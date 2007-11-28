@@ -141,6 +141,7 @@ ConnectionPool::ConnectionPool()
   m_sharedconnection_refcount(0),
   m_ready_to_connect(false),
   m_port(0), 
+  m_try_other_ports(true), 
   m_pFieldTypes(0),
   m_postgres_server_version(0)
 {
@@ -429,23 +430,29 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
             //handle_error(true /* cerr only */);
           }
 
-          //If we got this far then the connection failed, so we should try another port:
-          if(trying_remembered_port)
-            iter_port = m_list_ports.begin(); //Start looking at the possible ports.
-          else
-            ++iter_port;
 
-          if(iter_port == m_list_ports.end())
+          //If we got this far then the connection failed, so we should try another port:
+          if(!m_try_other_ports)
             try_another_port = false;
           else
           {
-            if(port == *iter_port) //Don't bother trying the same port again.
+            if(trying_remembered_port)
+              iter_port = m_list_ports.begin(); //Start looking at the possible ports.
+            else
               ++iter_port;
 
-            if(iter_port == m_list_ports.end()) //Check again, in case we iterated again.
+            if(iter_port == m_list_ports.end())
               try_another_port = false;
-            else            
-              port = *iter_port;
+            else
+            {
+              if(port == *iter_port) //Don't bother trying the same port again.
+                ++iter_port;
+
+              if(iter_port == m_list_ports.end()) //Check again, in case we iterated again.
+                try_another_port = false;
+              else            
+                port = *iter_port;
+            }
           }
 
           trying_remembered_port = false;
@@ -530,6 +537,11 @@ void ConnectionPool::set_user(const Glib::ustring& value)
 void ConnectionPool::set_port(int port)
 {
   m_port = port;
+}
+
+void ConnectionPool::set_try_other_ports(bool val)
+{
+  m_try_other_ports = val;
 }
 
 void ConnectionPool::set_password(const Glib::ustring& value)
@@ -763,6 +775,7 @@ bool ConnectionPool::start_self_hosting()
 
   m_port = available_port; //Remember it for later.
   m_self_hosting_active = true;
+  set_try_other_ports(false); //Only try to connect to this known instance, instead of finding others.
 
   //Let clients discover this server via avahi:
   avahi_start_publishing();

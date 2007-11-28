@@ -97,8 +97,11 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
       connection_pool->set_password(m_entry_password->get_text());
 
       //Start with the same port as last time the document was used:
+      //and avoid trying other ports if this is a self-hosted or network-browsed database.
       connection_pool->set_port(document->get_connection_port());
+      connection_pool->set_try_other_ports(document->get_connection_try_other_ports());
 
+      
       //if(document)
       //{
       //  connection_pool->set_database(document->get_connection_database());

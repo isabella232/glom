@@ -678,6 +678,10 @@ void App_Glom::open_browsed_document(const BrowsedServer& server)
       const Glib::ustring host = document_temp.get_connection_server();
       if(hostname_is_localhost(host))
         document_temp.set_connection_server(server.m_host);
+
+      //Make sure that we only use the specified port instead of connectin to some other postgres instance 
+      //on the same server:
+      document_temp.set_connection_try_other_ports(false);
     }
     else
     {
@@ -945,7 +949,10 @@ bool App_Glom::on_document_load()
         connection_pool->set_host(pDocument->get_connection_server());
         connection_pool->set_user(pDocument->get_connection_user());
         connection_pool->set_database(pDocument->get_connection_database());
-        connection_pool->set_port(port_used); //To make sure that we open the just-started self-hosted postgres server instead of any other postgres running on the same host.
+
+        //Make sure that we open the just-started self-hosted postgres server instead of any other postgres running on the same host.
+        connection_pool->set_port(port_used);
+        connection_pool->set_try_other_ports(false);
 
         connection_pool->set_ready_to_connect(this); //Box_DB::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
 

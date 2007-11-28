@@ -50,6 +50,7 @@ namespace Glom
 #define GLOM_ATTRIBUTE_CONNECTION_SELF_HOSTED "self_hosted"
 #define GLOM_ATTRIBUTE_CONNECTION_SERVER "server"
 #define GLOM_ATTRIBUTE_CONNECTION_PORT "port"
+#define GLOM_ATTRIBUTE_CONNECTION_TRY_OTHER_PORTS "try_other_ports"
 #define GLOM_ATTRIBUTE_CONNECTION_USER "user"
 #define GLOM_ATTRIBUTE_CONNECTION_DATABASE "database"
 
@@ -202,6 +203,7 @@ Document_Glom::Document_Glom()
   m_connection_is_self_hosted(false),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_connection_port(0),
+  m_connection_try_other_ports(false),
   m_block_cache_update(false),
   m_block_modified_set(false),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -305,6 +307,11 @@ int Document_Glom::get_connection_port() const
   return m_connection_port;
 }
 
+bool Document_Glom::get_connection_try_other_ports() const
+{
+  return m_connection_try_other_ports;
+}
+
 void Document_Glom::set_connection_user(const Glib::ustring& strVal)
 {
   if(strVal != m_connection_user)
@@ -351,6 +358,16 @@ void Document_Glom::set_connection_port(int port_number)
     set_modified();
   }
 }
+
+void Document_Glom::set_connection_try_other_ports(bool val)
+{
+  if(val != m_connection_try_other_ports)
+  {
+    m_connection_try_other_ports = val;
+    set_modified();
+  }
+}
+
 
 void Document_Glom::set_relationship(const Glib::ustring& table_name, const sharedptr<Relationship>& relationship)
 {
@@ -995,10 +1012,18 @@ void Document_Glom::change_relationship_name(const Glib::ustring& table_name, co
  }
 
 
-bool Document_Glom::get_node_attribute_value_as_bool(const xmlpp::Element* node, const Glib::ustring& strAttributeName)
+bool Document_Glom::get_node_attribute_value_as_bool(const xmlpp::Element* node, const Glib::ustring& strAttributeName, bool value_default)
 {
-  Glib::ustring strValue = get_node_attribute_value(node, strAttributeName);
-  return strValue == "true";
+  bool result = value_default;
+  const Glib::ustring value_string = get_node_attribute_value(node, strAttributeName);
+
+  //Get number for string:
+  if(!value_string.empty())
+  {
+    result = (value_string == "true");
+  }
+
+  return result;
 }
 
 Glib::ustring Document_Glom::get_child_text_node(const xmlpp::Element* node, const Glib::ustring& child_node_name) const
@@ -1028,10 +1053,10 @@ void Document_Glom::set_child_text_node(xmlpp::Element* node, const Glib::ustrin
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void Document_Glom::set_node_attribute_value_as_bool(xmlpp::Element* node, const Glib::ustring& strAttributeName, bool value)
+void Document_Glom::set_node_attribute_value_as_bool(xmlpp::Element* node, const Glib::ustring& strAttributeName, bool value, bool value_default)
 {
-  if(!value && !node->get_attribute(strAttributeName))
-    return; //Use the non-existance of an attribute to mean false, to save space.
+  if((value == value_default) && !node->get_attribute(strAttributeName))
+    return; //Use the non-existance of an attribute to mean zero, to save space.
 
   Glib::ustring strValue = (value ? "true" : "false");
   set_node_attribute_value(node, strAttributeName, strValue);
@@ -2181,6 +2206,7 @@ bool Document_Glom::load_after()
         bool self_hosted = get_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SELF_HOSTED);
         m_connection_server = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SERVER);
         m_connection_port = get_node_attribute_value_as_decimal(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_PORT);
+        m_connection_try_other_ports = get_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_TRY_OTHER_PORTS, true /* default */);
         m_connection_user = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_USER);
         m_connection_database = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_DATABASE);
 
@@ -3022,6 +3048,7 @@ bool Document_Glom::save_before()
 
     set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SERVER, m_connection_server);
     set_node_attribute_value_as_decimal(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_PORT, m_connection_port);
+    set_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_TRY_OTHER_PORTS, m_connection_try_other_ports, true /* default */);
     set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_USER, m_connection_user);
     set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_DATABASE, m_connection_database);
     append_newline(nodeRoot);

@@ -153,6 +153,7 @@ public:
    * Other ports will be tried if the specified port fails.
    */
   void set_port(int port);
+  void set_try_other_ports(bool val);
 
   void set_user(const Glib::ustring& value);
   void set_password(const Glib::ustring& value);
@@ -268,6 +269,8 @@ protected:
   bool m_ready_to_connect;
   Glib::ustring m_host, m_user, m_password, m_database;
   int m_port;
+  bool m_try_other_ports;
+
   FieldTypes* m_pFieldTypes;
   float m_postgres_server_version;
 

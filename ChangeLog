@@ -1,3 +1,18 @@
+2007-11-28  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/connectionpool.h: Added get/set_try_other_ports().
+	* glom/libglom/document/document_glom.cc:
+	* glom/libglom/document/document_glom.h: Added get/set_connection_try_other_ports(), 
+	and saved it.
+	* glom/dialog_connection.cc: connect_to_server_with_connection_settings():
+	Use try_other_ports from the document.
+	* glom/application.cc: open_browsed_document(): Set try_other_ports in the 
+	document (It is not really needed in the on-disk XML, but this is the easiest 
+	place to pass that information).
+	This should prevent us from opening a different postgres server on the same 
+	host when connecting via browse network.
+
 2007-11-27  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/application.cc: on_document_load(): When starting self-hosting, 

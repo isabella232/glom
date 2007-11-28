@@ -121,6 +121,7 @@ public:
   void set_connection_user(const Glib::ustring& strVal);
   void set_connection_database(const Glib::ustring& strVal);
   void set_connection_port(int port_number);
+  void set_connection_try_other_ports(bool val);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   /** When this returns true, the postgres database should be hosted by the local client,
@@ -139,6 +140,7 @@ public:
   Glib::ustring get_connection_user() const;
   Glib::ustring get_connection_database() const;
   int get_connection_port() const;
+  bool get_connection_try_other_ports() const;
 
   /** Set the language/locale used by original titles.
    * Title translations are translations of the text in this language.
@@ -387,17 +389,15 @@ protected:
 
   void fill_translatable_layout_items(const sharedptr<LayoutGroup>& group, type_list_translatables& the_list);
 
-  static bool get_node_attribute_value_as_bool(const xmlpp::Element* node, const Glib::ustring& strAttributeName);
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  static void set_node_attribute_value_as_bool(xmlpp::Element* node, const Glib::ustring& strAttributeName, bool value = true);
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   /// If the attribute is not there, then the default will be returned.
+  static bool get_node_attribute_value_as_bool(const xmlpp::Element* node, const Glib::ustring& strAttributeName, bool value_default = false);
   static guint get_node_attribute_value_as_decimal(const xmlpp::Element* node, const Glib::ustring& strAttributeName, guint value_default = 0);
   static double get_node_attribute_value_as_decimal_double(const xmlpp::Element* node, const Glib::ustring& strAttributeName);
-
   static float get_node_attribute_value_as_float(const xmlpp::Element* node, const Glib::ustring& strAttributeName);
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+  static void set_node_attribute_value_as_bool(xmlpp::Element* node, const Glib::ustring& strAttributeName, bool value = true, bool value_default = false);
   static void set_node_attribute_value_as_float( xmlpp::Element* node, const Glib::ustring& strAttributeName, float value );
   static void set_node_attribute_value_as_value(xmlpp::Element* node, const Glib::ustring& strAttributeName, const Gnome::Gda::Value& value, Field::glom_field_type field_type);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
@@ -417,6 +417,7 @@ protected:
 
   Glib::ustring m_connection_server, m_connection_user, m_connection_database;
   int m_connection_port; //0 means any port. Ignored when self-hosting (which may use a different port each time).
+  bool m_connection_try_other_ports; //Set to false for self-hosted or browsed-from-network documents.
 
   class LayoutInfo
   {
