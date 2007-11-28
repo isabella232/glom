@@ -1,3 +1,10 @@
+2007-11-28  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/connectionpool.cc: stop_self_hosting(): 
+	Use the -m fast option with pg_ctl to avoid waiting for clients to 
+	disconnect first.
+	This seems to fix bug #420962 (Craig Keogh, Denis Leroy, Perriman) 
+
 2007-11-27  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/data_structure/glomconversions.cc:
@@ -324,6 +331,12 @@
 	* glom/libglom/utils.cc:
 	* glom/libglom/utils.h: Added a show_ok_dialog() method, becasue it is silly to 
 	always call the on in Frame_Glom.
+
+	* glom/libglom/connectionpool.cc: stop_self_hosting(): 
+	Use the -m fast option with pg_ctl to avoid waiting for clients to 
+	disconnect first. 
+
+2007-11-28  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/connectionpool.cc:
 	* glom/libglom/connectionpool.h: create_self_hosting(): Take a parent window so we 
