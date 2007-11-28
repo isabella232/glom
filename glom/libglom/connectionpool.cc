@@ -809,7 +809,9 @@ void ConnectionPool::stop_self_hosting()
   // -c config_file= specifies the configuration file
   // -k specifies a directory to use for the socket. This must be writable by us.
   // POSTGRES_POSTMASTER_PATH is defined in config.h, based on the configure.
-  const std::string command_postgres_stop = POSTGRES_UTILS_PATH "/pg_ctl -D \"" + dbdir_data + "\" stop";
+  // We use "-m fast" instead of the default "-m smart" because that waits for clients to disconnect (and sometimes never succeeds).
+  // TODO: Warn about connected clients on other computers? Warn those other users?
+  const std::string command_postgres_stop = POSTGRES_UTILS_PATH "/pg_ctl -D \"" + dbdir_data + "\" stop -m fast";
   const bool result = Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, _("Stopping Database Server"));
   if(!result)
   {

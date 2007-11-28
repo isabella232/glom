@@ -1,5 +1,12 @@
 2007-11-28  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/connectionpool.cc: stop_self_hosting(): 
+	Use the -m fast option with pg_ctl to avoid waiting for clients to 
+	disconnect first.
+	This seems to fix bug #420962 (Craig Keogh, Denis Leroy, Perriman) 
+
+2007-11-28  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/connectionpool.cc:
 	* glom/libglom/connectionpool.h: Added get/set_try_other_ports().
 	* glom/libglom/document/document_glom.cc:
