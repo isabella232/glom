@@ -38,6 +38,7 @@ typedef struct _EpcAuthContext EpcAuthContext;
 namespace Gtk
 {
   class Window;
+  class Dialog;
 }
 
 namespace Glom
@@ -198,6 +199,11 @@ public:
   static EpcContents* on_publisher_document_requested (EpcPublisher* publisher, const gchar* key, gpointer user_data);
   static gboolean on_publisher_document_authentication(EpcAuthContext* context, const gchar* user_name, gpointer user_data);
 
+  static void on_epc_progress_begin(const gchar *title, gpointer user_data);
+  static void on_epc_progress_update(gdouble progress, const gchar* message, gpointer user_data);
+  static void on_epc_progress_end(gpointer user_data);
+
+
   /** Check whether PostgreSQL is really available for self-hosting,
    * in case the distro package has incorrect dependencies.
    *
@@ -262,6 +268,7 @@ protected:
   std::string m_self_hosting_data_uri;
 
   EpcPublisher* m_epc_publisher;
+  Gtk::Dialog* m_dialog_epc_progress; //For progress while generating certificates.
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   Glib::RefPtr<Gnome::Gda::Connection> m_refGdaConnection;

@@ -29,6 +29,7 @@
 #include <glom/libglom/utils.h>
 #include <libgdamm/connectionevent.h>
 #include <libepc/publisher.h>
+#include <libepc/shell.h> //For epc_shell_set_progress_hooks().
 #include <glibmm/i18n.h>
 
 #ifdef GLOM_ENABLE_MAEMO
@@ -137,6 +138,7 @@ ConnectionPool::ConnectionPool()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_self_hosting_active(false),
   m_epc_publisher(0),
+  m_dialog_epc_progress(0),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_sharedconnection_refcount(0),
   m_ready_to_connect(false),
@@ -1261,6 +1263,52 @@ gboolean ConnectionPool::on_publisher_document_authentication(EpcAuthContext* co
   }
 }
 
+
+void ConnectionPool::on_epc_progress_begin(const gchar* /* title */, gpointer user_data)
+{
+  //We ignore the title parameter because there is no way that libepc could know what Glom wants to say.
+ 
+  ConnectionPool* connection_pool = (ConnectionPool*)user_data;
+
+  //Create the dialog:
+  if(connection_pool->m_dialog_epc_progress)
+  {
+    delete connection_pool->m_dialog_epc_progress;
+    connection_pool->m_dialog_epc_progress = 0;
+  }
+
+  Gtk::MessageDialog* message_dialog = new Gtk::MessageDialog(Bakery::App_Gtk::util_bold_message(_("Glom: Generating Encryption Certificates")), true, Gtk::MESSAGE_INFO);
+  message_dialog->set_secondary_text(_("Please wait while Glom prepares your system for publishing over the network."));
+  message_dialog->show();
+
+  connection_pool->m_dialog_epc_progress = message_dialog; 
+}
+
+void ConnectionPool::on_epc_progress_update(gdouble /* progress */, const gchar* /* message */, gpointer user_data)
+{
+  //We ignore the title parameter because there is no way that libepc could know what Glom wants to say.
+  //TODO: Show the progress in a ProgressBar.
+
+  //ConnectionPool* connection_pool = (ConnectionPool*)user_data;
+
+  //Allow GTK+ to process events, so that the UI is responsive:
+  while(Gtk::Main::events_pending())
+   Gtk::Main::iteration();
+}
+
+void ConnectionPool::on_epc_progress_end(gpointer user_data)
+{
+  ConnectionPool* connection_pool = (ConnectionPool*)user_data;
+
+  //Delete the dialog:
+  if(connection_pool->m_dialog_epc_progress)
+  {
+    delete connection_pool->m_dialog_epc_progress;
+    connection_pool->m_dialog_epc_progress = 0;
+  }
+}
+
+
 /** Advertise self-hosting via avahi:
  */
 void ConnectionPool::avahi_start_publishing()
@@ -1283,7 +1331,14 @@ void ConnectionPool::avahi_start_publishing()
   epc_publisher_set_auth_flags(m_epc_publisher, EPC_AUTH_PASSWORD_TEXT_NEEDED);
   epc_publisher_set_auth_handler(m_epc_publisher, "document", on_publisher_document_authentication, this /* user_data */, NULL);
 
+  //Install progress callback, so we can keep the UI responsive while libepc is generating certificates for the first time:
+  EpcShellProgressHooks callbacks;
+  callbacks.begin = &ConnectionPool::on_epc_progress_begin;
+  callbacks.update = &ConnectionPool::on_epc_progress_update;
+  callbacks.end = &ConnectionPool::on_epc_progress_end;
+  epc_shell_set_progress_hooks(&callbacks, this, NULL);
       
+  //Start the publisher, serving HTTPS:
   GError* error = 0;
   epc_publisher_run_async(m_epc_publisher, &error);
   if(error)

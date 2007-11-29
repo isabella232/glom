@@ -1,3 +1,9 @@
+2007-11-29  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/connectionpool.h: Use epc_shell_set_progress_hooks() 
+	to show some UI while generating certificates during a first run.
+
 2007-11-28  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/connectionpool.cc: stop_self_hosting(): 
