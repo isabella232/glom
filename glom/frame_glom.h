@@ -192,6 +192,7 @@ protected:
   //Child widgets:
   Gtk::Label* m_pLabel_Name;
   Gtk::Label* m_pLabel_Table;
+  Gtk::HBox* m_box_footer;
   Gtk::Label* m_pLabel_Mode;
   Gtk::Label* m_pLabel_userlevel;
 

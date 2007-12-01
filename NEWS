@@ -1,3 +1,15 @@
+1.6.5 (stable):
+
+* Make sure that the self-hosted postgres server really shuts down.
+  (Murray Cumming)
+  (Bug #420962, Craig Keogh, Denis Leroy, Perriman)
+* Avoid a SQL error when using numeric calculated fields in non-English 
+  locales.
+  (Murray Cumming)
+  Bug #499459 (Perriman)
+* More Maemo build fixes.
+  (Johannes Schimd)
+
 1.6.4 (stable):
 
 * Really support Maemo

@@ -177,7 +177,7 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
     Gtk::Alignment* alignment = Gtk::manage( new Gtk::Alignment );
 
     if(!group->get_title().empty()) //Don't indent if it has no title, to allow use of groups just for positioning.
-      alignment->set_padding(6, 0, 6, 0);
+      alignment->set_padding(Glom::Utils::DEFAULT_SPACING_SMALL, 0, 6, 0); //Use left-padding of 6 even on Maemo because indentation is important.
 
     alignment->show();
     frame->add(*alignment);
@@ -287,7 +287,7 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
 
         //Add a Related Records list for this portal:
         Box_Data_List_Related* portal_box = create_related(portal, false /* no label, because it's in the tab instead. */);
-        //portal_box->set_border_width(6); It has "padding" around the Alignment instead.
+        //portal_box->set_border_width(Glom::Utils::DEFAULT_SPACING_SMALL); It has "padding" around the Alignment instead.
         portal_box->show();
         notebook_widget->append_page(*portal_box, *tab_label);
 
@@ -310,9 +310,9 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
 
         //This doesn't work (probably because we haven't implmented it in our custom container),
         //so we put the flowtable in an alignment and give that a border instead.
-        //flow_table->set_border_width(6); //Put some space between the page child and the page edges.
+        //flow_table->set_border_width(Glom::Utils::DEFAULT_SPACING_SMALL); //Put some space between the page child and the page edges.
         Gtk::Alignment* alignment = Gtk::manage(new Gtk::Alignment());
-        alignment->set_border_width(6);
+        alignment->set_border_width(Glom::Utils::DEFAULT_SPACING_SMALL);
         alignment->add(*flow_table);
         alignment->show();
 

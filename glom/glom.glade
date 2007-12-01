@@ -582,7 +582,7 @@
 	  </child>
 
 	  <child>
-	    <widget class="GtkHBox" id="hbox7">
+	    <widget class="GtkHBox" id="hbox_footer">
 	      <property name="visible">True</property>
 	      <property name="homogeneous">False</property>
 	      <property name="spacing">6</property>
