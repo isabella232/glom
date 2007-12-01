@@ -25,7 +25,7 @@ namespace Glom
 {
 
 Box_Data_List_Find::Box_Data_List_Find()
-: m_HBox(false, 6)
+: m_HBox(false, Glom::Utils::DEFAULT_SPACING_SMALL)
 {
   //m_strHint = _("Enter the search criteria and click [Find]\n Glom will then change to Data mode to display the results.");
 

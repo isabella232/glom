@@ -1290,7 +1290,7 @@ Glom could not connect to the database server. Maybe you entered an incorrect us
               </packing>
             </child>
             <child>
-              <widget class="GtkHBox" id="hbox7">
+              <widget class="GtkHBox" id="hbox_footer">
                 <property name="visible">True</property>
                 <property name="spacing">6</property>
                 <child>

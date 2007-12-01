@@ -1,5 +1,19 @@
 2007-12-01  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/appstate.cc: Constructor: Make sure that we 
+	default to operator mode for client-only mode.
+	* glom/glom.glade:
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h: Hide the footer (user level and found count)
+	in Maemo build.
+
+	* glom/dialog_glom.cc:
+	* glom/mode_find/box_data_list_find.cc:
+	* glom/utility_widgets/flowtablewithfields.cc: Replace some padding 
+	and spacing with the constants, so we save space in the Mameo build.
+
+2007-12-01  Murray Cumming  <murrayc@murrayc.com>
+
 	* configure.in: Check for glibmm 2.14.1, because only a libgdamm built with 
 	that can create the iter-only treemodel.
 

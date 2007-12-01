@@ -65,6 +65,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
 : PlaceHolder(cobject, refGlade),
   m_pLabel_Name(0),
   m_pLabel_Table(0),
+  m_box_footer(0),
   m_pLabel_Mode(0),
   m_pLabel_userlevel(0),
   m_pBox_QuickFind(0),
@@ -96,8 +97,17 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   //Load widgets from glade file:
   refGlade->get_widget("label_name", m_pLabel_Name);
   refGlade->get_widget("label_table_name", m_pLabel_Table);
+
+  refGlade->get_widget("hbox_footer", m_box_footer);
   refGlade->get_widget("label_mode", m_pLabel_Mode);
   refGlade->get_widget("label_user_level", m_pLabel_userlevel);
+  
+  //Hide the footer on maemo (It takes too much space),
+  //and reduce the border width:
+  #ifdef GLOM_ENABLE_MAEMO
+  m_box_footer->hide();
+  set_border_width(Glom::Utils::DEFAULT_SPACING_LARGE);
+  #endif
 
   refGlade->get_widget("hbox_quickfind", m_pBox_QuickFind);
   m_pBox_QuickFind->hide();
@@ -1045,7 +1055,7 @@ void Frame_Glom::show_table_title()
 #ifdef GLOM_ENABLE_MAEMO
     // xx-large is too large on maemo, taking away too much (vertical)
     // screen estate
-    m_pLabel_Table->set_markup("<b><span size=\"large\">" + table_label + "</span></b>");
+    m_pLabel_Table->set_markup("<b>" + table_label + "</b>");
 #else
     m_pLabel_Table->set_markup("<b><span size=\"xx-large\">" + table_label + "</span></b>"); //Show the table title in large text, because it's very important to the user.
 #endif
