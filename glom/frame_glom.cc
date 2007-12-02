@@ -91,8 +91,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_dialog_relationships_overview(0),
   m_pDrag_Bar(0),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-  m_pDialogConnection(0),
-  m_pDialogConnectionFailed(0)
+  m_pDialogConnection(0)
 {
   //Load widgets from glade file:
   refGlade->get_widget("label_name", m_pLabel_Name);
@@ -133,7 +132,6 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
 
   //Load the Glade file and instantiate its widgets to get the dialog stuff:
   Utils::get_glade_widget_derived_with_warning("dialog_connection", m_pDialogConnection);
-  Utils::get_glade_widget_with_warning("dialog_error_connection", m_pDialogConnectionFailed);
 
   m_Mode = MODE_None;
   m_Mode_Previous = MODE_None;
@@ -182,12 +180,6 @@ Frame_Glom::~Frame_Glom()
     remove_view(m_pDialogConnection);
     delete m_pDialogConnection;
     m_pDialogConnection = 0;
-  }
-
-  if(m_pDialogConnectionFailed)
-  {
-    delete m_pDialogConnectionFailed;
-    m_pDialogConnectionFailed = 0;
   }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -568,7 +560,7 @@ void Frame_Glom::on_menu_file_export()
   std::fstream the_stream(filepath.c_str(), std::ios_base::out | std::ios_base::trunc);
   if(!the_stream)
   {
-      show_ok_dialog(_("Could Not Create File."), _("Glom could not create the specified file."), *pWindowApp, Gtk::MESSAGE_ERROR);
+    show_ok_dialog(_("Could Not Create File."), _("Glom could not create the specified file."), *pWindowApp, Gtk::MESSAGE_ERROR);
     return;
   }
 
@@ -1648,13 +1640,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
         if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
         {
           //Warn the user, and let him try again:
-          m_pDialogConnectionFailed->set_transient_for(*get_app_window());
-          Glom::Utils::dialog_run_with_help(m_pDialogConnectionFailed, "dialog_error_connection");
-
-          response = Glom::Utils::dialog_run_with_help(m_pDialogConnection, "dialog_connection");
-          m_pDialogConnection->hide();
-          if(response != Gtk::RESPONSE_OK)
-            return false; //The user cancelled.
+          Utils::show_ok_dialog(_("Connection Failed"), _("Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."), *(get_app_window()), Gtk::MESSAGE_ERROR); //TODO: Add help button.
         }
         else
         {
@@ -1734,9 +1720,7 @@ bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring kno
         if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
         {
           //Warn the user, and let him try again:
-          m_pDialogConnectionFailed->set_transient_for(*get_app_window());
-          Glom::Utils::dialog_run_with_help(m_pDialogConnectionFailed, "dialog_error_connection");
-          m_pDialogConnectionFailed->hide();
+          Utils::show_ok_dialog(_("Connection Failed"), _("Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."), *(get_app_window()), Gtk::MESSAGE_ERROR); //TODO: Add help button.
         }
         else
         {

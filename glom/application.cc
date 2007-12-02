@@ -636,13 +636,7 @@ void App_Glom::open_browsed_document(const BrowsedServer& server)
         {
           //std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED" << std::endl;
         
-          Gtk::Dialog* dialog = 0;
-          Utils::get_glade_widget_with_warning("dialog_error_connection", dialog);
-
-          //Warn the user that the username and password were not accepted:
-          dialog->set_transient_for(*this);
-          Glom::Utils::dialog_run_with_help(dialog, "dialog_error_connection"); //TODO: Maybe the help is not appropriate here.
-          delete dialog;
+          Utils::show_ok_dialog(_("Connection Failed"), _("Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."), *this, Gtk::MESSAGE_ERROR); //TODO: Add help button.
         }
       }
       else

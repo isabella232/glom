@@ -239,7 +239,6 @@ protected:
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   Dialog_Connection* m_pDialogConnection;
-  Gtk::Dialog* m_pDialogConnectionFailed;
 };
 
 } //namespace Glom
