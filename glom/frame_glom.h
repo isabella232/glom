@@ -229,7 +229,6 @@ protected:
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   Dialog_Connection* m_pDialogConnection;
-  Gtk::Dialog* m_pDialogConnectionFailed;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   Dialog_Layout_Report* m_pDialogLayoutReport;

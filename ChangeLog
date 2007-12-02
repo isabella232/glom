@@ -1,3 +1,11 @@
+2007-12-02  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/glom.glade: Remove dialog_connection_error.
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h: Replace use of dialog_connection_error 
+	with Utils::show_ok_dialog(), so we can use a Hildon::Note 
+	on Maemo.
+
 2007-12-01  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/appstate.cc: Constructor: Make sure that we 
