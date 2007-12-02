@@ -1,5 +1,11 @@
 2007-12-02  Murray Cumming  <murrayc@murrayc.com>
 
+	* configure.in:
+	* Makefile.am: Added --disable-doc configure option, because 
+	Maemo has no gnome-doc-utils. This was copied partly from Ekiga.
+
+2007-12-02  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/Makefile.am:  Mention dragbar.h to fix the 
 	dist.
 	* icons/16x16/Makefile.am: Dist pixmaps_DATA.
