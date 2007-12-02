@@ -1,7 +1,11 @@
 ## top-level Makefile.am
 
 #Build in these directories:
-SUBDIRS = po glom docs macros examples xslt icons
+SUBDIRS = po glom macros examples xslt icons
+
+if HAVE_GNOME_DOC_UTILS
+SUBDIRS += docs
+endif
 
 # For running autoreconf
 # (The documentation for this macro says that it is only useful in this top-level Makefile.am)

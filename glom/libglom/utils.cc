@@ -851,7 +851,7 @@ void Utils::show_help(const Glib::ustring& id)
 void Utils::show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window& parent, Gtk::MessageType message_type)
 {
 #ifdef GLOM_ENABLE_MAEMO
-  // TODO_maemo: Map message_type to a senseful stock_id?
+  // TODO_maemo: Map message_type to an appropriate stock_id?
   Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, parent, message);
 #else
   Gtk::MessageDialog dialog("<b>" + title + "</b>", true /* markup */, message_type, Gtk::BUTTONS_OK);
