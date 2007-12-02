@@ -1,3 +1,13 @@
+2007-12-02  Murray Cumming  <murrayc@murrayc.com>
+
+	* POTFILES.in: Added 
+	glom/utility_widgets/filechooserdialog_openwithbrowse.cc
+        and
+        glom/utility_widgets/filechooserdialog_saveextras.cc
+        and removed
+        glom/utility_widgets/filechooserdialog.cc
+	Bug #501024 (Hubert Bielenia)
+
 2007-11-28  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
 
         * es.po: Updated Spanish translation
