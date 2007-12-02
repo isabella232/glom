@@ -1721,6 +1721,11 @@ bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring kno
         {
           //Warn the user, and let him try again:
           Utils::show_ok_dialog(_("Connection Failed"), _("Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."), *(get_app_window()), Gtk::MESSAGE_ERROR); //TODO: Add help button.
+
+          response = Glom::Utils::dialog_run_with_help(m_pDialogConnection, "dialog_connection");
+          m_pDialogConnection->hide();
+          if(response != Gtk::RESPONSE_OK)
+            return false; //The user cancelled.
         }
         else
         {
