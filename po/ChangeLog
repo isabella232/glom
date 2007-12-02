@@ -1,5 +1,11 @@
 2007-12-02  Murray Cumming  <murrayc@murrayc.com>
 
+	* POTFILES.in: Remove 
+	glom/utility_widgets/filechooserdialog_openwithbrowse.cc
+	which does not exist.
+
+2007-12-02  Murray Cumming  <murrayc@murrayc.com>
+
 	* POTFILES.in: Added 
 	glom/utility_widgets/filechooserdialog_openwithbrowse.cc
         and

@@ -1,5 +1,16 @@
 2007-12-02  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/Makefile.am:  Mention dragbar.h to fix the 
+	dist.
+	* icons/16x16/Makefile.am: Dist pixmaps_DATA.
+
+2007-12-02  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/Makefile.am: Mention dragbar.h to fix the 
+	dist.
+
+2007-12-02  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/glom.glade: Remove dialog_connection_error.
 	* glom/application.cc:
 	* glom/frame_glom.cc:
