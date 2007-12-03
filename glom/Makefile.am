@@ -12,6 +12,7 @@ glom_icon_dir = $(datadir)/icons/hicolor/48x48/apps
 # We define GLOM_GLADEDIR so that we can get the installed .glade file at runtime.
 # We define PREFIX, SYSCONFDIR, LIBDIR, and DATADIR for the GNOME_PROGRAM_STANDARD_PROPERTIES macro.
 INCLUDES = -I@top_srcdir@/ $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
+	    $(MAEMO_LAUNCHER_CFLAGS) \
            -DGLOM_GLADEDIR=\""$(gladedir)/"\" \
            -DLOCALEDIR=\""$(datadir)/locale"\" \
            -DPREFIX=\""$(prefix)"\" \
@@ -77,7 +78,8 @@ endif
 
 glom_LDADD += python_embed/libpython_embed.a \
               $(top_builddir)/glom/libglom/libglom.la \
-              $(GLOM_LIBS) $(PYTHON_LDFLAGS) -lutil -lgettextpo
+              $(GLOM_LIBS) $(PYTHON_LDFLAGS) $(MAEMO_LAUNCHER_LDFLAGS) \
+	      -lutil -lgettextpo
 
 
              #python_embed/python_module/glom.la

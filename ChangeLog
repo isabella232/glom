@@ -1,3 +1,9 @@
+2007-12-03  Johannes Schmid <johannes.schmid@openismus.com>
+
+	* glom/Makefile.am: Added MAEMO_LAUNCHER_CFLAGS and 
+	MAEMO_LAUNCHER_LDFLAGS to the Makefile. These will be usually just
+	empty but will allow us to build on maemo without changes
+
 2007-12-03  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.in: Rename --disable-doc to --disable-doc-utils to be 
