@@ -1,5 +1,10 @@
 2007-12-03  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/application.cc: open_browsed_document(): Adapt to the latest 
+	libepc API, using the EpcServiceInfo object.
+
+2007-12-03  Murray Cumming  <murrayc@murrayc.com>
+
 	* configure.in: Rename --disable-doc to --disable-doc-utils to be 
 	clearer, and move the check lower in configure.ac because it was 
 	somehow causing the check for pkg-config to fail. 

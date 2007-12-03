@@ -616,7 +616,11 @@ void App_Glom::open_browsed_document(const BrowsedServer& server)
     else
     {
       //Open the document supplied by the other glom instance on the network:
-      EpcConsumer* consumer = epc_consumer_new(epc_service_type_get_protocol(server.m_service_type.c_str()), server.m_host.c_str(), server.m_port);
+      EpcServiceInfo* service_info = epc_service_info_new(
+        server.m_service_type.c_str(), server.m_host.c_str(), server.m_port, NULL);
+      EpcConsumer* consumer = epc_consumer_new(service_info);
+      epc_service_info_unref(service_info);
+      service_info = 0;
 
       Glib::ustring username, password;
       dialog_connection->get_username_and_password(username, password);
