@@ -75,7 +75,7 @@ void FileChooserDialog_SaveExtras::create_child_widgets()
   frame->set_shadow_type(Gtk::SHADOW_NONE);
 
   Gtk::Alignment* alignment = Gtk::manage(new Gtk::Alignment());
-  alignment->set_padding(0, 0, 12, 0); //Add padding at the left.
+  alignment->set_padding(0, 0, Utils::DEFAULT_SPACING_LARGE, 0); //Add padding at the left.
   alignment->show();
   frame->add(*alignment);
   frame->show();

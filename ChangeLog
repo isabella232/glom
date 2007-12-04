@@ -1,5 +1,12 @@
 2007-12-04  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/utility_widgets/filechooserdialog_saveextras.cc:
+	* glom/utility_widgets/flowtablewithfields.cc: Replace more hard-coded 6 spacing 
+	with our constant, so it is less on Maemo.
+
+2007-12-04  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.cc: on_document_load(): Call set_get_document_func() earlier 
 	so that the connection pool always has it.
 	* glom/libglom/connectionpool.cc: connect(): Start avahi publihsing here if it has 
