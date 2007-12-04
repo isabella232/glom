@@ -78,30 +78,6 @@ namespace Glom
 
 static const int GLOM_RESPONSE_BROWSE_NETWORK = 1;
 
-App_Glom::BrowsedServer::BrowsedServer()
-: m_port(0)
-{
-}
-
-/*
-App_Glom::BrowsedServer::BrowsedServer(const App_Glom::BrowsedServer& src)
-: m_port(src.m_port),
-  m_host(src.m_host),
-  m_service_type(src.m_service_type)
-  m_service_name(src.m_service_name)
-{
-}
-
-App_Glom::BrowsedServer& App_Glom::BrowsedServer::operator=(const App_Glom::BrowsedServer& src)
-{
-  m_port = m_port;
-  m_host = src.m_host;
-  m_service_type = src.m_service_type;
-  m_service_name = src.m_service_name;
-  return *this;
-}
-*/
-
 
 // Global application variable
 App_Glom* global_application = NULL;
@@ -594,7 +570,7 @@ static bool hostname_is_localhost(const Glib::ustring& hostname)
   return true;
 }
 
-void App_Glom::open_browsed_document(const BrowsedServer& server)
+void App_Glom::open_browsed_document(const EpcServiceInfo* server, const Glib::ustring& service_name)
 {
   gsize length = 0;
   gchar *document_contents = 0;
@@ -608,7 +584,7 @@ void App_Glom::open_browsed_document(const BrowsedServer& server)
     Utils::get_glade_widget_derived_with_warning("dialog_connection", dialog_connection);
     dialog_connection->set_transient_for(*this);
     dialog_connection->set_connect_to_browsed();
-    dialog_connection->set_database_name(server.m_service_name);
+    dialog_connection->set_database_name(service_name);
     const int response = Glom::Utils::dialog_run_with_help(dialog_connection, "dialog_connection");
     dialog_connection->hide();
     if(response != Gtk::RESPONSE_OK)
@@ -616,11 +592,7 @@ void App_Glom::open_browsed_document(const BrowsedServer& server)
     else
     {
       //Open the document supplied by the other glom instance on the network:
-      EpcServiceInfo* service_info = epc_service_info_new(
-        server.m_service_type.c_str(), server.m_host.c_str(), server.m_port, NULL);
-      EpcConsumer* consumer = epc_consumer_new(service_info);
-      epc_service_info_unref(service_info);
-      service_info = 0;
+      EpcConsumer* consumer = epc_consumer_new(server);
 
       Glib::ustring username, password;
       dialog_connection->get_username_and_password(username, password);
@@ -675,7 +647,7 @@ void App_Glom::open_browsed_document(const BrowsedServer& server)
       //then we need to use a host name that means the same thing from the client's PC:
       const Glib::ustring host = document_temp.get_connection_server();
       if(hostname_is_localhost(host))
-        document_temp.set_connection_server(server.m_host);
+        document_temp.set_connection_server( epc_service_info_get_host(server) );
 
       //Make sure that we only use the specified port instead of connectin to some other postgres instance 
       //on the same server:
@@ -719,12 +691,16 @@ void App_Glom::on_menu_file_open()
 
   //Ask user to choose file to open:
   bool browsed = false;
-  BrowsedServer browsed_server;
-  Glib::ustring file_uri = ui_file_select_open_with_browse(browsed, browsed_server);
+  EpcServiceInfo* browsed_server = 0;
+  Glib::ustring browsed_service_name;
+  Glib::ustring file_uri = ui_file_select_open_with_browse(browsed, browsed_server, browsed_service_name);
   if(!file_uri.empty() && !browsed)
     open_document(file_uri);
   else if(browsed)
-    open_browsed_document(browsed_server);
+    open_browsed_document(browsed_server, browsed_service_name);
+
+ if(browsed_server)
+    epc_service_info_unref(browsed_server);
 }
 
 void App_Glom::on_menu_file_close() //override
@@ -1984,8 +1960,10 @@ void App_Glom::on_menu_file_save_as_example()
 }
 
 //This is replaced (not overridden) so we can use our custom FileChooserDialog:
-Glib::ustring App_Glom::ui_file_select_open_with_browse(bool& browsed, BrowsedServer& browsed_server, const Glib::ustring& starting_folder_uri)
+Glib::ustring App_Glom::ui_file_select_open_with_browse(bool& browsed, EpcServiceInfo*& browsed_server, Glib::ustring& browsed_service_name, const Glib::ustring& starting_folder_uri)
 {
+  g_return_val_if_fail(browsed_server == 0, "");
+
   //Initialize output parameter:
   browsed = false;
 
@@ -2035,16 +2013,15 @@ Glib::ustring App_Glom::ui_file_select_open_with_browse(bool& browsed, BrowsedSe
       {
         //Tell the caller that a networked document should be used instead:
         browsed = true;
-        browsed_server.m_port = aui_service_dialog_get_port(dialog);
 
-        const gchar *host = aui_service_dialog_get_host_name(dialog);
-        browsed_server.m_host = host ? host : std::string();
-
-        const gchar *service_type = aui_service_dialog_get_service_type(dialog);
-        browsed_server.m_service_type = service_type ? service_type : std::string();
-
+        browsed_server = epc_service_info_new(
+          aui_service_dialog_get_service_type(dialog),
+          aui_service_dialog_get_host_name(dialog),
+          aui_service_dialog_get_port(dialog),
+          aui_service_dialog_get_txt_data(dialog) );
+              
         const gchar *service_name = aui_service_dialog_get_service_name(dialog);
-        browsed_server.m_service_name = service_name ? service_name : Glib::ustring();
+        browsed_service_name = service_name ? service_name : Glib::ustring();
       }
 
       gtk_widget_destroy(GTK_WIDGET(dialog));

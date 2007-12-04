@@ -28,6 +28,14 @@
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 
+//Avoid including the header here:
+extern "C"
+{
+typedef struct AvahiStringList AvahiStringList;
+
+typedef struct _EpcServiceInfo EpcServiceInfo;
+}
+
 namespace Glom
 {
 
@@ -108,28 +116,11 @@ protected:
   void stop_self_hosting_of_document_database();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  class BrowsedServer
-  {
-  public:
-    BrowsedServer();
-
-  private:
-    //Prevent these:
-    BrowsedServer(const BrowsedServer& src);
-    BrowsedServer& operator=(const BrowsedServer& src);
-
-  public:
-    int m_port;
-    std::string m_host;
-    std::string m_service_type;
-    Glib::ustring m_service_name;
-  };
-
   /** Offer a file chooser dialog, with a Browse Network button.
    * @param browsed This will be set to true if the user chose a networked glom instance to open.
    * @browsed_server This will be filled with the server details if browsed was set to true.
    */
-  Glib::ustring ui_file_select_open_with_browse(bool& browsed, BrowsedServer& browsed_server, const Glib::ustring& starting_folder_uri = Glib::ustring());
+  Glib::ustring ui_file_select_open_with_browse(bool& browsed, EpcServiceInfo*& browsed_server, Glib::ustring& browsed_service_name, const Glib::ustring& starting_folder_uri = Glib::ustring());
 
   virtual void on_menu_file_open(); //overridden.
   virtual void on_menu_file_close(); //override.
@@ -137,7 +128,7 @@ protected:
 
   virtual Bakery::App* new_instance(); //Override
 
-  void open_browsed_document(const BrowsedServer& server);
+  void open_browsed_document(const EpcServiceInfo* server, const Glib::ustring& service_name);
   static Glib::ustring get_file_uri_without_extension(const Glib::ustring& uri);
 
   typedef Bakery::App_WithDoc_Gtk type_base;
