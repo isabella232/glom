@@ -1,5 +1,13 @@
 2007-12-04  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data_list_related.cc: create_layout_get_layout(), 
+	get_fields_to_show():
+	* glom/mode_data/dialog_layout_list_related.cc: update_ui():
+	Do not try to insert at position 0 of an empty std::vector, to prevent crashes.
+	I introduced this problem on 2007-11-17.
+
+2007-12-04  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.cc:
 	* glom/application.h: ui_file_select_open_with_browse(), 
 	open_browsed_document(): Remove the BrowsedServer inner class and instead use 

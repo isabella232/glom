@@ -371,7 +371,7 @@ Box_Data_List_Related::type_vecLayoutFields Box_Data_List_Related::get_fields_to
   if(document)
   {
     Document_Glom::type_list_layout_groups mapGroups;
-    mapGroups[0] = m_portal;
+    mapGroups.push_back(m_portal);
 
     sharedptr<const Relationship> relationship = m_portal->get_relationship();
     if(relationship)
@@ -581,7 +581,7 @@ Document_Glom::type_list_layout_groups Box_Data_List_Related::create_layout_get_
   Document_Glom::type_list_layout_groups result;
 
   if(m_portal)
-    result[0] = m_portal;
+    result.push_back(m_portal);
   
   return result;
 }

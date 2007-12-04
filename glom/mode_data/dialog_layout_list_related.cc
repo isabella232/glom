@@ -127,7 +127,7 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
     m_combo_relationship->set_selected_relationship(m_portal->get_relationship(), m_portal->get_related_relationship()); 
 
     Document_Glom::type_list_layout_groups mapGroups;
-    mapGroups[0] = m_portal;
+    mapGroups.push_back(m_portal);
     document->fill_layout_field_details(related_table_name, mapGroups); //Update with full field information.
 
     //Show the field layout
