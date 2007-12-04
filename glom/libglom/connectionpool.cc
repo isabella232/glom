@@ -361,6 +361,11 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
 
             std::cout << "  Postgres Server version: " << get_postgres_server_version() << std::endl << std::endl;
 
+           //Let other clients discover this server via avahi:
+           //TODO: Only advertize if we are the first to open the document,
+           //to avoid duplicates.
+           avahi_start_publishing(); //Stopped in the signal_finished handler.
+
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
             return connect(); //Call this method recursively. This time m_refGdaConnection exists.
 #else
@@ -602,6 +607,9 @@ void ConnectionPool::on_sharedconnection_finished()
     m_refGdaConnection->close();
 
     m_refGdaConnection.clear();
+
+    //TODO: this should only even be started if we are the first to open the .glom file:
+    avahi_stop_publishing();
 
     //g_warning("ConnectionPool: connection closed");
   }
@@ -1316,6 +1324,8 @@ void ConnectionPool::avahi_start_publishing()
   if(m_epc_publisher)
     return;
 
+  std::cout << "debug: ConnectionPool::avahi_start_publishing" << std::endl;
+
   //Publish the document contents over HTTPS (discoverable via avahi):
   const Document_Glom* document = get_document();
   if(!document)
@@ -1352,6 +1362,9 @@ void ConnectionPool::avahi_stop_publishing()
 {
   if(!m_epc_publisher)
     return;
+
+  std::cout << "debug: ConnectionPool::avahi_stop_publishing" << std::endl;
+
 
   epc_publisher_quit(m_epc_publisher);
   g_object_unref(m_epc_publisher);

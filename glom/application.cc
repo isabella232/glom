@@ -894,6 +894,8 @@ bool App_Glom::on_document_load()
         return false; //Impossible anyway.
       else
       {
+        connection_pool->set_get_document_func( sigc::mem_fun(*this, &App_Glom::on_connection_pool_get_document) );
+
         int port_used = 0;
 
         //Set the connection details in the ConnectionPool singleton.
@@ -906,7 +908,6 @@ bool App_Glom::on_document_load()
 
           if(!is_example) /* It will be started later, after we have asked for the initial db name/title and created the files.*/
           {
-            connection_pool->set_get_document_func( sigc::mem_fun(*this, &App_Glom::on_connection_pool_get_document) );
             const bool test = connection_pool->start_self_hosting(); //Stopped in on_menu_file_close().
             if(!test)
               return false;
