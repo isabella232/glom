@@ -41,14 +41,15 @@ glom_SOURCES = main.cc \
                dialog_invalid_data.h dialog_invalid_data.cc \
                filechooser_export.h filechooser_export.cc \
                box_reports.h box_reports.cc \
-               printoperation_printlayout.h printoperation_printlayout.cc \
                xsl_utils.h xsl_utils.cc
 
 if !GLOM_ENABLE_CLIENT_ONLY
 glom_SOURCES += dialog_new_self_hosted_connection.h \
                 dialog_new_self_hosted_connection.cc \
                 dialog_database_preferences.h \
-                dialog_database_preferences.cc
+                dialog_database_preferences.cc \
+                printoperation_printlayout.h \
+		printoperation_printlayout.cc
 endif
 
 # Note that the order in which libraries are linked seems to be important.
@@ -82,8 +83,13 @@ endif
 glom_LDADD += python_embed/libpython_embed.a \
               $(top_builddir)/glom/libglom/libglom.la \
               $(top_builddir)/glom/mode_data/libmode_data.a \
-              $(GLOM_LIBS) $(PYTHON_LDFLAGS) -lutil -lgettextpo
+              $(GLOM_LIBS) $(PYTHON_LDFLAGS)
 
+if !WIN32
+glom_LDADD += -lutil
+endif
+
+glom_LDADD += -lgettextpo
 
              #python_embed/python_module/glom.la
 
@@ -97,7 +103,11 @@ glom_LDADD += python_embed/libpython_embed.a \
 
 
 test_pyembed_SOURCES = test_pyembed.cc
-test_pyembed_LDADD = $(GLOM_LIBS) $(PYTHON_LDFLAGS) -lutil
+test_pyembed_LDADD = $(GLOM_LIBS) $(PYTHON_LDFLAGS)
+
+if !WIN32
+test_pyembed_LDADD += -lutil
+endif
 
 
 #Install the .dtd file:

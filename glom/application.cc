@@ -43,12 +43,17 @@
 #include <hildon/hildon-window.h>
 #endif // GLOM_ENABLE_MAEMO
 
+#ifndef G_OS_WIN32
 #include <libepc/consumer.h>
 #include <libsoup/soup-status.h>
 #include <avahi-ui/avahi-ui.h>
+#endif // !G_OS_WIN32
+
 #include <gtk/gtkstock.h> /* For use with the avahi-ui dialog. */
 
-#include <netdb.h> //For gethostbyname().
+#ifndef G_OS_WIN32
+# include <netdb.h> //For gethostbyname().
+#endif
 
 #ifdef GLOM_ENABLE_MAEMO
 namespace //anonymous namespace
@@ -78,7 +83,6 @@ namespace Glom
 
 static const int GLOM_RESPONSE_BROWSE_NETWORK = 1;
 
-
 // Global application variable
 App_Glom* global_application = NULL;
 
@@ -102,8 +106,8 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
   m_menu_tables_ui_merge_id(0),
   m_menu_reports_ui_merge_id(0),
   m_menu_print_layouts_ui_merge_id(0),
-  m_ui_save_extra_showextras(false),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+  m_ui_save_extra_showextras(false),
   m_ui_save_extra_newdb_selfhosted(false),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_show_sql_debug(false)
@@ -274,18 +278,20 @@ void App_Glom::init_menus_file()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_refFileActionGroup->add(action,
                         sigc::mem_fun((App_Glom&)*this, &App_Glom::on_menu_file_save_as_example));
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_Menu_File_Export", _("_Export")),
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_export));
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   m_refFileActionGroup->add(Gtk::Action::create("GlomAction_Menu_File_Print", Gtk::Stock::PRINT));
   m_refFileActionGroup->add(Gtk::Action::create("GlomAction_File_Print", _("_Standard")),
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_print) );
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   Glib::RefPtr<Gtk::Action> action_print_edit = Gtk::Action::create("GlomAction_File_PrintEdit", _("_Edit Print Layouts"));
   m_refFileActionGroup->add(action_print_edit, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_print_edit_layouts));
   m_listDeveloperActions.push_back(action_print_edit);
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Close", Gtk::Stock::CLOSE),
                         sigc::mem_fun((App_WithDoc&)*this, &App_WithDoc::on_menu_file_close));
@@ -570,6 +576,7 @@ static bool hostname_is_localhost(const Glib::ustring& hostname)
   return true;
 }
 
+#ifndef G_OS_WIN32
 void App_Glom::open_browsed_document(const EpcServiceInfo* server, const Glib::ustring& service_name)
 {
   gsize length = 0;
@@ -640,8 +647,11 @@ void App_Glom::open_browsed_document(const EpcServiceInfo* server, const Glib::u
     const bool loaded = document_temp.load_from_data((const guchar*)document_contents, length);
     if(loaded)
     {
+      // Connection is always remote-hosted in client only mode:
+#ifndef GLOM_ENABLE_CLIENT_ONLY
       //Stop the document from being self-hosted (it's already hosted by the other networked Glom instance):
       document_temp.set_connection_is_self_hosted(false);
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
       //If the publisher thinks that it's using a postgres database on localhost, 
       //then we need to use a host name that means the same thing from the client's PC:
@@ -675,11 +685,15 @@ void App_Glom::open_browsed_document(const EpcServiceInfo* server, const Glib::u
     if(document)
     {
       document->set_opened_from_browse();
+
       document->set_userlevel(AppState::USERLEVEL_OPERATOR); //TODO: This should happen automatically.
+#ifndef GLOM_ENABLE_CLIENT_ONLY
       update_userlevel_ui();
+#endif // !GLOM_ENABLE_CLIENT_ONLY
     }
   }
 }
+#endif // !G_OS_WIN32
 
 //We override this so we can show the custom FileChooserDialog with the Browse Network button:
 void App_Glom::on_menu_file_open()
@@ -691,16 +705,22 @@ void App_Glom::on_menu_file_open()
 
   //Ask user to choose file to open:
   bool browsed = false;
+#ifndef G_OS_WIN32
   EpcServiceInfo* browsed_server = 0;
   Glib::ustring browsed_service_name;
   Glib::ustring file_uri = ui_file_select_open_with_browse(browsed, browsed_server, browsed_service_name);
+#else
+  Glib::ustring file_uri = ui_file_select_open();
+#endif // !G_OS_WIN32
   if(!file_uri.empty() && !browsed)
     open_document(file_uri);
+#ifndef G_OS_WIN32
   else if(browsed)
     open_browsed_document(browsed_server, browsed_service_name);
 
  if(browsed_server)
     epc_service_info_unref(browsed_server);
+#endif // !G_OS_WIN32
 }
 
 void App_Glom::on_menu_file_close() //override
@@ -894,7 +914,9 @@ bool App_Glom::on_document_load()
         return false; //Impossible anyway.
       else
       {
+#ifndef GLOM_ENABLE_CLIENT_ONLY
         connection_pool->set_get_document_func( sigc::mem_fun(*this, &App_Glom::on_connection_pool_get_document) );
+#endif
 
         int port_used = 0;
 
@@ -1780,6 +1802,10 @@ void App_Glom::fill_menu_print_layouts(const Glib::ustring& table_name)
 
   Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
   const Document_Glom::type_listPrintLayouts tables = document->get_print_layout_names(table_name);
+
+  // TODO_clientonly: Should this be available in client only mode? We need to
+  // depend on goocanvas in client only mode then:
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   for(Document_Glom::type_listPrintLayouts::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
     sharedptr<PrintLayout> print_layout = document->get_print_layout(table_name, *iter);
@@ -1802,6 +1828,7 @@ void App_Glom::fill_menu_print_layouts(const Glib::ustring& table_name)
       }
     }
   }
+#endif
 
   m_refUIManager->insert_action_group(m_refNavPrintLayoutsActionGroup);
 
@@ -1959,7 +1986,9 @@ void App_Glom::on_menu_file_save_as_example()
     cancel_close_or_exit();
   }
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
+#ifndef G_OS_WIN32
 //This is replaced (not overridden) so we can use our custom FileChooserDialog:
 Glib::ustring App_Glom::ui_file_select_open_with_browse(bool& browsed, EpcServiceInfo*& browsed_server, Glib::ustring& browsed_service_name, const Glib::ustring& starting_folder_uri)
 {
@@ -2036,7 +2065,9 @@ Glib::ustring App_Glom::ui_file_select_open_with_browse(bool& browsed, EpcServic
 
   return Glib::ustring();
 }
+#endif // !G_OS_WIN32
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) //override
 {
   //Reimplement this whole function, just so we can use our custom FileChooserDialog class:
@@ -2332,6 +2363,7 @@ void App_Glom::document_history_add(const Glib::ustring& file_uri)
     Bakery::App_WithDoc_Gtk::document_history_add(file_uri);
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void App_Glom::do_menu_developer_fields(Gtk::Window& parent, const Glib::ustring table_name)
 {
   m_pFrame->do_menu_developer_fields(parent, table_name);
@@ -2341,6 +2373,7 @@ void App_Glom::do_menu_developer_relationships(Gtk::Window& parent, const Glib::
 {
   m_pFrame->do_menu_developer_relationships(parent, table_name);
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 void App_Glom::add_sidebar(SideBar& sidebar)
 {
@@ -2352,10 +2385,12 @@ void App_Glom::remove_sidebar(SideBar& sidebar)
   m_pBoxSidebar->remove (sidebar);
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 Document_Glom* App_Glom::on_connection_pool_get_document()
 {
   return dynamic_cast<Document_Glom*>(get_document());
 }
+#endif
 
 } //namespace Glom
 

@@ -24,6 +24,7 @@ libutility_widgets_a_SOURCES = alignment_justified.cc alignment_justified.h \
                                comboglomchoicesbase.h comboglomchoicesbase.cc \
                                comboentryglom.h comboentryglom.cc \
                                placeholder.cc placeholder.h \
+                               placeholder-glom.h  placeholder-glom.cc \
                                table_columns.cc table_columns.h \
                                layoutwidgetbase.cc layoutwidgetbase.h \
                                layoutwidgetfield.cc layoutwidgetfield.h \
@@ -40,7 +41,6 @@ if !GLOM_ENABLE_CLIENT_ONLY
 libutility_widgets_a_SOURCES += filechooserdialog_saveextras.cc filechooserdialog_saveextras.h \
                                 dragbutton.cc dragbutton.h \
                                 dragbar.cc dragbar.h \
-                                placeholder-glom.h  placeholder-glom.cc \
                                 sidebar.h sidebar.cc
 endif
 
@@ -48,7 +48,6 @@ endif
 libutility_widgets_a_LIBADD = adddel/libutility_widgets_adddel.a \
                               db_adddel/libutility_widgets_db_adddel.a \
                               canvas/libutility_widgets_canvas.a
-
 
 #noinst_PROGRAMS = test_flowtable
 #test_flowtable_SOURCES = test_flowtable.cc flowtable.cc flowtable.h

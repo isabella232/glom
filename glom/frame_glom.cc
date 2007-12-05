@@ -45,8 +45,8 @@
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #include <glom/mode_design/dialog_add_related_table.h>
 #include <glom/mode_design/script_library/dialog_script_library.h>
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 #include <glom/printoperation_printlayout.h>
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #ifdef GLOM_ENABLE_MAEMO
 #include <hildonmm/note.h>
@@ -519,7 +519,6 @@ void Frame_Glom::on_menu_userlevel_Operator(const Glib::RefPtr<Gtk::RadioAction>
     }
   }
 }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 void Frame_Glom::on_menu_file_export()
 {
@@ -667,6 +666,7 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
     }
   }
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 void Frame_Glom::on_menu_file_print()
 {
@@ -675,10 +675,12 @@ void Frame_Glom::on_menu_file_print()
    notebook_current->do_menu_file_print();
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void Frame_Glom::on_menu_file_print_edit_layouts()
 {
   on_menu_developer_print_layouts();
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 void Frame_Glom::on_menu_Mode_Data()
 {
@@ -1929,6 +1931,7 @@ void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
   report_builder.report_build(found_set, report, get_app_window()); //TODO: Use found set's where_clause.
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void Frame_Glom::on_menu_print_layout_selected(const Glib::ustring& print_layout_name)
 {
   const Privileges table_privs = Privs::get_current_privs(m_table_name);
@@ -1976,7 +1979,7 @@ void Frame_Glom::on_menu_print_layout_selected(const Glib::ustring& print_layout
         << ex.what() << std::endl;
   }
 }
-
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void Frame_Glom::on_dialog_layout_report_hide()

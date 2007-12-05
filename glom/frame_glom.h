@@ -84,7 +84,10 @@ public:
   void on_menu_Mode_Find();
 
   void on_menu_report_selected(const Glib::ustring& report_name);
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   void on_menu_print_layout_selected(const Glib::ustring& print_layout_name);
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   //virtual void on_menu_Navigate_Database();
   //virtual void do_menu_Navigate_Database(bool bUseList = true);
@@ -115,10 +118,11 @@ public:
   void on_dialog_reports_hide();
   void on_dialog_layout_print_hide();
   void on_dialog_print_layouts_hide();
-  void on_dialog_tables_hide();
 
   void on_dialog_add_related_table_request_edit_fields();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+
+  void on_dialog_tables_hide();
 
   virtual void set_document(Document_Glom* pDocument); //View override
   virtual void load_from_document(); //View override

@@ -210,7 +210,8 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
   // Loop, updating the UI, repeatedly trying the second command, until the second command succeeds:
   while(true)
   {
-    sleep(1); // To stop us calling the second command too often.
+    // Use Glib::usleep() instead of sleep() because it also works on Windows
+    Glib::usleep(1000000); // To stop us calling the second command too often.
 
     Glib::ustring stored_env_lang;
     Glib::ustring stored_env_language;
@@ -265,7 +266,8 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
         std::cout << " debug: output=" << stdout_output << ", waiting for=" << success_text << std::endl;
         if(stdout_output.find(success_text) != std::string::npos)
         {
-          sleep(3); //Sleep for a bit more, because I think that pg_ctl sometimes reports success too early.
+          // Use Glib::usleep() instead of sleep() because it also works on Windows
+          Glib::usleep(3000000); //Sleep for a bit more, because I think that pg_ctl sometimes reports success too early.
           return true;
         }
       }

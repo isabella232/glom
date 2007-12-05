@@ -116,11 +116,13 @@ protected:
   void stop_self_hosting_of_document_database();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
+#ifndef G_OS_WIN32
   /** Offer a file chooser dialog, with a Browse Network button.
    * @param browsed This will be set to true if the user chose a networked glom instance to open.
    * @browsed_server This will be filled with the server details if browsed was set to true.
    */
   Glib::ustring ui_file_select_open_with_browse(bool& browsed, EpcServiceInfo*& browsed_server, Glib::ustring& browsed_service_name, const Glib::ustring& starting_folder_uri = Glib::ustring());
+#endif // !G_OS_WIN32
 
   virtual void on_menu_file_open(); //overridden.
   virtual void on_menu_file_close(); //override.
@@ -128,7 +130,10 @@ protected:
 
   virtual Bakery::App* new_instance(); //Override
 
+#ifndef G_OS_WIN32
   void open_browsed_document(const EpcServiceInfo* server, const Glib::ustring& service_name);
+#endif // !G_OS_WIN32
+
   static Glib::ustring get_file_uri_without_extension(const Glib::ustring& uri);
 
   typedef Bakery::App_WithDoc_Gtk type_base;

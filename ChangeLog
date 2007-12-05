@@ -1,3 +1,34 @@
+2007-12-04  Armin Burgmeier  <armin@openismus.com>
+
+	* acinclude.m4: Change the the python library finder so that is also
+	finds libpythonMAJORMINOR.* instead of libpythonMAJOR.MINOR.*, because
+	the former is used on windows.
+
+	* configure.in: Don't require avahi, iso-codes and libepc on Windows,
+	made goocanvasmm nonoptional because it is needed for the printing
+	stuff.
+
+	* glom/frame_glom.h:
+	* glom/libglom/connectionpool.h:
+	* glom/libglom/spawn_with_feedback.cc:
+	* glom/libglom/connectionpool.cc:
+	* glom/utility_widgets/flowtable.h:
+	* glom/utility_widgets/flowtablewithfields.h:
+	* glom/utility_widgets/flowtable.cc:
+	* glom/utility_widgets/flowtablewithfields.cc:
+	* glom/utility_widgets/placeholder-glom.cc:
+	* glom/utility_widgets/Makefile.am:
+	* glom/frame_glom.cc:
+	* glom/application.h:
+	* glom/application.cc: Clientonly and Windows build fixes.
+
+	* glom/python_embed/python_module/Makefile.am:
+	* glom/libglom/Makefile.am:
+	* glom/Makefile.am:
+	* Makefile.am: Do not link against -lutil on Win32, because there is
+	no such library, and it does not seem to be needed. Link libglom
+	statically on Windows for now.
+
 2007-12-04  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data_list_related.cc:

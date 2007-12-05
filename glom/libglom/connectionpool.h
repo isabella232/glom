@@ -245,12 +245,12 @@ protected:
   static int discover_first_free_port(int start_port, int end_port);
 
   Document_Glom* get_document();
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   /** Advertize self-hosting via avahi:
    */
   void avahi_start_publishing();
   void avahi_stop_publishing();
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 protected:
 
@@ -284,8 +284,9 @@ protected:
 private:
 
   static ConnectionPool* m_instance;
-
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   SlotGetDocument m_slot_get_document;
+#endif
 };
 
 } //namespace Glom

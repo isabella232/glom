@@ -28,25 +28,38 @@
 #include <glom/libglom/spawn_with_feedback.h>
 #include <glom/libglom/utils.h>
 #include <libgdamm/connectionevent.h>
-#include <libepc/publisher.h>
+
+#ifndef G_OS_WIN32
 #include <libepc/shell.h> //For epc_shell_set_progress_hooks().
+#endif
+
 #include <glibmm/i18n.h>
+
+#ifndef G_OS_WIN32
+#include <libepc/publisher.h>
+#endif
+
 
 #ifdef GLOM_ENABLE_MAEMO
 #include <hildonmm/note.h>
 #endif
 
+#ifndef G_OS_WIN32
 #include <sys/types.h>
 #include <sys/socket.h> 
 #include <sys/socket.h>
 #include <netinet/in.h> //For sockaddr_in
+#endif
 
 #include <signal.h> //To catch segfaults
 
 #include "gst-package.h"
 
+/* TODO: Should this be used in clientonly mode? */
 
+#ifndef G_OS_WIN32
 static EpcProtocol publish_protocol = EPC_PROTOCOL_HTTPS;
+#endif
 
 namespace Glom
 {
@@ -361,10 +374,12 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
 
             std::cout << "  Postgres Server version: " << get_postgres_server_version() << std::endl << std::endl;
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
            //Let other clients discover this server via avahi:
            //TODO: Only advertize if we are the first to open the document,
            //to avoid duplicates.
            avahi_start_publishing(); //Stopped in the signal_finished handler.
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
             return connect(); //Call this method recursively. This time m_refGdaConnection exists.
@@ -608,8 +623,10 @@ void ConnectionPool::on_sharedconnection_finished()
 
     m_refGdaConnection.clear();
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
     //TODO: this should only even be started if we are the first to open the .glom file:
     avahi_stop_publishing();
+#endif
 
     //g_warning("ConnectionPool: connection closed");
   }
@@ -1172,6 +1189,12 @@ bool ConnectionPool::check_postgres_gda_client_is_available_with_warning()
 
 bool ConnectionPool::check_user_is_not_root()
 {
+#ifdef G_OS_WIN32
+  // TODO: Should we check for administator privileges here? Note that it is
+  // not too easy/convenient to change user on Windows (at least XP, I am not
+  // sure about Vista).
+  return true;
+#else
   //std::cout << "ConnectionPool::check_user_is_not_root(): geteuid()=" << geteuid() << ", getgid()=" << getgid() << std::endl;
 
   //This is very linux-specific. We should ifdef this out for other platforms.
@@ -1192,10 +1215,11 @@ bool ConnectionPool::check_user_is_not_root()
   }
 
   return true; /* Not root. It's OK. */
+#endif
 }
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 Document_Glom* ConnectionPool::get_document()
 {
   if(!m_slot_get_document)
@@ -1206,7 +1230,9 @@ Document_Glom* ConnectionPool::get_document()
 
   return m_slot_get_document();
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 //static
 EpcContents* ConnectionPool::on_publisher_document_requested(EpcPublisher* publisher, const gchar* key, gpointer user_data)
 {

@@ -919,7 +919,6 @@ void FlowTableWithFields::set_design_mode(bool value)
   }
 }
 
-
 void FlowTableWithFields::add_layoutwidgetbase(LayoutWidgetBase* layout_widget)
 {
   add_layoutwidgetbase(layout_widget, m_list_layoutwidgets.end());
@@ -1112,6 +1111,7 @@ void FlowTableWithFields::on_flowtable_requested_related_details(const Glib::ust
   signal_requested_related_details().emit(table_name, primary_key_value);
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void FlowTableWithFields::on_dnd_add_layout_item(LayoutWidgetBase* above)
 {
   //Ask the user to choose the layout item:
@@ -1197,6 +1197,7 @@ void FlowTableWithFields::on_dnd_remove_placeholder()
 
   m_placeholder = 0;
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 sharedptr<LayoutItem_Portal> FlowTableWithFields::get_layout_item_from_relation()
 {

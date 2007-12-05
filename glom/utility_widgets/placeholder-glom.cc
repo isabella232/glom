@@ -34,14 +34,18 @@ namespace Glom
 PlaceholderGlom::PlaceholderGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
 : Gtk::Frame(cobject)
 {
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   init();
 }
 
 PlaceholderGlom::PlaceholderGlom()
 {
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   init();
 }

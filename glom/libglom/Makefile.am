@@ -32,18 +32,34 @@ libglom_la_SOURCES = appstate.h appstate.cc \
 
 libglom_la_LDFLAGS = -no-undefined
 
+# Link libglom statically on maemo and windows for now.
+# We get lots of duplicate definitions when linking dynamically on Windows.
+# I am not yet sure why this happens. armin.
+if GLOM_ENABLE_MAEMO
+libglom_la_LDFLAGS += -static
+endif
+if WIN32
+libglom_la_LDFLAGS += -static
+endif
+
 libglom_la_LIBADD  = document/libdocument.la \
                      data_structure/libdata_structure.la \
                      data_structure/layout/libdata_structure_layout.la \
                      data_structure/layout/report_parts/libdata_structure_layout_reportparts.la \
                      python_embed/libglom_python_embed.la \
-                     $(GLOM_LIBS) $(PYTHON_LDFLAGS) -lutil
+                     $(GLOM_LIBS) $(PYTHON_LDFLAGS)
 
+if !WIN32
+libglom_la_LIBADD += -lutil
+endif
 
 noinst_PROGRAMS = test_sharedptr_layoutitem
 
 test_sharedptr_layoutitem_SOURCES = test_sharedptr_layoutitem.cc
 test_sharedptr_layoutitem_LDADD =  libglom.la \
-              $(GLOM_LIBS) -lutil
+              $(GLOM_LIBS)
 
-                   
+if !WIN32
+test_sharedptr_layoutitem_LDADD += -lutil
+endif
+

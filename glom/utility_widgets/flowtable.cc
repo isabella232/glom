@@ -282,8 +282,11 @@ FlowTable::FlowTable()
   // rather annoying, though I don't see another possibility at the moment. armin.
   Glib::ObjectBase("Glom_FlowTable"),
 #endif // !defined(GLIBMM_VFUNCS_ENABLED) || !defined(GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED)
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 	m_current_dnd_item(0),
   m_dnd_in_progress(false),
+#endif // !GLOM_ENABLE_CLIENT_ONLY
   m_columns_count(1),
   m_padding(0),
   m_design_mode(false)
@@ -1062,6 +1065,7 @@ bool FlowTable::on_expose_event(GdkEventExpose* event)
 #endif
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 bool FlowTable::on_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint time)
 {
   m_current_dnd_item = dnd_get_item(x, y);
@@ -1217,6 +1221,7 @@ LayoutWidgetBase* FlowTable::dnd_find_datawidget()
 
   return above;
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 } //namespace Glom
 

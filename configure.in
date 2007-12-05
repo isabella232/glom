@@ -42,6 +42,20 @@ AM_CONDITIONAL(ENABLE_SK, test "x$enable_scrollkeeper" = "xyes")
 #AC_CONFIG_AUX_DIR(macros)
 AC_SUBST([ACLOCAL_AMFLAGS], ['-I macros ${ACLOCAL_FLAGS}'])
 
+# Copied from gobby:
+AC_MSG_CHECKING([whether to enable WIN32 specific flags])
+case "$host_os" in
+*mingw*)
+        win32=true
+        AC_MSG_RESULT([yes])
+        AC_CHECK_TOOL(WINDRES, windres)
+        ;;
+*)
+        win32=false
+        AC_MSG_RESULT([no])
+        ;;
+esac
+AM_CONDITIONAL(WIN32, test x$win32 = xtrue)
 
 AC_LANG_CPLUSPLUS
 
@@ -71,16 +85,18 @@ if test "$enable_client_only" = "yes"; then
 fi
 
 # Do not require, goocanvas and gtksourceviewmm in client only mode
-REQUIRED_LIBS="bakery-2.4 >= 2.4.2 gtkmm-2.4 >= 2.10 glibmm-2.4 >= 2.14.1 gthread-2.0 gnome-vfsmm-2.6 >= 2.11.1 libxslt >= 1.1.10 pygda-3.0 pygtk-2.0 >= 2.6.0 libgnome-2.0 >= 2.6.0 iso-codes libgdamm-3.0 >= 2.9.8 libgda-3.0 >= 3.0.1 libgda-postgres-3.0 libepc-1.0 avahi-ui"
+REQUIRED_LIBS="bakery-2.4 >= 2.4.2 gtkmm-2.4 >= 2.10 glibmm-2.4 >= 2.14.1 gthread-2.0 gnome-vfsmm-2.6 >= 2.11.1 libxslt >= 1.1.10 pygda-3.0 pygtk-2.0 >= 2.6.0 libgnome-2.0 >= 2.6.0 libgdamm-3.0 >= 2.9.8 libgda-3.0 >= 3.0.1 libgda-postgres-3.0 goocanvasmm-1.0 >= 0.2.0"
 if test $enable_client_only != yes; then
-	REQUIRED_LIBS="$REQUIRED_LIBS gtksourceviewmm-2.0 goocanvasmm-1.0 >= 0.2.0"
+	REQUIRED_LIBS="$REQUIRED_LIBS gtksourceviewmm-2.0"
 fi
 
 # TODO_maemo: Make sure bakery was also compiled with (or without, respectively) maemo support
 if test "$enable_maemo" = "yes"; then
-	REQUIRED_LIBS="$REQUIRED_LIBS hildonmm"
+	REQUIRED_LIBS="$REQUIRED_LIBS hildonmm libepc-1.0 avahi-ui";
+elif test "$win32" = "true"; then
+	REQUIRED_LIBS="$REQUIRED_LIBS gtkmm-2.4 >= 2.10 libgnome-2.0 >= 2.6.0";
 else
-	REQUIRED_LIBS="$REQUIRED_LIBS libgnome-2.0 >= 2.6.0 iso-codes"
+	REQUIRED_LIBS="$REQUIRED_LIBS libgnome-2.0 >= 2.6.0 iso-codes libepc-1.0 avahi-ui";
 fi
 
 # Checks for libraries
@@ -143,13 +159,13 @@ AC_ARG_ENABLE([doc-utils],
 	[enable_doc=$enableval],
 	[enable_doc=yes])
 
+
 AM_CONDITIONAL(HAVE_GNOME_DOC_UTILS, test "$enable_doc" = "yes")
 
 # For gnome-doc-utils:
 if test $enable_doc = yes; then
   GNOME_DOC_INIT([0.9.0])
 fi
-
 
 # Generate Makefiles, configuration files and scripts:
 AC_OUTPUT(Makefile \

@@ -21,6 +21,8 @@
 #ifndef GLOM_UTILITYWIDGETS_FLOWTABLEWITHFIELDS_H
 #define GLOM_UTILITYWIDGETS_FLOWTABLEWITHFIELDS_H
 
+#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
+
 #include "flowtable.h"
 #include <glom/libglom/data_structure/layout/layoutgroup.h>
 #include <glom/libglom/data_structure/layout/layoutitem_field.h>
@@ -194,11 +196,13 @@ protected:
   void add_layout_notebook_at_position(const sharedptr<LayoutItem_Notebook>& notebook, const type_list_layoutwidgets::iterator& add_before);
   void add_layout_related_at_position(const sharedptr<LayoutItem_Portal>& portal, const type_list_layoutwidgets::iterator& add_before);
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void on_dnd_add_layout_item(LayoutWidgetBase* above);
   virtual void on_dnd_add_layout_group(LayoutWidgetBase* above); 
 	virtual void on_dnd_add_placeholder(LayoutWidgetBase* above);
 	virtual void on_dnd_remove_placeholder();
-  
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+
   sharedptr<LayoutItem_Portal> get_layout_item_from_relation();
   
   Box_Data_List_Related* create_related(const sharedptr<LayoutItem_Portal>& portal, bool show_title = true);
