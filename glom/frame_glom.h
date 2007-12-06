@@ -208,9 +208,6 @@ protected:
   PlaceHolder* m_pBox_Mode; //Contains e.g. design mode notebook.
 
   Box_Tables* m_pBox_Tables;
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  Box_Reports* m_pBox_Reports;
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   Notebook_Data m_Notebook_Data;
   Notebook_Find m_Notebook_Find;
@@ -218,21 +215,19 @@ protected:
   //Navigation:
   Dialog_Glom* m_pDialog_Tables;
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  Dialog_Glom* m_pDialog_Reports;
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
   //Developer:
+  Dialog_Glom* m_pDialog_Reports;
+  Box_Reports* m_pBox_Reports;
+
   Dialog_Fields* m_pDialog_Fields;
   Dialog_Relationships* m_pDialog_Relationships;
   Dialog_AddRelatedTable* m_dialog_addrelatedtable;
+
+  Dialog_Layout_Report* m_pDialogLayoutReport;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   Dialog_Connection* m_pDialogConnection;
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  Dialog_Layout_Report* m_pDialogLayoutReport;
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   Box_Data_List_Related m_HackToFixLinkerError; //The implementation of this class does not seem to be in the library unless I do this. murrayc.
 };

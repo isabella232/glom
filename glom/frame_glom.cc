@@ -82,12 +82,12 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_pBox_Tables(0),
   m_pDialog_Tables(0),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_pBox_Reports(0),
   m_pDialog_Reports(0),
-  m_pDialogLayoutReport(0),
+  m_pBox_Reports(0),
   m_pDialog_Fields(0),
   m_pDialog_Relationships(0),
   m_dialog_addrelatedtable(0),
+  m_pDialogLayoutReport(0),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_pDialogConnection(0)
 {

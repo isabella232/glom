@@ -70,22 +70,6 @@ if test "$enable_client_only" = "yes"; then
 	AC_DEFINE([GLOM_ENABLE_CLIENT_ONLY], 1, [Whether to disable support for self-hosting and developer mode])
 fi
 
-AC_ARG_ENABLE([maemo-launcher],
-              [AS_HELP_STRING([--enable-maemo-launcher],
-                              [build with maemo-launcher support])],
-                              [case "${enableval}" in
-                               yes) maemo_launcher=true ;;
-                               no)  maemo_launcher=false ;;
-                               *) AC_MSG_ERROR([bad value ${enableval} for --enable-maemo-launcher]) ;;
-                               esac], [maemo_launcher=false])
-
-if test x$maemo_launcher = xtrue
-then
-	PKG_CHECK_MODULES(MAEMO_LAUNCHER, [maemo-launcher-app])
-	AC_SUBST(MAEMO_LAUNCHER_CFLAGS)
-	AC_SUBST(MAEMO_LAUNCHER_LIBS)
-fi
-
 # Do not require avahi, goocanvas and gtksourceviewmm in client only mode
 REQUIRED_LIBS="bakery-2.4 >= 2.4.2 gthread-2.0 gnome-vfsmm-2.6 >= 2.11.1 libxslt >= 1.1.10 pygda-3.0 pygtk-2.0 >= 2.6.0 libgdamm-3.0 >= 2.9.8 libgda-3.0 >= 3.0.1 libgda-postgres-3.0"
 if test "$enable_client_only" != "yes"; then
@@ -167,6 +151,22 @@ if test $enable_doc = yes; then
   GNOME_DOC_INIT([0.9.0])
 fi
 
+# Add an --enable-maemo-launcher option.
+AC_ARG_ENABLE([maemo-launcher],
+              [AS_HELP_STRING([--enable-maemo-launcher],
+                              [build with maemo-launcher support])],
+                              [case "${enableval}" in
+                               yes) maemo_launcher=true ;;
+                               no)  maemo_launcher=false ;;
+                               *) AC_MSG_ERROR([bad value ${enableval} for --enable-maemo-launcher]) ;;
+                               esac], [maemo_launcher=false])
+
+if test x$maemo_launcher = xtrue
+then
+	PKG_CHECK_MODULES(MAEMO_LAUNCHER, [maemo-launcher-app])
+	AC_SUBST(MAEMO_LAUNCHER_CFLAGS)
+	AC_SUBST(MAEMO_LAUNCHER_LIBS)
+fi
 
 # Generate Makefiles, configuration files and scripts:
 AC_OUTPUT(Makefile \

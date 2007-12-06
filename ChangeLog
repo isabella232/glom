@@ -1,3 +1,14 @@
+2007-12-06  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in: Move the --enable-maemo-launcher code to nearer the bottom, 
+	because it somehow causes the check for pkg-config to fail. (This happened when 
+	I tried it too, before Johannes did this).
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h: Reorder some member variables to reduce the ifdefs and fix 
+	some warnings.
+	* glom/libglom/appstate.cc: Fix an ifdef to allow us to go into developer mode 
+	again in normal not-client-only mode.
+
 2007-12-04  Murray Cumming  <murrayc@murrayc.com>
   
 	* glom/mode_data/box_data_list_related.cc:
