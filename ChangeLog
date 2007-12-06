@@ -1,3 +1,8 @@
+2007-12-06  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/appstate.cc: Fix an ifdef to allow us to go into developer mode 
+	again in normal not-client-only mode.
+
 2007-12-04  Armin Burgmeier  <armin@openismus.com>
 
 	* acinclude.m4: Change the the python library finder so that is also

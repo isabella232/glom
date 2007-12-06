@@ -47,7 +47,7 @@ AppState::userlevels AppState::get_userlevel() const
 void AppState::set_userlevel(userlevels value)
 {
   //Make sure that developer mode is never possible in client-only mode:
-  #ifndef GLOM_ENABLE_CLIENT_ONLY
+  #ifdef GLOM_ENABLE_CLIENT_ONLY
   value = USERLEVEL_OPERATOR;
   #endif //GLOM_ENABLE_CLIENT_ONLY
 
