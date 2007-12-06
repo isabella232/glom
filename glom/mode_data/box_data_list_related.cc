@@ -44,7 +44,7 @@ Box_Data_List_Related::Box_Data_List_Related()
   m_Frame.set_label_widget(m_Label);
   m_Label.show();
 
-  m_Alignment.set_padding(6 /* top */, 0, 12 /* left */, 0);
+  m_Alignment.set_padding(Utils::DEFAULT_SPACING_SMALL /* top */, 0, Utils::DEFAULT_SPACING_LARGE /* left */, 0);
   m_Alignment.show();
 
   remove(m_AddDel);
@@ -113,7 +113,7 @@ bool Box_Data_List_Related::init_db_details(const sharedptr<const LayoutItem_Por
     m_Label.set_markup(Bakery::App_Gtk::util_bold_message(relationship_title));
     m_Label.show();
 
-    m_Alignment.set_padding(6 /* top */, 0, 12 /* left */, 0);
+    m_Alignment.set_padding(Utils::DEFAULT_SPACING_SMALL /* top */, 0, Utils::DEFAULT_SPACING_LARGE /* left */, 0);
   }
   else
   {

@@ -373,7 +373,7 @@ void FlowTableWithFields::add_group(const Glib::ustring& group_name, const Glib:
     Gtk::Alignment* alignment = Gtk::manage( new Gtk::Alignment );
 
     if(!group_title.empty()) //Don't indent if it has no title, to allow use of groups just for positioning.
-      alignment->set_padding(6, 0, 6, 0);
+      alignment->set_padding(Utils::DEFAULT_SPACING_SMALL, 0, Utils::DEFAULT_SPACING_SMALL, 0);
 
     alignment->show();
     frame->add(*alignment);
