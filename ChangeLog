@@ -1,3 +1,9 @@
+2007-12-07  Johannes Schmid <johannes.schmid@openismus.com>
+
+	* configure.in:
+	* glom/Makefile.am:
+	Merged maemo-launcher changes from glom-1.6 branch
+
 2007-12-06  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/appstate.cc: Fix an ifdef to allow us to go into developer mode 

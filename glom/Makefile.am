@@ -15,6 +15,7 @@ noinst_PROGRAMS = test_pyembed
 # We define GLOM_GLADEDIR so that we can get the installed .glade file at runtime.
 # We define PREFIX, SYSCONFDIR, LIBDIR, and DATADIR for the GNOME_PROGRAM_STANDARD_PROPERTIES macro.
 AM_CPPFLAGS = -I@top_srcdir@/ $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
+			$(MAEMO_LAUNCHER_CFLAGS) \
            -DGLOM_GLADEDIR=\""$(gladedir)/"\" \
            -DLOCALEDIR=\""$(datadir)/locale"\" \
            -DPREFIX=\""$(prefix)"\" \
@@ -83,7 +84,7 @@ endif
 glom_LDADD += python_embed/libpython_embed.a \
               $(top_builddir)/glom/libglom/libglom.la \
               $(top_builddir)/glom/mode_data/libmode_data.a \
-              $(GLOM_LIBS) $(PYTHON_LDFLAGS)
+              $(GLOM_LIBS) $(PYTHON_LDFLAGS) $(MAEMO_LAUNCHER_LIBS)
 
 if !WIN32
 glom_LDADD += -lutil
