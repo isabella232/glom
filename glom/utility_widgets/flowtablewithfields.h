@@ -197,10 +197,18 @@ protected:
   void add_layout_related_at_position(const sharedptr<LayoutItem_Portal>& portal, const type_list_layoutwidgets::iterator& add_before);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual void on_dnd_add_layout_item(LayoutWidgetBase* above);
-  virtual void on_dnd_add_layout_group(LayoutWidgetBase* above); 
 	virtual void on_dnd_add_placeholder(LayoutWidgetBase* above);
 	virtual void on_dnd_remove_placeholder();
+    
+  // Methods for the different layout object
+  virtual void on_dnd_add_layout_item_field (LayoutWidgetBase* above);
+  virtual void on_dnd_add_layout_group(LayoutWidgetBase* above);
+  virtual void on_dnd_add_layout_item_button (LayoutWidgetBase* above);
+  virtual void on_dnd_add_layout_item_text (LayoutWidgetBase* above);
+  virtual void on_dnd_add_layout_item_image (LayoutWidgetBase* above);
+  
+  bool get_field_information (sharedptr<LayoutItem>& item);
+  
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   sharedptr<LayoutItem_Portal> get_layout_item_from_relation();

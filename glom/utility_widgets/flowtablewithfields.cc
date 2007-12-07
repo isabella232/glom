@@ -1112,7 +1112,7 @@ void FlowTableWithFields::on_flowtable_requested_related_details(const Glib::ust
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void FlowTableWithFields::on_dnd_add_layout_item(LayoutWidgetBase* above)
+void FlowTableWithFields::on_dnd_add_layout_item_field(LayoutWidgetBase* above)
 {
   //Ask the user to choose the layout item:
   sharedptr<LayoutItem_Field> layout_item_field = 
@@ -1165,33 +1165,144 @@ void FlowTableWithFields::on_dnd_add_layout_group(LayoutWidgetBase* above)
   signal_layout_changed().emit();	
 }
 
-void FlowTableWithFields::on_dnd_add_placeholder(LayoutWidgetBase* above)
+void FlowTableWithFields::on_dnd_add_layout_item_button(LayoutWidgetBase* above)
 {
+  // create the button
+  sharedptr<LayoutItem_Button> layout_item_button(new LayoutItem_Button());
+  sharedptr<LayoutItem> layout_item = sharedptr<LayoutItem>::cast_dynamic(layout_item_button);
+  
+  // Get field informations
+  if (!get_field_information (layout_item))
+    return;
+    
+  //Add a widget for this layout item, after the "above" item:
   type_list_layoutwidgets::iterator cur_widget;
-
   if(above)
     cur_widget = std::find (m_list_layoutwidgets.begin(), m_list_layoutwidgets.end(), above);
   else
     cur_widget = m_list_layoutwidgets.end();
 
-  Gtk::Alignment* old_placeholder = 0;
+  add_layout_item_at_position(layout_item_button, cur_widget);
+
+
+  //Get the layout group that the "above" widget's layout item is in:
+  sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(get_layout_item());
+  if(!layout_group)
+  {
+    std::cerr << "FlowTableWithFields::on_datawidget_layout_item_added(): layout_group is null." << std::endl;
+    return;
+  }
+
+  if(above)
+    layout_group->add_item(layout_item_button, above->get_layout_item());
+  else
+    layout_group->add_item(layout_item_button);
+
+  //Tell the parent to tell the document to save the layout:
+  signal_layout_changed().emit();
+}
+
+void FlowTableWithFields::on_dnd_add_layout_item_text(LayoutWidgetBase* above)
+{
+  // create the text label
+  sharedptr<LayoutItem_Text> layout_item_text(new LayoutItem_Text());
+  sharedptr<LayoutItem> layout_item = sharedptr<LayoutItem>::cast_dynamic(layout_item_text);
+  
+  // Get field informations
+  if (!get_field_information (layout_item))
+    return;
+    
+  //Add a widget for this layout item, after the "above" item:
+  type_list_layoutwidgets::iterator cur_widget;
+  if(above)
+    cur_widget = std::find (m_list_layoutwidgets.begin(), m_list_layoutwidgets.end(), above);
+  else
+    cur_widget = m_list_layoutwidgets.end();
+
+  add_layout_item_at_position(layout_item_text, cur_widget);
+
+
+  //Get the layout group that the "above" widget's layout item is in:
+  sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(get_layout_item());
+  if(!layout_group)
+  {
+    std::cerr << "FlowTableWithFields::on_datawidget_layout_item_added(): layout_group is null." << std::endl;
+    return;
+  }
+
+  if(above)
+    layout_group->add_item(layout_item_text, above->get_layout_item());
+  else
+    layout_group->add_item(layout_item_text);
+
+  //Tell the parent to tell the document to save the layout:
+  signal_layout_changed().emit();
+}
+
+void FlowTableWithFields::on_dnd_add_layout_item_image(LayoutWidgetBase* above)
+{
+  // create the text label
+  sharedptr<LayoutItem_Image> layout_item_image(new LayoutItem_Image());
+  sharedptr<LayoutItem> layout_item = sharedptr<LayoutItem>::cast_dynamic(layout_item_image);
+  
+  // Get field informations
+  if (!get_field_information (layout_item))
+    return;
+    
+  //Add a widget for this layout item, after the "above" item:
+  type_list_layoutwidgets::iterator cur_widget;
+  if(above)
+    cur_widget = std::find (m_list_layoutwidgets.begin(), m_list_layoutwidgets.end(), above);
+  else
+    cur_widget = m_list_layoutwidgets.end();
+
+  add_layout_item_at_position(layout_item_image, cur_widget);
+
+
+  //Get the layout group that the "above" widget's layout item is in:
+  sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(get_layout_item());
+  if(!layout_group)
+  {
+    std::cerr << "FlowTableWithFields::on_datawidget_layout_item_added(): layout_group is null." << std::endl;
+    return;
+  }
+
+  if(above)
+    layout_group->add_item(layout_item_image, above->get_layout_item());
+  else
+    layout_group->add_item(layout_item_image);
+
+  //Tell the parent to tell the document to save the layout:
+  signal_layout_changed().emit();
+}
+
+void FlowTableWithFields::on_dnd_add_placeholder(LayoutWidgetBase* above)
+{
+  type_list_layoutwidgets::iterator cur_widget;
+  
+  std::cout << __FUNCTION__ << std::endl;
+  
+  if(above)
+    cur_widget = std::find (m_list_layoutwidgets.begin(), m_list_layoutwidgets.end(), above);
+  else
+    cur_widget = m_list_layoutwidgets.end();
+
   if(m_placeholder)
   {
     if(dynamic_cast<Glom::PlaceholderGlom*>(*cur_widget))
       return;
 
-    old_placeholder = m_placeholder;
+    remove (*m_placeholder);
   }
   
   sharedptr<LayoutItem_Placeholder> placeholder_field(new LayoutItem_Placeholder);
 	add_layout_item_at_position (placeholder_field, cur_widget);
-  
-  if(old_placeholder)
-    remove(*old_placeholder);
 }
 
 void FlowTableWithFields::on_dnd_remove_placeholder()
 {
+  std::cout << __FUNCTION__ << std::endl;
+  
   if(m_placeholder)
     remove(*m_placeholder);
 
@@ -1234,6 +1345,42 @@ sharedptr<LayoutItem_Portal> FlowTableWithFields::get_layout_item_from_relation(
     std::cerr << ex.what() << std::endl;
   }
   return layout_item;
+}
+
+bool FlowTableWithFields::get_field_information (sharedptr<LayoutItem>& item)
+{
+  bool retval = false; 
+ 
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_drop_field");
+
+    Gtk::Dialog* dialog = 0;
+    Gtk::Entry* entry_name = 0;
+    Gtk::Entry* entry_title = 0;
+    
+    refXml->get_widget("dialog_drop_field", dialog);
+    refXml->get_widget("entry_name", entry_name);
+    refXml->get_widget("entry_title", entry_title);
+
+    if(dialog)
+    {
+      const int response = dialog->run();
+      dialog->hide();
+      if(response == Gtk::RESPONSE_OK)
+      {
+        item->set_name (entry_name->get_text());
+        item->set_title (entry_title->get_text());
+        retval = true;
+      }
+      delete dialog;
+    }
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+  return retval;
 }
 
 } //namespace Glom

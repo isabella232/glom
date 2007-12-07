@@ -1068,6 +1068,7 @@ bool FlowTable::on_expose_event(GdkEventExpose* event)
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 bool FlowTable::on_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint time)
 {
+  std::cout << __FUNCTION__ << std::endl;
   m_current_dnd_item = dnd_get_item(x, y);
   LayoutWidgetBase* above = dnd_find_datawidget();
 	
@@ -1079,12 +1080,19 @@ bool FlowTable::on_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_contex
 
 void FlowTable::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int drag_x, int drag_y, const Gtk::SelectionData& selection_data, guint, guint time)
 {
+  std::cout << __FUNCTION__ << std::endl;
   const Glib::ustring type = selection_data.get_data_as_string();
   LayoutWidgetBase* above = dnd_find_datawidget ();
-  if(type == "LayoutItem")
-    on_dnd_add_layout_item(above);
+  if(type == "LayoutField")
+    on_dnd_add_layout_item_field(above);
   else if (type == "LayoutGroup")
     on_dnd_add_layout_group(above);
+  else if (type == "LayoutButton")
+    on_dnd_add_layout_item_button(above);
+  else if (type == "LayoutText")
+    on_dnd_add_layout_item_text(above);
+  else if (type == "LayoutImage")
+    on_dnd_add_layout_item_image(above);
   else
     std::cerr << "Unknown drop type: " << type << std::endl;
 
@@ -1093,6 +1101,7 @@ void FlowTable::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag
 
 void FlowTable::on_drag_leave(const Glib::RefPtr<Gdk::DragContext>& drag_context, guint time)
 {
+  std::cout << __FUNCTION__ << std::endl;
   on_dnd_remove_placeholder();
   get_window()->invalidate_region(get_window()->get_visible_region());
   change_dnd_status(false);

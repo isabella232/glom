@@ -1,5 +1,28 @@
 2007-12-07  Johannes Schmid <johannes.schmid@openismus.com>
 
+	* glom/glom.glade:
+	Added dialog for new fields
+	
+	* glom/libglom/data_structure/layout/layoutgroup.cc:
+	add_item() should add before - not after the item, at least for dnd
+	
+	* glom/utility_widgets/dragbar.cc:
+	* glom/utility_widgets/flowtable.cc:
+	* glom/utility_widgets/flowtable.h:
+	* glom/utility_widgets/flowtablewithfields.cc:
+	* glom/utility_widgets/flowtablewithfields.h:
+	Added drag buttons for text, image and button
+	Fix crasher in dnd code
+	
+	* icons/16x16/Makefile.am:
+	* icons/16x16/glom-button.png:
+	* icons/16x16/glom-text.png:
+	* icons/16x16/glom-image.png:
+	
+	Added new icons (from glade3)
+
+2007-12-07  Johannes Schmid <johannes.schmid@openismus.com>
+
 	* configure.in:
 	* glom/Makefile.am:
 	Merged maemo-launcher changes from glom-1.6 branch

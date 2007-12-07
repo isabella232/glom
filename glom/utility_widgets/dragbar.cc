@@ -33,13 +33,28 @@ DragBar::DragBar()
     Gtk::manage (new Gtk::Image(GLOM_ICON_DIR "/glom-field.png"));
   Gtk::Image* image_group = 
     Gtk::manage (new Gtk::Image(GLOM_ICON_DIR "/glom-group.png"));
+  Gtk::Image* image_button = 
+    Gtk::manage (new Gtk::Image(GLOM_ICON_DIR "/glom-button.png"));
+  Gtk::Image* image_text = 
+    Gtk::manage (new Gtk::Image(GLOM_ICON_DIR "/glom-text.png"));
+  Gtk::Image* image_image = 
+    Gtk::manage (new Gtk::Image(GLOM_ICON_DIR "/glom-image.png"));
+
   
-  
-  DragButton* drag_item = Gtk::manage(new DragButton(*image_item, "LayoutItem"));
+  DragButton* drag_item = Gtk::manage(new DragButton(*image_item, "LayoutField"));
   DragButton* drag_group = Gtk::manage(new DragButton(*image_group, "LayoutGroup"));  
+  DragButton* drag_button = Gtk::manage(new DragButton(*image_button, "LayoutButton"));
+  DragButton* drag_text = Gtk::manage(new DragButton(*image_text, "LayoutText"));  
+  DragButton* drag_image = Gtk::manage(new DragButton(*image_image, "LayoutImage"));  
+  
+  // FIXME: This does not work currently
+  drag_group->set_sensitive (false);
   
   add_button (*drag_item);
   add_button (*drag_group);
+  add_button (*drag_button);
+  add_button (*drag_text);
+  add_button (*drag_image);
 	
   show_all_children();
 }

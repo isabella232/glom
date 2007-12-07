@@ -124,7 +124,8 @@ void LayoutGroup::add_item(const sharedptr<LayoutItem>& item, const sharedptr<co
     return; //position isn't an item already in the list.
 
   //std::vector::insert() adds before rather than after:
-  ++iter;
+  // jhs: We want to add after rather than before - at least for dnd
+  //++iter;
  
   m_list_items.insert(iter, item);
 }

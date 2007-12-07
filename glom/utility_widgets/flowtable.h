@@ -94,10 +94,16 @@ protected:
   virtual bool on_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint time);
   virtual void on_drag_leave(const Glib::RefPtr<Gdk::DragContext>& drag_context, guint time);
   virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int, int, const Gtk::SelectionData& selection_data, guint, guint time);
-  virtual void on_dnd_add_layout_item(LayoutWidgetBase* above) = 0;
-  virtual void on_dnd_add_layout_group(LayoutWidgetBase* above) = 0;
   virtual void on_dnd_add_placeholder(LayoutWidgetBase* above) = 0;
   virtual void on_dnd_remove_placeholder() = 0;
+  
+  // Methods for the different layout object
+  virtual void on_dnd_add_layout_item_field (LayoutWidgetBase* above) = 0;
+  virtual void on_dnd_add_layout_group(LayoutWidgetBase* above) = 0;
+  virtual void on_dnd_add_layout_item_button (LayoutWidgetBase* above) = 0;
+  virtual void on_dnd_add_layout_item_text (LayoutWidgetBase* above) = 0;
+  virtual void on_dnd_add_layout_item_image (LayoutWidgetBase* above) = 0;
+
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   int get_column_height(guint start_widget, guint widget_count, int& total_width) const;
