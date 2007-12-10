@@ -1280,8 +1280,6 @@ void FlowTableWithFields::on_dnd_add_placeholder(LayoutWidgetBase* above)
 {
   type_list_layoutwidgets::iterator cur_widget;
   
-  std::cout << __FUNCTION__ << std::endl;
-  
   if(above)
     cur_widget = std::find (m_list_layoutwidgets.begin(), m_list_layoutwidgets.end(), above);
   else
@@ -1300,9 +1298,7 @@ void FlowTableWithFields::on_dnd_add_placeholder(LayoutWidgetBase* above)
 }
 
 void FlowTableWithFields::on_dnd_remove_placeholder()
-{
-  std::cout << __FUNCTION__ << std::endl;
-  
+{ 
   if(m_placeholder)
     remove(*m_placeholder);
 
