@@ -87,7 +87,8 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   //Make the canvas a drag-and-drop destination:
   m_drag_targets.push_back( Gtk::TargetEntry("glom_palette", Gtk::TARGET_SAME_APP) );
 
-  m_canvas.drag_dest_set(m_drag_targets);
+  //m_canvas.drag_dest_set(m_drag_targets);
+  m_canvas.drag_dest_set();
   m_canvas.signal_drag_drop().connect(
       sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_drag_drop) );
   m_canvas.signal_drag_motion().connect(
@@ -415,6 +416,8 @@ static Action_LayoutItem::enumItems get_item_type_from_selection_data(const Gtk:
 
 bool Window_PrintLayout_Edit::on_canvas_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint timestamp)
 {
+  std::cout << "Window_PrintLayout_Edit::on_canvas_drag_motion()" << std::endl;
+
   Glib::ustring target = m_canvas.drag_dest_find_target(drag_context);
   if(target.empty())
     return false;
@@ -424,13 +427,13 @@ bool Window_PrintLayout_Edit::on_canvas_drag_motion(const Glib::RefPtr<Gdk::Drag
   //Create the temporary canvas item if necesary:
   if(!m_layout_item_dropping)
   {
-    //std::cout << "Window_PrintLayout_Edit::on_canvas_drag_motion(): Calling drag_get_data()" << std::endl;
+    std::cout << "  Calling drag_get_data()" << std::endl;
 
-    //TODO: This stops the drop (or any further motion events) from happening:
     //We need to examine the SelectionData:
-    //This will cause our drag_data_received callback to be called, with that information:
-    //m_drag_preview_requested = true;
-    //m_canvas.drag_get_data(drag_context, target, timestamp);
+    //This will cause our drag_data_received callback to be called, with that information.
+    //Note: This does not work (and grabs the cursor) if we call dest_set() with targets in our constructor.
+    m_drag_preview_requested = true;
+    m_canvas.drag_get_data(drag_context, target, timestamp);
     return true;
   }
 
@@ -464,6 +467,8 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
       double item_y = y;
       m_canvas.convert_from_pixels(item_x, item_y);
 
+      std::cout << "  creating temp item: item_x=" << item_x << ", item_y=" << item_y << std::endl;
+
       sharedptr<LayoutItem> layout_item;
       //Add the item to the canvas:
       if(item_type == Action_LayoutItem::ITEM_FIELD)
@@ -493,12 +498,11 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
         m_layout_item_dropping = CanvasLayoutItem::create(layout_item);
         m_canvas.add_canvas_layout_item(m_layout_item_dropping);
 
-        drag_context->drag_status(Gdk::ACTION_COPY, timestamp);
-
         m_layout_item_dropping->set_xy(item_x, item_y);
       }
     }
 
+    drag_context->drag_status(Gdk::ACTION_COPY, timestamp);
     m_drag_preview_requested = false;
   }
   else
