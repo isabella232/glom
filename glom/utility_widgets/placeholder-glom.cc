@@ -31,34 +31,18 @@
 namespace Glom
 {
 
-PlaceholderGlom::PlaceholderGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
-: Gtk::Frame(cobject)
+PlaceholderGlom::PlaceholderGlom() :
+  Glib::ObjectBase("glom_placeholder"),
+  Gtk::Widget()
 {
+  set_flags(Gtk::NO_WINDOW);
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-
-  init();
-}
-
-PlaceholderGlom::PlaceholderGlom()
-{
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  setup_menu();
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-  init();
 }
 
 PlaceholderGlom::~PlaceholderGlom()
 {
-}
-
-void PlaceholderGlom::init()
-{
-	set_shadow_type (Gtk::SHADOW_ETCHED_IN);
-	
-	set_size_request (250, 25);
 }
 
 App_Glom* PlaceholderGlom::get_application()
@@ -67,6 +51,113 @@ App_Glom* PlaceholderGlom::get_application()
   //TODO: This only works when the child widget is already in its parent.
 
   return dynamic_cast<App_Glom*>(pWindow);
+}
+
+void PlaceholderGlom::on_size_request(Gtk::Requisition* requisition)
+{
+  //Initialize the output parameter:
+  *requisition = Gtk::Requisition();
+
+  // Take some mimimum size, we later want to cover the whole space available
+  requisition->height = 30;
+  requisition->width = 200;
+}
+
+void PlaceholderGlom::on_size_allocate(Gtk::Allocation& allocation)
+{
+  //Use the offered allocation for this container:
+  set_allocation(allocation);
+
+  if(m_refGdkWindow)
+  {
+    m_refGdkWindow->move_resize( allocation.get_x(), allocation.get_y(),
+            allocation.get_width(), allocation.get_height() );
+  }
+}
+
+void PlaceholderGlom::on_map()
+{
+  Gtk::Widget::on_map();	
+}
+
+void PlaceholderGlom::on_unmap()
+{
+  Gtk::Widget::on_unmap();
+}
+
+void PlaceholderGlom::on_realize()
+{
+  //Call base class:
+  Gtk::Widget::on_realize();
+
+  ensure_style();
+
+
+  if(!m_refGdkWindow)
+  {
+    //Create the GdkWindow:
+    GdkWindowAttr attributes;
+    memset(&attributes, 0, sizeof(attributes));
+
+    Gtk::Allocation allocation = get_allocation();
+
+    //Set initial position and size of the Gdk::Window:
+    attributes.x = allocation.get_x();
+    attributes.y = allocation.get_y();
+    attributes.width = allocation.get_width();
+    attributes.height = allocation.get_height();
+
+    attributes.event_mask = get_events () | Gdk::EXPOSURE_MASK; 
+    attributes.window_type = GDK_WINDOW_CHILD;
+    attributes.wclass = GDK_INPUT_OUTPUT;
+
+
+    m_refGdkWindow = Gdk::Window::create(get_window() /* parent */, &attributes,
+            GDK_WA_X | GDK_WA_Y);
+    unset_flags(Gtk::NO_WINDOW);
+    set_window(m_refGdkWindow);
+
+    //set colors
+    modify_fg(Gtk::STATE_NORMAL , Gdk::Color("black"));
+
+    //make the widget receive expose events
+    m_refGdkWindow->set_user_data(gobj());
+  }
+}
+
+void PlaceholderGlom::on_unrealize()
+{
+  m_refGdkWindow.clear();
+
+  Gtk::Widget::on_unrealize();
+}
+
+bool PlaceholderGlom::on_expose_event(GdkEventExpose* event)
+{
+  if(m_refGdkWindow)
+  {
+
+    Cairo::RefPtr<Cairo::Context> cr = m_refGdkWindow->create_cairo_context();
+    if (event)
+    {
+      // clip to the area that needs to be re-exposed so we don't draw any
+      // more than we need to.
+      cr->rectangle(event->area.x, event->area.y,
+              event->area.width, event->area.height);
+      cr->clip();
+    }
+
+    // paint the background
+    Gdk::Cairo::set_source_color(cr, get_style()->get_bg(Gtk::STATE_NORMAL));
+    cr->paint();
+
+    // draw the foreground
+    Gdk::Cairo::set_source_color(cr, get_style()->get_fg(Gtk::STATE_NORMAL));
+	cr->set_line_width (4);
+    cr->rectangle (0, 0,  get_allocation().get_width(), get_allocation().get_height());
+    cr->stroke();
+  }
+  return true;
 }
 
 } // namespace Glom

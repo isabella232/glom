@@ -24,8 +24,8 @@
 
 #include <gtkmm.h>
 #include "layoutwidgetbase.h"
-#include <glom/libglom/data_structure/layout/layoutitem_button.h>
-#include <libglademm.h>
+//#include <glom/libglom/data_structure/layout/layoutitem_button.h>
+//#include <libglademm.h>
 
 #ifndef GLOM_UTILITY_WIDGETS_PLACEHOLDER_GLOM_H_
 #define GLOM_UTILITY_WIDGETS_PLACEHOLDER_GLOM_H_
@@ -34,16 +34,25 @@ namespace Glom
 {
 
 class PlaceholderGlom: 
-    public Gtk::Frame,
+    public Gtk::Widget,
 	public LayoutWidgetBase
 {
 public:
-  explicit PlaceholderGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  //explicit PlaceholderGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   explicit PlaceholderGlom();
   virtual ~PlaceholderGlom();
 protected:
-  void init();
   virtual App_Glom* get_application();
+  
+  virtual void on_size_request(Gtk::Requisition* requisition);
+  virtual void on_size_allocate(Gtk::Allocation& allocation);
+  virtual void on_map();
+  virtual void on_unmap();
+  virtual void on_realize();
+  virtual void on_unrealize();
+  virtual bool on_expose_event(GdkEventExpose* event);
+
+  Glib::RefPtr<Gdk::Window> m_refGdkWindow;
 };
 
 } // namespace Glom
