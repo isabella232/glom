@@ -1,3 +1,8 @@
+1.6.6 (stable):
+
+* Some minor improvements to the (still unfinished) Maemo port.
+  (Murray Cumming, Johannes Schmid)
+
 1.6.5 (stable):
 
 * Make sure that the self-hosted postgres server really shuts down.

@@ -95,6 +95,7 @@ DbAddDel::DbAddDel()
   m_ScrolledWindow.set_shadow_type(Gtk::SHADOW_IN);
 
   m_TreeView.set_fixed_height_mode(); //This allows some optimizations.
+  m_TreeView.set_headers_visible(true); //This is not the default in Maemo's GTK+. Bad Maemo.
   m_TreeView.show();
 
   pack_start(m_ScrolledWindow);
