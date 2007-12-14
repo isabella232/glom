@@ -348,9 +348,9 @@ bool DbAddDel::on_button_press_event_Popup(GdkEventButton *event)
       return false; //Not handled.
     }
   }
+#endif
 
   return  false; //Not handled. TODO: Call base class?
-#endif
 }
 
 Gtk::TreeModel::iterator DbAddDel::get_item_placeholder()
