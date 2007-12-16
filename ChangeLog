@@ -1,3 +1,13 @@
+2007-12-16  Johannes Schmid,,,  <jhs@idefix>
+
+	reviewed by: <delete if not using a buddy>
+
+	* glom/utility_widgets/dragbar.cc:
+	* glom/utility_widgets/flowtable.cc:
+	* glom/utility_widgets/flowtable.h:
+	* glom/utility_widgets/flowtablewithfields.cc:
+	* glom/utility_widgets/flowtablewithfields.h:
+
 2007-12-12  Johannes Schmid <jhs@gnome.org>
 
 	* glom/utility_widgets/placeholder-glom.cc:

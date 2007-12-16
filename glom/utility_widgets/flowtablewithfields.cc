@@ -1239,43 +1239,6 @@ void FlowTableWithFields::on_dnd_add_layout_item_text(LayoutWidgetBase* above)
   signal_layout_changed().emit();
 }
 
-void FlowTableWithFields::on_dnd_add_layout_item_image(LayoutWidgetBase* above)
-{
-  // create the text label
-  sharedptr<LayoutItem_Image> layout_item_image(new LayoutItem_Image());
-  sharedptr<LayoutItem> layout_item = sharedptr<LayoutItem>::cast_dynamic(layout_item_image);
-  
-  // Get field informations
-  if (!get_field_information (layout_item))
-    return;
-    
-  //Add a widget for this layout item, after the "above" item:
-  type_list_layoutwidgets::iterator cur_widget;
-  if(above)
-    cur_widget = std::find (m_list_layoutwidgets.begin(), m_list_layoutwidgets.end(), above);
-  else
-    cur_widget = m_list_layoutwidgets.end();
-
-  add_layout_item_at_position(layout_item_image, cur_widget);
-
-
-  //Get the layout group that the "above" widget's layout item is in:
-  sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(get_layout_item());
-  if(!layout_group)
-  {
-    std::cerr << "FlowTableWithFields::on_datawidget_layout_item_added(): layout_group is null." << std::endl;
-    return;
-  }
-
-  if(above)
-    layout_group->add_item(layout_item_image, above->get_layout_item());
-  else
-    layout_group->add_item(layout_item_image);
-
-  //Tell the parent to tell the document to save the layout:
-  signal_layout_changed().emit();
-}
-
 void FlowTableWithFields::on_dnd_add_placeholder(LayoutWidgetBase* above)
 {
   type_list_layoutwidgets::iterator cur_widget;
@@ -1301,7 +1264,7 @@ void FlowTableWithFields::on_dnd_remove_placeholder()
 { 
   if(m_placeholder)
     remove(*m_placeholder);
-
+  
   m_placeholder = 0;
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY

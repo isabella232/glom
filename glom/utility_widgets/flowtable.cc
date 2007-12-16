@@ -1069,6 +1069,10 @@ bool FlowTable::on_expose_event(GdkEventExpose* event)
 bool FlowTable::on_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint time)
 {
   m_current_dnd_item = dnd_get_item(x, y);
+  
+  on_dnd_remove_placeholder ();
+  realize();
+  
   LayoutWidgetBase* above = dnd_find_datawidget();
 	
   // above might be 0 here...
@@ -1089,8 +1093,6 @@ void FlowTable::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag
     on_dnd_add_layout_item_button(above);
   else if (type == "LayoutText")
     on_dnd_add_layout_item_text(above);
-  else if (type == "LayoutImage")
-    on_dnd_add_layout_item_image(above);
   else
     std::cerr << "Unknown drop type: " << type << std::endl;
 
@@ -1100,7 +1102,7 @@ void FlowTable::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag
 void FlowTable::on_drag_leave(const Glib::RefPtr<Gdk::DragContext>& drag_context, guint time)
 {
   on_dnd_remove_placeholder();
-  get_window()->invalidate_region(get_window()->get_visible_region());
+  realize();
   change_dnd_status(false);
 }
 
@@ -1113,62 +1115,36 @@ FlowTable::dnd_get_item(int drag_x, int drag_y)
   drag_x += get_allocation().get_x();
   drag_y += get_allocation().get_y();
 
-  // Check if we are exactly "on" another widget
+  int column_width;
+  get_column_height (0, m_children.size(), column_width);
+  
+  int column = drag_x / column_width;
+  
+  std::cout << "Column: " << column << std::endl;
+  
   for (std::vector<FlowTableItem>::iterator cur_item = m_children.begin(); cur_item != m_children.end(); 
        cur_item++)
   {
-    std::vector<FlowTableItem>::iterator next_item = cur_item;
-    next_item++;
+    Gdk::Rectangle rect = cur_item->m_first->get_allocation();
+    if (cur_item->m_second)
+    {
+      Gdk::Rectangle second_rect = cur_item->m_first->get_allocation();
+      rect.set_height (MAX (rect.get_height(), second_rect.get_height()));
+      rect.set_width (rect.get_width() + m_padding + second_rect.get_width());
+    }
     
-    if(!cur_item->m_first)
+    int cur_column = rect.get_x() / column_width;
+    
+    if (cur_column != column)
       continue;
     
-    if(next_item == m_children.end())
-      return 0;
-
-    if(!next_item->m_first)
-      continue;
-    
-    int x = cur_item->m_first_allocation.get_x();   
-    int y = cur_item->m_first_allocation.get_y();    
-    int height = cur_item->m_first_allocation.get_height();
-    int width = cur_item->m_first_allocation.get_width();
-    
-    int next_x = next_item->m_first_allocation.get_x();   
-    int next_y = next_item->m_first_allocation.get_y();    
-    int next_height = next_item->m_first_allocation.get_height();
-    int next_width = next_item->m_first_allocation.get_width();
-
-    
-    if(cur_item->m_second)
+    if (drag_y < (rect.get_y() + rect.get_height()))
     {
-      width += m_padding + cur_item->m_second_allocation.get_width();
-      height = MAX(height, cur_item->m_second_allocation.get_height());
-      x = MIN(x, cur_item->m_second_allocation.get_x());
-      y = MIN(y, cur_item->m_second_allocation.get_y());
+      if (drag_x < (rect.get_x() + rect.get_width()))
+        return &(*cur_item);
     }
-
-    if(next_item->m_second)
-    {
-      next_width += m_padding + next_item->m_second_allocation.get_width();
-      next_height = MAX(next_height, next_item->m_second_allocation.get_height());
-      next_x = MIN(next_x, next_item->m_second_allocation.get_x());
-      next_y = MIN(next_y, next_item->m_second_allocation.get_y());
-    }
-    
-    if(m_columns_count > 1)
-    {
-      // Check if we are in the correct column
-      int column_width = x + width;
-      if(column_width < drag_x)
-        continue;
-    }
-    
-    if(drag_y < next_y)
-      return &(*cur_item);
   }
 
-  std::cout << "Could not find dnd item, taking end" << std::endl;
   return 0;
 }
 
