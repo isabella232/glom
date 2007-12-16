@@ -1,12 +1,17 @@
-2007-12-16  Johannes Schmid,,,  <jhs@idefix>
+2007-12-16  Johannes Schmid <jhs@gnome.org>
 
-	reviewed by: <delete if not using a buddy>
-
-	* glom/utility_widgets/dragbar.cc:
 	* glom/utility_widgets/flowtable.cc:
 	* glom/utility_widgets/flowtable.h:
+  Fixed drag&drop code to have a much better user-experience. The
+  items should now be dropped more accurate at the mouse-pointer position
+  and the placeholder is drawn there, too.
+
 	* glom/utility_widgets/flowtablewithfields.cc:
 	* glom/utility_widgets/flowtablewithfields.h:
+	* glom/utility_widgets/dragbar.cc:
+	
+	Removed the DragButton for LayoutItem Image because it does not make sense
+	without an associated field.
 
 2007-12-12  Johannes Schmid <jhs@gnome.org>
 
