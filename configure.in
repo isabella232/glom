@@ -92,7 +92,7 @@ fi
 
 # TODO_maemo: Make sure bakery was also compiled with (or without, respectively) maemo support
 if test "$enable_maemo" = "yes"; then
-	REQUIRED_LIBS="$REQUIRED_LIBS hildonmm libepc-1.0 avahi-ui";
+	REQUIRED_LIBS="$REQUIRED_LIBS hildonmm libepc-1.0 >= 0.3.1 avahi-ui";
 elif test "$win32" = "true"; then
 	REQUIRED_LIBS="$REQUIRED_LIBS gtkmm-2.4 >= 2.10 libgnome-2.0 >= 2.6.0";
 else

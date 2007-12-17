@@ -1374,6 +1374,16 @@ void ConnectionPool::avahi_start_publishing()
   callbacks.end = &ConnectionPool::on_epc_progress_end;
   epc_shell_set_progress_hooks(&callbacks, this, NULL);
       
+  //Prevent the consumer from seeing duplicates,
+  //if multiple client computers advertize the same document:
+  //
+  //Defer announcement until a duplicate disappears:
+  epc_publisher_set_collision_handling(m_epc_publisher, EPC_COLLISIONS_UNIQUE_SERVICE);
+  //
+  // How to uniquely-identify the service. TODO: Use some additional criteria, such as the real host name.
+  if(!m_database.empty())
+    epc_publisher_set_service_cookie(m_epc_publisher, m_database.c_str());
+
   //Start the publisher, serving HTTPS:
   GError* error = 0;
   epc_publisher_run_async(m_epc_publisher, &error);
