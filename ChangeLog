@@ -1,5 +1,12 @@
 2007-12-17  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data_details.cc: Constructor:
+	* glom/utility_widgets/datawidget.cc: Constructor:
+	Added tooltip text for navigation buttons and the Open and Find buttons 
+	next to IDs.
+
+2007-12-17  Murray Cumming  <murrayc@murrayc.com>
+
 	* configure.in: Depend on the latest libepc.
 	* glom/libglom/connectionpool.cc: Use the new functions to 
 	avoid duplicate libepc services.

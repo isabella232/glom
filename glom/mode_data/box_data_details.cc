@@ -48,9 +48,18 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
 {
   m_layout_name = "details";
 
+  m_Button_New.set_tooltip_text(_("Create a new record."));
+  m_Button_Del.set_tooltip_text(_("Remove this record."));
+  m_Button_Nav_First.set_tooltip_text(_("View the first record in the list."));
+  m_Button_Nav_Prev.set_tooltip_text(_("View the previous record in the list."));
+  m_Button_Nav_Next.set_tooltip_text(_("View the next record in the list."));
+  m_Button_Nav_Last.set_tooltip_text(_("View the last record in the list."));
+  
+
   add_view(&m_FlowTable); //Allow this to access the document too.
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+  //TODO_Performance: Instantiate this only when needed:
   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_data_layout"); //TODO: Use a generic layout dialog?
   if(refXml)
   {

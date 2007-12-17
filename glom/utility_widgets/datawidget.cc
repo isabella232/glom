@@ -210,6 +210,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     {
       //Let the user choose a date from a calendar dialog:
       Gtk::Button* button_date = Gtk::manage(new Gtk::Button(_("..."))); //TODO: A better label/icon for "Choose Date". 
+      button_date->set_tooltip_text(_("Choose a date from an on-screen calendar.")); 
       button_date->show();
       hbox_parent->pack_start(*button_date);
       button_date->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_choose_date));
@@ -219,10 +220,12 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     {
       //Add buttons for related record navigation:
       Gtk::Button* button_go_to_details = Gtk::manage(new Gtk::Button(Gtk::Stock::OPEN));
+      button_go_to_details->set_tooltip_text(_("Open the record identified by this ID, in the other table."));
       hbox_parent->pack_start(*button_go_to_details);
       button_go_to_details->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_open_details));
 
       Gtk::Button* button_select = Gtk::manage(new Gtk::Button(Gtk::Stock::FIND));
+      button_select->set_tooltip_text(_("Enter search criteria to identify records in the other table, to choose an ID for this field."));
       hbox_parent->pack_start(*button_select);
       button_select->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_select_id));
     }
