@@ -1,3 +1,13 @@
+2007-12-18  Murray Cumming,,,  <murrayc@murrayc.com>
+
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	Constructor: Do not use the drag_dest_set() default flag values, 
+	because they prevent us from really using our own callbacks, and actually 
+	cause a pointer grab when trying to get the data during a drag-motion event.
+	on_canvas_drag_drop(): Call drag_get_data(), because we are no longer 
+	using DEST_DEFAULT_DROP (via DEST_DEFAULT_ALL), which previously did 
+	this for us.
+
 2007-12-17  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data_details.cc: Constructor:
