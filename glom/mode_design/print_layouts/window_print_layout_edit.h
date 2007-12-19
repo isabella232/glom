@@ -23,6 +23,7 @@
 
 #include <glom/libglom/data_structure/print_layout.h>
 #include <glom/mode_design/print_layouts/canvas_print_layout.h>
+#include <glom/mode_design/print_layouts/action_layout_item.h>
 #include <glom/libglom/document/document_glom.h>
 #include <gtkmm/window.h>
 #include <gtkmm/entry.h>
@@ -75,6 +76,8 @@ protected:
 
   void on_scroll_value_changed();
   void on_button_close();
+
+  sharedptr<LayoutItem> create_empty_item(Action_LayoutItem::enumItems item_type);
 
   //void on_toolbar_item_drag_begin(const Glib::RefPtr<Gdk::DragContext>& drag_context);
   //void on_toolbar_item_drag_end(const Glib::RefPtr<Gdk::DragContext>& drag_context);

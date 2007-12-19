@@ -1,4 +1,13 @@
-2007-12-18  Murray Cumming,,,  <murrayc@murrayc.com>
+2007-12-19  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	* glom/mode_design/print_layouts/window_print_layout_edit.h:
+	Added create_empty_item() to avoid duplicate code for the various ways to add 
+	new items. For instance, when dragging from the toolbar, actually put some text 
+	in the text item so that something is visible.
+	We still need to make empty images and portals visible somehow. 
+
+2007-12-18  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
 	Constructor: Do not use the drag_dest_set() default flag values, 

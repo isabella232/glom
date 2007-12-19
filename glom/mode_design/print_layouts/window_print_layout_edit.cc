@@ -245,7 +245,7 @@ void Window_PrintLayout_Edit::init_toolbar()
   action->set_layout_item_type(Action_LayoutItem::ITEM_LINE_HORIZONTAL);
   m_toolbar_action_group->add(action,
                         sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_line_horizontal) );
-  action = Action_LayoutItem::create("Action_Toolbar_LineVertical",Gtk::Stock::ADD, _("Vertical Line"));
+  action = Action_LayoutItem::create("Action_Toolbar_LineVertical", Gtk::Stock::ADD, _("Vertical Line"));
   action->set_layout_item_type(Action_LayoutItem::ITEM_LINE_VERTICAL);
   m_toolbar_action_group->add(action,
                         sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_line_vertical) );
@@ -448,11 +448,45 @@ bool Window_PrintLayout_Edit::on_canvas_drag_motion(const Glib::RefPtr<Gdk::Drag
   double item_x = x;
   double item_y = y;
   m_canvas.convert_from_pixels(item_x, item_y);
-  std::cout << "  moving temp item: x=" << x << ", y=" << y << ", item_x=" << item_x << ", item_y=" << item_y << std::endl;
+  std::cout << "  moving temp " << m_layout_item_dropping << " item: x=" << x << ", y=" << y << ", item_x=" << item_x << ", item_y=" << item_y << std::endl;
 
   m_layout_item_dropping->set_xy(item_x, item_y);
 
   return true; //Allow the drop.
+}
+
+sharedptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(Action_LayoutItem::enumItems item_type)
+{
+  sharedptr<LayoutItem> layout_item;
+
+  if(item_type == Action_LayoutItem::ITEM_FIELD)
+    layout_item = sharedptr<LayoutItem_Field>::create();
+  else if(item_type == Action_LayoutItem::ITEM_TEXT)
+  {
+    sharedptr<LayoutItem_Text> layout_item_derived = sharedptr<LayoutItem_Text>::create();
+
+    // Note to translators: This is the default contents of a text item on a print layout: 
+    layout_item_derived->set_text(_("text"));
+    layout_item = layout_item_derived;
+  }
+  else if(item_type == Action_LayoutItem::ITEM_IMAGE)
+    layout_item = sharedptr<LayoutItem_Image>::create();
+  else if(item_type == Action_LayoutItem::ITEM_LINE_HORIZONTAL)
+  {
+    sharedptr<LayoutItem_Line> layout_item_derived = sharedptr<LayoutItem_Line>::create();
+    layout_item_derived->set_coordinates(0, 0, 100, 0);
+    layout_item = layout_item_derived;
+  }
+  else if(item_type == Action_LayoutItem::ITEM_LINE_VERTICAL)
+  {
+    sharedptr<LayoutItem_Line> layout_item_derived = sharedptr<LayoutItem_Line>::create();
+    layout_item_derived->set_coordinates(0, 0, 0, 100);
+    layout_item = layout_item_derived;
+  }
+  else if(item_type == Action_LayoutItem::ITEM_PORTAL)
+    layout_item = sharedptr<LayoutItem_Portal>::create();
+
+  return layout_item;
 }
 
 void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, const Gtk::SelectionData& selection_data, guint info, guint timestamp)
@@ -467,39 +501,10 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
   
   if(m_drag_preview_requested)
   {
-    std::cout << "  Window_PrintLayout_Edit::on_canvas_drag_data_received: m_drag_preview_requested" << std::endl;
-
     //Create the temporary drag item if necessary:
     if(!m_layout_item_dropping)
     {
-      double item_x = x;
-      double item_y = y;
-      m_canvas.convert_from_pixels(item_x, item_y);
-
-      std::cout << "    creating temp item: x=" << x << "y=" << y << ", item_x=" << item_x << ", item_y=" << item_y << std::endl;
-
-      sharedptr<LayoutItem> layout_item;
-      //Add the item to the canvas:
-      if(item_type == Action_LayoutItem::ITEM_FIELD)
-        layout_item = sharedptr<LayoutItem_Field>::create();
-      else if(item_type == Action_LayoutItem::ITEM_TEXT)
-        layout_item = sharedptr<LayoutItem_Text>::create();
-      else if(item_type == Action_LayoutItem::ITEM_IMAGE)
-        layout_item = sharedptr<LayoutItem_Image>::create();
-      else if(item_type == Action_LayoutItem::ITEM_LINE_HORIZONTAL)
-      {
-        sharedptr<LayoutItem_Line> layout_item_derived = sharedptr<LayoutItem_Line>::create();
-        layout_item_derived->set_coordinates(item_x, item_y, item_x + 100, item_y);
-        layout_item = layout_item_derived;
-      }
-      else if(item_type == Action_LayoutItem::ITEM_LINE_VERTICAL)
-      {
-        sharedptr<LayoutItem_Line> layout_item_derived = sharedptr<LayoutItem_Line>::create();
-        layout_item_derived->set_coordinates(item_x, item_y, item_x, item_y + 100);
-        layout_item = layout_item_derived;
-      }
-      else if(item_type == Action_LayoutItem::ITEM_PORTAL)
-        layout_item = sharedptr<LayoutItem_Portal>::create();
+      sharedptr<LayoutItem> layout_item = create_empty_item(item_type);
 
       //Show it on the canvas, at the position:
       if(layout_item)
@@ -507,6 +512,9 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
         m_layout_item_dropping = CanvasLayoutItem::create(layout_item);
         m_canvas.add_canvas_layout_item(m_layout_item_dropping);
 
+        double item_x = x;
+        double item_y = y;
+        m_canvas.convert_from_pixels(item_x, item_y);
         m_layout_item_dropping->set_xy(item_x, item_y);
       }
     }
@@ -516,8 +524,7 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
   }
   else
   {
-    std::cout << "  Window_PrintLayout_Edit::on_canvas_drag_data_received: !m_drag_preview_requested" << std::endl;
-
+    //Drop an item:
     drag_context->drag_finish(false, false, timestamp);
     m_canvas.drag_unhighlight();
 
@@ -757,7 +764,7 @@ void Window_PrintLayout_Edit::set_default_position(const sharedptr<LayoutItem>& 
 
 void Window_PrintLayout_Edit::on_menu_insert_field()
 {
-  sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+  sharedptr<LayoutItem> layout_item = create_empty_item(Action_LayoutItem::ITEM_FIELD);
 
   // Note to translators: This is the default contents of a text item on a print layout: 
   set_default_position(layout_item, m_drop_x, m_drop_y);
@@ -768,10 +775,7 @@ void Window_PrintLayout_Edit::on_menu_insert_field()
 
 void Window_PrintLayout_Edit::on_menu_insert_text()
 {
-  sharedptr<LayoutItem_Text> layout_item = sharedptr<LayoutItem_Text>::create();
-
-  // Note to translators: This is the default contents of a text item on a print layout: 
-  layout_item->set_text(_("text"));
+  sharedptr<LayoutItem> layout_item = create_empty_item(Action_LayoutItem::ITEM_TEXT);
   set_default_position(layout_item, m_drop_x, m_drop_y);
 
   Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
@@ -780,7 +784,7 @@ void Window_PrintLayout_Edit::on_menu_insert_text()
 
 void Window_PrintLayout_Edit::on_menu_insert_image()
 {
-  sharedptr<LayoutItem_Image> layout_item = sharedptr<LayoutItem_Image>::create();
+  sharedptr<LayoutItem> layout_item = create_empty_item(Action_LayoutItem::ITEM_IMAGE);
   // Note to translators: This is the default contents of a text item on a print layout: 
   //layout_item->set_text(_("text"));
   set_default_position(layout_item, m_drop_x, m_drop_y);
@@ -791,7 +795,7 @@ void Window_PrintLayout_Edit::on_menu_insert_image()
 
 void Window_PrintLayout_Edit::on_menu_insert_relatedrecords()
 {
-  sharedptr<LayoutItem_Portal> layout_item = sharedptr<LayoutItem_Portal>::create();
+  sharedptr<LayoutItem> layout_item = create_empty_item(Action_LayoutItem::ITEM_PORTAL);
   set_default_position(layout_item, m_drop_x, m_drop_y);
 
   Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
@@ -800,7 +804,7 @@ void Window_PrintLayout_Edit::on_menu_insert_relatedrecords()
 
 void Window_PrintLayout_Edit::on_menu_insert_line_horizontal()
 {
-  sharedptr<LayoutItem_Line> layout_item = sharedptr<LayoutItem_Line>::create();
+  sharedptr<LayoutItem> layout_item = create_empty_item(Action_LayoutItem::ITEM_LINE_HORIZONTAL);
 
   double item_x = m_drop_x;
   double item_y = m_drop_y;
@@ -808,7 +812,7 @@ void Window_PrintLayout_Edit::on_menu_insert_line_horizontal()
 
   // Note to translators: This is the default contents of a text item on a print layout: 
   //layout_item->set_text(_("text"));
-  layout_item->set_coordinates(item_x, item_y, item_x + 100, item_y);
+  //layout_item->set_coordinates(item_x, item_y, item_x + 100, item_y);
 
   Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
   m_canvas.add_canvas_layout_item(item);
@@ -816,7 +820,7 @@ void Window_PrintLayout_Edit::on_menu_insert_line_horizontal()
 
 void Window_PrintLayout_Edit::on_menu_insert_line_vertical()
 {
-  sharedptr<LayoutItem_Line> layout_item = sharedptr<LayoutItem_Line>::create();
+  sharedptr<LayoutItem> layout_item = create_empty_item(Action_LayoutItem::ITEM_LINE_VERTICAL);
 
   double item_x = m_drop_x;
   double item_y = m_drop_y;
@@ -824,7 +828,7 @@ void Window_PrintLayout_Edit::on_menu_insert_line_vertical()
 
   // Note to translators: This is the default contents of a text item on a print layout: 
   //layout_item->set_text(_("text"));
-  layout_item->set_coordinates(item_x, item_y, item_x, item_y + 100);
+  //layout_item->set_coordinates(item_x, item_y, item_x, item_y + 100);
 
   Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
   m_canvas.add_canvas_layout_item(item);
