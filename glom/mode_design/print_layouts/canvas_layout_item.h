@@ -61,6 +61,8 @@ public:
 
 protected:
   void check_and_apply_formatting(const Glib::RefPtr<CanvasTextMovable>& canvas_item, FieldFormatting& formatting);
+  
+  void on_resized();
 
   sharedptr<LayoutItem> m_layout_item;
 };

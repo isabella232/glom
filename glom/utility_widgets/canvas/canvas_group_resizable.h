@@ -62,6 +62,11 @@ public:
   virtual void get_width_height(double& width, double& height) const;
   virtual void set_width_height(double width, double height);
 
+  typedef sigc::signal<void> type_signal_resized;
+
+  /// This signal is emitted when the canvas item is resized by the user.
+  type_signal_resized signal_resized();
+
 protected:
   virtual Goocanvas::Canvas* get_parent_canvas_widget();
 
@@ -154,6 +159,8 @@ protected:
   //These are used only before there is a child.
   //When there is a child, we delegate to it instead.
   double m_x, m_y, m_width, m_height;
+
+  type_signal_resized m_signal_resized;
 };
 
 } //namespace Glom

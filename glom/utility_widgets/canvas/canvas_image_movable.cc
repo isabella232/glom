@@ -181,6 +181,9 @@ void CanvasImageMovable::scale_to_size()
     Glib::RefPtr<Gdk::Pixbuf> pixbuf = ImageGlom::scale_keeping_ratio(m_pixbuf, (int)height, (int)width);
     property_pixbuf() = pixbuf;
   }
+
+  //Make sure that the size stays the same even if the scaling wasn't exact:
+  set_width_height(width, height);
 }
 
 void CanvasImageMovable::set_image_empty()

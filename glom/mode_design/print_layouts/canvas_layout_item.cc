@@ -40,11 +40,16 @@ namespace Glom
 
 CanvasLayoutItem::CanvasLayoutItem()
 {
+  //Rescale images when the canvas item is resized:
+  signal_resized().connect( sigc::mem_fun(*this, &CanvasLayoutItem::on_resized) );
 }
 
 CanvasLayoutItem::CanvasLayoutItem(const sharedptr<LayoutItem>& layout_item)
 {
   set_layout_item(layout_item);
+
+  //Rescale images when the canvas item is resized:
+  signal_resized().connect( sigc::mem_fun(*this, &CanvasLayoutItem::on_resized) );
 }
 
 CanvasLayoutItem::~CanvasLayoutItem()
@@ -103,6 +108,13 @@ static void portal_add_child( const Glib::RefPtr<Goocanvas::Table>& table, guint
                                        "x-fill", TRUE, 
                                        "x-expand", TRUE, 
                                        NULL);
+}
+
+void CanvasLayoutItem::on_resized()
+{
+  Glib::RefPtr<CanvasImageMovable> canvas_image = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(get_child());
+  if(canvas_image)
+    canvas_image->scale_to_size();
 }
 
 void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
@@ -255,8 +267,9 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
   if(canvas_image)
   {
     canvas_image->scale_to_size();
-  }
 
+    //It will also be rescaled when this canvas item is resized - see on_resized().
+  }
 }
 
 void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)

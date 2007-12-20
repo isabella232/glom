@@ -471,6 +471,7 @@ void CanvasGroupResizable::on_manipulator_corner_moved(Manipulators manipulator_
   }
 
   position_manipulators();
+  m_signal_resized.emit();
 }
 
 void CanvasGroupResizable::on_manipulator_line_end_moved(Manipulators manipulator_id)
@@ -592,6 +593,8 @@ void CanvasGroupResizable::on_manipulator_edge_moved(Manipulators manipulator_id
   }
 
   position_manipulators();
+  
+  m_signal_resized.emit();
 }
 
 
@@ -851,6 +854,10 @@ bool CanvasGroupResizable::get_is_line() const
   return line;
 }
 
+CanvasGroupResizable::type_signal_resized CanvasGroupResizable::signal_resized()
+{
+  return m_signal_resized;
+}
 
 } //namespace Glom
 

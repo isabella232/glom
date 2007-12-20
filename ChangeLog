@@ -1,6 +1,18 @@
 2007-12-20  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/canvas/canvas_image_movable.cc:
+	* glom/utility_widgets/canvas/canvas_item_movable.h: scale_to_size():
+	Set the size again after setting the pixbuf, to preserve the size.
+	* glom/utility_widgets/canvas/canvas_group_resizable.cc:
+	* glom/utility_widgets/canvas/canvas_group_resizable.h:
+	Added (and emitted) signal_resized().
+	* glom/mode_design/print_layouts/canvas_layout_item.cc:
+	* glom/mode_design/print_layouts/canvas_layout_item.h:
+	Handle signal_resized() to rescale images when they are resized.
+
+2007-12-20  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/canvas/canvas_image_movable.cc:
 	* glom/utility_widgets/canvas/canvas_image_movable.h: Store the 
 	original pixbuf and use it in a new scale_to_size() method.
 	* glom/mode_design/print_layouts/canvas_layout_item.cc: 

@@ -62,6 +62,8 @@ public:
   void set_drag_cursor(const Gdk::Cursor& cursor);
 
   typedef sigc::signal<void> type_signal_moved;
+
+  /// This signal is emitted when the canvas item is moved by the user.
   type_signal_moved signal_moved();
 
   /** void on_show_context(guint button, guint32 activate_time);
