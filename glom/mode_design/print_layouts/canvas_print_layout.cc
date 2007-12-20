@@ -530,7 +530,8 @@ void Canvas_PrintLayout::fill_with_data(const FoundSet& found_set)
   if(!records_found)
     return;
 
-  //Set all the data for the fields in the canvas:
+  //Set all the data for the fields in the canvas
+  //(and clear the no-image pixbuf from images):
   for(int i = 0; i < count; ++i)
   {
     Glib::RefPtr<Goocanvas::Item> base_canvas_item = m_items_group->get_child(i);
@@ -548,10 +549,16 @@ void Canvas_PrintLayout::fill_with_data(const FoundSet& found_set)
       type_map_layout_fields_index::const_iterator iterFind = map_fields_index.find( layoutitem_field->get_layout_display_name() );
       if(iterFind != map_fields_index.end())
       {
+        //Set the data from the database:
         const guint col_index = iterFind->second;
         const Gnome::Gda::Value value = datamodel->get_value_at(col_index, 0);
         canvas_item->set_db_data(value);
       }
+    }
+    else
+    {
+      //Clear the no-image pixbuf from images:
+      canvas_item->remove_empty_indicators();
     }
   }
 }

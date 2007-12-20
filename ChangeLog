@@ -1,5 +1,15 @@
 2007-12-20  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_design/print_layouts/canvas_layout_item.cc:
+	* glom/mode_design/print_layouts/canvas_layout_item.h:
+	Added remove_empty_indicators() to remove the missing-image icon from empty 
+	static image items. 
+	* glom/mode_design/print_layouts/canvas_print_layout.cc: fill_with_data():
+	Call remove_empty_indicators() so that the missing-image icons are not seen 
+	when printing. 
+
+2007-12-20  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/canvas/canvas_image_movable.cc:
 	* glom/utility_widgets/canvas/canvas_image_movable.h: Added set_image() and 
 	set_image_empty(), which adds a MISSING_IMAGE stock icon.

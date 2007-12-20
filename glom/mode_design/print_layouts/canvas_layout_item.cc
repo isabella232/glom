@@ -317,5 +317,20 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
         
 }
 
+void CanvasLayoutItem::remove_empty_indicators()
+{
+  Glib::RefPtr<CanvasItemMovable> child = get_child();
+  Glib::RefPtr<CanvasImageMovable> canvas_image = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(child);
+  if(canvas_image)
+  {
+    //Clear the no-image pixbuf from images:
+    if(canvas_image->get_image_empty())
+    {
+      Glib::RefPtr<Gdk::Pixbuf> really_empty;
+      canvas_image->property_pixbuf() = really_empty;
+    }
+  }
+}
+
 } //namespace Glom
 

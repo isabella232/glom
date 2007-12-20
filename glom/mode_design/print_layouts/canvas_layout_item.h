@@ -31,6 +31,8 @@ namespace Glom
 class CanvasTextMovable;
 class FieldFormatting;
 
+/** This has the appropriate child canvas item, depending on the type of the child LayoutItem.
+ */
 class CanvasLayoutItem : public CanvasGroupResizable
 {
 protected:
@@ -53,6 +55,9 @@ public:
   
   /// Make the canvas item show actual data instead of, for instance, a field name.
   void set_db_data(const Gnome::Gda::Value& value);
+
+  /// Hide the missing-image pixbuf from images, for instance.
+  void remove_empty_indicators();
 
 protected:
   void check_and_apply_formatting(const Glib::RefPtr<CanvasTextMovable>& canvas_item, FieldFormatting& formatting);

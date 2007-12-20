@@ -170,16 +170,11 @@ void CanvasImageMovable::set_image_empty()
   if(!widget)
     widget = App_Glom::get_application();
 
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf;
   if(widget)
-  {
-    Glib::RefPtr<Gdk::Pixbuf> pixbuf = widget->render_icon(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG);
-    if(!pixbuf)
-      std::cout << "debug: MISSING_IMAGE pixbuf is NULL" << std::endl;
-    else
-      std::cout << "debug: MISSING_IMAGE pixbuf was found." << std::endl;
+    pixbuf = widget->render_icon(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG);
 
-    property_pixbuf() = pixbuf;
-  }
+  property_pixbuf() = pixbuf;
 }
 
 bool CanvasImageMovable::get_image_empty() const
