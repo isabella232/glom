@@ -30,12 +30,16 @@ namespace Glom
 {
 
 Dialog_ImageObject::Dialog_ImageObject(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
-: Gtk::Dialog(cobject)
+: Gtk::Dialog(cobject),
+  m_box_title(0),
+  m_entry_title(0),
+  m_image(0)
 {
-  refGlade->get_widget("entry_title",  m_entry_title);
-  refGlade->get_widget_derived("imageglom",  m_image);
+  refGlade->get_widget("hbox_title", m_box_title);
+  refGlade->get_widget("entry_title", m_entry_title);
+  refGlade->get_widget_derived("imageglom", m_image);
 
-  refGlade->get_widget("button_choose_image",  m_button_choose_image);
+  refGlade->get_widget("button_choose_image", m_button_choose_image);
   m_button_choose_image->signal_clicked().connect(sigc::mem_fun(*this, &Dialog_ImageObject::on_button_choose));
 
   //on_foreach_connect(*this);
@@ -55,7 +59,7 @@ void Dialog_ImageObject::on_button_choose()
 }
 
 
-void Dialog_ImageObject::set_imageobject(const sharedptr<const LayoutItem_Image>& imageobject, const Glib::ustring& table_name)
+void Dialog_ImageObject::set_imageobject(const sharedptr<const LayoutItem_Image>& imageobject, const Glib::ustring& table_name, bool show_title)
 {
   //set_blocked();
 
@@ -64,6 +68,11 @@ void Dialog_ImageObject::set_imageobject(const sharedptr<const LayoutItem_Image>
 
   m_entry_title->set_text(imageobject->get_title());
   m_image->set_value( imageobject->get_image() );
+
+  if(show_title)
+    m_box_title->show();
+  else
+    m_box_title->hide();
 
   //set_blocked(false);
 

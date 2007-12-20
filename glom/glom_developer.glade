@@ -2290,7 +2290,7 @@ The data in the field was not recognized. Please try to correct the data or reve
 </widget>
 
 <widget class="GtkDialog" id="window_imageobject">
-  <property name="title" translatable="yes">Text Object</property>
+  <property name="title" translatable="yes">Image Object</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_NONE</property>
   <property name="modal">False</property>

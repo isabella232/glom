@@ -1,5 +1,23 @@
 2007-12-20  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/base_db.cc:
+	* glom/base_db.h: offer_imageobject(): Add show_title bool, like 
+	offer_textobject() alread has.
+	* glom/glom_developer.glade: Correct the title of the choose image 
+	dialog.
+	* glom/layout_item_dialogs/dialog_imageobject.cc:
+	* glom/layout_item_dialogs/dialog_imageobject.h: set_layout_item():
+	Add show_title bool and hide the title if it is true.
+	* glom/libglom/data_structure/layout/layoutitem_image.cc:
+	* glom/libglom/data_structure/layout/layoutitem_image.h: Added 
+	get_image_as_pixbuf() for convenience.
+	* glom/mode_design/print_layouts/canvas_layout_item.cc:
+	set_layout_item(): Actually show the image from the layout item.
+	* glom/mode_design/print_layouts/canvas_print_layout.cc:
+	on_context_menu_edit(): Handle image objects.
+
+2007-12-20  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
 	* glom/mode_design/print_layouts/window_print_layout_edit.h:
 	Remove m_drop_x and m_drop_y: They are useless now that we don't use 

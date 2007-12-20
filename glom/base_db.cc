@@ -1415,7 +1415,7 @@ sharedptr<LayoutItem_Text> Base_DB::offer_textobject(const sharedptr<LayoutItem_
   return result;
 }
 
-sharedptr<LayoutItem_Image> Base_DB::offer_imageobject(const sharedptr<LayoutItem_Image>& start_imageobject, Gtk::Window* transient_for)
+sharedptr<LayoutItem_Image> Base_DB::offer_imageobject(const sharedptr<LayoutItem_Image>& start_imageobject, Gtk::Window* transient_for, bool show_title)
 {
   sharedptr<LayoutItem_Image> result;
 
@@ -1430,7 +1430,7 @@ sharedptr<LayoutItem_Image> Base_DB::offer_imageobject(const sharedptr<LayoutIte
       if(transient_for)
         dialog->set_transient_for(*transient_for);
 
-      dialog->set_imageobject(start_imageobject, Glib::ustring());
+      dialog->set_imageobject(start_imageobject, Glib::ustring(), show_title);
       const int response = Glom::Utils::dialog_run_with_help(dialog, "window_imageobject");
       dialog->hide();
       if(response == Gtk::RESPONSE_OK)

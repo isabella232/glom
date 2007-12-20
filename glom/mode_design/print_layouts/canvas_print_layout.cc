@@ -301,6 +301,15 @@ void Canvas_PrintLayout::on_context_menu_edit()
       text = Base_DB::offer_textobject(text, parent, false /* don't show title */);
       m_context_item->set_layout_item(text);
     }
+    else
+    {
+      sharedptr<LayoutItem_Image> image = sharedptr<LayoutItem_Image>::cast_dynamic(layout_item);
+      if(image)
+      {
+        image = Base_DB::offer_imageobject(image, parent, false /* don't show title */);
+        m_context_item->set_layout_item(image);
+      }
+    }
   }
 
   m_context_item.clear();

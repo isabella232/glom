@@ -20,6 +20,7 @@
 
 #include "layoutitem_image.h"
 #include <glom/libglom/utils.h>
+#include <glom/libglom/data_structure/glomconversions.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -78,11 +79,15 @@ Gnome::Gda::Value LayoutItem_Image::get_image() const
   return m_image;
 }
 
+Glib::RefPtr<Gdk::Pixbuf> LayoutItem_Image::get_image_as_pixbuf() const
+{
+  return Conversions::get_pixbuf_for_gda_value(m_image);
+}
+
 void LayoutItem_Image::set_image(const Gnome::Gda::Value& image)
 {
   m_image = image;
 }
-
 
 Glib::ustring LayoutItem_Image::create_local_image_uri() const
 {

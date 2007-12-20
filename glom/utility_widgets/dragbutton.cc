@@ -25,7 +25,7 @@ namespace Glom
   
 DragButton::DragButton(Gtk::Image& image, const Glib::ustring& id)
 {
-	set_image (image);
+  set_image(image);
   m_id = id;
   std::list<Gtk::TargetEntry> targetentries;
   targetentries.push_back(Gtk::TargetEntry(get_target()));

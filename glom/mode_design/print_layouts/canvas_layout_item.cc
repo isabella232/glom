@@ -133,7 +133,11 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
     if(image)
     {
       Glib::RefPtr<CanvasImageMovable> canvas_item = CanvasImageMovable::create();
-      canvas_item->set_image_empty(); //show a no-image picture.
+      Glib::RefPtr<Gdk::Pixbuf> pixbuf = image->get_image_as_pixbuf();
+      if(pixbuf)
+        canvas_item->set_image(pixbuf);
+      else
+        canvas_item->set_image_empty(); //show a no-image picture.
 
       canvas_item->property_fill_color() = "white"; //This makes the whole area clickable, not just the outline stroke.
       child = canvas_item;
@@ -170,12 +174,7 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
           if(field->get_glom_type() == Field::TYPE_IMAGE)
           {
             Glib::RefPtr<CanvasImageMovable> canvas_item = CanvasImageMovable::create();
-
-            //Glib::ustring name = field->get_name();
-            //  if(name.empty())
-            //    name = _("Choose Field");
-          
-            //canvas_item->set_text(name);
+            canvas_item->set_image_empty();
 
             child = canvas_item;
             child_item = canvas_item;

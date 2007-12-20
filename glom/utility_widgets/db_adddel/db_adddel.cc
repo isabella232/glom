@@ -628,7 +628,7 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
      {
        Gtk::CellRendererPixbuf* pixbuf_renderer = Gtk::manage( new Gtk::CellRendererPixbuf() );
 
-       Glib::RefPtr<Gdk::Pixbuf> pixbuf = Conversions::get_pixbuf_for_gda_value(item_image->get_image());
+       Glib::RefPtr<Gdk::Pixbuf> pixbuf = item_image->get_image_as_pixbuf();
        if(pixbuf)
          pixbuf_renderer->set_property("pixbuf", pixbuf);
        else

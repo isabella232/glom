@@ -39,12 +39,13 @@ public:
   Dialog_ImageObject(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Dialog_ImageObject();
 
-  void set_imageobject(const sharedptr<const LayoutItem_Image>& imageobject, const Glib::ustring& table_name);
+  void set_imageobject(const sharedptr<const LayoutItem_Image>& imageobject, const Glib::ustring& table_name, bool show_title = true);
   sharedptr<LayoutItem_Image> get_imageobject() const;
 
 protected:
   void on_button_choose();
 
+  Gtk::HBox* m_box_title;
   Gtk::Entry* m_entry_title;
   ImageGlom* m_image;
   Gtk::Button* m_button_choose_image;

@@ -23,6 +23,7 @@
 
 #include "layoutitem.h"
 #include <libgdamm/value.h>
+#include <gdkmm/pixbuf.h>
 
 namespace Glom
 {
@@ -52,6 +53,8 @@ public:
   /** Get the image that will be shown on each record.
    */
   Gnome::Gda::Value get_image() const;
+
+  Glib::RefPtr<Gdk::Pixbuf> get_image_as_pixbuf() const;
 
   /** Set the image that will be shown on each record.
    */
