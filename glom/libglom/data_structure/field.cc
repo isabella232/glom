@@ -208,6 +208,7 @@ Glom_PQescapeString(char *to, const char *from, size_t length)
 
 } //anonymous
 
+/// Escape text, including text that is the result of get_escaped_binary_data().
 static std::string glom_escape_text(const std::string& src)
 {
   if(src.empty())

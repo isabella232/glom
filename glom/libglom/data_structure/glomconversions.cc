@@ -275,8 +275,14 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
   }
   else if (glom_type == Field::TYPE_IMAGE)
   {
-    std::cerr << "Conversions::get_text_for_gda_value(): Unexpected image field type" << std::endl;
-    return value.to_string();
+    //Return the binary-as-escaped-text format, suitable for use in the document. 
+    std::string result;
+    long buffer_length;
+    const guchar* buffer = value.get_binary(buffer_length);
+    if(buffer && buffer_length > 0)
+      result = Conversions::get_escaped_binary_data((guint8*)buffer, buffer_length);
+
+    return result;
   }
   else
   {
@@ -409,12 +415,12 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
   }
   else if(glom_type == Field::TYPE_IMAGE)
   {
-    //We assume that the text is the same (escaped text) format that we use in the document when saving examples.
+    //We assume that the text is the same (escaped text) format that we use in the document when saving images:
     //(The SQL format).
     Gnome::Gda::Value result;
 
     size_t buffer_binary_length = 0;
-    guchar* buffer_binary =  Glom_PQunescapeBytea((const guchar*)text.c_str() /* must be null-terminated */, &buffer_binary_length); //freed by us later.
+    guchar* buffer_binary = Glom_PQunescapeBytea((const guchar*)text.c_str() /* must be null-terminated */, &buffer_binary_length); //freed by us later.
     if(buffer_binary)
     {
       result.set(buffer_binary, buffer_binary_length);
@@ -1004,7 +1010,7 @@ Glib::RefPtr<Gdk::Pixbuf> Conversions::get_pixbuf_for_gda_value(const Gnome::Gda
         {
           const Glib::Exception& ex = *error.get();        
 #endif
-          g_warning("ImageGlom::set_value(): PixbufLoader::write() failed: %s", ex.what().c_str());
+          g_warning("Conversions::get_pixbuf_for_gda_value(): PixbufLoader::write() failed: %s", ex.what().c_str());
         }
       }
 

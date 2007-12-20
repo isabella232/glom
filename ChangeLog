@@ -1,5 +1,12 @@
 2007-12-20  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/data_structure/glomconversions.cc: get_text_for_gda_value():
+	Return escaped text for images, instead of using to_string(). This fixes the 
+	loading of images from the document, so they are not lost when closing the 
+	document.
+
+2007-12-20  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/canvas/canvas_image_movable.cc:
 	* glom/utility_widgets/canvas/canvas_item_movable.h: scale_to_size():
 	Set the size again after setting the pixbuf, to preserve the size.

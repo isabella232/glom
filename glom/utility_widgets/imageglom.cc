@@ -251,9 +251,9 @@ Gnome::Gda::Value ImageGlom::get_value() const
       buffer = 0;
     }
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-    catch(const Glib::Exception& /* ex */)
+    catch(const Glib::Exception& ex)
     {
-
+      std::cerr << "ImageGlom::get_value(): " << ex.what() << std::endl;
     }
 #endif // GLIBMM_EXCEPTIONS_ENABLED
   }
