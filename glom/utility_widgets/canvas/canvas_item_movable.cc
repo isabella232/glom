@@ -24,6 +24,7 @@
 #include "canvas_image_movable.h"
 #include "canvas_line_movable.h"
 #include "canvas_group_movable.h"
+#include "canvas_group_resizable.h"
 #include "canvas_table_movable.h"
 #include <goocanvasmm/canvas.h>
 #include <goocanvasrect.h>
@@ -239,6 +240,10 @@ void CanvasItemMovable::snap_position(double& x, double& y) const
 
   if(m_grid)
     m_grid->snap_position(x, y);
+  //else
+  //{
+  //  std::cout << "CanvasItemMovable::snap_position(): m_grid is NULL" << std::endl;
+  //}
 }
 
 void CanvasItemMovable::set_movement_allowed(bool vertical, bool horizontal)
@@ -284,11 +289,20 @@ Glib::RefPtr<CanvasItemMovable> CanvasItemMovable::cast_to_movable(const Glib::R
             Glib::RefPtr<CanvasTableMovable> table = Glib::RefPtr<CanvasTableMovable>::cast_dynamic(item);
             if(table)
               movable = Glib::RefPtr<CanvasTableMovable>::cast_dynamic(table);
+            else
+            {
+              Glib::RefPtr<CanvasGroupResizable> group_resizable = Glib::RefPtr<CanvasGroupResizable>::cast_dynamic(item);
+              if(group_resizable)
+                movable = Glib::RefPtr<CanvasItemMovable>::cast_dynamic(group_resizable);
+            }
           }
         }
       }
     }
   }
+
+  //Goocanvas::Item* debug = item.operator->();
+  //std::cout << "CanvasItemMovable::cast_to_movable(" << typeid(*debug).name() << ") = " << movable << std::endl;
 
   return movable;
 }
@@ -337,6 +351,12 @@ Glib::RefPtr<Goocanvas::Item> CanvasItemMovable::cast_to_item(const Glib::RefPtr
             Glib::RefPtr<CanvasTableMovable> table = Glib::RefPtr<CanvasTableMovable>::cast_dynamic(item);
             if(table)
               result = Glib::RefPtr<Goocanvas::Item>::cast_dynamic(table);
+            else
+            {
+              Glib::RefPtr<CanvasGroupResizable> group_resizable = Glib::RefPtr<CanvasGroupResizable>::cast_dynamic(item);
+              if(group_resizable)
+                result = Glib::RefPtr<Goocanvas::Item>::cast_dynamic(group_resizable);
+            }
           }
         }
       }
