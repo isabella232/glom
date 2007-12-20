@@ -1,3 +1,10 @@
+2007-12-20  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/data_structure/glomconversions.cc: get_text_for_gda_value():
+	Return escaped text for images, instead of using to_string(). This fixes the 
+	loading of images from the document, so they are not lost when closing the 
+	document.
+
 1.6.6:
 
 2007-12-14  Murray Cumming  <murrayc@murrayc.com>

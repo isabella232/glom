@@ -273,6 +273,17 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
   {
      return value.get_string();
   }
+  else if (glom_type == Field::TYPE_IMAGE)
+  {
+    //Return the binary-as-escaped-text format, suitable for use in the document. 
+    std::string result;
+    long buffer_length;
+    const guchar* buffer = value.get_binary(buffer_length);
+    if(buffer && buffer_length > 0)
+      result = Conversions::get_escaped_binary_data((guint8*)buffer, buffer_length);
+
+    return result;
+  }
   else
   {
     std::cerr << "Conversions::get_text_for_gda_value(): Unexpected glom field type: " << glom_type << std::endl;
