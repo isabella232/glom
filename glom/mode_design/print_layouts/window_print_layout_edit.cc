@@ -49,7 +49,6 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   m_vruler(0),
   m_hruler(0),
   m_toolbar(0),
-  m_drop_x(0), m_drop_y(0),
   m_context_menu(0)
 {
   set_default_size(640, 480);
@@ -455,7 +454,10 @@ sharedptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(Action_LayoutIt
   sharedptr<LayoutItem> layout_item;
 
   if(item_type == Action_LayoutItem::ITEM_FIELD)
+  {
     layout_item = sharedptr<LayoutItem_Field>::create();
+    layout_item->set_print_layout_position(0, 0, 50, 10);
+  }
   else if(item_type == Action_LayoutItem::ITEM_TEXT)
   {
     sharedptr<LayoutItem_Text> layout_item_derived = sharedptr<LayoutItem_Text>::create();
@@ -463,6 +465,7 @@ sharedptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(Action_LayoutIt
     // Note to translators: This is the default contents of a text item on a print layout: 
     layout_item_derived->set_text(_("text"));
     layout_item = layout_item_derived;
+    layout_item->set_print_layout_position(0, 0, 50, 10);
   }
   else if(item_type == Action_LayoutItem::ITEM_IMAGE)
   {
@@ -482,7 +485,10 @@ sharedptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(Action_LayoutIt
     layout_item = layout_item_derived;
   }
   else if(item_type == Action_LayoutItem::ITEM_PORTAL)
+  {
     layout_item = sharedptr<LayoutItem_Portal>::create();
+    layout_item->set_print_layout_position(0, 0, 100, 50);
+  }
 
   return layout_item;
 }
@@ -524,11 +530,6 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
     drag_context->drag_finish(false, false, timestamp);
     m_canvas.drag_unhighlight();
 
-    //Set the x and y for use by set_default_position():
-    //TODO: Probably not used anymore.
-    m_drop_x = x;
-    m_drop_y = y;
-
     //Add the item to the canvas:
     sharedptr<LayoutItem> layout_item = create_empty_item(item_type);
     Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
@@ -537,10 +538,6 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
     double item_y = y;
     m_canvas.convert_from_pixels(item_x, item_y);
     item->set_xy(item_x, item_y);
-
-    //Clear these so they won't affect future calls to set_default_position():
-    m_drop_x = 0;
-    m_drop_y = 0;
    
     if(m_layout_item_dropping)
     {
@@ -750,13 +747,15 @@ bool Window_PrintLayout_Edit::get_is_item_at(double x, double y)
   return layout_item;
 }
 
-void Window_PrintLayout_Edit::set_default_position(const sharedptr<LayoutItem>& item, int x, int y)
+void Window_PrintLayout_Edit::set_default_position(const sharedptr<LayoutItem>& item)
 {
-  double item_x = x;
-  double item_y = y;
+  if(!item)
+    return;
+
+  double item_x = 10;
+  double item_y = 10;
   m_canvas.convert_from_pixels(item_x, item_y);
   
- 
   //TODO: This doesn't seem to actually work:
   while(get_is_item_at(item_x, item_y))
   {
@@ -764,11 +763,14 @@ void Window_PrintLayout_Edit::set_default_position(const sharedptr<LayoutItem>& 
     item_y += 10;
   }
 
-  double height = 10;
-  if(sharedptr<LayoutItem_Portal>::cast_dynamic(item))
-    height = 150;
+  //Get the old position so we can preserve the width and height:
+  double old_x = 0;
+  double old_y = 0;
+  double old_width = 0;
+  double old_height = 0;
+  item->get_print_layout_position(old_x, old_y, old_width, old_height);
 
-  item->set_print_layout_position(item_x, item_y, 100, height);
+  item->set_print_layout_position(item_x, item_y, old_width, old_height);
 }
 
 void Window_PrintLayout_Edit::on_menu_insert_field()
@@ -776,7 +778,7 @@ void Window_PrintLayout_Edit::on_menu_insert_field()
   sharedptr<LayoutItem> layout_item = create_empty_item(Action_LayoutItem::ITEM_FIELD);
 
   // Note to translators: This is the default contents of a text item on a print layout: 
-  set_default_position(layout_item, m_drop_x, m_drop_y);
+  set_default_position(layout_item);
 
   Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
   m_canvas.add_canvas_layout_item(item);
@@ -785,7 +787,7 @@ void Window_PrintLayout_Edit::on_menu_insert_field()
 void Window_PrintLayout_Edit::on_menu_insert_text()
 {
   sharedptr<LayoutItem> layout_item = create_empty_item(Action_LayoutItem::ITEM_TEXT);
-  set_default_position(layout_item, m_drop_x, m_drop_y);
+  set_default_position(layout_item);
 
   Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
   m_canvas.add_canvas_layout_item(item);
@@ -796,7 +798,7 @@ void Window_PrintLayout_Edit::on_menu_insert_image()
   sharedptr<LayoutItem> layout_item = create_empty_item(Action_LayoutItem::ITEM_IMAGE);
   // Note to translators: This is the default contents of a text item on a print layout: 
   //layout_item->set_text(_("text"));
-  set_default_position(layout_item, m_drop_x, m_drop_y);
+  set_default_position(layout_item);
 
   Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
   m_canvas.add_canvas_layout_item(item);
@@ -805,7 +807,7 @@ void Window_PrintLayout_Edit::on_menu_insert_image()
 void Window_PrintLayout_Edit::on_menu_insert_relatedrecords()
 {
   sharedptr<LayoutItem> layout_item = create_empty_item(Action_LayoutItem::ITEM_PORTAL);
-  set_default_position(layout_item, m_drop_x, m_drop_y);
+  set_default_position(layout_item);
 
   Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
   m_canvas.add_canvas_layout_item(item);
@@ -815,9 +817,11 @@ void Window_PrintLayout_Edit::on_menu_insert_line_horizontal()
 {
   sharedptr<LayoutItem> layout_item = create_empty_item(Action_LayoutItem::ITEM_LINE_HORIZONTAL);
 
+  /*
   double item_x = m_drop_x;
   double item_y = m_drop_y;
   m_canvas.convert_from_pixels(item_x, item_y);
+  */
 
   // Note to translators: This is the default contents of a text item on a print layout: 
   //layout_item->set_text(_("text"));
@@ -831,9 +835,11 @@ void Window_PrintLayout_Edit::on_menu_insert_line_vertical()
 {
   sharedptr<LayoutItem> layout_item = create_empty_item(Action_LayoutItem::ITEM_LINE_VERTICAL);
 
+  /*
   double item_x = m_drop_x;
   double item_y = m_drop_y;
   m_canvas.convert_from_pixels(item_x, item_y);
+  */
 
   // Note to translators: This is the default contents of a text item on a print layout: 
   //layout_item->set_text(_("text"));

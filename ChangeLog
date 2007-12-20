@@ -1,5 +1,13 @@
 2007-12-20  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	* glom/mode_design/print_layouts/window_print_layout_edit.h:
+	Remove m_drop_x and m_drop_y: They are useless now that we don't use 
+	the menu signal handler when dropping.
+	create_empty_item(): Set appropriate sizes for the new items.
+
+2007-12-20  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_design/print_layouts/canvas_layout_item.cc:
 	* glom/mode_design/print_layouts/canvas_layout_item.h:
 	Added remove_empty_indicators() to remove the missing-image icon from empty 

@@ -96,7 +96,7 @@ protected:
   void set_ruler_sizes();
 
   bool get_is_item_at(double x, double y);
-  void set_default_position(const sharedptr<LayoutItem>& item, int x = 0, int y = 0);
+  void set_default_position(const sharedptr<LayoutItem>& item);
 
   //Box_DB_Table_Definition* m_box;
   Glib::ustring m_name_original;
@@ -137,7 +137,6 @@ protected:
   Glib::RefPtr<Gtk::UIManager> m_toolbar_uimanager;
   Gtk::HandleBox* m_palette_handle_box;
   std::list<Gtk::TargetEntry> m_drag_targets;
-  int m_drop_x, m_drop_y;
   
   //Context menu for clicking on empty space on the canvas:
   Gtk::Menu* m_context_menu;
