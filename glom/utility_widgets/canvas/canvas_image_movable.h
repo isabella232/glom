@@ -44,12 +44,21 @@ public:
 
   /** Use this instead of property_pixbuf(), 
    * to make sure that m_image_empty is set to false.
+   *
+   * This also scales the image (maintaining the aspect ratio) to fit the current width and 
+   * height if they are not 0.
    */
-  void set_image(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf);
+  void set_image(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf, bool scale = true);
 
   /// Show the no-image picture. 
   void set_image_empty();
   bool get_image_empty() const;
+
+  /** Scale the pixbuf to the current height and width, keeping the aspect ratio.
+   * This uses the original pixbuf provided to set_image(), so this should not 
+   * result in a loss of quality if the original was large enough.
+   */
+  void scale_to_size();
 
   enum Corners
   {
@@ -78,6 +87,11 @@ protected:
 
   //Whether we are showing the no-image picture:
   bool m_image_empty;
+
+  //We keep a copy of this here because
+  //- GooCanvasImage doesn't let use read the pixbuf property (just write it),
+  //- This allows us to rescale (if wanted) when resizing, without losing quality.
+  Glib::RefPtr<Gdk::Pixbuf> m_pixbuf;
 };
 
 } //namespace Glom

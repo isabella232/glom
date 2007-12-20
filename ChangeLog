@@ -1,5 +1,14 @@
 2007-12-20  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/canvas/canvas_image_movable.cc:
+	* glom/utility_widgets/canvas/canvas_image_movable.h: Store the 
+	original pixbuf and use it in a new scale_to_size() method.
+	* glom/mode_design/print_layouts/canvas_layout_item.cc: 
+	set_layout_item(): Call scale_to_size() on images, after setting the 
+	size.
+
+2007-12-20  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/canvas/canvas_item_movable.cc:
 	cast_to_movable(), cast_to_item(): Make these handle 
 	CanvasGroupResizable too, causing snap-to-grid to work again, 

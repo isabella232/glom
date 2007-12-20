@@ -30,9 +30,9 @@
 #include <glom/libglom/data_structure/layout/layoutitem_image.h>
 #include <glom/libglom/data_structure/layout/layoutitem_field.h>
 #include <glom/libglom/data_structure/layout/layoutitem_line.h>
+#include <glom/libglom/data_structure/layout/layoutitem_portal.h>
 #include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 #include <glom/libglom/data_structure/glomconversions.h>
-#include <glom/utility_widgets/imageglom.h> //For ImageGlom::scale_keeping_ratio().
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -248,6 +248,15 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
     //Set the child (this removes the previous child):
     set_child(child);
   }
+
+  //Scale images.
+  //This can only be done after setting the size:
+  Glib::RefPtr<CanvasImageMovable> canvas_image = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(child);
+  if(canvas_image)
+  {
+    canvas_image->scale_to_size();
+  }
+
 }
 
 void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
@@ -299,14 +308,8 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
       canvas_item->get_width_height(width, height);
       
       Glib::RefPtr<Gdk::Pixbuf> pixbuf = Conversions::get_pixbuf_for_gda_value(value);
-      
-      //Scale the image down to fit the item:
-       //(Just resetting the height and width of the canvas item would crop the image)
-      if(pixbuf)
-        pixbuf = ImageGlom::scale_keeping_ratio(pixbuf, (int)height, (int)width);
-      
-      if(pixbuf) //Remove this if() check when goocanvas has my patch to avoid crashes when this is NULL.
-        canvas_item->property_pixbuf() = pixbuf;
+      if(pixbuf) //TODO: Remove this if() check when goocanvas has my patch to avoid crashes when this is NULL.
+        canvas_item->set_image(pixbuf);
      
       break;
     }

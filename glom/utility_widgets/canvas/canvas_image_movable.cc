@@ -22,6 +22,7 @@
 #include <goocanvasmm/canvas.h>
 #include <gtkmm/stock.h>
 #include <glom/application.h> // For get_application().
+#include <glom/utility_widgets/imageglom.h> //For ImageGlom::scale_keeping_ratio().
 #include <iostream>
 
 namespace Glom
@@ -154,10 +155,32 @@ void CanvasImageMovable::set_snap_corner(Corners corner)
   m_snap_corner = corner;
 }
 
-void CanvasImageMovable::set_image(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf)
+void CanvasImageMovable::set_image(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf, bool scale)
 {
-  property_pixbuf() = pixbuf;  
+  property_pixbuf() = pixbuf;
+  m_pixbuf = pixbuf;
+
+  if(scale)
+    scale_to_size();
+ 
   m_image_empty = false;
+}
+
+void CanvasImageMovable::scale_to_size()
+{
+  if(!m_pixbuf)
+    return;
+
+  double width = 0;
+  double height = 0;
+  get_width_height(width, height);
+  //std::cout << "CanvasImageMovable::set_image(): width=" << width << ", height=" << height << std::endl;
+  
+  if(width && height)
+  {
+    Glib::RefPtr<Gdk::Pixbuf> pixbuf = ImageGlom::scale_keeping_ratio(m_pixbuf, (int)height, (int)width);
+    property_pixbuf() = pixbuf;
+  }
 }
 
 void CanvasImageMovable::set_image_empty()
