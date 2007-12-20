@@ -26,8 +26,7 @@ libutility_widgets_canvas_a_SOURCES = \
 #libutility_widgets_canvas_a_LIBADD = 
 
 
-noinst_PROGRAMS =test_canvas_editable
-
-test_canvas_editable_SOURCES = test_canvas_editable.cc $(libutility_widgets_canvas_a_SOURCES)
-test_canvas_editable_LDADD =  $(GLOM_LIBS)
+# noinst_PROGRAMS = test_canvas_editable
+# test_canvas_editable_SOURCES = test_canvas_editable.cc $(libutility_widgets_canvas_a_SOURCES)
+# test_canvas_editable_LDADD =  $(GLOM_LIBS)
 

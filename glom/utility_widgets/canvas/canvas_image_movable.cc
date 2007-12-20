@@ -20,15 +20,17 @@
 
 #include "canvas_image_movable.h"
 #include <goocanvasmm/canvas.h>
+#include <gtkmm/stock.h>
+#include <glom/application.h> // For get_application().
 #include <iostream>
 
 namespace Glom
 {
 
-
 CanvasImageMovable::CanvasImageMovable(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf, double x, double y)
 : Goocanvas::Image(pixbuf, x, y),
-  m_snap_corner(CORNER_TOP_LEFT) //arbitrary default.
+  m_snap_corner(CORNER_TOP_LEFT), //arbitrary default.
+  m_image_empty(false)
 {
   init();
 }
@@ -150,6 +152,39 @@ Goocanvas::Canvas* CanvasImageMovable::get_parent_canvas_widget()
 void CanvasImageMovable::set_snap_corner(Corners corner)
 {
   m_snap_corner = corner;
+}
+
+void CanvasImageMovable::set_image(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf)
+{
+  property_pixbuf() = pixbuf;  
+  m_image_empty = false;
+}
+
+void CanvasImageMovable::set_image_empty()
+{
+  m_image_empty = true;
+
+  //We need some widget to use either render_icon() or get_style()+IconSet.
+  Gtk::Widget *widget = get_canvas();
+
+  if(!widget)
+    widget = App_Glom::get_application();
+
+  if(widget)
+  {
+    Glib::RefPtr<Gdk::Pixbuf> pixbuf = widget->render_icon(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG);
+    if(!pixbuf)
+      std::cout << "debug: MISSING_IMAGE pixbuf is NULL" << std::endl;
+    else
+      std::cout << "debug: MISSING_IMAGE pixbuf was found." << std::endl;
+
+    property_pixbuf() = pixbuf;
+  }
+}
+
+bool CanvasImageMovable::get_image_empty() const
+{
+  return m_image_empty;
 }
 
 } //namespace Glom

@@ -95,6 +95,8 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
       sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_drag_motion) );
   m_canvas.signal_drag_data_received().connect(
       sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_drag_data_received) );
+  m_canvas.signal_drag_leave().connect(
+      sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_drag_leave) );
 
   init_menu();
   init_toolbar();
@@ -392,8 +394,6 @@ void Window_PrintLayout_Edit::on_toolbar_item_drag_data_get(const Glib::RefPtr<G
 
 bool Window_PrintLayout_Edit::on_canvas_drag_drop(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint timestamp)
 {
-  std::cout << "Window_PrintLayout_Edit::on_canvas_drag_drop()" << std::endl;
-
   Glib::ustring target = m_canvas.drag_dest_find_target(drag_context);
   if(target.empty())
     return false;
@@ -421,8 +421,6 @@ static Action_LayoutItem::enumItems get_item_type_from_selection_data(const Gtk:
 
 bool Window_PrintLayout_Edit::on_canvas_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint timestamp)
 {
-  std::cout << "Window_PrintLayout_Edit::on_canvas_drag_motion()" << std::endl;
-
   Glib::ustring target = m_canvas.drag_dest_find_target(drag_context);
   if(target.empty())
     return false;
@@ -432,8 +430,6 @@ bool Window_PrintLayout_Edit::on_canvas_drag_motion(const Glib::RefPtr<Gdk::Drag
   //Create the temporary canvas item if necesary:
   if(!m_layout_item_dropping)
   {
-    std::cout << "  Calling drag_get_data()" << std::endl;
-
     //We need to examine the SelectionData:
     //This will cause our drag_data_received callback to be called, with that information.
     //Note: This does not work (and grabs the cursor) if we call dest_set() with the flags for default actions, such as DEST_DEFAULT_DEFAULTS.
@@ -448,7 +444,6 @@ bool Window_PrintLayout_Edit::on_canvas_drag_motion(const Glib::RefPtr<Gdk::Drag
   double item_x = x;
   double item_y = y;
   m_canvas.convert_from_pixels(item_x, item_y);
-  std::cout << "  moving temp " << m_layout_item_dropping << " item: x=" << x << ", y=" << y << ", item_x=" << item_x << ", item_y=" << item_y << std::endl;
 
   m_layout_item_dropping->set_xy(item_x, item_y);
 
@@ -470,7 +465,10 @@ sharedptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(Action_LayoutIt
     layout_item = layout_item_derived;
   }
   else if(item_type == Action_LayoutItem::ITEM_IMAGE)
+  {
     layout_item = sharedptr<LayoutItem_Image>::create();
+    layout_item->set_print_layout_position(0, 0, 50, 50);
+  }
   else if(item_type == Action_LayoutItem::ITEM_LINE_HORIZONTAL)
   {
     sharedptr<LayoutItem_Line> layout_item_derived = sharedptr<LayoutItem_Line>::create();
@@ -491,8 +489,6 @@ sharedptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(Action_LayoutIt
 
 void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, const Gtk::SelectionData& selection_data, guint info, guint timestamp)
 {
-  std::cout << "Window_PrintLayout_Edit::on_canvas_drag_data_received" << std::endl;
-
   //This is called when an item is dropped on the canvas,
   //or after our drag_motion handler has called drag_get_data()): 
   
@@ -529,26 +525,39 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
     m_canvas.drag_unhighlight();
 
     //Set the x and y for use by set_default_position():
+    //TODO: Probably not used anymore.
     m_drop_x = x;
     m_drop_y = y;
 
     //Add the item to the canvas:
-    if(item_type == Action_LayoutItem::ITEM_FIELD)
-      on_menu_insert_field();
-    else if(item_type == Action_LayoutItem::ITEM_TEXT)
-      on_menu_insert_text();
-    else if(item_type == Action_LayoutItem::ITEM_IMAGE)
-      on_menu_insert_image();
-    else if(item_type == Action_LayoutItem::ITEM_LINE_HORIZONTAL)
-      on_menu_insert_line_horizontal();
-    else if(item_type == Action_LayoutItem::ITEM_LINE_VERTICAL)
-      on_menu_insert_line_vertical();
-    else if(item_type == Action_LayoutItem::ITEM_PORTAL)
-      on_menu_insert_relatedrecords();
+    sharedptr<LayoutItem> layout_item = create_empty_item(item_type);
+    Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
+    m_canvas.add_canvas_layout_item(item);
+    double item_x = x;
+    double item_y = y;
+    m_canvas.convert_from_pixels(item_x, item_y);
+    item->set_xy(item_x, item_y);
 
     //Clear these so they won't affect future calls to set_default_position():
     m_drop_x = 0;
     m_drop_y = 0;
+   
+    if(m_layout_item_dropping)
+    {
+      m_layout_item_dropping->remove();
+      m_layout_item_dropping.clear();
+    }
+  }
+}
+
+
+void Window_PrintLayout_Edit::on_canvas_drag_leave(const Glib::RefPtr<Gdk::DragContext>& /* drag_context */, guint /* timestamp */)
+{
+  //Remove the temporary drag item if the cursor was dragged out of the drop widget:
+  if(m_layout_item_dropping)
+  {
+    m_layout_item_dropping->remove();
+    m_layout_item_dropping.clear();
   }
 }
 

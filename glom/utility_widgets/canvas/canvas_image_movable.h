@@ -42,6 +42,15 @@ public:
   static Glib::RefPtr<CanvasImageMovable> create(double x = 0.0, double y = 0.0);
   static Glib::RefPtr<CanvasImageMovable> create(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf, double x = 0.0, double y = 0.0);
 
+  /** Use this instead of property_pixbuf(), 
+   * to make sure that m_image_empty is set to false.
+   */
+  void set_image(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf);
+
+  /// Show the no-image picture. 
+  void set_image_empty();
+  bool get_image_empty() const;
+
   enum Corners
   {
     CORNER_TOP_LEFT,
@@ -66,6 +75,9 @@ protected:
 
   //What corner is considered when snapping to a grid while moving:
   Corners m_snap_corner;
+
+  //Whether we are showing the no-image picture:
+  bool m_image_empty;
 };
 
 } //namespace Glom

@@ -132,7 +132,8 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
     sharedptr<LayoutItem_Image> image = sharedptr<LayoutItem_Image>::cast_dynamic(m_layout_item);
     if(image)
     {
-      Glib::RefPtr<CanvasRectMovable> canvas_item = CanvasRectMovable::create();
+      Glib::RefPtr<CanvasImageMovable> canvas_item = CanvasImageMovable::create();
+      canvas_item->set_image_empty(); //show a no-image picture.
 
       canvas_item->property_fill_color() = "white"; //This makes the whole area clickable, not just the outline stroke.
       child = canvas_item;

@@ -1,3 +1,18 @@
+2007-12-20  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/canvas/canvas_image_movable.cc:
+	* glom/utility_widgets/canvas/canvas_image_movable.h: Added set_image() and 
+	set_image_empty(), which adds a MISSING_IMAGE stock icon.
+	* glom/mode_design/print_layouts/canvas_layout_item.cc: set_layout_item():
+	Use set_image_empty().
+
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	* glom/mode_design/print_layouts/window_print_layout_edit.h:
+	on_canvas_drag_data_received(): After a drop, delete the temporary canvas 
+	item shown during drag motion.
+	Added on_canvas_drag_leave(), so we can delete the temporary item when the 
+	user drags out of the canvas without doing a drop.
+
 2007-12-19  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
