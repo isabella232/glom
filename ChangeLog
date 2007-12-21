@@ -1,5 +1,10 @@
 2007-12-21  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/glom_document.dtd: Several corrections and improvements. This is not 
+	quite finished yet.
+
+2007-12-21  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/glom_document.dtd: Updated and corrected DTD with documentation 
 	comments. This was completed by novanasa, as a Google Highly-Open Participation 
 	(GHOP) task (GNOME GHOP task 49).

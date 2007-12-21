@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!--
 DTD for glom documents.
+TODO: Make sure that all the comments list all the attributes and their meaning.
 -->
 
 
-<!-- This is the main tag of the glom document. It describes the format of the
+<!-- This is the main node of the glom document. It describes the format of the
   databases (tables) and permissions (groups), as well as connections and any
-  libraries. -->
-
+  libraries. 
+  database_title: The human-readable title of the database.
+  translation_original_locale: What locale is considered to have been used for the human-readable titles in this document.
+  format_version: The version of this document's format. Older versions of Glom cannot open documents saved in newer versions of the document format.
+  is_example: Whether this is an example document. Opening an example document causes a new database (and document) to be created.
+-->
     <!ELEMENT glom_document (connection?, table*, groups?, library_modules?) >
     <!ATTLIST glom_document>
         database_title CDATA #IMPLIED
@@ -15,8 +20,12 @@ DTD for glom documents.
         format_version CDATA #IMPLIED
         is_example (true|false) "false" >
 
-<!-- This describes the (PostgreSQL) connection made for the data in the database. -->
-
+<!-- This describes the (PostgreSQL) connection details for the database.
+     server: The hostname of the PostgreSQL server.
+     user: The PostgreSQL user.
+     database: The name of the database to connect to on the PostgreSQL server.
+     self_hosted: Whether a local instance of Postgres should be started, to serve the data that is in a glom_postgres_data directory.      
+-->
     <!ELEMENT connection EMPTY >
     <!ATTLIST connection
         server CDATA "localhost"
@@ -24,23 +33,32 @@ DTD for glom documents.
         database CDATA #REQUIRED
         self_hosted (true|false) "false" >
 
-<!-- group(s) and table_privs are the actual permissions for each database.
-  They tell if viewing (priv_view), modifying (priv_edit), creating (priv_create),
-  or deleting (priv_delete) are allowed for various tables. -->
-
+<!-- group(s) and table_privs are the permissions for each table.
+      However, these are just initial permissions for examples. The real permissions are 
+      always in the database.
+-->
     <!ELEMENT groups (group|table_privs)* >
     <!ATTLIST groups>
 
+<!-- The group node specifies a group of users and lists the permissions for that group for each table.
+      However, these are just initial permissions for examples. The real permissions are 
+      always in the database.
+     name: The name of this group of users.
+     developer: Whether users in this group may use the developer features in Glom to change the database.
+-->
     <!ELEMENT group EMPTY >
     <!ATTLIST group
         name CDATA #REQUIRED
-        priv_developer CDATA #IMPLIED
-        priv_view CDATA #IMPLIED
-        priv_edit CDATA #IMPLIED
-        priv_create CDATA #IMPLIED
-        priv_delete CDATA #IMPLIED
         developer (true|false) "false" >
 
+<!-- table_privs are the permissions for each table for a group.
+     However, these are just initial permissions for examples. The real permissions are 
+     always in the database.
+     priv_view: Whether users in the group may view records in this table.
+     priv_edit: Whether users in the group may edit records in this table.
+     priv_create: Whether users in the group may create new records in this table.
+     priv_delete: Whether users in the group may delete records in this table.
+-->
     <!ELEMENT table_privs EMPTY>
     <!ATTLIST table_privs
         table_name CDATA #REQUIRED
@@ -49,30 +67,33 @@ DTD for glom documents.
         priv_create (true|false) "true"
         priv_delete (true|false) "true">
 
-<!-- This is the heart of glom. The table describes the format for a database - what fields there
-  are, any example entries to load, how the fields should be displayed, translations into other
-  languages, relationships between tables/fields, and reports of the content. The attributes specify
-  the internal name, printed title, and whether the table is hidden, as well as providing an alternative
-  interface to example_rows and calculations (on the whole table). -->
 
+<!-- The table node describes the structure for a database - what fields there
+  are, how the fields should be displayed, translations into other
+  languages, relationships between tables/fields, and reports for each table.
+  name: The internal name of the table. Not to be seen by normal operators.
+  title: The  human-visble title. This may be translated in the trans_set child node.
+  hidden: Whether the table is hidden.
+  overview_x and overview_y attributes are positions on the Relationships Overview picture.
+  default: can specify that the table should be opened when the file is opened. Only one table should have default=true.
+  example_rows: deprecated - use the child node instead.
+-->
     <!ELEMENT table (example_rows | fields | relationships | data_layouts | reports | trans_set)* >
     <!ATTLIST table
         name CDATA #REQUIRED
         title CDATA #IMPLIED
-        hide CDATA #IMPLIED
         hidden (true|false) "false"
         overview_x CDATA #IMPLIED
         overview_y CDATA #IMPLIED
         default (true|false) "false"
-        example_rows CDATA #IMPLIED
-        calculation CDATA #IMPLIED >
+        example_rows CDATA #IMPLIED  >
 
-<!-- example rows are comma separated lists of data to initially load into the table. -->
-
+<!-- example_rows are comma separated lists of data (in the child text node) to load into the table 
+     when it is first created. -->
     <!ELEMENT example_rows ANY>
     <!ATTLIST example_rows>
 
-<!-- relationships describe connections between databases, so that equivalent data is linked. -->
+<!-- relationships describe connections between databases. -->
 
     <!ELEMENT relationships (relationship*) >
     
@@ -86,11 +107,18 @@ DTD for glom documents.
         auto_create CDATA #IMPLIED
         allow_edit (true|false) "false" >
 
-<!-- fields are used to define what type of data the database stores. There are different types of
+<!-- fields define what type of data the database stores. There are different types of
   fields - numbers, strings, images, etc. The primary_key option is set to true when this field is
-  the primary sort key of the data. calculation is a python code snippet to run that returns the
-  contents of this field (based, most likely, on other fields). See the project manager for an example. -->
-
+  the primary sort key of the data.
+  name: The internal name of the table. Not to be seen by normal operators.
+  title: The  human-visble title. This may be translated in the trans_set child node.
+  primary_key: Whether this field is the primary key for its table.
+  unique: Whether the values in this field should be unique in this table, meaning that it should not appear in this field in any other record in this table. 
+  auto_increment: Whether the value in this field should be automatically filled in when creating a new record, by incrementing a number.
+  allow_edit: Whether users should be allowed to edit the value in this field.
+  default_value: New records will have this value in this field when they are first created.
+  calculation: deprecated - use the child node instead.
+-->
     <!ELEMENT fields (field | field_view)* >
 
     <!ELEMENT field (field_lookup|calculation|formatting|trans_set)* >
@@ -105,8 +133,10 @@ DTD for glom documents.
         default_value CDATA #IMPLIED
         calculation CDATA #IMPLIED >
 
-<!-- field lookups are used to, you guess it, bind fields to related fields. -->
-
+<!-- field_lookups specify that a value should be take from a related field when the associated ID changes.
+     relationship: The name of the relationship from which to look up a value.
+     field: The name of the field in the related table from which to look up a value.
+-->
     <!ELEMENT field_lookup EMPTY >
     <!ATTLIST field_lookup
         relationship CDATA #REQUIRED
@@ -130,7 +160,7 @@ DTD for glom documents.
         format_decimal_places_restricted (true|false) "false"
         format_currency_symbol CDATA #IMPLIED >
 
-<!-- a custom_choice is a drop down menu that can be selected (for example, Mrs., Mr., Ms., etc) from
+<!-- A custom_choice is a drop down menu that can be selected (for example, Mrs., Mr., Ms., etc) from
   a set of options. -->
 
     <!ELEMENT custom_choice_list (custom_choice)*>
@@ -140,11 +170,12 @@ DTD for glom documents.
     <!ATTLIST custom_choice
         value CDATA #REQUIRED>
 
-<!-- the calculation field is an alternative to the calculation attribute of a table/field -- it allows
-  for calculations to be made in python to generate the values. -->
-
+<!-- The calculation node specifies python code that should be used to 
+     calculate a value for this field. They python code is in a child text node. -->
     <!ELEMENT calculation ANY>
     <!ATTLIST calculation>
+
+<!-- TODO. -->
 
     <!ELEMENT field_view EMPTY >
     <!ATTLIST field_view
@@ -152,10 +183,10 @@ DTD for glom documents.
         relationship CDATA #REQUIRED
         field CDATA #REQUIRED >
 
-<!-- data layouts are used to determine the order of items and sorting of the fields. There are many
+<!-- data layouts determine the order of items and sorting of the fields. There are many
   different ways that they are grouped with the various data_layout* possibilities, but the idea is
   the same. They all have a sequence, which tells when they are displayed. In addition, there is a column_count
-  on the grouping subtags, which is the number of columns wide the element should be. 
+  on the grouping subnodes, which is the number of columns wide the element should be. 
   The name of the data_layout will be either "list" or "details".-->
 
     <!ELEMENT data_layouts (data_layout_details | data_layout_list | data_layout)* >
@@ -223,7 +254,7 @@ DTD for glom documents.
         columns_count CDATA #REQUIRED
         sequence CDATA #REQUIRED >
         
-<!-- data_layout_item_summary and data_layout_item_fieldsummary are used to summarize other
+<!-- data_layout_item_summary and data_layout_item_fieldsummary summarize other
   fields. A good example of this is the total price in example_smallbusiness.glom. -->
 
     <!ELEMENT data_layout_item_summary (data_layout_item_fieldsummary)*>
@@ -298,7 +329,7 @@ DTD for glom documents.
         sequence CDATA #IMPLIED
         script CDATA #IMPLIED >
 
-<!-- a script tag is used to embed python code into the custom button. -->
+<!-- a script node is used to embed python code into the custom button. -->
 
     <!ELEMENT script ANY>
     <!ATTLIST script>
@@ -321,7 +352,7 @@ DTD for glom documents.
         hide CDATA #IMPLIED
         columns_count CDATA #IMPLIED >
 
-<!-- reports and data reports are used to make short sheets of important information that
+<!-- reports and data reports make short sheets of important information that
   distill a larger database. data_report(s) is the old interface; use reports if you are
   writing a new XML document. -->
 
@@ -341,8 +372,16 @@ DTD for glom documents.
         title CDATA #IMPLIED
         show_table_title (true|false) "false" >
 
-<!-- library modules are python modules that are used while scripting the database. -->
+<!-- The library_modules node contains the code of python modules that are used while scripting the database. -->
 
     <!ELEMENT library_modules ANY>
-    <!ATTLIST library_modules>
+    <!ATTLIST library_modules >
+
+<!-- library_module nodes contain python code that may be used in scripts and calculation.
+     name: The name of the module, to be used with the python import command.
+     script: The code of the python module. TODO: Use a child node. -->
+    <!ELEMENT library_module ANY>
+    <!ATTLIST library_module
+        name CDATA #REQUIRED
+        script CDATA #IMPLIED >
 
