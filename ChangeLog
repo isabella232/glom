@@ -1,3 +1,11 @@
+2007-12-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/glom_document.dtd: Updated and corrected DTD with documentation 
+	comments. This was completed by novanasa, as a Google Highly-Open Participation 
+	(GHOP) task (GNOME GHOP task 49).
+	This is for documentation (or utilities) - we do not actually validate the 
+	.xml so that we can be as liberal as possible when loading documents.
+
 2007-12-20  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/data_structure/glomconversions.cc: get_text_for_gda_value():

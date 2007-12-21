@@ -3,112 +3,346 @@
 DTD for glom documents.
 -->
 
-<!ELEMENT glom_document (connection?, table*, groups?) >
-<!ATTLIST glom_document
-  database_title CDATA #OPTIONAL
->
 
-<!ELEMENT connection EMPTY >
-<!ATTLIST connection
-  server CDATA "localhost"
-  user CDATA #REQUIRED
-  database CDATA #REQUIRED
->
+<!-- This is the main tag of the glom document. It describes the format of the
+  databases (tables) and permissions (groups), as well as connections and any
+  libraries. -->
 
-<!ELEMENT groups (group*) >
-<!ATTLIST groups
->
+    <!ELEMENT glom_document (connection?, table*, groups?, library_modules?) >
+    <!ATTLIST glom_document>
+        database_title CDATA #IMPLIED
+        translation_original_locale CDATA #IMPLIED
+        format_version CDATA #IMPLIED
+        is_example (true|false) "false" >
 
-<!ELEMENT group EMPTY >
-<!ATTLIST group
-  name CDATA #REQUIRED
-  priv_developer CDATA #OPTIONAL
-  priv_view CDATA #OPTIONAL
-  priv_edit CDATA #OPTIONAL
-  priv_create CDATA #OPTIONAL
-  priv_delete CDATA #OPTIONAL
->
+<!-- This describes the (PostgreSQL) connection made for the data in the database. -->
+
+    <!ELEMENT connection EMPTY >
+    <!ATTLIST connection
+        server CDATA "localhost"
+        user CDATA #IMPLIED
+        database CDATA #REQUIRED
+        self_hosted (true|false) "false" >
+
+<!-- group(s) and table_privs are the actual permissions for each database.
+  They tell if viewing (priv_view), modifying (priv_edit), creating (priv_create),
+  or deleting (priv_delete) are allowed for various tables. -->
+
+    <!ELEMENT groups (group|table_privs)* >
+    <!ATTLIST groups>
+
+    <!ELEMENT group EMPTY >
+    <!ATTLIST group
+        name CDATA #REQUIRED
+        priv_developer CDATA #IMPLIED
+        priv_view CDATA #IMPLIED
+        priv_edit CDATA #IMPLIED
+        priv_create CDATA #IMPLIED
+        priv_delete CDATA #IMPLIED
+        developer (true|false) "false" >
+
+    <!ELEMENT table_privs EMPTY>
+    <!ATTLIST table_privs
+        table_name CDATA #REQUIRED
+        priv_view (true|false) "true"
+        priv_edit (true|false) "true"
+        priv_create (true|false) "true"
+        priv_delete (true|false) "true">
+
+<!-- This is the heart of glom. The table describes the format for a database - what fields there
+  are, any example entries to load, how the fields should be displayed, translations into other
+  languages, relationships between tables/fields, and reports of the content. The attributes specify
+  the internal name, printed title, and whether the table is hidden, as well as providing an alternative
+  interface to example_rows and calculations (on the whole table). -->
+
+    <!ELEMENT table (example_rows | fields | relationships | data_layouts | reports | trans_set)* >
+    <!ATTLIST table
+        name CDATA #REQUIRED
+        title CDATA #IMPLIED
+        hide CDATA #IMPLIED
+        hidden (true|false) "false"
+        overview_x CDATA #IMPLIED
+        overview_y CDATA #IMPLIED
+        default (true|false) "false"
+        example_rows CDATA #IMPLIED
+        calculation CDATA #IMPLIED >
+
+<!-- example rows are comma separated lists of data to initially load into the table. -->
+
+    <!ELEMENT example_rows ANY>
+    <!ATTLIST example_rows>
+
+<!-- relationships describe connections between databases, so that equivalent data is linked. -->
+
+    <!ELEMENT relationships (relationship*) >
+    
+    <!ELEMENT relationship ANY >
+    <!ATTLIST relationship
+        name CDATA #REQUIRED
+        title CDATA #IMPLIED
+        key CDATA #REQUIRED
+        other_table CDATA #REQUIRED
+        other_key CDATA #IMPLIED
+        auto_create CDATA #IMPLIED
+        allow_edit (true|false) "false" >
+
+<!-- fields are used to define what type of data the database stores. There are different types of
+  fields - numbers, strings, images, etc. The primary_key option is set to true when this field is
+  the primary sort key of the data. calculation is a python code snippet to run that returns the
+  contents of this field (based, most likely, on other fields). See the project manager for an example. -->
+
+    <!ELEMENT fields (field | field_view)* >
+
+    <!ELEMENT field (field_lookup|calculation|formatting|trans_set)* >
+    <!ATTLIST field
+        name CDATA #REQUIRED
+        type CDATA #IMPLIED
+        title CDATA #IMPLIED
+        primary_key (true|false) "false"
+        unique (true|false) "true"
+        auto_increment (true|false) "true"
+        allow_edit (true|false) "false"
+        default_value CDATA #IMPLIED
+        calculation CDATA #IMPLIED >
+
+<!-- field lookups are used to, you guess it, bind fields to related fields. -->
+
+    <!ELEMENT field_lookup EMPTY >
+    <!ATTLIST field_lookup
+        relationship CDATA #REQUIRED
+        field CDATA #REQUIRED >
+
+<!-- formatting is the formatting of a field. Most of the options are for multiline text or numbers,
+  since normal text boxes are relatively simple. The choices_* options are for defining the custom choice
+  boxes. -->
+
+    <!ELEMENT formatting ANY>
+    <!ATTLIST formatting
+        format_thousands_separator (true|false) "true"
+        format_text_multiline (true|false) "true"
+        format_text_multiline_height_lines CDATA #IMPLIED
+        format_decimal_places CDATA #IMPLIED
+        choices_related (true|false) "true"
+        choices_related_relationship CDATA #IMPLIED
+        choices_related_field CDATA #IMPLIED
+        choices_related_second CDATA #IMPLIED
+        choices_custom (true|false) "false"
+        format_decimal_places_restricted (true|false) "false"
+        format_currency_symbol CDATA #IMPLIED >
+
+<!-- a custom_choice is a drop down menu that can be selected (for example, Mrs., Mr., Ms., etc) from
+  a set of options. -->
+
+    <!ELEMENT custom_choice_list (custom_choice)*>
+    <!ATTLIST custom_choice_list>
+
+    <!ELEMENT custom_choice EMPTY>
+    <!ATTLIST custom_choice
+        value CDATA #REQUIRED>
+
+<!-- the calculation field is an alternative to the calculation attribute of a table/field -- it allows
+  for calculations to be made in python to generate the values. -->
+
+    <!ELEMENT calculation ANY>
+    <!ATTLIST calculation>
+
+    <!ELEMENT field_view EMPTY >
+    <!ATTLIST field_view
+        name CDATA #REQUIRED
+        relationship CDATA #REQUIRED
+        field CDATA #REQUIRED >
+
+<!-- data layouts are used to determine the order of items and sorting of the fields. There are many
+  different ways that they are grouped with the various data_layout* possibilities, but the idea is
+  the same. They all have a sequence, which tells when they are displayed. In addition, there is a column_count
+  on the grouping subtags, which is the number of columns wide the element should be. 
+  The name of the data_layout will be either "list" or "details".-->
+
+    <!ELEMENT data_layouts (data_layout_details | data_layout_list | data_layout)* >
+
+    <!ELEMENT data_layout (data_layout_groups)>
+    <!ATTLIST data_layout
+        name CDATA #REQUIRED
+        parent_table CDATA #IMPLIED >
+
+    <!ELEMENT data_layout_groups (data_layout_group)*>
+    <!ATTLIST data_layout_groups>
+
+<!-- a data_layout_group is just a the setup of fields to be shown. It encapsulates everything else. -->
+
+    <!ELEMENT data_layout_group (trans_set | data_layout_group | data_layout_item | data_layout_portal |
+        data_layout_item_groupby | data_layout_button | data_layout_notebook | data_layout_item_header | 
+        trans_set | data_layout_text)* >
+    <!ATTLIST data_layout_group
+        name CDATA #REQUIRED
+        title CDATA #IMPLIED
+        sequence CDATA #IMPLIED
+        columns_count CDATA #REQUIRED >
+
+<!-- a data_layout_notebook is the tabbed display of tables in the glom interface. -->
+
+    <!ELEMENT data_layout_notebook (data_layout_group|data_layout_portal)*>
+    <!ATTLIST data_layout_notebook
+        name CDATA #REQUIRED
+        columns_count CDATA #REQUIRED
+        sequence CDATA #IMPLIED
+        title CDATA #IMPLIED >
+
+<!-- a data_layout_item_groupby is a data_layout_group that sorts -->
+
+    <!ELEMENT data_layout_item_groupby (trans_set | groupby | sortby | data_layout_group | data_layout_item |
+        data_layout_portal | data_layout_button | data_layout_item_groupby | secondary_fields | 
+        data_layout_item_summary | data_layout_item_verticalgroup)* >
+    <!ATTLIST data_layout_item_groupby
+        name CDATA #REQUIRED
+        title CDATA #IMPLIED
+        sequence CDATA #IMPLIED
+        columns_count CDATA #REQUIRED
+        border_width CDATA #IMPLIED >
+
+<!-- data_layout_text and text are for displaying text. -->
+
+    <!ELEMENT data_layout_text (text)*>
+    <!ATTLIST data_layout_text
+        sequence CDATA #REQUIRED >
+
+    <!ELEMENT text EMPTY>
+    <!ATTLIST text
+        title CDATA #REQUIRED >
+        
+<!-- sortby describes what a data_layout_item_groupby sorts by. -->
+
+    <!ELEMENT sortby (data_layout_item)*>
+    <!ATTLIST sortby>
+    
+<!-- data_layout_item_verticalgroup is used to display a vertical group of fields. -->
+
+    <!ELEMENT data_layout_item_verticalgroup (data_layout_item)*>
+    <!ATTLIST data_layout_item_verticalgroup
+        name CDATA #REQUIRED
+        columns_count CDATA #REQUIRED
+        sequence CDATA #REQUIRED >
+        
+<!-- data_layout_item_summary and data_layout_item_fieldsummary are used to summarize other
+  fields. A good example of this is the total price in example_smallbusiness.glom. -->
+
+    <!ELEMENT data_layout_item_summary (data_layout_item_fieldsummary)*>
+    <!ATTLIST data_layout_item_summary
+        name CDATA #REQUIRED
+        columns_count CDATA #REQUIRED
+        sequence CDATA #IMPLIED >
+
+    <!ELEMENT data_layout_item_fieldsummary (formatting)>
+    <!ATTLIST data_layout_item_fieldsummary
+        name CDATA #REQUIRED
+        editable (true|false) "false"
+        use_default_formatting (true|false) "true"
+        sequence CDATA #IMPLIED
+        summarytype CDATA #REQUIRED >
+        
+<!-- groupby is used to determine how data_layout_item_groupby items group. -->
+
+    <!ELEMENT groupby (formatting|title_custom)*>
+    <!ATTLIST groupby
+        name CDATA #REQUIRED
+        editable (true|false) "false"
+        use_default_formatting (true|false) "true"
+        relationship CDATA #IMPLIED >
+
+<!-- secondary fields are fields derived from other fields -- this is a list of them. -->
+
+    <!ELEMENT secondary_fields (data_layout_group)>
+    <!ATTLIST secondary_fields>
 
 
-<!ELEMENT table (fields | relationships | data_layouts | reports)* >
-<!ATTLIST table
-  name CDATA #REQUIRED
-  title CDATA #OPTIONAL
-  hide CDATA #OPTIONAL
->
+<!-- trans_set and trans are used for translating. They describe a set of alternatives
+  for different languages - for a good sample, see example_film_manager.glom. -->
 
-<!ELEMENT relationships (relationship*) >
+    <!ELEMENT trans_set (trans*)>
+    <!ATTLIST trans_set>
 
-<!ELEMENT relationship EMPTY >
-<!ATTLIST relationship
-  name CDATA #REQUIRED
-  key CDATA #REQUIRED
-  other_table CDATA #REQUIRED
-  other_key CDATA #REQUIRED
-  auto_create CDATA #REQUIRED
->
+    <!ELEMENT trans EMPTY>
+    <!ATTLIST trans
+        loc CDATA #REQUIRED
+        val CDATA #REQUIRED >
+        
+<!-- A data_layout_item is a single entry in the display formatting, which tells how a single
+  field is displayed. -->
 
-<!ELEMENT fields (field | field_view)* >
+    <!ELEMENT data_layout_item (formatting|title_custom)* >
+    <!ATTLIST data_layout_item
+        name CDATA #REQUIRED
+        relationship CDATA #IMPLIED
+        group CDATA #IMPLIED
+        sequence CDATA #IMPLIED
+        editable CDATA #IMPLIED
+        use_default_formatting (true|false) "true"
+        related_relationship CDATA #IMPLIED
+        sort_ascending (true|false) "false" >
+        
+<!-- a data_layout_item_header is the items that go at the very top of the database (e.g. the
+  organization name and logo in example_film_manager.glom). -->
 
-<!ELEMENT field (field_lookup?) >
-<!ATTLIST field
-  name CDATA #REQUIRED
-  title CDATA #IMPLIED
->
+    <!ELEMENT data_layout_item_header (data_layout_item)*>
+    <!ATTLIST data_layout_item_header
+        name CDATA #REQUIRED
+        columns_count CDATA #REQUIRED
+        sequence CDATA #REQUIRED >
 
-<!ELEMENT field_lookup EMPTY >
-<!ATTLIST field_lookup
-  relationship CDATA #REQUIRED
-  field CDATA #REQUIRED
->
+<!-- data_layout_button is a way to have a custom script (python) control the
+  display and effect of a button in the database. -->
 
-<!ELEMENT field_view EMPTY >
-<!ATTLIST field_view
-  name CDATA #REQUIRED
-  relationship CDATA #REQUIRED
-  field CDATA #REQUIRED
->
+    <!ELEMENT data_layout_button (script?)>
+    <!ATTLIST data_layout_button
+        title CDATA #REQUIRED
+        sequence CDATA #IMPLIED
+        script CDATA #IMPLIED >
 
-<!ELEMENT data_layouts (data_layout_details | data_layout_list)* >
+<!-- a script tag is used to embed python code into the custom button. -->
 
-<!--
-The name will be either "list" or "details".
--->
-<!ELEMENT data_layout (data_layout_group)*>
-<!ATTLIST data_layout
- name CDATA #REQUIRED
->
+    <!ELEMENT script ANY>
+    <!ATTLIST script>
+    
+<!-- a title_custom is used to give a different name next to a field than normal. -->
 
-<!ELEMENT data_layout_group (data_layout_group | data_layout_item | data_layout_portal)* >
-<!ATTLIST data_layout_group
-  name CDATA #REQUIRED
-  sequence CDATA #REQUIRED
-  columns_count #REQUIRED
->
+    <!ELEMENT title_custom ANY>
+    <!ATTLIST title_custom
+        title CDATA #IMPLIED
+        use_custom (true|false) "true" >
+        
+<!-- a data_layout_portal is the essential information, a short and quick list of values
+  that are probably of interest to others (e.g. contact information, name, etc). -->
 
-<!ELEMENT data_layout_item EMPTY >
-<!ATTLIST data_layout_item
-  name CDATA #REQUIRED
-  relationship CDATA #OPTIONAL
-  group CDATA #OPTIONAL
-  sequence CDATA #REQUIRED
-  editable CDATA #OPTIONAL
->
+    <!ELEMENT data_layout_portal ANY >
+    <!ATTLIST data_layout_portal
+        name CDATA #REQUIRED
+        relationship CDATA #REQUIRED
+        sequence CDATA #REQUIRED
+        hide CDATA #IMPLIED
+        columns_count CDATA #IMPLIED >
 
-<!ELEMENT data_layout_portal EMPTY >
-<!ATTLIST data_layout_portal
-  name CDATA #REQUIRED
-  relationship CDATA #REQUIRED
-  sequence CDATA #REQUIRED
-  hide CDATA #OPTIONAL
->
+<!-- reports and data reports are used to make short sheets of important information that
+  distill a larger database. data_report(s) is the old interface; use reports if you are
+  writing a new XML document. -->
 
+    <!ELEMENT data_reports (data_report)* >
 
-<!ELEMENT data_reports (data_report)* >
+    <!ELEMENT data_report (data_layout_groups)>
+    <!ATTLIST data_report
+        name CDATA #REQUIRED
+        title CDATA #REQUIRED >
 
-<!ELEMENT data_report (data_layout_group)*>
-<!ATTLIST data_report
- name CDATA #REQUIRED
- title CDATA #REQUIRED
->
+    <!ELEMENT reports (report)*>
+    <!ATTLIST reports>
+
+    <!ELEMENT report (data_layout_groups|trans_set)*>
+    <!ATTLIST report
+        name CDATA #REQUIRED
+        title CDATA #IMPLIED
+        show_table_title (true|false) "false" >
+
+<!-- library modules are python modules that are used while scripting the database. -->
+
+    <!ELEMENT library_modules ANY>
+    <!ATTLIST library_modules>
 
