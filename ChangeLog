@@ -1,3 +1,10 @@
+2007-12-29  Armin Burgmeier  <armin@openismus.com>
+
+	* configure.in: Require latest libepc on both maemo and non-maemo.
+
+	* glom/application.cc: Fixed an #ifdef at the wrong position so the
+	application's menu is fully populated in client-only mode.
+
 2007-12-21  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/glom_document.dtd: Several corrections and improvements. This is not 

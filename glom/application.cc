@@ -316,8 +316,8 @@ void App_Glom::init_menus_file()
     "        </menu>"
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     "        <menuitem action='BakeryAction_File_SaveAsExample' />"
-#endif // !GLOM_ENABLE_CLIENT_ONLY
     "        <menuitem action='BakeryAction_Menu_File_Export' />"
+#endif // !GLOM_ENABLE_CLIENT_ONLY
     "        <separator/>"
     "        <menu action='GlomAction_Menu_File_Print'>"
     "          <menuitem action='GlomAction_File_Print' />"

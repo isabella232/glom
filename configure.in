@@ -96,7 +96,7 @@ if test "$enable_maemo" = "yes"; then
 elif test "$win32" = "true"; then
 	REQUIRED_LIBS="$REQUIRED_LIBS gtkmm-2.4 >= 2.10 libgnome-2.0 >= 2.6.0";
 else
-	REQUIRED_LIBS="$REQUIRED_LIBS libgnome-2.0 >= 2.6.0 iso-codes libepc-1.0 avahi-ui";
+	REQUIRED_LIBS="$REQUIRED_LIBS libgnome-2.0 >= 2.6.0 iso-codes libepc-1.0 >= 0.3.1 avahi-ui";
 fi
 
 # Checks for libraries
