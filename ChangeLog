@@ -1,3 +1,14 @@
+2007-12-30  Johannes Schmid <johannes.schmid@openismus.com>
+
+	* glom/utility_widgets/flowtable.cc:
+	* glom/utility_widgets/flowtable.h:
+	Allow dragging on child widgets that use their own GdkWindow. This
+	works for GlomImage now but still needs some work for GlomEntrys and 
+	other widgets.
+	
+	* glom/utility_widgets/flowtablewithfields.cc:
+	Don't put child flowtables into Gtk::EventBox because it's useless
+
 2007-12-29  Armin Burgmeier  <armin@openismus.com>
 
 	* configure.in: Require latest libepc on both maemo and non-maemo.

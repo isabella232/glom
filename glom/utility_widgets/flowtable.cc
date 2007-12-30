@@ -30,6 +30,7 @@
 #include <gdk/gdktypes.h>
 #include <iostream>
 #include <gdkmm/window.h>
+#include <gtk/gtk.h>
 
 // So we don't need to check for the condition above all the time
 
@@ -255,21 +256,27 @@ namespace Glom
 namespace Glom
 {
 
-FlowTable::FlowTableItem::FlowTableItem()
-: m_first(0),
+FlowTable::FlowTableItem::FlowTableItem(Gtk::Widget* first, FlowTable* flowtable)
+: m_first(first),
   m_second(0),
   m_expand_first_full(false),
   m_expand_second(false)
 {
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  flowtable->setup_dnd (*m_first);
+#endif /* GLOM_ENABLE_CLIENT_ONLY */
 }
 
-FlowTable::FlowTableItem::FlowTableItem(Gtk::Widget* first, Gtk::Widget* second)
+FlowTable::FlowTableItem::FlowTableItem(Gtk::Widget* first, Gtk::Widget* second, FlowTable* flowtable)
 : m_first (first),
   m_second(second),
   m_expand_first_full(false),
   m_expand_second(false)
 {
- 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  flowtable->setup_dnd (*m_first);
+  flowtable->setup_dnd (*m_second);
+#endif /* GLOM_ENABLE_CLIENT_ONLY */
 }
 
 
@@ -342,7 +349,7 @@ void FlowTable::set_design_mode(bool value)
 
 void FlowTable::add(Gtk::Widget& first, Gtk::Widget& second, bool expand_second)
 {
-  FlowTableItem item (&first, &second);
+  FlowTableItem item (&first, &second, this);
 	
   item.m_expand_second = expand_second; //Expand to fill the width for all of the second item.
   m_children.push_back(item);
@@ -352,7 +359,7 @@ void FlowTable::add(Gtk::Widget& first, Gtk::Widget& second, bool expand_second)
 
 void FlowTable::add(Gtk::Widget& first, bool expand)
 {
-  FlowTableItem item(&first, 0);
+  FlowTableItem item(&first, this);
   item.m_expand_first_full = expand; //Expand to fill the width for first and second.
   m_children.push_back(item);
   gtk_widget_set_parent(GTK_WIDGET (item.m_first->gobj()), GTK_WIDGET(gobj()));
@@ -360,14 +367,14 @@ void FlowTable::add(Gtk::Widget& first, bool expand)
 
 void FlowTable::insert_before(Gtk::Widget& first, Gtk::Widget& before, bool expand_second)
 {
-	FlowTableItem item(&first, 0);
+	FlowTableItem item(&first, this);
 	item.m_expand_second = expand_second;
 	insert_before (item, before);
 }
 
 void FlowTable::insert_before(Gtk::Widget& first, Gtk::Widget& second, Gtk::Widget& before, bool expand_second)
 {
-	FlowTableItem item(&first, &second);
+	FlowTableItem item(&first, &second, this);
 	item.m_expand_second = expand_second;
 	insert_before (item, before);
 }
@@ -387,13 +394,38 @@ void FlowTable::insert_before(FlowTableItem& item, Gtk::Widget& before)
  
   gtk_widget_set_parent(GTK_WIDGET (item.m_first->gobj()), GTK_WIDGET(gobj()));
 	if (item.m_second)
-	  gtk_widget_set_parent(GTK_WIDGET (item.m_second->gobj()), GTK_WIDGET(gobj()));	
+  {
+	  gtk_widget_set_parent(GTK_WIDGET (item.m_second->gobj()), GTK_WIDGET(gobj()));
+  }
   if (pos == m_children.end())
   {
-    std::cout << "Only end found" << std::endl;
     m_children.push_back(item);
   } else {
     m_children.insert(pos, item);
+  }
+}
+
+void FlowTable::setup_dnd (Gtk::Widget& child)
+{
+  if (!(child.get_flags() & Gtk::NO_WINDOW) && !dynamic_cast<FlowTable*>(&child))
+  {
+    child.signal_drag_motion().connect (sigc::bind<Gtk::Widget*>(sigc::mem_fun (*this, &FlowTable::on_child_drag_motion), &child));
+    child.signal_drag_data_received().connect (sigc::bind<Gtk::Widget*>(sigc::mem_fun (*this, &FlowTable::on_child_drag_data_received), &child));
+    child.signal_drag_leave().connect (sigc::mem_fun (*this, &FlowTable::on_child_drag_leave));
+		std::cout << "Setup DND" << std::endl;
+		std::cout << g_type_name (G_OBJECT_TYPE (child.gobj())) << std::endl;
+    
+    // Call this method recursive for all children
+    Gtk::Bin* bin = dynamic_cast<Gtk::Bin*>(&child);
+    if (bin)
+    {
+      setup_dnd (*bin->get_child());
+    }
+    
+    std::list<Gtk::TargetEntry> drag_targets;
+    Gtk::TargetEntry drag_target(DragButton::get_target());
+    drag_targets.push_back(drag_target);
+    child.drag_dest_set(drag_targets);
   }
 }
 
@@ -1068,8 +1100,10 @@ bool FlowTable::on_expose_event(GdkEventExpose* event)
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 bool FlowTable::on_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint time)
 {
-  m_current_dnd_item = dnd_get_item(x, y);
+  std::cout << __FUNCTION__ << " " << x << " " << y << std::endl;
   
+  m_current_dnd_item = dnd_get_item(x, y);
+    
   on_dnd_remove_placeholder ();
   realize();
   
@@ -1119,8 +1153,6 @@ FlowTable::dnd_get_item(int drag_x, int drag_y)
   get_column_height (0, m_children.size(), column_width);
   
   int column = drag_x / column_width;
-  
-  std::cout << "Column: " << column << std::endl;
   
   for (std::vector<FlowTableItem>::iterator cur_item = m_children.begin(); cur_item != m_children.end(); 
        cur_item++)
@@ -1203,6 +1235,53 @@ LayoutWidgetBase* FlowTable::dnd_find_datawidget()
 
   return above;
 }
+
+bool FlowTable::on_child_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint time,
+                                     Gtk::Widget* child)
+{
+  std::cout << __FUNCTION__ << std::endl;
+  
+  x += child->get_allocation().get_x();
+  y += child->get_allocation().get_y();
+
+  Gtk::Container* parent = child->get_parent();
+  Gtk::Widget* real_child;
+  if (parent != this)
+  {
+    x += parent->get_allocation().get_x();
+    y += parent->get_allocation().get_y();
+    real_child = parent;
+  }
+  else
+    real_child = child;
+  
+  m_current_dnd_item = &(*std::find (m_children.begin(), m_children.end(), real_child));
+  
+  on_dnd_remove_placeholder ();
+  realize();
+  
+  LayoutWidgetBase* above = dnd_find_datawidget();
+	
+  // above might be 0 here...
+  on_dnd_add_placeholder(above);
+  change_dnd_status(true);
+  return true;
+}
+
+void FlowTable::on_child_drag_leave(const Glib::RefPtr<Gdk::DragContext>& drag_context, guint time)
+{
+  realize();
+  std::cout << __FUNCTION__ << std::endl;  
+}
+
+void FlowTable::on_child_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, 
+                                            const Gtk::SelectionData& selection_data, guint, guint time,
+                                            Gtk::Widget* child)
+{
+    std::cout << __FUNCTION__ << " " << x << " " << y << std::endl;
+}
+
+
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 } //namespace Glom

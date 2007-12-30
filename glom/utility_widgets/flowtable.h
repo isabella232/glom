@@ -97,6 +97,12 @@ protected:
   virtual void on_dnd_add_placeholder(LayoutWidgetBase* above) = 0;
   virtual void on_dnd_remove_placeholder() = 0;
   
+  virtual bool on_child_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint time, Gtk::Widget* child);
+  virtual void on_child_drag_leave(const Glib::RefPtr<Gdk::DragContext>& drag_context, guint time);
+  virtual void on_child_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int, int, 
+                                           const Gtk::SelectionData& selection_data, guint, guint time, Gtk::Widget* child);  
+  void setup_dnd (Gtk::Widget& child);
+  
   // Methods for the different layout object
   virtual void on_dnd_add_layout_item_field (LayoutWidgetBase* above) = 0;
   virtual void on_dnd_add_layout_group(LayoutWidgetBase* above) = 0;
@@ -115,14 +121,19 @@ protected:
   class FlowTableItem
   {
   public:
-    FlowTableItem();
-    FlowTableItem(Gtk::Widget* first, Gtk::Widget* second);
+    FlowTableItem(Gtk::Widget* first, FlowTable* flowtable);
+    FlowTableItem(Gtk::Widget* first, Gtk::Widget* second, FlowTable* flowtable);
 
     Gtk::Widget* m_first;
     Gtk::Widget* m_second;
     bool m_expand_first_full;
     bool m_expand_second;
-
+    
+    bool operator==(Gtk::Widget* child)
+    {
+      return (child == m_first || child == m_second);
+    }
+    
     //Cache the positions, so we can use them in on_expose_event:
     Gtk::Allocation m_first_allocation;
     Gtk::Allocation m_second_allocation;
@@ -143,11 +154,6 @@ protected:
 	
   bool m_dnd_in_progress;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-  
-  enum
-  {
-    BELOW = -1
-  };
   
   bool child_is_visible(const Gtk::Widget* widget) const;
 

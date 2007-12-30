@@ -201,11 +201,11 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
     flow_table->set_padding(Utils::DEFAULT_SPACING_SMALL);
     flow_table->show();
     
-    Gtk::EventBox* event_box = Gtk::manage( new Gtk::EventBox() );
+    /*Gtk::EventBox* event_box = Gtk::manage( new Gtk::EventBox() );
     event_box->add(*flow_table);
-    event_box->show();
+    event_box->show();*/
     
-    alignment->add(*event_box);
+    alignment->add(*flow_table);
 
     LayoutGroup::type_list_items items = group->get_items(); 
     for(LayoutGroup::type_list_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
@@ -1119,7 +1119,10 @@ void FlowTableWithFields::on_dnd_add_layout_item_field(LayoutWidgetBase* above)
     DataWidget::offer_field_list(m_table_name, sharedptr<LayoutItem_Field>(), 
       get_document(), App_Glom::get_application());
   if(!layout_item_field)
+  {
+    realize();
     return;
+  }
 
   //Add a widget for this layout item, after the "above" item:
   type_list_layoutwidgets::iterator cur_widget;
@@ -1173,7 +1176,10 @@ void FlowTableWithFields::on_dnd_add_layout_item_button(LayoutWidgetBase* above)
   
   // Get field informations
   if (!get_field_information (layout_item))
+  {
+    realize();
     return;
+  }
     
   //Add a widget for this layout item, after the "above" item:
   type_list_layoutwidgets::iterator cur_widget;
@@ -1210,8 +1216,11 @@ void FlowTableWithFields::on_dnd_add_layout_item_text(LayoutWidgetBase* above)
   
   // Get field informations
   if (!get_field_information (layout_item))
+  {
+    realize();
     return;
-    
+  }
+  
   //Add a widget for this layout item, after the "above" item:
   type_list_layoutwidgets::iterator cur_widget;
   if(above)
@@ -1263,7 +1272,9 @@ void FlowTableWithFields::on_dnd_add_placeholder(LayoutWidgetBase* above)
 void FlowTableWithFields::on_dnd_remove_placeholder()
 { 
   if(m_placeholder)
+  {
     remove(*m_placeholder);
+  }
   
   m_placeholder = 0;
 }
