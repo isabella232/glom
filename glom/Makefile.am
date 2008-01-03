@@ -73,17 +73,15 @@ glom_LDADD += navigation/libnavigation.a \
               utility_widgets/adddel/eggcolumnchooser/libutility_widgets_adddel_eggcolumnchooserdialog.a \
               utility_widgets/db_adddel/libutility_widgets_db_adddel.a \
               utility_widgets/canvas/libutility_widgets_canvas.a \
-              utility_widgets/libutility_widgets.a
+              utility_widgets/cellrendererlist/libutility_widgets_cellrendererlist.a
 
 if !GLOM_ENABLE_CLIENT_ONLY
 glom_LDADD += translation/libtranslation.a \
-              relationships_overview/librelationshipsoverview.a \
-              utility_widgets/canvas/libutility_widgets_canvas.a
+              relationships_overview/librelationshipsoverview.a
 endif
 
 glom_LDADD += python_embed/libpython_embed.a \
               $(top_builddir)/glom/libglom/libglom.la \
-              $(top_builddir)/glom/mode_data/libmode_data.a \
               $(GLOM_LIBS) $(PYTHON_LDFLAGS) $(MAEMO_LAUNCHER_LIBS)
 
 if !WIN32

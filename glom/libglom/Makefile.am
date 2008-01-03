@@ -33,12 +33,7 @@ libglom_la_SOURCES = appstate.h appstate.cc \
 libglom_la_LDFLAGS = -no-undefined
 
 # Link libglom statically on maemo and windows for now.
-# We get lots of duplicate definitions when linking dynamically on Windows.
-# I am not yet sure why this happens. armin.
 if GLOM_ENABLE_MAEMO
-libglom_la_LDFLAGS += -static
-endif
-if WIN32
 libglom_la_LDFLAGS += -static
 endif
 

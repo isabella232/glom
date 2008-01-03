@@ -1,3 +1,39 @@
+2007-12-02  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/utility_widgets/cellrendererlist/cellrendererlist.h:
+	* glom/utility_widgets/cellrendererlist/cellrendererlist.cc:
+	* glom/utility_widgets/cellrendererlist/Makefile.am
+	* configure.in: Moved cellrendererlist to this subdirectory.
+
+	* glom/mode_data/flowtablewithfields.h:
+	* glom/mode_data/flowtablewithfields.cc: Moved the FlowTableWithFields
+	class from utility_widgets to mode_data. mode_data is the only one who
+	uses this, and this way, utility_widgets do no longer depend on
+	mode_data. This is necessary to link libglom dynamically on Windows.
+
+	* glom/Makefile.am: Added
+	utility_widgets/cellrendererlist/libutility_widgets_cellrendererlist.a
+	to LDADD.
+
+	* glom/utility_widgets/Makefile.am:
+	* glom/mode_data/Makefile.am: Changed list of source files
+	accordingly.
+
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/adddel/adddel.cc:
+	* glom/mode_data/box_data_details.h: Changed include paths
+	accordingly.
+
+	* glom/libglom/Makefile.am: Link libglom dynamically on Windows. This
+	requires also the latest versions of libgdamm, gnome-vfsmm, gconfmm
+	and bakery because earlier versions do not create a shared library on
+	Windows, and shared libraries cannot be linked against static ones.
+
+	* glom/python_embed/python_module/Makefile.am: Rename the python glom
+	module from glom.dll to glom.pyd on Windows when installing because
+	python does not find the module when it does not end on .pyd. These
+	.pyd files are simply renamed DLLs.
+
 2007-12-30  Johannes Schmid <johannes.schmid@openismus.com>
 
 	* glom/utility_widgets/flowtable.cc:

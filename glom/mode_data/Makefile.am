@@ -15,7 +15,8 @@ libmode_data_a_SOURCES = box_data.cc box_data.h \
                          dialog_layout.cc dialog_layout.h \
                          dialog_choose_field.cc dialog_choose_field.h \
                          dialog_choose_relationship.cc dialog_choose_relationship.h \
-                         dialog_layout_export.cc dialog_layout_export.h
+                         dialog_layout_export.cc dialog_layout_export.h \
+                         flowtablewithfields.cc flowtablewithfields.h 
 
 if !GLOM_ENABLE_CLIENT_ONLY
 libmode_data_a_SOURCES += dialog_layout_list.cc dialog_layout_list.h \

@@ -11,6 +11,7 @@ AM_MAINTAINER_MODE
 # Checks for programs:
 AC_PROG_CC
 AC_PROG_CXX
+AC_LIBTOOL_WIN32_DLL
 AM_PROG_LIBTOOL
 AM_SANITY_CHECK
 
@@ -205,6 +206,7 @@ AC_OUTPUT(Makefile \
     glom/mode_find/Makefile \
     glom/navigation/Makefile \
     glom/utility_widgets/Makefile \
+      glom/utility_widgets/cellrendererlist/Makefile \
       glom/utility_widgets/adddel/Makefile \
         glom/utility_widgets/adddel/eggcolumnchooser/Makefile \
       glom/utility_widgets/canvas/Makefile \

@@ -17,3 +17,10 @@ glom_la_LIBADD += -lutil
 endif
 
 glom_la_SOURCES = py_glom_module.cc py_glom_module.h
+
+if WIN32
+# Python .pyd modules are simply DLLs, but they have to be called .pyd for
+# python to find them, and libtool only creates .dll.
+install-exec-hook:
+	mv $(pyexecdir)/glom.dll $(pyexecdir)/glom.pyd
+endif

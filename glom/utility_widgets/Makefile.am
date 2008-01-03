@@ -1,6 +1,6 @@
 #AM_CPPFLAGS = -I@top_srcdir@/ $(GLOM_CFLAGS)
 
-SUBDIRS = adddel db_adddel canvas
+SUBDIRS = cellrendererlist adddel db_adddel canvas
 
 gladedir = $(datadir)/glom/glade/
 glom_icon_dir = $(datadir)/glom/pixmaps
@@ -15,7 +15,6 @@ noinst_LIBRARIES = libutility_widgets.a
 libutility_widgets_a_SOURCES = alignment_justified.cc alignment_justified.h \
                                dialog_properties.cc dialog_properties.h \
                                flowtable.cc flowtable.h \
-                               flowtablewithfields.cc flowtablewithfields.h \
                                datawidget.h datawidget.cc \
                                buttonglom.h buttonglom.cc \
                                notebookglom.h notebookglom.cc \
@@ -30,7 +29,6 @@ libutility_widgets_a_SOURCES = alignment_justified.cc alignment_justified.h \
                                layoutwidgetfield.cc layoutwidgetfield.h \
                                textviewglom.h textviewglom.cc \
                                combo_textglade.h combo_textglade.cc \
-                               cellrendererlist.h cellrendererlist.cc \
                                comboentry_currency.h comboentry_currency.cc \
                                imageglom.h imageglom.cc \
                                labelglom.h labelglom.cc \
@@ -45,7 +43,8 @@ libutility_widgets_a_SOURCES += filechooserdialog_saveextras.cc filechooserdialo
 endif
 
 
-libutility_widgets_a_LIBADD = adddel/libutility_widgets_adddel.a \
+libutility_widgets_a_LIBADD = cellrendererlist/libutility_widgets_cellrendererlist.a \
+                              adddel/libutility_widgets_adddel.a \
                               db_adddel/libutility_widgets_db_adddel.a \
                               canvas/libutility_widgets_canvas.a
 

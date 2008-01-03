@@ -25,8 +25,8 @@
 
 #include "box_data.h"
 //#include "box_data_list_related.h"
+#include "flowtablewithfields.h"
 #include "../utility_widgets/placeholder.h"
-#include "../utility_widgets/flowtablewithfields.h"
 
 namespace Glom
 {

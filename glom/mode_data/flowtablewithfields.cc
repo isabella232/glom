@@ -19,17 +19,17 @@
  */
 
 #include "flowtablewithfields.h"
-#include "datawidget.h"
-#include "buttonglom.h"
-#include "notebookglom.h"
-#include "imageglom.h"
-#include "labelglom.h"
-#include "placeholder-glom.h"
+#include <glom/utility_widgets/datawidget.h>
+#include <glom/utility_widgets/buttonglom.h>
+#include <glom/utility_widgets/notebookglom.h>
+#include <glom/utility_widgets/imageglom.h>
+#include <glom/utility_widgets/labelglom.h>
+#include <glom/utility_widgets/placeholder-glom.h>
 #include "../application.h"
 #include <gtkmm/checkbutton.h>
 #include <glom/libglom/data_structure/glomconversions.h>
-#include "../mode_data/box_data_list_related.h"
-#include "../mode_data/dialog_choose_relationship.h"
+#include "box_data_list_related.h"
+#include "dialog_choose_relationship.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <glibmm/i18n.h>
 #include <glom/libglom/data_structure/layout/layoutitem_placeholder.h>
@@ -1216,11 +1216,8 @@ void FlowTableWithFields::on_dnd_add_layout_item_text(LayoutWidgetBase* above)
   
   // Get field informations
   if (!get_field_information (layout_item))
-  {
-    realize();
     return;
-  }
-  
+    
   //Add a widget for this layout item, after the "above" item:
   type_list_layoutwidgets::iterator cur_widget;
   if(above)
@@ -1317,6 +1314,7 @@ sharedptr<LayoutItem_Portal> FlowTableWithFields::get_layout_item_from_relation(
   return layout_item;
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 bool FlowTableWithFields::get_field_information (sharedptr<LayoutItem>& item)
 {
   bool retval = false; 
@@ -1352,5 +1350,6 @@ bool FlowTableWithFields::get_field_information (sharedptr<LayoutItem>& item)
   }
   return retval;
 }
+#endif
 
 } //namespace Glom

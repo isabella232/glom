@@ -23,7 +23,7 @@
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
-#include "flowtable.h"
+#include <glom/utility_widgets/flowtable.h>
 #include <glom/libglom/data_structure/layout/layoutgroup.h>
 #include <glom/libglom/data_structure/layout/layoutitem_field.h>
 #include <glom/libglom/data_structure/layout/layoutitem_notebook.h>
@@ -33,9 +33,9 @@
 #include <glom/libglom/data_structure/layout/layoutitem_placeholder.h>
 #include <glom/libglom/data_structure/field.h>
 #include <glom/libglom/document/document_glom.h>
-#include "../mode_data/box_data_list_related.h"
-#include "layoutwidgetbase.h"
-#include "../mode_data/treestore_layout.h" //Forthe enum.
+#include <glom/utility_widgets/layoutwidgetbase.h>
+#include "box_data_list_related.h"
+#include "treestore_layout.h" //Forthe enum.
 #include <map>
 #include <list>
 
