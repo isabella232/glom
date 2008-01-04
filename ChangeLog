@@ -1,3 +1,9 @@
+2008-01-04  Johannes Schmid <jhs@gnome.org>
+
+	* glom/utility_widgets/flowtable.cc:
+	Cleaned-up setup_dnd() code and fix a very stupid
+	bug in column calculation
+
 2008-01-02  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/utility_widgets/cellrendererlist/cellrendererlist.h:

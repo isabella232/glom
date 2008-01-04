@@ -263,7 +263,7 @@ FlowTable::FlowTableItem::FlowTableItem(Gtk::Widget* first, FlowTable* flowtable
   m_expand_second(false)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  flowtable->setup_dnd (*m_first);
+  //flowtable->setup_dnd (*m_first);
 #endif /* GLOM_ENABLE_CLIENT_ONLY */
 }
 
@@ -274,7 +274,7 @@ FlowTable::FlowTableItem::FlowTableItem(Gtk::Widget* first, Gtk::Widget* second,
   m_expand_second(false)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  flowtable->setup_dnd (*m_first);
+  //flowtable->setup_dnd (*m_first);
   flowtable->setup_dnd (*m_second);
 #endif /* GLOM_ENABLE_CLIENT_ONLY */
 }
@@ -407,26 +407,31 @@ void FlowTable::insert_before(FlowTableItem& item, Gtk::Widget& before)
 
 void FlowTable::setup_dnd (Gtk::Widget& child)
 {
-  if (!(child.get_flags() & Gtk::NO_WINDOW) && !dynamic_cast<FlowTable*>(&child))
+  if (dynamic_cast<PlaceholderGlom*>(&child))
+    return;
+  
+	// Call this method recursive for all children
+  Gtk::Bin* bin = dynamic_cast<Gtk::Bin*>(&child);
+  if (bin)
+  {
+    setup_dnd (*bin->get_child());
+    return;
+  }
+  //std::cout << "Setup DND: ";
+  //std::cout << g_type_name (G_OBJECT_TYPE (child.gobj()));
+  
+  if (!(child.get_flags() & Gtk::NO_WINDOW))
   {
     child.signal_drag_motion().connect (sigc::bind<Gtk::Widget*>(sigc::mem_fun (*this, &FlowTable::on_child_drag_motion), &child));
     child.signal_drag_data_received().connect (sigc::bind<Gtk::Widget*>(sigc::mem_fun (*this, &FlowTable::on_child_drag_data_received), &child));
     child.signal_drag_leave().connect (sigc::mem_fun (*this, &FlowTable::on_child_drag_leave));
-		std::cout << "Setup DND" << std::endl;
-		std::cout << g_type_name (G_OBJECT_TYPE (child.gobj())) << std::endl;
-    
-    // Call this method recursive for all children
-    Gtk::Bin* bin = dynamic_cast<Gtk::Bin*>(&child);
-    if (bin)
-    {
-      setup_dnd (*bin->get_child());
-    }
-    
     std::list<Gtk::TargetEntry> drag_targets;
-    Gtk::TargetEntry drag_target(DragButton::get_target());
-    drag_targets.push_back(drag_target);
+    drag_targets.push_back(Gtk::TargetEntry(DragButton::get_target()));
     child.drag_dest_set(drag_targets);
+    //std::cout << "...done" << std::endl;
   }
+  else
+    ;//std::cout << "...skipped" << std::endl;
 }
 
 void FlowTable::set_columns_count(guint value)
@@ -1070,7 +1075,7 @@ bool FlowTable::on_expose_event(GdkEventExpose* event)
 {
   if(m_design_mode)
   {
-    //m_refGdkWindow = get_window();
+    m_refGdkWindow = get_window();
     if(m_refGdkWindow)
     {
       m_refGC = Gdk::GC::create(m_refGdkWindow);
@@ -1099,9 +1104,7 @@ bool FlowTable::on_expose_event(GdkEventExpose* event)
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 bool FlowTable::on_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint time)
-{
-  std::cout << __FUNCTION__ << " " << x << " " << y << std::endl;
-  
+{ 
   m_current_dnd_item = dnd_get_item(x, y);
     
   on_dnd_remove_placeholder ();
@@ -1160,7 +1163,7 @@ FlowTable::dnd_get_item(int drag_x, int drag_y)
     Gdk::Rectangle rect = cur_item->m_first->get_allocation();
     if (cur_item->m_second)
     {
-      Gdk::Rectangle second_rect = cur_item->m_first->get_allocation();
+      Gdk::Rectangle second_rect = cur_item->m_second->get_allocation();
       rect.set_height (MAX (rect.get_height(), second_rect.get_height()));
       rect.set_width (rect.get_width() + m_padding + second_rect.get_width());
     }
@@ -1168,7 +1171,9 @@ FlowTable::dnd_get_item(int drag_x, int drag_y)
     int cur_column = rect.get_x() / column_width;
     
     if (cur_column != column)
-      continue;
+    {
+      continue;  
+    }
     
     if (drag_y < (rect.get_y() + rect.get_height()))
     {
@@ -1177,6 +1182,8 @@ FlowTable::dnd_get_item(int drag_x, int drag_y)
     }
   }
 
+  std::cout << __FUNCTION__ << ": No widget found!" << std::endl;
+  
   return 0;
 }
 
@@ -1206,31 +1213,6 @@ LayoutWidgetBase* FlowTable::dnd_find_datawidget()
       above = dynamic_cast<LayoutWidgetBase*>(m_current_dnd_item->m_second);
       //std::cout << g_type_name (G_OBJECT_TYPE (m_current_dnd_item->m_second->gobj())) << std::endl;
     }
-
-    /*
-    if (!above && item->m_first)
-    {
-      // LayoutGroup
-      Gtk::Frame* frame = dynamic_cast<Gtk::Frame*>(item->m_first);
-      if (frame)
-      {
-        std::cout << "Frame:" << dynamic_cast<Gtk::Label*>(frame->get_label_widget())->get_text() 
-          << std::endl;
-        Gtk::Alignment* alignment = dynamic_cast<Gtk::Alignment*>(frame->get_child());
-        if (alignment)
-        {
-          std::cout << "Alignment" << std::endl;
-          Gtk::EventBox* eventbox = dynamic_cast<Gtk::EventBox*>(alignment->get_child());
-          if (eventbox)
-          {
-            above = dynamic_cast<LayoutWidgetBase*>(eventbox->get_child());
-            std::cout << "Eventbox!" << std::endl;
-          }
-        }
-        std::cout << "above LayoutGroup: " << (above != 0) << std::endl;
-      }
-    }
-    */
   }
 
   return above;
@@ -1238,24 +1220,19 @@ LayoutWidgetBase* FlowTable::dnd_find_datawidget()
 
 bool FlowTable::on_child_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint time,
                                      Gtk::Widget* child)
-{
-  std::cout << __FUNCTION__ << std::endl;
+{  
+  std::cout << __FUNCTION__ << " " << x << " " << y << std::endl;
   
-  x += child->get_allocation().get_x();
-  y += child->get_allocation().get_y();
-
-  Gtk::Container* parent = child->get_parent();
-  Gtk::Widget* real_child;
-  if (parent != this)
+  for (Gtk::Widget* widget = child; widget && widget != this; 
+       widget = widget->get_parent())
   {
-    x += parent->get_allocation().get_x();
-    y += parent->get_allocation().get_y();
-    real_child = parent;
-  }
-  else
-    real_child = child;
-  
-  m_current_dnd_item = &(*std::find (m_children.begin(), m_children.end(), real_child));
+    x += widget->get_allocation().get_x();
+    y += widget->get_allocation().get_y();
+    type_vecChildren::iterator item =
+      std::find (m_children.begin(), m_children.end(), widget);
+    if (item != m_children.end())
+      m_current_dnd_item = &(*item);
+  }  
   
   on_dnd_remove_placeholder ();
   realize();
@@ -1270,7 +1247,7 @@ bool FlowTable::on_child_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_
 
 void FlowTable::on_child_drag_leave(const Glib::RefPtr<Gdk::DragContext>& drag_context, guint time)
 {
-  realize();
+  on_dnd_remove_placeholder();
   std::cout << __FUNCTION__ << std::endl;  
 }
 
