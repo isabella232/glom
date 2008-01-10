@@ -1,3 +1,8 @@
+2008-01-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in: Depend on the latest version of libgda, because we 
+	use the new Gda::Value::get_ulong() method. Thanks to Rohit Agrawal.
+
 2008-01-04  Johannes Schmid <jhs@gnome.org>
 
 	* glom/utility_widgets/flowtable.cc:
