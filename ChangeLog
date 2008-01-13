@@ -1,3 +1,19 @@
+2008-01-13  Armin Burgmeier  <armin@openismus.com>
+
+	* configure.in: Disable the --with-postgres-utils options on Windows
+	because it does not make sense to hardcode paths on Windows. We use
+	Glib::find_program_in_path to locate the postgres executables.
+
+	* glom/libglom/connectionpool.h:
+	* glom/libglom/connectionpool.cc: Severial windows fixes: Don't use
+	libepc, locate postgres programs using Glib::find_program_in_path,
+	quote path to executables, use closesocket() instead of close().
+
+	* glom/libglom/spawn_with_feedback.cc: Fixed typo.
+
+	* glom/Makefile.am: Changed library linking order so linking developer
+	mode on Windows succeeds.
+
 2008-01-10  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.in: Depend on the latest version of libgda, because we 

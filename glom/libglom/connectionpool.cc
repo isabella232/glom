@@ -49,6 +49,8 @@
 #include <sys/socket.h> 
 #include <sys/socket.h>
 #include <netinet/in.h> //For sockaddr_in
+#else
+#include <winsock2.h>
 #endif
 
 #include <signal.h> //To catch segfaults
@@ -60,6 +62,19 @@
 #ifndef G_OS_WIN32
 static EpcProtocol publish_protocol = EPC_PROTOCOL_HTTPS;
 #endif
+
+namespace
+{
+  std::string get_path_to_postgres_executable(const std::string& program)
+  {
+#ifdef G_OS_WIN32
+    return Glib::find_program_in_path(program + EXEEXT);
+#else
+    return Glib::build_filename(POSTGRES_UTILS_PATH, program + EXEEXT);
+#endif
+  }
+}
+
 
 namespace Glom
 {
@@ -375,10 +390,12 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
             std::cout << "  Postgres Server version: " << get_postgres_server_version() << std::endl << std::endl;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+#ifndef G_OS_WIN32
            //Let other clients discover this server via avahi:
            //TODO: Only advertize if we are the first to open the document,
            //to avoid duplicates.
            avahi_start_publishing(); //Stopped in the signal_finished handler.
+#endif // !G_OS_WIN32
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -624,8 +641,10 @@ void ConnectionPool::on_sharedconnection_finished()
     m_refGdaConnection.clear();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+#ifndef G_OS_WIN32
     //TODO: this should only even be started if we are the first to open the .glom file:
     avahi_stop_publishing();
+#endif
 #endif
 
     //g_warning("ConnectionPool: connection closed");
@@ -712,7 +731,12 @@ bool ConnectionPool::directory_exists_uri(const std::string& uri)
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+#ifdef G_OS_WIN32
+// TODO: This is probably mingw specific
+static __p_sig_fn_t previous_sig_handler = SIG_DFL;
+#else
 static sighandler_t previous_sig_handler = SIG_DFL; /* Arbitrary default */
+#endif
 
 /* This is a Linux/Unix signal handler, 
  * so we can respond to a crash.
@@ -774,7 +798,7 @@ bool ConnectionPool::start_self_hosting()
   // -c config_file= specifies the configuration file
   // -k specifies a directory to use for the socket. This must be writable by us.
   // POSTGRES_POSTMASTER_PATH is defined in config.h, based on the configure.
-  const std::string command_postgres_start = POSTGRES_UTILS_PATH "/postmaster -D \"" + dbdir_data + "\" "
+  const std::string command_postgres_start = Glib::shell_quote(get_path_to_postgres_executable("postmaster")) + " -D \"" + dbdir_data + "\" "
                                   + " -p " + port_as_text 
                                   + " -h \"*\" " //Equivalent to listen_addresses in postgresql.conf. Listen to all IP addresses, so any client can connect (with a username+password)
                                   + " -c hba_file=\"" + dbdir + "/config/pg_hba.conf\""
@@ -782,7 +806,7 @@ bool ConnectionPool::start_self_hosting()
                                   + " -k \"" + dbdir + "\""
                                   + " --external_pid_file=\"" + dbdir + "/pid\"";
 
-  const std::string command_check_postgres_has_started = POSTGRES_UTILS_PATH "/pg_ctl status -D \"" + dbdir_data + "\"";
+  const std::string command_check_postgres_has_started = Glib::shell_quote(get_path_to_postgres_executable("pg_ctl")) + " status -D \"" + dbdir_data + "\"";
 
   //For postgres 8.1, this is "postmaster is running".
   //For postgres 8.2, this is "server is running".
@@ -804,8 +828,10 @@ bool ConnectionPool::start_self_hosting()
   m_self_hosting_active = true;
   set_try_other_ports(false); //Only try to connect to this known instance, instead of finding others.
 
+#ifndef G_OS_WIN32
   //Let clients discover this server via avahi:
   avahi_start_publishing();
+#endif // !G_OS_WIN32
 
   //If we crash while self-hosting (unlikely, hopefully) 
   //then try to stop the postgres instance instead of leaving it running as an orphan.
@@ -819,8 +845,10 @@ void ConnectionPool::stop_self_hosting()
   if(!m_self_hosting_active)
     return; //Don't try to stop it if we have not started it.
 
+#ifndef G_OS_WIN32
   /* Stop advertising the self-hosting database server via avahi: */
   avahi_stop_publishing();
+#endif // !G_OS_WIN32
 
   const std::string dbdir_uri = m_self_hosting_data_uri;
   const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
@@ -838,7 +866,7 @@ void ConnectionPool::stop_self_hosting()
   // POSTGRES_POSTMASTER_PATH is defined in config.h, based on the configure.
   // We use "-m fast" instead of the default "-m smart" because that waits for clients to disconnect (and sometimes never succeeds).
   // TODO: Warn about connected clients on other computers? Warn those other users?
-  const std::string command_postgres_stop = POSTGRES_UTILS_PATH "/pg_ctl -D \"" + dbdir_data + "\" stop -m fast";
+  const std::string command_postgres_stop = Glib::shell_quote(get_path_to_postgres_executable("pg_ctl")) + " -D \"" + dbdir_data + "\" stop -m fast";
   const bool result = Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, _("Stopping Database Server"));
   if(!result)
   {
@@ -938,10 +966,10 @@ bool ConnectionPool::create_self_hosting(Gtk::Window* parent_window)
     return false;
   }
 
-  const std::string temp_pwfile = "/tmp/glom_initdb_pwfile";
+  const std::string temp_pwfile = Glib::build_filename(Glib::get_tmp_dir(), "glom_initdb_pwfile");
   create_text_file(temp_pwfile, get_password());
 
-  const std::string command_initdb = POSTGRES_UTILS_PATH "/initdb -D \"" + dbdir_data + "\"" +
+  const std::string command_initdb = Glib::shell_quote(get_path_to_postgres_executable("initdb")) + " -D \"" + dbdir_data + "\"" +
                                         " -U " + username + " --pwfile=\"" + temp_pwfile + "\""; 
   //Note that --pwfile takes the password from the first line of a file. It's an alternative to supplying it when prompted on stdin.
   const bool result = Glom::Spawn::execute_command_line_and_wait(command_initdb, _("Creating Database Data"));
@@ -1044,15 +1072,23 @@ int ConnectionPool::discover_first_free_port(int start_port, int end_port)
 
     const int result = bind(fd, (sockaddr*)&sa, sizeof(sa));
     if((result == 0) || ((result < 0)
+#ifdef G_OS_WIN32
+    && (WSAGetLastError() != WSAEADDRINUSE)
+#else // G_OS_WIN32
 #ifdef EADDRINUSE //Some BSDs don't have this.
     && (errno != EADDRINUSE)
 #endif 
 #ifdef EPORTINUSE //Linux doesn't have this.
     && (errno != EPORTINUSE)
 #endif
+#endif // !G_OS_WIN32
     ))
     {
+#ifdef G_OS_WIN32
+      closesocket(fd);
+#else
       close(fd);
+#endif
 
       //std::cout << "debug: ConnectionPool::discover_first_free_port(): Found: returning " << port_to_try << std::endl;
       return port_to_try;
@@ -1065,7 +1101,11 @@ int ConnectionPool::discover_first_free_port(int start_port, int end_port)
     ++port_to_try;
   }
 
+#ifdef G_OS_WIN32
+  closesocket(fd);
+#else
   close(fd);
+#endif
 
   std::cerr << "debug: ConnectionPool::discover_first_free_port(): No port was available." << std::endl;
   return 0;
@@ -1085,10 +1125,16 @@ int ConnectionPool::discover_first_free_port(int start_port, int end_port)
 bool ConnectionPool::check_postgres_is_available_with_warning()
 {
   //EXEEXT is defined in the Makefile.am
-  const std::string binpath = Glib::build_filename(POSTGRES_UTILS_PATH, "postmaster" EXEEXT);
-  const Glib::ustring uri_binpath = Glib::filename_to_uri(binpath);
-  if(Bakery::App_WithDoc::file_exists(uri_binpath))
-    return true;
+  const std::string binpath = get_path_to_postgres_executable("postmaster");
+  // TODO: At least on Windows we should probably also check for initdb and
+  // pg_ctl. Perhaps it would also be a good idea to access these files as
+  // long as glom runs so they cannot be (re)moved.
+  if(!binpath.empty())
+  {
+    const Glib::ustring uri_binpath = Glib::filename_to_uri(binpath);
+    if(Bakery::App_WithDoc::file_exists(uri_binpath))
+      return true;
+  }
   else
   {
     #ifdef DISTRO_SPECIFIC_POSTGRES_INSTALL_IMPLEMENTED
@@ -1233,6 +1279,7 @@ Document_Glom* ConnectionPool::get_document()
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+#ifndef G_OS_WIN32
 //static
 EpcContents* ConnectionPool::on_publisher_document_requested(EpcPublisher* publisher, const gchar* key, gpointer user_data)
 {
@@ -1401,11 +1448,13 @@ void ConnectionPool::avahi_stop_publishing()
 
   std::cout << "debug: ConnectionPool::avahi_stop_publishing" << std::endl;
 
-
+#ifndef G_OS_WIN32
   epc_publisher_quit(m_epc_publisher);
+#endif // !G_OS_WIN32
   g_object_unref(m_epc_publisher);
   m_epc_publisher = NULL;
 }
+#endif // !G_OS_WIN32
 
 void ConnectionPool::set_get_document_func(const SlotGetDocument& slot)
 {

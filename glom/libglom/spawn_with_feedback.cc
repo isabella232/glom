@@ -54,7 +54,7 @@ static void execute_command_line_on_thread_create(CommandLineThreadData* data)
   }
   catch(const Glib::SpawnError& ex)
   {
-    std::cerr << "Glom:: execute_command_line_on_thread_create() Exception while calling lib::spawn_command_line_sync(): " << ex.what() << std::endl;
+    std::cerr << "Glom:: execute_command_line_on_thread_create() Exception while calling Glib::spawn_command_line_sync(): " << ex.what() << std::endl;
   }
 #else
   // TODO: I guess we can't find out whether this failed.
@@ -189,7 +189,6 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
   std::auto_ptr<Dialog_ProgressCreating> dialog_progress;
   dialog_progress.reset(dialog_temp);
 
-
   std::cout << std::endl << "debug: command_line: " << command << std::endl << std::endl;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   // Execute the first thread asynchronously (so we don't wait for it):
@@ -199,7 +198,7 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
   }
   catch(const Glib::SpawnError& ex)
   {
-    std::cerr << "Glom::Spawn::pulse_until_second_command_succeed() Exception while calling lib::spawn_command_line_async(): " << ex.what() << std::endl;
+    std::cerr << "Glom::Spawn::pulse_until_second_command_succeed() Exception while calling Glib::spawn_command_line_async(): " << ex.what() << std::endl;
   }
 #else
   // TODO: I guess we can't find out whether this failed.
@@ -241,7 +240,7 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
     }
     catch(const Glib::SpawnError& ex)
     {
-      std::cerr << "Glom::execute_command_line_and_wait_until_second_command_returns_success() Exception while calling lib::spawn_command_line_sync(): " << ex.what() << std::endl;
+      std::cerr << "Glom::execute_command_line_and_wait_until_second_command_returns_success() Exception while calling Glib::spawn_command_line_sync(): " << ex.what() << std::endl;
     }
 #else
     // TODO: I guess we can't find out whether this failed.

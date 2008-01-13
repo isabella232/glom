@@ -64,7 +64,9 @@ glom_LDADD += layout_item_dialogs/liblayoutitemdialogs.a \
               mode_design/fields/libmode_design_fields.a \
               mode_design/print_layouts/libmode_design_print_layouts.a \
               mode_design/users/libmode_design_users.a \
-              mode_design/script_library/libmode_design_script_library.a
+              mode_design/script_library/libmode_design_script_library.a \
+              translation/libtranslation.a \
+              relationships_overview/librelationshipsoverview.a
 endif
 
 glom_LDADD += navigation/libnavigation.a \
@@ -74,11 +76,6 @@ glom_LDADD += navigation/libnavigation.a \
               utility_widgets/db_adddel/libutility_widgets_db_adddel.a \
               utility_widgets/canvas/libutility_widgets_canvas.a \
               utility_widgets/cellrendererlist/libutility_widgets_cellrendererlist.a
-
-if !GLOM_ENABLE_CLIENT_ONLY
-glom_LDADD += translation/libtranslation.a \
-              relationships_overview/librelationshipsoverview.a
-endif
 
 glom_LDADD += python_embed/libpython_embed.a \
               $(top_builddir)/glom/libglom/libglom.la \

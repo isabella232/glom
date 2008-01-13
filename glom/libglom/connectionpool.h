@@ -196,12 +196,14 @@ public:
   typedef sigc::slot<Document_Glom*> SlotGetDocument; 
   void set_get_document_func(const SlotGetDocument& slot);
 
+#ifndef G_OS_WIN32
   static EpcContents* on_publisher_document_requested (EpcPublisher* publisher, const gchar* key, gpointer user_data);
   static gboolean on_publisher_document_authentication(EpcAuthContext* context, const gchar* user_name, gpointer user_data);
 
   static void on_epc_progress_begin(const gchar *title, gpointer user_data);
   static void on_epc_progress_update(gdouble progress, const gchar* message, gpointer user_data);
   static void on_epc_progress_end(gpointer user_data);
+#endif // !G_OS_WIN32
 
 
   /** Check whether PostgreSQL is really available for self-hosting,
@@ -245,12 +247,14 @@ protected:
   static int discover_first_free_port(int start_port, int end_port);
 
   Document_Glom* get_document();
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
+#ifndef G_OS_WIN32
   /** Advertize self-hosting via avahi:
    */
   void avahi_start_publishing();
   void avahi_stop_publishing();
+#endif // !G_OS_WIN32
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 protected:
 
