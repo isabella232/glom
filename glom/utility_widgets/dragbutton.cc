@@ -29,7 +29,8 @@ DragButton::DragButton(Gtk::Image& image, const Glib::ustring& id)
   m_id = id;
   std::list<Gtk::TargetEntry> targetentries;
   targetentries.push_back(Gtk::TargetEntry(get_target()));
-  drag_source_set(targetentries);
+  drag_source_set(targetentries, Gdk::MODIFIER_MASK, 
+                  Gdk::ACTION_COPY | Gdk::ACTION_MOVE);
 }
 
 DragButton::~DragButton()

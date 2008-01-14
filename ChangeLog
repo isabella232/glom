@@ -1,3 +1,13 @@
+2008-01-14  Johannes Schmid <jhs@gnome.org>
+
+	* glom/utility_widgets/dragbutton.cc:
+	Setup drag source correctly.
+	
+	* glom/utility_widgets/flowtable.cc:
+	* glom/utility_widgets/flowtable.h:	
+	Fixed placeholder expanding
+	Support dragging on child widgets (at least GtkEntry's for now)
+
 2008-01-13  Armin Burgmeier  <armin@openismus.com>
 
 	* configure.in: Disable the --with-postgres-utils options on Windows

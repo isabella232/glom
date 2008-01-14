@@ -38,7 +38,7 @@ public:
   virtual void add(Gtk::Widget& first, Gtk::Widget& second, bool expand_second = false);
   virtual void add(Gtk::Widget& first, bool expand = false); //override
   void insert_before(Gtk::Widget& first, Gtk::Widget& second, Gtk::Widget& before, bool expand_second);
-  void insert_before(Gtk::Widget& first, Gtk::Widget& before, bool expand_second);
+  void insert_before(Gtk::Widget& first, Gtk::Widget& before, bool expand);
 
 	virtual void remove(Gtk::Widget& first); //override
 
