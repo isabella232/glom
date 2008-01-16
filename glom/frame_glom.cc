@@ -1567,6 +1567,14 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
         const bool test = connection_pool->start_self_hosting();
         if(!test)
           return false;
+
+        // Store in document, so these values are actually used when connecting
+	Document_Glom* document = get_document();
+	if(document)
+	{
+	  document->set_connection_port(connection_pool->get_port());
+          document->set_connection_try_other_ports(connection_pool->get_try_other_ports());
+	}
       }
       else
         return false;
@@ -1643,6 +1651,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
         {
           //Warn the user, and let him try again:
           Utils::show_ok_dialog(_("Connection Failed"), _("Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."), *(get_app_window()), Gtk::MESSAGE_ERROR); //TODO: Add help button.
+	  return false;
         }
         else
         {

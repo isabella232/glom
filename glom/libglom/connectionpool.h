@@ -162,6 +162,7 @@ public:
 
   Glib::ustring get_host() const;
   int get_port() const;
+  bool get_try_other_ports() const;
   Glib::ustring get_user() const;
   Glib::ustring get_password() const;
   Glib::ustring get_database() const;

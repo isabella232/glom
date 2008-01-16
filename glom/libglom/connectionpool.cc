@@ -603,6 +603,11 @@ int ConnectionPool::get_port() const
   return m_port;
 }
 
+bool ConnectionPool::get_try_other_ports() const
+{
+  return m_try_other_ports;
+}
+
 Glib::ustring ConnectionPool::get_user() const
 {
   return m_user;
@@ -822,6 +827,7 @@ bool ConnectionPool::start_self_hosting()
   if(!result)
   {
     std::cerr << "Error while attempting to self-host a database." << std::endl;
+    return false;
   }
 
   m_port = available_port; //Remember it for later.
