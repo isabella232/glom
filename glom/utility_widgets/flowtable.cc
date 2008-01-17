@@ -1132,11 +1132,7 @@ bool FlowTable::on_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_contex
   x += get_allocation().get_x();
   y += get_allocation().get_y();
   
-  m_current_dnd_item = dnd_get_item(x, y);
-	
-  on_dnd_remove_placeholder ();
-  realize();
-  
+  m_current_dnd_item = dnd_get_item(x, y);  
   LayoutWidgetBase* above = dnd_find_datawidget();
 	
   // above might be 0 here...
@@ -1217,13 +1213,12 @@ LayoutWidgetBase* FlowTable::dnd_find_datawidget()
   LayoutWidgetBase* above = 0;
   if(m_current_dnd_item)
   {
-    if(m_current_dnd_item->m_first)
+		if(m_current_dnd_item->m_first)
     {
       Gtk::Alignment* alignment = dynamic_cast <Gtk::Alignment*>(m_current_dnd_item->m_first);
       if (alignment)
         above = dynamic_cast<PlaceholderGlom*>(alignment->get_child());
     }
-
     if(!above && m_current_dnd_item->m_first)
       above = dynamic_cast<LayoutWidgetBase*>(m_current_dnd_item->m_first);
 
@@ -1255,7 +1250,6 @@ bool FlowTable::on_child_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_
 	}
     
   on_dnd_remove_placeholder ();
-  realize();
   
   LayoutWidgetBase* above = dnd_find_datawidget();
 	

@@ -1,4 +1,13 @@
-2008-01-14  Johannes Schmid <jhs@gnome.org>
+2008-01-17  Johannes Schmid <johannes.schmid@openismus.com>
+
+	* glom/mode_data/flowtablewithfields.cc:
+	* glom/utility_widgets/flowtable.cc:
+	
+	Fixed some odd dragging bug and removed dialogs for
+	new buttons/label. Use Developers->Layout instead to
+	change the appearance of newly added items.
+
+2008-01-14  Johannes Schmid <johannes.schmid@openismus.com>
 
 	* glom/utility_widgets/dragbutton.cc:
 	Setup drag source correctly.
