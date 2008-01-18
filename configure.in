@@ -209,6 +209,7 @@ AC_OUTPUT(Makefile \
     glom/mode_find/Makefile \
     glom/navigation/Makefile \
     glom/utility_widgets/Makefile \
+      glom/utility_widgets/calendar/Makefile \
       glom/utility_widgets/cellrendererlist/Makefile \
       glom/utility_widgets/adddel/Makefile \
         glom/utility_widgets/adddel/eggcolumnchooser/Makefile \

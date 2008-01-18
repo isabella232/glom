@@ -1,0 +1,4 @@
+This is a copy of GtkCalendar and Gtk::Calendar, to 
+avoiding depending on an unreleased version of GTK+, 
+so we can use new API. It should be removed when 
+GTK+ 2.16.0 has been released.

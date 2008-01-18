@@ -1,3 +1,17 @@
+2008-01-18  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in:
+	* glom/utility_widgets/Makefile.am:
+	* glom/utility_widgets/calendar/Makefile.am:
+	* glom/utility_widgets/calendar/README:
+	* glom/utility_widgets/calendar/glomcalendar.cc:
+	* glom/utility_widgets/calendar/glomcalendar.h:
+	* glom/utility_widgets/calendar/glomgtkcalendar.c:
+	* glom/utility_widgets/calendar/glomgtkcalendar.h:
+	Added copied (and renamed) versions of Gtk::Calendar and 
+	GtkCalendar with the new details callback function, 
+	instead of depending on unreleased/unstable GTK+ and gtkmm.
+
 2008-01-17  Johannes Schmid <johannes.schmid@openismus.com>
 
 	* glom/mode_data/flowtablewithfields.cc:
