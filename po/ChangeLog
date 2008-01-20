@@ -1,7 +1,13 @@
+2008-01-20  Stéphane Raimbault  <stephane.raimbault@gmail.com>
+
+	* POTFILES.in: Moved flowtablewithfields.cc to glom/mode_data from
+	glom/utility_widgets.
+
 2007-12-31  Yannig Marchegay <yannig@marchegay.org>
 
 	* oc.po: Updated Occitan translation.
-2007-12-30  Jorge Gonzalez  <jorgegonz@svn.gnome.org>  
+	
+2007-12-30  Jorge Gonzalez  <jorgegonz@svn.gnome.org>  
 
 	* es.po: Updated Spanish translation 
 

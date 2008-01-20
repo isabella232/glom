@@ -57,6 +57,7 @@ glom/mode_data/dialog_layout_details.cc
 glom/mode_data/dialog_layout_export.cc
 glom/mode_data/dialog_layout_list.cc
 glom/mode_data/dialog_layout_list_related.cc
+glom/mode_data/flowtablewithfields.cc
 glom/mode_data/notebook_data.cc
 glom/mode_design/box_db_table_relationships.cc
 glom/mode_design/dialog_add_related_table.cc
@@ -92,7 +93,6 @@ glom/utility_widgets/db_adddel/db_adddel.cc
 glom/utility_widgets/dialog_choose_id.cc
 glom/utility_widgets/entryglom.cc
 glom/utility_widgets/filechooserdialog_saveextras.cc
-glom/utility_widgets/flowtablewithfields.cc
 glom/utility_widgets/imageglom.cc
 glom/utility_widgets/layoutwidgetbase.cc
 glom/xsl_utils.cc
