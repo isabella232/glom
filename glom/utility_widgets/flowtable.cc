@@ -1172,8 +1172,10 @@ FlowTable::dnd_get_item(int drag_x, int drag_y)
 { 
   int column_width;
   get_column_height (0, m_children.size(), column_width);
-  
-  int column = drag_x / column_width;
+  int column = 0;
+	
+  if (column_width != 0)
+    column = drag_x / column_width;
   
   for (std::vector<FlowTableItem>::iterator cur_item = m_children.begin(); cur_item != m_children.end(); 
        cur_item++)

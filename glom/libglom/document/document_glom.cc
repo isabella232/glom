@@ -1356,7 +1356,7 @@ Document_Glom::type_list_layout_groups Document_Glom::get_data_layout_groups_def
     sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::create();
     group->set_name("main");
     group->m_columns_count = 1;
-    result[1] = group;
+    result.push_back(group);
     pTopLevel = group;
 
     if(layout_name == "details") //The Details default layut is a bit more complicated.
