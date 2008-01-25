@@ -1,3 +1,10 @@
+2008-01-25  Johannes Schmid <johannes.schmid@openismus.com>
+
+	* glom/mode_data/box_data_details.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	
+	Fixed two crasher related to working with empty layout/empty tables
+
 2008-01-21  Johannes Schmid <johannes.schmid@openismus.com>
 
 	* glom/libglom/document/document_glom.cc:

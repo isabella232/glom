@@ -1638,7 +1638,7 @@ void DbAddDel::on_treeview_button_press_event(GdkEventButton* event)
     bool row_exists = static_cast<const Gtk::TreeView&>(m_TreeView).get_path_at_pos((int)event->x, (int)event->y, path, pColumn, cell_x, cell_y);
 
     //Get the row:
-    if(row_exists)
+    if(row_exists && m_refListStore)
     {
       Gtk::TreeModel::iterator iterRow = m_refListStore->get_iter(path);
       if(iterRow)
