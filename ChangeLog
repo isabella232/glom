@@ -1,3 +1,22 @@
+2008-01-26  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/dialog_progress_creating.h:
+	* glom/libglom/dialog_progress_creating.cc: Added a run() method so
+	that we can show it without the ugly while(Gtk::Main::events_pending())
+	Gtk::Main::iteration().
+
+	* glom/libglom/spawn_with_feedback.cc: Rewrote
+	execute_command_line_and_wait_until_second_command_returns_success()
+	so that it does not block the UI, does not run into an endless loop if
+	the first command fails, and shows a useful error message in that
+	case.
+
+	* glom/libglom/connectionpool.cc: Locate postgres executables via
+	Glib::find_program_in_path() on Windows, because hardcoding the path
+	to the postgres utils does not work. Use "postgres.exe" instead of
+	"postmaster.exe" on Windows because the postgres installer does not
+	install postmaster.exe (which is deprecated since postgresql 8.2).
+
 2008-01-25  Johannes Schmid <johannes.schmid@openismus.com>
 
 	* glom/mode_data/box_data_details.cc:
@@ -35,6 +54,17 @@
 	Fixed some odd dragging bug and removed dialogs for
 	new buttons/label. Use Developers->Layout instead to
 	change the appearance of newly added items.
+
+2008-01-17  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/connection_pool.h:
+	* glom/libglom/connection_pool.cc: Added
+	ConnectionPool::get_try_other_ports().
+
+	* glom/frame_glom.cc: Fixed connection proceduce after creating new
+	self-hosted database by setting port and try_other_ports into in the
+	document. These settings are later used for the connection. If we
+	don't do that, port is 0 and we can't connect.
 
 2008-01-14  Johannes Schmid <johannes.schmid@openismus.com>
 

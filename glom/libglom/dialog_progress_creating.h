@@ -43,9 +43,18 @@ public:
 
   void pulse();
 
+  // TODO: This should probably derive from Gtk::Dialog... armin.
+  void response(int response_id);
+  int run();
+
+  virtual bool on_delete_event(GdkEventAny* event);
+
 protected:
   Gtk::ProgressBar* m_progress;
   Gtk::Label* m_label_message;
+
+  int m_response_id;
+  bool m_running;
 };
 
 } //namespace Glom

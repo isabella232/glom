@@ -68,6 +68,11 @@ namespace
   std::string get_path_to_postgres_executable(const std::string& program)
   {
 #ifdef G_OS_WIN32
+    // Use postgres on Windows, since the postgresql installer does not
+    // install the (deprecated) postmaster binary.
+    if(program == "postmaster")
+      return Glib::find_program_in_path("postgres.exe");
+
     return Glib::find_program_in_path(program + EXEEXT);
 #else
     return Glib::build_filename(POSTGRES_UTILS_PATH, program + EXEEXT);
@@ -804,7 +809,7 @@ bool ConnectionPool::start_self_hosting()
   // -k specifies a directory to use for the socket. This must be writable by us.
   // POSTGRES_POSTMASTER_PATH is defined in config.h, based on the configure.
   const std::string command_postgres_start = Glib::shell_quote(get_path_to_postgres_executable("postmaster")) + " -D \"" + dbdir_data + "\" "
-                                  + " -p " + port_as_text 
+                                  + " -p " + port_as_text
                                   + " -h \"*\" " //Equivalent to listen_addresses in postgresql.conf. Listen to all IP addresses, so any client can connect (with a username+password)
                                   + " -c hba_file=\"" + dbdir + "/config/pg_hba.conf\""
                                   + " -c ident_file=\"" + dbdir + "/config/pg_ident.conf\""
