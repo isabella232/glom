@@ -20,6 +20,7 @@
 
 #include "dialog_group_by.h"
 #include <glom/libglom/data_structure/glomconversions.h>
+#include <glom/libglom/glade_utils.h>
 #include <sstream> //For stringstream
 #include <glibmm/i18n.h>
 
@@ -128,7 +129,7 @@ void Dialog_GroupBy::on_button_field_sort_by()
 {
   if(!m_dialog_choose_sort_fields)
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_groupby_sort_fields");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_groupby_sort_fields");
     if(refXml)
     {
       refXml->get_widget_derived("dialog_groupby_sort_fields", m_dialog_choose_sort_fields);
@@ -158,7 +159,7 @@ void Dialog_GroupBy::on_button_secondary_fields()
 {
   if(!m_dialog_choose_secondary_fields)
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_groupby_secondary_fields");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_groupby_secondary_fields");
     if(refXml)
     {
       refXml->get_widget_derived("dialog_groupby_secondary_fields", m_dialog_choose_secondary_fields);

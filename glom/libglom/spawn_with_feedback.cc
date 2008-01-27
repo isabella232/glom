@@ -20,6 +20,7 @@
 
 #include <glom/libglom/spawn_with_feedback.h>
 #include <glom/libglom/dialog_progress_creating.h>
+#include <glom/libglom/glade_utils.h>
 #include <bakery/bakery.h>
 #include <glibmm/i18n.h>
 #include <iostream>
@@ -133,10 +134,10 @@ static bool pulse_until_thread_finished(Dialog_ProgressCreating& dialog_progress
 static Dialog_ProgressCreating* get_and_show_pulse_dialog(const Glib::ustring& message, Gtk::Window* parent_window)
 {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_progress");
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "window_progress");
 #else
   std::auto_ptr<Gnome::Glade::XmlError> error;
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_progress", "", error);
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "window_progress", "", error);
   if(error.get()) return NULL;
 #endif
 

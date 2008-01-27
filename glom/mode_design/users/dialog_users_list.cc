@@ -22,6 +22,7 @@
 #include "dialog_user.h"
 #include "dialog_choose_user.h"
 #include <glom/glom_privs.h>
+#include <glom/libglom/glade_utils.h>
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
@@ -187,7 +188,7 @@ void Dialog_UsersList::on_button_user_add()
   Dialog_ChooseUser* dialog = 0;
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_choose_user");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_user");
 
     refXml->get_widget_derived("dialog_choose_user", dialog);
   }
@@ -234,7 +235,7 @@ void Dialog_UsersList::on_button_user_new()
   Dialog_User* dialog = 0;
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_user");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_user");
 
     refXml->get_widget_derived("dialog_user", dialog);
   }
@@ -300,7 +301,7 @@ void Dialog_UsersList::on_button_user_edit()
       Dialog_User* dialog = 0;
       try
       {
-        Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_user");
+        Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_user");
 
         refXml->get_widget_derived("dialog_user", dialog);
       }

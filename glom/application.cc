@@ -778,10 +778,10 @@ Glib::ustring App_Glom::get_file_uri_without_extension(const Glib::ustring& uri)
 Bakery::App* App_Glom::new_instance() //Override
 {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_main");
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "window_main");
 #else
   std::auto_ptr<Gnome::Glade::XmlError> error;
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_main", "", error);
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "window_main", "", error);
   if(error.get()) return NULL;
 #endif
   App_Glom* pApp_Glom = 0;
@@ -1127,10 +1127,10 @@ bool App_Glom::offer_new_or_existing()
 {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   //Offer to load an existing document, or start a new one.
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_existing_or_new");
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "dialog_existing_or_new");
 #else
   std::auto_ptr<Gnome::Glade::XmlError> error;
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_existing_or_new", "", error);
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "dialog_existing_or_new", "", error);
   if(error.get())
     return false;
 #endif
@@ -1449,7 +1449,7 @@ bool App_Glom::recreate_database(bool& user_cancelled)
   //Show the user that something is happening, because the INSERTS might take time.
   //TOOD: This doesn't actually show up until near the end, even with Gtk::Main::instance()->iteration().
   std::auto_ptr<Dialog_ProgressCreating> dialog_progress;
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_progress");
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "window_progress");
   if(refXml)
   {
     Dialog_ProgressCreating* dialog_progress_temp = 0;
@@ -2283,7 +2283,7 @@ void App_Glom::stop_self_hosting_of_document_database()
 
 void App_Glom::on_menu_developer_changelanguage()
 {
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_change_language");
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_change_language");
   if(refXml)
   {
     Dialog_ChangeLanguage* dialog = 0;
@@ -2314,7 +2314,7 @@ void App_Glom::on_menu_developer_translations()
 {
   if(!m_window_translations)
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_translations");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_translations");
     refXml->get_widget_derived("window_translations", m_window_translations);
     if(m_window_translations)
     {

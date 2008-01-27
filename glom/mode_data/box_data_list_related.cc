@@ -21,6 +21,7 @@
 #include "box_data_list_related.h"
 #include "dialog_layout_list_related.h"
 #include <glom/libglom/data_structure/glomconversions.h>
+#include <glom/libglom/glade_utils.h>
 #include <glom/frame_glom.h> //For show_ok_dialog()
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <glibmm/i18n.h>
@@ -65,7 +66,7 @@ Box_Data_List_Related::Box_Data_List_Related()
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_data_layout");
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_data_layout");
   if(refXml)
   {
     Dialog_Layout_List_Related* dialog = 0;

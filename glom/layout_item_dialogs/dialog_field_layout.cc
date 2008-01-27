@@ -20,6 +20,7 @@
 
 #include "dialog_field_layout.h"
 #include <glom/libglom/data_structure/glomconversions.h>
+#include <glom/libglom/glade_utils.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -53,7 +54,7 @@ Dialog_FieldLayout::Dialog_FieldLayout(BaseObjectType* cobject, const Glib::RefP
   //Get the formatting stuff:
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXmlFormatting = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "box_formatting");
+    Glib::RefPtr<Gnome::Glade::Xml> refXmlFormatting = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "box_formatting");
     refXmlFormatting->get_widget_derived("box_formatting", m_box_formatting);
   }
   catch(const Gnome::Glade::XmlError& ex)

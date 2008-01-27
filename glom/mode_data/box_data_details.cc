@@ -24,6 +24,7 @@
 #include <glom/libglom/data_structure/relationship.h>
 #include <glom/libglom/data_structure/glomconversions.h>
 #include "dialog_layout_details.h"
+#include <glom/libglom/glade_utils.h>
 #include <glom/libglom/utils.h>
 #include <glom/glom_privs.h>
 #include "../xsl_utils.h"
@@ -60,7 +61,7 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //TODO_Performance: Instantiate this only when needed:
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_data_layout"); //TODO: Use a generic layout dialog?
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_data_layout"); //TODO: Use a generic layout dialog?
   if(refXml)
   {
     Dialog_Layout_Details* dialog = 0;

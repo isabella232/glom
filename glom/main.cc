@@ -41,6 +41,7 @@
 #endif
 
 #include "application.h"
+#include <glom/libglom/glade_utils.h>
 
 namespace Glom
 {
@@ -214,10 +215,10 @@ main(int argc, char* argv[])
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     // Main app
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_main");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Glom::Utils::get_glade_file_path("glom.glade"), "window_main");
 #else
     std::auto_ptr<Gnome::Glade::XmlError> error;
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_main", "", error);
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Glom::Utils::get_glade_file_path("glom.glade"), "window_main", "", error);
     if(error.get())
     {
       std::cerr << "Glom: exception: \n  " << error->what() << std::endl;

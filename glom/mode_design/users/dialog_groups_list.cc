@@ -23,6 +23,7 @@
 #include "dialog_users_list.h"
 #include "dialog_new_group.h"
 #include <glom/libglom/standard_table_prefs_fields.h>
+#include <glom/libglom/glade_utils.h>
 #include <glom/glom_privs.h>
 //#include <libgnome/gnome-i18n.h>
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
@@ -238,7 +239,7 @@ void Dialog_GroupsList::on_button_group_new()
   Dialog_NewGroup* dialog = 0;
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_new_group");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_new_group");
 
     refXml->get_widget_derived("dialog_new_group", dialog);
   }
@@ -297,7 +298,7 @@ void Dialog_GroupsList::on_button_group_users()
       Dialog_UsersList* dialog = 0;
       try
       {
-        Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_users");
+        Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_users");
 
         refXml->get_widget_derived("window_users", dialog);
       }

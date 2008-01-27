@@ -22,6 +22,7 @@
 #include "dialog_choose_relationship.h"
 #include "../layout_item_dialogs/dialog_buttonscript.h"
 #include "../layout_item_dialogs/dialog_notebook.h"
+#include <glom/libglom/glade_utils.h>
 #include "../frame_glom.h" //For show_ok_dialog()
 //#include <libgnome/gnome-i18n.h>
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
@@ -523,7 +524,7 @@ sharedptr<LayoutItem_Button> Dialog_Layout_Details::offer_button_script_edit(con
 
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_button_script");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_button_script");
 
     Dialog_ButtonScript* dialog = 0;
     refXml->get_widget_derived("window_button_script", dialog);
@@ -558,7 +559,7 @@ sharedptr<LayoutItem_Text> Dialog_Layout_Details::offer_textobject_edit(const sh
 
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_textobject");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_textobject");
 
     Dialog_TextObject* dialog = 0;
     refXml->get_widget_derived("window_textobject", dialog);
@@ -598,7 +599,7 @@ sharedptr<Relationship> Dialog_Layout_Details::offer_relationship_list(const sha
 
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_choose_relationship");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_relationship");
 
     Dialog_ChooseRelationship* dialog = 0;
     refXml->get_widget_derived("dialog_choose_relationship", dialog);

@@ -21,6 +21,7 @@
 #ifndef GLOM_GLADE_UTILS_H
 #define GLOM_GLADE_UTILS_H
 
+#include <iostream> // For std::cerr
 #include <libglademm.h>
 
 namespace Glom
@@ -28,6 +29,18 @@ namespace Glom
 
 namespace Utils
 {
+
+inline std::string get_glade_file_path(const std::string& filename)
+{
+#ifdef G_OS_WIN32
+  gchar* packdir = g_win32_get_package_installation_directory(NULL, NULL);
+  std::string result = Glib::build_filename(packdir, filename);
+  g_free(packdir);
+  return result;
+#else
+  return GLOM_GLADEDIR + filename;
+#endif
+}
 
 template<class T_Widget>
 void get_glade_widget_derived_with_warning(const Glib::ustring& id, T_Widget*& widget)
@@ -37,7 +50,7 @@ void get_glade_widget_derived_with_warning(const Glib::ustring& id, T_Widget*& w
   #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", id);
+    refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), id);
   }
   catch(const Gnome::Glade::XmlError& ex)
   {
@@ -45,7 +58,7 @@ void get_glade_widget_derived_with_warning(const Glib::ustring& id, T_Widget*& w
   }
 #else
   error.reset(NULL);
-  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", id, "", error);
+  refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), id, "", error);
   if(error.get()) std::cerr << error->what() << std::endl;
 #endif
 
@@ -63,7 +76,7 @@ void get_glade_developer_widget_derived_with_warning(const Glib::ustring& id, T_
   #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", id);
+    refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), id);
   }
   catch(const Gnome::Glade::XmlError& ex)
   {
@@ -71,7 +84,7 @@ void get_glade_developer_widget_derived_with_warning(const Glib::ustring& id, T_
   }
 #else
   error.reset(NULL);
-  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", id, "", error);
+  refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), id, "", error);
   if(error.get()) std::cerr << error->what() << std::endl;
 #endif
 
@@ -89,7 +102,7 @@ void get_glade_widget_with_warning(const Glib::ustring& id, T_Widget*& widget)
   #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", id);
+    refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), id);
   }
   catch(const Gnome::Glade::XmlError& ex)
   {
@@ -97,7 +110,7 @@ void get_glade_widget_with_warning(const Glib::ustring& id, T_Widget*& widget)
   }
 #else
   error.reset(NULL);
-  refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", id, "", error);
+  refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), id, "", error);
   if(error.get()) std::cerr << error->what() << std::endl;
 #endif
 

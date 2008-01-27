@@ -23,6 +23,7 @@
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <gtkmm/stock.h>
 #include <glom/mode_design/print_layouts/dialog_text_formatting.h>
+#include <glom/libglom/glade_utils.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -337,7 +338,7 @@ void Canvas_PrintLayout::on_context_menu_formatting()
 
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXmlFormatting = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_text_format");
+    Glib::RefPtr<Gnome::Glade::Xml> refXmlFormatting = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_text_format");
     refXmlFormatting->get_widget_derived("window_text_format", m_dialog_format);
     add_view(m_dialog_format);
 

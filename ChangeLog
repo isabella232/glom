@@ -1,3 +1,35 @@
+2008-01-27  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/glade_utils.h: Added Utils::get_glade_file_path() to
+	locate the glade file relative to the application executable on
+	Windows.
+
+	* glom/dialog_invalid_data.cc:
+	* glom/libglom/spawn_with_feedback.cc:
+	* glom/utility_widgets/datawidget.cc:
+	* glom/frame_glom.cc:
+	* glom/layout_item_dialogs/dialog_field_layout.cc:
+	* glom/layout_item_dialogs/dialog_group_by.cc:
+	* glom/reports/dialog_layout_report.cc:
+	* glom/translation/window_translations.cc:
+	* glom/base_db.cc:
+	* glom/main.cc:
+	* glom/mode_data/dialog_layout_details.cc:
+	* glom/mode_data/flowtablewithfields.cc:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_details.cc:
+	* glom/filechooser_export.cc:
+	* glom/application.cc:
+	* glom/mode_design/script_library/dialog_script_library.cc:
+	* glom/mode_design/users/dialog_users_list.cc:
+	* glom/mode_design/users/dialog_groups_list.cc:
+	* glom/mode_design/fields/dialog_fielddefinition.cc:
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	* glom/mode_design/print_layouts/dialog_text_formatting.cc:
+	* glom/mode_design/print_layouts/canvas_print_layout.cc: Use
+	Utils::get_glade_file_path() to load the glade files.
+
 2008-01-26  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/dialog_progress_creating.h:

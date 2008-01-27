@@ -20,6 +20,7 @@
 
 #include "box_db_table_definition.h"
 #include <glom/frame_glom.h>
+#include <glom/libglom/glade_utils.h>
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <glom/glom_postgres.h>
 #include "../../../config.h"
@@ -43,7 +44,7 @@ void Box_DB_Table_Definition::init()
 {
   //m_strHint = _("Click [Edit] to edit the field definition in more detail.\nUse the Mode menu to see Data or perform a Find.");
 
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_field_definition_edit");
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_field_definition_edit");
   if(refXml)
     refXml->get_widget_derived("window_field_definition_edit", m_pDialog);
 

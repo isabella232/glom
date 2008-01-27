@@ -28,6 +28,7 @@
 #include "../application.h"
 #include <gtkmm/checkbutton.h>
 #include <glom/libglom/data_structure/glomconversions.h>
+#include <glom/libglom/glade_utils.h>
 #include "box_data_list_related.h"
 #include "dialog_choose_relationship.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
@@ -1007,7 +1008,7 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
   {
     try
     {
-      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_choose_relationship");
+      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_relationship");
 
       Dialog_ChooseRelationship* dialog = 0;
       refXml->get_widget_derived("dialog_choose_relationship", dialog);
@@ -1274,7 +1275,7 @@ sharedptr<LayoutItem_Portal> FlowTableWithFields::get_layout_item_from_relation(
   sharedptr<LayoutItem_Portal> layout_item(0);
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_choose_relationship");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "dialog_choose_relationship");
 
     Dialog_ChooseRelationship* dialog = 0;
     refXml->get_widget_derived("dialog_choose_relationship", dialog);

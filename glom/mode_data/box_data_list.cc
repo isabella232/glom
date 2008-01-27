@@ -20,6 +20,7 @@
 
 #include "box_data_list.h"
 #include <glom/libglom/data_structure/glomconversions.h>
+#include <glom/libglom/glade_utils.h>
 #include <glom/reports/report_builder.h>
 #include "dialog_layout_list.h"
 #include <glom/glom_privs.h>
@@ -38,7 +39,7 @@ Box_Data_List::Box_Data_List()
   m_layout_name = "list";
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_data_layout"); //TODO: Use a generic layout dialog?
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_data_layout"); //TODO: Use a generic layout dialog?
   if(refXml)
   {
     Dialog_Layout_List* dialog = 0;

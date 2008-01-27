@@ -21,6 +21,7 @@
 #include "dialog_invalid_data.h"
 #include <glom/libglom/data_structure/glomconversions.h>
 #include <glom/libglom/utils.h>
+#include <glom/libglom/glade_utils.h>
 
 namespace Glom
 {
@@ -32,10 +33,10 @@ bool glom_show_dialog_invalid_data(Field::glom_field_type glom_type)
 {
   //TODO: Share a global instance, to make this quicker?
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_data_invalid_format");
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "dialog_data_invalid_format");
 #else
   std::auto_ptr<Gnome::Glade::XmlError> error;
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "dialog_data_invalid_format", "", error);
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "dialog_data_invalid_format", "", error);
   if(error.get())
   {
     std::cerr << "glom_show_dialog_invalid_data() failed: " << error->what() << std::endl;

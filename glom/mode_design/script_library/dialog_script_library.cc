@@ -22,6 +22,7 @@
 #include "dialog_script_library.h"
 #include "../../python_embed/glom_python.h"
 #include <glom/libglom/data_structure/glomconversions.h>
+#include <glom/libglom/glade_utils.h>
 #include <glom/mode_design/script_library/dialog_new_script.h>
 #include <gtksourceviewmm/sourcelanguagemanager.h>
 #include <glom/application.h>
@@ -90,7 +91,7 @@ void Dialog_ScriptLibrary::on_button_add()
   Dialog_NewScript* dialog = 0;
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_new_library_script");
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_new_library_script");
 
     refXml->get_widget_derived("dialog_new_library_script", dialog);
   }
