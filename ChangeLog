@@ -1,3 +1,11 @@
+2008-01-28  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/document/document_glom.cc: load_after_layout_item_field():
+	Call set_full_field_details() on the layout item, so we load the correct 
+	formatting for that field type. For instance, this means we do not lose 
+	the multiline formatting option when loading. 
+	Thanks to Göran (TEK-en) for finding this bug.
+
 2008-01-28  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/spawn_with_feedback.cc: Set IOChannel that reads stderr

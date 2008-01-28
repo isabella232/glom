@@ -1855,6 +1855,9 @@ void Document_Glom::load_after_layout_item_field(const xmlpp::Element* element, 
 
   load_after_layout_item_usesrelationship(element, table_name, item);
 
+  //Needed to decide what formatting to load/save:
+  item->set_full_field_details( get_field(item->get_table_used(table_name), name) );
+
   item->set_editable( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_EDITABLE) );
 
   const xmlpp::Element* elementFormatting = get_node_child_named(element, GLOM_NODE_FORMAT);
