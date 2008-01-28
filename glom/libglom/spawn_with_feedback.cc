@@ -379,24 +379,17 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
 
   Glib::RefPtr<Glib::IOChannel> err = Glib::IOChannel::create_from_fd(child_stderr);
 
-  // Commented out, as it seems we do not get reading notifications on Windows
-  // with this:
-/*  // I think this can't actually fail, right after creation:
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  err->set_encoding("");
+  // We need to set the channel to nonblocking to not block the whole
+  // process waiting for input. This is not implemented on Windows, but
+  // it works there anyway; I guess it is always nonblocking on Windows:
 #ifndef G_OS_WIN32
-  // This is not implemented on Win32:
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   err->set_flags(Glib::IO_FLAG_NONBLOCK);
-#endif
 #else
   std::auto_ptr<Glib::Error> error;
-#ifndef G_OS_WIN32
-  // This is not implemented on Win32:
   err->set_flags(Glib::IO_FLAG_NONBLOCK, error);
-#endif
-  err->set_encoding("", error);
-#endif
-  err->set_buffered(false);*/
+#endif // !GLIBMM_EXCEPTIONS_ENABLED
+#endif // !G_OS_WIN32
 
   sigc::connection stderr_conn = Glib::signal_io().connect(sigc::bind(sigc::ptr_fun(&on_stderr_input), err, sigc::ref(stderr_text)), err, Glib::IO_IN);
 

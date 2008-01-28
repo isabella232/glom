@@ -1,3 +1,9 @@
+2008-01-28  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/spawn_with_feedback.cc: Set IOChannel that reads stderr
+	from child process to be nonblocking to make sure we don't block the
+	whole process.
+
 2008-01-27  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/glade_utils.h: Added Utils::get_glade_file_path() to
