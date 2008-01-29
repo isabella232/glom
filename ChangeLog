@@ -1,3 +1,10 @@
+2008-01-29  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_data/box_data_details.cc: on_flowtable_script_button_clicked():
+	Make sure that we send the primary key value when refreshing after a button 
+	was clicked. This fixes the bug that most of the fields were blanked after 
+	clicking a button.
+
 2008-01-28  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/document/document_glom.cc: load_after_layout_item_field():
