@@ -193,11 +193,11 @@ void Box_Data_Details::create_layout()
 
 bool Box_Data_Details::fill_from_database()
 {
-  //std::cout << "Box_Data_Details::fill_from_database(): m_primary_key_value=" << m_primary_Key_value.to_string() << std::endl;
+  //std::cout << "Box_Data_Details::fill_from_database(): m_primary_key_value=" << m_primary_key_value.to_string() << std::endl;
 
- //Don't try to open a connection if there is no document,
- //for instance, during application destruction.
- if(!get_document())
+  //Don't try to open a connection if there is no document,
+  //for instance, during application destruction.
+  if(!get_document())
     return false;
 
   bool bResult = false;
@@ -576,14 +576,15 @@ void Box_Data_Details::on_flowtable_script_button_clicked(const sharedptr<const 
     execute_button_script(layout_item, primary_key_value);
 
     //Refresh the view, in case the script changed any data:
-    if(get_primary_key_is_in_foundset(m_found_set, m_primary_key_value)) //Check, because maybe the script deleted the current record, or changed something so that it should no longer be shown in the found set.
+    //(m_primary_key_value seems to be NULL here. We can use primary_key_value instead, but it's a bit strange. murrayc.)
+    if(get_primary_key_is_in_foundset(m_found_set, primary_key_value)) //Check, because maybe the script deleted the current record, or changed something so that it should no longer be shown in the found set.
     {
-      refresh_data_from_database_with_primary_key(m_primary_key_value);
+      refresh_data_from_database_with_primary_key(primary_key_value);
     }
     else
     {
       //Tell the parent to do something appropriate, such as show another record:
-      signal_record_deleted().emit(m_primary_key_value);
+      signal_record_deleted().emit(primary_key_value);
     }
   }
 }

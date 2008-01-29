@@ -1,3 +1,9 @@
+1.6.7 (stable):
+
+* Fix loss of field formatting when reloading document.
+* Fix loss of images when reloading document.
+  (Murray Cumming)
+ 
 1.6.6 (stable):
 
 * Some minor improvements to the (still unfinished) Maemo port.
