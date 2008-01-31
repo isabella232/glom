@@ -86,8 +86,15 @@ OptionGroup::OptionGroup()
 int 
 main(int argc, char* argv[])
 {
+#ifdef G_OS_WIN32
+  // Load translations relative to glom.exe on Windows
+  gchar* dir = g_win32_get_package_installation_subdirectory(NULL, NULL, "locale");
+  bindtextdomain(GETTEXT_PACKAGE, dir);
+  g_free(dir);
+#else
   //Make this application use the current locale for _() translation:
   bindtextdomain(GETTEXT_PACKAGE, LOCALEDIR);  //LOCALEDIR is defined in the Makefile.am
+#endif
   bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
   textdomain(GETTEXT_PACKAGE);
 
