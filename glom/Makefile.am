@@ -105,6 +105,15 @@ if !WIN32
 test_pyembed_LDADD += -lutil
 endif
 
+# Icon on Windows
+if WIN32
+glom.res: glom.rc
+	$(WINDRES) -i glom.rc --input-format=rc -o glom.res -O coff
+
+BUILT_SOURCES = glom.res
+CLEANFILES = glom.res
+glom_LDADD += glom.res
+endif
 
 #Install the .dtd file:
 glomdatadir = $(pkgdatadir)

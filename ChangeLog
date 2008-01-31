@@ -1,5 +1,12 @@
 2008-01-31  Armin Burgmeier  <armin@openismus.com>
 
+	* icons/win32/glom.ico: Added 48x48 glom.ico to be used as icon for
+	glom.exe.
+	* glom/glom.rc: Added resource file containing glom.ico.
+	* glom/Makefile.am: Link resource file into glom.exe.
+
+2008-01-31  Armin Burgmeier  <armin@openismus.com>
+
 	* glom/main.cc: Load translations relative to glom.exe on Windows.
 
 2008-01-29  Murray Cumming  <murrayc@murrayc.com>
