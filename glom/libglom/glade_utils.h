@@ -33,7 +33,7 @@ namespace Utils
 inline std::string get_glade_file_path(const std::string& filename)
 {
 #ifdef G_OS_WIN32
-  gchar* packdir = g_win32_get_package_installation_directory(NULL, NULL);
+  gchar* packdir = g_win32_get_package_installation_subdirectory(NULL, NULL, "share/glom/glade");
   std::string result = Glib::build_filename(packdir, filename);
   g_free(packdir);
   return result;

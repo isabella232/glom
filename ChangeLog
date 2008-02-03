@@ -1,3 +1,14 @@
+2008-02-03  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/glade_utils.h:
+	* glom/main.cc: Adjust paths of glade files and locales to match the
+	path the (yet to come) installer installs them.
+
+	* glom/libglom/connectionpool.cc: Pass the -L flag with a path
+	relative to the glom executable (where the installer will install it)
+	to initdb on Windows so that it finds necessary files that are
+	normally available in /usr/share/postgresql/.
+
 2008-02-03  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/layout_item_dialogs/dialog_field_summary.cc: on_button_field():

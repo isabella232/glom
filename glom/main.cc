@@ -88,7 +88,7 @@ main(int argc, char* argv[])
 {
 #ifdef G_OS_WIN32
   // Load translations relative to glom.exe on Windows
-  gchar* dir = g_win32_get_package_installation_subdirectory(NULL, NULL, "locale");
+  gchar* dir = g_win32_get_package_installation_subdirectory(NULL, NULL, "lib/locale");
   bindtextdomain(GETTEXT_PACKAGE, dir);
   g_free(dir);
 #else

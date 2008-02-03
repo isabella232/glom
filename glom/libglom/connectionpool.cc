@@ -980,8 +980,21 @@ bool ConnectionPool::create_self_hosting(Gtk::Window* parent_window)
   const std::string temp_pwfile = Glib::build_filename(Glib::get_tmp_dir(), "glom_initdb_pwfile");
   create_text_file(temp_pwfile, get_password());
 
+  // We need to specify the path where initdb should look for shared files. If
+  // we don't do this, it defaults to /usr/local/pgsql/share. The installer
+  // installs the necessary files to $glomdir/share/postgresql which is what
+  // we pass here.
+#ifdef G_OS_WIN32
+  gchar* share_path_ = g_win32_get_package_installation_subdirectory(NULL, NULL, "share/postgresql");
+  const std::string share_path = std::string(" -L \"") + share_path_ + "\"";
+  g_free(share_path_);
+#else
+  const std::string share_path;
+#endif
+
   const std::string command_initdb = Glib::shell_quote(get_path_to_postgres_executable("initdb")) + " -D \"" + dbdir_data + "\"" +
-                                        " -U " + username + " --pwfile=\"" + temp_pwfile + "\""; 
+                                        " -U " + username + " --pwfile=\"" + temp_pwfile + "\"" + share_path;
+
   //Note that --pwfile takes the password from the first line of a file. It's an alternative to supplying it when prompted on stdin.
   const bool result = Glom::Spawn::execute_command_line_and_wait(command_initdb, _("Creating Database Data"));
   if(!result)
