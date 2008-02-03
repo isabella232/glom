@@ -1,3 +1,16 @@
+2008-02-03  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/layout_item_dialogs/box_formatting.cc: set_formatting(),
+	* glom/layout_item_dialogs/dialog_field_layout.cc: set_field():
+	Check for null RefPtrs to prevent crashes.
+
+	* glom/layout_item_dialogs/dialog_field_summary.cc: on_button_field():
+	Pass the correct parameter to avoid a use of an uninitialized value.
+	* glom/libglom/data_structure/layout/report_parts/layoutitem_fields_summary.cc:
+	Constructor: Initialize a member variable to avoid a use of an 
+	uninitialized value.
+	This fixed the crashes in bug #513927 (Göran)
+
 2008-01-29  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data_details.cc: on_flowtable_script_button_clicked():

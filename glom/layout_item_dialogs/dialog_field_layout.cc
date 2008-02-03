@@ -76,6 +76,9 @@ Dialog_FieldLayout::~Dialog_FieldLayout()
 
 void Dialog_FieldLayout::set_field(const sharedptr<const LayoutItem_Field>& field, const Glib::ustring& table_name)
 {
+  if(!field)
+    return;
+
   m_layout_item = glom_sharedptr_clone(field);
   m_table_name = table_name;
 

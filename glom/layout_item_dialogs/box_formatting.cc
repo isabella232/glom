@@ -108,6 +108,9 @@ void Box_Formatting::set_formatting(const FieldFormatting& format, const Glib::u
   m_combo_choices_field->set_selected_field(choices_field);
   m_combo_choices_field_second->set_selected_field(choices_field_second);
 
+  if(!field)
+    return;
+
   //Custom choices:
   m_adddel_choices_custom->remove_all();
   FieldFormatting::type_list_values list_choice_values = format.get_choices_custom();
