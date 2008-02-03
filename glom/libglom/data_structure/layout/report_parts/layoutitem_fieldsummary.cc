@@ -25,6 +25,7 @@ namespace Glom
 {
 
 LayoutItem_FieldSummary::LayoutItem_FieldSummary()
+: m_summary_type(TYPE_INVALID)
 {
 }
 

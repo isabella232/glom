@@ -1,3 +1,12 @@
+2008-02-03  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/layout_item_dialogs/dialog_field_summary.cc: on_button_field():
+	Pass the correct parameter to avoid a use of an uninitialized value.
+	* glom/libglom/data_structure/layout/report_parts/layoutitem_fields_summary.cc:
+	Constructor: Initialize a member variable to avoid a use of an 
+	uninitialized value.
+	This fixed the crashes in bug #513927 (Göran)
+
 2008-01-31  Armin Burgmeier  <armin@openismus.com>
 
 	* icons/win32/glom.ico: Added 48x48 glom.ico to be used as icon for
