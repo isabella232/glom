@@ -70,10 +70,26 @@ namespace
 #ifdef G_OS_WIN32
     // Use postgres on Windows, since the postgresql installer does not
     // install the (deprecated) postmaster binary.
+    std::string real_program = program + EXEEXT;
     if(program == "postmaster")
-      return Glib::find_program_in_path("postgres.exe");
+      real_program = "postgres.exe";
+    
+    // Have a look at the bin directory of the application executable first.
+    // The installer installs postgres there. postgres needs to be installed
+    // in a directory called bin for its relocation stuff to work, so that
+    // it finds the share data in share. Unfortunately it does not look into
+    // share/postgresql which would be nice to separate the postgres stuff
+    // from the other shared data. We can perhaps still change this later by
+    // building postgres with another prefix than /local/pgsql.
+    gchar* bin_subdir = g_win32_get_package_installation_subdirectory(NULL, NULL, "bin");
+    std::string test = Glib::build_filename(bin_subdir, real_program);
+    g_free(bin_subdir);
 
-    return Glib::find_program_in_path(program + EXEEXT);
+    if(Glib::file_test(test, Glib::FILE_TEST_IS_EXECUTABLE))
+      return test;
+
+    // Look in PATH otherwise
+    return Glib::find_program_in_path(real_program);
 #else
     return Glib::build_filename(POSTGRES_UTILS_PATH, program + EXEEXT);
 #endif
@@ -980,20 +996,8 @@ bool ConnectionPool::create_self_hosting(Gtk::Window* parent_window)
   const std::string temp_pwfile = Glib::build_filename(Glib::get_tmp_dir(), "glom_initdb_pwfile");
   create_text_file(temp_pwfile, get_password());
 
-  // We need to specify the path where initdb should look for shared files. If
-  // we don't do this, it defaults to /usr/local/pgsql/share. The installer
-  // installs the necessary files to $glomdir/share/postgresql which is what
-  // we pass here.
-#ifdef G_OS_WIN32
-  gchar* share_path_ = g_win32_get_package_installation_subdirectory(NULL, NULL, "share/postgresql");
-  const std::string share_path = std::string(" -L \"") + share_path_ + "\"";
-  g_free(share_path_);
-#else
-  const std::string share_path;
-#endif
-
   const std::string command_initdb = Glib::shell_quote(get_path_to_postgres_executable("initdb")) + " -D \"" + dbdir_data + "\"" +
-                                        " -U " + username + " --pwfile=\"" + temp_pwfile + "\"" + share_path;
+                                        " -U " + username + " --pwfile=\"" + temp_pwfile + "\"";
 
   //Note that --pwfile takes the password from the first line of a file. It's an alternative to supplying it when prompted on stdin.
   const bool result = Glom::Spawn::execute_command_line_and_wait(command_initdb, _("Creating Database Data"));

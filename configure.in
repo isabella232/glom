@@ -227,11 +227,14 @@ AC_OUTPUT(Makefile \
       icons/32x32/Makefile \
       icons/48x48/Makefile \
       icons/scalable/Makefile \
+      icons/win32/Makefile \
     xslt/Makefile \
     po/Makefile.in \
   macros/Makefile \
   examples/Makefile \
-  glom.desktop.in
+  glom.desktop.in \
+  win32/Makefile \
+  win32/glom.iss
 )
 
 

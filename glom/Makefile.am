@@ -113,6 +113,8 @@ glom.res: glom.rc
 BUILT_SOURCES = glom.res
 CLEANFILES = glom.res
 glom_LDADD += glom.res
+# Suppress console window
+glom_LDFLAGS = -mwindows
 endif
 
 #Install the .dtd file:

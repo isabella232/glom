@@ -1,3 +1,31 @@
+2008-02-04  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/connectionpool.cc: Try finding postgres binaries in
+	bin/ first. The installer installs them there because they do not find
+	the shared data they need otherwise.
+
+	* icons/Makefile.am:
+	* icons/win32/Makefile.am: Include the glom.ico in the distribution.
+
+	* glom/Makefile.am: Link glom.exe with the -mwindows flag on Windows
+	so that starting glom does not start a console window additionally.
+
+	* win32/glom.iss.in: The script to create the Windows installer with
+	InnoSetup (http://www.innosetup.org). It is a .in files so that
+	configure automatically sets the correct Glom version in it.
+
+	* win32/querymodules.bat: Batch file the installer uses to register
+	pango modules, gdk pixbuf loaders and GTK+ input methods.
+
+	* win32/build-installer: Tool I use to gather all files for the
+	installer. It is currently verify specific to my own build setup.
+
+	* win32/Makefile.am: Include these files with make dist.
+
+	* Makefile.am: Add win32 to SUBDIRS.
+	* configure.in: Create win32/Makefile, win32/glom.iss and
+	icons/win32/Makfile.
+
 2008-02-03  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/glade_utils.h:
