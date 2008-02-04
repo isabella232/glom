@@ -1,3 +1,16 @@
+2008-02-04  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/mode_data/dialog_layout_details.cc: save_to_document(): 
+	Set the sequence number later, to avoid it always being 1, which 
+	causes layout groups with those duplicate sequence numbers to be ignored 
+	and lost when reloading the document. This stopped people from adding 
+	new groups.
+	This fixes bug #513774  (Göran)
+
+	Note that svn trunk does not need this fix because we no longer use 
+	this explicit sequence number, because it was likely to lead to this 
+	kind of problem.
+
 2008-02-03  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/layout_item_dialogs/box_formatting.cc: set_formatting(),
@@ -25,6 +38,8 @@
 	formatting for that field type. For instance, this means we do not lose 
 	the multiline formatting option when loading. 
 	Thanks to Göran (TEK-en) for finding this bug.
+
+1.6.7:
 
 2007-12-20  Murray Cumming  <murrayc@murrayc.com>
 

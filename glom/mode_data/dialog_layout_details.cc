@@ -335,6 +335,8 @@ void Dialog_Layout_Details::set_document(const Glib::ustring& layout, Document_G
     for(Document_Glom::type_mapLayoutGroupSequence::const_iterator iter = mapGroups.begin(); iter != mapGroups.end(); ++iter)
     {
       sharedptr<const LayoutGroup> group = iter->second;
+      //std::cout << "debug: Dialog_Layout_Details::set_document(): adding group name=" << group->get_name() << std::endl;
+        
       sharedptr<const LayoutGroup> portal = sharedptr<const LayoutItem_Portal>::cast_dynamic(group);
       if(group && !portal)
         add_group(Gtk::TreeModel::iterator() /* null == top-level */, group);
@@ -1050,10 +1052,12 @@ void Dialog_Layout_Details::save_to_document()
       if(layout_group && !layout_portal) //There may be top-level groups, but no top-level fields, because the fields must be in a group (so that they are in columns)
       {
         sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::create();
-        group->m_sequence = group_sequence;
         fill_group(iterFields, group);
 
+        group->m_sequence = group_sequence;
         mapGroups[group_sequence] = group;
+        //std::cout << "debug: Dialog_Layout_Details::save_to_document(): adding group sequence=" << group_sequence << ", group->m_sequence=" << group->m_sequence << ". group name=" << group->get_name() << std::endl;
+        
         ++group_sequence;
       }
     }
