@@ -1,3 +1,13 @@
+2008-02-05  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/connectionpool.cc: Fixed a 'non-void function does not
+	return a value' warning in
+	ConnectionPool::check_postgres_is_available_with_warning().
+
+	* glom/layout_item_dialogs/dialog_buttonscript.cc: Use a monospace
+	font for the python script text field. Coding is much more convenient
+	with a monospace font.
+
 2008-02-04  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/connectionpool.cc: Try finding postgres binaries in

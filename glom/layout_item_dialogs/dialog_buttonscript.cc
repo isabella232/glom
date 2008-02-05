@@ -38,6 +38,9 @@ Dialog_ButtonScript::Dialog_ButtonScript(BaseObjectType* cobject, const Glib::Re
   refGlade->get_widget("button_test",  m_button_test);
 
   m_button_test->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_ButtonScript::on_button_test) );
+
+  // Set a monospace font
+  m_text_view->modify_font(Pango::FontDescription("Monospace"));
   //on_foreach_connect(*this);
 
   //Dialog_Properties::set_modified(false);
