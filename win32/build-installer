@@ -32,6 +32,8 @@ cp /bin/libatk-1.0-0.dll installer || exit
 cp /bin/libcairo-2.dll installer || exit
 cp /bin/libgnome-2-0.dll installer || exit
 cp /bin/libpng13.dll installer || exit
+cp /bin/jpeg62.dll installer || exit
+cp /bin/libtiff3.dll installer || exit
 cp /bin/libpopt-0.dll installer || exit
 
 cp /local/bin/libpango-1.0-0.dll installer || exit
@@ -82,13 +84,22 @@ strip installer/*.dll || exit
 strip installer/*.exe || exit
 
 # stripping libxml2.dll renders it unusable (although not changing it in size).
-# We therefore copy it after having stripped the rest
+# We therefore copy it after having stripped the rest. Same with the other DLLs
+# here. Perhaps those were built with MSVC.
 cp /bin/libxml2.dll installer || exit
 cp /bin/intl.dll installer || exit
 cp /bin/iconv.dll installer || exit
 cp /bin/zlib1.dll installer || exit
 
+# TODO: Find out Windows directory somehow, perhaps by looking at PATH?
+cp /c/WINDOWS/system32/python25.dll installer || exit
+
 echo "Copying modules..."
+
+# TODO: Let configure replace @pyexecdir@ to get the correct python path
+cp /c/Python25/Lib/site-packages/glom.pyd installer || exit
+cp /c/Python25/Lib/site-packages/gtk-2.0/gda.pyd installer || exit
+strip installer/*.pyd || exit
 
 mkdir -p installer/lib/gtk-2.0/2.10.0/immodules || exit
 cp /local/lib/gtk-2.0/2.10.0/immodules/*.dll installer/lib/gtk-2.0/2.10.0/immodules || exit

@@ -1,3 +1,9 @@
+2008-02-09  Armin Burgmeier  <armin@openismus.com>
+
+	* win32/build-installer:
+	* win32/glom.iss.in: Added some missing DLLs and gda and glom python
+	modules.
+
 2008-02-05  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/connectionpool.cc: Fixed a 'non-void function does not
