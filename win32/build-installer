@@ -1,6 +1,7 @@
 #!/bin/sh
 echo "You need to execute this on a Windows machine within msys (http://www.mingw.org)"
 echo "You also need InnoSetup (http://www.innosetup.org) with iscc in your PATH"
+echo "You need to have python, pygobject, pycairo and pygtk installed into C:\\Python25"
 echo "Make sure glom and all its dependencies have been installed correctly to /local"
 
 echo "Cleanup..."
@@ -91,8 +92,40 @@ cp /bin/intl.dll installer || exit
 cp /bin/iconv.dll installer || exit
 cp /bin/zlib1.dll installer || exit
 
+echo "Copying Python..."
+
 # TODO: Find out Windows directory somehow, perhaps by looking at PATH?
 cp /c/WINDOWS/system32/python25.dll installer || exit
+
+# We through all python modules into python/. Glom sets PYTHONPATH accordingly.
+mkdir -p installer/python || exit
+
+# TODO: Perhaps some scripts need more python modules.
+# TODO: Let configure replace @pyexecdir@ to get the correct python path?
+cp /c/Python25/Lib/*.py installer/python || exit
+
+mkdir -p installer/python/encodings || exit
+cp /c/Python25/Lib/encodings/*.py installer/python/encodings || exit
+
+cp /c/Python25/Lib/site-packages/glom.pyd installer/python || exit
+strip installer/python/glom.pyd || exit
+cp /c/Python25/Lib/site-packages/gtk-2.0/gda.pyd installer/python || exit
+strip installer/python/gda.pyd || exit
+
+cp /c/Python25/Lib/site-packages/pygtk.py installer/python || exit
+cp /c/Python25/Lib/site-packages/gtk-2.0/*.pyd installer/python || exit
+
+mkdir -p installer/python/gobject || exit
+cp /c/Python25/Lib/site-packages/gtk-2.0/gobject/*.py installer/python/gobject || exit
+cp /c/Python25/Lib/site-packages/gtk-2.0/gobject/*.pyd installer/python/gobject || exit
+
+mkdir -p installer/python/cairo || exit
+cp /c/Python25/Lib/site-packages/cairo/*.py installer/python/cairo || exit
+cp /c/Python25/Lib/site-packages/cairo/*.pyd installer/python/cairo || exit
+
+mkdir -p installer/python/gtk || exit
+cp /c/Python25/Lib/site-packages/gtk-2.0/gtk/*.py installer/python/gtk || exit
+cp /c/Python25/Lib/site-packages/gtk-2.0/gtk/*.pyd installer/python/gtk || exit
 
 echo "Copying modules..."
 

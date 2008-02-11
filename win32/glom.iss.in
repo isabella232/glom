@@ -12,6 +12,7 @@ OutputBaseFilename=glom-setup-@VERSION@
 
 [Components]
 Name: "gtk"; Description: "GTK+ runtime environment"; Types: full compact custom; Flags: fixed
+Name: "python"; Description: "Python runtime and modules"; Types: full compact custom; Flags: fixed
 Name: "main"; Description: "Glom"; Types: full compact custom; Flags: fixed
 Name: "locale"; Description: "Translations"; Types: full
 
@@ -103,9 +104,9 @@ Source: "share/postgresql/*"; DestDir: "{app}/share"; Components: main; Flags: r
 Source: "lib/postgresql/*.dll"; DestDir: "{app}/lib"; Components: main;
 
 ; Python modules
-Source: "python25.dll"; DestDir: "{app}"; Components: main
-Source: "glom.pyd"; DestDir: "{app}"; Components: main
-Source: "gda.pyd"; DestDir: "{app}"; Components: main
+Source: "python25.dll"; DestDir: "{app}"; Components: python
+Source: "python/*.py"; DestDir: "{app}"; Components: python; Flags: recursesubdirs
+Source: "python/*.pyd"; DestDir: "{app}"; Components: python; Flags: recursesubdirs
 
 ; Glom executables
 Source: "libglom-0.dll"; DestDir: "{app}"; Components: main

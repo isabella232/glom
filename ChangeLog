@@ -1,3 +1,10 @@
+2008-02-11  Armin Burgmeier  <armin@openismus.com>
+
+	* win32/build-installer:
+	* win32/glom.iss.in: Add all required python files. I would like to
+	put them into a separate python/ directory, but did not get it to find
+	them there. They are put into the main application directory for now.
+
 2008-02-09  Armin Burgmeier  <armin@openismus.com>
 
 	* win32/build-installer:
