@@ -15,87 +15,88 @@ echo "Copying DLL files..."
 
 # TODO: Built everything required myself, drop some redundant dependencies
 # such as intl.dll vs. libintl-8.dll
+mkdir -p installer/bin
 
-cp /local/bin/libintl-8.dll installer || exit
-cp /local/bin/libgettextpo-0.dll installer || exit
+cp /local/bin/libintl-8.dll installer/bin || exit
+cp /local/bin/libgettextpo-0.dll installer/bin || exit
 
-cp /local/bin/libglib-2.0-0.dll installer || exit
-cp /local/bin/libgio-2.0-0.dll installer || exit
-cp /local/bin/libgmodule-2.0-0.dll installer || exit
-cp /local/bin/libgobject-2.0-0.dll installer || exit
-cp /local/bin/libgthread-2.0-0.dll installer || exit
+cp /local/bin/libglib-2.0-0.dll installer/bin || exit
+cp /local/bin/libgio-2.0-0.dll installer/bin || exit
+cp /local/bin/libgmodule-2.0-0.dll installer/bin || exit
+cp /local/bin/libgobject-2.0-0.dll installer/bin || exit
+cp /local/bin/libgthread-2.0-0.dll installer/bin || exit
 
-cp /local/bin/gspawn-win32-helper.exe installer || exit
-cp /local/bin/gspawn-win32-helper-console.exe installer || exit
+cp /local/bin/gspawn-win32-helper.exe installer/bin || exit
+cp /local/bin/gspawn-win32-helper-console.exe installer/bin || exit
 
 # TODO: Build myself
-cp /bin/libatk-1.0-0.dll installer || exit
-cp /bin/libcairo-2.dll installer || exit
-cp /bin/libgnome-2-0.dll installer || exit
-cp /bin/libpng13.dll installer || exit
-cp /bin/jpeg62.dll installer || exit
-cp /bin/libtiff3.dll installer || exit
-cp /bin/libpopt-0.dll installer || exit
+cp /bin/libatk-1.0-0.dll installer/bin || exit
+cp /bin/libcairo-2.dll installer/bin || exit
+cp /bin/libgnome-2-0.dll installer/bin || exit
+cp /bin/libpng13.dll installer/bin || exit
+cp /bin/jpeg62.dll installer/bin || exit
+cp /bin/libtiff3.dll installer/bin || exit
+cp /bin/libpopt-0.dll installer/bin || exit
 
-cp /local/bin/libpango-1.0-0.dll installer || exit
-cp /local/bin/libpangocairo-1.0-0.dll installer || exit
-cp /local/bin/libpangowin32-1.0-0.dll installer || exit
+cp /local/bin/libpango-1.0-0.dll installer/bin || exit
+cp /local/bin/libpangocairo-1.0-0.dll installer/bin || exit
+cp /local/bin/libpangowin32-1.0-0.dll installer/bin || exit
 
-cp /local/bin/libgdk-win32-2.0-0.dll installer || exit
-cp /local/bin/libgdk_pixbuf-2.0-0.dll installer || exit
+cp /local/bin/libgdk-win32-2.0-0.dll installer/bin || exit
+cp /local/bin/libgdk_pixbuf-2.0-0.dll installer/bin || exit
 
-cp /local/bin/libgtk-win32-2.0-0.dll installer || exit
-cp /local/bin/libgtksourceview-2.0-0.dll installer || exit
+cp /local/bin/libgtk-win32-2.0-0.dll installer/bin || exit
+cp /local/bin/libgtksourceview-2.0-0.dll installer/bin || exit
 
-cp /local/bin/libORBit-2-0.dll installer || exit
-cp /local/bin/libORBitCosNaming-2-0.dll installer || exit
-cp /local/bin/libORBit-imodule-2-0.dll installer || exit
-cp /local/bin/libbonobo-2-0.dll installer || exit
-cp /local/bin/libbonobo-activation-4.dll installer || exit
+cp /local/bin/libORBit-2-0.dll installer/bin || exit
+cp /local/bin/libORBitCosNaming-2-0.dll installer/bin || exit
+cp /local/bin/libORBit-imodule-2-0.dll installer/bin || exit
+cp /local/bin/libbonobo-2-0.dll installer/bin || exit
+cp /local/bin/libbonobo-activation-4.dll installer/bin || exit
 
-cp /local/bin/libglade-2.0-0.dll installer || exit
-cp /local/bin/libgconf-2-4.dll installer || exit
-cp /local/bin/libgnomevfs-2-0.dll installer || exit
-cp /local/bin/libgoocanvas-3.dll installer || exit
+cp /local/bin/libglade-2.0-0.dll installer/bin || exit
+cp /local/bin/libgconf-2-4.dll installer/bin || exit
+cp /local/bin/libgnomevfs-2-0.dll installer/bin || exit
+cp /local/bin/libgoocanvas-3.dll installer/bin || exit
 
-cp /local/bin/libgda-3.0-2.dll installer || exit
-cp /local/bin/libgdasql-3.0-2.dll installer || exit
-cp /local/bin/libgda-report-3.0-2.dll installer || exit
+cp /local/bin/libgda-3.0-2.dll installer/bin || exit
+cp /local/bin/libgdasql-3.0-2.dll installer/bin || exit
+cp /local/bin/libgda-report-3.0-2.dll installer/bin || exit
 
-cp /local/bin/libsigc-2.0-0.dll installer || exit
-cp /local/bin/libglibmm-2.4-1.dll installer || exit
-cp /local/bin/libatkmm-1.6-1.dll installer || exit
-cp /local/bin/libcairomm-1.0-1.dll installer || exit
-cp /local/bin/libpangomm-1.4-1.dll installer || exit
-cp /local/bin/libgdkmm-2.4-1.dll installer || exit
-cp /local/bin/libxml++-2.6-2.dll installer || exit
-cp /local/bin/libgtkmm-2.4-1.dll installer || exit
+cp /local/bin/libsigc-2.0-0.dll installer/bin || exit
+cp /local/bin/libglibmm-2.4-1.dll installer/bin || exit
+cp /local/bin/libatkmm-1.6-1.dll installer/bin || exit
+cp /local/bin/libcairomm-1.0-1.dll installer/bin || exit
+cp /local/bin/libpangomm-1.4-1.dll installer/bin || exit
+cp /local/bin/libgdkmm-2.4-1.dll installer/bin || exit
+cp /local/bin/libxml++-2.6-2.dll installer/bin || exit
+cp /local/bin/libgtkmm-2.4-1.dll installer/bin || exit
 
-cp /local/bin/libgtksourceviewmm-2.0-1.dll installer || exit
-cp /local/bin/libgconfmm-2.6-1.dll installer || exit
-cp /local/bin/libgdamm-3.0-8.dll installer || exit
-cp /local/bin/libglademm-2.4-1.dll installer || exit
-cp /local/bin/libgnomevfsmm-2.6-1.dll installer || exit
+cp /local/bin/libgtksourceviewmm-2.0-1.dll installer/bin || exit
+cp /local/bin/libgconfmm-2.6-1.dll installer/bin || exit
+cp /local/bin/libgdamm-3.0-8.dll installer/bin || exit
+cp /local/bin/libglademm-2.4-1.dll installer/bin || exit
+cp /local/bin/libgnomevfsmm-2.6-1.dll installer/bin || exit
 
-cp /local/bin/libbakery-2.4-2-4-1.dll installer || exit
-cp /local/bin/libglom-0.dll installer || exit
+cp /local/bin/libbakery-2.4-2-4-1.dll installer/bin || exit
+cp /local/bin/libglom-0.dll installer/bin || exit
 
 echo "Stripping DLL files..."
-strip installer/*.dll || exit
-strip installer/*.exe || exit
+strip installer/bin/*.dll || exit
+strip installer/bin/*.exe || exit
 
 # stripping libxml2.dll renders it unusable (although not changing it in size).
 # We therefore copy it after having stripped the rest. Same with the other DLLs
 # here. Perhaps those were built with MSVC.
-cp /bin/libxml2.dll installer || exit
-cp /bin/intl.dll installer || exit
-cp /bin/iconv.dll installer || exit
-cp /bin/zlib1.dll installer || exit
+cp /bin/libxml2.dll installer/bin || exit
+cp /bin/intl.dll installer/bin || exit
+cp /bin/iconv.dll installer/bin || exit
+cp /bin/zlib1.dll installer/bin || exit
 
 echo "Copying Python..."
 
 # TODO: Find out Windows directory somehow, perhaps by looking at PATH?
-cp /c/WINDOWS/system32/python25.dll installer || exit
+cp /c/WINDOWS/system32/python25.dll installer/bin || exit
 
 # We through all python modules into python/. Glom sets PYTHONPATH accordingly.
 mkdir -p installer/python || exit
@@ -130,9 +131,9 @@ cp /c/Python25/Lib/site-packages/gtk-2.0/gtk/*.pyd installer/python/gtk || exit
 echo "Copying modules..."
 
 # TODO: Let configure replace @pyexecdir@ to get the correct python path
-cp /c/Python25/Lib/site-packages/glom.pyd installer || exit
-cp /c/Python25/Lib/site-packages/gtk-2.0/gda.pyd installer || exit
-strip installer/*.pyd || exit
+cp /c/Python25/Lib/site-packages/glom.pyd installer/bin || exit
+cp /c/Python25/Lib/site-packages/gtk-2.0/gda.pyd installer/bin || exit
+strip installer/bin/*.pyd || exit
 
 mkdir -p installer/lib/gtk-2.0/2.10.0/immodules || exit
 cp /local/lib/gtk-2.0/2.10.0/immodules/*.dll installer/lib/gtk-2.0/2.10.0/immodules || exit
@@ -178,18 +179,18 @@ find installer/lib/locale/ -type f | grep -v atk10.mo | grep -v gtk20.mo | grep 
 find installer/lib/locale -type d | xargs rmdir -p --ignore-fail-on-non-empty
 
 echo "Copying executable..."
-cp /local/bin/glom.exe installer || exit
-strip installer/glom.exe || exit
+cp /local/bin/glom.exe installer/bin || exit
+strip installer/bin/glom.exe || exit
 
 echo "Copying postgres..."
 mkdir -p installer/bin || exit
 cp /local/pgsql/bin/postgres.exe installer/bin || exit
 cp /local/pgsql/bin/initdb.exe installer/bin || exit
 cp /local/pgsql/bin/pg_ctl.exe installer/bin || exit
-strip installer/bin/*.exe || exit
+strip installer/bin/postgres.exe installer/bin/initdb.exe installer/bin/pg_ctl.exe || exit
 
-cp /local/pgsql/lib/libpq.dll installer || exit
-strip installer/libpq.dll || exit
+cp /local/pgsql/lib/libpq.dll installer/bin || exit
+strip installer/bin/libpq.dll || exit
 
 mkdir -p installer/share/postgresql || exit
 cp /local/pgsql/share/postgres.bki installer/share/postgresql || exit

@@ -24,78 +24,78 @@ Name: user; Description: "For the current user only"; Components: main; Flags: e
 
 [Icons]
 ; Common task icons
-Name: "{commonprograms}\{groupname}\Glom"; Filename: "{app}\Glom.exe"; Tasks: common
+Name: "{commonprograms}\{groupname}\Glom"; Filename: "{app}\bin\Glom.exe"; Tasks: common
 Name: "{commonprograms}\{groupname}\Uninstall Glom"; Filename: "{uninstallexe}"; Tasks: common
 
 ; User task icons
-Name: "{userprograms}\{groupname}\Glom"; Filename: "{app}\Glom.exe"; Tasks: user
+Name: "{userprograms}\{groupname}\Glom"; Filename: "{app}\bin\Glom.exe"; Tasks: user
 Name: "{userprograms}\{groupname}\Uninstall Glom"; Filename: "{uninstallexe}"; Tasks: user
 
 [Files]
 
 ; GTK+
-Source: "intl.dll"; DestDir: "{app}"; Components: gtk
-Source: "iconv.dll"; DestDir: "{app}"; Components: gtk
-Source: "zlib1.dll"; DestDir: "{app}"; Components: gtk
-Source: "libintl-8.dll"; DestDir: "{app}"; Components: gtk
-Source: "libpopt-0.dll"; DestDir: "{app}"; Components: gtk
-Source: "libpng13.dll"; DestDir: "{app}"; Components: gtk
-Source: "jpeg62.dll"; DestDir: "{app}"; Components: gtk
-Source: "libtiff3.dll"; DestDir: "{app}"; Components: gtk
-Source: "libxml2.dll"; DestDir: "{app}"; Components: gtk
-Source: "libglib-2.0-0.dll"; DestDir: "{app}"; Components: gtk
-Source: "libgobject-2.0-0.dll"; DestDir: "{app}"; Components: gtk
-Source: "libgio-2.0-0.dll"; DestDir: "{app}"; Components: gtk
-Source: "libgmodule-2.0-0.dll"; DestDir: "{app}"; Components: gtk
-Source: "libgthread-2.0-0.dll"; DestDir: "{app}"; Components: gtk
-Source: "gspawn-win32-helper.exe"; DestDir: "{app}"; Components: gtk
-Source: "gspawn-win32-helper-console.exe"; DestDir: "{app}"; Components: gtk
-Source: "libatk-1.0-0.dll"; DestDir: "{app}"; Components: gtk
-Source: "libpango-1.0-0.dll"; DestDir: "{app}"; Components: gtk
-Source: "libpangocairo-1.0-0.dll"; DestDir: "{app}"; Components: gtk
-Source: "libpangowin32-1.0-0.dll"; DestDir: "{app}"; Components: gtk
-Source: "libcairo-2.dll"; DestDir: "{app}"; Components: gtk
-Source: "libgdk-win32-2.0-0.dll"; DestDir: "{app}"; Components: gtk
-Source: "libgdk_pixbuf-2.0-0.dll"; DestDir: "{app}"; Components: gtk
-Source: "libgtk-win32-2.0-0.dll"; DestDir: "{app}"; Components: gtk
+Source: "bin\intl.dll"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\iconv.dll"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\zlib1.dll"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\libintl-8.dll"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\libpopt-0.dll"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\libpng13.dll"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\jpeg62.dll"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\libtiff3.dll"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\libxml2.dll"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\libglib-2.0-0.dll"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\libgobject-2.0-0.dll"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\libgio-2.0-0.dll"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\libgmodule-2.0-0.dll"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\libgthread-2.0-0.dll"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\gspawn-win32-helper.exe"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\gspawn-win32-helper-console.exe"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\libatk-1.0-0.dll"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\libpango-1.0-0.dll"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\libpangocairo-1.0-0.dll"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\libpangowin32-1.0-0.dll"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\libcairo-2.dll"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\libgdk-win32-2.0-0.dll"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\libgdk_pixbuf-2.0-0.dll"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\libgtk-win32-2.0-0.dll"; DestDir: "{app}\bin"; Components: gtk
 
 ; Other glom dependency DLLs
-Source: "libORBit-2-0.dll"; DestDir: "{app}"; Components: main
-Source: "libORBit-imodule-2-0.dll"; DestDir: "{app}"; Components: main
-Source: "libORBitCosNaming-2-0.dll"; DestDir: "{app}"; Components: main
-Source: "libbonobo-2-0.dll"; DestDir: "{app}"; Components: main
-Source: "libbonobo-activation-4.dll"; DestDir: "{app}"; Components: main
-Source: "libgconf-2-4.dll"; DestDir: "{app}"; Components: main
-Source: "libgda-3.0-2.dll"; DestDir: "{app}"; Components: main
-Source: "libgda-report-3.0-2.dll"; DestDir: "{app}"; Components: main
-Source: "libgdasql-3.0-2.dll"; DestDir: "{app}"; Components: main
-Source: "libgettextpo-0.dll"; DestDir: "{app}"; Components: main
-Source: "libglade-2.0-0.dll"; DestDir: "{app}"; Components: main
-Source: "libgnome-2-0.dll"; DestDir: "{app}"; Components: main
-Source: "libgnomevfs-2-0.dll"; DestDir: "{app}"; Components: main
-Source: "libgoocanvas-3.dll"; DestDir: "{app}"; Components: main
-Source: "libgtksourceview-2.0-0.dll"; DestDir: "{app}"; Components: main
+Source: "bin\libORBit-2-0.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libORBit-imodule-2-0.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libORBitCosNaming-2-0.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libbonobo-2-0.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libbonobo-activation-4.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libgconf-2-4.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libgda-3.0-2.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libgda-report-3.0-2.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libgdasql-3.0-2.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libgettextpo-0.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libglade-2.0-0.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libgnome-2-0.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libgnomevfs-2-0.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libgoocanvas-3.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libgtksourceview-2.0-0.dll"; DestDir: "{app}\bin"; Components: main
 
-Source: "libatkmm-1.6-1.dll"; DestDir: "{app}"; Components: main
-Source: "libbakery-2.4-2-4-1.dll"; DestDir: "{app}"; Components: main
-Source: "libcairomm-1.0-1.dll"; DestDir: "{app}"; Components: main
-Source: "libgconfmm-2.6-1.dll"; DestDir: "{app}"; Components: main
-Source: "libgdamm-3.0-8.dll"; DestDir: "{app}"; Components: main
-Source: "libgdkmm-2.4-1.dll"; DestDir: "{app}"; Components: main
-Source: "libglademm-2.4-1.dll"; DestDir: "{app}"; Components: main
-Source: "libglibmm-2.4-1.dll"; DestDir: "{app}"; Components: main
-Source: "libgnomevfsmm-2.6-1.dll"; DestDir: "{app}"; Components: main
-Source: "libgtkmm-2.4-1.dll"; DestDir: "{app}"; Components: main
-Source: "libgtksourceviewmm-2.0-1.dll"; DestDir: "{app}"; Components: main
-Source: "libpangomm-1.4-1.dll"; DestDir: "{app}"; Components: main
-Source: "libsigc-2.0-0.dll"; DestDir: "{app}"; Components: main
-Source: "libxml++-2.6-2.dll"; DestDir: "{app}"; Components: main
+Source: "bin\libatkmm-1.6-1.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libbakery-2.4-2-4-1.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libcairomm-1.0-1.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libgconfmm-2.6-1.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libgdamm-3.0-8.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libgdkmm-2.4-1.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libglademm-2.4-1.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libglibmm-2.4-1.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libgnomevfsmm-2.6-1.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libgtkmm-2.4-1.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libgtksourceviewmm-2.0-1.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libpangomm-1.4-1.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libsigc-2.0-0.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libxml++-2.6-2.dll"; DestDir: "{app}\bin"; Components: main
 
 ; Postgres
 Source: "bin/postgres.exe"; DestDir: "{app}/bin"; Components: main
 Source: "bin/initdb.exe"; DestDir: "{app}/bin"; Components: main
 Source: "bin/pg_ctl.exe"; DestDir: "{app}/bin"; Components: main
-Source: "libpq.dll"; DestDir: "{app}"; Components: main
+Source: "bin/libpq.dll"; DestDir: "{app}/bin"; Components: main
 
 ; TODO: I would like to install these into {app}/share/postgresql, but postgres
 ; does not find them then.
@@ -104,29 +104,34 @@ Source: "share/postgresql/*"; DestDir: "{app}/share"; Components: main; Flags: r
 Source: "lib/postgresql/*.dll"; DestDir: "{app}/lib"; Components: main;
 
 ; Python modules
-Source: "python25.dll"; DestDir: "{app}"; Components: python
-Source: "python/*.py"; DestDir: "{app}"; Components: python; Flags: recursesubdirs
-Source: "python/*.pyd"; DestDir: "{app}"; Components: python; Flags: recursesubdirs
+Source: "bin\python25.dll"; DestDir: "{app}\bin"; Components: python
+; TODO: I would like to install these into python/ instead of /bin, but I
+; could not get python to locate them there (setting PYTHONPATH with setenv()
+; in Glom's main() does not work).
+; TODO: Change component of gda.pyd and glom.pyd to main instead of python
+; since we also need these when the user installed python and pygtk on its own.
+Source: "python/*.py"; DestDir: "{app}\bin"; Components: python; Flags: recursesubdirs
+Source: "python/*.pyd"; DestDir: "{app}\bin"; Components: python; Flags: recursesubdirs
 
 ; Glom executables
-Source: "libglom-0.dll"; DestDir: "{app}"; Components: main
-Source: "Glom.exe"; DestDir: "{app}"; Components: main
+Source: "bin\libglom-0.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\Glom.exe"; DestDir: "{app}\bin"; Components: main
 
 ; Modules
 Source: "lib/gtk-2.0/2.10.0/immodules/*"; DestDir: "{app}/lib/gtk-2.0/2.10.0/immodules"; Components: gtk
-Source: "gtk-query-immodules-2.0.exe"; DestDir: "{app}"; Components: gtk; Flags: deleteafterinstall;
+Source: "gtk-query-immodules-2.0.exe"; DestDir: "{app}\bin"; Components: gtk; Flags: deleteafterinstall;
 
 Source: "lib/gtk-2.0/2.10.0/engines/*"; DestDir: "{app}/lib/gtk-2.0/2.10.0/engines"; Components: gtk
 
 Source: "lib/gtk-2.0/2.10.0/loaders/*"; DestDir: "{app}/lib/gtk-2.0/2.10.0/loaders"; Components: gtk
-Source: "gdk-pixbuf-query-loaders.exe"; DestDir: "{app}"; Components: gtk; Flags: deleteafterinstall;
+Source: "gdk-pixbuf-query-loaders.exe"; DestDir: "{app}\bin"; Components: gtk; Flags: deleteafterinstall;
 
 Source: "lib/pango/1.6.0/modules/*"; DestDir: "{app}/lib/pango/1.6.0/modules"; Components: gtk;
-Source: "pango-querymodules.exe"; DestDir: "{app}"; Components: gtk; Flags: deleteafterinstall;
+Source: "pango-querymodules.exe"; DestDir: "{app}\bin"; Components: gtk; Flags: deleteafterinstall;
 
 Source: "share/themes/MS-Windows/*"; DestDir: "{app}/share/themes/MS-Windows"; Flags: recursesubdirs; Components: gtk
 Source: "etc/gtk-2.0/gtkrc"; DestDir: "{app}/etc/gtk-2.0"; Components: gtk
-Source: "querymodules.bat"; DestDir: "{app}"; Components: gtk; Flags: deleteafterinstall;
+Source: "querymodules.bat"; DestDir: "{app}\bin"; Components: gtk; Flags: deleteafterinstall;
 
 Source: "lib/gnome-vfs-2.0/modules/*.dll"; DestDir: "{app}/lib/gnome-vfs-2.0/modules"; Components: main;
 Source: "etc/gnome-vfs-2.0/modules/default-modules.conf"; DestDir: "{app}/etc/gnome-vfs-2.0/modules"; Components: main;
@@ -260,7 +265,7 @@ Name: "{app}\etc\pango";
 Name: "{app}\etc\gtk-2.0";
 
 [Run]
-Filename: "{app}\querymodules.bat"; StatusMsg: "Querying modules..."; Flags: runhidden
+Filename: "{app}\bin\querymodules.bat"; StatusMsg: "Querying modules..."; Flags: runhidden
 
 [Code]
 { Remove generated files not generated by the installer }

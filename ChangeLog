@@ -1,3 +1,13 @@
+2008-02-14  Armin Burgmeier  <armin@openismus.com>
+
+	* win32/querymodules.bat:
+	* win32/build-installer:
+	* win32/glom.iss.in: Moved most files into the bin/ subdirectory. This
+	is because both Glom.exe and the postgres utilities need libpq.dll,
+	but the postgres utilities need to be in the bin/ subdirectory to find
+	their shared files. With this, the installer also works for me on a
+	machine that does not already have Python, GTK, etc. installed.
+
 2008-02-11  Armin Burgmeier  <armin@openismus.com>
 
 	* win32/build-installer:
