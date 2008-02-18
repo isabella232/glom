@@ -91,8 +91,8 @@ public:
    * for instance, if the user chose a new field for a DataWidget, 
    * or a new relationship for a portal.
    */
-  //void get_layout_groups(Document_Glom::type_list_layout_groups& groups);
-  //sharedptr<LayoutGroup> get_layout_group();
+  void get_layout_groups(Document_Glom::type_list_layout_groups& groups);
+  sharedptr<LayoutGroup> get_layout_group();
 
   /** For instance,
    * void on_flowtable_field_edited(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
@@ -123,7 +123,7 @@ public:
    */
   typedef sigc::signal<void, const sharedptr<LayoutItem_Button>&> type_signal_script_button_clicked;
   type_signal_script_button_clicked signal_script_button_clicked();
-
+  
 protected:
 
   virtual type_list_widgets get_field(const sharedptr<const LayoutItem_Field>& field);
@@ -138,7 +138,6 @@ protected:
   void on_entry_open_details_requested(const Gnome::Gda::Value& value, sharedptr<const LayoutItem_Field> field);
   void on_flowtable_entry_edited(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
   void on_flowtable_entry_open_details_requested(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value); 
-
   void on_portal_record_changed(const Glib::ustring& relationship_name);
   void on_flowtable_related_record_changed(const Glib::ustring& relationship_name);
   void on_flowtable_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
@@ -224,7 +223,6 @@ protected:
   //type_signal_related_record_added m_signal_related_record_added;
   type_signal_related_record_changed m_signal_related_record_changed;
   type_signal_requested_related_details m_signal_requested_related_details;
-
   type_signal_script_button_clicked m_signal_script_button_clicked;
 };
 

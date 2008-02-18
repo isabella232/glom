@@ -141,6 +141,10 @@ protected:
 
   type_signal_record_deleted m_signal_record_deleted;
   type_signal_requested_related_details m_signal_requested_related_details;
+  
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  bool m_design_mode; // Cache here because we need it when the layout is redrawn
+#endif
 };
 
 } //namespace Glom

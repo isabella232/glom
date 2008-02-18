@@ -1347,78 +1347,11 @@ Document_Glom::type_list_layout_groups Document_Glom::get_data_layout_groups_def
 
   type_list_layout_groups result;
 
-  //Add one if necessary:
-  sharedptr<LayoutGroup> pTopLevel;
-  sharedptr<LayoutGroup> pOverview;
-  sharedptr<LayoutGroup> pDetails;
-  if(!pTopLevel)
-  {
-    sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::create();
-    group->set_name("main");
-    group->m_columns_count = 1;
-    result.push_back(group);
-    pTopLevel = group;
-
-    if(layout_name == "details") //The Details default layut is a bit more complicated.
-    {
-      sharedptr<LayoutGroup> overview = sharedptr<LayoutGroup>::create();;
-      overview->set_name("overview");
-      overview->set_title_original("Overview"); //Don't translate this, but TODO: add standard translations.
-      overview->m_columns_count = 2;
-      pTopLevel->add_item(overview);
-      pOverview = overview;
-
-      sharedptr<LayoutGroup> details = sharedptr<LayoutGroup>::create();
-      details->set_name("details");
-      details->set_title_original("Details"); //Don't translate this, but TODO: add standard translations.
-      details->m_columns_count = 2;
-      pTopLevel->add_item(details);
-      pDetails = details;
-    }
-  }
-
-  //If, for some reason, we didn't create the-subgroups, add everything to the top level group:
-  if(!pOverview)
-    pOverview = pTopLevel;
-
-  if(!pDetails)
-    pDetails = pTopLevel;
-
-
-  //Discover new fields, and add them:
-  type_vecFields all_fields = get_table_fields(parent_table_name);
-  for(type_vecFields::const_iterator iter = all_fields.begin(); iter != all_fields.end(); ++iter)
-  {
-    const Glib::ustring field_name = (*iter)->get_name();
-    if(!field_name.empty())
-    {
-      //See whether it's already in the result:
-      //TODO_Performance: There is a lot of iterating and comparison here:
-      bool found = false; //TODO: This is horrible.
-      for(type_list_layout_groups::const_iterator iterFind = result.begin(); iterFind != result.end(); ++iterFind)
-      {
-        if(*iterFind && (*iterFind)->has_field(field_name))
-        {
-          found = true;
-          break;
-        }
-      }
-
-      if(!found)
-      {
-        sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
-        layout_item->set_full_field_details(*iter);
-        //layout_item.set_table_name(child_table_name); //TODO: Allow viewing of fields through relationships.
-
-        //std::cout << "  debug: add_item(): " << layout_item.get_name() << std::endl;
-        if(layout_item->get_full_field_details()->get_primary_key())
-          pOverview->add_item(layout_item);
-        else
-          pDetails->add_item(layout_item);
-      }
-    }
-  }
-
+  sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::create();
+  group->set_name("main");
+  group->m_columns_count = 1;
+  result.push_back(group);
+  
   return result;
 }
 

@@ -654,6 +654,11 @@ int FlowTable::get_minimum_column_height(guint start_widget, guint columns_count
 
 void FlowTable::on_size_request(Gtk::Requisition* requisition)
 {
+  // Set a minimum size so people are able to drag items into the
+  // table
+  const int MIN_HEIGHT = (m_design_mode ? 50 : 0);
+  const int MIN_WIDTH = (m_design_mode ? 100 : 0);
+  
   //Initialize the output parameter:
   *requisition = Gtk::Requisition();
 
@@ -662,8 +667,8 @@ void FlowTable::on_size_request(Gtk::Requisition* requisition)
   int total_width = 0;
   const int column_height = get_minimum_column_height(0, m_columns_count, total_width); //This calls itself recursively.
 
-  requisition->height = column_height;
-  requisition->width = total_width;
+  requisition->height = (column_height > MIN_HEIGHT ? column_height : MIN_HEIGHT);
+  requisition->width = (total_width > MIN_WIDTH ? total_width : MIN_WIDTH);
 }
 
 //Give it whatever height/width it wants, at this location:
@@ -1143,27 +1148,38 @@ bool FlowTable::on_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_contex
 
 void FlowTable::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int drag_x, int drag_y, const Gtk::SelectionData& selection_data, guint, guint time)
 {
-  const Glib::ustring type = selection_data.get_data_as_string();
+  std::cout << __FUNCTION__ << std::endl;
+  LayoutWidgetBase::enumType type = static_cast<LayoutWidgetBase::enumType>(*selection_data.get_data());
   LayoutWidgetBase* above = dnd_find_datawidget ();
-  if(type == "LayoutField")
+  switch (type)
+  {
+  case LayoutWidgetBase::TYPE_FIELD:
     on_dnd_add_layout_item_field(above);
-  else if (type == "LayoutGroup")
-    on_dnd_add_layout_group(above);
-  else if (type == "LayoutButton")
+    break;
+  case LayoutWidgetBase::TYPE_BUTTON:
     on_dnd_add_layout_item_button(above);
-  else if (type == "LayoutText")
+    break;
+  case LayoutWidgetBase::TYPE_TEXT:
     on_dnd_add_layout_item_text(above);
-  else
+    break;
+  case LayoutWidgetBase::TYPE_GROUP:
+    on_dnd_add_layout_group(above);
+    break;
+  case LayoutWidgetBase::TYPE_NOTEBOOK:
+    on_dnd_add_layout_notebook(above);
+    break;
+  default:
     std::cerr << "Unknown drop type: " << type << std::endl;
-
+  }
   change_dnd_status(false);
 }
 
 void FlowTable::on_drag_leave(const Glib::RefPtr<Gdk::DragContext>& drag_context, guint time)
 {
+  std::cout << __FUNCTION__ << std::endl;
   on_dnd_remove_placeholder();
-  realize();
   change_dnd_status(false);
+  realize();
 }
 
 // Calculate the nearest FlowTableItem below the current drag position
@@ -1219,18 +1235,27 @@ LayoutWidgetBase* FlowTable::dnd_find_datawidget()
     {
       Gtk::Alignment* alignment = dynamic_cast <Gtk::Alignment*>(m_current_dnd_item->m_first);
       if (alignment)
+      {
         above = dynamic_cast<PlaceholderGlom*>(alignment->get_child());
+        if (above)
+          std::cout << "Above placeholder" << std::endl;
+      }
     }
     if(!above && m_current_dnd_item->m_first)
       above = dynamic_cast<LayoutWidgetBase*>(m_current_dnd_item->m_first);
-
     if(!above && m_current_dnd_item->m_second)
     {
       above = dynamic_cast<LayoutWidgetBase*>(m_current_dnd_item->m_second);
       //std::cout << g_type_name (G_OBJECT_TYPE (m_current_dnd_item->m_second->gobj())) << std::endl;
     }
+    std::cout << "cur_widget: ";
+    std::cout << g_type_name (G_OBJECT_TYPE(m_current_dnd_item->m_first->gobj())) << std::endl;
+    Gtk::Alignment* al = dynamic_cast<Gtk::Alignment*> (m_current_dnd_item->m_first);
+    if (al)
+    {
+      std::cout << g_type_name (G_OBJECT_TYPE(al->get_child()->gobj())) << std::endl;
+    }
   }
-
   return above;
 }
 

@@ -63,6 +63,9 @@
 static EpcProtocol publish_protocol = EPC_PROTOCOL_HTTPS;
 #endif
 
+// Uncomment to see debug messages
+//#define AVAHI_DEBUG
+
 namespace
 {
   std::string get_path_to_postgres_executable(const std::string& program)
@@ -336,8 +339,9 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
             cnc_string += (";DB_NAME=" + default_database);
 
           //std::cout << "debug: connecting: cnc string: " << cnc_string << std::endl;
+#ifdef AVAHI_DEBUG          
           std::cout << std::endl << "Glom: trying to connect on port=" << port << std::endl;
-
+#endif
           //*m_refGdaConnection = m_GdaClient->open_connection(m_GdaDataSourceInfo.get_name(), m_GdaDataSourceInfo.get_username(), m_GdaDataSourceInfo.get_password() );
           //m_refGdaConnection.clear(); //Make sure any previous connection is really forgotten.
 
@@ -407,9 +411,10 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
                 }
               }
             }
-
+#ifdef AVAHI_DEBUG
             std::cout << "  Postgres Server version: " << get_postgres_server_version() << std::endl << std::endl;
-
+#endif
+              
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #ifndef G_OS_WIN32
            //Let other clients discover this server via avahi:
@@ -436,21 +441,26 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
           catch(const Gnome::Gda::ConnectionError& ex)
           {
 #endif
+#ifdef AVAHI_DEBUG
             std::cout << "ConnectionPool::connect() Attempt to connect to database failed on port=" << port << ", database=" << m_database << ": " << ex.what() << std::endl;
-
+#endif
+            
             bool bJustDatabaseMissing = false;
             if(!m_database.empty())
             {
+#ifdef AVAHI_DEBUG
               std::cout << "  ConnectionPool::connect() Attempting to connect without specifying the database." << std::endl;
-
+#endif
               //If the connection failed while looking for a database,
               //then try connecting without the database:
               Glib::ustring cnc_string = cnc_string_main;
               cnc_string += (";DB_NAME=" + default_database);
 
               //std::cout << "debug2: connecting: cnc string: " << cnc_string << std::endl;
-              std::cout << "Glom: connecting." << std::endl;
-
+#ifdef AVAHI_DEBUG
+                std::cout << "Glom: connecting." << std::endl;
+#endif
+                
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
               try
 #endif
@@ -480,12 +490,12 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
                 std::cerr << "    ConnectionPool::connect() connection also failed when not specifying database: " << ex.what() << std::endl;
               }
             }
-
+#ifdef AVAHI_DEBUG
             if(bJustDatabaseMissing)
               std::cout << "  (Connection succeeds, but not to the specific database on port=" << port << ", database=" << m_database << std::endl;
             else
               std::cerr << "  (Could not connect even to the default database on port=" << port << ", database=" << m_database  << std::endl;
-
+#endif
 
             //handle_error(true /* cerr only */);
           }
@@ -519,11 +529,13 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
         }
 
         g_warning("ConnectionPool::connect() throwing exception.");
+#ifdef AVAHI_DEBUG           
         if(connection_to_default_database_possible)
           std::cout << "  (Connection succeeds, but not to the specific database on port=" << m_port << ", database=" << m_database << std::endl;
         else
           std::cerr << "  (Could not connect even to the default database on any port. database=" << m_database  << std::endl;
-
+#endif
+                           
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
         throw ExceptionConnection(connection_to_default_database_possible ? ExceptionConnection::FAILURE_NO_DATABASE : ExceptionConnection::FAILURE_NO_SERVER);
 #else
@@ -588,7 +600,9 @@ void ConnectionPool::set_user(const Glib::ustring& value)
 {
   if(value.empty())
   {
+#ifdef AVAHI_DEBUG    
     std::cout << "debug: ConnectionPool::set_user(): user is empty." << std::endl;
+#endif
   }
 
   m_user = value;
@@ -725,7 +739,9 @@ bool ConnectionPool::handle_error(bool cerr_only)
 #endif
         //TODO: dialog.set_transient_for(*get_application());
         dialog.run(); //TODO: This segfaults in gtk_window_set_modal() when this method is run a second time, for instance if there are two database errors.
+#ifdef AVAHI_DEBUG
         std::cout << "debug: after Internal Error dialog run()." << std::endl;
+#endif
       }
 
       return true; //There really was an error.
@@ -1422,9 +1438,10 @@ void ConnectionPool::avahi_start_publishing()
 {
   if(m_epc_publisher)
     return;
-
+#ifdef AVAHI_DEBUG
   std::cout << "debug: ConnectionPool::avahi_start_publishing" << std::endl;
-
+#endif
+  
   //Publish the document contents over HTTPS (discoverable via avahi):
   const Document_Glom* document = get_document();
   if(!document)
@@ -1462,7 +1479,9 @@ void ConnectionPool::avahi_start_publishing()
   epc_publisher_run_async(m_epc_publisher, &error);
   if(error)
   {
+#ifdef AVAHI_DEBUG    
     std::cout << "Glom: ConnectionPool::avahi_start_publishing(): Error while running epc_publisher_run_async: " << error->message << std::endl;
+#endif
     g_clear_error(&error);
   }
 }
@@ -1471,8 +1490,9 @@ void ConnectionPool::avahi_stop_publishing()
 {
   if(!m_epc_publisher)
     return;
-
+#ifdef AVAHI_DEBUG
   std::cout << "debug: ConnectionPool::avahi_stop_publishing" << std::endl;
+#endif
 
 #ifndef G_OS_WIN32
   epc_publisher_quit(m_epc_publisher);

@@ -52,6 +52,11 @@ public:
    * @param position The item after which the item should be added. 
    */
   void add_item(const sharedptr<LayoutItem>& item, const sharedptr<const LayoutItem>& position);
+  
+  /** Remove a layout item from the group
+   * @param item The item to remove.
+   */
+  void remove_item (const sharedptr<LayoutItem>& item);  
 
   /** Remove any instance of the field (from the current table) from the layout.
    */

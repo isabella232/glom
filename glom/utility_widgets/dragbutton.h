@@ -22,6 +22,8 @@
 #include <gtkmm/image.h>
 #include <string>
 
+#include "layoutwidgetbase.h"
+
 #ifndef DRAGBUTTON_H
 #define DRAGBUTTON_H
 
@@ -31,7 +33,7 @@ namespace Glom
 class DragButton : public Gtk::Button
 {
   public:
-    DragButton(Gtk::Image& image, const Glib::ustring& id);  
+    DragButton(Gtk::Image& image, LayoutWidgetBase::enumType type);  
     ~DragButton();
 
   
@@ -42,7 +44,7 @@ class DragButton : public Gtk::Button
                                   Gtk::SelectionData& selection_data, guint, guint);
   
   private:
-    Glib::ustring m_id;
+    LayoutWidgetBase::enumType m_type;
 };
 
 }

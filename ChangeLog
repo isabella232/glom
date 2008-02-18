@@ -1,3 +1,36 @@
+2008-02-18  Johannes Schmid <jhs@gnome.org>
+
+	* glom/libglom/connectionpool.cc:	
+	#ifdef'd all those annoying avahi debug messages
+
+	* glom/libglom/data_structure/layout/layoutgroup.cc:
+	* glom/libglom/data_structure/layout/layoutgroup.h:	
+	Added LayoutGroup::remove_item()  
+
+	* glom/libglom/document/document_glom.cc:	
+	* glom/mode_data/dialog_layout_details.cc:
+	Remove default layout creation as it's no longer needed when you can  
+	create your layout using drag and drop.
+
+	* glom/mode_data/flowtablewithfields.cc:
+	* glom/mode_data/flowtablewithfields.h:	
+	* glom/mode_data/box_data_details.cc:  
+	* glom/mode_data/box_data_details.h:  
+	Fixed dragging of groups (mostly)
+
+	* glom/utility_widgets/dragbar.cc:
+	* glom/utility_widgets/dragbutton.cc:	
+	* glom/utility_widgets/dragbutton.h:	
+	Use enum instead of string to determine drag type
+
+	* glom/utility_widgets/flowtable.cc:
+	* glom/utility_widgets/flowtable.h:	
+	Set default size when in developer mode  
+  
+	* icons/16x16/Makefile.am:	
+	* icons/16x16/glom-notebook.png  
+	Added notebook icon
+
 2008-02-14  Armin Burgmeier  <armin@openismus.com>
 
 	* win32/querymodules.bat:

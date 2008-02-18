@@ -229,7 +229,6 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
     flow_table->signal_field_open_details_requested().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_entry_open_details_requested) );
     flow_table->signal_related_record_changed().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_related_record_changed) );
     flow_table->signal_requested_related_details().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_requested_related_details) );
-
     flow_table->signal_script_button_clicked().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_script_button_clicked) );
   }
 }
@@ -616,6 +615,20 @@ void FlowTableWithFields::add_imageobject_at_position(const sharedptr<LayoutItem
 		else
 			add(*alignment_title, *image, true /* expand */);
 	}
+}
+
+void FlowTableWithFields::get_layout_groups(Document_Glom::type_list_layout_groups& groups)
+{
+  sharedptr<LayoutGroup> group(get_layout_group());
+  if (group)
+  {
+    groups.push_back (group);
+  }
+}
+
+sharedptr<LayoutGroup> FlowTableWithFields::get_layout_group()
+{
+  return sharedptr<LayoutGroup>::cast_dynamic(get_layout_item());
 }
 
 
@@ -1132,9 +1145,6 @@ void FlowTableWithFields::on_dnd_add_layout_item_field(LayoutWidgetBase* above)
   else
     cur_widget = m_list_layoutwidgets.end();
 
-  add_layout_item_at_position(layout_item_field, cur_widget);
-
-
   //Get the layout group that the "above" widget's layout item is in:
   sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(get_layout_item());
   if(!layout_group)
@@ -1142,8 +1152,8 @@ void FlowTableWithFields::on_dnd_add_layout_item_field(LayoutWidgetBase* above)
     std::cerr << "FlowTableWithFields::on_datawidget_layout_item_added(): layout_group is null." << std::endl;
     return;
   }
-
-  if(above)
+  
+  if (above && above->get_layout_item())
     layout_group->add_item(layout_item_field, above->get_layout_item());
   else
     layout_group->add_item(layout_item_field);
@@ -1159,14 +1169,36 @@ void FlowTableWithFields::on_dnd_add_layout_group(LayoutWidgetBase* above)
     cur_widget = std::find(m_list_layoutwidgets.begin(), m_list_layoutwidgets.end(), above);
   else
     cur_widget = m_list_layoutwidgets.end();
-
-  // TODO: Get a title using a dialog and set a mimimum size because
-  // the layoutgroup does not have any items
+  
   sharedptr<LayoutGroup> group(new LayoutGroup());
-  group->set_title("test");
-  add_layout_group_at_position(group, cur_widget);
-  signal_layout_item_added().emit(TYPE_GROUP);
-  signal_layout_changed().emit();	
+  group->set_title(_("New Group"));
+  group->set_name (_("Group"));
+
+
+  //Get the layout group that the "above" widget's layout item is in
+  sharedptr<LayoutGroup> layout_group = get_layout_group();
+  if(!layout_group)
+  {
+    std::cerr << "FlowTableWithFields::on_dnd_layout_group_added(): layout_group is null." << std::endl;
+    return;
+  }
+
+  std::cout << "Group: " << layout_group->get_title() << std::endl;
+  
+  //add_layout_group_at_position (group, cur_widget);
+  if(above && above->get_layout_item())
+  {
+    std::cout << "Adding group above item" << std::endl;
+    layout_group->add_item(group, above->get_layout_item());
+  }
+  else
+  {
+    std::cout << "Adding group at the end" << std::endl;
+    layout_group->add_item(group);
+  }  
+    
+  //Tell the parent to tell the document to save the layout
+  signal_layout_changed().emit();
 }
 
 void FlowTableWithFields::on_dnd_add_layout_item_button(LayoutWidgetBase* above)
@@ -1179,23 +1211,21 @@ void FlowTableWithFields::on_dnd_add_layout_item_button(LayoutWidgetBase* above)
     
   //Add a widget for this layout item, after the "above" item:
   type_list_layoutwidgets::iterator cur_widget;
-  if(above)
+  if (above && above->get_layout_item())
     cur_widget = std::find (m_list_layoutwidgets.begin(), m_list_layoutwidgets.end(), above);
   else
     cur_widget = m_list_layoutwidgets.end();
-
-  add_layout_item_at_position(layout_item_button, cur_widget);
-
 
   //Get the layout group that the "above" widget's layout item is in:
   sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(get_layout_item());
   if(!layout_group)
   {
-    std::cerr << "FlowTableWithFields::on_datawidget_layout_item_added(): layout_group is null." << std::endl;
     return;
   }
 
-  if(above)
+  add_layout_item_at_position(layout_item_button, cur_widget);
+
+  if (above && above->get_layout_item())
     layout_group->add_item(layout_item_button, above->get_layout_item());
   else
     layout_group->add_item(layout_item_button);
@@ -1213,13 +1243,10 @@ void FlowTableWithFields::on_dnd_add_layout_item_text(LayoutWidgetBase* above)
     
   //Add a widget for this layout item, after the "above" item:
   type_list_layoutwidgets::iterator cur_widget;
-  if(above)
+  if (above && above->get_layout_item())
     cur_widget = std::find (m_list_layoutwidgets.begin(), m_list_layoutwidgets.end(), above);
   else
     cur_widget = m_list_layoutwidgets.end();
-
-  add_layout_item_at_position(textobject, cur_widget);
-
 
   //Get the layout group that the "above" widget's layout item is in:
   sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(get_layout_item());
@@ -1228,8 +1255,10 @@ void FlowTableWithFields::on_dnd_add_layout_item_text(LayoutWidgetBase* above)
     std::cerr << "FlowTableWithFields::on_datawidget_layout_item_added(): layout_group is null." << std::endl;
     return;
   }
+  
+  add_layout_item_at_position(textobject, cur_widget);
 
-  if(above)
+  if (above && above->get_layout_item())
     layout_group->add_item(textobject, above->get_layout_item());
   else
     layout_group->add_item(textobject);
@@ -1252,17 +1281,49 @@ void FlowTableWithFields::on_dnd_add_placeholder(LayoutWidgetBase* above)
     if(dynamic_cast<Glom::PlaceholderGlom*>(*cur_widget))
       return;
 
-    remove (*m_placeholder);
+    on_dnd_remove_placeholder();
   }
-  
   sharedptr<LayoutItem_Placeholder> placeholder_field(new LayoutItem_Placeholder);
 	add_layout_item_at_position (placeholder_field, cur_widget);
+  
+  //Get the layout group that the "above" widget's layout item is in
+  sharedptr<LayoutGroup> layout_group = get_layout_group();
+  if(!layout_group)
+  {
+    std::cerr << "FlowTableWithFields::on_dnd_add_placeholder: layout_group is null." << std::endl;
+    return;
+  }
+  
+  std::cout << "Group: " << layout_group->get_title() << std::endl;
+    
+  if(above)
+  {
+    layout_group->add_item(placeholder_field, above->get_layout_item());
+  }
+  else
+    layout_group->add_item(placeholder_field);
 }
 
 void FlowTableWithFields::on_dnd_remove_placeholder()
 { 
   if(m_placeholder)
   {
+    //Get the layout group that the "above" widget's layout item is in
+    sharedptr<LayoutGroup> layout_group = get_layout_group();
+    if(layout_group)
+    { 
+      LayoutGroup::type_list_items items = layout_group->get_items();
+      for (LayoutGroup::type_list_items::iterator item = items.begin();
+           item != items.end(); item++)
+      {
+        sharedptr<LayoutItem_Placeholder> placeholder = 
+          sharedptr<LayoutItem_Placeholder>::cast_dynamic(*item);
+        if (placeholder)
+        {
+          layout_group->remove_item (*item);
+        }
+      }   
+    }
     remove(*m_placeholder);
   }
   

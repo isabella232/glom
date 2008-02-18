@@ -303,23 +303,16 @@ void Dialog_Layout_Details::set_document(const Glib::ustring& layout, Document_G
     Document_Glom::type_list_layout_groups list_groups = document->get_data_layout_groups_plus_new_fields(layout, m_table_name);
     document->fill_layout_field_details(m_table_name, list_groups); //Update with full field information.
 
-    //If no information is stored in the document, then start with something:
+    //If no information is stored in the document, add a default group
 
     if(list_groups.empty())
     {
       sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::create();
       group->set_name("main");
-      group->m_columns_count = 2;
+      group->m_columns_count = 1;
 
-      for(type_vecLayoutFields::const_iterator iter = table_fields.begin(); iter != table_fields.end(); ++iter)
-      {
-        sharedptr<LayoutItem_Field> item = *iter;
-
-        group->add_item(item);
-      }
-
-      list_groups[1] = group;
-    }
+      list_groups.push_back(group);
+    }      
 
     //Show the field layout
     //typedef std::list< Glib::ustring > type_listStrings;

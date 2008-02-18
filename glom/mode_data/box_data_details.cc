@@ -45,7 +45,8 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_Button_Nav_Next(Gtk::Stock::GO_FORWARD),
   m_Button_Nav_Last(Gtk::Stock::GOTO_LAST),
   m_bDoNotRefreshRelated(false),
-  m_ignore_signals(true)
+  m_ignore_signals(true),
+  m_design_mode(false)
 {
   m_layout_name = "details";
 
@@ -215,7 +216,9 @@ void Box_Data_Details::create_layout()
       m_FlowTable.add_layout_group(*iter);
     }
   }
-
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  m_FlowTable.set_design_mode(m_design_mode);
+#endif
 }
 
 bool Box_Data_Details::fill_from_database()
@@ -556,16 +559,16 @@ Box_Data_Details::type_signal_requested_related_details Box_Data_Details::signal
 void Box_Data_Details::on_flowtable_layout_changed()
 {
   //Get new layout:
-  //Document_Glom::type_list_layout_groups layout_groups;
-  //m_FlowTable.get_layout_groups(layout_groups);
+#if 0
+  Document_Glom::type_list_layout_groups layout_groups;
+  m_FlowTable.get_layout_groups(layout_groups);
 
   //Store it in the document:
   Document_Glom* document = get_document();
-  document->set_modified();
-  //if(document)
-  //  document->set_data_layout_groups(m_layout_name, m_table_name, layout_groups);
-
+  if(document)
+    document->set_data_layout_groups(m_layout_name, m_table_name, layout_groups);
   //Build the view again from the new layout:
+#endif
   create_layout();
 
   //And fill it with data:
@@ -816,7 +819,8 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
 void Box_Data_Details::on_userlevel_changed(AppState::userlevels user_level)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_FlowTable.set_design_mode( user_level == AppState::USERLEVEL_DEVELOPER );
+  m_design_mode = ( user_level == AppState::USERLEVEL_DEVELOPER );    
+  m_FlowTable.set_design_mode(m_design_mode);
 #endif
 }
 

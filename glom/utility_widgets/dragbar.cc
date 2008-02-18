@@ -24,6 +24,8 @@
 #include <glibmm/i18n.h>
 #include "config.h"
 
+#include "layoutwidgetbase.h"
+
 namespace Glom
 {
 
@@ -31,23 +33,27 @@ DragBar::DragBar()
 { 
   Gtk::Image* image_item = 
     Gtk::manage (new Gtk::Image(GLOM_ICON_DIR "/glom-field.png"));
-  Gtk::Image* image_group = 
-    Gtk::manage (new Gtk::Image(GLOM_ICON_DIR "/glom-group.png"));
   Gtk::Image* image_button = 
     Gtk::manage (new Gtk::Image(GLOM_ICON_DIR "/glom-button.png"));
   Gtk::Image* image_text = 
     Gtk::manage (new Gtk::Image(GLOM_ICON_DIR "/glom-text.png"));
   
-  DragButton* drag_item = Gtk::manage(new DragButton(*image_item, "LayoutField"));
-  DragButton* drag_group = Gtk::manage(new DragButton(*image_group, "LayoutGroup"));  
-  DragButton* drag_button = Gtk::manage(new DragButton(*image_button, "LayoutButton"));
-  DragButton* drag_text = Gtk::manage(new DragButton(*image_text, "LayoutText"));  
+  Gtk::Image* image_group = 
+    Gtk::manage (new Gtk::Image(GLOM_ICON_DIR "/glom-group.png"));
+  Gtk::Image* image_notebook = 
+    Gtk::manage (new Gtk::Image(GLOM_ICON_DIR "/glom-notebook.png"));
   
-  // FIXME: This does not work currently
-  drag_group->set_sensitive (false);
+  DragButton* drag_group = Gtk::manage(new DragButton(*image_group, LayoutWidgetBase::TYPE_GROUP));  
+  DragButton* drag_notebook = Gtk::manage(new DragButton(*image_notebook, LayoutWidgetBase::TYPE_NOTEBOOK));  
+
+  DragButton* drag_item = Gtk::manage(new DragButton(*image_item, LayoutWidgetBase::TYPE_FIELD));
+  DragButton* drag_button = Gtk::manage(new DragButton(*image_button, LayoutWidgetBase::TYPE_BUTTON));
+  DragButton* drag_text = Gtk::manage(new DragButton(*image_text, LayoutWidgetBase::TYPE_TEXT));  
+    
+  add_button (*drag_group);
+  add_button (*drag_notebook);
   
   add_button (*drag_item);
-  add_button (*drag_group);
   add_button (*drag_button);
   add_button (*drag_text);
 	
