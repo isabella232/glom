@@ -48,6 +48,7 @@ glom/libglom/spawn_with_feedback.cc
 glom/libglom/utils.cc
 glom/main.cc
 glom/mode_data/box_data.cc
+glom/mode_data/box_data_calendar_related.cc
 glom/mode_data/box_data_details.cc
 glom/mode_data/box_data_list.cc
 glom/mode_data/box_data_list_related.cc
@@ -87,6 +88,7 @@ glom/translation/combobox_locale.cc
 glom/translation/dialog_change_language.cc
 glom/translation/window_translations.cc
 glom/utility_widgets/adddel/adddel.cc
+glom/utility_widgets/calendar/glomgtkcalendar.c
 glom/utility_widgets/comboentryglom.cc
 glom/utility_widgets/datawidget.cc
 glom/utility_widgets/db_adddel/db_adddel.cc

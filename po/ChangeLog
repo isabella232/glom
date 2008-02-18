@@ -1,3 +1,8 @@
+2008-02-19  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* POTFILES.in: Add missing files.
+	* nb.po: Updated Norwegian bokmål translation.
+
 2008-02-14  Pawan Chitrakar <chautari@gmail.com>
 
 	* ne.po: Updated Nepali Translation.
