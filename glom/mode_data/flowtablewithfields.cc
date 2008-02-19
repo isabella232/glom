@@ -1144,10 +1144,25 @@ void FlowTableWithFields::on_dnd_add_layout_item_field(LayoutWidgetBase* above)
   signal_layout_changed().emit();
 }
 
-void FlowTableWithFields::on_dnd_add_layout_group(LayoutWidgetBase* above)
+void FlowTableWithFields::on_dnd_add_layout_notebook (LayoutWidgetBase* above)
 {
-  type_list_layoutwidgets::iterator cur_widget;
+  sharedptr<LayoutItem_Notebook> notebook(new LayoutItem_Notebook);
+  sharedptr<LayoutItem> item = sharedptr<LayoutItem>::cast_dynamic(notebook);
+  notebook->set_name(_("Notebook"));
+  // Add a group to the notebook
+  sharedptr<LayoutGroup> group(new LayoutGroup ());
+  group->set_title(_("New Group"));
+  group->set_name (_("Group"));
+  notebook->m_list_items.push_back(group);
   
+  dnd_add_to_layout_group (item, above);
+  
+  //Tell the parent to tell the document to save the layout
+  signal_layout_changed().emit();
+}
+
+void FlowTableWithFields::on_dnd_add_layout_group(LayoutWidgetBase* above)
+{  
   sharedptr<LayoutGroup> group(new LayoutGroup());
   group->set_title(_("New Group"));
   group->set_name (_("Group"));

@@ -108,7 +108,7 @@ protected:
   virtual void on_dnd_add_layout_group(LayoutWidgetBase* above) = 0;
   virtual void on_dnd_add_layout_item_button (LayoutWidgetBase* above) = 0;
   virtual void on_dnd_add_layout_item_text (LayoutWidgetBase* above) = 0;
-  virtual void on_dnd_add_layout_notebook (LayoutWidgetBase* above) {};
+  virtual void on_dnd_add_layout_notebook (LayoutWidgetBase* above) = 0;
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

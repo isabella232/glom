@@ -204,6 +204,7 @@ protected:
   virtual void on_dnd_add_layout_group(LayoutWidgetBase* above);
   virtual void on_dnd_add_layout_item_button (LayoutWidgetBase* above);
   virtual void on_dnd_add_layout_item_text (LayoutWidgetBase* above);
+  virtual void on_dnd_add_layout_notebook (LayoutWidgetBase* above);
   
   bool get_field_information (sharedptr<LayoutItem>& item);
   void dnd_notify_failed_drop();

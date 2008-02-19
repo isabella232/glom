@@ -1,5 +1,12 @@
 2008-02-19  Johannes Schmid <johannes.schmid@openismus.com>
 
+	* glom/mode_data/flowtablewithfields.cc:
+	* glom/mode_data/flowtablewithfields.h:
+	* glom/utility_widgets/flowtable.h:
+	Added drag and drop for notebooks
+
+2008-02-19  Johannes Schmid <johannes.schmid@openismus.com>
+
 	* glom/frame_glom.cc:
 	Fixed crasher when using Tables menu
 	
