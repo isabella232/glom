@@ -1,4 +1,15 @@
-2008-02-18  Johannes Schmid <jhs@gnome.org>
+2008-02-19  Johannes Schmid <johannes.schmid@openismus.com>
+
+	* glom/application.cc:
+	* glom/application.h:
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h:
+	Show drag toolbar when in developer mode
+	
+	* glom/mode_data/box_data_details.cc:
+	Recreate layout when switching to developer mode
+
+2008-02-18  Johannes Schmid <johannes.schmid@openismus.com>
 
 	* glom/libglom/connectionpool.cc:	
 	#ifdef'd all those annoying avahi debug messages

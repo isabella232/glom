@@ -89,7 +89,6 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_pDialog_Relationships(0),
   m_dialog_addrelatedtable(0),
   m_dialog_relationships_overview(0),
-  m_pDrag_Bar(0),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_pDialogConnection(0)
 {
@@ -479,13 +478,6 @@ void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction
         test = (response == Gtk::RESPONSE_OK);
       }
       
-      if (test)
-      {
-        // Show the drag layout toolbar
-        m_pDrag_Bar = new DragBar();
-				App_Glom::get_application ()->add_sidebar (*m_pDrag_Bar);
-				m_pDrag_Bar->show();
-      }
       if(!test)
       {
         //Abort the change of user level:
@@ -509,13 +501,6 @@ void Frame_Glom::on_menu_userlevel_Operator(const Glib::RefPtr<Gtk::RadioAction>
       //Avoid double signals:
       //if(document->get_userlevel() != AppState::USERLEVEL_OPERATOR)
         document->set_userlevel(AppState::USERLEVEL_OPERATOR);
-      
-      if (m_pDrag_Bar)
-      {
-				App_Glom::get_application ()->remove_sidebar (*m_pDrag_Bar);
-        delete m_pDrag_Bar;
-        m_pDrag_Bar = 0;
-      }
     }
   }
 }

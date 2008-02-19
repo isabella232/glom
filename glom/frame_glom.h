@@ -239,7 +239,6 @@ protected:
   Dialog_AddRelatedTable* m_dialog_addrelatedtable;
   Dialog_RelationshipsOverview* m_dialog_relationships_overview;
   
-  DragBar* m_pDrag_Bar;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   Dialog_Connection* m_pDialogConnection;

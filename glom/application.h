@@ -182,6 +182,9 @@ protected:
   //so we can use them again when connecting directly to the database:
   Glib::ustring m_temp_username, m_temp_password;
 
+  // Drag bar (to be replaced by the fancy selector widget from mathias)
+  DragBar* m_pDrag_Bar;
+	
   bool m_show_sql_debug;
 };
 
