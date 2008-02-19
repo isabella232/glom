@@ -1128,7 +1128,7 @@ void FlowTableWithFields::on_flowtable_requested_related_details(const Glib::ust
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void FlowTableWithFields::on_dnd_add_layout_item_field(LayoutWidgetBase* above)
 {
-  //Ask the user to choose the layout item:
+  //Ask the user to choose the layout item
   sharedptr<LayoutItem_Field> layout_item_field = 
     DataWidget::offer_field_list(m_table_name, sharedptr<LayoutItem_Field>(), 
       get_document(), App_Glom::get_application());
@@ -1137,66 +1137,24 @@ void FlowTableWithFields::on_dnd_add_layout_item_field(LayoutWidgetBase* above)
     realize();
     return;
   }
-
-  //Add a widget for this layout item, after the "above" item:
-  type_list_layoutwidgets::iterator cur_widget;
-  if(above)
-    cur_widget = std::find (m_list_layoutwidgets.begin(), m_list_layoutwidgets.end(), above);
-  else
-    cur_widget = m_list_layoutwidgets.end();
-
-  //Get the layout group that the "above" widget's layout item is in:
-  sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(get_layout_item());
-  if(!layout_group)
-  {
-    std::cerr << "FlowTableWithFields::on_datawidget_layout_item_added(): layout_group is null." << std::endl;
-    return;
-  }
+  sharedptr<LayoutItem> item = sharedptr<LayoutItem>::cast_dynamic(layout_item_field);
+  dnd_add_to_layout_group (item, above);
   
-  if (above && above->get_layout_item())
-    layout_group->add_item(layout_item_field, above->get_layout_item());
-  else
-    layout_group->add_item(layout_item_field);
-
-  //Tell the parent to tell the document to save the layout:
+  //Tell the parent to tell the document to save the layout
   signal_layout_changed().emit();
 }
 
 void FlowTableWithFields::on_dnd_add_layout_group(LayoutWidgetBase* above)
 {
   type_list_layoutwidgets::iterator cur_widget;
-  if(above)
-    cur_widget = std::find(m_list_layoutwidgets.begin(), m_list_layoutwidgets.end(), above);
-  else
-    cur_widget = m_list_layoutwidgets.end();
   
   sharedptr<LayoutGroup> group(new LayoutGroup());
   group->set_title(_("New Group"));
   group->set_name (_("Group"));
-
-
-  //Get the layout group that the "above" widget's layout item is in
-  sharedptr<LayoutGroup> layout_group = get_layout_group();
-  if(!layout_group)
-  {
-    std::cerr << "FlowTableWithFields::on_dnd_layout_group_added(): layout_group is null." << std::endl;
-    return;
-  }
-
-  std::cout << "Group: " << layout_group->get_title() << std::endl;
   
-  //add_layout_group_at_position (group, cur_widget);
-  if(above && above->get_layout_item())
-  {
-    std::cout << "Adding group above item" << std::endl;
-    layout_group->add_item(group, above->get_layout_item());
-  }
-  else
-  {
-    std::cout << "Adding group at the end" << std::endl;
-    layout_group->add_item(group);
-  }  
-    
+  sharedptr<LayoutItem> item = sharedptr<LayoutItem>::cast_dynamic(group);
+  dnd_add_to_layout_group (item, above);
+  
   //Tell the parent to tell the document to save the layout
   signal_layout_changed().emit();
 }
@@ -1208,28 +1166,8 @@ void FlowTableWithFields::on_dnd_add_layout_item_button(LayoutWidgetBase* above)
   layout_item_button->set_title(_("New Button")); //Give the button a default title, so it is big enough, and so people see that they should change it.
   layout_item_button->set_name ("new_button");
   sharedptr<LayoutItem> layout_item = sharedptr<LayoutItem>::cast_dynamic(layout_item_button);
-    
-  //Add a widget for this layout item, after the "above" item:
-  type_list_layoutwidgets::iterator cur_widget;
-  if (above && above->get_layout_item())
-    cur_widget = std::find (m_list_layoutwidgets.begin(), m_list_layoutwidgets.end(), above);
-  else
-    cur_widget = m_list_layoutwidgets.end();
 
-  //Get the layout group that the "above" widget's layout item is in:
-  sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(get_layout_item());
-  if(!layout_group)
-  {
-    return;
-  }
-
-  add_layout_item_at_position(layout_item_button, cur_widget);
-
-  if (above && above->get_layout_item())
-    layout_group->add_item(layout_item_button, above->get_layout_item());
-  else
-    layout_group->add_item(layout_item_button);
-
+  dnd_add_to_layout_group (layout_item, above);
   //Tell the parent to tell the document to save the layout:
   signal_layout_changed().emit();
 }
@@ -1240,68 +1178,29 @@ void FlowTableWithFields::on_dnd_add_layout_item_text(LayoutWidgetBase* above)
   sharedptr<LayoutItem_Text> textobject = sharedptr<LayoutItem_Text>::create();
   textobject->set_title(_("Text Title")); //Give the button a default title, so it is big enough, and so people see that they should change it.
   sharedptr<LayoutItem> layout_item = sharedptr<LayoutItem>::cast_dynamic(textobject);
-    
-  //Add a widget for this layout item, after the "above" item:
-  type_list_layoutwidgets::iterator cur_widget;
-  if (above && above->get_layout_item())
-    cur_widget = std::find (m_list_layoutwidgets.begin(), m_list_layoutwidgets.end(), above);
-  else
-    cur_widget = m_list_layoutwidgets.end();
 
-  //Get the layout group that the "above" widget's layout item is in:
-  sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(get_layout_item());
-  if(!layout_group)
-  {
-    std::cerr << "FlowTableWithFields::on_datawidget_layout_item_added(): layout_group is null." << std::endl;
-    return;
-  }
-  
-  add_layout_item_at_position(textobject, cur_widget);
+  dnd_add_to_layout_group (layout_item, above);
+  //Tell the parent to tell the document to save the layout
 
-  if (above && above->get_layout_item())
-    layout_group->add_item(textobject, above->get_layout_item());
-  else
-    layout_group->add_item(textobject);
-
-  //Tell the parent to tell the document to save the layout:
   signal_layout_changed().emit();
 }
 
 void FlowTableWithFields::on_dnd_add_placeholder(LayoutWidgetBase* above)
 {
-  type_list_layoutwidgets::iterator cur_widget;
-  
-  if(above)
-    cur_widget = std::find (m_list_layoutwidgets.begin(), m_list_layoutwidgets.end(), above);
-  else
-    cur_widget = m_list_layoutwidgets.end();
-
   if(m_placeholder)
   {
-    if(dynamic_cast<Glom::PlaceholderGlom*>(*cur_widget))
+    if(dynamic_cast<Glom::PlaceholderGlom*>(above))
       return;
 
     on_dnd_remove_placeholder();
   }
+  type_list_layoutwidgets::iterator cur_widget = std::find (m_list_layoutwidgets.begin(),
+                                                            m_list_layoutwidgets.end(),
+                                                            above);
   sharedptr<LayoutItem_Placeholder> placeholder_field(new LayoutItem_Placeholder);
-	add_layout_item_at_position (placeholder_field, cur_widget);
-  
-  //Get the layout group that the "above" widget's layout item is in
-  sharedptr<LayoutGroup> layout_group = get_layout_group();
-  if(!layout_group)
-  {
-    std::cerr << "FlowTableWithFields::on_dnd_add_placeholder: layout_group is null." << std::endl;
-    return;
-  }
-  
-  std::cout << "Group: " << layout_group->get_title() << std::endl;
-    
-  if(above)
-  {
-    layout_group->add_item(placeholder_field, above->get_layout_item());
-  }
-  else
-    layout_group->add_item(placeholder_field);
+  sharedptr<LayoutItem> item = sharedptr<LayoutItem>::cast_dynamic(placeholder_field);  
+  add_layout_item_at_position (placeholder_field, cur_widget);
+  dnd_add_to_layout_group (item, above, true /* ignore error*/);
 }
 
 void FlowTableWithFields::on_dnd_remove_placeholder()
@@ -1329,6 +1228,35 @@ void FlowTableWithFields::on_dnd_remove_placeholder()
   
   m_placeholder = 0;
 }
+
+void FlowTableWithFields::dnd_notify_failed_drop()
+{
+  // TODO: Avoid this error message
+  Gtk::MessageDialog dialog(_("You cannot drop anything here. Try to add a group first"),
+                      false, Gtk::MESSAGE_ERROR);
+  dialog.run();
+}
+
+bool FlowTableWithFields::dnd_add_to_layout_group (sharedptr<LayoutItem>& item, 
+                                                   LayoutWidgetBase* layoutwidget,
+                                                   bool ignore_error)
+{
+  //Get the layout group that the "above" widget's layout item is in:
+  sharedptr<LayoutGroup> layout_group = get_layout_group();
+  if(!layout_group)
+  {
+    if (!ignore_error)
+      dnd_notify_failed_drop();
+    return false;
+  }
+      
+  if (layoutwidget && layoutwidget->get_layout_item())
+    layout_group->add_item(item, layoutwidget->get_layout_item());
+  else
+    layout_group->add_item(item);
+  return true;
+}
+
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 sharedptr<LayoutItem_Portal> FlowTableWithFields::get_layout_item_from_relation()

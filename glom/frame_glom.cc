@@ -251,7 +251,8 @@ void Frame_Glom::set_databases_selected(const Glib::ustring& strName)
 
 void Frame_Glom::on_box_tables_selected(const Glib::ustring& strName)
 {
-  m_pDialog_Tables->hide(); //cause_close();
+  if (m_pDialog_Tables)
+    m_pDialog_Tables->hide(); //cause_close();
 
   show_table(strName);
 }
@@ -853,6 +854,7 @@ void Frame_Glom::on_dialog_add_related_table_request_edit_fields()
 
 void Frame_Glom::do_menu_Navigate_Table(bool open_default)
 {
+  
   if(get_document()->get_connection_database().empty())
   {
     alert_no_table();
@@ -862,13 +864,6 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
   Glib::ustring default_table_name;
   if(open_default)
     default_table_name = get_document()->get_default_table();
-
-  if(!default_table_name.empty())
-  {
-    //Show the default table, and let the user navigate to another table manually if he wants:
-    show_table(default_table_name);
-    return;
-  }
   
   //Create the dialog, if it has not already been created:
   if(!m_pBox_Tables)
@@ -896,7 +891,15 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
   //Let the user choose a table:
   //m_pDialog_Tables->set_policy(false, true, false); //TODO_port
   //m_pDialog_Tables->load_from_document(); //Refresh
-  m_pDialog_Tables->show();
+  if(!default_table_name.empty())
+  {
+    //Show the default table, and let the user navigate to another table manually if he wants:
+    show_table(default_table_name);
+  }
+  else
+  {
+    m_pDialog_Tables->show();
+  }
 }
 
 const Gtk::Window* Frame_Glom::get_app_window() const

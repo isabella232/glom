@@ -206,6 +206,10 @@ protected:
   virtual void on_dnd_add_layout_item_text (LayoutWidgetBase* above);
   
   bool get_field_information (sharedptr<LayoutItem>& item);
+  void dnd_notify_failed_drop();
+  bool dnd_add_to_layout_group (sharedptr<LayoutItem>& item, 
+                                LayoutWidgetBase* layoutwidget,
+                                bool ignore_error = false);
   
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
