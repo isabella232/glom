@@ -1211,6 +1211,16 @@ FlowTable::dnd_get_item(int drag_x, int drag_y)
       continue;  
     }
     
+    // Allow dragging at the end
+    if (cur_item == --m_children.end())
+    {
+      if (drag_y > (rect.get_y() + rect.get_height() / 2) &&
+          drag_y < (rect.get_y() + rect.get_height()))
+      {
+        return 0;
+      }
+    }
+    
     if (drag_y < (rect.get_y() + rect.get_height()))
     {
 			return &(*cur_item);
