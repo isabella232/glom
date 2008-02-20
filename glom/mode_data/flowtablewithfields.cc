@@ -486,19 +486,19 @@ void FlowTableWithFields::add_field_at_position(const sharedptr<LayoutItem_Field
 }
 
 
-void FlowTableWithFields::add_button_at_position(const sharedptr<LayoutItem_Button>& layoutitem_button, const Glib::ustring& /* table_name */, const type_list_layoutwidgets::iterator& add_before)
+void FlowTableWithFields::add_button_at_position(const sharedptr<LayoutItem_Button>& layoutitem_button, const Glib::ustring& table_name, const type_list_layoutwidgets::iterator& add_before)
 {
-  //Add the widget:
+  //Add the widget
   ButtonGlom* button = Gtk::manage(new ButtonGlom());
   button->set_label(layoutitem_button->get_title_or_name());
-
+  button->set_layout_item (layoutitem_button, table_name);
   button->signal_clicked().connect(
     sigc::bind(
       sigc::mem_fun(*this, &FlowTableWithFields::on_script_button_clicked),
       layoutitem_button) );
 
-  button->show(), 
-
+  button->show();
+    
   add_layoutwidgetbase(button, add_before);
   //add_view(button); //So it can get the document.
 
@@ -509,7 +509,7 @@ void FlowTableWithFields::add_button_at_position(const sharedptr<LayoutItem_Butt
 		add(*button, false /* expand */);
 }
 
-void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_Text>& layoutitem_text, const Glib::ustring& /* table_name */, const type_list_layoutwidgets::iterator& add_before)
+void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_Text>& layoutitem_text, const Glib::ustring& table_name , const type_list_layoutwidgets::iterator& add_before)
 {
   //Add the widget:
   Gtk::Alignment* alignment_label = Gtk::manage(new Gtk::Alignment());
@@ -517,6 +517,7 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
   alignment_label->show();
 
   LabelGlom* label = Gtk::manage(new LabelGlom(layoutitem_text->get_text(), 0.0 /* xalign */, 0.5 /* yalign */)); //The alignment here seems to be necessary as well (or instead of) the parent Gtk::Alignment.
+  label->set_layout_item (layoutitem_text, table_name);    
   label->show();
   alignment_label->add(*label);
   
@@ -579,13 +580,14 @@ void FlowTableWithFields::add_placeholder_at_position(const sharedptr<LayoutItem
     add(*m_placeholder, true);
 }
 
-void FlowTableWithFields::add_imageobject_at_position(const sharedptr<LayoutItem_Image>& layoutitem_image, const Glib::ustring& /* table_name */, const type_list_layoutwidgets::iterator& add_before)
+void FlowTableWithFields::add_imageobject_at_position(const sharedptr<LayoutItem_Image>& layoutitem_image, const Glib::ustring& table_name , const type_list_layoutwidgets::iterator& add_before)
 {
   //Add the widget:
   ImageGlom* image = Gtk::manage(new ImageGlom());
   image->set_size_request(200, 200);
   image->set_value(layoutitem_image->get_image());
   image->set_read_only(); //Only field images can be changed by the user when they are on a layout.
+  image->set_layout_item (layoutitem_image, table_name);
   image->show();
 
   add_layoutwidgetbase(image, add_before);

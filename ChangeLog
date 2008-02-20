@@ -1,5 +1,14 @@
 2008-02-20  Johannes Schmid <johannes.schmid@openismus.com>
 
+	* glom/mode_data/flowtablewithfields.cc:
+	Use set_layout_item() on all layout element to allow to
+	adding them at the correct place to a layout_group
+	
+	* glom/utility_widgets/flowtable.cc:
+	Remove some debug messages
+
+2008-02-20  Johannes Schmid <johannes.schmid@openismus.com>
+
 	* glom/utility_widgets/flowtable.cc:
 	Allow dragging at below the last item of a group
 

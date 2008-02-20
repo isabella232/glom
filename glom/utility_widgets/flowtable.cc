@@ -1148,7 +1148,6 @@ bool FlowTable::on_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_contex
 
 void FlowTable::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int drag_x, int drag_y, const Gtk::SelectionData& selection_data, guint, guint time)
 {
-  std::cout << __FUNCTION__ << std::endl;
   LayoutWidgetBase::enumType type = static_cast<LayoutWidgetBase::enumType>(*selection_data.get_data());
   LayoutWidgetBase* above = dnd_find_datawidget ();
   switch (type)
@@ -1176,7 +1175,6 @@ void FlowTable::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag
 
 void FlowTable::on_drag_leave(const Glib::RefPtr<Gdk::DragContext>& drag_context, guint time)
 {
-  std::cout << __FUNCTION__ << std::endl;
   on_dnd_remove_placeholder();
   change_dnd_status(false);
   realize();
@@ -1257,13 +1255,6 @@ LayoutWidgetBase* FlowTable::dnd_find_datawidget()
     {
       above = dynamic_cast<LayoutWidgetBase*>(m_current_dnd_item->m_second);
       //std::cout << g_type_name (G_OBJECT_TYPE (m_current_dnd_item->m_second->gobj())) << std::endl;
-    }
-    std::cout << "cur_widget: ";
-    std::cout << g_type_name (G_OBJECT_TYPE(m_current_dnd_item->m_first->gobj())) << std::endl;
-    Gtk::Alignment* al = dynamic_cast<Gtk::Alignment*> (m_current_dnd_item->m_first);
-    if (al)
-    {
-      std::cout << g_type_name (G_OBJECT_TYPE(al->get_child()->gobj())) << std::endl;
     }
   }
   return above;
