@@ -1,5 +1,10 @@
 2008-02-20  Johannes Schmid <johannes.schmid@openismus.com>
 
+	* glom/mode_data/box_data_details.cc:
+	Cell set modified, when the document was modified...
+
+2008-02-20  Johannes Schmid <johannes.schmid@openismus.com>
+
 	* glom/mode_data/flowtablewithfields.cc:
 	Use set_layout_item() on all layout element to allow to
 	adding them at the correct place to a layout_group

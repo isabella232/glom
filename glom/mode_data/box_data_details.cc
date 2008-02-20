@@ -571,6 +571,12 @@ void Box_Data_Details::on_flowtable_layout_changed()
 #endif
   create_layout();
 
+  //Store it in the document:
+  Document_Glom* document = get_document();
+  if(document)
+    document->set_modified (true);
+    
+    
   //And fill it with data:
   fill_from_database();
 }
