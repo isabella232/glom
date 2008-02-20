@@ -155,6 +155,9 @@ protected:
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   Window_Translations* m_window_translations;
+
+  // Drag bar (to be replaced by the fancy selector widget from mathias)
+  DragBar* m_pDrag_Bar;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   Glib::RefPtr<Gtk::ActionGroup> m_refNavTablesActionGroup, m_refNavReportsActionGroup, m_refNavPrintLayoutsActionGroup;
@@ -181,9 +184,6 @@ protected:
   //we already asked for them when getting the document over the network,
   //so we can use them again when connecting directly to the database:
   Glib::ustring m_temp_username, m_temp_password;
-
-  // Drag bar (to be replaced by the fancy selector widget from mathias)
-  DragBar* m_pDrag_Bar;
 	
   bool m_show_sql_debug;
 };

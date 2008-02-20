@@ -1,3 +1,12 @@
+2008-02-20  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.h: Moved the m_pDrag_Bar declaration to 
+	avoid a warning about initialization sequence.
+	* glom/libglom/python_embed/py_glom_relatedrecord.cc:
+	* glom/python_embed/glom_python.cc: Cast some static strings to 
+	gchar* because the Python C API does not use const. This avoids some 
+	warnings.
+
 2008-02-20  Johannes Schmid <johannes.schmid@openismus.com>
 
 	* glom/mode_data/box_data_details.cc:

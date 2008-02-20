@@ -102,7 +102,7 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
   m_pFrame(0),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_window_translations(0),
-	m_pDrag_Bar(0),
+  m_pDrag_Bar(0),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_menu_tables_ui_merge_id(0),
   m_menu_reports_ui_merge_id(0),

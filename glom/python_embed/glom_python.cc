@@ -87,14 +87,14 @@ void ShowTrace()
     std::cerr << "traceback = 0" << std::endl;
   }
 
-  PyObject *tracebackModule = PyImport_ImportModule("traceback");
+  PyObject *tracebackModule = PyImport_ImportModule((char*)"traceback");
   gchar* chrRetval = 0;
   if (tracebackModule != NULL)
   {
       PyObject* tbList = PyObject_CallMethod(
           tracebackModule,
-          "format_exception",
-          "OOO",
+          (char*)"format_exception",
+          (char*)"OOO",
           type,
           value == NULL ? Py_None : value,
           traceback == NULL ? Py_None : traceback);
@@ -106,8 +106,8 @@ void ShowTrace()
       }
 
       PyObject* emptyString = PyString_FromString("");
-      PyObject* strRetval = PyObject_CallMethod(emptyString, "join",
-            "O", tbList);
+      PyObject* strRetval = PyObject_CallMethod(emptyString, (char*)"join",
+            (char*)"O", tbList);
       if (strRetval)
         chrRetval = g_strdup(PyString_AsString(strRetval));
     
@@ -172,7 +172,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   func_def = "def " + func_name + "(record):\n  import glom\n  import gda\n" + func_def;
   //We did this in main(): Py_Initialize();
 
-  PyObject* pMain = PyImport_AddModule("__main__");
+  PyObject* pMain = PyImport_AddModule((char*)"__main__");
   PyObject* pDict = PyModule_GetDict(pMain);
 
 
@@ -204,7 +204,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   }
 
 
-  PyObject* module_glom = PyImport_ImportModule("glom");
+  PyObject* module_glom = PyImport_ImportModule((char*)"glom");
   if(!module_glom)
   {
     g_warning("Could not import python glom module.");
@@ -213,7 +213,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
 
   PyObject* module_glom_dict = PyModule_GetDict(module_glom);
   //This seems to be different to PyGlomRecord_GetPyType() - we can PyObject_Call() this one to instantiate it.
-  PyObject* pyTypeGlomRecord = PyDict_GetItemString(module_glom_dict, "Record"); //TODO: Unref this?
+  PyObject* pyTypeGlomRecord = PyDict_GetItemString(module_glom_dict, (char*)"Record"); //TODO: Unref this?
   if(!pyTypeGlomRecord || !PyType_Check(pyTypeGlomRecord))
   {
     g_warning("Could not get glom.Record from glom_module.");
@@ -221,7 +221,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   }
 
 
-  PyObject* module_gda = PyImport_ImportModule("gda");
+  PyObject* module_gda = PyImport_ImportModule((char*)"gda");
   if(!module_gda)
   {
     g_warning("Could not import python gda module.");

@@ -284,10 +284,11 @@ static PyMappingMethods RelatedRecord_tp_as_mapping = {
 static PyObject *
 RelatedRecord_generic_aggregate(PyGlomRelatedRecord* self, PyObject *args, PyObject *kwargs, const Glib::ustring& aggregate)
 {
-  static char *kwlist[] = { "field_name", 0 };
+  typedef const char* type_pch;
+  static type_pch kwlist[] = { "field_name", 0 };
   PyObject* py_field_name = 0;
 
-  if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O:RelatedRecord.sum", kwlist, &py_field_name))
+  if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char*)"O:RelatedRecord.sum", (char**)kwlist, &py_field_name))
     return NULL;
 
   if(!(PyString_Check(py_field_name)))
@@ -394,17 +395,17 @@ RelatedRecord_max(PyObject* self, PyObject *args, PyObject *kwargs)
 }
 
 static PyMethodDef RelatedRecord_methods[] = {
-    {"sum", (PyCFunction)RelatedRecord_sum, METH_VARARGS | METH_KEYWORDS,
-     "Add all values of the field in the related records."
+    {(char*)"sum", (PyCFunction)RelatedRecord_sum, METH_VARARGS | METH_KEYWORDS,
+     (char*)"Add all values of the field in the related records."
     },
-    {"count", (PyCFunction)RelatedRecord_count, METH_VARARGS | METH_KEYWORDS,
-     "Count all values in the field in the related records."
+    {(char*)"count", (PyCFunction)RelatedRecord_count, METH_VARARGS | METH_KEYWORDS,
+     (char*)"Count all values in the field in the related records."
     },
-    {"min", (PyCFunction)RelatedRecord_min, METH_VARARGS | METH_KEYWORDS,
-     "Minimum of all values of the field in the related records."
+    {(char*)"min", (PyCFunction)RelatedRecord_min, METH_VARARGS | METH_KEYWORDS,
+     (char*)"Minimum of all values of the field in the related records."
     },
-    {"max", (PyCFunction)RelatedRecord_max, METH_VARARGS | METH_KEYWORDS,
-     "Maximum of all values of the field in the related records."
+    {(char*)"max", (PyCFunction)RelatedRecord_max, METH_VARARGS | METH_KEYWORDS,
+     (char*)"Maximum of all values of the field in the related records."
     },
     {NULL, 0, 0, 0}  /* Sentinel */
 };
@@ -415,7 +416,7 @@ static PyMethodDef RelatedRecord_methods[] = {
 static PyTypeObject pyglom_RelatedRecordType = {
     PyObject_HEAD_INIT(NULL)
     0,                         /*ob_size*/
-    "glom.RelatedRecord",             /*tp_name*/
+    (char*)"glom.RelatedRecord",             /*tp_name*/
     sizeof(PyGlomRelatedRecord), /*tp_basicsize*/
     0,                         /*tp_itemsize*/
     (destructor)RelatedRecord_dealloc, /*tp_dealloc*/
@@ -434,7 +435,7 @@ static PyTypeObject pyglom_RelatedRecordType = {
     0,                         /*tp_setattro*/
     0,                         /*tp_as_buffer*/
     Py_TPFLAGS_DEFAULT,        /*tp_flags*/
-    "Glom objects",           /* tp_doc */
+    (char*)"Glom objects",           /* tp_doc */
     0,                  /* tp_traverse */
     0,                   /* tp_clear */
     0,                   /* tp_richcompare */
