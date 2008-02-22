@@ -1,3 +1,5 @@
+1.6.8:
+
 2008-02-04  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/mode_data/dialog_layout_details.cc: save_to_document(): 

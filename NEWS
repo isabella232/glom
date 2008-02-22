@@ -1,3 +1,14 @@
+1.6.8 (stable)
+
+* Fix loss of new groups when editing the Details layout.
+  (Murray Cumming. Bug #513774 from Göran.)
+* Fix crash when editing summary fields on Reports.
+  (Murray Cumming. Bug #513927 from Göran.)
+* Fix loss of text field formatting.
+  (Murray Cumming. Found by Göran.)
+* Fix field-blanking after clicking a script button.
+  (Murray Cumming)
+
 1.6.7 (stable):
 
 * Fix loss of field formatting when reloading document.
