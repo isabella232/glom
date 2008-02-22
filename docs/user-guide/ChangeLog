@@ -1,13 +1,13 @@
+2008-02-22  Murray Cumming  <murrayc@murrayc.com>
+
+	* C/glom.xml: Put the pygda appendix in its own section, instead of 
+	inside the previous appendix. Update the application version from 
+	0.8 to 1.6.
+
 2007-05-15  David Lodge <dave@cirt.net>
 
 	* en_GB/en_GB.po: Added (British) English translation.
 	* Makefile.am: Added en_GB to DOC_LINGUAS
-
-2007-05-09  Murray Cumming,,,  <murrayc@murrayc-desktop>
-
-	reviewed by: <delete if not using a buddy>
-
-	* es/legal.xml:
 
 2007-04-25  Jorge Gonzalez <jorgegonz@svn.gnome.org>
 

@@ -2,8 +2,8 @@
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
 "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
   <!ENTITY legal SYSTEM "legal.xml">
-  <!ENTITY appversion "0.8">
-  <!ENTITY manrevision "0.1">
+  <!ENTITY appversion "1.6">
+  <!ENTITY manrevision "0.2">
   <!ENTITY date "20 June 2004">
   <!ENTITY app "Glom">
   <!-- Information about the entities
@@ -572,9 +572,10 @@
   </programlisting>
   </para>
   </sect2>
+</sect1>
 
 
-  <sect2>
+<sect1>
   <title>Using the full pygda API</title>
   <para>pygda is a python API for the libgda API. The record's <literal>connection</literal> attribute provides a gda.connection that can be used to access the current database directly. This allows you to run any SQL query, for instance to read data from the database with a SELECT, or to change values in the database with an UPDATE. Note that the connection is already open so you can avoid the difficult work of specifying the connection details.</para>
   <para>The record's <literal>table_name</literal> attribute also provides the name of the current table.</para>
@@ -619,9 +620,6 @@ for row_index in range(rows):
     print "\n";
   </programlisting>
   </para>
-  </sect2>
-
-
   </sect1>
 
   </appendix>
