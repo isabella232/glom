@@ -1,3 +1,11 @@
+2008-02-23  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/main.cc: Add the bin/ subdirectory to the PATH environment
+	variable on Windows. This is where the gspawn-win32-helper.exe program
+	required for g_spawn* is installed, and g_spawn* requires it to be in
+	somewhere in PATH. This fixes self-hosting on machines where
+	gspawn-win32-helper.exe is not already in the PATH.
+
 2008-02-22  Murray Cumming  <murrayc@murrayc.com>
 
 	* C/glom.xml: Put the pygda appendix in its own section, instead of 
