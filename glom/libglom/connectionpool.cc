@@ -842,7 +842,7 @@ bool ConnectionPool::start_self_hosting()
   // POSTGRES_POSTMASTER_PATH is defined in config.h, based on the configure.
   const std::string command_postgres_start = Glib::shell_quote(get_path_to_postgres_executable("postmaster")) + " -D \"" + dbdir_data + "\" "
                                   + " -p " + port_as_text
-                                  + " -h \"*\" " //Equivalent to listen_addresses in postgresql.conf. Listen to all IP addresses, so any client can connect (with a username+password)
+                                  + " -i " //Equivalent to -h "*", which in turn is equivalent to listen_addresses in postgresql.conf. Listen to all IP addresses, so any client can connect (with a username+password)
                                   + " -c hba_file=\"" + dbdir + "/config/pg_hba.conf\""
                                   + " -c ident_file=\"" + dbdir + "/config/pg_ident.conf\""
                                   + " -k \"" + dbdir + "\""
