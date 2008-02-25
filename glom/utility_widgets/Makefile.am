@@ -1,6 +1,6 @@
 #AM_CPPFLAGS = -I@top_srcdir@/ $(GLOM_CFLAGS)
 
-SUBDIRS = cellrendererlist adddel db_adddel canvas calendar eggtoolpalette
+SUBDIRS = cellrendererlist adddel db_adddel canvas calendar
 
 gladedir = $(datadir)/glom/glade/
 glom_icon_dir = $(datadir)/glom/pixmaps
