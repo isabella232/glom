@@ -108,6 +108,11 @@ GLOM_LIBS="$GLOM_LIBS --no-undefined"
 AC_SUBST(GLOM_CFLAGS)
 AC_SUBST(GLOM_LIBS)
 
+# Temporary egg CFLAGS
+PKG_CHECK_MODULES(EGG, gtk+-2.0 >= 2.5.0)
+GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`  
+AC_SUBST(GLIB_GENMARSHAL)
+
 #Get the location of the ISO-Codes (currencies, languages) files:
 AC_DEFINE_UNQUOTED([ISO_CODES_PREFIX],["`$PKG_CONFIG --variable=prefix iso-codes`"],[ISO codes prefix])
 
@@ -215,6 +220,8 @@ AC_OUTPUT(Makefile \
         glom/utility_widgets/adddel/eggcolumnchooser/Makefile \
       glom/utility_widgets/canvas/Makefile \
       glom/utility_widgets/db_adddel/Makefile \
+      glom/utility_widgets/eggtoolpalette/Makefile \
+      glom/utility_widgets/util/Makefile \
       glom/python_embed/Makefile \
         glom/python_embed/python_module/Makefile \
     glom/relationships_overview/Makefile \

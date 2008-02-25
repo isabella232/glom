@@ -1,3 +1,13 @@
+2008-02-25  Johannes Schmid <johannes.schmid@openismus.com>
+
+	* configure.in:
+	* glom/Makefile.am:
+	* glom/utility_widgets/Makefile.am:
+	* glom/utility_widgets/eggtoolpalette/* (external)
+	* glom/utility_widgets/util/* (external)
+	
+	Integrated eggtoolpalette into the build system (not used yet)
+
 2008-02-24  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/connectionpool.cc: Pass -i instead of -h "*" to

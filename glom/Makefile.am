@@ -75,7 +75,9 @@ glom_LDADD += navigation/libnavigation.a \
               utility_widgets/adddel/eggcolumnchooser/libutility_widgets_adddel_eggcolumnchooserdialog.a \
               utility_widgets/db_adddel/libutility_widgets_db_adddel.a \
               utility_widgets/canvas/libutility_widgets_canvas.a \
-              utility_widgets/cellrendererlist/libutility_widgets_cellrendererlist.a
+              utility_widgets/cellrendererlist/libutility_widgets_cellrendererlist.a \
+              utility_widgets/eggtoolpalette/libeggtoolpalette.la \
+              utility_widgets/util/libeggutil.la
 
 glom_LDADD += python_embed/libpython_embed.a \
               $(top_builddir)/glom/libglom/libglom.la \
