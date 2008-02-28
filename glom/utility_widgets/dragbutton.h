@@ -30,7 +30,7 @@
 namespace Glom
 {
   
-class DragButton : public Gtk::Button
+class DragButton : public Gtk::ToolButton
 {
   public:
     DragButton(Gtk::Image& image, LayoutWidgetBase::enumType type);  

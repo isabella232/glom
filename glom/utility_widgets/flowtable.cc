@@ -26,6 +26,7 @@
 #include "imageglom.h"
 #include "layoutwidgetbase.h"
 #include "placeholder-glom.h"
+#include "eggtoolpalette/eggtoolpalette.h"
 #include <gtk/gtkwidget.h>
 #include <gdk/gdktypes.h>
 #include <iostream>
@@ -331,7 +332,7 @@ FlowTable::FlowTable()
   set_flags(Gtk::NO_WINDOW);
   set_redraw_on_allocate(false);
   std::list<Gtk::TargetEntry> drag_targets;
-  Gtk::TargetEntry drag_target(DragButton::get_target());
+  Gtk::TargetEntry drag_target(egg_tool_palette_get_drag_target_item());
   drag_targets.push_back(drag_target);
   drag_dest_set(drag_targets);
 }
@@ -431,7 +432,7 @@ void FlowTable::setup_dnd (Gtk::Widget& child)
   if (!(child.get_flags() & Gtk::NO_WINDOW))
   {
     std::list<Gtk::TargetEntry> new_targets;
-    new_targets.push_back(Gtk::TargetEntry(DragButton::get_target()));
+    new_targets.push_back(Gtk::TargetEntry(egg_tool_palette_get_drag_target_item()));
     Glib::RefPtr<Gtk::TargetList> targets =
 			child.drag_dest_get_target_list ();
     // The widget has already a default drag destination - add more targets
@@ -1148,27 +1149,36 @@ bool FlowTable::on_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_contex
 
 void FlowTable::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int drag_x, int drag_y, const Gtk::SelectionData& selection_data, guint, guint time)
 {
-  LayoutWidgetBase::enumType type = static_cast<LayoutWidgetBase::enumType>(*selection_data.get_data());
-  LayoutWidgetBase* above = dnd_find_datawidget ();
-  switch (type)
+  Gtk::Widget* palette = drag_get_source_widget (drag_context);
+  while (palette && !EGG_IS_TOOL_PALETTE (palette->gobj()))
+    palette = palette->get_parent();
+  if (palette)
   {
-  case LayoutWidgetBase::TYPE_FIELD:
-    on_dnd_add_layout_item_field(above);
-    break;
-  case LayoutWidgetBase::TYPE_BUTTON:
-    on_dnd_add_layout_item_button(above);
-    break;
-  case LayoutWidgetBase::TYPE_TEXT:
-    on_dnd_add_layout_item_text(above);
-    break;
-  case LayoutWidgetBase::TYPE_GROUP:
-    on_dnd_add_layout_group(above);
-    break;
-  case LayoutWidgetBase::TYPE_NOTEBOOK:
-    on_dnd_add_layout_notebook(above);
-    break;
-  default:
-    std::cerr << "Unknown drop type: " << type << std::endl;
+    GtkWidget* tool_item = egg_tool_palette_get_drag_item (EGG_TOOL_PALETTE (palette->gobj()), selection_data.gobj());
+    LayoutWidgetBase::enumType type = 
+      static_cast<LayoutWidgetBase::enumType>(GPOINTER_TO_INT(g_object_get_data(G_OBJECT(tool_item), "glom-type")));
+  
+    LayoutWidgetBase* above = dnd_find_datawidget ();
+    switch (type)
+    {
+      case LayoutWidgetBase::TYPE_FIELD:
+        on_dnd_add_layout_item_field(above);
+        break;
+      case LayoutWidgetBase::TYPE_BUTTON:
+        on_dnd_add_layout_item_button(above);
+        break;
+      case LayoutWidgetBase::TYPE_TEXT:
+        on_dnd_add_layout_item_text(above);
+        break;
+      case LayoutWidgetBase::TYPE_GROUP:
+        on_dnd_add_layout_group(above);
+        break;
+      case LayoutWidgetBase::TYPE_NOTEBOOK:
+        on_dnd_add_layout_notebook(above);
+        break;
+      default:
+        std::cerr << "Unknown drop type: " << type << std::endl;
+    }
   }
   change_dnd_status(false);
 }

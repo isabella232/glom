@@ -1,3 +1,15 @@
+2008-02-28  Johannes Schmid  <johannes.schmid@openismus.com>
+
+	* glom/utility_widgets/dragbar.cc:
+	* glom/utility_widgets/dragbutton.cc:
+	* glom/utility_widgets/dragbutton.h:
+	* glom/utility_widgets/flowtable.cc:
+	* glom/utility_widgets/sidebar.cc:
+	* glom/utility_widgets/sidebar.h:
+	Use EggToolPalette for the developer drag and drop toolbar
+
+  * glom/utility_widgets/eggtoolpalette: Updated to new external revision
+
 2008-02-25  Johannes Schmid <johannes.schmid@openismus.com>
 
 	* configure.in:

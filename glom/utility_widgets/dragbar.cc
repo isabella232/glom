@@ -25,12 +25,16 @@
 #include "config.h"
 
 #include "layoutwidgetbase.h"
+#include "eggtoolpalette/eggtoolitemgroup.h"
 
 namespace Glom
 {
 
 DragBar::DragBar()
-{ 
+{
+	// Does look ugly otherwise
+	set_size_request(100, 200);
+	
   Gtk::Image* image_item = 
     Gtk::manage (new Gtk::Image(GLOM_ICON_DIR "/glom-field.png"));
   Gtk::Image* image_button = 
@@ -43,20 +47,28 @@ DragBar::DragBar()
   Gtk::Image* image_notebook = 
     Gtk::manage (new Gtk::Image(GLOM_ICON_DIR "/glom-notebook.png"));
   
+	
   DragButton* drag_group = Gtk::manage(new DragButton(*image_group, LayoutWidgetBase::TYPE_GROUP));  
   DragButton* drag_notebook = Gtk::manage(new DragButton(*image_notebook, LayoutWidgetBase::TYPE_NOTEBOOK));  
 
   DragButton* drag_item = Gtk::manage(new DragButton(*image_item, LayoutWidgetBase::TYPE_FIELD));
   DragButton* drag_button = Gtk::manage(new DragButton(*image_button, LayoutWidgetBase::TYPE_BUTTON));
   DragButton* drag_text = Gtk::manage(new DragButton(*image_text, LayoutWidgetBase::TYPE_TEXT));  
-    
-  add_button (*drag_group);
-  add_button (*drag_notebook);
   
-  add_button (*drag_item);
-  add_button (*drag_button);
-  add_button (*drag_text);
+	GtkContainer* container_group = GTK_CONTAINER(egg_tool_item_group_new(_("Container")));
+	gtk_container_add (container_group, GTK_WIDGET(drag_group->gobj()));
+	gtk_container_add (container_group, GTK_WIDGET(drag_notebook->gobj()));
+
+	GtkContainer* fields_group = GTK_CONTAINER(egg_tool_item_group_new(_("Fields")));
+	gtk_container_add (fields_group, GTK_WIDGET(drag_item->gobj()));
+	gtk_container_add (fields_group, GTK_WIDGET(drag_button->gobj()));  
+	gtk_container_add (fields_group, GTK_WIDGET(drag_text->gobj()));
 	
+	add_group (EGG_TOOL_ITEM_GROUP(container_group));
+	add_group (EGG_TOOL_ITEM_GROUP(fields_group));
+	
+  set_drag_source();
+  
   show_all_children();
 }
 

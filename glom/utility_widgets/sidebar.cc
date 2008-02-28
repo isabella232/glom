@@ -24,11 +24,11 @@ namespace Glom
 {
 
 SideBar::SideBar()
-{ 
-  set_snap_edge(Gtk::POS_LEFT);
-  set_handle_position(Gtk::POS_TOP);
-  
-  add(m_box);
+{  
+	palette = EGG_TOOL_PALETTE(egg_tool_palette_new ());
+	Gtk::Container* container = Glib::wrap(GTK_CONTAINER(palette));
+	
+	add(*container);
   show_all_children();
 }
 
@@ -37,15 +37,20 @@ SideBar::~SideBar()
   
 }
 
-void SideBar::add_button(Gtk::Button& button)
+void SideBar::add_group(EggToolItemGroup* group)
 {
-  button.set_relief(Gtk::RELIEF_HALF);
-  m_box.pack_start(button, false, false, 0);
+	gtk_container_add(GTK_CONTAINER(palette), GTK_WIDGET(group));
 }
 
-void SideBar::remove_button(Gtk::Button& button)
+void SideBar::remove_group(EggToolItemGroup* group)
 {
-  m_box.remove(button);  
+	gtk_container_remove(GTK_CONTAINER(palette), GTK_WIDGET(group));
+}
+
+void SideBar::set_drag_source()
+{
+  // It's important to call this AFTER all groups have been added
+  egg_tool_palette_set_drag_source (palette);
 }
 
 } // namespace Glom

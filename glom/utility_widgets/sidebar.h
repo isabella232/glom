@@ -25,21 +25,25 @@
 #include <gtkmm/handlebox.h>
 #include <gtkmm/box.h>
 #include <gtkmm/button.h>
+#include "eggtoolpalette/eggtoolpalette.h"
+#include "eggtoolpalette/eggtoolitemgroup.h"
 
 namespace Glom
 {
 
-class SideBar : public Gtk::HandleBox
+class SideBar : public Gtk::VBox
 {
 public:
   SideBar();
   ~SideBar();
     
-  void add_button(Gtk::Button& button);
-  void remove_button(Gtk::Button& button);
+  void add_group (EggToolItemGroup* group);
+	void remove_group (EggToolItemGroup* group);
+  
+  void set_drag_source();
   
 private:
-  Gtk::VBox m_box;
+  EggToolPalette* palette;
 };
 
 } //namespace Glom

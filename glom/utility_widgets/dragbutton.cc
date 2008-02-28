@@ -23,10 +23,11 @@
 namespace Glom
 {
   
-DragButton::DragButton(Gtk::Image& image, LayoutWidgetBase::enumType type)
+DragButton::DragButton(Gtk::Image& image, LayoutWidgetBase::enumType type) :
+	Gtk::ToolButton(image)
 {
-  set_image(image);
   m_type = type;
+	g_object_set_data (G_OBJECT(gobj()), "glom-type", GINT_TO_POINTER(type));
   std::list<Gtk::TargetEntry> targetentries;
   targetentries.push_back(Gtk::TargetEntry(get_target()));
   drag_source_set(targetentries, Gdk::MODIFIER_MASK, 
@@ -46,7 +47,7 @@ void DragButton::on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>&,
 
 void DragButton::on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& drag_context)
 {
-	drag_context->set_icon (dynamic_cast<Gtk::Image*>(get_image())->get_pixbuf(), 0, 0);
+	drag_context->set_icon (dynamic_cast<Gtk::Image*>(get_icon_widget())->get_pixbuf(), 0, 0);
 }
 
 } // namespace Glom
