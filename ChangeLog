@@ -1,3 +1,8 @@
+2008-02-29  Johannes Schmid  <johannes.schmid@openismus.com>
+
+	* glom/utility_widgets/flowtable.cc:
+	Fixed dragging on LabelGlom
+
 2008-02-28  Johannes Schmid  <johannes.schmid@openismus.com>
 
 	* glom/utility_widgets/dragbar.cc:

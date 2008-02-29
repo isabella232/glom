@@ -386,11 +386,35 @@ void FlowTable::insert_before(FlowTableItem& item, Gtk::Widget& before)
   std::vector<FlowTableItem>::iterator pos;
   for (pos = m_children.begin(); pos != m_children.end(); pos++)
   {
-      if (((*pos).m_first && (*pos).m_first->gobj() == before.gobj()) || ((*pos).m_second && (*pos).m_second->gobj() == before.gobj()))
+    FlowTableItem* item = &(*pos);
+    if (item->m_first)
+    {
+      if (item->m_first->gobj() == before.gobj())
       {
         found = true;
         break;
       }
+      Gtk::Alignment* alignment = dynamic_cast<Gtk::Alignment*>(item->m_first);
+      if (alignment && alignment->get_child()->gobj() == before.gobj())
+      {
+        found = true;
+        break;
+      }
+    }
+    if (item->m_second)
+    {
+      if (item->m_second->gobj() == before.gobj())
+      {
+        found = true;
+        break;
+      }
+      Gtk::Alignment* alignment = dynamic_cast<Gtk::Alignment*>(item->m_second);
+      if (alignment && alignment->get_child()->gobj() == before.gobj())
+      {
+        found = true;
+        break;
+      }
+    }    
   }
  
   gtk_widget_set_parent(GTK_WIDGET (item.m_first->gobj()), GTK_WIDGET(gobj()));
@@ -426,9 +450,6 @@ void FlowTable::setup_dnd (Gtk::Widget& child)
     return;
   }
   
-  //std::cout << "Setup DND: ";
-  //std::cout << g_type_name (G_OBJECT_TYPE (child.gobj()));
-  
   if (!(child.get_flags() & Gtk::NO_WINDOW))
   {
     std::list<Gtk::TargetEntry> new_targets;
@@ -451,10 +472,7 @@ void FlowTable::setup_dnd (Gtk::Widget& child)
                                         false);
     child.signal_drag_data_received().connect (sigc::bind<Gtk::Widget*>(sigc::mem_fun (*this, &FlowTable::on_child_drag_data_received), &child));
     child.signal_drag_leave().connect (sigc::mem_fun (*this, &FlowTable::on_child_drag_leave));
-    //std::cout << "...done" << std::endl;   
   }
-  else
-    ;//std::cout << "...skipped" << std::endl;
 }
 
 void FlowTable::set_columns_count(guint value)
@@ -1254,9 +1272,7 @@ LayoutWidgetBase* FlowTable::dnd_find_datawidget()
       Gtk::Alignment* alignment = dynamic_cast <Gtk::Alignment*>(m_current_dnd_item->m_first);
       if (alignment)
       {
-        above = dynamic_cast<PlaceholderGlom*>(alignment->get_child());
-        if (above)
-          std::cout << "Above placeholder" << std::endl;
+        above = dynamic_cast<LayoutWidgetBase*>(alignment->get_child());
       }
     }
     if(!above && m_current_dnd_item->m_first)
@@ -1264,7 +1280,15 @@ LayoutWidgetBase* FlowTable::dnd_find_datawidget()
     if(!above && m_current_dnd_item->m_second)
     {
       above = dynamic_cast<LayoutWidgetBase*>(m_current_dnd_item->m_second);
-      //std::cout << g_type_name (G_OBJECT_TYPE (m_current_dnd_item->m_second->gobj())) << std::endl;
+      // Special case for labels
+      if (!above)
+      {       
+        Gtk::Alignment* alignment = dynamic_cast <Gtk::Alignment*>(m_current_dnd_item->m_second);
+        if (alignment)
+        {
+          above = dynamic_cast<LayoutWidgetBase*>(alignment->get_child());
+        }
+      } 
     }
   }
   return above;
