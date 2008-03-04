@@ -20,6 +20,7 @@
 
 #include "datawidget.h"
 #include "entryglom.h"
+#include "checkglom.h"
 #include "labelglom.h"
 #include "comboentryglom.h"
 #include "comboglom.h"
@@ -54,13 +55,14 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
   const Glib::ustring title = field->get_title_or_name();
   if(glom_type == Field::TYPE_BOOLEAN)
   {
-    Gtk::CheckButton* checkbutton = Gtk::manage( new Gtk::CheckButton( title ) );
+    CheckGlom* checkbutton = Gtk::manage( new CheckGlom( title ) );
     checkbutton->show();
     checkbutton->signal_toggled().connect( sigc::mem_fun(*this, &DataWidget::on_widget_edited)  );
 
     //TODO: entry->signal_user_requested_layout().connect( sigc::mem_fun(*this, &DataWidget::on_child_user_requested_layout );
 
     m_child = checkbutton;
+    pFieldWidget = checkbutton;
 
     m_label.set_text( Glib::ustring() ); //It is not used.
   }
