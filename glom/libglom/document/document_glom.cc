@@ -680,7 +680,7 @@ void Document_Glom::remove_field(const Glib::ustring& table_name, const Glib::us
       }
     }
 
-     //Remove field from any reports:
+    //Remove field from any reports:
     for(DocumentTableInfo::type_reports::iterator iterReports = info.m_reports.begin(); iterReports != info.m_reports.end(); ++iterReports)
     {
       sharedptr<Report> report = iterReports->second;
@@ -1347,11 +1347,80 @@ Document_Glom::type_list_layout_groups Document_Glom::get_data_layout_groups_def
 
   type_list_layout_groups result;
 
+ //Add one if necessary:
+  sharedptr<LayoutGroup> pTopLevel;
+  sharedptr<LayoutGroup> pOverview;
+  sharedptr<LayoutGroup> pDetails;
+
   sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::create();
   group->set_name("main");
   group->m_columns_count = 1;
   result.push_back(group);
-  
+  pTopLevel = group;
+
+  if(layout_name == "details") //The Details default layOut is a bit more complicated.
+  {
+    sharedptr<LayoutGroup> overview = sharedptr<LayoutGroup>::create();;
+    overview->set_name("overview");
+    overview->set_title_original("Overview"); //Don't translate this, but TODO: add standard translations.
+    overview->m_columns_count = 2;
+
+    pTopLevel->add_item(overview);
+    pOverview = sharedptr<LayoutGroup>::cast_dynamic(overview);
+
+    sharedptr<LayoutGroup> details = sharedptr<LayoutGroup>::create();
+    details->set_name("details");
+    details->set_title_original("Details"); //Don't translate this, but TODO: add standard translations.
+    details->m_columns_count = 2;
+    
+    pTopLevel->add_item(details);
+    pDetails = sharedptr<LayoutGroup>::cast_dynamic(details);
+  }
+
+  //If, for some reason, we didn't create the-subgroups, add everything to the top level group:
+  if(!pOverview)
+    pOverview = pTopLevel;
+
+  if(!pDetails)
+    pDetails = pTopLevel;
+
+
+  //Discover new fields, and add them:
+  type_vecFields all_fields = get_table_fields(parent_table_name);
+  for(type_vecFields::const_iterator iter = all_fields.begin(); iter != all_fields.end(); ++iter)
+  {
+    const Glib::ustring field_name = (*iter)->get_name();
+    if(!field_name.empty())
+    {
+      //See whether it's already in the result:
+      //TODO_Performance: There is a lot of iterating and comparison here:
+      bool found = false; //TODO: This is horrible.
+      for(type_list_layout_groups::const_iterator iterFind = result.begin(); iterFind != result.end(); ++iterFind)
+      {
+        sharedptr<const LayoutGroup> group = *iterFind;
+        if(group && group->has_field(field_name))
+        {
+          found = true;
+          break;
+        }
+      }
+
+      if(!found)
+      {
+        sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+        layout_item->set_full_field_details(*iter);
+        //layout_item.set_table_name(child_table_name); //TODO: Allow viewing of fields through relationships.
+        //layout_item.m_sequence = sequence;  add_item() will fill this.
+
+        //std::cout << "  debug: add_item(): " << layout_item.get_name() << std::endl;
+        if(pOverview && layout_item->get_full_field_details()->get_primary_key())
+          pOverview->add_item(layout_item);
+        else if(pDetails)
+          pDetails->add_item(layout_item);
+      }
+    }
+  }
+
   return result;
 }
 

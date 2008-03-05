@@ -1,3 +1,10 @@
+2008-03-05  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/document/document_glom.cc:
+	get_data_layout_groups_default(): Restored the code that creates 
+	the default layouts, which was lost somehow.
+	Bug #517665 (Johannes Schmid).
+
 2008-03-04  Johannes Schmid  <jhs@gnome.org>
 
 	* glom/mode_data/box_data_details.cc:
