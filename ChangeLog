@@ -1,5 +1,13 @@
 2008-03-05  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/data_structure/glomconversions.cc: 
+	get_text_for_gda_value(): Improved the warning about the unexpected 
+	value type, though I have not yet solved this (minor) problem.
+	* glom/utility_widgets/dragbar.cc: Improve the titles in the tool 
+	pallete. And please stop using tabs in the source code.
+
+2008-03-05  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/document/document_glom.cc:
 	get_data_layout_groups_default(): Restored the code that creates 
 	the default layouts, which was lost somehow.

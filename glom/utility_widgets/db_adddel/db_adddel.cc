@@ -1992,6 +1992,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
           Gtk::CellRendererText* pDerived = dynamic_cast<Gtk::CellRendererText*>(renderer);
           if(pDerived)
           {
+            //std::cout << "debug field name=" << field->get_name() << ", glom type=" << field->get_glom_type() << std::endl;
             const Glib::ustring text = Conversions::get_text_for_gda_value(field->get_glom_type(), value, field->get_formatting_used().m_numeric_format);
             //g_assert(text != "NULL");
             g_object_set(pDerived->gobj(), "text", text.c_str(), (gpointer)NULL);

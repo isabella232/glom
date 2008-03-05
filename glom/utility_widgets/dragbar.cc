@@ -32,8 +32,8 @@ namespace Glom
 
 DragBar::DragBar()
 {
-	// Does look ugly otherwise
-	set_size_request(100, 200);
+  // Looks ugly otherwise:
+  set_size_request(100, 200);
 	
   Gtk::Image* image_item = 
     Gtk::manage (new Gtk::Image(GLOM_ICON_DIR "/glom-field.png"));
@@ -55,17 +55,17 @@ DragBar::DragBar()
   DragButton* drag_button = Gtk::manage(new DragButton(*image_button, LayoutWidgetBase::TYPE_BUTTON));
   DragButton* drag_text = Gtk::manage(new DragButton(*image_text, LayoutWidgetBase::TYPE_TEXT));  
   
-	GtkContainer* container_group = GTK_CONTAINER(egg_tool_item_group_new(_("Container")));
-	gtk_container_add (container_group, GTK_WIDGET(drag_group->gobj()));
-	gtk_container_add (container_group, GTK_WIDGET(drag_notebook->gobj()));
+  GtkContainer* container_group = GTK_CONTAINER(egg_tool_item_group_new(_("Containers")));
+  gtk_container_add (container_group, GTK_WIDGET(drag_group->gobj()));
+  gtk_container_add (container_group, GTK_WIDGET(drag_notebook->gobj()));
 
-	GtkContainer* fields_group = GTK_CONTAINER(egg_tool_item_group_new(_("Fields")));
-	gtk_container_add (fields_group, GTK_WIDGET(drag_item->gobj()));
-	gtk_container_add (fields_group, GTK_WIDGET(drag_button->gobj()));  
-	gtk_container_add (fields_group, GTK_WIDGET(drag_text->gobj()));
+  GtkContainer* fields_group = GTK_CONTAINER(egg_tool_item_group_new(_("Items")));
+  gtk_container_add (fields_group, GTK_WIDGET(drag_item->gobj()));
+  gtk_container_add (fields_group, GTK_WIDGET(drag_button->gobj()));  
+  gtk_container_add (fields_group, GTK_WIDGET(drag_text->gobj()));
 	
-	add_group (EGG_TOOL_ITEM_GROUP(container_group));
-	add_group (EGG_TOOL_ITEM_GROUP(fields_group));
+  add_group (EGG_TOOL_ITEM_GROUP(container_group));
+  add_group (EGG_TOOL_ITEM_GROUP(fields_group));
 	
   set_drag_source();
   

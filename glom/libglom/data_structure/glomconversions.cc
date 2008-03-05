@@ -211,8 +211,15 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
 
     return format_time(the_c_time, locale, iso_format);
   }
-  else if( (glom_type == Field::TYPE_NUMERIC) && (value.get_value_type() == GDA_TYPE_NUMERIC))
+  else if(glom_type == Field::TYPE_NUMERIC)
   {
+    if(value.get_value_type() != GDA_TYPE_NUMERIC)
+    {
+      //TODO: This happens for ID columns, because the TreeModel returns a gchararray GValue, in treeviewcolumn_on_cell_data(). Needs some investigation.
+      std::cerr << "Conversions::get_text_for_gda_value(): glom field type is NUMERIC but GdaValue type is: " << g_type_name(value.get_value_type()) << std::endl;
+      return value.to_string();
+    }
+
     const GdaNumeric* gda_numeric = value.get_numeric();
     std::string text_in_c_locale;
     if(gda_numeric && gda_numeric->number) //A char* - I assume that it formatted as per the C locale. murrayc. TODO: Do we need to look at the other fields?
