@@ -1,5 +1,12 @@
 2008-03-05  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/application.cc: offer_new_or_existing():
+	Call connection_pool->set_get_document_func() before calling 
+	connection_request_password_and_choose_new_database_name() to 
+	avoid a (maybe harmless anyway) warning.
+
+2008-03-05  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/data_structure/glomconversions.cc: 
 	get_text_for_gda_value(): Improved the warning about the unexpected 
 	value type, though I have not yet solved this (minor) problem.

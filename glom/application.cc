@@ -1291,6 +1291,13 @@ bool App_Glom::offer_new_or_existing()
           document->set_connection_database(db_name);
           document->set_connection_is_self_hosted(self_hosted);
                
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+         //Tell the connection pool about the document:
+         ConnectionPool* connection_pool = ConnectionPool::get_instance();
+         if(connection_pool)
+           connection_pool->set_get_document_func( sigc::mem_fun(*this, &App_Glom::on_connection_pool_get_document) );
+#endif
+
           const bool connected = m_pFrame->connection_request_password_and_choose_new_database_name();
           if(!connected)
             return false;
