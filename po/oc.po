@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: oc\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-19 20:22+0100\n"
+"POT-Creation-Date: 2008-03-07 10:20+0100\n"
 "PO-Revision-Date: 2007-12-27 15:18+0100\n"
 "Last-Translator: Yannig Marchegay (Kokoyaya) <yannig@marchegay.org>\n"
 "Language-Team: Occitan <ubuntu-l10n-oci@lists.ubuntu.com>\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid "A user-friendly database environment."
 msgstr ""
 
-#: ../glom.desktop.in.in.h:2 ../glom/glom.glade.h:22 ../glom/main.cc:170
+#: ../glom.desktop.in.in.h:2 ../glom/glom.glade.h:22 ../glom/main.cc:198
 msgid "Glom"
 msgstr "Glom"
 
@@ -1198,8 +1198,8 @@ msgstr ""
 
 #: ../glom/glom_developer.glade.h:131
 #: ../glom/libglom/data_structure/layout/layoutgroup.cc:357
-#: ../glom/mode_data/flowtablewithfields.cc:1155
-#: ../glom/mode_data/flowtablewithfields.cc:1168
+#: ../glom/mode_data/flowtablewithfields.cc:1157
+#: ../glom/mode_data/flowtablewithfields.cc:1170
 msgid "Group"
 msgstr "Grop"
 
@@ -1752,7 +1752,7 @@ msgstr "Linha"
 
 #. Note to translators: "Notebook" means a GtkNotebook-type widget.
 #: ../glom/libglom/data_structure/layout/layoutitem_notebook.cc:56
-#: ../glom/mode_data/flowtablewithfields.cc:1151
+#: ../glom/mode_data/flowtablewithfields.cc:1153
 msgid "Notebook"
 msgstr ""
 
@@ -1873,11 +1873,11 @@ msgstr ""
 msgid "Show the generated SQL queries on stdout, for debugging."
 msgstr ""
 
-#: ../glom/main.cc:137
+#: ../glom/main.cc:165
 msgid "Error while parsing command-line options: "
 msgstr ""
 
-#: ../glom/main.cc:138
+#: ../glom/main.cc:166
 msgid "Use --help to see a list of available command-line options."
 msgstr ""
 
@@ -1994,11 +1994,11 @@ msgid "This record cannot be deleted because there is no primary key."
 msgstr ""
 
 #. Warn user that they can't choose their own primary key:
-#: ../glom/mode_data/box_data_details.cc:773
+#: ../glom/mode_data/box_data_details.cc:779
 msgid "Primary key auto increments"
 msgstr ""
 
-#: ../glom/mode_data/box_data_details.cc:774
+#: ../glom/mode_data/box_data_details.cc:780
 msgid ""
 "The primary key is auto-incremented.\n"
 " You may not enter your own primary key value."
@@ -2016,13 +2016,13 @@ msgid "Columns Count"
 msgstr ""
 
 #: ../glom/mode_data/dialog_layout_details.cc:663
-#: ../glom/mode_data/flowtablewithfields.cc:1060
-#: ../glom/mode_data/flowtablewithfields.cc:1181
+#: ../glom/mode_data/flowtablewithfields.cc:1062
+#: ../glom/mode_data/flowtablewithfields.cc:1183
 msgid "New Button"
 msgstr ""
 
 #: ../glom/mode_data/dialog_layout_details.cc:688
-#: ../glom/mode_data/flowtablewithfields.cc:1194
+#: ../glom/mode_data/flowtablewithfields.cc:1196
 msgid "Text Title"
 msgstr ""
 
@@ -2031,7 +2031,7 @@ msgid "Image Title"
 msgstr ""
 
 #: ../glom/mode_data/dialog_layout_details.cc:739
-#: ../glom/mode_data/flowtablewithfields.cc:1005
+#: ../glom/mode_data/flowtablewithfields.cc:1007
 msgid "notebook"
 msgstr ""
 
@@ -2059,38 +2059,38 @@ msgstr ""
 msgid "None: No visible tables are specified by the fields."
 msgstr ""
 
-#: ../glom/mode_data/flowtablewithfields.cc:999
-#: ../glom/mode_data/flowtablewithfields.cc:1154
-#: ../glom/mode_data/flowtablewithfields.cc:1167
+#: ../glom/mode_data/flowtablewithfields.cc:1001
+#: ../glom/mode_data/flowtablewithfields.cc:1156
+#: ../glom/mode_data/flowtablewithfields.cc:1169
 msgid "New Group"
 msgstr "Grop novèl"
 
 #. Note to translators: This is the default name (not seen by most users) for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1011
+#: ../glom/mode_data/flowtablewithfields.cc:1013
 msgid "tab1"
 msgstr ""
 
 #. Note to translators: This is the default label text for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1014
+#: ../glom/mode_data/flowtablewithfields.cc:1016
 msgid "Tab One"
 msgstr ""
 
-#: ../glom/mode_data/flowtablewithfields.cc:1059
+#: ../glom/mode_data/flowtablewithfields.cc:1061
 msgid "button"
 msgstr ""
 
 #. Note to translators: This is the default contents of a text item on a print layout:
-#: ../glom/mode_data/flowtablewithfields.cc:1066
+#: ../glom/mode_data/flowtablewithfields.cc:1068
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:466
 msgid "text"
 msgstr "tèxt"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1067
+#: ../glom/mode_data/flowtablewithfields.cc:1069
 msgid "New Text"
 msgstr ""
 
 #. TODO: Avoid this error message
-#: ../glom/mode_data/flowtablewithfields.cc:1250
+#: ../glom/mode_data/flowtablewithfields.cc:1252
 msgid "You cannot drop anything here. Try to add a group first"
 msgstr ""
 
