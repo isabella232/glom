@@ -451,7 +451,7 @@ Gnome::Gda::Value Box_Data::generate_next_auto_increment(const Glib::ustring& ta
     //if(value.is_number())
     //  result = value.get_integer();
     //else
-    result = decimal_from_string(value.to_string());
+    result = get_double_for_gda_value_numeric(value);
 
     ++result; 
   }

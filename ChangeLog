@@ -1,3 +1,25 @@
+2008-03-08  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/data_structure/glomconversions.cc:
+	* glom/libglom/data_structure/glomconversions.h:
+	Added get_double_for_gda_value_numeric().
+	* glom/base_db.cc: auto_increment_insert_first_if_necessary(),
+	recalculate_next_auto_increment_value(),
+	get_next_auto_increment_value():
+	Return a GdaNumeric Gda::Value, not a string one, and
+	do the conversion without the locale affecting it.
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
+	fill_values_if_necessary(): Create default values of the correct type. 
+	* glom/libglom/utils.cc:
+	* glom/libglom/utils.h: Removed decimal_from_string() because it is 
+	no longer used.
+	This avoids a warning about an incorrect type when adding a row in 
+	the list view.
+
+	* examples/example_music_collection.glom: Song table:
+	Added Artists doubly-related fields on details and recreate this 
+	example.
+
 2008-03-05  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/application.cc: offer_new_or_existing():

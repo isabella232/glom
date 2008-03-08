@@ -577,19 +577,6 @@ Glib::ustring Utils::string_from_decimal(guint decimal)
   return result;
 }
 
-guint Utils::decimal_from_string(const Glib::ustring& str)
-{
-  //TODO_Performance:
-
-  //Convert it to a numeric type:
-  std::stringstream stream;
-  stream << str;
-  guint id_numeric = 0;
-  stream >> id_numeric;
-
-  return id_numeric;
-}
-
 Glib::ustring Utils::title_from_string(const Glib::ustring& text)
 {
   Glib::ustring result;

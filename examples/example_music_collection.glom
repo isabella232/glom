@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <glom_document translation_original_locale="en_US" database_title="Music Collection" is_example="true" format_version="1">
-  <connection server="localhost" database="glom_musiccollection21"/>
+  <connection server="localhost" database="glom_musiccollection21" port="5433"/>
   
   
   
@@ -133,128 +133,189 @@
 
 
 
-<table name="albums" overview_x="15" overview_y="9" title="Albums"><example_rows>3,'','Sign ''O'' The Times',2,1,1987
-0,'','Born To Run',0,0,1975
-2,'','The Wild, the Innocent, &amp; the E-Street Shuffle',0,0,1973
-1,'','True Blue',1,1,1987
-4,'','Superfly',3,2,1972
-</example_rows><fields><field name="album_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Album ID"><calculation></calculation><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></field>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table name="albums" overview_x="15" overview_y="9" title="Albums"><example_rows><example_row><value column="album_id">3</value><value column="comments">''</value><value column="name">'Sign ''O'' The Times'</value><value column="artist_id">2</value><value column="publisher_id">1</value><value column="year">1987</value></example_row><example_row><value column="album_id">0</value><value column="comments">''</value><value column="name">'Born To Run'</value><value column="artist_id">0</value><value column="publisher_id">0</value><value column="year">1975</value></example_row><example_row><value column="album_id">2</value><value column="comments">''</value><value column="name">'The Wild, the Innocent, &amp; the E-Street Shuffle'</value><value column="artist_id">0</value><value column="publisher_id">0</value><value column="year">1973</value></example_row><example_row><value column="album_id">1</value><value column="comments">''</value><value column="name">'True Blue'</value><value column="artist_id">1</value><value column="publisher_id">1</value><value column="year">1987</value></example_row><example_row><value column="album_id">4</value><value column="comments">''</value><value column="name">'Superfly'</value><value column="artist_id">3</value><value column="publisher_id">2</value><value column="year">1972</value></example_row></example_rows><fields><field name="album_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Album ID"><calculation></calculation><formatting format_thousands_separator="true" format_decimal_places="2"/></field>
 <field name="comments" type="Text" title="Comments"><calculation></calculation><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" format_text_multiline_height_lines="6"/></field>
 <field name="name" type="Text" title="Name"><calculation></calculation><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></field>
-<field name="artist_id" type="Number" title="Artist ID"><calculation></calculation><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related="true" choices_related_relationship="artist" choices_related_field="artist_id" choices_related_second="name"/></field>
-<field name="publisher_id" type="Number" title="Publisher ID"><calculation></calculation><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" choices_related="true" choices_related_relationship="publisher" choices_related_field="publishers_id" choices_related_second="name"/></field>
-<field name="year" type="Number" title="Year"><calculation></calculation><formatting format_decimal_places="2" format_text_multiline_height_lines="6"/></field>
+<field name="artist_id" type="Number" title="Artist ID"><calculation></calculation><formatting format_thousands_separator="true" format_decimal_places="2" choices_related="true" choices_related_relationship="artist" choices_related_field="artist_id" choices_related_second="name"/></field>
+<field name="publisher_id" type="Number" title="Publisher ID"><calculation></calculation><formatting format_thousands_separator="true" format_decimal_places="2" choices_related="true" choices_related_relationship="publisher" choices_related_field="publishers_id" choices_related_second="name"/></field>
+<field name="year" type="Number" title="Year"><calculation></calculation><formatting format_decimal_places="2"/></field>
 </fields>
 <relationships><relationship name="artist" key="artist_id" other_table="artists" other_key="artist_id" title="Artist"/>
 <relationship name="publisher" key="publisher_id" other_table="publishers" other_key="publishers_id" title="Publisher"/>
 <relationship name="songs" key="album_id" other_table="songs" other_key="album_id" auto_create="true" allow_edit="true" title="Songs"/>
 </relationships>
-<data_layouts><data_layout name="details" parent_table="albums"><data_layout_groups><data_layout_group name="main" columns_count="1" sequence="1"><data_layout_group name="overview" columns_count="2" sequence="1" title="Overview"><trans_set><trans loc="de_DE" val="Overview"/></trans_set><data_layout_item name="album_id" editable="true" use_default_formatting="true" sequence="1"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_item name="name" editable="true" use_default_formatting="true" sequence="2"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_group><data_layout_group name="details" columns_count="2" sequence="2" title="Details"><trans_set><trans loc="de_DE" val="Details"/></trans_set><data_layout_group name="artist" columns_count="1" sequence="1" title="Artist"><trans_set><trans loc="de_DE" val="Artist"/></trans_set><data_layout_item name="artist_id" editable="true" use_default_formatting="true" sequence="1"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_item name="name" relationship="artist" editable="true" use_default_formatting="true" sequence="2"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_group><data_layout_group name="publisher" columns_count="1" sequence="2" title="Publisher"><trans_set><trans loc="de_DE" val="Publisher"/></trans_set><data_layout_item name="publisher_id" editable="true" use_default_formatting="true" sequence="1"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_item name="name" relationship="publisher" editable="true" use_default_formatting="true" sequence="2"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_group><data_layout_item name="year" editable="true" use_default_formatting="true" sequence="3"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_portal relationship="songs" name="" columns_count="1" sequence="4"><data_layout_item name="name" editable="true" use_default_formatting="true" sequence="1"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_portal><data_layout_item name="comments" editable="true" use_default_formatting="true" sequence="5"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_group></data_layout_group>
+<data_layouts><data_layout name="details" parent_table="albums"><data_layout_groups><data_layout_group name="main"><data_layout_group name="overview" columns_count="2" title="Overview"><trans_set><trans loc="de_DE" val="Overview"/></trans_set><data_layout_item name="album_id" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2"/></data_layout_item><data_layout_item name="name" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_group><data_layout_group name="details" columns_count="2" title="Details"><trans_set><trans loc="de_DE" val="Details"/></trans_set><data_layout_group name="artist" title="Artist"><trans_set><trans loc="de_DE" val="Artist"/></trans_set><data_layout_item name="artist_id" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2"/></data_layout_item><data_layout_item name="name" relationship="artist" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_group><data_layout_group name="publisher" title="Publisher"><trans_set><trans loc="de_DE" val="Publisher"/></trans_set><data_layout_item name="publisher_id" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2"/></data_layout_item><data_layout_item name="name" relationship="publisher" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_group><data_layout_item name="year" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2"/></data_layout_item><data_layout_portal relationship="songs"><data_layout_item name="name" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_portal><data_layout_item name="comments" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_group></data_layout_group>
 </data_layout_groups></data_layout>
-<data_layout name="list" parent_table="albums"><data_layout_groups><data_layout_group name="toplevel" columns_count="1"><data_layout_item name="name" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_item name="year" editable="true" use_default_formatting="true" sequence="1"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_group>
+<data_layout name="list" parent_table="albums"><data_layout_groups><data_layout_group name="toplevel"><data_layout_item name="name" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_item name="year" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2"/></data_layout_item></data_layout_group>
 </data_layout_groups></data_layout>
 </data_layouts>
-<reports><report name="albums_by_artist" show_table_title="true" title="Albums By Artist"><data_layout_groups><data_layout_group name="" columns_count="1"><data_layout_item_groupby name="" columns_count="1" sequence="1"><groupby name="artist_id" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></groupby><secondary_fields><data_layout_group name="" columns_count="1"><data_layout_item name="name" relationship="artist" editable="true" use_default_formatting="true" sequence="1"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/><title_custom use_custom="true" title="Artist Name"/></data_layout_item></data_layout_group></secondary_fields><data_layout_item name="name" editable="true" use_default_formatting="true" sequence="1"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_item name="year" editable="true" use_default_formatting="true" sequence="2"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_item_groupby></data_layout_group>
+<reports><report name="albums_by_artist" show_table_title="true" title="Albums By Artist"><data_layout_groups><data_layout_group><data_layout_item_groupby><groupby name="artist_id" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2"/></groupby><secondary_fields><data_layout_group><data_layout_item name="name" relationship="artist" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/><title_custom use_custom="true" title="Artist Name"/></data_layout_item></data_layout_group></secondary_fields><data_layout_item name="name" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_item name="year" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2"/></data_layout_item></data_layout_item_groupby></data_layout_group>
 </data_layout_groups></report>
-</reports>
+
+</reports><print_layouts/>
 
 </table>
-<table name="artists" default="true" overview_x="407" overview_y="119" title="Artists"><example_rows>0,'','','Bruce Springsteen'
-1,'','','Madonna'
-2,'','','Prince'
-3,'','','Curtis Mayfield'
-</example_rows><fields><field name="artist_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Artist ID"><calculation></calculation><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></field>
+<table name="artists" default="true" overview_x="407" overview_y="119" title="Artists"><example_rows><example_row><value column="artist_id">0</value><value column="description">''</value><value column="comments">''</value><value column="name">'Bruce Springsteen'</value></example_row><example_row><value column="artist_id">1</value><value column="description">''</value><value column="comments">''</value><value column="name">'Madonna'</value></example_row><example_row><value column="artist_id">2</value><value column="description">''</value><value column="comments">''</value><value column="name">'Prince'</value></example_row><example_row><value column="artist_id">3</value><value column="description">''</value><value column="comments">''</value><value column="name">'Curtis Mayfield'</value></example_row><example_row><value column="artist_id">4</value><value column="description">''</value><value column="comments">''</value><value column="name">'sdsd'</value></example_row><example_row><value column="artist_id">5</value><value column="description">''</value><value column="comments">''</value><value column="name">'fdf'</value></example_row><example_row><value column="artist_id">6</value><value column="description">''</value><value column="comments">''</value><value column="name">'Curtis Mayfield'</value></example_row></example_rows><fields><field name="artist_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Artist ID"><calculation></calculation><formatting format_thousands_separator="true" format_decimal_places="2"/></field>
 <field name="description" type="Text" title="Description"><calculation></calculation><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></field>
 <field name="comments" type="Text" title="Comments"><calculation></calculation><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" format_text_multiline_height_lines="6"/></field>
 <field name="name" type="Text" title="Name"><calculation></calculation><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></field>
 </fields>
 <relationships><relationship name="albums" key="artist_id" other_table="albums" other_key="artist_id" auto_create="true" allow_edit="true" title="Albums"/>
 </relationships>
-<data_layouts><data_layout name="details" parent_table="artists"><data_layout_groups><data_layout_group name="main" columns_count="1" sequence="1"><data_layout_group name="overview" columns_count="2" sequence="1" title="Overview"><trans_set><trans loc="de_DE" val="Overview"/></trans_set><data_layout_item name="artist_id" editable="true" use_default_formatting="true" sequence="1"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_item name="name" editable="true" use_default_formatting="true" sequence="2"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_group><data_layout_group name="details" columns_count="2" sequence="2" title="Details"><trans_set><trans loc="de_DE" val="Details"/></trans_set><data_layout_item name="description" editable="true" use_default_formatting="true" sequence="1"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_portal relationship="albums" name="" columns_count="1" sequence="2"><data_layout_item name="name" editable="true" use_default_formatting="true" sequence="1"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_item name="year" editable="true" use_default_formatting="true" sequence="2"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_portal><data_layout_item name="comments" editable="true" use_default_formatting="true" sequence="3"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_group></data_layout_group>
+<data_layouts><data_layout name="details" parent_table="artists"><data_layout_groups><data_layout_group name="main"><data_layout_group name="overview" columns_count="2" title="Overview"><trans_set><trans loc="de_DE" val="Overview"/></trans_set><data_layout_item name="artist_id" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2"/></data_layout_item><data_layout_item name="name" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_group><data_layout_group name="details" columns_count="2" title="Details"><trans_set><trans loc="de_DE" val="Details"/></trans_set><data_layout_item name="description" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_portal relationship="albums"><data_layout_item name="name" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_item name="year" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2"/></data_layout_item></data_layout_portal><data_layout_item name="comments" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_group></data_layout_group>
 </data_layout_groups></data_layout>
-<data_layout name="list" parent_table="artists"><data_layout_groups><data_layout_group name="main" columns_count="1" sequence="1"><data_layout_item name="artist_id" editable="true" use_default_formatting="true" sequence="1"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_item name="name" editable="true" use_default_formatting="true" sequence="2"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_item name="description" editable="true" use_default_formatting="true" sequence="3"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_item name="comments" editable="true" use_default_formatting="true" sequence="4"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_group>
+<data_layout name="list" parent_table="artists"><data_layout_groups><data_layout_group name="main"><data_layout_item name="artist_id" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2"/></data_layout_item><data_layout_item name="name" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_item name="description" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_item name="comments" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_group>
 </data_layout_groups></data_layout>
 </data_layouts>
-<reports/>
+<reports/><print_layouts/>
 
 </table>
-<table name="publishers" overview_x="411" overview_y="235" title="Publishers"><example_rows>0,'','Sony'
-1,'','Warner Bros'
-2,'','Rhino'
-</example_rows><fields><field name="publishers_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Publisher ID"><calculation></calculation><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></field>
+<table name="publishers" overview_x="411" overview_y="235" title="Publishers"><example_rows><example_row><value column="publishers_id">0</value><value column="comments">''</value><value column="name">'Sony'</value></example_row><example_row><value column="publishers_id">1</value><value column="comments">''</value><value column="name">'Warner Bros'</value></example_row><example_row><value column="publishers_id">2</value><value column="comments">''</value><value column="name">'Rhino'</value></example_row></example_rows><fields><field name="publishers_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Publisher ID"><calculation></calculation><formatting format_thousands_separator="true" format_decimal_places="2"/></field>
 <field name="comments" type="Text" title="Comments"><calculation></calculation><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" format_text_multiline_height_lines="6"/></field>
 <field name="name" type="Text" title="Name"><calculation></calculation><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></field>
 </fields>
 <relationships><relationship name="albums" key="publishers_id" other_table="albums" other_key="publisher_id" title="Albums"/>
 </relationships>
-<data_layouts><data_layout name="details" parent_table="publishers"><data_layout_groups><data_layout_group name="main" columns_count="1" sequence="1"><data_layout_group name="overview" columns_count="2" sequence="1" title="Overview"><trans_set><trans loc="de_DE" val="Overview"/></trans_set><data_layout_item name="publishers_id" editable="true" use_default_formatting="true" sequence="1"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_item name="name" editable="true" use_default_formatting="true" sequence="2"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_group><data_layout_group name="details" columns_count="1" sequence="2" title="Details"><trans_set><trans loc="de_DE" val="Details"/></trans_set><data_layout_item name="comments" editable="true" use_default_formatting="true" sequence="1"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_portal relationship="albums" name="" columns_count="1" sequence="2"><data_layout_item name="album_id" use_default_formatting="true" sequence="1"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_item name="name" use_default_formatting="true" sequence="2"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_item name="name" relationship="artist" use_default_formatting="true" sequence="3"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_portal></data_layout_group></data_layout_group>
+<data_layouts><data_layout name="details" parent_table="publishers"><data_layout_groups><data_layout_group name="main"><data_layout_group name="overview" columns_count="2" title="Overview"><trans_set><trans loc="de_DE" val="Overview"/></trans_set><data_layout_item name="publishers_id" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2"/></data_layout_item><data_layout_item name="name" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_group><data_layout_group name="details" title="Details"><trans_set><trans loc="de_DE" val="Details"/></trans_set><data_layout_item name="comments" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_portal relationship="albums"><data_layout_item name="album_id" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2"/></data_layout_item><data_layout_item name="name" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_item name="name" relationship="artist" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_portal></data_layout_group></data_layout_group>
 </data_layout_groups></data_layout>
-<data_layout name="list" parent_table="publishers"><data_layout_groups><data_layout_group name="main" columns_count="1" sequence="1"><data_layout_item name="publishers_id" editable="true" use_default_formatting="true" sequence="1"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_item name="comments" editable="true" use_default_formatting="true" sequence="2"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_item name="name" editable="true" use_default_formatting="true" sequence="3"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_group>
+<data_layout name="list" parent_table="publishers"><data_layout_groups><data_layout_group name="main"><data_layout_item name="publishers_id" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2"/></data_layout_item><data_layout_item name="comments" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_item name="name" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_group>
 </data_layout_groups></data_layout>
 </data_layouts>
-<reports/>
+<reports/><print_layouts/>
 
 </table>
-<table name="songs" overview_x="407" overview_y="7" title="Songs"><example_rows>0,'',0,'Thunder Road'
-1,'',0,'Tenth Avenue Freeze Out'
-2,'',0,'Night'
-3,'',0,'Backstreets'
-4,'',0,'Born To Run'
-5,'',0,'She''s The One'
-6,'',0,'Meeting Across The River'
-7,'',0,'Jungleland'
-8,'',2,'E Street Shuffle'
-9,'',2,'4th of July, Asbury Park (Sandy)'
-10,'',2,'Kitty''s Back'
-11,'',2,'Wild Billy''s Circus Story'
-12,'',2,'Incident on 57th Street'
-13,'',2,'Rosalita (Come out Tonight)'
-14,'',2,'New York City Serenade'
-15,'',3,'Sign ''O'' The Times'
-16,'',3,'Play In The Sunshine'
-17,'',3,'Housequake'
-18,'',3,'Ballad of Dorothy Parker'
-19,'',3,'It'
-20,'',3,'Starfish and Coffee'
-21,'',3,'Slow Love'
-22,'',3,'Hot Thing'
-23,'',3,'Forever In My Life'
-24,'',3,'U Got The Look'
-25,'',3,'If I Was Your Girlfriend'
-26,'',3,'Strange Relationship'
-27,'',3,'I Could Never Take The Place Of Your Man'
-28,'',3,'The Cross'
-29,'',3,'It''s Gonna Be A Beautiful Night'
-30,'',3,'Adore'
-31,'',1,'Papa Don''t Preach'
-32,'',1,'Open Your Heart'
-33,'',1,'White Heart'
-34,'',1,'Live To Tell'
-35,'',1,'Where''s The Party'
-36,'',1,'True Blue'
-37,'',1,'La Isla Bonita'
-38,'',1,'Jimmy Jimmy'
-39,'',1,'Love Makes The World Go Round'
-40,'',4,'Little Child Runnin'' Wild'
-41,'',4,'Pusherman'
-42,'',4,'Freddie''s Dead'
-43,'',4,'Junkie Chase (Instrumental)'
-44,'',4,'Give Me Your Love (Love Song)'
-45,'',4,'Eddie You Should Know Better'
-46,'',4,'No Thing On Me (Cocaine Song)'
-47,'',4,'Think (Instrumental)'
-48,'',4,'Superfly'
-</example_rows><fields><field name="songs_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Song ID"><calculation></calculation><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></field>
+<table name="songs" overview_x="407" overview_y="7" title="Songs"><example_rows><example_row><value column="songs_id">0</value><value column="comments">''</value><value column="album_id">0</value><value column="name">'Thunder Road'</value></example_row><example_row><value column="songs_id">1</value><value column="comments">''</value><value column="album_id">0</value><value column="name">'Tenth Avenue Freeze Out'</value></example_row><example_row><value column="songs_id">2</value><value column="comments">''</value><value column="album_id">0</value><value column="name">'Night'</value></example_row><example_row><value column="songs_id">3</value><value column="comments">''</value><value column="album_id">0</value><value column="name">'Backstreets'</value></example_row><example_row><value column="songs_id">4</value><value column="comments">''</value><value column="album_id">0</value><value column="name">'Born To Run'</value></example_row><example_row><value column="songs_id">5</value><value column="comments">''</value><value column="album_id">0</value><value column="name">'She''s The One'</value></example_row><example_row><value column="songs_id">6</value><value column="comments">''</value><value column="album_id">0</value><value column="name">'Meeting Across The River'</value></example_row><example_row><value column="songs_id">7</value><value column="comments">''</value><value column="album_id">0</value><value column="name">'Jungleland'</value></example_row><example_row><value column="songs_id">8</value><value column="comments">''</value><value column="album_id">2</value><value column="name">'E Street Shuffle'</value></example_row><example_row><value column="songs_id">9</value><value column="comments">''</value><value column="album_id">2</value><value column="name">'4th of July, Asbury Park (Sandy)'</value></example_row><example_row><value column="songs_id">10</value><value column="comments">''</value><value column="album_id">2</value><value column="name">'Kitty''s Back'</value></example_row><example_row><value column="songs_id">11</value><value column="comments">''</value><value column="album_id">2</value><value column="name">'Wild Billy''s Circus Story'</value></example_row><example_row><value column="songs_id">12</value><value column="comments">''</value><value column="album_id">2</value><value column="name">'Incident on 57th Street'</value></example_row><example_row><value column="songs_id">13</value><value column="comments">''</value><value column="album_id">2</value><value column="name">'Rosalita (Come out Tonight)'</value></example_row><example_row><value column="songs_id">14</value><value column="comments">''</value><value column="album_id">2</value><value column="name">'New York City Serenade'</value></example_row><example_row><value column="songs_id">15</value><value column="comments">''</value><value column="album_id">3</value><value column="name">'Sign ''O'' The Times'</value></example_row><example_row><value column="songs_id">16</value><value column="comments">''</value><value column="album_id">3</value><value column="name">'Play In The Sunshine'</value></example_row><example_row><value column="songs_id">17</value><value column="comments">''</value><value column="album_id">3</value><value column="name">'Housequake'</value></example_row><example_row><value column="songs_id">18</value><value column="comments">''</value><value column="album_id">3</value><value column="name">'Ballad of Dorothy Parker'</value></example_row><example_row><value column="songs_id">19</value><value column="comments">''</value><value column="album_id">3</value><value column="name">'It'</value></example_row><example_row><value column="songs_id">20</value><value column="comments">''</value><value column="album_id">3</value><value column="name">'Starfish and Coffee'</value></example_row><example_row><value column="songs_id">21</value><value column="comments">''</value><value column="album_id">3</value><value column="name">'Slow Love'</value></example_row><example_row><value column="songs_id">22</value><value column="comments">''</value><value column="album_id">3</value><value column="name">'Hot Thing'</value></example_row><example_row><value column="songs_id">23</value><value column="comments">''</value><value column="album_id">3</value><value column="name">'Forever In My Life'</value></example_row><example_row><value column="songs_id">24</value><value column="comments">''</value><value column="album_id">3</value><value column="name">'U Got The Look'</value></example_row><example_row><value column="songs_id">25</value><value column="comments">''</value><value column="album_id">3</value><value column="name">'If I Was Your Girlfriend'</value></example_row><example_row><value column="songs_id">26</value><value column="comments">''</value><value column="album_id">3</value><value column="name">'Strange Relationship'</value></example_row><example_row><value column="songs_id">27</value><value column="comments">''</value><value column="album_id">3</value><value column="name">'I Could Never Take The Place Of Your Man'</value></example_row><example_row><value column="songs_id">28</value><value column="comments">''</value><value column="album_id">3</value><value column="name">'The Cross'</value></example_row><example_row><value column="songs_id">29</value><value column="comments">''</value><value column="album_id">3</value><value column="name">'It''s Gonna Be A Beautiful Night'</value></example_row><example_row><value column="songs_id">30</value><value column="comments">''</value><value column="album_id">3</value><value column="name">'Adore'</value></example_row><example_row><value column="songs_id">31</value><value column="comments">''</value><value column="album_id">1</value><value column="name">'Papa Don''t Preach'</value></example_row><example_row><value column="songs_id">32</value><value column="comments">''</value><value column="album_id">1</value><value column="name">'Open Your Heart'</value></example_row><example_row><value column="songs_id">33</value><value column="comments">''</value><value column="album_id">1</value><value column="name">'White Heart'</value></example_row><example_row><value column="songs_id">34</value><value column="comments">''</value><value column="album_id">1</value><value column="name">'Live To Tell'</value></example_row><example_row><value column="songs_id">35</value><value column="comments">''</value><value column="album_id">1</value><value column="name">'Where''s The Party'</value></example_row><example_row><value column="songs_id">36</value><value column="comments">''</value><value column="album_id">1</value><value column="name">'True Blue'</value></example_row><example_row><value column="songs_id">37</value><value column="comments">''</value><value column="album_id">1</value><value column="name">'La Isla Bonita'</value></example_row><example_row><value column="songs_id">38</value><value column="comments">''</value><value column="album_id">1</value><value column="name">'Jimmy Jimmy'</value></example_row><example_row><value column="songs_id">39</value><value column="comments">''</value><value column="album_id">1</value><value column="name">'Love Makes The World Go Round'</value></example_row><example_row><value column="songs_id">40</value><value column="comments">''</value><value column="album_id">4</value><value column="name">'Little Child Runnin'' Wild'</value></example_row><example_row><value column="songs_id">41</value><value column="comments">''</value><value column="album_id">4</value><value column="name">'Pusherman'</value></example_row><example_row><value column="songs_id">42</value><value column="comments">''</value><value column="album_id">4</value><value column="name">'Freddie''s Dead'</value></example_row><example_row><value column="songs_id">43</value><value column="comments">''</value><value column="album_id">4</value><value column="name">'Junkie Chase (Instrumental)'</value></example_row><example_row><value column="songs_id">44</value><value column="comments">''</value><value column="album_id">4</value><value column="name">'Give Me Your Love (Love Song)'</value></example_row><example_row><value column="songs_id">45</value><value column="comments">''</value><value column="album_id">4</value><value column="name">'Eddie You Should Know Better'</value></example_row><example_row><value column="songs_id">46</value><value column="comments">''</value><value column="album_id">4</value><value column="name">'No Thing On Me (Cocaine Song)'</value></example_row><example_row><value column="songs_id">47</value><value column="comments">''</value><value column="album_id">4</value><value column="name">'Think (Instrumental)'</value></example_row><example_row><value column="songs_id">48</value><value column="comments">''</value><value column="album_id">4</value><value column="name">'Superfly'</value></example_row></example_rows><fields><field name="songs_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Song ID"><calculation></calculation><formatting format_thousands_separator="true" format_decimal_places="2"/></field>
 <field name="comments" type="Text" title="Comments"><calculation></calculation><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" format_text_multiline_height_lines="6"/></field>
-<field name="album_id" type="Number" title="Album ID"><calculation></calculation><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></field>
+<field name="album_id" type="Number" title="Album ID"><calculation></calculation><formatting format_thousands_separator="true" format_decimal_places="2"/></field>
 <field name="name" type="Text" title="Name"><calculation></calculation><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></field>
 </fields>
-<relationships><relationship name="albu" key="album_id" other_table="albums" other_key="album_id" title="Album"/>
+<relationships><relationship name="album" key="album_id" other_table="albums" other_key="album_id" title="Album"/>
 </relationships>
-<data_layouts><data_layout name="details" parent_table="songs"><data_layout_groups><data_layout_group name="main" columns_count="1" sequence="1"><data_layout_group name="overview" columns_count="2" sequence="1" title="Overview"><trans_set><trans loc="de_DE" val="Overview"/></trans_set><data_layout_item name="songs_id" editable="true" use_default_formatting="true" sequence="1"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_item name="name" editable="true" use_default_formatting="true" sequence="2"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_group><data_layout_group name="details" columns_count="2" sequence="2" title="Details"><trans_set><trans loc="de_DE" val="Details"/></trans_set><data_layout_item name="comments" editable="true" use_default_formatting="true" sequence="1"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_item name="album_id" editable="true" use_default_formatting="true" sequence="2"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_item name="name" relationship="albu" editable="true" use_default_formatting="true" sequence="3"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_group></data_layout_group>
+<data_layouts><data_layout name="details" parent_table="songs"><data_layout_groups><data_layout_group name="main"><data_layout_group name="overview" columns_count="2" title="Overview"><trans_set><trans loc="de_DE" val="Overview"/></trans_set><data_layout_item name="songs_id" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2"/></data_layout_item><data_layout_item name="name" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_group><data_layout_group name="details" columns_count="2" title="Details"><trans_set><trans loc="de_DE" val="Details"/></trans_set><data_layout_group name="album" title="Album"><data_layout_item name="album_id" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2"/></data_layout_item><data_layout_item name="name" relationship="album" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_group><data_layout_group name="artist" title="Album Artist"><data_layout_item name="artist_id" relationship="album" related_relationship="artist" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2"/></data_layout_item><data_layout_item name="name" relationship="album" related_relationship="artist" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_group><data_layout_item name="comments" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_group></data_layout_group>
+</data_layout_groups></data_layout>
+<data_layout name="list" parent_table="songs"><data_layout_groups><data_layout_group name="main"><data_layout_item name="songs_id" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2"/></data_layout_item><data_layout_item name="comments" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item><data_layout_item name="album_id" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2"/></data_layout_item><data_layout_item name="name" editable="true" use_default_formatting="true"><formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/></data_layout_item></data_layout_group>
 </data_layout_groups></data_layout>
 </data_layouts>
-<reports/>
+<reports/><print_layouts/>
 
 </table>
 <groups><!--These are only used when recreating a database from an example file. The actual access-control is on the server, of course.--></groups>

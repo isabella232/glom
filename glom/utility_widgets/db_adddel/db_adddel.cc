@@ -1360,7 +1360,7 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
   if(path_string.empty())
     return;
 
-  Gtk::TreePath path(path_string);
+  const Gtk::TreePath path(path_string);
 
   //Get the row from the path:
   Gtk::TreeModel::iterator iter = m_refListStore->get_iter(path);
@@ -1368,13 +1368,13 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
   {
     Gtk::TreeModel::Row row = *iter;
 
-    int tree_model_column_index = data_model_column_index + get_count_hidden_system_columns();
+    const int tree_model_column_index = data_model_column_index + get_count_hidden_system_columns();
 
     Gnome::Gda::Value value_old;
     row.get_value(tree_model_column_index, value_old);
 
     const bool bValueOld = (value_old.get_value_type() == G_TYPE_BOOLEAN) && value_old.get_boolean();
-    bool bValueNew = !bValueOld;
+    const bool bValueNew = !bValueOld;
     Gnome::Gda::Value value_new;
     value_new.set(bValueNew);
     //Store the user's new value in the model:
@@ -1440,7 +1440,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
   if(path_string.empty())
     return;
 
-  Gtk::TreePath path(path_string);
+  const Gtk::TreePath path(path_string);
 
   //Get the row from the path:
   Gtk::TreeModel::iterator iter = m_refListStore->get_iter(path);
@@ -1452,6 +1452,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
 
     Gnome::Gda::Value valOld;
     row.get_value(treemodel_column_index, valOld);
+    //std::cout << "debug: valOld type=" << valOld.get_value_type() << std::endl;
 
     //Store the user's new text in the model:
     //row.set_value(treemodel_column_index, new_text);
@@ -1489,7 +1490,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
       //Make sure that the entered data is suitable for this field type:
       bool success = false;
 
-      Gnome::Gda::Value value = Conversions::parse_value(field_type, new_text, item_field->get_formatting_used().m_numeric_format, success);
+      const Gnome::Gda::Value value = Conversions::parse_value(field_type, new_text, item_field->get_formatting_used().m_numeric_format, success);
       if(!success)
       {
           //Tell the user and offer to revert or try again:
@@ -1547,7 +1548,9 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
       else
       {
         //Store the value in the model:
+        //std::cout << "debug: setting value: column=" << treemodel_column_index << ", type=" << value.get_value_type() << std::endl;
         row.set_value(treemodel_column_index, value);
+        //std::cout << "debug: after setting value" << std::endl;
       }
 
       if(!bIsAdd)
@@ -1556,7 +1559,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
       //Fire appropriate signal:
       if(bIsAdd)
       {
-        //Signal that a new key was added"
+        //Signal that a new key was added:
         if(m_allow_add)
           m_signal_user_added.emit(row, model_column_index);
       }
@@ -1946,6 +1949,9 @@ void DbAddDel::set_key_field(const sharedptr<Field>& field)
 
 void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, int model_column_index, int data_model_column_index)
 {
+  //std::cout << "debug: DbAddDel::treeviewcolumn_on_cell_data()" << std::endl; 
+
+
   if(iter)
   {
     const DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
@@ -1957,6 +1963,13 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
       Gtk::TreeModel::Row treerow = *iter;
       Gnome::Gda::Value value;
       treerow->get_value(col_real, value);
+
+      /*
+      GType debug_type = value.get_value_type();
+      std::cout << "  debug: DbAddDel::treeviewcolumn_on_cell_data(): GdaValue from TreeModel::get_value(): GType=" << debug_type << std::endl;
+      if(debug_type)
+         std::cout << "    GType name=\"" << g_type_name(debug_type) << "\"" << std::endl; 
+      */
 
       switch(field->get_glom_type())
       {
@@ -1992,7 +2005,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
           Gtk::CellRendererText* pDerived = dynamic_cast<Gtk::CellRendererText*>(renderer);
           if(pDerived)
           {
-            //std::cout << "debug field name=" << field->get_name() << ", glom type=" << field->get_glom_type() << std::endl;
+            //std::cout << "  debug: DbAddDel::treeviewcolumn_on_cell_data(): field name=" << field->get_name() << ", glom type=" << field->get_glom_type() << std::endl;
             const Glib::ustring text = Conversions::get_text_for_gda_value(field->get_glom_type(), value, field->get_formatting_used().m_numeric_format);
             //g_assert(text != "NULL");
             g_object_set(pDerived->gobj(), "text", text.c_str(), (gpointer)NULL);

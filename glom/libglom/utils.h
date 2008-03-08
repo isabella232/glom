@@ -80,8 +80,10 @@ Glib::ustring locale_language_id(const Glib::ustring& locale_id);
 
 Glib::ustring create_local_image_uri(const Gnome::Gda::Value& value);
 
+/** Get a decimal text representation of the number,
+ * in the current locale.
+ */
 Glib::ustring string_from_decimal(guint decimal);
-guint decimal_from_string(const Glib::ustring& str);
 
 /** Create an appropriate title for an ID string.
  * For instance, date_of_birth would become Date Of Birth.

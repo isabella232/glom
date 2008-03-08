@@ -169,6 +169,29 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
   return get_text_for_gda_value(glom_type, value, std::locale("") /* the user's current locale */, numeric_format); //Get the current locale.
 }
 
+double Conversions::get_double_for_gda_value_numeric(const Gnome::Gda::Value& value)
+{
+  if(value.get_value_type() != GDA_TYPE_NUMERIC)
+  {
+    std::cerr << "Conversions::get_double_for_gda_value_numeric(): expected NUMERIC but GdaValue type is: " << g_type_name(value.get_value_type()) << std::endl;
+    return 0;
+  }
+
+  const GdaNumeric* gda_numeric = value.get_numeric();
+  std::string text_in_c_locale;
+  if(gda_numeric && gda_numeric->number) //A char* - I assume that it formatted as per the C locale. murrayc. TODO: Do we need to look at the other fields?
+    text_in_c_locale = gda_numeric->number; //What formatting does this use?
+
+  //Get an actual numeric value, so we can get a locale-specific text representation:
+  std::stringstream the_stream;
+  the_stream.imbue( std::locale::classic() ); //The C locale.
+  the_stream.str(text_in_c_locale); //Avoid using << because Glib::ustring does implicit character conversion with that.
+
+  double number = 0;
+  the_stream >> number;
+  return number;
+}
+
 Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_type, const Gnome::Gda::Value& value, const std::locale& locale, const NumericFormat& numeric_format, bool iso_format)
 {
   if(value.is_null()) //The type can be null for any of the actual field types.
@@ -215,23 +238,11 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
   {
     if(value.get_value_type() != GDA_TYPE_NUMERIC)
     {
-      //TODO: This happens for ID columns, because the TreeModel returns a gchararray GValue, in treeviewcolumn_on_cell_data(). Needs some investigation.
       std::cerr << "Conversions::get_text_for_gda_value(): glom field type is NUMERIC but GdaValue type is: " << g_type_name(value.get_value_type()) << std::endl;
       return value.to_string();
     }
 
-    const GdaNumeric* gda_numeric = value.get_numeric();
-    std::string text_in_c_locale;
-    if(gda_numeric && gda_numeric->number) //A char* - I assume that it formatted as per the C locale. murrayc. TODO: Do we need to look at the other fields?
-      text_in_c_locale = gda_numeric->number; //What formatting does this use?
-
-    //Get an actual numeric value, so we can get a locale-specific text representation:
-    std::stringstream the_stream;
-    the_stream.imbue( std::locale::classic() ); //The C locale.
-    the_stream.str(text_in_c_locale); //Avoid using << because Glib::ustinrg does implicit character conversion with that.
-
-    double number = 0;
-    the_stream >> number;
+    const double number = get_double_for_gda_value_numeric(value);
 
     //Get the locale-specific text representation, in the required format:
     std::stringstream another_stream;
@@ -330,7 +341,7 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
 
 Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, const Glib::ustring& text, const NumericFormat& numeric_format, bool& success, bool iso_format)
 {
-  std::locale the_locale = (iso_format ? std::locale::classic() :  std::locale("") /* The user's current locale */);
+  const std::locale the_locale = (iso_format ? std::locale::classic() :  std::locale("") /* The user's current locale */);
 
   //Put a NULL in the database for empty dates, times, and numerics, because 0 would be an actual value.
   //But we use "" for strings, because the distinction between NULL and "" would not be clear to users.
@@ -390,7 +401,7 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
 
     //Try to parse the inputted number, according to the current locale.
     std::stringstream the_stream;
-    the_stream.imbue( the_locale ); //Parse it as per the current locale.
+    the_stream.imbue( the_locale ); //Parse it as per the specified locale.
     the_stream.str(text_to_parse); //Avoid << because it does implicit character conversion (though that might not be a problem here. Not sure). murrayc
     double the_number = 0;
     the_stream >> the_number;  //TODO: Does this throw any exception if the text is an invalid time?

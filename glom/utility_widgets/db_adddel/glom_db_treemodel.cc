@@ -251,8 +251,14 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
     std::cout << "1000" << std::endl;  
   }
 
-  if(!m_values_retrieved)
+  if(m_values_retrieved)
   {
+     //std::cout << "debug: DbTreeModelRow::fill_values_if_necessary(): already retrieved" << std::endl;
+  }
+  else
+  {
+     //std::cout << "debug: DbTreeModelRow::fill_values_if_necessary(): retrieving" << std::endl;
+  
     if((row < (int)model.m_data_model_rows_count) && model.m_gda_datamodel)
     {
       Glib::RefPtr<Gnome::Gda::DataModelIter> iter = model.m_gda_datamodel->create_iter();
@@ -265,6 +271,7 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
         {
           Glib::RefPtr<Gnome::Gda::Parameter> param = iter->get_param_for_column(i);
           m_db_values[i] = param->get_value();
+          //std::cout << "  debug: col=" << i << ", GType=" << m_db_values[i].get_value_type() << std::endl;
         }
 
         Glib::RefPtr<Gnome::Gda::Parameter> param = iter->get_param_for_column(model.m_column_index_key);
@@ -279,13 +286,27 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
       //g_warning("DbTreeModelRow::fill_values_if_necessary(): Non-db row.");
       if(m_extra)
       {
+        //std::cout << "  debug: DbTreeModelRow::fill_values_if_necessary(): using default value" << std::endl;
+  
         //It is an extra row, added with append().
-        //Use the default values.
       }
       else if(!m_removed)
       {
         //It must be the last blank placeholder row.
         //m_placeholder = true;
+      }
+
+      //Create default values, if necessary, of the correct types:
+      //Examine the columns in the returned DataModel:
+      for(guint col = 0; col < model.m_data_model_columns_count; ++col)
+      {
+        if(m_db_values.find(col) == m_db_values.end()) //If there is not already a value in the map for this column.
+        {
+          Glib::RefPtr<Gnome::Gda::Column> column = model.m_gda_datamodel->describe_column(col);
+          Gnome::Gda::Value value;
+          value.init(column->get_g_type());
+          m_db_values[col] = value;
+        }
       }
     }
 
@@ -297,6 +318,23 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
 void DbTreeModelRow::set_value(DbTreeModel& model, int column, int row, const DbValue& value)
 {
   fill_values_if_necessary(model, row);
+
+  //Check that the value has the correct type:
+  /*
+  Glib::RefPtr<const Gnome::Gda::Column> gdacolumn = model.m_gda_datamodel->describe_column(column);
+  const GType debug_type_in = value.get_value_type();
+  const GType debug_type_expected = gdacolumn->get_g_type();
+  if(debug_type_in != debug_type_expected)
+  {
+    std::cout << "debug: DbTreeModelRow::set_value(): expected GType=" << debug_type_expected << ", but received GType=" << debug_type_in << std::endl;
+    if(debug_type_expected)
+      std::cout << "  expected GType name=\"" << g_type_name(debug_type_expected) << "\"" << std::endl;
+
+    if(debug_type_in)
+      std::cout << "  received GType name=\"" << g_type_name(debug_type_in) << "\"" << std::endl;
+  }
+  */
+
   m_db_values[column] = value;
 }
 
@@ -309,7 +347,10 @@ DbTreeModelRow::DbValue DbTreeModelRow::get_value(DbTreeModel& model, int column
   if(iterFind != m_db_values.end())
     return iterFind->second;
   else
+  {
+    std::cout << "debug: DbTreeModelRow::get_value(): column not found." << std::endl;
     return DbValue();
+  }
 }
 
 DbTreeModel::GlueItem::GlueItem(const DbTreeModel::type_datamodel_iter& row_iter)
@@ -519,6 +560,15 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
       params->add_parameter("ITER_MODEL_ONLY", value);
 
       m_gda_datamodel = m_connection->get_gda_connection()->execute_select_command(sql_query, params);
+
+      //Examine the columns in the returned DataModel:
+      /*
+      for(int col = 0; col < m_gda_datamodel->get_n_columns(); ++col)
+      {
+        Glib::RefPtr<Gnome::Gda::Column> column = m_gda_datamodel->describe_column(col);
+        std::cout << "  debug: column index=" << col << ", name=" << column->get_name() << ", type=" << g_type_name(column->get_g_type()) << std::endl;
+      }
+      */
     }
     catch(const Glib::Exception& ex)
     {
@@ -597,11 +647,20 @@ GType DbTreeModel::get_column_type_vfunc(int index) const
 
 void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, Glib::ValueBase& value) const
 {
+  //std::cout << "debug: DbTreeModel::get_value_vfunc(): column=" << column << std::endl;
+
   if(check_treeiter_validity(iter))
   {
+    //std::cout << "  debug: DbTreeModel::get_value_vfunc() 1" << std::endl;
+
     if(column < (int)m_columns_count)
     {
+       //std::cout << "  debug: DbTreeModel::get_value_vfunc() 1.1" << std::endl;
+
       //Get the correct ValueType from the Gtk::TreeModel::Column's type, so we don't have to repeat it here:
+      //(This would be a custom boxed type for our Gda::Value (stored inside the TreeModel's Glib::Value just as an int or char* would be stored in it.)
+      //std::cout << "  debug: DbTreeModel::get_value_vfunc(): column=" << column << ", value type=" << g_type_name(typeModelColumn::ValueType::value_type()) << std::endl;
+
       typeModelColumn::ValueType value_specific;
       value_specific.init( typeModelColumn::ValueType::value_type() );  //TODO: Is there any way to avoid this step?
 
@@ -614,6 +673,8 @@ void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, G
       const unsigned int internal_rows_count = get_internal_rows_count();
       if( dataRowIter < internal_rows_count) //!= m_rows.end())
       {
+         //std::cout << "  debug: DbTreeModel::get_value_vfunc() 1.2" << std::endl;
+
         //const typeRow& dataRow = *dataRowIter;
 
         //g_warning("DbTreeModel::get_value_vfunc 1: column=%d, row=%d", column, dataRowIter);
@@ -624,8 +685,12 @@ void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, G
         const int column_sql = column;
         if(column_sql < (int)m_columns_count) //TODO_Performance: Remove the checks.
         {
+           //std::cout << "  debug: DbTreeModel::get_value_vfunc() 1.3" << std::endl;
+
           if( !(dataRowIter < (internal_rows_count - 1)))
           {
+              //std::cout << "  debug: DbTreeModel::get_value_vfunc() 1.4" << std::endl;
+
              //std::cout << "DbTreeModel::get_value_vfunc: row " << dataRowIter << " is placeholder" << std::endl;
 
              //If it's after the database rows then it must be a placeholder row.
@@ -634,12 +699,40 @@ void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, G
           }
           else
           {
+            /*
+            std::cout << "  debug: DbTreeModel::get_value_vfunc() 1.4b: column_sql=" << column_sql << std::endl;
+            //Examine the columns in the returned DataModel:
+            for(int col = 0; col < m_gda_datamodel->get_n_columns(); ++col)
+            {
+              Glib::RefPtr<Gnome::Gda::Column> column = m_gda_datamodel->describe_column(col);
+              std::cout << "    debug: column index=" << col << ", name=" << column->get_name() << ", type=" << g_type_name(column->get_g_type()) << std::endl;
+            }
+            */
+
+            //Double check that the result has the correct type:
+            //Glib::RefPtr<const Gnome::Gda::Column> column = m_gda_datamodel->describe_column(column_sql);
+            //const GType gtype_expected = column->get_g_type();
+
             result = row_details.get_value(const_cast<DbTreeModel&>(*this), column_sql, dataRowIter); //m_gda_datamodel->get_value_at(column_sql, dataRowIter); //dataRow.m_db_values[column];
+  
+            /*
+            if((result.get_value_type() != 0) && (result.get_value_type() != gtype_expected))
+            {
+              std::cout << "  debug: DbTreeModel::get_value_vfunc(): column_sql=" << column_sql << ", describe_column() returned GType: " << gtype_expected << " but get_value() returned GType: " << result.get_value_type() << std::endl;
+            }
+            */
           }
         }
         else
           g_warning("DbTreeModel::get_value_vfunc: column out of bounds: sql_col=%d, max=%d.", column_sql, m_columns_count);
 
+
+        /*
+        GType debug_type = result.get_value_type();
+        std::cout << "  debug: DbTreeModel::get_value_vfunc(): result value type: GType=" << debug_type << std::endl;
+        if(debug_type)
+          std::cout << "    GType name=\"" << g_type_name(debug_type) << "\"" << std::endl; 
+        */
 
         value_specific.set(result); //The compiler would complain if the type was wrong.
         value.init( Glib::Value< DbValue >::value_type() ); //TODO: Is there any way to avoid this step? Can't it copy the type as well as the value?
