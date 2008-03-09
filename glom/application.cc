@@ -920,6 +920,7 @@ bool App_Glom::on_document_load()
 #endif
 
         int port_used = 0;
+	bool try_other_ports = true;
 
         //Set the connection details in the ConnectionPool singleton.
         //The ConnectionPool will now use these every time it tries to connect.
@@ -937,20 +938,20 @@ bool App_Glom::on_document_load()
 
             port_used = connection_pool->get_port();
           }
+
+          //Make sure that we open the just-started self-hosted postgres server instead of any other postgres running on the same host.
+	  try_other_ports = false;
         }
         else
         {
-          connection_pool->set_self_hosted(std::string());
         }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
         connection_pool->set_host(pDocument->get_connection_server());
         connection_pool->set_user(pDocument->get_connection_user());
         connection_pool->set_database(pDocument->get_connection_database());
-
-        //Make sure that we open the just-started self-hosted postgres server instead of any other postgres running on the same host.
         connection_pool->set_port(port_used);
-        connection_pool->set_try_other_ports(false);
+        connection_pool->set_try_other_ports(try_other_ports);
 
         connection_pool->set_ready_to_connect(this); //Box_DB::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
 
@@ -1268,6 +1269,9 @@ bool App_Glom::offer_new_or_existing()
 
       //Make sure that the user can do something with his new document:
       document->set_userlevel(AppState::USERLEVEL_DEVELOPER);
+      // Try various ports if connecting to an existing database server instead
+      // of self-hosting one:
+      document->set_connection_try_other_ports(!m_ui_save_extra_newdb_selfhosted);
 
       //Each new document must have an associated new database,
       //so ask the user for the name of one to create:

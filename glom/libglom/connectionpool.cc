@@ -64,7 +64,7 @@ static EpcProtocol publish_protocol = EPC_PROTOCOL_HTTPS;
 #endif
 
 // Uncomment to see debug messages
-//#define AVAHI_DEBUG
+#define AVAHI_DEBUG
 
 namespace
 {
@@ -319,7 +319,7 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
 
         //If no port is known to work, start with the first possible port:
         bool trying_remembered_port = true;
-        if(port.empty())
+        if(port.empty() || m_port == 0)
         {
           port = *iter_port;
           trying_remembered_port = false;

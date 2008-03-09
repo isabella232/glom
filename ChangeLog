@@ -1,3 +1,14 @@
+2008-03-09  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/connectionpool.cc: Don't try to use remembered port
+	when m_port is 0. This broke connections to non-self-hosted database
+	servers since the connection attempt was only performed on port 0.
+
+	* glom/application.cc: Set "try_other_ports" to TRUE for new documents
+	if the document is not self-hosted. Otherwise, only port 5432 was
+	tried, and not the other ones specefied in the ConnectionPool's
+	constructor.
+
 2008-03-08  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/data_structure/glomconversions.cc:
