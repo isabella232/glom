@@ -47,7 +47,8 @@
 #ifndef G_OS_WIN32
 #include <sys/types.h>
 #include <sys/socket.h> 
-#include <sys/socket.h>
+#include <errno.h>
+
 #include <netinet/in.h> //For sockaddr_in
 #else
 #include <winsock2.h>
@@ -64,7 +65,7 @@ static EpcProtocol publish_protocol = EPC_PROTOCOL_HTTPS;
 #endif
 
 // Uncomment to see debug messages
-#define AVAHI_DEBUG
+//#define GLOM_CONNECTION_DEBUG
 
 namespace
 {
@@ -339,7 +340,7 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
             cnc_string += (";DB_NAME=" + default_database);
 
           //std::cout << "debug: connecting: cnc string: " << cnc_string << std::endl;
-#ifdef AVAHI_DEBUG          
+#ifdef GLOM_CONNECTION_DEBUG          
           std::cout << std::endl << "Glom: trying to connect on port=" << port << std::endl;
 #endif
           //*m_refGdaConnection = m_GdaClient->open_connection(m_GdaDataSourceInfo.get_name(), m_GdaDataSourceInfo.get_username(), m_GdaDataSourceInfo.get_password() );
@@ -411,7 +412,7 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
                 }
               }
             }
-#ifdef AVAHI_DEBUG
+#ifdef GLOM_CONNECTION_DEBUG
             std::cout << "  Postgres Server version: " << get_postgres_server_version() << std::endl << std::endl;
 #endif
               
@@ -441,14 +442,14 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
           catch(const Gnome::Gda::ConnectionError& ex)
           {
 #endif
-#ifdef AVAHI_DEBUG
+#ifdef GLOM_CONNECTION_DEBUG
             std::cout << "ConnectionPool::connect() Attempt to connect to database failed on port=" << port << ", database=" << m_database << ": " << ex.what() << std::endl;
 #endif
             
             bool bJustDatabaseMissing = false;
             if(!m_database.empty())
             {
-#ifdef AVAHI_DEBUG
+#ifdef GLOM_CONNECTION_DEBUG
               std::cout << "  ConnectionPool::connect() Attempting to connect without specifying the database." << std::endl;
 #endif
               //If the connection failed while looking for a database,
@@ -457,7 +458,7 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
               cnc_string += (";DB_NAME=" + default_database);
 
               //std::cout << "debug2: connecting: cnc string: " << cnc_string << std::endl;
-#ifdef AVAHI_DEBUG
+#ifdef GLOM_CONNECTION_DEBUG
                 std::cout << "Glom: connecting." << std::endl;
 #endif
                 
@@ -490,7 +491,7 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
                 std::cerr << "    ConnectionPool::connect() connection also failed when not specifying database: " << ex.what() << std::endl;
               }
             }
-#ifdef AVAHI_DEBUG
+#ifdef GLOM_CONNECTION_DEBUG
             if(bJustDatabaseMissing)
               std::cout << "  (Connection succeeds, but not to the specific database on port=" << port << ", database=" << m_database << std::endl;
             else
@@ -529,7 +530,7 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
         }
 
         g_warning("ConnectionPool::connect() throwing exception.");
-#ifdef AVAHI_DEBUG           
+#ifdef GLOM_CONNECTION_DEBUG           
         if(connection_to_default_database_possible)
           std::cout << "  (Connection succeeds, but not to the specific database on port=" << m_port << ", database=" << m_database << std::endl;
         else
@@ -600,7 +601,7 @@ void ConnectionPool::set_user(const Glib::ustring& value)
 {
   if(value.empty())
   {
-#ifdef AVAHI_DEBUG    
+#ifdef GLOM_CONNECTION_DEBUG    
     std::cout << "debug: ConnectionPool::set_user(): user is empty." << std::endl;
 #endif
   }
@@ -739,7 +740,7 @@ bool ConnectionPool::handle_error(bool cerr_only)
 #endif
         //TODO: dialog.set_transient_for(*get_application());
         dialog.run(); //TODO: This segfaults in gtk_window_set_modal() when this method is run a second time, for instance if there are two database errors.
-#ifdef AVAHI_DEBUG
+#ifdef GLOM_CONNECTION_DEBUG
         std::cout << "debug: after Internal Error dialog run()." << std::endl;
 #endif
       }
@@ -826,6 +827,7 @@ bool ConnectionPool::start_self_hosting()
 
 
   const int available_port = discover_first_free_port(PORT_POSTGRESQL_SELF_HOSTED_START, PORT_POSTGRESQL_SELF_HOSTED_END);
+  //std::cout << "ConnectionPool::create_self_hosting():() : debug: Available port for self-hosting: " << available_port << std::endl;
   if(available_port == 0)
   {
     //TODO: Use a return enum or exception so we can tell the user about this:
@@ -868,6 +870,15 @@ bool ConnectionPool::start_self_hosting()
   }
 
   m_port = available_port; //Remember it for later.
+
+  //Make sure that the document does not change the port later, 
+  //and ensure that the correct port is used when the document is loaded over the network:
+  Document_Glom* document = get_document();
+  if(document)
+    document->set_connection_port(m_port);
+  else
+    std::cerr << "ConnectionPool::start_self_hosting(): document is NULL" << std::endl;
+
   m_self_hosting_active = true;
   set_try_other_ports(false); //Only try to connect to this known instance, instead of finding others.
 
@@ -1115,27 +1126,37 @@ int ConnectionPool::discover_first_free_port(int start_port, int end_port)
     sa.sin_port = htons(port_to_try);
 
     const int result = bind(fd, (sockaddr*)&sa, sizeof(sa));
-    if((result == 0) || ((result < 0)
-#ifdef G_OS_WIN32
-    && (WSAGetLastError() != WSAEADDRINUSE)
-#else // G_OS_WIN32
-#ifdef EADDRINUSE //Some BSDs don't have this.
-    && (errno != EADDRINUSE)
-#endif 
-#ifdef EPORTINUSE //Linux doesn't have this.
-    && (errno != EPORTINUSE)
-#endif
-#endif // !G_OS_WIN32
-    ))
+    bool available = false;
+    if(result == 0)
+       available = true;
+    else if (result < 0)
     {
-#ifdef G_OS_WIN32
-      closesocket(fd);
-#else
-      close(fd);
-#endif
+      #ifdef G_OS_WIN32
+      available = (WSAGetLastError() != WSAEADDRINUSE);
+      #endif // G_OS_WIN32
 
-      //std::cout << "debug: ConnectionPool::discover_first_free_port(): Found: returning " << port_to_try << std::endl;
-      return port_to_try;
+      //Some BSDs don't have this.
+      //But watch out - if you don't include errno.h then this won't be 
+      //defined on Linux either, but you really do need to check for it.
+      #ifdef EADDRINUSE
+      available = (errno != EADDRINUSE);
+      #endif
+
+      #ifdef EPORTINUSE //Linux doesn't have this.
+      available = (errno != EPORTINUSE);
+      #endif
+
+      if(available)
+      {
+        #ifdef G_OS_WIN32
+        closesocket(fd);
+        #else
+        close(fd);
+        #endif //G_OS_WIN32
+
+        //std::cout << "debug: ConnectionPool::discover_first_free_port(): Found: returning " << port_to_try << std::endl;
+        return port_to_try;
+      }
     }
     else
     {
@@ -1438,7 +1459,7 @@ void ConnectionPool::avahi_start_publishing()
 {
   if(m_epc_publisher)
     return;
-#ifdef AVAHI_DEBUG
+#ifdef GLOM_CONNECTION_DEBUG
   std::cout << "debug: ConnectionPool::avahi_start_publishing" << std::endl;
 #endif
   
@@ -1479,7 +1500,7 @@ void ConnectionPool::avahi_start_publishing()
   epc_publisher_run_async(m_epc_publisher, &error);
   if(error)
   {
-#ifdef AVAHI_DEBUG    
+#ifdef GLOM_CONNECTION_DEBUG    
     std::cout << "Glom: ConnectionPool::avahi_start_publishing(): Error while running epc_publisher_run_async: " << error->message << std::endl;
 #endif
     g_clear_error(&error);
@@ -1490,7 +1511,7 @@ void ConnectionPool::avahi_stop_publishing()
 {
   if(!m_epc_publisher)
     return;
-#ifdef AVAHI_DEBUG
+#ifdef GLOM_CONNECTION_DEBUG
   std::cout << "debug: ConnectionPool::avahi_stop_publishing" << std::endl;
 #endif
 

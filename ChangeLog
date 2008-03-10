@@ -1,3 +1,15 @@
+2008-03-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/connectionpool.cc:
+	discover_first_free_port() Reformat the code to make the use of 
+	ifdefs for various platforms clearer. Include errno.h and add a comment 
+	about how this is essential to make the code actually work.
+	This stops Glom from starting a postgres instance on the same port that 
+	is used by an existing instance.
+	start_self_hosting(): Set the port in the document so it is not 
+	incorrectly set again later. This fixes the problem that Glom sometimes 
+	started a server and then could not connect to it.
+
 2008-03-09  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/connectionpool.cc: Don't try to use remembered port
