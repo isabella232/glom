@@ -1,3 +1,12 @@
+2008-03-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/connectionpool.cc:
+	discover_first_free_port() Reformat the code to make the use of 
+	ifdefs for various platforms clearer. Include errno.h and add a comment 
+	about how this is essential to make the code actually work.
+	This stops Glom from starting a postgres instance on the same port that 
+	is used by an existing instance.
+
 1.6.8:
 
 2008-02-04  Murray Cumming <murrayc@murrayc.com>

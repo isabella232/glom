@@ -35,7 +35,8 @@
 
 #include <sys/types.h>
 #include <sys/socket.h> 
-#include <sys/socket.h>
+#include <errno.h>
+
 #include <netinet/in.h> //For sockaddr_in
 
 #include <signal.h> //To catch segfaults
@@ -973,31 +974,53 @@ int ConnectionPool::discover_first_free_port(int start_port, int end_port)
     sa.sin_port = htons(port_to_try);
 
     const int result = bind(fd, (sockaddr*)&sa, sizeof(sa));
-    if((result == 0) || ((result < 0)
-#ifdef EADDRINUSE //Some BSDs don't have this.
-    && (errno != EADDRINUSE)
-#endif 
-#ifdef EPORTINUSE //Linux doesn't have this.
-    && (errno != EPORTINUSE)
-#endif
-    ))
+    bool available = false;
+    if(result == 0)
+       available = true;
+    else if (result < 0)
     {
-      close(fd);
+      #ifdef G_OS_WIN32
+      available = (WSAGetLastError() != WSAEADDRINUSE);
+      #endif // G_OS_WIN32
 
-      std::cout << "debug: ConnectionPool::discover_first_free_port(): Found: returning " << port_to_try << std::endl;
-      return port_to_try;
+      //Some BSDs don't have this.
+      //But watch out - if you don't include errno.h then this won't be 
+      //defined on Linux either, but you really do need to check for it.
+      #ifdef EADDRINUSE
+      available = (errno != EADDRINUSE);
+      #endif
+
+      #ifdef EPORTINUSE //Linux doesn't have this.
+      available = (errno != EPORTINUSE);
+      #endif
+
+      if(available)
+      {
+        #ifdef G_OS_WIN32
+        closesocket(fd);
+        #else
+        close(fd);
+        #endif //G_OS_WIN32
+
+        //std::cout << "debug: ConnectionPool::discover_first_free_port(): Found: returning " << port_to_try << std::endl;
+        return port_to_try;
+      }
     }
     else
     {
-      std::cout << "debug: ConnectionPool::discover_first_free_port(): port in use: " << port_to_try << std::endl;
+      //std::cout << "debug: ConnectionPool::discover_first_free_port(): port in use: " << port_to_try << std::endl;
     }
 
     ++port_to_try;
   }
 
+#ifdef G_OS_WIN32
+  closesocket(fd);
+#else
   close(fd);
+#endif
 
-  std::cout << "debug: ConnectionPool::discover_first_free_port(): No port was available." << std::endl;
+  std::cerr << "debug: ConnectionPool::discover_first_free_port(): No port was available." << std::endl;
   return 0;
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
