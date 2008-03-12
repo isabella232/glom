@@ -1,3 +1,8 @@
+1.6.9 (stable)
+
+* Prevent Glom from starting a postgres instance on the same port as an 
+  existing instance.
+
 1.6.8 (stable)
 
 * Fix loss of new groups when editing the Details layout.
