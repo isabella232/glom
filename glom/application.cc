@@ -904,7 +904,7 @@ bool App_Glom::on_document_load()
 
         const int response = dialog.run();
         dialog.hide();
-        if(response == Gtk::RESPONSE_CANCEL)
+        if((response == Gtk::RESPONSE_CANCEL)  || (response == Gtk::RESPONSE_DELETE_EVENT))
           return false;
       }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
@@ -1223,7 +1223,7 @@ bool App_Glom::offer_new_or_existing()
     }
   }
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  if(response_id == 3) //Open Example
+  else if(response_id == 3) //Open Example
   {
     //Based on on_menu_file_open();
 
@@ -1350,7 +1350,7 @@ bool App_Glom::offer_new_or_existing()
     }
   }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-  else if(response_id == Gtk::RESPONSE_CANCEL)
+  else if((response_id == Gtk::RESPONSE_CANCEL)  || (response_id == Gtk::RESPONSE_DELETE_EVENT))
   {
     return false; //close the window to close the application, because they need to choose a new or existing document.
   }
@@ -2045,7 +2045,7 @@ Glib::ustring App_Glom::ui_file_select_open_with_browse(bool& browsed, EpcServic
 
   const int response_id = fileChooser_Open.run();
   fileChooser_Open.hide();
-  if(response_id != Gtk::RESPONSE_CANCEL)
+  if((response_id != Gtk::RESPONSE_CANCEL) || (response_id != Gtk::RESPONSE_DELETE_EVENT)
   {
     if(response_id == GLOM_RESPONSE_BROWSE_NETWORK)
     {
@@ -2187,7 +2187,7 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
 
     const int response_id = fileChooser_Save->run();
     fileChooser_Save->hide();
-    if(response_id != Gtk::RESPONSE_CANCEL)
+    if((response_id != Gtk::RESPONSE_CANCEL) && (response_id != Gtk::RESPONSE_DELETE_EVENT))
     {
       const Glib::ustring uri_chosen = fileChooser_Save->get_uri();
 

@@ -529,7 +529,7 @@ void Frame_Glom::on_menu_file_export()
   const int response = dialog.run();
   dialog.hide();
 
-  if(response == Gtk::RESPONSE_CANCEL)
+  if((response == Gtk::RESPONSE_CANCEL) || (response == Gtk::RESPONSE_DELETE_EVENT))
     return;
 
   const std::string filepath = dialog.get_filename();
