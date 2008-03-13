@@ -1,5 +1,10 @@
 2008-03-13  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/application.cc ui_file_select_open_with_browse():
+	Fixed a typo in my previous commit, to fix the build.
+
+2008-03-13  Murray Cumming  <murrayc@murrayc.com>
+
 	Bug 521992 – Pressing Escape on Initial dialog does not close 
 	application properly.
 	(Pavel Mlčoch)

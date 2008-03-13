@@ -2045,7 +2045,7 @@ Glib::ustring App_Glom::ui_file_select_open_with_browse(bool& browsed, EpcServic
 
   const int response_id = fileChooser_Open.run();
   fileChooser_Open.hide();
-  if((response_id != Gtk::RESPONSE_CANCEL) || (response_id != Gtk::RESPONSE_DELETE_EVENT)
+  if((response_id != Gtk::RESPONSE_CANCEL) || (response_id != Gtk::RESPONSE_DELETE_EVENT))
   {
     if(response_id == GLOM_RESPONSE_BROWSE_NETWORK)
     {
