@@ -657,7 +657,7 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
 
     const int response_id = fileChooser_Save->run();
     fileChooser_Save->hide();
-    if(response_id != Gtk::RESPONSE_CANCEL)
+    if((response_id != Gtk::RESPONSE_CANCEL) && (response_id != Gtk::RESPONSE_DELETE_EVENT))
     {
       const Glib::ustring uri_chosen = fileChooser_Save->get_uri();
 
@@ -906,7 +906,7 @@ bool App_Glom::on_document_load()
 
         const int response = dialog.run();
         dialog.hide();
-        if(response == Gtk::RESPONSE_CANCEL)
+        if((response == Gtk::RESPONSE_CANCEL) || (response == Gtk::RESPONSE_DELETE_EVENT))
           return false;
       }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
@@ -1137,13 +1137,15 @@ bool App_Glom::offer_new_or_existing()
   Gtk::Frame* recent_frame = NULL;
   refXml->get_widget("existing_or_new_recentchooser_frame", recent_frame);
 
-  // Hide the recent chooser when they are not any recently used files
-  if(recent_chooser->get_items().empty()) recent_frame->hide();
+  // Hide the recent chooser when there are no recently used files
+  if(recent_chooser->get_items().empty())
+    recent_frame->hide();
+
   recent_chooser->signal_item_activated().connect(sigc::bind(sigc::mem_fun(*dialog, &Gtk::Dialog::response), 1)); // Open
 
 #ifdef GLOM_ENABLE_CLIENT_ONLY
-  // Don't offer the user to create a new document, because without
-  // developer mode he couldn't do anything useful without it, anyway.
+  // Don't offer the user the choice to create a new document, because without
+  // developer mode he couldn't do anything useful with it anyway:
   Gtk::Button* new_button;
   refXml->get_widget("existing_or_new_button_new", new_button);
   new_button->hide();
@@ -1170,7 +1172,7 @@ bool App_Glom::offer_new_or_existing()
 #endif
 
   const int response_id = dialog->run();
-  Glib::ustring selected_uri = recent_chooser->get_current_uri();
+  const Glib::ustring selected_uri = recent_chooser->get_current_uri();
 
   delete dialog;
   dialog = 0;
@@ -1309,7 +1311,7 @@ bool App_Glom::offer_new_or_existing()
     }
   }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-  else if(response_id == Gtk::RESPONSE_CANCEL)
+  else if((response_id == Gtk::RESPONSE_CANCEL) || (response_id == Gtk::RESPONSE_DELETE_EVENT))
   {
     return false; //close the window to close the application, because they need to choose a new or existing document.
   }

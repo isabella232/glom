@@ -391,7 +391,7 @@ void ImageGlom::on_menupopup_activate_select_file()
   int response = dialog.run();
   dialog.hide();
 
-  if(response != Gtk::RESPONSE_CANCEL)
+  if((response != Gtk::RESPONSE_CANCEL) && (response != Gtk::RESPONSE_DELETE_EVENT))
   {
     const std::string filepath = dialog.get_filename();
     if(!filepath.empty())

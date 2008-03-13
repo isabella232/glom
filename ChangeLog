@@ -1,3 +1,22 @@
+2008-03-13  Murray Cumming  <murrayc@murrayc.com>
+
+	Bug 521992 – Pressing Escape on Initial dialog does not close 
+	application properly.
+	(Pavel Mlčoch)
+
+	* glom/dialog_database_preferences.cc load_from_document():
+	Do not crash if the Gda::DataModel is empty.
+
+	* glom/application.cc ui_file_select_save(), on_document_load(),
+	  offer_new_or_existing():
+	* glom/frame_glom.cc on_menu_file_export():
+	* glom/utility_widgets/imageglom.cc
+	  on_menupopup_activate_select_file(): Check for 
+	Gtk::RESPONSE_DELETE_EVENT instead of just Gtk::RESPONSE_CANCEL, so 
+	that we treat pressing Escape the same as pressing Cancel. When we 
+	just ignore this then we can leave the application in an unexpected 
+	state.
+
 1.6.9:
 
 2008-03-10  Murray Cumming  <murrayc@murrayc.com>
