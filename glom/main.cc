@@ -28,7 +28,7 @@
 #ifndef GLOM_ENABLE_MAEMO
 #include <libgnome/gnome-init.h> // For gnome_program_init().
 #endif
-#include <libgnomevfsmm/uri.h>
+#include <giomm.h>
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #include <gtksourceviewmm/init.h>
@@ -189,7 +189,7 @@ main(int argc, char* argv[])
   PySys_SetArgv(argc, argv);
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
+  //try
 #endif
   {
 #ifndef GLOM_ENABLE_MAEMO
@@ -223,14 +223,16 @@ main(int argc, char* argv[])
     if(!input_uri.empty())
     {
       //Get a URI (file://something) from the filepath:
-      input_uri = Gnome::Vfs::Uri::make_from_shell_arg(input_uri);
+      Glib::RefPtr<Gio::File> file = Gio::File::create_for_commandline_arg(input_uri);
+      if(file)
+        input_uri = file->get_uri(); 
       //std::cout << "URI = " << input_uri << std::endl;
     }
 
     //debugging:
     //input_uri = "file:///home/murrayc/cvs/gnome212/glom/examples/example_smallbusiness.glom";
 
-    bool install_complete;
+    bool install_complete = false;
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     //Check that PostgreSQL is really available:
     install_complete = Glom::ConnectionPool::check_postgres_is_available_with_warning();
@@ -276,7 +278,7 @@ main(int argc, char* argv[])
     else
       delete pApp_Glom;
   }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
+#if 0 //#ifdef GLIBMM_EXCEPTIONS_ENABLED
   catch(const Glib::Exception& ex)
   {
     //If this happens then comment out the try/catch, and let the debugger show the call stack.

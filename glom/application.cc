@@ -35,7 +35,7 @@
 
 #include <cstdio>
 #include <memory> //For std::auto_ptr<>
-#include <libgnomevfsmm.h>
+#include <giomm.h>
 #include <sstream> //For stringstream.
 #include <glibmm/i18n.h>
 
@@ -730,36 +730,46 @@ void App_Glom::on_menu_file_close() //override
   Bakery::App_WithDoc_Gtk::on_menu_file_close();
 }
 
-static bool uri_is_writable(const Glib::RefPtr<const Gnome::Vfs::Uri>& uri)
+//Copied from bakery:
+static bool uri_is_writable(const Glib::RefPtr<const Gio::File>& uri)
 {
   if(!uri)
     return false;
 
+  Glib::RefPtr<const Gio::FileInfo> file_info;
+
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-  // TODO: What if this throws?
-  Glib::RefPtr<const Gnome::Vfs::FileInfo> file_info = uri->get_file_info(Gnome::Vfs::FILE_INFO_GET_ACCESS_RIGHTS);
+  try
+  {
+    file_info = uri->query_info(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE);
+  }
+  catch(const Glib::Error& /* ex */)
+  {
+    return false;
+  }
 #else
-  std::auto_ptr<Gnome::Vfs::exception> error;
-  Glib::RefPtr<const Gnome::Vfs::FileInfo> file_info = uri->get_file_info(Gnome::Vfs::FILE_INFO_GET_ACCESS_RIGHTS, error);
-  if(error.get() != NULL) return false;
+  std::auto_ptr<Gio::Error> error;
+  file_info = uri->query_info(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE, Gio::FILE_QUERY_INFO_NONE, error);
+  if(error.get())
+    return false;
 #endif
+
   if(file_info)
   {
-    const Gnome::Vfs::FilePermissions permissions = file_info->get_permissions();
-    return ((permissions & Gnome::Vfs::PERM_ACCESS_WRITABLE) == Gnome::Vfs::PERM_ACCESS_WRITABLE);
+    return file_info->get_attribute_boolean(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE);
   }
   else
-    return true; //Not every URI protocol supports FILE_INFO_GET_ACCESS_RIGHTS, so assume that it's writable and complain later.
+    return true; //Not every URI protocol supports access rights, so assume that it's writable and complain later.
 }
 
 
 Glib::ustring App_Glom::get_file_uri_without_extension(const Glib::ustring& uri)
 {
-  Glib::RefPtr<Gnome::Vfs::Uri> vfs_uri = Gnome::Vfs::Uri::create(uri);
-  if(!vfs_uri)
+  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
+  if(!file)
     return uri; //Actually an error.
 
-  const Glib::ustring filename_part = vfs_uri->extract_short_name();
+  const Glib::ustring filename_part = file->get_basename();
   
   const Glib::ustring::size_type pos_dot = filename_part.rfind(".");
   if(pos_dot == Glib::ustring::npos)
@@ -767,12 +777,12 @@ Glib::ustring App_Glom::get_file_uri_without_extension(const Glib::ustring& uri)
   else
   {
     const Glib::ustring filename_part_without_ext = filename_part.substr(0, pos_dot);
-    const Glib::ustring uri_parent = vfs_uri->extract_dirname();
 
-    Glib::RefPtr<Gnome::Vfs::Uri> vfs_uri_parent = Gnome::Vfs::Uri::create(uri_parent);
-    Glib::RefPtr<Gnome::Vfs::Uri> vfs_uri_without_extension = vfs_uri_parent->append_string(filename_part_without_ext);
+    //Use the Gio::File API to manipulate the URI:
+    Glib::RefPtr<Gio::File> parent = file->get_parent();
+    Glib::RefPtr<Gio::File> file_without_extension = parent->get_child(filename_part_without_ext);
 
-    return vfs_uri_without_extension->to_string();
+    return file_without_extension->get_uri();
   }
 }
 
@@ -1925,26 +1935,11 @@ void App_Glom::on_menu_file_save_as_example()
     file_uri = document->get_file_uri_with_extension(file_uri);
 
     bool bUseThisFileUri = true;
-
-    //Check whether file exists already:
-    {
-      // Try to open the input file.
-      Gnome::Vfs::Handle read_handle;
-      try
-      {
-        read_handle.open(file_uri, Gnome::Vfs::OPEN_READ);
-
-        //It does (there was no exception), so ask the user to confirm overwrite:
-        const bool bOverwrite = true; //The FileChooser asked already. ui_ask_overwrite(file_uri);
-
-        //Respond to button that was clicked:
-        bUseThisFileUri = bOverwrite;
-      }
-      catch(const Gnome::Vfs::exception& ex)
-      {
-        bUseThisFileUri = true; //It does not exist.
-      }
-    }
+    //We previously checked whether the file existed, 
+    //but The FileChooser checks that already, 
+    //so Bakery doesn't bother checking anymore,
+    //and our old test always set bUseThisFileUri to true anyway. murryac.
+    //TODO: So remove this bool. murrayc.
 
     //Save to this filepath:
     if(bUseThisFileUri)
@@ -2158,11 +2153,15 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
   {
     //Just start with the parent folder,
     //instead of the whole name, to avoid overwriting:
-    Glib::RefPtr<Gnome::Vfs::Uri> vfs_uri = Gnome::Vfs::Uri::create(old_file_uri);
-    if(vfs_uri)
+    Glib::RefPtr<Gio::File> gio_file = Gio::File::create_for_uri(old_file_uri);
+    if(gio_file)
     {
-      Glib::ustring uri_parent = vfs_uri->extract_dirname();
-      fileChooser_Save->set_uri(uri_parent);
+      Glib::RefPtr<Gio::File> parent = gio_file->get_parent();
+      if(parent)
+      {
+        const Glib::ustring uri_parent = parent->get_uri();
+        fileChooser_Save->set_uri(uri_parent);
+      }
     }
   }
 
@@ -2195,8 +2194,8 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
       const Glib::ustring uri = get_file_uri_without_extension(uri_chosen);
 
       //Check whether the file exists, and that we have rights to it:
-      Glib::RefPtr<Gnome::Vfs::Uri> vfs_uri = Gnome::Vfs::Uri::create(uri);
-      if(!vfs_uri)
+      Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
+      if(!file)
         return Glib::ustring(); //Failure.
 
 
@@ -2205,7 +2204,7 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
       {
         //Check whether we have rights to the file to change it:
         //Really, GtkFileChooser should do this for us.
-        if(!uri_is_writable(vfs_uri))
+        if(!uri_is_writable(file))
         {
            //Warn the user:
            ui_warning(gettext("Read-only File."), gettext("You may not overwrite the existing file, because you do not have sufficient access rights."));
@@ -2216,10 +2215,10 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
 
       //Check whether we have rights to the directory, to create a new file in it:
       //Really, GtkFileChooser should do this for us.
-      Glib::RefPtr<const Gnome::Vfs::Uri> vfs_uri_parent = vfs_uri->get_parent();
-      if(vfs_uri_parent)
+      Glib::RefPtr<const Gio::File> parent = file->get_parent();
+      if(parent)
       {
-        if(!uri_is_writable(vfs_uri_parent))
+        if(!uri_is_writable(parent))
         {
           //Warn the user:
            ui_warning(gettext("Read-only Directory."), gettext("You may not create a file in this directory, because you do not have sufficient access rights."));
@@ -2252,8 +2251,8 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
         //Check that the directory does not exist already.
         //The GtkFileChooser could not check for that because it could not know that we would create a directory based on the filename:
         //Note that uri has no extension at this point:
-        Glib::RefPtr<Gnome::Vfs::Uri> vfsuri = Gnome::Vfs::Uri::create(uri);
-        if(vfsuri->uri_exists())
+        Glib::RefPtr<Gio::File> dir = Gio::File::create_for_uri(uri);
+        if(dir->query_exists())
         {
           ui_warning(_("Directory Already Exists"), _("There is an existing directory with the same name as the directory that should be created for the new database files. You should specify a different filename to use a new directory instead."));
           try_again = true; //Try again.
@@ -2265,20 +2264,21 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
         //The 0 prefix means that this is octal.
         try
         {
-          Gnome::Vfs::Handle::make_directory(uri, 0770 /* leading zero means octal */);
+          //TODO: ensure that we use 0770? murrayc.
+          dir->make_directory();
         }
-        catch(const Gnome::Vfs::exception&  ex)
+        catch(const Gio::Error& ex)
         {
-          std::cerr << "Error during make_directory(): " << ex.what() << std::endl;
+          std::cerr << "Error during Gio::File::make_directory(): " << ex.what() << std::endl;
         }
 
         //Add the filename (Note that the caller will add the extension if necessary, so we don't do it here.)
-        Glib::RefPtr<Gnome::Vfs::Uri> uri_with_ext = Gnome::Vfs::Uri::create(uri_chosen);
-        const Glib::ustring filename_part = uri_with_ext->extract_short_name();
+        Glib::RefPtr<Gio::File> file_with_ext = Gio::File::create_for_uri(uri_chosen);
+        const Glib::ustring filename_part = file_with_ext->get_basename();
 
         //Add the filename part to the newly-created directory:
-        Glib::RefPtr<Gnome::Vfs::Uri> uri_whole = vfs_uri->append_string(filename_part);
-        return uri_whole->to_string();
+        Glib::RefPtr<Gio::File> file_whole = dir->get_child(filename_part);
+        return file_whole->get_uri();
       }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

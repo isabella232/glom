@@ -28,7 +28,7 @@
 #include <libxml++/libxml++.h>
 #include <libxslt/transform.h>
 //#include <libexslt/exslt.h> //For exsltRegisterAll().
-#include <libgnomevfsmm.h>
+#include <giomm.h>
 #include <glibmm/i18n.h>
 
 #ifndef GLOM_ENABLE_MAEMO
@@ -60,41 +60,60 @@ void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const
   const Glib::ustring temp_uri = "file:///tmp/glom_printout.html";
   std::cout << "temp_uri=" << temp_uri << std::endl;
 
-  Gnome::Vfs::Handle write_handle;
+  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(temp_uri);
+  Glib::RefPtr<Gio::FileOutputStream> stream;
 
+  //Create the file if it does not already exist:
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    //0660 means "this user and his group can read and write this non-executable file".
-    //The 0 prefix means that this is octal.
-    write_handle.create(temp_uri, Gnome::Vfs::OPEN_WRITE, false, 0660 /* leading zero means octal */);
+    if(file->query_exists())
+    {
+      stream = file->replace(); //Instead of append_to().
+    }
+    else
+    {
+      //By default files created are generally readable by everyone, but if we pass FILE_CREATE_PRIVATE in flags the file will be made readable only to the current user, to the level that is supported on the target filesystem.
+      //TODO: Do we want to specify 0660 exactly? (means "this user and his group can read and write this non-executable file".)
+      stream = file->create_file();
+    }
   }
-  catch(const Gnome::Vfs::exception& ex)
+  catch(const Gio::Error& ex)
   {
-    // If the operation was not successful, print the error and abort
-    return; // print_error(ex, output_uri_string);
-  }
 #else
-  std::auto_ptr<Gnome::Vfs::exception> error;
-  write_handle.create(temp_uri, Gnome::Vfs::OPEN_WRITE, false, 0660 /* leading zero means octal */, error);
-  if(error.get()) return;
+  std::auto_ptr<Gio::Error> error;
+  stream.create(error);
+  if(error.get() != NULL)
+  {
+    const Gio::Error& ex = *error.get();
 #endif
+    // If the operation was not successful, print the error and abort
+    return; // false; // print_error(ex, output_uri_string);
+  }
 
+  //Write the data to the output uri
+  gsize bytes_written = 0;
+  const Glib::ustring::size_type result_bytes = result.bytes();
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    //Write the data to the output uri
-    /* GnomeVFSFileSize bytes_written = */ write_handle.write(result.data(), result.bytes());
+    bytes_written = stream->write(result.data(), result_bytes);
   }
-  catch(const Gnome::Vfs::exception& ex)
+  catch(const Gio::Error& ex)
   {
-    // If the operation was not successful, print the error and abort
-    return; //print_error(ex, output_uri_string);
-  }
 #else
-  write_handle.create(temp_uri, Gnome::Vfs::OPEN_WRITE, false, 0660 /* leading zero means octal */, error);
-  if(error.get()) return;
+  bytes_written = stream->write(result.data(), result_bytes, error);
+  if(error.get() != NULL)
+  {
+    Gio::Error& ex = *error.get();
 #endif
+    // If the operation was not successful, print the error and abort
+    return; // false; //print_error(ex, output_uri_string);
+  }
+
+  if(bytes_written != result_bytes)
+    return; //false
+
 
   //Give the user a clue, in case the web browser opens in the background, for instance in a new tab:
   if(parent_window)
@@ -106,8 +125,13 @@ void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const
   //  gnome_vfs_url_show()?
 #else
   //Use the GNOME browser:
-  GError* gerror = 0; // TODO: This leaks memory if an error occurs. We can pass NULL as error if we are not interested in errors.
+  GError* gerror = 0;
   gnome_url_show(temp_uri.c_str(), &gerror); //This is in libgnome.
+  if(gerror)
+  {
+    std::cerr << "Error while calling gnome_url_show(): " << gerror->message << std::endl;
+    g_clear_error(&gerror);
+  }
 #endif
 }
 

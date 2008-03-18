@@ -250,23 +250,40 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute(const Glib::ustring& 
     if(strQuery.compare(0, 6, "SELECT") == 0)
     {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-      result = gda_connection->execute_select_command(strQuery);
+      try
+      {
+        result = gda_connection->execute_select_command(strQuery);
+      }
+      catch(const Gnome::Gda::ConnectionError& ex)
+      {
+        std::cout << "debug: Base_DB::query_execute(): exception from execute_select_command(): " << ex.what() << std::endl;
+      }
 #else
       std::auto_ptr<Glib::Error> error;
       result = gda_connection->execute_select_command(strQuery, error);
       // Ignore error, empty datamodel is handled below
-#endif
+#endif //GLIBMM_EXCEPTIONS_ENABLED
     }
     else
     {
-      std::auto_ptr<Glib::Error> error;
+
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-      if(gda_connection->execute_non_select_command(strQuery) != -1)
+      int execute_result = -1;
+      try
+      {
+        execute_result = gda_connection->execute_non_select_command(strQuery);
+      }
+      catch(const Gnome::Gda::ConnectionError& ex)
+      {
+        std::cout << "debug: Base_DB::query_execute(): exception from execute_non_select_command(): " << ex.what() << std::endl;
+      }
 #else
-      if(gda_connection->execute_non_select_command(strQuery, error) != -1)
-        if(error.get() == NULL)
-#endif
-          result = Gnome::Gda::DataModelArray::create(1);
+      std::auto_ptr<Glib::Error> error;
+      execute_result = gda_connection->execute_non_select_command(strQuery, error);
+#endif //GLIBMM_EXCEPTIONS_ENABLED
+      
+      if(execute_result != -1)
+        result = Gnome::Gda::DataModelArray::create(1);
     }
 
     if(!result)

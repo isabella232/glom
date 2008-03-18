@@ -1,5 +1,15 @@
 2008-03-18  Murray Cumming  <murrayc@murrayc.com>
 
+	* configure.in: Depend on the new unstable bakery-2.6 API.
+	* glom/application.cc:
+	* glom/base_db.cc:
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/document/document_glom.cc:
+	* glom/main.cc:
+	* glom/xsl_utils.cc: Use giomm instead of Gnome::Vfs.
+
+2008-03-18  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/python_embed/python_module/py_glom_module.cc (initglom):
 	Added more casts to non-const char* from static strings, to 
 	avoid warnings with Python. Python should use const char*, of course.

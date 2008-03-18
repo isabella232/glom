@@ -23,7 +23,7 @@
 #include <glom/libglom/connectionpool.h>
 #include <glom/libglom/document/document_glom.h>
 #include <bakery/bakery.h>
-#include <libgnomevfsmm.h>
+#include <giomm.h>
 #include <glib/gstdio.h> //For g_remove().
 #include <glom/libglom/spawn_with_feedback.h>
 #include <glom/libglom/utils.h>
@@ -769,8 +769,8 @@ bool ConnectionPool::directory_exists_filepath(const std::string& filepath)
 
 bool ConnectionPool::directory_exists_uri(const std::string& uri)
 {
-  Glib::RefPtr<Gnome::Vfs::Uri> vfsuri = Gnome::Vfs::Uri::create(uri);
-  return vfsuri->uri_exists();
+  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
+  return file && file->query_exists();
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -1002,9 +1002,11 @@ bool ConnectionPool::create_self_hosting(Gtk::Window* parent_window)
   //Create these files: environment  pg_hba.conf  pg_ident.conf  start.conf
 
   const std::string dbdir_uri_config = dbdir_uri + "/config";
-  create_text_file(dbdir_uri_config + "/pg_hba.conf", DEFAULT_CONFIG_PG_HBA);
+  const bool hba_conf_creation_succeeded = create_text_file(dbdir_uri_config + "/pg_hba.conf", DEFAULT_CONFIG_PG_HBA);
+  g_assert(hba_conf_creation_succeeded);
 
-  create_text_file(dbdir_uri_config + "/pg_ident.conf", DEFAULT_CONFIG_PG_IDENT);
+  const bool ident_conf_creation_succeeded = create_text_file(dbdir_uri_config + "/pg_ident.conf", DEFAULT_CONFIG_PG_IDENT);
+  g_assert(ident_conf_creation_succeeded);
 
   //Check that there is not an existing data directory:
   const std::string dbdir_data = dbdir + "/data";
@@ -1020,8 +1022,12 @@ bool ConnectionPool::create_self_hosting(Gtk::Window* parent_window)
     return false;
   }
 
+  //Get file:// URI for the tmp/ directory:
   const std::string temp_pwfile = Glib::build_filename(Glib::get_tmp_dir(), "glom_initdb_pwfile");
-  create_text_file(temp_pwfile, get_password());
+  Glib::RefPtr<Gio::File> file = Gio::File::create_for_path(temp_pwfile);
+  const std::string temp_pwfile_uri = file->get_uri();
+  const bool pwfile_creation_succeeded = create_text_file(temp_pwfile_uri, get_password());
+  g_assert(pwfile_creation_succeeded);
 
   const std::string command_initdb = Glib::shell_quote(get_path_to_postgres_executable("initdb")) + " -D \"" + dbdir_data + "\"" +
                                         " -U " + username + " --pwfile=\"" + temp_pwfile + "\"";
@@ -1042,65 +1048,76 @@ bool ConnectionPool::create_self_hosting(Gtk::Window* parent_window)
 
 bool ConnectionPool::create_text_file(const std::string& file_uri, const std::string& contents)
 {
-  Gnome::Vfs::Handle write_handle;
+  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(file_uri);
+  Glib::RefPtr<Gio::FileOutputStream> stream;
 
+  //Create the file if it does not already exist:
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
-#else
-  std::auto_ptr<Gnome::Vfs::exception> error;
-#endif
   {
-    //0660 means "this user and his group can read and write this non-executable file".
-    //The 0 prefix means that this is octal.
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-    write_handle.create(file_uri, Gnome::Vfs::OPEN_WRITE, false, 0660 /* leading zero means octal */);
-#else
-    write_handle.create(file_uri, Gnome::Vfs::OPEN_WRITE, false, 0660 /* leading zero means octal */, error);
-#endif
+    if(file->query_exists())
+    {
+      stream = file->replace(); //Instead of append_to().
+    }
+    else
+    {
+      //By default files created are generally readable by everyone, but if we pass FILE_CREATE_PRIVATE in flags the file will be made readable only to the current user, to the level that is supported on the target filesystem.
+      //TODO: Do we want to specify 0660 exactly? (means "this user and his group can read and write this non-executable file".)
+      stream = file->create_file();
+    }
   }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  catch(const Gnome::Vfs::exception& ex)
+  catch(const Gio::Error& ex)
   {
 #else
+  std::auto_ptr<Gio::Error> error;
+  stream.create(error);
   if(error.get() != NULL)
   {
-    const Gnome::Vfs::exception& ex = *error.get();
+    const Gio::Error& ex = *error.get();
 #endif
-    std::cerr << "ConnectionPool::create_text_file(): exception caught during file create: " << ex.what() << std::endl;
-
     // If the operation was not successful, print the error and abort
+    std::cerr << "ConnectionPool::create_text_file(): exception while creating file." << std::endl
+      << "  file uri:" << file_uri << std::endl
+      << "  error:" << ex.what() << std::endl;
     return false; // print_error(ex, output_uri_string);
   }
 
+
+  if(!stream)
+    return false;
+
+
+  gsize bytes_written = 0;
+  const std::string::size_type contents_size = contents.size();
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
-#endif
   {
     //Write the data to the output uri
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-    GnomeVFSFileSize bytes_written = write_handle.write(contents.data(), contents.size());
-#else
-    GnomeVFSFileSize bytes_written = write_handle.write(contents.data(), contents.size(), error);
-    if(error.get() != NULL)
-#endif
-      if(bytes_written != contents.size())
-        return false;
+    bytes_written = stream->write(contents.data(), contents_size);
   }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  catch(const Gnome::Vfs::exception& ex)
+  catch(const Gio::Error& ex)
   {
 #else
+  bytes_written = stream->write(contents.data(), contents_size, error);
   if(error.get() != NULL)
   {
-    Gnome::Vfs::exception& ex = *error.get();
+    Gio::Error& ex = *error.get();
 #endif
-    std::cerr << "ConnectionPool::create_text_file(): exception caught during write: " << ex.what() << std::endl;
-
     // If the operation was not successful, print the error and abort
+    std::cerr << "ConnectionPool::create_text_file(): exception while writing to file." << std::endl
+      << "  file uri:" << file_uri << std::endl
+      << "  error:" << ex.what() << std::endl;
     return false; //print_error(ex, output_uri_string);
   }
 
-  return true; //Success. (At doing nothing, because nothing needed to be done.)
+  if(bytes_written != contents_size)
+  {
+    std::cerr << "ConnectionPool::create_text_file(): not all bytes written when writing to file." << std::endl
+      << "  file uri:" << file_uri << std::endl;
+    return false;
+  }
+
+  return true; //Success.
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

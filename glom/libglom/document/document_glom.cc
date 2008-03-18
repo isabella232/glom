@@ -31,7 +31,7 @@
 #include <glom/libglom/data_structure/layout/layoutitem_image.h>
 #include <glom/libglom/data_structure/layout/layoutitem_line.h>
 #include <glom/libglom/standard_table_prefs_fields.h>
-#include <libgnomevfsmm/uri.h>
+#include <giomm.h>
 #include <bakery/Utilities/BusyCursor.h>
 
 #include <glom/libglom/connectionpool.h>
@@ -270,20 +270,20 @@ std::string Document_Glom::get_connection_self_hosted_directory_uri() const
   }
   else
   {
-    Glib::RefPtr<Gnome::Vfs::Uri> vfsuri = Gnome::Vfs::Uri::create(uri_file);
+    //Use Gio::File API to construct the URI:
+    Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri_file);
 
-    Glib::RefPtr<Gnome::Vfs::Uri> vfsuri_parent = vfsuri->get_parent();
-    if(vfsuri_parent)
+    Glib::RefPtr<Gio::File> parent = file->get_parent();
+    if(parent)
     {
-      Glib::RefPtr<Gnome::Vfs::Uri> datadir = vfsuri_parent->append_string("glom_postgres_data");
-      return datadir->to_string();
-    }
-    else
-    {
-      g_warning("Document_Glom::get_connection_self_hosted_directory_uri(): get_parent() returned empty.");
-      return std::string();
+      Glib::RefPtr<Gio::File> datadir = parent->get_child("glom_postgres_data");
+      if(datadir)
+        return datadir->get_uri();
     }
   }
+
+  g_warning("Document_Glom::get_connection_self_hosted_directory_uri(): returning empty string.");
+  return std::string();
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
