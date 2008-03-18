@@ -32,7 +32,6 @@
 #include <gettext-po.h>
 #include "config.h" //For HAVE_GETTEXTPO_XERROR
 
-#include <libgnomevfsmm/handle.h>
 #include <sstream>
 
 namespace Glom

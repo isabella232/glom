@@ -49,22 +49,22 @@ initglom(void)
     return;
 
 
-  m = Py_InitModule3("glom", pyglom_methods,
-                      "Python module for Glom caluclated fields.");
+  m = Py_InitModule3((char*)"glom", pyglom_methods,
+                      (char*)"Python module for Glom caluclated fields.");
 
 
   Py_INCREF(Glom::PyGlomRecord_GetPyType());
-  PyModule_AddObject(m, "Record", (PyObject *)Glom::PyGlomRecord_GetPyType());
+  PyModule_AddObject(m, (char*)"Record", (PyObject *)Glom::PyGlomRecord_GetPyType());
 
   Py_INCREF(Glom::PyGlomRelated_GetPyType());
-  PyModule_AddObject(m, "Related", (PyObject *)Glom::PyGlomRelated_GetPyType());
+  PyModule_AddObject(m, (char*)"Related", (PyObject *)Glom::PyGlomRelated_GetPyType());
 
   Py_INCREF(Glom::PyGlomRelated_GetPyType());
-  PyModule_AddObject(m, "RelatedRecord", (PyObject *)Glom::PyGlomRelated_GetPyType());
+  PyModule_AddObject(m, (char*)"RelatedRecord", (PyObject *)Glom::PyGlomRelated_GetPyType());
 
 
   if(PyErr_Occurred())
-    Py_FatalError ("Can't initialise glom module");
+    Py_FatalError((char*)"Can't initialise glom module");
 }
 
 

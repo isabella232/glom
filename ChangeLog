@@ -1,3 +1,9 @@
+2008-03-18  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/python_embed/python_module/py_glom_module.cc (initglom):
+	Added more casts to non-const char* from static strings, to 
+	avoid warnings with Python. Python should use const char*, of course.
+
 2008-03-13  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/application.cc ui_file_select_open_with_browse():
