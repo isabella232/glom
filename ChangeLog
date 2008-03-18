@@ -1,5 +1,13 @@
 2008-03-18  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/data_structure/fieldtypes.cc 
+	get_string_name_for_gdavaluetype(): Hard-code the result for 
+	text fields (G_TYPE_STRING) so we always use varchar. Otherwise 
+	we mistakenly create fields of type xml because libgda reports many 
+	postgres 8.3 fields types as being of type G_TYPE_STRING.
+
+2008-03-18  Murray Cumming  <murrayc@murrayc.com>
+
 	* configure.in: Depend on the new unstable bakery-2.6 API.
 	* glom/application.cc:
 	* glom/base_db.cc:
