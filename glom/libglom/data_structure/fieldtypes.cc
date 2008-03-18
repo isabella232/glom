@@ -59,7 +59,7 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
       int rows = data_model_tables->get_n_rows();
       for(int i = 0; i < rows; ++i)
       {
-        Gnome::Gda::Value value_name = data_model_tables->get_value_at(DATAMODEL_FIELDS_COL_NAME, i);
+        const Gnome::Gda::Value value_name = data_model_tables->get_value_at(DATAMODEL_FIELDS_COL_NAME, i);
 
         //Get the types's string representation:
         Glib::ustring schema_type_string;
@@ -75,6 +75,8 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
             GType gdatype = static_cast<GType>(g_value_get_ulong(value_gdatype.gobj()));
 
             //Save it for later:
+            //std::cout << "debug: schema_type_string=" << schema_type_string << ", gda type=" << gdatype << "(" << g_type_name(gdatype) << ")" << std::endl;
+            
             m_mapSchemaStringsToGdaTypes[schema_type_string] = gdatype;
 
             Glib::ustring gdatypestring = gda_g_type_to_string(gdatype); // TODO: What is this actually used for?
@@ -106,6 +108,12 @@ GType FieldTypes::get_gdavalue_for_schema_type_string(const Glib::ustring& schem
 
 Glib::ustring FieldTypes::get_string_name_for_gdavaluetype(GType field_type) const
 {
+  //Special-case gchararray (G_TYPE_STRING) because Gda reports this GType for several 
+  //postgres field types (xml, inet, tinterval, etc),
+  //though we only care about varchar:
+  if(field_type == G_TYPE_STRING)
+    return "varchar";
+
   type_mapGdaTypesToSchemaStrings::const_iterator iterFind = m_mapGdaTypesToSchemaStrings.find(field_type);
   if(iterFind == m_mapGdaTypesToSchemaStrings.end())
   {
