@@ -1,3 +1,10 @@
+2008-03-19  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc offer_new_or_existing(): Use a URI for the 
+	examples directory instead of a filepath, sot that the examples 
+	directory is really opened in the file chooser. gnome-vfs seems to 
+	have become less tolerant of URIs without file:// at the start.
+
 2008-03-18  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/data_structure/fieldtypes.cc 
