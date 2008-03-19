@@ -1243,8 +1243,21 @@ bool App_Glom::offer_new_or_existing()
     ui_bring_to_front();
 
     //Ask user to choose file to open:
+    //Create a URI (prefixed by file://) for this path).
+    //Previous versions of gnome-vfs could handle this without file://,
+    //but that stopped working at some point around Ubuntu Hardy. murrayc.
     //g_warning("GLOM_EXAMPLES_DIR=%s", GLOM_EXAMPLES_DIR);
-    Glib::ustring file_uri = ui_file_select_open(GLOM_EXAMPLES_DIR);
+    Glib::ustring examples_uri;
+    try
+    {
+      examples_uri = Glib::filename_to_uri(GLOM_EXAMPLES_DIR);
+    }
+    catch(const Glib::Error& ex)
+    {
+      std::cerr << "Glom: Error converting examples path to a URI: " << ex.what() << std::endl;
+    }
+    
+    Glib::ustring file_uri = ui_file_select_open(examples_uri);
     if(!file_uri.empty())
       open_document(file_uri);
 
