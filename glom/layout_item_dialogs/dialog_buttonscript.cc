@@ -87,6 +87,11 @@ sharedptr<LayoutItem_Button> Dialog_ButtonScript::get_script() const
   return result;
 }
 
+void Dialog_ButtonScript::get_script (const sharedptr<LayoutItem_Button>& script)
+{
+  script->set_script (m_text_view->get_buffer()->get_text() );
+}
+
 void Dialog_ButtonScript::on_button_test()
 {
   const Glib::ustring calculation = m_text_view->get_buffer()->get_text();

@@ -34,6 +34,7 @@ class App_Glom;
 class LabelGlom
 : public Gtk::Label,
   public LayoutWidgetBase
+  //public LayoutWidgetUtils
 {
 public:
   explicit LabelGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
@@ -45,6 +46,8 @@ protected:
   void init();
 
   virtual App_Glom* get_application();
+    
+  //virtual void on_menu_properties_activate();
 };
 
 } //namespace Glom

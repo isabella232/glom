@@ -41,6 +41,7 @@ public:
 
   void set_script(const sharedptr<const LayoutItem_Button>& script, const Glib::ustring& table_name);
   sharedptr<LayoutItem_Button> get_script() const;
+  void get_script (const sharedptr<LayoutItem_Button>& script);
 
 protected:
   void on_button_test();

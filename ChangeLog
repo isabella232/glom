@@ -1,3 +1,19 @@
+2008-03-22  Johannes Schmid <johannes.schmid@openismus.com>
+
+	* glom/glom_developer.glade:
+	* glom/utility_widgets/Makefile.am:
+	* glom/utility_widgets/buttonglom.cc:
+	* glom/utility_widgets/buttonglom.h:
+	* glom/utility_widgets/dialog_buttonscript.cc:
+	* glom/utility_widgets/dialog_buttonscript.h:
+	* glom/utility_widgets/dialog_layoutitem_properties.cc:
+	* glom/utility_widgets/dialog_layoutitem_properties.h:
+	* glom/utility_widgets/labelglom.h:
+	* glom/utility_widgets/layoutwidgetutils.h:
+	
+	Added popup-menu for buttons (and so refactoring to make it easier for other 
+	widgets)
+
 2008-03-19  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/application.cc offer_new_or_existing(): Use a URI for the 

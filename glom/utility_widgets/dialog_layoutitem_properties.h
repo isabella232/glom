@@ -18,41 +18,28 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_UTILITY_WIDGETS_BUTTON_GLOM_H
-#define GLOM_UTILITY_WIDGETS_BUTTON_GLOM_H
+#ifndef DIALOG_LAYOUTITEM_PROPERTIES_H
+#define DIALOG_LAYOUTITEM_PROPERTIES_H
 
 #include <gtkmm.h>
-#include "layoutwidgetbase.h"
-#include "layoutwidgetutils.h"
-#include <glom/libglom/data_structure/layout/layoutitem_button.h>
 #include <libglademm.h>
 
 namespace Glom
 {
 
-class App_Glom;
-
-class ButtonGlom
-: public Gtk::Button,
-  public LayoutWidgetBase,
-  public LayoutWidgetUtils
+class Dialog_LayoutItem_Properties : public Gtk::Dialog
 {
 public:
-  explicit ButtonGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
-  explicit ButtonGlom();
-  virtual ~ButtonGlom();
+  Dialog_LayoutItem_Properties(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  //virtual ~Dialog_LayoutItem_Properties();
 
+  Glib::ustring get_label() const; 
+  void set_label (Glib::ustring label);
+  
 protected:
-  void init();
-
-  virtual App_Glom* get_application();
-    
-  virtual void on_menu_properties_activate();
-  virtual void on_menu_details_activate();
-  virtual bool on_button_press_event(GdkEventButton *event);
+  Gtk::Entry* m_pEntryLabel;
 };
 
 } //namespace Glom
 
-#endif //GLOM_UTILITY_WIDGETS_BUTTON_GLOM_H
-
+#endif //DIALOG_LAYOUTITEM_PROPERTIES_H
