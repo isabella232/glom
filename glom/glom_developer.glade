@@ -7108,6 +7108,7 @@ Which user should be added to this group?</property>
 	      <property name="active">False</property>
 	      <property name="inconsistent">False</property>
 	      <property name="draw_indicator">True</property>
+              <property name="tooltip" translatable="yes">When this is checked the table's title will be shown at the top of the report in addition to the report title.</property>
 	    </widget>
 	    <packing>
 	      <property name="padding">0</property>
@@ -7789,8 +7790,8 @@ Which user should be added to this group?</property>
 	</widget>
 	<packing>
 	  <property name="padding">0</property>
-	  <property name="expand">True</property>
-	  <property name="fill">True</property>
+	  <property name="expand">False</property>
+	  <property name="fill">False</property>
 	</packing>
       </child>
     </widget>

@@ -219,6 +219,11 @@
     <para>When you press the <literal>Find</literal> button, glom will search for records and then display them. If only one record is found then it will show you that record in the Details view. If several records are found then it will show you those records in the List view.</para>
     </sect2>
 
+    <sect2 id="glom-operator-printing-reports">
+    <title>Printing Reports</title>
+    <para>If your database developer has defined some reports for a table then you will seem them listed in the <literal>Reports</literal> menu. Just choose the report from the menu to create the report. If you have previously performed a search then the report will contain only the currently-found data. Otherwise it will contain all data in the current report. Remember that each table has its own reports, so you may need to switch to the relevant table to use a particular report.</para>
+    </sect2>
+
 
     </sect1>
 
@@ -309,7 +314,91 @@
 
    <sect2>
    <title>Users Administration</title>
-   <para>To define the <literal>Operators</literal> who can use your database, and to specify what access they have to the various tables, choose <literal>Users</literal> from the <literal>Developer</literal> menu..</para> 
+   <para>To define the <literal>Operators</literal> who can use your database, and to specify what access they have to the various tables, choose <literal>Users</literal> from the <literal>Developer</literal> menu.</para> 
+   </sect2>
+
+   <sect2>
+   <title>Defining Reports</title>
+
+   <sect3>
+   <title>Adding or Editing Reports</title>
+
+   <para>Glom can produce reports to show specific fields for sets of records, sorted and grouped. 
+For instance, a shop might need a report listing all products sold in one month, grouped by product type, and sorted by price inside each group. Each table has its own reports, which are available to the operator from the <literal>Reports</literal> menu.</para>
+   <para>To define a report, or to change the definition of an existing report, choose <literal>Reports</literal> from the <literal>Developer</literal> menu.</para>
+   <figure id="developer-editing-reports"> 
+	<title>Creating or Editing Reports</title> 
+	<screenshot> 
+	  <mediaobject> 
+	    <imageobject><imagedata
+		fileref="figures/glom_design_reports.png" format="PNG"/> 
+	    </imageobject>
+	    <textobject> 
+	      <phrase>Creating or editing reports.
+	      </phrase> 
+	    </textobject>
+	  </mediaobject> 
+	</screenshot> 
+     </figure>
+
+    <para>Notice that each report has an ID as well as a human-readable name. This allows your report to have a translated title when used on a computer that uses a different language.</para>
+
+    </sect3>
+
+    <sect3>
+    <title>Editing a Report</title>
+
+    <para>A Glom report has three areas:
+    <orderedlist>
+      <listitem><simpara>The Header, which appears at the start of the report</simpara></listitem>
+      <listitem><simpara>The Main area, in which the records and summary lines are shown, with the actual data from the database.</simpara></listitem>
+      <listitem><simpara>The Footer, which appears at the end of the report.</simpara></listitem>
+    </orderedlist>
+    </para>
+
+    <para>Inside an area, such as the Main part, you may add report <literal>Parts</literal>, such as fields, text, or images. These will usually appear in a row on the printed report, with one row for each record. In the simple case, this will look much like Glom's list view. You can add parts to your report by selecting them from the <literal>Available Parts</literal> list and then clicking the <literal>Add</literal> button. The part will then be added to the <literal>Parts</literal> list, in the selected area.</para>
+    <para>To specify details for the parts, such as the text or image to display, or to choose the field to display, select the part in the <literal>Parts</literal> list and click the <para>Edit</para> button. You may also specify field formatting by clicking the <literal>Formatting</literal> button, just as you would when defining a details or list layout.</para>
+
+    <figure id="developer-editing-reports-details"> 
+	<title>Editing a Report</title> 
+	<screenshot> 
+	  <mediaobject> 
+	    <imageobject><imagedata
+		fileref="figures/glom_design_reports_details.png" format="PNG"/> 
+	    </imageobject>
+	    <textobject> 
+	      <phrase>Editing a report.
+	      </phrase> 
+	    </textobject> 
+	  </mediaobject> 
+	</screenshot> 
+     </figure>
+
+    <para>Some parts may contain other parts and have extra properties to control how they present their child parts. For instance, the <literal>Group By</literal> part groups records together by a field. For instance, a products report might group a list of products by product type. You can even add a second sub-grouping inside the main <literal>Group By</literal> part, by selecting your top-level <literal>Group By</literal> part in the <literal>Parts</literal> list while adding a new <literal>Group By</literal> part from the <literal>Available Parts</literal> list. For instance, you might group your products by manufacturer, inside each product type group.</para>
+    <para>To specify the field by which the records should be grouped, select your <literal>Group By</literal> part in the <literal>Parts</literal> list and click the <literal>Edit</literal> button. You can then choose the field by which the records should be grouped, and select the fields by which these records should be sorted within the group. You may also specify some additional fields to be displayed in the group's title row. For instance, you might want to group products by a manufacturer ID, but also show the manufacturer name.</para>
+
+    <figure id="developer-editing-reports-group_by"> 
+	<title>Editing a Group By Part</title> 
+	<screenshot> 
+	  <mediaobject> 
+	    <imageobject><imagedata
+		fileref="figures/glom_design_reports_group_by.png" format="PNG"/> 
+	    </imageobject>
+	    <textobject> 
+	      <phrase>Editing a report.
+	      </phrase> 
+	    </textobject> 
+	  </mediaobject> 
+	</screenshot> 
+     </figure>
+
+
+   <para>When you have finished, click the <literal>Close</literal> button to save the report's definition. Your report can then be chosen from the <literal>Reports</literal> menu. See the <link linkend="glom-operator-printing-reports">Printing Reports</link> section for more details.</para>
+
+
+
+   </sect3>
+
    </sect2>
   
   </sect1>
