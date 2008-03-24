@@ -1,3 +1,10 @@
+2008-03-24  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in:
+	* docs/user-guide/C/figures: Added images from screenshots on website.
+	* docs/user-guide/C/glom.xml: Added screenshots and some text.
+	Added section about translations.
+
 2008-03-22  Murray Cumming  <murrayc@murrayc.com>
 
 	* docs/user-guide/C/glom.xml: Added sections about defining and using 

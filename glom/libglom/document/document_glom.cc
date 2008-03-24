@@ -241,7 +241,7 @@ Document_Glom::Document_Glom()
 Document_Glom::~Document_Glom()
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  //It would be better to do this in a Application::on_document_closed() virtual method,
+  //TODO: It would be better to do this in a Application::on_document_closed() virtual method,
   //but that would need an ABI break in Bakery:
   if(get_connection_is_self_hosted())
   {
