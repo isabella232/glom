@@ -1,3 +1,12 @@
+2008-03-26  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/document/document_glom.cc:
+	* glom/libglom/document/document_glom.h:
+	Remove append_newline().
+	save_before(): Stop using append_newline() - it never worked anyway.
+	Use add_indenting_white_space_to_node() which was just added to Bakery.
+	This makes the .glom files have nice readable indenting again.
+
 2008-03-26  Johannes Schmid  <jhs@gnome.org>
 
 	* glom/mode_data/flowtablewithfields.cc:

@@ -223,9 +223,8 @@ Document_Glom::Document_Glom()
 
   set_dtd_root_node_name("glom_document");
 
-  //Don't add newlines automatically, because we have text nodes that this might affect:
-  //It doesn't seem to work anyway.
-  //set_write_formatted(); //Make the output more human-readable, just in case.
+  //We don't use set_write_formatted() because it doesn't handle text nodes well.
+  //We use add_indenting_white_space_to_node() instead later.
 
   //Set default database name:
   //This is also the XML attribute default value,
@@ -1178,11 +1177,6 @@ Gnome::Gda::Value Document_Glom::get_node_attribute_value_as_value(const xmlpp::
     return result;
   else 
     return Gnome::Gda::Value();
-}
-
-void Document_Glom::append_newline(xmlpp::Element* parent_node)
-{
-  parent_node->add_child_text("\n");
 }
 
 Document_Glom::type_listTableInfo Document_Glom::get_tables(bool plus_system_prefs) const
@@ -3056,7 +3050,6 @@ bool Document_Glom::save_before()
     set_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_TRY_OTHER_PORTS, m_connection_try_other_ports, true /* default */);
     set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_USER, m_connection_user);
     set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_DATABASE, m_connection_database);
-    append_newline(nodeRoot);
 
     //Remove existing tables:
     xmlpp::Node::NodeList listNodes = nodeRoot->get_children(GLOM_NODE_TABLE);
@@ -3154,11 +3147,7 @@ bool Document_Glom::save_before()
 
           //Translations:
           save_before_translations(elemField, *field);
-
-          append_newline(elemFields);
         } /* fields */
-
-        append_newline(nodeTable);
 
         //Relationships:
         //Add new <relationships> node:
@@ -3180,13 +3169,8 @@ bool Document_Glom::save_before()
 
             //Translations:
             save_before_translations(elemRelationship, *relationship);
-
-            append_newline(elemRelationships);
           }
         }
-
-        append_newline(nodeTable);
-
 
         //Layouts:
         xmlpp::Element* nodeDataLayouts = nodeTable->add_child(GLOM_NODE_DATA_LAYOUTS);
@@ -3205,13 +3189,8 @@ bool Document_Glom::save_before()
           for(type_list_layout_groups::const_iterator iterGroups = groups.begin(); iterGroups != groups.end(); ++iterGroups)
           {
             save_before_layout_group(nodeGroups, *iterGroups);
-            append_newline(nodeGroups);
           }
-
-          append_newline(nodeDataLayouts);
         }
-
-        append_newline(nodeTable);
 
         //Reports:
         xmlpp::Element* nodeReports = nodeTable->add_child(GLOM_NODE_REPORTS);
@@ -3229,14 +3208,10 @@ bool Document_Glom::save_before()
           if(report->m_layout_group)
           {
             save_before_layout_group(nodeGroups, report->m_layout_group);
-            append_newline(nodeGroups);
           }
 
           //Translations:
           save_before_translations(nodeReport, *report);
-
-          append_newline(nodeReports);
-          append_newline(nodeReports);
         }
 
         //Print Layouts:
@@ -3267,20 +3242,12 @@ bool Document_Glom::save_before()
           if(print_layout->m_layout_group)
           {
             save_before_layout_group(nodeGroups, print_layout->m_layout_group, true /* x,y positions too. */);
-            append_newline(nodeGroups);
           }
 
           //Translations:
           save_before_translations(nodePrintLayout, *print_layout);
-
-          append_newline(nodePrintLayout);
         }
-
-        append_newline(nodeTable);
-        append_newline(nodeTable);
       }
-
-      append_newline(nodeRoot);
 
     } //for m_tables
 
@@ -3318,9 +3285,6 @@ bool Document_Glom::save_before()
       }
     }
 
-    append_newline(nodeRoot);
-
-
     //Remove existing library modules::
     listNodes = nodeRoot->get_children(GLOM_NODE_LIBRARY_MODULES);
     for(xmlpp::Node::NodeList::iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
@@ -3340,9 +3304,11 @@ bool Document_Glom::save_before()
       set_node_attribute_value(nodeModule, GLOM_ATTRIBUTE_LIBRARY_MODULE_SCRIPT, script);
     }
 
-    append_newline(nodeRoot);
-
   }
+
+
+  //We don't use set_write_formatted() because it doesn't handle text nodes well.
+  add_indenting_white_space_to_node();
 
   return Bakery::Document_XML::save_before();  
 }
