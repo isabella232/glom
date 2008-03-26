@@ -23,6 +23,7 @@
 
 #include <gtkmm.h>
 #include "layoutwidgetbase.h"
+#include "layoutwidgetutils.h"
 #include <glom/libglom/data_structure/layout/layoutitem_button.h>
 #include <libglademm.h>
 
@@ -32,14 +33,13 @@ namespace Glom
 class App_Glom;
 
 class LabelGlom
-: public Gtk::Label,
-  public LayoutWidgetBase
-  //public LayoutWidgetUtils
+: public Gtk::EventBox,
+  public LayoutWidgetBase,
+  public LayoutWidgetUtils
 {
 public:
-  explicit LabelGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   explicit LabelGlom();
-  explicit LabelGlom(const Glib::ustring& label, float xalign, float yalign, bool mnemonic = false);
+  explicit LabelGlom(const Glib::ustring& label, float xalign, float yalign, bool mnemonic = false, bool title = false);
   virtual ~LabelGlom();
 
 protected:
@@ -47,7 +47,12 @@ protected:
 
   virtual App_Glom* get_application();
     
-  //virtual void on_menu_properties_activate();
+  Gtk::Label m_label;
+  bool m_title;
+    
+  virtual bool on_button_press_event(GdkEventButton *event);
+  virtual void on_menu_properties_activate();
+    
 };
 
 } //namespace Glom

@@ -43,8 +43,8 @@ void Dialog_LayoutItem_Properties::set_label (Glib::ustring label)
 
 Glib::ustring Dialog_LayoutItem_Properties::get_label() const
 {
-  return m_pEntryLabel->get_text();  
+  return m_pEntryLabel->get_text();
 }
 
-} // namespace Glom
+} // Glom
 

@@ -515,8 +515,9 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
   Gtk::Alignment* alignment_label = Gtk::manage(new Gtk::Alignment());
   alignment_label->set(Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER);
   alignment_label->show();
-
-  LabelGlom* label = Gtk::manage(new LabelGlom(layoutitem_text->get_text(), 0.0 /* xalign */, 0.5 /* yalign */)); //The alignment here seems to be necessary as well (or instead of) the parent Gtk::Alignment.
+  
+  const Glib::ustring text = layoutitem_text->get_text();
+  LabelGlom* label = Gtk::manage(new LabelGlom(text, 0.0 /* xalign */, 0.5 /* yalign */)); //The alignment here seems to be necessary as well (or instead of) the parent Gtk::Alignment.
   label->set_layout_item (layoutitem_text, table_name);
   label->show();
   alignment_label->add(*label);
@@ -541,7 +542,8 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
     alignment_title->set(Gtk::ALIGN_RIGHT, Gtk::ALIGN_CENTER);
     alignment_title->show();
 
-    Gtk::Label* title_label = Gtk::manage(new Gtk::Label(title));
+    LabelGlom* title_label = Gtk::manage(new LabelGlom(title, 0, 0, false, true));
+    title_label->set_layout_item (layoutitem_text, table_name);
     title_label->show();
     alignment_title->add(*title_label);
 

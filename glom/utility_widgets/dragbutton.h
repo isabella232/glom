@@ -37,7 +37,7 @@ class DragButton : public Gtk::ToolButton
     ~DragButton();
 
   
-    static gchar* get_target() {return "flowtable";};
+    static const gchar* get_target() {return "flowtable";};
   protected:
 		virtual void on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& drag_context);
     virtual void on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>&, 

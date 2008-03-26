@@ -1,3 +1,14 @@
+2008-03-26  Johannes Schmid  <jhs@gnome.org>
+
+	* glom/mode_data/flowtablewithfields.cc:
+	* glom/utility_widgets/dialog_layoutitem_properties.cc:
+	* glom/utility_widgets/labelglom.cc:
+	* glom/utility_widgets/labelglom.h:	
+	Added popup menu for LabelGlom
+	
+	* glom/utility_widgets/dragbutton.h:
+	Make a method const
+
 2008-03-24  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.in:
@@ -25,7 +36,7 @@
 	* glom/utility_widgets/labelglom.h:
 	* glom/utility_widgets/layoutwidgetutils.h:
 	
-	Added popup-menu for buttons (and so refactoring to make it easier for other 
+	Added popup-menu for buttons (and some refactoring to make it easier for other 
 	widgets)
 
 2008-03-19  Murray Cumming  <murrayc@murrayc.com>
