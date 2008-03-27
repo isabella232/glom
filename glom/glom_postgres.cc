@@ -177,7 +177,7 @@ sharedptr<Field> GlomPostgres::postgres_change_column_extras(const Glib::ustring
     if( set_anyway ||  (field->get_field_info().get_allow_null() != field_old->get_field_info().get_allow_null()) )
     {
       Glib::ustring nullness = (field->get_field_info().get_allow_null() ? "NULL" : "NOT NULL");
-      query_execute(  "ALTER TABLE " + m_table_name + " ALTER COLUMN " + field->get_name() + "  SET " + nullness);
+      query_execute(  "ALTER TABLE \"" + m_table_name + "\" ALTER COLUMN \"" + field->get_name() + "\"  SET " + nullness);
     }
   */ 
 

@@ -1,3 +1,10 @@
+2008-03-27  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/navigation/box_tables.cc: on_adddel_Delete(): Put quotes around 
+	the table name when doing a DROP TABLE, so we can delete tables that 
+	use upper case in their name.
+	Bug #522233 (Pavel Mlčoch).
+
 1.6.10:
 
 2008-03-19  Murray Cumming  <murrayc@murrayc.com>

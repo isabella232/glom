@@ -1078,7 +1078,7 @@ bool Base_DB::create_table_with_default_fields(const Glib::ustring& table_name)
     //query_execute( "INSERT INTO \"" + table_name + "\" VALUES (0)" );
 
     //PostgresSQL:
-    //query_execute( "CREATE TABLE " + table_name + " (\"" + primary_key_name + "\" serial NOT NULL  PRIMARY KEY)" );
+    //query_execute( "CREATE TABLE \"" + table_name + "\" (\"" + primary_key_name + "\" serial NOT NULL  PRIMARY KEY)" );
 
     //query_execute( "CREATE TABLE \"" + table_name + "\" (" +
     //  field_primary_key->get_name() + " numeric NOT NULL  PRIMARY KEY," + 
