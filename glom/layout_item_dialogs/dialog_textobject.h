@@ -40,6 +40,7 @@ public:
 
   void set_textobject(const sharedptr<const LayoutItem_Text>& textobject, const Glib::ustring& table_name, bool show_title = true);
   sharedptr<LayoutItem_Text> get_textobject() const;
+  void get_textobject(sharedptr<LayoutItem_Text>& textobject) const;
 
 protected:
   Gtk::HBox* m_box_title;

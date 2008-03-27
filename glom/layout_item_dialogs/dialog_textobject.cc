@@ -74,10 +74,15 @@ sharedptr<LayoutItem_Text> Dialog_TextObject::get_textobject() const
 {
   sharedptr<LayoutItem_Text> result = glom_sharedptr_clone(m_textobject); //Start with the old details, to preserve anything that is not in our UI.
 
-  result->set_title(m_entry_title->get_text());
-  result->set_text( m_text_view->get_buffer()->get_text() );
+  get_textobject(result);
 
   return result;
+}
+
+void Dialog_TextObject::get_textobject(sharedptr<LayoutItem_Text>& textobject) const
+{
+  textobject->set_title(m_entry_title->get_text());
+  textobject->set_text( m_text_view->get_buffer()->get_text() );
 }
 
 } //namespace Glom

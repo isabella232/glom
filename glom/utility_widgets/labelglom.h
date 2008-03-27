@@ -39,7 +39,7 @@ class LabelGlom
 {
 public:
   explicit LabelGlom();
-  explicit LabelGlom(const Glib::ustring& label, float xalign, float yalign, bool mnemonic = false, bool title = false);
+  explicit LabelGlom(const Glib::ustring& label, float xalign, float yalign, bool mnemonic = false);
   virtual ~LabelGlom();
 
 protected:
@@ -48,7 +48,6 @@ protected:
   virtual App_Glom* get_application();
     
   Gtk::Label m_label;
-  bool m_title;
     
   virtual bool on_button_press_event(GdkEventButton *event);
   virtual void on_menu_properties_activate();

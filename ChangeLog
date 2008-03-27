@@ -1,3 +1,14 @@
+2008-03-27  Johannes Schmid  <jhs@gnome.org>
+
+	* glom/layout_item_dialogs/dialog_textobject.cc:
+	* glom/layout_item_dialogs/dialog_textobject.h:
+	Added get_textobject(reference)
+	
+	* glom/mode_data/flowtablewithfields.cc:
+	* glom/utility_widgets/labelglom.cc:
+	* glom/utility_widgets/labelglom.h:
+	Use the correct dialog for editing textobject (missed that one before...)
+
 2008-03-27  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/navigation/box_tables.cc: on_adddel_Delete(): Put quotes around 

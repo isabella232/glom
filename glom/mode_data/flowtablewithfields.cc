@@ -542,7 +542,7 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
     alignment_title->set(Gtk::ALIGN_RIGHT, Gtk::ALIGN_CENTER);
     alignment_title->show();
 
-    LabelGlom* title_label = Gtk::manage(new LabelGlom(title, 0, 0, false, true));
+    LabelGlom* title_label = Gtk::manage(new LabelGlom(title, 0, 0, false));
     title_label->set_layout_item (layoutitem_text, table_name);
     title_label->show();
     alignment_title->add(*title_label);
@@ -1195,7 +1195,8 @@ void FlowTableWithFields::on_dnd_add_layout_item_text(LayoutWidgetBase* above)
 {
   // create the text label
   sharedptr<LayoutItem_Text> textobject = sharedptr<LayoutItem_Text>::create();
-  textobject->set_title(_("Text Title")); //Give the button a default title, so it is big enough, and so people see that they should change it.
+  textobject->set_title(_("Title")); //Give the button a default title, so it is big enough, and so people see that they should change it.
+  textobject->set_text(_("Text"));
   sharedptr<LayoutItem> layout_item = sharedptr<LayoutItem>::cast_dynamic(textobject);
 
   dnd_add_to_layout_group (layout_item, above);

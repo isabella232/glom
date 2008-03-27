@@ -22,7 +22,8 @@
 #include <gtkmm/messagedialog.h>
 #include "../application.h"
 #include <glibmm/i18n.h>
-#include "dialog_layoutitem_properties.h"
+#include "../layout_item_dialogs/dialog_textobject.h"
+#include "../libglom/glade_utils.h"
 //#include <sstream> //For stringstream
 
 namespace Glom
@@ -37,9 +38,8 @@ LabelGlom::LabelGlom()
   init();
 }
 
-LabelGlom::LabelGlom(const Glib::ustring& label, float xalign, float yalign, bool mnemonic, bool title)
-: m_label(label, xalign, yalign, mnemonic),
-  m_title(title)
+LabelGlom::LabelGlom(const Glib::ustring& label, float xalign, float yalign, bool mnemonic)
+: m_label(label, xalign, yalign, mnemonic)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
@@ -70,36 +70,28 @@ App_Glom* LabelGlom::get_application()
 
 void LabelGlom::on_menu_properties_activate()
 {
+  sharedptr<LayoutItem_Text> textobject = sharedptr<LayoutItem_Text>::cast_dynamic(m_pLayoutItem);
+  if (!textobject)
+    return;
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_layoutitem_properties");
-    
-    Dialog_LayoutItem_Properties* dialog = new Dialog_LayoutItem_Properties (0, refXml);
-    refXml->get_widget_derived("dialog_layoutitem_properties", dialog);
-    
-    if (dialog)
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_textobject");
+
+    Dialog_TextObject* dialog = 0;
+    refXml->get_widget_derived("window_textobject", dialog);
+
+    if(dialog)
     {
-      dialog->set_label (m_label.get_label());
-      if (dialog->run() == Gtk::RESPONSE_APPLY)
+      dialog->set_textobject(textobject, m_table_name);
+      const int response = dialog->run();
+      dialog->hide();
+      if(response == Gtk::RESPONSE_OK)
       {
-        Glib::ustring label(dialog->get_label());
-        sharedptr<LayoutItem_Text> layoutitem_text = sharedptr<LayoutItem_Text>::cast_dynamic(m_pLayoutItem);
-        if (layoutitem_text)
-        {
-          // We could just set the title of the layout item but than
-          // we would need to redraw the whole layout.
-          m_label.set_label (label);
-          if (m_title)
-          {
-            std::cout << "label: " << label << std::endl;
-            layoutitem_text->set_title (label);
-          }
-          else
-          {
-            layoutitem_text->set_text (label);
-          }
-        }
+        //Get the chosen relationship:
+        dialog->get_textobject(textobject);
       }
+      signal_layout_changed().emit();
+
       delete dialog;
     }
   }
