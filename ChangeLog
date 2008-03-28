@@ -1,3 +1,10 @@
+2008-03-28  Johannes Schmid  <jhs@idefix>
+
+	* glom/mode_data/flowtablewithfields.cc:
+	Fixed expanding of LabelGlom
+	* glom/utility_widgets/flowtable.cc:
+	Fixed dragging on Gtk::TextView
+
 2008-03-27  Johannes Schmid  <jhs@gnome.org>
 
 	* glom/layout_item_dialogs/dialog_textobject.cc:

@@ -436,9 +436,10 @@ void FlowTable::setup_dnd (Gtk::Widget& child)
       dynamic_cast<FlowTable*>(&child))
     return;
   
-	// Call this method recursive for all children
+	// Call this method recursive for all (real) children
   Gtk::Container* container = dynamic_cast<Gtk::Container*>(&child);
-  if (container)
+  Gtk::TextView* text_view = dynamic_cast<Gtk::TextView*>(&child);
+  if (container && !text_view)
   {
     typedef Glib::ListHandle<Gtk::Widget*>::const_iterator CI;
     Glib::ListHandle<Gtk::Widget*> children = container->get_children();
@@ -449,7 +450,6 @@ void FlowTable::setup_dnd (Gtk::Widget& child)
     }
     return;
   }
-  
   if (!(child.get_flags() & Gtk::NO_WINDOW))
   {
     std::list<Gtk::TargetEntry> new_targets;
@@ -461,7 +461,6 @@ void FlowTable::setup_dnd (Gtk::Widget& child)
     {
       targets->add (new_targets);
       child.drag_dest_set_target_list (targets);
-      //std::cout << "(added)";
     }
     else
       child.drag_dest_set(new_targets, Gtk::DEST_DEFAULT_ALL,

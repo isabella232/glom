@@ -525,16 +525,15 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
   apply_formatting(*label, layoutitem_text->get_formatting_used());
 
   add_layoutwidgetbase(label, add_before);
-  //add_view(button); //So it can get the document.
 
   const Glib::ustring title = layoutitem_text->get_title();
   if(title.empty())
 	{
 		Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
 	  if (widget)
-  	  insert_before (*alignment_label, *widget, true /* expand */);
+  	  insert_before (*alignment_label, *widget, false /* expand */);
   	else
-			add(*alignment_label, true /* expand */);
+			add(*alignment_label, false /* expand */);
 	}
   else
   {
@@ -549,9 +548,9 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
 
 		Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
 	  if (widget)
-  	  insert_before (*alignment_title, *alignment_label, *widget, true /* expand */);
+  	  insert_before (*alignment_title, *alignment_label, *widget, false /* expand */);
   	else
-			add(*alignment_title, *alignment_label, true /* expand */);
+			add(*alignment_title, *alignment_label, false /* expand */);
   }
 }
 
@@ -1195,8 +1194,7 @@ void FlowTableWithFields::on_dnd_add_layout_item_text(LayoutWidgetBase* above)
 {
   // create the text label
   sharedptr<LayoutItem_Text> textobject = sharedptr<LayoutItem_Text>::create();
-  textobject->set_title(_("Title")); //Give the button a default title, so it is big enough, and so people see that they should change it.
-  textobject->set_text(_("Text"));
+  textobject->set_title(_("Texttitle")); //Give the button a default title, so it is big enough, and so people see that they should change it.
   sharedptr<LayoutItem> layout_item = sharedptr<LayoutItem>::cast_dynamic(textobject);
 
   dnd_add_to_layout_group (layout_item, above);
