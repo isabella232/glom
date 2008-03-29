@@ -948,7 +948,7 @@ SystemPrefs Base_DB::get_database_preferences() const
 
   SystemPrefs result;
 
-  //Check that the user is allowd to even view this table:
+  //Check that the user is allowed to even view this table:
   Privileges table_privs = Privs::get_current_privs(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
   if(!table_privs.m_view)
     return result;
@@ -967,38 +967,55 @@ SystemPrefs Base_DB::get_database_preferences() const
       + Glib::ustring(optional_org_logo ? ", \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO "\"" : "") +
       " FROM \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\"";
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-#endif
+  int attempts = 0;
+  while(attempts < 2)
   {
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query);
-    if(datamodel && (datamodel->get_n_rows() != 0))
+    bool succeeded = true;
+    #ifdef GLIBMM_EXCEPTIONS_ENABLED
+    try
+    #endif
     {
-      result.m_name = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(0, 0));
-      result.m_org_name = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(1, 0));
-      result.m_org_address_street = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(2, 0));
-      result.m_org_address_street2 = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(3, 0));
-      result.m_org_address_town = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(4, 0));
-      result.m_org_address_county = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(5, 0));
-      result.m_org_address_country = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(6, 0));
-      result.m_org_address_postcode = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(7, 0));
+      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query);
+      if(datamodel && (datamodel->get_n_rows() != 0))
+      {
+        result.m_name = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(0, 0));
+        result.m_org_name = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(1, 0));
+        result.m_org_address_street = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(2, 0));
+        result.m_org_address_street2 = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(3, 0));
+        result.m_org_address_town = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(4, 0));
+        result.m_org_address_county = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(5, 0));
+        result.m_org_address_country = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(6, 0));
+        result.m_org_address_postcode = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(7, 0));
 
-      //We need to be more clever about these column indexes if we add more new fields:
-      if(optional_org_logo)
-        result.m_org_logo = datamodel->get_value_at(8, 0);
+        //We need to be more clever about these column indexes if we add more new fields:
+        if(optional_org_logo)
+          result.m_org_logo = datamodel->get_value_at(8, 0);
+      }
+      else
+        succeeded = false;
+    }
+    #ifdef GLIBMM_EXCEPTIONS_ENABLED
+    catch(const Glib::Exception& ex)
+    {
+      std::cerr << "Base_DB::get_database_preferences(): exception: " << ex.what() << std::endl;
+      succeeded = false;
+    }
+    catch(const std::exception& ex)
+    {
+      std::cerr << "Base_DB::get_database_preferences(): exception: " << ex.what() << std::endl;
+      succeeded = false;
+    }
+    #endif // GLIBMM_EXCEPTIONS_ENABLED
 
+    //Return the result, or try again:
+    if(succeeded)
+      return result;
+    else
+    {
+      add_standard_tables();
+      ++attempts; //Try again now that we have tried to create the table.
     }
   }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  catch(const Glib::Exception& ex)
-  {
-    std::cerr << "Base_DB::get_database_preferences(): exception: " << ex.what() << std::endl;
-  }
-  catch(const std::exception& ex)
-  {
-    std::cerr << "Base_DB::get_database_preferences(): exception: " << ex.what() << std::endl;
-  }
-#endif // GLIBMM_EXCEPTIONS_ENABLED
 
   return result;
 }

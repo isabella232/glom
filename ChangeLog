@@ -1,3 +1,9 @@
+2008-03-29  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.cc: get_database_preferences(): Try to create the standard 
+	tables if the query fails, as a small first step in making Glom adapt to 
+	existing databases.
+
 2008-03-28  Johannes Schmid  <jhs@idefix>
 
 	* glom/mode_data/flowtablewithfields.cc:
