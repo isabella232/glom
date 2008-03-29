@@ -526,6 +526,21 @@ For instance, a shop might need a report listing all products sold in one month,
 	</screenshot> 
      </figure>
 
+   <para>The <literal>Vertical Group</literal> part may contain other items. For instance, it allows you to arrange fields below each other instead of just one after the other in the horizontal row. This is useful for grouping related fields such as address lines, or just to squeeze more information into the records's row on the report.</para>
+   
+   <figure id="developer-editing-reports-vertical_group"> 
+	<title>A Report with Vertical Groups</title> 
+	<screenshot> 
+	  <mediaobject> 
+	    <imageobject><imagedata
+		fileref="figures/glom_design_reports_vertical_group.png" format="PNG"/> 
+	    </imageobject>
+	    <textobject> 
+	      <phrase>A Report with Vertical Groups.</phrase> 
+	    </textobject> 
+	  </mediaobject> 
+	</screenshot> 
+     </figure> 
 
    <para>When you have finished, click the <literal>Close</literal> button to save the report's definition. Your report can then be chosen from the <literal>Reports</literal> menu. See the <link linkend="glom-operator-printing-reports">Printing Reports</link> section for more details.</para>
 

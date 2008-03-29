@@ -1,3 +1,7 @@
+2008-03-29  Murray Cumming  <murrayc@murrayc.com>
+
+	* C/glom.xml: Added mention of vertical groups to the reports section.
+
 2008-03-29  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
 
 	* es/es.po: Updated Spanish translation by Daniel Mustieles.
@@ -19,9 +23,7 @@
 	* en_GB/en_GB.po: Added (British) English translation.
 	* Makefile.am: Added en_GB to DOC_LINGUAS
 
-2007-05-09  Murray Cumming,,,  <murrayc@murrayc-desktop>
-
-	reviewed by: <delete if not using a buddy>
+2007-05-09  Murray Cumming  <murrayc@murrayc.com>
 
 	* es/legal.xml:
 
