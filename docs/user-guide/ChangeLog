@@ -1,5 +1,9 @@
 2008-03-29  Murray Cumming  <murrayc@murrayc.com>
 
+	* Makefile.am: Mention all the image files.
+
+2008-03-29  Murray Cumming  <murrayc@murrayc.com>
+
 	* C/glom.xml: Added mention of vertical groups to the reports section.
 
 2008-03-29  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
