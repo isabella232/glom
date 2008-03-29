@@ -1,3 +1,8 @@
+2008-03-29  Murray Cumming  <murrayc@murrayc.com>
+
+	* C/glom.xml: Merged changes from svn trunk, mostly adding screenshots 
+	and a section about defining reports.
+
 2008-02-22  Murray Cumming  <murrayc@murrayc.com>
 
 	* C/glom.xml: Put the pygda appendix in its own section, instead of 
