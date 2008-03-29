@@ -1,3 +1,10 @@
+1.6.11 (stable)
+
+* Allow deletion of tables that use upper case in their name.
+  (Murray Cumming) Bug #522233 (Pavel Mlčoch).
+* Improved the online user guide.
+  (Murray Cumming)
+
 1.6.10 (stable)
 
 * Now supports Postgres 8.3.

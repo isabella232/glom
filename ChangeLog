@@ -1,3 +1,5 @@
+1.6.11:
+
 2008-03-27  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/navigation/box_tables.cc: on_adddel_Delete(): Put quotes around 
