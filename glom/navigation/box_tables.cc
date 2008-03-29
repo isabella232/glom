@@ -148,7 +148,7 @@ bool Box_Tables::fill_from_database()
     m_AddDel.remove_all();
     Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
 
-    type_vecStrings vecTables = document->get_table_names();
+    type_vecStrings vecTables = get_table_names_from_database();
 
     for(type_vecStrings::iterator iter = vecTables.begin(); iter != vecTables.end(); iter++)
     {
@@ -326,9 +326,8 @@ void Box_Tables::on_adddel_Edit(const Gtk::TreeModel::iterator& row)
   {
     //Don't open a table that the document does not know about, because we need information from the document:
     //This should never happen, because we never show them in the list:
-    if(!document->get_table_is_known(table_name))
+    if(false) //Let's see if we can adapt.  (!document->get_table_is_known(table_name))
     {
-       //TODO: Do not show tables that are not in the document.
        Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Unknown Table")), true);
        dialog.set_secondary_text(_("You cannot open this table, because there is no information about this table in the document."));
        dialog.set_transient_for(*get_app_window());

@@ -1,5 +1,13 @@
 2008-03-29  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/navigation/box_tables.cc: fill_from_database(): Do show tables 
+	that are in the database but not in the document (hidden by default), 
+	allowing us to adapt to an existing database.
+	on_adddel_Edit(): Do not complain about tables that are not in the 
+	document.
+
+2008-03-29  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/base_db.cc: get_database_preferences(): Try to create the standard 
 	tables if the query fails, as a small first step in making Glom adapt to 
 	existing databases.
