@@ -98,6 +98,13 @@ protected:
 
   bool offer_new_or_existing();
 
+  void on_existing_or_new_new(const std::string& template_uri);
+  void on_existing_or_new_open_from_uri(const std::string& document_uri);
+
+#ifndef G_OS_WIN32
+  void on_existing_or_new_open_from_remote(EpcServiceInfo* info, const Glib::ustring& service_name);
+#endif
+
   void on_menu_help_contents();
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void on_menu_userlevel_developer();

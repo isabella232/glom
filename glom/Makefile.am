@@ -39,6 +39,7 @@ glom_SOURCES = main.cc \
                combobox_fields.h combobox_fields.cc \
                combobox_relationship.h combobox_relationship.cc \
                dialog_connection.h dialog_connection.cc \
+	       dialog_existing_or_new.h dialog_existing_or_new.cc \
                dialog_invalid_data.h dialog_invalid_data.cc \
                filechooser_export.h filechooser_export.cc \
                box_reports.h box_reports.cc \
