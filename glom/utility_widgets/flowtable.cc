@@ -264,7 +264,7 @@ FlowTable::FlowTableItem::FlowTableItem(Gtk::Widget* first, FlowTable* flowtable
   m_expand_second(false)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  //flowtable->setup_dnd (*m_first);
+  flowtable->setup_dnd (*m_first);
 #endif /* GLOM_ENABLE_CLIENT_ONLY */
 }
 
@@ -275,7 +275,7 @@ FlowTable::FlowTableItem::FlowTableItem(Gtk::Widget* first, Gtk::Widget* second,
   m_expand_second(false)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  //flowtable->setup_dnd (*m_first);
+  flowtable->setup_dnd (*m_first);
   flowtable->setup_dnd (*m_second);
 #endif /* GLOM_ENABLE_CLIENT_ONLY */
 }
@@ -438,8 +438,7 @@ void FlowTable::setup_dnd (Gtk::Widget& child)
   
 	// Call this method recursive for all (real) children
   Gtk::Container* container = dynamic_cast<Gtk::Container*>(&child);
-  Gtk::TextView* text_view = dynamic_cast<Gtk::TextView*>(&child);
-  if (container && !text_view)
+  if (container)
   {
     typedef Glib::ListHandle<Gtk::Widget*>::const_iterator CI;
     Glib::ListHandle<Gtk::Widget*> children = container->get_children();
@@ -448,7 +447,6 @@ void FlowTable::setup_dnd (Gtk::Widget& child)
     {
       setup_dnd (*(*cur_child));
     }
-    return;
   }
   if (!(child.get_flags() & Gtk::NO_WINDOW))
   {

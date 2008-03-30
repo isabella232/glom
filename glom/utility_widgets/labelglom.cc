@@ -56,7 +56,8 @@ void LabelGlom::init()
 {
   add(m_label);
   m_label.show();
-  set_events (Gdk::BUTTON_PRESS_MASK);
+  set_events (Gdk::ALL_EVENTS_MASK);
+  set_above_child();
   m_refUtilDetails->set_visible(false);
 }
 
