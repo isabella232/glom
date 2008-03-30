@@ -1293,21 +1293,34 @@ LayoutWidgetBase* FlowTable::dnd_find_datawidget()
 bool FlowTable::on_child_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint time,
                                      Gtk::Widget* child)
 {
-  Gdk::Rectangle rect = child->get_allocation();
   type_vecChildren::iterator cur_child;
 	for (cur_child = m_children.begin();
 			 cur_child != m_children.end(); cur_child++)
 	{
+    // The widget was added directly to the FlowTable
 		if (cur_child->m_first == child || 
-				cur_child->m_second == child ||
-				cur_child->m_first == child->get_parent() ||
-				cur_child->m_second == child->get_parent())
-		{
-      m_current_dnd_item = &(*cur_child);
+				cur_child->m_second == child)
+    {
       break;
     }
+    // The parent of the widget was added to the FlowTable
+    else if (cur_child->m_first == child->get_parent() ||
+             cur_child->m_second == child->get_parent())
+		{
+      break;
+    }
+    Gtk::Bin* bin = dynamic_cast<Gtk::Bin*>(cur_child->m_second);
+    // The widget was added inside a Gtk::EventBox
+    if (bin)
+    {
+      if (bin->get_child() == child ||
+          bin->get_child() == child->get_parent())
+        break;
+    }
 	}
-  if (cur_child == m_children.end())
+  if (cur_child != m_children.end())
+    m_current_dnd_item = &(*cur_child);
+  else
     m_current_dnd_item = 0;
   
   // Allow dragging at-the-end
