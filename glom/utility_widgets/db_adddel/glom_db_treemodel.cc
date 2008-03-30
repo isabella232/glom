@@ -257,7 +257,7 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
   }
   else
   {
-     //std::cout << "debug: DbTreeModelRow::fill_values_if_necessary(): retrieving" << std::endl;
+    //std::cout << "debug: DbTreeModelRow::fill_values_if_necessary(): retrieving for row=" << row << std::endl;
   
     if((row < (int)model.m_data_model_rows_count) && model.m_gda_datamodel)
     {
@@ -363,7 +363,7 @@ DbTreeModel::GlueItem::GlueItem(const DbTreeModel::type_datamodel_iter& row_iter
 /*
 DbTreeModel::type_datamodel_iter DbTreeModel::GlueItem::get_row_iter() const
 {
-  return m_row_iter;
+  return m_datamodel_row_iter;
 }
 */
 
@@ -387,17 +387,19 @@ DbTreeModel::GlueList::~GlueList()
   }
 }
 
+/*
 DbTreeModel::GlueItem* DbTreeModel::GlueList::get_existing_item(const type_datamodel_iter& row_iter)
 {
   for(type_listOfGlue::iterator iter = m_list.begin(); iter != m_list.end(); ++iter)
   {
     DbTreeModel::GlueItem* pItem = *iter;
-    if(pItem->get_datamodel_row_iter() == row_iter) //TODO_Performance: Access m_row_iter directly?
+    if(pItem->get_datamodel_row_iter() == row_iter) //TODO_Performance: Access m_datamodel_row_iter directly?
       return pItem;
   }
 
   return 0;
 }
+*/
 
 //Intialize static variable:
 bool DbTreeModel::m_iface_initialized = false;
@@ -905,7 +907,7 @@ bool DbTreeModel::create_iterator(const type_datamodel_iter& row_iter, DbTreeMod
   iter.set_model_refptr(refModel);
 
   const guint count_all_rows = get_internal_rows_count();
-//g_warning("DbTreeModel::create_iterator(): row_iter=%d, count=%d", row_iter, count_all_rows);
+  //g_warning("DbTreeModel::create_iterator(): row_iter=%d, count=%d", row_iter, count_all_rows);
   if(row_iter >= (count_all_rows)) //row_iter == m_rows.end()) //1 for the placeholder.
   {
     //TreeView seems to use this to identify the last row.
@@ -925,7 +927,8 @@ bool DbTreeModel::create_iterator(const type_datamodel_iter& row_iter, DbTreeMod
      m_pGlueList = new GlueList();
     }
 
-    GlueItem* pItem = m_pGlueList->get_existing_item(row_iter);
+    //TODO: Do we need to return an existing GlueItem, so that iterator::operator=() works?
+    GlueItem* pItem = 0; //m_pGlueList->get_existing_item(row_iter);
     if(!pItem)
     {
       pItem = new GlueItem(row_iter);

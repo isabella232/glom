@@ -1,3 +1,14 @@
+2008-03-30  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc
+	create_iterator(): Always create a completely new iterator, instead of trying 
+	to return one with an existing GlueItem. A comment says that this is 
+	necessary to make operator=() work (it only compares pointers), but 
+	I do not know why a working iterator::operator=() is necessary. I guess 
+	we will find out. This was very inefficient. Glom can now show a list of 
+	60,000 records in 5 minutes instead of hours/days. There is still much 
+	room for improvement though.
+
 2008-03-29  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/navigation/box_tables.cc: fill_from_database(): Do show tables 

@@ -190,7 +190,6 @@ private:
      type_datamodel_iter get_datamodel_row_iter() const;
 
    protected:
-     //type_datamodel_iter m_row_iter;
      type_datamodel_iter m_datamodel_row_iter;
    };
 
@@ -208,7 +207,7 @@ private:
      //We must reuse GlueItems instead of having 2 that contain equal iterators,
      //because Gtk::TreeIter::iterator::operator() unfortunately does only
      //a pointer comparison, without allowing us to implement specific logic.
-     GlueItem* get_existing_item(const type_datamodel_iter& row_iter);
+     //GlueItem* get_existing_item(const type_datamodel_iter& row_iter);
 
      //This is just a list of stuff to delete later:
      typedef std::list<GlueItem*> type_listOfGlue;
