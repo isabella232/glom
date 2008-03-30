@@ -1200,9 +1200,8 @@ void FlowTable::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag
 
 void FlowTable::on_drag_leave(const Glib::RefPtr<Gdk::DragContext>& drag_context, guint time)
 {
-  on_dnd_remove_placeholder();
+  dnd_remove_placeholder_idle();
   change_dnd_status(false);
-  realize();
 }
 
 // Calculate the nearest FlowTableItem below the current drag position
@@ -1294,7 +1293,9 @@ LayoutWidgetBase* FlowTable::dnd_find_datawidget()
 bool FlowTable::on_child_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint time,
                                      Gtk::Widget* child)
 {
-	for (type_vecChildren::iterator cur_child = m_children.begin();
+  Gdk::Rectangle rect = child->get_allocation();
+  type_vecChildren::iterator cur_child;
+	for (cur_child = m_children.begin();
 			 cur_child != m_children.end(); cur_child++)
 	{
 		if (cur_child->m_first == child || 
@@ -1302,12 +1303,23 @@ bool FlowTable::on_child_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_
 				cur_child->m_first == child->get_parent() ||
 				cur_child->m_second == child->get_parent())
 		{
-			m_current_dnd_item = &(*cur_child);
- 			//std::cout << "Found child" << std::endl;
-			break;
-		}
+      m_current_dnd_item = &(*cur_child);
+      break;
+    }
 	}
-    
+  if (cur_child == m_children.end())
+    m_current_dnd_item = 0;
+  
+  // Allow dragging at-the-end
+  if (cur_child == --m_children.end())
+  {
+    Gdk::Rectangle rect = child->get_allocation();
+    if (y > (rect.get_y() + rect.get_height() / 2) &&
+        y < (rect.get_y() + rect.get_height()))
+    {
+        m_current_dnd_item = 0; // means end
+    }
+  }
   on_dnd_remove_placeholder ();
   
   LayoutWidgetBase* above = dnd_find_datawidget();
@@ -1320,8 +1332,7 @@ bool FlowTable::on_child_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_
 
 void FlowTable::on_child_drag_leave(const Glib::RefPtr<Gdk::DragContext>& drag_context, guint time)
 {
-  // FIXME: We need to remove the placeholder here in case the drag
-  // does no continue for the parent container.
+  dnd_remove_placeholder_idle();
 }
 
 void FlowTable::on_child_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, 
@@ -1331,6 +1342,26 @@ void FlowTable::on_child_drag_data_received(const Glib::RefPtr<Gdk::DragContext>
   on_drag_data_received (drag_context, x, y, selection_data, info, time);
 }
 
+/* This is a hack. The problem is that when you move the mouse down to the last
+ item, the item gets the "drag-motion" signal but in the same moment, the placeholder
+ is removed and the mouse pointer is no longer over the widget. Thus, it gets
+ a "drag-leave" signal and it's impossible to drop an item at the end. Doing 
+ the removal of the placeholder in an idle handler fixes it. */
+
+void FlowTable::dnd_remove_placeholder_idle()
+{
+  static sigc::connection connection;
+  if (connection)
+    connection.disconnect();
+  Glib::signal_idle().connect( sigc::mem_fun(*this, &FlowTable::dnd_remove_placeholder_real) );
+}
+
+bool FlowTable::dnd_remove_placeholder_real()
+{
+  on_dnd_remove_placeholder();
+  queue_draw();
+  return false; // remove from idle source
+}
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

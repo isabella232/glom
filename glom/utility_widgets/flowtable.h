@@ -153,6 +153,9 @@ protected:
   LayoutWidgetBase* dnd_find_datawidget();
   FlowTableItem* m_current_dnd_item;
 	
+  void dnd_remove_placeholder_idle();
+  bool dnd_remove_placeholder_real();
+  
   bool m_dnd_in_progress;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   
