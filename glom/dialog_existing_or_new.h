@@ -34,6 +34,7 @@
 #include <gtkmm/treeview.h>
 #include <gtkmm/treestore.h>
 #include <gtkmm/recentinfo.h>
+#include <gtkmm/notebook.h>
 #include <libglademm/xml.h>
 #include <glom/utility_widgets/db_adddel/cellrenderer_buttontext.h>
 
@@ -43,26 +44,36 @@ namespace Glom
 class Dialog_ExistingOrNew
   : public Gtk::Dialog
 {
-  typedef sigc::signal<void, const std::string&> SignalNew;
-  typedef sigc::signal<void, const std::string&> SignalOpenFromUri;
-#ifndef G_OS_WIN32
-  typedef sigc::signal<void, EpcServiceInfo*, const Glib::ustring&> SignalOpenFromRemote;
-#endif
-
 public:
+  enum Action {
+    NONE,
+    NEW_EMPTY,
+    NEW_FROM_TEMPLATE,
+    OPEN_URI,
+    OPEN_REMOTE
+  };
+
   Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Dialog_ExistingOrNew();
 
-  SignalNew signal_new() const { return m_signal_new; }
-  SignalOpenFromUri signal_open_from_uri() const { return m_signal_open_from_uri; }
-
+  Action get_action() const;
+  Glib::ustring get_uri() const; // Only when get_action is NEW_FROM_TEMPLATE or OPEN_URI
 #ifndef G_OS_WIN32
-  SignalOpenFromRemote signal_open_from_remote() const { return m_signal_open_from_remote; }
+  EpcServiceInfo* get_service_info() const; // Only when get_action is OPEN_REMOTE
+  Glib::ustring get_service_name() const; // Only when get_action is OPEN_REMOTE
 #endif
 
 protected:
+  Action get_action_impl(Gtk::TreeIter& iter) const;
+
   void existing_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeIter& iter);
   void new_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeIter& iter);
+
+  void on_switch_page(GtkNotebookPage* page, guint page_num);
+  void on_existing_selection_changed();
+  void on_new_selection_changed();
+
+  void update_ui_sensitivity();
 
   void on_enumerate_children(const Glib::RefPtr<Gio::AsyncResult>& res);
   void on_next_files(const Glib::RefPtr<Gio::AsyncResult>& res);
@@ -82,8 +93,7 @@ protected:
   void on_new_row_activated(const Gtk::TreePath& path, Gtk::TreeViewColumn* column);
   void on_new_button_clicked(const Gtk::TreePath& path);
 
-  void existing_activated(const Gtk::TreeIter& iter);
-  void new_activated(const Gtk::TreeIter& iter);
+  void on_select_clicked();
 
   class ExistingModelColumns : public Gtk::TreeModel::ColumnRecord
   {
@@ -129,8 +139,11 @@ protected:
 
     Gtk::TreeModelColumn<Glib::ustring> m_col_title;
     Gtk::TreeModelColumn<Glib::ustring> m_col_button_text;
-    Gtk::TreeModelColumn<std::string> m_col_template_uri;
+    Gtk::TreeModelColumn<Glib::ustring> m_col_template_uri;
   };
+
+  Gtk::Notebook* m_notebook;
+  Gtk::Button* m_select_button;
 
   ExistingModelColumns m_existing_columns;
   Glib::RefPtr<Gtk::TreeStore> m_existing_model;
@@ -171,12 +184,8 @@ protected:
   EpcServiceMonitor* m_service_monitor;
 #endif
 
-  SignalNew m_signal_new;
-  SignalOpenFromUri m_signal_open_from_uri;
-
-#ifndef G_OS_WIN32
-  SignalOpenFromRemote m_signal_open_from_remote;
-#endif
+  // URI chosen in the file chooser
+  Glib::ustring m_chosen_uri;
 };
 
 } //namespace Glom

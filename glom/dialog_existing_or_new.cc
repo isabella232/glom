@@ -92,6 +92,11 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   if(!m_existing_view || !m_new_view)
     throw std::runtime_error("Glade file does not contain treeviews for ExistingOrNew dialog");
 
+  refGlade->get_widget("existing_or_new_notebook", m_notebook);
+  refGlade->get_widget("existing_or_new_button_select", m_select_button);
+  if(!m_notebook || !m_select_button)
+    throw std::runtime_error("Glade file does not contain the notebook or the select button for ExistingOrNew dialog");
+
   m_existing_model = Gtk::TreeStore::create(m_existing_columns);
   m_existing_model->set_sort_column(m_existing_columns.m_col_time, Gtk::SORT_DESCENDING);
   m_existing_view->set_model(m_existing_model);
@@ -190,6 +195,13 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
       (*iter)[m_existing_columns.m_col_recent_info] = new Glib::RefPtr<Gtk::RecentInfo>(info);
     }
   }
+
+  m_select_button->signal_clicked().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_select_clicked));
+  m_notebook->signal_switch_page().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_switch_page));
+  m_existing_view->get_selection()->signal_changed().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_existing_selection_changed));
+  m_new_view->get_selection()->signal_changed().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_new_selection_changed));
+
+  update_ui_sensitivity();
 }
 
 Dialog_ExistingOrNew::~Dialog_ExistingOrNew()
@@ -219,6 +231,93 @@ Dialog_ExistingOrNew::~Dialog_ExistingOrNew()
       delete info;
     }
   }
+}
+
+Dialog_ExistingOrNew::Action Dialog_ExistingOrNew::get_action_impl(Gtk::TreeIter& iter) const
+{
+  if(m_notebook->get_current_page() == 0)
+  {
+    if(m_existing_view->get_selection()->count_selected_rows() == 0)
+      return NONE;
+
+    iter = m_existing_view->get_selection()->get_selected();
+    if(m_existing_model->is_ancestor(m_iter_existing_recent, iter))
+      return OPEN_URI;
+    else if(m_existing_model->is_ancestor(m_iter_existing_network, iter))
+      return OPEN_REMOTE;
+    else if(iter == m_iter_existing_other)
+      return OPEN_URI;
+    else
+      return NONE;
+  }
+  else
+  {
+    if(m_new_view->get_selection()->count_selected_rows() == 0)
+      return NONE;
+
+    iter = m_new_view->get_selection()->get_selected();
+    if(m_new_model->is_ancestor(m_iter_new_template, iter))
+      return NEW_FROM_TEMPLATE;
+    else if(iter == m_iter_new_empty)
+      return NEW_EMPTY;
+    else
+      return NONE;
+  }
+}
+
+Dialog_ExistingOrNew::Action Dialog_ExistingOrNew::get_action() const
+{
+  Gtk::TreeIter iter;
+  return get_action_impl(iter);
+}
+
+Glib::ustring Dialog_ExistingOrNew::get_uri() const
+{
+  Gtk::TreeIter iter;
+  Action action = get_action_impl(iter);
+
+  if(action == NEW_FROM_TEMPLATE)
+  {
+    return (*iter)[m_new_columns.m_col_template_uri];
+  }
+  else if(action == OPEN_URI)
+  {
+    if(iter == m_iter_existing_other)
+    {
+      return m_chosen_uri;
+    }
+    else
+    {
+      Glib::RefPtr<Gtk::RecentInfo>* info = (*iter)[m_existing_columns.m_col_recent_info];
+      return (*info)->get_uri();
+    }
+  }
+  else
+  {
+    throw std::logic_error("Dialog_ExistingOrNew::get_uri: action is neither NEW_FROM_TEMPLATE nor OPEN_URI");
+  }
+}
+
+EpcServiceInfo* Dialog_ExistingOrNew::get_service_info() const
+{
+  Gtk::TreeIter iter;
+  Action action = get_action_impl(iter);
+
+  if(action == OPEN_REMOTE)
+    return (*iter)[m_existing_columns.m_col_service_info];
+  else
+    throw std::logic_error("Dialog_ExistingOrNew::get_service_info: action is not OPEN_REMOTE");
+}
+
+Glib::ustring Dialog_ExistingOrNew::get_service_name() const
+{
+  Gtk::TreeIter iter;
+  Action action = get_action_impl(iter);
+
+  if(action == OPEN_REMOTE)
+    return (*iter)[m_existing_columns.m_col_service_name];
+  else
+    throw std::logic_error("Dialog_ExistingOrNew::get_service_name: action is not OPEN_REMOTE");
 }
 
 void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeIter& iter)
@@ -280,6 +379,57 @@ void Dialog_ExistingOrNew::new_icon_data_func(Gtk::CellRenderer* renderer, const
       throw std::logic_error("Unexpected iterator in new_icon_data_func");
     }
   }
+}
+
+void Dialog_ExistingOrNew::on_switch_page(GtkNotebookPage* page, guint page_num)
+{
+  update_ui_sensitivity();
+}
+
+void Dialog_ExistingOrNew::on_existing_selection_changed()
+{
+  update_ui_sensitivity();
+}
+
+void Dialog_ExistingOrNew::on_new_selection_changed()
+{
+  update_ui_sensitivity();
+}
+
+void Dialog_ExistingOrNew::update_ui_sensitivity()
+{
+  bool sensitivity;
+
+  if(m_notebook->get_current_page() == 0)
+  {
+    int count = m_existing_view->get_selection()->count_selected_rows();
+
+    if(count == 0)
+    {
+      sensitivity = false;
+    }
+    else
+    {
+      Gtk::TreeIter sel = m_existing_view->get_selection()->get_selected();
+      sensitivity = (sel != m_iter_existing_recent && sel != m_iter_existing_network);
+    }
+  }
+  else
+  {
+    int count = m_new_view->get_selection()->count_selected_rows();
+
+    if(count == 0)
+    {
+      sensitivity = false;
+    }
+    else
+    {
+      Gtk::TreeIter sel = m_new_view->get_selection()->get_selected();
+      sensitivity = (sel != m_iter_new_template);
+    }
+  }
+
+  m_select_button->set_sensitive(sensitivity);
 }
 
 void Dialog_ExistingOrNew::on_enumerate_children(const Glib::RefPtr<Gio::AsyncResult>& res)
@@ -427,27 +577,38 @@ void Dialog_ExistingOrNew::on_service_removed(const Glib::ustring& name, const G
 
 void Dialog_ExistingOrNew::on_existing_row_activated(const Gtk::TreePath& path, Gtk::TreeViewColumn* column)
 {
-  existing_activated(m_existing_model->get_iter(path));
+  if(m_select_button->is_sensitive())
+    on_select_clicked();
 }
 
 void Dialog_ExistingOrNew::on_existing_button_clicked(const Gtk::TreePath& path)
 {
-  existing_activated(m_existing_model->get_iter(path));
+  m_existing_view->get_selection()->select(path);
+
+  if(m_select_button->is_sensitive())
+    on_select_clicked();
 }
 
 void Dialog_ExistingOrNew::on_new_row_activated(const Gtk::TreePath& path, Gtk::TreeViewColumn* column)
 {
-  new_activated(m_new_model->get_iter(path));
+  if(m_select_button->is_sensitive())
+    on_select_clicked();
 }
 
 void Dialog_ExistingOrNew::on_new_button_clicked(const Gtk::TreePath& path)
 {
-  new_activated(m_new_model->get_iter(path));
+  m_new_view->get_selection()->select(path);
+
+  if(m_select_button->is_sensitive())
+    on_select_clicked();
 }
 
-void Dialog_ExistingOrNew::existing_activated(const Gtk::TreeIter& iter)
+void Dialog_ExistingOrNew::on_select_clicked()
 {
-  if(iter == m_iter_existing_other)
+  Gtk::TreeIter iter;
+  Action action = get_action_impl(iter);
+
+  if(action == OPEN_URI && iter == m_iter_existing_other)
   {
     Gtk::FileChooserDialog dialog(*this, "Choose a glom file to open");
     Gtk::FileFilter filter;
@@ -461,36 +622,12 @@ void Dialog_ExistingOrNew::existing_activated(const Gtk::TreeIter& iter)
 
     if(dialog.run() == Gtk::RESPONSE_ACCEPT)
     {
-      dialog.hide();
-      m_signal_open_from_uri.emit(dialog.get_uri());
+      m_chosen_uri = dialog.get_uri();
       response(Gtk::RESPONSE_ACCEPT);
     }
   }
-  else if(m_existing_model->is_ancestor(m_iter_existing_recent, iter))
+  else
   {
-    Glib::RefPtr<Gtk::RecentInfo>* info = (*iter)[m_existing_columns.m_col_recent_info];
-    m_signal_open_from_uri.emit((*info)->get_uri());
-    response(Gtk::RESPONSE_ACCEPT);
-  }
-  else if(m_existing_model->is_ancestor(m_iter_existing_network, iter))
-  {
-#ifndef G_OS_WIN32
-    m_signal_open_from_remote.emit((*iter)[m_existing_columns.m_col_service_info], (*iter)[m_existing_columns.m_col_service_name]);
-    response(Gtk::RESPONSE_ACCEPT);
-#endif
-  }
-}
-
-void Dialog_ExistingOrNew::new_activated(const Gtk::TreeIter& iter)
-{
-  if(iter == m_iter_new_empty)
-  {
-    m_signal_new.emit(std::string());
-    response(Gtk::RESPONSE_ACCEPT);
-  }
-  else if(m_new_model->is_ancestor(m_iter_new_template, iter))
-  {
-    m_signal_new.emit((*iter)[m_new_columns.m_col_template_uri]);
     response(Gtk::RESPONSE_ACCEPT);
   }
 }

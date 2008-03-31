@@ -1166,11 +1166,11 @@ bool App_Glom::offer_new_or_existing()
   refXml->get_widget_derived("dialog_existing_or_new", dialog_raw);
   std::auto_ptr<Dialog_ExistingOrNew> dialog(dialog_raw);
   dialog->set_transient_for(*this);
-
+/*
   dialog->signal_new().connect(sigc::mem_fun(*this, &App_Glom::on_existing_or_new_new));
   dialog->signal_open_from_uri().connect(sigc::mem_fun(*this, &App_Glom::on_existing_or_new_open_from_uri));
   dialog->signal_open_from_remote().connect(sigc::mem_fun(*this, &App_Glom::on_existing_or_new_open_from_remote));
-
+*/
   bool ask_again = true;
   while(ask_again)
   {
@@ -1179,12 +1179,31 @@ bool App_Glom::offer_new_or_existing()
 
     if(response_id == Gtk::RESPONSE_ACCEPT)
     {
+      switch(dialog->get_action())
+      {
+      case Dialog_ExistingOrNew::NONE:
+        // This should not happen
+        break;
+      case Dialog_ExistingOrNew::NEW_EMPTY:
+        existing_or_new_new();
+        break;
+      case Dialog_ExistingOrNew::NEW_FROM_TEMPLATE:
+      case Dialog_ExistingOrNew::OPEN_URI:
+        open_document(dialog->get_uri());
+        break;
+#ifndef G_OS_WIN32
+      case Dialog_ExistingOrNew::OPEN_REMOTE:
+        open_browsed_document(dialog->get_service_info(), dialog->get_service_name());
+        break;
+#endif
+      }
+
       //Check that a document was opened:
       Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
       if(!document->get_file_uri().empty() || (document->get_opened_from_browse()))
         ask_again = false;
     }
-    else if((response_id == Gtk::RESPONSE_CANCEL)  || (response_id == Gtk::RESPONSE_DELETE_EVENT))
+    else if((response_id == Gtk::RESPONSE_CLOSE)  || (response_id == Gtk::RESPONSE_DELETE_EVENT))
     {
       return false; //close the window to close the application, because they need to choose a new or existing document.
     }
@@ -1197,106 +1216,86 @@ bool App_Glom::offer_new_or_existing()
   return true;
 }
 
-void App_Glom::on_existing_or_new_new(const std::string& template_uri)
+void App_Glom::existing_or_new_new()
 {
-  if(!template_uri.empty())
-  {
-    // New from template
-    open_document(template_uri);
-  }
-  else
-  {
-    // New empty document
+  // New empty document
 
-    //Each document must have a location, so ask the user for one.
-    //This will use an extended save dialog that also asks for the database title and some hosting details:
-    Glib::ustring db_title;
+  //Each document must have a location, so ask the user for one.
+  //This will use an extended save dialog that also asks for the database title and some hosting details:
+  Glib::ustring db_title;
 
-    m_ui_save_extra_showextras = true; //Offer self-hosting or central hosting, and offer the database title.
-    m_ui_save_extra_newdb_selfhosted = true; /* Default to self-hosting */
+  m_ui_save_extra_showextras = true; //Offer self-hosting or central hosting, and offer the database title.
+  m_ui_save_extra_newdb_selfhosted = true; /* Default to self-hosting */
+  m_ui_save_extra_newdb_title.clear();
+  offer_saveas();
+
+  //Check that the document was given a location:
+  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  if(!document->get_file_uri().empty())
+  {
+    //Get details from the extended save dialog:
+    const Glib::ustring db_title = m_ui_save_extra_newdb_title;
+    const bool self_hosted = m_ui_save_extra_newdb_selfhosted;
     m_ui_save_extra_newdb_title.clear();
-    offer_saveas();
+    m_ui_save_extra_newdb_selfhosted = false;
 
-    //Check that the document was given a location:
-    Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
-    if(!document->get_file_uri().empty())
-    {
-      //Get details from the extended save dialog:
-      const Glib::ustring db_title = m_ui_save_extra_newdb_title;
-      const bool self_hosted = m_ui_save_extra_newdb_selfhosted;
-      m_ui_save_extra_newdb_title.clear();
-      m_ui_save_extra_newdb_selfhosted = false;
+    //Make sure that the user can do something with his new document:
+    document->set_userlevel(AppState::USERLEVEL_DEVELOPER);
+    // Try various ports if connecting to an existing database server instead
+    // of self-hosting one:
+    document->set_connection_try_other_ports(!m_ui_save_extra_newdb_selfhosted);
 
-      //Make sure that the user can do something with his new document:
-      document->set_userlevel(AppState::USERLEVEL_DEVELOPER);
-      // Try various ports if connecting to an existing database server instead
-      // of self-hosting one:
-      document->set_connection_try_other_ports(!m_ui_save_extra_newdb_selfhosted);
+    //Each new document must have an associated new database,
+    //so choose a name
 
-      //Each new document must have an associated new database,
-      //so choose a name
+    //Create a database name based on the title.
+    //The user will (almost) never see this anyway but it's nicer than using a random number:
+    Glib::ustring db_name = Utils::create_name_from_title(db_title);
 
-      //Create a database name based on the title.
-      //The user will (almost) never see this anyway but it's nicer than using a random number:
-      Glib::ustring db_name = Utils::create_name_from_title(db_title);
+    //Prefix glom_ to the database name, so it's more obvious
+    //for the system administrator.
+    //This database name should never be user-visible again, either prefixed or not prefixed.
+    db_name = "glom_" + db_name;
 
-      //Prefix glom_ to the database name, so it's more obvious
-      //for the system administrator.
-      //This database name should never be user-visible again, either prefixed or not prefixed.
-      db_name = "glom_" + db_name;
-
-      //Connect to the server and choose a variation of this db_name that does not exist yet:
-      document->set_connection_database(db_name);
-      document->set_connection_is_self_hosted(self_hosted);
-           
+    //Connect to the server and choose a variation of this db_name that does not exist yet:
+    document->set_connection_database(db_name);
+    document->set_connection_is_self_hosted(self_hosted);
+         
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-     //Tell the connection pool about the document:
-     ConnectionPool* connection_pool = ConnectionPool::get_instance();
-     if(connection_pool)
-       connection_pool->set_get_document_func( sigc::mem_fun(*this, &App_Glom::on_connection_pool_get_document) );
+   //Tell the connection pool about the document:
+   ConnectionPool* connection_pool = ConnectionPool::get_instance();
+   if(connection_pool)
+     connection_pool->set_get_document_func( sigc::mem_fun(*this, &App_Glom::on_connection_pool_get_document) );
 #endif
 
-      const bool connected = m_pFrame->connection_request_password_and_choose_new_database_name();
-      if(!connected)
+    const bool connected = m_pFrame->connection_request_password_and_choose_new_database_name();
+    if(!connected)
+    {
+      // Unset URI so that the offer_new_or_existing does not disappear
+      // so the user can make a different choice about what document to open.
+      // TODO: Show some error message?
+      document->set_file_uri("");
+    }
+    else
+    {
+      const bool db_created = m_pFrame->create_database(document->get_connection_database(), db_title, false /* do not request password */);
+      if(db_created)
+      {
+        const Glib::ustring database_name_used = document->get_connection_database();
+        ConnectionPool::get_instance()->set_database(database_name_used);
+        document->set_database_title(db_title);
+        m_pFrame->set_databases_selected(database_name_used);
+      }
+      else
       {
         // Unset URI so that the offer_new_or_existing does not disappear
         // so the user can make a different choice about what document to open.
         // TODO: Show some error message?
         document->set_file_uri("");
       }
-      else
-      {
-        const bool db_created = m_pFrame->create_database(document->get_connection_database(), db_title, false /* do not request password */);
-        if(db_created)
-        {
-          const Glib::ustring database_name_used = document->get_connection_database();
-          ConnectionPool::get_instance()->set_database(database_name_used);
-          document->set_database_title(db_title);
-          m_pFrame->set_databases_selected(database_name_used);
-        }
-        else
-        {
-          // Unset URI so that the offer_new_or_existing does not disappear
-          // so the user can make a different choice about what document to open.
-          // TODO: Show some error message?
-          document->set_file_uri("");
-        }
-      }
     }
   }
 }
-
-void App_Glom::on_existing_or_new_open_from_uri(const std::string& document_uri)
-{
-  open_document(document_uri);
-}
-
-#ifndef G_OS_WIN32
-void App_Glom::on_existing_or_new_open_from_remote(EpcServiceInfo* info, const Glib::ustring& service_name)
-{
-  open_browsed_document(info, service_name);
-}
-#endif
 
 void App_Glom::set_mode_data()
 {

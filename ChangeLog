@@ -1,3 +1,20 @@
+2008-03-31  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/glom.glade:
+	* glom/dialog_existing_or_new.h:
+	* glom/dialog_existing_or_new.cc: Use a notebook for the two
+	treeviews, add a Select button. Removed the signals, instead added
+	get_action(), get_uri(), get_service_info() and get_service_name().
+	This way, the application can hide the dialog before handling the
+	action more easily.
+
+	* glom/application.h:
+	* glom/application.cc: offer_new_or_existing(): Hide the
+	existing_or_new dialog after having run it.
+	existing_or_new_new(): Removed the signal handlers, but keep the
+	action for creating a new empty document in a separate function since
+	it is still a lot of code.
+
 2008-03-31  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db.cc: get_record_field_values_for_calculation():
