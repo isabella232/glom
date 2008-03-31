@@ -586,8 +586,8 @@ void Field::init_map()
     list_conversions.clear();
     list_conversions.push_back(Field::TYPE_BOOLEAN);
     list_conversions.push_back(Field::TYPE_TEXT);
-    list_conversions.push_back(Field::TYPE_DATE);
-    list_conversions.push_back(Field::TYPE_TIME);
+    //to_date(numeric) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::TYPE_DATE);
+    //to_timestamp(numeric) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::TYPE_TIME);
     m_map_conversions[Field::TYPE_NUMERIC] = list_conversions;
 
     //Text:
@@ -602,15 +602,15 @@ void Field::init_map()
     list_conversions.clear();
     list_conversions.push_back(Field::TYPE_TEXT);
     list_conversions.push_back(Field::TYPE_NUMERIC);
-    list_conversions.push_back(Field::TYPE_DATE);
-    list_conversions.push_back(Field::TYPE_TIME);
+    //to_timestamp(numeric) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::TYPE_DATE);
+    //to_timestamp(numeric) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::TYPE_TIME);
     m_map_conversions[Field::TYPE_BOOLEAN] = list_conversions;
 
     //Date:
     list_conversions.clear();
     list_conversions.push_back(Field::TYPE_TEXT);
-    list_conversions.push_back(Field::TYPE_NUMERIC);
-    list_conversions.push_back(Field::TYPE_BOOLEAN);
+    //to_number(textcat()) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::TYPE_NUMERIC);
+    //to_number(textcat()) was supported in 8.2 but not in 8.3: list_conversions.push_back(Field::TYPE_BOOLEAN);
     m_map_conversions[Field::TYPE_DATE] = list_conversions;
 
     //Time:
