@@ -117,7 +117,9 @@ bool Box_Tables::fill_from_database()
 
   m_colHidden = m_AddDel.add_column(_("Hidden"), AddDelColumnInfo::STYLE_Boolean, editable, visible_extras);
   m_colTitle =  m_AddDel.add_column(_("Title"), AddDelColumnInfo::STYLE_Text, editable, true);
-  m_colDefault =  m_AddDel.add_column(_("Default"), AddDelColumnInfo::STYLE_Boolean,  editable, visible_extras);
+
+  //TODO: This should really be a radio, but the use of AddDel makes it awkward to change that CellRenderer property.
+  m_colDefault =  m_AddDel.add_column(_("Default"), AddDelColumnInfo::STYLE_Boolean, editable, visible_extras);
 
 
   //_("Server: ") +  m_strServerName + ", " + 
@@ -365,10 +367,10 @@ void Box_Tables::save_to_document()
 
         if(!table_info->get_name().empty())
         {
-          table_info->m_hidden  = m_AddDel.get_value_as_bool(iter, m_colHidden);
+          table_info->m_hidden = m_AddDel.get_value_as_bool(iter, m_colHidden);
           table_info->set_title( m_AddDel.get_value(iter, m_colTitle) ); //TODO_Translations: Store the TableInfo in the TreeView.
           //std::cout << "save_to_document(): title=" << table_info->get_title() << std::endl;
-          table_info->m_default  = m_AddDel.get_value_as_bool(iter, m_colDefault);
+          table_info->m_default = m_AddDel.get_value_as_bool(iter, m_colDefault);
 
           listTables.push_back(table_info);
         }
@@ -389,13 +391,30 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
 {
   if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
-    if( (column == m_colHidden) )
+    if(column == m_colHidden)
     {
       save_to_document();
       //TODO: This causes a crash. fill_from_database(); //Hide/show the table.
     }
-    else if( (column == m_colTitle) || (column == m_colDefault) )
+    else if(column == m_colTitle)
     {
+      save_to_document();
+    }
+    else if(column == m_colDefault)
+    {
+      //Only one table can be the default, so ensure that:
+      const bool is_default = m_AddDel.get_value_as_bool(row, m_colDefault);
+      if(is_default)
+      {
+        //Set all the other rows to false:
+        Glib::RefPtr<Gtk::TreeModel> model = m_AddDel.get_model();
+        for(Gtk::TreeModel::iterator iter = model->children().begin(); iter != model->children().end(); ++iter)
+        {
+          if(iter != row)
+            m_AddDel.set_value(iter, m_colDefault, false);
+        }
+      }
+
       save_to_document();
     }
     else if(column == m_colTableName)
