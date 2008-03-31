@@ -1,5 +1,13 @@
 2008-03-31  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/navigation/box_tables.cc: on_adddel_changed(): When changing the 
+	default-table column, make sure that only one row can have this checked.
+	It should really be a radio column, but that would be more work 
+	(to work around the AddDel widget).
+	Bug #525186 (Jani Monoses)
+
+2008-03-31  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/data_structure/field.cc: Field::init_map():
 	Comment out some previously-allowed conversions because postgres 8.3 
 	has become less tolerant of conversions that could not produce useful 
