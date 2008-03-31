@@ -669,12 +669,12 @@ void Box_DB_Table_Definition::postgres_change_column_type(const sharedptr<const 
 
               break;
             }
-            case Field::TYPE_DATE: //CAST does not work if the destination type is numeric.
+            case Field::TYPE_DATE: //CAST does not work if the destination type is date.
             {
               conversion_command = "to_date( " + field_name_old_quoted + ", 'YYYYMMDD' )"; //TODO: standardise date storage format.
               break;
             }
-            case Field::TYPE_TIME: //CAST does not work if the destination type is numeric.
+            case Field::TYPE_TIME: //CAST does not work if the destination type is timestamp.
             {
               conversion_command = "to_timestamp( " + field_name_old_quoted + ", 'HHMMSS' )";  //TODO: standardise time storage format.
               break;
@@ -699,9 +699,26 @@ void Box_DB_Table_Definition::postgres_change_column_type(const sharedptr<const 
             }
           }
 
-          Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute( "UPDATE \"" + m_table_name + "\" SET \"" + fieldTemp->get_name() + "\" = " + conversion_command, get_app_window());  //TODO: Not full type details.
-          if(!datamodel)
-            conversion_failed = true;
+          //Convert the data in the field:
+          const Glib::ustring sql = "UPDATE \"" + m_table_name + "\" SET \"" + fieldTemp->get_name() + "\" = " + conversion_command;
+          try
+          {
+            Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql, get_app_window());  //TODO: Not full type details.
+            if(!datamodel)
+              conversion_failed = true;
+          }
+          catch(const Glib::Error& ex)
+          {
+            std::cerr << "Box_DB_Table_Definition::postgres_change_column_type(): Glib::Error exception while executing SQL:" << std::endl << "  " <<  sql << std::endl;
+            handle_error(ex);
+            conversion_failed = false;
+          }
+          catch(const std::exception& ex)
+          {
+            std::cerr << "Box_DB_Table_Definition::postgres_change_column_type(): std::exception while executing SQL:" << std::endl << "  " <<  sql << std::endl;
+            handle_error(ex);
+            conversion_failed = false;
+          }
         }
 
         if(!conversion_failed)
