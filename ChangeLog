@@ -1,5 +1,13 @@
 2008-03-31  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/base_db.cc: get_record_field_values_for_calculation():
+	Do not show an error if the record does not exist yet. That is normal 
+	and is already dealt with by the following code. Do show an error if 
+	there is an exception.
+	Bug #525096 (Jani Monoses)
+
+2008-03-31  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/glom_developer.glade: Make return activate the default buttons 
 	when in the last entry in some dialogs, such as the initial-user/password 
 	dialog when self-hosting.
