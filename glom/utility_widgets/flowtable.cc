@@ -1172,7 +1172,7 @@ void FlowTable::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag
     GtkWidget* tool_item = egg_tool_palette_get_drag_item (EGG_TOOL_PALETTE (palette->gobj()), selection_data.gobj());
     LayoutWidgetBase::enumType type = 
       static_cast<LayoutWidgetBase::enumType>(GPOINTER_TO_INT(g_object_get_data(G_OBJECT(tool_item), "glom-type")));
-  
+    on_dnd_remove_placeholder();
     LayoutWidgetBase* above = dnd_find_datawidget ();
     switch (type)
     {

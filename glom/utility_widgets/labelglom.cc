@@ -57,7 +57,7 @@ void LabelGlom::init()
   add(m_label);
   m_label.show();
   set_events (Gdk::ALL_EVENTS_MASK);
-  set_above_child();
+  set_visible_window (false);
   m_refUtilDetails->set_visible(false);
 }
 
