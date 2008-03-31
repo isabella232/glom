@@ -3526,7 +3526,7 @@ Please enter the initial connection details for your new database. You may add a
 		      <property name="text" translatable="yes"></property>
 		      <property name="has_frame">True</property>
 		      <property name="invisible_char">*</property>
-		      <property name="activates_default">False</property>
+		      <property name="activates_default">True</property>
 		    </widget>
 		    <packing>
 		      <property name="left_attach">1</property>
@@ -5488,7 +5488,7 @@ What name should this group have?</property>
 		  <property name="text" translatable="yes"></property>
 		  <property name="has_frame">True</property>
 		  <property name="invisible_char">*</property>
-		  <property name="activates_default">False</property>
+		  <property name="activates_default">True</property>
 		</widget>
 		<packing>
 		  <property name="padding">0</property>
@@ -12471,7 +12471,7 @@ If a suitable related table already exists then you should instead cancel and ju
 			      <property name="text" translatable="yes"></property>
 			      <property name="has_frame">True</property>
 			      <property name="invisible_char">*</property>
-			      <property name="activates_default">False</property>
+			      <property name="activates_default">True</property>
 			    </widget>
 			    <packing>
 			      <property name="padding">0</property>
@@ -12795,6 +12795,7 @@ What name should this module have?</property>
                   <widget class="GtkEntry" id="entry_name">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+		    <property name="activates_default">True</property>
                   </widget>
                   <packing>
                     <property name="position">1</property>
@@ -12844,6 +12845,7 @@ What name should this module have?</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
+                <property name="has_default">True</property>
                 <property name="response_id">-5</property>
                 <child>
                   <widget class="GtkAlignment" id="alignment2">
