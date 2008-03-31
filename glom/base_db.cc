@@ -2042,7 +2042,18 @@ Base_DB::type_map_fields Base_DB::get_record_field_values_for_calculation(const 
       //sharedptr<const Field> fieldPrimaryKey = get_field_primary_key();
 
       const Glib::ustring query = Utils::build_sql_select_with_key(table_name, fieldsToGet, primary_key, primary_key_value);
-      Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(query);
+
+      Glib::RefPtr<Gnome::Gda::DataModel> data_model;
+      try
+      {
+        data_model = query_execute(query);
+      }
+      catch(const Glib::Exception& ex)
+      {
+        std::cerr << "Base_DB::get_record_field_values_for_calculation(): Exception while executing SQL: " << query << std::endl;
+        handle_error(ex);
+        return field_values;
+      }
 
       if(data_model && data_model->get_n_rows())
       {
@@ -2065,7 +2076,9 @@ Base_DB::type_map_fields Base_DB::get_record_field_values_for_calculation(const 
       }
       else
       {
-        handle_error();
+        //Maybe the record does not exist yet
+        //(Maybe we need the field values so we can calculate default values for some fields when creating the record.)
+        //So we create appropriate empty values below.
       }
     }
 
