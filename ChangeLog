@@ -1,5 +1,12 @@
 2008-03-31  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/glom_developer.glade: Make return activate the default buttons 
+	when in the last entry in some dialogs, such as the initial-user/password 
+	dialog when self-hosting.
+	Bug #525284 (Jani Monoses)
+
+2008-03-31  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/navigation/box_tables.cc: on_adddel_changed(): When changing the 
 	default-table column, make sure that only one row can have this checked.
 	It should really be a radio column, but that would be more work 
