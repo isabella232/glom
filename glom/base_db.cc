@@ -231,7 +231,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute(const Glib::ustring& 
       try
       {
 #endif
-        std::cout << "Debug: query_execute():  " << strQuery << std::endl;
+        std::cout << "Debug: Base_DB::query_execute():  " << strQuery << std::endl;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
       }
       catch(const Glib::Exception& ex)

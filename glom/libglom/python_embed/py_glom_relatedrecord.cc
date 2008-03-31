@@ -220,7 +220,7 @@ RelatedRecord_tp_as_mapping_getitem(PyObject *self, PyObject *item)
             {
               try
               {
-                std::cout << "Debug: query_execute():  " << sql_query << std::endl;
+                std::cout << "Debug: RelatedRecord_tp_as_mapping_getitem():  " << sql_query << std::endl;
               }
               catch(const Glib::Exception& ex)
               {

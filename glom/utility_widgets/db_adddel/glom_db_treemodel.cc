@@ -533,7 +533,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
   if(m_connection && !m_found_set.m_table_name.empty() && m_get_records)
   {
     const Glib::ustring sql_query = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_column_fields, m_found_set.m_where_clause, m_found_set.m_extra_join, m_found_set.m_sort_clause, m_found_set.m_extra_group_by);
-    //std::cout << "  Debug: query_execute():  " << sql_query << std::endl;
+    //std::cout << "  Debug: DbTreeModel::refresh_from_database():  " << sql_query << std::endl;
 
     const App_Glom* app = App_Glom::get_application();
     if(app && app->get_show_sql_debug())
@@ -542,7 +542,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
       try
       {
 #endif //GLIBMM_EXCEPTIONS_ENABLED
-        std::cout << "Debug: query_execute():  " << sql_query << std::endl;
+        std::cout << "Debug: DbTreeModel::refresh_from_database():  " << sql_query << std::endl;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
       }
       catch(const Glib::Exception& ex)
