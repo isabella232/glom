@@ -1754,6 +1754,8 @@ void DbAddDel::on_treeview_column_resized(int model_column_index, DbTreeViewColu
 
 void DbAddDel::on_treeview_column_clicked(int model_column_index)
 {
+  Bakery::BusyCursor busy_cursor(get_application());
+
   if(model_column_index >= (int)m_ColumnTypes.size())
     return;
 

@@ -1,5 +1,11 @@
 2008-04-01  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	on_treeview_column_clicked(): Show the busy cursor because the 
+	new SQL query can take some time. 
+
+2008-04-01  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/data_structure/Makefile.am:
 	* glom/libglom/data_structure/foundset.cc
 	* glom/libglom/data_structure/foundset.h: Moved FoundSet into its own 

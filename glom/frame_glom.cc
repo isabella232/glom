@@ -901,7 +901,7 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
   }
 
   {
-    Bakery::BusyCursor busy_cursor(pApp);
+    Bakery::BusyCursor busy_cursor(get_app_window());
     m_pBox_Tables->init_db_details();
   }
 
