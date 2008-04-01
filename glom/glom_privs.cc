@@ -20,6 +20,7 @@
 
 #include "glom_privs.h"
 #include <glom/libglom/standard_table_prefs_fields.h>
+#include <glom/application.h>
 
 namespace Glom
 {
@@ -46,7 +47,7 @@ Privs::type_vecStrings Privs::get_database_groups()
 
 Privs::type_vecStrings Privs::get_database_users(const Glib::ustring& group_name)
 {
-  Bakery::BusyCursor cursor(get_app_window());
+  Bakery::BusyCursor cursor(App_Glom::get_application());
 
   type_vecStrings result;
 
@@ -320,7 +321,7 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
   //TODO_Performance: There's lots of database access here.
   //We could maybe replace some with the postgres has_table_* function().
 
-  Bakery::BusyCursor cursor(get_app_window());
+  Bakery::BusyCursor cursor(App_Glom::get_application());
 
   Privileges result;
 

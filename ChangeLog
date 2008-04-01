@@ -1,5 +1,10 @@
 2008-04-01  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/glom_privs.cc: Fixed the build (my previous changes did not 
+	actually compile).
+
+2008-04-01  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/glom_privs.cc: get_database_users(), get_current_privs():
 	* glom/mode_data/box_data.cc: record_new(),
 	  Glom.get_related_record_exists): Added use of BusyCursor because these 

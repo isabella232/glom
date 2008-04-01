@@ -710,6 +710,7 @@ bool DbTreeModel::iter_next_vfunc(const iterator& iter, iterator& iter_next) con
   {
     //Get the current row:
     type_datamodel_iter row_iter = get_datamodel_row_iter_from_tree_row_iter(iter);
+    //std::cout << "DbTreeModel::iter_next_vfunc():" << row_iter << std::endl;
 
     //Make the iter_next GtkTreeIter represent the next row:
     ++row_iter;
@@ -820,12 +821,14 @@ Gtk::TreeModel::Path DbTreeModel::get_path_vfunc(const iterator& iter) const
 
   //TODO_Performance:
   //Get the number of non-removed items before this iter, because the path index doesn't care about removed internal stuff.
-  int path_index = -1 ;
-  if(row_iter > 0) //A row inedx of 0 must mean a path index ir there are _any_ non-removed rows.
-  for(type_datamodel_iter i = 0; i <= row_iter; ++i)
+  int path_index = -1;
+  if(row_iter > 0) //A row index of 0 must mean a path index if there are _any_ non-removed rows.
   {
-    if(!(m_map_rows[i].m_removed))
-      ++path_index;
+    for(type_datamodel_iter i = 0; i <= row_iter; ++i)
+    {
+      if(!(m_map_rows[i].m_removed))
+        ++path_index;
+    }
   }
 
   //g_warning("DbTreeModel::get_path_vfunc(): returning path index %d for internal row %d", path_index, row_iter);
