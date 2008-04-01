@@ -59,40 +59,6 @@
 namespace Glom
 {
 
-FoundSet::FoundSet()
-{
-}
-
-FoundSet::FoundSet(const FoundSet& src)
-:  m_table_name(src.m_table_name),
-   m_extra_join(src.m_extra_join),
-   m_where_clause(src.m_where_clause),
-   m_extra_group_by(src.m_extra_group_by),
-   m_sort_clause(src.m_sort_clause)
-{
-}
-
-FoundSet& FoundSet::operator=(const FoundSet& src)
-{
-  m_table_name = src.m_table_name;
-  m_extra_join = src.m_extra_join;
-  m_where_clause = src.m_where_clause;
-  m_extra_group_by = src.m_extra_group_by;
-  m_sort_clause = src.m_sort_clause;
-
-  return *this;
-}
-
-bool FoundSet::operator==(const FoundSet& src) const
-{
-  return (m_table_name == src.m_table_name)
-      && (m_extra_join == src.m_extra_join)
-      && (m_where_clause == src.m_where_clause)
-      && (m_extra_group_by == src.m_extra_group_by)
-      && (m_sort_clause == src.m_sort_clause);
-}
-
-
 
 template<class T_Element>
 class predicate_LayoutItemIsEqual
@@ -2706,5 +2672,65 @@ bool Base_DB::get_primary_key_is_in_foundset(const FoundSet& found_set, const Gn
   else  
     return false;
 }
+
+int Base_DB::count_rows_returned_by(const Glib::ustring& sql_query)
+{
+  int result = 0;
+
+  //TODO: Is this inefficient?
+  //Note that the alias is just because the SQL syntax requires it - we get an error if we don't use it.
+  //Be careful not to include ORDER BY clauses in this, because that would make it unnecessarily slow:
+  const Glib::ustring query_count = "SELECT COUNT (*) FROM (" + sql_query + ") AS glomarbitraryalias";
+  
+  const App_Glom* app = App_Glom::get_application();
+  if(app && app->get_show_sql_debug())
+  { 
+    try
+    {
+      std::cout << "Debug: count_rows_returned_by():  " << query_count << std::endl;
+    }
+    catch(const Glib::Exception& ex)
+    {
+      std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
+    }
+  }
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  sharedptr<SharedConnection> sharedconnection = connect_to_server();
+#else
+  std::auto_ptr<ExceptionConnection> error;
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(0, error);
+  // TODO: Rethrow?
+#endif
+
+  if(!sharedconnection)
+  {
+    g_warning("Base_DB::count_rows_returned_by(): connection failed.");
+    return 0;
+  }
+
+  try
+  {
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = sharedconnection->get_gda_connection()->execute_select_command(query_count);
+    if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
+    {
+      Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
+      //This showed me that this contains a gint64: std::cerr << "DEBUG: value type=" << G_VALUE_TYPE_NAME(value.gobj()) << std::endl;
+      result = (int)value.get_int64();
+    }
+  }
+  catch(const Glib::Exception& ex)
+  {
+    std::cerr << "count_rows_returned_by(): exception caught: " << ex.what() << std::endl;
+  }
+  catch(const std::exception& ex)
+  {
+    std::cerr << "count_rows_returned_by(): exception caught: " << ex.what() << std::endl;
+  }
+
+  //std::cout << "DEBUG: count_rows_returned_by(): Returning " << result << std::endl;
+  return result;
+}
+
 
 } //namespace Glom

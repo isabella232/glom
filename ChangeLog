@@ -1,5 +1,37 @@
 2008-04-01  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/data_structure/Makefile.am:
+	* glom/libglom/data_structure/foundset.cc
+	* glom/libglom/data_structure/foundset.h: Moved FoundSet into its own 
+	file from base_db.[h|c], because I like that.
+
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.h:
+	* glom/base_db.cc
+	* glom/base_db.h: Moved count_rows_returned_by() to Base_DB so we 
+	can use it elsewhere.
+
+	* glom/frame_glom.cc Glom.show_table(): Count the approximate number of 
+	rows expected in the list view, and do not sort them by default if 
+	it is more than 10,000. This allows Glom to show 600,000 MusicBrainz 
+	album rows now in 1 minute.
+
+
+2008-04-01  Murray Cumming,,,  <murrayc@murrayc.com>
+
+	reviewed by: <delete if not using a buddy>
+
+	* glom/base_db.cc:
+	* glom/base_db.h:
+	* glom/frame_glom.cc:
+	* glom/libglom/data_structure/Makefile.am:
+	* glom/libglom/data_structure/foundset.cc:
+	* glom/libglom/data_structure/foundset.h:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.h:
+
+2008-04-01  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
 	Glom.refresh_from_database(): Omit the ORDER BY clause when counting the 
 	number of rows from our SQL query. This is much faster.

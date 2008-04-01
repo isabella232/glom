@@ -28,6 +28,7 @@
 #include <glom/libglom/document/document_glom.h>
 #include <glom/libglom/connectionpool.h>
 #include <glom/libglom/appstate.h>
+#include <glom/libglom/data_structure/foundset.h>
 #include <glom/libglom/data_structure/privileges.h>
 #include <glom/libglom/data_structure/system_prefs.h>
 #include <glom/libglom/utils.h>
@@ -42,25 +43,6 @@ class LayoutItem_GroupBy;
 class LayoutItem_Summary;
 class LayoutItem_VerticalGroup;
 
-class FoundSet
-{
-public:
-  FoundSet();
-  FoundSet(const FoundSet& src);
-  FoundSet& operator=(const FoundSet& src);
-
-  bool operator==(const FoundSet& src) const;
-
-  Glib::ustring m_table_name;
-  Glib::ustring m_extra_join; // Only used for doubly-related related records (portals), in which case the WHERE clause is also slightly different.
-  Glib::ustring m_where_clause;
-  Glib::ustring m_extra_group_by;  // Only used for doubly-related related records (portals), in which case the WHERE clause is also slightly different.
-
-  ///field, ascending
-  typedef std::pair< sharedptr<const LayoutItem_Field>, bool> type_pair_sort_field;
-  typedef std::list<type_pair_sort_field> type_sort_clause;
-  type_sort_clause m_sort_clause;
-};
 
 /** A base class that is a Bakery View with some database functionality.
 */
@@ -98,8 +80,9 @@ public:
   static bool get_field_exists_in_database(const Glib::ustring& table_name, const Glib::ustring& field_name);
 
 
-  //This is const because const means not changing this instance, not whether we change the database.
   static Glib::RefPtr<Gnome::Gda::DataModel> query_execute(const Glib::ustring& strQuery, Gtk::Window* parent_window = 0);
+  static int count_rows_returned_by(const Glib::ustring& sql_query);
+
 
   bool add_standard_groups();
   bool add_standard_tables() const;
@@ -332,9 +315,8 @@ protected:
   static bool get_field_primary_key_index_for_fields(const type_vecFields& fields, guint& field_column);
   static bool get_field_primary_key_index_for_fields(const type_vecLayoutFields& fields, guint& field_column);
 
-
-
   static type_vecStrings util_vecStrings_from_Fields(const type_vecFields& fields);
+
 
   static void handle_error(const Glib::Exception& ex);
   static void handle_error(const std::exception& ex); //TODO_port: This is probably useless now.

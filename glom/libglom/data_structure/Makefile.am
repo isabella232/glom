@@ -4,6 +4,7 @@ AM_CPPFLAGS = -I@top_srcdir@/ $(GLOM_CFLAGS)
 
 noinst_LTLIBRARIES = libdata_structure.la
 libdata_structure_la_SOURCES = field.h field.cc \
+                              foundset.h foundset.cc \
                               relationship.h relationship.cc \
                               fieldtypes.h fieldtypes.cc \
                               tableinfo.h tableinfo.cc \

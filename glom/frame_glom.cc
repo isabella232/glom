@@ -348,6 +348,9 @@ void Frame_Glom::show_table(const Glib::ustring& table_name, const Gnome::Gda::V
 {
   App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
 
+  //This can take quite a long time, so we show the busy cursor while it's working:
+  Bakery::BusyCursor busy_cursor(pApp);
+
   //Check that there is a table to show:
   if(table_name.empty())
   {
@@ -386,7 +389,19 @@ void Frame_Glom::show_table(const Glib::ustring& table_name, const Gnome::Gda::V
           layout_item_sort->set_full_field_details(field_primary_key);
 
           found_set.m_sort_clause.clear();
-          found_set.m_sort_clause.push_back( type_pair_sort_field(layout_item_sort, true /* ascending */) );
+
+          //Avoid the sort clause if the found set will include too many records, 
+          //because that would be too slow.
+          //The user can explicitly request a sort later, by clicking on a column header.
+          //TODO_Performance: This causes an almost-duplicate COUNT query (we do it in the treemodel too), but it's not that slow. 
+          sharedptr<LayoutItem_Field> layout_item_temp = sharedptr<LayoutItem_Field>::create();
+          layout_item_temp->set_full_field_details(field_primary_key);
+          type_vecLayoutFields layout_fields;
+          layout_fields.push_back(layout_item_temp);
+          const Glib::ustring sql_query_without_sort = Utils::build_sql_select_with_where_clause(found_set.m_table_name, layout_fields, found_set.m_where_clause, found_set.m_extra_join, type_sort_clause(), found_set.m_extra_group_by);
+          const int count = Base_DB::count_rows_returned_by(sql_query_without_sort);
+          if(count < 10000) //Arbitrary large number.
+            found_set.m_sort_clause.push_back( type_pair_sort_field(layout_item_sort, true /* ascending */) );
         }
 
         m_Notebook_Data.init_db_details(found_set, primary_key_value_for_details);
@@ -885,8 +900,10 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
     m_pBox_Tables->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_box_tables_selected));
   }
 
-    
-  m_pBox_Tables->init_db_details();
+  {
+    Bakery::BusyCursor busy_cursor(pApp);
+    m_pBox_Tables->init_db_details();
+  }
 
   //Let the user choose a table:
   //m_pDialog_Tables->set_policy(false, true, false); //TODO_port

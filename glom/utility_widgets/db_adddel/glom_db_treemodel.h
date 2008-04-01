@@ -157,8 +157,6 @@ protected:
   static gboolean glom_get_iter_impl(GtkTreeModel* model, GtkTreeIter* iter, GtkTreePath* path);
 #endif // !GLIBMM_VUFNCS_ENABLED
 
-   int count_rows_returned_by(const Glib::ustring& query);
-
 private:
    typedef DbTreeModelRow typeRow; //X columns, all of type Value.
 

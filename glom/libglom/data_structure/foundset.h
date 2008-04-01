@@ -1,0 +1,56 @@
+/* Glom
+ *
+ * Copyright (C) 2001-2008 Murray Cumming
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
+#ifndef GLOM_DATASTRUCTURE_FOUNDSET_H
+#define GLOM_DATASTRUCTURE_FOUNDSET_H
+
+#include <glibmm/ustring.h>
+#include <list>
+#include <utility> //For std::pair
+#include <glom/libglom/data_structure/layout/layoutitem_field.h>
+#include <glom/libglom/sharedptr.h>
+
+namespace Glom
+{
+
+class FoundSet
+{
+public:
+  FoundSet();
+  FoundSet(const FoundSet& src);
+  FoundSet& operator=(const FoundSet& src);
+
+  bool operator==(const FoundSet& src) const;
+
+  Glib::ustring m_table_name;
+  Glib::ustring m_extra_join; // Only used for doubly-related related records (portals), in which case the WHERE clause is also slightly different.
+  Glib::ustring m_where_clause;
+  Glib::ustring m_extra_group_by;  // Only used for doubly-related related records (portals), in which case the WHERE clause is also slightly different.
+
+  ///field, ascending
+  typedef std::pair< sharedptr<const LayoutItem_Field>, bool> type_pair_sort_field;
+  typedef std::list<type_pair_sort_field> type_sort_clause;
+  type_sort_clause m_sort_clause;
+};
+
+} //namespace Glom
+
+#endif //GLOM_DATASTRUCTURE_FOUNDSET_H
+
