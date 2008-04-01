@@ -122,7 +122,7 @@ DbAddDel::DbAddDel()
 
   show_all_children();
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY //Actually this has only been necessary for Maemo.
+#ifdef GLOM_ENABLE_CLIENT_ONLY //Actually this has only been necessary for Maemo.
   // Adjust sizing when style changed
   // TODO_Maemo: This calls construct_specified_columns(), which runs the SQL query again.
   //       Try to change the row and column sizes without doing that.
@@ -2061,6 +2061,7 @@ void DbAddDel::on_cell_button_clicked(const Gtk::TreeModel::Path& path)
   on_MenuPopup_activate_Edit();
 }
 
+#ifdef GLOM_ENABLE_CLIENT_ONLY 
 void DbAddDel::on_self_style_changed(const Glib::RefPtr<Gtk::Style>& style)
 {
   // Reset fixed cell height because the font might have changed due to the new style:
@@ -2070,6 +2071,7 @@ void DbAddDel::on_self_style_changed(const Glib::RefPtr<Gtk::Style>& style)
   // (TODO: But don't get the data again because that would be inefficient).
   construct_specified_columns();
 }
+#endif
 
 void DbAddDel::set_open_button_title(const Glib::ustring& title)
 {

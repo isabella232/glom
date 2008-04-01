@@ -1,5 +1,21 @@
 2008-04-01  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/notebook_glom.h
+	* glom/notebook_glom.cc: constructor, on_show(): Delay the connection of 
+	the switch_page handler because GtkNotebook sometimes emits the signal 
+	during show().
+	Save the sigc::connection so we can block it later.
+	* glom/mode_data/notebook_data.cc init_db_details(),
+	on_switch_page_handler(): Block the handling of this signal during 
+	the first initialization, to avoid an unnecessary duplicate SQL query.
+
+	* glom/utility_widgets/db_adddel/db_adddel.h 
+	* glom/utility_widgets/db_adddel/db_adddel.cc 
+	 on_self_style_changed): Correct the ifndef to an ifdef so this is 
+	really only used on Maemo, preventing a third duplicate SQL query.
+
+2008-04-01  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/glom_developer.glade: window_data_layout: Change window title from 
 	Details Layout to Layout because it is used for the list and the 
 	related records layout too. This string already exists elsewhere, so 

@@ -29,7 +29,9 @@ Notebook_Glom::Notebook_Glom()
   m_uiPreviousPage = 0;
 
   //Connect signals:
-  signal_switch_page().connect(sigc::mem_fun(*this, &Notebook_Glom::on_switch_page_handler));
+  //We do this on on_show() instead, because otherwise GtkNotebook emits the signal (and we catch it) during show:
+  //signal_switch_page().connect(sigc::mem_fun(*this, &Notebook_Glom::on_switch_page_handler));
+
   //signal_leave_page().connect(sigc::mem_fun(*this, &Notebook_Glom::on_leave_page));
 
   m_destructor_in_progress = false;
@@ -37,6 +39,15 @@ Notebook_Glom::Notebook_Glom()
 
 Notebook_Glom::~Notebook_Glom()
 {
+}
+
+void Notebook_Glom::on_show()
+{
+  Gtk::Notebook::on_show();
+
+  //We do this only in on_show() because otherwise GtkNotebook emits the signal (and we catch it) during show:
+  if(!m_connection_switch_page)
+    m_connection_switch_page = signal_switch_page().connect(sigc::mem_fun(*this, &Notebook_Glom::on_switch_page_handler));
 }
 
 /*
@@ -48,10 +59,6 @@ Notebook_Glom::type_signal_leave_page Notebook_Glom::signal_leave_page()
 
 void Notebook_Glom::on_switch_page_handler(GtkNotebookPage* pPage, guint uiPageNumber)
 {
-  //Call base class:
-  //Don't call base class because this is no default signal handler (anymore?)
-  //Gtk::Notebook::on_switch_page(pPage, uiPageNumber);
-
   //Remove the help hint for the previous page:
   Gtk::Window* pApp = get_app_window();
 

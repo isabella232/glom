@@ -72,7 +72,7 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
 
   const bool details_record_specified = !Conversions::value_is_empty(primary_key_value_for_details);
 
-  bool result = false;
+  bool result = true;
   //where_clause is only used as a result of a find.
 
   //Performance optimisation:
@@ -86,99 +86,94 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
     // Ignore error, sharedconnection is not used directly within this function
 #endif
 
-    const FoundSet old_found_set = m_Box_List.get_found_set();
+    //const FoundSet old_found_set = m_Box_List.get_found_set();
     //std::cout << "  old_where_clause=" << old_where_clause << std::endl;
     //std::cout << "  where_clause=" << where_clause << std::endl;
     //const bool new_find_set = !(found_set == old_found_set);
-    result = m_Box_List.init_db_details(found_set); //TODO: Select the last selected record.
-    //m_Box_List.load_from_document();
 
-    //Show the previously-shown record, if there is one, if this is not a new found-set (via a new where_clause)
-    //so that returning to this table will return the user to the same record:
-    Document_Glom* document = get_document();
-    if(document)
-    {
-      Gnome::Gda::Value primary_key_for_details;
+    //if(get_current_view() == DATA_VIEW_List)
+    //{
+      result = m_Box_List.init_db_details(found_set); //TODO: Select the last selected record.
+      //m_Box_List.load_from_document();
+    //}
+    //else //DATA_VIEW_Details
+    //{
+      //Show the previously-shown record, if there is one, if this is not a new found-set (via a new where_clause)
+      //so that returning to this table will return the user to the same record:
+      Document_Glom* document = get_document();
+      if(document)
+      {
+        Gnome::Gda::Value primary_key_for_details;
 
-      if(!details_record_specified)
-      {
-        //std::cout << "debug: no new_found_set" << std::endl;
-        primary_key_for_details = document->get_layout_record_viewed(m_table_name, m_Box_Details.get_layout_name());
-      }
-      else if(details_record_specified)
-      {
-        primary_key_for_details = primary_key_value_for_details;
-      }
-      else
-      {
-         //std::cout << "debug: new_found_set" << std::endl;
-      }
+        if(!details_record_specified)
+        {
+          //std::cout << "debug: no new_found_set" << std::endl;
+          primary_key_for_details = document->get_layout_record_viewed(m_table_name, m_Box_Details.get_layout_name());
+        }
+        else if(details_record_specified)
+        {
+          primary_key_for_details = primary_key_value_for_details;
+        }
+        else
+        {
+          //std::cout << "debug: new_found_set" << std::endl;
+        }
 
 
-      //If the specified (or remembered) primary key value is not in the found set, 
-      //then ignore it:
-      if(!found_set.m_where_clause.empty() && !get_primary_key_is_in_foundset(found_set, primary_key_for_details))
-      {
-        primary_key_for_details = Gnome::Gda::Value(); //TODO: We set it to empty just so we can test if for empty.
-      }
+        //If the specified (or remembered) primary key value is not in the found set, 
+        //then ignore it:
+        if(!found_set.m_where_clause.empty() && !get_primary_key_is_in_foundset(found_set, primary_key_for_details))
+        {
+          primary_key_for_details = Gnome::Gda::Value(); //TODO: We set it to empty just so we can test if for empty.
+        }
 
-      if(Conversions::value_is_empty(primary_key_for_details))
-      {
-        //Make sure that the details view is not empty, if there are any records to show:
-        primary_key_for_details = m_Box_List.get_primary_key_value_selected();
-        //std::cout << "debug:  m_Box_List.get_primary_key_value_selected()=" << primary_key_for_details.to_string() << std::endl;
         if(Conversions::value_is_empty(primary_key_for_details))
         {
-          //std::cout << "debug: calling list.get_primary_key_value_first()" << std::endl;
-          primary_key_for_details = m_Box_List.get_primary_key_value_first();
-          //std::cout << "  debug:  result=" <<  primary_key_for_details.to_string() << std::endl;
+          //Make sure that the details view is not empty, if there are any records to show:
+          primary_key_for_details = m_Box_List.get_primary_key_value_selected();
+          //std::cout << "debug:  m_Box_List.get_primary_key_value_selected()=" << primary_key_for_details.to_string() << std::endl;
+          if(Conversions::value_is_empty(primary_key_for_details))
+          {
+            //std::cout << "debug: calling list.get_primary_key_value_first()" << std::endl;
+            primary_key_for_details = m_Box_List.get_primary_key_value_first();
+            //std::cout << "  debug:  result=" <<  primary_key_for_details.to_string() << std::endl;
+          }
         }
-      }
 
-   
-      m_Box_Details.init_db_details(found_set, primary_key_for_details);
-    }
+        m_Box_Details.init_db_details(found_set, primary_key_for_details);
+      }
+    //}
   }
 
+  //Block this handler temporarily because we don't need another refresh from the database:
+  if(m_connection_switch_page)
+    m_connection_switch_page.block();
+
   //Select the last-viewed layout, or the details layout, if a specific details record was specified:
-  if(details_record_specified)
+  const dataview current_view = get_current_view();
+  if(details_record_specified && (current_view != DATA_VIEW_Details))
   {
-    set_current_page(m_iPage_Details);
+    set_current_view(DATA_VIEW_Details);
   }
   else
   {
     //Select the last-viewed layout:
-    bool found = false;
     Document_Glom* document = get_document();
+    
     if(document)
     {
       const Glib::ustring current_layout = get_document()->get_layout_current(m_table_name);
-      if(!current_layout.empty())
-      {
-        const int count = get_n_pages();
-        int page = 0;
-        while(!found && (page < count))
-        {
-          Box_Data* box = dynamic_cast<Box_Data*>(get_nth_page(page));
-          if(box && (box->get_layout_name() == current_layout))
-            found = true;
-          else
-            ++page;
-        }
-
-        if(found)
-        {
-          set_current_page(page);
-        }
-      }
-    }
-
-    if(!found)
-    {
-      //Select List as default:
-     set_current_page(m_iPage_List);
+      if( (current_layout.empty() || (current_layout == "list"))
+          && (current_view != DATA_VIEW_List) )
+          set_current_view(DATA_VIEW_List);
+        else if( (current_layout == "details") && (current_view != DATA_VIEW_Details) )
+          set_current_view(DATA_VIEW_Details);
     }
   }
+
+  //Re-enable this handler, so we can respond to notebook page changes:
+  if(m_connection_switch_page)
+    m_connection_switch_page.unblock();
 
   return result;
 }
@@ -309,9 +304,16 @@ void Notebook_Data::on_switch_page_handler(GtkNotebookPage* pPage, guint uiPageN
     //TODO_Performance: This causes double refreshes (with database retrieval) when doing finds. We probably want to distinguish between user page-switches and programmatic page-switches.
     if(box == &m_Box_List)
     {
+      std::cout << "debug: switching to list" << std::endl;
       Gnome::Gda::Value primary_key_selected = m_Box_List.get_primary_key_value_selected();
       m_Box_List.refresh_data_from_database();
       m_Box_List.set_primary_key_value_selected(primary_key_selected);
+    }
+    else if(box == &m_Box_Details)
+    {
+      std::cout << "debug: switching to details" << std::endl;
+      Gnome::Gda::Value primary_key_selected = m_Box_List.get_primary_key_value_selected();
+      m_Box_Details.refresh_data_from_database_with_primary_key(primary_key_selected);
     }
   }
 

@@ -42,12 +42,14 @@ public:
   //Signals:
   //Page number
   //typedef sigc::signal<void, guint> type_signal_leave_page;
- // type_signal_leave_page signal_leave_page();
+  // type_signal_leave_page signal_leave_page();
 
- virtual void do_menu_developer_layout();
- virtual void do_menu_file_print();
+  virtual void do_menu_developer_layout();
+  virtual void do_menu_file_print();
 
 protected:
+
+  virtual void on_show();
 
   Gtk::Window* get_app_window();
 
@@ -59,6 +61,7 @@ protected:
 
   guint m_uiPreviousPage;
   bool m_destructor_in_progress; //A hack to prevent calling wrap() on dead C instances.
+  sigc::connection m_connection_switch_page; //This allows us to delay connecting, and to block the handler temporarily.
 };
 
 } //namespace Glom
