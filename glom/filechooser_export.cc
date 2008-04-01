@@ -101,7 +101,7 @@ void FileChooser_Export::on_dialog_layout_hide()
 
 void FileChooser_Export::get_layout_groups(Document_Glom::type_list_layout_groups& layout_groups) const
 {
-  layout_groups = m_layout_groups; //TODO_Performance: Avoid copying so much.
+  layout_groups = m_layout_groups;
 }
 
 } //namespace Glom

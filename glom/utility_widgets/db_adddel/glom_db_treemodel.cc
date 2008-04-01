@@ -519,6 +519,9 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
 
       m_gda_datamodel = m_connection->get_gda_connection()->execute_select_command(sql_query, params);
 
+      if(app && app->get_show_sql_debug())
+        std::cout << "  Debug: DbTreeModel::refresh_from_database(): The query execution has finished." << std::endl;
+
       //Examine the columns in the returned DataModel:
       /*
       for(int col = 0; col < m_gda_datamodel->get_n_columns(); ++col)
@@ -777,18 +780,6 @@ bool DbTreeModel::iter_nth_root_child_vfunc(int n, iterator& iter) const
     //Store the row_index in the GtkTreeIter:
     //See also iter_next_vfunc()
 
-    //TODO_Performance
-    /*
-    type_datamodel_iter row_iter = m_rows.begin();
-    for(int i = 0; i < n; ++i)
-    {
-      if(row_iter == m_rows.end())
-        break;
-
-      ++row_iter;
-    }
-    */
-
     //TODO_Performance:
     //Get the nth unremoved row:
     type_datamodel_iter row_iter = 0;
@@ -826,15 +817,6 @@ bool DbTreeModel::iter_parent_vfunc(const iterator& child, iterator& iter) const
 Gtk::TreeModel::Path DbTreeModel::get_path_vfunc(const iterator& iter) const
 {
   type_datamodel_iter row_iter = get_datamodel_row_iter_from_tree_row_iter(iter);
-
-  //TODO_Performance:
-  /*
-  int index = 0;
-  for(type_datamodel_iter iter_count = m_rows.begin(); iter_count != row_iter; ++iter_count)
-  {
-    ++index;
-  }
-  */
 
   //TODO_Performance:
   //Get the number of non-removed items before this iter, because the path index doesn't care about removed internal stuff.

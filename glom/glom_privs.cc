@@ -46,6 +46,8 @@ Privs::type_vecStrings Privs::get_database_groups()
 
 Privs::type_vecStrings Privs::get_database_users(const Glib::ustring& group_name)
 {
+  Bakery::BusyCursor cursor(get_app_window());
+
   type_vecStrings result;
 
   if(group_name.empty())
@@ -89,7 +91,7 @@ Privs::type_vecStrings Privs::get_database_users(const Glib::ustring& group_name
           if(data_model)
           {
             const Gnome::Gda::Value value = data_model->get_value_at(0, 0); 
-           result.push_back(value.get_string());
+            result.push_back(value.get_string());
           }
         }
 
@@ -317,6 +319,8 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
 {
   //TODO_Performance: There's lots of database access here.
   //We could maybe replace some with the postgres has_table_* function().
+
+  Bakery::BusyCursor cursor(get_app_window());
 
   Privileges result;
 

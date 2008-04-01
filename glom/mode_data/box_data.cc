@@ -222,7 +222,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
         }
 
         //Use default values (These are also specified in postgres as part of the field definition,
-        //so we could theoretically just not specify it here.
+        //so we could theoretically just not specify it here.)
         //TODO_Performance: Add has_default_value()?
         if(Conversions::value_is_empty(value))
         {
@@ -664,6 +664,8 @@ g_warning("debug: Box_Data::get_field()");
 
 bool Box_Data::get_related_record_exists(const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value)
 {
+  Bakery::BusyCursor cursor(get_app_window());
+
   bool result = false;
 
   //TODO_Performance: It's very possible that this is slow.

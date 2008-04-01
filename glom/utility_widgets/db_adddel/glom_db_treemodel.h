@@ -228,7 +228,7 @@ private:
    //Data:
    sharedptr<SharedConnection> m_connection;
    Glib::RefPtr<Gnome::Gda::DataModel> m_gda_datamodel;
-   guint m_data_model_rows_count; //TODO: TODO_Performance: GdaDataModel probably needs an on-demand iterator. murrayc.
+   guint m_data_model_rows_count;
    guint m_data_model_columns_count; //1 less than m_columns_count, which also has a model column for the key.
 
    //TODO: Performance:

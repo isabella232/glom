@@ -285,9 +285,7 @@ bool Base_DB::get_table_exists_in_database(const Glib::ustring& table_name) cons
 
   type_vecStrings tables = get_table_names_from_database();
   type_vecStrings::const_iterator iterFind = std::find(tables.begin(), tables.end(), table_name);
-  bool result = (iterFind != tables.end());
-
-  return result;
+  return (iterFind != tables.end());
 }
 
 Base_DB::type_vecStrings Base_DB::get_table_names_from_database(bool ignore_system_tables) const
@@ -1636,7 +1634,7 @@ sharedptr<Field> Base_DB::get_field_primary_key_for_table(const Glib::ustring& t
   const Document_Glom* document = get_document();
   if(document)
   {
-    //TODO_Performance:
+    //TODO_Performance: Cache this result?
     Document_Glom::type_vecFields fields = document->get_table_fields(table_name);
     for(Document_Glom::type_vecFields::iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {

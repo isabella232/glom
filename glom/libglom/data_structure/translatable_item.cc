@@ -120,7 +120,7 @@ Glib::ustring TranslatableItem::get_title() const
       const Glib::ustring current_locale_language_id = Utils::locale_language_id(current_locale_id);
       for(type_map_locale_to_translations::const_iterator iter = m_map_translations.begin(); iter != m_map_translations.end(); ++iter)
       {
-        const Glib::ustring locale_id = iter->first;
+        const Glib::ustring& locale_id = iter->first;
         if(Utils::locale_language_id(locale_id) == current_locale_language_id)
         {
           if(!(iter->second.empty()))

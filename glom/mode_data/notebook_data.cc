@@ -301,7 +301,6 @@ void Notebook_Data::on_switch_page_handler(GtkNotebookPage* pPage, guint uiPageN
     //And refresh the list view whenever it is shown, to 
     //a) show any new records that were added via the details view, or via a related portal elsewhere.
     //b) show changed field contents, changed elsewhere.
-    //TODO_Performance: This causes double refreshes (with database retrieval) when doing finds. We probably want to distinguish between user page-switches and programmatic page-switches.
     if(box == &m_Box_List)
     {
       std::cout << "debug: switching to list" << std::endl;

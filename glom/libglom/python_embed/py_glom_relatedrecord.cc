@@ -186,7 +186,7 @@ RelatedRecord_tp_as_mapping_getitem(PyObject *self, PyObject *item)
 
         //Check whether the field exists in the table.
         //TODO_Performance: Do this without the useless Field information?
-        sharedptr<Field> field  = self_derived->m_document->get_field((*(self_derived->m_relationship))->get_to_table(), field_name);
+        sharedptr<Field> field = self_derived->m_document->get_field((*(self_derived->m_relationship))->get_to_table(), field_name);
         if(!field)
           g_warning("RelatedRecord_tp_as_mapping_getitem: field %s not found in table %s", field_name.c_str(), (*(self_derived->m_relationship))->get_to_table().c_str());
         else
