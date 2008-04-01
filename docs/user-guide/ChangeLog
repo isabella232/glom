@@ -1,3 +1,8 @@
+2008-04-01  Frederic Peters  <fpeters@0d.be>
+
+	* C/glom.xml: Added more section IDs so that the Table Of Contents 
+	works on library.gnome.org (it works without them in Glom).
+
 2008-03-29  Murray Cumming  <murrayc@murrayc.com>
 
 	* Makefile.am: Mention all the image files.
