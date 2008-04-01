@@ -469,6 +469,7 @@ int DbTreeModel::count_rows_returned_by(const Glib::ustring& sql_query)
 
   //TODO: Is this inefficient?
   //Note that the alias is just because the SQL syntax requires it - we get an error if we don't use it.
+  //Be careful not to include ORDER BY clauses in this, because that would make it unnecessarily slow:
   const Glib::ustring query_count = "SELECT COUNT (*) FROM (" + sql_query + ") AS glomarbitraryalias";
   
   const App_Glom* app = App_Glom::get_application();
@@ -604,7 +605,8 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
     {
       //This doesn't work with ITER_MODEL_ONLY: const int count = m_gda_datamodel->get_n_rows();
       //because rows count is -1 until we have iterated to the last row.
-      const int count = count_rows_returned_by(sql_query);
+      const Glib::ustring sql_query_without_sort = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_column_fields, m_found_set.m_where_clause, m_found_set.m_extra_join, type_sort_clause(), m_found_set.m_extra_group_by);
+      const int count = count_rows_returned_by(sql_query_without_sort);
       if(count < 0)
       {
         std::cerr << "DbTreeModel::refresh_from_database(): count is < 0" << std::endl;
