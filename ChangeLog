@@ -1,3 +1,11 @@
+2008-04-01  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/glom.glade: window_data_layout: Change window title from 
+	Details Layout to Layout because it is used for the list and the 
+	related records layout too. This string already exists elsewhere, so 
+	it should not be a problem for translators.
+	Bug #525449 (Jani Monoses)
+
 2008-03-31  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db.cc: get_record_field_values_for_calculation():
