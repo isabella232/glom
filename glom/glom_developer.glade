@@ -12900,7 +12900,7 @@ What name should this module have?</property>
 
 <widget class="GtkWindow" id="window_data_layout">
   <property name="border_width">12</property>
-  <property name="title" translatable="yes">Details Layout</property>
+  <property name="title" translatable="yes">Layout</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_NONE</property>
   <property name="modal">False</property>

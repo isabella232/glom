@@ -1,3 +1,11 @@
+2008-04-01  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/glom_developer.glade: window_data_layout: Change window title from 
+	Details Layout to Layout because it is used for the list and the 
+	related records layout too. This string already exists elsewhere, so 
+	it should not be a problem for translators.
+	Bug #525449 (Jani Monoses)
+
 2008-03-31  Johannes Schmid <johannes.schmid@openismus.com>
 
 	* glom/utility_widgets/flowtable.cc (on_drag_data_received):
