@@ -189,7 +189,7 @@ main(int argc, char* argv[])
   PySys_SetArgv(argc, argv);
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-  //try
+  try
 #endif
   {
 #ifndef GLOM_ENABLE_MAEMO
@@ -278,7 +278,7 @@ main(int argc, char* argv[])
     else
       delete pApp_Glom;
   }
-#if 0 //#ifdef GLIBMM_EXCEPTIONS_ENABLED
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   catch(const Glib::Exception& ex)
   {
     //If this happens then comment out the try/catch, and let the debugger show the call stack.
@@ -293,6 +293,9 @@ main(int argc, char* argv[])
 
   //We use python for calculated-fields:
   Py_Finalize();
+
+  //Clean up singletons:
+  Glom::ConnectionPool::delete_instance();
 
   return 0;
 }

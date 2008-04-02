@@ -226,8 +226,17 @@ ConnectionPool* ConnectionPool::get_instance()
     return m_instance;
   else
   {
-    m_instance = new ConnectionPool(); //TODO: Does it matter that this is never deleted?
+    m_instance = new ConnectionPool();
     return m_instance;
+  }
+}
+
+void ConnectionPool::delete_instance()
+{
+  if(m_instance)
+  {
+    delete m_instance;
+    m_instance = 0;
   }
 }
 

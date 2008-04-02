@@ -1,5 +1,12 @@
 2008-04-02  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/connectionpool.cc
+	* glom/libglom/connectionpool.h Added delete_instance().
+	* glom/main.cc (main): Clean up the ConnectionPool singleton at the 
+	end, so it is not reported as a leak by valgrind.
+
+2008-04-02  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.h 
 	* glom/application.cc added a Bakery::App::add_ui_from_string() override, 
 	so we can workaround a problem with UTF8 in the UI description in 

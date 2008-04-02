@@ -108,7 +108,13 @@ protected:
 
 public:
 
+  /** Get the singleton instance.
+   * Use delete_instance() when the program quits.
+   */
   static ConnectionPool* get_instance();
+
+  /// Delete the singleton so it doesn't show up as leaked memory in, for instance, valgrind.
+  static void delete_instance();
 
   bool get_ready_to_connect() const;
   void set_ready_to_connect(bool val = true);
