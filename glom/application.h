@@ -95,6 +95,8 @@ protected:
   virtual void init_toolbars(); //override
   virtual void init_create_document(); //override
   virtual bool on_document_load(); //override.
+  
+  virtual void add_ui_from_string(const Glib::ustring& ui_description);
 
   bool offer_new_or_existing();
 

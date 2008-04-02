@@ -56,6 +56,8 @@
 # include <netdb.h> //For gethostbyname().
 #endif
 
+#include <gtk/gtkuimanager.h>
+
 #ifdef GLOM_ENABLE_MAEMO
 namespace //anonymous namespace
 {
@@ -253,6 +255,22 @@ void App_Glom::init_toolbars()
 
   add_ui_from_string(ui_description);
 */
+}
+
+//gtkmm <2.12.7 has a bug that stops this working with non-ASCII text,
+//so we use the C function instead.
+//We could put this in Bakery instead, but it's hard enough just getting updates 
+//into Ubuntu, so we override this Bakery::App method here.
+//TODO: Remove this when gtkmm 2.12.7 is distributed widely-enough.
+void App_Glom::add_ui_from_string(const Glib::ustring& ui_description)
+{
+  GError* error = 0;
+  gtk_ui_manager_add_ui_from_string(m_refUIManager->gobj(), ui_description.c_str(), ui_description.bytes(), &error);
+  if(error)
+  {
+    std::cerr << "App_Glom::add_ui_from_string(): exception: " << error->message << std::endl;
+    g_clear_error(&error);
+  }
 }
 
 void App_Glom::init_menus_file()
@@ -1643,7 +1661,8 @@ void App_Glom::fill_menu_tables()
   {
     const Glib::Error& ex = *error.get();
 #endif // GLIBMM_EXCEPTIONS_ENABLED
-    std::cerr << " App_Glom::fill_menu_tables(): building menus failed: " <<  ex.what();
+    std::cerr << " App_Glom::fill_menu_tables(): building menus failed: " <<  ex.what() << std::endl;
+    std::cerr << "   The ui_description was: " <<  ui_description << std::endl;
   }
 }
 
