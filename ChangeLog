@@ -1,3 +1,14 @@
+2008-04-02  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.h:
+	Remove the GlueItem and GlueItemList classes. Store a simple int 
+	in GtkTreeIter::user_data instead of a pointer to an allocated GlueItem 
+	instance (which just stored an int now anyway).
+	This should prevent the leak of these instances, which GtkTreeModel 
+	really really gives us no way to ever know when to free, other than 
+	when the GktTreeModel is destroyed.
+
 2008-04-01  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/glom_privs.cc: Fixed the build (my previous changes did not 

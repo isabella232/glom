@@ -58,7 +58,7 @@ public:
 
   bool m_removed; //If it should not be shown anymore.
   bool m_extra; //A temporary new row.
-};
+};  
 
 class DbTreeModel
   : public Glib::Object,
@@ -164,60 +164,15 @@ private:
    //because std::list iterators are not all invalidated when we erase an element from the middle.
    //typedef std::list< typeRow > typeListOfRows; //Y rows.
 
-   typedef unsigned int type_datamodel_iter;
-   typedef const unsigned int type_datamodel_const_iter;
+   typedef unsigned int type_datamodel_row_index;
 
-   bool create_iterator(const type_datamodel_iter& row_iter, DbTreeModel::iterator& iter) const;
+   bool create_iterator(const type_datamodel_row_index& row_iter, DbTreeModel::iterator& iter) const;
    void invalidate_iter(iterator& iter) const;
-   bool row_was_removed(const type_datamodel_iter& row_iter) const;
+   bool row_was_removed(const type_datamodel_row_index& row_iter) const;
 
+   type_datamodel_row_index get_datamodel_row_index_from_tree_row_iter(const iterator& iter) const;
 
-   //This maps the GtkTreeIters to potential paths:
-   //Each GlueItem might be stored in more than one GtkTreeIter,
-   //but it will be deleted only once, because it is stored
-   //only once in the GlueList.
-   //GtkTreeIter::user_data might contain orphaned GlueList pointers,
-   //but nobody will access them because GtkTreeIter::stamp will have the
-   //wrong value, marking the user_data as invalid.
-   class GlueItem
-   {
-   public:
-     GlueItem(const type_datamodel_iter& row_iter);
-     //type_datamodel_iter get_row_iter() const;
-
-     type_datamodel_iter get_datamodel_row_iter() const;
-
-   protected:
-     type_datamodel_iter m_datamodel_row_iter;
-   };
-
-   //Allow the GlueList inner class to access the declaration of the GlueItem inner class.
-   //SUN's Forte compiler complains about this.
-   class GlueList;
-   friend class GlueList; 
-
-   class GlueList
-   {
-   public:
-     GlueList();
-     ~GlueList();
-
-     //We must reuse GlueItems instead of having 2 that contain equal iterators,
-     //because Gtk::TreeIter::iterator::operator() unfortunately does only
-     //a pointer comparison, without allowing us to implement specific logic.
-     //GlueItem* get_existing_item(const type_datamodel_iter& row_iter);
-
-     //This is just a list of stuff to delete later:
-     typedef std::list<GlueItem*> type_listOfGlue;
-     type_listOfGlue m_list;
-   };
-
-
-   type_datamodel_iter get_datamodel_row_iter_from_tree_row_iter(const iterator& iter) const;
-   //type_datamodel_iter get_data_row_iter_from_tree_row_iter(const iterator& iter) const;
-   //typeListOfRows::const_iterator get_data_row_iter_from_tree_row_iter(const iterator& iter) const;
    bool check_treeiter_validity(const iterator& iter) const;
-   void remember_glue_item(GlueItem* item) const;
 
    //Structure:
    unsigned int m_columns_count;
@@ -232,7 +187,7 @@ private:
    guint m_data_model_columns_count; //1 less than m_columns_count, which also has a model column for the key.
 
    //TODO: Performance:
-   typedef std::map<type_datamodel_iter, DbTreeModelRow> type_map_rows;
+   typedef std::map<type_datamodel_row_index, DbTreeModelRow> type_map_rows;
    mutable type_map_rows m_map_rows; //mutable because getting fills the internal cache.
    int m_count_extra_rows; //Rows that are not from the database.
    int m_count_removed_rows; //A cache, instead of searching through the map.
@@ -249,7 +204,6 @@ private:
    bool m_get_records;
 
    int m_stamp; //When the model's stamp and the TreeIter's stamp are equal, the TreeIter is valid.
-   mutable GlueList* m_pGlueList;
 
    static bool m_iface_initialized;
 };
