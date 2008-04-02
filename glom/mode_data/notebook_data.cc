@@ -303,14 +303,14 @@ void Notebook_Data::on_switch_page_handler(GtkNotebookPage* pPage, guint uiPageN
     //b) show changed field contents, changed elsewhere.
     if(box == &m_Box_List)
     {
-      std::cout << "debug: switching to list" << std::endl;
+      //std::cout << "debug: switching to list" << std::endl;
       Gnome::Gda::Value primary_key_selected = m_Box_List.get_primary_key_value_selected();
       m_Box_List.refresh_data_from_database();
       m_Box_List.set_primary_key_value_selected(primary_key_selected);
     }
     else if(box == &m_Box_Details)
     {
-      std::cout << "debug: switching to details" << std::endl;
+      //std::cout << "debug: switching to details" << std::endl;
       Gnome::Gda::Value primary_key_selected = m_Box_List.get_primary_key_value_selected();
       m_Box_Details.refresh_data_from_database_with_primary_key(primary_key_selected);
     }
