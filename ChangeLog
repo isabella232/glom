@@ -1,3 +1,11 @@
+2008-04-02  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.h 
+	* glom/application.cc added a Bakery::App::add_ui_from_string() override, 
+	so we can workaround a problem with UTF8 in the UI description in 
+	gtkmm < 2.12.7.
+	Bug #525718 (Pavel Mlčoch)
+
 2008-04-01  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/glom.glade: window_data_layout: Change window title from 
