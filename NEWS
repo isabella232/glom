@@ -1,3 +1,24 @@
+1.6.12 (stable)
+
+* Designing Fields: Avoid errors when changing field types
+  (necessary in order to even add some field types, such as Date and Time)
+  when using Postgres 8.3, which is less tolerant than previous versions.
+  Bug #525188 (Jani Monoses)
+* Do not show an error dialog while adding records when there is a calculated 
+  default value.
+  Bug #525096 (Jani Monoses)
+* Fix a problem with the Tables menu when tables have non-ASCII in their names
+  Bug #525718 (Pavel Mlčoch)
+* Layout design window: Change the title so that it doesn't say Details Layout 
+  even when editing the List layout.
+  Bug #525449 (Jani Monoses)
+* Make return activate the default buttons when in the last entry in some 
+  dialogs, such as the initial-user/password dialog when self-hosting.
+  Bug #525284 (Jani Monoses)
+* Designing Tables: When changing the default-table column, make sure that 
+  only one row can have this checked.
+  Bug #525186 (Jani Monoses)
+
 1.6.11 (stable)
 
 * Allow deletion of tables that use upper case in their name.
