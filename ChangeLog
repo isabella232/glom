@@ -1,5 +1,11 @@
 2008-04-04  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/db_adddel/db_adddel.cc: Fix the previous commit: 
+	treeviewcolumn_on_cell_data(): Do set the pixbuf property to NULL when 
+	it is empty, or images apear repeated on rows.
+
+2008-04-04  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/db_adddel/db_adddel.cc:
 	treeviewcolumn_on_cell_data(): Do not try to dereference a null pixbuf 
 	refptr. This fixes a crash when adding an image field to the list view 

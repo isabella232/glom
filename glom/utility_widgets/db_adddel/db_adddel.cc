@@ -1999,8 +1999,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
             if(pixbuf)
               pixbuf = ImageGlom::scale_keeping_ratio(pixbuf,  get_fixed_cell_height(), pixbuf->get_width());
 
-            if(pixbuf)
-              g_object_set(pDerived->gobj(), "pixbuf", pixbuf->gobj(), (gpointer)NULL);
+            g_object_set(pDerived->gobj(), "pixbuf", pixbuf ? pixbuf->gobj() : NULL, (gpointer)NULL);
           }
           else
             g_warning("Field::sql(): glom_type is TYPE_IMAGE but gda type is not VALUE_TYPE_BINARY");
