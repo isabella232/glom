@@ -246,11 +246,11 @@ DbTreeModelRow::DbTreeModelRow()
 
 void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
 {
-  std::cout << "DbTreeModelRow::fill_values_if_necessary(): row=" << row << std::endl;
-  if(row == 1000)
-  {
-    std::cout << "1000" << std::endl;  
-  }
+  //std::cout << "DbTreeModelRow::fill_values_if_necessary(): row=" << row << std::endl;
+  //if(row == 1000)
+  //{
+  //  std::cout << "1000" << std::endl;  
+  //}
 
   if(m_values_retrieved)
   {

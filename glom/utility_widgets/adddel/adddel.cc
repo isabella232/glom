@@ -673,7 +673,7 @@ void AddDel::construct_specified_columns()
           if(pCellRenderer)
           {
             //Make it editable:
-	    g_object_set(pCellRenderer->gobj(), "editable", TRUE, (gpointer)NULL);
+            g_object_set(pCellRenderer->gobj(), "editable", TRUE, (gpointer)NULL);
 
             //Connect to its signal:
             pCellRenderer->signal_edited().connect(
@@ -702,6 +702,7 @@ void AddDel::construct_specified_columns()
   }
 
   //Delete the vector's items:
+  model_column_index = 0;
   for(type_vecModelColumns::iterator iter = vecModelColumns.begin(); iter != vecModelColumns.end(); ++iter)
   {
      Gtk::TreeModelColumnBase* pModelColumn = *iter;
@@ -739,6 +740,8 @@ void AddDel::construct_specified_columns()
     {
       std::cerr << "debug: AddDel::construct_specified_columns(): Leaking a Gtk::TreeModelColumn<>." << std::endl;
     }
+    
+    ++model_column_index;
   }
 
   m_TreeView.columns_autosize();

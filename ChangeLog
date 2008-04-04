@@ -1,3 +1,8 @@
+2008-04-04  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/adddel/adddel.cc: construct_specified_columns():
+	Really delete the temporary TreeModelColumns to fix a leak.
+
 2008-04-04  Johannes Schmid  <johanens.schmid@openismus.com>
 
 	* glom/glom_developer.glade:
