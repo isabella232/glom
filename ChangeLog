@@ -1,3 +1,15 @@
+2008-04-04  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_data/box_data_list.cc
+	* glom/mode_data/box_data_list.h
+	on_dialog_layout_hide(): Override this so we can set a bool and 
+	check for this bool in create_layout_add_group(), to reset the column 
+	widths after the layout dialog has been closed. Otherwise the new 
+	columns are off the right-hand side of the scroll area, making users 
+	think that nothing has happened unless they look at the scroll bar.
+	This is not ideal, but drag-and-drop will make this easier anyway.
+	Bug #526046 (Jani Monoses).
+
 2008-04-02  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/connectionpool.cc

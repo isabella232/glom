@@ -314,7 +314,8 @@ Base_DB::type_vecStrings Base_DB::get_table_names_from_database(bool ignore_syst
     }
     else if(data_model_tables)
     {
-      int rows = data_model_tables->get_n_rows();
+      std::cout << "debug: data_model_tables refcount=" << G_OBJECT(data_model_tables->gobj())->ref_count << std::endl;
+      const int rows = data_model_tables->get_n_rows();
       for(int i = 0; i < rows; ++i)
       {
         Gnome::Gda::Value value = data_model_tables->get_value_at(0, i);

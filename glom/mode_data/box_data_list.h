@@ -71,6 +71,10 @@ public:
 
   void get_record_counts(gulong& total, gulong& found) const;
 
+  #ifndef GLOM_ENABLE_CLIENT_ONLY
+  virtual void on_dialog_layout_hide(); //override
+  #endif //GLOM_ENABLE_CLIENT_ONLY
+
 protected:
   virtual void create_layout(); //override
   virtual Document_Glom::type_list_layout_groups create_layout_get_layout(); //overriden in Box_Data_List_Related.
@@ -107,6 +111,8 @@ protected:
 
   bool m_has_one_or_more_records;
   bool m_read_only;
+
+  bool m_reset_column_widths; //create_layout() sets these to 0 when this is set.
 
   type_signal_user_requested_details m_signal_user_requested_details;
 };
