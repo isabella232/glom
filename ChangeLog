@@ -1,5 +1,13 @@
 2008-04-04  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	treeviewcolumn_on_cell_data(): Do not try to dereference a null pixbuf 
+	refptr. This fixes a crash when adding an image field to the list view 
+	if one of the records has no data in that field.
+	Bug #526114 (Jani Monoses).
+
+2008-04-04  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_data/box_data_list.cc
 	* glom/mode_data/box_data_list.h
 	on_dialog_layout_hide(): Override this so we can set a bool and 

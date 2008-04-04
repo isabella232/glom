@@ -177,7 +177,7 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
 
     if(!group->get_title().empty())
     {
-      Gtk::Label* label = Gtk::manage( new Gtk::Label );
+      Gtk::Label* label = Gtk::manage( new Gtk::Label ); //TODO: This is maybe leaked, according to valgrind, though it should be managed by GtkFrame.
       label->set_markup( Bakery::App_Gtk::util_bold_message(group->get_title()) );
       label->show();
       frame->set_label_widget(*label);

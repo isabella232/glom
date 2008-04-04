@@ -719,6 +719,12 @@ void AddDel::construct_specified_columns()
           delete pModelColumnDerived;
           break;
         }
+	case(AddDelColumnInfo::STYLE_Numerical):
+        {
+          Gtk::TreeModelColumn<int>* pModelColumnDerived = static_cast< Gtk::TreeModelColumn<int>* >(pModelColumn);
+          delete pModelColumnDerived;
+          break;
+        }
         default:
         {
           Gtk::TreeModelColumn<Glib::ustring>* pModelColumnDerived = static_cast< Gtk::TreeModelColumn<Glib::ustring>* >(pModelColumn);
@@ -728,7 +734,11 @@ void AddDel::construct_specified_columns()
 
         *iter = 0;
       }
-     }
+    }
+    else
+    {
+      std::cerr << "debug: AddDel::construct_specified_columns(): Leaking a Gtk::TreeModelColumn<>." << std::endl;
+    }
   }
 
   m_TreeView.columns_autosize();
