@@ -28,7 +28,7 @@
 namespace Glom
 {
 
-class LayoutWidgetUtils: public sigc::trackable 
+class LayoutWidgetUtils //: public sigc::trackable 
 {
   public:
 	LayoutWidgetUtils();

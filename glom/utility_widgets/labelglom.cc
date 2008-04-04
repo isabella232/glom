@@ -105,7 +105,7 @@ void LabelGlom::on_menu_properties_activate()
 bool LabelGlom::on_button_press_event(GdkEventButton *event)
 {
   App_Glom* pApp = get_application();
-  if(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+  if(pApp && pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
     GdkModifierType mods;
     gdk_window_get_pointer( Gtk::Widget::gobj()->window, 0, 0, &mods );

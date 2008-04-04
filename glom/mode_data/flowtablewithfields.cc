@@ -24,6 +24,7 @@
 #include <glom/utility_widgets/notebookglom.h>
 #include <glom/utility_widgets/imageglom.h>
 #include <glom/utility_widgets/labelglom.h>
+#include <glom/utility_widgets/dialog_flowtable.h>
 #include <glom/utility_widgets/placeholder-glom.h>
 #include "../application.h"
 #include <gtkmm/checkbutton.h>
@@ -57,6 +58,10 @@ FlowTableWithFields::FlowTableWithFields(const Glib::ustring& table_name)
   m_placeholder(0),
   m_table_name(table_name)
 {
+  m_refUtilDetails->set_visible(false);
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  setup_menu();
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
 FlowTableWithFields::~FlowTableWithFields()
@@ -202,11 +207,14 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
     flow_table->set_padding(Utils::DEFAULT_SPACING_SMALL);
     flow_table->show();
     
-    /*Gtk::EventBox* event_box = Gtk::manage( new Gtk::EventBox() );
+    Gtk::EventBox* event_box = Gtk::manage( new Gtk::EventBox() );
     event_box->add(*flow_table);
-    event_box->show();*/
+		event_box->set_visible_window (false);
+		event_box->signal_button_press_event().connect (sigc::mem_fun (*flow_table,
+																																	 &FlowTableWithFields::on_button_press_event));
+    event_box->show();
     
-    alignment->add(*flow_table);
+    alignment->add(*event_box);
 
     LayoutGroup::type_list_items items = group->get_items(); 
     for(LayoutGroup::type_list_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
@@ -1314,6 +1322,52 @@ sharedptr<LayoutItem_Portal> FlowTableWithFields::get_layout_item_from_relation(
     std::cerr << ex.what() << std::endl;
   }
   return layout_item;
+}
+
+void FlowTableWithFields::on_menu_properties_activate()
+{
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_flowtable");
+
+    Dialog_FlowTable* dialog = 0;
+    refXml->get_widget_derived("dialog_flowtable", dialog);
+
+    if(dialog)
+    {
+      dialog->set_flowtable(this);
+      const int response = dialog->run();
+      if (response == Gtk::RESPONSE_OK)
+      {
+        sharedptr<LayoutGroup> group = get_layout_group();
+        group->m_columns_count = dialog->get_columns_count();
+        group->set_title(dialog->get_title());
+        signal_layout_changed().emit();
+      }
+      delete dialog;
+    }
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+}
+
+bool FlowTableWithFields::on_button_press_event(GdkEventButton *event)
+{
+	App_Glom* pApp = App_Glom::get_application();
+  if(pApp && pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+  {
+    GdkModifierType mods;
+    gdk_window_get_pointer( Gtk::Widget::gobj()->window, 0, 0, &mods );
+    if(mods & GDK_BUTTON3_MASK)
+    {
+      //Give user choices of actions on this item:
+      m_pPopupMenuUtils->popup(event->button, event->time);
+      return true; //We handled this event.
+    }
+  }
+  return Gtk::Widget::on_button_press_event(event);
 }
 
 } //namespace Glom

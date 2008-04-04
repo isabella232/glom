@@ -34,6 +34,7 @@
 #include <glom/libglom/data_structure/field.h>
 #include <glom/libglom/document/document_glom.h>
 #include <glom/utility_widgets/layoutwidgetbase.h>
+#include <glom/utility_widgets/layoutwidgetutils.h>
 #include "box_data_list_related.h"
 #include "treestore_layout.h" //Forthe enum.
 #include <map>
@@ -47,7 +48,8 @@ class DataWidget;
 class FlowTableWithFields
   : public FlowTable,
     public View_Composite_Glom,
-    public LayoutWidgetBase
+    public LayoutWidgetBase,
+    public LayoutWidgetUtils
 {
 public: 
   FlowTableWithFields(const Glib::ustring& table_name = Glib::ustring());
@@ -229,6 +231,10 @@ protected:
   type_signal_related_record_changed m_signal_related_record_changed;
   type_signal_requested_related_details m_signal_requested_related_details;
   type_signal_script_button_clicked m_signal_script_button_clicked;
+    
+  //menu
+  virtual void on_menu_properties_activate();
+  virtual bool on_button_press_event(GdkEventButton *event);
 };
 
 } //namespace Glom

@@ -1,3 +1,27 @@
+2008-04-04  Johannes Schmid  <johanens.schmid@openismus.com>
+
+	* glom/glom_developer.glade:
+	Added dialog_flowtable
+	
+	* glom/mode_data/flowtablewithfields.cc (Glom.FlowTableWithFields,
+	  (add_layout_group_at_position), (on_menu_properties_activate),
+	  (on_button_press_event):
+	* glom/mode_data/flowtablewithfields.h
+	Added popup-menu for flowtables
+	
+	* glom/utility_widgets/buttonglom.cc (on_button_press_event):
+	* glom/utility_widgets/labelglom.cc (on_button_press_event):
+	Fixed a crasher when not in developer mode
+
+	* glom/utility_widgets/Makefile.am:
+	* glom/utility_widgets/dialog_flowtable.cc (Glom,
+	  (set_flowtable), (get_title), (get_columns_count):
+	* glom/utility_widgets/dialog_flowtable.h 
+	Added configuration dialog for FlowTables
+	
+	* glom/utility_widgets/layoutwidgetutils.h (LayoutWidgetUtils):
+	Do not derive from sigc::trackable as it's not necessary.
+
 2008-04-04  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/db_adddel/db_adddel.cc: Fix the previous commit: 
