@@ -33,7 +33,8 @@ namespace Glom
 
 Box_Data_List::Box_Data_List()
 : m_has_one_or_more_records(false),
-  m_read_only(false)
+  m_read_only(false),
+  m_reset_column_widths(false)
 {
   m_layout_name = "list";
 
@@ -726,6 +727,10 @@ void Box_Data_List::create_layout_add_group(const sharedptr<LayoutGroup>& layout
         }
       }
 
+      //Sometimes we reset the column width so that new fields are easily visible:
+      if(m_reset_column_widths)
+        child_item->set_display_width(0);
+
       m_AddDel.add_column(child_item);
     }
   }
@@ -891,7 +896,16 @@ void Box_Data_List::get_record_counts(gulong& total, gulong& found) const
     refModelDerived->get_record_counts(total, found);
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+//overridden, so we can change the column widths, so they are all visible:
+void Box_Data_List::on_dialog_layout_hide()
+{
+  //Tell create_layout() to reset the display_width for each layout item:
+  m_reset_column_widths = true;
+  Box_Data::on_dialog_layout_hide();
+  m_reset_column_widths = false;
+}
+#endif //GLOM_ENABLE_CLIENT_ONLY
+
 } //namespace Glom
-
-
 
