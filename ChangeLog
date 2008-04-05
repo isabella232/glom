@@ -1,3 +1,5 @@
+1.6.13:
+
 2008-04-04  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/db_adddel/db_adddel.cc: Fix the previous commit: 
@@ -23,6 +25,8 @@
 	think that nothing has happened unless they look at the scroll bar.
 	This is not ideal, but drag-and-drop will make this easier anyway.
 	Bug #526046 (Jani Monoses).
+
+1.6.12:
 
 2008-04-02  Murray Cumming  <murrayc@murrayc.com>
 

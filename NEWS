@@ -1,3 +1,11 @@
+1.6.13 (stable)
+
+* Prevent a crash when adding an image field to the list view.
+  Bug #526114 (Jani Monoses).
+* Reset column widths when adding changing the list view layout, so that 
+  added fields are more easily visible.
+  Bug #526046 (Jani Monoses).
+
 1.6.12 (stable)
 
 * Designing Fields: Avoid errors when changing field types
