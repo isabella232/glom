@@ -78,8 +78,6 @@ public:
   virtual void set_allow_add(bool val = true);
   virtual void set_allow_delete(bool val = true);
 
-  void set_allow_column_chooser(bool value = true);
-
   virtual Gtk::TreeModel::iterator add_item(const Glib::ustring& strKey); //Return index of new row.
 
   /** Get an iterator to the blank row in which the user should add data for the new row.
@@ -243,8 +241,6 @@ protected:
 
   virtual void on_treeview_button_press_event(GdkEventButton* event);
 
-  virtual bool on_treeview_columnheader_button_press_event(GdkEventButton* event);
-
   /** Set the menu to popup when the user right-clicks on the column titles.
    * This method does not take ownership of the Gtk::Menu.
    */
@@ -282,8 +278,6 @@ protected:
   typedef std::vector<AddDelColumnInfo> type_ColumnTypes;
   type_ColumnTypes m_ColumnTypes;
 
-  Gtk::Menu m_MenuPopup;
-
   bool m_bAllowUserActions;
 
   bool m_bPreventUserSignals;
@@ -292,8 +286,11 @@ protected:
   type_vecStrings m_vecColumnIDs; //We give each ViewColumn a special ID, so we know where they are after a reorder.
 
   Glib::ustring m_strTextActiveCell; //value before the change
-  Gtk::Menu* m_pColumnHeaderPopup;
-  bool m_allow_column_chooser;
+  Gtk::Menu* m_pMenuPopup;
+  Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
+  Glib::RefPtr<Gtk::UIManager> m_refUIManager;
+  Glib::RefPtr<Gtk::Action> m_refContextEdit, m_refContextDelete;
+
   bool m_auto_add;
   bool m_allow_add;
   bool m_allow_delete;

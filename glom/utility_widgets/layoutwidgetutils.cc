@@ -28,7 +28,7 @@ namespace Glom
 {
   
 LayoutWidgetUtils::LayoutWidgetUtils() :
-    m_pPopupMenuUtils(0)
+  m_pPopupMenuUtils(0)
 {
   m_refActionGroup = Gtk::ActionGroup::create();
 
@@ -48,9 +48,9 @@ void LayoutWidgetUtils::setup_util_menu()
   m_refUIManager = Gtk::UIManager::create();
 	
   m_refActionGroup->add(m_refUtilProperties,
-						sigc::mem_fun(*this, &LayoutWidgetUtils::on_menu_properties_activate) );
+    sigc::mem_fun(*this, &LayoutWidgetUtils::on_menu_properties_activate) );
   m_refActionGroup->add(m_refUtilDetails,
-						sigc::mem_fun(*this, &LayoutWidgetUtils::on_menu_details_activate) );
+    sigc::mem_fun(*this, &LayoutWidgetUtils::on_menu_details_activate) );
     
   m_refUIManager->insert_action_group(m_refActionGroup);
 
@@ -75,7 +75,6 @@ void LayoutWidgetUtils::setup_util_menu()
   m_pPopupMenuUtils = dynamic_cast<Gtk::Menu*>( m_refUIManager->get_widget("/UtilMenu") ); 
   if(!m_pPopupMenuUtils)
     g_warning("menu not found");
-
 }
 
 } // namespace Glom

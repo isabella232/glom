@@ -77,8 +77,7 @@ AddDelColumnInfo& AddDelColumnInfo::operator=(const AddDelColumnInfo& src)
 
 AddDel::AddDel()
 : m_col_key(0),
-  m_pColumnHeaderPopup(0),
-  m_allow_column_chooser(false),
+  m_pMenuPopup(0),
   m_auto_add(true),
   m_allow_add(true),
   m_allow_delete(true)
@@ -90,8 +89,7 @@ AddDel::AddDel()
 AddDel::AddDel(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
 : Gtk::VBox(cobject),
   m_col_key(0),
-  m_pColumnHeaderPopup(0),
-  m_allow_column_chooser(false),
+  m_pMenuPopup(0),
   m_auto_add(true),
   m_allow_add(true),
   m_allow_delete(true)
@@ -238,28 +236,58 @@ void AddDel::on_MenuPopup_activate_Delete()
 
 void AddDel::setup_menu()
 {
-  //Clear existing menu items:
-  m_MenuPopup.items().clear();
+  m_refActionGroup = Gtk::ActionGroup::create();
+  m_refActionGroup->add(Gtk::Action::create("ContextMenu", "Context Menu") );
 
-  //Add new menu items:
-  Gtk::Menu_Helpers::MenuElem menuItem_Edit(_("Edit"));
-  m_MenuPopup.items().push_back(menuItem_Edit);
-  m_MenuPopup.items().back().signal_activate().connect(sigc::mem_fun(*this, &AddDel::on_MenuPopup_activate_Edit));
+  m_refContextEdit = Gtk::Action::create("ContextEdit", Gtk::Stock::EDIT);
+  m_refActionGroup->add(m_refContextEdit,
+    sigc::mem_fun(*this, &AddDel::on_MenuPopup_activate_Edit) );
 
   if(get_allow_user_actions())
   {
-    Gtk::Menu_Helpers::MenuElem menuItem_Delete(_("Delete"));
-    m_MenuPopup.items().push_back(menuItem_Delete);
-    m_MenuPopup.items().back().signal_activate().connect(sigc::mem_fun(*this, &AddDel::on_MenuPopup_activate_Delete));
-  }
-  
-  if(m_allow_column_chooser)
-  {
-    Gtk::Menu_Helpers::MenuElem menuitem_ChooseColumns(_("Choose columns"));
-    m_MenuPopup.items().push_back(menuitem_ChooseColumns);
-    m_MenuPopup.items().back().signal_activate().connect(sigc::mem_fun(*this, &AddDel::on_MenuPopup_activate_ChooseColumns));
+    m_refContextDelete =  Gtk::Action::create("ContextDelete", Gtk::Stock::DELETE);
+    m_refActionGroup->add(m_refContextDelete,
+      sigc::mem_fun(*this, &AddDel::on_MenuPopup_activate_Delete) );
   }
 
+  m_refUIManager = Gtk::UIManager::create();
+
+  m_refUIManager->insert_action_group(m_refActionGroup);
+
+  //TODO: add_accel_group(m_refUIManager->get_accel_group());
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+#endif
+    Glib::ustring ui_info = 
+        "<ui>"
+        "  <popup name='ContextMenu'>"
+        "    <menuitem action='ContextEdit'/>"
+        "    <menuitem action='ContextDelete'/>"
+        "  </popup>"
+        "</ui>";
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    m_refUIManager->add_ui_from_string(ui_info);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << "building menus failed: " <<  ex.what();
+  }
+#else
+  std::auto_ptr<Glib::Error> error;
+  m_refUIManager->add_ui_from_string(ui_info, error);
+  if(error.get() != NULL)
+  {
+    std::cerr << "building menus failed: " << error->what();
+  }
+#endif //GLIBMM_EXCEPTIONS_ENABLED
+
+  //Get the menu:
+  m_pMenuPopup = dynamic_cast<Gtk::Menu*>( m_refUIManager->get_widget("/ContextMenu") ); 
+  if(!m_pMenuPopup)
+    g_warning("menu not found");
 }
 
 bool AddDel::on_button_press_event_Popup(GdkEventButton *event)
@@ -269,14 +297,14 @@ bool AddDel::on_button_press_event_Popup(GdkEventButton *event)
   if(mods & GDK_BUTTON3_MASK)
   {
     //Give user choices of actions on this item:
-    m_MenuPopup.popup(event->button, event->time);
+    m_pMenuPopup->popup(event->button, event->time);
   }
   else
   {
     if(event->type == GDK_2BUTTON_PRESS)
     {
       //Double-click means edit.
-      //Disable this, because it is confusing when single-click activates editable cells too. on_MenuPopup_activate_Edit();
+      //Disable this, because it is confusing when single-click activates editable cells too.
     }
   }
 
@@ -1349,27 +1377,6 @@ void AddDel::on_treeview_button_press_event(GdkEventButton* event)
   on_button_press_event_Popup(event);
 }
 
-bool AddDel::on_treeview_columnheader_button_press_event(GdkEventButton* event)
-{
-  //If this is a right-click with the mouse:
-  if( (event->type == GDK_BUTTON_PRESS) && (event->button == 3) )
-  {
-    if(m_pColumnHeaderPopup)
-    {
-      m_pColumnHeaderPopup->popup(event->button, event->time);
-      return true; //It has been handled.
-    }
-    else
-    {
-      //Default popup:
-      //TODO: We might want to disable this sometimes, because it could be useless sometimes.
-      
-    }
-  }
-
-  return false;
-}
-
 bool AddDel::on_treeview_column_drop(Gtk::TreeView* /* treeview */, Gtk::TreeViewColumn* /* column */, Gtk::TreeViewColumn* /* prev_column */, Gtk::TreeViewColumn* /* next_column */)
 {
   return true;
@@ -1393,8 +1400,6 @@ guint AddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRender
 
   //Save the extra ID, using the title if the column_id is empty:
   pViewColumn->set_column_id( (column_id.empty() ? title : column_id) );
-
-  //TODO pViewColumn->signal_button_press_event().connect( sigc::mem_fun(*this, &AddDel::on_treeview_columnheader_button_press_event) );
 
   return cols_count;
 }
@@ -1429,16 +1434,6 @@ AddDel::type_vecStrings AddDel::get_columns_order() const
 {
   //This list is rebuilt in on_treeview_columns_changed, but maybe we could just build it here.
   return m_vecColumnIDs;
-}
-
-void AddDel::set_column_header_popup(Gtk::Menu& popup)
-{
-  m_pColumnHeaderPopup = &popup;
-}
-
- void AddDel::set_allow_column_chooser(bool value)
-{
-  m_allow_column_chooser = value;
 }
 
 void AddDel::set_auto_add(bool value)

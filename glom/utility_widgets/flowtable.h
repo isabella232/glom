@@ -40,7 +40,7 @@ public:
   void insert_before(Gtk::Widget& first, Gtk::Widget& second, Gtk::Widget& before, bool expand_second);
   void insert_before(Gtk::Widget& first, Gtk::Widget& before, bool expand);
 
-	virtual void remove(Gtk::Widget& first); //override
+  virtual void remove(Gtk::Widget& first); //override
 
   void set_columns_count(guint value);
 

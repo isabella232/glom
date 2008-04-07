@@ -1,3 +1,13 @@
+2008-04-07  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/main.cc (Glom.OptionGroup, main): Use atexit(__libc_freeres) 
+	to maybe help valgrind to detect leaks.
+	* glom/mode_data/flowtablewithfields.cc Added TODO comments about 
+	possible widget leaks.
+	* glom/utility_widgets/adddel/adddel.cc
+	* glom/utility_widgets/adddel/adddel.h: Use UIManager instead of 
+	MenuElems, because it seems less leaky.
+
 2008-04-04  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/adddel/adddel.cc: construct_specified_columns():

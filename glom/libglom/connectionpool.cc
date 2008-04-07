@@ -371,6 +371,8 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
             if(glib_error.get())
               break;
 #endif
+            //std::cout << "m_refGdaConnection refcount=" << G_OBJECT(m_refGdaConnection->gobj())->ref_count << std::endl;
+
             //g_warning("ConnectionPool: connection opened");
 
             //Remember what port is working:

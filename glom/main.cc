@@ -83,9 +83,15 @@ OptionGroup::OptionGroup()
 
 } //namespace Glom
 
+extern "C" void __libc_freeres(void);
+
 int 
 main(int argc, char* argv[])
 {
+  //Force some cleanup at exit,
+  //to help valgrind to detect memory leaks:
+  atexit(__libc_freeres);
+
   // TODO: I am not sure why, but this does not work. PYTHONPATH is set
   // correctly according to getenv(), but python still does not look in it.
   // For now, the installer installs all the python stuff directly into the 

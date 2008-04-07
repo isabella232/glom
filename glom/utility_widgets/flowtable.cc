@@ -292,7 +292,7 @@ FlowTable::FlowTable()
 #endif // !defined(GLIBMM_VFUNCS_ENABLED) || !defined(GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED)
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-	m_current_dnd_item(0),
+  m_current_dnd_item(0),
   m_dnd_in_progress(false),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_columns_count(1),
@@ -351,7 +351,7 @@ void FlowTable::set_design_mode(bool value)
 void FlowTable::add(Gtk::Widget& first, Gtk::Widget& second, bool expand_second)
 {
   FlowTableItem item (&first, &second, this);
-	
+  
   item.m_expand_second = expand_second; //Expand to fill the width for all of the second item.
   m_children.push_back(item);
   gtk_widget_set_parent(GTK_WIDGET (item.m_first->gobj()), GTK_WIDGET(gobj()));
@@ -368,16 +368,16 @@ void FlowTable::add(Gtk::Widget& first, bool expand)
 
 void FlowTable::insert_before(Gtk::Widget& first, Gtk::Widget& before, bool expand)
 {
-	FlowTableItem item(&first, this);
-	item.m_expand_first_full = expand;
-	insert_before (item, before);
+  FlowTableItem item(&first, this);
+  item.m_expand_first_full = expand;
+  insert_before (item, before);
 }
 
 void FlowTable::insert_before(Gtk::Widget& first, Gtk::Widget& second, Gtk::Widget& before, bool expand_second)
 {
-	FlowTableItem item(&first, &second, this);
-	item.m_expand_second = expand_second;
-	insert_before (item, before);
+  FlowTableItem item(&first, &second, this);
+  item.m_expand_second = expand_second;
+  insert_before (item, before);
 }
 
 void FlowTable::insert_before(FlowTableItem& item, Gtk::Widget& before)
@@ -418,9 +418,9 @@ void FlowTable::insert_before(FlowTableItem& item, Gtk::Widget& before)
   }
  
   gtk_widget_set_parent(GTK_WIDGET (item.m_first->gobj()), GTK_WIDGET(gobj()));
-	if (item.m_second)
+  if (item.m_second)
   {
-	  gtk_widget_set_parent(GTK_WIDGET (item.m_second->gobj()), GTK_WIDGET(gobj()));
+    gtk_widget_set_parent(GTK_WIDGET (item.m_second->gobj()), GTK_WIDGET(gobj()));
   }
   if (pos == m_children.end())
   {
@@ -436,7 +436,7 @@ void FlowTable::setup_dnd (Gtk::Widget& child)
       dynamic_cast<FlowTable*>(&child))
     return;
   
-	// Call this method recursive for all (real) children
+  // Call this method recursive for all (real) children
   Gtk::Container* container = dynamic_cast<Gtk::Container*>(&child);
   if (container)
   {
@@ -453,7 +453,7 @@ void FlowTable::setup_dnd (Gtk::Widget& child)
     std::list<Gtk::TargetEntry> new_targets;
     new_targets.push_back(Gtk::TargetEntry(egg_tool_palette_get_drag_target_item()));
     Glib::RefPtr<Gtk::TargetList> targets =
-			child.drag_dest_get_target_list ();
+      child.drag_dest_get_target_list ();
     // The widget has already a default drag destination - add more targets
     if (targets)
     {
@@ -463,7 +463,7 @@ void FlowTable::setup_dnd (Gtk::Widget& child)
     else
       child.drag_dest_set(new_targets, Gtk::DEST_DEFAULT_ALL,
                           Gdk::ACTION_COPY | Gdk::ACTION_MOVE);
-							
+              
     // It's important to connect this one BEFORE
     child.signal_drag_motion().connect (sigc::bind<Gtk::Widget*>(sigc::mem_fun (*this, &FlowTable::on_child_drag_motion), &child),
                                         false);
@@ -1155,7 +1155,7 @@ bool FlowTable::on_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_contex
   
   m_current_dnd_item = dnd_get_item(x, y);  
   LayoutWidgetBase* above = dnd_find_datawidget();
-	
+  
   // above might be 0 here...
   on_dnd_add_placeholder(above);
   change_dnd_status(true);
@@ -1211,7 +1211,7 @@ FlowTable::dnd_get_item(int drag_x, int drag_y)
   int column_width;
   get_column_height (0, m_children.size(), column_width);
   int column = 0;
-	
+  
   if (column_width != 0)
     column = drag_x / column_width;
   
@@ -1245,7 +1245,7 @@ FlowTable::dnd_get_item(int drag_x, int drag_y)
     
     if (drag_y < (rect.get_y() + rect.get_height()))
     {
-			return &(*cur_item);
+      return &(*cur_item);
     }
   }
   
@@ -1263,7 +1263,7 @@ LayoutWidgetBase* FlowTable::dnd_find_datawidget()
   LayoutWidgetBase* above = 0;
   if(m_current_dnd_item)
   {
-		if(m_current_dnd_item->m_first)
+    if(m_current_dnd_item->m_first)
     {
       Gtk::Alignment* alignment = dynamic_cast <Gtk::Alignment*>(m_current_dnd_item->m_first);
       if (alignment)
@@ -1294,19 +1294,18 @@ bool FlowTable::on_child_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_
                                      Gtk::Widget* child)
 {
   type_vecChildren::iterator cur_child;
-	for (cur_child = m_children.begin();
-			 cur_child != m_children.end(); cur_child++)
-	{
+  for (cur_child = m_children.begin(); cur_child != m_children.end(); cur_child++)
+  {
     // The widget was added directly to the FlowTable
-		if (cur_child->m_first == child || 
-				cur_child->m_second == child)
+    if (cur_child->m_first == child || 
+        cur_child->m_second == child)
     {
       break;
     }
     // The parent of the widget was added to the FlowTable
     else if (cur_child->m_first == child->get_parent() ||
              cur_child->m_second == child->get_parent())
-		{
+    {
       break;
     }
     Gtk::Bin* bin = dynamic_cast<Gtk::Bin*>(cur_child->m_second);
@@ -1317,7 +1316,7 @@ bool FlowTable::on_child_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_
           bin->get_child() == child->get_parent())
         break;
     }
-	}
+  }
   if (cur_child != m_children.end())
     m_current_dnd_item = &(*cur_child);
   else
@@ -1336,7 +1335,7 @@ bool FlowTable::on_child_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_
   on_dnd_remove_placeholder ();
   
   LayoutWidgetBase* above = dnd_find_datawidget();
-	
+  
   // above might be 0 here...
   on_dnd_add_placeholder(above);
   change_dnd_status(true);

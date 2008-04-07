@@ -178,7 +178,7 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
 
   if(true)//!fields.empty() && !group_name.empty())
   {
-    Gtk::Frame* frame = Gtk::manage( new Gtk::Frame );
+    Gtk::Frame* frame = Gtk::manage( new Gtk::Frame ); //TODO_leak: This is possibly leaked, according to valgrind. 
 
     if(!group->get_title().empty())
     {
@@ -191,7 +191,7 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
     frame->set_shadow_type(Gtk::SHADOW_NONE); //HIG-style
     frame->show();
 
-    Gtk::Alignment* alignment = Gtk::manage( new Gtk::Alignment );
+    Gtk::Alignment* alignment = Gtk::manage( new Gtk::Alignment ); //TODO_leak: This is possibly leaked, according to valgrind.
 
     if(!group->get_title().empty()) //Don't indent if it has no title, to allow use of groups just for positioning.
       alignment->set_padding(Glom::Utils::DEFAULT_SPACING_SMALL, 0, 6, 0); //Use left-padding of 6 even on Maemo because indentation is important.
@@ -207,11 +207,11 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
     flow_table->set_padding(Utils::DEFAULT_SPACING_SMALL);
     flow_table->show();
     
-    Gtk::EventBox* event_box = Gtk::manage( new Gtk::EventBox() );
+    Gtk::EventBox* event_box = Gtk::manage( new Gtk::EventBox() ); //TODO_Leak: Valgrind says this is possibly leaked.
     event_box->add(*flow_table);
-		event_box->set_visible_window (false);
-		event_box->signal_button_press_event().connect (sigc::mem_fun (*flow_table,
-																																	 &FlowTableWithFields::on_button_press_event));
+    event_box->set_visible_window(false);
+    event_box->signal_button_press_event().connect (sigc::mem_fun (*flow_table,
+      &FlowTableWithFields::on_button_press_event));
     event_box->show();
     
     alignment->add(*event_box);
@@ -441,7 +441,7 @@ void FlowTableWithFields::add_field_at_position(const sharedptr<LayoutItem_Field
   info.m_field = layoutitem_field;
 
   //Add the entry or checkbox (handled by the DataWidget)
-  DataWidget* pDataWidget = Gtk::manage(new DataWidget(layoutitem_field, table_name, get_document()) );
+  DataWidget* pDataWidget = Gtk::manage(new DataWidget(layoutitem_field, table_name, get_document()) ); //TODO_Leak: Possibly leaked, according to valgrind.
   add_layoutwidgetbase(pDataWidget, add_before);
   add_view(pDataWidget); //So it can get the document.
 

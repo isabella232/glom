@@ -251,7 +251,7 @@ void DbAddDel::setup_menu()
   m_refActionGroup->add(m_refContextLayout,
     sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_layout) );
 
-  //TODO: This does not work until this widget is in a container in the window:s
+  //TODO: This does not work until this widget is in a container in the window:
   App_Glom* pApp = get_application();
   if(pApp)
   {
