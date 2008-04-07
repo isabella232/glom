@@ -211,7 +211,6 @@ ConnectionPool::ConnectionPool()
 
 ConnectionPool::~ConnectionPool()
 {
-  std::cout << "~ConnectionPool(): m_refGdaConnection refcount=" << G_OBJECT(m_refGdaConnection->gobj())->ref_count << std::endl;
   if(m_pFieldTypes)
   {
     delete m_pFieldTypes;
@@ -372,7 +371,7 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
             if(glib_error.get())
               break;
 #endif
-            std::cout << "m_refGdaConnection refcount=" << G_OBJECT(m_refGdaConnection->gobj())->ref_count << std::endl;
+            //std::cout << "m_refGdaConnection refcount=" << G_OBJECT(m_refGdaConnection->gobj())->ref_count << std::endl;
 
             //g_warning("ConnectionPool: connection opened");
 
