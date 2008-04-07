@@ -23,7 +23,11 @@
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
+#ifdef GLOM_ENABLE_CLIENT_ONLY
 #include <glom/utility_widgets/flowtable.h>
+#else
+#include <glom/utility_widgets/flowtable_dnd.h>
+#endif
 #include <glom/libglom/data_structure/layout/layoutgroup.h>
 #include <glom/libglom/data_structure/layout/layoutitem_field.h>
 #include <glom/libglom/data_structure/layout/layoutitem_notebook.h>
@@ -46,7 +50,12 @@ namespace Glom
 class DataWidget;
 
 class FlowTableWithFields
-  : public FlowTable,
+  : 
+#ifdef GLOM_ENABLE_CLIENT_ONLY
+    public FlowTable,
+#else
+    public FlowTableDnd,
+#endif
     public View_Composite_Glom,
     public LayoutWidgetBase,
     public LayoutWidgetUtils

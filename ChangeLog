@@ -1,3 +1,16 @@
+2008-04-07  Johannes Schmid  <johannes.schmid@openismus.com>
+
+	* glom/mode_data/flowtablewithfields.h:
+	Derive from FlowTableDnd if not in CLIENT_ONLY mode
+	
+	* glom/utility_widgets/flowtable.cc:
+	(dnd_*) (on_dnd_*)
+	* glom/utility_widgets/flowtable.h:
+	* glom/utility_widgets/Makefile.am:
+	* glom/utility_widgets/flowtable_dnd.cc:
+	* glom/utility_widgets/flowtable_dnd.h:	
+	Moved drag and drop stuff into it's own class and some code cleanup
+
 2008-04-07  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/main.cc (Glom.OptionGroup, main): Use atexit(__libc_freeres) 

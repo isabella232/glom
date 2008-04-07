@@ -89,29 +89,6 @@ protected:
   virtual void on_unrealize();
   virtual bool on_expose_event(GdkEventExpose* event);
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  //DND stuff:
-  virtual bool on_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint time);
-  virtual void on_drag_leave(const Glib::RefPtr<Gdk::DragContext>& drag_context, guint time);
-  virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int, int, const Gtk::SelectionData& selection_data, guint, guint time);
-  virtual void on_dnd_add_placeholder(LayoutWidgetBase* above) = 0;
-  virtual void on_dnd_remove_placeholder() = 0;
-  
-  virtual bool on_child_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint time, Gtk::Widget* child);
-  virtual void on_child_drag_leave(const Glib::RefPtr<Gdk::DragContext>& drag_context, guint time);
-  virtual void on_child_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int, int, 
-                                           const Gtk::SelectionData& selection_data, guint, guint time, Gtk::Widget* child);  
-  void setup_dnd (Gtk::Widget& child);
-  
-  // Methods for the different layout object
-  virtual void on_dnd_add_layout_item_field (LayoutWidgetBase* above) = 0;
-  virtual void on_dnd_add_layout_group(LayoutWidgetBase* above) = 0;
-  virtual void on_dnd_add_layout_item_button (LayoutWidgetBase* above) = 0;
-  virtual void on_dnd_add_layout_item_text (LayoutWidgetBase* above) = 0;
-  virtual void on_dnd_add_layout_notebook (LayoutWidgetBase* above) = 0;
-
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
   int get_column_height(guint start_widget, guint widget_count, int& total_width) const;
 
   /** 
@@ -147,18 +124,6 @@ protected:
   void get_item_requested_width(const FlowTableItem& item, int& first, int& second) const;
   void get_item_max_width_requested(guint start, guint height, guint& first_max_width, guint& second_max_width, guint& singles_max_width, bool& is_last_column) const; //TODO: maybe combine this with code in get_minimum_column_height().
   
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  FlowTableItem* dnd_get_item(int x, int y);
-  void change_dnd_status(bool active = true);
-  LayoutWidgetBase* dnd_find_datawidget();
-  FlowTableItem* m_current_dnd_item;
-	
-  void dnd_remove_placeholder_idle();
-  bool dnd_remove_placeholder_real();
-  
-  bool m_dnd_in_progress;
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-  
   bool child_is_visible(const Gtk::Widget* widget) const;
 
   Gtk::Allocation assign_child(Gtk::Widget* widget, int x, int y);
@@ -178,6 +143,9 @@ protected:
   //For drawing:
   Glib::RefPtr<Gdk::Window> m_refGdkWindow;
   Glib::RefPtr<Gdk::GC> m_refGC;
+    
+  // Dnd
+  virtual void setup_dnd (Gtk::Widget& child);
 };
 
 } //namespace Glom
