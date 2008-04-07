@@ -251,28 +251,42 @@ bool Box_DB_Table_Definition::check_field_change(const sharedptr<const Field>& f
 
     dialog.run();
 
-    result = false;
+    return false;
   }
-  else
-  {
-    //Refuse to set a second primary key:
-    //bool bcontinue = true;
-    if(field_new->get_primary_key() && !field_old->get_primary_key()) //Was the primary key column checked?
-    {
-      //Is there an existing primary key?
-      sharedptr<Field> existing_primary_key = get_field_primary_key_for_table(m_table_name);
-      if(existing_primary_key)
-      {
-        //Warn the user and refuse to make the change:
-        Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Too many primary keys")), true);
-        dialog.set_secondary_text(_("You may not specify more than one field as the primary key."));
-        if(parent_window)
-          dialog.set_transient_for(*parent_window);
-        dialog.run();
 
-        result = false;
-      }
+  //Refuse to set a second primary key:
+  //bool bcontinue = true;
+  if(field_new->get_primary_key() && !field_old->get_primary_key()) //Was the primary key column checked?
+  {
+    //Is there an existing primary key?
+    sharedptr<Field> existing_primary_key = get_field_primary_key_for_table(m_table_name);
+    if(existing_primary_key)
+    {
+      //Warn the user and refuse to make the change:
+      Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Too many primary keys")), true);
+      dialog.set_secondary_text(_("You may not specify more than one field as the primary key."));
+      if(parent_window)
+        dialog.set_transient_for(*parent_window);
+      dialog.run();
+
+      return false;
     }
+  }
+
+  //Refuse to change a field name to the same as an existing one:
+  if( (field_new->get_name() != field_old->get_name()) &&
+      (get_field_exists_in_database(m_table_name, field_new->get_name())) )
+  {
+    std::cout << "get_field_exists_in_database(" << m_table_name << ", " << field_new->get_name() << ") returned true" << std::endl;
+
+    //Warn the user and refuse to make the change:
+    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Field Name Already Exists")), true);
+    dialog.set_secondary_text(_("This field already exists. Please choose a different field name"));
+    if(parent_window)
+      dialog.set_transient_for(*parent_window);
+    dialog.run();
+
+    return false;
   }
 
   return result;
