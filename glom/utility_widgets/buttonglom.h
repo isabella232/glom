@@ -22,7 +22,6 @@
 #define GLOM_UTILITY_WIDGETS_BUTTON_GLOM_H
 
 #include <gtkmm.h>
-#include "layoutwidgetbase.h"
 #include "layoutwidgetutils.h"
 #include <glom/libglom/data_structure/layout/layoutitem_button.h>
 #include <libglademm.h>
@@ -34,7 +33,6 @@ class App_Glom;
 
 class ButtonGlom
 : public Gtk::Button,
-  public LayoutWidgetBase,
   public LayoutWidgetUtils
 {
 public:

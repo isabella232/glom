@@ -36,9 +36,6 @@ PlaceholderGlom::PlaceholderGlom() :
   Gtk::Widget()
 {
   set_flags(Gtk::NO_WINDOW);
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  setup_menu();
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
 PlaceholderGlom::~PlaceholderGlom()

@@ -108,7 +108,17 @@ public:
    */
   inline operator bool() const;
 
-    /** Dynamic cast to derived class.
+  /** Test whether the sharedptr<> points to any underlying instance.
+   *
+   * Mimics usage of ordinary pointers:
+   * @code
+   *   if (!ptr)
+   *     do_something();
+   * @endcode
+   */
+  inline bool operator!() const;
+
+   /** Dynamic cast to derived class.
    *
    * The sharedptr can't be cast with the usual notation so instead you can use
    * @code
@@ -308,6 +318,12 @@ sharedptr<T_obj>::operator bool() const
   return (m_pobj != 0);
 }
 
+template <class T_obj>
+inline
+bool sharedptr<T_obj>::operator!() const
+{
+  return (m_pobj == 0);
+}
 
 template <class T_obj>
 inline

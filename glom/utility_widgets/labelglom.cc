@@ -24,6 +24,7 @@
 #include <glibmm/i18n.h>
 #include "../layout_item_dialogs/dialog_textobject.h"
 #include "../libglom/glade_utils.h"
+#include "../mode_data/flowtablewithfields.h"
 //#include <sstream> //For stringstream
 
 namespace Glom
@@ -31,20 +32,12 @@ namespace Glom
 
 LabelGlom::LabelGlom()
 {
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  setup_menu();
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
   init();
 }
 
 LabelGlom::LabelGlom(const Glib::ustring& label, float xalign, float yalign, bool mnemonic)
 : m_label(label, xalign, yalign, mnemonic)
 {
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  setup_menu();
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
   init();
 }
 

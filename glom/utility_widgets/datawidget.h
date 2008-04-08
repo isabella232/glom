@@ -24,7 +24,7 @@
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 #include "placeholder.h"
-#include "layoutwidgetbase.h"
+#include "layoutwidgetmenu.h"
 #include <gtkmm/label.h>
 #include <glom/libglom/data_structure/field.h>
 #include <glom/libglom/document/document_glom.h>
@@ -38,7 +38,7 @@ class App_Glom;
 
 class DataWidget
  : public Gtk::EventBox,
-   public LayoutWidgetBase,
+   public LayoutWidgetMenu,
    public View_Composite_Glom
 {
 public:

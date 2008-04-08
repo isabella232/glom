@@ -38,7 +38,8 @@ libutility_widgets_a_SOURCES = alignment_justified.cc alignment_justified.h \
                                layoutwidgetutils.h layoutwidgetutils.cc \
                                dialog_layoutitem_properties.cc dialog_layoutitem_properties.h \
                                dialog_flowtable.cc  dialog_flowtable.h \
-                               flowtable_dnd.h  flowtable_dnd.cc
+                               flowtable_dnd.h  flowtable_dnd.cc \
+                               layoutwidgetmenu.cc  layoutwidgetmenu.h
 
 if !GLOM_ENABLE_CLIENT_ONLY
 libutility_widgets_a_SOURCES += filechooserdialog_saveextras.cc filechooserdialog_saveextras.h \

@@ -22,7 +22,7 @@
 #define GLOM_UTILITY_WIDGETS_BUTTON_GLOM_H
 
 #include <gtkmm.h>
-#include "layoutwidgetbase.h"
+#include "layoutwidgetmenu.h"
 #include <glom/libglom/data_structure/layout/layoutitem_notebook.h>
 #include <libglademm.h>
 
@@ -33,7 +33,7 @@ class App_Glom;
 
 class NotebookGlom
 : public Gtk::Notebook,
-  public LayoutWidgetBase
+  public LayoutWidgetMenu
 {
 public:
   explicit NotebookGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);

@@ -57,7 +57,6 @@ class FlowTableWithFields
     public FlowTableDnd,
 #endif
     public View_Composite_Glom,
-    public LayoutWidgetBase,
     public LayoutWidgetUtils
 {
 public: 
@@ -243,6 +242,7 @@ protected:
     
   //menu
   virtual void on_menu_properties_activate();
+  virtual void on_menu_delete_activate(); // override this to add a dialog box
   virtual bool on_button_press_event(GdkEventButton *event);
 };
 

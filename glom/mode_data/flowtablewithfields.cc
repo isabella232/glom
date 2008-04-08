@@ -59,9 +59,6 @@ FlowTableWithFields::FlowTableWithFields(const Glib::ustring& table_name)
   m_table_name(table_name)
 {
   m_refUtilDetails->set_visible(false);
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  setup_menu();
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
 FlowTableWithFields::~FlowTableWithFields()
@@ -1350,6 +1347,30 @@ void FlowTableWithFields::on_menu_properties_activate()
   catch(const Gnome::Glade::XmlError& ex)
   {
     std::cerr << ex.what() << std::endl;
+  }
+}
+
+void FlowTableWithFields::on_menu_delete_activate()
+{
+  Glib::ustring message;
+  if (!get_layout_item()->get_title().empty())
+  {
+    message = Glib::ustring::compose (_("Delete whole group \"%1\"?"),
+                                      get_layout_item()->get_title());
+  }
+  else
+  {
+    message = _("Delete whole group?");
+  }
+  Gtk::MessageDialog dlg (message, false, Gtk::MESSAGE_QUESTION,
+                          Gtk::BUTTONS_YES_NO, true);
+  switch (dlg.run())
+  {
+    case Gtk::RESPONSE_YES:
+      LayoutWidgetUtils::on_menu_delete_activate();
+      break;
+    default:
+      return;
   }
 }
 

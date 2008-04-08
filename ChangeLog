@@ -1,3 +1,41 @@
+2008-04-08  Johannes Schmid  <johannes.schmid@openismus.com>
+
+	* glom/libglom/sharedptr.h
+	(operator!): Added operator! for convenience
+	
+	* glom/mode_data/flowtablewithfields.cc
+	* glom/mode_data/flowtablewithfields.h:
+	(FlowTableWithFields): Removed setup_menu()
+	(on_menu_delete_activate): Added a confirmation dialog
+	
+	* glom/utility_widgets/Makefile.am:
+	* glom/utility_widgets/layoutwidgetmenu.cc:
+	* glom/utility_widgets/layoutwidgetmenu.h:
+	* glom/utility_widgets/layoutwidgetbase.cc:
+	* glom/utility_widgets/layoutwidgetbase.h:
+	Moved menu code from LayoutWidgetBase into it's own class
+	(on_menupopup_activate_delete): Added a menu item to delete fields
+
+	* glom/utility_widgets/buttonglom.cc:
+	* glom/utility_widgets/buttonglom.h:
+	* glom/utility_widgets/labelglom.cc:
+	* glom/utility_widgets/labelglom.h:
+	Derive from LayoutWidgetUtils, removed setup_menu() call in
+	constructors
+
+	* glom/utility_widgets/datawidget.h:
+	* glom/utility_widgets/notebookglom.h:
+	* glom/utility_widgets/layoutwidgetfield.h:
+	Derive from LayoutWidgetMenu
+	
+	* glom/utility_widgets/layoutwidgetutils.cc:
+	* glom/utility_widgets/layoutwidgetutils.h:
+	Derive from LayoutWidgetBase
+	(on_menu_delete_activate): Added menu item to delete layout items
+	
+	* glom/utility_widgets/placeholder-glom.cc:
+	Removed setup_menu() call
+
 2008-04-08  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/Makefile.am:

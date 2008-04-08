@@ -34,7 +34,6 @@ class App_Glom;
 
 class LabelGlom
 : public Gtk::EventBox,
-  public LayoutWidgetBase,
   public LayoutWidgetUtils
 {
 public:

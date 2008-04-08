@@ -55,14 +55,6 @@ public:
     TYPE_TEXT
   };
 
-  //Popup-menu:
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual void setup_menu();
-  virtual void on_menupopup_activate_layout();
-  virtual void on_menupopup_activate_layout_properties();
-  virtual void on_menupopup_add_item(enumType item);
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   typedef sigc::signal<void> type_signal_layout_changed;
 
@@ -103,14 +95,6 @@ protected:
   type_signal_user_requested_layout m_signal_user_requested_layout;
   type_signal_user_requested_layout_properties m_signal_user_requested_layout_properties;
 
-  Gtk::Menu* m_pMenuPopup;
-
-  //TODO_Performance: //Presumably we waste lots of memory by having this in each layout widget. Maybe we can use one shared menu.
-  Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
-  Glib::RefPtr<Gtk::UIManager> m_refUIManager;
-
-  Glib::RefPtr<Gtk::Action> m_refContextLayout, m_refContextLayoutProperties;
-  Glib::RefPtr<Gtk::Action> m_refContextAddField, m_refContextAddRelatedRecords, m_refContextAddGroup, m_refContextAddNotebook, m_refContextAddButton, m_refContextAddText;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 };
 

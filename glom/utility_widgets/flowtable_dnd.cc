@@ -31,7 +31,7 @@ namespace Glom
 {
   
 FlowTableDnd::FlowTableDnd() :
-	m_current_dnd_item(0)
+  m_current_dnd_item(0)
 {
   std::list<Gtk::TargetEntry> drag_targets;
   Gtk::TargetEntry drag_target(egg_tool_palette_get_drag_target_item());

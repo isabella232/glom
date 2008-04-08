@@ -21,12 +21,12 @@
 #ifndef GLOM_MODE_DATA_LAYOUT_WIDGET_FIELD_H
 #define GLOM_MODE_DATA_LAYOUT_WIDGET_FIELD_H
 
-#include "layoutwidgetbase.h"
+#include "layoutwidgetmenu.h"
 
 namespace Glom
 {
 
-class LayoutWidgetField : public LayoutWidgetBase
+class LayoutWidgetField : public LayoutWidgetMenu
 {
 public: 
   LayoutWidgetField();
