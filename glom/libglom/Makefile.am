@@ -48,13 +48,20 @@ if !WIN32
 libglom_la_LIBADD += -lutil
 endif
 
-noinst_PROGRAMS = test_sharedptr_layoutitem
+
+#Small test programs:
+noinst_PROGRAMS = test_sharedptr_layoutitem test_connectionpool
 
 test_sharedptr_layoutitem_SOURCES = test_sharedptr_layoutitem.cc
 test_sharedptr_layoutitem_LDADD =  libglom.la \
               $(GLOM_LIBS)
 
+test_connectionpool_SOURCES = test_connectionpool.cc
+test_connectionpool_LDADD =  libglom.la \
+              $(GLOM_LIBS)
+
 if !WIN32
 test_sharedptr_layoutitem_LDADD += -lutil
+test_connectionpool_LDADD += -lutil
 endif
 

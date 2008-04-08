@@ -1,3 +1,11 @@
+2008-04-08  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/Makefile.am:
+	* glom/libglom/test_connectionpool.cc: Added this test.
+
+	* glom/utility_widgets/Makefile.am:
+	* glom/utility_widgets/test_flowtable.cc: Revived this test.
+
 2008-04-07  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_design/fields/box_db_table_definition.cc

@@ -54,9 +54,9 @@ libutility_widgets_a_LIBADD = cellrendererlist/libutility_widgets_cellrendererli
                               db_adddel/libutility_widgets_db_adddel.a \
                               canvas/libutility_widgets_canvas.a
 
-#noinst_PROGRAMS = test_flowtable
-#test_flowtable_SOURCES = test_flowtable.cc flowtable.cc flowtable.h
-#test_flowtable_LDADD =  $(GLOM_LIBS)
+noinst_PROGRAMS = test_flowtable
+test_flowtable_SOURCES = test_flowtable.cc flowtable.cc flowtable.h
+test_flowtable_LDADD =  $(GLOM_LIBS)
 
 
 

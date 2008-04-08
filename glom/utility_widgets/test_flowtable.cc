@@ -19,11 +19,12 @@
  */
  
 #include <gtkmm.h>
-#include "flowtablewithfields.h"
+#include "flowtable.h"
 
 
-#include "dragwindow.h"
+//#include "dragwindow.h"
 
+/*
 void on_drag_data_get_label(const Glib::RefPtr<Gdk::DragContext>&, Gtk::SelectionData& selection_data, guint, guint)
 {
   selection_data.set(selection_data.get_target(), 8, (const guchar*)"label", 5);
@@ -33,14 +34,13 @@ void on_drag_data_get_entry(const Glib::RefPtr<Gdk::DragContext>&, Gtk::Selectio
 {
   selection_data.set(selection_data.get_target(), 8, (const guchar*)"entry", 5);
 }
-
-#include "dragwindow.h"
+*/
 
 int
 main(int argc, char* argv[])
 {
   Gtk::Main mainInstance(argc, argv);
-#if 0
+
   Gtk::Window window;
   //Gtk::VBox flowtable;
   Glom::FlowTable flowtable;
@@ -76,11 +76,10 @@ main(int argc, char* argv[])
 
   flowtable.set_padding(20);
 
-  Glom::DragWindow drag_window;
-  drag_window.show();
+//  Glom::DragWindow drag_window;
+//  drag_window.show();
   
   Gtk::Main::run(window);
-#endif
 
   return 0;
 }
