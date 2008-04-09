@@ -984,6 +984,25 @@ The data in the field was not recognized. Please try to correct the data or reve
                     <child>
                       <widget class="GtkViewport" id="viewport1">
                         <property name="visible">True</property>
+                        <child>
+                          <widget class="GtkSourceView" id="textview_calculation">
+		                        <property name="visible">True</property>
+		                        <property name="can_focus">True</property>
+		                        <property name="editable">True</property>
+		                        <property name="overwrite">False</property>
+		                        <property name="accepts_tab">True</property>
+		                        <property name="justification">GTK_JUSTIFY_LEFT</property>
+		                        <property name="wrap_mode">GTK_WRAP_NONE</property>
+		                        <property name="cursor_visible">True</property>
+		                        <property name="pixels_above_lines">0</property>
+		                        <property name="pixels_below_lines">0</property>
+		                        <property name="pixels_inside_wrap">0</property>		                      
+		                        <property name="left_margin">0</property>
+		                        <property name="right_margin">0</property>
+		                        <property name="indent">0</property>
+		                        <property name="text" translatable="yes"></property>
+		                      </widget>
+		                    </child>
                       </widget>
                     </child>
                   </widget>
@@ -1154,6 +1173,25 @@ The data in the field was not recognized. Please try to correct the data or reve
                     <child>
                       <widget class="GtkViewport" id="viewport1">
                         <property name="visible">True</property>
+                          <child>
+                            <widget class="GtkSourceView" id="textview_calculation">
+		                          <property name="visible">True</property>
+		                          <property name="can_focus">True</property>
+		                          <property name="editable">True</property>
+		                          <property name="overwrite">False</property>
+		                          <property name="accepts_tab">True</property>
+		                          <property name="justification">GTK_JUSTIFY_LEFT</property>
+		                          <property name="wrap_mode">GTK_WRAP_NONE</property>
+		                          <property name="cursor_visible">True</property>
+		                          <property name="pixels_above_lines">0</property>
+		                          <property name="pixels_below_lines">0</property>
+		                          <property name="pixels_inside_wrap">0</property>		                      
+		                          <property name="left_margin">0</property>
+		                          <property name="right_margin">0</property>
+		                          <property name="indent">0</property>
+		                          <property name="text" translatable="yes"></property>
+		                        </widget>
+		                      </child>
                       </widget>
                     </child>
                   </widget>

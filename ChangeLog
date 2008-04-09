@@ -1,3 +1,11 @@
+2008-04-09  Johannes Schmid <jhs@gnome.org>
+
+	* glom/glom_developer.glade:
+	Fix crasher when opening GlomButton details dialog
+	
+	* glom/utility_widgets/Makefile.am:
+  Move flowtable_dnd.[cch] in !GLOM_CLIENT_ONLY section
+
 2008-04-09  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/db_adddel/db_adddel.cc
