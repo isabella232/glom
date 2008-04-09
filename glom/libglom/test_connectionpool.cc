@@ -27,40 +27,48 @@ main(int argc, char* argv[])
 {
   Gnome::Gda::init("test", "0.1", argc, argv);
 
-  //Set the connection details:
-  Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
-  if(connection_pool)
+  Glib::RefPtr<Gnome::Gda::Connection> gdaconnection;
+
   {
-    //Set the connection details in the ConnectionPool singleton.
-    //The ConnectionPool will now use these every time it tries to connect.
+    //Set the connection details:
+    Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
+    if(connection_pool)
+    {
+      //Set the connection details in the ConnectionPool singleton.
+      //The ConnectionPool will now use these every time it tries to connect.
 
-    connection_pool->set_database("glom_musiccollection217");
-    connection_pool->set_host("localhost");
-    connection_pool->set_user("murrayc");
-    connection_pool->set_password("murraycpw");
+      connection_pool->set_database("glom_musiccollection217");
+      connection_pool->set_host("localhost");
+      connection_pool->set_user("murrayc");
+      connection_pool->set_password("murraycpw");
 
-    connection_pool->set_port(5433);
-    connection_pool->set_try_other_ports(false);
+      connection_pool->set_port(5433);
+      connection_pool->set_try_other_ports(false);
 
-    connection_pool->set_ready_to_connect(); //Box_DB::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
+      connection_pool->set_ready_to_connect(); //Box_DB::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
+    }
+
+    //Connect:
+    Glom::sharedptr<Glom::SharedConnection> connection;
+    #ifdef GLIBMM_EXCEPTIONS_ENABLED
+    connection = Glom::ConnectionPool::get_and_connect();
+    #else
+    std::auto_ptr<ExceptionConnection> error;
+    connection = Glom::ConnectionPool::get_and_connect(error);
+    #endif
+
+    if(connection)
+      std::cout << "Connected" << std::endl;
+    else
+      std::cout << "Connection failed." << std::endl;
+
+    gdaconnection = connection->get_gda_connection();
+    //Cleanup:
+    Glom::ConnectionPool::delete_instance();
   }
 
-  //Connect:
-  Glom::sharedptr<Glom::SharedConnection> connection;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  connection = Glom::ConnectionPool::get_and_connect();
-#else
-  std::auto_ptr<ExceptionConnection> error;
-  connection = Glom::ConnectionPool::get_and_connect(error);
-#endif
+  std::cout << "gdaconnection refcount=" << G_OBJECT(gdaconnection->gobj())->ref_count << std::endl;
 
-  if(connection)
-    std::cout << "Connected" << std::endl;
-  else
-    std::cout << "Connection failed." << std::endl;
-
-  //Cleanup:
-  Glom::ConnectionPool::delete_instance();
 
   return 0;
 }

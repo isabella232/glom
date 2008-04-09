@@ -37,7 +37,9 @@ namespace
 #define GLOM_FLOWTABLE(obj) (G_TYPE_CHECK_INSTANCE_CAST((obj), GLOM_TYPE_FLOWTABLE, GlomFlowtable))
 #endif
 
+#ifndef GLIBMM_VFUNCS_ENABLED
   GtkContainerClass* parent_class = NULL;
+#endif
 
 #if 0
   struct GlomFlowtableClass
@@ -323,6 +325,33 @@ FlowTable::FlowTable()
 
 FlowTable::~FlowTable()
 {
+  //Delete managed children.
+  //(For some reason this is not always happening via Gtk::Container:
+  /* Actualy, don't do this because we would then be double-deleting what the 
+   * Container base class already deleted. We'll have to really find out if/why some 
+   * things are not being deleted. murrayc.
+  bool one_deleted = true;
+  while(!m_children.empty() && one_deleted)
+  {
+    one_deleted = false;
+
+    type_vecChildren::iterator iter = m_children.begin();
+    FlowTableItem& item = *iter;
+
+    //Delete the widgets:
+    if(item.m_first || item.m_second)
+    {
+      if(item.m_first && item.m_first->is_managed_())
+        delete item.m_first;
+
+      if(item.m_second && item.m_second->is_managed_())
+        delete item.m_second;
+
+      m_children.erase(iter);
+      one_deleted = true; //Make sure that we loop again.
+    }
+  }
+  */
 }
 
 void FlowTable::set_design_mode(bool value)
@@ -505,7 +534,7 @@ int FlowTable::get_column_height(guint start_widget, guint widget_count, int& to
   guint i = 0;
   for(i = start_widget; i < (start_widget+widget_count);  ++i)
   {
-    FlowTableItem item = m_children[i];
+    const FlowTableItem& item = m_children[i];
     int item_height = get_item_requested_height(item);
 
     int item_width_first = 0;
@@ -681,7 +710,7 @@ void FlowTable::get_item_max_width_requested(guint start, guint height, guint& f
   guint i = start;
   while( (height_so_far < height) && (i < m_children.size()))
   {
-    FlowTableItem item = m_children[i];
+    const FlowTableItem& item = m_children[i];
     Gtk::Widget* first = item.m_first;
     Gtk::Widget* second = item.m_second;
 
@@ -790,7 +819,7 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
   {
     FlowTableItem& item = m_children[i];
 
-    int item_height = get_item_requested_height(item);
+    const int item_height = get_item_requested_height(item);
 
     //Start a new column if necessary:
     int bottom = allocation.get_y() + allocation.get_height();   

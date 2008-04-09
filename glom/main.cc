@@ -43,6 +43,8 @@
 #include "application.h"
 #include <glom/libglom/glade_utils.h>
 
+#include <fontconfig/fontconfig.h> //For cleanup.
+
 namespace Glom
 {
 
@@ -302,6 +304,10 @@ main(int argc, char* argv[])
 
   //Clean up singletons:
   Glom::ConnectionPool::delete_instance();
+
+  //These fail, probably because of previous things that are causing leaks:
+  //cairo_debug_reset_static_data(); //This crashes with _cairo_hash_table_destroy: Assertion `hash_table->live_entries == 0' failed.
+  //FcFini(); //This crashes with "FcCacheFini: Assertion `fcCacheChains[i] == ((void *)0)' failed."
 
   return 0;
 }

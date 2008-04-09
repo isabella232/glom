@@ -47,7 +47,7 @@ main(int argc, char* argv[])
   flowtable.set_columns_count(2);
   flowtable.set_padding(5);
 
-  Gtk::Entry button7; button7.set_text("seven");;
+  Gtk::Entry button7; button7.set_text("seven");
   button7.show();
   //button7.set_size_request(100, 100);
 
@@ -56,7 +56,7 @@ main(int argc, char* argv[])
   button8.show();
   //button8.set_size_request(100, 100);
 
-  Gtk::Label button9; button9.set_text("nine");;
+  Gtk::Label button9; button9.set_text("nine"); //TODO: valgrind says that something here is leaked.
   button9.show();
   //button7.set_size_request(100, 100);
 
