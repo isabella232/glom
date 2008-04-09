@@ -1,5 +1,19 @@
 2008-04-09  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/db_adddel/db_adddel.cc
+	get_item_placeholder(), Glom.get_item_selected(),
+	on_cell_layout_button_clicked(), remove_item(),
+	on_treeview_cell_edited_bool(), on_treeview_cell_edited(),
+	on_treeview_button_press_event(), get_last_row(),
+	get_last_row, set_value_key(), get_is_placeholder_row,()
+	on_cell_button_clicked(): Check that the treemodel is not null before 
+	dereferencing it.
+	This fixes a crash when trying to add a record when there is no 
+	primary key.
+	Bug #527007 (Jean-François Fortin Tam)
+
+2008-04-09  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/flowtable.cc: Destructor: Remove my hack to 
 	delete child widgets, because it causes double deletes.
 

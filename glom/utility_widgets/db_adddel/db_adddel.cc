@@ -361,7 +361,10 @@ bool DbAddDel::on_button_press_event_Popup(GdkEventButton *event)
 Gtk::TreeModel::iterator DbAddDel::get_item_placeholder()
 {
   //Get the existing placeholder row, or add one if necessary:
-  return m_refListStore->get_placeholder_row();
+  if(m_refListStore)
+    return m_refListStore->get_placeholder_row();
+  else
+   return Gtk::TreeModel::iterator();
 }
 
 Gnome::Gda::Value DbAddDel::get_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item)
@@ -412,7 +415,10 @@ Gtk::TreeModel::iterator DbAddDel::get_item_selected()
      return refTreeSelection->get_selected();
   }
 
-  return m_refListStore->children().end();
+  if(m_refListStore)
+    return m_refListStore->children().end();
+  else
+    return Gtk::TreeModel::iterator();
 }
 
 
@@ -566,6 +572,9 @@ int DbAddDel::get_fixed_cell_height()
 
 void DbAddDel::on_cell_layout_button_clicked(const Gtk::TreeModel::Path& path, int model_column_index)
 {
+  if(!m_refListStore)
+    return;
+
   Gtk::TreeModel::iterator iter = m_refListStore->get_iter(path);
   if(iter)
   {
@@ -1305,7 +1314,7 @@ void DbAddDel::reactivate()
 
 void DbAddDel::remove_item(const Gtk::TreeModel::iterator& iter)
 {
-  if(iter)
+  if(iter && m_refListStore)
     m_refListStore->erase(iter);
 }
 
@@ -1365,6 +1374,9 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
   if(path_string.empty())
     return;
 
+  if(!m_refListStore)
+    return;
+
   const Gtk::TreePath path(path_string);
 
   //Get the row from the path:
@@ -1392,7 +1404,7 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
     bool bIsAdd = false;
     bool bIsChange = false;
 
-    int iCount = m_refListStore->children().size();
+    const int iCount = m_refListStore->children().size();
     if(iCount)
     {
       if(get_allow_user_actions()) //If add is possible:
@@ -1443,6 +1455,9 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
 {
   //Note:: model_column_index is actually the AddDel column index, not the TreeModel column index.
   if(path_string.empty())
+    return;
+
+  if(!m_refListStore)
     return;
 
   const Gtk::TreePath path(path_string);
@@ -1648,6 +1663,9 @@ void DbAddDel::on_treeview_button_press_event(GdkEventButton* event)
     //Get the row:
     if(row_exists && m_refListStore)
     {
+      if(!m_refListStore)
+        return;
+
       Gtk::TreeModel::iterator iterRow = m_refListStore->get_iter(path);
       if(iterRow)
       {
@@ -1849,12 +1867,18 @@ bool DbAddDel::get_is_last_row(const Gtk::TreeModel::iterator& iter) const
 
 Gtk::TreeModel::iterator DbAddDel::get_last_row() const
 {
-  return m_refListStore->get_last_row();
+  if(m_refListStore)
+    return m_refListStore->get_last_row();
+  else
+    return Gtk::TreeModel::iterator();
 }
 
 Gtk::TreeModel::iterator DbAddDel::get_last_row()
 {
-  return m_refListStore->get_last_row();
+  if(m_refListStore)
+    return m_refListStore->get_last_row();
+  else
+    return Gtk::TreeModel::iterator();
 }
 
 Gnome::Gda::Value DbAddDel::get_value_key(const Gtk::TreeModel::iterator& iter)
@@ -1865,7 +1889,7 @@ Gnome::Gda::Value DbAddDel::get_value_key(const Gtk::TreeModel::iterator& iter)
 
 void DbAddDel::set_value_key(const Gtk::TreeModel::iterator& iter, const Gnome::Gda::Value& value)
 {
-  if(iter)
+  if(iter && m_refListStore)
   {
     Gtk::TreeModel::Row row = *iter;
 
@@ -1890,6 +1914,9 @@ bool DbAddDel::get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) cons
   }
 
   if(!iter)
+    return false;
+
+  if(!m_refListStore)
     return false;
 
   if(iter == m_refListStore->children().end())
@@ -2054,6 +2081,9 @@ bool DbAddDel::get_allow_view_details() const
 
 void DbAddDel::on_cell_button_clicked(const Gtk::TreeModel::Path& path)
 {
+  if(!m_refListStore)
+    return;
+
   Gtk::TreeModel::iterator iter = m_refListStore->get_iter(path);
   if(iter)
   {
