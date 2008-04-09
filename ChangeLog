@@ -10,7 +10,7 @@
 	dereferencing it.
 	This fixes a crash when trying to add a record when there is no 
 	primary key.
-	Bug #527007.
+	Bug #527007 (Jean-François Fortin Tam)
 
 2008-04-07  Murray Cumming  <murrayc@murrayc.com>
 
