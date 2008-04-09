@@ -9,7 +9,8 @@
 	* glom/mode_data/box_data_details.cc on_button_new():
 	* glom/mode_data/box_data_list.cc on_adddel_user_requested_add():
 	Warn the user if the layout has no dialogs, and do not try to add a 
-	record, because there would be nothing to see an no way to enter data. 
+	record, because there would be nothing to see an no way to enter data.
+	Bug #526721 (Jean-François Fortin Tam).
 
 2008-04-09  Johannes Schmid  <jhs@gnome.org>
 
