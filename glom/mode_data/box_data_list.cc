@@ -193,8 +193,23 @@ bool Box_Data_List::fill_from_database()
 
 void Box_Data_List::on_adddel_user_requested_add()
 {
- if(m_FieldsShown.empty())
-    return; //Don't try to add a record to a list with no fields.
+  //Don't try to add a record to a list with no fields.
+ 
+  //This isn't enough as a quick check, because the primary key is always in this list: if(m_FieldsShown.empty())
+  //{
+    //Warn the user that they won't see anything if there are no fields on the layout,
+    //doing an extra check:
+    //TODO_performance: Maybe this slows down the response when clicking Add.
+    Document_Glom* document = get_document();
+    if( document && !(document->get_data_layout_groups_have_any_fields(m_layout_name, m_table_name)) )
+    {
+      Gtk::Window* parent_window = get_app_window();
+      if(parent_window)
+        Utils::show_ok_dialog(_("Layout Contains No Fields"), _("There are no fields on the layout, so there is no way to enter data in a new record."), *parent_window, Gtk::MESSAGE_ERROR);
+
+      return;
+    }
+  //}
 
   Gtk::TreeModel::iterator iter = m_AddDel.get_item_placeholder();
   if(iter)
@@ -578,11 +593,15 @@ void Box_Data_List::on_details_nav_next()
     //Don't go past the last record:
     if( !m_AddDel.get_is_last_row(iter) )
     {
+      std::cout << "DEBUG: Box_Data_List::on_details_nav_next(): The current row was not the last row." << std::endl;
+
       iter++;
       m_AddDel.select_item(iter);
 
       signal_user_requested_details().emit(m_AddDel.get_value_key_selected());
     }
+    else
+      std::cout << "DEBUG: Box_Data_List::on_details_nav_next(): Not going past the last row." << std::endl;
   }
 }
 
@@ -594,8 +613,9 @@ void Box_Data_List::on_details_nav_last()
     m_AddDel.select_item(iter);
     signal_user_requested_details().emit(m_AddDel.get_value_key_selected());
   }
-  else
-    signal_user_requested_details().emit(Gnome::Gda::Value()); //Show a blank record if there are no records.
+  
+  //No, don't do this. When would that ever be a good idea? murrayc:
+  //signal_user_requested_details().emit(Gnome::Gda::Value()); //Show a blank record if there are no records.
 }
 
 void Box_Data_List::on_details_record_deleted(const Gnome::Gda::Value& primary_key_value)

@@ -370,24 +370,39 @@ bool Box_Data_Details::fill_from_database()
 
 void Box_Data_Details::on_button_new()
 {
-  if(confirm_discard_unstored_data())
+  if(!confirm_discard_unstored_data())
+    return;
+
+  //Don't try to add a record to a list with no fields.
+  if(m_FieldsShown.empty())
   {
-    if(m_field_primary_key && m_field_primary_key->get_auto_increment()) //If the primary key is an auto-increment:
+    //Warn the user that they won't see anything if there are no fields on the layout,
+    //doing an extra check:
+    Document_Glom* document = get_document();
+    if( document && !(document->get_data_layout_groups_have_any_fields(m_layout_name, m_table_name)) )
     {
-      //Just make a new record, and show it:
-      Gnome::Gda::Value primary_key_value = generate_next_auto_increment(m_table_name, m_field_primary_key->get_name()); //TODO: This should return a Gda::Value
-
-      record_new(false /* use entered field data */, primary_key_value);
-      refresh_data_from_database_with_primary_key(primary_key_value);
-    }
-    else
-    {
-      //It's not an auto-increment primary key,
-      //so just blank the fields ready for a primary key later.
-      refresh_data_from_database_blank(); //shows blank record.
+      Gtk::Window* parent_window = get_app_window();
+      if(parent_window)
+        Utils::show_ok_dialog(_("Layout Contains No Fields"), _("There are no fields on the layout, so there is no way to enter data in a new record."), *parent_window, Gtk::MESSAGE_ERROR);
     }
 
-  } //if(confirm_discard_unstored_data())
+    return;
+  }
+
+  if(m_field_primary_key && m_field_primary_key->get_auto_increment()) //If the primary key is an auto-increment:
+  {
+    //Just make a new record, and show it:
+    Gnome::Gda::Value primary_key_value = generate_next_auto_increment(m_table_name, m_field_primary_key->get_name()); //TODO: This should return a Gda::Value
+
+    record_new(false /* use entered field data */, primary_key_value);
+    refresh_data_from_database_with_primary_key(primary_key_value);
+  }
+  else
+  {
+    //It's not an auto-increment primary key,
+    //so just blank the fields ready for a primary key later.
+    refresh_data_from_database_blank(); //shows blank record.
+  }
 }
 
 void Box_Data_Details::on_button_del()

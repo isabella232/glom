@@ -1,3 +1,16 @@
+2008-04-09  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/data_structure/layout/layoutgroup.cc
+	* glom/libglom/data_structure/layout/layoutgroup.h:
+	Added has_any_fields().
+	* glom/libglom/document/document_glom.cc
+	* glom/libglom/document/document_glom.h
+	Added get_data_layout_groups_have_any_fields().
+	* glom/mode_data/box_data_details.cc on_button_new():
+	* glom/mode_data/box_data_list.cc on_adddel_user_requested_add():
+	Warn the user if the layout has no dialogs, and do not try to add a 
+	record, because there would be nothing to see an no way to enter data. 
+
 2008-04-09  Johannes Schmid  <jhs@gnome.org>
 
 	* glom/glom_developer.glade:
@@ -9,7 +22,7 @@
 	Fix crasher when opening GlomButton details dialog
 	
 	* glom/utility_widgets/Makefile.am:
-  Move flowtable_dnd.[cch] in !GLOM_CLIENT_ONLY section
+	Move flowtable_dnd.[cch] in !GLOM_CLIENT_ONLY section
 
 2008-04-09  Murray Cumming  <murrayc@murrayc.com>
 

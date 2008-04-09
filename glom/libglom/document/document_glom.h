@@ -186,8 +186,26 @@ public:
 
 
   typedef std::vector< sharedptr<LayoutGroup> > type_list_layout_groups;
+
+  /** Get the layout groups for a layout.
+   * @param layout_name The name of the layout, such as list or details.
+   * @param parent_table_name The name of the table for which this layout should appear.
+   * @result A list of layout groups at the top-level of the requested layout.
+   */
   type_list_layout_groups get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const;
 
+  /** Discover whether there are any fields in the layout.
+   * @param layout_name The name of the layout, such as list or details.
+   * @param parent_table_name The name of the table for which this layout should appear.
+   * @result true if there is at least one field in the layout group or its sub groups.
+   */
+  bool get_data_layout_groups_have_any_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const;
+
+  /** Set the layout groups for a layout.
+   * @param layout_name The name of the layout, such as list or details.
+   * @param parent_table_name The name of the table for which this layout should appear.
+   * @param groups A list of layout groups at the top-level of the requested layout.
+   */
   void set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const type_list_layout_groups& groups);
 
   /**
@@ -294,24 +312,22 @@ public:
 
   // Used by Relationship Overview dialog to preserve table locations accross instantiations:
     
-    /**
-     * Retrieve the x and y coordinates for the given table position.
-     * 
-     * @param table_name The name of the table to query.
-     * @param x The x coordinate of the table position.
-     * @param y The y coordinate of the table position.
-     * @return false if the table does not have any 
-     */
-    bool get_table_overview_position ( const Glib::ustring &table_name, float &x, float &y ) const;
+  /** Retrieve the x and y coordinates for the given table position.
+   * 
+   * @param table_name The name of the table to query.
+   * @param x The x coordinate of the table position.
+   * @param y The y coordinate of the table position.
+   * @return false if the table does not have any 
+   */
+  bool get_table_overview_position ( const Glib::ustring &table_name, float &x, float &y ) const;
     
-    /**
-     * Set the position of a table in the relationship overview dialog.
-     * 
-     * @param table_name The name of the table to modify.
-     * @param x The x coordinate of the table position.
-     * @param y The y coordinate of the table position.
-     */
-    void set_table_overview_position ( const Glib::ustring &table_name, float x, float y );
+  /** Set the position of a table in the relationship overview dialog.
+   * 
+   * @param table_name The name of the table to modify.
+   * @param x The x coordinate of the table position.
+   * @param y The y coordinate of the table position.
+   */
+  void set_table_overview_position ( const Glib::ustring &table_name, float x, float y );
     
   enum userLevelReason
   {

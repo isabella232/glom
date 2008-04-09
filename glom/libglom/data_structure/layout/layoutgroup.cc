@@ -110,6 +110,31 @@ bool LayoutGroup::has_field(const Glib::ustring& field_name) const
   return false;
 }
 
+bool LayoutGroup::has_any_fields() const
+{
+  for(type_list_items::const_iterator iter = m_list_items.begin(); iter != m_list_items.end(); ++iter)
+  {
+    sharedptr<LayoutItem> item = *iter;
+    sharedptr<LayoutItem_Field> field_item = sharedptr<LayoutItem_Field>::cast_dynamic(item);
+    if(field_item)
+    {
+      return true;
+    }
+    else
+    {
+      //Recurse into the child groups:
+      sharedptr<LayoutGroup> group_item = sharedptr<LayoutGroup>::cast_dynamic(item);
+      if(group_item)
+      {
+        if(group_item->has_any_fields())
+          return true;
+      }
+    }
+  }
+
+  return false;
+}
+
 void LayoutGroup::add_item(const sharedptr<LayoutItem>& item)
 {
   m_list_items.push_back(item);

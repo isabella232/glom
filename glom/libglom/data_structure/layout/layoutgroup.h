@@ -40,7 +40,16 @@ public:
 
   virtual LayoutItem* clone() const;
 
+  /** Discover whether the layout group contains the specified field.
+   * @param field_name The name of the field to seach for.
+   * @result True if the field is in the layout group (or its child groups).
+   */
   bool has_field(const Glib::ustring& field_name) const;
+
+  /** Discover whether the layout group contains any fields.
+   * @result True if the field is in the layout group (or its child groups).
+   */
+  bool has_any_fields() const;
 
   /** Add the item to the end of the list.
    * @param item The item to add.

@@ -1459,6 +1459,20 @@ Document_Glom::type_list_layout_groups Document_Glom::get_data_layout_groups(con
   return type_list_layout_groups(); //not found
 }
 
+bool Document_Glom::get_data_layout_groups_have_any_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const
+{
+  //TODO_Performance: This could make the response to some button slow, such as the Add button, which does a check for this.
+  type_list_layout_groups layout_groups = get_data_layout_groups(layout_name, parent_table_name);
+  for(type_list_layout_groups::iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
+  {
+    sharedptr<LayoutGroup> layout_group = *iter;
+    if(layout_group && layout_group->has_any_fields())
+      return true;
+  }
+
+  return false;
+}
+
 void Document_Glom::set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const type_list_layout_groups& groups)
 {
   const Glib::ustring child_table_name = parent_table_name; //TODO: Remove this cruft.
