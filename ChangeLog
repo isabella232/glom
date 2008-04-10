@@ -1,3 +1,10 @@
+2008-04-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/dialog_existing_or_new.cc
+	* glom/dialog_existing_or_new.h: Removed the second text-button column. 
+	I changed my mind about this. It doesn't feel useful - a double-click 
+	on the regular title makes more sense.
+
 2008-04-10  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/glom.glade: Re-set scrolledwindow shadows to IN in initial

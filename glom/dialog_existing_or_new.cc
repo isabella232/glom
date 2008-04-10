@@ -40,9 +40,9 @@
 namespace
 {
 
-const char* RECENT_DUMMY_TEXT = "No recently used documents available";
-const char* TEMPLATE_DUMMY_TEXT = "No templates available";
-const char* NETWORK_DUMMY_TEXT = "No sessions found on the local network";
+const char* RECENT_DUMMY_TEXT = _("No recently used documents available.");
+const char* TEMPLATE_DUMMY_TEXT = _("No templates available.");
+const char* NETWORK_DUMMY_TEXT = _("No sessions found on the local network.");
 
 /*bool has_dummy(const Gtk::TreeIter& parent, const std::auto_ptr<Gtk::TreeIter>& dummy)
 {
@@ -55,7 +55,8 @@ const char* NETWORK_DUMMY_TEXT = "No sessions found on the local network";
 class Parser: public xmlpp::SaxParser
 {
 public:
-  Parser() {}
+  Parser()
+  {}
 
   Glib::ustring get_example_title(const std::string& beginning)
   {
@@ -101,12 +102,12 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   refGlade->get_widget("existing_or_new_new_treeview", m_new_view);
 
   if(!m_existing_view || !m_new_view)
-    throw std::runtime_error("Glade file does not contain treeviews for ExistingOrNew dialog");
+    throw std::runtime_error("Glade file does not contain treeviews for ExistingOrNew dialog.");
 
   refGlade->get_widget("existing_or_new_notebook", m_notebook);
   refGlade->get_widget("existing_or_new_button_select", m_select_button);
   if(!m_notebook || !m_select_button)
-    throw std::runtime_error("Glade file does not contain the notebook or the select button for ExistingOrNew dialog");
+    throw std::runtime_error("Glade file does not contain the notebook or the select button for ExistingOrNew dialog.");
 
   m_existing_model = Gtk::TreeStore::create(m_existing_columns);
   m_existing_model->set_sort_column(m_existing_columns.m_col_time, Gtk::SORT_DESCENDING);
@@ -122,9 +123,6 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   m_existing_column_title.set_cell_data_func(m_existing_title_renderer, sigc::mem_fun(*this, &Dialog_ExistingOrNew::existing_title_data_func));
   m_existing_view->append_column(m_existing_column_title);
 
-  m_existing_column_button.pack_end(m_existing_button_renderer, false);
-  m_existing_column_button.add_attribute(m_existing_button_renderer, "text", m_existing_columns.m_col_button_text.index());
-  m_existing_view->append_column(m_existing_column_button);
 
   m_new_column_title.set_expand(true);
   m_new_column_title.pack_start(m_new_icon_renderer, false);
@@ -133,20 +131,13 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   m_new_column_title.set_cell_data_func(m_new_title_renderer, sigc::mem_fun(*this, &Dialog_ExistingOrNew::new_title_data_func));
   m_new_view->append_column(m_new_column_title);
 
-  m_new_column_button.pack_end(m_new_button_renderer, false);
-  m_new_column_button.add_attribute(m_new_button_renderer, "text", m_new_columns.m_col_button_text.index());
-  m_new_view->append_column(m_new_column_button);
-
   m_existing_view->set_headers_visible(false);
   m_existing_view->signal_row_activated().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_existing_row_activated));
-  m_existing_button_renderer.signal_clicked().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_existing_button_clicked));
   m_new_view->set_headers_visible(false);
   m_new_view->signal_row_activated().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_new_row_activated));
-  m_new_button_renderer.signal_clicked().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_new_button_clicked));
 
   m_iter_existing_other = m_existing_model->append();
-  (*m_iter_existing_other)[m_existing_columns.m_col_title] = _("Other");
-  (*m_iter_existing_other)[m_existing_columns.m_col_button_text] = _("Select File…");
+  (*m_iter_existing_other)[m_existing_columns.m_col_title] = _("Select File");
 
   m_iter_existing_network = m_existing_model->append();
   (*m_iter_existing_network)[m_existing_columns.m_col_title] = _("Local Network");
@@ -156,7 +147,6 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   
   m_iter_new_empty = m_new_model->append();
   (*m_iter_new_empty)[m_new_columns.m_col_title] = _("New Empty Document");
-  (*m_iter_new_empty)[m_new_columns.m_col_button_text] = _("Create");
 
   m_iter_new_template = m_new_model->append();
   (*m_iter_new_template)[m_new_columns.m_col_title] = _("New From Template");
@@ -202,7 +192,6 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
       Gtk::TreeIter iter = m_existing_model->append(m_iter_existing_recent->children());
       (*iter)[m_existing_columns.m_col_title] = info->get_display_name();
       (*iter)[m_existing_columns.m_col_time] = info->get_modified();
-      (*iter)[m_existing_columns.m_col_button_text] = _("Open");
       (*iter)[m_existing_columns.m_col_recent_info] = new Glib::RefPtr<Gtk::RecentInfo>(info);
     }
   }
@@ -608,7 +597,6 @@ void Dialog_ExistingOrNew::on_stream_read(const Glib::RefPtr<Gio::AsyncResult>& 
       // Add to list
       Gtk::TreeIter iter = m_new_model->append(m_iter_new_template->children());
       (*iter)[m_new_columns.m_col_title] = title;
-      (*iter)[m_new_columns.m_col_button_text] = _("Create");
       (*iter)[m_new_columns.m_col_template_uri] = m_current_example->get_uri();
 
       if(is_first_item)
@@ -640,7 +628,6 @@ void Dialog_ExistingOrNew::on_service_found(const Glib::ustring& name, EpcServic
   gchar* title = g_strdup_printf(_("%s on %s (via %s)"), name.c_str(), epc_service_info_get_host(info), epc_service_info_get_interface(info));
   Gtk::TreeIter iter = m_existing_model->prepend(m_iter_existing_network->children());
   (*iter)[m_existing_columns.m_col_title] = title;
-  (*iter)[m_existing_columns.m_col_button_text] = _("Open");
   (*iter)[m_existing_columns.m_col_time] = std::time(NULL); /* sort more recently discovered items above */
   (*iter)[m_existing_columns.m_col_service_name] = name;
   (*iter)[m_existing_columns.m_col_service_info] = info;

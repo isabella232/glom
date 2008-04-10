@@ -36,7 +36,6 @@
 #include <gtkmm/recentinfo.h>
 #include <gtkmm/notebook.h>
 #include <libglademm/xml.h>
-#include <glom/utility_widgets/db_adddel/cellrenderer_buttontext.h>
 
 namespace Glom
 {
@@ -107,7 +106,6 @@ protected:
     ExistingModelColumns()
     {
       add(m_col_title);
-      add(m_col_button_text); 
       add(m_col_time);
 
 #ifndef G_OS_WIN32
@@ -119,7 +117,6 @@ protected:
     }
 
     Gtk::TreeModelColumn<Glib::ustring> m_col_title;
-    Gtk::TreeModelColumn<Glib::ustring> m_col_button_text;
     Gtk::TreeModelColumn<std::time_t> m_col_time; // Sort criteria
 
 #ifndef G_OS_WIN32
@@ -140,10 +137,9 @@ protected:
   public:
 
     NewModelColumns()
-    { add(m_col_title); add(m_col_button_text); add(m_col_template_uri); }
+    { add(m_col_title); add(m_col_template_uri); }
 
     Gtk::TreeModelColumn<Glib::ustring> m_col_title;
-    Gtk::TreeModelColumn<Glib::ustring> m_col_button_text;
     Gtk::TreeModelColumn<Glib::ustring> m_col_template_uri;
   };
 
@@ -162,13 +158,11 @@ protected:
   Gtk::TreeViewColumn m_existing_column_button;
   Gtk::CellRendererPixbuf m_existing_icon_renderer;
   Gtk::CellRendererText m_existing_title_renderer;
-  GlomCellRenderer_ButtonText m_existing_button_renderer;
 
   Gtk::TreeViewColumn m_new_column_title;
   Gtk::TreeViewColumn m_new_column_button;
   Gtk::CellRendererPixbuf m_new_icon_renderer;
   Gtk::CellRendererText m_new_title_renderer;
-  GlomCellRenderer_ButtonText m_new_button_renderer;
 
   Gtk::TreeIter m_iter_existing_recent;
   Gtk::TreeIter m_iter_existing_network;
