@@ -1,5 +1,10 @@
 2008-04-10  Armin Burgmeier  <armin@openismus.com>
 
+	* glom/glom.glade: Re-set scrolledwindow shadows to IN in initial
+	dialog since this is what other treeviews have.
+
+2008-04-10  Armin Burgmeier  <armin@openismus.com>
+
 	* glom/glom.glade: Added a help button, reordered Quit/Select buttons,
 	remove mnemonics from the tab labels as suggested by the HIG. Removed
 	the separator and added a tooltip for the select button.
