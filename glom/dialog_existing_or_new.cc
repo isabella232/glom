@@ -44,7 +44,7 @@ const char* RECENT_DUMMY_TEXT = _("No recently used documents available.");
 const char* TEMPLATE_DUMMY_TEXT = _("No templates available.");
 const char* NETWORK_DUMMY_TEXT = _("No sessions found on the local network.");
 
-/*bool has_dummy(const Gtk::TreeIter& parent, const std::auto_ptr<Gtk::TreeIter>& dummy)
+/*bool has_dummy(const Gtk::TreeModel::iterator& parent, const std::auto_ptr<Gtk::TreeModel::iterator>& dummy)
 {
   if(dummy.get() == NULL) return false;
   const Gtk::TreeNodeChildren& children = parent->children();
@@ -189,7 +189,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
     Glib::RefPtr<Gtk::RecentInfo> info = *iter;
     if(info->get_mime_type() == "application/x-glom")
     {
-      Gtk::TreeIter iter = m_existing_model->append(m_iter_existing_recent->children());
+      Gtk::TreeModel::iterator iter = m_existing_model->append(m_iter_existing_recent->children());
       (*iter)[m_existing_columns.m_col_title] = info->get_display_name();
       (*iter)[m_existing_columns.m_col_time] = info->get_modified();
       (*iter)[m_existing_columns.m_col_recent_info] = new Glib::RefPtr<Gtk::RecentInfo>(info);
@@ -209,9 +209,15 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
 
   m_select_button->signal_clicked().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_select_clicked));
   m_notebook->signal_switch_page().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_switch_page));
-  m_existing_view->get_selection()->signal_changed().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_existing_selection_changed));
-  m_new_view->get_selection()->signal_changed().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_new_selection_changed));
 
+  Glib::RefPtr<Gtk::TreeView::Selection> existing_view_selection = m_existing_view->get_selection();
+  existing_view_selection->signal_changed().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_existing_selection_changed));
+  existing_view_selection->set_select_function( sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_existing_select_func) ); 
+
+  Glib::RefPtr<Gtk::TreeView::Selection> new_view_selection = m_new_view->get_selection();
+  new_view_selection->signal_changed().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_new_selection_changed));
+  new_view_selection->set_select_function( sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_new_select_func) );
+  
   update_ui_sensitivity();
 }
 
@@ -228,7 +234,7 @@ Dialog_ExistingOrNew::~Dialog_ExistingOrNew()
   if(!m_iter_existing_network_dummy.get())
   {
     const Gtk::TreeNodeChildren& children = m_iter_existing_network->children();
-    for(Gtk::TreeIter iter = children.begin(); iter != children.end(); ++ iter)
+    for(Gtk::TreeModel::iterator iter = children.begin(); iter != children.end(); ++ iter)
       epc_service_info_unref((*iter)[m_existing_columns.m_col_service_info]);
   }
 #endif
@@ -238,7 +244,7 @@ Dialog_ExistingOrNew::~Dialog_ExistingOrNew()
   if(!m_iter_existing_recent_dummy.get())
   {
     const Gtk::TreeNodeChildren& children = m_iter_existing_recent->children();
-    for(Gtk::TreeIter iter = children.begin(); iter != children.end(); ++ iter)
+    for(Gtk::TreeModel::iterator iter = children.begin(); iter != children.end(); ++ iter)
     {
       Glib::RefPtr<Gtk::RecentInfo>* info = (*iter)[m_existing_columns.m_col_recent_info];
       delete info;
@@ -246,7 +252,28 @@ Dialog_ExistingOrNew::~Dialog_ExistingOrNew()
   }
 }
 
-Dialog_ExistingOrNew::Action Dialog_ExistingOrNew::get_action_impl(Gtk::TreeIter& iter) const
+bool Dialog_ExistingOrNew::on_existing_select_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::Path& path, bool path_currently_selected)
+{
+  Gtk::TreeModel::iterator iter = model->get_iter(path);
+  if(iter == m_iter_existing_network)
+    return false; /* Do not allow parent nodes to be selected. */
+  else if(iter == m_iter_existing_recent)
+    return false;
+  else
+    return true;
+}
+
+bool Dialog_ExistingOrNew::on_new_select_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::Path& path, bool path_currently_selected)
+{
+  Gtk::TreeModel::iterator iter = model->get_iter(path);
+  if(iter == m_iter_new_template)
+    return false; /* Do not allow parent nodes to be selected. */
+  else
+    return true;
+}
+
+
+Dialog_ExistingOrNew::Action Dialog_ExistingOrNew::get_action_impl(Gtk::TreeModel::iterator& iter) const
 {
   if(m_notebook->get_current_page() == 0)
   {
@@ -280,13 +307,13 @@ Dialog_ExistingOrNew::Action Dialog_ExistingOrNew::get_action_impl(Gtk::TreeIter
 
 Dialog_ExistingOrNew::Action Dialog_ExistingOrNew::get_action() const
 {
-  Gtk::TreeIter iter;
+  Gtk::TreeModel::iterator iter;
   return get_action_impl(iter);
 }
 
 Glib::ustring Dialog_ExistingOrNew::get_uri() const
 {
-  Gtk::TreeIter iter;
+  Gtk::TreeModel::iterator iter;
   Action action = get_action_impl(iter);
 
   if(action == NEW_FROM_TEMPLATE)
@@ -313,7 +340,7 @@ Glib::ustring Dialog_ExistingOrNew::get_uri() const
 
 EpcServiceInfo* Dialog_ExistingOrNew::get_service_info() const
 {
-  Gtk::TreeIter iter;
+  Gtk::TreeModel::iterator iter;
   Action action = get_action_impl(iter);
 
   if(action == OPEN_REMOTE)
@@ -324,7 +351,7 @@ EpcServiceInfo* Dialog_ExistingOrNew::get_service_info() const
 
 Glib::ustring Dialog_ExistingOrNew::get_service_name() const
 {
-  Gtk::TreeIter iter;
+  Gtk::TreeModel::iterator iter;
   Action action = get_action_impl(iter);
 
   if(action == OPEN_REMOTE)
@@ -333,21 +360,21 @@ Glib::ustring Dialog_ExistingOrNew::get_service_name() const
     throw std::logic_error("Dialog_ExistingOrNew::get_service_name: action is not OPEN_REMOTE");
 }
 
-std::auto_ptr<Gtk::TreeIter> Dialog_ExistingOrNew::create_dummy_item_existing(const Gtk::TreeIter& parent, const Glib::ustring& text)
+std::auto_ptr<Gtk::TreeModel::iterator> Dialog_ExistingOrNew::create_dummy_item_existing(const Gtk::TreeModel::iterator& parent, const Glib::ustring& text)
 {
-  Gtk::TreeIter iter = m_existing_model->append(parent->children());
+  Gtk::TreeModel::iterator iter = m_existing_model->append(parent->children());
   (*iter)[m_existing_columns.m_col_title] = text;
-  return std::auto_ptr<Gtk::TreeIter>(new Gtk::TreeIter(iter));
+  return std::auto_ptr<Gtk::TreeModel::iterator>(new Gtk::TreeModel::iterator(iter));
 }
 
-std::auto_ptr<Gtk::TreeIter> Dialog_ExistingOrNew::create_dummy_item_new(const Gtk::TreeIter& parent, const Glib::ustring& text)
+std::auto_ptr<Gtk::TreeModel::iterator> Dialog_ExistingOrNew::create_dummy_item_new(const Gtk::TreeModel::iterator& parent, const Glib::ustring& text)
 {
-  Gtk::TreeIter iter = m_new_model->append(parent->children());
+  Gtk::TreeModel::iterator iter = m_new_model->append(parent->children());
   (*iter)[m_new_columns.m_col_title] = text;
-  return std::auto_ptr<Gtk::TreeIter>(new Gtk::TreeIter(iter));
+  return std::auto_ptr<Gtk::TreeModel::iterator>(new Gtk::TreeModel::iterator(iter));
 }
 
-void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeIter& iter)
+void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
 {
   Gtk::CellRendererPixbuf* pixbuf_renderer = dynamic_cast<Gtk::CellRendererPixbuf*>(renderer);
   if(!pixbuf_renderer) throw std::logic_error("Renderer not a pixbuf renderer in existing_icon_data_func");
@@ -386,7 +413,7 @@ void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, 
   }
 }
 
-void Dialog_ExistingOrNew::existing_title_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeIter& iter)
+void Dialog_ExistingOrNew::existing_title_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
 {
   Gtk::CellRendererText* text_renderer = dynamic_cast<Gtk::CellRendererText*>(renderer);
   if(!text_renderer) throw std::logic_error("Renderer not a text renderer in existing_title_data_func");
@@ -403,7 +430,7 @@ void Dialog_ExistingOrNew::existing_title_data_func(Gtk::CellRenderer* renderer,
   }
 }
 
-void Dialog_ExistingOrNew::new_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeIter& iter)
+void Dialog_ExistingOrNew::new_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
 {
   Gtk::CellRendererPixbuf* pixbuf_renderer = dynamic_cast<Gtk::CellRendererPixbuf*>(renderer);
   if(!pixbuf_renderer) throw std::logic_error("Renderer not a pixbuf renderer in new_icon_data_func");
@@ -431,7 +458,7 @@ void Dialog_ExistingOrNew::new_icon_data_func(Gtk::CellRenderer* renderer, const
   }
 }
 
-void Dialog_ExistingOrNew::new_title_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeIter& iter)
+void Dialog_ExistingOrNew::new_title_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
 {
   Gtk::CellRendererText* text_renderer = dynamic_cast<Gtk::CellRendererText*>(renderer);
   if(!text_renderer) throw std::logic_error("Renderer not a text renderer in new_title_data_func");
@@ -464,11 +491,11 @@ void Dialog_ExistingOrNew::on_new_selection_changed()
 
 void Dialog_ExistingOrNew::update_ui_sensitivity()
 {
-  bool sensitivity;
+  bool sensitivity = false;
 
   if(m_notebook->get_current_page() == 0)
   {
-    int count = m_existing_view->get_selection()->count_selected_rows();
+    const int count = m_existing_view->get_selection()->count_selected_rows();
 
     if(count == 0)
     {
@@ -476,7 +503,7 @@ void Dialog_ExistingOrNew::update_ui_sensitivity()
     }
     else
     {
-      Gtk::TreeIter sel = m_existing_view->get_selection()->get_selected();
+      Gtk::TreeModel::iterator sel = m_existing_view->get_selection()->get_selected();
       sensitivity = (sel != m_iter_existing_recent && sel != m_iter_existing_network &&
                      (!m_iter_existing_recent_dummy.get() || sel != *m_iter_existing_recent_dummy) &&
                      (!m_iter_existing_network_dummy.get() || sel != *m_iter_existing_network_dummy));
@@ -484,7 +511,7 @@ void Dialog_ExistingOrNew::update_ui_sensitivity()
   }
   else
   {
-    int count = m_new_view->get_selection()->count_selected_rows();
+    const int count = m_new_view->get_selection()->count_selected_rows();
 
     if(count == 0)
     {
@@ -492,7 +519,7 @@ void Dialog_ExistingOrNew::update_ui_sensitivity()
     }
     else
     {
-      Gtk::TreeIter sel = m_new_view->get_selection()->get_selected();
+      Gtk::TreeModel::iterator sel = m_new_view->get_selection()->get_selected();
       sensitivity = (sel != m_iter_new_template &&
                      (!m_iter_new_template_dummy.get() || sel != *m_iter_new_template_dummy));
     }
@@ -595,7 +622,7 @@ void Dialog_ExistingOrNew::on_stream_read(const Glib::RefPtr<Gio::AsyncResult>& 
       const bool is_first_item = m_iter_new_template_dummy.get() != NULL;
 
       // Add to list
-      Gtk::TreeIter iter = m_new_model->append(m_iter_new_template->children());
+      Gtk::TreeModel::iterator iter = m_new_model->append(m_iter_new_template->children());
       (*iter)[m_new_columns.m_col_title] = title;
       (*iter)[m_new_columns.m_col_template_uri] = m_current_example->get_uri();
 
@@ -626,7 +653,7 @@ void Dialog_ExistingOrNew::on_stream_read(const Glib::RefPtr<Gio::AsyncResult>& 
 void Dialog_ExistingOrNew::on_service_found(const Glib::ustring& name, EpcServiceInfo* info)
 {
   gchar* title = g_strdup_printf(_("%s on %s (via %s)"), name.c_str(), epc_service_info_get_host(info), epc_service_info_get_interface(info));
-  Gtk::TreeIter iter = m_existing_model->prepend(m_iter_existing_network->children());
+  Gtk::TreeModel::iterator iter = m_existing_model->prepend(m_iter_existing_network->children());
   (*iter)[m_existing_columns.m_col_title] = title;
   (*iter)[m_existing_columns.m_col_time] = std::time(NULL); /* sort more recently discovered items above */
   (*iter)[m_existing_columns.m_col_service_name] = name;
@@ -647,7 +674,7 @@ void Dialog_ExistingOrNew::on_service_removed(const Glib::ustring& name, const G
 {
   // Find the entry with the given name
   const Gtk::TreeNodeChildren& children = m_iter_existing_network->children();
-  for(Gtk::TreeIter iter = children.begin(); iter != children.end(); ++ iter)
+  for(Gtk::TreeModel::iterator iter = children.begin(); iter != children.end(); ++ iter)
   {
     if((*iter)[m_existing_columns.m_col_service_name] == name)
     {
@@ -695,7 +722,7 @@ void Dialog_ExistingOrNew::on_new_button_clicked(const Gtk::TreePath& path)
 
 void Dialog_ExistingOrNew::on_select_clicked()
 {
-  Gtk::TreeIter iter;
+  Gtk::TreeModel::iterator iter;
   Action action = get_action_impl(iter);
 
   if(action == OPEN_URI && iter == m_iter_existing_other)

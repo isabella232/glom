@@ -1,5 +1,14 @@
 2008-04-10  Murray Cumming  <murrayc@murrayc.com>
 
+	* docs/user-guide/C/glom.xml: Improved the text about the initial dialog.
+
+	* glom/dialog_existing_or_new.cc:
+	* glom/dialog_existing_or_new.h: Added on_existing_select_func() and
+	on_new_select_func() select_function handlers, to prevent selection of 
+	the parent nodes, which would be meaningless.
+
+2008-04-10  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/dialog_existing_or_new.cc
 	* glom/dialog_existing_or_new.h: Removed the second text-button column. 
 	I changed my mind about this. It doesn't feel useful - a double-click 

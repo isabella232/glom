@@ -77,6 +77,9 @@ protected:
   void on_existing_selection_changed();
   void on_new_selection_changed();
 
+  bool on_existing_select_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::Path& path, bool path_currently_selected);
+  bool on_new_select_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::Path& path, bool path_currently_selected);
+
   void update_ui_sensitivity();
 
   void on_enumerate_children(const Glib::RefPtr<Gio::AsyncResult>& res);
