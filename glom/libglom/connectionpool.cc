@@ -803,14 +803,16 @@ static void on_linux_signal(int signum)
 
   if(signum == SIGSEGV)
   {
-    connection_pool->stop_self_hosting();
+    //TODO: Make this dialog transient for the parent window, 
+    //though this is obviously an unusual case.
+    connection_pool->stop_self_hosting(0 /* parent_window */);
 	
     //TODO: How can we let GNOME's crash handler still handle this?
     exit(1);
   }
 }
 
-bool ConnectionPool::start_self_hosting()
+bool ConnectionPool::start_self_hosting(Gtk::Window* parent_window)
 {
   if(m_self_hosting_active)
     return true; //Just do it once.
@@ -873,7 +875,7 @@ bool ConnectionPool::start_self_hosting()
   const std::string second_command_success_text = "is running"; //TODO: This is not a stable API. Also, watch out for localisation.
 
   //The first command does not return, but the second command can check whether it succeeded:
-  const bool result = Glom::Spawn::execute_command_line_and_wait_until_second_command_returns_success(command_postgres_start, command_check_postgres_has_started, _("Starting Database Server"), 0 /* window*/, second_command_success_text);
+  const bool result = Glom::Spawn::execute_command_line_and_wait_until_second_command_returns_success(command_postgres_start, command_check_postgres_has_started, _("Starting Database Server"), parent_window, second_command_success_text);
   if(!result)
   {
     std::cerr << "Error while attempting to self-host a database." << std::endl;
@@ -905,7 +907,7 @@ bool ConnectionPool::start_self_hosting()
   return true;
 }
 
-void ConnectionPool::stop_self_hosting()
+void ConnectionPool::stop_self_hosting(Gtk::Window* parent_window)
 {
   if(!m_self_hosting_active)
     return; //Don't try to stop it if we have not started it.
@@ -932,14 +934,14 @@ void ConnectionPool::stop_self_hosting()
   // We use "-m fast" instead of the default "-m smart" because that waits for clients to disconnect (and sometimes never succeeds).
   // TODO: Warn about connected clients on other computers? Warn those other users?
   const std::string command_postgres_stop = Glib::shell_quote(get_path_to_postgres_executable("pg_ctl")) + " -D \"" + dbdir_data + "\" stop -m fast";
-  const bool result = Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, _("Stopping Database Server"));
+  const bool result = Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, _("Stopping Database Server"), parent_window);
   if(!result)
   {
     std::cerr << "Error while attempting to stop self-hosting of the database. Trying again."  << std::endl;
 
     //I've seen it fail when running under valgrind, and there are reports of failures in bug #420962.
     //Maybe it will help to try again:
-    const bool result = Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, _("Stopping Database Server (retrying)"));
+    const bool result = Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, _("Stopping Database Server (retrying)"), parent_window);
     if(!result)
     {
       std::cerr << "Error while attempting (for a second time) to stop self-hosting of the database."  << std::endl;
@@ -1044,7 +1046,7 @@ bool ConnectionPool::create_self_hosting(Gtk::Window* parent_window)
                                         " -U " + username + " --pwfile=\"" + temp_pwfile + "\"";
 
   //Note that --pwfile takes the password from the first line of a file. It's an alternative to supplying it when prompted on stdin.
-  const bool result = Glom::Spawn::execute_command_line_and_wait(command_initdb, _("Creating Database Data"));
+  const bool result = Glom::Spawn::execute_command_line_and_wait(command_initdb, _("Creating Database Data"), parent_window);
   if(!result)
   {
     std::cerr << "Error while attempting to create self-hosting database." << std::endl;
