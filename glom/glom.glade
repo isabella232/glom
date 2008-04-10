@@ -196,6 +196,7 @@
     <property name="default_width">480</property>
     <property name="default_height">320</property>
     <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox1">
         <property name="visible">True</property>
@@ -228,7 +229,7 @@
                     <property name="can_focus">True</property>
                     <property name="xalign">0</property>
                     <property name="yalign">0</property>
-                    <property name="label" translatable="yes">&lt;span weight="bold" size="larger"&gt;Please open an existing document or create new document&lt;/span&gt;</property>
+                    <property name="label" translatable="yes">&lt;span weight="bold" size="larger"&gt;Open or create a Document&lt;/span&gt;</property>
                     <property name="use_markup">True</property>
                     <property name="wrap">True</property>
                     <property name="selectable">True</property>
@@ -248,7 +249,7 @@
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
                         <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                        <property name="shadow_type">GTK_SHADOW_IN</property>
+                        <property name="window_placement_set">True</property>
                         <child>
                           <widget class="GtkTreeView" id="existing_or_new_existing_treeview">
                             <property name="visible">True</property>
@@ -263,7 +264,7 @@
                     <child>
                       <widget class="GtkLabel" id="label2">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Open _Existing Document</property>
+                        <property name="label" translatable="yes">Open Existing Document</property>
                         <property name="use_underline">True</property>
                       </widget>
                       <packing>
@@ -278,7 +279,6 @@
                         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
                         <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                        <property name="shadow_type">GTK_SHADOW_IN</property>
                         <child>
                           <widget class="GtkTreeView" id="existing_or_new_new_treeview">
                             <property name="visible">True</property>
@@ -295,7 +295,7 @@
                     <child>
                       <widget class="GtkLabel" id="label3">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Create _New Document</property>
+                        <property name="label" translatable="yes">Create New Document</property>
                         <property name="use_underline">True</property>
                       </widget>
                       <packing>
@@ -328,6 +328,8 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="has_tooltip">True</property>
+                <property name="tooltip_text">Applies the currently selected item. Depending on the item, this might create a new document or open an existing document.</property>
                 <property name="response_id">0</property>
                 <child>
                   <widget class="GtkHBox" id="hbox1">
@@ -354,6 +356,10 @@
                   </widget>
                 </child>
               </widget>
+              <packing>
+                <property name="pack_type">GTK_PACK_END</property>
+                <property name="position">2</property>
+              </packing>
             </child>
             <child>
               <widget class="GtkButton" id="cancelbutton1">
@@ -365,7 +371,23 @@
                 <property name="response_id">-7</property>
               </widget>
               <packing>
+                <property name="pack_type">GTK_PACK_END</property>
                 <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkButton" id="button1">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="label" translatable="yes">gtk-help</property>
+                <property name="use_stock">True</property>
+                <property name="response_id">-11</property>
+              </widget>
+              <packing>
+                <property name="pack_type">GTK_PACK_END</property>
+                <property name="position">1</property>
+                <property name="secondary">True</property>
               </packing>
             </child>
           </widget>
@@ -445,78 +467,30 @@
                     <property name="column_spacing">6</property>
                     <property name="row_spacing">6</property>
                     <child>
-                      <widget class="GtkEntry" id="entry_host">
+                      <widget class="GtkLabel" id="label_database">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
+                        <property name="xalign">0</property>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="right_attach">2</property>
-                        <property name="y_options"></property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label64">
-                        <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">_Host</property>
-                        <property name="use_underline">True</property>
-                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
-                        <property name="mnemonic_widget">entry_host</property>
-                        <accessibility>
-                          <atkrelation target="entry_host" type="label-for"/>
-                        </accessibility>
-                      </widget>
-                      <packing>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
                         <property name="x_options">GTK_FILL</property>
                         <property name="y_options"></property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="label66">
+                      <widget class="GtkLabel" id="label68">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
-                        <property name="label" translatable="yes">_Password</property>
-                        <property name="use_underline">True</property>
+                        <property name="label" translatable="yes">Database</property>
                         <property name="justify">GTK_JUSTIFY_RIGHT</property>
-                        <property name="mnemonic_widget">entry_password</property>
-                        <accessibility>
-                          <atkrelation target="entry_password" type="label-for"/>
-                        </accessibility>
                       </widget>
                       <packing>
-                        <property name="top_attach">3</property>
-                        <property name="bottom_attach">4</property>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
                         <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkEntry" id="entry_password">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="has_focus">True</property>
-                        <property name="visibility">False</property>
-                        <property name="activates_default">True</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">3</property>
-                        <property name="bottom_attach">4</property>
-                        <property name="y_options"></property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkEntry" id="entry_user">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">2</property>
-                        <property name="bottom_attach">3</property>
                         <property name="y_options"></property>
                       </packing>
                     </child>
@@ -540,30 +514,78 @@
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="label68">
+                      <widget class="GtkEntry" id="entry_user">
                         <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Database</property>
-                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
+                        <property name="can_focus">True</property>
                       </widget>
                       <packing>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="top_attach">2</property>
+                        <property name="bottom_attach">3</property>
+                        <property name="y_options"></property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkEntry" id="entry_password">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="has_focus">True</property>
+                        <property name="visibility">False</property>
+                        <property name="activates_default">True</property>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="top_attach">3</property>
+                        <property name="bottom_attach">4</property>
+                        <property name="y_options"></property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="label66">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes">_Password</property>
+                        <property name="use_underline">True</property>
+                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
+                        <property name="mnemonic_widget">entry_password</property>
+                        <accessibility>
+                          <atkrelation target="entry_password" type="label-for"/>
+                        </accessibility>
+                      </widget>
+                      <packing>
+                        <property name="top_attach">3</property>
+                        <property name="bottom_attach">4</property>
                         <property name="x_options">GTK_FILL</property>
                         <property name="y_options"></property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="label_database">
+                      <widget class="GtkLabel" id="label64">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
+                        <property name="label" translatable="yes">_Host</property>
+                        <property name="use_underline">True</property>
+                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
+                        <property name="mnemonic_widget">entry_host</property>
+                        <accessibility>
+                          <atkrelation target="entry_host" type="label-for"/>
+                        </accessibility>
+                      </widget>
+                      <packing>
+                        <property name="x_options">GTK_FILL</property>
+                        <property name="y_options"></property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkEntry" id="entry_host">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="right_attach">2</property>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
-                        <property name="x_options">GTK_FILL</property>
                         <property name="y_options"></property>
                       </packing>
                     </child>
@@ -1240,12 +1262,9 @@
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkButton" id="button_find_all">
+                      <widget class="GtkLabel" id="label_records_count">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="label" translatable="yes">Find All</property>
-                        <property name="use_underline">True</property>
-                        <property name="response_id">0</property>
+                        <property name="label" translatable="yes">0</property>
                       </widget>
                       <packing>
                         <property name="expand">False</property>
@@ -1255,9 +1274,12 @@
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="label_records_count">
+                      <widget class="GtkButton" id="button_find_all">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">0</property>
+                        <property name="can_focus">True</property>
+                        <property name="label" translatable="yes">Find All</property>
+                        <property name="use_underline">True</property>
+                        <property name="response_id">0</property>
                       </widget>
                       <packing>
                         <property name="expand">False</property>

@@ -1192,7 +1192,7 @@ bool App_Glom::offer_new_or_existing()
   bool ask_again = true;
   while(ask_again)
   {
-    const int response_id = dialog->run();
+    const int response_id = Utils::dialog_run_with_help(dialog.get(), "dialog_existing_or_new");
     dialog->hide();
 
     if(response_id == Gtk::RESPONSE_ACCEPT)

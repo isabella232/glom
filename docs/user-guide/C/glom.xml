@@ -557,6 +557,12 @@ For instance, a shop might need a report listing all products sold in one month,
 
 <sect1 id="dialogs">
 <title>Dialogs</title>
+
+<sect2 id="dialog_existing_or_new">
+<title>Dialog: Initial dialog</title>
+<para>This dialog lets the user choose what document to open. It is possible to open an existing Glom document by selecting it from several recently modified documents or by opening another document by choosing a .glom file. Documents can also be opened via the network, if other users are running glom on the local network. Finally, a new document can be created, either by opening a template file which already contains some tables and records to start from, or by creating an empty document.</para>
+</sect2>
+
 <sect2 id="dialog_new_database">
 <title>Dialog: New database</title>
 <para></para>

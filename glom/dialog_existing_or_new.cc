@@ -40,6 +40,17 @@
 namespace
 {
 
+const char* RECENT_DUMMY_TEXT = "No recently used documents available";
+const char* TEMPLATE_DUMMY_TEXT = "No templates available";
+const char* NETWORK_DUMMY_TEXT = "No sessions found on the local network";
+
+/*bool has_dummy(const Gtk::TreeIter& parent, const std::auto_ptr<Gtk::TreeIter>& dummy)
+{
+  if(dummy.get() == NULL) return false;
+  const Gtk::TreeNodeChildren& children = parent->children();
+  return children.begin() == *dummy;
+}*/
+
 // Reads the title of an example from the first few characters of the XML
 class Parser: public xmlpp::SaxParser
 {
@@ -108,7 +119,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   m_existing_column_title.pack_start(m_existing_icon_renderer, false);
   m_existing_column_title.pack_start(m_existing_title_renderer, true);
   m_existing_column_title.set_cell_data_func(m_existing_icon_renderer, sigc::mem_fun(*this, &Dialog_ExistingOrNew::existing_icon_data_func));
-  m_existing_column_title.add_attribute(m_existing_title_renderer, "text", m_existing_columns.m_col_title.index());
+  m_existing_column_title.set_cell_data_func(m_existing_title_renderer, sigc::mem_fun(*this, &Dialog_ExistingOrNew::existing_title_data_func));
   m_existing_view->append_column(m_existing_column_title);
 
   m_existing_column_button.pack_end(m_existing_button_renderer, false);
@@ -119,7 +130,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   m_new_column_title.pack_start(m_new_icon_renderer, false);
   m_new_column_title.pack_start(m_new_title_renderer, true);
   m_new_column_title.set_cell_data_func(m_new_icon_renderer, sigc::mem_fun(*this, &Dialog_ExistingOrNew::new_icon_data_func));
-  m_new_column_title.add_attribute(m_new_title_renderer, "text", m_new_columns.m_col_title.index());
+  m_new_column_title.set_cell_data_func(m_new_title_renderer, sigc::mem_fun(*this, &Dialog_ExistingOrNew::new_title_data_func));
   m_new_view->append_column(m_new_column_title);
 
   m_new_column_button.pack_end(m_new_button_renderer, false);
@@ -133,15 +144,15 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   m_new_view->signal_row_activated().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_new_row_activated));
   m_new_button_renderer.signal_clicked().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_new_button_clicked));
 
-  m_iter_existing_recent = m_existing_model->append();
-  (*m_iter_existing_recent)[m_existing_columns.m_col_title] = _("Recently Opened");
-  
-  m_iter_existing_network = m_existing_model->append();
-  (*m_iter_existing_network)[m_existing_columns.m_col_title] = _("Local Network");
-
   m_iter_existing_other = m_existing_model->append();
   (*m_iter_existing_other)[m_existing_columns.m_col_title] = _("Other");
   (*m_iter_existing_other)[m_existing_columns.m_col_button_text] = _("Select File…");
+
+  m_iter_existing_network = m_existing_model->append();
+  (*m_iter_existing_network)[m_existing_columns.m_col_title] = _("Local Network");
+
+  m_iter_existing_recent = m_existing_model->append();
+  (*m_iter_existing_recent)[m_existing_columns.m_col_title] = _("Recently Opened");
   
   m_iter_new_empty = m_new_model->append();
   (*m_iter_new_empty)[m_new_columns.m_col_title] = _("New Empty Document");
@@ -196,6 +207,17 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
     }
   }
 
+  const Gtk::TreeNodeChildren& children = m_iter_existing_recent->children();
+  if(children.begin() == children.end())
+    m_iter_existing_recent_dummy = create_dummy_item_existing(m_iter_existing_recent, _(RECENT_DUMMY_TEXT));
+
+  // Will be removed when items are added:
+  m_iter_existing_network_dummy = create_dummy_item_existing(m_iter_existing_network, _(NETWORK_DUMMY_TEXT));
+  m_iter_new_template_dummy = create_dummy_item_new(m_iter_new_template, _(TEMPLATE_DUMMY_TEXT));
+
+  // Expand recently used files
+  m_existing_view->expand_row(m_existing_model->get_path(m_iter_existing_recent), false);
+
   m_select_button->signal_clicked().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_select_clicked));
   m_notebook->signal_switch_page().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_switch_page));
   m_existing_view->get_selection()->signal_changed().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_existing_selection_changed));
@@ -214,6 +236,7 @@ Dialog_ExistingOrNew::~Dialog_ExistingOrNew()
 
 #ifndef G_OS_WIN32
   // Release the service infos in the treestore
+  if(!m_iter_existing_network_dummy.get())
   {
     const Gtk::TreeNodeChildren& children = m_iter_existing_network->children();
     for(Gtk::TreeIter iter = children.begin(); iter != children.end(); ++ iter)
@@ -223,6 +246,7 @@ Dialog_ExistingOrNew::~Dialog_ExistingOrNew()
 
   // Release the recent infos (see comment in the header for why these
   // have to be dynamically allocated)
+  if(!m_iter_existing_recent_dummy.get())
   {
     const Gtk::TreeNodeChildren& children = m_iter_existing_recent->children();
     for(Gtk::TreeIter iter = children.begin(); iter != children.end(); ++ iter)
@@ -320,6 +344,20 @@ Glib::ustring Dialog_ExistingOrNew::get_service_name() const
     throw std::logic_error("Dialog_ExistingOrNew::get_service_name: action is not OPEN_REMOTE");
 }
 
+std::auto_ptr<Gtk::TreeIter> Dialog_ExistingOrNew::create_dummy_item_existing(const Gtk::TreeIter& parent, const Glib::ustring& text)
+{
+  Gtk::TreeIter iter = m_existing_model->append(parent->children());
+  (*iter)[m_existing_columns.m_col_title] = text;
+  return std::auto_ptr<Gtk::TreeIter>(new Gtk::TreeIter(iter));
+}
+
+std::auto_ptr<Gtk::TreeIter> Dialog_ExistingOrNew::create_dummy_item_new(const Gtk::TreeIter& parent, const Glib::ustring& text)
+{
+  Gtk::TreeIter iter = m_new_model->append(parent->children());
+  (*iter)[m_new_columns.m_col_title] = text;
+  return std::auto_ptr<Gtk::TreeIter>(new Gtk::TreeIter(iter));
+}
+
 void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeIter& iter)
 {
   Gtk::CellRendererPixbuf* pixbuf_renderer = dynamic_cast<Gtk::CellRendererPixbuf*>(renderer);
@@ -328,13 +366,17 @@ void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, 
   pixbuf_renderer->property_stock_size() = Gtk::ICON_SIZE_BUTTON;
   pixbuf_renderer->property_stock_id() = "";
   pixbuf_renderer->property_pixbuf() = Glib::RefPtr<Gdk::Pixbuf>();
-      
+
   if(iter == m_iter_existing_recent)
     pixbuf_renderer->property_stock_id() = Gtk::Stock::INDEX.id; // TODO: More meaningful icon?
   else if(iter == m_iter_existing_network)
     pixbuf_renderer->property_stock_id() = Gtk::Stock::NETWORK.id;
   else if(iter == m_iter_existing_other)
     pixbuf_renderer->property_stock_id() = Gtk::Stock::OPEN.id;
+  else if(m_iter_existing_recent_dummy.get() != NULL && iter == *m_iter_existing_recent_dummy)
+    pixbuf_renderer->property_stock_id() = Gtk::Stock::DIALOG_ERROR.id; // TODO: Use Stock::STOP instead?
+  else if(m_iter_existing_network_dummy.get() != NULL && iter == *m_iter_existing_network_dummy)
+    pixbuf_renderer->property_stock_id() = Gtk::Stock::DIALOG_ERROR.id; // TODO: Use Stock::STOP instead?
   else
   {
     if(m_existing_model->is_ancestor(m_iter_existing_recent, iter))
@@ -355,6 +397,23 @@ void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, 
   }
 }
 
+void Dialog_ExistingOrNew::existing_title_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeIter& iter)
+{
+  Gtk::CellRendererText* text_renderer = dynamic_cast<Gtk::CellRendererText*>(renderer);
+  if(!text_renderer) throw std::logic_error("Renderer not a text renderer in existing_title_data_func");
+
+  text_renderer->property_text() = (*iter)[m_existing_columns.m_col_title];
+
+  // Default: Use default color
+  text_renderer->property_foreground_set() = false;
+  // Use grey if parent item has no children
+  if( (iter == m_iter_existing_network && m_iter_existing_network_dummy.get()) ||
+      (iter == m_iter_existing_recent && m_iter_existing_recent_dummy.get()))
+  {
+    text_renderer->property_foreground() = "grey";
+  }
+}
+
 void Dialog_ExistingOrNew::new_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeIter& iter)
 {
   Gtk::CellRendererPixbuf* pixbuf_renderer = dynamic_cast<Gtk::CellRendererPixbuf*>(renderer);
@@ -368,6 +427,8 @@ void Dialog_ExistingOrNew::new_icon_data_func(Gtk::CellRenderer* renderer, const
     pixbuf_renderer->property_stock_id() = Gtk::Stock::NEW.id;
   else if(iter == m_iter_new_template)
     pixbuf_renderer->property_stock_id() = Gtk::Stock::EDIT.id; // TODO: More meaningful icon?
+  else if(m_iter_new_template_dummy.get() != NULL && iter == *m_iter_new_template_dummy)
+    pixbuf_renderer->property_stock_id() = Gtk::Stock::DIALOG_ERROR.id; // TODO: Use Stock::STOP instead?
   else
   {
     if(m_new_model->is_ancestor(m_iter_new_template, iter))
@@ -378,6 +439,22 @@ void Dialog_ExistingOrNew::new_icon_data_func(Gtk::CellRenderer* renderer, const
     {
       throw std::logic_error("Unexpected iterator in new_icon_data_func");
     }
+  }
+}
+
+void Dialog_ExistingOrNew::new_title_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeIter& iter)
+{
+  Gtk::CellRendererText* text_renderer = dynamic_cast<Gtk::CellRendererText*>(renderer);
+  if(!text_renderer) throw std::logic_error("Renderer not a text renderer in new_title_data_func");
+
+  text_renderer->property_text() = (*iter)[m_new_columns.m_col_title];
+
+  // Default: Use default color
+  text_renderer->property_foreground_set() = false;
+  // Use grey if parent item has no children
+  if( (iter == m_iter_new_template && m_iter_new_template_dummy.get()))
+  {
+    text_renderer->property_foreground() = "grey";
   }
 }
 
@@ -411,7 +488,9 @@ void Dialog_ExistingOrNew::update_ui_sensitivity()
     else
     {
       Gtk::TreeIter sel = m_existing_view->get_selection()->get_selected();
-      sensitivity = (sel != m_iter_existing_recent && sel != m_iter_existing_network);
+      sensitivity = (sel != m_iter_existing_recent && sel != m_iter_existing_network &&
+                     (!m_iter_existing_recent_dummy.get() || sel != *m_iter_existing_recent_dummy) &&
+                     (!m_iter_existing_network_dummy.get() || sel != *m_iter_existing_network_dummy));
     }
   }
   else
@@ -425,7 +504,8 @@ void Dialog_ExistingOrNew::update_ui_sensitivity()
     else
     {
       Gtk::TreeIter sel = m_new_view->get_selection()->get_selected();
-      sensitivity = (sel != m_iter_new_template);
+      sensitivity = (sel != m_iter_new_template &&
+                     (!m_iter_new_template_dummy.get() || sel != *m_iter_new_template_dummy));
     }
   }
 
@@ -523,11 +603,22 @@ void Dialog_ExistingOrNew::on_stream_read(const Glib::RefPtr<Gio::AsyncResult>& 
     }
     else
     {
+      const bool is_first_item = m_iter_new_template_dummy.get() != NULL;
+
       // Add to list
       Gtk::TreeIter iter = m_new_model->append(m_iter_new_template->children());
       (*iter)[m_new_columns.m_col_title] = title;
       (*iter)[m_new_columns.m_col_button_text] = _("Create");
       (*iter)[m_new_columns.m_col_template_uri] = m_current_example->get_uri();
+
+      if(is_first_item)
+      {
+        // Remove dummy
+        m_new_model->erase(*m_iter_new_template_dummy);
+        m_iter_new_template_dummy.reset();
+        // Expand if this is the first item
+        m_new_view->expand_row(m_new_model->get_path(m_iter_new_template), false);
+      }
     }
   }
   catch(const Glib::Exception& ex)
@@ -556,6 +647,13 @@ void Dialog_ExistingOrNew::on_service_found(const Glib::ustring& name, EpcServic
 
   epc_service_info_ref(info);
   g_free(title);
+  
+  // Remove dummy item
+  if(m_iter_existing_network_dummy.get())
+  {
+    m_existing_model->erase(*m_iter_existing_network_dummy);
+    m_iter_existing_network_dummy.reset();
+  }
 }
 
 void Dialog_ExistingOrNew::on_service_removed(const Glib::ustring& name, const Glib::ustring& type)
@@ -566,9 +664,14 @@ void Dialog_ExistingOrNew::on_service_removed(const Glib::ustring& name, const G
   {
     if((*iter)[m_existing_columns.m_col_service_name] == name)
     {
+      const bool was_expanded = m_existing_view->row_expanded(m_existing_model->get_path(iter));
       // Remove from store
       epc_service_info_unref((*iter)[m_existing_columns.m_col_service_info]);
       m_existing_model->erase(iter);
+      // Reinsert dummy, if necessary
+      if(children.begin() == children.end())
+        m_iter_existing_network_dummy = create_dummy_item_existing(m_iter_existing_network, _(NETWORK_DUMMY_TEXT));
+      if(was_expanded) m_existing_view->expand_row(m_existing_model->get_path(iter), false);
       break;
     }
   }

@@ -66,8 +66,13 @@ public:
 protected:
   Action get_action_impl(Gtk::TreeIter& iter) const;
 
+  std::auto_ptr<Gtk::TreeIter> create_dummy_item_existing(const Gtk::TreeIter& parent, const Glib::ustring& text);
+  std::auto_ptr<Gtk::TreeIter> create_dummy_item_new(const Gtk::TreeIter& parent, const Glib::ustring& text);
+
   void existing_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeIter& iter);
+  void existing_title_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeIter& iter);
   void new_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeIter& iter);
+  void new_title_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeIter& iter);
 
   void on_switch_page(GtkNotebookPage* page, guint page_num);
   void on_existing_selection_changed();
@@ -171,7 +176,12 @@ protected:
 
   Gtk::TreeIter m_iter_new_empty;
   Gtk::TreeIter m_iter_new_template;
-  
+
+  // Dummy children to indicate that a parent item has no (real) children
+  std::auto_ptr<Gtk::TreeIter> m_iter_existing_network_dummy;
+  std::auto_ptr<Gtk::TreeIter> m_iter_existing_recent_dummy;
+  std::auto_ptr<Gtk::TreeIter> m_iter_new_template_dummy;
+
   Glib::RefPtr<Gio::File> m_examples_dir;
   Glib::RefPtr<Gio::FileEnumerator> m_examples_enumerator;
   Glib::RefPtr<Gio::File> m_current_example;

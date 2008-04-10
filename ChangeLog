@@ -1,3 +1,27 @@
+2008-04-10  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/glom.glade: Added a help button, reordered Quit/Select buttons,
+	remove mnemonics from the tab labels as suggested by the HIG. Removed
+	the separator and added a tooltip for the select button.
+
+	* glom/dialog_existing_or_new.h:
+	* glom/dialog_existing_or_new.cc (constructor): Reordered items in
+	existing_model, use a cell data func for the item's title so we can
+	change the color when necessary, expand the recent items by default.
+	Add a dummy item telling that there are no documents in this category
+	if there are none.
+	(on_service_found, on_service_removed): Create/Remove that dummy item
+	accordingly.
+	(on_stream_read): Remove the dummy item for the "New From Template"
+	category, expand the "New From Template" category if this was the first
+	item discovered.
+
+	* glom/application.cc (offer_new_or_existing): Use
+	Utils::dialog_run_with_help() to make the Help button work.
+
+	* docs/user-guide/C/glom.xml: Added an initial text for the Help
+	button of the initial dialog.
+
 2008-04-10  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/connectionpool.cc (on_linux_signal): Call the 
