@@ -28,20 +28,6 @@
 	the xfwm4 window manager.
 	Bug #525285 (Jani Monoses) 
 
-2008-04-09  Murray Cumming  <murrayc@murrayc.com>
-
-	* glom/libglom/data_structure/layout/layoutgroup.cc
-	* glom/libglom/data_structure/layout/layoutgroup.h:
-	Added has_any_fields().
-	* glom/libglom/document/document_glom.cc
-	* glom/libglom/document/document_glom.h
-	Added get_data_layout_groups_have_any_fields().
-	* glom/mode_data/box_data_details.cc on_button_new():
-	* glom/mode_data/box_data_list.cc on_adddel_user_requested_add():
-	Warn the user if the layout has no dialogs, and do not try to add a 
-	record, because there would be nothing to see an no way to enter data.
-	Bug #526721 (Jean-François Fortin Tam).
-
 2008-04-09  Johannes Schmid  <jhs@gnome.org>
 
 	* glom/glom_developer.glade:
@@ -53,12 +39,12 @@
 	Fix crasher when opening GlomButton details dialog
 	
 	* glom/utility_widgets/Makefile.am:
-	Move flowtable_dnd.[cch] in !GLOM_CLIENT_ONLY section
+  Move flowtable_dnd.[cch] in !GLOM_CLIENT_ONLY section
 
 2008-04-09  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/db_adddel/db_adddel.cc
-	get_item_placeholder(), get_item_selected(),
+	get_item_placeholder(), Glom.get_item_selected(),
 	on_cell_layout_button_clicked(), remove_item(),
 	on_treeview_cell_edited_bool(), on_treeview_cell_edited(),
 	on_treeview_button_press_event(), get_last_row(),
@@ -146,7 +132,7 @@
 
 2008-04-07  Murray Cumming  <murrayc@murrayc.com>
 
-	* glom/main.cc (OptionGroup, main): Use atexit(__libc_freeres) 
+	* glom/main.cc (Glom.OptionGroup, main): Use atexit(__libc_freeres) 
 	to maybe help valgrind to detect leaks.
 	* glom/mode_data/flowtablewithfields.cc Added TODO comments about 
 	possible widget leaks.
@@ -164,7 +150,7 @@
 	* glom/glom_developer.glade:
 	Added dialog_flowtable
 	
-	* glom/mode_data/flowtablewithfields.cc (FlowTableWithFields,
+	* glom/mode_data/flowtablewithfields.cc (Glom.FlowTableWithFields,
 	  (add_layout_group_at_position), (on_menu_properties_activate),
 	  (on_button_press_event):
 	* glom/mode_data/flowtablewithfields.h
@@ -244,7 +230,7 @@
 
 	* glom/glom_privs.cc: get_database_users(), get_current_privs():
 	* glom/mode_data/box_data.cc: record_new(),
-	  get_related_record_exists): Added use of BusyCursor because these 
+	  Glom.get_related_record_exists): Added use of BusyCursor because these 
 	access the database.
 
 2008-04-01  Murray Cumming  <murrayc@murrayc.com>
@@ -266,7 +252,7 @@
 	* glom/base_db.h: Moved count_rows_returned_by() to Base_DB so we 
 	can use it elsewhere.
 
-	* glom/frame_glom.cc show_table(): Count the approximate number of 
+	* glom/frame_glom.cc Glom.show_table(): Count the approximate number of 
 	rows expected in the list view, and do not sort them by default if 
 	it is more than 10,000. This allows Glom to show 600,000 MusicBrainz 
 	album rows now in 1 minute.
@@ -288,7 +274,7 @@
 2008-04-01  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
-	refresh_from_database(): Omit the ORDER BY clause when counting the 
+	Glom.refresh_from_database(): Omit the ORDER BY clause when counting the 
 	number of rows from our SQL query. This is much faster.
 
 2008-04-01  Murray Cumming  <murrayc@murrayc.com>
@@ -790,7 +776,7 @@
 	* win32/querymodules.bat:
 	* win32/build-installer:
 	* win32/glom.iss.in: Moved most files into the bin/ subdirectory. This
-	is because both exe and the postgres utilities need libpq.dll,
+	is because both Glom.exe and the postgres utilities need libpq.dll,
 	but the postgres utilities need to be in the bin/ subdirectory to find
 	their shared files. With this, the installer also works for me on a
 	machine that does not already have Python, GTK, etc. installed.
@@ -2528,7 +2514,7 @@ This is svn trunk. See also the glom-1-6 branch.
 	execute_command_line_on_thread_create(): Do not delete the data 
 	before using it, to avoid a crash.
 	* configure.ac: Depend on the latest versions of libgdamm and libxml++, 
-	which also have fixes for crashes in 
+	which also have fixes for crashes in Glom.
 
 2007-06-05  Ignacio Casal Quinteiro  <nacho.resa@gmail.com>
 
@@ -2589,7 +2575,7 @@ This is svn trunk. See also the glom-1-6 branch.
 2007-05-10  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.in: Require libgda 3.0.1, which is the first version that works 
-	enough for 
+	enough for Glom.
 
 2007-05-09  Murray Cumming  <murrayc@murrayc.com>
 
@@ -2686,7 +2672,7 @@ This is svn trunk. See also the glom-1-6 branch.
 
 	* glom/libglom/utils.cc:
 	* glom/libglom/utils.h: Added a show_ok_dialog() method, becasue it is silly to 
-	always call the on in Frame_
+	always call the on in Frame_Glom.
 
 	* glom/libglom/connectionpool.cc:
 	* glom/libglom/connectionpool.h: create_self_hosting(): Take a parent window so we 
@@ -3408,7 +3394,7 @@ This is svn trunk. See also the glom-1-6 branch.
 	saving changes.
 	* glom/frame_glom.cc: on_menu_userlevel_Developer(): When going into developer 
 	mode, warn that you might not be able to open the changed document with older 
-	versions of 
+	versions of Glom.
 
 2006-11-17  Murray Cumming  <murrayc@murrayc.com>
 
@@ -8154,7 +8140,7 @@ There is also a glom 1.0 branch for maintenance.
 	* glom/utility_widgets/comboglomchoicesbase.cc:
 	* glom/utility_widgets/comboglomchoicesbase.h:	
 	Add ComboGlom and ComboGlomChoicesBase which is 
-	a base class for ComboGlom and ComboEntry
+	a base class for ComboGlom and ComboEntryGlom.
 	* glom/utility_widgets/datawidget.cc:
 	Use ComboGlom instead of ComboEntryGlom when 
 	the choices should be restricted.
@@ -9206,7 +9192,7 @@ There is also a glom 1.0 branch for maintenance.
 	* glom/data_structure/groupinfo.h:
 	* glom/document/document_glom.cc:
 	* glom/document/document_glom.h:
-	Moved GroupInfo class out of Document_
+	Moved GroupInfo class out of Document_Glom.
 	* glom/mode_design/users/dialog_groups_list.cc:
 	Set the groups in the document when we get 
 	them from the database. But just in case 
@@ -10291,13 +10277,13 @@ There is also a glom 1.0 branch for maintenance.
 
 2004-07-05  Murray Cumming  <murrayc@murrayc.com>
 
-	* glom/document/Document_cc: set_modified(): Call save_before() 
+	* glom/document/Document_Glom.cc: set_modified(): Call save_before() 
 	and write_to_disk() instead of save() because that gets all the data 
 	from the views again.
 
 2004-07-05  Murray Cumming  <murrayc@murrayc.com>
 
-	* glom/document/Document_cc: set_modified(): Do nothing if the 
+	* glom/document/Document_Glom.cc: set_modified(): Do nothing if the 
 	modified status is already what it would be set to, to prevent 
 	infinite loops.
 	* glom/application.cc offer_new_or_existing(): Keep offering if the 
@@ -10305,7 +10291,7 @@ There is also a glom 1.0 branch for maintenance.
 
 2004-07-04  Murray Cumming  <murrayc@murrayc.com>
 
-	* glom/document/Document_cc: When in developer mode, save all 
+	* glom/document/Document_Glom.cc: When in developer mode, save all 
 	changes immediately and automatically. Lets see how much disk activity 
 	this creates.
 
@@ -10325,7 +10311,7 @@ There is also a glom 1.0 branch for maintenance.
 
 2004-07-04  Murray Cumming  <murrayc@murrayc.com>
 
-	* glom/document/Document_[h|cc]: Cache all the data in 
+	* glom/document/Document_Glom.[h|cc]: Cache all the data in 
 	member variables and only deal with the XML DOM when loading and 
 	saving, in overrides of load_before() and save_after(). This makes the 
 	code nicer and faster.
@@ -10637,7 +10623,7 @@ There is also a glom 1.0 branch for maintenance.
 	the code.
 	* glom/mode_data/box_data_details.cc: Use EntryGlom::set/get_value() 
 	instead of set/get_text(), so we delegate parsing/representation to 
-	the Entry
+	the EntryGlom.
 
 2004-06-10  Adam Weinberger  <adamw@gnome.org>
 
@@ -10712,7 +10698,7 @@ There is also a glom 1.0 branch for maintenance.
 
 2004-06-08  Murray Cumming  <murrayc@murrayc.com>
 
-	* glom/application.[h|cc], glom/Document/Document_[h|cc], and 
+	* glom/application.[h|cc], glom/Document/Document_Glom.[h|cc], and 
 	others: The AppState (User Level) is now dependent on the document so 
 	different instances (each with 1 document) can have different 
 	user levels. And the user level is Operator if the file is read-only.
@@ -10735,7 +10721,7 @@ There is also a glom 1.0 branch for maintenance.
 	* glom/Mode_Design/Box_Table_FieldDefinitions: Show the field titles 
 	in the list of fields.
 	* Changed all std::strings to Glib::ustrings. Thanks regexxer.
-	* glom/Document/Document_cc set_data_layout_groups(): Really save 
+	* glom/Document/Document_Glom.cc set_data_layout_groups(): Really save 
 	the groups.
 
 2004-06-06  Murray Cumming  <murrayc@murrayc.com>
@@ -10745,7 +10731,7 @@ There is also a glom 1.0 branch for maintenance.
 
 2004-06-06  Murray Cumming  <murrayc@murrayc.com>
 
-	* glom/Document/Document_cc: set_tables(): Removed old code that 
+	* glom/Document/Document_Glom.cc: set_tables(): Removed old code that 
 	caused tables to always be marked as hidden.
 	* glom/Mode_Data/Box_Data_Details.cc: Change Related Records frame to
 	HIG-style.
@@ -10763,7 +10749,7 @@ There is also a glom 1.0 branch for maintenance.
 
 2004-06-05  Murray Cumming  <murrayc@murrayc.com>
 
-	* glom/Frame_cc: on_userlevel_changed(): Really switch to data 
+	* glom/Frame_Glom.cc: on_userlevel_changed(): Really switch to data 
 	mode if the current mode is not allowed for the new userlevel.
 
 2004-06-04  Murray Cumming  <murrayc@murrayc.com>
@@ -10804,7 +10790,7 @@ There is also a glom 1.0 branch for maintenance.
 
 2004-06-03  Murray Cumming  <murrayc@murrayc.com>
 
-	* glom/Document/Document_h: Changed get/set_hidden_tables() to 
+	* glom/Document/Document_Glom.h: Changed get/set_hidden_tables() to 
 	get/set_tables(), using the new TableInfo class, so that we can 
 	save table titles.
 
@@ -10842,7 +10828,7 @@ There is also a glom 1.0 branch for maintenance.
 
 2004-05-30  Murray Cumming  <murrayc@murrayc.com>
 
-	* glom/Document/Document_[h|cc]: get/set_data_layout*(): Removed 
+	* glom/Document/Document_Glom.[h|cc]: get/set_data_layout*(): Removed 
 	the hidden_fields argument - now the LayoutItems have a m_hidden 
 	member instead.
 
@@ -10976,7 +10962,7 @@ There is also a glom 1.0 branch for maintenance.
 
 2003-02-15  Murray Cumming  <murrayc@usa.net>
 
-	* glom/Dialog_[h|cc]: Inherit from Gtk::Dialog instead of 
+	* glom/Dialog_Glom.[h|cc]: Inherit from Gtk::Dialog instead of 
 	Gtk::Window and use the action_area.
 
 2003-02-15  Murray Cumming  <murrayc@usa.net>
