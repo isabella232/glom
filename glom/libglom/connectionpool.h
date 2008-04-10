@@ -160,12 +160,15 @@ public:
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   /** Start a database server instance for the exisiting database files.
+   * @param parent_window The parent window (transient for) of any dialogs shown during this operation.
+   * @result Whether the operation was successful.
    */
-  bool start_self_hosting();
+  bool start_self_hosting(Gtk::Window* parent_window);
 
   /** Stop the database server instance for the database files.
+   * @param parent_window The parent window (transient for) of any dialogs shown during this operation.
    */
-  void stop_self_hosting();
+  void stop_self_hosting(Gtk::Window* parent_window);
 
   /** Create new database files, for later use by their own  database server instance.
    * @param parent_window A parent window to use as the transient window when displaying errors.

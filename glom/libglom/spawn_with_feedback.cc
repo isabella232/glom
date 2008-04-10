@@ -132,6 +132,9 @@ static bool pulse_until_thread_finished(Dialog_ProgressCreating& dialog_progress
 
 static Dialog_ProgressCreating* get_and_show_pulse_dialog(const Glib::ustring& message, Gtk::Window* parent_window)
 {
+  if(!parent_window)
+    std::cerr << "debug: Glom: get_and_show_pulse_dialog(): parent_window is NULL" << std::endl;
+
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom.glade", "window_progress");
 #else
@@ -169,6 +172,9 @@ static Dialog_ProgressCreating* get_and_show_pulse_dialog(const Glib::ustring& m
 
 bool execute_command_line_and_wait(const std::string& command, const Glib::ustring& message, Gtk::Window* parent_window)
 {
+  if(!parent_window)
+    std::cerr << "debug: Glom: execute_command_line_and_wait(): parent_window is NULL" << std::endl;
+
   //Show a dialog with a pulsing progress bar and a human-readable message, while we wait for the command to finish:
   //
   //Put the dialog in an auto_ptr so that it will be deleted (and hidden) when the current function returns.
@@ -176,15 +182,15 @@ bool execute_command_line_and_wait(const std::string& command, const Glib::ustri
   std::auto_ptr<Dialog_ProgressCreating> dialog_progress;
   dialog_progress.reset(dialog_temp);
 
-
-  std::cout << std::endl << "debug: command_line: " << command << std::endl << std::endl;
-
   return pulse_until_thread_finished(*dialog_progress, command, sigc::ptr_fun(&execute_command_line_on_thread_create) );
 }
 
 
 bool execute_command_line_and_wait_until_second_command_returns_success(const std::string& command, const std::string& second_command, const Glib::ustring& message, Gtk::Window* parent_window, const std::string& success_text)
 {
+  if(!parent_window)
+    std::cerr << "debug: Glom: execute_command_line_and_wait_until_second_command_returns_success(): parent_window is NULL" << std::endl;
+
   Dialog_ProgressCreating* dialog_temp = get_and_show_pulse_dialog(message, parent_window);
   std::auto_ptr<Dialog_ProgressCreating> dialog_progress;
   dialog_progress.reset(dialog_temp);
@@ -299,7 +305,7 @@ bool execute_command_line_and_wait_fixed_seconds(const std::string& command, uns
   while(Gtk::Main::instance()->events_pending())
     Gtk::Main::instance()->iteration();
 
-  std::cout << std::endl << "debug: command_line: " << command << std::endl << std::endl;
+  std::cout << std::endl << "  debug: command_line: " << command << std::endl << std::endl;
 
   try
   {

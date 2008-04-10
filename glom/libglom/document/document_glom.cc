@@ -223,7 +223,7 @@ Document_Glom::~Document_Glom()
     if(!connection_pool)
       return;
 
-    connection_pool->stop_self_hosting();
+    connection_pool->stop_self_hosting(m_parent_window);
   }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }

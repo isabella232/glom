@@ -1583,7 +1583,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
       created = dialog->create_self_hosted();
       if(created)
       {
-        const bool test = connection_pool->start_self_hosting();
+        const bool test = connection_pool->start_self_hosting(get_app_window());
         if(!test)
           return false;
       }

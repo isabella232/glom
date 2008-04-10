@@ -1,3 +1,33 @@
+2008-04-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/connectionpool.cc (on_linux_signal): Call the 
+	previously-set SIGSEGV handler, to hopefully make bug-buddy or apport 
+	catch (and report) crashes again.
+
+2008-04-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/spawn_with_feedback.h 
+	* glom/libglom/spawn_with_feedback.cc (get_and_show_pulse_dialog,
+	  execute_command_line_and_wait,
+	  execute_command_line_and_wait_until_second_command_returns_success):
+	* glom/libglom/connectionpool.h 
+	* glom/libglom/connectionpool.cc:
+	  start_self_hosting(), stop_self_hosting(), create_self_hosting():
+	Added parent_window parameter, so that any dialogs can be transient for 
+	it.
+
+	* glom/application.cc on_document_load(),
+	  stop_self_hosting_of_document_database(): Call 
+	start/stop_self_hosting() with the parent_window parameter.
+	* glom/frame_glom.cc:
+	  connection_request_password_and_choose_new_database_name():
+	* glom/libglom/document/document_glom.cc:
+	Call start/stop_self_hosting() with the parent_window parameter.
+
+	This should prevent these windows from being system-modal when using 
+	the xfwm4 window manager.
+	Bug #525285 (Jani Monoses) 
+
 2008-04-09  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/db_adddel/db_adddel.cc

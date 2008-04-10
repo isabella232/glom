@@ -35,7 +35,7 @@ namespace Spawn
  * @param message A human-readable message to be shown, for instance in a dialog, while waiting.
  * @parent_window Make the dialog transient to this window.
  */
-bool execute_command_line_and_wait(const std::string& command, const Glib::ustring& message, Gtk::Window* parent_window = 0);
+bool execute_command_line_and_wait(const std::string& command, const Glib::ustring& message, Gtk::Window* parent_window);
 
 /** Execute a command-line command, and repeatedly call a second command that tests whether the first command has finished.
  * @param command The command-line command.
@@ -43,9 +43,9 @@ bool execute_command_line_and_wait(const std::string& command, const Glib::ustri
  * @parent_window Make the dialog transient to this window.
  * @success_text If this is not empty, then the second command will only be considered to have succeeded when this text is found in its stdout output.
  */
-bool execute_command_line_and_wait_until_second_command_returns_success(const std::string& command, const std::string& second_command, const Glib::ustring& message, Gtk::Window* parent_window = 0, const std::string& success_text = std::string());
+bool execute_command_line_and_wait_until_second_command_returns_success(const std::string& command, const std::string& second_command, const Glib::ustring& message, Gtk::Window* parent_window, const std::string& success_text = std::string());
 
-//bool execute_command_line_and_wait_fixed_seconds(const std::string& command, unsigned int seconds, const Glib::ustring& message, Gtk::Window* parent_window = 0);
+//bool execute_command_line_and_wait_fixed_seconds(const std::string& command, unsigned int seconds, const Glib::ustring& message, Gtk::Window* parent_window);
 
 
 } //Spawn
