@@ -807,8 +807,11 @@ static void on_linux_signal(int signum)
     //though this is obviously an unusual case.
     connection_pool->stop_self_hosting(0 /* parent_window */);
 	
-    //TODO: How can we let GNOME's crash handler still handle this?
-    exit(1);
+    //Let GNOME/Ubuntu's crash handler still handle this?
+    if(previous_sig_handler)
+      (*previous_sig_handler)(signum);
+    else
+      exit(1);
   }
 }
 

@@ -1,5 +1,11 @@
 2008-04-10  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/connectionpool.cc (on_linux_signal): Call the 
+	previously-set SIGSEGV handler, to hopefully make bug-buddy or apport 
+	catch (and report) crashes again.
+
+2008-04-10  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/spawn_with_feedback.h 
 	* glom/libglom/spawn_with_feedback.cc (get_and_show_pulse_dialog,
 	  execute_command_line_and_wait,
