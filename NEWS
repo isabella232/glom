@@ -1,4 +1,15 @@
-1.6.13 (stable)
+1.6.14 (stable):
+
+* Allow apport and bug-buddy to catch crashes again, hopefully.
+* Fix a crash when trying to add a record when there is no primary key.
+  Bug #527007 (Jean-François Fortin Tam)
+* Field Defnitions: Refuse to change a field name to one that already exists.
+* Prevent progress windows from being system-modal when using 
+  the xfwm4 window manager, when starting/stopping self hosting.
+  Bug #525285 (Jani Monoses)
+  (Murray Cumming)
+
+1.6.13 (stable):
 
 * Prevent a crash when adding an image field to the list view.
   Bug #526114 (Jani Monoses).
@@ -6,7 +17,7 @@
   added fields are more easily visible.
   Bug #526046 (Jani Monoses).
 
-1.6.12 (stable)
+1.6.12 (stable):
 
 * Designing Fields: Avoid errors when changing field types
   (necessary in order to even add some field types, such as Date and Time)
