@@ -25,9 +25,6 @@
 
 //#include <gnome.h>
 #include <gtkmm/main.h>
-#ifndef GLOM_ENABLE_MAEMO
-#include <libgnome/gnome-init.h> // For gnome_program_init().
-#endif
 #include <giomm.h>
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -200,14 +197,6 @@ main(int argc, char* argv[])
   try
 #endif
   {
-#ifndef GLOM_ENABLE_MAEMO
-    //Initialize gnome_program, so that we can use gnome_help_display().    
-    gnome_program_init(PACKAGE, VERSION, LIBGNOME_MODULE, argc, argv,
-        GNOME_PARAM_HUMAN_READABLE_NAME, _("Glom"),
-        GNOME_PROGRAM_STANDARD_PROPERTIES, NULL);
-#endif
-
-
     Gtk::Main mainInstance(argc, argv, context);
     Bakery::init();
 

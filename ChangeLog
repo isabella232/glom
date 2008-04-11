@@ -1,3 +1,16 @@
+2008-04-11  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/utils.cc (Utils::show_help): Replace gnome_help_display
+	by constructing a path to the help file, making a ghelp: URI out of it
+	and passing it to g_app_info_launch_default_for_uri().
+
+	* glom/xsl_utils.cc (GlomXslUtils::transform_and_open): Replace
+	gnome_url_show by g_app_info_launch_default_for_uri().
+
+	* glom/main.cc (main): Don't call gnome_program_init().
+
+	* configure.in: Remove the libgnome dependency.
+
 2008-04-11  Johannes Schmid <johannes.schmid@openismus.com>
 
 	* glom/application.cc 

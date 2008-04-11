@@ -31,10 +31,6 @@
 #include <giomm.h>
 #include <glibmm/i18n.h>
 
-#ifndef GLOM_ENABLE_MAEMO
-#include <libgnome/gnome-url.h>
-#endif
-
 #include <sstream> //For stringstream
 
 #include <iostream>
@@ -119,20 +115,14 @@ void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const
   if(parent_window)
     Frame_Glom::show_ok_dialog(_("Report Finished"), _("The report will now be opened in your web browser."), *parent_window, Gtk::MESSAGE_INFO);
 
-#ifdef GLOM_ENABLE_MAEMO
-  // TODO_maemo: We don't have libgnome available. A quick search did not yield
-  // a similar method in the hildon API. Perhaps we can just use
-  //  gnome_vfs_url_show()?
-#else
   //Use the GNOME browser:
   GError* gerror = 0;
-  gnome_url_show(temp_uri.c_str(), &gerror); //This is in libgnome.
-  if(gerror)
+  // g_app_info_launch_default_for_uri seems not to be wrapped by giomm
+  if(!g_app_info_launch_default_for_uri(temp_uri.c_str(), NULL, &gerror))
   {
-    std::cerr << "Error while calling gnome_url_show(): " << gerror->message << std::endl;
-    g_clear_error(&gerror);
+    std::cerr << "Error while calling g_app_info_launch_default_for_uri(): " << gerror->message << std::endl;
+    g_error_free(gerror);
   }
-#endif
 }
 
 Glib::ustring GlomXslUtils::xslt_process(const xmlpp::Document& xml_document, const std::string& filepath_xslt)

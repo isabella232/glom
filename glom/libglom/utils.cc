@@ -28,10 +28,7 @@
 #include <glibmm/i18n.h>
 #include <gtkmm/messagedialog.h>
 
-#ifndef GLOM_ENABLE_MAEMO
-#include <libgnome/gnome-url.h>
-#include <libgnome/gnome-help.h>
-#endif
+#include <gio/gio.h> // For g_app_info_launch_default_for_uri
 
 #ifdef GLOM_ENABLE_MAEMO
 #include <hildonmm/note.h>
@@ -57,6 +54,42 @@ const unsigned int Glom::Utils::DEFAULT_SPACING_SMALL =  1;
 const unsigned int Glom::Utils::DEFAULT_SPACING_LARGE = 12;
 const unsigned int Glom::Utils::DEFAULT_SPACING_SMALL =  6;
 #endif //GLOM_ENABLE_MAEMO
+
+namespace
+{
+
+// Basically copied from libgnome (gnome-help.c, Copyright (C) 2001 Sid Vicious
+// Copyright (C) 2001 Jonathan Blandford <jrb@alum.mit.edu>), but C++ified
+std::string locate_help_file(const std::string& path, const std::string& doc_name)
+{
+  // g_get_language_names seems not to be wrapped by glibmm
+  const char* const* lang_list = g_get_language_names ();
+
+  for(unsigned int j = 0; lang_list[j] != NULL; ++j)
+  {
+    const char* lang = lang_list[j];
+
+    /* This has to be a valid language AND a language with
+     * no encoding postfix.  The language will come up without
+     * encoding next. */
+    if (lang == NULL || strchr(lang, '.') != NULL)
+      continue;
+
+    const char* exts[] = { "", ".xml", ".docbook", ".sgml", ".html", NULL };
+    for(unsigned i = 0; exts[i] != NULL; ++i)
+    {
+      std::string name = doc_name + exts[i];
+      std::string full = Glib::build_filename(path, Glib::build_filename(lang, name));
+
+      if(Glib::file_test(full, Glib::FILE_TEST_EXISTS))
+        return full;
+    }
+  }
+
+  return std::string();
+}
+
+}
 
 namespace Glom
 {
@@ -804,6 +837,8 @@ int Utils::dialog_run_with_help(Gtk::Dialog* dialog, const Glib::ustring& id)
 
 void Utils::show_help(const Glib::ustring& id)
 {
+  // TODO_maemo: Show help on maemo by some other means
+#ifndef GLOM_ENABLE_MAEMO
   GError* err = 0;
   const gchar* pId;
   if (id.length())
@@ -813,18 +848,36 @@ void Utils::show_help(const Glib::ustring& id)
   else
   {
     pId = 0;
-   }
+  }
 
-  // TODO_maemo: Show help on maemo by some other means
-#ifndef GLOM_ENABLE_MAEMO
-  if (!gnome_help_display("glom.xml", pId, &err))
+  try
   {
-     std::string message = std::string(_("Could not display help: ")) + err->message;
-     Gtk::MessageDialog* dialog = new Gtk::MessageDialog(message, false, Gtk::MESSAGE_ERROR);
-     dialog->run();
-     delete dialog;
-     g_error_free(err);
-   }
+    const char* path = DATADIR "/gnome/help/glom";
+    std::string help_file = locate_help_file(path, "glom.xml");
+    if(help_file.empty())
+    {
+      throw std::runtime_error(_("No help file available"));
+    }
+    else
+    {
+      std::string uri = "ghelp:" + help_file;
+      if(pId) { uri += "?"; uri += pId; }
+
+      // g_app_info_launch_default_for_uri seems not to be wrapped by giomm
+      if(!g_app_info_launch_default_for_uri(uri.c_str(), NULL, &err))
+      {
+        std::string message(err->message);
+        g_error_free(err);
+        throw std::runtime_error(message);
+      }
+    }
+  }
+  catch(const std::exception& ex)
+  {
+    std::string message(std::string(_("Could not display help: ")) + ex.what());
+    Gtk::MessageDialog dialog(message, false, Gtk::MESSAGE_ERROR);
+    dialog.run();
+  }
 #endif
 }
 
