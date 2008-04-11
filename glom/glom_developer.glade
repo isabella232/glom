@@ -545,6 +545,26 @@
                                 <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
                                 <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
                                 <property name="shadow_type">GTK_SHADOW_IN</property>
+
+                                <child>
+				  <widget class="GtkSourceView" id="textview_calculate">
+				    <property name="visible">True</property>
+				    <property name="can_focus">True</property>
+				    <property name="editable">True</property>
+				    <property name="overwrite">False</property>
+				    <property name="accepts_tab">True</property>
+				    <property name="justification">GTK_JUSTIFY_LEFT</property>
+				    <property name="wrap_mode">GTK_WRAP_NONE</property>
+				    <property name="cursor_visible">True</property>
+				    <property name="pixels_above_lines">0</property>
+				    <property name="pixels_below_lines">0</property>
+				    <property name="pixels_inside_wrap">0</property>
+				    <property name="left_margin">0</property>
+				    <property name="right_margin">0</property>
+				    <property name="indent">0</property>
+				    <property name="text" translatable="yes"></property>
+				  </widget>
+			        </child>
                               </widget>
                             </child>
                             <child>
@@ -1188,17 +1208,35 @@ The data in the field was not recognized. Please try to correct the data or reve
                     <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
                     <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
                     <property name="shadow_type">GTK_SHADOW_IN</property>
+
                     <child>
-                      <widget class="GtkViewport" id="viewport1">
-                        <property name="visible">True</property>
-                        <child>
-                          <widget class="GtkSourceView" id="textview_calculation">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                          </widget>
-                        </child>
-                      </widget>
-                    </child>
+		    <widget class="GtkViewport" id="viewport1">
+		      <property name="visible">True</property>
+		      <property name="shadow_type">GTK_SHADOW_IN</property>
+
+		      <child>
+			<widget class="GtkSourceView" id="textview_calculation">
+			  <property name="visible">True</property>
+			  <property name="can_focus">True</property>
+			  <property name="editable">True</property>
+			  <property name="overwrite">False</property>
+			  <property name="accepts_tab">True</property>
+			  <property name="justification">GTK_JUSTIFY_LEFT</property>
+			  <property name="wrap_mode">GTK_WRAP_NONE</property>
+			  <property name="cursor_visible">True</property>
+			  <property name="pixels_above_lines">0</property>
+			  <property name="pixels_below_lines">0</property>
+			  <property name="pixels_inside_wrap">0</property>
+			  <property name="left_margin">0</property>
+			  <property name="right_margin">0</property>
+			  <property name="indent">0</property>
+			  <property name="text" translatable="yes"></property>
+			</widget>
+		      </child>
+
+		    </widget>
+		  </child>
+
                   </widget>
                 </child>
               </widget>
@@ -7950,11 +7988,36 @@ If a suitable related table already exists then you should instead cancel and ju
                 <property name="visible">True</property>
                 <property name="left_padding">20</property>
                 <child>
-                  <widget class="GtkSourceView" id="textview_script">
+                  <widget class="GtkScrolledWindow" id="scrolledwindow2">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                    <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                    <property name="shadow_type">GTK_SHADOW_IN</property>
+                    
+                    <child>
+                      <widget class="GtkSourceView" id="textview_script">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="editable">True</property>
+                        <property name="overwrite">False</property>
+                        <property name="accepts_tab">True</property>
+                        <property name="justification">GTK_JUSTIFY_LEFT</property>
+                        <property name="wrap_mode">GTK_WRAP_NONE</property>
+                        <property name="cursor_visible">True</property>
+                        <property name="pixels_above_lines">0</property>
+                        <property name="pixels_below_lines">0</property>
+                        <property name="pixels_inside_wrap">0</property>
+                        <property name="left_margin">0</property>
+                        <property name="right_margin">0</property>
+                        <property name="indent">0</property>
+                        <property name="text" translatable="yes"></property>
+                      </widget>
+                    </child>
+
                   </widget>
                 </child>
+
               </widget>
               <packing>
                 <property name="position">2</property>

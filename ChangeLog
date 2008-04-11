@@ -1,3 +1,12 @@
+2008-04-11  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc fill_menu_tables(), fill_menu_reports(),
+	fill_menu_print_layouts(): Remove the ActionGroups before recreating 
+	them to avoid warnings, and presumably to avoid the changes from 
+	being ignored. Maybe GTK+ svn trunk has become less tolerant.
+	* glom/glom_developer.glade: Restored some GtkSourceViews, and put one 
+	in a scrolled window as it was before.
+
 2008-04-11  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/utils.cc (Utils::show_help): Replace gnome_help_display
