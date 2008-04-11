@@ -1,3 +1,23 @@
+2008-04-11  Johannes Schmid <jhs@gnome.org>
+
+	* glom/glom_developer.glade:
+	* glom/layout_item_dialogs/dialog_buttonscript.cc
+	  (Dialog_ButtonScript), (set_script), (get_script),
+	  (get_script):
+	* glom/layout_item_dialogs/dialog_buttonscript.h
+	Added new entry for the button title to the dialog
+	
+	* glom/mode_data/flowtablewithfields.cc 
+	(FlowTableWithFields):
+	* glom/utility_widgets/buttonglom.cc
+  (on_menu_properties_activate):
+	* glom/utility_widgets/buttonglom.h:
+	* glom/utility_widgets/labelglom.cc:
+	* glom/utility_widgets/layoutwidgetutils.cc:
+	* glom/utility_widgets/layoutwidgetutils.h 
+	(m_pPopupMenuUtils) (m_refUtilProperties):
+	Removed "Details" menu item as ButtonGlom has a dialog for all properties now.
+	
 2008-04-10  Murray Cumming  <murrayc@murrayc.com>
 
 	* docs/user-guide/C/glom.xml: Improved the text about the initial dialog.

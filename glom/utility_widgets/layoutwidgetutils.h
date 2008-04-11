@@ -43,16 +43,8 @@ protected:
 
   // This one is implemented here
   virtual void on_menu_delete_activate();
-    
-  // It's not really important to implement this though you should deactivate
-  // the menu item then. TODO: Does something need to be done here? murrayc.
-  // Some widgets such as buttons have a title and another detailed dialog
-  // in this case to set the script. Others such as labels have no detailed
-  // dialog and as such do not need this menu item. jhs
-  virtual void on_menu_details_activate() {};
   
   Glib::RefPtr<Gtk::Action> m_refUtilProperties;
-  Glib::RefPtr<Gtk::Action> m_refUtilDetails;
   Glib::RefPtr<Gtk::Action> m_refUtilDelete;  
   Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
   Glib::RefPtr<Gtk::UIManager> m_refUIManager;

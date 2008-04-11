@@ -58,7 +58,7 @@ FlowTableWithFields::FlowTableWithFields(const Glib::ustring& table_name)
   m_placeholder(0),
   m_table_name(table_name)
 {
-  m_refUtilDetails->set_visible(false);
+
 }
 
 FlowTableWithFields::~FlowTableWithFields()

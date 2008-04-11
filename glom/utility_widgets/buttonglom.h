@@ -46,7 +46,6 @@ protected:
   virtual App_Glom* get_application();
     
   virtual void on_menu_properties_activate();
-  virtual void on_menu_details_activate();
   virtual bool on_button_press_event(GdkEventButton *event);
 };
 

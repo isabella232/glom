@@ -35,7 +35,6 @@ LayoutWidgetUtils::LayoutWidgetUtils() :
 
   m_refActionGroup->add(Gtk::Action::create("UtilMenu", "Utility Menu") );
   m_refUtilProperties = Gtk::Action::create("UtilProperties", _("Properties"));
-  m_refUtilDetails = Gtk::Action::create("UtilDetails", _("Details"));
   m_refUtilDelete = Gtk::Action::create("UtilDelete", _("Delete"));
   setup_util_menu();
 }
@@ -51,8 +50,6 @@ void LayoutWidgetUtils::setup_util_menu()
 	
   m_refActionGroup->add(m_refUtilProperties,
     sigc::mem_fun(*this, &LayoutWidgetUtils::on_menu_properties_activate) );
-  m_refActionGroup->add(m_refUtilDetails,
-    sigc::mem_fun(*this, &LayoutWidgetUtils::on_menu_details_activate) );
   m_refActionGroup->add(m_refUtilDelete,
     sigc::mem_fun(*this, &LayoutWidgetUtils::on_menu_delete_activate) );
     
@@ -64,7 +61,6 @@ void LayoutWidgetUtils::setup_util_menu()
         "<ui>"
         "  <popup name='UtilMenu'>"
         "    <menuitem action='UtilProperties'/>"
-        "    <menuitem action='UtilDetails'/>"
         "    <separator />"
         "    <menuitem action='UtilDelete' />"
         "  </popup>"

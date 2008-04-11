@@ -36,6 +36,7 @@ Dialog_ButtonScript::Dialog_ButtonScript(BaseObjectType* cobject, const Glib::Re
 {
   refGlade->get_widget("textview_calculation",  m_text_view);
   refGlade->get_widget("button_test",  m_button_test);
+  refGlade->get_widget("entry_title",  m_entry_title);
 
   m_button_test->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_ButtonScript::on_button_test) );
 
@@ -72,7 +73,8 @@ void Dialog_ButtonScript::set_script(const sharedptr<const LayoutItem_Button>& s
   m_table_name = table_name;  //Used for lookup combo boxes.
 
   m_text_view->get_buffer()->set_text( script->get_script() );
-
+	
+  m_entry_title->set_text (script->get_title());
   //set_blocked(false);
 
   //Dialog_Properties::set_modified(false);
@@ -82,14 +84,15 @@ sharedptr<LayoutItem_Button> Dialog_ButtonScript::get_script() const
 {
   sharedptr<LayoutItem_Button> result = glom_sharedptr_clone(m_script); //Start with the old details, to preserve anything that is not in our UI.
 
-  result->set_script( m_text_view->get_buffer()->get_text() );
+  get_script (result);
 
   return result;
 }
 
-void Dialog_ButtonScript::get_script (const sharedptr<LayoutItem_Button>& script)
+void Dialog_ButtonScript::get_script (const sharedptr<LayoutItem_Button>& script) const
 {
   script->set_script (m_text_view->get_buffer()->get_text() );
+  script->set_title (m_entry_title->get_text());
 }
 
 void Dialog_ButtonScript::on_button_test()

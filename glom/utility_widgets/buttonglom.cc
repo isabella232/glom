@@ -62,34 +62,6 @@ void ButtonGlom::on_menu_properties_activate()
 {
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "dialog_layoutitem_properties");
-    
-    Dialog_LayoutItem_Properties* dialog = new Dialog_LayoutItem_Properties (0, refXml);
-    refXml->get_widget_derived("dialog_layoutitem_properties", dialog);
-    
-    if (dialog)
-    {
-      dialog->set_label (get_label());
-      if (dialog->run() == Gtk::RESPONSE_APPLY)
-      {
-        // We could just set the title of the layout item but than
-        // we would need to redraw the whole layout.
-        set_label (dialog->get_label()); 
-        m_pLayoutItem->set_title (dialog->get_label());
-      }
-      delete dialog;
-    }
-  }
-  catch(const Gnome::Glade::XmlError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
-}
-
-void ButtonGlom::on_menu_details_activate()
-{
-  try
-  {
     Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_button_script");
 
     Dialog_ButtonScript* dialog = 0;
@@ -105,6 +77,7 @@ void ButtonGlom::on_menu_details_activate()
       if(response == Gtk::RESPONSE_OK)
       {
         dialog->get_script(layout_item);
+        signal_layout_changed().emit();
       }
 
       delete dialog;
