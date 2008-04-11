@@ -1629,6 +1629,12 @@ void App_Glom::fill_menu_tables()
   if(m_menu_tables_ui_merge_id)
     m_refUIManager->remove_ui(m_menu_tables_ui_merge_id);
 
+  if(m_refNavTablesActionGroup)
+  {
+    m_refUIManager->remove_action_group(m_refNavTablesActionGroup);
+    m_refNavTablesActionGroup.clear();
+  }
+
   m_refNavTablesActionGroup = Gtk::ActionGroup::create("NavTablesActions");
 
   Glib::ustring ui_description =
@@ -1711,6 +1717,12 @@ void App_Glom::fill_menu_reports(const Glib::ustring& table_name)
   m_listNavReportActions.clear();
   if(m_menu_reports_ui_merge_id)
     m_refUIManager->remove_ui(m_menu_reports_ui_merge_id);
+
+  if(m_refNavReportsActionGroup)
+  {
+    m_refUIManager->remove_action_group(m_refNavReportsActionGroup);
+    m_refNavReportsActionGroup.clear();
+  }
 
   m_refNavReportsActionGroup = Gtk::ActionGroup::create("NavReportsActions");
 
