@@ -23,7 +23,6 @@
 
 #include "bakery/bakery.h"
 #include "frame_glom.h"
-#include "utility_widgets/sidebar.h"
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
@@ -81,9 +80,6 @@ public:
 
   ///Whether to show the generated SQL queries on stdout, for debugging.
   void set_show_sql_debug(bool val = true);
-
-  void add_sidebar(SideBar& sidebar);
-  void remove_sidebar(SideBar& sidebar);
 
   static App_Glom* get_application();
 	
@@ -160,8 +156,6 @@ protected:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   Window_Translations* m_window_translations;
 
-  // Drag bar (to be replaced by the fancy selector widget from mathias)
-  DragBar* m_pDrag_Bar;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   Glib::RefPtr<Gtk::ActionGroup> m_refNavTablesActionGroup, m_refNavReportsActionGroup, m_refNavPrintLayoutsActionGroup;

@@ -19,12 +19,16 @@
  */
 
 #include "sidebar.h"
+#include <iostream>
 
 namespace Glom
 {
 
 SideBar::SideBar()
-{  
+{ 
+  set_handle_position (Gtk::POS_TOP);
+  set_snap_edge (Gtk::POS_TOP);
+  
 	palette = EGG_TOOL_PALETTE(egg_tool_palette_new ());
 	Gtk::Container* container = Glib::wrap(GTK_CONTAINER(palette));
 	
@@ -51,6 +55,18 @@ void SideBar::set_drag_source()
 {
   // It's important to call this AFTER all groups have been added
   egg_tool_palette_set_drag_source (palette);
+}
+
+void SideBar::on_child_detached(Gtk::Widget* child)
+{
+  get_size_request (m_width, m_height);
+  child->set_size_request (m_width, m_height);
+  set_size_request (0, 0);
+}
+
+void SideBar::on_child_attached(Gtk::Widget* child)
+{
+  set_size_request (m_width, m_height);
 }
 
 } // namespace Glom

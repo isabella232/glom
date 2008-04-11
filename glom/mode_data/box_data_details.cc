@@ -38,6 +38,7 @@ namespace Glom
 
 Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
 : m_HBox(false, Utils::DEFAULT_SPACING_SMALL),
+  m_HBox_Sidebar (false, Utils::DEFAULT_SPACING_SMALL),
   m_Button_New(Gtk::Stock::ADD),
   m_Button_Del(Gtk::Stock::DELETE),
   m_Button_Nav_First(Gtk::Stock::GOTO_FIRST),
@@ -89,7 +90,12 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_ScrolledWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC); /* Allow vertical scrolling, but never scroll horizontally. */
 #endif
   m_ScrolledWindow.set_shadow_type(Gtk::SHADOW_NONE); //SHADOW_IN is Recommended by the GNOME HIG, but looks odd.
-  pack_start(m_ScrolledWindow);
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  m_HBox_Sidebar.pack_start (m_Dragbar, Gtk::PACK_SHRINK);
+  m_Dragbar.hide();
+#endif
+  m_HBox_Sidebar.pack_start(m_ScrolledWindow);
   m_ScrolledWindow.add(m_FlowTable);
   // The FlowTable does not support native scrolling, so gtkmm adds it to a
   // viewport first that also has some shadow we do not want.
@@ -119,6 +125,7 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_Button_Nav_Next.signal_clicked().connect(sigc::mem_fun(*this, &Box_Data_Details::on_button_nav_next));
   m_Button_Nav_Last.signal_clicked().connect(sigc::mem_fun(*this, &Box_Data_Details::on_button_nav_last));
 
+  pack_start(m_HBox_Sidebar);
   pack_start(m_HBox, Gtk::PACK_SHRINK);
 
   m_FlowTable.signal_field_edited().connect( sigc::mem_fun(*this,  &Box_Data_Details::on_flowtable_field_edited) );
@@ -218,6 +225,14 @@ void Box_Data_Details::create_layout()
   }
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_FlowTable.set_design_mode(m_design_mode);
+  if (m_design_mode)
+  {
+    m_Dragbar.show();
+  }
+  else
+  {
+    m_Dragbar.hide();
+  }
 #endif
 }
 

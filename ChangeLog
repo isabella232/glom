@@ -1,4 +1,19 @@
-2008-04-11  Johannes Schmid <jhs@gnome.org>
+2008-04-11  Johannes Schmid <johannes.schmid@openismus.com>
+
+	* glom/application.cc 
+	(update_userlevel_ui):
+	* glom/application.h:
+	* glom/mode_data/box_data_details.cc
+	  (create_layout):
+	* glom/mode_data/box_data_details.h
+	Moved sidebar into "Details"-page
+	 
+	* glom/utility_widgets/sidebar.cc 
+	  (on_child_detached),(on_child_attached):
+	* glom/utility_widgets/sidebar.h:
+	Made sidebar detachable again and give it a correct size when detached
+	
+2008-04-11  Johannes Schmid <johannes.schmid@openismus.com>
 
 	* glom/glom_developer.glade:
 	* glom/layout_item_dialogs/dialog_buttonscript.cc

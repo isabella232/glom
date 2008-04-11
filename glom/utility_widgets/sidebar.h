@@ -31,7 +31,7 @@
 namespace Glom
 {
 
-class SideBar : public Gtk::VBox
+class SideBar : public Gtk::HandleBox
 {
 public:
   SideBar();
@@ -41,9 +41,16 @@ public:
 	void remove_group (EggToolItemGroup* group);
   
   void set_drag_source();
-  
+
+protected:
+  virtual void on_child_detached(Gtk::Widget* child);
+  virtual void on_child_attached(Gtk::Widget* child);
+    
 private:
   EggToolPalette* palette;
+    
+  int m_width;
+  int m_height;
 };
 
 } //namespace Glom

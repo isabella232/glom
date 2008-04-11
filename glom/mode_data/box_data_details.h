@@ -27,6 +27,9 @@
 //#include "box_data_list_related.h"
 #include "flowtablewithfields.h"
 #include "../utility_widgets/placeholder.h"
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+#include "../utility_widgets/dragbar.h"
+#endif
 
 namespace Glom
 {
@@ -114,8 +117,12 @@ protected:
   //Member widgets:
   Gtk::ScrolledWindow m_ScrolledWindow;
   Gtk::HBox m_HBox;
+  Gtk::HBox m_HBox_Sidebar;
   Gtk::Button m_Button_New;
   Gtk::Button m_Button_Del;
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  DragBar m_Dragbar;
+#endif
 
   /*
   Gtk::Frame m_Frame_Related;
