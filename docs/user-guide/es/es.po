@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom.userguide.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-29 11:39+0000\n"
-"PO-Revision-Date: 2008-03-31 10:19+0200\n"
+"POT-Creation-Date: 2008-04-10 22:55+0100\n"
+"PO-Revision-Date: 2008-04-11 10:02+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -246,7 +246,7 @@ msgstr ""
 
 #. When image changes, this message will be marked fuzzy or untranslated for you.
 #. It doesn't matter what you translate it to: it's not used at all.
-#: C/glom.xml:741(None)
+#: C/glom.xml:747(None)
 msgid ""
 "@@image: 'figures/glom_design_fields_dialog_calculated.png'; "
 "md5=3306db510932ab3bb99f7e1c676b2512"
@@ -385,17 +385,17 @@ msgstr "Uso de Glom como un operador"
 
 #: C/glom.xml:199(para)
 msgid ""
-"To open an existing glom document, either open that document from the File "
+"To open an existing &glom; document, either open that document from the File "
 "Manager, or choose Glom from the Applications menu, and then choose the "
 "document when asked. Glom will ask you for a user name and password to "
 "access the database. Your administrator will provide your user name and "
 "password."
 msgstr ""
-"Para abrir un documento existente de Glom, puede hacerlo con el "
-"administrador de archivos o bien puede escoger Glom del  menú de "
+"Para abrir un documento existente de &glom; puede hacerlo con el "
+"administrador de archivos o bien puede seleccionar &glom; en el  menú de "
 "Aplicaciones, y después escoger el documento cuando se le pregunte. Glom le "
 "pedirá un nombre de usuario y una contraseña para acceder a la base de "
-"datos. El administrador le proveerá de ése nombre y ésa contraseña."
+"datos. El administrador le proporcionará su nombre de usuario y su contraseña."
 
 #: C/glom.xml:201(para)
 msgid ""
@@ -455,8 +455,8 @@ msgid ""
 "The List view shows many records at once and usually shows only the most "
 "important fields."
 msgstr ""
-"La vista de lista muestra cuántos registros a la vez y habitualmente muestra sólo "
-"los campos más importantes."
+"La vista de lista muestra cuántos registros a la vez y habitualmente muestra "
+"sólo los campos más importantes."
 
 #: C/glom.xml:230(para) C/glom.xml:253(para)
 msgid ""
@@ -474,9 +474,9 @@ msgid ""
 "start typing into a field in the last empty row. A new record row will be "
 "created with blank fields for you to fill in."
 msgstr ""
-"Para crear un nuevo registro simplemente pulse el botón <literal>Nuevo</literal>, "
-"o empiece a escribir en un campo en la última fila vacía. Se creará un nuevo registro "
-"con los campos en blanco para que los rellene."
+"Para crear un nuevo registro simplemente pulse el botón <literal>Nuevo</"
+"literal>, o empiece a escribir en un campo en la última fila vacía. Se "
+"creará un nuevo registro con los campos en blanco para que los rellene."
 
 #: C/glom.xml:241(phrase)
 msgid "The List View."
@@ -488,9 +488,9 @@ msgid ""
 "might click on a date column to list invoices in order of their date, and "
 "click again to list them in reverse order."
 msgstr ""
-"Para ordenar los registros, simplemente pulse en la cabecera de una columna. Por "
-"ejemplo, puede querer pulsar sobre una columna de fecha para listar facturas por "
-"su fecha, y pulsar de nuevo para listarlas en orden inverso."
+"Para ordenar los registros, simplemente pulse en la cabecera de una columna. "
+"Por ejemplo, puede querer pulsar sobre una columna de fecha para listar "
+"facturas por su fecha, y pulsar de nuevo para listarlas en orden inverso."
 
 #: C/glom.xml:251(title) C/glom.xml:257(title)
 msgid "The Details View"
@@ -501,8 +501,8 @@ msgid ""
 "The details view shows only one record and usually shows all the fields "
 "arranged suitably."
 msgstr ""
-"La vista de detalles muestra un único registro, y habitualmente muestra todos los "
-"campos ordenados adecuadamente."
+"La vista de detalles muestra un único registro, y habitualmente muestra "
+"todos los campos ordenados adecuadamente."
 
 #: C/glom.xml:254(para)
 msgid ""
@@ -543,12 +543,12 @@ msgstr ""
 
 #: C/glom.xml:278(para)
 msgid ""
-"When you press the <literal>Find</literal> button, glom will search for "
+"When you press the <literal>Find</literal> button, &glom; will search for "
 "records and then display them. If only one record is found then it will show "
 "you that record in the Details view. If several records are found then it "
 "will show you those records in the List view."
 msgstr ""
-"Cuando presione el botón <literal>Buscar</literal>, Glom buscará los "
+"Cuando presione el botón <literal>Buscar</literal>, &glom; buscará los "
 "registros y después los mostrará.Si sólo se encuentra un registro entonces "
 "se mostrará con la vista de «Detalles». Si se encuentran varios registros, "
 "entonces se mostrarán con la vista de «Lista»."
@@ -948,11 +948,11 @@ msgid ""
 msgstr ""
 "La interfaz de usuario de Glom (y este documento) está traducido a varios "
 "idiomas, como ya debería poder ver si utiliza un equipo con un interfaz de "
-"usuario que no esté en inglés. Además, Glom entiende y muestra automáticamente "
-"números y fechas de acuerdo a las convenciones actuales de localización del usuario. "
-"Por ejemplo, un usuario en EE. UU. debe introducir un precio como 1.99 y una fecha como "
-"1/13/2008, pero un usuario alemán de la misma base de datos lo verá más adelante "
-"como 1,99 y 13.1.2008."
+"usuario que no esté en inglés. Además, Glom entiende y muestra "
+"automáticamente números y fechas de acuerdo a las convenciones actuales de "
+"localización del usuario. Por ejemplo, un usuario en EE. UU. debe introducir "
+"un precio como 1.99 y una fecha como 1/13/2008, pero un usuario alemán de la "
+"misma base de datos lo verá más adelante como 1,99 y 13.1.2008."
 
 #: C/glom.xml:435(para)
 msgid ""
@@ -967,15 +967,15 @@ msgid ""
 "these text items will be shown in the user interface."
 msgstr ""
 "Sin embargo, el sistema Glom que crea contiene también texto que debe "
-"traducirse si personas que hablan diferentes idiomas lo van a usar."
-"Por ejemplo, puede proporcionar traducciones para los títulos de "
-"sus tablas, campos e informes. Todos estos elementos de texto se pueden ver "
-"en una lista cuando selecciona <literal>Traducciones</literal> en el menú "
-"<literal>Desarrollador</literal>. En esta ventana puede especificar el idioma "
-"que ha utilizado para el texto original, e introducir las traducciones adicionales en "
-"cada idioma para cada elemento de texto. Cuando un usuario de ese idioma "
-"abre el sistema Glom, se mostrarán esos elementos de texto en la interfaz de "
-"usuario."
+"traducirse si personas que hablan diferentes idiomas lo van a usar.Por "
+"ejemplo, puede proporcionar traducciones para los títulos de sus tablas, "
+"campos e informes. Todos estos elementos de texto se pueden ver en una lista "
+"cuando selecciona <literal>Traducciones</literal> en el menú "
+"<literal>Desarrollador</literal>. En esta ventana puede especificar el "
+"idioma que ha utilizado para el texto original, e introducir las "
+"traducciones adicionales en cada idioma para cada elemento de texto. Cuando "
+"un usuario de ese idioma abre el sistema Glom, se mostrarán esos elementos "
+"de texto en la interfaz de usuario."
 
 #: C/glom.xml:447(phrase)
 msgid "Translations."
@@ -989,11 +989,12 @@ msgid ""
 "in a separate tool or to send to a translator. You can then import the "
 "resulting translation by using the <literal>Import</literal> button."
 msgstr ""
-"Los traductores experimentados pueden estar más familiarizados con el formato .po, o "
-"puede desear utilizar la mayoría de las herramientas que funcionan con el formato "
-".po. Al usar el botón <literal>Exportar</literal> puede crear un archivo .po para "
-"utilizarlo en una herramienta aparte o para enviárselo a un traductor. Puede importar "
-"la traducción resultante usando el botón <literal>Importar</literal>."
+"Los traductores experimentados pueden estar más familiarizados con el "
+"formato .po, o puede desear utilizar la mayoría de las herramientas que "
+"funcionan con el formato .po. Al usar el botón <literal>Exportar</literal> "
+"puede crear un archivo .po para utilizarlo en una herramienta aparte o para "
+"enviárselo a un traductor. Puede importar la traducción resultante usando el "
+"botón <literal>Importar</literal>."
 
 #: C/glom.xml:458(title)
 msgid "Defining Reports"
@@ -1163,11 +1164,11 @@ msgid ""
 "related fields such as address lines, or just to squeeze more information "
 "into the records's row on the report."
 msgstr ""
-"La parte <literal>Grupo vertical</literal> puede contener otros elementos. Por "
-"ejemplo, le permite ordenar campos junto a otros en lugar de uno detrás de otro "
-"en la fila horizontal. Ésto es útil para agrupar campos relacionados tales como "
-"direcciones, o simplemente apretar más información dentro de la fila del registro "
-"del informe."
+"La parte <literal>Grupo vertical</literal> puede contener otros elementos. "
+"Por ejemplo, le permite ordenar campos junto a otros en lugar de uno detrás "
+"de otro en la fila horizontal. Ésto es útil para agrupar campos relacionados "
+"tales como direcciones, o simplemente apretar más información dentro de la "
+"fila del registro del informe."
 
 #: C/glom.xml:532(title)
 msgid "A Report with Vertical Groups"
@@ -1193,19 +1194,41 @@ msgstr ""
 msgid "Dialogs"
 msgstr "Diálogos"
 
-#: C/glom.xml:561(title)
+#: C/glom.xml:562(title)
+msgid "Dialog: Initial dialog"
+msgstr "Diálogo: Diálogo inicial"
+
+#: C/glom.xml:563(para)
+msgid ""
+"This dialog allows the user to choose an existing document or create a new "
+"document. Existing documents may be selecting from the list of recently "
+"opened documents or by select a file with the file chooser dialog. Documents "
+"can also be opened via the network if other users are running &glom; on the "
+"local network. Finally, a new document can be created either by opening a "
+"template file which already contains some initial tables and records, or by "
+"creating an empty document."
+msgstr ""
+"Este diálogo permite al usuario seleccionar un documento existente o crear "
+"un documento nuevo. Los documentos existentes se deben seleccionar de la "
+"lista de documentos abiertos recientemente, o seleccionando un archivo con el "
+"diálogo de selección de archivos. También se pueden abrir los documentos a través "
+"de la red, si otros usuarios están ejecutando &glom; en la red local. Finalmente, se puede "
+"crear un documento nuevo abriendo una plantilla que ya contenga algunas tablas o registros "
+"iniciales, o creando un documento vacío."
+
+#: C/glom.xml:567(title)
 msgid "Dialog: New database"
 msgstr "Diálogo: Nueva base de datos"
 
-#: C/glom.xml:566(title)
+#: C/glom.xml:572(title)
 msgid "Dialog: Create database"
 msgstr "Diálogo: Crear base de datos"
 
-#: C/glom.xml:571(title)
+#: C/glom.xml:577(title)
 msgid "Dialog: Connection"
 msgstr "Diálogo: Conexión"
 
-#: C/glom.xml:572(para)
+#: C/glom.xml:578(para)
 msgid ""
 "This dialog requests a user name and password for connection to a database "
 "server. This is usually not the same username and password combination with "
@@ -1224,13 +1247,13 @@ msgstr ""
 "nombre del equipo, tal como \"glomserver.openismus.com\", aunque su nombre "
 "del equipo sea diferente."
 
-#: C/glom.xml:573(para)
+#: C/glom.xml:579(para)
 msgid "Your system administrator can provide these database login details."
 msgstr ""
 "Su administrador de sistemas puede proporcionarle esos detalles de conexión "
 "a la base de datos."
 
-#: C/glom.xml:574(para)
+#: C/glom.xml:580(para)
 msgid ""
 "If you are the system administrator, see Glom's <ulink url=\"http://www.glom."
 "org/wiki/index.php?title=Initial_Postgres_Configuration\" type=\"http"
@@ -1242,11 +1265,11 @@ msgstr ""
 "type=\"http\">Configuración de Postgres</ulink> para obtener ayuda con la "
 "instalación y configuración del servidor de bases de datos."
 
-#: C/glom.xml:578(title)
+#: C/glom.xml:584(title)
 msgid "Dialog: Connection Error"
 msgstr "Diálogo: Error de conexión"
 
-#: C/glom.xml:579(para)
+#: C/glom.xml:585(para)
 msgid ""
 "This dialog is shown when Glom could not connect to the specified database "
 "server. Either the database server is not running at the specified hostname, "
@@ -1261,83 +1284,83 @@ msgstr ""
 "consulte la sección <link linkend=\"dialog_connection\">Diálogo de conexión</"
 "link>."
 
-#: C/glom.xml:585(title)
+#: C/glom.xml:591(title)
 msgid "Dialog: Database preferences"
 msgstr "Diálogo: Preferencias de la base de datos"
 
-#: C/glom.xml:590(title)
+#: C/glom.xml:596(title)
 msgid "Dialog: Change language"
 msgstr "Diálogo: Cambiar idioma"
 
-#: C/glom.xml:595(title)
+#: C/glom.xml:601(title)
 msgid "Window: Textobject"
 msgstr "Ventana: Objeto de texto"
 
-#: C/glom.xml:600(title)
+#: C/glom.xml:606(title)
 msgid "Window: Imageobject"
 msgstr "Ventana: Objeto de imagen"
 
-#: C/glom.xml:605(title)
+#: C/glom.xml:611(title)
 msgid "Dialog: Notebook"
 msgstr "Diálogo: Cuaderno de notas"
 
-#: C/glom.xml:610(title)
+#: C/glom.xml:616(title)
 msgid "Dialog: Data invalid format"
 msgstr "Diálogo: Formato de datos inválido"
 
-#: C/glom.xml:615(title)
+#: C/glom.xml:621(title)
 msgid "Dialog: Relationship overview"
 msgstr "Diálogo: Descripción de la relación"
 
-#: C/glom.xml:620(title)
+#: C/glom.xml:626(title)
 msgid "Window: Groups"
 msgstr "Ventana: Grupos"
 
-#: C/glom.xml:625(title)
+#: C/glom.xml:631(title)
 msgid "Dialog: Group by sort fields"
 msgstr "Diálogo: Agrupar por campos ordenados"
 
-#: C/glom.xml:630(title)
+#: C/glom.xml:636(title)
 msgid "Dialog: Group by secondary fields"
 msgstr "Diálogo: Agrupar por campos secundarios"
 
-#: C/glom.xml:635(title)
+#: C/glom.xml:641(title)
 msgid "Window: Button script"
 msgstr "Ventana: Botón de script"
 
-#: C/glom.xml:640(title)
+#: C/glom.xml:646(title)
 msgid "Window: Field calculation"
 msgstr "Ventana: Cálculo de campos"
 
-#: C/glom.xml:645(title)
+#: C/glom.xml:651(title)
 msgid "Dialog: New group"
 msgstr "Diálogo: Grupo nuevo"
 
-#: C/glom.xml:650(title)
+#: C/glom.xml:656(title)
 msgid "Dialog: Choose user"
 msgstr "Diálogo: Elegir usuario"
 
-#: C/glom.xml:655(title)
+#: C/glom.xml:661(title)
 msgid "Dialog: User"
 msgstr "Diálogo: Usuario"
 
-#: C/glom.xml:660(title)
+#: C/glom.xml:666(title)
 msgid "Dialog: Translation identify original"
 msgstr "Diálogo: La traducción identifica al original"
 
-#: C/glom.xml:665(title)
+#: C/glom.xml:671(title)
 msgid "Dialog: Translation copy"
 msgstr "Diálogo: Copia de la traducción"
 
-#: C/glom.xml:670(title)
+#: C/glom.xml:676(title)
 msgid "Dialog: Choose Date"
 msgstr "Diálogo: Elegir fecha"
 
-#: C/glom.xml:694(title)
+#: C/glom.xml:700(title)
 msgid "About Glom"
 msgstr "Acerca de Glom"
 
-#: C/glom.xml:695(para)
+#: C/glom.xml:701(para)
 msgid ""
 "Glom is maintained by Glom and GNOME community volunteers. To find more "
 "information about Glom, please visit the <ulink url=\"http://www.glom.org/\" "
@@ -1347,7 +1370,7 @@ msgstr ""
 "Para obtener más información acerca de Glom, visite la <ulink url=\"http://"
 "www.glom.org/\" type=\"http\">página web de Glom</ulink>."
 
-#: C/glom.xml:700(para)
+#: C/glom.xml:706(para)
 msgid ""
 "To report a bug or make a suggestion regarding this application or this "
 "manual, you can submit them using <ulink url=\"http://bugzilla.gnome.org\" "
@@ -1357,7 +1380,7 @@ msgstr ""
 "sobre éste manual, puede enviarlas usando <ulink url=\"http://bugzilla.gnome."
 "org\" type=\"http\">Bugzilla</ulink>."
 
-#: C/glom.xml:706(para)
+#: C/glom.xml:712(para)
 msgid ""
 "Another excellent source of information are the Glom <ulink url=\"http://www."
 "glom.org\" type=\"http\">mailing lists</ulink>."
@@ -1365,7 +1388,7 @@ msgstr ""
 "Otra excelente fuente de información son las <ulink url=\"http://www.glom.org"
 "\" type=\"http\">listas de correo</ulink> de Glom."
 
-#: C/glom.xml:711(para)
+#: C/glom.xml:717(para)
 msgid ""
 "This program is distributed under the terms of the GNU General Public "
 "license as published by the Free Software Foundation; either version 2 of "
@@ -1380,19 +1403,19 @@ msgstr ""
 "enlace</ulink>, o en el archivo COPYING incluido con el código fuente de "
 "este programa."
 
-#: C/glom.xml:720(title)
+#: C/glom.xml:726(title)
 msgid "Concepts"
 msgstr "Conceptos"
 
-#: C/glom.xml:723(simpara)
+#: C/glom.xml:729(simpara)
 msgid ""
-"<literal>Database</literal>: Each glom document allows access to one "
+"<literal>Database</literal>: Each &glom; document allows access to one "
 "database."
 msgstr ""
-"<literal>Base de datos</literal>: Cada documento de Glom permite el acceso a "
+"<literal>Base de datos</literal>: Cada documento de &glom; permite el acceso a "
 "una base de datos."
 
-#: C/glom.xml:724(simpara)
+#: C/glom.xml:730(simpara)
 msgid ""
 "<literal>Table</literal>: Each database contains several tables, such as "
 "\"Customers\" and \"Invoices\" tables."
@@ -1400,7 +1423,7 @@ msgstr ""
 "<literal>Tabla</literal>: Cada base de datos contiene varias tablas, tales "
 "como, por ejemplo, las tablas «Clientes» y «Facturas»."
 
-#: C/glom.xml:725(simpara)
+#: C/glom.xml:731(simpara)
 msgid ""
 "<literal>Field</literal>: Each table has several fields, such as \"Customer "
 "ID\", \"First Name\", and \"Date of Birth\" fields. In other documents and "
@@ -1410,7 +1433,7 @@ msgstr ""
 "cliente», «Nombre» y «Fecha de nacimiento», en otros documentos y "
 "aplicaciones, se suele denominar a estos campos «columnas»."
 
-#: C/glom.xml:726(simpara)
+#: C/glom.xml:732(simpara)
 msgid ""
 "<literal>Records</literal>: Each table contains several records, each of "
 "which has values for each of the fields. For instance, the \"Customers\" "
@@ -1423,7 +1446,7 @@ msgstr ""
 "documentos y aplicaciones, a los registros se los suele denominar "
 "<literal>filas</literal>."
 
-#: C/glom.xml:727(simpara)
+#: C/glom.xml:733(simpara)
 msgid ""
 "<literal>Relationships</literal>: Each table might be related to other "
 "tables, via fields in both tables. For instance, a \"Customers\" table could "
@@ -1439,7 +1462,7 @@ msgstr ""
 "necesitan entender éste concepto. En otros documentos y aplicaciones, a las "
 "relaciones se las suele denominar «uniones» o «joins»."
 
-#: C/glom.xml:721(para)
+#: C/glom.xml:727(para)
 msgid ""
 "Glom is easy to use, but you must understand the following basic concepts. "
 "<placeholder-1/>"
@@ -1447,11 +1470,11 @@ msgstr ""
 "Glom es fácil de usar, pero debe entender los siguientes conceptos básicos. "
 "<placeholder-1/>"
 
-#: C/glom.xml:733(title)
+#: C/glom.xml:739(title)
 msgid "Calculated fields and button scripts"
 msgstr "Campos calculados y botones de script"
 
-#: C/glom.xml:734(para)
+#: C/glom.xml:740(para)
 msgid ""
 "Calculated fields and button scripts use the Python programming language. "
 "The calculation or script is the implementation of a function whose "
@@ -1461,24 +1484,24 @@ msgstr ""
 "programación Python.El cálculo o el script es la implementación de una "
 "función cuya firma se le proporciona."
 
-#: C/glom.xml:737(title)
+#: C/glom.xml:743(title)
 msgid "Editing the definition of a calculated field"
 msgstr "Editar la definición de un campo calculado"
 
-#: C/glom.xml:744(phrase)
+#: C/glom.xml:750(phrase)
 msgid "Editing the definition of a calculated field."
 msgstr "Editar la definición de un campo calculado."
 
-#: C/glom.xml:751(title)
+#: C/glom.xml:757(title)
 msgid "Field values"
 msgstr "Valores de campo"
 
-#: C/glom.xml:752(programlisting)
+#: C/glom.xml:758(programlisting)
 #, no-wrap
 msgid "record[\"name_first\"]"
 msgstr "record[\"name_first\"]"
 
-#: C/glom.xml:752(para)
+#: C/glom.xml:758(para)
 msgid ""
 "For instance, <placeholder-1/> is the value of the name_first field in the "
 "current record."
@@ -1486,16 +1509,16 @@ msgstr ""
 "Por ejemplo, <placeholder-1/> es el valor del campo name_first en el "
 "registro actual."
 
-#: C/glom.xml:756(title)
+#: C/glom.xml:762(title)
 msgid "Related Records"
 msgstr "Registros relacionados"
 
-#: C/glom.xml:757(programlisting)
+#: C/glom.xml:763(programlisting)
 #, no-wrap
 msgid "record.related[\"location\"]"
 msgstr "record.related[\"ubicación\"]"
 
-#: C/glom.xml:757(para)
+#: C/glom.xml:763(para)
 msgid ""
 "For instance, <placeholder-1/> provides the related records for the current "
 "record."
@@ -1503,16 +1526,16 @@ msgstr ""
 "Por ejemplo, <placeholder-1/> proporciona los registros relacionados con el "
 "registro actual."
 
-#: C/glom.xml:760(title)
+#: C/glom.xml:766(title)
 msgid "Single related records"
 msgstr "Un sólo registro relacionado"
 
-#: C/glom.xml:761(programlisting)
+#: C/glom.xml:767(programlisting)
 #, no-wrap
 msgid "record.related[\"location\"][\"name\"]"
 msgstr "record.related[\"ubicación\"][\"nombre\"]"
 
-#: C/glom.xml:761(para)
+#: C/glom.xml:767(para)
 msgid ""
 "For relationships that specify a single record, you can get the value of a "
 "field in that record. For instance, <placeholder-1/> is the value of the "
@@ -1524,16 +1547,16 @@ msgstr ""
 "nombre del campo en la tabla indicada por la relación de ubicación "
 "(habitualmente denominada ubicación::nombre)."
 
-#: C/glom.xml:765(title)
+#: C/glom.xml:771(title)
 msgid "Multiple related records"
 msgstr "Múltiples registros relacionados"
 
-#: C/glom.xml:766(programlisting)
+#: C/glom.xml:772(programlisting)
 #, no-wrap
 msgid "record.related[\"invoice_lines\"].sum(\"total_price\")"
 msgstr "record.related[\"lineas_de_factura\"].sum(\"precio_total\")"
 
-#: C/glom.xml:766(para)
+#: C/glom.xml:772(para)
 msgid ""
 "For relationships that specify multiple records, you can use the aggregate "
 "functions (sum, count, average) to get overall values. For instance, "
@@ -1543,19 +1566,19 @@ msgstr ""
 "funciones de adición (sum, count, average) para obtener todos los valores. "
 "Por ejemplo, <placeholder-1/>."
 
-#: C/glom.xml:772(title)
+#: C/glom.xml:778(title)
 msgid "Testing for empty values"
 msgstr "Probando para valores vacíos"
 
-#: C/glom.xml:773(para)
+#: C/glom.xml:779(para)
 msgid "How you test for empty values depends on the type of field:"
 msgstr "La manera de probar para valores vacíos depende del tipo de campo:"
 
-#: C/glom.xml:778(title)
+#: C/glom.xml:784(title)
 msgid "Non-text fields"
 msgstr "Campos que no son de texto"
 
-#: C/glom.xml:779(para)
+#: C/glom.xml:785(para)
 msgid ""
 "Non-text fields may be empty, indicating that the user has not entered any "
 "value in the field. For instance, Glom does not assume that an empty value "
@@ -1565,14 +1588,14 @@ msgstr ""
 "no ha introducido ningún valor en el campo. Por ejemplo, Glom no asume que "
 "un valor vacío en un campo numérico deba valer 0."
 
-#: C/glom.xml:780(para)
+#: C/glom.xml:786(para)
 msgid ""
 "You can test whether a field is empty by using Python's None. For instance:"
 msgstr ""
 "Puede probar si un campo está vacío usando el código Python «None». Por "
 "ejemplo:"
 
-#: C/glom.xml:782(programlisting)
+#: C/glom.xml:788(programlisting)
 #, no-wrap
 msgid ""
 "\n"
@@ -1589,13 +1612,13 @@ msgstr ""
 "    return record.related[\"contacts\"][\"name_full\"]\n"
 "  "
 
-#: C/glom.xml:789(para)
+#: C/glom.xml:795(para)
 msgid ""
 "You might also test whether there are any related records. For instance:"
 msgstr ""
 "También puede comprobar si hay algunos registros relacionados. Por ejemplo:"
 
-#: C/glom.xml:791(programlisting)
+#: C/glom.xml:797(programlisting)
 #, no-wrap
 msgid ""
 "\n"
@@ -1612,11 +1635,11 @@ msgstr ""
 "    return record.related[\"contacts\"][\"name_full\"]\n"
 "  "
 
-#: C/glom.xml:801(title)
+#: C/glom.xml:807(title)
 msgid "Text fields"
 msgstr "Campos de texto"
 
-#: C/glom.xml:802(para)
+#: C/glom.xml:808(para)
 msgid ""
 "For text fields, you should check for zero-length strings. It is not "
 "possible in Glom to distinguish between zero-length strings and the absence "
@@ -1626,7 +1649,7 @@ msgstr ""
 "es posible distinguir entre cadenas de longitud cero y ausencia de cadena, "
 "ya que no hay diferencia. Por ejemplo:"
 
-#: C/glom.xml:804(programlisting)
+#: C/glom.xml:810(programlisting)
 #, no-wrap
 msgid ""
 "\n"
@@ -1643,11 +1666,11 @@ msgstr ""
 "    return record[\"name_full\"]\n"
 "  "
 
-#: C/glom.xml:816(title)
+#: C/glom.xml:822(title)
 msgid "Using the full pygda API"
 msgstr "Usando la API pydga completa"
 
-#: C/glom.xml:817(para)
+#: C/glom.xml:823(para)
 msgid ""
 "pygda is a python API for the libgda API. The record's <literal>connection</"
 "literal> attribute provides a gda.connection that can be used to access the "
@@ -1664,7 +1687,7 @@ msgstr ""
 "UPDATE. Nótese que la conexión ya está abierta, por lo que puede evitar el "
 "difícil trabajo de especificar los detalles de la conexión."
 
-#: C/glom.xml:818(para)
+#: C/glom.xml:824(para)
 msgid ""
 "The record's <literal>table_name</literal> attribute also provides the name "
 "of the current table."
@@ -1672,7 +1695,7 @@ msgstr ""
 "El atributo del registro <literal>table_name</literal> también proporciona "
 "el nombre de la tabla actual."
 
-#: C/glom.xml:819(para)
+#: C/glom.xml:825(para)
 msgid ""
 "(Note that the <literal>record.connection</literal> and <literal>record."
 "table_name</literal> attributes are only available since Glom 1.1.6.)"
@@ -1681,7 +1704,7 @@ msgstr ""
 "<literal>record.table_name</literal> sólo están disponibles desde la versión "
 "1.1.6 de Glom.)"
 
-#: C/glom.xml:820(para)
+#: C/glom.xml:826(para)
 msgid ""
 "This example reads all data from the current table and prints the values to "
 "the terminal:"
@@ -1689,7 +1712,7 @@ msgstr ""
 "Este ejemplo lee todos los datos de la tabla actual e imprime los valores en "
 "la terminal:"
 
-#: C/glom.xml:822(programlisting)
+#: C/glom.xml:828(programlisting)
 #, no-wrap
 msgid ""
 "\n"
