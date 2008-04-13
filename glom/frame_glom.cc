@@ -129,9 +129,6 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
 
   //m_pLabel_Mode->set_text(_("No database selected.\n Use the Navigation menu, or open a previous Glom document."));
 
-  //Load the Glade file and instantiate its widgets to get the dialog stuff:
-  Utils::get_glade_widget_derived_with_warning("dialog_connection", m_pDialogConnection);
-
   m_Mode = MODE_None;
   m_Mode_Previous = MODE_None;
 
@@ -145,7 +142,6 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
 
   //Fill Composite View:
   //This means that set_document and load/save are delegated to these children:
-  add_view(m_pDialogConnection); //Also a composite view.
   add_view(&m_Notebook_Data); //Also a composite view.
   add_view(&m_Notebook_Find); //Also a composite view.
 
@@ -191,12 +187,6 @@ Frame_Glom::~Frame_Glom()
   if(m_pDialog_Relationships)
   {
     remove_view(m_pDialog_Relationships);
-    delete m_pDialog_Relationships;
-    m_pDialog_Relationships = 0;
-  }
-
-  if(m_pDialog_Relationships)
-  {
     delete m_pDialog_Relationships;
     m_pDialog_Relationships = 0;
   }
@@ -1505,6 +1495,12 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
+  if(!m_pDialogConnection)
+  {
+    Utils::get_glade_widget_derived_with_warning("dialog_connection", m_pDialogConnection);
+    add_view(m_pDialogConnection); //Also a composite view.
+  }
+
   //Ask either for the existing username and password to use an existing database server,
   //or ask for a new username and password to specify when creating a new self-hosted database.
   int response = 0;
@@ -1574,12 +1570,12 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
           return false;
 
         // Store in document, so these values are actually used when connecting
-	Document_Glom* document = get_document();
-	if(document)
-	{
-	  document->set_connection_port(connection_pool->get_port());
+        Document_Glom* document = get_document();
+        if(document)
+        {
+          document->set_connection_port(connection_pool->get_port());
           document->set_connection_try_other_ports(connection_pool->get_try_other_ports());
-	}
+        }
       }
       else
         return false;
@@ -1691,6 +1687,12 @@ bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring kno
 bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring known_username, const Glib::ustring& known_password, std::auto_ptr<ExceptionConnection>& error)
 #endif
 {
+  if(!m_pDialogConnection)
+  {
+    Utils::get_glade_widget_derived_with_warning("dialog_connection", m_pDialogConnection);
+    add_view(m_pDialogConnection); //Also a composite view.
+  }
+
   while(true) //Loop until a return
   {
     //Ask for connection details:
@@ -1765,104 +1767,49 @@ bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring kno
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib::ustring& title, bool request_password)
+bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib::ustring& title)
 {
-  //Ask for connection details:
-  bool connection_possible = false;
+#if 1
+  // This seems to increase the change that the database creation does not
+  // fail due to the "source database is still in use" error. armin.
+  //std::cout << "Going to sleep" << std::endl;
+  Glib::usleep(500 * 1000);
+  //std::cout << "Awake" << std::endl;
+#endif
+
+  Gtk::Window* pWindowApp = get_app_window();
+  g_assert(pWindowApp);
+
+  Bakery::BusyCursor busycursor(*pWindowApp);
+
   try
   {
-    if(request_password)
-      connection_possible = connection_request_password_and_attempt(); //If it succeeded and the user did not cancel.
-    else
-    {
-      m_pDialogConnection->set_database_name(Glib::ustring()); //Make sure that it always connects to the default database when creating a database.
-      connection_possible = true; //Assume that connection details are already correct.
-    }
+    ConnectionPool::get_instance()->create_database(database_name);
   }
-  catch(const ExceptionConnection& ex)
+  catch(const Glib::Exception& ex) // libgda does not set error domain
   {
-     connection_possible = false;
-     std::cerr << "debug Frame_Glom::create_database() exception caught: connection failed: " << ex.what() << std::endl;
-  }
+    //I think a failure here might be caused by installing unstable libgda, which seems to affect stable libgda-1.2.
+    //Doing a "make install" in libgda-1.2 seems to fix this:
+    //TODO: Is this still relevant in libgda-3.0?
+    std::cerr << "Frame_Glom::create_database():  Gnome::Gda::Connection::create_database(" << database_name << ") failed: " << ex.what() << std::endl;
 
-  if(!connection_possible)
-  {
-    //g_warning("debug Frame_Glom::create_database(): connection was not possible.");
-    return false;
-  }
-  else
-  {
-    // TODO: I don't think this is required anymore since libgda-3.0 because
-    // we do not need a connection to create a database. armin.
-#if 0
-    //This must now succeed, because we've already tried it once:
-    sharedptr<SharedConnection> sharedconnection;
+    //Tell the user:
+    Gtk::Dialog* dialog = 0;
     try
     {
-      if(request_password)
-        sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings();
-      else
-      {
-        ConnectionPool* connection_pool = ConnectionPool::get_instance();
-        connection_pool->set_database(Glib::ustring()); //Make sure that it uses the default database for connections when creating databases.
-        sharedconnection = connection_pool->connect();
-      }
+       // TODO: Tell the user what has gone wrong (ex.what())
+      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_error_create_database");
+      refXml->get_widget("dialog_error_create_database", dialog);
+      dialog->set_transient_for(*pWindowApp);
+      Glom::Utils::dialog_run_with_help(dialog, "dialog_error_create_database");
+      delete dialog;
     }
-    catch(const ExceptionConnection& ex)
+    catch(const Gnome::Glade::XmlError& ex)
     {
-      //g_warning("debug Frame_Glom::create_database() Connection failed.");
-
-      return false;
-    }
-#endif
-
-#if 1
-    // This seems to increase the change that the database creation does not
-    // fail due to the "source database is still in use" error. armin.
-    //std::cout << "Going to sleep" << std::endl;
-    Glib::usleep(500 * 1000);
-    //std::cout << "Awake" << std::endl;
-#endif
-
-    Gtk::Window* pWindowApp = get_app_window();
-    g_assert(pWindowApp);
-
-    Bakery::BusyCursor busycursor(*pWindowApp);
-
-    try
-    {
-      ConnectionPool::get_instance()->create_database(database_name);
-    }
-    catch(const Glib::Exception& ex) // libgda does not set error domain
-    {
-      //I think a failure here might be caused by installing unstable libgda, which seems to affect stable libgda-1.2.
-      //Doing a "make install" in libgda-1.2 seems to fix this:
-      //TODO: Is this still relevant in libgda-3.0?
-      std::cerr << "Frame_Glom::create_database():  Gnome::Gda::Connection::create_database(" << database_name << ") failed: " << ex.what() << std::endl;
-
-      //Tell the user:
-      Gtk::Dialog* dialog = 0;
-      try
-      {
-         // TODO: Tell the user what has gone wrong (ex.what())
-        Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_error_create_database");
-        refXml->get_widget("dialog_error_create_database", dialog);
-        dialog->set_transient_for(*pWindowApp);
-        Glom::Utils::dialog_run_with_help(dialog, "dialog_error_create_database");
-        delete dialog;
-      }
-      catch(const Gnome::Glade::XmlError& ex)
-      {
-        std::cerr << ex.what() << std::endl;
-      }
-
-       return false;
+      std::cerr << ex.what() << std::endl;
     }
 
-    //if(result)
-    //{
-    //  std::cout << "Frame_Glom::create_database(): Creation succeeded: database_name=" << database_name << std::endl;
-    //}
+     return false;
   }
 
   //Connect to the actual database:

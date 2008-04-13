@@ -152,7 +152,7 @@ public:
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   ///Create the database for new documents, showing the Connection dialog
-  bool create_database(const Glib::ustring& database_name, const Glib::ustring& title, bool request_password = true);
+  bool create_database(const Glib::ustring& database_name, const Glib::ustring& title);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   void export_data_to_string(Glib::ustring& the_string, const FoundSet& found_set, const Document_Glom::type_list_layout_groups& sequence);

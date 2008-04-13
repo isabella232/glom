@@ -1,3 +1,19 @@
+2008-04-13  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/frame_glom.h:
+	* glom/frame_glom.cc (create_database): Simplified the function,
+	removed the request_password parameter. It was never set, and it
+	seemed to be a relict from libgda-1.2.
+	(connection_request_password_and_choose_new_database_name),
+	(connection_request_password_and_attempt): Create the connection
+	dialog when required, instead of loading it in the constructor, to
+	improve startup time.
+
+	* glom/dialog_existing_or_new.h: Added a comment about bug #527587.
+
+	* glom/application.cc (recreate_database), (existing_or_new_new):
+	Adapt to changed create_database() function in frame_glom.
+
 2008-04-11  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/application.cc fill_menu_tables(), fill_menu_reports(),

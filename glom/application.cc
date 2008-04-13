@@ -1281,7 +1281,7 @@ void App_Glom::existing_or_new_new()
     }
     else
     {
-      const bool db_created = m_pFrame->create_database(document->get_connection_database(), db_title, false /* do not request password */);
+      const bool db_created = m_pFrame->create_database(document->get_connection_database(), db_title);
       if(db_created)
       {
         const Glib::ustring database_name_used = document->get_connection_database();
@@ -1437,7 +1437,7 @@ bool App_Glom::recreate_database(bool& user_cancelled)
 
   //Create the database: (This will show a connection dialog)
   connection_pool->set_database( Glib::ustring() );
-  const bool db_created = m_pFrame->create_database(db_name, pDocument->get_database_title(), false /* Don't ask for password etc again. */);
+  const bool db_created = m_pFrame->create_database(db_name, pDocument->get_database_title());
 
   if(!db_created)
   {

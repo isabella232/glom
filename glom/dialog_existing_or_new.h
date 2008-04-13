@@ -130,8 +130,9 @@ protected:
 
     // For recently used resources:
     // TODO: We can't use Glib::RefPtr<Gtk::RecentInfo> directly here, due to
-    // bug #. Therefore, the refptrs are dynamically allocated and explicitely
-    // freed in the destructor.
+    // bug #527587. Therefore, the refptrs are dynamically allocated and
+    // explicitely freed in the destructor. This has already been fixed in
+    // gtkmm trunk and is fixed for gtkmm 2.14.
     Gtk::TreeModelColumn<Glib::RefPtr<Gtk::RecentInfo>*> m_col_recent_info;
   };
   
