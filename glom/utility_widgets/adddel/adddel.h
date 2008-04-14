@@ -232,6 +232,8 @@ protected:
   virtual void on_treeview_cell_edited(const Glib::ustring& path_string, const Glib::ustring& new_text, int model_column_index);
   virtual void on_treeview_cell_edited_bool(const Glib::ustring& path_string, int model_column_index);
 
+  void on_treeview_cell_editing_started(Gtk::CellEditable* editable, const Glib::ustring& path, int model_column_index);
+
   virtual bool on_treeview_column_drop(Gtk::TreeView* treeview, Gtk::TreeViewColumn* column, Gtk::TreeViewColumn* prev_column, Gtk::TreeViewColumn* next_column);
   virtual void on_treeview_columns_changed();
 
