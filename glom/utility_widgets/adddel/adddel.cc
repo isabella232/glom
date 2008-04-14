@@ -123,7 +123,7 @@ void AddDel::init()
   //m_TreeView.set_column_drag_function( sigc::mem_fun(*this, &AddDel::on_treeview_column_drop) );
 
 
-  m_TreeView.add_events(Gdk::BUTTON_PRESS_MASK); //Allow us to catch button_press_event and button_release_event
+  //m_TreeView.add_events(Gdk::BUTTON_PRESS_MASK); //Allow us to catch button_press_event and button_release_event
   m_TreeView.signal_button_press_event().connect_notify( sigc::mem_fun(*this, &AddDel::on_treeview_button_press_event) );
 
   m_TreeView.signal_columns_changed().connect( sigc::mem_fun(*this, &AddDel::on_treeview_columns_changed) );
@@ -722,8 +722,13 @@ void AddDel::construct_specified_columns()
         }
       }
 
-    ++view_column_index;
+      //Connect other signals:
+      Gtk::CellRenderer* pCellRenderer = m_TreeView.get_column_cell_renderer(view_column_index);
+      if(pCellRenderer)
+        pCellRenderer->signal_editing_started().connect(
+          sigc::bind( sigc::mem_fun(*this, &AddDel::on_treeview_cell_editing_started), model_column_index) );
 
+       ++view_column_index;
     } //is visible
 
     ++model_column_index;
@@ -1298,6 +1303,19 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
   }
 }
 
+
+void AddDel::on_treeview_cell_editing_started(Gtk::CellEditable* editable, const Glib::ustring& path_string, int model_column_index)
+{
+  Gtk::TreePath path(path_string);
+
+  if(!m_refListStore)
+    return;
+
+  Gtk::TreeModel::iterator iterRow = m_refListStore->get_iter(path);
+  if(iterRow)
+    signal_user_activated().emit(iterRow, model_column_index);
+}
+
 AddDel::type_signal_user_added AddDel::signal_user_added()
 {
   return m_signal_user_added;
@@ -1335,45 +1353,6 @@ AddDel::type_signal_user_reordered_columns AddDel::signal_user_reordered_columns
 
 void AddDel::on_treeview_button_press_event(GdkEventButton* event)
 {
-  if(event->type == GDK_BUTTON_PRESS) //Whatever would cause cellrenderer activation.
-  {
-    //This is really horrible code:
-    //Maybe we can improve the gtkmm API for this:
-
-    //Get the row and column:
-    Gtk::TreeModel::Path path;
-    Gtk::TreeView::Column* pColumn = 0;
-    int cell_x = 0;
-    int cell_y = 0;  
-
-    // Make sure to use the non-deprecated const version:
-    bool row_exists = static_cast<const Gtk::TreeView&>(m_TreeView).get_path_at_pos((int)event->x, (int)event->y, path, pColumn, cell_x, cell_y);
-
-    if(row_exists)
-    {
-      //Get the row:
-      Gtk::TreeModel::iterator iterRow = m_refListStore->get_iter(path);
-      if(iterRow)
-      {
-        //Get the column:
-        int tree_col = 0;
-        int col_index = get_count_hidden_system_columns();
-  
-        typedef std::vector<Gtk::TreeView::Column*> type_vecTreeViewColumns;
-        type_vecTreeViewColumns vecColumns = m_TreeView.get_columns();
-        for(type_vecTreeViewColumns::const_iterator iter = vecColumns.begin(); iter != vecColumns.end(); iter++)
-        {
-          if(*iter == pColumn)
-            tree_col = col_index; //Found.
-
-          col_index++;
-        }
-
-        signal_user_activated().emit(iterRow, tree_col);
-      }
-    }
-  }
-
   on_button_press_event_Popup(event);
 }
 

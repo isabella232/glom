@@ -1,3 +1,16 @@
+2008-04-14  Murray Cumming,  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/adddel/adddel.h
+	* glom/utility_widgets/adddel/adddel.cc:
+	Glom.construct_specified_columns(): Connect to the start_editing 
+	signal., Glom.on_treeview_cell_edited. Emit user_activated() on that 
+	instead of on the TreeView::button-press-event signal, so that any 
+	previous editing has already finished.
+
+	This fixes the relationships window, so that clicking on the To Field 
+	combo does not lose the new choice in the Table combo.
+	Bug #526900 (Jani Monoses).
+
 2008-04-13  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/frame_glom.h:
