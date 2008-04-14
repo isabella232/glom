@@ -72,66 +72,66 @@ public:
   AddDel(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~AddDel();
 
-  virtual void set_allow_user_actions(bool bVal = true);
-  virtual bool get_allow_user_actions() const;
+  void set_allow_user_actions(bool bVal = true);
+  bool get_allow_user_actions() const;
 
-  virtual void set_allow_add(bool val = true);
-  virtual void set_allow_delete(bool val = true);
+  void set_allow_add(bool val = true);
+  void set_allow_delete(bool val = true);
 
-  virtual Gtk::TreeModel::iterator add_item(const Glib::ustring& strKey); //Return index of new row.
+  Gtk::TreeModel::iterator add_item(const Glib::ustring& strKey); //Return index of new row.
 
   /** Get an iterator to the blank row in which the user should add data for the new row.
    * You can then add the row to your underlying data store when some data has been filled, by handling signal_user_changed.
    */
-  virtual Gtk::TreeModel::iterator get_item_placeholder(); //Return index of the placeholder row.
+  Gtk::TreeModel::iterator get_item_placeholder(); //Return index of the placeholder row.
 
-  virtual void remove_item(const Gtk::TreeModel::iterator& iter);
-  virtual void remove_item_by_key(const Glib::ustring& strKey);
+  void remove_item(const Gtk::TreeModel::iterator& iter);
+  void remove_item_by_key(const Glib::ustring& strKey);
 
-  virtual void remove_all();
+  void remove_all();
 
-  virtual Glib::ustring get_value(const Gtk::TreeModel::iterator& iter, guint col);
-  virtual bool get_value_as_bool(const Gtk::TreeModel::iterator& iter, guint col);
+  Glib::ustring get_value(const Gtk::TreeModel::iterator& iter, guint col);
+  bool get_value_as_bool(const Gtk::TreeModel::iterator& iter, guint col);
 
   /** Get the row's hidden key
    */
-  virtual Glib::ustring get_value_key(const Gtk::TreeModel::iterator& iter);
+  Glib::ustring get_value_key(const Gtk::TreeModel::iterator& iter);
 
   /** Set the row's hidden key
    */
-  virtual void set_value_key(const Gtk::TreeModel::iterator& iter, const Glib::ustring& strValue);
+  void set_value_key(const Gtk::TreeModel::iterator& iter, const Glib::ustring& strValue);
 
-  virtual Glib::ustring get_value_selected(guint col);
-  virtual Glib::ustring get_value_key_selected();
+  Glib::ustring get_value_selected(guint col);
+  Glib::ustring get_value_key_selected();
 
-  virtual Gtk::TreeModel::iterator get_item_selected();
+  Gtk::TreeModel::iterator get_item_selected();
 
-  virtual bool select_item(const Gtk::TreeModel::iterator& iter, guint column, bool start_editing = false);  //bool indicates success.
-  virtual bool select_item(const Gtk::TreeModel::iterator& iter);
+  bool select_item(const Gtk::TreeModel::iterator& iter, guint column, bool start_editing = false);  //bool indicates success.
+  bool select_item(const Gtk::TreeModel::iterator& iter);
 
   //Select row with this key value:
-  virtual bool select_item(const Glib::ustring& strItemText, guint column, bool start_editing = false);
+  bool select_item(const Glib::ustring& strItemText, guint column, bool start_editing = false);
 
-  virtual guint get_count() const;
+  guint get_count() const;
 
-  //virtual void set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gnome::Gda::Value& value);
-  virtual void set_value(const Gtk::TreeModel::iterator& iter, guint col, const Glib::ustring& strValue);
-  virtual void set_value(const Gtk::TreeModel::iterator& iter, guint col, unsigned long ulValue);
-  virtual void set_value(const Gtk::TreeModel::iterator& iter, guint col, bool bVal);
+  //void set_value(const Gtk::TreeModel::iterator& iter, guint col, const Gnome::Gda::Value& value);
+  void set_value(const Gtk::TreeModel::iterator& iter, guint col, const Glib::ustring& strValue);
+  void set_value(const Gtk::TreeModel::iterator& iter, guint col, unsigned long ulValue);
+  void set_value(const Gtk::TreeModel::iterator& iter, guint col, bool bVal);
 
-  //virtual void set_value_selected(guint col, const Gnome::Gda::Value& value);
+  //void set_value_selected(guint col, const Gnome::Gda::Value& value);
 
-  virtual bool get_is_first_row(const Gtk::TreeModel::iterator& iter) const;
-  virtual bool get_is_last_row(const Gtk::TreeModel::iterator& iter) const;
+  bool get_is_first_row(const Gtk::TreeModel::iterator& iter) const;
+  bool get_is_last_row(const Gtk::TreeModel::iterator& iter) const;
 
   /** @result Whether this is a blank row where date for a new row should be entered
    */
-  virtual bool get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) const;
+  bool get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) const;
 
 
-  virtual guint add_column(const AddDelColumnInfo& column_info);
-  virtual guint add_column(const Glib::ustring& strTitle, AddDelColumnInfo::enumStyles style = AddDelColumnInfo::STYLE_Text, bool editable = true, bool visible = true);
-  virtual guint add_column(const Glib::ustring& strTitle, const Glib::ustring& column_id, AddDelColumnInfo::enumStyles style = AddDelColumnInfo::STYLE_Text, bool editable = true, bool visible = true);
+  guint add_column(const AddDelColumnInfo& column_info);
+  guint add_column(const Glib::ustring& strTitle, AddDelColumnInfo::enumStyles style = AddDelColumnInfo::STYLE_Text, bool editable = true, bool visible = true);
+  guint add_column(const Glib::ustring& strTitle, const Glib::ustring& column_id, AddDelColumnInfo::enumStyles style = AddDelColumnInfo::STYLE_Text, bool editable = true, bool visible = true);
 
   void prevent_duplicates(guint column_number);
 
@@ -140,7 +140,7 @@ public:
 
   guint get_columns_count() const;
 
-  virtual Glib::ustring get_column_field(guint column_index) const;
+  Glib::ustring get_column_field(guint column_index) const;
 
   typedef AddDelColumnInfo::type_vecStrings type_vecStrings;
 
@@ -149,22 +149,22 @@ public:
    */
   type_vecStrings get_columns_order() const;
 
-  virtual void remove_all_columns();
-  //virtual void set_columns_count(guint count);
-  //virtual void set_column_title(guint col, const Glib::ustring& strText);
-  virtual void set_column_width(guint col, guint width);
+  void remove_all_columns();
+  //void set_columns_count(guint count);
+  //void set_column_title(guint col, const Glib::ustring& strText);
+  void set_column_width(guint col, guint width);
 
   /// For popup cells.
-  virtual void set_column_choices(guint col, const type_vecStrings& vecStrings);
+  void set_column_choices(guint col, const type_vecStrings& vecStrings);
 
-  virtual void construct_specified_columns(); //Delay actual use of set_column_*() stuff until this method is called.
+  void construct_specified_columns(); //Delay actual use of set_column_*() stuff until this method is called.
 
   void set_show_column_titles(bool bVal = true);
 
-  virtual Gtk::TreeModel::iterator get_row(const Glib::ustring& key);
+  Gtk::TreeModel::iterator get_row(const Glib::ustring& key);
 
-  virtual void finish_editing(); //Closes active edit controls and commits the data to the cell.
-  //virtual void reactivate(); //Sheet doesn't seem to update unless a cell is active.
+  void finish_editing(); //Closes active edit controls and commits the data to the cell.
+  //void reactivate(); //Sheet doesn't seem to update unless a cell is active.
   void set_prevent_user_signals(bool bVal = true);
 
   /** When this is set to true, a new row will be added automatically, and the cursor will be placed in the first column of the new row.
@@ -207,8 +207,8 @@ public:
 
   bool get_model_column_index(guint view_column_index, guint& model_column_index);
 
-  virtual Gtk::TreeModel::iterator get_last_row();
-  virtual Gtk::TreeModel::iterator get_last_row() const;
+  Gtk::TreeModel::iterator get_last_row();
+  Gtk::TreeModel::iterator get_last_row() const;
 
 protected:
   void init();
@@ -216,32 +216,32 @@ protected:
   /** Get an iterator to the blank row in which the user should add data for the new row.
    * You can then add the row to your underlying data store when some data has been filled, by handling signal_user_changed.
    */
-  virtual Gtk::TreeModel::iterator add_item_placeholder(); //Return index of new row.
+  Gtk::TreeModel::iterator add_item_placeholder(); //Return index of new row.
 
-  virtual void setup_menu();
-  virtual Glib::ustring treeview_get_key(const Gtk::TreeModel::iterator& row);
+  void setup_menu();
+  Glib::ustring treeview_get_key(const Gtk::TreeModel::iterator& row);
 
   ///Add a blank row, or return the existing blank row if there already is one.
-  virtual Gtk::TreeModel::iterator get_next_available_row_with_add_if_necessary();
-  virtual void add_blank();
+  Gtk::TreeModel::iterator get_next_available_row_with_add_if_necessary();
+  void add_blank();
 
 
   //Signal handlers:
-  virtual void on_treeview_cell_edited(const Glib::ustring& path_string, const Glib::ustring& new_text, int model_column_index);
-  virtual void on_treeview_cell_edited_bool(const Glib::ustring& path_string, int model_column_index);
+  void on_treeview_cell_edited(const Glib::ustring& path_string, const Glib::ustring& new_text, int model_column_index);
+  void on_treeview_cell_edited_bool(const Glib::ustring& path_string, int model_column_index);
 
   void on_treeview_cell_editing_started(Gtk::CellEditable* editable, const Glib::ustring& path, int model_column_index);
 
-  virtual bool on_treeview_column_drop(Gtk::TreeView* treeview, Gtk::TreeViewColumn* column, Gtk::TreeViewColumn* prev_column, Gtk::TreeViewColumn* next_column);
-  virtual void on_treeview_columns_changed();
+  bool on_treeview_column_drop(Gtk::TreeView* treeview, Gtk::TreeViewColumn* column, Gtk::TreeViewColumn* prev_column, Gtk::TreeViewColumn* next_column);
+  void on_treeview_columns_changed();
 
-  virtual bool on_button_press_event_Popup(GdkEventButton* event);
+  bool on_button_press_event_Popup(GdkEventButton* event);
 
-  virtual void on_MenuPopup_activate_Edit();
-  virtual void on_MenuPopup_activate_Delete();
-  virtual void on_MenuPopup_activate_ChooseColumns();
+  void on_MenuPopup_activate_Edit();
+  void on_MenuPopup_activate_Delete();
+  void on_MenuPopup_activate_ChooseColumns();
 
-  virtual void on_treeview_button_press_event(GdkEventButton* event);
+  void on_treeview_button_press_event(GdkEventButton* event);
 
   /** Set the menu to popup when the user right-clicks on the column titles.
    * This method does not take ownership of the Gtk::Menu.

@@ -39,11 +39,11 @@ public:
 
 protected:
   void init();
-  virtual void setup_buttons();
+  void setup_buttons();
 
-  virtual void on_button_add();
-  virtual void on_button_del();
-  virtual void on_button_edit();
+  void on_button_add();
+  void on_button_del();
+  void on_button_edit();
 
   //member widgets:
   Gtk::HBox m_HBox;

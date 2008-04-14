@@ -226,10 +226,6 @@ public:
   typedef sigc::signal<void> type_signal_user_requested_add;
   type_signal_user_requested_add signal_user_requested_add();
 
-  //row number, col number.
-  typedef sigc::signal<void, const Gtk::TreeModel::iterator&, guint> type_signal_user_activated;
-  type_signal_user_activated signal_user_activated();
-
   typedef sigc::signal<void> type_signal_user_reordered_columns;
   type_signal_user_reordered_columns signal_user_reordered_columns();
 
@@ -379,7 +375,6 @@ protected:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   type_signal_user_requested_layout m_signal_user_requested_layout;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-  type_signal_user_activated m_signal_user_activated;
   type_signal_user_reordered_columns m_signal_user_reordered_columns;
   type_signal_script_button_clicked m_signal_script_button_clicked;
 
