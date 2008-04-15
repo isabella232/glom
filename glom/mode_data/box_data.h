@@ -95,7 +95,7 @@ protected:
   virtual type_vecLayoutFields get_fields_to_show() const;
 
   virtual bool get_related_record_exists(const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value);
-  virtual bool add_related_record_for_field(const sharedptr<const LayoutItem_Field>& layout_item_parent, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& primary_key_field, const Gnome::Gda::Value& primary_key_value_provided);
+  virtual bool add_related_record_for_field(const sharedptr<const LayoutItem_Field>& layout_item_parent, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& primary_key_field, const Gnome::Gda::Value& primary_key_value_provided, Gnome::Gda::Value& primary_key_value_used);
 
   type_vecLayoutFields get_table_fields_to_show(const Glib::ustring& table_name) const;
 

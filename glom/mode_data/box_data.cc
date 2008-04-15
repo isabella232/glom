@@ -691,7 +691,11 @@ bool Box_Data::get_related_record_exists(const sharedptr<const Relationship>& re
   return result;
 }
 
-bool Box_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Field>& layout_item_parent, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& primary_key_field, const Gnome::Gda::Value& primary_key_value_provided)
+bool Box_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Field>& layout_item_parent, 
+  const sharedptr<const Relationship>& relationship, 
+  const sharedptr<const Field>& primary_key_field, 
+  const Gnome::Gda::Value& primary_key_value_provided,
+  Gnome::Gda::Value& primary_key_value_used)
 {
   Gnome::Gda::Value primary_key_value = primary_key_value_provided;
 
@@ -699,8 +703,12 @@ bool Box_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Fie
   if(related_record_exists)
   {
     //No problem, the SQL command below will update this value in the related table.
+    primary_key_value_used = primary_key_value; //Let the caller know what related record was created.
+    return true;
   }
-  else
+    
+
+  //TODO: Remove this useless {} scope. It is only still here to avoid whitespace changes in a patch diff.
   {
     //To store the entered data in the related field, we would first have to create a related record.
     if(!relationship->get_auto_create())
@@ -761,8 +769,11 @@ bool Box_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Fie
         }
 
         const Glib::ustring strQuery = "INSERT INTO \"" + relationship->get_to_table() + "\" (\"" + primary_key_field->get_name() + "\") VALUES (" + primary_key_field->sql(primary_key_value) + ")";
-        bool test = query_execute(strQuery, get_app_window());
-        if(test)
+        const bool test = query_execute(strQuery, get_app_window());
+        if(!test)
+          return false;
+
+        //TODO: Remove this useless {} scope. It is only still here to avoid whitespace changes in a patch diff.
         {
           if(key_is_auto_increment)
           {
@@ -775,7 +786,13 @@ bool Box_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Fie
 
             //Set it in the database too:
             sharedptr<Field> field_from_key = get_fields_for_table_one_field(relationship->get_from_table(), relationship->get_from_field()); //TODO_Performance.
-            if(field_from_key)
+            if(!field_from_key)
+            {
+              std::cerr << "Box_Data::add_related_record_for_field(): get_fields_for_table_one_field() failed." << std::endl;
+              return false;
+            }
+
+            //TODO: Remove this useless {} scope. It is only still here to avoid whitespace changes in a patch diff.
             {
               sharedptr<Field> parent_primary_key_field = get_field_primary_key();
               if(!parent_primary_key_field)
@@ -796,18 +813,20 @@ bool Box_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Fie
                   const Glib::ustring strQuery = "UPDATE \"" + relationship->get_from_table() + "\" SET \"" + relationship->get_from_field() + "\" = " + primary_key_field->sql(primary_key_value) +
                     " WHERE \"" + relationship->get_from_table() + "\".\"" + parent_primary_key_field->get_name() + "\" = " + parent_primary_key_field->sql(parent_primary_key_value);
                   const bool test = query_execute(strQuery, get_app_window());
-                  return test;
+                  if(!test)
+                    return false;
                 }
               }
             }
           }
+
+           primary_key_value_used = primary_key_value; //Let the caller know what related record was created.
+           return true;
         }
       }
     }
 
   }
-
-  return true;
 }
 
 void Box_Data::print_layout()

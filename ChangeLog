@@ -1,5 +1,18 @@
 2008-04-15  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data.cc
+	* glom/mode_data/box_data.h: add_related_record_for_field():
+	Added a primary_key_value_used output parameter so that the caller nows 
+	what record was actually created.
+	* glom/mode_data/box_data_details.cc: on_flowtable_field_edited():
+	* glom/mode_data/box_data_list.cc: on_adddel_user_changed(): 
+	Use the new output parameter instead of calling get_entered_field_data(), 
+	so that automatically-created related records are really linked from the 
+	parent record even when the ID is not on the layout.
+	This fixes bug #526386 (Jani Monoses).
+
+2008-04-15  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_data/box_data.cc:
 	get_related_record_exists(): Don't bother looking for a record 
 	with the key NULL, because that is not something we want to related 
@@ -31,8 +44,8 @@
 	* glom/utility_widgets/notelabelbookglom.h:
 	Added new tab widget for notebook to be able to attach a popupmenu
 
-  Summary: Added popup-menu to notebook tabs to add new groups and delete
-  the notebook.
+	Summary: Added popup-menu to notebook tabs to add new groups and delete 
+	the notebook.
 
 2008-04-14  Murray Cumming  <murrayc@murrayc.com>
 
@@ -41,7 +54,7 @@
 	virtuals on methods.
 	* glom/utility_widgets/db_adddel/db_adddel.cc:
 	* glom/utility_widgets/db_adddel/db_adddel.h: Removed unused 
-	siganl_user_activated (though it is used in AddDel).
+	signal_user_activated (though it is used in AddDel).
 
 2008-04-14  Murray Cumming,  <murrayc@murrayc.com>
 
@@ -121,7 +134,7 @@
 	* glom/mode_data/flowtablewithfields.cc 
 	(FlowTableWithFields):
 	* glom/utility_widgets/buttonglom.cc
-  (on_menu_properties_activate):
+	(on_menu_properties_activate):
 	* glom/utility_widgets/buttonglom.h:
 	* glom/utility_widgets/labelglom.cc:
 	* glom/utility_widgets/layoutwidgetutils.cc:
