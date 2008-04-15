@@ -426,10 +426,11 @@ void Box_Data_List::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, 
           {
             //Get the value of the corresponding key in the current table (that identifies the record in the table that we will change)
             sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
-            layout_item->set_name(relationship->get_from_field());
+            layout_item->set_full_field_details( document->get_field(relationship->get_from_table(), relationship->get_from_field()) );
 
             primary_key_value = get_entered_field_data(layout_item);
 
+            //Note: This just uses an existing record if one already exists:
             const bool test = add_related_record_for_field(layout_field, relationship, primary_key_field, primary_key_value);
             if(!test)
               return;

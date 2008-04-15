@@ -280,8 +280,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
           }
           */
 
-          Glib::ustring strFieldValue = field->sql(value);
-
+          const Glib::ustring strFieldValue = field->sql(value);
           if(!strFieldValue.empty())
           {
             if(!strNames.empty())
@@ -666,6 +665,10 @@ bool Box_Data::get_related_record_exists(const sharedptr<const Relationship>& re
 {
   bool result = false;
 
+  //Don't try doing a NULL=NULL or ""="" relationship:
+  if(Glom::Conversions::value_is_empty(key_value))
+    return false;
+
   //TODO_Performance: It's very possible that this is slow.
   //We don't care how many records there are, only whether there are more than zero.
   const Glib::ustring to_field = relationship->get_to_field();
@@ -755,8 +758,8 @@ bool Box_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Fie
           //Generate the new key value;
         }
 
-        std::cout << "DEBUG: Box_Data::add_related_record_for_field(): primary_key_field: " << primary_key_field->get_name() << std::endl;
-        std::cout << "  DEBUG:primary_key_value type=: " << g_type_name(primary_key_value.get_value_type()) << std::endl;
+        //std::cout << "DEBUG: Box_Data::add_related_record_for_field(): primary_key_field: " << primary_key_field->get_name() << std::endl;
+        //std::cout << "  DEBUG:primary_key_value type=: " << g_type_name(primary_key_value.get_value_type()) << std::endl;
 
         const Glib::ustring strQuery = "INSERT INTO \"" + relationship->get_to_table() + "\" (\"" + primary_key_field->get_name() + "\") VALUES (" + primary_key_field->sql(primary_key_value) + ")";
         bool test = query_execute(strQuery, get_app_window());

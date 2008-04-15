@@ -1,5 +1,23 @@
 2008-04-15  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data.cc (Glom.record_new,
+	Glom.get_related_record_exists(): Don't bother looking for a record 
+	with the key NULL, because that is not something we want to related 
+	records by.
+	* glom/mode_data/box_data_list.cc: on_adddel_user_changed(): Get 
+	full field details for the related field, to ensure that this works 
+	properly.
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc
+	fill_values_if_necessary(): Use Conversions::get_empty_value() instead 
+	of just creating a Gda::Value of the expected type, so we get a NULL 
+	GdaValue initially for appropriate field types.
+
+	This fixes the automatic creation of related records, at least when 
+	the from field is on the layout, partially fixing bug #526386
+	(Jani Monoses).
+
+2008-04-15  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/data_structure/glomconversions.cc:
 	* glom/libglom/data_structure/glomconversions.h:
 	Added get_double_for_gda_value_numeric().
