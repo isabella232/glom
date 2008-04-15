@@ -45,7 +45,8 @@ libutility_widgets_a_SOURCES += filechooserdialog_saveextras.cc filechooserdialo
                                 dragbutton.cc dragbutton.h \
                                 dragbar.cc dragbar.h \
                                 sidebar.h sidebar.cc \
-                                flowtable_dnd.h  flowtable_dnd.cc
+                                flowtable_dnd.h  flowtable_dnd.cc \
+                                notebooklabelglom.h notebooklabelglom.cc
                                 
 endif
 

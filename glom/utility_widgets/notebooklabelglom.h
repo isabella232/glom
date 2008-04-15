@@ -18,12 +18,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_UTILITY_WIDGETS_NOTEBOOK_GLOM_H
-#define GLOM_UTILITY_WIDGETS_NOTEBOOK_GLOM_H
+#ifndef GLOM_UTILITY_WIDGETS_NOTEBOOK_LABEL_GLOM_H
+#define GLOM_UTILITY_WIDGETS_NOTEBOOK_LABEL_GLOM_H
 
 #include <gtkmm.h>
-#include "layoutwidgetmenu.h"
-#include <glom/libglom/data_structure/layout/layoutitem_notebook.h>
+#include "notebookglom.h"
 #include <libglademm.h>
 
 namespace Glom
@@ -31,24 +30,39 @@ namespace Glom
 
 class App_Glom;
 
-class NotebookGlom
-: public Gtk::Notebook,
-  public LayoutWidgetMenu
+class NotebookLabelGlom
+: public Gtk::EventBox
 {
 public:
-  explicit NotebookGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
-  explicit NotebookGlom();
-  virtual ~NotebookGlom();
+  explicit NotebookLabelGlom(NotebookGlom* notebook);
+  explicit NotebookLabelGlom(const Glib::ustring& label, NotebookGlom* notebook);
+  virtual ~NotebookLabelGlom();
 
-  void delete_from_layout();  
-  
+  void set_label (const Glib::ustring& title);  
+    
 protected:
   void init();
 
   virtual App_Glom* get_application();
+    
+  Gtk::Label m_label;
+  NotebookGlom* m_notebook;
+  
+  void setup_menu();
+  Gtk::Menu* m_pPopupMenu;
+  
+  void on_menu_new_group_activate();
+  void on_menu_delete_activate();
+    
+  virtual bool on_button_press_event(GdkEventButton *event);
+  
+  Glib::RefPtr<Gtk::Action> m_refNewGroup;
+  Glib::RefPtr<Gtk::Action> m_refDelete;  
+  Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
+  Glib::RefPtr<Gtk::UIManager> m_refUIManager;
 };
 
 } //namespace Glom
 
-#endif //GLOM_UTILITY_WIDGETS_NOTEBOOK_GLOM_H
+#endif //GLOM_UTILITY_WIDGETS_NOTEBOOK_LABEL_GLOM_H
 

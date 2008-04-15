@@ -1,0 +1,163 @@
+/* Glom
+ *
+ * Copyright (C) 2001-2004 Murray Cumming
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
+#include "notebooklabelglom.h"
+#include "../application.h"
+#include <glibmm/i18n.h>
+
+namespace Glom
+{
+
+NotebookLabelGlom::NotebookLabelGlom(NotebookGlom* notebook) 
+: m_notebook(notebook),
+  m_pPopupMenu(0)
+{
+  init();
+}
+
+NotebookLabelGlom::NotebookLabelGlom(const Glib::ustring& label, NotebookGlom* notebook)
+: m_label(label),
+  m_notebook (notebook),
+  m_pPopupMenu(0)
+{
+  init();
+}
+
+NotebookLabelGlom::~NotebookLabelGlom()
+{
+
+}
+
+void NotebookLabelGlom::init()
+{
+  add(m_label);
+  m_label.show();
+  set_events (Gdk::ALL_EVENTS_MASK);
+  set_visible_window (false);
+  setup_menu();
+}
+
+void NotebookLabelGlom::set_label (const Glib::ustring& title)
+{
+  m_label.set_label (title); 
+}
+
+App_Glom* NotebookLabelGlom::get_application()
+{
+  Gtk::Container* pWindow = get_toplevel();
+  //TODO: This only works when the child widget is already in its parent.
+
+  return dynamic_cast<App_Glom*>(pWindow);
+}
+
+void NotebookLabelGlom::on_menu_new_group_activate()
+{
+  sharedptr<LayoutGroup> group(new LayoutGroup());
+  group->set_title(_("New Group"));
+  group->set_name (_("Group"));
+  
+  sharedptr<LayoutGroup> notebook_group = sharedptr<LayoutGroup>::cast_dynamic (m_notebook->get_layout_item());
+  notebook_group->add_item (group);
+  
+  m_notebook->signal_layout_changed().emit();
+}
+
+void NotebookLabelGlom::on_menu_delete_activate()
+{
+  Glib::ustring message;
+  if (!m_notebook->get_layout_item()->get_title().empty())
+  {
+    message = Glib::ustring::compose (_("Delete whole notebook \"%1\"?"),
+                                      m_notebook->get_layout_item()->get_title());
+  }
+  else
+  {
+    message = _("Delete whole notebook?");
+  }
+  Gtk::MessageDialog dlg (message, false, Gtk::MESSAGE_QUESTION,
+                          Gtk::BUTTONS_YES_NO, true);
+  switch (dlg.run())
+  {
+    case Gtk::RESPONSE_YES:
+      m_notebook->delete_from_layout();
+      break;
+    default:
+      return;
+  }
+}
+
+void NotebookLabelGlom::setup_menu()
+{
+  m_refUIManager = Gtk::UIManager::create();
+  m_refActionGroup = Gtk::ActionGroup::create();
+
+  m_refActionGroup->add(Gtk::Action::create("NotebookMenu", "Notebook Menu") );
+  m_refNewGroup = Gtk::Action::create("NewGroup", _("New Group"));
+  m_refDelete = Gtk::Action::create("Delete", _("Delete"));
+  
+  m_refActionGroup->add(m_refNewGroup,
+    sigc::mem_fun(*this, &NotebookLabelGlom::on_menu_new_group_activate) );
+  m_refActionGroup->add(m_refDelete,
+    sigc::mem_fun(*this, &NotebookLabelGlom::on_menu_delete_activate) );
+    
+  m_refUIManager->insert_action_group(m_refActionGroup);
+
+  try
+  {
+    Glib::ustring ui_info = 
+        "<ui>"
+        "  <popup name='NotebookMenu'>"
+        "    <menuitem action='NewGroup'/>"
+        "    <separator />"
+        "    <menuitem action='Delete' />"
+        "  </popup>"
+        "</ui>";
+
+    m_refUIManager->add_ui_from_string(ui_info);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << "building menus failed: " <<  ex.what();
+  }
+
+  //Get the menu:
+  m_pPopupMenu = dynamic_cast<Gtk::Menu*>( m_refUIManager->get_widget("/NotebookMenu") ); 
+  if(!m_pPopupMenu)
+    g_warning("menu not found");
+}
+
+bool NotebookLabelGlom::on_button_press_event(GdkEventButton *event)
+{
+  App_Glom* pApp = get_application();
+  if(pApp && pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+  {
+    GdkModifierType mods;
+    gdk_window_get_pointer( Gtk::Widget::gobj()->window, 0, 0, &mods );
+    if(mods & GDK_BUTTON3_MASK)
+    {
+      //Give user choices of actions on this item:
+      m_pPopupMenu->popup(event->button, event->time);
+      return true; //We handled this event.
+    }
+  }
+  return Gtk::EventBox::on_button_press_event(event);
+}
+
+} //namespace Glom

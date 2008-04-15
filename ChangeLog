@@ -1,3 +1,21 @@
+2008-04-15  Johannes Schmid <johannes.schmid@openismus.com>
+
+	* glom/mode_data/flowtablewithfields.cc
+	  (add_layout_notebook_at_position):
+	  Set layout item for notebook and use notebooklabelglom
+	* glom/utility_widgets/notebookglom.cc 
+	(delete_from_layout):
+	* glom/utility_widgets/notebookglom.h
+	  (GLOM_UTILITY_WIDGETS_NOTEBOOK_GLOM_H):
+	  Fixed typo in header and added delete method
+	* glom/utility_widgets/Makefile.am:
+	* glom/utility_widgets/notebooklabelglom.cc:
+	* glom/utility_widgets/notelabelbookglom.h:
+	Added new tab widget for notebook to be able to attach a popupmenu
+
+  Summary: Added popup-menu to notebook tabs to add new groups and delete
+  the notebook.
+
 2008-04-14  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/adddel/adddel.h 

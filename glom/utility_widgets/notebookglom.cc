@@ -67,5 +67,10 @@ App_Glom* NotebookGlom::get_application()
   return dynamic_cast<App_Glom*>(pWindow);
 }
 
+void NotebookGlom::delete_from_layout()
+{
+  on_menupopup_activate_delete();
+}
+
 } //namespace Glom
 

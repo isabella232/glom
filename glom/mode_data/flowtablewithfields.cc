@@ -22,6 +22,7 @@
 #include <glom/utility_widgets/datawidget.h>
 #include <glom/utility_widgets/buttonglom.h>
 #include <glom/utility_widgets/notebookglom.h>
+#include <glom/utility_widgets/notebooklabelglom.h>
 #include <glom/utility_widgets/imageglom.h>
 #include <glom/utility_widgets/labelglom.h>
 #include <glom/utility_widgets/dialog_flowtable.h>
@@ -290,15 +291,20 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
   NotebookGlom* notebook_widget = Gtk::manage(new NotebookGlom());
 
   notebook_widget->show();
+  notebook_widget->set_layout_item (notebook, m_table_name);
 
   for(LayoutGroup::type_list_items::iterator iter = notebook->m_list_items.begin(); iter != notebook->m_list_items.end(); ++iter)
   {
     sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(*iter);
     if(group)
     {
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+      NotebookLabelGlom* tab_label = Gtk::manage(new NotebookLabelGlom(notebook_widget));
+      tab_label->show();
+#else
       Gtk::Label* tab_label = Gtk::manage(new Gtk::Label());
       tab_label->show();
-
+#endif
       sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::cast_dynamic(group);
       if(portal)
       {
@@ -328,13 +334,20 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
         flow_table->set_columns_count(group->m_columns_count);
         flow_table->set_padding(Utils::DEFAULT_SPACING_SMALL);
         flow_table->show();
-
+        
+        // Put the new flowtable in an event box to catch events
+        Gtk::EventBox* event_box = Gtk::manage( new Gtk::EventBox() ); //TODO_Leak: Valgrind says this is possibly leaked.
+        event_box->add(*flow_table);
+        event_box->set_visible_window(false);
+        event_box->signal_button_press_event().connect (sigc::mem_fun (*flow_table,
+                                                                       &FlowTableWithFields::on_button_press_event));
+        event_box->show();        
         //This doesn't work (probably because we haven't implmented it in our custom container),
         //so we put the flowtable in an alignment and give that a border instead.
         //flow_table->set_border_width(Glom::Utils::DEFAULT_SPACING_SMALL); //Put some space between the page child and the page edges.
         Gtk::Alignment* alignment = Gtk::manage(new Gtk::Alignment());
         alignment->set_border_width(Glom::Utils::DEFAULT_SPACING_SMALL);
-        alignment->add(*flow_table);
+        alignment->add(*event_box);
         alignment->show();
 
         notebook_widget->append_page(*alignment, *tab_label);
