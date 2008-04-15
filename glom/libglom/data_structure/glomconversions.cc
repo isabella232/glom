@@ -691,7 +691,7 @@ bool Conversions::value_is_empty(const Gnome::Gda::Value& value)
     case(G_TYPE_STRING):
       return value.get_string().empty();
     default:
-      return false; //None of the other types can be empty. (An empty numeric, date, or time type shows up as a null.
+      return false; //None of the other types can be empty. (An empty numeric, date, or time type shows up as a NULL).
   }
 }
 

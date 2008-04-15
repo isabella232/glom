@@ -703,6 +703,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
 
           primary_key_value = get_entered_field_data(layout_item);
 
+          //Note: This just uses an existing record if one already exists:
           const bool test = add_related_record_for_field(layout_field, relationship, primary_key_field, primary_key_value);
           if(!test)
             return;

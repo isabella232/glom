@@ -280,8 +280,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Box_Data::record_new(bool use_entered_data, 
           }
           */
 
-          Glib::ustring strFieldValue = field->sql(value);
-
+          const Glib::ustring strFieldValue = field->sql(value);
           if(!strFieldValue.empty())
           {
             if(!strNames.empty())
@@ -667,6 +666,10 @@ bool Box_Data::get_related_record_exists(const sharedptr<const Relationship>& re
   Bakery::BusyCursor cursor(get_app_window());
 
   bool result = false;
+
+  //Don't try doing a NULL=NULL or ""="" relationship:
+  if(Glom::Conversions::value_is_empty(key_value))
+    return false;
 
   //TODO_Performance: It's very possible that this is slow.
   //We don't care how many records there are, only whether there are more than zero.

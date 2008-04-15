@@ -304,9 +304,11 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
         if(m_db_values.find(col) == m_db_values.end()) //If there is not already a value in the map for this column.
         {
           Glib::RefPtr<Gnome::Gda::Column> column = model.m_gda_datamodel->describe_column(col);
-          Gnome::Gda::Value value;
-          value.init(column->get_g_type());
-          m_db_values[col] = value;
+
+          //We don't just create a Gda::Value of the column's gda type, 
+          //because we should use a NULL-type Gda::Value as the initial value for some fields:
+          const Field::glom_field_type glom_type = Field::get_glom_type_for_gda_type(column->get_g_type());
+          m_db_values[col] = Glom::Conversions::get_empty_value(glom_type);
         }
       }
     }
