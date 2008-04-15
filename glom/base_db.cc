@@ -852,9 +852,16 @@ Gnome::Gda::Value Base_DB::auto_increment_insert_first_if_necessary(const Glib::
   else
   {
     //Return the value so that a calling function does not need to do a second SELECT.
-    value = datamodel->get_value_at(0, 0);
+    const Gnome::Gda::Value actual_value = datamodel->get_value_at(0, 0);
+    
+    //But the caller wants a numeric value not a text value
+    //(our system_autoincrements table has it as text, for future flexibility):
+    const std::string actual_value_text = actual_value.get_string();
+    bool success = false;
+    value = Conversions::parse_value(Field::TYPE_NUMERIC, actual_value_text, success, true /* iso_format */);
   }
 
+  //std::cout << "Base_DB::auto_increment_insert_first_if_necessary: returning value of type=" << value.get_value_type() << std::endl;
   return value;
 }
 
@@ -869,8 +876,8 @@ void Base_DB::recalculate_next_auto_increment_value(const Glib::ustring& table_n
   if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
   {
     //Increment it:
-    const Gnome::Gda::Value value_max = datamodel->get_value_at(0, 0);
-    long num_max = Utils::decimal_from_string(value_max.to_string()); //TODO: Is this sensible? Probably not.
+    const Gnome::Gda::Value value_max = datamodel->get_value_at(0, 0); // A GdaNumeric.
+    double num_max = Conversions::get_double_for_gda_value_numeric(value_max);
     ++num_max;
 
     //Set it in the glom system table:
@@ -895,8 +902,7 @@ void Base_DB::recalculate_next_auto_increment_value(const Glib::ustring& table_n
 Gnome::Gda::Value Base_DB::get_next_auto_increment_value(const Glib::ustring& table_name, const Glib::ustring& field_name) const
 {
   const Gnome::Gda::Value result = auto_increment_insert_first_if_necessary(table_name, field_name);
-  long num_result = 0;
-  num_result = Utils::decimal_from_string(result.to_string()); //TODO: Is this sensible? Probably not.
+  double num_result = Conversions::get_double_for_gda_value_numeric(result); 
 
 
   //Increment the next_value:

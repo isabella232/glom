@@ -451,7 +451,7 @@ Gnome::Gda::Value Box_Data::generate_next_auto_increment(const Glib::ustring& ta
     //if(value.is_number())
     //  result = value.get_integer();
     //else
-    result = decimal_from_string(value.to_string());
+    result = get_double_for_gda_value_numeric(value);
 
     ++result; 
   }
@@ -750,10 +750,13 @@ bool Box_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Fie
         //Create the related record:
         if(key_is_auto_increment)
         {
-          primary_key_value = generate_next_auto_increment(relationship->get_to_table(), primary_key_field->get_name());
+          primary_key_value = get_next_auto_increment_value(relationship->get_to_table(), primary_key_field->get_name());
 
           //Generate the new key value;
         }
+
+        std::cout << "DEBUG: Box_Data::add_related_record_for_field(): primary_key_field: " << primary_key_field->get_name() << std::endl;
+        std::cout << "  DEBUG:primary_key_value type=: " << g_type_name(primary_key_value.get_value_type()) << std::endl;
 
         const Glib::ustring strQuery = "INSERT INTO \"" + relationship->get_to_table() + "\" (\"" + primary_key_field->get_name() + "\") VALUES (" + primary_key_field->sql(primary_key_value) + ")";
         bool test = query_execute(strQuery, get_app_window());
