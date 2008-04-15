@@ -1,5 +1,18 @@
 2008-04-15  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data.cc
+	* glom/mode_data/box_data.h: add_related_record_for_field():
+	Added a primary_key_value_used output parameter so that the caller nows 
+	what record was actually created.
+	* glom/mode_data/box_data_details.cc: on_flowtable_field_edited():
+	* glom/mode_data/box_data_list.cc: on_adddel_user_changed(): 
+	Use the new output parameter instead of calling get_entered_field_data(), 
+	so that automatically-created related records are really linked from the 
+	parent record even when the ID is not on the layout.
+	This fixes bug #526386 (Jani Monoses).
+
+2008-04-15  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_data/box_data.cc (Glom.record_new,
 	Glom.get_related_record_exists(): Don't bother looking for a record 
 	with the key NULL, because that is not something we want to related 
