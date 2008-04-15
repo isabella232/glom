@@ -111,6 +111,11 @@ protected:
 
   virtual void recalculate_fields_for_related_records(const Glib::ustring& relationship_name);
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  virtual Dialog_Layout* create_layout_dialog() const; // override.
+  virtual void prepare_layout_dialog(Dialog_Layout* dialog); // override.
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+
   sharedptr<Field> m_field_primary_key;
   Gnome::Gda::Value m_primary_key_value;
 

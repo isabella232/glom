@@ -39,21 +39,6 @@ Box_Data_List::Box_Data_List()
 {
   m_layout_name = "list";
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_data_layout"); //TODO: Use a generic layout dialog?
-  if(refXml)
-  {
-    Dialog_Layout_List* dialog = 0;
-    refXml->get_widget_derived("window_data_layout", dialog);
-    if(dialog)
-    {
-      m_pDialogLayout = dialog;
-      add_view(m_pDialogLayout); //Give it access to the document.
-      m_pDialogLayout->signal_hide().connect( sigc::mem_fun(*this, &Box_Data::on_dialog_layout_hide) );
-    }
-  }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
   //m_strHint = _("When you change the data in a field the database is updated immediately.\n Click [Add] or enter data into the last row to add a new record.\n Leave automatic ID fields empty - they will be filled for you.\nOnly the first 100 records are shown.");
 
   pack_start(m_AddDel);
@@ -925,7 +910,25 @@ void Box_Data_List::on_dialog_layout_hide()
   Box_Data::on_dialog_layout_hide();
   m_reset_column_widths = false;
 }
-#endif //GLOM_ENABLE_CLIENT_ONLY
+
+Dialog_Layout* Box_Data_List::create_layout_dialog() const
+{
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_data_layout"); //TODO: Use a generic layout dialog?
+  if(refXml)
+  {
+    Dialog_Layout_List* dialog = 0;
+    refXml->get_widget_derived("window_data_layout", dialog);
+    return dialog;
+  }
+
+  return NULL;
+}
+
+void Box_Data_List::prepare_layout_dialog(Dialog_Layout* dialog)
+{
+  dialog->set_document(m_layout_name, get_document(), m_table_name, m_FieldsShown); //TODO: Use m_TableFields?
+}
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 } //namespace Glom
 

@@ -29,9 +29,6 @@ namespace Glom
 {
 
 Box_Data_List_Related::Box_Data_List_Related()
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-: m_pDialogLayoutRelated(0)
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 {
   set_size_request(400, -1); //An arbitrary default.
 
@@ -53,44 +50,6 @@ Box_Data_List_Related::Box_Data_List_Related()
   add(m_Frame);
 
   m_layout_name = "list_related"; //TODO: We need a unique name when 2 portals use the same table.
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  //Delete the dialog from the base class, because we don't use it.
-  if(m_pDialogLayout)
-  {
-    remove_view(m_pDialogLayout);
-    delete m_pDialogLayout;
-    m_pDialogLayout = 0;
-  }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_data_layout");
-  if(refXml)
-  {
-    Dialog_Layout_List_Related* dialog = 0;
-    refXml->get_widget_derived("window_data_layout", dialog);
-    if(dialog)
-    {
-      //Use the new dialog:
-      m_pDialogLayoutRelated = dialog;
-      add_view(m_pDialogLayoutRelated); //Give it access to the document.
-      m_pDialogLayoutRelated->signal_hide().connect( sigc::mem_fun(*this, &Box_Data::on_dialog_layout_hide) );
-    }
-  }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-}
-
-Box_Data_List_Related::~Box_Data_List_Related()
-{
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  if(m_pDialogLayoutRelated)
-  {
-    remove_view(m_pDialogLayoutRelated);
-    delete m_pDialogLayoutRelated;
-    m_pDialogLayoutRelated = 0;
-  }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
 void Box_Data_List_Related::enable_buttons()
@@ -396,17 +355,6 @@ Box_Data_List_Related::type_vecLayoutFields Box_Data_List_Related::get_fields_to
   return type_vecLayoutFields();
 }
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-void Box_Data_List_Related::show_layout_dialog()
-{
-  if(m_pDialogLayoutRelated)
-  {
-    m_pDialogLayoutRelated->set_document(m_layout_name, get_document(), m_portal);
-    m_pDialogLayoutRelated->show();
-  }
-}
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
 Box_Data_List_Related::type_signal_record_changed Box_Data_List_Related::signal_record_changed()
 {
   return m_signal_record_changed;
@@ -415,7 +363,9 @@ Box_Data_List_Related::type_signal_record_changed Box_Data_List_Related::signal_
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void Box_Data_List_Related::on_dialog_layout_hide()
 {
-  m_portal = m_pDialogLayoutRelated->get_portal_layout();
+  Dialog_Layout_List_Related* dialog_related = dynamic_cast<Dialog_Layout_List_Related*>(m_pDialogLayout);
+  g_assert(dialog_related != NULL);
+  m_portal = dialog_related->get_portal_layout();
 
 
   //Update the UI:
@@ -586,5 +536,27 @@ Document_Glom::type_list_layout_groups Box_Data_List_Related::create_layout_get_
   return result;
 }
 
+Dialog_Layout* Box_Data_List_Related::create_layout_dialog() const
+{
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_data_layout");
+  if(refXml)
+  {
+    Dialog_Layout_List_Related* dialog = 0;
+    refXml->get_widget_derived("window_data_layout", dialog);
+    return dialog;
+    }
+  }
+  
+  return NULL;
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+}
+
+void prepare_layout_dialog(Dialog_Layout* dialog)
+{
+  Dialog_Layout_List_Related* related_dialog = dynamic_cast<Dialog_Layout_List_Related*>(dialog);
+  g_assert(related_dialog != NULL);
+  related_dialog->set_document(m_layout_name, get_document(), m_portal);
+}
 
 } //namespace Glom

@@ -60,7 +60,7 @@ public:
   virtual bool confirm_discard_unstored_data() const;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual void show_layout_dialog();
+  void show_layout_dialog();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   Glib::ustring get_layout_name() const;
 
@@ -132,6 +132,11 @@ protected:
   virtual void on_Button_Find(); //only used by _Find sub-classes. Should be MI.
 
   static Glib::ustring xslt_process(const xmlpp::Document& xml_document, const std::string& filepath_xslt);
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  virtual Dialog_Layout* create_layout_dialog() const = 0;
+  virtual void prepare_layout_dialog(Dialog_Layout* dialog) = 0;
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   Gtk::Button m_Button_Find; //only used by _Find sub-classes. Should be MI.
   Gtk::Label m_Label_FindStatus;

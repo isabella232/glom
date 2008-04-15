@@ -61,22 +61,6 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
 
   add_view(&m_FlowTable); //Allow this to access the document too.
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  //TODO_Performance: Instantiate this only when needed:
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_data_layout"); //TODO: Use a generic layout dialog?
-  if(refXml)
-  {
-    Dialog_Layout_Details* dialog = 0;
-    refXml->get_widget_derived("window_data_layout", dialog);
-    if(dialog)
-    {
-      m_pDialogLayout = dialog;
-      add_view(m_pDialogLayout); //Give it access to the document.
-      m_pDialogLayout->signal_hide().connect( sigc::mem_fun(static_cast<Box_Data&>(*this), &Box_Data::on_dialog_layout_hide) );
-    }
-  }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
   m_FlowTable.set_columns_count(1); //Sub-groups will have multiple columns (by default, there is one sub-group, with 2 columns).
   m_FlowTable.set_padding(Utils::DEFAULT_SPACING_SMALL);
 
@@ -964,5 +948,25 @@ void Box_Data_Details::print_layout()
     GlomXslUtils::transform_and_open(*pDocument, "print_details_to_html.xsl", get_app_window());
   }
 }
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+Dialog_Layout* Box_Data_Details::create_layout_dialog() const
+{
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_data_layout"); //TODO: Use a generic layout dialog?
+  if(refXml)
+  {
+    Dialog_Layout_Details* dialog = 0;
+    refXml->get_widget_derived("window_data_layout", dialog);
+    return dialog;
+  }
+
+  return NULL;
+}
+
+void Box_Data_Details::prepare_layout_dialog(Dialog_Layout* dialog)
+{
+  dialog->set_document(m_layout_name, get_document(), m_table_name, m_FieldsShown); //TODO: Use m_TableFields?
+}
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 } //namespace Glom

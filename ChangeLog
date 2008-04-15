@@ -1,3 +1,28 @@
+2008-04-15  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/mode_data/box_data.h:
+	* glom/mode_data/box_data.cc: Made the show_layout_dialog() function
+	non-virtual and added two new (pure) virtual functions called
+	create_layout_dialog() and prepare_layout_dialog(). Create the dialog
+	in show_layout_dialog() if necessary, so the dialog is only created
+	when needed.
+
+	* glom/mode_data/box_data_list.h:
+	* glom/mode_data/box_data_details.h:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_details.cc: Implement the two new virtual
+	functions.
+
+	* glom/mode_data/box_data_list_related.h:
+	* glom/mode_data/box_data_calendar_related.h:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/box_data_calendar_related.cc: Removed the
+	m_pLayoutDialogRelated variable, and implement the two new virtual
+	functions instead. Removed the destructor which is no longer required.
+	(on_dialog_layout_hide): Cast m_pDialogLayout to a
+	Dialog_Layout_List_Related before usage. These changes clean up the
+	code in Box_Data_List_Related a bit.
+
 2008-04-15  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data.cc

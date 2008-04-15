@@ -387,11 +387,15 @@ bool Box_Data::confirm_discard_unstored_data() const
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void Box_Data::show_layout_dialog()
 {
-  if(m_pDialogLayout)
+  if(!m_pDialogLayout)
   {
-    m_pDialogLayout->set_document(m_layout_name, get_document(), m_table_name, m_FieldsShown); //TODO: Use m_TableFields?
-    m_pDialogLayout->show();
+    m_pDialogLayout = create_layout_dialog();
+    add_view(m_pDialogLayout); //Give it access to the document.
+    m_pDialogLayout->signal_hide().connect( sigc::mem_fun(*this, &Box_Data::on_dialog_layout_hide) );
   }
+
+  prepare_layout_dialog(m_pDialogLayout);
+  m_pDialogLayout->show();
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

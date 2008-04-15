@@ -37,7 +37,6 @@ class Box_Data_List_Related :
 {
 public: 
   Box_Data_List_Related();
-  virtual ~Box_Data_List_Related();
 
   /**
    * @param portal: The full portal details
@@ -52,10 +51,6 @@ public:
 
   sharedptr<LayoutItem_Portal> get_portal() const;
   virtual sharedptr<const Field> get_key_field() const;
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual void show_layout_dialog();
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   sigc::signal<void, Gnome::Gda::Value> signal_record_added;
 
@@ -83,16 +78,17 @@ protected:
 
   virtual void enable_buttons(); //override
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  virtual Dialog_Layout* create_layout_dialog() const; // override.
+  virtual void prepare_layout_dialog(Dialog_Layout* dialog); // override.
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+
 protected:
   virtual Document_Glom::type_list_layout_groups create_layout_get_layout(); //override.
 
   Gtk::Frame m_Frame;
   Gtk::Alignment m_Alignment;
   Gtk::Label m_Label;
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  Dialog_Layout_List_Related* m_pDialogLayoutRelated;
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   sharedptr<LayoutItem_Portal> m_portal;
   sharedptr<Field> m_key_field;

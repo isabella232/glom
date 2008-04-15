@@ -106,6 +106,11 @@ protected:
   virtual void print_layout();
   virtual void print_layout_group(xmlpp::Element* node_parent, const sharedptr<const LayoutGroup>& group);
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  virtual Dialog_Layout* create_layout_dialog() const; // override.
+  virtual void prepare_layout_dialog(Dialog_Layout* dialog); // override.
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+
   //Member widgers:
   mutable DbAddDel_WithButtons m_AddDel; //mutable because its get_ methods aren't const.
 
