@@ -308,7 +308,7 @@
 
     <sect2 id="adding-tables">
     <title>Adding Tables</title>
-    <para>You can see the list of existing tables by choosing <literal>Tables</literal> from the <literal>Navigate</literal> menu. You will also see this window after connecting to a database server, after creating a new document. To create a new table, click the <literal>Add</literal> button and enter the name for the new table. This name should not contain any spaces or special characters. &app; will suggest a human-readable title for this table. <literal>Operators</literal> will see this title instead of the actual table name. You can also mark a tables as <literal>hidden</literal> from Operators. For instance, Operators should see &quot;Invoice Lines&quot; as related records from the &quot;Invoices&quot; table, but they should never be able to navigate directly to the &quot;Invoice Lines&quot; table.</para>
+    <para>You can see the list of existing tables by choosing <literal>Tables</literal> from the <literal>Navigate</literal> menu. You will also see this window after connecting to a database server, after creating a new document. To create a new table, click the <literal>Add</literal> button and enter the name for the new table. &app; will suggest a human-readable title for this table. <literal>Operators</literal> will see this title instead of the actual table name. You can also mark a tables as <literal>hidden</literal> from Operators. For instance, Operators should see &quot;Invoice Lines&quot; as related records from the &quot;Invoices&quot; table, but they should never be able to navigate directly to the &quot;Invoice Lines&quot; table.</para>
     <!-- TODO: screenshot -->
     <para>You can also specify one table as the <literal>default table</literal>. This table will be shown whenever an operator opens an existing document, without asking him to select a table from the list.</para>
     <para>You can also use this window to rename an existing table.</para>
@@ -318,7 +318,7 @@
     <sect2 id="editing-fields">
     <title>Editing Fields</title>
     <para>Choose <literal>Fields</literal> from the <literal>Developer</literal> menu. This shows the list of fields in the table. New tables automatically have a primary key field, but you can change this field if necessary.</para>
-    <para>Click the <literal>Add</literal> button to add a new field, then enter the name of the new field. The name should not contain spaces or special characters. &app; will guess an appropriate human-readable title for this field, but you can edit this. <literal>Operators</literal> will see this title instead of the actual field name.</para> 
+    <para>Click the <literal>Add</literal> button to add a new field, then enter the name of the new field. &app; will guess an appropriate human-readable title for this field, but you can edit this. <literal>Operators</literal> will see this title instead of the actual field name.</para> 
     <para>To specify more field details, select the field and click the <literal>Details</literal> button.</para>
 
     <figure id="developer-editing-fields"> 
