@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-11 04:21+0100\n"
-"PO-Revision-Date: 2008-04-11 10:05+0200\n"
+"POT-Creation-Date: 2008-04-14 04:23+0100\n"
+"PO-Revision-Date: 2008-04-14 09:31+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -741,10 +741,6 @@ msgid "_User"
 msgstr "_Usuario"
 
 #: ../glom/glom.glade.h:32
-msgid "gtk-help"
-msgstr "gtk-help"
-
-#: ../glom/glom.glade.h:33
 msgid "table_name"
 msgstr "nombre_de_la_tabla"
 
@@ -1303,8 +1299,8 @@ msgstr "Del campo:"
 
 #: ../glom/glom_developer.glade.h:132
 #: ../glom/libglom/data_structure/layout/layoutgroup.cc:382
-#: ../glom/mode_data/flowtablewithfields.cc:1164
 #: ../glom/mode_data/flowtablewithfields.cc:1177
+#: ../glom/mode_data/flowtablewithfields.cc:1190
 msgid "Group"
 msgstr "Agrupar"
 
@@ -1721,22 +1717,10 @@ msgid "field name"
 msgstr "nombre del campo"
 
 #: ../glom/glom_developer.glade.h:227
-msgid "gtk-apply"
-msgstr "gtk-apply"
-
-#: ../glom/glom_developer.glade.h:228
-msgid "gtk-cancel"
-msgstr "gtk-cancel"
-
-#: ../glom/glom_developer.glade.h:229
-msgid "gtk-ok"
-msgstr "gtk-ok"
-
-#: ../glom/glom_developer.glade.h:230
 msgid "table name"
 msgstr "nombre de la tabla"
 
-#: ../glom/glom_developer.glade.h:231
+#: ../glom/glom_developer.glade.h:228
 msgid "the title"
 msgstr "el título"
 
@@ -1947,7 +1931,7 @@ msgstr "Línea"
 
 #. Note to translators: "Notebook" means a GtkNotebook-type widget.
 #: ../glom/libglom/data_structure/layout/layoutitem_notebook.cc:56
-#: ../glom/mode_data/flowtablewithfields.cc:1160
+#: ../glom/mode_data/flowtablewithfields.cc:1173
 msgid "Notebook"
 msgstr "Cuaderno"
 
@@ -2048,7 +2032,7 @@ msgstr ""
 
 #: ../glom/libglom/utils.cc:859
 msgid "No help file available"
-msgstr ""
+msgstr "No hay archivo de ayuda disponible"
 
 #: ../glom/libglom/utils.cc:877
 msgid "Could not display help: "
@@ -2092,7 +2076,7 @@ msgstr ""
 "No ha introducido un criterio de búsqueda. Pruebe introduciendo información "
 "en los campos."
 
-#: ../glom/mode_data/box_data.cc:368
+#: ../glom/mode_data/box_data.cc:367
 msgid ""
 "This data cannot be stored in the database because you have not provided a "
 "primary key.\n"
@@ -2102,13 +2086,13 @@ msgstr ""
 "proporcionado una clave primaria.\n"
 "¿Desea descartar estos datos?"
 
-#: ../glom/mode_data/box_data.cc:374
+#: ../glom/mode_data/box_data.cc:373
 msgid "No primary key value"
 msgstr "No hay un valor de clave primaria"
 
 #. Warn the user:
 #. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
-#: ../glom/mode_data/box_data.cc:707
+#: ../glom/mode_data/box_data.cc:722
 msgid ""
 "Data may not be entered into this related field, because the related record "
 "does not yet exist, and the relationship does not allow automatic creation "
@@ -2118,13 +2102,13 @@ msgstr ""
 "relacionado todavía no existe y la relación no permite crear automáticamente "
 "registros relacionados nuevos."
 
-#: ../glom/mode_data/box_data.cc:711
+#: ../glom/mode_data/box_data.cc:726
 msgid "Related Record Does Not Exist"
 msgstr "No existe ningún registro relacionado"
 
 #. Warn the user:
 #. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
-#: ../glom/mode_data/box_data.cc:731
+#: ../glom/mode_data/box_data.cc:746
 msgid ""
 "Data may not be entered into this related field, because the related record "
 "does not yet exist, and the key in the related record is auto-generated and "
@@ -2135,12 +2119,12 @@ msgstr ""
 "generada y por ello no se puede crear con el valor de la clave en este "
 "registro."
 
-#: ../glom/mode_data/box_data.cc:736
+#: ../glom/mode_data/box_data.cc:751
 msgid "Related Record Cannot Be Created"
 msgstr "No se puede crear el registro relacionado"
 
 #. Ask the user for confirmation:
-#: ../glom/mode_data/box_data.cc:831
+#: ../glom/mode_data/box_data.cc:857
 msgid ""
 "Are you sure that you would like to delete this record? The data in this "
 "record will then be permanently lost."
@@ -2148,18 +2132,18 @@ msgstr ""
 "¿Está seguro de querer borrar este registro? Los datos en este registro se "
 "perderán para siempre."
 
-#: ../glom/mode_data/box_data.cc:835
+#: ../glom/mode_data/box_data.cc:861
 msgid "Delete record"
 msgstr "Borrar registro"
 
 #. Tell user that they can't do that:
-#: ../glom/mode_data/box_data_calendar_related.cc:358
-#: ../glom/mode_data/box_data_list_related.cc:359
+#: ../glom/mode_data/box_data_calendar_related.cc:317
+#: ../glom/mode_data/box_data_list_related.cc:318
 msgid "Extra related records not possible."
 msgstr "No son posibles los registros relacionados extra."
 
-#: ../glom/mode_data/box_data_calendar_related.cc:359
-#: ../glom/mode_data/box_data_list_related.cc:360
+#: ../glom/mode_data/box_data_calendar_related.cc:318
+#: ../glom/mode_data/box_data_list_related.cc:319
 msgid ""
 "You attempted to add a new related record, but there can only be one related "
 "record, because the relationship uses a unique key."
@@ -2167,13 +2151,13 @@ msgstr ""
 "Está intentando introducir un nuevo registro relacionado, pero sólo puede "
 "haber uno porque la relación usa una clave única."
 
-#: ../glom/mode_data/box_data_calendar_related.cc:575
-#: ../glom/mode_data/box_data_list_related.cc:576
+#: ../glom/mode_data/box_data_calendar_related.cc:525
+#: ../glom/mode_data/box_data_list_related.cc:526
 msgid "No Corresponding Record Exists"
 msgstr "No existe un registro correspondiente"
 
-#: ../glom/mode_data/box_data_calendar_related.cc:575
-#: ../glom/mode_data/box_data_list_related.cc:576
+#: ../glom/mode_data/box_data_calendar_related.cc:525
+#: ../glom/mode_data/box_data_list_related.cc:526
 msgid ""
 "No record with this value exists. Therefore navigation to the related record "
 "is not possible."
@@ -2205,35 +2189,35 @@ msgstr "Ver el siguiente registro de la lista."
 msgid "View the last record in the list."
 msgstr "Ver el último registro de la lista."
 
-#: ../glom/mode_data/box_data_details.cc:401
-#: ../glom/mode_data/box_data_list.cc:208
+#: ../glom/mode_data/box_data_details.cc:385
+#: ../glom/mode_data/box_data_list.cc:193
 msgid "Layout Contains No Fields"
 msgstr "El esquema no contiene ningún campo"
 
-#: ../glom/mode_data/box_data_details.cc:401
-#: ../glom/mode_data/box_data_list.cc:208
+#: ../glom/mode_data/box_data_details.cc:385
+#: ../glom/mode_data/box_data_list.cc:193
 msgid ""
 "There are no fields on the layout, so there is no way to enter data in a new "
 "record."
 msgstr ""
-"No hay ningún campo en el esquema, por lo que no hay manera de introducir datos "
-"en un nuevo registro."
+"No hay ningún campo en el esquema, por lo que no hay manera de introducir "
+"datos en un nuevo registro."
 
 #. Tell user that a primary key is needed to delete a record:
-#: ../glom/mode_data/box_data_details.cc:428
+#: ../glom/mode_data/box_data_details.cc:412
 msgid "No primary key value."
 msgstr "No hay un valor para la clave primaria."
 
-#: ../glom/mode_data/box_data_details.cc:429
+#: ../glom/mode_data/box_data_details.cc:413
 msgid "This record cannot be deleted because there is no primary key."
 msgstr "Este registro no se puede borrar porque no hay una clave primaria."
 
 #. Warn user that they can't choose their own primary key:
-#: ../glom/mode_data/box_data_details.cc:809
+#: ../glom/mode_data/box_data_details.cc:795
 msgid "Primary key auto increments"
 msgstr "La clave primaria es autoincrementable"
 
-#: ../glom/mode_data/box_data_details.cc:810
+#: ../glom/mode_data/box_data_details.cc:796
 msgid ""
 "The primary key is auto-incremented.\n"
 " You may not enter your own primary key value."
@@ -2242,7 +2226,7 @@ msgstr ""
 " No debería introducir su propio valor para la clave primaria."
 
 #. Add Pages:
-#: ../glom/mode_data/box_data_list.cc:864
+#: ../glom/mode_data/box_data_list.cc:851
 #: ../glom/mode_data/notebook_data.cc:31 ../glom/mode_find/notebook_find.cc:32
 msgid "List"
 msgstr "Lista"
@@ -2253,8 +2237,8 @@ msgid "Columns Count"
 msgstr "Contar las columnas"
 
 #: ../glom/mode_data/dialog_layout_details.cc:663
-#: ../glom/mode_data/flowtablewithfields.cc:1069
-#: ../glom/mode_data/flowtablewithfields.cc:1190
+#: ../glom/mode_data/flowtablewithfields.cc:1082
+#: ../glom/mode_data/flowtablewithfields.cc:1203
 msgid "New Button"
 msgstr "Botón nuevo"
 
@@ -2267,7 +2251,7 @@ msgid "Image Title"
 msgstr "Título de la imagen"
 
 #: ../glom/mode_data/dialog_layout_details.cc:739
-#: ../glom/mode_data/flowtablewithfields.cc:1014
+#: ../glom/mode_data/flowtablewithfields.cc:1027
 msgid "notebook"
 msgstr "cuaderno"
 
@@ -2295,48 +2279,48 @@ msgstr "(Cuaderno)"
 msgid "None: No visible tables are specified by the fields."
 msgstr "Nada: Ninguna tablas visible está especificada por los campos."
 
-#: ../glom/mode_data/flowtablewithfields.cc:1008
-#: ../glom/mode_data/flowtablewithfields.cc:1163
+#: ../glom/mode_data/flowtablewithfields.cc:1021
 #: ../glom/mode_data/flowtablewithfields.cc:1176
+#: ../glom/mode_data/flowtablewithfields.cc:1189
 msgid "New Group"
 msgstr "Grupo nuevo"
 
 #. Note to translators: This is the default name (not seen by most users) for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1020
+#: ../glom/mode_data/flowtablewithfields.cc:1033
 msgid "tab1"
 msgstr "tab1"
 
 #. Note to translators: This is the default label text for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1023
+#: ../glom/mode_data/flowtablewithfields.cc:1036
 msgid "Tab One"
 msgstr "Solapa uno"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1068
+#: ../glom/mode_data/flowtablewithfields.cc:1081
 msgid "button"
 msgstr "botón"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
-#: ../glom/mode_data/flowtablewithfields.cc:1075
-#: ../glom/mode_data/flowtablewithfields.cc:1203
+#: ../glom/mode_data/flowtablewithfields.cc:1088
+#: ../glom/mode_data/flowtablewithfields.cc:1216
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:466
 msgid "text"
 msgstr "texto"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1076
-#: ../glom/mode_data/flowtablewithfields.cc:1204
+#: ../glom/mode_data/flowtablewithfields.cc:1089
+#: ../glom/mode_data/flowtablewithfields.cc:1217
 msgid "New Text"
 msgstr "Texto nuevo"
 
 #. TODO: Avoid this error message
-#: ../glom/mode_data/flowtablewithfields.cc:1260
+#: ../glom/mode_data/flowtablewithfields.cc:1273
 msgid "You cannot drop anything here. Try to add a group first"
 msgstr "No puede arrastrar nada aquí. Intente añadir primero un grupo."
 
-#: ../glom/mode_data/flowtablewithfields.cc:1358
+#: ../glom/mode_data/flowtablewithfields.cc:1371
 msgid "Delete whole group \"%1\"?"
 msgstr "¿Borrar el grupo «%1» entero?"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1363
+#: ../glom/mode_data/flowtablewithfields.cc:1376
 msgid "Delete whole group?"
 msgstr "¿Borrar el grupo entero?"
 
@@ -2872,7 +2856,7 @@ msgstr ""
 "Introduzca un criterio de búsqueda para identificar registros en la otra "
 "tabla, para elegir un ID para este campo."
 
-#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2120
+#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2073
 msgid "Right-click to layout, to specify the related fields."
 msgstr ""
 "Pulse con el botón derecho en la disposición, para especificar los campos "
@@ -2933,6 +2917,18 @@ msgstr "Informe finalizado"
 #: ../glom/xsl_utils.cc:116
 msgid "The report will now be opened in your web browser."
 msgstr "El informe se abrirá ahora en su navegador web."
+
+#~ msgid "gtk-help"
+#~ msgstr "gtk-help"
+
+#~ msgid "gtk-apply"
+#~ msgstr "gtk-apply"
+
+#~ msgid "gtk-cancel"
+#~ msgstr "gtk-cancel"
+
+#~ msgid "gtk-ok"
+#~ msgstr "gtk-ok"
 
 #~ msgid "<b>Recently Opened Files:</b>"
 #~ msgstr "<b>Archivos abiertos recientemente:<b/>"
