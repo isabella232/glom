@@ -45,7 +45,6 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
   m_button_field_add_group(0),
   m_button_add_notebook(0),
   m_button_add_related(0),
-  m_button_add_related_calendar(0),
   m_button_add_button(0),
   m_button_add_text(0),
   m_button_add_image(0),
@@ -62,10 +61,6 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
   m_box_related_table_widgets->hide();
   refGlade->get_widget("frame_related_table_navigation", m_box_related_navigation); 
   m_box_related_navigation->hide();
-
-  Gtk::Frame* box_calendar = 0;
-  refGlade->get_widget("frame_calendar", box_calendar); 
-  box_calendar->hide();
 
   refGlade->get_widget("label_table_name", m_label_table_name);
 
@@ -151,9 +146,6 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
 
   refGlade->get_widget("button_add_related", m_button_add_related);
   m_button_add_related->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_add_related) );
-
-  refGlade->get_widget("button_add_related_calendar", m_button_add_related_calendar);
-  m_button_add_related_calendar->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_add_related_calendar) );
 
   refGlade->get_widget("button_add_button", m_button_add_button);
   m_button_add_button->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_add_button) );
@@ -790,36 +782,6 @@ void Dialog_Layout_Details::on_button_add_related()
   enable_buttons();
 }
 
-void Dialog_Layout_Details::on_button_add_related_calendar()
-{
-  Gtk::TreeModel::iterator parent = get_selected_group_parent();
-
-  sharedptr<Relationship> relationship = offer_relationship_list();
-  if(relationship)
-  {
-    Gtk::TreeModel::iterator iter = append_appropriate_row();
-    if(iter)
-    {
-      Gtk::TreeModel::Row row = *iter;
-
-      sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_CalendarPortal>::create();
-      portal->set_relationship(relationship);
-      row[m_model_items->m_columns.m_col_layout_item] = portal;
-
-      //Scroll to, and select, the new row:
-      Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview_fields->get_selection();
-      if(refTreeSelection)
-        refTreeSelection->select(iter);
-
-      m_treeview_fields->scroll_to_row( Gtk::TreeModel::Path(iter) );
-
-      m_modified = true;
-    }
-  }
-
-  enable_buttons();
-}
-
 Gtk::TreeModel::iterator Dialog_Layout_Details::get_selected_group_parent() const
 {
   //Get the selected group, or a suitable parent group, or the first group:
@@ -1114,11 +1076,7 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
       sharedptr<LayoutItem_Portal> layout_portal = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_item);
       if(layout_portal)
       {
-        sharedptr<LayoutItem_CalendarPortal> layout_calendar = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(layout_portal);
-        if(layout_calendar)
-          markup = _("Related Calendar: ") + layout_portal->get_relationship_name();
-        else
-          markup = _("Related List: ") + layout_portal->get_relationship_name();
+        markup = _("Related: ") + layout_portal->get_relationship_name();
       }
       else
       {

@@ -39,7 +39,7 @@ glom_SOURCES = main.cc \
                combobox_fields.h combobox_fields.cc \
                combobox_relationship.h combobox_relationship.cc \
                dialog_connection.h dialog_connection.cc \
-               dialog_existing_or_new.h dialog_existing_or_new.cc \
+	       dialog_existing_or_new.h dialog_existing_or_new.cc \
                dialog_invalid_data.h dialog_invalid_data.cc \
                filechooser_export.h filechooser_export.cc \
                box_reports.h box_reports.cc \
@@ -75,7 +75,6 @@ glom_LDADD += navigation/libnavigation.a \
               utility_widgets/adddel/libutility_widgets_adddel.a \
               utility_widgets/adddel/eggcolumnchooser/libutility_widgets_adddel_eggcolumnchooserdialog.a \
               utility_widgets/db_adddel/libutility_widgets_db_adddel.a \
-              utility_widgets/calendar/libutility_widgets_calendar.a \
               utility_widgets/canvas/libutility_widgets_canvas.a \
               utility_widgets/cellrendererlist/libutility_widgets_cellrendererlist.a \
               utility_widgets/eggtoolpalette/libeggtoolpalette.la \

@@ -7,7 +7,6 @@ libdata_structure_layout_la_SOURCES = layoutitem.h layoutitem.cc \
                               layoutgroup.h layoutgroup.cc \
                               layoutitem_field.h layoutitem_field.cc \
                               layoutitem_portal.h layoutitem_portal.cc \
-                              layoutitem_calendarportal.h layoutitem_calendarportal.cc \
                               layoutitem_notebook.h layoutitem_notebook.cc \
                               layoutitem_button.h layoutitem_button.cc \
                               layoutitem_text.h layoutitem_text.cc \

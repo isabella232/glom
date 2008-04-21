@@ -29,7 +29,6 @@
 #include <glom/libglom/data_structure/layout/layoutitem_button.h>
 #include <glom/libglom/data_structure/layout/layoutitem_text.h>
 #include <glom/libglom/data_structure/layout/layoutitem_image.h>
-#include <glom/libglom/data_structure/layout/layoutitem_calendarportal.h>
 #include <glom/libglom/data_structure/layout/layoutitem_line.h>
 #include <glom/libglom/standard_table_prefs_fields.h>
 #include <giomm.h>
@@ -68,8 +67,6 @@ namespace Glom
 #define GLOM_NODE_DATA_LAYOUT_PORTAL "data_layout_portal"
 #define GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP "portal_navigation_relationship"
 #define GLOM_ATTRIBUTE_PORTAL_NAVIGATIONRELATIONSHIP_MAIN "navigation_main"
-#define GLOM_NODE_DATA_LAYOUT_CALENDAR_PORTAL "data_layout_calendar_portal"
-#define GLOM_ATTRIBUTE_PORTAL_CALENDAR_DATE_FIELD "date_field"
 #define GLOM_NODE_DATA_LAYOUT_ITEM "data_layout_item" //A field.
 #define GLOM_NODE_LAYOUT_ITEM_CUSTOM_TITLE "title_custom"
 #define GLOM_ATTRIBUTE_LAYOUT_ITEM_CUSTOM_TITLE_USE "use_custom"
@@ -2047,18 +2044,9 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         load_after_layout_group(element, table_name, notebook, with_print_layout_positions);
         item_added = notebook; 
       }
-      else if( (element->get_name() == GLOM_NODE_DATA_LAYOUT_PORTAL) || (element->get_name() == GLOM_NODE_DATA_LAYOUT_CALENDAR_PORTAL) )
+      else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_PORTAL)
       {
-        sharedptr<LayoutItem_Portal> portal;
-        sharedptr<LayoutItem_CalendarPortal> calendar_portal;
-
-        if(element->get_name() == GLOM_NODE_DATA_LAYOUT_PORTAL)
-          portal = sharedptr<LayoutItem_Portal>::create();
-        else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_CALENDAR_PORTAL)
-        {
-          calendar_portal = sharedptr<LayoutItem_CalendarPortal>::create();
-          portal = calendar_portal;
-        }
+        sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::create();
 
         load_after_layout_item_usesrelationship(element, table_name, portal); 
        
@@ -2083,15 +2071,6 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         portal->set_navigation_relationship_specific(relationship_navigation_specific_main, relationship_navigation_specific);
 
         load_after_layout_group(element, portal->get_table_used(table_name), portal, with_print_layout_positions);
-        
-        //Get the calendar portal's date field:
-        if(calendar_portal)
-        {
-          const Glib::ustring date_field_name = get_node_attribute_value(element, GLOM_ATTRIBUTE_PORTAL_CALENDAR_DATE_FIELD);
-          sharedptr<Field> date_field = get_field(calendar_portal->get_table_used(table_name), date_field_name);
-          calendar_portal->set_date_field(date_field);
-        }
-        
         item_added = portal; 
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY)
@@ -2858,17 +2837,7 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedp
             sharedptr<const LayoutItem_Portal> portal = sharedptr<const LayoutItem_Portal>::cast_dynamic(group);
             if(portal) //If it is a related records portal
             {
-              sharedptr<const LayoutItem_CalendarPortal> calendar_portal = sharedptr<const LayoutItem_CalendarPortal>::cast_dynamic(portal);
-              if(calendar_portal)
-              {
-                child = node->add_child(GLOM_NODE_DATA_LAYOUT_CALENDAR_PORTAL);
-                sharedptr<const Field> date_field = calendar_portal->get_date_field();
-                if(date_field)
-                  set_node_attribute_value(child, GLOM_ATTRIBUTE_PORTAL_CALENDAR_DATE_FIELD, date_field->get_name());
-              }
-              else
-                child = node->add_child(GLOM_NODE_DATA_LAYOUT_PORTAL);
-
+              child = node->add_child(GLOM_NODE_DATA_LAYOUT_PORTAL);
               save_before_layout_item_usesrelationship(child, portal);
 
               //Portal navigation details:

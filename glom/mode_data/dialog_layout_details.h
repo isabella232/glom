@@ -65,7 +65,6 @@ protected:
   void on_button_field_add_group();
   void on_button_add_notebook();
   void on_button_add_related();
-  void on_button_add_related_calendar();
   void on_button_add_button();
   void on_button_add_text();
   void on_button_add_image();
@@ -97,7 +96,6 @@ protected:
   Gtk::Button* m_button_field_add_group;
   Gtk::Button* m_button_add_notebook;
   Gtk::Button* m_button_add_related;
-  Gtk::Button* m_button_add_related_calendar;
   Gtk::Button* m_button_add_button;
   Gtk::Button* m_button_add_text;
   Gtk::Button* m_button_add_image;

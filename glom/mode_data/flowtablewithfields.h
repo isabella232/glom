@@ -32,7 +32,6 @@
 #include <glom/libglom/data_structure/layout/layoutitem_field.h>
 #include <glom/libglom/data_structure/layout/layoutitem_notebook.h>
 #include <glom/libglom/data_structure/layout/layoutitem_portal.h>
-#include <glom/libglom/data_structure/layout/layoutitem_calendarportal.h>
 #include <glom/libglom/data_structure/layout/layoutitem_button.h>
 #include <glom/libglom/data_structure/layout/layoutitem_text.h>
 #include <glom/libglom/data_structure/layout/layoutitem_placeholder.h>
@@ -41,7 +40,6 @@
 #include <glom/utility_widgets/layoutwidgetbase.h>
 #include <glom/utility_widgets/layoutwidgetutils.h>
 #include "box_data_list_related.h"
-#include "box_data_calendar_related.h"
 #include "treestore_layout.h" //Forthe enum.
 #include <map>
 #include <list>
@@ -166,7 +164,6 @@ protected:
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   void on_portal_user_requested_details(Gnome::Gda::Value primary_key_value, Box_Data_List_Related* portal_box);
-  void on_calendar_portal_user_requested_details(Gnome::Gda::Value primary_key_value, Box_Data_Calendar_Related* portal_box);
 
   class Info
   {
@@ -191,9 +188,6 @@ protected:
   typedef std::list< Box_Data_List_Related* > type_portals;
   type_portals m_portals;
 
-  typedef std::list< Box_Data_Calendar_Related* > type_calendar_portals;
-  type_calendar_portals m_calendar_portals;
-
   //Remember the sequence of LayoutWidgetBase widgets, so we can iterate over them later:
   typedef std::list< LayoutWidgetBase* > type_list_layoutwidgets;
   type_list_layoutwidgets m_list_layoutwidgets;
@@ -210,11 +204,10 @@ protected:
   void add_layout_group_at_position(const sharedptr<LayoutGroup>& group, const type_list_layoutwidgets::iterator& add_before);
   void add_layout_notebook_at_position(const sharedptr<LayoutItem_Notebook>& notebook, const type_list_layoutwidgets::iterator& add_before);
   void add_layout_related_at_position(const sharedptr<LayoutItem_Portal>& portal, const type_list_layoutwidgets::iterator& add_before);
-  void add_layout_related_calendar_at_position(const sharedptr<LayoutItem_CalendarPortal>& portal, const type_list_layoutwidgets::iterator& add_before);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual void on_dnd_add_placeholder(LayoutWidgetBase* above);
-  virtual void on_dnd_remove_placeholder();
+	virtual void on_dnd_add_placeholder(LayoutWidgetBase* above);
+	virtual void on_dnd_remove_placeholder();
     
   // Methods for the different layout object
   virtual void on_dnd_add_layout_item_field (LayoutWidgetBase* above);
@@ -234,7 +227,6 @@ protected:
   sharedptr<LayoutItem_Portal> get_layout_item_from_relation();
   
   Box_Data_List_Related* create_related(const sharedptr<LayoutItem_Portal>& portal, bool show_title = true);
-  Box_Data_Calendar_Related* create_related_calendar(const sharedptr<LayoutItem_CalendarPortal>& portal, bool show_title = true);
 
   Gtk::Alignment* m_placeholder;
   
