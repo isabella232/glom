@@ -1,3 +1,10 @@
+2008-04-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/glom.glade:
+	* glom/glom_developer.glade: Moved dialog_data_invalid_format to the 
+	non-developer .glade file, where the code expects it to be, preventing 
+	a crash.
+
 2008-04-17  Claude Paroz  <claude@2xlibre.net>
 
 	* glom/glom.glade:
