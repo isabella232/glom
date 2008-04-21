@@ -120,7 +120,11 @@ void FlowTableWithFields::add_layout_item_at_position(const sharedptr<LayoutItem
     sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::cast_dynamic(item);
     if(portal)
     {
-      add_layout_related_at_position(portal, add_before);
+      sharedptr<LayoutItem_CalendarPortal> calendar_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(portal);
+      if(calendar_portal)
+        add_layout_related_calendar_at_position(calendar_portal, add_before);
+      else
+        add_layout_related_at_position(portal, add_before);
     }
     else
     {
@@ -272,9 +276,52 @@ Box_Data_List_Related* FlowTableWithFields::create_related(const sharedptr<Layou
   return 0;
 }
 
+Box_Data_Calendar_Related* FlowTableWithFields::create_related_calendar(const sharedptr<LayoutItem_CalendarPortal>& portal, bool show_title)
+{
+  if(!portal)
+    return 0;
+
+  Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
+  if(pDocument)
+  {
+    sharedptr<Relationship> relationship = pDocument->get_relationship(m_table_name, portal->get_relationship_name());
+    if(relationship)
+    {
+      Box_Data_Calendar_Related* portal_box = Gtk::manage(new Box_Data_Calendar_Related);
+      add_view(portal_box); //Give it access to the document, needed to get the layout and fields information.
+
+      portal_box->init_db_details(portal, show_title); //Create the layout
+
+      portal_box->set_layout_item(portal, relationship->get_to_table());
+      portal_box->show();
+
+      m_portals.push_back(portal_box);
+
+      //Connect signals:
+      portal_box->signal_record_changed().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_portal_record_changed) );
+
+      portal_box->signal_user_requested_details().connect( sigc::bind( sigc::mem_fun(*this, &FlowTableWithFields::on_portal_user_requested_details), portal_box));
+
+      return portal_box;
+    }
+  }
+
+  return 0;
+}
+
 void FlowTableWithFields::add_layout_related_at_position(const sharedptr<LayoutItem_Portal>& portal, const type_list_layoutwidgets::iterator& add_before)
 {
   Box_Data_List_Related* portal_box = create_related(portal);
+  if(portal_box)
+  {
+    add(*portal_box, true /* expand */);
+    add_layoutwidgetbase(portal_box, add_before);
+  }
+}
+
+void FlowTableWithFields::add_layout_related_calendar_at_position(const sharedptr<LayoutItem_CalendarPortal>& portal, const type_list_layoutwidgets::iterator& add_before)
+{
+  Box_Data_Calendar_Related* portal_box = create_related_calendar(portal);
   if(portal_box)
   {
     add(*portal_box, true /* expand */);
@@ -745,13 +792,20 @@ FlowTableWithFields::type_list_widgets FlowTableWithFields::get_portals(const sh
    for(type_portals::const_iterator iter = m_portals.begin(); iter != m_portals.end(); ++iter)
   {
     //*iter is a FlowTableItem.
-    Box_Data_List_Related* pPortalUI = *iter;
+    Box_Data_Portal* pPortalUI = *iter;
     if(pPortalUI)
     {
       sharedptr<LayoutItem_Portal> portal = pPortalUI->get_portal();
-      sharedptr<Relationship> relationship = portal->get_relationship(); //In this case, we only care about the first relationship (not any child relationships), because that's what would trigger a change.
-      if(relationship && (relationship->get_from_field() == from_key_name))
-        result.push_back(pPortalUI);
+      if(portal)
+      {
+        sharedptr<Relationship> relationship = portal->get_relationship(); //In this case, we only care about the first relationship (not any child relationships), because that's what would trigger a change.
+        if(relationship && (relationship->get_from_field() == from_key_name))
+          result.push_back(pPortalUI);
+      }
+      else
+      {
+        std::cerr << "FlowTableWithFields::get_portals(): get_portal() returned NULL." << std::endl;
+      }
     }
   }
 
@@ -868,7 +922,7 @@ void FlowTableWithFields::remove_all()
 
   for(type_portals::iterator iter = m_portals.begin(); iter != m_portals.end(); ++iter)
   {
-    Box_Data_List_Related* pPortal = *iter;
+    Box_Data_Portal* pPortal = *iter;
     remove_view(pPortal);
     remove(*pPortal);
     delete pPortal;
@@ -1115,7 +1169,7 @@ void FlowTableWithFields::on_flowtable_related_record_changed(const Glib::ustrin
   signal_related_record_changed().emit(relationship_name);
 }
 
-void FlowTableWithFields::on_portal_user_requested_details(Gnome::Gda::Value primary_key_value, Box_Data_List_Related* portal_box)
+void FlowTableWithFields::on_portal_user_requested_details(Gnome::Gda::Value primary_key_value, Box_Data_Portal* portal_box)
 {
   sharedptr<const LayoutItem_Portal> portal = portal_box->get_portal();
   if(!portal)
@@ -1140,6 +1194,7 @@ void FlowTableWithFields::on_portal_user_requested_details(Gnome::Gda::Value pri
     signal_requested_related_details().emit(related_table, primary_key_value);
   }
 }
+
 
 void FlowTableWithFields::on_flowtable_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value)
 {

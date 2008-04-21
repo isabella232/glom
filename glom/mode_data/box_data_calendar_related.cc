@@ -18,8 +18,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "box_data_list_related.h"
-#include "dialog_layout_list_related.h"
+#include "box_data_calendar_related.h"
+#include "dialog_layout_calendar_related.h"
+#include <glom/application.h>
 #include <glom/libglom/data_structure/glomconversions.h>
 #include <glom/frame_glom.h> //For show_ok_dialog()
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
@@ -28,37 +29,32 @@
 namespace Glom
 {
 
-Box_Data_List_Related::Box_Data_List_Related()
+Box_Data_Calendar_Related::Box_Data_Calendar_Related()
+: m_pMenuPopup(0)
 {
   set_size_request(400, -1); //An arbitrary default.
 
-  //m_Frame.set_label_widget(m_Label_Related);
-  m_Frame.set_shadow_type(Gtk::SHADOW_NONE);
+  remove(m_AddDel); //TODO: Don't even have this at all.
+  m_Alignment.add(m_calendar);
+  m_calendar.show();
+  
+  //Tell the calendar how to get the record details to show:
+  m_calendar.set_detail_func( sigc::mem_fun(*this, &Box_Data_Calendar_Related::on_calendar_details) );
+  
+  setup_menu();
+  //m_calendar.add_events(Gdk::BUTTON_PRESS_MASK); //Allow us to catch button_press_event and button_release_event
+  m_calendar.signal_button_press_event().connect_notify( sigc::mem_fun(*this, &Box_Data_Calendar_Related::on_calendar_button_press_event) );
 
-  m_Frame.add(m_Alignment);
-  m_Frame.show();
-
-  m_Frame.set_label_widget(m_Label);
-  m_Label.show();
-
-  m_Alignment.set_padding(Utils::DEFAULT_SPACING_SMALL /* top */, 0, Utils::DEFAULT_SPACING_LARGE /* left */, 0);
-  m_Alignment.show();
-
-  remove(m_AddDel);
-  m_Alignment.add(m_AddDel);
-  m_AddDel.show();
-  add(m_Frame);
-
-  m_layout_name = "list_related"; //TODO: We need a unique name when 2 portals use the same table.
+  m_layout_name = "list_related_calendar"; //TODO: We need a unique name when 2 portals use the same table.
 }
 
-void Box_Data_List_Related::enable_buttons()
+void Box_Data_Calendar_Related::enable_buttons()
 {
-  const bool view_details_possible = get_has_suitable_record_to_view_details();
-  m_AddDel.set_allow_view_details(view_details_possible); //Don't allow the user to go to a record in a hidden table.
+  //const bool view_details_possible = get_has_suitable_record_to_view_details();
+  //m_calendar.set_allow_view_details(view_details_possible); //Don't allow the user to go to a record in a hidden table.
 }
 
-bool Box_Data_List_Related::init_db_details(const sharedptr<const LayoutItem_Portal>& portal, bool show_title)
+bool Box_Data_Calendar_Related::init_db_details(const sharedptr<const LayoutItem_CalendarPortal>& portal, bool show_title)
 {
   m_portal = glom_sharedptr_clone(portal);
 
@@ -91,10 +87,20 @@ bool Box_Data_List_Related::init_db_details(const sharedptr<const LayoutItem_Por
   return Box_Data_List::init_db_details(found_set); //Calls create_layout() and fill_from_database().
 }
 
-bool Box_Data_List_Related::refresh_data_from_database_with_foreign_key(const Gnome::Gda::Value& foreign_key_value)
+bool Box_Data_Calendar_Related::refresh_data_from_database_with_foreign_key(const Gnome::Gda::Value& foreign_key_value)
 {
+  std::cout << "DEBUG: Box_Data_Calendar_Related::refresh_data_from_database_with_foreign_key()" << std::endl;
+  
+  
   m_key_value = foreign_key_value;
 
+  if(!m_key_field)
+    std::cout << "DEBUG: Box_Data_Calendar_Related::refresh_data_from_database_with_foreign_key(): m_key_field is NULL" << std::endl;
+  
+  if(Conversions::value_is_empty(m_key_value))
+    std::cout << "DEBUG: Box_Data_Calendar_Related::refresh_data_from_database_with_foreign_key(): m_key_value is empty." << std::endl;
+  
+  
   if(m_key_field)
   {
     if(!Conversions::value_is_empty(m_key_value))
@@ -108,8 +114,7 @@ bool Box_Data_List_Related::refresh_data_from_database_with_foreign_key(const Gn
       Glib::ustring where_clause_to_table_name = relationship->get_to_table();
       sharedptr<Field> where_clause_to_key_field = m_key_field;
 
-      FoundSet found_set = m_found_set;
-      found_set.m_table_name = m_portal->get_table_used(Glib::ustring() /* parent table - not relevant */);
+      m_found_set.m_table_name = m_portal->get_table_used(Glib::ustring() /* parent table - not relevant */);
       
       sharedptr<const Relationship> relationship_related = m_portal->get_related_relationship();
       if(relationship_related)
@@ -118,44 +123,42 @@ bool Box_Data_List_Related::refresh_data_from_database_with_foreign_key(const Gn
          sharedptr<UsesRelationship> uses_rel_temp = sharedptr<UsesRelationship>::create();
          uses_rel_temp->set_relationship(relationship);
          //found_set.m_extra_join = uses_rel_temp->get_sql_join_alias_definition();
-         found_set.m_extra_join = "LEFT OUTER JOIN \"" + relationship->get_to_table() + "\" AS \"" + uses_rel_temp->get_sql_join_alias_name() + "\" ON (\"" + uses_rel_temp->get_sql_join_alias_name() + "\".\"" + relationship_related->get_from_field() + "\" = \"" + relationship_related->get_to_table() + "\".\"" + relationship_related->get_to_field() + "\")";
+         m_found_set.m_extra_join = "LEFT OUTER JOIN \"" + relationship->get_to_table() + "\" AS \"" + uses_rel_temp->get_sql_join_alias_name() + "\" ON (\"" + uses_rel_temp->get_sql_join_alias_name() + "\".\"" + relationship_related->get_from_field() + "\" = \"" + relationship_related->get_to_table() + "\".\"" + relationship_related->get_to_field() + "\")";
 
          //Add an extra GROUP BY to ensure that we get no repeated records from the doubly-related table:
-         found_set.m_extra_group_by = "GROUP BY \"" + found_set.m_table_name + "\".\"" + m_key_field->get_name() + "\"";
+         m_found_set.m_extra_group_by = "GROUP BY \"" + m_found_set.m_table_name + "\".\"" + m_key_field->get_name() + "\"";
 
          //Adjust the WHERE clause appropriately for the extra JOIN:
          where_clause_to_table_name = uses_rel_temp->get_sql_join_alias_name();
 
-         Glib::ustring to_field_name = uses_rel_temp->get_to_field_used();
+         const Glib::ustring to_field_name = uses_rel_temp->get_to_field_used();
          where_clause_to_key_field = get_fields_for_table_one_field(relationship->get_to_table(), to_field_name);
          //std::cout << "extra_join=" << found_set.m_extra_join << std::endl;
  
          //std::cout << "extra_join where_clause_to_key_field=" << where_clause_to_key_field->get_name() << std::endl;
       }
 
-      found_set.m_where_clause = "\"" + where_clause_to_table_name + "\".\"" + relationship->get_to_field() + "\" = " + where_clause_to_key_field->sql(m_key_value);
-
-
-      //g_warning("refresh_data_from_database(): where_clause=%s", where_clause.c_str());
-      return Box_Data_List::refresh_data_from_database_with_where_clause(found_set);
+      m_found_set.m_where_clause = "\"" + where_clause_to_table_name + "\".\"" + relationship->get_to_field() + "\" = " + where_clause_to_key_field->sql(m_key_value);
+      return true;
     }
     else
     {
       //If there is no from key value then no records can be shown:
-      refresh_data_from_database_blank();
+      //TODO
       return true;
     }
   }
   else
   {
     //If there is no to field then this relationship specifies all records in the table.
-    FoundSet found_set = m_found_set;
-    found_set.m_where_clause = Glib::ustring();
-    return Box_Data_List::refresh_data_from_database_with_where_clause(found_set);
+    m_found_set.m_where_clause = Glib::ustring();
+    return true;
   }
+  
+  //The actual data is retrieved in the detail_func handler.
 }
 
-bool Box_Data_List_Related::fill_from_database()
+bool Box_Data_Calendar_Related::fill_from_database()
 {
   bool result = false;
   bool allow_add = true;
@@ -192,12 +195,12 @@ bool Box_Data_List_Related::fill_from_database()
   if(allow_add && m_portal->get_relationship())
     allow_add = m_portal->get_relationship()->get_auto_create();
 
-  m_AddDel.set_allow_add(allow_add);
+  //TODO: m_calendar.set_allow_add(allow_add);
 
   return result;
 }
 
-void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row)
+void Box_Data_Calendar_Related::on_record_added(const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row)
 {
   //primary_key_value is a new autogenerated or human-entered key for the row.
   //It has already been added to the database.
@@ -212,7 +215,7 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
     //m_key_field is the field in this table that must match another field in the parent table.
     sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
     layout_item->set_full_field_details(m_key_field);
-    key_value = m_AddDel.get_value(row, layout_item);
+    //TODO: key_value = m_calendar.get_value(row, layout_item);
   }
 
   Box_Data_List::on_record_added(key_value, row); //adds blank row.
@@ -227,11 +230,11 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
   }
   else if(Conversions::value_is_empty(m_key_value))
   {
-    g_warning("Box_Data_List_Related::on_record_added(): m_key_value is NULL.");
+    g_warning("Box_Data_Calendar_Related::on_record_added(): m_key_value is NULL.");
   }
   else
   {
-    sharedptr<Field> field_primary_key = m_AddDel.get_key_field();
+    sharedptr<Field> field_primary_key; //TODO: = m_calendar.get_key_field();
 
     //Create the link by setting the foreign key
     if(m_key_field)
@@ -246,7 +249,7 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
         sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
         layout_item->set_full_field_details(field_primary_key);
 
-        m_AddDel.set_value(row, layout_item, m_key_value);
+        //TODO: m_calendar.set_value(row, layout_item, m_key_value);
       }
     }
 
@@ -254,77 +257,13 @@ void Box_Data_List_Related::on_record_added(const Gnome::Gda::Value& primary_key
   }
 }
 
-sharedptr<LayoutItem_Portal> Box_Data_List_Related::get_portal() const
-{
-  return m_portal;
-}
-
-sharedptr<const Field> Box_Data_List_Related::get_key_field() const
-{
-  return m_key_field;
-}
-
-void Box_Data_List_Related::on_record_deleted(const Gnome::Gda::Value& /* primary_key_value */)
+void Box_Data_Calendar_Related::on_record_deleted(const Gnome::Gda::Value& /* primary_key_value */)
 {
   //Allow the parent record (Details view) to recalculate aggregations:
   signal_record_changed().emit(m_portal->get_relationship_name());
 }
 
-
-void Box_Data_List_Related::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col)
-{
-  if(!(m_portal->get_relationship_used_allows_edit()))
-  {
-    std::cerr << "Box_Data_List_Related::on_adddel_user_added() called on non-editable portal. This should not happen." << std::endl;
-   return;
-  }
-
-  //Call base class:
-  Box_Data_List::on_adddel_user_changed(row, col);
-
-  //Let parent respond:
-  if(row)
-    signal_record_changed().emit(m_portal->get_relationship_name());
-}
-
-void Box_Data_List_Related::on_adddel_user_added(const Gtk::TreeModel::iterator& row, guint col_with_first_value)
-{
-  if(!m_portal->get_relationship_used_allows_edit())
-  {
-    std::cerr << "Box_Data_List_Related::on_adddel_user_added() called on non-editable portal. This should not happen." << std::endl;
-   return;
-  }
-
-  //Like Box_Data_List::on_adddel_user_added(),
-  //but it doesn't allow adding if the new record cannot be a related record.
-  //This would happen if there is already one related record and the relationship uses the primary key in the related record.
-
-  bool bAllowAdd = true;
-
-  if(m_key_field && (m_key_field->get_unique_key() || m_key_field->get_primary_key()))
-  {
-    if(m_AddDel.get_count() > 0) //If there is already 1 record
-      bAllowAdd = false;
-  }
-
-  if(bAllowAdd)
-  {
-    Box_Data_List::on_adddel_user_added(row, col_with_first_value);
-  }
-  else
-  {
-    //Tell user that they can't do that:
-    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Extra related records not possible.")), true, Gtk::MESSAGE_WARNING);
-    dialog.set_secondary_text(_("You attempted to add a new related record, but there can only be one related record, because the relationship uses a unique key.")),
-    dialog.set_transient_for(*get_app_window());
-    dialog.run();
-
-    //Replace with correct values:
-    fill_from_database();
-  }
-}
-
-Box_Data_List_Related::type_vecLayoutFields Box_Data_List_Related::get_fields_to_show() const
+Box_Data_Calendar_Related::type_vecLayoutFields Box_Data_Calendar_Related::get_fields_to_show() const
 {
   const Document_Glom* document = get_document();
   if(document)
@@ -355,45 +294,34 @@ Box_Data_List_Related::type_vecLayoutFields Box_Data_List_Related::get_fields_to
   return type_vecLayoutFields();
 }
 
-Box_Data_List_Related::type_signal_record_changed Box_Data_List_Related::signal_record_changed()
-{
-  return m_signal_record_changed;
-}
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void Box_Data_List_Related::on_dialog_layout_hide()
+void Box_Data_Calendar_Related::on_dialog_layout_hide()
 {
-  Dialog_Layout_List_Related* dialog_related = dynamic_cast<Dialog_Layout_List_Related*>(m_pDialogLayout);
+  Dialog_Layout_Calendar_Related* dialog_related = dynamic_cast<Dialog_Layout_Calendar_Related*>(m_pDialogLayout);
   g_assert(dialog_related != NULL);
   m_portal = dialog_related->get_portal_layout();
 
 
   //Update the UI:
-  init_db_details(m_portal); 
+  sharedptr<LayoutItem_CalendarPortal> derived_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(m_portal);
+  init_db_details(derived_portal); 
 
   Box_Data::on_dialog_layout_hide();
 
-  sharedptr<LayoutItem_Portal> pLayoutItem = sharedptr<LayoutItem_Portal>::cast_dynamic(get_layout_item());
+  sharedptr<LayoutItem_CalendarPortal> pLayoutItem = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(get_layout_item());
   if(pLayoutItem)
   {
-    *pLayoutItem = *m_portal;
+    sharedptr<LayoutItem_CalendarPortal> derived_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(m_portal);
+    if(derived_portal)
+      *pLayoutItem = *derived_portal;
+    
     signal_layout_changed().emit(); //TODO: Check whether it has really changed.
   }
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-void Box_Data_List_Related::on_adddel_user_requested_add()
-{
-  //Prevent an add on a portal with no fields:
-  //TODO: Warn the user instead of just doing nothing.
-  if(!m_portal->m_list_items.empty())
-    Box_Data_List::on_adddel_user_requested_add();
-}
 
-
-
-
-bool Box_Data_List_Related::get_has_suitable_record_to_view_details() const
+bool Box_Data_Calendar_Related::get_has_suitable_record_to_view_details() const
 {
   Glib::ustring navigation_table_name;
   sharedptr<const UsesRelationship> navigation_relationship;
@@ -402,7 +330,7 @@ bool Box_Data_List_Related::get_has_suitable_record_to_view_details() const
   return !(navigation_table_name.empty());
 }
 
-void Box_Data_List_Related::get_suitable_table_to_view_details(Glib::ustring& table_name, sharedptr<const UsesRelationship>& relationship) const
+void Box_Data_Calendar_Related::get_suitable_table_to_view_details(Glib::ustring& table_name, sharedptr<const UsesRelationship>& relationship) const
 {
  
   //Initialize output parameters:
@@ -442,13 +370,13 @@ void Box_Data_List_Related::get_suitable_table_to_view_details(Glib::ustring& ta
 
   if(navigation_table_name.empty())
   {
-    std::cerr << "Box_Data_List_Related::get_suitable_table_to_view_details(): navigation_table_name is empty." << std::endl;
+    std::cerr << "Box_Data_Calendar_Related::get_suitable_table_to_view_details(): navigation_table_name is empty." << std::endl;
     return;
   }
 
   if(document->get_table_is_hidden(navigation_table_name))
   {
-    std::cerr << "Box_Data_List_Related::get_suitable_table_to_view_details(): navigation_table_name indicates a hidden table: " << navigation_table_name << std::endl;
+    std::cerr << "Box_Data_Calendar_Related::get_suitable_table_to_view_details(): navigation_table_name indicates a hidden table: " << navigation_table_name << std::endl;
     return;
   }
 
@@ -456,7 +384,7 @@ void Box_Data_List_Related::get_suitable_table_to_view_details(Glib::ustring& ta
   relationship = navigation_relationship;
 }
 
-void Box_Data_List_Related::get_suitable_record_to_view_details(const Gnome::Gda::Value& primary_key_value, Glib::ustring& table_name, Gnome::Gda::Value& table_primary_key_value) const
+void Box_Data_Calendar_Related::get_suitable_record_to_view_details(const Gnome::Gda::Value& primary_key_value, Glib::ustring& table_name, Gnome::Gda::Value& table_primary_key_value) const
 {
   //Initialize output parameters:
   table_name = Glib::ustring();
@@ -487,7 +415,7 @@ void Box_Data_List_Related::get_suitable_record_to_view_details(const Gnome::Gda
   type_vecLayoutFields fieldsToGet;
   fieldsToGet.push_back(layout_item);
 
-  const Glib::ustring query = Utils::build_sql_select_with_key(m_portal->get_table_used(Glib::ustring() /* not relevant */), fieldsToGet, m_AddDel.get_key_field(), primary_key_value);
+  const Glib::ustring query; //TODO: = Utils::build_sql_select_with_key(m_portal->get_table_used(Glib::ustring() /* not relevant */), fieldsToGet, m_calendar.get_key_field(), primary_key_value);
   Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(query);
 
 
@@ -498,20 +426,20 @@ void Box_Data_List_Related::get_suitable_record_to_view_details(const Gnome::Gda
     table_name = navigation_table_name;
     table_primary_key_value = data_model->get_value_at(0, 0);
 
-    //std::cout << "Box_Data_List_Related::get_suitable_record_to_view_details(): table_primary_key_value=" << table_primary_key_value.to_string() << std::endl;
+    //std::cout << "Box_Data_Calendar_Related::get_suitable_record_to_view_details(): table_primary_key_value=" << table_primary_key_value.to_string() << std::endl;
 
     //The value is empty when there there is no record to match the key in the related table:
     //For instance, if an invoice lines record mentions a product id, but the product does not exist in the products table.
     if(Conversions::value_is_empty(table_primary_key_value))
     {
       value_found = false;
-      std::cout << "debug: Box_Data_List_Related::get_suitable_record_to_view_details(): SQL query returned empty primary key." << std::endl;
+      std::cout << "debug: Box_Data_Calendar_Related::get_suitable_record_to_view_details(): SQL query returned empty primary key." << std::endl;
     }
   }
   else
   {
     value_found = false;
-    std::cout << "debug: Box_Data_List_Related::get_suitable_record_to_view_details(): SQL query returned no suitable primary key." << std::endl;
+    std::cout << "debug: Box_Data_Calendar_Related::get_suitable_record_to_view_details(): SQL query returned no suitable primary key." << std::endl;
   }
 
   if(!value_found)
@@ -526,7 +454,7 @@ void Box_Data_List_Related::get_suitable_record_to_view_details(const Gnome::Gda
   }
 }
 
-Document_Glom::type_list_layout_groups Box_Data_List_Related::create_layout_get_layout()
+Document_Glom::type_list_layout_groups Box_Data_Calendar_Related::create_layout_get_layout()
 {
   Document_Glom::type_list_layout_groups result;
 
@@ -536,27 +464,237 @@ Document_Glom::type_list_layout_groups Box_Data_List_Related::create_layout_get_
   return result;
 }
 
-Dialog_Layout* Box_Data_List_Related::create_layout_dialog() const
+Dialog_Layout* Box_Data_Calendar_Related::create_layout_dialog() const
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_data_layout");
   if(refXml)
   {
-    Dialog_Layout_List_Related* dialog = 0;
+    Dialog_Layout_Calendar_Related* dialog = 0;
     refXml->get_widget_derived("window_data_layout", dialog);
     return dialog;
+  }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+
+  return NULL;
+}
+
+void Box_Data_Calendar_Related::prepare_layout_dialog(Dialog_Layout* dialog)
+{
+  Dialog_Layout_Calendar_Related* related_dialog = dynamic_cast<Dialog_Layout_Calendar_Related*>(dialog);
+  g_assert(related_dialog != NULL);
+  
+  sharedptr<LayoutItem_CalendarPortal> derived_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(m_portal);
+  related_dialog->set_document(m_layout_name, get_document(), derived_portal);
+}
+
+Glib::ustring Box_Data_Calendar_Related::on_calendar_details(guint year, guint month, guint day)
+{
+  sharedptr<LayoutItem_CalendarPortal> derived_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(m_portal);
+    
+  
+  if(!derived_portal || !derived_portal->get_date_field())
+  {
+    std::cout << "DEBUG: Box_Data_Calendar_Related::on_calendar_details(): date_field is NULL" << std::endl;
+    return Glib::ustring();
+  }
+  
+  Glib::Date date(day, Glib::Date::Month(month+1), year);
+  Gnome::Gda::Value date_value(date);
+
+  sharedptr<Relationship> relationship = m_portal->get_relationship();
+  Glib::ustring where_clause_to_table_name = relationship->get_to_table();
+  
+  const Glib::ustring date_field_name = derived_portal->get_date_field()->get_name();
+    
+  sharedptr<const Relationship> relationship_related = m_portal->get_related_relationship();
+  if(relationship_related)
+  {
+    //Adjust the WHERE clause appropriately for the extra JOIN:
+    sharedptr<UsesRelationship> uses_rel_temp = sharedptr<UsesRelationship>::create();
+    uses_rel_temp->set_relationship(relationship);
+    where_clause_to_table_name = uses_rel_temp->get_sql_join_alias_name();
+  }
+
+  //Add an AND to the existing where clause, to get only records with this date, if any:
+  const Glib::ustring extra_where_clause = "\"" + where_clause_to_table_name + "\".\"" + derived_portal->get_date_field()->get_name() + "\" = " + derived_portal->get_date_field()->sql(date_value);
+  Glib::ustring where_clause;
+  if(m_found_set.m_where_clause.empty())
+    where_clause = extra_where_clause;
+  else
+    where_clause = "( " + m_found_set.m_where_clause + " ) AND ( " + extra_where_clause + " )";
+  
+  const Glib::ustring sql_query = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_FieldsShown, where_clause, m_found_set.m_extra_join, m_found_set.m_sort_clause, m_found_set.m_extra_group_by);
+  //std::cout << "DEBUG: sql_query=" << sql_query << std::endl;
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query, get_app_window());
+  if(!(datamodel && datamodel->get_n_rows()))
+    return Glib::ustring();
+ 
+  //Execute the query to get the data:
+  Glib::ustring result;
+  const int row_index = 0;
+  int column_index = 0;
+  for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
+  {
+    sharedptr<LayoutItem> layout_item = *iter;
+    
+    Glib::ustring text;
+    
+    //Text for a text item:
+    sharedptr<LayoutItem_Text> layout_item_text = sharedptr<LayoutItem_Text>::cast_dynamic(layout_item);
+    if(layout_item_text)
+      text = layout_item_text->get_text();
+    else
+    {  
+      //Text for a field:
+      sharedptr<LayoutItem_Field> layout_item_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
+      if(layout_item_field)
+      {
+        const Gnome::Gda::Value value = datamodel->get_value_at(row_index, column_index);
+        text = Conversions::get_text_for_gda_value(layout_item_field->get_glom_type(), value, layout_item_field->get_formatting_used().m_numeric_format);
+        std::cout << "  DEBUG: text=" << text << std::endl;
+        ++column_index;
+      }
+    }
+    
+    if(!text.empty())
+    {
+      if(!result.empty())
+          result += ", "; //TODO: Internationalization?
+      
+      result += text;
     }
   }
   
-  return NULL;
+  return result;
+}
+
+void Box_Data_Calendar_Related::setup_menu()
+{
+  m_refActionGroup = Gtk::ActionGroup::create();
+
+  m_refActionGroup->add(Gtk::Action::create("ContextMenu", "Context Menu") );
+
+  m_refContextEdit =  Gtk::Action::create("ContextEdit", Gtk::Stock::EDIT);
+
+  m_refActionGroup->add(m_refContextEdit,
+    sigc::mem_fun(*this, &Box_Data_Calendar_Related::on_MenuPopup_activate_Edit) );
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  // Don't add ContextLayout in client only mode because it would never
+  // be sensitive anyway
+  m_refContextLayout =  Gtk::Action::create("ContextLayout", _("Layout"));
+  m_refActionGroup->add(m_refContextLayout,
+    sigc::mem_fun(*this, &Box_Data_Calendar_Related::on_MenuPopup_activate_layout) );
+
+  //TODO: This does not work until this widget is in a container in the window:
+  App_Glom* pApp = get_application();
+  if(pApp)
+  {
+    pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
+    pApp->update_userlevel_ui(); //Update our action's sensitivity. 
+  }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+
+  m_refUIManager = Gtk::UIManager::create();
+
+  m_refUIManager->insert_action_group(m_refActionGroup);
+
+  //TODO: add_accel_group(m_refUIManager->get_accel_group());
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+#endif
+    Glib::ustring ui_info = 
+        "<ui>"
+        "  <popup name='ContextMenu'>"
+        "    <menuitem action='ContextEdit'/>"
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+        "    <menuitem action='ContextLayout'/>"
+#endif
+        "  </popup>"
+        "</ui>";
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    m_refUIManager->add_ui_from_string(ui_info);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << "building menus failed: " <<  ex.what();
+  }
+#else
+  std::auto_ptr<Glib::Error> error;
+  m_refUIManager->add_ui_from_string(ui_info, error);
+  if(error.get() != NULL)
+  {
+    std::cerr << "building menus failed: " << error->what();
+  }
+#endif //GLIBMM_EXCEPTIONS_ENABLED
+
+  //Get the menu:
+  m_pMenuPopup = dynamic_cast<Gtk::Menu*>( m_refUIManager->get_widget("/ContextMenu") ); 
+  if(!m_pMenuPopup)
+    g_warning("menu not found");
+
+ 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  if(pApp)
+    m_refContextLayout->set_sensitive(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
-void prepare_layout_dialog(Dialog_Layout* dialog)
+void Box_Data_Calendar_Related::on_calendar_button_press_event(GdkEventButton *event)
 {
-  Dialog_Layout_List_Related* related_dialog = dynamic_cast<Dialog_Layout_List_Related*>(dialog);
-  g_assert(related_dialog != NULL);
-  related_dialog->set_document(m_layout_name, get_document(), m_portal);
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  //Enable/Disable items.
+  //We did this earlier, but get_application is more likely to work now:
+  App_Glom* pApp = get_application();
+  if(pApp)
+  {
+    pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
+    pApp->update_userlevel_ui(); //Update our action's sensitivity. 
+  }
+#endif
+
+  GdkModifierType mods;
+  gdk_window_get_pointer( Gtk::Widget::gobj()->window, 0, 0, &mods );
+  if(mods & GDK_BUTTON3_MASK)
+  {
+    //Give user choices of actions on this item:
+    m_pMenuPopup->popup(event->button, event->time);
+    return; //handled.
+  }
+  else
+  {
+    if(event->type == GDK_2BUTTON_PRESS)
+    {
+      //Double-click means edit.
+      //Don't do this usually, because users sometimes double-click by accident when they just want to edit a cell.
+
+      //TODO: If the cell is not editable, handle the double-click as an edit/selection.
+      //on_MenuPopup_activate_Edit();
+      return; //Not handled.
+    }
+  }
+
+  return; //Not handled. TODO: Call base class?
 }
+
+void
+Box_Data_Calendar_Related::on_MenuPopup_activate_Edit()
+{
+  const Gnome::Gda::Value primary_key_value; //TODO: = m_AddDel.get_value_key(row); //The primary key is in the key.
+
+  signal_user_requested_details().emit(primary_key_value);
+}
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+void Box_Data_Calendar_Related::on_MenuPopup_activate_layout()
+{
+  show_layout_dialog();
+}
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+
 
 } //namespace Glom

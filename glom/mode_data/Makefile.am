@@ -11,6 +11,8 @@ libmode_data_a_SOURCES = box_data.cc box_data.h \
                          box_data_details.cc box_data_details.h \
                          box_data_list_related.cc box_data_list_related.h \
                          box_data_list.cc box_data_list.h \
+                         box_data_calendar_related.cc box_data_calendar_related.h \
+                         box_data_portal.cc box_data_portal.h \
                          notebook_data.cc notebook_data.h \
                          dialog_layout.cc dialog_layout.h \
                          dialog_choose_field.cc dialog_choose_field.h \
@@ -21,6 +23,7 @@ libmode_data_a_SOURCES = box_data.cc box_data.h \
 if !GLOM_ENABLE_CLIENT_ONLY
 libmode_data_a_SOURCES += dialog_layout_list.cc dialog_layout_list.h \
                           dialog_layout_details.cc dialog_layout_details.h \
+                          dialog_layout_calendar_related.cc dialog_layout_calendar_related.h \
                           dialog_layout_list_related.cc dialog_layout_list_related.h \
                           treestore_layout.cc treestore_layout.h
 endif

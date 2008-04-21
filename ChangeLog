@@ -1,5 +1,47 @@
 2008-04-21  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/Makefile.am:
+	* glom/combobox_fields.h 
+	* glom/combobox_fields.cc: Added set_fields() that takes a field type to 
+	reduce the list.
+	* glom/glom_developer.glade: window_data_layout(): Added a Add Related 
+	Calendar button and added a Date section, which is hidden for the 
+	existing layout dialogs.
+	* glom/libglom/data_structure/layout/Makefile.am:
+	Added layoutitem_calendarportal.[h|cc]
+	* glom/libglom/document/document_glom.cc
+	  load_after_layout_group(), Glom.save_before_layout_group(): Handle 
+	LayoutItem_CalendarPortal items.
+
+	* glom/mode_data/Makefile.am:
+	* glom/mode_data/box_data_portal.cc
+	* glom/mode_data/box_data_portal.h: Added this new base class for 
+	related records widgets, using LayoutItem_Portal as the base class for 
+	their layout data.
+	* glom/mode_data/box_data_list_related.cc
+	* glom/mode_data/box_data_list_related.h: Derive from Box_Data_Portal, 
+	to which some of the code has moved.
+	* glom/mode_data/box_data_calendar_related.cc
+	* glom/mode_data/box_data_calendar_related.h: Added this new portal, 
+	which shows the related records in a calendar.
+
+	* glom/mode_data/dialog_layout_calendar_related.cc
+	* glom/mode_data/dialog_layout_calendar_related.h:
+	* glom/mode_data/dialog_layout_details.h
+	* glom/mode_data/dialog_layout_details.cc:
+	Allow adding of a related calendar portal.
+
+	* glom/mode_data/dialog_layout_list.cc (Glom.Dialog_Layout_List):
+	* glom/mode_data/flowtablewithfields.cc
+	* glom/mode_data/flowtablewithfields.h: Handle Box_Data_Portal instead 
+	of just Box_Data_List_Related, and handle Box_Data_Calendar_Related 
+	specifically where necessary.
+	* glom/utility_widgets/calendar/Makefile.am: Fixed a typo.
+	* glom/utility_widgets/calendar/glomgtkcalendar.c
+	  (glom_gtk_calendar_init, glom_gtk_calendar_new): Use the correct GType.
+
+2008-04-21  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/glom.glade:
 	* glom/glom_developer.glade: Moved dialog_data_invalid_format to the 
 	non-developer .glade file, where the code expects it to be, preventing 
