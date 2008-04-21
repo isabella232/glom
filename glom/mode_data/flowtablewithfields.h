@@ -138,11 +138,13 @@ public:
   
 protected:
 
-  virtual type_list_widgets get_field(const sharedptr<const LayoutItem_Field>& field);
-  virtual type_list_const_widgets get_field(const sharedptr<const LayoutItem_Field>& field) const;
+  type_list_widgets get_field(const sharedptr<const LayoutItem_Field>& field);
+  type_list_const_widgets get_field(const sharedptr<const LayoutItem_Field>& field) const;
 
-  ///Get portals whose relationships have @a from_key as the from_key.
-  virtual type_list_widgets get_portals(const sharedptr<const LayoutItem_Field>& from_key);
+  typedef std::list< Box_Data_Portal* > type_portals;
+    
+  /// Get portals whose relationships have @a from_key as the from_key.
+  type_portals get_portals(const sharedptr<const LayoutItem_Field>& from_key);
 
   //int get_suitable_width(Field::glom_field_type field_type);
 
@@ -186,7 +188,6 @@ protected:
   typedef std::list< FlowTableWithFields* > type_sub_flow_tables;
   type_sub_flow_tables m_sub_flow_tables;
 
-  typedef std::list< Box_Data_Portal* > type_portals;
   type_portals m_portals;
 
   //Remember the sequence of LayoutWidgetBase widgets, so we can iterate over them later:
@@ -204,8 +205,7 @@ protected:
   void add_layout_item_at_position(const sharedptr<LayoutItem>& item, const type_list_layoutwidgets::iterator& add_before);
   void add_layout_group_at_position(const sharedptr<LayoutGroup>& group, const type_list_layoutwidgets::iterator& add_before);
   void add_layout_notebook_at_position(const sharedptr<LayoutItem_Notebook>& notebook, const type_list_layoutwidgets::iterator& add_before);
-  void add_layout_related_at_position(const sharedptr<LayoutItem_Portal>& portal, const type_list_layoutwidgets::iterator& add_before);
-  void add_layout_related_calendar_at_position(const sharedptr<LayoutItem_CalendarPortal>& portal, const type_list_layoutwidgets::iterator& add_before);
+  void add_layout_portal_at_position(const sharedptr<LayoutItem_Portal>& portal, const type_list_layoutwidgets::iterator& add_before);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void on_dnd_add_placeholder(LayoutWidgetBase* above);

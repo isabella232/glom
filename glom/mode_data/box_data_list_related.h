@@ -40,17 +40,6 @@ public:
    */
   virtual bool init_db_details(const sharedptr<const LayoutItem_Portal>& portal, bool show_title = true);
 
-  /**
-   * @param foreign_key_value: The value that should be found in this table.
-   * @param from_table_primary_key_value The primary key of the parent record's table, used to associate new related records.
-   */
-  virtual bool refresh_data_from_database_with_foreign_key(const Gnome::Gda::Value& foreign_key_value);
-
-  bool get_has_suitable_record_to_view_details() const;
-  void get_suitable_table_to_view_details(Glib::ustring& table_name, sharedptr<const UsesRelationship>& relationship) const;
-  void get_suitable_record_to_view_details(const Gnome::Gda::Value& primary_key_value, Glib::ustring& table_name, Gnome::Gda::Value& table_primary_key_value) const;
-
-
 protected:
   virtual bool fill_from_database(); //Override.
   virtual type_vecLayoutFields get_fields_to_show() const; //override
@@ -71,9 +60,6 @@ protected:
   virtual Dialog_Layout* create_layout_dialog() const; // override.
   virtual void prepare_layout_dialog(Dialog_Layout* dialog); // override.
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-
-protected:
-  virtual Document_Glom::type_list_layout_groups create_layout_get_layout(); //override.
 };
 
 } //namespace Glom

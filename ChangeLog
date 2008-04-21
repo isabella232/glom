@@ -1,5 +1,28 @@
 2008-04-21  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data_calendar_related.cc
+	  (Glom.on_calendar_details):
+	* glom/mode_data/box_data_calendar_related.h
+	  (Box_Data_Calendar_Related):
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/box_data_list_related.h:
+	Removed get_has_suitable_record_to_view_details(),
+        get_suitable_table_to_view_details() and 
+	get_suitable_record_to_view_details() because they are in the base 
+	Box_Data_Portal) class.
+
+	* glom/mode_data/box_data_portal.cc:
+	* glom/mode_data/box_data_portal.h: Removed unused empty 
+	create_layout_dialog() and prepare_layout_dialog
+	* glom/mode_data/flowtablewithfields.h:
+	* glom/mode_data/flowtablewithfields.cc: get_portals(): Get a list of 
+	Box_Data_Portal instead of Widget, to make this more self-documenting.
+	set_field_value(): Do not dynamic_cast to just Box_Data_List_Related, 
+	so that Box_Data_Calendar_Related is updated too, to show just the 
+	related records, instead of all.
+
+2008-04-21  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/Makefile.am:
 	* glom/combobox_fields.h 
 	* glom/combobox_fields.cc: Added set_fields() that takes a field type to 

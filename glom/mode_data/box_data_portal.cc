@@ -352,17 +352,4 @@ Document_Glom::type_list_layout_groups Box_Data_Portal::create_layout_get_layout
   return result;
 }
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-Dialog_Layout* Box_Data_Portal::create_layout_dialog() const
-{
-  //Overridden inderived classes.
-  return 0;
-}
-
-void Box_Data_Portal::prepare_layout_dialog(Dialog_Layout* dialog)
-{
-  //Overridden inderived classes.
-}
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
 } //namespace Glom

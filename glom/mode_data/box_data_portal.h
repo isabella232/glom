@@ -29,7 +29,7 @@
 namespace Glom
 {
 
-/** This is a base class for data widgets that should show multiple related records. 
+/** This is a base class for data widgets that should show multiple related records.
  */
 class Box_Data_Portal : 
   public Box_Data_List,
@@ -43,11 +43,12 @@ public:
    */
   virtual bool init_db_details(const sharedptr<const LayoutItem_Portal>& portal, bool show_title = true);
 
-  /**
+  /** Update a portal if a relevant value in its parent table has changed.
+   *
    * @param foreign_key_value: The value that should be found in this table.
    * @param from_table_primary_key_value The primary key of the parent record's table, used to associate new related records.
    */
-  virtual bool refresh_data_from_database_with_foreign_key(const Gnome::Gda::Value& foreign_key_value);
+  bool refresh_data_from_database_with_foreign_key(const Gnome::Gda::Value& foreign_key_value);
 
   virtual sharedptr<LayoutItem_Portal> get_portal() const;
   virtual sharedptr<const Field> get_key_field() const;
@@ -71,11 +72,6 @@ protected:
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void on_dialog_layout_hide(); //override.
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual Dialog_Layout* create_layout_dialog() const; // override.
-  virtual void prepare_layout_dialog(Dialog_Layout* dialog); // override.
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 protected:

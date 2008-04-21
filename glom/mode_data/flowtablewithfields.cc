@@ -120,11 +120,7 @@ void FlowTableWithFields::add_layout_item_at_position(const sharedptr<LayoutItem
     sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::cast_dynamic(item);
     if(portal)
     {
-      sharedptr<LayoutItem_CalendarPortal> calendar_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(portal);
-      if(calendar_portal)
-        add_layout_related_calendar_at_position(calendar_portal, add_before);
-      else
-        add_layout_related_at_position(portal, add_before);
+      add_layout_portal_at_position(portal, add_before);     
     }
     else
     {
@@ -309,19 +305,15 @@ Box_Data_Calendar_Related* FlowTableWithFields::create_related_calendar(const sh
   return 0;
 }
 
-void FlowTableWithFields::add_layout_related_at_position(const sharedptr<LayoutItem_Portal>& portal, const type_list_layoutwidgets::iterator& add_before)
+void FlowTableWithFields::add_layout_portal_at_position(const sharedptr<LayoutItem_Portal>& portal, const type_list_layoutwidgets::iterator& add_before)
 {
-  Box_Data_List_Related* portal_box = create_related(portal);
-  if(portal_box)
-  {
-    add(*portal_box, true /* expand */);
-    add_layoutwidgetbase(portal_box, add_before);
-  }
-}
-
-void FlowTableWithFields::add_layout_related_calendar_at_position(const sharedptr<LayoutItem_CalendarPortal>& portal, const type_list_layoutwidgets::iterator& add_before)
-{
-  Box_Data_Calendar_Related* portal_box = create_related_calendar(portal);
+  Box_Data_Portal* portal_box = 0;
+  sharedptr<LayoutItem_CalendarPortal> calendar_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(portal);
+  if(calendar_portal)
+    portal_box = create_related_calendar(calendar_portal);
+  else
+    portal_box = create_related(portal);
+  
   if(portal_box)
   {
     add(*portal_box, true /* expand */);
@@ -741,10 +733,10 @@ void FlowTableWithFields::set_field_value(const sharedptr<const LayoutItem_Field
   }
 
   //Refresh widgets which should show the related records for relationships that use this field:
-  type_list_widgets list_portals = get_portals(field /* from_key field name */);
-  for(type_list_widgets::iterator iter = list_portals.begin(); iter != list_portals.end(); ++iter)
+  type_portals list_portals = get_portals(field /* from_key field name */);
+  for(type_portals::iterator iter = list_portals.begin(); iter != list_portals.end(); ++iter)
   {
-    Box_Data_List_Related* portal = dynamic_cast<Box_Data_List_Related*>(*iter);
+    Box_Data_Portal* portal = *iter;
     if(portal)
     {
       //g_warning("FlowTableWithFields::set_field_value: foreign_key_value=%s", value.to_string().c_str());
@@ -782,9 +774,9 @@ void FlowTableWithFields::set_field_editable(const sharedptr<const LayoutItem_Fi
 }
 
 
-FlowTableWithFields::type_list_widgets FlowTableWithFields::get_portals(const sharedptr<const LayoutItem_Field>& from_key)
+FlowTableWithFields::type_portals FlowTableWithFields::get_portals(const sharedptr<const LayoutItem_Field>& from_key)
 {
-  type_list_widgets result;
+  type_portals result;
 
   const Glib::ustring from_key_name = from_key->get_name();
 
@@ -815,7 +807,7 @@ FlowTableWithFields::type_list_widgets FlowTableWithFields::get_portals(const sh
     FlowTableWithFields* subtable = *iter;
     if(subtable)
     {
-      type_list_widgets sub_list = subtable->get_portals(from_key);
+      type_portals sub_list = subtable->get_portals(from_key);
       if(!sub_list.empty())
       {
         //Add to the main result:
