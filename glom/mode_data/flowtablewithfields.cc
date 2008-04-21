@@ -120,7 +120,11 @@ void FlowTableWithFields::add_layout_item_at_position(const sharedptr<LayoutItem
     sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::cast_dynamic(item);
     if(portal)
     {
-      add_layout_related_at_position(portal, add_before);
+      sharedptr<LayoutItem_CalendarPortal> calendar_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(portal);
+      if(calendar_portal)
+        add_layout_related_calendar_at_position(calendar_portal, add_before);
+      else
+        add_layout_related_at_position(portal, add_before);
     }
     else
     {
@@ -272,9 +276,52 @@ Box_Data_List_Related* FlowTableWithFields::create_related(const sharedptr<Layou
   return 0;
 }
 
+Box_Data_Calendar_Related* FlowTableWithFields::create_related_calendar(const sharedptr<LayoutItem_CalendarPortal>& portal, bool show_title)
+{
+  if(!portal)
+    return 0;
+
+  Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
+  if(pDocument)
+  {
+    sharedptr<Relationship> relationship = pDocument->get_relationship(m_table_name, portal->get_relationship_name());
+    if(relationship)
+    {
+      Box_Data_Calendar_Related* portal_box = Gtk::manage(new Box_Data_Calendar_Related);
+      add_view(portal_box); //Give it access to the document, needed to get the layout and fields information.
+
+      portal_box->init_db_details(portal, show_title); //Create the layout
+
+      portal_box->set_layout_item(portal, relationship->get_to_table());
+      portal_box->show();
+
+      m_calendar_portals.push_back(portal_box);
+
+      //Connect signals:
+      portal_box->signal_record_changed().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_portal_record_changed) );
+
+      portal_box->signal_user_requested_details().connect( sigc::bind( sigc::mem_fun(*this, &FlowTableWithFields::on_calendar_portal_user_requested_details), portal_box));
+
+      return portal_box;
+    }
+  }
+
+  return 0;
+}
+
 void FlowTableWithFields::add_layout_related_at_position(const sharedptr<LayoutItem_Portal>& portal, const type_list_layoutwidgets::iterator& add_before)
 {
   Box_Data_List_Related* portal_box = create_related(portal);
+  if(portal_box)
+  {
+    add(*portal_box, true /* expand */);
+    add_layoutwidgetbase(portal_box, add_before);
+  }
+}
+
+void FlowTableWithFields::add_layout_related_calendar_at_position(const sharedptr<LayoutItem_CalendarPortal>& portal, const type_list_layoutwidgets::iterator& add_before)
+{
+  Box_Data_Calendar_Related* portal_box = create_related_calendar(portal);
   if(portal_box)
   {
     add(*portal_box, true /* expand */);
@@ -1118,6 +1165,32 @@ void FlowTableWithFields::on_flowtable_related_record_changed(const Glib::ustrin
 void FlowTableWithFields::on_portal_user_requested_details(Gnome::Gda::Value primary_key_value, Box_Data_List_Related* portal_box)
 {
   sharedptr<const LayoutItem_Portal> portal = portal_box->get_portal();
+  if(!portal)
+    return;
+
+  const Glib::ustring related_table = portal->get_table_used(Glib::ustring() /* parent table - not relevant */);
+  if(related_table.empty())
+    return;
+
+  if(get_document()->get_table_is_hidden(related_table))
+  {
+    //Try to find a doubly-related table that is not hidden, and open that instead:
+    Glib::ustring doubly_related_table_name;
+    Gnome::Gda::Value doubly_related_primary_key;
+    portal_box->get_suitable_record_to_view_details(primary_key_value, doubly_related_table_name, doubly_related_primary_key);
+
+    if(!(doubly_related_table_name.empty()) && !Conversions::value_is_empty(doubly_related_primary_key))
+       signal_requested_related_details().emit(doubly_related_table_name, doubly_related_primary_key);
+  }
+  else
+  {
+    signal_requested_related_details().emit(related_table, primary_key_value);
+  }
+}
+
+void FlowTableWithFields::on_calendar_portal_user_requested_details(Gnome::Gda::Value primary_key_value, Box_Data_Calendar_Related* portal_box)
+{
+  sharedptr<const LayoutItem_CalendarPortal> portal = portal_box->get_portal();
   if(!portal)
     return;
 

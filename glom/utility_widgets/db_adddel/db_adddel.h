@@ -260,6 +260,7 @@ protected:
   //Signal handlers:
   void treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, int model_column_index, int data_model_column_index);
 
+  //TODO: Remove virtuals after checking that there are no method overrides:
   virtual void on_treeview_cell_edited(const Glib::ustring& path_string, const Glib::ustring& new_text, int model_column_index, int data_model_column_index);
   virtual void on_treeview_cell_edited_bool(const Glib::ustring& path_string, int model_column_index, int data_model_column_index);
 
@@ -268,12 +269,12 @@ protected:
 
   virtual bool on_button_press_event_Popup(GdkEventButton* event);
 
-  virtual void on_MenuPopup_activate_Edit();
-  virtual void on_MenuPopup_activate_Add();
-  virtual void on_MenuPopup_activate_Delete();
+  void on_MenuPopup_activate_Edit();
+  void on_MenuPopup_activate_Add();
+  void on_MenuPopup_activate_Delete();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual void on_MenuPopup_activate_layout();
+  void on_MenuPopup_activate_layout();
 #endif
 
   virtual void on_treeview_button_press_event(GdkEventButton* event);
@@ -339,6 +340,7 @@ protected:
 
   Glib::ustring m_open_button_title; //Allow us to change "Open" to "Select".
 
+  //TODO: Avoid repeating these in so many widgets:
   Gtk::Menu* m_pMenuPopup;
   Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
   Glib::RefPtr<Gtk::UIManager> m_refUIManager;

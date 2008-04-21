@@ -717,7 +717,7 @@ glom_gtk_calendar_init (GlomGtkCalendar *calendar)
 #endif
 
   priv = calendar->priv = G_TYPE_INSTANCE_GET_PRIVATE (calendar,
-						       GTK_TYPE_CALENDAR,
+						       GLOM_GTK_TYPE_CALENDAR,
 						       GlomGtkCalendarPrivate);
 
   GTK_WIDGET_SET_FLAGS (widget, GTK_CAN_FOCUS);
@@ -3570,7 +3570,7 @@ glom_gtk_calendar_drag_data_received (GtkWidget        *widget,
 GtkWidget*
 glom_gtk_calendar_new (void)
 {
-  return g_object_new (GTK_TYPE_CALENDAR, NULL);
+  return g_object_new (GLOM_GTK_TYPE_CALENDAR, NULL);
 }
 
 /**
