@@ -1,3 +1,16 @@
+2008-04-22  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/data_structure/glomconversions.cc:
+	parse_time(): Fall back to using strptime(), in various formats, 
+	so we can parse 01:00 PM and 13:00, instead of parsing these as 
+	01:00 AM.
+
+	* Makefile.am:
+	* configure.in:
+	* regression_tests/Makefile.am:
+	* regression_tests/test_parsing_time.cc: Added a test for this time 
+	parsing.
+
 1.6.15:
 
 2008-04-16  Murray Cumming  <murrayc@murrayc.com>
