@@ -1,0 +1,89 @@
+/* Glom
+ *
+ * Copyright (C) 2001-2004 Murray Cumming
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
+#include "layoutitem_calendarportal.h"
+#include <glibmm/i18n.h>
+
+namespace Glom
+{
+
+LayoutItem_CalendarPortal::LayoutItem_CalendarPortal()
+{
+}
+
+LayoutItem_CalendarPortal::LayoutItem_CalendarPortal(const LayoutItem_CalendarPortal& src)
+: LayoutItem_Portal(src),
+  m_date_field(src.m_date_field)
+{
+}
+
+LayoutItem_CalendarPortal::~LayoutItem_CalendarPortal()
+{
+}
+
+LayoutItem* LayoutItem_CalendarPortal::clone() const
+{
+  return new LayoutItem_CalendarPortal(*this);
+}
+
+
+LayoutItem_CalendarPortal& LayoutItem_CalendarPortal::operator=(const LayoutItem_CalendarPortal& src)
+{
+  LayoutItem_Portal::operator=(src);
+  m_date_field = src.m_date_field;
+
+  return *this;
+}
+
+Glib::ustring LayoutItem_CalendarPortal::get_part_type_name() const
+{
+  return _("Calendar Portal");
+}
+
+
+void LayoutItem_CalendarPortal::change_related_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new)
+{
+  LayoutItem_Portal::change_related_field_item_name(table_name, field_name, field_name_new);
+}
+
+void LayoutItem_CalendarPortal::change_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new)
+{
+  LayoutItem_Portal::change_field_item_name(table_name, field_name, field_name_new);
+  
+  if(m_relationship && (m_relationship->get_to_table() == table_name) && (m_date_field->get_name() == field_name))
+      m_date_field->set_name(field_name_new); //Change it.
+}
+
+sharedptr<Field> LayoutItem_CalendarPortal::get_date_field()
+{
+  return m_date_field;
+}
+
+sharedptr<const Field> LayoutItem_CalendarPortal::get_date_field() const
+{
+  return m_date_field;
+}
+
+void LayoutItem_CalendarPortal::set_date_field(const sharedptr<Field>& field)
+{
+  m_date_field = field;
+}
+
+} //namespace Glom
