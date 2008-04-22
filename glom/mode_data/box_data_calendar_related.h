@@ -37,6 +37,7 @@ class Box_Data_Calendar_Related : public Box_Data_Portal
 {
 public: 
   Box_Data_Calendar_Related();
+  virtual ~Box_Data_Calendar_Related();
 
   /**
    * @param portal: The full portal details
@@ -73,6 +74,8 @@ protected:
   #ifndef GLOM_ENABLE_CLIENT_ONLY
   void on_MenuPopup_activate_layout();
   #endif
+  
+  void clear_cached_database_values();
     
 protected:
   GlomGtk::Calendar m_calendar;
@@ -86,8 +89,14 @@ protected:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   Glib::RefPtr<Gtk::Action> m_refContextLayout;
 #endif
-
-  type_signal_record_changed m_signal_record_changed;
+    
+  //The cached data for the month:
+  //For each date we have a list of rows (vectors):
+  typedef std::vector<Gnome::Gda::Value> type_vector_values;
+  typedef std::list<type_vector_values*> type_list_vectors;
+  typedef std::map<Glib::Date, type_list_vectors> type_map_values;
+  type_map_values m_map_values;
+  mutable int m_query_column_date_field;
 };
 
 } //namespace Glom

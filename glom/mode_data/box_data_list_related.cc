@@ -238,37 +238,6 @@ void Box_Data_List_Related::on_adddel_user_added(const Gtk::TreeModel::iterator&
   }
 }
 
-Box_Data_List_Related::type_vecLayoutFields Box_Data_List_Related::get_fields_to_show() const
-{
-  const Document_Glom* document = get_document();
-  if(document)
-  {
-    Document_Glom::type_list_layout_groups mapGroups;
-    mapGroups.push_back(m_portal);
-
-    sharedptr<const Relationship> relationship = m_portal->get_relationship();
-    if(relationship)
-    {
-      type_vecLayoutFields result = get_table_fields_to_show_for_sequence(m_portal->get_table_used(Glib::ustring() /* not relevant */), mapGroups);
-
-      //If the relationship does not allow editing, then mark all these fields as non-editable:
-      if(!(m_portal->get_relationship_used_allows_edit()))
-      {
-        for(type_vecLayoutFields::iterator iter = result.begin(); iter != result.end(); ++iter)
-        {
-          sharedptr<LayoutItem_Field> item = *iter;
-          if(item)
-            item->set_editable(false);
-        }
-      }
-
-      return result;
-    }
-  }
-
-  return type_vecLayoutFields();
-}
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void Box_Data_List_Related::on_dialog_layout_hide()
 {

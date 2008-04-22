@@ -42,7 +42,6 @@ public:
 
 protected:
   virtual bool fill_from_database(); //Override.
-  virtual type_vecLayoutFields get_fields_to_show() const; //override
 
   virtual void on_adddel_user_requested_add();
   virtual void on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint col);

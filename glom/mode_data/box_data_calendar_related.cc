@@ -30,13 +30,18 @@ namespace Glom
 {
 
 Box_Data_Calendar_Related::Box_Data_Calendar_Related()
-: m_pMenuPopup(0)
+: m_pMenuPopup(0),
+  m_query_column_date_field(-1)
 {
   set_size_request(400, -1); //An arbitrary default.
 
   remove(m_AddDel); //TODO: Don't even have this at all.
   m_Alignment.add(m_calendar);
   m_calendar.show();
+  
+  //m_calendar.set_show_details();
+  m_calendar.set_detail_width_chars(7);
+  m_calendar.set_detail_height_rows(2); 
   
   //Tell the calendar how to get the record details to show:
   m_calendar.set_detail_func( sigc::mem_fun(*this, &Box_Data_Calendar_Related::on_calendar_details) );
@@ -46,6 +51,11 @@ Box_Data_Calendar_Related::Box_Data_Calendar_Related()
   m_calendar.signal_button_press_event().connect_notify( sigc::mem_fun(*this, &Box_Data_Calendar_Related::on_calendar_button_press_event) );
 
   m_layout_name = "list_related_calendar"; //TODO: We need a unique name when 2 portals use the same table.
+}
+
+Box_Data_Calendar_Related::~Box_Data_Calendar_Related()
+{
+  clear_cached_database_values();
 }
 
 void Box_Data_Calendar_Related::enable_buttons()
@@ -89,8 +99,10 @@ bool Box_Data_Calendar_Related::init_db_details(const sharedptr<const LayoutItem
 
 bool Box_Data_Calendar_Related::fill_from_database()
 {
+  if(!m_portal)
+    return false;
+  
   bool result = false;
-  bool allow_add = true;
 
   if(m_key_field && m_found_set.m_where_clause.empty()) //There's a key field, but no value.
   {
@@ -104,31 +116,102 @@ bool Box_Data_Calendar_Related::fill_from_database()
   }
   else
   {
-    result = Box_Data_List::fill_from_database();
+    if(m_query_column_date_field == -1)
+      return false; //This is useless without the date in the result.
+       
+    //Create a date range from the beginning to end of the selected month:
+    Glib::Date calendar_date;
+    m_calendar.get_date(calendar_date);
+    const Glib::Date date_start(1, calendar_date.get_month(), calendar_date.get_year());
+    Glib::Date date_end = date_start;
+    date_end.add_months(1);
+    
+    Gnome::Gda::Value date_start_value(date_start);
+    Gnome::Gda::Value date_end_value(date_end);
 
-
-    //Is there already one record here?
-    if(m_has_one_or_more_records) //This was set by Box_Data_List::fill_from_database().
+    //Add a WHERE clause for this date range:
+    sharedptr<Relationship> relationship = m_portal->get_relationship();
+    Glib::ustring where_clause_to_table_name = relationship->get_to_table();
+  
+    sharedptr<LayoutItem_CalendarPortal> derived_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(m_portal);
+    const Glib::ustring date_field_name = derived_portal->get_date_field()->get_name();
+    
+    sharedptr<const Relationship> relationship_related = m_portal->get_related_relationship();
+    if(relationship_related)
     {
-      //Is the to_field unique? If so, there can not be more than one.
-      if(m_key_field && m_key_field->get_unique_key()) //automatically true if it is a primary key
-        allow_add = false;
+      //Adjust the WHERE clause appropriately for the extra JOIN:
+      sharedptr<UsesRelationship> uses_rel_temp = sharedptr<UsesRelationship>::create();
+      uses_rel_temp->set_relationship(relationship);
+      where_clause_to_table_name = uses_rel_temp->get_sql_join_alias_name();
     }
 
-    //TODO: Disable add if the from_field already has a value and the to_field is auto-incrementing because
-    //- we cannot override the auto-increment in the to_field.
-    //- we cannot change the value in the from_field to the new auto_increment value in the to_field.
+    //Add an AND to the existing where clause, to get only records within these dates, if any:
+    sharedptr<const Field> date_field = derived_portal->get_date_field();
+    const Glib::ustring extra_where_clause = "\"" + where_clause_to_table_name + "\".\"" + date_field->get_name() + "\""
+      " BETWEEN DATE " + date_field->sql(date_start_value) + 
+      " AND DATE " + date_field->sql(date_end_value);
+    
+    Glib::ustring where_clause;
+    if(m_found_set.m_where_clause.empty())
+      where_clause = extra_where_clause;
+    else
+      where_clause = "( " + m_found_set.m_where_clause + " ) AND ( " + extra_where_clause + " )";
+    
+    
+    //Do one SQL query for the whole month and store the cached values here:
+    clear_cached_database_values();
+    
+    const Glib::ustring sql_query = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_FieldsShown, where_clause, m_found_set.m_extra_join, m_found_set.m_sort_clause, m_found_set.m_extra_group_by);
+    //std::cout << "DEBUG: sql_query=" << sql_query << std::endl;
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query, get_app_window());
+    if(!(datamodel))
+      return true;
+    
+    const int rows_count = datamodel->get_n_rows();
+    if(!(rows_count > 0))
+      return true;
+    
+    //Get the data:
+    for(int row_index = 0; row_index < rows_count; ++row_index)
+    {
+      const int columns_count = datamodel->get_n_columns();
+      if(m_query_column_date_field > columns_count)
+       continue;
+       
+      //Get the date value for this row:
+      Gnome::Gda::Value value_date = datamodel->get_value_at(m_query_column_date_field, row_index);     
+      const Glib::Date date = value_date.get_date();
+      
+      //Get all the values for this row:
+      type_vector_values* pVector = new type_vector_values(m_FieldsShown.size());
+      for(int column_index = 0; column_index < columns_count; ++column_index)
+      {
+        (*pVector)[column_index] = datamodel->get_value_at(column_index, row_index);
+      }
+      
+      m_map_values[date].push_back(pVector);
+    }
   }
 
-  //Prevent addition of new records if that is what the relationship specifies:
-  if(allow_add && m_portal->get_relationship())
-    allow_add = m_portal->get_relationship()->get_auto_create();
-
-  //TODO: m_calendar.set_allow_add(allow_add);
-
+ 
   return result;
 }
 
+void Box_Data_Calendar_Related::clear_cached_database_values()
+{
+  for(type_map_values::iterator iter = m_map_values.begin(); iter != m_map_values.end(); ++iter)
+  {
+    type_list_vectors vec = iter->second;
+    for(type_list_vectors::iterator iter = vec.begin(); iter != vec.end(); ++iter)
+    {
+      type_vector_values* pValues = *iter;
+      if(pValues)
+        delete pValues;
+    }
+  }
+  
+  m_map_values.clear(); 
+}
 void Box_Data_Calendar_Related::on_record_added(const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row)
 {
   //primary_key_value is a new autogenerated or human-entered key for the row.
@@ -194,33 +277,22 @@ void Box_Data_Calendar_Related::on_record_deleted(const Gnome::Gda::Value& /* pr
 
 Box_Data_Calendar_Related::type_vecLayoutFields Box_Data_Calendar_Related::get_fields_to_show() const
 {
-  const Document_Glom* document = get_document();
-  if(document)
-  {
-    Document_Glom::type_list_layout_groups mapGroups;
-    mapGroups.push_back(m_portal);
-
-    sharedptr<const Relationship> relationship = m_portal->get_relationship();
-    if(relationship)
-    {
-      type_vecLayoutFields result = get_table_fields_to_show_for_sequence(m_portal->get_table_used(Glib::ustring() /* not relevant */), mapGroups);
-
-      //If the relationship does not allow editing, then mark all these fields as non-editable:
-      if(!(m_portal->get_relationship_used_allows_edit()))
-      {
-        for(type_vecLayoutFields::iterator iter = result.begin(); iter != result.end(); ++iter)
-        {
-          sharedptr<LayoutItem_Field> item = *iter;
-          if(item)
-            item->set_editable(false);
-        }
-      }
-
-      return result;
-    }
-  }
-
-  return type_vecLayoutFields();
+  type_vecLayoutFields layout_fields = Box_Data_Portal::get_fields_to_show();
+  
+  sharedptr<LayoutItem_CalendarPortal> derived_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(m_portal);
+  if(!derived_portal)
+    return layout_fields;
+  
+  sharedptr<const Field> date_field = derived_portal->get_date_field();
+  if(!date_field)
+    return layout_fields;
+  
+  //Add it to the list to ensure that we request the date (though it will not really be shown in the calendar):
+  sharedptr<LayoutItem_Field> layout_item_date_field = sharedptr<LayoutItem_Field>::create();
+  layout_item_date_field->set_full_field_details(date_field);
+  layout_fields.push_back(layout_item_date_field);
+  m_query_column_date_field = layout_fields.size() - 1;
+  return layout_fields;
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -276,79 +348,82 @@ void Box_Data_Calendar_Related::prepare_layout_dialog(Dialog_Layout* dialog)
 Glib::ustring Box_Data_Calendar_Related::on_calendar_details(guint year, guint month, guint day)
 {
   sharedptr<LayoutItem_CalendarPortal> derived_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(m_portal);
-    
-  
-  if(!derived_portal || !derived_portal->get_date_field())
+  if(!derived_portal)
   {
     std::cout << "DEBUG: Box_Data_Calendar_Related::on_calendar_details(): date_field is NULL" << std::endl;
     return Glib::ustring();
   }
   
-  Glib::Date date(day, Glib::Date::Month(month+1), year);
-  Gnome::Gda::Value date_value(date);
-
-  sharedptr<Relationship> relationship = m_portal->get_relationship();
-  Glib::ustring where_clause_to_table_name = relationship->get_to_table();
-  
-  const Glib::ustring date_field_name = derived_portal->get_date_field()->get_name();
-    
-  sharedptr<const Relationship> relationship_related = m_portal->get_related_relationship();
-  if(relationship_related)
-  {
-    //Adjust the WHERE clause appropriately for the extra JOIN:
-    sharedptr<UsesRelationship> uses_rel_temp = sharedptr<UsesRelationship>::create();
-    uses_rel_temp->set_relationship(relationship);
-    where_clause_to_table_name = uses_rel_temp->get_sql_join_alias_name();
-  }
-
-  //Add an AND to the existing where clause, to get only records with this date, if any:
-  const Glib::ustring extra_where_clause = "\"" + where_clause_to_table_name + "\".\"" + derived_portal->get_date_field()->get_name() + "\" = " + derived_portal->get_date_field()->sql(date_value);
-  Glib::ustring where_clause;
-  if(m_found_set.m_where_clause.empty())
-    where_clause = extra_where_clause;
-  else
-    where_clause = "( " + m_found_set.m_where_clause + " ) AND ( " + extra_where_clause + " )";
-  
-  //TODO: Do one SQL query for the whole month and just read the cached values here, responding to month_changed to update the cache.
-  const Glib::ustring sql_query = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_FieldsShown, where_clause, m_found_set.m_extra_join, m_found_set.m_sort_clause, m_found_set.m_extra_group_by);
-  //std::cout << "DEBUG: sql_query=" << sql_query << std::endl;
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query, get_app_window());
-  if(!(datamodel && datamodel->get_n_rows()))
+  sharedptr<const Field> date_field = derived_portal->get_date_field();
+  if(!date_field)
     return Glib::ustring();
- 
-  //Execute the query to get the data:
+  
+  Glib::Date date(day, Glib::Date::Month(month+1), year);
+  
+  //Examine the cached data:
+  type_map_values::const_iterator iter_find = m_map_values.find(date);
+  if(iter_find == m_map_values.end())
+    return Glib::ustring(); //No data was found for this date.
+  
+  
   Glib::ustring result;
-  const int row_index = 0;
-  int column_index = 0;
-  for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
+  
+  //Look at each row for this date:
+  const type_list_vectors& rows = iter_find->second;
+  for(type_list_vectors::const_iterator iter = rows.begin(); iter != rows.end(); ++iter)
   {
-    sharedptr<LayoutItem> layout_item = *iter;
+    type_vector_values* pRow = *iter;
+    if(!pRow)
+      continue;
     
-    Glib::ustring text;
+    //Get the data for each column in the row:
+    Glib::ustring row_text;
+    int column_index = 0;
     
-    //Text for a text item:
-    sharedptr<LayoutItem_Text> layout_item_text = sharedptr<LayoutItem_Text>::cast_dynamic(layout_item);
-    if(layout_item_text)
-      text = layout_item_text->get_text();
-    else
-    {  
-      //Text for a field:
-      sharedptr<LayoutItem_Field> layout_item_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
-      if(layout_item_field)
+    //We iterate over the original list of items from the portal,
+    //instead of the ones used by the query (m_FieldsShown),
+    //because we really don't want to show the extra fields (at the end) to the user:
+    LayoutGroup::type_list_items items = m_portal->get_items();
+    for(LayoutGroup::type_list_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
+    {   
+      sharedptr<const LayoutItem> layout_item = *iter;
+      if(!layout_item)
+        continue;
+            
+      Glib::ustring text;
+      
+      //Text for a text item:
+      sharedptr<const LayoutItem_Text> layout_item_text = sharedptr<const LayoutItem_Text>::cast_dynamic(layout_item);
+      if(layout_item_text)
+        text = layout_item_text->get_text();
+      else
       {
-        const Gnome::Gda::Value value = datamodel->get_value_at(row_index, column_index);
+        //Text for a field:
+        sharedptr<const LayoutItem_Field> layout_item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
+        
+        const Gnome::Gda::Value value = (*pRow)[column_index];
         text = Conversions::get_text_for_gda_value(layout_item_field->get_glom_type(), value, layout_item_field->get_formatting_used().m_numeric_format);
-        //std::cout << "  DEBUG: text=" << text << std::endl;
+        
         ++column_index;
+      }
+      
+      //Add the field text to the row:
+      if(!text.empty())
+      {
+        if(!row_text.empty())
+          row_text += ", "; //TODO: Internationalization?
+      
+        row_text += text;
       }
     }
     
-    if(!text.empty())
+    //Add the row text to the result:
+    if(!row_text.empty())
     {
       if(!result.empty())
-          result += ", "; //TODO: Internationalization?
+        result += "\n";
       
-      result += text;
+      result += row_text;
     }
   }
   
