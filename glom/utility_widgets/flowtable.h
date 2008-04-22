@@ -54,6 +54,9 @@ public:
 
   void remove_all();
 
+	// Implement forall which is not implemented in gtkmm
+  typedef sigc::slot<void, Widget&> ForallSlot;
+  void forall(const ForallSlot& slot);
 
 protected:
 #ifndef GLIBMM_VFUNCS_ENABLED
@@ -143,9 +146,6 @@ protected:
   //For drawing:
   Glib::RefPtr<Gdk::Window> m_refGdkWindow;
   Glib::RefPtr<Gdk::GC> m_refGC;
-    
-  // Dnd
-  virtual void setup_dnd (Gtk::Widget& child);
 };
 
 } //namespace Glom

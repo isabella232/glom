@@ -252,15 +252,35 @@ namespace Glom
 namespace Glom
 {
 
+static void container_forall_callback(GtkWidget* widget_gobj, void* data)
+{
+  #ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+  #endif //GLIBMM_EXCEPTIONS_ENABLED
+    FlowTable::ForallSlot& slot = *static_cast<FlowTable::ForallSlot*>(data);
+    Gtk::Widget *const widget = Glib::wrap(widget_gobj);
+
+    g_return_if_fail(widget != 0);
+
+    slot(*widget);
+  #ifdef GLIBMM_EXCEPTIONS_ENABLED
+  }
+  catch(...)
+  {
+    Glib::exception_handlers_invoke();
+  }
+  #endif //GLIBMM_EXCEPTIONS_ENABLED
+}
+
+  
 FlowTable::FlowTableItem::FlowTableItem(Gtk::Widget* first, FlowTable* flowtable)
 : m_first(first),
   m_second(0),
   m_expand_first_full(false),
   m_expand_second(false)
 {
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  flowtable->setup_dnd (*m_first);
-#endif /* GLOM_ENABLE_CLIENT_ONLY */
+
 }
 
 FlowTable::FlowTableItem::FlowTableItem(Gtk::Widget* first, Gtk::Widget* second, FlowTable* flowtable)
@@ -269,10 +289,7 @@ FlowTable::FlowTableItem::FlowTableItem(Gtk::Widget* first, Gtk::Widget* second,
   m_expand_first_full(false),
   m_expand_second(false)
 {
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  flowtable->setup_dnd (*m_first);
-  flowtable->setup_dnd (*m_second);
-#endif /* GLOM_ENABLE_CLIENT_ONLY */
+
 }
 
 
@@ -441,11 +458,6 @@ void FlowTable::insert_before(FlowTableItem& item, Gtk::Widget& before)
   } else {
     m_children.insert(pos, item);
   }
-}
-
-void FlowTable::setup_dnd (Gtk::Widget& child)
-{
-  // override this when you need drag and drop support
 }
 
 void FlowTable::set_columns_count(guint value)
@@ -997,6 +1009,12 @@ void FlowTable::forall_vfunc(gboolean /* include_internals */, GtkCallback callb
     if(second)
       callback(second->gobj(), callback_data);
   }
+}
+
+void FlowTable::forall(const ForallSlot& slot)
+{
+  ForallSlot slot_copy (slot);
+  gtk_container_forall(gobj(), &container_forall_callback, &slot_copy);
 }
 
 /** Sets the padding to put between the child widgets.

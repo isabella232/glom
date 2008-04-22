@@ -46,8 +46,14 @@ protected:
   virtual void on_child_drag_leave(const Glib::RefPtr<Gdk::DragContext>& drag_context, guint time);
   virtual void on_child_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int, int, 
                                            const Gtk::SelectionData& selection_data, guint, guint time, Gtk::Widget* child);  
-  virtual void setup_dnd (Gtk::Widget& child); // overwritten
-  
+  virtual void on_child_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& drag_context, 
+                                           const Gtk::SelectionData& selection_data, guint, guint time, Gtk::Widget* child);  
+
+  virtual void start_dnd (Gtk::Widget& child);
+  virtual void stop_dnd (Gtk::Widget& child);
+
+  virtual void set_design_mode(bool value = true);
+    
   // Methods for the different layout object
   virtual void on_dnd_add_layout_item_field (LayoutWidgetBase* above) = 0;
   virtual void on_dnd_add_layout_group(LayoutWidgetBase* above) = 0;
@@ -63,7 +69,7 @@ protected:
   
   FlowTableItem* dnd_item_at_position(int x, int y);
   LayoutWidgetBase* dnd_datawidget_from_item();
-
+    
 private:
   FlowTableItem* m_current_dnd_item;
 };

@@ -990,7 +990,11 @@ void FlowTableWithFields::on_flowtable_entry_open_details_requested(const shared
 
 void FlowTableWithFields::set_design_mode(bool value)
 {
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  FlowTableDnd::set_design_mode(value);
+#else
   FlowTable::set_design_mode(value);
+#endif
 
   //Set the mode in the sub-flowtables:
   for(type_sub_flow_tables::iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)

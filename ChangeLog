@@ -1,3 +1,19 @@
+2008-04-22  Johannes Schmid  <johannes.schmid@openismus.com>
+
+	* glom/mode_data/flowtablewithfields.cc:
+	(set_design_mode): Call FlowTableDnd::set_design_mode() if appropriate
+	* glom/utility_widgets/flowtable.cc:
+	* glom/utility_widgets/flowtable.h:
+	(forall), (container_forall_callback):
+	Implement forall() with is not implement for Gtk::Container
+	(setup_dnd): Remove this and do all dnd stuff in flowtable_dnd
+	
+	* glom/utility_widgets/flowtable_dnd.cc:
+	* glom/utility_widgets/flowtable_dnd.h:
+	(set_design_mode), (start_dnd), (stop_dnd):
+	Override set_design_mode() and call start_dnd() and stop_dnd() there. 
+	Preparation for moving items around and setting them as drag source.
+
 2008-04-22  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data_calendar_related.h
