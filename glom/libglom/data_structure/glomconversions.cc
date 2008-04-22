@@ -77,7 +77,7 @@ Glib::ustring Conversions::format_date(const tm& tm_data, const std::locale& loc
 
 
 Glib::ustring Conversions::format_tm(const tm& tm_data, const std::locale& locale, const char* format)
-{
+{   
   //This is based on docs found here:
   //http://www.roguewave.com/support/docs/sourcepro/stdlibref/time-put.html
 
@@ -95,6 +95,7 @@ Glib::ustring Conversions::format_tm(const tm& tm_data, const std::locale& local
   tp.put(the_stream /* iter to beginning of stream */, the_stream, ' ' /* fill */, &tm_data, format, format + strlen(format) /* 'E' */ /* use locale's alternative format */);
 
   Glib::ustring text = the_stream.str();
+  //std::cout << "DEBUG: format_tm(): result from tp.put: " << text << std::endl;
 
   if(locale == std::locale("") /* The user's current locale */)
   {
@@ -109,6 +110,7 @@ Glib::ustring Conversions::format_tm(const tm& tm_data, const std::locale& local
 #endif
   }
 
+  //std::cout << "DEBUG: format_tm(): returning: " << text << std::endl;
   return text; //TODO: Use something like Glib::locale_to_utf8()?
 
   /*
@@ -592,6 +594,7 @@ tm Conversions::parse_time(const Glib::ustring& text, bool& success)
 
 tm Conversions::parse_time(const Glib::ustring& text, const std::locale& locale, bool& success)
 {
+  //std::cout << "parse_time(): text=" << text << std::endl;
   //The sequence of statements here seems to be very fragile. If you move things then it stops working.
 
   //return parse_tm(text, locale, 'X' /* time */);
@@ -633,17 +636,60 @@ tm Conversions::parse_time(const Glib::ustring& text, const std::locale& locale,
     success = true;
     return the_c_time;
   }
-  else
+  
+  //Fall back to strptime():
+  //It seems to be well known that time_get<> can parse much less than what time_put<> can generate:
+  // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2006/n2070.html
+  //
+  //Try various formats:
+  
+  memset(&the_c_time, 0, sizeof(the_c_time));
+  char* lastchar = strptime(text.c_str(), "%r" /* 12-hour clock time using the AM/PM notation */, &the_c_time);
+  if(lastchar)
   {
-    //std::cout << "  tg.get_time() failed" << text << std::endl;
-
-    //tm blank_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    tm blank_time ;
-    memset(&blank_time , 0, sizeof(blank_time ));
-
-    success = false;
-    return blank_time;
+    success = true;
+    return the_c_time;
   }
+  
+  memset(&the_c_time, 0, sizeof(the_c_time));
+  lastchar = strptime(text.c_str(), "%X" /* The time, using the locale's time format. */, &the_c_time);
+  if(lastchar)
+  {
+    //std::cout << "DEBUG: parse_time(): %X: text=" << text << " was parsed as: hour=" << the_c_time.tm_hour << ", min=" << the_c_time.tm_min  << ", sec=" << the_c_time.tm_sec << std::endl;
+    success = true;
+    return the_c_time;
+  }
+  
+  //Note: strptime() with "%OI" parses "01:00 PM" incorrectly as 01:00, though it claims to parse successfully.
+  
+  memset(&the_c_time, 0, sizeof(the_c_time));
+  lastchar = strptime(text.c_str(), "%c" /* alternative 12-hour clock */, &the_c_time);
+  if(lastchar)
+  {
+    //std::cout << "DEBUG: parse_time(): %c: text=" << text << " was parsed as: hour=" << the_c_time.tm_hour << ", min=" << the_c_time.tm_min  << ", sec=" << the_c_time.tm_sec << std::endl;
+    success = true;
+    return the_c_time;
+  }
+  
+  //This seems to be the only one that can parse "01:00 PM":
+  memset(&the_c_time, 0, sizeof(the_c_time));
+  lastchar = strptime(text.c_str(), "%I : %M %p" /* 12 hours clock with AM/PM, without seconds. */, &the_c_time);
+  if(lastchar)
+  {
+    //std::cout << "DEBUG: parse_time(): %I : %M %p: text=" << text << " was parsed as: hour=" << the_c_time.tm_hour << ", min=" << the_c_time.tm_min  << ", sec=" << the_c_time.tm_sec << std::endl;
+    success = true;
+    return the_c_time;
+  }
+ 
+  //std::cout << "  DEBUG: strptime(%c) failed on text=" << text << std::endl;
+
+  //Nothing worked:
+  //tm blank_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  tm blank_time ;
+  memset(&blank_time , 0, sizeof(blank_time ));
+
+  success = false;
+  return blank_time;
 }
 
 

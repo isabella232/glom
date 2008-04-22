@@ -238,6 +238,7 @@ AC_OUTPUT(Makefile \
     po/Makefile.in \
   macros/Makefile \
   examples/Makefile \
+  regression_tests/Makefile \
   glom.desktop.in \
   win32/Makefile \
   win32/glom.iss
