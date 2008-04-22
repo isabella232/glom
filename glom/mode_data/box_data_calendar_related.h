@@ -63,6 +63,7 @@ protected:
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   Glib::ustring on_calendar_details(guint year, guint month, guint day);
+  void on_calendar_month_changed();
     
   void setup_menu();
   void on_calendar_button_press_event(GdkEventButton *event);

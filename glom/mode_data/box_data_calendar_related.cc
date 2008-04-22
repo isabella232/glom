@@ -46,6 +46,8 @@ Box_Data_Calendar_Related::Box_Data_Calendar_Related()
   //Tell the calendar how to get the record details to show:
   m_calendar.set_detail_func( sigc::mem_fun(*this, &Box_Data_Calendar_Related::on_calendar_details) );
   
+  m_calendar.signal_month_changed().connect( sigc::mem_fun(*this, &Box_Data_Calendar_Related::on_calendar_month_changed) );
+  
   setup_menu();
   //m_calendar.add_events(Gdk::BUTTON_PRESS_MASK); //Allow us to catch button_press_event and button_release_event
   m_calendar.signal_button_press_event().connect_notify( sigc::mem_fun(*this, &Box_Data_Calendar_Related::on_calendar_button_press_event) );
@@ -345,6 +347,12 @@ void Box_Data_Calendar_Related::prepare_layout_dialog(Dialog_Layout* dialog)
   related_dialog->set_document(m_layout_name, get_document(), derived_portal);
 }
 
+void Box_Data_Calendar_Related::on_calendar_month_changed()
+{
+  //Update the cached values for the new month:
+  fill_from_database();
+}
+
 Glib::ustring Box_Data_Calendar_Related::on_calendar_details(guint year, guint month, guint day)
 {
   sharedptr<LayoutItem_CalendarPortal> derived_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(m_portal);
@@ -358,7 +366,14 @@ Glib::ustring Box_Data_Calendar_Related::on_calendar_details(guint year, guint m
   if(!date_field)
     return Glib::ustring();
   
-  Glib::Date date(day, Glib::Date::Month(month+1), year);
+  //TODO: month seems to be 143710360 sometimes, which seems to be a GtkCalendar bug:
+  //std::cout << "Box_Data_Calendar_Related::on_calendar_details(): year=" << year << ", month=" << month << " day=" << day << std::endl;
+
+  //Glib::Date is 1-indexed:
+  Glib::Date::Month datemonth = (Glib::Date::Month)(month +1);
+  if(datemonth > Glib::Date::DECEMBER)
+    datemonth = Glib::Date::JANUARY;
+  Glib::Date date(day, datemonth, year);
   
   //Examine the cached data:
   type_map_values::const_iterator iter_find = m_map_values.find(date);

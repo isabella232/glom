@@ -1,3 +1,24 @@
+2008-04-22  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_data/box_data_calendar_related.h
+	* glom/mode_data/box_data_calendar_related.cc
+	 on_calendar_month_changed(): Update the calendar details when the user 
+	navigates to a different month.
+
+2008-04-22  Murray Cumming  <murrayc@murrayc.com>
+
+	* examples/example_lesson_planner.glom:
+	* examples/Makefile.am: Added a new example, which uses a calendar.
+
+	* glom/mode_data/box_data_calendar_related.h
+	* glom/mode_data/box_data_calendar_related.cc:
+	fill_from_database(): Do one SQL query for the whole month and store 
+	the values.
+	on_calendar_details(): Show the stored values.
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/box_data_list_related.h: Removed get_fields_to_show() 
+	because it is in the base class.
+
 2008-04-21  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data_calendar_related.cc
