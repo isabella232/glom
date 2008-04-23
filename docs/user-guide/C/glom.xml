@@ -196,7 +196,7 @@
 
     <sect1 id="glom-operator-usage">
     <title>Using &app; as an Operator</title>
-    <para>To open an existing &glom; document, either open that document from the File Manager, or choose &app; from the Applications menu, and then choose the document when asked. &app; will ask you for a user name and password to access the database. Your administrator will provide your user name and password.</para>
+    <para>To open an existing &app; document, either open that document from the File Manager, or choose &app; from the Applications menu, and then choose the document when asked. &app; will ask you for a user name and password to access the database. Your administrator will provide your user name and password.</para>
 
     <para>When you open an existing document, &app; will be in <literal>Operator</literal> <literal>user level</literal>. This user level allows you to find and edit records, but does not allow you to change the fundamental structure of the database.</para>
 
@@ -275,7 +275,7 @@
     <title>Finding Data</title>
     <para>Choose <literal>Find Mode</literal> from the Mode menu. The fields in the List and Details views will now be empty, and a Find button will appear at the bottom of the window.</para>
     <para>Enter information, or part of the information, into a field to find records with that information in that field. For instance, enter Jim into a name field to find records with &quot;Jim&quot; or &quot;Jimmy&quot; in the name.</para> 
-    <para>When you press the <literal>Find</literal> button, &glom; will search for records and then display them. If only one record is found then it will show you that record in the Details view. If several records are found then it will show you those records in the List view.</para>
+    <para>When you press the <literal>Find</literal> button, &app; will search for records and then display them. If only one record is found then it will show you that record in the Details view. If several records are found then it will show you those records in the List view.</para>
     <!-- TODO: screenshot -->
     </sect2>
 
@@ -560,7 +560,7 @@ For instance, a shop might need a report listing all products sold in one month,
 
 <sect2 id="dialog_existing_or_new">
 <title>Dialog: Initial dialog</title>
-<para>This dialog allows the user to choose an existing document or create a new document. Existing documents may be selecting from the list of recently opened documents or by select a file with the file chooser dialog. Documents can also be opened via the network if other users are running &glom; on the local network. Finally, a new document can be created either by opening a template file which already contains some initial tables and records, or by creating an empty document.</para>
+<para>This dialog allows the user to choose an existing document or create a new document. Existing documents may be selecting from the list of recently opened documents or by select a file with the file chooser dialog. Documents can also be opened via the network if other users are running &app; on the local network. Finally, a new document can be created either by opening a template file which already contains some initial tables and records, or by creating an empty document.</para>
 </sect2>
 
 <sect2 id="dialog_new_database">
@@ -726,7 +726,7 @@ For instance, a shop might need a report listing all products sold in one month,
   <title>Concepts</title>
   <para>&app; is easy to use, but you must understand the following basic concepts.
 <orderedlist>
-<listitem><simpara><literal>Database</literal>: Each &glom; document allows access to one database.</simpara></listitem>
+<listitem><simpara><literal>Database</literal>: Each &app; document allows access to one database.</simpara></listitem>
 <listitem><simpara><literal>Table</literal>: Each database contains several tables, such as &quot;Customers&quot; and &quot;Invoices&quot; tables.</simpara></listitem>
 <listitem><simpara><literal>Field</literal>: Each table has several fields, such as &quot;Customer ID&quot;, &quot;First Name&quot;, and &quot;Date of Birth&quot; fields. In other documents and applications, fields are sometimes called &quot;Columns&quot;</simpara></listitem>
 <listitem><simpara><literal>Records</literal>: Each table contains several records, each of which has values for each of the fields. For instance, the &quot;Customers&quot; table will have a record for each customer. In other documents and applications, records are sometimes called <literal>Rows</literal>.</simpara></listitem>
