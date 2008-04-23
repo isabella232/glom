@@ -1,3 +1,9 @@
+2008-04-23  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/glom_developer.glade:
+	* glom/utility_widgets/datawidget.cc: constructor:
+	Added : at the end of labels, as per the GNOME HIG.
+
 2008-04-22  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/data_structure/glomconversions.cc:
