@@ -40,7 +40,7 @@
 #include <netinet/in.h> //For sockaddr_in
 
 #include <signal.h> //To catch segfaults
-
+#include <string.h> // for memset
 #include "gst-package.h"
 
 namespace Glom

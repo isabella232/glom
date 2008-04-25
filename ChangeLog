@@ -1,3 +1,12 @@
+2008-04-25  Jeremiah Savage  <jeremiahsavage@gmail.com>
+
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/data_structure/glomconversions.cc:
+	* glom/libglom/document/document_glom.h:
+	* glom/libglom/utils.cc:
+	* glom/translation/window_translations.cc: Add <cstring> includes to 
+	fix the build with gcc 4.3.
+
 2008-04-22  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/data_structure/glomconversions.cc:

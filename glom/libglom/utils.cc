@@ -37,6 +37,7 @@
 #include <hildonmm/note.h>
 #endif
 
+#include <string.h> // for strchr
 #include <sstream> //For stringstream
 
 #include <iostream>
