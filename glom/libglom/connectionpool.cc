@@ -55,7 +55,7 @@
 #endif
 
 #include <signal.h> //To catch segfaults
-
+#include <string.h> // for memset
 #include "gst-package.h"
 
 /* TODO: Should this be used in clientonly mode? */

@@ -27,6 +27,7 @@
 #include <gtkmm/messagedialog.h>
 #include "../application.h"
 #include <glibmm/i18n.h>
+#include <string.h> // for memset
 
 namespace Glom
 {

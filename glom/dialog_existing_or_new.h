@@ -26,6 +26,7 @@
 #endif
 
 #include <memory>
+#include <ctime> // for time_t
 #include <giomm/asyncresult.h>
 #include <giomm/file.h>
 #include <giomm/fileenumerator.h>

@@ -41,6 +41,7 @@
 #include <gtkmm/window.h>
 #include <vector>
 #include <map>
+#include <limits> // for numeric_limits
 
 namespace Glom
 {

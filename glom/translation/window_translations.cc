@@ -27,6 +27,7 @@
 #include "glom/libglom/glade_utils.h"
 
 #include <glibmm/i18n.h>
+#include <string.h> // for memset
 
 // To read the .po files
 #include <gettext-po.h>

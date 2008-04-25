@@ -30,7 +30,7 @@
 #include <ctime>     // for struct tm
 #include <iostream>   // for cout, endl
 #include <iomanip>
-
+#include <string.h> // for strlen, memset, strcmp
 
 namespace Glom
 {
