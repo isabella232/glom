@@ -392,6 +392,8 @@ void App_Glom::init_menus()
   m_listDeveloperActions.push_back(action);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
+  action = Gtk::Action::create("GlomAction_Menu_ImportIntoTable", _("Import _Into Table"));
+  m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Tables_ImportIntoTable));
 
   //"Reports" menu:
   m_refActionGroup_Others->add( Gtk::Action::create("Glom_Menu_Reports", _("_Reports")) );
@@ -501,6 +503,7 @@ void App_Glom::init_menus()
     "        <menuitem action='GlomAction_Menu_EditTables' />"
     "        <menuitem action='GlomAction_Menu_AddRelatedTable' />"
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+    "        <menuitem action='GlomAction_Menu_ImportIntoTable' />"
     "     </menu>"
     "     <menu action='Glom_Menu_Reports'>"
     "        <placeholder name='Menu_Reports_Dynamic' />"

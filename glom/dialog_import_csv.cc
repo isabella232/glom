@@ -1,0 +1,753 @@
+/* Glom
+ *
+ * Copyright (C) 2001-2004 Murray Cumming
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
+#include "dialog_import_csv.h"
+#include "config.h"
+
+#include <glom/libglom/data_structure/glomconversions.h>
+
+#include <gtkmm/messagedialog.h>
+#include <gtkmm/cellrenderercombo.h>
+#include <glibmm/i18n.h>
+#include <cerrno>
+
+namespace
+{
+
+const gunichar DELIMITER = ',';
+
+// TODO: Perhaps we should change this to std::string to allow binary data, such
+// as images.
+Glib::ustring::const_iterator advance_escape(const Glib::ustring::const_iterator& iter, const Glib::ustring::const_iterator& end, gunichar& c)
+{
+  // TODO: Throw an error if there is nothing to be escaped (iter == end)?
+  Glib::ustring::const_iterator walk = iter;
+  if(walk == end) return walk;
+
+  if(*walk == 'x')
+  {
+    // Hexadecimal number, insert according unichar
+    ++ walk;
+    unsigned int num = 0;
+
+    // TODO: Limit?
+    Glib::ustring::const_iterator pos = walk;
+    for(; (walk != end) && isxdigit(*walk); ++ walk)
+    {
+      num *= 16;
+
+      if(isdigit(*walk))
+        num += *walk - '0';
+      else if(isupper(*walk))
+        num += *walk - 'A' + 10;
+      else
+        num += *walk - 'a' + 10;
+    }
+
+    c = num;
+    return walk;
+  }
+  else if(isdigit(*walk) && *walk != '8' && *walk != '9')
+  {
+    unsigned int num = 0;
+
+    // TODO: Limit?
+    for(; (walk != end) && isdigit(*walk) && *walk != '8' && *walk != '9'; ++ walk)
+    {
+      num *= 8;
+      num += *walk - '0';
+    }
+
+    c = num;
+    return walk;
+  }
+  else
+  {
+    switch(*walk)
+    {
+    case 'n':
+      c = '\n';
+      break;
+    case '\\':
+      c = '\\';
+      break;
+    case 'r':
+      c = '\r';
+      break;
+    case 'a':
+      c = '\a';
+      break;
+    case 'v':
+      c = '\f';
+      break;
+    case 't':
+      c = '\t';
+      break;
+    default:
+      // Unrecognized escape sequence, TODO: throw error?
+      c = *walk;
+      break;
+    }
+
+    ++ walk;
+    return walk;
+  }
+}
+
+Glib::ustring::const_iterator advance_field(const Glib::ustring::const_iterator& iter, const Glib::ustring::const_iterator& end, Glib::ustring& field)
+{
+  Glib::ustring::const_iterator walk = iter;
+  gunichar quote_char = 0;
+
+  field.clear();
+
+  while(walk != end)
+  {
+    gunichar c = *walk;
+
+    // Escaped stuff in quoted strings:
+    if(quote_char && c == '\\')
+    {
+      ++ walk;
+      walk = advance_escape(walk, end, c);
+      field.append(1, c);
+    }
+    // End of quoted string
+    else if(quote_char && c == quote_char)
+    {
+      quote_char = 0;
+      ++ walk;
+    }
+    // Begin of quoted string. This allows stuff such as "foo"'bar'baz in a field here,
+    // but it can easily be avoided if it's a problem, by checking walk against iter.
+    else if(!quote_char && (c == '\'' || c == '\"'))
+    {
+      quote_char = c;
+      ++ walk;
+    }
+    // End of field:
+    else if(!quote_char && c == DELIMITER)
+    {
+      break;
+    }
+    else
+    {
+      field.append(1, c);
+      ++ walk;
+    }
+  }
+
+  // TODO: Throw error if still inside a quoted string?
+  return walk;
+}
+
+// When auto-detecting the encoding, we try to read the file in these
+// encodings, in order:
+const char* ENCODINGS[] = {
+  "UTF-8",
+  "ISO-8859-1",
+  "ISO-8859-15",
+  "UTF-16",
+  "UCS-2",
+  "UCS-4"
+};
+
+const unsigned int N_ENCODINGS = sizeof(ENCODINGS)/sizeof(ENCODINGS[0]);
+
+}
+
+namespace Glom
+{
+
+Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+: Gtk::Dialog(cobject), m_auto_detect_encoding(0), m_state(NONE)
+{
+  refGlade->get_widget("import_csv_fields", m_sample_view);
+  refGlade->get_widget("import_csv_target_table", m_target_table);
+  refGlade->get_widget("import_csv_encoding", m_encoding_combo);
+  refGlade->get_widget("import_csv_encoding_info", m_encoding_info);
+  refGlade->get_widget("import_csv_first_line_as_title", m_first_line_as_title);
+  refGlade->get_widget("import_csv_sample_rows", m_sample_rows);
+  if(!m_sample_view || !m_encoding_combo || !m_target_table || !m_encoding_info || !m_first_line_as_title || !m_sample_rows)
+    throw std::runtime_error("Missing widgets from glade file for Dialog_Import_CSV");
+
+  m_encoding_model = Gtk::ListStore::create(m_encoding_columns);
+
+  Gtk::TreeIter iter = m_encoding_model->append();
+  (*iter)[m_encoding_columns.m_col_encoding] = _("Auto Detect");
+
+  // Separator:
+  m_encoding_model->append();
+
+  for(unsigned int i = 0; i < N_ENCODINGS; ++ i)
+  {
+    iter = m_encoding_model->append();
+    (*iter)[m_encoding_columns.m_col_encoding] = ENCODINGS[i];
+  }
+
+  Gtk::CellRendererText* renderer = Gtk::manage(new Gtk::CellRendererText);
+  m_encoding_combo->set_model(m_encoding_model);
+  m_encoding_combo->pack_start(*renderer);
+  m_encoding_combo->add_attribute(renderer->property_text(), m_encoding_columns.m_col_encoding);
+  m_encoding_combo->set_row_separator_func(sigc::mem_fun(*this, &Dialog_Import_CSV::row_separator_func));
+  m_encoding_combo->set_active(0);
+  m_encoding_combo->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_encoding_changed));
+  m_first_line_as_title->signal_toggled().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_first_line_as_title_toggled));
+  m_sample_rows->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_sample_rows_changed));
+
+  m_sample_view->set_headers_visible(m_first_line_as_title->get_active());
+
+  clear();
+}
+
+void Dialog_Import_CSV::import(const Glib::ustring& uri, const Glib::ustring& into_table)
+{
+  clear();
+
+  Document_Glom* document = get_document();
+  if(!document)
+  {
+    show_error_dialog(_("No document available"), _("You need to open a document to import the data into"));
+  }
+  else
+  {
+    // Make the relevant widgets sensitive. We will make them insensitive
+    // again when a (nonrecoverable) error occurs.
+    m_sample_view->set_sensitive(true);
+    m_encoding_combo->set_sensitive(true);
+    m_first_line_as_title->set_sensitive(true);
+    m_sample_rows->set_sensitive(true);
+    set_response_sensitive(Gtk::RESPONSE_ACCEPT, true);
+
+    set_title("Import from CSV file");
+    m_target_table->set_markup("<b>" + Glib::Markup::escape_text(into_table) + "</b>");
+
+    m_field_model = Gtk::ListStore::create(m_field_columns);
+    Gtk::TreeIter tree_iter = m_field_model->append();
+    (*tree_iter)[m_field_columns.m_col_field_name] = _("<None>");
+
+    Document_Glom::type_vecFields fields(document->get_table_fields(into_table));
+    for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++ iter)
+    {
+      Gtk::TreeIter tree_iter = m_field_model->append();
+      (*tree_iter)[m_field_columns.m_col_field] = *iter;
+      (*tree_iter)[m_field_columns.m_col_field_name] = (*iter)->get_name();
+    }
+
+    m_file = Gio::File::create_for_uri(uri);
+    m_file->read_async(sigc::mem_fun(*this, &Dialog_Import_CSV::on_file_read));
+
+    // Query the display name of the file to set in the title
+    m_file->query_info_async(sigc::mem_fun(*this, &Dialog_Import_CSV::on_query_info), G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME);
+
+    m_state = PARSING;
+  }
+}
+
+void Dialog_Import_CSV::clear()
+{
+  // TODO: Do we explicitely need to cancel async operations?
+  m_sample_model.reset();
+  m_sample_view->remove_all_columns();
+  m_sample_view->set_model(m_sample_model);
+  m_field_model.reset();
+  m_rows.clear();
+  m_fields.clear();
+  m_file.reset();
+  m_stream.reset();
+  m_buffer.reset(NULL);
+  m_raw.clear();
+  m_parser.reset(NULL);
+
+  m_encoding_info->set_text("");
+  m_sample_view->set_sensitive(false);
+  m_encoding_combo->set_sensitive(false);
+  m_first_line_as_title->set_sensitive(false);
+  m_sample_rows->set_sensitive(false);
+  set_response_sensitive(Gtk::RESPONSE_ACCEPT, false);
+
+  m_state = NONE;
+}
+
+void Dialog_Import_CSV::show_error_dialog(const Glib::ustring& primary, const Glib::ustring& secondary)
+{
+  Gtk::MessageDialog dialog(*this, primary, false, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
+  dialog.set_title("Error importing CSV file");
+  dialog.set_secondary_text(secondary);
+  dialog.run();
+}
+
+bool Dialog_Import_CSV::row_separator_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeIter& iter) const
+{
+  return (*iter)[m_encoding_columns.m_col_encoding] == "";
+}
+
+void Dialog_Import_CSV::on_query_info(const Glib::RefPtr<Gio::AsyncResult>& result)
+{
+  try
+  {
+    Glib::RefPtr<Gio::FileInfo> info = m_file->query_info_finish(result);
+    set_title(info->get_display_name() + " - Import from CSV file");
+  }
+  catch(const Glib::Exception& ex)
+  {
+    std::cerr << "Failed to fetch display name of uri " << m_file->get_uri() << ": " << ex.what() << std::endl;
+  }
+}
+
+void Dialog_Import_CSV::on_file_read(const Glib::RefPtr<Gio::AsyncResult>& result)
+{
+  try
+  {
+    m_stream = m_file->read_finish(result);
+
+    m_buffer.reset(new Buffer);
+    m_stream->read_async(m_buffer->buf, sizeof(m_buffer->buf), sigc::mem_fun(*this, &Dialog_Import_CSV::on_stream_read));
+  }
+  catch(const Glib::Exception& error)
+  {
+    show_error_dialog(_("Could not open file"), Glib::ustring::compose(_("The file at \"%1\" could not be opened: %2"), m_file->get_uri(), error.what()));
+    clear();
+    // TODO: Response?
+  }
+}
+
+void Dialog_Import_CSV::on_stream_read(const Glib::RefPtr<Gio::AsyncResult>& result)
+{
+  try
+  {
+    gssize size = m_stream->read_finish(result);
+    if(size > 0)
+    {
+      m_raw.insert(m_raw.end(), m_buffer->buf, m_buffer->buf + size);
+
+      // If the parser already exists, but it is currently not parsing because it waits
+      // for new input, then continue parsing.
+      if(m_parser.get() && !m_parser->idle_connection.connected())
+        m_parser->idle_connection = Glib::signal_idle().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_idle_parse));
+
+      // If the parser does not exist yet, then create a new parser, except when the
+      // current encoding does not work for the file in which case the user first
+      // has to choose another encoding.
+      else if(!m_parser.get() && m_state != ENCODING_ERROR)
+        begin_parse();
+
+      // Read the next few bytes
+      m_stream->read_async(m_buffer->buf, sizeof(m_buffer->buf), sigc::mem_fun(*this, &Dialog_Import_CSV::on_stream_read));
+    }
+    else
+    {
+      // Finished reading
+      m_buffer.reset(NULL);
+      m_stream.reset();
+      m_file.reset();
+    }
+  }
+  catch(const Glib::Exception& error)
+  {
+    show_error_dialog(_("Could not read file"), Glib::ustring::compose(_("The file at \"%1\" could not be read: %2"), m_file->get_uri(), error.what()));
+    clear();
+    // TODO: Response?
+  }
+}
+
+void Dialog_Import_CSV::on_encoding_changed()
+{
+  // Reset current parsing process
+  m_parser.reset(NULL);
+
+  int active = m_encoding_combo->get_active_row_number();
+  switch(active)
+  {
+  case -1: // No active item
+  case 1: // Separator
+    g_assert_not_reached();
+    break;
+  case 0: // Auto-Detect
+    // Begin with first encoding
+    m_auto_detect_encoding = 0;
+    break;
+  default: // Some specific encoding
+    m_auto_detect_encoding = -1;
+    break;
+  }
+
+  // Parse from beginning with new encoding if we have already some data to
+  // parse.
+  if(!m_raw.empty())
+    begin_parse();
+}
+
+void Dialog_Import_CSV::on_first_line_as_title_toggled()
+{
+  // Ignore if we don't have a model yet, we will take care of the option
+  // later when inserting items into it.
+  if(!m_sample_model) return;
+
+  if(m_first_line_as_title->get_active())
+  {
+    m_sample_view->set_headers_visible(true);
+    unsigned int index = 1;
+    Gtk::TreePath path(&index, &index + 1);
+    Gtk::TreeIter iter = m_sample_model->get_iter(path);
+
+    // Remove the first row from the view
+    if(iter && (*iter)[m_sample_columns.m_col_row] == 0)
+    {
+      m_sample_model->erase(iter);
+
+      // Add another row to the end, if one is loaded.
+      unsigned int last_index = m_sample_model->children().size();
+      if(last_index < m_rows.size())
+      {
+        iter = m_sample_model->append();
+        (*iter)[m_sample_columns.m_col_row] = last_index;
+      }
+    }
+  }
+  else
+  {
+    m_sample_view->set_headers_visible(false);
+
+    // Check whether row 0 is displayed
+    unsigned int index = 1;
+    Gtk::TreePath path(&index, &index + 1);
+    Gtk::TreeIter iter = m_sample_model->get_iter(path);
+
+    if((!iter || (*iter)[m_sample_columns.m_col_row] != 0) && !m_rows.empty() && m_sample_rows->get_value_as_int() > 0)
+    {
+      // Add first row to model
+      if(!iter)
+        iter = m_sample_model->append();
+      else
+        iter = m_sample_model->insert(iter);
+      (*iter)[m_sample_columns.m_col_row] = 0;
+
+      // Remove last row if we hit the limit
+      unsigned int sample_rows = m_sample_model->children().size() - 1;
+      if(sample_rows > static_cast<unsigned int>(m_sample_rows->get_value_as_int()))
+      {
+        //m_sample_model->erase(m_sample_model->children().rbegin());
+        path[0] = sample_rows;
+        iter = m_sample_model->get_iter(path);
+        m_sample_model->erase(iter);
+      }
+    }
+  }
+}
+
+void Dialog_Import_CSV::on_sample_rows_changed()
+{
+}
+
+const char* Dialog_Import_CSV::get_current_encoding() const
+{
+  int active = m_encoding_combo->get_active_row_number();
+  switch(active)
+  {
+  case -1: // No active item
+  case 1: // Separator
+    g_assert_not_reached();
+    break;
+  case 0: // Auto-Detect
+    g_assert(m_auto_detect_encoding != -1);
+    return ENCODINGS[m_auto_detect_encoding];
+  default: // Some specific encoding
+    g_assert(active >= 2);
+    g_assert(static_cast<unsigned int>(active - 2) < N_ENCODINGS);
+    return ENCODINGS[active - 2];
+  }
+}
+
+void Dialog_Import_CSV::begin_parse()
+{
+  if(m_auto_detect_encoding != -1)
+    m_encoding_info->set_text(Glib::ustring::compose(_("Encoding detected as: %1"), Glib::ustring(get_current_encoding())));
+  else
+    m_encoding_info->set_text("");
+
+  // Clear sample preview since we reparse everything, perhaps with
+  // another encoding.
+  m_sample_model.reset();
+  m_sample_view->remove_all_columns();
+  m_sample_view->set_model(m_sample_model); // Empty model
+  m_rows.clear();
+
+  m_parser.reset(new Parser(get_current_encoding()));
+  m_state = PARSING;
+  m_parser->idle_connection = Glib::signal_idle().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_idle_parse));
+}
+
+void Dialog_Import_CSV::encoding_error()
+{
+  m_parser.reset(NULL);
+  m_state = ENCODING_ERROR;
+  // Clear sample preview (TODO: Let it visible, and only remove when reparsing?)
+  m_sample_model.reset();
+  m_sample_view->remove_all_columns();
+  m_sample_view->set_model(m_sample_model); // Empty model
+  m_rows.clear();
+
+  // If we are auto-detecting the encoding, then try the next one
+  if(m_auto_detect_encoding != -1)
+  {
+    ++ m_auto_detect_encoding;
+    if(static_cast<unsigned int>(m_auto_detect_encoding) < N_ENCODINGS)
+      begin_parse();
+    else
+      m_encoding_info->set_text(_("Encoding detection failed. Please manually choose one from the box to the left."));
+  }
+  else
+  {
+    m_encoding_info->set_text(_("The file contains data not in the specified encoding. Please choose another one, or try \"Auto Detect\"."));
+  }
+}
+
+bool Dialog_Import_CSV::on_idle_parse()
+{
+  const char* inbuffer = &m_raw[m_parser->input_position];
+  char* inbuf = const_cast<char*>(inbuffer);
+  gsize inbytes = m_raw.size() - m_parser->input_position;
+  char outbuffer[1024];
+  char* outbuf = outbuffer;
+  gsize outbytes = 1024;
+
+  std::size_t result = m_parser->conv.iconv(&inbuf, &inbytes, &outbuf, &outbytes);
+  bool more_to_process = inbytes != 0;
+
+  if(result == static_cast<size_t>(-1))
+  {
+    if(errno == EILSEQ)
+    {
+      // Invalid text in the current encoding.
+      encoding_error();
+      return false;
+    }
+
+    // If EINVAL is set, this means that an incomplete multibyte sequence was at
+    // the end of the input. We might have some more bytes, but those do not make
+    // up a whole character, so we need to wait for more input.
+    // TODO: Error out if at end of file
+    if(errno == EINVAL)
+      more_to_process = false;
+  }
+
+  m_parser->input_position += (inbuf - inbuffer);
+
+  // We now have outbuf - outbuffer bytes of valid UTF-8 in outbuffer.
+  const char* prev = outbuffer;
+  const char* pos;
+  const char to_find[] = { '\n', '\0' };
+
+  while( (pos = std::find_first_of<const char*>(prev, outbuf, to_find, to_find + sizeof(to_find))) != outbuf)
+  {
+    if(*pos == '\0')
+    {
+      // There is a nullbyte in the conversion. As normal text files don't
+      // contain nullbytes, this only occurs when converting for example a UTF-16
+      // file from ISO-8859-1 to UTF-8 (note that the UTF-16 file is valid ISO-8859-1,
+      // it just contains lots of nullbytes). We therefore produce an error here.
+      encoding_error();
+      return false;
+    }
+    else
+    {
+      m_parser->current_line.append(prev, pos - prev);
+      //++ m_parser->line_number;
+      handle_line(m_parser->current_line); //, m_parser->line_number);
+      m_parser->current_line.clear();
+      prev = pos + 1;
+    }
+  }
+
+  // Append last chunk of this line
+  m_parser->current_line.append(prev, outbuf - prev);
+  // TODO: Handle that last line if there is no more input
+
+  // Continue if there are more bytes to process
+  return more_to_process;
+}
+
+void Dialog_Import_CSV::handle_line(const Glib::ustring& line)
+{
+  if(line.empty()) return;
+
+  m_rows.push_back(std::vector<Glib::ustring>());
+  std::vector<Glib::ustring>& row = m_rows.back();
+
+  Glib::ustring field;
+  //Gtk::TreeModelColumnRecord record;
+
+  // Parse first field
+  Glib::ustring::const_iterator iter = advance_field(line.begin(), line.end(), field);
+  row.push_back(field);
+
+  // Parse more fields
+  while(iter != line.end())
+  {
+    // Skip delimiter
+    ++ iter;
+
+    // Read field
+    iter = advance_field(iter, line.end(), field);
+
+    // Add field to current row
+    row.push_back(field);
+  }
+
+  if(!m_sample_model)
+  {
+    // This is the first line read if there is no model yet
+    m_sample_model = Gtk::ListStore::create(m_sample_columns);
+    m_sample_view->set_model(m_sample_model);
+
+    // Create field vector that contains the fields into which to import
+    // the data.
+    m_fields.resize(row.size());
+
+    Gtk::CellRendererText* text = Gtk::manage(new Gtk::CellRendererText);
+    Gtk::TreeViewColumn* col = Gtk::manage(new Gtk::TreeViewColumn(_("Line")));
+    col->pack_start(*text, false);
+    col->set_cell_data_func(*text, sigc::mem_fun(*this, &Dialog_Import_CSV::line_data_func));
+    m_sample_view->append_column(*col);
+
+    for(unsigned int i = 0; i < row.size(); ++ i)
+    {
+      Gtk::CellRendererCombo* cell = Gtk::manage(new Gtk::CellRendererCombo);
+      Gtk::TreeViewColumn* col = Gtk::manage(new Gtk::TreeViewColumn(row[i]));
+      col->pack_start(*cell, true);
+      col->set_cell_data_func(*cell, sigc::bind(sigc::mem_fun(*this, &Dialog_Import_CSV::field_data_func), i));
+      col->set_sizing(Gtk::TREE_VIEW_COLUMN_AUTOSIZE);
+      cell->property_model() = m_field_model;
+      cell->property_text_column() = 0;
+      cell->property_has_entry() = false;
+      cell->signal_edited().connect(sigc::bind(sigc::mem_fun(*this, &Dialog_Import_CSV::on_field_edited), i));
+      m_sample_view->append_column(*col);
+    }
+
+    Gtk::TreeIter iter = m_sample_model->append();
+    // -1 means the row to select target fields (see special handling in cell data funcs)
+    (*iter)[m_sample_columns.m_col_row] = -1;
+  }
+
+  // Add the row to the treeview if there are not yet as much sample rows
+  // as the user has chosen (note the first row is to choose the target fields,
+  // not a sample row, which is why we do -1 here).
+  unsigned int sample_rows = m_sample_model->children().size() - 1;
+  
+  // If the first line is interpreted as column titles, then it is not
+  // a sample row
+  if(m_first_line_as_title->get_active() && sample_rows > 0)
+    -- sample_rows;
+
+  // TODO: Don't add if this is the first line and first line as title is set.
+  if(sample_rows < static_cast<unsigned int>(m_sample_rows->get_value_as_int()))
+  {
+    Gtk::TreeIter iter = m_sample_model->append();
+    (*iter)[m_sample_columns.m_col_row] = m_rows.size() - 1;
+  }
+}
+
+void Dialog_Import_CSV::line_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeIter& iter)
+{
+  int row = (*iter)[m_sample_columns.m_col_row];
+  Gtk::CellRendererText* renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
+  if(!renderer_text) throw std::logic_error("CellRenderer is not a CellRendererText in line_data_func");
+
+  if(row == -1)
+    renderer_text->set_property("text", Glib::ustring(_("Target Field")));
+  else
+    renderer_text->set_property("text", Glib::ustring::compose("%1", row + 1));
+}
+
+void Dialog_Import_CSV::field_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeIter& iter, unsigned int column_number)
+{
+  int row = (*iter)[m_sample_columns.m_col_row];
+  Gtk::CellRendererCombo* renderer_combo = dynamic_cast<Gtk::CellRendererCombo*>(renderer);
+  if(!renderer_combo) throw std::logic_error("CellRenderer is not a CellRendererCombo in field_data_func");
+
+  if(row == -1)
+  {
+    sharedptr<Field> field = m_fields[column_number];
+    if(field)
+      renderer_combo->set_property("text", field->get_name());
+    else
+      renderer_combo->set_property("text", Glib::ustring("<None>"));
+
+    renderer_combo->set_property("editable", true);
+  }
+  else
+  {
+    // Convert to currently chosen field, if any, and back, too see how it
+    // looks like when imported
+    sharedptr<Field> field = m_fields[column_number];
+    Glib::ustring text = m_rows[row][column_number];
+    if(field)
+    {
+      bool success;
+      Gnome::Gda::Value value = Glom::Conversions::parse_value(field->get_glom_type(), text, success);
+      if(!success) text = _("<Import failure>");
+      else text = Glom::Conversions::get_text_for_gda_value(field->get_glom_type(), value);
+    }
+
+    renderer_combo->set_property("text", text);
+    renderer_combo->set_property("editable", false);
+  }
+}
+
+void Dialog_Import_CSV::on_field_edited(const Glib::ustring& path, const Glib::ustring& new_text, unsigned int column_number)
+{
+  Gtk::TreePath treepath(path);
+  Gtk::TreeIter iter = m_sample_model->get_iter(treepath);
+
+  // Lookup field indicated by new_text
+  const Gtk::TreeNodeChildren& children = m_field_model->children();
+  for(Gtk::TreeIter field_iter = children.begin(); field_iter != children.end(); ++ field_iter)
+  {
+    if( (*field_iter)[m_field_columns.m_col_field_name] == new_text)
+    {
+      sharedptr<Field> field = (*field_iter)[m_field_columns.m_col_field];
+      // Check whether another column is already using that field
+      std::vector<sharedptr<Field> >::iterator vec_field_iter = std::find(m_fields.begin(), m_fields.end(), field);
+      // Reset the old column since two different columns cannot be imported into the same field
+      if(vec_field_iter != m_fields.end()) *vec_field_iter = sharedptr<Field>();
+
+      m_fields[column_number] = field;
+      
+      // Update the rows, so they are redrawn, doing a conversion to the new type.
+      const Gtk::TreeNodeChildren& sample_children = m_sample_model->children();
+      // Create a TreePath with initial index 0. We need a TreePath for the row_changed() call
+      unsigned int first_index = 0;
+      Gtk::TreePath path(&first_index, &first_index + 1);
+
+      for(Gtk::TreeIter sample_iter = sample_children.begin(); sample_iter != sample_children.end(); ++ sample_iter)
+      {
+        if(sample_iter != iter)
+          m_sample_model->row_changed(path, sample_iter);
+
+        path.next();
+      }
+
+      break;
+    }
+  }
+}
+
+} //namespace Glom

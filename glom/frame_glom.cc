@@ -22,6 +22,7 @@
 
 #include "frame_glom.h"
 #include "application.h"
+#include "dialog_import_csv.h"
 #include <glom/libglom/appstate.h>
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -763,6 +764,42 @@ void Frame_Glom::on_menu_Tables_AddRelatedTable()
   m_dialog_addrelatedtable->set_modal(); //We don't want people to edit the main window while we are changing structure.
   m_dialog_addrelatedtable->show();
 }
+
+#endif
+
+void Frame_Glom::on_menu_Tables_ImportIntoTable()
+{
+  if(m_table_name.empty())
+  {
+    Gtk::MessageDialog dialog(*get_app_window(), "There is no table to import data into", false, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
+    dialog.run();
+  }
+  else
+  {
+    Gtk::FileChooserDialog file_chooser(*get_app_window(), _("Choose a CSV file to open"), Gtk::FILE_CHOOSER_ACTION_OPEN);
+    file_chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+    file_chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
+
+    if(file_chooser.run() == Gtk::RESPONSE_ACCEPT)
+    {
+      Dialog_Import_CSV* dialog = 0;
+      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "dialog_import_csv");
+      refXml->get_widget_derived("dialog_import_csv", dialog);
+      add_view(dialog);
+
+      file_chooser.hide();
+
+      
+      dialog->import(file_chooser.get_uri(), m_table_name);
+      dialog->run();
+      
+      remove_view(dialog);
+      delete dialog;
+    }
+  }
+}
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 
 void Frame_Glom::on_dialog_add_related_table_response(int response)
 {

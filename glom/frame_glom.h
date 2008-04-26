@@ -97,6 +97,10 @@ public:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void on_menu_Tables_EditTables();
   void on_menu_Tables_AddRelatedTable();
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+  void on_menu_Tables_ImportIntoTable();
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   void on_menu_Reports_EditReports();
   void on_menu_File_EditPrintLayouts();
   void on_menu_developer_database_preferences();

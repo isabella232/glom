@@ -1,3 +1,17 @@
+2008-04-26  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/glom.glade:
+	* glom/dialog_import_csv.h:
+	* glom/dialog_import_csv.cc:
+	* glom/Makefile.am: Added yet unfinished "Import from CSV" dialog.
+
+	* glom/frame_glom.h:
+	* glom/frame_glom.cc: Added Frame_Glom::on_menu_Tables_ImportIntoTable
+	to launch the import dialog.
+
+	* glom/application.cc (init_menus): Added an action for the "Import
+	Into Table" menu item.
+
 2008-04-25  Jeremiah Savage  <jeremiahsavage@gmail.com>
 
 	* glom/libglom/connectionpool.cc:
