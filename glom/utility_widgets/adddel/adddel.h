@@ -21,7 +21,7 @@
 #ifndef ADDDEL_H
 #define ADDDEL_H
 
-#include "gtkmm.h"
+#include <gtkmm.h>
 #include <glom/libglom/data_structure/field.h>
 #include <libgdamm.h>
 #include <libglademm.h>

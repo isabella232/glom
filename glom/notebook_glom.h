@@ -21,7 +21,7 @@
 #ifndef NOTEBOOK_GLOM_H
 #define NOTEBOOK_GLOM_H
 
-#include "box_db.h"
+#include "box_withbuttons.h"
 #include <glom/libglom/document/document_glom.h>
 
 namespace Glom

@@ -56,7 +56,7 @@ bool Box_Data_Portal::init_db_details(const sharedptr<const LayoutItem_Portal>& 
   m_portal = glom_sharedptr_clone(portal);
 
   LayoutWidgetBase::m_table_name = m_portal->get_table_used(Glib::ustring() /* parent table_name, not used. */); 
-  Box_DB_Table::m_table_name = LayoutWidgetBase::m_table_name;
+  Base_DB_Table::m_table_name = LayoutWidgetBase::m_table_name;
 
   const Glib::ustring relationship_title = m_portal->get_title_used(Glib::ustring() /* parent title - not relevant */);
   
@@ -77,11 +77,9 @@ bool Box_Data_Portal::init_db_details(const sharedptr<const LayoutItem_Portal>& 
 
   m_key_field = get_fields_for_table_one_field(LayoutWidgetBase::m_table_name, m_portal->get_to_field_used());
 
-  enable_buttons();
-
   FoundSet found_set;
   found_set.m_table_name = LayoutWidgetBase::m_table_name;
-  return Box_Data_List::init_db_details(found_set); //Calls create_layout() and fill_from_database().
+  return Box_Data::init_db_details(found_set); //Calls create_layout() and fill_from_database().
 }
 
 bool Box_Data_Portal::refresh_data_from_database_with_foreign_key(const Gnome::Gda::Value& foreign_key_value)
@@ -129,8 +127,8 @@ bool Box_Data_Portal::refresh_data_from_database_with_foreign_key(const Gnome::G
       found_set.m_where_clause = "\"" + where_clause_to_table_name + "\".\"" + relationship->get_to_field() + "\" = " + where_clause_to_key_field->sql(m_key_value);
 
 
-      //g_warning("refresh_data_from_database(): where_clause=%s", where_clause.c_str());
-      return Box_Data_List::refresh_data_from_database_with_where_clause(found_set);
+      //g_warning("refresh_data_from_database_with_foreign_key(): where_clause=%s", where_clause.c_str());
+      return Box_Data::refresh_data_from_database_with_where_clause(found_set);
     }
     else
     {
@@ -144,7 +142,7 @@ bool Box_Data_Portal::refresh_data_from_database_with_foreign_key(const Gnome::G
     //If there is no to field then this relationship specifies all records in the table.
     FoundSet found_set = m_found_set;
     found_set.m_where_clause = Glib::ustring();
-    return Box_Data_List::refresh_data_from_database_with_where_clause(found_set);
+    return Box_Data::refresh_data_from_database_with_where_clause(found_set);
   }
 }
 
@@ -158,11 +156,18 @@ sharedptr<const Field> Box_Data_Portal::get_key_field() const
   return m_key_field;
 }
 
-//void Box_Data_Portal::on_record_deleted(const Gnome::Gda::Value& /* primary_key_value */)
-//{
-//  //Allow the parent record (Details view) to recalculate aggregations:
-//  signal_record_changed().emit(m_portal->get_relationship_name());
-//}
+//TODO: refactor: Remove this because it is never called?
+void Box_Data_Portal::on_record_deleted(const Gnome::Gda::Value& /* primary_key_value */)
+{
+  //Allow the parent record (Details view) to recalculate aggregations:
+  signal_portal_record_changed().emit(m_portal->get_relationship_name());
+}
+
+void Box_Data_Portal::on_record_added(const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row)
+{
+  //Allow the parent record (Details view) to recalculate aggregations:
+  signal_portal_record_changed().emit(m_portal->get_relationship_name());
+}
 
 Box_Data_Portal::type_vecLayoutFields Box_Data_Portal::get_fields_to_show() const
 {
@@ -193,11 +198,6 @@ Box_Data_Portal::type_vecLayoutFields Box_Data_Portal::get_fields_to_show() cons
   }
 
   return type_vecLayoutFields();
-}
-
-Box_Data_Portal::type_signal_record_changed Box_Data_Portal::signal_record_changed()
-{
-  return m_signal_record_changed;
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -351,5 +351,16 @@ Document_Glom::type_list_layout_groups Box_Data_Portal::create_layout_get_layout
   
   return result;
 }
+
+sharedptr<Field> Box_Data_Portal::get_field_primary_key() const
+{
+  return m_key_field;
+}
+
+Box_Data_Portal::type_signal_portal_record_changed Box_Data_Portal::signal_portal_record_changed()
+{
+  return m_signal_portal_record_changed;
+}
+
 
 } //namespace Glom

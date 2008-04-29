@@ -29,7 +29,9 @@ AM_CPPFLAGS = -I@top_srcdir@/ $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
 glom_SOURCES = main.cc \
                application.cc application.h \
                base_db.h base_db.cc \
-               box_db.h box_db.cc \
+               base_db_table.h base_db_table.cc \
+               base_db_table_data.h base_db_table_data.cc \
+               box_withbuttons.h box_withbuttons.cc \
                box_db_table.h box_db_table.cc \
                glom_postgres.h glom_postgres.cc \
                glom_privs.h glom_privs.cc \

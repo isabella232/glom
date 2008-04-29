@@ -18,10 +18,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef BOX_DB_H
-#define BOX_DB_H
+#ifndef GLOM_BOX_WITHBUTTONS_H
+#define GLOM_BOX_WITHBUTTONS_H
 
-#include "gtkmm.h"
+#include <gtkmm.h>
 #include "utility_widgets/adddel/adddel_withbuttons.h"
 
 #include <glom/libglom/document/document_glom.h>
@@ -34,18 +34,21 @@
 namespace Glom
 {
 
-class Box_DB :
-  public Gtk::VBox,
-  public Base_DB
+/** A Gtk::VBox base widget class, 
+ * with some extra signals to allow derived classes to be used generically in 
+ * Dialog_Glom, allowing the dialog to respond to buttons in the box.
+ */
+class Box_WithButtons :
+  public Gtk::VBox
 {
 public: 
-  Box_DB();
-  Box_DB(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Box_WithButtons();
+  Box_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
 
   ///For use with libglademm's get_widget_derived():
-  Box_DB(BaseObjectType* cobject);
+  Box_WithButtons(BaseObjectType* cobject);
 
-  virtual ~Box_DB();
+  virtual ~Box_WithButtons();
 
   Gtk::Window* get_app_window();
   const Gtk::Window* get_app_window() const;
@@ -77,4 +80,4 @@ protected:
 
 } //namespace Glom
 
-#endif //BOX_DB_H
+#endif //GLOM_BOX_WITHBUTTONS_H

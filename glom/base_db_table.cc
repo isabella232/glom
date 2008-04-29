@@ -18,34 +18,38 @@
  * Boston, MA 02111-1307, USA.
  */
 
-
-#ifndef BOX_DB_TABLE_H
-#define BOX_DB_TABLE_H
-
-#include <glom/box_withbuttons.h>
-#include <glom/base_db_table.h>
-#include <glom/libglom/data_structure/field.h>
-#include <libglademm.h>
-#include <algorithm> //find_if used in various places.
+#include "base_db_table.h"
+#include <glom/libglom/data_structure/glomconversions.h>
+#include <glom/application.h>
+#include "python_embed/glom_python.h"
+#include <sstream>
 
 namespace Glom
 {
 
-/** A Box that has access to a database table's structure.
- */
-class Box_DB_Table
-: public Box_WithButtons,
-  public Base_DB_Table
+Base_DB_Table::Base_DB_Table()
 {
-public: 
-  Box_DB_Table();
-  Box_DB_Table(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
-  virtual ~Box_DB_Table();
-    
-  Gtk::Window* get_app_window();
-  const Gtk::Window* get_app_window() const;
-};
+}
+
+Base_DB_Table::~Base_DB_Table()
+{
+}
+
+Glib::ustring Base_DB_Table::get_table_name() const
+{
+  return m_table_name;
+}
+
+bool Base_DB_Table::init_db_details(const Glib::ustring& table_name)
+{
+  m_table_name = table_name;
+
+  if(!ConnectionPool::get_instance()->get_ready_to_connect())
+    return false;
+
+  return fill_from_database();
+}
 
 } //namespace Glom
 
-#endif //BOX_DB_TABLE_H
+

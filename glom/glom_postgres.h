@@ -21,7 +21,7 @@
 #ifndef DB_POSTGRES_H
 #define DB_POSTGRES_H
 
-#include "gtkmm.h"
+#include <gtkmm.h>
 
 #include <glom/base_db.h>
 #include <glom/libglom/document/document_glom.h>

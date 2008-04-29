@@ -21,11 +21,12 @@
 #ifndef GLOM_DB_ADDDEL_H
 #define GLOM_DB_ADDDEL_H
 
-#include "gtkmm.h"
+#include <gtkmm.h>
 #include <glom/libglom/data_structure/layout/layoutitem_field.h>
 #include <libgdamm.h>
 #include "glom_db_treemodel.h"
 #include <glom/libglom/document/document_glom.h>
+#include <glom/base_db_table_data.h>
 
 #include <vector>
 #include <map>
@@ -56,11 +57,11 @@ public:
 
 class DbTreeViewColumnGlom;
 
-//For adding/deleting/selecting multi-columned lists of items.
-//This was also an abstraction layer against the strangeness of GtkSheet, though it now uses Gtk::TreeView instead.
+/** For adding/deleting/selecting record rows.
+ */
 class DbAddDel
  : public Gtk::VBox,
-   public View_Composite_Glom
+   public Base_DB_Table_Data
 {
 public:
   friend class InnerIgnore; //declared below.
@@ -73,21 +74,36 @@ public:
 
   virtual void set_allow_add(bool val = true);
   virtual void set_allow_delete(bool val = true);
+    
+  /** Prevent any attempts by this class to change actual records,
+   * if the widget is just being used to enter find critera.
+   * 
+   * @param val True if find mode should be used.
+   */
+  void set_find_mode(bool val = true);
+    
+  /** Prevent more than one record from being added,
+   * Use this if the portal is showing related records, 
+   * and if the relationship's to-field is unique or a primary key.
+   * In this case, adding a new record would require a duplicate value in that 
+   * unique field.
+   * When the user tries to do this, he will see an explanatory dialog from this 
+   * widget.
+   * 
+   * @param val True if multiple records  should be presented.
+   */
+  void set_allow_only_one_related_record(bool val = true);
+    
 
   //Gtk::TreeModel::iterator add_item(const Gnome::Gda::Value& valKey); //Return index of new row.
 
-  /** Get an iterator to the blank row in which the user should add data for the new row.
-   * You can then add the row to your underlying data store when some data has been filled, by handling signal_user_changed.
-   */
-  Gtk::TreeModel::iterator get_item_placeholder(); //Return index of the placeholder row.
-
   void remove_item(const Gtk::TreeModel::iterator& iter);
 
-  Gnome::Gda::Value get_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item);
+  Gnome::Gda::Value get_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item) const;
 
   /** Get the row's hidden key
    */
-  Gnome::Gda::Value get_value_key(const Gtk::TreeModel::iterator& iter);
+  Gnome::Gda::Value get_value_key(const Gtk::TreeModel::iterator& iter) const;
 
   /** Set the row's hidden key
    */
@@ -96,10 +112,11 @@ public:
   /** @param col A value returned from add_column().
    * @result The value on the selected row.
    */
-  Gnome::Gda::Value get_value_selected(const sharedptr<const LayoutItem_Field>& layout_item);
-  Gnome::Gda::Value get_value_key_selected();
+  Gnome::Gda::Value get_value_selected(const sharedptr<const LayoutItem_Field>& layout_item) const;
+  Gnome::Gda::Value get_value_key_selected() const;
 
   Gtk::TreeModel::iterator get_item_selected();
+  Gtk::TreeModel::iterator get_item_selected() const; //There is no TreeModel::const_iterator
 
   /** 
    * @param iter The row to be selected. 
@@ -188,12 +205,10 @@ public:
   void finish_editing(); //Closes active edit controls and commits the data to the cell.
   //virtual void reactivate(); //Sheet doesn't seem to update unless a cell is active.
   void set_prevent_user_signals(bool bVal = true);
+    
+  //TODO_refactor: make private.
 
-  /** When this is set to true, a new row will be added automatically, and the cursor will be placed in the first column of the new row.
-   * Use set_auto_add(false) if you want to provide default values for columns in the new row, or if you want to place the cursor in a different column.
-   * If @a value is false then signal_user_requested_add will be emitted so that you can add the row explicitly.
-   */
-  void set_auto_add(bool value = true);
+  void user_added(const Gtk::TreeModel::iterator& row);
 
   Glib::RefPtr<Gtk::TreeModel> get_model();
   Glib::RefPtr<const Gtk::TreeModel> get_model() const;
@@ -202,36 +217,43 @@ public:
 
   //Signals:
 
-  //row number, col number.
-  typedef sigc::signal<void, const Gtk::TreeModel::iterator&, guint> type_signal_user_added;
-  type_signal_user_added signal_user_added();
 
-  //row number, col number.
-  typedef sigc::signal<void, const Gtk::TreeModel::iterator&, guint> type_signal_user_changed;
-  type_signal_user_changed signal_user_changed();
-
-  //start row, end row
+  /** 
+   * @param start_row
+   * @param end_row
+   */
   typedef sigc::signal<void, const Gtk::TreeModel::iterator&, const Gtk::TreeModel::iterator&> type_signal_user_requested_delete;
   type_signal_user_requested_delete signal_user_requested_delete();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+  /** Emitted when the user wants to edit the layout of the items in this widget.
+   */
   typedef sigc::signal<void> type_signal_user_requested_layout;
   type_signal_user_requested_layout signal_user_requested_layout();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  //row number.
+  /** Emitted when the user request a view/edit of the details of the record.
+   * @param row
+   */
   typedef sigc::signal<void, const Gtk::TreeModel::iterator&> type_signal_user_requested_edit;
   type_signal_user_requested_edit signal_user_requested_edit();
 
-  typedef sigc::signal<void> type_signal_user_requested_add;
-  type_signal_user_requested_add signal_user_requested_add();
-
-  typedef sigc::signal<void> type_signal_user_reordered_columns;
-  type_signal_user_reordered_columns signal_user_reordered_columns();
-
+  /** Emitted when the user clicks on a script button.
+   * @param layout_button The layout item for the script button that was clicked.
+   * @param row
+   */
   typedef sigc::signal<void, const sharedptr<const LayoutItem_Button>&, const Gtk::TreeModel::iterator&> type_signal_script_button_clicked;
   type_signal_script_button_clicked signal_script_button_clicked();
 
+  /** Allow a parent widget to set the foreign key when a record is added,
+   * to make the new record a related record.
+   *
+   * @param row Row number
+   * @param primary_key_value The value of the primary key of the new related record.
+   */
+  typedef sigc::signal<void, const Gtk::TreeModel::iterator&, const Gnome::Gda::Value&> type_signal_record_added;
+  type_signal_record_added signal_record_added();
+    
  
   virtual Gtk::TreeModel::iterator get_last_row();
   virtual Gtk::TreeModel::iterator get_last_row() const;
@@ -239,6 +261,19 @@ public:
   virtual void set_open_button_title(const Glib::ustring& title);
 
 protected:
+  
+  
+  //Overrides of Base_DB/Base_DB_Table methods:
+  virtual void set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
+  virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
+  virtual Gnome::Gda::Value get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const;
+
+  //Implementations of pure virtual methods from Base_DB_Table_Data:
+  virtual sharedptr<Field> get_field_primary_key() const;
+  virtual Gnome::Gda::Value get_primary_key_value_selected() const;
+  virtual void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value);
+  virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const;
+      
   Gtk::CellRenderer* construct_specified_columns_cellrenderer(const sharedptr<LayoutItem>& layout_item, int model_column_index, int data_model_column_index);
 
   bool get_model_column_index(guint view_column_index, guint& model_column_index);
@@ -252,7 +287,7 @@ protected:
   type_list_indexes get_data_model_column_index(const sharedptr<const LayoutItem_Field>& layout_item_field) const;
 
   virtual void setup_menu();
-  virtual Gnome::Gda::Value treeview_get_key(const Gtk::TreeModel::iterator& row);
+  virtual Gnome::Gda::Value treeview_get_key(const Gtk::TreeModel::iterator& row) const;
 
   ///Add a blank row, or return the existing blank row if there already is one.
   //virtual Gtk::TreeModel::iterator get_next_available_row_with_add_if_necessary();
@@ -298,9 +333,9 @@ protected:
   /** @param model_column_index A value returned from add_column().
    * @param view_column_index The index of the corresponding view column.
    */
-  bool get_view_column_index(guint model_column_index, guint& view_column_index);
+  bool get_view_column_index(guint model_column_index, guint& view_column_index) const;
 
-  guint get_count_hidden_system_columns();
+  guint get_count_hidden_system_columns() const;
 
   //The column_id is extra information that we can use later to discover what the column shows, even when columns have been reordered.
   guint treeview_append_column(const Glib::ustring& title, Gtk::CellRenderer& cellrenderer, int model_column_index, int data_model_column_index);
@@ -313,6 +348,7 @@ protected:
 
   int get_fixed_cell_height();
 
+  //TODO: Remove this and use AppGlom::get_application() instead?
   App_Glom* get_application();
 
   static void apply_formatting(Gtk::CellRenderer* renderer, const FieldFormatting& formatting);
@@ -357,10 +393,13 @@ protected:
 
   type_vecStrings m_vecColumnIDs; //We give each ViewColumn a special ID, so we know where they are after a reorder.
 
-  bool m_auto_add;
   bool m_allow_add;
   bool m_allow_delete;
+    
+  bool m_find_mode;
+  bool m_allow_only_one_related_record;
 
+  /// The primary key for the table:
   sharedptr<Field> m_key_field;
 
   bool m_columns_ready;
@@ -369,16 +408,16 @@ protected:
   Gtk::TreeViewColumn* m_treeviewcolumn_button;
 
   //signals:
-  type_signal_user_added m_signal_user_added;
-  type_signal_user_changed m_signal_user_changed;
   type_signal_user_requested_delete m_signal_user_requested_delete;
   type_signal_user_requested_edit m_signal_user_requested_edit;
-  type_signal_user_requested_add m_signal_user_requested_add;
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   type_signal_user_requested_layout m_signal_user_requested_layout;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-  type_signal_user_reordered_columns m_signal_user_reordered_columns;
   type_signal_script_button_clicked m_signal_script_button_clicked;
+  type_signal_record_added m_signal_record_added;
+    
+  //TODO: Do this properly:
+  //type_signal_user_added m_signal_record_count_changed;
 
   bool get_ignore_treeview_signals() const;
   void set_ignore_treeview_signals(bool ignore = true);
@@ -420,6 +459,20 @@ protected:
   Glib::RefPtr<Gtk::ListStore> m_model_hint;
 
   int m_fixed_cell_height;
+    
+    
+private:
+  
+  //TODO_refactor: Give these better names, and document them:
+  bool start_new_record();
+  void user_changed(const Gtk::TreeModel::iterator& row, guint col);
+  void user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator&  /* rowEnd TODO */);
+
+  //TODO_refactor: Make some other methods private too.
+  /** Get an iterator to the blank row in which the user should add data for the new row.
+   * You can then add the row to your underlying data store when some data has been filled, by handling signal_user_changed.
+   */
+  Gtk::TreeModel::iterator get_item_placeholder(); //Return index of the placeholder row.
 };
 
 } //namespace Glom

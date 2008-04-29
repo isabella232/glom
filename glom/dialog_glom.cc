@@ -23,7 +23,7 @@
 namespace Glom
 {
 
-Dialog_Glom::Dialog_Glom(Box_DB* pBox)
+Dialog_Glom::Dialog_Glom(Box_WithButtons* pBox)
 {
   set_border_width(Utils::DEFAULT_SPACING_SMALL);
 

@@ -21,7 +21,7 @@
 #ifndef DIALOG_GLOM_H
 #define DIALOG_GLOM_H
 
-#include "box_db.h"
+#include "box_withbuttons.h"
 #include <gtkmm/dialog.h>
 #include <gtkmm/button.h>
 
@@ -32,7 +32,7 @@ class Dialog_Glom :
   public Gtk::Dialog
 {
 public: 
-  Dialog_Glom(Box_DB* pBox);
+  Dialog_Glom(Box_WithButtons* pBox);
   virtual ~Dialog_Glom();
 
   //Signal handlers:
@@ -41,7 +41,7 @@ public:
 protected:
 
   //Member widgets:
-  Box_DB* m_pBox;
+  Box_WithButtons* m_pBox;
 };
 
 } //namespace Glom

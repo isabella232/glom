@@ -23,7 +23,7 @@
 
 #include "config.h" // GLOM_ENABLE_CLIENT_ONLY
 
-#include "box_data_list.h"
+#include "box_data_manyrecords.h"
 #include "../utility_widgets/layoutwidgetbase.h"
 
 namespace Glom
@@ -32,8 +32,8 @@ namespace Glom
 /** This is a base class for data widgets that should show multiple related records.
  */
 class Box_Data_Portal : 
-  public Box_Data_List,
-  public LayoutWidgetBase
+  public Box_Data_ManyRecords,
+  public LayoutWidgetBase     
 {
 public: 
   Box_Data_Portal();
@@ -55,20 +55,27 @@ public:
 
   sigc::signal<void, Gnome::Gda::Value> signal_record_added;
 
+  /** Tell the parent widget that something has changed in one of the related records,
+   * or a record was added or deleted.
+   *
+   * @param relationship_name, if any.
+   */
+  typedef sigc::signal<void, const Glib::ustring&> type_signal_portal_record_changed;
+  type_signal_portal_record_changed signal_portal_record_changed();
+    
   bool get_has_suitable_record_to_view_details() const;
   void get_suitable_table_to_view_details(Glib::ustring& table_name, sharedptr<const UsesRelationship>& relationship) const;
   void get_suitable_record_to_view_details(const Gnome::Gda::Value& primary_key_value, Glib::ustring& table_name, Gnome::Gda::Value& table_primary_key_value) const;
 
-  ///@param relationship_name
-  typedef sigc::signal<void, const Glib::ustring&> type_signal_record_changed;
-  type_signal_record_changed signal_record_changed();
-
 protected:
-  //virtual bool fill_from_database(); //Override.
   virtual type_vecLayoutFields get_fields_to_show() const; //override
+    
+  //Implementations of pure virtual methods from Base_DB_Table_Data:
+  virtual sharedptr<Field> get_field_primary_key() const;
 
-  //virtual void on_record_added(const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row); //Override. Not a signal handler.
-  //virtual void on_record_deleted(const Gnome::Gda::Value& primary_key_value); //override.
+  //Overrides of virtual methods from Base_Db_Table_Data: 
+  virtual void on_record_added(const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row); //Override. Not a signal handler.
+  virtual void on_record_deleted(const Gnome::Gda::Value& primary_key_value); //override.
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void on_dialog_layout_hide(); //override.
@@ -84,8 +91,8 @@ protected:
   sharedptr<LayoutItem_Portal> m_portal;
   sharedptr<Field> m_key_field;
   Gnome::Gda::Value m_key_value;
-
-  type_signal_record_changed m_signal_record_changed;
+    
+  type_signal_portal_record_changed m_signal_portal_record_changed;
 };
 
 } //namespace Glom

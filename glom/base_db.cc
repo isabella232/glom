@@ -107,20 +107,11 @@ bool Base_DB::init_db_details()
   return fill_from_database();
 }
 
-bool Base_DB::refresh_data_from_database()
-{
-  return fill_from_database();
-}
-
+//TODO: Remove this?
 bool Base_DB::fill_from_database()
 {
   //m_AddDel.remove_all();
   return true;
-}
-
-void Base_DB::fill_end()
-{
-  //Call this from the end of fill_from_database() overrides.
 }
 
 //static:
@@ -2730,6 +2721,5 @@ int Base_DB::count_rows_returned_by(const Glib::ustring& sql_query)
   //std::cout << "DEBUG: count_rows_returned_by(): Returning " << result << std::endl;
   return result;
 }
-
 
 } //namespace Glom

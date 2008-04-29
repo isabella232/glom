@@ -157,8 +157,6 @@ bool Box_DB_Table_Definition::fill_from_database()
     result = false;
   }
 
-  fill_end();
-
   return result;
 }
 

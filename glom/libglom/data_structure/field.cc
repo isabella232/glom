@@ -452,7 +452,7 @@ void Field::set_default_value(const Gnome::Gda::Value& value)
 
 Glib::ustring Field::get_sql_type() const
 {
-  if(false) //See generate_next_auto_increment() //m_field_info->get_auto_increment())
+  if(false) //See get_next_auto_increment_value() //m_field_info->get_auto_increment())
     return "serial"; //See Postgres manual: http://www.postgresql.org/docs/7.4/interactive/datatype.html#DATATYPE-SERIAL. It's actually an integer..
   else
   {

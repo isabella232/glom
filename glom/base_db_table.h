@@ -19,33 +19,34 @@
  */
 
 
-#ifndef BOX_DB_TABLE_H
-#define BOX_DB_TABLE_H
+#ifndef BASE_DB_TABLE_H
+#define BASE_DB_TABLE_H
 
-#include <glom/box_withbuttons.h>
-#include <glom/base_db_table.h>
+#include "base_db.h"
 #include <glom/libglom/data_structure/field.h>
-#include <libglademm.h>
 #include <algorithm> //find_if used in various places.
 
 namespace Glom
 {
 
-/** A Box that has access to a database table's structure.
+/** A base class that is a Bakery View with some database functionality 
+ * for use with a specific database table.
  */
-class Box_DB_Table
-: public Box_WithButtons,
-  public Base_DB_Table
+class Base_DB_Table : public Base_DB
 {
 public: 
-  Box_DB_Table();
-  Box_DB_Table(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
-  virtual ~Box_DB_Table();
+  Base_DB_Table();
+  virtual ~Base_DB_Table();
+
+  virtual bool init_db_details(const Glib::ustring& table_name);
+
+  Glib::ustring get_table_name() const;
+
+protected:
     
-  Gtk::Window* get_app_window();
-  const Gtk::Window* get_app_window() const;
+  Glib::ustring m_table_name;
 };
 
 } //namespace Glom
 
-#endif //BOX_DB_TABLE_H
+#endif //BASE_DB_TABLE_H

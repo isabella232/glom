@@ -19,7 +19,7 @@
  */
 
 #include "dialog_new_self_hosted_connection.h"
-#include "box_db.h" //For Box_DB::connect_to_server().
+#include "box_withbuttons.h" //For Box_WithButtons::connect_to_server().
 #include <glom/frame_glom.h> //For Frame_Glom::show_ok_dialog
 #include <glibmm/i18n.h>
 

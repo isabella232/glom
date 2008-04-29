@@ -12,6 +12,7 @@ libmode_data_a_SOURCES = box_data.cc box_data.h \
                          box_data_list_related.cc box_data_list_related.h \
                          box_data_list.cc box_data_list.h \
                          box_data_calendar_related.cc box_data_calendar_related.h \
+                         box_data_manyrecords.cc box_data_manyrecords.h \
                          box_data_portal.cc box_data_portal.h \
                          notebook_data.cc notebook_data.h \
                          dialog_layout.cc dialog_layout.h \

@@ -23,7 +23,7 @@
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
-#include "gtkmm.h"
+#include <gtkmm.h>
 
 #include <glom/libglom/document/document_glom.h>
 #include <glom/libglom/connectionpool.h>
@@ -45,7 +45,7 @@ class LayoutItem_VerticalGroup;
 
 
 /** A base class that is a Bakery View with some database functionality.
-*/
+ */
 class Base_DB :
   public View_Composite_Glom
 {
@@ -55,9 +55,6 @@ public:
 
   /// Specify the structure of what will be shown, and fill it.
   virtual bool init_db_details();
-
-  /// Specify what actual data will be shown:
-  virtual bool refresh_data_from_database();
 
   /** Returns whether we are in developer mode.
    * Some functionality will be deactivated when not in developer mode.
@@ -127,6 +124,7 @@ protected:
   Glib::ustring get_find_where_clause_quick(const Glib::ustring& table_name, const Gnome::Gda::Value& quick_search) const;
 
 
+  //Methods to be overridden by derived classes:
   virtual void set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value&  value);
   virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
 
@@ -294,8 +292,10 @@ protected:
   bool check_entered_value_for_uniqueness(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value, Gtk::Window* parent_window);
   bool check_entered_value_for_uniqueness(const Glib::ustring& table_name, const Gtk::TreeModel::iterator& /* row */,  const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value, Gtk::Window* parent_window);
 
+  /** Fill the UI with information (data or structure, depending on the widget).
+   * Overridden by derived widgets to provide implementation.
+   */
   virtual bool fill_from_database();
-  virtual void fill_end(); //Call this from the end of fill_from_database() overrides.
 
   virtual void on_userlevel_changed(AppState::userlevels userlevel);
 

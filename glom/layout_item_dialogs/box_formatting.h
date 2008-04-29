@@ -24,7 +24,7 @@
 #include <gtkmm.h>
 #include "../utility_widgets/dialog_properties.h"
 #include <glom/libglom/document/document_glom.h>
-#include "../box_db.h"
+#include "../box_withbuttons.h"
 #include "../utility_widgets/comboentry_currency.h"
 #include "../combobox_relationship.h"
 #include "../combobox_fields.h"

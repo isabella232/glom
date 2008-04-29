@@ -135,9 +135,9 @@ Box_Data_Details::~Box_Data_Details()
   remove_view(&m_FlowTable);
 }
 
-Gnome::Gda::Value Box_Data_Details::get_primary_key_value() const
+Gnome::Gda::Value Box_Data_Details::get_primary_key_value(const Gtk::TreeModel::iterator& /* row */) const
 {
-  return m_primary_key_value;
+  return get_primary_key_value_selected();
 }
 
 void Box_Data_Details::set_primary_key_value(const Gtk::TreeModel::iterator& /* row */, const Gnome::Gda::Value& value)
@@ -359,9 +359,6 @@ bool Box_Data_Details::fill_from_database()
     //fill_related();
 
     set_unstored_data(false);
-
-    fill_end();
-
   }
 
   return bResult;
@@ -391,7 +388,7 @@ void Box_Data_Details::on_button_new()
   if(m_field_primary_key && m_field_primary_key->get_auto_increment()) //If the primary key is an auto-increment:
   {
     //Just make a new record, and show it:
-    Gnome::Gda::Value primary_key_value = generate_next_auto_increment(m_table_name, m_field_primary_key->get_name()); //TODO: This should return a Gda::Value
+    Gnome::Gda::Value primary_key_value = get_next_auto_increment_value(m_table_name, m_field_primary_key->get_name()); //TODO: This should return a Gda::Value
 
     record_new(false /* use entered field data */, primary_key_value);
     refresh_data_from_database_with_primary_key(primary_key_value);
@@ -406,7 +403,7 @@ void Box_Data_Details::on_button_new()
 
 void Box_Data_Details::on_button_del()
 {
-  if( Conversions::value_is_empty(get_primary_key_value()) )
+  if( Conversions::value_is_empty(get_primary_key_value_selected()) )
   {
     //Tell user that a primary key is needed to delete a record:
     Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("No primary key value.")), true);
@@ -469,7 +466,7 @@ void Box_Data_Details::set_entered_field_data(const Gtk::TreeModel::iterator& /*
   set_entered_field_data(field, value);
 }
 
-Gnome::Gda::Value Box_Data_Details::get_primary_key_value_selected()
+Gnome::Gda::Value Box_Data_Details::get_primary_key_value_selected() const
 {
   return m_primary_key_value;
 }
@@ -479,7 +476,7 @@ void Box_Data_Details::recalculate_fields_for_related_records(const Glib::ustrin
   m_FieldsCalculationInProgress.clear();
 
   //Check all fields in the parent table:
-  const Gnome::Gda::Value primary_key_value = get_primary_key_value();
+  const Gnome::Gda::Value primary_key_value = get_primary_key_value_selected();
   for(type_vecFields::iterator iter = m_TableFields.begin(); iter != m_TableFields.end(); ++iter)
   {
     const sharedptr<const Field> field = *iter;
@@ -625,7 +622,7 @@ void Box_Data_Details::on_flowtable_script_button_clicked(const sharedptr<const 
 {
   if(layout_item)
   {
-    const Gnome::Gda::Value primary_key_value = get_primary_key_value();
+    const Gnome::Gda::Value primary_key_value = get_primary_key_value_selected();
     execute_button_script(layout_item, primary_key_value);
 
     //Refresh the view, in case the script changed any data:
@@ -653,7 +650,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
 
   Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
 
-  Gnome::Gda::Value primary_key_value = get_primary_key_value();
+  Gnome::Gda::Value primary_key_value = get_primary_key_value_selected();
   if(!Conversions::value_is_empty(primary_key_value)) //If there is not a primary key value:
   {
     Glib::ustring table_name;
@@ -664,7 +661,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
     {
       table_name = get_table_name();
       primary_key_field = m_field_primary_key;
-      primary_key_value = get_primary_key_value();
+      primary_key_value = get_primary_key_value_selected();
     }
     else
     {
@@ -800,7 +797,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
       else
       {
         //Make a new record, and show it:
-        Gnome::Gda::Value primary_key_value = generate_next_auto_increment(m_table_name, m_field_primary_key->get_name());
+        Gnome::Gda::Value primary_key_value = get_next_auto_increment_value(m_table_name, m_field_primary_key->get_name());
 
         record_new(true /* use entered field data */, primary_key_value);
         refresh_data_from_database_with_primary_key(primary_key_value);
@@ -835,7 +832,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
         set_unstored_data(true); //Cause a warning if this is never put into the database.
       }
     }
-  } //if(get_primary_key_value().size())
+  } //if(get_primary_key_value_selected().size())
 }
 
 void Box_Data_Details::on_userlevel_changed(AppState::userlevels user_level)

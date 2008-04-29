@@ -21,7 +21,7 @@
 #ifndef GLOM_PRIVS_H
 #define GLOM_PRIVS_H
 
-#include "gtkmm.h"
+#include <gtkmm.h>
 
 #include <glom/glom_postgres.h>
 

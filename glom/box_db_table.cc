@@ -31,7 +31,7 @@ Box_DB_Table::Box_DB_Table()
 }
 
 Box_DB_Table::Box_DB_Table(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
-: Box_DB(cobject, refGlade)
+: Box_WithButtons(cobject, refGlade)
 {
 }
 
@@ -39,182 +39,17 @@ Box_DB_Table::~Box_DB_Table()
 {
 }
 
-Glib::ustring Box_DB_Table::get_table_name()
+const Gtk::Window* Box_DB_Table::get_app_window() const
 {
-  return m_table_name;
+  Box_DB_Table* nonconst = const_cast<Box_DB_Table*>(this);
+  return nonconst->get_app_window();
+}
+  
+Gtk::Window* Box_DB_Table::get_app_window()
+{
+  return dynamic_cast<Gtk::Window*>(get_toplevel());
 }
 
-bool Box_DB_Table::init_db_details(const Glib::ustring& table_name)
-{
-  m_table_name = table_name;
-
-  if(!ConnectionPool::get_instance()->get_ready_to_connect())
-    return false;
-
-  return fill_from_database();
-}
-
-bool Box_DB_Table::refresh_data_from_database()
-{
-  if(!ConnectionPool::get_instance()->get_ready_to_connect())
-    return false;
-
-  return fill_from_database();
-}
-
-Gnome::Gda::Value Box_DB_Table::get_entered_field_data_field_only(const sharedptr<const Field>& field) const
-{
-  sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
-  layout_item->set_full_field_details(field); 
-
-  return get_entered_field_data(layout_item);
-}
-
-Gnome::Gda::Value Box_DB_Table::get_entered_field_data(const sharedptr<const LayoutItem_Field>& /* field */) const
-{
-  //Override this to use Field::set_data() too.
-
-  return Gnome::Gda::Value(); //null
-}
-
-unsigned long Box_DB_Table::get_last_auto_increment_value(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model, const Glib::ustring& /* field_name */)
-{
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window());
-#else
-  std::auto_ptr<ExceptionConnection> error;
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window(), error);
-#endif
-
-  if(sharedconnection)
-  {
-    Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
-    Glib::ustring id = connection->get_last_insert_id(data_model);
-
-    //Convert it to a numeric type:
-    std::stringstream stream;
-    stream << id;
-    unsigned long id_numeric = 0;
-    stream >> id_numeric;
-
-    return id_numeric;
-  }
-  else
-    return 0;
-}
-
-//static:
-/*
-Box_DB_Table::type_vecFields Box_DB_Table::get_fields_for_datamodel(const Glib::RefPtr<Gnome::Gda::DataModel>& data_model)
-{
-  type_vecFields result;
-
-  int columns =  data_model->get_n_columns();
-  for(int i = 0; i < columns; ++i)
-  {
-    Glib::RefPtr<Gnome::Gda::Column> fieldinfo = data_model->describe_column(i);
-    sharedptr<Field> field(new Field());
-    field->set_field_info(fieldinfo); //TODO: Get glom-specific information from document?
-    result.push_back( field );
-  }
-
-  return result;
-}
-*/
-
-Glib::ustring Box_DB_Table::postgres_get_field_definition_for_sql(const Glib::RefPtr<const Gnome::Gda::Column>& field_info)
-{
-  Glib::ustring strResult;
-
-  //Type
-  Glib::ustring strType = "unknowntype";
-
-  //Postgres has a special "serial" datatype. (MySQL uses a numeric type, and has an extra "AUTO_INCREMENT" command)
-  if(false) //disabled for now - see generate_next_auto_increment() //field_info->get_auto_increment())
-  {
-    strType = "serial";
-  }
-  else
-  {
-    ConnectionPool* pConnectionPool = ConnectionPool::get_instance();
-    if(pConnectionPool)
-    {
-      const FieldTypes* pFieldTypes = pConnectionPool->get_field_types();
-      if(pFieldTypes)
-      {
-        const GType fieldType = field_info->get_g_type();
-        strType = pFieldTypes->get_string_name_for_gdavaluetype(fieldType);
-      }
-    }
-  }
-
-  strResult += strType;
-
-   /*
-  //Optinal type details: (M, D), UNSIGNED
-  Field::enumTypeOptionals optionals = fieldType.get_TypeOptionals();
-  if(optionals != Field::TYPE_OPTIONALS_None)
-  {
-  Glib::ustring strOptionals;
-
-  char pchM[10] = {0};
-  sprintf(pchM, "%d", fieldType.get_MaxLength());
-    Glib::ustring strM(pchM);
-
-
-  if(optionals == Field::TYPE_OPTIONALS_M_D)
-  {
-    if( (fieldType.get_MaxLength() != 0) && ( fieldType.get_DecimalsCount() != 0) ) //0 here means use default, so don't specify.
-    {
-      char pchD[10] = {0};
-      sprintf(pchD, "%d", fieldType.get_DecimalsCount());
-      Glib::ustring strD(pchD);
-
-      strOptionals = "(" + strM + "," + strD + ")";
-    }
-
-  }
-  else if(optionals == Field::TYPE_OPTIONALS_M_S)
-  {
-    if( fieldType.get_MaxLength() != 0 ) //0 here means use default, so don't specify.
-      strOptionals = "(" + strM + ")";
-
-      if(!(fieldType.get_Signed()))
-        strOptionals += " UNSIGNED";
-  }
-  else if(optionals == Field::TYPE_OPTIONALS_M)
-  {
-      if( fieldType.get_MaxLength() != 0 ) //0 here means use default, so don't specify.
-      strOptionals = "(" + strM + ")";
-  }
-
-    if(strOptionals.size())
-      strResult += (" " + strOptionals);
-  }
-  */
-
-  //Unique:
-  if(field_info->get_unique_key())
-    strResult += " UNIQUE";
-
-  /* Posgres needs us to do this separately
-  //Not Null:
-  if(!(field_info->get_allow_null()))
-    strResult += " NOT NULL";
-  */
-
-  //Default:
-  Gnome::Gda::Value valueDefault = field_info->get_default_value();
-  const Glib::ustring& strDefault =  valueDefault.to_string();
-  if(!strDefault.empty() && strDefault != "NULL")
-    strResult += " DEFAULT " + strDefault; //TODO: Quote/Escape it if necessary.
-
-  //Primary Key:
-  if(field_info->get_primary_key())
-    strResult += " PRIMARY KEY";
-
-  return strResult;
-}
 
 
 } //namespace Glom

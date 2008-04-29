@@ -71,9 +71,10 @@ DbAddDel::DbAddDel()
   m_bAllowUserActions(true),
   m_bPreventUserSignals(false),
   m_bIgnoreTreeViewSignals(false),
-  m_auto_add(true),
   m_allow_add(true),
   m_allow_delete(true),
+  m_find_mode(false),
+  m_allow_only_one_related_record(false),
   m_columns_ready(false),
   m_allow_view(true),
   m_allow_view_details(false),
@@ -191,18 +192,8 @@ void DbAddDel::on_MenuPopup_activate_layout()
 
 void DbAddDel::on_MenuPopup_activate_Add()
 {
-  if(m_auto_add)
-  {
-    Gtk::TreeModel::iterator iter = get_item_placeholder();
-    if(iter)
-    {
-      select_item(iter, true /* start_editing */);
-    }
-  }
-  else
-  {
-    signal_user_requested_add().emit(); //Let the client code add the row explicitly, if it wants.
-  }
+  //Create a new record in the database:
+  start_new_record();
 }
 
 void DbAddDel::on_MenuPopup_activate_Delete()
@@ -367,7 +358,7 @@ Gtk::TreeModel::iterator DbAddDel::get_item_placeholder()
    return Gtk::TreeModel::iterator();
 }
 
-Gnome::Gda::Value DbAddDel::get_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item)
+Gnome::Gda::Value DbAddDel::get_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item) const
 {
   Gnome::Gda::Value value;
 
@@ -391,7 +382,7 @@ Gnome::Gda::Value DbAddDel::get_value(const Gtk::TreeModel::iterator& iter, cons
   return value;
 }
 
-Gnome::Gda::Value DbAddDel::get_value_key_selected()
+Gnome::Gda::Value DbAddDel::get_value_key_selected() const
 {
   Gtk::TreeModel::iterator iter = get_item_selected();
   if(iter)
@@ -402,7 +393,7 @@ Gnome::Gda::Value DbAddDel::get_value_key_selected()
     return Gnome::Gda::Value();
 }
 
-Gnome::Gda::Value DbAddDel::get_value_selected(const sharedptr<const LayoutItem_Field>& layout_item)
+Gnome::Gda::Value DbAddDel::get_value_selected(const sharedptr<const LayoutItem_Field>& layout_item) const
 {
   return get_value(get_item_selected(), layout_item);
 }
@@ -413,6 +404,21 @@ Gtk::TreeModel::iterator DbAddDel::get_item_selected()
   if(refTreeSelection)
   {
      return refTreeSelection->get_selected();
+  }
+
+  if(m_refListStore)
+    return m_refListStore->children().end();
+  else
+    return Gtk::TreeModel::iterator();
+}
+
+Gtk::TreeModel::iterator DbAddDel::get_item_selected() const
+{
+  Glib::RefPtr<const Gtk::TreeSelection> refTreeSelection = m_TreeView.get_selection();
+  if(refTreeSelection)
+  {
+     Glib::RefPtr<Gtk::TreeSelection> unconst = Glib::RefPtr<Gtk::TreeSelection>::cast_const(refTreeSelection);
+     return unconst->get_selected();
   }
 
   if(m_refListStore)
@@ -837,7 +843,7 @@ void DbAddDel::construct_specified_columns()
   //Create the Gtk ColumnRecord:
 
   Gtk::TreeModel::ColumnRecord record;
-
+    
   //Database columns:
   type_model_store::type_vec_fields fields;
   {
@@ -863,6 +869,8 @@ void DbAddDel::construct_specified_columns()
       }
     }
   }
+  
+  m_FieldsShown = fields; //Needed by Base_DB_Table_Data::record_new().
 
   //Find the primary key:
   int column_index_key = 0;
@@ -899,6 +907,7 @@ void DbAddDel::construct_specified_columns()
     m_refListStore = Glib::RefPtr<type_model_store>();
   }
 
+ 
   m_TreeView.set_model(m_refListStore);
 
 
@@ -1053,7 +1062,7 @@ void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const sharedptr<c
       type_list_indexes list_indexes = get_data_model_column_index(layout_item);
       for(type_list_indexes::const_iterator iter = list_indexes.begin(); iter != list_indexes.end(); ++iter)
       {
-        guint treemodel_col = *iter + get_count_hidden_system_columns();
+        const guint treemodel_col = *iter + get_count_hidden_system_columns();
         treerow.set_value(treemodel_col, value);
 
         //Mark this row as not a placeholder because it has real data now.
@@ -1087,6 +1096,7 @@ void DbAddDel::remove_all_columns()
 void DbAddDel::set_table_name(const Glib::ustring& table_name)
 {
   m_found_set.m_table_name = table_name;
+  Base_DB_Table::m_table_name = table_name;
 }
 
 guint DbAddDel::add_column(const sharedptr<LayoutItem>& layout_item)
@@ -1272,6 +1282,16 @@ void DbAddDel::set_show_column_titles(bool bVal)
   m_TreeView.set_headers_visible(bVal);
 }
 
+void DbAddDel::set_find_mode(bool val)
+{
+  m_find_mode = val;
+}
+  
+void DbAddDel::set_allow_only_one_related_record(bool val)
+{
+  m_allow_only_one_related_record = val;
+}
+
 
 void DbAddDel::set_column_width(guint /* col */, guint /*width*/)
 {
@@ -1355,7 +1375,7 @@ DbAddDel::InnerIgnore::~InnerIgnore()
   m_pOuter = false;
 }
 
-Gnome::Gda::Value DbAddDel::treeview_get_key(const Gtk::TreeModel::iterator& row)
+Gnome::Gda::Value DbAddDel::treeview_get_key(const Gtk::TreeModel::iterator& row) const
 {
   Gnome::Gda::Value value;
 
@@ -1440,13 +1460,13 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
          
       //Signal that a new key was added:
       //We will ignore editing of bool values in the blank row. It seems like a bad way to start a new record.
-      //m_signal_user_added.emit(row);
+      //user_added(row);
     }
     else if(bIsChange)
     {
       //Existing item changed:
 
-      m_signal_user_changed.emit(row, model_column_index);
+      user_changed(row, model_column_index);
     }
   }
 }
@@ -1480,7 +1500,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
     //Is it an add or a change?:
     bool bIsAdd = false;
     bool bIsChange = false;
-    bool do_signal = true;
+    bool do_change = true;
 
     if(get_allow_user_actions()) //If add is possible:
     {
@@ -1563,7 +1583,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
             }
           }
 
-          do_signal = false;
+          do_change = false;
       }
       else
       {
@@ -1581,7 +1601,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
       {
         //Signal that a new key was added:
         if(m_allow_add)
-          m_signal_user_added.emit(row, model_column_index);
+          user_added(row);
       }
       else if(bIsChange)
       {
@@ -1589,22 +1609,12 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
         //Check that it has really changed - get the last value.
         if(value != valOld)
         {
-          if(do_signal)
-            m_signal_user_changed.emit(row, model_column_index);
+          if(do_change)
+            user_changed(row, model_column_index);
         }
       }
     }
   }
-}
-
-DbAddDel::type_signal_user_added DbAddDel::signal_user_added()
-{
-  return m_signal_user_added;
-}
-
-DbAddDel::type_signal_user_changed DbAddDel::signal_user_changed()
-{
-  return m_signal_user_changed;
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -1624,19 +1634,15 @@ DbAddDel::type_signal_user_requested_edit DbAddDel::signal_user_requested_edit()
   return m_signal_user_requested_edit;
 }
 
-DbAddDel::type_signal_user_requested_add DbAddDel::signal_user_requested_add()
-{
-  return m_signal_user_requested_add;
-}
-
-DbAddDel::type_signal_user_reordered_columns DbAddDel::signal_user_reordered_columns()
-{
-  return m_signal_user_reordered_columns;
-}
 
 DbAddDel::type_signal_script_button_clicked DbAddDel::signal_script_button_clicked()
 {
   return m_signal_script_button_clicked;
+}
+
+DbAddDel::type_signal_record_added DbAddDel::signal_record_added()
+{
+  return m_signal_record_added;
 }
 
 void DbAddDel::on_treeview_button_press_event(GdkEventButton* event)
@@ -1775,7 +1781,7 @@ void DbAddDel::on_treeview_columns_changed()
     }
 
     //Tell other code that something has changed, so the new column order can be serialized.
-    m_signal_user_reordered_columns.emit();
+    //TODO: If this is ever wanted: m_signal_user_reordered_columns.emit();
   }
 }
 
@@ -1783,11 +1789,6 @@ DbAddDel::type_vecStrings DbAddDel::get_columns_order() const
 {
   //This list is rebuilt in on_treeview_columns_changed, but maybe we could just build it here.
   return m_vecColumnIDs;
-}
-
-void DbAddDel::set_auto_add(bool value)
-{
-  m_auto_add = value;
 }
 
 Glib::RefPtr<Gtk::TreeModel> DbAddDel::get_model()
@@ -1834,7 +1835,7 @@ Gtk::TreeModel::iterator DbAddDel::get_last_row()
     return Gtk::TreeModel::iterator();
 }
 
-Gnome::Gda::Value DbAddDel::get_value_key(const Gtk::TreeModel::iterator& iter)
+Gnome::Gda::Value DbAddDel::get_value_key(const Gtk::TreeModel::iterator& iter) const
 {
   return treeview_get_key(iter);
 }
@@ -1890,7 +1891,7 @@ bool DbAddDel::get_model_column_index(guint view_column_index, guint& model_colu
   return true;
 }
 
-bool DbAddDel::get_view_column_index(guint model_column_index, guint& view_column_index)
+bool DbAddDel::get_view_column_index(guint model_column_index, guint& view_column_index) const
 {
   //Initialize output parameter:
   view_column_index = 0;
@@ -1912,7 +1913,7 @@ bool DbAddDel::get_view_column_index(guint model_column_index, guint& view_colum
   return true;
 }
 
-guint DbAddDel::get_count_hidden_system_columns()
+guint DbAddDel::get_count_hidden_system_columns() const
 {
   return 0; //The key now has explicit API in the model.
   //return 1; //The key.
@@ -2076,6 +2077,337 @@ void DbAddDel::show_hint_model()
 
   m_TreeView.set_fixed_height_mode(false); //fixed_height mode is incompatible with the default append_column() helper method.
   m_TreeView.append_column("", m_columns_hint.m_col_hint);
+}
+
+bool DbAddDel::start_new_record()
+{
+  Gtk::TreeModel::iterator iter = get_item_placeholder();
+  if(!iter)
+    return false;
+  
+  sharedptr<LayoutItem_Field> fieldToEdit;
+
+  //Start editing in the primary key or the first cell if the primary key is auto-incremented (because there is no point in editing an auto-generated value)
+  //guint index_primary_key = 0;
+  const bool bPresent = true; //get_field_primary_key_index(index_primary_key); //If there is no primary key then the default of 0 is OK.
+  if(!bPresent)
+    return false;
+   
+  sharedptr<Field> fieldPrimaryKey = get_key_field();
+  if(fieldPrimaryKey && fieldPrimaryKey->get_auto_increment())
+  {
+    //Start editing in the first cell that is not auto_increment:
+    for(type_ColumnTypes::iterator iter = m_ColumnTypes.begin(); iter != m_ColumnTypes.end(); ++iter)
+    {
+      sharedptr<LayoutItem> layout_item = iter->m_item;
+      sharedptr<LayoutItem_Field> layout_item_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
+      if(!(layout_item_field->get_full_field_details()->get_auto_increment()))
+      {
+        fieldToEdit = layout_item_field;
+        break;
+      }
+    }
+  }
+  else
+  {
+    //The primary key is not auto-increment, so start by editing it:
+    fieldToEdit = sharedptr<LayoutItem_Field>::create();
+    fieldToEdit->set_full_field_details(fieldPrimaryKey);
+  }
+
+  //std::cout << "debug: index_field_to_edit=" << index_field_to_edit << std::endl;
+
+  if(fieldToEdit)
+  {
+    select_item(iter, fieldToEdit, true /* start_editing */);
+  }
+  else
+  {
+    std::cout << "start_new_record(): no editable rows." << std::endl;
+    //The only keys are non-editable, so just add a row:
+    select_item(iter); //without start_editing.
+    //g_warning("start_new_record(): index_field_to_edit does not exist: %d", index_field_to_edit);
+  }
+  
+  return true;
+}
+
+void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
+{
+  const Gnome::Gda::Value parent_primary_key_value = get_value_key(row);
+  sharedptr<const LayoutItem_Field> layout_field = get_column_field(col);
+
+  if(!Conversions::value_is_empty(parent_primary_key_value)) //If the record's primary key is filled in:
+  {
+    //Just update the record:
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    try
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+    {
+      
+      Glib::ustring table_name = m_found_set.m_table_name;
+      sharedptr<Field> primary_key_field;
+      Gnome::Gda::Value primary_key_value;
+
+      if(!layout_field->get_has_relationship_name())
+      {
+        table_name = m_found_set.m_table_name;
+        primary_key_field = get_key_field();
+        primary_key_value = parent_primary_key_value;
+      }
+      else
+      {
+        //If it's a related field then discover the actual table that it's in,
+        //plus how to identify the record in that table.
+        const Glib::ustring relationship_name = layout_field->get_relationship_name();
+
+        Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+
+        sharedptr<Relationship> relationship = document->get_relationship(m_found_set.m_table_name, relationship_name);
+        if(relationship)
+        {
+          table_name = relationship->get_to_table();
+          const Glib::ustring to_field_name = relationship->get_to_field();
+          //Get the key field in the other table (the table that we will change)
+          primary_key_field = get_fields_for_table_one_field(table_name, to_field_name); //TODO_Performance.
+          if(primary_key_field)
+          {
+            //Get the value of the corresponding key in the current table (that identifies the record in the table that we will change)
+            sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+            layout_item->set_full_field_details( document->get_field(relationship->get_from_table(), relationship->get_from_field()) );
+
+            primary_key_value = get_value_selected(layout_item);
+
+            //Note: This just uses an existing record if one already exists:
+            Gnome::Gda::Value primary_key_value_used;
+            const bool test = add_related_record_for_field(layout_field, relationship, primary_key_field, primary_key_value, primary_key_value_used);
+            if(!test)
+              return;
+
+            //Get the new primary_key_value if it has been created:
+            primary_key_value = primary_key_value_used;
+
+            //Now that the related record exists, the following code to set the value of the other field in the related field can succeed.
+          }
+          else
+          {
+            g_warning("Box_Data_List::on_flowtable_field_edited(): key not found for edited related field.");
+          }
+        }
+      }
+
+      //Update the field in the record (the record with this primary key):
+      const Gnome::Gda::Value field_value = get_value(row, layout_field);
+      //std::cout << "Box_Data_List::on_adddel_user_changed(): field_value = " << field_value.to_string() << std::endl;
+      //const sharedptr<const Field>& field = layout_field->m_field;
+      //const Glib::ustring strFieldName = layout_field->get_name();
+
+      LayoutFieldInRecord field_in_record(layout_field, m_found_set.m_table_name /* parent */, primary_key_field, primary_key_value);
+
+      //Check whether the value meets uniqueness constraints:
+      Gtk::Window* window = get_application();
+      if(!check_entered_value_for_uniqueness(m_found_set.m_table_name, row, layout_field, field_value, window))
+      {
+        //Revert to the value in the database:
+        const Gnome::Gda::Value value_old = get_field_value_in_database(field_in_record, window);
+        set_entered_field_data(row, layout_field, value_old);
+
+        return; //The value has been reverted to the value in the database.
+      }
+
+
+      const bool bTest = set_field_value_in_database(field_in_record, row, field_value, false /* don't use current calculations */, window);
+
+      //Glib::ustring strQuery = "UPDATE \"" + table_name + "\"";
+      //strQuery += " SET " +  /* table_name + "." + postgres does not seem to like the table name here */ strFieldName + " = " + field.sql(field_value);
+      //strQuery += " WHERE " + table_name + "." + primary_key_field.get_name() + " = " + primary_key_field.sql(primary_key_value);
+      //bool bTest = query_execute(strQuery);
+      if(!bTest)
+      {
+        //Update failed.
+        fill_from_database(); //Replace with correct values.
+      }
+      else
+        signal_record_changed().emit();
+    }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    catch(const Glib::Exception& ex)
+    {
+      handle_error(ex);
+    }
+    catch(const std::exception& ex)
+    {
+      handle_error(ex);
+    }
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+  }
+  else
+  {
+    //This record probably doesn't exist yet.
+    //Add new record, which will generate the primary key:
+    user_added(row);
+    
+    const Gnome::Gda::Value primaryKeyValue = get_value_key(row); //TODO_Value
+    if(!(Conversions::value_is_empty(primaryKeyValue))) //If the Add succeeeded:
+    {
+      if(!(layout_field->get_full_field_details()->get_primary_key())) //Don't try to re-set the primary key field, because we just inserted the record with it.
+      {
+        user_changed(row, col); //Change this field in the new record.
+      }
+    }
+    else
+    {
+      //A field value was entered, but the record has not been added yet, because not enough information exists yet.
+       g_warning("Box_Data_List::on_adddel_user_changed(): debug: record not yet added.");
+    }
+  }
+}
+
+
+void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
+{
+  //Prevent impossible multiple related records:
+  if(m_allow_only_one_related_record && (get_count() > 0))
+  {
+    //Tell user that they can't do that:
+    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Extra Related Records Not Possible")), true, Gtk::MESSAGE_WARNING);
+    dialog.set_secondary_text(_("You attempted to add a new related record, but there can only be one related record, because the relationship uses a unique key.")),
+    dialog.set_transient_for(*App_Glom::get_application());
+    dialog.run();
+    
+    return;
+  }
+  
+  //std::cout << "DbAddDel::on_adddel_user_added" << std::endl;
+
+  Gnome::Gda::Value primary_key_value;
+
+  sharedptr<Field> primary_key_field = get_key_field();
+
+  //Get the new primary key value, if one is available now:
+  if(primary_key_field->get_auto_increment())
+  {
+    //Auto-increment is awkward (we can't get the last-generated ID) with postgres, so we auto-generate it ourselves;
+    const Glib::ustring& strPrimaryKeyName = primary_key_field->get_name();
+    primary_key_value = get_next_auto_increment_value(m_found_set.m_table_name, strPrimaryKeyName);  //TODO: return a Gnome::Gda::Value of an appropriate type.
+  }
+  else
+  {
+    //Use the user-entered primary key value:
+
+    //This only works when the primary key is already stored: primary_key_value = get_value_key(row);
+    //sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+    //layout_item->set_full_field_details(field);
+    
+    primary_key_value = get_value_key_selected();
+  }
+
+  //If no primary key value is available yet, then don't add the record yet:
+  if(!Conversions::value_is_empty(primary_key_value))
+  {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    sharedptr<SharedConnection> sharedconnection = connect_to_server(get_application()); //Keep it alive while we need the data_model.
+#else
+    std::auto_ptr<ExceptionConnection> error;
+    sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window(), error); //Keep it alive while we need the data_model.
+    // Ignore error, sharedconnection presence is checked below
+#endif
+    if(sharedconnection)
+    {
+      sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::create();
+      layout_field->set_full_field_details(primary_key_field);
+      if(!check_entered_value_for_uniqueness(m_found_set.m_table_name, layout_field, primary_key_value, get_application()))
+      {
+        //Revert to a blank value.
+        primary_key_value = Conversions::get_empty_value(layout_field->get_full_field_details()->get_glom_type());
+        set_entered_field_data(row, layout_field, primary_key_value);
+        return;
+      }
+
+      Glib::RefPtr<Gnome::Gda::DataModel> data_model = record_new(true /* use entered field data*/, primary_key_value);
+      if(data_model)
+      {
+        //Save the primary key value for later use:
+        //record_new() did this: set_value_key(row, primary_key_value);
+
+        //Show the primary key in the row, if the primary key is visible:
+
+        //If it's an auto-increment, then get the value and show it:
+        if(primary_key_field->get_auto_increment())
+        {
+          sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+          layout_item->set_full_field_details(primary_key_field);
+          set_value(row, layout_item, primary_key_value);
+        }
+
+        //Allow a parent widget to link the new record by setting the foreign key:
+        signal_record_added().emit(row, primary_key_value);
+      }
+      else
+        handle_error();
+    }
+    else
+    {
+      //Add Record failed.
+      //Replace with correct values:
+      fill_from_database();
+    }
+  }
+}
+
+void DbAddDel::user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator&  /* rowEnd TODO */)
+{
+  if(rowStart)
+  {
+    if(confirm_delete_record())
+    {
+      const Gnome::Gda::Value primary_key_value = get_primary_key_value(rowStart);
+      record_delete(primary_key_value);
+
+      //Remove the row:
+      remove_item(rowStart);
+
+      //TODO_refactor: Just emit signal_record_changed() directly instead?
+      on_record_deleted(primary_key_value);
+    }
+  }
+}
+
+//An override of the Base_DB method:
+void DbAddDel::set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+{
+  return set_value_selected(field, value);
+}
+
+//An override of the Base_DB method:
+void DbAddDel::set_entered_field_data(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+{
+  return set_value(row, field, value);
+}
+
+Gnome::Gda::Value DbAddDel::get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const
+{
+  return get_value_selected(field);
+}
+
+sharedptr<Field> DbAddDel::get_field_primary_key() const
+{
+  return get_key_field();
+}
+
+Gnome::Gda::Value DbAddDel::get_primary_key_value_selected() const
+{
+  return get_value_key_selected();
+}
+
+void DbAddDel::set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value)
+{
+  set_value_key(row, value);
+}
+
+Gnome::Gda::Value DbAddDel::get_primary_key_value(const Gtk::TreeModel::iterator& row) const
+{
+  return get_value_key(row);
 }
 
 } //namespace Glom

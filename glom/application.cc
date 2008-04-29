@@ -983,7 +983,7 @@ bool App_Glom::on_document_load()
         connection_pool->set_port(port_used);
         connection_pool->set_try_other_ports(try_other_ports);
 
-        connection_pool->set_ready_to_connect(this); //Box_DB::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
+        connection_pool->set_ready_to_connect(this); //Box_WithButtons::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
 
         //Attempt to connect to the specified database:
         bool test = false;

@@ -56,18 +56,7 @@ DbAddDel_WithButtons::~DbAddDel_WithButtons()
 
 void DbAddDel_WithButtons::on_button_add()
 {
-  if(m_auto_add)
-  {
-    Gtk::TreeModel::iterator iter = get_item_placeholder();
-    if(iter)
-    {
-      select_item(iter, true /* start_editing */);
-    }
-  }
-  else
-  {
-    signal_user_requested_add().emit(); //Let the client code add the row explicitly, if it wants.
-  }
+  on_MenuPopup_activate_Add();
 }
 
 void DbAddDel_WithButtons::on_button_del()

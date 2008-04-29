@@ -34,6 +34,9 @@ Box_Data_List_Find::Box_Data_List_Find()
 
   g_object_set(m_Button_Find.gobj(), "can-default", TRUE, (gpointer)NULL); //TODO: Make this a real method in gtkmm?
 
+  //Prevent the widget from trying to add or change records:
+  m_AddDel.set_find_mode();
+
   show_all_children();
 }
 
@@ -50,7 +53,7 @@ bool Box_Data_List_Find::fill_from_database()
 {
   Bakery::BusyCursor busy_cursor(get_app_window());
 
-  const bool result = Box_DB_Table::fill_from_database();
+  const bool result = Base_DB_Table_Data::fill_from_database();
   if(!result)
     return false;
 
@@ -64,25 +67,10 @@ bool Box_Data_List_Find::fill_from_database()
   return result;
 }
 
-void Box_Data_List_Find::on_adddel_user_changed(const Gtk::TreeModel::iterator& /* row */, guint /* col */)
-{
-  //Just block the implementation in the base class.
-}
-
 
 Gtk::Widget* Box_Data_List_Find::get_default_button() //override
 {
   return &m_Button_Find;
-}
-
-void Box_Data_List_Find::on_adddel_user_requested_delete(const Gtk::TreeModel::iterator& /* rowStart */, const Gtk::TreeModel::iterator&  /* rowEnd TODO */)
-{
-  //Ignore this, instead of updating the database, as the base class does.
-}
-
-void Box_Data_List_Find::on_adddel_user_added(const Gtk::TreeModel::iterator& /* row */, guint /* col_with_first_value */)
-{
-  //Ignore this, instead of updating the database, as the base class does.
 }
 
 bool Box_Data_List_Find::init_db_details(const Glib::ustring& table_name)

@@ -20,13 +20,14 @@
 
 #include "box_tables.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include <glom/application.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
 {
 
 Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
-: Box_DB(cobject),
+: Box_WithButtons(cobject, refGlade),
   m_pLabelFrameTitle(0),
   m_pCheckButtonShowHidden(0),
   m_colTableName(0),
@@ -87,9 +88,9 @@ void Box_Tables::fill_table_row(const Gtk::TreeModel::iterator& iter, const shar
 
 bool Box_Tables::fill_from_database()
 {
-  Bakery::BusyCursor busy_cursor(get_app_window());
+  Bakery::BusyCursor busy_cursor(App_Glom::get_application());
 
-  bool result = Box_DB::fill_from_database();
+  bool result = Base_DB::fill_from_database();
 
   //Enable/Disable extra widgets:
   const bool developer_mode = (get_userlevel() == AppState::USERLEVEL_DEVELOPER);
@@ -139,10 +140,10 @@ bool Box_Tables::fill_from_database()
 
   //Get the list of tables in the database, from the server:
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window());
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(App_Glom::get_application());
 #else
   std::auto_ptr<ExceptionConnection> error;
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window(), error);
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(App_Glom::get_application(), error);
   // Ignore error, sharedconnection presence is checked below
 #endif
   if(sharedconnection)
@@ -202,8 +203,6 @@ bool Box_Tables::fill_from_database()
     }
   }
 
-  fill_end();
-
   m_AddDel.set_allow_add(developer_mode);
   m_AddDel.set_allow_delete(developer_mode);
 
@@ -227,7 +226,7 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
     //Ask the user if they want us to try to cope with this:
     Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Table Already Exists")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
     dialog.set_secondary_text(_("This table already exists on the database server, though it is not mentioned in the .glom file. This should not happen. Would you like Glom to attempt to use the existing table?"));
-    dialog.set_transient_for(*get_app_window());
+    dialog.set_transient_for(*App_Glom::get_application());
 
     const int response = dialog.run();
     dialog.hide();
@@ -287,7 +286,7 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
         {
            //TODO: Do not show tables that are not in the document.
            Gtk::MessageDialog dialog(_("You cannot delete this table, because there is no information about this table in the document."));
-           dialog.set_transient_for(*get_app_window());
+           dialog.set_transient_for(*App_Glom::get_application());
            dialog.run();
         }
         else
@@ -296,13 +295,13 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
           Glib::ustring strMsg = _("Are you sure that you want to delete this table?\nTable name: ") + table_name;
           Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Delete Table")), true);
           dialog.set_secondary_text(strMsg);
-          dialog.set_transient_for(*get_app_window());
+          dialog.set_transient_for(*App_Glom::get_application());
           int iButtonClicked = dialog.run();
 
           //Delete the table:
           if(iButtonClicked == Gtk::RESPONSE_OK)
           {
-            query_execute( "DROP TABLE \"" + table_name + "\"", get_app_window());
+            query_execute( "DROP TABLE \"" + table_name + "\"", App_Glom::get_application());
             get_document()->remove_table(table_name); //Forget about it in the document too.
             something_changed = true;
           }
@@ -332,7 +331,7 @@ void Box_Tables::on_adddel_Edit(const Gtk::TreeModel::iterator& row)
     {
        Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Unknown Table")), true);
        dialog.set_secondary_text(_("You cannot open this table, because there is no information about this table in the document."));
-       dialog.set_transient_for(*get_app_window());
+       dialog.set_transient_for(*App_Glom::get_application());
        dialog.run();
     }
     else
@@ -432,7 +431,7 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
         //Rename the table:
         if(iButtonClicked == Gtk::RESPONSE_OK)
         {
-          const bool test = query_execute( "ALTER TABLE \"" + table_name + "\" RENAME TO \"" + table_name_new + "\"", get_app_window());
+          const bool test = query_execute( "ALTER TABLE \"" + table_name + "\" RENAME TO \"" + table_name_new + "\"", App_Glom::get_application());
           if(test)
           {
             //Change the AddDel item's key:

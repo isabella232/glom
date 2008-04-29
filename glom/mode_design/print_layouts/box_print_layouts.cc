@@ -69,7 +69,7 @@ bool Box_Print_Layouts::fill_from_database()
 {
   Bakery::BusyCursor busy_cursor(get_app_window());
 
-  bool result = Box_DB::fill_from_database();
+  bool result = Base_DB::fill_from_database();
 
   //Enable/Disable extra widgets:
   bool developer_mode = (get_userlevel() == AppState::USERLEVEL_DEVELOPER);
@@ -116,8 +116,6 @@ bool Box_Print_Layouts::fill_from_database()
     g_warning("Box_Print_Layouts::fill_from_database(): document is null");
 
   //TODO:
-
-  fill_end();
 
   m_AddDel.set_allow_add(developer_mode);
   m_AddDel.set_allow_delete(developer_mode);

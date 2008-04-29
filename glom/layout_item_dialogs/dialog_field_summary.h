@@ -25,7 +25,7 @@
 #include "../utility_widgets/dialog_properties.h"
 #include <glom/libglom/document/document_glom.h>
 #include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
-#include "../box_db.h"
+#include "../box_withbuttons.h"
 #include "../utility_widgets/combo_textglade.h"
 #include "combo_summarytype.h"
 

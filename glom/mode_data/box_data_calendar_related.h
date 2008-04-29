@@ -47,15 +47,23 @@ public:
 protected:
   virtual bool fill_from_database(); //Override.
   virtual type_vecLayoutFields get_fields_to_show() const; //override
+    
+    
+  //Implementations of pure virtual methods from Base_DB_Table_Data:
+  virtual void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value);
+    
 
-  virtual void on_record_added(const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row); //Override. Not a signal handler.
-  virtual void on_record_deleted(const Gnome::Gda::Value& primary_key_value); //override.
+  void on_record_added(const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row); //Override. Not a signal handler.
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void on_dialog_layout_hide(); //override.
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   virtual void enable_buttons(); //override
+    
+  //Implementations of pure virtual methods from Base_DB_Table_Data:
+  virtual Gnome::Gda::Value get_primary_key_value_selected() const;
+  virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual Dialog_Layout* create_layout_dialog() const; // override.

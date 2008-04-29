@@ -45,7 +45,7 @@ main(int argc, char* argv[])
       connection_pool->set_port(5433);
       connection_pool->set_try_other_ports(false);
 
-      connection_pool->set_ready_to_connect(); //Box_DB::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
+      connection_pool->set_ready_to_connect(); //Box_WithButtons::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
     }
 
     //Connect:

@@ -23,24 +23,30 @@
 
 #include "config.h" // GLOM_ENABLE_CLIENT_ONLY
 
-#include "../box_db_table.h"
+#include <glom/box_withbuttons.h>
+#include <glom/base_db_table_data.h>
 #include "dialog_layout.h"
 
 namespace Glom
 {
 
-/** Call init_db_details() to create the layout and fill it with data from the database.
+/** A Box for viewing and editing the data in a database table.
+ *
+ * Call init_db_details() to create the layout and fill it with data from the database.
  * Call refresh_data_from_database() to fill the existing layout with up-to-date data from the database.
  *
  * Derived classes should implement create_layout() to create/arrange the widgets for the groups, fields, portals, etc.
  * Derived classes should implement fill_from_database() to get the data from the database and fill the widgets created by create_layout().
  */
-class Box_Data : public Box_DB_Table
+class Box_Data
+: public Box_WithButtons,
+  public Base_DB_Table_Data
 {
 public: 
   Box_Data();
   virtual ~Box_Data();
 
+  //TODO: Put this in Base_DB_Table_Data?
   ///Create the layout for the database structure, and fill it with data from the database.
   virtual bool init_db_details(const FoundSet& found_set);
 
@@ -94,9 +100,6 @@ protected:
 
   virtual type_vecLayoutFields get_fields_to_show() const;
 
-  virtual bool get_related_record_exists(const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value);
-  virtual bool add_related_record_for_field(const sharedptr<const LayoutItem_Field>& layout_item_parent, const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& primary_key_field, const Gnome::Gda::Value& primary_key_value_provided, Gnome::Gda::Value& primary_key_value_used);
-
   type_vecLayoutFields get_table_fields_to_show(const Glib::ustring& table_name) const;
 
   /** Get the layout groups, with the Field information filled in.
@@ -108,23 +111,6 @@ protected:
   /** Get the fields that are in related tables, via a relationship using @a field_name changes.
   */
   type_vecLayoutFields get_related_fields(const sharedptr<const LayoutItem_Field>& field) const;
-
-  bool record_delete(const Gnome::Gda::Value& primary_key_value);
-
-  ///This allows record_new() to set the generated/entered primary key value, needed by Box_Data_List:
-  virtual void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value);
-
-  ///New record with all entered field values.
-  Glib::RefPtr<Gnome::Gda::DataModel> record_new(bool use_entered_data = true, const Gnome::Gda::Value& primary_key_value = Gnome::Gda::Value()); 
-  Glib::RefPtr<Gnome::Gda::DataModel> record_new(bool use_entered_data, const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row);
-
-  Gnome::Gda::Value generate_next_auto_increment(const Glib::ustring& table_name, const Glib::ustring field_name);
-
-  virtual sharedptr<Field> get_field_primary_key() const = 0;
-  virtual Gnome::Gda::Value get_primary_key_value_selected() = 0;
-  //virtual bool get_field(const Glib::ustring& name, sharedptr<Field>& field) const;
-
-  bool confirm_delete_record();
 
   void execute_button_script(const sharedptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key_value);
 
@@ -147,11 +133,6 @@ protected:
   Dialog_Layout* m_pDialogLayout;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   Glib::ustring m_layout_name;
-
-  FoundSet m_found_set;
-
-  type_vecFields m_TableFields; //A cache, so we don't have to repeatedly get them from the Document.
-  type_vecLayoutFields m_FieldsShown; //And any extra keys needed by shown fields.
 };
 
 } //namespace Glom

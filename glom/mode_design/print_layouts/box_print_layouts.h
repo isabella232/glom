@@ -23,6 +23,7 @@
 
 #include <glom/box_db_table.h>
 #include <glom/libglom/data_structure/print_layout.h>
+#include <glom/utility_widgets/adddel/adddel_withbuttons.h>
 
 namespace Glom
 {
@@ -41,10 +42,10 @@ protected:
   virtual void save_to_document();
 
   //Signal handlers:
-  virtual void on_adddel_Add(const Gtk::TreeModel::iterator& row);
-  virtual void on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
-  virtual void on_adddel_Edit(const Gtk::TreeModel::iterator& row);
-  virtual void on_adddel_changed(const Gtk::TreeModel::iterator& row, guint column);
+  void on_adddel_Add(const Gtk::TreeModel::iterator& row);
+  void on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
+  void on_adddel_Edit(const Gtk::TreeModel::iterator& row);
+  void on_adddel_changed(const Gtk::TreeModel::iterator& row, guint column);
 
   virtual void on_userlevel_changed(AppState::userlevels userlevel);
 

@@ -21,12 +21,21 @@
 #ifndef BOX_TABLES_H
 #define BOX_TABLES_H
 
-#include "../box_db.h"
+#include <glom/box_withbuttons.h>
+#include <glom/base_db.h>
+#include <glom/utility_widgets/adddel/adddel_withbuttons.h>
+#include <libglademm.h>
 
 namespace Glom
 {
 
-class Box_Tables : public Box_DB
+/** This widget offers a list of tables in the database,
+  * allowing the user to select a table,
+  * or add or delete a table.
+  */
+class Box_Tables 
+: public Box_WithButtons,
+  public Base_DB
 {
 public:
   Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
@@ -40,15 +49,15 @@ protected:
   virtual void save_to_document();
 
   //Signal handlers:
-  virtual void on_adddel_Add(const Gtk::TreeModel::iterator& row);
-  virtual void on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
-  virtual void on_adddel_Edit(const Gtk::TreeModel::iterator& row);
-  virtual void on_adddel_changed(const Gtk::TreeModel::iterator& row, guint column);
+  void on_adddel_Add(const Gtk::TreeModel::iterator& row);
+  void on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
+  void on_adddel_Edit(const Gtk::TreeModel::iterator& row);
+  void on_adddel_changed(const Gtk::TreeModel::iterator& row, guint column);
 
-  virtual void on_show_hidden_toggled();
+  void on_show_hidden_toggled();
 
   virtual void on_userlevel_changed(AppState::userlevels userlevel);
-
+      
   Gtk::Label* m_pLabelFrameTitle;
   Gtk::CheckButton* m_pCheckButtonShowHidden;
   guint m_colTableName;

@@ -46,15 +46,7 @@ public:
 
   virtual void print_layout();
 
-  virtual Gnome::Gda::Value get_primary_key_value() const; //Actual primary key value of this record.
-  virtual Gnome::Gda::Value get_primary_key_value_selected(); //Value in the primary key's cell.
-
-  virtual void set_primary_key_value(const Gtk::TreeModel::iterator& /* row */, const Gnome::Gda::Value& value);
-
-  virtual Gnome::Gda::Value get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const;
-  virtual void set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
-  virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
-
+ 
   //Signals:
   typedef sigc::signal<void> type_signal_void;
   type_signal_void signal_nav_first();
@@ -62,7 +54,7 @@ public:
   type_signal_void signal_nav_next();
   type_signal_void signal_nav_last();
 
-  typedef sigc::signal<void, const Gnome::Gda::Value&> type_signal_record_deleted; //arg is PrimaryKey.   //TODO: pass by const ref?
+  typedef sigc::signal<void, const Gnome::Gda::Value&> type_signal_record_deleted; //arg is PrimaryKey.
   type_signal_record_deleted signal_record_deleted();
 
    /** For instance,
@@ -72,6 +64,18 @@ public:
   type_signal_requested_related_details signal_requested_related_details();
 
 protected:
+
+
+  //Implementations of pure virtual methods from Base_DB_Table_Data:
+  virtual Gnome::Gda::Value get_primary_key_value_selected() const; //Value in the primary key's cell.
+  virtual void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value);
+  virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const; //Actual primary key value of this record.
+    
+  virtual Gnome::Gda::Value get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const;
+  virtual void set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
+  virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
+
+
   virtual bool fill_from_database(); //override.
   virtual void create_layout();
   //virtual void fill_related();

@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "box_db.h"
+#include "box_withbuttons.h"
 #include "application.h" //App_Glom.
 #include <glom/libglom/appstate.h>
 //#include <libgnomeui/gnome-app-helper.h>
@@ -28,7 +28,7 @@
 namespace Glom
 {
 
-Box_DB::Box_DB()
+Box_WithButtons::Box_WithButtons()
 : m_Box_Buttons(false, Utils::DEFAULT_SPACING_SMALL),
   m_Button_Cancel(Gtk::Stock::CANCEL)
 {
@@ -38,10 +38,10 @@ Box_DB::Box_DB()
   set_spacing(Utils::DEFAULT_SPACING_SMALL);
 
   //Connect signals:
-  m_Button_Cancel.signal_clicked().connect(sigc::mem_fun(*this, &Box_DB::on_Button_Cancel));
+  m_Button_Cancel.signal_clicked().connect(sigc::mem_fun(*this, &Box_WithButtons::on_Button_Cancel));
 }
 
-Box_DB::Box_DB(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
+Box_WithButtons::Box_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
 : Gtk::VBox(cobject),
   m_Box_Buttons(false, Utils::DEFAULT_SPACING_SMALL),
   m_Button_Cancel(Gtk::Stock::CANCEL)
@@ -52,33 +52,33 @@ Box_DB::Box_DB(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /
   set_spacing(Utils::DEFAULT_SPACING_SMALL);
 
   //Connect signals:
-  m_Button_Cancel.signal_clicked().connect(sigc::mem_fun(*this, &Box_DB::on_Button_Cancel));
+  m_Button_Cancel.signal_clicked().connect(sigc::mem_fun(*this, &Box_WithButtons::on_Button_Cancel));
 }
 
-Box_DB::Box_DB(BaseObjectType* cobject)
+Box_WithButtons::Box_WithButtons(BaseObjectType* cobject)
 : Gtk::VBox(cobject),
   m_Box_Buttons(false, Utils::DEFAULT_SPACING_SMALL),
   m_Button_Cancel(Gtk::Stock::CANCEL)
 {
 }
 
-Box_DB::~Box_DB()
+Box_WithButtons::~Box_WithButtons()
 {
 }
 
-void Box_DB::on_Button_Cancel()
+void Box_WithButtons::on_Button_Cancel()
 {
   //Tell the parent dialog that the user has clicked [Cancel]:
   signal_cancelled.emit();
 }
 
-const Gtk::Window* Box_DB::get_app_window() const
+const Gtk::Window* Box_WithButtons::get_app_window() const
 {
-  Box_DB* nonconst = const_cast<Box_DB*>(this);
+  Box_WithButtons* nonconst = const_cast<Box_WithButtons*>(this);
   return nonconst->get_app_window();
 }
   
-Gtk::Window* Box_DB::get_app_window()
+Gtk::Window* Box_WithButtons::get_app_window()
 {
   return dynamic_cast<Gtk::Window*>(get_toplevel());
 /*
@@ -105,18 +105,18 @@ Gtk::Window* Box_DB::get_app_window()
 }
 
 /*
-void Box_DB::show_hint()
+void Box_WithButtons::show_hint()
 {
   hint_set(m_strHint);
 }
 */
 
-void Box_DB::set_button_cancel(Gtk::Button& button)
+void Box_WithButtons::set_button_cancel(Gtk::Button& button)
 {
-  button.signal_clicked().connect(sigc::mem_fun(*this, &Box_DB::on_Button_Cancel));
+  button.signal_clicked().connect(sigc::mem_fun(*this, &Box_WithButtons::on_Button_Cancel));
 }
 
-Gtk::Widget* Box_DB::get_default_button()
+Gtk::Widget* Box_WithButtons::get_default_button()
 {
   return 0; //Override this if the box has a default button.
 }
