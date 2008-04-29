@@ -1,3 +1,50 @@
+2008-04-29  Murray Cumming  <murrayc@murrayc.com>
+
+	Large refactoring of the Base_DB_* and Box_DB_* hierarchy to make it 
+	simpler and less hacky.
+
+	* docs/developer_reference/Doxyfile: Added this, so you can do 
+	doxygen Doxyfile to get some HTML to help understand the code.
+
+	* glom/signal_reemitter.h: Added signal_connect_for_reemit_*args(), 
+	to make it easier to just emit a signal in response to another one, 
+	for instance to emit up to a parent widget.
+	* regression_tests/Makefile.am:
+	* regression_tests/test_signal_reemit.cc: Added a test for this.
+
+	* glom/Makefile.am:
+	* glom/base_db.[h|cc]: Split this, to create:
+	* glom/base_db_table.[h|cc]
+	* glom/base_db_table_data.[h|cc]: with some stuff from Box_DB_Table.
+
+	* glom/box_db.[h|cc]:  Renamed to
+	* glom/box_withbuttons.[h|cc] because that's all this is now.
+
+	* glom/box_db_table.[h|cc]: Derive from Base_DB_Table, instead of 
+	implementing so much stuff.
+
+	* glom/mode_data/Makefile.am:
+	* glom/mode_data/box_data.[h|cc]: Derive from Box_WithButtons,
+        and Base_DB_Table_Data instead of implementing so much stuff.
+
+	* glom/mode_data/box_data_details.[h|cc]
+	* glom/mode_data/box_data_manyrecords.cc[h|cc]: Added this base class 
+	for:
+	* glom/mode_data/box_data_list.[h|cc]
+	and Box_Data_Portal:
+
+	* glom/mode_data/box_data_portal.cc[h|cc]: Added this base class 
+	for 
+	* glom/mode_data/box_data_calendar_related.[h|cc]
+	and
+	* glom/mode_data/box_data_list_related.[h|cc]
+	
+	* glom/utility_widgets/db_adddel/db_adddel.[h|cc] Derive from 
+	Base_DB_Table_Data, to use its implementation, to move lots of 
+	code for record adding, changing, and deleting into this widget instead 
+	of having decisions in the parent Box_Data_List_Related and Box_Data_List.
+	This is simpler.
+
 2008-04-26  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/glom.glade:
