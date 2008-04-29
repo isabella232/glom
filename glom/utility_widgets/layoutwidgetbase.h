@@ -77,6 +77,11 @@ public:
 
   virtual void set_read_only(bool read_only = true);
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  void set_dnd_in_progress(bool drag = true);
+  bool get_dnd_in_progress();
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+    
 protected:
   virtual App_Glom* get_application() const; // = 0;
 
@@ -95,6 +100,7 @@ protected:
   type_signal_user_requested_layout m_signal_user_requested_layout;
   type_signal_user_requested_layout_properties m_signal_user_requested_layout_properties;
 
+  bool m_drag_in_progress;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 };
 

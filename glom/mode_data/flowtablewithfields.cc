@@ -1272,6 +1272,15 @@ void FlowTableWithFields::on_dnd_add_layout_item_text(LayoutWidgetBase* above)
   signal_layout_changed().emit();
 }
 
+void FlowTableWithFields::on_dnd_add_layout_item (LayoutWidgetBase* above,
+                                                  sharedptr<LayoutItem>& item)
+{
+  dnd_add_to_layout_group (item, above);
+  
+  // Don't do this here - it's done in the drag_end handler
+  // signal_layout_changed().emit();
+}
+
 void FlowTableWithFields::on_dnd_add_placeholder(LayoutWidgetBase* above)
 {
   if(m_placeholder)

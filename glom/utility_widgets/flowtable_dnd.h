@@ -23,6 +23,7 @@
 
 #include <gtkmm.h>
 #include "flowtable.h"
+#include "layoutwidgetutils.h"
 
 #ifdef GLOM_ENABLE_CLIENT_ONLY
 #error FlowTableDnd does not work in Client-only mode
@@ -31,7 +32,9 @@
 namespace Glom
 {
 
-class FlowTableDnd : public FlowTable
+class FlowTableDnd : 
+  public FlowTable,
+  public LayoutWidgetUtils
 {
 public:
   FlowTableDnd();
@@ -47,8 +50,10 @@ protected:
   virtual void on_child_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int, int, 
                                            const Gtk::SelectionData& selection_data, guint, guint time, Gtk::Widget* child);  
   virtual void on_child_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& drag_context, 
-                                           const Gtk::SelectionData& selection_data, guint, guint time, Gtk::Widget* child);  
-
+                                           Gtk::SelectionData& selection_data, guint, guint time, Gtk::Widget* child);  
+  virtual void on_child_drag_begin (const Glib::RefPtr<Gdk::DragContext>& drag_context, Gtk::Widget* child);
+  virtual void on_child_drag_end (const Glib::RefPtr<Gdk::DragContext>& drag_context, Gtk::Widget* child);    
+    
   virtual void start_dnd (Gtk::Widget& child);
   virtual void stop_dnd (Gtk::Widget& child);
 
@@ -60,6 +65,8 @@ protected:
   virtual void on_dnd_add_layout_item_button (LayoutWidgetBase* above) = 0;
   virtual void on_dnd_add_layout_item_text (LayoutWidgetBase* above) = 0;
   virtual void on_dnd_add_layout_notebook (LayoutWidgetBase* above) = 0;
+  virtual void on_dnd_add_layout_item (LayoutWidgetBase* above,
+                                       sharedptr<LayoutItem>& item) = 0;
   
   virtual void on_dnd_add_placeholder(LayoutWidgetBase* above) = 0;
   virtual void on_dnd_remove_placeholder() = 0;    
@@ -68,10 +75,13 @@ protected:
   bool dnd_remove_placeholder_real();
   
   FlowTableItem* dnd_item_at_position(int x, int y);
-  LayoutWidgetBase* dnd_datawidget_from_item();
+  LayoutWidgetBase* dnd_datawidget_from_item(FlowTableItem* item);
     
 private:
+  FlowTableItem* find_current_dnd_item (Gtk::Widget* child, int x = -1, int y = -1);
   FlowTableItem* m_current_dnd_item;
+    
+  bool m_internal_drag;
 };
 
 } // namespace Glom

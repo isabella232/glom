@@ -55,11 +55,11 @@ class FlowTableWithFields
   : 
 #ifdef GLOM_ENABLE_CLIENT_ONLY
     public FlowTable,
+    public LayoutWidgetUtils,
 #else
     public FlowTableDnd,
 #endif
-    public View_Composite_Glom,
-    public LayoutWidgetUtils
+    public View_Composite_Glom
 {
 public: 
   FlowTableWithFields(const Glib::ustring& table_name = Glib::ustring());
@@ -216,6 +216,8 @@ protected:
   virtual void on_dnd_add_layout_item_button (LayoutWidgetBase* above);
   virtual void on_dnd_add_layout_item_text (LayoutWidgetBase* above);
   virtual void on_dnd_add_layout_notebook (LayoutWidgetBase* above);
+  virtual void on_dnd_add_layout_item (LayoutWidgetBase* above,
+                                       sharedptr<LayoutItem>& item);
   
   bool get_field_information (sharedptr<LayoutItem>& item);
   void dnd_notify_failed_drop();

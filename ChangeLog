@@ -1,3 +1,25 @@
+2008-04-29  Johannes Schmid  <johannes.schmid@openismus.com>
+
+	* glom/mode_data/flowtablewithfields.cc:
+	* glom/mode_data/flowtablewithfields.h
+	(on_dnd_add_layout_item)
+	Added new method to reparent items from other flowtables.
+	
+	* glom/utility_widgets/flowtable_dnd.cc (start_dnd), (on_drag_motion),
+	  (on_drag_data_received), (dnd_item_at_position),
+	  (dnd_datawidget_from_item), (find_current_dnd_item),
+	  (on_child_drag_motion), (on_child_drag_data_get),
+	  (on_child_drag_begin), (on_child_drag_end):	  
+	* glom/utility_widgets/flowtable_dnd.h
+	Implemented drag sources for LayoutWidgets and allow dragging in and between
+	flowtables. Only works for labels as I didn't find out yet how to set other
+	widgets as drag sources.
+	
+	* glom/utility_widgets/layoutwidgetbase.cc
+	  (set_dnd_in_progress), (get_dnd_in_progress):
+	* glom/utility_widgets/layoutwidgetbase.h:
+	Added some need methods for drag and drop
+
 2008-04-29  Murray Cumming  <murrayc@murrayc.com>
 
 	Large refactoring of the Base_DB_* and Box_DB_* hierarchy to make it 
