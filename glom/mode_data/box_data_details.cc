@@ -294,8 +294,12 @@ bool Box_Data_Details::fill_from_database()
         //Add extra possibly-non-visible columns that we need:
         sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
         layout_item->set_full_field_details(m_field_primary_key);
-        fieldsToGet.push_back(layout_item);
-
+        
+        if(std::find_if(fieldsToGet.begin(), fieldsToGet.end(), predicate_LayoutItem_Field_IsSameField<LayoutItem_Field>(layout_item)) == fieldsToGet.end())
+        {
+          fieldsToGet.push_back(layout_item);
+        }
+        
         //g_warning("primary_key name = %s", m_field_primary_key->get_name().c_str());
         const int index_primary_key = fieldsToGet.size() - 1;
 

@@ -31,6 +31,9 @@
 namespace Glom
 {
 
+/** A predicate for use with std::find_if() to find a Field or LayoutItem which refers 
+ * to the same field, looking at just the name.
+ */
 template<class T_Element>
 class predicate_FieldHasName
 {

@@ -1,3 +1,16 @@
+2008-04-30  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_data/notebook_data.cc: on_list_user_requested_details():
+	Do not call Box_Data_Details::refresh_data_from_database_with_primary_key() 
+	because on_switch_page_handler() does it later. This avoids an 
+	unnecessary extra refresh of the details view.
+
+	* glom/libglom/data_structure/layout/layoutitem_field.h:
+	Added predicate_LayoutItem_Field_IsSameField for use with std::find_if().
+	* glom/mode_data/box_data_details.cc: fill_from_database(): Do not add 
+	the primary key to the list twice, to avoid setting it twice, to avoid 
+	refreshing portals twice.
+
 2008-04-29  Johannes Schmid  <johannes.schmid@openismus.com>
 
 	* glom/mode_data/flowtablewithfields.cc:

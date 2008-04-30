@@ -191,8 +191,7 @@ FoundSet Notebook_Data::get_found_set_details() const
 
 void Notebook_Data::on_list_user_requested_details(const Gnome::Gda::Value& primary_key_value)
 {
-  //std::cout << "Notebook_Data::on_list_user_requested_details" << std::endl;
-  m_Box_Details.refresh_data_from_database_with_primary_key(primary_key_value);
+  //on_switch_page_handler() does this: m_Box_Details.refresh_data_from_database_with_primary_key(primary_key_value);
   set_current_page(m_iPage_Details);
 }
 
@@ -304,14 +303,14 @@ void Notebook_Data::on_switch_page_handler(GtkNotebookPage* pPage, guint uiPageN
     if(box == &m_Box_List)
     {
       //std::cout << "debug: switching to list" << std::endl;
-      Gnome::Gda::Value primary_key_selected = m_Box_List.get_primary_key_value_selected();
+      const Gnome::Gda::Value primary_key_selected = m_Box_List.get_primary_key_value_selected();
       m_Box_List.refresh_data_from_database();
       m_Box_List.set_primary_key_value_selected(primary_key_selected);
     }
     else if(box == &m_Box_Details)
     {
       //std::cout << "debug: switching to details" << std::endl;
-      Gnome::Gda::Value primary_key_selected = m_Box_List.get_primary_key_value_selected();
+      const Gnome::Gda::Value primary_key_selected = m_Box_List.get_primary_key_value_selected();
       m_Box_Details.refresh_data_from_database_with_primary_key(primary_key_selected);
     }
   }
