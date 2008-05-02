@@ -1,3 +1,10 @@
+2008-05-02  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_data/box_data_details.cc fill_from_database():
+	Get the primary key index (inefficiently) even if the primary key was 
+	already in the list, allowing record editing to work again.
+	Fixes bug #530879 (Armin Burgmeier)
+
 2008-05-02  Johannes Schmid <jhs@gnome.org>
 
 	* glom/utility_widgets/flowtable_dnd.cc (on_child_drag_motion):

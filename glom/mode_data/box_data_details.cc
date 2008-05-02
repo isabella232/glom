@@ -295,13 +295,40 @@ bool Box_Data_Details::fill_from_database()
         sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
         layout_item->set_full_field_details(m_field_primary_key);
         
-        if(std::find_if(fieldsToGet.begin(), fieldsToGet.end(), predicate_LayoutItem_Field_IsSameField<LayoutItem_Field>(layout_item)) == fieldsToGet.end())
+        //Get the primary key index, adding the primary key if necessary:
+        //TODO_Performance: Do this for create_layout() only, instead of repeating it for each refresh?:
+        int index_primary_key = -1; //Arbitrary default.
+        //g_warning("primary_key name = %s", m_field_primary_key->get_name().c_str());
+        const type_vecLayoutFields::const_iterator iterFind = std::find_if(fieldsToGet.begin(), fieldsToGet.end(), predicate_LayoutItem_Field_IsSameField<LayoutItem_Field>(layout_item));
+        if(iterFind == fieldsToGet.end())
         {
           fieldsToGet.push_back(layout_item);
+          index_primary_key = fieldsToGet.size() - 1;
         }
-        
-        //g_warning("primary_key name = %s", m_field_primary_key->get_name().c_str());
-        const int index_primary_key = fieldsToGet.size() - 1;
+        else
+        {
+          //TODO_Performance: Is there any quick way to get the index from iterFind?
+          //TODO_Performance: If not, then just use this instead of the predicate.
+          const type_vecLayoutFields::size_type count = fieldsToGet.size();
+          for(type_vecLayoutFields::size_type i = 0; i < count; ++i)
+          {
+            sharedptr<const LayoutItem_Field> element = fieldsToGet[i];
+            if(!element)
+              continue;
+            
+            if(element->get_name() != layout_item->get_name())
+              continue;
+            
+            //Compare the relationship and related relationshp:
+            sharedptr<const UsesRelationship> uses_a = layout_item;
+            sharedptr<const UsesRelationship> uses_b = element;
+            if(*uses_a == *uses_b)
+            {
+              index_primary_key = i;
+              break;
+            }
+          }
+        }
 
         const Glib::ustring query = Utils::build_sql_select_with_key(m_table_name, fieldsToGet, m_field_primary_key, m_primary_key_value);
         Glib::RefPtr<Gnome::Gda::DataModel> result;
@@ -655,6 +682,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
   Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
 
   Gnome::Gda::Value primary_key_value = get_primary_key_value_selected();
+  //std::cout << "Box_Data_Details::on_flowtable_field_edited(): primary_key_value=" << primary_key_value.to_string() << std::endl;
   if(!Conversions::value_is_empty(primary_key_value)) //If there is not a primary key value:
   {
     Glib::ustring table_name;
