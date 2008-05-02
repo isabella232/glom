@@ -347,7 +347,7 @@ FlowTable::FlowTableItem* FlowTableDnd::find_current_dnd_item (Gtk::Widget* chil
 bool FlowTableDnd::on_child_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint time,
                                         Gtk::Widget* child)
 {
-  find_current_dnd_item(child, x, y);
+  m_current_dnd_item = find_current_dnd_item(child, x, y);
   
   on_dnd_remove_placeholder ();
   
