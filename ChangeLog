@@ -1,3 +1,9 @@
+2008-05-05  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_data/box_data_list_related.cc: constructor:
+	Use add_view() to give the DbAddDel access to the document, to avoid 
+	the repeated warning about the unexpected field type. 
+
 2008-05-02  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data_details.cc fill_from_database():
