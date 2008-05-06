@@ -34,7 +34,7 @@ public:
   Notebook_Find();
   virtual ~Notebook_Find();
 
-  virtual bool init_db_details(const Glib::ustring& table_name);
+  bool init_db_details(const Glib::ustring& table_name);
 
   void set_current_view(Notebook_Data::dataview view);
 
@@ -48,7 +48,7 @@ protected:
 
 
   //Signal handlers:
-  virtual void on_page_find_criteria(const Glib::ustring& where_clause);
+  void on_page_find_criteria(const Glib::ustring& where_clause);
 
   //Member widgets:
   Box_Data_List_Find m_Box_List;

@@ -395,6 +395,7 @@ void Frame_Glom::show_table(const Glib::ustring& table_name, const Gnome::Gda::V
             found_set.m_sort_clause.push_back( type_pair_sort_field(layout_item_sort, true /* ascending */) );
         }
 
+        //Show the wanted records in the notebook, showing details for a particular record if wanted:
         m_Notebook_Data.init_db_details(found_set, primary_key_value_for_details);
         set_mode_widget(m_Notebook_Data);
 
@@ -2077,8 +2078,8 @@ void Frame_Glom::on_notebook_data_switch_page(GtkNotebookPage* /* page */, guint
 
 void Frame_Glom::on_notebook_data_record_details_requested(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value)
 {
+  //Specifying a primary key value causes the details tab to be shown:
   show_table(table_name, primary_key_value);
-  //m_Notebook_Data.show_details(primary_key_value);
 }
 
 void Frame_Glom::update_records_count()

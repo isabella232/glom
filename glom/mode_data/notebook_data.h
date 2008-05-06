@@ -34,8 +34,12 @@ public:
   Notebook_Data();
   virtual ~Notebook_Data();
 
-  //Create the layout for the database structure, and fill it with data.
-  virtual bool init_db_details(const FoundSet& found_set, const Gnome::Gda::Value& primary_key_value_for_details = Gnome::Gda::Value());
+  /** Create the layout for the database structure, and fill it with data.
+   * @param found_set Specifies a found sub-set of the table's records, or all records.
+   * @param primary_key_value_for_details Specifies a single record to show in the details tab, if specified.
+   * @result true if the operation was successful.
+   */
+  bool init_db_details(const FoundSet& found_set, const Gnome::Gda::Value& primary_key_value_for_details = Gnome::Gda::Value());
 
   ///Get the existing where clause, previously supplied to init_db_details().
   FoundSet get_found_set() const;
@@ -44,9 +48,9 @@ public:
   FoundSet get_found_set_details() const;
 
   ///Show the details for a particular record, without affecting the list view:
-  virtual void show_details(const Gnome::Gda::Value& primary_key_value);
+  void show_details(const Gnome::Gda::Value& primary_key_value);
 
-  virtual void select_page_for_find_results(); //Details for 1, List for > 1.
+  void select_page_for_find_results(); //Details for 1, List for > 1.
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void do_menu_developer_layout(); //override
@@ -70,7 +74,7 @@ public:
 
 protected:
 
-  ///Show the counts of all records and found records:
+  ///Show the counts of all records and found records.
   void update_records_count();
 
   //Signal handlers:

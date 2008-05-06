@@ -68,7 +68,7 @@ Notebook_Data::~Notebook_Data()
 bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda::Value& primary_key_value_for_details)
 {
   m_table_name = found_set.m_table_name;
-  //std::cout << "Notebook_Data::init_db_details: table_name=" << m_table_name << std::endl;
+  //std::cout << "Notebook_Data::init_db_details: table_name=" << m_table_name << ", primary_key_value_for_details=" << primary_key_value_for_details.to_string() << std::endl;
 
   const bool details_record_specified = !Conversions::value_is_empty(primary_key_value_for_details);
 
@@ -142,6 +142,8 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
 
         m_Box_Details.init_db_details(found_set, primary_key_for_details);
       }
+      else
+        std::cerr << "Notebook_Data::init_db_details(): document is NULL" << std::endl;
     //}
   }
 
@@ -151,9 +153,11 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
 
   //Select the last-viewed layout, or the details layout, if a specific details record was specified:
   const dataview current_view = get_current_view();
-  if(details_record_specified && (current_view != DATA_VIEW_Details))
+  
+  if(details_record_specified)
   {
-    set_current_view(DATA_VIEW_Details);
+    if(current_view != DATA_VIEW_Details)
+      set_current_view(DATA_VIEW_Details);
   }
   else
   {
