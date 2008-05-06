@@ -167,11 +167,10 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
     if(document)
     {
       const Glib::ustring current_layout = get_document()->get_layout_current(m_table_name);
-      if( (current_layout.empty() || (current_layout == "list"))
-          && (current_view != DATA_VIEW_List) )
-          set_current_view(DATA_VIEW_List);
-        else if( (current_layout == "details") && (current_view != DATA_VIEW_Details) )
-          set_current_view(DATA_VIEW_Details);
+      if( (current_layout.empty() || (current_layout == "list")) && (current_view != DATA_VIEW_List) )
+        set_current_view(DATA_VIEW_List);
+      else if( (current_layout == "details") && (current_view != DATA_VIEW_Details) )
+        set_current_view(DATA_VIEW_Details);
     }
   }
 
@@ -195,8 +194,18 @@ FoundSet Notebook_Data::get_found_set_details() const
 
 void Notebook_Data::on_list_user_requested_details(const Gnome::Gda::Value& primary_key_value)
 {
-  //on_switch_page_handler() does this: m_Box_Details.refresh_data_from_database_with_primary_key(primary_key_value);
-  set_current_page(m_iPage_Details);
+  //Prevent n_switch_page_handler() from doing the same thing:
+  if(m_connection_switch_page)
+    m_connection_switch_page.block();
+    
+  m_Box_Details.refresh_data_from_database_with_primary_key(primary_key_value);
+  
+  if(get_current_view() != DATA_VIEW_Details)
+    set_current_view(DATA_VIEW_Details);
+  
+  //Re-enable this handler, so we can respond to notebook page changes:
+  if(m_connection_switch_page)
+    m_connection_switch_page.unblock();
 }
 
 void Notebook_Data::on_details_user_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value)

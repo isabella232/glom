@@ -1,5 +1,13 @@
 2008-05-06  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/notebook_data.cc: on_list_user_requested_details():
+	Improve my fix from 2008-04-30:
+	Call refresh_data_from_database_with_primary_key() again, but stop the 
+	switch-page handler from running, so that we really see the details for 
+	the row when clicking on the record in the list view. 
+
+2008-05-06  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_data/notebook_data.cc: init_db_details():
 	Fix an if to avoid showing the list view when we want the details view, 
 	just because the details view is already showing.
