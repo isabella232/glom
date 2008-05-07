@@ -1,3 +1,12 @@
+1.6.17:
+
+2008-05-07  Murray Cumming  <murrayc@murrayc.com>
+
+	* Makefile.am: Mention regression_tests/, to fix the build.
+	Bug #531983 (Funda Wang).
+
+1.6.16:
+
 2008-04-25  Jeremiah Savage  <jeremiahsavage@gmail.com>
 
 	* glom/libglom/connectionpool.cc:

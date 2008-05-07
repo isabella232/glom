@@ -1,7 +1,7 @@
 ## top-level Makefile.am
 
 #Build in these directories:
-SUBDIRS = po glom macros examples xslt icons
+SUBDIRS = po glom macros examples xslt icons regression_tests
 
 if HAVE_GNOME_DOC_UTILS
 SUBDIRS += docs

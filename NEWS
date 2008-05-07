@@ -1,3 +1,15 @@
+1.6.17 (stable):
+
+* Just a build fix.
+  Bug #531983 (Funda Wang)
+
+1.6.16 (stable):
+
+* Fix the build with gcc 4.3.
+  (Jeremiah Savage)
+* Correct the parsing of, for instance, 01:00 PM and 13:00 when entered.
+  (Murray Cumming)
+	
 1.6.15 (stable):
 
 * Really automatically create related records, and save data in existing 
