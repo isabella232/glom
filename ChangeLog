@@ -1,3 +1,22 @@
+2008-05-13  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/dialog_import_csv.h:
+	* glom/dialog_import_csv.cc: Added missing functionality.
+
+	* glom/glom.glade:
+	* glom/dialog_import_csv_progress.h:
+	* glom/dialog_import_csv_progress.cc:
+	* glom/Makefile.am: Dialog showing progress of the import and error
+	messages, performing the actual import.
+
+	* glom/frame_glom.cc (on_menu_Tables_ImportIntoTable): Show the
+	progress dialog after the user has finished the settings in the
+	"Import from CSV" dialog, refresh display after import so the list and
+	details show the imported values.
+
+	* docs/user-guide/C/glom.xml: Added an initial explanation for the
+	Import Dialog.
+
 2008-05-06  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/notebook_data.cc: on_list_user_requested_details():

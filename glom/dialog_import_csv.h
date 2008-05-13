@@ -43,9 +43,29 @@ class Dialog_Import_CSV
     public Base_DB
 {
 public:
+  typedef sigc::signal<void> SignalStateChanged;
+
+  enum State {
+    NONE,
+    PARSING,
+    ENCODING_ERROR,
+    PARSED
+  };
+
   Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
 
   void import(const Glib::ustring& uri, const Glib::ustring& into_table);
+  
+  State get_state() const { return m_state; }
+  Glib::ustring get_target_table_name() const { return m_target_table->get_text(); }
+  const Glib::ustring& get_filename() const { return m_filename; }
+
+  unsigned int get_row_count() const;
+  unsigned int get_column_count() const;
+  const sharedptr<Field>& get_field_for_column(unsigned int col);
+  const Glib::ustring& get_data(unsigned int row, unsigned int col);
+
+  SignalStateChanged signal_state_changed() const { return m_signal_state_changed; }
 
 protected:
   void clear();
@@ -66,11 +86,14 @@ protected:
   void encoding_error();
 
   bool on_idle_parse();
-  void handle_line(const Glib::ustring& line);
+  void handle_line(const Glib::ustring& line, unsigned int line_number);
 
   void line_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeIter& iter);
   void field_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeIter& iter, unsigned int column_number);
   void on_field_edited(const Glib::ustring& path, const Glib::ustring& new_text, unsigned int column_number);
+
+  void set_state(State state);
+  void validate_primary_key();
 
   class EncodingColumns: public Gtk::TreeModelColumnRecord
   {
@@ -111,9 +134,11 @@ protected:
   Gtk::Label* m_encoding_info;
   Gtk::CheckButton* m_first_line_as_title;
   Gtk::SpinButton* m_sample_rows;
+  Gtk::Label* m_error_label;
 
   Glib::RefPtr<Gio::File> m_file;
   Glib::RefPtr<Gio::FileInputStream> m_stream;
+  Glib::ustring m_filename;
 
   // The raw data in the original encoding. We keep this so we can convert
   // from the user-selected encoding to UTF-8 every time the user changes
@@ -137,26 +162,21 @@ protected:
     std::vector<char>::size_type input_position;
     std::string current_line;
     sigc::connection idle_connection;
+    unsigned int line_number;
 
-    Parser(const char* encoding): conv("UTF-8", encoding), input_position(0) {}
+    Parser(const char* encoding): conv("UTF-8", encoding), input_position(0), line_number(0) {}
     ~Parser() { idle_connection.disconnect(); }
   };
 
   std::auto_ptr<Parser> m_parser;
-  
-  enum State {
-    NONE,
-    PARSING,
-    ENCODING_ERROR,
-    PARSED
-  };
-
   State m_state;
 
   // Parsed data:
   std::vector<std::vector<Glib::ustring> > m_rows;
   // The fields into which to import the data:
   std::vector<sharedptr<Field> > m_fields;
+
+  SignalStateChanged m_signal_state_changed;
 };
 
 } //namespace Glom

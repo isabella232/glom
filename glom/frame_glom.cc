@@ -23,6 +23,7 @@
 #include "frame_glom.h"
 #include "application.h"
 #include "dialog_import_csv.h"
+#include "dialog_import_csv_progress.h"
 #include <glom/libglom/appstate.h>
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -790,10 +791,31 @@ void Frame_Glom::on_menu_Tables_ImportIntoTable()
 
       file_chooser.hide();
 
-      
       dialog->import(file_chooser.get_uri(), m_table_name);
-      dialog->run();
-      
+      while(Glom::Utils::dialog_run_with_help(dialog, "dialog_import_csv") == Gtk::RESPONSE_ACCEPT)
+      {
+        dialog->hide();
+        Dialog_Import_CSV_Progress* progress_dialog = 0;
+      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "dialog_import_csv_progress");
+        refXml->get_widget_derived("dialog_import_csv_progress", progress_dialog);
+        add_view(progress_dialog);
+
+        progress_dialog->init_db_details(dialog->get_target_table_name());
+        progress_dialog->import(*dialog);
+        const int response = progress_dialog->run();
+
+        remove_view(progress_dialog);
+        delete progress_dialog;
+
+        // Force update from database so the newly added entries are shown
+        show_table_refresh();
+
+        // Re-show chooser dialog when an error occured or when the user
+        // cancelled.
+        if(response == Gtk::RESPONSE_OK)
+          break;
+      }
+
       remove_view(dialog);
       delete dialog;
     }

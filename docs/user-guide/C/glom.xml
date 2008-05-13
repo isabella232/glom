@@ -677,6 +677,11 @@ For instance, a shop might need a report listing all products sold in one month,
 <para></para>
 </sect2>
 
+<sect2 id="dialog_import_csv">
+<title>Dialog: Import Into Table</title>
+<para>This dialog allows the user to import a CSV (comma separated value) file into the current database table. It shows the first few rows of the file to import and allows the user to select the target field in the database for each column in the CSV file. For auto-incremented primary keys, the primary cannot be used as target field, otherwise one column must be imported into the primary key field.</para>
+</sect2>
+
 </sect1>
 
 <!-- ============= Bugs ================================== -->
