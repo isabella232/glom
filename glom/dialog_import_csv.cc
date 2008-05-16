@@ -158,18 +158,69 @@ Glib::ustring::const_iterator advance_field(const Glib::ustring::const_iterator&
   return walk;
 }
 
+struct Encoding {
+  const char* name;
+  const char* charset;
+};
+
+const Encoding ENCODINGS[] = {
+  { N_("Unicode"), "UTF-8" },
+  { N_("Unicode"), "UTF-16" },
+  { N_("Unicode"), "UTF-16BE" },
+  { N_("Unicode"), "UTF-16LE" },
+  { N_("Unicode"), "UTF-32" },
+  { N_("Unicode"), "UTF-7" },
+  { N_("Unicode"), "UCS-2" },
+  { N_("Unicode"), "UCS-4" },
+  { NULL, NULL }, // This just adds a separator in the combo box
+  { N_("Western"), "ISO-8859-1" },
+  { N_("Central European"), "ISO-8859-2" },
+  { N_("South European"), "ISO-8859-3" },
+  { N_("Baltic"), "ISO-8859-4" },
+  { N_("Cyrillic"), "ISO-8859-5" },
+  { N_("Arabic"), "ISO-8859-6" },
+  { N_("Greek"), "ISO-8859-7" },
+  { N_("Hebrew Visual"), "ISO-8859-8" },
+  { N_("Hebrew"), "ISO-8859-8-I" },
+  { N_("Turkish"), "ISO-8859-9" },
+  { N_("Nordic"), "ISO-8859-10" },
+  { N_("Baltic"), "ISO-8859-13" },
+  { N_("Celtic"), "ISO-8859-14" },
+  { N_("Western"), "ISO-8859-15" },
+  { N_("Romanian"), "ISO-8859-16" },
+  { NULL, NULL },
+  { N_("Central European"), "WINDOWS-1250" },
+  { N_("Cyrillic"), "WINDOWS-1251" },
+  { N_("Western"), "WINDOWS-1252" },
+  { N_("Greek"), "WINDOWS-1253" },
+  { N_("Turkish"), "WINDOWS-1254" },
+  { N_("Hebrew"), "WINDOWS-1255" },
+  { N_("Arabic"), "WINDOWS-1256" },
+  { N_("Baltic"), "WINDOWS-1257" },
+  { N_("Vietnamese"), "WINDOWS-1258" }
+};
+
 // When auto-detecting the encoding, we try to read the file in these
 // encodings, in order:
-const char* ENCODINGS[] = {
-  "UTF-8",
-  "ISO-8859-1",
-  "ISO-8859-15",
-  "UTF-16",
-  "UCS-2",
-  "UCS-4"
+const Encoding AUTODETECT_ENCODINGS[] = {
+  { N_("Unicode"), "UTF-8" },
+  { N_("Western"), "ISO-8859-1" },
+  { N_("Western"), "ISO-8859-15" },
+  { N_("Unicode"), "UTF-16" },
+  { N_("Unicode"), "UCS-2" },
+  { N_("Unicode"), "UCS-4" }
 };
 
 const unsigned int N_ENCODINGS = sizeof(ENCODINGS)/sizeof(ENCODINGS[0]);
+const unsigned int N_AUTODETECT_ENCODINGS = sizeof(AUTODETECT_ENCODINGS)/sizeof(AUTODETECT_ENCODINGS[0]);
+
+Glib::ustring encoding_display(const Glib::ustring& name, const Glib::ustring& charset)
+{
+  if(charset.empty())
+    return name;
+  else
+    return name + " (" + charset + ")";
+}
 
 }
 
@@ -192,7 +243,7 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
   m_encoding_model = Gtk::ListStore::create(m_encoding_columns);
 
   Gtk::TreeIter iter = m_encoding_model->append();
-  (*iter)[m_encoding_columns.m_col_encoding] = _("Auto Detect");
+  (*iter)[m_encoding_columns.m_col_name] = _("Auto Detect");
 
   // Separator:
   m_encoding_model->append();
@@ -200,13 +251,17 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
   for(unsigned int i = 0; i < N_ENCODINGS; ++ i)
   {
     iter = m_encoding_model->append();
-    (*iter)[m_encoding_columns.m_col_encoding] = ENCODINGS[i];
+    if(ENCODINGS[i].name != NULL)
+    {
+      (*iter)[m_encoding_columns.m_col_name] = gettext(ENCODINGS[i].name);
+      (*iter)[m_encoding_columns.m_col_charset] = ENCODINGS[i].charset;
+    }
   }
 
   Gtk::CellRendererText* renderer = Gtk::manage(new Gtk::CellRendererText);
   m_encoding_combo->set_model(m_encoding_model);
   m_encoding_combo->pack_start(*renderer);
-  m_encoding_combo->add_attribute(renderer->property_text(), m_encoding_columns.m_col_encoding);
+  m_encoding_combo->set_cell_data_func(*renderer, sigc::bind(sigc::mem_fun(*this, &Dialog_Import_CSV::encoding_data_func), sigc::ref(*renderer)));
   m_encoding_combo->set_row_separator_func(sigc::mem_fun(*this, &Dialog_Import_CSV::row_separator_func));
   m_encoding_combo->set_active(0);
   m_encoding_combo->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_encoding_changed));
@@ -325,9 +380,17 @@ void Dialog_Import_CSV::show_error_dialog(const Glib::ustring& primary, const Gl
   dialog.run();
 }
 
+void Dialog_Import_CSV::encoding_data_func(const Gtk::TreeIter& iter, Gtk::CellRendererText& renderer)
+{
+  Glib::ustring name = (*iter)[m_encoding_columns.m_col_name];
+  Glib::ustring charset = (*iter)[m_encoding_columns.m_col_charset];
+
+  renderer.set_property("text", encoding_display(name, charset));
+}
+
 bool Dialog_Import_CSV::row_separator_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeIter& iter) const
 {
-  return (*iter)[m_encoding_columns.m_col_encoding] == "";
+  return (*iter)[m_encoding_columns.m_col_name] == "";
 }
 
 void Dialog_Import_CSV::on_query_info(const Glib::RefPtr<Gio::AsyncResult>& result)
@@ -409,7 +472,6 @@ void Dialog_Import_CSV::on_encoding_changed()
   switch(active)
   {
   case -1: // No active item
-  case 1: // Separator
     g_assert_not_reached();
     break;
   case 0: // Auto-Detect
@@ -518,29 +580,25 @@ void Dialog_Import_CSV::on_sample_rows_changed()
   }
 }
 
-const char* Dialog_Import_CSV::get_current_encoding() const
+Glib::ustring Dialog_Import_CSV::get_current_encoding() const
 {
-  int active = m_encoding_combo->get_active_row_number();
-  switch(active)
+  Gtk::TreeIter iter = m_encoding_combo->get_active();
+  Glib::ustring encoding = (*iter)[m_encoding_columns.m_col_charset];
+
+  if(encoding.empty())
   {
-  case -1: // No active item
-  case 1: // Separator
-    g_assert_not_reached();
-    break;
-  case 0: // Auto-Detect
+    // Auto-Detect
     g_assert(m_auto_detect_encoding != -1);
-    return ENCODINGS[m_auto_detect_encoding];
-  default: // Some specific encoding
-    g_assert(active >= 2);
-    g_assert(static_cast<unsigned int>(active - 2) < N_ENCODINGS);
-    return ENCODINGS[active - 2];
+    return AUTODETECT_ENCODINGS[m_auto_detect_encoding].charset;
   }
+
+  return encoding.c_str();
 }
 
 void Dialog_Import_CSV::begin_parse()
 {
   if(m_auto_detect_encoding != -1)
-    m_encoding_info->set_text(Glib::ustring::compose(_("Encoding detected as: %1"), Glib::ustring(get_current_encoding())));
+    m_encoding_info->set_text(Glib::ustring::compose(_("Encoding detected as: %1"), encoding_display(gettext(AUTODETECT_ENCODINGS[m_auto_detect_encoding].name), AUTODETECT_ENCODINGS[m_auto_detect_encoding].charset)));
   else
     m_encoding_info->set_text("");
 
@@ -551,7 +609,7 @@ void Dialog_Import_CSV::begin_parse()
   m_sample_view->set_model(m_sample_model); // Empty model
   m_rows.clear();
 
-  m_parser.reset(new Parser(get_current_encoding()));
+  m_parser.reset(new Parser(get_current_encoding().c_str()));
   set_state(PARSING);
 
   // Allow the Import button to be pressed when a field for the primary key
@@ -581,7 +639,7 @@ void Dialog_Import_CSV::encoding_error()
   if(m_auto_detect_encoding != -1)
   {
     ++ m_auto_detect_encoding;
-    if(static_cast<unsigned int>(m_auto_detect_encoding) < N_ENCODINGS)
+    if(static_cast<unsigned int>(m_auto_detect_encoding) < N_AUTODETECT_ENCODINGS)
       begin_parse();
     else
       m_encoding_info->set_text(_("Encoding detection failed. Please manually choose one from the box to the left."));

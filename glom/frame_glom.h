@@ -75,6 +75,7 @@ public:
   void on_menu_userlevel_Operator(const Glib::RefPtr<Gtk::RadioAction>& action);
 
   void on_menu_file_export();
+  void on_menu_file_import();
   void on_menu_file_print_edit_layouts();
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
@@ -98,7 +99,6 @@ public:
   void on_menu_Tables_EditTables();
   void on_menu_Tables_AddRelatedTable();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-  void on_menu_Tables_ImportIntoTable();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void on_menu_Reports_EditReports();

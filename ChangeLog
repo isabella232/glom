@@ -1,3 +1,16 @@
+2008-05-15  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/dialog_import_csv.h:
+	* glom/dialog_import_csv.cc: Added some more encodings, differentiate
+	between encoding name and charset.
+
+	* glom/application.cc (init_menus_file), (init_menus): Moved the
+	Import menu item from Tables to File menu.
+
+	* glom/frame_glom.h:
+	* glom/frame_glom.cc: Renamed the function from
+	on_menu_Tables_ImportIntoTable() to on_menu_file_import().
+
 2008-05-13  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/dialog_import_csv.h:

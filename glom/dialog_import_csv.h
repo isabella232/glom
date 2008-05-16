@@ -71,6 +71,7 @@ protected:
   void clear();
   void show_error_dialog(const Glib::ustring& primary, const Glib::ustring& secondary);
 
+  void encoding_data_func(const Gtk::TreeIter& iter, Gtk::CellRendererText& renderer);
   bool row_separator_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeIter& iter) const;
 
   void on_query_info(const Glib::RefPtr<Gio::AsyncResult>& result);
@@ -81,7 +82,7 @@ protected:
   void on_first_line_as_title_toggled();
   void on_sample_rows_changed();
 
-  const char* get_current_encoding() const;
+  Glib::ustring get_current_encoding() const;
   void begin_parse();
   void encoding_error();
 
@@ -98,9 +99,10 @@ protected:
   class EncodingColumns: public Gtk::TreeModelColumnRecord
   {
   public:
-    EncodingColumns() { add(m_col_encoding); }
+    EncodingColumns() { add(m_col_name); add(m_col_charset); }
 
-    Gtk::TreeModelColumn<Glib::ustring> m_col_encoding;
+    Gtk::TreeModelColumn<Glib::ustring> m_col_name;
+    Gtk::TreeModelColumn<Glib::ustring> m_col_charset;
   };
   
   class FieldColumns: public Gtk::TreeModelColumnRecord

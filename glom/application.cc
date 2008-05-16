@@ -301,6 +301,9 @@ void App_Glom::init_menus_file()
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_export));
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
+  action = Gtk::Action::create("BakeryAction_Menu_File_Import", _("Import"));
+  m_refFileActionGroup->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_import));
+
   m_refFileActionGroup->add(Gtk::Action::create("GlomAction_Menu_File_Print", Gtk::Stock::PRINT));
   m_refFileActionGroup->add(Gtk::Action::create("GlomAction_File_Print", _("_Standard")),
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_print) );
@@ -336,6 +339,7 @@ void App_Glom::init_menus_file()
     "        <menuitem action='BakeryAction_File_SaveAsExample' />"
     "        <menuitem action='BakeryAction_Menu_File_Export' />"
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+    "        <menuitem action='BakeryAction_Menu_File_Import' />"
     "        <separator/>"
     "        <menu action='GlomAction_Menu_File_Print'>"
     "          <menuitem action='GlomAction_File_Print' />"
@@ -391,9 +395,6 @@ void App_Glom::init_menus()
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Tables_AddRelatedTable) );
   m_listDeveloperActions.push_back(action);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-
-  action = Gtk::Action::create("GlomAction_Menu_ImportIntoTable", _("Import _Into Table"));
-  m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Tables_ImportIntoTable));
 
   //"Reports" menu:
   m_refActionGroup_Others->add( Gtk::Action::create("Glom_Menu_Reports", _("_Reports")) );
@@ -503,7 +504,6 @@ void App_Glom::init_menus()
     "        <menuitem action='GlomAction_Menu_EditTables' />"
     "        <menuitem action='GlomAction_Menu_AddRelatedTable' />"
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-    "        <menuitem action='GlomAction_Menu_ImportIntoTable' />"
     "     </menu>"
     "     <menu action='Glom_Menu_Reports'>"
     "        <placeholder name='Menu_Reports_Dynamic' />"

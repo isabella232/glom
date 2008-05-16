@@ -662,6 +662,59 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
+void Frame_Glom::on_menu_file_import()
+{
+  if(m_table_name.empty())
+  {
+    Gtk::MessageDialog dialog(*get_app_window(), "There is no table to import data into", false, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
+    dialog.run();
+  }
+  else
+  {
+    Gtk::FileChooserDialog file_chooser(*get_app_window(), _("Choose a CSV file to open"), Gtk::FILE_CHOOSER_ACTION_OPEN);
+    file_chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+    file_chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
+
+    if(file_chooser.run() == Gtk::RESPONSE_ACCEPT)
+    {
+      Dialog_Import_CSV* dialog = 0;
+      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "dialog_import_csv");
+      refXml->get_widget_derived("dialog_import_csv", dialog);
+      add_view(dialog);
+
+      file_chooser.hide();
+
+      dialog->import(file_chooser.get_uri(), m_table_name);
+      while(Glom::Utils::dialog_run_with_help(dialog, "dialog_import_csv") == Gtk::RESPONSE_ACCEPT)
+      {
+        dialog->hide();
+        Dialog_Import_CSV_Progress* progress_dialog = 0;
+      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "dialog_import_csv_progress");
+        refXml->get_widget_derived("dialog_import_csv_progress", progress_dialog);
+        add_view(progress_dialog);
+
+        progress_dialog->init_db_details(dialog->get_target_table_name());
+        progress_dialog->import(*dialog);
+        const int response = progress_dialog->run();
+
+        remove_view(progress_dialog);
+        delete progress_dialog;
+
+        // Force update from database so the newly added entries are shown
+        show_table_refresh();
+
+        // Re-show chooser dialog when an error occured or when the user
+        // cancelled.
+        if(response == Gtk::RESPONSE_OK)
+          break;
+      }
+
+      remove_view(dialog);
+      delete dialog;
+    }
+  }
+}
+
 void Frame_Glom::on_menu_file_print()
 {
  Notebook_Glom* notebook_current = dynamic_cast<Notebook_Glom*>(m_pBox_Mode->get_child());
@@ -768,59 +821,6 @@ void Frame_Glom::on_menu_Tables_AddRelatedTable()
 }
 
 #endif
-
-void Frame_Glom::on_menu_Tables_ImportIntoTable()
-{
-  if(m_table_name.empty())
-  {
-    Gtk::MessageDialog dialog(*get_app_window(), "There is no table to import data into", false, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
-    dialog.run();
-  }
-  else
-  {
-    Gtk::FileChooserDialog file_chooser(*get_app_window(), _("Choose a CSV file to open"), Gtk::FILE_CHOOSER_ACTION_OPEN);
-    file_chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-    file_chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
-
-    if(file_chooser.run() == Gtk::RESPONSE_ACCEPT)
-    {
-      Dialog_Import_CSV* dialog = 0;
-      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "dialog_import_csv");
-      refXml->get_widget_derived("dialog_import_csv", dialog);
-      add_view(dialog);
-
-      file_chooser.hide();
-
-      dialog->import(file_chooser.get_uri(), m_table_name);
-      while(Glom::Utils::dialog_run_with_help(dialog, "dialog_import_csv") == Gtk::RESPONSE_ACCEPT)
-      {
-        dialog->hide();
-        Dialog_Import_CSV_Progress* progress_dialog = 0;
-      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "dialog_import_csv_progress");
-        refXml->get_widget_derived("dialog_import_csv_progress", progress_dialog);
-        add_view(progress_dialog);
-
-        progress_dialog->init_db_details(dialog->get_target_table_name());
-        progress_dialog->import(*dialog);
-        const int response = progress_dialog->run();
-
-        remove_view(progress_dialog);
-        delete progress_dialog;
-
-        // Force update from database so the newly added entries are shown
-        show_table_refresh();
-
-        // Re-show chooser dialog when an error occured or when the user
-        // cancelled.
-        if(response == Gtk::RESPONSE_OK)
-          break;
-      }
-
-      remove_view(dialog);
-      delete dialog;
-    }
-  }
-}
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 
