@@ -526,12 +526,18 @@ void FlowTableWithFields::add_field_at_position(const sharedptr<LayoutItem_Field
     if(label)
       label->set_property("yalign", 0.0); //Equivalent to Gtk::ALIGN_TOP. Center is neater next to entries, but center is silly next to large images.
   }
-
+  
+  Gtk::EventBox* eventbox = new Gtk::EventBox();
+  eventbox->add (*info.m_first);
+  eventbox->set_visible_window (false);
+  eventbox->set_events (Gdk::ALL_EVENTS_MASK);
+  eventbox->show_all();
+  
 	Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
 	if (widget)
-		insert_before (*(info.m_first), *(info.m_second), *widget, expand_second);
+		insert_before (*eventbox, *(info.m_second), *widget, expand_second);
 	else
-		add(*(info.m_first), *(info.m_second), expand_second);
+		add(*eventbox, *(info.m_second), expand_second);
 
   info.m_second->signal_edited().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited), layoutitem_field)  ); //TODO:  Is it a good idea to bind the LayoutItem? sigc::bind() probably stores a copy at this point.
 

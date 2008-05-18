@@ -1,3 +1,17 @@
+2008-05-18  Johannes Schmid  <johannes.schmid@openismus.com>
+
+	* glom/Makefile.am: Corrected indentation
+	
+	* glom/mode_data/flowtablewithfields.cc:
+	(add_field_at_position):
+	Put labels for fields into their own EventBox
+	
+	* glom/utility_widgets/flowtable_dnd.cc:
+	  (start_dnd), (stop_dnd), (find_current_dnd_item), (on_child_drag_begin)
+	  (on_child_drag_data_delete):
+	* glom/utility_widgets/flowtable_dnd.h:
+	Allow moving of items fields through drag and drop
+
 2008-05-15  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/dialog_import_csv.h:

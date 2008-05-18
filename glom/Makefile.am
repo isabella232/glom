@@ -41,9 +41,9 @@ glom_SOURCES = main.cc \
                combobox_fields.h combobox_fields.cc \
                combobox_relationship.h combobox_relationship.cc \
                dialog_connection.h dialog_connection.cc \
-	       dialog_import_csv.h dialog_import_csv.cc \
-	       dialog_import_csv_progress.h dialog_import_csv_progress.cc \
-	       dialog_existing_or_new.h dialog_existing_or_new.cc \
+	             dialog_import_csv.h dialog_import_csv.cc \
+	             dialog_import_csv_progress.h dialog_import_csv_progress.cc \
+	             dialog_existing_or_new.h dialog_existing_or_new.cc \
                dialog_invalid_data.h dialog_invalid_data.cc \
                filechooser_export.h filechooser_export.cc \
                box_reports.h box_reports.cc \

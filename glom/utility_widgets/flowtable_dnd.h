@@ -50,7 +50,8 @@ protected:
   virtual void on_child_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int, int, 
                                            const Gtk::SelectionData& selection_data, guint, guint time, Gtk::Widget* child);  
   virtual void on_child_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& drag_context, 
-                                           Gtk::SelectionData& selection_data, guint, guint time, Gtk::Widget* child);  
+                                           Gtk::SelectionData& selection_data, guint, guint time, Gtk::Widget* child);
+  virtual void on_child_drag_data_delete(const Glib::RefPtr<Gdk::DragContext>& drag_context, Gtk::Widget* child); 
   virtual void on_child_drag_begin (const Glib::RefPtr<Gdk::DragContext>& drag_context, Gtk::Widget* child);
   virtual void on_child_drag_end (const Glib::RefPtr<Gdk::DragContext>& drag_context, Gtk::Widget* child);    
     

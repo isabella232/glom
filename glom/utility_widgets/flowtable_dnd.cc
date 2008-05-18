@@ -68,14 +68,18 @@ void FlowTableDnd::start_dnd (Gtk::Widget& child)
       start_dnd (*(*cur_child));
     }
   }
+  // Needed to move items around
+  std::list<Gtk::TargetEntry> source_targets;
+  source_targets.push_back (Gtk::TargetEntry (MOVE_TARGET));
+  child.drag_source_set(source_targets, Gdk::ModifierType(GDK_BUTTON1_MASK | GDK_BUTTON3_MASK),
+                        Gdk::DragAction(GDK_ACTION_COPY | GDK_ACTION_MOVE));
+  child.signal_drag_begin().connect (sigc::bind<Gtk::Widget*>(sigc::mem_fun (*this, &FlowTableDnd::on_child_drag_begin), &child), false);
+  child.signal_drag_end().connect (sigc::bind<Gtk::Widget*>(sigc::mem_fun (*this, &FlowTableDnd::on_child_drag_end), &child), false);
+  child.signal_drag_data_get().connect (sigc::bind<Gtk::Widget*>(sigc::mem_fun (*this, &FlowTableDnd::on_child_drag_data_get), &child), false);
+  child.signal_drag_data_delete().connect (sigc::bind<Gtk::Widget*>(sigc::mem_fun (*this, &FlowTableDnd::on_child_drag_data_delete), &child), false);
+  
   if (!(child.get_flags() & Gtk::NO_WINDOW))
-  {
-    // Needed to move items around
-    std::list<Gtk::TargetEntry> source_targets;
-    source_targets.push_back (Gtk::TargetEntry (MOVE_TARGET));
-    child.drag_source_set (source_targets, Gdk::BUTTON1_MASK|Gdk::BUTTON3_MASK, 
-                           Gdk::ACTION_MOVE | Gdk::ACTION_COPY);
-    
+  { 
     std::list<Gtk::TargetEntry> drag_targets;
     Gtk::TargetEntry toolbar_target (egg_tool_palette_get_drag_target_item());
     Gtk::TargetEntry move_target(MOVE_TARGET);
@@ -99,10 +103,6 @@ void FlowTableDnd::start_dnd (Gtk::Widget& child)
                                         false);
     child.signal_drag_data_received().connect (sigc::bind<Gtk::Widget*>(sigc::mem_fun (*this, &FlowTableDnd::on_child_drag_data_received), &child));
     child.signal_drag_leave().connect (sigc::mem_fun (*this, &FlowTableDnd::on_child_drag_leave));
-
-    child.signal_drag_begin().connect (sigc::bind<Gtk::Widget*>(sigc::mem_fun (*this, &FlowTableDnd::on_child_drag_begin), &child), false);
-    child.signal_drag_end().connect (sigc::bind<Gtk::Widget*>(sigc::mem_fun (*this, &FlowTableDnd::on_child_drag_end), &child), false);
-    child.signal_drag_data_get().connect (sigc::bind<Gtk::Widget*>(sigc::mem_fun (*this, &FlowTableDnd::on_child_drag_data_get), &child), false);
   }
 }
 
@@ -124,10 +124,7 @@ void FlowTableDnd::stop_dnd (Gtk::Widget& child)
       stop_dnd (*(*cur_child));
     }
   }
-  if (!(child.get_flags() & Gtk::NO_WINDOW))
-  {
-    child.drag_source_unset();
-  }
+  child.drag_source_unset();
 }
 
 bool FlowTableDnd::on_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint time)
@@ -317,8 +314,15 @@ FlowTable::FlowTableItem* FlowTableDnd::find_current_dnd_item (Gtk::Widget* chil
     {
       break;
     }
-    Gtk::Bin* bin = dynamic_cast<Gtk::Bin*>(cur_child->m_second);
+    Gtk::EventBox* bin = dynamic_cast<Gtk::EventBox*>(cur_child->m_second);
     // The widget was added inside a Gtk::EventBox
+    if (bin)
+    {
+      if (bin->get_child() == child ||
+          bin->get_child() == child->get_parent())
+        break;
+    }
+    bin = dynamic_cast<Gtk::EventBox*>(cur_child->m_first);
     if (bin)
     {
       if (bin->get_child() == child ||
@@ -332,7 +336,7 @@ FlowTable::FlowTableItem* FlowTableDnd::find_current_dnd_item (Gtk::Widget* chil
     item = 0;
   
   // Allow dragging at-the-end
-  if (cur_child == --m_children.end())
+  if (cur_child == --m_children.end() && y > 0)
   {
     Gdk::Rectangle rect = child->get_allocation();
     if (y > (rect.get_y() + rect.get_height() / 2) &&
@@ -387,13 +391,27 @@ void FlowTableDnd::on_child_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& 
 void FlowTableDnd::on_child_drag_begin (const Glib::RefPtr<Gdk::DragContext>& drag_context,
                           Gtk::Widget* child)
 {
+  std::cout << "Drag begin type: " << G_OBJECT_TYPE_NAME (child->gobj()) << std::endl;
+  Gtk::Container* container = dynamic_cast<Gtk::Container*>(child);
+  while (container)
+  {
+    std::list<Gtk::Widget*> children = container->get_children();
+    for (std::list<Gtk::Widget*>::const_iterator CI (children.begin());
+         CI != children.end(); CI++)
+      std::cout << "Drag begin child: " << G_OBJECT_TYPE_NAME ((*CI)->gobj()) << std::endl;
+    Gtk::Bin* bin = dynamic_cast<Gtk::Bin*>(container);
+    container = dynamic_cast<Gtk::Container*>(bin->get_child());
+  }
   FlowTableItem* item = find_current_dnd_item (child);
   if (!item)
+  {
     return;
+  }
   if (item->m_first)
     item->m_first->hide();
   if (item->m_second)
     item->m_second->hide();
+  std::cout << "Drag begin item: " << G_OBJECT_TYPE_NAME (item->m_first->gobj()) << std::endl;
   LayoutWidgetBase* base = dnd_datawidget_from_item (item);
   base->set_dnd_in_progress(); 
 }
@@ -419,6 +437,12 @@ void FlowTableDnd::on_child_drag_end (const Glib::RefPtr<Gdk::DragContext>& drag
     group->remove_item(item);
   }  
   signal_layout_changed().emit();
+}
+
+void FlowTableDnd::on_child_drag_data_delete(const Glib::RefPtr<Gdk::DragContext>& drag_context,
+                               Gtk::Widget* child)
+{
+  // Do nothing for now  
 }
 
 void FlowTableDnd::set_design_mode(bool value)
