@@ -1278,6 +1278,18 @@ void FlowTableWithFields::on_dnd_add_layout_item_text(LayoutWidgetBase* above)
   signal_layout_changed().emit();
 }
 
+void FlowTableWithFields::on_dnd_add_layout_item_image(LayoutWidgetBase* above)
+{
+  // create the text label
+  sharedptr<LayoutItem_Image> image_object = sharedptr<LayoutItem_Image>::create();
+  sharedptr<LayoutItem> layout_item = sharedptr<LayoutItem>::cast_dynamic(image_object);
+
+  dnd_add_to_layout_group (layout_item, above);
+  //Tell the parent to tell the document to save the layout
+
+  signal_layout_changed().emit();
+}
+
 void FlowTableWithFields::on_dnd_add_layout_item (LayoutWidgetBase* above,
                                                   sharedptr<LayoutItem>& item)
 {

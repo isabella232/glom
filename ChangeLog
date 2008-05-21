@@ -1,3 +1,18 @@
+2008-05-21  Johannes Schmid  <johannes.schmid@openismus.com>
+
+	* glom/mode_data/flowtablewithfields.cc:
+	  (on_dnd_add_layout_item_image)
+	* glom/mode_data/flowtablewithfields.h:
+	* glom/utility_widgets/dragbar.cc 
+	(DragBar):
+	* glom/utility_widgets/flowtable_dnd.cc 
+	(on_drag_data_received):
+	* glom/utility_widgets/flowtable_dnd.h
+	(FlowTableDnd):
+	* glom/utility_widgets/layoutwidgetbase.h:
+  Add images as possible drag items to the sidebar and adjust flowtable
+  to accept images.
+
 2008-05-18  Murray Cumming  <murrayc@murrayc.com>
 
 	* docs/user-guide/C/glom.xml:

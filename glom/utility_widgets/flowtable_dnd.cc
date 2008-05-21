@@ -166,6 +166,9 @@ void FlowTableDnd::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& d
       case LayoutWidgetBase::TYPE_TEXT:
         on_dnd_add_layout_item_text(above);
         break;
+      case LayoutWidgetBase::TYPE_IMAGE:
+        on_dnd_add_layout_item_image(above);
+        break;
       case LayoutWidgetBase::TYPE_GROUP:
         on_dnd_add_layout_group(above);
         break;

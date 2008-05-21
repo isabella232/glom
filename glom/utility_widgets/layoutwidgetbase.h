@@ -52,7 +52,8 @@ public:
     TYPE_NOTEBOOK,
     TYPE_PORTAL,
     TYPE_BUTTON,
-    TYPE_TEXT
+    TYPE_TEXT,
+    TYPE_IMAGE
   };
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

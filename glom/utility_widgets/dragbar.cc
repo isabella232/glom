@@ -41,6 +41,8 @@ DragBar::DragBar()
     Gtk::manage (new Gtk::Image(GLOM_ICON_DIR "/glom-button.png"));
   Gtk::Image* image_text = 
     Gtk::manage (new Gtk::Image(GLOM_ICON_DIR "/glom-text.png"));
+  Gtk::Image* image_image = 
+    Gtk::manage (new Gtk::Image(GLOM_ICON_DIR "/glom-image.png"));
   
   Gtk::Image* image_group = 
     Gtk::manage (new Gtk::Image(GLOM_ICON_DIR "/glom-group.png"));
@@ -54,6 +56,7 @@ DragBar::DragBar()
   DragButton* drag_item = Gtk::manage(new DragButton(*image_item, LayoutWidgetBase::TYPE_FIELD));
   DragButton* drag_button = Gtk::manage(new DragButton(*image_button, LayoutWidgetBase::TYPE_BUTTON));
   DragButton* drag_text = Gtk::manage(new DragButton(*image_text, LayoutWidgetBase::TYPE_TEXT));  
+  DragButton* drag_image = Gtk::manage(new DragButton(*image_image, LayoutWidgetBase::TYPE_IMAGE));
   
   GtkContainer* container_group = GTK_CONTAINER(egg_tool_item_group_new(_("Containers")));
   gtk_container_add (container_group, GTK_WIDGET(drag_group->gobj()));
@@ -63,7 +66,8 @@ DragBar::DragBar()
   gtk_container_add (fields_group, GTK_WIDGET(drag_item->gobj()));
   gtk_container_add (fields_group, GTK_WIDGET(drag_button->gobj()));  
   gtk_container_add (fields_group, GTK_WIDGET(drag_text->gobj()));
-	
+  gtk_container_add (fields_group, GTK_WIDGET(drag_image->gobj()));
+  
   add_group (EGG_TOOL_ITEM_GROUP(container_group));
   add_group (EGG_TOOL_ITEM_GROUP(fields_group));
 	
