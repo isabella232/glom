@@ -1,5 +1,11 @@
 2008-05-22  Johannes Schmid  <johannes.schmid@openismus.com>
 
+	* glom/utility_widgets/flowtable_dnd.cc:
+	* glom/utility_widgets/flowtable_dnd.h:
+	Fixed some crashers when starting a drag from no item
+
+2008-05-22  Johannes Schmid  <johannes.schmid@openismus.com>
+
 	* glom/libglom/data_structure/layout/layoutgroup.cc: (add_item)
 	Add item at the end of the group instead of losing it
 	

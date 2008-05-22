@@ -77,7 +77,6 @@ void FlowTableDnd::start_dnd (Gtk::Widget& child)
   child.signal_drag_end().connect (sigc::bind<Gtk::Widget*>(sigc::mem_fun (*this, &FlowTableDnd::on_child_drag_end), &child), false);
   child.signal_drag_data_get().connect (sigc::bind<Gtk::Widget*>(sigc::mem_fun (*this, &FlowTableDnd::on_child_drag_data_get), &child), false);
   child.signal_drag_data_delete().connect (sigc::bind<Gtk::Widget*>(sigc::mem_fun (*this, &FlowTableDnd::on_child_drag_data_delete), &child), false);
-  
   if (!(child.get_flags() & Gtk::NO_WINDOW))
   { 
     std::list<Gtk::TargetEntry> drag_targets;
@@ -382,12 +381,13 @@ void FlowTableDnd::on_child_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& 
 {
   FlowTableItem* item = find_current_dnd_item (child);
   LayoutWidgetBase* base = dnd_datawidget_from_item (item);
+  gpointer data = 0;
   if (base)
   {
-    gpointer data = base;
-    selection_data.set ("LayoutWidgetBase*", 8, (guint8*)&data, 
-                             sizeof(gpointer*));
+    data = base;
   }
+  selection_data.set ("LayoutWidgetBase*", 8, (guint8*)&data, 
+                      sizeof(gpointer*));
 }
 
 void FlowTableDnd::on_child_drag_begin (const Glib::RefPtr<Gdk::DragContext>& drag_context,
@@ -396,6 +396,7 @@ void FlowTableDnd::on_child_drag_begin (const Glib::RefPtr<Gdk::DragContext>& dr
   FlowTableItem* item = find_current_dnd_item (child);
   if (!item)
   {
+    gdk_drag_abort (drag_context->gobj(), 0);
     return;
   }
   if (item->m_first)
@@ -410,6 +411,8 @@ void FlowTableDnd::on_child_drag_end (const Glib::RefPtr<Gdk::DragContext>& drag
                         Gtk::Widget* child)
 {
   FlowTableItem* item = find_current_dnd_item (child);
+  if (!item)
+    return;
   LayoutWidgetBase* base = dnd_datawidget_from_item (item);
   if (base->get_dnd_in_progress())
   {
