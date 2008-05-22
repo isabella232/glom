@@ -347,7 +347,8 @@ FlowTable::FlowTableItem* FlowTableDnd::find_current_dnd_item (Gtk::Widget* chil
     {
       item = 0; // means end
     }
-  } 
+  }
+  
   return item;
 }
 
@@ -355,8 +356,6 @@ bool FlowTableDnd::on_child_drag_motion(const Glib::RefPtr<Gdk::DragContext>& dr
                                         Gtk::Widget* child)
 {
   m_current_dnd_item = find_current_dnd_item(child, x, y);
-  
-  on_dnd_remove_placeholder ();
   
   LayoutWidgetBase* above = dnd_datawidget_from_item(0);
   
@@ -394,17 +393,6 @@ void FlowTableDnd::on_child_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& 
 void FlowTableDnd::on_child_drag_begin (const Glib::RefPtr<Gdk::DragContext>& drag_context,
                           Gtk::Widget* child)
 {
-  std::cout << "Drag begin type: " << G_OBJECT_TYPE_NAME (child->gobj()) << std::endl;
-  Gtk::Container* container = dynamic_cast<Gtk::Container*>(child);
-  while (container)
-  {
-    std::list<Gtk::Widget*> children = container->get_children();
-    for (std::list<Gtk::Widget*>::const_iterator CI (children.begin());
-         CI != children.end(); CI++)
-      std::cout << "Drag begin child: " << G_OBJECT_TYPE_NAME ((*CI)->gobj()) << std::endl;
-    Gtk::Bin* bin = dynamic_cast<Gtk::Bin*>(container);
-    container = dynamic_cast<Gtk::Container*>(bin->get_child());
-  }
   FlowTableItem* item = find_current_dnd_item (child);
   if (!item)
   {
@@ -414,7 +402,6 @@ void FlowTableDnd::on_child_drag_begin (const Glib::RefPtr<Gdk::DragContext>& dr
     item->m_first->hide();
   if (item->m_second)
     item->m_second->hide();
-  std::cout << "Drag begin item: " << G_OBJECT_TYPE_NAME (item->m_first->gobj()) << std::endl;
   LayoutWidgetBase* base = dnd_datawidget_from_item (item);
   base->set_dnd_in_progress(); 
 }

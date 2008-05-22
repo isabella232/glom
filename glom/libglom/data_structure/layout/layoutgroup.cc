@@ -145,11 +145,6 @@ void LayoutGroup::add_item(const sharedptr<LayoutItem>& item, const sharedptr<co
   //Find the position of the item.
   sharedptr<LayoutItem> unconst = sharedptr<LayoutItem>::cast_const(position);
   type_list_items::iterator iter = std::find(m_list_items.begin(), m_list_items.end(), unconst);
-  if(iter == m_list_items.end())
-  {
-    std::cout << __FUNCTION__ << ": item not found" << std::endl;
-    return;
-  }
 
   //std::vector::insert() adds before rather than after:
   // jhs: We want to add after rather than before - at least for dnd
