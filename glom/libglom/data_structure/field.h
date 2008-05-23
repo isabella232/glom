@@ -159,6 +159,10 @@ public:
    */
   Glib::ustring sql(const Gnome::Gda::Value& value) const;
 
+  /** Unescape the value again.
+   */
+  Gnome::Gda::Value from_sql(const Glib::ustring& str, bool& success) const;
+
   /** Escape the value so that it can be used in a SQL command for a find.
    */
   Glib::ustring sql_find(const Gnome::Gda::Value& value) const;

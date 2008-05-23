@@ -1,3 +1,18 @@
+2008-05-23  Armin Burgmeier  <armin@arbur.net>
+
+	* glom/libglom/data_structure/field.h:
+	* glom/libglom/data_structure/field.cc: Added from_sql() to convert a
+	SQL representation to a Gnome::Gda::Value. This is the reverse to the
+	sql() function.
+
+	* glom/dialog_import_csv.cc (field_data_func): Remove own unescaping
+	code, use Field::from_sql() for preview instead.
+
+	* glom/dialog_import_csv_progress.cc (on_idle_import): Use
+	Field::from_sql() to do the actual import. This allows to correctly
+	import files that the Export functionality produces, escpecially
+	dates and images.
+
 2008-05-22  Johannes Schmid  <johannes.schmid@openismus.com>
 
 	* glom/utility_widgets/flowtable_dnd.cc:

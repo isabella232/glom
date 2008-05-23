@@ -33,6 +33,7 @@ namespace
 
 const gunichar DELIMITER = ',';
 
+#if 0
 // TODO: Perhaps we should change this to std::string to allow binary data, such
 // as images.
 // TODO: What escaping system is this? Can't we reuse some standard escaping function from somewhere? murrayc
@@ -112,48 +113,38 @@ Glib::ustring::const_iterator advance_escape(const Glib::ustring::const_iterator
     return walk;
   }
 }
+#endif
 
 Glib::ustring::const_iterator advance_field(const Glib::ustring::const_iterator& iter, const Glib::ustring::const_iterator& end, Glib::ustring& field)
 {
   Glib::ustring::const_iterator walk = iter;
+
   gunichar quote_char = 0;
+  bool escaped = false;
 
   field.clear();
 
-  while(walk != end)
+  for(; walk != end; ++ walk)
   {
     gunichar c = *walk;
 
+    // Skip escape sequences
+    if(escaped) { field += c; escaped = false; continue; }
+
     // Escaped stuff in quoted strings:
     if(quote_char && c == '\\')
-    {
-      ++ walk;
-      walk = advance_escape(walk, end, c);
-      field.append(1, c);
-    }
+      escaped = true;
     // End of quoted string
     else if(quote_char && c == quote_char)
-    {
       quote_char = 0;
-      ++ walk;
-    }
-    // Begin of quoted string. This allows stuff such as "foo"'bar'baz in a field here,
-    // but it can easily be avoided if it's a problem, by checking walk against iter.
+    // Begin of quoted string.
     else if(!quote_char && (c == '\'' || c == '\"'))
-    {
       quote_char = c;
-      ++ walk;
-    }
     // End of field:
     else if(!quote_char && c == DELIMITER)
-    {
       break;
-    }
-    else
-    {
-      field.append(1, c);
-      ++ walk;
-    }
+
+    field += c; // Just so that we don't need to iterate through the field again, since there is no Glib::ustring::substr(iter, iter)
   }
 
   // TODO: Throw error if still inside a quoted string?
@@ -861,13 +852,39 @@ void Dialog_Import_CSV::field_data_func(Gtk::CellRenderer* renderer, const Gtk::
     // Convert to currently chosen field, if any, and back, too see how it
     // looks like when imported
     sharedptr<Field> field = m_fields[column_number];
-    Glib::ustring text = m_rows[row][column_number];
+    const Glib::ustring& orig_text = m_rows[row][column_number];
+
+    Glib::ustring text;
     if(field)
     {
       bool success;
-      Gnome::Gda::Value value = Glom::Conversions::parse_value(field->get_glom_type(), text, success);
-      if(!success) text = _("<Import failure>");
-      else text = Glom::Conversions::get_text_for_gda_value(field->get_glom_type(), value);
+
+      if(field->get_glom_type() != Field::TYPE_IMAGE)
+      {
+        Gnome::Gda::Value value = field->from_sql(orig_text, success);
+        
+        if(!success) text = _("<Import Failure>");
+        else text = Glom::Conversions::get_text_for_gda_value(field->get_glom_type(), value);
+      }
+      else
+      {
+        // TODO: It is too slow to create the picture here. Maybe we should
+        // create it once and cache it. We could also think about using a
+        // GtkCellRendererPixbuf to show it, then.
+        if(!orig_text.empty() && orig_text != "NULL")
+          text = _("<Picture>");
+      }
+    }
+    else
+    {
+      // TODO: Should we unescape the field's content?
+      text = orig_text;
+    }
+
+    if(text.length() > 32)
+    {
+      text.erase(32);
+      text.append("…");
     }
 
     renderer_combo->set_property("text", text);

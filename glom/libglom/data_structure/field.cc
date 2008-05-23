@@ -242,6 +242,83 @@ static std::string glom_escape_text(const std::string& src)
   }
 }
 
+#define ISFIRSTOCTDIGIT(CH) ((CH) >= '0' && (CH) <= '3')
+#define ISOCTDIGIT(CH) ((CH) >= '0' && (CH) <= '7')
+#define OCTVAL(CH) ((CH) - '0')
+
+/// Unescape text that was escaped by the above function. Only unescapes
+/// quoted strings. Nonquoted strings are returned without being modified.
+static std::string glom_unescape_text(const std::string& str)
+{
+  std::string::const_iterator iter = str.begin();
+  if(iter == str.end()) return str;  // Empty string
+  if(*iter != '\'') return str; // Non-quoted
+  ++ iter;
+
+  std::string result;
+
+  while(iter != str.end())
+  {
+    // End here if this is the terminating quotation character, or unescape
+    // '' to '.
+    if(*iter == '\'')
+    {
+      ++ iter;
+      if(iter == str.end() || *iter != '\'') break;
+      result += '\'';
+      ++ iter;
+    }
+    // Unescape "" to ".
+    else if(*iter == '\"')
+    {
+      ++ iter;
+      if(iter == str.end()) break;
+      result += '\"';
+      ++ iter;
+    }
+    // Escape sequence beginning with backslash.
+    else if(*iter == '\\')
+    {
+      ++ iter;
+      if(iter == str.end()) break;
+
+      // Escaped backslash
+      if(*iter == '\\')
+      {
+        result += '\\';
+        ++ iter;
+      }
+      // Some octal representation
+      else if(ISFIRSTOCTDIGIT(*iter))
+      {
+        unsigned char byte = OCTVAL(*iter);
+
+        ++ iter;
+        if(iter != str.end() && ISOCTDIGIT(*iter))
+        {
+          byte = (byte << 3) | OCTVAL(*iter);
+          ++ iter;
+          if(iter != str.end() && ISOCTDIGIT(*iter))
+          {
+            byte = (byte << 3) | OCTVAL(*iter);
+            ++ iter;
+          }
+        }
+
+        result += byte;
+      }
+    }
+    else
+    {
+      // Take char as is
+      result += *iter;
+      ++ iter;
+    }
+  }
+
+  return result;
+}
+
 Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
 {
   //g_warning("Field::sql: glom_type=%d", get_glom_type());
@@ -349,6 +426,64 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
   }
 
   return str;
+}
+
+Gnome::Gda::Value Field::from_sql(const Glib::ustring& str, bool& success) const
+{
+  success = true;
+  switch(m_glom_type)
+  {
+  case TYPE_TEXT:
+    {
+      return Gnome::Gda::Value(glom_unescape_text(str));
+    }
+  case TYPE_DATE:
+  case TYPE_TIME:
+    {
+      if(str == "NULL") return Gnome::Gda::Value();
+      Glib::ustring unescaped = glom_unescape_text(str);
+
+      NumericFormat format_ignored; //Because we use ISO format.
+      return Conversions::parse_value(m_glom_type, unescaped, format_ignored, success, true);
+    }
+  case TYPE_NUMERIC:
+    {
+      //No quotes for numbers.
+      NumericFormat format_ignored; //Because we use ISO format.
+      return Conversions::parse_value(m_glom_type, str, format_ignored, success, true);
+    }
+  case TYPE_BOOLEAN:
+    {
+      if(str.lowercase() == "true")
+        return Gnome::Gda::Value(true);
+      return Gnome::Gda::Value(false);
+    }
+  case TYPE_IMAGE:
+    {
+      if(str == "NULL") return Gnome::Gda::Value();
+
+      // We store the data into the format E'some escaped data'::bytea, and we
+      // now expect it in exactly that format now.
+      // We operate on the raw std::string since access into the Glib::ustring
+      // is expensive, and we only check for ASCII stuff anyway.
+      const std::string& raw = str.raw();
+      if(raw.length() >= 10 &&
+         raw.compare(0, 2, "E'") == 0 && raw.compare(raw.length() - 8, 8, "'::bytea") == 0)
+      {
+        std::string unescaped = glom_unescape_text(raw.substr(1, raw.length() - 8));
+        NumericFormat format_ignored; //Because we use ISO format.
+        return Conversions::parse_value(m_glom_type, unescaped, format_ignored, success, true);
+      }
+      else
+      {
+        success = false;
+        return Gnome::Gda::Value();
+      }
+    }
+  default:
+    g_assert_not_reached();
+    break;
+  }
 }
 
 Glib::ustring Field::sql_find(const Gnome::Gda::Value& value) const

@@ -143,7 +143,8 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
     if(field)
     {
       bool success;
-      Gnome::Gda::Value value = Glom::Conversions::parse_value(field->get_glom_type(), m_data_source->get_data(m_current_row, i), success);
+      Gnome::Gda::Value value = field->from_sql(m_data_source->get_data(m_current_row, i), success);
+
       if(success)
       {
         // Make the value empty if the value is not unique.
