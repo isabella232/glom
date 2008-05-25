@@ -1,3 +1,8 @@
+2008-05-25  Jorge Gonzalez <jorgegonz@svn.gnome.org>
+
+	* es.po: Updated Spanish translation by Daniel Mustieles and
+	  suggestions from Eloy Alejandro Lautaro
+
 2008-05-09  Gabor Kelemen  <kelemeng@gnome.org>
 
 	* POTFILES.in: Remove some duplicates introduced in my previous commit.
