@@ -40,7 +40,9 @@
 #include "application.h"
 #include <glom/libglom/glade_utils.h>
 
+#ifndef G_OS_WIN32
 #include <fontconfig/fontconfig.h> //For cleanup.
+#endif
 
 namespace Glom
 {

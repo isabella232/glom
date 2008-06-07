@@ -18,6 +18,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
+
+#include "config.h" // For HAVE_STRPTIME
+
 #include "glomconversions.h"
 #include <glom/libglom/connectionpool.h>
 #include <glom/libglom/utils.h>
@@ -637,6 +640,7 @@ tm Conversions::parse_time(const Glib::ustring& text, const std::locale& locale,
     return the_c_time;
   }
   
+#ifdef HAVE_STRPTIME
   //Fall back to strptime():
   //It seems to be well known that time_get<> can parse much less than what time_put<> can generate:
   // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2006/n2070.html
@@ -683,6 +687,7 @@ tm Conversions::parse_time(const Glib::ustring& text, const std::locale& locale,
  
   //std::cout << "  DEBUG: strptime(%c) failed on text=" << text << std::endl;
 
+#endif // HAVE_STRPTIME
   //Nothing worked:
   //tm blank_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
   tm blank_time ;

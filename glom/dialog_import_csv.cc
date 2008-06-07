@@ -28,6 +28,11 @@
 #include <glibmm/i18n.h>
 #include <cerrno>
 
+// On Windows, "iconv" seems to be a define for "libiconv", breaking the Glib::IConv::iconv() call.
+#ifdef iconv
+#undef iconv
+#endif
+
 namespace
 {
 
@@ -656,6 +661,7 @@ bool Dialog_Import_CSV::on_idle_parse()
   char outbuffer[CONVERT_BUFFER_SIZE];
   char* outbuf = outbuffer;
   gsize outbytes = CONVERT_BUFFER_SIZE;
+
   const std::size_t result = m_parser->conv.iconv(&inbuf, &inbytes, &outbuf, &outbytes);
   bool more_to_process = (inbytes != 0);
 

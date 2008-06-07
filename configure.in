@@ -118,6 +118,8 @@ AC_DEFINE_UNQUOTED([ISO_CODES_PREFIX],["`$PKG_CONFIG --variable=prefix iso-codes
 # Get the CFLAGS and LIBS for python's embedding API:
 AM_CHECK_PYTHON_HEADERS(,[AC_MSG_ERROR(could not find Python headers)])
 
+# We don't have this on mingw, for example
+AC_CHECK_FUNCS(strptime)
 
 # Install path for DTD (e.g. /usr/local/share/glom):
 

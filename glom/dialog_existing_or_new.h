@@ -21,10 +21,6 @@
 #ifndef GLOM_DIALOG_EXISTING_OR_NEW_H
 #define GLOM_DIALOG_EXISTING_OR_NEW_H
 
-#ifndef G_OS_WIN32
-# include <libepc/service-monitor.h>
-#endif
-
 #include <memory>
 #include <ctime> // for time_t
 #include <giomm/asyncresult.h>
@@ -37,6 +33,10 @@
 #include <gtkmm/recentinfo.h>
 #include <gtkmm/notebook.h>
 #include <libglademm/xml.h>
+
+#ifndef G_OS_WIN32
+# include <libepc/service-monitor.h>
+#endif
 
 namespace Glom
 {

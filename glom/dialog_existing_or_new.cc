@@ -223,13 +223,13 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
 
 Dialog_ExistingOrNew::~Dialog_ExistingOrNew()
 {
+#ifndef G_OS_WIN32
   if(m_service_monitor)
   {
     g_object_unref(m_service_monitor);
     m_service_monitor = NULL;
   }
 
-#ifndef G_OS_WIN32
   // Release the service infos in the treestore
   if(!m_iter_existing_network_dummy.get())
   {
@@ -338,6 +338,7 @@ Glib::ustring Dialog_ExistingOrNew::get_uri() const
   }
 }
 
+#ifndef G_OS_WIN32
 EpcServiceInfo* Dialog_ExistingOrNew::get_service_info() const
 {
   Gtk::TreeModel::iterator iter;
@@ -359,6 +360,7 @@ Glib::ustring Dialog_ExistingOrNew::get_service_name() const
   else
     throw std::logic_error("Dialog_ExistingOrNew::get_service_name: action is not OPEN_REMOTE");
 }
+#endif
 
 std::auto_ptr<Gtk::TreeModel::iterator> Dialog_ExistingOrNew::create_dummy_item_existing(const Gtk::TreeModel::iterator& parent, const Glib::ustring& text)
 {

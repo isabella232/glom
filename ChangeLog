@@ -1,3 +1,22 @@
+2008-06-07  Armin Burgmeier  <armin@openismus.com>
+
+	* configure.in:
+	* config.h.in: Check whether the strptime function is available.
+
+	* glom/libglom/data_structure/glomconversions.cc (parse_time): Don't
+	fall back to strptime if strptime is not available, such as on Windows
+	(mingw).
+
+	* glom/dialog_existing_or_new.h:
+	* glom/dialog_existing_or_new.cc:
+	* glom/dialog_import_csv.cc: Windows build fixes, mostly
+	#ifndef/#endif pairs around libepc stuff. We also need to #undef iconv
+	which seems to be a define to libiconv on Windows, in order to use
+	the Glib::Iconv::iconv function.
+
+	* glom/main.cc: Don include <fontconfig/fontconfig.h> on Windows since
+	it is not available. It doesn't seem to be used anyway.
+
 2008-05-23  Armin Burgmeier  <armin@arbur.net>
 
 	* glom/libglom/data_structure/field.h:
