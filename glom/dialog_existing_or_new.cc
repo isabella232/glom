@@ -654,6 +654,7 @@ void Dialog_ExistingOrNew::on_stream_read(const Glib::RefPtr<Gio::AsyncResult>& 
 #ifndef G_OS_WIN32
 void Dialog_ExistingOrNew::on_service_found(const Glib::ustring& name, EpcServiceInfo* info)
 {
+  //Translator hint: This is <Service Name> on <Host> (via Network Interface such as eth0).
   gchar* title = g_strdup_printf(_("%s on %s (via %s)"), name.c_str(), epc_service_info_get_host(info), epc_service_info_get_interface(info));
   Gtk::TreeModel::iterator iter = m_existing_model->prepend(m_iter_existing_network->children());
   (*iter)[m_existing_columns.m_col_title] = title;

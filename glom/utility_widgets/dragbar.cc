@@ -58,10 +58,12 @@ DragBar::DragBar()
   DragButton* drag_text = Gtk::manage(new DragButton(*image_text, LayoutWidgetBase::TYPE_TEXT));  
   DragButton* drag_image = Gtk::manage(new DragButton(*image_image, LayoutWidgetBase::TYPE_IMAGE));
   
+  //Note for translators: These are container layout items, containing child layout items, like container widgets in GTK+.
   GtkContainer* container_group = GTK_CONTAINER(egg_tool_item_group_new(_("Containers")));
   gtk_container_add (container_group, GTK_WIDGET(drag_group->gobj()));
   gtk_container_add (container_group, GTK_WIDGET(drag_notebook->gobj()));
 
+  //Note for translators: These are layout items, like widgets in GTK+.
   GtkContainer* fields_group = GTK_CONTAINER(egg_tool_item_group_new(_("Items")));
   gtk_container_add (fields_group, GTK_WIDGET(drag_item->gobj()));
   gtk_container_add (fields_group, GTK_WIDGET(drag_button->gobj()));  
