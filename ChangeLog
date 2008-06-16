@@ -1,5 +1,10 @@
 2008-06-16  Johannes Schmid  <johannes.schmid@openismus.com>
 
+	* glom/utility_widgets/egg/toolpalette/Makefile.am:
+	Fixed distcheck
+
+2008-06-16  Johannes Schmid  <johannes.schmid@openismus.com>
+
 	* configure.in:
 	* glom/Makefile.am:
 	* glom/utility_widgets/Makefile.am:
