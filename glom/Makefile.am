@@ -82,8 +82,8 @@ glom_LDADD += navigation/libnavigation.a \
               utility_widgets/calendar/libutility_widgets_calendar.a \
               utility_widgets/canvas/libutility_widgets_canvas.a \
               utility_widgets/cellrendererlist/libutility_widgets_cellrendererlist.a \
-              utility_widgets/eggtoolpalette/libeggtoolpalette.la \
-              utility_widgets/util/libeggutil.la
+              utility_widgets/egg/toolpalette/libeggtoolpalette.la \
+              utility_widgets/egg/util/libeggutil.la
 
 glom_LDADD += python_embed/libpython_embed.a \
               $(top_builddir)/glom/libglom/libglom.la \

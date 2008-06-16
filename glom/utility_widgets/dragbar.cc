@@ -25,7 +25,7 @@
 #include "config.h"
 
 #include "layoutwidgetbase.h"
-#include "eggtoolpalette/eggtoolitemgroup.h"
+#include "egg/toolpalette/eggtoolitemgroup.h"
 
 namespace Glom
 {

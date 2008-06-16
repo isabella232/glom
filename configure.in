@@ -221,8 +221,9 @@ AC_OUTPUT(Makefile \
         glom/utility_widgets/adddel/eggcolumnchooser/Makefile \
       glom/utility_widgets/canvas/Makefile \
       glom/utility_widgets/db_adddel/Makefile \
-      glom/utility_widgets/eggtoolpalette/Makefile \
-      glom/utility_widgets/util/Makefile \
+      glom/utility_widgets/egg/Makefile
+        glom/utility_widgets/egg/toolpalette/Makefile \
+        glom/utility_widgets/egg/util/Makefile \
       glom/python_embed/Makefile \
         glom/python_embed/python_module/Makefile \
     glom/relationships_overview/Makefile \

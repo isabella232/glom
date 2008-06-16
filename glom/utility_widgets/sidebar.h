@@ -25,8 +25,8 @@
 #include <gtkmm/handlebox.h>
 #include <gtkmm/box.h>
 #include <gtkmm/button.h>
-#include "eggtoolpalette/eggtoolpalette.h"
-#include "eggtoolpalette/eggtoolitemgroup.h"
+#include "egg/toolpalette/eggtoolpalette.h"
+#include "egg/toolpalette/eggtoolitemgroup.h"
 
 namespace Glom
 {

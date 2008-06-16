@@ -20,7 +20,7 @@
 
 #include "flowtable_dnd.h"
 #include "../mode_data/flowtablewithfields.h"
-#include "eggtoolpalette/eggtoolpalette.h"
+#include "egg/toolpalette/eggtoolpalette.h"
 #include "placeholder-glom.h"
 #include "dragbutton.h"
 #include "entryglom.h"
@@ -38,7 +38,8 @@ FlowTableDnd::FlowTableDnd() :
   m_internal_drag (false)
 {
   std::list<Gtk::TargetEntry> drag_targets;
-  Gtk::TargetEntry toolbar_target (egg_tool_palette_get_drag_target_item());
+  const GtkTargetEntry* target_entry = egg_tool_palette_get_drag_target_item();
+  Gtk::TargetEntry toolbar_target (*target_entry);
   Gtk::TargetEntry move_target(MOVE_TARGET);
   drag_targets.push_back(toolbar_target);
   drag_targets.push_back(move_target);
@@ -80,7 +81,8 @@ void FlowTableDnd::start_dnd (Gtk::Widget& child)
   if (!(child.get_flags() & Gtk::NO_WINDOW))
   { 
     std::list<Gtk::TargetEntry> drag_targets;
-    Gtk::TargetEntry toolbar_target (egg_tool_palette_get_drag_target_item());
+    const GtkTargetEntry* target_entry = egg_tool_palette_get_drag_target_item();
+    Gtk::TargetEntry toolbar_target (*target_entry);
     Gtk::TargetEntry move_target(MOVE_TARGET);
     drag_targets.push_back(toolbar_target);
     drag_targets.push_back(move_target);
