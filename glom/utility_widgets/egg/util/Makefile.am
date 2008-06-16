@@ -26,4 +26,6 @@ noinst_HEADERS = \
 	egg-macros.h
 
 EXTRA_DIST=			\
-	eggmarshalers.list
+	eggmarshalers.list      \
+	eggmarshalers.h		\
+	eggmarshalers.c		

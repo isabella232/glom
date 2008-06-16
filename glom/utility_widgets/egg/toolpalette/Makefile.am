@@ -1,6 +1,6 @@
 INCLUDES = \
   $(EGG_CFLAGS) \
-  -I../util \
+  -I@srcdir@/../util \
   -DEGG_COMPILATION \
   -DGTK_DISABLE_DEPRECATED \
   -DGDK_DISABLE_DEPRECATED \
@@ -9,7 +9,7 @@ INCLUDES = \
 noinst_LTLIBRARIES = libeggtoolpalette.la
 noinst_PROGRAMS = testtoolpalette
 
-libeggtoolpalette_la_SOURCES = eggenumaction.c eggtoolpalette.c eggtoolitemgroup.c eggtoolpalette.h eggtoolitemgroup.h eggenumaction.h
+libeggtoolpalette_la_SOURCES = eggenumaction.c eggtoolpalette.c eggtoolitemgroup.c eggtoolpalette.h eggtoolitemgroup.h eggenumaction.h eggtoolpaletteprivate.h
 
 testtoolpalette_SOURCES = testtoolpalette.c
 testtoolpalette_LDFLAGS = libeggtoolpalette.la ../util/libeggutil.la $(EGG_LIBS)

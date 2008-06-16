@@ -1,3 +1,9 @@
+2008-06-16  Johannes Schmid  <johannes.schmid@openismus.com>
+
+	* POTFILES.in:
+	* POTFILES.skip:
+	Fixed distcheck
+
 2008-06-15  Andre Klapper  <a9016009@gmx.de>
 
 	* de.po: Updated German translation.

@@ -1,3 +1,4 @@
+[encoding: UTF-8]
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
 glom/application.cc
@@ -11,6 +12,7 @@ glom/dialog_connection.cc
 glom/dialog_database_preferences.cc
 glom/dialog_existing_or_new.cc
 glom/dialog_import_csv.cc
+glom/dialog_import_csv_progress.cc
 glom/dialog_new_self_hosted_connection.cc
 glom/filechooser_export.cc
 glom/frame_glom.cc
@@ -101,10 +103,10 @@ glom/utility_widgets/datawidget.cc
 glom/utility_widgets/db_adddel/db_adddel.cc
 glom/utility_widgets/dialog_choose_id.cc
 glom/utility_widgets/dragbar.cc
-glom/utility_widgets/eggtoolpalette/eggenumaction.c
-glom/utility_widgets/eggtoolpalette/eggtoolitemgroup.c
-glom/utility_widgets/eggtoolpalette/eggtoolpalette.c
-glom/utility_widgets/eggtoolpalette/testtoolpalette.c
+glom/utility_widgets/egg/toolpalette/eggenumaction.c
+glom/utility_widgets/egg/toolpalette/eggtoolitemgroup.c
+glom/utility_widgets/egg/toolpalette/eggtoolpalette.c
+glom/utility_widgets/egg/toolpalette/testtoolpalette.c
 glom/utility_widgets/entryglom.cc
 glom/utility_widgets/filechooserdialog_saveextras.cc
 glom/utility_widgets/imageglom.cc
