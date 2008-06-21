@@ -1,7 +1,7 @@
 2008-06-21  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/dialog_import_csv_progress.cc: on_idle_import(): Corrected the grammar 
-	in two strings.
+	in two strings. Bug #538480 (Andre Klapper).
 
 2008-06-21  Murray Cumming  <murrayc@murrayc.com>
 
