@@ -1,6 +1,11 @@
 2008-06-21  Murray Cumming  <murrayc@murrayc.com>
 
-	* glom/notebook_glom.h (Notebook_Glom): Made on_switch_page_handler() 
+	* glom/dialog_import_csv_progress.cc: on_idle_import(): Corrected the grammar 
+	in two strings.
+
+2008-06-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/notebook_glom.h: Made on_switch_page_handler() 
 	virtual again, so that the list updates again when moving from the details 
 	tab. Fixes bug #532721 (Armin Burgmeier).
 

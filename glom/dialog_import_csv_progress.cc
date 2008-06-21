@@ -128,7 +128,7 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
 
   if(m_current_row == m_data_source->get_row_count())
   {
-    // Don't response immediately, so the user has a chance to read the
+    // Don't do the response immediately, so the user has a chance to read the
     // warnings and errors, if any.
     set_response_sensitive(Gtk::RESPONSE_CANCEL, false);
     set_response_sensitive(Gtk::RESPONSE_OK, true);
@@ -156,7 +156,7 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
           {
             value = Gnome::Gda::Value();
 
-            Glib::ustring message(Glib::ustring::compose(_("Warning importing row %1: The value for field %2 must be unique, but is already in use. Don't importing the value.\n"), m_current_row + 1, field->get_name()));
+            const Glib::ustring message(Glib::ustring::compose(_("Warning: Importing row %1: The value for field %2 must be unique, but is already in use. The value will not be imported.\n"), m_current_row + 1, field->get_name()));
             add_text(message);
           }
         }
@@ -165,7 +165,7 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
       }
       else
       {
-        Glib::ustring message(Glib::ustring::compose(_("Warning importing row %1: The value for field %2, \"%3\" could not be converted to the field's type. Don't importing the value.\n"), m_current_row + 1, field->get_name(), m_data_source->get_data(m_current_row, i)));
+        const Glib::ustring message(Glib::ustring::compose(_("Warning: Importing row %1: The value for field %2, \"%3\" could not be converted to the field's type. The value will not be imported.\n"), m_current_row + 1, field->get_name(), m_data_source->get_data(m_current_row, i)));
         add_text(message);
       }
     }
