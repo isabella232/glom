@@ -55,7 +55,7 @@ protected:
   Gtk::Window* get_app_window();
 
   //Signal handlers:
-  void on_switch_page_handler(GtkNotebookPage* pPage, guint uiPageNumber);  //The _handler suffix is to avoid overriding the base class's method.
+  virtual void on_switch_page_handler(GtkNotebookPage* pPage, guint uiPageNumber);  //The _handler suffix is to avoid overriding the base class's method.
   void on_leave_page(guint uiPageNumber);
 
   //type_signal_leave_page m_signal_leave_page; //Signals when the user leaves a page.
