@@ -1,7 +1,53 @@
-Changes in 1.8 (future):
+Changes in 1.7.1:
 
+New features since 1.6:
+* Redesigned initial dialog.
+  (Armin Burgmeier)
+* Advertize running Glom systems on the network via Avahi and allow 
+  other users to browse for them and open them. Uses libepc.
+  (Murray Cumming, Mathias Hasselmann)
+* New Import feature, to import comma-separated rows of data into the 
+  current table.
+  (Armin Burgmeier)
+* (Unfinished) drag-and-drop of layout items from a toolbar, and 
+  right-clicking to edit item details.
+  For now, you will still need the layout dialog too.
+  (Johannes Schmid)
+* (Unfinished) exact-layout print layout feature, for instance for 
+  printing out invoices or for printing on pre-printed forms.
+  (Murray Cumming)
+* New Calendar portal, to view related records on a calendar, using 
+  one of the related records' fields as the date.
+  (Murray Cumming)
 * Custom font, foreground color and background color for fields.
   (Murray Cumming)
+
+Other changes:
+* Field Definitions: Refuse to change a field name to one that 
+  already exists.
+  (Murray Cumming)
+* Initial Windows port.
+  (Armin Burgmeier)
+* Some optimization for very large tables, and some memory leak fixes, 
+  though really fast-enough performance must wait until we port to 
+  libgda 4.0.
+  (Murray Cumming)
+* Added : at the end of labels, as per the GNOME HIG.
+  (Murray Cumming)
+* Remove sentences saying that names should not have spaces or 
+  special characters, because they can.
+  Bug #528209 (Jean-François Fortin Tam)
+* Hopefully allow bug-buddy and aport to work.
+  (Murray Cumming)
+* Reimplemented the Relationships Overview graph dialog.
+  (Murray Cumming)
+* Code refactoring to make it easier to add new layout items.
+  (Murray Cumming, Armin Burgmeier)
+* Removed libgnome dependency, by adding a hack for showing help.
+  (Armin Burgmeier)
+* Port to giomm instead of gnome-vfsmm (also in Bakery).
+* gcc 4.3 build fixes.
+  (Jeremiah Savage) Bug #529530.
 
 Changes in 1.6:
 

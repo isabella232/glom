@@ -1,3 +1,10 @@
+1.7.1:
+
+2008-06-23  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in: Default to looking for postgres 8.3 instead of 8.2, to make 
+	life easier for me when distchecking.
+
 2008-06-21  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/dialog_import_csv_progress.cc: on_idle_import(): Corrected the grammar 
@@ -102,8 +109,8 @@
 	* glom/utility_widgets/flowtable_dnd.h
 	(FlowTableDnd):
 	* glom/utility_widgets/layoutwidgetbase.h:
-  Add images as possible drag items to the sidebar and adjust flowtable
-  to accept images.
+	Add images as possible drag items to the sidebar and adjust flowtable
+ 	to accept images.
 
 2008-05-18  Murray Cumming  <murrayc@murrayc.com>
 
@@ -693,7 +700,7 @@
 	Fix crasher when opening GlomButton details dialog
 	
 	* glom/utility_widgets/Makefile.am:
-  Move flowtable_dnd.[cch] in !GLOM_CLIENT_ONLY section
+ 	Move flowtable_dnd.[cch] in !GLOM_CLIENT_ONLY section
 
 2008-04-09  Murray Cumming  <murrayc@murrayc.com>
 
@@ -910,20 +917,6 @@
 	rows expected in the list view, and do not sort them by default if 
 	it is more than 10,000. This allows Glom to show 600,000 MusicBrainz 
 	album rows now in 1 minute.
-
-
-2008-04-01  Murray Cumming,,,  <murrayc@murrayc.com>
-
-	reviewed by: <delete if not using a buddy>
-
-	* glom/base_db.cc:
-	* glom/base_db.h:
-	* glom/frame_glom.cc:
-	* glom/libglom/data_structure/Makefile.am:
-	* glom/libglom/data_structure/foundset.cc:
-	* glom/libglom/data_structure/foundset.h:
-	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
-	* glom/utility_widgets/db_adddel/glom_db_treemodel.h:
 
 2008-04-01  Murray Cumming  <murrayc@murrayc.com>
 

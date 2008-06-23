@@ -146,7 +146,7 @@ if test $win32 != true; then
 	AC_ARG_WITH(postgres-utils,
 	    [ --with-postgres-utils=<path> path to the postmaster executable. e.g. /usr/lib/postgresql/8.2/bin (ignored on Windows)],
 	    [POSTGRES_UTILS_PATH=$with_postgres_utils],
-	    [POSTGRES_UTILS_PATH=/usr/lib/postgresql/8.2/bin]
+	    [POSTGRES_UTILS_PATH=/usr/lib/postgresql/8.3/bin]
 	)
 
 	AC_SUBST(POSTGRES_UTILS_PATH)
