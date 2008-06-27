@@ -7,10 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom.userguide.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-18 21:54+0000\n"
-"PO-Revision-Date: 2008-06-01 15:05+0200\n"
+"POT-Creation-Date: 2008-06-16 06:45+0000\n"
+"PO-Revision-Date: 2008-06-22 19:34+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
-"Language-Team: Español <gnome-es-list@gnome.org>\n"
+"Language-Team: Spanish <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -131,14 +131,18 @@ msgstr "@@image: 'figures/start.png'; md5=b8c9acc03f9f1cdb213e37c9da91817a"
 #. When image changes, this message will be marked fuzzy or untranslated for you.
 #. It doesn't matter what you translate it to: it's not used at all.
 #: C/glom.xml:212(None)
-msgid "@@image: 'figures/glom_tables.png'; md5=e725285aae974272ca99dc991c7ae9ed"
-msgstr "@@image: 'figures/glom_tables.png'; md5=e725285aae974272ca99dc991c7ae9ed"
+msgid ""
+"@@image: 'figures/glom_tables.png'; md5=e725285aae974272ca99dc991c7ae9ed"
+msgstr ""
+"@@image: 'figures/glom_tables.png'; md5=e725285aae974272ca99dc991c7ae9ed"
 
 #. When image changes, this message will be marked fuzzy or untranslated for you.
 #. It doesn't matter what you translate it to: it's not used at all.
 #: C/glom.xml:238(None)
-msgid "@@image: 'figures/glom_data_list.png'; md5=3c43533f6b0ce3e645b29402f59af76f"
-msgstr "@@image: 'figures/glom_data_list.png'; md5=3c43533f6b0ce3e645b29402f59af76f"
+msgid ""
+"@@image: 'figures/glom_data_list.png'; md5=3c43533f6b0ce3e645b29402f59af76f"
+msgstr ""
+"@@image: 'figures/glom_data_list.png'; md5=3c43533f6b0ce3e645b29402f59af76f"
 
 #. When image changes, this message will be marked fuzzy or untranslated for you.
 #. It doesn't matter what you translate it to: it's not used at all.
@@ -271,8 +275,8 @@ msgid "Glom Development Team"
 msgstr "Equipo de desarrollo de Glom"
 
 #: C/glom.xml:57(firstname)
-msgid "Murrayc"
-msgstr "Murrayc"
+msgid "Murray"
+msgstr "Murray"
 
 #: C/glom.xml:58(surname)
 msgid "Cumming"
@@ -341,7 +345,8 @@ msgstr "Iniciar Glom"
 
 #: C/glom.xml:154(para)
 msgid "You can start <application>Glom</application> in the following ways:"
-msgstr "Puede iniciar <application>Glom</application> de las siguientes maneras:"
+msgstr ""
+"Puede iniciar <application>Glom</application> de las siguientes maneras:"
 
 #: C/glom.xml:158(term)
 msgid "<guimenu>Applications</guimenu> menu"
@@ -363,7 +368,8 @@ msgstr "Al iniciar Glom"
 msgid ""
 "When you start <application>Glom</application>, the following window is "
 "displayed."
-msgstr "Se mostrará la siguiente ventana al iniciar <application>Glom</application>."
+msgstr ""
+"Se mostrará la siguiente ventana al iniciar <application>Glom</application>."
 
 #: C/glom.xml:177(title)
 msgid "Glom Start Up Window"
@@ -641,7 +647,8 @@ msgstr "También puede usar esta ventana para renombrar una tabla existente."
 
 #: C/glom.xml:315(para)
 msgid "Click the <literal>Open</literal> button to look at the selected table."
-msgstr "Pulse el botón de <literal>Abrir</literal> para ver las tablas seleccionadas."
+msgstr ""
+"Pulse el botón de <literal>Abrir</literal> para ver las tablas seleccionadas."
 
 #: C/glom.xml:319(title) C/glom.xml:325(title)
 msgid "Editing Fields"
@@ -885,7 +892,8 @@ msgstr "Para mostrar un campo relacionado en la lista o en la vista detallada."
 
 #: C/glom.xml:419(simpara)
 msgid "To show a list of related records on the Details view."
-msgstr "Para mostrar una lista de registros relacionados en la vista detallada."
+msgstr ""
+"Para mostrar una lista de registros relacionados en la vista detallada."
 
 #: C/glom.xml:420(simpara)
 msgid ""
@@ -1358,12 +1366,13 @@ msgid ""
 "key field cannot be used as a target field, but otherwise one column must be "
 "imported into the primary key field."
 msgstr ""
-"Este diálogo permite al usuario importar un archivo CSV (valores separados por comas) "
-"en la tabla de la base de datos actual. Muestra las primeras filas del archivo para "
-"importar y permite al usuario seleccionar el campo destino en la base de datos "
-"para cada columna del archivo CSV. Para autoincrementar las claves primarias, el campo "
-"de la clave primaria no se puede utilizar como campo destino, de lo contrario se debe "
-"importar una columna en el campo de la clave primaria."
+"Este diálogo permite al usuario importar un archivo CSV (valores separados "
+"por comas) en la tabla de la base de datos actual. Muestra las primeras "
+"filas del archivo para importar y permite al usuario seleccionar el campo "
+"destino en la base de datos para cada columna del archivo CSV. Para "
+"autoincrementar las claves primarias, el campo de la clave primaria no se "
+"puede utilizar como campo destino, de lo contrario se debe importar una "
+"columna en el campo de la clave primaria."
 
 #: C/glom.xml:705(title)
 msgid "About Glom"
@@ -1598,7 +1607,8 @@ msgstr ""
 "un valor vacío en un campo numérico deba valer 0."
 
 #: C/glom.xml:791(para)
-msgid "You can test whether a field is empty by using Python's None. For instance:"
+msgid ""
+"You can test whether a field is empty by using Python's None. For instance:"
 msgstr ""
 "Puede probar si un campo está vacío usando el código Python «None». Por "
 "ejemplo:"
@@ -1621,8 +1631,10 @@ msgstr ""
 "  "
 
 #: C/glom.xml:800(para)
-msgid "You might also test whether there are any related records. For instance:"
-msgstr "También puede comprobar si hay algunos registros relacionados. Por ejemplo:"
+msgid ""
+"You might also test whether there are any related records. For instance:"
+msgstr ""
+"También puede comprobar si hay algunos registros relacionados. Por ejemplo:"
 
 #: C/glom.xml:802(programlisting)
 #, no-wrap
