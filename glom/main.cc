@@ -144,6 +144,10 @@ main(int argc, char* argv[])
 
   Glom::OptionGroup group;
   context.set_main_group(group);
+  //We use python for calculated-fields:
+  Py_Initialize();
+  PySys_SetArgv(argc, argv);
+  Gtk::Main mainInstance(argc, argv, context);
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
@@ -191,15 +195,10 @@ main(int argc, char* argv[])
     return 0;
   }
 
-  //We use python for calculated-fields:
-  Py_Initialize();
-  PySys_SetArgv(argc, argv);
-
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
 #endif
   {
-    Gtk::Main mainInstance(argc, argv, context);
     Bakery::init();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

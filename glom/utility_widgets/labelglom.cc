@@ -61,6 +61,7 @@ App_Glom* LabelGlom::get_application()
   return dynamic_cast<App_Glom*>(pWindow);
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void LabelGlom::on_menu_properties_activate()
 {
   sharedptr<LayoutItem_Text> textobject = sharedptr<LayoutItem_Text>::cast_dynamic(m_pLayoutItem);
@@ -110,5 +111,6 @@ bool LabelGlom::on_button_press_event(GdkEventButton *event)
   }
   return Gtk::EventBox::on_button_press_event(event);
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 } //namespace Glom

@@ -1410,6 +1410,7 @@ sharedptr<LayoutItem_Portal> FlowTableWithFields::get_layout_item_from_relation(
   return layout_item;
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void FlowTableWithFields::on_menu_properties_activate()
 {
   try
@@ -1479,5 +1480,6 @@ bool FlowTableWithFields::on_button_press_event(GdkEventButton *event)
   }
   return Gtk::Widget::on_button_press_event(event);
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 } //namespace Glom

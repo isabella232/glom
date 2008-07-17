@@ -69,7 +69,9 @@ App_Glom* NotebookGlom::get_application()
 
 void NotebookGlom::delete_from_layout()
 {
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   on_menupopup_activate_delete();
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
 } //namespace Glom

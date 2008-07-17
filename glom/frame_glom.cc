@@ -357,9 +357,10 @@ void Frame_Glom::show_table(const Glib::ustring& table_name, const Gnome::Gda::V
     //Show the table:
     m_table_name = table_name;
     Glib::ustring strMode;
-
+#ifndef GLOM_ENABLE_CLIENT_ONLY
     //Update the document with any new information in the database if necessary (though the database _should never have changed information)
     update_table_in_document_from_database();
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
     //Update user-level dependent UI:
     if(pApp)
@@ -660,7 +661,6 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
     }
   }
 }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 void Frame_Glom::on_menu_file_import()
 {
@@ -714,6 +714,7 @@ void Frame_Glom::on_menu_file_import()
     }
   }
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 void Frame_Glom::on_menu_file_print()
 {
@@ -1111,6 +1112,7 @@ void Frame_Glom::show_table_title()
   }
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void Frame_Glom::update_table_in_document_from_database()
 {
   //Add any new/changed information from the database to the document
@@ -1191,6 +1193,7 @@ void Frame_Glom::update_table_in_document_from_database()
       pDoc->set_table_fields(m_table_name, fieldsActual);
   }
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 void Frame_Glom::set_document(Document_Glom* pDocument)
 {

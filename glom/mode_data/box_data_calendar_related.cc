@@ -314,9 +314,9 @@ void Box_Data_Calendar_Related::on_dialog_layout_hide()
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 Dialog_Layout* Box_Data_Calendar_Related::create_layout_dialog() const
 {
-#ifndef GLOM_ENABLE_CLIENT_ONLY
   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_data_layout");
   if(refXml)
   {
@@ -324,7 +324,6 @@ Dialog_Layout* Box_Data_Calendar_Related::create_layout_dialog() const
     refXml->get_widget_derived("window_data_layout", dialog);
     return dialog;
   }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   return NULL;
 }
@@ -337,6 +336,7 @@ void Box_Data_Calendar_Related::prepare_layout_dialog(Dialog_Layout* dialog)
   sharedptr<LayoutItem_CalendarPortal> derived_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(m_portal);
   related_dialog->set_document(m_layout_name, get_document(), derived_portal);
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 void Box_Data_Calendar_Related::on_calendar_month_changed()
 {

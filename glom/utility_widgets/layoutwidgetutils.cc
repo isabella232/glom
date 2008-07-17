@@ -36,7 +36,9 @@ LayoutWidgetUtils::LayoutWidgetUtils() :
   m_refActionGroup->add(Gtk::Action::create("UtilMenu", "Utility Menu") );
   m_refUtilProperties = Gtk::Action::create("UtilProperties", _("Properties"));
   m_refUtilDelete = Gtk::Action::create("UtilDelete", _("Delete"));
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_util_menu();
+#endif
 }
 
 LayoutWidgetUtils::~LayoutWidgetUtils()
@@ -44,6 +46,7 @@ LayoutWidgetUtils::~LayoutWidgetUtils()
 	
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void LayoutWidgetUtils::setup_util_menu()
 {
   m_refUIManager = Gtk::UIManager::create();
@@ -108,6 +111,7 @@ void LayoutWidgetUtils::on_menu_delete_activate()
     signal_layout_changed().emit();
   }
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 } // namespace Glom
 

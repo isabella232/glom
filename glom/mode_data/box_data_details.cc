@@ -46,8 +46,10 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_Button_Nav_Next(Gtk::Stock::GO_FORWARD),
   m_Button_Nav_Last(Gtk::Stock::GOTO_LAST),
   m_bDoNotRefreshRelated(false),
-  m_ignore_signals(true),
-  m_design_mode(false)
+  m_ignore_signals(true)
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  ,m_design_mode(false)
+#endif
 {
   m_layout_name = "details";
 

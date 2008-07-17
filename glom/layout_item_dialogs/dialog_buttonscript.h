@@ -21,10 +21,13 @@
 #ifndef DIALOG_BUTTONSCRIPT_H
 #define DIALOG_BUTTONSCRIPT_H
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+
 #include <gtkmm.h>
 #include <libglademm.h>
 #include <glom/libglom/data_structure/layout/layoutitem_button.h>
 #include "../base_db.h"
+
 #include <gtksourceviewmm/sourceview.h>
 
 namespace Glom
@@ -56,4 +59,5 @@ protected:
 
 } //namespace Glom
 
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 #endif //DIALOG_BUTTONSCRIPT_H

@@ -23,7 +23,9 @@
 #include "../application.h"
 #include "../libglom/glade_utils.h"
 #include "dialog_layoutitem_properties.h"
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 #include "../layout_item_dialogs/dialog_buttonscript.h"
+#endif
 #include <glibmm/i18n.h>
 //#include <sstream> //For stringstream
 
@@ -58,6 +60,7 @@ App_Glom* ButtonGlom::get_application()
   return dynamic_cast<App_Glom*>(pWindow);
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void ButtonGlom::on_menu_properties_activate()
 {
   try
@@ -105,5 +108,6 @@ bool ButtonGlom::on_button_press_event(GdkEventButton *event)
   }
   return Gtk::Button::on_button_press_event(event);
 }
+#endif
 
 } //namespace Glom

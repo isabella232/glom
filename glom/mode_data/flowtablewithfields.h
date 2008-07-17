@@ -246,9 +246,11 @@ protected:
   type_signal_script_button_clicked m_signal_script_button_clicked;
     
   //menu
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void on_menu_properties_activate();
   virtual void on_menu_delete_activate(); // override this to add a dialog box
   virtual bool on_button_press_event(GdkEventButton *event);
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 };
 
 } //namespace Glom

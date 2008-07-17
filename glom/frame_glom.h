@@ -181,8 +181,9 @@ protected:
   void show_table(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value_for_details = Gnome::Gda::Value());
     
   void show_table_title();
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   void update_table_in_document_from_database();
-
+#endif // !GLOM_ENABLE_CLIENT_ONLY
   virtual void set_mode_widget(Gtk::Widget& widget); //e.g. show the design mode notebook.
   virtual bool set_mode(enumModes mode); //bool indicates that there was a change.
 

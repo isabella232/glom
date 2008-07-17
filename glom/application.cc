@@ -299,11 +299,11 @@ void App_Glom::init_menus_file()
 
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_Menu_File_Export", _("_Export")),
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_export));
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   action = Gtk::Action::create("BakeryAction_Menu_File_Import", _("Import"));
   m_refFileActionGroup->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_import));
-
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+	
   m_refFileActionGroup->add(Gtk::Action::create("GlomAction_Menu_File_Print", Gtk::Stock::PRINT));
   m_refFileActionGroup->add(Gtk::Action::create("GlomAction_File_Print", _("_Standard")),
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_print) );
@@ -338,8 +338,8 @@ void App_Glom::init_menus_file()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     "        <menuitem action='BakeryAction_File_SaveAsExample' />"
     "        <menuitem action='BakeryAction_Menu_File_Export' />"
-#endif // !GLOM_ENABLE_CLIENT_ONLY
     "        <menuitem action='BakeryAction_Menu_File_Import' />"
+#endif // !GLOM_ENABLE_CLIENT_ONLY
     "        <separator/>"
     "        <menu action='GlomAction_Menu_File_Print'>"
     "          <menuitem action='GlomAction_File_Print' />"
@@ -750,6 +750,7 @@ void App_Glom::on_menu_file_close() //override
   Bakery::App_WithDoc_Gtk::on_menu_file_close();
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 //Copied from bakery:
 static bool uri_is_writable(const Glib::RefPtr<const Gio::File>& uri)
 {
@@ -781,7 +782,7 @@ static bool uri_is_writable(const Glib::RefPtr<const Gio::File>& uri)
   else
     return true; //Not every URI protocol supports access rights, so assume that it's writable and complain later.
 }
-
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 Glib::ustring App_Glom::get_file_uri_without_extension(const Glib::ustring& uri)
 {
@@ -1190,6 +1191,7 @@ bool App_Glom::offer_new_or_existing()
       case Dialog_ExistingOrNew::NONE:
         // This should not happen
         break;
+#ifndef GLOM_ENABLE_CLIENT_ONLY
       case Dialog_ExistingOrNew::NEW_EMPTY:
         existing_or_new_new();
         break;
@@ -1197,11 +1199,15 @@ bool App_Glom::offer_new_or_existing()
       case Dialog_ExistingOrNew::OPEN_URI:
         open_document(dialog->get_uri());
         break;
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 #ifndef G_OS_WIN32
       case Dialog_ExistingOrNew::OPEN_REMOTE:
         open_browsed_document(dialog->get_service_info(), dialog->get_service_name());
         break;
 #endif
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+        default:
+#endif // !GLOM_ENABLE_CLIENT_ONLY
       }
 
       //Check that a document was opened:
@@ -1222,6 +1228,7 @@ bool App_Glom::offer_new_or_existing()
   return true;
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void App_Glom::existing_or_new_new()
 {
   // New empty document
@@ -1267,12 +1274,10 @@ void App_Glom::existing_or_new_new()
     document->set_connection_database(db_name);
     document->set_connection_is_self_hosted(self_hosted);
          
-#ifndef GLOM_ENABLE_CLIENT_ONLY
    //Tell the connection pool about the document:
    ConnectionPool* connection_pool = ConnectionPool::get_instance();
    if(connection_pool)
      connection_pool->set_get_document_func( sigc::mem_fun(*this, &App_Glom::on_connection_pool_get_document) );
-#endif
 
     const bool connected = m_pFrame->connection_request_password_and_choose_new_database_name();
     if(!connected)
@@ -1302,6 +1307,7 @@ void App_Glom::existing_or_new_new()
     }
   }
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 void App_Glom::set_mode_data()
 {

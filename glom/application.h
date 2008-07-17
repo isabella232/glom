@@ -96,10 +96,10 @@ protected:
 
   bool offer_new_or_existing();
 
-  void existing_or_new_new();
-
   void on_menu_help_contents();
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+  void existing_or_new_new();
+	
   void on_menu_userlevel_developer();
   void on_menu_userlevel_operator();
   void on_menu_file_save_as_example();

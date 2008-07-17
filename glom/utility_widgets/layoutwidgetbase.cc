@@ -103,6 +103,7 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const FieldFormatti
     widget.modify_base(Gtk::STATE_NORMAL, Gdk::Color(bg));
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void LayoutWidgetBase::set_dnd_in_progress(bool drag)
 {
   m_drag_in_progress = drag;
@@ -112,6 +113,6 @@ bool LayoutWidgetBase::get_dnd_in_progress()
 {
   return m_drag_in_progress; 
 }
-
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 } //namespace Glom
