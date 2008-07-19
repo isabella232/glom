@@ -37,6 +37,10 @@
 
 #include <iostream>
 
+#ifdef GLOM_ENABLE_CLIENT_ONLY
+#define NEW_PAGE 1
+#endif /* GLOM_ENABLE_CLIENT_ONLY */
+
 namespace
 {
 
@@ -157,9 +161,12 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   std::string path(dir);
   g_free(dir);
 #else
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   const char* path = GLOM_EXAMPLES_DIR;
 #endif
+#endif
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   m_examples_dir = Gio::File::create_for_path(path);
 
   try
@@ -172,6 +179,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   {
     std::cerr << "Could not enumerate examples: " << ex.what() << std::endl;
   }
+#endif /* !GLOM_ENABLE_CLIENT_ONLY */
 
   // Browse local network
 #ifndef G_OS_WIN32
@@ -208,16 +216,24 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   m_existing_view->expand_row(m_existing_model->get_path(m_iter_existing_recent), false);
 
   m_select_button->signal_clicked().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_select_clicked));
-  m_notebook->signal_switch_page().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_switch_page));
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  m_notebook->signal_switch_page().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_switch_page));
+#endif /* !GLOM_ENABLE_CLIENT_ONLY */
+    
   Glib::RefPtr<Gtk::TreeView::Selection> existing_view_selection = m_existing_view->get_selection();
   existing_view_selection->signal_changed().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_existing_selection_changed));
   existing_view_selection->set_select_function( sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_existing_select_func) ); 
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   Glib::RefPtr<Gtk::TreeView::Selection> new_view_selection = m_new_view->get_selection();
   new_view_selection->signal_changed().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_new_selection_changed));
   new_view_selection->set_select_function( sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_new_select_func) );
-  
+#else /* GLOM_ENABLE_CLIENT_ONLY */
+  m_notebook->remove_page(NEW_PAGE);
+  m_notebook->set_show_tabs (false);
+#endif /* !GLOM_ENABLE_CLIENT_ONLY */
+    
   update_ui_sensitivity();
 }
 
@@ -530,6 +546,7 @@ void Dialog_ExistingOrNew::update_ui_sensitivity()
   m_select_button->set_sensitive(sensitivity);
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void Dialog_ExistingOrNew::on_enumerate_children(const Glib::RefPtr<Gio::AsyncResult>& res)
 {
   try
@@ -650,6 +667,7 @@ void Dialog_ExistingOrNew::on_stream_read(const Glib::RefPtr<Gio::AsyncResult>& 
 
   m_examples_enumerator->next_files_async(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_next_files));
 }
+#endif /* !GLOM_ENABLE_CLIENT_ONLY */
 
 #ifndef G_OS_WIN32
 void Dialog_ExistingOrNew::on_service_found(const Glib::ustring& name, EpcServiceInfo* info)

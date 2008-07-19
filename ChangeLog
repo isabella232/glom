@@ -1,3 +1,9 @@
+2008-07-19  Johannes Schmid  <johannes.schmid@openismus.com>
+
+	* glom/dialog_existing_or_new.cc:
+	* glom/dialog_existing_or_new.h:
+	Don't show "Create database" tab for client only mode
+
 2008-07-17  Johannes Schmid  <johannes.schmid@openismus.com>
 
 	* glom/application.cc:

@@ -83,11 +83,13 @@ protected:
 
   void update_ui_sensitivity();
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   void on_enumerate_children(const Glib::RefPtr<Gio::AsyncResult>& res);
   void on_next_files(const Glib::RefPtr<Gio::AsyncResult>& res);
   void on_read(const Glib::RefPtr<Gio::AsyncResult>& res);
   void on_stream_read(const Glib::RefPtr<Gio::AsyncResult>& res);
-
+#endif /* !GLOM_ENABLE_CLIENT_ONLY */
+    
 #ifndef G_OS_WIN32
   static void on_service_found_static(EpcServiceMonitor* monitor, gchar* name, EpcServiceInfo* info, gpointer user_data) { static_cast<Dialog_ExistingOrNew*>(user_data)->on_service_found(name, info); }
   static void on_service_removed_static(EpcServiceMonitor* monitor, gchar* name, gchar* type, gpointer user_data) { static_cast<Dialog_ExistingOrNew*>(user_data)->on_service_removed(name, type); }
@@ -181,14 +183,16 @@ protected:
   std::auto_ptr<Gtk::TreeIter> m_iter_existing_recent_dummy;
   std::auto_ptr<Gtk::TreeIter> m_iter_new_template_dummy;
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   Glib::RefPtr<Gio::File> m_examples_dir;
   Glib::RefPtr<Gio::FileEnumerator> m_examples_enumerator;
   Glib::RefPtr<Gio::File> m_current_example;
   Glib::RefPtr<Gio::InputStream> m_current_stream;
-
+    
   struct buffer { static const guint SIZE = 1024; char buf[SIZE]; };
   std::auto_ptr<buffer> m_current_buffer;
-
+#endif /* !GLOM_ENABLE_CLIENT_ONLY */
+    
 #ifndef G_OS_WIN32
   EpcServiceMonitor* m_service_monitor;
 #endif
