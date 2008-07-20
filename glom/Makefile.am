@@ -135,6 +135,6 @@ glomdata_DATA = glom_document.dtd
 # Because that's how gladedir is defined.
 glade_DATA = glom.glade glom_developer.glade
 
-EXTRA_DIST = glom_document.dtd $(glade_DATA)
+EXTRA_DIST = glom_document.dtd glom.rc $(glade_DATA)
 
 
