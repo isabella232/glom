@@ -1,5 +1,11 @@
 2008-07-20  Armin Burgmeier  <armin@openismus.com>
 
+	* glom/application.cc (offer_new_or_existing): Fixed the
+	non-client-only build. There was a default: marker in a switch
+	statement with no code after it.
+
+2008-07-20  Armin Burgmeier  <armin@openismus.com>
+
 	* glom/libglom/connectionpool.cc: Windows build fix: winsock2.h
 	somehow includes a file that defines a structure called DATADIR, but
 	DATADIR is a define glom uses, which breaks the build. Fixed by

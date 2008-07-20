@@ -1206,7 +1206,8 @@ bool App_Glom::offer_new_or_existing()
         break;
 #endif
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-        default:
+      default:
+        break;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
       }
 
