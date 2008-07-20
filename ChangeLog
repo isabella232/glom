@@ -1,5 +1,12 @@
 2008-07-20  Armin Burgmeier  <armin@openismus.com>
 
+	* glom/libglom/connectionpool.cc: Windows build fix: winsock2.h
+	somehow includes a file that defines a structure called DATADIR, but
+	DATADIR is a define glom uses, which breaks the build. Fixed by
+	#undefining DATADIR for that include.
+
+2008-07-20  Armin Burgmeier  <armin@openismus.com>
+
 	* glom/Makefile.am: Added glom.rc to the distribution, which is
 	required to build Glom on Windows.
 

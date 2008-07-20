@@ -51,7 +51,13 @@
 
 #include <netinet/in.h> //For sockaddr_in
 #else
+
+// This includes objidl.h which has a structure called DATADIR. This fails to
+// compile with the DATADIR define, so undef it for the inclusion.
+#define GLOM_SAVE_DATADIR DATADIR
+#undef DATADIR
 #include <winsock2.h>
+#define DATADIR GLOM_SAVE_DATADIR
 #endif
 
 #include <signal.h> //To catch segfaults
