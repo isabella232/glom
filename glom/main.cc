@@ -84,14 +84,18 @@ OptionGroup::OptionGroup()
 
 } //namespace Glom
 
+#ifndef G_OS_WIN32
 extern "C" void __libc_freeres(void);
+#endif
 
 int 
 main(int argc, char* argv[])
 {
+#ifndef G_OS_WIN32
   //Force some cleanup at exit,
   //to help valgrind to detect memory leaks:
   atexit(__libc_freeres);
+#endif
 
   // TODO: I am not sure why, but this does not work. PYTHONPATH is set
   // correctly according to getenv(), but python still does not look in it.

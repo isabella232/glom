@@ -1,3 +1,8 @@
+2008-07-21  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/main.cc: #ifdef out the atexit() call on Windows since
+	__libc_freeres() is not available there.
+
 2008-07-20  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/application.cc (offer_new_or_existing): Fixed the
