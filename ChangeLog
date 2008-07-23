@@ -1,5 +1,11 @@
 2008-07-23  Armin Burgmeier  <armin@openismus.com>
 
+	* glom/existing_or_new.h:
+	* glom/existing_or_new.cc: Hide the network item on Windows in the
+	initial dialog.
+
+2008-07-23  Armin Burgmeier  <armin@openismus.com>
+
 	* glom/glom.glade: Removed the image from the Select button in the
 	initial dialog.
 

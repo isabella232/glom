@@ -143,8 +143,10 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   m_iter_existing_other = m_existing_model->append();
   (*m_iter_existing_other)[m_existing_columns.m_col_title] = _("Select File");
 
+#ifndef G_OS_WIN32
   m_iter_existing_network = m_existing_model->append();
   (*m_iter_existing_network)[m_existing_columns.m_col_title] = _("Local Network");
+#endif
 
   m_iter_existing_recent = m_existing_model->append();
   (*m_iter_existing_recent)[m_existing_columns.m_col_title] = _("Recently Opened");
@@ -211,8 +213,11 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   if(children.begin() == children.end())
     m_iter_existing_recent_dummy = create_dummy_item_existing(m_iter_existing_recent, _(RECENT_DUMMY_TEXT));
 
+#ifndef G_OS_WIN32
   // Will be removed when items are added:
   m_iter_existing_network_dummy = create_dummy_item_existing(m_iter_existing_network, _(NETWORK_DUMMY_TEXT));
+#endif
+
   m_iter_new_template_dummy = create_dummy_item_new(m_iter_new_template, _(TEMPLATE_DUMMY_TEXT));
 
   // Expand recently used files
@@ -275,12 +280,14 @@ Dialog_ExistingOrNew::~Dialog_ExistingOrNew()
 bool Dialog_ExistingOrNew::on_existing_select_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::Path& path, bool path_currently_selected)
 {
   Gtk::TreeModel::iterator iter = model->get_iter(path);
+#ifndef G_OS_WIN32
   if(iter == m_iter_existing_network)
     return false; /* Do not allow parent nodes to be selected. */
-  else if(iter == m_iter_existing_recent)
+#endif
+  if(iter == m_iter_existing_recent)
     return false;
-  else
-    return true;
+
+  return true;
 }
 
 bool Dialog_ExistingOrNew::on_new_select_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::Path& path, bool path_currently_selected)
@@ -303,12 +310,14 @@ Dialog_ExistingOrNew::Action Dialog_ExistingOrNew::get_action_impl(Gtk::TreeMode
     iter = m_existing_view->get_selection()->get_selected();
     if(m_existing_model->is_ancestor(m_iter_existing_recent, iter))
       return OPEN_URI;
-    else if(m_existing_model->is_ancestor(m_iter_existing_network, iter))
+#ifndef G_OS_WIN32
+    if(m_existing_model->is_ancestor(m_iter_existing_network, iter))
       return OPEN_REMOTE;
-    else if(iter == m_iter_existing_other)
+#endif
+    if(iter == m_iter_existing_other)
       return OPEN_URI;
-    else
-      return NONE;
+
+    return NONE;
   }
   else
   {
@@ -407,14 +416,18 @@ void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, 
 
   if(iter == m_iter_existing_recent)
     pixbuf_renderer->property_stock_id() = Gtk::Stock::INDEX.id; // TODO: More meaningful icon?
+#ifndef G_OS_WIN32
   else if(iter == m_iter_existing_network)
     pixbuf_renderer->property_stock_id() = Gtk::Stock::NETWORK.id;
+#endif
   else if(iter == m_iter_existing_other)
     pixbuf_renderer->property_stock_id() = Gtk::Stock::OPEN.id;
   else if(m_iter_existing_recent_dummy.get() != NULL && iter == *m_iter_existing_recent_dummy)
     pixbuf_renderer->property_stock_id() = Gtk::Stock::DIALOG_ERROR.id; // TODO: Use Stock::STOP instead?
+#ifndef G_OS_WIN32
   else if(m_iter_existing_network_dummy.get() != NULL && iter == *m_iter_existing_network_dummy)
     pixbuf_renderer->property_stock_id() = Gtk::Stock::DIALOG_ERROR.id; // TODO: Use Stock::STOP instead?
+#endif
   else
   {
     if(m_existing_model->is_ancestor(m_iter_existing_recent, iter))
@@ -423,11 +436,13 @@ void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, 
       //pixbuf_renderer->property_pixbuf() = (*info)->get_icon(Gtk::ICON_SIZE_BUTTON);
       pixbuf_renderer->set_property("icon-name", Glib::ustring("glom"));
     }
+#ifndef G_OS_WIN32
     else if(m_existing_model->is_ancestor(m_iter_existing_network, iter))
     {
       //pixbuf_renderer->property_stock_id() = Gtk::Stock::CONNECT.id;
       pixbuf_renderer->set_property("icon-name", Glib::ustring("glom"));
     }
+#endif
     else
     {
       throw std::logic_error("Unexpected iterator in existing_icon_data_func");
@@ -445,8 +460,12 @@ void Dialog_ExistingOrNew::existing_title_data_func(Gtk::CellRenderer* renderer,
   // Default: Use default color
   text_renderer->property_foreground_set() = false;
   // Use grey if parent item has no children
+#ifndef G_OS_WIN32
   if( (iter == m_iter_existing_network && m_iter_existing_network_dummy.get()) ||
       (iter == m_iter_existing_recent && m_iter_existing_recent_dummy.get()))
+#else
+  if(iter == m_iter_existing_recent && m_iter_existing_recent_dummy.get())
+#endif
   {
     text_renderer->property_foreground() = "grey";
   }
@@ -526,9 +545,15 @@ void Dialog_ExistingOrNew::update_ui_sensitivity()
     else
     {
       Gtk::TreeModel::iterator sel = m_existing_view->get_selection()->get_selected();
-      sensitivity = (sel != m_iter_existing_recent && sel != m_iter_existing_network &&
-                     (!m_iter_existing_recent_dummy.get() || sel != *m_iter_existing_recent_dummy) &&
-                     (!m_iter_existing_network_dummy.get() || sel != *m_iter_existing_network_dummy));
+      sensitivity = (sel != m_iter_existing_recent);
+#ifndef G_OS_WIN32
+      sensitivity = sensitivity && (sel != m_iter_existing_network);
+#endif
+
+      sensitivity = sensitivity && (!m_iter_existing_recent_dummy.get() || sel != *m_iter_existing_recent_dummy);
+#ifndef G_OS_WIN32
+      sensitivity = sensitivity && (!m_iter_existing_network_dummy.get() || sel != *m_iter_existing_network_dummy);
+#endif
     }
   }
   else

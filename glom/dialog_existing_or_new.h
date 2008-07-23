@@ -172,14 +172,18 @@ protected:
   Gtk::CellRendererText m_new_title_renderer;
 
   Gtk::TreeIter m_iter_existing_recent;
+#ifndef G_OS_WIN32
   Gtk::TreeIter m_iter_existing_network;
+#endif
   Gtk::TreeIter m_iter_existing_other;
 
   Gtk::TreeIter m_iter_new_empty;
   Gtk::TreeIter m_iter_new_template;
 
   // Dummy children to indicate that a parent item has no (real) children
+#ifndef G_OS_WIN32
   std::auto_ptr<Gtk::TreeIter> m_iter_existing_network_dummy;
+#endif
   std::auto_ptr<Gtk::TreeIter> m_iter_existing_recent_dummy;
   std::auto_ptr<Gtk::TreeIter> m_iter_new_template_dummy;
 
