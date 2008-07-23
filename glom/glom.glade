@@ -332,31 +332,9 @@
                 <property name="receives_default">True</property>
                 <property name="has_tooltip">True</property>
                 <property name="tooltip_text">Applies the currently selected item. Depending on the item, this might create a new document or open an existing document.</property>
+                <property name="label" translatable="yes">_Select</property>
+                <property name="use_underline">True</property>
                 <property name="response_id">0</property>
-                <child>
-                  <widget class="GtkHBox" id="hbox1">
-                    <property name="visible">True</property>
-                    <child>
-                      <widget class="GtkImage" id="image1">
-                        <property name="visible">True</property>
-                        <property name="stock">gtk-apply</property>
-                      </widget>
-                      <packing>
-                        <property name="expand">False</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label1">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Select</property>
-                        <property name="use_underline">True</property>
-                      </widget>
-                      <packing>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </widget>
-                </child>
               </widget>
               <packing>
                 <property name="pack_type">GTK_PACK_END</property>

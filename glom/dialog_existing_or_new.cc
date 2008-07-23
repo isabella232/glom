@@ -44,9 +44,9 @@
 namespace
 {
 
-const char* RECENT_DUMMY_TEXT = _("No recently used documents available.");
-const char* TEMPLATE_DUMMY_TEXT = _("No templates available.");
-const char* NETWORK_DUMMY_TEXT = _("No sessions found on the local network.");
+const char* RECENT_DUMMY_TEXT = N_("No recently used documents available.");
+const char* TEMPLATE_DUMMY_TEXT = N_("No templates available.");
+const char* NETWORK_DUMMY_TEXT = N_("No sessions found on the local network.");
 
 /*bool has_dummy(const Gtk::TreeModel::iterator& parent, const std::auto_ptr<Gtk::TreeModel::iterator>& dummy)
 {
@@ -160,6 +160,9 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   gchar* dir = g_win32_get_package_installation_subdirectory(NULL, NULL, "share/doc/examples");
   std::string path(dir);
   g_free(dir);
+
+  if(!Glib::file_test(path, Glib::FILE_TEST_EXISTS))
+    path = GLOM_EXAMPLES_DIR;
 #else
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   const char* path = GLOM_EXAMPLES_DIR;
@@ -216,6 +219,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   m_existing_view->expand_row(m_existing_model->get_path(m_iter_existing_recent), false);
 
   m_select_button->signal_clicked().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_select_clicked));
+  m_select_button->set_image(*Gtk::manage(new Gtk::Image(Gtk::Stock::APPLY, Gtk::ICON_SIZE_BUTTON)));
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_notebook->signal_switch_page().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_switch_page));
