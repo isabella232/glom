@@ -1,3 +1,8 @@
+2008-08-01  Claude Paroz  <claude@2xlibre.net>
+
+	* POTFILES.in: Removed non-existent files.
+	* fr.po: Updated French translation by Bruno Brouard and Claude Paroz.
+
 2008-07-31  Djihed Afifi <djihed@gmail.com> 
 
 	* ar.po: Updated Arabic Translation by Djihed Afifi.
