@@ -4,6 +4,10 @@ echo "You also need InnoSetup (http://www.innosetup.org) with iscc in your PATH"
 echo "You need to have python, pygobject, pycairo and pygtk installed into C:\\Python25"
 echo "Make sure glom and all its dependencies have been installed correctly to /local"
 
+# TODO: Let configure replace @pyexecdir@ to get the correct python path?
+PYTHONDIR=/c/Python25
+POSTGRESDIR=/c/postgres
+
 echo "Cleanup..."
 if test -e installer; then
   rm installer -Rf || exit;
@@ -13,51 +17,51 @@ mkdir -p installer || exit
 
 echo "Copying DLL files..."
 
-# TODO: Built everything required myself, drop some redundant dependencies
-# such as intl.dll vs. libintl-8.dll
 mkdir -p installer/bin
 
-cp /local/bin/libintl-8.dll installer/bin || exit
-cp /local/bin/libgettextpo-0.dll installer/bin || exit
+#cp /local/bin/libintl-8.dll installer/bin || exit
+cp /bin/libgettextpo-0.dll installer/bin || exit
+# TODO: There are no usable libxslt Windows binaries, therefore I built this myself:
+cp /local/bin/libxslt-1.dll installer/bin || exit
 
-cp /local/bin/libglib-2.0-0.dll installer/bin || exit
-cp /local/bin/libgio-2.0-0.dll installer/bin || exit
-cp /local/bin/libgmodule-2.0-0.dll installer/bin || exit
-cp /local/bin/libgobject-2.0-0.dll installer/bin || exit
-cp /local/bin/libgthread-2.0-0.dll installer/bin || exit
+cp /bin/libglib-2.0-0.dll installer/bin || exit
+cp /bin/libgio-2.0-0.dll installer/bin || exit
+cp /bin/libgmodule-2.0-0.dll installer/bin || exit
+cp /bin/libgobject-2.0-0.dll installer/bin || exit
+cp /bin/libgthread-2.0-0.dll installer/bin || exit
 
-cp /local/bin/gspawn-win32-helper.exe installer/bin || exit
-cp /local/bin/gspawn-win32-helper-console.exe installer/bin || exit
+cp /bin/gspawn-win32-helper.exe installer/bin || exit
+cp /bin/gspawn-win32-helper-console.exe installer/bin || exit
 
-# TODO: Build myself
 cp /bin/libatk-1.0-0.dll installer/bin || exit
 cp /bin/libcairo-2.dll installer/bin || exit
-cp /bin/libgnome-2-0.dll installer/bin || exit
-cp /bin/libpng13.dll installer/bin || exit
+#cp /bin/libgnome-2-0.dll installer/bin || exit
+cp /bin/libpng12-0.dll installer/bin || exit
 cp /bin/jpeg62.dll installer/bin || exit
 cp /bin/libtiff3.dll installer/bin || exit
-cp /bin/libpopt-0.dll installer/bin || exit
+#cp /bin/libpopt-0.dll installer/bin || exit
 
-cp /local/bin/libpango-1.0-0.dll installer/bin || exit
-cp /local/bin/libpangocairo-1.0-0.dll installer/bin || exit
-cp /local/bin/libpangowin32-1.0-0.dll installer/bin || exit
+cp /bin/libpango-1.0-0.dll installer/bin || exit
+cp /bin/libpangocairo-1.0-0.dll installer/bin || exit
+cp /bin/libpangowin32-1.0-0.dll installer/bin || exit
 
-cp /local/bin/libgdk-win32-2.0-0.dll installer/bin || exit
-cp /local/bin/libgdk_pixbuf-2.0-0.dll installer/bin || exit
+cp /bin/libgdk-win32-2.0-0.dll installer/bin || exit
+cp /bin/libgdk_pixbuf-2.0-0.dll installer/bin || exit
 
-cp /local/bin/libgtk-win32-2.0-0.dll installer/bin || exit
-cp /local/bin/libgtksourceview-2.0-0.dll installer/bin || exit
+cp /bin/libgtk-win32-2.0-0.dll installer/bin || exit
+cp /bin/libgtksourceview-2.0-0.dll installer/bin || exit
 
-cp /local/bin/libORBit-2-0.dll installer/bin || exit
-cp /local/bin/libORBitCosNaming-2-0.dll installer/bin || exit
-cp /local/bin/libORBit-imodule-2-0.dll installer/bin || exit
-cp /local/bin/libbonobo-2-0.dll installer/bin || exit
-cp /local/bin/libbonobo-activation-4.dll installer/bin || exit
+cp /bin/libORBit-2-0.dll installer/bin || exit
+cp /bin/libORBitCosNaming-2-0.dll installer/bin || exit
+cp /bin/libORBit-imodule-2-0.dll installer/bin || exit
+#cp /local/bin/libbonobo-2-0.dll installer/bin || exit
+#cp /local/bin/libbonobo-activation-4.dll installer/bin || exit
 
+# TODO: I compiled this myself since we needed the version from SVN:
 cp /local/bin/libglade-2.0-0.dll installer/bin || exit
-cp /local/bin/libgconf-2-4.dll installer/bin || exit
-cp /local/bin/libgnomevfs-2-0.dll installer/bin || exit
-cp /local/bin/libgoocanvas-3.dll installer/bin || exit
+cp /bin/libgconf-2-4.dll installer/bin || exit
+#cp /local/bin/libgnomevfs-2-0.dll installer/bin || exit
+cp /bin/libgoocanvas-3.dll installer/bin || exit
 
 cp /local/bin/libgda-3.0-2.dll installer/bin || exit
 cp /local/bin/libgdasql-3.0-2.dll installer/bin || exit
@@ -65,20 +69,21 @@ cp /local/bin/libgda-report-3.0-2.dll installer/bin || exit
 
 cp /local/bin/libsigc-2.0-0.dll installer/bin || exit
 cp /local/bin/libglibmm-2.4-1.dll installer/bin || exit
+cp /local/bin/libgiomm-2.4-1.dll installer/bin || exit
 cp /local/bin/libatkmm-1.6-1.dll installer/bin || exit
 cp /local/bin/libcairomm-1.0-1.dll installer/bin || exit
 cp /local/bin/libpangomm-1.4-1.dll installer/bin || exit
 cp /local/bin/libgdkmm-2.4-1.dll installer/bin || exit
 cp /local/bin/libxml++-2.6-2.dll installer/bin || exit
 cp /local/bin/libgtkmm-2.4-1.dll installer/bin || exit
-
-cp /local/bin/libgtksourceviewmm-2.0-1.dll installer/bin || exit
+cp /local/bin/libgtksourceviewmm-2.0-2.dll installer/bin || exit
+cp /local/bin/libgoocanvasmm-0.1-2.dll installer/bin || exit
 cp /local/bin/libgconfmm-2.6-1.dll installer/bin || exit
-cp /local/bin/libgdamm-3.0-8.dll installer/bin || exit
+cp /local/bin/libgdamm-3.0-10.dll installer/bin || exit
 cp /local/bin/libglademm-2.4-1.dll installer/bin || exit
-cp /local/bin/libgnomevfsmm-2.6-1.dll installer/bin || exit
+#cp /local/bin/libgnomevfsmm-2.6-1.dll installer/bin || exit
 
-cp /local/bin/libbakery-2.4-2-4-1.dll installer/bin || exit
+cp /local/bin/libbakery-2.6--5-1.dll installer/bin || exit
 cp /local/bin/libglom-0.dll installer/bin || exit
 
 echo "Stripping DLL files..."
@@ -103,59 +108,59 @@ mkdir -p installer/python || exit
 
 # TODO: Perhaps some scripts need more python modules.
 # TODO: Let configure replace @pyexecdir@ to get the correct python path?
-cp /c/Python25/Lib/*.py installer/python || exit
+cp $PYTHONDIR/Lib/*.py installer/python || exit
 
 mkdir -p installer/python/encodings || exit
-cp /c/Python25/Lib/encodings/*.py installer/python/encodings || exit
+cp $PYTHONDIR/Lib/encodings/*.py installer/python/encodings || exit
 
-cp /c/Python25/Lib/site-packages/glom.pyd installer/python || exit
+cp $PYTHONDIR/Lib/site-packages/glom.pyd installer/python || exit
 strip installer/python/glom.pyd || exit
-cp /c/Python25/Lib/site-packages/gtk-2.0/gda.pyd installer/python || exit
+cp $PYTHONDIR/Lib/site-packages/gtk-2.0/gda.pyd installer/python || exit
 strip installer/python/gda.pyd || exit
 
-cp /c/Python25/Lib/site-packages/pygtk.py installer/python || exit
-cp /c/Python25/Lib/site-packages/gtk-2.0/*.pyd installer/python || exit
+cp $PYTHONDIR/Lib/site-packages/pygtk.py installer/python || exit
+cp $PYTHONDIR/Lib/site-packages/gtk-2.0/*.pyd installer/python || exit
 
 mkdir -p installer/python/gobject || exit
-cp /c/Python25/Lib/site-packages/gtk-2.0/gobject/*.py installer/python/gobject || exit
-cp /c/Python25/Lib/site-packages/gtk-2.0/gobject/*.pyd installer/python/gobject || exit
+cp $PYTHONDIR/Lib/site-packages/gtk-2.0/gobject/*.py installer/python/gobject || exit
+cp $PYTHONDIR/Lib/site-packages/gtk-2.0/gobject/*.pyd installer/python/gobject || exit
 
 mkdir -p installer/python/cairo || exit
-cp /c/Python25/Lib/site-packages/cairo/*.py installer/python/cairo || exit
-cp /c/Python25/Lib/site-packages/cairo/*.pyd installer/python/cairo || exit
+cp $PYTHONDIR/Lib/site-packages/cairo/*.py installer/python/cairo || exit
+cp $PYTHONDIR/Lib/site-packages/cairo/*.pyd installer/python/cairo || exit
 
 mkdir -p installer/python/gtk || exit
-cp /c/Python25/Lib/site-packages/gtk-2.0/gtk/*.py installer/python/gtk || exit
-cp /c/Python25/Lib/site-packages/gtk-2.0/gtk/*.pyd installer/python/gtk || exit
+cp $PYTHONDIR/Lib/site-packages/gtk-2.0/gtk/*.py installer/python/gtk || exit
+cp $PYTHONDIR/Lib/site-packages/gtk-2.0/gtk/*.pyd installer/python/gtk || exit
 
 echo "Copying modules..."
 
-# TODO: Let configure replace @pyexecdir@ to get the correct python path
-cp /c/Python25/Lib/site-packages/glom.pyd installer/bin || exit
-cp /c/Python25/Lib/site-packages/gtk-2.0/gda.pyd installer/bin || exit
+cp $PYTHONDIR/Lib/site-packages/glom.pyd installer/bin || exit
+cp $PYTHONDIR/Lib/site-packages/gtk-2.0/gda.pyd installer/bin || exit
 strip installer/bin/*.pyd || exit
 
 mkdir -p installer/lib/gtk-2.0/2.10.0/immodules || exit
-cp /local/lib/gtk-2.0/2.10.0/immodules/*.dll installer/lib/gtk-2.0/2.10.0/immodules || exit
+cp /lib/gtk-2.0/2.10.0/immodules/*.dll installer/lib/gtk-2.0/2.10.0/immodules || exit
 strip installer/lib/gtk-2.0/2.10.0/immodules/*.dll || exit
-cp /local/bin/gtk-query-immodules-2.0.exe installer || exit
+cp /bin/gtk-query-immodules-2.0.exe installer || exit
 
 mkdir -p installer/lib/gtk-2.0/2.10.0/engines || exit
-cp /local/lib/gtk-2.0/2.10.0/engines/libwimp.dll installer/lib/gtk-2.0/2.10.0/engines || exit
+cp /lib/gtk-2.0/2.10.0/engines/libwimp.dll installer/lib/gtk-2.0/2.10.0/engines || exit
 strip installer/lib/gtk-2.0/2.10.0/engines/libwimp.dll || exit
 
 mkdir -p installer/lib/gtk-2.0/2.10.0/loaders || exit
-cp /local/lib/gtk-2.0/2.10.0/loaders/*.dll installer/lib/gtk-2.0/2.10.0/loaders || exit
+cp /lib/gtk-2.0/2.10.0/loaders/*.dll installer/lib/gtk-2.0/2.10.0/loaders || exit
 strip installer/lib/gtk-2.0/2.10.0/loaders/*.dll || exit
-cp /local/bin/gdk-pixbuf-query-loaders.exe installer || exit
+cp /bin/gdk-pixbuf-query-loaders.exe installer || exit
 
-mkdir -p installer/lib/pango/1.6.0/modules || exit
-cp /local/lib/pango/1.6.0/modules/*.dll installer/lib/pango/1.6.0/modules || exit
-strip installer/lib/pango/1.6.0/modules/*.dll || exit
-cp /local/bin/pango-querymodules.exe installer || exit
+# TODO: Test whether we can omit this:
+#mkdir -p installer/lib/pango/1.6.0/modules || exit
+#cp /lib/pango/1.6.0/modules/*.dll installer/lib/pango/1.6.0/modules || exit
+#strip installer/lib/pango/1.6.0/modules/*.dll || exit
+#cp /bin/pango-querymodules.exe installer || exit
 
 mkdir -p installer/share/themes || exit
-cp -R /local/share/themes/MS-Windows installer/share/themes || exit
+cp -R /share/themes/MS-Windows installer/share/themes || exit
 mkdir -p installer/etc/gtk-2.0 || exit
 echo "gtk-theme-name = \"MS-Windows\"" > installer/etc/gtk-2.0/gtkrc || exit
 
@@ -163,20 +168,26 @@ mkdir -p installer/lib/libgda-3.0/providers || exit
 cp /local/lib/libgda-3.0/providers/*.dll installer/lib/libgda-3.0/providers || exit
 strip installer/lib/libgda-3.0/providers/*.dll || exit
 
-mkdir -p installer/lib/gnome-vfs-2.0/modules || exit
-cp /local/lib/gnome-vfs-2.0/modules/*.dll installer/lib/gnome-vfs-2.0/modules || exit
-strip installer/lib/gnome-vfs-2.0/modules/*.dll || exit
+#mkdir -p installer/lib/gnome-vfs-2.0/modules || exit
+#cp /lib/gnome-vfs-2.0/modules/*.dll installer/lib/gnome-vfs-2.0/modules || exit
+#strip installer/lib/gnome-vfs-2.0/modules/*.dll || exit
 
-mkdir -p installer/etc/gnome-vfs-2.0/modules || exit
-cp /local/etc/gnome-vfs-2.0/modules/default-modules.conf installer/etc/gnome-vfs-2.0/modules || exit
+#mkdir -p installer/etc/gnome-vfs-2.0/modules || exit
+#cp /local/etc/gnome-vfs-2.0/modules/default-modules.conf installer/etc/gnome-vfs-2.0/modules || exit
 
 echo "Copying locales..."
 
+# We need to keep the locale files from share/locale in share/locale and those
+# from lib/locale in lib/locale:
+cp /share/locale installer/share -R || exit
 cp /lib/locale installer/lib -R || exit
 cp /local/lib/locale installer/lib -R || exit
 
-find installer/lib/locale/ -type f | grep -v atk10.mo | grep -v gtk20.mo | grep -v bakery.mo | grep -v GConf2.mo | grep -v glib20.mo | grep -v glom.mo | grep -v gnome-vfs-2.0.mo | grep -v gtk20.mo | grep -v gtk20-properties.mo | grep -v gtksourceview-2.0.mo | grep -v libbonobo-2.0.mo | grep -v libgda-3.0.mo | xargs rm
+find installer/lib/locale/ -type f | grep -v atk10.mo | grep -v gtk20.mo | grep -v bakery.mo | grep -v GConf2.mo | grep -v glib20.mo | grep -v glom.mo | grep -v gtk20.mo | grep -v gtk20-properties.mo | grep -v gtksourceview-2.0.mo |  grep -v libgda-3.0.mo | xargs rm
 find installer/lib/locale -type d | xargs rmdir -p --ignore-fail-on-non-empty
+
+find installer/share/locale/ -type f | grep -v atk10.mo | grep -v gtk20.mo | grep -v bakery.mo | grep -v GConf2.mo | grep -v glib20.mo | grep -v glom.mo | grep -v gtk20.mo | grep -v gtk20-properties.mo | grep -v gtksourceview-2.0.mo |  grep -v libgda-3.0.mo | xargs rm
+find installer/share/locale -type d | xargs rmdir -p --ignore-fail-on-non-empty
 
 echo "Copying executable..."
 cp /local/bin/glom.exe installer/bin || exit
@@ -184,39 +195,44 @@ strip installer/bin/glom.exe || exit
 
 echo "Copying postgres..."
 mkdir -p installer/bin || exit
-cp /local/pgsql/bin/postgres.exe installer/bin || exit
-cp /local/pgsql/bin/initdb.exe installer/bin || exit
-cp /local/pgsql/bin/pg_ctl.exe installer/bin || exit
-strip installer/bin/postgres.exe installer/bin/initdb.exe installer/bin/pg_ctl.exe || exit
+cp $POSTGRESDIR/bin/postgres.exe installer/bin || exit
+cp $POSTGRESDIR/bin/initdb.exe installer/bin || exit
+cp $POSTGRESDIR/bin/pg_ctl.exe installer/bin || exit
 
-cp /local/pgsql/lib/libpq.dll installer/bin || exit
-strip installer/bin/libpq.dll || exit
+cp $POSTGRESDIR/bin/libpq.dll installer/bin || exit
+# This is required by libpq.dll:
+cp $POSTGRESDIR/bin/libintl3.dll installer/bin || exit
+cp $POSTGRESDIR/bin/libiconv2.dll installer/bin || exit
+cp $POSTGRESDIR/bin/krb5_32.dll installer/bin || exit
+cp $POSTGRESDIR/bin/k5sprt32.dll installer/bin || exit
+cp $POSTGRESDIR/bin/gssapi32.dll installer/bin || exit
+cp $POSTGRESDIR/bin/comerr32.dll installer/bin || exit
 
 mkdir -p installer/share/postgresql || exit
-cp /local/pgsql/share/postgres.bki installer/share/postgresql || exit
-cp /local/pgsql/share/postgres.description installer/share/postgresql || exit
-cp /local/pgsql/share/postgres.shdescription installer/share/postgresql || exit
-cp /local/pgsql/share/conversion_create.sql installer/share/postgresql || exit
-cp /local/pgsql/share/information_schema.sql installer/share/postgresql || exit
-cp /local/pgsql/share/pg_hba.conf.sample installer/share/postgresql || exit
-cp /local/pgsql/share/pg_ident.conf.sample installer/share/postgresql || exit
-cp /local/pgsql/share/postgresql.conf.sample installer/share/postgresql || exit
-cp /local/pgsql/share/sql_features.txt installer/share/postgresql || exit
-cp /local/pgsql/share/system_views.sql installer/share/postgresql || exit
-cp -R /local/pgsql/share/timezone installer/share/postgresql || exit
-cp -R /local/pgsql/share/timezonesets installer/share/postgresql || exit
+cp $POSTGRESDIR/share/postgres.bki installer/share/postgresql || exit
+cp $POSTGRESDIR/share/postgres.description installer/share/postgresql || exit
+cp $POSTGRESDIR/share/postgres.shdescription installer/share/postgresql || exit
+cp $POSTGRESDIR/share/conversion_create.sql installer/share/postgresql || exit
+cp $POSTGRESDIR/share/information_schema.sql installer/share/postgresql || exit
+cp $POSTGRESDIR/share/snowball_create.sql installer/share/postgresql || exit
+cp $POSTGRESDIR/share/system_views.sql installer/share/postgresql || exit
+cp $POSTGRESDIR/share/pg_hba.conf.sample installer/share/postgresql || exit
+cp $POSTGRESDIR/share/pg_ident.conf.sample installer/share/postgresql || exit
+cp $POSTGRESDIR/share/postgresql.conf.sample installer/share/postgresql || exit
+cp $POSTGRESDIR/share/sql_features.txt installer/share/postgresql || exit
+cp -R $POSTGRESDIR/share/timezone installer/share/postgresql || exit
+cp -R $POSTGRESDIR/share/timezonesets installer/share/postgresql || exit
 
 mkdir -p installer/lib/postgresql || exit
-cp /local/pgsql/lib/*.dll installer/lib/postgresql || exit
-strip installer/lib/postgresql/*.dll || exit
+cp $POSTGRESDIR/lib/*.dll installer/lib/postgresql || exit
 # These are not conversion modules
-rm installer/lib/postgresql/libecpg.dll installer/lib/postgresql/libecpg_compat.dll installer/lib/postgresql/libpgtypes.dll installer/lib/postgresql/libpq.dll installer/lib/postgresql/pgevent.dll installer/lib/postgresql/plpgsql.dll || exit
+rm installer/lib/postgresql/libecpg.dll installer/lib/postgresql/libecpg_compat.dll installer/lib/postgresql/libpgtypes.dll installer/lib/postgresql/pgevent.dll installer/lib/postgresql/plpgsql.dll || exit
 
 echo "Copying shared data (glade files, icons, etc.)..."
 
 mkdir -p installer/share/gtksourceview-2.0 || exit
-cp -R /local/share/gtksourceview-2.0/language-specs installer/share/gtksourceview-2.0 || exit
-cp -R /local/share/gtksourceview-2.0/styles installer/share/gtksourceview-2.0 || exit
+cp -R /share/gtksourceview-2.0/language-specs installer/share/gtksourceview-2.0 || exit
+cp -R /share/gtksourceview-2.0/styles installer/share/gtksourceview-2.0 || exit
 
 mkdir -p installer/share/libgda-3.0/dtd
 cp /local/share/libgda-3.0/*.xml installer/share/libgda-3.0/
@@ -225,6 +241,7 @@ cp /local/share/libgda-3.0/dtd/*.dtd installer/share/libgda-3.0/dtd
 mkdir -p installer/share/glom/glade || exit
 cp /local/share/glom/glade/glom.glade installer/share/glom/glade || exit
 cp /local/share/glom/glade/glom_developer.glade installer/share/glom/glade || exit
+cp -R /local/share/glom/doc installer/share/glom/ || exit
 
 # TODO: /local/share/glom/doc/examples
 # TODO: /local/share/glom/pixmaps (requires correct lookup in glom)
@@ -232,6 +249,12 @@ cp /local/share/glom/glade/glom_developer.glade installer/share/glom/glade || ex
 
 mkdir -p installer/share/icons/hicolor/48x48/apps || exit
 cp /local/share/icons/hicolor/48x48/apps/glom.png installer/share/icons/hicolor/48x48/apps || exit
+
+# This is used for the glom icon in the initial dialog. I'm not sure why GTK
+# does not already get it from the icons/ directory, but it took me already
+# long enough to figure out that this works:
+mkdir -p installer/share/pixmaps
+cp /local/share/icons/hicolor/16x16/apps/glom.png installer/share/pixmaps || exit
 
 echo "Creating installer..."
 

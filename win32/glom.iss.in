@@ -37,12 +37,11 @@ Name: "{userprograms}\{groupname}\Uninstall Glom"; Filename: "{uninstallexe}"; T
 Source: "bin\intl.dll"; DestDir: "{app}\bin"; Components: gtk
 Source: "bin\iconv.dll"; DestDir: "{app}\bin"; Components: gtk
 Source: "bin\zlib1.dll"; DestDir: "{app}\bin"; Components: gtk
-Source: "bin\libintl-8.dll"; DestDir: "{app}\bin"; Components: gtk
-Source: "bin\libpopt-0.dll"; DestDir: "{app}\bin"; Components: gtk
-Source: "bin\libpng13.dll"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\libpng12-0.dll"; DestDir: "{app}\bin"; Components: gtk
 Source: "bin\jpeg62.dll"; DestDir: "{app}\bin"; Components: gtk
 Source: "bin\libtiff3.dll"; DestDir: "{app}\bin"; Components: gtk
 Source: "bin\libxml2.dll"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\libxslt-1.dll"; DestDir: "{app}\bin"; Components: gtk
 Source: "bin\libglib-2.0-0.dll"; DestDir: "{app}\bin"; Components: gtk
 Source: "bin\libgobject-2.0-0.dll"; DestDir: "{app}\bin"; Components: gtk
 Source: "bin\libgio-2.0-0.dll"; DestDir: "{app}\bin"; Components: gtk
@@ -63,30 +62,27 @@ Source: "bin\libgtk-win32-2.0-0.dll"; DestDir: "{app}\bin"; Components: gtk
 Source: "bin\libORBit-2-0.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libORBit-imodule-2-0.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libORBitCosNaming-2-0.dll"; DestDir: "{app}\bin"; Components: main
-Source: "bin\libbonobo-2-0.dll"; DestDir: "{app}\bin"; Components: main
-Source: "bin\libbonobo-activation-4.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libgconf-2-4.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libgda-3.0-2.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libgda-report-3.0-2.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libgdasql-3.0-2.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libgettextpo-0.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libglade-2.0-0.dll"; DestDir: "{app}\bin"; Components: main
-Source: "bin\libgnome-2-0.dll"; DestDir: "{app}\bin"; Components: main
-Source: "bin\libgnomevfs-2-0.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libgoocanvas-3.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libgtksourceview-2.0-0.dll"; DestDir: "{app}\bin"; Components: main
 
 Source: "bin\libatkmm-1.6-1.dll"; DestDir: "{app}\bin"; Components: main
-Source: "bin\libbakery-2.4-2-4-1.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libbakery-2.6--5-1.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libcairomm-1.0-1.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libgconfmm-2.6-1.dll"; DestDir: "{app}\bin"; Components: main
-Source: "bin\libgdamm-3.0-8.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libgdamm-3.0-10.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libgdkmm-2.4-1.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libglademm-2.4-1.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libglibmm-2.4-1.dll"; DestDir: "{app}\bin"; Components: main
-Source: "bin\libgnomevfsmm-2.6-1.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libgiomm-2.4-1.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libgoocanvasmm-0.1-2.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libgtkmm-2.4-1.dll"; DestDir: "{app}\bin"; Components: main
-Source: "bin\libgtksourceviewmm-2.0-1.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libgtksourceviewmm-2.0-2.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libpangomm-1.4-1.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libsigc-2.0-0.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libxml++-2.6-2.dll"; DestDir: "{app}\bin"; Components: main
@@ -96,9 +92,16 @@ Source: "bin/postgres.exe"; DestDir: "{app}/bin"; Components: main
 Source: "bin/initdb.exe"; DestDir: "{app}/bin"; Components: main
 Source: "bin/pg_ctl.exe"; DestDir: "{app}/bin"; Components: main
 Source: "bin/libpq.dll"; DestDir: "{app}/bin"; Components: main
+Source: "bin/libintl3.dll"; DestDir: "{app}/bin"; Components: main
+Source: "bin/libiconv2.dll"; DestDir: "{app}/bin"; Components: main
+Source: "bin/krb5_32.dll"; DestDir: "{app}/bin"; Components: main
+Source: "bin/k5sprt32.dll"; DestDir: "{app}/bin"; Components: main
+Source: "bin/gssapi32.dll"; DestDir: "{app}/bin"; Components: main
+Source: "bin/comerr32.dll"; DestDir: "{app}/bin"; Components: main
 
 ; TODO: I would like to install these into {app}/share/postgresql, but postgres
-; does not find them then.
+; does not find them then. Perhaps we should install all of postgres elsewhere,
+; and make glom find it.
 Source: "share/postgresql/*"; DestDir: "{app}/share"; Components: main; Flags: recursesubdirs
 ; TODO: Again, same with lib
 Source: "lib/postgresql/*.dll"; DestDir: "{app}/lib"; Components: main;
@@ -126,15 +129,15 @@ Source: "lib/gtk-2.0/2.10.0/engines/*"; DestDir: "{app}/lib/gtk-2.0/2.10.0/engin
 Source: "lib/gtk-2.0/2.10.0/loaders/*"; DestDir: "{app}/lib/gtk-2.0/2.10.0/loaders"; Components: gtk
 Source: "gdk-pixbuf-query-loaders.exe"; DestDir: "{app}\bin"; Components: gtk; Flags: deleteafterinstall;
 
-Source: "lib/pango/1.6.0/modules/*"; DestDir: "{app}/lib/pango/1.6.0/modules"; Components: gtk;
-Source: "pango-querymodules.exe"; DestDir: "{app}\bin"; Components: gtk; Flags: deleteafterinstall;
+;Source: "lib/pango/1.6.0/modules/*"; DestDir: "{app}/lib/pango/1.6.0/modules"; Components: gtk;
+;Source: "pango-querymodules.exe"; DestDir: "{app}\bin"; Components: gtk; Flags: deleteafterinstall;
 
 Source: "share/themes/MS-Windows/*"; DestDir: "{app}/share/themes/MS-Windows"; Flags: recursesubdirs; Components: gtk
 Source: "etc/gtk-2.0/gtkrc"; DestDir: "{app}/etc/gtk-2.0"; Components: gtk
 Source: "querymodules.bat"; DestDir: "{app}\bin"; Components: gtk; Flags: deleteafterinstall;
 
-Source: "lib/gnome-vfs-2.0/modules/*.dll"; DestDir: "{app}/lib/gnome-vfs-2.0/modules"; Components: main;
-Source: "etc/gnome-vfs-2.0/modules/default-modules.conf"; DestDir: "{app}/etc/gnome-vfs-2.0/modules"; Components: main;
+;Source: "lib/gnome-vfs-2.0/modules/*.dll"; DestDir: "{app}/lib/gnome-vfs-2.0/modules"; Components: main;
+;Source: "etc/gnome-vfs-2.0/modules/default-modules.conf"; DestDir: "{app}/etc/gnome-vfs-2.0/modules"; Components: main;
 
 ; GtkSourceView
 Source: "share/gtksourceview-2.0/language-specs/*"; DestDir: "{app}/share/gtksourceview-2.0/language-specs"; Components: main
@@ -147,112 +150,18 @@ Source: "lib/libgda-3.0/providers/*"; DestDir: "{app}/lib/libgda-3.0/providers";
 
 ; Icons
 Source: "share/icons/hicolor/48x48/apps/glom.png"; DestDir: "{app}/share/icons/hicolor/48x48/apps"; Components: main
+Source: "share/pixmaps/glom.png"; DestDir: "{app}/share/pixmaps"; Components: main
 
-; Glade files
+; Other shared glom files
 Source: "share/glom/glade/glom.glade"; DestDir: "{app}/share/glom/glade"; Components: main
 Source: "share/glom/glade/glom_developer.glade"; DestDir: "{app}/share/glom/glade"; Components: main
+Source: "share/glom/doc/*"; Destdir: "{app}/share/glom/doc/"; Components: main; Flags: recursesubdirs;
+
+;Source: "share/themes/MS-Windows/*"; DestDir: "{app}/share/themes/MS-Windows"; Flags: recursesubdirs; Components: gtk
 
 ; Locales
-Source: "lib\locale\af\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\af\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\am\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\am\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\ang\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\ang\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\ar\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\ar\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\as\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\as\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\az\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\az\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\az_IR\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\az_IR\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\be\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\be\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\be@latin\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\be@latin\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\bg\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\bg\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\bn\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\bn\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\bn_IN\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\bn_IN\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\br\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\br\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\bs\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\bs\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\ca\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\ca\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\cs\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\cs\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\cy\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\cy\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\da\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\da\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\de\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\de\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\dz\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\dz\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\el\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\el\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\en_CA\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\en_CA\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\en_GB\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\en_GB\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\eo\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\eo\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\es\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\es\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\et\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\et\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\eu\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\eu\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\fa\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\fa\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\fi\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\fi\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\fr\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\fr\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\ga\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\ga\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\gl\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\gl\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\gu\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\gu\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\he\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\he\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\hi\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\hi\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\hr\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\hr\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\hu\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\hu\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\hy\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\hy\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\ia\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\ia\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\id\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\id\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\io\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\io\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\is\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\is\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\it\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\it\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\ja\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\ja\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\ka\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\ka\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\kn\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\kn\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\ko\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\ko\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\ku\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\ku\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\li\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\li\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\lt\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\lt\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\lv\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\lv\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\mg\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\mg\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\mi\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\mi\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\mk\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\mk\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\ml\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\ml\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\mn\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\mn\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\mr\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\mr\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\ms\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\ms\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\nb\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\nb\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\ne\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\ne\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\nl\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\nl\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\nn\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\nn\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\nso\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\nso\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\oc\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\oc\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\or\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\or\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\pa\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\pa\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\pl\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\pl\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\pt\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\pt\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\pt_BR\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\pt_BR\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\ro\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\ro\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\ru\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\ru\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\rw\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\rw\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\si\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\si\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\sk\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\sk\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\sl\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\sl\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\sq\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\sq\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\sr\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\sr\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\sr@Latn\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\sr@Latn\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\sr@ije\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\sr@ije\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\sv\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\sv\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\ta\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\ta\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\te\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\te\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\th\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\th\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\tk\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\tk\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\tl\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\tl\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\tr\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\tr\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\tt\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\tt\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\ug\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\ug\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\uk\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\uk\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\ur\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\ur\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\uz\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\uz\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\uz@cyrillic\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\uz@cyrillic\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\vi\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\vi\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\wa\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\wa\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\xh\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\xh\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\yi\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\yi\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\zh_CN\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\zh_CN\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\zh_HK\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\zh_HK\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\zh_TW\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\zh_TW\LC_MESSAGES"; Components: main and locale
-Source: "lib\locale\zu\LC_MESSAGES\*"; DestDir: "{app}\lib\locale\zu\LC_MESSAGES"; Components: main and locale
+Source: "lib\locale\*"; DestDir: "{app}\lib\locale\"; Flags: recursesubdirs; Components: main and locale
+Source: "share\locale\*"; DestDir: "{app}\share\locale\"; Flags: recursesubdirs; Components: main and locale
 
 ; Register .glom file type if we install for all users. Is there a possibility
 ; to register a type just for a single user?
@@ -261,7 +170,7 @@ Root: HKCR; Subkey: ".glom"; ValueType: string; ValueData: "glomfile"; Flags: de
 Root: HKCR; Subkey: ".glom"; ValueType: string; ValueName: "Content Type"; ValueData: "application/x-glom"; Flags: deletevalue uninsdeletekeyifempty uninsdeletevalue; Tasks: common
 
 [Dirs]
-Name: "{app}\etc\pango";
+;Name: "{app}\etc\pango";
 Name: "{app}\etc\gtk-2.0";
 
 [Run]
@@ -269,13 +178,14 @@ Filename: "{app}\bin\querymodules.bat"; StatusMsg: "Querying modules..."; Flags:
 
 [Code]
 { Remove generated files not generated by the installer }
+
 procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
 begin
 	if CurUninstallStep = usUninstall then
 	begin
 		DeleteFile(ExpandConstant('{app}') + '\etc\gtk-2.0\gtk.immodules');
 		DeleteFile(ExpandConstant('{app}') + '\etc\gtk-2.0\gdk-pixbuf.loaders');
-		DeleteFile(ExpandConstant('{app}') + '\etc\pango\pango.modules');
+;		DeleteFile(ExpandConstant('{app}') + '\etc\pango\pango.modules');
 	end;
 end;
 

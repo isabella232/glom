@@ -1,5 +1,11 @@
 2008-08-05  Armin Burgmeier  <armin@openismus.com>
 
+	* win32/build-installer:
+	* win32/glom.iss.in:
+	* win32/querymodules.bat: Updated to fit my new build setup. 
+
+2008-08-05  Armin Burgmeier  <armin@openismus.com>
+
 	* glom/dialog_existing_or_new.cc: Changed the path where the example
 	files are looked up on Windows, to keep it consistent with the path to
 	load glade files from.
