@@ -159,7 +159,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
 
   // Load example files
 #ifdef G_OS_WIN32
-  gchar* dir = g_win32_get_package_installation_subdirectory(NULL, NULL, "share/doc/examples");
+  gchar* dir = g_win32_get_package_installation_subdirectory(NULL, NULL, "share/glom/doc/examples");
   std::string path(dir);
   g_free(dir);
 
