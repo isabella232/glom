@@ -207,6 +207,8 @@ cp $POSTGRESDIR/bin/krb5_32.dll installer/bin || exit
 cp $POSTGRESDIR/bin/k5sprt32.dll installer/bin || exit
 cp $POSTGRESDIR/bin/gssapi32.dll installer/bin || exit
 cp $POSTGRESDIR/bin/comerr32.dll installer/bin || exit
+cp $POSTGRESDIR/bin/ssleay32.dll installer/bin || exit
+cp $POSTGRESDIR/bin/libeay32.dll installer/bin || exit
 
 mkdir -p installer/share/postgresql || exit
 cp $POSTGRESDIR/share/postgres.bki installer/share/postgresql || exit
