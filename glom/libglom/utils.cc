@@ -825,6 +825,7 @@ int Utils::dialog_run_with_help(Gtk::Dialog* dialog, const Glib::ustring& id)
     show_help(id);
     result = dialog->run();
   }
+
   dialog->hide();
   return result;
 }
@@ -875,7 +876,7 @@ void Utils::show_help(const Glib::ustring& id)
   }
   catch(const std::exception& ex)
   {
-    std::string message(std::string(_("Could not display help: ")) + ex.what());
+    const Glib::ustring message = _("Could not display help: ") + Glib::ustring(ex.what());
     Gtk::MessageDialog dialog(message, false, Gtk::MESSAGE_ERROR);
     dialog.run();
   }

@@ -1,3 +1,9 @@
+2008-08-12  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/utils.cc:
+	* glom/libglom/utils.h: show_help() Add a note that this is a replacement 
+	for gnome_help_display() until we have something in GTK+.
+
 2008-08-11  Armin Burgmeier  <armin@openismus.com>
 
 	* win32/build_installer:

@@ -99,6 +99,10 @@ Glib::ustring string_remove_suffix(const Glib::ustring& str, const Glib::ustring
 
 int dialog_run_with_help(Gtk::Dialog* dialog, const Glib::ustring& id = Glib::ustring());
 
+/** This is a replacement for gnome_help_display(), 
+ * to avoid the libgnome dependency.
+ * TODO: GTK+ should have a function for this soon.
+ */
 void show_help(const Glib::ustring& id = Glib::ustring());
 
 void show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window& parent, Gtk::MessageType message_type);
