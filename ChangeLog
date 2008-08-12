@@ -1,3 +1,14 @@
+2008-08-12  Armin Burgmeier  <armin@openismus.com>
+
+	* win32/build_installer: Take a revision number as argument, producing
+	for instance glom-setup-1.7.1-2.exe.
+
+	* win32/glom.iss.in: Hide the components page, since all components
+	are fixed anyway.
+
+	* README: Added some general information on how the installer is
+	built.
+
 2008-08-12  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/utils.cc:

@@ -4,6 +4,12 @@ echo "You also need InnoSetup (http://www.innosetup.org) with iscc in your PATH"
 echo "You need to have python, pygobject, pycairo and pygtk installed into C:\\Python25"
 echo "Make sure glom and all its dependencies have been installed correctly to /local"
 
+revision=$1
+if test "$revision" = ''; then
+  echo "Installer revision not provided, assuming 1"
+  revision=1
+fi
+
 # TODO: Let configure replace @pyexecdir@ to get the correct python path?
 PYTHONDIR=/c/Python25
 POSTGRESDIR=/c/postgres
@@ -207,8 +213,8 @@ cp $POSTGRESDIR/bin/krb5_32.dll installer/bin || exit
 cp $POSTGRESDIR/bin/k5sprt32.dll installer/bin || exit
 cp $POSTGRESDIR/bin/gssapi32.dll installer/bin || exit
 cp $POSTGRESDIR/bin/comerr32.dll installer/bin || exit
-cp $POSTGRESDIR/bin/ssleay32.dll installer/bin || exit
 cp $POSTGRESDIR/bin/libeay32.dll installer/bin || exit
+cp $POSTGRESDIR/bin/ssleay32.dll installer/bin || exit
 
 mkdir -p installer/share/postgresql || exit
 cp $POSTGRESDIR/share/postgres.bki installer/share/postgresql || exit
@@ -260,7 +266,7 @@ cp /local/share/icons/hicolor/16x16/apps/glom.png installer/share/pixmaps || exi
 
 echo "Creating installer..."
 
-cp glom.iss installer || exit
+perl -pe "s/INSTALLERREVISION/$revision/" glom.iss > installer/glom.iss || exit
 cp querymodules.bat installer || exit
 iscc installer/glom.iss || exit
 
