@@ -1,3 +1,10 @@
+2008-08-15  Armin Burgmeier  <armin@openismus.com>
+
+	* win32/build_installer:
+	* win32/glom.iss.in: We use self-built postgresql binaries again, so
+	we don't need to ship all the libraries the official ones are built
+	against.
+
 2008-08-12  Armin Burgmeier  <armin@openismus.com>
 
 	* win32/build_installer: Take a revision number as argument, producing
