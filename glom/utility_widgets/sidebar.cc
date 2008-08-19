@@ -25,48 +25,48 @@ namespace Glom
 {
 
 SideBar::SideBar()
+: m_width(0), m_height(0)
 { 
-  set_handle_position (Gtk::POS_TOP);
-  set_snap_edge (Gtk::POS_TOP);
+  set_handle_position(Gtk::POS_TOP);
+  set_snap_edge(Gtk::POS_TOP);
   
-	palette = EGG_TOOL_PALETTE(egg_tool_palette_new ());
-	Gtk::Container* container = Glib::wrap(GTK_CONTAINER(palette));
-	
-	add(*container);
+  palette = EGG_TOOL_PALETTE(egg_tool_palette_new());
+  Gtk::Container* container = Glib::wrap(GTK_CONTAINER(palette));
+  
+  add(*container);
   show_all_children();
 }
 
 SideBar::~SideBar()
 {
-  
 }
 
 void SideBar::add_group(EggToolItemGroup* group)
 {
-	gtk_container_add(GTK_CONTAINER(palette), GTK_WIDGET(group));
+  gtk_container_add(GTK_CONTAINER(palette), GTK_WIDGET(group));
 }
 
 void SideBar::remove_group(EggToolItemGroup* group)
 {
-	gtk_container_remove(GTK_CONTAINER(palette), GTK_WIDGET(group));
+  gtk_container_remove(GTK_CONTAINER(palette), GTK_WIDGET(group));
 }
 
 void SideBar::set_drag_source()
 {
   // It's important to call this AFTER all groups have been added
-  egg_tool_palette_set_drag_source (palette);
+  egg_tool_palette_set_drag_source(palette, EGG_TOOL_PALETTE_DRAG_ITEMS);
 }
 
 void SideBar::on_child_detached(Gtk::Widget* child)
 {
-  get_size_request (m_width, m_height);
-  child->set_size_request (m_width, m_height);
-  set_size_request (0, 0);
+  get_size_request(m_width, m_height);
+  child->set_size_request(m_width, m_height);
+  set_size_request(0, 0);
 }
 
 void SideBar::on_child_attached(Gtk::Widget* child)
 {
-  set_size_request (m_width, m_height);
+  set_size_request(m_width, m_height);
 }
 
 } // namespace Glom

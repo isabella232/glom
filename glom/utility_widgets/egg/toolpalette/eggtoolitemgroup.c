@@ -38,6 +38,15 @@
 #define DEFAULT_COLLAPSED        FALSE
 #define DEFAULT_ELLIPSIZE        PANGO_ELLIPSIZE_NONE
 
+/**
+ * SECTION:EggToolItemGroup
+ * @short_description: A sub container used in a tool palette
+ * @include: eggtoolitemgroup.h
+ *
+ * An #EggToolItemGroup is used together with #EggToolPalette to add #GtkToolItem<!-- -->s to a palette like container
+ * with different categories and drag and drop support.
+ */
+
 enum
 {
   PROP_NONE,
@@ -71,8 +80,10 @@ struct _EggToolItemGroupPrivate
   gint               header_spacing;
   PangoEllipsizeMode ellipsize;
 
-  guint              collapsed : 1;
+  gulong             focus_set_id;
+  GtkWidget         *toplevel;
 
+  guint              collapsed : 1;
 };
 
 struct _EggToolItemGroupChild
@@ -435,15 +446,35 @@ egg_tool_item_group_finalize (GObject *object)
 }
 
 static void
+egg_tool_item_group_dispose (GObject *object)
+{
+  EggToolItemGroup *group = EGG_TOOL_ITEM_GROUP (object);
+
+  if (group->priv->toplevel)
+    {
+      /* disconnect focus tracking handler */
+      g_signal_handler_disconnect (group->priv->toplevel,
+                                   group->priv->focus_set_id);
+
+      group->priv->focus_set_id = 0;
+      group->priv->toplevel = NULL;
+    }
+
+  G_OBJECT_CLASS (egg_tool_item_group_parent_class)->dispose (object);
+}
+
+static void
 egg_tool_item_group_get_item_size (EggToolItemGroup *group,
-                                   GtkRequisition   *item_size)
+                                   GtkRequisition   *item_size,
+                                   gboolean          homogeneous_only,
+                                   gint             *requested_rows)
 {
   GtkWidget *parent = gtk_widget_get_parent (GTK_WIDGET (group));
 
   if (EGG_IS_TOOL_PALETTE (parent))
-    _egg_tool_palette_get_item_size (EGG_TOOL_PALETTE (parent), item_size);
+    _egg_tool_palette_get_item_size (EGG_TOOL_PALETTE (parent), item_size, homogeneous_only, requested_rows);
   else
-    _egg_tool_item_group_item_size_request (group, item_size);
+    _egg_tool_item_group_item_size_request (group, item_size, homogeneous_only, requested_rows);
 }
 
 static void
@@ -454,6 +485,7 @@ egg_tool_item_group_size_request (GtkWidget      *widget,
   EggToolItemGroup *group = EGG_TOOL_ITEM_GROUP (widget);
   GtkOrientation orientation;
   GtkRequisition item_size;
+  gint requested_rows;
 
   if (group->priv->children && egg_tool_item_group_get_name (group))
     {
@@ -466,34 +498,285 @@ egg_tool_item_group_size_request (GtkWidget      *widget,
       gtk_widget_hide (group->priv->header);
     }
 
-  egg_tool_item_group_get_item_size (group, &item_size);
+  egg_tool_item_group_get_item_size (group, &item_size, FALSE, &requested_rows);
 
   orientation = gtk_tool_shell_get_orientation (GTK_TOOL_SHELL (group));
 
   if (GTK_ORIENTATION_VERTICAL == orientation)
     requisition->width = MAX (requisition->width, item_size.width);
   else
-    requisition->height = MAX (requisition->height, item_size.height);
+    requisition->height = MAX (requisition->height, item_size.height * requested_rows);
 
   requisition->width += border_width * 2;
   requisition->height += border_width * 2;
 }
 
 static gboolean
-egg_tool_item_group_is_item_visible (GtkToolItem    *item,
-                                     GtkOrientation  orientation)
+egg_tool_item_group_is_item_visible (EggToolItemGroup      *group,
+                                     EggToolItemGroupChild *child)
 {
+  GtkToolbarStyle style;
+  GtkOrientation orientation;
+
+  orientation = gtk_tool_shell_get_orientation (GTK_TOOL_SHELL (group));
+  style = gtk_tool_shell_get_style (GTK_TOOL_SHELL (group));
+
+  /* horizontal tool palettes with text style support only homogeneous items */
+  if (!child->homogeneous &&
+      GTK_ORIENTATION_HORIZONTAL == orientation &&
+      GTK_TOOLBAR_TEXT == style)
+    return FALSE;
+
   return
-    (GTK_WIDGET_VISIBLE (item)) &&
+    (GTK_WIDGET_VISIBLE (child->item)) &&
     (GTK_ORIENTATION_VERTICAL == orientation ?
-     gtk_tool_item_get_visible_vertical (item) :
-     gtk_tool_item_get_visible_horizontal (item));
+     gtk_tool_item_get_visible_vertical (child->item) :
+     gtk_tool_item_get_visible_horizontal (child->item));
+}
+
+static inline unsigned
+udiv (unsigned x,
+      unsigned y)
+{
+  return (x + y - 1) / y;
+}
+
+static void
+egg_tool_item_group_real_size_query (GtkWidget      *widget,
+                                     GtkAllocation  *allocation,
+                                     GtkRequisition *inquery)
+{
+  const gint border_width = GTK_CONTAINER (widget)->border_width;
+  EggToolItemGroup *group = EGG_TOOL_ITEM_GROUP (widget);
+
+  GtkRequisition item_size;
+  GtkAllocation item_area;
+
+  GtkOrientation orientation;
+  GtkToolbarStyle style;
+
+  gint min_rows;
+
+  orientation = gtk_tool_shell_get_orientation (GTK_TOOL_SHELL (group));
+  style = gtk_tool_shell_get_style (GTK_TOOL_SHELL (group));
+
+  /* figure out the size of homogeneous items */
+  egg_tool_item_group_get_item_size (group, &item_size, TRUE, &min_rows);
+
+  if (GTK_ORIENTATION_VERTICAL == orientation)
+    item_size.width = MIN (item_size.width, allocation->width);
+  else
+    item_size.height = MIN (item_size.height, allocation->height);
+
+  item_area.width = 0;
+  item_area.height = 0;
+
+  /* figure out the required columns (n_columns) and rows (n_rows) to place all items */
+  if (!group->priv->collapsed || group->priv->animation_timeout)
+    {
+      guint n_columns;
+      gint n_rows;
+      GList *it;
+
+      if (GTK_ORIENTATION_VERTICAL == orientation)
+        {
+          gboolean new_row = FALSE;
+          gint row = -1;
+          guint col = 0;
+
+          item_area.width = allocation->width - 2 * border_width;
+          n_columns = MAX (item_area.width / item_size.width, 1);
+
+          /* calculate required rows for n_columns columns */
+          for (it = group->priv->children; it != NULL; it = it->next)
+            {
+              EggToolItemGroupChild *child = it->data;
+
+              if (!egg_tool_item_group_is_item_visible (group, child))
+                continue;
+
+              if (new_row || child->new_row)
+                {
+                  new_row = FALSE;
+                  row++;
+                  col = 0;
+                }
+
+              if (child->expand)
+                new_row = TRUE;
+
+              if (child->homogeneous)
+                {
+                  col++;
+                  if (col >= n_columns)
+                    new_row = TRUE;
+                }
+              else
+                {
+                  GtkRequisition req = {0, 0};
+                  guint width;
+
+                  gtk_widget_size_request (GTK_WIDGET (child->item), &req);
+
+                  width = udiv (req.width, item_size.width);
+                  col += width;
+
+                  if (col > n_columns)
+                    row++;
+
+                  col = width;
+
+                  if (col >= n_columns)
+                    new_row = TRUE;
+                }
+            }
+          n_rows = row + 2;
+        }
+      else
+        {
+          guint *row_min_width;
+          gint row = -1;
+          gboolean new_row = TRUE;
+          guint col = 0, min_col, max_col = 0, all_items = 0;
+          gint i;
+
+          item_area.height = allocation->height - 2 * border_width;
+          n_rows = MAX (item_area.height / item_size.height, min_rows);
+
+          row_min_width = g_new0 (guint, n_rows);
+
+          /* calculate minimal and maximal required cols and minimal required rows */
+          for (it = group->priv->children; it != NULL; it = it->next)
+            {
+              EggToolItemGroupChild *child = it->data;
+
+              if (!egg_tool_item_group_is_item_visible (group, child))
+                continue;
+
+              if (new_row || child->new_row)
+                {
+                  new_row = FALSE;
+                  row++;
+                  col = 0;
+                  row_min_width[row] = 1;
+                }
+
+              if (child->expand)
+                new_row = TRUE;
+
+              if (child->homogeneous)
+                {
+                  col++;
+                  all_items++;
+                }
+              else
+                {
+                  GtkRequisition req = {0, 0};
+                  guint width;
+
+                  gtk_widget_size_request (GTK_WIDGET (child->item), &req);
+
+                  width = udiv (req.width, item_size.width);
+
+                  col += width;
+                  all_items += width;
+
+                  row_min_width[row] = MAX (row_min_width[row], width);
+                }
+
+              max_col = MAX (max_col, col);
+            }
+
+          /* calculate minimal required cols */
+          min_col = udiv (all_items, n_rows);
+
+          for (i = 0; i <= row; i++)
+            {
+              min_col = MAX (min_col, row_min_width[i]);
+            }
+
+          /* simple linear search for minimal required columns for the given maximal number of rows (n_rows) */
+          for (n_columns = min_col; n_columns < max_col; n_columns ++)
+            {
+              new_row = TRUE;
+              row = -1;
+              /* calculate required rows for n_columns columns */
+              for (it = group->priv->children; it != NULL; it = it->next)
+                {
+                  EggToolItemGroupChild *child = it->data;
+
+                  if (!egg_tool_item_group_is_item_visible (group, child))
+                    continue;
+
+                  if (new_row || child->new_row)
+                    {
+                      new_row = FALSE;
+                      row++;
+                      col = 0;
+                    }
+
+                  if (child->expand)
+                    new_row = TRUE;
+
+                  if (child->homogeneous)
+                    {
+                      col++;
+                      if (col >= n_columns)
+                        new_row = TRUE;
+                    }
+                  else
+                    {
+                      GtkRequisition req = {0, 0};
+                      guint width;
+
+                      gtk_widget_size_request (GTK_WIDGET (child->item), &req);
+
+                      width = udiv (req.width, item_size.width);
+                      col += width;
+
+                      if (col > n_columns)
+                        row++;
+
+                      col = width;
+
+                      if (col >= n_columns)
+                        new_row = TRUE;
+                    }
+                }
+
+              if (row < n_rows)
+                break;
+            }
+        }
+
+      item_area.width = item_size.width * n_columns;
+      item_area.height = item_size.height * n_rows;
+    }
+
+  inquery->width = 0;
+  inquery->height = 0;
+
+  /* figure out header widget size */
+  if (GTK_WIDGET_VISIBLE (group->priv->header))
+    {
+      GtkRequisition child_requisition;
+
+      gtk_widget_size_request (group->priv->header, &child_requisition);
+
+      if (GTK_ORIENTATION_VERTICAL == orientation)
+        inquery->height += child_requisition.height;
+      else
+        inquery->width += child_requisition.width;
+    }
+
+  /* report effective widget size */
+  inquery->width += item_area.width + 2 * border_width;
+  inquery->height += item_area.height + 2 * border_width;
 }
 
 static void
 egg_tool_item_group_real_size_allocate (GtkWidget      *widget,
-                                        GtkAllocation  *allocation,
-                                        GtkRequisition *inquery)
+                                        GtkAllocation  *allocation)
 {
   const gint border_width = GTK_CONTAINER (widget)->border_width;
   EggToolItemGroup *group = EGG_TOOL_ITEM_GROUP (widget);
@@ -506,81 +789,27 @@ egg_tool_item_group_real_size_allocate (GtkWidget      *widget,
   GtkOrientation orientation;
   GtkToolbarStyle style;
 
-  guint n_visible_items;
-
   GList *it;
 
-  guint header_width = 0;
-
-  guint n_columns, n_rows;
+  gint n_columns, n_rows = 1;
+  gint min_rows;
 
   GtkTextDirection direction = gtk_widget_get_direction (widget);
-
-  if (!inquery)
-    GTK_WIDGET_CLASS (egg_tool_item_group_parent_class)->size_allocate (widget, allocation);
 
   orientation = gtk_tool_shell_get_orientation (GTK_TOOL_SHELL (group));
   style = gtk_tool_shell_get_style (GTK_TOOL_SHELL (group));
 
-  /* figure out header size */
-
-  if (GTK_WIDGET_VISIBLE (group->priv->header))
-    gtk_widget_size_request (group->priv->header, &child_requisition);
-  else
-    child_requisition.width = child_requisition.height = 0;
-
-  /* figure out item size */
-
-  egg_tool_item_group_get_item_size (group, &item_size);
-
-  if (GTK_ORIENTATION_VERTICAL == orientation)
-    item_size.width = MIN (item_size.width, allocation->width);
-  else
-    item_size.height = MIN (item_size.height, allocation->height);
-
-  n_visible_items = 0;
-
-  for (it = group->priv->children; it != NULL; it = it->next)
-    {
-      EggToolItemGroupChild *child = it->data;
-
-      if (egg_tool_item_group_is_item_visible (child->item, orientation))
-        n_visible_items += 1;
-    }
-
-  if (GTK_ORIENTATION_VERTICAL == orientation)
-    {
-      item_area.width = allocation->width - 2 * border_width;
-      n_columns = MAX (item_area.width / item_size.width, 1);
-      n_rows = (n_visible_items + n_columns - 1) / n_columns;
-    }
-  else if (inquery)
-    {
-      item_area.height = allocation->height - 2 * border_width;
-      n_rows = MAX (item_area.height / item_size.height, 1);
-      n_columns = (n_visible_items + n_rows - 1) / n_rows;
-    }
-  else
-    {
-      item_area.width = allocation->width - 2 * border_width;
-
-      if (child_requisition.width > 0)
-        item_area.width -= child_requisition.width;
-
-      n_columns = MAX (item_area.width / item_size.width, 1);
-      n_rows = (n_visible_items + n_columns - 1) / n_columns;
-    }
-
-  item_area.width = item_size.width * n_columns;
-  item_area.height = item_size.height * n_rows;
-
-  /* place the header widget */
+  /* chain up */
+  GTK_WIDGET_CLASS (egg_tool_item_group_parent_class)->size_allocate (widget, allocation);
 
   child_allocation.x = border_width;
   child_allocation.y = border_width;
 
+  /* place the header widget */
   if (GTK_WIDGET_VISIBLE (group->priv->header))
     {
+      gtk_widget_size_request (group->priv->header, &child_requisition);
+
       if (GTK_ORIENTATION_VERTICAL == orientation)
         {
           child_allocation.width = allocation->width;
@@ -589,15 +818,13 @@ egg_tool_item_group_real_size_allocate (GtkWidget      *widget,
       else
         {
           child_allocation.width = child_requisition.width;
-	  header_width = child_allocation.width;
           child_allocation.height = allocation->height;
 
-	  if (GTK_TEXT_DIR_RTL == direction)
-            child_allocation.x = allocation->width - border_width - header_width;
+          if (GTK_TEXT_DIR_RTL == direction)
+            child_allocation.x = allocation->width - border_width - child_allocation.width;
         }
 
-      if (!inquery)
-        gtk_widget_size_allocate (group->priv->header, &child_allocation);
+      gtk_widget_size_allocate (group->priv->header, &child_allocation);
 
       if (GTK_ORIENTATION_VERTICAL == orientation)
         child_allocation.y += child_allocation.height;
@@ -606,55 +833,67 @@ egg_tool_item_group_real_size_allocate (GtkWidget      *widget,
       else
         child_allocation.x = border_width;
     }
+  else
+    child_requisition.width = child_requisition.height = 0;
+
+  /* figure out the size of homogeneous items */
+  egg_tool_item_group_get_item_size (group, &item_size, TRUE, &min_rows);
+
+  /* figure out the available columns and size of item_area */
+  if (GTK_ORIENTATION_VERTICAL == orientation)
+    {
+      item_size.width = MIN (item_size.width, allocation->width);
+
+      item_area.width = allocation->width - 2 * border_width;
+      item_area.height = allocation->height - 2 * border_width - child_requisition.height;
+
+      n_columns = MAX (item_area.width / item_size.width, 1);
+
+      item_size.width = item_area.width / n_columns;
+    }
+  else
+    {
+      item_size.height = MIN (item_size.height, allocation->height);
+
+      item_area.width = allocation->width - 2 * border_width - child_requisition.width;
+      item_area.height = allocation->height - 2 * border_width;
+
+      n_columns = MAX (item_area.width / item_size.width, 1);
+      n_rows = MAX (item_area.height / item_size.height, min_rows);
+
+      item_size.height = item_area.height / n_rows;
+    }
 
   item_area.x = child_allocation.x;
   item_area.y = child_allocation.y;
 
-  if (!inquery)
-    {
-      if (GTK_ORIENTATION_VERTICAL == orientation)
-        {
-          item_area.width = allocation->width - 2 * border_width - header_width;
-          item_size.width = item_area.width / n_columns;
-        }
-      else
-        {
-          item_area.height = allocation->height - 2 * border_width;
-          item_size.height = item_area.height / n_rows;
-        }
-    }
-
-  /* otherwise, when expanded or in transition, place the tool items */
+  /* when expanded or in transition, place the tool items in a grid like layout */
   if (!group->priv->collapsed || group->priv->animation_timeout)
     {
-      guint col = 0, row = 0;
+      gint col = 0, row = 0;
 
       for (it = group->priv->children; it != NULL; it = it->next)
         {
           EggToolItemGroupChild *child = it->data;
+          gint col_child;
 
-          if (!egg_tool_item_group_is_item_visible (child->item, orientation))
+          if (!egg_tool_item_group_is_item_visible (group, child))
             {
-              if (!inquery)
-                gtk_widget_set_child_visible (GTK_WIDGET (child->item), FALSE);
+              gtk_widget_set_child_visible (GTK_WIDGET (child->item), FALSE);
 
               continue;
             }
 
+          /* for non homogeneous widgets request the required size */
           child_requisition.width = 0;
-	  if (!child->homogeneous)
-            {
-              if (GTK_ORIENTATION_HORIZONTAL == orientation && GTK_TOOLBAR_TEXT == style)
-                {
-                  /* in horizontal text mode non homogneneous items are not supported */
-                  gtk_widget_set_child_visible (GTK_WIDGET (child->item), FALSE);
-                  continue;
-                }
 
+          if (!child->homogeneous)
+            {
               gtk_widget_size_request (GTK_WIDGET (child->item), &child_requisition);
               child_requisition.width = MIN (child_requisition.width, item_area.width);
             }
 
+          /* select next row if at end of row */
           if (col > 0 && (child->new_row || (col * item_size.width) + MAX (child_requisition.width, item_size.width) > item_area.width))
             {
               row++;
@@ -662,29 +901,34 @@ egg_tool_item_group_real_size_allocate (GtkWidget      *widget,
               child_allocation.y += child_allocation.height;
             }
 
+          col_child = col;
+
+          /* calculate the position and size of the item */
           if (!child->homogeneous)
             {
-              guint col_width;
-              guint width;
+              gint col_width;
+              gint width;
 
-              if (child->expand)
-                col_width = n_columns - col;
+              if (!child->expand)
+                col_width = udiv (child_requisition.width, item_size.width);
               else
-                col_width = (guint) ceil (1.0 * child_requisition.width / item_size.width);
+                col_width = n_columns - col;
 
               width = col_width * item_size.width;
 
+              if (GTK_TEXT_DIR_RTL == direction)
+                col_child = (n_columns - col - col_width);
+
               if (child->fill)
                 {
-                  child_allocation.x = item_area.x + 
-			  (((GTK_TEXT_DIR_RTL == direction) ? (n_columns - col - col_width) : col) * item_size.width);
+                  child_allocation.x = item_area.x + col_child * item_size.width;
                   child_allocation.width = width;
                 }
               else
                 {
-                  child_allocation.x = item_area.x + 
-			  (((GTK_TEXT_DIR_RTL == direction) ? (n_columns - col - col_width) : col) * item_size.width) + 
-			  (width - child_requisition.width) / 2;
+                  child_allocation.x =
+                    (item_area.x + col_child * item_size.width +
+                    (width - child_requisition.width) / 2);
                   child_allocation.width = child_requisition.width;
                 }
 
@@ -692,8 +936,10 @@ egg_tool_item_group_real_size_allocate (GtkWidget      *widget,
             }
           else
             {
-              child_allocation.x = item_area.x + 
-		      (((GTK_TEXT_DIR_RTL == direction) ? (n_columns - col - 1) : col) * item_size.width);
+              if (GTK_TEXT_DIR_RTL == direction)
+                col_child = (n_columns - col - 1);
+
+              child_allocation.x = item_area.x + col_child * item_size.width;
               child_allocation.width = item_size.width;
 
               col++;
@@ -701,11 +947,8 @@ egg_tool_item_group_real_size_allocate (GtkWidget      *widget,
 
           child_allocation.height = item_size.height;
 
-          if (!inquery)
-            {
-              gtk_widget_size_allocate (GTK_WIDGET (child->item), &child_allocation);
-              gtk_widget_set_child_visible (GTK_WIDGET (child->item), TRUE);
-            }
+          gtk_widget_size_allocate (GTK_WIDGET (child->item), &child_allocation);
+          gtk_widget_set_child_visible (GTK_WIDGET (child->item), TRUE);
         }
 
       child_allocation.y += item_size.height;
@@ -713,7 +956,7 @@ egg_tool_item_group_real_size_allocate (GtkWidget      *widget,
 
   /* or just hide all items, when collapsed */
 
-  else if (!inquery)
+  else
     {
       for (it = group->priv->children; it != NULL; it = it->next)
         {
@@ -722,29 +965,129 @@ egg_tool_item_group_real_size_allocate (GtkWidget      *widget,
           gtk_widget_set_child_visible (GTK_WIDGET (child->item), FALSE);
         }
     }
-
-  /* report effective widget size */
-
-  if (inquery)
-    {
-      inquery->width = item_area.width + header_width + 2 * border_width;
-      inquery->height = child_allocation.y + border_width;
-    }
 }
 
 static void
 egg_tool_item_group_size_allocate (GtkWidget     *widget,
                                    GtkAllocation *allocation)
 {
-  egg_tool_item_group_real_size_allocate (widget, allocation, NULL);
+  egg_tool_item_group_real_size_allocate (widget, allocation);
 
   if (GTK_WIDGET_MAPPED (widget))
     gdk_window_invalidate_rect (widget->window, NULL, FALSE);
 }
 
 static void
+egg_tool_item_group_set_focus_cb (GtkWidget *window G_GNUC_UNUSED,
+                                  GtkWidget *widget,
+                                  gpointer   user_data)
+{
+  GtkAdjustment *adjustment;
+  GtkWidget *p;
+
+  /* Find this group's parent widget in the focused widget's anchestry. */
+  for (p = widget; p; p = gtk_widget_get_parent (p))
+    if (p == user_data)
+      {
+        p = gtk_widget_get_parent (p);
+        break;
+      }
+
+  if (EGG_IS_TOOL_PALETTE (p))
+    {
+      /* Check that the focused widgets is fully visible within
+       * the group's parent widget and make it visible otherwise. */
+
+      adjustment = egg_tool_palette_get_hadjustment (EGG_TOOL_PALETTE (p));
+      adjustment = egg_tool_palette_get_vadjustment (EGG_TOOL_PALETTE (p));
+
+      if (adjustment)
+        {
+          int y;
+
+          /* Handle vertical adjustment. */
+          if (gtk_widget_translate_coordinates
+                (widget, p, 0, 0, NULL, &y) && y < 0)
+            {
+              y += adjustment->value;
+              gtk_adjustment_clamp_page (adjustment, y, y + widget->allocation.height);
+            }
+          else if (gtk_widget_translate_coordinates
+                      (widget, p, 0, widget->allocation.height, NULL, &y) &&
+                   y > p->allocation.height)
+            {
+              y += adjustment->value;
+              gtk_adjustment_clamp_page (adjustment, y - widget->allocation.height, y);
+            }
+        }
+
+      adjustment = egg_tool_palette_get_hadjustment (EGG_TOOL_PALETTE (p));
+
+      if (adjustment)
+        {
+          int x;
+
+          /* Handle horizontal adjustment. */
+          if (gtk_widget_translate_coordinates
+                (widget, p, 0, 0, &x, NULL) && x < 0)
+            {
+              x += adjustment->value;
+              gtk_adjustment_clamp_page (adjustment, x, x + widget->allocation.width);
+            }
+          else if (gtk_widget_translate_coordinates
+                      (widget, p, widget->allocation.width, 0, &x, NULL) &&
+                   x > p->allocation.width)
+            {
+              x += adjustment->value;
+              gtk_adjustment_clamp_page (adjustment, x - widget->allocation.width, x);
+            }
+
+          return;
+        }
+    }
+}
+
+static void
+egg_tool_item_group_set_toplevel_window (EggToolItemGroup *group,
+                                         GtkWidget        *toplevel)
+{
+  if (toplevel != group->priv->toplevel)
+    {
+      if (group->priv->toplevel)
+        {
+          /* Disconnect focus tracking handler. */
+          g_signal_handler_disconnect (group->priv->toplevel,
+                                       group->priv->focus_set_id);
+
+          group->priv->focus_set_id = 0;
+          group->priv->toplevel = NULL;
+        }
+
+      if (toplevel)
+        {
+          /* Install focus tracking handler. We connect to the window's
+           * set-focus signal instead of connecting to the focus signal of
+           * each child to:
+           *
+           * 1) Reduce the number of signal handlers used.
+           * 2) Avoid special handling for group headers.
+           * 3) Catch focus grabs not only for direct children,
+           *    but also for nested widgets.
+           */
+          group->priv->focus_set_id =
+            g_signal_connect (toplevel, "set-focus",
+                              G_CALLBACK (egg_tool_item_group_set_focus_cb),
+                              group);
+
+          group->priv->toplevel = toplevel;
+        }
+    }
+}
+
+static void
 egg_tool_item_group_realize (GtkWidget *widget)
 {
+  GtkWidget *toplevel_window;
   const gint border_width = GTK_CONTAINER (widget)->border_width;
   gint attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
   GdkWindowAttr attributes;
@@ -780,6 +1123,17 @@ egg_tool_item_group_realize (GtkWidget *widget)
                         widget->window);
 
   gtk_widget_queue_resize_no_redraw (widget);
+
+  toplevel_window = gtk_widget_get_ancestor (widget, GTK_TYPE_WINDOW);
+  egg_tool_item_group_set_toplevel_window (EGG_TOOL_ITEM_GROUP (widget),
+                                           toplevel_window);
+}
+
+static void
+egg_tool_item_group_unrealize (GtkWidget *widget)
+{
+  egg_tool_item_group_set_toplevel_window (EGG_TOOL_ITEM_GROUP (widget), NULL);
+  GTK_WIDGET_CLASS (egg_tool_item_group_parent_class)->unrealize (widget);
 }
 
 static void
@@ -1090,10 +1444,12 @@ egg_tool_item_group_class_init (EggToolItemGroupClass *cls)
   oclass->set_property       = egg_tool_item_group_set_property;
   oclass->get_property       = egg_tool_item_group_get_property;
   oclass->finalize           = egg_tool_item_group_finalize;
+  oclass->dispose            = egg_tool_item_group_dispose;
 
   wclass->size_request       = egg_tool_item_group_size_request;
   wclass->size_allocate      = egg_tool_item_group_size_allocate;
   wclass->realize            = egg_tool_item_group_realize;
+  wclass->unrealize          = egg_tool_item_group_unrealize;
   wclass->style_set          = egg_tool_item_group_style_set;
 
   cclass->add                = egg_tool_item_group_add;
@@ -1192,12 +1548,28 @@ egg_tool_item_group_class_init (EggToolItemGroupClass *cls)
   g_type_class_add_private (cls, sizeof (EggToolItemGroupPrivate));
 }
 
+/**
+ * egg_tool_item_group_new:
+ * @name: the name of the new group.
+ *
+ * Creates a new tool item group with name @name.
+ *
+ * Returns: a new #EggToolItemGroup.
+ */
 GtkWidget*
 egg_tool_item_group_new (const gchar *name)
 {
   return g_object_new (EGG_TYPE_TOOL_ITEM_GROUP, "name", name, NULL);
 }
 
+/**
+ * egg_tool_item_group_set_name:
+ * @group: an #EggToolItemGroup.
+ * @name: the new name of of the group.
+ *
+ * Sets the name of the tool item group. The name is displayed in the header
+ * of the group.
+ */
 void
 egg_tool_item_group_set_name (EggToolItemGroup *group,
                               const gchar      *name)
@@ -1236,42 +1608,10 @@ egg_tool_item_group_animation_cb (gpointer data)
   EggToolItemGroup *group = EGG_TOOL_ITEM_GROUP (data);
   gint64 timestamp = egg_tool_item_group_get_animation_timestamp (group);
 
-  /* enque this early to reduce number of expose events */
+  /* Enque this early to reduce number of expose events. */
   gtk_widget_queue_resize_no_redraw (GTK_WIDGET (group));
 
-  if (GTK_WIDGET_REALIZED (group->priv->header))
-    {
-      GtkWidget *alignment = egg_tool_item_group_get_alignment (group);
-      GdkRectangle area;
-
-      area.x = alignment->allocation.x;
-      area.y = alignment->allocation.y + (alignment->allocation.height - group->priv->expander_size) / 2;
-      area.height = group->priv->expander_size;
-      area.width = group->priv->expander_size;
-
-      gdk_window_invalidate_rect (group->priv->header->window, &area, TRUE);
-    }
-
-  if (GTK_WIDGET_REALIZED (group))
-    {
-      GtkWidget *widget = GTK_WIDGET (group);
-      GtkWidget *parent = gtk_widget_get_parent (widget);
-
-      gint width = widget->allocation.width;
-      gint height = widget->allocation.height;
-      gint x, y;
-
-      gtk_widget_translate_coordinates (widget, parent, 0, 0, &x, &y);
-
-      if (GTK_WIDGET_VISIBLE (group->priv->header))
-        {
-          height -= group->priv->header->allocation.height;
-          y += group->priv->header->allocation.height;
-        }
-
-      gtk_widget_queue_draw_area (parent, x, y, width, height);
-    }
-
+  /* Figure out current style of the expander arrow. */
   if (group->priv->collapsed)
     {
       if (group->priv->expander_style == GTK_EXPANDER_EXPANDED)
@@ -1287,6 +1627,44 @@ egg_tool_item_group_animation_cb (gpointer data)
         group->priv->expander_style = GTK_EXPANDER_EXPANDED;
     }
 
+  if (GTK_WIDGET_REALIZED (group->priv->header))
+    {
+      GtkWidget *alignment = egg_tool_item_group_get_alignment (group);
+      GdkRectangle area;
+
+      /* Find the header button's arrow area... */
+      area.x = alignment->allocation.x;
+      area.y = alignment->allocation.y + (alignment->allocation.height - group->priv->expander_size) / 2;
+      area.height = group->priv->expander_size;
+      area.width = group->priv->expander_size;
+
+      /* ... and invalidated it to get it animated. */
+      gdk_window_invalidate_rect (group->priv->header->window, &area, TRUE);
+    }
+
+  if (GTK_WIDGET_REALIZED (group))
+    {
+      GtkWidget *widget = GTK_WIDGET (group);
+      GtkWidget *parent = gtk_widget_get_parent (widget);
+      int x, y, width, height;
+
+      /* Find the tool item area button's arrow area... */
+      width = widget->allocation.width;
+      height = widget->allocation.height;
+
+      gtk_widget_translate_coordinates (widget, parent, 0, 0, &x, &y);
+
+      if (GTK_WIDGET_VISIBLE (group->priv->header))
+        {
+          height -= group->priv->header->allocation.height;
+          y += group->priv->header->allocation.height;
+        }
+
+      /* ... and invalidated it to get it animated. */
+      gtk_widget_queue_draw_area (parent, x, y, width, height);
+    }
+
+  /* Finish animation when done. */
   if (timestamp >= ANIMATION_DURATION)
     group->priv->animation_timeout = NULL;
 
@@ -1301,6 +1679,13 @@ egg_tool_item_group_animation_cb (gpointer data)
   return (group->priv->animation_timeout != NULL);
 }
 
+/**
+ * egg_tool_item_group_set_collapsed:
+ * @group: an #EggToolItemGroup.
+ * @collapsed: whether the @group should be collapsed or expanded.
+ *
+ * Sets whether the @group should be collapsed or expanded.
+ */
 void
 egg_tool_item_group_set_collapsed (EggToolItemGroup *group,
                                    gboolean          collapsed)
@@ -1322,8 +1707,10 @@ egg_tool_item_group_set_collapsed (EggToolItemGroup *group,
       group->priv->animation_timeout = g_timeout_source_new (ANIMATION_TIMEOUT);
 
       parent = gtk_widget_get_parent (GTK_WIDGET (group));
+
       if (EGG_IS_TOOL_PALETTE (parent) && !collapsed)
-        _egg_tool_palette_set_expanding_child (EGG_TOOL_PALETTE (parent), GTK_WIDGET (group));
+        _egg_tool_palette_set_expanding_child (EGG_TOOL_PALETTE (parent),
+                                               GTK_WIDGET (group));
 
       g_source_set_callback (group->priv->animation_timeout,
                              egg_tool_item_group_animation_cb,
@@ -1334,6 +1721,13 @@ egg_tool_item_group_set_collapsed (EggToolItemGroup *group,
     }
 }
 
+/**
+ * egg_tool_item_group_set_ellipsize:
+ * @group: an #EggToolItemGroup.
+ * @ellipsize: the #PangoEllipsizeMode labels in @group should use.
+ *
+ * Sets the ellipsization mode which should be used by labels in @group.
+ */
 void
 egg_tool_item_group_set_ellipsize (EggToolItemGroup   *group,
                                    PangoEllipsizeMode  ellipsize)
@@ -1351,6 +1745,14 @@ egg_tool_item_group_set_ellipsize (EggToolItemGroup   *group,
     }
 }
 
+/**
+ * egg_tool_item_group_get_name:
+ * @group: an #EggToolItemGroup.
+ *
+ * Gets the name of @group.
+ *
+ * Returns: the name of @group. The name is an internal string of @group and must not be modified.
+ */
 G_CONST_RETURN gchar*
 egg_tool_item_group_get_name (EggToolItemGroup *group)
 {
@@ -1362,6 +1764,14 @@ egg_tool_item_group_get_name (EggToolItemGroup *group)
   return gtk_label_get_text (GTK_LABEL (label));
 }
 
+/**
+ * egg_tool_item_group_get_collapsed:
+ * @group: an EggToolItemGroup.
+ *
+ * Gets whether @group is collapsed or expanded.
+ *
+ * Returns: %TRUE if @group is collapsed, %FALSE if it is expanded.
+ */
 gboolean
 egg_tool_item_group_get_collapsed (EggToolItemGroup *group)
 {
@@ -1369,6 +1779,14 @@ egg_tool_item_group_get_collapsed (EggToolItemGroup *group)
   return group->priv->collapsed;
 }
 
+/**
+ * egg_tool_item_group_get_ellipsize:
+ * @group: an #EggToolItemGroup.
+ *
+ * Gets the ellipsization mode of @group.
+ *
+ * Returns: the #PangoEllipsizeMode of @group.
+ */
 PangoEllipsizeMode
 egg_tool_item_group_get_ellipsize (EggToolItemGroup *group)
 {
@@ -1376,12 +1794,20 @@ egg_tool_item_group_get_ellipsize (EggToolItemGroup *group)
   return group->priv->ellipsize;
 }
 
+/**
+ * egg_tool_item_group_insert:
+ * @group: an #EggToolItemGroup.
+ * @item: the #GtkToolItem to insert into @group.
+ * @position: the position of @item in @group, starting with 0. The position -1 means end of list.
+ *
+ * Inserts @item at @position in the list of children of @group.
+ */
 void
 egg_tool_item_group_insert (EggToolItemGroup *group,
                             GtkToolItem      *item,
                             gint              position)
 {
-  GtkWidget *parent;
+  GtkWidget *parent, *child_widget;
   EggToolItemGroupChild *child;
 
   g_return_if_fail (EGG_IS_TOOL_ITEM_GROUP (group));
@@ -1402,9 +1828,22 @@ egg_tool_item_group_insert (EggToolItemGroup *group,
   if (EGG_IS_TOOL_PALETTE (parent))
     _egg_tool_palette_child_set_drag_source (GTK_WIDGET (item), parent);
 
+  child_widget = gtk_bin_get_child (GTK_BIN (item));
+
+  if (GTK_IS_BUTTON (child_widget))
+    gtk_button_set_focus_on_click (GTK_BUTTON (child_widget), TRUE);
+
   gtk_widget_set_parent (GTK_WIDGET (item), GTK_WIDGET (group));
 }
 
+/**
+ * egg_tool_item_group_set_item_position:
+ * @group: an #EggToolItemGroup.
+ * @item: the #GtkToolItem to move to a new position, should be a child of @group.
+ * @position: the new position of @item in @group, starting with 0. The position -1 means end of list.
+ *
+ * Sets the position of @item in the list of children of @group.
+ */
 void
 egg_tool_item_group_set_item_position (EggToolItemGroup *group,
                                        GtkToolItem      *item,
@@ -1434,6 +1873,15 @@ egg_tool_item_group_set_item_position (EggToolItemGroup *group,
     gtk_widget_queue_resize (GTK_WIDGET (group));
 }
 
+/**
+ * egg_tool_item_group_get_item_position:
+ * @group: an #EggToolItemGroup.
+ * @item: a #GtkToolItem.
+ *
+ * Gets the position of @item in @group as index.
+ *
+ * Returns: the index of @item in @group or -1 if @item is no child of @group.
+ */
 gint
 egg_tool_item_group_get_item_position (EggToolItemGroup *group,
                                        GtkToolItem      *item)
@@ -1449,6 +1897,14 @@ egg_tool_item_group_get_item_position (EggToolItemGroup *group,
   return -1;
 }
 
+/**
+ * egg_tool_item_group_get_n_items:
+ * @group: an #EggToolItemGroup.
+ *
+ * Gets the number of tool items in group.
+ *
+ * Returns: the number of tool items in group.
+ */
 guint
 egg_tool_item_group_get_n_items (EggToolItemGroup *group)
 {
@@ -1457,6 +1913,15 @@ egg_tool_item_group_get_n_items (EggToolItemGroup *group)
   return g_list_length (group->priv->children);
 }
 
+/**
+ * egg_tool_item_group_get_nth_item:
+ * @group: an #EggToolItemGroup.
+ * @index: the index.
+ *
+ * Gets the tool item at index in group.
+ *
+ * Returns: the #GtkToolItem at index.
+ */
 GtkToolItem*
 egg_tool_item_group_get_nth_item (EggToolItemGroup *group,
                                   guint             index)
@@ -1470,6 +1935,16 @@ egg_tool_item_group_get_nth_item (EggToolItemGroup *group,
   return child != NULL ? child->item : NULL;
 }
 
+/** 
+ * egg_tool_item_group_get_drop_item:
+ * @group: an #EggToolItemGroup.
+ * @x: the x position.
+ * @y: the y position.
+ *
+ * Gets the tool item at position (x, y).
+ *
+ * Returns: the #GtkToolItem at position (x, y).
+ */
 GtkToolItem*
 egg_tool_item_group_get_drop_item (EggToolItemGroup *group,
                                    gint              x,
@@ -1493,7 +1968,7 @@ egg_tool_item_group_get_drop_item (EggToolItemGroup *group,
       GtkToolItem *item = child->item;
       gint x0, y0;
 
-      if (!item || !egg_tool_item_group_is_item_visible (item, orientation))
+      if (!item || !egg_tool_item_group_is_item_visible (group, child))
         continue;
 
       allocation = &GTK_WIDGET (item)->allocation;
@@ -1511,13 +1986,22 @@ egg_tool_item_group_get_drop_item (EggToolItemGroup *group,
 
 void
 _egg_tool_item_group_item_size_request (EggToolItemGroup *group,
-                                        GtkRequisition   *item_size)
+                                        GtkRequisition   *item_size,
+                                        gboolean          homogeneous_only,
+                                        gint             *requested_rows)
 {
   GtkRequisition child_requisition;
   GList *it;
+  gint rows = 0;
+  gboolean new_row = TRUE;
+  GtkOrientation orientation;
+  GtkToolbarStyle style;
 
   g_return_if_fail (EGG_IS_TOOL_ITEM_GROUP (group));
   g_return_if_fail (NULL != item_size);
+
+  orientation = gtk_tool_shell_get_orientation (GTK_TOOL_SHELL (group));
+  style = gtk_tool_shell_get_style (GTK_TOOL_SHELL (group));
 
   item_size->width = item_size->height = 0;
 
@@ -1525,12 +2009,27 @@ _egg_tool_item_group_item_size_request (EggToolItemGroup *group,
     {
       EggToolItemGroupChild *child = it->data;
 
+      if (!egg_tool_item_group_is_item_visible (group, child))
+        continue;
+
+      if (child->new_row || new_row)
+        {
+          rows++;
+          new_row = FALSE;
+        }
+
+      if (!child->homogeneous && child->expand)
+          new_row = TRUE;
+
       gtk_widget_size_request (GTK_WIDGET (child->item), &child_requisition);
 
-      if (child->homogeneous)
+      if (!homogeneous_only || child->homogeneous)
         item_size->width = MAX (item_size->width, child_requisition.width);
       item_size->height = MAX (item_size->height, child_requisition.height);
     }
+
+  if (requested_rows)
+    *requested_rows = rows;
 }
 
 void
@@ -1613,8 +2112,8 @@ _egg_tool_item_group_get_size_for_limit (EggToolItemGroup *group,
       else
         allocation.height = limit;
 
-      egg_tool_item_group_real_size_allocate (GTK_WIDGET (group),
-                                              &allocation, &inquery);
+      egg_tool_item_group_real_size_query (GTK_WIDGET (group),
+                                           &allocation, &inquery);
 
       if (vertical)
         inquery.height -= requisition.height;

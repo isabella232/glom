@@ -36,6 +36,72 @@
 
 #define P_(msgid) (msgid)
 
+/**
+ * SECTION:EggToolPalette
+ * @short_description: A tool palette with categories
+ * @include: eggtoolpalette.h
+ *
+ * An #EggToolPalette allows it to add #GtkToolItem<!-- -->s to a palette like container
+ * with different categories and drag and drop support.
+ *
+ * An #EggToolPalette is created with a call to egg_tool_palette_new().
+ *
+ * #GtkToolItem<!-- -->s cannot be added directly to an #EggToolPalette, instead they
+ * are added to an #EggToolItemGroup which can than be added to an #EggToolPalette. To add
+ * an #EggToolItemGroup to an #EggToolPalette use gtk_container_add().
+ *
+ * |[
+ * GtkWidget *palette, *group;
+ * GtkToolItem *item;
+ *
+ * palette = egg_tool_palette_new ();
+ * group = egg_tool_item_group_new (_("Test Category"));
+ * gtk_container_add (GTK_CONTAINER (palette), group);
+ *
+ * item = gtk_tool_button_new_from_stock (GTK_STOCK_OK);
+ * egg_tool_item_group_insert (EGG_TOOL_ITEM_GROUP (group), item, -1);
+ * ]|
+ *
+ * The easiest way to use drag and drop with EggToolPalette is to call egg_tool_palette_add_drag_dest()
+ * with the desired drag source @palette and the desired drag target @widget. Than egg_tool_palette_get_drag_item()
+ * can be used to get the dragged item in the #GtkWidget::drag-data-received signal handler of the drag target.
+ *
+ * |[
+ * static void
+ * passive_canvas_drag_data_received (GtkWidget        *widget,
+ *                                    GdkDragContext   *context,
+ *                                    gint              x,
+ *                                    gint              y,
+ *                                    GtkSelectionData *selection,
+ *                                    guint             info,
+ *                                    guint             time,
+ *                                    gpointer          data)
+ * {
+ *   GtkWidget *palette;
+ *   GtkWidget *item;
+ *
+ *   /<!-- -->* Get the dragged item *<!-- -->/
+ *   palette = gtk_widget_get_ancestor (gtk_drag_get_source_widget (context), EGG_TYPE_TOOL_PALETTE);
+ *   if (palette != NULL)
+ *     item = egg_tool_palette_get_drag_item (EGG_TOOL_PALETTE (palette), selection);
+ *
+ *   /<!-- -->* Do something with item *<!-- -->/
+ * }
+ *
+ * GtkWidget *target, palette;
+ *
+ * palette = egg_tool_palette_new ();
+ * target = gtk_drawing_area_new ();
+ *
+ * g_signal_connect (G_OBJECT (target), "drag-data-received",
+ *                   G_CALLBACK (passive_canvas_drag_data_received), NULL);   
+ * egg_tool_palette_add_drag_dest (EGG_TOOL_PALETTE (palette), target,
+ *                                 GTK_DEST_DEFAULT_ALL,
+ *                                 EGG_TOOL_PALETTE_DRAG_ITEMS,
+ *                                 GDK_ACTION_COPY);
+ * ]|
+ */
+
 typedef struct _EggToolItemGroupInfo   EggToolItemGroupInfo;
 typedef struct _EggToolPaletteDragData EggToolPaletteDragData;
 
@@ -72,7 +138,6 @@ struct _EggToolPalettePrivate
   GtkAdjustment        *hadjustment;
   GtkAdjustment        *vadjustment;
 
-  GtkRequisition        item_size;
   GtkIconSize           icon_size;
   GtkOrientation        orientation;
   GtkToolbarStyle       style;
@@ -84,7 +149,7 @@ struct _EggToolPalettePrivate
 #endif
 
   guint                 sparse_groups : 1;
-  guint                 drag_source : 1;
+  guint                 drag_source : 2;
 };
 
 struct _EggToolPaletteDragData
@@ -275,9 +340,6 @@ egg_tool_palette_size_request (GtkWidget      *widget,
   requisition->width = 0;
   requisition->height = 0;
 
-  palette->priv->item_size.width = 0;
-  palette->priv->item_size.height = 0;
-
   for (i = 0; i < palette->priv->groups_length; ++i)
     {
       EggToolItemGroupInfo *group = &palette->priv->groups[i];
@@ -297,13 +359,6 @@ egg_tool_palette_size_request (GtkWidget      *widget,
           requisition->width += child_requisition.width;
           requisition->height = MAX (requisition->height, child_requisition.height);
         }
-
-      _egg_tool_item_group_item_size_request (group->widget, &child_requisition);
-
-      palette->priv->item_size.width = MAX (palette->priv->item_size.width,
-                                            child_requisition.width);
-      palette->priv->item_size.height = MAX (palette->priv->item_size.height,
-                                             child_requisition.height);
     }
 
   requisition->width += border_width * 2;
@@ -364,6 +419,8 @@ egg_tool_palette_size_allocate (GtkWidget     *widget,
   else
     remaining_space = allocation->width;
 
+  /* figure out the required size of all groups to be able to distribute the
+   * remaining space on allocation */
   for (i = 0; i < palette->priv->groups_length; ++i)
     {
       EggToolItemGroupInfo *group = &palette->priv->groups[i];
@@ -390,22 +447,29 @@ egg_tool_palette_size_allocate (GtkWidget     *widget,
       remaining_space -= size;
       group_sizes[i] = size;
 
+      /* if the widget is currently expanding an offset which allows to display as much of the
+       * widget as possible is calculated */
       if (widget == palette->priv->expanding_child)
         {
-          gint j, real_size;
-          gint limit = GTK_ORIENTATION_VERTICAL == palette->priv->orientation ? child_allocation.width : child_allocation.height;
+          gint limit =
+            GTK_ORIENTATION_VERTICAL == palette->priv->orientation ?
+            child_allocation.width : child_allocation.height;
+
+          gint real_size;
+          guint j;
 
           min_offset = 0;
+
           for (j = 0; j < i; ++j)
-            {
-              min_offset += group_sizes[j];
-            }
+            min_offset += group_sizes[j];
+
           max_offset = min_offset + group_sizes[i];
 
-          real_size = _egg_tool_item_group_get_size_for_limit (EGG_TOOL_ITEM_GROUP (widget),
-                                                               limit,
-                                                               GTK_ORIENTATION_VERTICAL == palette->priv->orientation,
-                                                               FALSE);
+          real_size = _egg_tool_item_group_get_size_for_limit
+            (EGG_TOOL_ITEM_GROUP (widget), limit,
+             GTK_ORIENTATION_VERTICAL == palette->priv->orientation,
+             FALSE);
+
           if (size == real_size)
             palette->priv->expanding_child = NULL;
         }
@@ -419,9 +483,11 @@ egg_tool_palette_size_allocate (GtkWidget     *widget,
 
   if (max_offset != -1)
     {
-      gint limit = GTK_ORIENTATION_VERTICAL == palette->priv->orientation ? allocation->height : allocation->width;
+      gint limit =
+        GTK_ORIENTATION_VERTICAL == palette->priv->orientation ?
+        allocation->height : allocation->width;
 
-      offset = MIN(MAX (offset, max_offset - limit), min_offset);
+      offset = MIN (MAX (offset, max_offset - limit), min_offset);
     }
 
   if (remaining_space > 0)
@@ -435,6 +501,7 @@ egg_tool_palette_size_allocate (GtkWidget     *widget,
   else
     x -= offset;
 
+  /* allocate all groups at the calculated positions */
   for (i = 0; i < palette->priv->groups_length; ++i)
     {
       EggToolItemGroupInfo *group = &palette->priv->groups[i];
@@ -493,6 +560,7 @@ egg_tool_palette_size_allocate (GtkWidget     *widget,
       page_start = x;
     }
 
+  /* update the scrollbar to match the displayed adjustment */
   if (adjustment)
     {
       gdouble value;
@@ -500,24 +568,25 @@ egg_tool_palette_size_allocate (GtkWidget     *widget,
       adjustment->page_increment = page_size * 0.9;
       adjustment->step_increment = page_size * 0.1;
       adjustment->page_size = page_size;
-      if (GTK_ORIENTATION_HORIZONTAL == palette->priv->orientation &&
-          GTK_TEXT_DIR_RTL == direction)
-        {
-          adjustment->lower = page_size - MAX (0, page_start);
-          adjustment->upper = page_size;
 
-          offset = -offset;
-
-          value = MAX(offset, adjustment->lower);
-          gtk_adjustment_clamp_page (adjustment, offset, value + page_size);
-        }
-      else
+      if (GTK_ORIENTATION_VERTICAL == palette->priv->orientation ||
+          GTK_TEXT_DIR_LTR == direction)
         {
           adjustment->lower = 0;
           adjustment->upper = MAX (0, page_start);
 
           value = MIN (offset, adjustment->upper - adjustment->page_size);
           gtk_adjustment_clamp_page (adjustment, value, offset + page_size);
+        }
+      else
+        {
+          adjustment->lower = page_size - MAX (0, page_start);
+          adjustment->upper = page_size;
+
+          offset = -offset;
+
+          value = MAX (offset, adjustment->lower);
+          gtk_adjustment_clamp_page (adjustment, offset, value + page_size);
         }
 
       gtk_adjustment_changed (adjustment);
@@ -863,12 +932,26 @@ egg_tool_palette_class_init (EggToolPaletteClass *cls)
   dnd_target_atom_group = gdk_atom_intern_static_string (dnd_targets[1].target);
 }
 
+/**
+ * egg_tool_palette_new:
+ *
+ * Creates a new tool palette.
+ *
+ * Returns: a new #EggToolPalette.
+ */
 GtkWidget*
 egg_tool_palette_new (void)
 {
   return g_object_new (EGG_TYPE_TOOL_PALETTE, NULL);
 }
 
+/**
+ * egg_tool_palette_set_icon_size:
+ * @palette: an #EggToolPalette.
+ * @icon_size: the #GtkIconSize that icons in the tool palette shall have.
+ *
+ * Sets the size of icons in the tool palette.
+ */
 void
 egg_tool_palette_set_icon_size (EggToolPalette *palette,
                                 GtkIconSize     icon_size)
@@ -879,6 +962,13 @@ egg_tool_palette_set_icon_size (EggToolPalette *palette,
     g_object_set (palette, "icon-size", icon_size, NULL);
 }
 
+/**
+ * egg_tool_palette_set_orientation:
+ * @palette: an #EggToolPalette.
+ * @orientation: the #GtkOrientation that the tool palette shall have.
+ *
+ * Sets the orientation (horizontal or vertical) of the tool palette.
+ */
 void
 egg_tool_palette_set_orientation (EggToolPalette *palette,
                                   GtkOrientation  orientation)
@@ -889,6 +979,13 @@ egg_tool_palette_set_orientation (EggToolPalette *palette,
     g_object_set (palette, "orientation", orientation, NULL);
 }
 
+/**
+ * egg_tool_palette_set_style:
+ * @palette: an #EggToolPalette.
+ * @style: the #GtkToolbarStyle that items in the tool palette shall have.
+ *
+ * Sets the style (text, icons or both) of items in the tool palette.
+ */
 void
 egg_tool_palette_set_style (EggToolPalette  *palette,
                             GtkToolbarStyle  style)
@@ -899,6 +996,14 @@ egg_tool_palette_set_style (EggToolPalette  *palette,
     g_object_set (palette, "style", style, NULL);
 }
 
+/**
+ * egg_tool_palette_get_icon_size:
+ * @palette: an #EggToolPalette.
+ *
+ * Gets the size of icons in the tool palette. See egg_tool_palette_set_icon_size().
+ * 
+ * Returns: the #GtkIconSize of icons in the tool palette.
+ */
 GtkIconSize
 egg_tool_palette_get_icon_size (EggToolPalette *palette)
 {
@@ -906,6 +1011,14 @@ egg_tool_palette_get_icon_size (EggToolPalette *palette)
   return palette->priv->icon_size;
 }
 
+/**
+ * egg_tool_palette_get_orientation:
+ * @palette: an #EggToolPalette.
+ *
+ * Gets the orientation (horizontal or vertical) of the tool palette. See egg_tool_palette_set_orientation().
+ *
+ * Returns the #GtkOrientation of the tool palette.
+ */
 GtkOrientation
 egg_tool_palette_get_orientation (EggToolPalette *palette)
 {
@@ -913,6 +1026,14 @@ egg_tool_palette_get_orientation (EggToolPalette *palette)
   return palette->priv->orientation;
 }
 
+/**
+ * egg_tool_palette_get_style:
+ * @palette: an #EggToolPalette.
+ *
+ * Gets the style (icons, text or both) of items in the tool palette.
+ *
+ * Returns: the #GtkToolbarStyle of items in the tool palette.
+ */
 GtkToolbarStyle
 egg_tool_palette_get_style (EggToolPalette *palette)
 {
@@ -920,6 +1041,16 @@ egg_tool_palette_get_style (EggToolPalette *palette)
   return palette->priv->style;
 }
 
+/**
+ * egg_tool_palette_set_group_position:
+ * @palette: an #EggToolPalette.
+ * @group: an #EggToolItemGroup which is a child of palette.
+ * @position: a new index for group.
+ *
+ * Sets the position of the group as an index of the tool palette.
+ * If position is 0 the group will become the first child, if position is
+ * -1 it will become the last child.
+ */
 void
 egg_tool_palette_set_group_position (EggToolPalette *palette,
                                      GtkWidget      *group,
@@ -989,6 +1120,15 @@ egg_tool_palette_group_notify_collapsed (EggToolItemGroup *group,
     }
 }
 
+/**
+ * egg_tool_palette_set_exclusive:
+ * @palette: an #EggToolPalette.
+ * @group: an #EggToolItemGroup which is a child of palette.
+ * @exclusive: whether the group should be exclusive or not.
+ *
+ * Sets whether the group should be exclusive or not. If an exclusive group is expanded
+ * all other groups are collapsed.
+ */
 void
 egg_tool_palette_set_exclusive (EggToolPalette *palette,
                                 GtkWidget      *group,
@@ -1030,10 +1170,18 @@ egg_tool_palette_set_exclusive (EggToolPalette *palette,
   gtk_widget_child_notify (group, "exclusive");
 }
 
+/**
+ * egg_tool_palette_set_expand:
+ * @palette: an #EggToolPalette.
+ * @group: an #EggToolItemGroup which is a child of palette.
+ * @expand: whether the group should be given extra space.
+ *
+ * Sets whether the group should be given extra space.
+ */
 void
 egg_tool_palette_set_expand (EggToolPalette *palette,
                              GtkWidget      *group,
-                             gboolean        expand G_GNUC_UNUSED)
+                             gboolean        expand)
 {
   EggToolItemGroupInfo *group_info;
   gint position;
@@ -1054,6 +1202,15 @@ egg_tool_palette_set_expand (EggToolPalette *palette,
     }
 }
 
+/**
+ * egg_tool_palette_get_group_position:
+ * @palette: an #EggToolPalette.
+ * @group: an #EggToolItemGroup.
+ *
+ * Gets the position of @group in @palette as index. see egg_tool_palette_set_group_position().
+ *
+ * Returns: the index of group or -1 if @group is not a child of @palette.
+ */
 gint
 egg_tool_palette_get_group_position (EggToolPalette *palette,
                                      GtkWidget      *group)
@@ -1070,9 +1227,18 @@ egg_tool_palette_get_group_position (EggToolPalette *palette,
   return -1;
 }
 
+/**
+ * egg_tool_palette_get_exclusive:
+ * @palette: an #EggToolPalette.
+ * @group: an #EggToolItemGroup which is a child of palette.
+ *
+ * Gets whether group is exclusive or not. See egg_tool_palette_set_exclusive().
+ *
+ * Returns: %TRUE if group is exclusive.
+ */
 gboolean
-egg_tool_palette_get_exclusive (EggToolPalette *palette G_GNUC_UNUSED,
-                                GtkWidget      *group G_GNUC_UNUSED)
+egg_tool_palette_get_exclusive (EggToolPalette *palette,
+                                GtkWidget      *group)
 {
   gint position;
 
@@ -1085,6 +1251,15 @@ egg_tool_palette_get_exclusive (EggToolPalette *palette G_GNUC_UNUSED,
   return palette->priv->groups[position].exclusive;
 }
 
+/**
+ * egg_tool_palette_get_expand:
+ * @palette: an #EggToolPalette.
+ * @group: an #EggToolItemGroup which is a child of palette.
+ *
+ * Gets whether group should be given extra space. See egg_tool_palette_set_expand().
+ *
+ * Returns: %TRUE if group should be given extra space, %FALSE otherwise.
+ */
 gboolean
 egg_tool_palette_get_expand (EggToolPalette *palette,
                              GtkWidget      *group)
@@ -1100,6 +1275,16 @@ egg_tool_palette_get_expand (EggToolPalette *palette,
   return palette->priv->groups[position].expand;
 }
 
+/**
+ * egg_tool_palette_get_drop_item:
+ * @palette: an #EggToolPalette.
+ * @x: the x position.
+ * @y: the y position.
+ *
+ * Gets the item at position (x, y). See egg_tool_palette_get_drop_group().
+ *
+ * Returns: the #GtkToolItem at position or %NULL if there is no such item.
+ */
 GtkToolItem*
 egg_tool_palette_get_drop_item (EggToolPalette *palette,
                                 gint            x,
@@ -1115,6 +1300,16 @@ egg_tool_palette_get_drop_item (EggToolPalette *palette,
   return NULL;
 }
 
+/**
+ * egg_tool_palette_get_drop_group:
+ * @palette: an #EggToolPalette.
+ * @x: the x position.
+ * @y: the y position.
+ *
+ * Gets the group at position (x, y).
+ *
+ * Returns: the #EggToolItemGroup at position or %NULL if there is no such group.
+ */
 GtkWidget*
 egg_tool_palette_get_drop_group (EggToolPalette *palette,
                                  gint            x,
@@ -1152,6 +1347,16 @@ egg_tool_palette_get_drop_group (EggToolPalette *palette,
   return NULL;
 }
 
+/**
+ * egg_tool_palette_get_drag_item:
+ * @palette: an #EggToolPalette.
+ * @selection: a #GtkSelectionData.
+ *
+ * Get the dragged item from the selection. This could be a #GtkToolItem or 
+ * an #EggToolItemGroup.
+ *
+ * Returns: the dragged item in selection.
+ */
 GtkWidget*
 egg_tool_palette_get_drag_item (EggToolPalette         *palette,
                                 const GtkSelectionData *selection)
@@ -1179,17 +1384,30 @@ egg_tool_palette_get_drag_item (EggToolPalette         *palette,
   return data->item;
 }
 
+/**
+ * egg_tool_palette_set_drag_source:
+ * @palette: an #EggToolPalette.
+ * @targets: the #EggToolPaletteDragTargets which the widget should support.
+ *
+ * Sets the tool palette as a drag source. Enables all groups and items in
+ * the tool palette as drag sources on button 1 and button 3 press with copy
+ * and move actions.
+ *
+ * See gtk_drag_source_set().
+ *
+ */
 void
-egg_tool_palette_set_drag_source (EggToolPalette *palette)
+egg_tool_palette_set_drag_source (EggToolPalette            *palette,
+                                  EggToolPaletteDragTargets  targets)
 {
   guint i;
 
   g_return_if_fail (EGG_IS_TOOL_PALETTE (palette));
 
-  if (palette->priv->drag_source)
+  if ((palette->priv->drag_source & targets) == targets)
     return;
 
-  palette->priv->drag_source = TRUE;
+  palette->priv->drag_source |= targets;
 
   for (i = 0; i < palette->priv->groups_length; ++i)
     {
@@ -1200,6 +1418,23 @@ egg_tool_palette_set_drag_source (EggToolPalette *palette)
     }
 }
 
+/**
+ * egg_tool_palette_add_drag_dest:
+ * @palette: an #EggToolPalette.
+ * @widget: a #GtkWidget which should be a drag destination for palette.
+ * @flags: the flags that specify what actions GTK+ should take for drops on that widget.
+ * @targets: the #EggToolPaletteDragTargets which the widget should support.
+ * @actions: the #GdkDragAction<!-- -->s which the widget should suppport.
+ *
+ * Sets the tool palette as drag source (see egg_tool_palette_set_drag_source) and
+ * sets widget as a drag destination for drags from palette. With flags the actions
+ * (like highlighting and target checking) which should be performed by GTK+ for
+ * drops on widget can be specified. With targets the supported drag targets 
+ * (groups and/or items) can be specified. With actions the supported drag actions
+ * (copy and move) can be specified.
+ *
+ * See gtk_drag_dest_set().
+ */
 void
 egg_tool_palette_add_drag_dest (EggToolPalette            *palette,
                                 GtkWidget                 *widget,
@@ -1213,7 +1448,8 @@ egg_tool_palette_add_drag_dest (EggToolPalette            *palette,
   g_return_if_fail (EGG_IS_TOOL_PALETTE (palette));
   g_return_if_fail (GTK_IS_WIDGET (widget));
 
-  egg_tool_palette_set_drag_source (palette);
+  egg_tool_palette_set_drag_source (palette,
+                                    targets);
 
   if (targets & EGG_TOOL_PALETTE_DRAG_ITEMS)
     entries[n_entries++] = dnd_targets[0];
@@ -1225,27 +1461,41 @@ egg_tool_palette_add_drag_dest (EggToolPalette            *palette,
 
 void
 _egg_tool_palette_get_item_size (EggToolPalette *palette,
-                                 GtkRequisition *item_size)
+                                 GtkRequisition *item_size,
+                                 gboolean        homogeneous_only,
+                                 gint           *requested_rows)
 {
+  GtkRequisition max_requisition;
+  gint max_rows;
+  guint i;
+
   g_return_if_fail (EGG_IS_TOOL_PALETTE (palette));
   g_return_if_fail (NULL != item_size);
 
-  *item_size = palette->priv->item_size;
-}
+  max_requisition.width = 0;
+  max_requisition.height = 0;
+  max_rows = 0;
 
-static GtkWidget*
-egg_tool_palette_find_anchestor (GtkWidget *widget,
-                                 GType      type)
-{
-  while (widget)
+  /* iterate over all groups and calculate the max item_size and max row request */
+  for (i = 0; i < palette->priv->groups_length; ++i)
     {
-      if (G_TYPE_CHECK_INSTANCE_TYPE (widget, type))
-        return widget;
+      GtkRequisition requisition;
+      gint rows;
+      EggToolItemGroupInfo *group = &palette->priv->groups[i];
 
-      widget = gtk_widget_get_parent (widget);
+      if (!group->widget)
+        continue;
+
+      _egg_tool_item_group_item_size_request (group->widget, &requisition, homogeneous_only, &rows);
+
+      max_requisition.width = MAX (max_requisition.width, requisition.width);
+      max_requisition.height = MAX (max_requisition.height, requisition.height);
+      max_rows = MAX (max_rows, rows);
     }
 
-  return NULL;
+  *item_size = max_requisition;
+  if (requested_rows)
+    *requested_rows = max_rows;
 }
 
 static void
@@ -1259,7 +1509,7 @@ egg_tool_palette_item_drag_data_get (GtkWidget        *widget,
   EggToolPaletteDragData drag_data = { EGG_TOOL_PALETTE (data), NULL };
 
   if (selection->target == dnd_target_atom_item)
-    drag_data.item = egg_tool_palette_find_anchestor (widget, GTK_TYPE_TOOL_ITEM);
+    drag_data.item = gtk_widget_get_ancestor (widget, GTK_TYPE_TOOL_ITEM);
 
   if (drag_data.item)
     gtk_selection_data_set (selection, selection->target, 8,
@@ -1277,7 +1527,7 @@ egg_tool_palette_child_drag_data_get (GtkWidget        *widget,
   EggToolPaletteDragData drag_data = { EGG_TOOL_PALETTE (data), NULL };
 
   if (selection->target == dnd_target_atom_group)
-    drag_data.item = egg_tool_palette_find_anchestor (widget, EGG_TYPE_TOOL_ITEM_GROUP);
+    drag_data.item = gtk_widget_get_ancestor (widget, EGG_TYPE_TOOL_ITEM_GROUP);
 
   if (drag_data.item)
     gtk_selection_data_set (selection, selection->target, 8,
@@ -1296,12 +1546,14 @@ _egg_tool_palette_child_set_drag_source (GtkWidget *child,
   if (!palette->priv->drag_source)
     return;
 
-  if (GTK_IS_TOOL_ITEM (child))
+  if (GTK_IS_TOOL_ITEM (child) &&
+      (palette->priv->drag_source & EGG_TOOL_PALETTE_DRAG_ITEMS))
     {
       /* Connect to child instead of the item itself,
        * to work arround bug 510377.
        */
-      child = gtk_bin_get_child (GTK_BIN (child));
+      if (GTK_IS_TOOL_BUTTON (child))
+        child = gtk_bin_get_child (GTK_BIN (child));
 
       if (!child)
         return;
@@ -1313,7 +1565,8 @@ _egg_tool_palette_child_set_drag_source (GtkWidget *child,
                         G_CALLBACK (egg_tool_palette_item_drag_data_get),
                         palette);
     }
-  else if (GTK_IS_BUTTON (child))
+  else if (GTK_IS_BUTTON (child) && 
+           (palette->priv->drag_source & EGG_TOOL_PALETTE_DRAG_GROUPS))
     {
       gtk_drag_source_set (child, GDK_BUTTON1_MASK | GDK_BUTTON3_MASK,
                            &dnd_targets[1], 1, GDK_ACTION_COPY | GDK_ACTION_MOVE);
@@ -1324,12 +1577,26 @@ _egg_tool_palette_child_set_drag_source (GtkWidget *child,
     }
 }
 
+/**
+ * egg_tool_palette_get_drag_target_item:
+ *
+ * Get the target entry for a dragged #GtkToolItem.
+ *
+ * Returns: the #GtkTargetEntry for a dragged item.
+ */
 G_CONST_RETURN GtkTargetEntry*
 egg_tool_palette_get_drag_target_item (void)
 {
   return &dnd_targets[0];
 }
 
+/**
+ * egg_tool_palette_get_drag_target_group:
+ *
+ * Get the target entry for a dragged #EggToolItemGroup.
+ *
+ * Returns: the #GtkTargetEntry for a dragged group.
+ */
 G_CONST_RETURN GtkTargetEntry*
 egg_tool_palette_get_drag_target_group (void)
 {
@@ -1337,15 +1604,29 @@ egg_tool_palette_get_drag_target_group (void)
 }
 
 void
-_egg_tool_palette_set_expanding_child (EggToolPalette   *palette,
-                                       GtkWidget        *widget)
+_egg_tool_palette_set_expanding_child (EggToolPalette *palette,
+                                       GtkWidget      *widget)
 {
   g_return_if_fail (EGG_IS_TOOL_PALETTE (palette));
-
   palette->priv->expanding_child = widget;
 }
 
+GtkAdjustment*
+egg_tool_palette_get_hadjustment (EggToolPalette *palette)
+{
+  g_return_val_if_fail (EGG_IS_TOOL_PALETTE (palette), NULL);
+  return palette->priv->hadjustment;
+}
+
+GtkAdjustment*
+egg_tool_palette_get_vadjustment (EggToolPalette *palette)
+{
+  g_return_val_if_fail (EGG_IS_TOOL_PALETTE (palette), NULL);
+  return palette->priv->vadjustment;
+}
+
 #ifdef HAVE_EXTENDED_TOOL_SHELL_SUPPORT_BUG_535090
+
 GtkSizeGroup *
 _egg_tool_palette_get_size_group (EggToolPalette *palette)
 {
@@ -1353,4 +1634,5 @@ _egg_tool_palette_get_size_group (EggToolPalette *palette)
 
   return palette->priv->text_size_group;
 }
+
 #endif

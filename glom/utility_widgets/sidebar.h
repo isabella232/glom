@@ -37,8 +37,8 @@ public:
   SideBar();
   ~SideBar();
     
-  void add_group (EggToolItemGroup* group);
-	void remove_group (EggToolItemGroup* group);
+  void add_group(EggToolItemGroup* group);
+  void remove_group(EggToolItemGroup* group);
   
   void set_drag_source();
 

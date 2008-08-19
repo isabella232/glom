@@ -1,3 +1,16 @@
+2008-08-19  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/egg/toolpalette/eggtoolitemgroup.c:
+	* glom/utility_widgets/egg/toolpalette/eggtoolitemgroup.h:
+	* glom/utility_widgets/egg/toolpalette/eggtoolpalette.c:
+	* glom/utility_widgets/egg/toolpalette/eggtoolpalette.h:
+	* glom/utility_widgets/egg/toolpalette/eggtoolpaletteprivate.h:
+	* glom/utility_widgets/egg/toolpalette/testtoolpalette.c: Updated from libegg.
+	* glom/utility_widgets/sidebar.cc:
+	* glom/utility_widgets/sidebar.h: Fixed the whitespace.
+	set_drag_source(): Added the extra parameter for the call to 
+	egg_tool_palette_set_drag_source().
+
 2008-08-15  Armin Burgmeier  <armin@openismus.com>
 
 	* win32/build_installer:

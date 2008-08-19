@@ -39,6 +39,13 @@ typedef struct _EggToolPalette           EggToolPalette;
 typedef struct _EggToolPaletteClass      EggToolPaletteClass;
 typedef struct _EggToolPalettePrivate    EggToolPalettePrivate;
 
+/**
+ * EggToolPaletteDragTargets:
+ * @EGG_TOOL_PALETTE_DRAG_ITEMS: Support drag of items.
+ * @EGG_TOOL_PALETTE_DRAG_GROUPS: Support drag of groups.
+ *
+ * Flags used to specify the supported drag targets. 
+ */
 typedef enum /*< flags >*/
 {
   EGG_TOOL_PALETTE_DRAG_ITEMS = (1 << 0),
@@ -46,6 +53,11 @@ typedef enum /*< flags >*/
 }
 EggToolPaletteDragTargets;
 
+/**
+ * EggToolPalette:
+ *
+ * This should not be accessed directly. Use the accessor functions below.
+ */
 struct _EggToolPalette
 {
   GtkContainer parent_instance;
@@ -101,12 +113,16 @@ GtkWidget*                     egg_tool_palette_get_drop_group        (EggToolPa
 GtkWidget*                     egg_tool_palette_get_drag_item         (EggToolPalette            *palette,
                                                                        const GtkSelectionData    *selection);
 
-void                           egg_tool_palette_set_drag_source       (EggToolPalette            *palette);
+void                           egg_tool_palette_set_drag_source       (EggToolPalette            *palette,
+                                                                       EggToolPaletteDragTargets  targets);
 void                           egg_tool_palette_add_drag_dest         (EggToolPalette            *palette,
                                                                        GtkWidget                 *widget,
                                                                        GtkDestDefaults            flags,
                                                                        EggToolPaletteDragTargets  targets,
                                                                        GdkDragAction              actions);
+
+GtkAdjustment*                 egg_tool_palette_get_hadjustment       (EggToolPalette            *palette);
+GtkAdjustment*                 egg_tool_palette_get_vadjustment       (EggToolPalette            *palette);
 
 G_CONST_RETURN GtkTargetEntry* egg_tool_palette_get_drag_target_item  (void) G_GNUC_CONST;
 G_CONST_RETURN GtkTargetEntry* egg_tool_palette_get_drag_target_group (void) G_GNUC_CONST;
