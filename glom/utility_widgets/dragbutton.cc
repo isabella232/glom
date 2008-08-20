@@ -23,7 +23,8 @@
 namespace Glom
 {
   
-DragButton::DragButton(Gtk::Image& image, LayoutWidgetBase::enumType type) :
+DragButton::DragButton(Gtk::Image& image, LayoutWidgetBase::enumType type,
+                       Glib::ustring tooltip):
 	Gtk::ToolButton(image)
 {
   m_type = type;
@@ -32,6 +33,7 @@ DragButton::DragButton(Gtk::Image& image, LayoutWidgetBase::enumType type) :
   targetentries.push_back(Gtk::TargetEntry(get_target()));
   drag_source_set(targetentries, Gdk::MODIFIER_MASK, 
                   Gdk::ACTION_COPY | Gdk::ACTION_MOVE);
+  set_tooltip_text (tooltip);
 }
 
 DragButton::~DragButton()

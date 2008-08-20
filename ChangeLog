@@ -1,3 +1,10 @@
+2008-08-20  Johannes Schmid  <jhs@idefix>
+
+	* glom/utility_widgets/dragbar.cc:
+	* glom/utility_widgets/dragbutton.cc:
+	* glom/utility_widgets/dragbutton.h:
+	Added tooltips to toolitems
+
 2008-08-19  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/egg/toolpalette/eggtoolitemgroup.c:

@@ -33,7 +33,8 @@ namespace Glom
 class DragButton : public Gtk::ToolButton
 {
   public:
-    DragButton(Gtk::Image& image, LayoutWidgetBase::enumType type);  
+    DragButton(Gtk::Image& image, LayoutWidgetBase::enumType type,
+							 Glib::ustring tooltip);  
     ~DragButton();
 
   
