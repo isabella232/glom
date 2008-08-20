@@ -1,3 +1,19 @@
+2008-08-20  Johannes Schmid <jhs@gnome.org>
+
+	* glom/utility_widgets/dragbar.cc:
+	* glom/utility_widgets/dragbutton.cc:
+	* glom/utility_widgets/dragbutton.h:
+	Added labels to the toolitems
+	
+	* glom/utility_widgets/egg/toolpalette/eggtoolpalette.c
+	(egg_tool_palette_set_style):
+	Fixed a bug in eggtoolpalette ("toolbar-style" vs. "style). Also
+	fixed in libegg trunk.
+	
+	* glom/utility_widgets/sidebar.cc:
+	Use GTK_TOOLBAR_BOTH_HORIZ as toolbar style. (Does only work with 
+	gtk+ >= 2.14)
+
 2008-08-20  Johannes Schmid  <jhs@idefix>
 
 	* glom/utility_widgets/dragbar.cc:

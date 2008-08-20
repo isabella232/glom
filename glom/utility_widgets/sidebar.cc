@@ -31,10 +31,12 @@ SideBar::SideBar()
   set_snap_edge(Gtk::POS_TOP);
   
   palette = EGG_TOOL_PALETTE(egg_tool_palette_new());
+  egg_tool_palette_set_style (palette, GTK_TOOLBAR_BOTH_HORIZ);
   Gtk::Container* container = Glib::wrap(GTK_CONTAINER(palette));
   
   add(*container);
-  show_all_children();
+  show_all_children();;
+
 }
 
 SideBar::~SideBar()
