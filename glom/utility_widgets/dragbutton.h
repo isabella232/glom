@@ -1,6 +1,6 @@
 /* Glom
  *
- * Copyright (C) 2007 Johannes Schmid <johannes.schmid@openismus.com>
+ * Copyright (C) 2007, 2008 Openismus GmbH
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -18,35 +18,39 @@
  * Boston, MA 02111-1307, USA.
  */
  
+
+#ifndef GLOM_UTILITY_WIDGETS_DRAGBUTTON_H
+#define GLOM_UTILITY_WIDGETS_DRAGBUTTON_H
+
 #include <gtkmm/button.h>
 #include <gtkmm/image.h>
 #include <string>
 
 #include "layoutwidgetbase.h"
 
-#ifndef DRAGBUTTON_H
-#define DRAGBUTTON_H
-
 namespace Glom
 {
 
 class DragButton : public Gtk::ToolButton
 {
-  public:
-    DragButton(Gtk::Image& image, LayoutWidgetBase::enumType type,
-							 Glib::ustring title, Glib::ustring tooltip);  
-    ~DragButton();
+public:
+  DragButton(Gtk::Image& image, LayoutWidgetBase::enumType type, const Glib::ustring& title, const Glib::ustring& tooltip);  
+  ~DragButton();
 
   
-    static const gchar* get_target() {return "flowtable";};
-  protected:
-		virtual void on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& drag_context);
-    virtual void on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>&, 
-                                  Gtk::SelectionData& selection_data, guint, guint);
+  //TODO: What is this for? murrayc.
+  static const gchar* get_target()
+  {
+    return "flowtable";
+  };
+
+protected:
+    virtual void on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& drag_context);
+    virtual void on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>&, Gtk::SelectionData& selection_data, guint, guint);
   
   private:
     LayoutWidgetBase::enumType m_type;
 };
 
 }
-#endif // DRAGBUTTON_H
+#endif //GLOM_UTILITY_WIDGETS_DRAGBUTTON_H

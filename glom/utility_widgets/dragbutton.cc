@@ -1,6 +1,6 @@
 /* Glom
  *
- * Copyright (C) 2007 Johannes Schmid <johannes.schmid@openismus.com>
+ * Copyright (C) 2007, 2008 Openismus GmbH
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -24,17 +24,19 @@ namespace Glom
 {
   
 DragButton::DragButton(Gtk::Image& image, LayoutWidgetBase::enumType type,
-                       Glib::ustring title, Glib::ustring tooltip):
-	Gtk::ToolButton(image)
+                       const Glib::ustring& title, const Glib::ustring& tooltip)
+: Gtk::ToolButton(image)
 {
   m_type = type;
-	g_object_set_data (G_OBJECT(gobj()), "glom-type", GINT_TO_POINTER(type));
+  g_object_set_data(G_OBJECT(gobj()), "glom-type", GINT_TO_POINTER(type));
+
   std::list<Gtk::TargetEntry> targetentries;
   targetentries.push_back(Gtk::TargetEntry(get_target()));
+
   drag_source_set(targetentries, Gdk::MODIFIER_MASK, 
                   Gdk::ACTION_COPY | Gdk::ACTION_MOVE);
-  set_tooltip_text (tooltip);
-  set_label (title);
+  set_tooltip_text(tooltip);
+  set_label(title);
 }
 
 DragButton::~DragButton()
@@ -50,7 +52,7 @@ void DragButton::on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>&,
 
 void DragButton::on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& drag_context)
 {
-	drag_context->set_icon (dynamic_cast<Gtk::Image*>(get_icon_widget())->get_pixbuf(), 0, 0);
+  drag_context->set_icon(dynamic_cast<Gtk::Image*>(get_icon_widget())->get_pixbuf(), 0, 0);
 }
 
 } // namespace Glom

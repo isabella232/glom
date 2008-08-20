@@ -81,6 +81,7 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_HBox_Sidebar.pack_start (m_Dragbar, Gtk::PACK_SHRINK);
   m_Dragbar.hide();
 #endif
+
   m_HBox_Sidebar.pack_start(m_ScrolledWindow);
   m_ScrolledWindow.add(m_FlowTable);
   // The FlowTable does not support native scrolling, so gtkmm adds it to a
@@ -209,16 +210,13 @@ void Box_Data_Details::create_layout()
       m_FlowTable.add_layout_group(*iter);
     }
   }
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_FlowTable.set_design_mode(m_design_mode);
-  if (m_design_mode)
-  {
+  if(m_design_mode)
     m_Dragbar.show();
-  }
   else
-  {
     m_Dragbar.hide();
-  }
 #endif
 }
 
