@@ -1149,7 +1149,11 @@ int ConnectionPool::discover_first_free_port(int start_port, int end_port)
   const int fd = socket(AF_INET, SOCK_STREAM, 0);
   if(fd == -1)
   {
+#ifdef G_OS_WIN32
+    std::cerr << "Create socket: " << WSAGetLastError() << std::endl;
+#else
     perror("Create socket");
+#endif
     return 0;
   }
 

@@ -1,3 +1,13 @@
+2008-08-22  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/connectionpool.cc (discover_first_free_port): Print
+	WinSock error code in case the socket() call fails, since socket
+	errors are not reported via errno on Windows, so perror does not yield
+	a useful error message.
+
+	* glom/main.cc: Initialize WinSock at startup, so that
+	discover_first_free_port() can use the socket API.
+
 2008-08-22  Johannes Schmid  <johannes.schmid@openismus.com>
 
 	* glom/application.cc:

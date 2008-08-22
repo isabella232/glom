@@ -42,6 +42,11 @@
 
 #ifndef G_OS_WIN32
 #include <fontconfig/fontconfig.h> //For cleanup.
+#else
+#define SAVE_DATADIR DATADIR
+#undef DATADIR
+#include <winsock2.h>
+#define DATADIR SAVE_DATADIR
 #endif
 
 namespace Glom
@@ -95,6 +100,14 @@ main(int argc, char* argv[])
   //Force some cleanup at exit,
   //to help valgrind to detect memory leaks:
   atexit(__libc_freeres);
+#else
+  WSADATA data;
+  int errcode = WSAStartup(MAKEWORD(2, 0), &data);
+  if(errcode != 0)
+  {
+    std::cerr << "Failed to initialize WinSock: " << errcode << std::endl;
+    return -1;
+  }
 #endif
 
   // TODO: I am not sure why, but this does not work. PYTHONPATH is set
@@ -302,6 +315,9 @@ main(int argc, char* argv[])
   //These fail, probably because of previous things that are causing leaks:
   //cairo_debug_reset_static_data(); //This crashes with _cairo_hash_table_destroy: Assertion `hash_table->live_entries == 0' failed.
   //FcFini(); //This crashes with "FcCacheFini: Assertion `fcCacheChains[i] == ((void *)0)' failed."
+#ifdef G_OS_WIN32
+  WSACleanup();
+#endif
 
   return 0;
 }
