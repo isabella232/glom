@@ -19,8 +19,8 @@
  */
  
 
-#ifndef GLOM_UTILITY_WIDGETS_DRAGBUTTON_H
-#define GLOM_UTILITY_WIDGETS_DRAGBUTTON_H
+#ifndef GLOM_UTILITY_WIDGETS_LAYOUTTOOLBARBUTTON_H
+#define GLOM_UTILITY_WIDGETS_LAYOUTTOOLBARBUTTON_H
 
 #include <gtkmm/button.h>
 #include <gtkmm/image.h>
@@ -31,11 +31,11 @@
 namespace Glom
 {
 
-class DragButton : public Gtk::ToolButton
+class LayoutToolbarButton : public Gtk::ToolButton
 {
 public:
-  DragButton(Gtk::Image& image, LayoutWidgetBase::enumType type, const Glib::ustring& title, const Glib::ustring& tooltip);  
-  ~DragButton();
+  LayoutToolbarButton(Gtk::Image& image, LayoutWidgetBase::enumType type, const Glib::ustring& title, const Glib::ustring& tooltip);  
+  ~LayoutToolbarButton();
 
   
   //TODO: What is this for? murrayc.
@@ -54,4 +54,4 @@ protected:
 };
 
 }
-#endif //GLOM_UTILITY_WIDGETS_DRAGBUTTON_H
+#endif //GLOM_UTILITY_WIDGETS_LAYOUTTOOLBARBUTTON_H

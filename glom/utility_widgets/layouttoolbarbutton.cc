@@ -18,13 +18,13 @@
  * Boston, MA 02111-1307, USA.
  */
  
-#include "dragbutton.h"
+#include "layouttoolbarbutton.h"
 
 namespace Glom
 {
   
-DragButton::DragButton(Gtk::Image& image, LayoutWidgetBase::enumType type,
-                       const Glib::ustring& title, const Glib::ustring& tooltip)
+LayoutToolbarButton::LayoutToolbarButton(Gtk::Image& image, LayoutWidgetBase::enumType type,
+                                         const Glib::ustring& title, const Glib::ustring& tooltip)
 : Gtk::ToolButton(image)
 {
   m_type = type;
@@ -39,18 +39,18 @@ DragButton::DragButton(Gtk::Image& image, LayoutWidgetBase::enumType type,
   set_label(title);
 }
 
-DragButton::~DragButton()
+LayoutToolbarButton::~LayoutToolbarButton()
 {
 
 }
 
-void DragButton::on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>&, 
+void LayoutToolbarButton::on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>&, 
                                   Gtk::SelectionData& selection_data, guint, guint)
 {
   selection_data.set(8, (guint8*)(&m_type), 4);
 }
 
-void DragButton::on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& drag_context)
+void LayoutToolbarButton::on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& drag_context)
 {
   drag_context->set_icon(dynamic_cast<Gtk::Image*>(get_icon_widget())->get_pixbuf(), 0, 0);
 }

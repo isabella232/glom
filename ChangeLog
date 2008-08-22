@@ -1,3 +1,19 @@
+2008-08-22  Johannes Schmid  <johannes.schmid@openismus.com>
+
+	* glom/mode_data/box_data_details.h:
+	* glom/utility_widgets/Makefile.am:
+	* glom/utility_widgets/dragbar.cc (renamed):
+	* glom/utility_widgets/dragbar.h (renamed):
+	* glom/utility_widgets/dragbutton.cc (renamed):
+	* glom/utility_widgets/dragbutton.h (renamed):
+	* glom/utility_widgets/flowtable_dnd.cc:
+	* glom/utility_widgets/layouttoolbar.cc:
+	* glom/utility_widgets/layouttoolbar.h:
+	* glom/utility_widgets/layouttoolbarbutton.cc:
+	* glom/utility_widgets/layouttoolbarbutton.h:
+	Changed names of DragBar to LayoutToolbar and DragButton to 
+	LayouttoolbarButton
+
 2008-08-22  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/connectionpool.cc (discover_first_free_port): Print

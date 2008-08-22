@@ -42,8 +42,8 @@ libutility_widgets_a_SOURCES = alignment_justified.cc alignment_justified.h \
 
 if !GLOM_ENABLE_CLIENT_ONLY
 libutility_widgets_a_SOURCES += filechooserdialog_saveextras.cc filechooserdialog_saveextras.h \
-                                dragbutton.cc dragbutton.h \
-                                dragbar.cc dragbar.h \
+                                layouttoolbarbutton.cc layouttoolbarbutton.h \
+                                layouttoolbar.cc layouttoolbar.h \
                                 sidebar.h sidebar.cc \
                                 flowtable_dnd.h  flowtable_dnd.cc \
                                 notebooklabelglom.h notebooklabelglom.cc

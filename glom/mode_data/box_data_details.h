@@ -28,7 +28,7 @@
 #include "flowtablewithfields.h"
 #include "../utility_widgets/placeholder.h"
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-#include "../utility_widgets/dragbar.h"
+#include "../utility_widgets/layouttoolbar.h"
 #endif
 
 namespace Glom
@@ -133,7 +133,7 @@ protected:
   Gtk::Button m_Button_New;
   Gtk::Button m_Button_Del;
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  DragBar m_Dragbar;
+  LayoutToolbar m_Dragbar;
 #endif
 
   /*

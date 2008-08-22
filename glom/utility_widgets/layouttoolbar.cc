@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "dragbar.h"
-#include "dragbutton.h"
+#include "layouttoolbar.h"
+#include "layouttoolbarbutton.h"
 #include <gtkmm/stock.h>
 #include <glibmm/i18n.h>
 #include "config.h"
@@ -30,7 +30,7 @@
 namespace Glom
 {
 
-DragBar::DragBar()
+LayoutToolbar::LayoutToolbar()
 {
   // Looks ugly otherwise:
   set_size_request(100, 200);
@@ -50,19 +50,25 @@ DragBar::DragBar()
     Gtk::manage (new Gtk::Image(GLOM_ICON_DIR "/glom-notebook.png"));
   
 	
-  DragButton* drag_group = Gtk::manage(new DragButton(*image_group, LayoutWidgetBase::TYPE_GROUP,
-                                       _("Group"), _("Drag to document to add a new group")));
-  DragButton* drag_notebook = Gtk::manage(new DragButton(*image_notebook, LayoutWidgetBase::TYPE_NOTEBOOK,
-                                          _("Notebook"), _("Drag to document to add a new notebook")));  
-
-  DragButton* drag_item = Gtk::manage(new DragButton(*image_item, LayoutWidgetBase::TYPE_FIELD,
-                                      _("Database field"), _("Drag to document to add a new database field")));
-  DragButton* drag_button = Gtk::manage(new DragButton(*image_button, LayoutWidgetBase::TYPE_BUTTON,
+  LayoutToolbarButton* drag_group = 
+    Gtk::manage(new LayoutToolbarButton(*image_group, LayoutWidgetBase::TYPE_GROUP,
+                                        _("Group"), _("Drag to document to add a new group")));
+  LayoutToolbarButton* drag_notebook = 
+    Gtk::manage(new LayoutToolbarButton(*image_notebook, LayoutWidgetBase::TYPE_NOTEBOOK,
+                                        _("Notebook"), _("Drag to document to add a new notebook")));  
+  
+  LayoutToolbarButton* drag_item = 
+    Gtk::manage(new LayoutToolbarButton(*image_item, LayoutWidgetBase::TYPE_FIELD,
+                                        _("Database field"), _("Drag to document to add a new database field")));
+  LayoutToolbarButton* drag_button = 
+    Gtk::manage(new LayoutToolbarButton(*image_button, LayoutWidgetBase::TYPE_BUTTON,
                                         _("Button"), _("Drag to document to cadd a new button")));
-  DragButton* drag_text = Gtk::manage(new DragButton(*image_text, LayoutWidgetBase::TYPE_TEXT,
-                                      _("Group"), _("Drag to document to add a new text box")));  
-  DragButton* drag_image = Gtk::manage(new DragButton(*image_image, LayoutWidgetBase::TYPE_IMAGE,
-                                       _("Image"), _("Drag to document to add a new image")));
+  LayoutToolbarButton* drag_text = 
+    Gtk::manage(new LayoutToolbarButton(*image_text, LayoutWidgetBase::TYPE_TEXT,
+                                        _("Group"), _("Drag to document to add a new text box")));  
+  LayoutToolbarButton* drag_image = 
+    Gtk::manage(new LayoutToolbarButton(*image_image, LayoutWidgetBase::TYPE_IMAGE,
+                                        _("Image"), _("Drag to document to add a new image")));
   
   //Note for translators: These are container layout items, containing child layout items, like container widgets in GTK+.
   GtkContainer* container_group = GTK_CONTAINER(egg_tool_item_group_new(_("Containers")));
@@ -84,7 +90,7 @@ DragBar::DragBar()
   show_all_children();
 }
 
-DragBar::~DragBar()
+LayoutToolbar::~LayoutToolbar()
 {
   
 }

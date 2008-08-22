@@ -22,7 +22,7 @@
 #include "../mode_data/flowtablewithfields.h"
 #include "egg/toolpalette/eggtoolpalette.h"
 #include "placeholder-glom.h"
-#include "dragbutton.h"
+#include "layouttoolbarbutton.h"
 #include "entryglom.h"
 #include "labelglom.h"
 #include "buttonglom.h"

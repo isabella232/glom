@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_UTILITY_WIDGETS_DRAGBAR_H
-#define GLOM_UTILITY_WIDGETS_DRAGBAR_H
+#ifndef GLOM_UTILITY_WIDGETS_LAYOUTTOOLBAR_H
+#define GLOM_UTILITY_WIDGETS_LAYOUTTOOLBAR_H
 
 #include <gtkmm/window.h>
 #include <gtkmm/handlebox.h>
@@ -30,14 +30,14 @@
 namespace Glom
 {
 
-class DragBar : public SideBar
+class LayoutToolbar : public SideBar
 {
 public:
-  DragBar();
-   ~DragBar();
+  LayoutToolbar();
+   ~LayoutToolbar();
 
 };
 
 } //namespace Glom
 
-#endif // GLOM_UTILITY_WIDGETS_DRAGBAR_H
+#endif // GLOM_UTILITY_WIDGETS_LAYOUTTOOLBAR_H
