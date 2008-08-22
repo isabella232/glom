@@ -37,7 +37,6 @@
 #include "mode_design/print_layouts/box_print_layouts.h"
 #include "mode_design/dialog_fields.h"
 #include "mode_design/dialog_relationships.h"
-#include "utility_widgets/dragbar.h"
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #include "dialog_connection.h"
@@ -157,6 +156,7 @@ public:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   ///Create the database for new documents, showing the Connection dialog
   bool create_database(const Glib::ustring& database_name, const Glib::ustring& title);
+  void show_layout_toolbar (bool show = true);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   void export_data_to_string(Glib::ustring& the_string, const FoundSet& found_set, const Document_Glom::type_list_layout_groups& sequence);

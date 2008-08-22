@@ -254,6 +254,12 @@ void Notebook_Data::do_menu_developer_layout()
       pBox->show_layout_dialog();
   } 
 }
+
+void Notebook_Data::show_layout_toolbar(bool show)
+{
+  m_Box_Details.show_layout_toolbar(show);
+}
+
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 void Notebook_Data::do_menu_file_print()

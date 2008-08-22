@@ -1,3 +1,18 @@
+2008-08-22  Johannes Schmid  <johannes.schmid@openismus.com>
+
+	* glom/application.cc:
+	* glom/application.h:
+	* glom/frame_glom.cc:
+	* glom/frame_glom.h:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_details.h:
+	* glom/mode_data/notebook_data.cc:
+	* glom/mode_data/notebook_data.h:
+	Added menuitem to hide/show the layout toolbar (default: off)
+
+	* glom/utility_widgets/dragbutton.h:
+	Added a comment
+
 2008-08-20  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/dragbar.cc:

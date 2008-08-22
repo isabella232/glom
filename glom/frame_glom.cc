@@ -728,6 +728,12 @@ void Frame_Glom::on_menu_file_print_edit_layouts()
 {
   on_menu_developer_print_layouts();
 }
+
+void Frame_Glom::show_layout_toolbar (bool show)
+{
+  m_Notebook_Data.show_layout_toolbar(show);
+}
+
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 void Frame_Glom::on_menu_Mode_Data()

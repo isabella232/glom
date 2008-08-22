@@ -213,10 +213,7 @@ void Box_Data_Details::create_layout()
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_FlowTable.set_design_mode(m_design_mode);
-  if(m_design_mode)
-    m_Dragbar.show();
-  else
-    m_Dragbar.hide();
+  m_Dragbar.hide();
 #endif
 }
 
@@ -996,6 +993,15 @@ void Box_Data_Details::prepare_layout_dialog(Dialog_Layout* dialog)
 {
   dialog->set_document(m_layout_name, get_document(), m_table_name, m_FieldsShown); //TODO: Use m_TableFields?
 }
+
+void Box_Data_Details::show_layout_toolbar (bool show)
+{
+  if (show)
+    m_Dragbar.show();
+  else
+    m_Dragbar.hide();
+}
+
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 } //namespace Glom

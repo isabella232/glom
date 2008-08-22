@@ -106,6 +106,7 @@ protected:
   void on_menu_developer_changelanguage();
   void on_menu_developer_translations();
   void on_window_translations_hide();
+  void on_menu_developer_show_layout_toolbar();
 
   virtual Glib::ustring ui_file_select_save(const Glib::ustring& old_file_uri); //overridden.
   void on_userlevel_changed(AppState::userlevels userlevel);

@@ -39,6 +39,7 @@ public:
 
   
   //TODO: What is this for? murrayc.
+  // We need an unique identifier for drag & drop! jhs
   static const gchar* get_target()
   {
     return "flowtable";

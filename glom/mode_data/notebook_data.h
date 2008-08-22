@@ -54,6 +54,7 @@ public:
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void do_menu_developer_layout(); //override
+  void show_layout_toolbar(bool show = true);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   virtual void do_menu_file_print(); //override

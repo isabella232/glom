@@ -484,6 +484,11 @@ void App_Glom::init_menus()
   action = Gtk::Action::create("GlomAction_Menu_Developer_Translations", _("_Translations"));
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &App_Glom::on_menu_developer_translations));
+
+  action = Gtk::ToggleAction::create("GlomAction_Menu_Developer_ShowLayoutToolbar", _("_Show Layout Toolbar"));
+  m_listDeveloperActions.push_back(action);
+  m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &App_Glom::on_menu_developer_show_layout_toolbar));
+
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   m_refUIManager->insert_action_group(m_refActionGroup_Others);
@@ -535,6 +540,8 @@ void App_Glom::init_menus()
     "        <separator />"
     "        <menuitem action='GlomAction_Menu_Developer_Translations' />"
     "        <menuitem action='GlomAction_Menu_Developer_ChangeLanguage' />"
+    "        <separator />"
+    "        <menuitem action='GlomAction_Menu_Developer_ShowLayoutToolbar' />"
     "      </menu>"
 #endif // !GLOM_ENABLE_CLIENT_ONLY
     "    </placeholder>"
@@ -2317,6 +2324,14 @@ void App_Glom::on_menu_developer_translations()
     m_window_translations->load_from_document();
   }
 }
+
+void App_Glom::on_menu_developer_show_layout_toolbar()
+{
+  Glib::RefPtr<Gtk::ToggleAction> action = Glib::RefPtr<Gtk::ToggleAction>::cast_dynamic(
+    m_refActionGroup_Others->get_action ("GlomAction_Menu_Developer_ShowLayoutToolbar"));
+  m_pFrame->show_layout_toolbar (action->get_active());
+}
+
 
 void App_Glom::on_window_translations_hide()
 {
