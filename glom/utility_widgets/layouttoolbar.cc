@@ -27,6 +27,21 @@
 #include "layoutwidgetbase.h"
 #include "egg/toolpalette/eggtoolitemgroup.h"
 
+namespace
+{
+	Glib::ustring get_icon_path(const Glib::ustring& filename)
+	{
+#ifdef G_OS_WIN32
+		gchar* basepath = g_win32_get_package_installation_subdirectory(NULL, NULL, "share/glom/pixmaps");
+		Glib::ustring result = Glib::build_filename(basepath, filename);
+		g_free(basepath);
+		return result;
+#else
+		return Glib::build_filename(GLOM_ICON_DIR, filename);
+#endif
+	}
+}
+
 namespace Glom
 {
 
@@ -36,19 +51,18 @@ LayoutToolbar::LayoutToolbar()
   set_size_request(100, 200);
 	
   Gtk::Image* image_item = 
-    Gtk::manage (new Gtk::Image(GLOM_ICON_DIR "/glom-field.png"));
+    Gtk::manage (new Gtk::Image(get_icon_path("glom-field.png")));
   Gtk::Image* image_button = 
-    Gtk::manage (new Gtk::Image(GLOM_ICON_DIR "/glom-button.png"));
+    Gtk::manage (new Gtk::Image(get_icon_path("glom-button.png")));
   Gtk::Image* image_text = 
-    Gtk::manage (new Gtk::Image(GLOM_ICON_DIR "/glom-text.png"));
+    Gtk::manage (new Gtk::Image(get_icon_path("glom-text.png")));
   Gtk::Image* image_image = 
-    Gtk::manage (new Gtk::Image(GLOM_ICON_DIR "/glom-image.png"));
+    Gtk::manage (new Gtk::Image(get_icon_path("glom-image.png")));
   
   Gtk::Image* image_group = 
-    Gtk::manage (new Gtk::Image(GLOM_ICON_DIR "/glom-group.png"));
+    Gtk::manage (new Gtk::Image(get_icon_path("glom-group.png")));
   Gtk::Image* image_notebook = 
-    Gtk::manage (new Gtk::Image(GLOM_ICON_DIR "/glom-notebook.png"));
-  
+    Gtk::manage (new Gtk::Image(get_icon_path("glom-notebook.png")));  
 	
   LayoutToolbarButton* drag_group = 
     Gtk::manage(new LayoutToolbarButton(*image_group, LayoutWidgetBase::TYPE_GROUP,

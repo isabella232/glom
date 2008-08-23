@@ -158,6 +158,7 @@ Source: "share/pixmaps/glom.png"; DestDir: "{app}/share/pixmaps"; Components: ma
 Source: "share/glom/glade/glom.glade"; DestDir: "{app}/share/glom/glade"; Components: main
 Source: "share/glom/glade/glom_developer.glade"; DestDir: "{app}/share/glom/glade"; Components: main
 Source: "share/glom/doc/*"; Destdir: "{app}/share/glom/doc/"; Components: main; Flags: recursesubdirs
+Source: "share/glom/pixmaps/*"; Destdir: "{app}/share/glom/pixmaps/"; Components: main; Flags: recursesubdirs
 
 ;Source: "share/themes/MS-Windows/*"; DestDir: "{app}/share/themes/MS-Windows"; Flags: recursesubdirs; Components: gtk
 

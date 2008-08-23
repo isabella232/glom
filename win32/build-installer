@@ -252,9 +252,8 @@ mkdir -p installer/share/glom/glade || exit
 cp /local/share/glom/glade/glom.glade installer/share/glom/glade || exit
 cp /local/share/glom/glade/glom_developer.glade installer/share/glom/glade || exit
 cp -R /local/share/glom/doc installer/share/glom/ || exit
+cp -R /local/share/glom/pixmaps installer/share/glom/ || exit
 
-# TODO: /local/share/glom/doc/examples
-# TODO: /local/share/glom/pixmaps (requires correct lookup in glom)
 # TODO: /local/share/glom/xslt/* (what is this used for?)
 
 mkdir -p installer/share/icons/hicolor/48x48/apps || exit
