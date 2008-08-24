@@ -397,6 +397,9 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
 #endif // !GLIBMM_EXCEPTIONS_ENABLED
 #endif // !G_OS_WIN32
 
+  err->set_encoding("");
+  err->set_buffered(false);
+
   sigc::connection stderr_conn = Glib::signal_io().connect(sigc::bind(sigc::ptr_fun(&on_stderr_input), err, sigc::ref(stderr_text)), err, Glib::IO_IN);
 
   sigc::connection watch_conn = Glib::signal_child_watch().connect(sigc::bind(sigc::ptr_fun(&on_child_watch), sigc::ref(child_exited), dialog_temp), child_pid);

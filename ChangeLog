@@ -1,3 +1,12 @@
+2008-08-24  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/spawn_with_feedback.cc
+	(execute_command_line_and_wait_until_second_command_returns_success):
+	Set the encoding of the IO channel to read stderr from the child
+	process from to "", and set it to be unbuffered. Otherwise, we
+	sometimes receive an IO_IN event on Windows, but when trying to read
+	any data, then the read() call blocks the whole process forever.
+
 2008-08-23  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/utility_widgets/layouttoolbar.cc: Locate images relative to
