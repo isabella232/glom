@@ -1,5 +1,11 @@
 2008-08-27  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/base_db.cc offer_field_list(), offer_field_formatting(),
+	offer_imageobject(), offer_notebook(): Return the initial item if the user 
+	cancelled the dialog.
+
+2008-08-27  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_design/print_layouts/print_layout_toolbar_button.cc:
 	* glom/mode_design/print_layouts/print_layout_toolbar_button.h: Added 
 	get_item_type_from_selection_data().

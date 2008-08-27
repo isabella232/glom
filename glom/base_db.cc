@@ -1329,6 +1329,8 @@ sharedptr<LayoutItem_Field> Base_DB::offer_field_list(const sharedptr<const Layo
       //Get the chosen field:
       result = dialog->get_field_chosen();
     }
+    else if(start_field) //Cancel means use the old one:
+      result = glom_sharedptr_clone(start_field);
 
     delete dialog;
   }
@@ -1364,6 +1366,8 @@ sharedptr<LayoutItem_Field> Base_DB::offer_field_formatting(const sharedptr<cons
         //Get the chosen field:
         result = dialog->get_field_chosen();
       }
+      else if(start_field) //Cancel means use the old one:
+        result = glom_sharedptr_clone(start_field);
 
       remove_view(dialog);
       delete dialog;
@@ -1414,7 +1418,7 @@ sharedptr<LayoutItem_Text> Base_DB::offer_textobject(const sharedptr<LayoutItem_
 
 sharedptr<LayoutItem_Image> Base_DB::offer_imageobject(const sharedptr<LayoutItem_Image>& start_imageobject, Gtk::Window* transient_for, bool show_title)
 {
-  sharedptr<LayoutItem_Image> result;
+  sharedptr<LayoutItem_Image> result = start_imageobject;
 
   try
   {
@@ -1449,7 +1453,7 @@ sharedptr<LayoutItem_Image> Base_DB::offer_imageobject(const sharedptr<LayoutIte
 
 sharedptr<LayoutItem_Notebook> Base_DB::offer_notebook(const sharedptr<LayoutItem_Notebook>& start_notebook, Gtk::Window* transient_for)
 {
-  sharedptr<LayoutItem_Notebook> result;
+  sharedptr<LayoutItem_Notebook> result = start_notebook;
 
   try
   {
