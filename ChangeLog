@@ -1,5 +1,15 @@
 2008-08-27  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/layouttoolbarbutton.cc:
+	* glom/utility_widgets/layouttoolbarbutton.h: Change the constructor to 
+	take an icon name, to reduce some code elsewhere.
+	* glom/utility_widgets/layouttoolbar.cc: Adapted.
+	* glom/mode_data/box_data_details.cc:
+	* glom/utility_widgets/flowtable_dnd.cc:
+	* glom/utility_widgets/flowtable_dnd.h: Correct whitespace.
+
+2008-08-27  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/layouttoolbar.cc:
 	  Improve the tooltips text.
 	* glom/utility_widgets/layouttoolbar.h:

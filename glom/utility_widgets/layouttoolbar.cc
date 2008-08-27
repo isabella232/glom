@@ -52,54 +52,40 @@ LayoutToolbar::LayoutToolbar()
   // Looks ugly otherwise:
   set_size_request(100, 200);
 	
-  Gtk::Image* image_item = 
-    Gtk::manage (new Gtk::Image(get_icon_path("glom-field.png")));
-  Gtk::Image* image_button = 
-    Gtk::manage (new Gtk::Image(get_icon_path("glom-button.png")));
-  Gtk::Image* image_text = 
-    Gtk::manage (new Gtk::Image(get_icon_path("glom-text.png")));
-  Gtk::Image* image_image = 
-    Gtk::manage (new Gtk::Image(get_icon_path("glom-image.png")));
-  
-  Gtk::Image* image_group = 
-    Gtk::manage (new Gtk::Image(get_icon_path("glom-group.png")));
-  Gtk::Image* image_notebook = 
-    Gtk::manage (new Gtk::Image(get_icon_path("glom-notebook.png")));  
-	
   LayoutToolbarButton* drag_group = 
-    Gtk::manage(new LayoutToolbarButton(*image_group, LayoutWidgetBase::TYPE_GROUP,
+    Gtk::manage(new LayoutToolbarButton("glom-group.png", LayoutWidgetBase::TYPE_GROUP,
                                         _("Group"), _("Drag this to the layout to add a new group.")));
   LayoutToolbarButton* drag_notebook = 
-    Gtk::manage(new LayoutToolbarButton(*image_notebook, LayoutWidgetBase::TYPE_NOTEBOOK,
+    Gtk::manage(new LayoutToolbarButton("glom-notebook.png", LayoutWidgetBase::TYPE_NOTEBOOK,
                                         _("Notebook"), _("Drag this to the layout to add a new notebook.")));  
   
   LayoutToolbarButton* drag_item = 
-    Gtk::manage(new LayoutToolbarButton(*image_item, LayoutWidgetBase::TYPE_FIELD,
-                                        _("Database field"), _("Drag this to the layout to add a new database field.")));
+    Gtk::manage(new LayoutToolbarButton("glom-field.png", LayoutWidgetBase::TYPE_FIELD,
+                                        _("Database Field"), _("Drag this to the layout to add a new database field.")));
   LayoutToolbarButton* drag_button = 
-    Gtk::manage(new LayoutToolbarButton(*image_button, LayoutWidgetBase::TYPE_BUTTON,
+    Gtk::manage(new LayoutToolbarButton("glom-button.png", LayoutWidgetBase::TYPE_BUTTON,
                                         _("Button"), _("Drag this to the layout to cadd a new button.")));
   LayoutToolbarButton* drag_text = 
-    Gtk::manage(new LayoutToolbarButton(*image_text, LayoutWidgetBase::TYPE_TEXT,
+    Gtk::manage(new LayoutToolbarButton("glom-group.png", LayoutWidgetBase::TYPE_TEXT,
                                         _("Group"), _("Drag this to the layout to add a new static text box.")));  
   LayoutToolbarButton* drag_image = 
-    Gtk::manage(new LayoutToolbarButton(*image_image, LayoutWidgetBase::TYPE_IMAGE,
+    Gtk::manage(new LayoutToolbarButton("glom-image.png", LayoutWidgetBase::TYPE_IMAGE,
                                         _("Image"), _("Drag this to the layout to add a new static image.")));
   
   //Note for translators: These are container layout items, containing child layout items, like container widgets in GTK+.
   GtkContainer* container_group = GTK_CONTAINER(egg_tool_item_group_new(_("Containers")));
-  gtk_container_add (container_group, GTK_WIDGET(drag_group->gobj()));
-  gtk_container_add (container_group, GTK_WIDGET(drag_notebook->gobj()));
+  gtk_container_add(container_group, GTK_WIDGET(drag_group->gobj()));
+  gtk_container_add(container_group, GTK_WIDGET(drag_notebook->gobj()));
 
   //Note for translators: These are layout items, like widgets in GTK+.
   GtkContainer* fields_group = GTK_CONTAINER(egg_tool_item_group_new(_("Items")));
-  gtk_container_add (fields_group, GTK_WIDGET(drag_item->gobj()));
-  gtk_container_add (fields_group, GTK_WIDGET(drag_button->gobj()));  
-  gtk_container_add (fields_group, GTK_WIDGET(drag_text->gobj()));
-  gtk_container_add (fields_group, GTK_WIDGET(drag_image->gobj()));
+  gtk_container_add(fields_group, GTK_WIDGET(drag_item->gobj()));
+  gtk_container_add(fields_group, GTK_WIDGET(drag_button->gobj()));  
+  gtk_container_add(fields_group, GTK_WIDGET(drag_text->gobj()));
+  gtk_container_add(fields_group, GTK_WIDGET(drag_image->gobj()));
   
-  add_group (EGG_TOOL_ITEM_GROUP(container_group));
-  add_group (EGG_TOOL_ITEM_GROUP(fields_group));
+  add_group(EGG_TOOL_ITEM_GROUP(container_group));
+  add_group(EGG_TOOL_ITEM_GROUP(fields_group));
 	
   set_drag_source();
   

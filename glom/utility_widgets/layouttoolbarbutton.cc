@@ -20,12 +20,30 @@
  
 #include "layouttoolbarbutton.h"
 
+namespace
+{
+
+Glib::ustring get_icon_path(const Glib::ustring& filename)
+{
+#ifdef G_OS_WIN32
+  gchar* basepath = g_win32_get_package_installation_subdirectory(NULL, NULL, "share/glom/pixmaps");
+  Glib::ustring result = Glib::build_filename(basepath, filename);
+  g_free(basepath);
+  return result;
+#else
+  return Glib::build_filename(GLOM_ICON_DIR, filename);
+#endif
+}
+
+} //anonymous namespace
+
+
 namespace Glom
 {
-  
-LayoutToolbarButton::LayoutToolbarButton(Gtk::Image& image, LayoutWidgetBase::enumType type,
+
+LayoutToolbarButton::LayoutToolbarButton(const Glib::ustring& icon_name, LayoutWidgetBase::enumType type,
                                          const Glib::ustring& title, const Glib::ustring& tooltip)
-: Gtk::ToolButton(image)
+: Gtk::ToolButton( *(Gtk::manage (new Gtk::Image(get_icon_path(icon_name)))) )
 {
   m_type = type;
   g_object_set_data(G_OBJECT(gobj()), "glom-type", GINT_TO_POINTER(type));

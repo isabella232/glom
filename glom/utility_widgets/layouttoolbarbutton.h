@@ -34,10 +34,11 @@ namespace Glom
 class LayoutToolbarButton : public Gtk::ToolButton
 {
 public:
-  LayoutToolbarButton(Gtk::Image& image, LayoutWidgetBase::enumType type, const Glib::ustring& title, const Glib::ustring& tooltip);  
-  ~LayoutToolbarButton();
+  LayoutToolbarButton(const Glib::ustring& icon_name, LayoutWidgetBase::enumType type, const Glib::ustring& title, const Glib::ustring& tooltip);
+  virtual ~LayoutToolbarButton();
 
-  
+protected:
+
   //TODO: What is this for? murrayc.
   // We need an unique identifier for drag & drop! jhs
   static const gchar* get_target()
@@ -45,12 +46,11 @@ public:
     return "flowtable";
   };
 
-protected:
-    virtual void on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& drag_context);
-    virtual void on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>&, Gtk::SelectionData& selection_data, guint, guint);
+  virtual void on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& drag_context);
+  virtual void on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>&, Gtk::SelectionData& selection_data, guint, guint);
   
-  private:
-    LayoutWidgetBase::enumType m_type;
+private:
+  LayoutWidgetBase::enumType m_type;
 };
 
 }

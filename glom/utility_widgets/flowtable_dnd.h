@@ -44,22 +44,24 @@ protected:
   virtual bool on_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint time);
   virtual void on_drag_leave(const Glib::RefPtr<Gdk::DragContext>& drag_context, guint time);
   virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int, int, const Gtk::SelectionData& selection_data, guint, guint time);
-  virtual bool on_child_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint time, Gtk::Widget* child);
-  virtual void on_child_drag_leave(const Glib::RefPtr<Gdk::DragContext>& drag_context, guint time);
-  virtual void on_child_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int, int, 
+
+  bool on_child_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint time, Gtk::Widget* child);
+  void on_child_drag_leave(const Glib::RefPtr<Gdk::DragContext>& drag_context, guint time);
+  void on_child_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int, int, 
                                            const Gtk::SelectionData& selection_data, guint, guint time, Gtk::Widget* child);  
-  virtual void on_child_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& drag_context, 
+  void on_child_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& drag_context, 
                                            Gtk::SelectionData& selection_data, guint, guint time, Gtk::Widget* child);
-  virtual void on_child_drag_data_delete(const Glib::RefPtr<Gdk::DragContext>& drag_context, Gtk::Widget* child); 
-  virtual void on_child_drag_begin (const Glib::RefPtr<Gdk::DragContext>& drag_context, Gtk::Widget* child);
-  virtual void on_child_drag_end (const Glib::RefPtr<Gdk::DragContext>& drag_context, Gtk::Widget* child);    
+  void on_child_drag_data_delete(const Glib::RefPtr<Gdk::DragContext>& drag_context, Gtk::Widget* child); 
+  void on_child_drag_begin (const Glib::RefPtr<Gdk::DragContext>& drag_context, Gtk::Widget* child);
+  void on_child_drag_end (const Glib::RefPtr<Gdk::DragContext>& drag_context, Gtk::Widget* child);    
     
-  virtual void start_dnd (Gtk::Widget& child);
-  virtual void stop_dnd (Gtk::Widget& child);
+  void start_dnd(Gtk::Widget& child);
+  void stop_dnd(Gtk::Widget& child);
 
   virtual void set_design_mode(bool value = true);
     
-  // Methods for the different layout object
+  // Methods for the different layout object,
+  // to be implemented in the derived class.
   virtual void on_dnd_add_layout_item_field (LayoutWidgetBase* above) = 0;
   virtual void on_dnd_add_layout_group(LayoutWidgetBase* above) = 0;
   virtual void on_dnd_add_layout_item_button (LayoutWidgetBase* above) = 0;

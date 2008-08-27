@@ -78,7 +78,7 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_ScrolledWindow.set_shadow_type(Gtk::SHADOW_NONE); //SHADOW_IN is Recommended by the GNOME HIG, but looks odd.
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_HBox_Sidebar.pack_start (m_Dragbar, Gtk::PACK_SHRINK);
+  m_HBox_Sidebar.pack_start(m_Dragbar, Gtk::PACK_SHRINK);
   m_Dragbar.hide();
 #endif
 
@@ -996,7 +996,7 @@ void Box_Data_Details::prepare_layout_dialog(Dialog_Layout* dialog)
 
 void Box_Data_Details::show_layout_toolbar (bool show)
 {
-  if (show)
+  if(show)
     m_Dragbar.show();
   else
     m_Dragbar.hide();
