@@ -34,7 +34,7 @@ namespace Glom
 class LayoutToolbarButton : public Gtk::ToolButton
 {
 public:
-  LayoutToolbarButton(const Glib::ustring& icon_name, LayoutWidgetBase::enumType type, const Glib::ustring& title, const Glib::ustring& tooltip);
+  LayoutToolbarButton(const std::string& icon_name, LayoutWidgetBase::enumType type, const Glib::ustring& title, const Glib::ustring& tooltip);
   virtual ~LayoutToolbarButton();
 
 protected:
@@ -43,7 +43,7 @@ protected:
   // We need an unique identifier for drag & drop! jhs
   static const gchar* get_target()
   {
-    return "flowtable";
+    return "glom_print_layout_palette";
   };
 
   virtual void on_drag_begin(const Glib::RefPtr<Gdk::DragContext>& drag_context);

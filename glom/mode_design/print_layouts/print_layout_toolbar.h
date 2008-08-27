@@ -25,16 +25,16 @@
 #include <gtkmm/handlebox.h>
 #include <gtkmm/box.h>
 
-#include "sidebar.h"
+#include <glom/utility_widgets/sidebar.h>
 
 namespace Glom
 {
 
-class DragBar : public SideBar
+class PrintLayoutToolbar : public SideBar
 {
 public:
-  DragBar();
-   ~DragBar();
+  PrintLayoutToolbar();
+  virtual ~PrintLayoutToolbar();
 
 };
 

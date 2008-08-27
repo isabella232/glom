@@ -1,5 +1,24 @@
 2008-08-27  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_design/print_layouts/action_layout_item.cc:
+	* glom/mode_design/print_layouts/action_layout_item.h: Removed this.
+	* glom/mode_design/print_layouts/Makefile.am:
+	* glom/mode_design/print_layouts/print_layout_toolbar.cc:
+	* glom/mode_design/print_layouts/print_layout_toolbar.h:
+	* glom/mode_design/print_layouts/print_layout_toolbar_button.cc:
+	* glom/mode_design/print_layouts/print_layout_toolbar_button.h:
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	* glom/mode_design/print_layouts/window_print_layout_edit.h: Use a toolbar like 
+	the details layout toolbar, which use EggToolPallette.
+	* glom/utility_widgets/layouttoolbar.cc:
+	* glom/utility_widgets/layouttoolbarbutton.cc:
+	* glom/utility_widgets/layouttoolbarbutton.h: Use std::string for filenames 
+	and parts of filenames.
+	* icons/16x16/Makefile.am: Added placeholder images for extra items used on 
+	print layouts.
+
+2008-08-27  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/layouttoolbarbutton.cc:
 	* glom/utility_widgets/layouttoolbarbutton.h: Change the constructor to 
 	take an icon name, to reduce some code elsewhere.

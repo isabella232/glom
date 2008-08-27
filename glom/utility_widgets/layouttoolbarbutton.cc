@@ -23,11 +23,11 @@
 namespace
 {
 
-Glib::ustring get_icon_path(const Glib::ustring& filename)
+std::string get_icon_path(const std::string& filename)
 {
 #ifdef G_OS_WIN32
   gchar* basepath = g_win32_get_package_installation_subdirectory(NULL, NULL, "share/glom/pixmaps");
-  Glib::ustring result = Glib::build_filename(basepath, filename);
+  const std::string result = Glib::build_filename(basepath, filename);
   g_free(basepath);
   return result;
 #else
@@ -41,7 +41,7 @@ Glib::ustring get_icon_path(const Glib::ustring& filename)
 namespace Glom
 {
 
-LayoutToolbarButton::LayoutToolbarButton(const Glib::ustring& icon_name, LayoutWidgetBase::enumType type,
+LayoutToolbarButton::LayoutToolbarButton(const std::string& icon_name, LayoutWidgetBase::enumType type,
                                          const Glib::ustring& title, const Glib::ustring& tooltip)
 : Gtk::ToolButton( *(Gtk::manage (new Gtk::Image(get_icon_path(icon_name)))) )
 {

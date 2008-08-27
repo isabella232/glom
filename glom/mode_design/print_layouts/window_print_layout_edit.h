@@ -23,14 +23,15 @@
 
 #include <glom/libglom/data_structure/print_layout.h>
 #include <glom/mode_design/print_layouts/canvas_print_layout.h>
-#include <glom/mode_design/print_layouts/action_layout_item.h>
+#include <glom/mode_design/print_layouts/print_layout_toolbar.h>
+#include <glom/mode_design/print_layouts/print_layout_toolbar_button.h>
 #include <glom/libglom/document/document_glom.h>
 #include <gtkmm/window.h>
 #include <gtkmm/entry.h>
 #include <gtkmm/label.h>
 #include <gtkmm/box.h>
 #include <gtkmm/uimanager.h>
-#include <gtkmm/toggleaction.h>
+//#include <gtkmm/toggleaction.h>
 #include <gtkmm/ruler.h>
 #include <libglademm/xml.h>
 
@@ -55,8 +56,8 @@ protected:
 
   void enable_buttons();
   void init_menu();
-  void init_toolbar();
-  void make_toolbar_items_draggable();
+
+  sharedptr<LayoutItem> create_empty_item(PrintLayoutToolbarButton::enumItems item_type);
 
   void on_menu_file_page_setup();
   void on_menu_insert_field();
@@ -77,11 +78,9 @@ protected:
   void on_scroll_value_changed();
   void on_button_close();
 
-  sharedptr<LayoutItem> create_empty_item(Action_LayoutItem::enumItems item_type);
-
   //void on_toolbar_item_drag_begin(const Glib::RefPtr<Gdk::DragContext>& drag_context);
   //void on_toolbar_item_drag_end(const Glib::RefPtr<Gdk::DragContext>& drag_context);
-  void on_toolbar_item_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& drag_context, Gtk::SelectionData& selection_data, guint info, guint time, const Glib::RefPtr<Gtk::Action>& action);
+  void on_toolbar_item_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& drag_context, Gtk::SelectionData& selection_data, guint info, guint time);
   bool on_canvas_drag_drop(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint timestamp);
   bool on_canvas_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint timestamp);
   void on_canvas_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, const Gtk::SelectionData& selection_data, guint info, guint timestamp);
@@ -132,11 +131,9 @@ protected:
   Glib::RefPtr<Gtk::ToggleAction> m_action_zoom_fit_page_width;
 
   //Toolbar:
-  Gtk::Toolbar* m_toolbar;
-  Glib::RefPtr<Gtk::ActionGroup> m_toolbar_action_group;
-  Glib::RefPtr<Gtk::UIManager> m_toolbar_uimanager;
-  Gtk::HandleBox* m_palette_handle_box;
+  Gtk::HandleBox* m_palette_handle_box; //TODO: The toolbar is already a HandleBox.
   std::list<Gtk::TargetEntry> m_drag_targets;
+  PrintLayoutToolbar m_toolbar;
   
   //Context menu for clicking on empty space on the canvas:
   Gtk::Menu* m_context_menu;

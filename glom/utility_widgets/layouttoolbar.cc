@@ -64,13 +64,15 @@ LayoutToolbar::LayoutToolbar()
                                         _("Database Field"), _("Drag this to the layout to add a new database field.")));
   LayoutToolbarButton* drag_button = 
     Gtk::manage(new LayoutToolbarButton("glom-button.png", LayoutWidgetBase::TYPE_BUTTON,
-                                        _("Button"), _("Drag this to the layout to cadd a new button.")));
+                                        _("Button"), _("Drag this to the layout to add a new button.")));
   LayoutToolbarButton* drag_text = 
-    Gtk::manage(new LayoutToolbarButton("glom-group.png", LayoutWidgetBase::TYPE_TEXT,
+    Gtk::manage(new LayoutToolbarButton("glom-text.png", LayoutWidgetBase::TYPE_TEXT,
                                         _("Group"), _("Drag this to the layout to add a new static text box.")));  
   LayoutToolbarButton* drag_image = 
     Gtk::manage(new LayoutToolbarButton("glom-image.png", LayoutWidgetBase::TYPE_IMAGE,
                                         _("Image"), _("Drag this to the layout to add a new static image.")));
+
+  //TODO: Add a drag item for the related records item.
   
   //Note for translators: These are container layout items, containing child layout items, like container widgets in GTK+.
   GtkContainer* container_group = GTK_CONTAINER(egg_tool_item_group_new(_("Containers")));

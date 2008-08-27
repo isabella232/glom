@@ -22,7 +22,6 @@
 #include "window_print_layout_edit.h"
 #include <glom/box_db_table.h>
 #include "canvas_layout_item.h"
-#include "action_layout_item.h"
 #include <glom/libglom/data_structure/layout/layoutitem_line.h>
 #include <glom/libglom/data_structure/layout/layoutitem_portal.h>
 //#include <libgnome/gnome-i18n.h>
@@ -48,7 +47,6 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   m_drag_preview_requested(false),
   m_vruler(0),
   m_hruler(0),
-  m_toolbar(0),
   m_context_menu(0)
 {
   set_default_size(640, 480);
@@ -84,7 +82,9 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   m_canvas.show();
 
   //Make the canvas a drag-and-drop destination:
-  m_drag_targets.push_back( Gtk::TargetEntry("glom_palette", Gtk::TARGET_SAME_APP) );
+  const GtkTargetEntry* target_entry = egg_tool_palette_get_drag_target_item();
+  Gtk::TargetEntry toolbar_target(*target_entry);
+  m_drag_targets.push_back(toolbar_target);
 
   //Note that we don't use Gtk::DEST_DEFAULT_DEFAULTS because that would prevent our signal handlers from being used:
   m_canvas.drag_dest_set(m_drag_targets, Gtk::DEST_DEFAULT_HIGHLIGHT, Gdk::ACTION_COPY);
@@ -98,7 +98,9 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
       sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_canvas_drag_leave) );
 
   init_menu();
-  init_toolbar();
+
+  m_palette_handle_box->add(m_toolbar);
+  m_toolbar.show();
 
   m_scrolled_window.get_hadjustment()->signal_changed().connect(
     sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_scroll_value_changed) );
@@ -221,72 +223,6 @@ void Window_PrintLayout_Edit::init_menu()
   add_accel_group(m_uimanager->get_accel_group());
 }
 
-void Window_PrintLayout_Edit::init_toolbar()
-{
-  m_toolbar_action_group = Gtk::ActionGroup::create();
-
-  m_toolbar_action_group->add(Gtk::Action::create("Menu_Insert", Gtk::Stock::ADD, _("_Insert")));
-  Glib::RefPtr<Action_LayoutItem> action = Action_LayoutItem::create("Action_Toolbar_Field", Gtk::Stock::ADD,_("Field"));
-  action->set_layout_item_type(Action_LayoutItem::ITEM_FIELD);
-  m_toolbar_action_group->add(action,
-                        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_field) );
-  action = Action_LayoutItem::create("Action_Toolbar_Text", Gtk::Stock::ADD,_("Text"));
-  action->set_layout_item_type(Action_LayoutItem::ITEM_TEXT);
-  m_toolbar_action_group->add(action,
-                        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_text) );
-  action = Action_LayoutItem::create("Action_Toolbar_Image", Gtk::Stock::ADD,_("Image"));
-  action->set_layout_item_type(Action_LayoutItem::ITEM_IMAGE);
-  m_toolbar_action_group->add(action,
-                        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_image) );
-  action = Action_LayoutItem::create("Action_Toolbar_RelatedRecords", Gtk::Stock::ADD,_("Related Records"));
-  action->set_layout_item_type(Action_LayoutItem::ITEM_PORTAL);
-  m_toolbar_action_group->add(action,
-                        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_relatedrecords) );
-  action = Action_LayoutItem::create("Action_Toolbar_LineHorizontal", Gtk::Stock::ADD,_("Horizontal Line"));
-  action->set_layout_item_type(Action_LayoutItem::ITEM_LINE_HORIZONTAL);
-  m_toolbar_action_group->add(action,
-                        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_line_horizontal) );
-  action = Action_LayoutItem::create("Action_Toolbar_LineVertical", Gtk::Stock::ADD, _("Vertical Line"));
-  action->set_layout_item_type(Action_LayoutItem::ITEM_LINE_VERTICAL);
-  m_toolbar_action_group->add(action,
-                        sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_menu_insert_line_vertical) );
-
-  //Build part of the menu structure, to be merged in by using the "PH" placeholders:
-  static const Glib::ustring ui_description =
-    "<ui>"
-    "  <toolbar name='Toolbar'>"
-    "      <toolitem action='Action_Toolbar_Field' />"
-    "      <toolitem action='Action_Toolbar_Text' />"
-    "      <toolitem action='Action_Toolbar_Image' />"
-    "      <separator />"
-    "      <toolitem action='Action_Toolbar_LineHorizontal' />"
-    "      <toolitem action='Action_Toolbar_LineVertical' />"
-    "      <separator />"
-    "      <toolitem action='Action_Toolbar_RelatedRecords' />"
-    "  </toolbar>"
-    "</ui>";
-
-  m_toolbar_uimanager = Gtk::UIManager::create();
-  m_toolbar_uimanager->insert_action_group(m_toolbar_action_group);
-  m_toolbar_uimanager->add_ui_from_string(ui_description);
-
-  //Toolbar:
-  if(m_toolbar)
-    delete m_toolbar;
-
-  m_toolbar = static_cast<Gtk::Toolbar*>(m_toolbar_uimanager->get_widget("/Toolbar"));
-  if(m_toolbar)
-  {
-    m_toolbar->set_orientation(Gtk::ORIENTATION_VERTICAL);
-    m_palette_handle_box->add(*m_toolbar);
-    m_toolbar->show();
-  }
-
-  add_accel_group(m_toolbar_uimanager->get_accel_group());
-
-  make_toolbar_items_draggable();
-}
-
 Glib::RefPtr<Gdk::Pixbuf> Window_PrintLayout_Edit::get_icon_for_toolbar_item(Gtk::ToolItem& item)
 {
   Glib::RefPtr<Gdk::Pixbuf> result;
@@ -334,7 +270,7 @@ Glib::RefPtr<Gdk::Pixbuf> Window_PrintLayout_Edit::get_icon_for_toolbar_item(Gtk
   return result;
 }
 
-
+/*
 void Window_PrintLayout_Edit::make_toolbar_items_draggable()
 {
   const int count = m_toolbar->get_n_items();
@@ -365,6 +301,7 @@ void Window_PrintLayout_Edit::make_toolbar_items_draggable()
       sigc::bind( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_toolbar_item_drag_data_get), action) );
   }
 }
+*/
 
 /*
 void Window_PrintLayout_Edit::on_toolbar_item_drag_begin(const Glib::RefPtr<Gdk::DragContext>& drag_context)
@@ -378,12 +315,22 @@ void Window_PrintLayout_Edit::on_toolbar_item_drag_end(const Glib::RefPtr<Gdk::D
 }
 */
 
-void Window_PrintLayout_Edit::on_toolbar_item_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& drag_context, Gtk::SelectionData& selection_data, guint info, guint time, const Glib::RefPtr<Gtk::Action>& action)
+void Window_PrintLayout_Edit::on_toolbar_item_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& drag_context, Gtk::SelectionData& selection_data, guint info, guint time)
 {
-  //std::cout << "Window_PrintLayout_Edit::on_toolbar_item_drag_data_get" << std::endl;
+  //Put this code in the toolbar class:
+  Gtk::Widget* palette = drag_get_source_widget(drag_context);
+  while(palette && !EGG_IS_TOOL_PALETTE (palette->gobj()))
+    palette = palette->get_parent();
   
-  Glib::RefPtr<Action_LayoutItem> action_derived = Glib::RefPtr<Action_LayoutItem>::cast_dynamic(action);
-  Action_LayoutItem::enumItems type = action_derived ? action_derived->get_layout_item_type() : Action_LayoutItem::ITEM_INVALID;
+  if(!palette)
+    return;
+
+  GtkWidget* tool_item = egg_tool_palette_get_drag_item(EGG_TOOL_PALETTE (palette->gobj()), selection_data.gobj());
+  if(!tool_item)
+    return;
+
+  PrintLayoutToolbarButton::enumItems type = 
+    static_cast<PrintLayoutToolbarButton::enumItems>(GPOINTER_TO_INT(g_object_get_data(G_OBJECT(tool_item), "glom-type")));
 
   selection_data.set(selection_data.get_target(), DRAG_DATA_FORMAT,
           (const guchar*)&type,
@@ -393,7 +340,7 @@ void Window_PrintLayout_Edit::on_toolbar_item_drag_data_get(const Glib::RefPtr<G
 
 bool Window_PrintLayout_Edit::on_canvas_drag_drop(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint timestamp)
 {
-  Glib::ustring target = m_canvas.drag_dest_find_target(drag_context);
+  const Glib::ustring target = m_canvas.drag_dest_find_target(drag_context);
   if(target.empty())
     return false;
 
@@ -405,14 +352,14 @@ bool Window_PrintLayout_Edit::on_canvas_drag_drop(const Glib::RefPtr<Gdk::DragCo
   return true; //Allow the drop.
 }
 
-static Action_LayoutItem::enumItems get_item_type_from_selection_data(const Gtk::SelectionData& selection_data)
+static PrintLayoutToolbarButton::enumItems get_item_type_from_selection_data(const Gtk::SelectionData& selection_data)
 {
-  Action_LayoutItem::enumItems item_type = Action_LayoutItem::ITEM_INVALID;
+  PrintLayoutToolbarButton::enumItems item_type = PrintLayoutToolbarButton::ITEM_INVALID;
   if((selection_data.get_length() >= 0) && (selection_data.get_format() == DRAG_DATA_FORMAT))
   {
     const guint8* data = selection_data.get_data();
     if(data)
-      item_type = (Action_LayoutItem::enumItems)(data[0]);
+      item_type = (PrintLayoutToolbarButton::enumItems)(data[0]);
   }
 
   return item_type;
@@ -420,7 +367,7 @@ static Action_LayoutItem::enumItems get_item_type_from_selection_data(const Gtk:
 
 bool Window_PrintLayout_Edit::on_canvas_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint timestamp)
 {
-  Glib::ustring target = m_canvas.drag_dest_find_target(drag_context);
+  const Glib::ustring target = m_canvas.drag_dest_find_target(drag_context);
   if(target.empty())
     return false;
 
@@ -449,16 +396,16 @@ bool Window_PrintLayout_Edit::on_canvas_drag_motion(const Glib::RefPtr<Gdk::Drag
   return true; //Allow the drop.
 }
 
-sharedptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(Action_LayoutItem::enumItems item_type)
+sharedptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(PrintLayoutToolbarButton::enumItems item_type)
 {
   sharedptr<LayoutItem> layout_item;
 
-  if(item_type == Action_LayoutItem::ITEM_FIELD)
+  if(item_type == PrintLayoutToolbarButton::ITEM_FIELD)
   {
     layout_item = sharedptr<LayoutItem_Field>::create();
     layout_item->set_print_layout_position(0, 0, 50, 10);
   }
-  else if(item_type == Action_LayoutItem::ITEM_TEXT)
+  else if(item_type == PrintLayoutToolbarButton::ITEM_TEXT)
   {
     sharedptr<LayoutItem_Text> layout_item_derived = sharedptr<LayoutItem_Text>::create();
 
@@ -467,24 +414,24 @@ sharedptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(Action_LayoutIt
     layout_item = layout_item_derived;
     layout_item->set_print_layout_position(0, 0, 50, 10);
   }
-  else if(item_type == Action_LayoutItem::ITEM_IMAGE)
+  else if(item_type == PrintLayoutToolbarButton::ITEM_IMAGE)
   {
     layout_item = sharedptr<LayoutItem_Image>::create();
     layout_item->set_print_layout_position(0, 0, 50, 50);
   }
-  else if(item_type == Action_LayoutItem::ITEM_LINE_HORIZONTAL)
+  else if(item_type == PrintLayoutToolbarButton::ITEM_LINE_HORIZONTAL)
   {
     sharedptr<LayoutItem_Line> layout_item_derived = sharedptr<LayoutItem_Line>::create();
     layout_item_derived->set_coordinates(0, 0, 100, 0);
     layout_item = layout_item_derived;
   }
-  else if(item_type == Action_LayoutItem::ITEM_LINE_VERTICAL)
+  else if(item_type == PrintLayoutToolbarButton::ITEM_LINE_VERTICAL)
   {
     sharedptr<LayoutItem_Line> layout_item_derived = sharedptr<LayoutItem_Line>::create();
     layout_item_derived->set_coordinates(0, 0, 0, 100);
     layout_item = layout_item_derived;
   }
-  else if(item_type == Action_LayoutItem::ITEM_PORTAL)
+  else if(item_type == PrintLayoutToolbarButton::ITEM_PORTAL)
   {
     layout_item = sharedptr<LayoutItem_Portal>::create();
     layout_item->set_print_layout_position(0, 0, 100, 50);
@@ -499,7 +446,7 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
   //or after our drag_motion handler has called drag_get_data()): 
   
   //Discover what toolbar item was dropped:
-  const Action_LayoutItem::enumItems item_type = get_item_type_from_selection_data(selection_data);
+  const PrintLayoutToolbarButton::enumItems item_type = get_item_type_from_selection_data(selection_data);
   
   if(m_drag_preview_requested)
   {
@@ -775,7 +722,7 @@ void Window_PrintLayout_Edit::set_default_position(const sharedptr<LayoutItem>& 
 
 void Window_PrintLayout_Edit::on_menu_insert_field()
 {
-  sharedptr<LayoutItem> layout_item = create_empty_item(Action_LayoutItem::ITEM_FIELD);
+  sharedptr<LayoutItem> layout_item = create_empty_item(PrintLayoutToolbarButton::ITEM_FIELD);
 
   // Note to translators: This is the default contents of a text item on a print layout: 
   set_default_position(layout_item);
@@ -786,7 +733,7 @@ void Window_PrintLayout_Edit::on_menu_insert_field()
 
 void Window_PrintLayout_Edit::on_menu_insert_text()
 {
-  sharedptr<LayoutItem> layout_item = create_empty_item(Action_LayoutItem::ITEM_TEXT);
+  sharedptr<LayoutItem> layout_item = create_empty_item(PrintLayoutToolbarButton::ITEM_TEXT);
   set_default_position(layout_item);
 
   Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
@@ -795,7 +742,7 @@ void Window_PrintLayout_Edit::on_menu_insert_text()
 
 void Window_PrintLayout_Edit::on_menu_insert_image()
 {
-  sharedptr<LayoutItem> layout_item = create_empty_item(Action_LayoutItem::ITEM_IMAGE);
+  sharedptr<LayoutItem> layout_item = create_empty_item(PrintLayoutToolbarButton::ITEM_IMAGE);
   // Note to translators: This is the default contents of a text item on a print layout: 
   //layout_item->set_text(_("text"));
   set_default_position(layout_item);
@@ -806,7 +753,7 @@ void Window_PrintLayout_Edit::on_menu_insert_image()
 
 void Window_PrintLayout_Edit::on_menu_insert_relatedrecords()
 {
-  sharedptr<LayoutItem> layout_item = create_empty_item(Action_LayoutItem::ITEM_PORTAL);
+  sharedptr<LayoutItem> layout_item = create_empty_item(PrintLayoutToolbarButton::ITEM_PORTAL);
   set_default_position(layout_item);
 
   Glib::RefPtr<CanvasLayoutItem> item = CanvasLayoutItem::create(layout_item);
@@ -815,7 +762,7 @@ void Window_PrintLayout_Edit::on_menu_insert_relatedrecords()
 
 void Window_PrintLayout_Edit::on_menu_insert_line_horizontal()
 {
-  sharedptr<LayoutItem> layout_item = create_empty_item(Action_LayoutItem::ITEM_LINE_HORIZONTAL);
+  sharedptr<LayoutItem> layout_item = create_empty_item(PrintLayoutToolbarButton::ITEM_LINE_HORIZONTAL);
 
   /*
   double item_x = m_drop_x;
@@ -833,7 +780,7 @@ void Window_PrintLayout_Edit::on_menu_insert_line_horizontal()
 
 void Window_PrintLayout_Edit::on_menu_insert_line_vertical()
 {
-  sharedptr<LayoutItem> layout_item = create_empty_item(Action_LayoutItem::ITEM_LINE_VERTICAL);
+  sharedptr<LayoutItem> layout_item = create_empty_item(PrintLayoutToolbarButton::ITEM_LINE_VERTICAL);
 
   /*
   double item_x = m_drop_x;

@@ -69,7 +69,7 @@ void FlowTableDnd::start_dnd(Gtk::Widget& child)
     typedef Glib::ListHandle<Gtk::Widget*>::const_iterator CI;
     Glib::ListHandle<Gtk::Widget*> children = container->get_children();
     for(CI cur_child = children.begin(); cur_child != children.end();
-         ++cur_child)
+        ++cur_child)
     {
       start_dnd(*(*cur_child));
     }
@@ -81,7 +81,7 @@ void FlowTableDnd::start_dnd(Gtk::Widget& child)
   child.drag_source_set(source_targets, Gdk::ModifierType(GDK_BUTTON1_MASK | GDK_BUTTON3_MASK),
                         Gdk::DragAction(GDK_ACTION_COPY | GDK_ACTION_MOVE));
   child.signal_drag_begin().connect (sigc::bind<Gtk::Widget*>(sigc::mem_fun (*this, &FlowTableDnd::on_child_drag_begin), &child), false);
-  child.signal_drag_end().connect (sigc::bind<Gtk::Widget*>(sigc::mem_fun (*this, &FlowTableDnd::on_child_drag_end), &child), false);
+  child.signal_drag_end().connect(sigc::bind<Gtk::Widget*>(sigc::mem_fun (*this, &FlowTableDnd::on_child_drag_end), &child), false);
   child.signal_drag_data_get().connect (sigc::bind<Gtk::Widget*>(sigc::mem_fun (*this, &FlowTableDnd::on_child_drag_data_get), &child), false);
   child.signal_drag_data_delete().connect (sigc::bind<Gtk::Widget*>(sigc::mem_fun (*this, &FlowTableDnd::on_child_drag_data_delete), &child), false);
 
@@ -89,28 +89,30 @@ void FlowTableDnd::start_dnd(Gtk::Widget& child)
   { 
     std::list<Gtk::TargetEntry> drag_targets;
     const GtkTargetEntry* target_entry = egg_tool_palette_get_drag_target_item();
-    Gtk::TargetEntry toolbar_target (*target_entry);
+    Gtk::TargetEntry toolbar_target(*target_entry);
     Gtk::TargetEntry move_target(MOVE_TARGET);
     drag_targets.push_back(toolbar_target);
     drag_targets.push_back(move_target);
     
-    Glib::RefPtr<Gtk::TargetList> targets =
-			child.drag_dest_get_target_list ();
-    // The widget has already a default drag destination - add more targets
+    Glib::RefPtr<Gtk::TargetList> targets = child.drag_dest_get_target_list();
+
+    // The widget has already a default drag destination - add more targets:
     if(targets)
     {
       targets->add (drag_targets);
       child.drag_dest_set_target_list (targets);
     }
     else
+    {
       child.drag_dest_set(drag_targets, Gtk::DEST_DEFAULT_ALL,
                           Gdk::ACTION_COPY | Gdk::ACTION_MOVE);
-		    
+    }
+	    
     // It's important to connect this one BEFORE
     child.signal_drag_motion().connect(sigc::bind<Gtk::Widget*>(sigc::mem_fun (*this, &FlowTableDnd::on_child_drag_motion), &child),
-                                        false);
+                                       false);
     child.signal_drag_data_received().connect(sigc::bind<Gtk::Widget*>(sigc::mem_fun (*this, &FlowTableDnd::on_child_drag_data_received), &child));
-    child.signal_drag_leave().connect(sigc::mem_fun (*this, &FlowTableDnd::on_child_drag_leave));
+    child.signal_drag_leave().connect(sigc::mem_fun(*this, &FlowTableDnd::on_child_drag_leave));
   }
 }
 
@@ -120,7 +122,7 @@ void FlowTableDnd::stop_dnd(Gtk::Widget& child)
       dynamic_cast<FlowTableDnd*>(&child))
     return;
   
-	// Call this method recursive for all (real) children
+  // Call this method recursively for all (real) children:
   Gtk::Container* container = dynamic_cast<Gtk::Container*>(&child);
   if(container)
   {
@@ -132,6 +134,7 @@ void FlowTableDnd::stop_dnd(Gtk::Widget& child)
       stop_dnd (*(*cur_child));
     }
   }
+
   child.drag_source_unset();
 }
 

@@ -52,8 +52,8 @@ protected:
   void on_child_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& drag_context, 
                                            Gtk::SelectionData& selection_data, guint, guint time, Gtk::Widget* child);
   void on_child_drag_data_delete(const Glib::RefPtr<Gdk::DragContext>& drag_context, Gtk::Widget* child); 
-  void on_child_drag_begin (const Glib::RefPtr<Gdk::DragContext>& drag_context, Gtk::Widget* child);
-  void on_child_drag_end (const Glib::RefPtr<Gdk::DragContext>& drag_context, Gtk::Widget* child);    
+  void on_child_drag_begin(const Glib::RefPtr<Gdk::DragContext>& drag_context, Gtk::Widget* child);
+  void on_child_drag_end(const Glib::RefPtr<Gdk::DragContext>& drag_context, Gtk::Widget* child);    
     
   void start_dnd(Gtk::Widget& child);
   void stop_dnd(Gtk::Widget& child);
@@ -62,13 +62,13 @@ protected:
     
   // Methods for the different layout object,
   // to be implemented in the derived class.
-  virtual void on_dnd_add_layout_item_field (LayoutWidgetBase* above) = 0;
+  virtual void on_dnd_add_layout_item_field(LayoutWidgetBase* above) = 0;
   virtual void on_dnd_add_layout_group(LayoutWidgetBase* above) = 0;
-  virtual void on_dnd_add_layout_item_button (LayoutWidgetBase* above) = 0;
-  virtual void on_dnd_add_layout_item_text (LayoutWidgetBase* above) = 0;
-  virtual void on_dnd_add_layout_item_image (LayoutWidgetBase* above) = 0;
-  virtual void on_dnd_add_layout_notebook (LayoutWidgetBase* above) = 0;
-  virtual void on_dnd_add_layout_item (LayoutWidgetBase* above,
+  virtual void on_dnd_add_layout_item_button(LayoutWidgetBase* above) = 0;
+  virtual void on_dnd_add_layout_item_text(LayoutWidgetBase* above) = 0;
+  virtual void on_dnd_add_layout_item_image(LayoutWidgetBase* above) = 0;
+  virtual void on_dnd_add_layout_notebook(LayoutWidgetBase* above) = 0;
+  virtual void on_dnd_add_layout_item(LayoutWidgetBase* above,
                                        sharedptr<LayoutItem>& item) = 0;
   
   virtual void on_dnd_add_placeholder(LayoutWidgetBase* above) = 0;

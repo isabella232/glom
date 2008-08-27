@@ -7,6 +7,9 @@ pixmaps_DATA = glom-field.png \
 		glom-button.png \
 		glom-text.png \
 		glom-image.png \
-		glom-notebook.png
+		glom-notebook.png \
+                glom-line-horizontal.png \
+                glom-line-vertical.png \
+                glom-related-records.png
 
 EXTRA_DIST = $(icon_DATA) $(pixmaps_DATA) glom.svg
