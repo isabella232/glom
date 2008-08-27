@@ -122,6 +122,9 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
   //Add the new child:
   m_layout_item = item;
 
+  if(!m_layout_item)
+    std::cerr << "CanvasLayoutItem::set_layout_item(): item was NULL." << std::endl;
+
   sharedptr<LayoutItem_Line> line;
 
   Glib::RefPtr<CanvasItemMovable> child;

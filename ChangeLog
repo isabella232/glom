@@ -1,5 +1,16 @@
 2008-08-27  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_design/print_layouts/print_layout_toolbar_button.cc:
+	* glom/mode_design/print_layouts/print_layout_toolbar_button.h: Added 
+	get_item_type_from_selection_data().
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc: create_empty_item():
+	Mention unhandled items on std::cerr.
+	on_toolbar_item_drag_data_get(): Get the item type correctly. 
+	* glom/mode_design/print_layouts/canvas_layout_item.cc: set_layout_item(): Do 
+	not reference an empty layout item.
+
+2008-08-27  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_design/print_layouts/action_layout_item.cc:
 	* glom/mode_design/print_layouts/action_layout_item.h: Removed this.
 	* glom/mode_design/print_layouts/Makefile.am:

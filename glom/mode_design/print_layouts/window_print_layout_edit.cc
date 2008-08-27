@@ -32,10 +32,6 @@
 namespace Glom
 {
 
-//TODO: I don't know what this really means. murrayc.
-const int DRAG_DATA_FORMAT = 8; // 8 bits format
-
-
 Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : Gtk::Window(cobject),
   m_entry_name(0),
@@ -315,22 +311,13 @@ void Window_PrintLayout_Edit::on_toolbar_item_drag_end(const Glib::RefPtr<Gdk::D
 }
 */
 
+
+//TODO: I don't know what this really means. murrayc.
+const int DRAG_DATA_FORMAT = 8; // 8 bits format
+
 void Window_PrintLayout_Edit::on_toolbar_item_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& drag_context, Gtk::SelectionData& selection_data, guint info, guint time)
 {
-  //Put this code in the toolbar class:
-  Gtk::Widget* palette = drag_get_source_widget(drag_context);
-  while(palette && !EGG_IS_TOOL_PALETTE (palette->gobj()))
-    palette = palette->get_parent();
-  
-  if(!palette)
-    return;
-
-  GtkWidget* tool_item = egg_tool_palette_get_drag_item(EGG_TOOL_PALETTE (palette->gobj()), selection_data.gobj());
-  if(!tool_item)
-    return;
-
-  PrintLayoutToolbarButton::enumItems type = 
-    static_cast<PrintLayoutToolbarButton::enumItems>(GPOINTER_TO_INT(g_object_get_data(G_OBJECT(tool_item), "glom-type")));
+  PrintLayoutToolbarButton::enumItems type = PrintLayoutToolbarButton::get_item_type_from_selection_data(drag_context, selection_data);
 
   selection_data.set(selection_data.get_target(), DRAG_DATA_FORMAT,
           (const guchar*)&type,
@@ -350,19 +337,6 @@ bool Window_PrintLayout_Edit::on_canvas_drag_drop(const Glib::RefPtr<Gdk::DragCo
   m_canvas.drag_get_data(drag_context, target, timestamp);
 
   return true; //Allow the drop.
-}
-
-static PrintLayoutToolbarButton::enumItems get_item_type_from_selection_data(const Gtk::SelectionData& selection_data)
-{
-  PrintLayoutToolbarButton::enumItems item_type = PrintLayoutToolbarButton::ITEM_INVALID;
-  if((selection_data.get_length() >= 0) && (selection_data.get_format() == DRAG_DATA_FORMAT))
-  {
-    const guint8* data = selection_data.get_data();
-    if(data)
-      item_type = (PrintLayoutToolbarButton::enumItems)(data[0]);
-  }
-
-  return item_type;
 }
 
 bool Window_PrintLayout_Edit::on_canvas_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint timestamp)
@@ -436,6 +410,10 @@ sharedptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(PrintLayoutTool
     layout_item = sharedptr<LayoutItem_Portal>::create();
     layout_item->set_print_layout_position(0, 0, 100, 50);
   }
+  else
+  {
+    std::cerr << "Window_PrintLayout_Edit::create_empty_item(): Unhandled item type: " << item_type << std::endl;
+  }
 
   return layout_item;
 }
@@ -446,7 +424,7 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
   //or after our drag_motion handler has called drag_get_data()): 
   
   //Discover what toolbar item was dropped:
-  const PrintLayoutToolbarButton::enumItems item_type = get_item_type_from_selection_data(selection_data);
+  const PrintLayoutToolbarButton::enumItems item_type = PrintLayoutToolbarButton::get_item_type_from_selection_data(drag_context, selection_data);
   
   if(m_drag_preview_requested)
   {
