@@ -1,3 +1,10 @@
+2008-08-27  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/layouttoolbar.cc:
+	  Improve the tooltips text.
+	* glom/utility_widgets/layouttoolbar.h:
+	* po/POTFILES.in: Mention renamed files.
+
 2008-08-24  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/spawn_with_feedback.cc

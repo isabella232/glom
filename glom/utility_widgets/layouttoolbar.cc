@@ -29,18 +29,20 @@
 
 namespace
 {
-	Glib::ustring get_icon_path(const Glib::ustring& filename)
-	{
+
+Glib::ustring get_icon_path(const Glib::ustring& filename)
+{
 #ifdef G_OS_WIN32
-		gchar* basepath = g_win32_get_package_installation_subdirectory(NULL, NULL, "share/glom/pixmaps");
-		Glib::ustring result = Glib::build_filename(basepath, filename);
-		g_free(basepath);
-		return result;
+  gchar* basepath = g_win32_get_package_installation_subdirectory(NULL, NULL, "share/glom/pixmaps");
+  Glib::ustring result = Glib::build_filename(basepath, filename);
+  g_free(basepath);
+  return result;
 #else
-		return Glib::build_filename(GLOM_ICON_DIR, filename);
+  return Glib::build_filename(GLOM_ICON_DIR, filename);
 #endif
-	}
 }
+
+} //anonymous namespace
 
 namespace Glom
 {
@@ -66,23 +68,23 @@ LayoutToolbar::LayoutToolbar()
 	
   LayoutToolbarButton* drag_group = 
     Gtk::manage(new LayoutToolbarButton(*image_group, LayoutWidgetBase::TYPE_GROUP,
-                                        _("Group"), _("Drag to document to add a new group")));
+                                        _("Group"), _("Drag this to the layout to add a new group.")));
   LayoutToolbarButton* drag_notebook = 
     Gtk::manage(new LayoutToolbarButton(*image_notebook, LayoutWidgetBase::TYPE_NOTEBOOK,
-                                        _("Notebook"), _("Drag to document to add a new notebook")));  
+                                        _("Notebook"), _("Drag this to the layout to add a new notebook.")));  
   
   LayoutToolbarButton* drag_item = 
     Gtk::manage(new LayoutToolbarButton(*image_item, LayoutWidgetBase::TYPE_FIELD,
-                                        _("Database field"), _("Drag to document to add a new database field")));
+                                        _("Database field"), _("Drag this to the layout to add a new database field.")));
   LayoutToolbarButton* drag_button = 
     Gtk::manage(new LayoutToolbarButton(*image_button, LayoutWidgetBase::TYPE_BUTTON,
-                                        _("Button"), _("Drag to document to cadd a new button")));
+                                        _("Button"), _("Drag this to the layout to cadd a new button.")));
   LayoutToolbarButton* drag_text = 
     Gtk::manage(new LayoutToolbarButton(*image_text, LayoutWidgetBase::TYPE_TEXT,
-                                        _("Group"), _("Drag to document to add a new text box")));  
+                                        _("Group"), _("Drag this to the layout to add a new static text box.")));  
   LayoutToolbarButton* drag_image = 
     Gtk::manage(new LayoutToolbarButton(*image_image, LayoutWidgetBase::TYPE_IMAGE,
-                                        _("Image"), _("Drag to document to add a new image")));
+                                        _("Image"), _("Drag this to the layout to add a new static image.")));
   
   //Note for translators: These are container layout items, containing child layout items, like container widgets in GTK+.
   GtkContainer* container_group = GTK_CONTAINER(egg_tool_item_group_new(_("Containers")));
