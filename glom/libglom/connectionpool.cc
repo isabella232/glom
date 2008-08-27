@@ -75,33 +75,34 @@ static EpcProtocol publish_protocol = EPC_PROTOCOL_HTTPS;
 
 namespace
 {
-  std::string get_path_to_postgres_executable(const std::string& program)
-  {
+
+static std::string get_path_to_postgres_executable(const std::string& program)
+{
 #ifdef G_OS_WIN32
-    // Use postgres on Windows, since the postgresql installer does not
-    // install the (deprecated) postmaster binary.
-    std::string real_program = program + EXEEXT;
-    if(program == "postmaster")
-      real_program = "postgres.exe";
+  // Use postgres on Windows, since the postgresql installer does not
+  // install the (deprecated) postmaster binary.
+  std::string real_program = program + EXEEXT;
+  if(program == "postmaster")
+    real_program = "postgres.exe";
     
-    // Have a look at the bin directory of the application executable first.
-    // The installer installs postgres there. postgres needs to be installed
-    // in a directory called bin for its relocation stuff to work, so that
-    // it finds the share data in share. Unfortunately it does not look into
-    // share/postgresql which would be nice to separate the postgres stuff
-    // from the other shared data. We can perhaps still change this later by
-    // building postgres with another prefix than /local/pgsql.
-    gchar* bin_subdir = g_win32_get_package_installation_subdirectory(NULL, NULL, "bin");
-    std::string test = Glib::build_filename(bin_subdir, real_program);
-    g_free(bin_subdir);
+  // Have a look at the bin directory of the application executable first.
+  // The installer installs postgres there. postgres needs to be installed
+  // in a directory called bin for its relocation stuff to work, so that
+  // it finds the share data in share. Unfortunately it does not look into
+  // share/postgresql which would be nice to separate the postgres stuff
+  // from the other shared data. We can perhaps still change this later by
+  // building postgres with another prefix than /local/pgsql.
+  gchar* bin_subdir = g_win32_get_package_installation_subdirectory(NULL, NULL, "bin");
+  std::string test = Glib::build_filename(bin_subdir, real_program);
+  g_free(bin_subdir);
 
-    if(Glib::file_test(test, Glib::FILE_TEST_IS_EXECUTABLE))
-      return test;
+  if(Glib::file_test(test, Glib::FILE_TEST_IS_EXECUTABLE))
+    return test;
 
-    // Look in PATH otherwise
-    return Glib::find_program_in_path(real_program);
+  // Look in PATH otherwise
+  return Glib::find_program_in_path(real_program);
 #else
-    return Glib::build_filename(POSTGRES_UTILS_PATH, program + EXEEXT);
+  return Glib::build_filename(POSTGRES_UTILS_PATH, program + EXEEXT);
 #endif
   }
 }
