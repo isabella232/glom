@@ -1,3 +1,14 @@
+2008-08-28  Johannes Schmid <johannes.schmid@openismus.com>
+
+	* glom/application.cc:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/notebook_data.cc:
+	Correctly unset the menu item when layout toolbar is shown and don't hide
+	layout toolbar when an item is dragged
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc: 
+	(on_canvas_drag_drop, on_canvas_drag_motion)
+	Fixed build error with gtkmm 2.12 (const_cast, see comment)
+
 2008-08-27  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db.cc offer_field_list(), offer_field_formatting(),
@@ -77,10 +88,10 @@
 	* glom/utility_widgets/dragbutton.cc (renamed):
 	* glom/utility_widgets/dragbutton.h (renamed):
 	* glom/utility_widgets/flowtable_dnd.cc:
-	* glom/utility_widgets/layouttoolbar.cc:
-	* glom/utility_widgets/layouttoolbar.h:
-	* glom/utility_widgets/layouttoolbarbutton.cc:
-	* glom/utility_widgets/layouttoolbarbutton.h:
+	* glom/utility_widgets/layouttoolbar.cc (new):
+	* glom/utility_widgets/layouttoolbar.h (new):
+	* glom/utility_widgets/layouttoolbarbutton.cc (new):
+	* glom/utility_widgets/layouttoolbarbutton.h (new):
 	Changed names of DragBar to LayoutToolbar and DragButton to 
 	LayouttoolbarButton
 

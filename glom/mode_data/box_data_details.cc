@@ -213,7 +213,6 @@ void Box_Data_Details::create_layout()
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_FlowTable.set_design_mode(m_design_mode);
-  m_Dragbar.hide();
 #endif
 }
 

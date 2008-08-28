@@ -57,6 +57,7 @@ Notebook_Data::Notebook_Data()
   add_view(&m_Box_Details);
 
   show_all_children();
+  m_Box_Details.show_layout_toolbar(false);
 }
 
 Notebook_Data::~Notebook_Data()

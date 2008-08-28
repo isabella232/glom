@@ -334,7 +334,9 @@ bool Window_PrintLayout_Edit::on_canvas_drag_drop(const Glib::RefPtr<Gdk::DragCo
   //Cause our drag_data_received callback to be called:
   //Note that this isn't necessary when using DEST_DEFAULT_DEFAULTS (or DEST_DEFAULT_DROP), 
   //because that would allow us to just return true to make this happen automatically.
-  m_canvas.drag_get_data(drag_context, target, timestamp);
+  // Seems the const version of the method was added in gtkmm 2.14 so we do this const_cast here
+  // to allow compiling with 2.12 (jhs)
+  m_canvas.drag_get_data(drag_context, const_cast<Glib::ustring&>(target), timestamp);
 
   return true; //Allow the drop.
 }
@@ -354,7 +356,9 @@ bool Window_PrintLayout_Edit::on_canvas_drag_motion(const Glib::RefPtr<Gdk::Drag
     //This will cause our drag_data_received callback to be called, with that information.
     //Note: This does not work (and grabs the cursor) if we call dest_set() with the flags for default actions, such as DEST_DEFAULT_DEFAULTS.
     m_drag_preview_requested = true;
-    m_canvas.drag_get_data(drag_context, target, timestamp);
+    // Seems the const version of the method was added in gtkmm 2.14 so we do this const_cast here
+    // to allow compiling with 2.12 (jhs)
+    m_canvas.drag_get_data(drag_context, const_cast<Glib::ustring&>(target), timestamp);
     return true;
   }
 

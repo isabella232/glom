@@ -567,6 +567,9 @@ void App_Glom::on_menu_userlevel_developer()
 {
   if(m_pFrame)
     m_pFrame->on_menu_userlevel_Developer(m_action_menu_userlevel_developer, m_action_menu_userlevel_operator);
+  Glib::RefPtr<Gtk::ToggleAction> action = Glib::RefPtr<Gtk::ToggleAction>::cast_dynamic(
+    m_refActionGroup_Others->get_action ("GlomAction_Menu_Developer_ShowLayoutToolbar"));
+  action->set_active(false);
 }
 
 void App_Glom::on_menu_userlevel_operator()
