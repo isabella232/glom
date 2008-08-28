@@ -569,13 +569,16 @@ void App_Glom::on_menu_userlevel_developer()
     m_pFrame->on_menu_userlevel_Developer(m_action_menu_userlevel_developer, m_action_menu_userlevel_operator);
   Glib::RefPtr<Gtk::ToggleAction> action = Glib::RefPtr<Gtk::ToggleAction>::cast_dynamic(
     m_refActionGroup_Others->get_action ("GlomAction_Menu_Developer_ShowLayoutToolbar"));
-  action->set_active(false);
+  m_pFrame->show_layout_toolbar(action->get_active());
 }
 
 void App_Glom::on_menu_userlevel_operator()
 {
   if(m_pFrame)
+  {
     m_pFrame->on_menu_userlevel_Operator(m_action_menu_userlevel_operator);
+    m_pFrame->show_layout_toolbar(false);
+  }
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

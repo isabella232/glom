@@ -1,4 +1,9 @@
-2008-08-28  Johannes Schmid <johannes.schmid@openismus.com>
+2008-08-28  Johannes Schmid  <johannes.schmid@openismus.com>
+
+	* glom/application.cc:
+	Remeber state of layout toolbar when switching modes
+
+2008-08-28  Johannes Schmid  <johannes.schmid@openismus.com>
 
 	* glom/application.cc:
 	* glom/mode_data/box_data_details.cc:
