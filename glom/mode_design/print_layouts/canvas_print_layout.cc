@@ -23,6 +23,7 @@
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <gtkmm/stock.h>
 #include <glom/mode_design/print_layouts/dialog_text_formatting.h>
+#include <glom/mode_data/dialog_layout_list_related.h>
 #include <glom/libglom/glade_utils.h>
 #include <glibmm/i18n.h>
 
@@ -280,6 +281,43 @@ void Canvas_PrintLayout::update_layout_position_from_canvas(const sharedptr<Layo
   layout_item->set_print_layout_position(x, y, width, height); 
 }
 
+sharedptr<LayoutItem_Portal> Canvas_PrintLayout::offer_related_records(const sharedptr<LayoutItem_Portal>& portal, Gtk::Widget* parent)
+{
+  sharedptr<LayoutItem_Portal> result = portal;
+
+  Dialog_Layout_List_Related* dialog = 0;
+
+  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_data_layout");
+  if(refXml)
+    refXml->get_widget_derived("window_data_layout", dialog);
+  
+  if(!dialog)
+  {
+    std::cerr << "Canvas_PrintLayout::offer_related_records(): dialog was NULL." << std::endl;
+    return result;
+  }
+
+  add_view(dialog); //Give it access to the document.
+
+  if(!portal || (portal->get_from_table().empty()))
+    dialog->set_document("TODO_layout_name", get_document(), m_table_name);
+  else
+    dialog->set_document("TODO_layout_name", get_document(), portal);
+
+  //m_pDialogLayout->signal_hide().connect( sigc::mem_fun(*this, &Box_Data::on_dialog_layout_hide) );
+  dialog->run();
+
+
+
+  //TODO: block.
+
+  result = dialog->get_portal_layout();
+  delete dialog;
+  dialog = 0;
+
+  return result;
+}
+
 void Canvas_PrintLayout::on_context_menu_edit()
 {
   Gtk::Window* parent = dynamic_cast<Gtk::Window*>(get_toplevel());
@@ -309,6 +347,15 @@ void Canvas_PrintLayout::on_context_menu_edit()
       {
         image = Base_DB::offer_imageobject(image, parent, false /* don't show title */);
         m_context_item->set_layout_item(image);
+      }
+      else
+      {
+        sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_item);
+        if(portal)
+        {
+          portal = offer_related_records(portal, parent);
+          m_context_item->set_layout_item(portal);
+        }
       }
     }
   }

@@ -34,6 +34,7 @@
 #include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 #include <glom/libglom/data_structure/glomconversions.h>
 #include <glibmm/i18n.h>
+#include <math.h>
 
 namespace Glom
 {
@@ -96,18 +97,6 @@ void CanvasLayoutItem::check_and_apply_formatting(const Glib::RefPtr<CanvasTextM
   const Glib::ustring bg = formatting.get_text_format_color_background();
   if(!bg.empty())
   canvas_item->property_fill_color() = bg;
-}
-
-//Just a convenience function until we think of a nice API for goocanvasmm:
-static void portal_add_child( const Glib::RefPtr<Goocanvas::Table>& table, guint row, guint col, const Glib::RefPtr<Goocanvas::Item>& item)
-{
-  table->add_child(item);
-  goo_canvas_item_set_child_properties(GOO_CANVAS_ITEM(table->gobj()), GOO_CANVAS_ITEM(item->gobj()),
-                                       "row", row,
-                                       "column", col,
-                                       "x-fill", TRUE, 
-                                       "x-expand", TRUE, 
-                                       NULL);
 }
 
 void CanvasLayoutItem::on_resized()
@@ -218,26 +207,42 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
           if(portal)
           {
             Glib::RefPtr<CanvasTableMovable> canvas_item = CanvasTableMovable::create();
-            //canvas_item->property_line_width() = 0;
-            Glib::RefPtr<CanvasRectMovable> rect1 = CanvasRectMovable::create();
-            rect1->property_fill_color() = "white"; //This makes the whole area clickable, not just the outline stroke.
-            rect1->property_line_width() = 1;
-            rect1->property_stroke_color() = "black";
-            rect1->set_width_height(20, 20);
-            portal_add_child(canvas_item, 0, 0, rect1);
-            Glib::RefPtr<CanvasRectMovable> rect2 = CanvasRectMovable::create();
-            rect2->property_fill_color() = "white"; //This makes the whole area clickable, not just the outline stroke.
-            rect2->property_line_width() = 1;
-            rect2->property_stroke_color() = "black";
-            rect2->set_width_height(30, 30);
-            portal_add_child(canvas_item, 1, 1, rect2);
+            canvas_item->property_vert_grid_line_width() = 2;
+            canvas_item->property_stroke_color() = "black";
+
+            //Show as many rows as can fit in the height.
+            const double row_height = portal->get_print_layout_row_height(); //TODO: Let the user specify the row height
+            double ignore_x = 0;
+            double ignore_y = 0;
+            double total_width = 0;
+            double total_height = 0;
+            portal->get_print_layout_position(ignore_x, ignore_y, total_width, total_height);
+
+            const double max_rows_fraction = total_height / row_height;
+            double max_rows = 0;
+            modf(max_rows_fraction, &max_rows);
+            for(int i = 0; i < (int)max_rows; ++i)
+            {
+              Glib::RefPtr<CanvasRectMovable> rect_row = CanvasRectMovable::create();
+              rect_row->property_fill_color() = "white"; //This makes the whole area clickable, not just the outline stroke.
+              rect_row->property_line_width() = 1;
+              rect_row->property_stroke_color() = "black";
+              rect_row->set_width_height(total_width, row_height);
+
+              //TODO: Add/Remove rows when resizing, instead of resizing the rows:
+              canvas_item->attach(rect_row, 0 /* left_attach */, 1 /* right_attach */, i /* top_attach */, i + 1 /* right_attach */, (Gtk::AttachOptions)Gtk::FILL | Gtk::EXPAND, (Gtk::AttachOptions)Gtk::FILL | Gtk::EXPAND, 0.0, 0.0, 0.0, 0.0);
+            }
 
             child = canvas_item;
             child_item = canvas_item;
           }
-          else
+          else if(m_layout_item)
           {
             std::cerr << "CanvasLayoutItem::set_layout_item(): Unhandled LayoutItem type. part type=" << m_layout_item->get_part_type_name() << std::endl;
+          }
+          else
+          {
+            std::cerr << "CanvasLayoutItem::set_layout_item(): NULL LayoutItem type." << std::endl;
           }
         }
       }

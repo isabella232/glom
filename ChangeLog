@@ -1,3 +1,18 @@
+2008-09-03  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/data_structure/layout/layoutitem_portal.cc
+	* glom/libglom/data_structure/layout/layoutitem_portal.h: Added 
+	get/set_print_layout_row_height().
+	* glom/mode_data/dialog_layout_list_related.cc
+	* glom/mode_data/dialog_layout_list_related.h: Added a set_document() 
+	that takes the from_table, instead of an existing portal.
+	* glom/mode_design/print_layouts/canvas_layout_item.cc: set_layout_item(): 
+	Slightly more sane code, though I'm still just playing.
+	* glom/mode_design/print_layouts/canvas_print_layout.h:
+	* glom/mode_design/print_layouts/canvas_print_layout.cc
+	Added offer_related_records(), used in on_context_menu_edit(). Still needs 
+	to block on the dialog show. 
+
 2008-08-28  Johannes Schmid  <johannes.schmid@openismus.com>
 
 	* glom/application.cc:

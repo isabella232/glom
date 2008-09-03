@@ -33,6 +33,7 @@ namespace Glom
 {
 
 class Dialog_TextFormatting;
+class LayoutItem_Portal;
 
 /// A canvas that contains CanvasLayoutItem items.
 class Canvas_PrintLayout
@@ -69,6 +70,8 @@ protected:
   void add_layout_group(const sharedptr<LayoutGroup>& group, bool is_top_level = false);
   void add_layout_group_children(const sharedptr<LayoutGroup>& group);
   void fill_layout_group(const sharedptr<LayoutGroup>& group);
+
+  sharedptr<LayoutItem_Portal> offer_related_records(const sharedptr<LayoutItem_Portal>& portal, Gtk::Widget* parent);
 
   void on_item_show_context_menu(guint button, guint32 activate_time, Glib::RefPtr<CanvasLayoutItem> item);
   void on_context_menu_edit();

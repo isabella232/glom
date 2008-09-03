@@ -79,15 +79,24 @@ Dialog_Layout_List_Related::~Dialog_Layout_List_Related()
 {
 }
 
-void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout, Document_Glom* document, const sharedptr<const LayoutItem_Portal>& portal)
+void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& from_table)
 {
   type_vecLayoutFields empty_fields; //Just to satisfy the base class.
-  Dialog_Layout::set_document(layout, document, portal->get_relationship()->get_from_table(), empty_fields);
+  Dialog_Layout::set_document(layout, document, from_table, empty_fields);
   //m_table_name is now actually the parent_table_name.
 
+  update_ui();
+}
+
+void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout, Document_Glom* document, const sharedptr<const LayoutItem_Portal>& portal)
+{
   m_portal = glom_sharedptr_clone(portal);
 
-  update_ui();
+  Glib::ustring from_table;
+  if(portal)
+    from_table = portal->get_from_table();
+
+  set_document(layout, document, from_table);
 }
 
 void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)

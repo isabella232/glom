@@ -37,10 +37,18 @@ public:
   /**
    * @param layout "list" or "details"
    * @param document The document, so that the dialog can load the previous layout, and save changes.
-   * @param table_name The table name.
-   * @param table_fields: The actual fields in the table, in case the document does not yet know about them all.
+   * @param portal The layout item, which knows its from_table, for instance.
    */
   virtual void set_document(const Glib::ustring& layout, Document_Glom* document, const sharedptr<const LayoutItem_Portal>& portal);
+
+  /** Use this if there is no portal yet that can specify its from_table.
+   *
+   * @param layout "list" or "details"
+   * @param document The document, so that the dialog can load the previous layout, and save changes.
+   * @param from_table The parent table name.
+   */
+  virtual void set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& from_table);
+
   virtual void update_ui(bool including_relationships_list = true);
 
   sharedptr<Relationship> get_relationship() const;

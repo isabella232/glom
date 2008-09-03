@@ -25,7 +25,8 @@ namespace Glom
 {
 
 LayoutItem_Portal::LayoutItem_Portal()
-: m_navigation_relationship_specific_main(false)
+: m_navigation_relationship_specific_main(false),
+  m_print_layout_row_height(20) //arbitrary default.
 {
 }
 
@@ -33,7 +34,8 @@ LayoutItem_Portal::LayoutItem_Portal(const LayoutItem_Portal& src)
 : LayoutGroup(src),
   UsesRelationship(src),
   m_navigation_relationship_specific_main(src.m_navigation_relationship_specific_main),
-  m_navigation_relationship_specific(src.m_navigation_relationship_specific)
+  m_navigation_relationship_specific(src.m_navigation_relationship_specific),
+  m_print_layout_row_height(src.m_print_layout_row_height)
 {
 }
 
@@ -54,6 +56,7 @@ LayoutItem_Portal& LayoutItem_Portal::operator=(const LayoutItem_Portal& src)
 
   m_navigation_relationship_specific_main = src.m_navigation_relationship_specific_main;
   m_navigation_relationship_specific = src.m_navigation_relationship_specific;
+  m_print_layout_row_height = src.m_print_layout_row_height;
 
   return *this;
 }
@@ -123,6 +126,27 @@ void LayoutItem_Portal::set_navigation_relationship_specific(bool main_relations
     m_navigation_relationship_specific = relationship;
   else
     m_navigation_relationship_specific = sharedptr<UsesRelationship>();
+}
+
+Glib::ustring LayoutItem_Portal::get_from_table() const
+{
+  Glib::ustring from_table;
+  
+  sharedptr<const Relationship> relationship = get_relationship();
+  if(relationship)
+    from_table = relationship->get_from_table();
+  
+  return from_table;
+}
+
+double LayoutItem_Portal::get_print_layout_row_height() const
+{
+  return m_print_layout_row_height;
+}
+
+void LayoutItem_Portal::set_print_layout_row_height(double row_height)
+{
+  m_print_layout_row_height = row_height;
 }
 
 /*

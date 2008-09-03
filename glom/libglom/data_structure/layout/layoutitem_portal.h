@@ -46,17 +46,29 @@ public:
   virtual void change_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new);
   virtual void change_related_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new);
 
+  ///A helper method to avoid extra ifs to avoid null dereferencing.
+  Glib::ustring get_from_table() const;
+
   //virtual void debug(guint level = 0) const;
 
   sharedptr<UsesRelationship> get_navigation_relationship_specific(bool& main_relationship);
   sharedptr<const UsesRelationship> get_navigation_relationship_specific(bool& main_relationship) const;
   void set_navigation_relationship_specific(bool main_relationship, const sharedptr<UsesRelationship>& relationship);
 
+  /// This is used only for the print layouts.
+  double get_print_layout_row_height() const;
+
+  /// This is used only for the print layouts.
+  void set_print_layout_row_height(double row_height);
+
 protected:
 
   //If no navigation relationship has been specified then it will be automatically chosen: 
   bool m_navigation_relationship_specific_main;
-  sharedptr<UsesRelationship> m_navigation_relationship_specific; 
+  sharedptr<UsesRelationship> m_navigation_relationship_specific;
+
+  // This is used only for the print layouts.
+  double m_print_layout_row_height;
 };
 
 } //namespace Glom
