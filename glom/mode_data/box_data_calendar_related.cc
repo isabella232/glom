@@ -65,17 +65,37 @@ void Box_Data_Calendar_Related::enable_buttons()
   //m_calendar.set_allow_view_details(view_details_possible); //Don't allow the user to go to a record in a hidden table.
 }
 
-bool Box_Data_Calendar_Related::init_db_details(const sharedptr<const LayoutItem_CalendarPortal>& portal, bool show_title)
+bool Box_Data_Calendar_Related::init_db_details(const sharedptr<const LayoutItem_Portal>& portal, bool show_title)
 {
-  m_portal = glom_sharedptr_clone(portal);
+  //This calls the other method overload:
+  return Box_Data_Portal::init_db_details(portal, show_title);
+}
 
-  LayoutWidgetBase::m_table_name = m_portal->get_table_used(Glib::ustring() /* parent table_name, not used. */); 
- Base_DB_Table::m_table_name = LayoutWidgetBase::m_table_name;
+bool Box_Data_Calendar_Related::init_db_details(const Glib::ustring& parent_table, bool show_title)
+{
+  //std::cout << "DEBUG: Box_Data_Calendar_Related::init_db_details(): " << parent_table << std::endl;
 
-  const Glib::ustring relationship_title = m_portal->get_title_used(Glib::ustring() /* parent title - not relevant */);
-  
+  m_parent_table = parent_table;
+
+  if(m_portal)
+    LayoutWidgetBase::m_table_name = m_portal->get_table_used(Glib::ustring() /* parent table_name, not used. */); 
+  else
+    LayoutWidgetBase::m_table_name = Glib::ustring();
+
+  Base_DB_Table::m_table_name = LayoutWidgetBase::m_table_name;
+
+  //TODO: This is duplicated in box_data_related_list.cc and box_data_portal.cc. Just use code from the base class?
   if(show_title)
   {
+    Glib::ustring relationship_title;
+    if(m_portal && m_portal->get_has_relationship_name())
+      relationship_title = m_portal->get_title_used(Glib::ustring() /* parent title - not relevant */);
+    else
+    {
+      //Note to translators: This text is shown instead of a table title, when the table has not yet been chosen.
+      relationship_title = _("Undefined Table");
+    }
+
     m_Label.set_markup(Bakery::App_Gtk::util_bold_message(relationship_title));
     m_Label.show();
 
@@ -89,7 +109,10 @@ bool Box_Data_Calendar_Related::init_db_details(const sharedptr<const LayoutItem
     m_Alignment.set_padding(0, 0, 0, 0); //The box itself has padding of 6.
   }
 
-  m_key_field = get_fields_for_table_one_field(LayoutWidgetBase::m_table_name, m_portal->get_to_field_used());
+  if(m_portal)
+    m_key_field = get_fields_for_table_one_field(LayoutWidgetBase::m_table_name, m_portal->get_to_field_used());
+  else
+    m_key_field.clear();
 
   enable_buttons();
 
@@ -248,7 +271,7 @@ void Box_Data_Calendar_Related::on_record_added(const Gnome::Gda::Value& primary
     sharedptr<Field> field_primary_key; //TODO: = m_calendar.get_key_field();
 
     //Create the link by setting the foreign key
-    if(m_key_field)
+    if(m_key_field && m_portal)
     {
       Glib::ustring strQuery = "UPDATE \"" + m_portal->get_table_used(Glib::ustring() /* not relevant */) + "\"";
       strQuery += " SET \"" +  /* get_table_name() + "." +*/ m_key_field->get_name() + "\" = " + m_key_field->sql(m_key_value);
@@ -334,7 +357,16 @@ void Box_Data_Calendar_Related::prepare_layout_dialog(Dialog_Layout* dialog)
   g_assert(related_dialog != NULL);
   
   sharedptr<LayoutItem_CalendarPortal> derived_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(m_portal);
-  related_dialog->set_document(m_layout_name, get_document(), derived_portal);
+  if(derived_portal && derived_portal->get_has_relationship_name())
+  {
+    std::cout << "DEBUG: Box_Data_Calendar_Related::(): portal was not null" << std::endl;
+    related_dialog->set_document(m_layout_name, get_document(), derived_portal);
+  }
+  else
+  {
+    std::cout << "DEBUG: Box_Data_Calendar_Related::(): m_parent_table=" << m_parent_table << std::endl;
+    related_dialog->set_document(m_layout_name, get_document(), m_parent_table);
+  }
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -349,7 +381,7 @@ Glib::ustring Box_Data_Calendar_Related::on_calendar_details(guint year, guint m
   sharedptr<LayoutItem_CalendarPortal> derived_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(m_portal);
   if(!derived_portal)
   {
-    std::cout << "DEBUG: Box_Data_Calendar_Related::on_calendar_details(): date_field is NULL" << std::endl;
+    //std::cout << "DEBUG: Box_Data_Calendar_Related::on_calendar_details(): date_field is NULL" << std::endl;
     return Glib::ustring();
   }
   

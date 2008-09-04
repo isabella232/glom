@@ -105,10 +105,13 @@ void Canvas_PrintLayout::add_layout_group_children(const sharedptr<LayoutGroup>&
   for(LayoutGroup::type_list_items::const_iterator iter = group->m_list_items.begin(); iter != group->m_list_items.end(); ++iter)
   {
     sharedptr<LayoutItem> item = *iter;
+
+    sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::cast_dynamic(item);
     sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(item);
-    if(group)
+    if(group && !portal)
     {
       add_layout_group(group);
+      continue;
     }
     else
     {
@@ -178,6 +181,7 @@ void Canvas_PrintLayout::fill_layout_group(const sharedptr<LayoutGroup>& group)
       {
       */
         sharedptr<LayoutItem> layout_item = canvas_item->get_layout_item();
+        std::cout << "DEBUG: saving layout_item type=" << layout_item->get_part_type_name() << std::endl;
         update_layout_position_from_canvas(layout_item, canvas_item);
 
         group->add_item(layout_item);
@@ -281,7 +285,7 @@ void Canvas_PrintLayout::update_layout_position_from_canvas(const sharedptr<Layo
   layout_item->set_print_layout_position(x, y, width, height); 
 }
 
-sharedptr<LayoutItem_Portal> Canvas_PrintLayout::offer_related_records(const sharedptr<LayoutItem_Portal>& portal, Gtk::Widget* parent)
+sharedptr<LayoutItem_Portal> Canvas_PrintLayout::offer_related_records(const sharedptr<LayoutItem_Portal>& portal, Gtk::Window* parent)
 {
   sharedptr<LayoutItem_Portal> result = portal;
 
@@ -304,14 +308,17 @@ sharedptr<LayoutItem_Portal> Canvas_PrintLayout::offer_related_records(const sha
   else
     dialog->set_document("TODO_layout_name", get_document(), portal);
 
-  //m_pDialogLayout->signal_hide().connect( sigc::mem_fun(*this, &Box_Data::on_dialog_layout_hide) );
-  dialog->run();
+  if(parent)
+    dialog->set_transient_for(*parent);
 
-
-
-  //TODO: block.
+  Utils::show_window_until_hide(dialog);
 
   result = dialog->get_portal_layout();
+  if(!result)
+    std::cout << "DEBUG: result is empty." << std::endl;
+  else
+    std::cout << "result->get_items_count():" << result->get_items_count() << std::endl;
+
   delete dialog;
   dialog = 0;
 
@@ -359,6 +366,8 @@ void Canvas_PrintLayout::on_context_menu_edit()
       }
     }
   }
+
+  m_modified = true;
 
   m_context_item.clear();
 }

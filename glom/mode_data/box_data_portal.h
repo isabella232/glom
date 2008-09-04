@@ -43,6 +43,10 @@ public:
    */
   virtual bool init_db_details(const sharedptr<const LayoutItem_Portal>& portal, bool show_title = true);
 
+  /** Use this if no portal is yet defined, so the user can use the context menu to define a portal.
+   */
+  virtual bool init_db_details(const Glib::ustring& parent_table, bool show_title = true);
+
   /** Update a portal if a relevant value in its parent table has changed.
    *
    * @param foreign_key_value: The value that should be found in this table.
@@ -89,6 +93,7 @@ protected:
   Gtk::Label m_Label;
 
   sharedptr<LayoutItem_Portal> m_portal;
+  Glib::ustring m_parent_table; //A duplicate of the from_table in m_portal, but only when m_portal is not null.
   sharedptr<Field> m_key_field;
   Gnome::Gda::Value m_key_value;
     

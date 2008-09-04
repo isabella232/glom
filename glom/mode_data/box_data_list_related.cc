@@ -61,15 +61,32 @@ void Box_Data_List_Related::enable_buttons()
 
 bool Box_Data_List_Related::init_db_details(const sharedptr<const LayoutItem_Portal>& portal, bool show_title)
 {
-  m_portal = glom_sharedptr_clone(portal);
+  //This calls the other method overload:
+  return Box_Data_Portal::init_db_details(portal, show_title);
+}
 
-  LayoutWidgetBase::m_table_name = m_portal->get_table_used(Glib::ustring() /* parent table_name, not used. */); 
+bool Box_Data_List_Related::init_db_details(const Glib::ustring& parent_table, bool show_title)
+{
+  m_parent_table = parent_table;
+
+  if(m_portal)
+    LayoutWidgetBase::m_table_name = m_portal->get_table_used(Glib::ustring() /* parent table_name, not used. */); 
+  else
+    LayoutWidgetBase::m_table_name = Glib::ustring();
+
   Base_DB_Table::m_table_name = LayoutWidgetBase::m_table_name;
 
-  const Glib::ustring relationship_title = m_portal->get_title_used(Glib::ustring() /* parent title - not relevant */);
-  
   if(show_title)
   {
+    Glib::ustring relationship_title;
+    if(m_portal && m_portal->get_has_relationship_name())
+      relationship_title = m_portal->get_title_used(Glib::ustring() /* parent title - not relevant */);
+    else
+    {
+      //Note to translators: This text is shown instead of a table title, when the table has not yet been chosen.
+      relationship_title = _("Undefined Table");
+    }
+  
     m_Label.set_markup(Bakery::App_Gtk::util_bold_message(relationship_title));
     m_Label.show();
 
@@ -83,7 +100,11 @@ bool Box_Data_List_Related::init_db_details(const sharedptr<const LayoutItem_Por
     m_Alignment.set_padding(0, 0, 0, 0); //The box itself has padding of 6.
   }
 
-  m_key_field = get_fields_for_table_one_field(LayoutWidgetBase::m_table_name, m_portal->get_to_field_used());
+  if(m_portal)
+    m_key_field = get_fields_for_table_one_field(LayoutWidgetBase::m_table_name, m_portal->get_to_field_used());
+  else
+    m_key_field.clear();
+
 
   //Prevent impossible multiple related records:
   const bool single_related = (m_key_field && (m_key_field->get_unique_key() || m_key_field->get_primary_key()));
@@ -129,7 +150,7 @@ bool Box_Data_List_Related::fill_from_database()
   }
 
   //Prevent addition of new records if that is what the relationship specifies:
-  if(allow_add && m_portal->get_relationship())
+  if(allow_add && m_portal && m_portal->get_relationship())
     allow_add = m_portal->get_relationship()->get_auto_create();
 
   m_AddDel.set_allow_add(allow_add);
@@ -252,7 +273,7 @@ void Box_Data_List_Related::on_adddel_record_added(const Gtk::TreeModel::iterato
     sharedptr<Field> field_primary_key = m_AddDel.get_key_field();
 
     //Create the link by setting the foreign key
-    if(m_key_field)
+    if(m_key_field && m_portal)
     {
       Glib::ustring strQuery = "UPDATE \"" + m_portal->get_table_used(Glib::ustring() /* not relevant */) + "\"";
       strQuery += " SET \"" +  /* get_table_name() + "." +*/ m_key_field->get_name() + "\" = " + m_key_field->sql(m_key_value);
@@ -322,7 +343,11 @@ void Box_Data_List_Related::prepare_layout_dialog(Dialog_Layout* dialog)
 {
   Dialog_Layout_List_Related* related_dialog = dynamic_cast<Dialog_Layout_List_Related*>(dialog);
   g_assert(related_dialog != NULL);
-  related_dialog->set_document(m_layout_name, get_document(), m_portal);
+
+  if(m_portal && m_portal->get_has_relationship_name())
+    related_dialog->set_document(m_layout_name, get_document(), m_portal);
+  else
+    related_dialog->set_document(m_layout_name, get_document(), m_parent_table);
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

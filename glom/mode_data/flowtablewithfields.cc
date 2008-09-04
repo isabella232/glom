@@ -248,27 +248,32 @@ Box_Data_List_Related* FlowTableWithFields::create_related(const sharedptr<Layou
   Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
   if(pDocument)
   {
+    Box_Data_List_Related* portal_box = Gtk::manage(new Box_Data_List_Related);
+    add_view(portal_box); //Give it access to the document, needed to get the layout and fields information.
+
+    //Create the layout:
+    if(portal && portal->get_has_relationship_name())
+      portal_box->init_db_details(portal, show_title);
+    else
+      portal_box->init_db_details(m_table_name, show_title);
+
+    Glib::ustring to_table;
     sharedptr<Relationship> relationship = pDocument->get_relationship(m_table_name, portal->get_relationship_name());
     if(relationship)
-    {
-      Box_Data_List_Related* portal_box = Gtk::manage(new Box_Data_List_Related);
-      add_view(portal_box); //Give it access to the document, needed to get the layout and fields information.
+      to_table = relationship->get_to_table();
 
-      portal_box->init_db_details(portal, show_title); //Create the layout
+    portal_box->set_layout_item(portal, to_table);
+    portal_box->show();
 
-      portal_box->set_layout_item(portal, relationship->get_to_table());
-      portal_box->show();
+    m_portals.push_back(portal_box);
 
-      m_portals.push_back(portal_box);
+    //Connect signals:
+    //Just reemit this object's signal when receiving the same signal from the portal:
+    signal_connect_for_reemit_1arg(portal_box->signal_portal_record_changed(), signal_related_record_changed());
 
-      //Connect signals:
-      //Just reemit this object's signal when receiving the same signal from the portal:
-      signal_connect_for_reemit_1arg(portal_box->signal_portal_record_changed(), signal_related_record_changed());
+    portal_box->signal_user_requested_details().connect( sigc::bind( sigc::mem_fun(*this, &FlowTableWithFields::on_portal_user_requested_details), portal_box));
 
-      portal_box->signal_user_requested_details().connect( sigc::bind( sigc::mem_fun(*this, &FlowTableWithFields::on_portal_user_requested_details), portal_box));
-
-      return portal_box;
-    }
+    return portal_box;
   }
 
   return 0;
@@ -282,27 +287,32 @@ Box_Data_Calendar_Related* FlowTableWithFields::create_related_calendar(const sh
   Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
   if(pDocument)
   {
+    Box_Data_Calendar_Related* portal_box = Gtk::manage(new Box_Data_Calendar_Related);
+    add_view(portal_box); //Give it access to the document, needed to get the layout and fields information.
+
+    //Create the layout:
+    if(portal && portal->get_has_relationship_name())
+      portal_box->init_db_details(portal, show_title);
+    else
+      portal_box->init_db_details(m_table_name, show_title);
+
+    Glib::ustring to_table;
     sharedptr<Relationship> relationship = pDocument->get_relationship(m_table_name, portal->get_relationship_name());
     if(relationship)
-    {
-      Box_Data_Calendar_Related* portal_box = Gtk::manage(new Box_Data_Calendar_Related);
-      add_view(portal_box); //Give it access to the document, needed to get the layout and fields information.
+      to_table = relationship->get_to_table();
 
-      portal_box->init_db_details(portal, show_title); //Create the layout
+    portal_box->set_layout_item(portal, to_table);
+    portal_box->show();
 
-      portal_box->set_layout_item(portal, relationship->get_to_table());
-      portal_box->show();
+    m_portals.push_back(portal_box);
 
-      m_portals.push_back(portal_box);
+    //Connect signals:
+    //Just reemit this object's signal when receiving the same signal from the portal:
+    signal_connect_for_reemit_1arg(portal_box->signal_portal_record_changed(), signal_related_record_changed());    
 
-      //Connect signals:
-      //Just reemit this object's signal when receiving the same signal from the portal:
-      signal_connect_for_reemit_1arg(portal_box->signal_portal_record_changed(), signal_related_record_changed());    
+    portal_box->signal_user_requested_details().connect( sigc::bind( sigc::mem_fun(*this, &FlowTableWithFields::on_portal_user_requested_details), portal_box));
 
-      portal_box->signal_user_requested_details().connect( sigc::bind( sigc::mem_fun(*this, &FlowTableWithFields::on_portal_user_requested_details), portal_box));
-
-      return portal_box;
-    }
+    return portal_box;
   }
 
   return 0;
@@ -322,6 +332,8 @@ void FlowTableWithFields::add_layout_portal_at_position(const sharedptr<LayoutIt
     add(*portal_box, true /* expand */);
     add_layoutwidgetbase(portal_box, add_before);
   }
+  else
+    std::cerr << "FlowTableWithFields::add_layout_portal_at_position(): No portal was created." << std::endl;
 }
 
 void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<LayoutItem_Notebook>& notebook, const type_list_layoutwidgets::iterator& add_before)

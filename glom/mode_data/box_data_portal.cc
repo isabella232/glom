@@ -55,13 +55,37 @@ bool Box_Data_Portal::init_db_details(const sharedptr<const LayoutItem_Portal>& 
 {
   m_portal = glom_sharedptr_clone(portal);
 
-  LayoutWidgetBase::m_table_name = m_portal->get_table_used(Glib::ustring() /* parent table_name, not used. */); 
+  Glib::ustring parent_table;
+  if(m_portal)
+    parent_table = m_portal->get_from_table();
+
+  return init_db_details(parent_table, show_title);
+}
+
+//TODO: Is this base class implemenation actually called by anything?
+bool Box_Data_Portal::init_db_details(const Glib::ustring& parent_table, bool show_title)
+{
+  m_parent_table = parent_table;
+
+  if(m_portal)
+    LayoutWidgetBase::m_table_name = m_portal->get_table_used(Glib::ustring() /* parent table_name, not used. */); 
+  else
+    LayoutWidgetBase::m_table_name = Glib::ustring();
+
   Base_DB_Table::m_table_name = LayoutWidgetBase::m_table_name;
 
-  const Glib::ustring relationship_title = m_portal->get_title_used(Glib::ustring() /* parent title - not relevant */);
-  
   if(show_title)
   {
+    //TODO: This same code is in box_data_related_list.cc. Remove the duplication.
+    Glib::ustring relationship_title;
+    if(m_portal && m_portal->get_has_relationship_name())
+      relationship_title = m_portal->get_title_used(Glib::ustring() /* parent title - not relevant */);
+    else
+    {
+      //Note to translators: This text is shown instead of a table title, when the table has not yet been chosen.
+      relationship_title = _("Undefined Table");
+    }
+
     m_Label.set_markup(Bakery::App_Gtk::util_bold_message(relationship_title));
     m_Label.show();
 
@@ -86,7 +110,7 @@ bool Box_Data_Portal::refresh_data_from_database_with_foreign_key(const Gnome::G
 {
   m_key_value = foreign_key_value;
 
-  if(m_key_field)
+  if(m_key_field && m_portal)
   {
     if(!Conversions::value_is_empty(m_key_value))
     {
@@ -172,7 +196,7 @@ void Box_Data_Portal::on_record_added(const Gnome::Gda::Value& primary_key_value
 Box_Data_Portal::type_vecLayoutFields Box_Data_Portal::get_fields_to_show() const
 {
   const Document_Glom* document = get_document();
-  if(document)
+  if(document && m_portal)
   {
     Document_Glom::type_list_layout_groups mapGroups;
     mapGroups.push_back(m_portal);
@@ -223,6 +247,9 @@ void Box_Data_Portal::get_suitable_table_to_view_details(Glib::ustring& table_na
  
   //Initialize output parameters:
   table_name = Glib::ustring();
+
+  if(!m_portal)
+    return;
 
   //Check whether a relationship was specified:
   bool navigation_relationship_main = false;

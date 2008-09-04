@@ -897,4 +897,37 @@ void Utils::show_ok_dialog(const Glib::ustring& title, const Glib::ustring& mess
   dialog.run();
 }
 
+namespace
+{
+
+static void on_window_hide(Glib::RefPtr<Glib::MainLoop> main_loop, sigc::connection handler_connection)
+{
+  handler_connection.disconnect(); //This should release a main_loop reference.
+  main_loop->quit();
+
+  //main_loop should be destroyed soon, because nothing else is using it.
+}
+
+} //anonymous namespace.
+
+void Utils::show_window_until_hide(Gtk::Window* window)
+{
+  if(!window)
+    return;
+
+  Glib::RefPtr<Glib::MainLoop> main_loop = Glib::MainLoop::create(false /* not running */);
+
+  //Stop the main_loop when the window is hidden:
+  sigc::connection handler_connection; //TODO: There seems to be a crash if this is on the same line.
+  handler_connection = window->signal_hide().connect( 
+    sigc::bind(
+      sigc::ptr_fun(&on_window_hide),
+      main_loop, handler_connection
+    ) );
+  
+  window->show();
+  main_loop->run(); //Run and block until it is stopped by the hide signal handler.
+}
+
+
 } //namespace Glom

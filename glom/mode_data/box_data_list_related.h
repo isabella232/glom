@@ -40,6 +40,10 @@ public:
    */
   virtual bool init_db_details(const sharedptr<const LayoutItem_Portal>& portal, bool show_title = true);
 
+  /** Use this if no portal is yet defined, so the user can use the context menu to define a portal.
+   */
+  virtual bool init_db_details(const Glib::ustring& parent_table, bool show_title = true);
+
 protected:
   virtual bool fill_from_database(); //Override.
 

@@ -206,12 +206,15 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
           sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::cast_dynamic(m_layout_item);
           if(portal)
           {
+            std::cout << "DEBUG: found portal: items=" << portal->get_items_count() << std::endl;
+
             Glib::RefPtr<CanvasTableMovable> canvas_item = CanvasTableMovable::create();
-            canvas_item->property_vert_grid_line_width() = 2;
+            canvas_item->property_vert_grid_line_width() = 1;
+            canvas_item->property_horz_grid_line_width() = 1;
             canvas_item->property_stroke_color() = "black";
 
             //Show as many rows as can fit in the height.
-            const double row_height = portal->get_print_layout_row_height(); //TODO: Let the user specify the row height
+            const double row_height = portal->get_print_layout_row_height();
             double ignore_x = 0;
             double ignore_y = 0;
             double total_width = 0;

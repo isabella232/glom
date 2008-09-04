@@ -81,6 +81,11 @@ Dialog_Layout_List_Related::~Dialog_Layout_List_Related()
 
 void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& from_table)
 {
+  if(!m_portal)
+  {
+    m_portal = sharedptr<LayoutItem_Portal>::create(); //The rest of the class assumes that this is not null.
+  }
+
   type_vecLayoutFields empty_fields; //Just to satisfy the base class.
   Dialog_Layout::set_document(layout, document, from_table, empty_fields);
   //m_table_name is now actually the parent_table_name.
@@ -101,8 +106,8 @@ void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout, Docum
 
 void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
 {
-  if(!m_portal || !(m_portal->get_relationship()))
-   return;
+  if(!m_portal)
+    return;
 
   m_modified = false;
 
@@ -123,7 +128,13 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
         show_child_relationships = true;
       }
 
-      m_combo_relationship->set_relationships(document, m_portal->get_relationship()->get_from_table(), show_child_relationships, false /* don't show parent table */); //We don't show the optional parent table because portal use _only_ relationships, of course.
+      Glib::ustring from_table;
+      if(m_portal->get_has_relationship_name())
+        from_table = m_portal->get_relationship()->get_from_table();
+      else
+        from_table = m_table_name;
+
+      m_combo_relationship->set_relationships(document, from_table, show_child_relationships, false /* don't show parent table */); //We don't show the optional parent table because portal use _only_ relationships, of course.
 
       if(show_child_relationships != m_checkbutton_show_child_relationships->get_active())
       {
@@ -132,15 +143,18 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
     }
 
     //Set the table name and title:
-    sharedptr<LayoutItem_Portal> portal_temp = m_portal;
-    m_combo_relationship->set_selected_relationship(m_portal->get_relationship(), m_portal->get_related_relationship()); 
-
+    //sharedptr<LayoutItem_Portal> portal_temp = m_portal;
     Document_Glom::type_list_layout_groups mapGroups;
-    mapGroups.push_back(m_portal);
-    document->fill_layout_field_details(related_table_name, mapGroups); //Update with full field information.
+    if(m_portal)
+    {
+      m_combo_relationship->set_selected_relationship(m_portal->get_relationship(), m_portal->get_related_relationship()); 
 
-    //Show the field layout
-    //typedef std::list< Glib::ustring > type_listStrings;
+      mapGroups.push_back(m_portal);
+      document->fill_layout_field_details(related_table_name, mapGroups); //Update with full field information.
+
+      //Show the field layout
+      //typedef std::list< Glib::ustring > type_listStrings;
+    }
 
     m_model_items->clear();
 
@@ -240,6 +254,7 @@ void Dialog_Layout_List_Related::save_to_document()
 
     //Add the fields to the portal:
     //The code that created this dialog must read m_portal back out again.
+
     m_portal->remove_all_items();
 
     guint field_sequence = 1; //0 means no sequence

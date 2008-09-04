@@ -1,3 +1,32 @@
+2008-09-05  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_data/box_data_calendar_related.cc:
+	* glom/mode_data/box_data_calendar_related.h:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/box_data_list_related.h:
+	* glom/mode_data/box_data_portal.cc:
+	* glom/mode_data/box_data_portal.h: Added init_db_details() 
+	method overloads that take a parent table instead of a 
+	portal, to use when no relationship has been chosen yet.
+	* glom/mode_data/dialog_layout_calendar_related.cc:
+	* glom/mode_data/dialog_layout_calendar_related.h:
+	Added set_document() that takes a table instead of a portal, 
+	as the other portal layout dialogs do already.
+	* glom/mode_data/flowtablewithfields.cc:
+	Specify a from table name instead of a portal when 
+	no relationship has been chosen yet.
+	* glom/mode_data/dialog_layout_list_related.cc: Cope with a 
+	a null portal, so the user can choose the relationship on this
+	dialog without choosing the relationship separately first.
+	* glom/mode_data/dialog_layout_details.cc: Do not ask for the 
+	relationship whenever adding a portal.
+
+	* glom/libglom/utils.cc:
+	* glom/libglom/utils.h: Added show_window_until_hide().
+	* glom/mode_design/print_layouts/canvas_print_layout.cc:
+	* glom/mode_design/print_layouts/canvas_print_layout.h:
+	Block when showing the layout dialog for a portal.
+
 2008-09-03  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/data_structure/layout/layoutitem_portal.cc

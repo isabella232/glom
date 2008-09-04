@@ -764,16 +764,18 @@ void Dialog_Layout_Details::on_button_add_related()
 {
   Gtk::TreeModel::iterator parent = get_selected_group_parent();
 
+  /* We don't need to ask this because the portal layout dialog can now handle an empty portal:
   sharedptr<Relationship> relationship = offer_relationship_list();
   if(relationship)
   {
+  */
     Gtk::TreeModel::iterator iter = append_appropriate_row();
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
 
       sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::create();
-      portal->set_relationship(relationship);
+      //portal->set_relationship(relationship);
       row[m_model_items->m_columns.m_col_layout_item] = portal;
 
       //Scroll to, and select, the new row:
@@ -785,7 +787,9 @@ void Dialog_Layout_Details::on_button_add_related()
 
       m_modified = true;
     }
+  /*
   }
+  */
 
   enable_buttons();
 }
@@ -794,16 +798,18 @@ void Dialog_Layout_Details::on_button_add_related_calendar()
 {
   Gtk::TreeModel::iterator parent = get_selected_group_parent();
 
+  /* We don't need to ask this because the portal layout dialog can now handle an empty portal:
   sharedptr<Relationship> relationship = offer_relationship_list();
   if(relationship)
   {
+  */
     Gtk::TreeModel::iterator iter = append_appropriate_row();
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;
 
       sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_CalendarPortal>::create();
-      portal->set_relationship(relationship);
+      //portal->set_relationship(relationship);
       row[m_model_items->m_columns.m_col_layout_item] = portal;
 
       //Scroll to, and select, the new row:
@@ -815,7 +821,7 @@ void Dialog_Layout_Details::on_button_add_related_calendar()
 
       m_modified = true;
     }
-  }
+  //}
 
   enable_buttons();
 }

@@ -71,7 +71,7 @@ protected:
   void add_layout_group_children(const sharedptr<LayoutGroup>& group);
   void fill_layout_group(const sharedptr<LayoutGroup>& group);
 
-  sharedptr<LayoutItem_Portal> offer_related_records(const sharedptr<LayoutItem_Portal>& portal, Gtk::Widget* parent);
+  sharedptr<LayoutItem_Portal> offer_related_records(const sharedptr<LayoutItem_Portal>& portal, Gtk::Window* parent);
 
   void on_item_show_context_menu(guint button, guint32 activate_time, Glib::RefPtr<CanvasLayoutItem> item);
   void on_context_menu_edit();
