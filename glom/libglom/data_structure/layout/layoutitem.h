@@ -75,8 +75,7 @@ protected:
   Glib::ustring m_name;
   bool m_editable;
 
-  //Not saved in document:
-  guint m_display_width; //In pixels.
+  guint m_display_width; //In pixels for the list layout, in mm for the print layout.
 
   void instantiate_positions() const;
 

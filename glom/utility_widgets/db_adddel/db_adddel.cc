@@ -1691,7 +1691,7 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   pViewColumn->set_resizable();
   
   guint column_width = 0;
-  if(!layout_item->get_display_width(column_width)) //Not saved in document, but remembered when the column is resized.
+  if(!layout_item->get_display_width(column_width))
      column_width = 100; //Fairly sensible default. TODO: Choose a width based on the first 100 values.
 
   pViewColumn->set_fixed_width((int)column_width); //This is the only way to set the width, so we need to set it as resizable again immediately afterwards.
@@ -1720,9 +1720,17 @@ void DbAddDel::on_treeview_column_resized(int model_column_index, DbTreeViewColu
   if(!view_column)
     return;
 
+  //We do not save the column width if this is the last column, 
+  //because that must always be automatic, 
+  //because it must resize when the whole column resizes.
+  std::list<const Gtk::TreeView::Column*> columns = m_TreeView.get_columns();
+  const int n_view_columns = columns.size();
+  if(n_view_columns && (view_column == m_TreeView.get_column(n_view_columns -1)))
+    return;
+
   DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
 
-  guint width = (guint)view_column->get_width();
+  const guint width = (guint)view_column->get_width();
   //std::cout << "  DbAddDel::on_treeview_column_resized(): width=" << width << std::endl;
 
   if(column_info.m_item)

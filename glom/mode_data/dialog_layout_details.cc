@@ -36,6 +36,8 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
 : Dialog_Layout(cobject, refGlade),
   m_treeview_fields(0),
   m_treeview_column_title(0),
+  m_treeview_column_group_columns(0),
+  m_treeview_column_column_width(0),
   m_box_table_widgets(0),
   m_box_related_table_widgets(0),
   m_box_related_navigation(0),
@@ -108,15 +110,33 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
 
 
     //Columns-count column:
-    Gtk::TreeView::Column* column_count = Gtk::manage( new Gtk::TreeView::Column(_("Columns Count")) );
-    m_treeview_fields->append_column(*column_count);
+    m_treeview_column_group_columns = Gtk::manage( new Gtk::TreeView::Column(_("Group Columns")) );
+    m_treeview_fields->append_column(*m_treeview_column_group_columns);
 
     Gtk::CellRendererText* renderer_count = Gtk::manage(new Gtk::CellRendererText);
-    column_count->pack_start(*renderer_count);
-    column_count->set_cell_data_func(*renderer_count, sigc::mem_fun(*this, &Dialog_Layout_Details::on_cell_data_columns_count));
+    m_treeview_column_group_columns->pack_start(*renderer_count);
+    m_treeview_column_group_columns->set_cell_data_func(*renderer_count, sigc::mem_fun(*this, &Dialog_Layout_Details::on_cell_data_group_columns));
 
     //Connect to its signal:
-    renderer_count->signal_edited().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_treeview_cell_edited_columns_count) );
+    renderer_count->signal_edited().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_treeview_cell_edited_group_columns) );
+
+
+    //Column-Width column: (only for list views)
+    //Note to translators: This is a name (the width of a UI element in the display), not an action.
+    m_treeview_column_column_width = Gtk::manage( new Gtk::TreeView::Column(_("Display Width")) );
+    m_treeview_fields->append_column(*m_treeview_column_column_width);
+
+    Gtk::CellRendererText* renderer_column_width = Gtk::manage(new Gtk::CellRendererText);
+    m_treeview_column_column_width->pack_start(*renderer_column_width);
+    m_treeview_column_column_width->set_cell_data_func(*renderer_column_width, sigc::mem_fun(*this, &Dialog_Layout_Details::on_cell_data_column_width));
+
+    //Connect to its signal:
+    renderer_column_width->signal_edited().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_treeview_cell_edited_column_width) );
+
+    //Hide this column because we don't need it for the details layout.
+    //It is made visible by the (derived) list layout class.
+    m_treeview_column_column_width->set_visible(false);
+
 
     //Respond to changes of selection:
     Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_fields->get_selection();
@@ -974,8 +994,8 @@ void Dialog_Layout_Details::on_button_edit()
           sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(layout_item);
           if(layout_group)
           {
-              Gtk::TreeModel::Path path = m_model_items->get_path(iter);
-              m_treeview_fields->set_cursor(path, *m_treeview_column_title, true /* start_editing */);
+            Gtk::TreeModel::Path path = m_model_items->get_path(iter);
+            m_treeview_fields->set_cursor(path, *m_treeview_column_title, true /* start_editing */);
           }
           else
           {
@@ -1212,7 +1232,35 @@ void Dialog_Layout_Details::on_cell_data_title(Gtk::CellRenderer* renderer, cons
   }
 }
 
-void Dialog_Layout_Details::on_cell_data_columns_count(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
+void Dialog_Layout_Details::on_cell_data_column_width(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
+{
+  //Set the view's cell properties depending on the model's data:
+  Gtk::CellRendererText* renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
+  if(renderer_text)
+  {
+    if(iter)
+    {
+      Gtk::TreeModel::Row row = *iter;
+      sharedptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
+     
+      sharedptr<LayoutItem_Button> layout_button = sharedptr<LayoutItem_Button>::cast_dynamic(layout_item);
+      sharedptr<LayoutItem_Text> layout_text = sharedptr<LayoutItem_Text>::cast_dynamic(layout_item);
+      sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
+      const bool editable = (layout_field || layout_button || layout_text); //Only these have column widths that can be edited.
+      renderer_text->property_editable() = editable;
+
+      guint column_width = 0;
+      layout_item->get_display_width(column_width);
+      Glib::ustring text; 
+      if(column_width) //Show nothing if no width has been specified, meaning that it's automatic.
+        text = Utils::string_from_decimal(column_width);
+
+      renderer_text->property_text() = text;
+    }
+  }
+}
+
+void Dialog_Layout_Details::on_cell_data_group_columns(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
 {
   //Set the view's cell properties depending on the model's data:
   Gtk::CellRendererText* renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
@@ -1232,11 +1280,7 @@ void Dialog_Layout_Details::on_cell_data_columns_count(Gtk::CellRenderer* render
       Glib::ustring text;
       if(is_group)
       {
-        std::stringstream the_stream;
-        //the_stream.imbue(std::locale::classic());
-        const guint number = layout_group->m_columns_count;
-        the_stream << number;
-        text = the_stream.str();
+        text = Utils::string_from_decimal(layout_group->m_columns_count);
       }
       else
       {
@@ -1273,6 +1317,7 @@ void Dialog_Layout_Details::on_treeview_cell_edited_title(const Glib::ustring& p
   }
 }
 
+
 void Dialog_Layout_Details::on_treeview_cell_edited_name(const Glib::ustring& path_string, const Glib::ustring& new_text)
 {
   if(!path_string.empty())
@@ -1297,7 +1342,35 @@ void Dialog_Layout_Details::on_treeview_cell_edited_name(const Glib::ustring& pa
   }
 }
 
-void Dialog_Layout_Details::on_treeview_cell_edited_columns_count(const Glib::ustring& path_string, const Glib::ustring& new_text)
+void Dialog_Layout_Details::on_treeview_cell_edited_column_width(const Glib::ustring& path_string, const Glib::ustring& new_text)
+{
+  if(!path_string.empty())
+  {
+    Gtk::TreePath path(path_string);
+
+    //Get the row from the path:
+    Gtk::TreeModel::iterator iter = m_model_items->get_iter(path);
+    if(iter)
+    {
+      Gtk::TreeModel::Row row = *iter;
+      sharedptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
+      if(layout_item)
+      {
+        //Convert the text to a number, using the same logic used by GtkCellRendererText when it stores numbers.
+        char* pchEnd = 0;
+        const guint new_value = static_cast<guint>( strtod(new_text.c_str(), &pchEnd) );
+
+        //Store the user's new value in the model:
+        Gtk::TreeRow row = *iter;
+        layout_item->set_display_width(new_value);
+
+        m_modified = true;
+      }
+    }
+  }
+}
+
+void Dialog_Layout_Details::on_treeview_cell_edited_group_columns(const Glib::ustring& path_string, const Glib::ustring& new_text)
 {
   //This is used on numerical model columns:
   if(path_string.empty())

@@ -303,21 +303,33 @@ sharedptr<LayoutItem_Portal> Canvas_PrintLayout::offer_related_records(const sha
 
   add_view(dialog); //Give it access to the document.
 
-  if(!portal || (portal->get_from_table().empty()))
-    dialog->set_document("TODO_layout_name", get_document(), m_table_name);
-  else
-    dialog->set_document("TODO_layout_name", get_document(), portal);
+  dialog->set_document("TODO_layout_name", get_document(), portal, m_table_name);
 
   if(parent)
     dialog->set_transient_for(*parent);
 
   Utils::show_window_until_hide(dialog);
 
+  if(portal)
+  {
+    double x = 0;
+    double y = 0;
+    double width =0;
+    double height = 0;
+    portal->get_print_layout_position(x, y, width, height);
+    std::cout << "DEBUG before: x=" << x << ", y=" << y << ", width=" << width << ", height=" << height << std::endl;
+  }
+
   result = dialog->get_portal_layout();
-  if(!result)
-    std::cout << "DEBUG: result is empty." << std::endl;
-  else
-    std::cout << "result->get_items_count():" << result->get_items_count() << std::endl;
+  if(result)
+  {
+    double x = 0;
+    double y = 0;
+    double width =0;
+    double height = 0;
+    result->get_print_layout_position(x, y, width, height);
+    std::cout << "DEBUG after: x=" << x << ", y=" << y << ", width=" << width << ", height=" << height << std::endl;
+  }
 
   delete dialog;
   dialog = 0;

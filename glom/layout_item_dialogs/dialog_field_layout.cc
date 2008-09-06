@@ -79,12 +79,6 @@ void Dialog_FieldLayout::set_field(const sharedptr<const LayoutItem_Field>& fiel
 {
   m_layout_item = glom_sharedptr_clone(field);
 
-    double x = 0;
-    double y = 0;
-    double width, height;
-    m_layout_item->get_print_layout_position(x, y, width, height);
-    std::cout << "DEBUGDialog_FieldLayout::set_field(): m_layout_item: x=" << x << std::endl;
-
   m_table_name = table_name;
 
   m_label_field_name->set_text( field->get_layout_display_name() );

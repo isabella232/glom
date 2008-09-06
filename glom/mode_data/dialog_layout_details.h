@@ -75,16 +75,20 @@ protected:
 
   void on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
   void on_cell_data_title(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
-  void on_cell_data_columns_count(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
+  void on_cell_data_group_columns(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
+  void on_cell_data_column_width(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
 
   void on_treeview_cell_edited_name(const Glib::ustring& path_string, const Glib::ustring& new_text);
   void on_treeview_cell_edited_title(const Glib::ustring& path_string, const Glib::ustring& new_text);
-  void on_treeview_cell_edited_columns_count(const Glib::ustring& path_string, const Glib::ustring& new_text);
+  void on_treeview_cell_edited_group_columns(const Glib::ustring& path_string, const Glib::ustring& new_text);
+  void on_treeview_cell_edited_column_width(const Glib::ustring& path_string, const Glib::ustring& new_text);
 
   Gtk::TreeModel::iterator append_appropriate_row();
 
   Gtk::TreeView* m_treeview_fields;
   Gtk::TreeView::Column* m_treeview_column_title;
+  Gtk::TreeView::Column* m_treeview_column_group_columns;
+  Gtk::TreeView::Column* m_treeview_column_column_width;
 
   // Only one of these boxes should be shown:
   Gtk::Box* m_box_table_widgets;

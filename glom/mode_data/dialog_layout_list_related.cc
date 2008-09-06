@@ -79,29 +79,31 @@ Dialog_Layout_List_Related::~Dialog_Layout_List_Related()
 {
 }
 
-void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& from_table)
-{
-  if(!m_portal)
-  {
-    m_portal = sharedptr<LayoutItem_Portal>::create(); //The rest of the class assumes that this is not null.
-  }
 
+void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout, Document_Glom* document, const sharedptr<const LayoutItem_Portal>& portal, const Glib::ustring& from_table)
+{
+  //Ignore the provided from_table if the portal has one:
+  Glib::ustring actual_from_table;
+  if(portal)
+  {
+    const Glib::ustring portal_from_table = portal->get_from_table();
+    if(portal_from_table.empty())
+      actual_from_table = portal_from_table;
+  }
+  
+  if(actual_from_table.empty())
+    actual_from_table = from_table;
+
+  if(portal)
+    m_portal = glom_sharedptr_clone(portal);
+  else
+    m_portal = sharedptr<LayoutItem_Portal>::create(); //The rest of the class assumes that this is not null.
+  
   type_vecLayoutFields empty_fields; //Just to satisfy the base class.
-  Dialog_Layout::set_document(layout, document, from_table, empty_fields);
+  Dialog_Layout::set_document(layout, document, actual_from_table, empty_fields);
   //m_table_name is now actually the parent_table_name.
 
   update_ui();
-}
-
-void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout, Document_Glom* document, const sharedptr<const LayoutItem_Portal>& portal)
-{
-  m_portal = glom_sharedptr_clone(portal);
-
-  Glib::ustring from_table;
-  if(portal)
-    from_table = portal->get_from_table();
-
-  set_document(layout, document, from_table);
 }
 
 void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)

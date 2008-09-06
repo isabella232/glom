@@ -206,15 +206,14 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
           sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::cast_dynamic(m_layout_item);
           if(portal)
           {
-            std::cout << "DEBUG: found portal: items=" << portal->get_items_count() << std::endl;
-
             Glib::RefPtr<CanvasTableMovable> canvas_item = CanvasTableMovable::create();
             canvas_item->property_vert_grid_line_width() = 1;
             canvas_item->property_horz_grid_line_width() = 1;
             canvas_item->property_stroke_color() = "black";
 
             //Show as many rows as can fit in the height.
-            const double row_height = portal->get_print_layout_row_height();
+            //TODO: use std::max():
+            const double row_height = MAX(portal->get_print_layout_row_height(), 1); //Avoid 0, because that makes the whole thing zero sized.
             double ignore_x = 0;
             double ignore_y = 0;
             double total_width = 0;
@@ -224,16 +223,31 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
             const double max_rows_fraction = total_height / row_height;
             double max_rows = 0;
             modf(max_rows_fraction, &max_rows);
-            for(int i = 0; i < (int)max_rows; ++i)
-            {
-              Glib::RefPtr<CanvasRectMovable> rect_row = CanvasRectMovable::create();
-              rect_row->property_fill_color() = "white"; //This makes the whole area clickable, not just the outline stroke.
-              rect_row->property_line_width() = 1;
-              rect_row->property_stroke_color() = "black";
-              rect_row->set_width_height(total_width, row_height);
 
-              //TODO: Add/Remove rows when resizing, instead of resizing the rows:
-              canvas_item->attach(rect_row, 0 /* left_attach */, 1 /* right_attach */, i /* top_attach */, i + 1 /* right_attach */, (Gtk::AttachOptions)Gtk::FILL | Gtk::EXPAND, (Gtk::AttachOptions)Gtk::FILL | Gtk::EXPAND, 0.0, 0.0, 0.0, 0.0);
+            const LayoutGroup::type_list_items child_items = portal->get_items();
+
+            for(guint row = 0; row < (guint)max_rows; ++row)
+            {
+              guint col = 0;
+              for(LayoutGroup::type_list_items::const_iterator iter = child_items.begin(); iter != child_items.end(); ++iter)
+              {
+                sharedptr<LayoutItem> layout_item = *iter;
+
+                Glib::RefPtr<CanvasRectMovable> rect = CanvasRectMovable::create();
+                rect->property_fill_color() = "white"; //This makes the whole area clickable, not just the outline stroke.
+                rect->property_line_width() = 1;
+                rect->property_stroke_color() = "black";
+
+                //TODO: Use std::max():
+                guint width = 0;
+                layout_item->get_display_width(width);
+                width = MAX(width, 10);
+                rect->set_width_height(width, row_height);
+
+                //TODO: Add/Remove rows when resizing, instead of resizing the rows:
+                canvas_item->attach(rect, col /* left_attach */, col+1 /* right_attach */, row /* top_attach */, row + 1 /* right_attach */, Gtk::SHRINK, (Gtk::AttachOptions)Gtk::FILL | Gtk::EXPAND, 0.0, 0.0, 0.0, 0.0);
+                ++col;
+              }
             }
 
             child = canvas_item;

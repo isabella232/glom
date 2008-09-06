@@ -43,6 +43,14 @@ Dialog_Layout_List::Dialog_Layout_List(BaseObjectType* cobject, const Glib::RefP
   Gtk::Frame* box_calendar = 0;
   refGlade->get_widget("frame_calendar", box_calendar); 
   box_calendar->hide();
+
+  //We don't use this column:
+  if(m_treeview_column_group_columns)
+    m_treeview_column_group_columns->set_visible(false);
+
+  //We do use this column:
+  if(m_treeview_column_column_width)
+    m_treeview_column_column_width->set_visible();
 }
 
 Dialog_Layout_List::~Dialog_Layout_List()

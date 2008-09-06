@@ -344,10 +344,7 @@ void Box_Data_List_Related::prepare_layout_dialog(Dialog_Layout* dialog)
   Dialog_Layout_List_Related* related_dialog = dynamic_cast<Dialog_Layout_List_Related*>(dialog);
   g_assert(related_dialog != NULL);
 
-  if(m_portal && m_portal->get_has_relationship_name())
-    related_dialog->set_document(m_layout_name, get_document(), m_portal);
-  else
-    related_dialog->set_document(m_layout_name, get_document(), m_parent_table);
+  related_dialog->set_document(m_layout_name, get_document(), m_portal, m_parent_table);
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -471,10 +468,6 @@ void Box_Data_List_Related::create_layout_add_group(const sharedptr<LayoutGroup>
           continue;
         }
       }
-
-      //Sometimes we reset the column width so that new fields are easily visible:
-      //if(m_reset_column_widths)
-      //  child_item->set_display_width(0);
 
       m_AddDel.add_column(child_item);
     }

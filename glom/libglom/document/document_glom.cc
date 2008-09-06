@@ -69,10 +69,12 @@ namespace Glom
 #define GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP "portal_navigation_relationship"
 #define GLOM_ATTRIBUTE_PORTAL_NAVIGATIONRELATIONSHIP_MAIN "navigation_main"
 #define GLOM_NODE_DATA_LAYOUT_CALENDAR_PORTAL "data_layout_calendar_portal"
+#define GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_HEIGHT "row_height"
 #define GLOM_ATTRIBUTE_PORTAL_CALENDAR_DATE_FIELD "date_field"
 #define GLOM_NODE_DATA_LAYOUT_ITEM "data_layout_item" //A field.
 #define GLOM_NODE_LAYOUT_ITEM_CUSTOM_TITLE "title_custom"
 #define GLOM_ATTRIBUTE_LAYOUT_ITEM_CUSTOM_TITLE_USE "use_custom"
+#define GLOM_ATTRIBUTE_LAYOUT_ITEM_COLUMN_WIDTH "column_width"
 #define GLOM_NODE_DATA_LAYOUT_BUTTON "data_layout_button"
 #define GLOM_NODE_DATA_LAYOUT_TEXTOBJECT "data_layout_text"
 #define GLOM_NODE_DATA_LAYOUT_TEXTOBJECT_TEXT "text"
@@ -2067,8 +2069,6 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
         xmlpp::Element* elementNavigationRelationshipSpecific = get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP);
         if(elementNavigationRelationshipSpecific)
         {
-           //std::cout << "debug: loading GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP" << std::endl;
-
            relationship_navigation_specific = sharedptr<UsesRelationship>::create();
            load_after_layout_item_usesrelationship(elementNavigationRelationshipSpecific, portal->get_table_used(table_name), relationship_navigation_specific);
            relationship_navigation_specific_main = get_node_attribute_value_as_bool(elementNavigationRelationshipSpecific, GLOM_ATTRIBUTE_PORTAL_NAVIGATIONRELATIONSHIP_MAIN);
@@ -2091,6 +2091,9 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
           sharedptr<Field> date_field = get_field(calendar_portal->get_table_used(table_name), date_field_name);
           calendar_portal->set_date_field(date_field);
         }
+
+        //Print Layout specific stuff:
+        portal->set_print_layout_row_height( get_node_attribute_value_as_decimal(element, GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_HEIGHT) );
         
         item_added = portal; 
       }
@@ -2158,6 +2161,9 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
     if(item_added)
     {
       group->add_item(item_added);
+
+      //Attributes that all items could have:
+      item_added->set_display_width( get_node_attribute_value_as_decimal(element, GLOM_ATTRIBUTE_LAYOUT_ITEM_COLUMN_WIDTH) );
 
       if(with_print_layout_positions)
         load_after_print_layout_position(element, item_added);
@@ -2881,11 +2887,14 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedp
                 save_before_layout_item_usesrelationship(child_navigation_relationship_specific, relationship_navigation_specific);
                 set_node_attribute_value_as_bool(child_navigation_relationship_specific, GLOM_ATTRIBUTE_PORTAL_NAVIGATIONRELATIONSHIP_MAIN, navigation_specific_main);
               }
+
+              //Print Layout specific stuff:
+              set_node_attribute_value_as_decimal(child, GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_HEIGHT, portal->get_print_layout_row_height());
             }
             else
             {
               sharedptr<const LayoutItem_Notebook> notebook = sharedptr<const LayoutItem_Notebook>::cast_dynamic(group);
-              if(notebook) //If it is a related records portal
+              if(notebook) //If it is a notebook.
               {
                 child = node->add_child(GLOM_NODE_DATA_LAYOUT_NOTEBOOK);
               }
@@ -3008,6 +3017,11 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedp
 
       if(nodeItem)
       {
+        //Attributes that any layout item could have:
+        guint column_width = 0;
+        item->get_display_width(column_width);
+        set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_LAYOUT_ITEM_COLUMN_WIDTH, column_width);
+
         if(with_print_layout_positions)
           save_before_print_layout_position(nodeItem, item);
       }

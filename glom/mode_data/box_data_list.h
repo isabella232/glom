@@ -112,8 +112,6 @@ protected:
 
   bool m_has_one_or_more_records;
   bool m_read_only;
-
-  bool m_reset_column_widths; //create_layout() sets these to 0 when this is set.
 };
 
 } //namespace Glom

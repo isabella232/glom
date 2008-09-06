@@ -411,7 +411,9 @@ sharedptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(PrintLayoutTool
   }
   else if(item_type == PrintLayoutToolbarButton::ITEM_PORTAL)
   {
-    layout_item = sharedptr<LayoutItem_Portal>::create();
+    sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::create();
+    portal->set_print_layout_row_height(10); //Otherwise it will be 0, which is useless.
+    layout_item = portal;
     layout_item->set_print_layout_position(0, 0, 100, 50);
   }
   else

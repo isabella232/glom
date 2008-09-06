@@ -152,7 +152,7 @@ void Box_Data_Details::set_primary_key_value(const Gtk::TreeModel::iterator& /* 
 
 void Box_Data_Details::set_found_set_from_primary_key_value()
 {
-  if (!m_primary_key_value.is_null())
+  if(!m_primary_key_value.is_null())
   {
     m_found_set.m_where_clause = "\"" + m_table_name + "\".\"" + m_field_primary_key->get_name() + 
       "\" = " + m_field_primary_key->sql(m_primary_key_value);

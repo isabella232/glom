@@ -101,11 +101,12 @@ LayoutItem& LayoutItem::operator=(const LayoutItem& src)
   return *this;
 }
 
+//Is this used?
 bool LayoutItem::operator==(const LayoutItem& src) const
 {
   bool equal = (TranslatableItem::operator==(src)) &&
           (m_editable == src.m_editable) &&
-          (m_display_width == src.m_display_width); //careful of this - it's not saved in the document.
+          (m_display_width == src.m_display_width);
 
   if(m_positions && src.m_positions)
   {

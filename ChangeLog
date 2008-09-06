@@ -1,3 +1,33 @@
+2008-09-06  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_data/dialog_layout_details.cc:
+	* glom/mode_data/dialog_layout_details.h:
+	* glom/mode_data/dialog_layout_list.cc: Add a column for the column width, 
+	but only show it for the list. Also hide the columns count column for 
+	the list.
+	* glom/libglom/document/document_glom.cc: load_after_layout_group(),
+        Glom.save_before_layout_group(): Save the column widths for items 
+	in the document.
+
+	* glom/mode_data/dialog_layout_list_related.cc:
+	* glom/mode_data/dialog_layout_list_related.h: Remove one set_document() 
+	method overload, adding the parent_table to the existing one, to simplify 
+	code and to allow us to preserve LayoutItem_Portal details such as print 
+	layout positions, even when no relationship is chosen yet.
+	* glom/mode_data/box_data_list_related.cc: Adapted.
+	* glom/mode_design/print_layouts/canvas_print_layout.cc: Adapted.
+
+	* glom/mode_design/print_layouts/canvas_layout_item.cc: create_item():
+	For the portal, create a rect cell for each field in the layout. Still 
+	not very useful, but gradually becoming more sensible.
+
+	* glom/utility_widgets/db_adddel/db_adddel.cc: on_treeview_column_resized(): 
+	Do not save the column width if it is the last column because that autosizes 
+	to take all remaining space.
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list.h: Remove the reset_column_widths 
+	stuff, because ignoring the last column is a better fix.
+
 2008-09-05  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data_calendar_related.cc:
