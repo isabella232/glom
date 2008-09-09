@@ -1,3 +1,13 @@
+2008-09-09  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/spawn_with_feedback.cc: Refactored the code, removed
+	all blocking calls and use the CreateProcess() API on Windows to hide
+	the console window of child processes.
+
+	* glom/libglom/connectionpool.cc: Always call the spawn API with
+	double quotes for the path to the executable, because CreateProcess()
+	does not support single quotes.
+
 2008-09-06  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/dialog_layout_details.cc:

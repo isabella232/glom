@@ -865,7 +865,9 @@ bool ConnectionPool::start_self_hosting(Gtk::Window* parent_window)
   // -c config_file= specifies the configuration file
   // -k specifies a directory to use for the socket. This must be writable by us.
   // POSTGRES_POSTMASTER_PATH is defined in config.h, based on the configure.
-  const std::string command_postgres_start = Glib::shell_quote(get_path_to_postgres_executable("postmaster")) + " -D \"" + dbdir_data + "\" "
+  // Make sure to use double quotes for the executable path, because the
+  // CreateProcess() API used on Windows does not support single quotes.
+  const std::string command_postgres_start = "\"" + get_path_to_postgres_executable("postmaster") + "\" -D \"" + dbdir_data + "\" "
                                   + " -p " + port_as_text
                                   + " -i " //Equivalent to -h "*", which in turn is equivalent to listen_addresses in postgresql.conf. Listen to all IP addresses, so any client can connect (with a username+password)
                                   + " -c hba_file=\"" + dbdir + "/config/pg_hba.conf\""
@@ -873,7 +875,9 @@ bool ConnectionPool::start_self_hosting(Gtk::Window* parent_window)
                                   + " -k \"" + dbdir + "\""
                                   + " --external_pid_file=\"" + dbdir + "/pid\"";
 
-  const std::string command_check_postgres_has_started = Glib::shell_quote(get_path_to_postgres_executable("pg_ctl")) + " status -D \"" + dbdir_data + "\"";
+  // Make sure to use double quotes for the executable path, because the
+  // CreateProcess() API used on Windows does not support single quotes.
+  const std::string command_check_postgres_has_started = "\"" + get_path_to_postgres_executable("pg_ctl") + "\" status -D \"" + dbdir_data + "\"";
 
   //For postgres 8.1, this is "postmaster is running".
   //For postgres 8.2, this is "server is running".
@@ -943,7 +947,9 @@ void ConnectionPool::stop_self_hosting(Gtk::Window* parent_window)
   // POSTGRES_POSTMASTER_PATH is defined in config.h, based on the configure.
   // We use "-m fast" instead of the default "-m smart" because that waits for clients to disconnect (and sometimes never succeeds).
   // TODO: Warn about connected clients on other computers? Warn those other users?
-  const std::string command_postgres_stop = Glib::shell_quote(get_path_to_postgres_executable("pg_ctl")) + " -D \"" + dbdir_data + "\" stop -m fast";
+  // Make sure to use double quotes for the executable path, because the
+  // CreateProcess() API used on Windows does not support single quotes.
+  const std::string command_postgres_stop = "\"" + get_path_to_postgres_executable("pg_ctl") + "\" -D \"" + dbdir_data + "\" stop -m fast";
   const bool result = Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, _("Stopping Database Server"), parent_window);
   if(!result)
   {
@@ -1052,7 +1058,9 @@ bool ConnectionPool::create_self_hosting(Gtk::Window* parent_window)
   const bool pwfile_creation_succeeded = create_text_file(temp_pwfile_uri, get_password());
   g_assert(pwfile_creation_succeeded);
 
-  const std::string command_initdb = Glib::shell_quote(get_path_to_postgres_executable("initdb")) + " -D \"" + dbdir_data + "\"" +
+  // Make sure to use double quotes for the executable path, because the
+  // CreateProcess() API used on Windows does not support single quotes.
+  const std::string command_initdb = "\"" + get_path_to_postgres_executable("initdb") + "\" -D \"" + dbdir_data + "\"" +
                                         " -U " + username + " --pwfile=\"" + temp_pwfile + "\"";
 
   //Note that --pwfile takes the password from the first line of a file. It's an alternative to supplying it when prompted on stdin.

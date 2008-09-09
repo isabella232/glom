@@ -25,6 +25,13 @@
 #include <glibmm/i18n.h>
 #include <iostream>
 
+#ifdef G_OS_WIN32
+#define SAVE_DATADIR DATADIR
+#undef DATADIR
+#include <windows.h>
+#define DATADIR SAVE_DATADIR
+#endif
+
 
 namespace Glom
 {
@@ -41,95 +48,299 @@ public:
   bool* m_result;
 };
 
-
-static void execute_command_line_on_thread_create(CommandLineThreadData* data)
+// This is a simple process launching API wrapping g_spawn_async on linux and
+// CreateProcess() on Windows. We need to use CreateProcess on Windows to be
+// able to suppress the console window.
+namespace Impl
 {
-  std::cout << "  debug: thread start" << std::endl; 
 
-  int return_status = 0;
+static const unsigned int REDIRECT_STDOUT = 1;
+static const unsigned int REDIRECT_STDERR = 2;
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    Glib::spawn_command_line_sync(data->m_command, NULL, NULL, &return_status);
-  }
-  catch(const Glib::SpawnError& ex)
-  {
-    std::cerr << "Glom:: execute_command_line_on_thread_create() Exception while calling Glib::spawn_command_line_sync(): " << ex.what() << std::endl;
-  }
-#else
-  // TODO: I guess we can't find out whether this failed.
-  // This might be a glibmm bug.
-  Glib::spawn_command_line_sync(data->m_command, NULL, NULL, &return_status);
-#endif // !GLIBMM_EXCEPTIONS_ENABLED
-  
-  std::cout << "  debug: in thread: signalling condition" << std::endl; 
-
-  // TODO: Use WIFEXITED() and WEXITSTATUS()? 
-  *(data->m_result) = (return_status == 0);
-
-  data->m_mutex->lock(); //The documentation for g_cond_broadcast() says "It is good practice to lock the same mutex as the waiting threads, while calling this function, though not required."
-  data->m_cond->broadcast(); //Allows the caller to continue.
-  data->m_mutex->unlock();
-
-  delete data; //Note that this doesn't delete the data pointed to by data->m_result.
-}
-
-static bool pulse_until_thread_finished(Dialog_ProgressCreating& dialog_progress, const std::string& command, const sigc::slot<void, CommandLineThreadData*>& thread_slot)
+class SpawnError: public std::runtime_error
 {
-  // Spawn the command in a thread, waiting for a condition to be signalled by that thread when it has finished.
-  // This allows us to update the UI in this thread while we wait:
-  Glib::Cond cond;
-  Glib::Mutex cond_mutex;
+public:
+  SpawnError(const std::string& error_message): std::runtime_error(error_message) {}
+};
+#endif
 
-  bool result = false;
- 
-  CommandLineThreadData* data = new CommandLineThreadData(); //This will be deleted by the slot when it has finished.
-  data->m_command = command;
-  data->m_cond = &cond;
-  data->m_mutex = &cond_mutex;
-  data->m_result = &result;
-
-  // Create a thread, which will start by calling our slot
-  // We use sigc::bind to pass extra information to that slot.
-  //
-  // The slot signals the condition when it has finished.
-  // so the caller can repeatedly wait for the signal until the thread has finished. 
-  try
+class SpawnInfo: public sigc::trackable
+{
+private:
+  // Private platform-dependant helper functions
+#ifdef G_OS_WIN32
+  static std::string win32_error_message()
   {
-    Glib::Thread::create( sigc::bind(thread_slot, data), false /* joinable */);
+    gchar* message = g_win32_error_message(GetLastError());
+    std::string msg = message;
+    g_free(message);
+    return msg;
   }
-  catch(const Glib::ThreadError& ex)
+  // We redirect stdout and stderr output into a file, and read that file later.
+  // I would prefer to read child stderr directly, without using a temporary
+  // file, but that is probably not so easy since Glib::IOChannel does not
+  // support Windows file HANDLEs, but we need to pass a HANDLE to
+  // CreateProcess() for redirection.
+  static HANDLE create_redirect_file(std::string& filename)
   {
-    std::cerr << "Glom::Spawn::execute_command_line_and_wait_do_work(): Glib::Thread::create() failed." << std::endl;
+    static unsigned int redirect_seq = 0;
+    const gchar* appdata = getenv("APPDATA");
+    filename = Glib::ustring::compose("%1\\glom_spawn_redirect_%2.txt", std::string(appdata), ++ redirect_seq);
+
+    // Allow the redirect file to be inherited by the child process, so
+    // it can write to it.
+    SECURITY_ATTRIBUTES security_attr;
+    security_attr.nLength = sizeof(security_attr);
+    security_attr.lpSecurityDescriptor = NULL;
+    security_attr.bInheritHandle = TRUE;
+
+    HANDLE result = CreateFile(filename.c_str(), GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_DELETE, &security_attr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    if(!result) throw SpawnError(win32_error_message());
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+    return result;
   }
-
-
-  // Loop, updating the UI, waiting for the condition to be signalled by the thread:
-  cond_mutex.lock(); //The mutex used for timed_wait() must be locked.
-  bool keep_waiting = true;
-  while(keep_waiting)
+#else // G_OS_WIN32
+  bool on_io(Glib::IOCondition cond, Glib::RefPtr<Glib::IOChannel> channel, std::string& result)
   {
-    Glib::TimeVal abs_time;
-    abs_time.assign_current_time();
-    abs_time.add_milliseconds(500); /* Check 2 times per second */
-    if(cond.timed_wait(cond_mutex, abs_time))
+    if(cond != Glib::IO_IN)
     {
-      keep_waiting = false;
+      // Perhaps the pipe was closed or something. Ignore & Disconnect. If the
+      // this was because the child exited, then the on_child_watch() callback
+      // will be called anyway.
+      return false;
     }
     else
     {
-      dialog_progress.pulse();
+      char buffer[1024 + 1];
+      gsize bytes_read;
 
-      while(Gtk::Main::instance()->events_pending())
-        Gtk::Main::instance()->iteration();
+      Glib::IOStatus status;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+      try
+      {
+        status = channel->read(buffer, 1024, bytes_read);
+      }
+      catch(const Glib::Exception& ex)
+      {
+        std::cerr << "Glom::Spawn::Impl::SpawnInfo::on_io: Error while reading from pipe: " << ex.what() << std::endl;
+        return false;
+      }
+#else
+      std::auto_ptr<Glib::Error> error;
+      status = channel->read(buffer, 1024, bytes_read, error);
+      if(error.get())
+      {
+        std::cerr << "Glom::Spawn::Impl::SpawnInfo::on_io: Error while reading from pipe: " << error->what() << std::endl;
+        return false;
+      }
+#endif
+
+      buffer[bytes_read] = '\0';
+      result += buffer;
+
+      return status == Glib::IO_STATUS_NORMAL || status == Glib::IO_STATUS_AGAIN;
     }
   }
-  cond_mutex.unlock();
 
-  return result;
+  void redirect_to_string(int fd, std::string& string)
+  {
+    Glib::RefPtr<Glib::IOChannel> channel = Glib::IOChannel::create_from_fd(fd);
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    channel->set_flags(Glib::IO_FLAG_NONBLOCK);
+#else
+    std::auto_ptr<Glib::Error> error;
+    channel->set_flags(Glib::IO_FLAG_NONBLOCK, error);
+#endif // !GLIBMM_EXCEPTIONS_ENABLED
+
+    channel->set_encoding("");
+    channel->set_buffered(false);
+
+    Glib::signal_io().connect(sigc::bind(sigc::mem_fun(*this, &SpawnInfo::on_io), channel, sigc::ref(string)), channel, Glib::IO_IN);
+  }
+#endif // !G_OS_WIN32
+
+public:
+  typedef sigc::signal<void> SignalFinished;
+
+  SpawnInfo(const Glib::ustring& command_line, int redirect):
+    running(false), return_status(0)
+  {
+#ifdef G_OS_WIN32
+    startup_info.cb = sizeof(startup_info);
+    startup_info.dwFlags = STARTF_USESTDHANDLES;
+    startup_info.lpReserved = NULL;
+    startup_info.lpDesktop = NULL;
+    startup_info.lpTitle = NULL;
+    startup_info.cbReserved2 = 0;
+    startup_info.lpReserved2 = NULL;
+    startup_info.hStdInput = INVALID_HANDLE_VALUE;
+
+    if(redirect & REDIRECT_STDOUT)
+      startup_info.hStdOutput = create_redirect_file(stdout_file);
+    else
+      startup_info.hStdOutput = INVALID_HANDLE_VALUE;
+
+    if(redirect & REDIRECT_STDERR)
+      startup_info.hStdError = create_redirect_file(stderr_file);
+    else
+      startup_info.hStdError = INVALID_HANDLE_VALUE;
+
+    // CreateProcess needs a non-const string, so we copy command_line to provide one.
+    std::vector<char> command(command_line.length() + 1);
+    std::copy(command_line.data(), command_line.data() + command_line.length(), command.begin());
+    command[command_line.length()] = '\0';
+
+    if(!CreateProcess(NULL, &command[0], NULL, NULL, TRUE, CREATE_NO_WINDOW, NULL, NULL, &startup_info, &process_info))
+    {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+      throw SpawnError(win32_error_message());
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+    }
+#else // G_OS_WIN32
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    try
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+    {
+      std::vector<std::string> arguments = Glib::shell_parse_argv(command_line);
+      int child_stdout;
+      int child_stderr;
+      Glib::spawn_async_with_pipes(Glib::get_current_dir(), arguments, Glib::SPAWN_DO_NOT_REAP_CHILD, sigc::slot<void>(), &pid, NULL, redirect & REDIRECT_STDOUT ? &child_stdout : NULL, redirect & REDIRECT_STDERR ? &child_stderr : NULL);
+
+      if(redirect & REDIRECT_STDOUT)
+        redirect_to_string(child_stdout, stdout_text);
+      if(redirect & REDIRECT_STDERR)
+        redirect_to_string(child_stderr, stderr_text);
+    }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    catch(Glib::Exception& ex)
+    {
+      throw SpawnError(ex.what());
+    }
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+#endif // !G_OS_WIN32
+
+    Glib::signal_child_watch().connect(sigc::mem_fun(*this, &SpawnInfo::on_child_watch), get_pid());
+  }
+
+  ~SpawnInfo()
+  {
+#ifdef G_OS_WIN32
+    // TODO: Is it allowed to close the process handle while the process is still running?
+    CloseHandle(process_info.hProcess);
+    CloseHandle(process_info.hThread);
+
+    if(!stdout_file.empty())
+    {
+      CloseHandle(startup_info.hStdOutput);
+      DeleteFile(stdout_file.c_str());
+    }
+
+    if(!stderr_file.empty())
+    {
+      CloseHandle(startup_info.hStdError);
+      DeleteFile(stderr_file.c_str());
+    }
+#else
+    // TODO: What happens with the process if the child exits, but the mainloop
+    // is not run anymore (and therefore our callback is not called) before
+    // Glom exits itself? Is the child properly closed, or does it remain as
+    // a zombie?
+    if(running)
+      Glib::signal_child_watch().connect(sigc::hide<1>(sigc::ptr_fun(Glib::spawn_close_pid)), pid);
+#endif
+  }
+
+  Glib::Pid get_pid()
+  {
+#ifdef G_OS_WIN32
+    return process_info.hProcess;
+#else
+    return pid;
+#endif
+  }
+
+  bool is_running() const { return running; }
+  int get_return_status() const { g_assert(!running); return return_status; }
+
+  void get_stdout(std::string& out) const
+  {
+#ifdef G_OS_WIN32
+    out = Glib::file_get_contents(stdout_file);
+#else
+    out = stdout_text;
+#endif
+  }
+
+  void get_stderr(std::string& err) const
+  {
+#ifdef G_OS_WIN32
+    err = Glib::file_get_contents(stderr_file);
+#else
+    err = stderr_text;
+#endif
+  }
+
+  SignalFinished signal_finished() const { return m_signal_finished; }
+
+private:
+  void on_child_watch(Glib::Pid pid, int returned)
+  {
+    running = false;
+    return_status = returned;
+
+    m_signal_finished.emit();
+  }
+
+  bool running;
+  int return_status;
+  SignalFinished m_signal_finished;
+
+#ifdef G_OS_WIN32
+  PROCESS_INFORMATION process_info;
+  STARTUPINFO startup_info;
+  std::string stderr_file;
+  std::string stdout_file;
+#else
+  Glib::Pid pid;
+  std::string stdout_text;
+  std::string stderr_text;
+#endif
+};
+
+std::auto_ptr<const SpawnInfo> spawn_async(const Glib::ustring& command_line, int redirect)
+{
+  return std::auto_ptr<const SpawnInfo>(new SpawnInfo(command_line, redirect));
 }
 
+bool spawn_async_end(std::auto_ptr<const SpawnInfo> info, std::string* stdout_text = NULL, std::string* stderr_text = NULL, int* return_status = NULL)
+{
+  if(stdout_text) info->get_stdout(*stdout_text);
+  if(stderr_text) info->get_stderr(*stderr_text);
+  if(return_status) *return_status = info->get_return_status();
+  return !info->is_running();
+}
+
+int spawn_sync(const Glib::ustring& command_line, std::string* stdout_text, std::string* stderr_text)
+{
+  int redirect_flags = 0;
+  if(stdout_text) redirect_flags |= REDIRECT_STDOUT;
+  if(stderr_text) redirect_flags |= REDIRECT_STDERR;
+
+  std::auto_ptr<const SpawnInfo> info = spawn_async(command_line, redirect_flags);
+  info->signal_finished().connect(sigc::ptr_fun(&Gtk::Main::quit));
+
+  // Wait for termination
+  Gtk::Main::run();
+
+  int return_status = 0;
+  bool returned = spawn_async_end(info, stdout_text, stderr_text, &return_status);
+  g_assert(returned);
+  return return_status;
+}
+
+} // namespace Impl
 
 static Dialog_ProgressCreating* get_and_show_pulse_dialog(const Glib::ustring& message, Gtk::Window* parent_window)
 {
@@ -158,10 +369,6 @@ static Dialog_ProgressCreating* get_and_show_pulse_dialog(const Glib::ustring& m
 
       dialog_progress->show();
 
-      //Ensure that the dialog is shown, instead of waiting for the application to be idle:
-      while(Gtk::Main::instance()->events_pending())
-        Gtk::Main::instance()->iteration();
-
       return dialog_progress;
     }
   }
@@ -183,66 +390,26 @@ bool execute_command_line_and_wait(const std::string& command, const Glib::ustri
   std::auto_ptr<Dialog_ProgressCreating> dialog_progress;
   dialog_progress.reset(dialog_temp);
 
-  return pulse_until_thread_finished(*dialog_progress, command, sigc::ptr_fun(&execute_command_line_on_thread_create) );
+  std::auto_ptr<const Impl::SpawnInfo> info = Impl::spawn_async(command, 0);
+  info->signal_finished().connect(
+    sigc::bind(sigc::mem_fun(*dialog_progress, &Dialog_ProgressCreating::response), Gtk::RESPONSE_ACCEPT));
+
+  // Pulse two times a second
+  Glib::signal_timeout().connect(
+    sigc::bind_return(sigc::mem_fun(*dialog_progress, &Dialog_ProgressCreating::pulse), true),
+    500);
+
+  dialog_progress->run();
+
+  int return_status;
+  bool returned = Impl::spawn_async_end(info, NULL, NULL, &return_status);
+  if(!returned) return false; // User closed the dialog prematurely?
+
+  return (return_status == 0);
 }
 
 // Callback handlers for execute_command_line_and_wait_until_second_command_returns_success
 namespace {
-  bool on_stderr_input(Glib::IOCondition cond, const Glib::RefPtr<Glib::IOChannel>& err, std::string& stderr_text)
-  {
-    if(cond != Glib::IO_IN)
-    {
-      // Perhaps the pipe was closed or something. Ignore & Disconnect. If the
-      // this was because the child exited, then the on_child_watch() callback
-      // will be called anyway.
-      return false;
-    }
-    else
-    {
-      char buffer[1024 + 1];
-      gsize bytes_read;
-
-      Glib::IOStatus status;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-      try
-      {
-        status = err->read(buffer, 1024, bytes_read);
-      }
-      catch(const Glib::Exception& ex)
-      {
-	std::cerr << "execute_command_line_and_wait_until_second_command_returns_success: Error while reading from child stderr pipe: " << ex.what() << std::endl;
-	return false;
-      }
-#else
-      std::auto_ptr<Glib::Error> error;
-      status = err->read(buffer, 1024, bytes_read, error);
-      if(error.get())
-      {
-	std::cerr << "execute_command_line_and_wait_until_second_command_returns_success: Error while reading from child stderr pipe: " << ex.what() << std::endl;
-	return false;
-      }
-#endif
-
-      buffer[bytes_read] = '\0';
-      stderr_text += buffer;
-
-      return status == Glib::IO_STATUS_NORMAL || status == Glib::IO_STATUS_AGAIN;
-    }
-  }
-
-  void on_child_watch(GPid pid, int status, bool& child_exited, Dialog_ProgressCreating* dialog)
-  {
-    // Child did exit
-    child_exited = true;
-    // Cancel dialog (and thus the run() call in
-    // execute_command_line_and_wait_until_second_command_returns_success) if
-    // the child failed.
-    if(status != 0)
-      dialog->response(Gtk::RESPONSE_REJECT);
-
-    Glib::spawn_close_pid(pid);
-  }
-
   bool on_timeout(const std::string& second_command, const std::string& success_text, Dialog_ProgressCreating* dialog_progress)
   {
     Glib::ustring stored_env_lang;
@@ -256,8 +423,6 @@ namespace {
       // is probably defined on the system already and that definition would override our LANG:  
       // (Note that we can not just do "LANG=C;the_command", as on the command line, because g_spawn() does not support that.)
 
-      // TODO: If we would use g_spawn_sync instead of g_spawn_commandline_sync,
-      // we could set envp. I don't know whether that would be better. armin.
       std::cout << std::endl << "debug: temporarily setting LANG and LANGUAGE environment variables to \"C\"" << std::endl;
       stored_env_lang = Glib::getenv("LANG");
       stored_env_language = Glib::getenv("LANGUAGE");
@@ -272,18 +437,16 @@ namespace {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
-      Glib::spawn_command_line_sync(second_command, &stdout_output, NULL, &return_status);
+      return_status = Impl::spawn_sync(second_command, &stdout_output, NULL);
     }
-    catch(const Glib::SpawnError& ex)
+    catch(const Impl::SpawnError& ex)
     {
       std::cerr << "Glom::execute_command_line_and_wait_until_second_command_returns_success() Exception while calling Glib::spawn_command_line_sync(): " << ex.what() << std::endl;
       // TODO: We should cancel the whole call if this fails three times in 
       // a row or so.
     }
 #else
-    // TODO: I guess we can't find out whether this failed.
-    // This might be a glibmm bug.
-    Glib::spawn_command_line_sync(second_command, &stdout_output, NULL, &return_status);
+    Impl::spawn_sync(second_commands, &stdout_output, NULL, &return_status);
 #endif
 
     if(!success_text.empty())
@@ -309,8 +472,8 @@ namespace {
         std::cout << "Success, do response" << std::endl;
         // Exit from run() in execute_command_line_and_wait_until_second_command_returns_success().
         dialog_progress->response(Gtk::RESPONSE_OK);
- // Cancel timeout. Actually, we also could return true here since
- // the signal is disconnect explicetely after run() anyway.
+        // Cancel timeout. Actually, we also could return true here since
+        // the signal is disconnect explicetely after run() anyway.
         return false;
       }
     }
@@ -333,76 +496,18 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
   std::auto_ptr<Dialog_ProgressCreating> dialog_progress;
   dialog_progress.reset(dialog_temp);
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  std::vector<std::string> arguments;
-  try
-  {
-    arguments = Glib::shell_parse_argv(command);
-  }
-  catch(const Glib::ShellError& ex)
-  {
-    std::cerr << "Glom::Spawn::execute_command_line_and_wait_untils_second_command_returns_success: Exception while calling Glib::shell_parse_argv(): " << ex.what() << std::endl;
-    return false;
-  }
-#else
-  // TODO: I guess we can't find out whether this failed.
-  // This might be a glibmm bug.
-  arguments = Glib::shell_parse_argv(command);
-#endif
+  std::cout << "Command: " << command << std::endl;
 
-  Glib::Pid child_pid;
-  int child_stderr;
-
-  std::cout << std::endl << "  debug: command_line: " << command << std::endl << std::endl;
-
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  // Execute the first thread asynchronously (so we don't wait for it):
-  try
-  {
-    Glib::spawn_async_with_pipes(Glib::get_current_dir(), arguments, Glib::SPAWN_DO_NOT_REAP_CHILD, sigc::slot<void>(), &child_pid, NULL, NULL, &child_stderr);
-  }
-  catch(const Glib::SpawnError& ex)
-  {
-    std::cerr << "Glom::Spawn::pulse_until_second_command_succeed() Exception while calling Glib::spawn_command_line_async(): " << ex.what() << std::endl;
-    return false;
-  }
-#else
-  // TODO: I guess we can't find out whether this failed.
-  // This might be a glibmm bug.
-  Glib::spawn_async_with_pipes(Glib::get_current_dir(), arguments, Glib::SPAWN_DO_NOT_REAP_CHILD, sigc::slot<void>(), &child_pid, NULL, NULL, &child_stderr);
-#endif
+  std::auto_ptr<const Impl::SpawnInfo> info = Impl::spawn_async(command, Impl::REDIRECT_STDERR);
 
   // While we wait for the second command to finish we
   // a) check whether the first command finished. If it did, and has a
   // negative error code, we assume it failed and return directly.
   // b) Get stderr data, to display an error message in case the command
   // fails:
-  // TODO: We also should return if the first command returned with successful
-  // error code, because the second command is not likely to change its output
-  // when the first command is no longer running.
-  std::string stderr_text;
-  bool child_exited = false;
 
-  Glib::RefPtr<Glib::IOChannel> err = Glib::IOChannel::create_from_fd(child_stderr);
-
-  // We need to set the channel to nonblocking to not block the whole
-  // process waiting for input. This is not implemented on Windows, but
-  // it works there anyway; I guess it is always nonblocking on Windows:
-#ifndef G_OS_WIN32
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  err->set_flags(Glib::IO_FLAG_NONBLOCK);
-#else
-  std::auto_ptr<Glib::Error> error;
-  err->set_flags(Glib::IO_FLAG_NONBLOCK, error);
-#endif // !GLIBMM_EXCEPTIONS_ENABLED
-#endif // !G_OS_WIN32
-
-  err->set_encoding("");
-  err->set_buffered(false);
-
-  sigc::connection stderr_conn = Glib::signal_io().connect(sigc::bind(sigc::ptr_fun(&on_stderr_input), err, sigc::ref(stderr_text)), err, Glib::IO_IN);
-
-  sigc::connection watch_conn = Glib::signal_child_watch().connect(sigc::bind(sigc::ptr_fun(&on_child_watch), sigc::ref(child_exited), dialog_temp), child_pid);
+  // Hide dialog when the first command finished for some reason
+  sigc::connection watch_conn = info->signal_finished().connect(sigc::bind(sigc::mem_fun(*dialog_temp, &Dialog_ProgressCreating::response), Gtk::RESPONSE_REJECT));
 
   // Call the second command once every second
   sigc::connection timeout_conn = Glib::signal_timeout().connect(sigc::bind(sigc::ptr_fun(&on_timeout), sigc::ref(second_command), sigc::ref(success_text), dialog_temp), 1000);
@@ -410,25 +515,15 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
   // Enter the main loop
   int response = dialog_temp->run();
 
-  // We are no longer interested in stderr
-  stderr_conn.disconnect();
   timeout_conn.disconnect();
-
-  // We must still wait until the child exits, to call wait on it, so the
-  // child does not become a zombie.
   watch_conn.disconnect();
-  if(!child_exited)
-    Glib::signal_child_watch().connect(sigc::hide(sigc::ptr_fun(&Glib::spawn_close_pid)), child_pid);
 
-  // TODO: What happens with the process if the child exits, but the mainloop
-  // is not run anymore (and therefore our callback is not called) before
-  // Glom exits itself? Is the child properly closed, or does it remain as
-  // a zombie?
+  std::string stderr_text;
+
+  Impl::spawn_async_end(info, NULL, &stderr_text, NULL);
 
   if(response == Gtk::RESPONSE_OK)
   {
-    // The second command succeeded.
-
     //Sleep for a bit more, because I think that pg_ctl sometimes reports success too early.
     Glib::signal_timeout().connect(sigc::bind_return(sigc::ptr_fun(&Gtk::Main::quit), false), 3000);
     Gtk::Main::run();
@@ -437,7 +532,7 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
   }
   else
   {
-    // The user either cancelled, or the first command failed
+    // The user either cancelled, or the first command failed, or exited prematurely
     if(response == Gtk::RESPONSE_REJECT)
     {
       // Command failed
