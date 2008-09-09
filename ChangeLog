@@ -1,5 +1,10 @@
 2008-09-09  Armin Burgmeier  <armin@openismus.com>
 
+	* glom/libglom/connectionpool.cc: Implemented check_user_is_not_root()
+	for Windows, using some code from postgresql.
+
+2008-09-09  Armin Burgmeier  <armin@openismus.com>
+
 	* glom/libglom/spawn_with_feedback.cc: Refactored the code, removed
 	all blocking calls and use the CreateProcess() API on Windows to hide
 	the console window of child processes.

@@ -56,6 +56,7 @@
 // compile with the DATADIR define, so undef it for the inclusion.
 #define GLOM_SAVE_DATADIR DATADIR
 #undef DATADIR
+#include <windows.h>
 #include <winsock2.h>
 #define DATADIR GLOM_SAVE_DATADIR
 #endif
@@ -105,8 +106,114 @@ static std::string get_path_to_postgres_executable(const std::string& program)
   return Glib::build_filename(POSTGRES_UTILS_PATH, program + EXEEXT);
 #endif
   }
+
+  // This is copied from the postgresql code, fixed to compile with C++
+#ifdef G_OS_WIN32
+
+static BOOL
+pgwin32_get_dynamic_tokeninfo(HANDLE token, TOKEN_INFORMATION_CLASS class_,
+                char **InfoBuffer, char *errbuf, int errsize)
+{
+  DWORD    InfoBufferSize;
+
+  if (GetTokenInformation(token, class_, NULL, 0, &InfoBufferSize))
+  {
+    snprintf(errbuf, errsize, "could not get token information: got zero size\n");
+    return FALSE;
+  }
+
+  if (GetLastError() != ERROR_INSUFFICIENT_BUFFER)
+  {
+    snprintf(errbuf, errsize, "could not get token information: error code %d\n",
+         (int) GetLastError());
+    return FALSE;
+  }
+
+  *InfoBuffer = static_cast<char*>(malloc(InfoBufferSize));
+  if (*InfoBuffer == NULL)
+  {
+    snprintf(errbuf, errsize, "could not allocate %d bytes for token information\n",
+         (int) InfoBufferSize);
+    return FALSE;
+  }
+
+  if (!GetTokenInformation(token, class_, *InfoBuffer,
+               InfoBufferSize, &InfoBufferSize))
+  {
+    snprintf(errbuf, errsize, "could not get token information: error code %d\n",
+         (int) GetLastError());
+    return FALSE;
+  }
+
+  return TRUE;
 }
 
+int
+pgwin32_is_admin(void)
+{
+  HANDLE    AccessToken;
+  char     *InfoBuffer = NULL;
+  char    errbuf[256];
+  PTOKEN_GROUPS Groups;
+  PSID    AdministratorsSid;
+  PSID    PowerUsersSid;
+  SID_IDENTIFIER_AUTHORITY NtAuthority = {SECURITY_NT_AUTHORITY};
+  UINT    x;
+  BOOL    success;
+
+  if (!OpenProcessToken(GetCurrentProcess(), TOKEN_READ, &AccessToken))
+  {
+    throw std::runtime_error(Glib::ustring::compose("Could not open process token: error code %1", (int)GetLastError()));
+  }
+
+  if (!pgwin32_get_dynamic_tokeninfo(AccessToken, TokenGroups,
+                     &InfoBuffer, errbuf, sizeof(errbuf)))
+  {
+    CloseHandle(AccessToken);
+    throw std::runtime_error(errbuf);
+  }
+
+  Groups = (PTOKEN_GROUPS) InfoBuffer;
+
+  CloseHandle(AccessToken);
+
+  if (!AllocateAndInitializeSid(&NtAuthority, 2,
+     SECURITY_BUILTIN_DOMAIN_RID, DOMAIN_ALIAS_RID_ADMINS, 0, 0, 0, 0, 0,
+                  0, &AdministratorsSid))
+  {
+    free(InfoBuffer);
+    throw std::runtime_error(Glib::ustring::compose("could not get SID for Administrators group: error code %1", (int)GetLastError()));
+  }
+
+  if (!AllocateAndInitializeSid(&NtAuthority, 2,
+  SECURITY_BUILTIN_DOMAIN_RID, DOMAIN_ALIAS_RID_POWER_USERS, 0, 0, 0, 0, 0,
+                  0, &PowerUsersSid))
+  {
+    free(InfoBuffer);
+    FreeSid(AdministratorsSid);
+    throw std::runtime_error(Glib::ustring::compose("could not get SID for PowerUsers group: error code %1", (int) GetLastError()));
+  }
+
+  success = FALSE;
+
+  for (x = 0; x < Groups->GroupCount; x++)
+  {
+    if ((EqualSid(AdministratorsSid, Groups->Groups[x].Sid) && (Groups->Groups[x].Attributes & SE_GROUP_ENABLED)) ||
+      (EqualSid(PowerUsersSid, Groups->Groups[x].Sid) && (Groups->Groups[x].Attributes & SE_GROUP_ENABLED)))
+    {
+      success = TRUE;
+      break;
+    }
+  }
+
+  free(InfoBuffer);
+  FreeSid(AdministratorsSid);
+  FreeSid(PowerUsersSid);
+  return success;
+}
+
+#endif
+} // anonymous namespace
 
 namespace Glom
 {
@@ -346,7 +453,7 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
         while(try_another_port)
         { 
 //          const Glib::ustring cnc_string_main = "HOST=" + get_host() + ";USER=" + m_user + ";PASSWORD=" + m_password + ";PORT=" + port;
-	  const Glib::ustring cnc_string_main = "HOST=" + get_host() + ";PORT=" + port;
+    const Glib::ustring cnc_string_main = "HOST=" + get_host() + ";PORT=" + port;
 
           Glib::ustring cnc_string = cnc_string_main;
 
@@ -364,7 +471,7 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
           try
-	  {
+    {
 #else
           std::auto_ptr<Glib::Error> glib_error;
 #endif
@@ -813,7 +920,7 @@ static void on_linux_signal(int signum)
     //TODO: Make this dialog transient for the parent window, 
     //though this is obviously an unusual case.
     connection_pool->stop_self_hosting(0 /* parent_window */);
-	
+  
     //Let GNOME/Ubuntu's crash handler still handle this?
     if(previous_sig_handler)
       (*previous_sig_handler)(signum);
@@ -1350,11 +1457,19 @@ bool ConnectionPool::check_postgres_gda_client_is_available_with_warning()
 
 bool ConnectionPool::check_user_is_not_root()
 {
+  Glib::ustring message;
 #ifdef G_OS_WIN32
-  // TODO: Should we check for administator privileges here? Note that it is
-  // not too easy/convenient to change user on Windows (at least XP, I am not
-  // sure about Vista).
-  return true;
+  try
+  {
+    if(pgwin32_is_admin())
+    {
+      message = _("You seem to be running Glom as a user with administrator privileges. Glom may not be run with such privileges for security reasons.\nPlease login to your system as a normal user.");
+    }
+  }
+  catch(const std::runtime_error& ex)
+  {
+    message = ex.what();
+  }
 #else
   //std::cout << "ConnectionPool::check_user_is_not_root(): geteuid()=" << geteuid() << ", getgid()=" << getgid() << std::endl;
 
@@ -1362,7 +1477,12 @@ bool ConnectionPool::check_user_is_not_root()
   if(geteuid() == 0)
   {
     //Warn the user:
-    const Glib::ustring message = _("You seem to be running Glom as root. Glom may not be run as root.\nPlease login to your system as a normal user.");
+    message = _("You seem to be running Glom as root. Glom may not be run as root.\nPlease login to your system as a normal user.");
+  }
+#endif
+
+  if(!message.empty())
+  {
 #ifndef GLOM_ENABLE_MAEMO
     Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Running As Root")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
     dialog.set_secondary_text(message);
@@ -1376,7 +1496,6 @@ bool ConnectionPool::check_user_is_not_root()
   }
 
   return true; /* Not root. It's OK. */
-#endif
 }
 
 
