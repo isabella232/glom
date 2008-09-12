@@ -80,6 +80,7 @@ glom/mode_design/fields/dialog_fielddefinition.cc
 glom/mode_design/print_layouts/box_print_layouts.cc
 glom/mode_design/print_layouts/canvas_layout_item.cc
 glom/mode_design/print_layouts/canvas_print_layout.cc
+glom/mode_design/print_layouts/print_layout_toolbar.cc
 glom/mode_design/print_layouts/window_print_layout_edit.cc
 glom/mode_design/script_library/dialog_new_script.cc
 glom/mode_design/script_library/dialog_script_library.cc
