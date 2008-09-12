@@ -1,9 +1,6 @@
-2008-09-12  Murray Cumming,,,  <murrayc@murrayc.com>
+2008-09-12  Murray Cumming  <murrayc@murrayc.com>
 
-	reviewed by: <delete if not using a buddy>
-	patch by: <delete if not someone else's patch>
-
-	* po/POTFILES.in:
+	* po/POTFILES.in: Mention a new file.
 
 2008-09-09  Armin Burgmeier  <armin@openismus.com>
 
