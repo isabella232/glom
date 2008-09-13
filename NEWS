@@ -1,3 +1,37 @@
+1.7.2:
+
+* Drag-and-drop Layout:
+  - Hide the toolbar by default, because this feature is still 
+  not ready. Added a menu item to show it.
+  - Added tooltips to the toolbar items.
+  (Johannes Schmid)
+* List Layout:
+  - Allow the user to specify column widths.
+  - Hide the Groups Columns column for list layouts.
+  (Murray Cumming)
+* Print Layout: More improvements though this is still not ready.
+  - Use the same EggToolPallette toolbar as the drag-and-drop layout.
+  (Murray Cumming)
+* Build: Fixed a const problem with gtkmm 2.12.
+* Improvements for the Windows port:
+  - Check that the user is not admin (like root on Linux), 
+    because that would be a network security risk, and postgres 
+    checks too.
+  - Hide the console windows when starting postgres, by using 
+    CreateProcess() instead of Glib::spawn().
+  - Deal with some IO strangeness.
+  - Initialize WinSock at startup so we can find an unused port.
+  - Added the installer source files to svn.
+  - Initial dialog: Hide the network item, because we do not have 
+    Avahi on Windows.
+  (Armin Burgmeier)
+* Client-only (Maemo) build:
+  - Fix the build.
+  - Intial Dialog: Hide the Create Database tab.
+  (Johannes Schmid)
+* Removed translatable property from stock labels in the glade file.
+  (Claude Paroz)
+
 Changes in 1.7.1:
 
 New features since 1.6:
