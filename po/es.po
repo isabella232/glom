@@ -10,12 +10,12 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-09 11:21+0000\n"
-"PO-Revision-Date: 2008-08-27 10:52+0200\n"
+"POT-Creation-Date: 2008-09-12 20:57+0000\n"
+"PO-Revision-Date: 2008-09-13 13:07+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type:  text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
@@ -2226,14 +2226,14 @@ msgstr ""
 "para que pueda ser corregido."
 
 #: ../glom/libglom/connectionpool.cc:1466
-#, fuzzy
 msgid ""
 "You seem to be running Glom as a user with administrator privileges. Glom "
 "may not be run with such privileges for security reasons.\n"
 "Please login to your system as a normal user."
 msgstr ""
-"Parece que está ejecutando Glom como un usuario con privilegios de administrador. Glom "
-"no se puede ejecutar con esos privilegios por razones de seguridad.\n"
+"Parece que está ejecutando Glom como un usuario con privilegios de "
+"administrador. Por razones de seguridad, Glom no se debe ejecutar con esos "
+"privilegios.\n"
 "Inicie sesión en su sistema como un usuario normal."
 
 #. Warn the user:
@@ -2274,6 +2274,7 @@ msgstr "Número"
 #: ../glom/libglom/data_structure/layout/layoutitem_text.cc:71
 #: ../glom/libglom/data_structure/translatable_item.cc:302
 #: ../glom/mode_data/dialog_layout_details.cc:1182
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:43
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:617
 msgid "Text"
 msgstr "Texto"
@@ -2294,6 +2295,7 @@ msgstr "Booleano"
 #: ../glom/libglom/data_structure/layout/layoutitem_image.cc:69
 #: ../glom/libglom/data_structure/translatable_item.cc:304
 #: ../glom/mode_data/dialog_layout_details.cc:1189
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:46
 #: ../glom/utility_widgets/layouttoolbar.cc:73
 msgid "Image"
 msgstr "Imagen"
@@ -2592,7 +2594,7 @@ msgstr "Agrupar columnas"
 #. Note to translators: This is a name (the width of a UI element in the display), not an action.
 #: ../glom/mode_data/dialog_layout_details.cc:126
 msgid "Display Width"
-msgstr ""
+msgstr "Mostrar ancho"
 
 #: ../glom/mode_data/dialog_layout_details.cc:691
 #: ../glom/mode_data/flowtablewithfields.cc:1153
@@ -2841,6 +2843,71 @@ msgstr "Elegir campo"
 #: ../glom/mode_design/print_layouts/canvas_print_layout.cc:214
 msgid "_Formatting"
 msgstr "_Formato"
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:40
+#: ../glom/utility_widgets/layouttoolbar.cc:64
+msgid "Database Field"
+msgstr "Base de datos"
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:40
+#: ../glom/utility_widgets/layouttoolbar.cc:64
+msgid "Drag this to the layout to add a new database field."
+msgstr ""
+"Arrastre esto a la distribución para añadir un campo de base de datos nuevo."
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:43
+#: ../glom/utility_widgets/layouttoolbar.cc:70
+msgid "Drag this to the layout to add a new static text box."
+msgstr ""
+"Arrastre esto a la distribución para añadir una nueva caja de texto estática."
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:46
+#: ../glom/utility_widgets/layouttoolbar.cc:73
+msgid "Drag this to the layout to add a new static image."
+msgstr "Arrastre esto a la distribución para añadir una imagen estática nueva."
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:50
+msgid "Horizontal Line"
+msgstr "Línea horizontal"
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:50
+msgid "Drag this to the layout to add a new horizontal line."
+msgstr ""
+"Arrastre esto a la distribución para añadir una línea horizontal nueva."
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:53
+msgid "Vertical Line"
+msgstr "Línea vertical"
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:53
+msgid "Drag this to the layout to add a new vertical line."
+msgstr "Arrastre esto a la distribución para añadir una línea vertical nueva."
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:57
+msgid "Related Records"
+msgstr "Registros relacionados"
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:57
+msgid "Drag this to the layout to add a new related records portal."
+msgstr ""
+"Arrastre esto a la distribución para añadir un nuevo portal de registros "
+"relacionados."
+
+#. Note for translators: These are layout items, like widgets in GTK+.
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:60
+#: ../glom/utility_widgets/layouttoolbar.cc:83
+msgid "Items"
+msgstr "Elementos"
+
+#. Note for translators: These are layout items, like widgets in GTK+.
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:66
+msgid "Lines"
+msgstr "Líneas"
+
+#. Note for translators: These are layout items, like widgets in GTK+.
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:71
+msgid "Records"
+msgstr "Registros"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:124
 #: ../glom/relationships_overview/dialog_relationships_overview.cc:54
@@ -3349,38 +3416,15 @@ msgid "Drag this to the layout to add a new notebook."
 msgstr ""
 "Arrastre esto a la distribución para añadir un cuaderno de notas nuevo."
 
-#: ../glom/utility_widgets/layouttoolbar.cc:64
-msgid "Database Field"
-msgstr "Base de datos"
-
-#: ../glom/utility_widgets/layouttoolbar.cc:64
-msgid "Drag this to the layout to add a new database field."
-msgstr ""
-"Arrastre esto a la distribución para añadir un campo de base de datos nuevo."
-
 #: ../glom/utility_widgets/layouttoolbar.cc:67
 msgid "Drag this to the layout to add a new button."
 msgstr "Arrastre esto a la distribución para añadir un botón nuevo."
-
-#: ../glom/utility_widgets/layouttoolbar.cc:70
-msgid "Drag this to the layout to add a new static text box."
-msgstr ""
-"Arrastre esto a la distribución para añadir una nueva caja de texto estática."
-
-#: ../glom/utility_widgets/layouttoolbar.cc:73
-msgid "Drag this to the layout to add a new static image."
-msgstr "Arrastre esto a la distribución para añadir una imagen estática nueva."
 
 #. TODO: Add a drag item for the related records item.
 #. Note for translators: These are container layout items, containing child layout items, like container widgets in GTK+.
 #: ../glom/utility_widgets/layouttoolbar.cc:78
 msgid "Containers"
 msgstr "Contenedores"
-
-#. Note for translators: These are layout items, like widgets in GTK+.
-#: ../glom/utility_widgets/layouttoolbar.cc:83
-msgid "Items"
-msgstr "Elementos"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:39
 msgid "Field Layout Properties"
@@ -3412,15 +3456,6 @@ msgstr "El informe se abrirá ahora en su navegador web."
 
 #~ msgid "Columns Count"
 #~ msgstr "Contar las columnas"
-
-#~ msgid "Related Records"
-#~ msgstr "Registros relacionados"
-
-#~ msgid "Horizontal Line"
-#~ msgstr "Línea horizontal"
-
-#~ msgid "Vertical Line"
-#~ msgstr "Línea vertical"
 
 #~ msgid "gtk-cancel"
 #~ msgstr "gtk-cancel"
