@@ -1,3 +1,8 @@
+2008-09-13  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in: Increase the required goocanvasmm version, so we get the 
+	grid lines.
+
 2008-09-12  Murray Cumming  <murrayc@murrayc.com>
 
 	* po/POTFILES.in: Mention a new file.
