@@ -62,7 +62,10 @@ LayoutToolbar::LayoutToolbar()
   LayoutToolbarButton* drag_item = 
     Gtk::manage(new LayoutToolbarButton("glom-field.png", LayoutWidgetBase::TYPE_FIELD,
                                         _("Database Field"), _("Drag this to the layout to add a new database field.")));
-  LayoutToolbarButton* drag_button = 
+  LayoutToolbarButton* drag_portal = 
+    Gtk::manage(new LayoutToolbarButton("glom-related-records.png", LayoutWidgetBase::TYPE_PORTAL,
+                                        _("Related Records"), _("Drag this to the layout to add a new Related Record.")));
+	LayoutToolbarButton* drag_button = 
     Gtk::manage(new LayoutToolbarButton("glom-button.png", LayoutWidgetBase::TYPE_BUTTON,
                                         _("Button"), _("Drag this to the layout to add a new button.")));
   LayoutToolbarButton* drag_text = 
@@ -81,8 +84,9 @@ LayoutToolbar::LayoutToolbar()
 
   //Note for translators: These are layout items, like widgets in GTK+.
   GtkContainer* fields_group = GTK_CONTAINER(egg_tool_item_group_new(_("Items")));
+  gtk_container_add(fields_group, GTK_WIDGET(drag_portal->gobj()));
   gtk_container_add(fields_group, GTK_WIDGET(drag_item->gobj()));
-  gtk_container_add(fields_group, GTK_WIDGET(drag_button->gobj()));  
+	gtk_container_add(fields_group, GTK_WIDGET(drag_button->gobj()));  
   gtk_container_add(fields_group, GTK_WIDGET(drag_text->gobj()));
   gtk_container_add(fields_group, GTK_WIDGET(drag_image->gobj()));
   

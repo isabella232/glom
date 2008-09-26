@@ -1112,39 +1112,7 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
   }
   else if(item_type == LayoutWidgetBase::TYPE_PORTAL)
   {
-    try
-    {
-      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_relationship");
-
-      Dialog_ChooseRelationship* dialog = 0;
-      refXml->get_widget_derived("dialog_choose_relationship", dialog);
-
-      if(dialog)
-      {
-        Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
-        dialog->set_document(pDocument, m_table_name);
-        //TODO: dialog->set_transient_for(*get_app_window());
-        const int response = dialog->run();
-        dialog->hide();
-        if(response == Gtk::RESPONSE_OK)
-        {
-          //Get the chosen relationship:
-          sharedptr<Relationship> relationship  = dialog->get_relationship_chosen();
-          if(relationship)
-          {
-            sharedptr<LayoutItem_Portal> layout_item = sharedptr<LayoutItem_Portal>::create();
-            layout_item->set_relationship(relationship);
-            layout_item_new = layout_item;
-          }
-        }
-
-        delete dialog;
-      }
-    }
-    catch(const Gnome::Glade::XmlError& ex)
-    {
-      std::cerr << ex.what() << std::endl;
-    }
+    layout_item_new = get_portal_relationship();
   }
   else if(item_type == LayoutWidgetBase::TYPE_BUTTON)
   {
@@ -1248,6 +1216,20 @@ void FlowTableWithFields::on_dnd_add_layout_notebook (LayoutWidgetBase* above)
   
   //Tell the parent to tell the document to save the layout
   signal_layout_changed().emit();
+}
+
+void FlowTableWithFields::on_dnd_add_layout_portal (LayoutWidgetBase* above)
+{
+  sharedptr<LayoutItem_Portal> portal = get_portal_relationship();
+  
+  if (portal)
+  {
+    sharedptr<LayoutItem> item = sharedptr<LayoutItem>::cast_dynamic(portal);
+    dnd_add_to_layout_group (item, above);
+    
+    //Tell the parent to tell the document to save the layout
+    signal_layout_changed().emit();
+  }
 }
 
 void FlowTableWithFields::on_dnd_add_layout_group(LayoutWidgetBase* above)
@@ -1491,6 +1473,44 @@ bool FlowTableWithFields::on_button_press_event(GdkEventButton *event)
     }
   }
   return Gtk::Widget::on_button_press_event(event);
+}
+
+sharedptr<LayoutItem_Portal> FlowTableWithFields::get_portal_relationship()
+{
+  try
+  {
+    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_relationship");
+    
+    Dialog_ChooseRelationship* dialog = 0;
+    refXml->get_widget_derived("dialog_choose_relationship", dialog);
+    
+    if(dialog)
+    {
+      Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
+      dialog->set_document(pDocument, m_table_name);
+      //TODO: dialog->set_transient_for(*get_app_window());
+      const int response = dialog->run();
+      dialog->hide();
+      if(response == Gtk::RESPONSE_OK)
+      {
+        //Get the chosen relationship:
+        sharedptr<Relationship> relationship  = dialog->get_relationship_chosen();
+        if(relationship)
+        {
+          sharedptr<LayoutItem_Portal> layout_item = sharedptr<LayoutItem_Portal>::create();
+          layout_item->set_relationship(relationship);
+          return layout_item;
+        }
+      }
+      
+      delete dialog;
+    }
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+  return sharedptr<LayoutItem_Portal>();
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

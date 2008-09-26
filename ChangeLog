@@ -1,3 +1,14 @@
+2008-09-26  Johannes Schmid  <johannes.schmid@openismus.com>
+
+	* configure.in: Require correct version for bonobo and goocanvasmm
+	
+	* glom/mode_data/flowtablewithfields.cc:
+	* glom/mode_data/flowtablewithfields.h:
+	* glom/utility_widgets/flowtable_dnd.cc:
+	* glom/utility_widgets/flowtable_dnd.h:
+	* glom/utility_widgets/layouttoolbar.cc:
+	Added support for dragging related records to the layout. See #358092
+
 1.7.2:
 
 2008-09-13  Murray Cumming  <murrayc@murrayc.com>

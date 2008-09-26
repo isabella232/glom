@@ -217,10 +217,11 @@ protected:
   virtual void on_dnd_add_layout_item_text (LayoutWidgetBase* above);
   virtual void on_dnd_add_layout_item_image (LayoutWidgetBase* above);
   virtual void on_dnd_add_layout_notebook (LayoutWidgetBase* above);
+  virtual void on_dnd_add_layout_portal (LayoutWidgetBase* above);
   virtual void on_dnd_add_layout_item (LayoutWidgetBase* above,
                                        sharedptr<LayoutItem>& item);
   
-  bool get_field_information (sharedptr<LayoutItem>& item);
+  sharedptr<LayoutItem_Portal> get_portal_relationship ();
   void dnd_notify_failed_drop();
   bool dnd_add_to_layout_group (sharedptr<LayoutItem>& item, 
                                 LayoutWidgetBase* layoutwidget,

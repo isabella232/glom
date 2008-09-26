@@ -187,6 +187,9 @@ void FlowTableDnd::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& d
       case LayoutWidgetBase::TYPE_NOTEBOOK:
         on_dnd_add_layout_notebook(above);
         break;
+      case LayoutWidgetBase::TYPE_PORTAL:
+        on_dnd_add_layout_portal(above);
+        break;
       default:
         std::cerr << "Unknown drop type: " << type << std::endl;
     }
