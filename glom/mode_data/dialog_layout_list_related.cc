@@ -348,7 +348,7 @@ void Dialog_Layout_List_Related::on_combo_navigation_specific_changed()
 }
 
 //Overridden so we can show related fields instead of fields from the parent table:
-void Dialog_Layout_List_Related::on_button_field_add()
+void Dialog_Layout_List_Related::on_button_add_field()
 {
   //Get the chosen field:
   //std::cout << "debug: related relationship=" << glom_get_sharedptr_name(m_portal->get_related_relationship()) << std::endl;
@@ -358,7 +358,7 @@ void Dialog_Layout_List_Related::on_button_field_add()
   if(field)
   {
     //Add the field details to the layout treeview:
-    Gtk::TreeModel::iterator iter =  m_model_items->append();
+    Gtk::TreeModel::iterator iter = m_model_items->append();
     if(iter)
     {
       Gtk::TreeModel::Row row = *iter;

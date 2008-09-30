@@ -372,7 +372,7 @@ void Dialog_Layout_Calendar_Related::on_combo_date_field_changed()
 }
 
 //Overridden so we can show related fields instead of fields from the parent table:
-void Dialog_Layout_Calendar_Related::on_button_field_add()
+void Dialog_Layout_Calendar_Related::on_button_add_field()
 {
   //Get the chosen field:
   //std::cout << "debug: related relationship=" << glom_get_sharedptr_name(m_portal->get_related_relationship()) << std::endl;

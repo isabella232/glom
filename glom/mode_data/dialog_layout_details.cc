@@ -161,7 +161,7 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
   m_button_field_formatting->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_field_formatting) );
 
   refGlade->get_widget("button_add_field", m_button_add_field);
-  m_button_add_field->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_field_add) );
+  m_button_add_field->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_add_field) );
 
   refGlade->get_widget("button_add_group", m_button_add_group);
   m_button_add_group->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_add_group) );
@@ -512,7 +512,7 @@ void Dialog_Layout_Details::on_button_down()
   enable_buttons();
 }
 
-void Dialog_Layout_Details::on_button_field_add()
+void Dialog_Layout_Details::on_button_add_field()
 {
   sharedptr<LayoutItem_Field> layout_item = offer_field_list(m_table_name, this);
   if(layout_item)
@@ -656,9 +656,10 @@ Gtk::TreeModel::iterator Dialog_Layout_Details::append_appropriate_row()
   Gtk::TreeModel::iterator parent = get_selected_group_parent();
 
   //Add the field details to the layout treeview:
-  Gtk::TreeModel::iterator iter;
   if(parent)
+  {
     result = m_model_items->append(parent->children());
+  }
   else
   {
     //Find the first group, and make the new row a child of that:
@@ -673,6 +674,12 @@ Gtk::TreeModel::iterator Dialog_Layout_Details::append_appropriate_row()
 
       if(layout_group && !layout_portal)
         result = m_model_items->append(iter_first->children());
+    }
+
+    if(!result)
+    {
+      //For instance, for a Dialog_Layout_List_Related derived class, with a portal as the top-level group:
+      result = m_model_items->append();
     }
   }
 
@@ -1190,6 +1197,8 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
                 }
                 else if(layout_item)
                   markup = layout_item->get_name();
+                else
+                  markup = Glib::ustring();
               }
             }
           }
@@ -1219,8 +1228,10 @@ void Dialog_Layout_Details::on_cell_data_title(Gtk::CellRenderer* renderer, cons
       sharedptr<LayoutItem_Notebook> layout_notebook = sharedptr<LayoutItem_Notebook>::cast_dynamic(layout_item);
       if(layout_notebook)
         renderer_text->property_text() = _("(Notebook)");
-      else
+      else if(layout_item)
         renderer_text->property_text() = layout_item->get_title();
+      else
+        renderer_text->property_text() = Glib::ustring();
 
       sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(layout_item);
       sharedptr<LayoutItem_Portal> layout_portal = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_item);
@@ -1242,15 +1253,19 @@ void Dialog_Layout_Details::on_cell_data_column_width(Gtk::CellRenderer* rendere
     {
       Gtk::TreeModel::Row row = *iter;
       sharedptr<LayoutItem> layout_item = row[m_model_items->m_columns.m_col_layout_item];
-     
-      sharedptr<LayoutItem_Button> layout_button = sharedptr<LayoutItem_Button>::cast_dynamic(layout_item);
-      sharedptr<LayoutItem_Text> layout_text = sharedptr<LayoutItem_Text>::cast_dynamic(layout_item);
-      sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
-      const bool editable = (layout_field || layout_button || layout_text); //Only these have column widths that can be edited.
-      renderer_text->property_editable() = editable;
 
       guint column_width = 0;
-      layout_item->get_display_width(column_width);
+      if(layout_item)
+      {
+        sharedptr<LayoutItem_Button> layout_button = sharedptr<LayoutItem_Button>::cast_dynamic(layout_item);
+        sharedptr<LayoutItem_Text> layout_text = sharedptr<LayoutItem_Text>::cast_dynamic(layout_item);
+        sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
+        const bool editable = (layout_field || layout_button || layout_text); //Only these have column widths that can be edited.
+        renderer_text->property_editable() = editable;
+      
+        layout_item->get_display_width(column_width);
+      }
+
       Glib::ustring text; 
       if(column_width) //Show nothing if no width has been specified, meaning that it's automatic.
         text = Utils::string_from_decimal(column_width);

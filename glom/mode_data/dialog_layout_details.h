@@ -61,7 +61,7 @@ protected:
   void on_button_up();
   void on_button_down();
   void on_button_field_delete();
-  virtual void on_button_field_add(); //overridden in derived class. 
+  virtual void on_button_add_field(); //overridden in derived class. 
   void on_button_add_group();
   void on_button_add_notebook();
   void on_button_add_related();

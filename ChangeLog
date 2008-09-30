@@ -1,5 +1,13 @@
 2008-09-30  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/dialog_layout_details.cc:
+	* glom/mode_data/dialog_layout_details.h:
+	append_appropriate_row(): Make sure that this returns something even 
+	for related records portals, so we can add buttons, text, and images to 
+	them again.
+
+2008-09-30  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/glom_developer.glade:
 	* glom/mode_data/box_data_list_related.cc:
 	* glom/mode_data/dialog_layout_details.cc:
