@@ -48,8 +48,8 @@ protected:
   virtual void enable_buttons();
 
   //signal handlers:
-  virtual void on_button_field_up();
-  virtual void on_button_field_down();
+  virtual void on_button_up();
+  virtual void on_button_down();
   virtual void on_button_add_field();
   virtual void on_button_delete();
   virtual void on_button_edit_field();

@@ -177,7 +177,7 @@ void Box_Data_List_Related::on_adddel_user_requested_edit(const Gtk::TreeModel::
   //Call base class:
   
   const Gnome::Gda::Value primary_key_value = m_AddDel.get_value_key(row); //The primary key is in the key.
-  std::cout << "on_adddel_user_requested_edit(): Requesting edit for primary_key=" << primary_key_value.to_string() << std::endl;
+  //std::cout << "on_adddel_user_requested_edit(): Requesting edit for primary_key=" << primary_key_value.to_string() << std::endl;
   signal_user_requested_details().emit(primary_key_value);
 }
 

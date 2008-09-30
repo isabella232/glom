@@ -277,6 +277,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
                   layout_item->get_display_width(width);
                   width = std::max(width, (guint)10);
                   cell->set_width_height(width, row_height);
+                  std::cout << "DEBUG: width=" << width << std::endl;
 
                   //TODO: Add/Remove rows when resizing, instead of resizing the rows:
                   Glib::RefPtr<Goocanvas::Item> cell_as_item = CanvasItemMovable::cast_to_item(cell);
@@ -285,7 +286,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
                     canvas_item->attach(cell_as_item, 
                       col /* left_attach */, col+1 /* right_attach */, 
                       row /* top_attach */, row + 1 /* right_attach */, 
-                      Gtk::SHRINK, (Gtk::AttachOptions)Gtk::FILL | Gtk::EXPAND);
+                      Gtk::FILL, (Gtk::AttachOptions)Gtk::FILL | Gtk::EXPAND);
                   }
                 }
 

@@ -4648,7 +4648,7 @@ Which user should be added to this group?</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkButton" id="button_down">
+                              <widget class="GtkButton" id="button_field_down">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="can_default">True</property>
@@ -5448,7 +5448,7 @@ Which user should be added to this group?</property>
                                   </widget>
                                 </child>
                                 <child>
-                                  <widget class="GtkButton" id="button_field_down">
+                                  <widget class="GtkButton" id="button_down">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="can_default">True</property>
@@ -8280,7 +8280,7 @@ What name should this module have?</property>
                         <property name="visible">True</property>
                         <property name="spacing">6</property>
                         <child>
-                          <widget class="GtkButton" id="button_field_add">
+                          <widget class="GtkButton" id="button_add_field">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
@@ -8380,7 +8380,7 @@ What name should this module have?</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkButton" id="button_field_add_group">
+                          <widget class="GtkButton" id="button_add_group">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="can_default">True</property>
@@ -8695,7 +8695,7 @@ What name should this module have?</property>
                             <property name="spacing">6</property>
                             <property name="layout_style">GTK_BUTTONBOX_START</property>
                             <child>
-                              <widget class="GtkButton" id="button_field_up">
+                              <widget class="GtkButton" id="button_up">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="can_default">True</property>
@@ -8705,7 +8705,7 @@ What name should this module have?</property>
                               </widget>
                             </child>
                             <child>
-                              <widget class="GtkButton" id="button_field_down">
+                              <widget class="GtkButton" id="button_down">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="can_default">True</property>

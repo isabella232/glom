@@ -73,10 +73,10 @@ Dialog_Layout_Export::Dialog_Layout_Export(BaseObjectType* cobject, const Glib::
 
 
   refGlade->get_widget("button_field_up", m_button_field_up);
-  m_button_field_up->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Export::on_button_field_up) );
+  m_button_field_up->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Export::on_button_up) );
 
   refGlade->get_widget("button_field_down", m_button_field_down);
-  m_button_field_down->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Export::on_button_field_down) );
+  m_button_field_down->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Export::on_button_down) );
 
   refGlade->get_widget("button_field_delete", m_button_field_delete);
   m_button_field_delete->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Export::on_button_delete) );
@@ -209,12 +209,12 @@ void Dialog_Layout_Export::enable_buttons()
 }
 
 
-void Dialog_Layout_Export::on_button_field_up()
+void Dialog_Layout_Export::on_button_up()
 {
   move_treeview_selection_up(m_treeview_fields, m_ColumnsFields.m_col_sequence);
 }
 
-void Dialog_Layout_Export::on_button_field_down()
+void Dialog_Layout_Export::on_button_down()
 {
   move_treeview_selection_down(m_treeview_fields, m_ColumnsFields.m_col_sequence);
 }

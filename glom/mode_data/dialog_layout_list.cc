@@ -37,6 +37,7 @@ Dialog_Layout_List::Dialog_Layout_List(BaseObjectType* cobject, const Glib::RefP
   m_button_add_notebook->hide();
   m_button_add_related->hide();
   m_button_add_related_calendar->hide();
+  m_button_add_group->hide();
 
   //We don't want this part of the dialog:
   //(We share one glade definition for several dialogs.)

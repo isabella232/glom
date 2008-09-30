@@ -1,5 +1,16 @@
 2008-09-30  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/glom_developer.glade:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/dialog_layout_details.cc:
+	* glom/mode_data/dialog_layout_details.h:
+	* glom/mode_data/dialog_layout_export.cc:
+	* glom/mode_data/dialog_layout_export.h:
+	* glom/mode_data/dialog_layout_list.cc: Renamed some widgets to make the 
+	code just slightly less weird.
+
+2008-09-30  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_design/print_layouts/canvas_layout_item.cc:
 	* glom/mode_design/print_layouts/canvas_layout_item.h: set_layout_item(): 
 	Moved some code into a create_canvas_item_for_layout_item() function so 

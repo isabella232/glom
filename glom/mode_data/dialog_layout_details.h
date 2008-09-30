@@ -58,11 +58,11 @@ protected:
   sharedptr<LayoutItem_Button> offer_button_script_edit(const sharedptr<const LayoutItem_Button>& button);
 
   //signal handlers:
-  void on_button_field_up();
-  void on_button_field_down();
+  void on_button_up();
+  void on_button_down();
   void on_button_field_delete();
   virtual void on_button_field_add(); //overridden in derived class. 
-  void on_button_field_add_group();
+  void on_button_add_group();
   void on_button_add_notebook();
   void on_button_add_related();
   void on_button_add_related_calendar();
@@ -95,10 +95,10 @@ protected:
   Gtk::Box* m_box_related_table_widgets;
   Gtk::Frame* m_box_related_navigation;
 
-  Gtk::Button* m_button_field_up;
-  Gtk::Button* m_button_field_down;
-  Gtk::Button* m_button_field_add;
-  Gtk::Button* m_button_field_add_group;
+  Gtk::Button* m_button_up;
+  Gtk::Button* m_button_down;
+  Gtk::Button* m_button_add_field;
+  Gtk::Button* m_button_add_group;
   Gtk::Button* m_button_add_notebook;
   Gtk::Button* m_button_add_related;
   Gtk::Button* m_button_add_related_calendar;

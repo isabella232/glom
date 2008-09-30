@@ -41,10 +41,10 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
   m_box_table_widgets(0),
   m_box_related_table_widgets(0),
   m_box_related_navigation(0),
-  m_button_field_up(0),
-  m_button_field_down(0),
-  m_button_field_add(0),
-  m_button_field_add_group(0),
+  m_button_up(0),
+  m_button_down(0),
+  m_button_add_field(0),
+  m_button_add_group(0),
   m_button_add_notebook(0),
   m_button_add_related(0),
   m_button_add_related_calendar(0),
@@ -148,11 +148,11 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
     m_model_items->signal_row_changed().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_treemodel_row_changed) );
   }
 
-  refGlade->get_widget("button_field_up", m_button_field_up);
-  m_button_field_up->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_field_up) );
+  refGlade->get_widget("button_up", m_button_up);
+  m_button_up->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_up) );
 
-  refGlade->get_widget("button_field_down", m_button_field_down);
-  m_button_field_down->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_field_down) );
+  refGlade->get_widget("button_down", m_button_down);
+  m_button_down->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_down) );
 
   refGlade->get_widget("button_field_delete", m_button_field_delete);
   m_button_field_delete->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_field_delete) );
@@ -160,11 +160,11 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
   refGlade->get_widget("button_formatting", m_button_field_formatting);
   m_button_field_formatting->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_field_formatting) );
 
-  refGlade->get_widget("button_field_add", m_button_field_add);
-  m_button_field_add->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_field_add) );
+  refGlade->get_widget("button_add_field", m_button_add_field);
+  m_button_add_field->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_field_add) );
 
-  refGlade->get_widget("button_field_add_group", m_button_field_add_group);
-  m_button_field_add_group->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_field_add_group) );
+  refGlade->get_widget("button_add_group", m_button_add_group);
+  m_button_add_group->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_add_group) );
 
   refGlade->get_widget("button_add_notebook", m_button_add_notebook);
   m_button_add_notebook->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_add_notebook) );
@@ -389,7 +389,7 @@ void Dialog_Layout_Details::enable_buttons()
           enable_up = false;  //It can't go any higher.
       }
 
-      m_button_field_up->set_sensitive(enable_up);
+      m_button_up->set_sensitive(enable_up);
 
 
       //Disable Down if It can't go any lower.
@@ -410,7 +410,7 @@ void Dialog_Layout_Details::enable_buttons()
           enable_down = false;
       }
 
-      m_button_field_down->set_sensitive(enable_down);
+      m_button_down->set_sensitive(enable_down);
 
       m_button_field_delete->set_sensitive(true);
 
@@ -423,8 +423,8 @@ void Dialog_Layout_Details::enable_buttons()
     else
     {
       //Disable all buttons that act on a selection:
-      m_button_field_down->set_sensitive(false);
-      m_button_field_up->set_sensitive(false);
+      m_button_down->set_sensitive(false);
+      m_button_up->set_sensitive(false);
       m_button_field_delete->set_sensitive(false);
       m_button_field_formatting->set_sensitive(false);
     }
@@ -449,7 +449,7 @@ void Dialog_Layout_Details::on_button_field_delete()
   }
 }
 
-void Dialog_Layout_Details::on_button_field_up()
+void Dialog_Layout_Details::on_button_up()
 {
   Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_fields->get_selection();
   if(refSelection)
@@ -480,7 +480,7 @@ void Dialog_Layout_Details::on_button_field_up()
   enable_buttons();
 }
 
-void Dialog_Layout_Details::on_button_field_down()
+void Dialog_Layout_Details::on_button_down()
 {
   Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_fields->get_selection();
   if(refSelection)
@@ -880,7 +880,7 @@ Gtk::TreeModel::iterator Dialog_Layout_Details::get_selected_group_parent() cons
   return parent;
 }
 
-void Dialog_Layout_Details::on_button_field_add_group()
+void Dialog_Layout_Details::on_button_add_group()
 {
   Gtk::TreeModel::iterator parent = get_selected_group_parent();
 
