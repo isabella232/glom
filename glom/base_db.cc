@@ -2009,17 +2009,20 @@ Base_DB::type_map_fields Base_DB::get_record_field_values_for_calculation(const 
       const Glib::ustring query = Utils::build_sql_select_with_key(table_name, fieldsToGet, primary_key, primary_key_value);
 
       Glib::RefPtr<Gnome::Gda::DataModel> data_model;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
       try
+#endif
       {
         data_model = query_execute(query);
       }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
       catch(const Glib::Exception& ex)
       {
         std::cerr << "Base_DB::get_record_field_values_for_calculation(): Exception while executing SQL: " << query << std::endl;
         handle_error(ex);
         return field_values;
       }
-
+#endif
       if(data_model && data_model->get_n_rows())
       {
         int col_index = 0;

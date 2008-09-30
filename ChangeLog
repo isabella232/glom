@@ -1,3 +1,7 @@
+2008-09-30  Johannes Schmid  <johannes.schmid@openismus.com>
+
+	* glom/base_db.cc: Fixed build with disabled exceptions
+
 1.6.17:
 
 2008-05-07  Murray Cumming  <murrayc@murrayc.com>
