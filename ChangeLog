@@ -7,7 +7,7 @@
 	* glom/mode_data/dialog_layout_export.cc:
 	* glom/mode_data/dialog_layout_export.h:
 	* glom/mode_data/dialog_layout_list.cc: Renamed some widgets to make the 
-	code just slightly less weird.
+	code just slightly less weird. Also hid Add Group for list layouts.
 
 2008-09-30  Murray Cumming  <murrayc@murrayc.com>
 
