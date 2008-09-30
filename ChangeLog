@@ -1,3 +1,11 @@
+2008-09-30  Murray Cumming,,,  <murrayc@murrayc.com>
+
+	reviewed by: <delete if not using a buddy>
+	patch by: <delete if not someone else's patch>
+
+	* glom/mode_design/print_layouts/canvas_layout_item.cc:
+	* glom/mode_design/print_layouts/canvas_layout_item.h:
+
 2008-09-26  Johannes Schmid  <johannes.schmid@openismus.com>
 
 	* configure.in: Require correct version for bakery and goocanvasmm

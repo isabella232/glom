@@ -35,6 +35,7 @@
 #include <glom/libglom/data_structure/glomconversions.h>
 #include <glibmm/i18n.h>
 #include <math.h>
+#include <algorithm> //For std::max().
 
 namespace Glom
 {
@@ -96,7 +97,7 @@ void CanvasLayoutItem::check_and_apply_formatting(const Glib::RefPtr<CanvasTextM
 
   const Glib::ustring bg = formatting.get_text_format_color_background();
   if(!bg.empty())
-  canvas_item->property_fill_color() = bg;
+    canvas_item->property_fill_color() = bg;
 }
 
 void CanvasLayoutItem::on_resized()
@@ -106,19 +107,51 @@ void CanvasLayoutItem::on_resized()
     canvas_image->scale_to_size();
 }
 
-void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
+void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& layout_item)
 {
   //Add the new child:
-  m_layout_item = item;
+  m_layout_item = layout_item;
 
   if(!m_layout_item)
     std::cerr << "CanvasLayoutItem::set_layout_item(): item was NULL." << std::endl;
 
+  Glib::RefPtr<CanvasItemMovable> child_item = create_canvas_item_for_layout_item(m_layout_item);
+
+  if(child_item)
+  {
+    //child_item->property_pointer_events() = 
+    //  (Goocanvas::PointerEvents)(Goocanvas::CANVAS_EVENTS_VISIBLE_FILL & GOO_CANVAS_EVENTS_VISIBLE_STROKE);
+      
+    //Set the position and dimensions of this group to match the child:
+    double x = 0;
+    double y = 0;
+    double width = 0;
+    double height = 0;
+    m_layout_item->get_print_layout_position(x, y, width, height);
+
+    set_xy(x, y);
+    set_width_height(width, height);
+    //std::cout << "CanvasLayoutItem::set_layout_item(): item x=" << x << std::endl;
+
+    set_child(child_item);
+  }
+
+  //Scale images.
+  //This can only be done after setting the size:
+  Glib::RefPtr<CanvasImageMovable> canvas_image = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(child_item);
+  if(canvas_image)
+  {
+    canvas_image->scale_to_size();
+  }
+}
+
+Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_item(const sharedptr<LayoutItem>& layout_item)
+{
   sharedptr<LayoutItem_Line> line;
 
   Glib::RefPtr<CanvasItemMovable> child;
   Glib::RefPtr<Goocanvas::Item> child_item;
-  sharedptr<LayoutItem_Text> text = sharedptr<LayoutItem_Text>::cast_dynamic(m_layout_item);
+  sharedptr<LayoutItem_Text> text = sharedptr<LayoutItem_Text>::cast_dynamic(layout_item);
   if(text)
   {
     Glib::RefPtr<CanvasTextMovable> canvas_item = CanvasTextMovable::create();
@@ -133,7 +166,7 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
   }
   else
   {
-    sharedptr<LayoutItem_Image> image = sharedptr<LayoutItem_Image>::cast_dynamic(m_layout_item);
+    sharedptr<LayoutItem_Image> image = sharedptr<LayoutItem_Image>::cast_dynamic(layout_item);
     if(image)
     {
       Glib::RefPtr<CanvasImageMovable> canvas_item = CanvasImageMovable::create();
@@ -149,7 +182,7 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
     }
     else
     {
-      sharedptr<LayoutItem_Line> line = sharedptr<LayoutItem_Line>::cast_dynamic(m_layout_item);
+      sharedptr<LayoutItem_Line> line = sharedptr<LayoutItem_Line>::cast_dynamic(layout_item);
       if(line)
       {
         double start_x = 0;
@@ -171,7 +204,7 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
       }
       else
       {
-        sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(m_layout_item);
+        sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
         if(field)
         {
           //Create an appropriate canvas item for the field type:
@@ -203,7 +236,7 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
         }
         else
         {
-          sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::cast_dynamic(m_layout_item);
+          sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_item);
           if(portal)
           {
             Glib::RefPtr<CanvasTableMovable> canvas_item = CanvasTableMovable::create();
@@ -212,8 +245,7 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
             canvas_item->property_stroke_color() = "black";
 
             //Show as many rows as can fit in the height.
-            //TODO: use std::max():
-            const double row_height = MAX(portal->get_print_layout_row_height(), 1); //Avoid 0, because that makes the whole thing zero sized.
+            const double row_height = std::max(portal->get_print_layout_row_height(), (double)1); //Avoid 0, because that makes the whole thing zero sized.
             double ignore_x = 0;
             double ignore_y = 0;
             double total_width = 0;
@@ -233,19 +265,30 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
               {
                 sharedptr<LayoutItem> layout_item = *iter;
 
-                Glib::RefPtr<CanvasRectMovable> rect = CanvasRectMovable::create();
-                rect->property_fill_color() = "white"; //This makes the whole area clickable, not just the outline stroke.
-                rect->property_line_width() = 1;
-                rect->property_stroke_color() = "black";
+                //We use create_canvas_item_for_layout_item() instead of just 
+                //creating another CanvasLayoutItem, because that would be a group,
+                //but goocanvas cannot yet support Groups inside Tables. murrayc.
+                //TODO: Bug number.
+                Glib::RefPtr<CanvasItemMovable> cell = create_canvas_item_for_layout_item(layout_item);
+                if(cell)
+                {
+                  //Make sure that the width is sensible:
+                  guint width = 0;
+                  layout_item->get_display_width(width);
+                  width = std::max(width, (guint)10);
+                  cell->set_width_height(width, row_height);
 
-                //TODO: Use std::max():
-                guint width = 0;
-                layout_item->get_display_width(width);
-                width = MAX(width, 10);
-                rect->set_width_height(width, row_height);
+                  //TODO: Add/Remove rows when resizing, instead of resizing the rows:
+                  Glib::RefPtr<Goocanvas::Item> cell_as_item = CanvasItemMovable::cast_to_item(cell);
+                  if(cell_as_item)
+                  {
+                    canvas_item->attach(cell_as_item, 
+                      col /* left_attach */, col+1 /* right_attach */, 
+                      row /* top_attach */, row + 1 /* right_attach */, 
+                      Gtk::SHRINK, (Gtk::AttachOptions)Gtk::FILL | Gtk::EXPAND);
+                  }
+                }
 
-                //TODO: Add/Remove rows when resizing, instead of resizing the rows:
-                canvas_item->attach(rect, col /* left_attach */, col+1 /* right_attach */, row /* top_attach */, row + 1 /* right_attach */, Gtk::SHRINK, (Gtk::AttachOptions)Gtk::FILL | Gtk::EXPAND, 0.0, 0.0, 0.0, 0.0);
                 ++col;
               }
             }
@@ -253,9 +296,9 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
             child = canvas_item;
             child_item = canvas_item;
           }
-          else if(m_layout_item)
+          else if(layout_item)
           {
-            std::cerr << "CanvasLayoutItem::set_layout_item(): Unhandled LayoutItem type. part type=" << m_layout_item->get_part_type_name() << std::endl;
+            std::cerr << "CanvasLayoutItem::set_layout_item(): Unhandled LayoutItem type. part type=" << layout_item->get_part_type_name() << std::endl;
           }
           else
           {
@@ -265,6 +308,8 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
       }
     }
   }
+
+  return child;
 
   if(child && child_item)
   {
@@ -276,14 +321,9 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
     double y = 0;
     double width = 0;
     double height = 0;
-    item->get_print_layout_position(x, y, width, height);
-
-    set_xy(x, y);
-    set_width_height(width, height);
+    layout_item->get_print_layout_position(x, y, width, height);
+    child->set_width_height(width, height);
     //std::cout << "CanvasLayoutItem::set_layout_item(): item x=" << x << std::endl;
-
-    //Set the child (this removes the previous child):
-    set_child(child);
   }
 
   //Scale images.
@@ -295,6 +335,8 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& item)
 
     //It will also be rescaled when this canvas item is resized - see on_resized().
   }
+
+  return child;
 }
 
 void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)

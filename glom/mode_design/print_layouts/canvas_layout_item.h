@@ -41,6 +41,7 @@ protected:
   virtual ~CanvasLayoutItem();
 
 public:
+
   static Glib::RefPtr<CanvasLayoutItem> create();
 
   //Creates a new canvas item, with an appropriate child canvas item,
@@ -51,7 +52,7 @@ public:
 
   //Create an appropriate child canvas item,
   //and sets the position and size of this canvas item to the position in the LayoutItem.
-  void set_layout_item(const sharedptr<LayoutItem>& item);
+  void set_layout_item(const sharedptr<LayoutItem>& layout_item);
   
   /// Make the canvas item show actual data instead of, for instance, a field name.
   void set_db_data(const Gnome::Gda::Value& value);
@@ -60,7 +61,10 @@ public:
   void remove_empty_indicators();
 
 protected:
-  void check_and_apply_formatting(const Glib::RefPtr<CanvasTextMovable>& canvas_item, FieldFormatting& formatting);
+  /// Create the appropriate inner canvas item to represent the layout item.
+  static Glib::RefPtr<CanvasItemMovable> create_canvas_item_for_layout_item(const sharedptr<LayoutItem>& layout_item);
+
+  static void check_and_apply_formatting(const Glib::RefPtr<CanvasTextMovable>& canvas_item, FieldFormatting& formatting);
   
   void on_resized();
 
