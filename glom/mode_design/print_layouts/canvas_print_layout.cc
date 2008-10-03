@@ -540,17 +540,22 @@ Glib::RefPtr<Gtk::PageSetup> Canvas_PrintLayout::get_page_setup()
 
 void Canvas_PrintLayout::fill_with_data(const FoundSet& found_set)
 {
+  fill_with_data(m_items_group, found_set);
+}
+
+void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& layout_group, const FoundSet& found_set)
+{
   //A map of the text representation (e.g. field_name or relationship::field_name) to the index:
   typedef std::map<Glib::ustring, guint> type_map_layout_fields_index;
   type_map_layout_fields_index map_fields_index;
   
   //Get list of fields to get from the database.
   Utils::type_vecLayoutFields fieldsToGet;
-  const int count = m_items_group->get_n_children();
+  const int count = layout_group->get_n_children();
   guint field_i = 0;
   for(int i = 0; i < count; ++i)
   {
-    Glib::RefPtr<Goocanvas::Item> base_canvas_item = m_items_group->get_child(i);
+    Glib::RefPtr<Goocanvas::Item> base_canvas_item = layout_group->get_child(i);
     Glib::RefPtr<CanvasLayoutItem> canvas_item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(base_canvas_item);
     if(!canvas_item)
       continue;
@@ -568,7 +573,13 @@ void Canvas_PrintLayout::fill_with_data(const FoundSet& found_set)
       //to get the data for this column from the query results:
       map_fields_index[ layoutitem_field->get_layout_display_name() ] = field_i;
       ++field_i;
-    } 
+    }
+    else
+    {
+      sharedptr<LayoutItem_Portal> layoutitem_portal = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_item);
+      if(layoutitem_portal)
+        fill_with_data(canvas_item, found_set);
+    }
   }
 
   if(fieldsToGet.empty())
@@ -612,7 +623,7 @@ void Canvas_PrintLayout::fill_with_data(const FoundSet& found_set)
   //(and clear the no-image pixbuf from images):
   for(int i = 0; i < count; ++i)
   {
-    Glib::RefPtr<Goocanvas::Item> base_canvas_item = m_items_group->get_child(i);
+    Glib::RefPtr<Goocanvas::Item> base_canvas_item = layout_group->get_child(i);
     Glib::RefPtr<CanvasLayoutItem> canvas_item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(base_canvas_item);
     if(!canvas_item)
       continue;
@@ -639,6 +650,12 @@ void Canvas_PrintLayout::fill_with_data(const FoundSet& found_set)
       canvas_item->remove_empty_indicators();
     }
   }
+}
+
+
+void Canvas_PrintLayout::fill_with_data_portal(const sharedptr<CanvasLayoutItem>& layout_portal, const FoundSet& found_set)
+{
+  //TODO.
 }
 
 void Canvas_PrintLayout::set_zoom_percent(guint percent)
