@@ -1,5 +1,11 @@
 2008-10-07  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_design/print_layouts/box_print_layouts.cc:
+	on_adddel_user_added(): Set a default title based on the name, 
+	when adding a print layout.
+
+2008-10-07  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_design/print_layouts/box_print_layouts.[h|cc]:
 	Rename signal handler to make them clearer.
 

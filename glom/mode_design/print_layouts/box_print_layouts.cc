@@ -133,6 +133,17 @@ void Box_Print_Layouts::on_adddel_user_added(const Gtk::TreeModel::iterator& row
     item->set_name(name);
     m_AddDel.set_value_key(row, name);
 
+
+    //Set a suitable starting title, if there is none already:
+    Glib::ustring title = m_AddDel.get_value(row, m_colTitle);
+    if(title.empty())
+    {
+      title = Utils::title_from_string(name);
+      m_AddDel.set_value(row, m_colTitle, title);
+    }
+
+    item->set_title(title);
+
     get_document()->set_print_layout(m_table_name, item);
   }
 }
