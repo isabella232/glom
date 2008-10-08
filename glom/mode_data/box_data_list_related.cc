@@ -126,7 +126,6 @@ bool Box_Data_List_Related::fill_from_database()
   if(m_key_field && m_found_set.m_where_clause.empty()) //There's a key field, but no value.
   {
     //No Foreign Key value, so just show the field names:
-
     result = Base_DB_Table_Data::fill_from_database();
 
     //create_layout();

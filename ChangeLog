@@ -1,3 +1,22 @@
+2008-10-07  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_data/box_data_portal.cc
+	* glom/base_db.h
+	* glom/base_db.cc:
+	Moved code from Box_Data_Portal::init_db_details() into 
+	set_found_set_where_clause_for_portal() so it can be reused.
+	Added get_field_value_in_database() overload that 
+	takes a FoundSet.
+	* glom/mode_design/print_layouts/canvas_layout_item.cc
+	* glom/mode_design/print_layouts/canvas_layout_item.h: moved some code into  
+	get_rows_count_for_portal() so it can be reused.
+	* glom/frame_glom.cc
+	* glom/mode_design/print_layouts/canvas_print_layout.cc
+ 	* glom/mode_design/print_layouts/canvas_print_layout.h:
+	fill_with_data(): Added and used some helper functions to fill tables 
+	(for portals) with data so that portals actually show field data when 
+	printed.
+
 2008-09-30  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/dialog_layout_details.cc:

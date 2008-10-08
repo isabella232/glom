@@ -30,6 +30,7 @@ namespace Glom
 
 class CanvasTextMovable;
 class FieldFormatting;
+class LayoutItem_Portal;
 
 /** This has the appropriate child canvas item, depending on the type of the child LayoutItem.
  */
@@ -59,6 +60,8 @@ public:
 
   /// Hide the missing-image pixbuf from images, for instance.
   void remove_empty_indicators();
+
+  static int get_rows_count_for_portal(const sharedptr<const LayoutItem_Portal>& portal, double& row_height);
 
 protected:
   /// Create the appropriate inner canvas item to represent the layout item.

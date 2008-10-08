@@ -71,8 +71,14 @@ protected:
   void add_layout_group_children(const sharedptr<LayoutGroup>& group);
   void fill_layout_group(const sharedptr<LayoutGroup>& group);
 
-  static void fill_with_data(const Glib::RefPtr<Goocanvas::Group>& layout_group, const FoundSet& found_set);
-  static void fill_with_data_portal(const sharedptr<CanvasLayoutItem>& layout_portal, const FoundSet& found_set);
+  //These are not static, because they need access to the document:
+  void fill_with_data(const Glib::RefPtr<Goocanvas::Group>& canvas_group, const FoundSet& found_set);
+  void fill_with_data_portal(const Glib::RefPtr<CanvasLayoutItem>& canvas_item, const Gnome::Gda::Value& foreign_key_value);
+  static void set_canvas_item_field_value(const Glib::RefPtr<Goocanvas::Item> canvas_item, const sharedptr<LayoutItem_Field> field, const Gnome::Gda::Value& value);
+
+  static Glib::RefPtr<Goocanvas::Item> get_canvas_table_cell_child(const Glib::RefPtr<Goocanvas::Table>& table, int row, int col); //TODO: Add this to GooCanvas::Table.
+  
+  type_vecLayoutFields get_portal_fields_to_show(const sharedptr<LayoutItem_Portal>& portal);
 
   sharedptr<LayoutItem_Portal> offer_related_records(const sharedptr<LayoutItem_Portal>& portal, Gtk::Window* parent);
 

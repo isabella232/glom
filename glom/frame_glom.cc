@@ -1979,6 +1979,7 @@ void Frame_Glom::on_menu_print_layout_selected(const Glib::ustring& print_layout
     return;
 
   Canvas_PrintLayout canvas;
+  add_view(&canvas); //So it has access to the document.
   canvas.set_print_layout(m_table_name, print_layout);
 
   //Create a new PrintOperation with our PageSetup and PrintSettings:
@@ -2008,6 +2009,8 @@ void Frame_Glom::on_menu_print_layout_selected(const Glib::ustring& print_layout
     std::cerr << "An error occurred while trying to run a print operation:"
         << ex.what() << std::endl;
   }
+
+  remove_view(&canvas);
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

@@ -189,7 +189,7 @@ Glib::ustring UsesRelationship::get_sql_join_alias_name() const
     const Glib::ustring field_table_name = relationship->get_to_table();
     if(field_table_name.empty())
     {
-      g_warning("build_sql_select_with_where_clause(): field_table_name is null. relationship name = %s", relationship->get_name().c_str());
+      g_warning("get_sql_join_alias_name(): field_table_name is null. relationship name = %s", relationship->get_name().c_str());
     }
     */
 

@@ -267,8 +267,12 @@ protected:
   bool set_field_value_in_database(const LayoutFieldInRecord& field_in_record, const Gnome::Gda::Value& field_value, bool use_current_calculations = false, Gtk::Window* parent_window = 0);
   bool set_field_value_in_database(const LayoutFieldInRecord& field_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value, bool use_current_calculations = false, Gtk::Window* parent_window = 0);
 
-  //Get a single field value from the database.
+  ///Get a single field value from the database.
   Gnome::Gda::Value get_field_value_in_database(const LayoutFieldInRecord& field_in_record, Gtk::Window* parent_window);
+
+  ///Get a single field value from the database.
+  Gnome::Gda::Value get_field_value_in_database(const sharedptr<Field>& field, const FoundSet& found_set, Gtk::Window* parent_window);
+
 
 
   SystemPrefs get_database_preferences() const;
@@ -311,6 +315,16 @@ protected:
   sharedptr<const LayoutItem_Field> get_field_identifies_non_hidden_related_record(const sharedptr<const LayoutItem_Portal>& portal, sharedptr<const Relationship>& used_in_relationship) const;
 
   bool get_primary_key_is_in_foundset(const FoundSet& found_set, const Gnome::Gda::Value& primary_key_value);
+
+
+  /** A utility function to set the where_clause, even for doubly-related records.
+   *
+   * @param found_set The FoundSet to change.
+   * @param portal The related records portal whose records should be selected by the SQL query.
+   * @param foreign_key_value The value of the from field in the parent table.
+   */
+  void set_found_set_where_clause_for_portal(FoundSet& found_set, const sharedptr<LayoutItem_Portal>& portal, const Gnome::Gda::Value& foreign_key_value);
+
 
   static bool get_field_primary_key_index_for_fields(const type_vecFields& fields, guint& field_column);
   static bool get_field_primary_key_index_for_fields(const type_vecLayoutFields& fields, guint& field_column);

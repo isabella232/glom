@@ -24,6 +24,13 @@
 #include <gtkmm/stock.h>
 #include <glom/mode_design/print_layouts/dialog_text_formatting.h>
 #include <glom/mode_data/dialog_layout_list_related.h>
+
+//TODO: Remove these when we can just use a CanvasLayoutItem in a GooCanvasTable:
+#include <glom/utility_widgets/canvas/canvas_table_movable.h>
+#include <glom/utility_widgets/canvas/canvas_image_movable.h>
+#include <glom/utility_widgets/canvas/canvas_text_movable.h>
+#include <glom/libglom/data_structure/glomconversions.h>
+
 #include <glom/libglom/glade_utils.h>
 #include <glibmm/i18n.h>
 
@@ -543,19 +550,22 @@ void Canvas_PrintLayout::fill_with_data(const FoundSet& found_set)
   fill_with_data(m_items_group, found_set);
 }
 
-void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& layout_group, const FoundSet& found_set)
+void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& canvas_group, const FoundSet& found_set)
 {
   //A map of the text representation (e.g. field_name or relationship::field_name) to the index:
   typedef std::map<Glib::ustring, guint> type_map_layout_fields_index;
   type_map_layout_fields_index map_fields_index;
+
+  typedef std::list< sharedptr<LayoutItem_Portal> > type_list_portals;
+  type_list_portals list_portals;
   
   //Get list of fields to get from the database.
   Utils::type_vecLayoutFields fieldsToGet;
-  const int count = layout_group->get_n_children();
+  const int count = canvas_group->get_n_children();
   guint field_i = 0;
   for(int i = 0; i < count; ++i)
   {
-    Glib::RefPtr<Goocanvas::Item> base_canvas_item = layout_group->get_child(i);
+    Glib::RefPtr<Goocanvas::Item> base_canvas_item = canvas_group->get_child(i);
     Glib::RefPtr<CanvasLayoutItem> canvas_item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(base_canvas_item);
     if(!canvas_item)
       continue;
@@ -578,7 +588,16 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& la
     {
       sharedptr<LayoutItem_Portal> layoutitem_portal = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_item);
       if(layoutitem_portal)
-        fill_with_data(canvas_item, found_set);
+      {
+        //Fill the related records table:
+        sharedptr<Relationship> relationship = layoutitem_portal->get_relationship();
+        if(relationship)
+        {
+          sharedptr<Field> from_field = get_fields_for_table_one_field(relationship->get_from_table(), relationship->get_from_field());
+          const Gnome::Gda::Value from_key_value = get_field_value_in_database(from_field, found_set, 0 /* TODO: window */);
+          fill_with_data_portal(canvas_item, from_key_value);
+        }
+      }
     }
   }
 
@@ -623,7 +642,7 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& la
   //(and clear the no-image pixbuf from images):
   for(int i = 0; i < count; ++i)
   {
-    Glib::RefPtr<Goocanvas::Item> base_canvas_item = layout_group->get_child(i);
+    Glib::RefPtr<Goocanvas::Item> base_canvas_item = canvas_group->get_child(i);
     Glib::RefPtr<CanvasLayoutItem> canvas_item = Glib::RefPtr<CanvasLayoutItem>::cast_dynamic(base_canvas_item);
     if(!canvas_item)
       continue;
@@ -653,9 +672,117 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& la
 }
 
 
-void Canvas_PrintLayout::fill_with_data_portal(const sharedptr<CanvasLayoutItem>& layout_portal, const FoundSet& found_set)
+void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutItem>& canvas_item, const Gnome::Gda::Value& foreign_key_value)
 {
-  //TODO.
+  if(!canvas_item)
+    return;
+
+  sharedptr<LayoutItem> layout_item = canvas_item->get_layout_item();
+  sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_item);
+  if(!portal)
+    return;
+
+  Glib::RefPtr<CanvasTableMovable> canvas_table = Glib::RefPtr<CanvasTableMovable>::cast_dynamic(canvas_item->get_child());
+  if(!canvas_table)
+    return;
+
+  //TODO: When goocanvas supports groups (and therefore Glom::CanvasLayoutItem)
+  //in table cells, simplify this code by just setting the values of those
+  //existing items:
+  //
+  //Remove all existing cells, so we can recreate them:
+  //TODO: Add a function to goocanvas for this.
+  //TODO: Move the child stuff into group in goocanvas.
+
+  LayoutGroup::type_list_items child_layout_items = portal->get_items();
+  
+  //Build and run the SQL query for this portal:
+  type_vecLayoutFields fields_shown = get_portal_fields_to_show(portal);
+
+  FoundSet found_set;
+  found_set.m_table_name = portal->get_table_used(Glib::ustring() /* parent table_name, not used. */);
+  set_found_set_where_clause_for_portal(found_set, portal, foreign_key_value);
+
+  const Glib::ustring sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fields_shown, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause, found_set.m_extra_group_by);
+  //std::cout << "DEBUG: sql_query=" << sql_query << std::endl;
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query, 0 /* TODO: get_app_window() */);
+  if(!(datamodel))
+    return;
+    
+  const int db_rows_count = datamodel->get_n_rows();
+  if(!(db_rows_count > 0))
+    return;
+    
+  const int db_columns_count = datamodel->get_n_columns();
+  if(!db_columns_count)
+    return;
+
+  double row_height_ignored = 0;
+  const int rows_count = CanvasLayoutItem::get_rows_count_for_portal(portal, row_height_ignored);
+  const int cols_count = child_layout_items.size();
+
+  //Set the DB value for each cell:
+  for(int row = 0; row < rows_count; ++row)
+  {
+    int db_col = 0;
+    LayoutGroup::type_list_items::iterator iter_child_layout_items = child_layout_items.begin();
+    for(int col = 0; col < cols_count; ++col)
+    {
+      //Glib::RefPtr<Goocanvas::Item> canvas_child = base_item->get_cell_child(row, col); //TODO: Add this to GooCanvas::Table.
+      Glib::RefPtr<Goocanvas::Item> canvas_child = get_canvas_table_cell_child(canvas_table, row, col); //TODO: Add this to GooCanvas::Table.
+      if(!canvas_child)
+        std::cerr << "Canvas_PrintLayout::fill_with_data_portal(): canvas_child is NULL." << std::endl;
+
+      if(iter_child_layout_items == child_layout_items.end())
+        continue;
+      
+      sharedptr<LayoutItem> child_layout_item = *iter_child_layout_items;
+      sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(child_layout_item);
+      if(field)
+      {
+        Gnome::Gda::Value db_value;
+        if( row < datamodel->get_n_rows() )
+          db_value = datamodel->get_value_at(db_col, row);
+          
+        set_canvas_item_field_value(canvas_child, field, db_value);
+        ++db_col;
+      }
+
+      ++iter_child_layout_items;
+    }
+  }
+}
+
+void Canvas_PrintLayout::set_canvas_item_field_value(const Glib::RefPtr<Goocanvas::Item> canvas_item, const sharedptr<LayoutItem_Field> field, const Gnome::Gda::Value& value)
+{
+  if(!field)
+    return;
+
+  //Expect the appropriate canvas item, depending on the field type:
+  if(field->get_glom_type() == Field::TYPE_IMAGE)
+  {
+    Glib::RefPtr<CanvasImageMovable> canvas_image = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(canvas_item);
+    if(!canvas_image)
+      return;
+
+    Glib::RefPtr<Gdk::Pixbuf> pixbuf = Conversions::get_pixbuf_for_gda_value(value);
+    canvas_image->property_pixbuf() = pixbuf;
+  }
+  else //text, numbers, date, time, boolean:
+  {
+  	Glib::RefPtr<CanvasTextMovable> canvas_text = Glib::RefPtr<CanvasTextMovable>::cast_dynamic(canvas_item);
+    if(!canvas_text)
+    {
+      std::cerr << "Canvas_PrintLayout::set_canvas_item_field_value(): The canvas item is not of the expected type. Instead it is of type." << std::endl;
+      return;
+    }
+
+    //FieldFormatting& formatting = field->m_formatting;
+    //check_and_apply_formatting(canvas_item, formatting);
+    const Glib::ustring text = 
+      Conversions::get_text_for_gda_value(field->get_glom_type(), value, field->m_formatting.m_numeric_format);
+    canvas_text->set_text(text);
+  }
 }
 
 void Canvas_PrintLayout::set_zoom_percent(guint percent)
@@ -692,6 +819,76 @@ void Canvas_PrintLayout::set_grid_gap(double gap)
   if(m_bounds_group)
     m_bounds_group->lower();
 }
+
+Glib::RefPtr<Goocanvas::Item> Canvas_PrintLayout::get_canvas_table_cell_child(const Glib::RefPtr<Goocanvas::Table>& table, int row, int col)
+{
+  Glib::RefPtr<Goocanvas::Item> result;
+
+  if(!table)
+    return result;
+
+  const int count = table->get_n_children();
+  for(int i = 0; i < count; ++i)
+  {
+    Glib::RefPtr<Goocanvas::Item> child = table->get_child(i);
+    if(!child)
+      continue;
+
+    Glib::Value<int> column_value;
+    column_value.init( Glib::Value<int>::value_type() );
+    table->get_child_property(child, "column", column_value);
+
+    Glib::Value<int> row_value;
+    row_value.init( Glib::Value<int>::value_type() );
+    table->get_child_property(child, "row", row_value);
+       
+    //This assumes that all items occupy only one cell:
+    if( (column_value.get() == col) &&
+        (row_value.get() == row) )
+    {
+      return child;
+    }
+  }
+
+  return result;
+}
+
+
+
+Base_DB::type_vecLayoutFields Canvas_PrintLayout::get_portal_fields_to_show(const sharedptr<LayoutItem_Portal>& portal)
+{
+  const Document_Glom* document = get_document();
+  if(!document)
+    std::cerr << "Canvas_PrintLayout::get_portal_fields_to_show(): document is NULL." << std::endl;
+
+  if(document && portal)
+  {
+    Document_Glom::type_list_layout_groups mapGroups;
+    mapGroups.push_back(portal);
+
+    sharedptr<const Relationship> relationship = portal->get_relationship();
+    if(relationship)
+    {
+      type_vecLayoutFields result = get_table_fields_to_show_for_sequence(portal->get_table_used(Glib::ustring() /* not relevant */), mapGroups);
+
+      //If the relationship does not allow editing, then mark all these fields as non-editable:
+      if(!(portal->get_relationship_used_allows_edit()))
+      {
+        for(type_vecLayoutFields::iterator iter = result.begin(); iter != result.end(); ++iter)
+        {
+          sharedptr<LayoutItem_Field> item = *iter;
+          if(item)
+            item->set_editable(false);
+        }
+      }
+
+      return result;
+    }
+  }
+
+  return type_vecLayoutFields();
+}
+
 
 } //namespace Glom
 

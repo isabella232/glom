@@ -2166,8 +2166,11 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const LayoutFieldInRecord
   type_vecConstLayoutFields list_fields;
   sharedptr<const LayoutItem_Field> layout_item = field_in_record.m_field;
   list_fields.push_back(layout_item);
-  const Glib::ustring sql_query = Utils::build_sql_select_with_key(field_in_record.m_table_name,
+  Glib::ustring sql_query = Utils::build_sql_select_with_key(field_in_record.m_table_name,
       list_fields, field_in_record.m_key, field_in_record.m_key_value);
+
+  if(!sql_query.empty())
+    sql_query += " LIMIT 1";
 
   Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(sql_query);
   if(data_model)
@@ -2184,6 +2187,51 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const LayoutFieldInRecord
 
   return result;
 }
+
+Gnome::Gda::Value Base_DB::get_field_value_in_database(const sharedptr<Field>& field, const FoundSet& found_set, Gtk::Window* parent_window)
+{
+  Gnome::Gda::Value result;  //TODO: Return suitable empty value for the field when failing?
+
+  //row is invalid, and ignored, for Box_Data_Details.
+  if(!field)
+  {
+    std::cerr << "Base_DB:gset_field_value_in_database(): field is empty." << std::endl;
+    return result;
+  }
+
+  if(found_set.m_where_clause.empty())
+  {
+    std::cerr << "Base_DB::get_field_value_in_database(): where_clause is empty." << std::endl;
+    return result;
+  }
+
+  type_vecConstLayoutFields list_fields;
+  sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+  layout_item->set_full_field_details(field);
+  list_fields.push_back(layout_item);
+  Glib::ustring sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
+    list_fields,
+    found_set.m_where_clause);
+
+  if(!sql_query.empty())
+    sql_query += " LIMIT 1";
+
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(sql_query);
+  if(data_model)
+  {
+    if(data_model->get_n_rows())
+    {
+      result = data_model->get_value_at(0, 0);
+    }
+  }
+  else
+  {
+    handle_error();
+  }
+
+  return result;
+}
+
 
 void Base_DB::do_calculations(const LayoutFieldInRecord& field_changed, bool first_calc_field)
 {
@@ -2725,5 +2773,60 @@ int Base_DB::count_rows_returned_by(const Glib::ustring& sql_query)
   //std::cout << "DEBUG: count_rows_returned_by(): Returning " << result << std::endl;
   return result;
 }
+
+
+void Base_DB::set_found_set_where_clause_for_portal(FoundSet& found_set, const sharedptr<LayoutItem_Portal>& portal, const Gnome::Gda::Value& foreign_key_value)
+{
+  found_set.m_table_name = Glib::ustring();
+  found_set.m_where_clause = Glib::ustring();
+  found_set.m_extra_join = Glib::ustring();
+  found_set.m_extra_group_by = Glib::ustring();
+
+  if( !portal
+      || Conversions::value_is_empty(foreign_key_value) )
+  {
+    return;
+  }
+ 
+
+  sharedptr<Relationship> relationship = portal->get_relationship();
+
+  // Notice that, in the case that this is a portal to doubly-related records,
+  // The WHERE clause mentions the first-related table (though by the alias defined in extra_join)
+  // and we add an extra JOIN to mention the second-related table.
+
+  Glib::ustring where_clause_to_table_name = relationship->get_to_table();
+  sharedptr<Field> where_clause_to_key_field = get_fields_for_table_one_field(relationship->get_to_table(), relationship->get_to_field());
+
+  found_set.m_table_name = portal->get_table_used(Glib::ustring() /* parent table - not relevant */);
+      
+  sharedptr<const Relationship> relationship_related = portal->get_related_relationship();
+  if(relationship_related)
+  {
+    //Add the extra JOIN:
+    sharedptr<UsesRelationship> uses_rel_temp = sharedptr<UsesRelationship>::create();
+    uses_rel_temp->set_relationship(relationship);
+    //found_set.m_extra_join = uses_rel_temp->get_sql_join_alias_definition();
+    found_set.m_extra_join = "LEFT OUTER JOIN \"" + relationship->get_to_table() + "\" AS \"" + uses_rel_temp->get_sql_join_alias_name() + "\" ON (\"" + uses_rel_temp->get_sql_join_alias_name() + "\".\"" + relationship_related->get_from_field() + "\" = \"" + relationship_related->get_to_table() + "\".\"" + relationship_related->get_to_field() + "\")";
+
+    //Add an extra GROUP BY to ensure that we get no repeated records from the doubly-related table:
+    sharedptr<Field> to_table_primary_key = get_field_primary_key_for_table( relationship->get_to_table() );
+    if(to_table_primary_key)
+      found_set.m_extra_group_by = "GROUP BY \"" + found_set.m_table_name + "\".\"" + to_table_primary_key->get_name() + "\"";
+
+    //Adjust the WHERE clause appropriately for the extra JOIN:
+    where_clause_to_table_name = uses_rel_temp->get_sql_join_alias_name();
+
+    const Glib::ustring to_field_name = uses_rel_temp->get_to_field_used();
+    where_clause_to_key_field = get_fields_for_table_one_field(relationship->get_to_table(), to_field_name);
+    //std::cout << "extra_join=" << found_set.m_extra_join << std::endl;
+ 
+    //std::cout << "extra_join where_clause_to_key_field=" << where_clause_to_key_field->get_name() << std::endl;
+  }
+
+  if(where_clause_to_key_field)
+    found_set.m_where_clause = "\"" + where_clause_to_table_name + "\".\"" + relationship->get_to_field() + "\" = " + where_clause_to_key_field->sql(foreign_key_value);
+}
+
 
 } //namespace Glom

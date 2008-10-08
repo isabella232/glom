@@ -145,6 +145,29 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& layout_item)
   }
 }
 
+int CanvasLayoutItem::get_rows_count_for_portal(const sharedptr<const LayoutItem_Portal>& portal, double& row_height)
+{
+  if(!portal)
+  {
+    row_height = 0;
+    return 0;
+  }
+
+  row_height = std::max(portal->get_print_layout_row_height(), (double)1); //Avoid 0, because that makes the whole thing zero sized.
+
+  double ignore_x = 0;
+  double ignore_y = 0;
+  double total_width = 0;
+  double total_height = 0;
+  portal->get_print_layout_position(ignore_x, ignore_y, total_width, total_height);
+
+  const double max_rows_fraction = total_height / row_height;
+  double max_rows = 0;
+  modf(max_rows_fraction, &max_rows);
+
+  return max_rows;
+}
+
 Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_item(const sharedptr<LayoutItem>& layout_item)
 {
   sharedptr<LayoutItem_Line> line;
@@ -245,16 +268,8 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
             canvas_item->property_stroke_color() = "black";
 
             //Show as many rows as can fit in the height.
-            const double row_height = std::max(portal->get_print_layout_row_height(), (double)1); //Avoid 0, because that makes the whole thing zero sized.
-            double ignore_x = 0;
-            double ignore_y = 0;
-            double total_width = 0;
-            double total_height = 0;
-            portal->get_print_layout_position(ignore_x, ignore_y, total_width, total_height);
-
-            const double max_rows_fraction = total_height / row_height;
-            double max_rows = 0;
-            modf(max_rows_fraction, &max_rows);
+            double row_height = 0;
+            const int max_rows = get_rows_count_for_portal(portal, row_height);
 
             const LayoutGroup::type_list_items child_items = portal->get_items();
 

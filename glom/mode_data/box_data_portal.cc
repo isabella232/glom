@@ -109,49 +109,16 @@ bool Box_Data_Portal::init_db_details(const Glib::ustring& parent_table, bool sh
 bool Box_Data_Portal::refresh_data_from_database_with_foreign_key(const Gnome::Gda::Value& foreign_key_value)
 {
   m_key_value = foreign_key_value;
+  
 
   if(m_key_field && m_portal)
   {
     if(!Conversions::value_is_empty(m_key_value))
     {
-      sharedptr<Relationship> relationship = m_portal->get_relationship();
-
-      // Notice that, in the case that this is a portal to doubly-related records,
-      // The WHERE clause mentions the first-related table (though by the alias defined in extra_join)
-      // and we add an extra JOIN to mention the second-related table.
-
-      Glib::ustring where_clause_to_table_name = relationship->get_to_table();
-      sharedptr<Field> where_clause_to_key_field = m_key_field;
-
-      FoundSet found_set = m_found_set;
-      found_set.m_table_name = m_portal->get_table_used(Glib::ustring() /* parent table - not relevant */);
-      
-      sharedptr<const Relationship> relationship_related = m_portal->get_related_relationship();
-      if(relationship_related)
-      {
-         //Add the extra JOIN:
-         sharedptr<UsesRelationship> uses_rel_temp = sharedptr<UsesRelationship>::create();
-         uses_rel_temp->set_relationship(relationship);
-         //found_set.m_extra_join = uses_rel_temp->get_sql_join_alias_definition();
-         found_set.m_extra_join = "LEFT OUTER JOIN \"" + relationship->get_to_table() + "\" AS \"" + uses_rel_temp->get_sql_join_alias_name() + "\" ON (\"" + uses_rel_temp->get_sql_join_alias_name() + "\".\"" + relationship_related->get_from_field() + "\" = \"" + relationship_related->get_to_table() + "\".\"" + relationship_related->get_to_field() + "\")";
-
-         //Add an extra GROUP BY to ensure that we get no repeated records from the doubly-related table:
-         found_set.m_extra_group_by = "GROUP BY \"" + found_set.m_table_name + "\".\"" + m_key_field->get_name() + "\"";
-
-         //Adjust the WHERE clause appropriately for the extra JOIN:
-         where_clause_to_table_name = uses_rel_temp->get_sql_join_alias_name();
-
-         Glib::ustring to_field_name = uses_rel_temp->get_to_field_used();
-         where_clause_to_key_field = get_fields_for_table_one_field(relationship->get_to_table(), to_field_name);
-         //std::cout << "extra_join=" << found_set.m_extra_join << std::endl;
- 
-         //std::cout << "extra_join where_clause_to_key_field=" << where_clause_to_key_field->get_name() << std::endl;
-      }
-
-      found_set.m_where_clause = "\"" + where_clause_to_table_name + "\".\"" + relationship->get_to_field() + "\" = " + where_clause_to_key_field->sql(m_key_value);
-
-
-      //g_warning("refresh_data_from_database_with_foreign_key(): where_clause=%s", where_clause.c_str());
+      FoundSet found_set;
+      set_found_set_where_clause_for_portal(found_set, m_portal, m_key_value);
+   
+      //std::cout << "DEBUG: refresh_data_from_database_with_foreign_key(): where_clause=" << found_set.m_where_clause << std::endl;
       return Box_Data::refresh_data_from_database_with_where_clause(found_set);
     }
     else
