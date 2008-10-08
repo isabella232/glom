@@ -359,12 +359,10 @@ void Box_Data_Calendar_Related::prepare_layout_dialog(Dialog_Layout* dialog)
   sharedptr<LayoutItem_CalendarPortal> derived_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(m_portal);
   if(derived_portal && derived_portal->get_has_relationship_name())
   {
-    std::cout << "DEBUG: Box_Data_Calendar_Related::(): portal was not null" << std::endl;
     related_dialog->set_document(m_layout_name, get_document(), derived_portal);
   }
   else
   {
-    std::cout << "DEBUG: Box_Data_Calendar_Related::(): m_parent_table=" << m_parent_table << std::endl;
     related_dialog->set_document(m_layout_name, get_document(), m_parent_table);
   }
 }
