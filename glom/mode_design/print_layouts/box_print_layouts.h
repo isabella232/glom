@@ -42,10 +42,10 @@ protected:
   virtual void save_to_document();
 
   //Signal handlers:
-  void on_adddel_Add(const Gtk::TreeModel::iterator& row);
-  void on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
-  void on_adddel_Edit(const Gtk::TreeModel::iterator& row);
-  void on_adddel_changed(const Gtk::TreeModel::iterator& row, guint column);
+  void on_adddel_user_added(const Gtk::TreeModel::iterator& row);
+  void on_adddel_user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
+  void on_adddel_user_requested_edit(const Gtk::TreeModel::iterator& row);
+  void on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint column);
 
   virtual void on_userlevel_changed(AppState::userlevels userlevel);
 

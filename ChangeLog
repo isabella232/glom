@@ -1,5 +1,10 @@
 2008-10-07  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_design/print_layouts/box_print_layouts.[h|cc]:
+	Rename signal handler to make them clearer.
+
+2008-10-07  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_data/box_data_portal.cc
 	* glom/base_db.h
 	* glom/base_db.cc:

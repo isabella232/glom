@@ -42,10 +42,10 @@ Box_Print_Layouts::Box_Print_Layouts(BaseObjectType* cobject, const Glib::RefPtr
 
   //refGlade->get_widget("label_frame_title", m_pLabelFrameTitle);
 
-  m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_Print_Layouts::on_adddel_Add));
-  m_AddDel.signal_user_requested_delete().connect(sigc::mem_fun(*this, &Box_Print_Layouts::on_adddel_Delete));
-  m_AddDel.signal_user_requested_edit().connect(sigc::mem_fun(*this, &Box_Print_Layouts::on_adddel_Edit));
-  m_AddDel.signal_user_changed().connect(sigc::mem_fun(*this, &Box_Print_Layouts::on_adddel_changed));
+  m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_Print_Layouts::on_adddel_user_added));
+  m_AddDel.signal_user_requested_delete().connect(sigc::mem_fun(*this, &Box_Print_Layouts::on_adddel_user_requested_delete));
+  m_AddDel.signal_user_requested_edit().connect(sigc::mem_fun(*this, &Box_Print_Layouts::on_adddel_user_requested_edit));
+  m_AddDel.signal_user_changed().connect(sigc::mem_fun(*this, &Box_Print_Layouts::on_adddel_user_changed));
 
   show_all_children();
 }
@@ -123,7 +123,7 @@ bool Box_Print_Layouts::fill_from_database()
   return result;
 }
 
-void Box_Print_Layouts::on_adddel_Add(const Gtk::TreeModel::iterator& row)
+void Box_Print_Layouts::on_adddel_user_added(const Gtk::TreeModel::iterator& row)
 {
   sharedptr<PrintLayout> item = sharedptr<PrintLayout>::create();
 
@@ -137,7 +137,7 @@ void Box_Print_Layouts::on_adddel_Add(const Gtk::TreeModel::iterator& row)
   }
 }
 
-void Box_Print_Layouts::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& /* TODO: rowEnd */)
+void Box_Print_Layouts::on_adddel_user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& /* TODO: rowEnd */)
 {
   const Glib::ustring name = m_AddDel.get_value_key(rowStart);
   if(!name.empty())
@@ -147,7 +147,7 @@ void Box_Print_Layouts::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStar
   }
 }
 
-void Box_Print_Layouts::on_adddel_Edit(const Gtk::TreeModel::iterator& row)
+void Box_Print_Layouts::on_adddel_user_requested_edit(const Gtk::TreeModel::iterator& row)
 {
   Glib::ustring name = m_AddDel.get_value_key(row);
 
@@ -190,7 +190,7 @@ void Box_Print_Layouts::save_to_document()
   }
 }
 
-void Box_Print_Layouts::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint column)
+void Box_Print_Layouts::on_adddel_user_changed(const Gtk::TreeModel::iterator& row, guint column)
 {
   if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
