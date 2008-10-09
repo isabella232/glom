@@ -1,7 +1,9 @@
+1.7.3:
+
 2008-10-07  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/icons/16x16/glom-line-horizontal.png
-	* glom/icons/16x16/glom-line-vertica.png: Incredibly bad initial 
+	* glom/icons/16x16/glom-line-vertical.png: Incredibly bad initial 
 	versions of these icons, featuring actual lines.
 
 2008-10-07  Murray Cumming  <murrayc@murrayc.com>

@@ -188,7 +188,7 @@ void Canvas_PrintLayout::fill_layout_group(const sharedptr<LayoutGroup>& group)
       {
       */
         sharedptr<LayoutItem> layout_item = canvas_item->get_layout_item();
-        std::cout << "DEBUG: saving layout_item type=" << layout_item->get_part_type_name() << std::endl;
+        //std::cout << "DEBUG: saving layout_item type=" << layout_item->get_part_type_name() << std::endl;
         update_layout_position_from_canvas(layout_item, canvas_item);
 
         group->add_item(layout_item);
@@ -317,26 +317,7 @@ sharedptr<LayoutItem_Portal> Canvas_PrintLayout::offer_related_records(const sha
 
   Utils::show_window_until_hide(dialog);
 
-  if(portal)
-  {
-    double x = 0;
-    double y = 0;
-    double width =0;
-    double height = 0;
-    portal->get_print_layout_position(x, y, width, height);
-    std::cout << "DEBUG before: x=" << x << ", y=" << y << ", width=" << width << ", height=" << height << std::endl;
-  }
-
   result = dialog->get_portal_layout();
-  if(result)
-  {
-    double x = 0;
-    double y = 0;
-    double width =0;
-    double height = 0;
-    result->get_print_layout_position(x, y, width, height);
-    std::cout << "DEBUG after: x=" << x << ", y=" << y << ", width=" << width << ", height=" << height << std::endl;
-  }
 
   delete dialog;
   dialog = 0;

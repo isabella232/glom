@@ -1627,7 +1627,6 @@ void Document_Glom::on_app_state_userlevel_changed(AppState::userlevels userleve
 
 bool Document_Glom::set_userlevel(AppState::userlevels userlevel)
 {
-  std::cout << "debug: Document_Glom::set_userlevel(): " << userlevel << std::endl;
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Prevent incorrect user level:
   if((userlevel == AppState::USERLEVEL_DEVELOPER) && get_read_only())

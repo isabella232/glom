@@ -1,5 +1,15 @@
 1.7.3:
 
+* Print Layout: Fields can now be specified for related records 
+  portals, and their data appears in the printout, though the 
+  whole Print Layout feature is still rather unfinished.
+* Print Layout list: Add a default title when adding a print layout.
+* Related Records layout: Fix a bug that was introduced some time 
+  during 1.7.x, preventing static text and images from being added.
+  (Murray Cumming)
+* Drag and Drop layout: Add a related records toolbar item, to add 
+  portals to the layout.
+
 1.7.2:
 
 * Drag-and-drop Layout:
