@@ -1,3 +1,11 @@
+2007-04-01  Murray Cumming  <murrayc@murrayc.com>
+
+	po/en_GB.po: Restore the date printf format AGAIN that was removed by 
+	David Lodge AGAIN.
+	This date format translation corrects the parsing and display of 
+	4-digit dates.
+	Bug #425116
+
 2008-10-10  Jorge González  <jorgegonz@svn.gnome.org>
 
 	* es.po: Updated Spanish translation by Daniel Mustieles
