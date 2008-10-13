@@ -815,17 +815,14 @@ Glib::RefPtr<Goocanvas::Item> Canvas_PrintLayout::get_canvas_table_cell_child(co
     if(!child)
       continue;
 
-    Glib::Value<int> column_value;
-    column_value.init( Glib::Value<int>::value_type() );
+    int column_value = 0;
     table->get_child_property(child, "column", column_value);
-
-    Glib::Value<int> row_value;
-    row_value.init( Glib::Value<int>::value_type() );
+    int row_value = 0;
     table->get_child_property(child, "row", row_value);
        
     //This assumes that all items occupy only one cell:
-    if( (column_value.get() == col) &&
-        (row_value.get() == row) )
+    if( (column_value == col) &&
+        (row_value == row) )
     {
       return child;
     }

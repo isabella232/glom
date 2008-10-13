@@ -1,3 +1,9 @@
+2008-10-13  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_design/print_layouts/canvas_print_layout.cc:
+	get_canvas_table_cell_child(): Adapted for my 
+	Goocanvas::Item::get_child_property() API change. 
+
 1.7.3:
 
 2008-10-07  Murray Cumming  <murrayc@murrayc.com>
