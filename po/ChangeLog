@@ -1,3 +1,7 @@
+2008-10-18  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* nb.po: Updated Norwegian bokmål translation.
+
 2007-04-01  Murray Cumming  <murrayc@murrayc.com>
 
 	po/en_GB.po: Restore the date printf format AGAIN that was removed by 
