@@ -503,8 +503,7 @@ void Dialog_Import_CSV::on_first_line_as_title_toggled()
   if(m_first_line_as_title->get_active())
   {
     m_sample_view->set_headers_visible(true);
-    guint index = 1;
-    Gtk::TreeModel::Path path(&index, &index + 1);
+    Gtk::TreeModel::Path path("1");
     Gtk::TreeModel::iterator iter = m_sample_model->get_iter(path);
 
     // Remove the first row from the view
@@ -526,8 +525,7 @@ void Dialog_Import_CSV::on_first_line_as_title_toggled()
     m_sample_view->set_headers_visible(false);
 
     // Check whether row 0 is displayed
-    guint index = 1;
-    Gtk::TreeModel::Path path(&index, &index + 1);
+    Gtk::TreeModel::Path path("1");
     Gtk::TreeModel::iterator iter = m_sample_model->get_iter(path);
 
     if((!iter || (*iter)[m_sample_columns.m_col_row] != 0) && !m_rows.empty() && m_sample_rows->get_value_as_int() > 0)
@@ -565,8 +563,8 @@ void Dialog_Import_CSV::on_sample_rows_changed()
   if(current_sample_rows > new_sample_rows)
   {
     // +1 for the "target field" row
-    guint sample_index = new_sample_rows + 1;
-    Gtk::TreeModel::Path path(&sample_index, &sample_index + 1);
+    Gtk::TreeModel::Path path(1);
+    path[0] = new_sample_rows + 1;
     Gtk::TreeModel::iterator iter = m_sample_model->get_iter(path);
 
     while(iter != m_sample_model->children().end())
@@ -926,8 +924,7 @@ void Dialog_Import_CSV::on_field_edited(const Glib::ustring& path, const Glib::u
       // Update the rows, so they are redrawn, doing a conversion to the new type.
       const Gtk::TreeNodeChildren& sample_children = m_sample_model->children();
       // Create a TreePath with initial index 0. We need a TreePath for the row_changed() call
-      guint first_index = 0;
-      Gtk::TreeModel::Path path(&first_index, &first_index + 1);
+      Gtk::TreeModel::Path path("0");
 
       for(Gtk::TreeModel::iterator sample_iter = sample_children.begin(); sample_iter != sample_children.end(); ++ sample_iter)
       {

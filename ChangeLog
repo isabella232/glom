@@ -1,5 +1,15 @@
 2008-10-20  Murray Cumming  <murrayc@murrayc.com>
 
+	* docs/user-guide/C/figures/glom_import.png:
+	* docs/user-guide/Makefile.am:
+	* docs/website/screenshots/glom_import.png:
+	Added new screenshot.
+
+	* glom/dialog_import_csv.cc: Use a more robust way of 
+	creating TreeModel::Paths, to avoid a crash.
+
+2008-10-20  Murray Cumming  <murrayc@murrayc.com>
+
 	* NEWS: Updated, ready for a 1.8.0 release.
 	* configure.in: Depend on the latest goocanvasmmm, because of 
 	my API change.

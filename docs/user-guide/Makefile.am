@@ -12,6 +12,7 @@ DOC_FIGURES = \
 	figures/glom_data_list.png \
 	figures/glom_design_layout_list.png \
 	figures/glom_design_reports_vertical_group.png \
+	figures/glom_import.png
 	figures/start.png \
 	figures/glom_design_fields_dialog_calculated.png \
 	figures/glom_design_reports_details.png \

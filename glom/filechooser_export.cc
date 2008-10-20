@@ -71,6 +71,7 @@ FileChooser_Export::FileChooser_Export()
 FileChooser_Export::~FileChooser_Export()
 {
   delete m_pDialogLayout;
+  m_pDialogLayout = 0;
 }
 
 void FileChooser_Export::set_export_layout(const Document_Glom::type_list_layout_groups& layout_groups, const Glib::ustring& table_name, Document_Glom* document)
@@ -96,7 +97,8 @@ void FileChooser_Export::on_button_define_layout()
 
 void FileChooser_Export::on_dialog_layout_hide()
 {
-  m_pDialogLayout->get_layout_groups(m_layout_groups);
+  if(m_pDialogLayout)
+    m_pDialogLayout->get_layout_groups(m_layout_groups);
 }
 
 void FileChooser_Export::get_layout_groups(Document_Glom::type_list_layout_groups& layout_groups) const
