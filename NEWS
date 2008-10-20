@@ -1,3 +1,45 @@
+Glom 1.8.0:
+
+Major changes since 1.6:
+
+New features:
+* Import: Comma-separated data may now be imported into the 
+  current table, with the help of an assistant to choose the 
+  field mapping.
+  (Armin Burgmeier)
+* Drag and Drop layout: Drag the layout items from the toolbar, 
+  or drag items to move them around the layout.
+  (This feature may still have some bugs. The old layout window 
+   is still the default.)
+  (Johannes Schmid)
+* Print Layouts: precise layout of print outs for record details.
+  (This feature is not really complete yet. The old HTML output 
+   is still available.)
+  (Murray Cumming)
+* Calendar Portal: See related records via a calendar, choosing 
+  one field to use for the date, and other fields to show on that 
+  day in the calendar.
+  (Murray Cumming)
+* Network sharing: Open running Glom systems via the network, 
+  without opening the file from the file system.
+  (Murray Cumming, Mathias Hasselmann)
+* New clearer initial dialog.
+  (Armin Burgmeier)
+* Layout: You may now choose a custom font, foreground color 
+  and background color for fields.
+  (Murray Cumming)
+* List Layout: Column widths may now be specified.
+  (Murray Cumming)
+* An installer for MS Windows is now available.
+  (Armin Burgmeier)
+
+Build changes:
+* Removed libgnome(mm) dependency.
+* Removed gnome-vfs(mm) dependency, using gio(mm) instead.
+* Now uses bakery-2.6 instead of bakery-2.4.
+* Added dependencies on libepc and goocanvasmm.
+
+
 1.7.3:
 
 * Print Layout: Fields can now be specified for related records 

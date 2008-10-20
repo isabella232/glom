@@ -71,8 +71,8 @@ protected:
   void clear();
   void show_error_dialog(const Glib::ustring& primary, const Glib::ustring& secondary);
 
-  void encoding_data_func(const Gtk::TreeIter& iter, Gtk::CellRendererText& renderer);
-  bool row_separator_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeIter& iter) const;
+  void encoding_data_func(const Gtk::TreeModel::iterator& iter, Gtk::CellRendererText& renderer);
+  bool row_separator_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::iterator& iter) const;
 
   void on_query_info(const Glib::RefPtr<Gio::AsyncResult>& result);
   void on_file_read(const Glib::RefPtr<Gio::AsyncResult>& result);
@@ -89,8 +89,8 @@ protected:
   bool on_idle_parse();
   void handle_line(const Glib::ustring& line, unsigned int line_number);
 
-  void line_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeIter& iter);
-  void field_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeIter& iter, unsigned int column_number);
+  void line_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
+  void field_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, unsigned int column_number);
   void on_field_edited(const Glib::ustring& path, const Glib::ustring& new_text, unsigned int column_number);
 
   void set_state(State state);
