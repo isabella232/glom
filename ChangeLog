@@ -1,3 +1,9 @@
+2008-10-21  Koop Mast  <kwm@FreeBSD.org>
+
+	* glom/mode_data/notebook_data.cc: constructor:
+	Add an ifdef to fix the build in client-only mode.
+	Bug #557258
+
 1.8.0:
 
 2008-10-21  Murray Cumming  <murrayc@murrayc.com>

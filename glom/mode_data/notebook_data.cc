@@ -57,7 +57,11 @@ Notebook_Data::Notebook_Data()
   add_view(&m_Box_Details);
 
   show_all_children();
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  //This is hidden by default,
   m_Box_Details.show_layout_toolbar(false);
+#endif //GLOM_ENABLE_CLIENT_ONLY
 }
 
 Notebook_Data::~Notebook_Data()
