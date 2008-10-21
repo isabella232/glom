@@ -1397,7 +1397,7 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
   if(!m_refListStore)
     return;
 
-  const Gtk::TreePath path(path_string);
+  const Gtk::TreeModel::Path path(path_string);
 
   //Get the row from the path:
   Gtk::TreeModel::iterator iter = m_refListStore->get_iter(path);
@@ -1480,7 +1480,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
   if(!m_refListStore)
     return;
 
-  const Gtk::TreePath path(path_string);
+  const Gtk::TreeModel::Path path(path_string);
 
   //Get the row from the path:
   Gtk::TreeModel::iterator iter = m_refListStore->get_iter(path);

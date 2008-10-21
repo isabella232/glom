@@ -219,7 +219,7 @@ namespace Glom
 
       TreeModel::iterator iter_out(model, iter);
 
-      const gboolean retval = cpp_model->get_iter_vfunc(Gtk::TreePath(path, true), iter_out);
+      const gboolean retval = cpp_model->get_iter_vfunc(Gtk::TreeModel::Path(path, true), iter_out);
 
       if(retval)
         *iter = *(iter_out.gobj());
@@ -963,7 +963,7 @@ DbTreeModel::iterator DbTreeModel::erase(const iterator& iter)
     type_datamodel_row_index datamodel_row = get_datamodel_row_index_from_tree_row_iter(iter);
 
     //Remove the row.
-    Gtk::TreePath path_deleted = get_path(iter);
+    Gtk::TreeModel::Path path_deleted = get_path(iter);
 
     if(!(m_map_rows[datamodel_row].m_removed))
     {

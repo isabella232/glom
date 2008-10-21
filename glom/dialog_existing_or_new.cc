@@ -742,13 +742,13 @@ void Dialog_ExistingOrNew::on_service_removed(const Glib::ustring& name, const G
 }
 #endif // !G_OS_WIN32
 
-void Dialog_ExistingOrNew::on_existing_row_activated(const Gtk::TreePath& path, Gtk::TreeViewColumn* column)
+void Dialog_ExistingOrNew::on_existing_row_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column)
 {
   if(m_select_button->is_sensitive())
     on_select_clicked();
 }
 
-void Dialog_ExistingOrNew::on_existing_button_clicked(const Gtk::TreePath& path)
+void Dialog_ExistingOrNew::on_existing_button_clicked(const Gtk::TreeModel::Path& path)
 {
   m_existing_view->get_selection()->select(path);
 
@@ -756,13 +756,13 @@ void Dialog_ExistingOrNew::on_existing_button_clicked(const Gtk::TreePath& path)
     on_select_clicked();
 }
 
-void Dialog_ExistingOrNew::on_new_row_activated(const Gtk::TreePath& path, Gtk::TreeViewColumn* column)
+void Dialog_ExistingOrNew::on_new_row_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column)
 {
   if(m_select_button->is_sensitive())
     on_select_clicked();
 }
 
-void Dialog_ExistingOrNew::on_new_button_clicked(const Gtk::TreePath& path)
+void Dialog_ExistingOrNew::on_new_button_clicked(const Gtk::TreeModel::Path& path)
 {
   m_new_view->get_selection()->select(path);
 

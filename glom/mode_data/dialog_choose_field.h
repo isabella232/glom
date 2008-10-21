@@ -53,7 +53,7 @@ public:
 
 protected:
 
-  virtual void on_row_activated(const Gtk::TreePath& path, Gtk::TreeViewColumn* view_column);
+  virtual void on_row_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* view_column);
   virtual void on_treeview_selection_changed();
   virtual void on_combo_relationship_changed();
   virtual void on_checkbutton_related_relationships_toggled();

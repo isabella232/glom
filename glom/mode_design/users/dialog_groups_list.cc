@@ -503,7 +503,7 @@ bool Dialog_GroupsList::set_table_privilege(const Glib::ustring& table_name, con
 
 void Dialog_GroupsList::on_treeview_tables_toggled_view(const Glib::ustring& path_string)
 {
-  Gtk::TreePath path(path_string);
+  Gtk::TreeModel::Path path(path_string);
 
   //Get the row from the path:
   Gtk::TreeModel::iterator iter = m_model_tables->get_iter(path);
@@ -542,7 +542,7 @@ void Dialog_GroupsList::on_treeview_tables_toggled_view(const Glib::ustring& pat
 
 void Dialog_GroupsList::on_treeview_tables_toggled_edit(const Glib::ustring& path_string)
 {
-  Gtk::TreePath path(path_string);
+  Gtk::TreeModel::Path path(path_string);
 
   //Get the row from the path:
   Gtk::TreeModel::iterator iter = m_model_tables->get_iter(path);
@@ -566,7 +566,7 @@ void Dialog_GroupsList::on_treeview_tables_toggled_edit(const Glib::ustring& pat
 
 void Dialog_GroupsList::on_treeview_tables_toggled_create(const Glib::ustring& path_string)
 {
-  Gtk::TreePath path(path_string);
+  Gtk::TreeModel::Path path(path_string);
 
   //Get the row from the path:
   Gtk::TreeModel::iterator iter = m_model_tables->get_iter(path);
@@ -590,7 +590,7 @@ void Dialog_GroupsList::on_treeview_tables_toggled_create(const Glib::ustring& p
 
 void Dialog_GroupsList::on_treeview_tables_toggled_delete(const Glib::ustring& path_string)
 {
-  Gtk::TreePath path(path_string);
+  Gtk::TreeModel::Path path(path_string);
 
   //Get the row from the path:
   Gtk::TreeModel::iterator iter = m_model_tables->get_iter(path);

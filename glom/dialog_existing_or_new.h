@@ -64,15 +64,15 @@ public:
 #endif
 
 protected:
-  Action get_action_impl(Gtk::TreeIter& iter) const;
+  Action get_action_impl(Gtk::TreeModel::iterator& iter) const;
 
-  std::auto_ptr<Gtk::TreeIter> create_dummy_item_existing(const Gtk::TreeIter& parent, const Glib::ustring& text);
-  std::auto_ptr<Gtk::TreeIter> create_dummy_item_new(const Gtk::TreeIter& parent, const Glib::ustring& text);
+  std::auto_ptr<Gtk::TreeModel::iterator> create_dummy_item_existing(const Gtk::TreeModel::iterator& parent, const Glib::ustring& text);
+  std::auto_ptr<Gtk::TreeModel::iterator> create_dummy_item_new(const Gtk::TreeModel::iterator& parent, const Glib::ustring& text);
 
-  void existing_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeIter& iter);
-  void existing_title_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeIter& iter);
-  void new_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeIter& iter);
-  void new_title_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeIter& iter);
+  void existing_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
+  void existing_title_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
+  void new_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
+  void new_title_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
 
   void on_switch_page(GtkNotebookPage* page, guint page_num);
   void on_existing_selection_changed();
@@ -98,10 +98,10 @@ protected:
   void on_service_removed(const Glib::ustring& name, const Glib::ustring& type);
 #endif
 
-  void on_existing_row_activated(const Gtk::TreePath& path, Gtk::TreeViewColumn* column);
-  void on_existing_button_clicked(const Gtk::TreePath& path);
-  void on_new_row_activated(const Gtk::TreePath& path, Gtk::TreeViewColumn* column);
-  void on_new_button_clicked(const Gtk::TreePath& path);
+  void on_existing_row_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column);
+  void on_existing_button_clicked(const Gtk::TreeModel::Path& path);
+  void on_new_row_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column);
+  void on_new_button_clicked(const Gtk::TreeModel::Path& path);
 
   void on_select_clicked();
 
@@ -171,21 +171,21 @@ protected:
   Gtk::CellRendererPixbuf m_new_icon_renderer;
   Gtk::CellRendererText m_new_title_renderer;
 
-  Gtk::TreeIter m_iter_existing_recent;
+  Gtk::TreeModel::iterator m_iter_existing_recent;
 #ifndef G_OS_WIN32
-  Gtk::TreeIter m_iter_existing_network;
+  Gtk::TreeModel::iterator m_iter_existing_network;
 #endif
-  Gtk::TreeIter m_iter_existing_other;
+  Gtk::TreeModel::iterator m_iter_existing_other;
 
-  Gtk::TreeIter m_iter_new_empty;
-  Gtk::TreeIter m_iter_new_template;
+  Gtk::TreeModel::iterator m_iter_new_empty;
+  Gtk::TreeModel::iterator m_iter_new_template;
 
   // Dummy children to indicate that a parent item has no (real) children
 #ifndef G_OS_WIN32
-  std::auto_ptr<Gtk::TreeIter> m_iter_existing_network_dummy;
+  std::auto_ptr<Gtk::TreeModel::iterator> m_iter_existing_network_dummy;
 #endif
-  std::auto_ptr<Gtk::TreeIter> m_iter_existing_recent_dummy;
-  std::auto_ptr<Gtk::TreeIter> m_iter_new_template_dummy;
+  std::auto_ptr<Gtk::TreeModel::iterator> m_iter_existing_recent_dummy;
+  std::auto_ptr<Gtk::TreeModel::iterator> m_iter_new_template_dummy;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   Glib::RefPtr<Gio::File> m_examples_dir;

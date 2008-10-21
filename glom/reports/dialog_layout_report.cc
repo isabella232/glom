@@ -661,7 +661,7 @@ void Dialog_Layout_Report::on_button_add()
     Gtk::TreeModel::iterator iter;
     if(parent)
     {
-      m_treeview_parts_main->expand_row( Gtk::TreePath(parent), true);
+      m_treeview_parts_main->expand_row( Gtk::TreeModel::Path(parent), true);
       iter = model->append(parent->children());
     }
     else
@@ -671,7 +671,7 @@ void Dialog_Layout_Report::on_button_add()
   }
 
   if(parent)
-    treeview->expand_row( Gtk::TreePath(parent), true);
+    treeview->expand_row( Gtk::TreeModel::Path(parent), true);
 
   enable_buttons();
 }
@@ -789,7 +789,7 @@ void Dialog_Layout_Report::on_button_formatting()
         if(field_chosen)
         {
           *field = *field_chosen;
-          model->row_changed(Gtk::TreePath(iter), iter);
+          model->row_changed(Gtk::TreeModel::Path(iter), iter);
         }
       }
     }
@@ -842,7 +842,7 @@ void Dialog_Layout_Report::on_button_edit()
               {
                 *fieldsummary = *chosenitem; //TODO_Performance.
 
-                model->row_changed(Gtk::TreePath(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
+                model->row_changed(Gtk::TreeModel::Path(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
                 m_modified = true;
               }
             }
@@ -865,7 +865,7 @@ void Dialog_Layout_Report::on_button_edit()
           if(chosenitem)
           {
             *field = *chosenitem; //TODO_Performance.
-            model->row_changed(Gtk::TreePath(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
+            model->row_changed(Gtk::TreeModel::Path(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
             m_modified = true;
           }
         }
@@ -878,7 +878,7 @@ void Dialog_Layout_Report::on_button_edit()
             if(chosen)
             {
               *layout_item_text = *chosen;
-              model->row_changed(Gtk::TreePath(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
+              model->row_changed(Gtk::TreeModel::Path(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
               m_modified = true;
             }
           }
@@ -891,7 +891,7 @@ void Dialog_Layout_Report::on_button_edit()
               if(chosen)
               {
                 *layout_item_image = *chosen;
-                model->row_changed(Gtk::TreePath(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
+                model->row_changed(Gtk::TreeModel::Path(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
                 m_modified = true;
               }
             }
@@ -923,7 +923,7 @@ void Dialog_Layout_Report::on_button_edit()
                       if(chosenitem)
                       {
                         *group_by = *chosenitem;
-                        model->row_changed(Gtk::TreePath(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
+                        model->row_changed(Gtk::TreeModel::Path(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
                         m_modified = true;
                       }
                     }

@@ -1,3 +1,24 @@
+1.8.0:
+
+2008-10-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/dialog_database_preferences.cc:
+	* glom/dialog_existing_or_new.cc:
+	* glom/dialog_existing_or_new.h:
+	* glom/dialog_import_csv.cc:
+	* glom/libglom/connectionpool.cc:
+	* glom/mode_data/dialog_choose_field.cc:
+	* glom/mode_data/dialog_choose_field.h:
+	* glom/mode_data/dialog_layout_details.cc:
+	* glom/mode_design/users/dialog_groups_list.cc:
+	* glom/reports/dialog_layout_report.cc:
+	* glom/utility_widgets/adddel/adddel.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
+	Use Gtk::TreeModel::iterator instead of Gtk::TreeIter 
+	and Gtk::TreeModel::Path instead of Gtk::TreePath, for 
+	consistency.
+
 2008-10-20  Murray Cumming  <murrayc@murrayc.com>
 
 	* docs/user-guide/C/figures/glom_import.png:

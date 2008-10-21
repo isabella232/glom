@@ -944,7 +944,7 @@ void Dialog_Layout_Details::on_button_field_formatting()
         {
           *field = *chosenitem; //TODO_Performance.
           m_modified = true;
-          //m_model_parts->row_changed(Gtk::TreePath(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
+          //m_model_parts->row_changed(Gtk::TreeModel::Path(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
         }
       }
     }
@@ -1312,7 +1312,7 @@ void Dialog_Layout_Details::on_treeview_cell_edited_title(const Glib::ustring& p
 {
   if(!path_string.empty())
   {
-    Gtk::TreePath path(path_string);
+    Gtk::TreeModel::Path path(path_string);
 
     //Get the row from the path:
     Gtk::TreeModel::iterator iter = m_model_items->get_iter(path);
@@ -1337,7 +1337,7 @@ void Dialog_Layout_Details::on_treeview_cell_edited_name(const Glib::ustring& pa
 {
   if(!path_string.empty())
   {
-    Gtk::TreePath path(path_string);
+    Gtk::TreeModel::Path path(path_string);
 
     //Get the row from the path:
     Gtk::TreeModel::iterator iter = m_model_items->get_iter(path);
@@ -1361,7 +1361,7 @@ void Dialog_Layout_Details::on_treeview_cell_edited_column_width(const Glib::ust
 {
   if(!path_string.empty())
   {
-    Gtk::TreePath path(path_string);
+    Gtk::TreeModel::Path path(path_string);
 
     //Get the row from the path:
     Gtk::TreeModel::iterator iter = m_model_items->get_iter(path);
@@ -1391,7 +1391,7 @@ void Dialog_Layout_Details::on_treeview_cell_edited_group_columns(const Glib::us
   if(path_string.empty())
     return;
 
-  Gtk::TreePath path(path_string);
+  Gtk::TreeModel::Path path(path_string);
 
   //Get the row from the path:
   Gtk::TreeModel::iterator iter = m_model_items->get_iter(path);

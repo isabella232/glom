@@ -216,7 +216,7 @@ sharedptr<LayoutItem_Field> Dialog_ChooseField::get_field_chosen() const
   return field;
 }
 
-void Dialog_ChooseField::on_row_activated(const Gtk::TreePath& /* path */, Gtk::TreeViewColumn* /* view_column */)
+void Dialog_ChooseField::on_row_activated(const Gtk::TreeModel::Path& /* path */, Gtk::TreeViewColumn* /* view_column */)
 {
   response(Gtk::RESPONSE_OK);
 }

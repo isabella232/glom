@@ -1116,7 +1116,7 @@ void AddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, int 
   if(path_string.empty())
     return;
 
-  Gtk::TreePath path(path_string);
+  Gtk::TreeModel::Path path(path_string);
 
   //Get the row from the path:
   Gtk::TreeModel::iterator iter = m_refListStore->get_iter(path);
@@ -1191,7 +1191,7 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
   if(path_string.empty())
     return;
 
-  Gtk::TreePath path(path_string);
+  Gtk::TreeModel::Path path(path_string);
 
   //Get the row from the path:
   Gtk::TreeModel::iterator iter = m_refListStore->get_iter(path);
@@ -1306,7 +1306,7 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
 
 void AddDel::on_treeview_cell_editing_started(Gtk::CellEditable* editable, const Glib::ustring& path_string, int model_column_index)
 {
-  Gtk::TreePath path(path_string);
+  Gtk::TreeModel::Path path(path_string);
 
   if(!m_refListStore)
     return;

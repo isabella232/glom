@@ -77,7 +77,7 @@ void Dialog_Database_Preferences::on_treeview_cell_edited_next_value(const Glib:
   if(path_string.empty())
     return;
 
-  Gtk::TreePath path(path_string);
+  Gtk::TreeModel::Path path(path_string);
 
   //Get the row from the path:
   Gtk::TreeModel::iterator iter = m_model_autoincrements->get_iter(path);

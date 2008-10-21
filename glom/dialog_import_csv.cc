@@ -923,7 +923,7 @@ void Dialog_Import_CSV::on_field_edited(const Glib::ustring& path, const Glib::u
       
       // Update the rows, so they are redrawn, doing a conversion to the new type.
       const Gtk::TreeNodeChildren& sample_children = m_sample_model->children();
-      // Create a TreePath with initial index 0. We need a TreePath for the row_changed() call
+      // Create a TreeModel::Path with initial index 0. We need a TreeModel::Path for the row_changed() call
       Gtk::TreeModel::Path path("0");
 
       for(Gtk::TreeModel::iterator sample_iter = sample_children.begin(); sample_iter != sample_children.end(); ++ sample_iter)

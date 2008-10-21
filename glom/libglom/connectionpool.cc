@@ -65,7 +65,7 @@
 #include <string.h> // for memset
 #include "gst-package.h"
 
-/* TODO: Should this be used in clientonly mode? */
+/* TODO: Should this be used in client-only mode? */
 
 #ifndef G_OS_WIN32
 static EpcProtocol publish_protocol = EPC_PROTOCOL_HTTPS;
