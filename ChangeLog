@@ -1,3 +1,13 @@
+2008-10-22  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_data/box_data_list_related.cc create_layout_get_layout():
+	Return the portal as the group instead of trying to get the layout via 
+	the (not meant to be used) list_related layout name. This makes related 
+	records portals show the specified fields again, instead of all of them.
+	* glom/mode_data/box_data_manyrecords.cc: 
+	* glom/mode_data/box_data_manyrecords.h: Remove the useless 
+	create_layout_get_layout() override.
+
 2008-10-21  Koop Mast  <kwm@FreeBSD.org>
 
 	* glom/mode_data/notebook_data.cc: constructor:

@@ -49,8 +49,10 @@ Box_Data_List_Related::Box_Data_List_Related()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_AddDel.signal_user_requested_layout().connect(sigc::mem_fun(*this, &Box_Data_List_Related::on_adddel_user_requested_layout));
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-  
-  m_layout_name = "list_related"; //TODO: We need a unique name when 2 portals use the same table.
+
+  //We do not actually use this, 
+  //so it is a bug if this appears in the .glom file:
+  m_layout_name = "list_related";
 }
 
 void Box_Data_List_Related::enable_buttons()
@@ -365,8 +367,14 @@ void Box_Data_List_Related::set_primary_key_value(const Gtk::TreeModel::iterator
 
 Document_Glom::type_list_layout_groups Box_Data_List_Related::create_layout_get_layout()
 {
-  //Overriden in Box_Data_List_Related:
-  return get_data_layout_groups(m_layout_name); 
+  Document_Glom::type_list_layout_groups result;
+
+  //Do not use get_data_layout_groups(m_layout_name).
+  //instead do this:
+  if(m_portal)
+    result.push_back(m_portal);
+  
+  return result;
 }
 
 //These create_layout*() methods are actually copy/pasted from Box_Data_List().

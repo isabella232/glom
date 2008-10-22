@@ -35,6 +35,8 @@ Box_Data_ManyRecords::Box_Data_ManyRecords()
 : m_has_one_or_more_records(false),
   m_read_only(false)
 {
+  //We do not actually use this, 
+  //so it is a bug if this appears in the .glom file:
   m_layout_name = "manyrecords"; //Set by derived classes.
 
   //Groups are not very helpful for a list view:
@@ -51,11 +53,13 @@ void Box_Data_ManyRecords::refresh_data_from_database_blank()
   //Overridden by derived classes.
 }
 
+/*
 Document_Glom::type_list_layout_groups Box_Data_ManyRecords::create_layout_get_layout()
 {
   //Overriden in Box_Data_ManyRecords_Related:
   return get_data_layout_groups(m_layout_name); 
 }
+*/
 
 Box_Data_ManyRecords::type_signal_user_requested_details Box_Data_ManyRecords::signal_user_requested_details()
 {

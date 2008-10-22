@@ -441,7 +441,8 @@ void Box_Data_List::create_layout_add_group(const sharedptr<LayoutGroup>& layout
 
 Document_Glom::type_list_layout_groups Box_Data_List::create_layout_get_layout()
 {
-  //Overriden in Box_Data_List_Related:
+  //This method is overriden in Box_Data_List_Related.
+
   return get_data_layout_groups(m_layout_name); 
 }
 

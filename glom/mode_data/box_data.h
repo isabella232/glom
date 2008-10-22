@@ -104,7 +104,7 @@ protected:
 
   /** Get the layout groups, with the Field information filled in.
    */
-  Document_Glom::type_list_layout_groups get_data_layout_groups(const Glib::ustring& layout);
+  Document_Glom::type_list_layout_groups get_data_layout_groups(const Glib::ustring& layout_name);
   void fill_layout_group_field_info(const sharedptr<LayoutGroup>& group, const Privileges& table_privs);
 
 
