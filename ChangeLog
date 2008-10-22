@@ -1,3 +1,5 @@
+1.8.1:
+
 2008-10-22  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data_list_related.cc create_layout_get_layout():

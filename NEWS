@@ -1,4 +1,11 @@
-Glom 1.8.0:
+1.8.1:
+
+* Related records: Show the specified fields, not all fields.
+  (Murray Cumming)
+* Fix the client-only build.
+  (Koop Mast) Bug #557258
+
+Glom 1.8
 
 Major changes since 1.6:
 
