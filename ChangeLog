@@ -1,3 +1,8 @@
+This is the trunk branch, for Glom 1.9/1.10. Among other things, we will now 
+port to libgda-4.0.
+
+See also the glom-1-8 branch.
+
 1.8.1:
 
 2008-10-22  Murray Cumming  <murrayc@murrayc.com>
