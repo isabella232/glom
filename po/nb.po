@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Glom\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-18 16:18+0200\n"
-"PO-Revision-Date: 2008-10-18 16:30+0200\n"
+"POT-Creation-Date: 2008-11-02 11:59+0100\n"
+"PO-Revision-Date: 2008-11-02 12:19+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -397,7 +397,7 @@ msgstr ""
 #. TODO: Show old and new names?
 #: ../glom/box_reports.cc:215
 msgid "Rename Report"
-msgstr ""
+msgstr "Endre navn på rapport"
 
 #. A special "None" item, allowing the user to do the equivalent of clearing the combobox,
 #. which is not normally possible with the GtkComboBox UI:
@@ -480,148 +480,148 @@ msgstr "Ny fra mal"
 msgid "%s on %s (via %s)"
 msgstr "%s på %s (via %s)"
 
-#: ../glom/dialog_import_csv.cc:166 ../glom/dialog_import_csv.cc:167
-#: ../glom/dialog_import_csv.cc:168 ../glom/dialog_import_csv.cc:169
-#: ../glom/dialog_import_csv.cc:170 ../glom/dialog_import_csv.cc:171
-#: ../glom/dialog_import_csv.cc:172 ../glom/dialog_import_csv.cc:173
-#: ../glom/dialog_import_csv.cc:205 ../glom/dialog_import_csv.cc:208
-#: ../glom/dialog_import_csv.cc:209 ../glom/dialog_import_csv.cc:210
+#: ../glom/dialog_import_csv.cc:171 ../glom/dialog_import_csv.cc:172
+#: ../glom/dialog_import_csv.cc:173 ../glom/dialog_import_csv.cc:174
+#: ../glom/dialog_import_csv.cc:175 ../glom/dialog_import_csv.cc:176
+#: ../glom/dialog_import_csv.cc:177 ../glom/dialog_import_csv.cc:178
+#: ../glom/dialog_import_csv.cc:210 ../glom/dialog_import_csv.cc:213
+#: ../glom/dialog_import_csv.cc:214 ../glom/dialog_import_csv.cc:215
 msgid "Unicode"
 msgstr "Unicode"
 
 #. This just adds a separator in the combo box
-#: ../glom/dialog_import_csv.cc:175 ../glom/dialog_import_csv.cc:188
-#: ../glom/dialog_import_csv.cc:193 ../glom/dialog_import_csv.cc:206
-#: ../glom/dialog_import_csv.cc:207
+#: ../glom/dialog_import_csv.cc:180 ../glom/dialog_import_csv.cc:193
+#: ../glom/dialog_import_csv.cc:198 ../glom/dialog_import_csv.cc:211
+#: ../glom/dialog_import_csv.cc:212
 msgid "Western"
 msgstr "Vestlig"
 
-#: ../glom/dialog_import_csv.cc:176 ../glom/dialog_import_csv.cc:191
+#: ../glom/dialog_import_csv.cc:181 ../glom/dialog_import_csv.cc:196
 msgid "Central European"
 msgstr "Sentral-europeisk"
 
-#: ../glom/dialog_import_csv.cc:177
+#: ../glom/dialog_import_csv.cc:182
 msgid "South European"
 msgstr "Sør-europeisk"
 
-#: ../glom/dialog_import_csv.cc:178 ../glom/dialog_import_csv.cc:186
-#: ../glom/dialog_import_csv.cc:198
+#: ../glom/dialog_import_csv.cc:183 ../glom/dialog_import_csv.cc:191
+#: ../glom/dialog_import_csv.cc:203
 msgid "Baltic"
 msgstr "Baltisk"
 
-#: ../glom/dialog_import_csv.cc:179 ../glom/dialog_import_csv.cc:192
+#: ../glom/dialog_import_csv.cc:184 ../glom/dialog_import_csv.cc:197
 msgid "Cyrillic"
 msgstr "Kyrillisk"
 
-#: ../glom/dialog_import_csv.cc:180 ../glom/dialog_import_csv.cc:197
+#: ../glom/dialog_import_csv.cc:185 ../glom/dialog_import_csv.cc:202
 msgid "Arabic"
 msgstr "Arabisk"
 
-#: ../glom/dialog_import_csv.cc:181 ../glom/dialog_import_csv.cc:194
+#: ../glom/dialog_import_csv.cc:186 ../glom/dialog_import_csv.cc:199
 msgid "Greek"
 msgstr "Gresk"
 
-#: ../glom/dialog_import_csv.cc:182
+#: ../glom/dialog_import_csv.cc:187
 msgid "Hebrew Visual"
 msgstr ""
 
-#: ../glom/dialog_import_csv.cc:183 ../glom/dialog_import_csv.cc:196
+#: ../glom/dialog_import_csv.cc:188 ../glom/dialog_import_csv.cc:201
 msgid "Hebrew"
 msgstr "Hebraisk"
 
-#: ../glom/dialog_import_csv.cc:184 ../glom/dialog_import_csv.cc:195
+#: ../glom/dialog_import_csv.cc:189 ../glom/dialog_import_csv.cc:200
 msgid "Turkish"
 msgstr "Tyrkisk"
 
-#: ../glom/dialog_import_csv.cc:185
+#: ../glom/dialog_import_csv.cc:190
 msgid "Nordic"
 msgstr "Nordisk"
 
-#: ../glom/dialog_import_csv.cc:187
+#: ../glom/dialog_import_csv.cc:192
 msgid "Celtic"
 msgstr "Keltisk"
 
-#: ../glom/dialog_import_csv.cc:189
+#: ../glom/dialog_import_csv.cc:194
 msgid "Romanian"
 msgstr "Rumensk"
 
-#: ../glom/dialog_import_csv.cc:199
+#: ../glom/dialog_import_csv.cc:204
 msgid "Vietnamese"
 msgstr "Vietnamesisk"
 
-#: ../glom/dialog_import_csv.cc:245
+#: ../glom/dialog_import_csv.cc:250
 msgid "Auto Detect"
 msgstr "Gjenkjenn automatisk"
 
-#: ../glom/dialog_import_csv.cc:282
+#: ../glom/dialog_import_csv.cc:287
 msgid "No Document Available"
 msgstr "Ingen dokumenter tilgjengelig"
 
-#: ../glom/dialog_import_csv.cc:282
+#: ../glom/dialog_import_csv.cc:287
 msgid "You need to open a document to import the data into a table."
 msgstr ""
 
-#: ../glom/dialog_import_csv.cc:293
+#: ../glom/dialog_import_csv.cc:298
 msgid "Import From CSV File"
 msgstr "Importer fra CSV-fil"
 
-#: ../glom/dialog_import_csv.cc:298
+#: ../glom/dialog_import_csv.cc:303
 msgid "<None>"
 msgstr "<Ingen>"
 
-#: ../glom/dialog_import_csv.cc:401
+#: ../glom/dialog_import_csv.cc:406
 msgid " - Import From CSV File"
 msgstr "- Import fra CSV-fil"
 
-#: ../glom/dialog_import_csv.cc:420
+#: ../glom/dialog_import_csv.cc:425
 msgid "Could Not Open file"
 msgstr "Kunne ikke åpne fil"
 
-#: ../glom/dialog_import_csv.cc:420
+#: ../glom/dialog_import_csv.cc:425
 msgid "The file at \"%1\" could not be opened: %2"
 msgstr ""
 
-#: ../glom/dialog_import_csv.cc:459
+#: ../glom/dialog_import_csv.cc:464
 msgid "Could Not Read File"
 msgstr "Kunne ikke lese fil"
 
-#: ../glom/dialog_import_csv.cc:459
+#: ../glom/dialog_import_csv.cc:464
 msgid "The file at \"%1\" could not be read: %2"
 msgstr ""
 
-#: ../glom/dialog_import_csv.cc:601
+#: ../glom/dialog_import_csv.cc:605
 msgid "Encoding detected as: %1"
 msgstr ""
 
-#: ../glom/dialog_import_csv.cc:645
+#: ../glom/dialog_import_csv.cc:649
 msgid "Encoding detection failed. Please manually choose one from the box."
 msgstr ""
 
-#: ../glom/dialog_import_csv.cc:649
+#: ../glom/dialog_import_csv.cc:653
 msgid ""
 "The file contains data not in the specified encoding. Please choose another "
 "one, or try \"Auto Detect\"."
 msgstr ""
 
 #. Note to translators: This is a straight line, not a database row.
-#: ../glom/dialog_import_csv.cc:787
+#: ../glom/dialog_import_csv.cc:791
 #: ../glom/libglom/data_structure/layout/layoutitem_line.cc:82
 msgid "Line"
 msgstr "Linje"
 
-#: ../glom/dialog_import_csv.cc:835
+#: ../glom/dialog_import_csv.cc:839
 msgid "Target Field"
 msgstr "Målfelt"
 
-#: ../glom/dialog_import_csv.cc:872
+#: ../glom/dialog_import_csv.cc:876
 msgid "<Import Failure>"
-msgstr ""
+msgstr "<Feil ved import>"
 
-#: ../glom/dialog_import_csv.cc:881
+#: ../glom/dialog_import_csv.cc:885
 msgid "<Picture>"
 msgstr "<Bilde>"
 
-#: ../glom/dialog_import_csv.cc:982
+#: ../glom/dialog_import_csv.cc:985
 msgid ""
 "One column needs to be assigned the table's primary key (<b>%1</b>) as "
 "target field before importing"
@@ -658,7 +658,7 @@ msgstr ""
 
 #: ../glom/dialog_new_self_hosted_connection.cc:104
 msgid "Username Is Empty"
-msgstr ""
+msgstr "Brukernavn er tomt"
 
 #: ../glom/dialog_new_self_hosted_connection.cc:104
 msgid "Please enter a login name for the new user."
@@ -810,9 +810,8 @@ msgid "You must specify a field, a table name, and a relationship name."
 msgstr ""
 
 #: ../glom/frame_glom.cc:915
-#, fuzzy
 msgid "Related Table Created"
-msgstr "Slett tabell"
+msgstr "Relatert tabell opprettet"
 
 #: ../glom/frame_glom.cc:915
 msgid "The new related table has been created."
@@ -825,7 +824,7 @@ msgstr ""
 #: ../glom/frame_glom.cc:1023 ../glom/mode_data/box_data.cc:141
 #: ../glom/utility_widgets/dialog_choose_id.cc:109
 msgid "No Find Criteria"
-msgstr ""
+msgstr "Ingen søkekriterier"
 
 #. show user level:
 #: ../glom/frame_glom.cc:1083
@@ -1293,9 +1292,8 @@ msgid "Export Format"
 msgstr "Eksportformat"
 
 #: ../glom/glom_developer.glade.h:120
-#, fuzzy
 msgid "Field Calculation"
-msgstr "Feltutvalg:"
+msgstr "Beregning av felt"
 
 #: ../glom/glom_developer.glade.h:121
 msgid "Field Definition"
@@ -1306,15 +1304,13 @@ msgid "Field Definitions"
 msgstr "Feltdefinisjoner"
 
 #: ../glom/glom_developer.glade.h:123
-#, fuzzy
 msgid "Field Layout"
-msgstr "Rediger plassering"
+msgstr "Utforming av felt"
 
 #: ../glom/glom_developer.glade.h:124
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:71
-#, fuzzy
 msgid "Field Summary"
-msgstr "Felter i spørring"
+msgstr "Sammendrag for felt"
 
 #: ../glom/glom_developer.glade.h:125
 msgid "Field:"
@@ -1493,9 +1489,8 @@ msgid "Print Layout Editor"
 msgstr ""
 
 #: ../glom/glom_developer.glade.h:167
-#, fuzzy
 msgid "Print Layouts"
-msgstr "Rediger plassering"
+msgstr "Utskriftsutforming"
 
 #: ../glom/glom_developer.glade.h:168
 #: ../glom/utility_widgets/layoutwidgetutils.cc:37
@@ -1523,9 +1518,8 @@ msgid ""
 msgstr ""
 
 #: ../glom/glom_developer.glade.h:173
-#, fuzzy
 msgid "Report Layout"
-msgstr "Rediger plassering"
+msgstr "Uforming av rapport"
 
 #: ../glom/glom_developer.glade.h:174
 msgid "Reports"
@@ -1540,9 +1534,8 @@ msgid "Script name:"
 msgstr "Navn på skript"
 
 #: ../glom/glom_developer.glade.h:177
-#, fuzzy
 msgid "Secondary Fields:"
-msgstr "Felt for spørring:"
+msgstr "Sekundærfelt:"
 
 #: ../glom/glom_developer.glade.h:178
 #: ../glom/utility_widgets/dialog_choose_id.cc:88
@@ -1560,11 +1553,11 @@ msgstr "Velg relasjon"
 
 #: ../glom/glom_developer.glade.h:181
 msgid "Show Related Relationships"
-msgstr ""
+msgstr "Vis relaterte relasjoner"
 
 #: ../glom/glom_developer.glade.h:182
 msgid "Show Table Title"
-msgstr ""
+msgstr "Vis tittel på tabell"
 
 #: ../glom/glom_developer.glade.h:183
 #, fuzzy
@@ -1778,7 +1771,6 @@ msgstr "<b>Finn relatert post</b>"
 
 #. Import is a noun here. This is the title for a list of fields to import.
 #: ../glom/glom.glade.h:5
-#, fuzzy
 msgid "<b>Import Fields</b>"
 msgstr "<b>Importfelt</b>"
 
@@ -1797,7 +1789,7 @@ msgstr "<b>Tabeller i databasen</b>"
 
 #: ../glom/glom.glade.h:10
 msgid "<b>User Level:</b>"
-msgstr ""
+msgstr "<b>Brukernivå:</b>"
 
 #: ../glom/glom.glade.h:11
 msgid "<span weight=\"bold\" size=\"larger\">Connect to Server</span>"
@@ -1814,7 +1806,8 @@ msgstr ""
 
 #: ../glom/glom.glade.h:16
 msgid "<span weight=\"bold\" size=\"larger\">Open or create a Document</span>"
-msgstr "<span weight=\"bold\" size=\"larger\">Åpne eller lag et dokument</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Åpne eller lag et dokument</span>"
 
 #: ../glom/glom.glade.h:17
 msgid "C_onnect"
@@ -1984,9 +1977,8 @@ msgid ""
 msgstr ""
 
 #: ../glom/libglom/connectionpool.cc:1130
-#, fuzzy
 msgid "Could Not Create Configuration Directory"
-msgstr "Kunne ikke opprette fil."
+msgstr "Kunne ikke opprette konfigurasjonskatalog"
 
 #: ../glom/libglom/connectionpool.cc:1130
 msgid ""
@@ -1996,9 +1988,8 @@ msgstr ""
 
 #. Note that --pwfile takes the password from the first line of a file. It's an alternative to supplying it when prompted on stdin.
 #: ../glom/libglom/connectionpool.cc:1174
-#, fuzzy
 msgid "Creating Database Data"
-msgstr "Oppretter Glom database"
+msgstr "Oppretter data i databasen"
 
 #. Show message to the user about the broken installation:
 #. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
@@ -2184,9 +2175,8 @@ msgid "Layout Item"
 msgstr ""
 
 #: ../glom/libglom/data_structure/translatable_item.cc:290
-#, fuzzy
 msgid "Print Layout"
-msgstr "Rediger plassering"
+msgstr "Utskriftsutforming"
 
 #: ../glom/libglom/data_structure/translatable_item.cc:292
 msgid "Report"
@@ -2197,9 +2187,8 @@ msgid "Layout Group"
 msgstr ""
 
 #: ../glom/libglom/data_structure/translatable_item.cc:298
-#, fuzzy
 msgid "Field Title"
-msgstr "Felttype"
+msgstr "Tittel på felt"
 
 #: ../glom/libglom/document/document_glom.cc:409
 #: ../glom/libglom/document/document_glom.cc:427
@@ -2288,7 +2277,7 @@ msgstr ""
 
 #. Note to translators: This text is shown instead of a table title, when the table has not yet been chosen.
 #: ../glom/mode_data/box_data_calendar_related.cc:96
-#: ../glom/mode_data/box_data_list_related.cc:87
+#: ../glom/mode_data/box_data_list_related.cc:89
 #: ../glom/mode_data/box_data_portal.cc:86
 msgid "Undefined Table"
 msgstr "Udefinert tabell"
@@ -2346,9 +2335,8 @@ msgstr ""
 
 #. Tell user that a primary key is needed to delete a record:
 #: ../glom/mode_data/box_data_details.cc:436
-#, fuzzy
 msgid "No primary key value."
-msgstr "Primærnøkkel"
+msgstr "Ingen verdi for primærnøkkel."
 
 #: ../glom/mode_data/box_data_details.cc:437
 msgid "This record cannot be deleted because there is no primary key."
@@ -2366,8 +2354,8 @@ msgid ""
 msgstr ""
 
 #. Add Pages:
-#: ../glom/mode_data/box_data_list.cc:528
-#: ../glom/mode_data/box_data_manyrecords.cc:79
+#: ../glom/mode_data/box_data_list.cc:529
+#: ../glom/mode_data/box_data_manyrecords.cc:83
 #: ../glom/mode_data/notebook_data.cc:31 ../glom/mode_find/notebook_find.cc:32
 msgid "List"
 msgstr "Liste"
@@ -2407,11 +2395,11 @@ msgstr "Ny knapp"
 
 #: ../glom/mode_data/dialog_layout_details.cc:723
 msgid "Text Title"
-msgstr ""
+msgstr "Tittel for tekst"
 
 #: ../glom/mode_data/dialog_layout_details.cc:748
 msgid "Image Title"
-msgstr ""
+msgstr "Bildetittel"
 
 #: ../glom/mode_data/dialog_layout_details.cc:774
 #: ../glom/mode_data/flowtablewithfields.cc:1098
@@ -2427,14 +2415,12 @@ msgid "Add child groups to the notebook to add tabs."
 msgstr ""
 
 #: ../glom/mode_data/dialog_layout_details.cc:1152
-#, fuzzy
 msgid "Related Calendar: "
-msgstr "Relatert: "
+msgstr "Relatert kalender: "
 
 #: ../glom/mode_data/dialog_layout_details.cc:1154
-#, fuzzy
 msgid "Related List: "
-msgstr "Relatert: "
+msgstr "Relatert liste: "
 
 #: ../glom/mode_data/dialog_layout_details.cc:1171
 msgid "Field: "
@@ -2484,14 +2470,12 @@ msgid "You cannot drop anything here. Try to add a group first"
 msgstr ""
 
 #: ../glom/mode_data/flowtablewithfields.cc:1442
-#, fuzzy
 msgid "Delete whole group \"%1\"?"
-msgstr "Slett gruppe"
+msgstr "Slett hele gruppen «%1»?"
 
 #: ../glom/mode_data/flowtablewithfields.cc:1447
-#, fuzzy
 msgid "Delete whole group?"
-msgstr "Slett gruppe"
+msgstr "Slett hele gruppen?"
 
 #. Details column:
 #: ../glom/mode_data/notebook_data.cc:34 ../glom/mode_find/notebook_find.cc:35
@@ -2515,9 +2499,8 @@ msgid "To Field"
 msgstr "Til felt"
 
 #: ../glom/mode_design/box_db_table_relationships.cc:54
-#, fuzzy
 msgid "Automatic Creation"
-msgstr "oppretting av tabell"
+msgstr "Automatisk oppretting"
 
 #: ../glom/mode_design/dialog_relationships.cc:36
 msgid "Relationships"
@@ -2562,9 +2545,8 @@ msgstr ""
 
 #. Warn the user and refuse to make the change:
 #: ../glom/mode_design/fields/box_db_table_definition.cc:265
-#, fuzzy
 msgid "Too many primary keys"
-msgstr "Primærnøkkel"
+msgstr "For mange primærnøkler"
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:266
 msgid "You may not specify more than one field as the primary key."
@@ -2572,9 +2554,8 @@ msgstr ""
 
 #. Warn the user and refuse to make the change:
 #: ../glom/mode_design/fields/box_db_table_definition.cc:282
-#, fuzzy
 msgid "Field Name Already Exists"
-msgstr "Tabellen eksisterer allerede"
+msgstr "Feltnavnet eksisterer allerede"
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:460
 msgid "Field contains empty values."
@@ -2597,9 +2578,8 @@ msgid ""
 msgstr ""
 
 #: ../glom/mode_design/fields/dialog_fieldcalculation.cc:98
-#, fuzzy
 msgid "Calculation Error"
-msgstr "Resultater fra kjøring"
+msgstr "Feil i beregning"
 
 #: ../glom/mode_design/fields/dialog_fieldcalculation.cc:98
 msgid "The calculation does not have a return statement."
@@ -2635,9 +2615,8 @@ msgstr ""
 
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:228
 #: ../glom/navigation/box_tables.cc:427
-#, fuzzy
 msgid "Rename"
-msgstr "Endre navn på tabell"
+msgstr "Endre navn"
 
 #: ../glom/mode_design/print_layouts/canvas_layout_item.cc:252
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:38
@@ -2645,15 +2624,13 @@ msgid "Choose Field"
 msgstr "Velg felt"
 
 #: ../glom/mode_design/print_layouts/canvas_print_layout.cc:221
-#, fuzzy
 msgid "_Formatting"
-msgstr "Formatering"
+msgstr "_Formatering"
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:40
 #: ../glom/utility_widgets/layouttoolbar.cc:64
-#, fuzzy
 msgid "Database Field"
-msgstr "Felt:"
+msgstr "Daatabasefelt"
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:40
 #: ../glom/utility_widgets/layouttoolbar.cc:64
@@ -2672,16 +2649,15 @@ msgstr ""
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:50
 msgid "Horizontal Line"
-msgstr ""
+msgstr "Horisontal linje"
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:50
 msgid "Drag this to the layout to add a new horizontal line."
 msgstr ""
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:53
-#, fuzzy
 msgid "Vertical Line"
-msgstr "Vertikal gruppe"
+msgstr "Vertikal linje"
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:53
 msgid "Drag this to the layout to add a new vertical line."
@@ -2689,9 +2665,8 @@ msgstr ""
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:57
 #: ../glom/utility_widgets/layouttoolbar.cc:67
-#, fuzzy
 msgid "Related Records"
-msgstr "Legg til relaterte poster"
+msgstr "Relaterte poster"
 
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:57
 msgid "Drag this to the layout to add a new related records portal."
@@ -2700,72 +2675,65 @@ msgstr ""
 #. Note for translators: These are layout items, like widgets in GTK+.
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:60
 #: ../glom/utility_widgets/layouttoolbar.cc:86
-#, fuzzy
 msgid "Items"
-msgstr "Oppføring"
+msgstr "Oppføringer"
 
 #. Note for translators: These are layout items, like widgets in GTK+.
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:66
 msgid "Lines"
-msgstr ""
+msgstr "Linjer"
 
 #. Note for translators: These are layout items, like widgets in GTK+.
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:71
-#, fuzzy
 msgid "Records"
-msgstr "Poster: "
+msgstr "Poster"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:124
 #: ../glom/relationships_overview/dialog_relationships_overview.cc:54
 msgid "Page _Setup"
-msgstr ""
+msgstr "_Sideoppsett"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:133
-#, fuzzy
 msgid "_Insert"
-msgstr "Br_ukere"
+msgstr "Sett _inn"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:134
-#, fuzzy
 msgid "Insert _Field"
-msgstr "Velg felt"
+msgstr "Sett inn _felt"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:136
-#, fuzzy
 msgid "Insert _Text"
-msgstr "Ny tekst"
+msgstr "Sett inn _tekst"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:138
 msgid "Insert _Image"
-msgstr ""
+msgstr "Sett inn b_ilde"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:140
-#, fuzzy
 msgid "Insert _Related Records"
-msgstr "Finn relatert post"
+msgstr "Sett inn _relaterte poster"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:142
 msgid "Insert _Horizontal Line"
-msgstr ""
+msgstr "Sett inn _horisontal linje"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:144
 msgid "Insert _Vertical Line"
-msgstr ""
+msgstr "Sett inn _vertikal linje"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:147
 #: ../glom/relationships_overview/dialog_relationships_overview.cc:59
 #: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:682
-#, fuzzy
 msgid "_View"
-msgstr "Visning"
+msgstr "_Vis"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:148
 msgid "Show Grid"
-msgstr ""
+msgstr "Vis rutenett"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:150
 msgid "Show Rules"
-msgstr ""
+msgstr "Vis linjaler"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:154
 msgid "Fit Page _Width"
@@ -2773,20 +2741,19 @@ msgstr ""
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:157
 msgid "Zoom 200%"
-msgstr ""
+msgstr "Zoom 200%"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:162
 msgid "Zoom 50%"
-msgstr ""
+msgstr "Zoom 50%"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:167
 msgid "Zoom 25%"
-msgstr ""
+msgstr "Zoom 25%"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:611
-#, fuzzy
 msgid "Insert"
-msgstr "Bruker"
+msgstr "Sett inn"
 
 #: ../glom/mode_design/script_library/dialog_script_library.cc:132
 msgid "Remove library script"
@@ -2814,9 +2781,8 @@ msgid "Delete Group"
 msgstr "Slett gruppe"
 
 #: ../glom/mode_design/users/dialog_groups_list.cc:217
-#, fuzzy
 msgid "Are your sure that you wish to delete this group?"
-msgstr "Vil du virkelig fjerne grafen «%s»?"
+msgstr "Er du sikker på at du vil slette denne gruppen?"
 
 #: ../glom/mode_design/users/dialog_groups_list.cc:378
 msgid "Full access."
@@ -2827,9 +2793,8 @@ msgid "Delete User"
 msgstr "Slett bruker"
 
 #: ../glom/mode_design/users/dialog_users_list.cc:165
-#, fuzzy
 msgid "Are your sure that you wish to delete this user?"
-msgstr "Vil du virkelig fjerne spørring «%s»?"
+msgstr "Er du sikker på at du vil slette denne brukeren?"
 
 #: ../glom/mode_design/users/dialog_users_list.cc:434
 msgid "Developer group may not be empty."
@@ -2903,27 +2868,24 @@ msgstr ""
 
 #. TODO: Show old and new names?
 #: ../glom/navigation/box_tables.cc:425
-#, fuzzy
 msgid "<b>Rename Table</b>"
-msgstr "<b>Legg til relatert</b>"
+msgstr "<b>Endre navn på tabell</b>"
 
 #: ../glom/python_embed/glom_python.cc:131
 msgid "Python Error: \n"
-msgstr ""
+msgstr "Python-feil: \n"
 
 #: ../glom/relationships_overview/dialog_relationships_overview.cc:60
 msgid "Show _Grid"
-msgstr ""
+msgstr "Vis _rutenett"
 
 #: ../glom/relationships_overview/dialog_relationships_overview.cc:451
-#, fuzzy
 msgid "Edit _Fields"
-msgstr "_Felt"
+msgstr "Rediger _felt"
 
 #: ../glom/relationships_overview/dialog_relationships_overview.cc:454
-#, fuzzy
 msgid "Edit _Relationships"
-msgstr "Relasjoner"
+msgstr "Rediger _relasjoner"
 
 #. Append the View columns:
 #. Use set_cell_data_func() to give more control over the cell attributes depending on the row:
@@ -2986,7 +2948,7 @@ msgstr "Dupliser"
 #.
 #: ../glom/utility_widgets/calendar/glomgtkcalendar.c:811
 msgid "calendar:MY"
-msgstr ""
+msgstr "calendar:MY"
 
 #. Translate to calendar:week_start:0 if you want Sunday to be the
 #. * first day of the week to calendar:week_start:1 if you want Monday
@@ -2994,7 +2956,7 @@ msgstr ""
 #.
 #: ../glom/utility_widgets/calendar/glomgtkcalendar.c:849
 msgid "calendar:week_start:0"
-msgstr ""
+msgstr "calendar:week_start:1"
 
 #. Translators:  This is a text measurement template.
 #. * Translate it to the widest year text.
@@ -3006,7 +2968,7 @@ msgstr ""
 #.
 #: ../glom/utility_widgets/calendar/glomgtkcalendar.c:1857
 msgid "year measurement template|2000"
-msgstr ""
+msgstr "2000"
 
 #. Translators: this defines whether the day numbers should use
 #. * localized digits or the ones used in English (0123...).
@@ -3023,7 +2985,7 @@ msgstr ""
 #: ../glom/utility_widgets/calendar/glomgtkcalendar.c:2549
 #, c-format
 msgid "calendar:day:digits|%d"
-msgstr ""
+msgstr "%Id"
 
 #. Translators: this defines whether the week numbers should use
 #. * localized digits or the ones used in English (0123...).
@@ -3040,7 +3002,7 @@ msgstr ""
 #: ../glom/utility_widgets/calendar/glomgtkcalendar.c:2411
 #, c-format
 msgid "calendar:week:digits|%d"
-msgstr ""
+msgstr "%Id"
 
 #. Translators: This dictates how the year is displayed in
 #. * gtkcalendar widget.  See strftime() manual for the format.
@@ -3055,7 +3017,7 @@ msgstr ""
 #.
 #: ../glom/utility_widgets/calendar/glomgtkcalendar.c:2201
 msgid "calendar year format|%Y"
-msgstr ""
+msgstr "%Y"
 
 #: ../glom/utility_widgets/comboentryglom.cc:134
 msgid "Read-only field."
@@ -3132,25 +3094,23 @@ msgstr ""
 
 #: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:465
 msgid "Advanced Features"
-msgstr ""
+msgstr "Avanserte funksjoner"
 
 #: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:683
 msgid "_Help"
-msgstr ""
+msgstr "_Hjelp"
 
 #: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:706
 msgid "Icon Size"
-msgstr ""
+msgstr "Størrelse på ikon"
 
 #: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:711
-#, fuzzy
 msgid "Orientation"
-msgstr "Organisasjon"
+msgstr "Orientering"
 
 #: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:715
-#, fuzzy
 msgid "Style"
-msgstr "Tittel"
+msgstr "Stil"
 
 #: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:719
 msgid "Ellipsize Headers"
@@ -3161,14 +3121,12 @@ msgid "Exclusive Groups"
 msgstr ""
 
 #: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:727
-#, fuzzy
 msgid "Expand Groups"
-msgstr "Legg til gruppe"
+msgstr "Utvid grupper"
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:72
-#, fuzzy
 msgid "New Database"
-msgstr "Database"
+msgstr "Ny database"
 
 #. For instance, an extra hint when saving from an example, saying that a new file must be saved.
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:89
@@ -3188,7 +3146,6 @@ msgid ""
 msgstr ""
 
 #: ../glom/utility_widgets/imageglom.cc:382
-#, fuzzy
 msgid "Choose Image"
 msgstr "Velg bilde"
 
