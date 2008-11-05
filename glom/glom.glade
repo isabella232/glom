@@ -1049,17 +1049,6 @@
             <property name="border_width">12</property>
             <property name="spacing">6</property>
             <child>
-              <widget class="GtkLabel" id="label_name">
-                <property name="visible">True</property>
-                <property name="use_markup">True</property>
-                <property name="justify">GTK_JUSTIFY_CENTER</property>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-              </packing>
-            </child>
-            <child>
               <widget class="GtkHBox" id="hbox3">
                 <property name="visible">True</property>
                 <property name="spacing">6</property>

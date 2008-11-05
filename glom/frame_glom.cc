@@ -65,7 +65,6 @@ namespace Glom
 
 Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
 : PlaceHolder(cobject, refGlade),
-  m_pLabel_Name(0),
   m_pLabel_Table(0),
   m_box_footer(0),
   m_pLabel_Mode(0),
@@ -95,7 +94,6 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_pDialogConnection(0)
 {
   //Load widgets from glade file:
-  refGlade->get_widget("label_name", m_pLabel_Name);
   refGlade->get_widget("label_table_name", m_pLabel_Table);
 
   refGlade->get_widget("hbox_footer", m_box_footer);
@@ -129,8 +127,6 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
 
   refGlade->get_widget_derived("vbox_mode", m_pBox_Mode);
 
-  //m_pLabel_Mode->set_text(_("No database selected.\n Use the Navigation menu, or open a previous Glom document."));
-
   m_Mode = MODE_None;
   m_Mode_Previous = MODE_None;
 
@@ -148,14 +144,6 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   add_view(&m_Notebook_Find); //Also a composite view.
 
   on_userlevel_changed(AppState::USERLEVEL_OPERATOR); //A default to show before a document is created or loaded.
-
-#ifdef GLOM_ENABLE_MAEMO
-  // Don't show the document name on maemo. The label is on top of the window,
-  // and the document name is already shown in the window title (note that
-  // there is not even a menu between them as in the non-maemo version). This
-  // looks a bit strange and takes vertical screen space.
-  m_pLabel_Name->hide();
-#endif
 }
 
 Frame_Glom::~Frame_Glom()
@@ -236,7 +224,7 @@ void Frame_Glom::set_databases_selected(const Glib::ustring& strName)
 
   get_document()->set_connection_database(strName);
 
-  show_system_name();
+  //show_system_name();
 
   do_menu_Navigate_Table(true /* open default */);
 }
@@ -1220,29 +1208,6 @@ void Frame_Glom::set_document(Document_Glom* pDocument)
   }
 }
 
-void Frame_Glom::show_system_name()
-{
-  // Don't show the document name on maemo. The label is on top of the window,
-  // and the document name is already shown in the window title (note that
-  // there is not even a menu between them as in the non-maemo version). This
-  // looks a bit strange and takes unnecessarily vertical screen space.
-#ifndef GLOM_ENABLE_MAEMO
-  const SystemPrefs prefs = get_database_preferences();
-  const Glib::ustring org = prefs.m_org_name;
-  const Glib::ustring name = prefs.m_name;
-
-  Glib::ustring system_name = org;
-  if(!system_name.empty() && !name.empty())
-    system_name += ": ";
-
-  system_name += name;
-
-  m_pLabel_Name->set_text ( Bakery::App_Gtk::util_bold_message(system_name) );
-  m_pLabel_Name->set_use_markup();
-  m_pLabel_Name->show();
-#endif // !GLOM_ENABLE_MAEMO
-}
-
 void Frame_Glom::load_from_document()
 {
   Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
@@ -1272,7 +1237,7 @@ void Frame_Glom::on_menu_developer_database_preferences()
       remove_view(dialog);
       delete dialog;
 
-      show_system_name(); //In case it has changed.
+      //show_system_name(); //In case it has changed.
     }
   }
 

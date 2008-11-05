@@ -1,5 +1,16 @@
 2008-11-05  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/glom.glade: Remove the system name label. It is in the window 
+	title and this has always been a little weird. I never found a way to 
+	make it pretty without wasting space, so it is now gone.
+	* glom/frame_glom.[h|cc]: 
+	Removed show_system_name().
+	set_databases_selected(),
+	on_menu_developer_database_preferences():
+	* glom/application.cc: Constructor: Don't call it. 
+
+2008-11-05  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.[h|cc]: init_menus(): Added Developer/ActivePlatform 
 	sub menu.
 

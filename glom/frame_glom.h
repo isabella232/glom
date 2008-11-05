@@ -130,8 +130,6 @@ public:
   virtual void set_document(Document_Glom* pDocument); //View override
   virtual void load_from_document(); //View override
 
-  void show_system_name();
-
   enum enumModes
   {
     MODE_None, //at the start.
@@ -210,7 +208,6 @@ protected:
   Glib::ustring m_table_name;
 
   //Child widgets:
-  Gtk::Label* m_pLabel_Name;
   Gtk::Label* m_pLabel_Table;
   Gtk::HBox* m_box_footer;
   Gtk::Label* m_pLabel_Mode;

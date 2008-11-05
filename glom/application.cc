@@ -1121,10 +1121,6 @@ bool App_Glom::on_document_load()
         //Switch to operator mode when opening new documents:
         pDocument->set_userlevel(AppState::USERLEVEL_OPERATOR);
 
-#ifndef GLOM_ENABLE_MAEMO
-        m_pFrame->show_system_name();
-#endif // !GLOM_ENABLE_MAEMO
-
         //Open default table, or show list of tables instead:
         m_pFrame->do_menu_Navigate_Table(true /* open the default if there is one */);
 
