@@ -1,6 +1,6 @@
 /* Glom
  *
- * Copyright (C) 2008 Johannes Schmid
+ * Copyright (C) 2008 Openismus GmbH
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -29,7 +29,7 @@
 namespace Glom
 {
 
-CheckGlom::CheckGlom(Glib::ustring title)
+CheckGlom::CheckGlom(const Glib::ustring& title)
   : Gtk::CheckButton(title)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -63,7 +63,7 @@ bool CheckGlom::on_button_press_event(GdkEventButton *event)
 
     pApp->update_userlevel_ui(); //Update our action's sensitivity. 
 
-    //Only show this popup in developer mode, so operators still see the default GtkCheck context menu.
+    //Only show this popup in developer mode, so operators still see the default GtkCheckButton context menu.
     //TODO: It would be better to add it somehow to the standard context menu.
     if(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
     {

@@ -409,7 +409,7 @@ void Frame_Glom::show_table(const Glib::ustring& table_name, const Gnome::Gda::V
       case(MODE_Find):
       {
         strMode = _("Find");
-        m_Notebook_Find.init_db_details(m_table_name);
+        m_Notebook_Find.init_db_details(m_table_name, get_document()->get_active_layout_platform());
         set_mode_widget(m_Notebook_Find);
         break;
       }
@@ -519,7 +519,11 @@ void Frame_Glom::on_menu_file_export()
 {
   //Start with a sequence based on the Details view:
   //The user can changed this by clicking the button in the FileChooser:
-  Document_Glom::type_list_layout_groups mapGroupSequence =  get_document()->get_data_layout_groups_plus_new_fields("details", m_table_name);
+  Document_Glom* document = get_document();
+  if(!document)
+    return;
+
+  Document_Glom::type_list_layout_groups mapGroupSequence = document->get_data_layout_groups_plus_new_fields("details", document->get_active_layout_platform(), m_table_name);
 
   Gtk::Window* pWindowApp = get_app_window();
   g_assert(pWindowApp);

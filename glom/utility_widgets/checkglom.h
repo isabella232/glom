@@ -38,7 +38,7 @@ class CheckGlom
   public LayoutWidgetField
 {
 public:
-  explicit CheckGlom(Glib::ustring title);
+  explicit CheckGlom(const Glib::ustring& title);
   virtual ~CheckGlom();
 
   virtual void set_value(const Gnome::Gda::Value& value);

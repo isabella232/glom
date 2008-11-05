@@ -69,10 +69,6 @@ public:
   {
   }
 
-  virtual ~predicate_LayoutItemIsEqual()
-  {
-  }
-
   bool operator() (const sharedptr<const T_Element>& layout_item) const
   {
     if(!m_layout_item && !layout_item)

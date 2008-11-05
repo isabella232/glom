@@ -98,7 +98,7 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
 
     //if(get_current_view() == DATA_VIEW_List)
     //{
-      result = m_Box_List.init_db_details(found_set); //TODO: Select the last selected record.
+      result = m_Box_List.init_db_details(found_set, get_document()->get_active_layout_platform()); //TODO: Select the last selected record.
       //m_Box_List.load_from_document();
     //}
     //else //DATA_VIEW_Details
@@ -145,7 +145,7 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
           }
         }
 
-        m_Box_Details.init_db_details(found_set, primary_key_for_details);
+        m_Box_Details.init_db_details(found_set, get_document()->get_active_layout_platform(), primary_key_for_details);
       }
       else
         std::cerr << "Notebook_Data::init_db_details(): document is NULL" << std::endl;

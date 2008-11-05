@@ -160,14 +160,14 @@ void Box_Data_Details::set_found_set_from_primary_key_value()
   }
 }
 
-bool Box_Data_Details::init_db_details(const FoundSet& found_set, const Gnome::Gda::Value& primary_key_value)
+bool Box_Data_Details::init_db_details(const FoundSet& found_set, const Glib::ustring& layout_platform, const Gnome::Gda::Value& primary_key_value)
 {
   //std::cout << "Box_Data_Details::init_db_details(): primary_key_value=" << primary_key_value.to_string() << std::endl;
 
   m_primary_key_value = primary_key_value;
   m_field_primary_key = get_field_primary_key_for_table(found_set.m_table_name);
    
-  const bool result = Box_Data::init_db_details(found_set); //Calls create_layout(), then fill_from_database()
+  const bool result = Box_Data::init_db_details(found_set, layout_platform); //Calls create_layout(), then fill_from_database()
 
   //This is not used much, but we create it anyway:
   m_found_set = found_set; //Not used much.
@@ -203,7 +203,7 @@ void Box_Data_Details::create_layout()
     m_FlowTable.set_table(m_table_name); //This allows portals to get full Relationship information
 
     //This map of layout groups will also contain the field information from the database:
-    Document_Glom::type_list_layout_groups layout_groups = get_data_layout_groups(m_layout_name);
+    Document_Glom::type_list_layout_groups layout_groups = get_data_layout_groups(m_layout_name, m_layout_platform);
 
     for(Document_Glom::type_list_layout_groups::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
     {
@@ -402,7 +402,7 @@ void Box_Data_Details::on_button_new()
     //Warn the user that they won't see anything if there are no fields on the layout,
     //doing an extra check:
     Document_Glom* document = get_document();
-    if( document && !(document->get_data_layout_groups_have_any_fields(m_layout_name, m_table_name)) )
+    if( document && !(document->get_data_layout_groups_have_any_fields(m_layout_name, m_table_name, m_layout_platform)) )
     {
       Gtk::Window* parent_window = get_app_window();
       if(parent_window)
@@ -604,7 +604,7 @@ void Box_Data_Details::on_flowtable_layout_changed()
   //Store it in the document:
   Document_Glom* document = get_document();
   if(document)
-    document->set_data_layout_groups(m_layout_name, m_table_name, layout_groups);
+    document->set_data_layout_groups(m_layout_name, m_table_name, m_layout_platform, layout_groups);
   //Build the view again from the new layout:
 #endif
   create_layout();
@@ -963,7 +963,7 @@ void Box_Data_Details::print_layout()
     //The groups:
     xmlpp::Element* nodeParent = nodeRoot;
 
-    Document_Glom::type_list_layout_groups layout_groups = get_data_layout_groups(m_layout_name);
+    Document_Glom::type_list_layout_groups layout_groups = get_data_layout_groups(m_layout_name, m_layout_platform);
     for(Document_Glom::type_list_layout_groups::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
     {
       sharedptr<const LayoutGroup> layout_group = *iter;
@@ -990,7 +990,8 @@ Dialog_Layout* Box_Data_Details::create_layout_dialog() const
 
 void Box_Data_Details::prepare_layout_dialog(Dialog_Layout* dialog)
 {
-  dialog->set_document(m_layout_name, get_document(), m_table_name, m_FieldsShown); //TODO: Use m_TableFields?
+  if(dialog)
+    dialog->set_document(m_layout_name, m_layout_platform, get_document(), m_table_name, m_FieldsShown); //TODO: Use m_TableFields?
 }
 
 void Box_Data_Details::show_layout_toolbar (bool show)

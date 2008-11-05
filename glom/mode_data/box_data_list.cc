@@ -210,7 +210,7 @@ void Box_Data_List::on_adddel_user_reordered_columns()
     Document_Glom::type_list_layout_groups mapGroups;
     mapGroups[1] = group;
 
-    pDoc->set_data_layout_groups("list", m_table_name, mapGroups);  
+    pDoc->set_data_layout_groups("list", m_table_name, m_layout_platform, mapGroups);  
   }
 }
 
@@ -443,7 +443,7 @@ Document_Glom::type_list_layout_groups Box_Data_List::create_layout_get_layout()
 {
   //This method is overriden in Box_Data_List_Related.
 
-  return get_data_layout_groups(m_layout_name); 
+  return get_data_layout_groups(m_layout_name, m_layout_platform); 
 }
 
 void Box_Data_List::create_layout()
@@ -601,7 +601,7 @@ Dialog_Layout* Box_Data_List::create_layout_dialog() const
 
 void Box_Data_List::prepare_layout_dialog(Dialog_Layout* dialog)
 {
-  dialog->set_document(m_layout_name, get_document(), m_table_name, m_FieldsShown); //TODO: Use m_TableFields?
+  dialog->set_document(m_layout_name, m_layout_platform, get_document(), m_table_name, m_FieldsShown); //TODO: Use m_TableFields?
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

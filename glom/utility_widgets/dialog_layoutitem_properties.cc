@@ -36,7 +36,7 @@ Dialog_LayoutItem_Properties::~Dialog_LayoutItem_Properties()
 }
 #endif
 
-void Dialog_LayoutItem_Properties::set_label (Glib::ustring label)
+void Dialog_LayoutItem_Properties::set_label(const Glib::ustring& label)
 {
   m_pEntryLabel->set_text(label);
 }

@@ -80,7 +80,7 @@ Dialog_Layout_List_Related::~Dialog_Layout_List_Related()
 }
 
 
-void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout, Document_Glom* document, const sharedptr<const LayoutItem_Portal>& portal, const Glib::ustring& from_table)
+void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document_Glom* document, const sharedptr<const LayoutItem_Portal>& portal, const Glib::ustring& from_table)
 {
   //Ignore the provided from_table if the portal has one:
   Glib::ustring actual_from_table;
@@ -100,7 +100,7 @@ void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout, Docum
     m_portal = sharedptr<LayoutItem_Portal>::create(); //The rest of the class assumes that this is not null.
   
   type_vecLayoutFields empty_fields; //Just to satisfy the base class.
-  Dialog_Layout::set_document(layout, document, actual_from_table, empty_fields);
+  Dialog_Layout::set_document(layout_name, layout_platform, document, actual_from_table, empty_fields);
   //m_table_name is now actually the parent_table_name.
 
   update_ui();

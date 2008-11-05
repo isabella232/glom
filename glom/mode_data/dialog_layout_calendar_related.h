@@ -42,9 +42,9 @@ public:
    * @param table_name The table name.
    * @param table_fields: The actual fields in the table, in case the document does not yet know about them all.
    */
-  virtual void set_document(const Glib::ustring& layout, Document_Glom* document, const sharedptr<const LayoutItem_CalendarPortal>& portal);
+  virtual void set_document(const Glib::ustring& layout, const Glib::ustring& layout_platform, Document_Glom* document, const sharedptr<const LayoutItem_CalendarPortal>& portal);
 
-  virtual void set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& parent_table);
+  virtual void set_document(const Glib::ustring& layout, const Glib::ustring& layout_platform, Document_Glom* document, const Glib::ustring& parent_table);
 
   virtual void update_ui(bool including_relationships_list = true);
 

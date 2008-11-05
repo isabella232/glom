@@ -39,7 +39,7 @@ public:
   Dialog_ChooseID(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Dialog_ChooseID();
 
-  virtual bool init_db_details(const Glib::ustring& table_name);
+  virtual bool init_db_details(const Glib::ustring& table_name, const Glib::ustring& layout_platform);
 
   bool get_id_chosen(Gnome::Gda::Value& chosen_id) const;
 
@@ -66,6 +66,7 @@ protected:
   Gtk::Alignment* m_alignment_parent;
 
   Glib::ustring m_table_name;
+  Glib::ustring m_layout_platform;
 
   Document_Glom* m_document;
   Gnome::Gda::Value m_id_chosen;

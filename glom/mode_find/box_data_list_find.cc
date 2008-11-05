@@ -73,11 +73,11 @@ Gtk::Widget* Box_Data_List_Find::get_default_button() //override
   return &m_Button_Find;
 }
 
-bool Box_Data_List_Find::init_db_details(const Glib::ustring& table_name)
+bool Box_Data_List_Find::init_db_details(const Glib::ustring& table_name, const Glib::ustring& layout_platform)
 {
   FoundSet found_set;
   found_set.m_table_name = table_name;
-  return Box_Data_List::init_db_details(found_set);
+  return Box_Data_List::init_db_details(found_set, layout_platform);
 }
 
 } //namespace Glom

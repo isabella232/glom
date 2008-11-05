@@ -103,7 +103,7 @@ bool Box_Data_Portal::init_db_details(const Glib::ustring& parent_table, bool sh
 
   FoundSet found_set;
   found_set.m_table_name = LayoutWidgetBase::m_table_name;
-  return Box_Data::init_db_details(found_set); //Calls create_layout() and fill_from_database().
+  return Box_Data::init_db_details(found_set, m_layout_platform); //Calls create_layout() and fill_from_database().
 }
 
 bool Box_Data_Portal::refresh_data_from_database_with_foreign_key(const Gnome::Gda::Value& foreign_key_value)

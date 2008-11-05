@@ -848,7 +848,7 @@ bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)
     else
       g_warning("get_layout_item() was not a LayoutItem_Field");
 
-    dialog->init_db_details(related_table_name);
+    dialog->init_db_details(related_table_name, get_document()->get_active_layout_platform());
 
 
     int response = dialog->run();

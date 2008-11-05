@@ -105,8 +105,11 @@ protected:
   void on_menu_file_save_as_example();
   void on_menu_developer_changelanguage();
   void on_menu_developer_translations();
-  void on_window_translations_hide();
+  void on_menu_developer_active_platform_normal();
+  void on_menu_developer_active_platform_maemo();
   void on_menu_developer_show_layout_toolbar();
+
+  void on_window_translations_hide();
 
   virtual Glib::ustring ui_file_select_save(const Glib::ustring& old_file_uri); //overridden.
   void on_userlevel_changed(AppState::userlevels userlevel);
@@ -148,6 +151,7 @@ protected:
   Glib::RefPtr<Gtk::Action> m_action_mode_data, m_action_mode_find;
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   Glib::RefPtr<Gtk::RadioAction> m_action_menu_userlevel_developer, m_action_menu_userlevel_operator;
+  Glib::RefPtr<Gtk::ToggleAction> m_action_show_layout_toolbar;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   Gtk::VBox* m_pBoxTop;
@@ -183,7 +187,7 @@ protected:
   //we already asked for them when getting the document over the network,
   //so we can use them again when connecting directly to the database:
   Glib::ustring m_temp_username, m_temp_password;
-	
+
   bool m_show_sql_debug;
 };
 

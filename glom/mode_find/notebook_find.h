@@ -34,7 +34,7 @@ public:
   Notebook_Find();
   virtual ~Notebook_Find();
 
-  bool init_db_details(const Glib::ustring& table_name);
+  bool init_db_details(const Glib::ustring& table_name, const Glib::ustring& layout_platform);
 
   void set_current_view(Notebook_Data::dataview view);
 

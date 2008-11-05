@@ -118,7 +118,7 @@ bool Box_Data_Calendar_Related::init_db_details(const Glib::ustring& parent_tabl
 
   FoundSet found_set;
   found_set.m_table_name = LayoutWidgetBase::m_table_name;
-  return Box_Data::init_db_details(found_set); //Calls create_layout() and fill_from_database().
+  return Box_Data::init_db_details(found_set, "" /* layout_platform */); //Calls create_layout() and fill_from_database().
 }
 
 bool Box_Data_Calendar_Related::fill_from_database()
@@ -359,11 +359,11 @@ void Box_Data_Calendar_Related::prepare_layout_dialog(Dialog_Layout* dialog)
   sharedptr<LayoutItem_CalendarPortal> derived_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(m_portal);
   if(derived_portal && derived_portal->get_has_relationship_name())
   {
-    related_dialog->set_document(m_layout_name, get_document(), derived_portal);
+    related_dialog->set_document(m_layout_name, m_layout_platform, get_document(), derived_portal);
   }
   else
   {
-    related_dialog->set_document(m_layout_name, get_document(), m_parent_table);
+    related_dialog->set_document(m_layout_name, m_layout_platform, get_document(), m_parent_table);
   }
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY

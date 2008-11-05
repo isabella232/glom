@@ -62,6 +62,7 @@ namespace Glom
 
 #define GLOM_NODE_DATA_LAYOUTS "data_layouts"
 #define GLOM_NODE_DATA_LAYOUT "data_layout"
+#define GLOM_ATTRIBUTE_LAYOUT_PLATFORM "platform"
 #define GLOM_ATTRIBUTE_PARENT_TABLE_NAME "parent_table"
 
 #define GLOM_NODE_DATA_LAYOUT_NOTEBOOK "data_layout_notebook"
@@ -1340,13 +1341,13 @@ void Document_Glom::fill_layout_field_details(const Glib::ustring& parent_table_
   }
 }
 
-Document_Glom::type_list_layout_groups Document_Glom::get_data_layout_groups_default(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const
+Document_Glom::type_list_layout_groups Document_Glom::get_data_layout_groups_default(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform) const
 {
   //std::cout << "debug: Document_Glom::get_data_layout_groups_default(): table_name = " << parent_table_name << std::endl;
 
   type_list_layout_groups result;
 
- //Add one if necessary:
+  //Add one if necessary:
   sharedptr<LayoutGroup> pTopLevel;
   sharedptr<LayoutGroup> pOverview;
   sharedptr<LayoutGroup> pDetails;
@@ -1357,7 +1358,7 @@ Document_Glom::type_list_layout_groups Document_Glom::get_data_layout_groups_def
   result.push_back(group);
   pTopLevel = group;
 
-  if(layout_name == "details") //The Details default layOut is a bit more complicated.
+  if(layout_name == "details") //The Details default layout is a bit more complicated.
   {
     sharedptr<LayoutGroup> overview = sharedptr<LayoutGroup>::create();;
     overview->set_name("overview");
@@ -1423,9 +1424,9 @@ Document_Glom::type_list_layout_groups Document_Glom::get_data_layout_groups_def
   return result;
 }
 
-Document_Glom::type_list_layout_groups Document_Glom::get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const
+Document_Glom::type_list_layout_groups Document_Glom::get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform) const
 {
-  type_list_layout_groups result = get_data_layout_groups(layout_name, parent_table_name);
+  type_list_layout_groups result = get_data_layout_groups(layout_name, parent_table_name, layout_platform);
 
   //If there are no fields in the layout, then add a default:
   bool create_default = false;
@@ -1435,18 +1436,18 @@ Document_Glom::type_list_layout_groups Document_Glom::get_data_layout_groups_plu
 
   if(create_default)
   {
-    result = get_data_layout_groups_default(layout_name, parent_table_name);
+    result = get_data_layout_groups_default(layout_name, parent_table_name, layout_platform);
     
     //Store this so we don't have to recreate it next time:
     Document_Glom* nonconst_this = const_cast<Document_Glom*>(this); //TODO: This is not ideal.
-    nonconst_this->set_data_layout_groups(layout_name, parent_table_name, result);
+    nonconst_this->set_data_layout_groups(layout_name, parent_table_name, layout_platform, result);
     nonconst_this->set_modified(false); //This might have happened in operator mode, but in that case we don't really need to save it, or mark the document as unsaved.
   }
 
   return result;  
 }
 
-Document_Glom::type_list_layout_groups Document_Glom::get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const
+Document_Glom::type_list_layout_groups Document_Glom::get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform) const
 {
   type_tables::const_iterator iterFind = m_tables.find(parent_table_name);
   if(iterFind != m_tables.end())
@@ -1454,7 +1455,7 @@ Document_Glom::type_list_layout_groups Document_Glom::get_data_layout_groups(con
     const DocumentTableInfo& info = iterFind->second;
 
     //Look for the layout with this name:
-    DocumentTableInfo::type_layouts::const_iterator iter = std::find_if(info.m_layouts.begin(), info.m_layouts.end(), predicate_Layout<LayoutInfo>(parent_table_name, layout_name));
+    DocumentTableInfo::type_layouts::const_iterator iter = std::find_if(info.m_layouts.begin(), info.m_layouts.end(), predicate_Layout<LayoutInfo>(parent_table_name, layout_name, layout_platform));
     if(iter != info.m_layouts.end())
     {
       return iter->m_layout_groups; //found
@@ -1464,10 +1465,10 @@ Document_Glom::type_list_layout_groups Document_Glom::get_data_layout_groups(con
   return type_list_layout_groups(); //not found
 }
 
-bool Document_Glom::get_data_layout_groups_have_any_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const
+bool Document_Glom::get_data_layout_groups_have_any_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform) const
 {
   //TODO_Performance: This could make the response to some button slow, such as the Add button, which does a check for this.
-  type_list_layout_groups layout_groups = get_data_layout_groups(layout_name, parent_table_name);
+  type_list_layout_groups layout_groups = get_data_layout_groups(layout_name, parent_table_name, layout_platform);
   for(type_list_layout_groups::iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
   {
     sharedptr<LayoutGroup> layout_group = *iter;
@@ -1478,8 +1479,9 @@ bool Document_Glom::get_data_layout_groups_have_any_fields(const Glib::ustring& 
   return false;
 }
 
-void Document_Glom::set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const type_list_layout_groups& groups)
+void Document_Glom::set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform, const type_list_layout_groups& groups)
 {
+  std::cout << "DEBUG: Document_Glom::set_data_layout_groups(): layout_name=" << layout_name << ", parent_table_name=" << parent_table_name << ", layout_platform=" << layout_platform << std::endl;
   const Glib::ustring child_table_name = parent_table_name; //TODO: Remove this cruft.
 
   //g_warning("Document_Glom::set_data_layout_groups(): ADDING layout for table %s (child_table=%s), for layout %s", parent_table_name.c_str(), child_table_name.c_str(), layout_name.c_str());
@@ -1494,7 +1496,7 @@ void Document_Glom::set_data_layout_groups(const Glib::ustring& layout_name, con
     layout_info.m_layout_name = layout_name;
     layout_info.m_layout_groups = groups;
 
-    DocumentTableInfo::type_layouts::iterator iter = std::find_if(info.m_layouts.begin(), info.m_layouts.end(), predicate_Layout<LayoutInfo>(child_table_name, layout_name));
+    DocumentTableInfo::type_layouts::iterator iter = std::find_if(info.m_layouts.begin(), info.m_layouts.end(), predicate_Layout<LayoutInfo>(child_table_name, layout_name, layout_platform));
     if(iter == info.m_layouts.end())
       info.m_layouts.push_back(layout_info);
     else
@@ -1653,6 +1655,29 @@ bool Document_Glom::set_userlevel(AppState::userlevels userlevel)
 void Document_Glom::emit_userlevel_changed()
 {
   m_signal_userlevel_changed.emit(m_app_state.get_userlevel());
+}
+
+Glib::ustring Document_Glom::get_default_layout_platform()
+{
+  //Make Glom use the special "maemo" layouts if they exist.
+  #ifdef GLOM_ENABLE_MAEMO
+  return "maemo"
+  #else
+  return Glib::ustring();
+  #endif
+}
+
+Glib::ustring Document_Glom::get_active_layout_platform() const
+{
+  if(m_active_layout_platform.empty())
+    return get_default_layout_platform();
+  else
+    return m_active_layout_platform;
+}
+
+void Document_Glom::set_active_layout_platform(const Glib::ustring& layout_platform)
+{
+  m_active_layout_platform = layout_platform;
 }
 
 Glib::ustring Document_Glom::get_default_table() const
@@ -2475,6 +2500,8 @@ bool Document_Glom::load_after()
               if(node)
               {
                 const Glib::ustring layout_name = get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
+                const Glib::ustring layout_platform = get_node_attribute_value(node, GLOM_ATTRIBUTE_LAYOUT_PLATFORM);
+
                 Glib::ustring parent_table = get_node_attribute_value(node, GLOM_ATTRIBUTE_PARENT_TABLE_NAME);
                 if(parent_table.empty())
                   parent_table = table_name; //Deal with the earlier file format that did not include this.
@@ -2506,6 +2533,7 @@ bool Document_Glom::load_after()
                 LayoutInfo layout_info;
                 layout_info.m_parent_table = parent_table;
                 layout_info.m_layout_name = layout_name;
+                layout_info.m_layout_platform = layout_platform;
                 layout_info.m_layout_groups = layout_groups;
                 doctableinfo.m_layouts.push_back(layout_info);
               }
@@ -3239,6 +3267,7 @@ bool Document_Glom::save_before()
         {
           xmlpp::Element* nodeLayout = nodeDataLayouts->add_child(GLOM_NODE_DATA_LAYOUT);
           set_node_attribute_value(nodeLayout, GLOM_ATTRIBUTE_NAME, iter->m_layout_name);
+          set_node_attribute_value(nodeLayout, GLOM_ATTRIBUTE_LAYOUT_PLATFORM, iter->m_layout_platform);
           set_node_attribute_value(nodeLayout, GLOM_ATTRIBUTE_PARENT_TABLE_NAME, iter->m_parent_table);
 
           xmlpp::Element* nodeGroups = nodeLayout->add_child(GLOM_NODE_DATA_LAYOUT_GROUPS);

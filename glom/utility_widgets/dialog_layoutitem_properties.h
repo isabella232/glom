@@ -34,7 +34,7 @@ public:
   //virtual ~Dialog_LayoutItem_Properties();
 
   Glib::ustring get_label() const; 
-  void set_label (Glib::ustring label);
+  void set_label(const Glib::ustring& label);
   
 protected:
   Gtk::Entry* m_pEntryLabel;

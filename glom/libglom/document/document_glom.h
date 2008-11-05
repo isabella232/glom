@@ -51,24 +51,22 @@ template<class T_Element>
 class predicate_Layout
 {
 public:
-  predicate_Layout(const Glib::ustring& parent_table, const Glib::ustring& layout_name)
+  predicate_Layout(const Glib::ustring& parent_table, const Glib::ustring& layout_name, const Glib::ustring& layout_platform)
   : m_parent_table(parent_table),
-    m_layout_name(layout_name)
-  {
-  }
-
-  virtual ~predicate_Layout()
+    m_layout_name(layout_name),
+    m_layout_platform(layout_platform)
   {
   }
 
   bool operator() (const T_Element& element)
   {
     return (element.m_parent_table == m_parent_table) &&
-           (element.m_layout_name == m_layout_name);
+           (element.m_layout_name == m_layout_name) &&
+           (element.m_layout_platform == m_layout_platform);
   }
 
 protected:
-  Glib::ustring m_parent_table, m_layout_name;
+  Glib::ustring m_parent_table, m_layout_name, m_layout_platform;
 };
 
 class Document_Glom : public Bakery::Document_XML
@@ -191,31 +189,35 @@ public:
   /** Get the layout groups for a layout.
    * @param layout_name The name of the layout, such as list or details.
    * @param parent_table_name The name of the table for which this layout should appear.
+   * @param layout_platform The platform for which this layout should be used. Possible values are an empty string (meaning normal platforms) or "maemo" meaning "normal". 
    * @result A list of layout groups at the top-level of the requested layout.
    */
-  type_list_layout_groups get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const;
+  type_list_layout_groups get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform) const;
 
   /** Discover whether there are any fields in the layout.
    * @param layout_name The name of the layout, such as list or details.
    * @param parent_table_name The name of the table for which this layout should appear.
+   * @param layout_platform The platform for which this layout should be used. Possible values are an empty string (meaning normal platforms) or "maemo" meaning "normal". 
    * @result true if there is at least one field in the layout group or its sub groups.
    */
-  bool get_data_layout_groups_have_any_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const;
+  bool get_data_layout_groups_have_any_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform) const;
 
   /** Set the layout groups for a layout.
    * @param layout_name The name of the layout, such as list or details.
    * @param parent_table_name The name of the table for which this layout should appear.
+   * @param layout_platform The platform for which this layout should be used. Possible values are an empty string (meaning normal platforms) or "maemo" meaning "normal". 
    * @param groups A list of layout groups at the top-level of the requested layout.
    */
-  void set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const type_list_layout_groups& groups);
+  void set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform, const type_list_layout_groups& groups);
 
   /**
    * @para The layout_name, such as "details", "list".
    * @para parent_table_name The name of the table on whose layout the layout appears.
+   * @param layout_platform The platform for which this layout should be used. Possible values are an empty string (meaning normal platforms) or "maemo" meaning "normal". 
    */
-  type_list_layout_groups get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const;
+  type_list_layout_groups get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform) const;
 
-  type_list_layout_groups get_data_layout_groups_default(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name) const;
+  type_list_layout_groups get_data_layout_groups_default(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform) const;
 
   typedef std::list< sharedptr<TranslatableItem> > type_list_translatables;
   type_list_translatables get_translatable_layout_items(const Glib::ustring& table_name);
@@ -355,6 +357,18 @@ public:
 
   void emit_userlevel_changed();
 
+  static Glib::ustring get_default_layout_platform();
+
+  /** This is transitory information, not saved to disk.
+   */
+  Glib::ustring get_active_layout_platform() const;
+
+  /** This is transitory information, not saved to disk.
+   */
+  void set_active_layout_platform(const Glib::ustring& layout_platform);
+
+
+
   void set_parent_window(Gtk::Window* window);
 
   Glib::ustring build_and_get_contents() const;
@@ -438,6 +452,7 @@ protected:
   {
   public:
     Glib::ustring m_layout_name;
+    Glib::ustring m_layout_platform; //Empty string (meaning normal platforms), or "maemo", or something else.
     Glib::ustring m_parent_table;
 
     type_list_layout_groups m_layout_groups;
@@ -503,6 +518,8 @@ protected:
   guint m_document_format_version;
 
   bool m_opened_from_browse;
+
+  Glib::ustring m_active_layout_platform; //empty (means normal), or "maemo".
 
   Gtk::Window* m_parent_window; //Needed by BusyCursor.
 };

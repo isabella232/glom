@@ -43,10 +43,6 @@ public:
     m_layout_item = layout_item;
   }
 
-  virtual ~predicate_LayoutItem_Field_IsSameField()
-  {
-  }
-
   bool operator() (const sharedptr<const T_Element>& element)
   {
     const bool result = (m_layout_item->get_name() == element->get_name());

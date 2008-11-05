@@ -214,7 +214,7 @@ static PyMappingMethods Related_tp_as_mapping = {
 static PyTypeObject pyglom_RelatedType = {
     PyObject_HEAD_INIT(NULL)
     0,                         /*ob_size*/
-    "glom.Related",             /*tp_name*/
+    (char*)"glom.Related",             /*tp_name*/
     sizeof(PyGlomRelated), /*tp_basicsize*/
     0,                         /*tp_itemsize*/
     (destructor)Related_dealloc, /*tp_dealloc*/
@@ -233,7 +233,7 @@ static PyTypeObject pyglom_RelatedType = {
     0,                         /*tp_setattro*/
     0,                         /*tp_as_buffer*/
     Py_TPFLAGS_DEFAULT,        /*tp_flags*/
-    "Glom objects",           /* tp_doc */
+    (char*)"Glom objects",           /* tp_doc */
     0,                  /* tp_traverse */
     0,                   /* tp_clear */
     0,                   /* tp_richcompare */

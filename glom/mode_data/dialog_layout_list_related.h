@@ -35,11 +35,12 @@ public:
   virtual ~Dialog_Layout_List_Related();
 
   /**
-   * @param layout "list" or "details"
+   * @param layout_name "list" or "details"
+   * @param layout_platform As in the document. Empty or "maemo".
    * @param document The document, so that the dialog can load the previous layout, and save changes.
    * @param portal The layout item, which knows its from_table, for instance.
    */
-  virtual void set_document(const Glib::ustring& layout, Document_Glom* document, const sharedptr<const LayoutItem_Portal>& portal, const Glib::ustring& from_table);
+  virtual void set_document(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document_Glom* document, const sharedptr<const LayoutItem_Portal>& portal, const Glib::ustring& from_table);
 
   virtual void update_ui(bool including_relationships_list = true);
 

@@ -315,11 +315,11 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
   }
 }
 
-void Dialog_Layout_Details::set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields)
+void Dialog_Layout_Details::set_document(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document_Glom* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields)
 {
   m_modified = false;
 
-  Dialog_Layout::set_document(layout, document, table_name, table_fields);
+  Dialog_Layout::set_document(layout_name, layout_platform, document, table_name, table_fields);
 
   //Update the tree models from the document
   if(document)
@@ -328,7 +328,7 @@ void Dialog_Layout_Details::set_document(const Glib::ustring& layout, Document_G
     m_label_table_name->set_text(table_name);
     m_entry_table_title->set_text( document->get_table_title(table_name) );
 
-    Document_Glom::type_list_layout_groups list_groups = document->get_data_layout_groups_plus_new_fields(layout, m_table_name);
+    Document_Glom::type_list_layout_groups list_groups = document->get_data_layout_groups_plus_new_fields(m_layout_name, m_table_name, m_layout_platform);
     document->fill_layout_field_details(m_table_name, list_groups); //Update with full field information.
 
     //If no information is stored in the document, add a default group
@@ -1114,7 +1114,7 @@ void Dialog_Layout_Details::save_to_document()
 
     if(document)
     {
-      document->set_data_layout_groups(m_layout_name, m_table_name, list_groups);
+      document->set_data_layout_groups(m_layout_name, m_table_name, m_layout_platform, list_groups);
       m_modified = false;
     }
   }

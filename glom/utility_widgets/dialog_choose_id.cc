@@ -128,7 +128,7 @@ void Dialog_ChooseID::on_box_find_criteria(const Glib::ustring& where_clause)
     FoundSet found_set = m_box_select.get_found_set();
     found_set.m_table_name = m_table_name;
     found_set.m_where_clause = where_clause;
-    const bool records_found = m_box_select.init_db_details(found_set);
+    const bool records_found = m_box_select.init_db_details(found_set, m_layout_platform);
     if(!records_found)
     {
       const bool find_again = show_warning_no_records_found(*this);
@@ -170,9 +170,10 @@ void Dialog_ChooseID::update_ui_for_stage()
   }
 }
 
-bool Dialog_ChooseID::init_db_details(const Glib::ustring& table_name)
+bool Dialog_ChooseID::init_db_details(const Glib::ustring& table_name, const Glib::ustring& layout_platform)
 {
   m_table_name = table_name;
+  m_layout_platform = layout_platform;
 
   m_label_table_name->set_text( get_document()->get_table_title(m_table_name) );
 
@@ -180,7 +181,7 @@ bool Dialog_ChooseID::init_db_details(const Glib::ustring& table_name)
   m_stage = STAGE_FIND;
   update_ui_for_stage();
 
-  bool result = m_box_find.init_db_details(table_name);
+  bool result = m_box_find.init_db_details(table_name, layout_platform);
 
   m_table_name = table_name;
 

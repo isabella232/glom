@@ -166,13 +166,13 @@ Record__get_related(PyObject* self, void* /* closure */)
 
 
 static PyGetSetDef Record_getseters[] = {
-    {"related",
+    {(char*)"related",
      (getter)Record__get_related, (setter)0, 0, 0
     },
-    {"connection",
+    {(char*)"connection",
      (getter)Record__get_connection, (setter)0, 0, 0
     },
-    {"table_name",
+    {(char*)"table_name",
      (getter)Record__get_table_name, (setter)0, 0, 0
     },
     {NULL, 0, 0, 0, 0, }  // Sentinel
@@ -258,7 +258,7 @@ static PyMappingMethods Record_tp_as_mapping = {
 static PyTypeObject pyglom_RecordType = {
     PyObject_HEAD_INIT(NULL)
     0,                         /*ob_size*/
-    "glom.Record",             /*tp_name*/
+    (char*)"glom.Record",             /*tp_name*/
     sizeof(PyGlomRecord), /*tp_basicsize*/
     0,                         /*tp_itemsize*/
     (destructor)Record_dealloc, /*tp_dealloc*/
@@ -277,7 +277,7 @@ static PyTypeObject pyglom_RecordType = {
     0,                         /*tp_setattro*/
     0,                         /*tp_as_buffer*/
     Py_TPFLAGS_DEFAULT,        /*tp_flags*/
-    "Glom objects",           /* tp_doc */
+    (char*)"Glom objects",           /* tp_doc */
     0,                  /* tp_traverse */
     0,                   /* tp_clear */
     0,                   /* tp_richcompare */

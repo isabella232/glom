@@ -48,7 +48,7 @@ public:
 
   //TODO: Put this in Base_DB_Table_Data?
   ///Create the layout for the database structure, and fill it with data from the database.
-  virtual bool init_db_details(const FoundSet& found_set);
+  virtual bool init_db_details(const FoundSet& found_set, const Glib::ustring& layout_platform);
 
   //Fill the existing layout with data from the database:
   virtual bool refresh_data_from_database_with_where_clause(const FoundSet& found_set);
@@ -68,6 +68,7 @@ public:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void show_layout_dialog();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+
   Glib::ustring get_layout_name() const;
 
   //Signals:
@@ -104,7 +105,7 @@ protected:
 
   /** Get the layout groups, with the Field information filled in.
    */
-  Document_Glom::type_list_layout_groups get_data_layout_groups(const Glib::ustring& layout_name);
+  Document_Glom::type_list_layout_groups get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& layout_platform);
   void fill_layout_group_field_info(const sharedptr<LayoutGroup>& group, const Privileges& table_privs);
 
 
@@ -132,7 +133,12 @@ protected:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   Dialog_Layout* m_pDialogLayout;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+
+  /// "details" or "list", as specified in the Document's XML.
   Glib::ustring m_layout_name;
+
+  /// Empty string or "maemo" as specified in the Document's XML.
+  Glib::ustring m_layout_platform;
 };
 
 } //namespace Glom

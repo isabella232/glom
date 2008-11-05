@@ -40,7 +40,7 @@ public:
   Box_Data_Details(bool bWithNavButtons = true);
   virtual ~Box_Data_Details();
 
-  virtual bool init_db_details(const FoundSet& found_set, const Gnome::Gda::Value& primary_key_value);
+  virtual bool init_db_details(const FoundSet& found_set, const Glib::ustring& layout_platform, const Gnome::Gda::Value& primary_key_value);
   virtual bool refresh_data_from_database_with_primary_key(const Gnome::Gda::Value& primary_key_value);
   virtual bool refresh_data_from_database_blank();
 

@@ -41,11 +41,11 @@ Box_Data_Details_Find::~Box_Data_Details_Find()
 {
 }
 
-bool Box_Data_Details_Find::init_db_details(const Glib::ustring& table_name)
+bool Box_Data_Details_Find::init_db_details(const Glib::ustring& table_name, const Glib::ustring& layout_platform)
 {
   FoundSet found_set;
   found_set.m_table_name = table_name;
-  return Box_Data_Details::init_db_details(found_set, Gnome::Gda::Value());
+  return Box_Data_Details::init_db_details(found_set, layout_platform, Gnome::Gda::Value());
 }
 
 bool Box_Data_Details_Find::fill_from_database()

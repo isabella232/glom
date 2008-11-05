@@ -61,8 +61,9 @@ Box_Data::~Box_Data()
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
-bool Box_Data::init_db_details(const FoundSet& found_set)
+bool Box_Data::init_db_details(const FoundSet& found_set, const Glib::ustring& layout_platform)
 {
+  m_layout_platform = layout_platform;
   m_table_name = found_set.m_table_name;
   m_found_set = found_set;
 
@@ -238,7 +239,7 @@ Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::us
   const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
   if(pDoc)
   {
-    Document_Glom::type_list_layout_groups mapGroupSequence =  pDoc->get_data_layout_groups_plus_new_fields(m_layout_name, table_name);
+    Document_Glom::type_list_layout_groups mapGroupSequence = pDoc->get_data_layout_groups_plus_new_fields(m_layout_name, table_name, m_layout_platform);
     return get_table_fields_to_show_for_sequence(table_name, mapGroupSequence);
   }
   else
@@ -328,7 +329,7 @@ void Box_Data::refresh_related_fields(const LayoutFieldInRecord& field_in_record
   }
 }
 
-Document_Glom::type_list_layout_groups Box_Data::get_data_layout_groups(const Glib::ustring& layout)
+Document_Glom::type_list_layout_groups Box_Data::get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& layout_platform)
 {
   Document_Glom::type_list_layout_groups layout_groups;
 
@@ -338,7 +339,7 @@ Document_Glom::type_list_layout_groups Box_Data::get_data_layout_groups(const Gl
     if(!m_table_name.empty())
     {
       //Get the layout information from the document:
-      layout_groups = document->get_data_layout_groups_plus_new_fields(layout, m_table_name);
+      layout_groups = document->get_data_layout_groups_plus_new_fields(layout_name, m_table_name, layout_platform);
 
       const Privileges table_privs = Privs::get_current_privs(m_table_name);
 

@@ -485,9 +485,26 @@ void App_Glom::init_menus()
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &App_Glom::on_menu_developer_translations));
 
-  action = Gtk::ToggleAction::create("GlomAction_Menu_Developer_ShowLayoutToolbar", _("_Show Layout Toolbar"));
+
+  //"Active Platform" menu:
+  action =  Gtk::Action::create("Glom_Menu_Developer_ActivePlatform", _("_Active Platform"));
+  m_refActionGroup_Others->add(action);
+  Gtk::RadioAction::Group group_active_platform;
+
+  action = Gtk::RadioAction::create(group_active_platform, "GlomAction_Menu_Developer_ActivePlatform_Normal", 
+    _("_Normal"), _("The layout to use for normal desktop environments."));
   m_listDeveloperActions.push_back(action);
-  m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &App_Glom::on_menu_developer_show_layout_toolbar));
+  m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &App_Glom::on_menu_developer_active_platform_normal));
+
+  action = Gtk::RadioAction::create(group_active_platform, "GlomAction_Menu_Developer_ActivePlatform_Maemo",
+    _("_Maemo"), _("The layout to use for Maemo devices."));
+  m_listDeveloperActions.push_back(action);
+  m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &App_Glom::on_menu_developer_active_platform_maemo));
+
+
+  m_action_show_layout_toolbar = Gtk::ToggleAction::create("GlomAction_Menu_Developer_ShowLayoutToolbar", _("_Show Layout Toolbar"));
+  m_listDeveloperActions.push_back(m_action_show_layout_toolbar);
+  m_refActionGroup_Others->add(m_action_show_layout_toolbar, sigc::mem_fun(*this, &App_Glom::on_menu_developer_show_layout_toolbar));
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -541,6 +558,10 @@ void App_Glom::init_menus()
     "        <menuitem action='GlomAction_Menu_Developer_Translations' />"
     "        <menuitem action='GlomAction_Menu_Developer_ChangeLanguage' />"
     "        <separator />"
+    "        <menu action='Glom_Menu_Developer_ActivePlatform'>"
+    "          <menuitem action='GlomAction_Menu_Developer_ActivePlatform_Normal' />"
+    "          <menuitem action='GlomAction_Menu_Developer_ActivePlatform_Maemo' />"
+    "        </menu>"
     "        <menuitem action='GlomAction_Menu_Developer_ShowLayoutToolbar' />"
     "      </menu>"
 #endif // !GLOM_ENABLE_CLIENT_ONLY
@@ -565,11 +586,11 @@ void App_Glom::init_menus()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void App_Glom::on_menu_userlevel_developer()
 {
-  if(m_pFrame)
-    m_pFrame->on_menu_userlevel_Developer(m_action_menu_userlevel_developer, m_action_menu_userlevel_operator);
-  Glib::RefPtr<Gtk::ToggleAction> action = Glib::RefPtr<Gtk::ToggleAction>::cast_dynamic(
-    m_refActionGroup_Others->get_action ("GlomAction_Menu_Developer_ShowLayoutToolbar"));
-  m_pFrame->show_layout_toolbar(action->get_active());
+  if(!m_pFrame)
+    return;
+
+  m_pFrame->on_menu_userlevel_Developer(m_action_menu_userlevel_developer, m_action_menu_userlevel_operator);
+  m_pFrame->show_layout_toolbar(m_action_show_layout_toolbar->get_active());
 }
 
 void App_Glom::on_menu_userlevel_operator()
@@ -827,8 +848,10 @@ Bakery::App* App_Glom::new_instance() //Override
 #else
   std::auto_ptr<Gnome::Glade::XmlError> error;
   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "window_main", "", error);
-  if(error.get()) return NULL;
+  if(error.get())
+    return 0;
 #endif
+
   App_Glom* pApp_Glom = 0;
   refXml->get_widget_derived("window_main", pApp_Glom);
 
@@ -1930,7 +1953,7 @@ void App_Glom::on_menu_file_save_as_example()
         //const type_vecFields vec_fields = document->get_table_fields(table_name);
 
         //export_data_to_stream() needs a type_list_layout_groups;
-        Document_Glom::type_list_layout_groups sequence = document->get_data_layout_groups_default("list", table_name);
+        Document_Glom::type_list_layout_groups sequence = document->get_data_layout_groups_default("list", table_name, "" /* layout_platform */);
 
         //std::cout << "debug: table_name=" << table_name << std::endl;
 
@@ -2331,11 +2354,27 @@ void App_Glom::on_menu_developer_translations()
   }
 }
 
+void App_Glom::on_menu_developer_active_platform_normal()
+{
+  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  if(document)
+   document->set_active_layout_platform("");
+
+  m_pFrame->show_table_refresh();
+}
+
+void App_Glom::on_menu_developer_active_platform_maemo()
+{
+  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  if(document)
+   document->set_active_layout_platform("maemo");
+
+  m_pFrame->show_table_refresh();
+}
+
 void App_Glom::on_menu_developer_show_layout_toolbar()
 {
-  Glib::RefPtr<Gtk::ToggleAction> action = Glib::RefPtr<Gtk::ToggleAction>::cast_dynamic(
-    m_refActionGroup_Others->get_action ("GlomAction_Menu_Developer_ShowLayoutToolbar"));
-  m_pFrame->show_layout_toolbar (action->get_active());
+  m_pFrame->show_layout_toolbar(m_action_show_layout_toolbar->get_active());
 }
 
 

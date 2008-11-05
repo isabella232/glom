@@ -1,3 +1,54 @@
+2008-11-05  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.[h|cc]: init_menus(): Added Developer/ActivePlatform 
+	sub menu.
+
+	* glom/libglom/document/document_glom.[h|cc]:
+	Added set/get_active_layout_platform(), and 
+	set/get_default_layout_platform().
+	get_data_layout_groups_default(), get_data_layout_groups_plus_new_fields(),
+	set/get_data_layout_groups(), get_data_layout_groups_have_any_fields():
+	Added a layout_platform parameters.
+	load_after(), save_before(): Save the layout_platform for each layout.
+	* glom/frame_glom.cc: show_table(), on_menu_file_export():
+	* glom/mode_data/notebook_data.[h|cc]: init_db_details(),
+	  on_switch_page_handler():
+	* glom/mode_data/box_data.[h|cc]: init_db_details(),
+	  get_table_fields_to_show(), get_data_layout_groups()
+	* glom/mode_data/box_data_calendar_related.cc: init_db_details(),
+	  prepare_layout_dialog():
+	* glom/mode_data/box_data_details.cc: init_db_details(),
+	  create_layout(), on_button_new(),
+	  on_flowtable_layout_changed(), print_layout(),
+	  prepare_layout_dialog():
+	* glom/mode_data/box_data_list.cc: on_adddel_user_reordered_columns(),
+	  create_layout_get_layout(), prepare_layout_dialog():
+	* glom/mode_data/box_data_list_related.cc: init_db_details(), 
+	  prepare_layout_dialog():
+	* glom/mode_data/box_data_portal.cc: init_db_details():
+	* glom/mode_data/dialog_layout.[h|cc]: set_document():
+	* glom/mode_data/dialog_layout_calendar_related.[h|cc]: set_document():
+	* glom/mode_data/dialog_layout_details.[h|cc]: set_document(), 
+	  save_to_document():
+	* glom/mode_data/dialog_layout_list_related.[h|cc]: set_document():
+	* glom/mode_find/notebook_find.[h|cc]:
+	* glom/mode_find/box_data_details_find.[h|cc]:
+	* glom/mode_find/box_data_list_find.[h|cc]
+	* glom/utility_widgets/datawidget.cc: offer_related_record_id_find():
+	* glom/utility_widgets/dialog_choose_id.[h|cc]: on_box_find_criteria(),
+	  init_db_details():
+	* glom/utility_widgets/dialog_layoutitem_properties.[h|cc]:
+	
+	Adapted to changed Document_Glom API, taking note of the active platform.
+	
+	This allows people to define a different layout to be used when running 
+	on a Maemo platform.
+
+	* glom/libglom/python_embed/py_glom_record.cc:
+	* glom/libglom/python_embed/py_glom_related.cc:
+	Added some casts to avoid warnings about literal to char* conversions. 
+
+
 This is the trunk branch, for Glom 1.9/1.10. Among other things, we will now 
 port to libgda-4.0.
 
@@ -176,7 +227,7 @@ See also the glom-1-8 branch.
 	but only show it for the list. Also hide the columns count column for 
 	the list.
 	* glom/libglom/document/document_glom.cc: load_after_layout_group(),
-        Glom.save_before_layout_group(): Save the column widths for items 
+        save_before_layout_group(): Save the column widths for items 
 	in the document.
 
 	* glom/mode_data/dialog_layout_list_related.cc:
@@ -332,21 +383,21 @@ See also the glom-1-8 branch.
 
 	* glom/mode_data/box_data_details.h:
 	* glom/utility_widgets/Makefile.am:
-	* glom/utility_widgets/dragbar.cc (renamed):
+	* glom/utility_widgets/dragbar.cc: renamed):
 	* glom/utility_widgets/dragbar.h (renamed):
-	* glom/utility_widgets/dragbutton.cc (renamed):
+	* glom/utility_widgets/dragbutton.cc: renamed):
 	* glom/utility_widgets/dragbutton.h (renamed):
 	* glom/utility_widgets/flowtable_dnd.cc:
-	* glom/utility_widgets/layouttoolbar.cc (new):
+	* glom/utility_widgets/layouttoolbar.cc: new):
 	* glom/utility_widgets/layouttoolbar.h (new):
-	* glom/utility_widgets/layouttoolbarbutton.cc (new):
+	* glom/utility_widgets/layouttoolbarbutton.cc: new):
 	* glom/utility_widgets/layouttoolbarbutton.h (new):
 	Changed names of DragBar to LayoutToolbar and DragButton to 
 	LayouttoolbarButton
 
 2008-08-22  Armin Burgmeier  <armin@openismus.com>
 
-	* glom/libglom/connectionpool.cc (discover_first_free_port): Print
+	* glom/libglom/connectionpool.cc: discover_first_free_port): Print
 	WinSock error code in case the socket() call fails, since socket
 	errors are not reported via errno on Windows, so perror does not yield
 	a useful error message.
@@ -483,7 +534,7 @@ See also the glom-1-8 branch.
 
 2008-07-20  Armin Burgmeier  <armin@openismus.com>
 
-	* glom/application.cc (offer_new_or_existing): Fixed the
+	* glom/application.cc: offer_new_or_existing): Fixed the
 	non-client-only build. There was a default: marker in a switch
 	statement with no code after it.
 
@@ -585,7 +636,7 @@ See also the glom-1-8 branch.
 	* configure.in:
 	* config.h.in: Check whether the strptime function is available.
 
-	* glom/libglom/data_structure/glomconversions.cc (parse_time): Don't
+	* glom/libglom/data_structure/glomconversions.cc: parse_time): Don't
 	fall back to strptime if strptime is not available, such as on Windows
 	(mingw).
 
@@ -606,10 +657,10 @@ See also the glom-1-8 branch.
 	SQL representation to a Gnome::Gda::Value. This is the reverse to the
 	sql() function.
 
-	* glom/dialog_import_csv.cc (field_data_func): Remove own unescaping
+	* glom/dialog_import_csv.cc: field_data_func): Remove own unescaping
 	code, use Field::from_sql() for preview instead.
 
-	* glom/dialog_import_csv_progress.cc (on_idle_import): Use
+	* glom/dialog_import_csv_progress.cc: on_idle_import): Use
 	Field::from_sql() to do the actual import. This allows to correctly
 	import files that the Export functionality produces, escpecially
 	dates and images.
@@ -669,7 +720,7 @@ See also the glom-1-8 branch.
 	* glom/dialog_import_csv.cc: Added some more encodings, differentiate
 	between encoding name and charset.
 
-	* glom/application.cc (init_menus_file), (init_menus): Moved the
+	* glom/application.cc: init_menus_file), (init_menus): Moved the
 	Import menu item from Tables to File menu.
 
 	* glom/frame_glom.h:
@@ -687,7 +738,7 @@ See also the glom-1-8 branch.
 	* glom/Makefile.am: Dialog showing progress of the import and error
 	messages, performing the actual import.
 
-	* glom/frame_glom.cc (on_menu_Tables_ImportIntoTable): Show the
+	* glom/frame_glom.cc: on_menu_Tables_ImportIntoTable): Show the
 	progress dialog after the user has finished the settings in the
 	"Import from CSV" dialog, refresh display after import so the list and
 	details show the imported values.
@@ -727,7 +778,7 @@ See also the glom-1-8 branch.
 
 2008-05-02  Johannes Schmid <jhs@gnome.org>
 
-	* glom/utility_widgets/flowtable_dnd.cc (on_child_drag_motion):
+	* glom/utility_widgets/flowtable_dnd.cc: on_child_drag_motion):
 	Fixed a stupid bug in the dnd code that caused dropping problems all
 	over.
 
@@ -751,7 +802,7 @@ See also the glom-1-8 branch.
 	(on_dnd_add_layout_item)
 	Added new method to reparent items from other flowtables.
 	
-	* glom/utility_widgets/flowtable_dnd.cc (start_dnd), (on_drag_motion),
+	* glom/utility_widgets/flowtable_dnd.cc: start_dnd), (on_drag_motion),
 	  (on_drag_data_received), (dnd_item_at_position),
 	  (dnd_datawidget_from_item), (find_current_dnd_item),
 	  (on_child_drag_motion), (on_child_drag_data_get),
@@ -824,7 +875,7 @@ See also the glom-1-8 branch.
 	* glom/frame_glom.cc: Added Frame_Glom::on_menu_Tables_ImportIntoTable
 	to launch the import dialog.
 
-	* glom/application.cc (init_menus): Added an action for the "Import
+	* glom/application.cc: init_menus): Added an action for the "Import
 	Into Table" menu item.
 
 2008-04-25  Jeremiah Savage  <jeremiahsavage@gmail.com>
@@ -896,7 +947,7 @@ See also the glom-1-8 branch.
 2008-04-21  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data_calendar_related.cc
-	  (Glom.on_calendar_details):
+	  (on_calendar_details):
 	* glom/mode_data/box_data_calendar_related.h
 	  (Box_Data_Calendar_Related):
 	* glom/mode_data/box_data_list_related.cc:
@@ -928,7 +979,7 @@ See also the glom-1-8 branch.
 	* glom/libglom/data_structure/layout/Makefile.am:
 	Added layoutitem_calendarportal.[h|cc]
 	* glom/libglom/document/document_glom.cc
-	  load_after_layout_group(), Glom.save_before_layout_group(): Handle 
+	  load_after_layout_group(), save_before_layout_group(): Handle 
 	LayoutItem_CalendarPortal items.
 
 	* glom/mode_data/Makefile.am:
@@ -949,7 +1000,7 @@ See also the glom-1-8 branch.
 	* glom/mode_data/dialog_layout_details.cc:
 	Allow adding of a related calendar portal.
 
-	* glom/mode_data/dialog_layout_list.cc (Glom.Dialog_Layout_List):
+	* glom/mode_data/dialog_layout_list.cc: Dialog_Layout_List):
 	* glom/mode_data/flowtablewithfields.cc
 	* glom/mode_data/flowtablewithfields.h: Handle Box_Data_Portal instead 
 	of just Box_Data_List_Related, and handle Box_Data_Calendar_Related 
@@ -1064,8 +1115,8 @@ See also the glom-1-8 branch.
 
 	* glom/utility_widgets/adddel/adddel.h
 	* glom/utility_widgets/adddel/adddel.cc:
-	Glom.construct_specified_columns(): Connect to the start_editing 
-	signal., Glom.on_treeview_cell_edited. Emit user_activated() on that 
+	construct_specified_columns(): Connect to the start_editing 
+	signal., on_treeview_cell_edited. Emit user_activated() on that 
 	instead of on the TreeView::button-press-event signal, so that any 
 	previous editing has already finished.
 
@@ -1076,7 +1127,7 @@ See also the glom-1-8 branch.
 2008-04-13  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/frame_glom.h:
-	* glom/frame_glom.cc (create_database): Simplified the function,
+	* glom/frame_glom.cc: create_database): Simplified the function,
 	removed the request_password parameter. It was never set, and it
 	seemed to be a relict from libgda-1.2.
 	(connection_request_password_and_choose_new_database_name),
@@ -1086,7 +1137,7 @@ See also the glom-1-8 branch.
 
 	* glom/dialog_existing_or_new.h: Added a comment about bug #527587.
 
-	* glom/application.cc (recreate_database), (existing_or_new_new):
+	* glom/application.cc: recreate_database), (existing_or_new_new):
 	Adapt to changed create_database() function in frame_glom.
 
 2008-04-11  Murray Cumming  <murrayc@murrayc.com>
@@ -1100,14 +1151,14 @@ See also the glom-1-8 branch.
 
 2008-04-11  Armin Burgmeier  <armin@openismus.com>
 
-	* glom/libglom/utils.cc (Utils::show_help): Replace gnome_help_display
+	* glom/libglom/utils.cc: Utils::show_help): Replace gnome_help_display
 	by constructing a path to the help file, making a ghelp: URI out of it
 	and passing it to g_app_info_launch_default_for_uri().
 
-	* glom/xsl_utils.cc (GlomXslUtils::transform_and_open): Replace
+	* glom/xsl_utils.cc: GlomXslUtils::transform_and_open): Replace
 	gnome_url_show by g_app_info_launch_default_for_uri().
 
-	* glom/main.cc (main): Don't call gnome_program_init().
+	* glom/main.cc: main): Don't call gnome_program_init().
 
 	* configure.in: Remove the libgnome dependency.
 
@@ -1174,7 +1225,7 @@ See also the glom-1-8 branch.
 	the separator and added a tooltip for the select button.
 
 	* glom/dialog_existing_or_new.h:
-	* glom/dialog_existing_or_new.cc (constructor): Reordered items in
+	* glom/dialog_existing_or_new.cc: constructor): Reordered items in
 	existing_model, use a cell data func for the item's title so we can
 	change the color when necessary, expand the recent items by default.
 	Add a dummy item telling that there are no documents in this category
@@ -1185,7 +1236,7 @@ See also the glom-1-8 branch.
 	category, expand the "New From Template" category if this was the first
 	item discovered.
 
-	* glom/application.cc (offer_new_or_existing): Use
+	* glom/application.cc: offer_new_or_existing): Use
 	Utils::dialog_run_with_help() to make the Help button work.
 
 	* docs/user-guide/C/glom.xml: Added an initial text for the Help
@@ -1193,14 +1244,14 @@ See also the glom-1-8 branch.
 
 2008-04-10  Murray Cumming  <murrayc@murrayc.com>
 
-	* glom/libglom/connectionpool.cc (on_linux_signal): Call the 
+	* glom/libglom/connectionpool.cc: on_linux_signal): Call the 
 	previously-set SIGSEGV handler, to hopefully make bug-buddy or apport 
 	catch (and report) crashes again.
 
 2008-04-10  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/spawn_with_feedback.h 
-	* glom/libglom/spawn_with_feedback.cc (get_and_show_pulse_dialog,
+	* glom/libglom/spawn_with_feedback.cc: get_and_show_pulse_dialog,
 	  execute_command_line_and_wait,
 	  execute_command_line_and_wait_until_second_command_returns_success):
 	* glom/libglom/connectionpool.h 
@@ -1237,7 +1288,7 @@ See also the glom-1-8 branch.
 2008-04-09  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/db_adddel/db_adddel.cc
-	get_item_placeholder(), Glom.get_item_selected(),
+	get_item_placeholder(), get_item_selected(),
 	on_cell_layout_button_clicked(), remove_item(),
 	on_treeview_cell_edited_bool(), on_treeview_cell_edited(),
 	on_treeview_button_press_event(), get_last_row(),
@@ -1325,7 +1376,7 @@ See also the glom-1-8 branch.
 
 2008-04-07  Murray Cumming  <murrayc@murrayc.com>
 
-	* glom/main.cc (Glom.OptionGroup, main): Use atexit(__libc_freeres) 
+	* glom/main.cc: OptionGroup, main): Use atexit(__libc_freeres) 
 	to maybe help valgrind to detect leaks.
 	* glom/mode_data/flowtablewithfields.cc Added TODO comments about 
 	possible widget leaks.
@@ -1343,18 +1394,18 @@ See also the glom-1-8 branch.
 	* glom/glom_developer.glade:
 	Added dialog_flowtable
 	
-	* glom/mode_data/flowtablewithfields.cc (Glom.FlowTableWithFields,
+	* glom/mode_data/flowtablewithfields.cc: FlowTableWithFields,
 	  (add_layout_group_at_position), (on_menu_properties_activate),
 	  (on_button_press_event):
 	* glom/mode_data/flowtablewithfields.h
 	Added popup-menu for flowtables
 	
-	* glom/utility_widgets/buttonglom.cc (on_button_press_event):
-	* glom/utility_widgets/labelglom.cc (on_button_press_event):
+	* glom/utility_widgets/buttonglom.cc: on_button_press_event):
+	* glom/utility_widgets/labelglom.cc: on_button_press_event):
 	Fixed a crasher when not in developer mode
 
 	* glom/utility_widgets/Makefile.am:
-	* glom/utility_widgets/dialog_flowtable.cc (Glom,
+	* glom/utility_widgets/dialog_flowtable.cc: Glom,
 	  (set_flowtable), (get_title), (get_columns_count):
 	* glom/utility_widgets/dialog_flowtable.h 
 	Added configuration dialog for FlowTables
@@ -1392,7 +1443,7 @@ See also the glom-1-8 branch.
 
 	* glom/libglom/connectionpool.cc
 	* glom/libglom/connectionpool.h Added delete_instance().
-	* glom/main.cc (main): Clean up the ConnectionPool singleton at the 
+	* glom/main.cc: main): Clean up the ConnectionPool singleton at the 
 	end, so it is not reported as a leak by valgrind.
 
 2008-04-02  Murray Cumming  <murrayc@murrayc.com>
@@ -1423,7 +1474,7 @@ See also the glom-1-8 branch.
 
 	* glom/glom_privs.cc: get_database_users(), get_current_privs():
 	* glom/mode_data/box_data.cc: record_new(),
-	  Glom.get_related_record_exists): Added use of BusyCursor because these 
+	  get_related_record_exists): Added use of BusyCursor because these 
 	access the database.
 
 2008-04-01  Murray Cumming  <murrayc@murrayc.com>
@@ -1445,7 +1496,7 @@ See also the glom-1-8 branch.
 	* glom/base_db.h: Moved count_rows_returned_by() to Base_DB so we 
 	can use it elsewhere.
 
-	* glom/frame_glom.cc Glom.show_table(): Count the approximate number of 
+	* glom/frame_glom.cc show_table(): Count the approximate number of 
 	rows expected in the list view, and do not sort them by default if 
 	it is more than 10,000. This allows Glom to show 600,000 MusicBrainz 
 	album rows now in 1 minute.
@@ -1453,7 +1504,7 @@ See also the glom-1-8 branch.
 2008-04-01  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
-	Glom.refresh_from_database(): Omit the ORDER BY clause when counting the 
+	refresh_from_database(): Omit the ORDER BY clause when counting the 
 	number of rows from our SQL query. This is much faster.
 
 2008-04-01  Murray Cumming  <murrayc@murrayc.com>
@@ -1482,11 +1533,11 @@ See also the glom-1-8 branch.
 
 2008-03-31  Johannes Schmid <johannes.schmid@openismus.com>
 
-	* glom/utility_widgets/flowtable.cc (on_drag_data_received):
+	* glom/utility_widgets/flowtable.cc: on_drag_data_received):
 	Fixed side effect of idle hack that caused that items are always
 	inserted at the end of the flowtable when dropped.
 	
-	* glom/utility_widgets/labelglom.cc (init):
+	* glom/utility_widgets/labelglom.cc: init):
 	set_visible_window (false) for the eventbox to remove ugly label border.
 
 2008-03-31  Murray Cumming  <murrayc@murrayc.com>
@@ -1704,7 +1755,7 @@ See also the glom-1-8 branch.
 
 2008-03-18  Murray Cumming  <murrayc@murrayc.com>
 
-	* glom/python_embed/python_module/py_glom_module.cc (initglom):
+	* glom/python_embed/python_module/py_glom_module.cc: initglom):
 	Added more casts to non-const char* from static strings, to 
 	avoid warnings with Python. Python should use const char*, of course.
 
@@ -3826,7 +3877,7 @@ This is svn trunk. See also the glom-1-6 branch.
 	field name rather than the field index, to be more robust against
 	changes.
 
-	* glom/libglom/utils.cc (string_separate): For each quoted occurence,
+	* glom/libglom/utils.cc: string_separate): For each quoted occurence,
 	do no longer put an empty string in the result vector when
 	ignore_quoted_separator is set.
 
