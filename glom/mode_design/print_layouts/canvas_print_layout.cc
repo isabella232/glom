@@ -56,7 +56,7 @@ Canvas_PrintLayout::Canvas_PrintLayout()
 
   m_items_group = Goocanvas::Group::create();
   //m_items_group->signal_button_press_event().connect( sigc::ptr_fun(&on_group_button_press_event), false );
-  //TODO: How does this have any effect?: m_items_group->property_pointer_events() = Goocanvas::CANVAS_EVENTS_NONE;
+  //TODO: How does this have any effect?: m_items_group->property_pointer_events() = Goocanvas::EVENTS_NONE;
   Glib::RefPtr<Goocanvas::Item> root = get_root_item();
   if(root)
     root->add_child(m_items_group);
@@ -785,7 +785,7 @@ guint Canvas_PrintLayout::get_zoom_percent() const
 
 void Canvas_PrintLayout::hide_page_bounds()
 {
-  m_bounds_group->property_visibility() = Goocanvas::CANVAS_ITEM_HIDDEN;
+  m_bounds_group->property_visibility() = Goocanvas::ITEM_HIDDEN;
 }
 
 void Canvas_PrintLayout::set_grid_gap(double gap)
