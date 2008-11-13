@@ -1,3 +1,9 @@
+2008-11-13  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/canvas/canvas_group_grid.[h|cc]:
+	Use the new Goocanvas::Grid instead of creating lots of lines ourselves.
+	We still need this class to add the rules and do the snapping though.
+
 2008-11-11  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_design/print_layouts/canvas_layout_item.cc:

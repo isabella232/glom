@@ -32,8 +32,6 @@ CanvasGroupGrid::CanvasGroupGrid()
 : m_grid_gap(0.0),
   m_grid_sensitivity(5.0)
 {
-  m_grid_lines_group = Goocanvas::Group::create();
-  add_child(m_grid_lines_group);
   m_grid_rules_group = Goocanvas::Group::create();
   add_child(m_grid_rules_group);
 }
@@ -208,8 +206,8 @@ void CanvasGroupGrid::remove_grid()
 void CanvasGroupGrid::create_lines()
 {
   //Remove any existing lines:
-  while(m_grid_lines_group && m_grid_lines_group->get_n_children())
-    m_grid_lines_group->remove_child(0);
+  if(m_grid_lines)
+    m_grid_lines->remove();
 
   while(m_grid_rules_group && m_grid_rules_group->get_n_children())
     m_grid_rules_group->remove_child(0);
@@ -222,27 +220,14 @@ void CanvasGroupGrid::create_lines()
  
   const double width = right - left;
   const double height = bottom - top;
-
-  const double count_vertical_grid_lines = width / m_grid_gap;
-  const double count_horizontal_grid_lines = height / m_grid_gap;
   
-  //Vertical grid lines:
-  for(double i = 0; i < count_vertical_grid_lines; ++i)
-  {
-    const double x = i * m_grid_gap;
-   
-    Glib::RefPtr<Goocanvas::Polyline> line = create_grid_or_rule_line(x, top, x, bottom);
-    m_grid_lines_group->add_child(line);
-  }
-
-  //Horizontal grid lines:
-  for(double i = 0; i < count_horizontal_grid_lines; ++i)
-  {
-    const double y = i * m_grid_gap;
-
-    Glib::RefPtr<Goocanvas::Polyline> line = create_grid_or_rule_line(left, y, right, y);
-    m_grid_lines_group->add_child(line);
-  }
+  //Vertical and horizontal grid lines:
+  m_grid_lines = Goocanvas::Grid::create(0, 0, width, height, m_grid_gap, m_grid_gap);
+  m_grid_lines->property_horz_grid_line_width() = 1.0f;
+  m_grid_lines->property_vert_grid_line_width() = 1.0f;
+  m_grid_lines->property_horz_grid_line_color() = "gray";
+  m_grid_lines->property_vert_grid_line_color() = "gray";
+  add_child(m_grid_lines);
 
   //Vertical rules:
   for(CanvasGroupGrid::type_vec_double::const_iterator iter = m_rules_x.begin(); iter != m_rules_x.end(); ++iter)

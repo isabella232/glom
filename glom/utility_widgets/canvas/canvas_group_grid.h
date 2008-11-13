@@ -21,6 +21,7 @@
 #ifndef GLOM_UTILITY_WIDGETS_CANVAS_GROUP_GRID_H
 #define GLOM_UTILITY_WIDGETS_CANVAS_GROUP_GRID_H
 
+#include <goocanvasmm/grid.h>
 #include <goocanvasmm/group.h>
 #include <goocanvasmm/polyline.h>
 #include <vector>
@@ -80,7 +81,8 @@ protected:
 
   bool is_close(double a, double b) const;
 
-  Glib::RefPtr<Goocanvas::Group> m_grid_lines_group, m_grid_rules_group;
+  Glib::RefPtr<Goocanvas::Grid> m_grid_lines;
+  Glib::RefPtr<Goocanvas::Group> m_grid_rules_group;
 };
 
 } //namespace Glom
