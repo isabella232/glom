@@ -25,6 +25,8 @@
 #include <glom/libglom/sharedptr.h>
 #include <glom/libglom/data_structure/fieldtypes.h>
 
+#include <memory> // For std::auto_ptr
+
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 //Avoid including the header here:
@@ -95,6 +97,49 @@ protected:
 
 class Document_Glom;
 
+/* This hides database specific functionality from the ConnectionPool, so
+ * the ConnectionPool can be used without worrying about the actual database
+ * backend in use. Use ConnectionPool::set_backend() to set the backend for
+ * the connectionpool to use. */
+class ConnectionPoolBackend
+{
+  friend class ConnectionPool;
+public:
+  virtual ~ConnectionPoolBackend() {}
+
+protected:
+  /* TODO: Merge create_database() and initialize() into a single function?
+   */
+
+  /* This method is called for one-time initialization of the database
+   * storage. No need to implement this function if the data is centrally
+   * hosted, not managed by Glom. */
+  virtual bool initialize(Gtk::Window* parent_window, const Glib::ustring& initial_username, const Glib::ustring& password) { return true; }
+
+  /* This method is called before the backend is used otherwise. This can
+   * be used to start a self-hosted database server. No need to implement
+   * this function if there is no need for extra startup code. */
+  virtual bool startup(Gtk::Window* parent_window) { return true; }
+
+  /* This method is called when the backend is no longer used. This can be
+   * used to shut down a self-hosted database server. No need to
+   * implement this function  if there is no need for extra cleanup code. */
+  virtual void cleanup(Gtk::Window* parent_window) {}
+
+  /* This method is called to create a connection to the database server. */
+  virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password) = 0;
+
+  /* This method is called to create a new database on the
+   * database server. */
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  virtual bool create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password) = 0;
+#else
+  virtual bool create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error) = 0;
+#endif
+#endif
+};
+
 /** This is a singleton.
  * Use get_instance().
  */
@@ -119,6 +164,11 @@ public:
   bool get_ready_to_connect() const;
   void set_ready_to_connect(bool val = true);
 
+  void set_backend(std::auto_ptr<ConnectionPoolBackend> backend);
+
+  ConnectionPoolBackend* get_backend();
+  const ConnectionPoolBackend* get_backend() const;
+
   /** This method will return a SharedConnection, either by opening a new connection or returning an already-open connection.
    * When that SharedConnection is destroyed, or when SharedConnection::close() is called, then the ConnectionPool will be informed.
    * The connection will only be closed when all SharedConnections have finished with their connections.
@@ -139,13 +189,6 @@ public:
   static sharedptr<SharedConnection> get_and_connect(std::auto_ptr<ExceptionConnection>& error);
 #endif
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  /** This specifies that Glom should start its own database server instance for this database,
-   *  using the database files stored at the specified uri.
-   */
-  void set_self_hosted(const std::string& data_uri);
-#endif //GLOM_ENABLE_CLIENT_ONLY
-
   /** Creates a new database.
    */
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -154,50 +197,41 @@ public:
   void create_database(const Glib::ustring& database_name, std::auto_ptr<Glib::Error>& error);
 #endif
 
-  void set_host(const Glib::ustring& value);
-
-  /** 0 means any port
-   * Other ports will be tried if the specified port fails.
-   */
-  void set_port(int port);
-  void set_try_other_ports(bool val);
-
   void set_user(const Glib::ustring& value);
   void set_password(const Glib::ustring& value);
   void set_database(const Glib::ustring& value);
 
-  Glib::ustring get_host() const;
-  int get_port() const;
-  bool get_try_other_ports() const;
   Glib::ustring get_user() const;
   Glib::ustring get_password() const;
   Glib::ustring get_database() const;
 
   const FieldTypes* get_field_types() const;
 
+#if 0
   /** Return the version number of the connected postgres server.
    * This can be used to adapt to different server features.
    *
    * @result The version, or 0 if no connection has been made.
    */
   float get_postgres_server_version();
+#endif
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
+  /** Do one-time initialization, such as  creating required database
+   * files on disk for later use by their own  database server instance.
+   * @param parent_window A parent window to use as the transient window when displaying errors.
+   */
+  bool initialize(Gtk::Window* parent_window);
+
   /** Start a database server instance for the exisiting database files.
    * @param parent_window The parent window (transient for) of any dialogs shown during this operation.
    * @result Whether the operation was successful.
    */
-  bool start_self_hosting(Gtk::Window* parent_window);
+  bool startup(Gtk::Window* parent_window);
 
   /** Stop the database server instance for the database files.
    * @param parent_window The parent window (transient for) of any dialogs shown during this operation.
    */
-  void stop_self_hosting(Gtk::Window* parent_window);
-
-  /** Create new database files, for later use by their own  database server instance.
-   * @param parent_window A parent window to use as the transient window when displaying errors.
-   */
-  bool create_self_hosting(Gtk::Window* parent_window);
+  void cleanup(Gtk::Window* parent_window);
 
   /** Specify a callback that the ConnectionPool can call to get a pointer to the document.
    * This callback avoids Connection having to link to App_Glom,
@@ -215,30 +249,8 @@ public:
   static void on_epc_progress_end(gpointer user_data);
 #endif // !G_OS_WIN32
 
-
-  /** Check whether PostgreSQL is really available for self-hosting,
-   * in case the distro package has incorrect dependencies.
-   *
-   * @results True if everything is OK.
-   */
-  static bool check_postgres_is_available_with_warning();
-
-  /** Try to install postgres on the distro, though this will require a distro-specific 
-   * patch to the implementation.
-   */
-  static bool install_postgres(Gtk::Window* parent_window);
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
   //Show the gda error in a dialog.
   static bool handle_error(bool cerr_only = false);
-
-  /** Check whether the libgda postgres provider is really available, 
-   * so we can connect to postgres servers,
-   * in case the distro package has incorrect dependencies.
-   *
-   * @results True if everything is OK.
-   */
-  static bool check_postgres_gda_client_is_available_with_warning();
 
   /** Postgres can't be started as root. initdb complains.
    * So just prevent this in general. It is safer anyway.
@@ -248,13 +260,11 @@ public:
 protected:
   void on_sharedconnection_finished();
 
-  static bool create_text_file(const std::string& file_uri, const std::string& contents);
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   /** Examine ports one by one, starting at @a starting_port, in increasing order,
    * and return the first one that is available.
    */
-  static int discover_first_free_port(int start_port, int end_port);
+  //static int discover_first_free_port(int start_port, int end_port);
 
   Document_Glom* get_document();
 
@@ -268,32 +278,20 @@ protected:
 
 protected:
 
-  //bool directory_exists_filepath(const std::string& filepath);
-  bool directory_exists_uri(const std::string& uri);
-
-  typedef std::list<Glib::ustring> type_list_ports;
-  type_list_ports m_list_ports; //Network ports on which to try connecting to postgres.
-
   Glib::RefPtr<Gnome::Gda::Client> m_GdaClient;
-  //Gnome::Gda::DataSourceInfo m_GdaDataSourceInfo;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  bool m_self_hosting_active;
-  std::string m_self_hosting_data_uri;
-
   EpcPublisher* m_epc_publisher;
   Gtk::Dialog* m_dialog_epc_progress; //For progress while generating certificates.
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
+  std::auto_ptr<ConnectionPoolBackend> m_backend;
   Glib::RefPtr<Gnome::Gda::Connection> m_refGdaConnection;
   guint m_sharedconnection_refcount;
   bool m_ready_to_connect;
   Glib::ustring m_host, m_user, m_password, m_database;
-  int m_port;
-  bool m_try_other_ports;
 
   FieldTypes* m_pFieldTypes;
-  float m_postgres_server_version;
 
 private:
 

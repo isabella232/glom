@@ -1,4 +1,4 @@
-SUBDIRS = data_structure document python_embed
+SUBDIRS = connectionpool_backends data_structure document python_embed
 
 gladedir = $(datadir)/glom/glade/
 glomxsltdir = $(datadir)/glom/xslt/
@@ -38,6 +38,7 @@ libglom_la_LDFLAGS += -static
 endif
 
 libglom_la_LIBADD  = document/libdocument.la \
+                     connectionpool_backends/libconnectionpool_backends.la \
                      data_structure/libdata_structure.la \
                      data_structure/layout/libdata_structure_layout.la \
                      data_structure/layout/report_parts/libdata_structure_layout_reportparts.la \

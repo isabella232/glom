@@ -22,6 +22,10 @@
 #include "box_withbuttons.h" //For Box_WithButtons::connect_to_server().
 #include <glibmm/i18n.h>
 
+#include <glom/libglom/connectionpool.h>
+#include <glom/libglom/connectionpool_backends/postgres_central.h>
+#include <glom/libglom/connectionpool_backends/postgres_self.h>
+
 namespace Glom
 {
 
@@ -86,29 +90,24 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
       //std::cout << "debug: Dialog_Connection::connect_to_server_with_connection_settings(): m_database_name=" << m_database_name << std::endl;
       connection_pool->set_database(m_database_name);
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-      if(document->get_connection_is_self_hosted())
-        connection_pool->set_host("localhost");
-      else
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-        connection_pool->set_host(m_entry_host->get_text());
+      if(!document->get_connection_is_self_hosted())
+      {
+        ConnectionPoolBackend* backend = connection_pool->get_backend();
+        ConnectionPoolBackends::PostgresCentralHosted* central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
+        g_assert(central != NULL);
+
+        central->set_host(m_entry_host->get_text());
+      }
  
       connection_pool->set_user(m_entry_user->get_text());
       connection_pool->set_password(m_entry_password->get_text());
 
-      //Start with the same port as last time the document was used:
-      //and avoid trying other ports if this is a self-hosted or network-browsed database.
-      connection_pool->set_port(document->get_connection_port());
-      connection_pool->set_try_other_ports(document->get_connection_try_other_ports());
-
-      
       //if(document)
       //{
       //  connection_pool->set_database(document->get_connection_database());
       //}
     }
 
-    connection_pool->set_ready_to_connect(); //Box_WithButtons::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     result = Base_DB::connect_to_server(const_cast<Dialog_Connection*>(this));
@@ -122,7 +121,22 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
       //to make opening faster next time,
       //and so we can tell connecting clients (using browse network) what port to use:
       Document_Glom* unconst = const_cast<Document_Glom*>(document);
-      unconst->set_connection_port( connection_pool->get_port() );
+      if(!document->get_connection_is_self_hosted())
+      {
+        ConnectionPoolBackend* backend = connection_pool->get_backend();
+        ConnectionPoolBackends::PostgresCentralHosted* central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
+        g_assert(central != NULL);
+
+        unconst->set_connection_port(central->get_port() );
+      }
+      else
+      {
+        ConnectionPoolBackend* backend = connection_pool->get_backend();
+        ConnectionPoolBackends::PostgresSelfHosted* self = dynamic_cast<ConnectionPoolBackends::PostgresSelfHosted*>(backend);
+        g_assert(self != NULL);
+
+        unconst->set_connection_port(self->get_port() );
+      }
     }
 
     /*

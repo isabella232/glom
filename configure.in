@@ -204,6 +204,7 @@ AC_OUTPUT(Makefile \
         glom/libglom/data_structure/layout/Makefile \
           glom/libglom/data_structure/layout/report_parts/Makefile \
       glom/libglom/document/Makefile \
+      glom/libglom/connectionpool_backends/Makefile \
       glom/libglom/python_embed/Makefile \
     glom/layout_item_dialogs/Makefile \
     glom/mode_data/Makefile \

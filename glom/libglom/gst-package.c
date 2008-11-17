@@ -22,7 +22,8 @@
  */
 
 /* Commented-out because this is only useful when 
- * using the example code while patching ConnectionPool::install_postgres().
+ * using the example code while patching
+ * ConnectionPoolBackends::PostgresSelf::install_postgres().
  */
 #if 0
  

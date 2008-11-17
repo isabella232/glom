@@ -23,47 +23,19 @@
 #include <glom/libglom/connectionpool.h>
 #include <glom/libglom/document/document_glom.h>
 #include <bakery/bakery.h>
-#include <giomm.h>
-#include <glib/gstdio.h> //For g_remove().
-#include <glom/libglom/spawn_with_feedback.h>
-#include <glom/libglom/utils.h>
-#include <libgdamm/connectionevent.h>
-
-#ifndef G_OS_WIN32
-#include <libepc/shell.h> //For epc_shell_set_progress_hooks().
-#endif
-
+//#include <libgdamm/connectionevent.h>
 #include <glibmm/i18n.h>
 
 #ifndef G_OS_WIN32
+#include <libepc/shell.h> //For epc_shell_set_progress_hooks().
 #include <libepc/publisher.h>
 #endif
-
 
 #ifdef GLOM_ENABLE_MAEMO
 #include <hildonmm/note.h>
 #endif
 
-#ifndef G_OS_WIN32
-#include <sys/types.h>
-#include <sys/socket.h> 
-#include <errno.h>
-
-#include <netinet/in.h> //For sockaddr_in
-#else
-
-// This includes objidl.h which has a structure called DATADIR. This fails to
-// compile with the DATADIR define, so undef it for the inclusion.
-#define GLOM_SAVE_DATADIR DATADIR
-#undef DATADIR
-#include <windows.h>
-#include <winsock2.h>
-#define DATADIR GLOM_SAVE_DATADIR
-#endif
-
 #include <signal.h> //To catch segfaults
-#include <string.h> // for memset
-#include "gst-package.h"
 
 /* TODO: Should this be used in client-only mode? */
 
@@ -77,39 +49,7 @@ static EpcProtocol publish_protocol = EPC_PROTOCOL_HTTPS;
 namespace
 {
 
-static std::string get_path_to_postgres_executable(const std::string& program)
-{
 #ifdef G_OS_WIN32
-  // Use postgres on Windows, since the postgresql installer does not
-  // install the (deprecated) postmaster binary.
-  std::string real_program = program + EXEEXT;
-  if(program == "postmaster")
-    real_program = "postgres.exe";
-    
-  // Have a look at the bin directory of the application executable first.
-  // The installer installs postgres there. postgres needs to be installed
-  // in a directory called bin for its relocation stuff to work, so that
-  // it finds the share data in share. Unfortunately it does not look into
-  // share/postgresql which would be nice to separate the postgres stuff
-  // from the other shared data. We can perhaps still change this later by
-  // building postgres with another prefix than /local/pgsql.
-  gchar* bin_subdir = g_win32_get_package_installation_subdirectory(NULL, NULL, "bin");
-  std::string test = Glib::build_filename(bin_subdir, real_program);
-  g_free(bin_subdir);
-
-  if(Glib::file_test(test, Glib::FILE_TEST_IS_EXECUTABLE))
-    return test;
-
-  // Look in PATH otherwise
-  return Glib::find_program_in_path(real_program);
-#else
-  return Glib::build_filename(POSTGRES_UTILS_PATH, program + EXEEXT);
-#endif
-  }
-
-  // This is copied from the postgresql code, fixed to compile with C++
-#ifdef G_OS_WIN32
-
 static BOOL
 pgwin32_get_dynamic_tokeninfo(HANDLE token, TOKEN_INFORMATION_CLASS class_,
                 char **InfoBuffer, char *errbuf, int errsize)
@@ -212,28 +152,11 @@ pgwin32_is_admin(void)
   return success;
 }
 
-#endif
+#endif // G_OS_WIN32
 } // anonymous namespace
 
 namespace Glom
 {
-
-#define DEFAULT_CONFIG_PG_HBA "local   all         postgres                          ident sameuser\n\
-\n\
-# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD\n\
-\n\
-# local is for Unix domain socket connections only\n\
-local   all         all                               ident sameuser\n\
-# IPv4 local connections:\n\
-host    all         all         0.0.0.0/0          md5\n\
-# IPv6 local connections:\n\
-host    all         all         ::1/128               md5\n"
-
-#define PORT_POSTGRESQL_SELF_HOSTED_START 5433
-#define PORT_POSTGRESQL_SELF_HOSTED_END 5500
-
-#define DEFAULT_CONFIG_PG_IDENT ""
-
 
 ExceptionConnection::ExceptionConnection(failure_type failure)
 : m_failure_type(failure)
@@ -303,24 +226,13 @@ ConnectionPool* ConnectionPool::m_instance = 0;
 ConnectionPool::ConnectionPool()
 :
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_self_hosting_active(false),
   m_epc_publisher(0),
   m_dialog_epc_progress(0),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_sharedconnection_refcount(0),
   m_ready_to_connect(false),
-  m_port(0), 
-  m_try_other_ports(true), 
-  m_pFieldTypes(0),
-  m_postgres_server_version(0)
+  m_pFieldTypes(0)
 {
-  m_list_ports.push_back("5432"); //Ubuntu Breezy seems to default to this for Postgres 7.4, and this is probably the default for most postgres installations, including Fedora.
-
-  m_list_ports.push_back("5433"); //Ubuntu Dapper seems to default to this for Postgres 8.1, probably to avoid a clash with Postgres 7.4
-
-  m_list_ports.push_back("5434"); //Earlier versions of Ubuntu Feistry defaulted to this for Postgres 8.2.
-  m_list_ports.push_back("5435"); //In case Ubuntu increases the port number again in future.
-  m_list_ports.push_back("5436"); //In case Ubuntu increases the port number again in future.
 }
 
 ConnectionPool::~ConnectionPool()
@@ -364,6 +276,21 @@ void ConnectionPool::set_ready_to_connect(bool val)
   m_ready_to_connect = val;
 }
 
+void ConnectionPool::set_backend(std::auto_ptr<ConnectionPoolBackend> backend)
+{
+  m_backend = backend;
+}
+
+ConnectionPoolBackend* ConnectionPool::get_backend()
+{
+  return m_backend.get();
+}
+
+const ConnectionPoolBackend* ConnectionPool::get_backend() const
+{
+  return m_backend.get();
+}
+
 //static:
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
 sharedptr<SharedConnection> ConnectionPool::get_and_connect()
@@ -382,17 +309,6 @@ sharedptr<SharedConnection> ConnectionPool::get_and_connect(std::auto_ptr<Except
     result = connection_pool->connect(error);
 #endif // GLIBMM_EXCEPTIONS_ENABLED
   }
-
-  return result;
-}
-
-static Glib::ustring port_as_string(int port_num)
-{
-  Glib::ustring result;
-  char* cresult = g_strdup_printf("%d", port_num);
-  if(cresult)
-    result = cresult;
-  g_free(cresult);
 
   return result;
 }
@@ -420,307 +336,74 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
     }
     else
     {
-      //Create a new connection:
-
-      m_GdaClient = Gnome::Gda::Client::create();
-
-
-      //We must specify _some_ database even when we just want to create a database.
-      //This _might_ be different on some systems. I hope not. murrayc
-      const Glib::ustring default_database = "template1"; 
-      if(m_GdaClient)
+      m_refGdaConnection = m_backend->connect(m_database, get_user(), get_password());
+      if(!m_refGdaConnection)
       {
-        //m_GdaDataSourceInfo = Gnome::Gda::DataSourceInfo(); //init_db_details it.
-        //m_GdaDataSourceInfo->
-
-        bool connection_to_default_database_possible = false;
-
-        //Try each possible network port:
-        type_list_ports::const_iterator iter_port = m_list_ports.begin();
-
-        //Start with the remembered-as-working port:
-        Glib::ustring port = port_as_string(m_port);
-
-        //If no port is known to work, start with the first possible port:
-        bool trying_remembered_port = true;
-        if(port.empty() || m_port == 0)
-        {
-          port = *iter_port;
-          trying_remembered_port = false;
-        }
-
-        bool try_another_port = true;
-        while(try_another_port)
-        { 
-//          const Glib::ustring cnc_string_main = "HOST=" + get_host() + ";USER=" + m_user + ";PASSWORD=" + m_password + ";PORT=" + port;
-    const Glib::ustring cnc_string_main = "HOST=" + get_host() + ";PORT=" + port;
-
-          Glib::ustring cnc_string = cnc_string_main;
-
-          if(!m_database.empty())
-            cnc_string += (";DB_NAME=" + m_database);
-          else
-            cnc_string += (";DB_NAME=" + default_database);
-
-          //std::cout << "debug: connecting: cnc string: " << cnc_string << std::endl;
-#ifdef GLOM_CONNECTION_DEBUG          
-          std::cout << std::endl << "Glom: trying to connect on port=" << port << std::endl;
-#endif
-          //*m_refGdaConnection = m_GdaClient->open_connection(m_GdaDataSourceInfo.get_name(), m_GdaDataSourceInfo.get_username(), m_GdaDataSourceInfo.get_password() );
-          //m_refGdaConnection.clear(); //Make sure any previous connection is really forgotten.
-
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-          try
-    {
-#else
-          std::auto_ptr<Glib::Error> glib_error;
-#endif
-          // Use do/while without condition so we can easily jump out
-          do
-          {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-            m_refGdaConnection = m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string, m_user, m_password);
-#else
-            m_refGdaConnection = m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string, m_user, m_password, Gnome::Gda::ConnectionOptions(0), glib_error);
-            if(glib_error.get())
-              break;
-#endif
-            //std::cout << "m_refGdaConnection refcount=" << G_OBJECT(m_refGdaConnection->gobj())->ref_count << std::endl;
-
-            //g_warning("ConnectionPool: connection opened");
-
-            //Remember what port is working:
-            m_port = atoi(port.c_str());
-
-            //Create the fieldtypes member if it has not already been done:
-            if(!m_pFieldTypes)
-              m_pFieldTypes = new FieldTypes(m_refGdaConnection);  
-
-            //Enforce ISO formats in the communication:
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-            m_refGdaConnection->execute_non_select_command("SET DATESTYLE = 'ISO'");
-#else
-            m_refGdaConnection->execute_non_select_command("SET DATESTYLE = 'ISO'", glib_error);
-            if(glib_error.get())
-              break;
-#endif
-
-            //Open the database, if one has been specified:
-            /* This does not seem to work in libgda's postgres provider, so we specify it in the cnc_string instead:
-            std::cout << "  database = " << m_database << std::endl;
-            if(!m_database.empty())
-              m_refGdaConnection->change_database(m_database);
-            */
-
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-            //Get postgres version:
-            Glib::RefPtr<Gnome::Gda::DataModel> data_model = m_refGdaConnection->execute_select_command("SELECT version()");
-#else
-            Glib::RefPtr<Gnome::Gda::DataModel> data_model = m_refGdaConnection->execute_select_command("SELECT version()", glib_error);
-            if(glib_error.get() != NULL) break;
-#endif
-            if(data_model && data_model->get_n_rows() && data_model->get_n_columns())
-            {
-              Gnome::Gda::Value value = data_model->get_value_at(0, 0);
-              if(value.get_value_type() == G_TYPE_STRING)
-              {
-                const Glib::ustring version_text = value.get_string();
-
-                //This seems to have the format "PostgreSQL 7.4.11 on i486-pc-linux"
-                const Glib::ustring namePart = "PostgreSQL ";
-                const Glib::ustring::size_type posName = version_text.find(namePart);
-                if(posName != Glib::ustring::npos)
-                {
-                  const Glib::ustring versionPart = version_text.substr(namePart.size());
-                  char* end = 0;
-                  m_postgres_server_version = strtof(versionPart.c_str(), &end);
-                }
-              }
-            }
+        Glib::RefPtr<Gnome::Gda::Connection> temp_conn = m_backend->connect("", get_user(), get_password());
 #ifdef GLOM_CONNECTION_DEBUG
-            std::cout << "  Postgres Server version: " << get_postgres_server_version() << std::endl << std::endl;
+        std::cout << "  ConnectionPool::connect() Attempting to connect without specifying the database." << std::endl;
+        if(temp_conn)
+          std::cout << "  (Connection succeeds, but not to the specific database,  database=" << m_database << std::endl;
+        else
+          std::cerr << "  (Could not connect even to the default database, database=" << m_database  << std::endl;
 #endif
-              
+
+        g_warning("ConnectionPool::connect() throwing exception.");
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+        throw ExceptionConnection(temp_conn ? ExceptionConnection::FAILURE_NO_DATABASE : ExceptionConnection::FAILURE_NO_SERVER);
+#else
+        error.reset(new ExceptionConnection(temp_conn ? ExceptionConnection::FAILURE_NO_DATABASE : ExceptionConnection::FAILURE_NO_SERVER));
+#endif
+        return sharedptr<SharedConnection>(0);
+      }
+      else
+      {
+        // Connection succeeded
+        //Create the fieldtypes member if it has not already been done:
+        if(!m_pFieldTypes)
+          m_pFieldTypes = new FieldTypes(m_refGdaConnection);  
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #ifndef G_OS_WIN32
-           //Let other clients discover this server via avahi:
-           //TODO: Only advertize if we are the first to open the document,
-           //to avoid duplicates.
-           avahi_start_publishing(); //Stopped in the signal_finished handler.
+        //Let other clients discover this server via avahi:
+        //TODO: Only advertize if we are the first to open the document,
+        //to avoid duplicates.
+        //TODO: Only advertize if it makes sense for the backend,
+        //it does not for sqlite
+        avahi_start_publishing(); //Stopped in the signal_finished handler.
 #endif // !G_OS_WIN32
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-            return connect(); //Call this method recursively. This time m_refGdaConnection exists.
+        return connect(); //Call this method recursively. This time m_refGdaConnection exists.
 #else
-            return connect(error); //Call this method recursively. This time m_refGdaConnection exists.
+        return connect(error); //Call this method recursively. This time m_refGdaConnection exists.
 #endif // GLIBMM_EXCEPTIONS_ENABLED
-          }
-          while(false);
-
-#ifndef GLIBMM_EXCEPTIONS_ENABLED
-          if(glib_error.get())
-          {
-            const Glib::Error& ex = *glib_error.get();
-#else
-          }
-          catch(const Gnome::Gda::ConnectionError& ex)
-          {
-#endif
-#ifdef GLOM_CONNECTION_DEBUG
-            std::cout << "ConnectionPool::connect() Attempt to connect to database failed on port=" << port << ", database=" << m_database << ": " << ex.what() << std::endl;
-#endif
-            
-            bool bJustDatabaseMissing = false;
-            if(!m_database.empty())
-            {
-#ifdef GLOM_CONNECTION_DEBUG
-              std::cout << "  ConnectionPool::connect() Attempting to connect without specifying the database." << std::endl;
-#endif
-              //If the connection failed while looking for a database,
-              //then try connecting without the database:
-              Glib::ustring cnc_string = cnc_string_main;
-              cnc_string += (";DB_NAME=" + default_database);
-
-              //std::cout << "debug2: connecting: cnc string: " << cnc_string << std::endl;
-#ifdef GLOM_CONNECTION_DEBUG
-                std::cout << "Glom: connecting." << std::endl;
-#endif
-                
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-              try
-#endif
-              {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-                //If we could connect without specifying the database.
-                Glib::RefPtr<Gnome::Gda::Connection> gda_connection = m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string, m_user, m_password);
-#else
-                Glib::RefPtr<Gnome::Gda::Connection> gda_connection = m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string, m_user, m_password, Gnome::Gda::ConnectionOptions(0), glib_error);
-                if(glib_error.get() == NULL)
-                {
-#endif
-                bJustDatabaseMissing = true;
-                connection_to_default_database_possible = true;
-                m_port = atoi(port.c_str());
-#ifndef GLIBMM_EXCEPTIONS_ENABLED
-                }
-              }
-              if(glib_error.get())
-              {
-                const Glib::Error& ex = *glib_error.get();
-#else
-              }
-              catch(const Gnome::Gda::ConnectionError& ex)
-              {
-#endif
-                std::cerr << "    ConnectionPool::connect() connection also failed when not specifying database: " << ex.what() << std::endl;
-              }
-            }
-#ifdef GLOM_CONNECTION_DEBUG
-            if(bJustDatabaseMissing)
-              std::cout << "  (Connection succeeds, but not to the specific database on port=" << port << ", database=" << m_database << std::endl;
-            else
-              std::cerr << "  (Could not connect even to the default database on port=" << port << ", database=" << m_database  << std::endl;
-#endif
-
-            //handle_error(true /* cerr only */);
-          }
-
-
-          //If we got this far then the connection failed, so we should try another port:
-          if(!m_try_other_ports)
-            try_another_port = false;
-          else
-          {
-            if(trying_remembered_port)
-              iter_port = m_list_ports.begin(); //Start looking at the possible ports.
-            else
-              ++iter_port;
-
-            if(iter_port == m_list_ports.end())
-              try_another_port = false;
-            else
-            {
-              if(port == *iter_port) //Don't bother trying the same port again.
-                ++iter_port;
-
-              if(iter_port == m_list_ports.end()) //Check again, in case we iterated again.
-                try_another_port = false;
-              else            
-                port = *iter_port;
-            }
-          }
-
-          trying_remembered_port = false;
-        }
-
-        g_warning("ConnectionPool::connect() throwing exception.");
-#ifdef GLOM_CONNECTION_DEBUG           
-        if(connection_to_default_database_possible)
-          std::cout << "  (Connection succeeds, but not to the specific database on port=" << m_port << ", database=" << m_database << std::endl;
-        else
-          std::cerr << "  (Could not connect even to the default database on any port. database=" << m_database  << std::endl;
-#endif
-                           
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-        throw ExceptionConnection(connection_to_default_database_possible ? ExceptionConnection::FAILURE_NO_DATABASE : ExceptionConnection::FAILURE_NO_SERVER);
-#else
-        error.reset(new ExceptionConnection(connection_to_default_database_possible ? ExceptionConnection::FAILURE_NO_DATABASE : ExceptionConnection::FAILURE_NO_SERVER));
-#endif
       }
     }
   }
   else
   {
-      //g_warning("ConnectionPool::connect(): not ready to connect.");
+    //g_warning("ConnectionPool::connect(): not ready to connect.");
   }
 
   return sharedptr<SharedConnection>(0);
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void ConnectionPool::set_self_hosted(const std::string& data_uri)
-{
-  m_self_hosting_data_uri = data_uri;
-}
-
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
 void ConnectionPool::create_database(const Glib::ustring& database_name)
 #else
 void ConnectionPool::create_database(const Glib::ustring& database_name, std::auto_ptr<Glib::Error>& error)
 #endif
 {
-  if(m_GdaClient)
-  {
-    Glib::RefPtr<Gnome::Gda::ServerOperation> op = m_GdaClient->prepare_create_database(database_name, "PostgreSQL");
-    g_assert(op);
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-    op->set_value_at("/SERVER_CNX_P/HOST", get_host());
-    op->set_value_at("/SERVER_CNX_P/PORT", port_as_string(m_port));
-    op->set_value_at("/SERVER_CNX_P/ADM_LOGIN", get_user());
-    op->set_value_at("/SERVER_CNX_P/ADM_PASSWORD", get_password());
-    m_GdaClient->perform_create_database(op);
+  m_backend->create_database(database_name, get_user(), get_password());
 #else
-    op->set_value_at("/SERVER_CNX_P/HOST", get_host(), error);
-    op->set_value_at("/SERVER_CNX_P/PORT", port_as_string(m_port), error);
-    op->set_value_at("/SERVER_CNX_P/ADM_LOGIN", get_user(), error);
-    op->set_value_at("/SERVER_CNX_P/ADM_PASSWORD", get_password(), error);
-
-    if(error.get() != NULL)
-      m_GdaClient->perform_create_database(op);
+  m_backend->create_database(database_name, get_user(), get_password(), error);
 #endif
-  }
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-
-void ConnectionPool::set_host(const Glib::ustring& value)
-{
-  if(value != m_host)
-  {
-    m_host = value;  
-    m_port = 0; // Force us to try all ports again when connecting for the first time, then remember the working port again.
-  }
-}
 
 void ConnectionPool::set_user(const Glib::ustring& value)
 {
@@ -734,16 +417,6 @@ void ConnectionPool::set_user(const Glib::ustring& value)
   m_user = value;
 }
 
-void ConnectionPool::set_port(int port)
-{
-  m_port = port;
-}
-
-void ConnectionPool::set_try_other_ports(bool val)
-{
-  m_try_other_ports = val;
-}
-
 void ConnectionPool::set_password(const Glib::ustring& value)
 {
   m_password = value;
@@ -754,21 +427,6 @@ void ConnectionPool::set_database(const Glib::ustring& value)
   m_database = value;
 }
 
-Glib::ustring ConnectionPool::get_host() const
-{
-  return m_host;
-}
-
-int ConnectionPool::get_port() const
-{
-  return m_port;
-}
-
-bool ConnectionPool::get_try_other_ports() const
-{
-  return m_try_other_ports;
-}
-
 Glib::ustring ConnectionPool::get_user() const
 {
   return m_user;
@@ -776,7 +434,7 @@ Glib::ustring ConnectionPool::get_user() const
 
 Glib::ustring ConnectionPool::get_password() const
 {
-  return m_password;
+return m_password;
 }
 
 Glib::ustring ConnectionPool::get_database() const
@@ -815,7 +473,6 @@ void ConnectionPool::on_sharedconnection_finished()
 
     //g_warning("ConnectionPool: connection closed");
   }
-
 }
 
 //static
@@ -878,27 +535,6 @@ bool ConnectionPool::handle_error(bool cerr_only)
   return false;
 }
 
-float ConnectionPool::get_postgres_server_version()
-{
-  return m_postgres_server_version;
-}
-
-/*
-bool ConnectionPool::directory_exists_filepath(const std::string& filepath)
-{
-  const std::string uri = Glib::filename_to_uri(filepath);
-
-  return directory_exists_uri(uri);
-}
-*/
-
-bool ConnectionPool::directory_exists_uri(const std::string& uri)
-{
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
-  return file && file->query_exists();
-}
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 #ifdef G_OS_WIN32
 // TODO: This is probably mingw specific
 static __p_sig_fn_t previous_sig_handler = SIG_DFL;
@@ -907,20 +543,20 @@ static sighandler_t previous_sig_handler = SIG_DFL; /* Arbitrary default */
 #endif
 
 /* This is a Linux/Unix signal handler, 
- * so we can respond to a crash.
- */
+* so we can respond to a crash.
+*/
 static void on_linux_signal(int signum)
 {
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   if(!connection_pool)
-    return;
+  return;
 
   if(signum == SIGSEGV)
   {
     //TODO: Make this dialog transient for the parent window, 
     //though this is obviously an unusual case.
-    connection_pool->stop_self_hosting(0 /* parent_window */);
-  
+    connection_pool->cleanup(0 /* parent_window */);
+
     //Let GNOME/Ubuntu's crash handler still handle this?
     if(previous_sig_handler)
       (*previous_sig_handler)(signum);
@@ -929,530 +565,39 @@ static void on_linux_signal(int signum)
   }
 }
 
-bool ConnectionPool::start_self_hosting(Gtk::Window* parent_window)
+bool ConnectionPool::startup(Gtk::Window* parent_window)
 {
-  if(m_self_hosting_active)
-    return true; //Just do it once.
-
-  const std::string dbdir_uri = m_self_hosting_data_uri;
-
-  if(!(directory_exists_uri(dbdir_uri)))
-  {
-    //TODO: Use a return enum or exception so we can tell the user about this:
-    std::cerr << "ConnectionPool::create_self_hosting(): The data directory could not be found: " << dbdir_uri << std::endl;
+  if(!m_backend->startup(parent_window))
     return false;
-  }
-
-  const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
-  g_assert(!dbdir.empty());
-
-  const std::string dbdir_data = Glib::build_filename(dbdir, "data");
-  const std::string dbdir_data_uri = Glib::filename_to_uri(dbdir_data);
-  if(!(directory_exists_uri(dbdir_data_uri)))
-  {
-    //TODO: Use a return enum or exception so we can tell the user about this:
-    std::cerr << "ConnectionPool::create_self_hosting(): The data sub-directory could not be found." << dbdir_data_uri << std::endl;
-    return false;
-  }
-
-
-  const int available_port = discover_first_free_port(PORT_POSTGRESQL_SELF_HOSTED_START, PORT_POSTGRESQL_SELF_HOSTED_END);
-  //std::cout << "ConnectionPool::create_self_hosting():() : debug: Available port for self-hosting: " << available_port << std::endl;
-  if(available_port == 0)
-  {
-    //TODO: Use a return enum or exception so we can tell the user about this:
-    std::cerr << "ConnectionPool::create_self_hosting(): No port was available between " << PORT_POSTGRESQL_SELF_HOSTED_START << " and " << PORT_POSTGRESQL_SELF_HOSTED_END << std::endl;
-    return false;
-  }
-
-  const Glib::ustring port_as_text = Utils::string_from_decimal(available_port);
-
-
-  // -D specifies the data directory.
-  // -c config_file= specifies the configuration file
-  // -k specifies a directory to use for the socket. This must be writable by us.
-  // POSTGRES_POSTMASTER_PATH is defined in config.h, based on the configure.
-  // Make sure to use double quotes for the executable path, because the
-  // CreateProcess() API used on Windows does not support single quotes.
-  const std::string command_postgres_start = "\"" + get_path_to_postgres_executable("postmaster") + "\" -D \"" + dbdir_data + "\" "
-                                  + " -p " + port_as_text
-                                  + " -i " //Equivalent to -h "*", which in turn is equivalent to listen_addresses in postgresql.conf. Listen to all IP addresses, so any client can connect (with a username+password)
-                                  + " -c hba_file=\"" + dbdir + "/config/pg_hba.conf\""
-                                  + " -c ident_file=\"" + dbdir + "/config/pg_ident.conf\""
-                                  + " -k \"" + dbdir + "\""
-                                  + " --external_pid_file=\"" + dbdir + "/pid\"";
-
-  // Make sure to use double quotes for the executable path, because the
-  // CreateProcess() API used on Windows does not support single quotes.
-  const std::string command_check_postgres_has_started = "\"" + get_path_to_postgres_executable("pg_ctl") + "\" status -D \"" + dbdir_data + "\"";
-
-  //For postgres 8.1, this is "postmaster is running".
-  //For postgres 8.2, this is "server is running".
-  //This is a big hack that we should avoid. murrayc.
-  //
-  //pg_ctl actually seems to return a 0 result code for "is running" and a 1 for not running, at least with Postgres 8.2,
-  //so maybe we can avoid this in future.  
-  //Please do test it with your postgres version, using "echo $?" to see the result code of the last command.
-  const std::string second_command_success_text = "is running"; //TODO: This is not a stable API. Also, watch out for localisation.
-
-  //The first command does not return, but the second command can check whether it succeeded:
-  const bool result = Glom::Spawn::execute_command_line_and_wait_until_second_command_returns_success(command_postgres_start, command_check_postgres_has_started, _("Starting Database Server"), parent_window, second_command_success_text);
-  if(!result)
-  {
-    std::cerr << "Error while attempting to self-host a database." << std::endl;
-    return false;
-  }
-
-  m_port = available_port; //Remember it for later.
-
-  //Make sure that the document does not change the port later, 
-  //and ensure that the correct port is used when the document is loaded over the network:
-  Document_Glom* document = get_document();
-  if(document)
-    document->set_connection_port(m_port);
-  else
-    std::cerr << "ConnectionPool::start_self_hosting(): document is NULL" << std::endl;
-
-  m_self_hosting_active = true;
-  set_try_other_ports(false); //Only try to connect to this known instance, instead of finding others.
 
 #ifndef G_OS_WIN32
   //Let clients discover this server via avahi:
-  avahi_start_publishing();
+  //avahi_start_publishing();
 #endif // !G_OS_WIN32
 
-  //If we crash while self-hosting (unlikely, hopefully) 
-  //then try to stop the postgres instance instead of leaving it running as an orphan.
+  //If we crash while running (unlikely, hopefully), then try to cleanup.
   previous_sig_handler = signal(SIGSEGV, &on_linux_signal);
 
   return true;
 }
 
-void ConnectionPool::stop_self_hosting(Gtk::Window* parent_window)
+void ConnectionPool::cleanup(Gtk::Window* parent_window)
 {
-  if(!m_self_hosting_active)
-    return; //Don't try to stop it if we have not started it.
+  m_backend->cleanup(parent_window);
 
 #ifndef G_OS_WIN32
   /* Stop advertising the self-hosting database server via avahi: */
-  avahi_stop_publishing();
+  //avahi_stop_publishing();
 #endif // !G_OS_WIN32
-
-  const std::string dbdir_uri = m_self_hosting_data_uri;
-  const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
-  g_assert(!dbdir.empty());
-
-  const std::string dbdir_data = Glib::build_filename(dbdir, "data");
-
-
-  // TODO: Detect other instances on the same computer, and use a different port number, 
-  // or refuse to continue, showing an error dialog.
-
-  // -D specifies the data directory.
-  // -c config_file= specifies the configuration file
-  // -k specifies a directory to use for the socket. This must be writable by us.
-  // POSTGRES_POSTMASTER_PATH is defined in config.h, based on the configure.
-  // We use "-m fast" instead of the default "-m smart" because that waits for clients to disconnect (and sometimes never succeeds).
-  // TODO: Warn about connected clients on other computers? Warn those other users?
-  // Make sure to use double quotes for the executable path, because the
-  // CreateProcess() API used on Windows does not support single quotes.
-  const std::string command_postgres_stop = "\"" + get_path_to_postgres_executable("pg_ctl") + "\" -D \"" + dbdir_data + "\" stop -m fast";
-  const bool result = Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, _("Stopping Database Server"), parent_window);
-  if(!result)
-  {
-    std::cerr << "Error while attempting to stop self-hosting of the database. Trying again."  << std::endl;
-
-    //I've seen it fail when running under valgrind, and there are reports of failures in bug #420962.
-    //Maybe it will help to try again:
-    const bool result = Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, _("Stopping Database Server (retrying)"), parent_window);
-    if(!result)
-    {
-      std::cerr << "Error while attempting (for a second time) to stop self-hosting of the database."  << std::endl;
-    }
-  }
 
   //We don't need the segfault handler anymore:
   signal(SIGSEGV, previous_sig_handler);
   previous_sig_handler = SIG_DFL; /* Arbitrary default */
-
-  m_self_hosting_active = false;
 }
 
-bool ConnectionPool::create_self_hosting(Gtk::Window* parent_window)
+bool ConnectionPool::initialize(Gtk::Window* parent_window)
 {
-  if(m_self_hosting_data_uri.empty())
-  {
-    std::cerr << "ConnectionPool::create_self_hosting(): m_self_hosting_data_uri is empty." << std::endl;
-    return false;
-  }
-
-  //Get the filepath of the directory that we should create:
-  const std::string dbdir_uri = m_self_hosting_data_uri;
-  //std::cout << "debug: dbdir_uri=" << dbdir_uri << std::endl;
-
-  if(directory_exists_uri(dbdir_uri))
-  { 
-    if(parent_window)
-    {
-      Utils::show_ok_dialog(_("Directory Already Exists"), _("There is an existing directory with the same name as the directory that should be created for the new database files. You should specify a different filename to use a new directory instead."), *parent_window, Gtk::MESSAGE_ERROR);
-    }
-    
-    return false;
-  }
-
-  const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
-  //std::cout << "debug: dbdir=" << dbdir << std::endl;
-  g_assert(!dbdir.empty());
-
-  //0770 means "this user and his group can read and write and "execute" (meaning add sub-files) this non-executable file".
-  //The 0 prefix means that this is octal.
-  int mkdir_succeeded = g_mkdir_with_parents(dbdir.c_str(), 0770);
-  if(mkdir_succeeded == -1)
-  {
-    std::cerr << "Error from g_mkdir_with_parents() while trying to create directory: " << dbdir << std::endl;
-    perror("Error from g_mkdir_with_parents");
-
-    if(parent_window)
-    {
-       Utils::show_ok_dialog(_("Could Not Create Directory"), _("There was an error when attempting to create the directory for the new database files."), *parent_window, Gtk::MESSAGE_ERROR);
-    }
-
-    return false;
-  }
-
-  //Create the config directory:
-  const std::string dbdir_config = dbdir + "/config";
-  mkdir_succeeded = g_mkdir_with_parents(dbdir_config.c_str(), 0770);
-  if(mkdir_succeeded == -1)
-  {
-    if(parent_window)
-    {
-       Utils::show_ok_dialog(_("Could Not Create Configuration Directory"), _("There was an error when attempting to create the configuration directory for the new database files."), *parent_window, Gtk::MESSAGE_ERROR);
-    }
-
-    std::cerr << "Error from g_mkdir_with_parents() while trying to create directory: " << dbdir_config << std::endl;
-    perror("Error from g_mkdir_with_parents");
-    return false;
-  }
-
-  //Create these files: environment  pg_hba.conf  pg_ident.conf  start.conf
-
-  const std::string dbdir_uri_config = dbdir_uri + "/config";
-  const bool hba_conf_creation_succeeded = create_text_file(dbdir_uri_config + "/pg_hba.conf", DEFAULT_CONFIG_PG_HBA);
-  g_assert(hba_conf_creation_succeeded);
-
-  const bool ident_conf_creation_succeeded = create_text_file(dbdir_uri_config + "/pg_ident.conf", DEFAULT_CONFIG_PG_IDENT);
-  g_assert(ident_conf_creation_succeeded);
-
-  //Check that there is not an existing data directory:
-  const std::string dbdir_data = dbdir + "/data";
-  mkdir_succeeded = g_mkdir_with_parents(dbdir_data.c_str(), 0770);
-  g_assert(mkdir_succeeded != -1);
-
-  
-  // initdb creates a new postgres database cluster:
-  const std::string username = get_user();
-  if(username.empty())
-  {
-    std::cerr << "ConnectionPool::create_self_hosting(). Username was empty while attempting to create self-hosting  database" << std::endl;
-    return false;
-  }
-
-  //Get file:// URI for the tmp/ directory:
-  const std::string temp_pwfile = Glib::build_filename(Glib::get_tmp_dir(), "glom_initdb_pwfile");
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_path(temp_pwfile);
-  const std::string temp_pwfile_uri = file->get_uri();
-  const bool pwfile_creation_succeeded = create_text_file(temp_pwfile_uri, get_password());
-  g_assert(pwfile_creation_succeeded);
-
-  // Make sure to use double quotes for the executable path, because the
-  // CreateProcess() API used on Windows does not support single quotes.
-  const std::string command_initdb = "\"" + get_path_to_postgres_executable("initdb") + "\" -D \"" + dbdir_data + "\"" +
-                                        " -U " + username + " --pwfile=\"" + temp_pwfile + "\"";
-
-  //Note that --pwfile takes the password from the first line of a file. It's an alternative to supplying it when prompted on stdin.
-  const bool result = Glom::Spawn::execute_command_line_and_wait(command_initdb, _("Creating Database Data"), parent_window);
-  if(!result)
-  {
-    std::cerr << "Error while attempting to create self-hosting database." << std::endl;
-  }
-
-  const int temp_pwfile_removed = g_remove(temp_pwfile.c_str()); //Of course, we don't want this to stay around. It would be a security risk.
-  g_assert(temp_pwfile_removed == 0);
- 
-  return result;
-}
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-bool ConnectionPool::create_text_file(const std::string& file_uri, const std::string& contents)
-{
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(file_uri);
-  Glib::RefPtr<Gio::FileOutputStream> stream;
-
-  //Create the file if it does not already exist:
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    if(file->query_exists())
-    {
-      stream = file->replace(); //Instead of append_to().
-    }
-    else
-    {
-      //By default files created are generally readable by everyone, but if we pass FILE_CREATE_PRIVATE in flags the file will be made readable only to the current user, to the level that is supported on the target filesystem.
-      //TODO: Do we want to specify 0660 exactly? (means "this user and his group can read and write this non-executable file".)
-      stream = file->create_file();
-    }
-  }
-  catch(const Gio::Error& ex)
-  {
-#else
-  std::auto_ptr<Gio::Error> error;
-  stream.create(error);
-  if(error.get() != NULL)
-  {
-    const Gio::Error& ex = *error.get();
-#endif
-    // If the operation was not successful, print the error and abort
-    std::cerr << "ConnectionPool::create_text_file(): exception while creating file." << std::endl
-      << "  file uri:" << file_uri << std::endl
-      << "  error:" << ex.what() << std::endl;
-    return false; // print_error(ex, output_uri_string);
-  }
-
-
-  if(!stream)
-    return false;
-
-
-  gsize bytes_written = 0;
-  const std::string::size_type contents_size = contents.size();
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    //Write the data to the output uri
-    bytes_written = stream->write(contents.data(), contents_size);
-  }
-  catch(const Gio::Error& ex)
-  {
-#else
-  bytes_written = stream->write(contents.data(), contents_size, error);
-  if(error.get() != NULL)
-  {
-    Gio::Error& ex = *error.get();
-#endif
-    // If the operation was not successful, print the error and abort
-    std::cerr << "ConnectionPool::create_text_file(): exception while writing to file." << std::endl
-      << "  file uri:" << file_uri << std::endl
-      << "  error:" << ex.what() << std::endl;
-    return false; //print_error(ex, output_uri_string);
-  }
-
-  if(bytes_written != contents_size)
-  {
-    std::cerr << "ConnectionPool::create_text_file(): not all bytes written when writing to file." << std::endl
-      << "  file uri:" << file_uri << std::endl;
-    return false;
-  }
-
-  return true; //Success.
-}
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-int ConnectionPool::discover_first_free_port(int start_port, int end_port)
-{
-  //Open a socket so we can try to bind it to a port:
-  const int fd = socket(AF_INET, SOCK_STREAM, 0);
-  if(fd == -1)
-  {
-#ifdef G_OS_WIN32
-    std::cerr << "Create socket: " << WSAGetLastError() << std::endl;
-#else
-    perror("Create socket");
-#endif
-    return 0;
-  }
-
-  //This code was originally suggested by Lennart Poettering.
-
-  struct ::sockaddr_in sa;
-  memset(&sa, 0, sizeof(sa));
-  sa.sin_family = AF_INET;
-
-  int port_to_try = start_port;
-  while (port_to_try <= end_port)
-  {
-    sa.sin_port = htons(port_to_try);
-
-    const int result = bind(fd, (sockaddr*)&sa, sizeof(sa));
-    bool available = false;
-    if(result == 0)
-       available = true;
-    else if (result < 0)
-    {
-      #ifdef G_OS_WIN32
-      available = (WSAGetLastError() != WSAEADDRINUSE);
-      #endif // G_OS_WIN32
-
-      //Some BSDs don't have this.
-      //But watch out - if you don't include errno.h then this won't be 
-      //defined on Linux either, but you really do need to check for it.
-      #ifdef EADDRINUSE
-      available = (errno != EADDRINUSE);
-      #endif
-
-      #ifdef EPORTINUSE //Linux doesn't have this.
-      available = (errno != EPORTINUSE);
-      #endif
-
-      if(available)
-      {
-        #ifdef G_OS_WIN32
-        closesocket(fd);
-        #else
-        close(fd);
-        #endif //G_OS_WIN32
-
-        //std::cout << "debug: ConnectionPool::discover_first_free_port(): Found: returning " << port_to_try << std::endl;
-        return port_to_try;
-      }
-    }
-    else
-    {
-      //std::cout << "debug: ConnectionPool::discover_first_free_port(): port in use: " << port_to_try << std::endl;
-    }
-
-    ++port_to_try;
-  }
-
-#ifdef G_OS_WIN32
-  closesocket(fd);
-#else
-  close(fd);
-#endif
-
-  std::cerr << "debug: ConnectionPool::discover_first_free_port(): No port was available." << std::endl;
-  return 0;
-}
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-// Message to packagers:
-// If your Glom package does not depend on PostgreSQL, for some reason, 
-// then your distro-specific patch should uncomment this #define.
-// and implement ConnectionPool::install_posgres().
-// But please, just make your Glom package depend on PostgreSQL instead, 
-// because this is silly.
-//
-//#define DISTRO_SPECIFIC_POSTGRES_INSTALL_IMPLEMENTED 1
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-bool ConnectionPool::check_postgres_is_available_with_warning()
-{
-  //EXEEXT is defined in the Makefile.am
-  const std::string binpath = get_path_to_postgres_executable("postmaster");
-  // TODO: At least on Windows we should probably also check for initdb and
-  // pg_ctl. Perhaps it would also be a good idea to access these files as
-  // long as glom runs so they cannot be (re)moved.
-  if(!binpath.empty())
-  {
-    const Glib::ustring uri_binpath = Glib::filename_to_uri(binpath);
-    if(Bakery::App_WithDoc::file_exists(uri_binpath))
-      return true;
-  }
-
-  #ifdef DISTRO_SPECIFIC_POSTGRES_INSTALL_IMPLEMENTED
-
-  //Show message to the user about the broken installation:
-  //This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
-  Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_NONE, true /* modal */);
-  dialog.set_secondary_text(_("Your installation of Glom is not complete, because PostgreSQL is not available on your system. PostgreSQL is needed for self-hosting of Glom databases.\n\nYou may now install PostgreSQL to complete the Glom installation."));
-  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  dialog.add_button(_("Install PostgreSQL"), Gtk::RESPONSE_OK);
-  const int response = dialog.run();
-  if(response != Gtk::RESPONSE_OK)
-    return false; //Failure. Glom should now quit.
-  else
-    return install_postgres(&dialog);
-
-  #else  //DISTRO_SPECIFIC_POSTGRES_INSTALL_IMPLEMENTED
-
-  //Show message to the user about the broken installation:
-  Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
-  dialog.set_secondary_text(_("Your installation of Glom is not complete, because PostgreSQL is not available on your system. PostgreSQL is needed for self-hosting of Glom databases.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected."));
-  dialog.run();
-  return false;
-
-  #endif //DISTRO_SPECIFIC_POSTGRES_INSTALL_IMPLEMENTED
-}
-
-/** Try to install postgres on the distro, though this will require a distro-specific 
- * patch to the implementation.
- */
-bool ConnectionPool::install_postgres(Gtk::Window* parent_window)
-{
-#if 0
-  // This  is example code for Ubuntu, and possibly Debian,
-  // using code from the gnome-system-tools Debian/Ubuntu patches.
-  // (But please, just fix the dependencies instead. PostgreSQL is not optional.)
-  //
-  // You will also need to remove the "ifdef 0"s around the code in gst-package.[h|c],
-  // and define DISTRO_SPECIFIC_POSTGRES_INSTALL_IMPLEMENTED above.
-
-  //Careful. Maybe you want a different version.
-  //Also, Glom will start its own instance of PostgreSQL, on its own port, when it needs to,
-  //so there is no need to start a Glom service after installation at system startup, 
-  //though it will not hurt Glom if you do that.
-  const gchar *packages[] = { "postgresql-8.1", NULL };
-  const bool result = gst_packages_install(parent_window->gobj() /* parent window */, packages);
-  if(result)
-  {
-    std::cout << "Glom: gst_packages_install() reports success." << std::endl;
-    //Double-check, because gst_packages_install() incorrectly returns TRUE if it fails because 
-    //a) synaptic is already running, or
-    //b) synaptic did not know about the package (no warning is shown in this case.)
-    //Maybe gst_packages_install() never returns FALSE.
-    return check_postgres_is_available_with_warning(); //This is recursive, but clicking Cancel will stop everything.
-  }
-  else
-  {
-    std::cout << "Glom: gst_packages_install() reports failure." << std::endl;
-    return false; //Failed to install postgres.
-  }
-#else
-  return false; //Failed to install postgres because no installation technique was implemented.
-#endif // #if 0
-}
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-bool ConnectionPool::check_postgres_gda_client_is_available_with_warning()
-{
-  Glib::RefPtr<Gnome::Gda::Client> gda_client = Gnome::Gda::Client::create();
-  if(gda_client)
-  {
-    //Get the list of providers:
-    typedef std::list<Gnome::Gda::ProviderInfo> type_list_of_provider_info;
-    type_list_of_provider_info providers = Gnome::Gda::Config::get_providers();
-
-    //Examine the information about each Provider:
-    for(type_list_of_provider_info::const_iterator iter = providers.begin(); iter != providers.end(); ++iter)
-    { 
-      const Gnome::Gda::ProviderInfo& info = *iter;
-      if (info.get_id() == "PostgreSQL")
-        return true;
-    }
-  }
-
-  const Glib::ustring message = _("Your installation of Glom is not complete, because the PostgreSQL libgda provider is not available on your system. This provider is needed to access Postgres database servers.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
-#ifndef GLOM_ENABLE_MAEMO
-  /* The Postgres provider was not found, so warn the user: */
-  Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
-  dialog.set_secondary_text(message);
-  dialog.run();
-#else
-  Hildon::Note note(Hildon::NOTE_TYPE_INFORMATION, message);
-  note.run();
-#endif
-  return false;
+  return m_backend->initialize(parent_window, get_user(), get_password());
 }
 
 bool ConnectionPool::check_user_is_not_root()
@@ -1549,32 +694,17 @@ gboolean ConnectionPool::on_publisher_document_authentication(EpcAuthContext* co
 
  
   //Attempt a connection with this username/password:
-  ConnectionPool temp_pool;
-  temp_pool.set_host( connection_pool->get_host() );
-  temp_pool.set_database( connection_pool->get_database() );
-  temp_pool.set_user(user_name);
-  temp_pool.set_password(password);
-  temp_pool.set_port( connection_pool->get_port() );
-  temp_pool.set_ready_to_connect();
+  Glib::RefPtr<Gnome::Gda::Connection> connection = connection_pool->m_backend->connect(connection_pool->get_database(), user_name, password);
 
-  try
+  if(connection)
   {
-    sharedptr<SharedConnection> connection = temp_pool.connect();
-    if(connection)
-    {
-      //std::cout << "ConnectionPool::on_publisher_document_authentication(): succeeded." << std::endl;
-      return true; //Succeeded.
-    }
-    else
-    {
-      //std::cout << "ConnectionPool::on_publisher_document_authentication(): failed." << std::endl;
-      return false; //Failed.
-    }
+    //std::cout << "ConnectionPool::on_publisher_document_authentication(): succeeded." << std::endl;
+    return true; //Succeeded.
   }
-  catch(...)
+  else
   {
-     //std::cout << "ConnectionPool::on_publisher_document_authentication(): failed with exception" << std::endl;
-     return false; //Failed.
+    //std::cout << "ConnectionPool::on_publisher_document_authentication(): failed." << std::endl;
+    return false; //Failed.
   }
 }
 

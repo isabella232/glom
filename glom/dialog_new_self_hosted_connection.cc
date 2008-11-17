@@ -62,7 +62,7 @@ bool Dialog_NewSelfHostedConnection::create_self_hosted()
       connection_pool->set_user(m_entry_user->get_text());
       connection_pool->set_password(m_entry_password->get_text());
       //std::cout << "debug: Dialog_NewSelfHostedConnection::create_self_hosted() user=" << m_entry_user->get_text() << ", password=" << m_entry_password->get_text() << std::endl;
-      const bool created = connection_pool->create_self_hosting(this /* parent_window for errors */);
+      const bool created = connection_pool->initialize(this /* parent_window for errors */);
       if(!created)
       {
         return false;

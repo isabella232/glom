@@ -32,6 +32,9 @@
 #include <glom/libglom/utils.h>
 #include <glom/libglom/glade_utils.h>
 
+#include <glom/libglom/connectionpool_backends/postgres_central.h>
+#include <glom/libglom/connectionpool_backends/postgres_self.h>
+
 #include "config.h" //For VERSION.
 
 #include <cstdio>
@@ -706,6 +709,7 @@ void App_Glom::open_browsed_document(const EpcServiceInfo* server, const Glib::u
 #ifndef GLOM_ENABLE_CLIENT_ONLY
       //Stop the document from being self-hosted (it's already hosted by the other networked Glom instance):
       document_temp.set_connection_is_self_hosted(false);
+      // TODO: Set port from epc info(?)
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
       //If the publisher thinks that it's using a postgres database on localhost, 
@@ -986,41 +990,7 @@ bool App_Glom::on_document_load()
         connection_pool->set_get_document_func( sigc::mem_fun(*this, &App_Glom::on_connection_pool_get_document) );
 #endif
 
-        int port_used = 0;
-	bool try_other_ports = true;
-
-        //Set the connection details in the ConnectionPool singleton.
-        //The ConnectionPool will now use these every time it tries to connect.
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-        if(pDocument->get_connection_is_self_hosted())
-        {
-          // TODO: sleep, to give postgres time to start?
-          connection_pool->set_self_hosted(pDocument->get_connection_self_hosted_directory_uri());
-
-          if(!is_example) /* It will be started later, after we have asked for the initial db name/title and created the files.*/
-          {
-            const bool test = connection_pool->start_self_hosting(this); //Stopped in on_menu_file_close().
-            if(!test)
-              return false;
-
-            port_used = connection_pool->get_port();
-          }
-
-          //Make sure that we open the just-started self-hosted postgres server instead of any other postgres running on the same host.
-	  try_other_ports = false;
-        }
-        else
-        {
-        }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-        connection_pool->set_host(pDocument->get_connection_server());
-        connection_pool->set_user(pDocument->get_connection_user());
-        connection_pool->set_database(pDocument->get_connection_database());
-        connection_pool->set_port(port_used);
-        connection_pool->set_try_other_ports(try_other_ports);
-
-        connection_pool->set_ready_to_connect(this); //Box_WithButtons::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
+        connection_pool->set_ready_to_connect(true); //Box_WithButtons::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
 
         //Attempt to connect to the specified database:
         bool test = false;
@@ -1074,15 +1044,7 @@ bool App_Glom::on_document_load()
         }
 
         if(!test) //It usually throws an exception instead of returning false.
-        {
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-          //Stop self-hosting, if we are doing that:
-          std::cout << "debug: calling stop_self_hosting_of_document_database()" << std::endl;
-          stop_self_hosting_of_document_database();
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
           return false; //Failed. Close the document.
-        }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
         if(is_example)
@@ -1093,9 +1055,8 @@ bool App_Glom::on_document_load()
           const bool test = recreate_database(user_cancelled);
           if(!test)
           {
-            // TODO: This is dead code, isn't it? We already bail above if
-            // test isn't set. armin.
-
+	    // TODO: Do we need to call connection_pool->cleanup() here, for
+	    // stopping self-hosted databases? armin.
             //If the database was not successfully recreated:
             if(!user_cancelled)
             {
@@ -2287,13 +2248,13 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
 void App_Glom::stop_self_hosting_of_document_database()
 {
   Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
-  if(pDocument && pDocument->get_connection_is_self_hosted())
+  if(pDocument)
   {
     ConnectionPool* connection_pool = ConnectionPool::get_instance();
     if(!connection_pool)
       return;
 
-    connection_pool->stop_self_hosting(this);
+    connection_pool->cleanup(this);
   }
 }
 

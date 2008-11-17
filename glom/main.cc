@@ -27,6 +27,10 @@
 #include <gtkmm/main.h>
 #include <giomm.h>
 
+// For postgres availability checks:
+#include <glom/libglom/connectionpool_backends/postgres_central.h>
+#include <glom/libglom/connectionpool_backends/postgres_self.h>
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #include <gtksourceviewmm/init.h>
 #include <goocanvasmm/init.h>
@@ -250,13 +254,13 @@ main(int argc, char* argv[])
     bool install_complete = false;
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     //Check that PostgreSQL is really available:
-    install_complete = Glom::ConnectionPool::check_postgres_is_available_with_warning();
+    install_complete = Glom::ConnectionPoolBackends::PostgresSelfHosted::check_postgres_is_available_with_warning();
     if(!install_complete)
       return -1; //There is no point in going further because the most useful Glom functionality will not work without Postgres. Only a very cut-down Glom client would be useful without self-hosting.
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
     //Check that the libgda postgres provider is really available:
-    install_complete = Glom::ConnectionPool::check_postgres_gda_client_is_available_with_warning();
+    install_complete = Glom::ConnectionPoolBackends::PostgresCentralHosted::check_postgres_gda_client_is_available_with_warning();
     if(!install_complete)
       return -1; //There is no point in going further because Glom would not be able to connect to any Postgres servers.
 

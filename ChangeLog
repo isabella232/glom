@@ -1,3 +1,27 @@
+2008-11-17  Armin Burgmeier  <armin@arbur.net>
+
+	* glom/libglom/connectionpool.h: Removed postgres-specific function,
+	added a common "Backend" interface. Simplified the code logic in
+	connect().
+
+	* glom/libglom/connectionpool_backends/postgres_self.h:
+	* glom/libglom/connectionpool_backends/postgres_self.cc:
+	* glom/libglom/connectionpool_backends/postgres_central.h:
+	* glom/libglom/connectionpool_backends/postgres_central.cc:
+	* glom/libglom/connectionpool_backends/Makefile.am: Added backends
+	for postgres central and self hosting.
+
+	* glom/libglom/gst-package.c:
+	* glom/libglom/test_connectionpool.cc:
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/document/document_glom.cc:
+	* glom/main.cc:
+	* glom/frame_glom.cc:
+	* glom/dialog_connection.cc:
+	* glom/application.cc:
+	* glom/dialog_new_self_hosted_connection.cc: Adapt other glom code,
+	instantate the backends appropiately.
+
 2008-11-13  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/canvas/canvas_group_grid.[h|cc]:

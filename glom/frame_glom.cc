@@ -26,6 +26,10 @@
 #include "dialog_import_csv_progress.h"
 #include <glom/libglom/appstate.h>
 
+#include <glom/libglom/connectionpool.h>
+#include <glom/libglom/connectionpool_backends/postgres_central.h>
+#include <glom/libglom/connectionpool_backends/postgres_self.h>
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #include "mode_design/users/dialog_groups_list.h"
 #include "dialog_database_preferences.h"
@@ -1510,28 +1514,42 @@ void Frame_Glom::on_developer_dialog_hide()
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
+namespace 
+{
+  void setup_connection_pool_from_document(Document_Glom* document)
+  {
+    ConnectionPool* connection_pool = ConnectionPool::get_instance();
+    if(document->get_connection_is_self_hosted())
+    {
+      ConnectionPoolBackends::PostgresSelfHosted* backend = new ConnectionPoolBackends::PostgresSelfHosted;
+      backend->set_self_hosting_data_uri(document->get_connection_self_hosted_directory_uri());
+      connection_pool->set_backend(std::auto_ptr<ConnectionPoolBackend>(backend));
+    }
+    else
+    {
+      ConnectionPoolBackends::PostgresCentralHosted* backend = new ConnectionPoolBackends::PostgresCentralHosted;
+      backend->set_host(document->get_connection_server());
+      backend->set_port(document->get_connection_port());
+      backend->set_try_other_ports(document->get_connection_try_other_ports());
+      connection_pool->set_backend(std::auto_ptr<ConnectionPoolBackend>(backend));
+    }
+
+    // Might be overwritten later when actually attempting a connection:
+    connection_pool->set_user(document->get_connection_user());
+    connection_pool->set_database(document->get_connection_database());
+
+    connection_pool->set_ready_to_connect();
+  }
+}
+
 bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 {
   Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
   if(!document)
     return false;
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  //Give the ConnectionPool the self-hosted file path, 
-  //so that create_self_hosted() can succeed:
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
-
-  // Client only mode does not support self hosting, so there is nothing to do.
-  if(connection_pool && document && document->get_connection_is_self_hosted())
-  {
-    // TODO: sleep, to give postgres time to start?
-    connection_pool->set_self_hosted(document->get_connection_self_hosted_directory_uri());
-  }
-  else
-  {
-    connection_pool->set_self_hosted(std::string());
-  }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
+  setup_connection_pool_from_document(document);
 
   if(!m_pDialogConnection)
   {
@@ -1601,25 +1619,9 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     if(response == Gtk::RESPONSE_OK)
     {
       created = dialog->create_self_hosted();
-      if(created)
-      {
-        const bool test = connection_pool->start_self_hosting(get_app_window());
-        if(!test)
-          return false;
-
-        // Store in document, so these values are actually used when connecting
-        Document_Glom* document = get_document();
-        if(document)
-        {
-          document->set_connection_port(connection_pool->get_port());
-          document->set_connection_try_other_ports(connection_pool->get_try_other_ports());
-        }
-      }
-      else
+      if(!created)
         return false;
 
-      //dialog->create_self_hosted() has already set enough information in the ConnectionPool to allow a connection so we can create the database in the new database cluster:
-     
       //Put the details into m_pDialogConnection too, because that's what we use to connect.
       //This is a bit of a hack:
       m_pDialogConnection->set_self_hosted_user_and_password(connection_pool->get_user(), connection_pool->get_password());
@@ -1630,7 +1632,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     //std::cout << "DEBUG: after dialog->create_self_hosted(). The database cluster should now exist." << std::endl;
 
     if(!created)
-      return false;
+      return false; // The user cancelled
   }
   else
 #endif // !GLOM_ENABLE_CLIENT_ONLY
@@ -1640,82 +1642,98 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     m_pDialogConnection->set_transient_for(*get_app_window());
     response = Glom::Utils::dialog_run_with_help(m_pDialogConnection, "dialog_connection");
     m_pDialogConnection->hide();
+
+    if(response == Gtk::RESPONSE_OK)
+    {
+      // We are not self-hosting, but we also call initialize() for
+      // consistency (the backend will ignore it anyway).
+      if(!connection_pool->initialize(get_app_window()))
+        return false;
+    }
+    else
+    {
+      // The user cancelled
+      return false;
+    }
   }
 
-  if(response == Gtk::RESPONSE_OK)
+  // Do startup, such as starting the self-hosting database server
+  if(!connection_pool->startup(get_app_window()))
+    return false;
+
+  const Glib::ustring database_name = document->get_connection_database();
+
+  //std::cout << "debug: database_name to create=" << database_name << std::endl;
+
+
+  bool keep_trying = true;
+  size_t extra_num = 0;
+  while(keep_trying)
   {
-    const Glib::ustring database_name = document->get_connection_database();
-
-    //std::cout << "debug: database_name to create=" << database_name << std::endl;
-
-
-    bool keep_trying = true;
-    size_t extra_num = 0;
-    while(keep_trying)
+    Glib::ustring database_name_possible;
+    if(extra_num == 0)
+      database_name_possible = database_name; //Try the original name first.
+    else
     {
-      Glib::ustring database_name_possible;
-      if(extra_num == 0)
-        database_name_possible = database_name; //Try the original name first.
-      else
-      {
-        //Create a new database name by appending a number to the original name:
-        char pchExtraNum[10];
-        sprintf(pchExtraNum, "%d", extra_num);
-        database_name_possible = (database_name + pchExtraNum);
-      }
-      ++extra_num;
+      //Create a new database name by appending a number to the original name:
+      char pchExtraNum[10];
+      sprintf(pchExtraNum, "%d", extra_num);
+      database_name_possible = (database_name + pchExtraNum);
+    }
+    ++extra_num;
 
-      m_pDialogConnection->set_database_name(database_name_possible);
-      //std::cout << "debug: possible name=" << database_name_possible << std::endl;
+    m_pDialogConnection->set_database_name(database_name_possible);
+    //std::cout << "debug: possible name=" << database_name_possible << std::endl;
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-      try
-      {
-        sharedptr<SharedConnection> sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings();
-        //If no exception was thrown then the database exists.
-        //But we are looking for an unused database name, so we will try again.
-      }
-      catch(const ExceptionConnection& ex)
-      {
+    try
+    {
+      sharedptr<SharedConnection> sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings();
+      //If no exception was thrown then the database exists.
+      //But we are looking for an unused database name, so we will try again.
+    }
+    catch(const ExceptionConnection& ex)
+    {
 #else
-      std::auto_ptr<ExceptionConnection> error;
-      sharedptr<SharedConnection> sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings(error);
-      if(error.get())
-      {
-        const ExceptionConnection& ex = *error;
+    std::auto_ptr<ExceptionConnection> error;
+    sharedptr<SharedConnection> sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings(error);
+    if(error.get())
+    {
+      const ExceptionConnection& ex = *error;
 #endif
-        //g_warning("Frame_Glom::connection_request_password_and_choose_new_database_name(): caught exception.");
+      //g_warning("Frame_Glom::connection_request_password_and_choose_new_database_name(): caught exception.");
 
-        if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
+      if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
+      {
+        //Warn the user, and let him try again:
+        Utils::show_ok_dialog(_("Connection Failed"), _("Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."), *(get_app_window()), Gtk::MESSAGE_ERROR); //TODO: Add help button.
+        keep_trying = false;
+      }
+      else
+      {
+        std::cout << "Frame_Glom::connection_request_password_and_choose_new_database_name(): unused database name successfully found: " << database_name_possible << std::endl; 
+        //The connection to the server is OK, but the specified database does not exist.
+        //That's good - we were looking for an unused database name.
+
+        std::cout << "debug: unused database name found: " << database_name_possible << std::endl;
+        document->set_connection_database(database_name_possible);
+
+        // Remember host if the document is not self hosted
+        if(!document->get_connection_is_self_hosted())
         {
-          //Warn the user, and let him try again:
-          Utils::show_ok_dialog(_("Connection Failed"), _("Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."), *(get_app_window()), Gtk::MESSAGE_ERROR); //TODO: Add help button.
-	  return false;
-        }
-        else
-        {
-          std::cout << "Frame_Glom::connection_request_password_and_choose_new_database_name(): unused database name successfully found: " << database_name_possible << std::endl; 
-          //The connection to the server is OK, but the specified database does not exist.
-          //That's good - we were looking for an unused database name.
-          Document_Glom* document = get_document();
-          if(document)
-          {
-            std::cout << "debug: unused database name found: " << database_name_possible << std::endl;
-            document->set_connection_database(database_name_possible);
+          ConnectionPoolBackend* backend = connection_pool->get_backend();
+          ConnectionPoolBackends::PostgresCentralHosted* central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
+          g_assert(central != NULL);
 
-            ConnectionPool* connection_pool = ConnectionPool::get_instance();
-            if(connection_pool)
-              document->set_connection_server(connection_pool->get_host());
-          }
-
-          return true;
+          document->set_connection_server(central->get_host());
         }
+
+        return true;
       }
     }
   }
-  else
-    return false; //The user cancelled.
 
+  connection_pool->cleanup(get_app_window());
   return false;
 }
 
@@ -1725,11 +1743,20 @@ bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring kno
 bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring known_username, const Glib::ustring& known_password, std::auto_ptr<ExceptionConnection>& error)
 #endif
 {
+  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  if(!document)
+    return false;
+
   if(!m_pDialogConnection)
   {
     Utils::get_glade_widget_derived_with_warning("dialog_connection", m_pDialogConnection);
     add_view(m_pDialogConnection); //Also a composite view.
   }
+
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  setup_connection_pool_from_document(document);
+  if(!connection_pool->startup(get_app_window()))
+    return false;
 
   while(true) //Loop until a return
   {
@@ -1758,7 +1785,7 @@ bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring kno
       {
         //TODO: Remove any previous database setting?
         sharedptr<SharedConnection> sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings();
-        return true; //Succeeeded, because no exception was thrown.
+        return true; //Succeeded, because no exception was thrown.
       }
       catch(const ExceptionConnection& ex)
       {
@@ -1781,11 +1808,16 @@ bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring kno
           response = Glom::Utils::dialog_run_with_help(m_pDialogConnection, "dialog_connection");
           m_pDialogConnection->hide();
           if(response != Gtk::RESPONSE_OK)
+          {
+            connection_pool->cleanup(get_app_window());
             return false; //The user cancelled.
+          }
         }
         else
         {
           g_warning("Frame_Glom::connection_request_password_and_attempt(): rethrowing exception.");
+
+          connection_pool->cleanup(get_app_window());
 
           //The connection to the server is OK, but the specified database does not exist:
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -1800,7 +1832,10 @@ bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring kno
       //Try again.
     }
     else
+    {
+      connection_pool->cleanup(get_app_window());
       return false; //The user cancelled.
+    }
   }
 }
 

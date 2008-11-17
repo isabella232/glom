@@ -20,6 +20,7 @@
  
 #include <libgdamm/init.h>
 #include <glom/libglom/connectionpool.h>
+#include <glom/libglom/connectionpool_backends/postgres_central.h>
 
 
 int
@@ -38,13 +39,15 @@ main(int argc, char* argv[])
       //The ConnectionPool will now use these every time it tries to connect.
 
       connection_pool->set_database("glom_musiccollection217");
-      connection_pool->set_host("localhost");
       connection_pool->set_user("murrayc");
       connection_pool->set_password("murraycpw");
 
-      connection_pool->set_port(5433);
-      connection_pool->set_try_other_ports(false);
+      Glom::ConnectionPoolBackends::PostgresCentralHosted* backend = new Glom::ConnectionPoolBackends::PostgresCentralHosted;
+      backend->set_host("localhost");
+      backend->set_port(5433);
+      backend->set_try_other_ports(false);
 
+      connection_pool->set_backend(std::auto_ptr<Glom::ConnectionPoolBackend>(backend));
       connection_pool->set_ready_to_connect(); //Box_WithButtons::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
     }
 
