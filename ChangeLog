@@ -41,7 +41,6 @@
 	this way, but some initial queries still fail yet because they are
 	specific to postgres.
 
->>>>>>> .r1726
 2008-11-21  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/data_structure/glomconversions.[h|cc]:
