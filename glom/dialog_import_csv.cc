@@ -289,11 +289,11 @@ void Dialog_Import_CSV::import(const Glib::ustring& uri, const Glib::ustring& in
   else
   {
     // Make the relevant widgets sensitive. We will make them insensitive
-    // again when a (nonrecoverable) error occurs.
-    m_sample_view->set_sensitive(true);
-    m_encoding_combo->set_sensitive(true);
-    m_first_line_as_title->set_sensitive(true);
-    m_sample_rows->set_sensitive(true);
+    // again when a (non-recoverable) error occurs.
+    m_sample_view->set_sensitive();
+    m_encoding_combo->set_sensitive();
+    m_first_line_as_title->set_sensitive();
+    m_sample_rows->set_sensitive();
 
     set_title(_("Import From CSV File"));
     m_target_table->set_markup("<b>" + Glib::Markup::escape_text(into_table) + "</b>");
@@ -305,10 +305,14 @@ void Dialog_Import_CSV::import(const Glib::ustring& uri, const Glib::ustring& in
     Document_Glom::type_vecFields fields(document->get_table_fields(into_table));
     for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++ iter)
     {
+      sharedptr<Field> field = *iter;
+      if(!field)
+        continue;
+
       // Don't allow the primary key to be selected when it is an auto
       // increment key, since the value for the primary key is chosen
       // automatically anyway.
-      if(!(*iter)->get_primary_key() || !(*iter)->get_auto_increment())
+      if(!field->get_primary_key() || !field->get_auto_increment())
       {
         Gtk::TreeModel::iterator tree_iter = m_field_model->append();
         (*tree_iter)[m_field_columns.m_col_field] = *iter;
@@ -319,7 +323,7 @@ void Dialog_Import_CSV::import(const Glib::ustring& uri, const Glib::ustring& in
     m_file = Gio::File::create_for_uri(uri);
     m_file->read_async(sigc::mem_fun(*this, &Dialog_Import_CSV::on_file_read));
 
-    // Query the display name of the file to set in the title
+    // Query the display name of the file to set in the title:
     m_file->query_info_async(sigc::mem_fun(*this, &Dialog_Import_CSV::on_query_info), G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME);
 
     set_state(PARSING);
@@ -330,6 +334,7 @@ guint Dialog_Import_CSV::get_row_count() const
 {
   if(m_first_line_as_title->get_active() && m_rows.size() > 1)
     return m_rows.size() - 1;
+
   return m_rows.size();
 }
 
@@ -345,7 +350,9 @@ const sharedptr<Field>& Dialog_Import_CSV::get_field_for_column(guint col)
 
 const Glib::ustring& Dialog_Import_CSV::get_data(guint row, guint col)
 {
-  if(m_first_line_as_title->get_active()) ++ row;
+  if(m_first_line_as_title->get_active())
+    ++row;
+
   return m_rows[row][col];
 }
 
@@ -379,15 +386,15 @@ void Dialog_Import_CSV::clear()
 void Dialog_Import_CSV::show_error_dialog(const Glib::ustring& primary, const Glib::ustring& secondary)
 {
   Gtk::MessageDialog dialog(*this, primary, false, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
-  dialog.set_title("Error Importing CSV File");
+  dialog.set_title(_("Error Importing CSV File"));
   dialog.set_secondary_text(secondary);
   dialog.run();
 }
 
 void Dialog_Import_CSV::encoding_data_func(const Gtk::TreeModel::iterator& iter, Gtk::CellRendererText& renderer)
 {
-  Glib::ustring name = (*iter)[m_encoding_columns.m_col_name];
-  Glib::ustring charset = (*iter)[m_encoding_columns.m_col_charset];
+  const Glib::ustring name = (*iter)[m_encoding_columns.m_col_name];
+  const Glib::ustring charset = (*iter)[m_encoding_columns.m_col_charset];
 
   renderer.set_property("text", encoding_display(name, charset));
 }
@@ -432,19 +439,22 @@ void Dialog_Import_CSV::on_stream_read(const Glib::RefPtr<Gio::AsyncResult>& res
 {
   try
   {
-    gssize size = m_stream->read_finish(result);
+    const gssize size = m_stream->read_finish(result);
     m_raw.insert(m_raw.end(), m_buffer->buf, m_buffer->buf + size);
 
     // If the parser already exists, but it is currently not parsing because it waits
     // for new input, then continue parsing.
     if(m_parser.get() && !m_parser->idle_connection.connected())
+    {
       m_parser->idle_connection = Glib::signal_idle().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_idle_parse));
-
+    }
     // If the parser does not exist yet, then create a new parser, except when the
-    // current encoding does not work for the file in which case the user first
-    // has to choose another encoding.
+    // current encoding does not work for the file ,in which case the user must first
+    // choose another encoding.
     else if(!m_parser.get() && m_state != ENCODING_ERROR)
+    {
       begin_parse();
+    }
 
     if(size > 0)
     {
@@ -535,6 +545,7 @@ void Dialog_Import_CSV::on_first_line_as_title_toggled()
         iter = m_sample_model->append();
       else
         iter = m_sample_model->insert(iter);
+
       (*iter)[m_sample_columns.m_col_row] = 0;
 
       // Remove last row if we hit the limit
@@ -574,9 +585,10 @@ void Dialog_Import_CSV::on_sample_rows_changed()
   {
     // Find index of first row to add
     guint row_index = current_sample_rows;
-    if(m_first_line_as_title->get_active()) ++ row_index;
+    if(m_first_line_as_title->get_active())
+      ++row_index;
 
-    for(guint i = current_sample_rows; i < new_sample_rows && row_index < m_rows.size(); ++ i, ++ row_index)
+    for(guint i = current_sample_rows; i < new_sample_rows && row_index < m_rows.size(); ++i, ++row_index)
     {
       Gtk::TreeModel::iterator iter = m_sample_model->append();
       (*iter)[m_sample_columns.m_col_row] = row_index;
@@ -587,7 +599,7 @@ void Dialog_Import_CSV::on_sample_rows_changed()
 Glib::ustring Dialog_Import_CSV::get_current_encoding() const
 {
   Gtk::TreeModel::iterator iter = m_encoding_combo->get_active();
-  Glib::ustring encoding = (*iter)[m_encoding_columns.m_col_charset];
+  const Glib::ustring encoding = (*iter)[m_encoding_columns.m_col_charset];
 
   if(encoding.empty())
   {

@@ -1,5 +1,13 @@
 2008-11-21  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/frame_glom.cc: on_menu_file_export(): Correct the order of 
+	parameters to Document_Glom::get_data_layout_groups_plus_new_fields() 
+	so we actually get a sensible default set of fields instead of nothing.
+	This was only a problem since the addition of the active-layout feature 
+	on trunk.
+
+2008-11-21  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/glom.glade: Mark a tooltip as translatable in the initial dialog.
 	Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/299556
 

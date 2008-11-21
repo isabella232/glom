@@ -516,7 +516,7 @@ void Frame_Glom::on_menu_file_export()
   if(!document)
     return;
 
-  Document_Glom::type_list_layout_groups mapGroupSequence = document->get_data_layout_groups_plus_new_fields("details", document->get_active_layout_platform(), m_table_name);
+  Document_Glom::type_list_layout_groups mapGroupSequence = document->get_data_layout_groups_plus_new_fields("details", m_table_name, document->get_active_layout_platform());
 
   Gtk::Window* pWindowApp = get_app_window();
   g_assert(pWindowApp);
@@ -543,6 +543,7 @@ void Frame_Glom::on_menu_file_export()
     return;
 
   dialog.get_layout_groups(mapGroupSequence);
+  std::cout << "DEBUG 0: mapGroupSequence.size()=" << mapGroupSequence.size() << std::endl;
 
   //const int index_primary_key = fieldsSequence.size() - 1;
 
@@ -563,7 +564,10 @@ void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const FoundSet
   type_vecLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(found_set.m_table_name, sequence);
 
   if(fieldsSequence.empty())
+  {
+    std::cerr << "Glom: Frame_Glom::export_data_to_string(): No fields in sequence." << std::endl;
     return;
+  }
 
   const Glib::ustring query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause, found_set.m_extra_group_by);
 
@@ -612,10 +616,13 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
   type_vecLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(found_set.m_table_name, sequence);
 
   if(fieldsSequence.empty())
+  {
+    std::cerr << "Glom: Frame_Glom::export_data_to_stream(): No fields in sequence." << std::endl;
     return;
+  }
 
   const Glib::ustring query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause, found_set.m_extra_group_by);
-
+ 
   //TODO: Lock the database (prevent changes) during export.
   Glib::RefPtr<Gnome::Gda::DataModel> result = query_execute(query, get_app_window());
 
@@ -674,19 +681,20 @@ void Frame_Glom::on_menu_file_import()
 
     if(file_chooser.run() == Gtk::RESPONSE_ACCEPT)
     {
+      file_chooser.hide();
+
       Dialog_Import_CSV* dialog = 0;
       Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "dialog_import_csv");
       refXml->get_widget_derived("dialog_import_csv", dialog);
       add_view(dialog);
 
-      file_chooser.hide();
-
       dialog->import(file_chooser.get_uri(), m_table_name);
       while(Glom::Utils::dialog_run_with_help(dialog, "dialog_import_csv") == Gtk::RESPONSE_ACCEPT)
       {
         dialog->hide();
+
         Dialog_Import_CSV_Progress* progress_dialog = 0;
-      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "dialog_import_csv_progress");
+        Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "dialog_import_csv_progress");
         refXml->get_widget_derived("dialog_import_csv_progress", progress_dialog);
         add_view(progress_dialog);
 
@@ -696,6 +704,7 @@ void Frame_Glom::on_menu_file_import()
 
         remove_view(progress_dialog);
         delete progress_dialog;
+        progress_dialog = 0;
 
         // Force update from database so the newly added entries are shown
         show_table_refresh();

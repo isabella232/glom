@@ -129,7 +129,7 @@ void Dialog_GroupsList::set_document(const Glib::ustring& layout, Document_Glom*
     m_label_table_name->set_text(table_name);
     m_entry_table_title->set_text( document->get_table_title(table_name) );
 
-    Document_Glom::type_list_layout_groups mapGroups = document->get_data_layout_groups_plus_new_fields(layout, m_table_name);
+    Document_Glom::type_list_layout_groups mapGroups = document->get_data_layout_groups_plus_new_fields(layout, m_table_name, m_layout_platform);
 
     //If no information is stored in the document, then start with something:
 

@@ -1461,6 +1461,8 @@ Document_Glom::type_list_layout_groups Document_Glom::get_data_layout_groups_plu
 
 Document_Glom::type_list_layout_groups Document_Glom::get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform) const
 {
+  //std::cout << "DEBUG: Document_Glom::get_data_layout_groups(): layout_name=" << layout_name << ", parent_table_name=" << parent_table_name << ", layout_platform=" << layout_platform << std::endl;
+
   type_tables::const_iterator iterFind = m_tables.find(parent_table_name);
   if(iterFind != m_tables.end())
   {
@@ -1493,7 +1495,7 @@ bool Document_Glom::get_data_layout_groups_have_any_fields(const Glib::ustring& 
 
 void Document_Glom::set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform, const type_list_layout_groups& groups)
 {
-  std::cout << "DEBUG: Document_Glom::set_data_layout_groups(): layout_name=" << layout_name << ", parent_table_name=" << parent_table_name << ", layout_platform=" << layout_platform << std::endl;
+  //std::cout << "DEBUG: Document_Glom::set_data_layout_groups(): layout_name=" << layout_name << ", parent_table_name=" << parent_table_name << ", layout_platform=" << layout_platform << std::endl;
   const Glib::ustring child_table_name = parent_table_name; //TODO: Remove this cruft.
 
   //g_warning("Document_Glom::set_data_layout_groups(): ADDING layout for table %s (child_table=%s), for layout %s", parent_table_name.c_str(), child_table_name.c_str(), layout_name.c_str());
