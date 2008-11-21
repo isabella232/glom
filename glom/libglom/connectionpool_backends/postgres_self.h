@@ -79,13 +79,9 @@ protected:
   virtual bool startup(Gtk::Window* parent_window);
   virtual void cleanup(Gtk::Window* parent_window);
 
-  virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password);
+  virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error);
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  virtual bool create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password);
-#else
   virtual bool create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error);
-#endif
 
 private:
   /** Examine ports one by one, starting at @a starting_port, in increasing

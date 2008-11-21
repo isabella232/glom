@@ -63,19 +63,15 @@ public:
    */
   static bool check_postgres_gda_client_is_available_with_warning();
 
-  static Glib::RefPtr<Gnome::Gda::Connection> attempt_connect(const Glib::RefPtr<Gnome::Gda::Client>& client, const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, float& postgres_server_version);
+  static Glib::RefPtr<Gnome::Gda::Connection> attempt_connect(const Glib::RefPtr<Gnome::Gda::Client>& client, const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, float& postgres_server_version, std::auto_ptr<ExceptionConnection>& error);
 
 protected:
-  virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password);
+  virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error);
 
   /** Creates a new database.
    */
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  virtual bool create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password);
-#else
   virtual bool create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error);
-#endif
 #endif
 
 private:

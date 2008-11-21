@@ -90,7 +90,7 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
       //std::cout << "debug: Dialog_Connection::connect_to_server_with_connection_settings(): m_database_name=" << m_database_name << std::endl;
       connection_pool->set_database(m_database_name);
 
-      if(!document->get_connection_is_self_hosted())
+      if(document->get_hosting_mode() == Document_Glom::POSTGRES_CENTRAL_HOSTED)
       {
         ConnectionPoolBackend* backend = connection_pool->get_backend();
         ConnectionPoolBackends::PostgresCentralHosted* central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
@@ -121,7 +121,7 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
       //to make opening faster next time,
       //and so we can tell connecting clients (using browse network) what port to use:
       Document_Glom* unconst = const_cast<Document_Glom*>(document);
-      if(!document->get_connection_is_self_hosted())
+      if(document->get_hosting_mode() == Document_Glom::POSTGRES_CENTRAL_HOSTED)
       {
         ConnectionPoolBackend* backend = connection_pool->get_backend();
         ConnectionPoolBackends::PostgresCentralHosted* central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
@@ -129,7 +129,7 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
 
         unconst->set_connection_port(central->get_port() );
       }
-      else
+      else if(document->get_hosting_mode() == Document_Glom::POSTGRES_SELF_HOSTED)
       {
         ConnectionPoolBackend* backend = connection_pool->get_backend();
         ConnectionPoolBackends::PostgresSelfHosted* self = dynamic_cast<ConnectionPoolBackends::PostgresSelfHosted*>(backend);
@@ -160,7 +160,7 @@ void Dialog_Connection::load_from_document()
   {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     //Load server and user:
-    if(document->get_connection_is_self_hosted())
+    if(document->get_hosting_mode() != Document_Glom::POSTGRES_CENTRAL_HOSTED)
     {
        m_entry_host->set_text("(self hosted)");
        m_entry_host->set_sensitive(false);

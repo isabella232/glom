@@ -126,17 +126,17 @@ protected:
    * implement this function  if there is no need for extra cleanup code. */
   virtual void cleanup(Gtk::Window* parent_window) {}
 
-  /* This method is called to create a connection to the database server. */
-  virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password) = 0;
+  /* This method is called to create a connection to the database server.
+   * There exists only the variant with an error variable as last parameter
+   * so we don't need #ifdefs all over the code. This part of the API is only
+   * used by the ConnectionPool which will translate the error back into
+   * an exception in case exceptions are enabled. */
+  virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error) = 0;
 
   /* This method is called to create a new database on the
    * database server. */
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  virtual bool create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password) = 0;
-#else
   virtual bool create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error) = 0;
-#endif
 #endif
 };
 

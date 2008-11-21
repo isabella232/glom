@@ -109,12 +109,18 @@ public:
 
   static guint get_latest_known_document_format_version();
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  /** When this is set, the postgres database is hosted by the local client,
-   *  instead of connecting to an external database server.
+  enum HostingMode {
+    /* The database is hosted on an external postgresql server */
+    POSTGRES_CENTRAL_HOSTED,
+    /* A new postgres database process is spawned that hosts the data */
+    POSTGRES_SELF_HOSTED,
+    /* A sqlite database file is used */
+    SQLITE_HOSTED
+  };
+
+  /** Set the hosting mode of the database.
    */
-  void set_connection_is_self_hosted(bool self_hosted = true);
-#endif // !GLOM_ENABLE_CLIENT_ONLY
+  void set_hosting_mode(HostingMode mode);
 
   void set_connection_server(const Glib::ustring& strVal);
   void set_connection_user(const Glib::ustring& strVal);
@@ -122,18 +128,17 @@ public:
   void set_connection_port(int port_number);
   void set_connection_try_other_ports(bool val);
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  /** When this returns true, the postgres database should be hosted by the local client,
-   *  instead of connecting to an external database server.
+  /** This returns how the hosting mode of the database.
    */
-  bool get_connection_is_self_hosted() const;
+  HostingMode get_hosting_mode() const;
 
   /** If the database should be hosted, this provides the 
     * path to the directory that contains all the files needed to do that.
     * This is usually a specifically-named directory at the same level as the .glom file. 
+    * If the database is a sqlite database, this specifies the directory in
+    * which the database file is in.
     */   
   std::string get_connection_self_hosted_directory_uri() const;
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   Glib::ustring get_connection_server() const;
   Glib::ustring get_connection_user() const;
@@ -440,9 +445,7 @@ protected:
   AppState m_app_state;
   type_signal_userlevel_changed m_signal_userlevel_changed;
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  bool m_connection_is_self_hosted;
-#endif // !GLOM_ENABLE_CLIENT_ONLY
+  HostingMode m_hosting_mode;
 
   Glib::ustring m_connection_server, m_connection_user, m_connection_database;
   int m_connection_port; //0 means any port. Ignored when self-hosting (which may use a different port each time).

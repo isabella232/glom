@@ -21,6 +21,8 @@
 #ifndef GLOM_UTILITY_WIDGETS_FILECHOOSERDIALOG_SAVEEXTRAS_H
 #define GLOM_UTILITY_WIDGETS_FILECHOOSERDIALOG_SAVEEXTRAS_H
 
+#include <glom/libglom/document/document_glom.h>
+
 #include <gtkmm/filechooserdialog.h>
 #include <gtkmm/label.h>
 #include <gtkmm/box.h>
@@ -45,13 +47,14 @@ public:
   void set_extra_message(const Glib::ustring& message);
   void set_extra_newdb_title(const Glib::ustring& title);
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  void set_extra_newdb_self_hosted(bool self_hosted = true);
+  void set_extra_newdb_hosting_mode(Document_Glom::HostingMode mode);
+  //void set_extra_newdb_self_hosted(bool self_hosted = true);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   Glib::ustring get_extra_newdb_title() const;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  bool get_extra_newdb_self_hosted() const;
+  Document_Glom::HostingMode get_extra_newdb_hosting_mode() const;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 protected:
@@ -63,8 +66,9 @@ protected:
   /* New database details: */
   Gtk::Entry m_entry_title;
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  Gtk::RadioButton m_radiobutton_server_central;
-  Gtk::RadioButton m_radiobutton_server_selfhosted;
+  Gtk::RadioButton m_radiobutton_server_postgres_central;
+  Gtk::RadioButton m_radiobutton_server_postgres_selfhosted;
+  Gtk::RadioButton m_radiobutton_server_sqlite;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 };
 

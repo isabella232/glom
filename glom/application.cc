@@ -113,7 +113,7 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
   m_menu_print_layouts_ui_merge_id(0),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_ui_save_extra_showextras(false),
-  m_ui_save_extra_newdb_selfhosted(false),
+  m_ui_save_extra_newdb_hosting_mode(Document_Glom::POSTGRES_CENTRAL_HOSTED),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_show_sql_debug(false)
 {
@@ -708,9 +708,11 @@ void App_Glom::open_browsed_document(const EpcServiceInfo* server, const Glib::u
       // Connection is always remote-hosted in client only mode:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
       //Stop the document from being self-hosted (it's already hosted by the other networked Glom instance):
-      document_temp.set_connection_is_self_hosted(false);
-      // TODO: Set port from epc info(?)
+      if(document_temp.get_hosting_mode() == Document_Glom::POSTGRES_SELF_HOSTED)
+        document_temp.set_hosting_mode(Document_Glom::POSTGRES_CENTRAL_HOSTED);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+      // TODO: Error out in case this is a sqlite database, since we probably
+      // can't access it from this host?
 
       //If the publisher thinks that it's using a postgres database on localhost, 
       //then we need to use a host name that means the same thing from the client's PC:
@@ -934,7 +936,7 @@ bool App_Glom::on_document_load()
         m_ui_save_extra_title = _("Creating From Example File");
         m_ui_save_extra_message = _("To use this example file you must save an editable copy of the file. A new database will also be created on the server.");
         m_ui_save_extra_newdb_title = "TODO";
-        m_ui_save_extra_newdb_selfhosted = true;
+        m_ui_save_extra_newdb_hosting_mode = Document_Glom::POSTGRES_SELF_HOSTED;
         offer_saveas();
         // Note that bakery will try to add the example file itself to the
         // recently used documents, which is not what we want.
@@ -943,8 +945,8 @@ bool App_Glom::on_document_load()
 
         //Get the results from the extended save dialog:
         pDocument->set_database_title(m_ui_save_extra_newdb_title);
-        pDocument->set_connection_is_self_hosted(m_ui_save_extra_newdb_selfhosted);
-        m_ui_save_extra_newdb_selfhosted = false;
+        pDocument->set_hosting_mode(m_ui_save_extra_newdb_hosting_mode);
+        m_ui_save_extra_newdb_hosting_mode = Document_Glom::POSTGRES_CENTRAL_HOSTED;
 
         m_ui_save_extra_newdb_title.clear();
         m_ui_save_extra_showextras = false;
@@ -1232,7 +1234,7 @@ void App_Glom::existing_or_new_new()
   Glib::ustring db_title;
 
   m_ui_save_extra_showextras = true; //Offer self-hosting or central hosting, and offer the database title.
-  m_ui_save_extra_newdb_selfhosted = true; /* Default to self-hosting */
+  m_ui_save_extra_newdb_hosting_mode = Document_Glom::POSTGRES_SELF_HOSTED; /* Default to self-hosting */
   m_ui_save_extra_newdb_title.clear();
   offer_saveas();
 
@@ -1242,15 +1244,15 @@ void App_Glom::existing_or_new_new()
   {
     //Get details from the extended save dialog:
     const Glib::ustring db_title = m_ui_save_extra_newdb_title;
-    const bool self_hosted = m_ui_save_extra_newdb_selfhosted;
+    Document_Glom::HostingMode hosting_mode = m_ui_save_extra_newdb_hosting_mode;
     m_ui_save_extra_newdb_title.clear();
-    m_ui_save_extra_newdb_selfhosted = false;
+    m_ui_save_extra_newdb_hosting_mode = Document_Glom::POSTGRES_CENTRAL_HOSTED;
 
     //Make sure that the user can do something with his new document:
     document->set_userlevel(AppState::USERLEVEL_DEVELOPER);
     // Try various ports if connecting to an existing database server instead
     // of self-hosting one:
-    document->set_connection_try_other_ports(!m_ui_save_extra_newdb_selfhosted);
+    document->set_connection_try_other_ports(m_ui_save_extra_newdb_hosting_mode == Document_Glom::POSTGRES_CENTRAL_HOSTED);
 
     //Each new document must have an associated new database,
     //so choose a name
@@ -1266,7 +1268,7 @@ void App_Glom::existing_or_new_new()
 
     //Connect to the server and choose a variation of this db_name that does not exist yet:
     document->set_connection_database(db_name);
-    document->set_connection_is_self_hosted(self_hosted);
+    document->set_hosting_mode(hosting_mode);
          
    //Tell the connection pool about the document:
    ConnectionPool* connection_pool = ConnectionPool::get_instance();
@@ -1877,7 +1879,7 @@ void App_Glom::on_menu_file_save_as_example()
   m_ui_save_extra_title.clear();
   m_ui_save_extra_message.clear();
   m_ui_save_extra_newdb_title.clear();
-  m_ui_save_extra_newdb_selfhosted = false;
+  m_ui_save_extra_newdb_hosting_mode = Document_Glom::POSTGRES_CENTRAL_HOSTED;
 
   Glib::ustring file_uri = ui_file_select_save(file_uriOld); //Also asks for overwrite confirmation.
   if(!file_uri.empty())
@@ -2094,7 +2096,7 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
     fileChooser_SaveExtras->set_extra_newdb_title(m_ui_save_extra_newdb_title); 
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-    fileChooser_SaveExtras->set_extra_newdb_self_hosted(m_ui_save_extra_newdb_selfhosted);
+    fileChooser_SaveExtras->set_extra_newdb_hosting_mode(m_ui_save_extra_newdb_hosting_mode);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   }
 
@@ -2184,7 +2186,7 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
         m_ui_save_extra_newdb_title = fileChooser_SaveExtras->get_extra_newdb_title();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-        m_ui_save_extra_newdb_selfhosted = fileChooser_SaveExtras->get_extra_newdb_self_hosted();
+        m_ui_save_extra_newdb_hosting_mode = fileChooser_SaveExtras->get_extra_newdb_hosting_mode();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
         if(m_ui_save_extra_newdb_title.empty())
@@ -2196,8 +2198,11 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
         }
       }
  
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-      if(!try_again && fileChooser_SaveExtras && m_ui_save_extra_newdb_selfhosted)
+      // Create a directory for self-hosted databases (sqlite or self-hosted
+      // postgresql).
+      if(!try_again && fileChooser_SaveExtras &&
+         (m_ui_save_extra_newdb_hosting_mode == Document_Glom::POSTGRES_SELF_HOSTED ||
+          m_ui_save_extra_newdb_hosting_mode == Document_Glom::SQLITE_HOSTED))
       {
         //Check that the directory does not exist already.
         //The GtkFileChooser could not check for that because it could not know that we would create a directory based on the filename:
@@ -2231,7 +2236,6 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
         Glib::RefPtr<Gio::File> file_whole = dir->get_child(filename_part);
         return file_whole->get_uri();
       }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
       if(!try_again)
       {

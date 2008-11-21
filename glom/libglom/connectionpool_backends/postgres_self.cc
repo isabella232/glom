@@ -469,7 +469,7 @@ void PostgresSelfHosted::cleanup(Gtk::Window* parent_window)
   m_port = 0;
 }
 
-Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password)
+Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error)
 {
   if(!m_refGdaClient)
   {
@@ -481,15 +481,11 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ust
   if(!get_self_hosting_active())
     return Glib::RefPtr<Gnome::Gda::Connection>();
 
-  return PostgresCentralHosted::attempt_connect(m_refGdaClient, "localhost", port_as_string(m_port), database, username, password, m_postgres_server_version);
+  return PostgresCentralHosted::attempt_connect(m_refGdaClient, "localhost", port_as_string(m_port), database, username, password, m_postgres_server_version, error);
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-bool PostgresSelfHosted::create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password)
-#else
 bool PostgresSelfHosted::create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error)
-#endif
 {
   if(!m_refGdaClient)
   {
@@ -501,11 +497,19 @@ bool PostgresSelfHosted::create_database(const Glib::ustring& database_name, con
   Glib::RefPtr<Gnome::Gda::ServerOperation> op = m_refGdaClient->prepare_create_database(database_name, "PostgreSQL");
   g_assert(op);
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-  op->set_value_at("/SERVER_CNX_P/HOST", "localhost");
-  op->set_value_at("/SERVER_CNX_P/PORT", port_as_string(m_port));
-  op->set_value_at("/SERVER_CNX_P/ADM_LOGIN", username);
-  op->set_value_at("/SERVER_CNX_P/ADM_PASSWORD", password);
-  m_refGdaClient->perform_create_database(op);
+  try
+  {
+    op->set_value_at("/SERVER_CNX_P/HOST", "localhost");
+    op->set_value_at("/SERVER_CNX_P/PORT", port_as_string(m_port));
+    op->set_value_at("/SERVER_CNX_P/ADM_LOGIN", username);
+    op->set_value_at("/SERVER_CNX_P/ADM_PASSWORD", password);
+    m_refGdaClient->perform_create_database(op);
+  }
+  catch(const Glib::Error& ex)
+  {
+    error.reset(new Glib::Error(ex));
+    return false;
+  }
 #else
   op->set_value_at("/SERVER_CNX_P/HOST", get_host(), error);
   op->set_value_at("/SERVER_CNX_P/PORT", port_as_string(m_port), error);

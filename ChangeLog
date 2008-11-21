@@ -1,3 +1,38 @@
+2008-11-21  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/connectionpool.h: Changed connect() and
+	create_database() functions of Backend to always take an error
+	parameter as last argument, to save ugly #ifdefs. The ConnectionPool
+	is the only one accessing these functions anyway, so this is not part
+	of "public" API.
+
+	* glom/libglom/connectionpool_backends/postgres_self.h:
+	* glom/libglom/connectionpool_backends/postgres_self.cc:
+	* glom/libglom/connectionpool_backends/postgres_central.h:
+	* glom/libglom/connectionpool_backends/postgres_central.cc: Adapt.
+
+	* glom/libglom/connectionpool_backends/sqlite.h:
+	* glom/libglom/connectionpool_backends/sqlite.cc:
+	* glom/libglom/connectionpool_backends/Makefile.am: Added a sqlite for
+	creating and connecting to SQlite databases.
+
+	* glom/libglom/document/document_glom.h:
+	* glom/libglom/document/document_glom.cc: Replace self_hosted
+	attribute by a hosting_mode one in the document XML, which can be
+	either "postgres_central", "postgres_self" or "sqlite".
+
+	* glom/utility_widgets/filechooserdialog_saveextras.h:
+	* glom/utility_widgets/filechooserdialog_saveextras.cc: Offer to store
+	the data in a SQlite database.
+
+	* glom/application.h:
+	* glom/application.cc:
+	* glom/dialog_connection.cc:
+	* glom/frame_glom.cc: Handle the SQlite case, create corresponding
+	ConnectionPool backend. It is possible to create a SQlite database
+	this way, but some initial queries still fail yet because they are
+	specific to postgres.
+
 2008-11-21  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/data_structure/glomconversions.[h|cc]:
@@ -16,7 +51,7 @@
 
 2008-11-17  Armin Burgmeier  <armin@arbur.net>
 
-	* glom/libglom/connectionpool.h: Removed postgres-specific function,
+	* glom/libglom/connectionpool.h: Removed postgres-specific functions,
 	added a common "Backend" interface. Simplified the code logic in
 	connect().
 

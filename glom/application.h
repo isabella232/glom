@@ -175,7 +175,7 @@ protected:
 
   Glib::ustring m_ui_save_extra_newdb_title;
 
-  bool m_ui_save_extra_newdb_selfhosted;
+  Document_Glom::HostingMode m_ui_save_extra_newdb_hosting_mode;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   // This is set to the URI of an example file that is loaded to be able to

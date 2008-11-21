@@ -100,15 +100,20 @@ void FileChooserDialog_SaveExtras::create_child_widgets()
   vbox->pack_start(*box_label);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_radiobutton_server_selfhosted.set_label(_("Create database in its own folder, to be hosted by this computer."));
-  vbox->pack_start(m_radiobutton_server_selfhosted);
-  m_radiobutton_server_selfhosted.show();
+  m_radiobutton_server_postgres_selfhosted.set_label(_("Create postgresql database in its own folder, to be hosted by this computer."));
+  vbox->pack_start(m_radiobutton_server_postgres_selfhosted);
+  m_radiobutton_server_postgres_selfhosted.show();
 
-  m_radiobutton_server_central.set_label(_("Create database on an external database server, to be specified in the next step."));
-  Gtk::RadioButton::Group group = m_radiobutton_server_selfhosted.get_group();
-  m_radiobutton_server_central.set_group(group);
-  vbox->pack_start(m_radiobutton_server_central);
-  m_radiobutton_server_central.show();
+  m_radiobutton_server_postgres_central.set_label(_("Create database on an external postgresql database server, to be specified in the next step."));
+  Gtk::RadioButton::Group group = m_radiobutton_server_postgres_selfhosted.get_group();
+  m_radiobutton_server_postgres_central.set_group(group);
+  vbox->pack_start(m_radiobutton_server_postgres_central);
+  m_radiobutton_server_postgres_central.show();
+
+  m_radiobutton_server_sqlite.set_label(_("Create sqlite database in its own folder, to be hosted by this computer."));
+  m_radiobutton_server_sqlite.set_group(group);
+  vbox->pack_start(m_radiobutton_server_sqlite);
+  m_radiobutton_server_sqlite.show();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 
@@ -123,23 +128,38 @@ void FileChooserDialog_SaveExtras::set_extra_newdb_title(const Glib::ustring& ti
   m_entry_title.set_text(title);
 }
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-void FileChooserDialog_SaveExtras::set_extra_newdb_self_hosted(bool self_hosted)
+void FileChooserDialog_SaveExtras::set_extra_newdb_hosting_mode(Document_Glom::HostingMode mode)
 {
-  m_radiobutton_server_selfhosted.set_active(self_hosted);
+  switch(mode)
+  {
+  case Document_Glom::POSTGRES_CENTRAL_HOSTED:
+    m_radiobutton_server_postgres_selfhosted.set_active();
+    break;
+  case Document_Glom::POSTGRES_SELF_HOSTED:
+    m_radiobutton_server_postgres_central.set_active();
+    break;
+  case Document_Glom::SQLITE_HOSTED:
+    m_radiobutton_server_sqlite.set_active();
+    break;
+  default:
+    g_assert_not_reached();
+    break;
+  }
 }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 Glib::ustring FileChooserDialog_SaveExtras::get_extra_newdb_title() const
 {
   return m_entry_title.get_text();
 }
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-bool FileChooserDialog_SaveExtras::get_extra_newdb_self_hosted() const
+Document_Glom::HostingMode FileChooserDialog_SaveExtras::get_extra_newdb_hosting_mode() const
 {
-  return m_radiobutton_server_selfhosted.get_active();
+  if(m_radiobutton_server_postgres_central.get_active())
+    return Document_Glom::POSTGRES_CENTRAL_HOSTED;
+  else if(m_radiobutton_server_postgres_selfhosted.get_active())
+    return Document_Glom::POSTGRES_SELF_HOSTED;
+  else
+    return Document_Glom::SQLITE_HOSTED;
 }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 } //namespace Glom

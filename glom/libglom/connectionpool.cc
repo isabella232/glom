@@ -336,23 +336,14 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
     }
     else
     {
-      m_refGdaConnection = m_backend->connect(m_database, get_user(), get_password());
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+      std::auto_ptr<ExceptionConnection> error;
+#endif
+      m_refGdaConnection = m_backend->connect(m_database, get_user(), get_password(), error);
       if(!m_refGdaConnection)
       {
-        Glib::RefPtr<Gnome::Gda::Connection> temp_conn = m_backend->connect("", get_user(), get_password());
-#ifdef GLOM_CONNECTION_DEBUG
-        std::cout << "  ConnectionPool::connect() Attempting to connect without specifying the database." << std::endl;
-        if(temp_conn)
-          std::cout << "  (Connection succeeds, but not to the specific database,  database=" << m_database << std::endl;
-        else
-          std::cerr << "  (Could not connect even to the default database, database=" << m_database  << std::endl;
-#endif
-
-        g_warning("ConnectionPool::connect() throwing exception.");
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-        throw ExceptionConnection(temp_conn ? ExceptionConnection::FAILURE_NO_DATABASE : ExceptionConnection::FAILURE_NO_SERVER);
-#else
-        error.reset(new ExceptionConnection(temp_conn ? ExceptionConnection::FAILURE_NO_DATABASE : ExceptionConnection::FAILURE_NO_SERVER));
+        throw *error;
 #endif
         return sharedptr<SharedConnection>(0);
       }
@@ -398,9 +389,11 @@ void ConnectionPool::create_database(const Glib::ustring& database_name, std::au
 #endif
 {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-  m_backend->create_database(database_name, get_user(), get_password());
-#else
+  std::auto_ptr<Glib::Error> error;
+#endif
   m_backend->create_database(database_name, get_user(), get_password(), error);
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  if(error.get()) throw *error;
 #endif
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
@@ -694,7 +687,8 @@ gboolean ConnectionPool::on_publisher_document_authentication(EpcAuthContext* co
 
  
   //Attempt a connection with this username/password:
-  Glib::RefPtr<Gnome::Gda::Connection> connection = connection_pool->m_backend->connect(connection_pool->get_database(), user_name, password);
+  std::auto_ptr<ExceptionConnection> error;
+  Glib::RefPtr<Gnome::Gda::Connection> connection = connection_pool->m_backend->connect(connection_pool->get_database(), user_name, password, error);
 
   if(connection)
   {

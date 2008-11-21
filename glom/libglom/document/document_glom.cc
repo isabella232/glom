@@ -49,6 +49,10 @@ namespace Glom
 
 #define GLOM_NODE_CONNECTION "connection"
 #define GLOM_ATTRIBUTE_CONNECTION_SELF_HOSTED "self_hosted"
+#define GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE "hosting_mode"
+#define GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_CENTRAL "postgres_central"
+#define GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_SELF "postgres_self"
+#define GLOM_ATTRIBUTE_CONNECTION_HOSTING_SQLITE "sqlite"
 #define GLOM_ATTRIBUTE_CONNECTION_SERVER "server"
 #define GLOM_ATTRIBUTE_CONNECTION_PORT "port"
 #define GLOM_ATTRIBUTE_CONNECTION_TRY_OTHER_PORTS "try_other_ports"
@@ -205,9 +209,7 @@ namespace Glom
 
 Document_Glom::Document_Glom()
 :
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_connection_is_self_hosted(false),
-#endif // !GLOM_ENABLE_CLIENT_ONLY
+  m_hosting_mode(POSTGRES_CENTRAL_HOSTED),
   m_connection_port(0),
   m_connection_try_other_ports(false),
   m_block_cache_update(false),
@@ -248,21 +250,17 @@ Document_Glom::~Document_Glom()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //TODO: It would be better to do this in a Application::on_document_closed() virtual method,
   //but that would need an ABI break in Bakery:
-  if(get_connection_is_self_hosted())
-  {
-    ConnectionPool* connection_pool = ConnectionPool::get_instance();
-    if(!connection_pool)
-      return;
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  if(!connection_pool)
+    return;
 
-    connection_pool->cleanup(m_parent_window);
-  }
+  connection_pool->cleanup(m_parent_window);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-bool Document_Glom::get_connection_is_self_hosted() const
+Document_Glom::HostingMode Document_Glom::get_hosting_mode() const
 {
-  return m_connection_is_self_hosted;
+  return m_hosting_mode;
 }
 
 std::string Document_Glom::get_connection_self_hosted_directory_uri() const
@@ -279,9 +277,26 @@ std::string Document_Glom::get_connection_self_hosted_directory_uri() const
     Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri_file);
 
     Glib::RefPtr<Gio::File> parent = file->get_parent();
+    Glib::RefPtr<Gio::File> datadir;
+
     if(parent)
     {
-      Glib::RefPtr<Gio::File> datadir = parent->get_child("glom_postgres_data");
+      switch(m_hosting_mode)
+      {
+      case POSTGRES_SELF_HOSTED:
+        datadir = parent->get_child("glom_postgres_data");
+        break;
+      case POSTGRES_CENTRAL_HOSTED:
+        datadir = parent;
+        break;
+      case SQLITE_HOSTED:
+        datadir = parent;
+        break;
+      default:
+        g_assert_not_reached();
+        break;
+      }
+
       if(datadir)
         return datadir->get_uri();
     }
@@ -290,7 +305,6 @@ std::string Document_Glom::get_connection_self_hosted_directory_uri() const
   g_warning("Document_Glom::get_connection_self_hosted_directory_uri(): returning empty string.");
   return std::string();
 }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 Glib::ustring Document_Glom::get_connection_user() const
 {
@@ -326,16 +340,14 @@ void Document_Glom::set_connection_user(const Glib::ustring& strVal)
   }
 }
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-void Document_Glom::set_connection_is_self_hosted(bool self_hosted)
+void Document_Glom::set_hosting_mode(HostingMode mode)
 {
-  if(self_hosted != m_connection_is_self_hosted)
+  if(mode != m_hosting_mode)
   {
-    m_connection_is_self_hosted = self_hosted;
+    m_hosting_mode = mode;
     set_modified();
   }
 }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 void Document_Glom::set_connection_server(const Glib::ustring& strVal)
 {
@@ -2267,21 +2279,42 @@ bool Document_Glom::load_after()
       if(nodeConnection)
       {
         //Connection information:
-        bool self_hosted = get_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SELF_HOSTED);
         m_connection_server = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SERVER);
         m_connection_port = get_node_attribute_value_as_decimal(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_PORT);
         m_connection_try_other_ports = get_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_TRY_OTHER_PORTS, true /* default */);
         m_connection_user = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_USER);
         m_connection_database = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_DATABASE);
 
+        Glib::ustring attr_mode = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE);
+        HostingMode mode;
+
+        if(attr_mode.empty())
+        {
+          // If no hosting mode is set, then try the self_hosted flag which
+          // was used before sqlite support has been implemented.
+          bool self_hosted = get_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SELF_HOSTED);
+          mode = self_hosted ? POSTGRES_SELF_HOSTED : POSTGRES_CENTRAL_HOSTED;
+        }
+        else
+        {
+          if(attr_mode == GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_CENTRAL)
+            mode = POSTGRES_CENTRAL_HOSTED;
+          else if(attr_mode == GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_SELF)
+            mode = POSTGRES_SELF_HOSTED;
+          else if(attr_mode == GLOM_ATTRIBUTE_CONNECTION_HOSTING_SQLITE)
+            mode = SQLITE_HOSTED;
+          else
+            mode = POSTGRES_CENTRAL_HOSTED; // Default
+        }
+
 #ifdef GLOM_ENABLE_CLIENT_ONLY
-        if(self_hosted)
+        if(mode == POSTGRES_SELF_HOSTED)
         {
           std::cerr << "Document_Glom::load_after(): Loading failed because the document needs to be self-hosted, but self-hosting is not supported in client only mode" << std::endl;
           return false; //TODO: Provide more information so the application (or Bakery) can say exactly why loading failed.
         }
 #else
-        m_connection_is_self_hosted = self_hosted;
+        m_hosting_mode = mode;
 #endif
       }
 
@@ -3125,11 +3158,22 @@ bool Document_Glom::save_before()
     set_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_TRANSLATION_ORIGINAL_LOCALE, m_translation_original_locale);
 
     xmlpp::Element* nodeConnection = get_node_child_named_with_add(nodeRoot, GLOM_NODE_CONNECTION);
-#ifdef GLOM_ENABLE_CLIENT_ONLY
-    set_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SELF_HOSTED, false);
-#else // GLOM_ENABLE_CLIENT_ONLY
-    set_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SELF_HOSTED, m_connection_is_self_hosted);
-#endif // !GLOM_ENABLE_CLIENT_ONLY
+
+    switch(m_hosting_mode)
+    {
+    case POSTGRES_CENTRAL_HOSTED:
+      set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_CENTRAL);
+      break;
+    case POSTGRES_SELF_HOSTED:
+      set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_SELF);
+      break;
+    case SQLITE_HOSTED:
+      set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_SQLITE);
+      break;
+    default:
+      g_assert_not_reached();
+      break;
+    }
 
     set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SERVER, m_connection_server);
     set_node_attribute_value_as_decimal(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_PORT, m_connection_port);
@@ -3852,8 +3896,9 @@ guint Document_Glom::get_latest_known_document_format_version()
   // History:
   // Version 0: The first document format. (And the default version number when no version number was saved in the .XML)
   // Version 1: Saved scripts and other multiline text in text nodes instead of attributes. Can open Version 1 documents.
+  // Version 2: hosting_mode="postgres-central|postgres-self|sqlite" instead of self_hosted="true|false". Can open Version 1 documents, by falling back to the self_hosted attribute if hosting_mode is not set.
 
-  return 1;
+  return 2;
 }
 
 std::vector<Glib::ustring> Document_Glom::get_library_module_names() const
