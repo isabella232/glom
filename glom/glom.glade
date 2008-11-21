@@ -1539,13 +1539,23 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkLabel" id="import_csv_error_label">
+              <widget class="GtkLabel" id="import_csv_advice_label">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
-                <property name="label" translatable="yes">label</property>
+                <property name="label" translatable="no"></property>
               </widget>
               <packing>
                 <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkLabel" id="import_csv_error_label">
+                <property name="visible">True</property>
+                <property name="xalign">0</property>
+                <property name="label" translatable="no">label</property>
+              </widget>
+              <packing>
+                <property name="position">3</property>
               </packing>
             </child>
           </widget>

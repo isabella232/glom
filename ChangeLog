@@ -1,5 +1,13 @@
 2008-11-21  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/glom.glade: dialog_import_csv: Added a lable for advice about 
+	the expected data format.
+	* glom/dialog_import_csv.cc: Constructor: Generate advice text in the 
+	label, showing an example of the expected ISO date format.
+	Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/299591
+
+2008-11-21  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/frame_glom.cc: on_menu_file_export(): Correct the order of 
 	parameters to Document_Glom::get_data_layout_groups_plus_new_fields() 
 	so we actually get a sensible default set of fields instead of nothing.

@@ -240,6 +240,7 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
   refGlade->get_widget("import_csv_encoding_info", m_encoding_info);
   refGlade->get_widget("import_csv_first_line_as_title", m_first_line_as_title);
   refGlade->get_widget("import_csv_sample_rows", m_sample_rows);
+  refGlade->get_widget("import_csv_advice_label", m_advice_label);
   refGlade->get_widget("import_csv_error_label", m_error_label);
   if(!m_sample_view || !m_encoding_combo || !m_target_table || !m_encoding_info || !m_first_line_as_title || !m_sample_rows || !m_error_label)
     throw std::runtime_error("Missing widgets from glade file for Dialog_Import_CSV");
@@ -273,6 +274,24 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
   m_sample_rows->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_sample_rows_changed));
 
   m_sample_view->set_headers_visible(m_first_line_as_title->get_active());
+
+
+  //Warn the user about the numeric and date formats expected:
+
+  //A date that is really really the date that we mean:
+  tm the_c_time;
+  memset(&the_c_time, 0, sizeof(the_c_time));
+
+  //We mean 22nd November 2008:
+  the_c_time.tm_year = 2008 - 1900; //C years start are the AD year - 1900. So, 01 is 1901.
+  the_c_time.tm_mon = 11 - 1; //C months start at 0.
+  the_c_time.tm_mday = 22; //starts at 1
+
+  //Get the ISO (not current locale) text representation:
+  const Glib::ustring date_text = Glom::Conversions::format_date(the_c_time, std::locale() /* ignored */, true /* iso_format */);
+  const Glib::ustring advice = Glib::ustring::compose(_("Note that the source file should contain numbers and dates in international ISO format. For instance, 22nd November 2008 should be %1."), date_text);
+  m_advice_label->set_text(advice);
+  std::cout << "DEBUG: advice=" << advice << std::endl;
 
   clear();
 }
