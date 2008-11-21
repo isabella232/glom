@@ -55,6 +55,21 @@ namespace Conversions
   tm parse_time(const Glib::ustring& text, bool& success);
   tm parse_time(const Glib::ustring& text, const std::locale& locale, bool& success);
 
+  /** Check that Glom can parse text representations of dates for which is has 
+   * itself created the text representation.
+   * This may fail in some locales if a translation of the date format is missing.
+   *
+   * @result true if parsing is working.
+   */
+  bool sanity_check_date_parsing();
+
+  /** Check that Glom uses 4 digits to show years in text representations of dates.
+   * This may fail in some locales if a translation of the date format is missing.
+   *
+   * @result true if 4 digits are used.
+   */
+  bool sanity_check_date_text_representation_uses_4_digit_years();
+
   Glib::ustring format_tm(const tm& tm_data, const std::locale& locale, const char* format);
   //static tm parse_tm(const Glib::ustring& text, const std::locale& locale, char format);
 

@@ -47,7 +47,7 @@ void evaluate_function_implementation(const Glib::ustring& func_impl)
   
   Py_Initialize();
 
-  PyObject* pMain = PyImport_AddModule("__main__");
+  PyObject* pMain = PyImport_AddModule((gchar*)"__main__");
   PyObject* pDict = PyModule_GetDict(pMain);
 
   //Create the function definition:

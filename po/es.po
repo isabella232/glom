@@ -2309,7 +2309,7 @@ msgstr "%X"
 #: ../glom/libglom/data_structure/glomconversions.cc:67
 #, c-format
 msgid "%x"
-msgstr "%x"
+msgstr "%d/%m/%Y"
 
 #: ../glom/libglom/data_structure/layout/layoutitem_button.cc:67
 #: ../glom/libglom/data_structure/translatable_item.cc:300

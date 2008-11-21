@@ -1349,9 +1349,10 @@ void DbAddDel::set_ignore_treeview_signals(bool ignore)
 }
 
 DbAddDel::InnerIgnore::InnerIgnore(DbAddDel* pOuter)
+: m_pOuter(pOuter),
+  m_bPreventUserSignals(false),
+  m_bIgnoreTreeViewSignals(false)
 {
-  m_pOuter = pOuter;
-
   if(m_pOuter)
   {
     m_bPreventUserSignals = m_pOuter->get_prevent_user_signals();
