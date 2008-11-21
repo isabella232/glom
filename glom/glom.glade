@@ -331,7 +331,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="has_tooltip">True</property>
-                <property name="tooltip_text">Applies the currently selected item. Depending on the item, this might create a new document or open an existing document.</property>
+                <property name="tooltip_text" translatable="yes">Applies the currently selected item. Depending on the item, this might create a new document or open an existing document.</property>
                 <property name="label" translatable="yes">_Select</property>
                 <property name="use_underline">True</property>
                 <property name="response_id">0</property>
