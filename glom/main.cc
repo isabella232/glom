@@ -272,8 +272,8 @@ main(int argc, char* argv[])
     // Some more sanity checking:
     // These print errors to the stdout if they fail.
     // In future we might refuse to start if they fail.
-    const bool test1 = Glom::Conversions::sanity_check_date_parsing();
-    const bool test2 = Glom::Conversions::sanity_check_date_text_representation_uses_4_digit_years();
+    const bool test1 = Glom::Conversions::sanity_check_date_text_representation_uses_4_digit_years();
+    const bool test2 = Glom::Conversions::sanity_check_date_parsing();
     if(!test1 || !test2)
     {
       std::cerr << "Glom: ERROR: Date parsing sanity checks failed. Glom will not display dates correctly or interperet entered dates correctly. This needs attention from a translator. Please file a bug. See http://www.glom.org." << std::endl;
