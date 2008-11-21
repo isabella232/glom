@@ -136,6 +136,7 @@ protected:
   Gtk::Label* m_encoding_info;
   Gtk::CheckButton* m_first_line_as_title;
   Gtk::SpinButton* m_sample_rows;
+  Gtk::Label* m_advice_label;
   Gtk::Label* m_error_label;
 
   Glib::RefPtr<Gio::File> m_file;
