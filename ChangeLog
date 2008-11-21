@@ -1,3 +1,19 @@
+2008-11-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/data_structure/glomconversions.[h|cc]:
+	Added sanity_check_date_parsing() and 
+	sanity_check_date_text_representation_uses_4_digit_years().
+	* glom/main.cc: Use them to show informative warnings at startup.
+	The translators comment for %x mentions those warnings now too.
+	* po/es.po: Add a translation for %x because the es locales do not 
+	use 4-digit years for this.
+	Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/300057
+
+	* glom/test_pyembed.cc: Add a cast to avoid a warning.
+	* glom/utility_widgets/db_adddel/db_adddel.cc: Initialize InnerIgnore 
+	members to avoid warnings, though these would always be initialized in 
+	real life.
+
 2008-11-17  Armin Burgmeier  <armin@arbur.net>
 
 	* glom/libglom/connectionpool.h: Removed postgres-specific function,

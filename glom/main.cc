@@ -31,6 +31,9 @@
 #include <glom/libglom/connectionpool_backends/postgres_central.h>
 #include <glom/libglom/connectionpool_backends/postgres_self.h>
 
+// For sanity checks:
+#include <glom/libglom/data_structure/glomconversions.h> // For GLOM_IMAGE_FORMAT
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #include <gtksourceviewmm/init.h>
 #include <goocanvasmm/init.h>
@@ -268,6 +271,18 @@ main(int argc, char* argv[])
     // So just prevent this in general. It is safer anyway.
     if(!Glom::ConnectionPool::check_user_is_not_root())
       return -1;
+
+
+    // Some more sanity checking:
+    // These print errors to the stdout if they fail.
+    // In future we might refuse to start if they fail.
+    const bool test1 = Glom::Conversions::sanity_check_date_parsing();
+    const bool test2 = Glom::Conversions::sanity_check_date_text_representation_uses_4_digit_years();
+    if(!test1 || !test2)
+    {
+      std::cerr << "Glom: ERROR: Date parsing sanity checks failed. Glom will not display dates correctly or interperet entered dates correctly. This needs attention from a translator. Please file a bug. See http://www.glom.org." << std::endl;
+    }
+
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     // Main app
