@@ -1,5 +1,11 @@
 2008-11-21  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/glom_developer.glade: Corrected a button name to avoid a crash 
+	when editing reports.
+	Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/300054
+
+2008-11-21  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/glom.glade: dialog_import_csv: Added a lable for advice about 
 	the expected data format.
 	* glom/dialog_import_csv.cc: Constructor: Generate advice text in the 
