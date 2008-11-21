@@ -4648,7 +4648,7 @@ Which user should be added to this group?</property>
                               </packing>
                             </child>
                             <child>
-                              <widget class="GtkButton" id="button_field_down">
+                              <widget class="GtkButton" id="button_down">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="can_default">True</property>
