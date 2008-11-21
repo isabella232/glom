@@ -1,5 +1,10 @@
 2008-11-21  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/glom.glade: Mark a tooltip as translatable in the initial dialog.
+	Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/299556
+
+2008-11-21  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/data_structure/glomconversions.c: 
 	sanity_check_date_text_representation_uses_4_digit_years(): 
 	Default to dd/mm/yyyy for dates when the translator has not provided 
