@@ -1,3 +1,11 @@
+2008-11-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/data_structure/glomconversions.c: 
+	sanity_check_date_text_representation_uses_4_digit_years(): 
+	Default to dd/mm/yyyy for dates when the translator has not provided 
+	a 4-digit-year date syntax for the locale, printing a warning that the 
+	default might not be suitable. This seems better than failing.
+
 2008-11-21  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/connectionpool.h: Changed connect() and
@@ -33,6 +41,7 @@
 	this way, but some initial queries still fail yet because they are
 	specific to postgres.
 
+>>>>>>> .r1726
 2008-11-21  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/data_structure/glomconversions.[h|cc]:

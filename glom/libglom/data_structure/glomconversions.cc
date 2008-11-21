@@ -61,10 +61,25 @@ Glib::ustring Conversions::format_date(const tm& tm_data)
 
 #define GLOM_NON_TRANSLATED_LOCALE_DATE_FORMAT "%x"
 
-static const char* glom_get_locale_date_format()
+// The % format to use to print and interpret dates, with 4-digit years:
+static const gchar* c_locale_date_format = 0;
+
+static inline const char* glom_get_locale_date_format()
 {
-  /* TRANSLATORS: Please only translate this string if you know that strftime() shows only 2 year digits when using format "x". We want to always display 4 year digits. For instance, en_GB should translate it to "%d/%m/%Y". Glom will show a warning in the terminal at startup if this is necessary. Thanks. */
-  return _("%x");
+  if(!c_locale_date_format)
+  {
+    /* TRANSLATORS: Please only translate this string if you know that strftime() 
+     * shows only 2 year digits when using format "x". We want to always display 
+     * 4 year digits. For instance, en_GB should translate it to "%d/%m/%Y". 
+     * Glom will show a warning in the terminal at startup if this is necessary 
+     * and default to %d/%m/%Y" if it detects a problem, but that might not be 
+     * correct for your locale.
+     * Thanks.
+     */
+    c_locale_date_format = _("%x");
+  }
+
+  return c_locale_date_format;
 }
 
 Glib::ustring Conversions::format_date(const tm& tm_data, const std::locale& locale, bool iso_format)
@@ -131,7 +146,7 @@ bool Conversions::sanity_check_date_text_representation_uses_4_digit_years()
 
   //Get the current locale's text representation:
   const Glib::ustring date_text = format_date(the_c_time);
-  //std::cout << "DEBUG: 22nd November 2008 in this locale has this text represention: " << date_text << std::endl;
+  std::cout << "DEBUG: 22nd November 2008 in this locale has this text represention: " << date_text << std::endl;
 
   //See if the year appears in full in that date.
   //There are probably some locales for which this fails.
@@ -140,7 +155,12 @@ bool Conversions::sanity_check_date_text_representation_uses_4_digit_years()
   if(pos == Glib::ustring::npos)
   {
     //Note to translators: If you see this error in the terminal at startup then you need to translate the %x elsewhere.
-    std::cerr << _("ERROR: sanity_check_date_text_represenation_uses_4_digit_year(): Sanity check failed: Glom does not seem to use 4 digits to display years in a date's text representation, in this locale.") << std::endl;
+    std::cerr << _("ERROR: sanity_check_date_text_represenation_uses_4_digit_year(): Sanity check failed: Glom does not seem to use 4 digits to display years in a date's text representation, in this locale. Defaulting to dd/mm/yyyy though this might be incorrect for your locale. This needs attention from a translator. Please file a bug - see http://www.glom.org") << std::endl;
+
+    //Do not depend on translators to do what we ask.
+    //Default to a common format, though this would be incorrect in some 
+    //locales, such as German.
+    c_locale_date_format = "%d/%m/%Y";
 
     return false;
   }

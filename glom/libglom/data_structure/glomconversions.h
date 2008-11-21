@@ -65,6 +65,8 @@ namespace Conversions
 
   /** Check that Glom uses 4 digits to show years in text representations of dates.
    * This may fail in some locales if a translation of the date format is missing.
+   * If it fails then Glom will default to using a dd/mm/yy format, which 
+   * might be incorrect for the locale.
    *
    * @result true if 4 digits are used.
    */
