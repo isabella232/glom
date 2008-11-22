@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: glom.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&amp;component=general\n"
-"POT-Creation-Date: 2008-11-21 15:56+0000\n"
-"PO-Revision-Date: 2008-11-22 16:16+0100\n"
+"POT-Creation-Date: 2008-11-22 17:02+0000\n"
+"PO-Revision-Date: 2008-11-22 18:11+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -605,60 +605,75 @@ msgstr "Rumano"
 msgid "Vietnamese"
 msgstr "Vietnamita"
 
-#: ../glom/dialog_import_csv.cc:250
+#: ../glom/dialog_import_csv.cc:251
 msgid "Auto Detect"
 msgstr "Autodetectar"
 
-#: ../glom/dialog_import_csv.cc:287
+#. We mean 22nd November 2008:
+#. C years start are the AD year - 1900. So, 01 is 1901.
+#. C months start at 0.
+#. starts at 1
+#. Get the ISO (not current locale) text representation:
+#. ignored
+#. iso_format
+#: ../glom/dialog_import_csv.cc:292
+msgid ""
+"Note that the source file should contain numbers and dates in international "
+"ISO format. For instance, 22nd November 2008 should be %1."
+msgstr ""
+"Note que el archivo origen debería contener números y fechas en el formato "
+"internacional ISO. Por ejemplo, 22 de noviembre de 2008 debería ser %1."
+
+#: ../glom/dialog_import_csv.cc:306
 msgid "No Document Available"
 msgstr "No hay un documento disponible"
 
-#: ../glom/dialog_import_csv.cc:287
+#: ../glom/dialog_import_csv.cc:306
 msgid "You need to open a document to import the data into a table."
 msgstr "Necesita abrir un documento para importar los datos en una tabla."
 
-#: ../glom/dialog_import_csv.cc:298
+#: ../glom/dialog_import_csv.cc:317
 msgid "Import From CSV File"
 msgstr "Importar desde un archivo CSV"
 
-#: ../glom/dialog_import_csv.cc:303
+#: ../glom/dialog_import_csv.cc:322
 msgid "<None>"
 msgstr "<Ninguno>"
 
-#: ../glom/dialog_import_csv.cc:389
+#: ../glom/dialog_import_csv.cc:408
 msgid "Error Importing CSV File"
 msgstr "Error al importar el archivo CSV"
 
-#: ../glom/dialog_import_csv.cc:413
+#: ../glom/dialog_import_csv.cc:432
 msgid " - Import From CSV File"
 msgstr " - Importar desde un archivo CSV"
 
-#: ../glom/dialog_import_csv.cc:432
+#: ../glom/dialog_import_csv.cc:451
 msgid "Could Not Open file"
 msgstr "No se pudo abrir el archivo"
 
-#: ../glom/dialog_import_csv.cc:432
+#: ../glom/dialog_import_csv.cc:451
 msgid "The file at \"%1\" could not be opened: %2"
 msgstr "El archivo en «%1» no se pudo abrir: «%2»"
 
-#: ../glom/dialog_import_csv.cc:474
+#: ../glom/dialog_import_csv.cc:493
 msgid "Could Not Read File"
 msgstr "No se pudo leer el archivo"
 
-#: ../glom/dialog_import_csv.cc:474
+#: ../glom/dialog_import_csv.cc:493
 msgid "The file at \"%1\" could not be read: %2"
 msgstr "El archivo de «%1» no se pudo leer: «%2»"
 
-#: ../glom/dialog_import_csv.cc:617
+#: ../glom/dialog_import_csv.cc:636
 msgid "Encoding detected as: %1"
 msgstr "Codificación detectada como: %1"
 
-#: ../glom/dialog_import_csv.cc:661
+#: ../glom/dialog_import_csv.cc:680
 msgid "Encoding detection failed. Please manually choose one from the box."
 msgstr ""
 "Falló la detección de la codificación. Seleccione una manualmente de la caja."
 
-#: ../glom/dialog_import_csv.cc:665
+#: ../glom/dialog_import_csv.cc:684
 msgid ""
 "The file contains data not in the specified encoding. Please choose another "
 "one, or try \"Auto Detect\"."
@@ -667,24 +682,24 @@ msgstr ""
 "una codificación, o pruebe «Autodetectar»."
 
 #. Note to translators: This is a straight line, not a database row.
-#: ../glom/dialog_import_csv.cc:803
+#: ../glom/dialog_import_csv.cc:822
 #: ../glom/libglom/data_structure/layout/layoutitem_line.cc:82
 msgid "Line"
 msgstr "Línea"
 
-#: ../glom/dialog_import_csv.cc:851
+#: ../glom/dialog_import_csv.cc:870
 msgid "Target Field"
 msgstr "Campo destino"
 
-#: ../glom/dialog_import_csv.cc:888
+#: ../glom/dialog_import_csv.cc:907
 msgid "<Import Failure>"
 msgstr "<Fallo al importar>"
 
-#: ../glom/dialog_import_csv.cc:897
+#: ../glom/dialog_import_csv.cc:916
 msgid "<Picture>"
 msgstr "<Imagen>"
 
-#: ../glom/dialog_import_csv.cc:997
+#: ../glom/dialog_import_csv.cc:1016
 msgid ""
 "One column needs to be assigned the table's primary key (<b>%1</b>) as "
 "target field before importing"
