@@ -1984,6 +1984,14 @@ msgid "<span weight=\"bold\" size=\"larger\">Open or create a Document</span>"
 msgstr "<span weight='bold' size='larger'>Abrir o crear un documento</span>"
 
 #: ../glom/glom.glade.h:17
+msgid ""
+"Applies the currently selected item. Depending on the item, this might "
+"create a new document or open an existing document."
+msgstr ""
+"Se aplica al elemento actualmente seleccionado. Dependiendo del elemento, "
+"esto puede crear un documento nuevo o abrir un documento existente."
+
+#: ../glom/glom.glade.h:17
 msgid "C_onnect"
 msgstr "C_onectar"
 

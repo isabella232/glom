@@ -1,5 +1,9 @@
 2008-11-22  Jorge Gonzalez  <jorgegonz@svn.gnome.org>  
 
+	* es.po: Added Spanish translation for another new string.
+
+2008-11-22  Jorge Gonzalez  <jorgegonz@svn.gnome.org>  
+
 	* es.po: Added Spanish translation for a new string.
 
 2008-10-18  Kjartan Maraas  <kmaraas@gnome.org>
@@ -8,7 +12,7 @@
 
 2007-04-01  Murray Cumming  <murrayc@murrayc.com>
 
-	po/en_GB.po: Restore the date printf format AGAIN that was removed by 
+	* po/en_GB.po: Restore the date printf format AGAIN that was removed by 
 	David Lodge AGAIN.
 	This date format translation corrects the parsing and display of 
 	4-digit dates.
