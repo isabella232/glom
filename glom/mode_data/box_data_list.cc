@@ -45,6 +45,7 @@ Box_Data_List::Box_Data_List()
   m_AddDel.set_rules_hint(); //Use alternating row colors when the theme does that.
 
   //Connect signals:
+  //The Add and Delete buttons are handled by the DbAddDel widget itself.
   m_AddDel.signal_user_requested_edit().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_requested_edit));
   m_AddDel.signal_script_button_clicked().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_script_button_clicked));
   

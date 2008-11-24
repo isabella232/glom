@@ -1,5 +1,17 @@
 2008-11-24  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.h: Removed 
+	the unused signal_user_requested_delete signal.
+	on_MenuPopup_activate_Delete() (also called when the button is pressed):
+	Actually call user_requested_delete(), so that the user can delete a 
+	list row. I forgot to do this when moving the other stuff down into 
+	DbAddDel.
+	Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/299853
+	(elmergato)
+
+2008-11-24  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/data_structure/glomconversions.cc
 	get_text_for_gda_value: Add a more specific warning when getting a 
 	text representation for a boolean, as done by the import dialog, though 

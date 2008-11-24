@@ -217,14 +217,6 @@ public:
 
   //Signals:
 
-
-  /** 
-   * @param start_row
-   * @param end_row
-   */
-  typedef sigc::signal<void, const Gtk::TreeModel::iterator&, const Gtk::TreeModel::iterator&> type_signal_user_requested_delete;
-  type_signal_user_requested_delete signal_user_requested_delete();
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   /** Emitted when the user wants to edit the layout of the items in this widget.
    */
@@ -408,7 +400,6 @@ protected:
   Gtk::TreeViewColumn* m_treeviewcolumn_button;
 
   //signals:
-  type_signal_user_requested_delete m_signal_user_requested_delete;
   type_signal_user_requested_edit m_signal_user_requested_edit;
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   type_signal_user_requested_layout m_signal_user_requested_layout;
