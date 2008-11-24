@@ -1507,7 +1507,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
     {
       if(get_is_placeholder_row(iter))
       {
-        bool bPreventUserSignals = get_prevent_user_signals();
+        const bool bPreventUserSignals = get_prevent_user_signals();
         set_prevent_user_signals(true); //Stops extra signal_user_changed.
 
         //Mark this row as no longer a placeholder, because it has data now. The client code must set an actual key for this in the signal_user_added() or m_signal_user_changed signal handlers.
@@ -2139,6 +2139,8 @@ bool DbAddDel::start_new_record()
 void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
 {
   const Gnome::Gda::Value parent_primary_key_value = get_value_key(row);
+  std::cout << "DbAddDel::user_changed(): parent_primary_key_value=" << parent_primary_key_value.to_string() << std::endl;
+ 
   sharedptr<const LayoutItem_Field> layout_field = get_column_field(col);
 
   if(!Conversions::value_is_empty(parent_primary_key_value)) //If the record's primary key is filled in:
@@ -2270,6 +2272,8 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
 
 void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
 {
+  std::cout << "DEBUG: DbAddDel::user_added()" << std::endl;
+
   //Prevent impossible multiple related records:
   if(m_allow_only_one_related_record && (get_count() > 0))
   {
@@ -2292,7 +2296,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
   if(primary_key_field->get_auto_increment())
   {
     //Auto-increment is awkward (we can't get the last-generated ID) with postgres, so we auto-generate it ourselves;
-    const Glib::ustring& strPrimaryKeyName = primary_key_field->get_name();
+    const Glib::ustring strPrimaryKeyName = primary_key_field->get_name();
     primary_key_value = get_next_auto_increment_value(m_found_set.m_table_name, strPrimaryKeyName);  //TODO: return a Gnome::Gda::Value of an appropriate type.
   }
   else
@@ -2314,7 +2318,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
 #else
     std::auto_ptr<ExceptionConnection> error;
     sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window(), error); //Keep it alive while we need the data_model.
-    // Ignore error, sharedconnection presence is checked below
+    // Ignore error - sharedconnection is checked for NULL instead:
 #endif
     if(sharedconnection)
     {
@@ -2332,7 +2336,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
       if(data_model)
       {
         //Save the primary key value for later use:
-        //record_new() did this: set_value_key(row, primary_key_value);
+        set_value_key(row, primary_key_value);
 
         //Show the primary key in the row, if the primary key is visible:
 
