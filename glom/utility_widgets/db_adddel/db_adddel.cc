@@ -207,7 +207,7 @@ void DbAddDel::on_MenuPopup_activate_Delete()
     if(iter)
     {
       //TODO: We can't handle multiple-selections yet.
-      signal_user_requested_delete().emit(iter, iter);
+      user_requested_delete(iter, iter);
     }
   }
 }
@@ -1624,11 +1624,6 @@ DbAddDel::type_signal_user_requested_layout DbAddDel::signal_user_requested_layo
   return m_signal_user_requested_layout;
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-
-DbAddDel::type_signal_user_requested_delete DbAddDel::signal_user_requested_delete()
-{
-  return m_signal_user_requested_delete;
-}
 
 DbAddDel::type_signal_user_requested_edit DbAddDel::signal_user_requested_edit()
 {
