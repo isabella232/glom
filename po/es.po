@@ -595,6 +595,15 @@ msgstr "No hay un documento disponible"
 msgid "You need to open a document to import the data into a table."
 msgstr "Necesita abrir un documento para importar los datos en una tabla."
 
+#: ../glom/dialog_import_csv.cc:292
+msgid ""
+"Note that the source file should contain numbers and dates in international "
+"ISO format. For instance, 22nd November 2008 should be %1."
+msgstr ""
+"Note que el archivo origen debería contener números y fechas en el formato "
+"internacional ISO. Por ejemplo, 22 de noviembre de 2008 debería ser %1."
+
+
 #: ../glom/dialog_import_csv.cc:293
 msgid "Import From CSV File"
 msgstr "Importar desde un archivo CSV"
