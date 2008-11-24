@@ -1,13 +1,21 @@
 2008-11-24  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/db_adddel/db_adddel.cc
+	user_added(): Call set_value_key(), like the old code did.
+	Otherwise, each field edit adds another record, generating a new primary 
+	key each time, resulting in duplicate records.
+	Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/300819
+	(elmergato)
+
+2008-11-24  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_design/users/dialog_groups_list.cc: on_button_group_new():
 	Put quotes around the group name, to avoid a problem when it contains a 
 	space.
 
 2008-11-24  Murray Cumming  <murrayc@murrayc.com>
 
-	* glom/utility_widgets/db_adddel/db_adddel.cc:
-	* glom/utility_widgets/db_adddel/db_adddel.h: Removed 
+	* glom/utility_widgets/db_adddel/db_adddel.[h|cc]: Removed 
 	the unused signal_user_requested_delete signal.
 	on_MenuPopup_activate_Delete() (also called when the button is pressed):
 	Actually call user_requested_delete(), so that the user can delete a 
