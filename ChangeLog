@@ -1,5 +1,11 @@
 2008-11-24  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_design/users/dialog_groups_list.cc: on_button_group_new():
+	Put quotes around the group name, to avoid a problem when it contains a 
+	space.
+
+2008-11-24  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/db_adddel/db_adddel.cc:
 	* glom/utility_widgets/db_adddel/db_adddel.h: Removed 
 	the unused signal_user_requested_delete signal.

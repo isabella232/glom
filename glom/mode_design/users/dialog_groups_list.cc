@@ -260,7 +260,7 @@ void Dialog_GroupsList::on_button_group_new()
 
   if(!group_name.empty())
   {
-    Glib::ustring strQuery = "CREATE GROUP " + group_name;
+    const Glib::ustring strQuery = "CREATE GROUP \"" + group_name + "\"";
     Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(strQuery, this);
 
     //Give the new group some sensible default privileges:
@@ -401,10 +401,10 @@ void Dialog_GroupsList::fill_table_list(const Glib::ustring& group_name)
   Document_Glom* pDocument = get_document();
   if(pDocument)
   {
-     // Make sure that these are in the document,
-     // so that the correct groups will be created if we recreate the database from the document:
-     GroupInfo group_info;
-     group_info.set_name(group_name);
+    // Make sure that these are in the document,
+    // so that the correct groups will be created if we recreate the database from the document:
+    GroupInfo group_info;
+    group_info.set_name(group_name);
 
     Document_Glom::type_listTableInfo table_list = pDocument->get_tables(true /* plus system prefs */);
 
