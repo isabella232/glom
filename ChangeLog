@@ -1,3 +1,10 @@
+2008-11-24  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/data_structure/glomconversions.cc
+	get_text_for_gda_value: Add a more specific warning when getting a 
+	text representation for a boolean, as done by the import dialog, though 
+	it should not really. Return translated true/false strings in that case.
+
 2008-11-21  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/glom_developer.glade: Corrected a button name to avoid a crash 

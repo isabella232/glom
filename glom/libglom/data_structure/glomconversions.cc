@@ -382,11 +382,11 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
 
     return text; //Do something like Glib::locale_to_utf(), but with the specified locale instead of the current locale.
   }
-  else if (glom_type == Field::TYPE_TEXT)
+  else if(glom_type == Field::TYPE_TEXT)
   {
      return value.get_string();
   }
-  else if (glom_type == Field::TYPE_IMAGE)
+  else if(glom_type == Field::TYPE_IMAGE)
   {
     //Return the binary-as-escaped-text format, suitable for use in the document. 
     std::string result;
@@ -396,6 +396,22 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
       result = Conversions::get_escaped_binary_data((guint8*)buffer, buffer_length);
 
     return result;
+  }
+  else if(glom_type == Field::TYPE_BOOLEAN)
+  {
+    const bool val = value.get_boolean();
+
+    //Careful: Text representations for booleans should generally not be used.
+    //TODO: This is currently used by the import dialog. That should really use a checkbox instead. 
+    if(iso_format)
+      return (val ? "TRUE" : "FALSE");
+    else
+    {
+      std::cerr << "Warning: Conversions::get_text_for_gda_value(): Generating a text representation of a boolean. A checkbox should be used instead." << std::endl;
+
+      //TODO: Not only should we not use these in the UI, but we are ignoring the specified locale for this function:
+      return (val ? _("True") : _("False"));
+    }
   }
   else
   {
