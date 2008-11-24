@@ -1166,7 +1166,15 @@ void Frame_Glom::update_table_in_document_from_database()
               //The database has different information. We assume that the information in the database is newer.
 
               //Update the field information:
-              field_info_db->set_auto_increment( field_document->get_auto_increment() ); //libgda does not report it from the database properly.
+
+              // Ignore things that libgda does not report from the database properly:
+              // We do this also in Field::field_info_from_database_is_equal() and 
+              // Base_DB::get_fields_for_table(), 
+              // so make sure that we ignore the same things everywhere always
+              // TODO: Avoid that duplication?
+              field_info_db->set_auto_increment( field_document->get_auto_increment() );
+              field_info_db->set_default_value( field_document->get_default_value() );
+
               (*iterFindDoc)->set_field_info( field_info_db );
 
               document_must_be_updated = true;

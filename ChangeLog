@@ -1,5 +1,19 @@
 2008-11-24  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/frame_glom.cc: update_table_in_document_from_database:
+	Ignore the default_value property from libgda/database, because we only 
+	use it from the document, because libgda returns weird values.
+	This prevents the loss of the default value information when reloading 
+	a document.
+	Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/299896
+	(elmergato)
+
+2008-11-24  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/frame_glom.cc:
+
+2008-11-24  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/db_adddel/db_adddel.cc
 	user_added(): Call set_value_key(), like the old code did.
 	Otherwise, each field edit adds another record, generating a new primary 
