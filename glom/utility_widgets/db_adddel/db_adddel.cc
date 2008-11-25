@@ -2139,7 +2139,7 @@ bool DbAddDel::start_new_record()
 void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
 {
   const Gnome::Gda::Value parent_primary_key_value = get_value_key(row);
-  std::cout << "DbAddDel::user_changed(): parent_primary_key_value=" << parent_primary_key_value.to_string() << std::endl;
+  //std::cout << "DbAddDel::user_changed(): parent_primary_key_value=" << parent_primary_key_value.to_string() << std::endl;
  
   sharedptr<const LayoutItem_Field> layout_field = get_column_field(col);
 
