@@ -224,7 +224,7 @@ void Dialog_Layout_Export::get_layout_groups(Document_Glom::type_list_layout_gro
   //Get the data from the TreeView and store it in the document:
 
   //Get the groups and their fields:
-  Document_Glom::type_list_layout_groups mapGroups;
+  Document_Glom::type_list_layout_groups groups;
 
   //Add the fields to the one group:
   sharedptr<LayoutGroup> others = sharedptr<LayoutGroup>::create();
@@ -245,9 +245,8 @@ void Dialog_Layout_Export::get_layout_groups(Document_Glom::type_list_layout_gro
     }
   }
 
-  mapGroups[1] = others;
-
-  layout_groups = mapGroups;
+  groups.push_back(others);
+  layout_groups.swap(groups);
 }
 
 void Dialog_Layout_Export::on_treeview_fields_selection_changed()

@@ -1,3 +1,9 @@
+2008-11-25  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/mode_data/dialog_layout_export.cc (get_layout_groups): Fixed a
+	crash which was caused by accessing mapGroups[1] in a
+	default-constructed vector. Bug #557052.
+
 2008-11-25  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/utils.[h|cc]:
