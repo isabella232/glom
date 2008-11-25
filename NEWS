@@ -1,3 +1,37 @@
+1.8.2:
+
+* Date fields:
+  - Attempt to guess a 4-digit-year date format for display and 
+  entry, if the translator has not provided one. This will sometimes be correct.
+  - Specify a suitable 4-digit year date format for the Spanish locale.
+  Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/300057
+* List:
+  - Do not add multiple records when entering data for one new record.
+  Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/300819
+  (elmergato)
+  - Make the Delete button work again. 
+  Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/299853
+  (elmergato)
+* Details: Do not crash if there is no primary key, though this cannot happen now.
+* Field Definitions:
+  - Refuse to allow no primary key.
+    Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/299549
+    (elmergato)
+    Glom bug #562147
+  - Do not lose default values when reloading the document.
+    Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/299896
+    (elmergato)
+* Users: Avoid a failure when a group name contains a space.
+* Reports: Avoid a crash when editing reports.
+  Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/300054
+  (elmergato)
+* Import: Add a warning label telling people that the data should be in 
+  international ISO format, not the format for the current locale.
+  Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/299591
+* Initial dialog: Mark a tooltip as translatable in the initial dialog.
+  Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/299556
+* Build: Adapt to latest goocanvasmm API.
+
 1.8.1:
 
 * Related records: Show the specified fields, not all fields.

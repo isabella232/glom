@@ -38,10 +38,6 @@
 
 2008-11-24  Murray Cumming  <murrayc@murrayc.com>
 
-	* glom/frame_glom.cc:
-
-2008-11-24  Murray Cumming  <murrayc@murrayc.com>
-
 	* glom/utility_widgets/db_adddel/db_adddel.cc
 	user_added(): Call set_value_key(), like the old code did.
 	Otherwise, each field edit adds another record, generating a new primary 
@@ -74,7 +70,7 @@
 
 2008-11-21  Murray Cumming  <murrayc@murrayc.com>
 
-	* glom/glom.glade: dialog_import_csv: Added a lable for advice about 
+	* glom/glom.glade: dialog_import_csv: Added a label for advice about 
 	the expected data format.
 	* glom/dialog_import_csv.cc: Constructor: Generate advice text in the 
 	label, showing an example of the expected ISO date format.
