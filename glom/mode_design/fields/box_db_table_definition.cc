@@ -243,33 +243,51 @@ bool Box_DB_Table_Definition::check_field_change(const sharedptr<const Field>& f
   //Refuse to edit field definitions that were not created by glom:
   if(Field::get_glom_type_for_gda_type( field_old->get_field_info()->get_g_type() )  == Field::TYPE_INVALID)
   {
-    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Invalid database structure")), true);
-    dialog.set_secondary_text(_("This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."));
-    if(parent_window)
-       dialog.set_transient_for(*parent_window);
-
-    dialog.run();
+    Utils::show_ok_dialog(_("Invalid database structure"),
+      _("This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."), parent_window, Gtk::MESSAGE_ERROR);
 
     return false;
   }
 
-  //Refuse to set a second primary key:
-  //bool bcontinue = true;
-  if(field_new->get_primary_key() && !field_old->get_primary_key()) //Was the primary key column checked?
+  //Refuse to have no primary key set:
+  if(field_old->get_primary_key() && !field_new->get_primary_key()) //Was the primary key column unchecked?
   {
-    //Is there an existing primary key?
-    sharedptr<Field> existing_primary_key = get_field_primary_key_for_table(m_table_name);
-    if(existing_primary_key)
-    {
-      //Warn the user and refuse to make the change:
-      Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Too many primary keys")), true);
-      dialog.set_secondary_text(_("You may not specify more than one field as the primary key."));
-      if(parent_window)
-        dialog.set_transient_for(*parent_window);
-      dialog.run();
+    Utils::show_ok_dialog(_("Primary key required"), 
+      _("You may not unset the primary key because the table must have a primary key. You may set another field as the primary key instead."), parent_window, Gtk::MESSAGE_ERROR);
 
       return false;
+  }
+
+
+  //Setting a different primary key:
+  if(field_new->get_primary_key() && !field_old->get_primary_key()) //Was the primary key column checked?
+  {
+    //Check for nulls:
+    if(field_has_null_values(field_old)) //Use the fieldOld because we only use the name, and we want to check the _existing_ field:
+    {
+      Utils::show_ok_dialog(_("Field contains empty values."), _("The field may not yet be used as a primary key because it contains empty values."), parent_window, Gtk::MESSAGE_ERROR);
+
+      //TODO: Offer to fill it in with generated ID numbers? That could give strange results if the existing values are human-readable.
+      return false;
     }
+
+    //Check that the values are unique:
+    if(field_has_non_unique_values(field_old)) //Use the fieldOld because we only use the name, and we want to check the _existing_ field:
+    {
+      Utils::show_ok_dialog(_("Field contains non-unique values."), _("The field may not yet be used as a primary key because it contains values that are not unique."), parent_window, Gtk::MESSAGE_ERROR);
+      return false;
+    }
+
+    //Ask the user to confirm this major change:
+    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Change primary key")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+    dialog.set_secondary_text(_("Are you sure that you wish to set this field as the primary key, instead of the existing primary key?"));
+    if(parent_window)
+      dialog.set_transient_for(*parent_window);
+
+    dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+    dialog.add_button(_("Change Primary Key"), Gtk::RESPONSE_OK);
+    if(dialog.run() != Gtk::RESPONSE_OK)
+      return false; //Otherwise, continue, allowing the change.
   }
 
   //Refuse to change a field name to the same as an existing one:
@@ -279,11 +297,8 @@ bool Box_DB_Table_Definition::check_field_change(const sharedptr<const Field>& f
     std::cout << "get_field_exists_in_database(" << m_table_name << ", " << field_new->get_name() << ") returned true" << std::endl;
 
     //Warn the user and refuse to make the change:
-    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Field Name Already Exists")), true);
-    dialog.set_secondary_text(_("This field already exists. Please choose a different field name"));
-    if(parent_window)
-      dialog.set_transient_for(*parent_window);
-    dialog.run();
+    Utils::show_ok_dialog(_("Field Name Already Exists"), 
+      _("This field already exists. Please choose a different field name"), parent_window, Gtk::MESSAGE_ERROR);
 
     return false;
   }
@@ -449,32 +464,24 @@ sharedptr<Field> Box_DB_Table_Definition::change_definition(const sharedptr<cons
 
   if(fieldOld->get_primary_key() != field->get_primary_key())
   {
-    //If setting the primarykeyness, check whether this is likely to succeed:
-    if(!fieldOld->get_primary_key() && field->get_primary_key())
+    //Note: We have already checked whether this change of primary key is likely to succeed.
+
+    if(field->get_primary_key())
     {
-      //Check for nulls:
-      if(field_has_null_values(fieldOld)) //Use the fieldOld because we only use the name, and we want to check the _existing_ field:
+      //Unset the current primary key:
+      //(There should be one.)
+      sharedptr<Field> existing_primary_key = get_field_primary_key_for_table(m_table_name);
+      if(existing_primary_key)
       {
-        Gtk::Window* window = const_cast<Gtk::Window*>(get_app_window());
-        if(window)
-          Frame_Glom::show_ok_dialog(_("Field contains empty values."), _("The field may not yet be used as a primary key because it contains empty values."), *window, Gtk::MESSAGE_WARNING);
-
-          //TODO: Offer to fill it in with generated ID numbers? That could give strange results if the existing values are human-readable.
-
-        return glom_sharedptr_clone(fieldOld); //No changes were made.
+        sharedptr<Field> existing_primary_key_unset = glom_sharedptr_clone(existing_primary_key);
+        existing_primary_key_unset->set_primary_key(false);
+        sharedptr<Field> changed = change_definition(existing_primary_key, existing_primary_key_unset);
+        if(!changed)
+        {
+          std::cerr << "Box_DB_Table_Definition::change_definition(): Failed to unset the old primary key before setting the new primary key." << std::endl;
+          return result;
+        }
       }
-
-      //Check that the values are unique:
-      if(field_has_non_unique_values(fieldOld)) //Use the fieldOld because we only use the name, and we want to check the _existing_ field:
-      {
-        Gtk::Window* window = const_cast<Gtk::Window*>(get_app_window());
-        if(window)
-          Frame_Glom::show_ok_dialog(_("Field contains non-unique values."), _("The field may not yet be used as a primary key because it contains values that are not unique."), *window, Gtk::MESSAGE_WARNING);
-
-        return glom_sharedptr_clone(fieldOld); //No changes were made.
-      }
-
-   
     }
 
     //Forget the remembered currently-viewed primary key value, 
@@ -790,7 +797,8 @@ bool Box_DB_Table_Definition::field_has_null_values(const sharedptr<const Field>
   }
   else
   {
-    g_warning("Box_DB_Table_Definition::field_has_null_values(): SELECT COUNT() failed.");
+    //This seems to be normal if there are no NULL values.
+    //g_warning("Box_DB_Table_Definition::field_has_null_values(): SELECT COUNT() failed.");
   }
 
    return null_count > 0; 

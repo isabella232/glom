@@ -1,3 +1,25 @@
+2008-11-25  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/utils.[h|cc]:
+	Added a show_ok_dialog() overload that takes the parent_window as a 
+	pointer to simplify code by avoiding the need for a null check by 
+	callers.
+
+	* glom/mode_design/fields/box_db_table_definition.cc: 
+	check_field_change(): Refuse to leave no primary key set because 
+	the rest of Glom expects each table to have one, by refusing to 
+	directly unset a primary key.
+	When setting a primary key, ask the user if they really want to _change_ 
+	the primary key, and do the suitability checks that were previously in  
+	change_definition().
+	change_definition(): When setting a primary key, unset the previous 
+	primary key first.
+
+	This prevents the table from ever having no primary key.
+	Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/299549
+	(elmergato)
+	Glom bug #562147
+
 2008-11-24  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data_details.cc: 

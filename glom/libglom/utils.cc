@@ -883,8 +883,7 @@ void Utils::show_help(const Glib::ustring& id)
 #endif
 }
 
-
-void Utils::show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window& parent, Gtk::MessageType message_type)
+void Utils::show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window* parent, Gtk::MessageType message_type)
 {
 #ifdef GLOM_ENABLE_MAEMO
   // TODO_maemo: Map message_type to a senseful stock_id?
@@ -892,9 +891,16 @@ void Utils::show_ok_dialog(const Glib::ustring& title, const Glib::ustring& mess
 #else
   Gtk::MessageDialog dialog("<b>" + title + "</b>", true /* markup */, message_type, Gtk::BUTTONS_OK);
   dialog.set_secondary_text(message);
-  dialog.set_transient_for(parent);
+  if(parent)
+    dialog.set_transient_for(*parent);
 #endif
+
   dialog.run();
+}
+
+void Utils::show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window& parent, Gtk::MessageType message_type)
+{
+  show_ok_dialog(title, message, &parent, message_type);
 }
 
 namespace
