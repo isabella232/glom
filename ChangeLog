@@ -1,6 +1,8 @@
+1.8.2:
+
 2008-11-26  Murray Cumming  <murrayc@murrayc.com>
 
-	* configure.in: Revert the dependency on libgda-4.0 I am not sure how 
+	* configure.in: Revert the dependency on libgda-4.0. I am not sure how 
 	that got into this branch.
 
 	* glom/relationships_overview/dialog_relationships_overview.[h|cc]:

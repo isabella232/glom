@@ -22,6 +22,9 @@
     Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/299896
     (elmergato)
 * Users: Avoid a failure when a group name contains a space.
+* Relationships Overview: Increase the canvas size when the window is resized, 
+  to avoid dead areas.
+  Bug #559157 (Iain Lane).
 * Reports: Avoid a crash when editing reports.
   Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/300054
   (elmergato)
@@ -30,7 +33,10 @@
   Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/299591
 * Initial dialog: Mark a tooltip as translatable in the initial dialog.
   Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/299556
-* Build: Adapt to latest goocanvasmm API.
+  (Muray Cumming)
+* Export: Avoid a crash when defining the fields to export.
+  (Armin Burgmeier)
+
 
 1.8.1:
 
