@@ -120,7 +120,7 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& layout_item)
   if(child_item)
   {
     //child_item->property_pointer_events() = 
-    //  (Goocanvas::PointerEvents)(Goocanvas::EVENTS_VISIBLE_FILL & GOO_CANVAS_EVENTS_VISIBLE_STROKE);
+    //  (Goocanvas::PointerEvents)(Goocanvas::CANVAS_EVENTS_VISIBLE_FILL & GOO_CANVAS_EVENTS_VISIBLE_STROKE);
       
     //Set the position and dimensions of this group to match the child:
     double x = 0;
@@ -330,7 +330,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
   if(child && child_item)
   {
     //child_item->property_pointer_events() = 
-    //  (Goocanvas::PointerEvents)(Goocanvas::EVENTS_VISIBLE_FILL & GOO_CANVAS_EVENTS_VISIBLE_STROKE);
+    //  (Goocanvas::PointerEvents)(Goocanvas::CANVAS_EVENTS_VISIBLE_FILL & GOO_CANVAS_EVENTS_VISIBLE_STROKE);
       
     //Set the position and dimensions of this group to match the child:
     double x = 0;

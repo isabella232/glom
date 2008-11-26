@@ -1,3 +1,11 @@
+2008-11-25  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_design/print_layouts/canvas_layout_item.cc:
+	* glom/mode_design/print_layouts/canvas_print_layout.cc:
+	* glom/utility_widgets/canvas/canvas_group_resizable.cc:
+	Revert back to the old goocanvasmm enum names to avoid the need for a 
+	new goocanvasmm release.
+
 2008-11-25  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/mode_data/dialog_layout_export.cc (get_layout_groups): Fixed a
