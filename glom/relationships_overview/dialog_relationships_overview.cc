@@ -39,7 +39,8 @@ int Dialog_RelationshipsOverview::m_last_size_y = 0;
 Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
   : Gtk::Dialog(cobject),
     m_menu(0),
-    m_modified(false)
+    m_modified(false),
+    m_scrolledwindow_canvas(0)
 {
   m_refPageSetup = Gtk::PageSetup::create();
   m_refSettings = Gtk::PrintSettings::create();
@@ -116,12 +117,13 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
 
 
   //Get the scolled window and add the canvas to it:
-  Gtk::ScrolledWindow* scrolledwindow_canvas = 0;
-  refGlade->get_widget("scrolledwindow_canvas", scrolledwindow_canvas);
+  m_scrolledwindow_canvas = 0;
+  refGlade->get_widget("scrolledwindow_canvas", m_scrolledwindow_canvas);
   
-  scrolledwindow_canvas->add(m_canvas);
+  m_scrolledwindow_canvas->add(m_canvas);
   m_canvas.show();
   
+  //Restore the previous window size, to avoid annoying the user:
   if(m_last_size_x != 0 && m_last_size_y != 0 )
   {
     set_default_size(m_last_size_x, m_last_size_y);
@@ -132,6 +134,13 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
   m_group_lines = Goocanvas::Group::create();
   m_canvas.add_item(m_group_lines);
   m_group_lines->lower(); //Make sure that the lines are below the tables.
+
+  //Respond to changes of window size, 
+  //so we always make the canvas bounds big enough: 
+  m_scrolledwindow_canvas->get_hadjustment()->signal_changed().connect(
+    sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_scroll_value_changed) );
+  m_scrolledwindow_canvas->get_vadjustment()->signal_changed().connect(
+    sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_scroll_value_changed) );
 
   setup_context_menu();
 }
@@ -508,6 +517,34 @@ void Dialog_RelationshipsOverview::on_context_menu_edit_relationships(const Glib
     pApp->do_menu_developer_relationships(*this, table->get_table_name());
     //draw_tables();
     //draw_lines();
+  }
+}
+
+
+void Dialog_RelationshipsOverview::on_scroll_value_changed()
+{
+  if(!m_scrolledwindow_canvas)
+    return;
+
+  double width = m_scrolledwindow_canvas->get_hadjustment()->get_page_size();
+  double height = m_scrolledwindow_canvas->get_vadjustment()->get_page_size();
+  double x = m_scrolledwindow_canvas->get_hadjustment()->get_value();
+  double y = m_scrolledwindow_canvas->get_vadjustment()->get_value();
+  
+  //Make sure that the canvas bounds are as big as the scrollable area:
+  double old_left = 0;
+  double old_top = 0;
+  double old_right = 0;
+  double old_bottom = 0;
+  m_canvas.get_bounds(old_left, old_top, old_right, old_bottom);
+  
+  const double old_height = old_bottom - old_top;
+  const double old_width = old_right - old_left;
+
+  if( (width > old_width) ||
+      (height > old_height) )
+  {
+    m_canvas.set_bounds(0, 0, width, height);
   }
 }
 

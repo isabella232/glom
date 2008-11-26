@@ -1,3 +1,11 @@
+2008-11-26  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/relationships_overview/dialog_relationships_overview.[h|cc]:
+	Respond to changes in the scrolledwindow adjustments to increase the 
+	canvas size when the window size changes, so it is always big enough, 
+	avoiding dead areas.
+	Bug #559157 (Iain Lane).
+
 2008-11-25  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/mode_data/dialog_layout_export.cc (get_layout_groups): Fixed a
