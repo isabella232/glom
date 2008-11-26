@@ -1,3 +1,14 @@
+2008-11-26  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in: Revert the dependency on libgda-4.0 I am not sure how 
+	that got into this branch.
+
+	* glom/relationships_overview/dialog_relationships_overview.[h|cc]:
+	Respond to changes in the scrolledwindow adjustments to increase the 
+	canvas size when the window size changes, so it is always big enough, 
+	avoiding dead areas.
+	Bug #559157 (Iain Lane).
+
 2008-11-25  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_design/print_layouts/canvas_layout_item.cc:

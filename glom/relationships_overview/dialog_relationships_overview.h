@@ -29,6 +29,7 @@
 #include <gtkmm/uimanager.h>
 #include <gtkmm/menubar.h>
 #include <gtkmm/printoperation.h>
+#include <gtkmm/scrolledwindow.h>
 #include <gtkmm/toggleaction.h>
 #include <libglademm.h>
 #include <goocanvasmm/canvas.h>
@@ -71,6 +72,8 @@ protected:
   void on_context_menu_edit_fields(const Glib::RefPtr<CanvasGroupDbTable>& table);
   void on_context_menu_edit_relationships(const Glib::RefPtr<CanvasGroupDbTable>& table);
 
+  void on_scroll_value_changed();
+
   Glib::RefPtr<CanvasGroupDbTable> get_table_group(const Glib::ustring& table_name);
   
   Glib::RefPtr<Gtk::UIManager> m_refUIManager;
@@ -80,6 +83,7 @@ protected:
 
   bool m_modified;
   CanvasEditable m_canvas;
+  Gtk::ScrolledWindow* m_scrolledwindow_canvas;
 
   //typedef std::map<Glib::RefPtr<Goocanvas::Item>, TableView*> type_map_item_tables;
   //type_map_item_tables m_tables;
