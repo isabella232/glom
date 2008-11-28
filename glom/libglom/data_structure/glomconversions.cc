@@ -268,6 +268,12 @@ double Conversions::get_double_for_gda_value_numeric(const Gnome::Gda::Value& va
 {
   if(value.get_value_type() != GDA_TYPE_NUMERIC)
   {
+    // Note that in case the database system does not support GdaNumeric
+    // (such as sqlite) we fall back to double (see
+    // FieldTypes::get_string_name_for_gdavaluetype), so try this as well.
+    if(value.get_value_type() == G_TYPE_DOUBLE)
+      return value.get_double();
+
     std::cerr << "Conversions::get_double_for_gda_value_numeric(): expected NUMERIC but GdaValue type is: " << g_type_name(value.get_value_type()) << std::endl;
     return 0;
   }

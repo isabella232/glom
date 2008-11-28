@@ -41,6 +41,8 @@ public:
   const std::string& get_database_directory_uri() const;
 
 protected:
+  virtual Field::sql_format get_sql_format() const { return Field::SQL_FORMAT_SQLITE; }
+
   virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error);
 
   /** Creates a new database.

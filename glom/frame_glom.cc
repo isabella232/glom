@@ -435,8 +435,16 @@ void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction
     if(document)
     {
       //Check whether the current user has developer privileges:
-      const ConnectionPool* connection_pool = ConnectionPool::get_instance();
-      bool test = Privs::get_user_is_in_group(connection_pool->get_user(), GLOM_STANDARD_GROUP_NAME_DEVELOPER);
+      ConnectionPool* connection_pool = ConnectionPool::get_instance();
+      sharedptr<SharedConnection> sharedconnection = connection_pool->connect();
+
+      // Default to true; if we don't support users, we always have
+      // priviliges to change things in developer mode.
+      bool test = true;
+
+      if(sharedconnection && sharedconnection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS))
+        Privs::get_user_is_in_group(connection_pool->get_user(), GLOM_STANDARD_GROUP_NAME_DEVELOPER);
+
       if(test)
       {
         std::cout << "DEBUG: User=" << connection_pool->get_user() << " _is_ in the developer group on the server." << std::endl;
@@ -597,7 +605,7 @@ void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const FoundSet
               row_string += ",";
 
             //Output data in canonical SQL format, ignoring the user's locale, and ignoring the layout formatting:
-            row_string += layout_item->get_full_field_details()->sql(value);
+            row_string += layout_item->get_full_field_details()->sql(value, Field::SQL_FORMAT_POSTGRES);
 
             //if(layout_item->m_field.get_glom_type() == Field::TYPE_IMAGE) //This is too much data.
             //{
@@ -649,7 +657,7 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
               row_string += ",";
 
             //Output data in canonical SQL format, ignoring the user's locale, and ignoring the layout formatting:
-            row_string += layout_item->get_full_field_details()->sql(value);
+            row_string += layout_item->get_full_field_details()->sql(value, Field::SQL_FORMAT_POSTGRES);
 
             if(layout_item->get_glom_type() == Field::TYPE_IMAGE) //This is too much data.
             {

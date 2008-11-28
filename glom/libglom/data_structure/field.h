@@ -71,6 +71,15 @@ protected:
 class Field : public TranslatableItem
 {
 public:
+  /* Possible formats when converting from/to SQL representation.
+   * TODO: Maybe we should move the code that does the conversion between gda
+   * type and SQL into the connectionpool backends. */
+  enum sql_format
+  {
+    SQL_FORMAT_POSTGRES,
+    SQL_FORMAT_SQLITE
+  };
+
   enum glom_field_type
   {
     TYPE_INVALID,
@@ -151,17 +160,18 @@ public:
 
   Glib::ustring get_sql_type() const;
 
-  /** Escape the string so that it can be used in a SQL command.
+  /** Escape the value so that it can be used in a SQL command.
    */
-  //Glib::ustring sql(const Glib::ustring& str) const;
+  Glib::ustring sql(const Gnome::Gda::Value& value, sql_format format) const;
 
   /** Escape the value so that it can be used in a SQL command.
+   * Uses the sql_format of the current connectionpool backend.
    */
   Glib::ustring sql(const Gnome::Gda::Value& value) const;
 
   /** Unescape the value again.
    */
-  Gnome::Gda::Value from_sql(const Glib::ustring& str, bool& success) const;
+  Gnome::Gda::Value from_sql(const Glib::ustring& str, sql_format format, bool& success) const;
 
   /** Escape the value so that it can be used in a SQL command for a find.
    */

@@ -1,3 +1,50 @@
+2008-11-28  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/data_structure/field.h:
+	* glom/libglom/data_structure/field.cc: Added a sql_format
+	enumeration, and added a format paramater to sql() and from_sql().
+	This is needed for sqlite because it does not understand the
+	E'binarydata'::bytea representation for binary data, which is a
+	postgres extension.
+
+	* glom/libglom/connectionpool.h:
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/connectionpool_backends/postgres_central.h:
+	* glom/libglom/connectionpool_backends/postgres_self.h:
+	* glom/libglom/connectionpool_backends/sqlite.h: Added a
+	get_sql_format() virtual method that returns the SQL format of the
+	backend.
+
+	* glom/libglom/data_structure/fieldtypes.cc
+	(get_string_name_for_gdavaluetype): Added some fallbacks for types
+	sqlite does not support. This means we are storing numerics as
+	doubles, and dates and times as strings in sqlite.
+
+	* glom/libglom/data_structure/glomconversions.cc
+	(get_double_for_gda_value_numeric): Handle the value being a double,
+	since we use this when the database system doesn't has a "numeric"
+	type.
+
+	* glom/dialog_import_csv.cc:
+	* glom/dialog_import_csv_progress.cc:
+	* glom/frame_glom.cc: Export/Import data always in postgres format,
+	because this is what we used to do.
+
+	* glom/base_db.cc (add_standard_groups): Make this a no-op in case the
+	database system doesn't support users.
+	(insert_example_data): Convert data from the example file from
+	postgres format to the format the current database backend uses before
+	importing.
+	(count_rows_returned_by): For sqlite the result of the SELECT COUNT
+	query is int, not int64, so handle that case as well.
+
+	* glom/glom_privs.cc (get_current_privs): Assume we have all possible
+	privileges in case the database system doesn't support users.
+
+	* glom/utility_widgets/filechooserdialog_saveextras.cc
+	(set_extra_newdb_hosting_mode): Fixed central hosting/self hosting
+	mismatch (the default option in the dialog was wrong).
+
 2008-11-26  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/relationships_overview/dialog_relationships_overview.[h|cc]:

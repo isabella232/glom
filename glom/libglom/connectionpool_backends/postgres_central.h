@@ -66,6 +66,8 @@ public:
   static Glib::RefPtr<Gnome::Gda::Connection> attempt_connect(const Glib::RefPtr<Gnome::Gda::Client>& client, const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, float& postgres_server_version, std::auto_ptr<ExceptionConnection>& error);
 
 protected:
+  virtual Field::sql_format get_sql_format() const { return Field::SQL_FORMAT_POSTGRES; }
+
   virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error);
 
   /** Creates a new database.

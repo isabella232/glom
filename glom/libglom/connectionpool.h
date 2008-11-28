@@ -24,6 +24,7 @@
 #include <libgdamm.h>
 #include <glom/libglom/sharedptr.h>
 #include <glom/libglom/data_structure/fieldtypes.h>
+#include <glom/libglom/data_structure/field.h>
 
 #include <memory> // For std::auto_ptr
 
@@ -110,6 +111,10 @@ public:
 protected:
   /* TODO: Merge create_database() and initialize() into a single function?
    */
+
+  /* This method specifies the format of values in SQL expressions.
+   */
+  virtual Field::sql_format get_sql_format() const = 0;
 
   /* This method is called for one-time initialization of the database
    * storage. No need to implement this function if the data is centrally
@@ -205,6 +210,7 @@ public:
   Glib::ustring get_password() const;
   Glib::ustring get_database() const;
 
+  Field::sql_format get_sql_format() const;
   const FieldTypes* get_field_types() const;
 
 #if 0

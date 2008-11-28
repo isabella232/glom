@@ -114,6 +114,7 @@ void FileChooserDialog_SaveExtras::create_child_widgets()
   m_radiobutton_server_sqlite.set_group(group);
   vbox->pack_start(m_radiobutton_server_sqlite);
   m_radiobutton_server_sqlite.show();
+  m_radiobutton_server_postgres_selfhosted.set_active(true); // Default
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 
@@ -133,10 +134,10 @@ void FileChooserDialog_SaveExtras::set_extra_newdb_hosting_mode(Document_Glom::H
   switch(mode)
   {
   case Document_Glom::POSTGRES_CENTRAL_HOSTED:
-    m_radiobutton_server_postgres_selfhosted.set_active();
+    m_radiobutton_server_postgres_central.set_active();
     break;
   case Document_Glom::POSTGRES_SELF_HOSTED:
-    m_radiobutton_server_postgres_central.set_active();
+    m_radiobutton_server_postgres_selfhosted.set_active();
     break;
   case Document_Glom::SQLITE_HOSTED:
     m_radiobutton_server_sqlite.set_active();

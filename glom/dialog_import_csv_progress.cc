@@ -143,7 +143,10 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
     if(field)
     {
       bool success;
-      Gnome::Gda::Value value = field->from_sql(m_data_source->get_data(m_current_row, i), success);
+
+      // We always assume exported data was stored in postgres format, since
+      // we do export it this way.
+      Gnome::Gda::Value value = field->from_sql(m_data_source->get_data(m_current_row, i), Field::SQL_FORMAT_POSTGRES, success);
 
       if(success)
       {

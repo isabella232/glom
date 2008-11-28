@@ -1976,7 +1976,7 @@ Glib::ustring App_Glom::ui_file_select_open_with_browse(bool& browsed, EpcServic
 #ifdef GLOM_ENABLE_MAEMO
   //TODO: Put the browse button on the initial dialog for Maemo, 
   //because Hildon::FileChooserDialog does not allow extra widgets.
-  Hildon::FileChooserDialog fileChooser_Open(Gtk::FILE_CHOOSER_ACTION_OPEN));
+  Hildon::FileChooserDialog fileChooser_Open(Gtk::FILE_CHOOSER_ACTION_OPEN);
 #else
   Gtk::FileChooserDialog fileChooser_Open(gettext("Open Document"), Gtk::FILE_CHOOSER_ACTION_OPEN);
   fileChooser_Open.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);

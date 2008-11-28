@@ -319,7 +319,7 @@ static std::string glom_unescape_text(const std::string& str)
   return result;
 }
 
-Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
+Glib::ustring Field::sql(const Gnome::Gda::Value& value, sql_format format) const
 {
   //g_warning("Field::sql: glom_type=%d", get_glom_type());
 
@@ -403,15 +403,20 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
         if(buffer && buffer_length > 0)
         {
           //Get the escaped text that represents the binary data:
-	  const std::string escaped_binary_data = Conversions::get_escaped_binary_data((guint8*)buffer, buffer_length);
+          const std::string escaped_binary_data = Conversions::get_escaped_binary_data((guint8*)buffer, buffer_length);
           //Now escape that text (to convert \ to \\, for instance):
-	  //The E prefix indicates ""escape" string constants, which are an extension to the SQL standard"
+          //The E prefix indicates ""escape" string constants, which are an extension to the SQL standard"
           //Otherwise, we get a warning when using large escaped strings:
-          str = "E" + glom_escape_text(escaped_binary_data) /* has quotes */ + "::bytea";
+          if(format == SQL_FORMAT_POSTGRES)
+            str = "E" + glom_escape_text(escaped_binary_data) /* has quotes */ + "::bytea";
+          else
+            str = glom_escape_text(escaped_binary_data);
         }
       }
       else
+      {
         g_warning("Field::sql(): glom_type is TYPE_IMAGE but gda type is not VALUE_TYPE_BINARY");
+      }
 
       break;
     }
@@ -428,7 +433,13 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
   return str;
 }
 
-Gnome::Gda::Value Field::from_sql(const Glib::ustring& str, bool& success) const
+Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
+{
+  sql_format format = ConnectionPool::get_instance()->get_sql_format();
+  return sql(value, format);
+}
+
+Gnome::Gda::Value Field::from_sql(const Glib::ustring& str, sql_format format, bool& success) const
 {
   success = true;
   switch(m_glom_type)
@@ -467,17 +478,31 @@ Gnome::Gda::Value Field::from_sql(const Glib::ustring& str, bool& success) const
       // We operate on the raw std::string since access into the Glib::ustring
       // is expensive, and we only check for ASCII stuff anyway.
       const std::string& raw = str.raw();
-      if(raw.length() >= 10 &&
-         raw.compare(0, 2, "E'") == 0 && raw.compare(raw.length() - 8, 8, "'::bytea") == 0)
+
+      switch(format)
       {
-        std::string unescaped = glom_unescape_text(raw.substr(1, raw.length() - 8));
-        NumericFormat format_ignored; //Because we use ISO format.
-        return Conversions::parse_value(m_glom_type, unescaped, format_ignored, success, true);
-      }
-      else
-      {
-        success = false;
-        return Gnome::Gda::Value();
+      case SQL_FORMAT_POSTGRES:
+        if(raw.length() >= 10 &&
+           raw.compare(0, 2, "E'") == 0 && raw.compare(raw.length() - 8, 8, "'::bytea") == 0)
+        {
+          std::string unescaped = glom_unescape_text(raw.substr(1, raw.length() - 8));
+          NumericFormat format_ignored; //Because we use ISO format.
+          return Conversions::parse_value(m_glom_type, unescaped, format_ignored, success, true);
+        }
+        else
+        {
+          success = false;
+          return Gnome::Gda::Value();
+        }
+      case SQL_FORMAT_SQLITE:
+        {
+          std::string unescaped = glom_unescape_text(raw);
+          NumericFormat format_ignored; //Because we use ISO format.
+          return Conversions::parse_value(m_glom_type, unescaped, format_ignored, success, true);
+        }
+      default:
+        g_assert_not_reached();
+        break;
       }
     }
   default:

@@ -729,54 +729,74 @@ bool Base_DB::add_standard_groups()
   //Add the glom_developer group if it does not exist:
   const Glib::ustring devgroup = GLOM_STANDARD_GROUP_NAME_DEVELOPER;
 
-  const type_vecStrings vecGroups = Privs::get_database_groups();
-  type_vecStrings::const_iterator iterFind = std::find(vecGroups.begin(), vecGroups.end(), devgroup);
-  if(iterFind == vecGroups.end())
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  sharedptr<SharedConnection> sharedconnection = connect_to_server();
+#else
+  std::auto_ptr<ExceptionConnection> error;
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(0, error);
+  if(error.get())
   {
-    bool test = query_execute("CREATE GROUP \"" GLOM_STANDARD_GROUP_NAME_DEVELOPER "\"");
-    if(!test)
+    g_warning("Base_DB::add_standard_groups: Failed to connect: %s", error->what());
+    // TODO: Rethrow? 
+  }
+#endif
+
+  // If the connection doesn't support users we can skip this step
+  if(sharedconnection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS))
+  {
+    const type_vecStrings vecGroups = Privs::get_database_groups();
+    type_vecStrings::const_iterator iterFind = std::find(vecGroups.begin(), vecGroups.end(), devgroup);
+    if(iterFind == vecGroups.end())
     {
-      std::cerr << "Glom Base_DB::add_standard_groups(): CREATE GROUP failed when adding the developer group." << std::endl;
-      return false;
-    }
-
-    //Make sure the current user is in the developer group.
-    //(If he is capable of creating these groups then he is obviously a developer, and has developer rights on the postgres server.)
-    const Glib::ustring current_user = ConnectionPool::get_instance()->get_user();
-    Glib::ustring strQuery = "ALTER GROUP \"" GLOM_STANDARD_GROUP_NAME_DEVELOPER "\" ADD USER \"" + current_user + "\"";
-    test = query_execute(strQuery);
-    if(!test)
-    {
-      std::cerr << "Glom Base_DB::add_standard_groups(): ALTER GROUP failed when adding the user to the developer group." << std::endl;
-      return false;
-    }
-
-    std::cout << "DEBUG: Added user " << current_user << " to glom developer group on postgres server." << std::endl;
-
-    Privileges priv_devs;
-    priv_devs.m_view = true;
-    priv_devs.m_edit = true;
-    priv_devs.m_create = true;
-    priv_devs.m_delete = true;
-
-    Document_Glom::type_listTableInfo table_list = get_document()->get_tables(true /* including system prefs */);
-
-    for(Document_Glom::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
-    {
-      sharedptr<const TableInfo> table_info = *iter;
-      if(table_info)
+      bool test = query_execute("CREATE GROUP \"" GLOM_STANDARD_GROUP_NAME_DEVELOPER "\"");
+      if(!test)
       {
-        const Glib::ustring table_name = table_info->get_name();
-        if(get_table_exists_in_database(table_name)) //Maybe the table has not been created yet.
-          Privs::set_table_privileges(devgroup, table_name, priv_devs, true /* developer privileges */);
+        std::cerr << "Glom Base_DB::add_standard_groups(): CREATE GROUP failed when adding the developer group." << std::endl;
+        return false;
       }
-    }
 
-    //Make sure that it is in the database too:
-    GroupInfo group_info;
-    group_info.set_name(GLOM_STANDARD_GROUP_NAME_DEVELOPER);
-    group_info.m_developer = true;
-    get_document()->set_group(group_info);
+      //Make sure the current user is in the developer group.
+      //(If he is capable of creating these groups then he is obviously a developer, and has developer rights on the postgres server.)
+      const Glib::ustring current_user = ConnectionPool::get_instance()->get_user();
+      Glib::ustring strQuery = "ALTER GROUP \"" GLOM_STANDARD_GROUP_NAME_DEVELOPER "\" ADD USER \"" + current_user + "\"";
+      test = query_execute(strQuery);
+      if(!test)
+      {
+        std::cerr << "Glom Base_DB::add_standard_groups(): ALTER GROUP failed when adding the user to the developer group." << std::endl;
+        return false;
+      }
+
+      std::cout << "DEBUG: Added user " << current_user << " to glom developer group on postgres server." << std::endl;
+
+      Privileges priv_devs;
+      priv_devs.m_view = true;
+      priv_devs.m_edit = true;
+      priv_devs.m_create = true;
+      priv_devs.m_delete = true;
+
+      Document_Glom::type_listTableInfo table_list = get_document()->get_tables(true /* including system prefs */);
+
+      for(Document_Glom::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
+      {
+        sharedptr<const TableInfo> table_info = *iter;
+        if(table_info)
+        {
+          const Glib::ustring table_name = table_info->get_name();
+          if(get_table_exists_in_database(table_name)) //Maybe the table has not been created yet.
+            Privs::set_table_privileges(devgroup, table_name, priv_devs, true /* developer privileges */);
+        }
+      }
+
+      //Make sure that it is in the database too:
+      GroupInfo group_info;
+      group_info.set_name(GLOM_STANDARD_GROUP_NAME_DEVELOPER);
+      group_info.m_developer = true;
+      get_document()->set_group(group_info);
+    }
+  }
+  else
+  {
+    std::cout << "DEBUG: Connection does not support users" << std::endl;
   }
 
   return true;
@@ -1208,6 +1228,8 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
     strNames += "\"" + (*iter)->get_name() + "\"";
   }
 
+  const ConnectionPool* connection_pool = ConnectionPool::get_instance();
+
   if(strNames.empty())
   {
     g_warning("Base_DB::insert_example_data(): strNames is empty.");
@@ -1234,9 +1256,37 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
 	{
           //Do not allow any unescaped newlines in the row data.
           //Note that this is checking for newlines ("\n"), not escaped newlines ("\\n").
+          Glib::ustring converted_row_data;
+          const Glib::ustring* actual_row_data = &row_data;
           if(row_data.find("\n") == Glib::ustring::npos) 
           {
-            const Glib::ustring strQuery = "INSERT INTO \"" + table_name + "\" (" + strNames + ") VALUES (" + row_data + ")";
+            // All data is stored in postgres format in the examples file
+            // (for historical reasons). Convert to the format the backend
+            // requires, if necessary.
+            if(connection_pool->get_sql_format() != Field::SQL_FORMAT_POSTGRES)
+            {
+              for(unsigned int i = 0; i < vec_values.size(); ++i)
+              {
+                if(i > 0)
+                  converted_row_data += ", ";
+                // If there are more fields than data values, then simply
+                // omit the excess values.
+                if(i >= vec_fields.size())
+                  break;
+
+                bool success;
+                const Gnome::Gda::Value value = vec_fields[i]->from_sql(vec_values[i], Field::SQL_FORMAT_POSTGRES, success);
+
+		if(success)
+                  converted_row_data += vec_fields[i]->sql(value, connection_pool->get_sql_format());
+		else
+		  converted_row_data += "''";
+              }
+
+              actual_row_data = &converted_row_data;
+            }
+
+            const Glib::ustring strQuery = "INSERT INTO \"" + table_name + "\" (" + strNames + ") VALUES (" + *actual_row_data + ")";
             //std::cout << "debug: before query: " << strQuery << std::endl;
             if(query_execute(strQuery))
               //std::cout << "debug: after query: " << strQuery << std::endl;
@@ -2754,7 +2804,11 @@ int Base_DB::count_rows_returned_by(const Glib::ustring& sql_query)
     {
       Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
       //This showed me that this contains a gint64: std::cerr << "DEBUG: value type=" << G_VALUE_TYPE_NAME(value.gobj()) << std::endl;
-      result = (int)value.get_int64();
+      //For sqlite, this is an integer
+      if(value.get_value_type() == G_TYPE_INT64)
+        result = (int)value.get_int64();
+      else
+        result = value.get_int();
     }
   }
   catch(const Glib::Exception& ex)

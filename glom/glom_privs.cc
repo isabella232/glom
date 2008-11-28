@@ -338,23 +338,35 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
   }
   */
 
-  //Get the "true" rights for any groups that the user is in:
-  type_vecStrings groups = get_groups_of_user(current_user);
-  for(type_vecStrings::const_iterator iter = groups.begin(); iter != groups.end(); ++iter)
+  sharedptr<SharedConnection> sharedconnection = connection_pool->connect();
+  if(sharedconnection && sharedconnection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS))
   {
-    Privileges privs = get_table_privileges(*iter, table_name);
+    //Get the "true" rights for any groups that the user is in:
+    type_vecStrings groups = get_groups_of_user(current_user);
+    for(type_vecStrings::const_iterator iter = groups.begin(); iter != groups.end(); ++iter)
+    {
+      Privileges privs = get_table_privileges(*iter, table_name);
 
-    if(privs.m_view)
-      result.m_view = true;
+      if(privs.m_view)
+        result.m_view = true;
 
-    if(privs.m_edit)
-      result.m_edit = true;
+      if(privs.m_edit)
+        result.m_edit = true;
 
-    if(privs.m_create)
-      result.m_create = true;
+      if(privs.m_create)
+        result.m_create = true;
 
-    if(privs.m_delete)
-      result.m_delete = true;
+      if(privs.m_delete)
+        result.m_delete = true;
+    }
+  }
+  else
+  {
+    // If the database doesn't support users we have privileges to do everything
+    result.m_view = true;
+    result.m_edit = true;
+    result.m_create = true;
+    result.m_delete = true;
   }
 
   return result;

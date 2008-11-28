@@ -116,12 +116,21 @@ Glib::ustring FieldTypes::get_string_name_for_gdavaluetype(GType field_type) con
   type_mapGdaTypesToSchemaStrings::const_iterator iterFind = m_mapGdaTypesToSchemaStrings.find(field_type);
   if(iterFind == m_mapGdaTypesToSchemaStrings.end())
   {
-    g_warning("FieldTypes::get_string_name_for_gdavaluetype(): returning unknowntype for field_type=%ld", static_cast<long>(field_type));
+    // Fallback for a few types if the database system does not support
+    // them directly:
+    if(field_type == GDA_TYPE_NUMERIC)
+      return get_string_name_for_gdavaluetype(G_TYPE_DOUBLE);
+    if(field_type == G_TYPE_DATE)
+      return get_string_name_for_gdavaluetype(G_TYPE_STRING);
+    if(field_type == GDA_TYPE_TIME)
+      return get_string_name_for_gdavaluetype(G_TYPE_STRING);
+
+    g_warning("FieldTypes::get_string_name_for_gdavaluetype(): returning unknowntype for field_type=%ld (%s)", static_cast<long>(field_type), g_type_name(field_type));
 
     g_warning("  possible types are: ");
     for(type_mapGdaTypesToSchemaStrings::const_iterator iter = m_mapGdaTypesToSchemaStrings.begin(); iter != m_mapGdaTypesToSchemaStrings.end(); ++iter)
     {
-      g_warning("    gdatype=%ld, sqltype=%s", static_cast<long>(iter->first), iter->second.c_str());
+      g_warning("    gdatype=%ld (%s), sqltype=%s", static_cast<long>(iter->first), g_type_name(iter->first), iter->second.c_str());
     }
     
     return "unknowntype";
