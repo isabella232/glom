@@ -30,41 +30,37 @@ cp /bin/libgettextpo-0.dll installer/bin || exit
 # TODO: There are no usable libxslt Windows binaries, therefore I built this myself:
 cp /local/bin/libxslt-1.dll installer/bin || exit
 
-cp /bin/libglib-2.0-0.dll installer/bin || exit
-cp /bin/libgio-2.0-0.dll installer/bin || exit
-cp /bin/libgmodule-2.0-0.dll installer/bin || exit
-cp /bin/libgobject-2.0-0.dll installer/bin || exit
-cp /bin/libgthread-2.0-0.dll installer/bin || exit
+cp /bundle/bin/libglib-2.0-0.dll installer/bin || exit
+cp /bundle/bin/libgio-2.0-0.dll installer/bin || exit
+cp /bundle/bin/libgmodule-2.0-0.dll installer/bin || exit
+cp /bundle/bin/libgobject-2.0-0.dll installer/bin || exit
+cp /bundle/bin/libgthread-2.0-0.dll installer/bin || exit
 
-cp /bin/gspawn-win32-helper.exe installer/bin || exit
-cp /bin/gspawn-win32-helper-console.exe installer/bin || exit
+# TODO: We can probably omit these, as we do not use g_spawn on Windows anymore
+cp /bundle/bin/gspawn-win32-helper.exe installer/bin || exit
+cp /bundle/bin/gspawn-win32-helper-console.exe installer/bin || exit
 
-cp /bin/libatk-1.0-0.dll installer/bin || exit
-cp /bin/libcairo-2.dll installer/bin || exit
-#cp /bin/libgnome-2-0.dll installer/bin || exit
-cp /bin/libpng12-0.dll installer/bin || exit
-cp /bin/jpeg62.dll installer/bin || exit
-cp /bin/libtiff3.dll installer/bin || exit
-#cp /bin/libpopt-0.dll installer/bin || exit
+cp /bundle/bin/libatk-1.0-0.dll installer/bin || exit
+cp /bundle/bin/libcairo-2.dll installer/bin || exit
+cp /bundle/bin/libpng12-0.dll installer/bin || exit
+cp /bundle/bin/jpeg62.dll installer/bin || exit
+cp /bundle/bin/libtiff3.dll installer/bin || exit
 
-cp /bin/libpango-1.0-0.dll installer/bin || exit
-cp /bin/libpangocairo-1.0-0.dll installer/bin || exit
-cp /bin/libpangowin32-1.0-0.dll installer/bin || exit
+cp /bundle/bin/libpango-1.0-0.dll installer/bin || exit
+cp /bundle/bin/libpangocairo-1.0-0.dll installer/bin || exit
+cp /bundle/bin/libpangowin32-1.0-0.dll installer/bin || exit
 
-cp /bin/libgdk-win32-2.0-0.dll installer/bin || exit
-cp /bin/libgdk_pixbuf-2.0-0.dll installer/bin || exit
+cp /bundle/bin/libgdk-win32-2.0-0.dll installer/bin || exit
+cp /bundle/bin/libgdk_pixbuf-2.0-0.dll installer/bin || exit
 
-cp /bin/libgtk-win32-2.0-0.dll installer/bin || exit
-cp /bin/libgtksourceview-2.0-0.dll installer/bin || exit
+cp /bundle/bin/libgtk-win32-2.0-0.dll installer/bin || exit
+cp /gtksourceview/bin/libgtksourceview-2.0-0.dll installer/bin || exit
 
 cp /bin/libORBit-2-0.dll installer/bin || exit
 cp /bin/libORBitCosNaming-2-0.dll installer/bin || exit
 cp /bin/libORBit-imodule-2-0.dll installer/bin || exit
-#cp /local/bin/libbonobo-2-0.dll installer/bin || exit
-#cp /local/bin/libbonobo-activation-4.dll installer/bin || exit
 
-# TODO: I compiled this myself since we needed the version from SVN:
-cp /local/bin/libglade-2.0-0.dll installer/bin || exit
+cp /bundle/bin/libglade-2.0-0.dll installer/bin || exit
 cp /bin/libgconf-2-4.dll installer/bin || exit
 #cp /local/bin/libgnomevfs-2-0.dll installer/bin || exit
 cp /bin/libgoocanvas-3.dll installer/bin || exit
@@ -83,13 +79,12 @@ cp /local/bin/libgdkmm-2.4-1.dll installer/bin || exit
 cp /local/bin/libxml++-2.6-2.dll installer/bin || exit
 cp /local/bin/libgtkmm-2.4-1.dll installer/bin || exit
 cp /local/bin/libgtksourceviewmm-2.0-2.dll installer/bin || exit
-cp /local/bin/libgoocanvasmm-0.1-2.dll installer/bin || exit
+cp /local/bin/libgoocanvasmm-0.1-3.dll installer/bin || exit
 cp /local/bin/libgconfmm-2.6-1.dll installer/bin || exit
 cp /local/bin/libgdamm-3.0-10.dll installer/bin || exit
 cp /local/bin/libglademm-2.4-1.dll installer/bin || exit
-#cp /local/bin/libgnomevfsmm-2.6-1.dll installer/bin || exit
 
-cp /local/bin/libbakery-2.6--5-1.dll installer/bin || exit
+cp /local/bin/libbakery-2.6--6-1.dll installer/bin || exit
 cp /local/bin/libglom-0.dll installer/bin || exit
 
 echo "Stripping DLL files..."
@@ -99,10 +94,10 @@ strip installer/bin/*.exe || exit
 # stripping libxml2.dll renders it unusable (although not changing it in size).
 # We therefore copy it after having stripped the rest. Same with the other DLLs
 # here. Perhaps those were built with MSVC.
-cp /bin/libxml2.dll installer/bin || exit
-cp /bin/intl.dll installer/bin || exit
-cp /bin/iconv.dll installer/bin || exit
-cp /bin/zlib1.dll installer/bin || exit
+cp /bundle/bin/libxml2.dll installer/bin || exit
+cp /bundle/bin/intl.dll installer/bin || exit
+cp /bundle/bin/iconv.dll installer/bin || exit
+cp /bundle/bin/zlib1.dll installer/bin || exit
 
 echo "Copying Python..."
 
@@ -113,7 +108,6 @@ cp /c/WINDOWS/system32/python25.dll installer/bin || exit
 mkdir -p installer/python || exit
 
 # TODO: Perhaps some scripts need more python modules.
-# TODO: Let configure replace @pyexecdir@ to get the correct python path?
 cp $PYTHONDIR/Lib/*.py installer/python || exit
 
 mkdir -p installer/python/encodings || exit
@@ -145,28 +139,27 @@ cp $PYTHONDIR/Lib/site-packages/glom.pyd installer/bin || exit
 cp $PYTHONDIR/Lib/site-packages/gtk-2.0/gda.pyd installer/bin || exit
 strip installer/bin/*.pyd || exit
 
-mkdir -p installer/lib/gtk-2.0/2.10.0/immodules || exit
-cp /lib/gtk-2.0/2.10.0/immodules/*.dll installer/lib/gtk-2.0/2.10.0/immodules || exit
-strip installer/lib/gtk-2.0/2.10.0/immodules/*.dll || exit
-cp /bin/gtk-query-immodules-2.0.exe installer || exit
+#mkdir -p installer/lib/gtk-2.0/2.10.0/immodules || exit
+#cp /lib/gtk-2.0/2.10.0/immodules/*.dll installer/lib/gtk-2.0/2.10.0/immodules || exit
+#strip installer/lib/gtk-2.0/2.10.0/immodules/*.dll || exit
+#cp /bin/gtk-query-immodules-2.0.exe installer || exit
 
 mkdir -p installer/lib/gtk-2.0/2.10.0/engines || exit
-cp /lib/gtk-2.0/2.10.0/engines/libwimp.dll installer/lib/gtk-2.0/2.10.0/engines || exit
+cp /bundle/lib/gtk-2.0/2.10.0/engines/libwimp.dll installer/lib/gtk-2.0/2.10.0/engines || exit
 strip installer/lib/gtk-2.0/2.10.0/engines/libwimp.dll || exit
 
-mkdir -p installer/lib/gtk-2.0/2.10.0/loaders || exit
-cp /lib/gtk-2.0/2.10.0/loaders/*.dll installer/lib/gtk-2.0/2.10.0/loaders || exit
-strip installer/lib/gtk-2.0/2.10.0/loaders/*.dll || exit
-cp /bin/gdk-pixbuf-query-loaders.exe installer || exit
+#mkdir -p installer/lib/gtk-2.0/2.10.0/loaders || exit
+#cp /lib/gtk-2.0/2.10.0/loaders/*.dll installer/lib/gtk-2.0/2.10.0/loaders || exit
+#strip installer/lib/gtk-2.0/2.10.0/loaders/*.dll || exit
+#cp /bin/gdk-pixbuf-query-loaders.exe installer || exit
 
-# TODO: Test whether we can omit this:
-#mkdir -p installer/lib/pango/1.6.0/modules || exit
-#cp /lib/pango/1.6.0/modules/*.dll installer/lib/pango/1.6.0/modules || exit
-#strip installer/lib/pango/1.6.0/modules/*.dll || exit
-#cp /bin/pango-querymodules.exe installer || exit
+# TODO: Can we omit this?
+mkdir -p installer/etc/gtk-2.0
+cp /bundle/etc/gtk-2.0/gtk.immodules installer/etc/gtk-2.0 || exit -1
+cp /bundle/etc/gtk-2.0/gdk-pixbuf.loaders installer/etc/gtk-2.0 || exit -1
 
 mkdir -p installer/share/themes || exit
-cp -R /share/themes/MS-Windows installer/share/themes || exit
+cp -R /bundle/share/themes/MS-Windows installer/share/themes || exit
 mkdir -p installer/etc/gtk-2.0 || exit
 echo "gtk-theme-name = \"MS-Windows\"" > installer/etc/gtk-2.0/gtkrc || exit
 
@@ -185,9 +178,11 @@ echo "Copying locales..."
 
 # We need to keep the locale files from share/locale in share/locale and those
 # from lib/locale in lib/locale:
+cp /bundle/share/locale installer/share -R || exit
 cp /share/locale installer/share -R || exit
-cp /lib/locale installer/lib -R || exit
+#cp /lib/locale installer/lib -R || exit
 cp /local/lib/locale installer/lib -R || exit
+cp /gtksourceview/lib/locale installer/lib -R || exit
 
 find installer/lib/locale/ -type f | grep -v atk10.mo | grep -v gtk20.mo | grep -v bakery.mo | grep -v GConf2.mo | grep -v glib20.mo | grep -v glom.mo | grep -v gtk20.mo | grep -v gtk20-properties.mo | grep -v gtksourceview-2.0.mo |  grep -v libgda-3.0.mo | xargs rm
 find installer/lib/locale -type d | xargs rmdir -p --ignore-fail-on-non-empty
@@ -241,8 +236,8 @@ strip installer/lib/postgresql/*.dll
 echo "Copying shared data (glade files, icons, etc.)..."
 
 mkdir -p installer/share/gtksourceview-2.0 || exit
-cp -R /share/gtksourceview-2.0/language-specs installer/share/gtksourceview-2.0 || exit
-cp -R /share/gtksourceview-2.0/styles installer/share/gtksourceview-2.0 || exit
+cp -R /gtksourceview/share/gtksourceview-2.0/language-specs installer/share/gtksourceview-2.0 || exit
+cp -R /gtksourceview/share/gtksourceview-2.0/styles installer/share/gtksourceview-2.0 || exit
 
 mkdir -p installer/share/libgda-3.0/dtd
 cp /local/share/libgda-3.0/*.xml installer/share/libgda-3.0/
@@ -268,7 +263,7 @@ cp /local/share/icons/hicolor/16x16/apps/glom.png installer/share/pixmaps || exi
 echo "Creating installer..."
 
 perl -pe "s/INSTALLERREVISION/$revision/" glom.iss > installer/glom.iss || exit
-cp querymodules.bat installer || exit
+#cp installer || exit
 iscc installer/glom.iss || exit
 
 echo "Done"
