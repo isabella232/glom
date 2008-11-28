@@ -1,3 +1,8 @@
+2008-11-28  Armin Burgmeier  <armin@openismus.com>
+
+	* win32/build-installer:
+	* win32/glom.iss.in: Update for Glom 1.8.
+
 1.8.2:
 
 2008-11-26  Murray Cumming  <murrayc@murrayc.com>
