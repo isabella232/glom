@@ -1,3 +1,9 @@
+1.8.3:
+
+* Changed the dependency of libgda-postgres-4.0 to libgda-postgres-3.0, so
+  Glom can be built without having libgda-4 installed.
+  (Armin Burgmeier)
+
 1.8.2:
 
 * Date fields:

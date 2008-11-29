@@ -4,7 +4,7 @@ AC_INIT(glom/main.cc)
 AM_CONFIG_HEADER(config.h)
 
 # Package name and version number:
-AM_INIT_AUTOMAKE(glom, 1.8.2)
+AM_INIT_AUTOMAKE(glom, 1.8.3)
 
 AM_MAINTAINER_MODE
 
