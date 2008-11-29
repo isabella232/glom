@@ -45,7 +45,7 @@ EXTRA_DIST = $(desktop_in_files) $(MimeDatabase_DATA) $(appreg_DATA) $(mimeinfo_
              intltool-extract.in intltool-merge.in intltool-update.in xmldocs.make omf.make
 
 #gnome-doc-utils stuff:
-DISTCLEAN_FILES = gnome-doc-utils.make $(desktop_DATA) intltool-extract intltool-merge intltool-update
+DISTCLEANFILES = gnome-doc-utils.make $(desktop_DATA) intltool-extract intltool-merge intltool-update
 DISTCHECK_CONFIGURE_FLAGS = --disable-scrollkeeper
 
 # (See http://cvs.gnome.org/lxr/source/intltool/README about these intltool files)
