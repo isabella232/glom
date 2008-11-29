@@ -144,7 +144,7 @@ if test $win32 != true; then
 	# Ask user for path to the directory containing the postgresql utilities, such as the postmaster executable, so we can self-host postgresql databases:
 	# We default to the path used by Ubuntu (Dapper and Edgy) so that the build works at least somewhere by default.
 	AC_ARG_WITH(postgres-utils,
-	    [ --with-postgres-utils=<path> path to the postmaster executable. e.g. /usr/lib/postgresql/8.2/bin (ignored on Windows)],
+	    [ --with-postgres-utils=<path> path to the postmaster executable. e.g. /usr/lib/postgresql/8.3/bin (ignored on Windows)],
 	    [POSTGRES_UTILS_PATH=$with_postgres_utils],
 	    [POSTGRES_UTILS_PATH=/usr/lib/postgresql/8.3/bin]
 	)

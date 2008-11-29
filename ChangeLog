@@ -1,5 +1,10 @@
 2008-11-29  Armin Burgmeier  <armin@openismus.com>
 
+	* configure.in: Fixed the description of the --with-postgres-utils
+	option to match the default.
+
+2008-11-29  Armin Burgmeier  <armin@openismus.com>
+
 	* Makefile.am: Changed DISTCLEAN_FILES to DISTCLEANFILES, to fix make
 	distcheck.
 
