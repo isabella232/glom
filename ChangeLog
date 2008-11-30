@@ -1,3 +1,10 @@
+2008-11-30  Armin Burgmeier  <armin@openismus.com>
+
+	* Makefile.am: Removed the DISTCHECK_CONFIGURE_FLAGS setting, since
+	the --disable-scrollkeeper option is already passed to configure
+	during distcheck by other means. This allows setting custom
+	DISTCHECK_CONFIGURE_FLAGS. Bug #562688.
+
 2008-11-29  Armin Burgmeier  <armin@openismus.com>
 
 	* configure.in: Fixed the description of the --with-postgres-utils
