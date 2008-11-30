@@ -1,3 +1,9 @@
+2008-11-30  Armin Burgmeier  <armin@openismus.com>
+
+	* POTFILES.in: Added connectionpool_backends/postgres_central.cc and
+	connectionpool_backends/postgres_self.cc, which contain strings that
+	were in connectionpool.cc formerly.
+
 2008-11-22  Jorge Gonzalez  <jorgegonz@svn.gnome.org>  
 
 	* es.po: Updated initial Spanish translation
