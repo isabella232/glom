@@ -1,3 +1,7 @@
+2008-12-01  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in: Depend on the latest goocanvasmm version.
+
 2008-11-30  Armin Burgmeier  <armin@openismus.com>
 
 	* Makefile.am: Removed the DISTCHECK_CONFIGURE_FLAGS setting, since
