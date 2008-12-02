@@ -37,6 +37,8 @@ public:
 
   GType get_gdavalue_for_schema_type_string(const Glib::ustring& schema_type_string) const;
   Glib::ustring get_string_name_for_gdavaluetype(GType field_type) const;
+
+  GType get_fallback_type_for_gdavaluetype(GType field_type) const;
   
 protected:
   typedef std::map<Glib::ustring, GType> type_mapSchemaStringsToGdaTypes;
@@ -45,6 +47,10 @@ protected:
   //Duplicate information, to make searching easier:
   typedef std::map<GType, Glib::ustring> type_mapGdaTypesToSchemaStrings;
   type_mapGdaTypesToSchemaStrings m_mapGdaTypesToSchemaStrings;
+
+  //Fallback types used if the database system does not support a type natively
+  typedef std::map<GType, GType> type_mapFallbackTypes;
+  type_mapFallbackTypes m_mapFallbackTypes;
 };
 
 } //namespace Glom

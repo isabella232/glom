@@ -122,8 +122,31 @@ void Field::set_field_info(const Glib::RefPtr<Gnome::Gda::Column>& fieldinfo)
 {
   m_field_info = fieldinfo;
 
-  //TODO: Maybe just do this in get_glom_type()?
-  set_glom_type( get_glom_type_for_gda_type(fieldinfo->get_g_type()) );
+  // Set glom type from fieldinfo if it represents a different type.
+  // Also take fallback types into account as fieldinfo might originate from
+  // the database system directly.
+  GType new_type = fieldinfo->get_g_type();
+
+  GType cur_type = G_TYPE_NONE;
+  if(get_glom_type() != TYPE_INVALID)
+  {
+    cur_type = get_gda_type_for_glom_type(get_glom_type());
+
+    const FieldTypes* pFieldTypes = NULL;
+
+    ConnectionPool* pConnectionPool = ConnectionPool::get_instance();
+    if(pConnectionPool)
+      pFieldTypes = pConnectionPool->get_field_types();
+
+    if(pFieldTypes)
+    {
+      while(cur_type != new_type && cur_type != G_TYPE_NONE)
+        cur_type = pFieldTypes->get_fallback_type_for_gdavaluetype(cur_type);
+    }
+  }
+
+  if(cur_type == G_TYPE_NONE)
+    set_glom_type( get_glom_type_for_gda_type(fieldinfo->get_g_type()) );
 }
 
 Gnome::Gda::Value Field::get_data() const

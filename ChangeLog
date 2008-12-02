@@ -1,3 +1,20 @@
+2008-12-02  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/data_structure/fieldtypes.h:
+	* glom/libglom/data_structure/fieldtypes.cc: Added a fallback map that
+	specifies types that can be used when the database does not support
+	another type natively.
+
+	* glom/libglom/data_structure/field.cc (set_field_info): Only set glom
+	type of the field based on the GType of the info if it represents a
+	different type. This prevents losing type information of the field
+	when the type for this field used a fallback.
+
+	* glom/libglom/data_structure/glomconversions.cc
+	(get_text_for_gda_value): Don't complain for numeric types when the
+	gtype is double, because this is used when the database system does
+	not support GdaNumeric natively.
+
 2008-12-01  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.in: Depend on the latest goocanvasmm version.

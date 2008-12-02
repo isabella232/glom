@@ -337,7 +337,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
   }
   else if(glom_type == Field::TYPE_NUMERIC)
   {
-    if(value.get_value_type() != GDA_TYPE_NUMERIC)
+    if(value.get_value_type() != GDA_TYPE_NUMERIC && value.get_value_type() != G_TYPE_DOUBLE)
     {
       std::cerr << "Conversions::get_text_for_gda_value(): glom field type is NUMERIC but GdaValue type is: " << g_type_name(value.get_value_type()) << std::endl;
       return value.to_string();

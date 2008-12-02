@@ -90,6 +90,10 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
       }
     }
   }
+
+  m_mapFallbackTypes[GDA_TYPE_NUMERIC] = G_TYPE_DOUBLE;
+  m_mapFallbackTypes[GDA_TYPE_TIME] = G_TYPE_STRING;
+  m_mapFallbackTypes[G_TYPE_DATE] = G_TYPE_STRING;
 }
 
 FieldTypes::~FieldTypes()
@@ -98,6 +102,12 @@ FieldTypes::~FieldTypes()
 
 GType FieldTypes::get_gdavalue_for_schema_type_string(const Glib::ustring& schema_type_string) const
 {
+  // Special case varchar, because we also specialized it in
+  // get_string_name_for_gdavaluetype, so that we can properly convert back
+  // and forth between sql typename and gda type.
+  if(schema_type_string == "varchar")
+    return G_TYPE_STRING;
+
   type_mapSchemaStringsToGdaTypes::const_iterator iterFind = m_mapSchemaStringsToGdaTypes.find(schema_type_string);
   if(iterFind == m_mapSchemaStringsToGdaTypes.end())
     return GDA_TYPE_NULL;
@@ -116,14 +126,9 @@ Glib::ustring FieldTypes::get_string_name_for_gdavaluetype(GType field_type) con
   type_mapGdaTypesToSchemaStrings::const_iterator iterFind = m_mapGdaTypesToSchemaStrings.find(field_type);
   if(iterFind == m_mapGdaTypesToSchemaStrings.end())
   {
-    // Fallback for a few types if the database system does not support
-    // them directly:
-    if(field_type == GDA_TYPE_NUMERIC)
-      return get_string_name_for_gdavaluetype(G_TYPE_DOUBLE);
-    if(field_type == G_TYPE_DATE)
-      return get_string_name_for_gdavaluetype(G_TYPE_STRING);
-    if(field_type == GDA_TYPE_TIME)
-      return get_string_name_for_gdavaluetype(G_TYPE_STRING);
+    type_mapFallbackTypes::const_iterator iterFallback = m_mapFallbackTypes.find(field_type);
+    if(iterFallback != m_mapFallbackTypes.end())
+      return get_string_name_for_gdavaluetype(iterFallback->second);
 
     g_warning("FieldTypes::get_string_name_for_gdavaluetype(): returning unknowntype for field_type=%ld (%s)", static_cast<long>(field_type), g_type_name(field_type));
 
@@ -137,6 +142,13 @@ Glib::ustring FieldTypes::get_string_name_for_gdavaluetype(GType field_type) con
   }
   else
     return iterFind->second;
+}
+
+GType FieldTypes::get_fallback_type_for_gdavaluetype(GType field_type) const
+{
+  type_mapFallbackTypes::const_iterator iter = m_mapFallbackTypes.find(field_type);
+  if(iter == m_mapFallbackTypes.end()) return G_TYPE_NONE;
+  return iter->second;
 }
 
 } //namespace Glom
