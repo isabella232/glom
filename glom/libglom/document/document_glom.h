@@ -37,6 +37,7 @@
 #include <glom/libglom/data_structure/groupinfo.h>
 #include <glom/libglom/data_structure/report.h>
 #include <glom/libglom/data_structure/print_layout.h>
+#include <glom/libglom/data_structure/foundset.h>
 #include "../appstate.h"
 #include <gtkmm/window.h>
 #include <vector>
@@ -315,8 +316,28 @@ public:
   void forget_layout_record_viewed(const Glib::ustring& table_name);
   Gnome::Gda::Value get_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name) const;
 
+  //TODO: Rename set_layout_current() and set_criteria_current().
+
+  /** Temporarily save (but not in the document) the last-viewed layout for the table,
+   * so we can show the same layout when navigating back to this table later.
+   * 
+   * @param table_name The table.
+   * @param layout_name The layout name, such as "list" or "details".
+   */
   void set_layout_current(const Glib::ustring& table_name, const Glib::ustring& layout_name);
+
+  /** Temporarily save (but not in the document) the last-viewed criteria for the table,
+   * so we can show the same criteria (sort order, where clause) when navigating back to this table later.
+   * 
+   * @param table_name The table.
+   * @param found_set Additional information about the last use of that layout, such as the sort order or where clause.
+   */
+  void set_criteria_current(const Glib::ustring& table_name,const FoundSet& found_set);
+
   Glib::ustring get_layout_current(const Glib::ustring& table_name) const;
+
+  FoundSet get_criteria_current(const Glib::ustring& table_name) const;
+
 
   // Used by Relationship Overview dialog to preserve table locations accross instantiations:
     
@@ -465,10 +486,44 @@ protected:
   {
   public:
     DocumentTableInfo()
-        : m_overviewx ( std::numeric_limits<float>::infinity () ),
-          m_overviewy ( std::numeric_limits<float>::infinity () )
+      : m_overviewx ( std::numeric_limits<float>::infinity () ),
+        m_overviewy ( std::numeric_limits<float>::infinity () )
     {
       m_info = sharedptr<TableInfo>(new TableInfo()); //Avoid a null sharedptr.
+    }
+
+    //TODO: Avoid the use of this:
+    DocumentTableInfo(const DocumentTableInfo& src)
+      : m_fields(src.m_fields),
+        m_relationships(src.m_relationships),
+        m_layouts(src.m_layouts),
+        m_reports(src.m_reports),
+        m_print_layouts(src.m_print_layouts),
+        m_example_rows(src.m_example_rows),
+        m_map_current_record(src.m_map_current_record),
+        m_layout_current(src.m_layout_current),
+        m_foundset_current(src.m_foundset_current),
+        m_overviewx(src.m_overviewx),
+        m_overviewy(src.m_overviewy)
+    {
+    }
+
+    //TODO: Avoid the use of this:
+    DocumentTableInfo& operator=(const DocumentTableInfo& src)
+    {
+      m_fields = src.m_fields;
+      m_relationships = src.m_relationships;
+      m_layouts = src.m_layouts;
+      m_reports = src.m_reports;
+      m_print_layouts = src.m_print_layouts;
+      m_example_rows = src.m_example_rows;
+      m_map_current_record = src.m_map_current_record;
+      m_layout_current = src.m_layout_current;
+      m_foundset_current = src.m_foundset_current;
+      m_overviewx = src.m_overviewx;
+      m_overviewy = src.m_overviewy;
+
+      return *this;
     }
 
     sharedptr<TableInfo> m_info;
@@ -490,8 +545,8 @@ protected:
     //Per-session, not saved in document:
     typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_layout_primarykeys;
     type_map_layout_primarykeys m_map_current_record; //The record last viewed in each layout.
-
     Glib::ustring m_layout_current;
+    FoundSet m_foundset_current;
     
     float m_overviewx, m_overviewy;
   };

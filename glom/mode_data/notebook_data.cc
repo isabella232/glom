@@ -91,66 +91,51 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
     // Ignore error, sharedconnection is not used directly within this function
 #endif
 
-    //const FoundSet old_found_set = m_Box_List.get_found_set();
-    //std::cout << "  old_where_clause=" << old_where_clause << std::endl;
-    //std::cout << "  where_clause=" << where_clause << std::endl;
-    //const bool new_find_set = !(found_set == old_found_set);
+    result = m_Box_List.init_db_details(found_set, get_document()->get_active_layout_platform()); //TODO: Select the last selected record.
 
-    //if(get_current_view() == DATA_VIEW_List)
-    //{
-      result = m_Box_List.init_db_details(found_set, get_document()->get_active_layout_platform()); //TODO: Select the last selected record.
-      //m_Box_List.load_from_document();
-    //}
-    //else //DATA_VIEW_Details
-    //{
-      //Show the previously-shown record, if there is one, if this is not a new found-set (via a new where_clause)
-      //so that returning to this table will return the user to the same record:
-      Document_Glom* document = get_document();
-      if(document)
+    //Show the previously-shown record, if there is one, if this is not a new found-set (via a new where_clause)
+    //so that returning to this table will return the user to the same record:
+    Document_Glom* document = get_document();
+    if(document)
+    {
+      Gnome::Gda::Value primary_key_for_details;
+
+      if(!details_record_specified)
       {
-        Gnome::Gda::Value primary_key_for_details;
+        //std::cout << "debug: no new_found_set" << std::endl;
+        primary_key_for_details = document->get_layout_record_viewed(m_table_name, m_Box_Details.get_layout_name());
+      }
+      else if(details_record_specified)
+      {
+        primary_key_for_details = primary_key_value_for_details;
+      }
 
-        if(!details_record_specified)
-        {
-          //std::cout << "debug: no new_found_set" << std::endl;
-          primary_key_for_details = document->get_layout_record_viewed(m_table_name, m_Box_Details.get_layout_name());
-        }
-        else if(details_record_specified)
-        {
-          primary_key_for_details = primary_key_value_for_details;
-        }
-        else
-        {
-          //std::cout << "debug: new_found_set" << std::endl;
-        }
+      //If the specified (or remembered) primary key value is not in the found set, 
+      //then ignore it:
+      if(!found_set.m_where_clause.empty() && !get_primary_key_is_in_foundset(found_set, primary_key_for_details))
+      {
+        primary_key_for_details = Gnome::Gda::Value(); //TODO: We set it to empty just so we can test if for empty.
+      }
 
-
-        //If the specified (or remembered) primary key value is not in the found set, 
-        //then ignore it:
-        if(!found_set.m_where_clause.empty() && !get_primary_key_is_in_foundset(found_set, primary_key_for_details))
-        {
-          primary_key_for_details = Gnome::Gda::Value(); //TODO: We set it to empty just so we can test if for empty.
-        }
-
+      if(Conversions::value_is_empty(primary_key_for_details))
+      {
+        //Make sure that the details view is not empty, if there are any records to show:
+        primary_key_for_details = m_Box_List.get_primary_key_value_selected();
+        //std::cout << "debug:  m_Box_List.get_primary_key_value_selected()=" << primary_key_for_details.to_string() << std::endl;
         if(Conversions::value_is_empty(primary_key_for_details))
         {
-          //Make sure that the details view is not empty, if there are any records to show:
-          primary_key_for_details = m_Box_List.get_primary_key_value_selected();
-          //std::cout << "debug:  m_Box_List.get_primary_key_value_selected()=" << primary_key_for_details.to_string() << std::endl;
-          if(Conversions::value_is_empty(primary_key_for_details))
-          {
-            //std::cout << "debug: calling list.get_primary_key_value_first()" << std::endl;
-            primary_key_for_details = m_Box_List.get_primary_key_value_first();
-            //std::cout << "  debug:  result=" <<  primary_key_for_details.to_string() << std::endl;
-          }
+          //std::cout << "debug: calling list.get_primary_key_value_first()" << std::endl;
+          primary_key_for_details = m_Box_List.get_primary_key_value_first();
+          //std::cout << "  debug:  result=" <<  primary_key_for_details.to_string() << std::endl;
         }
-
-        m_Box_Details.init_db_details(found_set, get_document()->get_active_layout_platform(), primary_key_for_details);
       }
-      else
-        std::cerr << "Notebook_Data::init_db_details(): document is NULL" << std::endl;
-    //}
+
+      m_Box_Details.init_db_details(found_set, get_document()->get_active_layout_platform(), primary_key_for_details);
+    }
+    else
+      std::cerr << "Notebook_Data::init_db_details(): document is NULL" << std::endl;
   }
+
 
   //Block this handler temporarily because we don't need another refresh from the database:
   if(m_connection_switch_page)
@@ -166,17 +151,20 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
   }
   else
   {
-    //Select the last-viewed layout:
-    Document_Glom* document = get_document();
-    
-    if(document)
+    //Get information abvout the the last-viewed layout:
+    Glib::ustring current_layout;
+    if(!details_record_specified)
     {
-      const Glib::ustring current_layout = get_document()->get_layout_current(m_table_name);
-      if( (current_layout.empty() || (current_layout == "list")) && (current_view != DATA_VIEW_List) )
-        set_current_view(DATA_VIEW_List);
-      else if( (current_layout == "details") && (current_view != DATA_VIEW_Details) )
-        set_current_view(DATA_VIEW_Details);
+      Document_Glom* document = get_document(); 
+      if(document)
+        current_layout = document->get_layout_current(m_table_name);
     }
+
+    //Set the layout:
+    if( (current_layout.empty() || (current_layout == "list")) && (current_view != DATA_VIEW_List) )
+      set_current_view(DATA_VIEW_List);
+    else if( (current_layout == "details") && (current_view != DATA_VIEW_Details) )
+      set_current_view(DATA_VIEW_Details);
   }
 
   //Re-enable this handler, so we can respond to notebook page changes:

@@ -1,8 +1,27 @@
+2008-12-04  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/data_structure/foundset.[h|cc]: Added has_no_criteria() 
+	to check if it has a sort order or where clause.
+	* glom/libglom/document/document_glom.[h|cc]: Added 
+	set_criteria_current(), like set_layout_current(), so we can 
+	temporarily remember the sort (and find) for a table while navigating.
+	DocumentTableInfo: Hand-wrote copy constructor and operator=() rather 
+	than depend on generated ones.
+	* glom/utility_widgets/db_adddel/db_adddel.[h|cc]: 
+	Added signal_sort_clause_changed, emitted when the user clicks on 
+	the column header, which already caused a refresh with that sort.
+	* glom/mode_data/box_data_list.[h|cc]: Respond to a sort change in the 
+	DbAddDel widget, saving it temporarily in the document.
+	* glom/mode_data/frame_glom.cc: show_table(): Use the remembered 
+	criteria, from the document, where there is one.
+
+	Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/303422
+	(elmergato)
+
 2008-12-02  Armin Burgmeier  <armin@openismus.com>
 
-	* glom/libglom/data_structure/fieldtypes.h:
-	* glom/libglom/data_structure/fieldtypes.cc: Added a fallback map that
-	specifies types that can be used when the database does not support
+	* glom/libglom/data_structure/fieldtypes.[h|cc]:  Added a fallback map 
+	that specifies types that can be used when the database does not support
 	another type natively.
 
 	* glom/libglom/data_structure/field.cc (set_field_info): Only set glom

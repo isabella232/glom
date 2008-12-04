@@ -48,6 +48,7 @@ Box_Data_List::Box_Data_List()
   //The Add and Delete buttons are handled by the DbAddDel widget itself.
   m_AddDel.signal_user_requested_edit().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_requested_edit));
   m_AddDel.signal_script_button_clicked().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_script_button_clicked));
+  m_AddDel.signal_sort_clause_changed().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_sort_clause_changed));
   
   //TODO: Re-add this signal if this is really wanted, but make it part of a complete drag-and-drop feature for list views:
   //m_AddDel.signal_user_reordered_columns().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_reordered_columns));
@@ -578,6 +579,19 @@ void Box_Data_List::get_record_counts(gulong& total, gulong& found) const
   
   if(refModelDerived)
     refModelDerived->get_record_counts(total, found);
+}
+
+void Box_Data_List::on_adddel_user_sort_clause_changed()
+{
+  //Remember details about the previously viewed table, 
+  //so we don't forget the sort order and where clause when 
+  //navigating back, which would annoy the user:
+
+  m_found_set = m_AddDel.get_found_set();
+
+  Document_Glom* document = get_document(); 
+  if(document)
+    document->set_criteria_current(m_table_name, m_found_set);
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

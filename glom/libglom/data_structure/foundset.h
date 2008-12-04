@@ -30,6 +30,10 @@
 namespace Glom
 {
 
+/** A grouping of information about a view of a table, 
+ * including what records are viewed (the where clause),
+ * how the are  sorted (the sort clause).
+ */
 class FoundSet
 {
 public:
@@ -38,6 +42,10 @@ public:
   FoundSet& operator=(const FoundSet& src);
 
   bool operator==(const FoundSet& src) const;
+
+  /** Whether this specifies any where clause or sort order.
+   */
+  bool has_no_criteria() const;
 
   Glib::ustring m_table_name;
   Glib::ustring m_extra_join; // Only used for doubly-related related records (portals), in which case the WHERE clause is also slightly different.

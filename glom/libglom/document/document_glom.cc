@@ -3733,7 +3733,18 @@ void Document_Glom::set_layout_current(const Glib::ustring& table_name, const Gl
   type_tables::iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
   {
-    iterFind->second.m_layout_current = layout_name;
+    DocumentTableInfo& table_info = iterFind->second; 
+    table_info.m_layout_current = layout_name;
+  }
+}
+
+void Document_Glom::set_criteria_current(const Glib::ustring& table_name, const FoundSet& found_set)
+{
+  type_tables::iterator iterFind = m_tables.find(table_name);
+  if(iterFind != m_tables.end())
+  {
+    DocumentTableInfo& table_info = iterFind->second; 
+    table_info.m_foundset_current = found_set; 
   }
 }
 
@@ -3742,11 +3753,25 @@ Glib::ustring Document_Glom::get_layout_current(const Glib::ustring& table_name)
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
   {
-    return iterFind->second.m_layout_current;
+    const DocumentTableInfo& table_info = iterFind->second; 
+    return table_info.m_layout_current;
   }
 
   return Glib::ustring(); //not found.
 }
+
+FoundSet Document_Glom::get_criteria_current(const Glib::ustring& table_name) const
+{
+  type_tables::const_iterator iterFind = m_tables.find(table_name);
+  if(iterFind != m_tables.end())
+  {
+    const DocumentTableInfo& table_info = iterFind->second; 
+    return table_info.m_foundset_current;
+  }
+
+  return FoundSet();
+}
+
 
 bool Document_Glom::get_is_example_file() const
 {
