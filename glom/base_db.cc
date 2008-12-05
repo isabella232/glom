@@ -1253,7 +1253,7 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
       {
         const type_vecStrings vec_values = Utils::string_separate(row_data, ",", true /* ignore , inside quotes */);
         if(true) //vec_values.size() == fields_count)
-	{
+        {
           //Do not allow any unescaped newlines in the row data.
           //Note that this is checking for newlines ("\n"), not escaped newlines ("\\n").
           Glib::ustring converted_row_data;
@@ -1277,10 +1277,10 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
                 bool success;
                 const Gnome::Gda::Value value = vec_fields[i]->from_sql(vec_values[i], Field::SQL_FORMAT_POSTGRES, success);
 
-		if(success)
+                if(success)
                   converted_row_data += vec_fields[i]->sql(value, connection_pool->get_sql_format());
-		else
-		  converted_row_data += "''";
+                else
+                  converted_row_data += "''";
               }
 
               actual_row_data = &converted_row_data;
@@ -1291,7 +1291,7 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
             if(query_execute(strQuery))
               //std::cout << "debug: after query: " << strQuery << std::endl;
               insert_succeeded = true;
-	    else
+            else
             {
               insert_succeeded = false;
               break;
@@ -1988,12 +1988,12 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
           sharedptr<SharedConnection> sharedconnection = connect_to_server(0 /* parent window */);
 #else
-	  std::auto_ptr<ExceptionConnection> error;
-	  sharedptr<SharedConnection> sharedconnection = connect_to_server(0 /* parent window */, error);
-	  // TODO: Rethrow?
+          std::auto_ptr<ExceptionConnection> error;
+          sharedptr<SharedConnection> sharedconnection = connect_to_server(0 /* parent window */, error);
+          // TODO: Rethrow?
 #endif
 
-	  g_assert(sharedconnection);
+          g_assert(sharedconnection);
 
           refCalcProgress.m_value = glom_evaluate_python_function_implementation(field->get_glom_type(), field->get_calculation(), field_values, get_document(), field_in_record.m_table_name, sharedconnection->get_gda_connection());
 

@@ -291,6 +291,8 @@ static std::string glom_unescape_text(const std::string& str)
       result += '\'';
       ++ iter;
     }
+    /* double quotes are not escaped, so don't unescape them. */
+#if 0
     // Unescape "" to ".
     else if(*iter == '\"')
     {
@@ -299,6 +301,7 @@ static std::string glom_unescape_text(const std::string& str)
       result += '\"';
       ++ iter;
     }
+#endif
     // Escape sequence beginning with backslash.
     else if(*iter == '\\')
     {
@@ -425,15 +428,21 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value, sql_format format) cons
         const guchar* buffer = value.get_binary(buffer_length);
         if(buffer && buffer_length > 0)
         {
-          //Get the escaped text that represents the binary data:
-          const std::string escaped_binary_data = Conversions::get_escaped_binary_data((guint8*)buffer, buffer_length);
-          //Now escape that text (to convert \ to \\, for instance):
-          //The E prefix indicates ""escape" string constants, which are an extension to the SQL standard"
-          //Otherwise, we get a warning when using large escaped strings:
           if(format == SQL_FORMAT_POSTGRES)
-            str = "E" + glom_escape_text(escaped_binary_data) /* has quotes */ + "::bytea";
+          {
+            //Get the escaped text that represents the binary data:
+            const std::string escaped_binary_data = Conversions::escape_binary_data_postgres((guint8*)buffer, buffer_length);
+            //Now escape that text (to convert \ to \\, for instance):
+            //The E prefix indicates ""escape" string constants, which are an extension to the SQL standard"
+            //Otherwise, we get a warning when using large escaped strings:
+            if(format == SQL_FORMAT_POSTGRES)
+              str = "E" + glom_escape_text(escaped_binary_data) /* has quotes */ + "::bytea";
+          }
           else
-            str = glom_escape_text(escaped_binary_data);
+          {
+            const std::string escaped_binary_data = Conversions::escape_binary_data_sqlite((guint8*)buffer, buffer_length);
+            str = "x'" + escaped_binary_data + "'";
+          }
         }
       }
       else
@@ -502,27 +511,58 @@ Gnome::Gda::Value Field::from_sql(const Glib::ustring& str, sql_format format, b
       // is expensive, and we only check for ASCII stuff anyway.
       const std::string& raw = str.raw();
 
+      Glib::ustring unescaped;
       switch(format)
       {
       case SQL_FORMAT_POSTGRES:
         if(raw.length() >= 10 &&
            raw.compare(0, 2, "E'") == 0 && raw.compare(raw.length() - 8, 8, "'::bytea") == 0)
         {
-          std::string unescaped = glom_unescape_text(raw.substr(1, raw.length() - 8));
-          NumericFormat format_ignored; //Because we use ISO format.
-          return Conversions::parse_value(m_glom_type, unescaped, format_ignored, success, true);
+          unescaped = glom_unescape_text(raw.substr(1, raw.length() - 8));
+	}
+	// The E can be omitted, and it is in some example files, such as
+	// example_smallbusiness.glom. We need to parse this to convert the
+	// data into sqlite format, when the small bussiness example is loaded
+	// into a sqlite database.
+	else if(raw.length() >= 9 &&
+	        raw.compare(0, 1, "'") == 0 && raw.compare(raw.length() - 8, 8, "'::bytea") == 0)
+	{
+          unescaped = glom_unescape_text(raw.substr(0, raw.length() - 7));
         }
-        else
+
+        if(!unescaped.empty())
         {
-          success = false;
-          return Gnome::Gda::Value();
+          gsize length;
+          guint8* binary_data = Conversions::unescape_binary_data_postgres(unescaped, length);
+          if(binary_data)
+          {
+            Gnome::Gda::Value value;
+            value.set(binary_data, length);
+            g_free(binary_data);
+            return value;
+          }
         }
+
+        success = false;
+        return Gnome::Gda::Value();
       case SQL_FORMAT_SQLITE:
+        if(raw.length() >= 3 &&
+           (raw.compare(0, 2, "x'") == 0 || raw.compare(0, 2, "X'")) &&
+           raw.compare(raw.length() - 1, 1, "'") == 0)
         {
-          std::string unescaped = glom_unescape_text(raw);
-          NumericFormat format_ignored; //Because we use ISO format.
-          return Conversions::parse_value(m_glom_type, unescaped, format_ignored, success, true);
+          gsize length;
+          guint8* binary_data = Conversions::unescape_binary_data_sqlite(raw.substr(2, raw.length()), length);
+          if(binary_data)
+          {
+            Gnome::Gda::Value value;
+            value.set(binary_data, length);
+            g_free(binary_data);
+            return value;
+          }
         }
+
+        success = false;
+        return Gnome::Gda::Value();
       default:
         g_assert_not_reached();
         break;

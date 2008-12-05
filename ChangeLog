@@ -1,3 +1,24 @@
+2008-12-05  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/data_structure/glomconversions.h: 
+	* glom/libglom/data_structure/glomconversions.cc: Replaced
+	get_escaped_binary_data by escape_binary_data_postgres() and
+	escape_binary_data_sqlite(). SQLite uses a different format for binary
+	data.
+	(get_text_for_gda_value): Allow DATE and TIME values to be strings,
+	and parse them always in ISO format. This is used for SQLite within
+	which we store dates and times as ISO-formatted strings.
+
+	* glom/libglom/data_structure/field.cc (glom_unescape_text): Don't
+	unescape double quotes, as they are not escaped in glom_escape_text
+	either.
+	(sql): Use the escape_binary_data_postgres or
+	escape_binary_data_sqlite functions from glomconversions, depending on
+	the preferred format.
+	(from_sql): Use the unescape_binary_data_postgres or
+	unescape_binary_data_sqlite functions from glomconversions, depending
+	on the preferred format.
+
 2008-12-04  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/data_structure/foundset.[h|cc]: Added has_no_criteria() 

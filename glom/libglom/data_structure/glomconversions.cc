@@ -35,6 +35,24 @@
 #include <iomanip>
 #include <string.h> // for strlen, memset, strcmp
 
+namespace
+{
+  char hextochar(guint8 hex)
+  {
+    if(hex < 10) return '0' + hex;
+    if(hex < 16) return 'a' - 10 + hex;
+    return '\0';
+  }
+
+  guint8 chartohex(char c)
+  {
+    if(c >= '0' && c <= '9') return c - '0';
+    if(c >= 'a' && c <= 'f') return c - 'a' + 10;
+    if(c >= 'A' && c <= 'F') return c - 'A' + 10;
+    return 0;
+  }
+}
+
 namespace Glom
 {
 
@@ -300,18 +318,39 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
     return "";
   }
 
-  if( (glom_type == Field::TYPE_DATE) && (value.get_value_type() == G_TYPE_DATE))
+  if(glom_type == Field::TYPE_DATE)
   {
-    Glib::Date gda_date = value.get_date();
-    //Gnome::Gda::Date gda_date = value.get_date();
-
-    //tm the_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     tm the_c_time;
     memset(&the_c_time, 0, sizeof(the_c_time));
 
-    the_c_time.tm_year = gda_date.get_year() - 1900; //C years start are the AD year - 1900. So, 01 is 1901.
-    the_c_time.tm_mon = gda_date.get_month() - 1; //C months start at 0.
-    the_c_time.tm_mday = gda_date.get_day(); //starts at 1
+    if(value.get_value_type() == G_TYPE_STRING)
+    {
+      // If a date is contained in a string type instead of a date type,
+      // which can happen if the database system does not support dates
+      // natively, then the string representation is always in ISO format.
+      bool success;
+      the_c_time = parse_date(value.get_string(), std::locale::classic(), success);
+      if(!success)
+        std::cerr << "Conversions::get_text_for_gda_value(): Failed to convert string-represented date value" << std::endl;
+    }
+    else if(value.get_value_type() == G_TYPE_DATE)
+    {
+      Glib::Date gda_date = value.get_date();
+      //Gnome::Gda::Date gda_date = value.get_date();
+
+      //tm the_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+      the_c_time.tm_year = gda_date.get_year() - 1900; //C years start are the AD year - 1900. So, 01 is 1901.
+      the_c_time.tm_mon = gda_date.get_month() - 1; //C months start at 0.
+      the_c_time.tm_mday = gda_date.get_day(); //starts at 1
+    }
+    else
+    {
+      std::cerr << "Conversions::get_text_for_gda_value(): glom field type is DATE but GdaValue type is: " << g_type_name(value.get_value_type()) << std::endl;
+
+      // Default
+      the_c_time.tm_mday = 1;
+    }
 
     return format_date(the_c_time, locale, iso_format);
 
@@ -323,15 +362,32 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
   }
   else if((glom_type == Field::TYPE_TIME) && (value.get_value_type() == GDA_TYPE_TIME))
   {
-    Gnome::Gda::Time gda_time = value.get_time();
-
-    //tm the_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     tm the_c_time;
     memset(&the_c_time, 0, sizeof(the_c_time));
+    if(value.get_value_type() == G_TYPE_STRING)
+    {
+      // If a time is contained in a string type instead of a gda time type,
+      // which can happen if the database system does not support times
+      // natively, then the string representation is always in ISO format.
+      bool success;
+      the_c_time = parse_time(value.get_string(), std::locale::classic(), success);
+      if(!success)
+        std::cerr << "Conversions::get_text_for_gda_value(): Failed to convert string-represented time value" << std::endl;
+    }
+    else if(value.get_value_type() == GDA_TYPE_TIME)
+    {
+      Gnome::Gda::Time gda_time = value.get_time();
 
-    the_c_time.tm_hour = gda_time.hour;
-    the_c_time.tm_min = gda_time.minute;
-    the_c_time.tm_sec = gda_time.second;
+      //tm the_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+      the_c_time.tm_hour = gda_time.hour;
+      the_c_time.tm_min = gda_time.minute;
+      the_c_time.tm_sec = gda_time.second;
+    }
+    else
+    {
+      std::cerr << "Conversions::get_text_for_gda_value(): glom field type is TIME but GdaValue type is: " << g_type_name(value.get_value_type()) << std::endl;
+    }
 
     return format_time(the_c_time, locale, iso_format);
   }
@@ -394,12 +450,13 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
   }
   else if(glom_type == Field::TYPE_IMAGE)
   {
-    //Return the binary-as-escaped-text format, suitable for use in the document. 
+    //Return the binary-as-escaped-text format, suitable for use in the document.
+    //TODO: Where do we need this? Do we need to have this in SQLite format sometimes?
     std::string result;
     long buffer_length;
     const guchar* buffer = value.get_binary(buffer_length);
     if(buffer && buffer_length > 0)
-      result = Conversions::get_escaped_binary_data((guint8*)buffer, buffer_length);
+      result = Conversions::escape_binary_data_postgres((guint8*)buffer, buffer_length);
 
     return result;
   }
@@ -552,10 +609,11 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
   {
     //We assume that the text is the same (escaped text) format that we use in the document when saving images:
     //(The SQL format).
+    // TODO: For what do we need this? Does this have to be in SQLite format sometimes?
     Gnome::Gda::Value result;
 
     size_t buffer_binary_length = 0;
-    guchar* buffer_binary = Glom_PQunescapeBytea((const guchar*)text.c_str() /* must be null-terminated */, &buffer_binary_length); //freed by us later.
+    guchar* buffer_binary = Conversions::unescape_binary_data_postgres(text, buffer_binary_length); //freed by us later.
     if(buffer_binary)
     {
       result.set(buffer_binary, buffer_binary_length);
@@ -1043,7 +1101,7 @@ Glom_PQunescapeBytea(const unsigned char *strtext, size_t *retbuflen)
   return tmpbuf;
 }
 
-Glib::ustring Conversions::get_escaped_binary_data(guint8* buffer, size_t buffer_size)
+Glib::ustring Conversions::escape_binary_data_postgres(guint8* buffer, size_t buffer_size)
 {
   //g_warning("Conversions::get_escaped_binary_data: debug: buffer ");
   //for(int i = 0; i < 10; ++i)
@@ -1083,6 +1141,44 @@ Glib::ustring Conversions::get_escaped_binary_data(guint8* buffer, size_t buffer
   }
 
   return result;
+}
+
+Glib::ustring Conversions::escape_binary_data_sqlite(guint8* buffer, size_t buffer_size)
+{
+  // The sqlite format is two characters representing a byte in hexadecimal
+  // notation.
+  Glib::ustring result;
+  result.reserve(buffer_size*2);
+  for(unsigned int i = 0; i < buffer_size; ++ i)
+  {
+    result += hextochar((buffer[i] & 0xf0) >> 4);
+    result += hextochar((buffer[i] & 0x0f)     );
+  }
+
+  return result;
+}
+
+guint8* Conversions::unescape_binary_data_postgres(const Glib::ustring& escaped_binary_data, size_t& length)
+{
+  return Glom_PQunescapeBytea((const guchar*)escaped_binary_data.c_str(), &length);
+}
+
+guint8* Conversions::unescape_binary_data_sqlite(const Glib::ustring& escaped_binary_data, size_t& length)
+{
+  g_assert(escaped_binary_data.bytes() % 2 == 0);
+
+  length = escaped_binary_data.bytes()/2;
+  const char* in_data = escaped_binary_data.c_str();
+  // Use malloc here, since unescape_binary_data_postgres also uses malloc
+  // in Glom_PQunescapeBytea and we want the API to stay consistent.
+  guint8* out_data = static_cast<guint8*>(malloc(length));
+  if(!out_data) { length = 0; return NULL; }
+
+  // The sqlite format is two characters representing a byte in hexadecimal
+  // notation.
+  for(unsigned int i = 0; i < length; ++i)
+    out_data[i] = chartohex(in_data[2*i] << 4) | chartohex(in_data[2*i+1]);
+  return out_data;
 }
 
 Gnome::Gda::Value Conversions::convert_value(const Gnome::Gda::Value& value, Field::glom_field_type target_glom_type)
