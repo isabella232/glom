@@ -1,5 +1,14 @@
 2008-12-06  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/combobox_fields.cc: on_cell_data_title(): Pass a ustring to 
+	set_property() for the (None) item, so it really shows up. 
+	set_property() cannot handle a char* there, it seems.
+	For instance, this means that the choices fields can be cleared again.
+	This regression probably happened when we first ported Glom to Maemo.
+	Bug found by Arq. Maximiliano Meilán.
+
+2008-12-06  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/box_reports.cc: on_adddel_Add(): Set a default title based on 
 	the name, when adding a new report, as we do for tables, relationships, 
 	print layouts, etc.
