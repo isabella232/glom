@@ -467,6 +467,7 @@ void FlowTable::set_columns_count(guint value)
     value = 1;
 
   m_columns_count = value;
+  std::cout << "FlowTable::set_columns_count(): m_columns_count=:" << m_columns_count << std::endl;
 }
 
 void FlowTable::get_item_requested_width(const FlowTableItem& item, int& first, int& second) const

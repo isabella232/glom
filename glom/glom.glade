@@ -1499,7 +1499,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="width_chars">9</property>
-                                    <property name="adjustment">5 0 100 1 10 10</property>
+                                    <property name="adjustment">5 0 100 1 10 0</property>
                                   </widget>
                                 </child>
                               </widget>

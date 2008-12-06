@@ -179,6 +179,7 @@ void ComboBox_Fields::set_fields(const type_vecFields& fields, bool with_none_it
     tree_iter = m_model->append();
     row = *tree_iter;
 
+    std::cout << "DEBUG: ComboBox_Fields::set_fields(): adding none item." << std::endl;
     row[m_model_columns.m_field] = sharedptr<Field>(); 
     row[m_model_columns.m_separator] = true;
   }
@@ -201,14 +202,19 @@ void ComboBox_Fields::on_cell_data_title(const Gtk::TreeModel::const_iterator& i
   if(field)
   {
     m_renderer_title->set_property("text", field->get_title_or_name());
-    //m_renderer_title->property_text() = field->get_title_or_name();
+    //m_renderer_title->property_text() = field->get_title_or_name(); //Not available on Maemo.
   }
   else
   {
     // A special "None" item, allowing the user to do the equivalent of clearing the combobox,
     // which is not normally possible with the GtkComboBox UI:
-    m_renderer_title->set_property("text", _("(None)"));
-    //m_renderer_title->property_text() = _("(None)");
+
+    //set_property() does not work with a const gchar*, so we explicitly create a ustring.
+    //otherwise we get this warning:
+    //" unable to set property `text' of type `gchararray' from value of type `glibmm__CustomPointer_Pc' "
+    //TODO: Add a template specialization to Glib::ObjectBase::set_property() to allow this?
+    m_renderer_title->set_property("text", Glib::ustring(_("(None)")));
+    //m_renderer_title->property_text() = _("(None)"); //Not available on Maemo.
   }
 }
 

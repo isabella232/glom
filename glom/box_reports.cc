@@ -133,6 +133,16 @@ void Box_Reports::on_adddel_Add(const Gtk::TreeModel::iterator& row)
     report->set_name(report_name);
     m_AddDel.set_value_key(row, report_name);
 
+    //Set a suitable starting title, if there is none already:
+    Glib::ustring title = m_AddDel.get_value(row, m_colTitle);
+    if(title.empty())
+    {
+      title = Utils::title_from_string(report_name);
+      m_AddDel.set_value(row, m_colTitle, title);
+    }
+
+    report->set_title(title);
+
     get_document()->set_report(m_table_name, report);
   }
 }
