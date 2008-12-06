@@ -1,3 +1,9 @@
+2008-12-06  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/box_reports.cc: on_adddel_Add(): Set a default title based on 
+	the name, when adding a new report, as we do for tables, relationships, 
+	print layouts, etc.
+
 2008-12-05  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/data_structure/glomconversions.h: 
