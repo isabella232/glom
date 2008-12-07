@@ -91,6 +91,7 @@ protected:
   void on_adddel_user_requested_edit(const Gtk::TreeModel::iterator& row);
   void on_adddel_user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
   void on_adddel_user_reordered_columns();
+  void on_adddel_user_sort_clause_changed();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void on_adddel_user_requested_layout();

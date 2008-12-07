@@ -243,8 +243,8 @@ void Frame_Glom::set_databases_selected(const Glib::ustring& strName)
 
 void Frame_Glom::on_box_tables_selected(const Glib::ustring& strName)
 {
-  if (m_pDialog_Tables)
-    m_pDialog_Tables->hide(); //cause_close();
+  if(m_pDialog_Tables)
+    m_pDialog_Tables->hide();
 
   show_table(strName);
 }
@@ -372,29 +372,42 @@ void Frame_Glom::show_table(const Glib::ustring& table_name, const Gnome::Gda::V
       {
         strMode = _("Data");
         FoundSet found_set;
+
+        //Start with the last-used found set (sort order and where clause)
+        //for this layout:
+        //(This would be ignored anyway if a details primary key is specified.)
+        Document_Glom* document = get_document(); 
+        if(document)
+          found_set = document->get_criteria_current(m_table_name);
+
+        //Make sure that this is set:
         found_set.m_table_name = m_table_name;
 
-        //Sort by the ID, just so we sort by something, so that the order is predictable:
-        sharedptr<Field> field_primary_key = get_field_primary_key_for_table(m_table_name);
-        if(field_primary_key)
+        //If there is no saved sort clause, 
+        //then sort by the ID, just so we sort by something, so that the order is predictable:
+        if(found_set.m_sort_clause.empty())
         {
-          sharedptr<LayoutItem_Field> layout_item_sort = sharedptr<LayoutItem_Field>::create();
-          layout_item_sort->set_full_field_details(field_primary_key);
+          sharedptr<Field> field_primary_key = get_field_primary_key_for_table(m_table_name);
+          if(field_primary_key)
+          {
+            sharedptr<LayoutItem_Field> layout_item_sort = sharedptr<LayoutItem_Field>::create();
+            layout_item_sort->set_full_field_details(field_primary_key);
 
-          found_set.m_sort_clause.clear();
+            found_set.m_sort_clause.clear();
 
-          //Avoid the sort clause if the found set will include too many records, 
-          //because that would be too slow.
-          //The user can explicitly request a sort later, by clicking on a column header.
-          //TODO_Performance: This causes an almost-duplicate COUNT query (we do it in the treemodel too), but it's not that slow. 
-          sharedptr<LayoutItem_Field> layout_item_temp = sharedptr<LayoutItem_Field>::create();
-          layout_item_temp->set_full_field_details(field_primary_key);
-          type_vecLayoutFields layout_fields;
-          layout_fields.push_back(layout_item_temp);
-          const Glib::ustring sql_query_without_sort = Utils::build_sql_select_with_where_clause(found_set.m_table_name, layout_fields, found_set.m_where_clause, found_set.m_extra_join, type_sort_clause(), found_set.m_extra_group_by);
-          const int count = Base_DB::count_rows_returned_by(sql_query_without_sort);
-          if(count < 10000) //Arbitrary large number.
-            found_set.m_sort_clause.push_back( type_pair_sort_field(layout_item_sort, true /* ascending */) );
+            //Avoid the sort clause if the found set will include too many records, 
+            //because that would be too slow.
+            //The user can explicitly request a sort later, by clicking on a column header.
+            //TODO_Performance: This causes an almost-duplicate COUNT query (we do it in the treemodel too), but it's not that slow. 
+            sharedptr<LayoutItem_Field> layout_item_temp = sharedptr<LayoutItem_Field>::create();
+            layout_item_temp->set_full_field_details(field_primary_key);
+            type_vecLayoutFields layout_fields;
+            layout_fields.push_back(layout_item_temp);
+            const Glib::ustring sql_query_without_sort = Utils::build_sql_select_with_where_clause(found_set.m_table_name, layout_fields, found_set.m_where_clause, found_set.m_extra_join, type_sort_clause(), found_set.m_extra_group_by);
+            const int count = Base_DB::count_rows_returned_by(sql_query_without_sort);
+            if(count < 10000) //Arbitrary large number.
+              found_set.m_sort_clause.push_back( type_pair_sort_field(layout_item_sort, true /* ascending */) );
+          }
         }
 
         //Show the wanted records in the notebook, showing details for a particular record if wanted:

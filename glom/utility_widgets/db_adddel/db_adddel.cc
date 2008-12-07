@@ -1641,6 +1641,11 @@ DbAddDel::type_signal_record_added DbAddDel::signal_record_added()
   return m_signal_record_added;
 }
 
+DbAddDel::type_signal_sort_clause_changed DbAddDel::signal_sort_clause_changed()
+{
+  return m_signal_sort_clause_changed;
+}
+
 void DbAddDel::on_treeview_button_press_event(GdkEventButton* event)
 {
   on_button_press_event_Popup(event);
@@ -1761,6 +1766,8 @@ void DbAddDel::on_treeview_column_clicked(int model_column_index)
   }
 
   refresh_from_database();
+
+  m_signal_sort_clause_changed.emit();
 }
 
 void DbAddDel::on_treeview_columns_changed()

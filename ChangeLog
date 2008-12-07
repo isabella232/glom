@@ -1,3 +1,28 @@
+2008-12-04  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/data_structure/foundset.[h|cc]: Added has_no_criteria() 
+	to check if it has a sort order or where clause.
+	* glom/libglom/document/document_glom.[h|cc]: Added 
+	set_criteria_current(), like set_layout_current(), so we can 
+	temporarily remember the sort (and find) for a table while navigating.
+	DocumentTableInfo: Hand-wrote copy constructor and operator=() rather 
+	than depend on generated ones.
+	* glom/utility_widgets/db_adddel/db_adddel.[h|cc]: 
+	Added signal_sort_clause_changed, emitted when the user clicks on 
+	the column header, which already caused a refresh with that sort.
+	* glom/mode_data/box_data_list.[h|cc]: Respond to a sort change in the 
+	DbAddDel widget, saving it temporarily in the document.
+	* glom/mode_data/frame_glom.cc: show_table(): Use the remembered 
+	criteria, from the document, where there is one.
+
+	Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/303422
+	(elmergato)
+
+	This was backported from svn trunk because it also allows the sort to 
+	be used for the top-level of reports.
+	Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/303425
+	(elmergato)
+
 2008-12-06  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/combobox_fields.cc: on_cell_data_title(): Pass a ustring to 

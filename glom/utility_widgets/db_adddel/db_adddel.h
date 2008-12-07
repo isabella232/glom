@@ -246,6 +246,13 @@ public:
   typedef sigc::signal<void, const Gtk::TreeModel::iterator&, const Gnome::Gda::Value&> type_signal_record_added;
   type_signal_record_added signal_record_added();
     
+
+  /** Emitted when the user changed the sort order, 
+   * for instance by clicking on a column header.
+   */
+  typedef sigc::signal<void> type_signal_sort_clause_changed;
+  type_signal_sort_clause_changed signal_sort_clause_changed();
+
  
   virtual Gtk::TreeModel::iterator get_last_row();
   virtual Gtk::TreeModel::iterator get_last_row() const;
@@ -399,13 +406,15 @@ protected:
   bool m_allow_view_details;
   Gtk::TreeViewColumn* m_treeviewcolumn_button;
 
-  //signals:
+  //Signals:
   type_signal_user_requested_edit m_signal_user_requested_edit;
+  type_signal_script_button_clicked m_signal_script_button_clicked;
+  type_signal_record_added m_signal_record_added;
+  type_signal_sort_clause_changed m_signal_sort_clause_changed;
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   type_signal_user_requested_layout m_signal_user_requested_layout;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-  type_signal_script_button_clicked m_signal_script_button_clicked;
-  type_signal_record_added m_signal_record_added;
     
   //TODO: Do this properly:
   //type_signal_user_added m_signal_record_count_changed;

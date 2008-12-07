@@ -166,17 +166,20 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
   }
   else
   {
-    //Select the last-viewed layout:
-    Document_Glom* document = get_document();
-    
-    if(document)
+    //Get information abvout the the last-viewed layout:
+    Glib::ustring current_layout;
+    if(!details_record_specified)
     {
-      const Glib::ustring current_layout = get_document()->get_layout_current(m_table_name);
-      if( (current_layout.empty() || (current_layout == "list")) && (current_view != DATA_VIEW_List) )
-        set_current_view(DATA_VIEW_List);
-      else if( (current_layout == "details") && (current_view != DATA_VIEW_Details) )
-        set_current_view(DATA_VIEW_Details);
+      Document_Glom* document = get_document(); 
+      if(document)
+        current_layout = document->get_layout_current(m_table_name);
     }
+
+    //Set the layout:
+    if( (current_layout.empty() || (current_layout == "list")) && (current_view != DATA_VIEW_List) )
+      set_current_view(DATA_VIEW_List);
+    else if( (current_layout == "details") && (current_view != DATA_VIEW_Details) )
+      set_current_view(DATA_VIEW_Details);
   }
 
   //Re-enable this handler, so we can respond to notebook page changes:
