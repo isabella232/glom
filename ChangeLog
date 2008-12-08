@@ -1,3 +1,10 @@
+2008-12-08  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/canvas/canvas_group_grid.cc: create_lines():
+	Do not create the grid lines with 0 steps, to avoid a hang.
+	Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/303453
+	(elmergato)
+
 2008-12-04  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/data_structure/foundset.[h|cc]: Added has_no_criteria() 

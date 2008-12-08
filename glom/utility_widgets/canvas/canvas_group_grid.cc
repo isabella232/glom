@@ -223,25 +223,28 @@ void CanvasGroupGrid::create_lines()
   const double width = right - left;
   const double height = bottom - top;
 
-  const double count_vertical_grid_lines = width / m_grid_gap;
-  const double count_horizontal_grid_lines = height / m_grid_gap;
+  if(m_grid_gap > 0) //0 steps cause a crash in older versions of goocanvas.
+  {
+    const double count_vertical_grid_lines = width / m_grid_gap;
+    const double count_horizontal_grid_lines = height / m_grid_gap;
   
-  //Vertical grid lines:
-  for(double i = 0; i < count_vertical_grid_lines; ++i)
-  {
-    const double x = i * m_grid_gap;
+    //Vertical grid lines:
+    for(double i = 0; i < count_vertical_grid_lines; ++i)
+    {
+      const double x = i * m_grid_gap;
    
-    Glib::RefPtr<Goocanvas::Polyline> line = create_grid_or_rule_line(x, top, x, bottom);
-    m_grid_lines_group->add_child(line);
-  }
+      Glib::RefPtr<Goocanvas::Polyline> line = create_grid_or_rule_line(x, top, x, bottom);
+      m_grid_lines_group->add_child(line);
+    }
 
-  //Horizontal grid lines:
-  for(double i = 0; i < count_horizontal_grid_lines; ++i)
-  {
-    const double y = i * m_grid_gap;
+    //Horizontal grid lines:
+    for(double i = 0; i < count_horizontal_grid_lines; ++i)
+    {
+      const double y = i * m_grid_gap;
 
-    Glib::RefPtr<Goocanvas::Polyline> line = create_grid_or_rule_line(left, y, right, y);
-    m_grid_lines_group->add_child(line);
+      Glib::RefPtr<Goocanvas::Polyline> line = create_grid_or_rule_line(left, y, right, y);
+      m_grid_lines_group->add_child(line);
+    }
   }
 
   //Vertical rules:
