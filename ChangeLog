@@ -1,5 +1,11 @@
 2008-12-08  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/connectionpool.cc: cleanup(): Check for a null 
+	m_backend, to avoid a crash when quitting Glom without opening a file.
+	I added some more checks elsewhere.
+
+2008-12-08  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/canvas/canvas_group_grid.cc: create_lines():
 	Do not create a GooCanvasGrid with 0 steps, so Glom works with versions 
 	of GooCanvas without the bug fix.

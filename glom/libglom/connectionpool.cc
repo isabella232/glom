@@ -339,7 +339,9 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
       std::auto_ptr<ExceptionConnection> error;
 #endif
-      m_refGdaConnection = m_backend->connect(m_database, get_user(), get_password(), error);
+      if(m_backend.get())
+        m_refGdaConnection = m_backend->connect(m_database, get_user(), get_password(), error);
+
       if(!m_refGdaConnection)
       {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -391,7 +393,9 @@ void ConnectionPool::create_database(const Glib::ustring& database_name, std::au
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   std::auto_ptr<Glib::Error> error;
 #endif
-  m_backend->create_database(database_name, get_user(), get_password(), error);
+  if(m_backend.get())  
+    m_backend->create_database(database_name, get_user(), get_password(), error);
+
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   if(error.get()) throw *error;
 #endif
@@ -566,6 +570,9 @@ static void on_linux_signal(int signum)
 
 bool ConnectionPool::startup(Gtk::Window* parent_window)
 {
+  if(!m_backend.get())
+    return false;
+
   if(!m_backend->startup(parent_window))
     return false;
 
@@ -582,7 +589,8 @@ bool ConnectionPool::startup(Gtk::Window* parent_window)
 
 void ConnectionPool::cleanup(Gtk::Window* parent_window)
 {
-  m_backend->cleanup(parent_window);
+  if(m_backend.get())
+    m_backend->cleanup(parent_window);
 
 #ifndef G_OS_WIN32
   /* Stop advertising the self-hosting database server via avahi: */
@@ -596,7 +604,10 @@ void ConnectionPool::cleanup(Gtk::Window* parent_window)
 
 bool ConnectionPool::initialize(Gtk::Window* parent_window)
 {
-  return m_backend->initialize(parent_window, get_user(), get_password());
+  if(m_backend.get())
+    return m_backend->initialize(parent_window, get_user(), get_password());
+  else
+    return false;
 }
 
 bool ConnectionPool::check_user_is_not_root()
@@ -691,6 +702,7 @@ gboolean ConnectionPool::on_publisher_document_authentication(EpcAuthContext* co
 
   //std::cout << "ConnectionPool::on_publisher_document_authentication(): username=" << user_name << ", password=" << password << std::endl;
 
+  g_return_val_if_fail(connection_pool->m_backend.get(), FALSE);
  
   //Attempt a connection with this username/password:
   std::auto_ptr<ExceptionConnection> error;
