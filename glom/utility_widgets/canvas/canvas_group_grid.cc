@@ -207,7 +207,10 @@ void CanvasGroupGrid::create_lines()
 {
   //Remove any existing lines:
   if(m_grid_lines)
+  {
     m_grid_lines->remove();
+    m_grid_lines.clear(); //Null the RefPtr.
+  }
 
   while(m_grid_rules_group && m_grid_rules_group->get_n_children())
     m_grid_rules_group->remove_child(0);
@@ -222,12 +225,15 @@ void CanvasGroupGrid::create_lines()
   const double height = bottom - top;
   
   //Vertical and horizontal grid lines:
-  m_grid_lines = Goocanvas::Grid::create(0, 0, width, height, m_grid_gap, m_grid_gap);
-  m_grid_lines->property_horz_grid_line_width() = 1.0f;
-  m_grid_lines->property_vert_grid_line_width() = 1.0f;
-  m_grid_lines->property_horz_grid_line_color() = "gray";
-  m_grid_lines->property_vert_grid_line_color() = "gray";
-  add_child(m_grid_lines);
+  if(m_grid_gap > 0) //0 steps cause a crash in older versions of goocanvas.
+  {
+    m_grid_lines = Goocanvas::Grid::create(0, 0, width, height, m_grid_gap, m_grid_gap);
+    m_grid_lines->property_horz_grid_line_width() = 1.0f;
+    m_grid_lines->property_vert_grid_line_width() = 1.0f;
+    m_grid_lines->property_horz_grid_line_color() = "gray";
+    m_grid_lines->property_vert_grid_line_color() = "gray";
+    add_child(m_grid_lines);
+  }
 
   //Vertical rules:
   for(CanvasGroupGrid::type_vec_double::const_iterator iter = m_rules_x.begin(); iter != m_rules_x.end(); ++iter)
