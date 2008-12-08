@@ -1,8 +1,10 @@
 2008-12-08  Murray Cumming  <murrayc@murrayc.com>
 
-	* glom/utility_widgets/canvas/canvas_group_grid.cc (Glom.create_lines):
+	* glom/utility_widgets/canvas/canvas_group_grid.cc: create_lines():
 	Do not create a GooCanvasGrid with 0 steps, so Glom works with versions 
 	of GooCanvas without the bug fix.
+	Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/303453
+	(elmergato)
 
 2008-12-06  Murray Cumming  <murrayc@murrayc.com>
 
