@@ -321,7 +321,7 @@ void Dialog_Import_CSV::import(const Glib::ustring& uri, const Glib::ustring& in
     Gtk::TreeModel::iterator tree_iter = m_field_model->append();
     (*tree_iter)[m_field_columns.m_col_field_name] = _("<None>");
 
-    Document_Glom::type_vecFields fields(document->get_table_fields(into_table));
+    const Document_Glom::type_vecFields fields(document->get_table_fields(into_table));
     for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++ iter)
     {
       // Don't allow the primary key to be selected when it is an auto
@@ -334,6 +334,12 @@ void Dialog_Import_CSV::import(const Glib::ustring& uri, const Glib::ustring& in
         (*tree_iter)[m_field_columns.m_col_field_name] = (*iter)->get_name();
       }
     }
+
+    // Create the sorted version of this model, 
+    // so the user sees the fields in alphabetical order:
+    m_field_model_sorted = Gtk::TreeModelSort::create(m_field_model);
+    m_field_model_sorted->set_sort_column(m_field_columns.m_col_field_name, Gtk::SORT_ASCENDING);
+
 
     m_file = Gio::File::create_for_uri(uri);
     m_file->read_async(sigc::mem_fun(*this, &Dialog_Import_CSV::on_file_read));
@@ -376,6 +382,7 @@ void Dialog_Import_CSV::clear()
   m_sample_view->remove_all_columns();
   m_sample_view->set_model(m_sample_model);
   m_field_model.reset();
+  m_field_model_sorted.reset();
   m_rows.clear();
   m_fields.clear();
   m_file.reset();
@@ -819,7 +826,7 @@ void Dialog_Import_CSV::handle_line(const Glib::ustring& line, guint line_number
       col->pack_start(*cell, true);
       col->set_cell_data_func(*cell, sigc::bind(sigc::mem_fun(*this, &Dialog_Import_CSV::field_data_func), i));
       col->set_sizing(Gtk::TREE_VIEW_COLUMN_AUTOSIZE);
-      cell->property_model() = m_field_model;
+      cell->property_model() = m_field_model_sorted;
       cell->property_text_column() = 0;
       cell->property_has_entry() = false;
       cell->signal_edited().connect(sigc::bind(sigc::mem_fun(*this, &Dialog_Import_CSV::on_field_edited), i));
@@ -862,7 +869,7 @@ void Dialog_Import_CSV::line_data_func(Gtk::CellRenderer* renderer, const Gtk::T
 
 void Dialog_Import_CSV::field_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, guint column_number)
 {
-  int row = (*iter)[m_sample_columns.m_col_row];
+  const int row = (*iter)[m_sample_columns.m_col_row];
   Gtk::CellRendererCombo* renderer_combo = dynamic_cast<Gtk::CellRendererCombo*>(renderer);
   if(!renderer_combo) throw std::logic_error("CellRenderer is not a CellRendererCombo in field_data_func");
 
@@ -892,8 +899,10 @@ void Dialog_Import_CSV::field_data_func(Gtk::CellRenderer* renderer, const Gtk::
       {
         Gnome::Gda::Value value = field->from_sql(orig_text, success);
         
-        if(!success) text = _("<Import Failure>");
-        else text = Glom::Conversions::get_text_for_gda_value(field->get_glom_type(), value);
+        if(!success)
+          text = _("<Import Failure>");
+        else
+          text = Glom::Conversions::get_text_for_gda_value(field->get_glom_type(), value);
       }
       else
       {
@@ -934,7 +943,7 @@ void Dialog_Import_CSV::on_field_edited(const Glib::ustring& path, const Glib::u
     {
       sharedptr<Field> field = (*field_iter)[m_field_columns.m_col_field];
       // Check whether another column is already using that field
-      std::vector<sharedptr<Field> >::iterator vec_field_iter = std::find(m_fields.begin(), m_fields.end(), field);
+      type_vec_fields::iterator vec_field_iter = std::find(m_fields.begin(), m_fields.end(), field);
       // Reset the old column since two different columns cannot be imported into the same field
       if(vec_field_iter != m_fields.end()) *vec_field_iter = sharedptr<Field>();
 
@@ -982,7 +991,7 @@ void Dialog_Import_CSV::validate_primary_key()
     sharedptr<Field> primary_key = get_field_primary_key_for_table(get_target_table_name());
     bool primary_key_selected = false;
 
-    if(!primary_key->get_auto_increment())
+    if(primary_key && !primary_key->get_auto_increment())
     {
       // If m_rows is empty, then no single line was read from the file yet,
       // and the m_fields array is not up to date. It is set in handle_line()
@@ -990,7 +999,7 @@ void Dialog_Import_CSV::validate_primary_key()
       primary_key_selected = false;
       if(!m_rows.empty())
       {
-        for(std::vector<sharedptr<Field> >::iterator iter = m_fields.begin(); iter != m_fields.end(); ++ iter)
+        for(type_vec_fields::iterator iter = m_fields.begin(); iter != m_fields.end(); ++ iter)
         {
           if(*iter == primary_key)
           {
