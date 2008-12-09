@@ -47,10 +47,6 @@ Dialog_UsersList::Dialog_UsersList(BaseObjectType* cobject, const Glib::RefPtr<G
   refGlade->get_widget("treeview_users", m_treeview_users);
   if(m_treeview_users)
   {
-    m_treeview_users->set_reorderable();
-    m_treeview_users->enable_model_drag_source();
-    m_treeview_users->enable_model_drag_dest();
-
     Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_users->get_selection();
     if(refSelection)
     {

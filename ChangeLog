@@ -1,5 +1,14 @@
 2008-12-09  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_design/users/dialog_groups_list.cc:
+	* glom/mode_design/users/dialog_users_list.cc: Constructors: 
+	Do not enable row drag and drop on the treeviews, because it is not 
+	used and it just confuses users who trigger it accidentally.
+	This was just some left-over code from when these classes were started 
+	by copying the layout dialog.
+
+2008-12-09  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/dialog_existing_or_new.cc: Constructor: When the examples 
 	directory does not exist, mention the path in the stderr message, to 
 	help us to debug the problem.
