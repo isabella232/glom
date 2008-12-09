@@ -182,7 +182,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   }
   catch(const Glib::Exception& ex)
   {
-    std::cerr << "Could not enumerate examples: " << ex.what() << std::endl;
+    std::cerr << "Could not enumerate examples at path=:" << path << ex.what() << std::endl;
   }
 #endif /* !GLOM_ENABLE_CLIENT_ONLY */
 

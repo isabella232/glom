@@ -1,3 +1,9 @@
+2008-12-09  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/dialog_existing_or_new.cc: Constructor: When the examples 
+	directory does not exist, mention the path in the stderr message, to 
+	help us to debug the problem.
+
 2008-12-08  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/canvas/canvas_group_grid.cc: create_lines():
