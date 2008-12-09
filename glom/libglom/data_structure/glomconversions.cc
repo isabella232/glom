@@ -360,7 +360,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
     return date.format_string("%x"); //%x means "is replaced by the locale's appropriate date representation".
     */
   }
-  else if((glom_type == Field::TYPE_TIME) && (value.get_value_type() == GDA_TYPE_TIME))
+  else if(glom_type == Field::TYPE_TIME)
   {
     tm the_c_time;
     memset(&the_c_time, 0, sizeof(the_c_time));

@@ -42,6 +42,7 @@ public:
 
 protected:
   virtual Field::sql_format get_sql_format() const { return Field::SQL_FORMAT_SQLITE; }
+  virtual bool supports_remote_access() const { return false; }
 
   virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error);
 

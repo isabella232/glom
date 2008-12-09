@@ -1,3 +1,26 @@
+2008-12-09  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/application.h:
+	* glom/application.cc: Set "Users" mene item in "Developer" menu
+	insensitive when the database does not support users.
+
+	* glom/frame_glom.cc: Don't ask for user/password for SQLite
+	connections.
+
+	* glom/libglom/data_structure/glomconversions.cc
+	(get_text_for_gda_value): Really allow TIME values to be strings.
+
+	* glom/libglom/connectionpool.h:
+	* glom/libglom/connectionpool_backends/postgres_central.h:
+	* glom/libglom/connectionpool_backends/postgres_self.h:
+	* glom/libglom/connectionpool_backends/sqlite.h: Added a
+	supports_remote_connection() virtual function to the ConnectionPool
+	backends.
+
+	* glom/libglom/connectionpool.cc: Don't advertize the Glom document
+	via avahi when the database does not support remote connections, such
+	as SQLite.
+
 2008-12-09  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/dialog_import_csv.[h|cc]:

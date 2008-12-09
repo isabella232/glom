@@ -75,6 +75,7 @@ public:
 
 protected:
   virtual Field::sql_format get_sql_format() const { return Field::SQL_FORMAT_POSTGRES; }
+  virtual bool supports_remote_access() const { return true; }
 
   virtual bool initialize(Gtk::Window* parent_window, const Glib::ustring& initial_username, const Glib::ustring& password);
 

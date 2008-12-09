@@ -116,6 +116,10 @@ protected:
    */
   virtual Field::sql_format get_sql_format() const = 0;
 
+  /* Whether the database can be accessed from remote machines, once startup()
+   * was called. */
+  virtual bool supports_remote_access() const = 0;
+
   /* This method is called for one-time initialization of the database
    * storage. No need to implement this function if the data is centrally
    * hosted, not managed by Glom. */

@@ -110,7 +110,8 @@ void FileChooserDialog_SaveExtras::create_child_widgets()
   vbox->pack_start(m_radiobutton_server_postgres_central);
   m_radiobutton_server_postgres_central.show();
 
-  m_radiobutton_server_sqlite.set_label(_("Create sqlite database in its own folder, to be hosted by this computer."));
+  m_radiobutton_server_sqlite.set_label(_("Create SQLite database in its own folder, to be hosted by this computer."));
+  m_radiobutton_server_sqlite.set_tooltip_text(_("SQLite is more light-weight than postgresql, but it does not support authentication or remote access."));
   m_radiobutton_server_sqlite.set_group(group);
   vbox->pack_start(m_radiobutton_server_sqlite);
   m_radiobutton_server_sqlite.show();

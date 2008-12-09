@@ -1839,7 +1839,12 @@ bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring kno
 
     //Only show the dialog if we don't know the correct username/password yet:
     int response = Gtk::RESPONSE_OK;
-    if(known_username.empty() && known_password.empty())
+    // Don't ask for user/password for sqlite databases, since sqlite does
+    // not support authentication. I'd prefer to get that information from
+    // libgda, but gda_connection_supports_feature() requires a GdaConnection
+    // which we don't have at this point.
+    if(document->get_hosting_mode() != Document_Glom::SQLITE_HOSTED &&
+       known_username.empty() && known_password.empty())
     {
        response = Glom::Utils::dialog_run_with_help(m_pDialogConnection, "dialog_connection");
        m_pDialogConnection->hide();

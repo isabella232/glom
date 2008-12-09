@@ -770,6 +770,10 @@ void ConnectionPool::on_epc_progress_end(gpointer user_data)
  */
 void ConnectionPool::avahi_start_publishing()
 {
+  // Don't advertize if the database cannot be accessed remotely anyway
+  if(!m_backend->supports_remote_access())
+    return;
+
   if(m_epc_publisher)
     return;
 #ifdef GLOM_CONNECTION_DEBUG
@@ -822,6 +826,9 @@ void ConnectionPool::avahi_start_publishing()
 
 void ConnectionPool::avahi_stop_publishing()
 {
+  if(!m_backend->supports_remote_access())
+    return;
+
   if(!m_epc_publisher)
     return;
 #ifdef GLOM_CONNECTION_DEBUG

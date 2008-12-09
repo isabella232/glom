@@ -459,9 +459,9 @@ void App_Glom::init_menus()
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_relationships) );
 
-  action = Gtk::Action::create("GlomAction_Menu_Developer_Users", _("_Users"));
-  m_listDeveloperActions.push_back(action);
-  m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_users));
+  m_action_developer_users = Gtk::Action::create("GlomAction_Menu_Developer_Users", _("_Users"));
+  m_listDeveloperActions.push_back(m_action_developer_users);
+  m_refActionGroup_Others->add(m_action_developer_users, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_users));
 
   action = Gtk::Action::create("GlomAction_Menu_Developer_PrintLayouts", _("_Print Layouts")); //TODO: Rename? This looks like an action rather than a noun. It won't actually start printing.
   m_listDeveloperActions.push_back(action);
@@ -1130,6 +1130,15 @@ void App_Glom::update_userlevel_ui()
     Glib::RefPtr<Gtk::Action> action = *iter;
      action->set_sensitive ( userlevel == AppState::USERLEVEL_DEVELOPER );
   }
+
+  // Hide users entry from developer menu for connections that don't
+  // support users
+  if(userlevel == AppState::USERLEVEL_DEVELOPER)
+  {
+    sharedptr<SharedConnection> connection = ConnectionPool::get_and_connect();
+    if(connection && !connection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS))
+      m_action_developer_users->set_sensitive(false);
+  } 
 
   //Make sure that the correct radio menu item is activated (the userlevel might have been set programmatically):
   //We only need to set/unset one, because the others are in the same radio group.
