@@ -44,10 +44,6 @@ Dialog_GroupsList::Dialog_GroupsList(BaseObjectType* cobject, const Glib::RefPtr
   refGlade->get_widget("treeview_groups", m_treeview_groups);
   refGlade->get_widget("treeview_tables", m_treeview_tables);
 
-  m_treeview_groups->set_reorderable();
-  m_treeview_groups->enable_model_drag_source();
-  m_treeview_groups->enable_model_drag_dest();
-
   m_model_groups = Gtk::ListStore::create(m_model_columns_groups);
   m_model_tables = Gtk::ListStore::create(m_model_columns_tables);
 
