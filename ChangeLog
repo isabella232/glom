@@ -6,6 +6,9 @@
 	used and it just confuses users who trigger it accidentally.
 	This was just some left-over code from when these classes were started 
 	by copying the layout dialog.
+	As mentioned in Ubuntu bug 
+	https://bugs.launchpad.net/ubuntu/+source/glom/+bug/299573
+	(elmergato)
 
 2008-12-09  Murray Cumming  <murrayc@murrayc.com>
 
