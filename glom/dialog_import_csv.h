@@ -127,6 +127,7 @@ protected:
 
   FieldColumns m_field_columns;
   Glib::RefPtr<Gtk::ListStore> m_field_model;
+  Glib::RefPtr<Gtk::TreeModelSort> m_field_model_sorted;
 
   SampleColumns m_sample_columns;
   Glib::RefPtr<Gtk::ListStore> m_sample_model;
@@ -176,8 +177,10 @@ protected:
 
   // Parsed data:
   std::vector<std::vector<Glib::ustring> > m_rows;
+
   // The fields into which to import the data:
-  std::vector<sharedptr<Field> > m_fields;
+  typedef std::vector< sharedptr<Field> > type_vec_fields;
+  type_vec_fields m_fields;
 
   SignalStateChanged m_signal_state_changed;
 };

@@ -1,5 +1,15 @@
 2008-12-09  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/dialog_import_csv.[h|cc]:
+	validate_primary_key(): Avoid a null pointer dereference (crash) if 
+	there is no primary key, though that should never happen now.
+	handle_line(), import(): Use a sorted tree model so the fields list is 
+	alphabetically sorted.
+	Ubuntu bug #https://bugs.launchpad.net/ubuntu/+source/glom/+bug/306593
+	(elmergato)
+
+2008-12-09  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_design/users/dialog_groups_list.cc:
 	* glom/mode_design/users/dialog_users_list.cc: Constructors: 
 	Do not enable row drag and drop on the treeviews, because it is not 
