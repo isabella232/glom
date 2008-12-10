@@ -159,7 +159,7 @@ main(int argc, char* argv[])
 
   g_thread_init(NULL); //So we can use GMutex.
 
-  Gnome::Gda::init("glom", VERSION, argc, argv);
+  Gnome::Gda::init();
 #ifdef GLOM_ENABLE_MAEMO
   Hildon::init();
 #endif

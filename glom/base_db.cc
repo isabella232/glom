@@ -56,6 +56,8 @@
 
 #include <sstream> //For stringstream
 
+#include <libgda/libgda.h> // gda_g_type_from_string
+
 namespace Glom
 {
 
@@ -193,7 +195,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute(const Glib::ustring& 
       }
 #endif
     }
-
+        
     // TODO: Several functions call query_execute with non-select queries.
     // Before libgda-3.0, execute_single_command returned always a datamodel
     // on success. In case of a successful non-select command, we therefore
@@ -205,15 +207,15 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute(const Glib::ustring& 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
       try
       {
-        result = gda_connection->execute_select_command(strQuery);
+        result = gda_connection->statement_execute_select(strQuery);
       }
       catch(const Gnome::Gda::ConnectionError& ex)
       {
-        std::cout << "debug: Base_DB::query_execute(): exception from execute_select_command(): " << ex.what() << std::endl;
+        std::cout << "debug: Base_DB::query_execute(): exception from statement_execute_select(): " << ex.what() << std::endl;
       }
 #else
       std::auto_ptr<Glib::Error> error;
-      result = gda_connection->execute_select_command(strQuery, error);
+      result = gda_connection->statement_execute_select(strQuery, error);
       // Ignore error, empty datamodel is handled below
 #endif //GLIBMM_EXCEPTIONS_ENABLED
     }
@@ -224,7 +226,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute(const Glib::ustring& 
       int execute_result = -1;
       try
       {
-        execute_result = gda_connection->execute_non_select_command(strQuery);
+        execute_result = gda_connection->statement_execute_non_select(strQuery);
       }
       catch(const Gnome::Gda::ConnectionError& ex)
       {
@@ -232,7 +234,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute(const Glib::ustring& 
       }
 #else
       std::auto_ptr<Glib::Error> error;
-      execute_result = gda_connection->execute_non_select_command(strQuery, error);
+      execute_result = gda_connection->gda_connection->statement_execute_non_select(strQuery, error);
 #endif //GLIBMM_EXCEPTIONS_ENABLED
       
       if(execute_result != -1)
@@ -288,11 +290,12 @@ Base_DB::type_vecStrings Base_DB::get_table_names_from_database(bool ignore_syst
   if(sharedconnection)
   {
     Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
+    std::list< Glib::RefPtr<Gnome::Gda::Holder> > empty_filter_list;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model_tables = gda_connection->get_schema(Gnome::Gda::CONNECTION_SCHEMA_TABLES);
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_TABLES, empty_filter_list);
 #else
     std::auto_ptr<Glib::Error> error;
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model_tables = gda_connection->get_schema(Gnome::Gda::CONNECTION_SCHEMA_TABLES, error);
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_TABLES, empty_filter_list, error);
     // Ignore error, data_model_tables presence is checked below
 #endif
     if(data_model_tables && (data_model_tables->get_n_columns() == 0))
@@ -306,12 +309,13 @@ Base_DB::type_vecStrings Base_DB::get_table_names_from_database(bool ignore_syst
       for(int i = 0; i < rows; ++i)
       {
         Gnome::Gda::Value value = data_model_tables->get_value_at(0, i);
-
+        
         //Get the table name:
         Glib::ustring table_name;
         if(G_VALUE_TYPE(value.gobj()) ==  G_TYPE_STRING)
         {
           table_name = value.get_string();
+          std::cout << "Found table: " << table_name << std::endl;
 
           bool add_it = true;
 
@@ -416,18 +420,17 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
     return result;
 
   // These are documented here:
-  // http://www.gnome-db.org/docs/libgda/libgda-provider-class.html#LIBGDA-PROVIDER-GET-SCHEMA
+  // http://library.gnome.org/devel/libgda-4.0/3.99/connection.html#GdaConnectionMetaTypeHead
   enum GlomGdaDataModelFieldColumns
   {
     DATAMODEL_FIELDS_COL_NAME = 0,
     DATAMODEL_FIELDS_COL_TYPE = 1,
-    DATAMODEL_FIELDS_COL_SIZE = 2,
-    DATAMODEL_FIELDS_COL_SCALE = 3,
-    DATAMODEL_FIELDS_COL_NOTNULL = 4,
-    DATAMODEL_FIELDS_COL_PRIMARYKEY = 5,
-    DATAMODEL_FIELDS_COL_UNIQUEINDEX = 6,
-    DATAMODEL_FIELDS_COL_REFERENCES = 7,
-    DATAMODEL_FIELDS_COL_DEFAULTVALUE = 8
+    DATAMODEL_FIELDS_COL_GTYPE = 2,
+    DATAMODEL_FIELDS_COL_SIZE = 3,
+    DATAMODEL_FIELDS_COL_SCALE = 4,
+    DATAMODEL_FIELDS_COL_NOTNULL = 5,
+    DATAMODEL_FIELDS_COL_DEFAULTVALUE = 6,
+    DATAMODEL_FIELDS_COL_EXTRA = 6 // Could be auto-increment
   };
 
   //TODO: Bakery::BusyCursor busy_cursor(get_application());
@@ -448,16 +451,19 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
   {
     Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
 
-    Glib::RefPtr<Gnome::Gda::Parameter> param_table_name = Gnome::Gda::Parameter::create("name", table_name);
-    //Gnome::Gda::Parameter param_table_name("name", table_name);
-    Glib::RefPtr<Gnome::Gda::ParameterList> param_list = Gnome::Gda::ParameterList::create();
-    param_list->add_parameter(param_table_name);
-
+    Glib::RefPtr<Gnome::Gda::Holder> holder_table_name = Gnome::Gda::Holder::create(G_TYPE_STRING, "name");
+    Gnome::Gda::Value value(table_name);
+    holder_table_name->set_value(value);
+    std::list< Glib::RefPtr<Gnome::Gda::Holder> > holder_list;
+    holder_list.push_back (holder_table_name);
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model_fields;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model_fields = connection->get_schema(Gnome::Gda::CONNECTION_SCHEMA_FIELDS, param_list);
+    if (connection->update_meta_store())
+      data_model_fields = connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_FIELDS, holder_list);
 #else
     std::auto_ptr<Glib::Error> error;
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model_fields = connection->get_schema(Gnome::Gda::CONNECTION_SCHEMA_FIELDS, param_list, error);
+    if (connection->update_meta_store(error))
+      data_model_fields = connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_FIELDS, holder_list, error);
     // Ignore error, data_model_fields presence is checked below
 #endif
 
@@ -492,21 +498,12 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
         }
 
         //Get the field type:
-        //This is a string representation of the type, so we need to discover the GType for it:
-        Gnome::Gda::Value value_fieldtype = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_TYPE, row);
+        Gnome::Gda::Value value_fieldtype = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_GTYPE, row);
         if(value_fieldtype.get_value_type() ==  G_TYPE_STRING)
         {
-           Glib::ustring schema_type_string = value_fieldtype.get_string();
-           if(!schema_type_string.empty())
-           {
-             ConnectionPool* connection_pool = ConnectionPool::get_instance();
-             const FieldTypes* pFieldTypes = connection_pool->get_field_types();
-             if(pFieldTypes)
-             {
-               GType gdatype = pFieldTypes->get_gdavalue_for_schema_type_string(schema_type_string);
-               field_info->set_g_type(gdatype);
-             }
-           }
+          Glib::ustring type_string = value_fieldtype.get_string();
+          const GType gdatype = gda_g_type_from_string(type_string.c_str());
+          field_info->set_g_type(gdatype);
         }
 
         //Get the default value:
@@ -523,6 +520,7 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
 
 
         //Get whether it is a primary key:
+#if 0 // TODO_gda
         Gnome::Gda::Value value_primarykey = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_PRIMARYKEY, row);
         if(value_primarykey.get_value_type() ==  G_TYPE_BOOLEAN)
           field_info->set_primary_key( value_primarykey.get_boolean() );
@@ -530,16 +528,16 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
         //Get whether it is unique
         Gnome::Gda::Value value_unique = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_UNIQUEINDEX, row);
         if(value_unique.get_value_type() ==  G_TYPE_BOOLEAN)
-          field_info->set_unique_key( value_unique.get_boolean() );
-        else if(field_info->get_primary_key()) //All primaries keys are unique, so force this.
-          field_info->set_unique_key();
-
+          ;//TODO_gda:field_info->set_unique_key( value_unique.get_boolean() );
+        //TODO_gda:else if(field_info->get_primary_key()) //All primaries keys are unique, so force this.
+          //TODO_gda:field_info->set_unique_key();
         //Get whether it is autoincrements
         /* libgda does not provide this yet.
         Gnome::Gda::Value value_autoincrement = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_AUTOINCREMENT, row);
         if(value_autoincrement.get_value_type() ==  G_TYPE_BOOLEAN)
           field_info->set_auto_increment( value_autoincrement.get_bool() );
         */
+#endif
 
         sharedptr<Field> field(new Field()); //TODO: Get glom-specific information from the document?
         field->set_field_info(field_info);
@@ -598,7 +596,7 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table(const Glib::ustring& table
         field_info->set_auto_increment( field_info_document->get_auto_increment() );
 
         //libgda does not tell us whether the field is auto_incremented, so we need to get that from the document.
-        field_info->set_primary_key( field_info_document->get_primary_key() );
+        //TODO_gda:field_info->set_primary_key( field_info_document->get_primary_key() );
 
         //libgda does yet tell us correct default_value information so we need to get that from the document.
         field_info->set_default_value( field_info_document->get_default_value() );
@@ -2796,10 +2794,19 @@ int Base_DB::count_rows_returned_by(const Glib::ustring& sql_query)
     g_warning("Base_DB::count_rows_returned_by(): connection failed.");
     return 0;
   }
-
+#ifdef GLIBMM_EXCEPTIONS_ENABLED  
   try
   {
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = sharedconnection->get_gda_connection()->execute_select_command(query_count);
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = sharedconnection->get_gda_connection()->statement_execute_select(query_count);
+#else
+    std::auto_ptr<Glib::Error> error;
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = sharedconnection->get_gda_connection()->statement_execute_select(query_count, error);
+    if (error)
+    {
+      std::cerr << "count_rows_returned_by(): exception caught: " << ex.what() << std::endl;
+      return result;
+    }
+#endif
     if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
     {
       Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
@@ -2810,6 +2817,7 @@ int Base_DB::count_rows_returned_by(const Glib::ustring& sql_query)
       else
         result = value.get_int();
     }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   }
   catch(const Glib::Exception& ex)
   {
@@ -2819,7 +2827,7 @@ int Base_DB::count_rows_returned_by(const Glib::ustring& sql_query)
   {
     std::cerr << "count_rows_returned_by(): exception caught: " << ex.what() << std::endl;
   }
-
+#endif
   //std::cout << "DEBUG: count_rows_returned_by(): Returning " << result << std::endl;
   return result;
 }

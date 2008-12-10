@@ -219,7 +219,10 @@ void Dialog_FieldDefinition::set_field(const sharedptr<const Field>& field, cons
 sharedptr<Field> Dialog_FieldDefinition::get_field() const
 {
   sharedptr<Field> field = glom_sharedptr_clone(m_Field); //Start with the old details, to preserve anything that is not in our UI.
-
+  // const_cast is necessary and save here for the window (jhs)
+  sharedptr<SharedConnection> sharedcnc = connect_to_server(const_cast<Dialog_FieldDefinition*>(this));
+  Glib::RefPtr<Gnome::Gda::Connection> cnc = sharedcnc->get_gda_connection();
+  
   //Get the field info from the widgets:
 
   Glib::RefPtr<Gnome::Gda::Column> fieldInfo = field->get_field_info(); //Preserve previous information.
@@ -228,8 +231,8 @@ sharedptr<Field> Dialog_FieldDefinition::get_field() const
 
   fieldInfo->set_g_type( Field::get_gda_type_for_glom_type( m_pCombo_Type->get_field_type() ) );
 
-  fieldInfo->set_unique_key(m_pCheck_Unique->get_active());
-  fieldInfo->set_primary_key(m_pCheck_PrimaryKey->get_active());
+  //TODO_gda: fieldInfo->set_unique_key(m_pCheck_Unique->get_active());
+  //TODO_gda: fieldInfo->set_primary_key(m_pCheck_PrimaryKey->get_active());
   fieldInfo->set_auto_increment(m_pCheck_AutoIncrement->get_active());
 
   if(!fieldInfo->get_auto_increment()) //Ignore default_values for auto_increment fields - it's just some obscure postgres code.

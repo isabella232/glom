@@ -53,7 +53,6 @@ protected:
 #endif
 
 private:
-  Glib::RefPtr<Gnome::Gda::Client> m_refGdaClient;
   std::string m_database_directory_uri;
 };
 

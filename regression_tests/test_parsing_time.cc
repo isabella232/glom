@@ -2,7 +2,7 @@
 
 int main(int argc, char* argv[])
 {
-  Gnome::Gda::init("test", "1.0", argc, argv);
+  Gnome::Gda::init();
 
   const Glib::ustring time_text_input = "01:00 PM";
   std::cout << "time_text_input=" << time_text_input << std::endl;

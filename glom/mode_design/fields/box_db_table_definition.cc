@@ -416,11 +416,11 @@ sharedptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::TreeMo
 
     //Unique:
     const bool bUnique = m_AddDel.get_value_as_bool(row, m_colUnique);
-    fieldInfo->set_unique_key(bUnique);
+    //TODO_gda: fieldInfo->set_unique_key(bUnique);
 
     //Primary Key:
     const bool bPrimaryKey = m_AddDel.get_value_as_bool(row, m_colPrimaryKey);
-    fieldInfo->set_primary_key(bPrimaryKey);
+    ///TODO_gda: fieldInfo->set_primary_key(bPrimaryKey);
 
     fieldInfo->set_g_type(fieldType);
 

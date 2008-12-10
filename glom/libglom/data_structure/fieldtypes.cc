@@ -29,34 +29,42 @@ namespace Glom
 FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connection)
 {
   // These are documented here:
-  // http://www.gnome-db.org/docs/libgda/libgda-provider-class.html#LIBGDA-PROVIDER-GET-SCHEMA
+  // http://library.gnome.org/devel/libgda-4.0/3.99/connection.html#GdaConnectionMetaTypeHead
   enum GlomGdaDataModelTypesColumns
   {
     DATAMODEL_FIELDS_COL_NAME = 0,
-    DATAMODEL_FIELDS_COL_OWNER = 1,
+    DATAMODEL_FIELDS_COL_GTYPE = 1,
     DATAMODEL_FIELDS_COL_COMMENTS = 2,
-    DATAMODEL_FIELDS_COL_GDATYPE = 3
+    DATAMODEL_FIELDS_COL_SYNONYMS = 3
   };
   
   if(gda_connection && gda_connection->is_opened())
   {
-    //Read the Types information, so that we can map the string representation of the type (returned by CONNECTION_SCHEMA_FIELDS) to
+    std::list< Glib::RefPtr<Gnome::Gda::Holder> > filters; // remains empty as we don't filter anything
+    //Read the Types information, so that we can map the string representation of the type (returned by CONNECTION_META_FIELDS) to
     //the Gda::ValueType used by Glib::RefPtr<Gnome::Gda::Column>.
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model_tables;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model_tables = gda_connection->get_schema(Gnome::Gda::CONNECTION_SCHEMA_TYPES);
+    if (gda_connection->update_meta_store())
+      data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_TYPES, filters);
 #else
     std::auto_ptr<Glib::Error> error;
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model_tables = gda_connection->get_schema(Gnome::Gda::CONNECTION_SCHEMA_TYPES, error);
+    if (gda_connection->update_meta_store(error))
+      data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_TYPES, filters, error);
     // Ignore error here, we do not process data_model_tables if it is NULL
     // anyway
 #endif // GLIBMM_EXCEPTIONS_ENABLED
+    if (!data_model_tables)
+      std::cerr << "FieldTypes::FieldTypes(): Couldn't get datamodel" << std::endl;
     if(data_model_tables && (data_model_tables->get_n_columns() == 0))
     {
-      std::cerr << "FieldTypes::FieldTypes(): get_schema(Gnome::Gda::CONNECTION_SCHEMA_TYPES) failed." << std::endl;
+      std::cerr << "FieldTypes::FieldTypes(): get_meta_store_data(Gnome::Gda::CONNECTION_META_TYPES) failed." << std::endl;
     }
     else if(data_model_tables)
     {
       int rows = data_model_tables->get_n_rows();
+      if (!rows)
+        g_message ("FieldTypes::FieldTypes(): no rows from CONNECTION_META_TYPES");
       for(int i = 0; i < rows; ++i)
       {
         const Gnome::Gda::Value value_name = data_model_tables->get_value_at(DATAMODEL_FIELDS_COL_NAME, i);
@@ -65,21 +73,22 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
         Glib::ustring schema_type_string;
         if(value_name.get_value_type() == G_TYPE_STRING)
           schema_type_string = value_name.get_string();
-    
+        
         if(!schema_type_string.empty())
         {
-          Gnome::Gda::Value value_gdatype = data_model_tables->get_value_at(DATAMODEL_FIELDS_COL_GDATYPE, i);
-          if(value_gdatype.get_value_type() == G_TYPE_ULONG) // TODO: I think this might change to G_TYPE_GTYPE in a future libgda
+          Gnome::Gda::Value value_gdatype = data_model_tables->get_value_at(DATAMODEL_FIELDS_COL_GTYPE, i);
+          if(value_gdatype.get_value_type() == G_TYPE_STRING)
           {
-            const GType gdatype = static_cast<GType>(value_gdatype.get_ulong());
+            Glib::ustring type_string = value_gdatype.get_string();
+            const GType gdatype = gda_g_type_from_string(type_string.c_str());
 
             //Save it for later:
-            //std::cout << "debug: schema_type_string=" << schema_type_string << ", gda type=" << gdatype << "(" << g_type_name(gdatype) << ")" << std::endl;
+            std::cout << "debug: schema_type_string=" << schema_type_string << ", gda type=" << gdatype << "(" << g_type_name(gdatype) << ")" << std::endl;
             
             m_mapSchemaStringsToGdaTypes[schema_type_string] = gdatype;
 
             Glib::ustring gdatypestring = gda_g_type_to_string(gdatype); // TODO: What is this actually used for?
-            //std::cout << "schema type: " << schema_type_string << " = gdatype " << (guint)gdatype << "(" << gdatypestring << ")" << std::endl;
+            std::cout << "schema type: " << schema_type_string << " = gdatype " << (guint)gdatype << "(" << gdatypestring << ")" << std::endl;
             
             m_mapGdaTypesToSchemaStrings[gdatype] = schema_type_string; //We save it twice, to just to make searching easier, without using a predicate.
             

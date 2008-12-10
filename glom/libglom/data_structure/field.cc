@@ -645,22 +645,24 @@ void Field::set_auto_increment(bool val)
 
 bool Field::get_primary_key() const
 {
-  return m_field_info->get_primary_key();
+  //TODO_gda: return m_field_info->get_primary_key();
+  return false;
 }
 
 void Field::set_primary_key(bool val)
 {
-  m_field_info->set_primary_key(val);
+  //TODO_gda: m_field_info->set_primary_key(val);
 }
 
 bool Field::get_unique_key() const
 {
-  return m_field_info->get_unique_key();
+  //TODO_gda: return m_field_info->get_unique_key();
+  return false;
 }
 
 void Field::set_unique_key(bool val)
 {
-  m_field_info->set_unique_key(val);
+  //TODO_gda: m_field_info->set_unique_key(val);
 }
 
 Gnome::Gda::Value Field::get_default_value() const
@@ -714,7 +716,7 @@ bool Field::field_info_from_database_is_equal(const Glib::RefPtr<const Gnome::Gd
   Gnome::Gda::Value value = field->get_default_value();
   temp->set_default_value(value); //Don't compare this, because the data is incorrect when libgda reads it from the database.
 
-  temp->set_primary_key( field->get_primary_key() ); //Don't compare this, because the data is incorrect when libgda reads it from the database.
+  //TODO_gda: temp->set_primary_key( field->get_primary_key() ); //Don't compare this, because the data is incorrect when libgda reads it from the database.
 
   return temp->equal(field); 
 }

@@ -46,13 +46,6 @@ const std::string& Sqlite::get_database_directory_uri() const
 
 Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error)
 {
-  if(!m_refGdaClient)
-  {
-    m_refGdaClient = Gnome::Gda::Client::create();
-    if(!m_refGdaClient)
-      return Glib::RefPtr<Gnome::Gda::Connection>();
-  }
-
   // Check if the database file exists. If it does not, then we don't try to
   // connect. libgda would create the database file if necessary, but we need
   // to ensure slightly different semantics.
@@ -66,17 +59,18 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
     std::string database_directory = db_dir->get_path();
 
     const Glib::ustring cnc_string = "DB_DIR=" + database_directory + ";DB_NAME=" + database;
-
+    const Glib::ustring auth_string = Glib::ustring::compose("USERNAME=%1;PASSWORD=%2", username, password);
+    
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
-      connection = m_refGdaClient->open_connection_from_string("SQLite", cnc_string, username, password);
+      connection = Gnome::Gda::Connection::open_from_string("SQLite", cnc_string, auth_string);
     }
     catch(const Glib::Error& ex)
     {
 #else
     std::auto_ptr<Glib::Error> error;
-    connection = m_refGdaClient->open_connection_from_string("SQLite", cnc_string, username, password, error);
+    connection = Gnome::Gda::Connection::open_from_string("SQLite", cnc_string, username, auth_string, Gnome::Gda::CONNECTION_OPTIONS_NONE, error);
     if(error.get())
     {
       const Glib::Error& ex = *error.get();
@@ -100,24 +94,15 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 bool Sqlite::create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error)
 {
-  if(!m_refGdaClient)
-  {
-    m_refGdaClient = Gnome::Gda::Client::create();
-    if(!m_refGdaClient)
-      return false;
-  }
-
-  Glib::RefPtr<Gnome::Gda::ServerOperation> op = m_refGdaClient->prepare_create_database(database_name, "SQLite");
-  g_assert(op);
-
-  // Convert URI to path, for DB_DIR in server operation
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(m_database_directory_uri);
-  std::string database_directory = file->get_path();
+  std::string database_directory = file->get_path(); 
+  const Glib::ustring cnc_string = Glib::ustring::compose("DB_DIR=%1;DB_NAME=%2", database_directory, database_name);
+
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    op->set_value_at("/DB_DEF_P/DB_DIR", database_directory);
-    m_refGdaClient->perform_create_database(op);
+    Glib::RefPtr<Gnome::Gda::Connection> cnc = 
+      Gnome::Gda::Connection::open_from_string("SQLite", cnc_string, "");
   }
   catch(const Glib::Error& ex)
   {
@@ -125,14 +110,12 @@ bool Sqlite::create_database(const Glib::ustring& database_name, const Glib::ust
     return false;
   }
 #else
-  op->set_value_at("/DB_DEF_P/DB_DIR", database_directory);
-
-  if(error.get() != NULL)
-    m_refGdaClient->perform_create_database(op);
-  else
-    return false;
+  Glib::RefPtr<Gnome::Gda::Connection> cnc = 
+    Gnome::Gda::Connection::open_from_string("SQLite", cnc_string, "", Gnome::Gda::CONNECTION_OPTIONS_NONE, error);
+  if (error.get() != 0)
+    return false
 #endif
-
+    
   return true;
 }
 #endif

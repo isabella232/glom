@@ -26,7 +26,7 @@
 int
 main(int argc, char* argv[])
 {
-  Gnome::Gda::init("test", "0.1", argc, argv);
+  Gnome::Gda::init();
 
   Glib::RefPtr<Gnome::Gda::Connection> gdaconnection;
 

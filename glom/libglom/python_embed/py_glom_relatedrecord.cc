@@ -230,10 +230,10 @@ RelatedRecord_tp_as_mapping_getitem(PyObject *self, PyObject *item)
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
             // TODO: Does this behave well if this throws an exception?
-            Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->execute_select_command(sql_query);
+            Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->statement_execute_select(sql_query);
 #else
             std::auto_ptr<Glib::Error> error;
-            Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->execute_select_command(sql_query, error);
+            Glib::RefPtr<Gnome::Gda::DataModel> datamodel =  gda_connection->statement_execute_select(sql_query, error);
             // Ignore error, datamodel return value is checked below
 #endif
             if(datamodel && datamodel->get_n_rows())
@@ -329,10 +329,10 @@ RelatedRecord_generic_aggregate(PyGlomRelatedRecord* self, PyObject *args, PyObj
         //Get the aggregate value from the related records:
         const Glib::ustring sql_query = "SELECT " + aggregate + "(\"" + related_table + "\".\"" + field_name + "\") FROM \"" + related_table + "\""
           + " WHERE \"" + related_table + "\".\"" + related_key_name + "\" = " + *(self->m_from_key_value_sqlized);
-
+        
         //std::cout << "PyGlomRelatedRecord: Executing:  " << sql_query << std::endl;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-        Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->execute_select_command(sql_query);
+        Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->statement_execute_select(sql_query);
 #else
 	std::auto_ptr<Glib::Error> error;
         Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->execute_select_command(sql_query, error);

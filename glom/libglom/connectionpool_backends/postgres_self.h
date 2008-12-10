@@ -97,7 +97,6 @@ private:
   //bool directory_exists_filepath(const std::string& filepath);
   bool directory_exists_uri(const std::string& uri);
 
-  Glib::RefPtr<Gnome::Gda::Client> m_refGdaClient;
   std::string m_self_hosting_data_uri;
   int m_port;
 

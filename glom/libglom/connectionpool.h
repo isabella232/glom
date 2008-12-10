@@ -288,8 +288,6 @@ protected:
 
 protected:
 
-  Glib::RefPtr<Gnome::Gda::Client> m_GdaClient;
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   EpcPublisher* m_epc_publisher;
   Gtk::Dialog* m_dialog_epc_progress; //For progress while generating certificates.

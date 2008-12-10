@@ -229,6 +229,7 @@ ConnectionPool::ConnectionPool()
   m_epc_publisher(0),
   m_dialog_epc_progress(0),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+  m_backend(0),
   m_sharedconnection_refcount(0),
   m_ready_to_connect(false),
   m_pFieldTypes(0)
@@ -589,6 +590,7 @@ bool ConnectionPool::startup(Gtk::Window* parent_window)
 
 void ConnectionPool::cleanup(Gtk::Window* parent_window)
 {
+
   if(m_backend.get())
     m_backend->cleanup(parent_window);
 

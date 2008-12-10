@@ -264,19 +264,19 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
     {
       Glib::RefPtr<Gnome::Gda::DataModelIter> iter = model.m_gda_datamodel->create_iter();
       if(iter) {
-        iter->set_at_row(row);
+        iter->move_at_row(row);
 
         //It is a row from the database;
         const int cols_count = model.m_data_model_columns_count;
         for(int i = 0; i < cols_count; ++i)
         {
-          Glib::RefPtr<Gnome::Gda::Parameter> param = iter->get_param_for_column(i);
-          m_db_values[i] = param->get_value();
+          Glib::RefPtr<Gnome::Gda::Holder> holder = iter->get_holder_for_field(i);
+          m_db_values[i] = holder->get_value();
           //std::cout << "  debug: col=" << i << ", GType=" << m_db_values[i].get_value_type() << std::endl;
         }
 
-        Glib::RefPtr<Gnome::Gda::Parameter> param = iter->get_param_for_column(model.m_column_index_key);
-        m_key = param->get_value();
+        Glib::RefPtr<Gnome::Gda::Holder> holder = iter->get_holder_for_field(model.m_column_index_key);
+        m_key = holder->get_value();
 
         m_extra = false;
         m_removed = false;
@@ -464,17 +464,20 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
       }
 #endif //GLIBMM_EXCEPTIONS_ENABLED
     }
-
+    Glib::RefPtr<Gnome::Gda::SqlParser> parser = m_connection->get_gda_connection()->create_parser();
+    Glib::RefPtr<Gnome::Gda::Statement> stmt = parser->parse_string (sql_query);
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
       //Specify the ITER_MODEL_ONLY parameter, so that libgda only gets the rows that we actually use.
-      Glib::RefPtr<Gnome::Gda::ParameterList> params = Gnome::Gda::ParameterList::create();
       Gnome::Gda::Value value;
       value.set(true);
-      params->add_parameter("ITER_MODEL_ONLY", value);
-
-      m_gda_datamodel = m_connection->get_gda_connection()->execute_select_command(sql_query, params);
+      Glib::RefPtr<Gnome::Gda::Holder> holder = Gnome::Gda::Holder::create(G_TYPE_BOOLEAN, "iter_model_only");
+      holder->set_attribute("ITER_MODEL_ONLY", value);
+      Glib::RefPtr<Gnome::Gda::Set> set = Gnome::Gda::Set::create();
+      set->add_holder (holder);
+      
+      m_gda_datamodel = m_connection->get_gda_connection()->statement_execute_select(stmt, set);
 
       if(app && app->get_show_sql_debug())
         std::cout << "  Debug: DbTreeModel::refresh_from_database(): The query execution has finished." << std::endl;
@@ -500,7 +503,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
     }
 #else
     std::auto_ptr<Glib::Error> error;
-    m_gda_datamodel = m_connection->get_gda_connection()->execute_select_command(sql_query, error);
+    m_gda_datamodel = m_connection->get_gda_connection()->statement_execute_select(stmt, set, error);
     if(error.get())
     {
       m_gda_datamodel.clear(); //So that it is 0, so we can handle it below.
@@ -1125,11 +1128,13 @@ void DbTreeModel::get_record_counts(gulong& total, gulong& found) const
       //Ask the database how many records there are in the whole table:
       //TODO: Apparently, this is very slow:
       const Glib::ustring sql_query = "SELECT count(*) FROM \"" + m_found_set.m_table_name + "\"";
+      Glib::RefPtr<Gnome::Gda::SqlParser> parser = m_connection->get_gda_connection()->create_parser();
+      Glib::RefPtr<Gnome::Gda::Statement> stmt = parser->parse_string (sql_query);
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = m_connection->get_gda_connection()->execute_select_command(sql_query);
+      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = m_connection->get_gda_connection()->statement_execute_select(stmt);
 #else
       std::auto_ptr<Glib::Error> error;
-      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = m_connection->get_gda_connection()->execute_select_command(sql_query, error);
+      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = m_connection->get_gda_connection()->statement_execute_select(stmt, error);
       // Ignore error, datamodel presence is checked below
 #endif //GLIBMM_EXCEPTIONS_ENABLED
 

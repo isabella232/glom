@@ -110,7 +110,7 @@ float PostgresCentralHosted::get_postgres_server_version() const
   return m_postgres_server_version;
 }
 
-Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::attempt_connect(const Glib::RefPtr<Gnome::Gda::Client>& client, const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, float& postgres_server_version, std::auto_ptr<ExceptionConnection>& error)
+Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::attempt_connect(const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, float& postgres_server_version, std::auto_ptr<ExceptionConnection>& error)
 {
   //We must specify _some_ database even when we just want to create a database.
   //This _might_ be different on some systems. I hope not. murrayc
@@ -130,19 +130,24 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::attempt_connect(cons
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    connection = client->open_connection_from_string("PostgreSQL", cnc_string, username, password);
-    connection->execute_non_select_command("SET DATESTYLE = 'ISO'");
-    data_model = connection->execute_select_command("SELECT version()");
+    Glib::ustring auth_string = Glib::ustring::compose("USERNAME=%1;PASSWORD=%2", username, password);
+    connection = Gnome::Gda::Connection::open_from_string("PostgreSQL", cnc_string, auth_string);
+    
+    connection->statement_execute_non_select("SET DATESTYLE = 'ISO'");
+    data_model = connection->statement_execute_select("SELECT version()");
   }
   catch(const Glib::Error& ex)
   {
 #else
-  std::auto_ptr<Glib::Error> glib_error;
-  connection = m_GdaClient->open_connection_from_string("PostgreSQL", cnc_string, m_user, m_password, glib_error);
-  if(!glib_error)
-    connection->execute_non_select_command("SET DATESTYLE = 'ISO'", error);
-  if(!glib_error)
-    data_model = connection->execute_select_command("SELECT version()", error);
+  std::auto_ptr<Glib::Error> error;
+  Glib::ustring auth_string = Glib::ustring::compose("USERNAME=%1;PASSWORD=%2", username, password);
+  connection = Gnome::Gda::Connection::open_from_string("PostgreSQL", cnc_string, auth_string, Gnome::Gda::CONNECTION_OPTIONS_NONE, error);
+  
+  Glib::RefPtr<Gnome::Gda::SqlParser> parser = connection->create_parser();
+  if (!error)
+      connection->statement_execute_non_select("SET DATESTYLE = 'ISO'", error);
+  if (!error)
+      data_model = connection->statement_execute_select("SELECT version()", error);
 
   if(glib_error.get())
   {
@@ -156,13 +161,14 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::attempt_connect(cons
 
     Glib::ustring cnc_string = cnc_string_main + ";DB_NAME=" + default_database;
     Glib::RefPtr<Gnome::Gda::Connection> temp_conn;
+    const Glib::ustring auth_string = Glib::ustring::compose("USERNAME=%1;PASSWORD=%2", username, password);
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
-      temp_conn = client->open_connection_from_string("PostgreSQL", cnc_string, username, password);
+      temp_conn = Gnome::Gda::Connection::open_from_string("PostgreSQL", cnc_string, auth_string);
     } catch(const Glib::Error& ex) {}
 #else
-    temp_conn = client->open_connection_from_string("PostgreSQL", cnc_string, username, password, glib_error);
+    temp_conn = client->open_connection_from_string("PostgreSQL", cnc_string, auth_string, Gnome::Gda::CONNECTION_OPTIONS_NONE, glib_error);
 #endif
 
 #ifdef GLOM_CONNECTION_DEBUG
@@ -202,13 +208,6 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::attempt_connect(cons
 
 Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error)
 {
-  if(!m_refGdaClient)
-  {
-    m_refGdaClient = Gnome::Gda::Client::create();
-    if(!m_refGdaClient)
-      return Glib::RefPtr<Gnome::Gda::Connection>();
-  }
-
   Glib::RefPtr<Gnome::Gda::Connection> connection;
 
   //Try each possible network port:
@@ -219,7 +218,7 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::connect(const Glib::
   if(port == 0)
     port = *iter_port ++;
 
-  connection = attempt_connect(m_refGdaClient, m_host, port, database, username, password, m_postgres_server_version, error);
+  connection = attempt_connect(m_host, port, database, username, password, m_postgres_server_version, error);
 
   // Remember port if only the database was missing
   bool connection_possible = false;
@@ -235,7 +234,7 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::connect(const Glib::
     while(!connection && iter_port != m_list_ports.end())
     {
       port = *iter_port;
-      connection = attempt_connect(m_refGdaClient, m_host, port, database, username, password, m_postgres_server_version, error);
+      connection = attempt_connect(m_host, port, database, username, password, m_postgres_server_version, error);
 
       // Remember port if only the database was missing
       if(error.get() && error->get_failure_type() == ExceptionConnection::FAILURE_NO_DATABASE)
@@ -269,23 +268,16 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::connect(const Glib::
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 bool PostgresCentralHosted::create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error)
 {
-  if(!m_refGdaClient)
-  {
-    m_refGdaClient = Gnome::Gda::Client::create();
-    if(!m_refGdaClient)
-      return false;
-  }
-
-  Glib::RefPtr<Gnome::Gda::ServerOperation> op = m_refGdaClient->prepare_create_database(database_name, "PostgreSQL");
-  g_assert(op);
+  const Glib::ustring auth_string = Glib::ustring::compose("USERNAME=%1;PASSWORD=%2", username, password);
+  const Glib::ustring cnc_string = Glib::ustring::compose("HOST=%1;PORT=%2", get_host(), get_port());
+  Glib::RefPtr<Gnome::Gda::Set> set = Gnome::Gda::Set::create();
+  Glib::RefPtr<Gnome::Gda::Connection> cnc;
+  Glib::RefPtr<Gnome::Gda::ServerOperation> op;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    op->set_value_at("/SERVER_CNX_P/HOST", get_host());
-    op->set_value_at("/SERVER_CNX_P/PORT", port_as_string(m_port));
-    op->set_value_at("/SERVER_CNX_P/ADM_LOGIN", username);
-    op->set_value_at("/SERVER_CNX_P/ADM_PASSWORD", password);
-    m_refGdaClient->perform_create_database(op);
+     cnc = Gnome::Gda::Connection::open_from_string("PostgreSQL", cnc_string, auth_string);
+     op = cnc->create_operation(Gnome::Gda::SERVER_OPERATION_CREATE_DB, set);
   }
   catch(const Glib::Error& ex)
   {
@@ -293,13 +285,39 @@ bool PostgresCentralHosted::create_database(const Glib::ustring& database_name, 
     return false;
   }
 #else
+  cnc = Gnome::Gda::Connection::open_from_string("PostgreSQL", cnc_string, auth_string, 
+                                                 Gnome::Gda::CONNECTION_OPTIONS_NONE, error);
+  if (error)
+    return false;
+  op = cnc->create_operation(Gnome::Gda::SERVER_OPERATION_CREATE_DB, set, error);
+  if (error)
+    return false;
+#endif
+  g_assert(op);
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    op->set_value_at("/DB_DEF_P/DB_NAME", database_name);
+    op->set_value_at("/SERVER_CNX_P/HOST", get_host());
+    op->set_value_at("/SERVER_CNX_P/PORT", port_as_string(m_port));
+    op->set_value_at("/SERVER_CNX_P/ADM_LOGIN", username);
+    op->set_value_at("/SERVER_CNX_P/ADM_PASSWORD", password);
+    cnc->perform_operation(op);
+  }
+  catch(const Glib::Error& ex)
+  {
+    error.reset(new Glib::Error(ex));
+    return false;
+  }
+#else
+  op->set_value_at("/DB_DEF_P/DB_NAME", database_name, error);
   op->set_value_at("/SERVER_CNX_P/HOST", get_host(), error);
   op->set_value_at("/SERVER_CNX_P/PORT", port_as_string(m_port), error);
   op->set_value_at("/SERVER_CNX_P/ADM_LOGIN", username, error);
   op->set_value_at("/SERVER_CNX_P/ADM_PASSWORD", password, error);
 
   if(error.get() != NULL)
-    m_refGdaClient->perform_create_database(op);
+    cnc->perform_operation(op, error);
   else
     return false;
 #endif
@@ -310,6 +328,8 @@ bool PostgresCentralHosted::create_database(const Glib::ustring& database_name, 
 
 bool PostgresCentralHosted::check_postgres_gda_client_is_available_with_warning()
 {
+  // TODO_gda:
+#if 0
   Glib::RefPtr<Gnome::Gda::Client> gda_client = Gnome::Gda::Client::create();
   if(gda_client)
   {
@@ -336,8 +356,8 @@ bool PostgresCentralHosted::check_postgres_gda_client_is_available_with_warning(
   Hildon::Note note(Hildon::NOTE_TYPE_INFORMATION, message);
   note.run();
 #endif
-
-  return false;
+#endif
+  return true;
 }
 
 }

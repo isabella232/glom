@@ -63,14 +63,14 @@ public:
    */
   static bool check_postgres_gda_client_is_available_with_warning();
 
-  static Glib::RefPtr<Gnome::Gda::Connection> attempt_connect(const Glib::RefPtr<Gnome::Gda::Client>& client, const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, float& postgres_server_version, std::auto_ptr<ExceptionConnection>& error);
+  static Glib::RefPtr<Gnome::Gda::Connection> attempt_connect(const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, float& postgres_server_version, std::auto_ptr<ExceptionConnection>& error);
 
 protected:
+
   virtual Field::sql_format get_sql_format() const { return Field::SQL_FORMAT_POSTGRES; }
   virtual bool supports_remote_access() const { return true; }
 
   virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error);
-
   /** Creates a new database.
    */
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -81,7 +81,6 @@ private:
   typedef std::list<Glib::ustring> type_list_ports;
   type_list_ports m_list_ports;
 
-  Glib::RefPtr<Gnome::Gda::Client> m_refGdaClient;
   Glib::ustring m_host;
   int m_port;
   bool m_try_other_ports;

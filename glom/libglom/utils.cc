@@ -472,10 +472,10 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
 
   //std::cout << "get_choice_values: Executing SQL: " << sql_query << std::endl;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = connection->get_gda_connection()->execute_select_command(sql_query);
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = connection->get_gda_connection()->statement_execute_select(sql_query);
 #else
   std::auto_ptr<Glib::Error> error;
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = connection->get_gda_connection()->execute_select_command(sql_query, error);
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = connection->get_gda_connection()->statement_execute_select(sql_query, error);
 #endif
 
   if(datamodel)
