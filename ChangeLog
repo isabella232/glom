@@ -1,3 +1,11 @@
+2008-12-11  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/Makefile.am:
+	* glom/dialog_existing_or_new.[h|cc]: Also check an alternative 
+	directory path for the examples because an (unofficial) Ubuntu package 
+	installs them in an unexpected location. I would rather find out 
+	how/why that is happening though.
+
 2008-12-10  Johannes  <jschmid@openismus.com>
 
 	* configure.in:

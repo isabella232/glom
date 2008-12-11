@@ -583,7 +583,7 @@ bool ConnectionPool::startup(Gtk::Window* parent_window)
 #endif // !G_OS_WIN32
 
   //If we crash while running (unlikely, hopefully), then try to cleanup.
-  previous_sig_handler = signal(SIGSEGV, &on_linux_signal);
+  //previous_sig_handler = signal(SIGSEGV, &on_linux_signal);
 
   return true;
 }
