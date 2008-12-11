@@ -7,6 +7,7 @@ endif
 gladedir = $(datadir)/glom/glade
 glomxsltdir = $(datadir)/glom/xslt/
 glom_examples_dir = $(pkgdatadir)/doc/examples/
+glom_examples_dir_alternative = $(datadir)/doc/glom/examples/
 glom_icon_dir = $(datadir)/icons/hicolor/48x48/apps
 
 bin_PROGRAMS = glom
@@ -24,6 +25,7 @@ AM_CPPFLAGS = -I@top_srcdir@/ $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
            -DDATADIR=\""$(datadir)"\" \
            -DGLOM_XSLTDIR=\""$(glomxsltdir)/"\" \
            -DGLOM_EXAMPLES_DIR=\""$(glom_examples_dir)"\" \
+           -DGLOM_EXAMPLES_DIR_ALTERNATIVE=\""$(glom_examples_dir_alternative)"\" \
            -DGLOM_ICON_DIR=\""$(glom_icon_dir)"\"
 
 glom_SOURCES = main.cc \

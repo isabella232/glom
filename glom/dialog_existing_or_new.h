@@ -69,6 +69,7 @@ protected:
   std::auto_ptr<Gtk::TreeModel::iterator> create_dummy_item_existing(const Gtk::TreeModel::iterator& parent, const Glib::ustring& text);
   std::auto_ptr<Gtk::TreeModel::iterator> create_dummy_item_new(const Gtk::TreeModel::iterator& parent, const Glib::ustring& text);
 
+
   void existing_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
   void existing_title_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
   void new_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
@@ -84,6 +85,7 @@ protected:
   void update_ui_sensitivity();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+  bool list_examples_at_path(const std::string& path);
   void on_enumerate_children(const Glib::RefPtr<Gio::AsyncResult>& res);
   void on_next_files(const Glib::RefPtr<Gio::AsyncResult>& res);
   void on_read(const Glib::RefPtr<Gio::AsyncResult>& res);

@@ -157,7 +157,10 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   m_iter_new_template = m_new_model->append();
   (*m_iter_new_template)[m_new_columns.m_col_title] = _("New From Template");
 
-  // Load example files
+
+ // Load example files:
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+
 #ifdef G_OS_WIN32
   gchar* dir = g_win32_get_package_installation_subdirectory(NULL, NULL, "share/glom/doc/examples");
   std::string path(dir);
@@ -166,25 +169,21 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   if(!Glib::file_test(path, Glib::FILE_TEST_EXISTS))
     path = GLOM_EXAMPLES_DIR;
 #else
-#ifndef GLOM_ENABLE_CLIENT_ONLY
   const char* path = GLOM_EXAMPLES_DIR;
-#endif
-#endif
+#endif //G_OS_WIN32
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_examples_dir = Gio::File::create_for_path(path);
+  if(!list_examples_at_path(path))
+  {
+    // If that directory did not exist, then try this one instead:
+    // (An Ubuntu package puts the example files here for some reason.
+    // TODO: Find out what Makefile.am variable to use to just use this automatically instead.
+    #ifndef G_OS_WIN32
+    list_examples_at_path(GLOM_EXAMPLES_DIR_ALTERNATIVE);
+    #endif //G_OS_WIN32
+  }
 
-  try
-  {
-    m_examples_dir->enumerate_children_async(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_enumerate_children),
-                                             G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE","G_FILE_ATTRIBUTE_STANDARD_NAME);
-    // TODO: Monitor example directory for new/removed files?
-  }
-  catch(const Glib::Exception& ex)
-  {
-    std::cerr << "Could not enumerate examples at path=:" << path << ex.what() << std::endl;
-  }
-#endif /* !GLOM_ENABLE_CLIENT_ONLY */
+#endif //!GLOM_ENABLE_CLIENT_ONLY
+
 
   // Browse local network
 #ifndef G_OS_WIN32
@@ -245,6 +244,28 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
     
   update_ui_sensitivity();
 }
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+bool Dialog_ExistingOrNew::list_examples_at_path(const std::string& path)
+{
+  std::cout << "Dialog_ExistingOrNew::list_examples_at_path(): path=" << path << std::endl;
+
+  m_examples_dir = Gio::File::create_for_path(path);
+
+  try
+  {
+    m_examples_dir->enumerate_children_async(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_enumerate_children),
+                                             G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE","G_FILE_ATTRIBUTE_STANDARD_NAME);
+    // TODO: Monitor example directory for new/removed files?
+    return true;
+  }
+  catch(const Glib::Exception& ex)
+  {
+    std::cerr << "Could not enumerate examples at path=:" << path << ex.what() << std::endl;
+    return false;
+  }
+}
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 Dialog_ExistingOrNew::~Dialog_ExistingOrNew()
 {
@@ -578,6 +599,9 @@ void Dialog_ExistingOrNew::update_ui_sensitivity()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void Dialog_ExistingOrNew::on_enumerate_children(const Glib::RefPtr<Gio::AsyncResult>& res)
 {
+  if(!m_examples_dir)
+    return;
+
   try
   {
     m_examples_enumerator = m_examples_dir->enumerate_children_finish(res);
@@ -585,7 +609,7 @@ void Dialog_ExistingOrNew::on_enumerate_children(const Glib::RefPtr<Gio::AsyncRe
   }
   catch(const Glib::Exception& ex)
   {
-    std::cerr << "Could not enumerate examples: " << ex.what() << std::endl;
+    std::cerr << "Could not enumerate files in examples directory: " << ex.what() << std::endl;
     
     m_examples_enumerator.reset();
     m_examples_dir.reset();
