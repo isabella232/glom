@@ -1,3 +1,33 @@
+1.8.4:
+
+* Initial dialog: Try an alternative path for the example/template files, 
+  in case the package installed them somewhere unusual.
+* Relationships Overview, Print Layouts:
+  Don't crash when showing and then hiding the grid.
+  Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/303453
+  (elmergato)
+* List: Temporarily remember the sort order so it is the same when navigating 
+  away and back.
+  Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/303422
+  (elmergato)
+* Fields combo boxes (such as the choices field in the field formatting):
+  Bring back the (None) item so these can be cleared.
+  This regression probably happened when we first ported to Maemo.
+* Reports:
+  - Use the list's sort order for the top-level records in the report.
+    Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/303425
+    (elmergato)
+  - Set a default title based on the name, when adding a new report, as 
+  we do for tables, relationships, print layouts, etc.
+* Users/Groups: Disable drag-and-drop for the treeview, because it is useless 
+  and confusing.
+  https://bugs.launchpad.net/ubuntu/+source/glom/+bug/299573
+  (elmergato)
+* Import: Sort the fields list alphabetically.
+  Ubuntu bug #https://bugs.launchpad.net/ubuntu/+source/glom/+bug/306593
+  (elmergato)
+  (Murray Cumming)
+
 1.8.3:
 
 * Changed the dependency of libgda-postgres-4.0 to libgda-postgres-3.0, so
