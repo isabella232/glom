@@ -239,7 +239,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   new_view_selection->set_select_function( sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_new_select_func) );
 #else /* GLOM_ENABLE_CLIENT_ONLY */
   m_notebook->remove_page(NEW_PAGE);
-  m_notebook->set_show_tabs (false);
+  m_notebook->set_show_tabs(false);
 #endif /* !GLOM_ENABLE_CLIENT_ONLY */
     
   update_ui_sensitivity();
@@ -621,7 +621,7 @@ void Dialog_ExistingOrNew::on_next_files(const Glib::RefPtr<Gio::AsyncResult>& r
   try
   {
     const Glib::ListHandle<Glib::RefPtr<Gio::FileInfo> >& list = m_examples_enumerator->next_files_finish(res);
-    if (list.empty())
+    if(list.empty())
     {
       // Done
       m_examples_dir.reset();

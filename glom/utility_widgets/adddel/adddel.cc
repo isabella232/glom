@@ -753,7 +753,7 @@ void AddDel::construct_specified_columns()
           delete pModelColumnDerived;
           break;
         }
-	case(AddDelColumnInfo::STYLE_Numerical):
+        case(AddDelColumnInfo::STYLE_Numerical):
         {
           Gtk::TreeModelColumn<int>* pModelColumnDerived = static_cast< Gtk::TreeModelColumn<int>* >(pModelColumn);
           delete pModelColumnDerived;

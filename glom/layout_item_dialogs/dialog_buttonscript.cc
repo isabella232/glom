@@ -73,8 +73,8 @@ void Dialog_ButtonScript::set_script(const sharedptr<const LayoutItem_Button>& s
   m_table_name = table_name;  //Used for lookup combo boxes.
 
   m_text_view->get_buffer()->set_text( script->get_script() );
-	
-  m_entry_title->set_text (script->get_title());
+
+  m_entry_title->set_text(script->get_title());
   //set_blocked(false);
 
   //Dialog_Properties::set_modified(false);
@@ -89,10 +89,10 @@ sharedptr<LayoutItem_Button> Dialog_ButtonScript::get_script() const
   return result;
 }
 
-void Dialog_ButtonScript::get_script (const sharedptr<LayoutItem_Button>& script) const
+void Dialog_ButtonScript::get_script(const sharedptr<LayoutItem_Button>& script) const
 {
-  script->set_script (m_text_view->get_buffer()->get_text() );
-  script->set_title (m_entry_title->get_text());
+  script->set_script(m_text_view->get_buffer()->get_text() );
+  script->set_title(m_entry_title->get_text());
 }
 
 void Dialog_ButtonScript::on_button_test()

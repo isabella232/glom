@@ -54,7 +54,7 @@ public:
 
   void remove_all();
 
-	// Implement forall which is not implemented in gtkmm
+  // Implement forall which is not implemented in gtkmm:
   typedef sigc::slot<void, Widget&> ForallSlot;
   void forall(const ForallSlot& slot);
 
@@ -119,10 +119,10 @@ protected:
     Gtk::Allocation m_first_allocation;
     Gtk::Allocation m_second_allocation;
   };
-	
+
   typedef std::vector<FlowTableItem> type_vecChildren;
   void insert_before(FlowTableItem& item, Gtk::Widget& before);
-	
+
   int get_item_requested_height(const FlowTableItem& item) const;
   void get_item_requested_width(const FlowTableItem& item, int& first, int& second) const;
   void get_item_max_width_requested(guint start, guint height, guint& first_max_width, guint& second_max_width, guint& singles_max_width, bool& is_last_column) const; //TODO: maybe combine this with code in get_minimum_column_height().

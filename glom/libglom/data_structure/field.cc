@@ -198,7 +198,7 @@ namespace { //anonymous
 //and to use until we can use the latest libgda, which has an equivalent.
 //TODO: Now that we use libgda-3.0, actually use that equivalent.
 
-#define SQL_STR_DOUBLE(ch)	((ch) == '\'' || (ch) == '\\')
+#define SQL_STR_DOUBLE(ch) ((ch) == '\'' || (ch) == '\\')
 
 /*
  * Escaping arbitrary strings to get valid SQL literal strings.
@@ -224,8 +224,9 @@ Glom_PQescapeString(char *to, const char *from, size_t length)
 
 	while (remaining > 0 && *source != '\0')
 	{
-		if (SQL_STR_DOUBLE(*source))
+		if(SQL_STR_DOUBLE(*source))
 			*target++ = *source;
+
 		*target++ = *source++;
 		remaining--;
 	}

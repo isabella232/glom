@@ -51,7 +51,7 @@ LayoutToolbar::LayoutToolbar()
 {
   // Looks ugly otherwise:
   set_size_request(100, 200);
-	
+
   LayoutToolbarButton* drag_group = 
     Gtk::manage(new LayoutToolbarButton("glom-group.png", LayoutWidgetBase::TYPE_GROUP,
                                         _("Group"), _("Drag this to the layout to add a new group.")));
@@ -65,7 +65,7 @@ LayoutToolbar::LayoutToolbar()
   LayoutToolbarButton* drag_portal = 
     Gtk::manage(new LayoutToolbarButton("glom-related-records.png", LayoutWidgetBase::TYPE_PORTAL,
                                         _("Related Records"), _("Drag this to the layout to add a new Related Record.")));
-	LayoutToolbarButton* drag_button = 
+  LayoutToolbarButton* drag_button = 
     Gtk::manage(new LayoutToolbarButton("glom-button.png", LayoutWidgetBase::TYPE_BUTTON,
                                         _("Button"), _("Drag this to the layout to add a new button.")));
   LayoutToolbarButton* drag_text = 
@@ -86,13 +86,13 @@ LayoutToolbar::LayoutToolbar()
   GtkContainer* fields_group = GTK_CONTAINER(egg_tool_item_group_new(_("Items")));
   gtk_container_add(fields_group, GTK_WIDGET(drag_portal->gobj()));
   gtk_container_add(fields_group, GTK_WIDGET(drag_item->gobj()));
-	gtk_container_add(fields_group, GTK_WIDGET(drag_button->gobj()));  
+  gtk_container_add(fields_group, GTK_WIDGET(drag_button->gobj()));  
   gtk_container_add(fields_group, GTK_WIDGET(drag_text->gobj()));
   gtk_container_add(fields_group, GTK_WIDGET(drag_image->gobj()));
   
   add_group(EGG_TOOL_ITEM_GROUP(container_group));
   add_group(EGG_TOOL_ITEM_GROUP(fields_group));
-	
+
   set_drag_source();
   
   show_all_children();

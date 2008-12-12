@@ -54,7 +54,7 @@ void Table_Columns::add_row(Gtk::Widget& widgetA, Gtk::Widget& widgetB)
   widgetA.show();
   widgetB.show();
 }
-	
+
 void Table_Columns::add_row(const Glib::ustring& strText, Gtk::Widget& widgetB)
 {
   Gtk::Label* pLabel = Gtk::manage( new Gtk::Label(strText) );

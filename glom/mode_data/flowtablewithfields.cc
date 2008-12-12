@@ -345,7 +345,7 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
   NotebookGlom* notebook_widget = Gtk::manage(new NotebookGlom());
 
   notebook_widget->show();
-  notebook_widget->set_layout_item (notebook, m_table_name);
+  notebook_widget->set_layout_item(notebook, m_table_name);
 
   for(LayoutGroup::type_list_items::iterator iter = notebook->m_list_items.begin(); iter != notebook->m_list_items.end(); ++iter)
   {
@@ -434,12 +434,12 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
   }
 
   add_layoutwidgetbase(notebook_widget, add_before);
-    //add_view(button); //So it can get the document.
-	Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
-	if (widget)
-		insert_before (*notebook_widget, *widget, true /* expand */);
-	else
-		add(*notebook_widget, true /* expand */);
+  //add_view(button); //So it can get the document.
+  Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
+  if(widget)
+    insert_before (*notebook_widget, *widget, true /* expand */);
+  else
+    add(*notebook_widget, true /* expand */);
 }
 
 /*
@@ -540,16 +540,16 @@ void FlowTableWithFields::add_field_at_position(const sharedptr<LayoutItem_Field
   }
   
   Gtk::EventBox* eventbox = new Gtk::EventBox();
-  eventbox->add (*info.m_first);
-  eventbox->set_visible_window (false);
-  eventbox->set_events (Gdk::ALL_EVENTS_MASK);
+  eventbox->add(*info.m_first);
+  eventbox->set_visible_window(false);
+  eventbox->set_events(Gdk::ALL_EVENTS_MASK);
   eventbox->show_all();
   
-	Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
-	if (widget)
-		insert_before (*eventbox, *(info.m_second), *widget, expand_second);
-	else
-		add(*eventbox, *(info.m_second), expand_second);
+  Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
+  if(widget)
+    insert_before(*eventbox, *(info.m_second), *widget, expand_second);
+  else
+    add(*eventbox, *(info.m_second), expand_second);
 
   info.m_second->signal_edited().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited), layoutitem_field)  ); //TODO:  Is it a good idea to bind the LayoutItem? sigc::bind() probably stores a copy at this point.
 
@@ -569,7 +569,7 @@ void FlowTableWithFields::add_button_at_position(const sharedptr<LayoutItem_Butt
   //Add the widget
   ButtonGlom* button = Gtk::manage(new ButtonGlom());
   button->set_label(layoutitem_button->get_title_or_name());
-  button->set_layout_item (layoutitem_button, table_name);
+  button->set_layout_item(layoutitem_button, table_name);
   button->signal_clicked().connect(
     sigc::bind(
       sigc::mem_fun(*this, &FlowTableWithFields::on_script_button_clicked),
@@ -580,11 +580,11 @@ void FlowTableWithFields::add_button_at_position(const sharedptr<LayoutItem_Butt
   add_layoutwidgetbase(button, add_before);
   //add_view(button); //So it can get the document.
 
-	Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
-	if (widget)
-		insert_before (*button, *widget, false /* expand */);
-	else
-		add(*button, false /* expand */);
+  Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
+  if(widget)
+    insert_before (*button, *widget, false /* expand */);
+  else
+    add(*button, false /* expand */);
 }
 
 void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_Text>& layoutitem_text, const Glib::ustring& table_name , const type_list_layoutwidgets::iterator& add_before)
@@ -596,7 +596,7 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
   
   const Glib::ustring text = layoutitem_text->get_text();
   LabelGlom* label = Gtk::manage(new LabelGlom(text, 0.0 /* xalign */, 0.5 /* yalign */)); //The alignment here seems to be necessary as well (or instead of) the parent Gtk::Alignment.
-  label->set_layout_item (layoutitem_text, table_name);
+  label->set_layout_item(layoutitem_text, table_name);
   label->show();
   alignment_label->add(*label);
   
@@ -606,13 +606,13 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
 
   const Glib::ustring title = layoutitem_text->get_title();
   if(title.empty())
-	{
-		Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
-	  if (widget)
-  	  insert_before (*alignment_label, *widget, false /* expand */);
-  	else
-			add(*alignment_label, false /* expand */);
-	}
+  {
+    Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
+    if(widget)
+      insert_before(*alignment_label, *widget, false /* expand */);
+    else
+      add(*alignment_label, false /* expand */);
+  }
   else
   {
     Gtk::Alignment* alignment_title = Gtk::manage(new Gtk::Alignment());
@@ -620,16 +620,16 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
     alignment_title->show();
 
     LabelGlom* title_label = Gtk::manage(new LabelGlom(title, 0, 0, false));
-    title_label->set_layout_item (layoutitem_text, table_name);
+    title_label->set_layout_item(layoutitem_text, table_name);
     title_label->show();
     alignment_title->add(*title_label);
-    add_layoutwidgetbase (title_label, add_before);
+    add_layoutwidgetbase(title_label, add_before);
     
-		Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
-	  if (widget)
-  	  insert_before (*alignment_title, *alignment_label, *widget, false /* expand */);
-  	else
-			add(*alignment_title, *alignment_label, false /* expand */);
+    Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
+    if(widget)
+      insert_before (*alignment_title, *alignment_label, *widget, false /* expand */);
+    else
+      add(*alignment_title, *alignment_label, false /* expand */);
   }
 }
 
@@ -646,15 +646,15 @@ void FlowTableWithFields::add_placeholder_at_position(const sharedptr<LayoutItem
   m_placeholder = Gtk::manage(new Gtk::Alignment());
   m_placeholder->set(Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER);
   m_placeholder->show();
-	
+
   PlaceholderGlom* preview = Gtk::manage (new PlaceholderGlom);
   preview->show();
-	
+
   m_placeholder->add(*preview);
 
   m_list_layoutwidgets.insert(add_before, preview);
   Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
-  if (widget)
+  if(widget)
     insert_before(*m_placeholder, *widget, false /* expand */);
   else
     add(*m_placeholder, false);
@@ -667,7 +667,7 @@ void FlowTableWithFields::add_imageobject_at_position(const sharedptr<LayoutItem
   image->set_size_request(200, 200);
   image->set_value(layoutitem_image->get_image());
   image->set_read_only(); //Only field images can be changed by the user when they are on a layout.
-  image->set_layout_item (layoutitem_image, table_name);
+  image->set_layout_item(layoutitem_image, table_name);
   image->show();
 
   add_layoutwidgetbase(image, add_before);
@@ -675,36 +675,36 @@ void FlowTableWithFields::add_imageobject_at_position(const sharedptr<LayoutItem
 
   const Glib::ustring title = layoutitem_image->get_title();
   if(title.empty())
-	{
-		Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
-		if (widget)
-			insert_before (*image, *widget, true /* expand */);
-		else
-			add(*image, true /* expand */);
-	}
+  {
+    Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
+    if(widget)
+      insert_before(*image, *widget, true /* expand */);
+    else
+      add(*image, true /* expand */);
+  }
   else
   {
     Gtk::Alignment* alignment_title = Gtk::manage(new Gtk::Alignment());
     alignment_title->set(Gtk::ALIGN_RIGHT, Gtk::ALIGN_CENTER);
     alignment_title->show();
 
-		Gtk::Label* title_label = Gtk::manage(new Gtk::Label(title));
-		title_label->show();
-		alignment_title->add(*title_label);
-		Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
-		if (widget)
-			insert_before (*alignment_title, *image, *widget, true /* expand */);
-		else
-			add(*alignment_title, *image, true /* expand */);
-	}
+    Gtk::Label* title_label = Gtk::manage(new Gtk::Label(title));
+    title_label->show();
+    alignment_title->add(*title_label);
+    Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
+    if(widget)
+      insert_before(*alignment_title, *image, *widget, true /* expand */);
+    else
+      add(*alignment_title, *image, true /* expand */);
+  }
 }
 
 void FlowTableWithFields::get_layout_groups(Document_Glom::type_list_layout_groups& groups)
 {
   sharedptr<LayoutGroup> group(get_layout_group());
-  if (group)
+  if(group)
   {
-    groups.push_back (group);
+    groups.push_back(group);
   }
 }
 
@@ -1209,7 +1209,7 @@ void FlowTableWithFields::on_dnd_add_layout_notebook (LayoutWidgetBase* above)
   // Add a group to the notebook
   sharedptr<LayoutGroup> group(new LayoutGroup ());
   group->set_title(_("New Group"));
-  group->set_name (_("Group"));
+  group->set_name(_("Group"));
   notebook->m_list_items.push_back(group);
   
   dnd_add_to_layout_group (item, above);
@@ -1222,10 +1222,10 @@ void FlowTableWithFields::on_dnd_add_layout_portal (LayoutWidgetBase* above)
 {
   sharedptr<LayoutItem_Portal> portal = get_portal_relationship();
   
-  if (portal)
+  if(portal)
   {
     sharedptr<LayoutItem> item = sharedptr<LayoutItem>::cast_dynamic(portal);
-    dnd_add_to_layout_group (item, above);
+    dnd_add_to_layout_group(item, above);
     
     //Tell the parent to tell the document to save the layout
     signal_layout_changed().emit();
@@ -1236,7 +1236,7 @@ void FlowTableWithFields::on_dnd_add_layout_group(LayoutWidgetBase* above)
 {  
   sharedptr<LayoutGroup> group(new LayoutGroup());
   group->set_title(_("New Group"));
-  group->set_name (_("Group"));
+  group->set_name(_("Group"));
   
   sharedptr<LayoutItem> item = sharedptr<LayoutItem>::cast_dynamic(group);
   dnd_add_to_layout_group (item, above);
@@ -1250,10 +1250,10 @@ void FlowTableWithFields::on_dnd_add_layout_item_button(LayoutWidgetBase* above)
   // create the button
   sharedptr<LayoutItem_Button> layout_item_button = sharedptr<LayoutItem_Button>::create();
   layout_item_button->set_title(_("New Button")); //Give the button a default title, so it is big enough, and so people see that they should change it.
-  layout_item_button->set_name ("new_button");
+  layout_item_button->set_name("new_button");
   sharedptr<LayoutItem> layout_item = sharedptr<LayoutItem>::cast_dynamic(layout_item_button);
 
-  dnd_add_to_layout_group (layout_item, above);
+  dnd_add_to_layout_group(layout_item, above);
   //Tell the parent to tell the document to save the layout:
   signal_layout_changed().emit();
 }
@@ -1325,12 +1325,14 @@ void FlowTableWithFields::on_dnd_remove_placeholder()
       {
         sharedptr<LayoutItem_Placeholder> placeholder = 
           sharedptr<LayoutItem_Placeholder>::cast_dynamic(*item);
-        if (placeholder)
+
+        if(placeholder)
         {
-          layout_group->remove_item (*item);
+          layout_group->remove_item(*item);
         }
       }   
     }
+
     remove(*m_placeholder);
   }
   
@@ -1353,15 +1355,17 @@ bool FlowTableWithFields::dnd_add_to_layout_group (sharedptr<LayoutItem>& item,
   sharedptr<LayoutGroup> layout_group = get_layout_group();
   if(!layout_group)
   {
-    if (!ignore_error)
+    if(!ignore_error)
       dnd_notify_failed_drop();
+
     return false;
   }
       
-  if (layoutwidget && layoutwidget->get_layout_item())
+  if(layoutwidget && layoutwidget->get_layout_item())
     layout_group->add_item(item, layoutwidget->get_layout_item());
   else
     layout_group->add_item(item);
+
   return true;
 }
 
@@ -1418,13 +1422,14 @@ void FlowTableWithFields::on_menu_properties_activate()
     {
       dialog->set_flowtable(this);
       const int response = dialog->run();
-      if (response == Gtk::RESPONSE_OK)
+      if(response == Gtk::RESPONSE_OK)
       {
         sharedptr<LayoutGroup> group = get_layout_group();
         group->m_columns_count = dialog->get_columns_count();
         group->set_title(dialog->get_title());
         signal_layout_changed().emit();
       }
+
       delete dialog;
     }
   }
@@ -1437,18 +1442,21 @@ void FlowTableWithFields::on_menu_properties_activate()
 void FlowTableWithFields::on_menu_delete_activate()
 {
   Glib::ustring message;
-  if (!get_layout_item()->get_title().empty())
+  if(!get_layout_item()->get_title().empty())
   {
-    message = Glib::ustring::compose (_("Delete whole group \"%1\"?"),
+    //TODO: Use a real English sentence here?
+    message = Glib::ustring::compose(_("Delete whole group \"%1\"?"),
                                       get_layout_item()->get_title());
   }
   else
   {
+     //TODO: Use a real English sentence here:
     message = _("Delete whole group?");
   }
-  Gtk::MessageDialog dlg (message, false, Gtk::MESSAGE_QUESTION,
-                          Gtk::BUTTONS_YES_NO, true);
-  switch (dlg.run())
+
+  Gtk::MessageDialog dlg(message, false, Gtk::MESSAGE_QUESTION,
+    Gtk::BUTTONS_YES_NO, true);
+  switch(dlg.run())
   {
     case Gtk::RESPONSE_YES:
       LayoutWidgetUtils::on_menu_delete_activate();

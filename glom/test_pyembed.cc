@@ -7,9 +7,9 @@
 std::list<Glib::ustring> ustring_tokenize(const Glib::ustring& msg, const Glib::ustring& separators, int maxParts)
 {
   std::list<Glib::ustring> result;
-  Glib::ustring str=msg;
+  Glib::ustring str = msg;
   bool nocount = false;
-  if (maxParts == -1)
+  if(maxParts == -1)
     nocount = true;
 
   int count = 0;

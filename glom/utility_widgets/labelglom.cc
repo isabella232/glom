@@ -65,8 +65,9 @@ App_Glom* LabelGlom::get_application()
 void LabelGlom::on_menu_properties_activate()
 {
   sharedptr<LayoutItem_Text> textobject = sharedptr<LayoutItem_Text>::cast_dynamic(m_pLayoutItem);
-  if (!textobject)
+  if(!textobject)
     return;
+
   try
   {
     Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_textobject");

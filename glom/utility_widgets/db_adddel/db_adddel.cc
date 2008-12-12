@@ -662,7 +662,7 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
        if(item_text)
        {
          Gtk::CellRendererText* pCellText = Gtk::manage( new Gtk::CellRendererText() );
-	 pCellText->set_property("text", item_text->get_text());
+         pCellText->set_property("text", item_text->get_text());
 
          pCellRenderer = pCellText;
        }
@@ -672,7 +672,7 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
          if(item_button)
          {
            GlomCellRenderer_ButtonText* pCellButton = Gtk::manage( new GlomCellRenderer_ButtonText() );
-	   pCellButton->set_property("text", item_button->get_title_or_name());
+           pCellButton->set_property("text", item_button->get_title_or_name());
            //pCellButton->set_fixed_width(50); //Otherwise it doesn't show up. TODO: Discover the width of the contents.
 
            pCellButton->signal_clicked().connect(

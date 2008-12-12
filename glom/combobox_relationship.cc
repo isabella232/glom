@@ -232,7 +232,7 @@ void ComboBox_Relationship::on_cell_data_title(const Gtk::TreeModel::const_itera
       //related relationship:
       sharedptr<Relationship> parent_relationship = (*iterParent)[m_model_columns.m_relationship];
       if(relationship)
-	m_renderer_title->set_property("text", parent_relationship->get_title_or_name() + "::" + relationship->get_title_or_name());
+        m_renderer_title->set_property("text", parent_relationship->get_title_or_name() + "::" + relationship->get_title_or_name());
     }
     else
       m_renderer_title->set_property("text", relationship->get_title_or_name());

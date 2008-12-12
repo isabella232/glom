@@ -1895,7 +1895,7 @@ bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring kno
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
           throw ex; //Pass it on for the caller to handle.
 #else
-	  error = local_error; //Pass it on for the caller to handle.
+          error = local_error; //Pass it on for the caller to handle.
 #endif
           return false;
         }

@@ -2814,7 +2814,7 @@ int Base_DB::count_rows_returned_by(const Glib::ustring& sql_query)
 #else
     std::auto_ptr<Glib::Error> error;
     Glib::RefPtr<Gnome::Gda::DataModel> datamodel = sharedconnection->get_gda_connection()->statement_execute_select(query_count, error);
-    if (error)
+    if(error)
     {
       std::cerr << "count_rows_returned_by(): exception caught: " << ex.what() << std::endl;
       return result;

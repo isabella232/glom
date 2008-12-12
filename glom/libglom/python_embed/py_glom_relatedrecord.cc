@@ -288,7 +288,7 @@ RelatedRecord_generic_aggregate(PyGlomRelatedRecord* self, PyObject *args, PyObj
   static type_pch kwlist[] = { "field_name", 0 };
   PyObject* py_field_name = 0;
 
-  if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char*)"O:RelatedRecord.sum", (char**)kwlist, &py_field_name))
+  if(!PyArg_ParseTupleAndKeywords(args, kwargs, (char*)"O:RelatedRecord.sum", (char**)kwlist, &py_field_name))
     return NULL;
 
   if(!(PyString_Check(py_field_name)))
@@ -334,10 +334,11 @@ RelatedRecord_generic_aggregate(PyGlomRelatedRecord* self, PyObject *args, PyObj
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
         Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->statement_execute_select(sql_query);
 #else
-	std::auto_ptr<Glib::Error> error;
+        std::auto_ptr<Glib::Error> error;
         Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->execute_select_command(sql_query, error);
-	// Ignore error, the case that the command execution didn't return
-	//  a datamodel is handled below.
+
+        // Ignore the error: The case that the command execution didn't return
+        // a datamodel is handled below.
 #endif
         if(datamodel && datamodel->get_n_rows())
         {

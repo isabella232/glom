@@ -56,13 +56,13 @@ pgwin32_get_dynamic_tokeninfo(HANDLE token, TOKEN_INFORMATION_CLASS class_,
 {
   DWORD    InfoBufferSize;
 
-  if (GetTokenInformation(token, class_, NULL, 0, &InfoBufferSize))
+  if(GetTokenInformation(token, class_, NULL, 0, &InfoBufferSize))
   {
     snprintf(errbuf, errsize, "could not get token information: got zero size\n");
     return FALSE;
   }
 
-  if (GetLastError() != ERROR_INSUFFICIENT_BUFFER)
+  if(GetLastError() != ERROR_INSUFFICIENT_BUFFER)
   {
     snprintf(errbuf, errsize, "could not get token information: error code %d\n",
          (int) GetLastError());
@@ -70,14 +70,14 @@ pgwin32_get_dynamic_tokeninfo(HANDLE token, TOKEN_INFORMATION_CLASS class_,
   }
 
   *InfoBuffer = static_cast<char*>(malloc(InfoBufferSize));
-  if (*InfoBuffer == NULL)
+  if(*InfoBuffer == NULL)
   {
     snprintf(errbuf, errsize, "could not allocate %d bytes for token information\n",
          (int) InfoBufferSize);
     return FALSE;
   }
 
-  if (!GetTokenInformation(token, class_, *InfoBuffer,
+  if(!GetTokenInformation(token, class_, *InfoBuffer,
                InfoBufferSize, &InfoBufferSize))
   {
     snprintf(errbuf, errsize, "could not get token information: error code %d\n",
@@ -101,12 +101,12 @@ pgwin32_is_admin(void)
   UINT    x;
   BOOL    success;
 
-  if (!OpenProcessToken(GetCurrentProcess(), TOKEN_READ, &AccessToken))
+  if(!OpenProcessToken(GetCurrentProcess(), TOKEN_READ, &AccessToken))
   {
     throw std::runtime_error(Glib::ustring::compose("Could not open process token: error code %1", (int)GetLastError()));
   }
 
-  if (!pgwin32_get_dynamic_tokeninfo(AccessToken, TokenGroups,
+  if(!pgwin32_get_dynamic_tokeninfo(AccessToken, TokenGroups,
                      &InfoBuffer, errbuf, sizeof(errbuf)))
   {
     CloseHandle(AccessToken);
@@ -117,7 +117,7 @@ pgwin32_is_admin(void)
 
   CloseHandle(AccessToken);
 
-  if (!AllocateAndInitializeSid(&NtAuthority, 2,
+  if(!AllocateAndInitializeSid(&NtAuthority, 2,
      SECURITY_BUILTIN_DOMAIN_RID, DOMAIN_ALIAS_RID_ADMINS, 0, 0, 0, 0, 0,
                   0, &AdministratorsSid))
   {
@@ -125,7 +125,7 @@ pgwin32_is_admin(void)
     throw std::runtime_error(Glib::ustring::compose("could not get SID for Administrators group: error code %1", (int)GetLastError()));
   }
 
-  if (!AllocateAndInitializeSid(&NtAuthority, 2,
+  if(!AllocateAndInitializeSid(&NtAuthority, 2,
   SECURITY_BUILTIN_DOMAIN_RID, DOMAIN_ALIAS_RID_POWER_USERS, 0, 0, 0, 0, 0,
                   0, &PowerUsersSid))
   {
@@ -138,7 +138,7 @@ pgwin32_is_admin(void)
 
   for (x = 0; x < Groups->GroupCount; x++)
   {
-    if ((EqualSid(AdministratorsSid, Groups->Groups[x].Sid) && (Groups->Groups[x].Attributes & SE_GROUP_ENABLED)) ||
+    if((EqualSid(AdministratorsSid, Groups->Groups[x].Sid) && (Groups->Groups[x].Attributes & SE_GROUP_ENABLED)) ||
       (EqualSid(PowerUsersSid, Groups->Groups[x].Sid) && (Groups->Groups[x].Attributes & SE_GROUP_ENABLED)))
     {
       success = TRUE;
@@ -505,7 +505,7 @@ bool ConnectionPool::handle_error(bool cerr_only)
       for(type_list_errors::iterator iter = list_errors.begin(); iter != list_errors.end(); ++iter)
       {
         Glib::RefPtr<Gnome::Gda::ConnectionEvent> event = *iter;
-        if (event && (event->get_event_type() == Gnome::Gda::CONNECTION_EVENT_ERROR))
+        if(event && (event->get_event_type() == Gnome::Gda::CONNECTION_EVENT_ERROR))
         {
           if(!error_details.empty())
             error_details += "\n"; //Add newline after each error.

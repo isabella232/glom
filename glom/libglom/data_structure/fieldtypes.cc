@@ -49,13 +49,14 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
       data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_TYPES);
 #else
     std::auto_ptr<Glib::Error> error;
-    if (gda_connection->update_meta_store(error))
+    if(gda_connection->update_meta_store(error))
       data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_TYPES, error);
+
     // Ignore error here, we do not process data_model_tables if it is NULL
     // anyway
 #endif // GLIBMM_EXCEPTIONS_ENABLED
 
-    if (!data_model_tables)
+    if(!data_model_tables)
       std::cerr << "FieldTypes::FieldTypes(): Couldn't get datamodel" << std::endl;
 
     if(data_model_tables && (data_model_tables->get_n_columns() == 0))
@@ -65,8 +66,9 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
     else if(data_model_tables)
     {
       int rows = data_model_tables->get_n_rows();
-      if (!rows)
-        g_message ("FieldTypes::FieldTypes(): no rows from CONNECTION_META_TYPES");
+      if(!rows)
+        std::cerr << "FieldTypes::FieldTypes(): no rows from CONNECTION_META_TYPES" << std::endl;
+
       for(int i = 0; i < rows; ++i)
       {
         const Gnome::Gda::Value value_name = data_model_tables->get_value_at(DATAMODEL_FIELDS_COL_NAME, i);

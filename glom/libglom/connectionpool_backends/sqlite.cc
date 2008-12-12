@@ -112,7 +112,7 @@ bool Sqlite::create_database(const Glib::ustring& database_name, const Glib::ust
 #else
   Glib::RefPtr<Gnome::Gda::Connection> cnc = 
     Gnome::Gda::Connection::open_from_string("SQLite", cnc_string, "", Gnome::Gda::CONNECTION_OPTIONS_NONE, error);
-  if (error.get() != 0)
+  if(error.get() != 0)
     return false
 #endif
     

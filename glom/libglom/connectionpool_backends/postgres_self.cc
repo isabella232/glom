@@ -501,10 +501,11 @@ bool PostgresSelfHosted::create_database(const Glib::ustring& database_name, con
 #else
   cnc = Gnome::Gda::Connection::open_from_string("PostgreSQL", cnc_string, auth_string, 
                                                  Gnome::Gda::CONNECTION_OPTIONS_NONE, error);
-  if (error)
+  if(error)
     return false;
+
   op = cnc->create_operation(Gnome::Gda::SERVER_OPERATION_CREATE_DB, set, error);
-  if (error)
+  if(error)
     return false;
 #endif
   g_assert(op);
@@ -569,7 +570,7 @@ int PostgresSelfHosted::discover_first_free_port(int start_port, int end_port)
     bool available = false;
     if(result == 0)
        available = true;
-    else if (result < 0)
+    else if(result < 0)
     {
       #ifdef G_OS_WIN32
       available = (WSAGetLastError() != WSAEADDRINUSE);

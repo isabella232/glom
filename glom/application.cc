@@ -306,7 +306,7 @@ void App_Glom::init_menus_file()
   action = Gtk::Action::create("BakeryAction_Menu_File_Import", _("Import"));
   m_refFileActionGroup->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_import));
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-	
+
   m_refFileActionGroup->add(Gtk::Action::create("GlomAction_Menu_File_Print", Gtk::Stock::PRINT));
   m_refFileActionGroup->add(Gtk::Action::create("GlomAction_File_Print", _("_Standard")),
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_print) );
@@ -614,9 +614,9 @@ static bool hostname_is_localhost(const Glib::ustring& hostname)
   //Quick short cut:
   if(hostname == "localhost")
     return true;
-  else if (hostname == "localhost.localdomain")
+  else if(hostname == "localhost.localdomain")
     return true;
-  else if (hostname == "127.0.0.1") //Standard IP address for localhost.
+  else if(hostname == "127.0.0.1") //Standard IP address for localhost.
     return true;
 
   //TODO: Is there some way to compare hostents?
@@ -1057,8 +1057,8 @@ bool App_Glom::on_document_load()
           const bool test = recreate_database(user_cancelled);
           if(!test)
           {
-	    // TODO: Do we need to call connection_pool->cleanup() here, for
-	    // stopping self-hosted databases? armin.
+            // TODO: Do we need to call connection_pool->cleanup() here, for
+            // stopping self-hosted databases? armin.
             //If the database was not successfully recreated:
             if(!user_cancelled)
             {
@@ -1128,7 +1128,7 @@ void App_Glom::update_userlevel_ui()
   for(type_listActions::iterator iter = m_listDeveloperActions.begin(); iter != m_listDeveloperActions.end(); ++iter)
   {
     Glib::RefPtr<Gtk::Action> action = *iter;
-     action->set_sensitive ( userlevel == AppState::USERLEVEL_DEVELOPER );
+     action->set_sensitive( userlevel == AppState::USERLEVEL_DEVELOPER );
   }
 
   // Hide users entry from developer menu for connections that don't

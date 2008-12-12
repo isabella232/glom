@@ -82,7 +82,7 @@ public:
   void set_show_sql_debug(bool val = true);
 
   static App_Glom* get_application();
-	
+
 protected:
   virtual void init_layout(); //override.
   virtual void init_menus_file(); //override.
@@ -99,7 +99,7 @@ protected:
   void on_menu_help_contents();
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void existing_or_new_new();
-	
+
   void on_menu_userlevel_developer();
   void on_menu_userlevel_operator();
   void on_menu_file_save_as_example();

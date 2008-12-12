@@ -416,11 +416,11 @@ static jmp_buf jump;
 static void show_gettext_error(int severity, const char* filename, const gchar* message)
 {
   std::ostringstream msg_stream;
-  if (filename != NULL);
+  if(filename != NULL);
     msg_stream << filename << ": ";
-  if (message != NULL)
+  if(message != NULL)
    msg_stream << message;
-  switch (severity)
+  switch(severity)
   {
     #ifdef PO_SEVERITY_WARNING //This was introduced in libgettext-po some time after gettext version 0.14.5 
     case PO_SEVERITY_WARNING:
@@ -457,25 +457,25 @@ static void show_gettext_error(int severity, const char* filename, const gchar* 
  */
 #ifdef HAVE_GETTEXTPO_XERROR
 static void on_gettextpo_xerror (int severity, po_message_t message, const char *filename, size_t lineno, size_t column,
-		  int multiline_p, const char *message_text)
+                  int multiline_p, const char *message_text)
 {
   show_gettext_error(severity, filename, message_text);
 
   #ifdef PO_SEVERITY_FATAL_ERROR  //This was introduced in libgettext-po some time after gettext version 0.14.5 
-  if (severity == PO_SEVERITY_FATAL_ERROR)
+  if(severity == PO_SEVERITY_FATAL_ERROR)
     longjmp(jump, 1);
   #endif //PO_SEVERITY_FATAL_ERROR
 }
 
 static void on_gettextpo_xerror2 (int severity, po_message_t message1, const char *filename1, size_t lineno1, size_t column1,
-		   int multiline_p1, const char *message_text1,
-		   po_message_t message2, const char *filename2, size_t lineno2, size_t column2,
-		   int multiline_p2, const char *message_text2)
+                   int multiline_p1, const char *message_text1,
+                   po_message_t message2, const char *filename2, size_t lineno2, size_t column2,
+                   int multiline_p2, const char *message_text2)
 {
   show_gettext_error(severity, filename1, message_text1);
   
   #ifdef PO_SEVERITY_FATAL_ERROR  //This was introduced in libgettext-po some time after gettext version 0.14.5 
-  if (severity == PO_SEVERITY_FATAL_ERROR)
+  if(severity == PO_SEVERITY_FATAL_ERROR)
     longjmp(jump, 1);
   #endif //PO_SEVERITY_FATAL_ERROR
 }
@@ -495,7 +495,7 @@ Glib::ustring Window_Translations::get_po_context_for_item(const sharedptr<Trans
 
 void Window_Translations::on_button_export()
 {
-  if (setjmp(jump) != 0)
+  if(setjmp(jump) != 0)
     return;  
   
   //Show the file-chooser dialog, to select an output .po file:
@@ -573,7 +573,7 @@ void Window_Translations::on_button_export()
 
 void Window_Translations::on_button_import()
 {
-  if (setjmp(jump) != 0)
+  if(setjmp(jump) != 0)
     return;
 
   Gtk::FileChooserDialog file_dlg(_("Choose .po File Name"), Gtk::FILE_CHOOSER_ACTION_OPEN);
@@ -590,7 +590,7 @@ void Window_Translations::on_button_import()
   file_dlg.add_button(_("Import"), Gtk::RESPONSE_OK);
   
   int result = file_dlg.run();
-  if (result == Gtk::RESPONSE_OK)
+  if(result == Gtk::RESPONSE_OK)
   {
       // We cannot use an uri here:
       const std::string filename = file_dlg.get_filename();
@@ -609,7 +609,7 @@ void Window_Translations::on_button_import()
       #endif //HAVE_GETTEXTPO_XERROR
 
       po_file_t po_file = po_file_read(filename.c_str(), &error_handler);
-      if (!po_file)
+      if(!po_file)
       {
         // error message is already given by error_handle.
         return;

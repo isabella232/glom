@@ -34,8 +34,8 @@ namespace Glom
 {
 
 class PlaceholderGlom: 
-    public Gtk::Widget,
-	public LayoutWidgetBase
+  public Gtk::Widget,
+  public LayoutWidgetBase
 {
 public:
   //explicit PlaceholderGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);

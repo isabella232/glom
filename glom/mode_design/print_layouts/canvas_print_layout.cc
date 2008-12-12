@@ -751,7 +751,7 @@ void Canvas_PrintLayout::set_canvas_item_field_value(const Glib::RefPtr<Goocanva
   }
   else //text, numbers, date, time, boolean:
   {
-  	Glib::RefPtr<CanvasTextMovable> canvas_text = Glib::RefPtr<CanvasTextMovable>::cast_dynamic(canvas_item);
+    Glib::RefPtr<CanvasTextMovable> canvas_text = Glib::RefPtr<CanvasTextMovable>::cast_dynamic(canvas_item);
     if(!canvas_text)
     {
       std::cerr << "Canvas_PrintLayout::set_canvas_item_field_value(): The canvas item is not of the expected type. Instead it is of type." << std::endl;

@@ -68,7 +68,7 @@ find_app (GtkWindow   *window,
 
   path = g_find_program_in_path (app);
 
-  if (!path)
+  if(!path)
     {
       show_error_dialog (window,
 			 _("The necessary applications to install"

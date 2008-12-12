@@ -129,7 +129,7 @@ bool CanvasItemMovable::on_motion_notify_event(const Glib::RefPtr<Goocanvas::Ite
         m_dragging_horizontal_only = false;
       }
     }
-    else if ( !(event->state & Gdk::CONTROL_MASK) && (m_dragging_vertical_only || m_dragging_horizontal_only))
+    else if( !(event->state & Gdk::CONTROL_MASK) && (m_dragging_vertical_only || m_dragging_horizontal_only))
     {
       //Ctrl was released, so allow full movement again:
       m_dragging_vertical_only = false;

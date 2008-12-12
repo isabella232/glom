@@ -74,7 +74,7 @@ PrintLayoutToolbar::PrintLayoutToolbar()
   add_group(EGG_TOOL_ITEM_GROUP(items_group));
   add_group(EGG_TOOL_ITEM_GROUP(lines_group));
   add_group(EGG_TOOL_ITEM_GROUP(related_group));
-	
+
   set_drag_source();
   
   show_all_children();

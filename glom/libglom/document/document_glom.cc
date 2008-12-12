@@ -1261,7 +1261,7 @@ bool Document_Glom::get_table_overview_position ( const Glib::ustring &table_nam
   type_tables::const_iterator it = m_tables.find(table_name);
   if(it != m_tables.end())
   {
-    if ( it->second.m_overviewx == std::numeric_limits<float>::infinity() ||
+    if( it->second.m_overviewx == std::numeric_limits<float>::infinity() ||
          it->second.m_overviewy == std::numeric_limits<float>::infinity() )
     {
       return false;
@@ -1772,7 +1772,7 @@ void Document_Glom::set_modified(bool value)
     return;
   }
 
-  if (get_userlevel() != AppState::USERLEVEL_DEVELOPER)
+  if(get_userlevel() != AppState::USERLEVEL_DEVELOPER)
   {
     //Some things can be legitimately changed by the user, 
     //such as field information from the server,
@@ -2449,7 +2449,7 @@ bool Document_Glom::load_after()
           } //Fields
 
           // Load Example Rows after fields have been loaded, because they
-	  // need the fields to be able to associate a value to a named field.
+          // need the fields to be able to associate a value to a named field.
           const xmlpp::Element* nodeExampleRows = get_node_child_named(nodeTable, GLOM_NODE_EXAMPLE_ROWS);
           if(nodeExampleRows)
           {
@@ -2472,14 +2472,15 @@ bool Document_Glom::load_after()
                     const xmlpp::Attribute* column_name = nodeChild->get_attribute(GLOM_ATTRIBUTE_COLUMN);
                     if(column_name)
                     {
-                      // TODO_Performance: If it's too much rows we could
+                      // TODO_Performance: If it's too many rows we could
                       // consider a map to find the column more quickly.
                       for(unsigned int i = 0; i < doctableinfo.m_fields.size(); ++ i)
                       {
                         if(doctableinfo.m_fields[i]->get_name() == column_name->get_value())
                         {
-			  if(nodeChild->has_child_text())
+                          if(nodeChild->has_child_text())
                             field_values[i] = nodeChild->get_child_text()->get_content();
+ 
                           break;
                         }
                       }
@@ -3208,27 +3209,28 @@ bool Document_Glom::save_before()
         set_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_Y, doctableinfo.m_overviewy);
         
         if(m_is_example) //The example data is useless to non-example files (and is big):
-	{
-	  xmlpp::Element* nodeExampleRows = nodeTable->add_child(GLOM_NODE_EXAMPLE_ROWS);
+        {
+          xmlpp::Element* nodeExampleRows = nodeTable->add_child(GLOM_NODE_EXAMPLE_ROWS);
           //set_child_text_node(nodeTable, GLOM_NODE_EXAMPLE_ROWS, doctableinfo.m_example_rows);
-	  //TODO: This is merely copied from Base_DB::insert_example_data(). Instead, we should probably save the example rows in a more intelligent manner, like a list of vector of strings instead of just one big string.
+ 
+         //TODO: This is merely copied from Base_DB::insert_example_data(). Instead, we should probably save the example rows in a more intelligent manner, like a list of vector of strings instead of just one big string.
           typedef std::vector<Glib::ustring> type_vecStrings; // TODO: Put this into class declaration?
-	  const type_vecStrings vec_rows = Utils::string_separate(doctableinfo.m_example_rows, "\n", false);
-	  for(type_vecStrings::const_iterator iter = vec_rows.begin(); iter != vec_rows.end(); ++iter)
-	  {
-	    xmlpp::Element* nodeExampleRow = nodeExampleRows->add_child(GLOM_NODE_EXAMPLE_ROW);
-	    const Glib::ustring& row_data = *iter;
-	    if(!row_data.empty())
-	    {
-	      const type_vecStrings vec_values = Utils::string_separate(row_data, ",", true /* ignore , inside quotes */);
-	      for(unsigned int i = 0; i < vec_values.size(); ++i)
-	      {
-	        xmlpp::Element* nodeField = nodeExampleRow->add_child(GLOM_NODE_VALUE);
-		set_node_attribute_value(nodeField, GLOM_ATTRIBUTE_COLUMN, doctableinfo.m_fields[i]->get_name());
-		nodeField->add_child_text(vec_values[i]);
-	      } // for each value
-	    } // !row_data.empty
-	  } // for each row
+          const type_vecStrings vec_rows = Utils::string_separate(doctableinfo.m_example_rows, "\n", false);
+          for(type_vecStrings::const_iterator iter = vec_rows.begin(); iter != vec_rows.end(); ++iter)
+          {
+            xmlpp::Element* nodeExampleRow = nodeExampleRows->add_child(GLOM_NODE_EXAMPLE_ROW);
+            const Glib::ustring& row_data = *iter;
+            if(!row_data.empty())
+            {
+              const type_vecStrings vec_values = Utils::string_separate(row_data, ",", true /* ignore , inside quotes */);
+              for(unsigned int i = 0; i < vec_values.size(); ++i)
+              {
+                xmlpp::Element* nodeField = nodeExampleRow->add_child(GLOM_NODE_VALUE);
+                set_node_attribute_value(nodeField, GLOM_ATTRIBUTE_COLUMN, doctableinfo.m_fields[i]->get_name());
+                nodeField->add_child_text(vec_values[i]);
+              } // for each value
+            } // !row_data.empty
+          } // for each row
         } // m_is_example
         //else
           //TODO: doctableinfo.m_example_rows.clear(); //Make sure we are not keeping this in memory unnecessarily.

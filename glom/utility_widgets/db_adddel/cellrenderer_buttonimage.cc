@@ -42,7 +42,7 @@ namespace Glom
       GlomCellRenderer_ButtonImage* const obj = dynamic_cast<GlomCellRenderer_ButtonImage*>(obj_base);
       if(obj)
       {
-	return obj->activate_vfunc(event, *Glib::wrap(widget), path, Glib::wrap(background_area), Glib::wrap(cell_area), static_cast<Gtk::CellRendererState>(flags));
+       return obj->activate_vfunc(event, *Glib::wrap(widget), path, Glib::wrap(background_area), Glib::wrap(cell_area), static_cast<Gtk::CellRendererState>(flags));
       }
     }
     else if(GTK_CELL_RENDERER_CLASS(parent_class)->activate)

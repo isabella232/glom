@@ -80,7 +80,7 @@ public:
 
   virtual void add_layout_item(const sharedptr<LayoutItem>& item);
   virtual void add_layout_group(const sharedptr<LayoutGroup>& group);
-	
+
   virtual void set_field_editable(const sharedptr<const LayoutItem_Field>& field, bool editable = true);
 
   virtual Gnome::Gda::Value get_field_value(const sharedptr<const LayoutItem_Field>& field) const;

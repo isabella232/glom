@@ -417,29 +417,31 @@ void FlowTable::insert_before(FlowTableItem& item, Gtk::Widget& before)
   for (pos = m_children.begin(); pos != m_children.end(); pos++)
   {
     FlowTableItem* item = &(*pos);
-    if (item->m_first)
+    if(item->m_first)
     {
-      if (item->m_first->gobj() == before.gobj())
+      if(item->m_first->gobj() == before.gobj())
       {
         found = true;
         break;
       }
+
       Gtk::Alignment* alignment = dynamic_cast<Gtk::Alignment*>(item->m_first);
-      if (alignment && alignment->get_child()->gobj() == before.gobj())
+      if(alignment && alignment->get_child()->gobj() == before.gobj())
       {
         found = true;
         break;
       }
     }
-    if (item->m_second)
+
+    if(item->m_second)
     {
-      if (item->m_second->gobj() == before.gobj())
+      if(item->m_second->gobj() == before.gobj())
       {
         found = true;
         break;
       }
       Gtk::Alignment* alignment = dynamic_cast<Gtk::Alignment*>(item->m_second);
-      if (alignment && alignment->get_child()->gobj() == before.gobj())
+      if(alignment && alignment->get_child()->gobj() == before.gobj())
       {
         found = true;
         break;
@@ -448,16 +450,15 @@ void FlowTable::insert_before(FlowTableItem& item, Gtk::Widget& before)
   }
  
   gtk_widget_set_parent(GTK_WIDGET (item.m_first->gobj()), GTK_WIDGET(gobj()));
-  if (item.m_second)
+  if(item.m_second)
   {
     gtk_widget_set_parent(GTK_WIDGET (item.m_second->gobj()), GTK_WIDGET(gobj()));
   }
+
   if (pos == m_children.end())
-  {
     m_children.push_back(item);
-  } else {
+  else
     m_children.insert(pos, item);
-  }
 }
 
 void FlowTable::set_columns_count(guint value)

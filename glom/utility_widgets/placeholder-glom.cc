@@ -75,7 +75,7 @@ void PlaceholderGlom::on_size_allocate(Gtk::Allocation& allocation)
 
 void PlaceholderGlom::on_map()
 {
-  Gtk::Widget::on_map();	
+  Gtk::Widget::on_map();
 }
 
 void PlaceholderGlom::on_unmap()
@@ -136,7 +136,7 @@ bool PlaceholderGlom::on_expose_event(GdkEventExpose* event)
   {
 
     Cairo::RefPtr<Cairo::Context> cr = m_refGdkWindow->create_cairo_context();
-    if (event)
+    if(event)
     {
       // clip to the area that needs to be re-exposed so we don't draw any
       // more than we need to.
@@ -145,16 +145,17 @@ bool PlaceholderGlom::on_expose_event(GdkEventExpose* event)
       cr->clip();
     }
 
-    // paint the background
+    // Paint the background:
     Gdk::Cairo::set_source_color(cr, get_style()->get_bg(Gtk::STATE_NORMAL));
     cr->paint();
 
-    // draw the foreground
+    // Draw the foreground:
     Gdk::Cairo::set_source_color(cr, get_style()->get_fg(Gtk::STATE_NORMAL));
-	cr->set_line_width (4);
-    cr->rectangle (0, 0,  get_allocation().get_width(), get_allocation().get_height());
+    cr->set_line_width(4);
+    cr->rectangle(0, 0,  get_allocation().get_width(), get_allocation().get_height());
     cr->stroke();
   }
+
   return true;
 }
 

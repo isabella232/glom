@@ -1,5 +1,10 @@
 2008-12-12  Murray Cumming  <murrayc@murrayc.com>
 
+	* Many files: Remove tabs, and spaces before ( and generally fix some 
+	old Johannes-esque formatting.
+
+2008-12-12  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/data_structure/field.[h|cc]: Store the primary_key and 
 	unique_key details as bools in the C++ class, because we cannot 
 	easily get that from libgda-4.0, so we at least remember that 

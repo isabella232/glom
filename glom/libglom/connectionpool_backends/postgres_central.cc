@@ -144,9 +144,10 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::attempt_connect(cons
   connection = Gnome::Gda::Connection::open_from_string("PostgreSQL", cnc_string, auth_string, Gnome::Gda::CONNECTION_OPTIONS_NONE, error);
   
   Glib::RefPtr<Gnome::Gda::SqlParser> parser = connection->create_parser();
-  if (!error)
+  if(!error)
       connection->statement_execute_non_select("SET DATESTYLE = 'ISO'", error);
-  if (!error)
+
+  if(!error)
       data_model = connection->statement_execute_select("SELECT version()", error);
 
   if(glib_error.get())
@@ -287,10 +288,11 @@ bool PostgresCentralHosted::create_database(const Glib::ustring& database_name, 
 #else
   cnc = Gnome::Gda::Connection::open_from_string("PostgreSQL", cnc_string, auth_string, 
                                                  Gnome::Gda::CONNECTION_OPTIONS_NONE, error);
-  if (error)
+  if(error)
     return false;
+
   op = cnc->create_operation(Gnome::Gda::SERVER_OPERATION_CREATE_DB, set, error);
-  if (error)
+  if(error)
     return false;
 #endif
   g_assert(op);
@@ -341,7 +343,7 @@ bool PostgresCentralHosted::check_postgres_gda_client_is_available_with_warning(
     for(type_list_of_provider_info::const_iterator iter = providers.begin(); iter != providers.end(); ++iter)
     { 
       const Gnome::Gda::ProviderInfo& info = *iter;
-      if (info.get_id() == "PostgreSQL")
+      if(info.get_id() == "PostgreSQL")
         return true;
     }
   }

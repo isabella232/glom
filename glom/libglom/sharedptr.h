@@ -102,7 +102,7 @@ public:
    *
    * Mimics usage of ordinary pointers:
    * @code
-   *   if (ptr)
+   *   if(ptr)
    *     do_something();
    * @endcode
    */
@@ -112,7 +112,7 @@ public:
    *
    * Mimics usage of ordinary pointers:
    * @code
-   *   if (!ptr)
+   *   if(!ptr)
    *     do_something();
    * @endcode
    */

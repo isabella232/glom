@@ -71,10 +71,10 @@ void NotebookLabelGlom::on_menu_new_group_activate()
 {
   sharedptr<LayoutGroup> group(new LayoutGroup());
   group->set_title(_("New Group"));
-  group->set_name (_("Group"));
+  group->set_name(_("Group"));
   
   sharedptr<LayoutGroup> notebook_group = sharedptr<LayoutGroup>::cast_dynamic (m_notebook->get_layout_item());
-  notebook_group->add_item (group);
+  notebook_group->add_item(group);
   
   m_notebook->signal_layout_changed().emit();
 }
@@ -82,7 +82,7 @@ void NotebookLabelGlom::on_menu_new_group_activate()
 void NotebookLabelGlom::on_menu_delete_activate()
 {
   Glib::ustring message;
-  if (!m_notebook->get_layout_item()->get_title().empty())
+  if(!m_notebook->get_layout_item()->get_title().empty())
   {
     message = Glib::ustring::compose (_("Delete whole notebook \"%1\"?"),
                                       m_notebook->get_layout_item()->get_title());
@@ -91,9 +91,10 @@ void NotebookLabelGlom::on_menu_delete_activate()
   {
     message = _("Delete whole notebook?");
   }
+
   Gtk::MessageDialog dlg (message, false, Gtk::MESSAGE_QUESTION,
                           Gtk::BUTTONS_YES_NO, true);
-  switch (dlg.run())
+  switch(dlg.run())
   {
     case Gtk::RESPONSE_YES:
       m_notebook->delete_from_layout();

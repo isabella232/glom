@@ -162,29 +162,30 @@ void LayoutWidgetMenu::on_menupopup_activate_layout_properties()
 void LayoutWidgetMenu::on_menupopup_activate_delete()
 {
   Gtk::Widget* parent = dynamic_cast<Gtk::Widget*>(this);
-  if (!parent)
+  if(!parent)
   {
     // Should never happen!
     std::cerr << "LayoutWidgetUtils is no Gtk::Widget" << std::endl;
     return;
   }
+
   LayoutWidgetBase* base = 0;
   do
   {
     parent = parent->get_parent();
     base = dynamic_cast<LayoutWidgetBase*>(parent);
-    if (base && dynamic_cast<FlowTableWithFields*>(base))
-    {
+    if(base && dynamic_cast<FlowTableWithFields*>(base))
       break;
-    }
   } while (parent);
-  if (base)
+
+  if(base)
   {
     sharedptr<LayoutGroup> group = 
       sharedptr<LayoutGroup>::cast_dynamic(base->get_layout_item());
-    if (!group)
-      return;  
-    group->remove_item (get_layout_item());
+    if(!group)
+      return; 
+ 
+    group->remove_item(get_layout_item());
     base->signal_layout_changed().emit();
   } 
 }

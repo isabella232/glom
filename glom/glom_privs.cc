@@ -257,11 +257,11 @@ Privileges Privs::get_table_privileges(const Glib::ustring& group_name, const Gl
               //See http://www.postgresql.org/docs/8.0/interactive/sql-grant.html
               if(perm == "r")
                 result.m_view = true;
-              else if (perm == "w")
+              else if(perm == "w")
                 result.m_edit = true;
-              else if (perm == "a")
+              else if(perm == "a")
                 result.m_create = true;
-              else if (perm == "d")
+              else if(perm == "d")
                 result.m_delete = true;
             }
           }

@@ -311,12 +311,12 @@ public:
    */
   void set_detail_func(const SlotDetails& slot);
   ;
-  	 
+  
   
   void set_detail_width_chars(int chars);
   
   void set_detail_height_rows(int rows);
-	  	 
+ 
   
   int get_detail_width_chars() const;
   

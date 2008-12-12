@@ -45,7 +45,7 @@ std::list<Glib::ustring> ustring_tokenize(const Glib::ustring& msg, const Glib::
   std::list<Glib::ustring> result;
   Glib::ustring str = msg;
   bool nocount = false;
-  if (maxParts == -1)
+  if(maxParts == -1)
     nocount = true;
 
   int count = 0;
@@ -82,14 +82,14 @@ void ShowTrace()
 
   PyErr_Fetch(&type, &value, &traceback);
   
-  if (!traceback)
+  if(!traceback)
   {
     std::cerr << "traceback = 0" << std::endl;
   }
 
   PyObject *tracebackModule = PyImport_ImportModule((char*)"traceback");
   gchar* chrRetval = 0;
-  if (tracebackModule != NULL)
+  if(tracebackModule != NULL)
   {
       PyObject* tbList = PyObject_CallMethod(
           tracebackModule,
@@ -99,7 +99,7 @@ void ShowTrace()
           value == NULL ? Py_None : value,
           traceback == NULL ? Py_None : traceback);
       
-      if (!tbList)
+      if(!tbList)
       {
         std::cerr << "format_exception failed" << std::endl;
         return;
@@ -108,7 +108,7 @@ void ShowTrace()
       PyObject* emptyString = PyString_FromString("");
       PyObject* strRetval = PyObject_CallMethod(emptyString, (char*)"join",
             (char*)"O", tbList);
-      if (strRetval)
+      if(strRetval)
         chrRetval = g_strdup(PyString_AsString(strRetval));
     
       Py_DECREF(tbList);
@@ -126,7 +126,7 @@ void ShowTrace()
     Py_XDECREF(value);
     Py_XDECREF(traceback);
   
-  if (chrRetval)
+  if(chrRetval)
   {
     Glib::ustring message = _("Python Error: \n");
     message += chrRetval;
@@ -177,7 +177,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
 
 
   //Allow the function to import from our script library:
-  if (pDocument)
+  if(pDocument)
   {
     const std::vector<Glib::ustring> module_names = pDocument->get_library_module_names();
     for(std::vector<Glib::ustring>::const_iterator iter = module_names.begin(); iter != module_names.end(); ++iter)
@@ -300,16 +300,16 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
         const int test = pygda_value_from_pyobject(&value, pyResult);
 
         if(test == 0) //-1 means error.
-	  object_is_gda_value = true;
+          object_is_gda_value = true;
 
         if(object_is_gda_value && G_IS_VALUE(&value))
         {
-	  valueResult = Gnome::Gda::Value(&value);
+          valueResult = Gnome::Gda::Value(&value);
           //Make sure that the value is of the expected Gda type:
           //TODO_Performance:
           valueResult = Glom::Conversions::convert_value(valueResult, result_type);
           //std::cout << "DEBUG: glom_evaluate_python_function_implementation(): valueResult Gda type=" << g_type_name(valueResult.get_value_type()) << std::endl;
-	  g_value_unset(&value);
+          g_value_unset(&value);
         }
         else
         {

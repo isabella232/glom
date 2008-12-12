@@ -99,7 +99,7 @@ void FlowTableDnd::start_dnd(Gtk::Widget& child)
     // The widget has already a default drag destination - add more targets:
     if(targets)
     {
-      targets->add (drag_targets);
+      targets->add(drag_targets);
       child.drag_dest_set_target_list (targets);
     }
     else
@@ -107,7 +107,7 @@ void FlowTableDnd::start_dnd(Gtk::Widget& child)
       child.drag_dest_set(drag_targets, Gtk::DEST_DEFAULT_ALL,
                           Gdk::ACTION_COPY | Gdk::ACTION_MOVE);
     }
-	    
+
     // It's important to connect this one BEFORE
     child.signal_drag_motion().connect(sigc::bind<Gtk::Widget*>(sigc::mem_fun (*this, &FlowTableDnd::on_child_drag_motion), &child),
                                        false);
@@ -147,7 +147,7 @@ bool FlowTableDnd::on_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_con
   
   m_current_dnd_item = dnd_item_at_position(x, y);  
   LayoutWidgetBase* above = dnd_datawidget_from_item(0);
-	
+
   // above might be 0 here...
   on_dnd_add_placeholder(above);
   return false;
@@ -198,7 +198,7 @@ void FlowTableDnd::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& d
   {
     gpointer* data = (gpointer*)selection_data.get_data();
     LayoutWidgetBase* base = (LayoutWidgetBase*)*data;
-    if (base)
+    if(base)
     {
       sharedptr<LayoutItem> item = base->get_layout_item();
       if(item)
@@ -232,7 +232,7 @@ FlowTableDnd::dnd_item_at_position(int drag_x, int drag_y)
   int column_width = 0;
   get_column_height(0, m_children.size(), column_width);
   int column = 0;
-	
+
   if(column_width != 0)
     column = drag_x / column_width;
   
@@ -257,7 +257,7 @@ FlowTableDnd::dnd_item_at_position(int drag_x, int drag_y)
     // Allow dragging at the end
     if(cur_item == --m_children.end())
     {
-      if (drag_y > (rect.get_y() + rect.get_height() / 2) &&
+      if(drag_y > (rect.get_y() + rect.get_height() / 2) &&
           drag_y < (rect.get_y() + rect.get_height()))
       {
         return 0;
@@ -276,7 +276,7 @@ LayoutWidgetBase* FlowTableDnd::dnd_datawidget_from_item(FlowTable::FlowTableIte
   // Test if we have a datawidget below which we want to add
   LayoutWidgetBase* above = 0;
   FlowTableItem* used_item;
-  if (item)
+  if(item)
     used_item = item;
   else
     used_item = m_current_dnd_item;
@@ -301,7 +301,7 @@ LayoutWidgetBase* FlowTableDnd::dnd_datawidget_from_item(FlowTable::FlowTableIte
       if(!above)
       {       
         Gtk::Alignment* alignment = dynamic_cast <Gtk::Alignment*>(used_item->m_second);
-        if (alignment)
+        if(alignment)
           above = dynamic_cast<LayoutWidgetBase*>(alignment->get_child());
       } 
     }
@@ -335,7 +335,7 @@ FlowTable::FlowTableItem* FlowTableDnd::find_current_dnd_item(Gtk::Widget* child
     // The widget was added inside a Gtk::EventBox
     if(bin)
     {
-      if (bin->get_child() == child ||
+      if(bin->get_child() == child ||
           bin->get_child() == child->get_parent())
         break;
     }
@@ -431,11 +431,11 @@ void FlowTableDnd::on_child_drag_end(const Glib::RefPtr<Gdk::DragContext>& drag_
                         Gtk::Widget* child)
 {
   FlowTableItem* item = find_current_dnd_item (child);
-  if (!item)
+  if(!item)
     return;
 
   LayoutWidgetBase* base = dnd_datawidget_from_item (item);
-  if (base->get_dnd_in_progress())
+  if(base->get_dnd_in_progress())
   {
     if(!item)
       return;
@@ -480,8 +480,9 @@ void FlowTableDnd::set_design_mode(bool value)
 void FlowTableDnd::dnd_remove_placeholder_idle()
 {
   static sigc::connection connection;
-  if (connection)
+  if(connection)
     connection.disconnect();
+
   Glib::signal_idle().connect( sigc::mem_fun(*this, &FlowTableDnd::dnd_remove_placeholder_real) );
 }
 

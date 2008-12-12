@@ -615,7 +615,7 @@ void Box_Data_Details::on_flowtable_layout_changed()
   //Store it in the document:
   Document_Glom* document = get_document();
   if(document)
-    document->set_modified (true);
+    document->set_modified();
     
     
   //And fill it with data:
@@ -871,8 +871,8 @@ void Box_Data_Details::on_userlevel_changed(AppState::userlevels user_level)
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_design_mode = ( user_level == AppState::USERLEVEL_DEVELOPER );    
   m_FlowTable.set_design_mode(m_design_mode);
-	// Recreate layout to correctly set the size of empty flowtables
-	create_layout();
+  // Recreate the layout to correctly set the size of empty flowtables:
+  create_layout();
 #endif
 }
 

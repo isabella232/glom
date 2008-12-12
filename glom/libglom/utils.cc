@@ -73,7 +73,7 @@ std::string locate_help_file(const std::string& path, const std::string& doc_nam
     /* This has to be a valid language AND a language with
      * no encoding postfix.  The language will come up without
      * encoding next. */
-    if (lang == NULL || strchr(lang, '.') != NULL)
+    if(lang == NULL || strchr(lang, '.') != NULL)
       continue;
 
     const char* exts[] = { "", ".xml", ".docbook", ".sgml", ".html", NULL };
@@ -843,7 +843,7 @@ void Utils::show_help(const Glib::ustring& id)
 #ifndef GLOM_ENABLE_MAEMO
   GError* err = 0;
   const gchar* pId;
-  if (id.length())
+  if(id.length())
   {
     pId = id.c_str();
   }
