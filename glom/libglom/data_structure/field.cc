@@ -39,7 +39,9 @@ bool Field::m_maps_inited = false;
 Field::Field()
 : m_glom_type(TYPE_INVALID),
   m_field_info(Gnome::Gda::Column::create()),
-  m_visible(true)
+  m_visible(true),
+  m_primary_key(false),
+  m_unique_key(false)
 {
   m_translatable_item_type = TRANSLATABLE_TYPE_FIELD;
 }
@@ -70,6 +72,9 @@ Field& Field::operator=(const Field& src)
 
   m_visible = src.m_visible;
 
+  m_primary_key = src.m_primary_key;
+  m_unique_key = src.m_unique_key;
+
   m_default_formatting = src.m_default_formatting;
 
   return *this;
@@ -85,6 +90,8 @@ bool Field::operator==(const Field& src) const
          && (m_strLookupField == src.m_strLookupField)
          && (m_calculation == src.m_calculation)
          && (m_visible == src.m_visible)
+         && (m_primary_key == src.m_primary_key)
+         && (m_unique_key == src.m_unique_key)
          && (m_default_formatting == src.m_default_formatting);
 }
 
@@ -646,23 +653,25 @@ void Field::set_auto_increment(bool val)
 bool Field::get_primary_key() const
 {
   //TODO_gda: return m_field_info->get_primary_key();
-  return false;
+  return m_primary_key;
 }
 
 void Field::set_primary_key(bool val)
 {
+  m_primary_key = val;
   //TODO_gda: m_field_info->set_primary_key(val);
 }
 
 bool Field::get_unique_key() const
 {
   //TODO_gda: return m_field_info->get_unique_key();
-  return false;
+  return m_unique_key;
 }
 
 void Field::set_unique_key(bool val)
 {
   //TODO_gda: m_field_info->set_unique_key(val);
+  m_unique_key = val;
 }
 
 Gnome::Gda::Value Field::get_default_value() const

@@ -277,6 +277,7 @@ bool Base_DB::get_table_exists_in_database(const Glib::ustring& table_name) cons
   return (iterFind != tables.end());
 }
 
+//TODO_Performance: Avoid calling this so often.
 Base_DB::type_vecStrings Base_DB::get_table_names_from_database(bool ignore_system_tables) const
 {
   type_vecStrings result;
@@ -537,6 +538,7 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
           ;//TODO_gda:field_info->set_unique_key( value_unique.get_boolean() );
         //TODO_gda:else if(field_info->get_primary_key()) //All primaries keys are unique, so force this.
           //TODO_gda:field_info->set_unique_key();
+
         //Get whether it is autoincrements
         /* libgda does not provide this yet.
         Gnome::Gda::Value value_autoincrement = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_AUTOINCREMENT, row);
@@ -1682,12 +1684,17 @@ sharedptr<Field> Base_DB::get_field_primary_key_for_table(const Glib::ustring& t
   {
     //TODO_Performance: Cache this result?
     Document_Glom::type_vecFields fields = document->get_table_fields(table_name);
+    //std::cout << "Base_DB::get_field_primary_key_for_table(): table=" << table_name << ", fields count=" << fields.size() << std::endl;
     for(Document_Glom::type_vecFields::iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
-      if((*iter)->get_primary_key())
-      {
+      sharedptr<Field> field = *iter;
+      if(!field)
+        continue;
+
+      //std::cout << "  field=" << field->get_name() << std::endl;
+    
+      if(field->get_primary_key())
         return *iter;
-      }
     }
   }
 

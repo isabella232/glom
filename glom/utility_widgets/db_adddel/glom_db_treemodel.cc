@@ -271,12 +271,19 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
         for(int i = 0; i < cols_count; ++i)
         {
           Glib::RefPtr<Gnome::Gda::Holder> holder = iter->get_holder_for_field(i);
-          m_db_values[i] = holder->get_value();
+          if(holder)
+            m_db_values[i] = holder->get_value(); //TODO_gda: Why not just use get_value_at()?
+          else
+            std::cerr << "DbTreeModelRow::fill_values_if_necessary(): NULL Gnome::Gda::Holder for field=." << i << std::endl;
+
           //std::cout << "  debug: col=" << i << ", GType=" << m_db_values[i].get_value_type() << std::endl;
         }
 
         Glib::RefPtr<Gnome::Gda::Holder> holder = iter->get_holder_for_field(model.m_column_index_key);
-        m_key = holder->get_value();
+        if(holder)
+          m_key = holder->get_value();  //TODO_gda: Why not just use get_value_at()?
+        else
+          std::cerr << "DbTreeModelRow::fill_values_if_necessary(): NULL Gnome::Gda::Holder for key field" << std::endl;
 
         m_extra = false;
         m_removed = false;

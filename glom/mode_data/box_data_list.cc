@@ -465,10 +465,12 @@ void Box_Data_List::create_layout()
     sharedptr<Field> field_primary_key = get_field_primary_key_for_table(m_table_name);
     if(!field_primary_key)
     {
-      //g_warning("%s: primary key not found.", __FUNCTION__);
+      std::cerr << "Box_Data_List::create_layout(): primary key not found." << std::endl;
     }
     else
     {
+      std::cout << "DEBUG: Box_Data_List::create_layout(): primary_key=" << field_primary_key->get_name() << std::endl;
+
       m_AddDel.set_key_field(field_primary_key);
  
       //This map of layout groups will also contain the field information from the database:

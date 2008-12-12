@@ -1,5 +1,20 @@
 2008-12-12  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/data_structure/field.[h|cc]: Store the primary_key and 
+	unique_key details as bools in the C++ class, because we cannot 
+	easily get that from libgda-4.0, so we at least remember that 
+	information from the document. If we can get it from the database 
+	somehow then we can do that later.
+	* glom/mode_design/fields/dialog_fielddefinition.cc: get_field(): 
+	Store the primary_key and unique_key details in the C++ class.
+	We previously stored them info Gda::Column but that code was commented 
+	out during the port to libgda-4.0.
+
+	There is also a crash workaround in Gda::Holder in libgdamm, but there 
+	is still another unsolved crash.
+
+2008-12-12  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/connectionpool.cc: connect(): Call update_meta_store() 
 	here.
 	* glom/libglom/data_structure/fieldtypes.cc: Constructor,

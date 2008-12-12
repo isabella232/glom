@@ -231,8 +231,6 @@ sharedptr<Field> Dialog_FieldDefinition::get_field() const
 
   fieldInfo->set_g_type( Field::get_gda_type_for_glom_type( m_pCombo_Type->get_field_type() ) );
 
-  //TODO_gda: fieldInfo->set_unique_key(m_pCheck_Unique->get_active());
-  //TODO_gda: fieldInfo->set_primary_key(m_pCheck_PrimaryKey->get_active());
   fieldInfo->set_auto_increment(m_pCheck_AutoIncrement->get_active());
 
   if(!fieldInfo->get_auto_increment()) //Ignore default_values for auto_increment fields - it's just some obscure postgres code.
@@ -263,6 +261,9 @@ sharedptr<Field> Dialog_FieldDefinition::get_field() const
   field->set_field_info(fieldInfo);
 
   //Glom-specific details:
+
+  field->set_unique_key(m_pCheck_Unique->get_active());
+  field->set_primary_key(m_pCheck_PrimaryKey->get_active());
 
   field->set_title(m_pEntry_Title->get_text());
 

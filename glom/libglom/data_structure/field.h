@@ -248,6 +248,10 @@ protected:
   Glib::ustring m_strLookupField;
   Glib::ustring m_calculation;
   bool m_visible; //Whether it will be shown to the user.
+
+  //Things that libgda cannot easily tell us:
+  bool m_primary_key;
+  bool m_unique_key;
 };
 
 } //namespace Glom
