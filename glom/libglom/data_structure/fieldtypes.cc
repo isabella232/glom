@@ -42,9 +42,10 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
   {
     //Read the Types information, so that we can map the string representation of the type (returned by CONNECTION_META_FIELDS) to
     //the Gda::ValueType used by Glib::RefPtr<Gnome::Gda::Column>.
+    //This first call to update_meta_store() is also necessary for other calls to get_meta_store_data() elsewhere to succeed.
     Glib::RefPtr<Gnome::Gda::DataModel> data_model_tables;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-    if (gda_connection->update_meta_store())
+    if(true) //Already done in ConnectionPool::connect(): gda_connection->update_meta_store())
       data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_TYPES);
 #else
     std::auto_ptr<Glib::Error> error;

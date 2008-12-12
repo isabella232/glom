@@ -1,5 +1,15 @@
 2008-12-12  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/connectionpool.cc: connect(): Call update_meta_store() 
+	here.
+	* glom/libglom/data_structure/fieldtypes.cc: Constructor,
+	* glom/base_db.cc: get_fields_for_table_from_database(): Do not call 
+	update_meta_store() here, because ConnectionPool::connect() has 
+	already called it. This makes things faster but there is still some 
+	slowness.
+
+2008-12-12  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/data_structure/fieldtypes.cc: Constructor,
 	* glom/base_db.cc: get_fields_for_table_from_database():
 	Use the new get_meta_store_data() method overload with no filter 

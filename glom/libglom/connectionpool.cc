@@ -352,11 +352,14 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
       }
       else
       {
-        // Connection succeeded
-        //Create the fieldtypes member if it has not already been done:
-        if(!m_pFieldTypes)
-          m_pFieldTypes = new FieldTypes(m_refGdaConnection);  
+        //Allow get_meta_store_data() to succeed:
+        m_refGdaConnection->update_meta_store();
 
+        // Connection succeeded
+        // Create the fieldtypes member if it has not already been done:
+        if(!m_pFieldTypes)
+          m_pFieldTypes = new FieldTypes(m_refGdaConnection);
+          
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #ifndef G_OS_WIN32
         //Let other clients discover this server via avahi:
@@ -583,7 +586,7 @@ bool ConnectionPool::startup(Gtk::Window* parent_window)
 #endif // !G_OS_WIN32
 
   //If we crash while running (unlikely, hopefully), then try to cleanup.
-  //previous_sig_handler = signal(SIGSEGV, &on_linux_signal);
+  previous_sig_handler = signal(SIGSEGV, &on_linux_signal);
 
   return true;
 }

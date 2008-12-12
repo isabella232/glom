@@ -309,14 +309,14 @@ Base_DB::type_vecStrings Base_DB::get_table_names_from_database(bool ignore_syst
       const int rows = data_model_tables->get_n_rows();
       for(int i = 0; i < rows; ++i)
       {
-        Gnome::Gda::Value value = data_model_tables->get_value_at(0, i);
+        const Gnome::Gda::Value value = data_model_tables->get_value_at(0, i);
         
         //Get the table name:
         Glib::ustring table_name;
         if(G_VALUE_TYPE(value.gobj()) ==  G_TYPE_STRING)
         {
           table_name = value.get_string();
-          std::cout << "Found table: " << table_name << std::endl;
+          std::cout << "DEBUG: Found table: " << table_name << std::endl;
 
           bool add_it = true;
 
@@ -459,22 +459,18 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
     holder_list.push_back(holder_table_name);
 
     Glib::RefPtr<Gnome::Gda::DataModel> data_model_fields;
-    std::cout << "DEBUG: Base_DB::get_fields_for_table_from_database(): Calling update_meta_store() ..." << std::endl;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-    if (connection->update_meta_store())
+    if(true) //Already done in ConnectionPool::connect(): connection->update_meta_store())
     {
-      std::cout << "  DEBUG: Base_DB::get_fields_for_table_from_database(): Calling get_meta_store_data() ..." << std::endl;
       data_model_fields = connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_FIELDS, holder_list);
-      std::cout << "  DEBUG: ... get_meta_store_data() returned." << std::endl;
     }
 #else
     std::auto_ptr<Glib::Error> error;
-    if (connection->update_meta_store(error))
+    if(true) //Already done in ConnectionPool::connect(): connection->update_meta_store(error))
       data_model_fields = connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_FIELDS, holder_list, error);
 
     // Ignore error, data_model_fields presence is checked below
 #endif
-    std::cout << "DEBUG: ... update_meta_store() returned." << std::endl;
 
 
     if(!data_model_fields)
