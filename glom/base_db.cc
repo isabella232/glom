@@ -290,14 +290,15 @@ Base_DB::type_vecStrings Base_DB::get_table_names_from_database(bool ignore_syst
   if(sharedconnection)
   {
     Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
-    std::list< Glib::RefPtr<Gnome::Gda::Holder> > empty_filter_list;
+
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_TABLES, empty_filter_list);
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_TABLES);
 #else
     std::auto_ptr<Glib::Error> error;
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_TABLES, empty_filter_list, error);
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_TABLES, error);
     // Ignore error, data_model_tables presence is checked below
 #endif
+
     if(data_model_tables && (data_model_tables->get_n_columns() == 0))
     {
       std::cerr << "Base_DB_Table::get_table_names_from_database(): libgda reported 0 tables for the database." << std::endl;
@@ -455,17 +456,26 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
     Gnome::Gda::Value value(table_name);
     holder_table_name->set_value(value);
     std::list< Glib::RefPtr<Gnome::Gda::Holder> > holder_list;
-    holder_list.push_back (holder_table_name);
+    holder_list.push_back(holder_table_name);
+
     Glib::RefPtr<Gnome::Gda::DataModel> data_model_fields;
+    std::cout << "DEBUG: Base_DB::get_fields_for_table_from_database(): Calling update_meta_store() ..." << std::endl;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     if (connection->update_meta_store())
+    {
+      std::cout << "  DEBUG: Base_DB::get_fields_for_table_from_database(): Calling get_meta_store_data() ..." << std::endl;
       data_model_fields = connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_FIELDS, holder_list);
+      std::cout << "  DEBUG: ... get_meta_store_data() returned." << std::endl;
+    }
 #else
     std::auto_ptr<Glib::Error> error;
     if (connection->update_meta_store(error))
       data_model_fields = connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_FIELDS, holder_list, error);
+
     // Ignore error, data_model_fields presence is checked below
 #endif
+    std::cout << "DEBUG: ... update_meta_store() returned." << std::endl;
+
 
     if(!data_model_fields)
     {
@@ -473,7 +483,7 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
     } 
     else if(data_model_fields->get_n_columns() == 0)
     {
-      std::cerr << "BBase_DB::get_fields_for_table_from_database(): libgda reported 0 fields for the table." << std::endl;
+      std::cerr << "Base_DB::get_fields_for_table_from_database(): libgda reported 0 fields for the table." << std::endl;
     }
     else if(data_model_fields->get_n_rows() == 0)
     {
@@ -501,7 +511,7 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
         Gnome::Gda::Value value_fieldtype = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_GTYPE, row);
         if(value_fieldtype.get_value_type() ==  G_TYPE_STRING)
         {
-          Glib::ustring type_string = value_fieldtype.get_string();
+          const Glib::ustring type_string = value_fieldtype.get_string();
           const GType gdatype = gda_g_type_from_string(type_string.c_str());
           field_info->set_g_type(gdatype);
         }

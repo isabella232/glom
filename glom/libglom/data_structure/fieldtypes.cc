@@ -40,22 +40,23 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
   
   if(gda_connection && gda_connection->is_opened())
   {
-    std::list< Glib::RefPtr<Gnome::Gda::Holder> > filters; // remains empty as we don't filter anything
     //Read the Types information, so that we can map the string representation of the type (returned by CONNECTION_META_FIELDS) to
     //the Gda::ValueType used by Glib::RefPtr<Gnome::Gda::Column>.
     Glib::RefPtr<Gnome::Gda::DataModel> data_model_tables;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     if (gda_connection->update_meta_store())
-      data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_TYPES, filters);
+      data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_TYPES);
 #else
     std::auto_ptr<Glib::Error> error;
     if (gda_connection->update_meta_store(error))
-      data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_TYPES, filters, error);
+      data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_TYPES, error);
     // Ignore error here, we do not process data_model_tables if it is NULL
     // anyway
 #endif // GLIBMM_EXCEPTIONS_ENABLED
+
     if (!data_model_tables)
       std::cerr << "FieldTypes::FieldTypes(): Couldn't get datamodel" << std::endl;
+
     if(data_model_tables && (data_model_tables->get_n_columns() == 0))
     {
       std::cerr << "FieldTypes::FieldTypes(): get_meta_store_data(Gnome::Gda::CONNECTION_META_TYPES) failed." << std::endl;
