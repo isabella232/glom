@@ -263,23 +263,24 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
     if((row < (int)model.m_data_model_rows_count) && model.m_gda_datamodel)
     {
       Glib::RefPtr<Gnome::Gda::DataModelIter> iter = model.m_gda_datamodel->create_iter();
-      if(iter) {
+      if(iter)
+      {
         iter->move_at_row(row);
 
         //It is a row from the database;
         const int cols_count = model.m_data_model_columns_count;
         for(int i = 0; i < cols_count; ++i)
         {
-          Glib::RefPtr<Gnome::Gda::Holder> holder = iter->get_holder_for_field(i);
+          Glib::RefPtr<const Gnome::Gda::Holder> holder = iter->get_holder_for_field(i);
           if(holder)
             m_db_values[i] = holder->get_value(); //TODO_gda: Why not just use get_value_at()?
           else
-            std::cerr << "DbTreeModelRow::fill_values_if_necessary(): NULL Gnome::Gda::Holder for field=." << i << std::endl;
+            std::cerr << "DbTreeModelRow::fill_values_if_necessary(): NULL Gnome::Gda::Holder for field=" << i << std::endl;
 
           //std::cout << "  debug: col=" << i << ", GType=" << m_db_values[i].get_value_type() << std::endl;
         }
 
-        Glib::RefPtr<Gnome::Gda::Holder> holder = iter->get_holder_for_field(model.m_column_index_key);
+        Glib::RefPtr<const Gnome::Gda::Holder> holder = iter->get_holder_for_field(model.m_column_index_key);
         if(holder)
           m_key = holder->get_value();  //TODO_gda: Why not just use get_value_at()?
         else

@@ -10,8 +10,8 @@
 	We previously stored them info Gda::Column but that code was commented 
 	out during the port to libgda-4.0.
 
-	There is also a crash workaround in Gda::Holder in libgdamm, but there 
-	is still another unsolved crash.
+	There is also a crash workaround in Gda::Holder and a refcount fix 
+	in DataModelIter in libgdamm. With this we can now actually view data.
 
 2008-12-12  Murray Cumming  <murrayc@murrayc.com>
 
