@@ -1114,6 +1114,41 @@ bool Base_DB::create_table_with_default_fields(const Glib::ustring& table_name)
       document->add_table(table_info);
       document->set_table_fields(table_info->get_name(), fields);
     }
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    sharedptr<SharedConnection> sharedconnection = connect_to_server();
+#else
+    std::auto_ptr<ExceptionConnection> error;
+    sharedptr<SharedConnection> sharedconnection = connect_to_server(0, error);
+    // TODO: Rethrow?
+#endif
+
+    if(!sharedconnection)
+    {
+      g_warning("Base_DB::create_table_with_default_fields: connection failed.");
+    }
+    else
+    {
+
+      // Update meta store, so that get_fields_for_table_from_database
+      // returns the fields correctly for the new table.
+      sharedconnection->get_gda_connection()->update_meta_store();
+
+      // Don't do full update_meta_store() here because that's too slow.
+      // TODO: Maybe we should create the table directly via libgda instead of
+      // executing an SQL query ourselves, so that libgda has the chance to
+      // do this meta store update automatically.
+      // TODO: This doesn't work:
+#if 0
+      GdaMetaContext context;
+      context.table_name = const_cast<char*>(table_name.c_str());
+      context.size = 0;
+      context.column_names = NULL;
+      context.column_values = NULL;
+
+      gda_connection_update_meta_store(sharedconnection->get_gda_connection()->gobj(), &context, NULL);
+#endif
+    }
   }
 
   return created;

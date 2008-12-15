@@ -811,7 +811,7 @@ void Document_Glom::set_table_fields(const Glib::ustring& table_name, const type
     }
 
     DocumentTableInfo& info = get_table_info_with_add(table_name);
-    const bool will_change = (info.m_fields == vecFields); //TODO: Does this do a deep comparison?
+    const bool will_change = (info.m_fields != vecFields); //TODO: Does this do a deep comparison?
     info.m_fields = vecFields;
 
     set_modified(will_change);

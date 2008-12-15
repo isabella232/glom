@@ -1,3 +1,16 @@
+2008-12-15  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/document/document_glom.cc (set_table_fields): Fixed
+	logic so that the document is set to be modified when the new fields
+	differ from the old fields, not when they compare equal.
+
+	* glom/libglom/document/document_glom.h: Also copy the m_info member
+	in DocumentTableInfo's copy constructor and assignment operator.
+
+	* glom/base_db.cc: Update the libgda meta store after having created a
+	new table, so that get_fields_for_table_from_database works correctly
+	for the new table. These changes fix creating new tables.
+
 2008-12-15  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/connectionpool.cc:
