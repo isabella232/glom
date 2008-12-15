@@ -356,7 +356,7 @@ int DataWidget::get_suitable_width(const sharedptr<const LayoutItem_Field>& fiel
     }
     case(Field::TYPE_TIME):
     {
-      Gnome::Gda::Time time = {0, 0, 0, 0};
+      Gnome::Gda::Time time = {0, 0, 0, 0, 0};
       time.hour = 24;
       time.minute = 59;
       time.second = 59;
@@ -793,7 +793,7 @@ void DataWidget::on_button_choose_date()
   }
 }
 
-void DataWidget::on_self_style_changed(const Glib::RefPtr<Gtk::Style>& style)
+void DataWidget::on_self_style_changed(const Glib::RefPtr<Gtk::Style>& /* style */)
 {
   sharedptr<LayoutItem_Field> layoutField = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
   set_child_size_by_field(layoutField);

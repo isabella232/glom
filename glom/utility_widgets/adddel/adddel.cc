@@ -1070,9 +1070,10 @@ void AddDel::remove_item_by_key(const Glib::ustring& strKey)
 }
 
 AddDel::InnerIgnore::InnerIgnore(AddDel* pOuter)
+: m_pOuter(pOuter),
+  m_bPreventUserSignals(false),
+  m_bIgnoreSheetSignals(false)
 {
-  m_pOuter = pOuter;
-
   if(m_pOuter)
   {
     m_bPreventUserSignals = m_pOuter->get_prevent_user_signals();
@@ -1304,7 +1305,7 @@ void AddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const Gli
 }
 
 
-void AddDel::on_treeview_cell_editing_started(Gtk::CellEditable* editable, const Glib::ustring& path_string, int model_column_index)
+void AddDel::on_treeview_cell_editing_started(Gtk::CellEditable* /* editable */, const Glib::ustring& path_string, int model_column_index)
 {
   Gtk::TreeModel::Path path(path_string);
 

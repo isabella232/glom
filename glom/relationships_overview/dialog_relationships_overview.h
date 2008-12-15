@@ -105,6 +105,6 @@ protected:
   Glib::RefPtr<Gtk::PageSetup> m_refPageSetup;
 };
 
-}; //namespace Glom
+} //namespace Glom
 
 #endif //GLOM_DIALOG_RELATIONSHIPS_OVERVIEW

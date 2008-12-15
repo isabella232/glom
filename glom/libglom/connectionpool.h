@@ -98,7 +98,9 @@ protected:
 
 class Document_Glom;
 
-/* This hides database specific functionality from the ConnectionPool, so
+//TODO: Put this in the sub-directory:
+
+/** This hides database specific functionality from the ConnectionPool, so
  * the ConnectionPool can be used without worrying about the actual database
  * backend in use. Use ConnectionPool::set_backend() to set the backend for
  * the connectionpool to use. */
@@ -112,7 +114,7 @@ protected:
   /* TODO: Merge create_database() and initialize() into a single function?
    */
 
-  /* This method specifies the format of values in SQL expressions.
+  /** This method specifies the format of values in SQL expressions.
    */
   virtual Field::sql_format get_sql_format() const = 0;
 
@@ -120,31 +122,31 @@ protected:
    * was called. */
   virtual bool supports_remote_access() const = 0;
 
-  /* This method is called for one-time initialization of the database
+  /** This method is called for one-time initialization of the database
    * storage. No need to implement this function if the data is centrally
    * hosted, not managed by Glom. */
-  virtual bool initialize(Gtk::Window* parent_window, const Glib::ustring& initial_username, const Glib::ustring& password) { return true; }
+  virtual bool initialize(Gtk::Window* parent_window, const Glib::ustring& initial_username, const Glib::ustring& password);
 
-  /* This method is called before the backend is used otherwise. This can
-   * be used to start a self-hosted database server. No need to implement
+  /** This method is called before the backend is used otherwise. This can
+   * be used to start a self-hosted database server. There is no need to implement
    * this function if there is no need for extra startup code. */
-  virtual bool startup(Gtk::Window* parent_window) { return true; }
+  virtual bool startup(Gtk::Window* parent_window);
 
-  /* This method is called when the backend is no longer used. This can be
-   * used to shut down a self-hosted database server. No need to
+  /** This method is called when the backend is no longer used. This can be
+   * used to shut down a self-hosted database server. There is no need to
    * implement this function  if there is no need for extra cleanup code. */
-  virtual void cleanup(Gtk::Window* parent_window) {}
+  virtual void cleanup(Gtk::Window* parent_window);
 
-  /* This method is called to create a connection to the database server.
+  /** This method is called to create a connection to the database server.
    * There exists only the variant with an error variable as last parameter
    * so we don't need #ifdefs all over the code. This part of the API is only
    * used by the ConnectionPool which will translate the error back into
    * an exception in case exceptions are enabled. */
   virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error) = 0;
 
-  /* This method is called to create a new database on the
-   * database server. */
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+  /** This method is called to create a new database on the
+   * database server. */
   virtual bool create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error) = 0;
 #endif
 };

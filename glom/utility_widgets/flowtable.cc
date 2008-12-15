@@ -59,9 +59,6 @@ namespace
   }
 #endif
 
-  void register_vfuncs(Glom::FlowTable& table)
-  {
-  }
 #if 0
   void glom_flowtable_class_init(gpointer g_class, gpointer class_data)
   {
@@ -274,7 +271,7 @@ static void container_forall_callback(GtkWidget* widget_gobj, void* data)
 }
 
   
-FlowTable::FlowTableItem::FlowTableItem(Gtk::Widget* first, FlowTable* flowtable)
+FlowTable::FlowTableItem::FlowTableItem(Gtk::Widget* first, FlowTable* /* flowtable */)
 : m_first(first),
   m_second(0),
   m_expand_first_full(false),
@@ -283,8 +280,8 @@ FlowTable::FlowTableItem::FlowTableItem(Gtk::Widget* first, FlowTable* flowtable
 
 }
 
-FlowTable::FlowTableItem::FlowTableItem(Gtk::Widget* first, Gtk::Widget* second, FlowTable* flowtable)
-: m_first (first),
+FlowTable::FlowTableItem::FlowTableItem(Gtk::Widget* first, Gtk::Widget* second, FlowTable* /* flowtable */)
+: m_first(first),
   m_second(second),
   m_expand_first_full(false),
   m_expand_second(false)
@@ -380,12 +377,12 @@ void FlowTable::set_design_mode(bool value)
 
 void FlowTable::add(Gtk::Widget& first, Gtk::Widget& second, bool expand_second)
 {
-  FlowTableItem item (&first, &second, this);
+  FlowTableItem item(&first, &second, this);
   
   item.m_expand_second = expand_second; //Expand to fill the width for all of the second item.
   m_children.push_back(item);
-  gtk_widget_set_parent(GTK_WIDGET (item.m_first->gobj()), GTK_WIDGET(gobj()));
-  gtk_widget_set_parent(GTK_WIDGET (item.m_second->gobj()), GTK_WIDGET(gobj()));
+  gtk_widget_set_parent(GTK_WIDGET(item.m_first->gobj()), GTK_WIDGET(gobj()));
+  gtk_widget_set_parent(GTK_WIDGET(item.m_second->gobj()), GTK_WIDGET(gobj()));
 }
 
 void FlowTable::add(Gtk::Widget& first, bool expand)
@@ -393,28 +390,28 @@ void FlowTable::add(Gtk::Widget& first, bool expand)
   FlowTableItem item(&first, this);
   item.m_expand_first_full = expand; //Expand to fill the width for first and second.
   m_children.push_back(item);
-  gtk_widget_set_parent(GTK_WIDGET (item.m_first->gobj()), GTK_WIDGET(gobj()));
+  gtk_widget_set_parent(GTK_WIDGET(item.m_first->gobj()), GTK_WIDGET(gobj()));
 }
 
 void FlowTable::insert_before(Gtk::Widget& first, Gtk::Widget& before, bool expand)
 {
   FlowTableItem item(&first, this);
   item.m_expand_first_full = expand;
-  insert_before (item, before);
+  insert_before(item, before);
 }
 
 void FlowTable::insert_before(Gtk::Widget& first, Gtk::Widget& second, Gtk::Widget& before, bool expand_second)
 {
   FlowTableItem item(&first, &second, this);
   item.m_expand_second = expand_second;
-  insert_before (item, before);
+  insert_before(item, before);
 }
 
 void FlowTable::insert_before(FlowTableItem& item, Gtk::Widget& before)
 {
   bool found = false;
   std::vector<FlowTableItem>::iterator pos;
-  for (pos = m_children.begin(); pos != m_children.end(); pos++)
+  for(pos = m_children.begin(); pos != m_children.end(); pos++)
   {
     FlowTableItem* item = &(*pos);
     if(item->m_first)
@@ -449,13 +446,13 @@ void FlowTable::insert_before(FlowTableItem& item, Gtk::Widget& before)
     }    
   }
  
-  gtk_widget_set_parent(GTK_WIDGET (item.m_first->gobj()), GTK_WIDGET(gobj()));
+  gtk_widget_set_parent(GTK_WIDGET(item.m_first->gobj()), GTK_WIDGET(gobj()));
   if(item.m_second)
   {
-    gtk_widget_set_parent(GTK_WIDGET (item.m_second->gobj()), GTK_WIDGET(gobj()));
+    gtk_widget_set_parent(GTK_WIDGET(item.m_second->gobj()), GTK_WIDGET(gobj()));
   }
 
-  if (pos == m_children.end())
+  if(pos == m_children.end())
     m_children.push_back(item);
   else
     m_children.insert(pos, item);
@@ -952,7 +949,7 @@ void FlowTable::on_add(Gtk::Widget* child)
   FlowTableItem item(child, 0);
   m_children.push_back(item);
   
-  gtk_widget_set_parent(GTK_WIDGET (item.m_first->gobj()), GTK_WIDGET(gobj()));
+  gtk_widget_set_parent(GTK_WIDGET(item.m_first->gobj()), GTK_WIDGET(gobj()));
 
   //This is protected, but should be public: child.set_parent(*this);
 
@@ -973,7 +970,7 @@ void FlowTable::on_remove(Gtk::Widget* child)
       if(item.m_first == child)
       {
             //g_warning("FlowTable::on_remove unparenting first");
-        gtk_widget_unparent(GTK_WIDGET (item.m_first->gobj())); //This is protected, but should be public: child.unparent();
+        gtk_widget_unparent(GTK_WIDGET(item.m_first->gobj())); //This is protected, but should be public: child.unparent();
         item.m_first = 0;
 
        if(visible)
@@ -983,7 +980,7 @@ void FlowTable::on_remove(Gtk::Widget* child)
       if(item.m_second == child)
       {
         //g_warning("FlowTable::on_remove unparenting second");
-        gtk_widget_unparent(GTK_WIDGET (item.m_second->gobj())); //This is protected, but should be public: child.unparent();
+        gtk_widget_unparent(GTK_WIDGET(item.m_second->gobj())); //This is protected, but should be public: child.unparent();
         item.m_second = 0;
 
         if(visible)
@@ -1014,7 +1011,7 @@ void FlowTable::forall_vfunc(gboolean /* include_internals */, GtkCallback callb
 
 void FlowTable::forall(const ForallSlot& slot)
 {
-  ForallSlot slot_copy (slot);
+  ForallSlot slot_copy(slot);
   gtk_container_forall(gobj(), &container_forall_callback, &slot_copy);
 }
 
@@ -1062,7 +1059,7 @@ void FlowTable::remove_all()
       if(widget->is_managed_())
         widget->reference();
 
-      gtk_widget_unparent(GTK_WIDGET (iter->m_first->gobj()));
+      gtk_widget_unparent(GTK_WIDGET(iter->m_first->gobj()));
     }
 
     if(iter->m_second)
@@ -1072,7 +1069,7 @@ void FlowTable::remove_all()
       if(widget->is_managed_())
         widget->reference();
 
-      gtk_widget_unparent(GTK_WIDGET (iter->m_second->gobj()));
+      gtk_widget_unparent(GTK_WIDGET(iter->m_second->gobj()));
     }
 
   }

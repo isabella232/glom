@@ -66,7 +66,7 @@ void SideBar::on_child_detached(Gtk::Widget* child)
   set_size_request(0, 0);
 }
 
-void SideBar::on_child_attached(Gtk::Widget* child)
+void SideBar::on_child_attached(Gtk::Widget* /* child */)
 {
   set_size_request(m_width, m_height);
 }

@@ -84,7 +84,7 @@ protected:
 #include <gtk/gtkcalendar.h>
 
 
-static gchar* SignalProxy_Details_gtk_callback(GlomGtkCalendar* model, guint year, guint month, guint day, gpointer user_data)
+static gchar* SignalProxy_Details_gtk_callback(GlomGtkCalendar* /* model */, guint year, guint month, guint day, gpointer user_data)
 {
   GlomGtk::Calendar::SlotDetails* the_slot = static_cast<GlomGtk::Calendar::SlotDetails*>(user_data);
 

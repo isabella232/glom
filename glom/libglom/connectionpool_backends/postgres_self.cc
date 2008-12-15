@@ -201,7 +201,7 @@ bool PostgresSelfHosted::check_postgres_is_available_with_warning()
 /** Try to install postgres on the distro, though this will require a
  * distro-specific patch to the implementation.
  */
-bool PostgresSelfHosted::install_postgres(Gtk::Window* parent_window)
+bool PostgresSelfHosted::install_postgres(Gtk::Window* /* parent_window */)
 {
 #if 0
   // This  is example code for Ubuntu, and possibly Debian,

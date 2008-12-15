@@ -633,7 +633,7 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
   }
 }
 
-void FlowTableWithFields::add_placeholder_at_position(const sharedptr<LayoutItem_Placeholder>& layoutitem_placeholder, const Glib::ustring& /* table_name */, const type_list_layoutwidgets::iterator& add_before)
+void FlowTableWithFields::add_placeholder_at_position(const sharedptr<LayoutItem_Placeholder>& /* layoutitem_placeholder */, const Glib::ustring& /* table_name */, const type_list_layoutwidgets::iterator& add_before)
 {
   //Delete any existing placeholder (there can be only one):
   if(m_placeholder)

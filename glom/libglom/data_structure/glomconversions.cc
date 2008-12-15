@@ -488,7 +488,7 @@ Gnome::Gda::Value Conversions::parse_value(double number)
   //This is just a way to get a NUMERIC Gnome::Gda::Value from a numeric type:
   //Try to parse the inputted number, according to the current locale.
 
-  GdaNumeric gda_numeric = {0, 0, 0};
+  GdaNumeric gda_numeric = {0, 0, 0, 0};
 
   //Then generate a canonical representation of the number:
   std::stringstream clocale_stream;
@@ -548,7 +548,7 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
       the_c_time = parse_time(text, success);
     }
 
-    Gnome::Gda::Time gda_time = {0, 0, 0, 0};
+    Gnome::Gda::Time gda_time = {0, 0, 0, 0, 0};
     gda_time.hour = the_c_time.tm_hour;
     gda_time.minute = the_c_time.tm_min;
     gda_time.second = the_c_time.tm_sec;
@@ -580,7 +580,7 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
     double the_number = 0;
     the_stream >> the_number;  //TODO: Does this throw any exception if the text is an invalid time?
 
-    GdaNumeric gda_numeric = {0, 0, 0};
+    GdaNumeric gda_numeric = {0, 0, 0, 0};
 
     //Then generate a canonical representation of the number:
 

@@ -92,7 +92,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-bool Sqlite::create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error)
+bool Sqlite::create_database(const Glib::ustring& database_name, const Glib::ustring& /* username */, const Glib::ustring& /* password */, std::auto_ptr<Glib::Error>& error)
 {
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(m_database_directory_uri);
   std::string database_directory = file->get_path(); 

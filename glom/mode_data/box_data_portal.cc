@@ -154,7 +154,7 @@ void Box_Data_Portal::on_record_deleted(const Gnome::Gda::Value& /* primary_key_
   signal_portal_record_changed().emit(m_portal->get_relationship_name());
 }
 
-void Box_Data_Portal::on_record_added(const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row)
+void Box_Data_Portal::on_record_added(const Gnome::Gda::Value& /* primary_key_value */, const Gtk::TreeModel::iterator& /* row */)
 {
   //Allow the parent record (Details view) to recalculate aggregations:
   signal_portal_record_changed().emit(m_portal->get_relationship_name());

@@ -171,7 +171,7 @@ bool CanvasItemMovable::on_button_release_event(const Glib::RefPtr<Goocanvas::It
   return true;
 }
 
-bool CanvasItemMovable::on_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event)
+bool CanvasItemMovable::on_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, GdkEventCrossing* /* event */)
 {
   set_cursor(m_drag_cursor);
 
@@ -179,7 +179,7 @@ bool CanvasItemMovable::on_enter_notify_event(const Glib::RefPtr<Goocanvas::Item
 }
 
 
-bool CanvasItemMovable::on_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event)
+bool CanvasItemMovable::on_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, GdkEventCrossing* /* event */)
 {
   unset_cursor();
 

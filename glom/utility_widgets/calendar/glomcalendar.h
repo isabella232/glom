@@ -310,7 +310,6 @@ public:
    * @newin2p16
    */
   void set_detail_func(const SlotDetails& slot);
-  ;
   
   
   void set_detail_width_chars(int chars);

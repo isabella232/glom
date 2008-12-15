@@ -220,6 +220,21 @@ void SharedConnection::close()
 }
 
 
+
+bool ConnectionPoolBackend::initialize(Gtk::Window* /* parent_window */, const Glib::ustring& /* initial_username */, const Glib::ustring& /* password */)
+{
+  return true;
+}
+
+bool ConnectionPoolBackend::startup(Gtk::Window* /* parent_window */)
+{
+  return true;
+}
+
+void ConnectionPoolBackend::cleanup(Gtk::Window* /* parent_window */)
+{}
+
+
 //init_db_details static data:
 ConnectionPool* ConnectionPool::m_instance = 0;
 

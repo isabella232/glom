@@ -1,3 +1,31 @@
+2008-12-15  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/connectionpool.h:
+	* glom/libglom/connectionpool_backends/postgres_self.cc:
+	* glom/libglom/connectionpool_backends/sqlite.cc:
+	* glom/libglom/data_structure/glomconversions.cc:
+	* glom/libglom/document/document_glom.cc:
+	* glom/mode_data/box_data_calendar_related.cc:
+	* glom/mode_data/box_data_portal.cc:
+	* glom/mode_data/flowtablewithfields.cc:
+	* glom/relationships_overview/dialog_relationships_overview.cc:
+	* glom/relationships_overview/dialog_relationships_overview.h:
+	* glom/relationships_overview/printoperation_relationshipsoverview.cc:
+	* glom/translation/window_translations.cc:
+	* glom/utility_widgets/adddel/adddel.cc:
+	* glom/utility_widgets/calendar/glomcalendar.cc:
+	* glom/utility_widgets/calendar/glomcalendar.h:
+	* glom/utility_widgets/calendar/glomgtkcalendar.h:
+	* glom/utility_widgets/canvas/canvas_group_resizable.cc:
+	* glom/utility_widgets/canvas/canvas_item_movable.cc:
+	* glom/utility_widgets/datawidget.cc:
+	* glom/utility_widgets/egg/toolpalette/eggtoolpalette.h:
+	* glom/utility_widgets/flowtable.cc:
+	* glom/utility_widgets/flowtable_dnd.cc:
+	* glom/utility_widgets/sidebar.cc: Avoided compiler warnings, mostly 
+	commenting out unused parameters.
+
 2008-12-15  Johannes Schmid  <jhs@Obelix>
 
 	* glom/frame_glom.cc:

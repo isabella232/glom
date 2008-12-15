@@ -35,13 +35,13 @@ Glib::RefPtr<PrintOperationRelationshipsOverview> PrintOperationRelationshipsOve
 }
 
 void PrintOperationRelationshipsOverview::on_begin_print(
-        const Glib::RefPtr<Gtk::PrintContext>& print_context)
+        const Glib::RefPtr<Gtk::PrintContext>& /* print_context */)
 {
   set_n_pages(1);
 }
 
 void PrintOperationRelationshipsOverview::on_draw_page(
-        const Glib::RefPtr<Gtk::PrintContext>& print_context, int page_nr)
+        const Glib::RefPtr<Gtk::PrintContext>& print_context, int /* page_nr */)
 {
   if(!m_canvas)
     return;
@@ -52,7 +52,7 @@ void PrintOperationRelationshipsOverview::on_draw_page(
   //Set a drawing scale (before drawing) so that the cairo context fits on the page:
   const double print_height = print_context->get_height();
   const double print_width = print_context->get_width();
-  std::cout << "print_height=" << print_height << ", print_width=" << print_width << std::endl;
+  //std::cout << "print_height=" << print_height << ", print_width=" << print_width << std::endl;
 
   //TODO: Get the total size of the drawn objects instead of the bounds (which includes extra whitespace): 
   double canvas_left = 0;

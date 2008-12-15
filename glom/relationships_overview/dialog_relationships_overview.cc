@@ -328,7 +328,7 @@ void Dialog_RelationshipsOverview::load_from_document()
   draw_lines();
 }
 
-void Dialog_RelationshipsOverview::on_response(int id)
+void Dialog_RelationshipsOverview::on_response(int /* id */)
 {
   if(m_modified && get_document())
     get_document()->set_modified();
@@ -528,8 +528,8 @@ void Dialog_RelationshipsOverview::on_scroll_value_changed()
 
   double width = m_scrolledwindow_canvas->get_hadjustment()->get_page_size();
   double height = m_scrolledwindow_canvas->get_vadjustment()->get_page_size();
-  double x = m_scrolledwindow_canvas->get_hadjustment()->get_value();
-  double y = m_scrolledwindow_canvas->get_vadjustment()->get_value();
+  //double x = m_scrolledwindow_canvas->get_hadjustment()->get_value();
+  //double y = m_scrolledwindow_canvas->get_vadjustment()->get_value();
   
   //Make sure that the canvas bounds are as big as the scrollable area:
   double old_left = 0;

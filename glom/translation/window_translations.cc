@@ -416,10 +416,12 @@ static jmp_buf jump;
 static void show_gettext_error(int severity, const char* filename, const gchar* message)
 {
   std::ostringstream msg_stream;
-  if(filename != NULL);
+  if(filename != NULL)
     msg_stream << filename << ": ";
+
   if(message != NULL)
    msg_stream << message;
+
   switch(severity)
   {
     #ifdef PO_SEVERITY_WARNING //This was introduced in libgettext-po some time after gettext version 0.14.5 
@@ -456,8 +458,8 @@ static void show_gettext_error(int severity, const char* filename, const gchar* 
  * and longjmp to bypass this and return to the caller
  */
 #ifdef HAVE_GETTEXTPO_XERROR
-static void on_gettextpo_xerror (int severity, po_message_t message, const char *filename, size_t lineno, size_t column,
-                  int multiline_p, const char *message_text)
+static void on_gettextpo_xerror (int severity, po_message_t /* message */, const char *filename, size_t /* lineno */, size_t /* column */,
+                  int /* multiline_p */, const char *message_text)
 {
   show_gettext_error(severity, filename, message_text);
 
@@ -467,10 +469,10 @@ static void on_gettextpo_xerror (int severity, po_message_t message, const char 
   #endif //PO_SEVERITY_FATAL_ERROR
 }
 
-static void on_gettextpo_xerror2 (int severity, po_message_t message1, const char *filename1, size_t lineno1, size_t column1,
-                   int multiline_p1, const char *message_text1,
-                   po_message_t message2, const char *filename2, size_t lineno2, size_t column2,
-                   int multiline_p2, const char *message_text2)
+static void on_gettextpo_xerror2 (int severity, po_message_t /* message1 */, const char * filename1, size_t /* lineno1 */, size_t /* column1 */,
+                   int /* multiline_p1 */, const char *message_text1,
+                   po_message_t /* message2 */, const char * /*filename2 */, size_t /* lineno2 */, size_t /* column2 */,
+                   int /* multiline_p2 */, const char * /* message_text2 */)
 {
   show_gettext_error(severity, filename1, message_text1);
   
