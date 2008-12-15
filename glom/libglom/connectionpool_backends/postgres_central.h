@@ -86,6 +86,8 @@ private:
   bool m_try_other_ports;
 
   float m_postgres_server_version;
+  
+  static Glib::ustring create_auth_string(const Glib::ustring& username, const Glib::ustring& password);
 };
 
 } //namespace ConnectionPoolBackends

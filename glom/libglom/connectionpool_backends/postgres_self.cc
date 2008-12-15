@@ -481,17 +481,12 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ust
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 bool PostgresSelfHosted::create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error)
 {
-  const Glib::ustring auth_string = Glib::ustring::compose("USERNAME=%1;PASSWORD=%2", username, password);
-  const Glib::ustring cnc_string = Glib::ustring::compose("HOST=localhost;PORT=%1;DB_NAME=%2", m_port, database_name);
-  Glib::RefPtr<Gnome::Gda::Set> set = Gnome::Gda::Set::create();
-  Glib::RefPtr<Gnome::Gda::Connection> cnc;
   Glib::RefPtr<Gnome::Gda::ServerOperation> op;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    cnc = Gnome::Gda::Connection::open_from_string("PostgreSQL", cnc_string, auth_string);
-    cnc = Gnome::Gda::Connection::create();
-    op = cnc->create_operation(Gnome::Gda::SERVER_OPERATION_CREATE_DB, set);
+    op = Gnome::Gda::ServerOperation::prepare_create_database("PostgreSQL",
+                                                              database_name);
   }
   catch(const Glib::Error& ex)
   {
@@ -499,8 +494,10 @@ bool PostgresSelfHosted::create_database(const Glib::ustring& database_name, con
     return false;
   }
 #else
-  cnc = Gnome::Gda::Connection::open_from_string("PostgreSQL", cnc_string, auth_string, 
-                                                 Gnome::Gda::CONNECTION_OPTIONS_NONE, error);
+  std::auto_ptr<Glib::Error> error;
+  op = Gnome::Gda::ServerOperation::prepare_create_database("PostgreSQL",
+                                                            database_name,
+                                                            error);
   if(error)
     return false;
 
@@ -512,12 +509,11 @@ bool PostgresSelfHosted::create_database(const Glib::ustring& database_name, con
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    op->set_value_at("/DB_DEF_P/DB_NAME", database_name);
     op->set_value_at("/SERVER_CNX_P/HOST", "localhost");
     op->set_value_at("/SERVER_CNX_P/PORT", port_as_string(m_port));
     op->set_value_at("/SERVER_CNX_P/ADM_LOGIN", username);
     op->set_value_at("/SERVER_CNX_P/ADM_PASSWORD", password);
-    cnc->perform_operation(op);
+    op->perform_create_database("PostgreSQL");
   }
   catch(const Glib::Error& ex)
   {
@@ -525,14 +521,13 @@ bool PostgresSelfHosted::create_database(const Glib::ustring& database_name, con
     return false;
   }
 #else
-  op->set_value_at("/DB_DEF_P/DB_NAME", database_name, error);
   op->set_value_at("/SERVER_CNX_P/HOST", "localhost", error);
   op->set_value_at("/SERVER_CNX_P/PORT", port_as_string(m_port), error);
   op->set_value_at("/SERVER_CNX_P/ADM_LOGIN", username, error);
   op->set_value_at("/SERVER_CNX_P/ADM_PASSWORD", password, error);
 
-  if(error.get() != NULL)
-    cnc->perform_operation(op, error);
+  if(error.get() == 0)
+    op->perform_create_database("PostgreSQL");
   else
     return false;
 #endif

@@ -1,3 +1,14 @@
+2008-12-15  Johannes Schmid  <jhs@Obelix>
+
+	* glom/frame_glom.cc:
+	Fixed a warning (actually avoided a sprintf completely...)
+	
+	* glom/libglom/connectionpool_backends/postgres_central.cc:
+	* glom/libglom/connectionpool_backends/postgres_central.h:
+	* glom/libglom/connectionpool_backends/postgres_self.cc:
+	Fixed creating of databases. Database is no created though things break
+	at a latter stage.
+
 2008-12-12  Murray Cumming  <murrayc@murrayc.com>
 
 	* Many files: Remove tabs, and spaces before ( and generally fix some 
@@ -70,6 +81,13 @@
 	* glom/mode_design/fields/dialog_fielddefinition.cc:
 	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
 	* regression_tests/test_parsing_time.cc:
+	
+	Ported gda calls to libgda 4.0. This does mostly involve the removal of Gda::Client
+	and some more API changes (Gda::ParamList => Gda::Set, Gda::Parameter => Gda::Holder).
+	Some bits are still missing which involves creating database for Postgres (sqlite works) and
+	several checks if postgres is installed that have been performed in the past. Also, the
+	set_unique_key() and set_primary_key() methods of Gda::Column have no replacement in 4.0.
+	All things that are not finished are marked with "TODO_gda:".
 
 2008-12-09  Armin Burgmeier  <armin@openismus.com>
 

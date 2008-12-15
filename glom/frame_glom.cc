@@ -1743,8 +1743,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     else
     {
       //Create a new database name by appending a number to the original name:
-      char pchExtraNum[10];
-      sprintf(pchExtraNum, "%d", extra_num);
+      Glib::ustring pchExtraNum = Glib::ustring::compose("%1", extra_num);
       database_name_possible = (database_name + pchExtraNum);
     }
     ++extra_num;
