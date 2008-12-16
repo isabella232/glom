@@ -478,15 +478,8 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
-      //Specify the ITER_MODEL_ONLY parameter, so that libgda only gets the rows that we actually use.
-      Gnome::Gda::Value value;
-      value.set(true);
-      Glib::RefPtr<Gnome::Gda::Holder> holder = Gnome::Gda::Holder::create(G_TYPE_BOOLEAN, "iter_model_only");
-      holder->set_attribute("ITER_MODEL_ONLY", value);
-      Glib::RefPtr<Gnome::Gda::Set> set = Gnome::Gda::Set::create();
-      set->add_holder(holder);
-      
-      m_gda_datamodel = m_connection->get_gda_connection()->statement_execute_select(stmt, set);
+      //Specify the STATEMENT_MODEL_CURSOR, so that libgda only gets the rows that we actually use.   
+      m_gda_datamodel = m_connection->get_gda_connection()->statement_execute_select(stmt, Gnome::Gda::STATEMENT_MODEL_CURSOR);
 
       if(app && app->get_show_sql_debug())
         std::cout << "  Debug: DbTreeModel::refresh_from_database(): The query execution has finished." << std::endl;
@@ -530,7 +523,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
     }
     else
     {
-      //This doesn't work with ITER_MODEL_ONLY: const int count = m_gda_datamodel->get_n_rows();
+      //This doesn't work with cursor-based models: const int count = m_gda_datamodel->get_n_rows();
       //because rows count is -1 until we have iterated to the last row.
       const Glib::ustring sql_query_without_sort = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_column_fields, m_found_set.m_where_clause, m_found_set.m_extra_join, type_sort_clause(), m_found_set.m_extra_group_by);
       const int count = Base_DB::count_rows_returned_by(sql_query_without_sort);
