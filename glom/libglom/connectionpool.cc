@@ -307,6 +307,8 @@ const ConnectionPoolBackend* ConnectionPool::get_backend() const
   return m_backend.get();
 }
 
+
+
 //static:
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
 sharedptr<SharedConnection> ConnectionPool::get_and_connect()
@@ -329,6 +331,25 @@ sharedptr<SharedConnection> ConnectionPool::get_and_connect(std::auto_ptr<Except
   return result;
 }
 
+
+
+// Store the connection for a few seconds in case it 
+// is immediately requested again, to avoid making a new connection 
+// and introspecting again, which is slow. 
+static sharedptr<SharedConnection> connection_cached;
+static sigc::connection connection_cached_timeout_connection;
+
+bool on_connection_pool_cache_timeout()
+{
+  //std::cout << "DEBUG: Clearing connection cache." << std::endl;
+      
+  //Forget the cached connection after a few seconds:
+  connection_cached.clear();
+
+  return false; //Don't call this again.
+}
+
+
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
 sharedptr<SharedConnection> ConnectionPool::connect()
 #else
@@ -348,7 +369,18 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
       //Remember that somebody is using it:
       m_sharedconnection_refcount++;
 
+      //Store the connection in a cache for a few seconds to avoid unnecessary disconnections/reconnections:
+      //std::cout << "DEBUG: Stored connection cache." << std::endl;
+      connection_cached = sharedConnection;
+      connection_cached_timeout_connection.disconnect(); //Stop the existing timeout if it has not run yet.
+      connection_cached_timeout_connection = Glib::signal_timeout().connect_seconds(&on_connection_pool_cache_timeout, 30 /* seconds */);
+
       return sharedConnection;
+    }
+    else if(connection_cached)
+    {
+      //Avoid a reconnection immediately after disconnecting:
+      return connection_cached;
     }
     else
     {
@@ -368,7 +400,9 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
       else
       {
         //Allow get_meta_store_data() to succeed:
+        std::cout << "DEBUG: Calling update_meta_store() ..." << std::endl;
         m_refGdaConnection->update_meta_store();
+        std::cout << "DEBUG: ... update_meta_store() has finished." << std::endl;
 
         // Connection succeeded
         // Create the fieldtypes member if it has not already been done:
@@ -431,16 +465,25 @@ void ConnectionPool::set_user(const Glib::ustring& value)
   }
 
   m_user = value;
+
+  //Make sure that connect() makes a new connection:
+  connection_cached.clear();
 }
 
 void ConnectionPool::set_password(const Glib::ustring& value)
 {
   m_password = value;
+  
+  //Make sure that connect() makes a new connection:
+  connection_cached.clear();
 }
 
 void ConnectionPool::set_database(const Glib::ustring& value)
 {
   m_database = value;
+
+  //Make sure that connect() makes a new connection:
+  connection_cached.clear();
 }
 
 Glib::ustring ConnectionPool::get_user() const
