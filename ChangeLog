@@ -1,5 +1,12 @@
 2008-12-17  Armin Burgmeier  <armin@openismus.com>
 
+	* glom/base_db.cc (create_table_with_default_fields): Reverted the
+	previous change. People can choose not to show the "comments" or
+	"description" columns in their layouts. We'll later support removing
+	columns by recreating the whole table.
+
+2008-12-17  Armin Burgmeier  <armin@openismus.com>
+
 	* glom/base_db.cc (create_table_with_default_fields): Don't create the
 	"comments" and "description" columns if the database system does not
 	support removing columns.

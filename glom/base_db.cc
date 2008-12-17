@@ -1083,28 +1083,20 @@ bool Base_DB::create_table_with_default_fields(const Glib::ustring& table_name)
   type_vecFields fields;
   fields.push_back(field_primary_key);
 
-  // Don't create these standard fields if the database system does not
-  // support deleting them. We still create the primary key column because
-  // there are database systems that don't support adding primary key columns
-  // into existing databases (such as SQLite).
-  Glib::RefPtr<Gnome::Gda::Set> set;
-  if(sharedconnection->get_gda_connection()->get_provider()->supports_operation(sharedconnection->get_gda_connection(), Gnome::Gda::SERVER_OPERATION_DROP_COLUMN, set))
-  {
-    //Description:
-    sharedptr<Field> field_description(new Field());
-    field_description->set_name("description");
-    field_description->set_title(_("Description")); //Use a translation, because the original locale will be marked as non-English if the current locale is non-English.
-    field_description->set_glom_type(Field::TYPE_TEXT);
-    fields.push_back(field_description);
+  //Description:
+  sharedptr<Field> field_description(new Field());
+  field_description->set_name("description");
+  field_description->set_title(_("Description")); //Use a translation, because the original locale will be marked as non-English if the current locale is non-English.
+  field_description->set_glom_type(Field::TYPE_TEXT);
+  fields.push_back(field_description);
 
-    //Comments:
-    sharedptr<Field> field_comments(new Field());
-    field_comments->set_name("comments");
-    field_comments->set_title(_("Comments"));
-    field_comments->set_glom_type(Field::TYPE_TEXT);
-    field_comments->m_default_formatting.set_text_format_multiline();
-    fields.push_back(field_comments);
-  }
+  //Comments:
+  sharedptr<Field> field_comments(new Field());
+  field_comments->set_name("comments");
+  field_comments->set_title(_("Comments"));
+  field_comments->set_glom_type(Field::TYPE_TEXT);
+  field_comments->m_default_formatting.set_text_format_multiline();
+  fields.push_back(field_comments);
 
   sharedptr<TableInfo> table_info(new TableInfo());
   table_info->set_name(table_name);
