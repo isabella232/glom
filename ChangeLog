@@ -1,3 +1,13 @@
+2008-12-17  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/base_db.cc (create_table_with_default_fields): Don't create the
+	"comments" and "description" columns if the database system does not
+	support removing columns.
+
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc
+	(fill_values_if_necessary): Adapt to libgdamm API change.
+	Gda::DataModelIter::move_at_row has been renamed to move_to_row.
+
 2008-12-16  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/connectionpool.cc: connect(): Store a cache of the 

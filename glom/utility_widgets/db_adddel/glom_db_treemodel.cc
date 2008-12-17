@@ -265,7 +265,7 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
       Glib::RefPtr<Gnome::Gda::DataModelIter> iter = model.m_gda_datamodel->create_iter();
       if(iter)
       {
-        iter->move_at_row(row);
+        iter->move_to_row(row);
 
         //It is a row from the database;
         const int cols_count = model.m_data_model_columns_count;
