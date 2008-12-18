@@ -211,7 +211,11 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute(const Glib::ustring& 
       }
       catch(const Gnome::Gda::ConnectionError& ex)
       {
-        std::cout << "debug: Base_DB::query_execute(): exception from statement_execute_select(): " << ex.what() << std::endl;
+        std::cout << "debug: Base_DB::query_execute(): ConnectionError: exception from statement_execute_select(): " << ex.what() << std::endl;
+      }
+      catch(const Gnome::Gda::ServerProviderError& ex)
+      {
+        std::cout << "debug: Base_DB::query_execute(): ServerProviderError: exception from statement_execute_select(): " << ex.what() << std::endl;
       }
 #else
       std::auto_ptr<Glib::Error> error;
@@ -230,7 +234,11 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute(const Glib::ustring& 
       }
       catch(const Gnome::Gda::ConnectionError& ex)
       {
-        std::cout << "debug: Base_DB::query_execute(): exception from execute_non_select_command(): " << ex.what() << std::endl;
+        std::cout << "debug: Base_DB::query_execute(): ConnectionError: exception from execute_non_select_command(): " << ex.what() << std::endl;
+      }
+      catch(const Gnome::Gda::ServerProviderError& ex)
+      {
+        std::cout << "debug: Base_DB::query_execute(): ServerProviderError: exception from execute_non_select_command(): " << ex.what() << std::endl;
       }
 #else
       std::auto_ptr<Glib::Error> error;

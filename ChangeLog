@@ -1,5 +1,10 @@
 2008-12-18  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/base_db.cc: query_execute(): Catch ServerProviderError 
+	exceptions too. This needs the latest libgdamm.
+
+2008-12-18  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_design/fields/box_db_table_definition.cc:
 	get_field_definition(): Actually store the primary-key and unique 
 	details. This was a regression since the port to libgda 4.0.
