@@ -415,17 +415,21 @@ sharedptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::TreeMo
     GType fieldType = Field::get_gda_type_for_glom_type(glom_type);
 
     //Unique:
-    //const bool bUnique = m_AddDel.get_value_as_bool(row, m_colUnique);
+    const bool bUnique = m_AddDel.get_value_as_bool(row, m_colUnique);
     //TODO_gda: fieldInfo->set_unique_key(bUnique);
 
     //Primary Key:
-    //const bool bPrimaryKey = m_AddDel.get_value_as_bool(row, m_colPrimaryKey);
+    const bool bPrimaryKey = m_AddDel.get_value_as_bool(row, m_colPrimaryKey);
     ///TODO_gda: fieldInfo->set_primary_key(bPrimaryKey);
 
     fieldInfo->set_g_type(fieldType);
 
     //Put it together:
     fieldResult->set_field_info(fieldInfo);
+
+    //TODO: Use the libgda functions above when we make them work:
+    fieldResult->set_unique_key(bUnique);
+    fieldResult->set_primary_key(bPrimaryKey);
   }
 
   return fieldResult;

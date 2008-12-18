@@ -1,3 +1,9 @@
+2008-12-18  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	get_field_definition(): Actually store the primary-key and unique 
+	details. This was a regression since the port to libgda 4.0.
+
 2008-12-17  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/base_db.cc (create_table_with_default_fields): Reverted the

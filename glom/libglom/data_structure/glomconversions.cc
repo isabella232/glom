@@ -451,7 +451,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
   else if(glom_type == Field::TYPE_IMAGE)
   {
     //Return the binary-as-escaped-text format, suitable for use in the document.
-    //TODO: Where do we need this? Do we need to have this in SQLite format sometimes?
+    //TODO_sqlite: Where do we need this? Do we need to have this in SQLite format sometimes?
     std::string result;
     long buffer_length;
     const guchar* buffer = value.get_binary(buffer_length);
@@ -609,7 +609,7 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
   {
     //We assume that the text is the same (escaped text) format that we use in the document when saving images:
     //(The SQL format).
-    // TODO: For what do we need this? Does this have to be in SQLite format sometimes?
+    // TODO_sqlite: For what do we need this? Does this have to be in SQLite format sometimes?
     Gnome::Gda::Value result;
 
     size_t buffer_binary_length = 0;
@@ -1103,6 +1103,9 @@ Glom_PQunescapeBytea(const unsigned char *strtext, size_t *retbuflen)
 
 Glib::ustring Conversions::escape_binary_data_postgres(guint8* buffer, size_t buffer_size)
 {
+  std::cout << "Conversions::escape_binary_data_postgres()" << std::endl;
+  
+
   //g_warning("Conversions::get_escaped_binary_data: debug: buffer ");
   //for(int i = 0; i < 10; ++i)
   //  g_warning("%02X (%c), ", (guint8)buffer[i], buffer[i]);
@@ -1160,6 +1163,7 @@ Glib::ustring Conversions::escape_binary_data_sqlite(guint8* buffer, size_t buff
 
 guint8* Conversions::unescape_binary_data_postgres(const Glib::ustring& escaped_binary_data, size_t& length)
 {
+  std::cout << "Conversions::unescape_binary_data_postgres()" << std::endl;
   return Glom_PQunescapeBytea((const guchar*)escaped_binary_data.c_str(), &length);
 }
 

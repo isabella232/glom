@@ -93,7 +93,8 @@ void Dialog_Import_CSV_Progress::add_text(const Glib::ustring& text)
 
 void Dialog_Import_CSV_Progress::begin_import()
 {
-  m_progress_bar->set_text(Glib::ustring::compose("%1 / %2", m_current_row, m_data_source->get_row_count()));
+  //Note to translators: This is a progress indication, showing how many rows have been imported, of the total number of rows.
+  m_progress_bar->set_text(Glib::ustring::compose(_("%1 / %2"), m_current_row, m_data_source->get_row_count()));
   m_progress_bar->set_fraction(0.0);
 
   m_progress_connection = Glib::signal_idle().connect(sigc::mem_fun(*this, &Dialog_Import_CSV_Progress::on_idle_import));
@@ -123,7 +124,8 @@ void Dialog_Import_CSV_Progress::on_state_changed()
 
 bool Dialog_Import_CSV_Progress::on_idle_import()
 {
-  m_progress_bar->set_text(Glib::ustring::compose("%1 / %2", m_current_row, m_data_source->get_row_count()));
+  //Note to translators: This is a progress indication, showing how many rows have been imported, of the total number of rows.
+  m_progress_bar->set_text(Glib::ustring::compose(_("%1 / %2"), m_current_row, m_data_source->get_row_count()));
   m_progress_bar->set_fraction(static_cast<double>(m_current_row) / static_cast<double>(m_data_source->get_row_count()));
 
   if(m_current_row == m_data_source->get_row_count())
@@ -142,10 +144,10 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
     const sharedptr<Field>& field = m_data_source->get_field_for_column(i);
     if(field)
     {
-      bool success;
-
-      // We always assume exported data was stored in postgres format, since
-      // we do export it this way.
+      // We always assume exported data is in postgres format, since
+      // we export it this way.
+      // TODO: Document what that format is.
+      bool success = false;
       Gnome::Gda::Value value = field->from_sql(m_data_source->get_data(m_current_row, i), Field::SQL_FORMAT_POSTGRES, success);
 
       if(success)
@@ -193,12 +195,14 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
   
   if(Glom::Conversions::value_is_empty(primary_key_value))
   {
-    Glib::ustring message(Glib::ustring::compose(_("Error importing row %1: Cannot import the row since the primary key is empty.\n"), m_current_row + 1));
+    Glib::ustring message(Glib::ustring::compose(_("Error importing row %1: Cannot import the row because the primary key is empty.\n"), m_current_row + 1));
     add_text(message);
   }
   else
   {
+    std::cout << "Dialog_Import_CSV_Progress::on_idle_import(): Calling record_new() with primary_key_value=" << primary_key_value.to_string() << " ..." << std::endl;
     record_new(true /* use_entered_data */, primary_key_value);
+    std::cout << "Dialog_Import_CSV_Progress::on_idle_import(): ... Finished calling record_new()" << std::endl;
   }
 
   m_current_row_values.clear();
@@ -217,7 +221,9 @@ void Dialog_Import_CSV_Progress::on_response(int response_id)
 Gnome::Gda::Value Dialog_Import_CSV_Progress::get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const
 {
   type_mapValues::const_iterator iter = m_current_row_values.find(field->get_name());
-  if(iter == m_current_row_values.end()) return Gnome::Gda::Value();
+  if(iter == m_current_row_values.end())
+    return Gnome::Gda::Value();
+
   return iter->second;
 }
 
@@ -234,7 +240,9 @@ sharedptr<Field> Dialog_Import_CSV_Progress::get_field_primary_key() const
 Gnome::Gda::Value Dialog_Import_CSV_Progress::get_primary_key_value_selected() const
 {
   type_mapValues::const_iterator iter = m_current_row_values.find(m_field_primary_key->get_name());
-  if(iter == m_current_row_values.end()) return Gnome::Gda::Value();
+  if(iter == m_current_row_values.end())
+    return Gnome::Gda::Value();
+
   return iter->second;
 }
 
