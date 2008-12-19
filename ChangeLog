@@ -1,3 +1,12 @@
+2008-12-19  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_design/users/dialog_groups_list.cc
+	on_button_group_delete():
+	* glom/mode_design/users/dialog_users_list.cc
+	on_button_user_delete(), on_button_user_add(),
+	on_button_user_new(), on_button_user_edit(): 
+	Add missing quotes around user and group names in SQL queries.
+
 1.8.4:
 
 2008-12-11  Murray Cumming  <murrayc@murrayc.com>
