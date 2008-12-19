@@ -166,7 +166,7 @@ void Dialog_UsersList::on_button_user_delete()
 
           if(response == Gtk::RESPONSE_OK)
           {
-            Glib::ustring strQuery = "DROP USER " + user;
+            Glib::ustring strQuery = "DROP USER +\"" + user + "\"";
             query_execute(strQuery, this);
 
             fill_list();
@@ -210,7 +210,7 @@ void Dialog_UsersList::on_button_user_add()
   if(!user.empty())
   {
     //Add it to the group:
-    Glib::ustring strQuery = "ALTER GROUP \"" + m_combo_group->get_active_text() + "\" ADD USER " + user;
+    Glib::ustring strQuery = "ALTER GROUP \"" + m_combo_group->get_active_text() + "\" ADD USER \"" + user + "\"";
     query_execute(strQuery, this);
 
     //Remove any user rights, so that all rights come from the user's presence in the group:
