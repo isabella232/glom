@@ -77,7 +77,17 @@ public:
   static bool get_field_exists_in_database(const Glib::ustring& table_name, const Glib::ustring& field_name);
 
 
-  static Glib::RefPtr<Gnome::Gda::DataModel> query_execute(const Glib::ustring& strQuery, Gtk::Window* parent_window = 0);
+  /** Execute a SQL Select command, returning the result.
+   * This method handles any Gda exceptions caused by executing the command.
+   */
+  static Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::ustring& strQuery, Gtk::Window* parent_window = 0);
+
+
+  /** Execute a SQL non-select command, returning true if it succeeded.
+   * This method handles any Gda exceptions caused by executing the command.
+   */
+  static bool query_execute(const Glib::ustring& strQuery, Gtk::Window* parent_window = 0);
+
   static int count_rows_returned_by(const Glib::ustring& sql_query);
 
 

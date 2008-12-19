@@ -60,7 +60,7 @@ Gnome::Gda::Value Base_DB_Table_Data::get_entered_field_data(const sharedptr<con
 }
 
 
-Glib::RefPtr<Gnome::Gda::DataModel> Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Value& primary_key_value)
+bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Value& primary_key_value)
 {
   sharedptr<const Field> fieldPrimaryKey = get_field_primary_key();
 
@@ -204,12 +204,13 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB_Table_Data::record_new(bool use_ente
   }
 
   //Put it all together to create the record with these field values:
-  Glib::RefPtr<Gnome::Gda::DataModel> result;
   if(!strNames.empty() && !strValues.empty())
   {
     const Glib::ustring strQuery = "INSERT INTO \"" + m_table_name + "\" (" + strNames + ") VALUES (" + strValues + ")";
-    result = query_execute(strQuery, App_Glom::get_application());
-    if(result)
+    const bool test = query_execute(strQuery, App_Glom::get_application());
+    if(!test)
+      std::cerr << "Box_Data::record_new(): INSERT failed." << std::endl;
+    else
     {
       Gtk::TreeModel::iterator row; // TODO: remove this parameter.
       set_primary_key_value(row, primary_key_value); //Needed by Box_Data_List::on_adddel_user_changed().
@@ -217,27 +218,29 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB_Table_Data::record_new(bool use_ente
       //Update any lookups, related fields, or calculations:
       for(type_vecLayoutFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
       {
-         sharedptr<const LayoutItem_Field> layout_item = *iter;
+        sharedptr<const LayoutItem_Field> layout_item = *iter;
          
-         //TODO_Performance: We just set this with set_entered_field_data() above. Maybe we could just remember it.
-         const Gnome::Gda::Value field_value = get_entered_field_data(layout_item);
+        //TODO_Performance: We just set this with set_entered_field_data() above. Maybe we could just remember it.
+        const Gnome::Gda::Value field_value = get_entered_field_data(layout_item);
 
-         LayoutFieldInRecord field_in_record(layout_item, m_table_name, fieldPrimaryKey, primary_key_value);
+        LayoutFieldInRecord field_in_record(layout_item, m_table_name, fieldPrimaryKey, primary_key_value);
 
-         //Get-and-set values for lookup fields, if this field triggers those relationships:
-         do_lookups(field_in_record, row, field_value);
+        //Get-and-set values for lookup fields, if this field triggers those relationships:
+        do_lookups(field_in_record, row, field_value);
 
-         //Update related fields, if this field is used in the relationship:
-         refresh_related_fields(field_in_record, row, field_value);
+        //Update related fields, if this field is used in the relationship:
+        refresh_related_fields(field_in_record, row, field_value);
+
+        //TODO: Put the inserted row into result, somehow? murrayc
+
+        return true; //success
       }
     }
-    else
-    {
-      std::cerr << "Box_Data::record_new(): INSERT returned null DataModel." << std::endl; 
-    }
   }
+  else
+    std::cerr << "Base_DB_Table_Data::record_new(): Empty field names or values." << std::endl;
 
-  return result; //Failed.
+  return false; //Failed.
 }
 
 
@@ -258,7 +261,7 @@ bool Base_DB_Table_Data::get_related_record_exists(const sharedptr<const Relatio
 
   //TODO_Performance: Is this the best way to just find out whether there is one record that meets this criteria?
   const Glib::ustring query = "SELECT \"" + to_field + "\" FROM \"" + relationship->get_to_table() + "\" WHERE \"" + related_table + "\".\"" + to_field + "\" = " + key_field->sql(key_value);
-  Glib::RefPtr<Gnome::Gda::DataModel> records = query_execute(query, App_Glom::get_application());
+  Glib::RefPtr<Gnome::Gda::DataModel> records = query_execute_select(query, App_Glom::get_application());
   if(!records)
     handle_error();
   else
@@ -349,7 +352,10 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
       const Glib::ustring strQuery = "INSERT INTO \"" + relationship->get_to_table() + "\" (\"" + primary_key_field->get_name() + "\") VALUES (" + primary_key_field->sql(primary_key_value) + ")";
       const bool test = query_execute(strQuery, App_Glom::get_application());
       if(!test)
+      {
+        std::cerr << "Base_DB_Table_Data::add_related_record_for_field(): INSERT failed." << std::endl;
         return false;
+      }
 
       if(key_is_auto_increment)
       {
@@ -388,7 +394,10 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
               " WHERE \"" + relationship->get_from_table() + "\".\"" + parent_primary_key_field->get_name() + "\" = " + parent_primary_key_field->sql(parent_primary_key_value);
             const bool test = query_execute(strQuery, App_Glom::get_application());
             if(!test)
+            {
+              std::cerr << "Base_DB_Table_Data::add_related_record_for_field(): UPDATE failed." << std::endl;
               return false;
+            }
           }
         }
       }

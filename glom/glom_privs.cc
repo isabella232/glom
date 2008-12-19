@@ -30,7 +30,7 @@ Privs::type_vecStrings Privs::get_database_groups()
   type_vecStrings result;
 
   Glib::ustring strQuery = "SELECT \"pg_group\".\"groname\" FROM \"pg_group\"";
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(strQuery);
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery);
   if(data_model)
   {
     const int rows_count = data_model->get_n_rows();
@@ -55,7 +55,7 @@ Privs::type_vecStrings Privs::get_database_users(const Glib::ustring& group_name
   {
     //pg_shadow contains the users. pg_users is a view of pg_shadow without the password.
     Glib::ustring strQuery = "SELECT \"pg_shadow\".\"usename\" FROM \"pg_shadow\"";
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(strQuery);
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery);
     if(data_model)
     {
       const int rows_count = data_model->get_n_rows();
@@ -70,7 +70,7 @@ Privs::type_vecStrings Privs::get_database_users(const Glib::ustring& group_name
   else
   {
     Glib::ustring strQuery = "SELECT \"pg_group\".\"groname\", \"pg_group\".\"grolist\" FROM \"pg_group\" WHERE \"pg_group\".\"groname\" = '" + group_name + "'";
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(strQuery);
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery);
     if(data_model && data_model->get_n_rows())
     {
       const int rows_count = data_model->get_n_rows();
@@ -88,7 +88,7 @@ Privs::type_vecStrings Privs::get_database_users(const Glib::ustring& group_name
         {
           //TODO_Performance: Can we do this in one SQL SELECT?
           Glib::ustring strQuery = "SELECT \"pg_user\".\"usename\" FROM \"pg_user\" WHERE \"pg_user\".\"usesysid\" = '" + *iter + "'";
-          Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(strQuery);
+          Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery);
           if(data_model)
           {
             const Gnome::Gda::Value value = data_model->get_value_at(0, 0); 
@@ -159,8 +159,9 @@ void Privs::set_table_privileges(const Glib::ustring& group_name, const Glib::us
   strQuery += " GROUP \"" + group_name + "\"";
 
   const bool test = query_execute(strQuery);
-
-  if(test)
+  if(!test)
+    std::cerr << "Privs::set_table_privileges(): GRANT failed." << std::endl;
+  else
   {
     if( (table_name != GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME) && privs.m_create )
     {
@@ -190,7 +191,7 @@ Privileges Privs::get_table_privileges(const Glib::ustring& group_name, const Gl
 
   //Get the permissions:
   Glib::ustring strQuery = "SELECT \"pg_class\".\"relacl\" FROM \"pg_class\" WHERE \"pg_class\".\"relname\" = '" + table_name + "'";
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(strQuery);
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery);
   if(data_model && data_model->get_n_rows())
   {
     const Gnome::Gda::Value value = data_model->get_value_at(0, 0);

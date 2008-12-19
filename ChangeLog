@@ -1,3 +1,10 @@
+2008-12-19  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.[h|cc]: Split query_execute() into query_execute() and 
+	query_execute_select(), returning just a bool for query_execute(), 
+	as suggested by a TODO because of the changed API in libgda 4.0.
+	* Many files: Call the correct method.
+
 2008-12-18  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db.cc: query_execute(): Catch ServerProviderError 

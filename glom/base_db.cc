@@ -158,7 +158,7 @@ bool Base_DB::handle_error()
 }
 
 //static:
-Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute(const Glib::ustring& strQuery, Gtk::Window* /* parent_window */)
+Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute_select(const Glib::ustring& strQuery, Gtk::Window* /* parent_window */)
 {
   Glib::RefPtr<Gnome::Gda::DataModel> result;
 
@@ -171,97 +171,137 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute(const Glib::ustring& 
   sharedptr<SharedConnection> sharedconnection = connect_to_server(0, error);
   if(error.get())
   {
-    g_warning("Base_DB::query_execute failed (query was: %s): %s", strQuery.c_str(), error->what());
+    g_warning("Base_DB::query_execute_select() failed (query was: %s): %s", strQuery.c_str(), error->what());
     // TODO: Rethrow? 
   }
 #endif
-  if(sharedconnection)
+  if(!sharedconnection)
   {
-    Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
-
-   const App_Glom* app = App_Glom::get_application();
-   if(app && app->get_show_sql_debug())
-   {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-      try
-      {
-#endif
-        std::cout << "Debug: Base_DB::query_execute():  " << strQuery << std::endl;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-      }
-      catch(const Glib::Exception& ex)
-      {
-        std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
-      }
-#endif
-    }
-        
-    // TODO: Several functions call query_execute with non-select queries.
-    // Before libgda-3.0, execute_single_command returned always a datamodel
-    // on success. In case of a successful non-select command, we therefore
-    // create an empty datamodel to return, to make clear that the function
-    // succeeded. Probably, we should introduce another
-    // query_execute_non_select in the long term. 
-    if(strQuery.compare(0, 6, "SELECT") == 0)
-    {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-      try
-      {
-        result = gda_connection->statement_execute_select(strQuery);
-      }
-      catch(const Gnome::Gda::ConnectionError& ex)
-      {
-        std::cout << "debug: Base_DB::query_execute(): ConnectionError: exception from statement_execute_select(): " << ex.what() << std::endl;
-      }
-      catch(const Gnome::Gda::ServerProviderError& ex)
-      {
-        std::cout << "debug: Base_DB::query_execute(): ServerProviderError: exception from statement_execute_select(): " << ex.what() << std::endl;
-      }
-#else
-      std::auto_ptr<Glib::Error> error;
-      result = gda_connection->statement_execute_select(strQuery, error);
-      // Ignore error, empty datamodel is handled below
-#endif //GLIBMM_EXCEPTIONS_ENABLED
-    }
-    else
-    {
-
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-      int execute_result = -1;
-      try
-      {
-        execute_result = gda_connection->statement_execute_non_select(strQuery);
-      }
-      catch(const Gnome::Gda::ConnectionError& ex)
-      {
-        std::cout << "debug: Base_DB::query_execute(): ConnectionError: exception from execute_non_select_command(): " << ex.what() << std::endl;
-      }
-      catch(const Gnome::Gda::ServerProviderError& ex)
-      {
-        std::cout << "debug: Base_DB::query_execute(): ServerProviderError: exception from execute_non_select_command(): " << ex.what() << std::endl;
-      }
-#else
-      std::auto_ptr<Glib::Error> error;
-      execute_result = gda_connection->gda_connection->statement_execute_non_select(strQuery, error);
-#endif //GLIBMM_EXCEPTIONS_ENABLED
-      
-      if(execute_result != -1)
-        result = Gnome::Gda::DataModelArray::create(1);
-    }
-
-    if(!result)
-    {
-      std::cerr << "Glom  Base_DB::query_execute(): Error while executing SQL" << std::endl <<
-                   "  " <<  strQuery << std::endl;
-      handle_error();
-    }
+    std::cerr << "Base_DB::query_execute_select(): No connection yet." << std::endl;
+    return result;
   }
-  else
+
+  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
+
+  const App_Glom* app = App_Glom::get_application();
+  if(app && app->get_show_sql_debug())
   {
-    g_warning("Base_DB::query_execute(): No connection yet.");
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    try
+    {
+#endif
+      std::cout << "Debug: Base_DB::query_execute_select():  " << strQuery << std::endl;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    }
+    catch(const Glib::Exception& ex)
+    {
+      std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
+    }
+#endif
+  }
+        
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    result = gda_connection->statement_execute_select(strQuery);
+  }
+  catch(const Gnome::Gda::ConnectionError& ex)
+  {
+    std::cout << "debug: Base_DB::query_execute_select(): ConnectionError: exception from statement_execute_select(): " << ex.what() << std::endl;
+  }
+  catch(const Gnome::Gda::ServerProviderError& ex)
+  {
+    std::cout << "debug: Base_DB::query_execute_select(): ServerProviderError: exception from statement_execute_select(): " << ex.what() << std::endl;
+  }
+#else
+  std::auto_ptr<Glib::Error> error;
+  result = gda_connection->statement_execute_select(strQuery, error);
+  if(error)
+    std::cout << "debug: Base_DB::query_execute_select(): Glib::Error from statement_execute_select(): " << error->what() << std::endl;
+#endif //GLIBMM_EXCEPTIONS_ENABLED
+
+  if(!result)
+  {
+    std::cerr << "Glom  Base_DB::query_execute_select(): Error while executing SQL" << std::endl <<
+      "  " <<  strQuery << std::endl;
+    handle_error();
   }
 
   return result;
+}
+
+
+//static:
+bool Base_DB::query_execute(const Glib::ustring& strQuery, Gtk::Window* /* parent_window */)
+{
+  //TODO: Bakery::BusyCursor busy_cursor(get_app_window());
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  sharedptr<SharedConnection> sharedconnection = connect_to_server();
+#else
+  std::auto_ptr<ExceptionConnection> error;
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(0, error);
+  if(error.get())
+  {
+    g_warning("Base_DB::query_execute() failed (query was: %s): %s", strQuery.c_str(), error->what());
+    // TODO: Rethrow? 
+  }
+#endif
+  if(!sharedconnection)
+  {
+    std::cerr << "Base_DB::query_execute(): No connection yet." << std::endl;
+    return false;
+  }
+
+  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
+
+  const App_Glom* app = App_Glom::get_application();
+  if(app && app->get_show_sql_debug())
+  {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    try
+    {
+#endif
+      std::cout << "Debug: Base_DB::query_execute():  " << strQuery << std::endl;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    }
+    catch(const Glib::Exception& ex)
+    {
+      std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
+    }
+#endif
+  }
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  int execute_result = -1;
+  try
+  {
+    execute_result = gda_connection->statement_execute_non_select(strQuery);
+  }
+  catch(const Gnome::Gda::ConnectionError& ex)
+  {
+    std::cout << "debug: Base_DB::query_execute(): ConnectionError: exception from execute_non_select_command(): " << ex.what() << std::endl;
+  }
+  catch(const Gnome::Gda::ServerProviderError& ex)
+  {
+    std::cout << "debug: Base_DB::query_execute(): ServerProviderError: exception from execute_non_select_command(): " << ex.what() << std::endl;
+  }
+#else
+  std::auto_ptr<Glib::Error> error;
+  execute_result = gda_connection->gda_connection->statement_execute_non_select(strQuery, error);
+  if(error)
+    std::cout << "debug: Base_DB::query_execute(): Glib::Error from statement_execute_non_select(): " << error->what() << std::endl;
+#endif //GLIBMM_EXCEPTIONS_ENABLED
+      
+  if(execute_result == -1) //-1 from statement_execute_non_select() means an error.
+  {
+    std::cerr << "Glom  Base_DB::query_execute(): Error while executing SQL" << std::endl <<
+      "  " <<  strQuery << std::endl;
+    handle_error();
+    return false;
+  }
+  
+  return true;
 }
 
 void Base_DB::load_from_document()
@@ -658,13 +698,17 @@ bool Base_DB::add_standard_tables() const
       if(test)
       {
         //Add the single record:
-        query_execute("INSERT INTO \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\" (\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ID "\") VALUES (1)");
+        const bool test = query_execute("INSERT INTO \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\" (\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ID "\") VALUES (1)");
+        if(!test)
+          std::cerr << "Base_DB::add_standard_tables(): INSERT failed." << std::endl;
 
         //Use the database title from the document, if there is one:
         const Glib::ustring system_name = get_document()->get_database_title();
         if(!system_name.empty())
         {
-          query_execute("UPDATE \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\" SET  " "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_NAME "\" = '" + system_name + "' WHERE \"" GLOM_STANDARD_TABLE_PREFS_FIELD_ID "\" = 1");
+          const bool test = query_execute("UPDATE \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\" SET  " "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_NAME "\" = '" + system_name + "' WHERE \"" GLOM_STANDARD_TABLE_PREFS_FIELD_ID "\" = 1");
+          if(!test)
+            std::cerr << "Base_DB::add_standard_tables(): UPDATE failed." << std::endl;
         }
       }
       else
@@ -833,7 +877,7 @@ Gnome::Gda::Value Base_DB::auto_increment_insert_first_if_necessary(const Glib::
    " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = '" + table_name + "' AND "
           "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\" = '" + field_name + "'";
 
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query);
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query);
   if(!datamodel || (datamodel->get_n_rows() == 0))
   {
     //Start with zero:
@@ -843,11 +887,9 @@ Gnome::Gda::Value Base_DB::auto_increment_insert_first_if_necessary(const Glib::
       GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME ", " GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME ", " GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE
       ") VALUES ('" + table_name + "', '" + field_name + "', 0)";
 
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query);
-    if(!datamodel)
-    {
-      g_warning("Base_DB::auto_increment_insert_first_if_necessary(): INSERT of new row failed.");
-    }
+    const bool test = query_execute(sql_query);
+    if(!test)
+      std::cerr << "Base_DB::auto_increment_insert_first_if_necessary(): INSERT of new row failed." << std::endl;
 
     //GdaNumeric is a pain, so we take a short-cut:
     bool success = false;
@@ -876,7 +918,7 @@ void Base_DB::recalculate_next_auto_increment_value(const Glib::ustring& table_n
 
   //Get the max key value in the database:
   const Glib::ustring sql_query = "SELECT MAX(\"" + table_name + "\".\"" + field_name + "\") FROM \"" + table_name + "\"";
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query);
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query);
   if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
   {
     //Increment it:
@@ -891,16 +933,12 @@ void Base_DB::recalculate_next_auto_increment_value(const Glib::ustring& table_n
       " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = '" + table_name + "' AND "
              "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\" = '" + field_name + "'";
 
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query);
-    if(!datamodel)
-    {
-      g_warning("Base_DB::recalculate_next_auto_increment_value(): UPDATE failed.");
-    }
+    const bool test = query_execute(sql_query);
+    if(!test)
+      std::cerr << "Base_DB::recalculate_next_auto_increment_value(): UPDATE failed." << std::endl;
   }
   else
-  {
-    g_warning("Base_DB::recalculate_next_auto_increment_value(): SELECT MAX() failed.");
-  }
+    std::cerr << "Base_DB::recalculate_next_auto_increment_value(): SELECT MAX() failed." << std::endl;
 }
 
 Gnome::Gda::Value Base_DB::get_next_auto_increment_value(const Glib::ustring& table_name, const Glib::ustring& field_name) const
@@ -918,11 +956,9 @@ Gnome::Gda::Value Base_DB::get_next_auto_increment_value(const Glib::ustring& ta
       " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = '" + table_name + "' AND "
             "\""  GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\" = '" + field_name + "'";
 
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query);
-  if(!datamodel)
-  {
-    g_warning("Base_DB::get_next_auto_increment_value(): Increment failed.");
-  }
+  const bool test = query_execute(sql_query);
+  if(!test)
+    std::cerr << "Base_DB::get_next_auto_increment_value(): Increment failed." << std::endl;
 
   return result;
 }
@@ -961,7 +997,7 @@ SystemPrefs Base_DB::get_database_preferences() const
     try
     #endif
     {
-      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query);
+      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query);
       if(datamodel && (datamodel->get_n_rows() != 0))
       {
         result.m_name = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(0, 0));
@@ -1033,11 +1069,12 @@ void Base_DB::set_database_preferences(const SystemPrefs& prefs)
       "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE "\" = '" + prefs.m_org_address_postcode + "'"
       " WHERE \"" GLOM_STANDARD_TABLE_PREFS_FIELD_ID "\" = 1";
 
+    bool test = false;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-    try
+    try //TODO: query_execute() probably handles these already.
 #endif // GLIBMM_EXCEPTIONS_ENABLED
     {
-      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query);
+      test = query_execute(sql_query);
     }
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     catch(const Glib::Exception& ex)
@@ -1049,6 +1086,9 @@ void Base_DB::set_database_preferences(const SystemPrefs& prefs)
       std::cerr << "Base_DB::set_database_preferences(): exception: " << ex.what() << std::endl;
     }
 #endif // GLIBMM_EXCEPTIONS_ENABLED
+
+    if(!test)
+      std::cerr << "Base_DB::set_database_preferences(): UPDATE failed." << std::endl;
 
     //Set some information in the document too, so we can use it to recreate the database:
     get_document()->set_database_title(prefs.m_name);
@@ -1211,11 +1251,9 @@ bool Base_DB::create_table(const sharedptr<const TableInfo>& table_info, const D
   //Actually create the table
   try
   {
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute( "CREATE TABLE \"" + table_info->get_name() + "\" (" + sql_fields + ");" );
-    if(!data_model)
-      table_creation_succeeded = false;
-    else
-      table_creation_succeeded = true;
+    table_creation_succeeded = query_execute( "CREATE TABLE \"" + table_info->get_name() + "\" (" + sql_fields + ");" );
+    if(!table_creation_succeeded)
+      std::cerr << "Base_DB::create_table(): CREATE TABLE failed." << std::endl;
   }
   catch(const ExceptionConnection& ex)
   {
@@ -1913,7 +1951,7 @@ void Base_DB::calculate_field_in_all_records(const Glib::ustring& table_name, co
 
   //Get primary key values for every record:
   const Glib::ustring query = "SELECT \"" + table_name + "\".\"" + primary_key->get_name() + "\" FROM \"" + table_name + "\"";
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(query);
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(query);
   if(!data_model || !data_model->get_n_rows() || !data_model->get_n_columns())
   {
     //HandleError();
@@ -2103,7 +2141,7 @@ Base_DB::type_map_fields Base_DB::get_record_field_values_for_calculation(const 
       Glib::RefPtr<Gnome::Gda::DataModel> data_model;
       try
       {
-        data_model = query_execute(query);
+        data_model = query_execute_select(query);
       }
       catch(const Glib::Exception& ex)
       {
@@ -2200,13 +2238,13 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
     //std::cout << "debug: set_field_value_in_database(): " << std::endl << "  " << strQuery << std::endl;
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-    try
+    try //TODO: The exceptions are probably already handled by query_execute(0.
 #endif
     {
-      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(strQuery, parent_window);  //TODO: Handle errors
-      if(!datamodel)
+      const bool test = query_execute(strQuery, parent_window); //TODO: Respond to failure.
+      if(!test)
       {
-        g_warning("Box_Data::set_field_value_in_database(): UPDATE failed.");
+        std::cerr << "Box_Data::set_field_value_in_database(): UPDATE failed." << std::endl;
         return false; //failed.
       }
     }
@@ -2269,7 +2307,7 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const LayoutFieldInRecord
   if(!sql_query.empty())
     sql_query += " LIMIT 1";
 
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(sql_query);
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(sql_query);
   if(data_model)
   {
     if(data_model->get_n_rows())
@@ -2313,7 +2351,7 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const sharedptr<Field>& f
   if(!sql_query.empty())
     sql_query += " LIMIT 1";
 
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(sql_query);
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(sql_query);
   if(data_model)
   {
     if(data_model->get_n_rows())
@@ -2582,7 +2620,7 @@ Gnome::Gda::Value Base_DB::get_lookup_value(const Glib::ustring& /* table_name *
     Glib::ustring strQuery = "SELECT \"" + relationship->get_to_table() + "\".\"" + source_field->get_name() + "\" FROM \"" +  relationship->get_to_table() + "\"";
     strQuery += " WHERE \"" + to_key_field->get_name() + "\" = " + to_key_field->sql(value_to_key_field);
 
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(strQuery);
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery);
     if(data_model && data_model->get_n_rows())
     {
       //There should be only 1 row. Well, there could be more but we will ignore them.
@@ -2605,7 +2643,7 @@ bool Base_DB::get_field_value_is_unique(const Glib::ustring& table_name, const s
   Glib::ustring strQuery = "SELECT \"" + table_name_used + "\".\"" + field->get_name() + "\" FROM \"" + table_name_used + "\"";
   strQuery += " WHERE \"" + field->get_name() + "\" = " + field->get_full_field_details()->sql(value);
 
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(strQuery);
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery);
   if(data_model)
   {
     //std::cout << "debug: Base_DB::get_field_value_is_unique(): table_name=" << table_name << ", field name=" << field->get_name() << ", value=" << value.to_string() << ", rows count=" << data_model->get_n_rows() << std::endl;
@@ -2801,7 +2839,7 @@ bool Base_DB::get_primary_key_is_in_foundset(const FoundSet& found_set, const Gn
   where_clause += "(\"" + primary_key->get_name() + "\"=" + primary_key->sql(primary_key_value) + ")";
 
   const Glib::ustring query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsToGet, where_clause);
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(query);
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(query);
 
   if(data_model && data_model->get_n_rows())
   {

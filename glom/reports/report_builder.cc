@@ -184,7 +184,7 @@ void ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
 
     sql_query += " GROUP BY " + field_group_by->get_name(); //rTODO: And restrict to the current found set.
 
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query);
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query);
     if(datamodel)
     {
       guint rows_count = datamodel->get_n_rows();
@@ -307,7 +307,7 @@ void ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
       sql_query += " LIMIT 1";
 
     bool records_found = false;
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query);
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query);
     if(datamodel)
     {
       const guint rows_count = datamodel->get_n_rows();
@@ -379,7 +379,7 @@ void ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
     //So let's get that data here:
     const Glib::ustring table_used = field->get_table_used(found_set.m_table_name);
     const Glib::ustring query = "SELECT \"" + table_used + "\".\"" + field->get_name() + "\" FROM \""+ table_used + "\" LIMIT 1";
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(query);
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(query);
 
     if(!datamodel)
       return;

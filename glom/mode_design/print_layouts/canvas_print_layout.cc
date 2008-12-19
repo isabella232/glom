@@ -598,7 +598,7 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
   Glib::RefPtr<Gnome::Gda::DataModel> datamodel;
   try
   {
-    datamodel = query_execute(sql_query);
+    datamodel = query_execute_select(sql_query);
   }
   catch(const Glib::Exception& ex)
   {
@@ -686,7 +686,7 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
 
   const Glib::ustring sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fields_shown, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause, found_set.m_extra_group_by);
   //std::cout << "DEBUG: sql_query=" << sql_query << std::endl;
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query, 0 /* TODO: get_app_window() */);
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query, 0 /* TODO: get_app_window() */);
   if(!(datamodel))
     return;
     

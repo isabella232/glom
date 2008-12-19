@@ -130,7 +130,9 @@ void Dialog_UsersList::on_button_user_remove()
         if(!user.empty())
         {
           Glib::ustring strQuery = "ALTER GROUP \"" + m_combo_group->get_active_text() + "\" DROP USER \"" + user + "\"";
-          query_execute(strQuery, this);
+          const bool test = query_execute(strQuery, this);
+          if(!test)
+            std::cerr << "Dialog_UsersList::on_button_user_remove(): ALTER GROUP failed." << std::endl;
 
           fill_list();
         }
@@ -161,13 +163,15 @@ void Dialog_UsersList::on_button_user_delete()
           dialog.set_secondary_text(_("Are your sure that you wish to delete this user?"));
           dialog.set_transient_for(*this);
 
-          int response = dialog.run();
+          const int response = dialog.run();
           dialog.hide();
 
           if(response == Gtk::RESPONSE_OK)
           {
-            Glib::ustring strQuery = "DROP USER " + user;
-            query_execute(strQuery, this);
+            const Glib::ustring strQuery = "DROP USER " + user;
+            const bool test = query_execute(strQuery, this);
+            if(!test)
+              std::cerr << "Dialog_UsersList::on_button_user_delete(): DROP USER failed" << std::endl;
 
             fill_list();
           }
@@ -210,16 +214,20 @@ void Dialog_UsersList::on_button_user_add()
   if(!user.empty())
   {
     //Add it to the group:
-    Glib::ustring strQuery = "ALTER GROUP \"" + m_combo_group->get_active_text() + "\" ADD USER " + user;
-    query_execute(strQuery, this);
+    const Glib::ustring strQuery = "ALTER GROUP \"" + m_combo_group->get_active_text() + "\" ADD USER " + user;
+    const bool test = query_execute(strQuery, this);
+    if(!test)
+      std::cerr << "Dialog_UsersList::on_button_user_add(): ALTER GROUP failed." << std::endl;
 
     //Remove any user rights, so that all rights come from the user's presence in the group:
     Document_Glom::type_listTableInfo table_list = get_document()->get_tables();
 
     for(Document_Glom::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
     {
-      Glib::ustring strQuery = "REVOKE ALL PRIVILEGES ON \"" + (*iter)->get_name() + "\" FROM \"" + user + "\"";
-      query_execute(strQuery, this);
+      const Glib::ustring strQuery = "REVOKE ALL PRIVILEGES ON \"" + (*iter)->get_name() + "\" FROM \"" + user + "\"";
+      const bool test = query_execute(strQuery, this);
+      if(!test)
+        std::cerr << "Dialog_UsersList::on_button_user_add(): REVOKE failed." << std::endl;
     }
 
     fill_list();
@@ -273,11 +281,15 @@ void Dialog_UsersList::on_button_user_new()
   {
     //Create the user:
     Glib::ustring strQuery = "CREATE USER \"" + user + "\" PASSWORD '" + password + "'" ;
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(strQuery, this);
+    bool test = query_execute(strQuery, this);
+    if(!test)
+       std::cerr << "Dialog_UsersList::on_button_user_new(): CREATE USER failed." << std::endl;
 
     //Add it to the group:
     strQuery = "ALTER GROUP \"" + m_combo_group->get_active_text() + "\" ADD USER \"" + user + "\"";
-    data_model = query_execute(strQuery, this);
+    test = query_execute(strQuery, this);
+    if(!test)
+       std::cerr << "Dialog_UsersList::on_button_user_new(): ALTER GROUP failed." << std::endl;
 
     fill_list();
   }
@@ -352,13 +364,15 @@ void Dialog_UsersList::on_button_user_edit()
 
       if(!user.empty() && !password.empty())
       {
-        Glib::ustring strQuery = "ALTER USER \"" + user + "\" PASSWORD '" + password + "'" ;
-        Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(strQuery, this);
+        const Glib::ustring strQuery = "ALTER USER \"" + user + "\" PASSWORD '" + password + "'" ;
+        const bool test = query_execute(strQuery, this);
+        if(!test)
+          std::cerr << "Dialog_UsersList::on_button_user_edit(): ALTER USER failed." << std::endl;
 
         //Change the password in the current connection, if this is the current user.
-         ConnectionPool* connection_pool = ConnectionPool::get_instance();
-         if(connection_pool->get_user() == user)
-           connection_pool->set_password(password);
+        ConnectionPool* connection_pool = ConnectionPool::get_instance();
+        if(connection_pool->get_user() == user)
+          connection_pool->set_password(password);
 
         fill_list();
       }

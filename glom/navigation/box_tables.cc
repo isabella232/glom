@@ -301,9 +301,14 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
           //Delete the table:
           if(iButtonClicked == Gtk::RESPONSE_OK)
           {
-            query_execute( "DROP TABLE \"" + table_name + "\"", App_Glom::get_application());
-            get_document()->remove_table(table_name); //Forget about it in the document too.
-            something_changed = true;
+            const bool test = query_execute( "DROP TABLE \"" + table_name + "\"", App_Glom::get_application());
+            if(!test)
+              std::cerr << "Box_Tables::on_adddel_Delete(): DROP TABLE failed." << std::endl;
+            else
+            {
+              get_document()->remove_table(table_name); //Forget about it in the document too.
+              something_changed = true;
+            }
           }
         }
       }

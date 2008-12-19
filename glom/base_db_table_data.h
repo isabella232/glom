@@ -52,8 +52,9 @@ public:
 protected:
 
   /** Create a new record with all the entered field values from the currently-active details/row.
+   * @result true if the record was added to the database.
    */
-  Glib::RefPtr<Gnome::Gda::DataModel> record_new(bool use_entered_data = true, const Gnome::Gda::Value& primary_key_value = Gnome::Gda::Value()); 
+  bool record_new(bool use_entered_data = true, const Gnome::Gda::Value& primary_key_value = Gnome::Gda::Value()); 
 
   Gnome::Gda::Value get_entered_field_data_field_only(const sharedptr<const Field>& field) const;
   virtual Gnome::Gda::Value get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const;

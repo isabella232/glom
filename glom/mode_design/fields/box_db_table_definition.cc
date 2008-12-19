@@ -165,7 +165,7 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
   Glib::ustring name = m_AddDel.get_value(row, m_colName);
   if(!name.empty())
   {
-    bool bTest = query_execute( "ALTER TABLE \"" + m_table_name + "\" ADD \"" + name + "\" NUMERIC", get_app_window()); //TODO: Get schema type for Field::TYPE_NUMERIC
+    const bool bTest = query_execute( "ALTER TABLE \"" + m_table_name + "\" ADD \"" + name + "\" NUMERIC", get_app_window()); //TODO: Get schema type for Field::TYPE_NUMERIC
     if(bTest)
     {
       //Show the new field (fill in the other cells):
@@ -205,10 +205,14 @@ void Box_DB_Table_Definition::on_adddel_delete(const Gtk::TreeModel::iterator& r
     Glib::ustring name = m_AddDel.get_value_key(iter);
     if(!name.empty())
     {
-      query_execute( "ALTER TABLE \"" + m_table_name + "\" DROP COLUMN \"" + name + "\"", get_app_window());
-
-      //Remove it from all layouts, reports, etc:
-      get_document()->remove_field(m_table_name, name);
+      const bool test = query_execute( "ALTER TABLE \"" + m_table_name + "\" DROP COLUMN \"" + name + "\"", get_app_window());
+      if(test)
+      {
+        //Remove it from all layouts, reports, etc:
+        get_document()->remove_field(m_table_name, name);
+      }
+      else
+        std::cerr << "Box_DB_Table_Definition::on_adddel_delete(): field deletion failed." << std::endl;
     }
   }
 
@@ -726,8 +730,8 @@ void Box_DB_Table_Definition::postgres_change_column_type(const sharedptr<const 
           const Glib::ustring sql = "UPDATE \"" + m_table_name + "\" SET \"" + fieldTemp->get_name() + "\" = " + conversion_command;
           try
           {
-            Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql, get_app_window());  //TODO: Not full type details.
-            if(!datamodel)
+            const bool test = query_execute(sql, get_app_window());  //TODO: Not full type details. What does that comment mean? murrayc
+            if(!test)
               conversion_failed = true;
           }
           catch(const Glib::Error& ex)
@@ -746,14 +750,14 @@ void Box_DB_Table_Definition::postgres_change_column_type(const sharedptr<const 
 
         if(!conversion_failed)
         {
-          Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute( "ALTER TABLE \"" + m_table_name + "\" DROP COLUMN \"" +  field_old->get_name() + "\"", get_app_window());
-          if(datamodel)
+          const bool test = query_execute( "ALTER TABLE \"" + m_table_name + "\" DROP COLUMN \"" +  field_old->get_name() + "\"", get_app_window());
+          if(test)
           {
             const Glib::ustring sql =  "ALTER TABLE \"" + m_table_name + "\" RENAME COLUMN \"" + fieldTemp->get_name() + "\" TO \"" + field->get_name() + "\"";
             try
             {
-              datamodel = query_execute(sql, get_app_window());
-              if(datamodel)
+              const bool test = query_execute(sql, get_app_window());
+              if(test)
               {
                 const bool test = gda_connection->commit_transaction(transaction_name);
                 if(!test)
@@ -793,7 +797,7 @@ bool Box_DB_Table_Definition::field_has_null_values(const sharedptr<const Field>
   //std::cout << "sql_query: " << sql_query << std::endl;
 
   long null_count = 0;
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query, get_app_window());
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query, get_app_window());
   if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
   {
     null_count = datamodel->get_n_rows();
@@ -815,7 +819,7 @@ bool Box_DB_Table_Definition::field_has_non_unique_values(const sharedptr<const 
   //Count the distint rows:
   const Glib::ustring sql_query_distinct = "SELECT DISTINCT \"" + field->get_name() + "\" FROM \"" + m_table_name + "\"";
   
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query_distinct, get_app_window());
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query_distinct, get_app_window());
   if(datamodel)
   {
     count_distinct = datamodel->get_n_rows();
@@ -829,7 +833,7 @@ bool Box_DB_Table_Definition::field_has_non_unique_values(const sharedptr<const 
   //Count all rows, to compare. TODO_performance: Is there a more efficient way to do this? Maybe count(*), which apparently doesn't ignore NULL rows like count(somefield) would.
   const Glib::ustring sql_query_all = "SELECT \"" + field->get_name() + "\" FROM \"" + m_table_name + "\"";
   
-  datamodel = query_execute(sql_query_all, get_app_window());
+  datamodel = query_execute_select(sql_query_all, get_app_window());
   if(datamodel)
   {
     count_all = datamodel->get_n_rows();

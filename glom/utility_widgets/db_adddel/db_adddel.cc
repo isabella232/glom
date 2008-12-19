@@ -2339,8 +2339,8 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
         return;
       }
 
-      Glib::RefPtr<Gnome::Gda::DataModel> data_model = record_new(true /* use entered field data*/, primary_key_value);
-      if(data_model)
+      const bool added = record_new(true /* use entered field data*/, primary_key_value);
+      if(added)
       {
         //Save the primary key value for later use:
         set_value_key(row, primary_key_value);

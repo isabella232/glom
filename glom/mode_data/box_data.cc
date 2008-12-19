@@ -294,7 +294,7 @@ void Box_Data::refresh_related_fields(const LayoutFieldInRecord& field_in_record
   {
     const Glib::ustring query = Utils::build_sql_select_with_key(field_in_record_changed.m_table_name, fieldsToGet, field_in_record_changed.m_key, field_in_record_changed.m_key_value);
 
-    Glib::RefPtr<Gnome::Gda::DataModel> result = query_execute(query, get_app_window());
+    Glib::RefPtr<Gnome::Gda::DataModel> result = query_execute_select(query, get_app_window());
     if(!result)
     {
       g_warning("Box_Data_List::refresh_related_fields(): no result.");

@@ -35,7 +35,9 @@ bool GlomPostgres::postgres_add_column(const Glib::ustring& table_name, const sh
   }
 
   const bool bTest = query_execute(  "ALTER TABLE \"" + table_name + "\" ADD \"" + field_to_add->get_name() + "\" " +  field_to_add->get_sql_type() );
-  if(bTest)
+  if(!bTest)
+    std::cerr << "GlomPostgres::postgres_add_column(): ALTER TABLE failed." << std::endl;
+  else
   {
     if(not_extras)
     {
@@ -56,9 +58,11 @@ sharedptr<Field> GlomPostgres::postgres_change_column_extras(const Glib::ustring
 
   if(field->get_name() != field_old->get_name())
   {
-     Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = query_execute( "ALTER TABLE \"" + table_name + "\" RENAME COLUMN \"" + field_old->get_name() + "\" TO \"" + field->get_name() + "\"" );
-     if(!datamodel)
+     const bool test = query_execute( "ALTER TABLE \"" + table_name + "\" RENAME COLUMN \"" + field_old->get_name() + "\" TO \"" + field->get_name() + "\"" );
+     if(!test)
      {
+       std::cerr << "GlomPostgres::postgres_change_column_extras(): ALTER TABLE failed." << std::endl;
+
        handle_error();
        return result;
      }
@@ -71,14 +75,17 @@ sharedptr<Field> GlomPostgres::postgres_change_column_extras(const Glib::ustring
      //TODO: Check that there is only one primary key.
      //When unsetting a primary key, ask which one should replace it.
 
-     Glib::RefPtr<Gnome::Gda::DataModel> datamodel;
+     bool test = false;
        
      //TODO: Somehow discover whether these constraint names really exists, so we can be more robust in strange situations. This needs libgda 2, which has GDA_CONNECTION_SCHEMA_CONSTRAINTS.
      //Postgres needs us to add/drop constraints explicitly when changing existing fields, though it can create them implicitly when creating the field:
      if(field->get_primary_key())
      {
        //Set field as primary key :
-       datamodel = query_execute( "ALTER TABLE \"" + table_name + "\" ADD PRIMARY KEY (\"" + field->get_name() + "\")");
+       test = query_execute( "ALTER TABLE \"" + table_name + "\" ADD PRIMARY KEY (\"" + field->get_name() + "\")");
+       if(!test)
+         std::cerr << "GlomPostgres::postgres_change_column_extras(): ALTER TABLE with ADD PRIMARY KEY failed." << std::endl;
+
        primary_key_was_set = true;
 
        //Tell the caller about a constraint:
@@ -87,7 +94,10 @@ sharedptr<Field> GlomPostgres::postgres_change_column_extras(const Glib::ustring
      else
      {
        //Unset field as primary key:
-       datamodel = query_execute( "ALTER TABLE \"" + table_name + "\" DROP CONSTRAINT \"" + table_name + "_pkey\"" );
+       test = query_execute( "ALTER TABLE \"" + table_name + "\" DROP CONSTRAINT \"" + table_name + "_pkey\"" );
+       if(!test)
+         std::cerr << "GlomPostgres::postgres_change_column_extras(): ALTER TABLE with DROP CONSTRAINT failed." << std::endl;
+
        primary_key_was_unset = true;
 
        //Make sure that the caller knows that a field stops being unique when it stops being a primary key, 
@@ -95,7 +105,7 @@ sharedptr<Field> GlomPostgres::postgres_change_column_extras(const Glib::ustring
        result->set_unique_key(false); //All primary keys are unique.
      }
 
-     if(!datamodel)
+     if(!test)
      {
        handle_error();
        return result;
@@ -104,12 +114,14 @@ sharedptr<Field> GlomPostgres::postgres_change_column_extras(const Glib::ustring
      if(primary_key_was_set && field_old->get_unique_key())
      {
        //If the key already had a uniqueness constraint, without also being a primary key, remove that now, because it is superfluous and we will not expect it later:
-       Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = query_execute( "ALTER TABLE \"" + table_name + "\" DROP CONSTRAINT \"" + field->get_name() + "_key\"" );
-      if(!datamodel)
-      {
-        handle_error();
-        return result;
-      }
+       const bool test = query_execute( "ALTER TABLE \"" + table_name + "\" DROP CONSTRAINT \"" + field->get_name() + "_key\"" );
+       if(!test)
+       {
+         std::cerr << "GlomPostgres::postgres_change_column_extras(): ALTER TABLE with DROP CONSTRAINT (2) failed." << std::endl;
+
+         handle_error();
+         return result;
+       }
     }
   }
 
@@ -121,9 +133,11 @@ sharedptr<Field> GlomPostgres::postgres_change_column_extras(const Glib::ustring
     if(!primary_key_was_set && field->get_unique_key()) //Postgres automatically makes primary keys unique, so we do not need to do that separately if we have already made it a primary key
     {
       //Add uniqueness:
-      Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = query_execute( "ALTER TABLE \"" + table_name + "\" ADD CONSTRAINT \"" + field->get_name() + "_key\" UNIQUE (\"" + field->get_name() + "\")" );
-      if(!datamodel)
+      const bool test = query_execute( "ALTER TABLE \"" + table_name + "\" ADD CONSTRAINT \"" + field->get_name() + "_key\" UNIQUE (\"" + field->get_name() + "\")" );
+      if(!test)
       {
+        std::cerr << "GlomPostgres::postgres_change_column_extras(): ALTER TABLE with ADD CONSTRAINT failed." << std::endl;
+
         handle_error();
         return result;
       }
@@ -138,9 +152,11 @@ sharedptr<Field> GlomPostgres::postgres_change_column_extras(const Glib::ustring
       else
       {
         //Remove uniqueness:
-        Glib::RefPtr<Gnome::Gda::DataModel>  datamodel = query_execute( "ALTER TABLE \"" + table_name + "\" DROP CONSTRAINT \"" + field->get_name() + "_key\"" );
-        if(!datamodel)
+        const bool test = query_execute( "ALTER TABLE \"" + table_name + "\" DROP CONSTRAINT \"" + field->get_name() + "_key\"" );
+        if(!test)
         {
+          std::cerr << "GlomPostgres::postgres_change_column_extras(): ALTER TABLE with DROP CONSTRAINT (3) failed." << std::endl;
+
           handle_error();
           return result;
         }
@@ -155,9 +171,11 @@ sharedptr<Field> GlomPostgres::postgres_change_column_extras(const Glib::ustring
     {
       if(set_anyway || (default_value != default_value_old))
       {
-        Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute( "ALTER TABLE \"" + table_name + "\" ALTER COLUMN \""+ field->get_name() + "\" SET DEFAULT " + field->sql(field->get_default_value()) );
-        if(!datamodel)
+        const bool test = query_execute( "ALTER TABLE \"" + table_name + "\" ALTER COLUMN \""+ field->get_name() + "\" SET DEFAULT " + field->sql(field->get_default_value()) );
+        if(!test)
         {
+          std::cerr << "GlomPostgres::postgres_change_column_extras(): ALTER TABLE with ALTER COLUMN failed." << std::endl;
+
           handle_error();
           return result;
         }
@@ -176,7 +194,7 @@ sharedptr<Field> GlomPostgres::postgres_change_column_extras(const Glib::ustring
     //If the not-nullness has changed:
     if( set_anyway ||  (field->get_field_info().get_allow_null() != field_old->get_field_info().get_allow_null()) )
     {
-      Glib::ustring nullness = (field->get_field_info().get_allow_null() ? "NULL" : "NOT NULL");
+      const Glib::ustring nullness = (field->get_field_info().get_allow_null() ? "NULL" : "NOT NULL");
       query_execute(  "ALTER TABLE \"" + m_table_name + "\" ALTER COLUMN \"" + field->get_name() + "\"  SET " + nullness);
     }
   */ 

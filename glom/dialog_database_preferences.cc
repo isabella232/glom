@@ -101,12 +101,9 @@ void Dialog_Database_Preferences::on_treeview_cell_edited_next_value(const Glib:
         " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = '" + table_name + "' AND "
                "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\" = '" + field_name +"'";
 
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query, this);
-    if(!datamodel)
-    {
-      g_warning("Dialog_Database_Preferences::on_treeview_cell_edited_next_value(): UPDATE failed.");
-    }
-
+    const bool test = query_execute(sql_query, this);
+    if(!test)
+      std::cerr << "Dialog_Database_Preferences::on_treeview_cell_edited_next_value(): UPDATE failed." << std::endl;
   }
 }
 
@@ -144,7 +141,7 @@ void Dialog_Database_Preferences::load_from_document()
 
   NumericFormat numeric_format; //ignored
 
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute(sql_query, this);
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query, this);
   if(!datamodel)
   {
     std::cerr << "Dialog_Database_Preferences::load_from_document(): Gda::DataModel is NULL." << std::endl;

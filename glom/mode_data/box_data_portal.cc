@@ -298,7 +298,7 @@ void Box_Data_Portal::get_suitable_record_to_view_details(const Gnome::Gda::Valu
   fieldsToGet.push_back(layout_item);
 
   const Glib::ustring query = Utils::build_sql_select_with_key(m_portal->get_table_used(Glib::ustring() /* not relevant */), fieldsToGet, get_key_field(), primary_key_value);
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute(query);
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(query);
 
 
   bool value_found = true;
