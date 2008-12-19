@@ -205,8 +205,8 @@ void Dialog_GroupsList::on_button_group_delete()
     {
       Gtk::TreeModel::Row row = *iter;
 
-      const Glib::ustring user = row[m_model_columns_groups.m_col_name];
-      if(!user.empty())
+      const Glib::ustring group = row[m_model_columns_groups.m_col_name];
+      if(!group.empty())
       {
         //TODO: Prevent deletion of standard groups
         Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Delete Group")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
@@ -218,7 +218,7 @@ void Dialog_GroupsList::on_button_group_delete()
 
         if(response == Gtk::RESPONSE_OK)
         {
-          Glib::ustring strQuery = "DROP GROUP " + user;
+          Glib::ustring strQuery = "DROP GROUP \"" + group + "\"";
           const bool test = query_execute(strQuery, this);
           if(!test)
             std::cerr << "Box_DB_Table_Definition::on_adddel_delete(): DROP GROUP failed." << std::endl;
