@@ -1,3 +1,12 @@
+2008-12-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/data_structure/layout/layoutitem_text.cc: 
+	Copy constructor and operator=: Copy the underlying text, not just 
+	the smartpointer to it. This stops us from accidentally changing the 
+	empty available template parts in reports.
+	Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/309417
+	(elmergato) 
+
 2008-12-19  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_design/users/dialog_groups_list.cc

@@ -631,14 +631,20 @@ void Dialog_Layout_Report::on_button_add()
   Glib::RefPtr<type_model> model_available = Glib::RefPtr<type_model>::cast_dynamic(m_treeview_available_parts->get_model());
 
   Gtk::TreeModel::iterator parent = get_selected_group_parent();
-  sharedptr<LayoutItem> pParentPart;
+  sharedptr<const LayoutItem> pParentPart;
   if(parent)
-    pParentPart = (*parent)[m_model_available_parts_main->m_columns.m_col_item];
+  {
+    sharedptr<LayoutItem> temp = (*parent)[m_model_available_parts_main->m_columns.m_col_item];
+    parent = temp;
+  }
 
   Gtk::TreeModel::iterator available = get_selected_available();
-  sharedptr<LayoutItem> pAvailablePart;
+  sharedptr<const LayoutItem> pAvailablePart;
   if(available)
-    pAvailablePart = (*available)[model_available->m_columns.m_col_item];
+  {
+    sharedptr<LayoutItem> temp = (*available)[model_available->m_columns.m_col_item];
+    pAvailablePart = temp;
+  }
 
 
   //Check whether the available part may be a child of the selected parent:
