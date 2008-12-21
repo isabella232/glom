@@ -2824,6 +2824,11 @@ bool Base_DB::get_primary_key_is_in_foundset(const FoundSet& found_set, const Gn
 {
   //TODO_Performance: This is probably called too often, when we should know that the key is in the found set.
   sharedptr<const Field> primary_key = get_field_primary_key_for_table(found_set.m_table_name);
+  if(!primary_key)
+  {
+    std::cerr << "Base_DB::get_primary_key_is_in_foundset(): No primary key found for table: " << found_set.m_table_name << std::endl;
+    return false;
+  }
   
   type_vecLayoutFields fieldsToGet;
     

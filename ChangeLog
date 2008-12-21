@@ -1,5 +1,10 @@
 2008-12-21  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/base_db.cc: get_primary_key_is_in_foundset(): Avoid a crash 
+	when (unusually) the primary key is not known.
+
+2008-12-21  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/data_structure/layout/layoutitem_text.cc: 
 	Copy constructor and operator=: Copy the underlying text, not just 
 	the smartpointer to it. This stops us from accidentally changing the 
