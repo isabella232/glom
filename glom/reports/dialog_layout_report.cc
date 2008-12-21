@@ -635,7 +635,7 @@ void Dialog_Layout_Report::on_button_add()
   if(parent)
   {
     sharedptr<LayoutItem> temp = (*parent)[m_model_available_parts_main->m_columns.m_col_item];
-    parent = temp;
+    pParentPart = temp;
   }
 
   Gtk::TreeModel::iterator available = get_selected_available();
@@ -655,7 +655,9 @@ void Dialog_Layout_Report::on_button_add()
     parent = (*parent).parent();
     if(parent)
     {
-      pParentPart = (*parent)[model_available->m_columns.m_col_item];
+      sharedptr<LayoutItem> temp = (*parent)[model_available->m_columns.m_col_item];
+      pParentPart = temp;
+
       if(!TreeStore_ReportLayout::may_be_child_of(pParentPart, pAvailablePart))
         return; //Not allowed either.
     }
