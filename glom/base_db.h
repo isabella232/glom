@@ -126,7 +126,20 @@ protected:
   bool get_table_exists_in_database(const Glib::ustring& table_name) const;
   bool get_relationship_exists(const Glib::ustring& table_name, const Glib::ustring& relationship_name);
 
+  /** Get all the fields for a table, including any from the datasbase that are not yet known in the document.
+   *
+   * @param table_name The name of the table whose fields should be listed.
+   * @param including_system_fields Whether extra non-user-visible fields should be included in the list.
+   * @result A list of fields.
+   */
   type_vecFields get_fields_for_table(const Glib::ustring& table_name, bool including_system_fields = false) const;
+
+  /** Get a single field definition for a table, even if the field is in the datasbase but not yet known in the document.
+   *
+   * @param table_name The name of the table whose fields should be listed.
+   * @param field_name The name of the field for which to get the definition.
+   * @result The field definition.
+   */
   sharedptr<Field> get_fields_for_table_one_field(const Glib::ustring& table_name, const Glib::ustring& field_name) const;
 
   sharedptr<Field> get_field_primary_key_for_table(const Glib::ustring& table_name) const;

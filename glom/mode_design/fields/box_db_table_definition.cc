@@ -170,6 +170,7 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
     {
       //Show the new field (fill in the other cells):
 
+      //Update our list of database fields.
       fill_fields();
 
       //fill_from_database(); //We cannot change the structure in a cell renderer signal handler.
@@ -323,7 +324,9 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
 
     //Get DB field info: (TODO: This might be unnecessary).
     type_vecFields::const_iterator iterFind = std::find_if( m_vecFields.begin(), m_vecFields.end(), predicate_FieldHasName<Field>(strFieldNameBeingEdited) );
-    if(iterFind != m_vecFields.end()) //If it was found:
+    if(iterFind == m_vecFields.end()) //If it was not found:
+      std::cerr << "Box_DB_Table_Definition::on_adddel_changed(): field not found." << std::endl;
+    else
     {
       sharedptr<const Field> constfield = *iterFind;
       m_Field_BeingEdited = constfield;
@@ -586,6 +589,7 @@ sharedptr<Field> Box_DB_Table_Definition::change_definition(const sharedptr<cons
 
 void Box_DB_Table_Definition::fill_fields()
 {
+  //Update the fields (also checking the actual database):
   m_vecFields = get_fields_for_table(m_table_name);
 }
 

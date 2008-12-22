@@ -1,5 +1,12 @@
 2008-12-22  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/base_db.h: Documented two methods.
+	* glom/mode_design/fields/box_db_table_definition.cc: on_adddel_changed():
+	Warn on stdcerr if the newly-added field seems unknown to the database, 
+	showing that the GdaMetaStore is not being updated automatically.
+
+2008-12-22  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/connectionpool.cc:
 	* glom/libglom/connectionpool.h: cleanup(): Clear the cached connection, 
 	to stop Glom from using a connection that has been disconnected.
