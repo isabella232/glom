@@ -1,3 +1,9 @@
+2008-12-22  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/connectionpool.h: cleanup(): Clear the cached connection, 
+	to stop Glom from using a connection that has been disconnected.
+
 2008-12-21  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db.cc: get_primary_key_is_in_foundset(): Avoid a crash 

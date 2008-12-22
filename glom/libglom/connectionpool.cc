@@ -652,9 +652,11 @@ bool ConnectionPool::startup(Gtk::Window* parent_window)
 
 void ConnectionPool::cleanup(Gtk::Window* parent_window)
 {
-
   if(m_backend.get())
     m_backend->cleanup(parent_window);
+
+  //Make sure that connect() makes a new connection:
+  connection_cached.clear();
 
 #ifndef G_OS_WIN32
   /* Stop advertising the self-hosting database server via avahi: */

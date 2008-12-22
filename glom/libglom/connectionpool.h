@@ -119,29 +119,34 @@ protected:
   virtual Field::sql_format get_sql_format() const = 0;
 
   /* Whether the database can be accessed from remote machines, once startup()
-   * was called. */
+   * was called.
+   */
   virtual bool supports_remote_access() const = 0;
 
   /** This method is called for one-time initialization of the database
    * storage. No need to implement this function if the data is centrally
-   * hosted, not managed by Glom. */
+   * hosted, not managed by Glom.
+   */
   virtual bool initialize(Gtk::Window* parent_window, const Glib::ustring& initial_username, const Glib::ustring& password);
 
   /** This method is called before the backend is used otherwise. This can
    * be used to start a self-hosted database server. There is no need to implement
-   * this function if there is no need for extra startup code. */
+   * this function if there is no need for extra startup code.
+   */
   virtual bool startup(Gtk::Window* parent_window);
 
   /** This method is called when the backend is no longer used. This can be
    * used to shut down a self-hosted database server. There is no need to
-   * implement this function  if there is no need for extra cleanup code. */
+   * implement this function if there is no need for extra cleanup code.
+   */
   virtual void cleanup(Gtk::Window* parent_window);
 
   /** This method is called to create a connection to the database server.
    * There exists only the variant with an error variable as last parameter
    * so we don't need #ifdefs all over the code. This part of the API is only
    * used by the ConnectionPool which will translate the error back into
-   * an exception in case exceptions are enabled. */
+   * an exception in case exceptions are enabled.
+    */
   virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error) = 0;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
