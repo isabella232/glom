@@ -1,3 +1,11 @@
+2008-12-24  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_data/box_data_details.h: show_tool_pallete(): Make this 
+	non-virtual because there are no overrides.
+	* glom/mode_find/box_data_details_find.cc: constructor, 
+	fill_from_database(): Hide the tool palette, because it is useless in 
+	Find mode.
+
 2008-12-21  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/data_structure/layout/layoutitem_text.cc: 
