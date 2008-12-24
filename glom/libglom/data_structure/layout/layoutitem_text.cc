@@ -27,14 +27,16 @@ namespace Glom
 LayoutItem_Text::LayoutItem_Text()
 {
   m_translatable_item_type = TRANSLATABLE_TYPE_TEXTOBJECT;
-  m_text = sharedptr<TranslatableItem>::create();
+  m_text = sharedptr<TranslatableItem>::create(); //TODO: Why use a smartpointer?
 }
 
 LayoutItem_Text::LayoutItem_Text(const LayoutItem_Text& src)
 : LayoutItem(src),
-  m_text(src.m_text),
   m_formatting(src.m_formatting)
 {
+  //Copy the underlying TranslatableItem, not the shardptr to it:
+  const TranslatableItem& src_item = *(src.m_text);
+  m_text = sharedptr<TranslatableItem>(new TranslatableItem(src_item));
 }
 
 LayoutItem_Text::~LayoutItem_Text()
@@ -49,7 +51,7 @@ LayoutItem* LayoutItem_Text::clone() const
 bool LayoutItem_Text::operator==(const LayoutItem_Text& src) const
 {
   bool result = LayoutItem::operator==(src) && 
-                (*m_text == *(src.m_text)) &&
+                (*m_text == *(src.m_text)) &&  //TODO: Compare the underlying item, not the smartpointer?
                 (m_formatting == src.m_formatting);
 
   return result;
@@ -60,7 +62,10 @@ LayoutItem_Text& LayoutItem_Text::operator=(const LayoutItem_Text& src)
 {
   LayoutItem::operator=(src);
 
-  m_text = src.m_text;
+  //Copy the underlying TranslatableItem, not the shardptr to it:
+  const TranslatableItem& src_item = *(src.m_text);
+  m_text = sharedptr<TranslatableItem>(new TranslatableItem(src_item));
+
   m_formatting = src.m_formatting;
 
   return *this;
