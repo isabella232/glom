@@ -18,6 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
+
 #include "box_data_details_find.h"
 #include <glibmm/i18n.h>
 
@@ -33,6 +35,11 @@ Box_Data_Details_Find::Box_Data_Details_Find()
   m_HBox.pack_end(m_Button_Find, Gtk::PACK_SHRINK);
 
   g_object_set(m_Button_Find.gobj(), "can-default", TRUE, (gpointer)NULL); //TODO: Make this a real method in gtkmm?
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  //Hide this because it is useless for Find mode:
+  show_layout_toolbar(false);
+#endif
 
   show_all_children();
 }
@@ -59,6 +66,12 @@ bool Box_Data_Details_Find::fill_from_database()
   m_FieldsShown = get_fields_to_show();
 
   create_layout(); //TODO: Only do this when the layout has changed.
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  //Hide this because it is useless for Find mode:
+  //Actually we already hide this in the constructor, but somehow it is visible again by now.
+  show_layout_toolbar(false);
+#endif
 
   return result;
 }
