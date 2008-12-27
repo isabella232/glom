@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: glom.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&amp;component=general\n"
-"POT-Creation-Date: 2008-11-25 16:28+0000\n"
-"PO-Revision-Date: 2008-11-30 13:38+0100\n"
+"POT-Creation-Date: 2008-12-18 17:38+0000\n"
+"PO-Revision-Date: 2008-12-21 12:27+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -49,7 +49,7 @@ msgstr "_Exportar"
 
 #. Note to translators: "Import" here is an action verb - it's a button.
 #: ../glom/application.cc:306 ../glom/glom_developer.glade.h:147
-#: ../glom/translation/window_translations.cc:590
+#: ../glom/translation/window_translations.cc:592
 msgid "Import"
 msgstr "Importar"
 
@@ -181,13 +181,13 @@ msgstr "_Mostrar distribución de la barra de herramientas"
 
 #. std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED" << std::endl;
 #. Warn the user, and let him try again:
-#: ../glom/application.cc:680 ../glom/frame_glom.cc:1776
-#: ../glom/frame_glom.cc:1878
+#: ../glom/application.cc:680 ../glom/frame_glom.cc:1775
+#: ../glom/frame_glom.cc:1877
 msgid "Connection Failed"
 msgstr "Falló la conexión"
 
-#: ../glom/application.cc:680 ../glom/frame_glom.cc:1776
-#: ../glom/frame_glom.cc:1878
+#: ../glom/application.cc:680 ../glom/frame_glom.cc:1775
+#: ../glom/frame_glom.cc:1877
 msgid ""
 "Glom could not connect to the database server. Maybe you entered an "
 "incorrect user name or password, or maybe the postgres database server is "
@@ -326,38 +326,38 @@ msgstr ""
 "crearse para los archivos de la base de datos nueva. Debería especificar un "
 "nombre de archivo diferente para usar un nuevo directorio en su lugar."
 
-#: ../glom/base_db.cc:133 ../glom/base_db.cc:146
-#: ../glom/libglom/connectionpool.cc:523
+#: ../glom/base_db.cc:135 ../glom/base_db.cc:148
+#: ../glom/libglom/connectionpool.cc:585
 msgid "Internal error"
 msgstr "Error interno"
 
-#: ../glom/base_db.cc:1070 ../glom/mode_design/users/dialog_groups_list.cc:64
+#: ../glom/base_db.cc:1089 ../glom/mode_design/users/dialog_groups_list.cc:64
 msgid "Description"
 msgstr "Descripción"
 
-#: ../glom/base_db.cc:1077
+#: ../glom/base_db.cc:1096
 msgid "Comments"
 msgstr "Comentarios"
 
-#: ../glom/base_db.cc:1548
+#: ../glom/base_db.cc:1586
 msgid "Your find criteria did not match any records in the table."
 msgstr ""
 "El criterio de búsqueda introducido no coincide con ningún registro de la "
 "tabla."
 
-#: ../glom/base_db.cc:1553
+#: ../glom/base_db.cc:1591
 msgid "No Records Found"
 msgstr "No se encontró ningún registro"
 
-#: ../glom/base_db.cc:1559
+#: ../glom/base_db.cc:1597
 msgid "New Find"
 msgstr "Nueva búsqueda"
 
-#: ../glom/base_db.cc:2590
+#: ../glom/base_db.cc:2633
 msgid "Value Is Not Unique"
 msgstr "El valor no es único"
 
-#: ../glom/base_db.cc:2590
+#: ../glom/base_db.cc:2633
 msgid ""
 "The field's value must be unique, but a record with this value already "
 "exists."
@@ -537,7 +537,7 @@ msgid "New From Template"
 msgstr "Nuevo desde plantilla"
 
 #. Translator hint: This is <Service Name> on <Host> (via Network Interface such as eth0).
-#: ../glom/dialog_existing_or_new.cc:705
+#: ../glom/dialog_existing_or_new.cc:729
 #, c-format
 msgid "%s on %s (via %s)"
 msgstr "%s en %s (vía %s)"
@@ -720,11 +720,17 @@ msgstr ""
 msgid "Parsing CSV file %1"
 msgstr "Analizando archivo CSV %1"
 
-#: ../glom/dialog_import_csv_progress.cc:135
+#. Note to translators: This is a progress indication, showing how many rows have been imported, of the total number of rows.
+#: ../glom/dialog_import_csv_progress.cc:97
+#: ../glom/dialog_import_csv_progress.cc:128
+msgid "%1 / %2"
+msgstr "%1 / %2"
+
+#: ../glom/dialog_import_csv_progress.cc:137
 msgid "Import complete\n"
 msgstr "Importación completada\n"
 
-#: ../glom/dialog_import_csv_progress.cc:162
+#: ../glom/dialog_import_csv_progress.cc:164
 msgid ""
 "Warning: Importing row %1: The value for field %2 must be unique, but is "
 "already in use. The value will not be imported.\n"
@@ -732,7 +738,7 @@ msgstr ""
 "Advertencia: Importando la fila %1: El valor del campo %2 debe ser único, "
 "pero ya está en uso. No se importará el valor.\n"
 
-#: ../glom/dialog_import_csv_progress.cc:171
+#: ../glom/dialog_import_csv_progress.cc:173
 msgid ""
 "Warning: Importing row %1: The value for field %2, \"%3\" could not be "
 "converted to the field's type. The value will not be imported.\n"
@@ -740,9 +746,9 @@ msgstr ""
 "Advertencia: Importando la fila %1: El valor del campo %2, «%3» no se puede "
 "convertir al tipo del campo. No se importará el valor.\n"
 
-#: ../glom/dialog_import_csv_progress.cc:196
+#: ../glom/dialog_import_csv_progress.cc:198
 msgid ""
-"Error importing row %1: Cannot import the row since the primary key is "
+"Error importing row %1: Cannot import the row because the primary key is "
 "empty.\n"
 msgstr ""
 "Error importando la columna %1: No se puede importar la columna porque la "
@@ -789,7 +795,7 @@ msgid "Define Data _Format"
 msgstr "Definir el _formato de los datos"
 
 #: ../glom/filechooser_export.cc:39 ../glom/glom_developer.glade.h:117
-#: ../glom/translation/window_translations.cc:511
+#: ../glom/translation/window_translations.cc:513
 msgid "Export"
 msgstr "Exportar"
 
@@ -946,7 +952,7 @@ msgid "Developer"
 msgstr "Desarrollador"
 
 #. Show 0 instead of "all" when all of no records are found, to avoid confusion.
-#: ../glom/frame_glom.cc:2214
+#: ../glom/frame_glom.cc:2213
 msgid "All"
 msgstr "Todos"
 
@@ -2164,7 +2170,7 @@ msgstr "Color de fondo"
 msgid "Ascending"
 msgstr "Ascendiente"
 
-#: ../glom/libglom/connectionpool.cc:621
+#: ../glom/libglom/connectionpool.cc:685
 msgid ""
 "You seem to be running Glom as a user with administrator privileges. Glom "
 "may not be run with such privileges for security reasons.\n"
@@ -2176,7 +2182,7 @@ msgstr ""
 "Inicie sesión en su sistema como un usuario normal."
 
 #. Warn the user:
-#: ../glom/libglom/connectionpool.cc:635
+#: ../glom/libglom/connectionpool.cc:699
 msgid ""
 "You seem to be running Glom as root. Glom may not be run as root.\n"
 "Please login to your system as a normal user."
@@ -2185,21 +2191,21 @@ msgstr ""
 "ejecutar como superusuario.\n"
 "Inicie sesión en su sistema como un usuario normal."
 
-#: ../glom/libglom/connectionpool.cc:642
+#: ../glom/libglom/connectionpool.cc:706
 msgid "Running As Root"
 msgstr "Ejecutándose como superusuario"
 
-#: ../glom/libglom/connectionpool.cc:737
+#: ../glom/libglom/connectionpool.cc:801
 msgid "Glom: Generating Encryption Certificates"
 msgstr "Glom: Generando los certificados de cifrado"
 
-#: ../glom/libglom/connectionpool.cc:738
+#: ../glom/libglom/connectionpool.cc:802
 msgid ""
 "Please wait while Glom prepares your system for publishing over the network."
 msgstr ""
 "Espere mientras Glom prepara su sistema para publicar a través de la red."
 
-#: ../glom/libglom/connectionpool_backends/postgres_central.cc:329
+#: ../glom/libglom/connectionpool_backends/postgres_central.cc:346
 msgid ""
 "Your installation of Glom is not complete, because the PostgreSQL libgda "
 "provider is not available on your system. This provider is needed to access "
@@ -2219,7 +2225,7 @@ msgstr ""
 #. Show message to the user about the broken installation:
 #. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
 #. Show message to the user about the broken installation:
-#: ../glom/libglom/connectionpool_backends/postgres_central.cc:332
+#: ../glom/libglom/connectionpool_backends/postgres_central.cc:349
 #: ../glom/libglom/connectionpool_backends/postgres_self.cc:180
 #: ../glom/libglom/connectionpool_backends/postgres_self.cc:193
 msgid "Incomplete Glom Installation"
@@ -2315,17 +2321,17 @@ msgstr "Parando el servidor de bases de datos"
 msgid "Stopping Database Server (retrying)"
 msgstr "Parando el servidor de bases de datos (reintentando)"
 
-#: ../glom/libglom/data_structure/field.cc:785
+#: ../glom/libglom/data_structure/field.cc:797
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:143
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:151
 msgid "Invalid"
 msgstr "No válido"
 
-#: ../glom/libglom/data_structure/field.cc:786
+#: ../glom/libglom/data_structure/field.cc:798
 msgid "Number"
 msgstr "Número"
 
-#: ../glom/libglom/data_structure/field.cc:787
+#: ../glom/libglom/data_structure/field.cc:799
 #: ../glom/libglom/data_structure/layout/layoutitem_text.cc:71
 #: ../glom/libglom/data_structure/translatable_item.cc:302
 #: ../glom/mode_data/dialog_layout_details.cc:1189
@@ -2334,19 +2340,19 @@ msgstr "Número"
 msgid "Text"
 msgstr "Texto"
 
-#: ../glom/libglom/data_structure/field.cc:788
+#: ../glom/libglom/data_structure/field.cc:800
 msgid "Time"
 msgstr "Hora"
 
-#: ../glom/libglom/data_structure/field.cc:789
+#: ../glom/libglom/data_structure/field.cc:801
 msgid "Date"
 msgstr "Fecha"
 
-#: ../glom/libglom/data_structure/field.cc:790
+#: ../glom/libglom/data_structure/field.cc:802
 msgid "Boolean"
 msgstr "Booleano"
 
-#: ../glom/libglom/data_structure/field.cc:791
+#: ../glom/libglom/data_structure/field.cc:803
 #: ../glom/libglom/data_structure/layout/layoutitem_image.cc:69
 #: ../glom/libglom/data_structure/translatable_item.cc:304
 #: ../glom/mode_data/dialog_layout_details.cc:1196
@@ -2654,7 +2660,7 @@ msgstr ""
 " No debería introducir su propio valor para la clave primaria."
 
 #. Add Pages:
-#: ../glom/mode_data/box_data_list.cc:531
+#: ../glom/mode_data/box_data_list.cc:533
 #: ../glom/mode_data/box_data_manyrecords.cc:83
 #: ../glom/mode_data/notebook_data.cc:31 ../glom/mode_find/notebook_find.cc:32
 msgid "List"
@@ -2735,7 +2741,7 @@ msgstr "(Cuaderno)"
 #: ../glom/mode_data/flowtablewithfields.cc:1211
 #: ../glom/mode_data/flowtablewithfields.cc:1238
 #: ../glom/utility_widgets/notebooklabelglom.cc:73
-#: ../glom/utility_widgets/notebooklabelglom.cc:112
+#: ../glom/utility_widgets/notebooklabelglom.cc:113
 msgid "New Group"
 msgstr "Grupo nuevo"
 
@@ -2766,15 +2772,17 @@ msgid "New Text"
 msgstr "Texto nuevo"
 
 #. TODO: Avoid this error message
-#: ../glom/mode_data/flowtablewithfields.cc:1343
+#: ../glom/mode_data/flowtablewithfields.cc:1345
 msgid "You cannot drop anything here. Try to add a group first"
 msgstr "No puede arrastrar nada aquí. Intente añadir primero un grupo."
 
-#: ../glom/mode_data/flowtablewithfields.cc:1442
+#. TODO: Use a real English sentence here?
+#: ../glom/mode_data/flowtablewithfields.cc:1448
 msgid "Delete whole group \"%1\"?"
 msgstr "¿Borrar el grupo «%1» entero?"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1447
+#. TODO: Use a real English sentence here:
+#: ../glom/mode_data/flowtablewithfields.cc:1454
 msgid "Delete whole group?"
 msgstr "¿Borrar el grupo entero?"
 
@@ -2859,8 +2867,8 @@ msgid ""
 "You may not unset the primary key because the table must have a primary key. "
 "You may set another field as the primary key instead."
 msgstr ""
-"No debe eliminar la clave primaria porque la tabla debe tener una. En su lugar puede "
-"establecer otro campo como clave primaria."
+"No debe eliminar la clave primaria porque la tabla debe tener una. En su "
+"lugar puede establecer otro campo como clave primaria."
 
 #: ../glom/mode_design/fields/box_db_table_definition.cc:268
 msgid "Field contains empty values."
@@ -3106,7 +3114,7 @@ msgstr "Ver"
 #: ../glom/mode_design/users/dialog_groups_list.cc:79
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:46
 #: ../glom/utility_widgets/layoutwidgetutils.cc:38
-#: ../glom/utility_widgets/notebooklabelglom.cc:113
+#: ../glom/utility_widgets/notebooklabelglom.cc:114
 msgid "Delete"
 msgstr "Borrar"
 
@@ -3253,22 +3261,22 @@ msgid "Translation"
 msgstr "Traducción"
 
 #. Show only debug output
-#: ../glom/translation/window_translations.cc:429
+#: ../glom/translation/window_translations.cc:431
 msgid "Gettext-Warning: "
 msgstr "Alerta de gettext"
 
-#: ../glom/translation/window_translations.cc:445
+#: ../glom/translation/window_translations.cc:447
 msgid "Gettext-Error: "
 msgstr "Error de gettext: "
 
 #. Show the file-chooser dialog, to select an output .po file:
-#: ../glom/translation/window_translations.cc:502
-#: ../glom/translation/window_translations.cc:579
+#: ../glom/translation/window_translations.cc:504
+#: ../glom/translation/window_translations.cc:581
 msgid "Choose .po File Name"
 msgstr "Elija el nombre de archivo .po"
 
-#: ../glom/translation/window_translations.cc:506
-#: ../glom/translation/window_translations.cc:583
+#: ../glom/translation/window_translations.cc:508
+#: ../glom/translation/window_translations.cc:585
 msgid "Po files"
 msgstr "Archivos po"
 
@@ -3503,9 +3511,9 @@ msgstr ""
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:113
 msgid ""
-"Create sqlite database in its own folder, to be hosted by this computer."
+"Create SQLite database in its own folder, to be hosted by this computer."
 msgstr ""
-"Crear la base de datos sqlite en su propia carpeta, para hospedarla en este "
+"Crear la base de datos SQlite en su propia carpeta, para hospedarla en este "
 "equipo."
 
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:114
@@ -3513,6 +3521,8 @@ msgid ""
 "SQLite is more light-weight than postgresql, but it does not support "
 "authentication or remote access."
 msgstr ""
+"SQLite es más ligero que postgresql, pero no soporta autenticación o acceso "
+"remoto."
 
 #: ../glom/utility_widgets/imageglom.cc:382
 msgid "Choose Image"
