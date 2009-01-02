@@ -1,3 +1,8 @@
+2009-01-02  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_design/users/dialog_groups_list.cc: Added a missing quote 
+	to fix the build.
+
 2009-01-02  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/document/document_glom.cc (set_table_fields): Fixed

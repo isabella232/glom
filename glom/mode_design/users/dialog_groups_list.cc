@@ -218,7 +218,7 @@ void Dialog_GroupsList::on_button_group_delete()
 
         if(response == Gtk::RESPONSE_OK)
         {
-          Glib::ustring strQuery = "DROP GROUP \"" + group + "\";
+          Glib::ustring strQuery = "DROP GROUP \"" + group + "\"";
           query_execute(strQuery, this);
 
           fill_group_list();
