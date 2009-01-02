@@ -476,7 +476,8 @@ protected:
 
     //TODO: Avoid the use of this:
     DocumentTableInfo(const DocumentTableInfo& src)
-      : m_fields(src.m_fields),
+      : m_info(src.m_info),
+        m_fields(src.m_fields),
         m_relationships(src.m_relationships),
         m_layouts(src.m_layouts),
         m_reports(src.m_reports),
@@ -493,6 +494,7 @@ protected:
     //TODO: Avoid the use of this:
     DocumentTableInfo& operator=(const DocumentTableInfo& src)
     {
+      m_info = src.m_info;
       m_fields = src.m_fields;
       m_relationships = src.m_relationships;
       m_layouts = src.m_layouts;

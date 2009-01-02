@@ -1,3 +1,13 @@
+2009-01-02  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/document/document_glom.cc (set_table_fields): Fixed
+	logic so that the document is set to be modified when the new fields
+	differ from the old fields, not when they compare equal.
+
+	* glom/libglom/document/document_glom.h: Also copy the m_info member
+	in DocumentTableInfo's copy constructor and assignment operator.
+	This should fix bug #566102 (Iain Lane)
+
 2008-12-24  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_data/box_data_details.h: show_tool_pallete(): Make this 
