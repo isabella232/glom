@@ -42,8 +42,7 @@ public:
 
   Glib::ustring get_table_name() const;
 
-protected:
-    
+protected:    
   Glib::ustring m_table_name;
 };
 

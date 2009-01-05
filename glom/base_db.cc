@@ -1174,25 +1174,6 @@ bool Base_DB::create_table_with_default_fields(const Glib::ustring& table_name)
     {
       document->add_table(table_info);
       document->set_table_fields(table_info->get_name(), fields);
-
-      // Update meta store, so that get_fields_for_table_from_database
-      // returns the fields correctly for the new table.
-      sharedconnection->get_gda_connection()->update_meta_store();
-
-      // Don't do full update_meta_store() here because that's too slow.
-      // TODO: Maybe we should create the table directly via libgda instead of
-      // executing an SQL query ourselves, so that libgda has the chance to
-      // do this meta store update automatically.
-      // TODO: This doesn't work:
-#if 0
-      GdaMetaContext context;
-      context.table_name = const_cast<char*>(table_name.c_str());
-      context.size = 0;
-      context.column_names = NULL;
-      context.column_values = NULL;
-
-      gda_connection_update_meta_store(sharedconnection->get_gda_connection()->gobj(), &context, NULL);
-#endif
     }
   }
 
@@ -1258,6 +1239,18 @@ bool Base_DB::create_table(const sharedptr<const TableInfo>& table_info, const D
   catch(const ExceptionConnection& ex)
   {
     table_creation_succeeded = false;
+  }
+
+  if(table_creation_succeeded)
+  {
+    // Update the libgda meta store, so that get_fields_for_table_from_database()
+    // returns the fields correctly for the new table.
+    update_gda_metastore_for_table(table_info->get_name());
+
+    // TODO: Maybe we should create the table directly via libgda instead of
+    // executing an SQL query ourselves, so that libgda has the chance to
+    // do this meta store update automatically.
+    // (Yes, generally it would be nice to use libgda API instead of generating SQL. murrayc)
   }
 
   return table_creation_succeeded;
@@ -2982,5 +2975,31 @@ void Base_DB::set_found_set_where_clause_for_portal(FoundSet& found_set, const s
     found_set.m_where_clause = "\"" + where_clause_to_table_name + "\".\"" + relationship->get_to_field() + "\" = " + where_clause_to_key_field->sql(foreign_key_value);
 }
 
+void Base_DB::update_gda_metastore_for_table(const Glib::ustring& table_name) const
+{
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(App_Glom::get_application());
+  if(!sharedconnection)
+  {
+    std::cerr << "Base_DB_Table::update_gda_metastore_for_table(): No connection." << std::endl;
+    return;
+  }
+
+  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
+  if(!gda_connection)
+  {
+    std::cerr << "Base_DB_Table::update_gda_metastore_for_table(): No gda_connection." << std::endl;
+    return;
+  }
+
+  if(table_name.empty())
+  {
+    std::cerr << "Base_DB_Table::update_gda_metastore_for_table(): table_name is empty." << std::endl;
+    return;
+  }
+
+  std::cout << "DEBUG: Base_DB_Table::update_gda_metastore_for_table(): Calling Gda::Connection::update_meta_store_table() ..." << std::endl;
+  gda_connection->update_meta_store_table(table_name);
+  std::cout << "DEBUG: Base_DB_Table::update_gda_metastore_for_table(): ... Finished calling Gda::Connection::update_meta_store_table()" << std::endl;
+}
 
 } //namespace Glom

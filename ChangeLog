@@ -1,3 +1,12 @@
+2009-01-05  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.[h|cc]: Added update_gda_metastore_for_table().
+	* glom/mode_design/fields/box_db_table_definition.cc
+	  on_adddel_add(), on_adddel_delete(), postgres_change_column(): 
+	Call it, but it does not seem to work.
+	New fields are immedietaly reported as not found (on the command line) 
+	and field type changes are reverted when reopening the dialog.
+
 2009-01-03  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom.desktop.in.in: Removed the encoding line because it is deprecated 

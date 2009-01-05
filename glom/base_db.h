@@ -348,6 +348,13 @@ protected:
    */
   void set_found_set_where_clause_for_portal(FoundSet& found_set, const sharedptr<LayoutItem_Portal>& portal, const Gnome::Gda::Value& foreign_key_value);
 
+  /** Update GDA's information about the table structure, such as the 
+   * field list and their types.
+   * Call this whenever changing the table structure, for instance with an ALTER query.
+   * This may take a few seconds to return.
+   */
+  void update_gda_metastore_for_table(const Glib::ustring& table_name) const;
+
 
   static bool get_field_primary_key_index_for_fields(const type_vecFields& fields, guint& field_column);
   static bool get_field_primary_key_index_for_fields(const type_vecLayoutFields& fields, guint& field_column);

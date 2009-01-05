@@ -171,6 +171,7 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
       //Show the new field (fill in the other cells):
 
       //Update our list of database fields.
+      update_gda_metastore_for_table(m_table_name);
       fill_fields();
 
       //fill_from_database(); //We cannot change the structure in a cell renderer signal handler.
@@ -209,6 +210,8 @@ void Box_DB_Table_Definition::on_adddel_delete(const Gtk::TreeModel::iterator& r
       const bool test = query_execute( "ALTER TABLE \"" + m_table_name + "\" DROP COLUMN \"" + name + "\"", get_app_window());
       if(test)
       {
+        update_gda_metastore_for_table(m_table_name);
+
         //Remove it from all layouts, reports, etc:
         get_document()->remove_field(m_table_name, name);
       }
@@ -325,7 +328,7 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
     //Get DB field info: (TODO: This might be unnecessary).
     type_vecFields::const_iterator iterFind = std::find_if( m_vecFields.begin(), m_vecFields.end(), predicate_FieldHasName<Field>(strFieldNameBeingEdited) );
     if(iterFind == m_vecFields.end()) //If it was not found:
-      std::cerr << "Box_DB_Table_Definition::on_adddel_changed(): field not found." << std::endl;
+      std::cerr << "Box_DB_Table_Definition::on_adddel_changed(): field not found: " << strFieldNameBeingEdited << std::endl;
     else
     {
       sharedptr<const Field> constfield = *iterFind;
@@ -589,12 +592,14 @@ sharedptr<Field> Box_DB_Table_Definition::change_definition(const sharedptr<cons
 
 void Box_DB_Table_Definition::fill_fields()
 {
+  std::cout << "DEBUG: Box_DB_Table_Definition::fill_fields()" << std::endl;
   //Update the fields (also checking the actual database):
   m_vecFields = get_fields_for_table(m_table_name);
 }
 
 sharedptr<Field> Box_DB_Table_Definition::postgres_change_column(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field)
 {
+  //std::cout << "DEBUG: Box_DB_Table_Definition::postgres_change_column()" << std::endl;
   const Glib::RefPtr<const Gnome::Gda::Column> field_info = field->get_field_info();
   const Glib::RefPtr<const Gnome::Gda::Column> field_info_old = field_old->get_field_info();
 
@@ -602,12 +607,15 @@ sharedptr<Field> Box_DB_Table_Definition::postgres_change_column(const sharedptr
   if(field_info->get_g_type() != field_info_old->get_g_type() )
   {
     postgres_change_column_type(field_old, field); //This will also change everything else at the same time.
+    update_gda_metastore_for_table(m_table_name);
     return glom_sharedptr_clone(field);
   }
   else
   {
     //Change other stuff, without changing the type:
-    return GlomPostgres::postgres_change_column_extras(m_table_name, field_old, field);
+    sharedptr<Field> result = GlomPostgres::postgres_change_column_extras(m_table_name, field_old, field);
+    update_gda_metastore_for_table(m_table_name);
+    return result;
   }
 }
 
@@ -790,6 +798,8 @@ void Box_DB_Table_Definition::postgres_change_column_type(const sharedptr<const 
 
     if(!new_column_created) //We don't need to change anything else if everything was already correctly set as a new column:
       GlomPostgres::postgres_change_column_extras(m_table_name, field_old, field);
+
+    //Callers should call this: update_gda_metastore_for_table();
   }
 }
 
