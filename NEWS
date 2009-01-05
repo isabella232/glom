@@ -1,3 +1,16 @@
+1.8.5:
+
+* Fix crash when creating tables, introduced in 1.8.4.
+  Bug #566102 (Iain Lane)
+* Find mode: Hide the tool palette.
+* Layout/Report design: Clear the text in property dialogs for 
+  text items.
+  Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/309417
+  (elmergato)
+* Users/Groups: More correction of quoting to allow spaces in user and group 
+  names.
+* Build: Require the goocanvasmm 0.13.
+
 1.8.4:
 
 * Initial dialog: Try an alternative path for the example/template files, 

@@ -1,3 +1,5 @@
+1.8.5:
+
 2009-01-02  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_design/users/dialog_groups_list.cc: Added a missing quote 
