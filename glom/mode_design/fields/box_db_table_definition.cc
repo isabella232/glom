@@ -22,7 +22,6 @@
 #include <glom/frame_glom.h>
 #include <glom/libglom/glade_utils.h>
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
-#include <glom/glom_postgres.h>
 #include "../../../config.h"
 #include <glibmm/i18n.h>
 
@@ -165,26 +164,27 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
   Glib::ustring name = m_AddDel.get_value(row, m_colName);
   if(!name.empty())
   {
-    const bool bTest = query_execute( "ALTER TABLE \"" + m_table_name + "\" ADD \"" + name + "\" NUMERIC", get_app_window()); //TODO: Get schema type for Field::TYPE_NUMERIC
+    sharedptr<Field> field(new Field());
+    field->set_name(name);
+    field->set_title( Utils::title_from_string(name) ); //Start with a title that might be useful.
+    field->set_glom_type(Field::TYPE_NUMERIC);
+
+    Glib::RefPtr<Gnome::Gda::Column> field_info = field->get_field_info();
+    field_info->set_g_type( Field::get_gda_type_for_glom_type(Field::TYPE_NUMERIC) );
+    field->set_field_info(field_info);
+
+    //TODO: Warn about a delay before actually doing this when the backend
+    //needs to recreate the whole table.
+    const bool bTest = add_column(m_table_name, field, get_app_window()); //TODO: Get schema type for Field::TYPE_NUMERIC
     if(bTest)
     {
       //Show the new field (fill in the other cells):
 
       //Update our list of database fields.
-      update_gda_metastore_for_table(m_table_name);
+      //update_gda_metastore_for_table(m_table_name); // already done by add_column()
       fill_fields();
 
       //fill_from_database(); //We cannot change the structure in a cell renderer signal handler.
-
-      //This must match the SQL statement above:
-      sharedptr<Field> field(new Field());
-      field->set_name(name);
-      field->set_title( Utils::title_from_string(name) ); //Start with a title that might be useful.
-      field->set_glom_type(Field::TYPE_NUMERIC);
-
-      Glib::RefPtr<Gnome::Gda::Column> field_info = field->get_field_info();
-      field_info->set_g_type( Field::get_gda_type_for_glom_type(Field::TYPE_NUMERIC) );
-      field->set_field_info(field_info);
 
       fill_field_row(row, field);
 
@@ -207,10 +207,12 @@ void Box_DB_Table_Definition::on_adddel_delete(const Gtk::TreeModel::iterator& r
     Glib::ustring name = m_AddDel.get_value_key(iter);
     if(!name.empty())
     {
-      const bool test = query_execute( "ALTER TABLE \"" + m_table_name + "\" DROP COLUMN \"" + name + "\"", get_app_window());
+      //TODO: Warn about a delay before actually doing this when the backend
+      //needs to recreate the whole table.
+      const bool test = drop_column(m_table_name, name, get_app_window());
       if(test)
       {
-        update_gda_metastore_for_table(m_table_name);
+        //update_gda_metastore_for_table(m_table_name); // already done in drop_column().
 
         //Remove it from all layouts, reports, etc:
         get_document()->remove_field(m_table_name, name);
@@ -346,6 +348,9 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
           sharedptr<Field> fieldNewWithModifications = change_definition(m_Field_BeingEdited, fieldNew);
 
           //Update the row to show any extra changes (such as unique being set/unset whenever the primary key is set/unset) 
+	  // TODO: When change_definition decides to unset another column from
+	  // being primary key, then we also need to refill that row, so that
+	  // the user interface does not show two primary keys.
           fill_field_row(row, fieldNewWithModifications);
         }
         else
@@ -476,6 +481,9 @@ sharedptr<Field> Box_DB_Table_Definition::change_definition(const sharedptr<cons
   if(!fieldOld || !field)
     return result;
 
+  type_vecConstFields old_fields;
+  type_vecFields new_fields;
+
   if(fieldOld->get_primary_key() != field->get_primary_key())
   {
     //Note: We have already checked whether this change of primary key is likely to succeed.
@@ -489,12 +497,8 @@ sharedptr<Field> Box_DB_Table_Definition::change_definition(const sharedptr<cons
       {
         sharedptr<Field> existing_primary_key_unset = glom_sharedptr_clone(existing_primary_key);
         existing_primary_key_unset->set_primary_key(false);
-        sharedptr<Field> changed = change_definition(existing_primary_key, existing_primary_key_unset);
-        if(!changed)
-        {
-          std::cerr << "Box_DB_Table_Definition::change_definition(): Failed to unset the old primary key before setting the new primary key." << std::endl;
-          return result;
-        }
+	old_fields.push_back(existing_primary_key);
+	new_fields.push_back(existing_primary_key_unset);
       }
     }
 
@@ -504,40 +508,28 @@ sharedptr<Field> Box_DB_Table_Definition::change_definition(const sharedptr<cons
     document->forget_layout_record_viewed(m_table_name);
   }
 
-  try
-  {
-    result = postgres_change_column(fieldOld, field);
-  }
-  catch(const Glib::Exception& ex) //In case the database reports an error.
-  {
-    handle_error(ex);
+  old_fields.push_back(fieldOld);
+  new_fields.push_back(glom_sharedptr_clone(field));
 
+  //TODO: Warn about a delay, and possible loss of precision, before actually
+  //changing types or when the backend needs to recreate the whole column or
+  //table.
+  // TODO: Don't call change_columns if only the field title has changed,
+  // since the title is only stored in the document anyway.
+  if(change_columns(m_table_name, old_fields, new_fields, get_app_window()))
+  {
+    result = new_fields.back();
+  }
+  else
+  {
     //Give up. Don't update the document. Hope that we can read the current field properties from the database.
     fill_fields();
     //fill_from_database(); //We should not change the database definition in a cell renderer signal handler.
 
     //Select the same field again:
     m_AddDel.select_item(field->get_name(), m_colName, false);
-
-    return glom_sharedptr_clone(field); 
+    return glom_sharedptr_clone(old_fields.back());
   }
-  catch(const std::exception& ex) //In case the database reports an error.
-  {
-    handle_error(ex);
-
-    //Give up. Don't update the document. Hope that we can read the current field properties from the database.
-    fill_fields();
-    //fill_from_database(); //We should not change the database definition in a cell renderer signal handler.
-
-    //Select the same field again:
-    m_AddDel.select_item(field->get_name(), m_colName, false);
-
-    return glom_sharedptr_clone(field); 
-  }
-
-   //MySQL does this all with ALTER_TABLE, with "CHANGE" followed by the same details used with "CREATE TABLE",
-   //MySQL also makes it easier to change the type.
-   // but Postgres uses various subcommands, such as  "ALTER COLUMN", and "RENAME".
 
   //Extra Glom field definitions:
   Document_Glom* pDoc = static_cast<Document_Glom*>(get_document());
@@ -546,38 +538,43 @@ sharedptr<Field> Box_DB_Table_Definition::change_definition(const sharedptr<cons
     //Get Table's fields:
     Document_Glom::type_vecFields vecFields = pDoc->get_table_fields(m_table_name);
 
-    //Find old field:
-    const Glib::ustring field_name_old = fieldOld->get_name();
-    Document_Glom::type_vecFields::iterator iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(field_name_old) );
-    if(iterFind != vecFields.end()) //If it was found:
+    for(unsigned int i = 0; i < old_fields.size(); ++ i)
     {
-      //Change it to the new Fields's value:
-      sharedptr<Field> refField = *iterFind;
-      *refField = *result; //Remember, result is field with any necessary changes due to constraints.
-    }
-    else
-    {
-      //Add it, because it's not there already:
-      vecFields.push_back( glom_sharedptr_clone(result) );
-    }
+      //Find old field:
+      const Glib::ustring field_name_old = old_fields[i]->get_name();
+      Document_Glom::type_vecFields::iterator iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(field_name_old) );
+      if(iterFind != vecFields.end()) //If it was found:
+      {
+        //Change it to the new Fields's value:
+	*iterFind = glom_sharedptr_clone(new_fields[i]);
+      }
+      else
+      {
+        //Add it, because it's not there already:
+        vecFields.push_back( glom_sharedptr_clone(new_fields[i]) );
+      }
 
-    pDoc->set_table_fields(m_table_name, vecFields);
+      // TODO_Performance: Can we do this at the end, after the loop? Or do
+      // the following operations depend on this?
+      pDoc->set_table_fields(m_table_name, vecFields);
 
-    //Update field names where they are used in relationships or on layouts:
-    if(field_name_old != field->get_name())
-    {
-      pDoc->change_field_name(m_table_name, field_name_old, field->get_name());
-    }
+      //Update field names where they are used in relationships or on layouts:
+      if(field_name_old != new_fields[i]->get_name())
+      {
+        pDoc->change_field_name(m_table_name, field_name_old, new_fields[i]->get_name());
+      }
 
-    //Recalculate if necessary:
-    if(field->get_has_calculation())
-    {
-      const Glib::ustring calculation = field->get_calculation();
-      if(calculation != fieldOld->get_calculation())
-        calculate_field_in_all_records(m_table_name, field);
+      // TODO_Performance: Do we even need to do this if only the primary key
+      // flag changed, such as for the first entry in the new_fields vector?
+      //Recalculate if necessary:
+      if(new_fields[i]->get_has_calculation())
+      {
+        const Glib::ustring calculation = new_fields[i]->get_calculation();
+        if(calculation != old_fields[i]->get_calculation())
+          calculate_field_in_all_records(m_table_name, new_fields[i]);
+      }
     }
   }
-
 
   //Update UI:
 
@@ -597,29 +594,8 @@ void Box_DB_Table_Definition::fill_fields()
   m_vecFields = get_fields_for_table(m_table_name);
 }
 
-sharedptr<Field> Box_DB_Table_Definition::postgres_change_column(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field)
-{
-  //std::cout << "DEBUG: Box_DB_Table_Definition::postgres_change_column()" << std::endl;
-  const Glib::RefPtr<const Gnome::Gda::Column> field_info = field->get_field_info();
-  const Glib::RefPtr<const Gnome::Gda::Column> field_info_old = field_old->get_field_info();
-
-  //If the underlying data type has changed:
-  if(field_info->get_g_type() != field_info_old->get_g_type() )
-  {
-    postgres_change_column_type(field_old, field); //This will also change everything else at the same time.
-    update_gda_metastore_for_table(m_table_name);
-    return glom_sharedptr_clone(field);
-  }
-  else
-  {
-    //Change other stuff, without changing the type:
-    sharedptr<Field> result = GlomPostgres::postgres_change_column_extras(m_table_name, field_old, field);
-    update_gda_metastore_for_table(m_table_name);
-    return result;
-  }
-}
-
-
+// TODO: Move this to ConnectionPoolBackends::Postgres:
+#if 0
 void Box_DB_Table_Definition::postgres_change_column_type(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field)
 {
   Gtk::Window* parent_window = get_app_window();
@@ -802,6 +778,7 @@ void Box_DB_Table_Definition::postgres_change_column_type(const sharedptr<const 
     //Callers should call this: update_gda_metastore_for_table();
   }
 }
+#endif
 
 bool Box_DB_Table_Definition::field_has_null_values(const sharedptr<const Field>& field)
 {

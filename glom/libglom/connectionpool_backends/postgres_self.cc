@@ -19,7 +19,6 @@
  */
 
 #include <glom/libglom/connectionpool_backends/postgres_self.h>
-#include <glom/libglom/connectionpool_backends/postgres_central.h> // For PostgresCentralHosted::attempt_connect
 #include <glom/libglom/utils.h>
 #include <glom/libglom/spawn_with_feedback.h>
 #include <glib/gstdio.h> // For g_remove
@@ -120,8 +119,7 @@ host    all         all         ::1/128               md5\n"
 
 PostgresSelfHosted::PostgresSelfHosted()
 :
-  m_port(0),
-  m_postgres_server_version(0.0f)
+  m_port(0)
 {
 }
 
@@ -138,11 +136,6 @@ void PostgresSelfHosted::set_self_hosting_data_uri(const std::string& data_uri)
 bool PostgresSelfHosted::get_self_hosting_active() const
 {
   return m_port != 0;
-}
-
-float PostgresSelfHosted::get_postgres_server_version() const
-{
-  return m_postgres_server_version;
 }
 
 int PostgresSelfHosted::get_port() const
@@ -474,67 +467,14 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ust
   if(!get_self_hosting_active())
     return Glib::RefPtr<Gnome::Gda::Connection>();
 
-  return PostgresCentralHosted::attempt_connect("localhost", port_as_string(m_port), database, username, password, m_postgres_server_version, error);
+  return attempt_connect("localhost", port_as_string(m_port), database, username, password, error);
 
 }
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 bool PostgresSelfHosted::create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error)
 {
-  Glib::RefPtr<Gnome::Gda::ServerOperation> op;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    op = Gnome::Gda::ServerOperation::prepare_create_database("PostgreSQL",
-                                                              database_name);
-  }
-  catch(const Glib::Error& ex)
-  {
-    error.reset(new Glib::Error(ex));
-    return false;
-  }
-#else
-  std::auto_ptr<Glib::Error> error;
-  op = Gnome::Gda::ServerOperation::prepare_create_database("PostgreSQL",
-                                                            database_name,
-                                                            error);
-  if(error)
-    return false;
-
-  op = cnc->create_operation(Gnome::Gda::SERVER_OPERATION_CREATE_DB, set, error);
-  if(error)
-    return false;
-#endif
-  g_assert(op);
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    op->set_value_at("/SERVER_CNX_P/HOST", "localhost");
-    op->set_value_at("/SERVER_CNX_P/PORT", port_as_string(m_port));
-    op->set_value_at("/SERVER_CNX_P/ADM_LOGIN", username);
-    op->set_value_at("/SERVER_CNX_P/ADM_PASSWORD", password);
-    op->perform_create_database("PostgreSQL");
-  }
-  catch(const Glib::Error& ex)
-  {
-    error.reset(new Glib::Error(ex));
-    return false;
-  }
-#else
-  op->set_value_at("/SERVER_CNX_P/HOST", "localhost", error);
-  op->set_value_at("/SERVER_CNX_P/PORT", port_as_string(m_port), error);
-  op->set_value_at("/SERVER_CNX_P/ADM_LOGIN", username, error);
-  op->set_value_at("/SERVER_CNX_P/ADM_PASSWORD", password, error);
-
-  if(error.get() == 0)
-    op->perform_create_database("PostgreSQL");
-  else
-    return false;
-#endif
-
-  return true;
+  return attempt_create_database(database_name, "localhost", port_as_string(m_port), username, password, error);
 }
-#endif
 
 int PostgresSelfHosted::discover_first_free_port(int start_port, int end_port)
 {

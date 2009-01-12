@@ -28,7 +28,7 @@
 #include <giomm.h>
 
 // For postgres availability checks:
-#include <glom/libglom/connectionpool_backends/postgres_central.h>
+#include <glom/libglom/connectionpool_backends/postgres.h>
 #include <glom/libglom/connectionpool_backends/postgres_self.h>
 
 // For sanity checks:
@@ -263,7 +263,7 @@ main(int argc, char* argv[])
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
     //Check that the libgda postgres provider is really available:
-    install_complete = Glom::ConnectionPoolBackends::PostgresCentralHosted::check_postgres_gda_client_is_available_with_warning();
+    install_complete = Glom::ConnectionPoolBackends::Postgres::check_postgres_gda_client_is_available_with_warning();
     if(!install_complete)
       return -1; //There is no point in going further because Glom would not be able to connect to any Postgres servers.
 

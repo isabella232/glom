@@ -72,6 +72,7 @@ public:
   virtual void load_from_document(); //View override
 
   typedef std::vector< sharedptr<Field> > type_vecFields;
+  typedef std::vector< sharedptr<const Field> > type_vecConstFields;
 
   static type_vecFields get_fields_for_table_from_database(const Glib::ustring& table_name, bool including_system_fields = false);
   static bool get_field_exists_in_database(const Glib::ustring& table_name, const Glib::ustring& field_name);
@@ -99,6 +100,18 @@ public:
 
   /// Also saves the table information in the document:
   bool create_table_with_default_fields(const Glib::ustring& table_name);
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  // TODO: Should these functions update the document, so callers don't need
+  // to do it?
+  bool add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field, Gtk::Window* parent_window) const;
+
+  bool drop_column(const Glib::ustring& table_name, const Glib::ustring& field_name, Gtk::Window* parent_window) const;
+
+  sharedptr<Field> change_column(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, Gtk::Window* parent_window) const;
+
+  bool change_columns(const Glib::ustring& table_name, const type_vecConstFields& old_fields, type_vecFields& fields, Gtk::Window* parent_window) const;
+#endif
 
   bool insert_example_data(const Glib::ustring& table_name) const;
 

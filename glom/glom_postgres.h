@@ -34,19 +34,6 @@ class GlomPostgres : public Base_DB
 {
 public:
 
-  /** @param not_extras If this is true, then do not set extra details, such as NOT NULL. You should do that later, when you are ready.
-   */
-  static bool postgres_add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field, bool not_extras = false);
-
-  /**
-   * @param table_name The name of the table that will be affected.
-   * @param field_old The definition of the field that will be changed.
-   * @param field The new definition to give the field.
-   * @param set_anyway If this is true, then set the extra details even if @field_old has the same properties.
-   * @result The new field definition, with any necessary changes.
-   */
-  static sharedptr<Field> postgres_change_column_extras(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, bool set_anyway = false);
-
 protected:
   //Utility functions to help with the odd formats of postgres internal catalog fields:
   static type_vecStrings pg_list_separate(const Glib::ustring& str);

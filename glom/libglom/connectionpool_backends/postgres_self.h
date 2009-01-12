@@ -23,7 +23,7 @@
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
-#include <glom/libglom/connectionpool.h>
+#include <glom/libglom/connectionpool_backends/postgres.h>
 
 namespace Glom
 {
@@ -31,7 +31,7 @@ namespace Glom
 namespace ConnectionPoolBackends
 {
 
-class PostgresSelfHosted : public ConnectionPoolBackend
+class PostgresSelfHosted : public Postgres
 {
 public:
   PostgresSelfHosted();
@@ -40,13 +40,6 @@ public:
    * for this database, using the database files stored at the specified uri.
    */
   void set_self_hosting_data_uri(const std::string& data_uri);
-
-  /** Return the version number of the connected postgres server.
-   * This can be used to adapt to different server features.
-   *
-   * @result The version, or 0 if no connection has been made.
-   */
-  float get_postgres_server_version() const;
 
   /** Return whether the self-hosted server is currently running.
    *
@@ -74,9 +67,6 @@ public:
   static bool install_postgres(Gtk::Window* parent_window);
 
 protected:
-  virtual Field::sql_format get_sql_format() const { return Field::SQL_FORMAT_POSTGRES; }
-  virtual bool supports_remote_access() const { return true; }
-
   virtual bool initialize(Gtk::Window* parent_window, const Glib::ustring& initial_username, const Glib::ustring& password);
 
   virtual bool startup(Gtk::Window* parent_window);
@@ -84,7 +74,9 @@ protected:
 
   virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error);
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual bool create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error);
+#endif
 
 private:
   /** Examine ports one by one, starting at @a starting_port, in increasing
@@ -99,8 +91,6 @@ private:
 
   std::string m_self_hosting_data_uri;
   int m_port;
-
-  float m_postgres_server_version;
 };
 
 } // namespace ConnectionPoolBackends

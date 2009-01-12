@@ -1265,7 +1265,7 @@ bool Base_DB::create_table_add_missing_fields(const sharedptr<const TableInfo>& 
     sharedptr<const Field> field = *iter;
     if(!get_field_exists_in_database(table_name, field->get_name()))
     {
-      const bool test = GlomPostgres::postgres_add_column(table_name, field);
+      const bool test = add_column(table_name, field, 0); /* TODO: parent_window */
       if(!test)
        return test;
     }
@@ -1273,6 +1273,167 @@ bool Base_DB::create_table_add_missing_fields(const sharedptr<const TableInfo>& 
 
   return true;
 }
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+bool Base_DB::add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field, Gtk::Window* parent_window) const
+{
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    connection_pool->add_column(table_name, field);
+  }
+  catch(const Glib::Error& ex)
+  {
+#else
+  std::auto_ptr<Glib::Error> error;
+  connection_pool->add_column(table_name, field, error);
+  if(error.get())
+  {
+    const Glib::Error& ex = *error;
+#endif
+    handle_error(ex);
+//    Gtk::MessageDialog window(*parent_window, Bakery::App_Gtk::util_bold_message(ex.what()), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
+//    window.run();
+    return false;
+  }
+
+  return true;
+}
+
+bool Base_DB::drop_column(const Glib::ustring& table_name, const Glib::ustring& field_name, Gtk::Window* parent_window) const
+{
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    return connection_pool->drop_column(table_name, field_name);
+  }
+  catch(const Glib::Error& ex)
+  {
+#else
+  std::auto_ptr<Glib::Error> error;
+  connection_pool->add_column(table_name, field_name, error);
+  if(error.get())
+  {
+    const Glib::Error& ex = *error;
+#endif
+    handle_error(ex);
+//    Gtk::MessageDialog window(*parent_window, Bakery::App_Gtk::util_bold_message(ex.what()), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
+//    window.run();
+    return false;
+  }
+
+  return true;
+}
+
+namespace
+{
+  // Check primary key and uniqueness constraints when changing a column
+  sharedptr<Field> check_field_change_constraints(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field)
+  {
+    sharedptr<Field> result = glom_sharedptr_clone(field);
+    bool primary_key_was_set = false;
+    bool primary_key_was_unset = false;
+    if(field_old->get_primary_key() != field->get_primary_key())
+    {
+      //TODO: Check that there is only one primary key
+      //When unsetting a primary key, ask which one should replace it.
+
+      if(field->get_primary_key())
+      {
+        result->set_unique_key();
+        primary_key_was_set = true;
+      }
+      else
+      {
+        //Make sure the caller knows that a fields stop being unique when it
+        //stops being a primary key, because its uniqueness was just a
+        //side-effect of it being a primary key.
+        result->set_unique_key(false);
+        primary_key_was_unset = true;
+      }
+    }
+
+    if(field_old->get_unique_key() != field->get_unique_key())
+    {
+      if(!primary_key_was_unset && !field->get_unique_key())
+      {
+        if(field->get_primary_key())
+          result->set_unique_key();
+      }
+    }
+
+    return result;
+  }
+}
+
+sharedptr<Field> Base_DB::change_column(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, Gtk::Window* parent_window) const
+{
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  sharedptr<Field> result = check_field_change_constraints(field_old, field);
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    connection_pool->change_column(table_name, field_old, result);
+  }
+  catch(const Glib::Error& ex)
+  {
+#else
+  std::auto_ptr<Glib::Error> error;
+  connection_pool->change_column(table_name, field_old, result, error);
+  if(error.get())
+  {
+    const Glib::Error& ex = *error;
+#endif
+    handle_error(ex);
+//    Gtk::MessageDialog window(*parent_window, Bakery::App_Gtk::util_bold_message(ex.what()), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
+//    window.run();
+    return sharedptr<Field>();
+  }
+
+  return result;
+}
+
+bool Base_DB::change_columns(const Glib::ustring& table_name, const type_vecConstFields& old_fields, type_vecFields& fields, Gtk::Window* parent_window) const
+{
+  g_assert(old_fields.size() == fields.size());
+
+  type_vecConstFields pass_fields(fields.size());
+  for(unsigned int i = 0; i < fields.size(); ++i)
+  {
+    fields[i] = check_field_change_constraints(old_fields[i], fields[i]);
+    pass_fields[i] = fields[i];
+  }
+
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    connection_pool->change_columns(table_name, old_fields, pass_fields);
+  }
+  catch(const Glib::Error& ex)
+  {
+#else
+  std::auto_ptr<Glib::Error> error;
+  connection_pool->change_columns(table_name, old_fields, pass_fields, error);
+  if(error.get())
+  {
+    const Glib::Error& ex = *error;
+#endif
+    handle_error(ex);
+//    Gtk::MessageDialog window(*parent_window, Bakery::App_Gtk::util_bold_message(ex.what()), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
+//    window.run();
+    return false;
+  }
+
+  return true;
+}
+#endif
 
 bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
 {

@@ -4,6 +4,7 @@ AM_CPPFLAGS = \
 
 noinst_LTLIBRARIES = libconnectionpool_backends.la
 libconnectionpool_backends_la_SOURCES = \
+	postgres.h postgres.cc \
 	postgres_central.h postgres_central.cc \
 	sqlite.h sqlite.cc
 

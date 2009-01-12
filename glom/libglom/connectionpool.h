@@ -109,8 +109,17 @@ class ConnectionPoolBackend
   friend class ConnectionPool;
 public:
   virtual ~ConnectionPoolBackend() {}
+  typedef std::vector<sharedptr<const Field> > type_vecConstFields;
 
 protected:
+  /** Helper functions for backend implementations to use, so that these don't
+   * need to worry whether glibmm was compiled with exceptions or not.
+   */
+  bool query_execute(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& sql_query, std::auto_ptr<Glib::Error>& error);
+  bool begin_transaction(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& name, Gnome::Gda::TransactionIsolation level, std::auto_ptr<Glib::Error>& error);
+  bool commit_transaction(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& name, std::auto_ptr<Glib::Error>& error);
+  bool rollback_transaction(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& name, std::auto_ptr<Glib::Error>& error);
+
   /* TODO: Merge create_database() and initialize() into a single function?
    */
 
@@ -149,6 +158,12 @@ protected:
     */
   virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error) = 0;
 
+  virtual bool add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const sharedptr<const Field>& field, std::auto_ptr<Glib::Error>& error);
+
+  virtual bool drop_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const Glib::ustring& field_name, std::auto_ptr<Glib::Error>& error);
+
+  virtual bool change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vecConstFields& old_fields, const type_vecConstFields& new_fields, std::auto_ptr<Glib::Error>& error);
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   /** This method is called to create a new database on the
    * database server. */
@@ -168,6 +183,7 @@ protected:
   //ConnectionPool& operator=(const ConnectionPool& src);
 
 public:
+  typedef ConnectionPoolBackend::type_vecConstFields type_vecConstFields;
 
   /** Get the singleton instance.
    * Use delete_instance() when the program quits.
@@ -189,7 +205,7 @@ public:
    * When that SharedConnection is destroyed, or when SharedConnection::close() is called, then the ConnectionPool will be informed.
    * The connection will only be closed when all SharedConnections have finished with their connections.
    *
-   * @result a shareptr to a SharedConnection. This sharedptr will be null if the connection failed.
+   * @result a sharedptr to a SharedConnection. This sharedptr will be null if the connection failed.
    *
    * @throws an ExceptionConnection when the connection fails.
    */
@@ -224,15 +240,6 @@ public:
   Field::sql_format get_sql_format() const;
   const FieldTypes* get_field_types() const;
 
-#if 0
-  /** Return the version number of the connected postgres server.
-   * This can be used to adapt to different server features.
-   *
-   * @result The version, or 0 if no connection has been made.
-   */
-  float get_postgres_server_version();
-#endif
-
   /** Do one-time initialization, such as  creating required database
    * files on disk for later use by their own  database server instance.
    * @param parent_window A parent window to use as the transient window when displaying errors.
@@ -249,6 +256,30 @@ public:
    * @param parent_window The parent window (transient for) of any dialogs shown during this operation.
    */
   void cleanup(Gtk::Window* parent_window);
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  bool add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field);
+#else
+  bool add_column(const Glib::ustring& field_name, const sharedptr<const Field>& field, std::auto_ptr<Glib::Error>& error);
+#endif
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  bool drop_column(const Glib::ustring& table_name, const Glib::ustring& field_name);
+#else
+  bool drop_column(const Glib::ustring& table_name, const Glib::ustring& field_name, std::auto_ptr<Glib::Error>& error);
+#endif
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  bool change_column(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field);
+#else
+  bool change_column(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, std::auto_ptr<Glib::Error>& error);
+#endif
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  bool change_columns(const Glib::ustring& table_name, const type_vecConstFields& old_fields, const type_vecConstFields& fields);
+#else
+  bool change_columns(const Glib::ustring& table_name, const type_vecConstFields& old_fields, const type_vecConstFields& fields, std::auto_ptr<Glib::Error>& error);
+#endif
 
   /** Specify a callback that the ConnectionPool can call to get a pointer to the document.
    * This callback avoids Connection having to link to App_Glom,

@@ -1,3 +1,38 @@
+2009-01-12  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/connectionpool.h:
+	* glom/libglom/connectionpool.cc: Added add_column(), change_column(),
+	drop_column(), using a generic implementation via libgda's DDL API.
+
+	* glom/libglom/connectionpool_backends/postgres.h:
+	* glom/libglom/connectionpool_backends/postgres.cc:
+	* glom/libglom/connectionpool_backends/Makefile.am: Added a base class
+	for the two postgres backends, implementing the common functionality.
+
+	* glom/libglom/connectionpool_backends/postgres_self.h:
+	* glom/libglom/connectionpool_backends/postgres_central.h:
+	* glom/libglom/connectionpool_backends/postgres_self.cc:
+	* glom/libglom/connectionpool_backends/postgres_central.cc: Use the
+	Postgres base class, instead of deriving directly from
+	ConnectionPoolBackend.
+
+	* glom/mode_design/fields/box_db_table_definition.h:
+	* glom/mode_design/fields/box_db_table_definition.cc: Use the
+	connectionpool add_column(), drop_column() and change_column()
+	functions instead of using postgres-specific code from
+	glom_postgres.cc. There is maybe a drawback concerning data conversion
+	when changing column types, but I'll re-add the relevant code to the
+	postgres connectionpool backend in the near future.
+
+	* glom/glom_postgres.h:
+	* glom/glom_postgres.cc: Removed postgres_add_column() and
+	postgres_change_column_extras().
+
+	* glom/main.cc: Adapt to
+	check_postgres_gda_client_is_available_with_warning() now being in
+	ConnectionPoolBackends::Postgres instead of
+	ConnectionPoolBackends::PostgresCentral.
+
 2009-01-12  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/glom.glade: Allowed a recent version of glade-2 to resave this.

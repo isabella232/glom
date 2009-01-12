@@ -234,6 +234,206 @@ bool ConnectionPoolBackend::startup(Gtk::Window* /* parent_window */)
 void ConnectionPoolBackend::cleanup(Gtk::Window* /* parent_window */)
 {}
 
+namespace
+{
+  bool set_server_operation_value(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, const Glib::ustring& path, const Glib::ustring& value, std::auto_ptr<Glib::Error>& error)
+  {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    try
+    {
+      operation->set_value_at(path, value);
+      return true;
+    }
+    catch(const Glib::Error& ex)
+    {
+      error.reset(new Glib::Error(ex));
+      return false;
+    }
+#else
+    operation->set_value_at(path, value, error);
+    if(error.get()) return false;
+    return true;
+#endif
+  }
+
+  Glib::RefPtr<Gnome::Gda::ServerOperation> create_server_operation(const Glib::RefPtr<Gnome::Gda::ServerProvider>& provider, const Glib::RefPtr<Gnome::Gda::Connection>& connection, Gnome::Gda::ServerOperationType type, std::auto_ptr<Glib::Error>& error)
+  {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    try
+    {
+      return provider->create_operation(connection, type, Gnome::Gda::Set::create());
+    }
+    catch(const Glib::Error& ex)
+    {
+      error.reset(new Glib::Error(ex));
+      return Glib::RefPtr<Gnome::Gda::ServerOperation>();
+    }
+#else
+    return provider->create_operation(connection, type, Gnome::Gda::Set::create(), error);
+#endif
+  }
+
+  bool perform_server_operation(const Glib::RefPtr<Gnome::Gda::ServerProvider>& provider, const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, std::auto_ptr<Glib::Error>& error)
+  {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    try
+    {
+      provider->perform_operation(connection, operation);
+      return true;
+    }
+    catch(const Glib::Error& ex)
+    {
+      error.reset(new Glib::Error(ex));
+      return false;
+    }
+#else
+    provider->perform_operation(connection, operation, error);
+    if(error.get()) return false;
+    return true;
+#endif
+  }
+}
+
+bool ConnectionPoolBackend::begin_transaction(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& name, Gnome::Gda::TransactionIsolation level, std::auto_ptr<Glib::Error>& error)
+{
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    return connection->begin_transaction(name, level);
+  }
+  catch(const Glib::Error& ex)
+  {
+    error.reset(new Glib::Error(ex));
+    return false;
+  }
+#else
+  return connection->begin_transaction(name, level, error);
+#endif
+}
+
+bool ConnectionPoolBackend::commit_transaction(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& name, std::auto_ptr<Glib::Error>& error)
+{
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    return connection->commit_transaction(name);
+  }
+  catch(const Glib::Error& ex)
+  {
+    error.reset(new Glib::Error(ex));
+    return false;
+  }
+#else
+  return connection->commit_transaction(name, error);
+#endif
+}
+
+bool ConnectionPoolBackend::rollback_transaction(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& name, std::auto_ptr<Glib::Error>& error)
+{
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    return connection->rollback_transaction(name);
+  }
+  catch(const Glib::Error& ex)
+  {
+    error.reset(new Glib::Error(ex));
+    return false;
+  }
+#else
+  return connection->rollback_transaction(name, error);
+#endif
+}
+
+bool ConnectionPoolBackend::query_execute(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& sql_query, std::auto_ptr<Glib::Error>& error)
+{
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    return connection->statement_execute_non_select(sql_query) != -1;
+  }
+  catch(const Glib::Error& ex)
+  {
+    error.reset(new Glib::Error(ex));
+    return false;
+  }
+#else
+  return connection->statement_execute_non_select(sql_query, error) != -1;
+#endif
+}
+
+bool ConnectionPoolBackend::add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const sharedptr<const Field>& field, std::auto_ptr<Glib::Error>& error)
+{
+  Glib::RefPtr<Gnome::Gda::ServerProvider> provider = connection->get_provider();
+  Glib::RefPtr<Gnome::Gda::ServerOperation> operation = create_server_operation(provider, connection, Gnome::Gda::SERVER_OPERATION_ADD_COLUMN, error);
+  if(!operation) return false;
+
+  if(!set_server_operation_value(operation, "/COLUMN_DEF_P/TABLE_NAME", table_name, error)) return false;
+  if(!set_server_operation_value(operation, "/COLUMN_DEF_P/COLUMN_NAME", field->get_name(), error)) return false;
+  if(!set_server_operation_value(operation, "/COLUMN_DEF_P/COLUMN_TYPE", field->get_sql_type(), error)) return false;
+  if(!set_server_operation_value(operation, "/COLUMN_DEF_P/COLUMN_AUTOINC", field->get_auto_increment() ? "TRUE" : "FALSE", error)) return false;
+  if(!set_server_operation_value(operation, "/COLUMN_DEF_P/COLUMN_PKEY", field->get_primary_key() ? "TRUE" : "FALSE", error)) return false;
+  if(!set_server_operation_value(operation, "/COLUMN_DEF_P/COLUMN_UNIQUE", field->get_unique_key() ? "TRUE" : "FALSE", error)) return false;
+
+  if(!perform_server_operation(provider, connection, operation, error)) return false;
+  return true;
+}
+
+bool ConnectionPoolBackend::drop_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const Glib::ustring& field_name, std::auto_ptr<Glib::Error>& error)
+{
+  Glib::RefPtr<Gnome::Gda::ServerProvider> provider = connection->get_provider();
+  Glib::RefPtr<Gnome::Gda::ServerOperation> operation = create_server_operation(provider, connection, Gnome::Gda::SERVER_OPERATION_DROP_COLUMN, error);
+  if(!operation) return false;
+
+  if(!set_server_operation_value(operation, "/COLUMN_DESC_P/TABLE_NAME", table_name, error)) return false;
+  if(!set_server_operation_value(operation, "/COLUMN_DESC_P/COLUMN_NAME", field_name, error)) return false;
+  
+  if(!perform_server_operation(provider, connection, operation, error)) return false;
+  return true;
+}
+
+bool ConnectionPoolBackend::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vecConstFields& old_fields, const type_vecConstFields& new_fields, std::auto_ptr<Glib::Error>& error)
+{
+  static const char* TRANSACTION_NAME = "glom_change_columns_transaction";
+  static const gchar* TEMP_COLUMN_NAME = "glom_temp_column"; // TODO: Find a unique name.
+
+  if(!begin_transaction(connection, TRANSACTION_NAME, Gnome::Gda::TRANSACTION_ISOLATION_UNKNOWN, error)) return false; // TODO: What does the transaction isolation do?
+
+  for(unsigned int i = 0; i < old_fields.size(); ++ i)
+  {
+    // TODO: Don't create an intermediate column if the name of the column
+    // changes anyway.
+    sharedptr<Field> temp_field = glom_sharedptr_clone(new_fields[i]);
+    temp_field->set_name(TEMP_COLUMN_NAME);
+    // The temporary column must not be a primary key, otherwise
+    // we might end up with two primary key columns temporarily, which most
+    // database systems do not allow.
+    temp_field->set_primary_key(false);
+
+    if(!add_column(connection, table_name, temp_field, error)) break;
+
+    const Glib::ustring temp_move_query = "UPDATE " + table_name + " SET " + TEMP_COLUMN_NAME + " = CAST(" + old_fields[i]->get_name() + " AS " + new_fields[i]->get_sql_type() + ")";
+    if(!query_execute(connection, temp_move_query, error)) break;
+
+    if(!drop_column(connection, table_name, old_fields[i]->get_name(), error)) return false;
+
+    if(!add_column(connection, table_name, new_fields[i], error)) break;
+
+    const Glib::ustring final_move_query = "UPDATE " + table_name + " SET " + new_fields[i]->get_name() + " = " + TEMP_COLUMN_NAME; // TODO: Do we need a cast here, even though the type matches?
+    if(!query_execute(connection, final_move_query, error)) break;
+
+    if(!drop_column(connection, table_name, TEMP_COLUMN_NAME, error)) break;
+  }
+
+  if(error.get() || !commit_transaction(connection, TRANSACTION_NAME, error))
+  {
+    std::auto_ptr<Glib::Error> rollback_error;
+    rollback_transaction(connection, TRANSACTION_NAME, rollback_error);
+    return false;
+  }
+
+  return true;
+}
 
 //init_db_details static data:
 ConnectionPool* ConnectionPool::m_instance = 0;
@@ -666,6 +866,133 @@ void ConnectionPool::cleanup(Gtk::Window* parent_window)
   //We don't need the segfault handler anymore:
   signal(SIGSEGV, previous_sig_handler);
   previous_sig_handler = SIG_DFL; /* Arbitrary default */
+}
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+bool ConnectionPool::add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field)
+#else
+bool ConnectionPool::add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field, std::auto_ptr<Glib::Error>& error)
+#endif
+{
+  sharedptr<SharedConnection> conn;
+  if(!m_refGdaConnection)
+  {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    conn = connect();
+#else
+    std::auto_ptr<ExceptionConnection> local_error;
+    // TODO: We can't rethrow local_error here since ExceptionConnection does
+    // not derive from Glib::Error
+    conn = connect(local_error);
+#endif
+  }
+
+  if(!m_refGdaConnection)
+    return false;
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  std::auto_ptr<Glib::Error> error;
+  const bool result = m_backend->add_column(m_refGdaConnection, table_name, field, error);
+  if(error.get()) throw *error;
+
+  m_refGdaConnection->update_meta_store_table(table_name);
+#else
+  const bool result = m_backend->add_column(m_refGdaConnection, table_name, field, error);
+  if(result)
+    result = m_refGdaConnection->update_meta_store_table(table_name, error);
+#endif
+
+  return result;
+}
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+bool ConnectionPool::drop_column(const Glib::ustring& table_name, const Glib::ustring& field_name)
+#else
+bool ConnectionPool::drop_column(const Glib::ustring& table_name, const Glib::ustring& field_name, std::auto_ptr<Glib::Error>& error)
+#endif
+{
+  sharedptr<SharedConnection> conn;
+  if(!m_refGdaConnection)
+  {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    conn = connect();
+#else
+    std::auto_ptr<ExceptionConnection> local_error;
+    // TODO: We can't rethrow local_error here since ExceptionConnection does
+    // not derive from Glib::Error
+    conn = connect(local_error);
+#endif
+  }
+
+  if(!m_refGdaConnection)
+    return false;
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  std::auto_ptr<Glib::Error> error;
+  const bool result = m_backend->drop_column(m_refGdaConnection, table_name, field_name, error);
+  if(error.get()) throw *error;
+
+  m_refGdaConnection->update_meta_store_table(table_name);
+#else
+  const bool result = m_backend->drop_column(m_refGdaConnection, table_name, field_name, error);
+  if(result)
+    result = m_refGdaConnection->update_meta_store_table(table_name, error);
+#endif
+
+  return result;
+}
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+bool ConnectionPool::change_column(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field)
+#else
+bool ConnectionPool::change_column(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, std::auto_ptr<Glib::Error>& error)
+#endif
+{
+  type_vecConstFields old_fields(1, field_old);
+  type_vecConstFields new_fields(1, field);
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  return change_columns(table_name, old_fields, new_fields);
+#else
+  return change_columns(table_name, old_fields, new_fields, error);
+#endif
+}
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_vecConstFields& old_fields, const type_vecConstFields& new_fields)
+#else
+bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_vecConstFields& old_fields, const type_vecConstFields& new_fields, std::auto_ptr<Glib::Error>& error)
+#endif
+{
+  sharedptr<SharedConnection> conn;
+  if(!m_refGdaConnection)
+  {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    conn = connect();
+#else
+    std::auto_ptr<ExceptionConnection> local_error;
+    // TODO: We can't rethrow local_error here since ExceptionConnection does
+    // not derive from Glib::Error
+    conn = connect(local_error);
+#endif
+  }
+
+  if(!m_refGdaConnection)
+    return false;
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  std::auto_ptr<Glib::Error> error;
+  const bool result = m_backend->change_columns(m_refGdaConnection, table_name, old_fields, new_fields, error);
+  if(error.get()) throw *error;
+
+  m_refGdaConnection->update_meta_store_table(table_name);
+#else
+  const bool result = m_backend->change_columns(m_refGdaConnection, table_name, old_fields, new_fields, error);
+  if(result)
+    result = m_refGdaConnection->update_meta_store_table(table_name, error);
+#endif
+
+  return result;
 }
 
 bool ConnectionPool::initialize(Gtk::Window* parent_window)
