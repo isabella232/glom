@@ -1,5 +1,10 @@
 2009-01-12  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/glom.glade: Allowed a recent version of glade-2 to resave this.
+	The changes seem harmless, just adding things, but we will see.
+
+2009-01-12  Murray Cumming  <murrayc@murrayc.com>
+
 	* configure.in: Increase version to 1.9.0, in anticiaption of a first 
 	unstable 1.9/1.10 release.
 
