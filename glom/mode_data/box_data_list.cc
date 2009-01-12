@@ -22,6 +22,7 @@
 #include <glom/libglom/data_structure/glomconversions.h>
 #include <glom/libglom/glade_utils.h>
 #include <glom/reports/report_builder.h>
+#include <glom/utility_widgets/db_adddel/glom_db_treemodel.h>
 #include "dialog_layout_list.h"
 #include <glom/glom_privs.h>
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
@@ -469,7 +470,7 @@ void Box_Data_List::create_layout()
     }
     else
     {
-      std::cout << "DEBUG: Box_Data_List::create_layout(): primary_key=" << field_primary_key->get_name() << std::endl;
+      //std::cout << "DEBUG: Box_Data_List::create_layout(): primary_key=" << field_primary_key->get_name() << std::endl;
 
       m_AddDel.set_key_field(field_primary_key);
  
@@ -577,10 +578,20 @@ void Box_Data_List::get_record_counts(gulong& total, gulong& found) const
   found = 0;
 
   Glib::RefPtr<Gtk::TreeModel> refModel = m_AddDel.get_model();
+  //if(!refModel)
+  //  std::cerr << "Box_Data_List::get_record_counts(): (this=" << typeid(this).name() << ") The tree model was NULL." << std::endl;
+
   Glib::RefPtr<DbTreeModel> refModelDerived = Glib::RefPtr<DbTreeModel>::cast_dynamic(refModel);
   
   if(refModelDerived)
     refModelDerived->get_record_counts(total, found);
+
+  /*
+  else
+  {
+    std::cerr << "Box_Data_List::get_record_counts(): (this=" << typeid(this).name() << ") The tree model was not a DbTreeModel. It was a " << typeid(refModel.operator->()).name() << std::endl;
+  }
+  */
 }
 
 void Box_Data_List::on_adddel_user_sort_clause_changed()

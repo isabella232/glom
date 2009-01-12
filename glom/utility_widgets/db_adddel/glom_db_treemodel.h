@@ -21,11 +21,10 @@
 #ifndef GLOM_MODE_DATA_DB_TREEMODEL_H
 #define GLOM_MODE_DATA_DB_TREEMODEL_H
 
-#include <gtkmm/treemodel.h>
+#include <glom/utility_widgets/db_adddel/treemodel_with_addrow.h>
 #include <gtkmm/treepath.h>
 #include <glom/libglom/data_structure/layout/layoutitem_field.h>
 #include <glom/libglom/connectionpool.h>
-#include "../../base_db.h"
 
 namespace Glom
 {
@@ -62,13 +61,11 @@ public:
 
 class DbTreeModel
   : public Glib::Object,
-    public Gtk::TreeModel
+    public Gtk::TreeModel,
+    public TreeModelWithAddRow
 {
 public:
   typedef unsigned int size_type;
-
-  //typedef std::vector<LayoutItem_Field> type_vec_fields;
-  typedef Base_DB::type_vecLayoutFields type_vec_fields;
 
   friend class DbTreeModelRow;
 

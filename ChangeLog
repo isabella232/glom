@@ -1,3 +1,25 @@
+2009-01-12  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/mode_find/box_data_list_find.cc: fill_from_database(): 
+	Call DbAddDel::set_columns_ready() so the treeview actually shows some 
+	columns.
+	* glom/utility_widgets/db_adddel/Makefile.am:
+	* glom/utility_widgets/db_adddel/treemodel_with_addrow.[h|cc]: A new 
+	common MI abstract base class for treemodels that have the extra empty 
+	row for adding rows.
+	* glom/utility_widgets/db_adddel/liststore_with_addrow.[h|cc]: A new 
+	treemodel derived from ListStore and the new base class, for use with 
+	find mode.
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.h: Derive from 
+	the new base class.
+	* glom/utility_widgets/db_adddel/db_adddel.[h|cc]: 
+	construct_specified_columns(): Create the ListStore model for find mode.
+	Use the model via the base class where possible, so we can use the 
+	find mode model too.
+	Avoid changing the data in the database when in find mode.
+
+	This makes find mode work again in the list view, fixing bug #565579.
+
 2009-01-05  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db.[h|cc]: Added update_gda_metastore_for_table().

@@ -23,6 +23,8 @@
 #include <glibmm/i18n.h>
 #include "../cellrendererlist/cellrendererlist.h"
 #include "db_treeviewcolumn_glom.h"
+#include "glom_db_treemodel.h"
+#include "liststore_with_addrow.h"
 #include <glom/libglom/data_structure/glomconversions.h>
 #include "../../dialog_invalid_data.h"
 #include "../../application.h"
@@ -406,8 +408,8 @@ Gtk::TreeModel::iterator DbAddDel::get_item_selected()
      return refTreeSelection->get_selected();
   }
 
-  if(m_refListStore)
-    return m_refListStore->children().end();
+  if(m_refListStore_as_model)
+    return m_refListStore_as_model->children().end();
   else
     return Gtk::TreeModel::iterator();
 }
@@ -421,8 +423,8 @@ Gtk::TreeModel::iterator DbAddDel::get_item_selected() const
      return unconst->get_selected();
   }
 
-  if(m_refListStore)
-    return m_refListStore->children().end();
+  if(m_refListStore_as_model)
+    return m_refListStore_as_model->children().end();
   else
     return Gtk::TreeModel::iterator();
 }
@@ -430,10 +432,10 @@ Gtk::TreeModel::iterator DbAddDel::get_item_selected() const
 
 Gtk::TreeModel::iterator DbAddDel::get_row(const Gnome::Gda::Value& key)
 {
-  if(!m_refListStore)
+  if(!m_refListStore_as_model)
     return Gtk::TreeModel::iterator();
 
-  for(Gtk::TreeModel::iterator iter = m_refListStore->children().begin(); iter != m_refListStore->children().end(); ++iter)
+  for(Gtk::TreeModel::iterator iter = m_refListStore_as_model->children().begin(); iter != m_refListStore_as_model->children().end(); ++iter)
   {
     //Gtk::TreeModel::Row row = *iter;
     const Gnome::Gda::Value& valTemp = get_value_key(iter);
@@ -443,7 +445,7 @@ Gtk::TreeModel::iterator DbAddDel::get_row(const Gnome::Gda::Value& key)
     }
   }
 
-  return  m_refListStore->children().end();
+  return  m_refListStore_as_model->children().end();
 }
 
 bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, bool start_editing)
@@ -489,7 +491,7 @@ bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, const sharedptr
     {
       refTreeSelection->select(iter);
 
-      Gtk::TreeModel::Path path = m_refListStore->get_path(iter);
+      Gtk::TreeModel::Path path = m_refListStore_as_model->get_path(iter);
 
       guint view_column_index = 0;
       const bool test = get_view_column_index(treemodel_col, view_column_index);
@@ -516,10 +518,10 @@ bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, const sharedptr
 
 guint DbAddDel::get_count() const
 {
-  if(!m_refListStore)
+  if(!m_refListStore_as_model)
     return 0;
 
-  guint iCount = m_refListStore->children().size();
+  guint iCount = m_refListStore_as_model->children().size();
 
   //Take account of the extra blank for new entries:
   if(get_allow_user_actions()) //If it has the extra row.
@@ -578,10 +580,10 @@ int DbAddDel::get_fixed_cell_height()
 
 void DbAddDel::on_cell_layout_button_clicked(const Gtk::TreeModel::Path& path, int model_column_index)
 {
-  if(!m_refListStore)
+  if(!m_refListStore_as_model)
     return;
 
-  Gtk::TreeModel::iterator iter = m_refListStore->get_iter(path);
+  Gtk::TreeModel::iterator iter = m_refListStore_as_model->get_iter(path);
   if(iter)
   {
     sharedptr<const LayoutItem> layout_item = m_ColumnTypes[model_column_index].m_item;
@@ -822,7 +824,7 @@ void DbAddDel::apply_formatting(Gtk::CellRenderer* renderer, const FieldFormatti
 
 void DbAddDel::construct_specified_columns()
 {
-  //std::cout << "debug: DbAddDel::construct_specified_columns" << std::endl;
+  //std::cout << "debug: DbAddDel::construct_specified_columns()" << std::endl;
 
   InnerIgnore innerIgnore(this);
 
@@ -832,6 +834,8 @@ void DbAddDel::construct_specified_columns()
 
   if(m_ColumnTypes.empty())
   {
+    //std::cout << "debug: DbAddDel::construct_specified_columns(): showing hint model: m_find_mode=" << m_find_mode << std::endl;
+
     show_hint_model();
     return;
   }
@@ -845,7 +849,7 @@ void DbAddDel::construct_specified_columns()
   Gtk::TreeModel::ColumnRecord record;
     
   //Database columns:
-  type_model_store::type_vec_fields fields;
+  DbTreeModel::type_vec_fields fields;
   {
     type_vecModelColumns::size_type i = 0;
     for(type_ColumnTypes::iterator iter = m_ColumnTypes.begin(); iter != m_ColumnTypes.end(); ++iter)
@@ -872,43 +876,59 @@ void DbAddDel::construct_specified_columns()
   
   m_FieldsShown = fields; //Needed by Base_DB_Table_Data::record_new().
 
-  //Find the primary key:
-  int column_index_key = 0;
-  bool key_found = false;
-  for(type_model_store::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
-  {
-    sharedptr<LayoutItem_Field> layout_item = *iter;
-    if( !(layout_item->get_has_relationship_name()) )
-    {
-      sharedptr<const Field> field_full = layout_item->get_full_field_details();
-      if(field_full && field_full->get_primary_key() )
-      {
-        key_found = true;
-        break;
-      }
-    }
+  //std::cout << "DEBUG: DbAddDel::construct_specified_columns(): m_find_mode=" << m_find_mode << std::endl;
 
-    ++column_index_key;
-  }
-
-  if(key_found)
+  if(m_find_mode)
   {
-    //Create the model from the ColumnRecord:
-    m_refListStore = type_model_store::create(record, m_found_set, fields, column_index_key, m_allow_view);
+    //std::cout << "DEBUG: DbAddDel::construct_specified_columns(): Creating ListStoreWithAddRow" << std::endl;
+    Glib::RefPtr<ListStoreWithAddRow> liststore = ListStoreWithAddRow::create(record, fields);
+    liststore->append();
+    m_refListStore = liststore.operator->();
+    m_refListStore_as_model = liststore;
   }
   else
   {
-    g_warning("%s: no primary key field found.", __FUNCTION__);
-    //for(type_model_store::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
-    //{
-    //  g_warning("  field: %s", (iter->get_name().c_str());
-    //}
+    //Find the primary key:
+    int column_index_key = 0;
+    bool key_found = false;
+    for(DbTreeModel::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+    {
+      sharedptr<LayoutItem_Field> layout_item = *iter;
+      if( !(layout_item->get_has_relationship_name()) )
+      {
+        sharedptr<const Field> field_full = layout_item->get_full_field_details();
+        if(field_full && field_full->get_primary_key() )
+        {
+          key_found = true;
+          break;
+        }
+      }
 
-    m_refListStore = Glib::RefPtr<type_model_store>();
+      ++column_index_key;
+    }
+
+    if(key_found )
+    {
+      //Create the model from the ColumnRecord:
+      Glib::RefPtr<DbTreeModel> liststore  = DbTreeModel::create(record, m_found_set, fields, column_index_key, m_allow_view);
+      m_refListStore = liststore.operator->();
+      m_refListStore_as_model = liststore;
+    }
+    else
+    {
+      g_warning("%s: no primary key field found.", __FUNCTION__);
+      //for(type_model_store::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+      //{
+      //  g_warning("  field: %s", (iter->get_name().c_str());
+      //}
+
+      Glib::RefPtr<DbTreeModel> liststore = Glib::RefPtr<DbTreeModel>();
+      m_refListStore = liststore.operator->();
+      m_refListStore_as_model = liststore;
+    }
   }
-
  
-  m_TreeView.set_model(m_refListStore);
+  m_TreeView.set_model(m_refListStore_as_model);
 
 
   //Remove all View columns:
@@ -1028,7 +1048,7 @@ bool DbAddDel::refresh_from_database()
     if(m_TreeView.get_model())
       gtk_tree_view_set_model(m_TreeView.gobj(), 0); //This gives the same warning.
 
-    m_TreeView.set_model(m_refListStore);
+    m_TreeView.set_model(m_refListStore_as_model);
     return result;
   }
   else
@@ -1284,7 +1304,17 @@ void DbAddDel::set_show_column_titles(bool bVal)
 
 void DbAddDel::set_find_mode(bool val)
 {
+  std::cout << "DbAddDel::set_find_mode() val=" << val << std::endl;
+
+  const bool current = m_find_mode;
   m_find_mode = val;
+
+  //Recreate the model if necessary:
+  if( (current != m_find_mode) &&
+      m_refListStore)
+  {
+    construct_specified_columns();
+  }
 }
   
 void DbAddDel::set_allow_only_one_related_record(bool val)
@@ -1378,14 +1408,11 @@ DbAddDel::InnerIgnore::~InnerIgnore()
 
 Gnome::Gda::Value DbAddDel::treeview_get_key(const Gtk::TreeModel::iterator& row) const
 {
-  Gnome::Gda::Value value;
-
-  if(m_refListStore)
-  {
-    return m_refListStore->get_key_value(row);
-  }
-
-  return value;
+  Glib::RefPtr<DbTreeModel> dbmodel = Glib::RefPtr<DbTreeModel>::cast_dynamic(m_refListStore_as_model);
+  if(dbmodel)
+    return dbmodel->get_key_value(row);
+  else
+    return Gnome::Gda::Value();
 }
 
 void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, int model_column_index, int data_model_column_index)
@@ -1401,7 +1428,7 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
   const Gtk::TreeModel::Path path(path_string);
 
   //Get the row from the path:
-  Gtk::TreeModel::iterator iter = m_refListStore->get_iter(path);
+  Gtk::TreeModel::iterator iter = m_refListStore_as_model->get_iter(path);
   if(iter)
   {
     Gtk::TreeModel::Row row = *iter;
@@ -1425,7 +1452,7 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
     bool bIsAdd = false;
     bool bIsChange = false;
 
-    const int iCount = m_refListStore->children().size();
+    const int iCount = m_refListStore_as_model->children().size();
     if(iCount)
     {
       if(get_allow_user_actions()) //If add is possible:
@@ -1478,13 +1505,13 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
   if(path_string.empty())
     return;
 
-  if(!m_refListStore)
+  if(!m_refListStore_as_model)
     return;
 
   const Gtk::TreeModel::Path path(path_string);
 
   //Get the row from the path:
-  Gtk::TreeModel::iterator iter = m_refListStore->get_iter(path);
+  Gtk::TreeModel::iterator iter = m_refListStore_as_model->get_iter(path);
   if(iter != get_model()->children().end())
   {
     Gtk::TreeModel::Row row = *iter;
@@ -1804,11 +1831,11 @@ DbAddDel::type_vecStrings DbAddDel::get_columns_order() const
 
 Glib::RefPtr<Gtk::TreeModel> DbAddDel::get_model()
 {
-  return m_refListStore;
+  return m_refListStore_as_model;
 }
 Glib::RefPtr<const Gtk::TreeModel> DbAddDel::get_model() const
 {
-  return m_refListStore;
+  return m_refListStore_as_model;
 }
 
 bool DbAddDel::get_is_first_row(const Gtk::TreeModel::iterator& iter) const
@@ -1865,7 +1892,10 @@ void DbAddDel::set_value_key(const Gtk::TreeModel::iterator& iter, const Gnome::
       //row[*m_modelcolumn_placeholder] = false;
     }
 
-    m_refListStore->set_key_value(iter, value);
+    //TODO_Performance: Cache the dynamic_cast<>ed result?
+    Glib::RefPtr<DbTreeModel> dbmodel = Glib::RefPtr<DbTreeModel>::cast_dynamic(m_refListStore_as_model);
+    if(dbmodel)
+      return dbmodel->set_key_value(iter, value);
   }
 }
 
@@ -1881,10 +1911,10 @@ bool DbAddDel::get_is_placeholder_row(const Gtk::TreeModel::iterator& iter) cons
   if(!iter)
     return false;
 
-  if(!m_refListStore)
+  if(!m_refListStore_as_model)
     return false;
 
-  if(iter == m_refListStore->children().end())
+  if(iter == m_refListStore_as_model->children().end())
   {
     return false;
   }
@@ -1948,11 +1978,22 @@ void DbAddDel::set_key_field(const sharedptr<Field>& field)
 
 void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, int model_column_index, int data_model_column_index)
 {
-  //std::cout << "debug: DbAddDel::treeviewcolumn_on_cell_data()" << std::endl; 
+  if(!m_refListStore_as_model)
+    return;
+
+  //std::cout << "debug: DbAddDel::treeviewcolumn_on_cell_data(): model columns count=" << m_refListStore_as_model->get_n_columns() << std::endl; 
 
 
   if(iter)
   {
+    /*
+    if(!iter->get_model_gobject())
+    {
+      std::cerr << "DbAddDel::treeviewcolumn_on_cell_data(): iter has no model" << std::endl;
+      return; 
+    }
+    */
+
     const DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
 
     sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(column_info.m_item);
@@ -2046,10 +2087,10 @@ bool DbAddDel::get_allow_view_details() const
 
 void DbAddDel::on_cell_button_clicked(const Gtk::TreeModel::Path& path)
 {
-  if(!m_refListStore)
+  if(!m_refListStore_as_model)
     return;
 
-  Gtk::TreeModel::iterator iter = m_refListStore->get_iter(path);
+  Gtk::TreeModel::iterator iter = m_refListStore_as_model->get_iter(path);
   if(iter)
   {
     select_item(iter, false /* start_editing */);
@@ -2193,9 +2234,12 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
 
             //Note: This just uses an existing record if one already exists:
             Gnome::Gda::Value primary_key_value_used;
-            const bool test = add_related_record_for_field(layout_field, relationship, primary_key_field, primary_key_value, primary_key_value_used);
-            if(!test)
-              return;
+            if(!m_find_mode)
+            {
+              const bool test = add_related_record_for_field(layout_field, relationship, primary_key_field, primary_key_value, primary_key_value_used);
+              if(!test)
+                return;
+            }
 
             //Get the new primary_key_value if it has been created:
             primary_key_value = primary_key_value_used;
@@ -2339,6 +2383,9 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
         return;
       }
 
+      if(m_find_mode)
+        return;
+    
       const bool added = record_new(true /* use entered field data*/, primary_key_value);
       if(added)
       {
@@ -2377,7 +2424,8 @@ void DbAddDel::user_requested_delete(const Gtk::TreeModel::iterator& rowStart, c
     if(confirm_delete_record())
     {
       const Gnome::Gda::Value primary_key_value = get_primary_key_value(rowStart);
-      record_delete(primary_key_value);
+      if(!m_find_mode)
+        record_delete(primary_key_value);
 
       //Remove the row:
       remove_item(rowStart);

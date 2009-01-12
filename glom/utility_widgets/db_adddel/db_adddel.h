@@ -24,7 +24,7 @@
 #include <gtkmm.h>
 #include <glom/libglom/data_structure/layout/layoutitem_field.h>
 #include <libgdamm.h>
-#include "glom_db_treemodel.h"
+#include <glom/utility_widgets/db_adddel/treemodel_with_addrow.h>
 #include <glom/libglom/document/document_glom.h>
 #include <glom/base_db_table_data.h>
 
@@ -360,9 +360,9 @@ protected:
   Gtk::TreeView m_TreeView;
   Gtk::TreeModel::ColumnRecord m_ColumnRecord;
 
-  //typedef Gtk::ListStore type_model_store;
-  typedef DbTreeModel type_model_store;
-  Glib::RefPtr<type_model_store> m_refListStore;
+  //Either a db-backed model, or a liststore-derived find-criteria model:
+  TreeModelWithAddRow* m_refListStore; //We use this without a Glib::RefPtr to avoid the complication of ObjectBase as an MI base.
+  Glib::RefPtr<Gtk::TreeModel> m_refListStore_as_model; //To avoid repeated dynamic_casts.
 
   //Columns, not including the hidden internal columns:
   typedef std::vector<DbAddDelColumnInfo> type_ColumnTypes;
