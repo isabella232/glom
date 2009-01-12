@@ -1,5 +1,10 @@
 2009-01-12  Murray Cumming  <murrayc@murrayc.com>
 
+	* configure.in: Increase version to 1.9.0, in anticiaption of a first 
+	unstable 1.9/1.10 release.
+
+2009-01-12  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/glom.glade: Main window: Correct the order of the Records: and 
 	Found: labels, which became confused at some point, maybe during 1.8.
 
