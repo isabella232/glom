@@ -1,3 +1,8 @@
+2009-01-12  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/glom.glade: Main window: Correct the order of the Records: and 
+	Found: labels, which became confused at some point, maybe during 1.8.
+
 1.8.5:
 
 2009-01-02  Murray Cumming  <murrayc@murrayc.com>
