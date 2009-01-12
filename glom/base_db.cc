@@ -365,7 +365,7 @@ Base_DB::type_vecStrings Base_DB::get_table_names_from_database(bool ignore_syst
         if(G_VALUE_TYPE(value.gobj()) ==  G_TYPE_STRING)
         {
           table_name = value.get_string();
-          std::cout << "DEBUG: Found table: " << table_name << std::endl;
+          //std::cout << "DEBUG: Found table: " << table_name << std::endl;
 
           bool add_it = true;
 
