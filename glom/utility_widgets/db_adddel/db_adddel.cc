@@ -1304,8 +1304,6 @@ void DbAddDel::set_show_column_titles(bool bVal)
 
 void DbAddDel::set_find_mode(bool val)
 {
-  std::cout << "DbAddDel::set_find_mode() val=" << val << std::endl;
-
   const bool current = m_find_mode;
   m_find_mode = val;
 

@@ -1,5 +1,10 @@
 2009-01-12  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/glom.glade: Main window: Correct the order of the Records: and 
+	Found: labels, which became confused at some point, maybe during 1.8.
+
+2009-01-12  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_find/box_data_list_find.cc: fill_from_database(): 
 	Call DbAddDel::set_columns_ready() so the treeview actually shows some 
 	columns.
