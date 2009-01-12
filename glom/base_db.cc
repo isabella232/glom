@@ -350,7 +350,7 @@ Base_DB::type_vecStrings Base_DB::get_table_names_from_database(bool ignore_syst
 
     if(data_model_tables && (data_model_tables->get_n_columns() == 0))
     {
-      std::cerr << "Base_DB_Table::get_table_names_from_database(): libgda reported 0 tables for the database." << std::endl;
+      std::cerr << "Base_DB::get_table_names_from_database(): libgda reported 0 tables for the database." << std::endl;
     }
     else if(data_model_tables)
     {
@@ -2980,26 +2980,28 @@ void Base_DB::update_gda_metastore_for_table(const Glib::ustring& table_name) co
   sharedptr<SharedConnection> sharedconnection = connect_to_server(App_Glom::get_application());
   if(!sharedconnection)
   {
-    std::cerr << "Base_DB_Table::update_gda_metastore_for_table(): No connection." << std::endl;
+    std::cerr << "Base_DB::update_gda_metastore_for_table(): No connection." << std::endl;
     return;
   }
 
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
   if(!gda_connection)
   {
-    std::cerr << "Base_DB_Table::update_gda_metastore_for_table(): No gda_connection." << std::endl;
+    std::cerr << "Base_DB::update_gda_metastore_for_table(): No gda_connection." << std::endl;
     return;
   }
 
   if(table_name.empty())
   {
-    std::cerr << "Base_DB_Table::update_gda_metastore_for_table(): table_name is empty." << std::endl;
+    std::cerr << "Base_DB::update_gda_metastore_for_table(): table_name is empty." << std::endl;
     return;
   }
 
-  std::cout << "DEBUG: Base_DB_Table::update_gda_metastore_for_table(): Calling Gda::Connection::update_meta_store_table() ..." << std::endl;
+  std::cout << "DEBUG: Base_DB::update_gda_metastore_for_table(): Calling Gda::Connection::update_meta_store_table() ..." << std::endl;
+  //TODO: This doesn't seem to quite work yet:
   gda_connection->update_meta_store_table(table_name);
-  std::cout << "DEBUG: Base_DB_Table::update_gda_metastore_for_table(): ... Finished calling Gda::Connection::update_meta_store_table()" << std::endl;
+  //This does work, though it takes ages: gda_connection->update_meta_store();
+  std::cout << "DEBUG: Base_DB::update_gda_metastore_for_table(): ... Finished calling Gda::Connection::update_meta_store_table()" << std::endl;
 }
 
 } //namespace Glom
