@@ -392,6 +392,7 @@ bool ConnectionPoolBackend::drop_column(const Glib::RefPtr<Gnome::Gda::Connectio
   return true;
 }
 
+//TODO: Why/When do we need to change multiple columns instead of a single one? murrayc.
 bool ConnectionPoolBackend::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vecConstFields& old_fields, const type_vecConstFields& new_fields, std::auto_ptr<Glib::Error>& error)
 {
   static const char* TRANSACTION_NAME = "glom_change_columns_transaction";
