@@ -158,13 +158,13 @@ protected:
     */
   virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error) = 0;
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual bool add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const sharedptr<const Field>& field, std::auto_ptr<Glib::Error>& error);
 
   virtual bool drop_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const Glib::ustring& field_name, std::auto_ptr<Glib::Error>& error);
 
   virtual bool change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vecConstFields& old_fields, const type_vecConstFields& new_fields, std::auto_ptr<Glib::Error>& error);
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
   /** This method is called to create a new database on the
    * database server. */
   virtual bool create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error) = 0;
@@ -257,6 +257,7 @@ public:
    */
   void cleanup(Gtk::Window* parent_window);
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   bool add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field);
 #else
@@ -280,6 +281,7 @@ public:
 #else
   bool change_columns(const Glib::ustring& table_name, const type_vecConstFields& old_fields, const type_vecConstFields& fields, std::auto_ptr<Glib::Error>& error);
 #endif
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   /** Specify a callback that the ConnectionPool can call to get a pointer to the document.
    * This callback avoids Connection having to link to App_Glom,

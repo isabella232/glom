@@ -158,6 +158,228 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vecConstFields& old_fields, const type_vecConstFields& new_fields, std::auto_ptr<Glib::Error>& error)
+{
+  static const char* TRANSACTION_NAME = "glom_change_columns_transaction";
+  static const gchar* TEMP_COLUMN_NAME = "glom_temp_column"; // TODO: Find a unique name.
+
+  if(!begin_transaction(connection, TRANSACTION_NAME, Gnome::Gda::TRANSACTION_ISOLATION_UNKNOWN, error)) return false; // TODO: What does the transaction isolation do?
+
+  for(unsigned int i = 0; i < old_fields.size(); ++ i)
+  {
+    // If the type did change, then we need to recreate the column. See
+    // http://www.postgresql.org/docs/faqs.FAQ.html#item4.3
+    if(old_fields[i]->get_field_info()->get_g_type() != new_fields[i]->get_field_info()->get_g_type())
+    {
+      // Create a temporary column
+      sharedptr<Field> temp_field = glom_sharedptr_clone(new_fields[i]);
+      temp_field->set_name(TEMP_COLUMN_NAME);
+      // The temporary column must not be primary key as long as the original
+      // (primary key) column is still present, because there cannot be two
+      // primary key columns.
+      temp_field->set_primary_key(false);
+
+      if(!add_column(connection, table_name, temp_field, error)) break;
+
+      Glib::ustring conversion_command;
+      const Glib::ustring field_name_old_quoted = "\"" + old_fields[i]->get_name() + "\"";
+      const Field::glom_field_type old_field_type = old_fields[i]->get_glom_type();
+
+      // For most conversions that are not possible according to this function,
+      // we get still quite good results when doing them nevertheless, such as
+      // text to date or date to text, so I commented this out.
+//      if(Field::get_conversion_possible(old_fields[i]->get_glom_type(), new_fields[i]->get_glom_type()))
+      {
+        //TODO: postgres seems to give an error if the data cannot be converted (for instance if the text is not a numeric digit when converting to numeric) instead of using 0.
+        /*
+        Maybe, for instance:
+        http://groups.google.de/groups?hl=en&lr=&ie=UTF-8&frame=right&th=a7a62337ad5a8f13&seekm=23739.1073660245%40sss.pgh.pa.us#link5
+        UPDATE _table
+        SET _bbb = to_number(substring(_aaa from 1 for 5), '99999')
+        WHERE _aaa <> '     ';  
+        */
+
+        switch(new_fields[i]->get_glom_type())
+        {
+          case Field::TYPE_BOOLEAN:
+          {
+            if(old_field_type == Field::TYPE_NUMERIC)
+            {
+              conversion_command = "(CASE WHEN " + field_name_old_quoted + " > 0 THEN true "
+                                         "WHEN " + field_name_old_quoted + " = 0 THEN false "
+                                         "WHEN " + field_name_old_quoted + " IS NULL THEN false END)";
+            }
+            else if(old_field_type == Field::TYPE_TEXT)
+              conversion_command = "(" + field_name_old_quoted + " !~~* \'false\')"; // !~~* means ! ILIKE
+            else // Dates and Times:
+              conversion_command = "(" + field_name_old_quoted + " IS NOT NULL)";
+            break;
+          }
+
+          case Field::TYPE_NUMERIC: // CAST does not work if the destination type is numeric
+          {
+            if(old_field_type == Field::TYPE_BOOLEAN)
+            {
+              conversion_command = "(CASE WHEN " + field_name_old_quoted + " = true THEN 1 "
+                                         "WHEN " + field_name_old_quoted + " = false THEN 0 "
+                                         "WHEN " + field_name_old_quoted + " IS NULL THEN 0 END)";
+            }
+            else
+            {
+              //We use to_number, with textcat() so that to_number always has usable data.
+              //Otherwise, it says 
+              //invalid input syntax for type numeric: " "
+              //
+              //We must use single quotes with the 0, otherwise it says "column 0 does not exist.".
+              conversion_command = "to_number( textcat(\'0\', " + field_name_old_quoted + "), '999999999.99999999' )";
+            }
+
+            break;
+          }
+
+          case Field::TYPE_DATE: // CAST does not work if the destination type is date.
+          {
+            conversion_command = "to_date( " + field_name_old_quoted + ", 'YYYYMMDD' )"; // TODO: Standardise date storage format.
+            break;
+          }
+          case Field::TYPE_TIME: // CAST does not work if the destination type is timestamp.
+          {
+            conversion_command = "to_timestamp( " + field_name_old_quoted + ", 'HHMMSS' )"; // TODO: Standardise time storage format.
+            break;
+          }
+
+          default:
+          {
+            // To Text:
+
+            // bool to text:
+            if(old_field_type == Field::TYPE_BOOLEAN)
+            {
+              conversion_command = "(CASE WHEN " + field_name_old_quoted + " = true THEN \'true\' "
+                                         "WHEN " + field_name_old_quoted + " = false THEN \'false\' "
+                                         "WHEN " + field_name_old_quoted + " IS NULL THEN \'false\' END)";
+            }
+            else
+            {
+              // This works for most to-text conversions:
+              conversion_command = "CAST(" + field_name_old_quoted + " AS " + new_fields[i]->get_sql_type() + ")";
+            }
+
+            break;
+          }
+        }
+
+        if(!query_execute(connection, "UPDATE \"" + table_name + "\" SET \"" + TEMP_COLUMN_NAME + "\" = " + conversion_command, error))
+          break;
+      }
+#if 0
+      else
+      {
+        // The conversion is not possible.
+
+        // TODO: What to do here? The old code seems to have changed the type
+        // nevertheless, losing all data in the field.
+        std::cout << "Conversion between " << old_fields[i]->get_sql_type() << " and " << new_fields[i]->get_sql_type() << " not supported, trying direct CAST" << std::endl;
+
+        conversion_command = "CAST(" + field_name_old_quoted + " AS " + new_fields[i]->get_sql_type() + ")";
+        if(!query_execute(connection, "UPDATE \"" + table_name + "\" SET \"" + TEMP_COLUMN_NAME + "\" = " + conversion_command, error))
+	{
+	  // Don't panic if this fails, for now.
+          std::cout << "  ... failed: " << error->what() << std::endl;
+	  error.reset(NULL);
+	}
+      }
+#endif
+
+      if(!drop_column(connection, table_name, old_fields[i]->get_name(), error));
+      if(!query_execute(connection, "ALTER TABLE \"" + table_name + "\" RENAME COLUMN \"" + TEMP_COLUMN_NAME + "\" TO \"" + new_fields[i]->get_name() + "\"", error)) break;
+
+      // Readd primary key constraint
+      if(new_fields[i]->get_primary_key())
+        if(!query_execute(connection, "ALTER TABLE \"" + table_name + "\" ADD PRIMARY KEY (\"" + new_fields[i]->get_name() + "\")", error))
+          break;
+    }
+    else
+    {
+      // The type did not change. What could have changed: The field being a
+      // unique key, primary key, its name or its default value.
+
+      // Primary key
+      // TODO: Test whether this is able to remove unique key constraints
+      // added via libgda's DDL API in add_column(). Maybe override
+      // add_column() if we can't.
+      bool primary_key_was_set = false;
+      bool primary_key_was_unset = false;
+      if(old_fields[i]->get_primary_key() != new_fields[i]->get_primary_key())
+      {
+        if(new_fields[i]->get_primary_key())
+        {
+          primary_key_was_set = true;
+
+          // Primary key was added
+          if(!query_execute(connection, "ALTER TABLE \"" + table_name + "\" ADD PRIMARY KEY (\"" + old_fields[i]->get_name() + "\")", error))
+            break;
+
+          // Remove unique key constraint, because this is already implied in
+          // the field being primary key.
+          if(old_fields[i]->get_unique_key())
+            if(!query_execute(connection, "ALTER TABLE \"" + table_name + "\" DROP CONSTRAINT \"" + old_fields[i]->get_name() + "_key", error))
+              break;
+        }
+        else
+        {
+          primary_key_was_unset = true;
+
+          // Primary key was removed
+          if(!query_execute(connection, "ALTER TABLE \"" + table_name + "\" DROP CONSTRAINT \"" + table_name + "_pkey\"", error))
+            break;
+        }
+      }
+
+      // Uniqueness
+      if(old_fields[i]->get_unique_key() != new_fields[i]->get_unique_key())
+      {
+        // Postgres automatically makes primary keys unique, so we do not need
+        // to do that separately if we already made it a primary key
+        if(!primary_key_was_set && new_fields[i]->get_unique_key())
+        {
+          if(!query_execute(connection, "ALTER TABLE \"" + table_name + "\" ADD CONSTRAINT \"" + old_fields[i]->get_name() + "_key\" UNIQUE (\"" + old_fields[i]->get_name() + "\")", error))
+            break;
+        }
+        else if(!primary_key_was_unset && !new_fields[i]->get_unique_key() && !new_fields[i]->get_primary_key())
+        {
+          if(!query_execute(connection, "ALTER TABLE \"" + table_name + "\" DROP CONSTRAINT \"" + old_fields[i]->get_name() + "_key\"", error))
+            break;
+        }
+      }
+
+      if(!new_fields[i]->get_auto_increment()) // Auto-increment fields have special code as their default values.
+      {
+        if(old_fields[i]->get_default_value() != new_fields[i]->get_default_value())
+        {
+          if(!query_execute(connection, "ALTER TABLE \"" + table_name + "\" ALTER COLUMN \"" + old_fields[i]->get_name() + "\" SET DEFAULT " + new_fields[i]->sql(new_fields[i]->get_default_value(), Field::SQL_FORMAT_POSTGRES), error))
+            break;
+        }
+      }
+
+      if(old_fields[i]->get_name() != new_fields[i]->get_name())
+      {
+        if(!query_execute(connection, "ALTER TABLE \"" + table_name + "\" RENAME COLUMN \"" + old_fields[i]->get_name() + "\" TO \"" + new_fields[i]->get_name() + "\"", error))
+          break;
+      }
+    }
+  }
+
+  if(error.get() || !commit_transaction(connection, TRANSACTION_NAME, error))
+  {
+    std::auto_ptr<Glib::Error> rollback_error;
+    rollback_transaction(connection, TRANSACTION_NAME, rollback_error);
+    return false;
+  }
+
+  return true;
+}
+
 bool Postgres::attempt_create_database(const Glib::ustring& database_name, const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error)
 {
   Glib::RefPtr<Gnome::Gda::ServerOperation> op;

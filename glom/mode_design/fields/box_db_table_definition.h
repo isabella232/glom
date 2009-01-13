@@ -58,11 +58,6 @@ protected:
 
   bool check_field_change(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field_new);
 
-#if 0
-  //Postgres needs some complex stuff:
-  virtual void postgres_change_column_type(const sharedptr<const Field>& field_old, const sharedptr<const Field>& field);
-#endif
-
   mutable AddDel_WithButtons m_AddDel; //mutable because its get_ methods aren't const.
 
   guint m_colName, m_colTitle, m_colType, m_colUnique, m_colPrimaryKey;

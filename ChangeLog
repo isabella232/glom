@@ -1,3 +1,21 @@
+2009-01-13  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/connectionpool.h: 
+	* glom/libglom/connectionpool.cc: Explain that when changing a table's
+	primary key we are changing two columns, in response to Murray's
+	previously added TODO comment. Don't compile add_column(),
+	drop_column(), change_columns() in client only mode.
+
+	* glom/libglom/connectionpool_backends/postgres.h:
+	* glom/libglom/connectionpool_backends/postgres.cc: Added
+	postgres-specific code for changing a column's type, to allow
+	conversions from/to date and time fields.
+
+	* glom/mode_design/fields/box_db_table_definition.h:
+	* glom/mode_design/fields/box_db_table_definition.cc: Removed
+	commented-out code that did the same before I moved the functionality
+	to the connectionpool backend.
+
 2009-01-13  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/connectionpool.cc: change_columns(): Added a TODO 

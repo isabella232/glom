@@ -56,9 +56,9 @@ protected:
   virtual Field::sql_format get_sql_format() const { return Field::SQL_FORMAT_POSTGRES; }
   virtual bool supports_remote_access() const { return true; }
 
-  /** Creates a new database.
-   */
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+  virtual bool change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vecConstFields& old_fields, const type_vecConstFields& new_fields, std::auto_ptr<Glib::Error>& error);
+
   bool attempt_create_database(const Glib::ustring& database_name, const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error);
 #endif
 

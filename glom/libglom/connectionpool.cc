@@ -362,6 +362,7 @@ bool ConnectionPoolBackend::query_execute(const Glib::RefPtr<Gnome::Gda::Connect
 #endif
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 bool ConnectionPoolBackend::add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const sharedptr<const Field>& field, std::auto_ptr<Glib::Error>& error)
 {
   Glib::RefPtr<Gnome::Gda::ServerProvider> provider = connection->get_provider();
@@ -393,6 +394,12 @@ bool ConnectionPoolBackend::drop_column(const Glib::RefPtr<Gnome::Gda::Connectio
 }
 
 //TODO: Why/When do we need to change multiple columns instead of a single one? murrayc.
+//When changing a table's primary key, we unset the primary key for the old
+//column and set it for the new column. Using a single call to the
+//ConnectionPoolBackend for this, the backend can do all the required
+//operations at once, maybe optimizing them. For example, for SQLite we need
+//to recreate the whole table when changing columns, so we only need to do
+//this once instead of twice when changing the primary key. armin.
 bool ConnectionPoolBackend::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vecConstFields& old_fields, const type_vecConstFields& new_fields, std::auto_ptr<Glib::Error>& error)
 {
   static const char* TRANSACTION_NAME = "glom_change_columns_transaction";
@@ -435,6 +442,7 @@ bool ConnectionPoolBackend::change_columns(const Glib::RefPtr<Gnome::Gda::Connec
 
   return true;
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 //init_db_details static data:
 ConnectionPool* ConnectionPool::m_instance = 0;
@@ -869,6 +877,7 @@ void ConnectionPool::cleanup(Gtk::Window* parent_window)
   previous_sig_handler = SIG_DFL; /* Arbitrary default */
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ENLY
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
 bool ConnectionPool::add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field)
 #else
@@ -995,6 +1004,7 @@ bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_
 
   return result;
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 bool ConnectionPool::initialize(Gtk::Window* parent_window)
 {
