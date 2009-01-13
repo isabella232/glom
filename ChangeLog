@@ -1,5 +1,11 @@
 2009-01-13  Armin Burgmeier  <armin@openismus.com>
 
+	* glom/libglom/connectionpool.cc add_column(): Don't set the
+	autoincrement field for the newly added column since we do control
+	this ourselves in Glom.
+
+2009-01-13  Armin Burgmeier  <armin@openismus.com>
+
 	* glom/libglom/connectionpool.h: 
 	* glom/libglom/connectionpool.cc: Explain that when changing a table's
 	primary key we are changing two columns, in response to Murray's

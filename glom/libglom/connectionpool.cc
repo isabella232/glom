@@ -372,7 +372,6 @@ bool ConnectionPoolBackend::add_column(const Glib::RefPtr<Gnome::Gda::Connection
   if(!set_server_operation_value(operation, "/COLUMN_DEF_P/TABLE_NAME", table_name, error)) return false;
   if(!set_server_operation_value(operation, "/COLUMN_DEF_P/COLUMN_NAME", field->get_name(), error)) return false;
   if(!set_server_operation_value(operation, "/COLUMN_DEF_P/COLUMN_TYPE", field->get_sql_type(), error)) return false;
-  if(!set_server_operation_value(operation, "/COLUMN_DEF_P/COLUMN_AUTOINC", field->get_auto_increment() ? "TRUE" : "FALSE", error)) return false;
   if(!set_server_operation_value(operation, "/COLUMN_DEF_P/COLUMN_PKEY", field->get_primary_key() ? "TRUE" : "FALSE", error)) return false;
   if(!set_server_operation_value(operation, "/COLUMN_DEF_P/COLUMN_UNIQUE", field->get_unique_key() ? "TRUE" : "FALSE", error)) return false;
 
