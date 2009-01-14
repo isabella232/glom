@@ -440,6 +440,7 @@ sharedptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::TreeMo
     fieldInfo->set_g_type(fieldType);
 
     //Put it together:
+    fieldResult->set_glom_type(glom_type);
     fieldResult->set_field_info(fieldInfo);
 
     //TODO: Use the libgda functions above when we make them work:

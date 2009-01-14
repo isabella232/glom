@@ -421,6 +421,8 @@ bool ConnectionPoolBackend::change_columns(const Glib::RefPtr<Gnome::Gda::Connec
 
     const Glib::ustring temp_move_query = "UPDATE " + table_name + " SET " + TEMP_COLUMN_NAME + " = CAST(" + old_fields[i]->get_name() + " AS " + new_fields[i]->get_sql_type() + ")";
     if(!query_execute(connection, temp_move_query, error)) break;
+    // TODO: If this CAST was not successful, then just go on,
+    // dropping the data in the column?
 
     if(!drop_column(connection, table_name, old_fields[i]->get_name(), error)) return false;
 

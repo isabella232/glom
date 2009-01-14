@@ -1,3 +1,18 @@
+2009-01-14  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/connectionpool_backends/postgres.cc (change_columns):
+	When changing column types, only attempt to convert data if
+	Field::get_conversion_possible() returns TRUE, otherwise just change
+	the column type without trying to convert the data.
+
+	* glom/libglom/connectionpool.cc (change_columns): Added a TODO
+	comment about not failing when data could not be converted to the new
+	column type.
+
+	* glom/mode_design/fields/box_db_table_definition.cc
+	(get_field_definition): Set the glom type explicitely on the result
+	field, so that we don't have to guess from the GType.
+
 2009-01-13  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/connectionpool.cc add_column(): Don't set the

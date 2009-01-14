@@ -185,10 +185,7 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
       const Glib::ustring field_name_old_quoted = "\"" + old_fields[i]->get_name() + "\"";
       const Field::glom_field_type old_field_type = old_fields[i]->get_glom_type();
 
-      // For most conversions that are not possible according to this function,
-      // we get still quite good results when doing them nevertheless, such as
-      // text to date or date to text, so I commented this out.
-//      if(Field::get_conversion_possible(old_fields[i]->get_glom_type(), new_fields[i]->get_glom_type()))
+      if(Field::get_conversion_possible(old_fields[i]->get_glom_type(), new_fields[i]->get_glom_type()))
       {
         //TODO: postgres seems to give an error if the data cannot be converted (for instance if the text is not a numeric digit when converting to numeric) instead of using 0.
         /*
@@ -272,24 +269,10 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
         if(!query_execute(connection, "UPDATE \"" + table_name + "\" SET \"" + TEMP_COLUMN_NAME + "\" = " + conversion_command, error))
           break;
       }
-#if 0
       else
       {
-        // The conversion is not possible.
-
-        // TODO: What to do here? The old code seems to have changed the type
-        // nevertheless, losing all data in the field.
-        std::cout << "Conversion between " << old_fields[i]->get_sql_type() << " and " << new_fields[i]->get_sql_type() << " not supported, trying direct CAST" << std::endl;
-
-        conversion_command = "CAST(" + field_name_old_quoted + " AS " + new_fields[i]->get_sql_type() + ")";
-        if(!query_execute(connection, "UPDATE \"" + table_name + "\" SET \"" + TEMP_COLUMN_NAME + "\" = " + conversion_command, error))
-	{
-	  // Don't panic if this fails, for now.
-          std::cout << "  ... failed: " << error->what() << std::endl;
-	  error.reset(NULL);
-	}
+        // The conversion is not possible, so drop data in that column
       }
-#endif
 
       if(!drop_column(connection, table_name, old_fields[i]->get_name(), error));
       if(!query_execute(connection, "ALTER TABLE \"" + table_name + "\" RENAME COLUMN \"" + TEMP_COLUMN_NAME + "\" TO \"" + new_fields[i]->get_name() + "\"", error)) break;
