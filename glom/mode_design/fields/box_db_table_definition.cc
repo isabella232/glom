@@ -590,7 +590,8 @@ sharedptr<Field> Box_DB_Table_Definition::change_definition(const sharedptr<cons
 
 void Box_DB_Table_Definition::fill_fields()
 {
-  std::cout << "DEBUG: Box_DB_Table_Definition::fill_fields()" << std::endl;
+  //std::cout << "DEBUG: Box_DB_Table_Definition::fill_fields()" << std::endl;
+
   //Update the fields (also checking the actual database):
   m_vecFields = get_fields_for_table(m_table_name);
 }

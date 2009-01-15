@@ -1,3 +1,12 @@
+2009-01-15  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/glom.glade: initial dialog: Correct the button order, which 
+	seems to have been broken when re-saving with glade-2. The other 
+	dialogs seem OK.
+	* glom/libglom/data_structure/fieldtypes.cc: Constructor:
+	* glom/mode_design/fields/box_db_table_definition.cc: fill_fields(): 
+	Comment out some debug output.
+
 2009-01-14  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/connectionpool_backends/postgres.cc (change_columns):

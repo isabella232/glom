@@ -87,12 +87,12 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
             const GType gdatype = gda_g_type_from_string(type_string.c_str());
 
             //Save it for later:
-            std::cout << "debug: schema_type_string=" << schema_type_string << ", gda type=" << gdatype << "(" << g_type_name(gdatype) << ")" << std::endl;
+            //std::cout << "debug: schema_type_string=" << schema_type_string << ", gda type=" << gdatype << "(" << g_type_name(gdatype) << ")" << std::endl;
             
             m_mapSchemaStringsToGdaTypes[schema_type_string] = gdatype;
 
             Glib::ustring gdatypestring = gda_g_type_to_string(gdatype); // TODO: What is this actually used for?
-            std::cout << "schema type: " << schema_type_string << " = gdatype " << (guint)gdatype << "(" << gdatypestring << ")" << std::endl;
+            //std::cout << "schema type: " << schema_type_string << " = gdatype " << (guint)gdatype << "(" << gdatypestring << ")" << std::endl;
             
             m_mapGdaTypesToSchemaStrings[gdatype] = schema_type_string; //We save it twice, to just to make searching easier, without using a predicate.
             
