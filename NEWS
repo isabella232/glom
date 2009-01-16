@@ -1,3 +1,18 @@
+1.9.0:
+
+* Ported to libgdamm-4.0 (libgda-4.0) from libgda(mm)-3.0.
+  (Johannes Schmid, Armin Burgmeier, Murray Cumming)
+* Initial sqlite support as an alternative to PostgreSQL, intended for 
+  embedded use. There are still some obvious problems with this, but we 
+  expect to solve them soon in the next release, when we will also make this 
+  only a configure option.
+  (Armin Burgmeier)
+* Find: Make find mode work again in the list view.
+  (Murray Cumming) Bug #565579
+* Cache the connection for a few seconds to avoid unnecessary reconnects, 
+  making things faster. (Murray Cumming)
+* Fixes from recent 1.8 releases.
+
 1.8.1:
 
 * Related records: Show the specified fields, not all fields.

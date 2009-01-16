@@ -29,6 +29,7 @@ glom/layout_item_dialogs/dialog_imageobject.cc
 glom/layout_item_dialogs/dialog_notebook.cc
 glom/layout_item_dialogs/dialog_textobject.cc
 glom/libglom/connectionpool.cc
+glom/libglom/connectionpool_backends/postgres.cc
 glom/libglom/connectionpool_backends/postgres_central.cc
 glom/libglom/connectionpool_backends/postgres_self.cc
 glom/libglom/data_structure/field.cc

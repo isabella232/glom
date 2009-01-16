@@ -1,3 +1,5 @@
+1.9.0:
+
 2009-01-16  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.in: Update the required libgda(mm) versions.
@@ -369,7 +371,7 @@
 2008-12-09  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/application.h:
-	* glom/application.cc: Set "Users" mene item in "Developer" menu
+	* glom/application.cc: Set "Users" menu item in "Developer" menu
 	insensitive when the database does not support users.
 
 	* glom/frame_glom.cc: Don't ask for user/password for SQLite
