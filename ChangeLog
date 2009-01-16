@@ -1,3 +1,7 @@
+2009-01-16  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in: Update the required libgda(mm) versions.
+
 2009-01-15  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/glom.glade: initial dialog: Correct the button order, which 
