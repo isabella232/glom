@@ -2370,11 +2370,27 @@ void App_Glom::document_history_add(const Glib::ustring& file_uri)
   if(!file_uri.empty())
   {
     prevent = (file_uri == m_example_uri);
+    if (prevent)
+      return;
   }
+  // Check if the file exists because Gtk::RecentManager spits out a warning otherwise
+  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri (file_uri);
+  if (file->query_exists())
+  {
+    // Call the base class:
+    Bakery::App_WithDoc_Gtk::document_history_add(file_uri);    
+  }
+  else
+  {
+    Gtk::RecentManager::Data data;
+    data.display_name = get_document()->get_name();
+    data.app_name = "Glom";
+    data.mime_type = "application/x-glom";
+    data.is_private = false;
+    Bakery::App_WithDoc_Gtk::document_history_add(file_uri, data);
+  }
+  
 
-  // Call the base class:
-  if(!prevent)
-    Bakery::App_WithDoc_Gtk::document_history_add(file_uri);
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

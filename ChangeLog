@@ -1,3 +1,13 @@
+2009-01-19  Johannes Schmid  <jschmid@openismus.com>
+
+	* glom/application.cc:
+	Avoid a critical warning by adding the recent data instead of
+	letting Gtk::RecentManager query for non-existing uris which causes a
+	Gtk-Critical. Requires new bakery trunk
+	
+	* glom/libglom/document/document_glom.cc:
+	Don't duplicate code from Bakery.
+
 1.9.0:
 
 2009-01-16  Murray Cumming  <murrayc@murrayc.com>

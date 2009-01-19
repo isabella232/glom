@@ -1742,7 +1742,7 @@ void Document_Glom::save_changes()
   //(when in developer mode - no changes should even be possible when not in developer mode)
   if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
-    //This rebuilds the whole XML DOM and saves the whole document,
+    /*//This rebuilds the whole XML DOM and saves the whole document,
     //so we need to be careful not to call set_modified() too often.
 
       bool test = save_before();
@@ -1754,7 +1754,9 @@ void Document_Glom::save_changes()
         {
           set_modified(false);
         }
-      }
+      }*/
+		// The above is equivalent as calling Bakery::Document::save()
+		save();
   }
   else
   {
@@ -3138,11 +3140,10 @@ void Document_Glom::save_before_print_layout_position(xmlpp::Element* nodeItem, 
 
 bool Document_Glom::save_before()
 {
-  //std::cout << "debug: save_before(): uri=" << get_file_uri() << std::endl;
- 
   Bakery::BusyCursor busy_cursor(m_parent_window);
 
   xmlpp::Element* nodeRoot = get_node_document();
+
   if(nodeRoot)
   {
     //Always save as the latest format,
@@ -3396,7 +3397,7 @@ bool Document_Glom::save_before()
     xmlpp::Element* nodeGroups = nodeRoot->add_child(GLOM_NODE_GROUPS);
 
     nodeGroups->add_child_comment("These are only used when recreating a database from an example file. The actual access-control is on the server, of course.");
-
+    
     for(type_map_groups::const_iterator iter = m_groups.begin(); iter != m_groups.end(); ++iter)
     {
       const GroupInfo& group_info = iter->second;
@@ -3438,9 +3439,7 @@ bool Document_Glom::save_before()
       set_node_attribute_value(nodeModule, GLOM_ATTRIBUTE_LIBRARY_MODULE_NAME, name);
       set_node_attribute_value(nodeModule, GLOM_ATTRIBUTE_LIBRARY_MODULE_SCRIPT, script);
     }
-
   }
-
 
   //We don't use set_write_formatted() because it doesn't handle text nodes well.
   add_indenting_white_space_to_node();
