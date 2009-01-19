@@ -1,6 +1,12 @@
+2009-01-19  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc: document_history_add: Revert the previous,
+	because I removed the new API from Bakery and just fixed the existing 
+	Bakery method instead.
+
 2009-01-19  Johannes Schmid  <jschmid@openismus.com>
 
-	* glom/application.cc:
+	* glom/application.cc: document_history_add():
 	Avoid a critical warning by adding the recent data instead of
 	letting Gtk::RecentManager query for non-existing uris which causes a
 	Gtk-Critical. Requires new bakery trunk
