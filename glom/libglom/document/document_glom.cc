@@ -1289,8 +1289,8 @@ void Document_Glom::set_table_overview_position ( const Glib::ustring &table_nam
     
 void Document_Glom::set_tables(const type_listTableInfo& tables)
 {
-  //TODO: Avoid adding information about tables that we don't know about - that should be done explicitly.
-  //Look at each "table".
+  //We avoid adding information about tables that we don't know about - that should be done explicitly.
+  //Look at each "table":
 
   bool something_changed = false;
   for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); iter++)
@@ -1299,13 +1299,14 @@ void Document_Glom::set_tables(const type_listTableInfo& tables)
 
     const Glib::ustring table_name = doctableinfo.m_info->get_name();
 
+    //If the table is also in the supplied list:
     type_listTableInfo::const_iterator iterfind = std::find_if(tables.begin(), tables.end(), predicate_FieldHasName<TableInfo>(table_name));
     if(iterfind != tables.end())
     {
       sharedptr<TableInfo> info = doctableinfo.m_info;
 
       sharedptr<TableInfo> infoFound = *iterfind;
-      *info = *infoFound;
+      *info = *infoFound; //TODO: Check that it has really changed, to avoid calling set_modified() unnecessarily?
 
       something_changed = true;
     }
@@ -1742,21 +1743,19 @@ void Document_Glom::save_changes()
   //(when in developer mode - no changes should even be possible when not in developer mode)
   if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
-    /*//This rebuilds the whole XML DOM and saves the whole document,
+    //This rebuilds the whole XML DOM and saves the whole document,
     //so we need to be careful not to call set_modified() too often.
 
-      bool test = save_before();
+    bool test = save_before();
+    if(test)
+    {
+      //std::cout << "Document_Glom::save_changes(): calling write_to_disk()." << std::endl;
+      test = write_to_disk();
       if(test)
       {
-        //std::cout << "Document_Glom::save_changes(): calling write_to_disk()." << std::endl;
-        test = write_to_disk();
-        if(test)
-        {
-          set_modified(false);
-        }
-      }*/
-		// The above is equivalent as calling Bakery::Document::save()
-		save();
+        set_modified(false);
+      }
+    }
   }
   else
   {

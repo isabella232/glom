@@ -1,3 +1,10 @@
+2009-01-20  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/document/document_glom.cc: save_changes():
+	Revert the Johannes change here too, because it is causing infinite 
+	loops when adding fields, and probably at other times, repeatedly 
+	saving the file. The code is not equivalent.
+
 2009-01-19  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/application.cc: document_history_add: Revert the previous,

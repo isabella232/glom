@@ -381,7 +381,7 @@ void Box_Tables::save_to_document()
     }
 
     if(document)
-      document->set_tables( listTables); //TODO: Don't save all new tables - just the ones already in the document.
+      document->set_tables(listTables); //TODO: Don't save all new tables - just the ones already in the document.
   }
 }
 
