@@ -718,7 +718,7 @@ Glib::ustring Field::get_sql_type() const
 
 Glib::ustring Field::get_gda_type() const
 {
-  switch (m_glom_type)
+  switch(m_glom_type)
   {
     case TYPE_NUMERIC:
       return g_type_name(GDA_TYPE_NUMERIC);

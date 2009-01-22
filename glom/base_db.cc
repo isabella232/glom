@@ -1449,15 +1449,17 @@ Glib::RefPtr<Gnome::Gda::Connection> Base_DB::get_connection() const
   sharedptr<SharedConnection> sharedconnection = connect_to_server(0, error);
   if(error.get())
   {
-    g_warning("Base_DB::insert_example_data failed (query was: %s): %s", strQuery.c_str(), error->what());
+    std::cerr << "Base_DB::insert_example_data failed (query was: " << strQuery << "): " << error->what() << std::endl;
     // TODO: Rethrow? 
   }
 #endif
+
   if(!sharedconnection)
   {
     std::cerr << "Base_DB::insert_example_data: No connection yet." << std::endl;
     return Glib::RefPtr<Gnome::Gda::Connection>(0);
   }
+
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
   
   return gda_connection;
@@ -1473,7 +1475,7 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
   }
 
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
-  if (!gda_connection)
+  if(!gda_connection)
     return false;
 
   
@@ -1506,14 +1508,21 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
       {
         for(unsigned int i = 0; i < vec_values.size(); ++i)
         {
-          if (i > 0)
+          if(i > 0)
           {
             strVals += ", ";
             strNames += ", ";
-          }            
+          }
+
           strNames += vec_fields[i]->get_name();
+
+          //Add a SQL parameter placeholder for the value:
           strVals += "##" + vec_fields[i]->get_name() + "::" + vec_fields[i]->get_gda_type();              
         }
+
+        //Create and parse the SQL query:
+        //After this, the Parser will know how many SQL parameters there are in 
+        //the query, and allow us to set their values.
         const Glib::ustring strQuery = "INSERT INTO \"" + table_name + "\" (" + strNames + ") VALUES (" + strVals + ")";
         //std::cout << "debug: BaseDB::insert_exampledata: " << strQuery << std::endl;
         Glib::RefPtr<Gnome::Gda::SqlParser> parser = gda_connection->create_parser();
@@ -1523,48 +1532,53 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
         {
           stmt = parser->parse_string(strQuery);
         }
-        catch (Gnome::Gda::SqlParserError& error)
+        catch(const Gnome::Gda::SqlParserError& error)
         {
-          std::cout << "BaseDB::insert_exampledata: " << error.what() << std::endl;
+          std::cout << "DEBUG: BaseDB::insert_exampledata: " << error.what() << std::endl;
           insert_succeeded = false;
           break;
         }
 #else
         std::auto_ptr<Glib::Error> sql_error;
         stmt = parser->parse_string(strQuery, sql_error);
-        if (sql_error)
+        if(sql_error)
         {
-          std::cout << "BaseDB::insert_exampledata: " << error.what() << std::endl;
+          std::cout << "DEBUG: BaseDB::insert_exampledata: " << error.what() << std::endl;
           insert_succeeded = false;
           break;
         }
 #endif
+
         Glib::RefPtr<Gnome::Gda::Set> params;
         stmt->get_parameters(params);
-        for (unsigned int i = 0; i < vec_values.size(); ++i)
+        for(unsigned int i = 0; i < vec_values.size(); ++i)
         {
           Glib::RefPtr<Gnome::Gda::Holder> holder = params->get_holder(vec_fields[i]->get_name());
-          if (holder)
+          if(holder)
           {
-            bool success;
+            //Note that the file format always uses the Postgres field format, 
+            //even if the data will be inserted into a SQL database, so that 
+            //the file is not different just because of the backend:
+            bool success = false;
             Gnome::Gda::Value value = vec_fields[i]->from_sql(vec_values[i], Field::SQL_FORMAT_POSTGRES, success);
-            if (!success)
+            if(!success)
             {
-              std::cout << "Base_DB::insert_example_data: could not convert example data" << std::endl;
+              std::cerr << "Base_DB::insert_example_data: could not convert example data" << std::endl;
               continue;
             }
+
             holder->set_not_null(false); // some values might be null */
             holder->set_value(value);
           }
           else
-            std::cout << "Base_DB::insert_example_data: Missing holder: " << vec_fields[i]->get_name() << std::endl;
+            std::cerr << "Base_DB::insert_example_data: Missing holder: " << vec_fields[i]->get_name() << std::endl;
         }
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
         try
         {
           gda_connection->statement_execute_non_select (stmt, params);
         }
-        catch (Glib::Error& error)
+        catch(const Glib::Error& error)
         {
           std::cout << "BaseDB::insert_exampledata: " << error.what() << std::endl;
           insert_succeeded = false;
@@ -1573,7 +1587,7 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
 #else
         std_autoptr<Glib::Error> exec_error;
         gda_connection->statement_execute_non_select (stmt, params, exec_error);
-        if (exec_error)
+        if(exec_error)
         {
           std::cout << "BaseDB::insert_exampledata: " << error.what() << std::endl;
           insert_succeeded = false;
