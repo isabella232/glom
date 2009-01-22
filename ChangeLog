@@ -1,3 +1,17 @@
+2009-01-22  Johannes Schmid  <jschmid@openismus.com>
+
+	* glom/base_db.cc (insert_example_data(), get_connection()):
+	* glom/base_db.h:
+	Fixed insertion of example data by using variables in the sql statement
+	instead of inserting the data directly in the statement (which confuses the
+	GdaSqlParser and is inefficient)
+	
+	* glom/libglom/data_structure/field.cc (get_gda_type()):
+	* glom/libglom/data_structure/field.h:
+	Added a method to get the gda GType of the field. This is necessary to
+	prepare the sql statement so I would rather like to reuse get_sql_type().
+	Currntly investigating on gnome-db-list.
+
 2009-01-20  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/document/document_glom.cc: save_changes():

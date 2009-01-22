@@ -716,6 +716,27 @@ Glib::ustring Field::get_sql_type() const
   }
 }
 
+Glib::ustring Field::get_gda_type() const
+{
+  switch (m_glom_type)
+  {
+    case TYPE_NUMERIC:
+      return g_type_name(GDA_TYPE_NUMERIC);
+    case TYPE_TEXT:
+      return g_type_name(G_TYPE_STRING);
+    case TYPE_DATE:
+      return g_type_name(G_TYPE_DATE);
+    case TYPE_TIME:
+      return g_type_name(GDA_TYPE_TIME);
+    case TYPE_BOOLEAN:
+      return g_type_name(G_TYPE_BOOLEAN);
+    case TYPE_IMAGE:
+      return g_type_name(GDA_TYPE_BINARY);
+    default:
+      g_assert_not_reached();
+  }
+}
+
 /// Ignores any part of FieldAttributes that libgda does not properly fill.
 bool Field::field_info_from_database_is_equal(const Glib::RefPtr<const Gnome::Gda::Column>& field)
 {

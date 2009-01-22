@@ -286,6 +286,11 @@ bool Base_DB::query_execute(const Glib::ustring& strQuery, Gtk::Window* /* paren
   {
     std::cout << "debug: Base_DB::query_execute(): ServerProviderError: exception from execute_non_select_command(): " << ex.what() << std::endl;
   }
+	catch(const Gnome::Gda::SqlParserError& ex)
+	{
+		std::cout << "debug: Base_DB::query_execute(): SqlParserError:" << ex.what() << std::endl;
+		std::cout << "debug: query was: " << strQuery << std::endl;
+	}
 #else
   std::auto_ptr<Glib::Error> error;
   execute_result = gda_connection->gda_connection->statement_execute_non_select(strQuery, error);
@@ -1435,6 +1440,29 @@ bool Base_DB::change_columns(const Glib::ustring& table_name, const type_vecCons
 }
 #endif
 
+Glib::RefPtr<Gnome::Gda::Connection> Base_DB::get_connection() const
+{
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  sharedptr<SharedConnection> sharedconnection = connect_to_server();
+#else
+  std::auto_ptr<ExceptionConnection> error;
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(0, error);
+  if(error.get())
+  {
+    g_warning("Base_DB::insert_example_data failed (query was: %s): %s", strQuery.c_str(), error->what());
+    // TODO: Rethrow? 
+  }
+#endif
+  if(!sharedconnection)
+  {
+    std::cerr << "Base_DB::insert_example_data: No connection yet." << std::endl;
+    return Glib::RefPtr<Gnome::Gda::Connection>(0);
+  }
+  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
+  
+  return gda_connection;
+}
+
 bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
 {
   const Glib::ustring example_rows = get_document()->get_table_example_data(table_name);
@@ -1444,6 +1472,11 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
     return true;
   }
 
+  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
+  if (!gda_connection)
+    return false;
+
+  
   //std::cout << "debug: inserting example_rows for table: " << table_name << std::endl;
 
   bool insert_succeeded = true;
@@ -1452,109 +1485,108 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
   //Get field names:
   Document_Glom::type_vecFields vec_fields = get_document()->get_table_fields(table_name);
 
-  Glib::ustring strNames;
-  unsigned int fields_count = 0;
-  for(Document_Glom::type_vecFields::const_iterator iter = vec_fields.begin(); iter != vec_fields.end(); ++iter)
-  {
-    //Append it:
-    if(!strNames.empty())
-    {
-      strNames += ", ";
-      ++fields_count;
-    }
-
-    strNames += "\"" + (*iter)->get_name() + "\"";
-  }
-
-  const ConnectionPool* connection_pool = ConnectionPool::get_instance();
-
-  if(strNames.empty())
-  {
-    g_warning("Base_DB::insert_example_data(): strNames is empty.");
-  }
-
   //Actually insert the data:
   const type_vecStrings vec_rows = Utils::string_separate(example_rows, "\n", false /* ignore \n inside quotes. */);
   //std::cout << "  debug: Base_DB::insert_example_data(): number of rows of data: " << vec_rows.size() << std::endl;
-
+  
   for(type_vecStrings::const_iterator iter = vec_rows.begin(); iter != vec_rows.end(); ++iter)
   {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-    try
-#endif // GLIBMM_EXCEPTIONS_ENABLED
+    //Check that the row contains the correct number of columns.
+    //This check will slow this down, but it seems useful:
+    //TODO: This can only work if we can distinguish , inside "" and , outside "":
+    const Glib::ustring& row_data = *iter;
+    Glib::ustring strNames;
+    Glib::ustring strVals;
+    if(!row_data.empty())
     {
-      //Check that the row contains the correct number of columns.
-      //This check will slow this down, but it seems useful:
-      //TODO: This can only work if we can distinguish , inside "" and , outside "":
-      const Glib::ustring& row_data = *iter;
-      if(!row_data.empty())
+      const type_vecStrings vec_values = Utils::string_separate(row_data, ",", true /* ignore , inside quotes */);
+      //Do not allow any unescaped newlines in the row data.
+      //Note that this is checking for newlines ("\n"), not escaped newlines ("\\n").
+      if(row_data.find("\n") == Glib::ustring::npos)
       {
-        const type_vecStrings vec_values = Utils::string_separate(row_data, ",", true /* ignore , inside quotes */);
-        if(true) //vec_values.size() == fields_count)
+        for(unsigned int i = 0; i < vec_values.size(); ++i)
         {
-          //Do not allow any unescaped newlines in the row data.
-          //Note that this is checking for newlines ("\n"), not escaped newlines ("\\n").
-          Glib::ustring converted_row_data;
-          const Glib::ustring* actual_row_data = &row_data;
-          if(row_data.find("\n") == Glib::ustring::npos) 
+          if (i > 0)
           {
-            // All data is stored in postgres format in the examples file
-            // (for historical reasons). Convert to the format the backend
-            // requires, if necessary.
-            if(connection_pool->get_sql_format() != Field::SQL_FORMAT_POSTGRES)
+            strVals += ", ";
+            strNames += ", ";
+          }            
+          strNames += vec_fields[i]->get_name();
+          strVals += "##" + vec_fields[i]->get_name() + "::" + vec_fields[i]->get_gda_type();              
+        }
+        const Glib::ustring strQuery = "INSERT INTO \"" + table_name + "\" (" + strNames + ") VALUES (" + strVals + ")";
+        //std::cout << "debug: BaseDB::insert_exampledata: " << strQuery << std::endl;
+        Glib::RefPtr<Gnome::Gda::SqlParser> parser = gda_connection->create_parser();
+        Glib::RefPtr<Gnome::Gda::Statement> stmt;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+        try
+        {
+          stmt = parser->parse_string(strQuery);
+        }
+        catch (Gnome::Gda::SqlParserError& error)
+        {
+          std::cout << "BaseDB::insert_exampledata: " << error.what() << std::endl;
+          insert_succeeded = false;
+          break;
+        }
+#else
+        std::auto_ptr<Glib::Error> sql_error;
+        stmt = parser->parse_string(strQuery, sql_error);
+        if (sql_error)
+        {
+          std::cout << "BaseDB::insert_exampledata: " << error.what() << std::endl;
+          insert_succeeded = false;
+          break;
+        }
+#endif
+        Glib::RefPtr<Gnome::Gda::Set> params;
+        stmt->get_parameters(params);
+        for (unsigned int i = 0; i < vec_values.size(); ++i)
+        {
+          Glib::RefPtr<Gnome::Gda::Holder> holder = params->get_holder(vec_fields[i]->get_name());
+          if (holder)
+          {
+            bool success;
+            Gnome::Gda::Value value = vec_fields[i]->from_sql(vec_values[i], Field::SQL_FORMAT_POSTGRES, success);
+            if (!success)
             {
-              for(unsigned int i = 0; i < vec_values.size(); ++i)
-              {
-                if(i > 0)
-                  converted_row_data += ", ";
-                // If there are more fields than data values, then simply
-                // omit the excess values.
-                if(i >= vec_fields.size())
-                  break;
-
-                bool success;
-                const Gnome::Gda::Value value = vec_fields[i]->from_sql(vec_values[i], Field::SQL_FORMAT_POSTGRES, success);
-
-                if(success)
-                  converted_row_data += vec_fields[i]->sql(value, connection_pool->get_sql_format());
-                else
-                  converted_row_data += "''";
-              }
-
-              actual_row_data = &converted_row_data;
+              std::cout << "Base_DB::insert_example_data: could not convert example data" << std::endl;
+              continue;
             }
-
-            const Glib::ustring strQuery = "INSERT INTO \"" + table_name + "\" (" + strNames + ") VALUES (" + *actual_row_data + ")";
-            //std::cout << "debug: before query: " << strQuery << std::endl;
-            if(query_execute(strQuery))
-              //std::cout << "debug: after query: " << strQuery << std::endl;
-              insert_succeeded = true;
-            else
-            {
-              insert_succeeded = false;
-              break;
-            }
+            holder->set_not_null(false); // some values might be null */
+            holder->set_value(value);
           }
           else
-          {
-            std::cerr << "Glom: Base_DB::insert_example_data(): nested newline found in row data: " << row_data << std::endl;
-          }
+            std::cout << "Base_DB::insert_example_data: Missing holder: " << vec_fields[i]->get_name() << std::endl;
         }
-        else
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+        try
         {
-          std::cerr << "Glom: Base_DB::insert_example_data(): vec_values.size()=" << vec_values.size() << " != fields_count="<< fields_count << std::endl;
+          gda_connection->statement_execute_non_select (stmt, params);
         }
+        catch (Glib::Error& error)
+        {
+          std::cout << "BaseDB::insert_exampledata: " << error.what() << std::endl;
+          insert_succeeded = false;
+          break;
+        }
+#else
+        std_autoptr<Glib::Error> exec_error;
+        gda_connection->statement_execute_non_select (stmt, params, exec_error);
+        if (exec_error)
+        {
+          std::cout << "BaseDB::insert_exampledata: " << error.what() << std::endl;
+          insert_succeeded = false;
+          break;
+        }
+#endif
+      }
+      else
+      {
+        std::cerr << "Glom: Base_DB::insert_example_data(): nested newline found in row data: " << row_data << std::endl;
       }
     }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-    catch(const ExceptionConnection& ex)
-    {
-      std::cerr << "debug: Base_DB::insert_example_data(): query_execute() failed: " << ex.what() << std::endl;
-   
-      insert_succeeded = false;
-      break;
-    }
-#endif
+    insert_succeeded = true;
   }
 
   for(Document_Glom::type_vecFields::const_iterator iter = vec_fields.begin(); iter != vec_fields.end(); ++iter)
@@ -1562,7 +1594,6 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
     if((*iter)->get_auto_increment())
       recalculate_next_auto_increment_value(table_name, (*iter)->get_name());
   }
-
   return insert_succeeded;
 }
 

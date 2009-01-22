@@ -159,6 +159,7 @@ public:
   void set_lookup_field(const Glib::ustring& strField);
 
   Glib::ustring get_sql_type() const;
+  Glib::ustring get_gda_type() const;
 
   /** Escape the value so that it can be used in a SQL command.
    */

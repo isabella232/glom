@@ -367,7 +367,8 @@ protected:
    * This may take a few seconds to return.
    */
   void update_gda_metastore_for_table(const Glib::ustring& table_name) const;
-
+  
+  Glib::RefPtr<Gnome::Gda::Connection> get_connection() const;
 
   static bool get_field_primary_key_index_for_fields(const type_vecFields& fields, guint& field_column);
   static bool get_field_primary_key_index_for_fields(const type_vecLayoutFields& fields, guint& field_column);
