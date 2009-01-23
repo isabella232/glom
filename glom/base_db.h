@@ -87,7 +87,8 @@ public:
   /** Execute a SQL non-select command, returning true if it succeeded.
    * This method handles any Gda exceptions caused by executing the command.
    */
-  static bool query_execute(const Glib::ustring& strQuery, Gtk::Window* parent_window = 0);
+  static bool query_execute(const Glib::ustring& strQuery,
+                            const Glib::RefPtr<Gnome::Gda::Set>& params = Glib::RefPtr<Gnome::Gda::Set>(0));
 
   static int count_rows_returned_by(const Glib::ustring& sql_query);
 

@@ -1,3 +1,24 @@
+2009-01-23  Johannes Schmid  <jhs@openismus.com>
+
+	* glom/base_db.cc:
+	* glom/base_db.h:
+	Refactored query_execute() to be able to use additional parameters. Changed
+	insert_example_data() to use the new method.
+	
+	* glom/libglom/data_structure/field.cc:
+	* glom/libglom/data_structure/field.h:
+	Added get_gda_g_type() and made get_gda_type() should a wrapper around it
+	
+	* glom/base_db_table_data.cc:
+	* glom/dialog_database_preferences.cc:
+	* glom/mode_data/box_data_calendar_related.cc:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_design/users/dialog_groups_list.cc:
+	* glom/mode_design/users/dialog_users_list.cc:
+	* glom/navigation/box_tables.cc:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
+	Removed the unused Gtk::Window* parameter from all query_execute() calls
+
 2009-01-22  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db.cc: insert_example_data(): Catch exceptions as const.

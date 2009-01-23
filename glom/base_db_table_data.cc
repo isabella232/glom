@@ -207,7 +207,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
   if(!strNames.empty() && !strValues.empty())
   {
     const Glib::ustring strQuery = "INSERT INTO \"" + m_table_name + "\" (" + strNames + ") VALUES (" + strValues + ")";
-    const bool test = query_execute(strQuery, App_Glom::get_application());
+    const bool test = query_execute(strQuery);
     if(!test)
       std::cerr << "Box_Data::record_new(): INSERT failed." << std::endl;
     else
@@ -350,7 +350,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
       }
 
       const Glib::ustring strQuery = "INSERT INTO \"" + relationship->get_to_table() + "\" (\"" + primary_key_field->get_name() + "\") VALUES (" + primary_key_field->sql(primary_key_value) + ")";
-      const bool test = query_execute(strQuery, App_Glom::get_application());
+      const bool test = query_execute(strQuery);
       if(!test)
       {
         std::cerr << "Base_DB_Table_Data::add_related_record_for_field(): INSERT failed." << std::endl;
@@ -392,7 +392,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
           {
             const Glib::ustring strQuery = "UPDATE \"" + relationship->get_from_table() + "\" SET \"" + relationship->get_from_field() + "\" = " + primary_key_field->sql(primary_key_value) +
               " WHERE \"" + relationship->get_from_table() + "\".\"" + parent_primary_key_field->get_name() + "\" = " + parent_primary_key_field->sql(parent_primary_key_value);
-            const bool test = query_execute(strQuery, App_Glom::get_application());
+            const bool test = query_execute(strQuery);
             if(!test)
             {
               std::cerr << "Base_DB_Table_Data::add_related_record_for_field(): UPDATE failed." << std::endl;
@@ -445,7 +445,7 @@ bool Base_DB_Table_Data::record_delete(const Gnome::Gda::Value& primary_key_valu
   sharedptr<Field> field_primary_key = get_field_primary_key();
   if(field_primary_key && !Conversions::value_is_empty(primary_key_value))
   {
-    return query_execute( "DELETE FROM \"" + m_table_name + "\" WHERE \"" + m_table_name + "\".\"" + field_primary_key->get_name() + "\" = " + field_primary_key->sql(primary_key_value), App_Glom::get_application());
+    return query_execute( "DELETE FROM \"" + m_table_name + "\" WHERE \"" + m_table_name + "\".\"" + field_primary_key->get_name() + "\" = " + field_primary_key->sql(primary_key_value));
   }
   else
   {

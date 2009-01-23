@@ -280,7 +280,7 @@ void Box_Data_List_Related::on_adddel_record_added(const Gtk::TreeModel::iterato
       strQuery += " SET \"" +  /* get_table_name() + "." +*/ m_key_field->get_name() + "\" = " + m_key_field->sql(m_key_value);
       strQuery += " WHERE \"" + get_table_name() + "\".\"" + field_primary_key->get_name() + "\" = " + field_primary_key->sql(primary_key_value);
       std::cout << "Box_Data_List_Related::on_adddel_record_added(): setting value in db=" << primary_key_value.to_string() << std::endl;
-      const bool test = query_execute(strQuery, get_app_window());
+      const bool test = query_execute(strQuery);
       if(test)
       {
         //Show it on the view, if it's visible:

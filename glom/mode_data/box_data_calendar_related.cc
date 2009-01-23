@@ -276,7 +276,7 @@ void Box_Data_Calendar_Related::on_record_added(const Gnome::Gda::Value& primary
       Glib::ustring strQuery = "UPDATE \"" + m_portal->get_table_used(Glib::ustring() /* not relevant */) + "\"";
       strQuery += " SET \"" +  /* get_table_name() + "." +*/ m_key_field->get_name() + "\" = " + m_key_field->sql(m_key_value);
       strQuery += " WHERE \"" + get_table_name() + "\".\"" + field_primary_key->get_name() + "\" = " + field_primary_key->sql(primary_key_value);
-      const bool test = query_execute(strQuery, get_app_window());
+      const bool test = query_execute(strQuery);
       if(test)
       {
         //Show it on the view, if it's visible:

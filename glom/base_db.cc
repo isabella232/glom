@@ -230,13 +230,11 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute_select(const Glib::us
   return result;
 }
 
-
 //static:
-bool Base_DB::query_execute(const Glib::ustring& strQuery, Gtk::Window* /* parent_window */)
+bool Base_DB::query_execute(const Glib::ustring& strQuery,
+                            const Glib::RefPtr<Gnome::Gda::Set>& params)
 {
-  //TODO: Bakery::BusyCursor busy_cursor(get_app_window());
-
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  #ifdef GLIBMM_EXCEPTIONS_ENABLED
   sharedptr<SharedConnection> sharedconnection = connect_to_server();
 #else
   std::auto_ptr<ExceptionConnection> error;
@@ -252,9 +250,7 @@ bool Base_DB::query_execute(const Glib::ustring& strQuery, Gtk::Window* /* paren
     std::cerr << "Base_DB::query_execute(): No connection yet." << std::endl;
     return false;
   }
-
-  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
-
+  
   const App_Glom* app = App_Glom::get_application();
   if(app && app->get_show_sql_debug())
   {
@@ -262,51 +258,59 @@ bool Base_DB::query_execute(const Glib::ustring& strQuery, Gtk::Window* /* paren
     try
     {
 #endif
-      std::cout << "Debug: Base_DB::query_execute():  " << strQuery << std::endl;
+      std::cerr << "Debug: Base_DB::query_execute():  " << strQuery << std::endl;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     }
     catch(const Glib::Exception& ex)
     {
-      std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
+      std::cerr << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
     }
 #endif
   }
-
+  
+  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
+  Glib::RefPtr<Gnome::Gda::SqlParser> parser = gda_connection->create_parser();
+  Glib::RefPtr<Gnome::Gda::Statement> stmt;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-  int execute_result = -1;
   try
   {
-    execute_result = gda_connection->statement_execute_non_select(strQuery);
+    stmt = parser->parse_string(strQuery);
   }
-  catch(const Gnome::Gda::ConnectionError& ex)
+  catch(const Gnome::Gda::SqlParserError& error)
   {
-    std::cout << "debug: Base_DB::query_execute(): ConnectionError: exception from execute_non_select_command(): " << ex.what() << std::endl;
-  }
-  catch(const Gnome::Gda::ServerProviderError& ex)
-  {
-    std::cout << "debug: Base_DB::query_execute(): ServerProviderError: exception from execute_non_select_command(): " << ex.what() << std::endl;
-  }
-	catch(const Gnome::Gda::SqlParserError& ex)
-	{
-		std::cout << "debug: Base_DB::query_execute(): SqlParserError:" << ex.what() << std::endl;
-		std::cout << "debug: query was: " << strQuery << std::endl;
-	}
-#else
-  std::auto_ptr<Glib::Error> error;
-  execute_result = gda_connection->gda_connection->statement_execute_non_select(strQuery, error);
-  if(error)
-    std::cout << "debug: Base_DB::query_execute(): Glib::Error from statement_execute_non_select(): " << error->what() << std::endl;
-#endif //GLIBMM_EXCEPTIONS_ENABLED
-      
-  if(execute_result == -1) //-1 from statement_execute_non_select() means an error.
-  {
-    std::cerr << "Glom  Base_DB::query_execute(): Error while executing SQL" << std::endl <<
-      "  " <<  strQuery << std::endl;
-    handle_error();
+    std::cerr << "DEBUG: BaseDB::query_execute: " << error.what() << std::endl;
     return false;
   }
-  
-  return true;
+#else
+  std::auto_ptr<Glib::Error> sql_error;
+  stmt = parser->parse_string(strQuery, sql_error);
+  if(sql_error)
+  {
+    std::cerr << "DEBUG: BaseDB::query_execute: " << error.what() << std::endl;
+    return false;
+  }
+#endif
+  int exec_retval = -1;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    exec_retval = gda_connection->statement_execute_non_select (stmt, params);
+  }
+  catch(const Glib::Error& error)
+  {
+    std::cerr << "BaseDB::query_execute: " << error.what() << std::endl;
+    return false;
+  }
+#else
+  std_autoptr<Glib::Error> exec_error;
+  exec_retval = gda_connection->statement_execute_non_select (stmt, params, exec_error);
+  if(exec_error)
+  {
+    std::cerr << "BaseDB::query_execute: " << error.what() << std::endl;
+    return false;
+  }
+#endif
+  return (exec_retval >= 0);
 }
 
 void Base_DB::load_from_document()
@@ -1506,6 +1510,7 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
       //Note that this is checking for newlines ("\n"), not escaped newlines ("\\n").
       if(row_data.find("\n") == Glib::ustring::npos)
       {
+        Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
         for(unsigned int i = 0; i < vec_values.size(); ++i)
         {
           if(i > 0)
@@ -1516,91 +1521,40 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
 
           strNames += vec_fields[i]->get_name();
 
-          //Add a SQL parameter placeholder for the value:
-          strVals += "##" + vec_fields[i]->get_name() + "::" + vec_fields[i]->get_gda_type();              
+          bool success = false;
+          Gnome::Gda::Value value = vec_fields[i]->from_sql(vec_values[i], Field::SQL_FORMAT_POSTGRES, success);
+          if(!success)
+          {
+            std::cerr << "Base_DB::insert_example_data: could not convert example data" << std::endl;
+            continue;
+          }
+          
+          //Add a SQL parameter for the value:
+          Glib::ustring param_name = Glib::ustring::compose("param%1", i);
+          Glib::RefPtr<Gnome::Gda::Holder> holder = Gnome::Gda::Holder::create(vec_fields[i]->get_gda_g_type(),
+                                                                               param_name);
+
+          holder->set_not_null(false);
+          holder->set_value(value);
+          params->add_holder(holder);
+          
+          strVals += "##" + param_name + "::" + vec_fields[i]->get_gda_type();
         }
 
         //Create and parse the SQL query:
         //After this, the Parser will know how many SQL parameters there are in 
         //the query, and allow us to set their values.
         const Glib::ustring strQuery = "INSERT INTO \"" + table_name + "\" (" + strNames + ") VALUES (" + strVals + ")";
-        //std::cout << "debug: BaseDB::insert_exampledata: " << strQuery << std::endl;
-        Glib::RefPtr<Gnome::Gda::SqlParser> parser = gda_connection->create_parser();
-        Glib::RefPtr<Gnome::Gda::Statement> stmt;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-        try
-        {
-          stmt = parser->parse_string(strQuery);
-        }
-        catch(const Gnome::Gda::SqlParserError& error)
-        {
-          std::cout << "DEBUG: BaseDB::insert_exampledata: " << error.what() << std::endl;
-          insert_succeeded = false;
+        params->reference(); // bug in libgda or libgdamm?
+        insert_succeeded = query_execute(strQuery, params);
+        if (!insert_succeeded)
           break;
-        }
-#else
-        std::auto_ptr<Glib::Error> sql_error;
-        stmt = parser->parse_string(strQuery, sql_error);
-        if(sql_error)
-        {
-          std::cout << "DEBUG: BaseDB::insert_exampledata: " << error.what() << std::endl;
-          insert_succeeded = false;
-          break;
-        }
-#endif
-
-        Glib::RefPtr<Gnome::Gda::Set> params;
-        stmt->get_parameters(params);
-        for(unsigned int i = 0; i < vec_values.size(); ++i)
-        {
-          Glib::RefPtr<Gnome::Gda::Holder> holder = params->get_holder(vec_fields[i]->get_name());
-          if(holder)
-          {
-            //Note that the file format always uses the Postgres field format, 
-            //even if the data will be inserted into a SQL database, so that 
-            //the file is not different just because of the backend:
-            bool success = false;
-            Gnome::Gda::Value value = vec_fields[i]->from_sql(vec_values[i], Field::SQL_FORMAT_POSTGRES, success);
-            if(!success)
-            {
-              std::cerr << "Base_DB::insert_example_data: could not convert example data" << std::endl;
-              continue;
-            }
-
-            holder->set_not_null(false); // some values might be null */
-            holder->set_value(value);
-          }
-          else
-            std::cerr << "Base_DB::insert_example_data: Missing holder: " << vec_fields[i]->get_name() << std::endl;
-        }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-        try
-        {
-          gda_connection->statement_execute_non_select (stmt, params);
-        }
-        catch(const Glib::Error& error)
-        {
-          std::cout << "BaseDB::insert_exampledata: " << error.what() << std::endl;
-          insert_succeeded = false;
-          break;
-        }
-#else
-        std_autoptr<Glib::Error> exec_error;
-        gda_connection->statement_execute_non_select (stmt, params, exec_error);
-        if(exec_error)
-        {
-          std::cout << "BaseDB::insert_exampledata: " << error.what() << std::endl;
-          insert_succeeded = false;
-          break;
-        }
-#endif
       }
       else
       {
         std::cerr << "Glom: Base_DB::insert_example_data(): nested newline found in row data: " << row_data << std::endl;
       }
     }
-    insert_succeeded = true;
   }
 
   for(Document_Glom::type_vecFields::const_iterator iter = vec_fields.begin(); iter != vec_fields.end(); ++iter)
@@ -2440,7 +2394,7 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
     try //TODO: The exceptions are probably already handled by query_execute(0.
 #endif
     {
-      const bool test = query_execute(strQuery, parent_window); //TODO: Respond to failure.
+      const bool test = query_execute(strQuery); //TODO: Respond to failure.
       if(!test)
       {
         std::cerr << "Box_Data::set_field_value_in_database(): UPDATE failed." << std::endl;

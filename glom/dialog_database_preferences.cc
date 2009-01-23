@@ -101,7 +101,7 @@ void Dialog_Database_Preferences::on_treeview_cell_edited_next_value(const Glib:
         " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = '" + table_name + "' AND "
                "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\" = '" + field_name +"'";
 
-    const bool test = query_execute(sql_query, this);
+    const bool test = query_execute(sql_query);
     if(!test)
       std::cerr << "Dialog_Database_Preferences::on_treeview_cell_edited_next_value(): UPDATE failed." << std::endl;
   }

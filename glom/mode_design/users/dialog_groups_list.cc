@@ -219,7 +219,7 @@ void Dialog_GroupsList::on_button_group_delete()
         if(response == Gtk::RESPONSE_OK)
         {
           Glib::ustring strQuery = "DROP GROUP \"" + group + "\"";
-          const bool test = query_execute(strQuery, this);
+          const bool test = query_execute(strQuery);
           if(!test)
             std::cerr << "Box_DB_Table_Definition::on_adddel_delete(): DROP GROUP failed." << std::endl;
 
@@ -259,7 +259,7 @@ void Dialog_GroupsList::on_button_group_new()
   if(!group_name.empty())
   {
     const Glib::ustring strQuery = "CREATE GROUP \"" + group_name + "\"";
-    const bool test = query_execute(strQuery, this);
+    const bool test = query_execute(strQuery);
     if(!test)
       std::cout << "Dialog_GroupsList::on_button_group_new(): CREATE GROUP failed." << std::endl;
 
@@ -496,7 +496,7 @@ bool Dialog_GroupsList::set_table_privilege(const Glib::ustring& table_name, con
 
   strQuery += " GROUP \"" + group_name + "\"";
 
-  const bool test = query_execute(strQuery, this); //TODO: Handle errors.
+  const bool test = query_execute(strQuery); //TODO: Handle errors.
   if(!test)
     std::cerr << "Dialog_GroupsList::set_table_privilege(): GRANT/REVOKE failed." << std::endl;
 
