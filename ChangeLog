@@ -1,3 +1,23 @@
+2009-01-24  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/data_structure/fieldtypes.cc (constructor): Added
+	GdaBlob as a fallback type for GdaBinary, so that
+	Field::set_field_info() sets the correct glom type if the GType is
+	GDA_TYPE_BLOB.
+
+	* glom/libglom/data_structure/glomconversions.cc
+	(get_pixbuf_for_gda_value): Allow the value having type
+	GDA_TYPE_BLOB, and handle this appropriately. These changes fix images
+	in SQLite with libgda4, requiring libgda trunk.
+
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc
+	(refresh_from_database): Use STATEMENT_MODEL_RANDOM_ACCESS to create
+	the data model when using SQLite, because of bug #567891.
+
+	* glom/mode_design/fields/box_db_table_definition.cc (fill_field): Use
+	the field's glom type directly, instead of guessing it from the
+	field's GType.
+
 2009-01-23  Johannes Schmid  <jhs@openismus.com>
 
 	* glom/base_db.cc:

@@ -21,6 +21,8 @@
 
 #include "config.h" // For HAVE_STRPTIME
 
+#include <libgda/gda-blob-op.h> // For gda_blob_op_read_all()
+
 #include "glomconversions.h"
 #include <glom/libglom/connectionpool.h>
 #include <glom/libglom/utils.h>
@@ -1214,10 +1216,29 @@ Glib::RefPtr<Gdk::Pixbuf> Conversions::get_pixbuf_for_gda_value(const Gnome::Gda
 {
   Glib::RefPtr<Gdk::Pixbuf> result;
 
-  if(value.get_value_type() == GDA_TYPE_BINARY)
+  if(value.get_value_type() == GDA_TYPE_BINARY || value.get_value_type() == GDA_TYPE_BLOB)
   {
-    glong buffer_binary_length = 0;
-    gconstpointer buffer_binary = value.get_binary(buffer_binary_length);
+    glong buffer_binary_length;
+    gconstpointer buffer_binary;
+    if(value.get_value_type() == GDA_TYPE_BLOB)
+    {
+      const GdaBlob* blob = value.get_blob();
+      if(gda_blob_op_read_all(blob->op, const_cast<GdaBlob*>(blob)))
+      {
+        buffer_binary_length = blob->data.binary_length;
+        buffer_binary = blob->data.data;
+      }
+      else
+      {
+        buffer_binary_length = 0;
+        buffer_binary = NULL;
+        g_warning("Conversions::get_pixbuf_for_gda_value(): Failed to read BLOB data");
+      }
+    }
+    else
+    {
+      buffer_binary = value.get_binary(buffer_binary_length);
+    }
 
     /* Note that this is regular binary data, not escaped text representing the binary data: */
     if(buffer_binary && buffer_binary_length)

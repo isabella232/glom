@@ -103,7 +103,11 @@ void Box_DB_Table_Definition::fill_field_row(const Gtk::TreeModel::iterator& ite
   m_AddDel.set_value(iter, m_colTitle, title);
 
   //Type:
-  Field::glom_field_type fieldType = Field::get_glom_type_for_gda_type(field->get_field_info()->get_g_type()); //Could be TYPE_INVALID if the gda type is not one of ours.
+  //Field::glom_field_type fieldType = Field::get_glom_type_for_gda_type(field->get_field_info()->get_g_type()); //Could be TYPE_INVALID if the gda type is not one of ours.
+  // TODO: Why was this done by converting the field's gtype to a glom type
+  // instead of using the glom type directly? This breaks numerical types in
+  // sqlite which we store as double.
+  Field::glom_field_type fieldType = field->get_glom_type();
 
   const Glib::ustring strType = Field::get_type_name_ui( fieldType );
   m_AddDel.set_value(iter, m_colType, strType);

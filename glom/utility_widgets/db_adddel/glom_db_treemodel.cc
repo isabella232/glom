@@ -22,6 +22,7 @@
 #include "glom_db_treemodel.h"
 
 #include <glom/libglom/connectionpool.h>
+#include <glom/libglom/connectionpool_backends/sqlite.h> //For checking whether we are using SQLite or not
 #include <glom/libglom/data_structure/glomconversions.h> //For util_build_sql
 #include <glom/libglom/utils.h>
 
@@ -479,8 +480,18 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
-      //Specify the STATEMENT_MODEL_CURSOR, so that libgda only gets the rows that we actually use.   
-      m_gda_datamodel = m_connection->get_gda_connection()->statement_execute_select(stmt, Gnome::Gda::STATEMENT_MODEL_CURSOR);
+      //Specify the STATEMENT_MODEL_CURSOR, so that libgda only gets the rows that we actually use.
+      // TODO: CURSOR mode does not properly work with SQLite, because when 
+      // requesting a second iterator from the data model, it points to the
+      // same row as the previous iterator (not to the first row), and there
+      // is no way to do backwards iteration. I don't think there is API in
+      // libgda to find this out, se we are currently hardcoding this for the
+      // SQLite case. See also
+      // http://bugzilla.gnome.org/show_bug.cgi?id=567891.
+      Gnome::Gda::StatementModelUsage usage = Gnome::Gda::STATEMENT_MODEL_CURSOR_FORWARD;
+      if(dynamic_cast<ConnectionPoolBackends::Sqlite*>(connection_pool->get_backend()))
+        usage = Gnome::Gda::STATEMENT_MODEL_RANDOM_ACCESS;
+      m_gda_datamodel = m_connection->get_gda_connection()->statement_execute_select(stmt, usage);
 
       if(app && app->get_show_sql_debug())
         std::cout << "  Debug: DbTreeModel::refresh_from_database(): The query execution has finished." << std::endl;

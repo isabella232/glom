@@ -718,6 +718,9 @@ Glib::ustring Field::get_sql_type() const
 
 GType Field::get_gda_g_type() const
 {
+  // TODO: Can't we just do this here? armin.
+  // return get_field_info()->get_g_type();
+
   switch(m_glom_type)
   {
     case TYPE_NUMERIC:

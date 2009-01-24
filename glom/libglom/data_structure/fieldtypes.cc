@@ -86,9 +86,9 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
             Glib::ustring type_string = value_gdatype.get_string();
             const GType gdatype = gda_g_type_from_string(type_string.c_str());
 
-            //Save it for later:
             //std::cout << "debug: schema_type_string=" << schema_type_string << ", gda type=" << gdatype << "(" << g_type_name(gdatype) << ")" << std::endl;
-            
+
+            //Save it for later:
             m_mapSchemaStringsToGdaTypes[schema_type_string] = gdatype;
 
             Glib::ustring gdatypestring = gda_g_type_to_string(gdatype); // TODO: What is this actually used for?
@@ -104,6 +104,7 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
     }
   }
 
+  m_mapFallbackTypes[GDA_TYPE_BINARY] = GDA_TYPE_BLOB;
   m_mapFallbackTypes[GDA_TYPE_NUMERIC] = G_TYPE_DOUBLE;
   m_mapFallbackTypes[GDA_TYPE_TIME] = G_TYPE_STRING;
   m_mapFallbackTypes[G_TYPE_DATE] = G_TYPE_STRING;
