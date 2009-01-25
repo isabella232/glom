@@ -291,6 +291,8 @@ bool Base_DB::query_execute(const Glib::ustring& strQuery,
   }
 #endif
   int exec_retval = -1;
+  /*if (params)
+    params->reference(); // TODO: bug in libgda?*/
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
@@ -1447,20 +1449,28 @@ bool Base_DB::change_columns(const Glib::ustring& table_name, const type_vecCons
 Glib::RefPtr<Gnome::Gda::Connection> Base_DB::get_connection() const
 {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-  sharedptr<SharedConnection> sharedconnection = connect_to_server();
+  sharedptr<SharedConnection> sharedconnection;
+  try
+  {
+     sharedconnection = connect_to_server();
+  }
+  catch (const Glib::Error& error)
+  {
+    std::cerr << "Base_DB::get_connection(): " << error.what() << std::endl;
+  }
 #else
   std::auto_ptr<ExceptionConnection> error;
   sharedptr<SharedConnection> sharedconnection = connect_to_server(0, error);
   if(error.get())
   {
-    std::cerr << "Base_DB::insert_example_data failed (query was: " << strQuery << "): " << error->what() << std::endl;
+    std::cerr << "Base_DB::get_connection(): " << error->what() << std::endl;
     // TODO: Rethrow? 
   }
 #endif
 
   if(!sharedconnection)
   {
-    std::cerr << "Base_DB::insert_example_data: No connection yet." << std::endl;
+    std::cerr << "Base_DB::get_connection(): No connection yet." << std::endl;
     return Glib::RefPtr<Gnome::Gda::Connection>(0);
   }
 
@@ -1545,7 +1555,6 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
         //After this, the Parser will know how many SQL parameters there are in 
         //the query, and allow us to set their values.
         const Glib::ustring strQuery = "INSERT INTO \"" + table_name + "\" (" + strNames + ") VALUES (" + strVals + ")";
-        params->reference(); // bug in libgda or libgdamm?
         insert_succeeded = query_execute(strQuery, params);
         if (!insert_succeeded)
           break;
