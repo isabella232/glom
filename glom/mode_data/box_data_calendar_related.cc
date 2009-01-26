@@ -185,7 +185,7 @@ bool Box_Data_Calendar_Related::fill_from_database()
     
     const Glib::ustring sql_query = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_FieldsShown, where_clause, m_found_set.m_extra_join, m_found_set.m_sort_clause, m_found_set.m_extra_group_by);
     //std::cout << "DEBUG: sql_query=" << sql_query << std::endl;
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query, get_app_window());
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query);
     if(!(datamodel))
       return true;
     

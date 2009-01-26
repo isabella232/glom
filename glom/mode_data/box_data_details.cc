@@ -333,7 +333,7 @@ bool Box_Data_Details::fill_from_database()
         Glib::RefPtr<Gnome::Gda::DataModel> result;
 
         if(!primary_key_is_empty)
-          result = query_execute_select(query, get_app_window());
+          result = query_execute_select(query);
 
         if((result && result->get_n_rows()) || primary_key_is_empty) //either a working result or no result needed.
         {

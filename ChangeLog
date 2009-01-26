@@ -1,3 +1,24 @@
+2009-01-26  Johannes Schmid  <jschmid@openismus.com>
+
+	* glom/base_db.cc:
+	* glom/base_db.h:
+	Ported more queries to use parameters. query_execute_select() now
+	accepts parameters.
+	
+	* glom/base_db_table_data.cc:
+	* glom/dialog_database_preferences.cc:
+	* glom/frame_glom.cc:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data_calendar_related.cc:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	* glom/mode_design/print_layouts/canvas_print_layout.cc:
+	Removed parent_window argument from query_execute_select() call.
+		
+	* glom/libglom/data_structure/field.cc:
+	* glom/libglom/data_structure/field.h:
+	Added get_holder() und get_gda_holder_string() as conveniece methods
+
 2009-01-25  Johannes Schmid <jschmid@openismus.com>
 
 	* glom/base_db.cc:

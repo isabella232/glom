@@ -261,7 +261,7 @@ bool Base_DB_Table_Data::get_related_record_exists(const sharedptr<const Relatio
 
   //TODO_Performance: Is this the best way to just find out whether there is one record that meets this criteria?
   const Glib::ustring query = "SELECT \"" + to_field + "\" FROM \"" + relationship->get_to_table() + "\" WHERE \"" + related_table + "\".\"" + to_field + "\" = " + key_field->sql(key_value);
-  Glib::RefPtr<Gnome::Gda::DataModel> records = query_execute_select(query, App_Glom::get_application());
+  Glib::RefPtr<Gnome::Gda::DataModel> records = query_execute_select(query);
   if(!records)
     handle_error();
   else

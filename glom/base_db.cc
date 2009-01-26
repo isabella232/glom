@@ -158,7 +158,8 @@ bool Base_DB::handle_error()
 }
 
 //static:
-Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute_select(const Glib::ustring& strQuery, Gtk::Window* /* parent_window */)
+Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute_select(const Glib::ustring& strQuery,
+                                                                  const Glib::RefPtr<Gnome::Gda::Set>& params)
 {
   Glib::RefPtr<Gnome::Gda::DataModel> result;
 
@@ -182,7 +183,8 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute_select(const Glib::us
   }
 
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
-
+  Glib::RefPtr<Gnome::Gda::SqlParser> parser = gda_connection->create_parser();
+  
   const App_Glom* app = App_Glom::get_application();
   if(app && app->get_show_sql_debug())
   {
@@ -199,11 +201,27 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute_select(const Glib::us
     }
 #endif
   }
-        
+  Glib::RefPtr<Gnome::Gda::Statement> stmt;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    result = gda_connection->statement_execute_select(strQuery);
+    stmt = parser->parse_string(strQuery);
+  }
+  catch(const Gnome::Gda::SqlParserError& ex)
+  {
+    std::cout << "debug: Base_DB::query_execute_select(): SqlParserError: exception from parse_string(): " << ex.what() << std::endl;
+  }
+#else
+  std::auto_ptr<Glib::Error> error;
+  stmt = parser->parse_string(strQuery, error);
+  if(error)
+     std::cout << "debug: Base_DB::query_execute_select(): SqlParserError: exception from parse_string(): " << error.what() << std::endl;
+#endif //GLIBMM_EXCEPTIONS_ENABLED
+  
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    result = gda_connection->statement_execute_select(stmt, params);
   }
   catch(const Gnome::Gda::ConnectionError& ex)
   {
@@ -213,9 +231,14 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute_select(const Glib::us
   {
     std::cout << "debug: Base_DB::query_execute_select(): ServerProviderError: exception from statement_execute_select(): " << ex.what() << std::endl;
   }
+  catch(const Glib::Error& ex)
+  {
+    std::cout << "debug: Base_DB::query_execute_select(): Error: exception from statement_execute_select(): " << ex.what() << std::endl;
+  }
+
 #else
   std::auto_ptr<Glib::Error> error;
-  result = gda_connection->statement_execute_select(strQuery, error);
+  result = gda_connection->statement_execute_select(stmt, params, error);
   if(error)
     std::cout << "debug: Base_DB::query_execute_select(): Glib::Error from statement_execute_select(): " << error->what() << std::endl;
 #endif //GLIBMM_EXCEPTIONS_ENABLED
@@ -278,7 +301,7 @@ bool Base_DB::query_execute(const Glib::ustring& strQuery,
   }
   catch(const Gnome::Gda::SqlParserError& error)
   {
-    std::cerr << "DEBUG: BaseDB::query_execute: " << error.what() << std::endl;
+    std::cerr << "DEBUG: BaseDB::query_execute: SqlParserError: " << error.what() << std::endl;
     return false;
   }
 #else
@@ -286,13 +309,11 @@ bool Base_DB::query_execute(const Glib::ustring& strQuery,
   stmt = parser->parse_string(strQuery, sql_error);
   if(sql_error)
   {
-    std::cerr << "DEBUG: BaseDB::query_execute: " << error.what() << std::endl;
+    std::cerr << "DEBUG: BaseDB::query_execute: SqlParserError:" << error.what() << std::endl;
     return false;
   }
 #endif
   int exec_retval = -1;
-  /*if (params)
-    params->reference(); // TODO: bug in libgda?*/
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
@@ -300,7 +321,7 @@ bool Base_DB::query_execute(const Glib::ustring& strQuery,
   }
   catch(const Glib::Error& error)
   {
-    std::cerr << "BaseDB::query_execute: " << error.what() << std::endl;
+    std::cerr << "BaseDB::query_execute: ConnectionError:" << error.what() << std::endl;
     return false;
   }
 #else
@@ -308,7 +329,7 @@ bool Base_DB::query_execute(const Glib::ustring& strQuery,
   exec_retval = gda_connection->statement_execute_non_select (stmt, params, exec_error);
   if(exec_error)
   {
-    std::cerr << "BaseDB::query_execute: " << error.what() << std::endl;
+    std::cerr << "BaseDB::query_execute: ConnectionError:" << error.what() << std::endl;
     return false;
   }
 #endif
@@ -882,13 +903,19 @@ Gnome::Gda::Value Base_DB::auto_increment_insert_first_if_necessary(const Glib::
     //This should not happen:
     std::cerr << "Glom: Base_DB::auto_increment_insert_first_if_necessary(): The current user may not edit the autoincrements table. Any user who has create rights for a table should have edit rights to the autoincrements table." << std::endl;
   }
-
-
+  Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
+  Glib::RefPtr<Gnome::Gda::Holder> holder_table_name = Gnome::Gda::Holder::create(G_TYPE_STRING, "table_name");
+  Glib::RefPtr<Gnome::Gda::Holder> holder_field_name = Gnome::Gda::Holder::create(G_TYPE_STRING, "field_name");
+  holder_table_name->set_value(Gnome::Gda::Value(table_name));
+  holder_field_name->set_value(Gnome::Gda::Value(field_name));
+  params->add_holder(holder_table_name);
+  params->add_holder(holder_field_name);
+  
   const Glib::ustring sql_query = "SELECT \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\".\"next_value\" FROM \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\""
-   " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = '" + table_name + "' AND "
-          "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\" = '" + field_name + "'";
+   " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = ##table_name::gchararray AND "
+          "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\" = ##field_name::gchararray";
 
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query);
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query, params);
   if(!datamodel || (datamodel->get_n_rows() == 0))
   {
     //Start with zero:
@@ -896,9 +923,9 @@ Gnome::Gda::Value Base_DB::auto_increment_insert_first_if_necessary(const Glib::
     //Insert the row if it's not there.
     const Glib::ustring sql_query = "INSERT INTO \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\" ("
       GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME ", " GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME ", " GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE
-      ") VALUES ('" + table_name + "', '" + field_name + "', 0)";
+      ") VALUES (##table_name::gchararray, ##field_name::gchararray, 0)";
 
-    const bool test = query_execute(sql_query);
+    const bool test = query_execute(sql_query, params);
     if(!test)
       std::cerr << "Base_DB::auto_increment_insert_first_if_necessary(): INSERT of new row failed." << std::endl;
 
@@ -942,8 +969,8 @@ void Base_DB::recalculate_next_auto_increment_value(const Glib::ustring& table_n
     const Glib::ustring sql_query = "UPDATE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\" SET "
       "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE "\" = " + next_value.to_string() + //TODO: Don't use to_string().
       " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = '" + table_name + "' AND "
-             "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\" = '" + field_name + "'";
-
+      "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\" = '" + field_name + "'";
+    
     const bool test = query_execute(sql_query);
     if(!test)
       std::cerr << "Base_DB::recalculate_next_auto_increment_value(): UPDATE failed." << std::endl;
@@ -961,13 +988,21 @@ Gnome::Gda::Value Base_DB::get_next_auto_increment_value(const Glib::ustring& ta
   //Increment the next_value:
   ++num_result;
   const Gnome::Gda::Value next_value = Conversions::parse_value(num_result);
-
+  Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
+  Glib::RefPtr<Gnome::Gda::Holder> holder_table_name = Gnome::Gda::Holder::create(G_TYPE_STRING, "table_name");
+  Glib::RefPtr<Gnome::Gda::Holder> holder_field_name = Gnome::Gda::Holder::create(G_TYPE_STRING, "field_name");
+  Glib::RefPtr<Gnome::Gda::Holder> holder_next_value = Gnome::Gda::Holder::create(G_TYPE_STRING, "next_value");
+  holder_table_name->set_value(Gnome::Gda::Value(table_name));
+  holder_field_name->set_value(Gnome::Gda::Value(field_name));
+  holder_next_value->set_value(next_value);
+  params->add_holder(holder_table_name);
+  params->add_holder(holder_field_name);
   const Glib::ustring sql_query = "UPDATE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\" SET "
-      "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE "\" = " + next_value.to_string() +
-      " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = '" + table_name + "' AND "
-            "\""  GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\" = '" + field_name + "'";
+      "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE "\" = ##next_value::gchararray"
+      " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = ##table_name::gchararray AND "
+            "\""  GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\" = ##field_name::gchararray";
 
-  const bool test = query_execute(sql_query);
+  const bool test = query_execute(sql_query, params);
   if(!test)
     std::cerr << "Base_DB::get_next_auto_increment_value(): Increment failed." << std::endl;
 
@@ -1058,51 +1093,42 @@ void Base_DB::set_database_preferences(const SystemPrefs& prefs)
   if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
     add_standard_tables();
 
+  Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
+  params->add_holder("name", Gnome::Gda::Value(prefs.m_name));
+  params->add_holder("street", Gnome::Gda::Value(prefs.m_org_address_street));
+  params->add_holder("street2", Gnome::Gda::Value(prefs.m_org_address_street2));
+  params->add_holder("town", Gnome::Gda::Value(prefs.m_org_address_town));
+  params->add_holder("county", Gnome::Gda::Value(prefs.m_org_address_county));
+  params->add_holder("country", Gnome::Gda::Value(prefs.m_org_address_country));
+  params->add_holder("postcode", Gnome::Gda::Value(prefs.m_org_address_postcode));
+    
   //The logo field was introduced in a later version of Glom.
   //If the user is not in developer mode then the new field has not yet been added:
   Glib::ustring optional_part_logo;
   if(get_field_exists_in_database(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME, GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO))
   {
-    Field field_temp_logo;
-    field_temp_logo.set_glom_type(Field::TYPE_IMAGE);
-    const Glib::ustring logo_escaped = field_temp_logo.sql(prefs.m_org_logo);
-    optional_part_logo =  "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO "\" = " + logo_escaped + ", ";
-  }
-
+    params->add_holder("org_logo", prefs.m_org_logo);
+    optional_part_logo =  "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO "\" = ##org_logo::GDA_TYPE_BINARY, ";
+  }  
   const Glib::ustring sql_query = "UPDATE \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\" SET "
-      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_NAME "\" = '" + prefs.m_name + "', "
+      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_NAME "\" = ##name::gchararray, "
       + optional_part_logo +
-      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET "\" = '" + prefs.m_org_address_street + "', "
-      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2 "\" = '" + prefs.m_org_address_street2 + "', "
-      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN "\" = '" + prefs.m_org_address_town + "', "
-      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY "\" = '" + prefs.m_org_address_county + "', "
-      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY "\" = '" + prefs.m_org_address_country + "', "
-      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE "\" = '" + prefs.m_org_address_postcode + "'"
+      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET "\" = ##street::gchararray, "
+      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2 "\" = ##street2::gchararray, "
+      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN "\" = ##town::gchararray, "
+      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY "\" = ##county::gchararray, "
+      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY "\" = ##country::gchararray, "
+      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE "\" = ##postcode::gchararray"
       " WHERE \"" GLOM_STANDARD_TABLE_PREFS_FIELD_ID "\" = 1";
 
-    bool test = false;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-    try //TODO: query_execute() probably handles these already.
-#endif // GLIBMM_EXCEPTIONS_ENABLED
-    {
-      test = query_execute(sql_query);
-    }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-    catch(const Glib::Exception& ex)
-    {
-      std::cerr << "Base_DB::set_database_preferences(): exception: " << ex.what() << std::endl;
-    }
-    catch(const std::exception& ex)
-    {
-      std::cerr << "Base_DB::set_database_preferences(): exception: " << ex.what() << std::endl;
-    }
-#endif // GLIBMM_EXCEPTIONS_ENABLED
+  bool test = false;
+  test = query_execute(sql_query, params);
 
-    if(!test)
-      std::cerr << "Base_DB::set_database_preferences(): UPDATE failed." << std::endl;
-
-    //Set some information in the document too, so we can use it to recreate the database:
-    get_document()->set_database_title(prefs.m_name);
+  if(!test)
+    std::cerr << "Base_DB::set_database_preferences(): UPDATE failed." << std::endl;
+  
+  //Set some information in the document too, so we can use it to recreate the database:
+  get_document()->set_database_title(prefs.m_name);
 }
 
 bool Base_DB::create_table_with_default_fields(const Glib::ustring& table_name)
@@ -2392,10 +2418,12 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
   const Glib::ustring field_name = field_in_record.m_field->get_name();
   if(!field_name.empty()) //This should not happen.
   {
-   
+    Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
+    params->add_holder(field_in_record.m_field->get_holder());
+    params->add_holder(field_in_record.m_key->get_holder());  
     Glib::ustring strQuery = "UPDATE \"" + field_in_record.m_table_name + "\"";
-    strQuery += " SET \"" + field_in_record.m_field->get_name() + "\" = " + field_in_record.m_field->sql(field_value);
-    strQuery += " WHERE \"" + field_in_record.m_key->get_name() + "\" = " + field_in_record.m_key->sql(field_in_record.m_key_value);
+    strQuery += " SET \"" + field_in_record.m_field->get_name() + "\" = " + field_in_record.m_field->get_gda_holder_string();
+    strQuery += " WHERE \"" + field_in_record.m_key->get_name() + "\" = " + field_in_record.m_key->get_gda_holder_string();
 
     //std::cout << "debug: set_field_value_in_database(): " << std::endl << "  " << strQuery << std::endl;
 
@@ -2403,7 +2431,7 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
     try //TODO: The exceptions are probably already handled by query_execute(0.
 #endif
     {
-      const bool test = query_execute(strQuery); //TODO: Respond to failure.
+      const bool test = query_execute(strQuery, params); //TODO: Respond to failure.
       if(!test)
       {
         std::cerr << "Box_Data::set_field_value_in_database(): UPDATE failed." << std::endl;

@@ -141,7 +141,7 @@ void Dialog_Database_Preferences::load_from_document()
 
   NumericFormat numeric_format; //ignored
 
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query, this);
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query);
   if(!datamodel)
   {
     std::cerr << "Dialog_Database_Preferences::load_from_document(): Gda::DataModel is NULL." << std::endl;

@@ -81,7 +81,8 @@ public:
   /** Execute a SQL Select command, returning the result.
    * This method handles any Gda exceptions caused by executing the command.
    */
-  static Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::ustring& strQuery, Gtk::Window* parent_window = 0);
+  static Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::ustring& strQuery, 
+                                                                  const Glib::RefPtr<Gnome::Gda::Set>& params = Glib::RefPtr<Gnome::Gda::Set>(0));
 
 
   /** Execute a SQL non-select command, returning true if it succeeded.

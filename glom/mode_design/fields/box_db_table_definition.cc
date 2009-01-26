@@ -608,7 +608,7 @@ bool Box_DB_Table_Definition::field_has_null_values(const sharedptr<const Field>
   //std::cout << "sql_query: " << sql_query << std::endl;
 
   long null_count = 0;
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query, get_app_window());
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query);
   if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
   {
     null_count = datamodel->get_n_rows();
@@ -630,7 +630,7 @@ bool Box_DB_Table_Definition::field_has_non_unique_values(const sharedptr<const 
   //Count the distint rows:
   const Glib::ustring sql_query_distinct = "SELECT DISTINCT \"" + field->get_name() + "\" FROM \"" + m_table_name + "\"";
   
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query_distinct, get_app_window());
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query_distinct);
   if(datamodel)
   {
     count_distinct = datamodel->get_n_rows();
@@ -644,7 +644,7 @@ bool Box_DB_Table_Definition::field_has_non_unique_values(const sharedptr<const 
   //Count all rows, to compare. TODO_performance: Is there a more efficient way to do this? Maybe count(*), which apparently doesn't ignore NULL rows like count(somefield) would.
   const Glib::ustring sql_query_all = "SELECT \"" + field->get_name() + "\" FROM \"" + m_table_name + "\"";
   
-  datamodel = query_execute_select(sql_query_all, get_app_window());
+  datamodel = query_execute_select(sql_query_all);
   if(datamodel)
   {
     count_all = datamodel->get_n_rows();

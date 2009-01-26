@@ -161,6 +161,8 @@ public:
   Glib::ustring get_sql_type() const;
   Glib::ustring get_gda_type() const;
   GType get_gda_g_type() const;
+  Glib::RefPtr<Gnome::Gda::Holder> get_holder(const Glib::ustring& name = Glib::ustring()) const;
+  Glib::ustring get_gda_holder_string(const Glib::ustring& name = Glib::ustring()) const;
 
   /** Escape the value so that it can be used in a SQL command.
    */
