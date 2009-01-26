@@ -534,8 +534,7 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
     Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
 
     Glib::RefPtr<Gnome::Gda::Holder> holder_table_name = Gnome::Gda::Holder::create(G_TYPE_STRING, "name");
-    Gnome::Gda::Value value(table_name);
-    holder_table_name->set_value(value);
+    holder_table_name->set_value(table_name);
     std::list< Glib::RefPtr<Gnome::Gda::Holder> > holder_list;
     holder_list.push_back(holder_table_name);
 
@@ -906,8 +905,8 @@ Gnome::Gda::Value Base_DB::auto_increment_insert_first_if_necessary(const Glib::
   Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
   Glib::RefPtr<Gnome::Gda::Holder> holder_table_name = Gnome::Gda::Holder::create(G_TYPE_STRING, "table_name");
   Glib::RefPtr<Gnome::Gda::Holder> holder_field_name = Gnome::Gda::Holder::create(G_TYPE_STRING, "field_name");
-  holder_table_name->set_value(Gnome::Gda::Value(table_name));
-  holder_field_name->set_value(Gnome::Gda::Value(field_name));
+  holder_table_name->set_value(table_name);
+  holder_field_name->set_value(field_name);
   params->add_holder(holder_table_name);
   params->add_holder(holder_field_name);
   
@@ -992,8 +991,8 @@ Gnome::Gda::Value Base_DB::get_next_auto_increment_value(const Glib::ustring& ta
   Glib::RefPtr<Gnome::Gda::Holder> holder_table_name = Gnome::Gda::Holder::create(G_TYPE_STRING, "table_name");
   Glib::RefPtr<Gnome::Gda::Holder> holder_field_name = Gnome::Gda::Holder::create(G_TYPE_STRING, "field_name");
   Glib::RefPtr<Gnome::Gda::Holder> holder_next_value = Gnome::Gda::Holder::create(G_TYPE_STRING, "next_value");
-  holder_table_name->set_value(Gnome::Gda::Value(table_name));
-  holder_field_name->set_value(Gnome::Gda::Value(field_name));
+  holder_table_name->set_value(table_name);
+  holder_field_name->set_value(field_name);
   holder_next_value->set_value(next_value);
   params->add_holder(holder_table_name);
   params->add_holder(holder_field_name);
@@ -1558,7 +1557,7 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
           strNames += vec_fields[i]->get_name();
 
           bool success = false;
-          Gnome::Gda::Value value = vec_fields[i]->from_sql(vec_values[i], Field::SQL_FORMAT_POSTGRES, success);
+          const Gnome::Gda::Value value = vec_fields[i]->from_sql(vec_values[i], Field::SQL_FORMAT_POSTGRES, success);
           if(!success)
           {
             std::cerr << "Base_DB::insert_example_data: could not convert example data" << std::endl;
@@ -1571,7 +1570,7 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
                                                                                param_name);
 
           holder->set_not_null(false);
-          holder->set_value(value);
+          holder->set_value_as_value(value);
           params->add_holder(holder);
           
           strVals += "##" + param_name + "::" + vec_fields[i]->get_gda_type();

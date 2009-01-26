@@ -1,3 +1,13 @@
+2009-01-26  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.cc: get_fields_for_table_from_database(),
+	auto_increment_insert_first_if_necessary(),
+	get_next_auto_increment_value(), insert_example_data():
+	* glom/libglom/data_structure/field.cc: get_holder(): Adapt to 
+	my set_value()/set_value_as_value() changes in libgdamm to slightly 
+	simply the code. I guess that a better add_param() method could 
+	simplify it more.
+
 2009-01-26  Johannes Schmid  <jschmid@openismus.com>
 
 	* glom/base_db.cc:
