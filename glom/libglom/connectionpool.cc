@@ -261,7 +261,7 @@ namespace
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
-      return provider->create_operation(connection, type, Gnome::Gda::Set::create());
+      return provider->create_operation(connection, type);
     }
     catch(const Glib::Error& ex)
     {
@@ -269,7 +269,7 @@ namespace
       return Glib::RefPtr<Gnome::Gda::ServerOperation>();
     }
 #else
-    return provider->create_operation(connection, type, Gnome::Gda::Set::create(), error);
+    return provider->create_operation(connection, type, error);
 #endif
   }
 

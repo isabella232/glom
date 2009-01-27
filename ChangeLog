@@ -1,3 +1,9 @@
+2009-01-27  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/connectionpool_backends/postgres.cc
+	attempt_create_database(): Do not pass an empty Set to 
+	create_operation() because I added a method overload in libgdamm.
+
 2009-01-27  Johannes Schmid  <jschmid@openismus.com>
 
 	* glom/base_db.cc (set_field_value_in_database):

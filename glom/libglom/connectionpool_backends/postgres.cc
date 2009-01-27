@@ -385,6 +385,7 @@ bool Postgres::attempt_create_database(const Glib::ustring& database_name, const
   if(error)
     return false;
 
+  //TODO: Why is this here but not in the EXCEPTIONS_ENABLED part?
   op = cnc->create_operation(Gnome::Gda::SERVER_OPERATION_CREATE_DB, set, error);
   if(error)
     return false;
