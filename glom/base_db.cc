@@ -2417,14 +2417,17 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
   const Glib::ustring field_name = field_in_record.m_field->get_name();
   if(!field_name.empty()) //This should not happen.
   {
+    Field field = *field_in_record.m_field;
+    Field key = *field_in_record.m_key;
+    field.set_data(field_value);
+    key.set_data(field_in_record.m_key_value);
+    
     Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
-    params->add_holder(field_in_record.m_field->get_holder());
-    params->add_holder(field_in_record.m_key->get_holder());  
+    params->add_holder(field.get_holder());
+    params->add_holder(key.get_holder());  
     Glib::ustring strQuery = "UPDATE \"" + field_in_record.m_table_name + "\"";
-    strQuery += " SET \"" + field_in_record.m_field->get_name() + "\" = " + field_in_record.m_field->get_gda_holder_string();
-    strQuery += " WHERE \"" + field_in_record.m_key->get_name() + "\" = " + field_in_record.m_key->get_gda_holder_string();
-
-    //std::cout << "debug: set_field_value_in_database(): " << std::endl << "  " << strQuery << std::endl;
+    strQuery += " SET \"" + field.get_name() + "\" = " + field.get_gda_holder_string();
+    strQuery += " WHERE \"" + key.get_name() + "\" = " + key.get_gda_holder_string();
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try //TODO: The exceptions are probably already handled by query_execute(0.

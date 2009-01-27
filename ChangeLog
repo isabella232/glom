@@ -1,3 +1,8 @@
+2009-01-27  Johannes Schmid  <jschmid@openismus.com>
+
+	* glom/base_db.cc (set_field_value_in_database):
+	Fix updating of fields with was broken due to a stupid mistake
+
 2009-01-26  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db.cc: get_fields_for_table_from_database(),
