@@ -1,5 +1,11 @@
 2009-01-27  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/base_db.cc: auto_increment_insert_first_if_necessary(),
+	get_next_auto_increment_value(), set_database_preferences():
+	Use the new templated Gda::Set::add_holder(), simplifying the code.
+
+2009-01-27  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/connectionpool_backends/postgres.cc
 	attempt_create_database(): Do not pass an empty Set to 
 	create_operation() because I added a method overload in libgdamm.

@@ -903,12 +903,8 @@ Gnome::Gda::Value Base_DB::auto_increment_insert_first_if_necessary(const Glib::
     std::cerr << "Glom: Base_DB::auto_increment_insert_first_if_necessary(): The current user may not edit the autoincrements table. Any user who has create rights for a table should have edit rights to the autoincrements table." << std::endl;
   }
   Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
-  Glib::RefPtr<Gnome::Gda::Holder> holder_table_name = Gnome::Gda::Holder::create(G_TYPE_STRING, "table_name");
-  Glib::RefPtr<Gnome::Gda::Holder> holder_field_name = Gnome::Gda::Holder::create(G_TYPE_STRING, "field_name");
-  holder_table_name->set_value(table_name);
-  holder_field_name->set_value(field_name);
-  params->add_holder(holder_table_name);
-  params->add_holder(holder_field_name);
+  params->add_holder("table_name", table_name);
+  params->add_holder("field_name", field_name);
   
   const Glib::ustring sql_query = "SELECT \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\".\"next_value\" FROM \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\""
    " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = ##table_name::gchararray AND "
@@ -988,14 +984,9 @@ Gnome::Gda::Value Base_DB::get_next_auto_increment_value(const Glib::ustring& ta
   ++num_result;
   const Gnome::Gda::Value next_value = Conversions::parse_value(num_result);
   Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
-  Glib::RefPtr<Gnome::Gda::Holder> holder_table_name = Gnome::Gda::Holder::create(G_TYPE_STRING, "table_name");
-  Glib::RefPtr<Gnome::Gda::Holder> holder_field_name = Gnome::Gda::Holder::create(G_TYPE_STRING, "field_name");
-  Glib::RefPtr<Gnome::Gda::Holder> holder_next_value = Gnome::Gda::Holder::create(G_TYPE_STRING, "next_value");
-  holder_table_name->set_value(table_name);
-  holder_field_name->set_value(field_name);
-  holder_next_value->set_value(next_value);
-  params->add_holder(holder_table_name);
-  params->add_holder(holder_field_name);
+  params->add_holder("table_name", table_name);
+  params->add_holder("field_name", field_name);
+  params->add_holder("next_value", next_value);
   const Glib::ustring sql_query = "UPDATE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\" SET "
       "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE "\" = ##next_value::gchararray"
       " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = ##table_name::gchararray AND "
@@ -1093,13 +1084,13 @@ void Base_DB::set_database_preferences(const SystemPrefs& prefs)
     add_standard_tables();
 
   Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
-  params->add_holder("name", Gnome::Gda::Value(prefs.m_name));
-  params->add_holder("street", Gnome::Gda::Value(prefs.m_org_address_street));
-  params->add_holder("street2", Gnome::Gda::Value(prefs.m_org_address_street2));
-  params->add_holder("town", Gnome::Gda::Value(prefs.m_org_address_town));
-  params->add_holder("county", Gnome::Gda::Value(prefs.m_org_address_county));
-  params->add_holder("country", Gnome::Gda::Value(prefs.m_org_address_country));
-  params->add_holder("postcode", Gnome::Gda::Value(prefs.m_org_address_postcode));
+  params->add_holder("name", prefs.m_name);
+  params->add_holder("street", prefs.m_org_address_street);
+  params->add_holder("street2", prefs.m_org_address_street2);
+  params->add_holder("town", prefs.m_org_address_town);
+  params->add_holder("county", prefs.m_org_address_county);
+  params->add_holder("country", prefs.m_org_address_country);
+  params->add_holder("postcode", prefs.m_org_address_postcode);
     
   //The logo field was introduced in a later version of Glom.
   //If the user is not in developer mode then the new field has not yet been added:
