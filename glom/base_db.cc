@@ -2799,11 +2799,13 @@ Gnome::Gda::Value Base_DB::get_lookup_value(const Glib::ustring& /* table_name *
   {
     //Convert the value, in case the from and to fields have different types:
     const Gnome::Gda::Value value_to_key_field = Conversions::convert_value(key_value, to_key_field->get_glom_type());
+    Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
+    params->add_holder("key", value_to_key_field);
 
     Glib::ustring strQuery = "SELECT \"" + relationship->get_to_table() + "\".\"" + source_field->get_name() + "\" FROM \"" +  relationship->get_to_table() + "\"";
-    strQuery += " WHERE \"" + to_key_field->get_name() + "\" = " + to_key_field->sql(value_to_key_field);
+    strQuery += " WHERE \"" + to_key_field->get_name() + "\" = ##key::" + to_key_field->get_gda_type();
 
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery);
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery, params);
     if(data_model && data_model->get_n_rows())
     {
       //There should be only 1 row. Well, there could be more but we will ignore them.
@@ -2823,10 +2825,14 @@ bool Base_DB::get_field_value_is_unique(const Glib::ustring& table_name, const s
   bool result = true;  //Arbitrarily default to saying it's unique if we can't get any result.
 
   const Glib::ustring table_name_used = field->get_table_used(table_name); 
+  Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
+  Field glom_field = *field->get_full_field_details();
+  glom_field.set_data(value);
+  params->add_holder(glom_field.get_holder());
   Glib::ustring strQuery = "SELECT \"" + table_name_used + "\".\"" + field->get_name() + "\" FROM \"" + table_name_used + "\"";
-  strQuery += " WHERE \"" + field->get_name() + "\" = " + field->get_full_field_details()->sql(value);
+  strQuery += " WHERE \"" + field->get_name() + "\" = " + glom_field.get_gda_holder_string();
 
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery);
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery, params);
   if(data_model)
   {
     //std::cout << "debug: Base_DB::get_field_value_is_unique(): table_name=" << table_name << ", field name=" << field->get_name() << ", value=" << value.to_string() << ", rows count=" << data_model->get_n_rows() << std::endl;
@@ -3019,15 +3025,17 @@ bool Base_DB::get_primary_key_is_in_foundset(const FoundSet& found_set, const Gn
   layout_item->set_full_field_details(primary_key);
   fieldsToGet.push_back(layout_item);
 
-
+  Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
+  params->add_holder("primary_key", primary_key_value);
+  
   Glib::ustring where_clause;
   if(!found_set.m_where_clause.empty())
     where_clause = "(" + found_set.m_where_clause + ") AND ";
 
-  where_clause += "(\"" + primary_key->get_name() + "\"=" + primary_key->sql(primary_key_value) + ")";
+  where_clause += "(\"" + primary_key->get_name() + "\" = ##primary_key::" + primary_key->get_gda_type() + ")";
 
   const Glib::ustring query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsToGet, where_clause);
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(query);
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(query, params);
 
   if(data_model && data_model->get_n_rows())
   {
@@ -3160,7 +3168,7 @@ void Base_DB::set_found_set_where_clause_for_portal(FoundSet& found_set, const s
  
     //std::cout << "extra_join where_clause_to_key_field=" << where_clause_to_key_field->get_name() << std::endl;
   }
-
+  // TODO: Where is this used? Should we use parameters for this query?
   if(where_clause_to_key_field)
     found_set.m_where_clause = "\"" + where_clause_to_table_name + "\".\"" + relationship->get_to_field() + "\" = " + where_clause_to_key_field->sql(foreign_key_value);
 }

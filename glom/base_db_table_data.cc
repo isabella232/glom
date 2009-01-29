@@ -147,7 +147,8 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
   //Avoid specifying the same field twice:
   typedef std::map<Glib::ustring, bool> type_map_added;
   type_map_added map_added;
-
+  Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
+  
   for(type_vecLayoutFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
   {
     sharedptr<LayoutItem_Field> layout_item = *iter;
@@ -162,6 +163,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
         const sharedptr<const Field>& field = layout_item->get_full_field_details();
         if(field)
         {
+          Field gda_field = *field;
           //Use the specified (generated) primary key value, if there is one:
           if(primary_key_name == field_name && !Conversions::value_is_empty(primary_key_value))
           {
@@ -172,6 +174,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
             if(use_entered_data)
               value = get_entered_field_data(layout_item);
           }
+          gda_field.set_data(value);
 
           /* //TODO: This would be too many small queries when adding one record.
           //Check whether the value meets uniqueness constraints:
@@ -183,9 +186,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
             } 
           }
           */
-
-          const Glib::ustring strFieldValue = field->sql(value);
-          if(!strFieldValue.empty())
+          if(!gda_field.get_data().is_null())
           {
             if(!strNames.empty())
             {
@@ -194,7 +195,10 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
             }
   
             strNames += "\"" + field_name + "\"";
-            strValues += strFieldValue;
+            strValues += gda_field.get_gda_holder_string();
+            Glib::RefPtr<Gnome::Gda::Holder> holder = gda_field.get_holder();
+            holder->set_not_null(false);
+            params->add_holder(holder);
   
             map_added[field_name] = true;
           }
@@ -207,7 +211,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
   if(!strNames.empty() && !strValues.empty())
   {
     const Glib::ustring strQuery = "INSERT INTO \"" + m_table_name + "\" (" + strNames + ") VALUES (" + strValues + ")";
-    const bool test = query_execute(strQuery);
+    const bool test = query_execute(strQuery, params);
     if(!test)
       std::cerr << "Box_Data::record_new(): INSERT failed." << std::endl;
     else
