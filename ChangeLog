@@ -1,3 +1,18 @@
+2009-01-29  Johannes Schmid  <jhs@openismus.com>
+
+	* glom/base_db.cc:
+	* glom/base_db_table_data.cc:
+	* glom/mode_data/box_data_calendar_related.cc:
+	* glom/mode_data/box_data_list_related.cc:
+	Move the rest of queries from sql() to use params where this made sense.
+	Some methods generate random sql that is executed elsewhere which means that
+	they cannot use parameters themselves. I did not touch those.
+	
+	* glom/libglom/data_structure/field.cc:
+	* glom/libglom/data_structure/field.h:
+	Added get_holder(value, name) to avoid having to use temporary field to
+	be able to use get_holder() and get_gda_holder_string()
+
 2009-01-29  Johannes Schmid  <jschmid@openismus.com>
 
 	* glom/base_db.cc:

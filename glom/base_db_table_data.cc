@@ -160,10 +160,9 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
       {
         Gnome::Gda::Value value;
 
-        const sharedptr<const Field>& field = layout_item->get_full_field_details();
+        const sharedptr<const Field>& field = layout_item->get_full_field_details();        
         if(field)
         {
-          Field gda_field = *field;
           //Use the specified (generated) primary key value, if there is one:
           if(primary_key_name == field_name && !Conversions::value_is_empty(primary_key_value))
           {
@@ -174,7 +173,6 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
             if(use_entered_data)
               value = get_entered_field_data(layout_item);
           }
-          gda_field.set_data(value);
 
           /* //TODO: This would be too many small queries when adding one record.
           //Check whether the value meets uniqueness constraints:
@@ -186,7 +184,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
             } 
           }
           */
-          if(!gda_field.get_data().is_null())
+          if(!value.is_null())
           {
             if(!strNames.empty())
             {
@@ -195,9 +193,8 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
             }
   
             strNames += "\"" + field_name + "\"";
-            strValues += gda_field.get_gda_holder_string();
-            Glib::RefPtr<Gnome::Gda::Holder> holder = gda_field.get_holder();
-            holder->set_not_null(false);
+            strValues += field->get_gda_holder_string();
+            Glib::RefPtr<Gnome::Gda::Holder> holder = field->get_holder(value);
             params->add_holder(holder);
   
             map_added[field_name] = true;
@@ -352,9 +349,10 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
 
         //Generate the new key value;
       }
-
-      const Glib::ustring strQuery = "INSERT INTO \"" + relationship->get_to_table() + "\" (\"" + primary_key_field->get_name() + "\") VALUES (" + primary_key_field->sql(primary_key_value) + ")";
-      const bool test = query_execute(strQuery);
+      Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
+      params->add_holder(primary_key_field->get_holder(primary_key_value));
+      const Glib::ustring strQuery = "INSERT INTO \"" + relationship->get_to_table() + "\" (\"" + primary_key_field->get_name() + "\") VALUES (" + primary_key_field->get_gda_holder_string() + ")";
+      const bool test = query_execute(strQuery, params);
       if(!test)
       {
         std::cerr << "Base_DB_Table_Data::add_related_record_for_field(): INSERT failed." << std::endl;
@@ -394,9 +392,10 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
           }
           else
           {
-            const Glib::ustring strQuery = "UPDATE \"" + relationship->get_from_table() + "\" SET \"" + relationship->get_from_field() + "\" = " + primary_key_field->sql(primary_key_value) +
-              " WHERE \"" + relationship->get_from_table() + "\".\"" + parent_primary_key_field->get_name() + "\" = " + parent_primary_key_field->sql(parent_primary_key_value);
-            const bool test = query_execute(strQuery);
+            params->add_holder(parent_primary_key_field->get_holder(parent_primary_key_value));
+            const Glib::ustring strQuery = "UPDATE \"" + relationship->get_from_table() + "\" SET \"" + relationship->get_from_field() + "\" = " + primary_key_field->get_gda_holder_string() +
+              " WHERE \"" + relationship->get_from_table() + "\".\"" + parent_primary_key_field->get_name() + "\" = " +  parent_primary_key_field->get_gda_holder_string();
+            const bool test = query_execute(strQuery, params);
             if(!test)
             {
               std::cerr << "Base_DB_Table_Data::add_related_record_for_field(): UPDATE failed." << std::endl;
@@ -449,7 +448,9 @@ bool Base_DB_Table_Data::record_delete(const Gnome::Gda::Value& primary_key_valu
   sharedptr<Field> field_primary_key = get_field_primary_key();
   if(field_primary_key && !Conversions::value_is_empty(primary_key_value))
   {
-    return query_execute( "DELETE FROM \"" + m_table_name + "\" WHERE \"" + m_table_name + "\".\"" + field_primary_key->get_name() + "\" = " + field_primary_key->sql(primary_key_value));
+    Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
+    params->add_holder(field_primary_key->get_holder(primary_key_value));
+    return query_execute( "DELETE FROM \"" + m_table_name + "\" WHERE \"" + m_table_name + "\".\"" + field_primary_key->get_name() + "\" = " + field_primary_key->get_gda_holder_string(), params);
   }
   else
   {
