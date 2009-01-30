@@ -423,6 +423,7 @@ Glib::ustring Utils::build_sql_select_with_key(const Glib::ustring& table_name, 
 {
   if(!Conversions::value_is_empty(key_value)) //If there is a record to show:
   {
+    //TODO: Use a SQL parameter instead of using sql():
     const Glib::ustring where_clause = "\"" + table_name + "\".\"" + key_field->get_name() + "\" = " + key_field->sql(key_value);
     return Utils::build_sql_select_with_where_clause(table_name, fieldsToGet, where_clause);
   }

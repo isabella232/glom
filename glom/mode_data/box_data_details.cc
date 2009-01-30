@@ -147,7 +147,6 @@ void Box_Data_Details::set_primary_key_value(const Gtk::TreeModel::iterator& /* 
 {
   m_primary_key_value = value;
   set_found_set_from_primary_key_value();
-  //std::cout << "Box_Data_Details::set_primary_key_value(): m_primary_key_value=" << m_field_primary_key->sql(m_primary_key_value) << std::endl;
 }
 
 void Box_Data_Details::set_found_set_from_primary_key_value()
@@ -157,6 +156,7 @@ void Box_Data_Details::set_found_set_from_primary_key_value()
 
   if(!m_primary_key_value.is_null())
   {
+    //TODO: Use a SQL parameter instead of using sql().
     m_found_set.m_where_clause = "\"" + m_table_name + "\".\"" + m_field_primary_key->get_name() + 
       "\" = " + m_field_primary_key->sql(m_primary_key_value);
     //std::cout << "  DEBUG: Box_Data_Details::set_primary_key_value(): m_found_set.m_where_clause = " << m_found_set.m_where_clause << std::endl;

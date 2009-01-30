@@ -169,6 +169,7 @@ bool Box_Data_Calendar_Related::fill_from_database()
 
     //Add an AND to the existing where clause, to get only records within these dates, if any:
     sharedptr<const Field> date_field = derived_portal->get_date_field();
+    //TODO: Use a SQL parameter instead of using sql().
     const Glib::ustring extra_where_clause = "\"" + where_clause_to_table_name + "\".\"" + date_field->get_name() + "\""
       " BETWEEN DATE " + date_field->sql(date_start_value) + 
       " AND DATE " + date_field->sql(date_end_value);

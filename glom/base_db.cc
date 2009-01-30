@@ -1849,6 +1849,7 @@ Glib::ustring Base_DB::get_find_where_clause_quick(const Glib::ustring& table_na
 
       if(use_this_field)
       {
+        //TODO: Use a SQL parameter instead of using sql().
         strClausePart = "\"" + table_name + "\".\"" + field->get_name() + "\" " + field->sql_find_operator() + " " +  field->sql_find(quick_search);
       }
 
@@ -3163,7 +3164,8 @@ void Base_DB::set_found_set_where_clause_for_portal(FoundSet& found_set, const s
  
     //std::cout << "extra_join where_clause_to_key_field=" << where_clause_to_key_field->get_name() << std::endl;
   }
-  // TODO: Where is this used? Should we use parameters for this query?
+
+  // TODO: Where is this used? Should we use parameters for this query instead of sql()?
   if(where_clause_to_key_field)
     found_set.m_where_clause = "\"" + where_clause_to_table_name + "\".\"" + relationship->get_to_field() + "\" = " + where_clause_to_key_field->sql(foreign_key_value);
 }

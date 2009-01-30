@@ -200,6 +200,7 @@ void ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
         nodeGroupBy->set_attribute("group_value",
           Conversions::get_text_for_gda_value(field_group_by->get_glom_type(), group_value, field_group_by->get_formatting_used().m_numeric_format) );
 
+        //TODO: Use a SQL parameter instead of using sql().
         Glib::ustring where_clause = "(\"" + group_field_table_name + "\".\"" + field_group_by->get_name() + "\" = " + field_group_by->get_full_field_details()->sql(group_value) + ")";
         if(!found_set_parent.m_where_clause.empty())
           where_clause += " AND (" + found_set_parent.m_where_clause + ")";

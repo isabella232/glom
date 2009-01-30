@@ -747,7 +747,7 @@ Glib::ustring Field::get_gda_type() const
 
 Glib::RefPtr<Gnome::Gda::Holder> Field::get_holder(const Glib::ustring& name) const
 {
-  Glib::ustring real_name = name.empty() ? get_name() : name;
+  const Glib::ustring real_name = name.empty() ? get_name() : name;
   Glib::RefPtr<Gnome::Gda::Holder> holder = Gnome::Gda::Holder::create(get_gda_g_type(),
                                                                        real_name);
   holder->set_value_as_value(get_data());
@@ -763,7 +763,7 @@ Glib::RefPtr<Gnome::Gda::Holder> Field::get_holder(const Gnome::Gda::Value& valu
 
 Glib::ustring Field::get_gda_holder_string(const Glib::ustring& name) const
 {
-  Glib::ustring real_name = name.empty() ? get_name() : name;
+  const Glib::ustring real_name = name.empty() ? get_name() : name;
   return "##" + real_name + "::" + get_gda_type();
 }
 
