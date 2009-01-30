@@ -1,5 +1,11 @@
 2009-01-30  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/glom.glade: Make the labels FILL and EXPAND so they really 
+	align left instead of centering. This broke when I resaved with a 
+	newer glade-2.
+
+2009-01-30  Murray Cumming  <murrayc@murrayc.com>
+
 	Added some TODO comments where we would like to use SQL parameters 
 	instead of Field::sql(), if we can figure out how to do that for 
 	fragments of SQL, or how to refactor the code to parse the whole 
