@@ -930,31 +930,41 @@ bool App_Glom::on_document_load()
         m_example_uri = pDocument->get_file_uri();
 
         pDocument->set_file_uri(Glib::ustring()); //Prevent it from defaulting to the read-only examples directory when offering saveas.
-
         //m_ui_save_extra_* are used by offer_saveas() if it's not empty:
         m_ui_save_extra_showextras = true;
         m_ui_save_extra_title = _("Creating From Example File");
         m_ui_save_extra_message = _("To use this example file you must save an editable copy of the file. A new database will also be created on the server.");
         m_ui_save_extra_newdb_title = "TODO";
         m_ui_save_extra_newdb_hosting_mode = Document_Glom::POSTGRES_SELF_HOSTED;
+        
+        // Reinit cancelled state
+        set_operation_cancelled(false);
+        
         offer_saveas();
         // Note that bakery will try to add the example file itself to the
         // recently used documents, which is not what we want.
         m_ui_save_extra_message.clear();
         m_ui_save_extra_title.clear();
 
-        //Get the results from the extended save dialog:
-        pDocument->set_database_title(m_ui_save_extra_newdb_title);
-        pDocument->set_hosting_mode(m_ui_save_extra_newdb_hosting_mode);
-        m_ui_save_extra_newdb_hosting_mode = Document_Glom::POSTGRES_CENTRAL_HOSTED;
-
+        if (!get_operation_cancelled())
+        {	
+          //Get the results from the extended save dialog:
+          pDocument->set_database_title(m_ui_save_extra_newdb_title);
+          pDocument->set_hosting_mode(m_ui_save_extra_newdb_hosting_mode);
+          m_ui_save_extra_newdb_hosting_mode = Document_Glom::POSTGRES_CENTRAL_HOSTED;
+          pDocument->set_is_example_file(false);
+          // We have a valid uri, so we can set it to !new and modified here
+        }                
         m_ui_save_extra_newdb_title.clear();
         m_ui_save_extra_showextras = false;
-
-        if(get_operation_cancelled())
+        if (get_operation_cancelled())
+        {
+          pDocument->set_modified(false);
+          pDocument->set_is_new(true);
+          std::cout << "debug: user cancelled creating database" << std::endl;
           return false;
-        else
-          pDocument->set_is_example_file(false);
+        }
+        
 #else // !GLOM_ENABLE_CLIENT_ONLY
         // TODO_clientonly: Tell the user that opening example files is
         // not supported. This could alternatively also be done in
@@ -1059,6 +1069,7 @@ bool App_Glom::on_document_load()
           {
             // TODO: Do we need to call connection_pool->cleanup() here, for
             // stopping self-hosted databases? armin.
+            connection_pool->cleanup(this);
             //If the database was not successfully recreated:
             if(!user_cancelled)
             {
