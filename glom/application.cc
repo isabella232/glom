@@ -946,7 +946,7 @@ bool App_Glom::on_document_load()
         m_ui_save_extra_message.clear();
         m_ui_save_extra_title.clear();
 
-        if (!get_operation_cancelled())
+        if(!get_operation_cancelled())
         {	
           //Get the results from the extended save dialog:
           pDocument->set_database_title(m_ui_save_extra_newdb_title);
@@ -954,10 +954,12 @@ bool App_Glom::on_document_load()
           m_ui_save_extra_newdb_hosting_mode = Document_Glom::POSTGRES_CENTRAL_HOSTED;
           pDocument->set_is_example_file(false);
           // We have a valid uri, so we can set it to !new and modified here
-        }                
+        }        
+        
         m_ui_save_extra_newdb_title.clear();
         m_ui_save_extra_showextras = false;
-        if (get_operation_cancelled())
+
+        if(get_operation_cancelled())
         {
           pDocument->set_modified(false);
           pDocument->set_is_new(true);
@@ -2381,7 +2383,7 @@ void App_Glom::document_history_add(const Glib::ustring& file_uri)
   if(!file_uri.empty())
   {
     prevent = (file_uri == m_example_uri);
-    if (prevent)
+    if(prevent)
       return;
   }
 
