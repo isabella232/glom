@@ -266,7 +266,8 @@ protected:
   virtual void set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
   virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
   virtual Gnome::Gda::Value get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const;
-
+  virtual Gtk::TreeModel::iterator get_row_selected();
+ 
   //Implementations of pure virtual methods from Base_DB_Table_Data:
   virtual sharedptr<Field> get_field_primary_key() const;
   virtual Gnome::Gda::Value get_primary_key_value_selected() const;

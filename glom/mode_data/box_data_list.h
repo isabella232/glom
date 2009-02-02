@@ -47,6 +47,8 @@ public:
   virtual void set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
   virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
 
+  virtual Gtk::TreeModel::iterator get_row_selected();
+
   bool get_showing_multiple_records() const;
 
   void set_read_only(bool read_only = true);

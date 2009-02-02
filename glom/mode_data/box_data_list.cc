@@ -594,6 +594,11 @@ void Box_Data_List::on_adddel_user_sort_clause_changed()
     document->set_criteria_current(m_table_name, m_found_set);
 }
 
+Gtk::TreeModel::iterator Box_Data_List::get_row_selected()
+{
+  return m_AddDel.get_item_selected();
+}
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 //overridden, so we can change the column widths, so they are all visible:
 void Box_Data_List::on_dialog_layout_hide()
