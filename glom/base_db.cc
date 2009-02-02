@@ -184,23 +184,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute_select(const Glib::us
 
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
   Glib::RefPtr<Gnome::Gda::SqlParser> parser = gda_connection->create_parser();
-  
-  const App_Glom* app = App_Glom::get_application();
-  if(app && app->get_show_sql_debug())
-  {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-    try
-    {
-#endif
-      std::cout << "Debug: Base_DB::query_execute_select():  " << strQuery << std::endl;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-    }
-    catch(const Glib::Exception& ex)
-    {
-      std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
-    }
-#endif
-  }
+
   Glib::RefPtr<Gnome::Gda::Statement> stmt;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
@@ -217,6 +201,28 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute_select(const Glib::us
   if(error)
      std::cout << "debug: Base_DB::query_execute_select(): SqlParserError: exception from parse_string(): " << error.what() << std::endl;
 #endif //GLIBMM_EXCEPTIONS_ENABLED
+
+
+  //Debug output:
+  const App_Glom* app = App_Glom::get_application();
+  if(stmt && app && app->get_show_sql_debug())
+  {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    try
+    {
+#endif
+      const Glib::ustring full_query = stmt->to_sql(params);
+      std::cout << "Debug: Base_DB::query_execute_select():  " << full_query << std::endl;
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    }
+    catch(const Glib::Exception& ex)
+    {
+      std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
+    }
+#endif
+  }
+
   
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
@@ -274,23 +280,6 @@ bool Base_DB::query_execute(const Glib::ustring& strQuery,
     return false;
   }
   
-  const App_Glom* app = App_Glom::get_application();
-  if(app && app->get_show_sql_debug())
-  {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-    try
-    {
-#endif
-      std::cerr << "Debug: Base_DB::query_execute():  " << strQuery << std::endl;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-    }
-    catch(const Glib::Exception& ex)
-    {
-      std::cerr << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
-    }
-#endif
-  }
-  
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
   Glib::RefPtr<Gnome::Gda::SqlParser> parser = gda_connection->create_parser();
   Glib::RefPtr<Gnome::Gda::Statement> stmt;
@@ -313,11 +302,35 @@ bool Base_DB::query_execute(const Glib::ustring& strQuery,
     return false;
   }
 #endif
+
+
+  //Debug output:
+  const App_Glom* app = App_Glom::get_application();
+  if(stmt && app && app->get_show_sql_debug())
+  {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    try
+    {
+#endif
+      //TODO: full_query still seems to contain ## parameter names, 
+      //though it works for our SELECT queries in query_execute_select(): 
+      const Glib::ustring full_query = stmt->to_sql(params);
+      std::cerr << "Debug: Base_DB::query_execute(): " << full_query << std::endl;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    }
+    catch(const Glib::Exception& ex)
+    {
+      std::cerr << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
+    }
+#endif
+  }
+
+
   int exec_retval = -1;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    exec_retval = gda_connection->statement_execute_non_select (stmt, params);
+    exec_retval = gda_connection->statement_execute_non_select(stmt, params);
   }
   catch(const Glib::Error& error)
   {

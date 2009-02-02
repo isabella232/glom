@@ -294,11 +294,12 @@ void Box_Data::refresh_related_fields(const LayoutFieldInRecord& field_in_record
   if(!fieldsToGet.empty())
   {
     const Glib::ustring query = Utils::build_sql_select_with_key(field_in_record_changed.m_table_name, fieldsToGet, field_in_record_changed.m_key, field_in_record_changed.m_key_value);
+    std::cout << "DEBUG: Box_Data::refresh_related_fields(): query=" << query << std::endl;
 
     Glib::RefPtr<Gnome::Gda::DataModel> result = query_execute_select(query);
     if(!result)
     {
-      g_warning("Box_Data_List::refresh_related_fields(): no result.");
+      std::cerr << "Box_Data_List::refresh_related_fields(): no result." << std::endl;
       handle_error();
     }
     else
@@ -308,24 +309,33 @@ void Box_Data::refresh_related_fields(const LayoutFieldInRecord& field_in_record
       {
         type_vecLayoutFields::const_iterator iterFields = fieldsToGet.begin();
 
-        guint cols_count = result->get_n_columns();
+        const guint cols_count = result->get_n_columns();
+        if(cols_count <= 0)
+        {
+          std::cerr << "Box_Data_List::refresh_related_fields(): The result had 0 columns" << std::endl;
+        }
+
         for(guint uiCol = 0; uiCol < cols_count; uiCol++)
         {
           const Gnome::Gda::Value value = result->get_value_at(uiCol, 0 /* row */);
           sharedptr<LayoutItem_Field> layout_item = *iterFields;
+          if(!layout_item)
+            std::cerr << "Box_Data_List::refresh_related_fields(): The layout_item was null." << std::endl;
+          else
+          {
+            //std::cout << "DEBUG: Box_Data_List::refresh_related_fields(): field_name=" << layout_item->get_name() << std::endl;
+            //std::cout << "  DEBUG: Box_Data_List::refresh_related_fields(): value_as_string=" << value.to_string()  << std::endl;
 
-          //g_warning("list fill: field_name=%s", iterFields->get_name().c_str());
-          //g_warning("  value_as_string=%s", value.to_string().c_str());
-
-          //m_AddDel.set_value(row, layout_item, value);
-          set_entered_field_data(row, layout_item, value);
-          //g_warning("addedel size=%d", m_AddDel.get_count());
+            //m_AddDel.set_value(row, layout_item, value);
+            set_entered_field_data(row, layout_item, value);
+            //g_warning("addedel size=%d", m_AddDel.get_count());
+          }
 
           ++iterFields;
         }
       }
       else
-       g_warning("Box_Data_List::refresh_related_fields(): no records found.");
+        std::cerr << "Box_Data_List::refresh_related_fields(): no records found." << std::endl;
     }
   }
 }
