@@ -2414,7 +2414,7 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
     params->add_holder(field_in_record.m_key->get_holder(field_in_record.m_key_value));  
     Glib::ustring strQuery = "UPDATE \"" + field_in_record.m_table_name + "\"";
     strQuery += " SET \"" + field_in_record.m_field->get_name() + "\" = " + field_in_record.m_field->get_gda_holder_string();
-    strQuery += " WHERE \"" +field_in_record.m_field->get_name() + "\" = " + field_in_record.m_field->get_gda_holder_string();
+    strQuery += " WHERE \"" + field_in_record.m_key->get_name() + "\" = " + field_in_record.m_key->get_gda_holder_string();
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try //TODO: The exceptions are probably already handled by query_execute(0.

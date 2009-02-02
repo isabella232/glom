@@ -1,3 +1,10 @@
+2009-02-02  Murray Cumming  <murrayc@murrayc.com>>
+
+	* glom/base_db.cc: :set_field_value_in_database(): Correct a 
+	copy/paste typo that was probably introduced when switching to using 
+	parameters, so we now actually specify the primary key, so we really 
+	change the data in the database.
+
 2009-01-31  Johannes Schmid  <jschmid@openismus.com>
 
 	* glom/application.cc (on_document_load()):
