@@ -59,6 +59,13 @@ Gnome::Gda::Value Base_DB_Table_Data::get_entered_field_data(const sharedptr<con
   return Gnome::Gda::Value(); //null
 }
 
+Gtk::TreeModel::iterator Base_DB_Table_Data::get_row_selected()
+{
+  //This in meaningless for Details, 
+  //but is overridden for list views.
+  return Gtk::TreeModel::iterator();
+}
+
 
 bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Value& primary_key_value)
 {
@@ -213,7 +220,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
       std::cerr << "Box_Data::record_new(): INSERT failed." << std::endl;
     else
     {
-      Gtk::TreeModel::iterator row; // TODO: remove this parameter.
+      Gtk::TreeModel::iterator row = get_row_selected(); //Null and ignored for details views.
       set_primary_key_value(row, primary_key_value); //Needed by Box_Data_List::on_adddel_user_changed().
 
       //Update any lookups, related fields, or calculations:

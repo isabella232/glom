@@ -2471,6 +2471,11 @@ Gnome::Gda::Value DbAddDel::get_primary_key_value(const Gtk::TreeModel::iterator
   return get_value_key(row);
 }
 
+Gtk::TreeModel::iterator DbAddDel::get_row_selected()
+{
+  return get_item_selected();
+}
+
 } //namespace Glom
 
 

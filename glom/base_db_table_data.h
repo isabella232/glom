@@ -77,6 +77,9 @@ protected:
 
   virtual void on_record_added(const Gnome::Gda::Value& primary_key_value, const Gtk::TreeModel::iterator& row); //Overridden by derived classes.
   virtual void on_record_deleted(const Gnome::Gda::Value& primary_key_value); //Overridden by derived classes.
+
+  //Gets the row being edited, for derived classes that have rows.
+  virtual Gtk::TreeModel::iterator get_row_selected();
       
   FoundSet m_found_set;
 
