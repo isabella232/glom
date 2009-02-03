@@ -317,23 +317,28 @@ Base_DB::type_vecStrings Base_DB::get_table_names_from_database(bool ignore_syst
         {
           table_name = value.get_string();
 
-          bool add_it = true;
-
           if(ignore_system_tables)
           {
             //Check whether it's a system table:
             const Glib::ustring prefix = "glom_system_";
             const Glib::ustring table_prefix = table_name.substr(0, prefix.size());
             if(table_prefix == prefix)
-              add_it = false;
+              continue;
           }
 
           //Ignore the pga_* tables that pgadmin adds when you use it:
           if(table_name.substr(0, 4) == "pga_")
-            add_it = false;
+            continue;
 
-          if(add_it)
-            result.push_back(table_name);
+          //Ignore the pg_* tables that something (Postgres? libgda?) adds:
+          if(table_name.substr(0, 14) == "pg_catalog.pg_")
+            continue;
+
+          //Ignore the information_schema tables that something (libgda?) adds:
+          if(table_name.substr(0, 23) == "information_schema.sql_")
+            continue;
+
+          result.push_back(table_name);
         }
       }
     }
