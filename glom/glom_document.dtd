@@ -24,14 +24,16 @@ TODO: Make sure that all the comments list all the attributes and their meaning.
      server: The hostname of the PostgreSQL server.
      user: The PostgreSQL user.
      database: The name of the database to connect to on the PostgreSQL server.
-     self_hosted: Whether a local instance of Postgres should be started, to serve the data that is in a glom_postgres_data directory.      
+     self_hosted: Whether a local instance of PostgreSQL should be started, to serve the data that is in a glom_postgres_data directory. Deprecated in favor of host_mode.
+     hosting_mode: Can be "postgres_central" (self hosted via a local instance of PostgreSQL), "postgres_self" (a central PostgreSQL instance is used) or "sqlite" (self-hosted via a SQLite file).   
 -->
     <!ELEMENT connection EMPTY >
     <!ATTLIST connection
         server CDATA "localhost"
         user CDATA #IMPLIED
         database CDATA #REQUIRED
-        self_hosted (true|false) "false" >
+        self_hosted (true|false) "false" 
+        hosting_mode CDATA #IMPLIED>
 
 <!-- group(s) and table_privs are the permissions for each table.
       However, these are just initial permissions for examples. The real permissions are 

@@ -48,8 +48,8 @@ namespace Glom
 {
 
 #define GLOM_NODE_CONNECTION "connection"
-#define GLOM_ATTRIBUTE_CONNECTION_SELF_HOSTED "self_hosted"
-#define GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE "hosting_mode"
+#define GLOM_ATTRIBUTE_CONNECTION_SELF_HOSTED "self_hosted" //deprecated.
+#define GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE "hosting_mode" 
 #define GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_CENTRAL "postgres_central"
 #define GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_SELF "postgres_self"
 #define GLOM_ATTRIBUTE_CONNECTION_HOSTING_SQLITE "sqlite"
@@ -2294,8 +2294,8 @@ bool Document_Glom::load_after()
         if(attr_mode.empty())
         {
           // If no hosting mode is set, then try the self_hosted flag which
-          // was used before sqlite support has been implemented.
-          bool self_hosted = get_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SELF_HOSTED);
+          // was used before sqlite support was implemented.
+          const bool self_hosted = get_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SELF_HOSTED);
           mode = self_hosted ? POSTGRES_SELF_HOSTED : POSTGRES_CENTRAL_HOSTED;
         }
         else

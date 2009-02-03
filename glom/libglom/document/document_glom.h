@@ -110,13 +110,11 @@ public:
 
   static guint get_latest_known_document_format_version();
 
-  enum HostingMode {
-    /* The database is hosted on an external postgresql server */
-    POSTGRES_CENTRAL_HOSTED,
-    /* A new postgres database process is spawned that hosts the data */
-    POSTGRES_SELF_HOSTED,
-    /* A sqlite database file is used */
-    SQLITE_HOSTED
+  enum HostingMode
+  {
+    POSTGRES_CENTRAL_HOSTED, /*!< The database is hosted on an external postgresql server. */
+    POSTGRES_SELF_HOSTED, /*!< A new postgres database process is spawned that hosts the data. */
+    SQLITE_HOSTED /*!< A sqlite database file is used. */
   };
 
   /** Set the hosting mode of the database.

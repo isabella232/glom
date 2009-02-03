@@ -1,5 +1,10 @@
 2009-02-03  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/glom_document.dtd: Mention the new self_hosted <connection> 
+	attribute.
+
+2009-02-03  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/base_db.cc: get_table_names_from_database(): Filter out some 
 	extra internal table names which may be created/reported by newer 
 	versions of libgda.
