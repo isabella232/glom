@@ -197,7 +197,7 @@ namespace Glom
 #define GLOM_ATTRIBUTE_POSITION_WIDTH "width"
 #define GLOM_ATTRIBUTE_POSITION_HEIGHT "height"
 
-#define GLOM_NODE_PAGE_SETUP "page_setup" //It's text child is the keyfile for a GtkPageSetup
+#define GLOM_NODE_PAGE_SETUP "page_setup" //Its text child is the keyfile for a GtkPageSetup
 
 #define GLOM_NODE_LIBRARY_MODULES "library_modules"
 #define GLOM_NODE_LIBRARY_MODULE "module"

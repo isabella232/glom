@@ -144,23 +144,24 @@ bool Box_Tables::fill_from_database()
 #else
   std::auto_ptr<ExceptionConnection> error;
   sharedptr<SharedConnection> sharedconnection = connect_to_server(App_Glom::get_application(), error);
-  // Ignore error, sharedconnection presence is checked below
+  // Ignore error because sharedconnection presence is checked below.
 #endif
+
   if(sharedconnection)
   {
     m_AddDel.remove_all();
     Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
 
-    type_vecStrings vecTables = get_table_names_from_database();
+    const type_vecStrings vecTables = get_table_names_from_database();
 
-    for(type_vecStrings::iterator iter = vecTables.begin(); iter != vecTables.end(); iter++)
+    for(type_vecStrings::const_iterator iter = vecTables.begin(); iter != vecTables.end(); iter++)
     {
       const Glib::ustring strName = *iter;
 
       sharedptr<TableInfo> table_info;
 
       //Check whether it should be hidden:
-      Document_Glom::type_listTableInfo::iterator iterFind = std::find_if(listTablesDocument.begin(), listTablesDocument.end(), predicate_FieldHasName<TableInfo>(strName));
+      Document_Glom::type_listTableInfo::const_iterator iterFind = std::find_if(listTablesDocument.begin(), listTablesDocument.end(), predicate_FieldHasName<TableInfo>(strName));
       if(iterFind != listTablesDocument.end())
       {
         table_info = *iterFind;
@@ -179,7 +180,7 @@ bool Box_Tables::fill_from_database()
       const bool hidden = table_info->m_hidden;
 
       bool bAddIt = true;
-      if(hidden && !developer_mode)  //Don't add hidden tables unless we are in developer mode:
+      if(hidden && !developer_mode) //Don't add hidden tables unless we are in developer mode:
         bAddIt = false;
 
       if(hidden && !m_pCheckButtonShowHidden->get_active()) //Don't add hidden tables if that checkbox is unset.
@@ -191,9 +192,7 @@ bool Box_Tables::fill_from_database()
       const Glib::ustring prefix = "glom_system_";
       const Glib::ustring table_prefix = strName.substr(0, prefix.size());
       if(table_prefix == prefix)
-      {
         bAddIt = false;
-      }
 
       if(bAddIt)
       {

@@ -1,3 +1,9 @@
+2009-02-03  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.cc: get_table_names_from_database(): Filter out some 
+	extra internal table names which may be created/reported by newer 
+	versions of libgda.
+
 2009-02-02  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db_table_data.[h|cc]: Added get_row_selected() virtual function, 

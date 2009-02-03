@@ -29,7 +29,7 @@ Privs::type_vecStrings Privs::get_database_groups()
 {
   type_vecStrings result;
 
-  Glib::ustring strQuery = "SELECT \"pg_group\".\"groname\" FROM \"pg_group\"";
+  const Glib::ustring strQuery = "SELECT \"pg_group\".\"groname\" FROM \"pg_group\"";
   Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery);
   if(data_model)
   {
@@ -54,7 +54,7 @@ Privs::type_vecStrings Privs::get_database_users(const Glib::ustring& group_name
   if(group_name.empty())
   {
     //pg_shadow contains the users. pg_users is a view of pg_shadow without the password.
-    Glib::ustring strQuery = "SELECT \"pg_shadow\".\"usename\" FROM \"pg_shadow\"";
+    const Glib::ustring strQuery = "SELECT \"pg_shadow\".\"usename\" FROM \"pg_shadow\"";
     Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery);
     if(data_model)
     {
@@ -69,7 +69,7 @@ Privs::type_vecStrings Privs::get_database_users(const Glib::ustring& group_name
   }
   else
   {
-    Glib::ustring strQuery = "SELECT \"pg_group\".\"groname\", \"pg_group\".\"grolist\" FROM \"pg_group\" WHERE \"pg_group\".\"groname\" = '" + group_name + "'";
+    const Glib::ustring strQuery = "SELECT \"pg_group\".\"groname\", \"pg_group\".\"grolist\" FROM \"pg_group\" WHERE \"pg_group\".\"groname\" = '" + group_name + "'";
     Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery);
     if(data_model && data_model->get_n_rows())
     {
@@ -87,7 +87,7 @@ Privs::type_vecStrings Privs::get_database_users(const Glib::ustring& group_name
         for(type_vecStrings::const_iterator iter = vecUserIds.begin(); iter != vecUserIds.end(); ++iter)
         {
           //TODO_Performance: Can we do this in one SQL SELECT?
-          Glib::ustring strQuery = "SELECT \"pg_user\".\"usename\" FROM \"pg_user\" WHERE \"pg_user\".\"usesysid\" = '" + *iter + "'";
+          const Glib::ustring strQuery = "SELECT \"pg_user\".\"usename\" FROM \"pg_user\" WHERE \"pg_user\".\"usesysid\" = '" + *iter + "'";
           Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery);
           if(data_model)
           {

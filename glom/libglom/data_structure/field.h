@@ -162,12 +162,11 @@ public:
   Glib::ustring get_gda_type() const;
   GType get_gda_g_type() const;
 
-  /** TODO: Documentation.
-   */
+  /// A convenience when using parameters with a libgda SQL query.
   Glib::RefPtr<Gnome::Gda::Holder> get_holder(const Glib::ustring& name = Glib::ustring()) const;
-
-  /** TODO: Documentation.
-   */
+ 
+  //TODO: Shouldn't this be called get_gda_holder_name()?
+  /// A convenience when using parameters with a libgda SQL query.
   Glib::RefPtr<Gnome::Gda::Holder> get_holder(const Gnome::Gda::Value& value, const Glib::ustring& name = Glib::ustring()) const;
 
   /** TODO: Documentation.
