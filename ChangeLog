@@ -1,3 +1,10 @@
+2009-02-04  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc
+	(DbTreeModelRow::fill_values_if_necessary): Use a
+	Gnome::Gda::DataModelWrapper to wrap the resulting cursor-based data
+	model. This avoids a special-case for SQLite. Requires libgda trunk.
+
 2009-02-03  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/glom_document.dtd: Mention the new self_hosted <connection> 

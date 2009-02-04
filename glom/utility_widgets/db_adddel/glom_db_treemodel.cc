@@ -279,7 +279,7 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
             // This is quite possible for example for unset dates, jhs 
             ;//std::cerr << "DbTreeModelRow::fill_values_if_necessary(): NULL Gnome::Gda::Holder for field=" << i << std::endl;
 
-          //std::cout << "  debug: col=" << i << ", GType=" << m_db_values[i].get_value_type() << std::endl;
+          //std::cout << "  debug: col=" << i << ", GType=" << m_db_values[i].get_value_type() << ", string=" << m_db_values[i].to_string() << std::endl;
         }
 
         Glib::RefPtr<const Gnome::Gda::Holder> holder = iter->get_holder_for_field(model.m_column_index_key);
@@ -481,17 +481,9 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
     try
     {
       //Specify the STATEMENT_MODEL_CURSOR, so that libgda only gets the rows that we actually use.
-      // TODO: CURSOR mode does not properly work with SQLite, because when 
-      // requesting a second iterator from the data model, it points to the
-      // same row as the previous iterator (not to the first row), and there
-      // is no way to do backwards iteration. I don't think there is API in
-      // libgda to find this out, se we are currently hardcoding this for the
-      // SQLite case. See also
-      // http://bugzilla.gnome.org/show_bug.cgi?id=567891.
-      Gnome::Gda::StatementModelUsage usage = Gnome::Gda::STATEMENT_MODEL_CURSOR_FORWARD;
-      if(dynamic_cast<ConnectionPoolBackends::Sqlite*>(connection_pool->get_backend()))
-        usage = Gnome::Gda::STATEMENT_MODEL_RANDOM_ACCESS;
-      m_gda_datamodel = m_connection->get_gda_connection()->statement_execute_select(stmt, usage);
+      m_gda_datamodel = m_connection->get_gda_connection()->statement_execute_select(stmt, Gnome::Gda::STATEMENT_MODEL_CURSOR_FORWARD);
+      // Use a DataAccessWrapper to allow random access: 
+      m_gda_datamodel = Gnome::Gda::DataAccessWrapper::create(m_gda_datamodel);
 
       if(app && app->get_show_sql_debug())
         std::cout << "  Debug: DbTreeModel::refresh_from_database(): The query execution has finished." << std::endl;
