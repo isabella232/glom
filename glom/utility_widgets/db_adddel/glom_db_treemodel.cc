@@ -489,9 +489,10 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
       // does not support it (for example the one for Sqlite recordsets does
       // not). The alternative would be to acquire a random-access model
       // directly here for SQLite, but this would
-      // a) make this code dependent on the database backend used
+      // a) make this code dependent on the database backend used.
       // b) fetch rows we perhaps don't need, if only the first few rows of
       // a table are accessed.
+      // TODO_Performance: The unnecessary (for PostgreSQL) extra indirection might theoretically make this slower.
       m_gda_datamodel = Gnome::Gda::DataAccessWrapper::create(m_gda_datamodel);
 
       if(app && app->get_show_sql_debug())
