@@ -1,3 +1,8 @@
+2009-02-05  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc: Added a
+	clarifying comment on why we use a DataAccessWrapper.
+
 2009-02-04  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc

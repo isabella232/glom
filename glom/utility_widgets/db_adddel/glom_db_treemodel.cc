@@ -482,7 +482,16 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
     {
       //Specify the STATEMENT_MODEL_CURSOR, so that libgda only gets the rows that we actually use.
       m_gda_datamodel = m_connection->get_gda_connection()->statement_execute_select(stmt, Gnome::Gda::STATEMENT_MODEL_CURSOR_FORWARD);
-      // Use a DataAccessWrapper to allow random access: 
+
+      // Use a DataAccessWrapper to allow random access. This is necessary
+      // since we use move_to_row() on a created iterator in
+      // fill_values_if_necessary(), which does not work if the iterator
+      // does not support it (for example the one for Sqlite recordsets does
+      // not). The alternative would be to acquire a random-access model
+      // directly here for SQLite, but this would
+      // a) make this code dependent on the database backend used
+      // b) fetch rows we perhaps don't need, if only the first few rows of
+      // a table are accessed.
       m_gda_datamodel = Gnome::Gda::DataAccessWrapper::create(m_gda_datamodel);
 
       if(app && app->get_show_sql_debug())
