@@ -331,12 +331,14 @@ Base_DB::type_vecStrings Base_DB::get_table_names_from_database(bool ignore_syst
             continue;
 
           //Ignore the pg_* tables that something (Postgres? libgda?) adds:
-          if(table_name.substr(0, 14) == "pg_catalog.pg_")
-            continue;
+          //Not needed now that this was fixed again in libgda-4.0.
+          //if(table_name.substr(0, 14) == "pg_catalog.pg_")
+          //  continue;
 
           //Ignore the information_schema tables that something (libgda?) adds:
-          if(table_name.substr(0, 23) == "information_schema.sql_")
-            continue;
+          //Not needed now that this was fixed again in libgda-4.0.
+          //if(table_name.substr(0, 23) == "information_schema.sql_")
+          //  continue;
 
           result.push_back(table_name);
         }
