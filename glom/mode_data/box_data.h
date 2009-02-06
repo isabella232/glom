@@ -97,8 +97,6 @@ protected:
   ///Fill the existing layout with data from the database.
   virtual bool fill_from_database(); //override.
 
-  virtual void refresh_related_fields(const LayoutFieldInRecord& field_in_record_changed, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value);
-
   virtual type_vecLayoutFields get_fields_to_show() const;
 
   type_vecLayoutFields get_table_fields_to_show(const Glib::ustring& table_name) const;
@@ -107,11 +105,6 @@ protected:
    */
   Document_Glom::type_list_layout_groups get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& layout_platform);
   void fill_layout_group_field_info(const sharedptr<LayoutGroup>& group, const Privileges& table_privs);
-
-
-  /** Get the fields that are in related tables, via a relationship using @a field_name changes.
-  */
-  type_vecLayoutFields get_related_fields(const sharedptr<const LayoutItem_Field>& field) const;
 
   void execute_button_script(const sharedptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key_value);
 

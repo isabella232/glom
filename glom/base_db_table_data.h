@@ -63,6 +63,12 @@ protected:
   virtual Gnome::Gda::Value get_primary_key_value_selected() const = 0;
   virtual void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value) = 0;
   virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const = 0;
+
+  virtual void refresh_related_fields(const LayoutFieldInRecord& field_in_record_changed, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value);
+
+  /** Get the fields that are in related tables, via a relationship using @a field_name changes.
+   */
+  type_vecLayoutFields get_related_fields(const sharedptr<const LayoutItem_Field>& field) const;
       
   /** Ask the user if he really wants to delete the record.
    */  
