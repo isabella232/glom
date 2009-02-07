@@ -2841,14 +2841,16 @@ bool Base_DB::get_field_value_is_unique(const Glib::ustring& table_name, const s
   bool result = true;  //Arbitrarily default to saying it's unique if we can't get any result.
 
   const Glib::ustring table_name_used = field->get_table_used(table_name); 
-  Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
-  Field glom_field = *field->get_full_field_details();
-  glom_field.set_data(value);
-  params->add_holder(glom_field.get_holder());
-  Glib::ustring strQuery = "SELECT \"" + table_name_used + "\".\"" + field->get_name() + "\" FROM \"" + table_name_used + "\"";
-  strQuery += " WHERE \"" + field->get_name() + "\" = " + glom_field.get_gda_holder_string();
 
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery, params);
+  Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
+  sharedptr<const Field> glom_field = field->get_full_field_details();
+  if(glom_field)
+    params->add_holder(glom_field->get_holder(value));
+
+  const Glib::ustring strQuery = "SELECT \"" + table_name_used + "\".\"" + field->get_name() + "\" FROM \"" + table_name_used + "\""
+    " WHERE \"" + field->get_name() + "\" = " + glom_field->get_gda_holder_string();
+
+  Glib::RefPtr<const Gnome::Gda::DataModel> data_model = query_execute_select(strQuery, params);
   if(data_model)
   {
     //std::cout << "debug: Base_DB::get_field_value_is_unique(): table_name=" << table_name << ", field name=" << field->get_name() << ", value=" << value.to_string() << ", rows count=" << data_model->get_n_rows() << std::endl;

@@ -145,10 +145,6 @@ public:
   /// Ignores any part of FieldAttributes that libgda does not properly fill.
   bool field_info_from_database_is_equal(const Glib::RefPtr<const Gnome::Gda::Column>& field);
 
-  //These are not used much:
-  Gnome::Gda::Value get_data() const;
-  void set_data(const Gnome::Gda::Value& value);
-
   //Lookup stuff:
   bool get_is_lookup() const;
 
@@ -162,9 +158,6 @@ public:
   Glib::ustring get_gda_type() const;
   GType get_gda_g_type() const;
 
-  /// A convenience when using parameters with a libgda SQL query.
-  Glib::RefPtr<Gnome::Gda::Holder> get_holder(const Glib::ustring& name = Glib::ustring()) const;
- 
   //TODO: Shouldn't this be called get_gda_holder_name()?
   /// A convenience when using parameters with a libgda SQL query.
   Glib::RefPtr<Gnome::Gda::Holder> get_holder(const Gnome::Gda::Value& value, const Glib::ustring& name = Glib::ustring()) const;
@@ -254,8 +247,6 @@ protected:
 
   glom_field_type m_glom_type;
   Glib::RefPtr<Gnome::Gda::Column> m_field_info;
-
-  Gnome::Gda::Value m_data; //Not used much.
 
   sharedptr<Relationship> m_lookup_relationship;
   Glib::ustring m_strLookupField;

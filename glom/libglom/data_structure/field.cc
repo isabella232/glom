@@ -63,7 +63,6 @@ Field& Field::operator=(const Field& src)
 
   m_glom_type = src.m_glom_type;
   m_field_info = src.m_field_info->copy();
-  m_data = src.m_data;
 
   m_lookup_relationship = src.m_lookup_relationship;
   m_strLookupField = src.m_strLookupField;
@@ -85,7 +84,6 @@ bool Field::operator==(const Field& src) const
   return TranslatableItem::operator==(src)
          && (m_field_info->equal(src.m_field_info))
          && (m_glom_type == src.m_glom_type)
-         && (m_data == src.m_data)
          && (m_lookup_relationship == src.m_lookup_relationship)
          && (m_strLookupField == src.m_strLookupField)
          && (m_calculation == src.m_calculation)
@@ -154,16 +152,6 @@ void Field::set_field_info(const Glib::RefPtr<Gnome::Gda::Column>& fieldinfo)
 
   if(cur_type == G_TYPE_NONE)
     set_glom_type( get_glom_type_for_gda_type(fieldinfo->get_g_type()) );
-}
-
-Gnome::Gda::Value Field::get_data() const
-{
-  return m_data;
-}
-
-void Field::set_data(const Gnome::Gda::Value& data)
-{
-  m_data = data;
 }
 
 sharedptr<Relationship> Field::get_lookup_relationship() const
@@ -745,18 +733,10 @@ Glib::ustring Field::get_gda_type() const
   return g_type_name(get_gda_g_type());
 }
 
-Glib::RefPtr<Gnome::Gda::Holder> Field::get_holder(const Glib::ustring& name) const
-{
-  const Glib::ustring real_name = name.empty() ? get_name() : name;
-  Glib::RefPtr<Gnome::Gda::Holder> holder = Gnome::Gda::Holder::create(get_gda_g_type(),
-                                                                       real_name);
-  holder->set_value_as_value(get_data());
-  return holder;
-}
-
 Glib::RefPtr<Gnome::Gda::Holder> Field::get_holder(const Gnome::Gda::Value& value, const Glib::ustring& name) const
 {
-  Glib::RefPtr<Gnome::Gda::Holder> holder = get_holder(name);
+  const Glib::ustring real_name = name.empty() ? get_name() : name;
+  Glib::RefPtr<Gnome::Gda::Holder> holder = Gnome::Gda::Holder::create(get_gda_g_type(), real_name);
   holder->set_value_as_value(value);
   return holder;
 }
