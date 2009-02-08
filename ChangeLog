@@ -1,3 +1,26 @@
+2009-02-08  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.[h|cc]:
+	constuctor/create(): Added a bool find_mode parameter and member 
+	variable.
+	refresh_from_database(): Create a DataModelArray for find mode, 
+	with the appropriate column types.
+	* glom/utility_widgets/db_adddel/db_adddel.[h|cc]:
+	Remove the awkward ListStore alternative model for find mode that I 
+	recently introduced,
+	construct_specified_columns(): Instead just specify find_mode=true 
+	when creating the tree model.
+
+	* glom/mode_data/box_data_list.cc: Simplify this code again 
+	accordingly.
+
+	* glom/utility_widgets/db_adddel/Makefile.am:
+	* glom/utility_widgets/db_adddel/treemodel_with_addrow.[h|cc]:
+	* glom/utility_widgets/db_adddel/liststore_with_addrow.[h|cc]:
+	* regression_tests/Makefile.am:
+	* regression_tests/test_treemodel_dynamic_cast.cc:
+	Removed these because they are no longer used.
+
 2009-02-08  Johannes Schmid  <jschmid@openismus.com>
 	
 	* glom/libglom/data_structure/Makefile.am:

@@ -18,6 +18,3 @@ test_parsing_time_LDADD = $(GLOM_LIBS) $(top_builddir)/glom/libglom/libglom.la
 test_signal_reemit_SOURCES = test_signal_reemit.cc
 test_signal_reemit_LDADD = $(GLOM_LIBS) 
 
-test_treemodel_dynamic_cast_SOURCES = test_treemodel_dynamic_cast.cc
-test_treemodel_dynamic_cast_LDADD = $(GLOM_LIBS) 
-

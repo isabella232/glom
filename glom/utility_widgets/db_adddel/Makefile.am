@@ -7,8 +7,6 @@ libutility_widgets_db_adddel_a_SOURCES = db_adddel.cc db_adddel.h db_adddel_with
                                       db_treeviewcolumn_glom.cc db_treeviewcolumn_glom.h \
                                       glom_db_treemodel.h glom_db_treemodel.cc \
                                       cellrenderer_buttonimage.h cellrenderer_buttonimage.cc \
-                                      cellrenderer_buttontext.h cellrenderer_buttontext.cc \
-                                      treemodel_with_addrow.h treemodel_with_addrow.cc \
-                                      liststore_with_addrow.h liststore_with_addrow.cc
+                                      cellrenderer_buttontext.h cellrenderer_buttontext.cc
                                       
  

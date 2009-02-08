@@ -1,6 +1,6 @@
 /*
  * glom
- * Copyright (C) Johannes Schmid 2009 <jhs@gnome.org>
+ * Copyright (C) Openismus GmbH, 2009
  * 
  * glom is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -21,27 +21,25 @@
 namespace Glom
 {
 
-ParameterNameGenerator::ParameterNameGenerator() :
-    m_id(0)
+ParameterNameGenerator::ParameterNameGenerator()
+: m_id(0)
 {
-    
 }
 
 ParameterNameGenerator::~ParameterNameGenerator()
 {
-    
 }
     
 Glib::ustring ParameterNameGenerator::get_next_name(unsigned int& id)
 {
-    m_id_table[m_id] = Glib::ustring::compose("glom_param%1", m_id);
-    id = m_id++;
-    return m_id_table[id];
+  m_id_table[m_id] = Glib::ustring::compose("glom_param%1", m_id);
+  id = m_id++;
+  return m_id_table[id];
 }
 
 Glib::ustring ParameterNameGenerator::get_name_from_id(unsigned int id)
 {
-    return m_id_table[id];
+  return m_id_table[id];
 }
 
 } // namespace Glom

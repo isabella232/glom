@@ -21,10 +21,11 @@
 #ifndef GLOM_MODE_DATA_DB_TREEMODEL_H
 #define GLOM_MODE_DATA_DB_TREEMODEL_H
 
-#include <glom/utility_widgets/db_adddel/treemodel_with_addrow.h>
+#include <gtkmm/treemodel.h>
 #include <gtkmm/treepath.h>
 #include <glom/libglom/data_structure/layout/layoutitem_field.h>
 #include <glom/libglom/connectionpool.h>
+#include "../../base_db.h"
 
 namespace Glom
 {
@@ -61,21 +62,23 @@ public:
 
 class DbTreeModel
   : public Glib::Object,
-    public Gtk::TreeModel,
-    public TreeModelWithAddRow
+    public Gtk::TreeModel
 {
 public:
   typedef unsigned int size_type;
+
+  //typedef std::vector<LayoutItem_Field> type_vec_fields;
+  typedef Base_DB::type_vecLayoutFields type_vec_fields;
 
   friend class DbTreeModelRow;
 
 protected:
   //Create a TreeModel with @a columns_count number of columns, each of type Glib::ustring.
-  DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const FoundSet& found_set, const type_vec_fields& column_fields, int column_index_key, bool get_records = true);
+  DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const FoundSet& found_set, const type_vec_fields& column_fields, int column_index_key, bool get_records = true, bool find_mode = false);
   virtual ~DbTreeModel();
 
 public:
-  static Glib::RefPtr<DbTreeModel> create(const Gtk::TreeModelColumnRecord& columns, const FoundSet& found_set, const type_vec_fields& column_fields, int column_index_key, bool get_records = true);
+  static Glib::RefPtr<DbTreeModel> create(const Gtk::TreeModelColumnRecord& columns, const FoundSet& found_set, const type_vec_fields& column_fields, int column_index_key, bool get_records = true, bool find_mode = false);
 
   typedef DbTreeModelRow::DbValue DbValue;
 
@@ -199,6 +202,7 @@ private:
    typedef Gtk::TreeModelColumn< DbValue > typeModelColumn;
 
    bool m_get_records;
+   bool m_find_mode;
 
    int m_stamp; //When the model's stamp and the TreeIter's stamp are equal, the TreeIter is valid.
 

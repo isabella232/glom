@@ -369,7 +369,7 @@ DbTreeModelRow::DbValue DbTreeModelRow::get_value(DbTreeModel& model, int column
 //Intialize static variable:
 bool DbTreeModel::m_iface_initialized = false;
 
-DbTreeModel::DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const FoundSet& found_set, const type_vec_fields& column_fields, int column_index_key, bool get_records)
+DbTreeModel::DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const FoundSet& found_set, const type_vec_fields& column_fields, int column_index_key, bool get_records, bool find_mode)
 : Glib::ObjectBase( typeid(DbTreeModel) ), //register a custom GType.
   Glib::Object(), //The custom GType is actually registered here.
   m_columns_count(0),
@@ -381,6 +381,7 @@ DbTreeModel::DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const FoundS
   m_count_extra_rows(0),
   m_count_removed_rows(0),
   m_get_records(get_records),
+  m_find_mode(find_mode),
   m_stamp(1) //When the model's stamp != the iterator's stamp then that iterator is invalid and should be ignored. Also, 0=invalid
 {
   if(!m_iface_initialized)
@@ -422,9 +423,9 @@ DbTreeModel::~DbTreeModel()
 }
 
 //static:
-Glib::RefPtr<DbTreeModel> DbTreeModel::create(const Gtk::TreeModelColumnRecord& columns, const FoundSet& found_set, const type_vec_fields& column_fields, int column_index_key, bool get_records)
+Glib::RefPtr<DbTreeModel> DbTreeModel::create(const Gtk::TreeModelColumnRecord& columns, const FoundSet& found_set, const type_vec_fields& column_fields, int column_index_key, bool get_records, bool find_mode)
 {
-  return Glib::RefPtr<DbTreeModel>( new DbTreeModel(columns, found_set, column_fields, column_index_key, get_records) );
+  return Glib::RefPtr<DbTreeModel>( new DbTreeModel(columns, found_set, column_fields, column_index_key, get_records, find_mode) );
 }
 
 bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
@@ -432,10 +433,39 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
   //std::cout << "DbTreeModel::refresh_from_database()" << std::endl;
   m_found_set = found_set;
 
-  if(!m_get_records)
+  if(!m_get_records && !m_find_mode)
     return false;
 
   clear(); //Clear existing shown records.
+
+  if(m_find_mode)
+  {
+    m_get_records = false; //Otherwise it would not make sense.
+
+    //Use a dummy DataModel that has the same columns and types, 
+    //but which does not use a real database table,
+    //so we can use it to add find criteria.
+    Glib::RefPtr<Gnome::Gda::DataModelArray> model_array = Gnome::Gda::DataModelArray::create(m_column_fields.size());
+    m_gda_datamodel = model_array;
+
+    int col = 0;
+    for(type_vec_fields::const_iterator iter = m_column_fields.begin(); iter != m_column_fields.end(); ++iter)
+    {
+      sharedptr<const LayoutItem_Field> layout_item = *iter;
+      if(layout_item)
+      {
+        const Field::glom_field_type glom_type = layout_item->get_glom_type();
+        const GType gda_type = Field::get_gda_type_for_glom_type(glom_type);
+        model_array->set_column_g_type(col, gda_type);
+        ++col;
+      }
+    }
+
+    //Add at least an initial row:
+    m_gda_datamodel->append_row(); //TODO: Handle adding.
+    return true;
+  }
+
 
   //Connect to database:
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
