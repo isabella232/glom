@@ -39,6 +39,7 @@
 #include <glom/libglom/utils.h>
 #include <glom/libglom/glade_utils.h>
 #include <glom/libglom/data_structure/glomconversions.h>
+#include <glom/libglom/data_structure/parameternamegenerator.h>
 #include <glom/libglom/data_structure/layout/report_parts/layoutitem_summary.h>
 #include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 #include <glom/libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.h>
@@ -1557,6 +1558,7 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
       if(row_data.find("\n") == Glib::ustring::npos)
       {
         Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
+        ParameterNameGenerator generator;
         for(unsigned int i = 0; i < vec_values.size(); ++i)
         {
           if(i > 0)
@@ -1576,15 +1578,15 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
           }
           
           //Add a SQL parameter for the value:
-          Glib::ustring param_name = Glib::ustring::compose("param%1", i);
+          unsigned int id;
           Glib::RefPtr<Gnome::Gda::Holder> holder = Gnome::Gda::Holder::create(vec_fields[i]->get_gda_g_type(),
-                                                                               param_name);
+                                                                               generator.get_next_name(id));
 
           holder->set_not_null(false);
           holder->set_value_as_value(value);
           params->add_holder(holder);
           
-          strVals += "##" + param_name + "::" + vec_fields[i]->get_gda_type();
+          strVals += "##" + generator.get_name_from_id(id) + "::" + vec_fields[i]->get_gda_type();
         }
 
         //Create and parse the SQL query:

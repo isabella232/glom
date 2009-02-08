@@ -1,3 +1,13 @@
+2009-02-08  Johannes Schmid  <jschmid@openismus.com>
+	
+	* glom/libglom/data_structure/Makefile.am:
+	* glom/libglom/data_structure/parameternamegenerator.cc:
+	* glom/libglom/data_structure/parameternamegenerator.h:
+	New class to generate simple unique holder names
+	
+	* glom/base_db.cc (insert_example_data):
+	Use the new ParameterNameGenerator class
+
 2009-02-07  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db.cc: get_field_value_is_unique(): Use the 

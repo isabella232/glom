@@ -16,7 +16,9 @@ libdata_structure_la_SOURCES = field.h field.cc \
                               system_prefs.h system_prefs.cc \
                               print_layout.h print_layout.cc \
                               report.h report.cc \
-                              translatable_item.h translatable_item.cc
+                              translatable_item.h translatable_item.cc \
+                              parameternamegenerator.h \
+                              parameternamegenerator.cc
 
 
 
