@@ -704,39 +704,16 @@ Glib::ustring Field::get_sql_type() const
   }
 }
 
-GType Field::get_gda_g_type() const
+Glib::ustring Field::get_gda_type_name() const
 {
-  // TODO: Can't we just do this here? armin.
-  // return get_field_info()->get_g_type();
-
-  switch(m_glom_type)
-  {
-    case TYPE_NUMERIC:
-      return GDA_TYPE_NUMERIC;
-    case TYPE_TEXT:
-      return G_TYPE_STRING;
-    case TYPE_DATE:
-      return G_TYPE_DATE;
-    case TYPE_TIME:
-      return GDA_TYPE_TIME;
-    case TYPE_BOOLEAN:
-      return G_TYPE_BOOLEAN;
-    case TYPE_IMAGE:
-      return GDA_TYPE_BINARY;
-    default:
-      g_assert_not_reached();
-  }
-}
-
-Glib::ustring Field::get_gda_type() const
-{
-  return g_type_name(get_gda_g_type());
+  return g_type_name( get_gda_type_for_glom_type(m_glom_type) );
 }
 
 Glib::RefPtr<Gnome::Gda::Holder> Field::get_holder(const Gnome::Gda::Value& value, const Glib::ustring& name) const
 {
   const Glib::ustring real_name = name.empty() ? get_name() : name;
-  Glib::RefPtr<Gnome::Gda::Holder> holder = Gnome::Gda::Holder::create(get_gda_g_type(), real_name);
+  const GType gtype = get_gda_type_for_glom_type(m_glom_type);
+  Glib::RefPtr<Gnome::Gda::Holder> holder = Gnome::Gda::Holder::create(gtype, real_name);
   holder->set_value_as_value(value);
   return holder;
 }
@@ -744,7 +721,7 @@ Glib::RefPtr<Gnome::Gda::Holder> Field::get_holder(const Gnome::Gda::Value& valu
 Glib::ustring Field::get_gda_holder_string(const Glib::ustring& name) const
 {
   const Glib::ustring real_name = name.empty() ? get_name() : name;
-  return "##" + real_name + "::" + get_gda_type();
+  return "##" + real_name + "::" + get_gda_type_name();
 }
 
 /// Ignores any part of FieldAttributes that libgda does not properly fill.

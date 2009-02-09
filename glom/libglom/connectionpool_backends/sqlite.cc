@@ -56,7 +56,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
   if(db_file->query_file_type() == Gio::FILE_TYPE_REGULAR)
   {
     // Convert URI to path, for GDA connection string
-    std::string database_directory = db_dir->get_path();
+    const std::string database_directory = db_dir->get_path();
 
     const Glib::ustring cnc_string = "DB_DIR=" + database_directory + ";DB_NAME=" + database;
     const Glib::ustring auth_string = Glib::ustring::compose("USERNAME=%1;PASSWORD=%2", username, password);
@@ -95,7 +95,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
 bool Sqlite::create_database(const Glib::ustring& database_name, const Glib::ustring& /* username */, const Glib::ustring& /* password */, std::auto_ptr<Glib::Error>& error)
 {
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(m_database_directory_uri);
-  std::string database_directory = file->get_path(); 
+  const std::string database_directory = file->get_path(); 
   const Glib::ustring cnc_string = Glib::ustring::compose("DB_DIR=%1;DB_NAME=%2", database_directory, database_name);
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED

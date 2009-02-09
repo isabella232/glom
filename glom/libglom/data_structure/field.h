@@ -155,8 +155,7 @@ public:
   void set_lookup_field(const Glib::ustring& strField);
 
   Glib::ustring get_sql_type() const;
-  Glib::ustring get_gda_type() const;
-  GType get_gda_g_type() const;
+  Glib::ustring get_gda_type_name() const;
 
   //TODO: Shouldn't this be called get_gda_holder_name()?
   /// A convenience when using parameters with a libgda SQL query.

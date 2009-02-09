@@ -1578,15 +1578,17 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
           }
           
           //Add a SQL parameter for the value:
-          unsigned int id;
-          Glib::RefPtr<Gnome::Gda::Holder> holder = Gnome::Gda::Holder::create(vec_fields[i]->get_gda_g_type(),
-                                                                               generator.get_next_name(id));
+          guint id = 0;
+          const Field::glom_type glom_type = vec_fields[i]->get_glom_type();
+          Glib::RefPtr<Gnome::Gda::Holder> holder = 
+            Gnome::Gda::Holder::create( Field::get_gda_type_for_glom_type(glom_type),
+              generator.get_next_name(id));
 
           holder->set_not_null(false);
           holder->set_value_as_value(value);
           params->add_holder(holder);
           
-          strVals += "##" + generator.get_name_from_id(id) + "::" + vec_fields[i]->get_gda_type();
+          strVals += "##" + generator.get_name_from_id(id) + "::" + vec_fields[i]->get_gda_type_name();
         }
 
         //Create and parse the SQL query:
@@ -2821,7 +2823,7 @@ Gnome::Gda::Value Base_DB::get_lookup_value(const Glib::ustring& /* table_name *
     params->add_holder("key", value_to_key_field);
 
     Glib::ustring strQuery = "SELECT \"" + relationship->get_to_table() + "\".\"" + source_field->get_name() + "\" FROM \"" +  relationship->get_to_table() + "\"";
-    strQuery += " WHERE \"" + to_key_field->get_name() + "\" = ##key::" + to_key_field->get_gda_type();
+    strQuery += " WHERE \"" + to_key_field->get_name() + "\" = ##key::" + to_key_field->get_gda_type_name();
 
     Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery, params);
     if(data_model && data_model->get_n_rows())
@@ -3052,7 +3054,7 @@ bool Base_DB::get_primary_key_is_in_foundset(const FoundSet& found_set, const Gn
   if(!found_set.m_where_clause.empty())
     where_clause = "(" + found_set.m_where_clause + ") AND ";
 
-  where_clause += "(\"" + primary_key->get_name() + "\" = ##primary_key::" + primary_key->get_gda_type() + ")";
+  where_clause += "(\"" + primary_key->get_name() + "\" = ##primary_key::" + primary_key->get_gda_type_name() + ")";
 
   const Glib::ustring query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsToGet, where_clause);
   Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(query, params);
