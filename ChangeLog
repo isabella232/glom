@@ -1,3 +1,16 @@
+2009-02-09  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/connectionpool.h:
+	* glom/libglom/connectionpool.cc: Added set_server_operation_value(),
+	create_server_operation() and perform_server_operation() convenience
+	methods to connectionpool backend base class.
+
+	* glom/libglom/connectionpool_backends/sqlite.h:
+	* glom libglom/connectionpool_backends/sqlite.cc: Implemented table
+	recreation, required for changing or dropping columns, or adding
+	primary key columns. The glom type of newly added columns doesn't yet
+	seem to be recognized correctly, though.
+
 2009-02-08  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/db_adddel/glom_db_treemodel.[h|cc]:

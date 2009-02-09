@@ -234,64 +234,61 @@ bool ConnectionPoolBackend::startup(Gtk::Window* /* parent_window */)
 void ConnectionPoolBackend::cleanup(Gtk::Window* /* parent_window */)
 {}
 
-namespace
+bool ConnectionPoolBackend::set_server_operation_value(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, const Glib::ustring& path, const Glib::ustring& value, std::auto_ptr<Glib::Error>& error)
 {
-  bool set_server_operation_value(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, const Glib::ustring& path, const Glib::ustring& value, std::auto_ptr<Glib::Error>& error)
-  {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-    try
-    {
-      operation->set_value_at(path, value);
-      return true;
-    }
-    catch(const Glib::Error& ex)
-    {
-      error.reset(new Glib::Error(ex));
-      return false;
-    }
-#else
-    operation->set_value_at(path, value, error);
-    if(error.get()) return false;
+  try
+  {
+    operation->set_value_at(path, value);
     return true;
-#endif
   }
-
-  Glib::RefPtr<Gnome::Gda::ServerOperation> create_server_operation(const Glib::RefPtr<Gnome::Gda::ServerProvider>& provider, const Glib::RefPtr<Gnome::Gda::Connection>& connection, Gnome::Gda::ServerOperationType type, std::auto_ptr<Glib::Error>& error)
+  catch(const Glib::Error& ex)
   {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-    try
-    {
-      return provider->create_operation(connection, type);
-    }
-    catch(const Glib::Error& ex)
-    {
-      error.reset(new Glib::Error(ex));
-      return Glib::RefPtr<Gnome::Gda::ServerOperation>();
-    }
-#else
-    return provider->create_operation(connection, type, error);
-#endif
+    error.reset(new Glib::Error(ex));
+    return false;
   }
-
-  bool perform_server_operation(const Glib::RefPtr<Gnome::Gda::ServerProvider>& provider, const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, std::auto_ptr<Glib::Error>& error)
-  {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-    try
-    {
-      provider->perform_operation(connection, operation);
-      return true;
-    }
-    catch(const Glib::Error& ex)
-    {
-      error.reset(new Glib::Error(ex));
-      return false;
-    }
 #else
-    provider->perform_operation(connection, operation, error);
-    if(error.get()) return false;
+  operation->set_value_at(path, value, error);
+  if(error.get()) return false;
+  return true;
+#endif
+}
+
+Glib::RefPtr<Gnome::Gda::ServerOperation> ConnectionPoolBackend::create_server_operation(const Glib::RefPtr<Gnome::Gda::ServerProvider>& provider, const Glib::RefPtr<Gnome::Gda::Connection>& connection, Gnome::Gda::ServerOperationType type, std::auto_ptr<Glib::Error>& error)
+{
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    return provider->create_operation(connection, type);
+  }
+  catch(const Glib::Error& ex)
+  {
+    error.reset(new Glib::Error(ex));
+    return Glib::RefPtr<Gnome::Gda::ServerOperation>();
+  }
+#else
+  return provider->create_operation(connection, type, error);
+#endif
+}
+
+bool ConnectionPoolBackend::perform_server_operation(const Glib::RefPtr<Gnome::Gda::ServerProvider>& provider, const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, std::auto_ptr<Glib::Error>& error)
+{
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    provider->perform_operation(connection, operation);
     return true;
-#endif
   }
+  catch(const Glib::Error& ex)
+  {
+    error.reset(new Glib::Error(ex));
+    return false;
+  }
+#else
+  provider->perform_operation(connection, operation, error);
+  if(error.get()) return false;
+  return true;
+#endif
 }
 
 bool ConnectionPoolBackend::begin_transaction(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& name, Gnome::Gda::TransactionIsolation level, std::auto_ptr<Glib::Error>& error)

@@ -116,6 +116,9 @@ protected:
    * need to worry whether glibmm was compiled with exceptions or not.
    */
   bool query_execute(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& sql_query, std::auto_ptr<Glib::Error>& error);
+  bool set_server_operation_value(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, const Glib::ustring& path, const Glib::ustring& value, std::auto_ptr<Glib::Error>& error);
+  Glib::RefPtr<Gnome::Gda::ServerOperation> create_server_operation(const Glib::RefPtr<Gnome::Gda::ServerProvider>& provider, const Glib::RefPtr<Gnome::Gda::Connection>& connection, Gnome::Gda::ServerOperationType type, std::auto_ptr<Glib::Error>& error);
+  bool perform_server_operation(const Glib::RefPtr<Gnome::Gda::ServerProvider>& provider, const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, std::auto_ptr<Glib::Error>& error);
   bool begin_transaction(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& name, Gnome::Gda::TransactionIsolation level, std::auto_ptr<Glib::Error>& error);
   bool commit_transaction(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& name, std::auto_ptr<Glib::Error>& error);
   bool rollback_transaction(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& name, std::auto_ptr<Glib::Error>& error);

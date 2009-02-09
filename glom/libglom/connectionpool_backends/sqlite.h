@@ -44,6 +44,18 @@ protected:
   virtual Field::sql_format get_sql_format() const { return Field::SQL_FORMAT_SQLITE; }
   virtual bool supports_remote_access() const { return false; }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  bool add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, GdaMetaTableColumn* column, unsigned int i, std::auto_ptr<Glib::Error>& error);
+  bool add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, const sharedptr<const Field>& column, unsigned int i, std::auto_ptr<Glib::Error>& error);
+
+  typedef std::vector<Glib::ustring> type_vecStrings;
+  typedef std::vector<sharedptr<const Field> > type_vecFields;
+
+  bool recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vecStrings& fields_removed, const type_vecFields& fields_added, std::auto_ptr<Glib::Error>& error);
+
+  virtual bool add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const sharedptr<const Field>& field, std::auto_ptr<Glib::Error>& error);
+#endif
+
   virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error);
 
   /** Creates a new database.
