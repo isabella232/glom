@@ -1579,7 +1579,7 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
           
           //Add a SQL parameter for the value:
           guint id = 0;
-          const Field::glom_type glom_type = vec_fields[i]->get_glom_type();
+          const Field::glom_field_type glom_type = vec_fields[i]->get_glom_type();
           Glib::RefPtr<Gnome::Gda::Holder> holder = 
             Gnome::Gda::Holder::create( Field::get_gda_type_for_glom_type(glom_type),
               generator.get_next_name(id));
