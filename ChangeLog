@@ -1,5 +1,12 @@
 2009-02-10  Armin Burgmeier  <armin@openismus.com>
 
+	* glom/libglom/connectionpool_backends/sqlite.h:
+	* glom/libglom/connectionpool_backends/sqlite.cc: Support dropping and
+	changing columns, though changing doesn't yet seem to work reliably
+	yet.
+
+2009-02-10  Armin Burgmeier  <armin@openismus.com>
+
 	* glom/libglom/connectionpool_backends/sqlite.cc (recreate_table):
 	Use get_value_type() to find out a value's not type, not get_g_type()
 	which returns the GType the value stores if it's value type is GType.

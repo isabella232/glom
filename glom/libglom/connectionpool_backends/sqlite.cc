@@ -121,66 +121,6 @@ bool Sqlite::create_database(const Glib::ustring& database_name, const Glib::ust
 #endif
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-namespace
-{
-#if 0
-  enum
-  {
-    DATAMODEL_FIELDS_COL_NAME = 0,
-    DATAMODEL_FIELDS_COL_TYPE = 1,
-    DATAMODEL_FIELDS_COL_GTYPE = 2,
-    DATAMODEL_FIELDS_COL_SIZE = 3,
-    DATAMODEL_FIELDS_COL_SCALE = 4,
-    DATAMODEL_FIELDS_COL_NOTNULL = 5,
-    DATAMODEL_FIELDS_COL_DEFAULTVALUE = 6,
-    DATAMODEL_FIELDS_COL_EXTRA = 7 // ?
-  };
-
-  Glib::RefPtr<Gnome::Gda::DataModel> get_meta_store_fields(const Glib::RefPtr<Gnome::Gda::Connection>& connection, Glib::ustring& table_name, std::auto_ptr<Glib::Error>& error)
-  {
-    Glib::RefPtr<Gnome::Gda::Holder> holder_table_name = Gnome::Gda::Holder::create(G_TYPE_STRING, "name");
-    Gnome::Gda::Value table_name_value(table_name);
-    holder_table_name->set_value(table_name_value);
-    std::vector<Glib::RefPtr<Gnome::Gda::Holder> > holder_list;
-    holder_list.push_back(holder_table_name);
-
-    Glib::RefPtr<Gnome::Gda::DataModel> model;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-    try
-    {
-      model = connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_FIELDS, holder_list);
-    }
-    catch(const Glib::Error& ex)
-    {
-      error.reset(new Glib::Error(ex));
-      return model;
-    }
-#else
-    model = connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_FIELDS, holder_list, error);
-#endif
-
-    return model;
-  }
-
-  bool set_data_model_value(const Glib::RefPtr<Gnome::Gda::DataModel>& model, int col, int row, const Gnome::Gda::Value& value, std::auto_ptr<Glib::Error>& error)
-  {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-    try
-    {
-      model->set_value_at(col, row, value);
-      return true;
-    }
-    catch(const Glib::Error& ex)
-    {
-      error.reset(new Glib::Error(ex));
-      return false;
-    }
-#else
-    return model->set_value_at(col, row, value, error);
-#endif
-  }
-#endif
-}
 
 bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, GdaMetaTableColumn* column, unsigned int i, std::auto_ptr<Glib::Error>& error)
 {
@@ -221,7 +161,7 @@ bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::Serve
   return true;
 }
 
-bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vecStrings& fields_removed, const type_vecFields& fields_added, std::auto_ptr<Glib::Error>& error)
+bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vecStrings& fields_removed, const type_vecConstFields& fields_added, const type_mapFieldChanges& fields_changed, std::auto_ptr<Glib::Error>& error)
 {
   static const gchar* TEMPORARY_TABLE_NAME = "GLOM_TEMP_TABLE"; // TODO: Make sure this is unique.
   static const gchar* TRANSACTION_NAME = "GLOM_RECREATE_TABLE_TRANSACTION";
@@ -245,9 +185,11 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
   {
     GdaMetaTableColumn* column = GDA_META_TABLE_COLUMN(item->data);
 
-    // Don't add if field was removed
-    sharedptr<const Field> added;
+    // Don't add if field was removed or changed.
+    const type_mapFieldChanges::const_iterator changed_iter = fields_changed.find(column->column_name);
     if(std::find(fields_removed.begin(), fields_removed.end(), column->column_name) != fields_removed.end())
+      continue;
+#if 0
     {
       // If it was removed, and added again, then it has changed, so use the
       // definition from the added_fields vector.
@@ -257,14 +199,15 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
       else
         added = *iter;
     }
+#endif
 
     if(!trans_fields.empty())
       trans_fields += ",";
     trans_fields += column->column_name;
 
-    if(added)
+    if(changed_iter != fields_changed.end())
     {
-      if(!add_column_to_server_operation(operation, added, i++, error))
+      if(!add_column_to_server_operation(operation, changed_iter->second, i++, error))
         return false;
     }
     else
@@ -274,7 +217,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
     }
   }
 
-  for(type_vecFields::const_iterator iter = fields_added.begin(); iter != fields_added.end(); ++ iter)
+  for(type_vecConstFields::const_iterator iter = fields_added.begin(); iter != fields_added.end(); ++ iter)
   {
     // Add new fields to the table. Fields that have changed have already
     // been handled above.
@@ -342,27 +285,32 @@ bool Sqlite::add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, 
 {
   // Sqlite does not support adding primary key columns. So recreate the table
   // in that case.
-/*  if(!field->get_primary_key())
+  if(!field->get_primary_key())
   {
-    return ConnectionPoolBackend::add_column(connection, table, field, error);
+    return ConnectionPoolBackend::add_column(connection, table_name, field, error);
   }
-  else*/
+  else
   {
-#if 0
-    Glib::RefPtr<Gnome::Gda::DataModel> model = get_meta_store_fields(connection, table_name, error);
-    if(!model) return false;
-
-/*    guint new_row = model->append_row();
-    if(!set_data_model_value(model, DATAMODEL_FIELDS_COL_NAME, new_row, Gnome::Gda::Value(field->get_name()), error)) return false;
-    if(!set_data_model_value(model, DATAMODEL_FIELDS_COL_TYPE, new_row, Gnome::Gda::Value(field->get_sql_type()), error)) return false;
-    if(!set_data_model_value(model, DATAMODEL_FIELDS_COL_GTYPE, new_row, Gnome::Gda::Value(g_type_name(field->get_field_info()->get_g_type())), error)) return false;*/
-
-#endif
-    if(!recreate_table(connection, table_name, type_vecStrings(), type_vecFields(1, field), error)) return false;
-    return true;
+    return recreate_table(connection, table_name, type_vecStrings(), type_vecConstFields(1, field), type_mapFieldChanges(), error);
   }
 }
-#endif
+
+bool Sqlite::drop_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const Glib::ustring& field_name, std::auto_ptr<Glib::Error>& error)
+{
+  return recreate_table(connection, table_name, type_vecStrings(1, field_name), type_vecConstFields(), type_mapFieldChanges(), error);
+}
+
+bool Sqlite::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vecConstFields& old_fields, const type_vecConstFields& new_fields, std::auto_ptr<Glib::Error>& error)
+{
+  type_mapFieldChanges fields_changed;
+
+  for(type_vecConstFields::size_type i = 0; i < old_fields.size(); ++ i)
+    fields_changed[old_fields[i]->get_name()] = new_fields[i];
+
+  return recreate_table(connection, table_name, type_vecStrings(), type_vecConstFields(), fields_changed, error);
+}
+
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 } // namespace ConnectionPoolBackends
 
