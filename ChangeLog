@@ -1,3 +1,15 @@
+2009-02-10  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/connectionpool_backends/sqlite.cc (recreate_table):
+	Use get_value_type() to find out a value's not type, not get_g_type()
+	which returns the GType the value stores if it's value type is GType.
+
+	* glom/mode_design/fields/box_db_table_definition.cc (on_adddel_add):
+	Don't call on_adddel_changed() just to store the field into the
+	document, since on_adddel_changed() does a lot of unnecessary extra
+	stuff such as calling change_columns() on the backend, which forces a
+	whole table recreation with SQLite.
+
 2009-02-10  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db.cc: insert_example_data(): Fixed my typo to fix the 

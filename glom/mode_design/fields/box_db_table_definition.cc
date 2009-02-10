@@ -193,7 +193,21 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
       fill_field_row(row, field);
 
       //Store the generated title in the document:
-      on_adddel_changed(row, m_colTitle);
+      //on_adddel_changed(row, m_colTitle);
+
+      // Don't call on_adddel_changed for this, since this does a lot of
+      // unnecessary extra stuff just to get the field added into the
+      // document:
+
+      Document_Glom* pDoc = static_cast<Document_Glom*>(get_document());
+      if(pDoc)
+      {
+        Document_Glom::type_vecFields vecFields = pDoc->get_table_fields(m_table_name);
+        vecFields.push_back(field);
+        pDoc->set_table_fields(m_table_name, vecFields);
+      }
+
+      m_AddDel.select_item(field->get_name(), m_colName, false);
 
       //m_AddDel.select_item(row, m_colTitle, true); //Start editing the title
     }
