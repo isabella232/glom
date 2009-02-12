@@ -1,3 +1,14 @@
+2009-02-12  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/mode_design/fields/box_db_table_definition.cc
+	(check_field_change): Check field's glom type directly instead of
+	guessing the glom type from its GType, which might produce a wrong
+	result with some of the fallback types used with SQLite.
+
+	* glom/libglom/connectionpool_backends/sqlite.cc (recreate_table):
+	Don't crash if transaction rollback fails without the error variable
+	being set.
+
 2009-02-10  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/connectionpool_backends/sqlite.h:

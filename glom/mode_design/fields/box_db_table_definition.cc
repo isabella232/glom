@@ -269,7 +269,7 @@ bool Box_DB_Table_Definition::check_field_change(const sharedptr<const Field>& f
 
   //If we are changing a non-glom type:
   //Refuse to edit field definitions that were not created by glom:
-  if(Field::get_glom_type_for_gda_type( field_old->get_field_info()->get_g_type() )  == Field::TYPE_INVALID)
+  if(field_old->get_glom_type() == Field::TYPE_INVALID)
   {
     Utils::show_ok_dialog(_("Invalid database structure"),
       _("This database field was created or edited outside of Glom. It has a data type that is not supported by Glom. Your system administrator may be able to correct this."), parent_window, Gtk::MESSAGE_ERROR);

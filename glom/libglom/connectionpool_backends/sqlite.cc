@@ -154,10 +154,6 @@ bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::Serve
   if(!set_server_operation_value(operation, pkey_path, column->get_primary_key() ? "TRUE" : "FALSE", error)) return false;
   if(!set_server_operation_value(operation, unique_path, column->get_unique_key() ? "TRUE" : "FALSE", error)) return false;
 
-  Gnome::Gda::Value value = column->get_default_value();
-  if(value.get_value_type() != G_TYPE_NONE && !value.is_null())
-    if(!set_server_operation_value(operation, default_path, value.to_string(), error))
-      return false;
   return true;
 }
 
@@ -185,8 +181,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
   {
     GdaMetaTableColumn* column = GDA_META_TABLE_COLUMN(item->data);
 
-    // Don't add if field was removed or changed.
-    const type_mapFieldChanges::const_iterator changed_iter = fields_changed.find(column->column_name);
+    // Don't add if field was removed
     if(std::find(fields_removed.begin(), fields_removed.end(), column->column_name) != fields_removed.end())
       continue;
 #if 0
@@ -205,6 +200,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
       trans_fields += ",";
     trans_fields += column->column_name;
 
+    const type_mapFieldChanges::const_iterator changed_iter = fields_changed.find(column->column_name);
     if(changed_iter != fields_changed.end())
     {
       if(!add_column_to_server_operation(operation, changed_iter->second, i++, error))
@@ -275,7 +271,10 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
   std::auto_ptr<Glib::Error> rollback_error;
   if(!rollback_transaction(connection, TRANSACTION_NAME, rollback_error))
   {
-    std::cerr << "Sqlite::recreate_table: Failed to rollback failed transaction: " << rollback_error->what() << std::endl;
+    std::cerr << "Sqlite::recreate_table: Failed to rollback failed transaction";
+    if(rollback_error.get())
+      std::cerr << ": " << rollback_error->what();
+    std::cerr << std::endl;
   }
 
   return false;
