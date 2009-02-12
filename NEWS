@@ -1,3 +1,13 @@
+1.8.6:
+
+* Main window: Correct the order of the widgets at the bottom-right that 
+  show the number of found records and the total number of records.
+  (Murray Cumming)
+* List view, Related Records lists:
+  Really show lookup values and related fields.
+  This regression was introduce in Glom 1.8, now fixed.
+  (Murray Cumming) Bug #569722 (Johannes Schmid)
+
 1.8.5:
 
 * Fix crash when creating tables, introduced in 1.8.4.
