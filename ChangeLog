@@ -1,5 +1,11 @@
 2009-02-15  Armin Burgmeier  <armin@openismus.com>
 
+	* glom/utility_widgets/db_adddel/db_adddel.cc (user_changed): Revert
+	the changed value if set_field_value_in_database() throws an
+	exception.
+
+2009-02-15  Armin Burgmeier  <armin@openismus.com>
+
 	* glom/libglom/connectionpool_backends/sqlite.cc: Convert existing
 	values explicitely via the date() and time() SQLite functions when
 	converting existing values to date or time. This fixes all rows being

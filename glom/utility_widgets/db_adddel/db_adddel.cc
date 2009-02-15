@@ -2165,16 +2165,16 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
 
   if(!Conversions::value_is_empty(parent_primary_key_value)) //If the record's primary key is filled in:
   {
+    Glib::ustring table_name = m_found_set.m_table_name;
+    sharedptr<Field> primary_key_field;
+    Gnome::Gda::Value primary_key_value;
+    Gtk::Window* window = get_application();
+
     //Just update the record:
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
 #endif // GLIBMM_EXCEPTIONS_ENABLED
     {
-      
-      Glib::ustring table_name = m_found_set.m_table_name;
-      sharedptr<Field> primary_key_field;
-      Gnome::Gda::Value primary_key_value;
-
       if(!layout_field->get_has_relationship_name())
       {
         table_name = m_found_set.m_table_name;
@@ -2234,7 +2234,6 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
       LayoutFieldInRecord field_in_record(layout_field, m_found_set.m_table_name /* parent */, primary_key_field, primary_key_value);
 
       //Check whether the value meets uniqueness constraints:
-      Gtk::Window* window = get_application();
       if(!check_entered_value_for_uniqueness(m_found_set.m_table_name, row, layout_field, field_value, window))
       {
         //Revert to the value in the database:
@@ -2254,7 +2253,9 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
       if(!bTest)
       {
         //Update failed.
-        fill_from_database(); //Replace with correct values.
+        //Replace with correct values.
+        const Gnome::Gda::Value value_old = get_field_value_in_database(field_in_record, window);
+        set_entered_field_data(row, layout_field, value_old);
       }
       else
         signal_record_changed().emit();
@@ -2263,10 +2264,24 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
     catch(const Glib::Exception& ex)
     {
       handle_error(ex);
+
+      if(primary_key_field)
+      {
+        LayoutFieldInRecord field_in_record(layout_field, m_found_set.m_table_name /* parent */, primary_key_field, primary_key_value);
+        const Gnome::Gda::Value value_old = get_field_value_in_database(field_in_record, window);
+        set_entered_field_data(row, layout_field, value_old);
+      }
     }
     catch(const std::exception& ex)
     {
       handle_error(ex);
+
+      if(primary_key_field)
+      {
+        LayoutFieldInRecord field_in_record(layout_field, m_found_set.m_table_name /* parent */, primary_key_field, primary_key_value);
+        const Gnome::Gda::Value value_old = get_field_value_in_database(field_in_record, window);
+        set_entered_field_data(row, layout_field, value_old);
+      }
     }
 #endif // GLIBMM_EXCEPTIONS_ENABLED
   }
