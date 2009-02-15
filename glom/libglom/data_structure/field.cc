@@ -706,13 +706,26 @@ Glib::ustring Field::get_sql_type() const
 
 Glib::ustring Field::get_gda_type_name() const
 {
-  return g_type_name( get_gda_type_for_glom_type(m_glom_type) );
+  //return g_type_name( get_gda_type_for_glom_type(m_glom_type) );
+  return g_type_name( m_field_info->get_g_type());
 }
 
 Glib::RefPtr<Gnome::Gda::Holder> Field::get_holder(const Gnome::Gda::Value& value, const Glib::ustring& name) const
 {
   const Glib::ustring real_name = name.empty() ? get_name() : name;
-  const GType gtype = get_gda_type_for_glom_type(m_glom_type);
+
+  const GType gtype = value.get_value_type();
+
+  const GType field_type = m_field_info->get_g_type();
+  if(m_field_info->get_g_type() != gtype)
+  {
+    // This currently happens with SQLite for pictures. The value type is
+    // GdaBinary, but the field type is GdaBlob. This is not an optimal
+    // solution this way. We should maybe check fallback types here, or
+    // investigate why the field type is not GdaBinary as well.
+    //g_warning("Field::get_holder(): Field type (%s) and value type (%s) don't match!\n", g_type_name(field_type), g_type_name(gtype));
+  }
+
   Glib::RefPtr<Gnome::Gda::Holder> holder = Gnome::Gda::Holder::create(gtype, real_name);
   holder->set_value_as_value(value);
   return holder;

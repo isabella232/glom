@@ -1,5 +1,16 @@
 2009-02-15  Armin Burgmeier  <armin@openismus.com>
 
+	* glom/libglom/data_structure/field.cc (get_gda_type_name): Use the
+	GType from m_field_info instead of converting the glom type to a gda
+	type, to take fallback types into account, as used by SQLite for
+	numeric values.
+	(get_holder): Use the passed value's type to initialize the holder
+	type. For binary values, there can be a mismatch between the value
+	type and the field type with SQLite. This is not optimal, but it
+	works for now.
+
+2009-02-15  Armin Burgmeier  <armin@openismus.com>
+
 	* glom/mode_data/box_data_details.cc (on_flowtable_field_edited):
 	Revert the changed value if set_field_value_in_database() throws a
 	glib exception.
