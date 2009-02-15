@@ -2265,6 +2265,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
     {
       handle_error(ex);
 
+      //Replace with correct values.
       if(primary_key_field)
       {
         LayoutFieldInRecord field_in_record(layout_field, m_found_set.m_table_name /* parent */, primary_key_field, primary_key_value);
@@ -2276,6 +2277,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
     {
       handle_error(ex);
 
+      //Replace with correct values.
       if(primary_key_field)
       {
         LayoutFieldInRecord field_in_record(layout_field, m_found_set.m_table_name /* parent */, primary_key_field, primary_key_value);

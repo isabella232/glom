@@ -760,6 +760,10 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
       bTest = set_field_value_in_database(field_in_record, field_value, false /* don't use current calculations */, get_app_window());
     }
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
+    catch(const Glib::Exception& ex)
+    {
+      handle_error(ex);
+    }
     catch(const std::exception& ex)
     {
       handle_error(ex);
@@ -773,7 +777,9 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
       if(!bTest)
       {
         //Update failed.
-        fill_from_database(); //Replace with correct values.
+        //Replace with correct values.
+        const Gnome::Gda::Value value_old = get_field_value_in_database(field_in_record, window);
+        set_entered_field_data(layout_field, value_old);
       }
       else
       {
