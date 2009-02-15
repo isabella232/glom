@@ -1,3 +1,10 @@
+2009-02-15  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/connectionpool_backends/sqlite.cc: Convert existing
+	values explicitely via the date() and time() SQLite functions when
+	converting existing values to date or time. This fixes all rows being
+	erased when changing a column to date or time.
+
 2009-02-12  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/mode_design/fields/box_db_table_definition.cc

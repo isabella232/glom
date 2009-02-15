@@ -198,16 +198,30 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
 
     if(!trans_fields.empty())
       trans_fields += ",";
-    trans_fields += column->column_name;
 
     const type_mapFieldChanges::const_iterator changed_iter = fields_changed.find(column->column_name);
     if(changed_iter != fields_changed.end())
     {
+      // Convert values to date or time, accordingly.
+      switch(changed_iter->second->get_glom_type())
+      {
+      case Field::TYPE_DATE:
+        trans_fields += Glib::ustring("date(") + column->column_name + ")";
+        break;
+      case Field::TYPE_TIME:
+        trans_fields += Glib::ustring("time(") + column->column_name + ")";
+        break;
+      default:
+        trans_fields += column->column_name;
+        break;
+      };
+
       if(!add_column_to_server_operation(operation, changed_iter->second, i++, error))
         return false;
     }
     else
     {
+      trans_fields += column->column_name;
       if(!add_column_to_server_operation(operation, column, i++, error))
         return false;
     }
