@@ -58,6 +58,10 @@ namespace
 namespace Glom
 {
 
+// Increase the number of digits (even before the decimal point) we can 
+// have until it uses the awkward e syntax. The default seems to be 7
+static const int STRINGSTREAM_PRECISION_DEFAULT = 15;
+
 Glib::ustring Conversions::format_time(const tm& tm_data)
 {
   return format_time( tm_data, std::locale("") /* the user's current locale */ ); //Get the current locale.
@@ -420,7 +424,15 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
       if(numeric_format.m_decimal_places_restricted)
       {
         another_stream << std::fixed;
-        another_stream << std::setprecision(numeric_format.m_decimal_places); //precision means number of decimal places when using std::fixed.
+
+        //precision means number of decimal places when using std::fixed:
+        another_stream << std::setprecision(numeric_format.m_decimal_places);
+      }
+      else
+      {
+        //Increase the number of digits (even before the decimal point) we can 
+        //have until it uses the awkward e syntax. The default seems to be 7.
+        another_stream << std::setprecision(STRINGSTREAM_PRECISION_DEFAULT);
       }
 
       if(!(numeric_format.m_currency_symbol.empty()))
@@ -582,7 +594,10 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
     the_stream.imbue( the_locale ); //Parse it as per the specified locale.
     the_stream.str(text_to_parse); //Avoid << because it does implicit character conversion (though that might not be a problem here. Not sure). murrayc
     double the_number = 0;
-    the_stream >> the_number;  //TODO: Does this throw any exception if the text is an invalid time?
+    the_stream >> the_number;  //TODO: Does this throw any exception if the text is an invalid number?
+
+    //std::cout << "DEBUG: Conversions::parse_value(): text=" << text_to_parse << ", number=" << the_number << std::endl;
+    
 
     GdaNumeric gda_numeric = {0, 0, 0, 0};
 
@@ -590,8 +605,10 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
 
     std::stringstream clocale_stream;
     clocale_stream.imbue( std::locale::classic() ); //The C locale.
+    clocale_stream << std::setprecision(STRINGSTREAM_PRECISION_DEFAULT); //Avoid the e syntax. Normally this happens afer 7 digits, with loss of precision. TODO: Handle more.
     clocale_stream << the_number;
-    Glib::ustring number_canonical_text = clocale_stream.str(); //Avoid << because it does implicit character conversion (though that might not be a problem here. Not sure). murrayc
+    const Glib::ustring number_canonical_text = clocale_stream.str(); //Avoid << because it does implicit character conversion (though that might not be a problem here. Not sure). murrayc
+    //std::cout << "  DEBUG: number_canonical_text=" << number_canonical_text << std::endl;  
 
     //TODO: What about the precision and width values?
     /* From the postgres docs:

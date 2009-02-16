@@ -1,3 +1,11 @@
+2009-02-16  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/data_structure/glomconversions.cc:
+	get_text_for_gda_value(), parse_value(): Use std::setprecision() to 
+	avoid showing the awkward scientific e notation, raising the limit 
+	from 7 digits to 15. We don't know how to avoid it always.
+	Noticed by Arq. Maximiliano Meilán.
+
 2009-02-16  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/connectionpool_backends/sqlite.cc: Fixed various
