@@ -1,3 +1,5 @@
+1.9.1:
+
 2009-02-15  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/data_structure/field.cc (get_gda_type_name): Use the

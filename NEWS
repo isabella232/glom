@@ -1,4 +1,24 @@
-1.9.0:
+1.9.1: (unstable)
+
+* Sqlite support: Improvements, including changing of fields types, and 
+  adding/deleting fields.
+  (We will later make this only a configure option.)
+  (Armin Burgmeier)
+* Use SQL parameters where possible, making code safer and fixing problems 
+  with image data with libgda-4.0.
+  (Johannes Schmid)
+* When cancelling the initial dialog, fix the strange behaviour.
+  (Johannes Schmid) Bug #569721. 
+* Main window: Correct the order of the widgets at the bottom-right that 
+  show the number of found records and the total number of records.
+  (Murray Cumming)
+* List view, Related Records lists:
+  Really show lookup values and related fields.
+  This regression was introduce in Glom 1.8, now fixed.
+  (Murray Cumming) Bug #569722 (Johannes Schmid)
+
+
+1.9.0: (unstable)
 
 * Ported to libgdamm-4.0 (libgda-4.0) from libgda(mm)-3.0.
   (Johannes Schmid, Armin Burgmeier, Murray Cumming)
