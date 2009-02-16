@@ -910,7 +910,7 @@ void Dialog_Import_CSV::field_data_func(Gtk::CellRenderer* renderer, const Gtk::
       if(field->get_glom_type() != Field::TYPE_IMAGE)
       {
         /* Exported data is always stored in postgres format */
-        Gnome::Gda::Value value = field->from_sql(orig_text, Field::SQL_FORMAT_POSTGRES, success);
+        const Gnome::Gda::Value value = field->from_file_format(orig_text, success);
         
         if(!success)
           text = _("<Import Failure>");

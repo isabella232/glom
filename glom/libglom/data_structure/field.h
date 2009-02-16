@@ -174,9 +174,15 @@ public:
    */
   Glib::ustring sql(const Gnome::Gda::Value& value) const;
 
-  /** Unescape the value again.
+  /** Escape the value so that it can be used in a file, for instance for 
+   * a default value or for example data.
+   * Uses the sql_format of the current connectionpool backend.
    */
-  Gnome::Gda::Value from_sql(const Glib::ustring& str, sql_format format, bool& success) const;
+  Glib::ustring to_file_format(const Gnome::Gda::Value& value) const;
+
+  /** Unescape the value again. See to_file_format()
+   */
+  Gnome::Gda::Value from_file_format(const Glib::ustring& str, bool& success) const;
 
   /** Escape the value so that it can be used in a SQL command for a find.
    */

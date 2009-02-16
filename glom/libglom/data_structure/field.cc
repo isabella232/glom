@@ -420,13 +420,14 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value, sql_format format) cons
     {
       if(value.get_value_type() == GDA_TYPE_BINARY)
       {
-        long buffer_length;
+        long buffer_length = 0;
         const guchar* buffer = value.get_binary(buffer_length);
         if(buffer && buffer_length > 0)
         {
           if(format == SQL_FORMAT_POSTGRES)
           {
             //Get the escaped text that represents the binary data:
+            //TODO: Use gda_binary_from_string() instead?
             const std::string escaped_binary_data = Conversions::escape_binary_data_postgres((guint8*)buffer, buffer_length);
             //Now escape that text (to convert \ to \\, for instance):
             //The E prefix indicates ""escape" string constants, which are an extension to the SQL standard"
@@ -436,6 +437,7 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value, sql_format format) cons
           }
           else
           {
+            //TODO: Is this used for anything?
             const std::string escaped_binary_data = Conversions::escape_binary_data_sqlite((guint8*)buffer, buffer_length);
             str = "x'" + escaped_binary_data + "'";
           }
@@ -467,7 +469,12 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
   return sql(value, format);
 }
 
-Gnome::Gda::Value Field::from_sql(const Glib::ustring& str, sql_format format, bool& success) const
+Glib::ustring Field::to_file_format(const Gnome::Gda::Value& value) const
+{
+  return sql(value, Field::SQL_FORMAT_POSTGRES);
+}
+
+Gnome::Gda::Value Field::from_file_format(const Glib::ustring& str, bool& success) const
 {
   success = true;
   switch(m_glom_type)
@@ -479,8 +486,10 @@ Gnome::Gda::Value Field::from_sql(const Glib::ustring& str, sql_format format, b
   case TYPE_DATE:
   case TYPE_TIME:
     {
-      if(str == "NULL") return Gnome::Gda::Value();
-      Glib::ustring unescaped = glom_unescape_text(str);
+      if(str == "NULL")
+        return Gnome::Gda::Value();
+      
+      const Glib::ustring unescaped = glom_unescape_text(str);
 
       NumericFormat format_ignored; //Because we use ISO format.
       return Conversions::parse_value(m_glom_type, unescaped, format_ignored, success, true);
@@ -495,7 +504,8 @@ Gnome::Gda::Value Field::from_sql(const Glib::ustring& str, sql_format format, b
     {
       if(str.lowercase() == "true")
         return Gnome::Gda::Value(true);
-      return Gnome::Gda::Value(false);
+      else
+        return Gnome::Gda::Value(false);
     }
   case TYPE_IMAGE:
     {
@@ -508,9 +518,8 @@ Gnome::Gda::Value Field::from_sql(const Glib::ustring& str, sql_format format, b
       const std::string& raw = str.raw();
 
       Glib::ustring unescaped;
-      switch(format)
+
       {
-      case SQL_FORMAT_POSTGRES:
         if(raw.length() >= 10 &&
            raw.compare(0, 2, "E'") == 0 && raw.compare(raw.length() - 8, 8, "'::bytea") == 0)
         {
@@ -528,7 +537,8 @@ Gnome::Gda::Value Field::from_sql(const Glib::ustring& str, sql_format format, b
 
         if(!unescaped.empty())
         {
-          gsize length;
+          gsize length = 0;
+          //TODO: Use gda_binary_to_string() instead?
           guint8* binary_data = Conversions::unescape_binary_data_postgres(unescaped, length);
           if(binary_data)
           {
@@ -541,27 +551,6 @@ Gnome::Gda::Value Field::from_sql(const Glib::ustring& str, sql_format format, b
 
         success = false;
         return Gnome::Gda::Value();
-      case SQL_FORMAT_SQLITE:
-        if(raw.length() >= 3 &&
-           (raw.compare(0, 2, "x'") == 0 || raw.compare(0, 2, "X'")) &&
-           raw.compare(raw.length() - 1, 1, "'") == 0)
-        {
-          gsize length;
-          guint8* binary_data = Conversions::unescape_binary_data_sqlite(raw.substr(2, raw.length()), length);
-          if(binary_data)
-          {
-            Gnome::Gda::Value value;
-            value.set(binary_data, length);
-            g_free(binary_data);
-            return value;
-          }
-        }
-
-        success = false;
-        return Gnome::Gda::Value();
-      default:
-        g_assert_not_reached();
-        break;
       }
     }
   default:

@@ -148,7 +148,7 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
       // we export it this way.
       // TODO: Document what that format is.
       bool success = false;
-      Gnome::Gda::Value value = field->from_sql(m_data_source->get_data(m_current_row, i), Field::SQL_FORMAT_POSTGRES, success);
+      Gnome::Gda::Value value = field->from_file_format(m_data_source->get_data(m_current_row, i), success);
 
       if(success)
       {

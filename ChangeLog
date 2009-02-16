@@ -1,3 +1,17 @@
+2009-02-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/data_structure/field.[h|cc]: Renamed from_sql() to 
+	from_file_format(), without the sql_format parameter, to make it 
+	clearer. Added to_file_format(), which currently just calls sql() 
+	with the postgres format.
+	* glom/data_structure/glomconversions.cc: Removed unused 
+	unescape_binary_data_sqlite().
+	* glom/base_db.cc: insert_example_data():
+	* glom/dialog_import_csv.cc: field_data_func():
+	* glom/dialog_import_csv_progress.cc: on_idle_import(): Adapt.
+	* glom/frame_glom.cc: export_data_to_string(): Use to_file_format() 
+	instead of sql() to make it clearer.
+
 1.9.1:
 
 2009-02-15  Armin Burgmeier  <armin@openismus.com>

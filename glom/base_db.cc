@@ -1570,7 +1570,7 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
           strNames += vec_fields[i]->get_name();
 
           bool success = false;
-          const Gnome::Gda::Value value = vec_fields[i]->from_sql(vec_values[i], Field::SQL_FORMAT_POSTGRES, success);
+          const Gnome::Gda::Value value = vec_fields[i]->from_file_format(vec_values[i], success);
           if(!success)
           {
             std::cerr << "Base_DB::insert_example_data: could not convert example data" << std::endl;

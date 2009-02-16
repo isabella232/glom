@@ -618,7 +618,7 @@ void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const FoundSet
               row_string += ",";
 
             //Output data in canonical SQL format, ignoring the user's locale, and ignoring the layout formatting:
-            row_string += layout_item->get_full_field_details()->sql(value, Field::SQL_FORMAT_POSTGRES);
+            row_string += layout_item->get_full_field_details()->to_file_format(value);
 
             //if(layout_item->m_field.get_glom_type() == Field::TYPE_IMAGE) //This is too much data.
             //{
@@ -670,7 +670,7 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
               row_string += ",";
 
             //Output data in canonical SQL format, ignoring the user's locale, and ignoring the layout formatting:
-            row_string += layout_item->get_full_field_details()->sql(value, Field::SQL_FORMAT_POSTGRES);
+            row_string += layout_item->get_full_field_details()->to_file_format(value);
 
             if(layout_item->get_glom_type() == Field::TYPE_IMAGE) //This is too much data.
             {

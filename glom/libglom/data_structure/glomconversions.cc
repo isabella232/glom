@@ -434,7 +434,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
 
     if(locale == std::locale("") /* The user's current locale */)
     {
-      //Converts from the user's current locale to utf8. I would prefer a generic conversion from any locale,
+      // Converts from the user's current locale to utf8. I would prefer a generic conversion from any locale,
       // but there is no such function, and it's hard to do because I don't know how to get the encoding name from the std::locale()
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
       text = Glib::locale_to_utf8(text);
@@ -444,6 +444,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
 #endif
     }
 
+    //std::cout << "DEBUG: Conversions::get_text_for_gda_value(): number=" << number << ", text=" << text << std::endl;
     return text; //Do something like Glib::locale_to_utf(), but with the specified locale instead of the current locale.
   }
   else if(glom_type == Field::TYPE_TEXT)
@@ -457,6 +458,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
     std::string result;
     long buffer_length;
     const guchar* buffer = value.get_binary(buffer_length);
+    //std::cout << "DEBUG: get_text_for_gda_value(): Calling Conversions::escape_binary_data_postgres(). This should probably not happen. murrayc." << std::endl;
     if(buffer && buffer_length > 0)
       result = Conversions::escape_binary_data_postgres((guint8*)buffer, buffer_length);
 
@@ -615,6 +617,7 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
     Gnome::Gda::Value result;
 
     size_t buffer_binary_length = 0;
+    //std::cout << "DEBUG: parse_value(): Calling Conversions::unescape_binary_data_postgres(). This should probably not happen. murrayc." << std::endl;
     guchar* buffer_binary = Conversions::unescape_binary_data_postgres(text, buffer_binary_length); //freed by us later.
     if(buffer_binary)
     {
@@ -1167,24 +1170,6 @@ guint8* Conversions::unescape_binary_data_postgres(const Glib::ustring& escaped_
 {
   std::cout << "Conversions::unescape_binary_data_postgres()" << std::endl;
   return Glom_PQunescapeBytea((const guchar*)escaped_binary_data.c_str(), &length);
-}
-
-guint8* Conversions::unescape_binary_data_sqlite(const Glib::ustring& escaped_binary_data, size_t& length)
-{
-  g_assert(escaped_binary_data.bytes() % 2 == 0);
-
-  length = escaped_binary_data.bytes()/2;
-  const char* in_data = escaped_binary_data.c_str();
-  // Use malloc here, since unescape_binary_data_postgres also uses malloc
-  // in Glom_PQunescapeBytea and we want the API to stay consistent.
-  guint8* out_data = static_cast<guint8*>(malloc(length));
-  if(!out_data) { length = 0; return NULL; }
-
-  // The sqlite format is two characters representing a byte in hexadecimal
-  // notation.
-  for(unsigned int i = 0; i < length; ++i)
-    out_data[i] = chartohex(in_data[2*i] << 4) | chartohex(in_data[2*i+1]);
-  return out_data;
 }
 
 Gnome::Gda::Value Conversions::convert_value(const Gnome::Gda::Value& value, Field::glom_field_type target_glom_type)
