@@ -38,6 +38,10 @@
 namespace Glom
 {
 
+// Increase the number of digits (even before the decimal point) we can 
+// have until it uses the awkward e syntax. The default seems to be 7
+static const int STRINGSTREAM_PRECISION_DEFAULT = 15;
+
 Glib::ustring Conversions::format_time(const tm& tm_data)
 {
   return format_time( tm_data, std::locale("") /* the user's current locale */ ); //Get the current locale.
@@ -356,7 +360,15 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
       if(numeric_format.m_decimal_places_restricted)
       {
         another_stream << std::fixed;
-        another_stream << std::setprecision(numeric_format.m_decimal_places); //precision means number of decimal places when using std::fixed.
+
+        //precision means number of decimal places when using std::fixed:
+        another_stream << std::setprecision(numeric_format.m_decimal_places);
+      }
+      else
+      {
+        //Increase the number of digits (even before the decimal point) we can 
+        //have until it uses the awkward e syntax. The default seems to be 7.
+        another_stream << std::setprecision(STRINGSTREAM_PRECISION_DEFAULT);
       }
 
       if(!(numeric_format.m_currency_symbol.empty()))
@@ -415,6 +427,7 @@ Gnome::Gda::Value Conversions::parse_value(double number)
   std::stringstream clocale_stream;
   clocale_stream.imbue( std::locale::classic() ); //The C locale.
   clocale_stream << number;
+  clocale_stream << std::setprecision(STRINGSTREAM_PRECISION_DEFAULT); //Avoid the e syntax. Normally this happens afer 7 digits, with loss of precision. TODO: Handle more.
   Glib::ustring number_canonical_text = clocale_stream.str(); //Avoid << because it does implicit character conversion (though that might not be a problem here. Not sure). murrayc
 
   //TODO: What about the precision and width values?
