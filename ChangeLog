@@ -1,3 +1,10 @@
+2009-02-16  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/connectionpool_backends/sqlite.cc: Fixed various
+	problems with field type changes. Before, often some or all of the
+	records have been erased after certain changes (only from the view,
+	not from the database).
+
 2009-02-10  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/data_structure/field.[h|cc]: Renamed from_sql() to 

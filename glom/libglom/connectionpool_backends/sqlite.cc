@@ -205,11 +205,59 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
       // Convert values to date or time, accordingly.
       switch(changed_iter->second->get_glom_type())
       {
+      case Field::TYPE_TEXT:
+        if(column->gtype == G_TYPE_BOOLEAN)
+	  trans_fields += Glib::ustring("(CASE WHEN ") + column->column_name + " = 1 THEN 'true' "
+                                              "WHEN "  + column->column_name + " = 0 THEN 'false' "
+                                              "WHEN "  + column->column_name + " IS NULL THEN 'false' END)";
+	else if(column->gtype == GDA_TYPE_BLOB)
+	  trans_fields += "''";
+	else
+          // Make sure we don't insert NULL strings, as we ignore that concept in Glom.
+          trans_fields += Glib::ustring("(CASE WHEN ") + column->column_name + " IS NULL THEN '' "
+                                              "WHEN "  + column->column_name + " IS NOT NULL THEN " + column->column_name + " END)";
+	break;
+      case Field::TYPE_NUMERIC:
+        if(column->gtype == G_TYPE_BOOLEAN)
+          trans_fields += Glib::ustring("(CASE WHEN ") + column->column_name + " = 0 THEN 0 "
+                                              "WHEN "  + column->column_name + " != 0 THEN 1 "
+                                              "WHEN "  + column->column_name + " IS NULL THEN 0 END)";
+        else if(column->gtype == GDA_TYPE_BLOB || column->gtype == G_TYPE_DATE || column->gtype == GDA_TYPE_TIME)
+          trans_fields += "0";
+        else
+          trans_fields += Glib::ustring("CAST(") + column->column_name + " AS real)";
+        break;
+      case Field::TYPE_BOOLEAN:
+        if(column->gtype == G_TYPE_STRING)
+          trans_fields += Glib::ustring("(CASE WHEN ") + column->column_name + " = 'true' THEN 1 "
+                                              "WHEN "  + column->column_name + " = 'false' THEN 0 "
+                                              "WHEN "  + column->column_name + " IS NULL THEN 0 END)";
+        else if(column->gtype == G_TYPE_DOUBLE)
+          trans_fields += Glib::ustring("(CASE WHEN ") + column->column_name + " = 0 THEN 0 "
+                                              "WHEN "  + column->column_name + " != 0 THEN 1 "
+                                              "WHEN "  + column->column_name + " IS NULL THEN 0 END)";
+        else if(column->gtype == G_TYPE_BOOLEAN)
+          trans_fields += column->column_name;
+        else
+          trans_fields += Glib::ustring(column->column_name) + " IS NOT NULL";
+        break;
       case Field::TYPE_DATE:
-        trans_fields += Glib::ustring("date(") + column->column_name + ")";
+        if(column->gtype == G_TYPE_BOOLEAN || column->gtype == GDA_TYPE_BLOB || column->gtype == G_TYPE_DOUBLE)
+          trans_fields += "NULL";
+        else
+          trans_fields += Glib::ustring("date(") + column->column_name + ")";
         break;
       case Field::TYPE_TIME:
-        trans_fields += Glib::ustring("time(") + column->column_name + ")";
+        if(column->gtype == G_TYPE_BOOLEAN || column->gtype == GDA_TYPE_BLOB || column->gtype == G_TYPE_DOUBLE)
+          trans_fields += "NULL";
+        else
+          trans_fields += Glib::ustring("time(") + column->column_name + ")";
+        break;
+      case Field::TYPE_IMAGE:
+        if(column->gtype == GDA_TYPE_BLOB)
+          trans_fields += column->column_name;
+        else
+          trans_fields += "NULL";
         break;
       default:
         trans_fields += column->column_name;
@@ -250,7 +298,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
           trans_fields += "0";
           break;
         case Field::TYPE_BOOLEAN:
-          trans_fields += "'false'";
+          trans_fields += "0";
           break;
         case Field::TYPE_TEXT:
           trans_fields += "''";
