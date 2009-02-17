@@ -335,7 +335,9 @@ bool Base_DB::query_execute(const Glib::ustring& strQuery,
   }
   catch(const Glib::Error& error)
   {
-    std::cerr << "BaseDB::query_execute: ConnectionError:" << error.what() << std::endl;
+    std::cerr << "BaseDB::query_execute: ConnectionError: " << error.what() << std::endl;
+    const Glib::ustring full_query = stmt->to_sql(params);
+    std::cerr << "  full_query: " << full_query << std::endl;
     return false;
   }
 #else
@@ -343,7 +345,9 @@ bool Base_DB::query_execute(const Glib::ustring& strQuery,
   exec_retval = gda_connection->statement_execute_non_select (stmt, params, exec_error);
   if(exec_error)
   {
-    std::cerr << "BaseDB::query_execute: ConnectionError:" << error.what() << std::endl;
+    std::cerr << "BaseDB::query_execute: ConnectionError: " << error.what() << std::endl;
+    const Glib::ustring full_query = stmt->to_sql(params);
+    std::cerr << "  full_query: " << full_query << std::endl;
     return false;
   }
 #endif
@@ -1518,7 +1522,8 @@ Glib::RefPtr<Gnome::Gda::Connection> Base_DB::get_connection() const
 
 bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
 {
-  const Glib::ustring example_rows = get_document()->get_table_example_data(table_name);
+  //TODO_Performance: Avoid copying:
+  const Document_Glom::type_example_rows example_rows = get_document()->get_table_example_data(table_name);
   if(example_rows.empty())
   {
     //std::cout << "debug: Base_DB::insert_example_data(): No example data available." << std::endl;
@@ -1539,71 +1544,68 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
   Document_Glom::type_vecFields vec_fields = get_document()->get_table_fields(table_name);
 
   //Actually insert the data:
-  const type_vecStrings vec_rows = Utils::string_separate(example_rows, "\n", false /* ignore \n inside quotes. */);
   //std::cout << "  debug: Base_DB::insert_example_data(): number of rows of data: " << vec_rows.size() << std::endl;
   
-  for(type_vecStrings::const_iterator iter = vec_rows.begin(); iter != vec_rows.end(); ++iter)
+  //std::cout << "DEBUG: example_row size = " << example_rows.size() << std::endl;
+
+  for(Document_Glom::type_example_rows::const_iterator iter = example_rows.begin(); iter != example_rows.end(); ++iter)
   {
     //Check that the row contains the correct number of columns.
     //This check will slow this down, but it seems useful:
     //TODO: This can only work if we can distinguish , inside "" and , outside "":
-    const Glib::ustring& row_data = *iter;
+    const Document_Glom::type_row_data& row_data = *iter;
     Glib::ustring strNames;
     Glib::ustring strVals;
-    if(!row_data.empty())
+    if(row_data.empty())
+      break;
+
+    //std::cout << "DEBUG: row_data size = " << row_data.size() << ", (fields size= " << vec_fields.size() << " )" << std::endl;
+
+    Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
+    ParameterNameGenerator generator;
+    for(unsigned int i = 0; i < row_data.size(); ++i) //TODO_Performance: Avoid calling size() so much.
     {
-      const type_vecStrings vec_values = Utils::string_separate(row_data, ",", true /* ignore , inside quotes */);
-      //Do not allow any unescaped newlines in the row data.
-      //Note that this is checking for newlines ("\n"), not escaped newlines ("\\n").
-      if(row_data.find("\n") == Glib::ustring::npos)
+      //std::cout << "  DEBUG: i=" << i << ", row_data.size()=" << row_data.size() << std::endl;
+
+      if(i > 0)
       {
-        Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
-        ParameterNameGenerator generator;
-        for(unsigned int i = 0; i < vec_values.size(); ++i)
-        {
-          if(i > 0)
-          {
-            strVals += ", ";
-            strNames += ", ";
-          }
-
-          strNames += vec_fields[i]->get_name();
-
-          bool success = false;
-          const Gnome::Gda::Value value = vec_fields[i]->from_file_format(vec_values[i], success);
-          if(!success)
-          {
-            std::cerr << "Base_DB::insert_example_data: could not convert example data" << std::endl;
-            continue;
-          }
-          
-          //Add a SQL parameter for the value:
-          guint id = 0;
-          const Field::glom_field_type glom_type = vec_fields[i]->get_glom_type();
-          Glib::RefPtr<Gnome::Gda::Holder> holder = 
-            Gnome::Gda::Holder::create( Field::get_gda_type_for_glom_type(glom_type),
-              generator.get_next_name(id));
-
-          holder->set_not_null(false);
-          holder->set_value_as_value(value);
-          params->add_holder(holder);
-          
-          strVals += "##" + generator.get_name_from_id(id) + "::" + vec_fields[i]->get_gda_type_name();
-        }
-
-        //Create and parse the SQL query:
-        //After this, the Parser will know how many SQL parameters there are in 
-        //the query, and allow us to set their values.
-        const Glib::ustring strQuery = "INSERT INTO \"" + table_name + "\" (" + strNames + ") VALUES (" + strVals + ")";
-        insert_succeeded = query_execute(strQuery, params);
-        if (!insert_succeeded)
-          break;
+        strVals += ", ";
+        strNames += ", ";
       }
-      else
+
+      sharedptr<Field> field = vec_fields[i];
+      if(!field)
       {
-        std::cerr << "Glom: Base_DB::insert_example_data(): nested newline found in row data: " << row_data << std::endl;
+        std::cerr << "Base_DB::insert_example_data(): field was null for field num=" << i << std::endl;
+        break;
       }
+
+      strNames += field->get_name();
+
+      Gnome::Gda::Value value = row_data[i];
+      //std::cout << "  DEBUG: example: field=" << field->get_name() << ", value=" << value.to_string() << std::endl;
+
+      //Add a SQL parameter for the value:
+      guint id = 0;
+      const Field::glom_field_type glom_type = field->get_glom_type();
+      Glib::RefPtr<Gnome::Gda::Holder> holder = 
+        Gnome::Gda::Holder::create( Field::get_gda_type_for_glom_type(glom_type),
+          generator.get_next_name(id));
+
+      holder->set_not_null(false);
+      holder->set_value_as_value(value);
+      params->add_holder(holder);
+          
+      strVals += "##" + generator.get_name_from_id(id) + "::" + vec_fields[i]->get_gda_type_name();
     }
+
+    //Create and parse the SQL query:
+    //After this, the Parser will know how many SQL parameters there are in 
+    //the query, and allow us to set their values.
+    const Glib::ustring strQuery = "INSERT INTO \"" + table_name + "\" (" + strNames + ") VALUES (" + strVals + ")";
+    insert_succeeded = query_execute(strQuery, params);
+    if(!insert_succeeded)
+      break;
   }
 
   for(Document_Glom::type_vecFields::const_iterator iter = vec_fields.begin(); iter != vec_fields.end(); ++iter)

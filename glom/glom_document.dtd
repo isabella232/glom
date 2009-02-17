@@ -78,7 +78,7 @@ TODO: Make sure that all the comments list all the attributes and their meaning.
   hidden: Whether the table is hidden.
   overview_x and overview_y attributes are positions on the Relationships Overview picture.
   default: can specify that the table should be opened when the file is opened. Only one table should have default=true.
-  example_rows: deprecated - use the child node instead.
+  example_rows: deprecated in 1.6 (and support removed in 1.10) - use the child node instead.
 -->
     <!ELEMENT table (example_rows | fields | relationships | data_layouts | reports | trans_set)* >
     <!ATTLIST table
@@ -87,8 +87,7 @@ TODO: Make sure that all the comments list all the attributes and their meaning.
         hidden (true|false) "false"
         overview_x CDATA #IMPLIED
         overview_y CDATA #IMPLIED
-        default (true|false) "false"
-        example_rows CDATA #IMPLIED  >
+        default (true|false) "false" >
 
 <!-- example_rows are comma separated lists of data (in the child text node) to load into the table 
      when it is first created. -->

@@ -236,6 +236,8 @@ static std::string glom_escape_text(const std::string& src)
   {
     const size_t len = src.size();
     char* to = (char*)malloc(sizeof(char) * 2 * (len + 1)); //recommended size for to.
+    //TODO: Use gda_data_handler_get_sql_from_value() instead.
+    //See gda_server_provider_get_data_handler_g_type().
     const size_t len_escaped = Glom_PQescapeString(to, src.c_str(), len);
     if(!len_escaped)
     {
@@ -259,86 +261,6 @@ static std::string glom_escape_text(const std::string& src)
       //std::cout << "glom_escape_text: escaped and quoted: " << str << std::endl;
     }
   }
-}
-
-#define ISFIRSTOCTDIGIT(CH) ((CH) >= '0' && (CH) <= '3')
-#define ISOCTDIGIT(CH) ((CH) >= '0' && (CH) <= '7')
-#define OCTVAL(CH) ((CH) - '0')
-
-/// Unescape text that was escaped by the above function. Only unescapes
-/// quoted strings. Nonquoted strings are returned without being modified.
-static std::string glom_unescape_text(const std::string& str)
-{
-  std::string::const_iterator iter = str.begin();
-  if(iter == str.end()) return str;  // Empty string
-  if(*iter != '\'') return str; // Non-quoted
-  ++ iter;
-
-  std::string result;
-
-  while(iter != str.end())
-  {
-    // End here if this is the terminating quotation character, or unescape
-    // '' to '.
-    if(*iter == '\'')
-    {
-      ++ iter;
-      if(iter == str.end() || *iter != '\'') break;
-      result += '\'';
-      ++ iter;
-    }
-    /* double quotes are not escaped, so don't unescape them. */
-#if 0
-    // Unescape "" to ".
-    else if(*iter == '\"')
-    {
-      ++ iter;
-      if(iter == str.end()) break;
-      result += '\"';
-      ++ iter;
-    }
-#endif
-    // Escape sequence beginning with backslash.
-    else if(*iter == '\\')
-    {
-      ++ iter;
-      if(iter == str.end()) break;
-
-      // Escaped backslash
-      if(*iter == '\\')
-      {
-        result += '\\';
-        ++ iter;
-      }
-      // Some octal representation
-      else if(ISFIRSTOCTDIGIT(*iter))
-      {
-        unsigned char byte = OCTVAL(*iter);
-
-        ++ iter;
-        if(iter != str.end() && ISOCTDIGIT(*iter))
-        {
-          byte = (byte << 3) | OCTVAL(*iter);
-          ++ iter;
-          if(iter != str.end() && ISOCTDIGIT(*iter))
-          {
-            byte = (byte << 3) | OCTVAL(*iter);
-            ++ iter;
-          }
-        }
-
-        result += byte;
-      }
-    }
-    else
-    {
-      // Take char as is
-      result += *iter;
-      ++ iter;
-    }
-  }
-
-  return result;
 }
 
 Glib::ustring Field::sql(const Gnome::Gda::Value& value, sql_format format) const
@@ -418,36 +340,7 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value, sql_format format) cons
     }
     case(TYPE_IMAGE):
     {
-      if(value.get_value_type() == GDA_TYPE_BINARY)
-      {
-        long buffer_length = 0;
-        const guchar* buffer = value.get_binary(buffer_length);
-        if(buffer && buffer_length > 0)
-        {
-          if(format == SQL_FORMAT_POSTGRES)
-          {
-            //Get the escaped text that represents the binary data:
-            //TODO: Use gda_binary_from_string() instead?
-            const std::string escaped_binary_data = Conversions::escape_binary_data_postgres((guint8*)buffer, buffer_length);
-            //Now escape that text (to convert \ to \\, for instance):
-            //The E prefix indicates ""escape" string constants, which are an extension to the SQL standard"
-            //Otherwise, we get a warning when using large escaped strings:
-            if(format == SQL_FORMAT_POSTGRES)
-              str = "E" + glom_escape_text(escaped_binary_data) /* has quotes */ + "::bytea";
-          }
-          else
-          {
-            //TODO: Is this used for anything?
-            const std::string escaped_binary_data = Conversions::escape_binary_data_sqlite((guint8*)buffer, buffer_length);
-            str = "x'" + escaped_binary_data + "'";
-          }
-        }
-      }
-      else
-      {
-        g_warning("Field::sql(): glom_type is TYPE_IMAGE but gda type is not VALUE_TYPE_BINARY");
-      }
-
+      std::cerr << "Field::sql(): Field type TYPE_IMAGE is not supported. A SQL parameter should be used instead." << std::endl;
       break;
     }
     default:
@@ -471,91 +364,71 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
 
 Glib::ustring Field::to_file_format(const Gnome::Gda::Value& value) const
 {
-  return sql(value, Field::SQL_FORMAT_POSTGRES);
+  return to_file_format(value, m_glom_type);
+}
+
+Glib::ustring Field::to_file_format(const Gnome::Gda::Value& value, glom_field_type glom_type)
+{
+  if(glom_type == TYPE_IMAGE)
+  {
+    if(!value.gobj() || (value.get_value_type() != GDA_TYPE_BINARY))
+      return Glib::ustring();
+ 
+    const GdaBinary* gdabinary = gda_value_get_binary(value.gobj());
+    if(!gdabinary)
+      return Glib::ustring();
+    else
+    {
+      gchar* str = gda_binary_to_string(gdabinary, 0);
+      return (str) ? Glib::ustring(Glib::ScopedPtr<char>(str).get())
+        : Glib::ustring();
+    }
+  }
+  
+  NumericFormat format_ignored; //Because we use ISO format.
+  return Conversions::get_text_for_gda_value(glom_type, value, std::locale() /* SQL uses the C locale */, format_ignored, true /* ISO standard */);
+}
+
+namespace
+{
+  // Changes the type of a given value
+  void value_reinit(GValue* value, GType g_type)
+  {
+    if(G_IS_VALUE(value) && G_VALUE_TYPE(value) != g_type)
+      g_value_unset(value);
+
+    if(!G_IS_VALUE(value))
+      g_value_init(value, g_type);
+  }
 }
 
 Gnome::Gda::Value Field::from_file_format(const Glib::ustring& str, bool& success) const
 {
+  return from_file_format(str, m_glom_type, success);
+}
+
+Gnome::Gda::Value Field::from_file_format(const Glib::ustring& str, glom_field_type glom_type, bool& success)
+{
   success = true;
-  switch(m_glom_type)
+  
+  if(glom_type == TYPE_IMAGE)
   {
-  case TYPE_TEXT:
+    GdaBinary* gdabinary = (GdaBinary*)g_malloc0(sizeof(GdaBinary));
+    success = gda_string_to_binary(str.c_str(), gdabinary);
+    if(!success)
+      return Gnome::Gda::Value();
+    else
     {
-      return Gnome::Gda::Value(glom_unescape_text(str));
+      Gnome::Gda::Value value;
+      value_reinit(value.gobj(), GDA_TYPE_BINARY);
+      gda_value_take_binary(value.gobj(), gdabinary);
+      return value; 
     }
-  case TYPE_DATE:
-  case TYPE_TIME:
-    {
-      if(str == "NULL")
-        return Gnome::Gda::Value();
-      
-      const Glib::ustring unescaped = glom_unescape_text(str);
-
-      NumericFormat format_ignored; //Because we use ISO format.
-      return Conversions::parse_value(m_glom_type, unescaped, format_ignored, success, true);
-    }
-  case TYPE_NUMERIC:
-    {
-      //No quotes for numbers.
-      NumericFormat format_ignored; //Because we use ISO format.
-      return Conversions::parse_value(m_glom_type, str, format_ignored, success, true);
-    }
-  case TYPE_BOOLEAN:
-    {
-      if(str.lowercase() == "true")
-        return Gnome::Gda::Value(true);
-      else
-        return Gnome::Gda::Value(false);
-    }
-  case TYPE_IMAGE:
-    {
-      if(str == "NULL") return Gnome::Gda::Value();
-
-      // We store the data into the format E'some escaped data'::bytea, and we
-      // now expect it in exactly that format now.
-      // We operate on the raw std::string since access into the Glib::ustring
-      // is expensive, and we only check for ASCII stuff anyway.
-      const std::string& raw = str.raw();
-
-      Glib::ustring unescaped;
-
-      {
-        if(raw.length() >= 10 &&
-           raw.compare(0, 2, "E'") == 0 && raw.compare(raw.length() - 8, 8, "'::bytea") == 0)
-        {
-          unescaped = glom_unescape_text(raw.substr(1, raw.length() - 8));
-	}
-	// The E can be omitted, and it is in some example files, such as
-	// example_smallbusiness.glom. We need to parse this to convert the
-	// data into sqlite format, when the small bussiness example is loaded
-	// into a sqlite database.
-	else if(raw.length() >= 9 &&
-	        raw.compare(0, 1, "'") == 0 && raw.compare(raw.length() - 8, 8, "'::bytea") == 0)
-	{
-          unescaped = glom_unescape_text(raw.substr(0, raw.length() - 7));
-        }
-
-        if(!unescaped.empty())
-        {
-          gsize length = 0;
-          //TODO: Use gda_binary_to_string() instead?
-          guint8* binary_data = Conversions::unescape_binary_data_postgres(unescaped, length);
-          if(binary_data)
-          {
-            Gnome::Gda::Value value;
-            value.set(binary_data, length);
-            g_free(binary_data);
-            return value;
-          }
-        }
-
-        success = false;
-        return Gnome::Gda::Value();
-      }
-    }
-  default:
-    g_assert_not_reached();
-    break;
+  }
+  else
+  {
+    NumericFormat format_ignored; //Because we use ISO format.
+    return Conversions::parse_value(glom_type, str, format_ignored, success, true);
   }
 }
 
@@ -712,7 +585,7 @@ Glib::RefPtr<Gnome::Gda::Holder> Field::get_holder(const Gnome::Gda::Value& valu
     // GdaBinary, but the field type is GdaBlob. This is not an optimal
     // solution this way. We should maybe check fallback types here, or
     // investigate why the field type is not GdaBinary as well.
-    //g_warning("Field::get_holder(): Field type (%s) and value type (%s) don't match!\n", g_type_name(field_type), g_type_name(gtype));
+    std::cout << "DEBUG: Field::get_holder(): Field type " << g_type_name(field_type) << " and value type " << g_type_name(gtype) << " don't match." << std::endl;
   }
 
   Glib::RefPtr<Gnome::Gda::Holder> holder = Gnome::Gda::Holder::create(gtype, real_name);

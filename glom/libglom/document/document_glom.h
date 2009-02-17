@@ -262,14 +262,17 @@ public:
   Glib::ustring get_table_title(const Glib::ustring& table_name) const;
   void set_table_title(const Glib::ustring& table_name, const Glib::ustring& value);
 
+  typedef std::vector< Gnome::Gda::Value > type_row_data;
+  typedef std::vector< type_row_data > type_example_rows;
+
   /** Save example data into the document, for use when creating the example database on the server.
    * Don't use this for large amounts of data.
    * @param table_name The table that should contain this example data.
    * @param rows Each row is separated by a newline. Each line has comma-separated field values, in SQL format.
    */
-  void set_table_example_data(const Glib::ustring& table_name, const Glib::ustring& rows);
+  void set_table_example_data(const Glib::ustring& table_name, const type_example_rows& rows);
 
-  Glib::ustring get_table_example_data(const Glib::ustring& table_name) const;
+  type_example_rows get_table_example_data(const Glib::ustring& table_name) const;
 
   virtual Glib::ustring get_name() const; //override.
 
@@ -455,8 +458,10 @@ protected:
   static void set_node_attribute_value_as_bool(xmlpp::Element* node, const Glib::ustring& strAttributeName, bool value = true, bool value_default = false);
   static void set_node_attribute_value_as_float( xmlpp::Element* node, const Glib::ustring& strAttributeName, float value );
   static void set_node_attribute_value_as_value(xmlpp::Element* node, const Glib::ustring& strAttributeName, const Gnome::Gda::Value& value, Field::glom_field_type field_type);
+  static void set_node_text_child_as_value(xmlpp::Element* node, const Gnome::Gda::Value& value, Field::glom_field_type field_type);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   static Gnome::Gda::Value get_node_attribute_value_as_value(const xmlpp::Element* node, const Glib::ustring& strAttributeName, Field::glom_field_type field_type);
+  static Gnome::Gda::Value get_node_text_child_as_value(const xmlpp::Element* node, Field::glom_field_type field_type);
 
   Glib::ustring get_child_text_node(const xmlpp::Element* node, const Glib::ustring& child_node_name) const;
   void set_child_text_node(xmlpp::Element* node, const Glib::ustring& child_node_name, const Glib::ustring& text);
@@ -540,7 +545,8 @@ protected:
     typedef std::map< Glib::ustring, sharedptr<PrintLayout> > type_print_layouts; //map of print layout names to print layouts
     type_print_layouts m_print_layouts;
 
-    Glib::ustring m_example_rows;
+    //Example data, used when creating a database from an example.
+    type_example_rows m_example_rows;
 
     //Per-session, not saved in document:
     typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_layout_primarykeys;

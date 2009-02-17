@@ -80,14 +80,6 @@ namespace Conversions
 
   Gnome::Gda::Value get_example_value(Field::glom_field_type field_type);
 
-  //TODO: Use gda_binary_from_string() instead?
-  ///Get a string representing binary data, for SQL
-  Glib::ustring escape_binary_data_postgres(guint8* buffer, size_t buffer_size);
-  Glib::ustring escape_binary_data_sqlite(guint8* buffer, size_t buffer_size);
-
-  //TODO: Use gda_binary_to_string() instead?
-  guint8* unescape_binary_data_postgres(const Glib::ustring& escaped_binary_data, size_t& length);
-
   Gnome::Gda::Value convert_value(const Gnome::Gda::Value& value, Field::glom_field_type target_glom_type);
 
 

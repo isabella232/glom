@@ -1,6 +1,6 @@
 /* Glom
  *
- * Copyright (C) 2001-2004 Murray Cumming
+ * Copyright (C) 2001-2009 Openismus GmbH
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -20,7 +20,7 @@
 
 #include <glom/libglom/document/document_glom.h>
 #include <glom/libglom/utils.h>
-#include <glom/libglom/data_structure/glomconversions.h>
+//#include <glom/libglom/data_structure/glomconversions.h>
 #include <glom/libglom/data_structure/layout/report_parts/layoutitem_summary.h>
 #include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 #include <glom/libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.h>
@@ -140,7 +140,6 @@ namespace Glom
 #define GLOM_ATTRIBUTE_OVERVIEW_Y "overview_y"
 #define GLOM_ATTRIBUTE_FIELD "field"
 #define GLOM_ATTRIBUTE_EDITABLE "editable"
-#define GLOM_DEPRECATED_ATTRIBUTE_EXAMPLE_ROWS "example_rows"
 #define GLOM_NODE_EXAMPLE_ROWS "example_rows"
 #define GLOM_NODE_EXAMPLE_ROW "example_row"
 #define GLOM_NODE_VALUE "value"
@@ -1179,9 +1178,17 @@ float Document_Glom::get_node_attribute_value_as_float(const xmlpp::Element* nod
 void Document_Glom::set_node_attribute_value_as_value(xmlpp::Element* node, const Glib::ustring& strAttributeName, const Gnome::Gda::Value& value,  Field::glom_field_type field_type)
 {
   NumericFormat format_ignored; //Because we use ISO format.
-  const Glib::ustring value_as_text = Conversions::get_text_for_gda_value(field_type, value, std::locale() /* Use the C locale */, format_ignored, true /* ISO standard */);
-
+  const Glib::ustring value_as_text = Field::to_file_format(value, field_type);
   set_node_attribute_value(node, strAttributeName, value_as_text);
+}
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+void Document_Glom::set_node_text_child_as_value(xmlpp::Element* node, const Gnome::Gda::Value& value, Field::glom_field_type field_type)
+{
+  const Glib::ustring value_as_text = Field::to_file_format(value, field_type);
+  if(node)
+    node->set_child_text(value_as_text);
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -1190,7 +1197,23 @@ Gnome::Gda::Value Document_Glom::get_node_attribute_value_as_value(const xmlpp::
   const Glib::ustring value_string = get_node_attribute_value(node, strAttributeName);
 
   bool success = false;
-  Gnome::Gda::Value  result = Conversions::parse_value(field_type, value_string, success, true /* iso_format */);
+  const Gnome::Gda::Value result = Field::from_file_format(value_string, field_type, success);
+  if(success)
+    return result;
+  else 
+    return Gnome::Gda::Value();
+}
+
+Gnome::Gda::Value Document_Glom::get_node_text_child_as_value(const xmlpp::Element* node, Field::glom_field_type field_type)
+{
+  const xmlpp::TextNode* text_child = node->get_child_text();
+  if(!text_child)
+    return Gnome::Gda::Value();
+
+  const Glib::ustring value_string = text_child->get_content();
+
+  bool success = false;
+  const Gnome::Gda::Value result = Field::from_file_format(value_string, field_type, success);
   if(success)
     return result;
   else 
@@ -1559,9 +1582,9 @@ void Document_Glom::set_table_title(const Glib::ustring& table_name, const Glib:
   }
 }
 
-void Document_Glom::set_table_example_data(const Glib::ustring& table_name, const Glib::ustring& rows)
+void Document_Glom::set_table_example_data(const Glib::ustring& table_name, const type_example_rows& rows)
 {
- if(!table_name.empty())
+  if(!table_name.empty())
   {
     DocumentTableInfo& info = get_table_info_with_add(table_name);
     if(info.m_example_rows != rows)
@@ -1572,13 +1595,13 @@ void Document_Glom::set_table_example_data(const Glib::ustring& table_name, cons
   }
 }
 
-Glib::ustring Document_Glom::get_table_example_data(const Glib::ustring& table_name) const
+Document_Glom::type_example_rows Document_Glom::get_table_example_data(const Glib::ustring& table_name) const
 {
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
     return iterFind->second.m_example_rows;
   else
-    return Glib::ustring();
+    return type_example_rows();
 }
 
 bool Document_Glom::get_table_is_known(const Glib::ustring& table_name) const
@@ -2461,8 +2484,7 @@ bool Document_Glom::load_after()
               const xmlpp::Element* nodeChild = dynamic_cast<xmlpp::Element*>(*iter);
               if(nodeChild)
               {
-                typedef std::vector<Glib::ustring> type_vecStrings; // TODO: Put this into class declaration?
-                type_vecStrings field_values(doctableinfo.m_fields.size(), "''");
+                type_row_data field_values(doctableinfo.m_fields.size());
                 //Loop through value child nodes
                 xmlpp::Node::NodeList listNodes = nodeChild->get_children(GLOM_NODE_VALUE);
                 for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); ++ iter)
@@ -2473,15 +2495,18 @@ bool Document_Glom::load_after()
                     const xmlpp::Attribute* column_name = nodeChild->get_attribute(GLOM_ATTRIBUTE_COLUMN);
                     if(column_name)
                     {
+                      //std::cout << "DEBUG: column_name = " << column_name->get_value() << " fields size=" << doctableinfo.m_fields.size() << std::endl;
+
                       // TODO_Performance: If it's too many rows we could
                       // consider a map to find the column more quickly.
-                      for(unsigned int i = 0; i < doctableinfo.m_fields.size(); ++ i)
+                      for(unsigned int i = 0; i < doctableinfo.m_fields.size(); ++i)
                       {
-                        if(doctableinfo.m_fields[i]->get_name() == column_name->get_value())
+                        sharedptr<const Field> field = doctableinfo.m_fields[i];
+                        //std::cout << "  DEBUG: searching: field i=" << i << " =" << field->get_name() << std::endl; 
+                        if(field && (field->get_name() == column_name->get_value()))
                         {
-                          if(nodeChild->has_child_text())
-                            field_values[i] = nodeChild->get_child_text()->get_content();
- 
+                          field_values[i] = get_node_text_child_as_value(nodeChild, field->get_glom_type());
+                          //std::cout << "    DEBUG: document example value: field=" << field->get_name() << ", value=" << field_values[i].to_string() << std::endl; 
                           break;
                         }
                       }
@@ -2490,25 +2515,10 @@ bool Document_Glom::load_after()
                 }
 
                 // Append line to doctableinfo.m_example_rows
-                if(!doctableinfo.m_example_rows.empty())
-                  doctableinfo.m_example_rows += "\n";
-
-                for(type_vecStrings::const_iterator field_iter = field_values.begin(); field_iter != field_values.end(); ++ field_iter)
-                {
-                  if(field_iter != field_values.begin())
-                    doctableinfo.m_example_rows += ",";
-                  doctableinfo.m_example_rows += *field_iter;
-                }
-
-                // TODO_Performance: doctableinfo.m_example_rows should perhaps be a vector or list of strings (a string for each row) instead of one big string
+                doctableinfo.m_example_rows.push_back(field_values);
               }
             }
           } // Example Rows
-
-          if(doctableinfo.m_example_rows.empty()) //Try the deprecated format (all rows in a single node) instead
-            doctableinfo.m_example_rows = get_child_text_node(nodeTable, GLOM_NODE_EXAMPLE_ROWS);
-          if(doctableinfo.m_example_rows.empty()) //Try the deprecated attribute instead
-            doctableinfo.m_example_rows = get_node_attribute_value(nodeTable, GLOM_DEPRECATED_ATTRIBUTE_EXAMPLE_ROWS);
 
           //std::cout << "  debug: loading: table=" << table_name << ", m_example_rows.size()=" << doctableinfo.m_example_rows.size() << std::endl;
 
@@ -3211,29 +3221,27 @@ bool Document_Glom::save_before()
         if(m_is_example) //The example data is useless to non-example files (and is big):
         {
           xmlpp::Element* nodeExampleRows = nodeTable->add_child(GLOM_NODE_EXAMPLE_ROWS);
-          //set_child_text_node(nodeTable, GLOM_NODE_EXAMPLE_ROWS, doctableinfo.m_example_rows);
  
-         //TODO: This is merely copied from Base_DB::insert_example_data(). Instead, we should probably save the example rows in a more intelligent manner, like a list of vector of strings instead of just one big string.
-          typedef std::vector<Glib::ustring> type_vecStrings; // TODO: Put this into class declaration?
-          const type_vecStrings vec_rows = Utils::string_separate(doctableinfo.m_example_rows, "\n", false);
-          for(type_vecStrings::const_iterator iter = vec_rows.begin(); iter != vec_rows.end(); ++iter)
+          for(type_example_rows::const_iterator iter = doctableinfo.m_example_rows.begin(); iter != doctableinfo.m_example_rows.end(); ++iter)
           {
             xmlpp::Element* nodeExampleRow = nodeExampleRows->add_child(GLOM_NODE_EXAMPLE_ROW);
-            const Glib::ustring& row_data = *iter;
+            const type_row_data& row_data = *iter;
             if(!row_data.empty())
             {
-              const type_vecStrings vec_values = Utils::string_separate(row_data, ",", true /* ignore , inside quotes */);
-              for(unsigned int i = 0; i < vec_values.size(); ++i)
+              for(unsigned int i = 0; i < row_data.size(); ++i) //TODO_Performance: don't call size() so much.
               {
+                sharedptr<const Field> field = doctableinfo.m_fields[i];
+                if(!field)
+                  break;
+
                 xmlpp::Element* nodeField = nodeExampleRow->add_child(GLOM_NODE_VALUE);
-                set_node_attribute_value(nodeField, GLOM_ATTRIBUTE_COLUMN, doctableinfo.m_fields[i]->get_name());
-                nodeField->add_child_text(vec_values[i]);
+                set_node_attribute_value(nodeField, GLOM_ATTRIBUTE_COLUMN, field->get_name());
+                set_node_text_child_as_value(nodeField, row_data[i], field->get_glom_type()); 
               } // for each value
             } // !row_data.empty
           } // for each row
         } // m_is_example
-        //else
-          //TODO: doctableinfo.m_example_rows.clear(); //Make sure we are not keeping this in memory unnecessarily.
+        
 
         //Translations:
         save_before_translations(nodeTable, *(doctableinfo.m_info));
@@ -3924,8 +3932,9 @@ guint Document_Glom::get_latest_known_document_format_version()
   // Version 0: The first document format. (And the default version number when no version number was saved in the .XML)
   // Version 1: Saved scripts and other multiline text in text nodes instead of attributes. Can open Version 1 documents.
   // Version 2: hosting_mode="postgres-central|postgres-self|sqlite" instead of self_hosted="true|false". Can open Version 1 documents, by falling back to the self_hosted attribute if hosting_mode is not set.
+  // Version 3: Support for the old one-big-string example_rows format was removed, and we now use (unquoted) non-postgres libgda escaping. 
 
-  return 2;
+  return 3;
 }
 
 std::vector<Glib::ustring> Document_Glom::get_library_module_names() const

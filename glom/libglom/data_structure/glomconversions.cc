@@ -463,34 +463,22 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
   {
      return value.get_string();
   }
-  else if(glom_type == Field::TYPE_IMAGE)
+  else if (glom_type == Field::TYPE_BOOLEAN)
   {
-    //Return the binary-as-escaped-text format, suitable for use in the document.
-    //TODO_sqlite: Where do we need this? Do we need to have this in SQLite format sometimes?
-    std::string result;
-    long buffer_length;
-    const guchar* buffer = value.get_binary(buffer_length);
-    //std::cout << "DEBUG: get_text_for_gda_value(): Calling Conversions::escape_binary_data_postgres(). This should probably not happen. murrayc." << std::endl;
-    if(buffer && buffer_length > 0)
-      result = Conversions::escape_binary_data_postgres((guint8*)buffer, buffer_length);
-
-    return result;
-  }
-  else if(glom_type == Field::TYPE_BOOLEAN)
-  {
-    const bool val = value.get_boolean();
-
-    //Careful: Text representations for booleans should generally not be used.
-    //TODO: This is currently used by the import dialog. That should really use a checkbox instead. 
-    if(iso_format)
-      return (val ? "TRUE" : "FALSE");
+    //This is used only by Field::to_file_format(),
+    //and should never be shown in the UI.
+    if(G_VALUE_TYPE(value.gobj()) == G_TYPE_BOOLEAN)
+      return (value.get_boolean() ? "TRUE" : "FALSE" );
     else
-    {
-      std::cerr << "Warning: Conversions::get_text_for_gda_value(): Generating a text representation of a boolean. A checkbox should be used instead." << std::endl;
-
-      //TODO: Not only should we not use these in the UI, but we are ignoring the specified locale for this function:
-      return (val ? _("True") : _("False"));
-    }
+      return "FALSE";
+  }
+  else if (glom_type == Field::TYPE_IMAGE)
+  {
+    //This function is only used for :
+    //- UI-visible strings, but images should never be shown as text in the UI. 
+    //- Values in SQL queries, but we only do that for clauses (where/sort/order) 
+    //  which should never use image values.
+    std::cerr << "Conversions::get_text_for_gda_value(): Unexpected TYPE_IMAGE field type: " << glom_type << std::endl;
   }
   else
   {
@@ -624,27 +612,14 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
   else if(glom_type == Field::TYPE_BOOLEAN)
   {
     success = true;
-    return Gnome::Gda::Value( (text == "TRUE" ? true : false) ); //TODO: Internationalize this, but it should never be used anyway.
+    return Gnome::Gda::Value( (text.uppercase() == "TRUE" ? true : false) ); //TODO: Internationalize this, but it should never be used anyway.
   }
   else if(glom_type == Field::TYPE_IMAGE)
   {
-    //We assume that the text is the same (escaped text) format that we use in the document when saving images:
-    //(The SQL format).
-    // TODO_sqlite: For what do we need this? Does this have to be in SQLite format sometimes?
-    Gnome::Gda::Value result;
-
-    size_t buffer_binary_length = 0;
-    //std::cout << "DEBUG: parse_value(): Calling Conversions::unescape_binary_data_postgres(). This should probably not happen. murrayc." << std::endl;
-    guchar* buffer_binary = Conversions::unescape_binary_data_postgres(text, buffer_binary_length); //freed by us later.
-    if(buffer_binary)
-    {
-      result.set(buffer_binary, buffer_binary_length);
-      success = true;
-
-      free(buffer_binary);
-
-      return result;
-    }
+    //This function is only used for :
+    //- UI-visible strings, but images should never be entered as text in the UI. 
+    std::cerr << "Conversions::parse_value(): Unexpected TYPE_IMAGE field type: " << glom_type << std::endl;
+    return Gnome::Gda::Value();
   }
 
   success = true;
@@ -975,218 +950,6 @@ Gnome::Gda::Value Conversions::get_example_value(Field::glom_field_type field_ty
     default:
       return Gnome::Gda::Value();
   }
-}
-
-
-unsigned char *
-Glom_PQescapeBytea(const unsigned char *bintext, size_t binlen, size_t *bytealen)
-{
-  const unsigned char *vp;
-  unsigned char *rp;
-  unsigned char *result;
-  size_t    i;
-  size_t    len;
-
-  /*
-   * empty string has 1 char ('\0')
-   */
-  len = 1;
-
-  vp = bintext;
-  for (i = binlen; i > 0; i--, vp++)
-  {
-    if (*vp < 0x20 || *vp > 0x7e)
-      len += 5;     /* '5' is for '\\ooo' */
-    else if (*vp == '\'')
-      len += 2;
-    else if (*vp == '\\')
-      len += 4;
-    else
-      len++;
-  }
-
-  rp = result = (unsigned char *) malloc(len);
-  if (rp == NULL)
-    return NULL;
-
-  vp = bintext;
-  *bytealen = len;
-
-  for (i = binlen; i > 0; i--, vp++)
-  {
-    if (*vp < 0x20 || *vp > 0x7e)
-    {
-      (void) sprintf((char*)rp, "\\\\%03o", *vp);
-      rp += 5;
-    }
-    else if (*vp == '\'')
-    {
-      rp[0] = '\\';
-      rp[1] = '\'';
-      rp += 2;
-    }
-    else if (*vp == '\\')
-    {
-      rp[0] = '\\';
-      rp[1] = '\\';
-      rp[2] = '\\';
-      rp[3] = '\\';
-      rp += 4;
-    }
-    else
-      *rp++ = *vp;
-  }
-  *rp = '\0';
-
-  return result;
-}
-
-#define ISFIRSTOCTDIGIT(CH) ((CH) >= '0' && (CH) <= '3')
-#define ISOCTDIGIT(CH) ((CH) >= '0' && (CH) <= '7')
-#define OCTVAL(CH) ((CH) - '0')
-
-unsigned char *
-Glom_PQunescapeBytea(const unsigned char *strtext, size_t *retbuflen)
-{
-  size_t    strtextlen,
-        buflen;
-  unsigned char *buffer,
-         *tmpbuf;
-  size_t    i,
-        j;
-
-  if (strtext == NULL)
-    return NULL;
-
-  strtextlen = strlen((const char*)strtext);
-
-  /*
-   * Length of input is max length of output, but add one to avoid
-   * unportable malloc(0) if input is zero-length.
-   */
-  buffer = (unsigned char *) malloc(strtextlen + 1);
-  if (buffer == NULL)
-    return NULL;
-
-  for (i = j = 0; i < strtextlen;)
-  {
-    switch (strtext[i])
-    {
-      case '\\':
-        i++;
-        if (strtext[i] == '\\')
-          buffer[j++] = strtext[i++];
-        else
-        {
-          if ((ISFIRSTOCTDIGIT(strtext[i])) &&
-            (ISOCTDIGIT(strtext[i + 1])) &&
-            (ISOCTDIGIT(strtext[i + 2])))
-          {
-            int     byte;
-
-            byte = OCTVAL(strtext[i++]);
-            byte = (byte << 3) + OCTVAL(strtext[i++]);
-            byte = (byte << 3) + OCTVAL(strtext[i++]);
-            buffer[j++] = byte;
-          }
-        }
-
-        /*
-         * Note: if we see '\' followed by something that isn't a
-         * recognized escape sequence, we loop around having done
-         * nothing except advance i.  Therefore the something will
-         * be emitted as ordinary data on the next cycle. Corner
-         * case: '\' at end of string will just be discarded.
-         */
-        break;
-
-      default:
-        buffer[j++] = strtext[i++];
-        break;
-    }
-  }
-  buflen = j;         /* buflen is the length of the dequoted
-                 * data */
-
-  /* Shrink the buffer to be no larger than necessary */
-  /* +1 avoids unportable behavior when buflen==0 */
-  tmpbuf = (unsigned char*)realloc(buffer, buflen + 1);
-
-  /* It would only be a very brain-dead realloc that could fail, but... */
-  if (!tmpbuf)
-  {
-    free(buffer);
-    return NULL;
-  }
-
-  *retbuflen = buflen;
-  return tmpbuf;
-}
-
-Glib::ustring Conversions::escape_binary_data_postgres(guint8* buffer, size_t buffer_size)
-{
-  std::cout << "Conversions::escape_binary_data_postgres()" << std::endl;
-  
-
-  //g_warning("Conversions::get_escaped_binary_data: debug: buffer ");
-  //for(int i = 0; i < 10; ++i)
-  //  g_warning("%02X (%c), ", (guint8)buffer[i], buffer[i]);
-
-  //TODO: Performance: Preallocate a string of the appropriate size.
-  //Use an output parameter instead of copying it during return.
-
-  Glib::ustring result;
-
-  /* This should be much faster, and more correct, but it gives an error - "unterminated quoted string at or near: "
-  size_t escaped_length = 0;
-  guchar* escaped =  Glom_PQescapeBytea(buffer, buffer_size, &escaped_length);
-
-  if(escaped && escaped_length)
-  {
-    result = std::string((char*)escaped, escaped_length);
-    free(escaped);
-  }
-  */
-
-
-  if(buffer && buffer_size)
-  {
-    guint8* buffer_end = buffer + buffer_size;
-    char byte_as_octal[4]; //3 digits, and a null terminator
-
-    for(guint8* pos = buffer; pos < buffer_end; ++pos)
-    {
-      sprintf(byte_as_octal, "%03o", *pos); //Format as octal with 3 digits.
-      byte_as_octal[3] = 0;
-
-//      g_warning("byte=%d, as_hex=%s", *pos, byte_as_octal);      
-
-      result += Glib::ustring("\\") + byte_as_octal; //Note that this string must be escaped once more to convert \ ("\\") into \\ ("\\\\").
-    }
-  }
-
-  return result;
-}
-
-Glib::ustring Conversions::escape_binary_data_sqlite(guint8* buffer, size_t buffer_size)
-{
-  // The sqlite format is two characters representing a byte in hexadecimal
-  // notation.
-  Glib::ustring result;
-  result.reserve(buffer_size*2);
-  for(unsigned int i = 0; i < buffer_size; ++ i)
-  {
-    result += hextochar((buffer[i] & 0xf0) >> 4);
-    result += hextochar((buffer[i] & 0x0f)     );
-  }
-
-  return result;
-}
-
-guint8* Conversions::unescape_binary_data_postgres(const Glib::ustring& escaped_binary_data, size_t& length)
-{
-  std::cout << "Conversions::unescape_binary_data_postgres()" << std::endl;
-  return Glom_PQunescapeBytea((const guchar*)escaped_binary_data.c_str(), &length);
 }
 
 Gnome::Gda::Value Conversions::convert_value(const Gnome::Gda::Value& value, Field::glom_field_type target_glom_type)

@@ -564,7 +564,7 @@ void Frame_Glom::on_menu_file_export()
     return;
 
   dialog.get_layout_groups(mapGroupSequence);
-  std::cout << "DEBUG 0: mapGroupSequence.size()=" << mapGroupSequence.size() << std::endl;
+  //std::cout << "DEBUG 0: mapGroupSequence.size()=" << mapGroupSequence.size() << std::endl;
 
   //const int index_primary_key = fieldsSequence.size() - 1;
 
@@ -578,6 +578,57 @@ void Frame_Glom::on_menu_file_export()
   }
 
   export_data_to_stream(the_stream, found_set, mapGroupSequence);
+}
+
+//TODO: Reduce copy/pasting in these export_data_to_*() methods:
+void Frame_Glom::export_data_to_vector(Document_Glom::type_example_rows& the_vector, const FoundSet& found_set, const Document_Glom::type_list_layout_groups& sequence)
+{
+  type_vecLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(found_set.m_table_name, sequence);
+
+  if(fieldsSequence.empty())
+  {
+    std::cerr << "Glom: Frame_Glom::export_data_to_string(): No fields in sequence." << std::endl;
+    return;
+  }
+
+  const Glib::ustring query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause, found_set.m_extra_group_by);
+
+  //TODO: Lock the database (prevent changes) during export.
+  Glib::RefPtr<Gnome::Gda::DataModel> result = query_execute_select(query);
+
+  guint rows_count = 0;
+  if(result)
+    rows_count = result->get_n_rows();
+
+  if(rows_count)
+  {
+    const guint columns_count = result->get_n_columns();
+
+    for(guint row_index = 0; row_index < rows_count; ++row_index)
+    {
+        Document_Glom::type_row_data row_data;
+
+        for(guint col_index = 0; col_index < columns_count; ++col_index)
+        {
+          const Gnome::Gda::Value value = result->get_value_at(col_index, row_index);
+
+          sharedptr<LayoutItem_Field> layout_item = fieldsSequence[col_index];
+          //if(layout_item->m_field.get_glom_type() != Field::TYPE_IMAGE) //This is too much data.
+          //{
+
+            //Output data in canonical SQL format, ignoring the user's locale, and ignoring the layout formatting:
+            row_data.push_back(value);  //TODO_Performance: reserve the size.
+
+            //if(layout_item->m_field.get_glom_type() == Field::TYPE_IMAGE) //This is too much data.
+            //{
+             //std::cout << "  field name=" << layout_item->get_name() << ", value=" << layout_item->m_field.sql(value) << std::endl;
+            //}
+        }
+
+        //std::cout << " row_string=" << row_string << std::endl;
+        the_vector.push_back(row_data); //TODO_Performance: Reserve the size.
+    }
+  }
 }
 
 void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const FoundSet& found_set, const Document_Glom::type_list_layout_groups& sequence)

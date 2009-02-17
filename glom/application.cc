@@ -1077,6 +1077,8 @@ bool App_Glom::on_document_load()
             {
               //Let the user try again.
               //A warning has already been shown.
+              //TODO: No, I don't think there is a warning.
+              std::cerr << "App_Glom::on_document_load(): recreate_database() failed." << std::endl;
               return offer_new_or_existing();
             }
             else
@@ -1938,13 +1940,13 @@ void App_Glom::on_menu_file_save_as_example()
 
         //std::cout << "debug: table_name=" << table_name << std::endl;
 
-        Glib::ustring row_text;
+        Document_Glom::type_example_rows example_rows;
         FoundSet found_set;
         found_set.m_table_name = table_name;
-        m_pFrame->export_data_to_string(row_text, found_set, sequence);
+        m_pFrame->export_data_to_vector(example_rows, found_set, sequence);
         //std::cout << "  debug after row_text=" << row_text << std::endl;
 
-        document->set_table_example_data(table_name, row_text);
+        document->set_table_example_data(table_name, example_rows);
       }
 
       document->set_allow_autosave(true);

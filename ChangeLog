@@ -1,3 +1,22 @@
+2009-02-17  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/data_structure/field.[h|cc]: Added static versions of
+ 	from_file_format() and to_file_format(), taking the field type, for use 
+	in document, though we can probably avoid that.
+	* glom/libglom/data_structure/glomconversions.[h|cc]:
+	* glom/libglom/document/document_glom.[h|cc]: Remove support for the 
+	deprecated one-big-string example_rows format. Store the example rows as 
+	a vector of vector of Values, instead of strings. This avoids extra 
+	string parsing, unescaping, etc.
+	* glom/glom_document.dtd: Documented the change.
+	* glom/frame_glom.[h|cc]: Added export_data_to_vector().
+	* glom/application.cc: on_menu_file_save_as_example(): Use the vector 
+	instead of a string.
+	* glom/base_db.cc: insert_example_data(): Handle the vector instead of 
+	doing nasty string parsing.
+
+	* examples/example_*.glom: Resaved in the new format.
+
 2009-02-16  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/data_structure/glomconversions.cc:

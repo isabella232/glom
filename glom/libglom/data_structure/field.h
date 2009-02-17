@@ -165,24 +165,28 @@ public:
    */
   Glib::ustring get_gda_holder_string(const Glib::ustring& name = Glib::ustring()) const;
 
-  /** Escape the value so that it can be used in a SQL command.
+  /** Escape and quote the value so that it can be used in a SQL command.
    */
   Glib::ustring sql(const Gnome::Gda::Value& value, sql_format format) const;
 
-  /** Escape the value so that it can be used in a SQL command.
+  /** Escape and quote the value so that it can be used in a SQL command.
    * Uses the sql_format of the current connectionpool backend.
    */
   Glib::ustring sql(const Gnome::Gda::Value& value) const;
 
-  /** Escape the value so that it can be used in a file, for instance for 
+  /** Get the canonical format for a file, for instance for 
    * a default value or for example data.
-   * Uses the sql_format of the current connectionpool backend.
+   * Note that this does not do any extra escaping such as an XML file might need.
    */
   Glib::ustring to_file_format(const Gnome::Gda::Value& value) const;
 
-  /** Unescape the value again. See to_file_format()
+  static Glib::ustring to_file_format(const Gnome::Gda::Value& value, glom_field_type glom_type);
+
+  /** Parse the value from the canonical file format. See to_file_format()
    */
   Gnome::Gda::Value from_file_format(const Glib::ustring& str, bool& success) const;
+
+  static Gnome::Gda::Value from_file_format(const Glib::ustring& str, glom_field_type glom_type, bool& success);
 
   /** Escape the value so that it can be used in a SQL command for a find.
    */
