@@ -456,6 +456,9 @@ sharedptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::TreeMo
     ///TODO_gda: fieldInfo->set_primary_key(bPrimaryKey);
 
     fieldInfo->set_g_type(fieldType);
+    // Reset old default value if the field type changes:
+    if(fieldResult->get_glom_type() != glom_type)
+      fieldInfo->set_default_value(Gnome::Gda::Value());
 
     //Put it together:
     fieldResult->set_glom_type(glom_type);

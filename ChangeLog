@@ -1,6 +1,25 @@
+2009-02-18  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/data_structure/field.cc (set_glom_type): Reset the
+	default value if the Glom type is changed. The old default value
+	probably doesn't make sense for the new type. This fixes a warning
+	when changing a field's type from text to numerical.
+	(set_default_value): Verify that the new default value is compatible
+	with the field's glom type.
+	(set_field_info): Verify that the default value of the new field info
+	is compatible with the field's glom type.
+
+	* glom/mode_design/fields/box_db_table_definition.cc
+	(get_field_definition): When changing the field info's GType, make
+	sure its default value matches the new GType, or reset it if not.
+
+	* glom/libglom/document/document_glom.cc (load_after): Set a field's
+	default value after having set the glom type, so that the checks
+	introduced above don't fail.
+
 2009-02-18  Murray Cumming   <murrayc@murrayc.com>
 
-	* glom/libglom/data_structure/field.[h|cc[: sql(value, format):
+	* glom/libglom/data_structure/field.[h|cc]: sql(value, format):
 	Replace this with sql(value, connection). Use 
 	Gda::DataHolder::get_sql_from_value(), using the connection to get the 
 	DataHolder. Remove the nasty Postgres escaping code, which is now 

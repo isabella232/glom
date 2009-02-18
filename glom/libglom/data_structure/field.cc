@@ -110,7 +110,17 @@ Field::glom_field_type Field::get_glom_type() const
 
 void Field::set_glom_type(glom_field_type fieldtype)
 {
+  glom_field_type old_type = m_glom_type;
+
+  // Set glom type from fieldinfo if it represents a different type.
   m_glom_type = fieldtype;
+
+  // Reset default value if the default value type does not match the new
+  // glom type.
+  // TODO: Should we try to convert the default value to the new type here?
+  if(fieldtype != old_type)
+    set_default_value(Gnome::Gda::Value());
+
 }
 
 Glib::RefPtr<Gnome::Gda::Column> Field::get_field_info()
@@ -127,7 +137,6 @@ void Field::set_field_info(const Glib::RefPtr<Gnome::Gda::Column>& fieldinfo)
 {
   m_field_info = fieldinfo;
 
-  // Set glom type from fieldinfo if it represents a different type.
   // Also take fallback types into account as fieldinfo might originate from
   // the database system directly.
   GType new_type = fieldinfo->get_g_type();
@@ -152,6 +161,33 @@ void Field::set_field_info(const Glib::RefPtr<Gnome::Gda::Column>& fieldinfo)
 
   if(cur_type == G_TYPE_NONE)
     set_glom_type( get_glom_type_for_gda_type(fieldinfo->get_g_type()) );
+
+  Gnome::Gda::Value value = get_default_value();
+  if(!value.is_null())
+  {
+    // Check that the default value is consistent with the field's type
+    // TODO: Basically copied from set_default_value(). Maybe this check should
+    // be moved into an extra function.
+    GType cur_type = get_gda_type_for_glom_type(get_glom_type());
+    const FieldTypes* pFieldTypes = NULL;
+
+    ConnectionPool* pConnectionPool = ConnectionPool::get_instance();
+    if(pConnectionPool)
+      pFieldTypes = pConnectionPool->get_field_types();
+
+    // Take into account that value might be one of the fallback types
+    if(pFieldTypes)
+    {
+      while(cur_type != value.get_value_type() && cur_type != G_TYPE_NONE)
+        cur_type = pFieldTypes->get_fallback_type_for_gdavaluetype(cur_type);
+    }
+
+    if(!value.is_null() && value.get_value_type() != cur_type)
+    {
+      g_warning("Field::set_field_info: New field's default value type (%s) does not match field type (%s). Resetting default value.", g_type_name(value.get_value_type()), g_type_name(get_gda_type_for_glom_type(get_glom_type())));
+      m_field_info->set_default_value(Gnome::Gda::Value());
+    }
+  }
 }
 
 sharedptr<Relationship> Field::get_lookup_relationship() const
@@ -400,7 +436,27 @@ Gnome::Gda::Value Field::get_default_value() const
 
 void Field::set_default_value(const Gnome::Gda::Value& value)
 {
-  m_field_info->set_default_value(value);
+  // TODO: Allow setting a NULL default value when glom type is invalid?
+
+  // Verify that the value matches the type of the field.
+  GType cur_type = get_gda_type_for_glom_type(get_glom_type());
+  const FieldTypes* pFieldTypes = NULL;
+
+  ConnectionPool* pConnectionPool = ConnectionPool::get_instance();
+  if(pConnectionPool)
+    pFieldTypes = pConnectionPool->get_field_types();
+
+  // Take into account that value might be one of the fallback types
+  if(pFieldTypes)
+  {
+    while(cur_type != value.get_value_type() && cur_type != G_TYPE_NONE)
+      cur_type = pFieldTypes->get_fallback_type_for_gdavaluetype(cur_type);
+  }
+
+  if(value.is_null() || value.get_value_type() == cur_type)
+    m_field_info->set_default_value(value);
+  else
+    g_warning("Field::set_default_value: Cannot set incompatible default value: Default value has type %s, but field has type %s", g_type_name(value.get_value_type()), g_type_name(get_gda_type_for_glom_type(get_glom_type())));
 }
 
 Glib::ustring Field::get_sql_type() const
@@ -453,6 +509,8 @@ Glib::RefPtr<Gnome::Gda::Holder> Field::get_holder(const Gnome::Gda::Value& valu
     // GdaBinary, but the field type is GdaBlob. This is not an optimal
     // solution this way. We should maybe check fallback types here, or
     // investigate why the field type is not GdaBinary as well.
+    // Maybe get_gda_type_for_glom_type() should already return fallback
+    // types if necessary.
     std::cout << "DEBUG: Field::get_holder(): Field type " << g_type_name(field_type) << " and value type " << g_type_name(gtype) << " don't match." << std::endl;
   }
 

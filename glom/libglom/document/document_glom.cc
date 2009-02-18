@@ -2454,10 +2454,11 @@ bool Document_Glom::load_after()
                   }
                 }
 
-                field->set_default_value( get_node_attribute_value_as_value(nodeChild, GLOM_ATTRIBUTE_DEFAULT_VALUE, field_type_enum) );
 
                 //We set this after set_field_info(), because that gets a glom type from the (not-specified) gdatype. Yes, that's strange, and should probably be more explicit.
                 field->set_glom_type(field_type_enum);
+
+                field->set_default_value( get_node_attribute_value_as_value(nodeChild, GLOM_ATTRIBUTE_DEFAULT_VALUE, field_type_enum) );
 
                 //Default Formatting:
                 const xmlpp::Element* elementFormatting = get_node_child_named(nodeChild, GLOM_NODE_FORMAT);
