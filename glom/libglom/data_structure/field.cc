@@ -180,186 +180,54 @@ bool Field::get_is_lookup() const
   return ( m_lookup_relationship && (!m_strLookupField.empty()) );
 }
 
-namespace { //anonymous
-
-//A copy of PQescapeString from the Postgres source, to avoid linking with libpql directly, 
-//and to use until we can use the latest libgda, which has an equivalent.
-//TODO: Now that we use libgda-3.0, actually use that equivalent.
-
-#define SQL_STR_DOUBLE(ch) ((ch) == '\'' || (ch) == '\\')
-
-/*
- * Escaping arbitrary strings to get valid SQL literal strings.
- *
- * Replaces "\\" with "\\\\" and "'" with "''".
- *
- * length is the length of the source string.  (Note: if a terminating NUL
- * is encountered sooner, PQescapeString stops short of "length"; the behavior
- * is thus rather like strncpy.)
- *
- * For safety the buffer at "to" must be at least 2*length + 1 bytes long.
- * A terminating NUL character is added to the output string, whether the
- * input is NUL-terminated or not.
- *
- * Returns the actual length of the output (not counting the terminating NUL).
- */
-size_t
-Glom_PQescapeString(char *to, const char *from, size_t length)
-{
-	const char *source = from;
-	char	   *target = to;
-	size_t		remaining = length;
-
-	while (remaining > 0 && *source != '\0')
-	{
-		if(SQL_STR_DOUBLE(*source))
-			*target++ = *source;
-
-		*target++ = *source++;
-		remaining--;
-	}
-
-	/* Write the terminating NUL character. */
-	*target = '\0';
-
-	return target - to;
-}
-
-} //anonymous
-
-/// Escape text, including text that is the result of get_escaped_binary_data().
-static std::string glom_escape_text(const std::string& src)
-{
-  if(src.empty())
-    return "''"; //We want to ignore the concept of NULL strings, and deal only with empty strings.
-  else
-  {
-    const size_t len = src.size();
-    char* to = (char*)malloc(sizeof(char) * 2 * (len + 1)); //recommended size for to.
-    //TODO: Use gda_data_handler_get_sql_from_value() instead.
-    //See gda_server_provider_get_data_handler_g_type().
-    const size_t len_escaped = Glom_PQescapeString(to, src.c_str(), len);
-    if(!len_escaped)
-    {
-      std::cerr << "glom_escape_text(): Glom_PQescapeString() failed with text: " << src << std::endl;
-
-      if(to)
-        free(to);
-
-      return "''";
-    }
-    else
-    {
-      std::string escaped(to, len_escaped);
-      free(to);
-
-      //Also escape any ";" characters, because these also cause problems, at least with libgda:
-      //See bug #326325.
-      escaped = Utils::string_replace(escaped, ";", "\\073");
-
-      return ("'" + escaped + "'"); //Add single-quotes. Actually escape it 
-      //std::cout << "glom_escape_text: escaped and quoted: " << str << std::endl;
-    }
-  }
-}
-
-Glib::ustring Field::sql(const Gnome::Gda::Value& value, sql_format format) const
+Glib::ustring Field::sql(const Gnome::Gda::Value& value, const Glib::RefPtr<Gnome::Gda::Connection>& connection) const
 {
   //g_warning("Field::sql: glom_type=%d", get_glom_type());
 
-  if(value.is_null())
+  if(value.is_null() && (get_glom_type() == TYPE_TEXT))
   {
-    switch(get_glom_type())
-    {
-      case(TYPE_TEXT):
-      {
-        return "''"; //We want to ignore the concept of NULL strings, and deal only with empty strings.
-        break;
-      }
-      case(TYPE_DATE):
-      case(TYPE_TIME):
-      case(TYPE_NUMERIC):
-      case(TYPE_IMAGE):
-      {
-        return "NULL";
-        break;
-      }
-      case(TYPE_INVALID):
-      {
-        g_warning("Field::sql(): The field type is INVALID.");
-        return "NULL";
-        break;
-      }
-      default:
-      {
-        //Don't deal with these here.
-        break;
-      }
-    }
+    return "''"; //We want to ignore the concept of NULL strings, and deal only with empty strings.
   }
 
-  Glib::ustring str;
 
-  switch(get_glom_type())
+  //Use libgda's DataHandler to get the string for SQL:
+  Glib::RefPtr<const Gnome::Gda::ServerProvider> provider = connection->get_provider();
+  if(!provider)
   {
-    case(TYPE_TEXT):
-    {
-      if(value.is_null())
-        return "''"; //We want to ignore the concept of NULL strings, and deal only with empty strings.
-      else
-      {
-        str = value.get_string();
-        str = glom_escape_text(str);
-      }
+    std::cerr << "Field::sql(): The ServerProvider was null." << std::endl;
+    return Glib::ustring();
+  } 
 
-      break;
-    }
-    case(TYPE_DATE):
-    case(TYPE_TIME):
-    {
-      NumericFormat format_ignored; //Because we use ISO format.
-      str = Conversions::get_text_for_gda_value(m_glom_type, value, std::locale() /* SQL uses the C locale */, format_ignored, true /* ISO standard */);
-      if(str != "NULL")
-         str = "'" + str + "'"; //Add single-quotes.
-
-      break;
-    }
-    case(TYPE_NUMERIC):
-    {
-      str =  Conversions::get_text_for_gda_value(m_glom_type, value, std::locale() /* SQL uses the C locale */); //No quotes for numbers.
-      break;
-    }
-    case(TYPE_BOOLEAN):
-    {
-      if(G_VALUE_TYPE(value.gobj()) == G_TYPE_BOOLEAN)
-        str = (value.get_boolean() ? "TRUE" : "FALSE" );
-      else
-        str = "FALSE";
-
-      break;
-    }
-    case(TYPE_IMAGE):
-    {
-      std::cerr << "Field::sql(): Field type TYPE_IMAGE is not supported. A SQL parameter should be used instead." << std::endl;
-      break;
-    }
-    default:
-    {
-      str = value.to_string();
-      if(str.empty() && (m_glom_type != Field::TYPE_TEXT))
-        str = "NULL"; //This has probably been handled in get_text_for_gda_value() anyway.
-
-      break;
-    }
+  const GType gda_type = get_gda_type_for_glom_type(m_glom_type);
+  Glib::RefPtr<const Gnome::Gda::DataHandler> datahandler = 
+    provider->get_data_handler_g_type(connection, gda_type);
+  if(datahandler)
+  {
+    //Note that this does seems to add the needed quotes too, for instance around strings,
+    //though that is not clearly documented. See bug http://bugzilla.gnome.org/show_bug.cgi?id=572220
+    return datahandler->get_sql_from_value(value);
+  }
+  else
+  {
+    std::cerr << "Field::sql(): The DataHandler was null." << std::endl;
+    return Glib::ustring();
   }
 
-  return str;
+  return Glib::ustring();
 }
 
 Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
 {
-  sql_format format = ConnectionPool::get_instance()->get_sql_format();
-  return sql(value, format);
+  //TODO: Handle exceptions as in BaseDB::connect().
+  sharedptr<SharedConnection> connection = ConnectionPool::get_instance()->connect();
+  if(connection)
+  {
+    Glib::RefPtr<Gnome::Gda::Connection> gda_connection = connection->get_gda_connection();
+    if(gda_connection)
+      return sql(value, gda_connection);
+  }
+
+  return Glib::ustring();
 }
 
 Glib::ustring Field::to_file_format(const Gnome::Gda::Value& value) const
@@ -443,7 +311,7 @@ Glib::ustring Field::sql_find(const Gnome::Gda::Value& value) const
       if(value.is_null())
         return "''"; //We want to ignore the concept of NULL strings, and deal only with empty strings.
       else
-        return ("'%" + value.to_string() + "%'"); //Add single-quotes. Actually escape it.
+        return ("'%" + value.to_string() + "%'"); //Add single-quotes. TODO: Actually escape it.
         
       break;
     }

@@ -1,3 +1,20 @@
+2009-02-18  Murray Cumming   <murrayc@murrayc.com>
+
+	* glom/libglom/data_structure/field.[h|cc[: sql(value, format):
+	Replace this with sql(value, connection). Use 
+	Gda::DataHolder::get_sql_from_value(), using the connection to get the 
+	DataHolder. Remove the nasty Postgres escaping code, which is now 
+	unnecessary. There is now no code in Glom to do escaping or unescaping 
+	- we use libgda functions instead.
+	sql(value): Use the active connection.
+	* glom/libglom/connectionpool_backends/postgres.cc: change_columns():
+	* glom/libglom/connectionpool_backends/sqlite.cc: recreate_table():
+	Adapted, though these can probably just call sql(value), using the 
+	active connection. 
+
+	* glom/base_db.[h|cc]: get_connection(): Make this static because it 
+	can be.
+
 2009-02-17  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/data_structure/field.[h|cc]: Added static versions of

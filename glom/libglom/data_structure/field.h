@@ -167,8 +167,9 @@ public:
 
   /** Escape and quote the value so that it can be used in a SQL command.
    */
-  Glib::ustring sql(const Gnome::Gda::Value& value, sql_format format) const;
+  Glib::ustring sql(const Gnome::Gda::Value& value, const Glib::RefPtr<Gnome::Gda::Connection>& connection) const;
 
+  //TODO: Remove this:
   /** Escape and quote the value so that it can be used in a SQL command.
    * Uses the sql_format of the current connectionpool backend.
    */

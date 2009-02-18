@@ -340,7 +340,7 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
       {
         if(old_fields[i]->get_default_value() != new_fields[i]->get_default_value())
         {
-          if(!query_execute(connection, "ALTER TABLE \"" + table_name + "\" ALTER COLUMN \"" + old_fields[i]->get_name() + "\" SET DEFAULT " + new_fields[i]->sql(new_fields[i]->get_default_value(), Field::SQL_FORMAT_POSTGRES), error))
+          if(!query_execute(connection, "ALTER TABLE \"" + table_name + "\" ALTER COLUMN \"" + old_fields[i]->get_name() + "\" SET DEFAULT " + new_fields[i]->sql(new_fields[i]->get_default_value(), connection), error))
             break;
         }
       }

@@ -289,7 +289,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
         trans_fields += ",";
       Gnome::Gda::Value default_value = field->get_default_value();
       if(default_value.get_value_type() != G_TYPE_NONE && !default_value.is_null())
-        trans_fields += field->sql(default_value, Field::SQL_FORMAT_SQLITE);
+        trans_fields += field->sql(default_value, connection);
       else
       {
         switch(field->get_glom_type())

@@ -1487,7 +1487,7 @@ bool Base_DB::change_columns(const Glib::ustring& table_name, const type_vecCons
 }
 #endif
 
-Glib::RefPtr<Gnome::Gda::Connection> Base_DB::get_connection() const
+Glib::RefPtr<Gnome::Gda::Connection> Base_DB::get_connection()
 {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   sharedptr<SharedConnection> sharedconnection;
