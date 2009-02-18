@@ -119,8 +119,7 @@ void Field::set_glom_type(glom_field_type fieldtype)
   // glom type.
   // TODO: Should we try to convert the default value to the new type here?
   if(fieldtype != old_type)
-    set_default_value(Gnome::Gda::Value());
-
+    set_default_value(Gnome::Gda::Value()); //TODO: Try to convert it, maybe by rendering and parsing it.
 }
 
 Glib::RefPtr<Gnome::Gda::Column> Field::get_field_info()
