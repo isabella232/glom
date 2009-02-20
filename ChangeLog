@@ -1,5 +1,16 @@
 2009-02-20  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utlity_widgets/datawidget.cc: Constructor: Show the Open button, 
+	(but not Find) for related fields that are primary keys, so we can 
+	navigate to that record.
+	* glom/mode_data/box_data_details.cc: 
+	on_flowtable_field_open_details_requested(): Navigate to the 
+	appropriate record in the appropriate table for this type of Open 
+	button.
+	* glom/base_db.cc: fill_full_field_details(): Avoid crashes.
+
+2009-02-20  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/document/document_glom.[h|cc]: 
 	get_field_used_in_relationship_to_one(): Make this take a 
 	LayoutItem_Field instead of just a field name.

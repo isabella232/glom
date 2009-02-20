@@ -852,7 +852,7 @@ bool ConnectionPool::startup(Gtk::Window* parent_window)
 
   //If we crash while running (unlikely, hopefully), then try to cleanup.
   //Comment this out if you want to see the backtrace in a debugger.
-  previous_sig_handler = signal(SIGSEGV, &on_linux_signal);
+  //previous_sig_handler = signal(SIGSEGV, &on_linux_signal);
 
   return true;
 }

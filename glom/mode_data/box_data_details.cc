@@ -641,10 +641,24 @@ void Box_Data_Details::on_flowtable_field_open_details_requested(const sharedptr
   if(Conversions::value_is_empty(field_value))
     return; //Ignore empty ID fields.
 
+  //If it's a simple field that is part of a relationship, 
+  //identifying a related record.
   sharedptr<const Relationship> relationship = get_document()->get_field_used_in_relationship_to_one(m_table_name, layout_field);
   if(relationship)
   {
     signal_requested_related_details().emit(relationship->get_to_table(), field_value);
+    return;
+  }
+
+  //If it is a related field that is a primary key,
+  //meaning it identifies a record in another table:
+  sharedptr<const Field> field_info = layout_field->get_full_field_details();
+  const bool field_is_related_primary_key = 
+    layout_field->get_has_relationship_name() && 
+    field_info && field_info->get_primary_key();
+  if(field_is_related_primary_key)
+  {
+    signal_requested_related_details().emit(layout_field->get_table_used(m_table_name), field_value);   
   }
 }
 
