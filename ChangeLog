@@ -1,5 +1,13 @@
 2009-02-20  Murray Cumming  <murrayc@murrayc.com>
 
+	* configure.in:
+	* glom/libglom/connectionpool_backends/postgres_self.cc: Use the 
+	postgres executable name instead of the deprecated postmaster 
+	executable. Everything probably has that now.
+	Bug # 525108
+ 
+2009-02-20  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utlity_widgets/datawidget.cc: Constructor: Show the Open button, 
 	(but not Find) for related fields that are primary keys, so we can 
 	navigate to that record.

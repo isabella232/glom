@@ -88,7 +88,7 @@
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION
 
-/* Path to the postgres utilities, such as postmaster. */
+/* Path to the postgres utilities, such as postgres, pg_ctl, etc. */
 #undef POSTGRES_UTILS_PATH
 
 /* Define to 1 if you have the ANSI C header files. */

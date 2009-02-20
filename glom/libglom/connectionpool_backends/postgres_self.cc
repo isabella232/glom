@@ -67,11 +67,8 @@ static Glib::ustring port_as_string(int port_num)
 static std::string get_path_to_postgres_executable(const std::string& program)
 {
 #ifdef G_OS_WIN32
-  // Use postgres on Windows, since the postgresql installer does not
-  // install the (deprecated) postmaster binary.
+  // Add the .exe extension on Windows:
   std::string real_program = program + EXEEXT;
-  if(program == "postmaster")
-    real_program = "postgres.exe";
     
   // Have a look at the bin directory of the application executable first.
   // The installer installs postgres there. postgres needs to be installed
@@ -155,7 +152,8 @@ int PostgresSelfHosted::get_port() const
 bool PostgresSelfHosted::check_postgres_is_available_with_warning()
 {
   //EXEEXT is defined in the Makefile.am
-  const std::string binpath = get_path_to_postgres_executable("postmaster");
+  const std::string binpath = get_path_to_postgres_executable("postgres");
+
   // TODO: At least on Windows we should probably also check for initdb and
   // pg_ctl. Perhaps it would also be a good idea to access these files as
   // long as glom runs so they cannot be (re)moved.
@@ -380,7 +378,7 @@ bool PostgresSelfHosted::startup(Gtk::Window* parent_window)
   // -D specifies the data directory.
   // -c config_file= specifies the configuration file
   // -k specifies a directory to use for the socket. This must be writable by us.
-  // POSTGRES_POSTMASTER_PATH is defined in config.h, based on the configure.
+  // POSTGRES_UTILS_PATH is defined in config.h, based on the configure.
   // Make sure to use double quotes for the executable path, because the
   // CreateProcess() API used on Windows does not support single quotes.
   const std::string command_postgres_start = "\"" + get_path_to_postgres_executable("postmaster") + "\" -D \"" + dbdir_data + "\" "
@@ -439,7 +437,7 @@ void PostgresSelfHosted::cleanup(Gtk::Window* parent_window)
   // -D specifies the data directory.
   // -c config_file= specifies the configuration file
   // -k specifies a directory to use for the socket. This must be writable by us.
-  // POSTGRES_POSTMASTER_PATH is defined in config.h, based on the configure.
+  // POSTGRES_UTILS_PATH is defined in config.h, based on the configure.
   // We use "-m fast" instead of the default "-m smart" because that waits for clients to disconnect (and sometimes never succeeds).
   // TODO: Warn about connected clients on other computers? Warn those other users?
   // Make sure to use double quotes for the executable path, because the
