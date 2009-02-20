@@ -7,6 +7,8 @@
 	on_flowtable_field_open_details_requested(): Navigate to the 
 	appropriate record in the appropriate table for this type of Open 
 	button.
+	Bug #571975
+
 	* glom/base_db.cc: fill_full_field_details(): Avoid crashes.
 
 2009-02-20  Murray Cumming  <murrayc@murrayc.com>
