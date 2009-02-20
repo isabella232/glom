@@ -546,7 +546,7 @@ sharedptr<SharedConnection> ConnectionPool::get_and_connect(std::auto_ptr<Except
 static sharedptr<SharedConnection> connection_cached;
 static sigc::connection connection_cached_timeout_connection;
 
-bool on_connection_pool_cache_timeout()
+static bool on_connection_pool_cache_timeout()
 {
   //std::cout << "DEBUG: Clearing connection cache." << std::endl;
       

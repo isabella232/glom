@@ -1,3 +1,13 @@
+<<<<<<< .mine
+2009-02-20  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/glom_privs[h|cc]: get_current_privs(): Cache the priviliges 
+	for each table for 30 seconds, to avoid unnecessary repetitive groups 
+	queries to the database. This seems to avoid about 5 out of 6 
+	requests, so it should be faster.
+	Bug #567473
+
+=======
 2009-02-20  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.in:
@@ -28,6 +38,7 @@
 	Open and Find buttons for related fields too when appropriate.
 	* glom/base_db.cc: Adapt to API change.
 
+>>>>>>> .r1913
 2009-02-18  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/data_structure/field.cc: from_file_format(): Adjusted 

@@ -2697,6 +2697,7 @@ bool Document_Glom::load_after()
 
 
           //Groups:
+          //These are only used when recreating the database, for instance from an example file.
           m_groups.clear();
 
           const xmlpp::Element* nodeGroups = get_node_child_named(nodeRoot, GLOM_NODE_GROUPS);

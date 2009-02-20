@@ -25,6 +25,10 @@
 namespace Glom
 {
 
+Privs::type_map_privileges Privs::m_privileges_cache;
+
+Privs::type_map_cache_timeouts Privs::m_map_cache_timeouts;
+
 Privs::type_vecStrings Privs::get_database_groups()
 {
   type_vecStrings result;
@@ -317,6 +321,21 @@ bool Privs::get_user_is_in_group(const Glib::ustring& user, const Glib::ustring&
   return (iterFind != users.end());
 }
 
+bool Privs::on_privs_privileges_cache_timeout(const Glib::ustring& table_name)
+{
+  std::cout << "DEBUG: Privs::on_privs_privileges_cache_timeou(): table=" << table_name << std::endl;  
+      
+  //Forget the cached privileges after a few seconds:
+  type_map_privileges::iterator iter = m_privileges_cache.find(table_name);
+  if(iter != m_privileges_cache.end())
+  {
+    std::cout << "  DEBUG: Privs::on_privs_privileges_cache_timeou(): Cleared cache for table=" << table_name << std::endl;
+    m_privileges_cache.erase(iter);
+  }
+
+  return false; //Don't call this again.
+}
+
 Privileges Privs::get_current_privs(const Glib::ustring& table_name)
 {
   //TODO_Performance: There's lots of database access here.
@@ -324,7 +343,20 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
 
   Bakery::BusyCursor cursor(App_Glom::get_application());
 
+  //Return a cached value if possible.
+  //(If it is in the cache then it's fairly recent)
+  type_map_privileges::const_iterator iter = m_privileges_cache.find(table_name);
+  if(iter != m_privileges_cache.end())
+  {
+    std::cout << "DEBUG: Privs::get_current_privs(): Returning cache." << std::endl;
+    return iter->second;
+  }
+
+   
+  //Get the up-to-date privileges from the database:
   Privileges result;
+
+  std::cout << "DEBUG: Privs::get_current_privs(): Getting non-cached." << std::endl;  
 
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   const Glib::ustring current_user = connection_pool->get_user();
@@ -369,6 +401,24 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
     result.m_create = true;
     result.m_delete = true;
   }
+
+  m_privileges_cache[table_name] = result;
+
+
+  //Connect a timeout to invalidate the cache after a short time:
+  //In theory, the privileges could change (via another client)
+  //during this time, but it is fairly unlikely.
+  //TODO: Make sure we handle the failure well in that unlikely case.
+
+  //Stop the existing timeout if it has not run yet.
+  type_map_cache_timeouts::iterator iter_connection = m_map_cache_timeouts.find(table_name);
+  if(iter_connection != m_map_cache_timeouts.end())
+    iter_connection->second.disconnect();
+
+  m_map_cache_timeouts[table_name] = 
+    Glib::signal_timeout().connect_seconds(
+      sigc::bind( sigc::ptr_fun(&Privs::on_privs_privileges_cache_timeout), table_name ), 
+      30 /* seconds */);
 
   return result;
 }
