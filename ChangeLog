@@ -1,4 +1,14 @@
-<<<<<<< .mine
+2009-02-20  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc:
+	* glom/base_db.[h|cc]:
+	* glom/dialog_connection.cc:
+	* glom/frame_glom.cc:
+	* glom/libglom/connectionpool.[h|cc]:
+	* glom/libglom/connectionpool_backends/postgres_central.cc
+	* glom/navigation/box_tables.[h|cc]:
+	Added ifdefs to fix the build with --enable-client-only.
+
 2009-02-20  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/glom_privs[h|cc]: get_current_privs(): Cache the priviliges 
@@ -7,7 +17,6 @@
 	requests, so it should be faster.
 	Bug #567473
 
-=======
 2009-02-20  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.in:
@@ -39,6 +48,7 @@
 	* glom/base_db.cc: Adapt to API change.
 
 >>>>>>> .r1913
+>>>>>>> .r1914
 2009-02-18  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/data_structure/field.cc: from_file_format(): Adjusted 

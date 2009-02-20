@@ -1224,10 +1224,8 @@ bool App_Glom::offer_new_or_existing()
         open_browsed_document(dialog->get_service_info(), dialog->get_service_name());
         break;
 #endif
-#ifndef GLOM_ENABLE_CLIENT_ONLY
       default:
         break;
-#endif // !GLOM_ENABLE_CLIENT_ONLY
       }
 
       //Check that a document was opened:

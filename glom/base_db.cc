@@ -734,186 +734,6 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table(const Glib::ustring& table
 
     return result;
   }
-
-}
-
-bool Base_DB::add_standard_tables() const
-{
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-#endif // GLIBMM_EXCEPTIONS_ENABLED
-  {
-    Document_Glom::type_vecFields pref_fields;
-    sharedptr<TableInfo> prefs_table_info = Document_Glom::create_table_system_preferences(pref_fields);
-
-    //Name, address, etc:
-    if(!get_table_exists_in_database(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME))
-    {
-      const bool test = create_table(prefs_table_info, pref_fields);
-
-      if(test)
-      {
-        //Add the single record:
-        const bool test = query_execute("INSERT INTO \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\" (\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ID "\") VALUES (1)");
-        if(!test)
-          std::cerr << "Base_DB::add_standard_tables(): INSERT failed." << std::endl;
-
-        //Use the database title from the document, if there is one:
-        const Glib::ustring system_name = get_document()->get_database_title();
-        if(!system_name.empty())
-        {
-          const bool test = query_execute("UPDATE \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\" SET  " "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_NAME "\" = '" + system_name + "' WHERE \"" GLOM_STANDARD_TABLE_PREFS_FIELD_ID "\" = 1");
-          if(!test)
-            std::cerr << "Base_DB::add_standard_tables(): UPDATE failed." << std::endl;
-        }
-      }
-      else
-      {
-        g_warning("Base_DB::add_standard_tables(): create_table(prefs) failed.");
-        return false;
-      }
-    }
-    else
-    {
-      //Make sure that it has all the fields it should have,
-      //because we sometimes add some in new Glom versions:
-      create_table_add_missing_fields(prefs_table_info, pref_fields);
-    }
-
-    //Auto-increment next values:
-    if(!get_table_exists_in_database(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME))
-    {
-      sharedptr<TableInfo> table_info(new TableInfo());
-      table_info->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
-      table_info->set_title("System: Auto Increments"); //TODO: Provide standard translations.
-      table_info->m_hidden = true;
-
-      Document_Glom::type_vecFields fields;
-
-      sharedptr<Field> primary_key(new Field()); //It's not used, because there's only one record, but we must have one.
-      primary_key->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_ID);
-      primary_key->set_glom_type(Field::TYPE_NUMERIC);
-      fields.push_back(primary_key);
-
-      sharedptr<Field> field_table_name(new Field());
-      field_table_name->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME);
-      field_table_name->set_glom_type(Field::TYPE_TEXT);
-      fields.push_back(field_table_name);
-
-      sharedptr<Field> field_field_name(new Field());
-      field_field_name->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME);
-      field_field_name->set_glom_type(Field::TYPE_TEXT);
-      fields.push_back(field_field_name);
-
-      sharedptr<Field> field_next_value(new Field());
-      field_next_value->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE);
-      field_next_value->set_glom_type(Field::TYPE_TEXT);
-      fields.push_back(field_next_value);
-
-      const bool test = create_table(table_info, fields);
-      if(!test)
-      {
-        g_warning("Base_DB::add_standard_tables(): create_table(autoincrements) failed.");
-        return false;
-      }
-
-      return true;
-    }
-    else
-    {
-      return false;
-    }
-  }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  catch(const Glib::Exception& ex)
-  {
-    std::cerr << "Base_DB::add_standard_tables(): caught exception: " << ex.what() << std::endl;
-    return false;
-  }
-  catch(const std::exception& ex)
-  {
-    std::cerr << "Base_DB::add_standard_tables(): caught exception: " << ex.what() << std::endl;
-    return false;
-  }
-#endif // GLIBMM_EXCEPTIONS_ENABLED
-}
-
-bool Base_DB::add_standard_groups()
-{
-  //Add the glom_developer group if it does not exist:
-  const Glib::ustring devgroup = GLOM_STANDARD_GROUP_NAME_DEVELOPER;
-
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  sharedptr<SharedConnection> sharedconnection = connect_to_server();
-#else
-  std::auto_ptr<ExceptionConnection> error;
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(0, error);
-  if(error.get())
-  {
-    g_warning("Base_DB::add_standard_groups: Failed to connect: %s", error->what());
-    // TODO: Rethrow? 
-  }
-#endif
-
-  // If the connection doesn't support users we can skip this step
-  if(sharedconnection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS))
-  {
-    const type_vecStrings vecGroups = Privs::get_database_groups();
-    type_vecStrings::const_iterator iterFind = std::find(vecGroups.begin(), vecGroups.end(), devgroup);
-    if(iterFind == vecGroups.end())
-    {
-      bool test = query_execute("CREATE GROUP \"" GLOM_STANDARD_GROUP_NAME_DEVELOPER "\"");
-      if(!test)
-      {
-        std::cerr << "Glom Base_DB::add_standard_groups(): CREATE GROUP failed when adding the developer group." << std::endl;
-        return false;
-      }
-
-      //Make sure the current user is in the developer group.
-      //(If he is capable of creating these groups then he is obviously a developer, and has developer rights on the postgres server.)
-      const Glib::ustring current_user = ConnectionPool::get_instance()->get_user();
-      Glib::ustring strQuery = "ALTER GROUP \"" GLOM_STANDARD_GROUP_NAME_DEVELOPER "\" ADD USER \"" + current_user + "\"";
-      test = query_execute(strQuery);
-      if(!test)
-      {
-        std::cerr << "Glom Base_DB::add_standard_groups(): ALTER GROUP failed when adding the user to the developer group." << std::endl;
-        return false;
-      }
-
-      std::cout << "DEBUG: Added user " << current_user << " to glom developer group on postgres server." << std::endl;
-
-      Privileges priv_devs;
-      priv_devs.m_view = true;
-      priv_devs.m_edit = true;
-      priv_devs.m_create = true;
-      priv_devs.m_delete = true;
-
-      Document_Glom::type_listTableInfo table_list = get_document()->get_tables(true /* including system prefs */);
-
-      for(Document_Glom::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
-      {
-        sharedptr<const TableInfo> table_info = *iter;
-        if(table_info)
-        {
-          const Glib::ustring table_name = table_info->get_name();
-          if(get_table_exists_in_database(table_name)) //Maybe the table has not been created yet.
-            Privs::set_table_privileges(devgroup, table_name, priv_devs, true /* developer privileges */);
-        }
-      }
-
-      //Make sure that it is in the database too:
-      GroupInfo group_info;
-      group_info.set_name(GLOM_STANDARD_GROUP_NAME_DEVELOPER);
-      group_info.m_developer = true;
-      get_document()->set_group(group_info);
-    }
-  }
-  else
-  {
-    std::cout << "DEBUG: Connection does not support users" << std::endl;
-  }
-
-  return true;
 }
 
 Gnome::Gda::Value Base_DB::auto_increment_insert_first_if_necessary(const Glib::ustring& table_name, const Glib::ustring& field_name) const
@@ -1093,14 +913,197 @@ SystemPrefs Base_DB::get_database_preferences() const
     //Return the result, or try again:
     if(succeeded)
       return result;
+#ifndef GLOM_ENABLE_CLIENT_ONLY
     else
     {
       add_standard_tables();
       ++attempts; //Try again now that we have tried to create the table.
     }
+#endif //GLOM_ENABLE_CLIENT_ONLY
   }
 
   return result;
+}
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+
+bool Base_DB::add_standard_tables() const
+{
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+  {
+    Document_Glom::type_vecFields pref_fields;
+    sharedptr<TableInfo> prefs_table_info = Document_Glom::create_table_system_preferences(pref_fields);
+
+    //Name, address, etc:
+    if(!get_table_exists_in_database(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME))
+    {
+      const bool test = create_table(prefs_table_info, pref_fields);
+
+      if(test)
+      {
+        //Add the single record:
+        const bool test = query_execute("INSERT INTO \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\" (\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ID "\") VALUES (1)");
+        if(!test)
+          std::cerr << "Base_DB::add_standard_tables(): INSERT failed." << std::endl;
+
+        //Use the database title from the document, if there is one:
+        const Glib::ustring system_name = get_document()->get_database_title();
+        if(!system_name.empty())
+        {
+          const bool test = query_execute("UPDATE \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\" SET  " "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_NAME "\" = '" + system_name + "' WHERE \"" GLOM_STANDARD_TABLE_PREFS_FIELD_ID "\" = 1");
+          if(!test)
+            std::cerr << "Base_DB::add_standard_tables(): UPDATE failed." << std::endl;
+        }
+      }
+      else
+      {
+        g_warning("Base_DB::add_standard_tables(): create_table(prefs) failed.");
+        return false;
+      }
+    }
+    else
+    {
+      //Make sure that it has all the fields it should have,
+      //because we sometimes add some in new Glom versions:
+      create_table_add_missing_fields(prefs_table_info, pref_fields);
+    }
+
+    //Auto-increment next values:
+    if(!get_table_exists_in_database(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME))
+    {
+      sharedptr<TableInfo> table_info(new TableInfo());
+      table_info->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
+      table_info->set_title("System: Auto Increments"); //TODO: Provide standard translations.
+      table_info->m_hidden = true;
+
+      Document_Glom::type_vecFields fields;
+
+      sharedptr<Field> primary_key(new Field()); //It's not used, because there's only one record, but we must have one.
+      primary_key->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_ID);
+      primary_key->set_glom_type(Field::TYPE_NUMERIC);
+      fields.push_back(primary_key);
+
+      sharedptr<Field> field_table_name(new Field());
+      field_table_name->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME);
+      field_table_name->set_glom_type(Field::TYPE_TEXT);
+      fields.push_back(field_table_name);
+
+      sharedptr<Field> field_field_name(new Field());
+      field_field_name->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME);
+      field_field_name->set_glom_type(Field::TYPE_TEXT);
+      fields.push_back(field_field_name);
+
+      sharedptr<Field> field_next_value(new Field());
+      field_next_value->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE);
+      field_next_value->set_glom_type(Field::TYPE_TEXT);
+      fields.push_back(field_next_value);
+
+      const bool test = create_table(table_info, fields);
+      if(!test)
+      {
+        g_warning("Base_DB::add_standard_tables(): create_table(autoincrements) failed.");
+        return false;
+      }
+
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  catch(const Glib::Exception& ex)
+  {
+    std::cerr << "Base_DB::add_standard_tables(): caught exception: " << ex.what() << std::endl;
+    return false;
+  }
+  catch(const std::exception& ex)
+  {
+    std::cerr << "Base_DB::add_standard_tables(): caught exception: " << ex.what() << std::endl;
+    return false;
+  }
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+}
+
+bool Base_DB::add_standard_groups()
+{
+  //Add the glom_developer group if it does not exist:
+  const Glib::ustring devgroup = GLOM_STANDARD_GROUP_NAME_DEVELOPER;
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  sharedptr<SharedConnection> sharedconnection = connect_to_server();
+#else
+  std::auto_ptr<ExceptionConnection> error;
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(0, error);
+  if(error.get())
+  {
+    g_warning("Base_DB::add_standard_groups: Failed to connect: %s", error->what());
+    // TODO: Rethrow? 
+  }
+#endif
+
+  // If the connection doesn't support users we can skip this step
+  if(sharedconnection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS))
+  {
+    const type_vecStrings vecGroups = Privs::get_database_groups();
+    type_vecStrings::const_iterator iterFind = std::find(vecGroups.begin(), vecGroups.end(), devgroup);
+    if(iterFind == vecGroups.end())
+    {
+      bool test = query_execute("CREATE GROUP \"" GLOM_STANDARD_GROUP_NAME_DEVELOPER "\"");
+      if(!test)
+      {
+        std::cerr << "Glom Base_DB::add_standard_groups(): CREATE GROUP failed when adding the developer group." << std::endl;
+        return false;
+      }
+
+      //Make sure the current user is in the developer group.
+      //(If he is capable of creating these groups then he is obviously a developer, and has developer rights on the postgres server.)
+      const Glib::ustring current_user = ConnectionPool::get_instance()->get_user();
+      Glib::ustring strQuery = "ALTER GROUP \"" GLOM_STANDARD_GROUP_NAME_DEVELOPER "\" ADD USER \"" + current_user + "\"";
+      test = query_execute(strQuery);
+      if(!test)
+      {
+        std::cerr << "Glom Base_DB::add_standard_groups(): ALTER GROUP failed when adding the user to the developer group." << std::endl;
+        return false;
+      }
+
+      std::cout << "DEBUG: Added user " << current_user << " to glom developer group on postgres server." << std::endl;
+
+      Privileges priv_devs;
+      priv_devs.m_view = true;
+      priv_devs.m_edit = true;
+      priv_devs.m_create = true;
+      priv_devs.m_delete = true;
+
+      Document_Glom::type_listTableInfo table_list = get_document()->get_tables(true /* including system prefs */);
+
+      for(Document_Glom::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
+      {
+        sharedptr<const TableInfo> table_info = *iter;
+        if(table_info)
+        {
+          const Glib::ustring table_name = table_info->get_name();
+          if(get_table_exists_in_database(table_name)) //Maybe the table has not been created yet.
+            Privs::set_table_privileges(devgroup, table_name, priv_devs, true /* developer privileges */);
+        }
+      }
+
+      //Make sure that it is in the database too:
+      GroupInfo group_info;
+      group_info.set_name(GLOM_STANDARD_GROUP_NAME_DEVELOPER);
+      group_info.m_developer = true;
+      get_document()->set_group(group_info);
+    }
+  }
+  else
+  {
+    std::cout << "DEBUG: Connection does not support users" << std::endl;
+  }
+
+  return true;
 }
 
 void Base_DB::set_database_preferences(const SystemPrefs& prefs)
@@ -1326,7 +1329,6 @@ bool Base_DB::create_table_add_missing_fields(const sharedptr<const TableInfo>& 
   return true;
 }
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 bool Base_DB::add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field, Gtk::Window* parent_window) const
 {
   ConnectionPool* connection_pool = ConnectionPool::get_instance();

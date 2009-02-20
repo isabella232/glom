@@ -49,10 +49,12 @@ Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   refGlade->get_widget("checkbutton_show_hidden", m_pCheckButtonShowHidden);
   m_pCheckButtonShowHidden->signal_toggled().connect(sigc::mem_fun(*this, &Box_Tables::on_show_hidden_toggled));
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_Tables::on_adddel_Add));
   m_AddDel.signal_user_requested_delete().connect(sigc::mem_fun(*this, &Box_Tables::on_adddel_Delete));
-  m_AddDel.signal_user_requested_edit().connect(sigc::mem_fun(*this, &Box_Tables::on_adddel_Edit));
   m_AddDel.signal_user_changed().connect(sigc::mem_fun(*this, &Box_Tables::on_adddel_changed));
+#endif //GLOM_ENABLE_CLIENT_ONLY
+  m_AddDel.signal_user_requested_edit().connect(sigc::mem_fun(*this, &Box_Tables::on_adddel_Edit));
 
   show_all_children();
 }
@@ -208,6 +210,7 @@ bool Box_Tables::fill_from_database()
   return result;
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
 {
   //TODO: Handle cell renderer changes to prevent illegal table names (e.g. starting with numbers.).
@@ -322,72 +325,6 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
   }
 }
 
-void Box_Tables::on_adddel_Edit(const Gtk::TreeModel::iterator& row)
-{
-  Glib::ustring table_name = m_AddDel.get_value_key(row);
-
-  Document_Glom* document = get_document();
-  if(document)
-  {
-    //Don't open a table that the document does not know about, because we need information from the document:
-    //This should never happen, because we never show them in the list:
-    if(false) //Let's see if we can adapt.  (!document->get_table_is_known(table_name))
-    {
-       Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Unknown Table")), true);
-       dialog.set_secondary_text(_("You cannot open this table, because there is no information about this table in the document."));
-       dialog.set_transient_for(*App_Glom::get_application());
-       dialog.run();
-    }
-    else
-    {
-       //Go ahead:
- 
-       save_to_document();
-
-       //Emit the signal:
-       signal_selected.emit(table_name);
-    }
-  }
-}
-
-void Box_Tables::save_to_document()
-{
-  if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
-  {
-    //Save the hidden tables. TODO_usermode: Only if we are in developer mode.
-    Document_Glom::type_listTableInfo listTables;
-
-    Document_Glom* document = get_document();
-
-    for(Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().begin(); iter != m_AddDel.get_model()->children().end(); ++iter)
-    {
-      const Glib::ustring table_name = m_AddDel.get_value(iter, m_colTableName); //The name has already been changed in the document.
-      sharedptr<TableInfo> table_info = document->get_table(table_name); //Start with the existing table_info, to preserve extra information, such as translations.
-      if(table_info)
-      {
-        table_info->set_name( m_AddDel.get_value(iter, m_colTableName) );
-
-        if(!table_info->get_name().empty())
-        {
-          table_info->m_hidden = m_AddDel.get_value_as_bool(iter, m_colHidden);
-          table_info->set_title( m_AddDel.get_value(iter, m_colTitle) ); //TODO_Translations: Store the TableInfo in the TreeView.
-          //std::cout << "save_to_document(): title=" << table_info->get_title() << std::endl;
-          table_info->m_default = m_AddDel.get_value_as_bool(iter, m_colDefault);
-
-          listTables.push_back(table_info);
-        }
-      }
-    }
-
-    if(document)
-      document->set_tables(listTables); //TODO: Don't save all new tables - just the ones already in the document.
-  }
-}
-
-void Box_Tables::on_show_hidden_toggled()
-{
-  fill_from_database();
-}
 
 void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint column)
 {
@@ -454,6 +391,74 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
       }
     }
   }
+}
+#endif //GLOM_ENABLE_CLIENT_ONLY
+
+void Box_Tables::on_adddel_Edit(const Gtk::TreeModel::iterator& row)
+{
+  Glib::ustring table_name = m_AddDel.get_value_key(row);
+
+  Document_Glom* document = get_document();
+  if(document)
+  {
+    //Don't open a table that the document does not know about, because we need information from the document:
+    //This should never happen, because we never show them in the list:
+    if(false) //Let's see if we can adapt.  (!document->get_table_is_known(table_name))
+    {
+       Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Unknown Table")), true);
+       dialog.set_secondary_text(_("You cannot open this table, because there is no information about this table in the document."));
+       dialog.set_transient_for(*App_Glom::get_application());
+       dialog.run();
+    }
+    else
+    {
+       //Go ahead:
+ 
+       save_to_document();
+
+       //Emit the signal:
+       signal_selected.emit(table_name);
+    }
+  }
+}
+
+void Box_Tables::save_to_document()
+{
+  if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+  {
+    //Save the hidden tables. TODO_usermode: Only if we are in developer mode.
+    Document_Glom::type_listTableInfo listTables;
+
+    Document_Glom* document = get_document();
+
+    for(Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().begin(); iter != m_AddDel.get_model()->children().end(); ++iter)
+    {
+      const Glib::ustring table_name = m_AddDel.get_value(iter, m_colTableName); //The name has already been changed in the document.
+      sharedptr<TableInfo> table_info = document->get_table(table_name); //Start with the existing table_info, to preserve extra information, such as translations.
+      if(table_info)
+      {
+        table_info->set_name( m_AddDel.get_value(iter, m_colTableName) );
+
+        if(!table_info->get_name().empty())
+        {
+          table_info->m_hidden = m_AddDel.get_value_as_bool(iter, m_colHidden);
+          table_info->set_title( m_AddDel.get_value(iter, m_colTitle) ); //TODO_Translations: Store the TableInfo in the TreeView.
+          //std::cout << "save_to_document(): title=" << table_info->get_title() << std::endl;
+          table_info->m_default = m_AddDel.get_value_as_bool(iter, m_colDefault);
+
+          listTables.push_back(table_info);
+        }
+      }
+    }
+
+    if(document)
+      document->set_tables(listTables); //TODO: Don't save all new tables - just the ones already in the document.
+  }
+}
+
+void Box_Tables::on_show_hidden_toggled()
+{
+  fill_from_database();
 }
 
 void Box_Tables::on_userlevel_changed(AppState::userlevels /* userlevel */)

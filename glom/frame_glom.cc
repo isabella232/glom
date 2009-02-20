@@ -1613,6 +1613,7 @@ namespace
     ConnectionPool* connection_pool = ConnectionPool::get_instance();
     switch(document->get_hosting_mode())
     {
+#ifndef GLOM_ENABLE_CLIENT_ONLY
     case Document_Glom::POSTGRES_SELF_HOSTED:
       {
         ConnectionPoolBackends::PostgresSelfHosted* backend = new ConnectionPoolBackends::PostgresSelfHosted;
@@ -1620,6 +1621,7 @@ namespace
         connection_pool->set_backend(std::auto_ptr<ConnectionPoolBackend>(backend));
       }
       break;
+#endif //GLOM_ENABLE_CLIENT_ONLY
     case Document_Glom::POSTGRES_CENTRAL_HOSTED:
       {
         ConnectionPoolBackends::PostgresCentralHosted* backend = new ConnectionPoolBackends::PostgresCentralHosted;
@@ -1630,6 +1632,7 @@ namespace
       }
 
       break;
+#ifndef GLOM_ENABLE_CLIENT_ONLY
     case Document_Glom::SQLITE_HOSTED:
       {
         ConnectionPoolBackends::Sqlite* backend = new ConnectionPoolBackends::Sqlite;
@@ -1637,6 +1640,7 @@ namespace
         connection_pool->set_backend(std::auto_ptr<ConnectionPoolBackend>(backend));
       }
       break;
+#endif //GLOM_ENABLE_CLIENT_ONLY
     default:
       g_assert_not_reached();
       break;

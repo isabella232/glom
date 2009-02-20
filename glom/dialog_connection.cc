@@ -129,6 +129,7 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
 
         unconst->set_connection_port(central->get_port() );
       }
+#ifndef GLOM_ENABLE_CLIENT_ONLY
       else if(document->get_hosting_mode() == Document_Glom::POSTGRES_SELF_HOSTED)
       {
         ConnectionPoolBackend* backend = connection_pool->get_backend();
@@ -137,6 +138,7 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
 
         unconst->set_connection_port(self->get_port() );
       }
+#endif
     }
 
     /*

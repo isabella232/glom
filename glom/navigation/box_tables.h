@@ -49,10 +49,12 @@ protected:
   virtual void save_to_document();
 
   //Signal handlers:
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   void on_adddel_Add(const Gtk::TreeModel::iterator& row);
   void on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
-  void on_adddel_Edit(const Gtk::TreeModel::iterator& row);
   void on_adddel_changed(const Gtk::TreeModel::iterator& row, guint column);
+#endif //GLOM_ENABLE_CLIENT_ONLY
+  void on_adddel_Edit(const Gtk::TreeModel::iterator& row);
 
   void on_show_hidden_toggled();
 

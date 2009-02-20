@@ -37,10 +37,10 @@
 
 #include <signal.h> //To catch segfaults
 
-/* TODO: Should this be used in client-only mode? */
-
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 #ifndef G_OS_WIN32
 static EpcProtocol publish_protocol = EPC_PROTOCOL_HTTPS;
+#endif
 #endif
 
 // Uncomment to see debug messages
@@ -875,7 +875,7 @@ void ConnectionPool::cleanup(Gtk::Window* parent_window)
   previous_sig_handler = SIG_DFL; /* Arbitrary default */
 }
 
-#ifndef GLOM_ENABLE_CLIENT_ENLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
 bool ConnectionPool::add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field)
 #else

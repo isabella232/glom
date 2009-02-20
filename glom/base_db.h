@@ -93,7 +93,7 @@ public:
 
   static int count_rows_returned_by(const Glib::ustring& sql_query);
 
-
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   bool add_standard_groups();
   bool add_standard_tables() const;
 
@@ -103,7 +103,6 @@ public:
   /// Also saves the table information in the document:
   bool create_table_with_default_fields(const Glib::ustring& table_name);
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
   // TODO: Should these functions update the document, so callers don't need
   // to do it?
   bool add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field, Gtk::Window* parent_window) const;
@@ -113,7 +112,7 @@ public:
   sharedptr<Field> change_column(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, Gtk::Window* parent_window) const;
 
   bool change_columns(const Glib::ustring& table_name, const type_vecConstFields& old_fields, type_vecFields& fields, Gtk::Window* parent_window) const;
-#endif
+#endif //GLOM_ENABLE_CLIENT_ONLY
 
   bool insert_example_data(const Glib::ustring& table_name) const;
 
