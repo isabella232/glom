@@ -195,7 +195,8 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     apply_formatting(*m_child, field->get_formatting_used());
     
     bool child_added = false; //Don't use an extra container unless necessary.
-    const bool field_used_in_relationship_to_one = document->get_field_used_in_relationship_to_one(table_name, field->get_name());
+    const bool field_used_in_relationship_to_one = document->get_field_used_in_relationship_to_one(table_name, field);
+    std::cout << "DEBUG: table_name=" << table_name << ", table_used=" << field->get_table_used(table_name) << ", field=" << field->get_name() << ", field_used_in_relationship_to_one=" << field_used_in_relationship_to_one << std::endl;
 
     Gtk::HBox* hbox_parent = 0; //Only used if there are extra widgets.
 
@@ -838,10 +839,10 @@ bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)
 
     //Discover the related table, in the relationship that uses this ID field:
     Glib::ustring related_table_name;
-    sharedptr<LayoutItem_Field> layoutField = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
+    sharedptr<const LayoutItem_Field> layoutField = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
     if(layoutField)
     {
-      sharedptr<Relationship> relationship = get_document()->get_field_used_in_relationship_to_one(m_table_name, layoutField->get_name());
+      sharedptr<const Relationship> relationship = get_document()->get_field_used_in_relationship_to_one(m_table_name, layoutField);
       if(relationship)
         related_table_name = relationship->get_to_table();
     }
@@ -851,7 +852,7 @@ bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)
     dialog->init_db_details(related_table_name, get_document()->get_active_layout_platform());
 
 
-    int response = dialog->run();
+    const int response = dialog->run();
     dialog->hide();
     if(response == Gtk::RESPONSE_OK)
     {

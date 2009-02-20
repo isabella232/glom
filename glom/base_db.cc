@@ -2963,7 +2963,7 @@ sharedptr<const LayoutItem_Field> Base_DB::get_field_identifies_non_hidden_relat
     sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(*iter);
     if(field && !(field->get_has_relationship_name()))
     {
-      sharedptr<Relationship> relationship = document->get_field_used_in_relationship_to_one(parent_table_name, field->get_name());
+      sharedptr<const Relationship> relationship = document->get_field_used_in_relationship_to_one(parent_table_name, field);
       if(relationship)
       {
         const Glib::ustring table_name = relationship->get_to_table();

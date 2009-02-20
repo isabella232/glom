@@ -641,7 +641,7 @@ void Box_Data_Details::on_flowtable_field_open_details_requested(const sharedptr
   if(Conversions::value_is_empty(field_value))
     return; //Ignore empty ID fields.
 
-  sharedptr<Relationship> relationship = get_document()->get_field_used_in_relationship_to_one(m_table_name, layout_field->get_name());
+  sharedptr<const Relationship> relationship = get_document()->get_field_used_in_relationship_to_one(m_table_name, layout_field);
   if(relationship)
   {
     signal_requested_related_details().emit(relationship->get_to_table(), field_value);

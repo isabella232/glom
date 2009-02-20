@@ -3672,30 +3672,41 @@ bool Document_Glom::get_relationship_is_to_one(const Glib::ustring& table_name, 
   return false;
 }
 
-sharedptr<Relationship> Document_Glom::get_field_used_in_relationship_to_one(const Glib::ustring& table_name, const Glib::ustring& field_name) const
+sharedptr<Relationship> Document_Glom::get_field_used_in_relationship_to_one(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& layout_field) const
 {
   sharedptr<Relationship> result;
 
-  type_tables::const_iterator iterFind = m_tables.find(table_name);
-  if(iterFind != m_tables.end())
+  if(!layout_field)
   {
-    //Look at each relationship:
-    for(type_vecRelationships::const_iterator iterRel = iterFind->second.m_relationships.begin(); iterRel != iterFind->second.m_relationships.end(); ++iterRel)
+    std::cerr << "Document::get_field_used_in_relationship_to_one(): layout_field was null" << std::endl;
+    return result; 
+  }
+
+  const Glib::ustring table_used = layout_field->get_table_used(table_name);
+  type_tables::const_iterator iterFind = m_tables.find(table_used);
+  if(iterFind == m_tables.end())
+  {
+    std::cerr << "Document::get_field_used_in_relationship_to_one(): table not found:" << table_used << std::endl;
+    return result; 
+  }
+
+  //Look at each relationship:
+  const Glib::ustring field_name = layout_field->get_name();
+  for(type_vecRelationships::const_iterator iterRel = iterFind->second.m_relationships.begin(); iterRel != iterFind->second.m_relationships.end(); ++iterRel)
+  {
+    sharedptr<Relationship> relationship = *iterRel;
+    if(relationship)
     {
-      sharedptr<Relationship> relationship = *iterRel;
-      if(relationship)
+      //If the relationship uses the field
+      if(relationship->get_from_field() == field_name)
       {
-        //If the relationship uses the field
-        if(relationship->get_from_field() == field_name)
+        //if the to_table is not hidden:
+        if(!get_table_is_hidden(relationship->get_to_table()))
         {
-          //if the to_table is not hidden:
-          if(!get_table_is_hidden(relationship->get_to_table()))
+          //TODO_Performance: The use of this convenience method means we get the full relationship information again:
+          if(get_relationship_is_to_one(table_name, relationship->get_name()))
           {
-            //TODO_Performance: The use of this convenience method means we get the full relationship information again:
-            if(get_relationship_is_to_one(table_name, relationship->get_name()))
-            {
-              result = relationship;
-            }
+           result = relationship;
           }
         }
       }

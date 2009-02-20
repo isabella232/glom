@@ -173,8 +173,7 @@ public:
   /** Returns whether the field is the from-field in a to-one relationship.
    * @see get_relationship_is_to_one(). Ignores hidden tables.
    */
-  sharedptr<Relationship> get_field_used_in_relationship_to_one(const Glib::ustring& table_name, const Glib::ustring& field_name) const;
-
+  sharedptr<Relationship> get_field_used_in_relationship_to_one(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& layout_field) const;
 
   typedef std::vector< sharedptr<Field> > type_vecFields;
   type_vecFields get_table_fields(const Glib::ustring& table_name) const;

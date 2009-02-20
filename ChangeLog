@@ -1,3 +1,12 @@
+2009-02-20  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/document/document_glom.[h|cc]: 
+	get_field_used_in_relationship_to_one(): Make this take a 
+	LayoutItem_Field instead of just a field name.
+	* glom/utlity_widgets/datawidget.cc: Constructor: adapt, so we add 
+	Open and Find buttons for related fields too when appropriate.
+	* glom/base_db.cc: Adapt to API change.
+
 2009-02-18  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/data_structure/field.cc: from_file_format(): Adjusted 
