@@ -3,6 +3,7 @@
 	* glom/glom_developer.glade: Resaved with glade-3. Recent versions of 
 	glade-3 are much better at converting from glade-2. I just had to 
 	hand-add the GtkSourceView widgets back.
+	Bug #567470
 
 2009-02-20  Murray Cumming  <murrayc@murrayc.com>
 
