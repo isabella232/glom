@@ -500,6 +500,7 @@ Glib::RefPtr<Gnome::Gda::Holder> Field::get_holder(const Gnome::Gda::Value& valu
 
   const GType gtype = value.get_value_type();
 
+  /*
   const GType field_type = m_field_info->get_g_type();
   if(m_field_info->get_g_type() != gtype)
   {
@@ -509,10 +510,11 @@ Glib::RefPtr<Gnome::Gda::Holder> Field::get_holder(const Gnome::Gda::Value& valu
     // investigate why the field type is not GdaBinary as well.
     // Maybe get_gda_type_for_glom_type() should already return fallback
     // types if necessary.
-    //std::cout << "DEBUG: Field::get_holder(): Field type " << g_type_name(field_type) << " and value type " << g_type_name(gtype) << " don't match." << std::endl;
+    std::cout << "DEBUG: Field::get_holder(): Field type " << g_type_name(field_type) << " and value type " << g_type_name(gtype) << " don't match." << std::endl;
   }
+  */
 
-  Glib::RefPtr<Gnome::Gdau::Holder> holder = Gnome::Gda::Holder::create(gtype, real_name);
+  Glib::RefPtr<Gnome::Gda::Holder> holder = Gnome::Gda::Holder::create(gtype, real_name);
   holder->set_value_as_value(value);
   return holder;
 }
