@@ -1,3 +1,8 @@
+2009-02-22  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/mode_data/flowtablewithfields.cc (add_field_at_position): Don't
+	leak the Gtk::EventBox.
+
 2009-02-21  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/glom_developer.glade: Resaved with glade-3. Recent versions of 
@@ -54,8 +59,6 @@
 	Open and Find buttons for related fields too when appropriate.
 	* glom/base_db.cc: Adapt to API change.
 
->>>>>>> .r1913
->>>>>>> .r1914
 2009-02-18  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/data_structure/field.cc: from_file_format(): Adjusted 
