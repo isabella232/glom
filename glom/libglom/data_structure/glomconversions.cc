@@ -321,7 +321,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
 {
   if(value.is_null()) //The type can be null for any of the actual field types.
   {
-    return "";
+    return Glib::ustring();
   }
 
   if(glom_type == Field::TYPE_DATE)
@@ -479,6 +479,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
     //- Values in SQL queries, but we only do that for clauses (where/sort/order) 
     //  which should never use image values.
     std::cerr << "Conversions::get_text_for_gda_value(): Unexpected TYPE_IMAGE field type: " << glom_type << std::endl;
+    return Glib::ustring();
   }
   else
   {
