@@ -67,7 +67,8 @@ void Dialog_ProgressCreating::set_message(const Glib::ustring& title, const Glib
 
 void Dialog_ProgressCreating::response(int response_id)
 {
-  if(!m_running) return;
+  if(!m_running)
+   return;
 
   m_response_id = response_id;
   Gtk::Main::quit();
@@ -77,7 +78,8 @@ void Dialog_ProgressCreating::response(int response_id)
 int Dialog_ProgressCreating::run()
 {
   // Cannot nest
-  if(m_running) return Gtk::RESPONSE_CANCEL;
+  if(m_running)
+    return Gtk::RESPONSE_CANCEL;
 
   show();
   m_running = true;
@@ -85,9 +87,11 @@ int Dialog_ProgressCreating::run()
   return m_response_id;
 }
 
-bool Dialog_ProgressCreating::on_delete_event(GdkEventAny* event)
+bool Dialog_ProgressCreating::on_delete_event(GdkEventAny* /* event */)
 {
-  if(m_running) response(Gtk::RESPONSE_DELETE_EVENT);
+  if(m_running)
+    response(Gtk::RESPONSE_DELETE_EVENT);
+
   return true;
 }
 

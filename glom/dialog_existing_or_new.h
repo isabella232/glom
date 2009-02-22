@@ -93,8 +93,8 @@ protected:
 #endif /* !GLOM_ENABLE_CLIENT_ONLY */
     
 #ifndef G_OS_WIN32
-  static void on_service_found_static(EpcServiceMonitor* monitor, gchar* name, EpcServiceInfo* info, gpointer user_data) { static_cast<Dialog_ExistingOrNew*>(user_data)->on_service_found(name, info); }
-  static void on_service_removed_static(EpcServiceMonitor* monitor, gchar* name, gchar* type, gpointer user_data) { static_cast<Dialog_ExistingOrNew*>(user_data)->on_service_removed(name, type); }
+  static void on_service_found_static(EpcServiceMonitor* monitor, gchar* name, EpcServiceInfo* info, gpointer user_data);
+  static void on_service_removed_static(EpcServiceMonitor* monitor, gchar* name, gchar* type, gpointer user_data);
 
   void on_service_found(const Glib::ustring& name, EpcServiceInfo* info);
   void on_service_removed(const Glib::ustring& name, const Glib::ustring& type);

@@ -315,7 +315,7 @@ void Window_PrintLayout_Edit::on_toolbar_item_drag_end(const Glib::RefPtr<Gdk::D
 //TODO: I don't know what this really means. murrayc.
 const int DRAG_DATA_FORMAT = 8; // 8 bits format
 
-void Window_PrintLayout_Edit::on_toolbar_item_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& drag_context, Gtk::SelectionData& selection_data, guint info, guint time)
+void Window_PrintLayout_Edit::on_toolbar_item_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& drag_context, Gtk::SelectionData& selection_data, guint /* info */, guint /* time */)
 {
   PrintLayoutToolbarButton::enumItems type = PrintLayoutToolbarButton::get_item_type_from_selection_data(drag_context, selection_data);
 
@@ -325,7 +325,7 @@ void Window_PrintLayout_Edit::on_toolbar_item_drag_data_get(const Glib::RefPtr<G
 }
 
 
-bool Window_PrintLayout_Edit::on_canvas_drag_drop(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint timestamp)
+bool Window_PrintLayout_Edit::on_canvas_drag_drop(const Glib::RefPtr<Gdk::DragContext>& drag_context, int /* x */, int /* y */, guint timestamp)
 {
   const Glib::ustring target = m_canvas.drag_dest_find_target(drag_context);
   if(target.empty())
@@ -424,7 +424,7 @@ sharedptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(PrintLayoutTool
   return layout_item;
 }
 
-void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, const Gtk::SelectionData& selection_data, guint info, guint timestamp)
+void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, const Gtk::SelectionData& selection_data, guint /* info */, guint timestamp)
 {
   //This is called when an item is dropped on the canvas,
   //or after our drag_motion handler has called drag_get_data()): 

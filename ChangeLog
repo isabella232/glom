@@ -1,5 +1,9 @@
 2009-02-22  Murray Cumming  <murrayc@murrayc.com>
 
+	* Various minor fixes to avoid minor compiler warnings.
+
+2009-02-22  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/data_structure/glomconversions.cc: 
 	get_text_for_gda_value(): Avoid a warning about no return value.
 

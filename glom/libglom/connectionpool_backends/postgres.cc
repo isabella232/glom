@@ -274,13 +274,18 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
         // The conversion is not possible, so drop data in that column
       }
 
-      if(!drop_column(connection, table_name, old_fields[i]->get_name(), error));
-      if(!query_execute(connection, "ALTER TABLE \"" + table_name + "\" RENAME COLUMN \"" + TEMP_COLUMN_NAME + "\" TO \"" + new_fields[i]->get_name() + "\"", error)) break;
+      if(!drop_column(connection, table_name, old_fields[i]->get_name(), error))
+        break;
+
+      if(!query_execute(connection, "ALTER TABLE \"" + table_name + "\" RENAME COLUMN \"" + TEMP_COLUMN_NAME + "\" TO \"" + new_fields[i]->get_name() + "\"", error))
+        break;
 
       // Readd primary key constraint
       if(new_fields[i]->get_primary_key())
+      {
         if(!query_execute(connection, "ALTER TABLE \"" + table_name + "\" ADD PRIMARY KEY (\"" + new_fields[i]->get_name() + "\")", error))
           break;
+      }
     }
     else
     {

@@ -296,7 +296,8 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
         //Deal with the various possible return types:
         bool object_is_gda_value = false;
 
-        GValue value = { 0 };
+        GValue value;
+        memset(&value, 0, sizeof(GValue));
         const int test = pygda_value_from_pyobject(&value, pyResult);
 
         if(test == 0) //-1 means error.

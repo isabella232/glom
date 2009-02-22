@@ -1,6 +1,6 @@
 #include <glom/libglom/data_structure/glomconversions.h>
 
-int main(int argc, char* argv[])
+int main()
 {
   Gnome::Gda::init();
 

@@ -285,7 +285,7 @@ public:
   SignalFinished signal_finished() const { return m_signal_finished; }
 
 private:
-  void on_child_watch(Glib::Pid pid, int returned)
+  void on_child_watch(Glib::Pid /* pid */, int returned)
   {
     running = false;
     return_status = returned;

@@ -425,7 +425,7 @@ void Dialog_Import_CSV::encoding_data_func(const Gtk::TreeModel::iterator& iter,
   renderer.set_property("text", encoding_display(name, charset));
 }
 
-bool Dialog_Import_CSV::row_separator_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::iterator& iter) const
+bool Dialog_Import_CSV::row_separator_func(const Glib::RefPtr<Gtk::TreeModel>& /* model */, const Gtk::TreeModel::iterator& iter) const
 {
   return (*iter)[m_encoding_columns.m_col_name] == "";
 }

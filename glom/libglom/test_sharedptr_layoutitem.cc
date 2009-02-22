@@ -23,7 +23,7 @@
 
 
 int
-main(int argc, char* argv[])
+main()
 {
   Glom::sharedptr<Glom::LayoutItem_Field> field_copy;
   {

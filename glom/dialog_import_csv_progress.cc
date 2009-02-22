@@ -211,7 +211,7 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
   return true;
 }
 
-void Dialog_Import_CSV_Progress::on_response(int response_id)
+void Dialog_Import_CSV_Progress::on_response(int /* response_id */)
 {
   // Don't continue importing when the user already cancelled, or closed the
   // window via delete event.
@@ -249,13 +249,13 @@ Gnome::Gda::Value Dialog_Import_CSV_Progress::get_primary_key_value_selected() c
 // These don't make sense in Dialog_Import_CSV_Progress, and thus should not
 // be called. We need to implement them though, because they are pure abstract
 // in Base_DB_Table_Data.
-void Dialog_Import_CSV_Progress::set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value)
+void Dialog_Import_CSV_Progress::set_primary_key_value(const Gtk::TreeModel::iterator& /* row */, const Gnome::Gda::Value& /* value */)
 {
   // This is actually called by Base_DB_Table_Data::record_new(), but we can safely ignore it.
   //throw std::logic_error("Dialog_Import_CSV_Progress::set_primary_key_value() called");
 }
 
-Gnome::Gda::Value Dialog_Import_CSV_Progress::get_primary_key_value(const Gtk::TreeModel::iterator& row) const
+Gnome::Gda::Value Dialog_Import_CSV_Progress::get_primary_key_value(const Gtk::TreeModel::iterator& /* row */) const
 {
   throw std::logic_error("Dialog_Import_CSV_Progress::get_primary_key_value() called");
 }

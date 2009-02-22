@@ -57,7 +57,7 @@ Notebook_Glom::type_signal_leave_page Notebook_Glom::signal_leave_page()
 }
 */
 
-void Notebook_Glom::on_switch_page_handler(GtkNotebookPage* pPage, guint uiPageNumber)
+void Notebook_Glom::on_switch_page_handler(GtkNotebookPage* /* pPage */, guint uiPageNumber)
 {
   //Remove the help hint for the previous page:
   Gtk::Window* pApp = get_app_window();

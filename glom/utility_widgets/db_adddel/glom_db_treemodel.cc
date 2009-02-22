@@ -276,8 +276,10 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
           if(holder)
             m_db_values[i] = holder->get_value(); //TODO_gda: Why not just use get_value_at()?
           else
-            // This is quite possible for example for unset dates, jhs 
-            ;//std::cerr << "DbTreeModelRow::fill_values_if_necessary(): NULL Gnome::Gda::Holder for field=" << i << std::endl;
+          {
+            // This is quite possible, for example for unset dates. jhs 
+            //std::cerr << "DbTreeModelRow::fill_values_if_necessary(): NULL Gnome::Gda::Holder for field=" << i << std::endl;
+          }
 
           //std::cout << "  debug: col=" << i << ", GType=" << m_db_values[i].get_value_type() << ", string=" << m_db_values[i].to_string() << std::endl;
         }

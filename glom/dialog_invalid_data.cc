@@ -78,7 +78,7 @@ void Dialog_InvalidData::set_example_data(Field::glom_field_type glom_type)
     }
     case(Field::TYPE_TIME):
     {
-      Gnome::Gda::Time time = {0, 0, 0, 0};
+      Gnome::Gda::Time time = {0, 0, 0, 0, 0};
       time.hour = 13;
       time.minute = 02;
       time.second = 03;

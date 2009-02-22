@@ -298,7 +298,7 @@ Dialog_ExistingOrNew::~Dialog_ExistingOrNew()
   }
 }
 
-bool Dialog_ExistingOrNew::on_existing_select_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::Path& path, bool path_currently_selected)
+bool Dialog_ExistingOrNew::on_existing_select_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::Path& path, bool /* path_currently_selected */)
 {
   Gtk::TreeModel::iterator iter = model->get_iter(path);
 #ifndef G_OS_WIN32
@@ -311,7 +311,7 @@ bool Dialog_ExistingOrNew::on_existing_select_func(const Glib::RefPtr<Gtk::TreeM
   return true;
 }
 
-bool Dialog_ExistingOrNew::on_new_select_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::Path& path, bool path_currently_selected)
+bool Dialog_ExistingOrNew::on_new_select_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::Path& path, bool /* path_currently_selected */)
 {
   Gtk::TreeModel::iterator iter = model->get_iter(path);
   if(iter == m_iter_new_template)
@@ -536,7 +536,7 @@ void Dialog_ExistingOrNew::new_title_data_func(Gtk::CellRenderer* renderer, cons
   }
 }
 
-void Dialog_ExistingOrNew::on_switch_page(GtkNotebookPage* page, guint page_num)
+void Dialog_ExistingOrNew::on_switch_page(GtkNotebookPage* /* page */, guint /* page_num */)
 {
   update_ui_sensitivity();
 }
@@ -723,6 +723,16 @@ void Dialog_ExistingOrNew::on_stream_read(const Glib::RefPtr<Gio::AsyncResult>& 
 #endif /* !GLOM_ENABLE_CLIENT_ONLY */
 
 #ifndef G_OS_WIN32
+void Dialog_ExistingOrNew::on_service_found_static(EpcServiceMonitor* /* monitor */, gchar* name, EpcServiceInfo* info, gpointer user_data)
+{
+  static_cast<Dialog_ExistingOrNew*>(user_data)->on_service_found(name, info);
+}
+
+void Dialog_ExistingOrNew::on_service_removed_static(EpcServiceMonitor* /* monitor */, gchar* name, gchar* type, gpointer user_data)
+{
+  static_cast<Dialog_ExistingOrNew*>(user_data)->on_service_removed(name, type);
+}
+
 void Dialog_ExistingOrNew::on_service_found(const Glib::ustring& name, EpcServiceInfo* info)
 {
   //Translator hint: This is <Service Name> on <Host> (via Network Interface such as eth0).
@@ -744,7 +754,7 @@ void Dialog_ExistingOrNew::on_service_found(const Glib::ustring& name, EpcServic
   }
 }
 
-void Dialog_ExistingOrNew::on_service_removed(const Glib::ustring& name, const Glib::ustring& type)
+void Dialog_ExistingOrNew::on_service_removed(const Glib::ustring& name, const Glib::ustring& /* type */)
 {
   // Find the entry with the given name
   const Gtk::TreeNodeChildren& children = m_iter_existing_network->children();
@@ -766,7 +776,7 @@ void Dialog_ExistingOrNew::on_service_removed(const Glib::ustring& name, const G
 }
 #endif // !G_OS_WIN32
 
-void Dialog_ExistingOrNew::on_existing_row_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column)
+void Dialog_ExistingOrNew::on_existing_row_activated(const Gtk::TreeModel::Path& /* path */, Gtk::TreeViewColumn* /* column */)
 {
   if(m_select_button->is_sensitive())
     on_select_clicked();
@@ -780,7 +790,7 @@ void Dialog_ExistingOrNew::on_existing_button_clicked(const Gtk::TreeModel::Path
     on_select_clicked();
 }
 
-void Dialog_ExistingOrNew::on_new_row_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column)
+void Dialog_ExistingOrNew::on_new_row_activated(const Gtk::TreeModel::Path& /* path */, Gtk::TreeViewColumn* /* column */)
 {
   if(m_select_button->is_sensitive())
     on_select_clicked();
@@ -822,5 +832,6 @@ void Dialog_ExistingOrNew::on_select_clicked()
     response(Gtk::RESPONSE_ACCEPT);
   }
 }
+
 
 } //namespace Glom

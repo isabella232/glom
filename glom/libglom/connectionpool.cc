@@ -852,7 +852,7 @@ bool ConnectionPool::startup(Gtk::Window* parent_window)
 
   //If we crash while running (unlikely, hopefully), then try to cleanup.
   //Comment this out if you want to see the backtrace in a debugger.
-  //previous_sig_handler = signal(SIGSEGV, &on_linux_signal);
+  previous_sig_handler = signal(SIGSEGV, &on_linux_signal);
 
   return true;
 }
@@ -1072,7 +1072,7 @@ Document_Glom* ConnectionPool::get_document()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #ifndef G_OS_WIN32
 //static
-EpcContents* ConnectionPool::on_publisher_document_requested(EpcPublisher* publisher, const gchar* key, gpointer user_data)
+EpcContents* ConnectionPool::on_publisher_document_requested(EpcPublisher* /* publisher */, const gchar* /* key */, gpointer user_data)
 {
   Glom::ConnectionPool* connection_pool = static_cast<Glom::ConnectionPool*>(user_data);
   if(!connection_pool)
@@ -1143,7 +1143,7 @@ void ConnectionPool::on_epc_progress_begin(const gchar* /* title */, gpointer us
   connection_pool->m_dialog_epc_progress = message_dialog; 
 }
 
-void ConnectionPool::on_epc_progress_update(gdouble /* progress */, const gchar* /* message */, gpointer user_data)
+void ConnectionPool::on_epc_progress_update(gdouble /* progress */, const gchar* /* message */, gpointer /* user_data */)
 {
   //We ignore the title parameter because there is no way that libepc could know what Glom wants to say.
   //TODO: Show the progress in a ProgressBar.

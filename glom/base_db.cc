@@ -1329,7 +1329,7 @@ bool Base_DB::create_table_add_missing_fields(const sharedptr<const TableInfo>& 
   return true;
 }
 
-bool Base_DB::add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field, Gtk::Window* parent_window) const
+bool Base_DB::add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field, Gtk::Window* /* parent_window */) const
 {
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
 
@@ -1356,7 +1356,7 @@ bool Base_DB::add_column(const Glib::ustring& table_name, const sharedptr<const 
   return true;
 }
 
-bool Base_DB::drop_column(const Glib::ustring& table_name, const Glib::ustring& field_name, Gtk::Window* parent_window) const
+bool Base_DB::drop_column(const Glib::ustring& table_name, const Glib::ustring& field_name, Gtk::Window* /* parent_window */) const
 {
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
 
@@ -1424,7 +1424,7 @@ namespace
   }
 }
 
-sharedptr<Field> Base_DB::change_column(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, Gtk::Window* parent_window) const
+sharedptr<Field> Base_DB::change_column(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, Gtk::Window* /* parent_window */) const
 {
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   sharedptr<Field> result = check_field_change_constraints(field_old, field);
@@ -1452,7 +1452,7 @@ sharedptr<Field> Base_DB::change_column(const Glib::ustring& table_name, const s
   return result;
 }
 
-bool Base_DB::change_columns(const Glib::ustring& table_name, const type_vecConstFields& old_fields, type_vecFields& fields, Gtk::Window* parent_window) const
+bool Base_DB::change_columns(const Glib::ustring& table_name, const type_vecConstFields& old_fields, type_vecFields& fields, Gtk::Window* /* parent_window */) const
 {
   g_assert(old_fields.size() == fields.size());
 
@@ -2425,7 +2425,7 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& field_in_re
   return set_field_value_in_database(field_in_record, Gtk::TreeModel::iterator(), field_value, use_current_calculations, parent_window);
 }
 
-bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value, bool use_current_calculations, Gtk::Window* parent_window)
+bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value, bool use_current_calculations, Gtk::Window* /* parent_window */)
 {
   Document_Glom* document = get_document();
   g_assert(document);
@@ -2541,7 +2541,7 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const LayoutFieldInRecord
   return result;
 }
 
-Gnome::Gda::Value Base_DB::get_field_value_in_database(const sharedptr<Field>& field, const FoundSet& found_set, Gtk::Window* parent_window)
+Gnome::Gda::Value Base_DB::get_field_value_in_database(const sharedptr<Field>& field, const FoundSet& found_set, Gtk::Window* /* parent_window */)
 {
   Gnome::Gda::Value result;  //TODO: Return suitable empty value for the field when failing?
 
