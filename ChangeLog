@@ -1,5 +1,11 @@
 2009-02-22  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/glom.glade, glom_developer.glade:
+	* glom/base_db.cc: offer_notebook(): Move the dialog_notebook window 
+	into glom_developer.glade because it is only used in developer mode.
+
+2009-02-22  Murray Cumming  <murrayc@murrayc.com>
+
 	* Various minor fixes to avoid minor compiler warnings.
 
 2009-02-22  Murray Cumming  <murrayc@murrayc.com>
