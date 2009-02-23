@@ -395,7 +395,7 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
         event_box->set_visible_window(false);
         event_box->signal_button_press_event().connect (sigc::mem_fun (*flow_table,
                                                                        &FlowTableWithFields::on_button_press_event));
-        event_box->show();        
+        event_box->show();
         //This doesn't work (probably because we haven't implmented it in our custom container),
         //so we put the flowtable in an alignment and give that a border instead.
         //flow_table->set_border_width(Glom::Utils::DEFAULT_SPACING_SMALL); //Put some space between the page child and the page edges.

@@ -557,7 +557,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
       m_gda_datamodel.clear(); //So that it is 0, so we can handle it below.
     }
 #endif //GLIBMM_EXCEPTIONS_ENABLED
-      
+
     if(!m_gda_datamodel)
     {
       m_data_model_rows_count = 0;
