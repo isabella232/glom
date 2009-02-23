@@ -1,3 +1,8 @@
+2009-02-23  David King  <davidk@openismus.com>
+ 
+ 	* glom/frame_glom.cc: on_menu_file_import(): Add CSV mime-type filter
+ 	to import dialog. Bug #572702
+
 2009-02-23  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/utility_widgets/db_adddel/db_adddel.cc
@@ -12,6 +17,7 @@
 	before opening the fields editing dialog, so that no references to the
 	database are used anymore. SQLite requires this to be able to drop the
 	old table when changing fields.
+	Bug #572847
 
 2009-02-22  Murray Cumming  <murrayc@murrayc.com>
 
