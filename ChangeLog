@@ -1,3 +1,18 @@
+2009-02-23  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/utility_widgets/db_adddel/db_adddel.cc
+	(construct_specified_columns): Clear m_refListStore if in case no
+	column types are set. This allows dropping the reference to the GDA
+	DataModel by setting an empty table name on the AddDel.
+
+	* glom/frame_glom.h:
+	* glom/frame_glom.cc: Added show_table_allow_empty() which allows the
+	table name to be empty, in which case no table is shown, and
+	show_no_table() as a shortcut for this case. Show an empty table
+	before opening the fields editing dialog, so that no references to the
+	database are used anymore. SQLite requires this to be able to drop the
+	old table when changing fields.
+
 2009-02-22  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/glom.glade, glom_developer.glade:

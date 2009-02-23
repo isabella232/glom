@@ -832,7 +832,11 @@ void DbAddDel::construct_specified_columns()
   {
     //std::cout << "debug: DbAddDel::construct_specified_columns(): showing hint model: m_find_mode=" << m_find_mode << std::endl;
 
-    show_hint_model();
+    m_refListStore.clear();
+    if(m_table_name.empty())
+      m_TreeView.set_model(m_refListStore); // clear old model from treeview
+    else
+      show_hint_model();
     return;
   }
 

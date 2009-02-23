@@ -329,106 +329,98 @@ void Frame_Glom::show_table_refresh()
   show_table(m_table_name);
 }
 
-void Frame_Glom::show_table(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value_for_details)
+void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value_for_details)
 {
   App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
 
   //This can take quite a long time, so we show the busy cursor while it's working:
   Bakery::BusyCursor busy_cursor(pApp);
 
-  //Check that there is a table to show:
-  if(table_name.empty())
-  {
-    alert_no_table();
-  }
-  else
-  {
-    //Choose a default mode, if necessary:
-    if(m_Mode == MODE_None)
-      set_mode(m_Mode);
+  //Choose a default mode, if necessary:
+  if(m_Mode == MODE_None)
+    set_mode(m_Mode);
 
-    //Show the table:
-    m_table_name = table_name;
-    Glib::ustring strMode;
+  //Show the table:
+  m_table_name = table_name;
+  Glib::ustring strMode;
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-    //Update the document with any new information in the database if necessary (though the database _should never have changed information)
-    update_table_in_document_from_database();
+  //Update the document with any new information in the database if necessary (though the database _should never have changed information)
+  update_table_in_document_from_database();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-    //Update user-level dependent UI:
-    if(pApp)
-      on_userlevel_changed(pApp->get_userlevel());
+  //Update user-level dependent UI:
+  if(pApp)
+    on_userlevel_changed(pApp->get_userlevel());
 
-    switch(m_Mode)
+  switch(m_Mode)
+  {
+    case(MODE_Data):
     {
-      case(MODE_Data):
+      strMode = _("Data");
+      FoundSet found_set;
+
+      //Start with the last-used found set (sort order and where clause)
+      //for this layout:
+      //(This would be ignored anyway if a details primary key is specified.)
+      Document_Glom* document = get_document(); 
+      if(document)
+        found_set = document->get_criteria_current(m_table_name);
+
+      //Make sure that this is set:
+      found_set.m_table_name = m_table_name;
+
+      //If there is no saved sort clause, 
+      //then sort by the ID, just so we sort by something, so that the order is predictable:
+      if(found_set.m_sort_clause.empty())
       {
-        strMode = _("Data");
-        FoundSet found_set;
+        sharedptr<Field> field_primary_key = get_field_primary_key_for_table(m_table_name);
+        if(field_primary_key)
+      {
+          sharedptr<LayoutItem_Field> layout_item_sort = sharedptr<LayoutItem_Field>::create();
+          layout_item_sort->set_full_field_details(field_primary_key);
 
-        //Start with the last-used found set (sort order and where clause)
-        //for this layout:
-        //(This would be ignored anyway if a details primary key is specified.)
-        Document_Glom* document = get_document(); 
-        if(document)
-          found_set = document->get_criteria_current(m_table_name);
+          found_set.m_sort_clause.clear();
 
-        //Make sure that this is set:
-        found_set.m_table_name = m_table_name;
-
-        //If there is no saved sort clause, 
-        //then sort by the ID, just so we sort by something, so that the order is predictable:
-        if(found_set.m_sort_clause.empty())
-        {
-          sharedptr<Field> field_primary_key = get_field_primary_key_for_table(m_table_name);
-          if(field_primary_key)
-          {
-            sharedptr<LayoutItem_Field> layout_item_sort = sharedptr<LayoutItem_Field>::create();
-            layout_item_sort->set_full_field_details(field_primary_key);
-
-            found_set.m_sort_clause.clear();
-
-            //Avoid the sort clause if the found set will include too many records, 
-            //because that would be too slow.
-            //The user can explicitly request a sort later, by clicking on a column header.
-            //TODO_Performance: This causes an almost-duplicate COUNT query (we do it in the treemodel too), but it's not that slow. 
-            sharedptr<LayoutItem_Field> layout_item_temp = sharedptr<LayoutItem_Field>::create();
-            layout_item_temp->set_full_field_details(field_primary_key);
-            type_vecLayoutFields layout_fields;
-            layout_fields.push_back(layout_item_temp);
-            const Glib::ustring sql_query_without_sort = Utils::build_sql_select_with_where_clause(found_set.m_table_name, layout_fields, found_set.m_where_clause, found_set.m_extra_join, type_sort_clause(), found_set.m_extra_group_by);
-            const int count = Base_DB::count_rows_returned_by(sql_query_without_sort);
-            if(count < 10000) //Arbitrary large number.
-              found_set.m_sort_clause.push_back( type_pair_sort_field(layout_item_sort, true /* ascending */) );
-          }
+          //Avoid the sort clause if the found set will include too many records, 
+          //because that would be too slow.
+          //The user can explicitly request a sort later, by clicking on a column header.
+          //TODO_Performance: This causes an almost-duplicate COUNT query (we do it in the treemodel too), but it's not that slow. 
+          sharedptr<LayoutItem_Field> layout_item_temp = sharedptr<LayoutItem_Field>::create();
+          layout_item_temp->set_full_field_details(field_primary_key);
+          type_vecLayoutFields layout_fields;
+          layout_fields.push_back(layout_item_temp);
+          const Glib::ustring sql_query_without_sort = Utils::build_sql_select_with_where_clause(found_set.m_table_name, layout_fields, found_set.m_where_clause, found_set.m_extra_join, type_sort_clause(), found_set.m_extra_group_by);
+          const int count = Base_DB::count_rows_returned_by(sql_query_without_sort);
+          if(count < 10000) //Arbitrary large number.
+            found_set.m_sort_clause.push_back( type_pair_sort_field(layout_item_sort, true /* ascending */) );
         }
-
-        //Show the wanted records in the notebook, showing details for a particular record if wanted:
-        m_Notebook_Data.init_db_details(found_set, primary_key_value_for_details);
-        set_mode_widget(m_Notebook_Data);
-
-        //Show how many records were found:
-        update_records_count();
-
-        break;
       }
-      case(MODE_Find):
-      {
-        strMode = _("Find");
-        m_Notebook_Find.init_db_details(m_table_name, get_document()->get_active_layout_platform());
-        set_mode_widget(m_Notebook_Find);
-        break;
-      }
-      default:
-      {
-        std::cout << "Frame_Glom::on_box_tables_selected(): Unexpected mode" << std::endl;
-        strMode = _("Unknown");
-        break;
-      }
+
+      //Show the wanted records in the notebook, showing details for a particular record if wanted:
+      m_Notebook_Data.init_db_details(found_set, primary_key_value_for_details);
+      set_mode_widget(m_Notebook_Data);
+
+      //Show how many records were found:
+      update_records_count();
+
+      break;
     }
-
-    m_pLabel_Mode->set_text(strMode);
+    case(MODE_Find):
+    {
+      strMode = _("Find");
+      m_Notebook_Find.init_db_details(m_table_name, get_document()->get_active_layout_platform());
+      set_mode_widget(m_Notebook_Find);
+      break;
+    }
+    default:
+    {
+      std::cout << "Frame_Glom::on_box_tables_selected(): Unexpected mode" << std::endl;
+      strMode = _("Unknown");
+      break;
+    }
   }
+
+  m_pLabel_Mode->set_text(strMode);
 
   show_table_title();
 
@@ -437,6 +429,24 @@ void Frame_Glom::show_table(const Glib::ustring& table_name, const Gnome::Gda::V
   pApp->fill_menu_print_layouts(table_name);
 
   //show_all();
+}
+
+void Frame_Glom::show_table(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value_for_details)
+{
+  //Check that there is a table to show:
+  if(table_name.empty())
+  {
+    alert_no_table();
+  }
+  else
+  {
+    show_table_allow_empty(table_name, primary_key_value_for_details);
+  }
+}
+
+void Frame_Glom::show_no_table()
+{
+  show_table_allow_empty(Glib::ustring());
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -1367,6 +1377,15 @@ void Frame_Glom::do_menu_developer_fields(Gtk::Window& parent, const Glib::ustri
 
     add_view(m_pDialog_Fields);
   }
+
+  // Some database backends (SQLite) require the table to change no longer
+  // being in use when changing the records, so clear the database usage
+  // here. We reshow everything in on_developer_dialog_hide anyway.
+  show_no_table();
+
+  // Remember the old table name so that we re-show the previous table as
+  // soon as the dialog has been closed.
+  m_table_name = table_name;
 
   m_pDialog_Fields->set_transient_for(parent);
   m_pDialog_Fields->init_db_details(table_name);

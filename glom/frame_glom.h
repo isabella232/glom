@@ -172,13 +172,25 @@ protected:
 
   //virtual void set_document(Document_Glom* pDocument); //override
 
+  /** Show the table, possibly selecting a particular record, possibly showing that in the details tab. This allows table_name to be empty in which case no
+   * table will be shown.
+   *
+   * @param table_name The database table to show.
+   * @param primary_key_value_for_details If specified, switch to the details view, and show this record.
+   */
+  void show_table_allow_empty(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value_for_details = Gnome::Gda::Value());
+
   /** Show the table, possibly selecting a particular record, possibly showing that in the details tab.
    *
    * @param table_name The database table to show.
    * @param primary_key_value_for_details If specified, switch to the details view, and show this record.
    */
   void show_table(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value_for_details = Gnome::Gda::Value());
-    
+
+  /** Hide the currently shown table so that no table is shown.
+   */
+  void show_no_table();
+
   void show_table_title();
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void update_table_in_document_from_database();
