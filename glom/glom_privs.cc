@@ -348,7 +348,7 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
   type_map_privileges::const_iterator iter = m_privileges_cache.find(table_name);
   if(iter != m_privileges_cache.end())
   {
-    std::cout << "DEBUG: Privs::get_current_privs(): Returning cache." << std::endl;
+    //std::cout << "DEBUG: Privs::get_current_privs(): Returning cache." << std::endl;
     return iter->second;
   }
 
