@@ -323,13 +323,13 @@ bool Privs::get_user_is_in_group(const Glib::ustring& user, const Glib::ustring&
 
 bool Privs::on_privs_privileges_cache_timeout(const Glib::ustring& table_name)
 {
-  std::cout << "DEBUG: Privs::on_privs_privileges_cache_timeou(): table=" << table_name << std::endl;  
+  //std::cout << "DEBUG: Privs::on_privs_privileges_cache_timeou(): table=" << table_name << std::endl;  
       
   //Forget the cached privileges after a few seconds:
   type_map_privileges::iterator iter = m_privileges_cache.find(table_name);
   if(iter != m_privileges_cache.end())
   {
-    std::cout << "  DEBUG: Privs::on_privs_privileges_cache_timeou(): Cleared cache for table=" << table_name << std::endl;
+    //std::cout << "  DEBUG: Privs::on_privs_privileges_cache_timeou(): Cleared cache for table=" << table_name << std::endl;
     m_privileges_cache.erase(iter);
   }
 
@@ -356,7 +356,7 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
   //Get the up-to-date privileges from the database:
   Privileges result;
 
-  std::cout << "DEBUG: Privs::get_current_privs(): Getting non-cached." << std::endl;  
+  //std::cout << "DEBUG: Privs::get_current_privs(): Getting non-cached." << std::endl;  
 
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   const Glib::ustring current_user = connection_pool->get_user();
