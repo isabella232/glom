@@ -1,3 +1,10 @@
+2009-02-24  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/flowtable.cc: on_size_allocate(): Change an 
+	accidental += to the = that it should be, to stop columns getting 
+	increasingly large amounts of extra width when there are >2 columns.
+	Bug #539369 (maximiliano)
+
 2009-02-24  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/connectionpool_backends/postgres_central.cc (set_host):
