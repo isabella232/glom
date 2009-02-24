@@ -1,3 +1,8 @@
+2009-02-24  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/connectionpool_backends/sqlite.cc: Keep non-NULL
+	constraint of columns when recreating table.
+
 2009-02-23  David King  <davidk@openismus.com>
  
  	* glom/frame_glom.cc: on_menu_file_import(): Add CSV mime-type filter

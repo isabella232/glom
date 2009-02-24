@@ -127,12 +127,14 @@ bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::Serve
   Glib::ustring name_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_NAME/%1", i);
   Glib::ustring type_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_TYPE/%1", i);
   Glib::ustring pkey_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_PKEY/%1", i);
+  Glib::ustring nnul_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_NNUL/%1", i);
   // TODO: Find out whether the column is unique.
   Glib::ustring default_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_DEFAULT/%1", i);
 
   if(!set_server_operation_value(operation, name_path, column->column_name, error)) return false;
   if(!set_server_operation_value(operation, type_path, column->column_type, error)) return false;
   if(!set_server_operation_value(operation, pkey_path, column->pkey ? "TRUE" : "FALSE", error)) return false;
+  if(!set_server_operation_value(operation, nnul_path, !column->nullok ? "TRUE" : "FALSE", error)) return false;
 
   if(column->default_value)
     if(!set_server_operation_value(operation, default_path, column->default_value, error))
