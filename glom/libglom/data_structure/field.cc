@@ -367,7 +367,11 @@ Glib::ustring Field::sql_find_operator() const
   {
     case(TYPE_TEXT):
     {
-      return "ILIKE"; //"LIKE"; ILIKE is a postgres extension for locale-dependent case-insensitive matches.
+      ConnectionPool* connection_pool = ConnectionPool::get_instance();
+      if(connection_pool && connection_pool->get_backend())
+        return connection_pool->get_string_find_operator();
+      else
+        return "LIKE"; // Default
       break;
     }
     case(TYPE_DATE):

@@ -1,5 +1,22 @@
 2009-02-24  Armin Burgmeier  <armin@openismus.com>
 
+	* glom/libglom/connectionpool.h:
+	* glom/libglom/connectionpool.cc: Added a get_string_find_operator()
+	virtual method to ConnectionPoolBackend, and a similar method to
+	ConnectionPool which simply queries its backend.
+
+	* glom/libglom/connectionpool_backends/sqlite.h:
+	* glom/libglom/connectionpool_backends/postgres.h: Implement the new
+	virtual method appropriately.
+
+	* glom/libglom/data_structure/field.cc (sql_find_operator): Use the
+	get_string_find_operator() method of the connectionpool backend in
+	case the field's type is TYPE_TEXT. This fixes Find Mode with SQLite.
+	Bug #570401. I wonder whether libgda can generate a case-insensitive
+	string comparison, which would make this easier for us.
+
+2009-02-24  Armin Burgmeier  <armin@openismus.com>
+
 	* configure.in: Added an --enable-sqlite configure option, which is
 	enabled by default.
 

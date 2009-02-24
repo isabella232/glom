@@ -130,10 +130,18 @@ protected:
    */
   virtual Field::sql_format get_sql_format() const = 0;
 
-  /* Whether the database can be accessed from remote machines, once startup()
+  /** Whether the database can be accessed from remote machines, once startup()
    * was called.
    */
   virtual bool supports_remote_access() const = 0;
+
+  /** The operator to use to compare strings in a case-independant way. This
+   * is backend-depandent. For example, postgres uses ILIKE but SQLite uses
+   * LIKE.
+   * TODO: Maybe we can use libgda to construct the expression, so we don't
+   * need this function.
+   */
+  virtual Glib::ustring get_string_find_operator() const = 0;
 
   /** This method is called for one-time initialization of the database
    * storage. No need to implement this function if the data is centrally
@@ -242,6 +250,7 @@ public:
 
   Field::sql_format get_sql_format() const;
   const FieldTypes* get_field_types() const;
+  Glib::ustring get_string_find_operator() const;
 
   /** Do one-time initialization, such as  creating required database
    * files on disk for later use by their own  database server instance.
