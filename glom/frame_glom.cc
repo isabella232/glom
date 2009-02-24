@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "config.h"
+#include "config.h" // For GLOM_ENABLE_SQLITE, GLOM_ENABLE_CLIENT_ONLY
 
 #include "frame_glom.h"
 #include "application.h"
@@ -29,7 +29,10 @@
 #include <glom/libglom/connectionpool.h>
 #include <glom/libglom/connectionpool_backends/postgres_central.h>
 #include <glom/libglom/connectionpool_backends/postgres_self.h>
-#include <glom/libglom/connectionpool_backends/sqlite.h>
+
+#ifdef GLOM_ENABLE_SQLITE
+# include <glom/libglom/connectionpool_backends/sqlite.h>
+#endif
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #include "mode_design/users/dialog_groups_list.h"
@@ -1659,7 +1662,7 @@ namespace
       }
 
       break;
-#ifndef GLOM_ENABLE_CLIENT_ONLY
+#ifdef GLOM_ENABLE_SQLITE
     case Document_Glom::SQLITE_HOSTED:
       {
         ConnectionPoolBackends::Sqlite* backend = new ConnectionPoolBackends::Sqlite;
@@ -1667,7 +1670,7 @@ namespace
         connection_pool->set_backend(std::auto_ptr<ConnectionPoolBackend>(backend));
       }
       break;
-#endif //GLOM_ENABLE_CLIENT_ONLY
+#endif // GLOM_ENABLE_SQLITE
     default:
       g_assert_not_reached();
       break;
@@ -1926,11 +1929,15 @@ bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring kno
     // not support authentication. I'd prefer to get that information from
     // libgda, but gda_connection_supports_feature() requires a GdaConnection
     // which we don't have at this point.
-    if(document->get_hosting_mode() != Document_Glom::SQLITE_HOSTED &&
-       known_username.empty() && known_password.empty())
+#ifdef GLOM_ENABLE_SQLITE
+    if(document->get_hosting_mode() != Document_Glom::SQLITE_HOSTED)
+#endif
     {
-       response = Glom::Utils::dialog_run_with_help(m_pDialogConnection, "dialog_connection");
-       m_pDialogConnection->hide();
+      if(known_username.empty() && known_password.empty())
+      {
+        response = Glom::Utils::dialog_run_with_help(m_pDialogConnection, "dialog_connection");
+        m_pDialogConnection->hide();
+      }
     }
 
     if(response == Gtk::RESPONSE_OK)

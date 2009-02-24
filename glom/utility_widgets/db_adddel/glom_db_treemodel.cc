@@ -22,7 +22,6 @@
 #include "glom_db_treemodel.h"
 
 #include <glom/libglom/connectionpool.h>
-#include <glom/libglom/connectionpool_backends/sqlite.h> //For checking whether we are using SQLite or not
 #include <glom/libglom/data_structure/glomconversions.h> //For util_build_sql
 #include <glom/libglom/utils.h>
 

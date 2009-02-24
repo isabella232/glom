@@ -288,9 +288,11 @@ std::string Document_Glom::get_connection_self_hosted_directory_uri() const
       case POSTGRES_CENTRAL_HOSTED:
         datadir = parent;
         break;
+#ifdef GLOM_ENABLE_SQLITE
       case SQLITE_HOSTED:
         datadir = parent;
         break;
+#endif
       default:
         g_assert_not_reached();
         break;
@@ -2327,10 +2329,15 @@ bool Document_Glom::load_after()
             mode = POSTGRES_CENTRAL_HOSTED;
           else if(attr_mode == GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_SELF)
             mode = POSTGRES_SELF_HOSTED;
+#ifdef GLOM_ENABLE_SQLITE
           else if(attr_mode == GLOM_ATTRIBUTE_CONNECTION_HOSTING_SQLITE)
             mode = SQLITE_HOSTED;
+#endif
           else
-            mode = POSTGRES_CENTRAL_HOSTED; // Default
+	  {
+            std::cerr << "Document_Glom::load_after(): Hosting mode " << attr_mode << " is not supported" << std::endl;
+            return false; //TODO: Provide more information so the application (or Bakery) can say exactly why loading failed.
+	  }
         }
 
 #ifdef GLOM_ENABLE_CLIENT_ONLY
@@ -2339,9 +2346,8 @@ bool Document_Glom::load_after()
           std::cerr << "Document_Glom::load_after(): Loading failed because the document needs to be self-hosted, but self-hosting is not supported in client only mode" << std::endl;
           return false; //TODO: Provide more information so the application (or Bakery) can say exactly why loading failed.
         }
-#else
-        m_hosting_mode = mode;
 #endif
+        m_hosting_mode = mode;
       }
 
       //Tables:
@@ -3182,9 +3188,11 @@ bool Document_Glom::save_before()
     case POSTGRES_SELF_HOSTED:
       set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_SELF);
       break;
+#ifdef GLOM_ENABLE_SQLITE
     case SQLITE_HOSTED:
       set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_SQLITE);
       break;
+#endif
     default:
       g_assert_not_reached();
       break;

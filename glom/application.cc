@@ -18,6 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "config.h" //For VERSION, GLOM_ENABLE_CLIENT_ONLY, GLOM_ENABLE_SQLITE
+
 #include "application.h"
 #include "dialog_existing_or_new.h"
 
@@ -34,8 +36,6 @@
 
 #include <glom/libglom/connectionpool_backends/postgres_central.h>
 #include <glom/libglom/connectionpool_backends/postgres_self.h>
-
-#include "config.h" //For VERSION.
 
 #include <cstdio>
 #include <memory> //For std::auto_ptr<>
@@ -2219,12 +2219,18 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
           continue;
         }
       }
- 
+
+      bool is_self_hosted = false;
+      if(m_ui_save_extra_newdb_hosting_mode == Document_Glom::POSTGRES_SELF_HOSTED)
+        is_self_hosted = true;
+#ifdef GLOM_ENABLE_SQLITE
+      if(m_ui_save_extra_newdb_hosting_mode == Document_Glom::SQLITE_HOSTED)
+        is_self_hosted = true;
+#endif // GLOM_ENABLE_SQLITE
+
       // Create a directory for self-hosted databases (sqlite or self-hosted
       // postgresql).
-      if(!try_again && fileChooser_SaveExtras &&
-         (m_ui_save_extra_newdb_hosting_mode == Document_Glom::POSTGRES_SELF_HOSTED ||
-          m_ui_save_extra_newdb_hosting_mode == Document_Glom::SQLITE_HOSTED))
+      if(!try_again && fileChooser_SaveExtras && is_self_hosted)
       {
         //Check that the directory does not exist already.
         //The GtkFileChooser could not check for that because it could not know that we would create a directory based on the filename:

@@ -21,7 +21,7 @@
 #ifndef DOCUMENT_GLOM_H
 #define DOCUMENT_GLOM_H
 
-#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
+#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY, GLOM_ENABLE_SQLITE
 
 #include <bakery/Document/Document_XML.h>
 #include <bakery/View/View_Composite.h>
@@ -114,7 +114,9 @@ public:
   {
     POSTGRES_CENTRAL_HOSTED, /*!< The database is hosted on an external postgresql server. */
     POSTGRES_SELF_HOSTED, /*!< A new postgres database process is spawned that hosts the data. */
+#ifdef GLOM_ENABLE_SQLITE
     SQLITE_HOSTED /*!< A sqlite database file is used. */
+#endif // GLOM_ENABLE_SQLITE
   };
 
   /** Set the hosting mode of the database.

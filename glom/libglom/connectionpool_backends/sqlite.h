@@ -24,7 +24,11 @@
 #include <libgdamm.h>
 #include <glom/libglom/connectionpool.h>
 
-#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
+#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY, GLOM_ENABLE_SQLITE
+
+#ifndef GLOM_ENABLE_SQLITE
+# error <sqlite.h> has been included even though sqlite support is disabled
+#endif
 
 namespace Glom
 {

@@ -110,11 +110,14 @@ void FileChooserDialog_SaveExtras::create_child_widgets()
   vbox->pack_start(m_radiobutton_server_postgres_central);
   m_radiobutton_server_postgres_central.show();
 
+#ifdef GLOM_ENABLE_SQLITE
   m_radiobutton_server_sqlite.set_label(_("Create SQLite database in its own folder, to be hosted by this computer."));
   m_radiobutton_server_sqlite.set_tooltip_text(_("SQLite is more light-weight than postgresql, but it does not support authentication or remote access."));
   m_radiobutton_server_sqlite.set_group(group);
   vbox->pack_start(m_radiobutton_server_sqlite);
   m_radiobutton_server_sqlite.show();
+#endif // GLOM_ENABLE_SQLITE
+
   m_radiobutton_server_postgres_selfhosted.set_active(true); // Default
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -140,9 +143,11 @@ void FileChooserDialog_SaveExtras::set_extra_newdb_hosting_mode(Document_Glom::H
   case Document_Glom::POSTGRES_SELF_HOSTED:
     m_radiobutton_server_postgres_selfhosted.set_active();
     break;
+#ifdef GLOM_ENABLE_SQLITE
   case Document_Glom::SQLITE_HOSTED:
     m_radiobutton_server_sqlite.set_active();
     break;
+#endif
   default:
     g_assert_not_reached();
     break;
@@ -160,8 +165,12 @@ Document_Glom::HostingMode FileChooserDialog_SaveExtras::get_extra_newdb_hosting
     return Document_Glom::POSTGRES_CENTRAL_HOSTED;
   else if(m_radiobutton_server_postgres_selfhosted.get_active())
     return Document_Glom::POSTGRES_SELF_HOSTED;
-  else
+#ifdef GLOM_ENABLE_SQLITE
+  else if(m_radiobutton_server_sqlite.get_active())
     return Document_Glom::SQLITE_HOSTED;
+#endif
+  else
+    g_assert_not_reached();
 }
 
 } //namespace Glom

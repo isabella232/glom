@@ -21,6 +21,8 @@
 #ifndef GLOM_UTILITY_WIDGETS_FILECHOOSERDIALOG_SAVEEXTRAS_H
 #define GLOM_UTILITY_WIDGETS_FILECHOOSERDIALOG_SAVEEXTRAS_H
 
+#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY, GLOM_ENABLE_SQLITE
+
 #include <glom/libglom/document/document_glom.h>
 
 #include <gtkmm/filechooserdialog.h>
@@ -29,8 +31,6 @@
 #include <gtkmm/frame.h>
 #include <gtkmm/entry.h>
 #include <gtkmm/radiobutton.h>
-
-#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 namespace Glom
 {
@@ -68,7 +68,11 @@ protected:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   Gtk::RadioButton m_radiobutton_server_postgres_central;
   Gtk::RadioButton m_radiobutton_server_postgres_selfhosted;
+
+#ifdef GLOM_ENABLE_SQLITE
   Gtk::RadioButton m_radiobutton_server_sqlite;
+#endif // GLOM_ENABLE_SQLITE
+
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 };
 
