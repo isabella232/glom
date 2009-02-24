@@ -1,5 +1,15 @@
 2009-02-24  Armin Burgmeier  <armin@openismus.com>
 
+	* glom/libglom/connectionpool_backends/postgres_central.cc (set_host):
+	Only reset m_port to zero if m_try_other_ports is true. Otherwise, a
+	specific port has already been set by the user.
+	(connect): Compare m_port to 0, not port, which is a Glib::ustring.
+	This fixes a warning about g_utf8_collate's argument being NULL, and
+	fixes connection to a remote postgres server advertized via networked
+	glom.
+
+2009-02-24  Armin Burgmeier  <armin@openismus.com>
+
 	* glom/libglom/connectionpool_backends/backend.h:
 	* glom/libglom/connectionpool_backends/backend.cc: Moved the
 	ConnectionPool backend base class into a new file in the

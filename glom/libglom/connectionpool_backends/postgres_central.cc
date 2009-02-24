@@ -68,7 +68,10 @@ void PostgresCentralHosted::set_host(const Glib::ustring& value)
   if(value != m_host)
   {
     m_host = value;
-    m_port = 0; // Force us to try all ports again when connecting for the first time, then remember the working port again.
+
+    // Force us to try all ports again when connecting for the first time, then remember the working port again. Except when a specific port was set to be used.
+    if(m_try_other_ports)
+      m_port = 0;
   }
 }
 
@@ -106,7 +109,7 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::connect(const Glib::
 
   //Start with the remembered-as-working port:
   Glib::ustring port = port_as_string(m_port);
-  if(port == 0)
+  if(m_port == 0)
     port = *iter_port ++;
 
   connection = attempt_connect(m_host, port, database, username, password, error);
