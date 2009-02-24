@@ -44,7 +44,7 @@ main(int argc, char* argv[])
   Gtk::Window window;
   //Gtk::VBox flowtable;
   Glom::FlowTable flowtable;
-  flowtable.set_columns_count(4);
+  flowtable.set_columns_count(3);
   flowtable.set_padding(5);
 
   Gtk::Entry button7; button7.set_text("seven");

@@ -841,7 +841,7 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
       //start a new column:
       column_child_y_start = allocation.get_y();
       int column_x_start_plus_singles = column_x_start + singles_max_width;
-      column_x_start += column_x_start_second + second_max_width;
+      column_x_start = column_x_start_second + second_max_width;
       column_x_start = MAX(column_x_start, column_x_start_plus_singles); //Maybe the single items take up even more width.
       column_x_start += m_padding;
 
