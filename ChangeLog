@@ -1,5 +1,24 @@
 2009-02-24  Armin Burgmeier  <armin@openismus.com>
 
+	* glom/libglom/connectionpool_backends/backend.h:
+	* glom/libglom/connectionpool_backends/backend.cc: Moved the
+	ConnectionPool backend base class into a new file in the
+	connectionpool_backends subdirectory.
+
+	* glom/libglom/connectionpool_backends/Makefile.am: Add it to the
+	build.
+
+	* glom/libglom/connectionpool_backends/postgres.h:
+	* glom/libglom/connectionpool_backends/sqlite.h:
+	* glom/libglom/connectionpool_backends/sqlite.cc:
+	* glom/libglom/connectionpool.h:
+	* glom/libglom/connectionpool.cc:
+	* glom/libglom/test_connectionpool.cc:
+	* glom/dialog_connection.cc:
+	* glom/frame_glom.cc: Adapt.
+
+2009-02-24  Armin Burgmeier  <armin@openismus.com>
+
 	* glom/libglom/connectionpool.h:
 	* glom/libglom/connectionpool.cc: Added a get_string_find_operator()
 	virtual method to ConnectionPoolBackend, and a similar method to

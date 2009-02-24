@@ -21,14 +21,15 @@
 #ifndef GLOM_CONNECTIONPOOL_H
 #define GLOM_CONNECTIONPOOL_H
 
+#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
+
 #include <libgdamm.h>
 #include <glom/libglom/sharedptr.h>
 #include <glom/libglom/data_structure/fieldtypes.h>
 #include <glom/libglom/data_structure/field.h>
+#include <glom/libglom/connectionpool_backends/backend.h>
 
 #include <memory> // For std::auto_ptr
-
-#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 //Avoid including the header here:
 extern "C"
@@ -48,26 +49,6 @@ namespace Glom
 {
 
 class AvahiPublisher;
-
-class ExceptionConnection : public std::exception
-{
-public:
-  enum failure_type
-  {
-    FAILURE_NO_SERVER, //Either there was no attempt to connect to a specific database, or the connection failed both with and without specifying the database.
-    FAILURE_NO_DATABASE //Connection without specifying the database was possible.
-  };
-
-  ExceptionConnection(failure_type failure);
-  virtual ~ExceptionConnection() throw();
-
-  virtual const char* what() const throw();
-
-  virtual failure_type get_failure_type() const;
-
-protected:
-  failure_type m_failure_type;
-};
 
 /** When the SharedConnection is destroyed, it will inform the connection pool,
  * so that the connection pool can keep track of who is using the connection,
@@ -98,90 +79,6 @@ protected:
 
 class Document_Glom;
 
-//TODO: Put this in the sub-directory:
-
-/** This hides database specific functionality from the ConnectionPool, so
- * the ConnectionPool can be used without worrying about the actual database
- * backend in use. Use ConnectionPool::set_backend() to set the backend for
- * the connectionpool to use. */
-class ConnectionPoolBackend
-{
-  friend class ConnectionPool;
-public:
-  virtual ~ConnectionPoolBackend() {}
-  typedef std::vector<sharedptr<const Field> > type_vecConstFields;
-
-protected:
-  /** Helper functions for backend implementations to use, so that these don't
-   * need to worry whether glibmm was compiled with exceptions or not.
-   */
-  bool query_execute(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& sql_query, std::auto_ptr<Glib::Error>& error);
-  bool set_server_operation_value(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, const Glib::ustring& path, const Glib::ustring& value, std::auto_ptr<Glib::Error>& error);
-  Glib::RefPtr<Gnome::Gda::ServerOperation> create_server_operation(const Glib::RefPtr<Gnome::Gda::ServerProvider>& provider, const Glib::RefPtr<Gnome::Gda::Connection>& connection, Gnome::Gda::ServerOperationType type, std::auto_ptr<Glib::Error>& error);
-  bool perform_server_operation(const Glib::RefPtr<Gnome::Gda::ServerProvider>& provider, const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, std::auto_ptr<Glib::Error>& error);
-  bool begin_transaction(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& name, Gnome::Gda::TransactionIsolation level, std::auto_ptr<Glib::Error>& error);
-  bool commit_transaction(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& name, std::auto_ptr<Glib::Error>& error);
-  bool rollback_transaction(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& name, std::auto_ptr<Glib::Error>& error);
-
-  /* TODO: Merge create_database() and initialize() into a single function?
-   */
-
-  /** This method specifies the format of values in SQL expressions.
-   */
-  virtual Field::sql_format get_sql_format() const = 0;
-
-  /** Whether the database can be accessed from remote machines, once startup()
-   * was called.
-   */
-  virtual bool supports_remote_access() const = 0;
-
-  /** The operator to use to compare strings in a case-independant way. This
-   * is backend-depandent. For example, postgres uses ILIKE but SQLite uses
-   * LIKE.
-   * TODO: Maybe we can use libgda to construct the expression, so we don't
-   * need this function.
-   */
-  virtual Glib::ustring get_string_find_operator() const = 0;
-
-  /** This method is called for one-time initialization of the database
-   * storage. No need to implement this function if the data is centrally
-   * hosted, not managed by Glom.
-   */
-  virtual bool initialize(Gtk::Window* parent_window, const Glib::ustring& initial_username, const Glib::ustring& password);
-
-  /** This method is called before the backend is used otherwise. This can
-   * be used to start a self-hosted database server. There is no need to implement
-   * this function if there is no need for extra startup code.
-   */
-  virtual bool startup(Gtk::Window* parent_window);
-
-  /** This method is called when the backend is no longer used. This can be
-   * used to shut down a self-hosted database server. There is no need to
-   * implement this function if there is no need for extra cleanup code.
-   */
-  virtual void cleanup(Gtk::Window* parent_window);
-
-  /** This method is called to create a connection to the database server.
-   * There exists only the variant with an error variable as last parameter
-   * so we don't need #ifdefs all over the code. This part of the API is only
-   * used by the ConnectionPool which will translate the error back into
-   * an exception in case exceptions are enabled.
-    */
-  virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error) = 0;
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual bool add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const sharedptr<const Field>& field, std::auto_ptr<Glib::Error>& error);
-
-  virtual bool drop_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const Glib::ustring& field_name, std::auto_ptr<Glib::Error>& error);
-
-  virtual bool change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vecConstFields& old_fields, const type_vecConstFields& new_fields, std::auto_ptr<Glib::Error>& error);
-
-  /** This method is called to create a new database on the
-   * database server. */
-  virtual bool create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error) = 0;
-#endif
-};
-
 /** This is a singleton.
  * Use get_instance().
  */
@@ -194,7 +91,8 @@ protected:
   //ConnectionPool& operator=(const ConnectionPool& src);
 
 public:
-  typedef ConnectionPoolBackend::type_vecConstFields type_vecConstFields;
+  typedef ConnectionPoolBackends::Backend Backend;
+  typedef Backend::type_vecConstFields type_vecConstFields;
 
   /** Get the singleton instance.
    * Use delete_instance() when the program quits.
@@ -207,10 +105,10 @@ public:
   bool get_ready_to_connect() const;
   void set_ready_to_connect(bool val = true);
 
-  void set_backend(std::auto_ptr<ConnectionPoolBackend> backend);
+  void set_backend(std::auto_ptr<Backend> backend);
 
-  ConnectionPoolBackend* get_backend();
-  const ConnectionPoolBackend* get_backend() const;
+  Backend* get_backend();
+  const Backend* get_backend() const;
 
   /** This method will return a SharedConnection, either by opening a new connection or returning an already-open connection.
    * When that SharedConnection is destroyed, or when SharedConnection::close() is called, then the ConnectionPool will be informed.
@@ -345,7 +243,7 @@ protected:
   Gtk::Dialog* m_dialog_epc_progress; //For progress while generating certificates.
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  std::auto_ptr<ConnectionPoolBackend> m_backend;
+  std::auto_ptr<Backend> m_backend;
   Glib::RefPtr<Gnome::Gda::Connection> m_refGdaConnection;
   guint m_sharedconnection_refcount;
   bool m_ready_to_connect;

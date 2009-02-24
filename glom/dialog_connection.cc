@@ -92,7 +92,7 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
 
       if(document->get_hosting_mode() == Document_Glom::POSTGRES_CENTRAL_HOSTED)
       {
-        ConnectionPoolBackend* backend = connection_pool->get_backend();
+        ConnectionPool::Backend* backend = connection_pool->get_backend();
         ConnectionPoolBackends::PostgresCentralHosted* central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
         g_assert(central != NULL);
 
@@ -123,7 +123,7 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
       Document_Glom* unconst = const_cast<Document_Glom*>(document);
       if(document->get_hosting_mode() == Document_Glom::POSTGRES_CENTRAL_HOSTED)
       {
-        ConnectionPoolBackend* backend = connection_pool->get_backend();
+        ConnectionPool::Backend* backend = connection_pool->get_backend();
         ConnectionPoolBackends::PostgresCentralHosted* central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
         g_assert(central != NULL);
 
@@ -132,7 +132,7 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
 #ifndef GLOM_ENABLE_CLIENT_ONLY
       else if(document->get_hosting_mode() == Document_Glom::POSTGRES_SELF_HOSTED)
       {
-        ConnectionPoolBackend* backend = connection_pool->get_backend();
+        ConnectionPool::Backend* backend = connection_pool->get_backend();
         ConnectionPoolBackends::PostgresSelfHosted* self = dynamic_cast<ConnectionPoolBackends::PostgresSelfHosted*>(backend);
         g_assert(self != NULL);
 

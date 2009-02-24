@@ -47,7 +47,7 @@ main()
       backend->set_port(5433);
       backend->set_try_other_ports(false);
 
-      connection_pool->set_backend(std::auto_ptr<Glom::ConnectionPoolBackend>(backend));
+      connection_pool->set_backend(std::auto_ptr<Glom::ConnectionPool::Backend>(backend));
       connection_pool->set_ready_to_connect(); //Box_WithButtons::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
     }
 

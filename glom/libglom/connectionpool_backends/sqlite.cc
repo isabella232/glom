@@ -350,7 +350,7 @@ bool Sqlite::add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, 
   // in that case.
   if(!field->get_primary_key())
   {
-    return ConnectionPoolBackend::add_column(connection, table_name, field, error);
+    return Backend::add_column(connection, table_name, field, error);
   }
   else
   {

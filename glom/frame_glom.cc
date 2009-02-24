@@ -1648,7 +1648,7 @@ namespace
       {
         ConnectionPoolBackends::PostgresSelfHosted* backend = new ConnectionPoolBackends::PostgresSelfHosted;
         backend->set_self_hosting_data_uri(document->get_connection_self_hosted_directory_uri());
-        connection_pool->set_backend(std::auto_ptr<ConnectionPoolBackend>(backend));
+        connection_pool->set_backend(std::auto_ptr<ConnectionPool::Backend>(backend));
       }
       break;
 #endif //GLOM_ENABLE_CLIENT_ONLY
@@ -1658,7 +1658,7 @@ namespace
         backend->set_host(document->get_connection_server());
         backend->set_port(document->get_connection_port());
         backend->set_try_other_ports(document->get_connection_try_other_ports());
-        connection_pool->set_backend(std::auto_ptr<ConnectionPoolBackend>(backend));
+        connection_pool->set_backend(std::auto_ptr<ConnectionPool::Backend>(backend));
       }
 
       break;
@@ -1667,7 +1667,7 @@ namespace
       {
         ConnectionPoolBackends::Sqlite* backend = new ConnectionPoolBackends::Sqlite;
         backend->set_database_directory_uri(document->get_connection_self_hosted_directory_uri());
-        connection_pool->set_backend(std::auto_ptr<ConnectionPoolBackend>(backend));
+        connection_pool->set_backend(std::auto_ptr<ConnectionPool::Backend>(backend));
       }
       break;
 #endif // GLOM_ENABLE_SQLITE
@@ -1874,7 +1874,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
         // Remember host if the document is not self hosted
         if(document->get_hosting_mode() == Document_Glom::POSTGRES_CENTRAL_HOSTED)
         {
-          ConnectionPoolBackend* backend = connection_pool->get_backend();
+          ConnectionPool::Backend* backend = connection_pool->get_backend();
           ConnectionPoolBackends::PostgresCentralHosted* central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
           g_assert(central != NULL);
 
