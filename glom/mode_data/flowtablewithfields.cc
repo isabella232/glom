@@ -539,7 +539,7 @@ void FlowTableWithFields::add_field_at_position(const sharedptr<LayoutItem_Field
       label->set_property("yalign", 0.0); //Equivalent to Gtk::ALIGN_TOP. Center is neater next to entries, but center is silly next to large images.
   }
   
-  Gtk::EventBox* eventbox = new Gtk::EventBox();
+  Gtk::EventBox* eventbox = Gtk::manage(new Gtk::EventBox());
   eventbox->add (*info.m_first);
   eventbox->set_visible_window (false);
   eventbox->set_events (Gdk::ALL_EVENTS_MASK);
