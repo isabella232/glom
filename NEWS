@@ -1,3 +1,39 @@
+1.9.2: (unstable)
+
+* Sqlite backend:
+  - Added a configure option to enable/disable sqlite support.
+    This is the last Glom version that will enable sqlite by default,
+    because this is only intended for embedded use, with reduced functionality.
+  - Fix Find mode. Bug #570401
+  - Don't lose the non-NULL field constraint when changing fields.
+  - Release any existing DataModels when changing the table, to avoid sqlite 
+    errors. Bug #572847
+  - Various fixes for field changes.
+  (Armin Burgmeier)
+* Networked Glom: Correct use of wrong port.
+  (Armin Burgmeier) Bug #572982
+* Details:
+  - Avoid vast extra space when using 3 or more columns. 
+    Bug #539369 (maximiliano)
+  - Show the Open button (but not Find) for related fields that are primary 
+    keys, so we can navigate to that record. Bug #571975
+  - Avoid showing scientific e notation for up to 15 digits, instead of 7.
+   (Murray Cumming)
+* Cache the user privileges for a short time, to improve performance.
+  (Murray Cumming) Bug #567473 
+* Import: Add a .cvs filter to the file chooser dialog.
+  (David King) Bug #572702
+* Avoid leaking a Gtk::EventBox.
+  (Armin Burgmeier)
+* Build:
+  - Updated for latest libgda/libgdamm API.
+  - Fixed the build with --enable-client-only.
+  - Fix various minor compiler warnings.
+  - Updated the .glade file to glade-3 format. Bug #567470\
+  - Use the postgres executable instead of the deprecated postmaster executable.
+    Bug #525108
+  (Murray Cumming)
+
 1.9.1: (unstable)
 
 * Sqlite support: Improvements, including changing of fields types, and 
