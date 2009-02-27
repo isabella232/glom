@@ -1880,6 +1880,20 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 
           document->set_connection_server(central->get_host());
         }
+        // Remember port if the document is self-hosted, so that remote
+        // connections to the database (usinc browse network) know what port to use.
+        // TODO: There is already similar code in
+        // connect_to_server_with_connection_settings, which is just not
+        // executed because it failed with no database present. We should
+        // somehow avoid this code duplication.
+        else if(document->get_hosting_mode() == Document_Glom::POSTGRES_SELF_HOSTED)
+        {
+          ConnectionPool::Backend* backend = connection_pool->get_backend();
+          ConnectionPoolBackends::PostgresSelfHosted* self = dynamic_cast<ConnectionPoolBackends::PostgresSelfHosted*>(backend);
+          g_assert(self != NULL);
+
+          document->set_connection_port(self->get_port());
+        }
 
         return true;
       }

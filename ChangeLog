@@ -1,5 +1,13 @@
 2009-02-27  Armin Burgmeier  <armin@openismus.com>
 
+	* glom/frame_glom.cc:
+	(connection_request_password_and_choose_new_database_name): When
+	creating a new self-hosting postgres database, then store the port it
+	uses within the document, so that remote connections (using browse
+	network) can connect to the newly created database. Bug #572982.
+
+2009-02-27  Armin Burgmeier  <armin@openismus.com>
+
 	* glom/mode_design/fields/box_db_table_definition.cc (on_adddel_add):
 	Add newly added field into document before refreshing m_vecFields, so
 	that Base_DB::get_fields_for_table() has an up-to-date document. This
