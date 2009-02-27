@@ -1,3 +1,13 @@
+2009-02-27  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/mode_design/fields/box_db_table_definition.cc (on_adddel_add):
+	Add newly added field into document before refreshing m_vecFields, so
+	that Base_DB::get_fields_for_table() has an up-to-date document. This
+	fixes changing newly added fields with SQLite.
+
+	* configure.in: Fixed a typo, which caused libgda-sqlite-4.0 not being
+	required even when SQLite support was enabled.
+
 1.9.2:
 
 2009-02-24  Murray Cumming  <murrayc@murrayc.com>

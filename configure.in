@@ -112,7 +112,7 @@ else
 fi
 
 if test "$enable_sqlite" = "yes"; then
-	REQIRED_LIBS="$REQUIRED_LIBS libgda-sqlite-4.0"
+	REQUIRED_LIBS="$REQUIRED_LIBS libgda-sqlite-4.0"
 fi
 
 # Checks for libraries

@@ -182,16 +182,6 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
     const bool bTest = add_column(m_table_name, field, get_app_window()); //TODO: Get schema type for Field::TYPE_NUMERIC
     if(bTest)
     {
-      //Show the new field (fill in the other cells):
-
-      //Update our list of database fields.
-      //update_gda_metastore_for_table(m_table_name); // already done by add_column()
-      fill_fields();
-
-      //fill_from_database(); //We cannot change the structure in a cell renderer signal handler.
-
-      fill_field_row(row, field);
-
       //Store the generated title in the document:
       //on_adddel_changed(row, m_colTitle);
 
@@ -202,10 +192,24 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
       Document_Glom* pDoc = static_cast<Document_Glom*>(get_document());
       if(pDoc)
       {
+        std::cout << field->get_glom_type() << std::endl;
         Document_Glom::type_vecFields vecFields = pDoc->get_table_fields(m_table_name);
         vecFields.push_back(field);
         pDoc->set_table_fields(m_table_name, vecFields);
       }
+
+      // Do this after having added the new field to the document, so
+      // Base_DB::get_fields_for_table() can use it to compare the fields from
+      // the database against.
+
+      //Show the new field (fill in the other cells):
+
+      //Update our list of database fields.
+      fill_fields();
+
+      //fill_from_database(); //We cannot change the structure in a cell renderer signal handler.
+
+      fill_field_row(row, field);
 
       m_AddDel.select_item(field->get_name(), m_colName, false);
 
