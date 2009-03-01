@@ -1,3 +1,12 @@
+1.9.3: (unstable)
+
+* Fix network sharing with just-created documents.
+  Bug #572982.
+* Sqlite backend: Fix changing newly added fields with SQLite.
+  (Armin Burgmeier)
+* Build: Builds again against a released libgda version (3.99.12).
+  (Murray Cumming)
+
 1.9.2: (unstable)
 
 * Sqlite backend:
