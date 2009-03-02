@@ -99,26 +99,59 @@ void FileChooserDialog_SaveExtras::create_child_widgets()
   box_label->show();
   vbox->pack_start(*box_label);
 
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_radiobutton_server_postgres_selfhosted.set_label(_("Create postgresql database in its own folder, to be hosted by this computer."));
+
+#ifdef GLOM_ENABLE_SQLITE
+
+#ifdef GLOM_ENABLE_POSTGRESQL
+  //Use titles that show the distinction between PostgreSQL and SQLite:
+  m_radiobutton_server_postgres_selfhosted.set_label(_("Create PostgreSQL database in its own folder, to be hosted by this computer."));
   vbox->pack_start(m_radiobutton_server_postgres_selfhosted);
   m_radiobutton_server_postgres_selfhosted.show();
 
-  m_radiobutton_server_postgres_central.set_label(_("Create database on an external postgresql database server, to be specified in the next step."));
+  m_radiobutton_server_postgres_central.set_label(_("Create database on an external PostgreSQL database server, to be specified in the next step."));
   Gtk::RadioButton::Group group = m_radiobutton_server_postgres_selfhosted.get_group();
   m_radiobutton_server_postgres_central.set_group(group);
   vbox->pack_start(m_radiobutton_server_postgres_central);
   m_radiobutton_server_postgres_central.show();
 
-#ifdef GLOM_ENABLE_SQLITE
   m_radiobutton_server_sqlite.set_label(_("Create SQLite database in its own folder, to be hosted by this computer."));
-  m_radiobutton_server_sqlite.set_tooltip_text(_("SQLite is more light-weight than postgresql, but it does not support authentication or remote access."));
+  m_radiobutton_server_sqlite.set_tooltip_text(_("SQLite does not support authentication or remote access but is suitable for embedded devices."));
   m_radiobutton_server_sqlite.set_group(group);
   vbox->pack_start(m_radiobutton_server_sqlite);
   m_radiobutton_server_sqlite.show();
-#endif // GLOM_ENABLE_SQLITE
 
   m_radiobutton_server_postgres_selfhosted.set_active(true); // Default
+#else
+  //Only SQLite:
+  std::cerr << "WARNING: Glom was built with developer mode (not client-only) but with only support for SQLite. This is very unusual. Postgres is the default backend so it should not be hidden from developers." << std::endl; 
+  //TODO: Hide this because it's the only radio button, so it's not a choice:
+  m_radiobutton_server_sqlite.set_label(_("Create database in its own folder, to be hosted by this computer, using SQLite"));
+  //m_radiobutton_server_sqlite.set_group(group);
+  vbox->pack_start(m_radiobutton_server_sqlite);
+  m_radiobutton_server_sqlite.show();
+#endif // GLOM_ENABLE_POSTGRESQL
+
+#else //GLOM_ENABLE_SQLITE
+  //Only PostgreSQL:
+  //Use titles that don't mention the boring name of the backend:
+  m_radiobutton_server_postgres_selfhosted.set_label(_("Create database in its own folder, to be hosted by this computer."));
+  vbox->pack_start(m_radiobutton_server_postgres_selfhosted);
+  m_radiobutton_server_postgres_selfhosted.show();
+
+  m_radiobutton_server_postgres_central.set_label(_("Create database on an external database server, to be specified in the next step."));
+  Gtk::RadioButton::Group group = m_radiobutton_server_postgres_selfhosted.get_group();
+  m_radiobutton_server_postgres_central.set_group(group);
+  vbox->pack_start(m_radiobutton_server_postgres_central);
+  m_radiobutton_server_postgres_central.show();
+
+  m_radiobutton_server_postgres_selfhosted.set_active(true); // Default
+
+#endif //GLOM_ENABLE_SQLITE
+
+
+
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 
@@ -137,17 +170,20 @@ void FileChooserDialog_SaveExtras::set_extra_newdb_hosting_mode(Document_Glom::H
 {
   switch(mode)
   {
+#ifdef GLOM_ENABLE_POSTGRESQL
   case Document_Glom::POSTGRES_CENTRAL_HOSTED:
     m_radiobutton_server_postgres_central.set_active();
     break;
   case Document_Glom::POSTGRES_SELF_HOSTED:
     m_radiobutton_server_postgres_selfhosted.set_active();
     break;
+#endif //GLOM_ENABLE_POSTGRESQL
+
 #ifdef GLOM_ENABLE_SQLITE
   case Document_Glom::SQLITE_HOSTED:
     m_radiobutton_server_sqlite.set_active();
     break;
-#endif
+#endif //GLOM_ENABLE_SQLITE
   default:
     g_assert_not_reached();
     break;
@@ -161,16 +197,25 @@ Glib::ustring FileChooserDialog_SaveExtras::get_extra_newdb_title() const
 
 Document_Glom::HostingMode FileChooserDialog_SaveExtras::get_extra_newdb_hosting_mode() const
 {
+#ifdef GLOM_ENABLE_POSTGRESQL
   if(m_radiobutton_server_postgres_central.get_active())
     return Document_Glom::POSTGRES_CENTRAL_HOSTED;
   else if(m_radiobutton_server_postgres_selfhosted.get_active())
     return Document_Glom::POSTGRES_SELF_HOSTED;
+#endif //GLOM_ENABLE_POSTGRESQL
+
 #ifdef GLOM_ENABLE_SQLITE
-  else if(m_radiobutton_server_sqlite.get_active())
+  if(m_radiobutton_server_sqlite.get_active())
     return Document_Glom::SQLITE_HOSTED;
-#endif
-  else
-    g_assert_not_reached();
+#endif //GLOM_ENABLE_SQLITE
+
+  g_assert_not_reached();
+
+#ifdef GLOM_ENABLE_SQLITE
+  return Document_Glom::SQLITE_HOSTED; //Arbitrary
+#else
+  return Document_Glom::POSTGRES_SELF_HOSTED; //Arbitrary.
+#endif //GLOM_ENABLE_SQLITE
 }
 
 } //namespace Glom

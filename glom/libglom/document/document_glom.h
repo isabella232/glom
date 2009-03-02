@@ -110,13 +110,23 @@ public:
 
   static guint get_latest_known_document_format_version();
 
+  //TODO: Use a prefix instead of a suffix for these enum names:
   enum HostingMode
   {
+#ifdef GLOM_ENABLE_POSTGRESQL
     POSTGRES_CENTRAL_HOSTED, /*!< The database is hosted on an external postgresql server. */
     POSTGRES_SELF_HOSTED, /*!< A new postgres database process is spawned that hosts the data. */
+#endif //GLOM_ENABLE_POSTGRESQL
 #ifdef GLOM_ENABLE_SQLITE
-    SQLITE_HOSTED /*!< A sqlite database file is used. */
+    SQLITE_HOSTED, /*!< A sqlite database file is used. */
 #endif // GLOM_ENABLE_SQLITE
+
+    //This reduces the ifdefs elsewhere:
+#ifdef GLOM_ENABLE_POSTGRESQL
+    DEFAULT_HOSTED = POSTGRES_CENTRAL_HOSTED
+#else
+    DEFAULT_HOSTED = SQLITE_HOSTED
+#endif
   };
 
   /** Set the hosting mode of the database.

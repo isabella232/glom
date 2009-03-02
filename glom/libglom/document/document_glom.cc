@@ -208,7 +208,7 @@ namespace Glom
 
 Document_Glom::Document_Glom()
 :
-  m_hosting_mode(POSTGRES_CENTRAL_HOSTED),
+  m_hosting_mode(DEFAULT_HOSTED),
   m_connection_port(0),
   m_connection_try_other_ports(false),
   m_block_cache_update(false),
@@ -282,17 +282,20 @@ std::string Document_Glom::get_connection_self_hosted_directory_uri() const
     {
       switch(m_hosting_mode)
       {
+#ifdef GLOM_ENABLE_POSTGRESQL
       case POSTGRES_SELF_HOSTED:
         datadir = parent->get_child("glom_postgres_data");
         break;
       case POSTGRES_CENTRAL_HOSTED:
         datadir = parent;
         break;
+#endif //GLOM_ENABLE_POSTGRESQL
+
 #ifdef GLOM_ENABLE_SQLITE
       case SQLITE_HOSTED:
         datadir = parent;
         break;
-#endif
+#endif //GLOM_ENABLE_SQLITE
       default:
         g_assert_not_reached();
         break;
@@ -2313,26 +2316,32 @@ bool Document_Glom::load_after()
         m_connection_user = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_USER);
         m_connection_database = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_DATABASE);
 
-        Glib::ustring attr_mode = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE);
-        HostingMode mode;
+        const Glib::ustring attr_mode = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE);
+
+        HostingMode mode = DEFAULT_HOSTED;
 
         if(attr_mode.empty())
         {
+#ifdef GLOM_ENABLE_POSTGRESQL
           // If no hosting mode is set, then try the self_hosted flag which
           // was used before sqlite support was implemented.
           const bool self_hosted = get_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SELF_HOSTED);
           mode = self_hosted ? POSTGRES_SELF_HOSTED : POSTGRES_CENTRAL_HOSTED;
+#endif //GLOM_ENABLE_POSTGRESQL
         }
         else
         {
+#ifdef GLOM_ENABLE_POSTGRESQL
           if(attr_mode == GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_CENTRAL)
             mode = POSTGRES_CENTRAL_HOSTED;
           else if(attr_mode == GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_SELF)
             mode = POSTGRES_SELF_HOSTED;
+#endif //GLOM_ENABLE_POSTGRESQL
+
 #ifdef GLOM_ENABLE_SQLITE
-          else if(attr_mode == GLOM_ATTRIBUTE_CONNECTION_HOSTING_SQLITE)
+          if(attr_mode == GLOM_ATTRIBUTE_CONNECTION_HOSTING_SQLITE)
             mode = SQLITE_HOSTED;
-#endif
+#endif //GLOM_ENABLE_SQLITE
           else
 	  {
             std::cerr << "Document_Glom::load_after(): Hosting mode " << attr_mode << " is not supported" << std::endl;
@@ -3182,12 +3191,15 @@ bool Document_Glom::save_before()
 
     switch(m_hosting_mode)
     {
+#ifdef GLOM_ENABLE_POSTGRESQL
     case POSTGRES_CENTRAL_HOSTED:
       set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_CENTRAL);
       break;
     case POSTGRES_SELF_HOSTED:
       set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_SELF);
       break;
+#endif //GLOM_ENABLE_POSTGRESQL
+
 #ifdef GLOM_ENABLE_SQLITE
     case SQLITE_HOSTED:
       set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_SQLITE);

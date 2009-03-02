@@ -28,8 +28,12 @@
 #include <giomm.h>
 
 // For postgres availability checks:
+#ifdef GLOM_ENABLE_POSTGRESQL
 #include <glom/libglom/connectionpool_backends/postgres.h>
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 #include <glom/libglom/connectionpool_backends/postgres_self.h>
+#endif //GLOM_ENABLE_CLIENT_ONLY
+#endif //GLOM_ENABLE_POSTGRESQL
 
 // For sanity checks:
 #include <glom/libglom/data_structure/glomconversions.h> // For GLOM_IMAGE_FORMAT
@@ -254,6 +258,7 @@ main(int argc, char* argv[])
     //debugging:
     //input_uri = "file:///home/murrayc/cvs/gnome212/glom/examples/example_smallbusiness.glom";
 
+#ifdef GLOM_ENABLE_POSTGRESQL
     bool install_complete = false;
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     //Check that PostgreSQL is really available:
@@ -271,6 +276,7 @@ main(int argc, char* argv[])
     // So just prevent this in general. It is safer anyway.
     if(!Glom::ConnectionPool::check_user_is_not_root())
       return -1;
+#endif //GLOM_ENABLE_POSTGRESQL
 
 
     // Some more sanity checking:

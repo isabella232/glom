@@ -58,7 +58,7 @@ PostgresCentralHosted::PostgresCentralHosted()
 
   m_list_ports.push_back("5433"); //Ubuntu Dapper seems to default to this for Postgres 8.1, probably to avoid a clash with Postgres 7.4
 
-  m_list_ports.push_back("5434"); //Earlier versions of Ubuntu Feistry defaulted to this for Postgres 8.2.
+  m_list_ports.push_back("5434"); //Earlier versions of Ubuntu Feisty defaulted to this for Postgres 8.2.
   m_list_ports.push_back("5435"); //In case Ubuntu increases the port number again in future.
   m_list_ports.push_back("5436"); //In case Ubuntu increases the port number again in future.
 }

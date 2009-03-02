@@ -86,11 +86,6 @@ namespace Conversions
   Glib::RefPtr<Gdk::Pixbuf> get_pixbuf_for_gda_value(const Gnome::Gda::Value& value);
 }
 
-//Copied from Postgres's PQunescapeBytea() so I don't have the trouble of finding and linking to the 
-//postgres libraries directly, without the benefit of a pkg-config .pc file. murrayc.
-unsigned char *
-Glom_PQunescapeBytea(const unsigned char *strtext, size_t *retbuflen);
-
 } //namespace Glom
 
 #endif //GLOM_DATASTRUCTURE_GLOMCONVERSIONS_H

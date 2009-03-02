@@ -23,8 +23,11 @@
 #include <glibmm/i18n.h>
 
 #include <glom/libglom/connectionpool.h>
+
+#ifdef GLOM_ENABLE_POSTGRESQL
 #include <glom/libglom/connectionpool_backends/postgres_central.h>
 #include <glom/libglom/connectionpool_backends/postgres_self.h>
+#endif //#ifdef GLOM_ENABLE_POSTGRESQL
 
 namespace Glom
 {
@@ -90,6 +93,7 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
       //std::cout << "debug: Dialog_Connection::connect_to_server_with_connection_settings(): m_database_name=" << m_database_name << std::endl;
       connection_pool->set_database(m_database_name);
 
+#ifdef GLOM_ENABLE_POSTGRESQL
       if(document->get_hosting_mode() == Document_Glom::POSTGRES_CENTRAL_HOSTED)
       {
         ConnectionPool::Backend* backend = connection_pool->get_backend();
@@ -98,7 +102,8 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
 
         central->set_host(m_entry_host->get_text());
       }
- 
+#endif //GLOM_ENABLE_POSTGRESQL
+
       connection_pool->set_user(m_entry_user->get_text());
       connection_pool->set_password(m_entry_password->get_text());
 
@@ -115,12 +120,14 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
     result = Base_DB::connect_to_server(const_cast<Dialog_Connection*>(this), error);
 #endif
 
+#ifdef GLOM_ENABLE_POSTGRESQL
     if(document)
     {
       //Remember the port, 
       //to make opening faster next time,
       //and so we can tell connecting clients (using browse network) what port to use:
       Document_Glom* unconst = const_cast<Document_Glom*>(document);
+
       if(document->get_hosting_mode() == Document_Glom::POSTGRES_CENTRAL_HOSTED)
       {
         ConnectionPool::Backend* backend = connection_pool->get_backend();
@@ -129,6 +136,7 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
 
         unconst->set_connection_port(central->get_port() );
       }
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
       else if(document->get_hosting_mode() == Document_Glom::POSTGRES_SELF_HOSTED)
       {
@@ -138,8 +146,9 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
 
         unconst->set_connection_port(self->get_port() );
       }
-#endif
+#endif //GLOM_ENABLE_CLIENT_ONLY
     }
+#endif //GLOM_ENABLE_POSTGRESQL
 
     /*
     if(document)
@@ -161,6 +170,7 @@ void Dialog_Connection::load_from_document()
   if(document)
   {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+#ifdef GLOM_ENABLE_POSTGRESQL
     //Load server and user:
     if(document->get_hosting_mode() != Document_Glom::POSTGRES_CENTRAL_HOSTED)
     {
@@ -168,6 +178,7 @@ void Dialog_Connection::load_from_document()
        m_entry_host->set_sensitive(false);
     }
     else
+#endif // LOM_ENABLE_POSTGRESQL
 #endif // !GLOM_ENABLE_CLIENT_ONLY
     {
       Glib::ustring host = document->get_connection_server();

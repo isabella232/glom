@@ -34,8 +34,8 @@
 #include <glom/libglom/utils.h>
 #include <glom/libglom/glade_utils.h>
 
-#include <glom/libglom/connectionpool_backends/postgres_central.h>
-#include <glom/libglom/connectionpool_backends/postgres_self.h>
+//#include <glom/libglom/connectionpool_backends/postgres_central.h>
+//#include <glom/libglom/connectionpool_backends/postgres_self.h>
 
 #include <cstdio>
 #include <memory> //For std::auto_ptr<>
@@ -113,7 +113,13 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
   m_menu_print_layouts_ui_merge_id(0),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_ui_save_extra_showextras(false),
+
+#ifdef GLOM_ENABLE_POSTGRESQL
   m_ui_save_extra_newdb_hosting_mode(Document_Glom::POSTGRES_CENTRAL_HOSTED),
+#else
+  m_ui_save_extra_newdb_hosting_mode(Document_Glom::SQLITE_HOSTED),
+#endif //GLOM_ENABLE_POSTGRESQL
+
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_show_sql_debug(false)
 {
@@ -707,9 +713,11 @@ void App_Glom::open_browsed_document(const EpcServiceInfo* server, const Glib::u
     {
       // Connection is always remote-hosted in client only mode:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+#ifdef GLOM_ENABLE_POSTGRESQL
       //Stop the document from being self-hosted (it's already hosted by the other networked Glom instance):
       if(document_temp.get_hosting_mode() == Document_Glom::POSTGRES_SELF_HOSTED)
         document_temp.set_hosting_mode(Document_Glom::POSTGRES_CENTRAL_HOSTED);
+#endif //GLOM_ENABLE_POSTGRESQL
 #endif // !GLOM_ENABLE_CLIENT_ONLY
       // TODO: Error out in case this is a sqlite database, since we probably
       // can't access it from this host?
@@ -935,7 +943,8 @@ bool App_Glom::on_document_load()
         m_ui_save_extra_title = _("Creating From Example File");
         m_ui_save_extra_message = _("To use this example file you must save an editable copy of the file. A new database will also be created on the server.");
         m_ui_save_extra_newdb_title = "TODO";
-        m_ui_save_extra_newdb_hosting_mode = Document_Glom::POSTGRES_SELF_HOSTED;
+        m_ui_save_extra_newdb_hosting_mode = Document_Glom::DEFAULT_HOSTED;
+
         
         // Reinit cancelled state
         set_operation_cancelled(false);
@@ -951,7 +960,7 @@ bool App_Glom::on_document_load()
           //Get the results from the extended save dialog:
           pDocument->set_database_title(m_ui_save_extra_newdb_title);
           pDocument->set_hosting_mode(m_ui_save_extra_newdb_hosting_mode);
-          m_ui_save_extra_newdb_hosting_mode = Document_Glom::POSTGRES_CENTRAL_HOSTED;
+          m_ui_save_extra_newdb_hosting_mode = Document_Glom::DEFAULT_HOSTED;
           pDocument->set_is_example_file(false);
           // We have a valid uri, so we can set it to !new and modified here
         }        
@@ -1256,7 +1265,7 @@ void App_Glom::existing_or_new_new()
   Glib::ustring db_title;
 
   m_ui_save_extra_showextras = true; //Offer self-hosting or central hosting, and offer the database title.
-  m_ui_save_extra_newdb_hosting_mode = Document_Glom::POSTGRES_SELF_HOSTED; /* Default to self-hosting */
+  m_ui_save_extra_newdb_hosting_mode = Document_Glom::DEFAULT_HOSTED; /* Default to self-hosting */
   m_ui_save_extra_newdb_title.clear();
   offer_saveas();
 
@@ -1268,13 +1277,13 @@ void App_Glom::existing_or_new_new()
     const Glib::ustring db_title = m_ui_save_extra_newdb_title;
     Document_Glom::HostingMode hosting_mode = m_ui_save_extra_newdb_hosting_mode;
     m_ui_save_extra_newdb_title.clear();
-    m_ui_save_extra_newdb_hosting_mode = Document_Glom::POSTGRES_CENTRAL_HOSTED;
+    m_ui_save_extra_newdb_hosting_mode = Document_Glom::DEFAULT_HOSTED;
 
     //Make sure that the user can do something with his new document:
     document->set_userlevel(AppState::USERLEVEL_DEVELOPER);
     // Try various ports if connecting to an existing database server instead
     // of self-hosting one:
-    document->set_connection_try_other_ports(m_ui_save_extra_newdb_hosting_mode == Document_Glom::POSTGRES_CENTRAL_HOSTED);
+    document->set_connection_try_other_ports(m_ui_save_extra_newdb_hosting_mode == Document_Glom::DEFAULT_HOSTED);
 
     //Each new document must have an associated new database,
     //so choose a name
@@ -1901,7 +1910,7 @@ void App_Glom::on_menu_file_save_as_example()
   m_ui_save_extra_title.clear();
   m_ui_save_extra_message.clear();
   m_ui_save_extra_newdb_title.clear();
-  m_ui_save_extra_newdb_hosting_mode = Document_Glom::POSTGRES_CENTRAL_HOSTED;
+  m_ui_save_extra_newdb_hosting_mode = Document_Glom::DEFAULT_HOSTED;
 
   Glib::ustring file_uri = ui_file_select_save(file_uriOld); //Also asks for overwrite confirmation.
   if(!file_uri.empty())
@@ -2075,7 +2084,7 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
   //Create the appropriate dialog, depending on how the caller set m_ui_save_extra_showextras:
   if(m_ui_save_extra_showextras)
   {
-    fileChooser_SaveExtras = new Glom::FileChooserDialog_SaveExtras(gettext("Save Document"), Gtk::FILE_CHOOSER_ACTION_SAVE);
+    fileChooser_SaveExtras = new Glom::FileChooserDialog_SaveExtras(_("Save Document"), Gtk::FILE_CHOOSER_ACTION_SAVE);
     fileChooser_Save.reset(fileChooser_SaveExtras);
   }
   else
@@ -2182,7 +2191,7 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
         if(!uri_is_writable(file))
         {
            //Warn the user:
-           ui_warning(gettext("Read-only File."), gettext("You may not overwrite the existing file, because you do not have sufficient access rights."));
+           ui_warning(gettext("Read-only File."), _("You may not overwrite the existing file, because you do not have sufficient access rights."));
            try_again = true; //Try again.
            continue;
         }
@@ -2196,7 +2205,7 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
         if(!uri_is_writable(parent))
         {
           //Warn the user:
-           ui_warning(gettext("Read-only Directory."), gettext("You may not create a file in this directory, because you do not have sufficient access rights."));
+           ui_warning(gettext("Read-only Directory."), _("You may not create a file in this directory, because you do not have sufficient access rights."));
            try_again = true; //Try again.
            continue;
         }
@@ -2221,8 +2230,12 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
       }
 
       bool is_self_hosted = false;
+
+#ifdef GLOM_ENABLE_POSTGRESQL
       if(m_ui_save_extra_newdb_hosting_mode == Document_Glom::POSTGRES_SELF_HOSTED)
         is_self_hosted = true;
+#endif //GLOM_ENABLE_POSTGRESQL
+
 #ifdef GLOM_ENABLE_SQLITE
       if(m_ui_save_extra_newdb_hosting_mode == Document_Glom::SQLITE_HOSTED)
         is_self_hosted = true;

@@ -21,6 +21,7 @@
  *            Carlos Garnacho <carlosg@gnome.org>
  */
 
+//TODO: Use PackageKit? Is that recommended on all major distros now?
 /* Commented-out because this is only useful when 
  * using the example code while patching
  * ConnectionPoolBackends::PostgresSelf::install_postgres().

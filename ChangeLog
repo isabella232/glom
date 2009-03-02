@@ -1,3 +1,28 @@
+2009-03-02  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in: Added an --enable-postgresql option, so we can have 
+	embedded builds that only use SQLite. Disable SQLite by default.
+
+	* glom/utility_widgets/filechooserdialog_saveextras.[h|cc]:
+	Don't mention the backend names if only SQLite is disabled, to avoid 
+	confronting people with unnecessary technicalese.
+
+	* glom/application.cc:
+	* glom/dialog_connection.cc:
+	* glom/frame_glom.cc:
+	* glom/libglom/connectionpool_backends/Makefile.am:
+	* glom/libglom/connectionpool_backends/postgres.h:
+	* glom/libglom/connectionpool_backends/postgres_central.[h|cc]:
+	* glom/libglom/connectionpool_backends/sqlite.h:
+	* glom/libglom/data_structure/glomconversions.h:
+	* glom/libglom/document/document_glom.[h|cc]:
+	* glom/libglom/gst-package.c:
+	* glom/libglom/test_connectionpool.cc:
+	* glom/main.cc:
+	Added ifdefs to allow builds with -enable-postgresql=no.
+
+	* glom/dialog_import_csv.cc: Replace gettext() with _().
+
 1.9.3:
 
 2009-02-27  Armin Burgmeier  <armin@openismus.com>

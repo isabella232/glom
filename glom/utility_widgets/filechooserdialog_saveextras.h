@@ -66,8 +66,11 @@ protected:
   /* New database details: */
   Gtk::Entry m_entry_title;
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+
+#ifdef GLOM_ENABLE_POSTGRESQL
   Gtk::RadioButton m_radiobutton_server_postgres_central;
   Gtk::RadioButton m_radiobutton_server_postgres_selfhosted;
+#endif // GLOM_ENABLE_POSTGRESQL
 
 #ifdef GLOM_ENABLE_SQLITE
   Gtk::RadioButton m_radiobutton_server_sqlite;

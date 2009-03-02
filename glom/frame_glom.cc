@@ -27,8 +27,11 @@
 #include <glom/libglom/appstate.h>
 
 #include <glom/libglom/connectionpool.h>
+
+#ifdef GLOM_ENABLE_POSTGRESQL
 #include <glom/libglom/connectionpool_backends/postgres_central.h>
 #include <glom/libglom/connectionpool_backends/postgres_self.h>
+#endif
 
 #ifdef GLOM_ENABLE_SQLITE
 # include <glom/libglom/connectionpool_backends/sqlite.h>
@@ -1643,6 +1646,8 @@ namespace
     ConnectionPool* connection_pool = ConnectionPool::get_instance();
     switch(document->get_hosting_mode())
     {
+#ifdef GLOM_ENABLE_POSTGRESQL
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     case Document_Glom::POSTGRES_SELF_HOSTED:
       {
@@ -1652,6 +1657,7 @@ namespace
       }
       break;
 #endif //GLOM_ENABLE_CLIENT_ONLY
+
     case Document_Glom::POSTGRES_CENTRAL_HOSTED:
       {
         ConnectionPoolBackends::PostgresCentralHosted* backend = new ConnectionPoolBackends::PostgresCentralHosted;
@@ -1660,8 +1666,9 @@ namespace
         backend->set_try_other_ports(document->get_connection_try_other_ports());
         connection_pool->set_backend(std::auto_ptr<ConnectionPool::Backend>(backend));
       }
-
       break;
+#endif //GLOM_ENABLE_POSTGRESQL
+
 #ifdef GLOM_ENABLE_SQLITE
     case Document_Glom::SQLITE_HOSTED:
       {
@@ -1671,6 +1678,7 @@ namespace
       }
       break;
 #endif // GLOM_ENABLE_SQLITE
+
     default:
       g_assert_not_reached();
       break;
@@ -1701,7 +1709,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 
   //Ask either for the existing username and password to use an existing database server,
   //or ask for a new username and password to specify when creating a new self-hosted database.
-  int response = 0;
+#ifdef GLOM_ENABLE_POSTGRESQL
   if(document->get_hosting_mode() == Document_Glom::POSTGRES_SELF_HOSTED)
   {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -1726,7 +1734,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
       std::cerr << error->what() << std::endl;
       return false;
     }
-#endif
+#endif //GLIBMM_EXCEPTIONS_ENABLED
 
     refXml->get_widget_derived("dialog_new_self_hosted_connection", dialog);
     if(!dialog) return false;
@@ -1734,7 +1742,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     add_view(dialog);
 
 
-    response = Gtk::RESPONSE_OK;
+    int response = Gtk::RESPONSE_OK;
     bool keep_trying = true;
     while(keep_trying)
     {
@@ -1785,7 +1793,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     //Ask for connection details:
     m_pDialogConnection->load_from_document(); //Get good defaults.
     m_pDialogConnection->set_transient_for(*get_app_window());
-    response = Glom::Utils::dialog_run_with_help(m_pDialogConnection, "dialog_connection");
+    int response = Glom::Utils::dialog_run_with_help(m_pDialogConnection, "dialog_connection");
     m_pDialogConnection->hide();
 
     if(response == Gtk::RESPONSE_OK)
@@ -1802,6 +1810,9 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     }
   }
   else
+#endif //GLOM_ENABLE_POSTGRESQL
+#ifdef GLOM_ENABLE_SQLITE
+  if(document->get_hosting_mode() == Document_Glom::SQLITE_HOSTED)
   {
     // sqlite
     if(!connection_pool->initialize(get_app_window()))
@@ -1810,6 +1821,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     m_pDialogConnection->load_from_document(); //Get good defaults.
     // No authentication required
   }
+#endif //GLOM_ENABLE_SQLITE
 
   // Do startup, such as starting the self-hosting database server
   if(!connection_pool->startup(get_app_window()))
@@ -1872,6 +1884,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
         document->set_connection_database(database_name_possible);
 
         // Remember host if the document is not self hosted
+        #ifdef GLOM_ENABLE_POSTGRESQL
         if(document->get_hosting_mode() == Document_Glom::POSTGRES_CENTRAL_HOSTED)
         {
           ConnectionPool::Backend* backend = connection_pool->get_backend();
@@ -1894,6 +1907,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 
           document->set_connection_port(self->get_port());
         }
+        #endif //sGLOM_ENABLE_POSTGRESQL
 
         return true;
       }
@@ -1939,6 +1953,7 @@ bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring kno
 
     //Only show the dialog if we don't know the correct username/password yet:
     int response = Gtk::RESPONSE_OK;
+
     // Don't ask for user/password for sqlite databases, since sqlite does
     // not support authentication. I'd prefer to get that information from
     // libgda, but gda_connection_supports_feature() requires a GdaConnection

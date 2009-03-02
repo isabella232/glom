@@ -258,7 +258,7 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
     iter = m_encoding_model->append();
     if(ENCODINGS[i].name != NULL)
     {
-      (*iter)[m_encoding_columns.m_col_name] = gettext(ENCODINGS[i].name);
+      (*iter)[m_encoding_columns.m_col_name] = _(ENCODINGS[i].name);
       (*iter)[m_encoding_columns.m_col_charset] = ENCODINGS[i].charset;
     }
   }

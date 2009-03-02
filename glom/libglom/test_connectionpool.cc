@@ -20,7 +20,12 @@
  
 #include <libgdamm/init.h>
 #include <glom/libglom/connectionpool.h>
+
+#ifdef GLOM_ENABLE_POSTGRESQL
 #include <glom/libglom/connectionpool_backends/postgres_central.h>
+#else
+#include <glom/libglom/connectionpool_backends/sqlite.h>
+#endif //#GLOM_ENABLE_POSTGRESQL
 
 
 int
@@ -42,10 +47,14 @@ main()
       connection_pool->set_user("murrayc");
       connection_pool->set_password("murraycpw");
 
+#ifdef GLOM_ENABLE_POSTGRESQL
       Glom::ConnectionPoolBackends::PostgresCentralHosted* backend = new Glom::ConnectionPoolBackends::PostgresCentralHosted;
       backend->set_host("localhost");
       backend->set_port(5433);
       backend->set_try_other_ports(false);
+#else
+      Glom::ConnectionPoolBackends::Sqlite* backend = new Glom::ConnectionPoolBackends::Sqlite;
+#endif //GLOM_ENABLE_POSTGRESQL
 
       connection_pool->set_backend(std::auto_ptr<Glom::ConnectionPool::Backend>(backend));
       connection_pool->set_ready_to_connect(); //Box_WithButtons::connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
