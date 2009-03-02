@@ -1709,119 +1709,130 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 
   //Ask either for the existing username and password to use an existing database server,
   //or ask for a new username and password to specify when creating a new self-hosted database.
-#ifdef GLOM_ENABLE_POSTGRESQL
-  if(document->get_hosting_mode() == Document_Glom::POSTGRES_SELF_HOSTED)
+  switch(document->get_hosting_mode())
   {
+#ifdef GLOM_ENABLE_POSTGRESQL
+  case Document_Glom::POSTGRES_SELF_HOSTED:
+    {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-    Dialog_NewSelfHostedConnection* dialog = 0;
-    Glib::RefPtr<Gnome::Glade::Xml> refXml;
+      Dialog_NewSelfHostedConnection* dialog = 0;
+      Glib::RefPtr<Gnome::Glade::Xml> refXml;
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-    try
-    {
-      refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_new_self_hosted_connection");
-    }
-    catch(const Gnome::Glade::XmlError& ex)
-    {
-      std::cerr << ex.what() << std::endl;
-      return false;
-    }
+      try
+      {
+        refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_new_self_hosted_connection");
+      }
+      catch(const Gnome::Glade::XmlError& ex)
+      {
+        std::cerr << ex.what() << std::endl;
+        return false;
+      }
 #else
-    std::auto_ptr<Gnome::Glade::XmlError> error;
-    refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_new_self_hosted_connection", error);
-    if(error.get())
-    {
-      std::cerr << error->what() << std::endl;
-      return false;
-    }
+      std::auto_ptr<Gnome::Glade::XmlError> error;
+      refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_new_self_hosted_connection", error);
+      if(error.get())
+      {
+        std::cerr << error->what() << std::endl;
+        return false;
+      }
 #endif //GLIBMM_EXCEPTIONS_ENABLED
 
-    refXml->get_widget_derived("dialog_new_self_hosted_connection", dialog);
-    if(!dialog) return false;
+      refXml->get_widget_derived("dialog_new_self_hosted_connection", dialog);
+      if(!dialog) return false;
 
-    add_view(dialog);
+      add_view(dialog);
 
 
-    int response = Gtk::RESPONSE_OK;
-    bool keep_trying = true;
-    while(keep_trying)
-    {
-      response = Glom::Utils::dialog_run_with_help(dialog, "dialog_new_self_hosted_connection");
+      int response = Gtk::RESPONSE_OK;
+      bool keep_trying = true;
+      while(keep_trying)
+      {
+        response = Glom::Utils::dialog_run_with_help(dialog, "dialog_new_self_hosted_connection");
 
-      //Check the password is acceptable:
+        //Check the password is acceptable:
+        if(response == Gtk::RESPONSE_OK)
+        {
+          const bool password_ok = dialog->check_password();
+          if(password_ok)
+          {
+            keep_trying = false; //Everything is OK.
+          }
+        }
+        else
+          keep_trying = false; //The user cancelled.
+
+      }
+
+      dialog->hide();
+ 
+      // Create the requested self-hosting database:
+      bool created = false;
       if(response == Gtk::RESPONSE_OK)
       {
-        const bool password_ok = dialog->check_password();
-        if(password_ok)
-        {
-          keep_trying = false; //Everything is OK.
-        }
-      }
-      else
-        keep_trying = false; //The user cancelled.
-
-    }
-
-    dialog->hide();
- 
-    // Create the requested self-hosting database:
-    bool created = false;
-    if(response == Gtk::RESPONSE_OK)
-    {
-      created = dialog->create_self_hosted();
-      if(!created)
-        return false;
+        created = dialog->create_self_hosted();
+        if(!created)
+          return false;
 
       //Put the details into m_pDialogConnection too, because that's what we use to connect.
       //This is a bit of a hack:
-      m_pDialogConnection->set_self_hosted_user_and_password(connection_pool->get_user(), connection_pool->get_password());
-    }
+        m_pDialogConnection->set_self_hosted_user_and_password(connection_pool->get_user(), connection_pool->get_password());
+      }
 
-    remove_view(dialog);
+      remove_view(dialog);
 
     //std::cout << "DEBUG: after dialog->create_self_hosted(). The database cluster should now exist." << std::endl;
 
-    if(!created)
-      return false; // The user cancelled
+      if(!created)
+        return false; // The user cancelled
 #else
-    // Self-hosted postgres not supported in client only mode
-    g_assert_not_reached();
+      // Self-hosted postgres not supported in client only mode
+      g_assert_not_reached();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-  }
-  else if(document->get_hosting_mode() == Document_Glom::POSTGRES_CENTRAL_HOSTED)
-  {
-    //Ask for connection details:
-    m_pDialogConnection->load_from_document(); //Get good defaults.
-    m_pDialogConnection->set_transient_for(*get_app_window());
-    int response = Glom::Utils::dialog_run_with_help(m_pDialogConnection, "dialog_connection");
-    m_pDialogConnection->hide();
+    }
 
-    if(response == Gtk::RESPONSE_OK)
+    break;
+  case Document_Glom::POSTGRES_CENTRAL_HOSTED:
     {
-      // We are not self-hosting, but we also call initialize() for
-      // consistency (the backend will ignore it anyway).
-      if(!connection_pool->initialize(get_app_window()))
+      //Ask for connection details:
+      m_pDialogConnection->load_from_document(); //Get good defaults.
+      m_pDialogConnection->set_transient_for(*get_app_window());
+      int response = Glom::Utils::dialog_run_with_help(m_pDialogConnection, "dialog_connection");
+      m_pDialogConnection->hide();
+
+      if(response == Gtk::RESPONSE_OK)
+      {
+        // We are not self-hosting, but we also call initialize() for
+        // consistency (the backend will ignore it anyway).
+        if(!connection_pool->initialize(get_app_window()))
+          return false;
+      }
+      else
+      {
+        // The user cancelled
         return false;
+      }
     }
-    else
-    {
-      // The user cancelled
-      return false;
-    }
-  }
-  else
+
+    break;
 #endif //GLOM_ENABLE_POSTGRESQL
 #ifdef GLOM_ENABLE_SQLITE
-  if(document->get_hosting_mode() == Document_Glom::SQLITE_HOSTED)
-  {
-    // sqlite
-    if(!connection_pool->initialize(get_app_window()))
-      return false;
+  case Document_Glom::SQLITE_HOSTED:
+    {
+      // sqlite
+      if(!connection_pool->initialize(get_app_window()))
+        return false;
 
-    m_pDialogConnection->load_from_document(); //Get good defaults.
-    // No authentication required
-  }
+      m_pDialogConnection->load_from_document(); //Get good defaults.
+      // No authentication required
+    }
+
+    break;
 #endif //GLOM_ENABLE_SQLITE
+  default:
+    g_assert_not_reached();
+    break;
+  }
 
   // Do startup, such as starting the self-hosting database server
   if(!connection_pool->startup(get_app_window()))

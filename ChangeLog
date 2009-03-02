@@ -1,3 +1,9 @@
+2009-03-02  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/frame_glom.cc:
+	(connection_request_password_and_choose_new_database_name): Call
+	connectionpool's startup() also if SQLite is disabled. Bug #573799.
+
 2009-03-02  Murray Cumming  <murrayc@murrayc.com>
 
 	* Many .h files: Changed many protected to private to make the API 
