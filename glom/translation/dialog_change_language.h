@@ -39,7 +39,7 @@ public:
 
   Glib::ustring get_locale() const;
 
-protected:
+private:
   ComboBox_Locale* m_combo_locale;
 };
 

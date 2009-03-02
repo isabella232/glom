@@ -44,7 +44,7 @@ public:
   bool operator==(const LayoutItem& src) const;
 
   virtual bool get_editable() const;
-  virtual void set_editable(bool val);
+  virtual void set_editable(bool val = true);
 
   virtual Glib::ustring get_layout_display_name() const;
   virtual Glib::ustring get_part_type_name() const = 0;
@@ -71,7 +71,7 @@ public:
 
   //bool m_hidden;
 
-protected:
+private:
   Glib::ustring m_name;
   bool m_editable;
 

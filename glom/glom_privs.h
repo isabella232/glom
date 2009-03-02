@@ -44,7 +44,7 @@ public:
   static bool get_user_is_in_group(const Glib::ustring& user, const Glib::ustring& group);
   static Privileges get_current_privs(const Glib::ustring& table_name);
 
-protected:
+private:
   static bool on_privs_privileges_cache_timeout(const Glib::ustring& table_name);
 
   typedef std::map<Glib::ustring, Privileges> type_map_privileges;

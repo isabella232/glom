@@ -44,7 +44,7 @@ public:
   void set_database_directory_uri(const std::string& directory_uri);
   const std::string& get_database_directory_uri() const;
 
-protected:
+private:
   virtual Field::sql_format get_sql_format() const { return Field::SQL_FORMAT_SQLITE; }
   virtual bool supports_remote_access() const { return false; }
   virtual Glib::ustring get_string_find_operator() const { return "LIKE"; }

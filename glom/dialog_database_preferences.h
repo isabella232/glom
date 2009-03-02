@@ -47,7 +47,7 @@ public:
   virtual void load_from_document(); //override
   virtual void save_to_document(); //override
 
-protected:
+private:
   void on_response(int response_id);
 
   void on_button_choose_image();

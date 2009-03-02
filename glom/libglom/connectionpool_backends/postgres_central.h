@@ -51,7 +51,7 @@ public:
   int get_port() const;
   bool get_try_other_ports() const;
 
-protected:
+private:
   virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

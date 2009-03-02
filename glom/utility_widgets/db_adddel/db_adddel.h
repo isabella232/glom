@@ -259,7 +259,7 @@ public:
 
   virtual void set_open_button_title(const Glib::ustring& title);
 
-protected:
+private:
   
   
   //Overrides of Base_DB/Base_DB_Table methods:
@@ -286,7 +286,10 @@ protected:
   ///Return the query column index of any columns that display this field:
   type_list_indexes get_data_model_column_index(const sharedptr<const LayoutItem_Field>& layout_item_field) const;
 
+protected:
   virtual void setup_menu();
+
+private:
   virtual Gnome::Gda::Value treeview_get_key(const Gtk::TreeModel::iterator& row) const;
 
   ///Add a blank row, or return the existing blank row if there already is one.
@@ -304,9 +307,12 @@ protected:
 
   virtual bool on_button_press_event_Popup(GdkEventButton* event);
 
+protected:
   void on_MenuPopup_activate_Edit();
   void on_MenuPopup_activate_Add();
   void on_MenuPopup_activate_Delete();
+
+private:
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void on_MenuPopup_activate_layout();
@@ -374,8 +380,10 @@ protected:
   bool m_column_sorted_direction; //true means ascending. 
   guint m_column_sorted; //Previously-clicked (on the treeview header) column. Remember it so we can reverse the sort order on a second click.
 
+protected:
   Glib::ustring m_open_button_title; //Allow us to change "Open" to "Select".
 
+private:
   //TODO: Avoid repeating these in so many widgets:
   Gtk::Menu* m_pMenuPopup;
   Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
@@ -393,8 +401,11 @@ protected:
 
   type_vecStrings m_vecColumnIDs; //We give each ViewColumn a special ID, so we know where they are after a reorder.
 
+protected:
   bool m_allow_add;
   bool m_allow_delete;
+
+private:
     
   bool m_find_mode;
   bool m_allow_only_one_related_record;
@@ -431,7 +442,7 @@ protected:
     InnerIgnore(DbAddDel* pOuter);
     ~InnerIgnore();
 
-  protected:
+  private:
     DbAddDel* m_pOuter;
     bool m_bPreventUserSignals, m_bIgnoreTreeViewSignals;
   };

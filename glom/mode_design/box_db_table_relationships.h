@@ -38,7 +38,7 @@ public:
 
   virtual void save_to_document(); //override.
 
-protected:
+private:
   virtual bool fill_from_database();
 
   //Signal handlers:

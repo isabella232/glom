@@ -57,7 +57,7 @@ public:
   //we hide some stuff:
   void set_is_for_print_layout();
 
-protected:
+private:
   //Signal handlers:
   void on_combo_choices_relationship_changed();
   void on_checkbox();

@@ -136,7 +136,7 @@ public:
   typedef sigc::signal<void, const sharedptr<LayoutItem_Button>&> type_signal_script_button_clicked;
   type_signal_script_button_clicked signal_script_button_clicked();
   
-protected:
+private:
 
   type_list_widgets get_field(const sharedptr<const LayoutItem_Field>& field);
   type_list_const_widgets get_field(const sharedptr<const LayoutItem_Field>& field) const;

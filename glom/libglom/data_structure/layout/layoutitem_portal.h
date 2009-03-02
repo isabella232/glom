@@ -61,7 +61,7 @@ public:
   /// This is used only for the print layouts.
   void set_print_layout_row_height(double row_height);
 
-protected:
+private:
 
   //If no navigation relationship has been specified then it will be automatically chosen: 
   bool m_navigation_relationship_specific_main;

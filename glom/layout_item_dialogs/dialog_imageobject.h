@@ -42,7 +42,7 @@ public:
   void set_imageobject(const sharedptr<const LayoutItem_Image>& imageobject, const Glib::ustring& table_name, bool show_title = true);
   sharedptr<LayoutItem_Image> get_imageobject() const;
 
-protected:
+private:
   void on_button_choose();
 
   Gtk::HBox* m_box_title;

@@ -41,7 +41,7 @@ public:
 
  
 
-protected:
+private:
 
   void report_build_groupby(const FoundSet& found_set_parent, xmlpp::Element& parent_node, const sharedptr<LayoutItem_GroupBy>& group_by);
   void report_build_groupby_children(const FoundSet& found_set, xmlpp::Element& nodeGroupBy, const sharedptr<LayoutItem_GroupBy>& group_by);

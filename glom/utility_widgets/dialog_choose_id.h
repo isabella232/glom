@@ -50,7 +50,7 @@ public:
     STAGE_SELECT
   };
 
-protected:
+private:
 
   void setup();
   void update_ui_for_stage();

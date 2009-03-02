@@ -37,7 +37,7 @@ public:
   virtual void set_allow_delete(bool val = true); //override
   virtual void set_allow_user_actions(bool bVal = true); //override
 
-protected:
+private:
   void init();
   void setup_buttons();
 

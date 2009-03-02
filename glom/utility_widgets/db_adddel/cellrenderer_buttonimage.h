@@ -38,7 +38,7 @@ public:
   typedef sigc::signal<void, const Gtk::TreeModel::Path&> type_signal_clicked;
   type_signal_clicked signal_clicked();
   
-protected:
+private:
 #ifndef GLIBMM_VFUNCS_ENABLED
   static gboolean activate_impl(GtkCellRenderer* cell, GdkEvent* event, GtkWidget* widget, const gchar* path, GdkRectangle* background_area, GdkRectangle* cell_area, GtkCellRendererState flags);
 #endif

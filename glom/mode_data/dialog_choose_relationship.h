@@ -46,7 +46,7 @@ public:
 
   sharedptr<Relationship> get_relationship_chosen() const;
 
-protected:
+private:
 
   //Tree model columns:
   class ModelColumns_Relationships : public Gtk::TreeModel::ColumnRecord

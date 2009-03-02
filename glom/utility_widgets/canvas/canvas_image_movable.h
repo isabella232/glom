@@ -31,7 +31,7 @@ class CanvasImageMovable
   : public Goocanvas::Image,
     public CanvasItemMovable
 {
-protected:
+private:
   CanvasImageMovable(double x = 0.0, double y = 0.0);
   CanvasImageMovable(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf, double x = 0.0, double y = 0.0);
   virtual ~CanvasImageMovable();
@@ -77,7 +77,7 @@ public:
   virtual void get_width_height(double& width, double& height) const;
   virtual void set_width_height(double width, double height);
 
-protected:
+private:
   virtual Goocanvas::Canvas* get_parent_canvas_widget();
 
   virtual void snap_position(double& x, double& y) const;

@@ -79,12 +79,11 @@ public:
 
   Glib::ustring get_sql_table_or_join_alias_name(const Glib::ustring& parent_table) const;
 
-protected:
+private:
 
   //This is just cached data, so we don't need to always lookup the relationship details from the document, from the name.
   sharedptr<Relationship> m_relationship;
   sharedptr<Relationship> m_related_relationship; //Rarely used. It is for showing fields from the (related) relationships of related tables.
-
 };
 
 } //namespace Glom

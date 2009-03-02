@@ -47,7 +47,7 @@ public:
    */
   //virtual void set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields);
 
-protected:
+private:
 
   void fill_group_list();
   void fill_table_list(const Glib::ustring& group_name);

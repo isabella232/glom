@@ -63,7 +63,7 @@ public:
   //Saves the image to a temporary file and provides the file URI.
   Glib::ustring create_local_image_uri() const;
 
-protected:
+private:
 
   Gnome::Gda::Value m_image;
 };

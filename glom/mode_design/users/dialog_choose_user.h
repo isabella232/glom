@@ -40,7 +40,7 @@ public:
 
   Glib::ustring get_user() const;
 
-protected:
+private:
   Combo_TextGlade* m_combo_name;
 };
 

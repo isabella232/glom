@@ -36,7 +36,7 @@ public:
   Glib::ustring get_label() const; 
   void set_label(const Glib::ustring& label);
   
-protected:
+private:
   Gtk::Entry* m_pEntryLabel;
 };
 

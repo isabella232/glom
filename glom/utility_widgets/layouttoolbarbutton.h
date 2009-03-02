@@ -37,7 +37,7 @@ public:
   LayoutToolbarButton(const std::string& icon_name, LayoutWidgetBase::enumType type, const Glib::ustring& title, const Glib::ustring& tooltip);
   virtual ~LayoutToolbarButton();
 
-protected:
+private:
 
   //TODO: What is this for? murrayc.
   // We need an unique identifier for drag & drop! jhs

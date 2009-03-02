@@ -30,7 +30,7 @@ namespace Glom
 
 class CanvasGroupDbTable : public CanvasGroupMovable
 {
-protected:
+private:
   CanvasGroupDbTable(const Glib::ustring& table_name, const Glib::ustring& table_title, const Document_Glom::type_vecFields& fields, double x = 0.0, double y = 0.0);
   virtual ~CanvasGroupDbTable();
 
@@ -44,7 +44,7 @@ public:
   Glib::ustring get_table_name() const;
   double get_field_y(const Glib::ustring& field_name) const;
 
-protected:
+private:
    Glib::RefPtr<Goocanvas::Item> m_rect;
    Glib::RefPtr<Goocanvas::Item> m_text;
    Glib::RefPtr<Goocanvas::Item> m_line;

@@ -39,7 +39,7 @@ public:
   void set_fields(const Glib::ustring& table_name, const LayoutGroup::type_list_items& table_fields);
   LayoutGroup::type_list_items get_fields() const;
 
-protected:
+private:
 
   //Enable/disable buttons, depending on treeview selection:
   virtual void enable_buttons();

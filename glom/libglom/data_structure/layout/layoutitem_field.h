@@ -56,7 +56,7 @@ public:
     return (*uses_a == *uses_b);
   }
     
-protected:
+private:
   sharedptr<const T_Element> m_layout_item;
 };
 
@@ -133,7 +133,7 @@ public:
    */
   Glib::ustring get_sql_name(const Glib::ustring& parent_table) const;
 
-protected:
+private:
 
   //This is just a cache, filled in by looking at the database structure:
   sharedptr<const Field> m_field;

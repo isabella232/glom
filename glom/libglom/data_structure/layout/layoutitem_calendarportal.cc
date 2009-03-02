@@ -67,7 +67,9 @@ void LayoutItem_CalendarPortal::change_field_item_name(const Glib::ustring& tabl
 {
   LayoutItem_Portal::change_field_item_name(table_name, field_name, field_name_new);
   
-  if(m_relationship && (m_relationship->get_to_table() == table_name) && (m_date_field->get_name() == field_name))
+  sharedptr<const Relationship> relationship = get_relationship();
+        
+  if(relationship && (relationship->get_to_table() == table_name) && (m_date_field->get_name() == field_name))
       m_date_field->set_name(field_name_new); //Change it.
 }
 

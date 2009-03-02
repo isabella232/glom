@@ -46,7 +46,7 @@ public:
   typedef sigc::signal<void> type_signal_request_edit_fields;
   type_signal_request_edit_fields signal_request_edit_fields();
 
-protected:
+private:
 
   void on_entry_table_name();
   void on_combo_field_name();

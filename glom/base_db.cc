@@ -87,7 +87,7 @@ public:
       return false;
   }
 
-protected:
+private:
   sharedptr<const T_Element> m_layout_item;
 };
 

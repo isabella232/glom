@@ -34,7 +34,7 @@ public:
   Box_Print_Layouts(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Box_Print_Layouts();
 
-protected:
+private:
   virtual bool fill_from_database(); //override
 
   virtual void fill_row(const Gtk::TreeModel::iterator& iter, const sharedptr<const PrintLayout>& print_layout);

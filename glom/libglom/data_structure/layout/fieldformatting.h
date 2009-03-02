@@ -86,7 +86,7 @@ public:
 
   NumericFormat m_numeric_format; //Only used for numeric fields.
 
-protected:
+private:
 
   type_list_values m_choices_custom_list; //A drop-down list of possible values for the field.
   bool m_choices_restricted;

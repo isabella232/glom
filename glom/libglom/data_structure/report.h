@@ -40,7 +40,7 @@ public:
 
   sharedptr<LayoutGroup> m_layout_group;
 
-protected:
+private:
   bool m_show_table_title;
 };
 

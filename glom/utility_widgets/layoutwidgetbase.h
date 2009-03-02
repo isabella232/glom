@@ -86,10 +86,16 @@ public:
 protected:
   virtual App_Glom* get_application() const; // = 0;
 
+
   static void apply_formatting(Gtk::Widget& widget, const FieldFormatting& formatting);
 
+protected: //TODO: Add accessor?
   sharedptr<LayoutItem> m_pLayoutItem;
+
+protected: //TODO: Add accessor?
   Glib::ustring m_table_name;
+
+private:
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   /// Signals that the layout has changed, so it should be saved to the document again.

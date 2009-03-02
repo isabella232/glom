@@ -51,7 +51,7 @@ public:
   sharedptr<Relationship> get_relationship() const;
   sharedptr<LayoutItem_CalendarPortal>  get_portal_layout();
 
-protected:
+private:
 
   virtual void save_to_document();
 

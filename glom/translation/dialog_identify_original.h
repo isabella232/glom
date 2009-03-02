@@ -43,7 +43,7 @@ public:
 
   virtual void load_from_document(); //override
 
-protected:
+private:
   Gtk::Label* m_label_original;
   ComboBox_Locale* m_combo_locale;
 };

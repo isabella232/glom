@@ -129,7 +129,7 @@ public:
 
   static bool get_current_locale_not_original();
 
-protected:
+private:
 
   /** Get the locale used as the source language.
    * This is the language of the title that is used when there are no translations.
@@ -137,8 +137,10 @@ protected:
   static Glib::ustring get_original_locale();
 
 
-
+protected:
   enumTranslatableItemType m_translatable_item_type;
+
+private:
   Glib::ustring m_name; //Non-translated identifier;
   Glib::ustring m_title; //The original, untranslated (usually-English) title.
   type_map_locale_to_translations m_map_translations;

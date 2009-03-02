@@ -71,7 +71,7 @@ public:
   typedef sigc::signal<void> type_signal_finished;
   type_signal_finished signal_finished();
 
-protected:
+private:
   Glib::RefPtr<Gnome::Gda::Connection> m_gda_connection;
 
   type_signal_finished m_signal_finished;
@@ -84,7 +84,7 @@ class Document_Glom;
  */
 class ConnectionPool : public sigc::trackable
 {
-protected:
+private:
   ConnectionPool();
   //ConnectionPool(const ConnectionPool& src);
   virtual ~ConnectionPool();
@@ -217,7 +217,7 @@ public:
    */
   static bool check_user_is_not_root();
 
-protected:
+private:
   void on_sharedconnection_finished();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -236,7 +236,7 @@ protected:
 #endif // !G_OS_WIN32
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-protected:
+private:
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   EpcPublisher* m_epc_publisher;

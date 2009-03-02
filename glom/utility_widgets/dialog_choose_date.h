@@ -41,7 +41,7 @@ public:
   void set_date_chosen(const Gnome::Gda::Value& value);
   Gnome::Gda::Value get_date_chosen() const;
 
-protected:
+private:
   void on_day_selected_double_click();
 
   Gtk::Calendar* m_calendar;

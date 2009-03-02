@@ -43,9 +43,6 @@ public:
   virtual LayoutItem* clone() const;
 
   virtual Glib::ustring get_part_type_name() const;
-
-protected:
-
 };
 
 } //namespace Glom

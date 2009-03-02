@@ -37,7 +37,7 @@ public:
 
   virtual void on_hide();
 
-protected:
+private:
 
   Box_DB_Table_Relationships* m_box;
 };

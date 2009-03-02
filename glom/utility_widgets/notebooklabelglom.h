@@ -40,7 +40,7 @@ public:
 
   void set_label (const Glib::ustring& title);  
     
-protected:
+private:
   void init();
 
   virtual App_Glom* get_application();

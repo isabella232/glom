@@ -40,7 +40,7 @@ public:
   void set_selected_locale(const Glib::ustring& locale);
   Glib::ustring get_selected_locale() const;
 
-protected:
+private:
 
   //Tree model columns:
   //These columns are used by the model that is created by the default constructor

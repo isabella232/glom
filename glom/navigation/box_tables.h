@@ -41,7 +41,7 @@ public:
   Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Box_Tables();
 
-protected:
+private:
   virtual bool fill_from_database(); //override
 
   virtual void fill_table_row(const Gtk::TreeModel::iterator& iter, const sharedptr<const TableInfo>& table_info);

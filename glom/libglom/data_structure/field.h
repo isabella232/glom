@@ -62,7 +62,7 @@ public:
     return (element->get_name() == m_strName);
   }
 
-protected:
+private:
   Glib::ustring m_strName;
 };
 
@@ -235,7 +235,7 @@ public:
 
   FieldFormatting m_default_formatting;
 
-protected:
+private:
 
   static void init_map();
 

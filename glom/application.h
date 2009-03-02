@@ -83,7 +83,7 @@ public:
 
   static App_Glom* get_application();
 
-protected:
+private:
   virtual void init_layout(); //override.
   virtual void init_menus_file(); //override.
   virtual void init_menus(); //override.

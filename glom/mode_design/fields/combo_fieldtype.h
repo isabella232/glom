@@ -53,7 +53,7 @@ public:
     return item.second == m_valueToFind;
   }
 
-protected:
+private:
   type_value m_valueToFind;
 };
 
@@ -69,7 +69,7 @@ public:
   virtual void set_field_type(Field::glom_field_type fieldType);
   virtual Field::glom_field_type get_field_type() const;
 
-protected:
+private:
 
   void init();
 

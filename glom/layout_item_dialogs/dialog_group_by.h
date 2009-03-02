@@ -51,7 +51,7 @@ public:
 
   sharedptr<LayoutItem_GroupBy> get_item() const;
 
-protected:
+private:
   //Signal handlers:
   void on_button_field_group_by();
   void on_button_formatting_group_by();

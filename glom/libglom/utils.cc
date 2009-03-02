@@ -133,7 +133,7 @@ public:
     return (element->get_relationship_name() == m_relationship_name) && (element->get_related_relationship_name() == m_related_relationship_name);
   }
 
-protected:
+private:
   Glib::ustring m_relationship_name, m_related_relationship_name;
 };
 

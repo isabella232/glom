@@ -34,7 +34,7 @@ public:
   Box_DB_Table_Definition(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Box_DB_Table_Definition();
 
-protected:
+private:
   void init(); //Avoid duplicating code in constructors.
   virtual bool fill_from_database();
   virtual void fill_fields();

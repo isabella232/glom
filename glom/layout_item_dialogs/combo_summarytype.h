@@ -39,7 +39,7 @@ public:
   virtual void set_summary_type(LayoutItem_FieldSummary::summaryType summary_type);
   virtual LayoutItem_FieldSummary::summaryType get_summary_type() const;
 
-protected:
+private:
 
   //Tree model columns:
   //These columns are used by the model that is created by the default constructor

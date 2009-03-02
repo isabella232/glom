@@ -43,7 +43,7 @@ public:
   gint get_columns_count();
   Glib::ustring get_title();
     
-protected:
+private:
   Gtk::Entry* m_entry_title;
   Gtk::SpinButton* m_spin_columns;
    

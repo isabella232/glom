@@ -31,7 +31,7 @@ class CanvasRectMovable
   : public Goocanvas::Rect,
     public CanvasItemMovable
 {
-protected:
+private:
   CanvasRectMovable();
   CanvasRectMovable(double x, double y, double width, double height);
   virtual ~CanvasRectMovable();
@@ -61,7 +61,7 @@ public:
   virtual void get_width_height(double& width, double& height) const;
   virtual void set_width_height(double width, double height);
 
-protected:
+private:
   virtual Goocanvas::Canvas* get_parent_canvas_widget();
 
   virtual void snap_position(double& x, double& y) const;

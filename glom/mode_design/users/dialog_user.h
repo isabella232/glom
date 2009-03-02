@@ -48,13 +48,6 @@ public:
   Combo_TextGlade* m_combo_group;
   Gtk::Entry* m_entry_password;
   Gtk::Entry* m_entry_password_confirm;
-
-protected:
-
-  //virtual void save_to_document();
-
-  //signal handlers:
-
 };
 
 } //namespace Glom

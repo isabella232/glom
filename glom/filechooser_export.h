@@ -40,7 +40,7 @@ public:
 
   void get_layout_groups(Document_Glom::type_list_layout_groups& layout_groups) const;
 
-protected:
+private:
 
   void on_button_define_layout();
   void on_dialog_layout_hide();

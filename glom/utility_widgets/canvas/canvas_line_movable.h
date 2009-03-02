@@ -32,7 +32,7 @@ class CanvasLineMovable
   : public Goocanvas::Polyline,
     public CanvasItemMovable
 {
-protected:
+private:
   CanvasLineMovable();
   virtual ~CanvasLineMovable();
 
@@ -44,7 +44,7 @@ protected:
 public:
   static Glib::RefPtr<CanvasLineMovable> create();
 
-protected:
+private:
   virtual Goocanvas::Canvas* get_parent_canvas_widget();
 
 };

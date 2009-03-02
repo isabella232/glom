@@ -31,7 +31,7 @@ class CanvasTextMovable
   : public Goocanvas::Text,
     public CanvasItemMovable
 {
-protected:
+private:
   CanvasTextMovable(const Glib::ustring& string = Glib::ustring(), double x = 0.0, double y = 0.0, double width = 0.0, Gtk::AnchorType anchor = Gtk::ANCHOR_NORTH_WEST);
   virtual ~CanvasTextMovable();
 
@@ -69,7 +69,7 @@ public:
    */
   void set_font_points(const Glib::ustring& font);
 
-protected:
+private:
   virtual Goocanvas::Canvas* get_parent_canvas_widget();
 
   virtual void snap_position(double& x, double& y) const;

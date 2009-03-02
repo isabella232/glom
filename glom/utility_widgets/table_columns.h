@@ -41,7 +41,7 @@ public:
   
   void add_row(Gtk::Widget& widgetA); //Span 2 columns.
     
-protected:
+private:
   typedef std::vector<Gtk::Justification> type_vecJustification;
   type_vecJustification m_vecJustification;
 

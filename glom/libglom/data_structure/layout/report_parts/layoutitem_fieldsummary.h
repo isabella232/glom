@@ -69,7 +69,7 @@ public:
 
   static Glib::ustring get_summary_type_name(summaryType summary_type);
 
-protected:
+private:
   summaryType m_summary_type;
 };
 

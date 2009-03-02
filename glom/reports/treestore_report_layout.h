@@ -29,7 +29,7 @@ namespace Glom
 
 class TreeStore_ReportLayout : public Gtk::TreeStore
 {
-protected:
+private:
   TreeStore_ReportLayout();
 
 public:
@@ -55,7 +55,7 @@ public:
 
   static bool may_be_child_of(const sharedptr<const LayoutItem>& parent, const sharedptr<const LayoutItem>& suggested_child);
 
-protected:
+private:
   //Overridden virtual functions:
   virtual bool row_draggable_vfunc(const Gtk::TreeModel::Path& path) const;
   virtual bool row_drop_possible_vfunc(const Gtk::TreeModel::Path& dest, const Gtk::SelectionData& selection_data) const;

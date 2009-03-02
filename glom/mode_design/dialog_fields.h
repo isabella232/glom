@@ -35,7 +35,7 @@ public:
 
   virtual bool init_db_details(const Glib::ustring& table_name);
 
-protected:
+private:
 
   Box_DB_Table_Definition* m_box;
 };

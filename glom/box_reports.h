@@ -33,7 +33,7 @@ public:
   Box_Reports(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~Box_Reports();
 
-protected:
+private:
   virtual bool fill_from_database(); //override
 
   virtual void fill_row(const Gtk::TreeModel::iterator& iter, const sharedptr<const Report>& report);

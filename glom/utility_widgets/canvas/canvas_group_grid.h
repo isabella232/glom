@@ -32,7 +32,7 @@ namespace Glom
 
 class CanvasGroupGrid : public Goocanvas::Group
 {
-protected:
+private:
   CanvasGroupGrid();
   virtual ~CanvasGroupGrid();
 
@@ -70,7 +70,7 @@ public:
   void add_vertical_rule(double x);
   void add_horizontal_rule(double x);
 
-protected:
+private:
   void create_lines();
   Glib::RefPtr<Goocanvas::Polyline> create_grid_or_rule_line(double x1, double y1, double x2, double y2, bool is_rule = false);
 

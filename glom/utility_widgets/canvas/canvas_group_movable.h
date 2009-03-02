@@ -44,7 +44,7 @@ public:
   virtual void set_width_height(double width, double height);
   virtual void set_grid(const Glib::RefPtr<const CanvasGroupGrid>& grid);
 
-protected:
+private:
   virtual Goocanvas::Canvas* get_parent_canvas_widget();
 
   enum Corners

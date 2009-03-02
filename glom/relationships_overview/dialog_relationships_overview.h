@@ -51,7 +51,7 @@ public:
   
   virtual void load_from_document(); //overridden.
 
-protected:
+private:
   class TableView;
   
   void draw_tables();

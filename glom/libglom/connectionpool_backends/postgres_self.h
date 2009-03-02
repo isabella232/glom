@@ -66,7 +66,7 @@ public:
    */
   static bool install_postgres(Gtk::Window* parent_window);
 
-protected:
+private:
   virtual bool initialize(Gtk::Window* parent_window, const Glib::ustring& initial_username, const Glib::ustring& password);
 
   virtual bool startup(Gtk::Window* parent_window);

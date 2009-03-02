@@ -72,7 +72,7 @@ public:
 
   friend class DbTreeModelRow;
 
-protected:
+private:
   //Create a TreeModel with @a columns_count number of columns, each of type Glib::ustring.
   DbTreeModel(const Gtk::TreeModelColumnRecord& columns, const FoundSet& found_set, const type_vec_fields& column_fields, int column_index_key, bool get_records = true, bool find_mode = false);
   virtual ~DbTreeModel();
@@ -113,7 +113,7 @@ public:
 
   void get_record_counts(gulong& total, gulong& found) const;
 
-protected:
+private:
 
   bool refresh_from_database(const FoundSet& found_set);
 

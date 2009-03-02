@@ -71,9 +71,8 @@ public:
 
   type_list_sort_fields m_fields_sort_by;
 
-protected:
+private:
   sharedptr<LayoutItem_Field> m_field_group_by;
-
 };
 
 } //namespace Glom

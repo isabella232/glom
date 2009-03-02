@@ -52,7 +52,7 @@ public:
   Glib::ustring get_original_name() const;
   sharedptr<PrintLayout> get_print_layout();
 
-protected:
+private:
 
   void enable_buttons();
   void init_menu();

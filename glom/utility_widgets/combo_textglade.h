@@ -51,7 +51,7 @@ public:
   ///This ensures that something is selected:
   void set_first_active();
 
-protected:
+private:
 
   //This determines whether each row should be shown as a separator.
   bool on_row_separator(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::iterator& iter);

@@ -42,7 +42,7 @@ public:
 
   void get_layout_groups(Document_Glom::type_list_layout_groups& layout_groups) const;
 
-protected:
+private:
 
   //Enable/disable buttons, depending on treeview selection:
   virtual void enable_buttons();

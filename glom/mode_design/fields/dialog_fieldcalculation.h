@@ -42,7 +42,7 @@ public:
   void set_field(const sharedptr<const Field>& field, const Glib::ustring& table_name);
   sharedptr<Field> get_field() const;
 
-protected:
+private:
   void on_button_test();
   bool check_for_return_statement(const Glib::ustring& calculation);
 

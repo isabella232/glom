@@ -51,7 +51,7 @@ public:
 
   virtual failure_type get_failure_type() const;
 
-protected:
+private:
   failure_type m_failure_type;
 };
 

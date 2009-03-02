@@ -30,7 +30,7 @@ namespace Glom
 
 class TreeStore_Layout : public Gtk::TreeStore
 {
-protected:
+private:
   TreeStore_Layout();
 
 public:
@@ -54,7 +54,7 @@ public:
   virtual void fill_sequences();
   virtual void fill_sequences(const iterator& iter);
 
-protected:
+private:
   //Overridden virtual functions:
   virtual bool row_draggable_vfunc(const Gtk::TreeModel::Path& path) const;
   virtual bool row_drop_possible_vfunc(const Gtk::TreeModel::Path& dest, const Gtk::SelectionData& selection_data) const;

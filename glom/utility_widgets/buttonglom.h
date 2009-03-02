@@ -40,7 +40,7 @@ public:
   explicit ButtonGlom();
   virtual ~ButtonGlom();
 
-protected:
+private:
   void init();
 
   virtual App_Glom* get_application();

@@ -36,7 +36,7 @@ class LayoutItem_Portal;
  */
 class CanvasLayoutItem : public CanvasGroupResizable
 {
-protected:
+private:
   CanvasLayoutItem();
   CanvasLayoutItem(const sharedptr<LayoutItem>& layout_item);
   virtual ~CanvasLayoutItem();
@@ -63,7 +63,7 @@ public:
 
   static int get_rows_count_for_portal(const sharedptr<const LayoutItem_Portal>& portal, double& row_height);
 
-protected:
+private:
   /// Create the appropriate inner canvas item to represent the layout item.
   static Glib::RefPtr<CanvasItemMovable> create_canvas_item_for_layout_item(const sharedptr<LayoutItem>& layout_item);
 

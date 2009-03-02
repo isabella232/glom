@@ -61,7 +61,7 @@ public:
    */
   void set_database_name(const Glib::ustring& name);
 
-protected:
+private:
   Gtk::Entry* m_entry_host;
   Gtk::Entry* m_entry_user;
   Gtk::Entry* m_entry_password;

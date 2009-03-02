@@ -42,7 +42,7 @@ public:
   sharedptr<LayoutItem_Text> get_textobject() const;
   void get_textobject(sharedptr<LayoutItem_Text>& textobject) const;
 
-protected:
+private:
   Gtk::HBox* m_box_title;
   Gtk::Entry* m_entry_title;
   Gtk::TextView* m_text_view;

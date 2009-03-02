@@ -66,7 +66,7 @@ public:
            (element.m_layout_platform == m_layout_platform);
   }
 
-protected:
+private:
   Glib::ustring m_parent_table, m_layout_name, m_layout_platform;
 };
 
@@ -425,7 +425,7 @@ public:
   // in client only mode
   static void set_node_attribute_value_as_decimal_double(xmlpp::Element* node, const Glib::ustring& strAttributeName, double value);
 
-protected:
+private:
 
   //Overrides:
 

@@ -44,7 +44,7 @@ public:
    */
   virtual void set_example_data(Field::glom_field_type glom_type);
 
-protected:
+private:
   Gtk::Label* m_label;
 };
 

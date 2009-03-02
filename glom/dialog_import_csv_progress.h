@@ -41,7 +41,7 @@ public:
   // parsed data within a separate class.
   void import(Dialog_Import_CSV& data_source);
 
-protected:
+private:
   void clear();
   void add_text(const Glib::ustring& text);
 

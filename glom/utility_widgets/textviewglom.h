@@ -54,7 +54,7 @@ public:
 
   virtual Gnome::Gda::Value get_value() const;
 
-protected:
+private:
   void init();
 
   //Overrides of default signal handlers:

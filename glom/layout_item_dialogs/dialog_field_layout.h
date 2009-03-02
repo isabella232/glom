@@ -49,7 +49,7 @@ public:
 
   sharedptr<LayoutItem_Field> get_field_chosen() const;
 
-protected:
+private:
   void on_radiobutton_custom_formatting();
   void enforce_constraints();
 

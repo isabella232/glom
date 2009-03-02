@@ -48,7 +48,7 @@ public:
   virtual void set_field(const sharedptr<const Field>& field, const Glib::ustring& table_name);
   virtual sharedptr<Field> get_field() const; //TODO_FieldShared
 
-protected:
+private:
 
   //Signal handlers:
   void on_combo_type_changed();

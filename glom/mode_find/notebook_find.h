@@ -44,7 +44,7 @@ public:
    */
   sigc::signal<void, Glib::ustring> signal_find_criteria;
 
-protected:
+private:
 
 
   //Signal handlers:

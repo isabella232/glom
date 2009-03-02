@@ -64,7 +64,7 @@ public:
 
   virtual void set_grid_gap(double gap = 20.0);
   
-protected:
+private:
 
   void setup_context_menu();
   void add_layout_group(const sharedptr<LayoutGroup>& group, bool is_top_level = false);

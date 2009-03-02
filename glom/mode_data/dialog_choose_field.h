@@ -51,7 +51,7 @@ public:
 
   sharedptr<LayoutItem_Field> get_field_chosen() const;
 
-protected:
+private:
 
   virtual void on_row_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* view_column);
   virtual void on_treeview_selection_changed();

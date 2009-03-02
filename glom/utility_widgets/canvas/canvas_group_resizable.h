@@ -37,8 +37,6 @@ class CanvasGroupResizable
     public CanvasItemMovable
 {
 protected:
-  /** @param add_manipulators Derived classes may want to use false here.
-   */
   CanvasGroupResizable();
   virtual ~CanvasGroupResizable();
 
@@ -67,7 +65,7 @@ public:
   /// This signal is emitted when the canvas item is resized by the user.
   type_signal_resized signal_resized();
 
-protected:
+private:
   virtual Goocanvas::Canvas* get_parent_canvas_widget();
 
   virtual void snap_position(double& x, double& y) const;

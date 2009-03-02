@@ -42,7 +42,7 @@ public:
   
   void set_drag_source();
 
-protected:
+private:
   virtual void on_child_detached(Gtk::Widget* child);
   virtual void on_child_attached(Gtk::Widget* child);
     

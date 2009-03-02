@@ -57,7 +57,7 @@ public:
   ///Select the parent table.
   void set_selected_parent_table(const Glib::ustring& table_name, const Glib::ustring& table_title = Glib::ustring());
 
-protected:
+private:
 
   //void on_cell_data_name(const Gtk::TreeModel::const_iterator& iter);
   void on_cell_data_title(const Gtk::TreeModel::const_iterator& iter);

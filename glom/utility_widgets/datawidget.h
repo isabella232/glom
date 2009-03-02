@@ -77,7 +77,7 @@ public:
   typedef sigc::signal<void, const Gnome::Gda::Value&> type_signal_open_details_requested;
   type_signal_open_details_requested signal_open_details_requested();
 
-protected:
+private:
   //virtual void setup_menu();
 
   //Overrides of default signal handlers:

@@ -131,7 +131,7 @@ public:
 
   }
 
-protected:
+private:
   //This is an override:
   virtual void on_show_context_menu(guint button, guint32 activate_time)
   {

@@ -62,7 +62,7 @@ public:
 
   virtual void set_read_only(bool read_only = true);
 
-protected:
+private:
   void init();
 
 

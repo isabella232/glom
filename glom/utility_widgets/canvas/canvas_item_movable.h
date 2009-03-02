@@ -90,11 +90,11 @@ public:
   static Glib::RefPtr<Goocanvas::Item> cast_to_item(const Glib::RefPtr<CanvasItemMovable>& item);
   static Glib::RefPtr<const Goocanvas::Item> cast_const_to_item(const Glib::RefPtr<const CanvasItemMovable>& item);
 
-protected:
+  virtual void snap_position(double& x, double& y) const;
+
+private:
 
   virtual Goocanvas::Canvas* get_parent_canvas_widget() = 0;
-
-  virtual void snap_position(double& x, double& y) const;
 
   void set_cursor(const Gdk::Cursor& cursor);
   void unset_cursor();
@@ -107,15 +107,17 @@ public:
   bool on_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event);
   bool on_leave_notify_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventCrossing* event);
 
-protected:
+private:
   bool m_dragging;
   bool m_dragging_vertical_only, m_dragging_horizontal_only; //Set by using Ctrl while dragging.
   double m_drag_start_cursor_x, m_drag_start_cursor_y;
   double m_drag_start_position_x, m_drag_start_position_y;
   Gdk::Cursor m_drag_cursor;
 
+protected:
   Glib::RefPtr<const CanvasGroupGrid> m_grid;
 
+private:
   bool m_allow_vertical_movement, m_allow_horizontal_movement;
 
   type_signal_moved m_signal_moved;

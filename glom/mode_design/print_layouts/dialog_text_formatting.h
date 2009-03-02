@@ -43,7 +43,7 @@ public:
   Gtk::VBox* m_box_formatting_placeholder;
   Box_Formatting* m_box_formatting;
 
-protected:
+private:
   virtual void on_button_close();
 };
 

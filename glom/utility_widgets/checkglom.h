@@ -44,7 +44,7 @@ public:
   virtual void set_value(const Gnome::Gda::Value& value);
   virtual Gnome::Gda::Value get_value() const;    
 
-protected:
+private:
   void init();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

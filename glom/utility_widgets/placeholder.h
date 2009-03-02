@@ -40,7 +40,7 @@ public:
   virtual Gtk::Widget* get_child();
   virtual const Gtk::Widget* get_child() const;  
 
-protected:
+private:
   Gtk::Widget* m_pChild;
 };
 

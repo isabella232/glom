@@ -52,7 +52,7 @@ public:
    */
   void set_coordinates(double start_x, double start_y, double end_x, double end_y);
 
-protected:
+private:
 
   double m_start_x, m_start_y, m_end_x, m_end_y;
 };

@@ -40,7 +40,7 @@ public:
   void set_notebook(const sharedptr<const LayoutItem_Notebook>& start_notebook);
   sharedptr<LayoutItem_Notebook> get_notebook() const;
 
-protected:
+private:
 
   //Enable/disable buttons, depending on treeview selection:
   virtual void enable_buttons();

@@ -43,9 +43,6 @@ public:
 
   virtual Glib::ustring get_part_type_name() const;
   virtual Glib::ustring get_report_part_id() const;
-
-protected:
-
 };
 
 } //namespace Glom

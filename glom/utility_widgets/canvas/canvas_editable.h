@@ -59,7 +59,7 @@ public:
   typedef sigc::signal<void, guint, guint32> type_signal_show_context;
   type_signal_show_context signal_show_context();
 
-protected:
+private:
   
   static Glib::RefPtr<Goocanvas::Item> get_parent_container_or_self(const Glib::RefPtr<Goocanvas::Item>& item);
 
@@ -76,8 +76,10 @@ protected:
     bool m_resizable;
   };
 
+protected:
   Glib::RefPtr<CanvasGroupGrid> m_grid;
 
+public:
   type_signal_show_context m_signal_show_context;
 };
 

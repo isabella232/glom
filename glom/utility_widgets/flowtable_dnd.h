@@ -40,7 +40,7 @@ public:
   FlowTableDnd();
   ~FlowTableDnd();
   
-protected:
+private:
   virtual bool on_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint time);
   virtual void on_drag_leave(const Glib::RefPtr<Gdk::DragContext>& drag_context, guint time);
   virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int, int, const Gtk::SelectionData& selection_data, guint, guint time);
@@ -58,8 +58,10 @@ protected:
   void start_dnd(Gtk::Widget& child);
   void stop_dnd(Gtk::Widget& child);
 
+protected:
   virtual void set_design_mode(bool value = true);
-    
+
+private:
   // Methods for the different layout object,
   // to be implemented in the derived class.
   virtual void on_dnd_add_layout_item_field(LayoutWidgetBase* above) = 0;

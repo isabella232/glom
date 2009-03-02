@@ -35,7 +35,7 @@ public:
   ComboEntry_BorderWidth(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~ComboEntry_BorderWidth();
 
-protected:
+private:
 
   /** Get the correct text representation of the @a number for the current locale:
    */

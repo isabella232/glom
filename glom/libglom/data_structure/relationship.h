@@ -67,7 +67,7 @@ public:
    */
   bool get_has_to_table() const;
 
-protected:
+private:
   Glib::ustring m_strFrom_Table;
   Glib::ustring m_strFrom_Field;
   Glib::ustring m_strTo_Table;

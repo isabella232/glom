@@ -39,7 +39,7 @@ public:
 
   virtual void set_group(const Glib::ustring& group_name);
 
-protected:
+private:
 
   void fill_list();
 

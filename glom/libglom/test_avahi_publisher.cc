@@ -10,7 +10,7 @@ public:
   TestWindow();
   virtual ~TestWindow();
 
-protected:
+private:
   //Signal handlers:
   virtual void on_button_start();
   virtual void on_button_stop();

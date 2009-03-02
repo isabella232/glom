@@ -49,7 +49,7 @@ public:
 
   virtual bool on_delete_event(GdkEventAny* event);
 
-protected:
+private:
   Gtk::ProgressBar* m_progress;
   Gtk::Label* m_label_message;
 

@@ -63,7 +63,7 @@ public:
   Glib::ustring get_service_name() const; // Only when get_action is OPEN_REMOTE
 #endif
 
-protected:
+private:
   Action get_action_impl(Gtk::TreeModel::iterator& iter) const;
 
   std::auto_ptr<Gtk::TreeModel::iterator> create_dummy_item_existing(const Gtk::TreeModel::iterator& parent, const Glib::ustring& text);

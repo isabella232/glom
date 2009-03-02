@@ -36,8 +36,8 @@ public:
 
   virtual Gnome::Gda::Value get_value() const = 0;
 
-  /**Whether this widget still has the original entered data, instead of just a representation.
-   * For intance, and image widget might only store a preview.
+  /** Whether this widget still has the original entered data, instead of just a representation.
+   * For instance, an image widget might only store a preview.
    */
   virtual bool get_has_original_data() const;
 

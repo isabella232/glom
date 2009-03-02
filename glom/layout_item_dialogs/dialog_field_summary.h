@@ -49,7 +49,7 @@ public:
 
   sharedptr<LayoutItem_FieldSummary> get_item() const;
 
-protected:
+private:
   //Signal handlers:
   void on_button_field();
 

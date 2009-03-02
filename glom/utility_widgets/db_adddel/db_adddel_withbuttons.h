@@ -39,7 +39,7 @@ public:
   ///Whether each row should have a button, to request edit.
   virtual void set_allow_view_details(bool val = true);
 
-protected:
+private:
   void setup_buttons();
 
   void on_button_add();

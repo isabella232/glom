@@ -68,7 +68,8 @@ public:
     return m_title;
   }
 
-protected:
+//TODO: Put this in a .cc file.
+private:
   virtual void on_start_element(const Glib::ustring& name, const AttributeList& attributes)
   {
     if(m_title.empty()) // Already found name? Wait for parse_chunk() call to return.

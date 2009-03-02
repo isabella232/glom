@@ -40,9 +40,10 @@ public:
 
   virtual bool init_db_details(const Glib::ustring& table_name);
 
-protected:
+private:
   virtual void on_button_close();
 
+protected:
   Gtk::Label* m_label_table;
   Gtk::Label* m_label_frame;
 };

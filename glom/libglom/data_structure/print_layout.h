@@ -45,7 +45,7 @@ public:
   Glib::RefPtr<Gtk::PageSetup> get_page_setup();
   Glib::RefPtr<const Gtk::PageSetup> get_page_setup() const;
 
-protected:
+private:
   bool m_show_table_title;
 
   Glib::RefPtr<Gtk::PageSetup> m_page_setup;

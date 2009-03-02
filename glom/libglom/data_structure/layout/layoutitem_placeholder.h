@@ -47,10 +47,6 @@ public:
   virtual Glib::ustring get_report_part_id() const;
   
   bool operator==(const LayoutItem_Placeholder* src) const;
-protected:
-
-private:
-
 };
 
 }

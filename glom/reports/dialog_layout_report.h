@@ -41,7 +41,7 @@ public:
 
   Glib::ustring get_original_report_name() const;
 
-protected:
+private:
 
   typedef TreeStore_ReportLayout type_model;
 

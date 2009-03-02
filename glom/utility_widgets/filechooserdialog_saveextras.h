@@ -57,7 +57,7 @@ public:
   Document_Glom::HostingMode get_extra_newdb_hosting_mode() const;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-protected:
+private:
   void create_child_widgets();
 
   Gtk::VBox m_extra_widget;

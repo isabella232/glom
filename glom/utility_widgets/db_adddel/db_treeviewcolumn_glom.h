@@ -35,7 +35,7 @@ public:
   virtual Glib::ustring get_column_id() const;
   virtual void set_column_id(const Glib::ustring& value);
 
-protected:
+private:
   Glib::ustring m_column_id; 
 };
 

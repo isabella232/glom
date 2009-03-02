@@ -159,7 +159,7 @@ bool LayoutItem_Field::get_editable_and_allowed() const
     return false; //Calculations can never be edited.
   }
 
-  return m_editable && m_priv_edit;
+  return get_editable() && m_priv_edit;
 }
 
 Glib::ustring LayoutItem_Field::get_layout_display_name() const
@@ -169,7 +169,7 @@ Glib::ustring LayoutItem_Field::get_layout_display_name() const
   if(m_field_cache_valid && m_field)
     result = m_field->get_name();
   else
-    result = m_name;
+    result = get_name();
 
   //Indicate if it's a field in another table.
   if(get_has_related_relationship_name())

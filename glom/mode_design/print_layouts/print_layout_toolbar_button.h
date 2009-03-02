@@ -52,7 +52,7 @@ public:
 
   static enumItems get_item_type_from_selection_data(const Glib::RefPtr<Gdk::DragContext>& drag_context, const Gtk::SelectionData& selection_data);
 
-protected:
+private:
 
   //TODO: What is this for? murrayc.
   // We need an unique identifier for drag & drop! jhs

@@ -41,7 +41,7 @@ public:
   explicit LabelGlom(const Glib::ustring& label, float xalign, float yalign, bool mnemonic = false);
   virtual ~LabelGlom();
 
-protected:
+private:
   void init();
 
   virtual App_Glom* get_application();

@@ -28,13 +28,13 @@ namespace Glom
 //so we can put the actual print implementation here.
 class PrintOperationRelationshipsOverview : public Gtk::PrintOperation
 {
- public:
+public:
   static Glib::RefPtr<PrintOperationRelationshipsOverview> create();
   virtual ~PrintOperationRelationshipsOverview();
 
   void set_canvas(Goocanvas::Canvas* canvas);
 
- protected:
+private:
   PrintOperationRelationshipsOverview();
 
   //PrintOperation default signal handler overrides:

@@ -163,7 +163,7 @@ public:
   inline size_type* _get_refcount() const
   { return m_pRefCount; }
 
-protected:
+private:
   inline void ref();
   inline void unref();
 

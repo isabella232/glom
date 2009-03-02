@@ -52,7 +52,7 @@ public:
    */
   void set_script(const Glib::ustring& script);
 
-protected:
+private:
   Glib::ustring m_script;
 };
 

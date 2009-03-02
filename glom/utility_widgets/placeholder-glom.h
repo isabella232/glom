@@ -41,7 +41,8 @@ public:
   //explicit PlaceholderGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   explicit PlaceholderGlom();
   virtual ~PlaceholderGlom();
-protected:
+
+private:
   virtual App_Glom* get_application();
   
   virtual void on_size_request(Gtk::Requisition* requisition);

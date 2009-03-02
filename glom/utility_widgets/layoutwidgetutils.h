@@ -40,10 +40,12 @@ protected:
   Gtk::Menu* m_pPopupMenuUtils;
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void on_menu_properties_activate() = 0;
-  // This one is implemented here
+
+  // This one is implemented here:
   virtual void on_menu_delete_activate();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-  
+
+//private:  
   Glib::RefPtr<Gtk::Action> m_refUtilProperties;
   Glib::RefPtr<Gtk::Action> m_refUtilDelete;  
   Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;

@@ -67,7 +67,7 @@ public:
   Glib::ustring get_selected_field_name() const;
 
 
-protected:
+private:
 
   //void on_cell_data_name(const Gtk::TreeModel::const_iterator& iter);
   void on_cell_data_title(const Gtk::TreeModel::const_iterator& iter);

@@ -36,7 +36,7 @@ public:
 
   virtual Gtk::Widget* get_default_button(); //override
 
-protected:
+private:
 
   virtual bool fill_from_database(); //override.
   virtual void fill_related(); //override.

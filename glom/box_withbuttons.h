@@ -67,7 +67,7 @@ public:
   virtual Gtk::Widget* get_default_button();
 
 
-protected:
+private:
 
   //virtual void hint_set(const Glib::ustring& strText);
 

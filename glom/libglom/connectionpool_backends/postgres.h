@@ -56,7 +56,7 @@ public:
    */
   static bool check_postgres_gda_client_is_available_with_warning();
 
-protected:
+private:
   virtual Field::sql_format get_sql_format() const { return Field::SQL_FORMAT_POSTGRES; }
   virtual bool supports_remote_access() const { return true; }
   virtual Glib::ustring get_string_find_operator() const { return "ILIKE"; } // ILIKE is a postgres extension for locale-dependent case-insensitive matches.
@@ -64,9 +64,11 @@ protected:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual bool change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vecConstFields& old_fields, const type_vecConstFields& new_fields, std::auto_ptr<Glib::Error>& error);
 
+protected:
   bool attempt_create_database(const Glib::ustring& database_name, const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error);
 #endif
 
+protected:
   Glib::RefPtr<Gnome::Gda::Connection> attempt_connect(const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error);
 
 private:

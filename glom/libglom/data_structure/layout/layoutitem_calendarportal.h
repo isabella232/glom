@@ -48,7 +48,7 @@ public:
   virtual void change_related_field_item_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new);
 
 
-protected:
+private:
   sharedptr<Field> m_date_field;
 };
 

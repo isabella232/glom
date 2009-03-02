@@ -46,7 +46,7 @@ public:
   virtual void load_from_document(); //override
 
 
-protected:
+private:
   Gtk::Entry* m_entry_user;
   Gtk::Entry* m_entry_password;
   Gtk::Entry* m_entry_password_confirm;

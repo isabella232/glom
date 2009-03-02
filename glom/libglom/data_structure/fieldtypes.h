@@ -40,7 +40,7 @@ public:
 
   GType get_fallback_type_for_gdavaluetype(GType field_type) const;
   
-protected:
+private:
   typedef std::map<Glib::ustring, GType> type_mapSchemaStringsToGdaTypes;
   type_mapSchemaStringsToGdaTypes m_mapSchemaStringsToGdaTypes;
 

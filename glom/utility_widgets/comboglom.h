@@ -63,7 +63,7 @@ public:
 
   virtual Gnome::Gda::Value get_value() const;
 
-protected:
+private:
   void init();
 
   // Note this is a normal signal handlers when compiled without default

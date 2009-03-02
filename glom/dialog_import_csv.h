@@ -67,7 +67,7 @@ public:
 
   SignalStateChanged signal_state_changed() const { return m_signal_state_changed; }
 
-protected:
+private:
   void clear();
   void show_error_dialog(const Glib::ustring& primary, const Glib::ustring& secondary);
 

@@ -107,7 +107,7 @@ public:
 
   type_list_items m_list_items;
 
-protected:
+private:
 
   double m_border_width; //For use on reports.
 };

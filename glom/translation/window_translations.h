@@ -46,7 +46,7 @@ public:
   virtual void load_from_document(); //override
   virtual void save_to_document(); //override
 
-protected:
+private:
 
   //Enable/disable buttons, depending on treeview selection:
   virtual void enable_buttons();

@@ -59,7 +59,7 @@ public:
   /// The user interface should handle this signal and alter itself accordingly.
   type_signal_userlevel_changed signal_userlevel_changed();
 
-protected:
+private:
 
   userlevels m_userlevel;
   type_signal_userlevel_changed m_signal_userlevel_changed;

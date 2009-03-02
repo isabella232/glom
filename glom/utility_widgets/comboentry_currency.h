@@ -37,7 +37,7 @@ public:
   ComboEntry_Currency(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
   virtual ~ComboEntry_Currency();
 
-protected:
+private:
 
   //Tree model columns:
   //These columns are used by the model that is created by the default constructor

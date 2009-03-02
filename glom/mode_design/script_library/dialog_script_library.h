@@ -43,7 +43,7 @@ public:
   virtual void load_from_document();
   virtual void save_to_document();
 
-protected:
+private:
   void on_button_add();
   void on_button_remove();
   void on_button_check();
