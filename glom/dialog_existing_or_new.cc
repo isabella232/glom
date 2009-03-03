@@ -22,6 +22,7 @@
 #include "dialog_existing_or_new.h"
 
 #include <libxml++/parsers/saxparser.h>
+#include <libxml/parser.h> //For xmlStopParser()
 
 #include <glibmm/i18n.h>
 #include <giomm/contenttype.h>
@@ -48,14 +49,8 @@ const char* RECENT_DUMMY_TEXT = N_("No recently used documents available.");
 const char* TEMPLATE_DUMMY_TEXT = N_("No templates available.");
 const char* NETWORK_DUMMY_TEXT = N_("No sessions found on the local network.");
 
-/*bool has_dummy(const Gtk::TreeModel::iterator& parent, const std::auto_ptr<Gtk::TreeModel::iterator>& dummy)
-{
-  if(dummy.get() == NULL) return false;
-  const Gtk::TreeNodeChildren& children = parent->children();
-  return children.begin() == *dummy;
-}*/
-
-// Reads the title of an example from the first few characters of the XML
+//TODO_Performance: A DomParser or XmlReader might be faster, or even a regex.
+/// Reads the title of an example from the first few characters of the XML.
 class Parser: public xmlpp::SaxParser
 {
 public:
@@ -68,23 +63,22 @@ public:
     return m_title;
   }
 
-//TODO: Put this in a .cc file.
 private:
   virtual void on_start_element(const Glib::ustring& name, const AttributeList& attributes)
   {
     if(m_title.empty()) // Already found name? Wait for parse_chunk() call to return.
     {
-      if(name == "glom_document")
+      if(name == "glom_document") //See document_glom.cc for the #defines.
       {
         for(AttributeList::const_iterator iter = attributes.begin(); iter != attributes.end(); ++ iter)
         {
           if(iter->name == "database_title")
           {
             m_title = iter->value;
-            // TODO: We should stop parsing here somehow, but I don't
-            // think we can throw an exception through the C library back
-            // to get_example_name, and there does not seem to be API to
-            // stop parsing.
+
+            // Stop parsing here because we have what we need:
+            xmlStopParser(context_);
+
             break;
           }
         }
@@ -95,7 +89,7 @@ private:
   Glib::ustring m_title;
 };
 
-}
+} //anonymous namespace
 
 namespace Glom
 {
