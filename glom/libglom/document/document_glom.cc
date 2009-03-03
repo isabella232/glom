@@ -2364,13 +2364,14 @@ bool Document_Glom::load_after()
             mode = HOSTING_MODE_POSTGRES_CENTRAL;
           else if(attr_mode == GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_SELF)
             mode = HOSTING_MODE_POSTGRES_SELF;
+          else
 #endif //GLOM_ENABLE_POSTGRESQL
 
 #ifdef GLOM_ENABLE_SQLITE
           if(attr_mode == GLOM_ATTRIBUTE_CONNECTION_HOSTING_SQLITE)
             mode = HOSTING_MODE_SQLITE;
-#endif //GLOM_ENABLE_SQLITE
           else
+#endif //GLOM_ENABLE_SQLITE
 	  {
             std::cerr << "Document_Glom::load_after(): Hosting mode " << attr_mode << " is not supported" << std::endl;
             return false; //TODO: Provide more information so the application (or Bakery) can say exactly why loading failed.

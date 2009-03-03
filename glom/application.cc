@@ -113,12 +113,7 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
   m_menu_print_layouts_ui_merge_id(0),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_ui_save_extra_showextras(false),
-
-#ifdef GLOM_ENABLE_POSTGRESQL
-  m_ui_save_extra_newdb_hosting_mode(Document_Glom::HOSTING_MODE_POSTGRES_CENTRAL),
-#else
-  m_ui_save_extra_newdb_hosting_mode(Document_Glom::HOSTING_MODE_SQLITE),
-#endif //GLOM_ENABLE_POSTGRESQL
+  m_ui_save_extra_newdb_hosting_mode(Document_Glom::DEFAULT_HOSTED),
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_show_sql_debug(false)

@@ -1,3 +1,15 @@
+2009-03-03  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/document/document_glom.cc (load_after): Fixed another
+	misplaced else which prevented postgresql files from being opened
+	when support for both postgresql and sqlite was enabled.
+
+	* glom/libglom/document/document_glom.h: Changed DEFAULT_HOSTED to
+	HOSTING_MODE_POSTGRES_SELF if postgresql is enabled.
+
+	* glom/application.cc (constructor): Use DEFAULT_HOSTED to initialize
+	m_ui_save_extra_newdb_hosting_mode, so that we don't need an #ifdef.
+
 2009-03-03  Murray Cumming  <murrayc@murrayc.com>
 
 	* *.[h|cc]: Include all libglom headers via libglom/ instead of 
