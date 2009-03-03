@@ -78,7 +78,7 @@ test_connectionpool_LDADD =  libglom-1.0.la \
               $(GLOM_LIBS)
 
 test_document_SOURCES = test_document.cc
-test_document_LDADD =  libglom.la \
+test_document_LDADD =  libglom-1.0.la \
               $(GLOM_LIBS)
 
 if !WIN32

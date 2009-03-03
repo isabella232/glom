@@ -19,17 +19,43 @@
  */
 
 #include <libglom/document/document_glom.h>
-
+#include <giomm.h>
+#include <glibmm.h>
 
 int
 main()
 {
   Gnome::Gda::init();
+  Gio::init();
+
+  Glib::ustring uri;
+
+  try
+  {
+    uri = Glib::filename_to_uri("/home/murrayc/checkouts/gnome224/glom/examples/example_music_collection.glom");
+  }
+  catch(const Glib::ConvertError& ex)
+  {
+    std::cerr << "Exception from Glib::filename_to_uri(): " << ex.what();
+    return 1;
+  }
+
+  std::cout << "URI=" << uri << std::endl;
 
   Glom::Document_Glom document;
-  document.set_file_uri("../../examples/example_music_collection.glom");
+  document.set_file_uri(uri);
   bool test = document.load();
   std::cout << "Document load result=" << test << std::endl;
+
+  if(!test)
+    return 1;
+
+  typedef std::vector<Glib::ustring> type_vecstrings;
+  const type_vecstrings table_names = document.get_table_names();
+  for(type_vecstrings::const_iterator iter = table_names.begin(); iter != table_names.end(); ++iter)
+  {
+    std::cout << "Table: " << *iter << std::endl;
+  }
 
   return 0;
 }
