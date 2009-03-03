@@ -9,7 +9,7 @@ common_ldflags = -module -avoid-version -no-undefined
 pyexec_LTLIBRARIES = glom.la
 glom_la_LDFLAGS = $(common_ldflags) -export-symbols-regex initglom
 
-glom_la_LIBADD = $(top_builddir)/glom/libglom/libglom.la \
+glom_la_LIBADD = $(top_builddir)/glom/libglom/libglom-1.0.la \
                  $(GLOM_LIBS) $(PYTHON_LDFLAGS)
 
 if !WIN32

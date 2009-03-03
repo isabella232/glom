@@ -2304,7 +2304,11 @@ void Document_Glom::load_after_print_layout_position(const xmlpp::Element* nodeI
 
 bool Document_Glom::load_after()
 {
-  Bakery::BusyCursor busy_cursor(m_parent_window);
+  //Use a std::auto_ptr<> to avoid even unncessarily instantiating a BusyCursor,
+  //which would require GTK+ to be initialized:
+  std::auto_ptr<Bakery::BusyCursor> auto_cursor;
+  if(m_parent_window)
+    auto_cursor = std::auto_ptr<Bakery::BusyCursor>( new Bakery::BusyCursor(m_parent_window) );
 
   m_block_modified_set = true; //Prevent the set_ functions from trigerring a save.
 
@@ -3190,7 +3194,11 @@ void Document_Glom::save_before_print_layout_position(xmlpp::Element* nodeItem, 
 
 bool Document_Glom::save_before()
 {
-  Bakery::BusyCursor busy_cursor(m_parent_window);
+  //Use a std::auto_ptr<> to avoid even unncessarily instantiating a BusyCursor,
+  //which would require GTK+ to be initialized:
+  std::auto_ptr<Bakery::BusyCursor> auto_cursor;
+  if(m_parent_window)
+    auto_cursor = std::auto_ptr<Bakery::BusyCursor>( new Bakery::BusyCursor(m_parent_window) );
 
   xmlpp::Element* nodeRoot = get_node_document();
 

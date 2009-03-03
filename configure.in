@@ -230,6 +230,7 @@ AC_OUTPUT(Makefile \
   glom/Makefile \
     docs/Makefile \
       docs/user-guide/Makefile \
+    glom/libglom/glom-1.0.pc \
     glom/libglom/Makefile \
       glom/libglom/data_structure/Makefile \
         glom/libglom/data_structure/layout/Makefile \

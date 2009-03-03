@@ -1,10 +1,22 @@
 AM_CPPFLAGS = -I@top_srcdir@/ $(GLOM_CFLAGS)
 
 noinst_LTLIBRARIES = libdata_structure_layout_reportparts.la
-libdata_structure_layout_reportparts_la_SOURCES = layoutitem_groupby.h layoutitem_groupby.cc \
-                              layoutitem_summary.h layoutitem_summary.cc \
-                              layoutitem_fieldsummary.h layoutitem_fieldsummary.cc \
-                              layoutitem_header.h layoutitem_header.cc \
-                              layoutitem_footer.h layoutitem_footer.cc \
-                              layoutitem_verticalgroup.h layoutitem_verticalgroup.cc
 
+h_sources = layoutitem_groupby.h \
+                              layoutitem_summary.h \
+                              layoutitem_fieldsummary.h \
+                              layoutitem_header.h \
+                              layoutitem_footer.h \
+                              layoutitem_verticalgroup.h
+
+cc_sources = layoutitem_groupby.cc \
+                              layoutitem_summary.cc \
+                              layoutitem_fieldsummary.cc \
+                              layoutitem_header.cc \
+                              layoutitem_footer.cc \
+                              layoutitem_verticalgroup.cc
+
+library_includedir=$(includedir)/glom-1.0/libglom/data_structure/layout/report_parts
+library_include_HEADERS = $(h_sources)
+
+libdata_structure_layout_reportparts_la_SOURCES = $(h_sources) $(cc_sources)

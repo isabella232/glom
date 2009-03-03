@@ -19,8 +19,8 @@ AM_CPPFLAGS = -I@top_srcdir@/ $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
            -DGLOM_EXAMPLES_DIR=\""$(glom_examples_dir)"\" \
            -DGLOM_ICON_DIR=\""$(glom_icon_dir)"\"
 
-lib_LTLIBRARIES = libglom.la
-libglom_la_SOURCES = appstate.h appstate.cc \
+lib_LTLIBRARIES = libglom-1.0.la
+libglom_1_0_la_SOURCES = appstate.h appstate.cc \
                      calcinprogress.h calcinprogress.cc \
                      connectionpool.h connectionpool.cc \
                      dialog_progress_creating.h dialog_progress_creating.cc \
@@ -30,14 +30,14 @@ libglom_la_SOURCES = appstate.h appstate.cc \
                      standard_table_prefs_fields.h \
 		     gst-package.h gst-package.c
 
-libglom_la_LDFLAGS = -no-undefined
+libglom_1_0_la_LDFLAGS = -no-undefined
 
 # Link libglom statically on maemo and windows for now.
 if GLOM_ENABLE_MAEMO
-libglom_la_LDFLAGS += -static
+libglom_1_0_la_LDFLAGS += -static
 endif
 
-libglom_la_LIBADD  = document/libdocument.la \
+libglom_1_0_la_LIBADD  = document/libdocument.la \
                      connectionpool_backends/libconnectionpool_backends.la \
                      data_structure/libdata_structure.la \
                      data_structure/layout/libdata_structure_layout.la \
@@ -46,19 +46,23 @@ libglom_la_LIBADD  = document/libdocument.la \
                      $(GLOM_LIBS) $(PYTHON_LDFLAGS)
 
 if !WIN32
-libglom_la_LIBADD += -lutil
+libglom_1_0_la_LIBADD += -lutil
 endif
+
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = glom-1.0.pc
+
 
 
 #Small test programs:
 noinst_PROGRAMS = test_sharedptr_layoutitem test_connectionpool
 
 test_sharedptr_layoutitem_SOURCES = test_sharedptr_layoutitem.cc
-test_sharedptr_layoutitem_LDADD =  libglom.la \
+test_sharedptr_layoutitem_LDADD =  libglom-1.0.la \
               $(GLOM_LIBS)
 
 test_connectionpool_SOURCES = test_connectionpool.cc
-test_connectionpool_LDADD =  libglom.la \
+test_connectionpool_LDADD =  libglom-1.0.la \
               $(GLOM_LIBS)
 
 if !WIN32

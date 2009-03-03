@@ -89,7 +89,7 @@ glom_LDADD += navigation/libnavigation.a \
               utility_widgets/egg/util/libeggutil.la
 
 glom_LDADD += python_embed/libpython_embed.a \
-              $(top_builddir)/glom/libglom/libglom.la \
+              $(top_builddir)/glom/libglom/libglom-1.0.la \
               $(GLOM_LIBS) $(PYTHON_LDFLAGS) $(MAEMO_LAUNCHER_LIBS)
 
 if !WIN32

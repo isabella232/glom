@@ -1,5 +1,24 @@
 2009-03-03  Murray Cumming  <murrayc@murrayc.com>
 
+	* configure.in:
+	* glom/libglom/Makefile.am:
+	* glom/libglom/glom-1.0.pc.in: Added and installed pkg-config file.
+
+	* glom/Makefile.am:
+	* glom/libglom/data_structure/Makefile.am:
+	* glom/libglom/data_structure/layout/Makefile.am:
+	* glom/libglom/data_structure/layout/report_parts/Makefile.am:
+	* glom/libglom/document/Makefile.am:
+	* glom/python_embed/python_module/Makefile.am:
+	* regression_tests/Makefile.am: Change libglom to libglom-1.0 so we can 
+	use proper API versioning. Install the headers.
+
+	* glom/libglom/document/document_glom.cc: Use std::auto_ptr<> to 
+	avoid instantiating Bakery::BusyCursor if no parent window was set, 
+	to avoid the need to initialize gtkmm/GTK+.
+
+2009-03-03  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/document/document_glom.h: Add some SWIG ifdefs to 
 	improve the Java wrapping output with swig.
 
