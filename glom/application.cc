@@ -115,9 +115,9 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
   m_ui_save_extra_showextras(false),
 
 #ifdef GLOM_ENABLE_POSTGRESQL
-  m_ui_save_extra_newdb_hosting_mode(Document_Glom::POSTGRES_CENTRAL_HOSTED),
+  m_ui_save_extra_newdb_hosting_mode(Document_Glom::HOSTING_MODE_POSTGRES_CENTRAL),
 #else
-  m_ui_save_extra_newdb_hosting_mode(Document_Glom::SQLITE_HOSTED),
+  m_ui_save_extra_newdb_hosting_mode(Document_Glom::HOSTING_MODE_SQLITE),
 #endif //GLOM_ENABLE_POSTGRESQL
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
@@ -715,8 +715,8 @@ void App_Glom::open_browsed_document(const EpcServiceInfo* server, const Glib::u
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #ifdef GLOM_ENABLE_POSTGRESQL
       //Stop the document from being self-hosted (it's already hosted by the other networked Glom instance):
-      if(document_temp.get_hosting_mode() == Document_Glom::POSTGRES_SELF_HOSTED)
-        document_temp.set_hosting_mode(Document_Glom::POSTGRES_CENTRAL_HOSTED);
+      if(document_temp.get_hosting_mode() == Document_Glom::HOSTING_MODE_POSTGRES_SELF)
+        document_temp.set_hosting_mode(Document_Glom::HOSTING_MODE_POSTGRES_CENTRAL);
 #endif //GLOM_ENABLE_POSTGRESQL
 #endif // !GLOM_ENABLE_CLIENT_ONLY
       // TODO: Error out in case this is a sqlite database, since we probably
@@ -2232,12 +2232,12 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
       bool is_self_hosted = false;
 
 #ifdef GLOM_ENABLE_POSTGRESQL
-      if(m_ui_save_extra_newdb_hosting_mode == Document_Glom::POSTGRES_SELF_HOSTED)
+      if(m_ui_save_extra_newdb_hosting_mode == Document_Glom::HOSTING_MODE_POSTGRES_SELF)
         is_self_hosted = true;
 #endif //GLOM_ENABLE_POSTGRESQL
 
 #ifdef GLOM_ENABLE_SQLITE
-      if(m_ui_save_extra_newdb_hosting_mode == Document_Glom::SQLITE_HOSTED)
+      if(m_ui_save_extra_newdb_hosting_mode == Document_Glom::HOSTING_MODE_SQLITE)
         is_self_hosted = true;
 #endif // GLOM_ENABLE_SQLITE
 

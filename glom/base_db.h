@@ -25,7 +25,7 @@
 
 #include <gtkmm.h>
 
-#include <glom/libglom/document/document_glom.h>
+#include <glom/libglom/document/view.h>
 #include <glom/libglom/connectionpool.h>
 #include <glom/libglom/appstate.h>
 #include <glom/libglom/data_structure/foundset.h>

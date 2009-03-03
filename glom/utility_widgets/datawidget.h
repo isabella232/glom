@@ -27,7 +27,7 @@
 #include "layoutwidgetmenu.h"
 #include <gtkmm/label.h>
 #include <glom/libglom/data_structure/field.h>
-#include <glom/libglom/document/document_glom.h>
+#include <glom/libglom/document/view.h>
 #include <glom/libglom/data_structure/layout/layoutitem_field.h>
 #include "../mode_data/treestore_layout.h" //Forthe enum.
 

@@ -1,6 +1,6 @@
 /* Glom
  *
- * Copyright (C) 2001-2004 Murray Cumming
+ * Copyright (C) 2001-2009 Murray Cumming
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -39,36 +39,18 @@
 #include <glom/libglom/data_structure/print_layout.h>
 #include <glom/libglom/data_structure/foundset.h>
 #include "../appstate.h"
-#include <gtkmm/window.h>
+//#include <gtkmm/window.h>
 #include <vector>
 #include <map>
 #include <limits> // for numeric_limits
 
+namespace Gtk
+{
+class Window;
+}
+
 namespace Glom
 {
-
-/// Can be used with std::find_if() to find a layout with the same parent_table and layout_name.
-template<class T_Element>
-class predicate_Layout
-{
-public:
-  predicate_Layout(const Glib::ustring& parent_table, const Glib::ustring& layout_name, const Glib::ustring& layout_platform)
-  : m_parent_table(parent_table),
-    m_layout_name(layout_name),
-    m_layout_platform(layout_platform)
-  {
-  }
-
-  bool operator() (const T_Element& element)
-  {
-    return (element.m_parent_table == m_parent_table) &&
-           (element.m_layout_name == m_layout_name) &&
-           (element.m_layout_platform == m_layout_platform);
-  }
-
-private:
-  Glib::ustring m_parent_table, m_layout_name, m_layout_platform;
-};
 
 class Document_Glom : public Bakery::Document_XML
 {
@@ -110,26 +92,26 @@ public:
 
   static guint get_latest_known_document_format_version();
 
-  //TODO: Use a prefix instead of a suffix for these enum names:
+  /// How the database is hosted.
   enum HostingMode
   {
 #ifdef GLOM_ENABLE_POSTGRESQL
-    POSTGRES_CENTRAL_HOSTED, /*!< The database is hosted on an external postgresql server. */
-    POSTGRES_SELF_HOSTED, /*!< A new postgres database process is spawned that hosts the data. */
+    HOSTING_MODE_POSTGRES_CENTRAL, /*!< The database is hosted on an external postgresql server. */
+    HOSTING_MODE_POSTGRES_SELF, /*!< A new postgres database process is spawned that hosts the data. */
 #endif //GLOM_ENABLE_POSTGRESQL
 #ifdef GLOM_ENABLE_SQLITE
-    SQLITE_HOSTED, /*!< A sqlite database file is used. */
+    HOSTING_MODE_SQLITE, /*!< A sqlite database file is used. */
 #endif // GLOM_ENABLE_SQLITE
 
     //This reduces the ifdefs elsewhere:
 #ifdef GLOM_ENABLE_POSTGRESQL
-    DEFAULT_HOSTED = POSTGRES_CENTRAL_HOSTED
+    DEFAULT_HOSTED = HOSTING_MODE_POSTGRES_CENTRAL
 #else
-    DEFAULT_HOSTED = SQLITE_HOSTED
+    DEFAULT_HOSTED = HOSTING_MODE_SQLITE
 #endif
   };
 
-  /** Set the hosting mode of the database.
+  /** Set the hosting mode of the database. 
    */
   void set_hosting_mode(HostingMode mode);
 
@@ -139,7 +121,7 @@ public:
   void set_connection_port(int port_number);
   void set_connection_try_other_ports(bool val);
 
-  /** This returns how the hosting mode of the database.
+  /** This returns how the database is hosted.
    */
   HostingMode get_hosting_mode() const;
 
@@ -353,14 +335,14 @@ public:
 
   // Used by Relationship Overview dialog to preserve table locations accross instantiations:
     
-  /** Retrieve the x and y coordinates for the given table position.
+  /** Retrieve the x and y coordinates for the given table position in the relationship overview dialog.
    * 
    * @param table_name The name of the table to query.
    * @param x The x coordinate of the table position.
    * @param y The y coordinate of the table position.
-   * @return false if the table does not have any 
+   * @return false if the table does not have any position for this table.
    */
-  bool get_table_overview_position ( const Glib::ustring &table_name, float &x, float &y ) const;
+  bool get_table_overview_position( const Glib::ustring& table_name, float &x, float &y ) const;
     
   /** Set the position of a table in the relationship overview dialog.
    * 
@@ -368,7 +350,7 @@ public:
    * @param x The x coordinate of the table position.
    * @param y The y coordinate of the table position.
    */
-  void set_table_overview_position ( const Glib::ustring &table_name, float x, float y );
+  void set_table_overview_position( const Glib::ustring& utable_name, float x, float y );
     
   enum userLevelReason
   {
@@ -598,10 +580,6 @@ private:
 
   Gtk::Window* m_parent_window; //Needed by BusyCursor.
 };
-
-//The base View for this document;
-typedef Bakery::View<Document_Glom> View_Glom;
-typedef Bakery::View_Composite<Document_Glom> View_Composite_Glom;
 
 } //namespace Glom
 

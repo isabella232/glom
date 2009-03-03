@@ -171,16 +171,16 @@ void FileChooserDialog_SaveExtras::set_extra_newdb_hosting_mode(Document_Glom::H
   switch(mode)
   {
 #ifdef GLOM_ENABLE_POSTGRESQL
-  case Document_Glom::POSTGRES_CENTRAL_HOSTED:
+  case Document_Glom::HOSTING_MODE_POSTGRES_CENTRAL:
     m_radiobutton_server_postgres_central.set_active();
     break;
-  case Document_Glom::POSTGRES_SELF_HOSTED:
+  case Document_Glom::HOSTING_MODE_POSTGRES_SELF:
     m_radiobutton_server_postgres_selfhosted.set_active();
     break;
 #endif //GLOM_ENABLE_POSTGRESQL
 
 #ifdef GLOM_ENABLE_SQLITE
-  case Document_Glom::SQLITE_HOSTED:
+  case Document_Glom::HOSTING_MODE_SQLITE:
     m_radiobutton_server_sqlite.set_active();
     break;
 #endif //GLOM_ENABLE_SQLITE
@@ -199,22 +199,22 @@ Document_Glom::HostingMode FileChooserDialog_SaveExtras::get_extra_newdb_hosting
 {
 #ifdef GLOM_ENABLE_POSTGRESQL
   if(m_radiobutton_server_postgres_central.get_active())
-    return Document_Glom::POSTGRES_CENTRAL_HOSTED;
+    return Document_Glom::HOSTING_MODE_POSTGRES_CENTRAL;
   else if(m_radiobutton_server_postgres_selfhosted.get_active())
-    return Document_Glom::POSTGRES_SELF_HOSTED;
+    return Document_Glom::HOSTING_MODE_POSTGRES_SELF;
 #endif //GLOM_ENABLE_POSTGRESQL
 
 #ifdef GLOM_ENABLE_SQLITE
   if(m_radiobutton_server_sqlite.get_active())
-    return Document_Glom::SQLITE_HOSTED;
+    return Document_Glom::HOSTING_MODE_SQLITE;
 #endif //GLOM_ENABLE_SQLITE
 
   g_assert_not_reached();
 
 #ifdef GLOM_ENABLE_SQLITE
-  return Document_Glom::SQLITE_HOSTED; //Arbitrary
+  return Document_Glom::HOSTING_MODE_SQLITE; //Arbitrary
 #else
-  return Document_Glom::POSTGRES_SELF_HOSTED; //Arbitrary.
+  return Document_Glom::HOSTING_MODE_POSTGRES_SELF; //Arbitrary.
 #endif //GLOM_ENABLE_SQLITE
 }
 

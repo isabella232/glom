@@ -1649,7 +1649,7 @@ namespace
 #ifdef GLOM_ENABLE_POSTGRESQL
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-    case Document_Glom::POSTGRES_SELF_HOSTED:
+    case Document_Glom::HOSTING_MODE_POSTGRES_SELF:
       {
         ConnectionPoolBackends::PostgresSelfHosted* backend = new ConnectionPoolBackends::PostgresSelfHosted;
         backend->set_self_hosting_data_uri(document->get_connection_self_hosted_directory_uri());
@@ -1658,7 +1658,7 @@ namespace
       break;
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
-    case Document_Glom::POSTGRES_CENTRAL_HOSTED:
+    case Document_Glom::HOSTING_MODE_POSTGRES_CENTRAL:
       {
         ConnectionPoolBackends::PostgresCentralHosted* backend = new ConnectionPoolBackends::PostgresCentralHosted;
         backend->set_host(document->get_connection_server());
@@ -1670,7 +1670,7 @@ namespace
 #endif //GLOM_ENABLE_POSTGRESQL
 
 #ifdef GLOM_ENABLE_SQLITE
-    case Document_Glom::SQLITE_HOSTED:
+    case Document_Glom::HOSTING_MODE_SQLITE:
       {
         ConnectionPoolBackends::Sqlite* backend = new ConnectionPoolBackends::Sqlite;
         backend->set_database_directory_uri(document->get_connection_self_hosted_directory_uri());
@@ -1712,7 +1712,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   switch(document->get_hosting_mode())
   {
 #ifdef GLOM_ENABLE_POSTGRESQL
-  case Document_Glom::POSTGRES_SELF_HOSTED:
+  case Document_Glom::HOSTING_MODE_POSTGRES_SELF:
     {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
       Dialog_NewSelfHostedConnection* dialog = 0;
@@ -1792,7 +1792,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     }
 
     break;
-  case Document_Glom::POSTGRES_CENTRAL_HOSTED:
+  case Document_Glom::HOSTING_MODE_POSTGRES_CENTRAL:
     {
       //Ask for connection details:
       m_pDialogConnection->load_from_document(); //Get good defaults.
@@ -1817,7 +1817,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     break;
 #endif //GLOM_ENABLE_POSTGRESQL
 #ifdef GLOM_ENABLE_SQLITE
-  case Document_Glom::SQLITE_HOSTED:
+  case Document_Glom::HOSTING_MODE_SQLITE:
     {
       // sqlite
       if(!connection_pool->initialize(get_app_window()))
@@ -1896,7 +1896,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 
         // Remember host if the document is not self hosted
         #ifdef GLOM_ENABLE_POSTGRESQL
-        if(document->get_hosting_mode() == Document_Glom::POSTGRES_CENTRAL_HOSTED)
+        if(document->get_hosting_mode() == Document_Glom::HOSTING_MODE_POSTGRES_CENTRAL)
         {
           ConnectionPool::Backend* backend = connection_pool->get_backend();
           ConnectionPoolBackends::PostgresCentralHosted* central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
@@ -1910,7 +1910,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
         // connect_to_server_with_connection_settings, which is just not
         // executed because it failed with no database present. We should
         // somehow avoid this code duplication.
-        else if(document->get_hosting_mode() == Document_Glom::POSTGRES_SELF_HOSTED)
+        else if(document->get_hosting_mode() == Document_Glom::HOSTING_MODE_POSTGRES_SELF)
         {
           ConnectionPool::Backend* backend = connection_pool->get_backend();
           ConnectionPoolBackends::PostgresSelfHosted* self = dynamic_cast<ConnectionPoolBackends::PostgresSelfHosted*>(backend);
@@ -1970,7 +1970,7 @@ bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring kno
     // libgda, but gda_connection_supports_feature() requires a GdaConnection
     // which we don't have at this point.
 #ifdef GLOM_ENABLE_SQLITE
-    if(document->get_hosting_mode() != Document_Glom::SQLITE_HOSTED)
+    if(document->get_hosting_mode() != Document_Glom::HOSTING_MODE_SQLITE)
 #endif
     {
       if(known_username.empty() && known_password.empty())

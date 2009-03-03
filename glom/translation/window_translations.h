@@ -21,14 +21,11 @@
 #ifndef GLOM_TRANSLATIONS_DIALOG_TRANSLATIONS_H
 #define GLOM_TRANSLATIONS_DIALOG_TRANSLATIONS_H
 
-#include <glom/libglom/document/document_glom.h>
+#include <glom/libglom/document/view.h>
 #include <gtkmm.h>
 #include <libglademm.h>
 
 #include <gettext-po.h>
-
-/* For really ugly hacks! */
-#include <setjmp.h>
 
 namespace Glom
 {

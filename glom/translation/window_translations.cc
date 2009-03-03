@@ -35,6 +35,10 @@
 
 #include <sstream>
 
+/* For really ugly hacks! */
+#include <setjmp.h>
+
+
 namespace Glom
 {
 

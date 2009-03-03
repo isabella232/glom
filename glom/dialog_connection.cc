@@ -94,7 +94,7 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
       connection_pool->set_database(m_database_name);
 
 #ifdef GLOM_ENABLE_POSTGRESQL
-      if(document->get_hosting_mode() == Document_Glom::POSTGRES_CENTRAL_HOSTED)
+      if(document->get_hosting_mode() == Document_Glom::HOSTING_MODE_POSTGRES_CENTRAL)
       {
         ConnectionPool::Backend* backend = connection_pool->get_backend();
         ConnectionPoolBackends::PostgresCentralHosted* central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
@@ -128,7 +128,7 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
       //and so we can tell connecting clients (using browse network) what port to use:
       Document_Glom* unconst = const_cast<Document_Glom*>(document);
 
-      if(document->get_hosting_mode() == Document_Glom::POSTGRES_CENTRAL_HOSTED)
+      if(document->get_hosting_mode() == Document_Glom::HOSTING_MODE_POSTGRES_CENTRAL)
       {
         ConnectionPool::Backend* backend = connection_pool->get_backend();
         ConnectionPoolBackends::PostgresCentralHosted* central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
@@ -138,7 +138,7 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
       }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-      else if(document->get_hosting_mode() == Document_Glom::POSTGRES_SELF_HOSTED)
+      else if(document->get_hosting_mode() == Document_Glom::HOSTING_MODE_POSTGRES_SELF)
       {
         ConnectionPool::Backend* backend = connection_pool->get_backend();
         ConnectionPoolBackends::PostgresSelfHosted* self = dynamic_cast<ConnectionPoolBackends::PostgresSelfHosted*>(backend);
@@ -172,7 +172,7 @@ void Dialog_Connection::load_from_document()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #ifdef GLOM_ENABLE_POSTGRESQL
     //Load server and user:
-    if(document->get_hosting_mode() != Document_Glom::POSTGRES_CENTRAL_HOSTED)
+    if(document->get_hosting_mode() != Document_Glom::HOSTING_MODE_POSTGRES_CENTRAL)
     {
        m_entry_host->set_text("(self hosted)");
        m_entry_host->set_sensitive(false);

@@ -1,3 +1,21 @@
+2009-03-03  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/document/Makefile.am:
+	* glom/libglom/document/document_glom.[h|cc]: Renamed the *_HOSTED enum values to 
+	use a prefix. Moved the View tyepdefs into a view.h file.
+
+	* glom/application.cc:
+	* glom/base_db.h:
+	* glom/dialog_connection.cc:
+	* glom/frame_glom.cc:
+	* glom/layout_item_dialogs/dialog_field_layout.h:
+	* glom/mode_design/dialog_design.h:
+	* glom/relationships_overview/dialog_relationships_overview.h:
+	* glom/translation/dialog_identify_original.h:
+	* glom/translation/window_translations.[h|cc]:
+	* glom/utility_widgets/datawidget.h:
+	* glom/utility_widgets/filechooserdialog_saveextras.cc: Adapted.
+
 2009-03-02  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/frame_glom.cc:

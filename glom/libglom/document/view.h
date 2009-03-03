@@ -1,6 +1,6 @@
 /* Glom
  *
- * Copyright (C) 2001-2004 Murray Cumming
+ * Copyright (C) 2001-2009 Murray Cumming
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -18,37 +18,19 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_TRANSLATIONS_DIALOG_IDENTIFY_ORIGINAL_H
-#define GLOM_TRANSLATIONS_DIALOG_IDENTIFY_ORIGINAL_H
+#ifndef DOCUMENT_GLOM_VIEW_H
+#define DOCUMENT_GLOM_VIEW_H
 
-#include "combobox_locale.h"
-#include <glom/libglom/document/view.h> // For View_Glom
-#include <libglademm.h>
-#include <gtkmm/dialog.h>
+#include <glom/libglom/document/document_glom.h>
 
 namespace Glom
 {
 
-/**
- */
-class Dialog_IdentifyOriginal
-  : public Gtk::Dialog,
-    public View_Glom
-{
-public:
-  Dialog_IdentifyOriginal(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
-  virtual ~Dialog_IdentifyOriginal();
+///The base View for the document.
+typedef Bakery::View<Document_Glom> View_Glom;
 
-  Glib::ustring get_locale() const;
-
-  virtual void load_from_document(); //override
-
-private:
-  Gtk::Label* m_label_original;
-  ComboBox_Locale* m_combo_locale;
-};
+typedef Bakery::View_Composite<Document_Glom> View_Composite_Glom;
 
 } //namespace Glom
 
-#endif //GLOM_TRANSLATIONS_DIALOG_IDENTIFY_ORIGINAL_H
-
+#endif //DOCUMENT_GLOM_VIEW_H
