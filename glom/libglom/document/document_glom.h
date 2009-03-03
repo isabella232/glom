@@ -44,6 +44,21 @@
 #include <map>
 #include <limits> // for numeric_limits
 
+// Instructions to swig, telling it what Java API to generate:
+#ifdef SWIG
+%module glom
+%include "std_string.i"
+%include "std_vector.i"
+%include "typemaps.i"
+
+%inline %{ typedef unsigned int guint; %}
+%inline %{ namespace Glib { typedef std::string ustring; } %}
+
+//Stick to the client-only API for swig, for now.
+//TODO: Watch out if some of these are virtual.
+#define GLOM_ENABLE_CLIENT_ONLY 1
+#endif //SWIG
+
 namespace Gtk
 {
 class Window;
@@ -332,7 +347,7 @@ public:
 
   FoundSet get_criteria_current(const Glib::ustring& table_name) const;
 
-
+#ifndef SWIG //Hide this API from swig.
   // Used by Relationship Overview dialog to preserve table locations accross instantiations:
     
   /** Retrieve the x and y coordinates for the given table position in the relationship overview dialog.
@@ -375,7 +390,9 @@ public:
   typedef sigc::signal<void, AppState::userlevels> type_signal_userlevel_changed;
   type_signal_userlevel_changed signal_userlevel_changed();
 
+
   void emit_userlevel_changed();
+#endif
 
   static Glib::ustring get_default_layout_platform();
 
@@ -389,6 +406,7 @@ public:
 
 
 
+#ifndef SWIG //Hide this API from swig.
   void set_parent_window(Gtk::Window* window);
 
   Glib::ustring build_and_get_contents() const;
@@ -406,6 +424,7 @@ public:
   // This is required by the report builder, so it cannot be disabled
   // in client only mode
   static void set_node_attribute_value_as_decimal_double(xmlpp::Element* node, const Glib::ustring& strAttributeName, double value);
+#endif //SWIG
 
 private:
 

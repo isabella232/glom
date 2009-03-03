@@ -1,5 +1,10 @@
 2009-03-03  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/document/document_glom.h: Add some SWIG ifdefs to 
+	improve the Java wrapping output with swig.
+
+2009-03-03  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/dialog_existing_or_new.cc: Parser::on_start_element():
 	Call xmlStopParser() to avoid unnecessary extra parsing, fixing a TODO.
 
