@@ -24,12 +24,12 @@
 #include <eval.h> /* for PyEval_EvalCode */
 #include <objimpl.h> /* for PyObject_New() */
 
-#include <glom/libglom/python_embed/py_glom_related.h>
-//#include <glom/libglom/python_embed/py_glom_record.h>
-#include <glom/libglom/python_embed/py_glom_relatedrecord.h>
+#include <libglom/python_embed/py_glom_related.h>
+//#include <libglom/python_embed/py_glom_record.h>
+#include <libglom/python_embed/py_glom_relatedrecord.h>
 
-#include <glom/libglom/data_structure/field.h>
-#include <glom/libglom/data_structure/glomconversions.h>
+#include <libglom/data_structure/field.h>
+#include <libglom/data_structure/glomconversions.h>
 #include <glibmm/ustring.h>
 
 

@@ -22,7 +22,7 @@
 #define GLOM_BACKEND_SQLITE_H
 
 #include <libgdamm.h>
-#include <glom/libglom/connectionpool_backends/backend.h>
+#include <libglom/connectionpool_backends/backend.h>
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY, GLOM_ENABLE_SQLITE
 

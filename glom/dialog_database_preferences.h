@@ -27,8 +27,8 @@
 #include <gtkmm/entry.h>
 #include <gtkmm/label.h>
 #include "base_db.h"
-#include <glom/libglom/data_structure/system_prefs.h>
-#include <glom/libglom/connectionpool.h>
+#include <libglom/data_structure/system_prefs.h>
+#include <libglom/connectionpool.h>
 #include "utility_widgets/imageglom.h"
 
 namespace Glom

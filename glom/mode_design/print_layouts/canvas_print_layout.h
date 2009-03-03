@@ -24,7 +24,7 @@
 #include <glom/base_db.h>
 #include <glom/utility_widgets/canvas/canvas_editable.h>
 #include <glom/mode_design/print_layouts/canvas_layout_item.h>
-#include <glom/libglom/data_structure/print_layout.h>
+#include <libglom/data_structure/print_layout.h>
 #include <gtkmm/uimanager.h>
 #include <gtkmm/toggleaction.h>
 #include <gtkmm/pagesetup.h>

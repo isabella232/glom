@@ -21,7 +21,7 @@
 #include "dialog_import_csv_progress.h"
 #include "config.h"
 
-#include <glom/libglom/data_structure/glomconversions.h>
+#include <libglom/data_structure/glomconversions.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

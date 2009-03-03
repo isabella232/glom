@@ -20,12 +20,12 @@
 
 #include "box_data_details.h"
 #include "../frame_glom.h" //For show_ok_dialog().
-#include <glom/libglom/data_structure/field.h>
-#include <glom/libglom/data_structure/relationship.h>
-#include <glom/libglom/data_structure/glomconversions.h>
+#include <libglom/data_structure/field.h>
+#include <libglom/data_structure/relationship.h>
+#include <libglom/data_structure/glomconversions.h>
 #include "dialog_layout_details.h"
-#include <glom/libglom/glade_utils.h>
-#include <glom/libglom/utils.h>
+#include <libglom/glade_utils.h>
+#include <libglom/utils.h>
 #include <glom/glom_privs.h>
 #include "../xsl_utils.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().

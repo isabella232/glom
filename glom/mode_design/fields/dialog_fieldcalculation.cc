@@ -23,7 +23,7 @@
 #include "../../box_db_table.h"
 #include "../../frame_glom.h"
 #include "../../python_embed/glom_python.h"
-#include <glom/libglom/data_structure/glomconversions.h>
+#include <libglom/data_structure/glomconversions.h>
 #include <gtksourceviewmm/sourcelanguagemanager.h>
 
 //#include <libgnome/gnome-i18n.h>

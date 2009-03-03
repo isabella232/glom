@@ -19,7 +19,7 @@
  */
 
 #include "glom_privs.h"
-#include <glom/libglom/standard_table_prefs_fields.h>
+#include <libglom/standard_table_prefs_fields.h>
 #include <glom/application.h>
 
 namespace Glom

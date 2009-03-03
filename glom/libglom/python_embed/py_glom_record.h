@@ -26,8 +26,8 @@
 
 #include <Python.h>
 
-#include <glom/libglom/document/document_glom.h>
-#include <glom/libglom/data_structure/field.h>
+#include <libglom/document/document_glom.h>
+#include <libglom/data_structure/field.h>
 #include <glibmm/ustring.h>
 
 namespace Glom

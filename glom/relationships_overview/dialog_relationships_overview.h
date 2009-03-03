@@ -21,7 +21,7 @@
 #ifndef GLOM_DIALOG_RELATIONSHIPS_OVERVIEW
 #define GLOM_DIALOG_RELATIONSHIPS_OVERVIEW
 
-#include <glom/libglom/document/view.h>
+#include <libglom/document/view.h>
 #include "glom/utility_widgets/canvas/canvas_editable.h"
 #include "canvas_group_dbtable.h"
 #include <gtkmm/dialog.h>

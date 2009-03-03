@@ -24,7 +24,7 @@
 
 #include <glom/box_withbuttons.h>
 #include <glom/base_db_table.h>
-#include <glom/libglom/data_structure/field.h>
+#include <libglom/data_structure/field.h>
 #include <libglademm.h>
 #include <algorithm> //find_if used in various places.
 

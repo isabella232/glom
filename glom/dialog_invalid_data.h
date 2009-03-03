@@ -23,7 +23,7 @@
 
 #include <gtkmm/dialog.h>
 #include <gtkmm/entry.h>
-#include <glom/libglom/data_structure/field.h>
+#include <libglom/data_structure/field.h>
 #include <libglademm.h>
 
 namespace Glom

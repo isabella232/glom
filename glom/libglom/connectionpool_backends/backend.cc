@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <glom/libglom/connectionpool_backends/backend.h>
+#include <libglom/connectionpool_backends/backend.h>
 
 namespace Glom
 {

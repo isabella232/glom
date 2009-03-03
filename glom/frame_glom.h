@@ -25,7 +25,7 @@
 
 #include <gtkmm/frame.h>
 #include "bakery/View/View_Composite.h"
-#include <glom/libglom/document/document_glom.h>
+#include <libglom/document/document_glom.h>
 
 #include "dialog_glom.h"
 #include "navigation/box_tables.h"
@@ -40,7 +40,7 @@
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #include "dialog_connection.h"
-#include <glom/libglom/utils.h>
+#include <libglom/utils.h>
 
 #include "mode_data/box_data_list_related.h" //only for m_HackToFixLinkerError.
 

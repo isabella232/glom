@@ -24,7 +24,7 @@
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 #include <gtkmm.h>
-#include <glom/libglom/data_structure/field.h>
+#include <libglom/data_structure/field.h>
 #include "layoutwidgetfield.h"
 #include <libglademm.h>
 

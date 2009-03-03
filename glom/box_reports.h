@@ -22,7 +22,7 @@
 #define BOX_REPORTS_H
 
 #include "box_db_table.h"
-#include <glom/libglom/data_structure/report.h>
+#include <libglom/data_structure/report.h>
 
 namespace Glom
 {

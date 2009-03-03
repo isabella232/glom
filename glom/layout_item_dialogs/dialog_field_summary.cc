@@ -19,7 +19,7 @@
  */
 
 #include "dialog_field_summary.h"
-#include <glom/libglom/data_structure/glomconversions.h>
+#include <libglom/data_structure/glomconversions.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

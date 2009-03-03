@@ -18,24 +18,24 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <glom/libglom/document/document_glom.h>
-#include <glom/libglom/utils.h>
-//#include <glom/libglom/data_structure/glomconversions.h>
-#include <glom/libglom/data_structure/layout/report_parts/layoutitem_summary.h>
-#include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
-#include <glom/libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.h>
-#include <glom/libglom/data_structure/layout/report_parts/layoutitem_header.h>
-#include <glom/libglom/data_structure/layout/report_parts/layoutitem_footer.h>
-#include <glom/libglom/data_structure/layout/layoutitem_button.h>
-#include <glom/libglom/data_structure/layout/layoutitem_text.h>
-#include <glom/libglom/data_structure/layout/layoutitem_image.h>
-#include <glom/libglom/data_structure/layout/layoutitem_calendarportal.h>
-#include <glom/libglom/data_structure/layout/layoutitem_line.h>
-#include <glom/libglom/standard_table_prefs_fields.h>
+#include <libglom/document/document_glom.h>
+#include <libglom/utils.h>
+//#include <libglom/data_structure/glomconversions.h>
+#include <libglom/data_structure/layout/report_parts/layoutitem_summary.h>
+#include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
+#include <libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.h>
+#include <libglom/data_structure/layout/report_parts/layoutitem_header.h>
+#include <libglom/data_structure/layout/report_parts/layoutitem_footer.h>
+#include <libglom/data_structure/layout/layoutitem_button.h>
+#include <libglom/data_structure/layout/layoutitem_text.h>
+#include <libglom/data_structure/layout/layoutitem_image.h>
+#include <libglom/data_structure/layout/layoutitem_calendarportal.h>
+#include <libglom/data_structure/layout/layoutitem_line.h>
+#include <libglom/standard_table_prefs_fields.h>
 #include <giomm.h>
 #include <bakery/Utilities/BusyCursor.h>
 
-#include <glom/libglom/connectionpool.h>
+#include <libglom/connectionpool.h>
 
 #include <gtk/gtkpagesetup.h> //TODO: Remove this when we can use the C++ constructor.
 

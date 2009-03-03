@@ -21,7 +21,7 @@
 
 #include "dialog_buttonscript.h"
 #include "../python_embed/glom_python.h"
-#include <glom/libglom/data_structure/glomconversions.h>
+#include <libglom/data_structure/glomconversions.h>
 #include <gtksourceviewmm/sourcelanguagemanager.h>
 
 

@@ -22,10 +22,10 @@
 #define GLOM_DIALOG_LAYOUT_REPORT
 
 #include "../mode_data/dialog_layout.h"
-#include <glom/libglom/data_structure/report.h>
+#include <libglom/data_structure/report.h>
 #include "treestore_report_layout.h"
-//#include <glom/libglom/data_structure/layout/layoutitem.h>
-//#include <glom/libglom/sharedptr.h>
+//#include <libglom/data_structure/layout/layoutitem.h>
+//#include <libglom/sharedptr.h>
 
 namespace Glom
 {

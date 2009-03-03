@@ -23,7 +23,7 @@
 
 #include <gtkmm.h>
 #include <libglademm.h>
-#include <glom/libglom/data_structure/field.h>
+#include <libglom/data_structure/field.h>
 #include "../../base_db.h"
 #include <gtksourceviewmm/sourceview.h>
 

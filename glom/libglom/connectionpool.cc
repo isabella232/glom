@@ -20,8 +20,8 @@
 
 #include "config.h" // For GLOM_ENABLE_MAEMO
  
-#include <glom/libglom/connectionpool.h>
-#include <glom/libglom/document/document_glom.h>
+#include <libglom/connectionpool.h>
+#include <libglom/document/document_glom.h>
 #include <bakery/bakery.h>
 //#include <libgdamm/connectionevent.h>
 #include <glibmm/i18n.h>

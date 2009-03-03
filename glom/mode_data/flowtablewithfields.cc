@@ -29,13 +29,13 @@
 #include <glom/utility_widgets/placeholder-glom.h>
 #include "../application.h"
 #include <gtkmm/checkbutton.h>
-#include <glom/libglom/data_structure/glomconversions.h>
-#include <glom/libglom/glade_utils.h>
+#include <libglom/data_structure/glomconversions.h>
+#include <libglom/glade_utils.h>
 #include "box_data_list_related.h"
 #include "dialog_choose_relationship.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <glibmm/i18n.h>
-#include <glom/libglom/data_structure/layout/layoutitem_placeholder.h>
+#include <libglom/data_structure/layout/layoutitem_placeholder.h>
 #include <glom/signal_reemitter.h>
 
 namespace Glom

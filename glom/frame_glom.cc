@@ -24,17 +24,17 @@
 #include "application.h"
 #include "dialog_import_csv.h"
 #include "dialog_import_csv_progress.h"
-#include <glom/libglom/appstate.h>
+#include <libglom/appstate.h>
 
-#include <glom/libglom/connectionpool.h>
+#include <libglom/connectionpool.h>
 
 #ifdef GLOM_ENABLE_POSTGRESQL
-#include <glom/libglom/connectionpool_backends/postgres_central.h>
-#include <glom/libglom/connectionpool_backends/postgres_self.h>
+#include <libglom/connectionpool_backends/postgres_central.h>
+#include <libglom/connectionpool_backends/postgres_self.h>
 #endif
 
 #ifdef GLOM_ENABLE_SQLITE
-# include <glom/libglom/connectionpool_backends/sqlite.h>
+# include <libglom/connectionpool_backends/sqlite.h>
 #endif
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -48,11 +48,11 @@
 #include "relationships_overview/dialog_relationships_overview.h"
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-#include <glom/libglom/utils.h>
-#include <glom/libglom/glade_utils.h>
-#include <glom/libglom/data_structure/glomconversions.h>
-#include <glom/libglom/data_structure/layout/report_parts/layoutitem_summary.h>
-#include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
+#include <libglom/utils.h>
+#include <libglom/glade_utils.h>
+#include <libglom/data_structure/glomconversions.h>
+#include <libglom/data_structure/layout/report_parts/layoutitem_summary.h>
+#include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 
 #include <glom/reports/report_builder.h>
 #ifndef GLOM_ENABLE_CLIENT_ONLY

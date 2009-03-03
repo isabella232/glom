@@ -21,7 +21,7 @@
 #include "fieldtypes.h"
 #include <iostream> //For debug output
 #include <libgda/gda-util.h> // For gda_g_type_to_string
-#include <glom/libglom/connectionpool.h>
+#include <libglom/connectionpool.h>
 
 namespace Glom
 {

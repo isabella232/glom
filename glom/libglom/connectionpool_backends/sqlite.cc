@@ -20,7 +20,7 @@
 
 #include "config.h"
 
-#include <glom/libglom/connectionpool_backends/sqlite.h>
+#include <libglom/connectionpool_backends/sqlite.h>
 
 #include <giomm/file.h>
 

@@ -25,19 +25,19 @@
 
 #include <bakery/Document/Document_XML.h>
 #include <bakery/View/View_Composite.h>
-#include <glom/libglom/data_structure/relationship.h>
-#include <glom/libglom/data_structure/field.h>
-#include <glom/libglom/data_structure/layout/layoutgroup.h>
-#include <glom/libglom/data_structure/layout/layoutitem_notebook.h>
-#include <glom/libglom/data_structure/layout/layoutitem_portal.h>
-#include <glom/libglom/data_structure/layout/layoutitem_button.h>
-#include <glom/libglom/data_structure/layout/layoutitem_text.h>
-#include <glom/libglom/data_structure/layout/layoutitem_image.h>
-#include <glom/libglom/data_structure/tableinfo.h>
-#include <glom/libglom/data_structure/groupinfo.h>
-#include <glom/libglom/data_structure/report.h>
-#include <glom/libglom/data_structure/print_layout.h>
-#include <glom/libglom/data_structure/foundset.h>
+#include <libglom/data_structure/relationship.h>
+#include <libglom/data_structure/field.h>
+#include <libglom/data_structure/layout/layoutgroup.h>
+#include <libglom/data_structure/layout/layoutitem_notebook.h>
+#include <libglom/data_structure/layout/layoutitem_portal.h>
+#include <libglom/data_structure/layout/layoutitem_button.h>
+#include <libglom/data_structure/layout/layoutitem_text.h>
+#include <libglom/data_structure/layout/layoutitem_image.h>
+#include <libglom/data_structure/tableinfo.h>
+#include <libglom/data_structure/groupinfo.h>
+#include <libglom/data_structure/report.h>
+#include <libglom/data_structure/print_layout.h>
+#include <libglom/data_structure/foundset.h>
 #include "../appstate.h"
 //#include <gtkmm/window.h>
 #include <vector>
@@ -390,9 +390,9 @@ public:
   typedef sigc::signal<void, AppState::userlevels> type_signal_userlevel_changed;
   type_signal_userlevel_changed signal_userlevel_changed();
 
-
+  //TODO: This is a rather indirect way for application.cc to request the UI to update for the userlevel.
   void emit_userlevel_changed();
-#endif
+#endif //SWIG
 
   static Glib::ustring get_default_layout_platform();
 
@@ -411,25 +411,32 @@ public:
 
   Glib::ustring build_and_get_contents() const;
 
-  static sharedptr<TableInfo> create_table_system_preferences();
-  static sharedptr<TableInfo> create_table_system_preferences(type_vecFields& fields);
-  static sharedptr<Relationship>  create_relationship_system_preferences(const Glib::ustring& table_name);
-  static bool get_relationship_is_system_properties(const sharedptr<const Relationship>& relationship);
+protected:
+
+
+  //TODO: Remove this:
+  friend class ReportBuilder;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   ///If value is equal to the default then no attribute will be set, to save text space in the XML file.
   static void set_node_attribute_value_as_decimal(xmlpp::Element* node, const Glib::ustring& strAttributeName, guint value, guint value_default = 0);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-
+  
   // This is required by the report builder, so it cannot be disabled
   // in client only mode
   static void set_node_attribute_value_as_decimal_double(xmlpp::Element* node, const Glib::ustring& strAttributeName, double value);
 #endif //SWIG
 
+#ifndef SWIG
+public:
+  static sharedptr<TableInfo> create_table_system_preferences();
+  static sharedptr<TableInfo> create_table_system_preferences(type_vecFields& fields);
+  static sharedptr<Relationship> create_relationship_system_preferences(const Glib::ustring& table_name);
+  static bool get_relationship_is_system_properties(const sharedptr<const Relationship>& relationship);
+#endif //SWIG
+
 private:
-
   //Overrides:
-
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual bool save_before();

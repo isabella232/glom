@@ -24,7 +24,7 @@
 
 #include <gtkmm.h>
 #include "layoutwidgetbase.h"
-//#include <glom/libglom/data_structure/layout/layoutitem_button.h>
+//#include <libglom/data_structure/layout/layoutitem_button.h>
 //#include <libglademm.h>
 
 #ifndef GLOM_UTILITY_WIDGETS_PLACEHOLDER_GLOM_H_

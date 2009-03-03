@@ -20,7 +20,7 @@
 
 #include "box_withbuttons.h"
 #include "application.h" //App_Glom.
-#include <glom/libglom/appstate.h>
+#include <libglom/appstate.h>
 //#include <libgnomeui/gnome-app-helper.h>
 
 #include <sstream> //For stringstream

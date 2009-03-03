@@ -23,7 +23,7 @@
 
 #include <gtkmm.h>
 #include "layoutwidgetmenu.h"
-#include <glom/libglom/data_structure/layout/layoutitem_notebook.h>
+#include <libglom/data_structure/layout/layoutitem_notebook.h>
 #include <libglademm.h>
 
 namespace Glom

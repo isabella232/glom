@@ -21,7 +21,7 @@
 #ifndef GLOM_PYTHON_H
 #define GLOM_PYTHON_H
 
-#include <glom/libglom/data_structure/field.h>
+#include <libglom/data_structure/field.h>
 #include <glibmm/ustring.h>
 
 namespace Glom

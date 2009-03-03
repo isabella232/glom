@@ -19,7 +19,7 @@
  */
 
 #include "dialog_properties.h"
-#include "adddel/adddel.h"
+#include "glom/utility_widgets/adddel/adddel.h"
 
 namespace Glom
 {

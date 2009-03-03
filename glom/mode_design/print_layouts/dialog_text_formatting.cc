@@ -20,7 +20,7 @@
 
 #include "dialog_text_formatting.h"
 #include <glom/box_db_table.h>
-#include <glom/libglom/glade_utils.h>
+#include <libglom/glade_utils.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

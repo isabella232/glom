@@ -21,8 +21,8 @@
 #ifndef GLOM_DATASTRUCTURE_ISO_CODES_H
 #define GLOM_DATASTRUCTURE_ISO_CODES_H
 
-#include <glom/libglom/data_structure/field.h>
-#include <glom/libglom/data_structure/numeric_format.h>
+#include <libglom/data_structure/field.h>
+#include <libglom/data_structure/numeric_format.h>
 
 namespace Glom
 {

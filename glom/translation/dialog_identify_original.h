@@ -22,7 +22,7 @@
 #define GLOM_TRANSLATIONS_DIALOG_IDENTIFY_ORIGINAL_H
 
 #include "combobox_locale.h"
-#include <glom/libglom/document/view.h> // For View_Glom
+#include <libglom/document/view.h> // For View_Glom
 #include <libglademm.h>
 #include <gtkmm/dialog.h>
 

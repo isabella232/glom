@@ -21,9 +21,9 @@
 #include <iostream>
 #include "glom_db_treemodel.h"
 
-#include <glom/libglom/connectionpool.h>
-#include <glom/libglom/data_structure/glomconversions.h> //For util_build_sql
-#include <glom/libglom/utils.h>
+#include <libglom/connectionpool.h>
+#include <libglom/data_structure/glomconversions.h> //For util_build_sql
+#include <libglom/utils.h>
 
 #include "glom/application.h"
 

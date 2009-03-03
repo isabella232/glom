@@ -22,11 +22,11 @@
 #include "box_withbuttons.h" //For Box_WithButtons::connect_to_server().
 #include <glibmm/i18n.h>
 
-#include <glom/libglom/connectionpool.h>
+#include <libglom/connectionpool.h>
 
 #ifdef GLOM_ENABLE_POSTGRESQL
-#include <glom/libglom/connectionpool_backends/postgres_central.h>
-#include <glom/libglom/connectionpool_backends/postgres_self.h>
+#include <libglom/connectionpool_backends/postgres_central.h>
+#include <libglom/connectionpool_backends/postgres_self.h>
 #endif //#ifdef GLOM_ENABLE_POSTGRESQL
 
 namespace Glom

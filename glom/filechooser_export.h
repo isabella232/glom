@@ -21,7 +21,7 @@
 #ifndef FILECHOOSER_EXPORT_GLOM_H
 #define FILECHOOSER_EXPORT_GLOM_H
 
-#include <glom/libglom/document/document_glom.h>
+#include <libglom/document/document_glom.h>
 #include <gtkmm/filechooserdialog.h>
 
 namespace Glom

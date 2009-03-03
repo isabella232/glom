@@ -23,7 +23,7 @@
 #include "application.h"
 #include "dialog_existing_or_new.h"
 
-#include <glom/libglom/dialog_progress_creating.h>
+#include <libglom/dialog_progress_creating.h>
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #include <glom/translation/dialog_change_language.h>
@@ -31,11 +31,11 @@
 #include <glom/utility_widgets/filechooserdialog_saveextras.h>
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-#include <glom/libglom/utils.h>
-#include <glom/libglom/glade_utils.h>
+#include <libglom/utils.h>
+#include <libglom/glade_utils.h>
 
-//#include <glom/libglom/connectionpool_backends/postgres_central.h>
-//#include <glom/libglom/connectionpool_backends/postgres_self.h>
+//#include <libglom/connectionpool_backends/postgres_central.h>
+//#include <libglom/connectionpool_backends/postgres_self.h>
 
 #include <cstdio>
 #include <memory> //For std::auto_ptr<>

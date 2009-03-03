@@ -19,7 +19,7 @@
  */
 
 #include <glom/utility_widgets/filechooserdialog_saveextras.h>
-#include <glom/libglom/utils.h>
+#include <libglom/utils.h>
 #include <gtkmm/alignment.h>
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <glibmm/i18n.h>

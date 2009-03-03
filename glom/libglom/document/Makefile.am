@@ -1,4 +1,4 @@
-AM_CPPFLAGS = -I@top_srcdir@/ $(GLOM_CFLAGS)
+AM_CPPFLAGS = -I@top_srcdir@/ -I@top_srcdir@/glom $(GLOM_CFLAGS)
 
 h_sources = document_glom.h view.h
 cc_sources = document_glom.cc

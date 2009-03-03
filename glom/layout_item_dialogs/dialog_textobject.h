@@ -23,7 +23,7 @@
 
 #include <gtkmm.h>
 #include <libglademm.h>
-#include <glom/libglom/data_structure/layout/layoutitem_text.h>
+#include <libglom/data_structure/layout/layoutitem_text.h>
 #include "../base_db.h"
 
 namespace Glom

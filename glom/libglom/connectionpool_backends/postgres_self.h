@@ -23,7 +23,7 @@
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
-#include <glom/libglom/connectionpool_backends/postgres.h>
+#include <libglom/connectionpool_backends/postgres.h>
 
 namespace Glom
 {

@@ -21,7 +21,7 @@
 #ifndef GLOM_BACKEND_POSTGRES_CENTRAL_H
 #define GLOM_BACKEND_POSTGRES_CENTRAL_H
 
-#include <glom/libglom/connectionpool_backends/postgres.h>
+#include <libglom/connectionpool_backends/postgres.h>
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 

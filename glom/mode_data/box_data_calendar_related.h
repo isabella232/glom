@@ -24,7 +24,7 @@
 #include "config.h" // GLOM_ENABLE_CLIENT_ONLY
 
 #include "box_data_portal.h"
-#include <glom/libglom/data_structure/layout/layoutitem_calendarportal.h>
+#include <libglom/data_structure/layout/layoutitem_calendarportal.h>
 #include "../utility_widgets/layoutwidgetbase.h"
 #include "../utility_widgets/calendar/glomcalendar.h"
 

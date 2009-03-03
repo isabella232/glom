@@ -21,10 +21,10 @@
 #ifndef GLOM_DATASTRUCTURE_GLOMCONVERSIONS_H
 #define GLOM_DATASTRUCTURE_GLOMCONVERSIONS_H
 
-#include <glom/libglom/data_structure/field.h>
-#include <glom/libglom/data_structure/numeric_format.h>
+#include <libglom/data_structure/field.h>
+#include <libglom/data_structure/numeric_format.h>
 
-#include <glom/libglom/data_structure/layout/layoutitem_field.h>
+#include <libglom/data_structure/layout/layoutitem_field.h>
 #include <libxml++/libxml++.h>
 #include <gdkmm/pixbuf.h>
 

@@ -19,7 +19,7 @@
  */
 
 #include "base_db_table_data.h"
-#include <glom/libglom/data_structure/glomconversions.h>
+#include <libglom/data_structure/glomconversions.h>
 #include <glom/application.h>
 #include "python_embed/glom_python.h"
 #include <sstream>

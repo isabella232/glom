@@ -19,9 +19,9 @@
  */
  
 #include "dialog_invalid_data.h"
-#include <glom/libglom/data_structure/glomconversions.h>
-#include <glom/libglom/utils.h>
-#include <glom/libglom/glade_utils.h>
+#include <libglom/data_structure/glomconversions.h>
+#include <libglom/utils.h>
+#include <libglom/glade_utils.h>
 
 namespace Glom
 {

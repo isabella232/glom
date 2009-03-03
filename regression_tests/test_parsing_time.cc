@@ -1,4 +1,4 @@
-#include <glom/libglom/data_structure/glomconversions.h>
+#include <libglom/data_structure/glomconversions.h>
 
 int main()
 {

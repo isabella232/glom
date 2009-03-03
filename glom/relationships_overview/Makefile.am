@@ -1,7 +1,7 @@
 gladedir = $(datadir)/glom/glade/
 
 # We define GLOM_GLADEDIR so that we can get the installed .glade file at runtime.
-AM_CPPFLAGS = -I@top_srcdir@/ $(GLOM_CFLAGS) \
+AM_CPPFLAGS = -I@top_srcdir@/ -I@top_srcdir@/glom $(GLOM_CFLAGS) \
            -DGLOM_GLADEDIR=\""$(gladedir)/"\"
 
 noinst_LIBRARIES = librelationshipsoverview.a

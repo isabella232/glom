@@ -20,10 +20,10 @@
 
 #include "config.h" // For GLOM_ENABLE_MAEMO
 
-#include <glom/libglom/utils.h>
-#include <glom/libglom/connectionpool.h>
-#include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
-#include <glom/libglom/data_structure/glomconversions.h>
+#include <libglom/utils.h>
+#include <libglom/connectionpool.h>
+#include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
+#include <libglom/data_structure/glomconversions.h>
 
 #include <glibmm/i18n.h>
 #include <gtkmm/messagedialog.h>

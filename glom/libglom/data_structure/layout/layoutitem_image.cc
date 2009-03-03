@@ -19,8 +19,8 @@
  */
 
 #include "layoutitem_image.h"
-#include <glom/libglom/utils.h>
-#include <glom/libglom/data_structure/glomconversions.h>
+#include <libglom/utils.h>
+#include <libglom/data_structure/glomconversions.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

@@ -19,13 +19,13 @@
  */
 
 #include "report_builder.h"
-#include <glom/libglom/utils.h>
-#include <glom/libglom/data_structure/glomconversions.h>
-#include <glom/libglom/data_structure/layout/report_parts/layoutitem_summary.h>
-#include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
-#include <glom/libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.h>
-#include <glom/libglom/data_structure/layout/report_parts/layoutitem_header.h>
-#include <glom/libglom/data_structure/layout/report_parts/layoutitem_footer.h>
+#include <libglom/utils.h>
+#include <libglom/data_structure/glomconversions.h>
+#include <libglom/data_structure/layout/report_parts/layoutitem_summary.h>
+#include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
+#include <libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.h>
+#include <libglom/data_structure/layout/report_parts/layoutitem_header.h>
+#include <libglom/data_structure/layout/report_parts/layoutitem_footer.h>
 #include <glom/xsl_utils.h>
 
 namespace Glom

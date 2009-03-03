@@ -29,9 +29,9 @@
 #include <glom/utility_widgets/canvas/canvas_table_movable.h>
 #include <glom/utility_widgets/canvas/canvas_image_movable.h>
 #include <glom/utility_widgets/canvas/canvas_text_movable.h>
-#include <glom/libglom/data_structure/glomconversions.h>
+#include <libglom/data_structure/glomconversions.h>
 
-#include <glom/libglom/glade_utils.h>
+#include <libglom/glade_utils.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

@@ -29,14 +29,14 @@
 
 // For postgres availability checks:
 #ifdef GLOM_ENABLE_POSTGRESQL
-#include <glom/libglom/connectionpool_backends/postgres.h>
+#include <libglom/connectionpool_backends/postgres.h>
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-#include <glom/libglom/connectionpool_backends/postgres_self.h>
+#include <libglom/connectionpool_backends/postgres_self.h>
 #endif //GLOM_ENABLE_CLIENT_ONLY
 #endif //GLOM_ENABLE_POSTGRESQL
 
 // For sanity checks:
-#include <glom/libglom/data_structure/glomconversions.h> // For GLOM_IMAGE_FORMAT
+#include <libglom/data_structure/glomconversions.h> // For GLOM_IMAGE_FORMAT
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #include <gtksourceviewmm/init.h>
@@ -49,7 +49,7 @@
 #endif
 
 #include "application.h"
-#include <glom/libglom/glade_utils.h>
+#include <libglom/glade_utils.h>
 
 #ifndef G_OS_WIN32
 #include <fontconfig/fontconfig.h> //For cleanup.

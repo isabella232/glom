@@ -22,7 +22,7 @@
 #define GLOM_MODE_DATA_DIALOG_CHOOSE_ID_H
 
 #include <gtkmm/dialog.h>
-#include <glom/libglom/document/document_glom.h>
+#include <libglom/document/document_glom.h>
 #include "../base_db.h"
 #include "../mode_find/box_data_details_find.h"
 #include "../mode_data/box_data_list.h"

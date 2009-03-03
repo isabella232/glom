@@ -21,8 +21,8 @@
 #ifndef GLOM_PYTHON_GLOM_RELATED_H
 #define GLOM_PYTHON_GLOM_RELATED_H
 
-#include <glom/libglom/python_embed/py_glom_record.h>
-#include <glom/libglom/data_structure/relationship.h>
+#include <libglom/python_embed/py_glom_record.h>
+#include <libglom/data_structure/relationship.h>
 
 namespace Glom
 {

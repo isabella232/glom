@@ -21,7 +21,7 @@
 #ifndef GLOM_MODE_DESIGN_COMBOENTRY_CURRENCY_HH
 #define GLOM_MODE_DESIGN_COMBOENTRY_CURRENCY_HH
 
-#include <glom/libglom/data_structure/iso_codes.h>
+#include <libglom/data_structure/iso_codes.h>
 #include <gtkmm/comboboxentry.h>
 #include <libglademm.h>
 

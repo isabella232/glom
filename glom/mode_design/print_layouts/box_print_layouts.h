@@ -22,7 +22,7 @@
 #define BOX_PRINT_LAYOUTS_H
 
 #include <glom/box_db_table.h>
-#include <glom/libglom/data_structure/print_layout.h>
+#include <libglom/data_structure/print_layout.h>
 #include <glom/utility_widgets/adddel/adddel_withbuttons.h>
 
 namespace Glom

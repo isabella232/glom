@@ -24,10 +24,10 @@
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 #include <libgdamm.h>
-#include <glom/libglom/sharedptr.h>
-#include <glom/libglom/data_structure/fieldtypes.h>
-#include <glom/libglom/data_structure/field.h>
-#include <glom/libglom/connectionpool_backends/backend.h>
+#include <libglom/sharedptr.h>
+#include <libglom/data_structure/fieldtypes.h>
+#include <libglom/data_structure/field.h>
+#include <libglom/connectionpool_backends/backend.h>
 
 #include <memory> // For std::auto_ptr
 

@@ -21,7 +21,7 @@
 #ifndef GLOM_MODE_DESIGN_COMBO_SUMMARYTYPE_HH
 #define GLOM_MODE_DESIGN_COMBO_SUMMARYTYPE_HH
 
-#include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
+#include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 #include <gtkmm/combobox.h>
 #include <libglademm.h>
 

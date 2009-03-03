@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
  
-#include "glom/libglom/data_structure/layout/layoutgroup.h"
-#include "glom/libglom/data_structure/layout/layoutitem_field.h"
+#include <libglom/data_structure/layout/layoutgroup.h>
+#include <libglom/data_structure/layout/layoutitem_field.h>
 
 
 int

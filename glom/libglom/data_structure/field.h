@@ -24,7 +24,7 @@
 #include <libgdamm.h>
 #include "translatable_item.h"
 #include "layout/fieldformatting.h"
-#include <glom/libglom/sharedptr.h>
+#include <libglom/sharedptr.h>
 
 //Predicate, for use with std::find_if():
 

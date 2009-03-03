@@ -22,8 +22,8 @@
 #define GLOM_REPORTS_REPORT_BUILDER
 
 #include <glom/base_db.h>
-#include <glom/libglom/data_structure/report.h>
-#include <glom/libglom/sharedptr.h>
+#include <libglom/data_structure/report.h>
+#include <libglom/sharedptr.h>
 
 namespace Glom
 {

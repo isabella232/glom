@@ -21,7 +21,7 @@
 #include "box_data_calendar_related.h"
 #include "dialog_layout_calendar_related.h"
 #include <glom/application.h>
-#include <glom/libglom/data_structure/glomconversions.h>
+#include <libglom/data_structure/glomconversions.h>
 #include <glom/frame_glom.h> //For show_ok_dialog()
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <glibmm/i18n.h>

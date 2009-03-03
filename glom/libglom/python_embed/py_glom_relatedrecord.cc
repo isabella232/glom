@@ -24,12 +24,12 @@
 #include <eval.h> /* for PyEval_EvalCode */
 #include <objimpl.h> /* for PyObject_New() */
 
-#include <glom/libglom/python_embed/py_glom_relatedrecord.h>
-#include <glom/libglom/python_embed/py_glom_record.h>
+#include <libglom/python_embed/py_glom_relatedrecord.h>
+#include <libglom/python_embed/py_glom_record.h>
 #include "pygdavalue_conversions.h" //For pygda_value_as_pyobject().
-#include <glom/libglom/connectionpool.h>
+#include <libglom/connectionpool.h>
 
-#include <glom/libglom/data_structure/field.h>
+#include <libglom/data_structure/field.h>
 #include <glibmm/ustring.h>
 
 #include "glom/application.h"

@@ -21,7 +21,7 @@
 #ifndef COMBO_FIELDTYPE_HH
 #define COMBO_FIELDTYPE_HH
 
-#include <glom/libglom/data_structure/field.h>
+#include <libglom/data_structure/field.h>
 #include <gtkmm/combobox.h>
 #include <gtkmm/liststore.h>
 #include <libgdamm.h>

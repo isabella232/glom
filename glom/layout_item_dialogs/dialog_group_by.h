@@ -23,7 +23,7 @@
 
 #include <gtkmm.h>
 #include "../utility_widgets/dialog_properties.h"
-#include <glom/libglom/document/document_glom.h>
+#include <libglom/document/document_glom.h>
 #include "../box_withbuttons.h"
 #include "../utility_widgets/combo_textglade.h"
 #include "../utility_widgets/comboentry_currency.h"

@@ -21,9 +21,9 @@
 #include "config.h" // For GLOM_ENABLE_MAEMO
 
 #include "box_data.h"
-#include <glom/libglom/data_structure/glomconversions.h>
-#include <glom/libglom/utils.h>
-#include <glom/libglom/data_structure/layout/layoutitem_field.h>
+#include <libglom/data_structure/glomconversions.h>
+#include <libglom/utils.h>
+#include <libglom/data_structure/layout/layoutitem_field.h>
 #include <glom/glom_privs.h>
 #include "../python_embed/glom_python.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().

@@ -20,7 +20,7 @@
 
 #include "config.h"
 
-#include <glom/libglom/connectionpool_backends/postgres_central.h>
+#include <libglom/connectionpool_backends/postgres_central.h>
 #include <glibmm/i18n.h>
 #include <bakery/bakery.h>
 

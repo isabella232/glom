@@ -20,7 +20,7 @@
 
 #include "dialog_fielddefinition.h"
 #include "dialog_fieldcalculation.h"
-#include <glom/libglom/glade_utils.h>
+#include <libglom/glade_utils.h>
 #include "../../box_db_table.h"
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>

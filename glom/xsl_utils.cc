@@ -21,9 +21,9 @@
 #include "config.h" // For GLOM_ENABLE_MAEMO
 
 #include "xsl_utils.h"
-#include <glom/libglom/connectionpool.h>
-#include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
-#include <glom/libglom/data_structure/glomconversions.h>
+#include <libglom/connectionpool.h>
+#include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
+#include <libglom/data_structure/glomconversions.h>
 #include "frame_glom.h"
 #include <libxml++/libxml++.h>
 #include <libxslt/transform.h>

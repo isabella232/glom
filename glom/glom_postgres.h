@@ -24,8 +24,8 @@
 #include <gtkmm.h>
 
 #include <glom/base_db.h>
-#include <glom/libglom/document/document_glom.h>
-#include <glom/libglom/connectionpool.h>
+#include <libglom/document/document_glom.h>
+#include <libglom/connectionpool.h>
 
 namespace Glom
 {

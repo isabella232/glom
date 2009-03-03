@@ -1,6 +1,6 @@
 SUBDIRS = layout
 
-AM_CPPFLAGS = -I@top_srcdir@/ $(GLOM_CFLAGS)
+AM_CPPFLAGS = -I@top_srcdir@/ -I@top_srcdir@/glom $(GLOM_CFLAGS)
 
 h_sources = field.h \
                               foundset.h \

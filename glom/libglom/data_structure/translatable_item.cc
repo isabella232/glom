@@ -19,7 +19,7 @@
  */
 
 #include "translatable_item.h"
-#include <glom/libglom/utils.h>
+#include <libglom/utils.h>
 #include <glibmm/i18n.h>
 #include <iostream>
 

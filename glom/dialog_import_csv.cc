@@ -21,7 +21,7 @@
 #include "dialog_import_csv.h"
 #include "config.h"
 
-#include <glom/libglom/data_structure/glomconversions.h>
+#include <libglom/data_structure/glomconversions.h>
 
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/cellrenderercombo.h>

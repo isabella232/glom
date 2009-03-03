@@ -19,7 +19,7 @@
  */
 
 #include "dialog_identify_original.h"
-#include <glom/libglom/data_structure/iso_codes.h>
+#include <libglom/data_structure/iso_codes.h>
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <glibmm/i18n.h>
 

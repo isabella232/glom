@@ -23,10 +23,10 @@
 #include <glibmm/i18n.h>
 #include "../cellrendererlist/cellrendererlist.h"
 #include "db_treeviewcolumn_glom.h"
-#include <glom/libglom/data_structure/glomconversions.h>
+#include <libglom/data_structure/glomconversions.h>
 #include "../../dialog_invalid_data.h"
 #include "../../application.h"
-#include <glom/libglom/utils.h>
+#include <libglom/utils.h>
 #include "cellrenderer_buttonimage.h"
 #include "cellrenderer_buttontext.h"
 #include <glom/utility_widgets/imageglom.h> //For ImageGlom::scale_keeping_ratio().

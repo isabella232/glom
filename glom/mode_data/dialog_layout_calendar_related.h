@@ -22,7 +22,7 @@
 #define GLOM_MODE_DATA_DIALOG_LAYOUT_LIST_RELATED_H
 
 #include "dialog_layout_list.h"
-#include <glom/libglom/data_structure/layout/layoutitem_calendarportal.h>
+#include <libglom/data_structure/layout/layoutitem_calendarportal.h>
 #include <glom/utility_widgets/combo_textglade.h>
 #include <glom/combobox_relationship.h>
 #include <glom/combobox_fields.h>

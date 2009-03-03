@@ -21,7 +21,7 @@
 #ifndef GLOM_TRANSLATION_COMBOBOX_LOCALE_HH
 #define GLOM_TRANSLATION_COMBOBOX_LOCALE_HH
 
-#include <glom/libglom/data_structure/iso_codes.h>
+#include <libglom/data_structure/iso_codes.h>
 #include <gtkmm/combobox.h>
 #include <libglademm.h>
 

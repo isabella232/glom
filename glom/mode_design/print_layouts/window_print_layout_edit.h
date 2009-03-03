@@ -21,11 +21,11 @@
 #ifndef WINDOW_PRINT_LAYOUT_EDIT_H
 #define WINDOW_PRINT_LAYOUT_EDIT_H
 
-#include <glom/libglom/data_structure/print_layout.h>
+#include <libglom/data_structure/print_layout.h>
 #include <glom/mode_design/print_layouts/canvas_print_layout.h>
 #include <glom/mode_design/print_layouts/print_layout_toolbar.h>
 #include <glom/mode_design/print_layouts/print_layout_toolbar_button.h>
-#include <glom/libglom/document/document_glom.h>
+#include <libglom/document/document_glom.h>
 #include <gtkmm/window.h>
 #include <gtkmm/entry.h>
 #include <gtkmm/label.h>

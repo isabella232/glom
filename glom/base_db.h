@@ -25,14 +25,14 @@
 
 #include <gtkmm.h>
 
-#include <glom/libglom/document/view.h>
-#include <glom/libglom/connectionpool.h>
-#include <glom/libglom/appstate.h>
-#include <glom/libglom/data_structure/foundset.h>
-#include <glom/libglom/data_structure/privileges.h>
-#include <glom/libglom/data_structure/system_prefs.h>
-#include <glom/libglom/utils.h>
-#include <glom/libglom/calcinprogress.h>
+#include <libglom/document/view.h>
+#include <libglom/connectionpool.h>
+#include <libglom/appstate.h>
+#include <libglom/data_structure/foundset.h>
+#include <libglom/data_structure/privileges.h>
+#include <libglom/data_structure/system_prefs.h>
+#include <libglom/utils.h>
+#include <libglom/calcinprogress.h>
 #include "bakery/View/View.h"
 #include <bakery/Utilities/BusyCursor.h>
 

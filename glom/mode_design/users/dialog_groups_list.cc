@@ -22,8 +22,8 @@
 #include "dialog_user.h"
 #include "dialog_users_list.h"
 #include "dialog_new_group.h"
-#include <glom/libglom/standard_table_prefs_fields.h>
-#include <glom/libglom/glade_utils.h>
+#include <libglom/standard_table_prefs_fields.h>
+#include <libglom/glade_utils.h>
 #include <glom/glom_privs.h>
 //#include <libgnome/gnome-i18n.h>
 #include <bakery/App/App_Gtk.h> //For util_bold_message().

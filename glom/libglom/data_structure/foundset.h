@@ -24,8 +24,8 @@
 #include <glibmm/ustring.h>
 #include <list>
 #include <utility> //For std::pair
-#include <glom/libglom/data_structure/layout/layoutitem_field.h>
-#include <glom/libglom/sharedptr.h>
+#include <libglom/data_structure/layout/layoutitem_field.h>
+#include <libglom/sharedptr.h>
 
 namespace Glom
 {

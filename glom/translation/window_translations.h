@@ -21,7 +21,7 @@
 #ifndef GLOM_TRANSLATIONS_DIALOG_TRANSLATIONS_H
 #define GLOM_TRANSLATIONS_DIALOG_TRANSLATIONS_H
 
-#include <glom/libglom/document/view.h>
+#include <libglom/document/view.h>
 #include <gtkmm.h>
 #include <libglademm.h>
 

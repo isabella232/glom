@@ -26,14 +26,14 @@
 #include "comboglom.h"
 #include "textviewglom.h"
 #include "imageglom.h"
-#include <glom/libglom/data_structure/glomconversions.h>
+#include <libglom/data_structure/glomconversions.h>
 #include "../application.h"
 #include "../mode_data/dialog_choose_field.h"
 #include "dialog_choose_id.h"
 #include "dialog_choose_date.h"
 #include "../layout_item_dialogs/dialog_field_layout.h"
-#include <glom/libglom/utils.h>
-#include <glom/libglom/glade_utils.h>
+#include <libglom/utils.h>
+#include <libglom/glade_utils.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

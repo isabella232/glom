@@ -23,7 +23,7 @@
 
 #include "../base_db.h"
 #include "../mode_data/dialog_layout.h"
-#include <glom/libglom/data_structure/layout/layoutitem_notebook.h>
+#include <libglom/data_structure/layout/layoutitem_notebook.h>
 #include <libglademm.h>
 
 namespace Glom

@@ -1,6 +1,6 @@
 #include <gtkmm.h>
-#include <glom/libglom/avahi_publisher.h>
-#include <glom/libglom/utils.h>
+#include <libglom/avahi_publisher.h>
+#include <libglom/utils.h>
 #include <iostream>
 
 class TestWindow : public Gtk::Window

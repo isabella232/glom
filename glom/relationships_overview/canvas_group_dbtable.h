@@ -23,7 +23,7 @@
 
 #include "glom/utility_widgets/canvas/canvas_group_movable.h"
 #include <goocanvasmm/polyline.h>
-#include <glom/libglom/document/document_glom.h>
+#include <libglom/document/document_glom.h>
 
 namespace Glom
 {

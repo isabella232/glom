@@ -19,9 +19,9 @@
  */
 
 #include "field.h"
-#include <glom/libglom/connectionpool.h>
+#include <libglom/connectionpool.h>
 #include "glomconversions.h"
-#include <glom/libglom/utils.h>
+#include <libglom/utils.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

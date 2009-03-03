@@ -22,10 +22,10 @@
 
 #include "base_db.h"
 #include "application.h" //App_Glom.
-#include <glom/libglom/appstate.h>
-#include <glom/libglom/standard_table_prefs_fields.h>
-#include <glom/libglom/document/document_glom.h>
-#include <glom/libglom/data_structure/glomconversions.h>
+#include <libglom/appstate.h>
+#include <libglom/standard_table_prefs_fields.h>
+#include <libglom/document/document_glom.h>
+#include <libglom/data_structure/glomconversions.h>
 #include "mode_data/dialog_choose_field.h"
 
 //#ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -36,15 +36,15 @@
 //#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 //#include "reports/dialog_layout_report.h"
-#include <glom/libglom/utils.h>
-#include <glom/libglom/glade_utils.h>
-#include <glom/libglom/data_structure/glomconversions.h>
-#include <glom/libglom/data_structure/parameternamegenerator.h>
-#include <glom/libglom/data_structure/layout/report_parts/layoutitem_summary.h>
-#include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
-#include <glom/libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.h>
-#include <glom/libglom/data_structure/layout/report_parts/layoutitem_header.h>
-#include <glom/libglom/data_structure/layout/report_parts/layoutitem_footer.h>
+#include <libglom/utils.h>
+#include <libglom/glade_utils.h>
+#include <libglom/data_structure/glomconversions.h>
+#include <libglom/data_structure/parameternamegenerator.h>
+#include <libglom/data_structure/layout/report_parts/layoutitem_summary.h>
+#include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
+#include <libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.h>
+#include <libglom/data_structure/layout/report_parts/layoutitem_header.h>
+#include <libglom/data_structure/layout/report_parts/layoutitem_footer.h>
 #include "python_embed/glom_python.h"
 #include <glom/glom_postgres.h>
 #include <glom/glom_privs.h>

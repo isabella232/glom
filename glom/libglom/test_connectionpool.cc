@@ -19,12 +19,12 @@
  */
  
 #include <libgdamm/init.h>
-#include <glom/libglom/connectionpool.h>
+#include <libglom/connectionpool.h>
 
 #ifdef GLOM_ENABLE_POSTGRESQL
-#include <glom/libglom/connectionpool_backends/postgres_central.h>
+#include <libglom/connectionpool_backends/postgres_central.h>
 #else
-#include <glom/libglom/connectionpool_backends/sqlite.h>
+#include <libglom/connectionpool_backends/sqlite.h>
 #endif //#GLOM_ENABLE_POSTGRESQL
 
 

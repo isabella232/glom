@@ -19,7 +19,7 @@
  */
 
 #include "layoutitem_line.h"
-#include <glom/libglom/utils.h>
+#include <libglom/utils.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

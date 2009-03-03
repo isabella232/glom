@@ -19,8 +19,8 @@
  */
 
 #include "dialog_group_by.h"
-#include <glom/libglom/data_structure/glomconversions.h>
-#include <glom/libglom/glade_utils.h>
+#include <libglom/data_structure/glomconversions.h>
+#include <libglom/glade_utils.h>
 #include <sstream> //For stringstream
 #include <glibmm/i18n.h>
 

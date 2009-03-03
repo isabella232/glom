@@ -25,14 +25,14 @@
 #include <glom/utility_widgets/canvas/canvas_line_movable.h>
 #include <glom/utility_widgets/canvas/canvas_group_movable.h>
 #include <glom/utility_widgets/canvas/canvas_table_movable.h>
-#include <glom/libglom/data_structure/layout/layoutitem_button.h>
-#include <glom/libglom/data_structure/layout/layoutitem_text.h>
-#include <glom/libglom/data_structure/layout/layoutitem_image.h>
-#include <glom/libglom/data_structure/layout/layoutitem_field.h>
-#include <glom/libglom/data_structure/layout/layoutitem_line.h>
-#include <glom/libglom/data_structure/layout/layoutitem_portal.h>
-#include <glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
-#include <glom/libglom/data_structure/glomconversions.h>
+#include <libglom/data_structure/layout/layoutitem_button.h>
+#include <libglom/data_structure/layout/layoutitem_text.h>
+#include <libglom/data_structure/layout/layoutitem_image.h>
+#include <libglom/data_structure/layout/layoutitem_field.h>
+#include <libglom/data_structure/layout/layoutitem_line.h>
+#include <libglom/data_structure/layout/layoutitem_portal.h>
+#include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
+#include <libglom/data_structure/glomconversions.h>
 #include <glibmm/i18n.h>
 #include <math.h>
 #include <algorithm> //For std::max().

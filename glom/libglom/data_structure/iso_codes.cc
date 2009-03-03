@@ -20,8 +20,8 @@
 
 #include "iso_codes.h"
 #include <libxml++/libxml++.h>
-#include <glom/libglom/document/document_glom.h>
-#include <glom/libglom/utils.h>
+#include <libglom/document/document_glom.h>
+#include <libglom/utils.h>
 #include <glibmm/i18n.h>
 #include "config.h" //For ISO_CODES_PREFIX.
 

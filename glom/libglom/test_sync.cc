@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
  
-#include "glom/libglom/spawn_with_feedback.h"
+#include <libglom/spawn_with_feedback.h>
 #include <iostream>
 
 int

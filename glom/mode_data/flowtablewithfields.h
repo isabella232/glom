@@ -28,16 +28,16 @@
 #else
 #include <glom/utility_widgets/flowtable_dnd.h>
 #endif
-#include <glom/libglom/data_structure/layout/layoutgroup.h>
-#include <glom/libglom/data_structure/layout/layoutitem_field.h>
-#include <glom/libglom/data_structure/layout/layoutitem_notebook.h>
-#include <glom/libglom/data_structure/layout/layoutitem_portal.h>
-#include <glom/libglom/data_structure/layout/layoutitem_calendarportal.h>
-#include <glom/libglom/data_structure/layout/layoutitem_button.h>
-#include <glom/libglom/data_structure/layout/layoutitem_text.h>
-#include <glom/libglom/data_structure/layout/layoutitem_placeholder.h>
-#include <glom/libglom/data_structure/field.h>
-#include <glom/libglom/document/document_glom.h>
+#include <libglom/data_structure/layout/layoutgroup.h>
+#include <libglom/data_structure/layout/layoutitem_field.h>
+#include <libglom/data_structure/layout/layoutitem_notebook.h>
+#include <libglom/data_structure/layout/layoutitem_portal.h>
+#include <libglom/data_structure/layout/layoutitem_calendarportal.h>
+#include <libglom/data_structure/layout/layoutitem_button.h>
+#include <libglom/data_structure/layout/layoutitem_text.h>
+#include <libglom/data_structure/layout/layoutitem_placeholder.h>
+#include <libglom/data_structure/field.h>
+#include <libglom/document/document_glom.h>
 #include <glom/utility_widgets/layoutwidgetbase.h>
 #include <glom/utility_widgets/layoutwidgetutils.h>
 #include "box_data_list_related.h"

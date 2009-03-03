@@ -23,8 +23,8 @@
 #include "dialog_identify_original.h"
 #include "dialog_copy_translation.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
-#include "glom/libglom/utils.h"
-#include "glom/libglom/glade_utils.h"
+#include <libglom/utils.h>
+#include <libglom/glade_utils.h>
 
 #include <glibmm/i18n.h>
 #include <string.h> // for memset

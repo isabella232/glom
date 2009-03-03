@@ -24,10 +24,10 @@
 #include <libgda/gda-blob-op.h> // For gda_blob_op_read_all()
 
 #include "glomconversions.h"
-#include <glom/libglom/connectionpool.h>
-#include <glom/libglom/utils.h>
+#include <libglom/connectionpool.h>
+#include <libglom/utils.h>
 #include <gdkmm/pixbufloader.h>
-#include <glom/libglom/data_structure/layout/layoutitem_image.h> // For GLOM_IMAGE_FORMAT
+#include <libglom/data_structure/layout/layoutitem_image.h> // For GLOM_IMAGE_FORMAT
 #include <glibmm/i18n.h>
 #include <sstream> //For stringstream
 

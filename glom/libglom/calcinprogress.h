@@ -21,7 +21,7 @@
 #ifndef GLOM_MODE_DATA_CALCINPROGRESS_H
 #define GLOM_MODE_DATA_CALCINPROGRESS_H
 
-#include <glom/libglom/data_structure/field.h>
+#include <libglom/data_structure/field.h>
 
 namespace Glom
 {

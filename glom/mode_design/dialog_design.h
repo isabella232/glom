@@ -23,7 +23,7 @@
 
 #include <gtkmm.h>
 #include <libglademm.h>
-#include <glom/libglom/document/view.h>
+#include <libglom/document/view.h>
 
 namespace Glom
 {

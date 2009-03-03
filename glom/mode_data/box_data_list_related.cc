@@ -20,8 +20,8 @@
 
 #include "box_data_list_related.h"
 #include "dialog_layout_list_related.h"
-#include <glom/libglom/data_structure/glomconversions.h>
-#include <glom/libglom/glade_utils.h>
+#include <libglom/data_structure/glomconversions.h>
+#include <libglom/glade_utils.h>
 #include <glom/frame_glom.h> //For show_ok_dialog()
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <glibmm/i18n.h>

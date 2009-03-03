@@ -19,8 +19,8 @@
  */
 
 //We need to include this before anything else, to avoid redefinitions:
-#include <glom/libglom/python_embed/py_glom_record.h>
-#include <glom/libglom/python_embed/pygdavalue_conversions.h>
+#include <libglom/python_embed/py_glom_record.h>
+#include <libglom/python_embed/pygdavalue_conversions.h>
 
 #define NO_IMPORT_PYGTK //To avoid a multiple definition in pygtk.
 #include <pygtk/pygtk.h> //For the PyGObject and PyGBoxed struct definitions.
@@ -30,7 +30,7 @@
 #include <eval.h> /* for PyEval_EvalCode */
 
 #include "glom_python.h"
-#include <glom/libglom/data_structure/glomconversions.h>
+#include <libglom/data_structure/glomconversions.h>
 #include <list>
 #include <glib.h> //For g_warning().
 #include <glibmm/i18n.h>

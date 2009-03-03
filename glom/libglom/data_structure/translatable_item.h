@@ -23,7 +23,7 @@
 
 #include <glibmm/ustring.h>
 #include <map>
-#include <glom/libglom/sharedptr.h>
+#include <libglom/sharedptr.h>
 
 namespace Glom
 {

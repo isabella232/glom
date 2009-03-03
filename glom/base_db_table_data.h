@@ -23,7 +23,7 @@
 #define BASE_DB_TABLE_DATA_H
 
 #include "base_db_table.h"
-#include <glom/libglom/data_structure/field.h>
+#include <libglom/data_structure/field.h>
 #include <algorithm> //find_if used in various places.
 
 namespace Glom

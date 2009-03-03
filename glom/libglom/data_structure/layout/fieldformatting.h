@@ -24,7 +24,7 @@
 #include "usesrelationship.h"
 #include "../numeric_format.h"
 #include "../relationship.h"
-#include <glom/libglom/sharedptr.h>
+#include <libglom/sharedptr.h>
 #include <libgdamm.h>
 
 namespace Glom

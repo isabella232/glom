@@ -18,9 +18,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <glom/libglom/spawn_with_feedback.h>
-#include <glom/libglom/dialog_progress_creating.h>
-#include <glom/libglom/glade_utils.h>
+#include <libglom/spawn_with_feedback.h>
+#include <libglom/dialog_progress_creating.h>
+#include <libglom/glade_utils.h>
 #include <bakery/bakery.h>
 #include <glibmm/i18n.h>
 #include <iostream>

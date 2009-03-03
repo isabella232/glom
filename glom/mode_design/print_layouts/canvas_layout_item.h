@@ -22,7 +22,7 @@
 #define GLOM_MODE_DESIGN_PRINT_LAYOUTS_CANVAS_LAYOUT_ITEM_H
 
 #include <glom/utility_widgets/canvas/canvas_group_resizable.h>
-#include <glom/libglom/data_structure/layout/layoutitem.h>
+#include <libglom/data_structure/layout/layoutitem.h>
 #include <libgdamm/value.h>
 
 namespace Glom

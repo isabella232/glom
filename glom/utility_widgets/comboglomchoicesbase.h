@@ -22,7 +22,7 @@
 #define GLOM_UTILITY_WIDGETS_COMBO_GLOM_CHOICESBASE_H
 
 #include <gtkmm.h>
-#include <glom/libglom/data_structure/field.h>
+#include <libglom/data_structure/field.h>
 #include "layoutwidgetfield.h"
 
 namespace Glom

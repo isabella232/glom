@@ -21,7 +21,7 @@
 #ifndef GLOM_MODE_DATA_TREESTORE_REPORT_LAYOUT_H
 #define GLOM_MODE_DATA_TREESTORE_REPORT_LAYOUT_H
 
-#include <glom/libglom/data_structure/layout/layoutitem.h>
+#include <libglom/data_structure/layout/layoutitem.h>
 #include <gtkmm/treestore.h>
 
 namespace Glom

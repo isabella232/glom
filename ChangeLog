@@ -1,5 +1,13 @@
 2009-03-03  Murray Cumming  <murrayc@murrayc.com>
 
+	* *.[h|cc]: Include all libglom headers via libglom/ instead of 
+	glom/libglom so it works from outside, with the path to the installed 
+	headers, from pkg-config.
+	* All Makefile.am files: Add -I@top_srcdir@/glom to AM_CPPFLAGS.
+	The repetition is awful. We should avoid that somehow.
+
+2009-03-03  Murray Cumming  <murrayc@murrayc.com>
+
 	* configure.in:
 	* glom/libglom/Makefile.am:
 	* glom/libglom/glom-1.0.pc.in: Added and installed pkg-config file.

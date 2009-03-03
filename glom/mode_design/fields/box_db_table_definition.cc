@@ -20,7 +20,7 @@
 
 #include "box_db_table_definition.h"
 #include <glom/frame_glom.h>
-#include <glom/libglom/glade_utils.h>
+#include <libglom/glade_utils.h>
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include "../../../config.h"
 #include <glibmm/i18n.h>

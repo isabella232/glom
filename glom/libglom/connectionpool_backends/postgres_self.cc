@@ -18,9 +18,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <glom/libglom/connectionpool_backends/postgres_self.h>
-#include <glom/libglom/utils.h>
-#include <glom/libglom/spawn_with_feedback.h>
+#include <libglom/connectionpool_backends/postgres_self.h>
+#include <libglom/utils.h>
+#include <libglom/spawn_with_feedback.h>
 #include <glib/gstdio.h> // For g_remove
 
 #include <bakery/bakery.h>

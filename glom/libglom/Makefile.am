@@ -7,7 +7,7 @@ glom_icon_dir = $(datadir)/icons/hicolor/48x48/apps
 
 # We define GLOM_GLADEDIR so that we can get the installed .glade file at runtime.
 # We define PREFIX, SYSCONFDIR, LIBDIR, and DATADIR for the GNOME_PROGRAM_STANDARD_PROPERTIES macro.
-AM_CPPFLAGS = -I@top_srcdir@/ $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
+AM_CPPFLAGS = -I@top_srcdir@/ -I@top_srcdir@/glom $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
            -DGLOM_GLADEDIR=\""$(gladedir)/"\" \
            -DLOCALEDIR=\""$(datadir)/locale"\" \
            -DPREFIX=\""$(prefix)"\" \
@@ -19,16 +19,28 @@ AM_CPPFLAGS = -I@top_srcdir@/ $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
            -DGLOM_EXAMPLES_DIR=\""$(glom_examples_dir)"\" \
            -DGLOM_ICON_DIR=\""$(glom_icon_dir)"\"
 
-lib_LTLIBRARIES = libglom-1.0.la
-libglom_1_0_la_SOURCES = appstate.h appstate.cc \
-                     calcinprogress.h calcinprogress.cc \
-                     connectionpool.h connectionpool.cc \
-                     dialog_progress_creating.h dialog_progress_creating.cc \
-                     spawn_with_feedback.h spawn_with_feedback.cc \
-                     utils.h utils.cc glade_utils.h \
+h_sources = appstate.h \
+                     calcinprogress.h \
+                     connectionpool.h \
+                     dialog_progress_creating.h \
+                     spawn_with_feedback.h \
+                     utils.h glade_utils.h \
                      sharedptr.h \
                      standard_table_prefs_fields.h \
-		     gst-package.h gst-package.c
+		     gst-package.h
+cc_sources = appstate.cc \
+                     calcinprogress.cc \
+                     connectionpool.cc \
+                     dialog_progress_creating.cc \
+                     spawn_with_feedback.cc \
+                     utils.cc \
+                     gst-package.c
+
+library_includedir=$(includedir)/glom-1.0/libglom
+library_include_HEADERS = $(h_sources)
+
+lib_LTLIBRARIES = libglom-1.0.la
+libglom_1_0_la_SOURCES = $(h_sources) $(cc_sources)
 
 libglom_1_0_la_LDFLAGS = -no-undefined
 
@@ -55,7 +67,7 @@ pkgconfig_DATA = glom-1.0.pc
 
 
 #Small test programs:
-noinst_PROGRAMS = test_sharedptr_layoutitem test_connectionpool
+noinst_PROGRAMS = test_sharedptr_layoutitem test_connectionpool test_document
 
 test_sharedptr_layoutitem_SOURCES = test_sharedptr_layoutitem.cc
 test_sharedptr_layoutitem_LDADD =  libglom-1.0.la \
@@ -63,6 +75,10 @@ test_sharedptr_layoutitem_LDADD =  libglom-1.0.la \
 
 test_connectionpool_SOURCES = test_connectionpool.cc
 test_connectionpool_LDADD =  libglom-1.0.la \
+              $(GLOM_LIBS)
+
+test_document_SOURCES = test_document.cc
+test_document_LDADD =  libglom.la \
               $(GLOM_LIBS)
 
 if !WIN32

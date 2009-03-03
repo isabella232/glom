@@ -23,8 +23,8 @@
 
 #include <config.h> // For GLOM_ENABLE_CLIENT_ONLY
 
-#include <glom/libglom/sharedptr.h>
-#include <glom/libglom/data_structure/field.h>
+#include <libglom/sharedptr.h>
+#include <libglom/data_structure/field.h>
 
 #include <gtkmm/window.h>
 
