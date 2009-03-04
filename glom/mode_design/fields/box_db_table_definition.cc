@@ -22,7 +22,7 @@
 #include <glom/frame_glom.h>
 #include <libglom/glade_utils.h>
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
-#include #include <libglom/libglom_config.h>
+#include <libglom/libglom_config.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
