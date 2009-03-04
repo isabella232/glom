@@ -1,5 +1,10 @@
 2009-03-04  Murray Cumming  <murrayc@murrayc.com>
 
+	* configure.in: Ran autoupdate on this so it does things as per what is 
+	currently correct.
+
+2009-03-04  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/Makefile.am: Link to the correct library name for 
 	test_document.cc
 	* glom/libglom/test_document.cc: List the tables in the document.

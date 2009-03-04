@@ -1,7 +1,8 @@
 # Initialization macros:
-AC_INIT(glom/main.cc)
+AC_INIT
+AC_CONFIG_SRCDIR([glom/main.cc])
 
-AM_CONFIG_HEADER(config.h)
+AC_CONFIG_HEADERS([config.h])
 
 # Package name and version number:
 AM_INIT_AUTOMAKE(glom, 1.9.3)
@@ -35,8 +36,7 @@ AM_GLIB_GNU_GETTEXT
 IT_PROG_INTLTOOL([0.35.0])
 
 AC_ARG_ENABLE([scrollkeeper],
-[AC_HELP_STRING([--disable-scrollkeeper],
-   [do not make updates to the scrollkeeper database])],,
+[AS_HELP_STRING([--disable-scrollkeeper],[do not make updates to the scrollkeeper database])],,
    enable_scrollkeeper=yes)
 AM_CONDITIONAL(ENABLE_SK, test "x$enable_scrollkeeper" = "xyes")
 
@@ -58,17 +58,15 @@ case "$host_os" in
 esac
 AM_CONDITIONAL(WIN32, test x$win32 = xtrue)
 
-AC_LANG_CPLUSPLUS
+AC_LANG([C++])
 
 AC_ARG_ENABLE([client-only],
-	AC_HELP_STRING([--enable-client-only],
-	[build without developer mode and self-hosting]),
+	AS_HELP_STRING([--enable-client-only],[build without developer mode and self-hosting]),
 	[enable_client_only=$enableval],
 	[enable_client_only=no])
 
 AC_ARG_ENABLE([maemo],
-	AC_HELP_STRING([--enable-maemo],
-	[build with support for the maemo platform (implies --enable-client-only)]),
+	AS_HELP_STRING([--enable-maemo],[build with support for the maemo platform (implies --enable-client-only)]),
 	[enable_maemo=$enableval],
 	[enable_maemo=no])
 
@@ -88,8 +86,7 @@ fi
 
 
 AC_ARG_ENABLE([sqlite],
-	AC_HELP_STRING([--enable-sqlite],
-	[Allow creation of SQLite databases and opening of documents using SQLite databases. This disables some functionality and is intended only for embedded use. [default=no]]),
+	AS_HELP_STRING([--enable-sqlite],[Allow creation of SQLite databases and opening of documents using SQLite databases. This disables some functionality and is intended only for embedded use. [default=no]]),
 	[enable_sqlite=$enableval],
 	[enable_sqlite=no])
 
@@ -100,8 +97,7 @@ fi
 
 
 AC_ARG_ENABLE([postgresql],
-	AC_HELP_STRING([--enable-postgresql],
-	[Allow creation of PostgreSQL databases and opening of documents using PostgreSQL databases. [default=yes]]),
+	AS_HELP_STRING([--enable-postgresql],[Allow creation of PostgreSQL databases and opening of documents using PostgreSQL databases. [default=yes]]),
 	[enable_postgresql=$enableval],
 	[enable_postgresql=yes])
 
@@ -165,8 +161,7 @@ AC_DEFINE_UNQUOTED(GLOM_DTD_INSTALL_DIR, $GLOM_DTD_INSTALL_DIR, "definition of G
 GLOM_ARG_ENABLE_WARNINGS()
 
 AC_ARG_ENABLE(update-mime-database,
-        AC_HELP_STRING([--disable-update-mime-database],
-        [do not run the update-mime-database utility (mostly useful for package maintainers) ]))
+        AS_HELP_STRING([--disable-update-mime-database],[do not run the update-mime-database utility (mostly useful for package maintainers) ]))
 AM_CONDITIONAL(UPDATE_MIME_DATABASE, test "$enable_update_mime_database" != "no")
 
 # Option not needed on Windows
@@ -195,8 +190,7 @@ fi
 
 # Allow use of gnome-doc-utils to be disabled for platforms (For instance, Maemo) that don't have it:
 AC_ARG_ENABLE([doc-utils],
-	AC_HELP_STRING([--enable-doc-utils],
-	[Whether the documentation should be built.]),
+	AS_HELP_STRING([--enable-doc-utils],[Whether the documentation should be built.]),
 	[enable_doc=$enableval],
 	[enable_doc=yes])
 
@@ -226,7 +220,7 @@ then
 fi
 
 # Generate Makefiles, configuration files and scripts:
-AC_OUTPUT(Makefile \
+AC_CONFIG_FILES([Makefile \
   glom/Makefile \
     docs/Makefile \
       docs/user-guide/Makefile \
@@ -278,6 +272,7 @@ AC_OUTPUT(Makefile \
   glom.desktop.in \
   win32/Makefile \
   win32/glom.iss
-)
+])
+AC_OUTPUT
 
 
