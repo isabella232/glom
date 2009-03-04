@@ -24,7 +24,7 @@
 #include <libgdamm.h>
 #include <libglom/connectionpool_backends/backend.h>
 
-#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
+#include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY
 
 #ifndef GLOM_ENABLE_POSTGRESQL
 # error The Glom <postgres.h> backend has been included even though PostgreSQL support is disabled

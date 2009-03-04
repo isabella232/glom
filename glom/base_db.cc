@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
+#include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY
 
 #include "base_db.h"
 #include "application.h" //App_Glom.

@@ -22,7 +22,7 @@
 #include "layouttoolbarbutton.h"
 #include <gtkmm/stock.h>
 #include <glibmm/i18n.h>
-#include "config.h"
+#include <libglom/libglom_config.h>
 
 #include "layoutwidgetbase.h"
 #include "egg/toolpalette/eggtoolitemgroup.h"

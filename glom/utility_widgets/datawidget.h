@@ -21,7 +21,7 @@
 #ifndef GLOM_UTILITY_WIDGETS_DATAWIDGET_H
 #define GLOM_UTILITY_WIDGETS_DATAWIDGET_H
 
-#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
+#include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY
 
 #include "placeholder.h"
 #include "layoutwidgetmenu.h"

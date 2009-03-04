@@ -7,5 +7,5 @@ Name: libglom
 Description: Library for accessing Glom documents and data structures.
 Requires: glibmm-2.4 giomm-2.4 bakery-2.6 libgdamm-4.0
 Version: @VERSION@
-Libs: -L${libdir} -lglom
+Libs: -L${libdir} -lglom-1.0
 Cflags: -I${includedir}/glom-1.0

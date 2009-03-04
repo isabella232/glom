@@ -21,7 +21,7 @@
 #ifndef FRAME_GLOM_H
 #define FRAME_GLOM_H
 
-#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
+#include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY
 
 #include <gtkmm/frame.h>
 #include "bakery/View/View_Composite.h"

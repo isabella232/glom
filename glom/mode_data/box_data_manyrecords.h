@@ -21,7 +21,7 @@
 #ifndef BOX_DATA_MANY_RECORDS_H
 #define BOX_DATA_MANY_RECORDS_H
 
-#include "config.h" // GLOM_ENABLE_CLIENT_ONLY
+#include <libglom/libglom_config.h> // GLOM_ENABLE_CLIENT_ONLY
 
 #include "box_data.h"
 #include "../utility_widgets/db_adddel/db_adddel_withbuttons.h"

@@ -21,7 +21,7 @@
 #ifndef GLOM_CONNECTIONPOOL_H
 #define GLOM_CONNECTIONPOOL_H
 
-#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
+#include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY
 
 #include <libgdamm.h>
 #include <libglom/sharedptr.h>

@@ -25,7 +25,7 @@
 #include <gtkmm.h>
 #include "../mode_data/treestore_layout.h" //Forthe enum.
 
-#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
+#include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY
 
 namespace Glom
 {

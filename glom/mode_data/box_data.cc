@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "config.h" // For GLOM_ENABLE_MAEMO
+#include <libglom/libglom_config.h> // For GLOM_ENABLE_MAEMO
 
 #include "box_data.h"
 #include <libglom/data_structure/glomconversions.h>
@@ -28,7 +28,7 @@
 #include "../python_embed/glom_python.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <algorithm> //For std::find()
-#include "config.h"
+#include <libglom/libglom_config.h>
 #include <glibmm/i18n.h>
 
 #ifdef GLOM_ENABLE_MAEMO

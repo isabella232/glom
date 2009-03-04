@@ -19,7 +19,7 @@
  */
 
 #include "dialog_import_csv.h"
-#include "config.h"
+#include <libglom/libglom_config.h>
 
 #include <libglom/data_structure/glomconversions.h>
 

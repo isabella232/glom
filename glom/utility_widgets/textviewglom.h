@@ -21,7 +21,7 @@
 #ifndef GLOM_UTILITY_WIDGETS_TEXTVIEW_GLOM_H
 #define GLOM_UTILITY_WIDGETS_TEXTVIEW_GLOM_H
 
-#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
+#include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY
 
 #include <gtkmm.h>
 #include <libglom/data_structure/field.h>

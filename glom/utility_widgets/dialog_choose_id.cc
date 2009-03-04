@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "config.h" // For GLOM_ENABLE_MAEMO
+#include <libglom/libglom_config.h> // For GLOM_ENABLE_MAEMO
 
 #include "dialog_choose_id.h"
 #include <bakery/App/App_Gtk.h> //For util_bold_message().

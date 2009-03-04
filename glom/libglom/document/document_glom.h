@@ -21,7 +21,7 @@
 #ifndef DOCUMENT_GLOM_H
 #define DOCUMENT_GLOM_H
 
-#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY, GLOM_ENABLE_SQLITE
+#include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY, GLOM_ENABLE_SQLITE
 
 #include <bakery/Document/Document_XML.h>
 #include <bakery/View/View_Composite.h>

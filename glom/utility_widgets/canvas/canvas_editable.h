@@ -24,7 +24,7 @@
 #include <goocanvasmm.h>
 #include "canvas_group_grid.h"
 #include <map>
-#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
+#include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY
 
 namespace Glom
 {

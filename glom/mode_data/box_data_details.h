@@ -21,7 +21,7 @@
 #ifndef BOX_DATA_DETAILS_H
 #define BOX_DATA_DETAILS_H
 
-#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
+#include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY
 
 #include "box_data.h"
 //#include "box_data_list_related.h"

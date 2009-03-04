@@ -19,7 +19,7 @@
  */
 
 
-#include "config.h" // For HAVE_STRPTIME
+#include <libglom/libglom_config.h> // For HAVE_STRPTIME
 
 #include <libgda/gda-blob-op.h> // For gda_blob_op_read_all()
 

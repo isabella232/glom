@@ -23,7 +23,7 @@
 #include <libglom/document/document_glom.h>
 #include <libglom/utils.h>
 #include <glibmm/i18n.h>
-#include "config.h" //For ISO_CODES_PREFIX.
+#include <libglom/libglom_config.h> //For ISO_CODES_PREFIX.
 
 namespace Glom
 {

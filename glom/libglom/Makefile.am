@@ -19,7 +19,7 @@ AM_CPPFLAGS = -I@top_srcdir@/ -I@top_srcdir@/glom $(GLOM_CFLAGS) $(PYTHON_INCLUD
            -DGLOM_EXAMPLES_DIR=\""$(glom_examples_dir)"\" \
            -DGLOM_ICON_DIR=\""$(glom_icon_dir)"\"
 
-h_sources = appstate.h \
+h_sources = libglom_config.h appstate.h \
                      calcinprogress.h \
                      connectionpool.h \
                      dialog_progress_creating.h \

@@ -1,5 +1,13 @@
 2009-03-04  Murray Cumming  <murrayc@murrayc.com>
 
+	* configure.in: Generate libglom/libglom_config.h instead of config.h, 
+	so we can install it and use it in our public headers.
+	* glom/libglom/Makefile.am: Install libglom_config.h.
+	* glom/libglom/glom-1.0.pc.in: Correct the shared library name.
+	* *.[h|cc]: Include libglom/libglom_config.h instead of config.h.
+
+2009-03-04  Murray Cumming  <murrayc@murrayc.com>
+
 	* configure.in: Ran autoupdate on this so it does things as per what is 
 	currently correct.
 

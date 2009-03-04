@@ -24,7 +24,7 @@
 #include "bakery/bakery.h"
 #include "frame_glom.h"
 
-#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
+#include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY
 
 
 //Avoid including the header here:

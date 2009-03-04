@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "config.h"
+#include <libglom/libglom_config.h>
 #include "dialog_existing_or_new.h"
 
 #include <libxml++/parsers/saxparser.h>
