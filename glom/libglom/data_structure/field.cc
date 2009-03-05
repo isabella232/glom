@@ -316,8 +316,11 @@ Gnome::Gda::Value Field::from_file_format(const Glib::ustring& str, glom_field_t
   
   if(glom_type == TYPE_IMAGE)
   {
+    if(str.empty())
+      return  Gnome::Gda::Value();
+
     GdaBinary* gdabinary = gda_string_to_binary(str.c_str());
-    if(!success)
+    if(!success || !gdabinary)
       return Gnome::Gda::Value();
     else
     {

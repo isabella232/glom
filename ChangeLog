@@ -1,3 +1,8 @@
+2009-03-05  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/data_structure/field.cc: from_file_format(): Add some 
+	checks.
+
 2009-03-04  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.in: Generate libglom/libglom_config.h instead of config.h, 
