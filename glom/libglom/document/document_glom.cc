@@ -2379,11 +2379,13 @@ bool Document_Glom::load_after()
         }
 
 #ifdef GLOM_ENABLE_CLIENT_ONLY
-        if(mode == HOSTING_MODE_POSTGRES_SELF)
+#ifdef GLOM_ENABLE_POSTGRESQL
+        if(mode == HOSTING_MODE_POSTGRES_SELF) //TODO: Define these enums always and show a dialog saying that the feature is not enabled.
         {
           std::cerr << "Document_Glom::load_after(): Loading failed because the document needs to be self-hosted, but self-hosting is not supported in client only mode" << std::endl;
           return false; //TODO: Provide more information so the application (or Bakery) can say exactly why loading failed.
         }
+#endif //GLOM_ENABLE_POSTGRESQL
 #endif
         m_hosting_mode = mode;
       }

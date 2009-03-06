@@ -1,5 +1,10 @@
 2009-03-06  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/document/document_glom.cc: load_after(): Added an ifdef to 
+    fix the client-only sqlite build.
+
+2009-03-06  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/frame_glom.cc: 
     connection_request_password_and_choose_new_database_name(): Added an ifdef 
     to fix the client-only postgres build.
