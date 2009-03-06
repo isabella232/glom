@@ -297,7 +297,12 @@ void Box_Data_Portal::get_suitable_record_to_view_details(const Gnome::Gda::Valu
   type_vecLayoutFields fieldsToGet;
   fieldsToGet.push_back(layout_item);
 
-  const Glib::ustring query = Utils::build_sql_select_with_key(m_portal->get_table_used(Glib::ustring() /* not relevant */), fieldsToGet, get_key_field(), primary_key_value);
+  //For instance "invoice_line_id" if this is a portal to an "invoice_lines" table:
+  const Glib::ustring related_table = m_portal->get_table_used(Glib::ustring() /* not relevant */);
+  sharedptr<const Field> key_field = get_field_primary_key_for_table(related_table);
+  //std::cout << "DEBUG: related table=" << related_table << ", whose primary_key=" << key_field->get_name() << std::endl;
+
+  const Glib::ustring query = Utils::build_sql_select_with_key(related_table, fieldsToGet, key_field, primary_key_value);
   Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(query);
 
 
@@ -321,7 +326,14 @@ void Box_Data_Portal::get_suitable_record_to_view_details(const Gnome::Gda::Valu
   else
   {
     value_found = false;
-    std::cout << "debug: Box_Data_Portal::get_suitable_record_to_view_details(): SQL query returned no suitable primary key." << std::endl;
+
+    std::cout << "DEBUG: Box_Data_Portal::get_suitable_record_to_view_details(): SQL query returned no suitable primary key. table=" 
+      << related_table  
+      << ", field=" << layout_item->get_layout_display_name() 
+      << ", key_field=" key_field->get_name()
+      << ", primary_key_value=" << primary_key_value.to_string() << std::endl;
+
+    std::cout << "  DEBUG: SQL was: " << query << std::endl;
   }
 
   if(!value_found)

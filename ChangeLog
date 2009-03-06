@@ -1,5 +1,12 @@
 2009-03-06  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_data/box_data_portal.cc: get_suitable_record_to_view_details():
+	Use the correct primary key of the related table. This fixes navigation 
+	on the Small Business Example, on the invoice lines, which goes to the 
+	product record.
+
+2009-03-06  Murray Cumming  <murrayc@murrayc.com>
+
 	* examples/example_lesson_planner.glom:
 	* examples/example_project_manager.glom:
 	* examples/example_smallbusiness.glom: Resaved these, because libgda 
