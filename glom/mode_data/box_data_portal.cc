@@ -330,7 +330,7 @@ void Box_Data_Portal::get_suitable_record_to_view_details(const Gnome::Gda::Valu
     std::cout << "DEBUG: Box_Data_Portal::get_suitable_record_to_view_details(): SQL query returned no suitable primary key. table=" 
       << related_table  
       << ", field=" << layout_item->get_layout_display_name() 
-      << ", key_field=" key_field->get_name()
+      << ", key_field=" << key_field->get_name()
       << ", primary_key_value=" << primary_key_value.to_string() << std::endl;
 
     std::cout << "  DEBUG: SQL was: " << query << std::endl;
