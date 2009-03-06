@@ -1904,6 +1904,8 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 
           document->set_connection_server(central->get_host());
         }
+
+        #ifndef GLOM_ENABLE_CLIENT_ONLY
         // Remember port if the document is self-hosted, so that remote
         // connections to the database (usinc browse network) know what port to use.
         // TODO: There is already similar code in
@@ -1918,7 +1920,9 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 
           document->set_connection_port(self->get_port());
         }
-        #endif //sGLOM_ENABLE_POSTGRESQL
+        #endif //GLOM_ENABLE_CLIENT_ONLY
+
+        #endif //GLOM_ENABLE_POSTGRESQL
 
         return true;
       }
