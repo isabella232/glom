@@ -1,3 +1,11 @@
+2009-03-06  Murray Cumming  <murrayc@murrayc.com>
+
+	* examples/example_lesson_planner.glom:
+	* examples/example_project_manager.glom:
+	* examples/example_smallbusiness.glom: Resaved these, because libgda 
+	corrected the string format for binary data (images). libgda also fixed 
+	the crash when parsing that string, as used in from_file_format().
+
 2009-03-05  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/data_structure/field.cc: from_file_format(): Add some 
