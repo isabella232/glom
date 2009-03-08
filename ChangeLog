@@ -1,5 +1,11 @@
 2009-03-08  Stéphane Raimbault  <stephane.raimbault@gmail.com>
 
+	* glom/libglom/data_structure/glomconversions.cc:
+ 	sanity_check_date_text_representation_uses_4_digit_years(): Fix a typo
+ 	in the word representation of the error message.
+
+2009-03-08  Stéphane Raimbault  <stephane.raimbault@gmail.com>
+
 	* configure.in: Changes made to reflect new po linguas setup including 
 	removing ALL_LINGUAS (now in new file LINGUAS).
 	* po/LINGUAS: new file.
