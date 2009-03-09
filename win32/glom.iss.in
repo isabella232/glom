@@ -63,9 +63,9 @@ Source: "bin\libORBit-2-0.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libORBit-imodule-2-0.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libORBitCosNaming-2-0.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libgconf-2-4.dll"; DestDir: "{app}\bin"; Components: main
-Source: "bin\libgda-3.0-2.dll"; DestDir: "{app}\bin"; Components: main
-Source: "bin\libgda-report-3.0-2.dll"; DestDir: "{app}\bin"; Components: main
-Source: "bin\libgdasql-3.0-2.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libgda-4.0-4.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libgda-report-4.0-4.dll"; DestDir: "{app}\bin"; Components: main
+;Source: "bin\libgdasql-4.0-4.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libgettextpo-0.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libglade-2.0-0.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libgoocanvas-3.dll"; DestDir: "{app}\bin"; Components: main
@@ -75,12 +75,12 @@ Source: "bin\libatkmm-1.6-1.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libbakery-2.6--6-1.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libcairomm-1.0-1.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libgconfmm-2.6-1.dll"; DestDir: "{app}\bin"; Components: main
-Source: "bin\libgdamm-3.0-10.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libgdamm-4.0-10.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libgdkmm-2.4-1.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libglademm-2.4-1.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libglibmm-2.4-1.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libgiomm-2.4-1.dll"; DestDir: "{app}\bin"; Components: main
-Source: "bin\libgoocanvasmm-0.1-3.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libgoocanvasmm-0.1-4.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libgtkmm-2.4-1.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libgtksourceviewmm-2.0-2.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libpangomm-1.4-1.dll"; DestDir: "{app}\bin"; Components: main
@@ -119,18 +119,16 @@ Source: "python/*.py"; DestDir: "{app}\bin"; Components: python; Flags: recurses
 Source: "python/*.pyd"; DestDir: "{app}\bin"; Components: python; Flags: recursesubdirs
 
 ; Glom executables
-Source: "bin\libglom-0.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libglom-1.0-0.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\Glom.exe"; DestDir: "{app}\bin"; Components: main
 
 ; Modules
 ;Source: "lib/gtk-2.0/2.10.0/immodules/*"; DestDir: "{app}/lib/gtk-2.0/2.10.0/immodules"; Components: gtk
 ;Source: "gtk-query-immodules-2.0.exe"; DestDir: "{app}\bin"; Components: gtk; Flags: deleteafterinstall;
-Source: "etc/gtk-2.0/gdk-pixbuf.loaders"; DestDir: "{app}\etc\gtk-2.0"; Components: gtk;
 
 Source: "lib/gtk-2.0/2.10.0/engines/*"; DestDir: "{app}/lib/gtk-2.0/2.10.0/engines"; Components: gtk
 
-;Source: "lib/gtk-2.0/2.10.0/loaders/*"; DestDir: "{app}/lib/gtk-2.0/2.10.0/loaders"; Components: gtk
-;Source: "gdk-pixbuf-query-loaders.exe"; DestDir: "{app}\bin"; Components: gtk; Flags: deleteafterinstall;
+Source: "lib/gtk-2.0/2.10.0/loaders/*"; DestDir: "{app}/lib/gtk-2.0/2.10.0/loaders"; Components: gtk
 Source: "etc/gtk-2.0/gdk-pixbuf.loaders"; DestDir: "{app}\etc\gtk-2.0"; Components: gtk;
 
 ;Source: "lib/pango/1.6.0/modules/*"; DestDir: "{app}/lib/pango/1.6.0/modules"; Components: gtk;
@@ -148,9 +146,11 @@ Source: "share/gtksourceview-2.0/language-specs/*"; DestDir: "{app}/share/gtksou
 Source: "share/gtksourceview-2.0/styles/*"; DestDir: "{app}/share/gtksourceview-2.0/styles"; Components: main
 
 ; libgda
-Source: "share/libgda-3.0/*"; DestDir: "{app}/share/libgda-3.0"; Components: main
-Source: "share/libgda-3.0/dtd/*"; DestDir: "{app}/share/libgda-3.0/dtd"; Components: main
-Source: "lib/libgda-3.0/providers/*"; DestDir: "{app}/lib/libgda-3.0/providers"; Components: main
+Source: "share/libgda-4.0/*"; DestDir: "{app}/share/libgda-4.0"; Components: main
+Source: "share/libgda-4.0/dtd/*"; DestDir: "{app}/share/libgda-4.0/dtd"; Components: main
+; TODO: We only need postgresql and SQLite providers
+Source: "lib/libgda-4.0/providers/*"; DestDir: "{app}/lib/libgda-4.0/providers"; Components: main
+Source: "etc/libgda-4.0/config"; DestDir: "{app}/etc/libgda-4.0"; Components: main
 
 ; Icons
 Source: "share/icons/hicolor/48x48/apps/glom.png"; DestDir: "{app}/share/icons/hicolor/48x48/apps"; Components: main
@@ -161,6 +161,7 @@ Source: "share/glom/glade/glom.glade"; DestDir: "{app}/share/glom/glade"; Compon
 Source: "share/glom/glade/glom_developer.glade"; DestDir: "{app}/share/glom/glade"; Components: main
 Source: "share/glom/doc/*"; Destdir: "{app}/share/glom/doc/"; Components: main; Flags: recursesubdirs
 Source: "share/glom/pixmaps/*"; Destdir: "{app}/share/glom/pixmaps/"; Components: main; Flags: recursesubdirs
+Source: "share/glom/xslt/*"; DestDir: "{app}/share/glom/xslt/"; Components: main; Flags: recursesubdirs
 
 ;Source: "share/themes/MS-Windows/*"; DestDir: "{app}/share/themes/MS-Windows"; Flags: recursesubdirs; Components: gtk
 

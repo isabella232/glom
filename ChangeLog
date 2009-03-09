@@ -1,3 +1,19 @@
+2009-03-09  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/connectionpool_backends/postgres_self.cc (startup): Use
+	"postgres" executable instead of "postmaster".
+
+	* glom/libglom/connectionpool.cc: Fixed the Windows build.
+
+	* glom/main.cc: Fixed locale search path.
+
+	* win32/querymodules.bat: Removed, this file is no longer required.
+
+	* win32/build-installer:
+	* win32/glom.iss.in:
+	* win32/Makefile.am:
+	* win32/README: Update for current version.
+
 2009-03-09  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/document/document_glom.h: HostingMode: Declare all enum 

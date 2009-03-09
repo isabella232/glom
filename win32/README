@@ -1,9 +1,12 @@
 To create the Windows installer for glom, ideally all you have to do is to run
 the build-installer script, after having installed all dependencies to the
-correct places (that means precompiled ones to /, and self-built
-ones to /local/). Also, you will need to have postgresql installed at
-C:\postgres and Python at C:\Python25. The Inno Setup compiler (iscc) needs to
-be in your PATH.
+correct places. I'm using official Windows builds from ftp.gnome.org where
+possible. The GTK+ all-in-one bundle is expected in /bundle, GtkSourceView in
+/gtksourceview and libgda in /libgda. Others are still in /, but this might
+change in future. Self-built dependencies (most C++ libraries) are expected
+in /local. Also, you will need to have postgresql installed at C:\postgres
+and Python at C:\Python25. The Inno Setup compiler (iscc) needs to be in your
+PATH.
 
 There are many paths hardcoded to fit my own build environment. Feel free to
 generalize the script, to make it more adaptive to other environments.

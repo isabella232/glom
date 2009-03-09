@@ -60,14 +60,13 @@ cp /bin/libORBit-2-0.dll installer/bin || exit
 cp /bin/libORBitCosNaming-2-0.dll installer/bin || exit
 cp /bin/libORBit-imodule-2-0.dll installer/bin || exit
 
-cp /bundle/bin/libglade-2.0-0.dll installer/bin || exit
 cp /bin/libgconf-2-4.dll installer/bin || exit
-#cp /local/bin/libgnomevfs-2-0.dll installer/bin || exit
-cp /bin/libgoocanvas-3.dll installer/bin || exit
+cp /libglade/bin/libglade-2.0-0.dll installer/bin || exit
+cp /goocanvas/bin/libgoocanvas-3.dll installer/bin || exit
 
-cp /local/bin/libgda-3.0-2.dll installer/bin || exit
-cp /local/bin/libgdasql-3.0-2.dll installer/bin || exit
-cp /local/bin/libgda-report-3.0-2.dll installer/bin || exit
+cp /libgda/bin/libgda-4.0-4.dll installer/bin || exit
+#cp /libgda/bin/libgdasql-3.0-2.dll installer/bin || exit
+cp /libgda/bin/libgda-report-4.0-4.dll installer/bin || exit
 
 cp /local/bin/libsigc-2.0-0.dll installer/bin || exit
 cp /local/bin/libglibmm-2.4-1.dll installer/bin || exit
@@ -79,13 +78,13 @@ cp /local/bin/libgdkmm-2.4-1.dll installer/bin || exit
 cp /local/bin/libxml++-2.6-2.dll installer/bin || exit
 cp /local/bin/libgtkmm-2.4-1.dll installer/bin || exit
 cp /local/bin/libgtksourceviewmm-2.0-2.dll installer/bin || exit
-cp /local/bin/libgoocanvasmm-0.1-3.dll installer/bin || exit
+cp /local/bin/libgoocanvasmm-0.1-4.dll installer/bin || exit
 cp /local/bin/libgconfmm-2.6-1.dll installer/bin || exit
-cp /local/bin/libgdamm-3.0-10.dll installer/bin || exit
+cp /local/bin/libgdamm-4.0-10.dll installer/bin || exit
 cp /local/bin/libglademm-2.4-1.dll installer/bin || exit
 
 cp /local/bin/libbakery-2.6--6-1.dll installer/bin || exit
-cp /local/bin/libglom-0.dll installer/bin || exit
+cp /local/bin/libglom-1.0-0.dll installer/bin || exit
 
 echo "Stripping DLL files..."
 strip installer/bin/*.dll || exit
@@ -99,9 +98,12 @@ cp /bundle/bin/intl.dll installer/bin || exit
 cp /bundle/bin/iconv.dll installer/bin || exit
 cp /bundle/bin/zlib1.dll installer/bin || exit
 
+cp /libgda/bin/libdb47.dll installer/bin # TODO: TEMP!
+
 echo "Copying Python..."
 
 # TODO: Find out Windows directory somehow, perhaps by looking at PATH?
+# There is $WINDIR already.
 cp /c/WINDOWS/system32/python25.dll installer/bin || exit
 
 # We through all python modules into python/. Glom sets PYTHONPATH accordingly.
@@ -142,18 +144,15 @@ strip installer/bin/*.pyd || exit
 #mkdir -p installer/lib/gtk-2.0/2.10.0/immodules || exit
 #cp /lib/gtk-2.0/2.10.0/immodules/*.dll installer/lib/gtk-2.0/2.10.0/immodules || exit
 #strip installer/lib/gtk-2.0/2.10.0/immodules/*.dll || exit
-#cp /bin/gtk-query-immodules-2.0.exe installer || exit
 
 mkdir -p installer/lib/gtk-2.0/2.10.0/engines || exit
 cp /bundle/lib/gtk-2.0/2.10.0/engines/libwimp.dll installer/lib/gtk-2.0/2.10.0/engines || exit
 strip installer/lib/gtk-2.0/2.10.0/engines/libwimp.dll || exit
 
-#mkdir -p installer/lib/gtk-2.0/2.10.0/loaders || exit
-#cp /lib/gtk-2.0/2.10.0/loaders/*.dll installer/lib/gtk-2.0/2.10.0/loaders || exit
-#strip installer/lib/gtk-2.0/2.10.0/loaders/*.dll || exit
-#cp /bin/gdk-pixbuf-query-loaders.exe installer || exit
+mkdir -p installer/lib/gtk-2.0/2.10.0/loaders || exit
+cp /bundle/lib/gtk-2.0/2.10.0/loaders/*.dll installer/lib/gtk-2.0/2.10.0/loaders || exit
+strip installer/lib/gtk-2.0/2.10.0/loaders/*.dll || exit
 
-# TODO: Can we omit this?
 mkdir -p installer/etc/gtk-2.0
 cp /bundle/etc/gtk-2.0/gtk.immodules installer/etc/gtk-2.0 || exit -1
 cp /bundle/etc/gtk-2.0/gdk-pixbuf.loaders installer/etc/gtk-2.0 || exit -1
@@ -163,31 +162,32 @@ cp -R /bundle/share/themes/MS-Windows installer/share/themes || exit
 mkdir -p installer/etc/gtk-2.0 || exit
 echo "gtk-theme-name = \"MS-Windows\"" > installer/etc/gtk-2.0/gtkrc || exit
 
-mkdir -p installer/lib/libgda-3.0/providers || exit
-cp /local/lib/libgda-3.0/providers/*.dll installer/lib/libgda-3.0/providers || exit
-strip installer/lib/libgda-3.0/providers/*.dll || exit
+# TODO: We only need SQLite and postgres providers
+mkdir -p installer/lib/libgda-4.0/providers || exit
+cp /libgda/lib/libgda-4.0/providers/*.dll installer/lib/libgda-4.0/providers || exit
+strip installer/lib/libgda-4.0/providers/*.dll || exit
 
-#mkdir -p installer/lib/gnome-vfs-2.0/modules || exit
-#cp /lib/gnome-vfs-2.0/modules/*.dll installer/lib/gnome-vfs-2.0/modules || exit
-#strip installer/lib/gnome-vfs-2.0/modules/*.dll || exit
-
-#mkdir -p installer/etc/gnome-vfs-2.0/modules || exit
-#cp /local/etc/gnome-vfs-2.0/modules/default-modules.conf installer/etc/gnome-vfs-2.0/modules || exit
+mkdir -p installer/etc/libgda-4.0 || exit
+cp /libgda/etc/libgda-4.0/config installer/etc/libgda-4.0 || exit
 
 echo "Copying locales..."
 
 # We need to keep the locale files from share/locale in share/locale and those
 # from lib/locale in lib/locale:
-cp /bundle/share/locale installer/share -R || exit
-cp /share/locale installer/share -R || exit
-#cp /lib/locale installer/lib -R || exit
-cp /local/lib/locale installer/lib -R || exit
-cp /gtksourceview/lib/locale installer/lib -R || exit
+cp /bundle/share/locale installer/share -R || exit # GTK+ + deps
+cp /share/locale installer/share -R || exit # GConf2
+cp /local/share/locale installer/share -R || exit # bakery, glom
+# TODO: Switch to >=GtkSourceView 2.5, which has locales in share/
+cp /gtksourceview/lib/locale installer/lib -R || exit # gtksourceview
+# TODO: libgda-4.0 locales (wait for them being present in official binaries)
+# TODO: Bail if a translation file is missing
 
-find installer/lib/locale/ -type f | grep -v atk10.mo | grep -v gtk20.mo | grep -v bakery.mo | grep -v GConf2.mo | grep -v glib20.mo | grep -v glom.mo | grep -v gtk20.mo | grep -v gtk20-properties.mo | grep -v gtksourceview-2.0.mo |  grep -v libgda-3.0.mo | xargs rm
+TRANSLATIONS="atk10.mo gtk20.mo bakery.mo GConf2.mo glib20.mo gtk20.mo gtk20-properties.mo gtksourceview-2.0.mo libgda-4.0.mo glom.mo"
+
+find installer/lib/locale/ -type f | grep -v atk10.mo | grep -v gtk20.mo | grep -v bakery.mo | grep -v GConf2.mo | grep -v glib20.mo | grep -v glom.mo | grep -v gtk20.mo | grep -v gtk20-properties.mo | grep -v gtksourceview-2.0.mo |  grep -v libgda-4.0.mo | xargs rm
 find installer/lib/locale -type d | xargs rmdir -p --ignore-fail-on-non-empty
 
-find installer/share/locale/ -type f | grep -v atk10.mo | grep -v gtk20.mo | grep -v bakery.mo | grep -v GConf2.mo | grep -v glib20.mo | grep -v glom.mo | grep -v gtk20.mo | grep -v gtk20-properties.mo | grep -v gtksourceview-2.0.mo |  grep -v libgda-3.0.mo | xargs rm
+find installer/share/locale/ -type f | grep -v atk10.mo | grep -v gtk20.mo | grep -v bakery.mo | grep -v GConf2.mo | grep -v glib20.mo | grep -v glom.mo | grep -v gtk20.mo | grep -v gtk20-properties.mo | grep -v gtksourceview-2.0.mo |  grep -v libgda-4.0.mo | xargs rm
 find installer/share/locale -type d | xargs rmdir -p --ignore-fail-on-non-empty
 
 echo "Copying executable..."
@@ -201,8 +201,8 @@ cp $POSTGRESDIR/bin/initdb.exe installer/bin || exit
 cp $POSTGRESDIR/bin/pg_ctl.exe installer/bin || exit
 
 cp $POSTGRESDIR/lib/libpq.dll installer/bin || exit
-strip installer/bin/postgres.exe installer/bin/initdb.exe installer/bin/pg_ctl.exe installer/bin/libpq.dll
-# This is required by libpq.dll:
+strip installer/bin/postgres.exe installer/bin/initdb.exe installer/bin/pg_ctl.exe installer/bin/libpq.dll || exit
+# This is required by libpq.dll in the official installer
 #cp $POSTGRESDIR/bin/libintl3.dll installer/bin || exit
 #cp $POSTGRESDIR/bin/libiconv2.dll installer/bin || exit
 #cp $POSTGRESDIR/bin/krb5_32.dll installer/bin || exit
@@ -239,17 +239,16 @@ mkdir -p installer/share/gtksourceview-2.0 || exit
 cp -R /gtksourceview/share/gtksourceview-2.0/language-specs installer/share/gtksourceview-2.0 || exit
 cp -R /gtksourceview/share/gtksourceview-2.0/styles installer/share/gtksourceview-2.0 || exit
 
-mkdir -p installer/share/libgda-3.0/dtd
-cp /local/share/libgda-3.0/*.xml installer/share/libgda-3.0/
-cp /local/share/libgda-3.0/dtd/*.dtd installer/share/libgda-3.0/dtd
+mkdir -p installer/share/libgda-4.0/dtd
+cp /libgda/share/libgda-4.0/*.xml installer/share/libgda-4.0/
+cp /libgda/share/libgda-4.0/dtd/*.dtd installer/share/libgda-4.0/dtd
 
 mkdir -p installer/share/glom/glade || exit
 cp /local/share/glom/glade/glom.glade installer/share/glom/glade || exit
 cp /local/share/glom/glade/glom_developer.glade installer/share/glom/glade || exit
 cp -R /local/share/glom/doc installer/share/glom/ || exit
 cp -R /local/share/glom/pixmaps installer/share/glom/ || exit
-
-# TODO: /local/share/glom/xslt/* (what is this used for?)
+cp -R /local/share/glom/xslt installer/share/glom || exit
 
 mkdir -p installer/share/icons/hicolor/48x48/apps || exit
 cp /local/share/icons/hicolor/48x48/apps/glom.png installer/share/icons/hicolor/48x48/apps || exit
@@ -257,6 +256,8 @@ cp /local/share/icons/hicolor/48x48/apps/glom.png installer/share/icons/hicolor/
 # This is used for the glom icon in the initial dialog. I'm not sure why GTK
 # does not already get it from the icons/ directory, but it took me already
 # long enough to figure out that this works:
+# TODO: Maybe we'll need to use gtk_icon_theme_append_search_path to tell GTK+
+# where we store the icon.
 mkdir -p installer/share/pixmaps
 cp /local/share/icons/hicolor/16x16/apps/glom.png installer/share/pixmaps || exit
 

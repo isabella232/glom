@@ -27,8 +27,15 @@
 #include <glibmm/i18n.h>
 
 #ifndef G_OS_WIN32
-#include <libepc/shell.h> //For epc_shell_set_progress_hooks().
-#include <libepc/publisher.h>
+# include <libepc/shell.h> //For epc_shell_set_progress_hooks().
+# include <libepc/publisher.h>
+#else
+// objidl.h, included by windows.h, defines a type called DATADIR, so we need
+// to undef it temporarily.
+# define GLOM_SAVE_DATADIR DATADIR
+# undef DATADIR
+# include <windows.h>
+# define DATADIR GLOM_SAVE_DATADIR
 #endif
 
 #ifdef GLOM_ENABLE_MAEMO
