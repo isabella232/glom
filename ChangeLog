@@ -1,3 +1,9 @@
+2009-03-09  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/document/document_glom.h: HostingMode: Declare all enum 
+	values regardless of what is enabled, to avoid ABI confusion and to maybe 
+	allow us to say that some are not supported at runtime.
+
 2009-03-08  Stéphane Raimbault  <stephane.raimbault@gmail.com>
 
 	* glom/libglom/data_structure/glomconversions.cc:

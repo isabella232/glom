@@ -110,13 +110,14 @@ public:
   /// How the database is hosted.
   enum HostingMode
   {
-#ifdef GLOM_ENABLE_POSTGRESQL
+    //Only enabled if GLOM_ENABLE_POSTGRESQL is defined:
     HOSTING_MODE_POSTGRES_CENTRAL, /*!< The database is hosted on an external postgresql server. */
+    
+    //Only enabled if GLOM_ENABLE_POSTGRESQL is defined and GLOM_ENABLE_CLIENT_ONLY is not defined:
     HOSTING_MODE_POSTGRES_SELF, /*!< A new postgres database process is spawned that hosts the data. */
-#endif //GLOM_ENABLE_POSTGRESQL
-#ifdef GLOM_ENABLE_SQLITE
+
+    //Only enabled if GLOM_ENABLE_SQLITE is defined:
     HOSTING_MODE_SQLITE, /*!< A sqlite database file is used. */
-#endif // GLOM_ENABLE_SQLITE
 
     //This reduces the ifdefs elsewhere:
 #ifdef GLOM_ENABLE_POSTGRESQL
