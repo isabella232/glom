@@ -1,3 +1,8 @@
+2009-03-09  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in: Require the latest (from svn, not yet in a tarball) version 
+	of libgda, needed by the images in the example files.
+
 2009-03-09  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/connectionpool_backends/postgres_self.cc (startup): Use
