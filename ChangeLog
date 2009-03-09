@@ -1,3 +1,8 @@
+2009-03-09  Claude Paroz  <claude@2xlibre.net>
+
+	* glom/mode_data/dialog_layout_details.cc: Add a translator comment.
+	Bug #574672.
+
 2009-03-09  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.in: Require the latest (from svn, not yet in a tarball) version 

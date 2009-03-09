@@ -110,6 +110,7 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
 
 
     //Columns-count column:
+    //Note to translators: This is the number of columns in a group (group being a noun)
     m_treeview_column_group_columns = Gtk::manage( new Gtk::TreeView::Column(_("Group Columns")) );
     m_treeview_fields->append_column(*m_treeview_column_group_columns);
 
