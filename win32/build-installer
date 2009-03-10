@@ -160,9 +160,9 @@ cp -R /bundle/share/themes/MS-Windows installer/share/themes || exit
 mkdir -p installer/etc/gtk-2.0 || exit
 echo "gtk-theme-name = \"MS-Windows\"" > installer/etc/gtk-2.0/gtkrc || exit
 
-# TODO: We only need SQLite and postgres providers
 mkdir -p installer/lib/libgda-4.0/providers || exit
-cp /libgda/lib/libgda-4.0/providers/*.dll installer/lib/libgda-4.0/providers || exit
+cp /libgda/lib/libgda-4.0/providers/libgda-postgres.dll installer/lib/libgda-4.0/providers || exit
+cp /libgda/lib/libgda-4.0/providers/libgda-sqlite.dll installer/lib/libgda-4.0/providers || exit
 strip installer/lib/libgda-4.0/providers/*.dll || exit
 
 mkdir -p installer/etc/libgda-4.0 || exit
@@ -238,7 +238,9 @@ cp -R /gtksourceview/share/gtksourceview-2.0/language-specs installer/share/gtks
 cp -R /gtksourceview/share/gtksourceview-2.0/styles installer/share/gtksourceview-2.0 || exit
 
 mkdir -p installer/share/libgda-4.0/dtd
-cp /libgda/share/libgda-4.0/*.xml installer/share/libgda-4.0/
+cp /libgda/share/libgda-4.0/information_schema.xml installer/share/libgda-4.0/
+cp /libgda/share/libgda-4.0/postgres_*.xml installer/share/libgda-4.0/
+cp /libgda/share/libgda-4.0/sqlite_*.xml installer/share/libgda-4.0/
 cp /libgda/share/libgda-4.0/dtd/*.dtd installer/share/libgda-4.0/dtd
 
 mkdir -p installer/share/glom/glade || exit
