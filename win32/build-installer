@@ -98,8 +98,6 @@ cp /bundle/bin/intl.dll installer/bin || exit
 cp /bundle/bin/iconv.dll installer/bin || exit
 cp /bundle/bin/zlib1.dll installer/bin || exit
 
-cp /libgda/bin/libdb47.dll installer/bin # TODO: TEMP!
-
 echo "Copying Python..."
 
 # TODO: Find out Windows directory somehow, perhaps by looking at PATH?
@@ -177,12 +175,12 @@ echo "Copying locales..."
 cp /bundle/share/locale installer/share -R || exit # GTK+ + deps
 cp /share/locale installer/share -R || exit # GConf2
 cp /local/share/locale installer/share -R || exit # bakery, glom
+cp /libgda/share/locale installer/share -R || exit # libgda-4.0
 # TODO: Switch to >=GtkSourceView 2.5, which has locales in share/
 cp /gtksourceview/lib/locale installer/lib -R || exit # gtksourceview
-# TODO: libgda-4.0 locales (wait for them being present in official binaries)
 # TODO: Bail if a translation file is missing
 
-TRANSLATIONS="atk10.mo gtk20.mo bakery.mo GConf2.mo glib20.mo gtk20.mo gtk20-properties.mo gtksourceview-2.0.mo libgda-4.0.mo glom.mo"
+TRANSLATIONS="glib20.mo gtk20-properties.mo atk10.mo gtk20.mo gtksourceview-2.0.mo GConf2.mo libgda-4.0.mo bakery.mo glom.mo"
 
 find installer/lib/locale/ -type f | grep -v atk10.mo | grep -v gtk20.mo | grep -v bakery.mo | grep -v GConf2.mo | grep -v glib20.mo | grep -v glom.mo | grep -v gtk20.mo | grep -v gtk20-properties.mo | grep -v gtksourceview-2.0.mo |  grep -v libgda-4.0.mo | xargs rm
 find installer/lib/locale -type d | xargs rmdir -p --ignore-fail-on-non-empty

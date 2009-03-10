@@ -1,3 +1,13 @@
+2009-03-10  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/xsl_utils.cc: Made reports work on Windows, by using
+	Glib::get_tmp_dir() instead of "/tmp" and ShellExecute instead of
+	g_app_info_launch_default_for_uri(), for which file:// URIs don't seem
+	to be supported on Windows.
+
+	* win32/build_installer: Don't ship libdb47.dll anymore, as this is no
+	longer required with libgda 3.99.13.
+
 2009-03-09  Claude Paroz  <claude@2xlibre.net>
 
 	* glom/mode_data/dialog_layout_details.cc: Add a translator comment.

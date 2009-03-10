@@ -41,6 +41,29 @@
 #include <iostream>   // for cout, endl
 #include <iomanip>
 
+// For ShellExecute:
+#ifdef G_OS_WIN32
+# define GLOM_SAVE_DATADIR DATADIR
+# undef DATADIR
+# include <windows.h>
+# define DATADIR GLOM_SAVE_DATADIR
+#endif
+
+namespace
+{
+	Glib::ustring get_xslt_file(const Glib::ustring& xsl_file)
+	{
+#ifdef G_OS_WIN32
+		gchar* directory;
+		directory = g_win32_get_package_installation_directory_of_module(NULL);
+		Glib::ustring xsltdir = Glib::build_filename(directory, "share/glom/xslt/" + xsl_file);
+		g_free(directory);
+		return xsltdir;
+#else
+		return GLOM_XSLTDIR + xsl_file;
+#endif
+	}
+}
 
 namespace Glom
 {
@@ -48,15 +71,15 @@ namespace Glom
 void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const Glib::ustring& xsl_file_path, Gtk::Window* parent_window)
 {
   //Use libxslt to convert the XML to HTML:
-  Glib::ustring result = xslt_process(xml_document, GLOM_XSLTDIR + xsl_file_path);
+  Glib::ustring result = xslt_process(xml_document, get_xslt_file(xsl_file_path));
   std::cout << "After xslt: " << result << std::endl;
 
   //Save it to a temporary file and show it in a browser:
   //TODO: This actually shows it in gedit.
-  const Glib::ustring temp_uri = "file:///tmp/glom_printout.html";
-  std::cout << "temp_uri=" << temp_uri << std::endl;
+  const Glib::ustring temp_path = Glib::get_tmp_dir() + "/glom_printout.html";
+  std::cout << "temp_path=" << temp_path << std::endl;
 
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(temp_uri);
+  Glib::RefPtr<Gio::File> file = Gio::File::create_for_path(temp_path);
   Glib::RefPtr<Gio::FileOutputStream> stream;
 
   //Create the file if it does not already exist:
@@ -115,14 +138,20 @@ void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const
   if(parent_window)
     Frame_Glom::show_ok_dialog(_("Report Finished"), _("The report will now be opened in your web browser."), *parent_window, Gtk::MESSAGE_INFO);
 
+#ifdef G_OS_WIN32
+  // gtk_show_uri doesn't seem to work on Win32, at least not for local files
+  // We use Windows API instead.
+  ShellExecute(NULL, "open", file->get_path().c_str(), NULL, NULL, SW_SHOW);
+#else
   //Use the GNOME browser:
+  //TODO: Use gtk_show_uri() as soon as we require GTK+ 2.14
   GError* gerror = 0;
-  // g_app_info_launch_default_for_uri seems not to be wrapped by giomm
-  if(!g_app_info_launch_default_for_uri(temp_uri.c_str(), NULL, &gerror))
+  if(!g_app_info_launch_default_for_uri(file->get_uri().c_str(), NULL, &gerror))
   {
     std::cerr << "Error while calling g_app_info_launch_default_for_uri(): " << gerror->message << std::endl;
     g_error_free(gerror);
   }
+#endif
 }
 
 Glib::ustring GlomXslUtils::xslt_process(const xmlpp::Document& xml_document, const std::string& filepath_xslt)
