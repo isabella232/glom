@@ -1,3 +1,20 @@
+1.9.4: (unstable):
+
+* Disable the sqlite backend by default. It is for embedded use with limited 
+  functionality. (Armin Burgmeier, Murray Cumming)
+* Related records: Correct the navigation to doubly related records.
+  (Murray Cumming)
+* Correct loading of images from examples, preventing a crash.
+  (Murray Cummign)
+* Windows build: Fix the build and make reports work. (Armin Burgmeier)
+  (Armin Burgmeier)
+* Build fixes for the client-only build.
+  (Murray Cumming, Armin Burgmeier)
+* Improve the installation of libglom, adding a pkg-config file and a small 
+  test. This is still highly unstable.
+* String corrections for translators.
+  (Claude Paroz, Stéphane Raimbault)
+   
 1.9.3: (unstable)
 
 * Fix network sharing with just-created documents.
