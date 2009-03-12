@@ -934,7 +934,7 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
   }
 }
 
-GtkType FlowTable::child_type_vfunc() const
+GType FlowTable::child_type_vfunc() const
 {
   //TODO: What is this for?
   if(!m_children.empty())

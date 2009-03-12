@@ -1,5 +1,14 @@
 2009-03-12  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/adddel/eggcolumnchooser/: Copy a newer version from 
+	libegg, which already fixed the use of deprecated GTK+ macros.
+	* glom/utility_widgets/flowtable.cc:
+	* glom/utility_widgets/flowtable.h: child_type_vfunc(): Use GType instead 
+	of deprecated GtkType.
+	This mostly fixes bug #575021 (André Klapper).
+
+2009-03-12  Murray Cumming  <murrayc@murrayc.com>
+
 	* configure.in: Rename to configure.ac, because configure.in is 
 	deprecated by recent autotools.
 	

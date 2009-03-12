@@ -82,7 +82,7 @@ protected:
   //Handle child widgets:
   virtual void on_size_request(Gtk::Requisition* requisition);
   virtual void on_size_allocate(Gtk::Allocation& allocation);
-  virtual GtkType child_type_vfunc() const;
+  virtual GType child_type_vfunc() const;
   virtual void on_add(Gtk::Widget* child);
   virtual void forall_vfunc(gboolean include_internals, GtkCallback callback, gpointer callback_data);
   virtual void on_remove(Gtk::Widget* child);
