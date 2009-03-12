@@ -1,3 +1,8 @@
+2009-03-12  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in: Rename to configure.ac, because configure.in is 
+	deprecated by recent autotools.
+	
 2009-03-12  Armin Burgmeier  <armin@openismus.com>
 
 	* configure.in: Added config.h to AC_CONFIG_FILES, so that we create
