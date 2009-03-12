@@ -1,5 +1,10 @@
 2009-03-12  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/Makefile.am: Do not install some headers that are for 
+	API that I do not really want other people to use.
+
+2009-03-12  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/adddel/eggcolumnchooser/: Copy a newer version from 
 	libegg, which already fixed the use of deprecated GTK+ macros.
 	* glom/utility_widgets/flowtable.cc:

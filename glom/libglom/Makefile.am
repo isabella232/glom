@@ -19,15 +19,20 @@ AM_CPPFLAGS = -I@top_srcdir@/ -I@top_srcdir@/glom $(GLOM_CFLAGS) $(PYTHON_INCLUD
            -DGLOM_EXAMPLES_DIR=\""$(glom_examples_dir)"\" \
            -DGLOM_ICON_DIR=\""$(glom_icon_dir)"\"
 
-h_sources = libglom_config.h appstate.h \
+# These are installed, for use by other applications/utilties:
+h_sources_public = libglom_config.h \
+                     sharedptr.h \
+                     standard_table_prefs_fields.h \
+                     appstate.h
+                     
+h_sources = $(h_sources_public) \
                      calcinprogress.h \
                      connectionpool.h \
                      dialog_progress_creating.h \
                      spawn_with_feedback.h \
                      utils.h glade_utils.h \
-                     sharedptr.h \
-                     standard_table_prefs_fields.h \
-		     gst-package.h
+                     gst-package.h
+
 cc_sources = appstate.cc \
                      calcinprogress.cc \
                      connectionpool.cc \
@@ -37,7 +42,7 @@ cc_sources = appstate.cc \
                      gst-package.c
 
 library_includedir=$(includedir)/glom-1.0/libglom
-library_include_HEADERS = $(h_sources)
+library_include_HEADERS = $(h_sources_public)
 
 lib_LTLIBRARIES = libglom-1.0.la
 libglom_1_0_la_SOURCES = $(h_sources) $(cc_sources)
