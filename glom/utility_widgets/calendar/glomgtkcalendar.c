@@ -5,7 +5,7 @@
 #include <gtk/gtk.h>
 #if !GTK_CHECK_VERSION(2,16,0)
 
-#include <libglom/libglom_config.h>
+#include "config.h"
 
 #ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>

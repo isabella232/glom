@@ -1,3 +1,22 @@
+2009-03-12  Armin Burgmeier  <armin@openismus.com>
+
+	* configure.in: Added config.h to AC_CONFIG_FILES, so that we create
+	two config files: config.h with all definitions, and libglom_config.h
+	which contains only definitions prefixed with GLOM_ to be installed.
+	This means header files cannot use non-prefixed definitions.
+
+	* glom/libglom/libglom_config.h.in: New file containing the
+	definitions to be installed.
+
+	* glom/libglom/connectionpool_backends/postgres_self.cc:
+	* glom/libglom/data_structure/iso_codes.cc:
+	* glom/translation/window_translations.cc:
+	* glom/utility_widgets/calendar/glomgtkcalendar.h:
+	* glom/utility_widgets/calendar/glomgtkcalendar.c:
+	* glom/application.cc:
+	* glom/main.cc: Adapt the code by including config.h instead of
+	libglom_config.h.
+
 1.9.4:
 
 2009-03-10  Armin Burgmeier  <armin@openismus.com>

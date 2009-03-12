@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <libglom/libglom_config.h> //For VERSION.
+#include "config.h" //For VERSION.
 
 //We use Python for calculated fields.
 #include <Python.h> //Include it before anything else to avoid "_POSIX_C_SOURCE redefined".

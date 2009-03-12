@@ -31,7 +31,7 @@
 
 // To read the .po files
 #include <gettext-po.h>
-#include <libglom/libglom_config.h> //For HAVE_GETTEXTPO_XERROR
+#include "config.h" //For HAVE_GETTEXTPO_XERROR
 
 #include <sstream>
 

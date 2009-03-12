@@ -212,4 +212,4 @@ G_END_DECLS
 
 #endif /* __GLOM_GTK_CALENDAR_H__ */
 
-#endif //!GTK_CHECK_VERSION(2.16.0)
+#endif /* !GTK_CHECK_VERSION(2.16.0) */
