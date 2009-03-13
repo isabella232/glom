@@ -49,7 +49,7 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
       data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_TYPES);
 #else
     std::auto_ptr<Glib::Error> error;
-    if(gda_connection->update_meta_store(error))
+    if(true) //Already done in ConnectionPool::connect(): gda_connection->update_meta_store(error))
       data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_TYPES, error);
 
     // Ignore error here, we do not process data_model_tables if it is NULL

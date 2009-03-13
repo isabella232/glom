@@ -65,6 +65,12 @@ Box_Tables::~Box_Tables()
 
 void Box_Tables::fill_table_row(const Gtk::TreeModel::iterator& iter, const sharedptr<const TableInfo>& table_info)
 {
+  if(!table_info)
+  {
+    std::cerr << "Box_Tables::fill_table_row(): table_info was null." << std::endl;
+    return;
+  }
+  
   if(iter)
   {
     const bool developer_mode = (get_userlevel() == AppState::USERLEVEL_DEVELOPER);

@@ -1,5 +1,12 @@
 2009-03-13  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/data_structure/fieldtypes.cc: Avoid an extra 
+	update_meta_store() when exceptions are disabled.
+	* glom/navigation/box_tables.cc: fill_table_row(): Avoid a crash when 
+	the TableInfo is null.
+
+2009-03-13  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/connectionpool_backends/postgres.cc: Fix the build when 
 	GLOM_CONNECTION_DEBUG is defined.
 
