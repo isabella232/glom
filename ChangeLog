@@ -1,5 +1,13 @@
 2009-03-13  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/connectionpool.cc: connect(): Update the meta store for 
+	just the data types and the table names, instead of everything. This is 
+	slightly faster. This needs libgdamm from svn.
+	More about the libgda meta store speed here:
+	http://bugzilla.gnome.org/show_bug.cgi?id=575235
+
+2009-03-13  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/data_structure/fieldtypes.cc: Avoid an extra 
 	update_meta_store() when exceptions are disabled.
 	* glom/navigation/box_tables.cc: fill_table_row(): Avoid a crash when 

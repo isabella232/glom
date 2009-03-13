@@ -372,9 +372,13 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
       else
       {
         //Allow get_meta_store_data() to succeed:
-        std::cout << "DEBUG: Calling update_meta_store() ..." << std::endl;
-        m_refGdaConnection->update_meta_store();
-        std::cout << "DEBUG: ... update_meta_store() has finished." << std::endl;
+        //Hopefully this (and the update_meta_store_for_table() calls) is all we need.
+        std::cout << "DEBUG: Calling update_meta_store_data_types() ..." << std::endl;
+        m_refGdaConnection->update_meta_store_data_types();
+        std::cout << "DEBUG: ... update_meta_store_data_types() has finished." << std::endl;
+        std::cout << "DEBUG: Calling update_meta_store_table_names() ..." << std::endl;
+        m_refGdaConnection->update_meta_store_table_names();
+        std::cout << "DEBUG: ... update_meta_store_table_names() has finished." << std::endl;
 
         // Connection succeeded
         // Create the fieldtypes member if it has not already been done:
