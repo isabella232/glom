@@ -572,7 +572,7 @@ sharedptr<Field> Box_DB_Table_Definition::change_definition(const sharedptr<cons
       if(iterFind != vecFields.end()) //If it was found:
       {
         //Change it to the new Fields's value:
-	*iterFind = glom_sharedptr_clone(new_fields[i]);
+        *iterFind = glom_sharedptr_clone(new_fields[i]);
       }
       else
       {
@@ -659,7 +659,7 @@ bool Box_DB_Table_Definition::field_has_non_unique_values(const sharedptr<const 
   if(datamodel)
   {
     count_distinct = datamodel->get_n_rows();
-    //std::cout << "debug: null_count = " << null_count << std::endl;
+    //std::cout << "debug: count_distinct = " << count_distinct << std::endl;
   }
   else
   {

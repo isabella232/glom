@@ -190,13 +190,24 @@ bool Backend::add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection,
   Glib::RefPtr<Gnome::Gda::ServerOperation> operation = create_server_operation(provider, connection, Gnome::Gda::SERVER_OPERATION_ADD_COLUMN, error);
   if(!operation) return false;
 
-  if(!set_server_operation_value(operation, "/COLUMN_DEF_P/TABLE_NAME", table_name, error)) return false;
-  if(!set_server_operation_value(operation, "/COLUMN_DEF_P/COLUMN_NAME", field->get_name(), error)) return false;
-  if(!set_server_operation_value(operation, "/COLUMN_DEF_P/COLUMN_TYPE", field->get_sql_type(), error)) return false;
-  if(!set_server_operation_value(operation, "/COLUMN_DEF_P/COLUMN_PKEY", field->get_primary_key() ? "TRUE" : "FALSE", error)) return false;
-  if(!set_server_operation_value(operation, "/COLUMN_DEF_P/COLUMN_UNIQUE", field->get_unique_key() ? "TRUE" : "FALSE", error)) return false;
+  if(!set_server_operation_value(operation, "/COLUMN_DEF_P/TABLE_NAME", table_name, error))
+    return false;
 
-  if(!perform_server_operation(provider, connection, operation, error)) return false;
+  if(!set_server_operation_value(operation, "/COLUMN_DEF_P/COLUMN_NAME", field->get_name(), error))
+    return false;
+
+  if(!set_server_operation_value(operation, "/COLUMN_DEF_P/COLUMN_TYPE", field->get_sql_type(), error))
+    return false;
+
+  if(!set_server_operation_value(operation, "/COLUMN_DEF_P/COLUMN_PKEY", field->get_primary_key() ? "TRUE" : "FALSE", error))
+    return false;
+
+  if(!set_server_operation_value(operation, "/COLUMN_DEF_P/COLUMN_UNIQUE", field->get_unique_key() ? "TRUE" : "FALSE", error))
+    return false;
+
+  if(!perform_server_operation(provider, connection, operation, error))
+    return false;
+
   return true;
 }
 
@@ -204,12 +215,18 @@ bool Backend::drop_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection
 {
   Glib::RefPtr<Gnome::Gda::ServerProvider> provider = connection->get_provider();
   Glib::RefPtr<Gnome::Gda::ServerOperation> operation = create_server_operation(provider, connection, Gnome::Gda::SERVER_OPERATION_DROP_COLUMN, error);
-  if(!operation) return false;
+  if(!operation)
+    return false;
 
-  if(!set_server_operation_value(operation, "/COLUMN_DESC_P/TABLE_NAME", table_name, error)) return false;
-  if(!set_server_operation_value(operation, "/COLUMN_DESC_P/COLUMN_NAME", field_name, error)) return false;
+  if(!set_server_operation_value(operation, "/COLUMN_DESC_P/TABLE_NAME", table_name, error))
+    return false;
+
+  if(!set_server_operation_value(operation, "/COLUMN_DESC_P/COLUMN_NAME", field_name, error))
+    return false;
   
-  if(!perform_server_operation(provider, connection, operation, error)) return false;
+  if(!perform_server_operation(provider, connection, operation, error))
+    return false;
+
   return true;
 }
 
@@ -238,21 +255,27 @@ bool Backend::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connect
     // database systems do not allow.
     temp_field->set_primary_key(false);
 
-    if(!add_column(connection, table_name, temp_field, error)) break;
+    if(!add_column(connection, table_name, temp_field, error))
+      break;
 
     const Glib::ustring temp_move_query = "UPDATE " + table_name + " SET " + TEMP_COLUMN_NAME + " = CAST(" + old_fields[i]->get_name() + " AS " + new_fields[i]->get_sql_type() + ")";
-    if(!query_execute(connection, temp_move_query, error)) break;
+    if(!query_execute(connection, temp_move_query, error))
+      break;
     // TODO: If this CAST was not successful, then just go on,
     // dropping the data in the column?
 
-    if(!drop_column(connection, table_name, old_fields[i]->get_name(), error)) return false;
+    if(!drop_column(connection, table_name, old_fields[i]->get_name(), error))
+      return false;
 
-    if(!add_column(connection, table_name, new_fields[i], error)) break;
+    if(!add_column(connection, table_name, new_fields[i], error))
+      break;
 
     const Glib::ustring final_move_query = "UPDATE " + table_name + " SET " + new_fields[i]->get_name() + " = " + TEMP_COLUMN_NAME; // TODO: Do we need a cast here, even though the type matches?
-    if(!query_execute(connection, final_move_query, error)) break;
+    if(!query_execute(connection, final_move_query, error))
+      break;
 
-    if(!drop_column(connection, table_name, TEMP_COLUMN_NAME, error)) break;
+    if(!drop_column(connection, table_name, TEMP_COLUMN_NAME, error))
+      break;
   }
 
   if(error.get() || !commit_transaction(connection, TRANSACTION_NAME, error))
