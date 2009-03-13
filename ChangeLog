@@ -1,5 +1,10 @@
 2009-03-13  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_design/fields/box_db_table_definition.
+	field_has_null_values(): Do not warn about a false failure. 
+
+2009-03-13  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/connectionpool.cc: connect(): Update the meta store for 
 	just the data types and the table names, instead of everything. This is 
 	slightly faster. This needs libgdamm from svn.

@@ -623,24 +623,28 @@ void Box_DB_Table_Definition::fill_fields()
 
 bool Box_DB_Table_Definition::field_has_null_values(const sharedptr<const Field>& field)
 {
+  //TODO: Use SQL paramters?
   //Note that "= Null" doesn't work, though it doesn't error either.
   //Note also that SELECT COUNT always returns 0 if all the values are NULL, so we can't use that to be more efficient.
-  const Glib::ustring sql_query = "SELECT \"" + field->get_name() + "\" FROM \"" + m_table_name + "\" WHERE \"" + m_table_name + "\".\"" + field->get_name() + "\" IS NULL ";
+  const Glib::ustring sql_query = "SELECT \"" + field->get_name() + "\" FROM \"" + m_table_name + "\" WHERE \"" + m_table_name + "\".\"" + field->get_name() + "\" IS NULL LIMIT 1";
   //std::cout << "sql_query: " << sql_query << std::endl;
 
   long null_count = 0;
   Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query);
-  if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
+  if(datamodel)
   {
-    null_count = datamodel->get_n_rows();
-    //std::cout << "debug: null_count = " << null_count << std::endl;
+    if(datamodel->get_n_rows() && datamodel->get_n_columns())
+    {
+      null_count = datamodel->get_n_rows();
+      //std::cout << "debug: null_count = " << null_count << std::endl;
+    }
   }
   else
   {
-    g_warning("Box_DB_Table_Definition::field_has_null_values(): SELECT COUNT() failed.");
+    std::cerr << "Box_DB_Table_Definition::field_has_null_values(): query failed: " << sql_query << std::endl;
   }
 
-   return null_count > 0; 
+  return null_count > 0; 
 }
 
 bool Box_DB_Table_Definition::field_has_non_unique_values(const sharedptr<const Field>& field)
