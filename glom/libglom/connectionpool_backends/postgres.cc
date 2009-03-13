@@ -32,7 +32,7 @@
 
 
 // Uncomment to see debug messages
-//#define GLOM_CONNECTION_DEBUG
+// #define GLOM_CONNECTION_DEBUG
 
 namespace
 {
@@ -106,7 +106,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
 #endif
 
 #ifdef GLOM_CONNECTION_DEBUG
-    std::cout << "ConnectionPoolBackends::PostgresCentralHosted::attempt_connect(): Attempt to connect to database failed on port=" << port << ", database=" << actual_database << ": " << ex.what() << std::endl;
+    std::cout << "ConnectionPoolBackends::PostgresCentralHosted::attempt_connect(): Attempt to connect to database failed on port=" << port << ", database=" << database << ": " << ex.what() << std::endl;
     std::cout << "ConnectionPoolBackends::PostgresCentralHosted::attempt_connect(): Attempting to connect without specifying the database." << std::endl;
 #endif
 
@@ -124,9 +124,9 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
 
 #ifdef GLOM_CONNECTION_DEBUG
     if(temp_conn)
-      std::cout << "  (Connection succeeds, but not to the specific database,  database=" << m_database << std::endl;
+      std::cout << "  (Connection succeeds, but not to the specific database,  database=" << database << std::endl;
     else
-      std::cerr << "  (Could not connect even to the default database, database=" << m_database  << std::endl;
+      std::cerr << "  (Could not connect even to the default database, database=" << database  << std::endl;
 #endif
 
     error.reset(new ExceptionConnection(temp_conn ? ExceptionConnection::FAILURE_NO_DATABASE : ExceptionConnection::FAILURE_NO_SERVER));
@@ -148,7 +148,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
         m_postgres_server_version = strtof(versionPart.c_str(), NULL);
 
 #ifdef GLOM_CONNECTION_DEBUG
-        std::cout << "  Postgres Server version: " << postgres_server_version << std::endl;
+        std::cout << "  Postgres Server version: " << m_postgres_server_version << std::endl;
 #endif
       }
     }
