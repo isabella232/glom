@@ -79,9 +79,9 @@ static std::string get_path_to_postgres_executable(const std::string& program)
   // share/postgresql which would be nice to separate the postgres stuff
   // from the other shared data. We can perhaps still change this later by
   // building postgres with another prefix than /local/pgsql.
-  gchar* bin_subdir = g_win32_get_package_installation_subdirectory(NULL, NULL, "bin");
-  std::string test = Glib::build_filename(bin_subdir, real_program);
-  g_free(bin_subdir);
+  gchar* installation_directory = g_win32_get_package_installation_directory_of_module(NULL);
+  std::string test = Glib::build_filename(installation_directory, Glib::build_filename("bin", real_program));
+  g_free(installation_directory);
 
   if(Glib::file_test(test, Glib::FILE_TEST_IS_EXECUTABLE))
     return test;

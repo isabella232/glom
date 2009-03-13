@@ -26,8 +26,8 @@ namespace
 std::string get_icon_path(const std::string& filename)
 {
 #ifdef G_OS_WIN32
-  gchar* basepath = g_win32_get_package_installation_subdirectory(NULL, NULL, "share/glom/pixmaps");
-  const std::string result = Glib::build_filename(basepath, filename);
+  gchar* basepath = g_win32_get_package_installation_directory_of_module(NULL);
+  const std::string result = Glib::build_filename(basepath, Glib::build_filename("share/glom/pixmaps", filename));
   g_free(basepath);
   return result;
 #else

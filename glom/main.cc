@@ -121,6 +121,10 @@ main(int argc, char* argv[])
   }
 #endif
 
+  gchar* installation_dir_c = g_win32_get_package_installation_directory_of_module(NULL);
+  const std::string installation_dir(installation_dir_c);
+  g_free(installation_dir_c);
+
   // TODO: I am not sure why, but this does not work. PYTHONPATH is set
   // correctly according to getenv(), but python still does not look in it.
   // For now, the installer installs all the python stuff directly into the 
@@ -130,11 +134,10 @@ main(int argc, char* argv[])
 #ifdef G_OS_WIN32
   // Set PYTHONPATH to point to python/ because that's where the installer
   // installs all the python modules into.
-  gchar* python_path = g_win32_get_package_installation_subdirectory(NULL, NULL, "python");
+  std::string python_path = Glib::build_filename(installation_dir, "python");
   std::string current_path = Glib::getenv("PYTHONPATH");
   if(current_path.empty()) current_path = python_path;
   else current_path += (std::string(";") + python_path); // PATH-like variables are separated by ; on Windows because : is a valid character in paths.
-  g_free(python_path);
   std::cout << "Setting " << current_path << ":" << std::endl;
   std::cout << Glib::setenv("PYTHONPATH", current_path) << std::endl;
   std::cout << getenv("PYTHONPATH") << std::endl;
@@ -144,16 +147,12 @@ main(int argc, char* argv[])
 #ifdef G_OS_WIN32
   // Add glom's bin directory to PATH so that g_spawn* finds the
   // gspawn-win32-helper.exe helper program. The installer installs it there.
-  gchar* app_dir = g_win32_get_package_installation_subdirectory(NULL, NULL, "bin");
-  Glib::setenv("PATH", Glib::getenv("PATH") + ";" + app_dir);
-  g_free(app_dir);
+  Glib::setenv("PATH", Glib::getenv("PATH") + ";" + Glib::build_filename(installation_dir, "bin"));
 #endif
 
 #ifdef G_OS_WIN32
   // Load translations relative to glom.exe on Windows
-  gchar* dir = g_win32_get_package_installation_subdirectory(NULL, NULL, "share/locale");
-  bindtextdomain(GETTEXT_PACKAGE, dir);
-  g_free(dir);
+  bindtextdomain(GETTEXT_PACKAGE, Glib::build_filename(installation_dir, "share/locale").c_str());
 #else
   //Make this application use the current locale for _() translation:
   bindtextdomain(GETTEXT_PACKAGE, LOCALEDIR);  //LOCALEDIR is defined in the Makefile.am

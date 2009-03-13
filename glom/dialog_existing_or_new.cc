@@ -157,8 +157,8 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 
 #ifdef G_OS_WIN32
-  gchar* dir = g_win32_get_package_installation_subdirectory(NULL, NULL, "share/glom/doc/examples");
-  std::string path(dir);
+  gchar* dir = g_win32_get_package_installation_directory_of_module(NULL);
+  std::string path = Glib::build_filename(dir, "share/glom/doc/examples");
   g_free(dir);
 
   if(!Glib::file_test(path, Glib::FILE_TEST_EXISTS))

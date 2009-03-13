@@ -1,3 +1,16 @@
+2009-03-13  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/dialog_existing_or_new.cc:
+	* libglom/connectionpool_backends/postgres_self.cc:
+	* libglom/glade_utils.h:
+	* glom/main.cc:
+	* glom/mode_design/print_layouts/print_layout_toolbar_button.cc:
+	* glom/utility_widgets/layouttoolbar.cc:
+	* glom/utility_widgets/layouttoolbarbutton.cc: Replaced
+	g_win32_get_package_installation_subdirectory() by
+	g_win32_get_package_installation_directory_of_module() since the
+	former is deprecated. Bug #575021.
+
 2009-03-13  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/mode_design/fields/box_db_table_definition.
