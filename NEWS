@@ -1,3 +1,15 @@
+1.10.0 (stable):
+
+What's new in Glom 1.10:
+
+(Not much from the point of view of users.)
+* Performance improvements, avoiding excessive network queries.
+* Details: Show the Open button (but not Find) for related fields that are 
+  primary keys, so we can navigate to that record.
+* Ported to libgda-4.0 (libgdamm-4.0)
+* Sqlite backend suitable for embedded use, configurable when building Glom.
+* Bug-fixes from Glom 1.8.
+
 1.9.4: (unstable):
 
 * Disable the sqlite backend by default. It is for embedded use with limited 
@@ -5,7 +17,7 @@
 * Related records: Correct the navigation to doubly related records.
   (Murray Cumming)
 * Correct loading of images from examples, preventing a crash.
-  (Murray Cummign)
+  (Murray Cumming)
 * Windows build: Fix the build and make reports work. (Armin Burgmeier)
   (Armin Burgmeier)
 * Build fixes for the client-only build.
