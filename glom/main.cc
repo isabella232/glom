@@ -119,11 +119,11 @@ main(int argc, char* argv[])
     std::cerr << "Failed to initialize WinSock: " << errcode << std::endl;
     return -1;
   }
-#endif
 
   gchar* installation_dir_c = g_win32_get_package_installation_directory_of_module(NULL);
   const std::string installation_dir(installation_dir_c);
   g_free(installation_dir_c);
+#endif
 
   // TODO: I am not sure why, but this does not work. PYTHONPATH is set
   // correctly according to getenv(), but python still does not look in it.

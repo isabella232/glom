@@ -1,3 +1,11 @@
+2009-03-16  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/gst-package.c: Converted a C++ comment to a C comment,
+	to avoid a warning.
+
+	* glom/main.cc (main): Fixed the build on Linux, which was broken
+	since my last commit.
+
 2009-03-13  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/dialog_existing_or_new.cc:
