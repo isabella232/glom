@@ -5,10 +5,10 @@
 //#include <gtk/gtkcalendar.h>
 #include <gtkmm/calendar.h>
 #include <gtk/gtk.h>
-#if GTK_CHECK_VERSION(2,16,0)
+#if GTK_CHECK_VERSION(2,14,0)
 namespace GlomGtk
 {
-  typedef GlomGtk::Calendar Calendar;
+  typedef Gtk::Calendar Calendar;
 }
 #else
 

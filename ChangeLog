@@ -1,3 +1,10 @@
+2009-03-16  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/calendar/glomcalendar.[h|cc]:
+	* glom/utility_widgets/calendar/glomgtkcalendar.[h|c]: Check for GTK+ 2.14, 
+	not GTK+ 2.16, because the GtkCalendar details_func API is in 2.14.
+	Correct a typedef to fix the build in that case.
+
 2009-03-16  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/gst-package.c: Converted a C++ comment to a C comment,

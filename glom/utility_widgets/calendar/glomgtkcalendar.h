@@ -3,7 +3,7 @@
  * the GNOME release schedule.
  */
 #include <gtk/gtkcalendar.h>
-#if GTK_CHECK_VERSION(2,16,0)
+#if GTK_CHECK_VERSION(2,14,0)
 typedef GlomGlomGtkCalendar GlomGlomGtkCalendar; 
 #else
 /* GTK - The GIMP Toolkit
