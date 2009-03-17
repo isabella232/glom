@@ -1018,20 +1018,6 @@ Glib::RefPtr<Gdk::Pixbuf> Conversions::get_pixbuf_for_gda_value(const Gnome::Gda
       //}
 
       Glib::RefPtr<Gdk::PixbufLoader> refPixbufLoader;
-
-      // PixbufLoader::create() is broken in gtkmm before 2.6.something,
-      // so let's do this in C so it works with all 2.6 versions:
-      GError* error = 0;
-      GdkPixbufLoader* loader = gdk_pixbuf_loader_new_with_type(GLOM_IMAGE_FORMAT, &error);
-      if(!error)
-        refPixbufLoader = Glib::wrap(loader);
-      else
-      {
-        std::cerr << "ImageGlom::set_value(): Error while calling gdk_pixbuf_loader_new_with_type(): " << error->message << std::endl;
-        g_error_free(error);
-      }
-
-      /*
       try
       {
         refPixbufLoader = Gdk::PixbufLoader::create(GLOM_IMAGE_FORMAT);
@@ -1040,9 +1026,8 @@ Glib::RefPtr<Gdk::Pixbuf> Conversions::get_pixbuf_for_gda_value(const Gnome::Gda
       catch(const Gdk::PixbufError& ex)
       {
         refPixbufLoader.clear();
-        g_warning("PixbufLoader::create failed: %s",ex.what().c_str());
+        std::cerr << "PixbufLoader::create failed: " << ex.what() << std::endl;
       }
-      */
 
       if(refPixbufLoader)
       {

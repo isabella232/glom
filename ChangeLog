@@ -1,5 +1,21 @@
 2009-03-17  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/combo_textglade.[h|cc]: Remove the reimplementation 
+	of Gtk::ComboBoxText now that we can use gtkmm 2.14.
+	* glom/frame_glom.cc:
+	* glom/libglom/data_structure/glomconversions.cc:
+	* glom/mode_design/dialog_add_related_table.cc:
+	* glom/mode_design/fields/dialog_fielddefinition.cc:
+	* glom/mode_design/script_library/dialog_script_library.cc:
+	* glom/mode_design/users/dialog_users_list.cc: Adapted.
+	* glom/libglom/document/document_glom.cc: save_before: Remove another 
+	gtkmm 2.10 workaround.
+	
+2009-03-17  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/document/document_glom.cc: 
+2009-03-17  Murray Cumming  <murrayc@murrayc.com>
+
 	* configure.ac: Depend on gtkmm 2.14 rather than gtkmm 2.10.
 	
 	* glom/Makefile.am: 

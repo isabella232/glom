@@ -21,8 +21,7 @@
 #ifndef GLOM_MODE_DESIGN_COMBO_TEXTGLADE_HH
 #define GLOM_MODE_DESIGN_COMBO_TEXTGLADE_HH
 
-//#include <gtkmm/comboboxtext.h>
-#include <gtkmm/combobox.h>
+#include <gtkmm/comboboxtext.h>
 #include <libglademm.h>
 
 #include <gtkmm/liststore.h>
@@ -30,46 +29,15 @@
 namespace Glom
 {
 
-/** This class should just derive from Gtk::ComboBoxText and provide a constuctor suitable for libglade's get_widget_derived() template.
- * However, I have reimplemented Gtk::ComboBoxText here temporarily, until the fixes in gtkmm 2.4.3 are widely available.
+/** This class just derives from Gtk::ComboBoxText and provides a constuctor suitable for libglade's get_widget_derived() template.
  */
-class Combo_TextGlade : public Gtk::ComboBox
+class Combo_TextGlade : public Gtk::ComboBoxText
 {
 public:
   Combo_TextGlade(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
-  virtual ~Combo_TextGlade();
-
-  void append_text(const Glib::ustring& text);
-  void append_separator();
-  void prepend_text(const Glib::ustring& text);
-  Glib::ustring get_active_text() const;
-
-  //This is not part of ComboBoxText:
-  void clear_text();
-  void set_active_text(const Glib::ustring& text);
-
-  ///This ensures that something is selected:
+  
+  ///This ensures that something is selected,
   void set_first_active();
-
-private:
-
-  //This determines whether each row should be shown as a separator.
-  bool on_row_separator(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::iterator& iter);
-
-  //Tree model columns:
-  //These columns are used by the model that is created by the default constructor
-  class TextModelColumns : public Gtk::TreeModel::ColumnRecord
-  {
-  public:
-    TextModelColumns()
-    { add(m_column); add(m_separator); }
-
-    Gtk::TreeModelColumn<Glib::ustring> m_column;
-    Gtk::TreeModelColumn<bool> m_separator;
-  };
-
-  TextModelColumns m_text_columns;
-  Glib::RefPtr<Gtk::ListStore> m_model;
 };
 
 } //namespace Glom

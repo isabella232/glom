@@ -2067,9 +2067,6 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
   }
   catch(const Glib::Exception& ex) // libgda does not set error domain
   {
-    //I think a failure here might be caused by installing unstable libgda, which seems to affect stable libgda-1.2.
-    //Doing a "make install" in libgda-1.2 seems to fix this:
-    //TODO: Is this still relevant in libgda-3.0?
     std::cerr << "Frame_Glom::create_database():  Gnome::Gda::Connection::create_database(" << database_name << ") failed: " << ex.what() << std::endl;
 
     //Tell the user:

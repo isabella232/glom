@@ -344,7 +344,7 @@ void Dialog_FieldDefinition::on_combo_lookup_relationship_changed()
 {
   //Get the fields that are avaiable from the new relationship:
 
-  m_pCombo_LookupField->clear_text();
+  m_pCombo_LookupField->clear_items();
 
   //Get the relationship name:
   sharedptr<const Relationship> relationship = m_pCombo_LookupRelationship->get_selected_relationship();

@@ -3431,8 +3431,7 @@ bool Document_Glom::save_before()
           if(page_setup)
           {
             Glib::KeyFile key_file;
-            Glib::RefPtr<Gtk::PageSetup> unconst = Glib::RefPtr<Gtk::PageSetup>::cast_const(page_setup); //TODO: Remove this when using gtkmm 2.13/14.
-            unconst->save_to_key_file(key_file);
+            page_setup->save_to_key_file(key_file);
             
             xmlpp::Element* child = nodePrintLayout->add_child(GLOM_NODE_PAGE_SETUP);
             child->add_child_text(key_file.to_data());
