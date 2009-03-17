@@ -27,8 +27,7 @@
 #include <libglom/glade_utils.h>
 #include <libglom/utils.h>
 #include <glom/glom_privs.h>
-#include "../xsl_utils.h"
-#include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include "../xsl_utils.h".
 #include "../python_embed/glom_python.h"
 #include <sstream> //For stringstream
 #include <glibmm/i18n.h>
@@ -193,7 +192,7 @@ bool Box_Data_Details::refresh_data_from_database_blank()
 
 void Box_Data_Details::create_layout()
 {
-  Bakery::BusyCursor busy_cursor(get_app_window());
+  BusyCursor busy_cursor(get_app_window());
 
   Box_Data::create_layout(); //Fills m_TableFields.
 
@@ -230,7 +229,7 @@ bool Box_Data_Details::fill_from_database()
 
   bool bResult = false;
 
-  Bakery::BusyCursor busy_cursor(get_app_window());
+  BusyCursor busy_cursor(get_app_window());
 
   const bool primary_key_is_empty = Conversions::value_is_empty(m_primary_key_value);
   if(!primary_key_is_empty)
@@ -436,7 +435,7 @@ void Box_Data_Details::on_button_del()
   if( Conversions::value_is_empty(get_primary_key_value_selected()) )
   {
     //Tell user that a primary key is needed to delete a record:
-    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("No primary key value.")), true);
+    Gtk::MessageDialog dialog(Utils::bold_message(_("No primary key value.")), true);
     dialog.set_secondary_text(_("This record cannot be deleted because there is no primary key."));
     dialog.set_transient_for(*get_app_window());
     dialog.run();
@@ -840,7 +839,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
       if(strFieldName == m_field_primary_key->get_name()) //If edited field is the primary key.
       {
         //Warn user that they can't choose their own primary key:
-        Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Primary key auto increments")), true);
+        Gtk::MessageDialog dialog(Utils::bold_message(_("Primary key auto increments")), true);
         dialog.set_secondary_text(_("The primary key is auto-incremented.\n You may not enter your own primary key value."));
         dialog.set_transient_for(*get_app_window());
         dialog.run();

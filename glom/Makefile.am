@@ -1,4 +1,4 @@
-SUBDIRS = libglom mode_data mode_find navigation utility_widgets python_embed reports
+SUBDIRS = libglom bakery mode_data mode_find navigation utility_widgets python_embed reports
 
 if !GLOM_ENABLE_CLIENT_ONLY
 SUBDIRS += layout_item_dialogs mode_design translation relationships_overview
@@ -77,7 +77,8 @@ glom_LDADD += layout_item_dialogs/liblayoutitemdialogs.a \
               relationships_overview/librelationshipsoverview.a
 endif
 
-glom_LDADD += navigation/libnavigation.a \
+glom_LDADD += bakery/libbakery_app.a \
+              navigation/libnavigation.a \
               utility_widgets/libutility_widgets.a \
               utility_widgets/adddel/libutility_widgets_adddel.a \
               utility_widgets/adddel/eggcolumnchooser/libutility_widgets_adddel_eggcolumnchooserdialog.a \

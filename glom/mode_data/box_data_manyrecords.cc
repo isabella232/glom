@@ -24,7 +24,7 @@
 #include <glom/reports/report_builder.h>
 #include "dialog_layout_list.h"
 #include <glom/glom_privs.h>
-#include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include <libglom/utils.h> //For bold_message()).
 #include <sstream> //For stringstream
 #include <glibmm/i18n.h>
 

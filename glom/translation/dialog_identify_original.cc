@@ -20,7 +20,7 @@
 
 #include "dialog_identify_original.h"
 #include <libglom/data_structure/iso_codes.h>
-#include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include <libglom/utils.h> //For bold_message()).
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -46,7 +46,7 @@ void Dialog_IdentifyOriginal::load_from_document()
   std::cout << "Dialog_IdentifyOriginal::load_from_document" << std::endl;
 
   if(m_label_original )
-    m_label_original->set_markup( Bakery::App_Gtk::util_bold_message( IsoCodes::get_locale_name( get_document()->get_translation_original_locale()) ) );
+    m_label_original->set_markup( Utils::bold_message( IsoCodes::get_locale_name( get_document()->get_translation_original_locale()) ) );
 
   m_combo_locale->set_selected_locale(TranslatableItem::get_current_locale());
 

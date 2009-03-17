@@ -21,7 +21,7 @@
 #include <libglom/libglom_config.h> // For GLOM_ENABLE_MAEMO
 
 #include "dialog_choose_id.h"
-#include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include <libglom/utils.h> //For bold_message()).
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
@@ -106,7 +106,7 @@ void Dialog_ChooseID::on_button_quickfind()
 #ifdef GLOM_ENABLE_MAEMO
     Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, *this, message);
 #else
-    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("No Find Criteria")), true, Gtk::MESSAGE_WARNING );
+    Gtk::MessageDialog dialog(Utils::bold_message(_("No Find Criteria")), true, Gtk::MESSAGE_WARNING );
     dialog.set_secondary_text(message);
     dialog.set_transient_for(*this);
 #endif

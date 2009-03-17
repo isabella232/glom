@@ -20,7 +20,7 @@
  */
 
 #include "canvas_print_layout.h"
-#include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include <libglom/utils.h> //For bold_message()).
 #include <gtkmm/stock.h>
 #include <glom/mode_design/print_layouts/dialog_text_formatting.h>
 #include <glom/mode_data/dialog_layout_list_related.h>

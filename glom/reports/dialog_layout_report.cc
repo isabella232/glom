@@ -35,7 +35,7 @@
 #include "../layout_item_dialogs/dialog_field_summary.h"
 #include "../mode_data/dialog_choose_relationship.h"
 //#include <libgnome/gnome-i18n.h>
-#include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include <libglom/utils.h> //For bold_message()).
 #include <glibmm/i18n.h>
 #include <sstream> //For stringstream
 

@@ -110,6 +110,11 @@ void show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gt
 
 void show_window_until_hide(Gtk::Window* window);
 
+/// For instance, to create bold primary text for a dialog box, without marking the markup for translation.
+Glib::ustring bold_message(const Glib::ustring& message);
+
+bool file_exists(const Glib::ustring& uri);
+
 } //namespace Utils
 
 } //namespace Glom

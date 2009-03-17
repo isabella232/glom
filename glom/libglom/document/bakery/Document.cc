@@ -1,0 +1,458 @@
+/*
+ * Copyright 2002 Murray Cumming
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Library General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Library General Public License for more details.
+ *
+ * You should have received a copy of the GNU Library General Public
+ * License along with this library; if not, write to the Free
+ * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+
+#include "config.h"
+#include <libglom/document/bakery/Document.h>
+#include <giomm.h>
+//#include <fstream>
+#include <glibmm/i18n-lib.h>
+
+namespace GlomBakery
+{
+
+const guint BYTES_TO_PROCESS = 256;
+
+Document::Document()
+{
+  m_bIsNew = true;
+  m_bModified = false;
+  m_bReadOnly = false;
+  m_pView = 0;
+}
+
+Document::~Document()
+{
+  //Tell views to forget the document -  to null their pointers to it. We should maybe use the Document via a sharing smartpointer instead.
+  signal_forget_.emit();
+}
+
+Glib::ustring Document::get_file_uri() const
+{
+  return m_file_uri;
+}
+
+Glib::ustring Document::get_file_uri_with_extension(const Glib::ustring& uri)
+{
+  Glib::ustring result = uri;
+
+  //Enforce file extension:
+  if(!m_file_extension.empty())  //If there is an extension to enforce.
+  {
+    bool bAddExt = false;
+    Glib::ustring strExt = "." + get_file_extension();
+
+    if(result.size() < strExt.size()) //It can't have the ext already if it's not long enough.
+    {
+      bAddExt = true; //It isn't there already.
+    }
+    else
+    {
+      Glib::ustring strEnd = result.substr(result.size() - strExt.size());
+      if(strEnd != strExt) //If it doesn't already have the extension
+        bAddExt = true;
+    }
+
+    //Add extension if necessay.
+    if(bAddExt)
+      result += strExt;
+
+    //Note that this does not replace existing extensions, so it could be e.g. 'something.blah.theext'
+  }
+
+  return result;
+}
+
+void Document::set_file_uri(const Glib::ustring& file_uri, bool bEnforceFileExtension /* = false */)
+{
+  if(file_uri != m_file_uri)
+    set_modified(); //Ready to save() for a Save As.
+
+  m_file_uri = file_uri;
+
+  //Enforce file extension:
+  if(bEnforceFileExtension)
+    m_file_uri = get_file_uri_with_extension(m_file_uri);
+}
+
+void Document::set_contents(const Glib::ustring& strVal)
+{
+  m_strContents = strVal;
+}
+
+Glib::ustring Document::get_contents() const
+{
+  return m_strContents;
+}
+
+void Document::set_modified(bool bVal /* = true */)
+{
+  m_bModified = bVal;
+
+  if(m_bModified)
+  {
+    m_bIsNew = false; //Can't be new if it's been modified.
+  }
+
+  //Allow the application or view to update it's UI accordingly:
+  signal_modified().emit(m_bModified);
+}
+
+bool Document::get_modified() const
+{
+  return m_bModified;
+}
+
+bool Document::load()
+{
+  bool bTest = read_from_disk();
+  if(bTest)
+  {
+    bTest = load_after(); //may be overridden.
+    if(bTest)
+    {
+      //Tell the View to show the new data:
+      if(m_pView)
+        m_pView->load_from_document();
+    }
+  }
+
+  return bTest;
+}
+
+bool Document::load_from_data(const guchar* data, std::size_t length)
+{
+  if(!data || !length)
+    return false;
+
+  m_strContents = Glib::ustring((char*)data, length);
+ 
+  const bool bTest = load_after(); //may be overridden.
+  if(bTest)
+  {
+    //Tell the View to show the new data:
+    if(m_pView)
+      m_pView->load_from_document();
+  }
+
+  return bTest;
+}
+
+
+
+bool Document::load_after()
+{
+  //Called after text is read from disk, but before updating view.
+
+  //Override this if necessary.
+  //For instance, Document_XML parses the XML.
+
+  return true;
+}
+
+bool Document::save()
+{
+  //Tell the view to update the data in this document.
+  if(m_pView)
+    m_pView->save_to_document();
+
+  const bool bTest = save_before(); //This could be overridden.
+  if(bTest)
+    return write_to_disk();
+
+  return bTest;
+}
+
+bool Document::save_before()
+{
+  //Called after view saves itself to document, but before writing to disk.
+
+  //Override this if necessary.
+  //For instance, Document_XML serializes its XML to text.
+
+  return true;
+}
+
+bool Document::read_from_disk()
+{
+  m_strContents.erase();
+
+  // Open the input file for read access:
+  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(m_file_uri);
+  Glib::RefPtr<Gio::FileInputStream> stream;
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    stream = file->read();
+  }
+  catch(const Gio::Error& ex)
+  {
+    // If the operation was not successful, print the error and abort
+    return false; //print_error(ex, input_uri_string);
+  }
+#else
+  std::auto_ptr<Gio::Error> error;
+  Glib::RefPtr<FileInputStream> stream = file.read(error);
+  if(error.get() != NULL)
+    return false; //print_error(ex, input_uri_string);
+#endif
+
+  // Read data from the input uri:
+  guint buffer[BYTES_TO_PROCESS] = {0, }; // For each chunk.
+  gsize bytes_read = 0;
+  std::string data; //We use a std::string because we might not get whole UTF8 characters at a time. This might not be necessary.
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+#endif
+  {
+    bool bContinue = true;
+    while(bContinue)
+    {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+      bytes_read = stream->read(buffer, BYTES_TO_PROCESS);
+#else
+      bytes_read = stream->read(buffer, BYTES_TO_PROCESS, error);
+      if(error.get() != NULL) break;
+#endif
+
+      if(bytes_read == 0)
+        bContinue = false; //stop because we reached the end.
+      else
+      {
+        // Add the text to the string:
+        data += std::string((char*)buffer, bytes_read);
+      }
+    }
+  }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  catch(const Gio::Error& ex)
+  {
+#else
+  if(error.get() != NULL)
+  {
+    Gio::Error& ex = *error.get();
+#endif
+    // If the operation was not successful, print the error and abort
+    return false; //print_error(ex, input_uri_string);
+  }
+
+  m_strContents = data;
+
+  set_modified(false);
+
+  return true; //Success.
+}
+
+bool Document::write_to_disk()
+{
+  //Write the changed data to disk:
+  if(get_modified())
+  {
+    Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(m_file_uri);
+    Glib::RefPtr<Gio::FileOutputStream> stream;
+
+    //Create the file if it does not already exist:
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    try
+    {
+      if(file->query_exists())
+      {
+        stream = file->replace(); //Instead of append_to().
+      }
+      else
+      {
+        //By default files created are generally readable by everyone, but if we pass FILE_CREATE_PRIVATE in flags the file will be made readable only to the current user, to the level that is supported on the target filesystem.
+        //TODO: Do we want to specify 0660 exactly? (means "this user and his group can read and write this non-executable file".)
+        stream = file->create_file();
+      }
+    }
+    catch(const Gio::Error& ex)
+    {
+#else
+    std::auto_ptr<Gio::Error> error;
+    stream.create(error);
+    if(error.get() != NULL)
+    {
+      const Gio::Error& ex = *error.get();
+#endif
+     // If the operation was not successful, print the error and abort
+     return false; // print_error(ex, output_uri_string);
+    }
+
+
+    if(!stream)
+      return false;
+
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    try
+    {
+      //Write the data to the output uri
+      const gsize bytes_written = stream->write(m_strContents.data(), m_strContents.bytes());
+
+      //Close the stream to make sure that the write really happens 
+      //even with glibmm 2.16.0 which had a refcount leak that stopped it.
+      stream->close();
+      stream.reset();
+    }
+    catch(const Gio::Error& ex)
+    {
+#else
+    const gsize bytes_written = stream->write(m_strContents.data(), m_strContents.bytes(), error);
+    if(error.get() != NULL)
+    {
+      Gio::Error& ex = *error.get();
+#endif
+      // If the operation was not successful, print the error and abort
+      return false; //print_error(ex, output_uri_string);
+    }
+
+    return true; //Success. (At doing nothing, because nothing needed to be done.)
+  }
+  else
+    return true; //Success. (At doing nothing, because nothing needed to be done.)
+}
+
+Glib::ustring Document::get_name() const
+{
+  return util_file_uri_get_name(m_file_uri, m_file_extension);
+}
+
+Glib::ustring Document::util_file_uri_get_name(const Glib::ustring& file_uri, const Glib::ustring& file_extension)
+{
+  Glib::ustring strResult = Glib::filename_display_basename(file_uri);
+
+  //Remove the file extension:
+  //TODO: Maybe filename_display_basename() should do this.
+  if(!strResult.empty() && !file_extension.empty())
+  {
+    const Glib::ustring strExt = "." + file_extension;
+
+    if(strResult.size() >= file_extension.size()) //It can't have the ext already if it's not long enough.
+    {
+      Glib::ustring strEnd = strResult.substr(strResult.size() - strExt.size());
+      if(strEnd == strExt) //If it has the extension
+      {
+        strResult = strResult.substr(0, strResult.size() - strExt.size());
+      }
+    }
+  }
+
+  //Show untitled explicitly:
+  //Also happens for file_uris with path but no name. e.g. /sub/sub/, which shouldn't happen.
+  if(strResult.empty())
+    strResult = _("Untitled");
+
+  return strResult;
+}
+
+void Document::set_view(ViewBase* pView)
+{
+  m_pView = pView;
+}
+
+ViewBase* Document::get_view()
+{
+  return m_pView;
+}
+
+bool Document::get_read_only() const
+{
+  if(m_bReadOnly)
+  {
+    //An application might have used set_read_only() to make this document explicitly read_only, regardless of the positions of the storage location.
+    return true;
+  }
+  else
+  {
+    if(m_file_uri.empty())
+      return false; //It must be a default empty document, not yet saved, so it is not read-only.
+    else
+    {
+      Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(m_file_uri);
+      Glib::RefPtr<Gio::FileInfo> info;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+      try
+      {
+        Glib::RefPtr<Gio::FileInfo> info = file->query_info(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE);
+      }
+      catch(const Gio::Error& ex)
+      {
+        return false; //We should at least be able to read the permissions, so maybe the location is invalid. I'm not sure what the best return result here is.
+      }
+#else
+      std::auto_ptr<Gio::Error> error;
+      info = file.query_info(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE, Gio::FILE_QUERY_INFO_NONE, error);
+      if(error.get() != NULL)
+        return false;
+#endif
+
+      if(!info)
+        return false;
+
+      const bool read_only = info->get_attribute_boolean(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE);
+      return read_only;
+    }
+  }
+
+  return m_bReadOnly;
+}
+
+void Document::set_read_only(bool bVal)
+{
+  m_bReadOnly = bVal;
+}
+
+bool Document::get_is_new() const
+{
+  return m_bIsNew;
+}
+
+void Document::set_is_new(bool bVal)
+{
+  if(bVal)
+    set_modified(false); //can't be modified if it is new.
+
+  m_bIsNew = bVal;
+}
+
+void Document::set_file_extension(const Glib::ustring& strVal)
+{
+  m_file_extension = strVal;
+}
+
+Glib::ustring Document::get_file_extension() const
+{
+  return m_file_extension; //TODO: get it from the mime-type system?
+}
+
+Document::type_signal_modified& Document::signal_modified()
+{
+  return signal_modified_;
+}
+
+Document::type_signal_forget& Document::signal_forget()
+{
+  return signal_forget_;
+}
+
+
+
+
+} //namespace

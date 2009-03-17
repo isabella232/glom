@@ -25,7 +25,7 @@
 #include <libglom/glade_utils.h>
 #include "../frame_glom.h" //For show_ok_dialog()
 //#include <libgnome/gnome-i18n.h>
-#include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include <libglom/utils.h> //For bold_message()).
 #include <glibmm/i18n.h>
 #include <sstream> //For stringstream
 
@@ -1162,7 +1162,7 @@ void Dialog_Layout_Details::on_cell_data_name(Gtk::CellRenderer* renderer, const
           is_group = true;
 
           //Make group names bold:
-          markup = Bakery::App_Gtk::util_bold_message( layout_item->get_name() );
+          markup = Utils::bold_message( layout_item->get_name() );
         }
         else
         {

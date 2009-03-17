@@ -21,7 +21,7 @@
 #include "dialog_relationships.h"
 #include "../box_db_table.h"
 //#include <libgnome/gnome-i18n.h>
-#include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include <libglom/utils.h> //For bold_message()).
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -33,7 +33,7 @@ Dialog_Relationships::Dialog_Relationships(BaseObjectType* cobject, const Glib::
 {
   refGlade->get_widget_derived("vbox_placeholder", m_box);
 
-  m_label_frame->set_markup( Bakery::App_Gtk::util_bold_message(_("Relationships")) );
+  m_label_frame->set_markup( Utils::bold_message(_("Relationships")) );
 
   //Fill composite view:
   add_view(m_box);

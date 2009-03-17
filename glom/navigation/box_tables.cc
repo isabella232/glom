@@ -19,7 +19,7 @@
  */
 
 #include "box_tables.h"
-#include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include <libglom/utils.h> //For bold_message()).
 #include <glom/application.h>
 #include <glibmm/i18n.h>
 
@@ -96,7 +96,7 @@ void Box_Tables::fill_table_row(const Gtk::TreeModel::iterator& iter, const shar
 
 bool Box_Tables::fill_from_database()
 {
-  Bakery::BusyCursor busy_cursor(App_Glom::get_application());
+  BusyCursor busy_cursor(App_Glom::get_application());
 
   bool result = Base_DB::fill_from_database();
 
@@ -232,7 +232,7 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
   if(exists_in_db)
   {
     //Ask the user if they want us to try to cope with this:
-    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Table Already Exists")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
+    Gtk::MessageDialog dialog(Utils::bold_message(_("Table Already Exists")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
     dialog.set_secondary_text(_("This table already exists on the database server, though it is not mentioned in the .glom file. This should not happen. Would you like Glom to attempt to use the existing table?"));
     dialog.set_transient_for(*App_Glom::get_application());
 
@@ -301,7 +301,7 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
         {
           //Ask the user to confirm:
           Glib::ustring strMsg = _("Are you sure that you want to delete this table?\nTable name: ") + table_name;
-          Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Delete Table")), true);
+          Gtk::MessageDialog dialog(Utils::bold_message(_("Delete Table")), true);
           dialog.set_secondary_text(strMsg);
           dialog.set_transient_for(*App_Glom::get_application());
           int iButtonClicked = dialog.run();
@@ -411,7 +411,7 @@ void Box_Tables::on_adddel_Edit(const Gtk::TreeModel::iterator& row)
     //This should never happen, because we never show them in the list:
     if(false) //Let's see if we can adapt.  (!document->get_table_is_known(table_name))
     {
-       Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Unknown Table")), true);
+       Gtk::MessageDialog dialog(Utils::bold_message(_("Unknown Table")), true);
        dialog.set_secondary_text(_("You cannot open this table, because there is no information about this table in the document."));
        dialog.set_transient_for(*App_Glom::get_application());
        dialog.run();

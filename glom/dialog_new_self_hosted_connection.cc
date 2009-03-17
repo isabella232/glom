@@ -45,7 +45,7 @@ bool Dialog_NewSelfHostedConnection::create_self_hosted()
 {
   //std::cout << "debug: Dialog_NewSelfHostedConnection::connect_to_server_with_connection_settings()" << std::endl;
 
-  //TODO: Bakery::BusyCursor busy_cursor(get_app_window());
+  //TODO: BusyCursor busy_cursor(get_app_window());
 
  
   ConnectionPool* connection_pool = ConnectionPool::get_instance();

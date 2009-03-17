@@ -23,7 +23,7 @@
 #include "dialog_choose_user.h"
 #include <glom/glom_privs.h>
 #include <libglom/glade_utils.h>
-#include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include <libglom/utils.h> //For bold_message()).
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 
@@ -159,7 +159,7 @@ void Dialog_UsersList::on_button_user_delete()
         const Glib::ustring user = row[m_model_columns_users.m_col_name];
         if(!user.empty())
         {
-          Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Delete User")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
+          Gtk::MessageDialog dialog(Utils::bold_message(_("Delete User")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
           dialog.set_secondary_text(_("Are your sure that you wish to delete this user?"));
           dialog.set_transient_for(*this);
 
@@ -441,7 +441,7 @@ bool Dialog_UsersList::warn_about_empty_standard_group()
   {
     if(m_model_users->children().size() == 1)
     {
-      Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Developer group may not be empty.")), true, Gtk::MESSAGE_WARNING);
+      Gtk::MessageDialog dialog(Utils::bold_message(_("Developer group may not be empty.")), true, Gtk::MESSAGE_WARNING);
       dialog.set_secondary_text(_("The developer group must contain at least one user."));
       dialog.set_transient_for(*this);
       dialog.run();

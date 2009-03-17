@@ -21,7 +21,7 @@
 #include <glom/utility_widgets/filechooserdialog_saveextras.h>
 #include <libglom/utils.h>
 #include <gtkmm/alignment.h>
-#include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include <libglom/utils.h> //For bold_message()).
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -69,7 +69,7 @@ void FileChooserDialog_SaveExtras::create_child_widgets()
 
   Gtk::Frame* frame = Gtk::manage(new Gtk::Frame());
   Gtk::Label* frame_label = Gtk::manage(new Gtk::Label());
-  frame_label->set_markup(Bakery::App_Gtk::util_bold_message(_("New Database")));
+  frame_label->set_markup(Utils::bold_message(_("New Database")));
   frame_label->show();
   frame->set_label_widget(*frame_label);
   frame->set_shadow_type(Gtk::SHADOW_NONE);

@@ -22,7 +22,6 @@
 
 #include <libglom/connectionpool_backends/postgres.h>
 #include <glibmm/i18n.h>
-#include <bakery/bakery.h>
 
 #ifdef GLOM_ENABLE_MAEMO
 # include <hildonmm/note.h>
@@ -449,7 +448,7 @@ bool Postgres::check_postgres_gda_client_is_available_with_warning()
   const Glib::ustring message = _("Your installation of Glom is not complete, because the PostgreSQL libgda provider is not available on your system. This provider is needed to access Postgres database servers.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
 #ifndef GLOM_ENABLE_MAEMO
   /* The Postgres provider was not found, so warn the user: */
-  Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
+  Gtk::MessageDialog dialog(Utils::bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
   dialog.set_secondary_text(message);
   dialog.run();
 #else

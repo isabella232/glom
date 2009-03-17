@@ -23,8 +23,7 @@
 
 #include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY, GLOM_ENABLE_SQLITE
 
-#include <bakery/Document/Document_XML.h>
-#include <bakery/View/View_Composite.h>
+#include <libglom/document/bakery/Document_XML.h>
 #include <libglom/data_structure/relationship.h>
 #include <libglom/data_structure/field.h>
 #include <libglom/data_structure/layout/layoutgroup.h>
@@ -67,7 +66,7 @@ class Window;
 namespace Glom
 {
 
-class Document_Glom : public Bakery::Document_XML
+class Document_Glom : public GlomBakery::Document_XML
 {
 public: 
   Document_Glom();

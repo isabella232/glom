@@ -340,7 +340,7 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
   App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
 
   //This can take quite a long time, so we show the busy cursor while it's working:
-  Bakery::BusyCursor busy_cursor(pApp);
+  BusyCursor busy_cursor(pApp);
 
   //Choose a default mode, if necessary:
   if(m_Mode == MODE_None)
@@ -494,14 +494,14 @@ void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction
         if(document->get_opened_from_browse())
         {
           //TODO: Obviously this could be possible but it would require a network protocol and some work:
-          Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Developer Mode Not Available.")), true, Gtk::MESSAGE_WARNING);
+          Gtk::MessageDialog dialog(Utils::bold_message(_("Developer Mode Not Available.")), true, Gtk::MESSAGE_WARNING);
           dialog.set_secondary_text(_("Developer mode is not available because the file was opened over the network from a running Glom. Only the original file may be edited."));
           dialog.set_transient_for(*get_app_window());
           dialog.run();
         }
         else
         {
-          Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Developer Mode Not Available")), true, Gtk::MESSAGE_WARNING);
+          Gtk::MessageDialog dialog(Utils::bold_message(_("Developer Mode Not Available")), true, Gtk::MESSAGE_WARNING);
           dialog.set_secondary_text(_("Developer mode is not available. Check that you have sufficient database access rights and that the glom file is not read-only."));
           dialog.set_transient_for(*get_app_window());
           dialog.run();
@@ -509,7 +509,7 @@ void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction
       }
       else if(document->get_document_format_version() < Document_Glom::get_latest_known_document_format_version())
       {
-        Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Saving in New Document Format")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+        Gtk::MessageDialog dialog(Utils::bold_message(_("Saving in New Document Format")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
         dialog.set_secondary_text(_("The document was created by an earlier version of the application. Making changes to the document will mean that the document cannot be opened by some earlier versions of the application."));
         dialog.set_transient_for(*get_app_window());
         dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
@@ -848,7 +848,7 @@ void Frame_Glom::on_menu_Mode_Find()
 {
   //This can take quite a long time, flicking between 1 or 2 intermediate screens. 
   //It shouldn't, but until we fix that, let's show the busy cursor while it's working:
-  Bakery::BusyCursor busy_cursor(get_app_window());
+  BusyCursor busy_cursor(get_app_window());
 
   const bool previously_in_data_mode = (m_Mode == MODE_Data);
 
@@ -1060,7 +1060,7 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
   }
 
   {
-    Bakery::BusyCursor busy_cursor(get_app_window());
+    BusyCursor busy_cursor(get_app_window());
     m_pBox_Tables->init_db_details();
   }
 
@@ -1122,7 +1122,7 @@ void Frame_Glom::on_button_quickfind()
     Hildon::Note note(Hildon::NOTE_TYPE_INFORMATION, *get_app_window(), message);
     note.run();
 #else
-    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("No Find Criteria")), true, Gtk::MESSAGE_WARNING );
+    Gtk::MessageDialog dialog(Utils::bold_message(_("No Find Criteria")), true, Gtk::MESSAGE_WARNING );
     dialog.set_secondary_text(message);
     dialog.set_transient_for(*get_app_window());
     dialog.run();
@@ -1147,7 +1147,7 @@ void Frame_Glom::on_notebook_find_criteria(const Glib::ustring& where_clause)
     bool records_found = false;
 
     { //Extra scope, to control the lifetime of the busy cursor. 
-      Bakery::BusyCursor busy_cursor(pApp);
+      BusyCursor busy_cursor(pApp);
 
       pApp->set_mode_data();
 
@@ -2059,7 +2059,7 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
   Gtk::Window* pWindowApp = get_app_window();
   g_assert(pWindowApp);
 
-  Bakery::BusyCursor busycursor(*pWindowApp);
+  BusyCursor busycursor(*pWindowApp);
 
   try
   {

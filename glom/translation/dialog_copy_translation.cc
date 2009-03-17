@@ -19,7 +19,7 @@
  */
 
 #include "dialog_copy_translation.h"
-#include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include <libglom/utils.h> //For bold_message()).
 #include <glibmm/i18n.h>
 
 namespace Glom

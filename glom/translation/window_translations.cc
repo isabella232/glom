@@ -22,7 +22,7 @@
 #include "combobox_locale.h"
 #include "dialog_identify_original.h"
 #include "dialog_copy_translation.h"
-#include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include <libglom/utils.h> //For bold_message()).
 #include <libglom/utils.h>
 #include <libglom/glade_utils.h>
 

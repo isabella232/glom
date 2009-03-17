@@ -19,7 +19,7 @@
  */
 
 #include "box_reports.h"
-#include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include <libglom/utils.h> //For bold_message()).
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -67,7 +67,7 @@ void Box_Reports::fill_row(const Gtk::TreeModel::iterator& iter, const sharedptr
 
 bool Box_Reports::fill_from_database()
 {
-  Bakery::BusyCursor busy_cursor(get_app_window());
+  BusyCursor busy_cursor(get_app_window());
 
   bool result = Box_DB_Table::fill_from_database();
 

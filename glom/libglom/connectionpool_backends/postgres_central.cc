@@ -22,7 +22,6 @@
 
 #include <libglom/connectionpool_backends/postgres_central.h>
 #include <glibmm/i18n.h>
-#include <bakery/bakery.h>
 
 // Uncomment to see debug messages
 //#define GLOM_CONNECTION_DEBUG

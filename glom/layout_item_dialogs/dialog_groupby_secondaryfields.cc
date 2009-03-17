@@ -20,7 +20,6 @@
 
 #include "dialog_groupby_secondaryfields.h"
 #include "dialog_field_layout.h"
-#include <bakery/App/App_Gtk.h> //For util_bold_message().
 
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>

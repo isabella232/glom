@@ -1,0 +1,196 @@
+/*
+ * Copyright 2000 Murray Cumming
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Library General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Library General Public License for more details.
+ *
+ * You should have received a copy of the GNU Library General Public
+ * License along with this library; if not, write to the Free
+ * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+
+#include <glom/bakery/App.h>
+#include <algorithm>
+
+
+namespace GlomBakery
+{
+
+//Initialize static member data:
+AppInstanceManager App::m_AppInstanceManager;
+HelpInfo App::m_HelpInfo;
+
+bool App::m_bAboutShown = false;
+bool App::m_bOperationCancelled = false;
+Glib::ustring App::m_strCommandLine_0;
+Glib::ustring App::m_strAppName;
+
+App::App(const Glib::ustring& appname)
+{
+  init_app_name(appname);
+  
+  //Register an instance of this app:
+  m_AppInstanceManager.add_app(this);
+}
+
+App::~App()
+{
+  //If this was the last instance:
+  if(m_AppInstanceManager.get_app_count() == 0)
+  {
+    
+  }
+}
+
+void App::init_app_name(const Glib::ustring& appname) //static
+{
+  m_strAppName = appname;
+}
+
+void App::init()
+{
+  //set_wmclass(m_strAppName, m_strTitle); //The docs say "Don't use this".
+
+  //TODO: set_statusbar(m_Status);
+
+  init_ui_manager();
+  init_menus();
+  init_toolbars();
+
+  //on_document_load(); //Show the document (even if it is empty).
+}
+
+void App::init_ui_manager()
+{
+  
+}
+
+void App::init_menus()
+{
+  init_menus_file();
+  init_menus_edit();
+  init_menus_help();
+
+  //create_menus(m_menu_UI_Infos);
+  //install_menu_hints();
+
+  //Override this to add more menus.
+}
+
+void App::init_toolbars()
+{
+  
+}
+
+
+
+void App::on_menu_file_new()
+{
+  App* pApp = new_instance();
+  pApp->init(); 
+}
+
+void App::on_menu_file_close()
+{
+  ui_hide(); //AppInstanceManager will delete this when the hide signal is emitted..
+}
+
+void App::on_menu_file_exit()
+{
+  // we don't want to quit directly as we should save our work
+  // therefore we need to send close to each window.
+
+  //Close each instance:
+  m_AppInstanceManager.close_all();
+}
+
+void App::on_menu_edit_cut()
+{
+  on_menu_edit_copy();
+  on_menu_edit_clear();
+}
+
+
+void App::on_menu_edit_copy()
+{
+  
+}
+
+void App::on_menu_edit_paste()
+{
+  
+}
+
+void App::on_menu_edit_clear()
+{
+  
+}
+
+/*
+void App::on_menu_help_about()
+{
+  
+}
+*/
+
+void App::on_about_close()
+{
+  m_bAboutShown = false;
+}
+
+void App::set_about_information(const Glib::ustring& strVersion, const type_vecStrings& vecAuthors, const Glib::ustring& strCopyright, const Glib::ustring& strDescription)
+{
+  m_HelpInfo.m_strVersion = strVersion;
+  m_HelpInfo.m_vecAuthors = vecAuthors;
+  m_HelpInfo.m_strCopyright = strCopyright;
+  m_HelpInfo.m_strDescription = strDescription;
+}
+
+void App::set_about_information(const Glib::ustring& strVersion, const type_vecStrings& vecAuthors, const Glib::ustring& strCopyright, const Glib::ustring& strDescription, const type_vecStrings& vecDocumenters, const Glib::ustring& strTranslatorCredits)
+{
+  m_HelpInfo.m_strVersion = strVersion;
+  m_HelpInfo.m_vecAuthors = vecAuthors;
+  m_HelpInfo.m_strCopyright = strCopyright;
+  m_HelpInfo.m_strDescription = strDescription;
+  m_HelpInfo.m_vecDocumenters = vecDocumenters;
+  m_HelpInfo.m_strTranslatorCredits = strTranslatorCredits;
+}
+
+Glib::ustring App::get_version() const
+{
+  return m_HelpInfo.m_strVersion;
+}
+
+
+
+void App::set_operation_cancelled(bool bVal /* = true */)
+{
+  m_bOperationCancelled = bVal;
+}
+
+bool App::get_operation_cancelled()
+{
+  return m_bOperationCancelled;
+}
+
+void App::set_command_line_args(int argc, char **&argv)
+{
+  if( (argc > 0) && argv[0])
+    m_strCommandLine_0 = (char*)argv[0];
+}
+
+App::type_signal_hide App::ui_signal_hide()
+{
+  return m_signal_hide;
+}
+
+
+
+} //namespace

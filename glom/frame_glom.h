@@ -24,7 +24,7 @@
 #include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY
 
 #include <gtkmm/frame.h>
-#include "bakery/View/View_Composite.h"
+#include <libglom/document/bakery/view/View_Composite.h>
 #include <libglom/document/document_glom.h>
 
 #include "dialog_glom.h"
@@ -56,7 +56,7 @@ class Dialog_RelationshipsOverview;
 
 class Frame_Glom :
   public PlaceHolder,
-  //public Bakery::View_Composite<Document_Glom>,
+  //public GlomBakery::View_Composite<Document_Glom>,
   public Base_DB //Inherits from View_Composite.
 {
 public: 

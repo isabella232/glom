@@ -106,12 +106,11 @@ fi
 
 
 # Do not require, goocanvas and gtksourceviewmm in client only mode
-REQUIRED_LIBS="bakery-2.6 >= 2.6.0 gtkmm-2.4 >= 2.14 gthread-2.0 libxslt >= 1.1.10 pygda-4.0 >= 2.25.3 pygtk-2.0 >= 2.6.0 libgdamm-4.0 >= 3.99.12 libgda-4.0 >= 3.99.13 libgda-postgres-4.0 goocanvasmm-1.0 >= 0.13.0"
+REQUIRED_LIBS="gtkmm-2.4 >= 2.14 gthread-2.0 libglademm-2.4 gconfmm-2.6 libxml++-2.6 libxslt >= 1.1.10 pygda-4.0 >= 2.25.3 pygtk-2.0 >= 2.6.0 libgdamm-4.0 >= 3.99.12 libgda-4.0 >= 3.99.13 libgda-postgres-4.0 goocanvasmm-1.0 >= 0.13.0"
 if test $enable_client_only != yes; then
 	REQUIRED_LIBS="$REQUIRED_LIBS gtksourceviewmm-2.0"
 fi
 
-# TODO_maemo: Make sure bakery was also compiled with (or without, respectively) maemo support
 if test "$enable_maemo" = "yes"; then
 	REQUIRED_LIBS="$REQUIRED_LIBS hildonmm libepc-1.0 >= 0.3.1 avahi-ui";
 elif test "$win32" = "true"; then
@@ -133,7 +132,7 @@ AC_SUBST(GLOM_LIBS)
 
 # Temporary egg CFLAGS
 PKG_CHECK_MODULES(EGG, gtk+-2.0 >= 2.5.0)
-GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`  
+GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`
 AC_SUBST(GLIB_GENMARSHAL)
 
 #Get the location of the ISO-Codes (currencies, languages) files:
@@ -222,14 +221,39 @@ AC_CONFIG_FILES([Makefile \
   glom/Makefile \
     docs/Makefile \
       docs/user-guide/Makefile \
+  icons/Makefile \
+    icons/16x16/Makefile \
+    icons/22x22/Makefile \
+    icons/24x24/Makefile \
+    icons/32x32/Makefile \
+    icons/48x48/Makefile \
+    icons/scalable/Makefile \
+    icons/win32/Makefile \
+  xslt/Makefile \
+  po/Makefile.in \
+  macros/Makefile \
+  examples/Makefile \
+  regression_tests/Makefile \
+  glom.desktop.in \
+  win32/Makefile \
+  win32/glom.iss
+])
+
+AC_CONFIG_FILES([
     glom/libglom/glom-1.0.pc \
     glom/libglom/Makefile \
       glom/libglom/data_structure/Makefile \
         glom/libglom/data_structure/layout/Makefile \
           glom/libglom/data_structure/layout/report_parts/Makefile \
       glom/libglom/document/Makefile \
+        glom/libglom/document/bakery/Makefile \
+          glom/libglom/document/bakery/view/Makefile \
       glom/libglom/connectionpool_backends/Makefile \
       glom/libglom/python_embed/Makefile \
+])
+
+AC_CONFIG_FILES([
+    glom/bakery/Makefile \
     glom/layout_item_dialogs/Makefile \
     glom/mode_data/Makefile \
     glom/mode_design/Makefile \
@@ -253,22 +277,6 @@ AC_CONFIG_FILES([Makefile \
     glom/relationships_overview/Makefile \
     glom/reports/Makefile \
     glom/translation/Makefile \
-    icons/Makefile \
-      icons/16x16/Makefile \
-      icons/22x22/Makefile \
-      icons/24x24/Makefile \
-      icons/32x32/Makefile \
-      icons/48x48/Makefile \
-      icons/scalable/Makefile \
-      icons/win32/Makefile \
-    xslt/Makefile \
-    po/Makefile.in \
-  macros/Makefile \
-  examples/Makefile \
-  regression_tests/Makefile \
-  glom.desktop.in \
-  win32/Makefile \
-  win32/glom.iss
 ])
 AC_OUTPUT
 

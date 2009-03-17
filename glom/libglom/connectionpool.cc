@@ -22,8 +22,10 @@
  
 #include <libglom/connectionpool.h>
 #include <libglom/document/document_glom.h>
-#include <bakery/bakery.h>
+#include <libglom/utils.h>
 //#include <libgdamm/connectionevent.h>
+#include <gtkmm/main.h>
+#include <gtkmm/messagedialog.h>
 #include <glibmm/i18n.h>
 
 #ifndef G_OS_WIN32
@@ -564,7 +566,7 @@ bool ConnectionPool::handle_error(bool cerr_only)
 #ifdef GLOM_ENABLE_MAEMO
         Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, error_details);
 #else
-        Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
+        Gtk::MessageDialog dialog(Utils::bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
         dialog.set_secondary_text(error_details);
 #endif
         //TODO: dialog.set_transient_for(*get_application());
@@ -816,7 +818,7 @@ bool ConnectionPool::check_user_is_not_root()
   if(!message.empty())
   {
 #ifndef GLOM_ENABLE_MAEMO
-    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Running As Root")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
+    Gtk::MessageDialog dialog(Utils::bold_message(_("Running As Root")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
     dialog.set_secondary_text(message);
     dialog.run();
 #else
@@ -911,7 +913,7 @@ void ConnectionPool::on_epc_progress_begin(const gchar* /* title */, gpointer us
     connection_pool->m_dialog_epc_progress = 0;
   }
 
-  Gtk::MessageDialog* message_dialog = new Gtk::MessageDialog(Bakery::App_Gtk::util_bold_message(_("Glom: Generating Encryption Certificates")), true, Gtk::MESSAGE_INFO);
+  Gtk::MessageDialog* message_dialog = new Gtk::MessageDialog(Utils::bold_message(_("Glom: Generating Encryption Certificates")), true, Gtk::MESSAGE_INFO);
   message_dialog->set_secondary_text(_("Please wait while Glom prepares your system for publishing over the network."));
   message_dialog->show();
 

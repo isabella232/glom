@@ -21,7 +21,7 @@
 #ifndef HEADER_APP_GLOM
 #define HEADER_APP_GLOM
 
-#include "bakery/bakery.h"
+#include <glom/bakery/App_WithDoc_Gtk.h>
 #include "frame_glom.h"
 
 #include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY
@@ -40,7 +40,7 @@ namespace Glom
 
 class Window_Translations;
 
-class App_Glom : public Bakery::App_WithDoc_Gtk
+class App_Glom : public GlomBakery::App_WithDoc_Gtk
 {
 public:
   App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
@@ -132,7 +132,7 @@ private:
   virtual void on_menu_file_close(); //override.
   virtual void document_history_add(const Glib::ustring& file_uri); //overridden.
 
-  virtual Bakery::App* new_instance(); //Override
+  virtual GlomBakery::App* new_instance(); //Override
 
 #ifndef G_OS_WIN32
   void open_browsed_document(const EpcServiceInfo* server, const Glib::ustring& service_name);
@@ -140,7 +140,7 @@ private:
 
   static Glib::ustring get_file_uri_without_extension(const Glib::ustring& uri);
 
-  typedef Bakery::App_WithDoc_Gtk type_base;
+  typedef GlomBakery::App_WithDoc_Gtk type_base;
 
   //Widgets:
 

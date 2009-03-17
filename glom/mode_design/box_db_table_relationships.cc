@@ -68,7 +68,7 @@ Box_DB_Table_Relationships::~Box_DB_Table_Relationships()
 
 bool Box_DB_Table_Relationships::fill_from_database()
 {
-  Bakery::BusyCursor busy_cursor(get_app_window());
+  BusyCursor busy_cursor(get_app_window());
 
   bool result = Box_DB_Table::fill_from_database();
 
@@ -224,7 +224,7 @@ void Box_DB_Table_Relationships::on_adddel_user_activated(const Gtk::TreeModel::
 {
   if(col == m_colToField)
   {
-    Bakery::BusyCursor busy_cursor(get_app_window());
+    BusyCursor busy_cursor(get_app_window());
 
     const Glib::ustring old_to_field = m_AddDel.get_value(row, m_colToField);
 

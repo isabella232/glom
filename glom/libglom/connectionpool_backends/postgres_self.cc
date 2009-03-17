@@ -23,9 +23,9 @@
 #include <libglom/connectionpool_backends/postgres_self.h>
 #include <libglom/utils.h>
 #include <libglom/spawn_with_feedback.h>
+#include <giomm.h>
 #include <glib/gstdio.h> // For g_remove
 
-#include <bakery/bakery.h>
 #include <glibmm/i18n.h>
 
 #include "../gst-package.h"
@@ -162,7 +162,7 @@ bool PostgresSelfHosted::check_postgres_is_available_with_warning()
   if(!binpath.empty())
   {
     const Glib::ustring uri_binpath = Glib::filename_to_uri(binpath);
-    if(Bakery::App_WithDoc::file_exists(uri_binpath))
+    if(Utils::file_exists(uri_binpath))
       return true;
   }
 
@@ -170,7 +170,7 @@ bool PostgresSelfHosted::check_postgres_is_available_with_warning()
 
   //Show message to the user about the broken installation:
   //This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
-  Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_NONE, true /* modal */);
+  Gtk::MessageDialog dialog(Utils::bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_NONE, true /* modal */);
   dialog.set_secondary_text(_("Your installation of Glom is not complete, because PostgreSQL is not available on your system. PostgreSQL is needed for self-hosting of Glom databases.\n\nYou may now install PostgreSQL to complete the Glom installation."));
   dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   dialog.add_button(_("Install PostgreSQL"), Gtk::RESPONSE_OK);
@@ -183,7 +183,7 @@ bool PostgresSelfHosted::check_postgres_is_available_with_warning()
   #else  //DISTRO_SPECIFIC_POSTGRES_INSTALL_IMPLEMENTED
 
   //Show message to the user about the broken installation:
-  Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
+  Gtk::MessageDialog dialog(Utils::bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
   dialog.set_secondary_text(_("Your installation of Glom is not complete, because PostgreSQL is not available on your system. PostgreSQL is needed for self-hosting of Glom databases.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected."));
   dialog.run();
   return false;

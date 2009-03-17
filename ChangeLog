@@ -1,5 +1,15 @@
 2009-03-17  Murray Cumming  <murrayc@murrayc.com>
 
+	* configure.ac: Remove bakery dependency.
+	* glom/Makefile.am:
+	* glom/bakery/: Added copies of the Bakery/App files.
+	* glom/libglom/document/bakery/: Added copies of the Bakery Document 
+	and View files.
+	This allows us to change the Bakery ABI when we need to. We already 
+	do unusually hacky things with Bakery so this is reasonable.
+
+2009-03-17  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/combo_textglade.[h|cc]: Remove the reimplementation 
 	of Gtk::ComboBoxText now that we can use gtkmm 2.14.
 	* glom/frame_glom.cc:
@@ -11,9 +21,6 @@
 	* glom/libglom/document/document_glom.cc: save_before: Remove another 
 	gtkmm 2.10 workaround.
 	
-2009-03-17  Murray Cumming  <murrayc@murrayc.com>
-
-	* glom/libglom/document/document_glom.cc: 
 2009-03-17  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.ac: Depend on gtkmm 2.14 rather than gtkmm 2.10.
@@ -36,6 +43,8 @@
 	* glom/xsl_utils.cc: transform_and_open(): 
 	Remove workarounds for gtkmm 2.10 now that we can depend on gtkmm 2.14.
 	This is not really necessary but it's nice to clean up the code.
+
+This is svn trunk, for Glom 1.11/12. See also the glom-1-10 branch.
 
 1.10.0:
 

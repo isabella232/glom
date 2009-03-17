@@ -21,7 +21,7 @@
 #include "dialog_fields.h"
 #include "../box_db_table.h"
 //#include <libgnome/gnome-i18n.h>
-#include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include <libglom/utils.h> //For bold_message()).
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -33,7 +33,7 @@ Dialog_Fields::Dialog_Fields(BaseObjectType* cobject, const Glib::RefPtr<Gnome::
 {
   refGlade->get_widget_derived("vbox_placeholder", m_box);
 
-  m_label_frame->set_markup( Bakery::App_Gtk::util_bold_message(_("Field Definitions")) );
+  m_label_frame->set_markup( Utils::bold_message(_("Field Definitions")) );
 
 
   //Fill composite view:

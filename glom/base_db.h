@@ -33,8 +33,8 @@
 #include <libglom/data_structure/system_prefs.h>
 #include <libglom/utils.h>
 #include <libglom/calcinprogress.h>
-#include "bakery/View/View.h"
-#include <bakery/Utilities/BusyCursor.h>
+#include <libglom/document/bakery/view/View.h>
+#include <libglom/busy_cursor.h>
 
 namespace Glom
 {

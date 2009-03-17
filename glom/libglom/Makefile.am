@@ -26,6 +26,7 @@ h_sources_public = libglom_config.h \
                      appstate.h
                      
 h_sources = $(h_sources_public) \
+                     busy_cursor.h \
                      calcinprogress.h \
                      connectionpool.h \
                      dialog_progress_creating.h \
@@ -34,6 +35,7 @@ h_sources = $(h_sources_public) \
                      gst-package.h
 
 cc_sources = appstate.cc \
+                     busy_cursor.cc \
                      calcinprogress.cc \
                      connectionpool.cc \
                      dialog_progress_creating.cc \
@@ -55,6 +57,8 @@ libglom_1_0_la_LDFLAGS += -static
 endif
 
 libglom_1_0_la_LIBADD  = document/libdocument.la \
+                     document/bakery/libdocument_bakery.la \
+                     document/bakery/view/libdocument_bakery_view.la \
                      connectionpool_backends/libconnectionpool_backends.la \
                      data_structure/libdata_structure.la \
                      data_structure/layout/libdata_structure_layout.la \

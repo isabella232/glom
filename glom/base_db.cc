@@ -120,7 +120,7 @@ sharedptr<SharedConnection> Base_DB::connect_to_server(Gtk::Window* parent_windo
 sharedptr<SharedConnection> Base_DB::connect_to_server(Gtk::Window* parent_window, std::auto_ptr<ExceptionConnection>& error)
 #endif
 {
-  Bakery::BusyCursor busy_cursor(parent_window);
+  BusyCursor busy_cursor(parent_window);
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   return ConnectionPool::get_and_connect();
@@ -133,7 +133,7 @@ void Base_DB::handle_error(const Glib::Exception& ex)
 {
   std::cerr << "Internal Error (Base_DB::handle_error()): exception type=" << typeid(ex).name() << ", ex.what()=" << ex.what() << std::endl;
 
-  Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
+  Gtk::MessageDialog dialog(Utils::bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
   dialog.set_secondary_text(ex.what());
   //TODO: dialog.set_transient_for(*get_application());
   dialog.run();
@@ -146,7 +146,7 @@ void Base_DB::handle_error(const std::exception& ex)
 #ifdef GLOM_ENABLE_MAEMO
   Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, ex.what());
 #else
-  Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
+  Gtk::MessageDialog dialog(Utils::bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
   dialog.set_secondary_text(ex.what());
   //TODO: dialog.set_transient_for(*get_application());
 #endif
@@ -164,7 +164,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute_select(const Glib::us
 {
   Glib::RefPtr<Gnome::Gda::DataModel> result;
 
-  //TODO: Bakery::BusyCursor busy_cursor(get_app_window());
+  //TODO: BusyCursor busy_cursor(get_app_window());
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   sharedptr<SharedConnection> sharedconnection = connect_to_server();
@@ -540,7 +540,7 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
     DATAMODEL_FIELDS_COL_EXTRA = 6 // Could be auto-increment
   };
 
-  //TODO: Bakery::BusyCursor busy_cursor(get_application());
+  //TODO: BusyCursor busy_cursor(get_application());
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   sharedptr<SharedConnection> sharedconnection = connect_to_server();
@@ -1348,7 +1348,7 @@ bool Base_DB::add_column(const Glib::ustring& table_name, const sharedptr<const 
     const Glib::Error& ex = *error;
 #endif
     handle_error(ex);
-//    Gtk::MessageDialog window(*parent_window, Bakery::App_Gtk::util_bold_message(ex.what()), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
+//    Gtk::MessageDialog window(*parent_window, Utils::bold_message(ex.what()), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
 //    window.run();
     return false;
   }
@@ -1375,7 +1375,7 @@ bool Base_DB::drop_column(const Glib::ustring& table_name, const Glib::ustring& 
     const Glib::Error& ex = *error;
 #endif
     handle_error(ex);
-//    Gtk::MessageDialog window(*parent_window, Bakery::App_Gtk::util_bold_message(ex.what()), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
+//    Gtk::MessageDialog window(*parent_window, Utils::bold_message(ex.what()), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
 //    window.run();
     return false;
   }
@@ -1444,7 +1444,7 @@ sharedptr<Field> Base_DB::change_column(const Glib::ustring& table_name, const s
     const Glib::Error& ex = *error;
 #endif
     handle_error(ex);
-//    Gtk::MessageDialog window(*parent_window, Bakery::App_Gtk::util_bold_message(ex.what()), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
+//    Gtk::MessageDialog window(*parent_window, Utils::bold_message(ex.what()), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
 //    window.run();
     return sharedptr<Field>();
   }
@@ -1480,7 +1480,7 @@ bool Base_DB::change_columns(const Glib::ustring& table_name, const type_vecCons
     const Glib::Error& ex = *error;
 #endif
     handle_error(ex);
-//    Gtk::MessageDialog window(*parent_window, Bakery::App_Gtk::util_bold_message(ex.what()), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
+//    Gtk::MessageDialog window(*parent_window, Utils::bold_message(ex.what()), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
 //    window.run();
     return false;
   }
@@ -1851,7 +1851,7 @@ bool Base_DB::show_warning_no_records_found(Gtk::Window& transient_for)
 #ifdef GLOM_ENABLE_MAEMO
   Hildon::Note dialog(Hildon::NOTE_TYPE_CONFIRMATION_BUTTON, transient_for, message);
 #else
-  Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("No Records Found")), true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_NONE);
+  Gtk::MessageDialog dialog(Utils::bold_message(_("No Records Found")), true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_NONE);
   dialog.set_secondary_text(message);
   dialog.set_transient_for(transient_for);
 #endif

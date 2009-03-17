@@ -1,0 +1,62 @@
+/*
+ * Copyright 2000 Murray Cumming
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Library General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Library General Public License for more details.
+ *
+ * You should have received a copy of the GNU Library General Public
+ * License along with this library; if not, write to the Free
+ * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+
+#ifndef BAKERY_UTILITIES_BUSYCURSOR_H
+#define BAKERY_UTILITIES_BUSYCURSOR_H
+
+#include <gtkmm/window.h>
+#include <gdkmm/cursor.h>
+#include <map>
+
+namespace Glom
+{
+
+/** Changes the cursor for as long as this instance lives.
+ * For instance, put it at the start of code in a { and } block.
+ */ 
+class BusyCursor
+{
+public:
+  /** Associate a busy cursor with the window, for the lifetime of this object.
+   */
+  BusyCursor(Gtk::Window& window, Gdk::CursorType cursor_type = Gdk::WATCH);
+
+  /**  Associate a busy cursor with the window, for the lifetime of this object, if window is not 0.
+   */
+  BusyCursor(Gtk::Window* window, Gdk::CursorType cursor_type = Gdk::WATCH);
+
+  virtual ~BusyCursor();
+
+protected:
+
+  void init();
+  void force_gui_update();
+
+  Gdk::Cursor m_Cursor;
+  Gtk::Window* m_pWindow;
+  Glib::RefPtr<Gdk::Window> m_refWindow;
+
+  typedef std::map<Gtk::Window*, Gdk::Cursor> type_map_cursors;
+  static type_map_cursors m_map_cursors;
+  Gdk::Cursor m_old_cursor;
+  bool m_old_cursor_valid;
+};
+
+} //namespace Glom
+
+#endif //BAKERY_UTILITIES_BUSYCURSOR_H

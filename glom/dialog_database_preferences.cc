@@ -22,7 +22,7 @@
 #include "box_withbuttons.h" //For Box_WithButtons::connect_to_server().
 #include <libglom/standard_table_prefs_fields.h>
 #include <libglom/data_structure/glomconversions.h>
-#include <bakery/Utilities/BusyCursor.h>
+#include <libglom/busy_cursor.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -178,7 +178,7 @@ int Dialog_Database_Preferences::on_autoincrements_sort(const Gtk::TreeModel::it
 
 void Dialog_Database_Preferences::save_to_document()
 {
-  Bakery::BusyCursor busy_cursor(this);
+  BusyCursor busy_cursor(this);
 
   m_glade_variables_map.transfer_widgets_to_variables();
   m_system_prefs.m_org_logo = m_image->get_value();

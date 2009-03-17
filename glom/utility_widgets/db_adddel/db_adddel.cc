@@ -1757,7 +1757,7 @@ void DbAddDel::on_treeview_column_resized(int model_column_index, DbTreeViewColu
 
 void DbAddDel::on_treeview_column_clicked(int model_column_index)
 {
-  Bakery::BusyCursor busy_cursor(get_application());
+  BusyCursor busy_cursor(get_application());
 
   if(model_column_index >= (int)m_ColumnTypes.size())
     return;
@@ -2322,7 +2322,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
   if(m_allow_only_one_related_record && (get_count() > 0))
   {
     //Tell user that they can't do that:
-    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Extra Related Records Not Possible")), true, Gtk::MESSAGE_WARNING);
+    Gtk::MessageDialog dialog(Utils::bold_message(_("Extra Related Records Not Possible")), true, Gtk::MESSAGE_WARNING);
     dialog.set_secondary_text(_("You attempted to add a new related record, but there can only be one related record, because the relationship uses a unique key.")),
     dialog.set_transient_for(*App_Glom::get_application());
     dialog.run();

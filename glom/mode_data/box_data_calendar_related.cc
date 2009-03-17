@@ -23,7 +23,6 @@
 #include <glom/application.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/frame_glom.h> //For show_ok_dialog()
-#include <bakery/App/App_Gtk.h> //For util_bold_message().
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -96,7 +95,7 @@ bool Box_Data_Calendar_Related::init_db_details(const Glib::ustring& parent_tabl
       relationship_title = _("Undefined Table");
     }
 
-    m_Label.set_markup(Bakery::App_Gtk::util_bold_message(relationship_title));
+    m_Label.set_markup(Utils::bold_message(relationship_title));
     m_Label.show();
 
     m_Alignment.set_padding(Utils::DEFAULT_SPACING_SMALL /* top */, 0, Utils::DEFAULT_SPACING_LARGE /* left */, 0);

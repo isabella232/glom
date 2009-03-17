@@ -25,8 +25,7 @@
 #include <libglom/utils.h>
 #include <libglom/data_structure/layout/layoutitem_field.h>
 #include <glom/glom_privs.h>
-#include "../python_embed/glom_python.h"
-#include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include "../python_embed/glom_python.h".
 #include <algorithm> //For std::find()
 #include <libglom/libglom_config.h>
 #include <glibmm/i18n.h>
@@ -140,7 +139,7 @@ void Box_Data::on_Button_Find()
 #ifdef GLOM_ENABLE_MAEMO
     Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, *get_app_window(), message);
 #else
-    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("No Find Criteria")), true, Gtk::MESSAGE_WARNING );
+    Gtk::MessageDialog dialog(Utils::bold_message(_("No Find Criteria")), true, Gtk::MESSAGE_WARNING );
     dialog.set_secondary_text(message);
     dialog.set_transient_for(*get_app_window());
 #endif
@@ -185,7 +184,7 @@ bool Box_Data::confirm_discard_unstored_data() const
     //Hildon::Note dialog(Hildon::NOTE_TYPE_CONFIRMATION, *get_app_window(), message);
     Hildon::Note dialog(Hildon::NOTE_TYPE_CONFIRMATION, message);
 #else
-    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("No primary key value")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL );
+    Gtk::MessageDialog dialog(Utils::bold_message(_("No primary key value")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL );
     dialog.set_secondary_text(message);
 #endif
     //TODO: It needs a const. I wonder if it should. murrayc. dialog.set_transient_for(*get_app_window());

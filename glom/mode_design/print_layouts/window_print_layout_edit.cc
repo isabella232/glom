@@ -25,7 +25,7 @@
 #include <libglom/data_structure/layout/layoutitem_line.h>
 #include <libglom/data_structure/layout/layoutitem_portal.h>
 //#include <libgnome/gnome-i18n.h>
-#include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include <libglom/utils.h> //For bold_message()).
 #include <gtkmm/scrolledwindow.h>
 #include <glibmm/i18n.h>
 

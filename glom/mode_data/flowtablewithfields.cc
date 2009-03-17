@@ -33,7 +33,7 @@
 #include <libglom/glade_utils.h>
 #include "box_data_list_related.h"
 #include "dialog_choose_relationship.h"
-#include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include <libglom/utils.h> //For bold_message()).
 #include <glibmm/i18n.h>
 #include <libglom/data_structure/layout/layoutitem_placeholder.h>
 #include <glom/signal_reemitter.h>
@@ -182,7 +182,7 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
     if(!group->get_title().empty())
     {
       Gtk::Label* label = Gtk::manage( new Gtk::Label ); //TODO: This is maybe leaked, according to valgrind, though it should be managed by GtkFrame.
-      label->set_markup( Bakery::App_Gtk::util_bold_message(group->get_title()) );
+      label->set_markup( Utils::bold_message(group->get_title()) );
       label->show();
       frame->set_label_widget(*label);
     }
@@ -363,7 +363,7 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
       if(portal)
       {
         const Glib::ustring tab_title = glom_get_sharedptr_title_or_name(portal->get_relationship());
-        //tab_label->set_markup(Bakery::App_Gtk::util_bold_message(tab_title));
+        //tab_label->set_markup(Utils::bold_message(tab_title));
         tab_label->set_label(tab_title);
 
         //Add a Related Records list for this portal:
@@ -377,7 +377,7 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
       else
       {
         const Glib::ustring tab_title = group->get_title_or_name();
-        //tab_label->set_markup(Bakery::App_Gtk::util_bold_message(tab_title));
+        //tab_label->set_markup(Utils::bold_message(tab_title));
         tab_label->set_label(tab_title);
 
         //Add a FlowTable for this group:

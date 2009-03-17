@@ -254,7 +254,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
 
 bool Base_DB_Table_Data::get_related_record_exists(const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value)
 {
-  Bakery::BusyCursor cursor(App_Glom::get_application());
+  BusyCursor cursor(App_Glom::get_application());
 
   bool result = false;
 
@@ -308,7 +308,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
 #ifdef GLOM_ENABLE_MAEMO
     Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, *App_Glom::get_application(), message);
 #else
-    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Related Record Does Not Exist")), true);
+    Gtk::MessageDialog dialog(Utils::bold_message(_("Related Record Does Not Exist")), true);
     dialog.set_secondary_text(message);
     dialog.set_transient_for(*App_Glom::get_application());
 #endif
@@ -333,7 +333,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
 #ifdef GLOM_ENABLE_MAEMO
       Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, *App_Glom::get_application(), message);
 #else
-      Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Related Record Cannot Be Created")), true);
+      Gtk::MessageDialog dialog(Utils::bold_message(_("Related Record Cannot Be Created")), true);
       //TODO: This is a very complex error message:
       dialog.set_secondary_text(message);
       dialog.set_transient_for(*App_Glom::get_application());
@@ -439,7 +439,7 @@ bool Base_DB_Table_Data::confirm_delete_record()
 #ifdef GLOM_ENABLE_MAEMO
   Hildon::Note dialog(Hildon::NOTE_TYPE_CONFIRMATION_BUTTON, *get_app_window(), message);
 #else
-  Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Delete record")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+  Gtk::MessageDialog dialog(Utils::bold_message(_("Delete record")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
   dialog.set_secondary_text(message);
   dialog.set_transient_for(*App_Glom::get_application());
 #endif

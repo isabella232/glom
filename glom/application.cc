@@ -260,7 +260,7 @@ void App_Glom::init_toolbars()
 }
 
 //We could put this in Bakery instead, but it's hard enough just getting updates 
-//into Ubuntu, so we override this Bakery::App method here.
+//into Ubuntu, so we override this GlomBakery::App method here.
 void App_Glom::add_ui_from_string(const Glib::ustring& ui_description)
 {
   try
@@ -788,7 +788,7 @@ void App_Glom::on_menu_file_open()
 void App_Glom::on_menu_file_close() //override
 {
   // Call the base class implementation:
-  Bakery::App_WithDoc_Gtk::on_menu_file_close();
+  GlomBakery::App_WithDoc_Gtk::on_menu_file_close();
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -848,7 +848,7 @@ Glib::ustring App_Glom::get_file_uri_without_extension(const Glib::ustring& uri)
   }
 }
 
-Bakery::App* App_Glom::new_instance() //Override
+GlomBakery::App* App_Glom::new_instance() //Override
 {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "window_main");
@@ -983,7 +983,7 @@ bool App_Glom::on_document_load()
       const AppState::userlevels userlevel = pDocument->get_userlevel(reason);
       if( (userlevel == AppState::USERLEVEL_OPERATOR) && (reason == Document_Glom::USER_LEVEL_REASON_FILE_READ_ONLY) )
       {
-        Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Opening Read-Only File.")), true,  Gtk::MESSAGE_INFO, Gtk::BUTTONS_NONE);
+        Gtk::MessageDialog dialog(Utils::bold_message(_("Opening Read-Only File.")), true,  Gtk::MESSAGE_INFO, Gtk::BUTTONS_NONE);
         dialog.set_secondary_text(_("This file is read only, so you will not be able to enter Developer mode to make design changes."));
         dialog.set_transient_for(*this);
         dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
@@ -1476,7 +1476,7 @@ bool App_Glom::recreate_database(bool& user_cancelled)
     connection_pool->set_database(db_name); //Specify the new database when connecting from now on.
 
   dialog_progress->pulse();
-  Bakery::BusyCursor busy_cursor(this);
+  BusyCursor busy_cursor(this);
 
   sharedptr<SharedConnection> sharedconnection;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -1887,7 +1887,7 @@ void App_Glom::fill_menu_print_layouts(const Glib::ustring& table_name)
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void App_Glom::on_menu_file_save_as_example()
 {
-  //Based on the implementation of Bakery::App_WithDoc::on_menu_file_saveas()
+  //Based on the implementation of GlomBakery::App_WithDoc::on_menu_file_saveas()
 
   //Display File Save dialog and respond to choice:
 
@@ -2399,7 +2399,7 @@ void App_Glom::document_history_add(const Glib::ustring& file_uri)
       return;
   }
 
-  Bakery::App_WithDoc_Gtk::document_history_add(file_uri);
+  GlomBakery::App_WithDoc_Gtk::document_history_add(file_uri);
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

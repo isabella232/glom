@@ -21,8 +21,10 @@
 #include <libglom/spawn_with_feedback.h>
 #include <libglom/dialog_progress_creating.h>
 #include <libglom/glade_utils.h>
-#include <bakery/bakery.h>
+#include <gtkmm/main.h>
+#include <gtkmm/messagedialog.h>
 #include <glibmm/i18n.h>
+#include <memory> //For auto_ptr.
 #include <iostream>
 
 #ifdef G_OS_WIN32
@@ -560,7 +562,7 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
 #if 0
 bool execute_command_line_and_wait_fixed_seconds(const std::string& command, unsigned int seconds, const Glib::ustring& message, Gtk::Window* parent_window)
 {
-  Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(message), true, Gtk::MESSAGE_INFO, Gtk::BUTTONS_NONE, true /* modal */); 
+  Gtk::MessageDialog dialog(Utils::bold_message(message), true, Gtk::MESSAGE_INFO, Gtk::BUTTONS_NONE, true /* modal */); 
   if(parent_window)
     dialog.set_transient_for(*parent_window);
 

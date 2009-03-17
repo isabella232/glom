@@ -33,7 +33,7 @@
 #include <libglom/data_structure/layout/layoutitem_line.h>
 #include <libglom/standard_table_prefs_fields.h>
 #include <giomm.h>
-#include <bakery/Utilities/BusyCursor.h>
+#include <libglom/busy_cursor.h>
 
 #include <libglom/connectionpool.h>
 
@@ -1838,7 +1838,7 @@ void Document_Glom::set_modified(bool value)
 
   //if(value != get_modified()) //Prevent endless loops
   //{
-    Bakery::Document_XML::set_modified(value);
+    GlomBakery::Document_XML::set_modified(value);
 
     if(value)
     {
@@ -2306,13 +2306,13 @@ bool Document_Glom::load_after()
 {
   //Use a std::auto_ptr<> to avoid even unncessarily instantiating a BusyCursor,
   //which would require GTK+ to be initialized:
-  std::auto_ptr<Bakery::BusyCursor> auto_cursor;
+  std::auto_ptr<BusyCursor> auto_cursor;
   if(m_parent_window)
-    auto_cursor = std::auto_ptr<Bakery::BusyCursor>( new Bakery::BusyCursor(m_parent_window) );
+    auto_cursor = std::auto_ptr<BusyCursor>( new BusyCursor(m_parent_window) );
 
   m_block_modified_set = true; //Prevent the set_ functions from trigerring a save.
 
-  bool result = Bakery::Document_XML::load_after();  
+  bool result = GlomBakery::Document_XML::load_after();  
 
   m_block_cache_update = true; //Don't waste time repeatedly updating this until we have finished.
 
@@ -3199,9 +3199,9 @@ bool Document_Glom::save_before()
 {
   //Use a std::auto_ptr<> to avoid even unncessarily instantiating a BusyCursor,
   //which would require GTK+ to be initialized:
-  std::auto_ptr<Bakery::BusyCursor> auto_cursor;
+  std::auto_ptr<BusyCursor> auto_cursor;
   if(m_parent_window)
-    auto_cursor = std::auto_ptr<Bakery::BusyCursor>( new Bakery::BusyCursor(m_parent_window) );
+    auto_cursor = std::auto_ptr<BusyCursor>( new BusyCursor(m_parent_window) );
 
   xmlpp::Element* nodeRoot = get_node_document();
 
@@ -3507,7 +3507,7 @@ bool Document_Glom::save_before()
   //We don't use set_write_formatted() because it doesn't handle text nodes well.
   add_indenting_white_space_to_node();
 
-  return Bakery::Document_XML::save_before();  
+  return GlomBakery::Document_XML::save_before();  
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -3529,7 +3529,7 @@ Glib::ustring Document_Glom::get_name() const
 {
   //Show the database title in the window title bar:
   if(m_database_title.empty())
-    return Bakery::Document_XML::get_name();
+    return GlomBakery::Document_XML::get_name();
   else
     return m_database_title;
 }

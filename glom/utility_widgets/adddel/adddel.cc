@@ -28,7 +28,7 @@
 #include <libglom/data_structure/glomconversions.h>
 #include "../../dialog_invalid_data.h"
 #include <libglom/utils.h>
-#include "bakery/App/App_Gtk.h"
+#include <glom/bakery/App_Gtk.h>
 #include <iostream> //For debug output.
 
 #ifdef GLOM_ENABLE_MAEMO
@@ -157,7 +157,7 @@ void AddDel::warn_about_duplicate()
 #ifdef GLOM_ENABLE_MAEMO
   Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, message);
 #else
-  Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Duplicate")), true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK);
+  Gtk::MessageDialog dialog(Utils::bold_message(_("Duplicate")), true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK);
   dialog.set_secondary_text(message);
 #endif
   //TODO: dialog.set_transient_for(get_parent_window());

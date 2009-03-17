@@ -21,7 +21,7 @@
 #include "box_db_table_definition.h"
 #include <glom/frame_glom.h>
 #include <libglom/glade_utils.h>
-#include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include <libglom/utils.h> //For bold_message()).
 #include <libglom/libglom_config.h>
 #include <glibmm/i18n.h>
 
@@ -260,7 +260,7 @@ bool Box_DB_Table_Definition::check_field_change(const sharedptr<const Field>& f
     if(field_new->get_calculation() != field_old->get_calculation())
     {
       //TODO: Only show this when there are > 100 records?
-      Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Recalculation Required")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+      Gtk::MessageDialog dialog(Utils::bold_message(_("Recalculation Required")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
       dialog.set_secondary_text(_("You have changed the calculation used by this field so Glom must recalculate the value in all records. If the table contains many records then this could take a long time."));
       if(parent_window)
         dialog.set_transient_for(*parent_window);
@@ -311,7 +311,7 @@ bool Box_DB_Table_Definition::check_field_change(const sharedptr<const Field>& f
     }
 
     //Ask the user to confirm this major change:
-    Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Change primary key")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+    Gtk::MessageDialog dialog(Utils::bold_message(_("Change primary key")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
     dialog.set_secondary_text(_("Are you sure that you wish to set this field as the primary key, instead of the existing primary key?"));
     if(parent_window)
       dialog.set_transient_for(*parent_window);
@@ -498,7 +498,7 @@ void Box_DB_Table_Definition::on_Properties_apply()
 
 sharedptr<Field> Box_DB_Table_Definition::change_definition(const sharedptr<const Field>& fieldOld, const sharedptr<const Field>& field)
 {
-  Bakery::BusyCursor busy_cursor(get_app_window());
+  BusyCursor busy_cursor(get_app_window());
 
   //DB field definition:
 

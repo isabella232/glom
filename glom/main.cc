@@ -226,8 +226,6 @@ main(int argc, char* argv[])
   try
 #endif
   {
-    Bakery::init();
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     gtksourceview::init();
     Goocanvas::init(PACKAGE, VERSION, argc, argv ) ;

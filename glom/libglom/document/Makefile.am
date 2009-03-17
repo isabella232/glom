@@ -1,3 +1,5 @@
+SUBDIRS = bakery
+
 AM_CPPFLAGS = -I@top_srcdir@/ -I@top_srcdir@/glom $(GLOM_CFLAGS)
 
 h_sources = document_glom.h view.h

@@ -22,14 +22,15 @@
 #define DOCUMENT_GLOM_VIEW_H
 
 #include <libglom/document/document_glom.h>
+#include <libglom/document/bakery/view/View_Composite.h>
 
 namespace Glom
 {
 
 ///The base View for the document.
-typedef Bakery::View<Document_Glom> View_Glom;
+typedef GlomBakery::View<Document_Glom> View_Glom;
 
-typedef Bakery::View_Composite<Document_Glom> View_Composite_Glom;
+typedef GlomBakery::View_Composite<Document_Glom> View_Composite_Glom;
 
 } //namespace Glom
 

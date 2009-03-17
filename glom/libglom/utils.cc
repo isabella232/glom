@@ -28,7 +28,7 @@
 #include <glibmm/i18n.h>
 #include <gtkmm/messagedialog.h>
 
-#include <gio/gio.h> // For g_app_info_launch_default_for_uri
+#include <giomm.h>
 
 #ifdef GLOM_ENABLE_MAEMO
 #include <hildonmm/note.h>
@@ -934,6 +934,35 @@ void Utils::show_window_until_hide(Gtk::Window* window)
   
   window->show();
   main_loop->run(); //Run and block until it is stopped by the hide signal handler.
+}
+
+Glib::ustring Utils::bold_message(const Glib::ustring& message)
+{
+  return "<b>" + message + "</b>";
+}
+
+
+bool Utils::file_exists(const Glib::ustring& uri)
+{
+  //Check whether file exists already:
+  {
+    // Try to examine the input file.
+    Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    try
+    {
+      return file->query_exists();
+    }
+    catch(const Gio::Error& /* ex */)
+    {
+      return false; //Something went wrong. It does not exist.
+    }
+#else
+      std::auto_ptr<Gio::Error> error;
+      retrun file->query_exists(error);
+#endif
+  }
 }
 
 

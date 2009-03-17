@@ -26,7 +26,7 @@
 #include <libglom/glade_utils.h>
 #include <glom/glom_privs.h>
 //#include <libgnome/gnome-i18n.h>
-#include <bakery/App/App_Gtk.h> //For util_bold_message().
+#include <libglom/utils.h> //For bold_message()).
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -209,7 +209,7 @@ void Dialog_GroupsList::on_button_group_delete()
       if(!group.empty())
       {
         //TODO: Prevent deletion of standard groups
-        Gtk::MessageDialog dialog(Bakery::App_Gtk::util_bold_message(_("Delete Group")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
+        Gtk::MessageDialog dialog(Utils::bold_message(_("Delete Group")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
         dialog.set_secondary_text(_("Are your sure that you wish to delete this group?"));
         dialog.set_transient_for(*this);
 

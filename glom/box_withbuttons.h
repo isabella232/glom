@@ -28,7 +28,7 @@
 #include <libglom/connectionpool.h>
 #include <libglom/appstate.h>
 #include "base_db.h"
-#include <bakery/Utilities/BusyCursor.h>
+#include <libglom/busy_cursor.h>
 #include <libglademm.h>
 
 namespace Glom
