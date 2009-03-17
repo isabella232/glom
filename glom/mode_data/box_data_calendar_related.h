@@ -26,7 +26,7 @@
 #include "box_data_portal.h"
 #include <libglom/data_structure/layout/layoutitem_calendarportal.h>
 #include "../utility_widgets/layoutwidgetbase.h"
-#include "../utility_widgets/calendar/glomcalendar.h"
+#include <gtkmm/calendar.h>
 
 namespace Glom
 {
@@ -91,7 +91,7 @@ private:
   void clear_cached_database_values();
     
 private:
-  GlomGtk::Calendar m_calendar;
+  Gtk::Calendar m_calendar;
     
   //TODO: Avoid repeating these in so many widgets:
   Gtk::Menu* m_pMenuPopup;

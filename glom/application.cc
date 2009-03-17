@@ -259,19 +259,17 @@ void App_Glom::init_toolbars()
 */
 }
 
-//gtkmm <2.12.7 has a bug that stops this working with non-ASCII text,
-//so we use the C function instead.
 //We could put this in Bakery instead, but it's hard enough just getting updates 
 //into Ubuntu, so we override this Bakery::App method here.
-//TODO: Remove this when gtkmm 2.12.7 is distributed widely-enough.
 void App_Glom::add_ui_from_string(const Glib::ustring& ui_description)
 {
-  GError* error = 0;
-  gtk_ui_manager_add_ui_from_string(m_refUIManager->gobj(), ui_description.c_str(), ui_description.bytes(), &error);
-  if(error)
+  try
   {
-    std::cerr << "App_Glom::add_ui_from_string(): exception: " << error->message << std::endl;
-    g_clear_error(&error);
+    m_refUIManager->add_ui_from_string(ui_description);
+  }  
+  catch(const Glib::Error& error)
+  {
+    std::cerr << "App_Glom::add_ui_from_string(): exception: " << error.what() << std::endl;
   }
 }
 

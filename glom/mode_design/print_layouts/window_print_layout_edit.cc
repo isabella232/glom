@@ -229,28 +229,21 @@ Glib::RefPtr<Gdk::Pixbuf> Window_PrintLayout_Edit::get_icon_for_toolbar_item(Gtk
     return result;
 
   const Gtk::StockID stock_id = action->property_stock_id();
-  if(!(stock_id.get_string().empty())) //The operator bool() is only in gtkmm 2.14.
+  if(!(stock_id.get_string().empty())) //The operator bool() is only in later versions of gtkmm 2.*.x
   {
     result = item.render_icon(stock_id, Gtk::ICON_SIZE_LARGE_TOOLBAR);
   }
   else
   {
-    //TODO: Use this when we can use gtkmm 2.14: Glib::ustring icon_name = action->property_icon_name();
-    gchar* c_icon_name = 0;
-    g_object_get (action->gobj(), "icon-name", &c_icon_name, NULL);
-    Glib::ustring icon_name = Glib::convert_return_gchar_ptr_to_ustring(c_icon_name);
-    c_icon_name = 0;
+    const Glib::ustring icon_name = action->property_icon_name();
 
     Glib::RefPtr<Gdk::Screen> screen = item.get_screen();
     if(!screen)
       return result;
 
-    Glib::RefPtr<Gtk::Settings> settings = Gtk::Settings::get_for_screen(screen);
-
     int width = 0;
     int height = 0;
-    //TODO: Use this when we can use gtkmm 2.14: Gtk::IconSize::lookup(with, height, settings);
-    if(!gtk_icon_size_lookup_for_settings (settings->gobj(), GTK_ICON_SIZE_LARGE_TOOLBAR, &width, &height))
+    if(!Gtk::IconSize::lookup(Gtk::ICON_SIZE_LARGE_TOOLBAR, width, height))
     {
       //An arbitrary default:
       width = height = 24;
@@ -334,9 +327,7 @@ bool Window_PrintLayout_Edit::on_canvas_drag_drop(const Glib::RefPtr<Gdk::DragCo
   //Cause our drag_data_received callback to be called:
   //Note that this isn't necessary when using DEST_DEFAULT_DEFAULTS (or DEST_DEFAULT_DROP), 
   //because that would allow us to just return true to make this happen automatically.
-  // Seems the const version of the method was added in gtkmm 2.14 so we do this const_cast here
-  // to allow compiling with 2.12 (jhs)
-  m_canvas.drag_get_data(drag_context, const_cast<Glib::ustring&>(target), timestamp);
+  m_canvas.drag_get_data(drag_context, target, timestamp);
 
   return true; //Allow the drop.
 }
@@ -356,9 +347,7 @@ bool Window_PrintLayout_Edit::on_canvas_drag_motion(const Glib::RefPtr<Gdk::Drag
     //This will cause our drag_data_received callback to be called, with that information.
     //Note: This does not work (and grabs the cursor) if we call dest_set() with the flags for default actions, such as DEST_DEFAULT_DEFAULTS.
     m_drag_preview_requested = true;
-    // Seems the const version of the method was added in gtkmm 2.14 so we do this const_cast here
-    // to allow compiling with 2.12 (jhs)
-    m_canvas.drag_get_data(drag_context, const_cast<Glib::ustring&>(target), timestamp);
+    m_canvas.drag_get_data(drag_context, target, timestamp);
     return true;
   }
 

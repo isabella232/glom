@@ -82,7 +82,6 @@ glom_LDADD += navigation/libnavigation.a \
               utility_widgets/adddel/libutility_widgets_adddel.a \
               utility_widgets/adddel/eggcolumnchooser/libutility_widgets_adddel_eggcolumnchooserdialog.a \
               utility_widgets/db_adddel/libutility_widgets_db_adddel.a \
-              utility_widgets/calendar/libutility_widgets_calendar.a \
               utility_widgets/canvas/libutility_widgets_canvas.a \
               utility_widgets/cellrendererlist/libutility_widgets_cellrendererlist.a \
               utility_widgets/egg/toolpalette/libeggtoolpalette.la \

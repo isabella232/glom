@@ -1,3 +1,26 @@
+2009-03-17  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.ac: Depend on gtkmm 2.14 rather than gtkmm 2.10.
+	
+	* glom/Makefile.am: 
+	* glom/utility_widgets/Makefile.am:
+	* glom/utility_widgets/calendar/: Remove copy of Gtk::Calendar.
+	* glom/mode_data/box_data_calendar_related.h: Adapted.
+	
+	* glom/application.cc:: init_toolbars(), add_ui_from_string():
+	* glom/dialog_existing_or_new.cc: constructor, get_uri(), 
+	existing_icon_data_func():
+	* glom/dialog_existing_or_new.h
+	* glom/layout_item_dialogs/box_formatting.cc: get_formatting():
+	* glom/libglom/data_structure/print_layout.cc: Constructor, operator=():
+
+	* glom/mode_design/print_layouts/canvas_print_layout.cc: set_print_layout():
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc: 
+	get_icon_for_toolbar_item(), on_canvas_drag_drop(), on_canvas_drag_motion():
+	* glom/xsl_utils.cc: transform_and_open(): 
+	Remove workarounds for gtkmm 2.10 now that we can depend on gtkmm 2.14.
+	This is not really necessary but it's nice to clean up the code.
+
 1.10.0:
 
 2009-03-16  Murray Cumming  <murrayc@murrayc.com>

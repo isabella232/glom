@@ -141,14 +141,14 @@ void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const
 #ifdef G_OS_WIN32
   // gtk_show_uri doesn't seem to work on Win32, at least not for local files
   // We use Windows API instead.
+  // TODO: Check it again and file a bug if necessary.
   ShellExecute(NULL, "open", file->get_path().c_str(), NULL, NULL, SW_SHOW);
 #else
   //Use the GNOME browser:
-  //TODO: Use gtk_show_uri() as soon as we require GTK+ 2.14
   GError* gerror = 0;
-  if(!g_app_info_launch_default_for_uri(file->get_uri().c_str(), NULL, &gerror))
+  if(gtk_show_uri(0 /* screen */, file->get_uri().c_str(), GDK_CURRENT_TIME, &gerror))
   {
-    std::cerr << "Error while calling g_app_info_launch_default_for_uri(): " << gerror->message << std::endl;
+    std::cerr << "Error while calling gtk_show_uri(): " << gerror->message << std::endl;
     g_error_free(gerror);
   }
 #endif

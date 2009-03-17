@@ -199,7 +199,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
       Gtk::TreeModel::iterator iter = m_existing_model->append(m_iter_existing_recent->children());
       (*iter)[m_existing_columns.m_col_title] = info->get_display_name();
       (*iter)[m_existing_columns.m_col_time] = info->get_modified();
-      (*iter)[m_existing_columns.m_col_recent_info] = new Glib::RefPtr<Gtk::RecentInfo>(info);
+      (*iter)[m_existing_columns.m_col_recent_info] = info;
     }
   }
 
@@ -280,17 +280,6 @@ Dialog_ExistingOrNew::~Dialog_ExistingOrNew()
   }
 #endif
 
-  // Release the recent infos (see comment in the header for why these
-  // have to be dynamically allocated)
-  if(!m_iter_existing_recent_dummy.get())
-  {
-    const Gtk::TreeNodeChildren& children = m_iter_existing_recent->children();
-    for(Gtk::TreeModel::iterator iter = children.begin(); iter != children.end(); ++ iter)
-    {
-      Glib::RefPtr<Gtk::RecentInfo>* info = (*iter)[m_existing_columns.m_col_recent_info];
-      delete info;
-    }
-  }
 }
 
 bool Dialog_ExistingOrNew::on_existing_select_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::Path& path, bool /* path_currently_selected */)
@@ -373,8 +362,8 @@ Glib::ustring Dialog_ExistingOrNew::get_uri() const
     }
     else
     {
-      Glib::RefPtr<Gtk::RecentInfo>* info = (*iter)[m_existing_columns.m_col_recent_info];
-      return (*info)->get_uri();
+      Glib::RefPtr<Gtk::RecentInfo> info = (*iter)[m_existing_columns.m_col_recent_info];
+      return info->get_uri();
     }
   }
   else
@@ -448,7 +437,7 @@ void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, 
   {
     if(m_existing_model->is_ancestor(m_iter_existing_recent, iter))
     {
-      //Glib::RefPtr<Gtk::RecentInfo>* info = (*iter)[m_existing_columns.m_col_recent_info];
+      //Glib::RefPtr<Gtk::RecentInfo> info = (*iter)[m_existing_columns.m_col_recent_info];
       //pixbuf_renderer->property_pixbuf() = (*info)->get_icon(Gtk::ICON_SIZE_BUTTON);
       pixbuf_renderer->set_property("icon-name", Glib::ustring("glom"));
     }

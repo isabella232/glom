@@ -198,12 +198,6 @@ void Box_Formatting::set_formatting(const FieldFormatting& format)
   enforce_constraints();
 }
 
-//TODO: Remove this when using gtkmm 2.14, which has Gdk::Color::to_string():
-static Glib::ustring color_to_string(const Gdk::Color& color)
-{
-  return Glib::convert_return_gchar_ptr_to_ustring( gdk_color_to_string(color.gobj()) );
-}
-
 bool Box_Formatting::get_formatting(FieldFormatting& format) const
 {
   //Numeric Formatting:
@@ -226,12 +220,13 @@ bool Box_Formatting::get_formatting(FieldFormatting& format) const
 
   Glib::ustring color_foreground;
   if(m_checkbox_format_text_color_foreground->get_active())
-    color_foreground = color_to_string( m_colorbutton_foreground->get_color() );
+    color_foreground = m_colorbutton_foreground->get_color().to_string();
   m_format.set_text_format_color_foreground(color_foreground);
 
   Glib::ustring color_background;
   if(m_checkbox_format_text_color_background->get_active())
-    color_background = color_to_string( m_colorbutton_background->get_color() );
+    color_background = m_colorbutton_background->get_color().to_string();
+
   m_format.set_text_format_color_background(color_background);
 
   //Choices:

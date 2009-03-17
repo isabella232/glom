@@ -106,7 +106,7 @@ fi
 
 
 # Do not require, goocanvas and gtksourceviewmm in client only mode
-REQUIRED_LIBS="bakery-2.6 >= 2.6.0 gtkmm-2.4 >= 2.10 gthread-2.0 libxslt >= 1.1.10 pygda-4.0 >= 2.25.3 pygtk-2.0 >= 2.6.0 libgdamm-4.0 >= 3.99.12 libgda-4.0 >= 3.99.13 libgda-postgres-4.0 goocanvasmm-1.0 >= 0.13.0"
+REQUIRED_LIBS="bakery-2.6 >= 2.6.0 gtkmm-2.4 >= 2.14 gthread-2.0 libxslt >= 1.1.10 pygda-4.0 >= 2.25.3 pygtk-2.0 >= 2.6.0 libgdamm-4.0 >= 3.99.12 libgda-4.0 >= 3.99.13 libgda-postgres-4.0 goocanvasmm-1.0 >= 0.13.0"
 if test $enable_client_only != yes; then
 	REQUIRED_LIBS="$REQUIRED_LIBS gtksourceviewmm-2.0"
 fi
@@ -115,7 +115,7 @@ fi
 if test "$enable_maemo" = "yes"; then
 	REQUIRED_LIBS="$REQUIRED_LIBS hildonmm libepc-1.0 >= 0.3.1 avahi-ui";
 elif test "$win32" = "true"; then
-	REQUIRED_LIBS="$REQUIRED_LIBS gtkmm-2.4 >= 2.10";
+	REQUIRED_LIBS="$REQUIRED_LIBS gtkmm-2.4 >= 2.14";
 else
 	REQUIRED_LIBS="$REQUIRED_LIBS iso-codes libepc-1.0 >= 0.3.1 avahi-ui";
 fi
@@ -240,7 +240,6 @@ AC_CONFIG_FILES([Makefile \
     glom/mode_find/Makefile \
     glom/navigation/Makefile \
     glom/utility_widgets/Makefile \
-      glom/utility_widgets/calendar/Makefile \
       glom/utility_widgets/cellrendererlist/Makefile \
       glom/utility_widgets/adddel/Makefile \
         glom/utility_widgets/adddel/eggcolumnchooser/Makefile \

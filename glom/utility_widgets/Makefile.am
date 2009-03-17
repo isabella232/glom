@@ -1,4 +1,4 @@
-SUBDIRS = cellrendererlist adddel db_adddel canvas calendar egg 
+SUBDIRS = cellrendererlist adddel db_adddel canvas egg 
 
 gladedir = $(datadir)/glom/glade/
 glom_icon_dir = $(datadir)/glom/pixmaps
