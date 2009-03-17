@@ -1,3 +1,9 @@
+2009-03-17  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/connectionpool_backends/postgres.cc:
+	check_postgres_gda_client_is_available_with_warning(): Actually check.
+	This was commented out because the libgda-4.0 API for it is unpleasant.
+
 1.10.0:
 
 2009-03-16  Murray Cumming  <murrayc@murrayc.com>
