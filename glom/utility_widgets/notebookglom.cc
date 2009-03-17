@@ -27,7 +27,7 @@
 namespace Glom
 {
 
-NotebookGlom::NotebookGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
+NotebookGlom::NotebookGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
 : Gtk::Notebook(cobject)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY

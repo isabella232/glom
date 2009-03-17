@@ -26,15 +26,15 @@
 namespace Glom
 {
 
-Dialog_NewSelfHostedConnection::Dialog_NewSelfHostedConnection(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_NewSelfHostedConnection::Dialog_NewSelfHostedConnection(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   Base_DB(),
   m_entry_user(0),
   m_entry_password(0)
 {
-  refGlade->get_widget("entry_user", m_entry_user);
-  refGlade->get_widget("entry_password", m_entry_password);
-  refGlade->get_widget("entry_password_confirm", m_entry_password_confirm);
+  builder->get_widget("entry_user", m_entry_user);
+  builder->get_widget("entry_password", m_entry_password);
+  builder->get_widget("entry_password_confirm", m_entry_password_confirm);
 }
 
 Dialog_NewSelfHostedConnection::~Dialog_NewSelfHostedConnection()

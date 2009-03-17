@@ -21,7 +21,7 @@
 #ifndef GLOM_MODE_DESIGN_USERS_DIALOG_NEWGROUP_H
 #define GLOM_MODE_DESIGN_USERS_DIALOG_NEWGROUP_H
 
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/entry.h>
 
@@ -31,7 +31,7 @@ namespace Glom
 class Dialog_NewGroup : public Gtk::Dialog
 {
 public:
-  Dialog_NewGroup(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_NewGroup(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_NewGroup();
 
   Gtk::Entry* m_entry_name;

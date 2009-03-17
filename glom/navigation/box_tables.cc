@@ -26,8 +26,8 @@
 namespace Glom
 {
 
-Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
-: Box_WithButtons(cobject, refGlade),
+Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
+: Box_WithButtons(cobject, builder),
   m_pLabelFrameTitle(0),
   m_pCheckButtonShowHidden(0),
   m_colTableName(0),
@@ -37,16 +37,16 @@ Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
 {
   //Get the Glade-instantiated widgets, and connect signal handlers:
   Gtk::Button* pButtonCancel = 0;
-  refGlade->get_widget("button_cancel", pButtonCancel);
+  builder->get_widget("button_cancel", pButtonCancel);
   set_button_cancel(*pButtonCancel);
 
   Gtk::Alignment* pAligmentPlaceholder = 0;
-  refGlade->get_widget("alignment_placeholder_adddel", pAligmentPlaceholder);
+  builder->get_widget("alignment_placeholder_adddel", pAligmentPlaceholder);
   pAligmentPlaceholder->add(m_AddDel);
 
-  refGlade->get_widget("label_frame_title", m_pLabelFrameTitle);
+  builder->get_widget("label_frame_title", m_pLabelFrameTitle);
 
-  refGlade->get_widget("checkbutton_show_hidden", m_pCheckButtonShowHidden);
+  builder->get_widget("checkbutton_show_hidden", m_pCheckButtonShowHidden);
   m_pCheckButtonShowHidden->signal_toggled().connect(sigc::mem_fun(*this, &Box_Tables::on_show_hidden_toggled));
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

@@ -289,10 +289,10 @@ main(int argc, char* argv[])
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     // Main app
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Glom::Utils::get_glade_file_path("glom.glade"), "window_main");
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Glom::Utils::get_glade_file_path("glom.glade"), "window_main");
 #else
-    std::auto_ptr<Gnome::Glade::XmlError> error;
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Glom::Utils::get_glade_file_path("glom.glade"), "window_main", "", error);
+    std::auto_ptr<Glib::Error> error;
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Glom::Utils::get_glade_file_path("glom.glade"), "window_main", "", error);
     if(error.get())
     {
       std::cerr << "Glom: exception: \n  " << error->what() << std::endl;

@@ -21,7 +21,7 @@
 #ifndef GLOM_DIALOG_PROGRESS_CREATING_H
 #define GLOM_DIALOG_PROGRESS_CREATING_H
 
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 #include <gtkmm/window.h>
 #include <gtkmm/label.h>
 #include <gtkmm/progressbar.h>
@@ -36,7 +36,7 @@ class Dialog_ProgressCreating
   : public Gtk::Window
 {
 public:
-  Dialog_ProgressCreating(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_ProgressCreating(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_ProgressCreating();
 
   void set_message(const Glib::ustring& title, const Glib::ustring& secondary_text);

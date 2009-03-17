@@ -31,11 +31,11 @@ Dialog_ChooseDate::Dialog_ChooseDate()
 {
 }
 
-Dialog_ChooseDate::Dialog_ChooseDate(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_ChooseDate::Dialog_ChooseDate(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_calendar(0)
 {
-  refGlade->get_widget("calendar", m_calendar);
+  builder->get_widget("calendar", m_calendar);
 
   m_calendar->signal_day_selected_double_click().connect(sigc::mem_fun(*this, &Dialog_ChooseDate::on_day_selected_double_click));
 }

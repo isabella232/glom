@@ -23,10 +23,10 @@
 namespace Glom
 {
 
-Dialog_LayoutItem_Properties::Dialog_LayoutItem_Properties(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade) 
+Dialog_LayoutItem_Properties::Dialog_LayoutItem_Properties(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder) 
 : Gtk::Dialog(cobject)
 {
-  refGlade->get_widget("entry_label", m_pEntryLabel);
+  builder->get_widget("entry_label", m_pEntryLabel);
   show_all_children ();
 }
 

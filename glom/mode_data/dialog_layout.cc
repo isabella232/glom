@@ -25,22 +25,22 @@
 namespace Glom
 {
 
-Dialog_Layout::Dialog_Layout(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade, bool with_table_title)
+Dialog_Layout::Dialog_Layout(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder, bool with_table_title)
 : Gtk::Dialog(cobject),
   m_entry_table_title(0),
   m_label_table_title(0),
   m_modified(false)
 {
   Gtk::Button* button = 0;
-  refGlade->get_widget("button_close", button);
+  builder->get_widget("button_close", button);
   button->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout::on_button_close) );
 
   if(with_table_title)
   {
-    refGlade->get_widget("entry_table_title", m_entry_table_title);
+    builder->get_widget("entry_table_title", m_entry_table_title);
     m_entry_table_title->signal_changed().connect( sigc::mem_fun(*this, &Dialog_Layout::on_entry_table_title_changed) );
 
-    refGlade->get_widget("label_title", m_label_table_title);
+    builder->get_widget("label_title", m_label_table_title);
   }
 
   show_all_children();

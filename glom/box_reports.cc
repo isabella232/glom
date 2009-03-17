@@ -25,22 +25,22 @@
 namespace Glom
 {
 
-Box_Reports::Box_Reports(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
-: Box_DB_Table(cobject, refGlade),
+Box_Reports::Box_Reports(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
+: Box_DB_Table(cobject, builder),
   m_pLabelFrameTitle(0),
   m_colReportName(0),
   m_colTitle(0)
 {
   //Get the Glade-instantiated widgets, and connect signal handlers:
   Gtk::Button* pButtonCancel = 0;
-  refGlade->get_widget("button_cancel", pButtonCancel);
+  builder->get_widget("button_cancel", pButtonCancel);
   set_button_cancel(*pButtonCancel);
 
   Gtk::Alignment* pAligmentPlaceholder = 0;
-  refGlade->get_widget("alignment_placeholder_adddel", pAligmentPlaceholder);
+  builder->get_widget("alignment_placeholder_adddel", pAligmentPlaceholder);
   pAligmentPlaceholder->add(m_AddDel);
 
-  //refGlade->get_widget("label_frame_title", m_pLabelFrameTitle);
+  //builder->get_widget("label_frame_title", m_pLabelFrameTitle);
 
   m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_Reports::on_adddel_Add));
   m_AddDel.signal_user_requested_delete().connect(sigc::mem_fun(*this, &Box_Reports::on_adddel_Delete));

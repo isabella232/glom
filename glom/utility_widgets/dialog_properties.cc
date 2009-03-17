@@ -24,13 +24,13 @@
 namespace Glom
 {
 
-Dialog_Properties::Dialog_Properties(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_Properties::Dialog_Properties(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Window(cobject),
   m_block(false),
   m_modified(false)
 {
-  refGlade->get_widget("button_cancel", m_pButton_Cancel);
-  refGlade->get_widget("button_save", m_pButton_Save);
+  builder->get_widget("button_cancel", m_pButton_Cancel);
+  builder->get_widget("button_save", m_pButton_Save);
 
   //In general, we don't want to allow changes to windows underneath while editing properties.
   //Also, if we don't set this then seconday windows (from a modal dialog) will be on top but unusable.

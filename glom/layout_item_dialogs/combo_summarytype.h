@@ -23,7 +23,7 @@
 
 #include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 #include <gtkmm/combobox.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 
 #include <gtkmm/liststore.h>
 
@@ -33,7 +33,7 @@ namespace Glom
 class Combo_SummaryType : public Gtk::ComboBox
 {
 public:
-  Combo_SummaryType(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Combo_SummaryType(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Combo_SummaryType();
 
   virtual void set_summary_type(LayoutItem_FieldSummary::summaryType summary_type);

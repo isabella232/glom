@@ -21,7 +21,7 @@
 #ifndef GLOM_MODE_DESIGN_USERS_DIALOG_NEWSCRIPT_H
 #define GLOM_MODE_DESIGN_USERS_DIALOG_NEWSCRIPT_H
 
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/entry.h>
 
@@ -31,7 +31,7 @@ namespace Glom
 class Dialog_NewScript : public Gtk::Dialog
 {
 public:
-  Dialog_NewScript(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_NewScript(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_NewScript();
 
   Gtk::Entry* m_entry_name;

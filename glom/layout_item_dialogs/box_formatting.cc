@@ -25,7 +25,7 @@
 namespace Glom
 {
 
-Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::VBox(cobject),
   m_vbox_numeric_format(0),
   m_vbox_text_format(0),
@@ -50,44 +50,44 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gnome
   m_for_print_layout(false)
 {
   //Numeric formatting:
-  refGlade->get_widget("vbox_numeric_format", m_vbox_numeric_format);
-  refGlade->get_widget("checkbutton_format_thousands", m_checkbox_format_use_thousands);
-  refGlade->get_widget("checkbutton_format_use_decimal_places", m_checkbox_format_use_decimal_places);
-  refGlade->get_widget("entry_format_decimal_places", m_entry_format_decimal_places);
-  refGlade->get_widget_derived("entry_currency_symbol", m_entry_currency_symbol);
+  builder->get_widget("vbox_numeric_format", m_vbox_numeric_format);
+  builder->get_widget("checkbutton_format_thousands", m_checkbox_format_use_thousands);
+  builder->get_widget("checkbutton_format_use_decimal_places", m_checkbox_format_use_decimal_places);
+  builder->get_widget("entry_format_decimal_places", m_entry_format_decimal_places);
+  builder->get_widget_derived("entry_currency_symbol", m_entry_currency_symbol);
 
   //Text formatting:
-  refGlade->get_widget("vbox_text_format", m_vbox_text_format);
-  refGlade->get_widget("checkbutton_format_text_multiline", m_checkbox_format_text_multiline);
-  refGlade->get_widget("label_format_text_multiline", m_label_format_text_multiline_height);
-  refGlade->get_widget("spinbutton_format_text_multiline_height", m_spinbutton_format_text_multiline_height);
-  refGlade->get_widget("hbox_font", m_hbox_font);
-  refGlade->get_widget("checkbutton_font", m_checkbox_format_text_font);
-  refGlade->get_widget("fontbutton", m_fontbutton);
-  refGlade->get_widget("hbox_color_foreground", m_hbox_color_foreground);
-  refGlade->get_widget("colorbutton_foreground", m_colorbutton_foreground);
-  refGlade->get_widget("checkbutton_color_foreground", m_checkbox_format_text_color_foreground);
-  refGlade->get_widget("hbox_color_background", m_hbox_color_background);
-  refGlade->get_widget("colorbutton_background", m_colorbutton_background);
-  refGlade->get_widget("checkbutton_color_background", m_checkbox_format_text_color_background);
+  builder->get_widget("vbox_text_format", m_vbox_text_format);
+  builder->get_widget("checkbutton_format_text_multiline", m_checkbox_format_text_multiline);
+  builder->get_widget("label_format_text_multiline", m_label_format_text_multiline_height);
+  builder->get_widget("spinbutton_format_text_multiline_height", m_spinbutton_format_text_multiline_height);
+  builder->get_widget("hbox_font", m_hbox_font);
+  builder->get_widget("checkbutton_font", m_checkbox_format_text_font);
+  builder->get_widget("fontbutton", m_fontbutton);
+  builder->get_widget("hbox_color_foreground", m_hbox_color_foreground);
+  builder->get_widget("colorbutton_foreground", m_colorbutton_foreground);
+  builder->get_widget("checkbutton_color_foreground", m_checkbox_format_text_color_foreground);
+  builder->get_widget("hbox_color_background", m_hbox_color_background);
+  builder->get_widget("colorbutton_background", m_colorbutton_background);
+  builder->get_widget("checkbutton_color_background", m_checkbox_format_text_color_background);
 
 
 
   //Choices:
-  refGlade->get_widget("vbox_choices", m_vbox_choices);
-  refGlade->get_widget_derived("adddel_choices", m_adddel_choices_custom);
+  builder->get_widget("vbox_choices", m_vbox_choices);
+  builder->get_widget_derived("adddel_choices", m_adddel_choices_custom);
   m_col_index_custom_choices = m_adddel_choices_custom->add_column("Choices");
   m_adddel_choices_custom->set_allow_add();
   m_adddel_choices_custom->set_allow_delete();
   m_adddel_choices_custom->set_auto_add();
 
-  refGlade->get_widget("checkbutton_choices_restrict", m_checkbutton_choices_restricted);
+  builder->get_widget("checkbutton_choices_restrict", m_checkbutton_choices_restricted);
 
-  refGlade->get_widget_derived("combobox_choices_related_relationship", m_combo_choices_relationship);
-  refGlade->get_widget_derived("combobox_choices_related_field", m_combo_choices_field);
-  refGlade->get_widget_derived("combobox_choices_related_field_second", m_combo_choices_field_second);
-  refGlade->get_widget("radiobutton_choices_custom", m_radiobutton_choices_custom);
-  refGlade->get_widget("radiobutton_choices_related", m_radiobutton_choices_related);
+  builder->get_widget_derived("combobox_choices_related_relationship", m_combo_choices_relationship);
+  builder->get_widget_derived("combobox_choices_related_field", m_combo_choices_field);
+  builder->get_widget_derived("combobox_choices_related_field_second", m_combo_choices_field_second);
+  builder->get_widget("radiobutton_choices_custom", m_radiobutton_choices_custom);
+  builder->get_widget("radiobutton_choices_related", m_radiobutton_choices_related);
 
   m_combo_choices_relationship->signal_changed().connect(sigc::mem_fun(*this, &Box_Formatting::on_combo_choices_relationship_changed));
 

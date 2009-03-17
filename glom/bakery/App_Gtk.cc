@@ -46,7 +46,7 @@ App_Gtk::App_Gtk(const Glib::ustring& appname)
 #endif
 }
 
-/// This constructor can be used with Gnome::Glade::Xml::get_derived_widget().
+/// This constructor can be used with Gtk::Builder::get_derived_widget().
 App_Gtk::App_Gtk(BaseObjectType* cobject, const Glib::ustring& appname)
 : ParentWindow(cobject),
   m_pVBox(0)
@@ -100,7 +100,7 @@ void App_Gtk::init_layout()
   set_resizable(); //resizable
   set_default_size(640, 400); //A sensible default.
 
-  //This might have been instantiated by Gnome::Glade::Xml::get_widget() instead.
+  //This might have been instantiated by Gtk::Builder::get_widget() instead.
   //If not, then we create a default one and add it to the window.
   if(!m_pVBox)
   {

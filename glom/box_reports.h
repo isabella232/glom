@@ -30,7 +30,7 @@ namespace Glom
 class Box_Reports : public Box_DB_Table
 {
 public:
-  Box_Reports(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Box_Reports(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Box_Reports();
 
 private:

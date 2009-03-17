@@ -24,7 +24,7 @@
 #include <gtkmm.h>
 #include <libglom/data_structure/field.h>
 #include "layoutwidgetfield.h"
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 
 namespace Glom
 {
@@ -37,7 +37,7 @@ class ImageGlom
 {
 public:
   ImageGlom();
-  explicit ImageGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  explicit ImageGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 
 
   virtual ~ImageGlom();

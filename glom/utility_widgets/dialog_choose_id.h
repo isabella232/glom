@@ -36,7 +36,7 @@ class Dialog_ChooseID
 {
 public:
   Dialog_ChooseID();
-  Dialog_ChooseID(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_ChooseID(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_ChooseID();
 
   virtual bool init_db_details(const Glib::ustring& table_name, const Glib::ustring& layout_platform);

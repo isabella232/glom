@@ -32,7 +32,7 @@
 namespace Glom
 {
 
-Dialog_GroupsList::Dialog_GroupsList(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_GroupsList::Dialog_GroupsList(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_treeview_groups(0),
   m_button_group_new(0),
@@ -41,8 +41,8 @@ Dialog_GroupsList::Dialog_GroupsList(BaseObjectType* cobject, const Glib::RefPtr
 {
   //set_default_size(600, -1);
 
-  refGlade->get_widget("treeview_groups", m_treeview_groups);
-  refGlade->get_widget("treeview_tables", m_treeview_tables);
+  builder->get_widget("treeview_groups", m_treeview_groups);
+  builder->get_widget("treeview_tables", m_treeview_tables);
 
   m_model_groups = Gtk::ListStore::create(m_model_columns_groups);
   m_model_tables = Gtk::ListStore::create(m_model_columns_tables);
@@ -92,13 +92,13 @@ Dialog_GroupsList::Dialog_GroupsList(BaseObjectType* cobject, const Glib::RefPtr
     refSelection->signal_changed().connect( sigc::mem_fun(*this, &Dialog_GroupsList::on_treeview_tables_selection_changed) );
   }
 
-  refGlade->get_widget("button_group_new", m_button_group_new);
+  builder->get_widget("button_group_new", m_button_group_new);
   m_button_group_new->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_GroupsList::on_button_group_new) );
 
-  refGlade->get_widget("button_group_delete", m_button_group_delete);
+  builder->get_widget("button_group_delete", m_button_group_delete);
   m_button_group_delete->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_GroupsList::on_button_group_delete) );
 
-  refGlade->get_widget("button_group_users", m_button_group_users);
+  builder->get_widget("button_group_users", m_button_group_users);
   m_button_group_users->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_GroupsList::on_button_group_users) );
 
   enable_buttons();
@@ -237,11 +237,11 @@ void Dialog_GroupsList::on_button_group_new()
   Dialog_NewGroup* dialog = 0;
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_new_group");
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_new_group");
 
     refXml->get_widget_derived("dialog_new_group", dialog);
   }
-  catch(const Gnome::Glade::XmlError& ex)
+  catch(const Gtk::BuilderError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }
@@ -298,11 +298,11 @@ void Dialog_GroupsList::on_button_group_users()
       Dialog_UsersList* dialog = 0;
       try
       {
-        Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_users");
+        Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_users");
 
         refXml->get_widget_derived("window_users", dialog);
       }
-      catch(const Gnome::Glade::XmlError& ex)
+      catch(const Gtk::BuilderError& ex)
       {
         std::cerr << ex.what() << std::endl;
       }

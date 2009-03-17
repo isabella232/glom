@@ -27,11 +27,11 @@
 namespace Glom
 {
 
-Dialog_Fields::Dialog_Fields(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
-: Dialog_Design(cobject, refGlade),
+Dialog_Fields::Dialog_Fields(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
+: Dialog_Design(cobject, builder),
   m_box(0)
 {
-  refGlade->get_widget_derived("vbox_placeholder", m_box);
+  builder->get_widget_derived("vbox_placeholder", m_box);
 
   m_label_frame->set_markup( Utils::bold_message(_("Field Definitions")) );
 

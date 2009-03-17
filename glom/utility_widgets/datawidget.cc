@@ -588,21 +588,21 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& ta
 {
   sharedptr<LayoutItem_Field> result;
 
-  Glib::RefPtr<Gnome::Glade::Xml> refXml;
+  Glib::RefPtr<Gtk::Builder> refXml;
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_field");
+    refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_field");
   }
-  catch(const Gnome::Glade::XmlError& ex)
+  catch(const Gtk::BuilderError& ex)
   {
     std::cerr << ex.what() << std::endl;
     return result;
   }
 #else
-  std::auto_ptr<Gnome::Glade::XmlError> error;
-  refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_field", "", error);
+  std::auto_ptr<Gtk::BuilderError> error;
+  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_field", "", error);
   if(error.get())
   {
     std::cerr << error->what() << std::endl;
@@ -638,7 +638,7 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_layout(const sharedptr<const
 
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_layout_field_properties");
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_layout_field_properties");
 
     Dialog_FieldLayout* dialog = 0;
     refXml->get_widget_derived("dialog_layout_field_properties", dialog);
@@ -660,7 +660,7 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_layout(const sharedptr<const
       delete dialog;
     }
   }
-  catch(const Gnome::Glade::XmlError& ex)
+  catch(const Gtk::BuilderError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }
@@ -771,20 +771,20 @@ const Gtk::Widget* DataWidget::get_data_child_widget() const
 
 void DataWidget::on_button_choose_date()
 {
-  Glib::RefPtr<Gnome::Glade::Xml> refXml;
+  Glib::RefPtr<Gtk::Builder> refXml;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_date");
+    refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_date");
   }
-  catch(const Gnome::Glade::XmlError& ex)
+  catch(const Gtk::BuilderError& ex)
   {
     std::cerr << ex.what() << std::endl;
     return;
   }
 #else
-  std::auto_ptr<Gnome::Glade::XmlError> error;
-  refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_date", "", error);
+  std::auto_ptr<Gtk::BuilderError> error;
+  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_date", "", error);
   if(error.get())
   {
     std::cerr << error->what() << std::endl;
@@ -828,20 +828,20 @@ bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)
   //Initialize output variable:
   chosen_id = Gnome::Gda::Value();
 
-  Glib::RefPtr<Gnome::Glade::Xml> refXml;
+  Glib::RefPtr<Gtk::Builder> refXml;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "dialog_find_id");
+    refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_find_id");
   }
-  catch(const Gnome::Glade::XmlError& ex)
+  catch(const Glib::Error& ex)
   {
     std::cerr << ex.what() << std::endl;
     return result;
   }
 #else
-  std::auto_ptr<Gnome::Glade::XmlError> error;
-  refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "dialog_find_id", "", error);
+  std::auto_ptr<Glib::Error> error;
+  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_find_id", "", error);
   if(error.get())
   {
     std::cerr << error->what() << std::endl;

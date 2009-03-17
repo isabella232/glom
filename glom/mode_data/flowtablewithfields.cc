@@ -1369,51 +1369,11 @@ bool FlowTableWithFields::dnd_add_to_layout_group (sharedptr<LayoutItem>& item,
   return true;
 }
 
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-sharedptr<LayoutItem_Portal> FlowTableWithFields::get_layout_item_from_relation()
-{
-  sharedptr<LayoutItem_Portal> layout_item(0);
-  try
-  {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "dialog_choose_relationship");
-
-    Dialog_ChooseRelationship* dialog = 0;
-    refXml->get_widget_derived("dialog_choose_relationship", dialog);
-
-    if(dialog)
-    {
-      Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
-      dialog->set_document(pDocument, m_table_name);
-      //TODO: dialog->set_transient_for(*get_app_window());
-      const int response = dialog->run();
-      dialog->hide();
-      if(response == Gtk::RESPONSE_OK)
-      {
-        //Get the chosen relationship:
-        sharedptr<Relationship> relationship  = dialog->get_relationship_chosen();
-        if(relationship)
-        {
-          layout_item = sharedptr<LayoutItem_Portal>::create();
-          layout_item->set_relationship(relationship);
-        }
-      }
-      delete dialog;
-    }
-  }
-  catch(const Gnome::Glade::XmlError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
-  return layout_item;
-}
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 void FlowTableWithFields::on_menu_properties_activate()
 {
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_flowtable");
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_flowtable");
 
     Dialog_FlowTable* dialog = 0;
     refXml->get_widget_derived("dialog_flowtable", dialog);
@@ -1433,7 +1393,7 @@ void FlowTableWithFields::on_menu_properties_activate()
       delete dialog;
     }
   }
-  catch(const Gnome::Glade::XmlError& ex)
+  catch(const Gtk::BuilderError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }
@@ -1487,7 +1447,7 @@ sharedptr<LayoutItem_Portal> FlowTableWithFields::get_portal_relationship()
 {
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_relationship");
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_relationship");
     
     Dialog_ChooseRelationship* dialog = 0;
     refXml->get_widget_derived("dialog_choose_relationship", dialog);
@@ -1514,7 +1474,7 @@ sharedptr<LayoutItem_Portal> FlowTableWithFields::get_portal_relationship()
       delete dialog;
     }
   }
-  catch(const Gnome::Glade::XmlError& ex)
+  catch(const Gtk::BuilderError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }

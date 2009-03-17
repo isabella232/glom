@@ -23,7 +23,7 @@
 
 #include "combobox_locale.h"
 #include <libglom/document/view.h> // For View_Glom
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 #include <gtkmm/dialog.h>
 
 namespace Glom
@@ -36,7 +36,7 @@ class Dialog_IdentifyOriginal
     public View_Glom
 {
 public:
-  Dialog_IdentifyOriginal(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_IdentifyOriginal(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_IdentifyOriginal();
 
   Glib::ustring get_locale() const;

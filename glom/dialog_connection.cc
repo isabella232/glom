@@ -32,7 +32,7 @@
 namespace Glom
 {
 
-Dialog_Connection::Dialog_Connection(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_Connection::Dialog_Connection(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   Base_DB(),
   m_entry_host(0),
@@ -40,10 +40,10 @@ Dialog_Connection::Dialog_Connection(BaseObjectType* cobject, const Glib::RefPtr
   m_entry_password(0),
   m_label_database(0)
 {
-  refGlade->get_widget("entry_host", m_entry_host);
-  refGlade->get_widget("entry_user", m_entry_user);
-  refGlade->get_widget("entry_password", m_entry_password);
-  refGlade->get_widget("label_database", m_label_database);
+  builder->get_widget("entry_host", m_entry_host);
+  builder->get_widget("entry_user", m_entry_user);
+  builder->get_widget("entry_password", m_entry_password);
+  builder->get_widget("label_database", m_label_database);
 
 #ifdef GLOM_ENABLE_MAEMO
   // Make the bold title the window title (which cannot be empty in maemo
@@ -53,8 +53,8 @@ Dialog_Connection::Dialog_Connection(BaseObjectType* cobject, const Glib::RefPtr
   Gtk::Label* title;
   Gtk::Label* note;
 
-  refGlade->get_widget("connection_title", title);
-  refGlade->get_widget("connection_note", note);
+  builder->get_widget("connection_title", title);
+  builder->get_widget("connection_note", note);
 
   set_title(title->get_text());
   title->hide();

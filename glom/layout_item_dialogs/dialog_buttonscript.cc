@@ -31,12 +31,12 @@
 namespace Glom
 {
 
-Dialog_ButtonScript::Dialog_ButtonScript(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_ButtonScript::Dialog_ButtonScript(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject)
 {
-  refGlade->get_widget("textview_calculation",  m_text_view);
-  refGlade->get_widget("button_test",  m_button_test);
-  refGlade->get_widget("entry_title",  m_entry_title);
+  builder->get_widget("textview_calculation",  m_text_view);
+  builder->get_widget("button_test",  m_button_test);
+  builder->get_widget("entry_title",  m_entry_title);
 
   m_button_test->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_ButtonScript::on_button_test) );
 

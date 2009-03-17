@@ -25,7 +25,7 @@
 namespace Glom
 {
 
-Dialog_AddRelatedTable::Dialog_AddRelatedTable(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_AddRelatedTable::Dialog_AddRelatedTable(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   Base_DB(),
   m_entry_table_name(0),
@@ -34,17 +34,17 @@ Dialog_AddRelatedTable::Dialog_AddRelatedTable(BaseObjectType* cobject, const Gl
   m_button_edit_fields(0),
   m_button_ok(0)
 {
-  refGlade->get_widget("entry_related_table_name", m_entry_table_name);
-  refGlade->get_widget("entry_relationship_name", m_entry_relationship_name);
-  refGlade->get_widget_derived("combobox_from_key", m_combo_from_field);
+  builder->get_widget("entry_related_table_name", m_entry_table_name);
+  builder->get_widget("entry_relationship_name", m_entry_relationship_name);
+  builder->get_widget_derived("combobox_from_key", m_combo_from_field);
 
   //Connect signals:
   m_combo_from_field->signal_changed().connect( sigc::mem_fun(*this, &Dialog_AddRelatedTable::on_combo_field_name) );
   m_entry_table_name->signal_changed().connect( sigc::mem_fun(*this, &Dialog_AddRelatedTable::on_entry_table_name) );
 
 
-  refGlade->get_widget("button_edit_fields", m_button_edit_fields);
-  refGlade->get_widget("button_ok", m_button_ok);
+  builder->get_widget("button_edit_fields", m_button_edit_fields);
+  builder->get_widget("button_ok", m_button_ok);
 
   m_button_edit_fields->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_AddRelatedTable::on_button_edit_fields) );
 

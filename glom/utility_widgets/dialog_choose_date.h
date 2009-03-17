@@ -35,7 +35,7 @@ class Dialog_ChooseDate
 {
 public:
   Dialog_ChooseDate();
-  Dialog_ChooseDate(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_ChooseDate(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_ChooseDate();
 
   void set_date_chosen(const Gnome::Gda::Value& value);

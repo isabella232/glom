@@ -70,7 +70,7 @@ void LabelGlom::on_menu_properties_activate()
 
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_textobject");
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_textobject");
 
     Dialog_TextObject* dialog = 0;
     refXml->get_widget_derived("window_textobject", dialog);
@@ -90,7 +90,7 @@ void LabelGlom::on_menu_properties_activate()
       delete dialog;
     }
   }
-  catch(const Gnome::Glade::XmlError& ex)
+  catch(const Gtk::BuilderError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }

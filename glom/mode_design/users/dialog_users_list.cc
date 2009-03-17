@@ -30,7 +30,7 @@
 namespace Glom
 {
 
-Dialog_UsersList::Dialog_UsersList(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_UsersList::Dialog_UsersList(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_treeview_users(0),
   m_combo_group(0),
@@ -40,11 +40,11 @@ Dialog_UsersList::Dialog_UsersList(BaseObjectType* cobject, const Glib::RefPtr<G
   m_button_user_delete(0),
   m_button_user_edit(0)
 {
-  refGlade->get_widget_derived("combobox_group", m_combo_group);
+  builder->get_widget_derived("combobox_group", m_combo_group);
   m_combo_group->signal_changed().connect(sigc::mem_fun(*this, &Dialog_UsersList::on_combo_group_changed));
 
 
-  refGlade->get_widget("treeview_users", m_treeview_users);
+  builder->get_widget("treeview_users", m_treeview_users);
   if(m_treeview_users)
   {
     Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_users->get_selection();
@@ -65,19 +65,19 @@ Dialog_UsersList::Dialog_UsersList(BaseObjectType* cobject, const Glib::RefPtr<G
   }
 
 
-  refGlade->get_widget("button_delete", m_button_user_delete);
+  builder->get_widget("button_delete", m_button_user_delete);
   m_button_user_delete->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_UsersList::on_button_user_delete) );
 
-  refGlade->get_widget("button_add", m_button_user_add);
+  builder->get_widget("button_add", m_button_user_add);
   m_button_user_add->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_UsersList::on_button_user_add) );
 
-  refGlade->get_widget("button_remove", m_button_user_remove);
+  builder->get_widget("button_remove", m_button_user_remove);
   m_button_user_remove->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_UsersList::on_button_user_remove) );
 
-  refGlade->get_widget("button_new", m_button_user_new);
+  builder->get_widget("button_new", m_button_user_new);
   m_button_user_new->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_UsersList::on_button_user_new) );
 
-  refGlade->get_widget("button_edit", m_button_user_edit);
+  builder->get_widget("button_edit", m_button_user_edit);
   m_button_user_edit->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_UsersList::on_button_user_edit) );
 
   enable_buttons();
@@ -188,11 +188,11 @@ void Dialog_UsersList::on_button_user_add()
   Dialog_ChooseUser* dialog = 0;
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_user");
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_user");
 
     refXml->get_widget_derived("dialog_choose_user", dialog);
   }
-  catch(const Gnome::Glade::XmlError& ex)
+  catch(const Gtk::BuilderError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }
@@ -239,11 +239,11 @@ void Dialog_UsersList::on_button_user_new()
   Dialog_User* dialog = 0;
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_user");
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_user");
 
     refXml->get_widget_derived("dialog_user", dialog);
   }
-  catch(const Gnome::Glade::XmlError& ex)
+  catch(const Gtk::BuilderError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }
@@ -309,11 +309,11 @@ void Dialog_UsersList::on_button_user_edit()
       Dialog_User* dialog = 0;
       try
       {
-        Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_user");
+        Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_user");
 
         refXml->get_widget_derived("dialog_user", dialog);
       }
-      catch(const Gnome::Glade::XmlError& ex)
+      catch(const Gtk::BuilderError& ex)
       {
         std::cerr << ex.what() << std::endl;
       }

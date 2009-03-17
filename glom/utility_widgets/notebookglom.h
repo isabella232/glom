@@ -24,7 +24,7 @@
 #include <gtkmm.h>
 #include "layoutwidgetmenu.h"
 #include <libglom/data_structure/layout/layoutitem_notebook.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 
 namespace Glom
 {
@@ -36,7 +36,7 @@ class NotebookGlom
   public LayoutWidgetMenu
 {
 public:
-  explicit NotebookGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  explicit NotebookGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   explicit NotebookGlom();
   virtual ~NotebookGlom();
 

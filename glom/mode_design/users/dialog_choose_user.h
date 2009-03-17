@@ -21,7 +21,7 @@
 #ifndef GLOM_MODE_DESIGN_USERS_DIALOG_NEWGROUP_H
 #define GLOM_MODE_DESIGN_USERS_DIALOG_NEWGROUP_H
 
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/entry.h>
 #include "../../utility_widgets/combo_textglade.h"
@@ -32,7 +32,7 @@ namespace Glom
 class Dialog_ChooseUser : public Gtk::Dialog
 {
 public:
-  Dialog_ChooseUser(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_ChooseUser(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_ChooseUser();
 
   typedef std::vector<Glib::ustring> type_vecStrings;

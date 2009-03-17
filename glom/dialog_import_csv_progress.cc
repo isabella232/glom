@@ -27,11 +27,11 @@
 namespace Glom
 {
 
-Dialog_Import_CSV_Progress::Dialog_Import_CSV_Progress(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_Import_CSV_Progress::Dialog_Import_CSV_Progress(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject), m_data_source(NULL), m_current_row(0)
 {
-  refGlade->get_widget("import_csv_progress_progress_bar", m_progress_bar);
-  refGlade->get_widget("import_csv_progress_textview", m_text_view);
+  builder->get_widget("import_csv_progress_progress_bar", m_progress_bar);
+  builder->get_widget("import_csv_progress_textview", m_text_view);
 
   if(!m_progress_bar || !m_text_view)
     throw std::runtime_error("Missing widgets from glade file for Dialog_Import_CSV_Progress");

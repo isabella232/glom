@@ -36,7 +36,7 @@ int Dialog_RelationshipsOverview::m_last_size_x = 0;
 int Dialog_RelationshipsOverview::m_last_size_y = 0;
 
 
-Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
   : Gtk::Dialog(cobject),
     m_menu(0),
     m_modified(false),
@@ -47,7 +47,7 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
 
   //Add a menu:
   Gtk::VBox* vbox = 0;
-  refGlade->get_widget("vbox_placeholder_menubar", vbox);
+  builder->get_widget("vbox_placeholder_menubar", vbox);
 
   m_refActionGroup = Gtk::ActionGroup::create();
 
@@ -118,7 +118,7 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
 
   //Get the scolled window and add the canvas to it:
   m_scrolledwindow_canvas = 0;
-  refGlade->get_widget("scrolledwindow_canvas", m_scrolledwindow_canvas);
+  builder->get_widget("scrolledwindow_canvas", m_scrolledwindow_canvas);
   
   m_scrolledwindow_canvas->add(m_canvas);
   m_canvas.show();

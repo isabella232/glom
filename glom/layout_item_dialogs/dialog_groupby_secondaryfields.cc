@@ -27,8 +27,8 @@
 namespace Glom
 {
 
-Dialog_GroupBy_SecondaryFields::Dialog_GroupBy_SecondaryFields(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
-: Dialog_Layout(cobject, refGlade, false /* means no table title */),
+Dialog_GroupBy_SecondaryFields::Dialog_GroupBy_SecondaryFields(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
+: Dialog_Layout(cobject, builder, false /* means no table title */),
   m_treeview_fields(0),
   m_button_field_up(0),
   m_button_field_down(0),
@@ -38,9 +38,9 @@ Dialog_GroupBy_SecondaryFields::Dialog_GroupBy_SecondaryFields(BaseObjectType* c
   m_button_field_formatting(0),
   m_label_table_name(0)
 {
-  refGlade->get_widget("label_table_name", m_label_table_name);
+  builder->get_widget("label_table_name", m_label_table_name);
 
-  refGlade->get_widget("treeview_fields", m_treeview_fields);
+  builder->get_widget("treeview_fields", m_treeview_fields);
   if(m_treeview_fields)
   {
     m_model_fields = Gtk::ListStore::create(m_ColumnsFields);
@@ -70,22 +70,22 @@ Dialog_GroupBy_SecondaryFields::Dialog_GroupBy_SecondaryFields(BaseObjectType* c
   }
 
 
-  refGlade->get_widget("button_field_up", m_button_field_up);
+  builder->get_widget("button_field_up", m_button_field_up);
   m_button_field_up->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_GroupBy_SecondaryFields::on_button_field_up) );
 
-  refGlade->get_widget("button_field_down", m_button_field_down);
+  builder->get_widget("button_field_down", m_button_field_down);
   m_button_field_down->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_GroupBy_SecondaryFields::on_button_field_down) );
 
-  refGlade->get_widget("button_field_delete", m_button_field_delete);
+  builder->get_widget("button_field_delete", m_button_field_delete);
   m_button_field_delete->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_GroupBy_SecondaryFields::on_button_delete) );
 
-  refGlade->get_widget("button_field_add", m_button_field_add);
+  builder->get_widget("button_field_add", m_button_field_add);
   m_button_field_add->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_GroupBy_SecondaryFields::on_button_add_field) );
 
-  refGlade->get_widget("button_field_edit", m_button_field_edit);
+  builder->get_widget("button_field_edit", m_button_field_edit);
   m_button_field_edit->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_GroupBy_SecondaryFields::on_button_edit_field) );
 
-  refGlade->get_widget("button_field_formatting", m_button_field_formatting);
+  builder->get_widget("button_field_formatting", m_button_field_formatting);
   m_button_field_formatting->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_GroupBy_SecondaryFields::on_button_field_formatting) );
 
   show_all_children();

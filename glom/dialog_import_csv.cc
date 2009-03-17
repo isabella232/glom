@@ -38,87 +38,6 @@ namespace
 
 const gunichar DELIMITER = ',';
 
-#if 0
-// TODO: Perhaps we should change this to std::string to allow binary data, such
-// as images.
-// TODO: What escaping system is this? Can't we reuse some standard escaping function from somewhere? murrayc
-Glib::ustring::const_iterator advance_escape(const Glib::ustring::const_iterator& iter, const Glib::ustring::const_iterator& end, gunichar& c)
-{
-  // TODO: Throw an error if there is nothing to be escaped (iter == end)?
-  Glib::ustring::const_iterator walk = iter;
-  if(walk == end)
-    return walk;
-
-  if(*walk == 'x')
-  {
-    // Hexadecimal number, insert according unichar
-    ++ walk;
-    guint num = 0;
-
-    // TODO: Limit?
-    Glib::ustring::const_iterator pos = walk;
-    for(; (walk != end) && isxdigit(*walk); ++ walk)
-    {
-      num *= 16;
-
-      if(isdigit(*walk))
-        num += *walk - '0';
-      else if(isupper(*walk))
-        num += *walk - 'A' + 10;
-      else
-        num += *walk - 'a' + 10;
-    }
-
-    c = num;
-    return walk;
-  }
-  else if(isdigit(*walk) && *walk != '8' && *walk != '9')
-  {
-    guint num = 0;
-
-    // TODO: Limit?
-    for(; (walk != end) && isdigit(*walk) && *walk != '8' && *walk != '9'; ++ walk)
-    {
-      num *= 8;
-      num += *walk - '0';
-    }
-
-    c = num;
-    return walk;
-  }
-  else
-  {
-    switch(*walk)
-    {
-    case 'n':
-      c = '\n';
-      break;
-    case '\\':
-      c = '\\';
-      break;
-    case 'r':
-      c = '\r';
-      break;
-    case 'a':
-      c = '\a';
-      break;
-    case 'v':
-      c = '\f';
-      break;
-    case 't':
-      c = '\t';
-      break;
-    default:
-      // Unrecognized escape sequence, TODO: throw error?
-      c = *walk;
-      break;
-    }
-
-    ++ walk;
-    return walk;
-  }
-}
-#endif
 
 Glib::ustring::const_iterator advance_field(const Glib::ustring::const_iterator& iter, const Glib::ustring::const_iterator& end, Glib::ustring& field)
 {
@@ -231,17 +150,17 @@ Glib::ustring encoding_display(const Glib::ustring& name, const Glib::ustring& c
 namespace Glom
 {
 
-Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject), m_auto_detect_encoding(0), m_state(NONE)
 {
-  refGlade->get_widget("import_csv_fields", m_sample_view);
-  refGlade->get_widget("import_csv_target_table", m_target_table);
-  refGlade->get_widget("import_csv_encoding", m_encoding_combo);
-  refGlade->get_widget("import_csv_encoding_info", m_encoding_info);
-  refGlade->get_widget("import_csv_first_line_as_title", m_first_line_as_title);
-  refGlade->get_widget("import_csv_sample_rows", m_sample_rows);
-  refGlade->get_widget("import_csv_advice_label", m_advice_label);
-  refGlade->get_widget("import_csv_error_label", m_error_label);
+  builder->get_widget("import_csv_fields", m_sample_view);
+  builder->get_widget("import_csv_target_table", m_target_table);
+  builder->get_widget("import_csv_encoding", m_encoding_combo);
+  builder->get_widget("import_csv_encoding_info", m_encoding_info);
+  builder->get_widget("import_csv_first_line_as_title", m_first_line_as_title);
+  builder->get_widget("import_csv_sample_rows", m_sample_rows);
+  builder->get_widget("import_csv_advice_label", m_advice_label);
+  builder->get_widget("import_csv_error_label", m_error_label);
   if(!m_sample_view || !m_encoding_combo || !m_target_table || !m_encoding_info || !m_first_line_as_title || !m_sample_rows || !m_error_label)
     throw std::runtime_error("Missing widgets from glade file for Dialog_Import_CSV");
 

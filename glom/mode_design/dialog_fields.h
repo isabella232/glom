@@ -30,7 +30,7 @@ namespace Glom
 class Dialog_Fields : public Dialog_Design
 {
 public:
-  Dialog_Fields(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_Fields(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_Fields();
 
   virtual bool init_db_details(const Glib::ustring& table_name);

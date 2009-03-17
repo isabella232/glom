@@ -27,7 +27,7 @@
 namespace Glom
 {
 
-Dialog_GroupBy::Dialog_GroupBy(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_GroupBy::Dialog_GroupBy(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_label_group_by(0),
   m_label_sort_by(0),
@@ -40,16 +40,16 @@ Dialog_GroupBy::Dialog_GroupBy(BaseObjectType* cobject, const Glib::RefPtr<Gnome
   m_dialog_choose_secondary_fields(0),
   m_dialog_choose_sort_fields(0)
 {
-  refGlade->get_widget("label_group_by", m_label_group_by);
-  refGlade->get_widget("label_sort_by", m_label_sort_by);
-  refGlade->get_widget("label_secondary_fields", m_label_secondary_fields);
+  builder->get_widget("label_group_by", m_label_group_by);
+  builder->get_widget("label_sort_by", m_label_sort_by);
+  builder->get_widget("label_secondary_fields", m_label_secondary_fields);
 
-  refGlade->get_widget("button_select_group_by", m_button_field_group_by);
-  refGlade->get_widget("button_formatting_group_by", m_button_formatting_group_by);
-  refGlade->get_widget("button_select_sort_by", m_button_field_sort_by);
-  refGlade->get_widget("button_secondary_edit", m_button_secondary_fields);
+  builder->get_widget("button_select_group_by", m_button_field_group_by);
+  builder->get_widget("button_formatting_group_by", m_button_formatting_group_by);
+  builder->get_widget("button_select_sort_by", m_button_field_sort_by);
+  builder->get_widget("button_secondary_edit", m_button_secondary_fields);
 
-  refGlade->get_widget_derived("comboboxentry_border_width", m_comboboxentry_border_width);
+  builder->get_widget_derived("comboboxentry_border_width", m_comboboxentry_border_width);
 
   //Connect signals:
   m_button_field_group_by->signal_clicked().connect(sigc::mem_fun(*this, &Dialog_GroupBy::on_button_field_group_by));
@@ -129,7 +129,7 @@ void Dialog_GroupBy::on_button_field_sort_by()
 {
   if(!m_dialog_choose_sort_fields)
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_groupby_sort_fields");
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_groupby_sort_fields");
     if(refXml)
     {
       refXml->get_widget_derived("dialog_groupby_sort_fields", m_dialog_choose_sort_fields);
@@ -159,7 +159,7 @@ void Dialog_GroupBy::on_button_secondary_fields()
 {
   if(!m_dialog_choose_secondary_fields)
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_groupby_secondary_fields");
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_groupby_secondary_fields");
     if(refXml)
     {
       refXml->get_widget_derived("dialog_groupby_secondary_fields", m_dialog_choose_secondary_fields);

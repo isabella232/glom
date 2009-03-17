@@ -21,8 +21,8 @@
 #ifndef GLOM_DIALOG_DATABASE_PREFERENCES_H
 #define GLOM_DIALOG_DATABASE_PREFERENCES_H
 
-#include <libglademm.h>
-#include <libglademm/variablesmap.h>
+#include <gtkmm/builder.h>
+#include <glom/variablesmap.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/entry.h>
 #include <gtkmm/label.h>
@@ -39,7 +39,7 @@ class Dialog_Database_Preferences
     public Base_DB
 {
 public:
-  Dialog_Database_Preferences(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_Database_Preferences(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_Database_Preferences();
 
   sharedptr<SharedConnection> connect_to_server_with_connection_settings() const;
@@ -72,7 +72,7 @@ private:
   Glib::RefPtr<Gtk::ListStore> m_model_autoincrements;
 
 
-  Gnome::Glade::VariablesMap m_glade_variables_map;
+  Glom::VariablesMap m_glade_variables_map;
   Gtk::TreeView* m_treeview_autoincrements;
 
   ImageGlom* m_image;

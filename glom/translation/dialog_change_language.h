@@ -22,7 +22,7 @@
 #define GLOM_TRANSLATIONS_DIALOG_CHANGE_LANGUAGE_H
 
 #include "combobox_locale.h"
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 #include <gtkmm/dialog.h>
 
 namespace Glom
@@ -34,7 +34,7 @@ class Dialog_ChangeLanguage
   : public Gtk::Dialog
 {
 public:
-  Dialog_ChangeLanguage(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_ChangeLanguage(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_ChangeLanguage();
 
   Glib::ustring get_locale() const;

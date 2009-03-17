@@ -34,7 +34,7 @@
 namespace Glom
 {
 
-ComboEntryGlom::ComboEntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
+ComboEntryGlom::ComboEntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
 : Gtk::ComboBoxEntry(cobject)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY

@@ -25,14 +25,14 @@
 namespace Glom
 {
 
-Dialog_FlowTable::Dialog_FlowTable(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_FlowTable::Dialog_FlowTable(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_entry_title(0),
   m_spin_columns(0),
   m_flowtable(0)
 {
-  refGlade->get_widget("entry_title",  m_entry_title);
-  refGlade->get_widget("spin_columns",  m_spin_columns);
+  builder->get_widget("entry_title",  m_entry_title);
+  builder->get_widget("spin_columns",  m_spin_columns);
   
   show_all_children();
 }

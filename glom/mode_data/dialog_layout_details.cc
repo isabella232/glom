@@ -32,8 +32,8 @@
 namespace Glom
 {
 
-Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
-: Dialog_Layout(cobject, refGlade),
+Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
+: Dialog_Layout(cobject, builder),
   m_treeview_fields(0),
   m_treeview_column_title(0),
   m_treeview_column_group_columns(0),
@@ -58,20 +58,20 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
 {
   // Get the alternate sets of widgets, only one of which should be shown:
   // Derived classes will hide one and show the other:
-  refGlade->get_widget("hbox_table_widgets", m_box_table_widgets);
+  builder->get_widget("hbox_table_widgets", m_box_table_widgets);
   m_box_table_widgets->show();
-  refGlade->get_widget("hbox_related_table_widgets", m_box_related_table_widgets);
+  builder->get_widget("hbox_related_table_widgets", m_box_related_table_widgets);
   m_box_related_table_widgets->hide();
-  refGlade->get_widget("frame_related_table_navigation", m_box_related_navigation); 
+  builder->get_widget("frame_related_table_navigation", m_box_related_navigation); 
   m_box_related_navigation->hide();
 
   Gtk::Frame* box_calendar = 0;
-  refGlade->get_widget("frame_calendar", box_calendar); 
+  builder->get_widget("frame_calendar", box_calendar); 
   box_calendar->hide();
 
-  refGlade->get_widget("label_table_name", m_label_table_name);
+  builder->get_widget("label_table_name", m_label_table_name);
 
-  refGlade->get_widget("treeview_fields", m_treeview_fields);
+  builder->get_widget("treeview_fields", m_treeview_fields);
   if(m_treeview_fields)
   {
     m_treeview_fields->set_reorderable();
@@ -149,43 +149,43 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
     m_model_items->signal_row_changed().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_treemodel_row_changed) );
   }
 
-  refGlade->get_widget("button_up", m_button_up);
+  builder->get_widget("button_up", m_button_up);
   m_button_up->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_up) );
 
-  refGlade->get_widget("button_down", m_button_down);
+  builder->get_widget("button_down", m_button_down);
   m_button_down->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_down) );
 
-  refGlade->get_widget("button_field_delete", m_button_field_delete);
+  builder->get_widget("button_field_delete", m_button_field_delete);
   m_button_field_delete->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_field_delete) );
 
-  refGlade->get_widget("button_formatting", m_button_field_formatting);
+  builder->get_widget("button_formatting", m_button_field_formatting);
   m_button_field_formatting->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_field_formatting) );
 
-  refGlade->get_widget("button_add_field", m_button_add_field);
+  builder->get_widget("button_add_field", m_button_add_field);
   m_button_add_field->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_add_field) );
 
-  refGlade->get_widget("button_add_group", m_button_add_group);
+  builder->get_widget("button_add_group", m_button_add_group);
   m_button_add_group->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_add_group) );
 
-  refGlade->get_widget("button_add_notebook", m_button_add_notebook);
+  builder->get_widget("button_add_notebook", m_button_add_notebook);
   m_button_add_notebook->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_add_notebook) );
 
-  refGlade->get_widget("button_add_related", m_button_add_related);
+  builder->get_widget("button_add_related", m_button_add_related);
   m_button_add_related->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_add_related) );
 
-  refGlade->get_widget("button_add_related_calendar", m_button_add_related_calendar);
+  builder->get_widget("button_add_related_calendar", m_button_add_related_calendar);
   m_button_add_related_calendar->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_add_related_calendar) );
 
-  refGlade->get_widget("button_add_button", m_button_add_button);
+  builder->get_widget("button_add_button", m_button_add_button);
   m_button_add_button->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_add_button) );
 
-  refGlade->get_widget("button_add_text", m_button_add_text);
+  builder->get_widget("button_add_text", m_button_add_text);
   m_button_add_text->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_add_text) );
 
-  refGlade->get_widget("button_add_image", m_button_add_image);
+  builder->get_widget("button_add_image", m_button_add_image);
   m_button_add_image->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_add_image) );
 
-  refGlade->get_widget("button_edit", m_button_edit);
+  builder->get_widget("button_edit", m_button_edit);
   m_button_edit->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_edit) );
 
   //show_all_children();
@@ -546,7 +546,7 @@ sharedptr<LayoutItem_Button> Dialog_Layout_Details::offer_button_script_edit(con
 
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_button_script");
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_button_script");
 
     Dialog_ButtonScript* dialog = 0;
     refXml->get_widget_derived("window_button_script", dialog);
@@ -566,7 +566,7 @@ sharedptr<LayoutItem_Button> Dialog_Layout_Details::offer_button_script_edit(con
       delete dialog;
     }
   }
-  catch(const Gnome::Glade::XmlError& ex)
+  catch(const Gtk::BuilderError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }
@@ -581,7 +581,7 @@ sharedptr<LayoutItem_Text> Dialog_Layout_Details::offer_textobject_edit(const sh
 
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_textobject");
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_textobject");
 
     Dialog_TextObject* dialog = 0;
     refXml->get_widget_derived("window_textobject", dialog);
@@ -601,7 +601,7 @@ sharedptr<LayoutItem_Text> Dialog_Layout_Details::offer_textobject_edit(const sh
       delete dialog;
     }
   }
-  catch(const Gnome::Glade::XmlError& ex)
+  catch(const Gtk::BuilderError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }
@@ -621,7 +621,7 @@ sharedptr<Relationship> Dialog_Layout_Details::offer_relationship_list(const sha
 
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_relationship");
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_relationship");
 
     Dialog_ChooseRelationship* dialog = 0;
     refXml->get_widget_derived("dialog_choose_relationship", dialog);
@@ -642,7 +642,7 @@ sharedptr<Relationship> Dialog_Layout_Details::offer_relationship_list(const sha
       delete dialog;
     }
   }
-  catch(const Gnome::Glade::XmlError& ex)
+  catch(const Gtk::BuilderError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }

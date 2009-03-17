@@ -22,7 +22,9 @@
 #define GLOM_DIALOG_PROPERTIES_H
 
 #include <gtkmm/window.h>
-#include "placeholder.h"
+#include <gtkmm/treemodel.h>
+#include <gtkmm/button.h>
+#include <gtkmm/builder.h>
 
 namespace Glom
 {
@@ -30,7 +32,7 @@ namespace Glom
 class Dialog_Properties : public Gtk::Window
 {
 public:
-  Dialog_Properties(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_Properties(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_Properties();
 
   //Add a widget (probably a container) to the top half of the dialog:

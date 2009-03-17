@@ -332,7 +332,7 @@ void Box_Data_List_Related::on_dialog_layout_hide()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 Dialog_Layout* Box_Data_List_Related::create_layout_dialog() const
 {
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_data_layout");
+  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_data_layout");
   if(refXml)
   {
     Dialog_Layout_List_Related* dialog = 0;

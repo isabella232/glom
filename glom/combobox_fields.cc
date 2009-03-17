@@ -25,7 +25,7 @@
 namespace Glom
 {
 
-ComboBox_Fields::ComboBox_Fields(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
+ComboBox_Fields::ComboBox_Fields(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
 : Gtk::ComboBox(cobject),
   m_renderer_title(0)
 {

@@ -33,7 +33,7 @@
 #include <gtkmm/uimanager.h>
 //#include <gtkmm/toggleaction.h>
 #include <gtkmm/ruler.h>
-#include <libglademm/xml.h>
+#include <gtkmm/builder.h>
 
 namespace Glom
 {
@@ -43,7 +43,7 @@ class Window_PrintLayout_Edit
   public View_Composite_Glom
 {
 public:
-  Window_PrintLayout_Edit(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Window_PrintLayout_Edit(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Window_PrintLayout_Edit();
 
   virtual bool init_db_details(const Glib::ustring& table_name);

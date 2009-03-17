@@ -26,7 +26,7 @@
 namespace Glom
 {
 
-Dialog_ProgressCreating::Dialog_ProgressCreating(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_ProgressCreating::Dialog_ProgressCreating(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Window(cobject),
   m_progress(0),
   m_label_message(0),
@@ -34,8 +34,8 @@ Dialog_ProgressCreating::Dialog_ProgressCreating(BaseObjectType* cobject, const 
   m_running(false)
 {
   //set_modal();
-  refGlade->get_widget("progressbar", m_progress);
-  refGlade->get_widget("label_message", m_label_message);
+  builder->get_widget("progressbar", m_progress);
+  builder->get_widget("label_message", m_label_message);
   //m_progress->show();
 }
 

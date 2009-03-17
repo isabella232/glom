@@ -23,11 +23,11 @@
 namespace Glom
 {
 
-Dialog_ChooseUser::Dialog_ChooseUser(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_ChooseUser::Dialog_ChooseUser(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_combo_name(0)
 {
-  refGlade->get_widget_derived("combo_user_name", m_combo_name);
+  builder->get_widget_derived("combo_user_name", m_combo_name);
 }
 
 Dialog_ChooseUser::~Dialog_ChooseUser()

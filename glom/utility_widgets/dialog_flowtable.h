@@ -22,7 +22,7 @@
 #define DIALOG_FLOWTABLE_H
 
 #include <gtkmm.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 #include "../mode_data/flowtablewithfields.h"
 #include "../base_db.h"
 
@@ -35,7 +35,7 @@ class Dialog_FlowTable
 
 {
 public:
-  Dialog_FlowTable(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_FlowTable(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_FlowTable();
 
   void set_flowtable(FlowTableWithFields* flowtable);

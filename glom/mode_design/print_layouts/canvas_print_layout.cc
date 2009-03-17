@@ -297,7 +297,7 @@ sharedptr<LayoutItem_Portal> Canvas_PrintLayout::offer_related_records(const sha
 
   Dialog_Layout_List_Related* dialog = 0;
 
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_data_layout");
+  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_data_layout");
   if(refXml)
     refXml->get_widget_derived("window_data_layout", dialog);
   
@@ -393,13 +393,13 @@ void Canvas_PrintLayout::on_context_menu_formatting()
 
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXmlFormatting = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_text_format");
+    Glib::RefPtr<Gtk::Builder> refXmlFormatting = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_text_format");
     refXmlFormatting->get_widget_derived("window_text_format", m_dialog_format);
     add_view(m_dialog_format);
 
     m_dialog_format->signal_hide().connect( sigc::mem_fun(*this, &Canvas_PrintLayout::on_dialog_format_hide) );
   }
-  catch(const Gnome::Glade::XmlError& ex)
+  catch(const Gtk::BuilderError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }

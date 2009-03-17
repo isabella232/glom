@@ -29,7 +29,7 @@
 #include <libglom/appstate.h>
 #include "base_db.h"
 #include <libglom/busy_cursor.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 
 namespace Glom
 {
@@ -43,7 +43,8 @@ class Box_WithButtons :
 {
 public: 
   Box_WithButtons();
-  Box_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+
+  Box_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 
   ///For use with libglademm's get_widget_derived():
   Box_WithButtons(BaseObjectType* cobject);

@@ -34,7 +34,7 @@
 namespace Glom
 {
 
-TextViewGlom::TextViewGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
+TextViewGlom::TextViewGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
 : Gtk::ScrolledWindow(cobject),
   m_glom_type(Field::TYPE_TEXT)
 {

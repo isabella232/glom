@@ -24,7 +24,7 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/entry.h>
 #include <libglom/data_structure/field.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 
 namespace Glom
 {
@@ -37,7 +37,7 @@ bool glom_show_dialog_invalid_data(Field::glom_field_type glom_type);
 class Dialog_InvalidData : public Gtk::Dialog
 {
 public:
-  Dialog_InvalidData(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_InvalidData(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_InvalidData();
 
   /** Show appropriate example data for this field type

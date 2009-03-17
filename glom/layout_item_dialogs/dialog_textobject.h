@@ -22,7 +22,7 @@
 #define DIALOG_TEXTOBJECT_H
 
 #include <gtkmm.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 #include <libglom/data_structure/layout/layoutitem_text.h>
 #include "../base_db.h"
 
@@ -35,7 +35,7 @@ class Dialog_TextObject
 
 {
 public:
-  Dialog_TextObject(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_TextObject(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_TextObject();
 
   void set_textobject(const sharedptr<const LayoutItem_Text>& textobject, const Glib::ustring& table_name, bool show_title = true);

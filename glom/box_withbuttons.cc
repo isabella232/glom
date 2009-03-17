@@ -41,7 +41,7 @@ Box_WithButtons::Box_WithButtons()
   m_Button_Cancel.signal_clicked().connect(sigc::mem_fun(*this, &Box_WithButtons::on_Button_Cancel));
 }
 
-Box_WithButtons::Box_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
+Box_WithButtons::Box_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
 : Gtk::VBox(cobject),
   m_Box_Buttons(false, Utils::DEFAULT_SPACING_SMALL),
   m_Button_Cancel(Gtk::Stock::CANCEL)

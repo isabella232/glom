@@ -44,7 +44,7 @@ Dialog_ChooseID::Dialog_ChooseID()
 {
 }
 
-Dialog_ChooseID::Dialog_ChooseID(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_ChooseID::Dialog_ChooseID(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_label_table_name(0),
   m_pBox_QuickFind(0),
@@ -54,15 +54,15 @@ Dialog_ChooseID::Dialog_ChooseID(BaseObjectType* cobject, const Glib::RefPtr<Gno
   m_document(0),
   m_stage(STAGE_INVALID)
 {
-  refGlade->get_widget("label_table_name", m_label_table_name);
-  refGlade->get_widget("alignment_parent", m_alignment_parent);
+  builder->get_widget("label_table_name", m_label_table_name);
+  builder->get_widget("alignment_parent", m_alignment_parent);
 
-  refGlade->get_widget("hbox_quickfind", m_pBox_QuickFind);
-  refGlade->get_widget("entry_quickfind", m_pEntry_QuickFind);
+  builder->get_widget("hbox_quickfind", m_pBox_QuickFind);
+  builder->get_widget("entry_quickfind", m_pEntry_QuickFind);
   m_pEntry_QuickFind->signal_activate().connect(
    sigc::mem_fun(*this, &Dialog_ChooseID::on_button_quickfind) ); //Pressing Enter here is like pressing Find.
 
-  refGlade->get_widget("button_quickfind", m_pButton_QuickFind);
+  builder->get_widget("button_quickfind", m_pButton_QuickFind);
   m_pButton_QuickFind->signal_clicked().connect(
     sigc::mem_fun(*this, &Dialog_ChooseID::on_button_quickfind) );
 

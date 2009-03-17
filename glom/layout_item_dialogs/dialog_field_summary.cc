@@ -25,16 +25,16 @@
 namespace Glom
 {
 
-Dialog_FieldSummary::Dialog_FieldSummary(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_FieldSummary::Dialog_FieldSummary(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_label_field(0),
   m_combo_summarytype(0),
   m_button_field(0)
 {
-  refGlade->get_widget("label_field", m_label_field);
-  refGlade->get_widget_derived("combobox_summarytype", m_combo_summarytype);
+  builder->get_widget("label_field", m_label_field);
+  builder->get_widget_derived("combobox_summarytype", m_combo_summarytype);
 
-  refGlade->get_widget("button_field", m_button_field);
+  builder->get_widget("button_field", m_button_field);
 
   //Connect signals:
   m_button_field->signal_clicked().connect(sigc::mem_fun(*this, &Dialog_FieldSummary::on_button_field));

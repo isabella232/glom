@@ -43,7 +43,7 @@ class Window_Translations;
 class App_Glom : public GlomBakery::App_WithDoc_Gtk
 {
 public:
-  App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~App_Glom();
 
   virtual bool init(const Glib::ustring& document_uri = Glib::ustring()); //override

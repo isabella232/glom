@@ -25,7 +25,7 @@
 namespace Glom
 {
 
-Dialog_ChooseField::Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_ChooseField::Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_combo_relationship(0),
   m_button_select(0),
@@ -33,15 +33,15 @@ Dialog_ChooseField::Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefP
   m_treeview(0),
   m_document(0)
 {
-  refGlade->get_widget("checkbutton_show_related_relationships", m_checkbutton_show_related_relationships);
+  builder->get_widget("checkbutton_show_related_relationships", m_checkbutton_show_related_relationships);
   m_checkbutton_show_related_relationships->set_active(false); //Start with the simpler list, to avoid confusing people.
   m_checkbutton_show_related_relationships->signal_toggled().connect(sigc::mem_fun(*this, &Dialog_ChooseField::on_checkbutton_related_relationships_toggled));
 
-  refGlade->get_widget("button_select", m_button_select);
-  refGlade->get_widget_derived("combobox_relationship", m_combo_relationship);
+  builder->get_widget("button_select", m_button_select);
+  builder->get_widget_derived("combobox_relationship", m_combo_relationship);
   m_combo_relationship->signal_changed().connect(sigc::mem_fun(*this, &Dialog_ChooseField::on_combo_relationship_changed));
 
-  refGlade->get_widget("treeview_fields", m_treeview);
+  builder->get_widget("treeview_fields", m_treeview);
 
   if(m_treeview)
   {

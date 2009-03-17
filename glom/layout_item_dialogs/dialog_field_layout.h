@@ -37,7 +37,7 @@ class Dialog_FieldLayout
    public View_Composite_Glom //Give it access to the document.
 {
 public:
-  Dialog_FieldLayout(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_FieldLayout(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_FieldLayout();
 
   /**

@@ -21,7 +21,7 @@
 #ifndef GLOM_DIALOG_ADDRELATEDTABLE_H
 #define GLOM_DIALOG_ADDRELATEDTABLE_H
 
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/entry.h>
 #include <glom/utility_widgets/combo_textglade.h>
@@ -35,7 +35,7 @@ class Dialog_AddRelatedTable
     public Base_DB
 {
 public:
-  Dialog_AddRelatedTable(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_AddRelatedTable(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_AddRelatedTable();
 
   void set_fields(const Glib::ustring& table_name);

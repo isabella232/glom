@@ -22,7 +22,7 @@
 #define GLOM_DIALOG_TEXT_FORMATTING_H
 
 #include <gtkmm.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 #include <libglom/document/document_glom.h>
 #include <glom/layout_item_dialogs/box_formatting.h>
 
@@ -36,7 +36,7 @@ class Dialog_TextFormatting
   public View_Composite_Glom
 {
 public:
-  Dialog_TextFormatting(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_TextFormatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_TextFormatting();
 
   //Allow direct access, for convenience:  

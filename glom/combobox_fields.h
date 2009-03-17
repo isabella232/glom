@@ -22,7 +22,7 @@
 #define GLOM_TRANSLATION_COMBOBOX_FIELDS_HH
 
 #include <gtkmm/combobox.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 #include <libglom/data_structure/field.h>
 #include <libglom/document/document_glom.h>
 #include <libglom/sharedptr.h>
@@ -35,7 +35,7 @@ namespace Glom
 class ComboBox_Fields : public Gtk::ComboBox
 {
 public:
-  ComboBox_Fields(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  ComboBox_Fields(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~ComboBox_Fields();
 
   typedef std::vector< sharedptr<Field> > type_vecFields;

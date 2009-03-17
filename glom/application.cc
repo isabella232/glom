@@ -92,7 +92,7 @@ static const int GLOM_RESPONSE_BROWSE_NETWORK = 1;
 // Global application variable
 App_Glom* global_application = NULL;
 
-App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
   // Note cobject is actually a GtkWindow, not a HildonWindow, because the
   // glade file specified the type as GtkWindow.
   // ParentWindow is defined in Bakery.
@@ -143,9 +143,9 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml
   } 
 
   //Load widgets from glade file:
-  refGlade->get_widget("bakery_vbox", m_pBoxTop);
-  refGlade->get_widget("sidebar_vbox", m_pBoxSidebar);
-  refGlade->get_widget_derived("vbox_frame", m_pFrame); //This one is derived. There's a lot happening here.
+  builder->get_widget("bakery_vbox", m_pBoxTop);
+  builder->get_widget("sidebar_vbox", m_pBoxSidebar);
+  builder->get_widget_derived("vbox_frame", m_pFrame); //This one is derived. There's a lot happening here.
 
   add_mime_type("application/x-glom"); //TODO: make this actually work - we need to register it properly.
 
@@ -851,10 +851,10 @@ Glib::ustring App_Glom::get_file_uri_without_extension(const Glib::ustring& uri)
 GlomBakery::App* App_Glom::new_instance() //Override
 {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "window_main");
+  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "window_main");
 #else
-  std::auto_ptr<Gnome::Glade::XmlError> error;
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "window_main", "", error);
+  std::auto_ptr<Glib::Error> error;
+  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "window_main", "", error);
   if(error.get())
     return 0;
 #endif
@@ -1182,10 +1182,10 @@ bool App_Glom::offer_new_or_existing()
 {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   //Offer to load an existing document, or start a new one.
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "dialog_existing_or_new");
+  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_existing_or_new");
 #else
-  std::auto_ptr<Gnome::Glade::XmlError> error;
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "dialog_existing_or_new", "", error);
+  std::auto_ptr<Glib::Error> error;
+  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_existing_or_new", "", error);
   if(error.get())
     return false;
 #endif
@@ -1443,7 +1443,7 @@ bool App_Glom::recreate_database(bool& user_cancelled)
   //Show the user that something is happening, because the INSERTS might take time.
   //TOOD: This doesn't actually show up until near the end, even with Gtk::Main::instance()->iteration().
   std::auto_ptr<Dialog_ProgressCreating> dialog_progress;
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "window_progress");
+  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "window_progress");
   if(refXml)
   {
     Dialog_ProgressCreating* dialog_progress_temp = 0;
@@ -2298,7 +2298,7 @@ void App_Glom::stop_self_hosting_of_document_database()
 
 void App_Glom::on_menu_developer_changelanguage()
 {
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_change_language");
+  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_change_language");
   if(refXml)
   {
     Dialog_ChangeLanguage* dialog = 0;
@@ -2329,7 +2329,7 @@ void App_Glom::on_menu_developer_translations()
 {
   if(!m_window_translations)
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_translations");
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_translations");
     refXml->get_widget_derived("window_translations", m_window_translations);
     if(m_window_translations)
     {

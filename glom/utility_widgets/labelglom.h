@@ -25,7 +25,7 @@
 #include "layoutwidgetbase.h"
 #include "layoutwidgetutils.h"
 #include <libglom/data_structure/layout/layoutitem_button.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 
 namespace Glom
 {

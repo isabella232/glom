@@ -22,7 +22,7 @@
 #define DIALOG_SCRIPTLIBRARY_H
 
 #include <gtkmm.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 #include <libglom/data_structure/layout/layoutitem_button.h>
 #include <glom/base_db.h>
 #include <gtksourceviewmm/sourceview.h>
@@ -37,7 +37,7 @@ class Dialog_ScriptLibrary
 
 {
 public:
-  Dialog_ScriptLibrary(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_ScriptLibrary(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_ScriptLibrary();
 
   virtual void load_from_document();

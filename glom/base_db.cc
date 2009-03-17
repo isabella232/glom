@@ -1627,21 +1627,21 @@ sharedptr<LayoutItem_Field> Base_DB::offer_field_list(const sharedptr<const Layo
 {
   sharedptr<LayoutItem_Field> result;
 
-  Glib::RefPtr<Gnome::Glade::Xml> refXml;
+  Glib::RefPtr<Gtk::Builder> refXml;
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_field");
+    refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_field");
   }
-  catch(const Gnome::Glade::XmlError& ex)
+  catch(const Gtk::BuilderError& ex)
   {
     std::cerr << ex.what() << std::endl;
     return result;
   }
 #else
-  std::auto_ptr<Gnome::Glade::XmlError> error;
-  refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_field", "", error);
+  std::auto_ptr<Gtk::BuilderError> error;
+  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_field", "", error);
   if(error.get())
   {
     std::cerr << error->what() << std::endl;
@@ -1681,7 +1681,7 @@ sharedptr<LayoutItem_Field> Base_DB::offer_field_formatting(const sharedptr<cons
 
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_layout_field_properties");
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_layout_field_properties");
 
     Dialog_FieldLayout* dialog = 0;
     refXml->get_widget_derived("dialog_layout_field_properties", dialog);
@@ -1709,7 +1709,7 @@ sharedptr<LayoutItem_Field> Base_DB::offer_field_formatting(const sharedptr<cons
       delete dialog;
     }
   }
-  catch(const Gnome::Glade::XmlError& ex)
+  catch(const Gtk::BuilderError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }
@@ -1723,7 +1723,7 @@ sharedptr<LayoutItem_Text> Base_DB::offer_textobject(const sharedptr<LayoutItem_
 
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_textobject");
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_textobject");
 
     Dialog_TextObject* dialog = 0;
     refXml->get_widget_derived("window_textobject", dialog);
@@ -1744,7 +1744,7 @@ sharedptr<LayoutItem_Text> Base_DB::offer_textobject(const sharedptr<LayoutItem_
       delete dialog;
     }
   }
-  catch(const Gnome::Glade::XmlError& ex)
+  catch(const Gtk::BuilderError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }
@@ -1758,7 +1758,7 @@ sharedptr<LayoutItem_Image> Base_DB::offer_imageobject(const sharedptr<LayoutIte
 
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_imageobject");
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_imageobject");
 
     Dialog_ImageObject* dialog = 0;
     refXml->get_widget_derived("window_imageobject", dialog);
@@ -1779,7 +1779,7 @@ sharedptr<LayoutItem_Image> Base_DB::offer_imageobject(const sharedptr<LayoutIte
       delete dialog;
     }
   }
-  catch(const Gnome::Glade::XmlError& ex)
+  catch(const Gtk::BuilderError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }
@@ -1793,7 +1793,7 @@ sharedptr<LayoutItem_Notebook> Base_DB::offer_notebook(const sharedptr<LayoutIte
 
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_notebook");
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_notebook");
 
     Dialog_Notebook* dialog = 0;
     refXml->get_widget_derived("dialog_notebook", dialog);
@@ -1815,7 +1815,7 @@ sharedptr<LayoutItem_Notebook> Base_DB::offer_notebook(const sharedptr<LayoutIte
       delete dialog;
     }
   }
-  catch(const Gnome::Glade::XmlError& ex)
+  catch(const Gtk::BuilderError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }

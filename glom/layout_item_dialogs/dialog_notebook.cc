@@ -27,15 +27,15 @@
 namespace Glom
 {
 
-Dialog_Notebook::Dialog_Notebook(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
-: Dialog_Layout(cobject, refGlade, false /* means no table title */),
+Dialog_Notebook::Dialog_Notebook(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
+: Dialog_Layout(cobject, builder, false /* means no table title */),
   m_treeview(0),
   m_button_up(0),
   m_button_down(0),
   m_button_add(0),
   m_button_delete(0)
 {
-  refGlade->get_widget("treeview", m_treeview);
+  builder->get_widget("treeview", m_treeview);
   if(m_treeview)
   {
     m_model = Gtk::ListStore::create(m_ColumnsTabs);
@@ -61,16 +61,16 @@ Dialog_Notebook::Dialog_Notebook(BaseObjectType* cobject, const Glib::RefPtr<Gno
   }
 
 
-  refGlade->get_widget("button_up", m_button_up);
+  builder->get_widget("button_up", m_button_up);
   m_button_up->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Notebook::on_button_up) );
 
-  refGlade->get_widget("button_down", m_button_down);
+  builder->get_widget("button_down", m_button_down);
   m_button_down->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Notebook::on_button_down) );
 
-  refGlade->get_widget("button_delete", m_button_delete);
+  builder->get_widget("button_delete", m_button_delete);
   m_button_delete->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Notebook::on_button_delete) );
 
-  refGlade->get_widget("button_add", m_button_add);
+  builder->get_widget("button_add", m_button_add);
   m_button_add->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Notebook::on_button_add) );
 
   show_all_children();

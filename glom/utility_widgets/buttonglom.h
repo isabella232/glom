@@ -24,7 +24,7 @@
 #include <gtkmm.h>
 #include "layoutwidgetutils.h"
 #include <libglom/data_structure/layout/layoutitem_button.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 
 namespace Glom
 {
@@ -36,7 +36,7 @@ class ButtonGlom
   public LayoutWidgetUtils
 {
 public:
-  explicit ButtonGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  explicit ButtonGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   explicit ButtonGlom();
   virtual ~ButtonGlom();
 

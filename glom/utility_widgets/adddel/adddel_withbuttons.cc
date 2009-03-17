@@ -34,8 +34,8 @@ AddDel_WithButtons::AddDel_WithButtons()
   init();
 }
 
-AddDel_WithButtons::AddDel_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
-: AddDel(cobject, refGlade),
+AddDel_WithButtons::AddDel_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
+: AddDel(cobject, builder),
   m_HBox(false, Utils::DEFAULT_SPACING_SMALL),
   m_Button_Add(Gtk::Stock::ADD),
   m_Button_Del(Gtk::Stock::DELETE),

@@ -26,13 +26,13 @@
 namespace Glom
 {
 
-Dialog_IdentifyOriginal::Dialog_IdentifyOriginal(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_IdentifyOriginal::Dialog_IdentifyOriginal(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_label_original(0),
   m_combo_locale(0)
 {
-  refGlade->get_widget("label_original", m_label_original);
-  refGlade->get_widget_derived("combobox_locale", m_combo_locale);
+  builder->get_widget("label_original", m_label_original);
+  builder->get_widget_derived("combobox_locale", m_combo_locale);
 
   m_combo_locale->set_selected_locale(TranslatableItem::get_current_locale());
 }

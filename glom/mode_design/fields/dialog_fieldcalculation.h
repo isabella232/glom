@@ -22,7 +22,7 @@
 #define DIALOG_FIELDCALCULATION_H
 
 #include <gtkmm.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 #include <libglom/data_structure/field.h>
 #include "../../base_db.h"
 #include <gtksourceviewmm/sourceview.h>
@@ -36,7 +36,7 @@ class Dialog_FieldCalculation
 
 {
 public:
-  Dialog_FieldCalculation(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_FieldCalculation(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_FieldCalculation();
 
   void set_field(const sharedptr<const Field>& field, const Glib::ustring& table_name);

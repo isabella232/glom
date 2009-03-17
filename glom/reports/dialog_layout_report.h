@@ -33,7 +33,7 @@ namespace Glom
 class Dialog_Layout_Report : public Dialog_Layout
 {
 public:
-  Dialog_Layout_Report(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_Layout_Report(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_Layout_Report();
 
   void set_report(const Glib::ustring& table_name, const sharedptr<const Report>& report);

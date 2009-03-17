@@ -34,15 +34,15 @@
 namespace Glom
 {
 
-Dialog_ScriptLibrary::Dialog_ScriptLibrary(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_ScriptLibrary::Dialog_ScriptLibrary(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject)
 {
   //Get child widgets:
-  refGlade->get_widget_derived("combobox_name", m_combobox_name);
-  refGlade->get_widget("textview_script",  m_text_view);
-  refGlade->get_widget("button_check",  m_button_check);
-  refGlade->get_widget("button_add",  m_button_add);
-  refGlade->get_widget("button_remove",  m_button_remove);
+  builder->get_widget_derived("combobox_name", m_combobox_name);
+  builder->get_widget("textview_script",  m_text_view);
+  builder->get_widget("button_check",  m_button_check);
+  builder->get_widget("button_add",  m_button_add);
+  builder->get_widget("button_remove",  m_button_remove);
 
   //Connect signals:
   m_button_check->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_ScriptLibrary::on_button_check) );
@@ -91,11 +91,11 @@ void Dialog_ScriptLibrary::on_button_add()
   Dialog_NewScript* dialog = 0;
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_new_library_script");
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_new_library_script");
 
     refXml->get_widget_derived("dialog_new_library_script", dialog);
   }
-  catch(const Gnome::Glade::XmlError& ex)
+  catch(const Gtk::BuilderError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }

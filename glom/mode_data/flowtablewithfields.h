@@ -228,8 +228,6 @@ private:
                                 bool ignore_error = false);
   
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-
-  sharedptr<LayoutItem_Portal> get_layout_item_from_relation();
   
   Box_Data_List_Related* create_related(const sharedptr<LayoutItem_Portal>& portal, bool show_title = true);
   Box_Data_Calendar_Related* create_related_calendar(const sharedptr<LayoutItem_CalendarPortal>& portal, bool show_title = true);

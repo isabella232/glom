@@ -32,8 +32,9 @@
 #include <gtkmm/liststore.h>
 #include <gtkmm/combobox.h>
 #include <gtkmm/spinbutton.h>
+#include <gtkmm/builder.h>
 #include <libgdamm/datamodelimport.h>
-#include <libglademm/xml.h>
+
 
 namespace Glom
 {
@@ -52,7 +53,7 @@ public:
     PARSED
   };
 
-  Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 
   void import(const Glib::ustring& uri, const Glib::ustring& into_table);
   

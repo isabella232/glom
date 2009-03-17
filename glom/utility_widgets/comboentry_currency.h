@@ -23,7 +23,7 @@
 
 #include <libglom/data_structure/iso_codes.h>
 #include <gtkmm/comboboxentry.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 
 #include <gtkmm/liststore.h>
 
@@ -34,7 +34,7 @@ namespace Glom
 class ComboEntry_Currency : public Gtk::ComboBoxEntry
 {
 public:
-  ComboEntry_Currency(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  ComboEntry_Currency(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~ComboEntry_Currency();
 
 private:

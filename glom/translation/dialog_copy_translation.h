@@ -23,7 +23,7 @@
 
 #include "combobox_locale.h"
 #include <libglom/document/document_glom.h> // For View_Composite_Glom
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 #include <gtkmm/dialog.h>
 
 namespace Glom
@@ -35,7 +35,7 @@ class Dialog_CopyTranslation
   : public Gtk::Dialog
 {
 public:
-  Dialog_CopyTranslation(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_CopyTranslation(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_CopyTranslation();
 
   Glib::ustring get_locale() const;

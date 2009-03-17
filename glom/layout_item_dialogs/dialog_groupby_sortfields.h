@@ -23,7 +23,7 @@
 
 #include "../base_db.h"
 #include "../mode_data/dialog_layout.h"
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 
 namespace Glom
 {
@@ -32,7 +32,7 @@ class Dialog_GroupBy_SortFields
  : public Dialog_Layout //It has some useful stuff
 {
 public:
-  Dialog_GroupBy_SortFields(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_GroupBy_SortFields(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_GroupBy_SortFields();
 
 

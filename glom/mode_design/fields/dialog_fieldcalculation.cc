@@ -32,12 +32,12 @@
 namespace Glom
 {
 
-Dialog_FieldCalculation::Dialog_FieldCalculation(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_FieldCalculation::Dialog_FieldCalculation(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject)
 {
-  refGlade->get_widget("textview_calculation",  m_text_view);
-  refGlade->get_widget("button_test",  m_button_test);
-  refGlade->get_widget("label_triggered_by", m_label_triggered_by);
+  builder->get_widget("textview_calculation",  m_text_view);
+  builder->get_widget("button_test",  m_button_test);
+  builder->get_widget("label_triggered_by", m_label_triggered_by);
 
   m_button_test->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_FieldCalculation::on_button_test) );
   //on_foreach_connect(*this);

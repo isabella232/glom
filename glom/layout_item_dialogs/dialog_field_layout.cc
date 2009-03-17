@@ -26,7 +26,7 @@
 namespace Glom
 {
 
-Dialog_FieldLayout::Dialog_FieldLayout(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_FieldLayout::Dialog_FieldLayout(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_label_field_name(0),
   m_checkbutton_editable(0),
@@ -38,26 +38,26 @@ Dialog_FieldLayout::Dialog_FieldLayout(BaseObjectType* cobject, const Glib::RefP
   m_radiobutton_custom_formatting(0),
   m_box_formatting(0)
 {
-  refGlade->get_widget("label_field_name", m_label_field_name);
-  refGlade->get_widget("checkbutton_editable", m_checkbutton_editable);
+  builder->get_widget("label_field_name", m_label_field_name);
+  builder->get_widget("checkbutton_editable", m_checkbutton_editable);
 
-  refGlade->get_widget("radiobutton_use_title_default", m_radiobutton_title_default);
-  refGlade->get_widget("label_title_default", m_label_title_default);
-  refGlade->get_widget("radiobutton_use_title_custom", m_radiobutton_title_custom);
-  refGlade->get_widget("entry_title_custom", m_entry_title_custom);
+  builder->get_widget("radiobutton_use_title_default", m_radiobutton_title_default);
+  builder->get_widget("label_title_default", m_label_title_default);
+  builder->get_widget("radiobutton_use_title_custom", m_radiobutton_title_custom);
+  builder->get_widget("entry_title_custom", m_entry_title_custom);
 
   //Get the place to put the Formatting stuff:
-  refGlade->get_widget("radiobutton_use_custom", m_radiobutton_custom_formatting);
-  refGlade->get_widget("box_formatting_placeholder", m_box_formatting_placeholder);
+  builder->get_widget("radiobutton_use_custom", m_radiobutton_custom_formatting);
+  builder->get_widget("box_formatting_placeholder", m_box_formatting_placeholder);
 
 
   //Get the formatting stuff:
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXmlFormatting = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "box_formatting");
+    Glib::RefPtr<Gtk::Builder> refXmlFormatting = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "box_formatting");
     refXmlFormatting->get_widget_derived("box_formatting", m_box_formatting);
   }
-  catch(const Gnome::Glade::XmlError& ex)
+  catch(const Gtk::BuilderError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }

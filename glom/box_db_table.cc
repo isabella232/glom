@@ -30,8 +30,8 @@ Box_DB_Table::Box_DB_Table()
 {
 }
 
-Box_DB_Table::Box_DB_Table(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
-: Box_WithButtons(cobject, refGlade)
+Box_DB_Table::Box_DB_Table(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
+: Box_WithButtons(cobject, builder)
 {
 }
 

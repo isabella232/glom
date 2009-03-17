@@ -36,7 +36,7 @@ ImageGlom::ImageGlom()
   init();
 }
 
-ImageGlom::ImageGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
+ImageGlom::ImageGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
 : Gtk::EventBox(cobject),
   m_image(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG), //The widget is invisible if we don't specify an image.
   m_pMenuPopup_UserMode(0)

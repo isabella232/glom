@@ -26,7 +26,7 @@
 #include <gtkmm.h>
 #include <libglom/data_structure/field.h>
 #include "layoutwidgetfield.h"
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 
 namespace Glom
 {
@@ -38,7 +38,7 @@ class EntryGlom
   public LayoutWidgetField
 {
 public:
-  explicit EntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  explicit EntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   explicit EntryGlom(Field::glom_field_type glom_type = Field::TYPE_TEXT);
   virtual ~EntryGlom();
 

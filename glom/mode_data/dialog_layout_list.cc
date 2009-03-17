@@ -30,8 +30,8 @@
 namespace Glom
 {
 
-Dialog_Layout_List::Dialog_Layout_List(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
-: Dialog_Layout_Details(cobject, refGlade)
+Dialog_Layout_List::Dialog_Layout_List(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
+: Dialog_Layout_Details(cobject, builder)
 {
   //These do not make sense in a list:
   m_button_add_notebook->hide();
@@ -42,7 +42,7 @@ Dialog_Layout_List::Dialog_Layout_List(BaseObjectType* cobject, const Glib::RefP
   //We don't want this part of the dialog:
   //(We share one glade definition for several dialogs.)
   Gtk::Frame* box_calendar = 0;
-  refGlade->get_widget("frame_calendar", box_calendar); 
+  builder->get_widget("frame_calendar", box_calendar); 
   box_calendar->hide();
 
   //We don't use this column:

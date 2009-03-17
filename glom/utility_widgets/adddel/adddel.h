@@ -24,7 +24,7 @@
 #include <gtkmm.h>
 #include <libglom/data_structure/field.h>
 #include <libgdamm.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 
 #include <vector>
 #include <map>
@@ -69,7 +69,7 @@ public:
   friend class InnerIgnore; //declared below.
 
   AddDel();
-  AddDel(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  AddDel(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~AddDel();
 
   void set_allow_user_actions(bool bVal = true);

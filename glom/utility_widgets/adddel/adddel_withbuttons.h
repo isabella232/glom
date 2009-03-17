@@ -30,7 +30,7 @@ class AddDel_WithButtons : public AddDel
 {
 public: 
   AddDel_WithButtons();
-  AddDel_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  AddDel_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~AddDel_WithButtons();
 
   virtual void set_allow_add(bool val = true); //override

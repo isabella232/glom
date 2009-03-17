@@ -60,7 +60,7 @@ class Frame_Glom :
   public Base_DB //Inherits from View_Composite.
 {
 public: 
-  Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Frame_Glom();
 
   void set_databases_selected(const Glib::ustring& strName);

@@ -74,8 +74,8 @@
 namespace Glom
 {
 
-Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
-: PlaceHolder(cobject, refGlade),
+Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
+: PlaceHolder(cobject, builder),
   m_pLabel_Table(0),
   m_box_footer(0),
   m_pLabel_Mode(0),
@@ -105,11 +105,11 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   m_pDialogConnection(0)
 {
   //Load widgets from glade file:
-  refGlade->get_widget("label_table_name", m_pLabel_Table);
+  builder->get_widget("label_table_name", m_pLabel_Table);
 
-  refGlade->get_widget("hbox_footer", m_box_footer);
-  refGlade->get_widget("label_mode", m_pLabel_Mode);
-  refGlade->get_widget("label_user_level", m_pLabel_userlevel);
+  builder->get_widget("hbox_footer", m_box_footer);
+  builder->get_widget("label_mode", m_pLabel_Mode);
+  builder->get_widget("label_user_level", m_pLabel_userlevel);
   
   //Hide the footer on maemo (It takes too much space),
   //and reduce the border width:
@@ -118,25 +118,25 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade:
   set_border_width(Glom::Utils::DEFAULT_SPACING_LARGE);
   #endif
 
-  refGlade->get_widget("hbox_quickfind", m_pBox_QuickFind);
+  builder->get_widget("hbox_quickfind", m_pBox_QuickFind);
   m_pBox_QuickFind->hide();
 
-  refGlade->get_widget("entry_quickfind", m_pEntry_QuickFind);
+  builder->get_widget("entry_quickfind", m_pEntry_QuickFind);
   m_pEntry_QuickFind->signal_activate().connect(
    sigc::mem_fun(*this, &Frame_Glom::on_button_quickfind) ); //Pressing Enter here is like pressing Find.
 
-  refGlade->get_widget("button_quickfind", m_pButton_QuickFind);
+  builder->get_widget("button_quickfind", m_pButton_QuickFind);
   m_pButton_QuickFind->signal_clicked().connect(
     sigc::mem_fun(*this, &Frame_Glom::on_button_quickfind) );
 
-  refGlade->get_widget("hbox_records_count", m_pBox_RecordsCount);
-  refGlade->get_widget("label_records_count", m_pLabel_RecordsCount);
-  refGlade->get_widget("label_records_found_count", m_pLabel_FoundCount);
-  refGlade->get_widget("button_find_all", m_pButton_FindAll);
+  builder->get_widget("hbox_records_count", m_pBox_RecordsCount);
+  builder->get_widget("label_records_count", m_pLabel_RecordsCount);
+  builder->get_widget("label_records_found_count", m_pLabel_FoundCount);
+  builder->get_widget("button_find_all", m_pButton_FindAll);
   m_pButton_FindAll->signal_clicked().connect(
     sigc::mem_fun(*this, &Frame_Glom::on_button_find_all) );
 
-  refGlade->get_widget_derived("vbox_mode", m_pBox_Mode);
+  builder->get_widget_derived("vbox_mode", m_pBox_Mode);
 
   m_Mode = MODE_None;
   m_Mode_Previous = MODE_None;
@@ -780,7 +780,7 @@ void Frame_Glom::on_menu_file_import()
       file_chooser.hide();
 
       Dialog_Import_CSV* dialog = 0;
-      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "dialog_import_csv");
+      Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_import_csv");
       refXml->get_widget_derived("dialog_import_csv", dialog);
       add_view(dialog);
 
@@ -790,7 +790,7 @@ void Frame_Glom::on_menu_file_import()
         dialog->hide();
 
         Dialog_Import_CSV_Progress* progress_dialog = 0;
-        Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "dialog_import_csv_progress");
+        Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_import_csv_progress");
         refXml->get_widget_derived("dialog_import_csv_progress", progress_dialog);
         add_view(progress_dialog);
 
@@ -901,11 +901,11 @@ void Frame_Glom::on_menu_Tables_AddRelatedTable()
 
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_add_related_table");
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_add_related_table");
 
     refXml->get_widget_derived("dialog_add_related_table", m_dialog_addrelatedtable);
   }
-  catch(const Gnome::Glade::XmlError& ex)
+  catch(const Gtk::BuilderError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }
@@ -1342,7 +1342,7 @@ void Frame_Glom::on_menu_developer_database_preferences()
   Dialog_Database_Preferences* dialog = 0;
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_database_preferences");
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_database_preferences");
     refXml->get_widget_derived("dialog_database_preferences", dialog);
     if(dialog)
     {
@@ -1359,7 +1359,7 @@ void Frame_Glom::on_menu_developer_database_preferences()
     }
   }
 
-  catch(const Gnome::Glade::XmlError& ex)
+  catch(const Gtk::BuilderError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }
@@ -1379,12 +1379,12 @@ void Frame_Glom::do_menu_developer_fields(Gtk::Window& parent, const Glib::ustri
   {
     try
     {
-      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_design");
+      Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_design");
 
       refXml->get_widget_derived("window_design", m_pDialog_Fields);
       m_pDialog_Fields->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
     }
-    catch(const Gnome::Glade::XmlError& ex)
+    catch(const Gtk::BuilderError& ex)
     {
       std::cerr << ex.what() << std::endl;
     }
@@ -1475,11 +1475,11 @@ void Frame_Glom::on_menu_developer_users()
   Dialog_GroupsList* dialog = 0;
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_groups");
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_groups");
 
     refXml->get_widget_derived("window_groups", dialog);
   }
-  catch(const Gnome::Glade::XmlError& ex)
+  catch(const Gtk::BuilderError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }
@@ -1577,7 +1577,7 @@ void Frame_Glom::on_menu_developer_print_layouts()
 void Frame_Glom::on_menu_developer_script_library()
 {
   Dialog_ScriptLibrary* dialog = 0;
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_script_library");
+  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_script_library");
   refXml->get_widget_derived("dialog_script_library", dialog);
   dialog->set_transient_for(*(get_app_window()));
   add_view(dialog); //Give it access to the document.
@@ -1716,21 +1716,21 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
       Dialog_NewSelfHostedConnection* dialog = 0;
-      Glib::RefPtr<Gnome::Glade::Xml> refXml;
+      Glib::RefPtr<Gtk::Builder> refXml;
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
       try
       {
-        refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_new_self_hosted_connection");
+        refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_new_self_hosted_connection");
       }
-      catch(const Gnome::Glade::XmlError& ex)
+      catch(const Gtk::BuilderError& ex)
       {
         std::cerr << ex.what() << std::endl;
         return false;
       }
 #else
-      std::auto_ptr<Gnome::Glade::XmlError> error;
-      refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_new_self_hosted_connection", error);
+      std::auto_ptr<Gtk::BuilderError> error;
+      refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_new_self_hosted_connection", error);
       if(error.get())
       {
         std::cerr << error->what() << std::endl;
@@ -2074,13 +2074,13 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
     try
     {
        // TODO: Tell the user what has gone wrong (ex.what())
-      Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_error_create_database");
+      Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_error_create_database");
       refXml->get_widget("dialog_error_create_database", dialog);
       dialog->set_transient_for(*pWindowApp);
       Glom::Utils::dialog_run_with_help(dialog, "dialog_error_create_database");
       delete dialog;
     }
-    catch(const Gnome::Glade::XmlError& ex)
+    catch(const Gtk::BuilderError& ex)
     {
       std::cerr << ex.what() << std::endl;
     }

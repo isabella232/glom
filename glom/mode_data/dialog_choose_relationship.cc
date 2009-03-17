@@ -33,16 +33,16 @@ Dialog_ChooseRelationship::Dialog_ChooseRelationship()
 {
 }
 
-Dialog_ChooseRelationship::Dialog_ChooseRelationship(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_ChooseRelationship::Dialog_ChooseRelationship(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_label_table_name(0),
   m_button_select(0),
   m_treeview(0),
   m_document(0)
 {
-  refGlade->get_widget("button_select", m_button_select);
-  refGlade->get_widget("label_table_name", m_label_table_name);
-  refGlade->get_widget("treeview_relationships", m_treeview);
+  builder->get_widget("button_select", m_button_select);
+  builder->get_widget("label_table_name", m_label_table_name);
+  builder->get_widget("treeview_relationships", m_treeview);
 
   if(m_treeview)
   {

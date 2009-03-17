@@ -42,8 +42,8 @@
 namespace Glom
 {
 
-Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
-: Dialog_Layout(cobject, refGlade, false /* No table title */),
+Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
+: Dialog_Layout(cobject, builder, false /* No table title */),
   m_notebook_parts(0),
   m_treeview_parts_header(0),
   m_treeview_parts_footer(0),
@@ -60,34 +60,34 @@ Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::
   m_entry_title(0),
   m_checkbutton_table_title(0)
 {
-  refGlade->get_widget("label_table_name", m_label_table_name);
-  refGlade->get_widget("entry_name", m_entry_name);
-  refGlade->get_widget("entry_title", m_entry_title);
-  refGlade->get_widget("checkbutton_table_title", m_checkbutton_table_title);
+  builder->get_widget("label_table_name", m_label_table_name);
+  builder->get_widget("entry_name", m_entry_name);
+  builder->get_widget("entry_title", m_entry_title);
+  builder->get_widget("checkbutton_table_title", m_checkbutton_table_title);
 
-  refGlade->get_widget("button_up", m_button_up);
+  builder->get_widget("button_up", m_button_up);
   m_button_up->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Report::on_button_up) );
 
-  refGlade->get_widget("button_down", m_button_down);
+  builder->get_widget("button_down", m_button_down);
   m_button_down->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Report::on_button_down) );
 
-  refGlade->get_widget("button_delete", m_button_delete);
+  builder->get_widget("button_delete", m_button_delete);
   m_button_delete->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Report::on_button_delete) );
 
-  refGlade->get_widget("button_add", m_button_add);
+  builder->get_widget("button_add", m_button_add);
   m_button_add->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Report::on_button_add) );
 
-  refGlade->get_widget("button_edit", m_button_edit);
+  builder->get_widget("button_edit", m_button_edit);
   m_button_edit->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Report::on_button_edit) );
 
-  refGlade->get_widget("button_formatting", m_button_formatting);
+  builder->get_widget("button_formatting", m_button_formatting);
   m_button_formatting->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Report::on_button_formatting) );
 
-  refGlade->get_widget("notebook_parts", m_notebook_parts);
+  builder->get_widget("notebook_parts", m_notebook_parts);
   m_notebook_parts->set_current_page(1); //The main part, because it is used most often.
 
   //Available parts:
-  refGlade->get_widget("treeview_available_parts", m_treeview_available_parts);
+  builder->get_widget("treeview_available_parts", m_treeview_available_parts);
   if(m_treeview_available_parts)
   {
     //Add list of available parts:
@@ -165,11 +165,11 @@ Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::
     }
   }
 
-  refGlade->get_widget("treeview_parts_header", m_treeview_parts_header);
+  builder->get_widget("treeview_parts_header", m_treeview_parts_header);
   setup_model(*m_treeview_parts_header, m_model_parts_header);
-  refGlade->get_widget("treeview_parts_footer", m_treeview_parts_footer);
+  builder->get_widget("treeview_parts_footer", m_treeview_parts_footer);
   setup_model(*m_treeview_parts_footer, m_model_parts_footer);
-  refGlade->get_widget("treeview_parts_main", m_treeview_parts_main);
+  builder->get_widget("treeview_parts_main", m_treeview_parts_main);
   setup_model(*m_treeview_parts_main, m_model_parts_main);
 
 
@@ -691,7 +691,7 @@ sharedptr<Relationship> Dialog_Layout_Report::offer_relationship_list()
 
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_relationship");
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_relationship");
 
     Dialog_ChooseRelationship* dialog = 0;
     refXml->get_widget_derived("dialog_choose_relationship", dialog);
@@ -711,7 +711,7 @@ sharedptr<Relationship> Dialog_Layout_Report::offer_relationship_list()
       delete dialog;
     }
   }
-  catch(const Gnome::Glade::XmlError& ex)
+  catch(const Gtk::BuilderError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }
@@ -828,7 +828,7 @@ void Dialog_Layout_Report::on_button_edit()
       {
         try
         {
-          Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_field_summary");
+          Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_field_summary");
 
           Dialog_FieldSummary* dialog = 0;
           refXml->get_widget_derived("dialog_field_summary", dialog);
@@ -859,7 +859,7 @@ void Dialog_Layout_Report::on_button_edit()
             delete dialog;
           }
         }
-        catch(const Gnome::Glade::XmlError& ex)
+        catch(const Gtk::BuilderError& ex)
         {
           std::cerr << ex.what() << std::endl;
         }
@@ -910,7 +910,7 @@ void Dialog_Layout_Report::on_button_edit()
               {
                 try
                 {
-                  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_group_by");
+                  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_group_by");
   
                   Dialog_GroupBy* dialog = 0;
                   refXml->get_widget_derived("dialog_group_by", dialog);
@@ -940,7 +940,7 @@ void Dialog_Layout_Report::on_button_edit()
                     delete dialog;
                   }
                 }
-                catch(const Gnome::Glade::XmlError& ex)
+                catch(const Gtk::BuilderError& ex)
                 {
                   std::cerr << ex.what() << std::endl;
                 }

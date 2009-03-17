@@ -22,7 +22,7 @@
 #define GLOM_DIALOG_DESIGN_H
 
 #include <gtkmm.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 #include <libglom/document/view.h>
 
 namespace Glom
@@ -35,7 +35,7 @@ class Dialog_Design
   public View_Composite_Glom
 {
 public:
-  Dialog_Design(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_Design(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_Design();
 
   virtual bool init_db_details(const Glib::ustring& table_name);

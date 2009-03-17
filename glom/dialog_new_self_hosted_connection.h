@@ -21,7 +21,7 @@
 #ifndef GLOM_DIALOG_NEWSELFHOSTEDCONNECTION_H
 #define GLOM_DIALOG_NEWSELFHOSTEDCONNECTION_H
 
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/entry.h>
 #include <gtkmm/label.h>
@@ -36,7 +36,7 @@ class Dialog_NewSelfHostedConnection
     public Base_DB
 {
 public:
-  Dialog_NewSelfHostedConnection(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_NewSelfHostedConnection(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_NewSelfHostedConnection();
 
   bool check_password();

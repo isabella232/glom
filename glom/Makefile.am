@@ -50,6 +50,7 @@ glom_SOURCES = main.cc \
                filechooser_export.h filechooser_export.cc \
                box_reports.h box_reports.cc \
                xsl_utils.h xsl_utils.cc \
+               variablesmap.h variablesmap.cc \
                signal_reemitter.h
 
 if !GLOM_ENABLE_CLIENT_ONLY

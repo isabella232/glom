@@ -28,10 +28,10 @@
 namespace Glom
 {
 
-Dialog_Database_Preferences::Dialog_Database_Preferences(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_Database_Preferences::Dialog_Database_Preferences(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   Base_DB(),
-  m_glade_variables_map(refGlade)
+  m_glade_variables_map(builder)
 {
   m_glade_variables_map.connect_widget("entry_name", m_system_prefs.m_name);
   m_glade_variables_map.connect_widget("entry_org_name", m_system_prefs.m_org_name);
@@ -42,11 +42,11 @@ Dialog_Database_Preferences::Dialog_Database_Preferences(BaseObjectType* cobject
   m_glade_variables_map.connect_widget("entry_org_address_country", m_system_prefs.m_org_address_country);
   m_glade_variables_map.connect_widget("entry_org_address_postcode", m_system_prefs.m_org_address_postcode);
 
-  refGlade->get_widget_derived("imageglom", m_image);
-  refGlade->get_widget("button_choose_image", m_button_choose_image);
+  builder->get_widget_derived("imageglom", m_image);
+  builder->get_widget("button_choose_image", m_button_choose_image);
   m_button_choose_image->signal_clicked().connect(sigc::mem_fun(*this, &Dialog_Database_Preferences::on_button_choose_image));
 
-  refGlade->get_widget("treeview_autoincrements", m_treeview_autoincrements);
+  builder->get_widget("treeview_autoincrements", m_treeview_autoincrements);
 
   m_model_autoincrements = Gtk::ListStore::create(m_columns);
   m_treeview_autoincrements->set_model(m_model_autoincrements);

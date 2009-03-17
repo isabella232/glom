@@ -23,7 +23,7 @@
 
 #include <libglom/document/view.h>
 #include <gtkmm.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 
 #include <gettext-po.h>
 
@@ -37,7 +37,7 @@ class Window_Translations
   public View_Composite_Glom //So it can use the document.
 {
 public:
-  Window_Translations(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Window_Translations(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Window_Translations();
 
   virtual void load_from_document(); //override

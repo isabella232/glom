@@ -94,17 +94,17 @@ private:
 namespace Glom
 {
 
-Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject)
 {
-  refGlade->get_widget("existing_or_new_existing_treeview", m_existing_view);
-  refGlade->get_widget("existing_or_new_new_treeview", m_new_view);
+  builder->get_widget("existing_or_new_existing_treeview", m_existing_view);
+  builder->get_widget("existing_or_new_new_treeview", m_new_view);
 
   if(!m_existing_view || !m_new_view)
     throw std::runtime_error("Glade file does not contain treeviews for ExistingOrNew dialog.");
 
-  refGlade->get_widget("existing_or_new_notebook", m_notebook);
-  refGlade->get_widget("existing_or_new_button_select", m_select_button);
+  builder->get_widget("existing_or_new_notebook", m_notebook);
+  builder->get_widget("existing_or_new_button_select", m_select_button);
   if(!m_notebook || !m_select_button)
     throw std::runtime_error("Glade file does not contain the notebook or the select button for ExistingOrNew dialog.");
 

@@ -24,7 +24,7 @@
 #include "../base_db.h"
 #include "../mode_data/dialog_layout.h"
 #include <libglom/data_structure/layout/layoutitem_notebook.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 
 namespace Glom
 {
@@ -33,7 +33,7 @@ class Dialog_Notebook
  : public Dialog_Layout //It has some useful stuff
 {
 public:
-  Dialog_Notebook(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_Notebook(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_Notebook();
 
 

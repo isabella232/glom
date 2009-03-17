@@ -28,37 +28,37 @@
 namespace Glom
 {
 
-Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
-: Dialog_Properties(cobject, refGlade),
+Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
+: Dialog_Properties(cobject, builder),
   m_pDataWidget_DefaultValueSimple(0),
   m_box_formatting_placeholder(0),
   m_box_formatting(0)
 {
-  refGlade->get_widget_derived("combobox_type", m_pCombo_Type);
+  builder->get_widget_derived("combobox_type", m_pCombo_Type);
 
-  refGlade->get_widget("entry_name", m_pEntry_Name);
-  refGlade->get_widget("entry_title", m_pEntry_Title);
+  builder->get_widget("entry_name", m_pEntry_Name);
+  builder->get_widget("entry_title", m_pEntry_Title);
 
-  refGlade->get_widget("checkbutton_unique",  m_pCheck_Unique);
-  refGlade->get_widget("checkbutton_primarykey",  m_pCheck_PrimaryKey);
-  refGlade->get_widget("checkbutton_autoincrement",  m_pCheck_AutoIncrement);  
+  builder->get_widget("checkbutton_unique",  m_pCheck_Unique);
+  builder->get_widget("checkbutton_primarykey",  m_pCheck_PrimaryKey);
+  builder->get_widget("checkbutton_autoincrement",  m_pCheck_AutoIncrement);  
 
-  refGlade->get_widget("hbox_default_value_simple",  m_pBox_DefaultValueSimple);
+  builder->get_widget("hbox_default_value_simple",  m_pBox_DefaultValueSimple);
 
-  refGlade->get_widget("box_default_value",  m_pBox_ValueTab);
+  builder->get_widget("box_default_value",  m_pBox_ValueTab);
 
-  refGlade->get_widget("radiobutton_userentry",  m_pRadio_UserEntry);
-  refGlade->get_widget("alignment_userentry",  m_pAlignment_UserEntry);
+  builder->get_widget("radiobutton_userentry",  m_pRadio_UserEntry);
+  builder->get_widget("alignment_userentry",  m_pAlignment_UserEntry);
 
-  refGlade->get_widget("checkbutton_lookup",  m_pCheck_Lookup);
-  refGlade->get_widget("table_lookup",  m_pTable_Lookup);
-  refGlade->get_widget_derived("combobox_lookup_relationship",  m_pCombo_LookupRelationship);
-  refGlade->get_widget_derived("combobox_lookup_field",  m_pCombo_LookupField);
+  builder->get_widget("checkbutton_lookup",  m_pCheck_Lookup);
+  builder->get_widget("table_lookup",  m_pTable_Lookup);
+  builder->get_widget_derived("combobox_lookup_relationship",  m_pCombo_LookupRelationship);
+  builder->get_widget_derived("combobox_lookup_field",  m_pCombo_LookupField);
 
-  refGlade->get_widget("radiobutton_calculate",  m_pRadio_Calculate);
-  refGlade->get_widget("alignment_calculate",  m_pAlignment_Calculate);
-  refGlade->get_widget("textview_calculate",  m_pTextView_Calculation);
-  refGlade->get_widget("button_edit_calculation",  m_pButton_EditCalculation);
+  builder->get_widget("radiobutton_calculate",  m_pRadio_Calculate);
+  builder->get_widget("alignment_calculate",  m_pAlignment_Calculate);
+  builder->get_widget("textview_calculate",  m_pTextView_Calculation);
+  builder->get_widget("button_edit_calculation",  m_pButton_EditCalculation);
 
   //Connect signals:
   m_pCombo_Type->signal_changed().connect( sigc::mem_fun(*this, &Dialog_FieldDefinition::on_combo_type_changed) );
@@ -80,15 +80,15 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
 
   //Formatting:
   //Get the place to put the Formatting stuff:
-  refGlade->get_widget("box_formatting_placeholder", m_box_formatting_placeholder);
+  builder->get_widget("box_formatting_placeholder", m_box_formatting_placeholder);
 
   //Get the formatting stuff:
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXmlFormatting = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "box_formatting");
+    Glib::RefPtr<Gtk::Builder> refXmlFormatting = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "box_formatting");
     refXmlFormatting->get_widget_derived("box_formatting", m_box_formatting);
   }
-  catch(const Gnome::Glade::XmlError& ex)
+  catch(const Gtk::BuilderError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }
@@ -372,7 +372,7 @@ void Dialog_FieldDefinition::on_combo_lookup_relationship_changed()
 void Dialog_FieldDefinition::on_button_edit_calculation()
 {
   //TODO: Share a global instance, to make this quicker?
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(GLOM_GLADEDIR "glom_developer.glade", "window_field_calculation");
+  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(GLOM_GLADEDIR "glom_developer.glade", "window_field_calculation");
   if(refXml)
   {
     Dialog_FieldCalculation* dialog = 0;

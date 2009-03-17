@@ -22,7 +22,7 @@
 #define GLOM_TRANSLATION_COMBOBOX_RELATIONSHIP_HH
 
 #include <gtkmm/combobox.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 #include <libglom/data_structure/relationship.h>
 #include <libglom/document/document_glom.h>
 #include <libglom/sharedptr.h>
@@ -35,7 +35,7 @@ namespace Glom
 class ComboBox_Relationship : public Gtk::ComboBox
 {
 public:
-  ComboBox_Relationship(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  ComboBox_Relationship(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~ComboBox_Relationship();
 
   typedef std::vector< sharedptr<Relationship> > type_vecRelationships;

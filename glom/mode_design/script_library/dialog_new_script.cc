@@ -23,11 +23,11 @@
 namespace Glom
 {
 
-Dialog_NewScript::Dialog_NewScript(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_NewScript::Dialog_NewScript(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_entry_name(0)
 {
-  refGlade->get_widget("entry_name", m_entry_name);
+  builder->get_widget("entry_name", m_entry_name);
 
   //m_entry_name->signal_changed().connect( sigc::mem_fun(*this, &Dialog_NewScript::on_entry_name_changed) );
 }

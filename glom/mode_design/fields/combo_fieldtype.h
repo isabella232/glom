@@ -26,7 +26,7 @@
 #include <gtkmm/liststore.h>
 #include <libgdamm.h>
 #include <algorithm> //For std::find_if
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 
 namespace Glom
 {
@@ -62,7 +62,7 @@ class Combo_FieldType : public Gtk::ComboBox
 {
 public: 
   Combo_FieldType();
-  Combo_FieldType(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Combo_FieldType(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Combo_FieldType();
 
   //set/get the text in terms of enumerated type:

@@ -30,8 +30,8 @@
 namespace Glom
 {
 
-Dialog_Layout_Calendar_Related::Dialog_Layout_Calendar_Related(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
-: Dialog_Layout_List(cobject, refGlade),
+Dialog_Layout_Calendar_Related::Dialog_Layout_Calendar_Related(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
+: Dialog_Layout_List(cobject, builder),
   m_combo_relationship(0),
   m_checkbutton_show_child_relationships(0),
   m_radio_navigation_automatic(0),
@@ -45,24 +45,24 @@ Dialog_Layout_Calendar_Related::Dialog_Layout_Calendar_Related(BaseObjectType* c
   m_box_related_table_widgets->show();
   m_box_related_navigation->show();
 
-  refGlade->get_widget_derived("combo_relationship_name", m_combo_relationship);
+  builder->get_widget_derived("combo_relationship_name", m_combo_relationship);
   m_combo_relationship->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Layout_Calendar_Related::on_combo_relationship_changed));
 
-  refGlade->get_widget("checkbutton_show_child_relationships", m_checkbutton_show_child_relationships);
+  builder->get_widget("checkbutton_show_child_relationships", m_checkbutton_show_child_relationships);
   m_checkbutton_show_child_relationships->signal_toggled().connect(sigc::mem_fun(*this, &Dialog_Layout_Calendar_Related::on_checkbutton_show_child_relationships));
 
   
 
-  refGlade->get_widget("radiobutton_navigation_automatic", m_radio_navigation_automatic);
-  refGlade->get_widget("label_navigation_automatic", m_label_navigation_automatic);
+  builder->get_widget("radiobutton_navigation_automatic", m_radio_navigation_automatic);
+  builder->get_widget("label_navigation_automatic", m_label_navigation_automatic);
   make_sensitivity_depend_on_toggle_button(*m_radio_navigation_automatic, *m_label_navigation_automatic);
 
-  refGlade->get_widget("radiobutton_navigation_specify", m_radio_navigation_specify);
-  refGlade->get_widget_derived("combobox_navigation_specify", m_combo_navigation_specify);
+  builder->get_widget("radiobutton_navigation_specify", m_radio_navigation_specify);
+  builder->get_widget_derived("combobox_navigation_specify", m_combo_navigation_specify);
   make_sensitivity_depend_on_toggle_button(*m_radio_navigation_specify, *m_combo_navigation_specify);
   m_combo_navigation_specify->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Layout_Calendar_Related::on_combo_navigation_specific_changed));
 
-  refGlade->get_widget_derived("combobox_date_field", m_combobox_date_field);
+  builder->get_widget_derived("combobox_date_field", m_combobox_date_field);
   m_combobox_date_field->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Layout_Calendar_Related::on_combo_date_field_changed));
 
   
@@ -73,7 +73,7 @@ Dialog_Layout_Calendar_Related::Dialog_Layout_Calendar_Related(BaseObjectType* c
   //The base class hid this, but we do want it here:
   //(We share one glade definition for several dialogs.)
   Gtk::Frame* box_calendar = 0;
-  refGlade->get_widget("frame_calendar", box_calendar); 
+  builder->get_widget("frame_calendar", box_calendar); 
   box_calendar->show();
   
   //This entry must be in the Glade file, because it's used by the base class,

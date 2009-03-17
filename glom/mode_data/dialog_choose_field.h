@@ -35,7 +35,7 @@ namespace Glom
 class Dialog_ChooseField : public Gtk::Dialog
 {
 public:
-  Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_ChooseField();
 
   /**

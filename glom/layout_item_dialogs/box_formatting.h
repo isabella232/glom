@@ -37,7 +37,7 @@ class Box_Formatting
    public Base_DB
 {
 public:
-  Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Box_Formatting();
 
   /**

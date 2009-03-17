@@ -26,7 +26,7 @@
 #include <gtkmm.h>
 #include <libglom/data_structure/field.h>
 #include "comboglomchoicesbase.h"
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 
 namespace Glom
 {
@@ -38,7 +38,7 @@ class ComboEntryGlom
   public ComboGlomChoicesBase
 {
 public:
-  explicit ComboEntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  explicit ComboEntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 
   ///You must call set_layout_item() to specify the field type and formatting of the main column.
   explicit ComboEntryGlom();

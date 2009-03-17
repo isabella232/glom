@@ -28,7 +28,7 @@ PlaceHolder::PlaceHolder()
 {
 }
 
-PlaceHolder::PlaceHolder(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /*refGlade*/)
+PlaceHolder::PlaceHolder(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /*builder*/)
 : Gtk::VBox(cobject),
   m_pChild(0)
 {

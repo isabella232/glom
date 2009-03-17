@@ -22,7 +22,7 @@
 #define DIALOG_IMAGEOBJECT_H
 
 #include <gtkmm.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 #include <libglom/data_structure/layout/layoutitem_image.h>
 #include "../base_db.h"
 #include "../utility_widgets/imageglom.h"
@@ -36,7 +36,7 @@ class Dialog_ImageObject
 
 {
 public:
-  Dialog_ImageObject(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_ImageObject(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_ImageObject();
 
   void set_imageobject(const sharedptr<const LayoutItem_Image>& imageobject, const Glib::ustring& table_name, bool show_title = true);

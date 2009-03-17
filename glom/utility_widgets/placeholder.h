@@ -22,16 +22,17 @@
 #define GLOM_UTILITY_WIDGETS_PLACEHOLDER_H
 
 #include <gtkmm.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 
 namespace Glom
 {
 
+//TODO: Remove this, using the vbox directly?
 class PlaceHolder : public Gtk::VBox
 {
 public:
   PlaceHolder();
-  PlaceHolder(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  PlaceHolder(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~PlaceHolder();
 
   virtual void add(Gtk::Widget& child);

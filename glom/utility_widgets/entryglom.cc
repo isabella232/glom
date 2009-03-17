@@ -34,7 +34,7 @@
 namespace Glom
 {
 
-EntryGlom::EntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
+EntryGlom::EntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
 : Gtk::Entry(cobject),
   m_glom_type(Field::TYPE_TEXT)
 {

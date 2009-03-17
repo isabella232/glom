@@ -29,8 +29,8 @@
 namespace Glom
 {
 
-Dialog_Layout_Export::Dialog_Layout_Export(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
-: Dialog_Layout(cobject, refGlade, false /* no table title */),
+Dialog_Layout_Export::Dialog_Layout_Export(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
+: Dialog_Layout(cobject, builder, false /* no table title */),
   m_treeview_fields(0),
   m_button_field_up(0),
   m_button_field_down(0),
@@ -39,10 +39,10 @@ Dialog_Layout_Export::Dialog_Layout_Export(BaseObjectType* cobject, const Glib::
   m_button_field_edit(0),
   m_label_table_name(0)
 {
-  refGlade->get_widget("label_table_name", m_label_table_name);
+  builder->get_widget("label_table_name", m_label_table_name);
   m_entry_table_title = 0; //Not in this glade file.
 
-  refGlade->get_widget("treeview_fields", m_treeview_fields);
+  builder->get_widget("treeview_fields", m_treeview_fields);
   if(m_treeview_fields)
   {
     m_model_fields = Gtk::ListStore::create(m_ColumnsFields);
@@ -72,19 +72,19 @@ Dialog_Layout_Export::Dialog_Layout_Export(BaseObjectType* cobject, const Glib::
   }
 
 
-  refGlade->get_widget("button_field_up", m_button_field_up);
+  builder->get_widget("button_field_up", m_button_field_up);
   m_button_field_up->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Export::on_button_up) );
 
-  refGlade->get_widget("button_field_down", m_button_field_down);
+  builder->get_widget("button_field_down", m_button_field_down);
   m_button_field_down->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Export::on_button_down) );
 
-  refGlade->get_widget("button_field_delete", m_button_field_delete);
+  builder->get_widget("button_field_delete", m_button_field_delete);
   m_button_field_delete->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Export::on_button_delete) );
 
-  refGlade->get_widget("button_field_add", m_button_field_add);
+  builder->get_widget("button_field_add", m_button_field_add);
   m_button_field_add->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Export::on_button_add_field) );
 
-  refGlade->get_widget("button_field_edit", m_button_field_edit);
+  builder->get_widget("button_field_edit", m_button_field_edit);
   m_button_field_edit->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Export::on_button_edit_field) );
 
   show_all_children();

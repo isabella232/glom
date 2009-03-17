@@ -29,7 +29,7 @@ namespace Glom
 class Dialog_Layout_Export : public Dialog_Layout
 {
 public:
-  Dialog_Layout_Export(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_Layout_Export(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_Layout_Export();
 
   /**

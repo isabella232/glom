@@ -32,7 +32,7 @@
 #include <gtkmm/treestore.h>
 #include <gtkmm/recentinfo.h>
 #include <gtkmm/notebook.h>
-#include <libglademm/xml.h>
+#include <gtkmm/builder.h>
 
 #ifndef G_OS_WIN32
 # include <libepc/service-monitor.h>
@@ -53,7 +53,7 @@ public:
     OPEN_REMOTE
   };
 
-  Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_ExistingOrNew();
 
   Action get_action() const;

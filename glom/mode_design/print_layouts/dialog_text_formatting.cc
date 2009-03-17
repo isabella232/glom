@@ -26,26 +26,26 @@
 namespace Glom
 {
 
-Dialog_TextFormatting::Dialog_TextFormatting(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_TextFormatting::Dialog_TextFormatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Window(cobject),
   m_box_formatting_placeholder(0),
   m_box_formatting(0)
 {
   Gtk::Button* button_close = 0;
-  refGlade->get_widget("button_close",  button_close);
+  builder->get_widget("button_close",  button_close);
   button_close->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_TextFormatting::on_button_close) );
 
   //Formatting:
   //Get the place to put the Formatting stuff:
-  refGlade->get_widget("box_formatting_placeholder", m_box_formatting_placeholder);
+  builder->get_widget("box_formatting_placeholder", m_box_formatting_placeholder);
   
   //Get the formatting stuff:
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXmlFormatting = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "box_formatting");
+    Glib::RefPtr<Gtk::Builder> refXmlFormatting = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "box_formatting");
     refXmlFormatting->get_widget_derived("box_formatting", m_box_formatting);
   }
-  catch(const Gnome::Glade::XmlError& ex)
+  catch(const Gtk::BuilderError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }

@@ -21,10 +21,10 @@
 #ifndef GLOM_DIALOG_CONNECTION_H
 #define GLOM_DIALOG_CONNECTION_H
 
-#include <libglademm.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/entry.h>
 #include <gtkmm/label.h>
+#include <gtkmm/builder.h>
 #include "base_db.h"
 #include <libglom/connectionpool.h>
 
@@ -36,7 +36,7 @@ class Dialog_Connection
     public Base_DB
 {
 public:
-  Dialog_Connection(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_Connection(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_Connection();
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED

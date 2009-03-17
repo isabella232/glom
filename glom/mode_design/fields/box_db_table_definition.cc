@@ -33,8 +33,8 @@ Box_DB_Table_Definition::Box_DB_Table_Definition()
   init();
 }
 
-Box_DB_Table_Definition::Box_DB_Table_Definition(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
-: Box_DB_Table(cobject, refGlade)
+Box_DB_Table_Definition::Box_DB_Table_Definition(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
+: Box_DB_Table(cobject, builder)
 {
   init();
 }
@@ -43,7 +43,7 @@ void Box_DB_Table_Definition::init()
 {
   //m_strHint = _("Click [Edit] to edit the field definition in more detail.\nUse the Mode menu to see Data or perform a Find.");
 
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_field_definition_edit");
+  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_field_definition_edit");
   if(refXml)
     refXml->get_widget_derived("window_field_definition_edit", m_pDialog);
 

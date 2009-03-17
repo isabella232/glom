@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 #include "box_db_table_relationships.h"
 #include <algorithm>
 #include <glibmm/i18n.h>
@@ -31,8 +31,8 @@ Box_DB_Table_Relationships::Box_DB_Table_Relationships()
   init();
 }
 
-Box_DB_Table_Relationships::Box_DB_Table_Relationships(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
-: Box_DB_Table(cobject, refGlade)
+Box_DB_Table_Relationships::Box_DB_Table_Relationships(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
+: Box_DB_Table(cobject, builder)
 {
   init();
 }

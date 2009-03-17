@@ -42,7 +42,7 @@
 namespace Glom
 {
 
-Window_Translations::Window_Translations(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Window_Translations::Window_Translations(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Window(cobject),
   m_treeview(0),
   m_button_identify(0),
@@ -54,9 +54,9 @@ Window_Translations::Window_Translations(BaseObjectType* cobject, const Glib::Re
   m_button_export(0),
   m_treeview_modified(false)
 {
-  refGlade->get_widget("label_source_locale", m_label_source_locale);
+  builder->get_widget("label_source_locale", m_label_source_locale);
 
-  refGlade->get_widget("treeview", m_treeview);
+  builder->get_widget("treeview", m_treeview);
   if(m_treeview)
   {
     m_model = Gtk::ListStore::create(m_columns);
@@ -85,25 +85,25 @@ Window_Translations::Window_Translations(BaseObjectType* cobject, const Glib::Re
       renderer->signal_edited().connect(sigc::mem_fun(*this, &Window_Translations::on_treeview_edited));
   }
 
-  refGlade->get_widget("button_identify", m_button_identify);
+  builder->get_widget("button_identify", m_button_identify);
   m_button_identify->signal_clicked().connect( sigc::mem_fun(*this, &Window_Translations::on_button_identify) );
 
-  refGlade->get_widget_derived("combobox_target_locale", m_combo_target_locale);
+  builder->get_widget_derived("combobox_target_locale", m_combo_target_locale);
   m_combo_target_locale->signal_changed().connect(sigc::mem_fun(*this, &Window_Translations::on_combo_target_locale_changed));
 
-  refGlade->get_widget("button_ok", m_button_ok);
+  builder->get_widget("button_ok", m_button_ok);
   m_button_ok->signal_clicked().connect( sigc::mem_fun(*this, &Window_Translations::on_button_ok) );
 
-  refGlade->get_widget("button_cancel", m_button_cancel);
+  builder->get_widget("button_cancel", m_button_cancel);
   m_button_cancel->signal_clicked().connect( sigc::mem_fun(*this, &Window_Translations::on_button_cancel) );
 
-  refGlade->get_widget("button_copy_translation", m_button_copy_translation);
+  builder->get_widget("button_copy_translation", m_button_copy_translation);
   m_button_copy_translation->signal_clicked().connect( sigc::mem_fun(*this, &Window_Translations::on_button_copy_translation) );
 
-  refGlade->get_widget("button_import", m_button_import);
+  builder->get_widget("button_import", m_button_import);
   m_button_import->signal_clicked().connect( sigc::mem_fun(*this, &Window_Translations::on_button_import) );
 
-  refGlade->get_widget("button_export", m_button_export);
+  builder->get_widget("button_export", m_button_export);
   m_button_export->signal_clicked().connect( sigc::mem_fun(*this, &Window_Translations::on_button_export) );
 
   show_all_children();
@@ -129,7 +129,7 @@ void Window_Translations::enable_buttons()
 
 void Window_Translations::on_button_identify()
 {
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_translation_identify_original");
+  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_translation_identify_original");
   if(refXml)
   {
     Dialog_IdentifyOriginal* dialog = 0;
@@ -359,7 +359,7 @@ void Window_Translations::on_button_ok()
 
 void Window_Translations::on_button_copy_translation()
 {
-   Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "dialog_translation_copy");
+   Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_translation_copy");
   if(refXml)
   {
     Dialog_CopyTranslation* dialog = 0;

@@ -29,15 +29,15 @@
 namespace Glom
 {
 
-Dialog_TextObject::Dialog_TextObject(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_TextObject::Dialog_TextObject(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_box_title(0),
   m_entry_title(0),
   m_text_view(0)
 {
-  refGlade->get_widget("hbox_title",  m_box_title);
-  refGlade->get_widget("entry_title",  m_entry_title);
-  refGlade->get_widget("textview_text",  m_text_view);
+  builder->get_widget("hbox_title",  m_box_title);
+  builder->get_widget("entry_title",  m_entry_title);
+  builder->get_widget("textview_text",  m_text_view);
 
   //on_foreach_connect(*this);
 

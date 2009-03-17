@@ -26,15 +26,15 @@
 namespace Glom
 {
 
-Dialog_User::Dialog_User(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_User::Dialog_User(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject)
 {
-  //refGlade->get_widget("label_table_name", m_label_table_name);
+  //builder->get_widget("label_table_name", m_label_table_name);
 
-  refGlade->get_widget("entry_user", m_entry_user);
-  refGlade->get_widget_derived("combobox_group", m_combo_group);
-  refGlade->get_widget("entry_password", m_entry_password);
-  refGlade->get_widget("entry_password_confirm", m_entry_password_confirm);
+  builder->get_widget("entry_user", m_entry_user);
+  builder->get_widget_derived("combobox_group", m_combo_group);
+  builder->get_widget("entry_password", m_entry_password);
+  builder->get_widget("entry_password_confirm", m_entry_password_confirm);
 
   show_all_children();
 }

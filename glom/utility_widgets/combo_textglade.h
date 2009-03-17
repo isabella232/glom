@@ -22,7 +22,7 @@
 #define GLOM_MODE_DESIGN_COMBO_TEXTGLADE_HH
 
 #include <gtkmm/comboboxtext.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 
 #include <gtkmm/liststore.h>
 
@@ -34,7 +34,7 @@ namespace Glom
 class Combo_TextGlade : public Gtk::ComboBoxText
 {
 public:
-  Combo_TextGlade(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Combo_TextGlade(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   
   ///This ensures that something is selected,
   void set_first_active();

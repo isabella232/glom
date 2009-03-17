@@ -24,7 +24,7 @@
 #include <glom/box_withbuttons.h>
 #include <glom/base_db.h>
 #include <glom/utility_widgets/adddel/adddel_withbuttons.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 
 namespace Glom
 {
@@ -38,7 +38,7 @@ class Box_Tables
   public Base_DB
 {
 public:
-  Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Box_Tables();
 
 private:

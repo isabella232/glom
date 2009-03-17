@@ -37,7 +37,7 @@ class Dialog_FieldSummary
    public Base_DB
 {
 public:
-  Dialog_FieldSummary(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_FieldSummary(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_FieldSummary();
 
   /**

@@ -22,7 +22,7 @@
 #define GLOM_MODE_DESIGN_DIALOG_USER_H
 
 #include <gtkmm.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 #include "../../utility_widgets/combo_textglade.h"
 
 namespace Glom
@@ -31,7 +31,7 @@ namespace Glom
 class Dialog_User : public Gtk::Dialog
 {
 public:
-  Dialog_User(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_User(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_User();
 
   bool check_password();

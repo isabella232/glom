@@ -86,7 +86,7 @@ AddDel::AddDel()
 }
 
 
-AddDel::AddDel(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
+AddDel::AddDel(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
 : Gtk::VBox(cobject),
   m_col_key(0),
   m_pMenuPopup(0),

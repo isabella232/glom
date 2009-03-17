@@ -23,7 +23,7 @@
 
 #include <libglom/data_structure/iso_codes.h>
 #include <gtkmm/combobox.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 
 #include <gtkmm/liststore.h>
 
@@ -34,7 +34,7 @@ namespace Glom
 class ComboBox_Locale : public Gtk::ComboBox
 {
 public:
-  ComboBox_Locale(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  ComboBox_Locale(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~ComboBox_Locale();
 
   void set_selected_locale(const Glib::ustring& locale);

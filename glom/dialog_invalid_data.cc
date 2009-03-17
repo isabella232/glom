@@ -33,10 +33,10 @@ bool glom_show_dialog_invalid_data(Field::glom_field_type glom_type)
 {
   //TODO: Share a global instance, to make this quicker?
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "dialog_data_invalid_format");
+  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_data_invalid_format");
 #else
-  std::auto_ptr<Gnome::Glade::XmlError> error;
-  Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom.glade"), "dialog_data_invalid_format", "", error);
+  std::auto_ptr<Glib::Error> error;
+  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_data_invalid_format", "", error);
   if(error.get())
   {
     std::cerr << "glom_show_dialog_invalid_data() failed: " << error->what() << std::endl;
@@ -54,11 +54,11 @@ bool glom_show_dialog_invalid_data(Field::glom_field_type glom_type)
   return (response == 2); //The glade file has a response of 2 for the Revert button.
 }
 
-Dialog_InvalidData::Dialog_InvalidData(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_InvalidData::Dialog_InvalidData(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_label(0)
 {
-  refGlade->get_widget("label_example_data", m_label);
+  builder->get_widget("label_example_data", m_label);
 }
 
 Dialog_InvalidData::~Dialog_InvalidData()

@@ -39,7 +39,7 @@ class Dialog_GroupBy
    public Base_DB
 {
 public:
-  Dialog_GroupBy(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_GroupBy(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_GroupBy();
 
   /**

@@ -32,7 +32,7 @@
 namespace Glom
 {
 
-ButtonGlom::ButtonGlom(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
+ButtonGlom::ButtonGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
 : Gtk::Button(cobject)
 {
   init();
@@ -65,7 +65,7 @@ void ButtonGlom::on_menu_properties_activate()
 {
   try
   {
-    Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create(Utils::get_glade_file_path("glom_developer.glade"), "window_button_script");
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_button_script");
 
     Dialog_ButtonScript* dialog = 0;
     refXml->get_widget_derived("window_button_script", dialog);
@@ -86,7 +86,7 @@ void ButtonGlom::on_menu_properties_activate()
       delete dialog;
     }
   }
-  catch(const Gnome::Glade::XmlError& ex)
+  catch(const Gtk::BuilderError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }

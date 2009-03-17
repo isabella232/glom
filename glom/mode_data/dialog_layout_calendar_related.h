@@ -33,7 +33,7 @@ namespace Glom
 class Dialog_Layout_Calendar_Related : public Dialog_Layout_List
 {
 public:
-  Dialog_Layout_Calendar_Related(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_Layout_Calendar_Related(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_Layout_Calendar_Related();
 
   /**

@@ -22,7 +22,7 @@
 #define GLOM_MODE_DESIGN_DIALOG_USERS_LIST_H
 
 #include <gtkmm.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 #include "../../base_db.h"
 #include "../../utility_widgets/combo_textglade.h"
 
@@ -34,7 +34,7 @@ class Dialog_UsersList
     public Base_DB
 {
 public:
-  Dialog_UsersList(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_UsersList(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_UsersList();
 
   virtual void set_group(const Glib::ustring& group_name);

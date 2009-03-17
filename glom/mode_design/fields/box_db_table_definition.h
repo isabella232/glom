@@ -31,7 +31,7 @@ class Box_DB_Table_Definition : public Box_DB_Table
 {
 public: 
   Box_DB_Table_Definition();
-  Box_DB_Table_Definition(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Box_DB_Table_Definition(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Box_DB_Table_Definition();
 
 private:

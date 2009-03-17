@@ -24,7 +24,7 @@
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 
 #include <gtkmm.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 #include <libglom/data_structure/layout/layoutitem_button.h>
 #include "../base_db.h"
 
@@ -39,7 +39,7 @@ class Dialog_ButtonScript
 
 {
 public:
-  Dialog_ButtonScript(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_ButtonScript(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_ButtonScript();
 
   void set_script(const sharedptr<const LayoutItem_Button>& script, const Glib::ustring& table_name);

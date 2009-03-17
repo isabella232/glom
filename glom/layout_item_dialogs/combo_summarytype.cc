@@ -25,7 +25,7 @@
 namespace Glom
 {
 
-Combo_SummaryType::Combo_SummaryType(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& /* refGlade */)
+Combo_SummaryType::Combo_SummaryType(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
 : Gtk::ComboBox(cobject)
 {
   m_model = Gtk::ListStore::create(m_model_columns);

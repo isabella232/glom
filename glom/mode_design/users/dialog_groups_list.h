@@ -22,7 +22,7 @@
 #define GLOM_MODE_DESIGN_DIALOG_GROUPS_LIST_H
 
 #include <gtkmm.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 #include "../../base_db.h"
 
 namespace Glom
@@ -33,7 +33,7 @@ class Dialog_GroupsList
     public Base_DB
 {
 public:
-  Dialog_GroupsList(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_GroupsList(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_GroupsList();
 
   //Refresh the UI when we get the document, from add_view:

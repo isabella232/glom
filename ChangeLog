@@ -1,5 +1,16 @@
 2009-03-17  Murray Cumming  <murrayc@murrayc.com>
 
+	* configure.ac: Remove the libglademm dependency.
+	* glom/glom.glade:
+	* glom/glom_developer.glade: Resaved as GtkBuilder format in glade-3.
+	* glom/Makefile.am:
+	* glom/variablesmap.[h|cc]: Copied this from libglademm and adapted it to 
+	Gtk::Builder.
+	* glom/*.[h|cc]: Use Gtk::Builder instead of Gnome::Glade::Xml. The changes 
+	are mostly just search/replace.
+
+2009-03-17  Murray Cumming  <murrayc@murrayc.com>
+
 	* configure.ac: Remove bakery dependency.
 	* glom/Makefile.am:
 	* glom/bakery/: Added copies of the Bakery/App files.

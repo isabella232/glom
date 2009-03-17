@@ -32,7 +32,7 @@
 namespace Glom
 {
 
-Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Window(cobject),
   m_entry_name(0),
   m_entry_title(0),
@@ -49,26 +49,26 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
 
   add_view(&m_canvas);
 
-  refGlade->get_widget("vbox_menu", m_box_menu);
-  refGlade->get_widget("vbox_canvas", m_box_canvas);
-  refGlade->get_widget("vbox_inner", m_box);
+  builder->get_widget("vbox_menu", m_box_menu);
+  builder->get_widget("vbox_canvas", m_box_canvas);
+  builder->get_widget("vbox_inner", m_box);
 
-  //refGlade->get_widget("label_name", m_label_name);
-  refGlade->get_widget("label_table_name", m_label_table_name);
-  refGlade->get_widget("entry_name", m_entry_name);
-  refGlade->get_widget("entry_title", m_entry_title);
+  //builder->get_widget("label_name", m_label_name);
+  builder->get_widget("label_table_name", m_label_table_name);
+  builder->get_widget("entry_name", m_entry_name);
+  builder->get_widget("entry_title", m_entry_title);
 
-  refGlade->get_widget("vruler", m_vruler);
-  refGlade->get_widget("hruler", m_hruler);
+  builder->get_widget("vruler", m_vruler);
+  builder->get_widget("hruler", m_hruler);
 
   //I'm not sure what set_metric() does, but using Gtk::CENTIMETERS leads to our max being ignored/used-weirdly. murrayc.
   m_hruler->set_metric(Gtk::PIXELS);
   m_vruler->set_metric(Gtk::PIXELS);
 
-  refGlade->get_widget("handle_box", m_palette_handle_box);
+  builder->get_widget("handle_box", m_palette_handle_box);
 
 
-  refGlade->get_widget("button_close", m_button_close);
+  builder->get_widget("button_close", m_button_close);
   m_button_close->signal_clicked().connect( sigc::mem_fun(*this, &Window_PrintLayout_Edit::on_button_close) );
 
   m_scrolled_window.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);

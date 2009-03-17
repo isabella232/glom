@@ -22,7 +22,7 @@
 #define DIALOG_LAYOUTITEM_PROPERTIES_H
 
 #include <gtkmm.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 
 namespace Glom
 {
@@ -30,7 +30,7 @@ namespace Glom
 class Dialog_LayoutItem_Properties : public Gtk::Dialog
 {
 public:
-  Dialog_LayoutItem_Properties(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_LayoutItem_Properties(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   //virtual ~Dialog_LayoutItem_Properties();
 
   Glib::ustring get_label() const; 

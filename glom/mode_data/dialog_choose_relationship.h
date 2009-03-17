@@ -33,7 +33,7 @@ class Dialog_ChooseRelationship : public Gtk::Dialog
 {
 public:
   Dialog_ChooseRelationship();
-  Dialog_ChooseRelationship(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_ChooseRelationship(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_ChooseRelationship();
 
   /**

@@ -31,7 +31,7 @@
 #include <gtkmm/printoperation.h>
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/toggleaction.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 #include <goocanvasmm/canvas.h>
 #include <map>
 #include <vector>
@@ -46,7 +46,7 @@ class Dialog_RelationshipsOverview
    public View_Composite_Glom
 {
 public:
-  Dialog_RelationshipsOverview(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_RelationshipsOverview(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_RelationshipsOverview();
   
   virtual void load_from_document(); //overridden.

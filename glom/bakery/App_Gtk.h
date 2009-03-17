@@ -32,7 +32,7 @@
 #include <gtkmm/handlebox.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/uimanager.h>
-#include <libglademm.h>
+#include <gtkmm/builder.h>
 
 namespace GlomBakery
 {
@@ -62,7 +62,7 @@ public:
   ///Don't forget to call init() too.
   App_Gtk(const Glib::ustring& appname);
 
-  /// This constructor can be used to implement derived classes for use with Gnome::Glade::Xml::get_derived_widget().
+  /// This constructor can be used to implement derived classes for use with Gtk::Builder::get_derived_widget().
   App_Gtk(BaseObjectType* cobject, const Glib::ustring& appname);
 
   virtual ~App_Gtk();

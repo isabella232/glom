@@ -25,11 +25,11 @@
 namespace Glom
 {
 
-Dialog_CopyTranslation::Dialog_CopyTranslation(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_CopyTranslation::Dialog_CopyTranslation(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_combo_locale(0)
 {
-  refGlade->get_widget_derived("combobox_locale", m_combo_locale);
+  builder->get_widget_derived("combobox_locale", m_combo_locale);
 
   m_combo_locale->set_selected_locale(TranslatableItem::get_current_locale());
 }

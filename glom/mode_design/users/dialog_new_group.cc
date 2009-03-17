@@ -23,11 +23,11 @@
 namespace Glom
 {
 
-Dialog_NewGroup::Dialog_NewGroup(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_NewGroup::Dialog_NewGroup(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_entry_name(0)
 {
-  refGlade->get_widget("entry_group_name", m_entry_name);
+  builder->get_widget("entry_group_name", m_entry_name);
 
   //m_entry_name->signal_changed().connect( sigc::mem_fun(*this, &Dialog_NewGroup::on_entry_name_changed) );
 }

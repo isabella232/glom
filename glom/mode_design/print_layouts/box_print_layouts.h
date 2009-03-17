@@ -31,7 +31,7 @@ namespace Glom
 class Box_Print_Layouts : public Box_DB_Table
 {
 public:
-  Box_Print_Layouts(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Box_Print_Layouts(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Box_Print_Layouts();
 
 private:

@@ -29,17 +29,17 @@
 namespace Glom
 {
 
-Dialog_ImageObject::Dialog_ImageObject(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade)
+Dialog_ImageObject::Dialog_ImageObject(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_box_title(0),
   m_entry_title(0),
   m_image(0)
 {
-  refGlade->get_widget("hbox_title", m_box_title);
-  refGlade->get_widget("entry_title", m_entry_title);
-  refGlade->get_widget_derived("imageglom", m_image);
+  builder->get_widget("hbox_title", m_box_title);
+  builder->get_widget("entry_title", m_entry_title);
+  builder->get_widget_derived("imageglom", m_image);
 
-  refGlade->get_widget("button_choose_image", m_button_choose_image);
+  builder->get_widget("button_choose_image", m_button_choose_image);
   m_button_choose_image->signal_clicked().connect(sigc::mem_fun(*this, &Dialog_ImageObject::on_button_choose));
 
   //on_foreach_connect(*this);

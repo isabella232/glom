@@ -42,7 +42,7 @@ class Dialog_FieldDefinition
    public Base_DB //Give this class access to the current document, and to some utility methods.
 {
 public: 
-  Dialog_FieldDefinition(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_FieldDefinition(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_FieldDefinition();
 
   virtual void set_field(const sharedptr<const Field>& field, const Glib::ustring& table_name);

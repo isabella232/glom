@@ -30,7 +30,7 @@ namespace Glom
 class Dialog_Relationships : public Dialog_Design
 {
 public:
-  Dialog_Relationships(BaseObjectType* cobject, const Glib::RefPtr<Gnome::Glade::Xml>& refGlade);
+  Dialog_Relationships(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_Relationships();
 
   virtual bool init_db_details(const Glib::ustring& table_name);
