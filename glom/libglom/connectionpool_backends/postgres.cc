@@ -21,6 +21,7 @@
 #include <libglom/libglom_config.h>
 
 #include <libglom/connectionpool_backends/postgres.h>
+#include <libglom/utils.h>
 #include <glibmm/i18n.h>
 
 #ifdef GLOM_ENABLE_MAEMO
@@ -427,23 +428,26 @@ bool Postgres::attempt_create_database(const Glib::ustring& database_name, const
 
 bool Postgres::check_postgres_gda_client_is_available_with_warning()
 {
-  // TODO_gda:
-#if 0
-  Glib::RefPtr<Gnome::Gda::Client> gda_client = Gnome::Gda::Client::create();
-  if(gda_client)
-  {
-    //Get the list of providers:
-    typedef std::list<Gnome::Gda::ProviderInfo> type_list_of_provider_info;
-    type_list_of_provider_info providers = Gnome::Gda::Config::get_providers();
+  //This API is horrible.
+  //See libgda bug http://bugzilla.gnome.org/show_bug.cgi?id=575754
+  Glib::RefPtr<Gnome::Gda::DataModel> model = Gnome::Gda::Config::list_providers();
+  if(!model)
+    return false;
 
-    //Examine the information about each Provider:
-    for(type_list_of_provider_info::const_iterator iter = providers.begin(); iter != providers.end(); ++iter)
-    { 
-      const Gnome::Gda::ProviderInfo& info = *iter;
-      if(info.get_id() == "PostgreSQL")
-        return true;
-    }
+  Glib::RefPtr<Gnome::Gda::DataModelIter> iter = model->create_iter();
+
+  do
+  {
+    //See http://library.gnome.org/devel/libgda/unstable/libgda-40-Configuration.html#gda-config-list-providers
+    //about the columns of this DataModel:
+    const Gnome::Gda::Value name = iter->get_value_at(0);
+    const Glib::ustring name_as_string = name.get_string();
+    //std::cout << "DEBUG: Provider name:" << name_as_string << std::endl;
+    if(name_as_string == "PostgreSQL")
+      return true;
   }
+  while(iter->move_next());
+
 
   const Glib::ustring message = _("Your installation of Glom is not complete, because the PostgreSQL libgda provider is not available on your system. This provider is needed to access Postgres database servers.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
 #ifndef GLOM_ENABLE_MAEMO
@@ -455,8 +459,8 @@ bool Postgres::check_postgres_gda_client_is_available_with_warning()
   Hildon::Note note(Hildon::NOTE_TYPE_INFORMATION, message);
   note.run();
 #endif
-#endif
-  return true;
+
+  return false;
 }
 
 }
