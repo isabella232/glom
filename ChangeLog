@@ -1,3 +1,9 @@
+2009-03-17  Murray Cumming  <murrayc@murrayc.com
+
+	* glom/glom_developer.glade: Remove superfluous empty TextBuffer objects, 
+	to avoid warnigns, but we still have problems with Adjustments.
+	See GtkBuilder bug #575714.
+
 2009-03-17  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.ac: Remove the libglademm dependency.

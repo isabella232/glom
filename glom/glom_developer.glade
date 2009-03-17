@@ -576,7 +576,6 @@
                                   <object class="GtkSourceView" id="textview_calculate">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="buffer">textbuffer3</property>
                                   </object>
                                 </child>
                               </object>
@@ -1117,7 +1116,6 @@
                           <object class="GtkSourceView" id="textview_calculation">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <property name="buffer">textbuffer2</property>
                           </object>
                         </child>
                       </object>
@@ -8396,7 +8394,6 @@ If a suitable related table already exists then you should instead cancel and ju
                       <object class="GtkSourceView" id="textview_script">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="buffer">textbuffer1</property>
                       </object>
                     </child>
                   </object>
@@ -10098,7 +10095,5 @@ What name should this module have?</property>
     <property name="page_increment">10</property>
     <property name="page_size">10</property>
   </object>
-  <object class="GtkTextBuffer" id="textbuffer1"/>
-  <object class="GtkTextBuffer" id="textbuffer2"/>
-  <object class="GtkTextBuffer" id="textbuffer3"/>
+
 </interface>
