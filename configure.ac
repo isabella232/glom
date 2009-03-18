@@ -106,7 +106,7 @@ fi
 
 
 # Do not require, goocanvas and gtksourceviewmm in client only mode
-REQUIRED_LIBS="bakery-2.6 >= 2.6.0 gtkmm-2.4 >= 2.10 gthread-2.0 libxslt >= 1.1.10 pygda-4.0 >= 2.25.3 pygtk-2.0 >= 2.6.0 libgdamm-4.0 >= 3.99.12 libgda-4.0 >= 3.99.13 libgda-postgres-4.0 goocanvasmm-1.0 >= 0.13.0"
+REQUIRED_LIBS="bakery-2.6 >= 2.6.0 gtkmm-2.4 >= 2.10 gthread-2.0 libxslt >= 1.1.10 pygda-4.0 >= 2.25.3 pygtk-2.0 >= 2.6.0 libgdamm-4.0 >= 3.99.14 libgda-4.0 >= 4.0.0 libgda-postgres-4.0 goocanvasmm-1.0 >= 0.13.0"
 if test $enable_client_only != yes; then
 	REQUIRED_LIBS="$REQUIRED_LIBS gtksourceviewmm-2.0"
 fi

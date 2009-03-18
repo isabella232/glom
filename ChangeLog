@@ -1,3 +1,7 @@
+2009-03-18  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.ac: Correct the libgdamm and libgda versions needed.
+
 2009-03-17  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/connectionpool_backends/postgres.cc:
