@@ -1,5 +1,9 @@
 2009-03-18  Murray Cumming  <murrayc@murrayc.com>
 
+	* configure.ac: Correct the libgdamm and libgda versions needed.
+
+2009-03-18  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.cc:
 	* glom/bakery/App_Gtk.cc:
 	* glom/bakery/App_WithDoc.cc:
