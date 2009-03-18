@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "config.h" //For ISO_CODES_PREFIX.
+#include <config.h> //For ISO_CODES_PREFIX.
 
 #include "iso_codes.h"
 #include <libxml++/libxml++.h>

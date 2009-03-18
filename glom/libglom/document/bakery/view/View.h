@@ -19,7 +19,7 @@
 #ifndef BAKERY_VIEW_H
 #define BAKERY_VIEW_H
 
-#include "ViewBase.h"
+#include <libglom/document/bakery/view/ViewBase.h>
 #include <libglom/document/bakery/Document.h>
 #include <sigc++/sigc++.h>
 
