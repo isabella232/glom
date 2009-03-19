@@ -21,7 +21,7 @@
 
 #include <config.h>
 
-#ifdef BAKERY_MAEMO_ENABLED
+#ifdef GLOM_ENABLE_MAEMO
 #include <hildonmm/note.h>
 #else
 #include <gtkmm/messagedialog.h>
@@ -30,7 +30,7 @@
 namespace GlomBakery
 {
 
-#ifdef BAKERY_MAEMO_ENABLED
+#ifdef GLOM_ENABLE_MAEMO
 class Dialog_OfferSave : public Hildon::Note
 #else
 class Dialog_OfferSave : public Gtk::MessageDialog

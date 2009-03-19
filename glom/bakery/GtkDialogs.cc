@@ -18,10 +18,10 @@
 
 #include <config.h>
 
-#ifdef BAKERY_MAEMO_ENABLED
+#ifdef GLOM_ENABLE_MAEMO
 #include <hildon-fmmm/file-chooser-dialog.h>
 #include <hildonmm/note.h>
-#endif // BAKERY_MAEMO_ENABLED
+#endif // GLOM_ENABLE_MAEMO
 
 #include <glom/bakery/GtkDialogs.h>
 #include <glom/bakery/Dialog_OfferSave.h>
@@ -40,7 +40,7 @@ void GtkDialogs::ui_warning(App& app, const Glib::ustring& text, const Glib::ust
 {
   Gtk::Window* pWindow = dynamic_cast<Gtk::Window*>(&app);
 
-#ifdef BAKERY_MAEMO_ENABLED
+#ifdef GLOM_ENABLE_MAEMO
   Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, text, Gtk::Stock::DIALOG_WARNING);
 #else
   Gtk::MessageDialog dialog(App_Gtk::util_bold_message(text), true /* use markup */, Gtk::MESSAGE_WARNING);
@@ -59,14 +59,14 @@ Glib::ustring GtkDialogs::ui_file_select_open(App& app, const Glib::ustring& sta
 {
   Gtk::Window* pWindow = dynamic_cast<Gtk::Window*>(&app);
 
-#ifdef BAKERY_MAEMO_ENABLED
+#ifdef GLOM_ENABLE_MAEMO
   Hildon::FileChooserDialog fileChooser_Open(Gtk::FILE_CHOOSER_ACTION_OPEN);
 #else
   Gtk::FileChooserDialog fileChooser_Open(_("Open Document"), Gtk::FILE_CHOOSER_ACTION_OPEN);
   fileChooser_Open.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   fileChooser_Open.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
   fileChooser_Open.set_default_response(Gtk::RESPONSE_OK);
-#endif // BAKERY_MAEMO_ENABLED
+#endif // GLOM_ENABLE_MAEMO
 
   if(pWindow)
     fileChooser_Open.set_transient_for(*pWindow);
@@ -119,14 +119,14 @@ Glib::ustring GtkDialogs::ui_file_select_save(App& app, const Glib::ustring& old
 {
   Gtk::Window* pWindow = dynamic_cast<Gtk::Window*>(&app);
 
-#ifdef BAKERY_MAEMO_ENABLED
+#ifdef GLOM_ENABLE_MAEMO
   Hildon::FileChooserDialog fileChooser_Save(Gtk::FILE_CHOOSER_ACTION_SAVE);
 #else
   Gtk::FileChooserDialog fileChooser_Save(_("Save Document"), Gtk::FILE_CHOOSER_ACTION_SAVE);
   fileChooser_Save.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   fileChooser_Save.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_OK);
   fileChooser_Save.set_default_response(Gtk::RESPONSE_OK);
-#endif // BAKERY_MAEMO_ENABLED
+#endif // GLOM_ENABLE_MAEMO
 
  if(pWindow)
     fileChooser_Save.set_transient_for(*pWindow);
@@ -211,6 +211,8 @@ Glib::ustring GtkDialogs::ui_file_select_save(App& app, const Glib::ustring& old
     else
       return Glib::ustring(); //The user cancelled.
   }
+
+  return Glib::ustring();
 }
 
 App_WithDoc::enumSaveChanges GtkDialogs::ui_offer_to_save_changes(App& app, const Glib::ustring& file_uri)

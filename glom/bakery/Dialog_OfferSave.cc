@@ -39,7 +39,7 @@ namespace GlomBakery
 
 
 Dialog_OfferSave::Dialog_OfferSave(const Glib::ustring& file_uri)
-#ifdef BAKERY_MAEMO_ENABLED
+#ifdef GLOM_ENABLE_MAEMO
 : Hildon::Note(Hildon::NOTE_TYPE_CONFIRMATION_BUTTON, get_confirmation_message(file_uri))
 #else
 : Gtk::MessageDialog( App_Gtk::util_bold_message(_("Close without Saving")), true /* use markup */, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE)
@@ -47,7 +47,7 @@ Dialog_OfferSave::Dialog_OfferSave(const Glib::ustring& file_uri)
 {
   set_title(""); //The HIG says that alert dialogs should not have titles. The default comes from the message type.
 
-#ifndef BAKERY_MAEMO_ENABLED
+#ifndef GLOM_ENABLE_MAEMO
   set_secondary_text(get_confirmation_message(file_uri));
 #endif
 

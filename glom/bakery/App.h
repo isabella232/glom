@@ -16,8 +16,8 @@
  * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#ifndef BAKERY_APP_H
-#define BAKERY_APP_H
+#ifndef GLOM_BAKERY_APP_H
+#define GLOM_BAKERY_APP_H
 
 #include <glom/bakery/AppInstanceManager.h>
 #include <glibmm/object.h>

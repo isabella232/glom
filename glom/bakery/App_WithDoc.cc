@@ -24,10 +24,6 @@
 #include <algorithm>
 #include <glibmm/i18n-lib.h>
 
-//#include <gtk/gtkfilesel.h>
-
-#define BAKERY_GCONF_DIRECTORY_RECENTFILES "recent_files"
-
 namespace GlomBakery
 {
 
@@ -470,7 +466,7 @@ void App_WithDoc::update_window_title()
 
 }
 
-void App_WithDoc::on_document_modified(bool modified)
+void App_WithDoc::on_document_modified(bool /* modified */)
 {
   //Change the displayed 'modified' status.
   //This method could be overridden to e.g. enable a Save icon or enable the Save menu item.
@@ -525,12 +521,12 @@ Glib::ustring App_WithDoc::get_conf_fullkey(const Glib::ustring& key)
 }
 
 
-void App_WithDoc::document_history_add(const Glib::ustring& file_uri)
+void App_WithDoc::document_history_add(const Glib::ustring& /* file_uri */)
 {
   //Override this.
 }
 
-void App_WithDoc::document_history_remove(const Glib::ustring& file_uri)
+void App_WithDoc::document_history_remove(const Glib::ustring& /* file_uri */)
 {
   //Override this.
 }

@@ -16,8 +16,8 @@
  * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#ifndef BAKERY_APP_GTKDIALOGS_H
-#define BAKERY_APP_GTKDIALOGS_H
+#ifndef GLOM_BAKERY_APP_GTKDIALOGS_H
+#define GLOM_BAKERY_APP_GTKDIALOGS_H
 
 #include <glom/bakery/App_WithDoc.h>
 

@@ -16,8 +16,8 @@
  * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#ifndef BAKERY_APP_WITHDOC_H
-#define BAKERY_APP_WITHDOC_H
+#ifndef GLOM_BAKERY_APP_WITHDOC_H
+#define GLOM_BAKERY_APP_WITHDOC_H
 
 #include <glom/bakery/App.h>
 #include <libglom/document/bakery/Document.h>

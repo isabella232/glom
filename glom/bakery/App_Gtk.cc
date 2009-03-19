@@ -110,7 +110,7 @@ void App_Gtk::init_layout()
 
   //Add menu bar at the top:
   //These were defined in init_uimanager().
-#ifdef BAKERY_MAEMO_ENABLED
+#ifdef GLOM_ENABLE_MAEMO
   Gtk::Menu* pMenu = static_cast<Gtk::Menu*>(m_refUIManager->get_widget("/Bakery_MainMenu"));
   set_menu(*pMenu);
 #else
@@ -121,7 +121,7 @@ void App_Gtk::init_layout()
   Gtk::Toolbar* pToolBar = static_cast<Gtk::Toolbar*>(m_refUIManager->get_widget("/Bakery_ToolBar"));
   if(pToolBar)
   {
-#ifdef BAKERY_MAEMO_ENABLED
+#ifdef GLOM_ENABLE_MAEMO
     add_toolbar(*pToolBar);
 #else
     m_HandleBox_Toolbar.add(*pToolBar);
@@ -176,7 +176,7 @@ void App_Gtk::init_ui_manager()
   //by adding a us string with one of the placeholders, but with menu items underneath it.
   static const Glib::ustring ui_description =
     "<ui>"
-#ifdef BAKERY_MAEMO_ENABLED
+#ifdef GLOM_ENABLE_MAEMO
     "  <popup name='Bakery_MainMenu'>"
 #else
     "  <menubar name='Bakery_MainMenu'>"
@@ -185,7 +185,7 @@ void App_Gtk::init_ui_manager()
     "    <placeholder name='Bakery_MenuPH_Edit' />"
     "    <placeholder name='Bakery_MenuPH_Others' />" //Note that extra menus should be inserted before the Help menu, which should always be at the end.
     "    <placeholder name='Bakery_MenuPH_Help' />"
-#ifdef BAKERY_MAEMO_ENABLED
+#ifdef GLOM_ENABLE_MAEMO
     "  </popup>"
 #else
     "  </menubar>"
@@ -257,7 +257,7 @@ void App_Gtk::init_menus_file()
   //Build part of the menu structure, to be merged in by using the "PH" placeholders:
   static const Glib::ustring ui_description =
     "<ui>"
-#ifdef BAKERY_MAEMO_ENABLED
+#ifdef GLOM_ENABLE_MAEMO
     "  <popup name='Bakery_MainMenu'>"
 #else
     "  <menubar name='Bakery_MainMenu'>"
@@ -269,7 +269,7 @@ void App_Gtk::init_menus_file()
     "        <menuitem action='BakeryAction_File_Exit' />"
     "      </menu>"
     "    </placeholder>"
-#ifdef BAKERY_MAEMO_ENABLED
+#ifdef GLOM_ENABLE_MAEMO
     "  </popup>"
 #else
     "  </menubar>"
@@ -299,7 +299,7 @@ void App_Gtk::init_menus_edit()
   //Build part of the menu structure, to be merged in by using the "PH" placeholders:
   static const Glib::ustring ui_description =
     "<ui>"
-#ifdef BAKERY_MAEMO_ENABLED
+#ifdef GLOM_ENABLE_MAEMO
     "  <popup name='Bakery_MainMenu'>"
 #else
     "  <menubar name='Bakery_MainMenu'>"
@@ -312,7 +312,7 @@ void App_Gtk::init_menus_edit()
     "        <menuitem action='BakeryAction_Edit_Clear' />"
     "      </menu>"
     "    </placeholder>"
-#ifdef BAKERY_MAEMO_ENABLED
+#ifdef GLOM_ENABLE_MAEMO
     "  </popup>"
 #else
     "  </menubar>"
@@ -342,7 +342,7 @@ void App_Gtk::init_menus_help()
   //Build part of the menu structure, to be merged in by using the "PH" plaeholders:
   static const Glib::ustring ui_description =
     "<ui>"
-#ifdef BAKERY_MAEMO_ENABLED
+#ifdef GLOM_ENABLE_MAEMO
     "  <popup name='Bakery_MainMenu'>"
 #else
     "  <menubar name='Bakery_MainMenu'>"
@@ -352,7 +352,7 @@ void App_Gtk::init_menus_help()
     "        <menuitem action='BakeryAction_Help_About' />"
     "      </menu>"
     "    </placeholder>"
-#ifdef BAKERY_MAEMO_ENABLED
+#ifdef GLOM_ENABLE_MAEMO
     "  </popup>"
 #else
     "  </menubar>"

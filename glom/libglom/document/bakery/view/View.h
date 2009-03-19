@@ -16,8 +16,8 @@
  * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#ifndef BAKERY_VIEW_H
-#define BAKERY_VIEW_H
+#ifndef GLOM_BAKERY_VIEW_H
+#define GLOM_BAKERY_VIEW_H
 
 #include <libglom/document/bakery/view/ViewBase.h>
 #include <libglom/document/bakery/Document.h>

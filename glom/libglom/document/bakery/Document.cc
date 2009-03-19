@@ -304,7 +304,7 @@ bool Document::write_to_disk()
     try
     {
       //Write the data to the output uri
-      const gsize bytes_written = stream->write(m_strContents.data(), m_strContents.bytes());
+      stream->write(m_strContents.data(), m_strContents.bytes());
 
       //Close the stream to make sure that the write really happens 
       //even with glibmm 2.16.0 which had a refcount leak that stopped it.
@@ -314,7 +314,7 @@ bool Document::write_to_disk()
     catch(const Gio::Error& ex)
     {
 #else
-    const gsize bytes_written = stream->write(m_strContents.data(), m_strContents.bytes(), error);
+    stream->write(m_strContents.data(), m_strContents.bytes(), error);
     if(error.get() != NULL)
     {
       Gio::Error& ex = *error.get();

@@ -16,8 +16,8 @@
  * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#ifndef BAKERY_VIEWBASE_H
-#define BAKERY_VIEWBASE_H
+#ifndef GLOM_BAKERY_VIEWBASE_H
+#define GLOM_BAKERY_VIEWBASE_H
 
 #include <sigc++/trackable.h>
 

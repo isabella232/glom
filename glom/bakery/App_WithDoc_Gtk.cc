@@ -47,9 +47,9 @@ App_WithDoc_Gtk::App_WithDoc_Gtk(const Glib::ustring& appname)
 
 /// This constructor can be used with Gtk::Builder::get_derived_widget().
 App_WithDoc_Gtk::App_WithDoc_Gtk(BaseObjectType* cobject, const Glib::ustring& appname)
-: App_WithDoc(appname),
-  App_Gtk(cobject, appname),
-  ParentWindow(cobject) //This is a virtual base class (not a direct base), so we must specify a constructor or the default constructor will be called, regardless of what the App_Gtk(cobject) constructor does. Derived classes must do this as well.
+: ParentWindow(cobject), //This is a virtual base class (not a direct base), so we must specify a constructor or the default constructor will be called, regardless of what the App_Gtk(cobject) constructor does. Derived classes must do this as well.
+  App_WithDoc(appname),
+  App_Gtk(cobject, appname)
 {
   //TODO: appname.
 }
@@ -175,7 +175,7 @@ void App_WithDoc_Gtk::init_menus_file()
   //Build part of the menu structure, to be merged in by using the "PH" placeholders:
   static const Glib::ustring ui_description =
     "<ui>"
-#ifdef BAKERY_MAEMO_ENABLED
+#ifdef GLOM_ENABLE_MAEMO
     "  <popup name='Bakery_MainMenu'>"
 #else
     "  <menubar name='Bakery_MainMenu'>"
@@ -193,7 +193,7 @@ void App_WithDoc_Gtk::init_menus_file()
     "        <menuitem action='BakeryAction_File_Exit' />"
     "      </menu>"
     "    </placeholder>"
-#ifdef BAKERY_MAEMO_ENABLED
+#ifdef GLOM_ENABLE_MAEMO
     "  </popup>"
 #else
     "  </menubar>"
@@ -275,11 +275,10 @@ void App_WithDoc_Gtk::document_history_add(const Glib::ustring& file_uri)
   if(!file_exists(file_uri))
     return;
 
-#ifdef GTKMM_GEQ_2_10
   {
     //TODO: Wrap gnome_vfs_escape_path_string() in gnome-vfsmm.
     //Glib::ustring filename_e = Gnome::Vfs::escape_path_string(file_uri);
-    Glib::ustring uri = file_uri; // "file://" + filename_e;
+    const Glib::ustring uri = file_uri; // "file://" + filename_e;
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     Gtk::RecentManager::get_default()->add_item(uri);
@@ -289,16 +288,14 @@ void App_WithDoc_Gtk::document_history_add(const Glib::ustring& file_uri)
     // Ignore error
 #endif
   }
-#endif // GTKMM_GEQ_2_10
 }
 
 void App_WithDoc_Gtk::document_history_remove(const Glib::ustring& file_uri)
 {
-#ifdef GTKMM_GEQ_2_10
   if(!file_uri.empty())
   {
     //Glib::ustring filename_e = Gnome::Vfs::escape_path_string(file_uri.c_str());
-    Glib::ustring uri = file_uri; //"file://" + filename_e;
+    const Glib::ustring uri = file_uri; //"file://" + filename_e;
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     Gtk::RecentManager::get_default()->remove_item(uri);
@@ -308,17 +305,14 @@ void App_WithDoc_Gtk::document_history_remove(const Glib::ustring& file_uri)
     // Ignore error
 #endif
   }
-#endif // GTKMM_GEQ_2_10
 }
 
 void App_WithDoc_Gtk::on_recent_files_activate(Gtk::RecentChooser& chooser)
 {
-#ifdef GTKMM_GEQ_2_10
-  Glib::ustring uri = chooser.get_current_uri();
-  bool bTest = open_document(uri);
+  const Glib::ustring uri = chooser.get_current_uri();
+  const bool bTest = open_document(uri);
   if(!bTest)
     document_history_remove(uri);
-#endif // GTKMM_GEQ_2_10
 }
 
 } //namespace

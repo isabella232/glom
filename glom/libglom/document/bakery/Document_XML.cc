@@ -85,7 +85,8 @@ bool Document_XML::save_before()
   }
 }
 
-bool Document_XML::set_xml(const Glib::ustring& strXML)
+//TODO: Why is this parameter here if it is not used?
+bool Document_XML::set_xml(const Glib::ustring& /* strXML */)
 { 
 #ifdef LIBXMLPP_EXCEPTIONS_ENABLED
   try
@@ -96,7 +97,8 @@ bool Document_XML::set_xml(const Glib::ustring& strXML)
 
     m_DOM_Parser.parse_memory(m_strContents);
     m_pDOM_Document = m_DOM_Parser.get_document();
-    if(!m_pDOM_Document) return false;
+    if(!m_pDOM_Document)
+      return false;
 
     return true;	
   }

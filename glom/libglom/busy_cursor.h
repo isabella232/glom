@@ -16,8 +16,8 @@
  * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#ifndef BAKERY_UTILITIES_BUSYCURSOR_H
-#define BAKERY_UTILITIES_BUSYCURSOR_H
+#ifndef GLOM_BAKERY_UTILITIES_BUSYCURSOR_H
+#define GLOM_BAKERY_UTILITIES_BUSYCURSOR_H
 
 #include <gtkmm/window.h>
 #include <gdkmm/cursor.h>

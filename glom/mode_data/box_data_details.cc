@@ -27,7 +27,7 @@
 #include <libglom/glade_utils.h>
 #include <libglom/utils.h>
 #include <glom/glom_privs.h>
-#include "../xsl_utils.h".
+#include "../xsl_utils.h"
 #include "../python_embed/glom_python.h"
 #include <sstream> //For stringstream
 #include <glibmm/i18n.h>

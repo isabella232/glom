@@ -16,13 +16,13 @@
  * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#ifndef BAKERY_APP_GTK_H
-#define BAKERY_APP_GTK_H
+#ifndef GLOM_BAKERY_APP_GTK_H
+#define GLOM_BAKERY_APP_GTK_H
 
-#include <config.h> // For BAKERY_MAEMO_ENABLED
+#include <config.h> // For GLOM_ENABLE_MAEMO
 #include <glom/bakery/App.h>
 
-#ifdef BAKERY_MAEMO_ENABLED
+#ifdef GLOM_ENABLE_MAEMO
 #include <hildonmm/window.h>
 #endif
 
@@ -45,14 +45,14 @@ namespace GlomBakery
  */
 class App_Gtk
   : virtual public App, //virtual because App_WithDoc_Gtk will inherit it via App_Gtk and via App_With_Doc
-#ifdef BAKERY_MAEMO_ENABLED
+#ifdef GLOM_ENABLE_MAEMO
     virtual public Hildon::Window //inherit virtually to share sigc::trackable.
 #else
     virtual public Gtk::Window //inherit virtually to share sigc::trackable.
 #endif
 {
 public:
-#ifdef BAKERY_MAEMO_ENABLED
+#ifdef GLOM_ENABLE_MAEMO
   typedef Hildon::Window ParentWindow;
 #else
   typedef Gtk::Window ParentWindow;
