@@ -1,5 +1,25 @@
 2009-03-19  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/bakery/Makefile.am:
+	* glom/bakery/AppInstanceManager.[h|cc]: Removed this class.
+	* glom/application.cc:
+	* glom/bakery/App.cc:
+	* glom/bakery/App.h:
+	* glom/bakery/App_Gtk.cc:
+	* glom/bakery/App_Gtk.h:
+	* glom/bakery/App_WithDoc.cc:
+	* glom/bakery/App_WithDoc_Gtk.cc: Removed management of multiple 
+	instances. Each Glom window is now isolated. That is necessary anyway 
+	because we have been storing a global application pointer separately 
+	anyway for a while now, which broke this.
+
+	This would need to use some single-instance DBus thing anyway to make 
+	it work properly between processes (started from the Application menu.)
+	That would be nice. Then we could really check if a file is already 
+	open, like gedit does.
+
+2009-03-19  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/bakery/*.[h|cc]: Fixed compiler warnings. Used GLOM defines 
 	instead of BAKERY defines.
 	* po/POTFILES.in: Added the bakery files.

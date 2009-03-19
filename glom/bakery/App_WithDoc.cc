@@ -63,7 +63,7 @@ void App_WithDoc::on_menu_file_close()
   }
 
   if(!get_operation_cancelled())
-    ui_hide(); //The AppInstanceManager will delete it.
+    ui_hide();
 }
 
 bool App_WithDoc::open_document_from_data(const guchar* data, std::size_t length)
@@ -100,40 +100,6 @@ bool App_WithDoc::open_document_from_data(const guchar* data, std::size_t length
 
 bool App_WithDoc::open_document(const Glib::ustring& file_uri)
 {
-  //Check whether it's already open:
-  //It could even be open in this instance.
-  bool bAlreadyOpen = false;
-  App_WithDoc* pAppAlreadyOpen = 0;
-
-  AppInstanceManager::type_listAppInstances apps =  m_AppInstanceManager.get_instances();
-  for(AppInstanceManager::type_listAppInstances::iterator iter = apps.begin(); iter != apps.end(); iter++)
-  {
-    App_WithDoc* pApp = dynamic_cast<App_WithDoc*>(*iter);
-    if(pApp)
-    {
-      Document* pDoc = pApp->get_document();
-      if(pDoc->get_file_uri() == file_uri)
-      {
-        bAlreadyOpen = true;
-        pAppAlreadyOpen = pApp;
-      }
-    }
-  }
-
-  if(bAlreadyOpen)
-  {
-    //Bring it to the front:
-    if(pAppAlreadyOpen)
-    {
-      pAppAlreadyOpen->ui_bring_to_front();
-    }
-
-    //Tell user that it's already open:
-    ui_warning(_("Document already open"), _("This document is already open."));
-
-    return true; //success.
-  }
-  else
   {
     //Open it:
         
@@ -436,7 +402,6 @@ void App_WithDoc::cancel_close_or_exit()
 {
   set_operation_cancelled();
   m_bCloseAfterSave = false;
-  m_AppInstanceManager.cancel_close_all();
 
   //exit_destroy_marked_instances(); //Clean up after an exit.
 }

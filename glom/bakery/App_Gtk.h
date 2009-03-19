@@ -57,7 +57,6 @@ public:
 #else
   typedef Gtk::Window ParentWindow;
 #endif
-  friend class AppInstanceManager;
 
   ///Don't forget to call init() too.
   App_Gtk(const Glib::ustring& appname);

@@ -68,15 +68,10 @@ App_Gtk::~App_Gtk()
     m_pVBox = 0;
   }
   
-  //If this was the last instance:
-  if(m_AppInstanceManager.get_app_count() == 0)
+  if(m_pAbout)
   {
-    //Delete shared static widgets if this was the last instance:
-    if(m_pAbout)
-    {
-      delete m_pAbout;
-      m_pAbout = 0;
-    }
+    delete m_pAbout;
+    m_pAbout = 0;
   }
 }
 
@@ -250,8 +245,6 @@ void App_Gtk::init_menus_file()
                         sigc::mem_fun((GlomBakery::App&)*this, &App_Gtk::on_menu_file_new));
   m_refFileActionGroup->add(Action::create("BakeryAction_File_Close", Gtk::Stock::CLOSE),
                         sigc::mem_fun((GlomBakery::App&)*this, &App_Gtk::on_menu_file_close));
-  m_refFileActionGroup->add(Action::create("BakeryAction_File_Exit", Gtk::Stock::QUIT),
-                        sigc::mem_fun((GlomBakery::App&)*this, &App_Gtk::on_menu_file_exit));
   m_refUIManager->insert_action_group(m_refFileActionGroup);
 
   //Build part of the menu structure, to be merged in by using the "PH" placeholders:
@@ -266,7 +259,6 @@ void App_Gtk::init_menus_file()
     "      <menu action='BakeryAction_Menu_File'>" 
     "        <menuitem action='BakeryAction_File_New' />"
     "        <menuitem action='BakeryAction_File_Close' />"
-    "        <menuitem action='BakeryAction_File_Exit' />"
     "      </menu>"
     "    </placeholder>"
 #ifdef GLOM_ENABLE_MAEMO

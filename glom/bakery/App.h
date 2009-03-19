@@ -19,7 +19,6 @@
 #ifndef GLOM_BAKERY_APP_H
 #define GLOM_BAKERY_APP_H
 
-#include <glom/bakery/AppInstanceManager.h>
 #include <glibmm/object.h>
 
 #include <vector>
@@ -60,7 +59,6 @@ public:
 class App : virtual public Glib::ObjectBase
 {
 public:
-  friend class AppInstanceManager;
 
   //The constructor has a default argument so that there is a default constructor,
   //so that derived classes do not need to call a specific constructor. This is
@@ -121,7 +119,6 @@ public: // We can not take function pointers of these methods in a
   //Menus:
   virtual void on_menu_file_new();
   virtual void on_menu_file_close();
-  virtual void on_menu_file_exit();
 
   //Edit menu handlers overriden in App_WithDoc:
   virtual void on_menu_edit_cut();
@@ -154,7 +151,6 @@ protected:
   static HelpInfo m_HelpInfo;
 
   //Instances
-  static AppInstanceManager m_AppInstanceManager;
 
   static bool m_bOperationCancelled; //see set/get_operation_cancelled().
 
