@@ -24,6 +24,7 @@ namespace GlomBakery
 {
 
 //Initialize static member data:
+AppInstanceManager App::m_AppInstanceManager;
 HelpInfo App::m_HelpInfo;
 
 bool App::m_bAboutShown = false;
@@ -34,10 +35,18 @@ Glib::ustring App::m_strAppName;
 App::App(const Glib::ustring& appname)
 {
   init_app_name(appname);
+  
+  //Register an instance of this app:
+  m_AppInstanceManager.add_app(this);
 }
 
 App::~App()
 {
+  //If this was the last instance:
+  if(m_AppInstanceManager.get_app_count() == 0)
+  {
+    
+  }
 }
 
 void App::init_app_name(const Glib::ustring& appname) //static
@@ -90,7 +99,16 @@ void App::on_menu_file_new()
 
 void App::on_menu_file_close()
 {
-  ui_hide();
+  ui_hide(); //AppInstanceManager will delete this when the hide signal is emitted..
+}
+
+void App::on_menu_file_exit()
+{
+  // we don't want to quit directly as we should save our work
+  // therefore we need to send close to each window.
+
+  //Close each instance:
+  m_AppInstanceManager.close_all();
 }
 
 void App::on_menu_edit_cut()
