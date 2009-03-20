@@ -1,5 +1,10 @@
 2009-03-20  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/bakery/App_WithDoc_Gtk.cc: Remove checks for GTK+ 2.10. We really 
+	have it now.
+
+2009-03-20  Murray Cumming  <murrayc@murrayc.com>
+
 	* configure.ac: Depend on libunique-1.0
 	* glom/bakery/App_WithDoc_Gtk.[h|cc]: Added set_unique_app(), to make 
 	the app handle UniqueApp messages, to start new instances or open files.

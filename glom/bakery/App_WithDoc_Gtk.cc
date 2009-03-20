@@ -24,9 +24,7 @@
 //#include <libgnomevfsmm/mime-handlers.h> //For type_is_known(). 
 #include <gtkmm/toolbutton.h>
 #include <gtkmm/stock.h>
-#ifdef GTKMM_GEQ_2_10
 #include <gtkmm/recentchoosermenu.h>
-#endif // GTKMM_GEQ_2_10
 #include <algorithm>
 #include <glibmm/i18n-lib.h>
 
@@ -94,7 +92,6 @@ void App_WithDoc_Gtk::init_menus_file_recentfiles(const Glib::ustring& path)
     Gtk::MenuItem* pMenuItem = dynamic_cast<Gtk::MenuItem*>(m_refUIManager->get_widget(path));
     if(pMenuItem)
     {
-#ifdef GTKMM_GEQ_2_10
       Gtk::RecentFilter filter;
 
       //Add the mime-types, so that it only shows those documents:
@@ -103,18 +100,7 @@ void App_WithDoc_Gtk::init_menus_file_recentfiles(const Glib::ustring& path)
         const Glib::ustring mime_type = *iter;
 
         //TODO: Find a gio equivalent for gnome_vfs_mime_type_is_known(). murrayc.
-//#ifndef G_OS_WIN32
-//        if( Gnome::Vfs::Mime::type_is_known(mime_type) )
-//#endif // !G_OS_WIN32
-//        {
-          filter.add_mime_type(mime_type);
-//        }
-//#ifndef G_OS_WIN32
-//        else
-//        {
-//          g_warning("App_WithDoc_Gtk::init_menus_file_recentfiles(): MIME-type %s is not known to gnome-vfs", mime_type.c_str());
-//        }
-//#endif // !G_OS_WIN32
+        filter.add_mime_type(mime_type);
       }
 
       Gtk::RecentChooserMenu* menu = Gtk::manage(new Gtk::RecentChooserMenu);
@@ -125,9 +111,6 @@ void App_WithDoc_Gtk::init_menus_file_recentfiles(const Glib::ustring& path)
       menu->signal_item_activated().connect(sigc::bind(sigc::mem_fun(*this, static_cast<void(App_WithDoc_Gtk::*)(Gtk::RecentChooser&)>(&App_WithDoc_Gtk::on_recent_files_activate)), sigc::ref(*menu)));
 
       pMenuItem->set_submenu(*menu);
-#else
-      // TODO: Resurrect libegg? Ignore?
-#endif // GTKMM_GEQ_2_10
     }
     else
     {
