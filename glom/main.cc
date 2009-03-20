@@ -112,15 +112,17 @@ main(int argc, char* argv[])
   //to help valgrind to detect memory leaks:
   atexit(__libc_freeres);
 #else
+  //Allow use of the Windows Sockets API:
   WSADATA data;
-  int errcode = WSAStartup(MAKEWORD(2, 0), &data);
+  const int errcode = WSAStartup(MAKEWORD(2, 0), &data);
   if(errcode != 0)
   {
     std::cerr << "Failed to initialize WinSock: " << errcode << std::endl;
     return -1;
   }
 
-  gchar* installation_dir_c = g_win32_get_package_installation_directory_of_module(NULL);
+  //Get the installation directory for use in other MS Windows initialization later:
+  gchar* installation_dir_c = g_win32_get_package_installation_directory_of_module(0);
   const std::string installation_dir(installation_dir_c);
   g_free(installation_dir_c);
 #endif
@@ -129,7 +131,7 @@ main(int argc, char* argv[])
   // correctly according to getenv(), but python still does not look in it.
   // For now, the installer installs all the python stuff directly into the 
   // application directory, although I would like to move this to a python/
-  // subdirectory.
+  // subdirectory. Armin.
 #if 0
 #ifdef G_OS_WIN32
   // Set PYTHONPATH to point to python/ because that's where the installer
@@ -150,15 +152,19 @@ main(int argc, char* argv[])
   Glib::setenv("PATH", Glib::getenv("PATH") + ";" + Glib::build_filename(installation_dir, "bin"));
 #endif
 
+
+  // Make this application use the current locale for _() translation:
 #ifdef G_OS_WIN32
-  // Load translations relative to glom.exe on Windows
+  // Load translations relative to glom.exe on Windows:
   bindtextdomain(GETTEXT_PACKAGE, Glib::build_filename(installation_dir, "share/locale").c_str());
 #else
-  //Make this application use the current locale for _() translation:
   bindtextdomain(GETTEXT_PACKAGE, LOCALEDIR);  //LOCALEDIR is defined in the Makefile.am
 #endif
   bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
   textdomain(GETTEXT_PACKAGE);
+
+
+  //Initialize gtkmm, Python, etc:
 
   g_thread_init(NULL); //So we can use GMutex.
 
@@ -167,31 +173,35 @@ main(int argc, char* argv[])
   Hildon::init();
 #endif
 
-  Glib::OptionContext context;
-
-  Glom::OptionGroup group;
-  context.set_main_group(group);
   //We use python for calculated-fields:
   Py_Initialize();
   PySys_SetArgv(argc, argv);
-  Gtk::Main mainInstance(argc, argv, context);
+
+
+  //Parse command-line arguments:
+  Glib::OptionContext context;
+  Glom::OptionGroup group;
+  context.set_main_group(group);
+  Gtk::Main mainInstance(argc, argv, context); //Parses standard GTK+ command-line arguments.
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
+  {
 #else
   std::auto_ptr<Glib::Error> error;
 #endif // GLIBMM_EXCEPTIONS_ENABLED
-  {
+
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     context.parse(argc, argv);
 #else
     context.parse(argc, argv, error);
 #endif // GLIBMM_EXCEPTIONS_ENABLED
-  }
+
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
+  }
   catch(const Glib::OptionError& ex)
 #else
-  if(error.get() != NULL)
+  if(error.get())
 #endif
   {
 #ifndef GLIBMM_EXCEPTIONS_ENABLED
@@ -215,7 +225,12 @@ main(int argc, char* argv[])
     return 0;
   }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+    gtksourceview::init();
+    Goocanvas::init(PACKAGE, VERSION, argc, argv ) ;
+#endif //!GLOM_ENABLE_CLIENT_ONLY
 
+  //Show the application version:
   if(group.m_arg_version)
   {
     std::cout << VERSION << std::endl;
@@ -226,11 +241,6 @@ main(int argc, char* argv[])
   try
 #endif
   {
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-    gtksourceview::init();
-    Goocanvas::init(PACKAGE, VERSION, argc, argv ) ;
-#endif //!GLOM_ENABLE_CLIENT_ONLY
-
     //Get command-line parameters, if any:
     Glib::ustring input_uri = group.m_arg_filename;
 
@@ -254,6 +264,42 @@ main(int argc, char* argv[])
 
     //debugging:
     //input_uri = "file:///home/murrayc/cvs/gnome212/glom/examples/example_smallbusiness.glom";
+
+
+    //Ensure that only one instance of Glom is ever started,
+    //so that the file menu's new/open/quit menu items can be aware of other open files/windows:
+    //
+    //If an instance is already running then ask that instance to do something instead,
+    //and close this instance.
+    UniqueApp* unique_app = unique_app_new("org.glom", NULL /* startup_id */);
+    if( unique_app_is_running(unique_app) )
+    {
+      //There is an existing instance:
+
+      UniqueResponse response = UNIQUE_RESPONSE_OK;
+
+      if(!input_uri.empty())
+      {
+        //Tell the existing instance to do a File/Open:
+        UniqueMessageData *message = unique_message_data_new();
+        unique_message_data_set_text(message, input_uri.c_str(), -1); //TODO: Use set_uris().
+        response = unique_app_send_message(unique_app, UNIQUE_OPEN, message);
+        unique_message_data_free(message);
+      }
+      else
+      {
+        //Tell the existing instance to do a File/New:
+        response = unique_app_send_message(unique_app, UNIQUE_NEW, 0);
+      }
+
+      g_object_unref(unique_app);
+      unique_app = 0;
+      if(response != UNIQUE_RESPONSE_OK)
+        std::cerr << "unique_app_send_message() failed." << std::endl;
+
+      return 0;
+    }
+    //Else this is the first instance:
 
 #ifdef GLOM_ENABLE_POSTGRESQL
     bool install_complete = false;
@@ -300,18 +346,20 @@ main(int argc, char* argv[])
     }
 #endif
 
-
+    //Create the main window (the application):
     Glom::App_Glom* pApp_Glom = 0;
     refXml->get_widget_derived("window_main", pApp_Glom);
+
+    pApp_Glom->set_unique_app(unique_app);
+    g_object_unref(unique_app);
+    unique_app = 0;
 
     pApp_Glom->set_command_line_args(argc, argv);
     pApp_Glom->set_show_sql_debug(group.m_arg_debug_sql);
 
-    bool test = pApp_Glom->init(input_uri); //Sets it up and shows it.
+    const bool test = pApp_Glom->init(input_uri); //Sets it up and shows it.
     if(test) //The user could cancel the offer of a new or existing database.
-    {
       Gtk::Main::run();
-    }
     else
       delete pApp_Glom;
   }

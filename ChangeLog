@@ -1,3 +1,11 @@
+2009-03-20  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.ac: Depend on libunique-1.0
+	* glom/bakery/App_WithDoc_Gtk.[h|cc]: Added set_unique_app(), to make 
+	the app handle UniqueApp messages, to start new instances or open files.
+	* glom/main.cc: Use set_unique_app() and send messages to the existing 
+	instance instead of starting a new instance, if one is already running.
+
 2009-03-19  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/bakery/*.[h|cc]: Fixed compiler warnings. Used GLOM defines 
