@@ -1,5 +1,12 @@
 2009-03-20  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/connectionpool_backends/postgres.cc:
+	check_postgres_gda_client_is_available_with_warning(): Avoid a 
+	warning when libgda sometimes gives us a non-string GValue from 
+	gda_config_list_providers(), which is a silly API.
+
+2009-03-20  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/bakery/App_WithDoc_Gtk.cc: Remove checks for GTK+ 2.10. We really 
 	have it now.
 

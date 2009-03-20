@@ -431,23 +431,25 @@ bool Postgres::check_postgres_gda_client_is_available_with_warning()
   //This API is horrible.
   //See libgda bug http://bugzilla.gnome.org/show_bug.cgi?id=575754
   Glib::RefPtr<Gnome::Gda::DataModel> model = Gnome::Gda::Config::list_providers();
-  if(!model)
-    return false;
-
-  Glib::RefPtr<Gnome::Gda::DataModelIter> iter = model->create_iter();
-
-  do
+  if(model && model->get_n_columns() && model->get_n_rows())
   {
-    //See http://library.gnome.org/devel/libgda/unstable/libgda-40-Configuration.html#gda-config-list-providers
-    //about the columns of this DataModel:
-    const Gnome::Gda::Value name = iter->get_value_at(0);
-    const Glib::ustring name_as_string = name.get_string();
-    //std::cout << "DEBUG: Provider name:" << name_as_string << std::endl;
-    if(name_as_string == "PostgreSQL")
-      return true;
-  }
-  while(iter->move_next());
+    Glib::RefPtr<Gnome::Gda::DataModelIter> iter = model->create_iter();
 
+    do
+    {
+      //See http://library.gnome.org/devel/libgda/unstable/libgda-40-Configuration.html#gda-config-list-providers
+      //about the columns of this DataModel:
+      const Gnome::Gda::Value name = iter->get_value_at(0);
+      if(name.get_value_type() != G_TYPE_STRING)
+        continue;
+
+      const Glib::ustring name_as_string = name.get_string();
+      //std::cout << "DEBUG: Provider name:" << name_as_string << std::endl;
+      if(name_as_string == "PostgreSQL")
+        return true;
+    }
+    while(iter->move_next());
+  }
 
   const Glib::ustring message = _("Your installation of Glom is not complete, because the PostgreSQL libgda provider is not available on your system. This provider is needed to access Postgres database servers.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
 #ifndef GLOM_ENABLE_MAEMO
