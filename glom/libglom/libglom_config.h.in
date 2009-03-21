@@ -1,3 +1,7 @@
+
+#ifndef GLOM_LIBGLOM_CONFIG_H
+#define GLOM_LIBGLOM_CONFIG_H
+
 /* "definition of GLOM_DTD_INSTALL_DIR" */
 #undef GLOM_DTD_INSTALL_DIR
 
@@ -12,3 +16,5 @@
 
 /* Whether to enable support for SQLite databases. */
 #undef GLOM_ENABLE_SQLITE
+
+#endif /* GLOM_LIBGLOM_CONFIG_H */

@@ -216,6 +216,10 @@ then
 	AC_SUBST(MAEMO_LAUNCHER_LIBS)
 fi
 
+# HACK:  Assign a dummy in order to prevent execution of autoheader by the
+# maintainer-mode rules.  That would fail since we aren't using autoheader.
+AUTOHEADER=':'
+
 # Generate Makefiles, configuration files and scripts:
 AC_CONFIG_FILES([Makefile \
   glom/Makefile \
