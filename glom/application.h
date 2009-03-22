@@ -132,7 +132,7 @@ private:
   virtual void on_menu_file_close(); //override.
   virtual void document_history_add(const Glib::ustring& file_uri); //overridden.
 
-  virtual GlomBakery::App* new_instance(); //Override
+  virtual void new_instance(const Glib::ustring& uri = Glib::ustring()); //Override
 
 #ifndef G_OS_WIN32
   void open_browsed_document(const EpcServiceInfo* server, const Glib::ustring& service_name);

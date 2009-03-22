@@ -846,21 +846,20 @@ Glib::ustring App_Glom::get_file_uri_without_extension(const Glib::ustring& uri)
   }
 }
 
-GlomBakery::App* App_Glom::new_instance() //Override
+void App_Glom::new_instance(const Glib::ustring& uri) //Override
 {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "window_main");
-#else
-  std::auto_ptr<Glib::Error> error;
-  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "window_main", "", error);
-  if(error.get())
-    return 0;
-#endif
+  Glib::ustring command = "glom";
+  if(!uri.empty())
+    command += " " + uri;
 
-  App_Glom* pApp_Glom = 0;
-  refXml->get_widget_derived("window_main", pApp_Glom);
-
-  return pApp_Glom;
+  GError* gerror = 0;
+  gdk_spawn_command_line_on_screen(Glib::unwrap(get_screen()),
+    command.c_str(),
+    &gerror);
+  if(gerror)
+  {
+    std::cerr << "App_Glom::new_instance(): error calling gdk_spawn_command_line_on_screen(): " << gerror->message << std::endl;
+  }
 }
 
 void App_Glom::init_create_document()

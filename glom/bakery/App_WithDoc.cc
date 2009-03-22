@@ -104,19 +104,14 @@ bool App_WithDoc::open_document(const Glib::ustring& file_uri)
     //Open it:
         
     //Load it into a new instance unless the current document is just a default new.
-    App_WithDoc* pApp = 0;
-    bool bUsingNewInstance = false;
     if(!(get_document()->get_is_new())) //if it's not new.
     {
       //New instance:
-      pApp = dynamic_cast<App_WithDoc*>(new_instance());
-      pApp->init(); //It's shown too.
-      bUsingNewInstance = true;
+      new_instance(file_uri);
+      return true;
     }
-    else
-    {
-      pApp = this; //Replace the default new document in this instance.
-    }
+    
+    App_WithDoc* pApp = this; //Replace the default new document in this instance.
 
     //Open it.
     pApp->m_pDocument->set_file_uri(file_uri);
@@ -150,19 +145,10 @@ bool App_WithDoc::open_document(const Glib::ustring& file_uri)
     {
       ui_warning(_("Open failed."), _("The document could not be opened."));
 
-      if(bUsingNewInstance)
-      {
-        //Remove new instance:
-        pApp->get_document()->set_modified(false); //avoid 'do you want to save?' dialog.
-        pApp->on_menu_file_close();
-      }
-      else
-      {
-        //re-initialize document.
-        delete pApp->m_pDocument;
-        pApp->m_pDocument = 0;
-        pApp->init_create_document();
-      }
+      //re-initialize document.
+      delete pApp->m_pDocument;
+      pApp->m_pDocument = 0;
+      pApp->init_create_document();
 
       return false; //failed.
     }

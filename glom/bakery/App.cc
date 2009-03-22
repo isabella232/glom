@@ -84,8 +84,7 @@ void App::init_toolbars()
 
 void App::on_menu_file_new()
 {
-  App* pApp = new_instance();
-  pApp->init(); 
+  new_instance();
 }
 
 void App::on_menu_file_close()

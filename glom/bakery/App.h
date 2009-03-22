@@ -108,7 +108,7 @@ protected:
 
   virtual void init_toolbars();
   
-  virtual App* new_instance() = 0; //Must override in order to new() the derived document class.
+  virtual void new_instance(const Glib::ustring& uri = Glib::ustring()) = 0; //Must override in order to new() the derived document class.
 
 //  virtual void close_window() = 0;
 //  virtual void bring_to_front() = 0;

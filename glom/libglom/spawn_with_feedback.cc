@@ -63,7 +63,9 @@ static const unsigned int REDIRECT_STDERR = 2;
 class SpawnError: public std::runtime_error
 {
 public:
-  SpawnError(const std::string& error_message): std::runtime_error(error_message) {}
+  SpawnError(const std::string& error_message)
+  : std::runtime_error(error_message)
+  {}
 };
 #endif
 
@@ -318,17 +320,26 @@ std::auto_ptr<const SpawnInfo> spawn_async(const Glib::ustring& command_line, in
 
 bool spawn_async_end(std::auto_ptr<const SpawnInfo> info, std::string* stdout_text = NULL, std::string* stderr_text = NULL, int* return_status = NULL)
 {
-  if(stdout_text) info->get_stdout(*stdout_text);
-  if(stderr_text) info->get_stderr(*stderr_text);
-  if(return_status) *return_status = info->get_return_status();
+  if(stdout_text)
+    info->get_stdout(*stdout_text);
+
+  if(stderr_text)
+    info->get_stderr(*stderr_text);
+
+  if(return_status)
+    *return_status = info->get_return_status();
+
   return !info->is_running();
 }
 
 int spawn_sync(const Glib::ustring& command_line, std::string* stdout_text, std::string* stderr_text)
 {
   int redirect_flags = 0;
-  if(stdout_text) redirect_flags |= REDIRECT_STDOUT;
-  if(stderr_text) redirect_flags |= REDIRECT_STDERR;
+  if(stdout_text)
+    redirect_flags |= REDIRECT_STDOUT;
+
+  if(stderr_text)
+    redirect_flags |= REDIRECT_STDERR;
 
   std::auto_ptr<const SpawnInfo> info = spawn_async(command_line, redirect_flags);
   info->signal_finished().connect(sigc::ptr_fun(&Gtk::Main::quit));

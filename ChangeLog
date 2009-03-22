@@ -1,5 +1,18 @@
 2009-03-22  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/application.[h|cc]: new_instance(): Spawn a new process via a 
+	a command line command.
+	* glom/bakery/App.[h|cc]: new_instance(): Take a uri parameter.
+	on_menu_file_new():
+	* glom/bakery/App_WithDoc.cc: open_document():
+	new_instance() is now expected to start a new process instead of 
+	returning a new C++ instance.
+
+	This means that File/New and File/Open will start a new independent 
+	process.
+
+2009-03-22  Murray Cumming  <murrayc@murrayc.com>
+
 	Reverted this change because each instance is now an independent 
 	process, or soon will be when I have made some more changes:
 
