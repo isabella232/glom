@@ -25,7 +25,6 @@
 #include <gtkmm/toolbutton.h>
 #include <gtkmm/recentmanager.h>
 #include <gtkmm/recentchooser.h>
-#include <unique/unique.h>
 
 namespace GlomBakery
 {
@@ -53,12 +52,6 @@ public:
 
   virtual void init(); //Unique final overrider.
 
-  /** Connect a signal handler for UniqueApp messages,
-   * which handles the default commands, for instance to open new instances 
-   * an to open files.
-   */
-  virtual void set_unique_app(UniqueApp* unique_app);
-
 protected:
   virtual void init_menus_file(); //overridden to add open/save/save as.
   virtual void init_menus_file_recentfiles(const Glib::ustring& path); // call this in init_menus_file()
@@ -77,14 +70,8 @@ protected:
 
   void on_recent_files_activate(Gtk::RecentChooser& recent_chooser);
 
-  static UniqueResponse on_unique_app_message_received(UniqueApp* app, UniqueCommand command, UniqueMessageData* message, guint time_, gpointer user_data);
-
   //Menu stuff:
   Glib::RefPtr<Gtk::Action> m_action_save, m_action_saveas;
-
-  //We keep this around just so we can keep a ref on it.
-  //This will only be non-null for the first instance.
-  UniqueApp* m_unique_app;
 };
 
 } //namespace
