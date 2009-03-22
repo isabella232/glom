@@ -150,8 +150,6 @@ void App_WithDoc_Gtk::init_menus_file()
                         
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Close", Gtk::Stock::CLOSE),
                         sigc::mem_fun((App_WithDoc&)*this, &App_WithDoc::on_menu_file_close));
-  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Exit", Gtk::Stock::QUIT),
-                        sigc::mem_fun((App&)*this, &App::on_menu_file_exit));
                         
   m_refUIManager->insert_action_group(m_refFileActionGroup);
 
@@ -173,7 +171,6 @@ void App_WithDoc_Gtk::init_menus_file()
     "        <menuitem action='BakeryAction_File_SaveAs' />"
     "        <separator/>"
     "        <menuitem action='BakeryAction_File_Close' />"
-    "        <menuitem action='BakeryAction_File_Exit' />"
     "      </menu>"
     "    </placeholder>"
 #ifdef GLOM_ENABLE_MAEMO
