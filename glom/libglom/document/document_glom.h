@@ -78,6 +78,13 @@ public:
 
   virtual void set_file_uri(const Glib::ustring& file_uri, bool bEnforceFileExtension = false);
 
+  /* Loads data from disk, using the URI (set with set_file_uri()) then asks the View to update itself.
+   * bool indicates success.
+   * This is just here so the SWIG Java API generator does not need to wrap methods from the base classes.
+   */
+  bool load();
+  
+  
   /** Whether the document was opened from another networked glom instance, 
    * instead of via a URI.
    */

@@ -1,3 +1,9 @@
+2009-03-23  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/document/document_glom.[h|cc]: Added a load() that just calls 
+	the base class, just to make life easier for SWIG, so it can ignore the base 
+	class for client-only API.
+
 2009-03-22  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/application.[h|cc]: new_instance(): Spawn a new process via a 

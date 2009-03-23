@@ -4083,6 +4083,11 @@ bool Document_Glom::get_opened_from_browse() const
   return m_opened_from_browse;
 }
 
+bool Document_Glom::load()
+{
+  return GlomBakery::Document_XML::load();
+}
+
 
 } //namespace Glom
 
