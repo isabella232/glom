@@ -467,7 +467,7 @@ void App_WithDoc_Gtk::add(Gtk::Widget& child)
 
 bool App_WithDoc_Gtk::on_delete_event(GdkEventAny* /* event */)
 {
-  //Clicking on the [x] in the title bar should be like choosing File|New
+  //Clicking on the [x] in the title bar should be like choosing File|Close
   on_menu_file_close();
 
   return true; // true = don't hide, don't destroy

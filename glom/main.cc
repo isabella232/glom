@@ -309,11 +309,11 @@ main(int argc, char* argv[])
 
     bool test = pApp_Glom->init(input_uri); //Sets it up and shows it.
     if(test) //The user could cancel the offer of a new or existing database.
-    {
-      Gtk::Main::run();
-    }
-    else
-      delete pApp_Glom;
+      Gtk::Main::run(*pApp_Glom); //Quit when the window is closed.
+
+    //Cleanup:
+    delete pApp_Glom;
+    pApp_Glom = 0;
   }
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   catch(const Glib::Exception& ex)

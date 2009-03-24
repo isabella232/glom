@@ -1,5 +1,10 @@
 2009-03-24  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/main.cc: Stop the mainloop when the window is hidden, and then 
+	delete it. I think this was done by AppInstanceManager before.
+
+2009-03-24  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/bakery/:
 	* glom/libglom/document/bakery/: Rename the files to make them lower 
 	case just because the inconsistency has always annoyed me.
