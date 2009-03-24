@@ -1,3 +1,13 @@
+2009-03-24  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/bakery/Makefile.am:
+	* glom/bakery/GtkDialogs.[h|cc]: Remove this, moving the code into 
+	these functions that previously just called the same named functions 
+	in GtkDialogs, for reasons that are no longer relevant:
+	* glom/bakery/App_WithDoc_Gtk.cc ui_warning(),
+	ui_file_select_open(), uri_is_writable(),
+	ui_file_select_save(), ui_offer_to_save_changes().
+
 2009-03-23  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/document/document_glom.[h|cc]: Added a load() that just calls 

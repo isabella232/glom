@@ -49,8 +49,6 @@ void App::init()
 {
   //set_wmclass(m_strAppName, m_strTitle); //The docs say "Don't use this".
 
-  //TODO: set_statusbar(m_Status);
-
   init_ui_manager();
   init_menus();
   init_toolbars();
