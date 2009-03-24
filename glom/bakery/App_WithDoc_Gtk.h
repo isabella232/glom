@@ -20,7 +20,22 @@
 #define GLOM_BAKERY_APP_WITHDOC_GTK_H
 
 #include <glom/bakery/App_WithDoc.h>
-#include <glom/bakery/App_Gtk.h>
+#include <config.h> // For GLOM_ENABLE_MAEMO
+#include <glom/bakery/App.h>
+
+#ifdef GLOM_ENABLE_MAEMO
+#include <hildonmm/window.h>
+#endif
+
+#include <gtkmm/menubar.h>
+#include <gtkmm/menu.h>
+#include <gtkmm/toolbar.h>
+#include <gtkmm/handlebox.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/uimanager.h>
+#include <gtkmm/builder.h>
+
+
 #include <libglom/document/bakery/Document.h>
 #include <gtkmm/toolbutton.h>
 #include <gtkmm/recentmanager.h>
@@ -37,11 +52,20 @@ namespace GlomBakery
  *
  */
 class App_WithDoc_Gtk
-    //These are virtual base classes, with shared shared App and sigc::trackable base classes:
-  : public App_WithDoc, 
-    public App_Gtk
+  : public App_WithDoc,
+#ifdef GLOM_ENABLE_MAEMO
+    public Hildon::Window //inherit virtually to share sigc::trackable.
+#else
+    public Gtk::Window //inherit virtually to share sigc::trackable.
+#endif
 {
 public:
+#ifdef GLOM_ENABLE_MAEMO
+  typedef Hildon::Window ParentWindow;
+#else
+  typedef Gtk::Window ParentWindow;
+#endif
+
   ///Don't forget to call init() too.
   App_WithDoc_Gtk(const Glib::ustring& appname);
 
@@ -52,10 +76,25 @@ public:
 
   virtual void init(); //Unique final overrider.
 
+  /// Overidden to add a widget in the middle, under the menu, instead of replacing the whole contents.
+  virtual void add(Gtk::Widget& child);
+
+  /// For instance, to create bold primary text for a dialog box, without marking the markup for translation.
+  static Glib::ustring util_bold_message(const Glib::ustring& message);
+
 protected:
-  virtual void init_menus_file(); //overridden to add open/save/save as.
+  virtual void init_layout(); //Arranges the menu, toolbar, etc.
   virtual void init_menus_file_recentfiles(const Glib::ustring& path); // call this in init_menus_file()
-  virtual void init_toolbars(); //overridden to add open/save
+  virtual void init_ui_manager(); //Override this to add more UI placeholders
+  virtual void init_menus(); //Override this to add more or different menus.
+  virtual void init_menus_file(); //Call this from init_menus() to add the standard file menu.
+  virtual void init_menus_edit(); //Call this from init_menus() to add the standard edit menu
+  virtual void init_menus_help(); //Call this from init_menus() to add the standard help menu.	
+  virtual void init_toolbars();
+
+  virtual void add_ui_from_string(const Glib::ustring& ui_description); //Convenience function
+
+  virtual void on_hide(); //override.
 
   virtual void document_history_add(const Glib::ustring& file_uri); //overridden.
   virtual void document_history_remove(const Glib::ustring& file_uri); //overridden.
@@ -68,7 +107,39 @@ protected:
   virtual void ui_show_modification_status();
   virtual enumSaveChanges ui_offer_to_save_changes();
 
+
+  //Signal handlers:
+
+  //Menus:
+  virtual void on_menu_help_about();
+
+  virtual void on_about_close();
+
+
+  virtual void ui_hide();
+  virtual void ui_bring_to_front();
+
+  virtual bool on_delete_event(GdkEventAny* event); //override
+
   void on_recent_files_activate(Gtk::RecentChooser& recent_chooser);
+
+  //UIManager and Actions
+  Glib::RefPtr<Gtk::UIManager> m_refUIManager;
+  Glib::RefPtr<Gtk::ActionGroup> m_refFileActionGroup;
+  Glib::RefPtr<Gtk::ActionGroup> m_refEditActionGroup;
+  Glib::RefPtr<Gtk::ActionGroup> m_refHelpActionGroup;
+
+  //Member widgets:
+  Gtk::VBox* m_pVBox;
+  Gtk::VBox m_VBox_PlaceHolder;
+
+  //Gtk::MenuBar m_MenuBar;
+  //Gtk::Menu m_Menu_File, m_Menu_Edit, m_Menu_Help;
+
+  Gtk::HandleBox m_HandleBox_Toolbar;
+  //Gtk::Toolbar m_Toolbar;
+
+  Gtk::Window* m_pAbout; //About box.
 
   //Menu stuff:
   Glib::RefPtr<Gtk::Action> m_action_save, m_action_saveas;

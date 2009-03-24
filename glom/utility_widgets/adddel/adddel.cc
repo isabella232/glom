@@ -28,7 +28,7 @@
 #include <libglom/data_structure/glomconversions.h>
 #include "../../dialog_invalid_data.h"
 #include <libglom/utils.h>
-#include <glom/bakery/App_Gtk.h>
+//#include <glom/bakery/App_Gtk.h>
 #include <iostream> //For debug output.
 
 #ifdef GLOM_ENABLE_MAEMO

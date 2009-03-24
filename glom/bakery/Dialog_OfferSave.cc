@@ -18,7 +18,7 @@
 
 #include <config.h>
 #include <glom/bakery/Dialog_OfferSave.h>
-#include <glom/bakery/App_Gtk.h>
+#include <glom/bakery/App_WithDoc_Gtk.h>
 #include <gtkmm/box.h>
 #include <gtkmm/stock.h>
 #include <glibmm/i18n-lib.h>
@@ -42,7 +42,7 @@ Dialog_OfferSave::Dialog_OfferSave(const Glib::ustring& file_uri)
 #ifdef GLOM_ENABLE_MAEMO
 : Hildon::Note(Hildon::NOTE_TYPE_CONFIRMATION_BUTTON, get_confirmation_message(file_uri))
 #else
-: Gtk::MessageDialog( App_Gtk::util_bold_message(_("Close without Saving")), true /* use markup */, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE)
+: Gtk::MessageDialog( App_WithDoc_Gtk::util_bold_message(_("Close without Saving")), true /* use markup */, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE)
 #endif
 {
   set_title(""); //The HIG says that alert dialogs should not have titles. The default comes from the message type.

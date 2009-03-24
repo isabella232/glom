@@ -1,3 +1,14 @@
+2009-03-24  Murray Cumming <murrayc@murrayc.com>
+
+	* glom/bakery/Makefile.am:
+	* glom/bakery/App_WithDoc.h:
+	* glom/bakery/App_Gtk.[h|cc]: Remove this, merging it into:
+	* glom/bakery/App_WithDoc_Gtk.[h|cc]: allowing us to remove some 
+	awkward virtual inheritance.
+	* glom/bakery/Dialog_OfferSave.cc:
+	* glom/application.cc:
+	* glom/utility_widgets/adddel/adddel.cc: Adapted.
+
 2009-03-24  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/bakery/Makefile.am:

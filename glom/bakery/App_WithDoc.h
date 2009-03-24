@@ -52,7 +52,7 @@ namespace GlomBakery
  *  - File/New sub menu
  *  - Some way to associate a view with a document type: class factory.
  */
-class App_WithDoc : virtual public App //virtual because App_WithDoc_Gtk will inherit it via App_With_Doc and via App_Gtk.
+class App_WithDoc : public App
 {
 public: 
   ///Don't forget to call init() too.

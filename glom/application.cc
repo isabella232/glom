@@ -93,16 +93,7 @@ static const int GLOM_RESPONSE_BROWSE_NETWORK = 1;
 App_Glom* global_application = NULL;
 
 App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
-  // Note cobject is actually a GtkWindow, not a HildonWindow, because the
-  // glade file specified the type as GtkWindow.
-  // ParentWindow is defined in Bakery.
-  // The compilation will fail here if you have not built Bakery with or without --enable-maemo as appropriate:
-#ifdef GLOM_ENABLE_MAEMO
-: ParentWindow(turn_gtk_window_into_hildon_window(GTK_WINDOW(cobject))), //It's a virtual base class, so we have to call the specific constructor to prevent the default constructor from being called.
-#else
-: ParentWindow(cobject), //It's a virtual base class, so we have to call the specific constructor to prevent the default constructor from being called.
-#endif
-  type_base(cobject, "Glom"),
+: type_base(cobject, "Glom"),
   m_pBoxTop(0),
   m_pFrame(0),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
