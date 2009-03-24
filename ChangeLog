@@ -1,5 +1,10 @@
 2009-03-24  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/document/document_glom.h: Added a SWIG hint telling it how to 
+	include this header.
+
+2009-03-24  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/document/bakery/Document.h: 
 	* glom/libglom/document/bakery/Document_XML.h: Removed more unnecessary 
 	virtuals.

@@ -50,8 +50,11 @@
 %include "std_vector.i"
 %include "typemaps.i"
 
+%inline %{ #include <libglom/document/document_glom.h> %}
 %inline %{ typedef unsigned int guint; %}
 %inline %{ namespace Glib { typedef std::string ustring; } %}
+
+
 
 //Stick to the client-only API for swig, for now.
 //TODO: Watch out if some of these are virtual.
