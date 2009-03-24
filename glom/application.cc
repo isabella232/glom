@@ -902,6 +902,7 @@ bool App_Glom::on_document_load()
         // adding the URI to the recently used files in document_history_add.
         // We want to add the document that is created from the example
         // instead of the example itself.
+        // TODO: This is a weird hack. Find a nicer way. murrayc.
         m_example_uri = pDocument->get_file_uri();
 
         pDocument->set_file_uri(Glib::ustring()); //Prevent it from defaulting to the read-only examples directory when offering saveas.

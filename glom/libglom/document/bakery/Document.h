@@ -58,35 +58,35 @@ public:
   bool load_from_data(const guchar* data, std::size_t length);
 
 
-  virtual bool get_modified() const;
+  bool get_modified() const;
   virtual void set_modified(bool bVal = true);
 
   ///Whether this just a default document.
-  virtual bool get_is_new() const;
+  bool get_is_new() const;
   ///Called by App_WithDoc::init_create_document().
   void set_is_new(bool bVal);
 
-  virtual Glib::ustring get_contents() const;
-  virtual void set_contents(const Glib::ustring& strVal);
+  Glib::ustring get_contents() const;
+  void set_contents(const Glib::ustring& strVal);
 
-  virtual Glib::ustring get_file_uri_with_extension(const Glib::ustring& uri);
+  Glib::ustring get_file_uri_with_extension(const Glib::ustring& uri);
 
-  virtual Glib::ustring get_file_uri() const;
+  Glib::ustring get_file_uri() const;
   virtual void set_file_uri(const Glib::ustring& file_uri, bool bEnforceFileExtension = false);
 
   ///Gets filename part of file_uri, or 'untitled'.
   virtual Glib::ustring get_name() const;
   static Glib::ustring util_file_uri_get_name(const Glib::ustring& file_uri, const Glib::ustring& file_extension);
 
-  virtual bool get_read_only() const;
-  virtual void set_read_only(bool bVal);
+  bool get_read_only() const;
+  void set_read_only(bool bVal);
 
   ///If you don't want to use a View, then don't use set_view().
-  virtual void set_view(ViewBase* pView);
-  virtual ViewBase* get_view();
+  void set_view(ViewBase* pView);
+  ViewBase* get_view();
 
-  virtual void set_file_extension(const Glib::ustring& strVal);
-  virtual Glib::ustring get_file_extension() const;
+  void set_file_extension(const Glib::ustring& strVal);
+  Glib::ustring get_file_extension() const;
 
   //Signals
   /** For instance, void on_document_modified(bool modified);
@@ -118,8 +118,8 @@ protected:
    */
   virtual bool save_before();
 
-  virtual bool read_from_disk();
-  virtual bool write_to_disk();
+  bool read_from_disk();
+  bool write_to_disk();
 
   Glib::ustring m_strContents;
   Glib::ustring m_file_uri;
