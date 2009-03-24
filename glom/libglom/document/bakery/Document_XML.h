@@ -41,11 +41,11 @@ public:
   virtual bool load_after();
   virtual bool save_before();
 
-  virtual void set_dtd_name(const std::string& strVal); //e.g. "glom.dtd"
-  virtual std::string get_dtd_name() const;
+  void set_dtd_name(const std::string& strVal); //e.g. "glom.dtd"
+  std::string get_dtd_name() const;
 
-  virtual void set_dtd_root_node_name(const Glib::ustring& strVal);
-  virtual Glib::ustring get_dtd_root_node_name() const;
+  void set_dtd_root_node_name(const Glib::ustring& strVal);
+  Glib::ustring get_dtd_root_node_name() const;
 
   /** Whether to add extra whitespace when writing the XML to disk.
    * Do not use this if whitespace is significant in your XML format.
@@ -60,8 +60,8 @@ public:
    */
   void add_indenting_white_space();
   
-  virtual bool set_xml(const Glib::ustring& strXML); //Parse the XML from the text.
-  virtual Glib::ustring get_xml() const; //Get the text for the XML.
+  bool set_xml(const Glib::ustring& strXML); //Parse the XML from the text.
+  Glib::ustring get_xml() const; //Get the text for the XML.
 
 protected:
   static Glib::ustring get_node_attribute_value(const xmlpp::Element* node, const Glib::ustring& strAttributeName);
@@ -70,10 +70,10 @@ protected:
   static xmlpp::Element* get_node_child_named(const xmlpp::Element* node, const Glib::ustring& strName);
   static xmlpp::Element* get_node_child_named_with_add(xmlpp::Element* node, const Glib::ustring& strName);
 
-  virtual const xmlpp::Element* get_node_document() const; //e.g. <glom_document> (root name)
-  virtual xmlpp::Element* get_node_document(); //e.g. <glom_document> (root name)
+  const xmlpp::Element* get_node_document() const; //e.g. <glom_document> (root name)
+  xmlpp::Element* get_node_document(); //e.g. <glom_document> (root name)
 
-  virtual void Util_DOM_Write(Glib::ustring& refstrXML) const;
+  void Util_DOM_Write(Glib::ustring& refstrXML) const;
 
   void add_indenting_white_space_to_node(xmlpp::Node* node = 0, const Glib::ustring& start_indent = Glib::ustring());
 
