@@ -1,3 +1,10 @@
+2009-03-24  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.[h|cc]: Remove add_ui_from_string() because it is 
+	in App_WithDoc_Gtk too.
+	* glom/bakery/App_WithDoc_Gtk.h: Make init_menus_file_recentfiles() 
+	non virtual because nothing overrides it.
+
 2009-03-24  Murray Cumming <murrayc@murrayc.com>
 
 	* glom/bakery/Makefile.am:

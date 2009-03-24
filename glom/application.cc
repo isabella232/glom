@@ -250,20 +250,6 @@ void App_Glom::init_toolbars()
 */
 }
 
-//We could put this in Bakery instead, but it's hard enough just getting updates 
-//into Ubuntu, so we override this GlomBakery::App method here.
-void App_Glom::add_ui_from_string(const Glib::ustring& ui_description)
-{
-  try
-  {
-    m_refUIManager->add_ui_from_string(ui_description);
-  }  
-  catch(const Glib::Error& error)
-  {
-    std::cerr << "App_Glom::add_ui_from_string(): exception: " << error.what() << std::endl;
-  }
-}
-
 void App_Glom::init_menus_file()
 {
   //Overridden to remove the Save and Save-As menu items,

@@ -112,13 +112,6 @@ void App::on_menu_edit_clear()
   
 }
 
-/*
-void App::on_menu_help_about()
-{
-  
-}
-*/
-
 void App::on_about_close()
 {
   m_bAboutShown = false;

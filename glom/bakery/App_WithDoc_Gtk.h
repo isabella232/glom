@@ -84,7 +84,7 @@ public:
 
 protected:
   virtual void init_layout(); //Arranges the menu, toolbar, etc.
-  virtual void init_menus_file_recentfiles(const Glib::ustring& path); // call this in init_menus_file()
+  void init_menus_file_recentfiles(const Glib::ustring& path); // call this in init_menus_file()
   virtual void init_ui_manager(); //Override this to add more UI placeholders
   virtual void init_menus(); //Override this to add more or different menus.
   virtual void init_menus_file(); //Call this from init_menus() to add the standard file menu.
@@ -92,15 +92,14 @@ protected:
   virtual void init_menus_help(); //Call this from init_menus() to add the standard help menu.	
   virtual void init_toolbars();
 
-  virtual void add_ui_from_string(const Glib::ustring& ui_description); //Convenience function
+  void add_ui_from_string(const Glib::ustring& ui_description); //Convenience function
 
   virtual void on_hide(); //override.
 
+  //Overrides from App_WithDoc:
   virtual void document_history_add(const Glib::ustring& file_uri); //overridden.
   virtual void document_history_remove(const Glib::ustring& file_uri); //overridden.
-
   virtual void update_window_title();
-
   virtual void ui_warning(const Glib::ustring& text, const Glib::ustring& secondary_text);
   virtual Glib::ustring ui_file_select_open(const Glib::ustring& starting_folder_uri = Glib::ustring());
   virtual Glib::ustring ui_file_select_save(const Glib::ustring& old_file_uri);
@@ -111,8 +110,9 @@ protected:
   //Signal handlers:
 
   //Menus:
-  virtual void on_menu_help_about();
 
+  //Overrides from App:
+  virtual void on_menu_help_about();
   virtual void on_about_close();
 
 

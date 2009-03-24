@@ -128,7 +128,6 @@ public: // We can not take function pointers of these methods in a
 
   virtual void on_menu_help_about() = 0;
 
-
   virtual void on_about_close();
 
 protected:
