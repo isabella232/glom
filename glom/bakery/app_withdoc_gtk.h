@@ -19,9 +19,9 @@
 #ifndef GLOM_BAKERY_APP_WITHDOC_GTK_H
 #define GLOM_BAKERY_APP_WITHDOC_GTK_H
 
-#include <glom/bakery/App_WithDoc.h>
+#include <glom/bakery/app_withdoc.h>
 #include <config.h> // For GLOM_ENABLE_MAEMO
-#include <glom/bakery/App.h>
+#include <glom/bakery/app.h>
 
 #ifdef GLOM_ENABLE_MAEMO
 #include <hildonmm/window.h>
@@ -36,7 +36,7 @@
 #include <gtkmm/builder.h>
 
 
-#include <libglom/document/bakery/Document.h>
+#include <libglom/document/bakery/document.h>
 #include <gtkmm/toolbutton.h>
 #include <gtkmm/recentmanager.h>
 #include <gtkmm/recentchooser.h>

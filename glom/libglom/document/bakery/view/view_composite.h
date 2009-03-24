@@ -19,7 +19,7 @@
 #ifndef GLOM_BAKERY_VIEW_COMPOSITE_H
 #define GLOM_BAKERY_VIEW_COMPOSITE_H
 
-#include <libglom/document/bakery/view/View.h>
+#include <libglom/document/bakery/view/view.h>
 #include <vector>
 #include <algorithm> //For std::find
 

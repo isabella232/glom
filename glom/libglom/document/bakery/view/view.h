@@ -19,8 +19,8 @@
 #ifndef GLOM_BAKERY_VIEW_H
 #define GLOM_BAKERY_VIEW_H
 
-#include <libglom/document/bakery/view/ViewBase.h>
-#include <libglom/document/bakery/Document.h>
+#include <libglom/document/bakery/view/viewbase.h>
+#include <libglom/document/bakery/document.h>
 #include <sigc++/sigc++.h>
 
 namespace GlomBakery

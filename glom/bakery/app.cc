@@ -16,7 +16,7 @@
  * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#include <glom/bakery/App.h>
+#include <glom/bakery/app.h>
 #include <algorithm>
 
 

@@ -8,8 +8,8 @@ AM_CPPFLAGS = -I@top_srcdir@/ -I@top_srcdir@/glom $(GLOM_CFLAGS) $(PYTHON_INCLUD
            -DGLOM_GLADEDIR=\""$(gladedir)/"\"
 
 
-h_sources = View.h ViewBase.h View_Composite.h 
-cc_sources = View.cc ViewBase.cc View_Composite.cc 
+h_sources = view.h viewbase.h view_composite.h 
+cc_sources = view.cc viewbase.cc view_composite.cc 
 
 noinst_LTLIBRARIES = libdocument_bakery_view.la
 libdocument_bakery_view_la_SOURCES = $(h_sources) $(cc_sources)

@@ -23,7 +23,7 @@
 
 #include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY, GLOM_ENABLE_SQLITE
 
-#include <libglom/document/bakery/Document_XML.h>
+#include <libglom/document/bakery/document_xml.h>
 #include <libglom/data_structure/relationship.h>
 #include <libglom/data_structure/field.h>
 #include <libglom/data_structure/layout/layoutgroup.h>

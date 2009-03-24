@@ -16,11 +16,37 @@
  * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#include <libglom/document/bakery/view/View_Composite.h>
+#include <libglom/document/bakery/view/viewbase.h>
 
 namespace GlomBakery
 {
 
+ViewBase::ViewBase()
+{
+}
 
+ViewBase::~ViewBase()
+{
+}
+
+void ViewBase::load_from_document()
+{
+}
+
+void ViewBase::save_to_document()
+{
+}
+
+void ViewBase::clipboard_copy()
+{
+}
+
+void ViewBase::clipboard_paste()
+{
+}
+
+void ViewBase::clipboard_clear()
+{
+}
 
 } //namespace

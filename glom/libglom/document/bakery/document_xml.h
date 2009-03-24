@@ -19,7 +19,7 @@
 #ifndef GLOM_BAKERY_DOCUMENT_XML_H
 #define GLOM_BAKERY_DOCUMENT_XML_H
 
-#include <libglom/document/bakery/Document.h>
+#include <libglom/document/bakery/document.h>
 #include <libxml++/libxml++.h>
 
 //Features:

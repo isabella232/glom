@@ -20,7 +20,7 @@
 #define GLOM_BAKERY_DOCUMENT_H
 
 #include <glibmm.h>
-#include <libglom/document/bakery/view/ViewBase.h>
+#include <libglom/document/bakery/view/viewbase.h>
 #include <iostream>
 
 namespace GlomBakery

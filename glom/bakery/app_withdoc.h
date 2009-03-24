@@ -19,8 +19,8 @@
 #ifndef GLOM_BAKERY_APP_WITHDOC_H
 #define GLOM_BAKERY_APP_WITHDOC_H
 
-#include <glom/bakery/App.h>
-#include <libglom/document/bakery/Document.h>
+#include <glom/bakery/app.h>
+#include <libglom/document/bakery/document.h>
 
 namespace GlomBakery
 {

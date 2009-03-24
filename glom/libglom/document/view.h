@@ -22,7 +22,7 @@
 #define DOCUMENT_GLOM_VIEW_H
 
 #include <libglom/document/document_glom.h>
-#include <libglom/document/bakery/view/View_Composite.h>
+#include <libglom/document/bakery/view/view_composite.h>
 
 namespace Glom
 {

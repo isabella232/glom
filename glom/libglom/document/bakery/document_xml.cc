@@ -16,7 +16,7 @@
  * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#include <libglom/document/bakery/Document_XML.h>
+#include <libglom/document/bakery/document_xml.h>
 
 
 namespace GlomBakery

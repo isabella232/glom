@@ -1695,7 +1695,7 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   sharedptr<const LayoutItem> layout_item = m_ColumnTypes[model_column_index].m_item;
   sharedptr<const LayoutItem_Field> layout_item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
 
-  //Tell the TreeView how to render the Gnome::Gda::Values:
+  //Tell the Treeview.how to render the Gnome::Gda::Values:
   if(layout_item_field)
   {
     pViewColumn->set_cell_data_func(cellrenderer, 

@@ -24,7 +24,7 @@
 #include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY
 
 #include <gtkmm/frame.h>
-#include <libglom/document/bakery/view/View_Composite.h>
+#include <libglom/document/bakery/view/view_composite.h>
 #include <libglom/document/document_glom.h>
 
 #include "dialog_glom.h"

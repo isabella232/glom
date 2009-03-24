@@ -17,8 +17,8 @@
  */
 
 #include <config.h>
-#include <glom/bakery/App_WithDoc.h>
-#include <glom/bakery/Dialog_OfferSave.h>
+#include <glom/bakery/app_withdoc.h>
+#include <glom/bakery/dialog_offersave.h>
 #include <gconfmm.h>
 #include <giomm.h>
 #include <algorithm>
