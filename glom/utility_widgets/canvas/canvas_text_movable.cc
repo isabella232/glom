@@ -71,29 +71,14 @@ void CanvasTextMovable::get_width_height(double& width, double& height) const
   //TODO: This only works when it is on a canvas already,
   //and this is apparently incorrect when the "coordinate space" of the item changes, whatever that means. murrayc.
   
-  //We don't use this because it's only useful when you force a width, instead of allowing _enough_ width: 
-  //height = property_height();
-
   width = property_width();
-
-  Goocanvas::Bounds bounds = get_bounds();
- 
-  if(width == -1) //-1 means unlimited.
-    width = bounds.get_x2() - bounds.get_x1();
-
-  if(m_fake_height == 0)
-    height = bounds.get_y2() - bounds.get_y1();
-  else
-    height = m_fake_height;
+  height = property_height();
 }
 
 void CanvasTextMovable::set_width_height(double width, double height)
 {
   property_width() = width;
-
-  //There is no height property:
-  //property_height() = height;
-  m_fake_height = height;
+  property_height() = height;
 }
 
 void CanvasTextMovable::snap_position(double& x, double& y) const

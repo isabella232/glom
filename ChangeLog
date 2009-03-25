@@ -1,3 +1,11 @@
+2009-03-25  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/canvas/canvas_line_movable.cc: get_xy(), 
+	set_xy(), get_width_height(), set_width_height():
+	* glom/utility_widgets/canvas/canvas_text_movable.cc
+	get_width_height, set_width_height(): Use the new properties instead 
+	of our custom implementations.
+
 2009-03-24  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/main.cc: Stop the mainloop when the window is hidden, and then 

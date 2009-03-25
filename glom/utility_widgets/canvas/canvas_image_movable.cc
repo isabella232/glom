@@ -85,9 +85,6 @@ void CanvasImageMovable::get_width_height(double& width, double& height) const
   //TODO: This only works when it is on a canvas already,
   //and this is apparently incorrect when the "coordinate space" of the item changes, whatever that means. murrayc.
   
-  //We don't use this because it's only useful when you force a width, instead of allowing _enough_ width: 
-  //height = property_height();
-
   width = property_width();
   height = property_height();
 }
