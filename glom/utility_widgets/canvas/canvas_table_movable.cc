@@ -28,7 +28,6 @@ namespace Glom
 
 
 CanvasTableMovable::CanvasTableMovable()
-: m_x(0), m_y(0)
 {
   signal_motion_notify_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_motion_notify_event));
   signal_button_press_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_button_press_event));
@@ -49,37 +48,14 @@ Glib::RefPtr<CanvasTableMovable> CanvasTableMovable::create()
 
 void CanvasTableMovable::get_xy(double& x, double& y) const
 {
-  x = m_x;
-  y = m_y;
-
-  // Or we could use the child at the top-left:
-  /*
-  Glib::RefPtr<const Goocanvas::Item> first_child = get_child(0);
-  if(!first_child)
-    return;
-
-  Glib::RefPtr<const CanvasItemMovable> movable = CanvasItemMovable::cast_const_to_movable(first_child);
-  if(movable)
-     movable->get_xy(x, y);
-  */
+  x = property_x();
+  y = property_y();
 }
 
 void CanvasTableMovable::set_xy(double x, double y)
 {
-  //Discover the offset:
-  double old_x = 0;
-  double old_y = 0;
-  get_xy(old_x, old_y);
-
-  const double offset_x = x - old_x;
-  const double offset_y = y - old_y;
-
-  //Apply the offset:
-  translate(offset_x, offset_y);
-
-  //Remember the position, because GooCanvasTable does not:
-  m_x = x;
-  m_y = y;
+  property_x() = x;
+  property_y() = y;
 }
 
 void CanvasTableMovable::get_width_height(double& width, double& height) const

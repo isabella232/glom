@@ -1,3 +1,8 @@
+2009-03-26  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/canvas/canvas_table_movable.[h|cc]: get_xy(),
+	set_xy(): Use the new height property instead of faking it.
+
 2009-03-25  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/canvas/canvas_line_movable.cc: get_xy(), 

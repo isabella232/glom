@@ -59,9 +59,6 @@ private:
   void snap_position_one_corner(Corners corner, double& x, double& y) const;
 
   virtual void snap_position(double& x, double& y) const;
-
-  //We store the x and y position, because GooCanvasTable does not:
-  double m_x, m_y;
 };
 
 } //namespace Glom
