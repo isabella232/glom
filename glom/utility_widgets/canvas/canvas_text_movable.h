@@ -79,10 +79,6 @@ private:
   //What corner is considered when snapping to a grid while moving:
   Corners m_snap_corner;
 
-  //Goocanvas does not yet allow us to truncate vertically, and a greater-than-necessary height would have no meaning,
-  //but we need to store a height just so that get==set.
-  double m_fake_height; 
-
   //We rememeber this so we can reconstruct the pango markup when the text size changes:
   Glib::ustring m_text;
   Glib::ustring m_font;
