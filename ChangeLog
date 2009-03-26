@@ -1,5 +1,14 @@
 2009-03-26  Murray Cumming  <murrayc@murrayc.com>
 
+	* configure.ac: Depend on the latest goocanvasmm for the new API.
+	* glom/libglom/document/bakery/Makefile.am:
+	* glom/libglom/document/bakery/view/Makefile.am: Install the headers as in 
+	the other directories.
+	* glom/libglom/document/document_glom.h: Tell SWIG to add using Glom because 
+	it gets confused about the namespace.
+
+2009-03-26  Murray Cumming  <murrayc@murrayc.com>
+
 	* configure.ac:
 	* macros/macros.m4: Removed this.
 	* macros/dk-warn.m4: Added this, which is the updated version.

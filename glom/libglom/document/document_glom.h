@@ -51,8 +51,9 @@
 %include "typemaps.i"
 
 %inline %{ #include <libglom/document/document_glom.h> %}
-%inline %{ typedef unsigned int guint; %}
-%inline %{ namespace Glib { typedef std::string ustring; } %}
+%inline %{ using namespace Glom; %}
+//%inline %{ typedef unsigned int guint; %}
+//%inline %{ namespace Glib { typedef std::string ustring; } %}
 
 
 
