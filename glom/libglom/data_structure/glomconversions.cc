@@ -1024,7 +1024,7 @@ Glib::RefPtr<Gdk::Pixbuf> Conversions::get_pixbuf_for_gda_value(const Gnome::Gda
       }
       catch(const Gdk::PixbufError& ex)
       {
-        refPixbufLoader.clear();
+        refPixbufLoader.reset();
         std::cerr << "PixbufLoader::create failed: " << ex.what() << std::endl;
       }
 

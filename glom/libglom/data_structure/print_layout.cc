@@ -47,7 +47,7 @@ PrintLayout& PrintLayout::operator=(const PrintLayout& src)
   m_layout_group = src.m_layout_group;
   m_show_table_title = src.m_show_table_title;
 
-  m_page_setup.clear();
+  m_page_setup.reset();
   if(src.m_page_setup)
     m_page_setup = src.m_page_setup->copy();
 

@@ -2,7 +2,7 @@ gladedir = $(datadir)/glom/glade/
 glomxsltdir = $(datadir)/glom/xslt/
 
 # We define GLOM_GLADEDIR so that we can get the installed .glade file at runtime.
-AM_CPPFLAGS = -I@top_srcdir@/ -I@top_srcdir@/glom $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
+AM_CPPFLAGS = -I@top_srcdir@/ -I@top_srcdir@/glom $(GLOM_CFLAGS) $(GLOM_WARNING_FLAGS) $(PYTHON_INCLUDES) \
                     -DGLOM_GLADEDIR=\""$(gladedir)/"\" \
                     -DGLOM_XSLTDIR=\""$(glomxsltdir)/"\"
 

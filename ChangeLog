@@ -1,5 +1,13 @@
 2009-03-26  Murray Cumming  <murrayc@murrayc.com>
 
+	* configure.ac:
+	* macros/macros.m4: Removed this.
+	* macros/dk-warn.m4: Added this, which is the updated version.
+	* glom/*/*.am
+	* glom/*/*.cc: Fixed some warnings.
+
+2009-03-26  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/canvas/canvas_table_movable.[h|cc]: get_xy(),
 	set_xy(): Use the new height property instead of faking it.
 

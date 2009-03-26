@@ -462,7 +462,7 @@ void Window_PrintLayout_Edit::on_canvas_drag_data_received(const Glib::RefPtr<Gd
     if(m_layout_item_dropping)
     {
       m_layout_item_dropping->remove();
-      m_layout_item_dropping.clear();
+      m_layout_item_dropping.reset();
     }
   }
 }
@@ -474,7 +474,7 @@ void Window_PrintLayout_Edit::on_canvas_drag_leave(const Glib::RefPtr<Gdk::DragC
   if(m_layout_item_dropping)
   {
     m_layout_item_dropping->remove();
-    m_layout_item_dropping.clear();
+    m_layout_item_dropping.reset();
   }
 }
 

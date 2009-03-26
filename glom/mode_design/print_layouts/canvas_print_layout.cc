@@ -368,7 +368,7 @@ void Canvas_PrintLayout::on_context_menu_edit()
 
   m_modified = true;
 
-  m_context_item.clear();
+  m_context_item.reset();
 }
 
 void Canvas_PrintLayout::on_context_menu_formatting()
@@ -424,7 +424,7 @@ void Canvas_PrintLayout::on_context_menu_formatting()
 void Canvas_PrintLayout::on_context_menu_delete()
 {
   m_context_item->remove();
-  m_context_item.clear();
+  m_context_item.reset();
 }
 
 void Canvas_PrintLayout::on_dialog_format_hide()
@@ -494,7 +494,7 @@ void Canvas_PrintLayout::set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page
   if(m_bounds_group)
   {
     m_bounds_group->remove();
-    m_bounds_group.clear();
+    m_bounds_group.reset();
   }
 
   Glib::RefPtr<Goocanvas::Item> root = get_root_item();

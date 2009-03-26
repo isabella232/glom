@@ -1,5 +1,5 @@
 AM_CPPFLAGS = \
-	-I@top_srcdir@/ -I@top_srcdir@/glom $(GLOM_CFLAGS) \
+	-I@top_srcdir@/ -I@top_srcdir@/glom $(GLOM_CFLAGS) $(GLOM_WARNING_FLAGS) \
 	-DEXEEXT=\""$(EXEEXT)"\"
 
 noinst_LTLIBRARIES = libconnectionpool_backends.la

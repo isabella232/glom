@@ -155,7 +155,10 @@ GLOM_DTD_INSTALL_DIR="\"${prefix}/share/${PACKAGE}\""
 AC_DEFINE_UNQUOTED(GLOM_DTD_INSTALL_DIR, $GLOM_DTD_INSTALL_DIR, "definition of GLOM_DTD_INSTALL_DIR")
 
 # Evaluate the --enable-warnings=level option.
-GLOM_ARG_ENABLE_WARNINGS()
+DK_ARG_ENABLE_WARNINGS([GLOM_WARNING_FLAGS],
+                       [-Wall -w1],
+                       [-Wall -Wextra -w1],
+                       [GLIBMM GTKMM])
 
 AC_ARG_ENABLE(update-mime-database,
         AS_HELP_STRING([--disable-update-mime-database],[do not run the update-mime-database utility (mostly useful for package maintainers) ]))

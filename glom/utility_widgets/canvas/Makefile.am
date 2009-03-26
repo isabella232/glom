@@ -1,11 +1,11 @@
-#AM_CPPFLAGS = -I@top_srcdir@/ $(GLOM_CFLAGS)
+#AM_CPPFLAGS = -I@top_srcdir@/ $(GLOM_CFLAGS) $(GLOM_WARNING_FLAGS)
 
 #SUBDIRS = 
 
 gladedir = $(datadir)/glom/glade/
 
 # We define GLOM_GLADEDIR so that we can get the installed .glade file at runtime.
-AM_CPPFLAGS = -I@top_srcdir@/ -I@top_srcdir@/glom $(GLOM_CFLAGS) $(PYTHON_INCLUDES) \
+AM_CPPFLAGS = -I@top_srcdir@/ -I@top_srcdir@/glom $(GLOM_CFLAGS) $(GLOM_WARNING_FLAGS) $(PYTHON_INCLUDES) \
            -DGLOM_GLADEDIR=\""$(gladedir)/"\" \
            -DDATADIR=\""$(datadir)"\"
 

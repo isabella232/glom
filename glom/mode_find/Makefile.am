@@ -1,4 +1,4 @@
-AM_CPPFLAGS = -I@top_srcdir@/ -I@top_srcdir@/glom $(GLOM_CFLAGS)
+AM_CPPFLAGS = -I@top_srcdir@/ -I@top_srcdir@/glom $(GLOM_CFLAGS) $(GLOM_WARNING_FLAGS)
 
 noinst_LIBRARIES = libmode_find.a
 libmode_find_a_SOURCES = box_data_details_find.cc box_data_details_find.h \

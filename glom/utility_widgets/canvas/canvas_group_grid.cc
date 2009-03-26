@@ -209,7 +209,7 @@ void CanvasGroupGrid::create_lines()
   if(m_grid_lines)
   {
     m_grid_lines->remove();
-    m_grid_lines.clear(); //Null the RefPtr.
+    m_grid_lines.reset(); //Null the RefPtr.
   }
 
   while(m_grid_rules_group && m_grid_rules_group->get_n_children())

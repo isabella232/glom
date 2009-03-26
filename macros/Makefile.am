@@ -1,3 +1,3 @@
-EXTRA_DIST = macros.m4
+EXTRA_DIST = dk-warn.m4
 
 

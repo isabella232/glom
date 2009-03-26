@@ -200,7 +200,7 @@ SharedConnection::type_signal_finished SharedConnection::signal_finished()
 void SharedConnection::close()
 {
   if(m_gda_connection)
-    m_gda_connection.clear();
+    m_gda_connection.reset();
 
 
   //Tell the connection pool that we have finished with this connection.
@@ -511,7 +511,7 @@ void ConnectionPool::on_sharedconnection_finished()
     //g_warning("ConnectionPool::on_sharedconnection_finished(): closing GdaConnection");
     m_refGdaConnection->close();
 
-    m_refGdaConnection.clear();
+    m_refGdaConnection.reset();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #ifndef G_OS_WIN32

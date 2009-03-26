@@ -90,6 +90,8 @@ pygda_value_from_pyobject(GValue *boxed, PyObject *input)
 PyObject *
 pygda_value_as_pyobject(const GValue *boxed, gboolean copy_boxed)
 {
+    copy_boxed = FALSE; //Just to avoid the "unused paramter" and "parameter name omitted" warnings.
+
     GType value_type = GDA_TYPE_NULL;
     PyObject* ret = 0;
 
