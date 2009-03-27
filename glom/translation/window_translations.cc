@@ -24,7 +24,7 @@
 #include "dialog_copy_translation.h"
 #include <libglom/utils.h> //For bold_message()).
 #include <libglom/utils.h>
-#include <libglom/glade_utils.h>
+#include <glom/glade_utils.h>
 
 #include <glibmm/i18n.h>
 #include <string.h> // for memset

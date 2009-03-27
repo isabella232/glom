@@ -7,7 +7,7 @@ glom_icon_dir = $(datadir)/icons/hicolor/48x48/apps
 
 # We define GLOM_GLADEDIR so that we can get the installed .glade file at runtime.
 # We define PREFIX, SYSCONFDIR, LIBDIR, and DATADIR for the GNOME_PROGRAM_STANDARD_PROPERTIES macro.
-AM_CPPFLAGS = -I@top_srcdir@/ -I@top_srcdir@/glom $(GLOM_CFLAGS) $(GLOM_WARNING_FLAGS) $(PYTHON_INCLUDES) \
+AM_CPPFLAGS = -I@top_srcdir@/ -I@top_srcdir@/glom $(LIBGLOM_CFLAGS) $(GLOM_WARNING_FLAGS) $(PYTHON_INCLUDES) \
            -DGLOM_GLADEDIR=\""$(gladedir)/"\" \
            -DLOCALEDIR=\""$(datadir)/locale"\" \
            -DPREFIX=\""$(prefix)"\" \
@@ -31,7 +31,7 @@ h_sources = $(h_sources_public) \
                      connectionpool.h \
                      dialog_progress_creating.h \
                      spawn_with_feedback.h \
-                     utils.h glade_utils.h \
+                     utils.h \
                      gst-package.h
 
 cc_sources = appstate.cc \
@@ -64,7 +64,7 @@ libglom_1_0_la_LIBADD  = document/libdocument.la \
                      data_structure/layout/libdata_structure_layout.la \
                      data_structure/layout/report_parts/libdata_structure_layout_reportparts.la \
                      python_embed/libglom_python_embed.la \
-                     $(GLOM_LIBS) $(PYTHON_LDFLAGS)
+                     $(LIBGLOM_LIBS) $(PYTHON_LDFLAGS)
 
 if !WIN32
 libglom_1_0_la_LIBADD += -lutil
@@ -80,15 +80,15 @@ noinst_PROGRAMS = test_sharedptr_layoutitem test_connectionpool test_document
 
 test_sharedptr_layoutitem_SOURCES = test_sharedptr_layoutitem.cc
 test_sharedptr_layoutitem_LDADD =  libglom-1.0.la \
-              $(GLOM_LIBS)
+              $(LIBGLOM_LIBS)
 
 test_connectionpool_SOURCES = test_connectionpool.cc
 test_connectionpool_LDADD =  libglom-1.0.la \
-              $(GLOM_LIBS)
+              $(LIBGLOM_LIBS)
 
 test_document_SOURCES = test_document.cc
 test_document_LDADD =  libglom-1.0.la \
-              $(GLOM_LIBS)
+              $(LIBGLOM_LIBS)
 
 if !WIN32
 test_sharedptr_layoutitem_LDADD += -lutil

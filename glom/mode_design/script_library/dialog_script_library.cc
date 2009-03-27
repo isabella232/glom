@@ -22,7 +22,7 @@
 #include "dialog_script_library.h"
 #include "../../python_embed/glom_python.h"
 #include <libglom/data_structure/glomconversions.h>
-#include <libglom/glade_utils.h>
+#include <glom/glade_utils.h>
 #include <glom/mode_design/script_library/dialog_new_script.h>
 #include <gtksourceviewmm/sourcelanguagemanager.h>
 #include <glom/application.h>

@@ -21,7 +21,7 @@
 #ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_FIELDSUMMARY_H
 #define GLOM_DATASTRUCTURE_LAYOUTITEM_FIELDSUMMARY_H
 
-#include "../layoutitem_field.h"
+#include <libglom/data_structure/layout/layoutitem_field.h>
 
 namespace Glom
 {

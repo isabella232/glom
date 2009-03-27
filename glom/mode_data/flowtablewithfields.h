@@ -40,7 +40,7 @@
 #include <libglom/document/document_glom.h>
 #include <glom/utility_widgets/layoutwidgetbase.h>
 #include <glom/utility_widgets/layoutwidgetutils.h>
-#include "box_data_list_related.h"
+#include <glom/mode_data/box_data_list_related.h>
 #include "box_data_calendar_related.h"
 #include "treestore_layout.h" //Forthe enum.
 #include <map>

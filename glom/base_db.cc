@@ -37,7 +37,7 @@
 
 //#include "reports/dialog_layout_report.h"
 #include <libglom/utils.h>
-#include <libglom/glade_utils.h>
+#include <glom/glade_utils.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/data_structure/parameternamegenerator.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_summary.h>

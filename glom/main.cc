@@ -49,7 +49,7 @@
 #endif
 
 #include "application.h"
-#include <libglom/glade_utils.h>
+#include <glom/glade_utils.h>
 
 #ifndef G_OS_WIN32
 #include <fontconfig/fontconfig.h> //For cleanup.

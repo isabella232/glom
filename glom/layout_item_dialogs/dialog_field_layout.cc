@@ -20,7 +20,7 @@
 
 #include "dialog_field_layout.h"
 #include <libglom/data_structure/glomconversions.h>
-#include <libglom/glade_utils.h>
+#include <glom/glade_utils.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

@@ -104,31 +104,53 @@ if test "$enable_postgresql" = "yes"; then
 	AC_DEFINE([GLOM_ENABLE_POSTGRESQL], 1, [Whether to enable support for PostgreSQL databases.])
 fi
 
-
-# Do not require, goocanvas and gtksourceviewmm in client only mode
-REQUIRED_LIBS="gtkmm-2.4 >= 2.14 gthread-2.0 gconfmm-2.6 libxml++-2.6 libxslt >= 1.1.10 pygda-4.0 >= 2.25.3 pygtk-2.0 >= 2.6.0 libgdamm-4.0 >= 3.99.14 libgda-4.0 >= 4.0.0 libgda-postgres-4.0 goocanvasmm-1.0 >= 0.14.0"
-if test $enable_client_only != yes; then
-	REQUIRED_LIBS="$REQUIRED_LIBS gtksourceviewmm-2.0"
-fi
+# Libraries used by libglom:
+REQUIRED_LIBGLOM_LIBS="gtkmm-2.4 >= 2.14 gthread-2.0 libxml++-2.6 pygda-4.0 >= 2.25.3 pygtk-2.0 >= 2.6.0 libgdamm-4.0 >= 3.99.14 libgda-4.0 >= 4.0.0 libgda-postgres-4.0"
 
 if test "$enable_maemo" = "yes"; then
-	REQUIRED_LIBS="$REQUIRED_LIBS hildonmm libepc-1.0 >= 0.3.1 avahi-ui";
+	REQUIRED_LIBGLOM_LIBS="$REQUIRED_LIBGLOM_LIBS ibepc-1.0 >= 0.3.1 avahi-ui";
 elif test "$win32" = "true"; then
-	REQUIRED_LIBS="$REQUIRED_LIBS gtkmm-2.4 >= 2.14";
+	REQUIRED_LIBGLOM_LIBS="$REQUIRED_LIBGLOM_LIBS";
 else
-	REQUIRED_LIBS="$REQUIRED_LIBS iso-codes libepc-1.0 >= 0.3.1 avahi-ui";
+	REQUIRED_LIBGLOM_LIBS="$REQUIRED_LIBGLOM_LIBS iso-codes libepc-1.0 >= 0.3.1 avahi-ui";
+fi
+
+
+# Libraries used by Glom:
+REQUIRED_GLOM_LIBS="gtkmm-2.4 >= 2.14 gthread-2.0 gconfmm-2.6 libxml++-2.6 libxslt >= 1.1.10 pygda-4.0 >= 2.25.3 pygtk-2.0 >= 2.6.0 libgdamm-4.0 >= 3.99.14 libgda-4.0 >= 4.0.0 libgda-postgres-4.0 goocanvasmm-1.0 >= 0.14.0"
+
+REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS $REQUIRED_LIBGLOM_LIBS"
+	
+# Do not require, goocanvas and gtksourceviewmm in client only mode
+if test $enable_client_only != yes; then
+	REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS gtksourceviewmm-2.0"
+fi
+
+
+if test "$enable_maemo" = "yes"; then
+	REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS hildonmm";
+elif test "$win32" = "true"; then
+	REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS gtkmm-2.4 >= 2.14";
+else
+	REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS";
 fi
 
 if test "$enable_sqlite" = "yes"; then
-	REQUIRED_LIBS="$REQUIRED_LIBS libgda-sqlite-4.0"
+	REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS libgda-sqlite-4.0"
 fi
 
-# Checks for libraries
-PKG_CHECK_MODULES(GLOM, $REQUIRED_LIBS)
-
+# Checks for libraries.
+PKG_CHECK_MODULES(GLOM, $REQUIRED_GLOM_LIBS)
 GLOM_LIBS="$GLOM_LIBS --no-undefined"
 AC_SUBST(GLOM_CFLAGS)
 AC_SUBST(GLOM_LIBS)
+
+PKG_CHECK_MODULES(LIBGLOM, $REQUIRED_LIBGLOM_LIBS)
+LIBGLOM_LIBS="$GLOM_LIBS --no-undefined"
+AC_SUBST(LIBGLOM_CFLAGS)
+AC_SUBST(LIBGLOM_LIBS)
+
+
 
 # Temporary egg CFLAGS
 PKG_CHECK_MODULES(EGG, gtk+-2.0 >= 2.5.0)

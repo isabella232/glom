@@ -23,7 +23,7 @@
 #include "dialog_users_list.h"
 #include "dialog_new_group.h"
 #include <libglom/standard_table_prefs_fields.h>
-#include <libglom/glade_utils.h>
+#include <glom/glade_utils.h>
 #include <glom/glom_privs.h>
 //#include <libgnome/gnome-i18n.h>
 #include <libglom/utils.h> //For bold_message()).

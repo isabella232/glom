@@ -21,7 +21,7 @@
 #ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_H
 #define GLOM_DATASTRUCTURE_LAYOUTITEM_H
 
-#include "../translatable_item.h"
+#include <libglom/data_structure/translatable_item.h>
 #include <glibmm/ustring.h>
 
 namespace Glom

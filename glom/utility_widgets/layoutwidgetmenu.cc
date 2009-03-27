@@ -20,7 +20,7 @@
 
 #include "layoutwidgetfield.h"
 #include <glibmm/i18n.h>
-#include "../application.h"
+#include <glom/application.h>
 #include "../mode_data/flowtablewithfields.h"
 
 namespace Glom

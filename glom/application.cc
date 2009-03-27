@@ -32,7 +32,7 @@
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #include <libglom/utils.h>
-#include <libglom/glade_utils.h>
+#include <glom/glade_utils.h>
 
 //#include <libglom/connectionpool_backends/postgres_central.h>
 //#include <libglom/connectionpool_backends/postgres_self.h>

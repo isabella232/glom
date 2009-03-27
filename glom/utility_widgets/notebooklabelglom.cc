@@ -19,7 +19,7 @@
  */
 
 #include "notebooklabelglom.h"
-#include "../application.h"
+#include <glom/application.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

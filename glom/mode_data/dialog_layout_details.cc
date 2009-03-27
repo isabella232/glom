@@ -22,7 +22,7 @@
 #include "dialog_choose_relationship.h"
 #include "../layout_item_dialogs/dialog_buttonscript.h"
 #include "../layout_item_dialogs/dialog_notebook.h"
-#include <libglom/glade_utils.h>
+#include <glom/glade_utils.h>
 #include "../frame_glom.h" //For show_ok_dialog()
 //#include <libgnome/gnome-i18n.h>
 #include <libglom/utils.h> //For bold_message()).

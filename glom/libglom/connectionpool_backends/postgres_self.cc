@@ -28,7 +28,7 @@
 
 #include <glibmm/i18n.h>
 
-#include "../gst-package.h"
+#include <libglom/gst-package.h>
 
 #ifndef G_OS_WIN32
 #include <sys/types.h>

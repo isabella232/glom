@@ -51,7 +51,7 @@ glom_SOURCES = main.cc \
                box_reports.h box_reports.cc \
                xsl_utils.h xsl_utils.cc \
                variablesmap.h variablesmap.cc \
-               signal_reemitter.h
+               signal_reemitter.h glade_utils.h
 
 if !GLOM_ENABLE_CLIENT_ONLY
 glom_SOURCES += dialog_new_self_hosted_connection.h \

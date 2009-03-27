@@ -37,8 +37,7 @@
 #include <libglom/data_structure/report.h>
 #include <libglom/data_structure/print_layout.h>
 #include <libglom/data_structure/foundset.h>
-#include "../appstate.h"
-//#include <gtkmm/window.h>
+#include <libglom/appstate.h>
 #include <vector>
 #include <map>
 #include <limits> // for numeric_limits

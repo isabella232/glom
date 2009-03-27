@@ -24,7 +24,7 @@
 #include <libglom/data_structure/relationship.h>
 #include <libglom/data_structure/glomconversions.h>
 #include "dialog_layout_details.h"
-#include <libglom/glade_utils.h>
+#include <glom/glade_utils.h>
 #include <libglom/utils.h>
 #include <glom/glom_privs.h>
 #include "../xsl_utils.h"

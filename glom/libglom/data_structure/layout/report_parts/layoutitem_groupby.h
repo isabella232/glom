@@ -21,8 +21,8 @@
 #ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_GROUPBY_H
 #define GLOM_DATASTRUCTURE_LAYOUTITEM_GROUPBY_H
 
-#include "../layoutgroup.h"
-#include "../layoutitem_field.h"
+#include <libglom/data_structure/layout/layoutgroup.h>
+#include <libglom/data_structure/layout/layoutitem_field.h>
 #include <map>
 
 namespace Glom

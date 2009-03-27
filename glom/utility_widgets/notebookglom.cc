@@ -20,7 +20,7 @@
 
 #include "notebookglom.h"
 #include <gtkmm/messagedialog.h>
-#include "../application.h"
+#include <glom/application.h>
 #include <glibmm/i18n.h>
 //#include <sstream> //For stringstream
 

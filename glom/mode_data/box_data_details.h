@@ -24,11 +24,11 @@
 #include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY
 
 #include "box_data.h"
-//#include "box_data_list_related.h"
+//#include <glom/mode_data/box_data_list_related.h>
 #include "flowtablewithfields.h"
-#include "../utility_widgets/placeholder.h"
+#include <glom/utility_widgets/placeholder.h>
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-#include "../utility_widgets/layouttoolbar.h"
+#include <glom/utility_widgets/layouttoolbar.h>
 #endif
 
 namespace Glom

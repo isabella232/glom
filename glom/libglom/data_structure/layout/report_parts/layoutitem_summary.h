@@ -21,7 +21,7 @@
 #ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_SUMMARY_H
 #define GLOM_DATASTRUCTURE_LAYOUTITEM_SUMMARY_H
 
-#include "../layoutgroup.h"
+#include <libglom/data_structure/layout/layoutgroup.h>
 
 namespace Glom
 {

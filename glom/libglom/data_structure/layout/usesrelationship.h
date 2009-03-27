@@ -21,8 +21,8 @@
 #ifndef GLOM_DATASTRUCTURE_LAYOUT_USESRELATIONSHIP_H
 #define GLOM_DATASTRUCTURE_LAYOUT_USESRELATIONSHIP_H
 
-#include "../numeric_format.h"
-#include "../relationship.h"
+#include <libglom/data_structure/numeric_format.h>
+#include <libglom/data_structure/relationship.h>
 #include <libglom/sharedptr.h>
 #include <libgdamm.h>
 

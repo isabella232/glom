@@ -21,8 +21,8 @@
 #ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_HEADER_H
 #define GLOM_DATASTRUCTURE_LAYOUTITEM_HEADER_H
 
-#include "../layoutgroup.h"
-#include "../../field.h"
+#include <libglom/data_structure/layout/layoutgroup.h>
+#include <libglom/data_structure/field.h>
 
 namespace Glom
 {

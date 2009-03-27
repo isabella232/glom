@@ -21,7 +21,7 @@
 #include "dialog_invalid_data.h"
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/utils.h>
-#include <libglom/glade_utils.h>
+#include <glom/glade_utils.h>
 
 namespace Glom
 {

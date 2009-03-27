@@ -20,10 +20,10 @@
 
 #include "labelglom.h"
 #include <gtkmm/messagedialog.h>
-#include "../application.h"
+#include <glom/application.h>
 #include <glibmm/i18n.h>
 #include "../layout_item_dialogs/dialog_textobject.h"
-#include "../libglom/glade_utils.h"
+#include <glom/glade_utils.h>
 #include "../mode_data/flowtablewithfields.h"
 //#include <sstream> //For stringstream
 

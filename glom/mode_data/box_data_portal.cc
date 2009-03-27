@@ -20,7 +20,7 @@
 
 #include "box_data_portal.h"
 #include <libglom/data_structure/glomconversions.h>
-#include <libglom/glade_utils.h>
+#include <glom/glade_utils.h>
 #include <glom/frame_glom.h> //For show_ok_dialog()
 #include <libglom/utils.h> //For bold_message()).
 #include <glibmm/i18n.h>

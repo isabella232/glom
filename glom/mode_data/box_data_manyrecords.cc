@@ -20,7 +20,7 @@
 
 #include "box_data_manyrecords.h"
 #include <libglom/data_structure/glomconversions.h>
-#include <libglom/glade_utils.h>
+#include <glom/glade_utils.h>
 #include <glom/reports/report_builder.h>
 #include "dialog_layout_list.h"
 #include <glom/glom_privs.h>

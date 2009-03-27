@@ -22,8 +22,8 @@
 #define GLOM_DATASTRUCTURE_LAYOUTITEM_NOTEBOOK_H
 
 #include "layoutgroup.h"
-#include "../field.h"
-#include "../relationship.h"
+#include <libglom/data_structure/field.h>
+#include <libglom/data_structure/relationship.h>
 
 namespace Glom
 {

@@ -28,7 +28,7 @@
 #include <libglom/data_structure/layout/layoutitem_field.h>
 #include <libglom/data_structure/layout/layoutitem_text.h>
 #include <libglom/data_structure/layout/layoutitem_image.h>
-#include <libglom/glade_utils.h>
+#include <glom/glade_utils.h>
 #include "../mode_data/dialog_choose_field.h"
 #include "../layout_item_dialogs/dialog_field_layout.h"
 #include "../layout_item_dialogs/dialog_group_by.h"

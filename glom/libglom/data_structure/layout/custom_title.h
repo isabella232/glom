@@ -21,7 +21,7 @@
 #ifndef GLOM_DATASTRUCTURE_LAYOUT_CUSTOM_TITLE_H
 #define GLOM_DATASTRUCTURE_LAYOUT_CUSTOM_TITLE_H
 
-#include "../translatable_item.h"
+#include <libglom/data_structure/translatable_item.h>
 
 namespace Glom
 {

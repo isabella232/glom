@@ -31,7 +31,7 @@
 #include <glom/utility_widgets/canvas/canvas_text_movable.h>
 #include <libglom/data_structure/glomconversions.h>
 
-#include <libglom/glade_utils.h>
+#include <glom/glade_utils.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

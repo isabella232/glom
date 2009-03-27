@@ -20,7 +20,7 @@
 
 #include <libglom/spawn_with_feedback.h>
 #include <libglom/dialog_progress_creating.h>
-#include <libglom/glade_utils.h>
+#include <glom/glade_utils.h>
 #include <gtkmm/main.h>
 #include <gtkmm/messagedialog.h>
 #include <glibmm/i18n.h>
@@ -423,7 +423,9 @@ bool execute_command_line_and_wait(const std::string& command, const Glib::ustri
 }
 
 // Callback handlers for execute_command_line_and_wait_until_second_command_returns_success
-namespace {
+namespace
+{
+
   bool on_timeout(const std::string& second_command, const std::string& success_text, Dialog_ProgressCreating* dialog_progress)
   {
     Glib::ustring stored_env_lang;
@@ -499,7 +501,8 @@ namespace {
     dialog_progress->pulse();
     return true;
   }
-}
+
+} //Anonymous namespace
 
 bool execute_command_line_and_wait_until_second_command_returns_success(const std::string& command, const std::string& second_command, const Glib::ustring& message, Gtk::Window* parent_window, const std::string& success_text)
 {

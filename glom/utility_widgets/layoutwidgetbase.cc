@@ -20,7 +20,7 @@
 
 #include "layoutwidgetbase.h"
 #include <glibmm/i18n.h>
-#include "../application.h"
+#include <glom/application.h>
 
 namespace Glom
 {

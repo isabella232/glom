@@ -21,12 +21,12 @@
 #ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_FIELD_H
 #define GLOM_DATASTRUCTURE_LAYOUTITEM_FIELD_H
 
-#include "layoutitem.h"
-#include "usesrelationship.h"
-#include "../field.h"
-#include "../numeric_format.h"
-#include "../relationship.h"
-#include "custom_title.h"
+#include <libglom/data_structure/layout/layoutitem.h>
+#include <libglom/data_structure/layout/usesrelationship.h>
+#include <libglom/data_structure/field.h>
+#include <libglom/data_structure/numeric_format.h>
+#include <libglom/data_structure/relationship.h>
+#include <libglom/data_structure/layout/custom_title.h>
 
 namespace Glom
 {

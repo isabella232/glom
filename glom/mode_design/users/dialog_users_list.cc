@@ -22,7 +22,7 @@
 #include "dialog_user.h"
 #include "dialog_choose_user.h"
 #include <glom/glom_privs.h>
-#include <libglom/glade_utils.h>
+#include <glom/glade_utils.h>
 #include <libglom/utils.h> //For bold_message()).
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>

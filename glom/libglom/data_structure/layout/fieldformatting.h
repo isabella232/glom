@@ -21,9 +21,9 @@
 #ifndef GLOM_DATASTRUCTURE_FIELDFORMATTING_H
 #define GLOM_DATASTRUCTURE_FIELDFORMATTING_H
 
-#include "usesrelationship.h"
-#include "../numeric_format.h"
-#include "../relationship.h"
+#include <libglom/data_structure/layout/usesrelationship.h>
+#include <libglom/data_structure/numeric_format.h>
+#include <libglom/data_structure/relationship.h>
 #include <libglom/sharedptr.h>
 #include <libgdamm.h>
 

@@ -21,7 +21,7 @@
 #include "filechooser_export.h"
 #include "mode_data/dialog_layout_export.h"
 #include <libglom/utils.h>
-#include <libglom/glade_utils.h>
+#include <glom/glade_utils.h>
 #include <gtkmm/stock.h>
 #include <glibmm/i18n.h>
 
