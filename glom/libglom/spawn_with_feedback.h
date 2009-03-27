@@ -21,7 +21,8 @@
 #ifndef GLOM_SPAWN_WITH_FEEDBACK_H
 #define GLOM_SPAWN_WITH_FEEDBACK_H
 
-#include <gtkmm/window.h>
+#include <glibmm/ustring.h>
+#include <sigc++/sigc++.h>
 
 namespace Glom
 {
@@ -29,23 +30,25 @@ namespace Glom
 namespace Spawn
 {
 
+/** This callback should show UI to indicate that work is still happening.
+ * For instance, a pulsing ProgressBar.
+ */
+typedef sigc::slot<void> SlotProgress;
 
 /** Execute a command-line command, and wait for it to return.
  * @param command The command-line command.
  * @param message A human-readable message to be shown, for instance in a dialog, while waiting.
- * @parent_window Make the dialog transient to this window.
+ * @slot_progress A callback to call while the work is still happening.
  */
-bool execute_command_line_and_wait(const std::string& command, const Glib::ustring& message, Gtk::Window* parent_window);
+bool execute_command_line_and_wait(const std::string& command, const SlotProgress& slot_progress);
 
 /** Execute a command-line command, and repeatedly call a second command that tests whether the first command has finished.
  * @param command The command-line command.
  * @param message A human-readable message to be shown, for instance in a dialog, while waiting. 
- * @parent_window Make the dialog transient to this window.
+ * @slot_progress A callback to call while the work is still happening.
  * @success_text If this is not empty, then the second command will only be considered to have succeeded when this text is found in its stdout output.
  */
-bool execute_command_line_and_wait_until_second_command_returns_success(const std::string& command, const std::string& second_command, const Glib::ustring& message, Gtk::Window* parent_window, const std::string& success_text = std::string());
-
-//bool execute_command_line_and_wait_fixed_seconds(const std::string& command, unsigned int seconds, const Glib::ustring& message, Gtk::Window* parent_window);
+bool execute_command_line_and_wait_until_second_command_returns_success(const std::string& command, const std::string& second_command, const SlotProgress& slot_progress, const std::string& success_text = std::string());
 
 
 } //Spawn

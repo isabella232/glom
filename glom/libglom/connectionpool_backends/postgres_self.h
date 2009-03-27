@@ -64,13 +64,13 @@ public:
   /** Try to install postgres on the distro, though this will require a
    * distro-specific patch to the implementation.
    */
-  static bool install_postgres(Gtk::Window* parent_window);
+  static bool install_postgres(const SlotProgress& slot_progress);
 
 private:
-  virtual bool initialize(Gtk::Window* parent_window, const Glib::ustring& initial_username, const Glib::ustring& password);
+  virtual bool initialize(const SlotProgress& slot_progress, const Glib::ustring& initial_username, const Glib::ustring& password);
 
-  virtual bool startup(Gtk::Window* parent_window);
-  virtual void cleanup(Gtk::Window* parent_window);
+  virtual bool startup(const SlotProgress& slot_progress);
+  virtual void cleanup(const SlotProgress& slot_progress);
 
   virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error);
 

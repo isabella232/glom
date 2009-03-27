@@ -91,6 +91,7 @@ private:
   virtual void init_toolbars(); //override
   virtual void init_create_document(); //override
   virtual bool on_document_load(); //override.
+  virtual void on_document_close(); //override.
 
   bool offer_new_or_existing();
 
@@ -131,6 +132,8 @@ private:
   virtual void document_history_add(const Glib::ustring& file_uri); //overridden.
 
   virtual void new_instance(const Glib::ustring& uri = Glib::ustring()); //Override
+  
+  void on_connection_close_progress();
 
 #ifndef G_OS_WIN32
   void open_browsed_document(const EpcServiceInfo* server, const Glib::ustring& service_name);

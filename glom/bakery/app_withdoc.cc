@@ -47,7 +47,7 @@ App_WithDoc::~App_WithDoc()
 }
 
 //static
-void  App_WithDoc::add_mime_type(const Glib::ustring& mime_type)
+void App_WithDoc::add_mime_type(const Glib::ustring& mime_type)
 {
   if( std::find(m_mime_types.begin(), m_mime_types.end(), mime_type) == m_mime_types.end() )
     m_mime_types.push_back(mime_type);
@@ -64,6 +64,8 @@ void App_WithDoc::on_menu_file_close()
 
   if(!get_operation_cancelled())
     ui_hide();
+    
+  on_document_close();
 }
 
 bool App_WithDoc::open_document_from_data(const guchar* data, std::size_t length)
@@ -123,7 +125,7 @@ bool App_WithDoc::open_document(const Glib::ustring& file_uri)
     else
     {
       //if open succeeded then let the App respond:
-      bool test = pApp->on_document_load();
+      const bool test = pApp->on_document_load();
       if(!test)
         bOpenFailed = true; //The application didn't like something about the just-loaded document.
       else
@@ -410,6 +412,10 @@ bool App_WithDoc::on_document_load()
     return false; //I can't think of any reason why this would happen.
   
   //If you are not using Views, then override this to fill your various windows with stuff according to the contents of the document.
+}
+
+void App_WithDoc::on_document_close()
+{
 }
 
 void App_WithDoc::update_window_title()

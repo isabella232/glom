@@ -131,6 +131,9 @@ protected:
 
   ///override this to show document contents.
   virtual bool on_document_load();
+  
+  ///override this to do extra cleanup.
+  virtual void on_document_close();
 
   virtual void offer_to_save_changes();
 

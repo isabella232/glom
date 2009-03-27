@@ -602,9 +602,8 @@ static void on_linux_signal(int signum)
 
   if(signum == SIGSEGV)
   {
-    //TODO: Make this dialog transient for the parent window, 
-    //though this is obviously an unusual case.
-    connection_pool->cleanup(0 /* parent_window */);
+    ConnectionPool::SlotProgress slot_ignored;
+    connection_pool->cleanup(slot_ignored);
 
     //Let GNOME/Ubuntu's crash handler still handle this?
     if(previous_sig_handler)
@@ -614,12 +613,12 @@ static void on_linux_signal(int signum)
   }
 }
 
-bool ConnectionPool::startup(Gtk::Window* parent_window)
+bool ConnectionPool::startup(const SlotProgress& slot_progress)
 {
   if(!m_backend.get())
     return false;
 
-  if(!m_backend->startup(parent_window))
+  if(!m_backend->startup(slot_progress))
     return false;
 
 #ifndef G_OS_WIN32
@@ -634,10 +633,10 @@ bool ConnectionPool::startup(Gtk::Window* parent_window)
   return true;
 }
 
-void ConnectionPool::cleanup(Gtk::Window* parent_window)
+void ConnectionPool::cleanup(const SlotProgress& slot_progress)
 {
   if(m_backend.get())
-    m_backend->cleanup(parent_window);
+    m_backend->cleanup(slot_progress);
 
   //Make sure that connect() makes a new connection:
   connection_cached.clear();
@@ -781,10 +780,10 @@ bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-bool ConnectionPool::initialize(Gtk::Window* parent_window)
+bool ConnectionPool::initialize(const SlotProgress& slot_progress)
 {
   if(m_backend.get())
-    return m_backend->initialize(parent_window, get_user(), get_password());
+    return m_backend->initialize(slot_progress, get_user(), get_password());
   else
     return false;
 }

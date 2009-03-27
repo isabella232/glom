@@ -31,6 +31,8 @@
 namespace Glom
 {
 
+class Dialog_ProgressCreating;
+
 class Dialog_NewSelfHostedConnection
   : public Gtk::Dialog,
     public Base_DB
@@ -47,9 +49,13 @@ public:
 
 
 private:
+  void on_connection_initialization_progress();
+  
   Gtk::Entry* m_entry_user;
   Gtk::Entry* m_entry_password;
   Gtk::Entry* m_entry_password_confirm;
+  
+  Dialog_ProgressCreating* m_dialog_progess_connection_initialize;
 };
 
 } //namespace Glom

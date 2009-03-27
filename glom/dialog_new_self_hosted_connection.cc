@@ -21,6 +21,7 @@
 #include "dialog_new_self_hosted_connection.h"
 #include "box_withbuttons.h" //For Box_WithButtons::connect_to_server().
 #include <glom/frame_glom.h> //For Frame_Glom::show_ok_dialog
+#include <glom/glade_utils.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -30,7 +31,8 @@ Dialog_NewSelfHostedConnection::Dialog_NewSelfHostedConnection(BaseObjectType* c
 : Gtk::Dialog(cobject),
   Base_DB(),
   m_entry_user(0),
-  m_entry_password(0)
+  m_entry_password(0),
+  m_dialog_progess_connection_initialize(0)
 {
   builder->get_widget("entry_user", m_entry_user);
   builder->get_widget("entry_password", m_entry_password);
@@ -39,6 +41,19 @@ Dialog_NewSelfHostedConnection::Dialog_NewSelfHostedConnection(BaseObjectType* c
 
 Dialog_NewSelfHostedConnection::~Dialog_NewSelfHostedConnection()
 {
+  if(m_dialog_progess_connection_initialize)
+  {
+    delete m_dialog_progess_connection_initialize;
+    m_dialog_progess_connection_initialize = 0;
+  }
+}
+
+void Dialog_NewSelfHostedConnection::on_connection_initialization_progress()
+{
+  if(!m_dialog_progess_connection_initialize)
+    m_dialog_progess_connection_initialize = Utils::get_and_show_pulse_dialog(_("Creating Database Data"), this);
+        
+  m_dialog_progess_connection_initialize->pulse();
 }
 
 bool Dialog_NewSelfHostedConnection::create_self_hosted()
@@ -62,7 +77,8 @@ bool Dialog_NewSelfHostedConnection::create_self_hosted()
       connection_pool->set_user(m_entry_user->get_text());
       connection_pool->set_password(m_entry_password->get_text());
       //std::cout << "debug: Dialog_NewSelfHostedConnection::create_self_hosted() user=" << m_entry_user->get_text() << ", password=" << m_entry_password->get_text() << std::endl;
-      const bool created = connection_pool->initialize(this /* parent_window for errors */);
+      const bool created = connection_pool->initialize(
+        sigc::mem_fun(*this, &Dialog_NewSelfHostedConnection::on_connection_initialization_progress) );
       if(!created)
       {
         return false;

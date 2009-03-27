@@ -1,5 +1,38 @@
 2009-03-27  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/bakery/app_withdoc.[h|cc]: Added on_document_close() virtual method 
+	now that we can break this ABI.
+	* glom/application.[h|cc]: Override on_document_close().
+	* glom/libglom/document/document_glom.cc: Destructor: Don't shutdown the 
+	database here. Do in App_Glom::on_document_close() instead.
+
+	* glom/libglom/Makefile.am:
+	* glom/libglom/spawn_with_feedback.[h|cc]: execute_command_line_and_wait(),
+	  execute_command_line_and_wait_until_second_command_returns_success():
+	  Take a SlotProgress callback instead of a parent window, and don't take 
+	  a human-readable message string to show, allowing the caller to show UI if 
+	  it wants, removing UI code from this part of libglom.
+	  Use a Glib::MainLoop to block instead of using the Gtk::Main in 
+	  Gtk::Dialog::run().
+	* glom/libglom/connectionpool.[h|cc]: initialize(), startup, cleanup():
+	* glom/libglom/connectionpool_backends/backend.[h|cc]: initialize(),
+	  startup(), cleanup():
+	* glom/libglom/connectionpool_backends/postgres_self.cc: initialize(), 
+	startup, cleanup(): Take a SlotProgress callback instead of a parent window, 
+	allowing the caller to show UI if it wants, removing UI code from this part of 
+	libglom.
+	
+		* glom/Makefile.am:
+	* glom/libglom/dialog_progress_creating.[h|cc]: moved to 
+	* glom/glom/glade_utils.[h|cc]: Moved get_and_show_pulse_dialog() here.
+	
+	* glom/dialog_new_self_hosted_connection.[h|cc]:
+	* glom/frame_glom.[h|cc]: 
+	connection_request_password_and_choose_new_database_name(), 
+	connection_request_password_and_attempt(): Adapted.
+
+2009-03-27  Murray Cumming  <murrayc@murrayc.com>
+
 	* configure.ac, glom/libglom/*/Makefile.am: Do two separate 
 	PKG_CONFIG_MODULE() checks for Glom and libglom to avoid unnecessary 
 	dependencies in libglom.

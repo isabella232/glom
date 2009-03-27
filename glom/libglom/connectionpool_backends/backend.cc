@@ -45,18 +45,19 @@ ExceptionConnection::failure_type ExceptionConnection::get_failure_type() const
 namespace ConnectionPoolBackends
 {
 
-bool Backend::initialize(Gtk::Window* /* parent_window */, const Glib::ustring& /* initial_username */, const Glib::ustring& /* password */)
+bool Backend::initialize(const SlotProgress& /* slot_progress */, const Glib::ustring& /* initial_username */, const Glib::ustring& /* password */)
 {
   return true;
 }
 
-bool Backend::startup(Gtk::Window* /* parent_window */)
+bool Backend::startup(const SlotProgress& /* slot_progress */)
 {
   return true;
 }
 
-void Backend::cleanup(Gtk::Window* /* parent_window */)
-{}
+void Backend::cleanup(const SlotProgress& /* slot_progress */)
+{
+}
 
 bool Backend::set_server_operation_value(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, const Glib::ustring& path, const Glib::ustring& value, std::auto_ptr<Glib::Error>& error)
 {

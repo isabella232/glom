@@ -23,7 +23,7 @@
 #include "application.h"
 #include "dialog_existing_or_new.h"
 
-#include <libglom/dialog_progress_creating.h>
+#include <glom/dialog_progress_creating.h>
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #include <glom/translation/dialog_change_language.h>
@@ -1048,7 +1048,7 @@ bool App_Glom::on_document_load()
           {
             // TODO: Do we need to call connection_pool->cleanup() here, for
             // stopping self-hosted databases? armin.
-            connection_pool->cleanup(this);
+            connection_pool->cleanup( sigc::mem_fun(*this, &App_Glom::on_connection_close_progress) );
             //If the database was not successfully recreated:
             if(!user_cancelled)
             {
@@ -1091,6 +1091,24 @@ bool App_Glom::on_document_load()
 
     return true; //Loading of the document into the application succeeded.
   }
+}
+
+void App_Glom::on_connection_close_progress()
+{
+  //TODO_murrayc
+}
+
+void App_Glom::on_document_close()
+{
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  //TODO: It would be better to do this in a Application::on_document_closed() virtual method,
+  //but that would need an ABI break in Bakery:
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  if(!connection_pool)
+    return;
+
+  connection_pool->cleanup( sigc::mem_fun(*this, &App_Glom::on_connection_close_progress) );
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
 /*
@@ -2267,7 +2285,7 @@ void App_Glom::stop_self_hosting_of_document_database()
     if(!connection_pool)
       return;
 
-    connection_pool->cleanup(this);
+    connection_pool->cleanup( sigc::mem_fun(*this, &App_Glom::on_connection_close_progress ));
   }
 }
 
@@ -2395,6 +2413,7 @@ Document_Glom* App_Glom::on_connection_pool_get_document()
   return dynamic_cast<Document_Glom*>(get_document());
 }
 #endif
+
 
 } //namespace Glom
 

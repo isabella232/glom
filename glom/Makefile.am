@@ -48,10 +48,11 @@ glom_SOURCES = main.cc \
 	             dialog_existing_or_new.h dialog_existing_or_new.cc \
                dialog_invalid_data.h dialog_invalid_data.cc \
                filechooser_export.h filechooser_export.cc \
+               dialog_progress_creating.h dialog_progress_creating.cc \
                box_reports.h box_reports.cc \
                xsl_utils.h xsl_utils.cc \
                variablesmap.h variablesmap.cc \
-               signal_reemitter.h glade_utils.h
+               signal_reemitter.h glade_utils.h glade_utils.cc
 
 if !GLOM_ENABLE_CLIENT_ONLY
 glom_SOURCES += dialog_new_self_hosted_connection.h \

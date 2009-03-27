@@ -101,23 +101,34 @@ protected:
    */
   virtual Glib::ustring get_string_find_operator() const = 0;
 
+  /** This callback should show UI to indicate that work is still happening.
+   * For instance, a pulsing ProgressBar.
+   */
+  typedef sigc::slot<void> SlotProgress;
+
   /** This method is called for one-time initialization of the database
    * storage. No need to implement this function if the data is centrally
    * hosted, not managed by Glom.
+   *
+   * @slot_progress A callback to call while the work is still happening.
    */
-  virtual bool initialize(Gtk::Window* parent_window, const Glib::ustring& initial_username, const Glib::ustring& password);
+  virtual bool initialize(const SlotProgress& slot_progress, const Glib::ustring& initial_username, const Glib::ustring& password);
 
   /** This method is called before the backend is used otherwise. This can
    * be used to start a self-hosted database server. There is no need to implement
    * this function if there is no need for extra startup code.
+   *
+   * @slot_progress A callback to call while the work is still happening.
    */
-  virtual bool startup(Gtk::Window* parent_window);
+  virtual bool startup(const SlotProgress& slot_progress);
 
   /** This method is called when the backend is no longer used. This can be
    * used to shut down a self-hosted database server. There is no need to
    * implement this function if there is no need for extra cleanup code.
+   *
+   * @slot_progress A callback to call while the work is still happening.
    */
-  virtual void cleanup(Gtk::Window* parent_window);
+  virtual void cleanup(const SlotProgress& slot_progress);
 
   /** This method is called to create a connection to the database server.
    * There exists only the variant with an error variable as last parameter

@@ -23,7 +23,7 @@
 
 #include <iostream> // For std::cerr
 #include <gtkmm/builder.h>
-#include <gtkmm/builder.h>
+#include <glom/dialog_progress_creating.h>
 
 namespace Glom
 {
@@ -122,6 +122,8 @@ void get_glade_widget_with_warning(const Glib::ustring& id, T_Widget*& widget)
     refXml->get_widget(id, widget);
   }
 }
+
+Dialog_ProgressCreating* get_and_show_pulse_dialog(const Glib::ustring& message, Gtk::Window* parent_window);
 
 } //namespace Utils
 

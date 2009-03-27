@@ -271,15 +271,6 @@ Document_Glom::Document_Glom()
 
 Document_Glom::~Document_Glom()
 {
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  //TODO: It would be better to do this in a Application::on_document_closed() virtual method,
-  //but that would need an ABI break in Bakery:
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
-  if(!connection_pool)
-    return;
-
-  connection_pool->cleanup(m_parent_window);
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
 Document_Glom::HostingMode Document_Glom::get_hosting_mode() const

@@ -41,7 +41,6 @@ typedef struct _EpcAuthContext EpcAuthContext;
 
 namespace Gtk
 {
-  class Window;
   class Dialog;
 }
 
@@ -150,22 +149,27 @@ public:
   const FieldTypes* get_field_types() const;
   Glib::ustring get_string_find_operator() const;
 
+  /** This callback should show UI to indicate that work is still happening.
+   * For instance, a pulsing ProgressBar.
+   */
+  typedef sigc::slot<void> SlotProgress;
+  
   /** Do one-time initialization, such as  creating required database
    * files on disk for later use by their own  database server instance.
    * @param parent_window A parent window to use as the transient window when displaying errors.
    */
-  bool initialize(Gtk::Window* parent_window);
+  bool initialize(const SlotProgress& slot_progress);
 
   /** Start a database server instance for the exisiting database files.
    * @param parent_window The parent window (transient for) of any dialogs shown during this operation.
    * @result Whether the operation was successful.
    */
-  bool startup(Gtk::Window* parent_window);
+  bool startup(const SlotProgress& slot_progress);
 
   /** Stop the database server instance for the database files.
    * @param parent_window The parent window (transient for) of any dialogs shown during this operation.
    */
-  void cleanup(Gtk::Window* parent_window);
+  void cleanup(const SlotProgress& slot_progress);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #ifdef GLIBMM_EXCEPTIONS_ENABLED

@@ -52,6 +52,7 @@ class Dialog_Layout_Report;
 class Window_PrintLayout_Edit;
 class Dialog_AddRelatedTable;
 class Dialog_RelationshipsOverview;
+class Dialog_ProgressCreating;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 class Frame_Glom :
@@ -217,6 +218,10 @@ protected:
   void on_dialog_add_related_table_response(int response);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
+  void on_connection_startup_progress();
+  void on_connection_cleanup_progress();
+  void cleanup_connection();
+  
   //Member data:
   Glib::ustring m_table_name;
 
@@ -259,10 +264,12 @@ protected:
   Dialog_Relationships* m_pDialog_Relationships;
   Dialog_AddRelatedTable* m_dialog_addrelatedtable;
   Dialog_RelationshipsOverview* m_dialog_relationships_overview;
-  
+    
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   Dialog_Connection* m_pDialogConnection;
+  Dialog_ProgressCreating* m_dialog_progess_connection_startup;
+  Dialog_ProgressCreating* m_dialog_progess_connection_cleanup;
 };
 
 } //namespace Glom

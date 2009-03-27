@@ -19,12 +19,15 @@
  */
 
 #include <libglom/spawn_with_feedback.h>
-#include <libglom/dialog_progress_creating.h>
-#include <glom/glade_utils.h>
-#include <gtkmm/main.h>
-#include <gtkmm/messagedialog.h>
+#include <glibmm/main.h>
+#include <glibmm/spawn.h>
+#include <glibmm/thread.h>
+#include <glibmm/iochannel.h>
+#include <glibmm/shell.h>
+#include <glibmm/miscutils.h>
 #include <glibmm/i18n.h>
 #include <memory> //For auto_ptr.
+#include <stdexcept>
 #include <iostream>
 
 #ifdef G_OS_WIN32
@@ -50,9 +53,17 @@ public:
   bool* m_result;
 };
 
-// This is a simple process launching API wrapping g_spawn_async on linux and
-// CreateProcess() on Windows. We need to use CreateProcess on Windows to be
+static void on_spawn_info_finished(const Glib::RefPtr<Glib::MainLoop>& mainloop)
+{
+  //Allow our mainloop.run() to return:
+  if(mainloop)
+    mainloop->quit();
+}
+
+// This is a simple-process launching API wrapping g_spawn_async on linux and
+// CreateProcess() on Windows. We need to use CreateProcess() on Windows to be
 // able to suppress the console window.
+// TODO: File a bug about the console window on Windows.
 namespace Impl
 {
 
@@ -120,7 +131,7 @@ private:
       char buffer[1024 + 1];
       gsize bytes_read;
 
-      Glib::IOStatus status;
+      Glib::IOStatus status = Glib::IO_STATUS_NORMAL;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
       try
       {
@@ -341,11 +352,14 @@ int spawn_sync(const Glib::ustring& command_line, std::string* stdout_text, std:
   if(stderr_text)
     redirect_flags |= REDIRECT_STDERR;
 
+  Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
+     
   std::auto_ptr<const SpawnInfo> info = spawn_async(command_line, redirect_flags);
-  info->signal_finished().connect(sigc::ptr_fun(&Gtk::Main::quit));
-
-  // Wait for termination
-  Gtk::Main::run();
+  info->signal_finished().connect(
+    sigc::bind(sigc::ptr_fun(&on_spawn_info_finished), sigc::ref(mainloop) ) );
+ 
+  // Block until signal_finished is emitted:
+  mainloop->run();
 
   int return_status = 0;
   bool returned = spawn_async_end(info, stdout_text, stderr_text, &return_status);
@@ -355,69 +369,30 @@ int spawn_sync(const Glib::ustring& command_line, std::string* stdout_text, std:
 
 } // namespace Impl
 
-static Dialog_ProgressCreating* get_and_show_pulse_dialog(const Glib::ustring& message, Gtk::Window* parent_window)
+
+bool execute_command_line_and_wait(const std::string& command, const SlotProgress& slot_progress)
 {
-  if(!parent_window)
-    std::cerr << "debug: Glom: get_and_show_pulse_dialog(): parent_window is NULL" << std::endl;
-
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "window_progress");
-#else
-  std::auto_ptr<Glib::Error> error;
-  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "window_progress", "", error);
-  if(error.get())
-    return 0;
-#endif
-
-  if(refXml)
-  {
-    Dialog_ProgressCreating* dialog_progress = 0;
-    refXml->get_widget_derived("window_progress", dialog_progress);
-    if(dialog_progress)
-    {
-      dialog_progress->set_message(_("Processing"), message);
-      dialog_progress->set_modal();
-
-      if(parent_window)
-        dialog_progress->set_transient_for(*parent_window);
-
-      dialog_progress->show();
-
-      return dialog_progress;
-    }
-  }
-
-  return NULL;
-}
-
-
-
-bool execute_command_line_and_wait(const std::string& command, const Glib::ustring& message, Gtk::Window* parent_window)
-{
-  if(!parent_window)
-    std::cerr << "debug: Glom: execute_command_line_and_wait(): parent_window is NULL" << std::endl;
-
-  //Show a dialog with a pulsing progress bar and a human-readable message, while we wait for the command to finish:
-  //
-  //Put the dialog in an auto_ptr so that it will be deleted (and hidden) when the current function returns.
-  Dialog_ProgressCreating* dialog_temp = get_and_show_pulse_dialog(message, parent_window);
-  std::auto_ptr<Dialog_ProgressCreating> dialog_progress;
-  dialog_progress.reset(dialog_temp);
-
+  //Show UI progress feedback while we wait for the command to finish:
+  
   std::auto_ptr<const Impl::SpawnInfo> info = Impl::spawn_async(command, 0);
+  
+  Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
   info->signal_finished().connect(
-    sigc::bind(sigc::mem_fun(*dialog_progress, &Dialog_ProgressCreating::response), Gtk::RESPONSE_ACCEPT));
+    sigc::bind(sigc::ptr_fun(&on_spawn_info_finished), sigc::ref(mainloop) ) );
 
-  // Pulse two times a second
+  // Pulse two times a second:
   Glib::signal_timeout().connect(
-    sigc::bind_return(sigc::mem_fun(*dialog_progress, &Dialog_ProgressCreating::pulse), true),
+    sigc::bind_return( slot_progress, true),
     500);
+  slot_progress(); //Make sure it is called at least once.
 
-  dialog_progress->run();
+  //Block until signal_finished is called.
+  mainloop->run();
 
-  int return_status;
-  bool returned = Impl::spawn_async_end(info, NULL, NULL, &return_status);
-  if(!returned) return false; // User closed the dialog prematurely?
+  int return_status = false;
+  const bool returned = Impl::spawn_async_end(info, NULL, NULL, &return_status);
+  if(!returned)
+    return false; // User closed the dialog prematurely?
 
   return (return_status == 0);
 }
@@ -426,7 +401,7 @@ bool execute_command_line_and_wait(const std::string& command, const Glib::ustri
 namespace
 {
 
-  bool on_timeout(const std::string& second_command, const std::string& success_text, Dialog_ProgressCreating* dialog_progress)
+  bool second_command_on_timeout(const std::string& second_command, const std::string& success_text, const SlotProgress& slot_progress, const Glib::RefPtr<Glib::MainLoop>& mainloop)
   {
     Glib::ustring stored_env_lang;
     Glib::ustring stored_env_language;
@@ -485,9 +460,9 @@ namespace
 
       if(success)
       {
-        std::cout << "Success, do response" << std::endl;
+        std::cout << "debug: Success, do response" << std::endl;
         // Exit from run() in execute_command_line_and_wait_until_second_command_returns_success().
-        dialog_progress->response(Gtk::RESPONSE_OK);
+        mainloop->quit();
         // Cancel timeout. Actually, we also could return true here since
         // the signal is disconnect explicetely after run() anyway.
         return false;
@@ -498,22 +473,24 @@ namespace
        std::cout << " debug: second command failed. output=" << stdout_output << std::endl;
     }
 
-    dialog_progress->pulse();
+    slot_progress(); //Show UI progress feedback.
     return true;
   }
 
 } //Anonymous namespace
 
-bool execute_command_line_and_wait_until_second_command_returns_success(const std::string& command, const std::string& second_command, const Glib::ustring& message, Gtk::Window* parent_window, const std::string& success_text)
+static bool on_timeout_delay(const Glib::RefPtr<Glib::MainLoop>& mainloop)
 {
-  if(!parent_window)
-    std::cerr << "debug: Glom: execute_command_line_and_wait_until_second_command_returns_success(): parent_window is NULL" << std::endl;
+  //Allow our mainloop.run() to return:
+  if(mainloop)
+    mainloop->quit();
+    
+  return false;
+}
 
-  Dialog_ProgressCreating* dialog_temp = get_and_show_pulse_dialog(message, parent_window);
-  std::auto_ptr<Dialog_ProgressCreating> dialog_progress;
-  dialog_progress.reset(dialog_temp);
-
-  std::cout << "Command: " << command << std::endl;
+bool execute_command_line_and_wait_until_second_command_returns_success(const std::string& command, const std::string& second_command, const SlotProgress& slot_progress, const std::string& success_text)
+{
+  std::cout << "debug: Command: " << command << std::endl;
 
   std::auto_ptr<const Impl::SpawnInfo> info = Impl::spawn_async(command, Impl::REDIRECT_STDERR);
 
@@ -523,35 +500,41 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
   // b) Get stderr data, to display an error message in case the command
   // fails:
 
-  // Hide dialog when the first command finished for some reason
-  sigc::connection watch_conn = info->signal_finished().connect(sigc::bind(sigc::mem_fun(*dialog_temp, &Dialog_ProgressCreating::response), Gtk::RESPONSE_REJECT));
+  Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
+  sigc::connection watch_conn = info->signal_finished().connect(
+    sigc::bind(sigc::ptr_fun(&on_spawn_info_finished), sigc::ref(mainloop) ) );
 
   // Call the second command once every second
-  sigc::connection timeout_conn = Glib::signal_timeout().connect(sigc::bind(sigc::ptr_fun(&on_timeout), sigc::ref(second_command), sigc::ref(success_text), dialog_temp), 1000);
+  sigc::connection timeout_conn = Glib::signal_timeout().connect(sigc::bind(sigc::ptr_fun(&second_command_on_timeout), sigc::ref(second_command), sigc::ref(success_text), slot_progress, sigc::ref(mainloop)), 1000);
+  slot_progress(); //Make sure it is called at least once.
 
-  // Enter the main loop
-  int response = dialog_temp->run();
+  // Block until signal_finished is emitted:
+  mainloop->run();
 
   timeout_conn.disconnect();
   watch_conn.disconnect();
 
   std::string stderr_text;
 
-  Impl::spawn_async_end(info, NULL, &stderr_text, NULL);
+  const bool success = Impl::spawn_async_end(info, NULL, &stderr_text, NULL);
 
-  if(response == Gtk::RESPONSE_OK)
+  if(success) //response == Gtk::RESPONSE_OK)
   {
     //Sleep for a bit more, because I think that pg_ctl sometimes reports success too early.
-    Glib::signal_timeout().connect(sigc::bind_return(sigc::ptr_fun(&Gtk::Main::quit), false), 3000);
-    Gtk::Main::run();
+    Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
+    Glib::signal_timeout().connect(
+     sigc::bind(sigc::ptr_fun(&on_timeout_delay), sigc::ref(mainloop)), 
+     3000);
+    mainloop->run();
 
     return true;
   }
   else
   {
     // The user either cancelled, or the first command failed, or exited prematurely
-    if(response == Gtk::RESPONSE_REJECT)
+    if(true) //response == Gtk::RESPONSE_REJECT)
     {
+      /* TODO: Allow the caller to show a dialog?
       // Command failed
       std::auto_ptr<Gtk::MessageDialog> error_dialog;
       if(parent_window)
@@ -562,6 +545,9 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
       // TODO: i18n
       error_dialog->set_secondary_text("The command was:\n\n" + Glib::Markup::escape_text(command) + (stderr_text.empty() ? Glib::ustring("") : ("\n\n<small>" + Glib::Markup::escape_text(stderr_text) + "</small>")), true);
       error_dialog->run();
+      */
+      
+      std::cerr << "Glom:  execute_command_line_and_wait_until_second_command_returns_success(): Child command failed. The command was: " << std::endl << stderr_text << std::endl;
     }
     else
     {

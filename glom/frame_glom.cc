@@ -102,7 +102,9 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_dialog_addrelatedtable(0),
   m_dialog_relationships_overview(0),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-  m_pDialogConnection(0)
+  m_pDialogConnection(0),
+  m_dialog_progess_connection_startup(0),
+  m_dialog_progess_connection_cleanup(0)
 {
   //Load widgets from glade file:
   builder->get_widget("label_table_name", m_pLabel_Table);
@@ -176,6 +178,18 @@ Frame_Glom::~Frame_Glom()
     remove_view(m_pDialogConnection);
     delete m_pDialogConnection;
     m_pDialogConnection = 0;
+  }
+  
+  if(m_dialog_progess_connection_startup)
+  {
+    delete m_dialog_progess_connection_startup;
+    m_dialog_progess_connection_startup = 0;
+  }
+  
+  if(m_dialog_progess_connection_cleanup)
+  {
+    delete m_dialog_progess_connection_cleanup;
+    m_dialog_progess_connection_cleanup = 0;
   }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -1692,6 +1706,22 @@ namespace
   }
 }
 
+void Frame_Glom::on_connection_startup_progress()
+{
+  if(!m_dialog_progess_connection_startup)
+    m_dialog_progess_connection_startup = Utils::get_and_show_pulse_dialog(_("Starting Database Server"), get_app_window());
+        
+  m_dialog_progess_connection_startup->pulse();
+}
+
+void Frame_Glom::on_connection_cleanup_progress()
+{
+  if(!m_dialog_progess_connection_cleanup)
+    m_dialog_progess_connection_cleanup = Utils::get_and_show_pulse_dialog(_("Stopping Database Server"), get_app_window());
+        
+  m_dialog_progess_connection_cleanup->pulse();
+}
+
 bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 {
   Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
@@ -1797,14 +1827,15 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
       //Ask for connection details:
       m_pDialogConnection->load_from_document(); //Get good defaults.
       m_pDialogConnection->set_transient_for(*get_app_window());
-      int response = Glom::Utils::dialog_run_with_help(m_pDialogConnection, "dialog_connection");
+      const int response = Glom::Utils::dialog_run_with_help(m_pDialogConnection, "dialog_connection");
       m_pDialogConnection->hide();
 
       if(response == Gtk::RESPONSE_OK)
       {
         // We are not self-hosting, but we also call initialize() for
         // consistency (the backend will ignore it anyway).
-        if(!connection_pool->initialize(get_app_window()))
+        ConnectionPool::SlotProgress slot_ignored;
+        if(!connection_pool->initialize(slot_ignored))
           return false;
       }
       else
@@ -1835,8 +1866,14 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   }
 
   // Do startup, such as starting the self-hosting database server
-  if(!connection_pool->startup(get_app_window()))
+  if(!connection_pool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) ))
     return false;
+    
+  if(m_dialog_progess_connection_startup)
+  {
+    delete m_dialog_progess_connection_startup;
+    m_dialog_progess_connection_startup = 0;
+  }
 
   const Glib::ustring database_name = document->get_connection_database();
 
@@ -1929,8 +1966,21 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     }
   }
 
-  connection_pool->cleanup(get_app_window());
+  cleanup_connection();
+  
   return false;
+}
+
+void Frame_Glom::cleanup_connection()
+{
+  ConnectionPool* connection_pool = ConnectionPool::get_instance(); 
+  connection_pool->cleanup( sigc::mem_fun(*this, &Frame_Glom::on_connection_cleanup_progress) );
+
+  if(m_dialog_progess_connection_cleanup)
+  {
+    delete m_dialog_progess_connection_cleanup;
+    m_dialog_progess_connection_cleanup = 0;
+  }
 }
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -1951,8 +2001,14 @@ bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring kno
 
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   setup_connection_pool_from_document(document);
-  if(!connection_pool->startup(get_app_window()))
+  if(!connection_pool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) ))
     return false;
+    
+  if(m_dialog_progess_connection_startup)
+  {
+    delete m_dialog_progess_connection_startup;
+    m_dialog_progess_connection_startup = 0;
+  }
 
   while(true) //Loop until a return
   {
@@ -2015,7 +2071,7 @@ bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring kno
           m_pDialogConnection->hide();
           if(response != Gtk::RESPONSE_OK)
           {
-            connection_pool->cleanup(get_app_window());
+            cleanup_connection();
             return false; //The user cancelled.
           }
         }
@@ -2023,7 +2079,7 @@ bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring kno
         {
           g_warning("Frame_Glom::connection_request_password_and_attempt(): rethrowing exception.");
 
-          connection_pool->cleanup(get_app_window());
+          cleanup_connection();
 
           //The connection to the server is OK, but the specified database does not exist:
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -2039,7 +2095,7 @@ bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring kno
     }
     else
     {
-      connection_pool->cleanup(get_app_window());
+      cleanup_connection();
       return false; //The user cancelled.
     }
   }

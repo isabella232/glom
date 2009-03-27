@@ -194,7 +194,7 @@ bool PostgresSelfHosted::check_postgres_is_available_with_warning()
 /** Try to install postgres on the distro, though this will require a
  * distro-specific patch to the implementation.
  */
-bool PostgresSelfHosted::install_postgres(Gtk::Window* /* parent_window */)
+bool PostgresSelfHosted::install_postgres(const SlotProgress& /* slot_progress */)
 {
 #if 0
   // This  is example code for Ubuntu, and possibly Debian,
@@ -229,8 +229,10 @@ bool PostgresSelfHosted::install_postgres(Gtk::Window* /* parent_window */)
 #endif // #if 0
 }
 
-bool PostgresSelfHosted::initialize(Gtk::Window* parent_window, const Glib::ustring& initial_username, const Glib::ustring& password)
+bool PostgresSelfHosted::initialize(const SlotProgress& slot_progress, const Glib::ustring& initial_username, const Glib::ustring& password)
 {
+  Gtk::Window* parent_window = 0; //TODO: Replace the dialog with some callback or exception?
+  
   if(m_self_hosting_data_uri.empty())
   {
     std::cerr << "PostgresSelfHosted::initialize: m_self_hosting_data_uri is empty." << std::endl;
@@ -322,7 +324,7 @@ bool PostgresSelfHosted::initialize(Gtk::Window* parent_window, const Glib::ustr
                                         " -U " + initial_username + " --pwfile=\"" + temp_pwfile + "\"";
 
   //Note that --pwfile takes the password from the first line of a file. It's an alternative to supplying it when prompted on stdin.
-  const bool result = Glom::Spawn::execute_command_line_and_wait(command_initdb, _("Creating Database Data"), parent_window);
+  const bool result = Glom::Spawn::execute_command_line_and_wait(command_initdb, slot_progress);
   if(!result)
   {
     std::cerr << "Error while attempting to create self-hosting database." << std::endl;
@@ -334,7 +336,7 @@ bool PostgresSelfHosted::initialize(Gtk::Window* parent_window, const Glib::ustr
   return result;
 }
 
-bool PostgresSelfHosted::startup(Gtk::Window* parent_window)
+bool PostgresSelfHosted::startup(const SlotProgress& slot_progress)
 {
   // Don't risk random crashes, although this really shouldn't be called
   // twice of course.
@@ -405,7 +407,7 @@ bool PostgresSelfHosted::startup(Gtk::Window* parent_window)
   const std::string second_command_success_text = "is running"; //TODO: This is not a stable API. Also, watch out for localisation.
 
   //The first command does not return, but the second command can check whether it succeeded:
-  const bool result = Glom::Spawn::execute_command_line_and_wait_until_second_command_returns_success(command_postgres_start, command_check_postgres_has_started, _("Starting Database Server"), parent_window, second_command_success_text);
+  const bool result = Glom::Spawn::execute_command_line_and_wait_until_second_command_returns_success(command_postgres_start, command_check_postgres_has_started, slot_progress, second_command_success_text);
   if(!result)
   {
     std::cerr << "Error while attempting to self-host a database." << std::endl;
@@ -417,7 +419,7 @@ bool PostgresSelfHosted::startup(Gtk::Window* parent_window)
   return true;
 }
 
-void PostgresSelfHosted::cleanup(Gtk::Window* parent_window)
+void PostgresSelfHosted::cleanup(const SlotProgress& slot_progress)
 {
   // This seems to be called twice sometimes, so we don't assert here until
   // this is fixed.
@@ -445,14 +447,14 @@ void PostgresSelfHosted::cleanup(Gtk::Window* parent_window)
   // Make sure to use double quotes for the executable path, because the
   // CreateProcess() API used on Windows does not support single quotes.
   const std::string command_postgres_stop = "\"" + get_path_to_postgres_executable("pg_ctl") + "\" -D \"" + dbdir_data + "\" stop -m fast";
-  const bool result = Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, _("Stopping Database Server"), parent_window);
+  const bool result = Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, slot_progress);
   if(!result)
   {
     std::cerr << "Error while attempting to stop self-hosting of the database. Trying again."  << std::endl;
 
     //I've seen it fail when running under valgrind, and there are reports of failures in bug #420962.
     //Maybe it will help to try again:
-    const bool result = Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, _("Stopping Database Server (retrying)"), parent_window);
+    const bool result = Glom::Spawn::execute_command_line_and_wait(command_postgres_stop, slot_progress);
     if(!result)
     {
       std::cerr << "Error while attempting (for a second time) to stop self-hosting of the database."  << std::endl;

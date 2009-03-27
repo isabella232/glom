@@ -29,7 +29,6 @@ h_sources = $(h_sources_public) \
                      busy_cursor.h \
                      calcinprogress.h \
                      connectionpool.h \
-                     dialog_progress_creating.h \
                      spawn_with_feedback.h \
                      utils.h \
                      gst-package.h
@@ -38,7 +37,6 @@ cc_sources = appstate.cc \
                      busy_cursor.cc \
                      calcinprogress.cc \
                      connectionpool.cc \
-                     dialog_progress_creating.cc \
                      spawn_with_feedback.cc \
                      utils.cc \
                      gst-package.c
