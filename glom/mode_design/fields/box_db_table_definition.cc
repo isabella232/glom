@@ -21,7 +21,7 @@
 #include "box_db_table_definition.h"
 #include <glom/frame_glom.h>
 #include <glom/glade_utils.h>
-#include <libglom/utils.h> //For bold_message()).
+#include <glom/utils_ui.h> //For bold_message()).
 #include <libglom/libglom_config.h>
 #include <glibmm/i18n.h>
 

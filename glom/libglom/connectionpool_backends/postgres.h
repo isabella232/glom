@@ -54,7 +54,7 @@ public:
    *
    * @results True if everything is OK.
    */
-  static bool check_postgres_gda_client_is_available_with_warning();
+  static bool check_postgres_gda_client_is_available();
 
 private:
   virtual Field::sql_format get_sql_format() const { return Field::SQL_FORMAT_POSTGRES; }

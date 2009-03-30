@@ -20,7 +20,7 @@
  */
 
 #include "canvas_print_layout.h"
-#include <libglom/utils.h> //For bold_message()).
+#include <glom/utils_ui.h> //For bold_message()).
 #include <gtkmm/stock.h>
 #include <glom/mode_design/print_layouts/dialog_text_formatting.h>
 #include <glom/mode_data/dialog_layout_list_related.h>
@@ -79,8 +79,14 @@ void Canvas_PrintLayout::set_print_layout(const Glib::ustring& table_name, const
   add_layout_group(print_layout->m_layout_group, true /* is top-level */);
 
   Glib::RefPtr<Gtk::PageSetup> page_setup;
-  if(print_layout->get_page_setup())
-    page_setup = print_layout->get_page_setup()->copy();
+  const Glib::ustring key_file_text = print_layout->get_page_setup();
+  if(!key_file_text.empty())
+  {
+    Glib::KeyFile key_file;
+    key_file.load_from_data(key_file_text);
+    //TODO: Use this when gtkmm and GTK+ have been fixed: page_setup = Gtk::PageSetup::create(key_file);
+    page_setup = Glib::wrap(gtk_page_setup_new_from_key_file(key_file.gobj(), NULL, NULL));
+  }
 
   set_page_setup(page_setup);
 
@@ -91,7 +97,12 @@ sharedptr<PrintLayout> Canvas_PrintLayout::get_print_layout()
 {
   sharedptr<PrintLayout> result = sharedptr<PrintLayout>::create();
   fill_layout_group(result->m_layout_group);
-  result->set_page_setup(m_page_setup);
+
+  //Page Setup:
+  Glib::KeyFile key_file;
+  m_page_setup->save_to_key_file(key_file);
+  result->set_page_setup(key_file.to_data());
+
   return result;
 }
 

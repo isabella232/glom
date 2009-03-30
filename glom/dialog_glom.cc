@@ -18,7 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
  
-#include "dialog_glom.h"
+#include <glom/dialog_glom.h>
+#include <glom/utils_ui.h>
 
 namespace Glom
 {

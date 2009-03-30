@@ -20,10 +20,10 @@
 
 #include <libglom/libglom_config.h> // For GLOM_ENABLE_SQLITE, GLOM_ENABLE_CLIENT_ONLY
 
-#include "frame_glom.h"
-#include "application.h"
-#include "dialog_import_csv.h"
-#include "dialog_import_csv_progress.h"
+#include <glom/frame_glom.h>
+#include <glom/application.h>
+#include <glom/dialog_import_csv.h>
+#include <glom/dialog_import_csv_progress.h>
 #include <libglom/appstate.h>
 
 #include <libglom/connectionpool.h>
@@ -48,7 +48,7 @@
 #include "relationships_overview/dialog_relationships_overview.h"
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-#include <libglom/utils.h>
+#include <glom/utils_ui.h>
 #include <glom/glade_utils.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_summary.h>
@@ -103,6 +103,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_dialog_relationships_overview(0),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_pDialogConnection(0),
+  m_dialog_progess_connection_initialize(0),
   m_dialog_progess_connection_startup(0),
   m_dialog_progess_connection_cleanup(0)
 {
@@ -178,6 +179,12 @@ Frame_Glom::~Frame_Glom()
     remove_view(m_pDialogConnection);
     delete m_pDialogConnection;
     m_pDialogConnection = 0;
+  }
+  
+  if(m_dialog_progess_connection_initialize)
+  {
+    delete m_dialog_progess_connection_initialize;
+    m_dialog_progess_connection_initialize = 0;
   }
   
   if(m_dialog_progess_connection_startup)
@@ -1706,6 +1713,15 @@ namespace
   }
 }
 
+void Frame_Glom::on_connection_initialize_progress()
+{
+  if(!m_dialog_progess_connection_initialize)
+    m_dialog_progess_connection_initialize = Utils::get_and_show_pulse_dialog(_("Initializing Database Data"), get_app_window());
+        
+  m_dialog_progess_connection_initialize->pulse();
+}
+
+
 void Frame_Glom::on_connection_startup_progress()
 {
   if(!m_dialog_progess_connection_startup)
@@ -1720,6 +1736,34 @@ void Frame_Glom::on_connection_cleanup_progress()
     m_dialog_progess_connection_cleanup = Utils::get_and_show_pulse_dialog(_("Stopping Database Server"), get_app_window());
         
   m_dialog_progess_connection_cleanup->pulse();
+}
+
+bool Frame_Glom::handle_connection_initialize_errors(ConnectionPool::InitErrors error)
+{
+  Glib::ustring title;
+  Glib::ustring message;
+  
+  if(error == ConnectionPool::Backend::INITERROR_NONE)
+    return true;
+  else if(error == ConnectionPool::Backend::INITERROR_DIRECTORY_ALREADY_EXISTS)
+  {
+    title = _("Directory Already Exists");
+    message = _("There is an existing directory with the same name as the directory that should be created for the new database files. You should specify a different filename to use a new directory instead.");
+  }
+  else if (error == ConnectionPool::Backend::INITERROR_COULD_NOT_CREATE_DIRECTORY)
+  {
+    title = _("Could Not Create Directory");
+    message = _("There was an error when attempting to create the directory for the new database files.");
+  }
+  else if(error == ConnectionPool::Backend::INITERROR_COULD_NOT_START_SERVER)
+  {
+    title = _("Could Not Start Database Server");
+    message = _("There was an error when attempting to start the database server.");
+  }
+  
+  Utils::show_ok_dialog(title, message, *get_app_window(), Gtk::MESSAGE_ERROR);
+  
+  return false;
 }
 
 bool Frame_Glom::connection_request_password_and_choose_new_database_name()
@@ -1778,7 +1822,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
       bool keep_trying = true;
       while(keep_trying)
       {
-        response = Glom::Utils::dialog_run_with_help(dialog, "dialog_new_self_hosted_connection");
+        response = Utils::dialog_run_with_help(dialog, "dialog_new_self_hosted_connection");
 
         //Check the password is acceptable:
         if(response == Gtk::RESPONSE_OK)
@@ -1797,24 +1841,34 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
       dialog->hide();
  
       // Create the requested self-hosting database:
-      bool created = false;
       if(response == Gtk::RESPONSE_OK)
       {
-        created = dialog->create_self_hosted();
-        if(!created)
+        //Set the connection details in the ConnectionPool singleton.
+        //The ConnectionPool will now use these every time it tries to connect.
+        connection_pool->set_user(dialog->get_user());
+        connection_pool->set_password(dialog->get_password());
+      
+        const bool initialized = handle_connection_initialize_errors( connection_pool->initialize(
+          sigc::mem_fun(*this, &Frame_Glom::on_connection_initialize_progress) ) );
+
+        if(m_dialog_progess_connection_initialize)
+        {
+          delete m_dialog_progess_connection_initialize;
+          m_dialog_progess_connection_initialize = 0;
+        }
+
+        if(!initialized)
           return false;
 
-      //Put the details into m_pDialogConnection too, because that's what we use to connect.
-      //This is a bit of a hack:
+        //Put the details into m_pDialogConnection too, because that's what we use to connect.
+        //This is a bit of a hack:
         m_pDialogConnection->set_self_hosted_user_and_password(connection_pool->get_user(), connection_pool->get_password());
       }
 
       remove_view(dialog);
 
-    //std::cout << "DEBUG: after dialog->create_self_hosted(). The database cluster should now exist." << std::endl;
+      //std::cout << "DEBUG: after connection_pool->initialize(). The database cluster should now exist." << std::endl;
 
-      if(!created)
-        return false; // The user cancelled
 #else
       // Self-hosted postgres not supported in client only mode
       g_assert_not_reached();
@@ -1835,7 +1889,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
         // We are not self-hosting, but we also call initialize() for
         // consistency (the backend will ignore it anyway).
         ConnectionPool::SlotProgress slot_ignored;
-        if(!connection_pool->initialize(slot_ignored))
+        if(!handle_connection_initialize_errors( connection_pool->initialize(slot_ignored)) )
           return false;
       }
       else
@@ -1851,7 +1905,8 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   case Document_Glom::HOSTING_MODE_SQLITE:
     {
       // sqlite
-      if(!connection_pool->initialize(get_app_window()))
+      ConnectionPool::SlotProgress slot_ignored;
+      if(!handle_connection_initialize_errors( connection_pool->initialize(slot_ignored)) )
         return false;
 
       m_pDialogConnection->load_from_document(); //Get good defaults.
@@ -2251,7 +2306,20 @@ void Frame_Glom::on_menu_print_layout_selected(const Glib::ustring& print_layout
   print->set_canvas(&canvas);
 
   print->set_track_print_status();
-  print->set_default_page_setup(print_layout->get_page_setup());
+
+  //TODO: Put this in a utility function.
+  Glib::RefPtr<Gtk::PageSetup> page_setup;
+  const Glib::ustring key_file_text = print_layout->get_page_setup();
+  if(!key_file_text.empty())
+  {
+    Glib::KeyFile key_file;
+    key_file.load_from_data(key_file_text);
+    //TODO: Use this when gtkmm and GTK+ have been fixed: page_setup = Gtk::PageSetup::create(key_file);
+    page_setup = Glib::wrap(gtk_page_setup_new_from_key_file(key_file.gobj(), NULL, NULL));
+  }
+  
+  print->set_default_page_setup(page_setup);
+  
   //print->set_print_settings(m_refSettings);
 
   //print->signal_done().connect(sigc::bind(sigc::mem_fun(*this,

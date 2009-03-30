@@ -36,7 +36,7 @@
 //#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 //#include "reports/dialog_layout_report.h"
-#include <libglom/utils.h>
+#include <glom/utils_ui.h>
 #include <glom/glade_utils.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <libglom/data_structure/parameternamegenerator.h>
@@ -155,7 +155,7 @@ void Base_DB::handle_error(const std::exception& ex)
 
 bool Base_DB::handle_error()
 {
-  return ConnectionPool::handle_error();
+  return ConnectionPool::handle_error_cerr_only();
 }
 
 //static:

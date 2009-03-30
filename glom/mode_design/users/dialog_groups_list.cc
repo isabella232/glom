@@ -26,7 +26,7 @@
 #include <glom/glade_utils.h>
 #include <glom/glom_privs.h>
 //#include <libgnome/gnome-i18n.h>
-#include <libglom/utils.h> //For bold_message()).
+#include <glom/utils_ui.h> //For bold_message()).
 #include <glibmm/i18n.h>
 
 namespace Glom

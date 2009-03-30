@@ -22,7 +22,7 @@
 
 #include "box_data.h"
 #include <libglom/data_structure/glomconversions.h>
-#include <libglom/utils.h>
+#include <glom/utils_ui.h>
 #include <libglom/data_structure/layout/layoutitem_field.h>
 #include <glom/glom_privs.h>
 #include "../python_embed/glom_python.h"

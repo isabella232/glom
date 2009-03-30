@@ -51,6 +51,7 @@ glom_SOURCES = main.cc \
                dialog_progress_creating.h dialog_progress_creating.cc \
                box_reports.h box_reports.cc \
                xsl_utils.h xsl_utils.cc \
+               utils_ui.h utils_ui.cc \
                variablesmap.h variablesmap.cc \
                signal_reemitter.h glade_utils.h glade_utils.cc
 

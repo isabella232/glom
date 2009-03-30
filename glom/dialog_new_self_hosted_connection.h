@@ -31,8 +31,6 @@
 namespace Glom
 {
 
-class Dialog_ProgressCreating;
-
 class Dialog_NewSelfHostedConnection
   : public Gtk::Dialog,
     public Base_DB
@@ -43,19 +41,17 @@ public:
 
   bool check_password();
 
-  bool create_self_hosted();
+  Glib::ustring get_user() const;
+  Glib::ustring get_password() const;
 
   virtual void load_from_document(); //override
 
 
 private:
-  void on_connection_initialization_progress();
-  
+
   Gtk::Entry* m_entry_user;
   Gtk::Entry* m_entry_password;
   Gtk::Entry* m_entry_password_confirm;
-  
-  Dialog_ProgressCreating* m_dialog_progess_connection_initialize;
 };
 
 } //namespace Glom

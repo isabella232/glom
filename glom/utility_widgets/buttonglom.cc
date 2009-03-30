@@ -18,11 +18,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "buttonglom.h"
+#include <glom/utility_widgets/buttonglom.h>
 #include <gtkmm/messagedialog.h>
 #include <glom/application.h>
 #include <glom/glade_utils.h>
 #include <glom/utility_widgets/dialog_layoutitem_properties.h>
+#include <glom/utils_ui.h>
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #include <glom/layout_item_dialogs/dialog_buttonscript.h>
 #endif

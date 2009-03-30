@@ -108,7 +108,7 @@ visible_toggled (GtkCellRendererToggle *cell, gchar *path_str, EggColumnChooserD
 {
 	GtkTreePath *path;
 	GtkTreeIter iter;
-	GValue value = { 0, 0 };
+	GValue value = {0, {{0}}};
 	GtkTreeModel *model = GTK_TREE_MODEL (dialog->column_model);
 	
 	path = gtk_tree_path_new_from_string (path_str);

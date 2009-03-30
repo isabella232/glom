@@ -18,11 +18,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "box_data_portal.h"
+#include <glom/mode_data/box_data_portal.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/glade_utils.h>
 #include <glom/frame_glom.h> //For show_ok_dialog()
-#include <libglom/utils.h> //For bold_message()).
+#include <glom/utils_ui.h> //For bold_message()).
 #include <glibmm/i18n.h>
 
 namespace Glom

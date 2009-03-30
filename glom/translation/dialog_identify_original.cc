@@ -20,7 +20,7 @@
 
 #include "dialog_identify_original.h"
 #include <libglom/data_structure/iso_codes.h>
-#include <libglom/utils.h> //For bold_message()).
+#include <glom/utils_ui.h> //For bold_message()).
 #include <glibmm/i18n.h>
 
 namespace Glom

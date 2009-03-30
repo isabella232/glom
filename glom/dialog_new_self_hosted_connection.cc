@@ -31,8 +31,7 @@ Dialog_NewSelfHostedConnection::Dialog_NewSelfHostedConnection(BaseObjectType* c
 : Gtk::Dialog(cobject),
   Base_DB(),
   m_entry_user(0),
-  m_entry_password(0),
-  m_dialog_progess_connection_initialize(0)
+  m_entry_password(0)
 {
   builder->get_widget("entry_user", m_entry_user);
   builder->get_widget("entry_password", m_entry_password);
@@ -41,54 +40,16 @@ Dialog_NewSelfHostedConnection::Dialog_NewSelfHostedConnection(BaseObjectType* c
 
 Dialog_NewSelfHostedConnection::~Dialog_NewSelfHostedConnection()
 {
-  if(m_dialog_progess_connection_initialize)
-  {
-    delete m_dialog_progess_connection_initialize;
-    m_dialog_progess_connection_initialize = 0;
-  }
 }
 
-void Dialog_NewSelfHostedConnection::on_connection_initialization_progress()
+Glib::ustring Dialog_NewSelfHostedConnection::get_user() const
 {
-  if(!m_dialog_progess_connection_initialize)
-    m_dialog_progess_connection_initialize = Utils::get_and_show_pulse_dialog(_("Creating Database Data"), this);
-        
-  m_dialog_progess_connection_initialize->pulse();
+  return m_entry_user->get_text();
 }
 
-bool Dialog_NewSelfHostedConnection::create_self_hosted()
+Glib::ustring Dialog_NewSelfHostedConnection::get_password() const
 {
-  //std::cout << "debug: Dialog_NewSelfHostedConnection::connect_to_server_with_connection_settings()" << std::endl;
-
-  //TODO: BusyCursor busy_cursor(get_app_window());
-
- 
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
-  if(connection_pool)
-  {
-    //Set the connection details in the ConnectionPool singleton.
-    //The ConnectionPool will now use these every time it tries to connect.
-
-    const Document_Glom* document = get_document();
-    if(document)
-    {
-      // Create the files needed to self-host a database:
-      //connection_pool->set_self_hosted() has already been called.
-      connection_pool->set_user(m_entry_user->get_text());
-      connection_pool->set_password(m_entry_password->get_text());
-      //std::cout << "debug: Dialog_NewSelfHostedConnection::create_self_hosted() user=" << m_entry_user->get_text() << ", password=" << m_entry_password->get_text() << std::endl;
-      const bool created = connection_pool->initialize(
-        sigc::mem_fun(*this, &Dialog_NewSelfHostedConnection::on_connection_initialization_progress) );
-      if(!created)
-      {
-        return false;
-      }
-
-      return true;
-    }
-  }
-
-  return false;
+  return m_entry_password->get_text();
 }
 
 void Dialog_NewSelfHostedConnection::load_from_document()

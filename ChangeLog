@@ -1,3 +1,39 @@
+2009-03-30  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/glade_utils.cc: Added missing file to fix the build.
+	
+	* glom/Makefile.am:
+	* glom/libglom/Makefile.am:
+	* glom/libglom/utils.cc:
+	* glom/libglom/utils.h: Moved some of these functions to new 
+	glom/utils_ui.[h|cc] files to avoid having the UI stuff in libglom.
+	*.cc: Adapted.
+		
+	* glom/libglom/connectionpool.[h|cc]:
+	* glom/libglom/connectionpool_backends/backend.[h|cc]:
+	* glom/libglom/connectionpool_backends/postgres.[h|cc]:
+	* glom/libglom/connectionpool_backends/postgres_self.[h|cc]: 
+	initialize(): Return an enum instead of a bool, to report errors, instead of 
+	showing a UI warning here.
+	Added set_avahi_publish_callbacks() to avoid showing that UI here.
+	* glom/frame_glom.[h|cc]: Adapt to the new API, showing UI here instead of 
+	in libglom.
+
+	* glom/libglom/spawn_with_feedback.cc: Disconnect the progress timeout 
+		handlers.
+
+	* glom/libglom/data_structure/layout/layoutitem_image.[h|cc]: Removed 
+	get_image_as_pixbuf() to avoid a gtkmm dependency in libglom. Made m_image 
+	public instead, to avoid performance problems with copying lots of binary 
+	data via a get*() method.
+	* glom/libglom/document/document_glom.cc: Adapted.
+
+	* glom/libglom/data_structure/print_layout.[h|cc]: Use a string instead of a 
+	Gtk::PrintLayout, using the Glib::KeyFile format, to avoid depending on gtkmm 
+	in libglom.
+	* glom/mode_design/print_layouts/canvas_layout_item.cc:
+	* glom/mode_design/print_layouts/canvas_print_layout.cc: Adapted.
+
 2009-03-27  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/bakery/app_withdoc.[h|cc]: Added on_document_close() virtual method 
@@ -22,7 +58,7 @@
 	allowing the caller to show UI if it wants, removing UI code from this part of 
 	libglom.
 	
-		* glom/Makefile.am:
+	* glom/Makefile.am:
 	* glom/libglom/dialog_progress_creating.[h|cc]: moved to 
 	* glom/glom/glade_utils.[h|cc]: Moved get_and_show_pulse_dialog() here.
 	

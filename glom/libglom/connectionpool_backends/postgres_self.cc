@@ -66,32 +66,6 @@ static Glib::ustring port_as_string(int port_num)
   return result;
 }
 
-static std::string get_path_to_postgres_executable(const std::string& program)
-{
-#ifdef G_OS_WIN32
-  // Add the .exe extension on Windows:
-  std::string real_program = program + EXEEXT;
-    
-  // Have a look at the bin directory of the application executable first.
-  // The installer installs postgres there. postgres needs to be installed
-  // in a directory called bin for its relocation stuff to work, so that
-  // it finds the share data in share. Unfortunately it does not look into
-  // share/postgresql which would be nice to separate the postgres stuff
-  // from the other shared data. We can perhaps still change this later by
-  // building postgres with another prefix than /local/pgsql.
-  gchar* installation_directory = g_win32_get_package_installation_directory_of_module(NULL);
-  std::string test = Glib::build_filename(installation_directory, Glib::build_filename("bin", real_program));
-  g_free(installation_directory);
-
-  if(Glib::file_test(test, Glib::FILE_TEST_IS_EXECUTABLE))
-    return test;
-
-  // Look in PATH otherwise
-  return Glib::find_program_in_path(real_program);
-#else // G_OS_WIN32
-  return Glib::build_filename(POSTGRES_UTILS_PATH, program + EXEEXT);
-#endif // !G_OS_WIN32
-  }
 } // anonymous namespace
 
 namespace Glom
@@ -122,6 +96,34 @@ PostgresSelfHosted::PostgresSelfHosted()
 {
 }
 
+
+std::string PostgresSelfHosted::get_path_to_postgres_executable(const std::string& program)
+{
+#ifdef G_OS_WIN32
+  // Add the .exe extension on Windows:
+  std::string real_program = program + EXEEXT;
+    
+  // Have a look at the bin directory of the application executable first.
+  // The installer installs postgres there. postgres needs to be installed
+  // in a directory called bin for its relocation stuff to work, so that
+  // it finds the share data in share. Unfortunately it does not look into
+  // share/postgresql which would be nice to separate the postgres stuff
+  // from the other shared data. We can perhaps still change this later by
+  // building postgres with another prefix than /local/pgsql.
+  gchar* installation_directory = g_win32_get_package_installation_directory_of_module(NULL);
+  std::string test = Glib::build_filename(installation_directory, Glib::build_filename("bin", real_program));
+  g_free(installation_directory);
+
+  if(Glib::file_test(test, Glib::FILE_TEST_IS_EXECUTABLE))
+    return test;
+
+  // Look in PATH otherwise
+  return Glib::find_program_in_path(real_program);
+#else // G_OS_WIN32
+  return Glib::build_filename(POSTGRES_UTILS_PATH, program + EXEEXT);
+#endif // !G_OS_WIN32
+}
+
 void PostgresSelfHosted::set_self_hosting_data_uri(const std::string& data_uri)
 {
   if(m_self_hosting_data_uri != data_uri)
@@ -140,55 +142,6 @@ bool PostgresSelfHosted::get_self_hosting_active() const
 int PostgresSelfHosted::get_port() const
 {
   return m_port;
-}
-
-// Message to packagers:
-// If your Glom package does not depend on PostgreSQL, for some reason, 
-// then your distro-specific patch should uncomment this #define.
-// and implement ConnectionPool::install_posgres().
-// But please, just make your Glom package depend on PostgreSQL instead, 
-// because this is silly.
-//
-//#define DISTRO_SPECIFIC_POSTGRES_INSTALL_IMPLEMENTED 1
-
-bool PostgresSelfHosted::check_postgres_is_available_with_warning()
-{
-  //EXEEXT is defined in the Makefile.am
-  const std::string binpath = get_path_to_postgres_executable("postgres");
-
-  // TODO: At least on Windows we should probably also check for initdb and
-  // pg_ctl. Perhaps it would also be a good idea to access these files as
-  // long as glom runs so they cannot be (re)moved.
-  if(!binpath.empty())
-  {
-    const Glib::ustring uri_binpath = Glib::filename_to_uri(binpath);
-    if(Utils::file_exists(uri_binpath))
-      return true;
-  }
-
-  #ifdef DISTRO_SPECIFIC_POSTGRES_INSTALL_IMPLEMENTED
-
-  //Show message to the user about the broken installation:
-  //This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
-  Gtk::MessageDialog dialog(Utils::bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_NONE, true /* modal */);
-  dialog.set_secondary_text(_("Your installation of Glom is not complete, because PostgreSQL is not available on your system. PostgreSQL is needed for self-hosting of Glom databases.\n\nYou may now install PostgreSQL to complete the Glom installation."));
-  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  dialog.add_button(_("Install PostgreSQL"), Gtk::RESPONSE_OK);
-  const int response = dialog.run();
-  if(response != Gtk::RESPONSE_OK)
-    return false; //Failure. Glom should now quit.
-  else
-    return install_postgres(&dialog);
-
-  #else  //DISTRO_SPECIFIC_POSTGRES_INSTALL_IMPLEMENTED
-
-  //Show message to the user about the broken installation:
-  Gtk::MessageDialog dialog(Utils::bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
-  dialog.set_secondary_text(_("Your installation of Glom is not complete, because PostgreSQL is not available on your system. PostgreSQL is needed for self-hosting of Glom databases.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected."));
-  dialog.run();
-  return false;
-
-  #endif //DISTRO_SPECIFIC_POSTGRES_INSTALL_IMPLEMENTED
 }
 
 /** Try to install postgres on the distro, though this will require a
@@ -229,14 +182,18 @@ bool PostgresSelfHosted::install_postgres(const SlotProgress& /* slot_progress *
 #endif // #if 0
 }
 
-bool PostgresSelfHosted::initialize(const SlotProgress& slot_progress, const Glib::ustring& initial_username, const Glib::ustring& password)
+Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_progress, const Glib::ustring& initial_username, const Glib::ustring& password)
 {
-  Gtk::Window* parent_window = 0; //TODO: Replace the dialog with some callback or exception?
-  
   if(m_self_hosting_data_uri.empty())
   {
     std::cerr << "PostgresSelfHosted::initialize: m_self_hosting_data_uri is empty." << std::endl;
-    return false;
+    return INITERROR_OTHER;
+  }
+  
+  if(initial_username.empty())
+  {
+    std::cerr << "PostgresSelfHosted::initialize(). Username was empty while attempting to create self-hosting database" << std::endl;
+    return INITERROR_OTHER;
   }
 
   //Get the filepath of the directory that we should create:
@@ -244,14 +201,7 @@ bool PostgresSelfHosted::initialize(const SlotProgress& slot_progress, const Gli
   //std::cout << "debug: dbdir_uri=" << dbdir_uri << std::endl;
 
   if(directory_exists_uri(dbdir_uri))
-  { 
-    if(parent_window)
-    {
-      Utils::show_ok_dialog(_("Directory Already Exists"), _("There is an existing directory with the same name as the directory that should be created for the new database files. You should specify a different filename to use a new directory instead."), *parent_window, Gtk::MESSAGE_ERROR);
-    }
-    
-    return false;
-  }
+    return INITERROR_DIRECTORY_ALREADY_EXISTS;
 
   const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
   //std::cout << "debug: dbdir=" << dbdir << std::endl;
@@ -264,13 +214,8 @@ bool PostgresSelfHosted::initialize(const SlotProgress& slot_progress, const Gli
   {
     std::cerr << "Error from g_mkdir_with_parents() while trying to create directory: " << dbdir << std::endl;
     perror("Error from g_mkdir_with_parents");
-
-    if(parent_window)
-    {
-       Utils::show_ok_dialog(_("Could Not Create Directory"), _("There was an error when attempting to create the directory for the new database files."), *parent_window, Gtk::MESSAGE_ERROR);
-    }
-
-    return false;
+    
+    return INITERROR_COULD_NOT_CREATE_DIRECTORY;
   }
 
   //Create the config directory:
@@ -281,12 +226,7 @@ bool PostgresSelfHosted::initialize(const SlotProgress& slot_progress, const Gli
     std::cerr << "Error from g_mkdir_with_parents() while trying to create directory: " << dbdir_config << std::endl;
     perror("Error from g_mkdir_with_parents");
 
-    if(parent_window)
-    {
-       Utils::show_ok_dialog(_("Could Not Create Configuration Directory"), _("There was an error when attempting to create the configuration directory for the new database files."), *parent_window, Gtk::MESSAGE_ERROR);
-    }
-
-    return false;
+    return INITERROR_COULD_NOT_CREATE_DIRECTORY;
   }
 
   //Create these files: environment  pg_hba.conf  pg_ident.conf  start.conf
@@ -305,11 +245,6 @@ bool PostgresSelfHosted::initialize(const SlotProgress& slot_progress, const Gli
 
   
   // initdb creates a new postgres database cluster:
-  if(initial_username.empty())
-  {
-    std::cerr << "PostgresSelfHosted::initialize(). Username was empty while attempting to create self-hosting database" << std::endl;
-    return false;
-  }
 
   //Get file:// URI for the tmp/ directory:
   const std::string temp_pwfile = Glib::build_filename(Glib::get_tmp_dir(), "glom_initdb_pwfile");
@@ -333,7 +268,7 @@ bool PostgresSelfHosted::initialize(const SlotProgress& slot_progress, const Gli
   const int temp_pwfile_removed = g_remove(temp_pwfile.c_str()); //Of course, we don't want this to stay around. It would be a security risk.
   g_assert(temp_pwfile_removed == 0);
  
-  return result;
+  return result ? INITERROR_NONE : INITERROR_COULD_NOT_START_SERVER;
 }
 
 bool PostgresSelfHosted::startup(const SlotProgress& slot_progress)

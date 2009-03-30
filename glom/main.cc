@@ -25,6 +25,7 @@
 
 //#include <gnome.h>
 #include <gtkmm/main.h>
+#include <gtkmm/messagedialog.h>
 #include <giomm.h>
 
 // For postgres availability checks:
@@ -46,10 +47,12 @@
 
 #ifdef GLOM_ENABLE_MAEMO
 #include <hildonmm/init.h>
+#include <hildonmm/note.h>
 #endif
 
-#include "application.h"
+#include <glom/application.h>
 #include <glom/glade_utils.h>
+#include <glom/utils_ui.h>
 
 #ifndef G_OS_WIN32
 #include <fontconfig/fontconfig.h> //For cleanup.
@@ -97,6 +100,107 @@ OptionGroup::OptionGroup()
   entry_version.set_description(_("Show the generated SQL queries on stdout, for debugging."));
   add_entry(entry_version, m_arg_debug_sql);
 }
+
+#ifdef GLOM_ENABLE_POSTGRESQL
+bool check_user_is_not_root()
+{
+  Glib::ustring message;
+#ifdef G_OS_WIN32
+  try
+  {
+    if(pgwin32_is_admin())
+    {
+      message = _("You seem to be running Glom as a user with administrator privileges. Glom may not be run with such privileges for security reasons.\nPlease login to your system as a normal user.");
+    }
+  }
+  catch(const std::runtime_error& ex)
+  {
+    message = ex.what();
+  }
+#else
+  //std::cout << "ConnectionPool::check_user_is_not_root(): geteuid()=" << geteuid() << ", getgid()=" << getgid() << std::endl;
+
+  //This is very linux-specific. We should ifdef this out for other platforms.
+  if(geteuid() == 0)
+  {
+    //Warn the user:
+    message = _("You seem to be running Glom as root. Glom may not be run as root.\nPlease login to your system as a normal user.");
+  }
+#endif
+
+  if(!message.empty())
+  {
+#ifndef GLOM_ENABLE_MAEMO
+    Gtk::MessageDialog dialog(Utils::bold_message(_("Running As Root")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
+    dialog.set_secondary_text(message);
+    dialog.run();
+#else
+    Hildon::Note note(Hildon::NOTE_TYPE_INFORMATION, message);
+    note.run();
+#endif
+
+    return false; /* Is root. Bad. */
+  }
+
+  return true; /* Not root. It's OK. */
+}
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+// Message to packagers:
+// If your Glom package does not depend on PostgreSQL, for some reason, 
+// then your distro-specific patch should uncomment this #define.
+// and implement ConnectionPool::install_posgres().
+// But please, just make your Glom package depend on PostgreSQL instead, 
+// because this is silly.
+//
+//#define DISTRO_SPECIFIC_POSTGRES_INSTALL_IMPLEMENTED 1
+
+/** Check whether PostgreSQL is really available for self-hosting,
+ * in case the distro package has incorrect dependencies.
+ *
+ * @results True if everything is OK.
+ */
+bool check_postgres_is_available_with_warning()
+{
+  const std::string binpath = Glom::ConnectionPoolBackends::PostgresSelfHosted::get_path_to_postgres_executable("postgres");
+
+  // TODO: At least on Windows we should probably also check for initdb and
+  // pg_ctl. Perhaps it would also be a good idea to access these files as
+  // long as glom runs so they cannot be (re)moved.
+  if(!binpath.empty())
+  {
+    const Glib::ustring uri_binpath = Glib::filename_to_uri(binpath);
+    if(Utils::file_exists(uri_binpath))
+      return true;
+  }
+
+  #ifdef DISTRO_SPECIFIC_POSTGRES_INSTALL_IMPLEMENTED
+
+  //Show message to the user about the broken installation:
+  //This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
+  Gtk::MessageDialog dialog(Utils::bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_NONE, true /* modal */);
+  dialog.set_secondary_text(_("Your installation of Glom is not complete, because PostgreSQL is not available on your system. PostgreSQL is needed for self-hosting of Glom databases.\n\nYou may now install PostgreSQL to complete the Glom installation."));
+  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dialog.add_button(_("Install PostgreSQL"), Gtk::RESPONSE_OK);
+  const int response = dialog.run();
+  if(response != Gtk::RESPONSE_OK)
+    return false; //Failure. Glom should now quit.
+  else
+    return install_postgres(&dialog);
+
+  #else  //DISTRO_SPECIFIC_POSTGRES_INSTALL_IMPLEMENTED
+
+  //Show message to the user about the broken installation:
+  Gtk::MessageDialog dialog(Utils::bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
+  dialog.set_secondary_text(_("Your installation of Glom is not complete, because PostgreSQL is not available on your system. PostgreSQL is needed for self-hosting of Glom databases.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected."));
+  dialog.run();
+  return false;
+
+  #endif //DISTRO_SPECIFIC_POSTGRES_INSTALL_IMPLEMENTED
+}
+#endif //GLOM_ENABLE_CLIENT_ONLY
+
+#endif //GLOM_ENABLE_POSTGRESQL
 
 } //namespace Glom
 
@@ -256,22 +360,35 @@ main(int argc, char* argv[])
     //input_uri = "file:///home/murrayc/cvs/gnome212/glom/examples/example_smallbusiness.glom";
 
 #ifdef GLOM_ENABLE_POSTGRESQL
-    bool install_complete = false;
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-    //Check that PostgreSQL is really available:
-    install_complete = Glom::ConnectionPoolBackends::PostgresSelfHosted::check_postgres_is_available_with_warning();
-    if(!install_complete)
-      return -1; //There is no point in going further because the most useful Glom functionality will not work without Postgres. Only a very cut-down Glom client would be useful without self-hosting.
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
     //Check that the libgda postgres provider is really available:
-    install_complete = Glom::ConnectionPoolBackends::Postgres::check_postgres_gda_client_is_available_with_warning();
+    bool install_complete = Glom::ConnectionPoolBackends::Postgres::check_postgres_gda_client_is_available();
     if(!install_complete)
+    {
+      /* The Postgres provider was not found, so warn the user: */
+      const Glib::ustring message = _("Your installation of Glom is not complete, because the PostgreSQL libgda provider is not available on your system. This provider is needed to access Postgres database servers.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
+      
+      #ifndef GLOM_ENABLE_MAEMO
+      Gtk::MessageDialog dialog(Glom::Utils::bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
+      dialog.set_secondary_text(message);
+      dialog.run();
+      #else
+      Hildon::Note note(Hildon::NOTE_TYPE_INFORMATION, message);
+      note.run();
+      #endif
+      
       return -1; //There is no point in going further because Glom would not be able to connect to any Postgres servers.
+    }
 
+    #ifndef GLOM_ENABLE_CLIENT_ONLY
+    //Check that the postgres executable is really available:
+    if(!Glom::check_postgres_is_available_with_warning())
+      return -1; //There is no point in going further because the most useful Glom functionality will not work without Postgres. Only a very cut-down Glom client would be useful without self-hosting.
+    #endif // !GLOM_ENABLE_CLIENT_ONLY
+      
     // Postgres can't be started as root. initdb complains.
     // So just prevent this in general. It is safer anyway.
-    if(!Glom::ConnectionPool::check_user_is_not_root())
+    if(!Glom::check_user_is_not_root())
       return -1;
 #endif //GLOM_ENABLE_POSTGRESQL
 

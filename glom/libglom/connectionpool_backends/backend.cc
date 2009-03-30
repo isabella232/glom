@@ -45,9 +45,9 @@ ExceptionConnection::failure_type ExceptionConnection::get_failure_type() const
 namespace ConnectionPoolBackends
 {
 
-bool Backend::initialize(const SlotProgress& /* slot_progress */, const Glib::ustring& /* initial_username */, const Glib::ustring& /* password */)
+Backend::InitErrors Backend::initialize(const SlotProgress& /* slot_progress */, const Glib::ustring& /* initial_username */, const Glib::ustring& /* password */)
 {
-  return true;
+  return INITERROR_NONE;
 }
 
 bool Backend::startup(const SlotProgress& /* slot_progress */)

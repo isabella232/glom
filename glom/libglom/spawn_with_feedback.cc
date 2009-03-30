@@ -381,7 +381,7 @@ bool execute_command_line_and_wait(const std::string& command, const SlotProgres
     sigc::bind(sigc::ptr_fun(&on_spawn_info_finished), sigc::ref(mainloop) ) );
 
   // Pulse two times a second:
-  Glib::signal_timeout().connect(
+  sigc::connection timeout_connection = Glib::signal_timeout().connect(
     sigc::bind_return( slot_progress, true),
     500);
   slot_progress(); //Make sure it is called at least once.
@@ -389,6 +389,9 @@ bool execute_command_line_and_wait(const std::string& command, const SlotProgres
   //Block until signal_finished is called.
   mainloop->run();
 
+  //Stop the timeout callback:
+  timeout_connection.disconnect();
+  
   int return_status = false;
   const bool returned = Impl::spawn_async_end(info, NULL, NULL, &return_status);
   if(!returned)
@@ -522,11 +525,13 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
   {
     //Sleep for a bit more, because I think that pg_ctl sometimes reports success too early.
     Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
-    Glib::signal_timeout().connect(
+    sigc::connection connection_timeout = Glib::signal_timeout().connect(
      sigc::bind(sigc::ptr_fun(&on_timeout_delay), sigc::ref(mainloop)), 
      3000);
     mainloop->run();
 
+    connection_timeout.disconnect();
+    
     return true;
   }
   else

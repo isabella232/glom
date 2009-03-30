@@ -248,7 +248,7 @@ RelatedRecord_tp_as_mapping_getitem(PyObject *self, PyObject *item)
             else if(!datamodel)
             {
               g_warning("RelatedRecord_tp_as_mapping_getitem(): The datamodel was null.");
-              ConnectionPool::handle_error(true /* cerr only */);
+              ConnectionPool::handle_error_cerr_only();
               RelatedRecord_HandlePythonError();
             }
             else
@@ -352,7 +352,7 @@ RelatedRecord_generic_aggregate(PyGlomRelatedRecord* self, PyObject *args, PyObj
         else if(!datamodel)
         {
           g_warning("RelatedRecord_generic_aggregate(): The datamodel was null.");
-          ConnectionPool::handle_error(true /* cerr only */);
+          ConnectionPool::handle_error_cerr_only();
           RelatedRecord_HandlePythonError();
         }
         else

@@ -34,6 +34,7 @@
 #include <libglom/standard_table_prefs_fields.h>
 #include <giomm.h>
 #include <libglom/busy_cursor.h>
+#include <gtkmm/pagesetup.h>
 
 #include <libglom/connectionpool.h>
 
@@ -2692,16 +2693,8 @@ bool Document_Glom::load_after()
                 print_layout->set_show_table_title(show_table_title);
 
                 //Page Setup:
-                Glib::RefPtr<Gtk::PageSetup> page_setup;
                 const Glib::ustring key_file_text = get_child_text_node(node, GLOM_NODE_PAGE_SETUP);
-                if(!key_file_text.empty())
-                {
-                  Glib::KeyFile key_file;
-                  key_file.load_from_data(key_file_text);
-                  //TODO: Use this when gtkmm and GTK+ have been fixed: page_setup = Gtk::PageSetup::create(key_file);
-                  page_setup = Glib::wrap(gtk_page_setup_new_from_key_file(key_file.gobj(), NULL, NULL));
-                }
-                print_layout->set_page_setup(page_setup);
+                print_layout->set_page_setup(key_file_text);
 
                 //Layout Groups:
                 const xmlpp::Element* nodeGroups = get_node_child_named(node, GLOM_NODE_DATA_LAYOUT_GROUPS);
@@ -3418,14 +3411,11 @@ bool Document_Glom::save_before()
           set_node_attribute_value_as_bool(nodePrintLayout, GLOM_ATTRIBUTE_REPORT_SHOW_TABLE_TITLE, print_layout->get_show_table_title());
 
           //Page Setup:
-          Glib::RefPtr<const Gtk::PageSetup> page_setup =  print_layout->get_page_setup();
-          if(page_setup)
+          const std::string page_setup = print_layout->get_page_setup();
+          if(!page_setup.empty())
           {
-            Glib::KeyFile key_file;
-            page_setup->save_to_key_file(key_file);
-            
             xmlpp::Element* child = nodePrintLayout->add_child(GLOM_NODE_PAGE_SETUP);
-            child->add_child_text(key_file.to_data());
+            child->add_child_text(page_setup);
           }
 
           xmlpp::Element* nodeGroups = nodePrintLayout->add_child(GLOM_NODE_DATA_LAYOUT_GROUPS);

@@ -117,6 +117,10 @@ private:
 
   bool recreate_database(bool& user_cancelled); //return indicates success.
   void stop_self_hosting_of_document_database();
+  
+  void on_connection_avahi_begin();
+  void on_connection_avahi_progress();
+  void on_connection_avahi_done();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #ifndef G_OS_WIN32
@@ -190,6 +194,8 @@ private:
   //so we can use them again when connecting directly to the database:
   Glib::ustring m_temp_username, m_temp_password;
 
+  Gtk::MessageDialog* m_avahi_progress_dialog;
+  
   bool m_show_sql_debug;
 };
 

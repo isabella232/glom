@@ -18,17 +18,17 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "box_data_details.h"
-#include "../frame_glom.h" //For show_ok_dialog().
+#include <glom/mode_data/box_data_details.h>
+#include <glom/frame_glom.h> //For show_ok_dialog().
 #include <libglom/data_structure/field.h>
 #include <libglom/data_structure/relationship.h>
 #include <libglom/data_structure/glomconversions.h>
-#include "dialog_layout_details.h"
+#include <glom/mode_data/dialog_layout_details.h>
 #include <glom/glade_utils.h>
-#include <libglom/utils.h>
+#include <glom/utils_ui.h>
 #include <glom/glom_privs.h>
-#include "../xsl_utils.h"
-#include "../python_embed/glom_python.h"
+#include <glom/xsl_utils.h>
+#include <glom/python_embed/glom_python.h>
 #include <sstream> //For stringstream
 #include <glibmm/i18n.h>
 

@@ -21,7 +21,7 @@
 #include <libglom/libglom_config.h> // For GLOM_ENABLE_MAEMO
 
 #include "dialog_choose_id.h"
-#include <libglom/utils.h> //For bold_message()).
+#include <glom/utils_ui.h> //For bold_message()).
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
 

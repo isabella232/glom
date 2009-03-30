@@ -24,13 +24,13 @@
 #include "../cellrendererlist/cellrendererlist.h"
 #include "db_treeviewcolumn_glom.h"
 #include <libglom/data_structure/glomconversions.h>
-#include "../../dialog_invalid_data.h"
-#include "../../application.h"
-#include <libglom/utils.h>
+#include <glom/dialog_invalid_data.h>
+#include <glom/application.h>
+#include <glom/utils_ui.h>
 #include "cellrenderer_buttonimage.h"
 #include "cellrenderer_buttontext.h"
 #include <glom/utility_widgets/imageglom.h> //For ImageGlom::scale_keeping_ratio().
-//#include "../cellrendererlist.h"
+
 #include <iostream> //For debug output.
 #include <gtk/gtktreeview.h>
 #include <gtk/gtkstock.h>
@@ -648,7 +648,7 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
      {
        Gtk::CellRendererPixbuf* pixbuf_renderer = Gtk::manage( new Gtk::CellRendererPixbuf() );
 
-       Glib::RefPtr<Gdk::Pixbuf> pixbuf = item_image->get_image_as_pixbuf();
+       Glib::RefPtr<Gdk::Pixbuf> pixbuf = Conversions::get_pixbuf_for_gda_value(item_image->m_image);
        if(pixbuf)
          pixbuf_renderer->set_property("pixbuf", pixbuf);
        else

@@ -19,7 +19,8 @@
  */
 
 #include "box_withbuttons.h"
-#include "application.h" //App_Glom.
+#include <glom/application.h> //App_Glom.
+#include <glom/utils_ui.h>
 #include <libglom/appstate.h>
 //#include <libgnomeui/gnome-app-helper.h>
 

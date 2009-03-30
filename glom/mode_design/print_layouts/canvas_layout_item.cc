@@ -193,7 +193,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
     if(image)
     {
       Glib::RefPtr<CanvasImageMovable> canvas_item = CanvasImageMovable::create();
-      Glib::RefPtr<Gdk::Pixbuf> pixbuf = image->get_image_as_pixbuf();
+      Glib::RefPtr<Gdk::Pixbuf> pixbuf = Conversions::get_pixbuf_for_gda_value(image->m_image);
       if(pixbuf)
         canvas_item->set_image(pixbuf);
       else

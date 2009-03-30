@@ -88,7 +88,7 @@ private:
   //ConnectionPool(const ConnectionPool& src);
   virtual ~ConnectionPool();
   //ConnectionPool& operator=(const ConnectionPool& src);
-
+  
 public:
   typedef ConnectionPoolBackends::Backend Backend;
   typedef Backend::type_vecConstFields type_vecConstFields;
@@ -100,6 +100,18 @@ public:
 
   /// Delete the singleton so it doesn't show up as leaked memory in, for instance, valgrind.
   static void delete_instance();
+  
+  typedef sigc::slot<void> type_void_slot;
+  
+  /** Set callbacks that will be called to show UI while starting to advertise 
+   * on the network via Avahi.
+   *
+   * @param slot_begin Show an explanatory message.
+   * @param slot_progress Show a pulse progress and/or keep the UI updating.
+   * @param slot_done Stop showing the message.
+   */ 
+  void set_avahi_publish_callbacks(const type_void_slot& slot_begin, const type_void_slot& slot_progress, const type_void_slot& slot_done);
+  
 
   bool get_ready_to_connect() const;
   void set_ready_to_connect(bool val = true);
@@ -152,13 +164,15 @@ public:
   /** This callback should show UI to indicate that work is still happening.
    * For instance, a pulsing ProgressBar.
    */
-  typedef sigc::slot<void> SlotProgress;
+  typedef Backend::SlotProgress SlotProgress;
+ 
+  typedef Backend::InitErrors InitErrors;
   
   /** Do one-time initialization, such as  creating required database
    * files on disk for later use by their own  database server instance.
    * @param parent_window A parent window to use as the transient window when displaying errors.
    */
-  bool initialize(const SlotProgress& slot_progress);
+  InitErrors initialize(const SlotProgress& slot_progress);
 
   /** Start a database server instance for the exisiting database files.
    * @param parent_window The parent window (transient for) of any dialogs shown during this operation.
@@ -214,12 +228,7 @@ public:
 #endif // !G_OS_WIN32
 
   //Show the gda error in a dialog.
-  static bool handle_error(bool cerr_only = false);
-
-  /** Postgres can't be started as root. initdb complains.
-   * So just prevent this in general. It is safer anyway.
-   */
-  static bool check_user_is_not_root();
+  static bool handle_error_cerr_only();
 
 private:
   void on_sharedconnection_finished();
@@ -261,6 +270,8 @@ private:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   SlotGetDocument m_slot_get_document;
 #endif
+
+  type_void_slot m_epc_slot_begin, m_epc_slot_progress, m_epc_slot_done;
 };
 
 } //namespace Glom

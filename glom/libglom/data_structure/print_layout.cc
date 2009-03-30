@@ -36,8 +36,7 @@ PrintLayout::PrintLayout(const PrintLayout& src)
   m_layout_group(src.m_layout_group),
   m_show_table_title(src.m_show_table_title)
 {
-  if(src.m_page_setup)
-    m_page_setup = src.m_page_setup->copy();
+  m_page_setup = src.m_page_setup;
 }
 
 PrintLayout& PrintLayout::operator=(const PrintLayout& src)
@@ -46,11 +45,8 @@ PrintLayout& PrintLayout::operator=(const PrintLayout& src)
 
   m_layout_group = src.m_layout_group;
   m_show_table_title = src.m_show_table_title;
-
-  m_page_setup.reset();
-  if(src.m_page_setup)
-    m_page_setup = src.m_page_setup->copy();
-
+  m_page_setup = src.m_page_setup;
+  
   return *this;
 }
 
@@ -64,21 +60,15 @@ void PrintLayout::set_show_table_title(bool show_table_title)
   m_show_table_title = show_table_title;
 }
 
-void PrintLayout::set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page_setup)
+void PrintLayout::set_page_setup(const std::string& page_setup)
 {
   m_page_setup = page_setup;
 }
 
-Glib::RefPtr<Gtk::PageSetup> PrintLayout::get_page_setup()
+std::string PrintLayout::get_page_setup() const
 {
   return m_page_setup;
 }
-
-Glib::RefPtr<const Gtk::PageSetup> PrintLayout::get_page_setup() const
-{
-  return m_page_setup;
-}
-
 
 } //namespace Glom
 

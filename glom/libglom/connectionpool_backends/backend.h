@@ -26,8 +26,6 @@
 #include <libglom/sharedptr.h>
 #include <libglom/data_structure/field.h>
 
-#include <gtkmm/window.h>
-
 #include <memory>
 
 namespace Glom
@@ -69,6 +67,15 @@ public:
   virtual ~Backend() {}
   typedef std::vector<sharedptr<const Field> > type_vecConstFields;
 
+  enum InitErrors
+  {
+     INITERROR_NONE,
+     INITERROR_DIRECTORY_ALREADY_EXISTS,
+     INITERROR_COULD_NOT_CREATE_DIRECTORY,
+     INITERROR_COULD_NOT_START_SERVER,
+     INITERROR_OTHER
+  };
+  
 protected:
   /** Helper functions for backend implementations to use, so that these don't
    * need to worry whether glibmm was compiled with exceptions or not.
@@ -105,14 +112,14 @@ protected:
    * For instance, a pulsing ProgressBar.
    */
   typedef sigc::slot<void> SlotProgress;
-
+  
   /** This method is called for one-time initialization of the database
-   * storage. No need to implement this function if the data is centrally
-   * hosted, not managed by Glom.
+   * storage. There is no need to implement this function if the data is centrally
+   * hosted rather than hosted by Glom.
    *
    * @slot_progress A callback to call while the work is still happening.
    */
-  virtual bool initialize(const SlotProgress& slot_progress, const Glib::ustring& initial_username, const Glib::ustring& password);
+  virtual InitErrors initialize(const SlotProgress& slot_progress, const Glib::ustring& initial_username, const Glib::ustring& password);
 
   /** This method is called before the backend is used otherwise. This can
    * be used to start a self-hosted database server. There is no need to implement

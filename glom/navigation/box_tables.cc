@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "box_tables.h"
-#include <libglom/utils.h> //For bold_message()).
+#include <glom/navigation/box_tables.h>
+#include <glom/utils_ui.h> //For bold_message()).
 #include <glom/application.h>
 #include <glibmm/i18n.h>
 

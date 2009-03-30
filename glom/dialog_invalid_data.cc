@@ -20,7 +20,7 @@
  
 #include "dialog_invalid_data.h"
 #include <libglom/data_structure/glomconversions.h>
-#include <libglom/utils.h>
+#include <glom/utils_ui.h>
 #include <glom/glade_utils.h>
 
 namespace Glom
@@ -48,7 +48,7 @@ bool glom_show_dialog_invalid_data(Field::glom_field_type glom_type)
   refXml->get_widget_derived("dialog_data_invalid_format", dialog);
   dialog->set_example_data(glom_type);
   //dialog->set_transient_for(*this);
-  int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_data_invalid_format");
+  const int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_data_invalid_format");
   
   delete dialog;
   return (response == 2); //The glade file has a response of 2 for the Revert button.

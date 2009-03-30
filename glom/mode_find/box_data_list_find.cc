@@ -18,7 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "box_data_list_find.h"
+#include <glom/mode_find/box_data_list_find.h>
+#include <glom/utils_ui.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

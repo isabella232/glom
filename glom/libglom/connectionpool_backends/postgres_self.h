@@ -54,20 +54,15 @@ public:
    */
   int get_port() const;
 
-  /** Check whether PostgreSQL is really available for self-hosting,
-   * in case the distro package has incorrect dependencies.
-   *
-   * @results True if everything is OK.
-   */
-  static bool check_postgres_is_available_with_warning();
-
   /** Try to install postgres on the distro, though this will require a
    * distro-specific patch to the implementation.
    */
   static bool install_postgres(const SlotProgress& slot_progress);
 
+  static std::string get_path_to_postgres_executable(const std::string& program);
+
 private:
-  virtual bool initialize(const SlotProgress& slot_progress, const Glib::ustring& initial_username, const Glib::ustring& password);
+  virtual InitErrors initialize(const SlotProgress& slot_progress, const Glib::ustring& initial_username, const Glib::ustring& password);
 
   virtual bool startup(const SlotProgress& slot_progress);
   virtual void cleanup(const SlotProgress& slot_progress);

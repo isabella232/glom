@@ -21,6 +21,7 @@
 #include "dialog_fielddefinition.h"
 #include "dialog_fieldcalculation.h"
 #include <glom/glade_utils.h>
+#include <glom/utils_ui.h>
 #include "../../box_db_table.h"
 //#include <libgnome/gnome-i18n.h>
 #include <glibmm/i18n.h>
@@ -384,7 +385,7 @@ void Dialog_FieldDefinition::on_button_edit_calculation()
       m_Field->set_calculation( m_pTextView_Calculation->get_buffer()->get_text() );
       dialog->set_field(m_Field, m_table_name);
       //TODO: dialog.set_transient_for(*get_app_window());
-      int response = Glom::Utils::dialog_run_with_help(dialog, "window_field_calculation");
+      const int response = Glom::Utils::dialog_run_with_help(dialog, "window_field_calculation");
       if(response == Gtk::RESPONSE_OK)
       {
         m_pTextView_Calculation->get_buffer()->set_text( dialog->get_field()->get_calculation() );

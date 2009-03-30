@@ -19,7 +19,7 @@
  */
 
 #include "db_adddel_withbuttons.h"
-//#include <libgnome/gnome-i18n.h>
+#include <glom/utils_ui.h>
 
 namespace Glom
 {
@@ -31,9 +31,6 @@ DbAddDel_WithButtons::DbAddDel_WithButtons()
   m_Button_Edit(Gtk::Stock::OPEN)
 {
   m_HBox.set_spacing(Utils::DEFAULT_SPACING_SMALL);
-  //m_Button_Add.set_border_width(Utils::DEFAULT_SPACING_SMALL);
-  //m_Button_Del.set_border_width(Utils::DEFAULT_SPACING_SMALL);
-  //m_Button_Edit.set_border_width(Utils::DEFAULT_SPACING_SMALL);
 
   setup_buttons();
   pack_start(m_HBox, Gtk::PACK_SHRINK);

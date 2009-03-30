@@ -26,9 +26,6 @@
 
 #include <libglom/data_structure/layout/layoutitem_field.h>
 
-#include <gtkmm/dialog.h>
-#include <gtkmm/messagedialog.h>
-
 namespace Glom
 {
 
@@ -38,12 +35,6 @@ typedef std::list<type_pair_sort_field> type_sort_clause;
 
 namespace Utils
 {
-
-///A standard widget spacing:
-extern const unsigned int DEFAULT_SPACING_LARGE;
-
-///A standard widget spacing:
-extern const unsigned int DEFAULT_SPACING_SMALL;
 
 Glib::ustring trim_whitespace(const Glib::ustring& text);
 
@@ -96,22 +87,6 @@ type_vecStrings string_separate(const Glib::ustring& str, const Glib::ustring& s
 Glib::ustring string_trim(const Glib::ustring& str, const Glib::ustring& to_remove);
 
 Glib::ustring string_remove_suffix(const Glib::ustring& str, const Glib::ustring& suffix, bool case_sensitive = true);
-
-int dialog_run_with_help(Gtk::Dialog* dialog, const Glib::ustring& id = Glib::ustring());
-
-/** This is a replacement for gnome_help_display(), 
- * to avoid the libgnome dependency.
- * TODO: GTK+ should have a function for this soon.
- */
-void show_help(const Glib::ustring& id = Glib::ustring());
-
-void show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window& parent, Gtk::MessageType message_type);
-void show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window* parent, Gtk::MessageType message_type);
-
-void show_window_until_hide(Gtk::Window* window);
-
-/// For instance, to create bold primary text for a dialog box, without marking the markup for translation.
-Glib::ustring bold_message(const Glib::ustring& message);
 
 bool file_exists(const Glib::ustring& uri);
 

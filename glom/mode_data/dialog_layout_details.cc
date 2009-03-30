@@ -18,14 +18,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "dialog_layout_details.h"
-#include "dialog_choose_relationship.h"
-#include "../layout_item_dialogs/dialog_buttonscript.h"
-#include "../layout_item_dialogs/dialog_notebook.h"
+#include <glom/mode_data/dialog_layout_details.h>
+#include <glom/mode_data/dialog_choose_relationship.h>
+#include <glom/layout_item_dialogs/dialog_buttonscript.h>
+#include <glom/layout_item_dialogs/dialog_notebook.h>
 #include <glom/glade_utils.h>
-#include "../frame_glom.h" //For show_ok_dialog()
+#include <glom/frame_glom.h> //For show_ok_dialog()
 //#include <libgnome/gnome-i18n.h>
-#include <libglom/utils.h> //For bold_message()).
+#include <glom/utils_ui.h> //For bold_message()).
 #include <glibmm/i18n.h>
 #include <sstream> //For stringstream
 
@@ -555,7 +555,7 @@ sharedptr<LayoutItem_Button> Dialog_Layout_Details::offer_button_script_edit(con
     {
       dialog->set_script(button, m_table_name);
       dialog->set_transient_for(*this);
-      int response = Glom::Utils::dialog_run_with_help(dialog, "window_button_script");
+      const int response = Glom::Utils::dialog_run_with_help(dialog, "window_button_script");
       dialog->hide();
       if(response == Gtk::RESPONSE_OK)
       {

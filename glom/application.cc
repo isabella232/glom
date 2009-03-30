@@ -31,11 +31,8 @@
 #include <glom/utility_widgets/filechooserdialog_saveextras.h>
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-#include <libglom/utils.h>
+#include <glom/utils_ui.h>
 #include <glom/glade_utils.h>
-
-//#include <libglom/connectionpool_backends/postgres_central.h>
-//#include <libglom/connectionpool_backends/postgres_self.h>
 
 #include <cstdio>
 #include <memory> //For std::auto_ptr<>
@@ -107,6 +104,7 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& bu
   m_ui_save_extra_newdb_hosting_mode(Document_Glom::DEFAULT_HOSTED),
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+  m_avahi_progress_dialog(0),
   m_show_sql_debug(false)
 {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -143,6 +141,14 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& bu
   //Hide the toolbar because it doesn't contain anything useful for this app.
   m_HandleBox_Toolbar.hide();
   
+  //Install UI hooks for this:
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  if(!connection_pool)
+    connection_pool->set_avahi_publish_callbacks(
+      sigc::mem_fun(*this, &App_Glom::on_connection_avahi_begin),
+      sigc::mem_fun(*this, &App_Glom::on_connection_avahi_progress),
+      sigc::mem_fun(*this, &App_Glom::on_connection_avahi_done) );     
+  
   global_application = this;
 }
 
@@ -155,6 +161,44 @@ App_Glom::~App_Glom()
     delete m_window_translations;
   }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+
+  if(m_avahi_progress_dialog)
+  {
+    delete m_avahi_progress_dialog;
+    m_avahi_progress_dialog = 0;
+  }
+}
+
+void App_Glom::on_connection_avahi_begin()
+{
+  //Create the dialog:
+  if(m_avahi_progress_dialog)
+  {
+    delete m_avahi_progress_dialog;
+    m_avahi_progress_dialog = 0;
+  }
+
+  m_avahi_progress_dialog = new Gtk::MessageDialog(Utils::bold_message(_("Glom: Generating Encryption Certificates")), true, Gtk::MESSAGE_INFO);
+  m_avahi_progress_dialog->set_secondary_text(_("Please wait while Glom prepares your system for publishing over the network."));
+  m_avahi_progress_dialog->set_transient_for(*this);
+  m_avahi_progress_dialog->show();
+}
+
+void App_Glom::on_connection_avahi_progress()
+{
+  //Allow GTK+ to process events, so that the UI is responsive:
+  while(Gtk::Main::events_pending())
+   Gtk::Main::iteration();
+}
+
+void App_Glom::on_connection_avahi_done()
+{
+  //Delete the dialog:
+  if(m_avahi_progress_dialog)
+  {
+    delete m_avahi_progress_dialog;
+    m_avahi_progress_dialog = 0;
+  }
 }
 
 bool App_Glom::init(const Glib::ustring& document_uri)

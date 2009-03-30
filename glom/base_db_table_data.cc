@@ -22,6 +22,7 @@
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/application.h>
 #include "python_embed/glom_python.h"
+#include <glom/utils_ui.h>
 #include <sstream>
 #include <glibmm/i18n.h>
 

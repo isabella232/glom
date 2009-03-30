@@ -32,7 +32,7 @@
 #include "dialog_choose_id.h"
 #include "dialog_choose_date.h"
 #include "../layout_item_dialogs/dialog_field_layout.h"
-#include <libglom/utils.h>
+#include <glom/utils_ui.h>
 #include <glom/glade_utils.h>
 #include <glibmm/i18n.h>
 

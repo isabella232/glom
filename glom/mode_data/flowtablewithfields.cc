@@ -32,11 +32,11 @@
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/glade_utils.h>
 #include <glom/mode_data/box_data_list_related.h>
-#include "dialog_choose_relationship.h"
-#include <libglom/utils.h> //For bold_message()).
-#include <glibmm/i18n.h>
+#include <glom/mode_data/dialog_choose_relationship.h>
+#include <glom/utils_ui.h> //For bold_message()).
 #include <libglom/data_structure/layout/layoutitem_placeholder.h>
 #include <glom/signal_reemitter.h>
+#include <glibmm/i18n.h>
 
 namespace Glom
 {

@@ -18,8 +18,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "box_data_calendar_related.h"
-#include "dialog_layout_calendar_related.h"
+#include <glom/mode_data/box_data_calendar_related.h>
+#include <glom/mode_data/dialog_layout_calendar_related.h>
+#include <glom/utils_ui.h>
 #include <glom/application.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/frame_glom.h> //For show_ok_dialog()

@@ -24,13 +24,6 @@
 #include <libglom/utils.h>
 #include <glibmm/i18n.h>
 
-#ifdef GLOM_ENABLE_MAEMO
-# include <hildonmm/note.h>
-#else
-# include <gtkmm/messagedialog.h>
-#endif
-
-
 // Uncomment to see debug messages
 // #define GLOM_CONNECTION_DEBUG
 
@@ -426,7 +419,7 @@ bool Postgres::attempt_create_database(const Glib::ustring& database_name, const
 }
 #endif
 
-bool Postgres::check_postgres_gda_client_is_available_with_warning()
+bool Postgres::check_postgres_gda_client_is_available()
 {
   //This API is horrible.
   //See libgda bug http://bugzilla.gnome.org/show_bug.cgi?id=575754
@@ -450,17 +443,6 @@ bool Postgres::check_postgres_gda_client_is_available_with_warning()
     }
     while(iter->move_next());
   }
-
-  const Glib::ustring message = _("Your installation of Glom is not complete, because the PostgreSQL libgda provider is not available on your system. This provider is needed to access Postgres database servers.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
-#ifndef GLOM_ENABLE_MAEMO
-  /* The Postgres provider was not found, so warn the user: */
-  Gtk::MessageDialog dialog(Utils::bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
-  dialog.set_secondary_text(message);
-  dialog.run();
-#else
-  Hildon::Note note(Hildon::NOTE_TYPE_INFORMATION, message);
-  note.run();
-#endif
 
   return false;
 }

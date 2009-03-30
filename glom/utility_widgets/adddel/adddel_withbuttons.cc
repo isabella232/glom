@@ -18,8 +18,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <libglom/utils.h>
 #include "adddel_withbuttons.h"
+#include <glom/utils_ui.h>
+
 //#include <libgnome/gnome-i18n.h>
 
 namespace Glom

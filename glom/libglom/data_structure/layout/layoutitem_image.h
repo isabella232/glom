@@ -54,8 +54,6 @@ public:
    */
   Gnome::Gda::Value get_image() const;
 
-  Glib::RefPtr<Gdk::Pixbuf> get_image_as_pixbuf() const;
-
   /** Set the image that will be shown on each record.
    */
   void set_image(const Gnome::Gda::Value& image);
@@ -63,8 +61,8 @@ public:
   //Saves the image to a temporary file and provides the file URI.
   Glib::ustring create_local_image_uri() const;
 
-private:
-
+//private:
+//This is public, for performance:
   Gnome::Gda::Value m_image;
 };
 

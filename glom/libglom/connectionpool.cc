@@ -24,8 +24,6 @@
 #include <libglom/document/document_glom.h>
 #include <libglom/utils.h>
 //#include <libgdamm/connectionevent.h>
-#include <gtkmm/main.h>
-#include <gtkmm/messagedialog.h>
 #include <glibmm/i18n.h>
 
 #ifndef G_OS_WIN32
@@ -38,10 +36,6 @@
 # undef DATADIR
 # include <windows.h>
 # define DATADIR GLOM_SAVE_DATADIR
-#endif
-
-#ifdef GLOM_ENABLE_MAEMO
-#include <hildonmm/note.h>
 #endif
 
 #include <signal.h> //To catch segfaults
@@ -525,7 +519,7 @@ void ConnectionPool::on_sharedconnection_finished()
 }
 
 //static
-bool ConnectionPool::handle_error(bool cerr_only)
+bool ConnectionPool::handle_error_cerr_only()
 {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   sharedptr<SharedConnection> sharedconnection = get_and_connect();
@@ -555,25 +549,6 @@ bool ConnectionPool::handle_error(bool cerr_only)
           error_details += (*iter)->get_description();
           std::cerr << "Internal error (Database): " << error_details << std::endl;
         }
-      }
-
-      //For debugging only:
-      //Gtk::Dialog* dialog = 0;
-      //dialog->run(); //Force a crash.
-
-      if(!cerr_only)
-      {
-#ifdef GLOM_ENABLE_MAEMO
-        Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, error_details);
-#else
-        Gtk::MessageDialog dialog(Utils::bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
-        dialog.set_secondary_text(error_details);
-#endif
-        //TODO: dialog.set_transient_for(*get_application());
-        dialog.run(); //TODO: This segfaults in gtk_window_set_modal() when this method is run a second time, for instance if there are two database errors.
-#ifdef GLOM_CONNECTION_DEBUG
-        std::cout << "debug: after Internal Error dialog run()." << std::endl;
-#endif
       }
 
       return true; //There really was an error.
@@ -780,57 +755,13 @@ bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-bool ConnectionPool::initialize(const SlotProgress& slot_progress)
+ConnectionPool::InitErrors ConnectionPool::initialize(const SlotProgress& slot_progress)
 {
   if(m_backend.get())
     return m_backend->initialize(slot_progress, get_user(), get_password());
   else
-    return false;
+    return Backend::INITERROR_OTHER;
 }
-
-bool ConnectionPool::check_user_is_not_root()
-{
-  Glib::ustring message;
-#ifdef G_OS_WIN32
-  try
-  {
-    if(pgwin32_is_admin())
-    {
-      message = _("You seem to be running Glom as a user with administrator privileges. Glom may not be run with such privileges for security reasons.\nPlease login to your system as a normal user.");
-    }
-  }
-  catch(const std::runtime_error& ex)
-  {
-    message = ex.what();
-  }
-#else
-  //std::cout << "ConnectionPool::check_user_is_not_root(): geteuid()=" << geteuid() << ", getgid()=" << getgid() << std::endl;
-
-  //This is very linux-specific. We should ifdef this out for other platforms.
-  if(geteuid() == 0)
-  {
-    //Warn the user:
-    message = _("You seem to be running Glom as root. Glom may not be run as root.\nPlease login to your system as a normal user.");
-  }
-#endif
-
-  if(!message.empty())
-  {
-#ifndef GLOM_ENABLE_MAEMO
-    Gtk::MessageDialog dialog(Utils::bold_message(_("Running As Root")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
-    dialog.set_secondary_text(message);
-    dialog.run();
-#else
-    Hildon::Note note(Hildon::NOTE_TYPE_INFORMATION, message);
-    note.run();
-#endif
-
-    return false; /* Is root. Bad. */
-  }
-
-  return true; /* Not root. It's OK. */
-}
-
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 Document_Glom* ConnectionPool::get_document()
@@ -902,45 +833,34 @@ gboolean ConnectionPool::on_publisher_document_authentication(EpcAuthContext* co
 void ConnectionPool::on_epc_progress_begin(const gchar* /* title */, gpointer user_data)
 {
   //We ignore the title parameter because there is no way that libepc could know what Glom wants to say.
- 
+  
   ConnectionPool* connection_pool = (ConnectionPool*)user_data;
-
-  //Create the dialog:
-  if(connection_pool->m_dialog_epc_progress)
-  {
-    delete connection_pool->m_dialog_epc_progress;
-    connection_pool->m_dialog_epc_progress = 0;
-  }
-
-  Gtk::MessageDialog* message_dialog = new Gtk::MessageDialog(Utils::bold_message(_("Glom: Generating Encryption Certificates")), true, Gtk::MESSAGE_INFO);
-  message_dialog->set_secondary_text(_("Please wait while Glom prepares your system for publishing over the network."));
-  message_dialog->show();
-
-  connection_pool->m_dialog_epc_progress = message_dialog; 
+  if(connection_pool)
+    connection_pool->m_epc_slot_begin();
 }
 
-void ConnectionPool::on_epc_progress_update(gdouble /* progress */, const gchar* /* message */, gpointer /* user_data */)
+void ConnectionPool::on_epc_progress_update(gdouble /* progress */, const gchar* /* message */, gpointer user_data)
 {
   //We ignore the title parameter because there is no way that libepc could know what Glom wants to say.
   //TODO: Show the progress in a ProgressBar.
 
-  //ConnectionPool* connection_pool = (ConnectionPool*)user_data;
-
-  //Allow GTK+ to process events, so that the UI is responsive:
-  while(Gtk::Main::events_pending())
-   Gtk::Main::iteration();
+  ConnectionPool* connection_pool = (ConnectionPool*)user_data;
+  if(connection_pool)
+    connection_pool->m_epc_slot_progress();
 }
 
 void ConnectionPool::on_epc_progress_end(gpointer user_data)
 {
   ConnectionPool* connection_pool = (ConnectionPool*)user_data;
+  if(connection_pool)
+    connection_pool->m_epc_slot_done();
+}
 
-  //Delete the dialog:
-  if(connection_pool->m_dialog_epc_progress)
-  {
-    delete connection_pool->m_dialog_epc_progress;
-    connection_pool->m_dialog_epc_progress = 0;
-  }
+void ConnectionPool::set_avahi_publish_callbacks(const type_void_slot& slot_begin, const type_void_slot& slot_progress, const type_void_slot& slot_done)
+{
+  m_epc_slot_begin = slot_begin;
+  m_epc_slot_progress = slot_progress;
+  m_epc_slot_done = slot_done; 
 }
 
 

@@ -20,13 +20,14 @@
 
 #include <libglom/libglom_config.h> // For GLOM_ENABLE_MAEMO
 
-#include "adddel.h"
+#include <glom/utility_widgets/adddel/adddel.h>
 #include <algorithm> //For std::find.
 #include <glibmm/i18n.h>
-#include "../cellrendererlist/cellrendererlist.h"
-#include "treeviewcolumn_glom.h"
+#include <glom/utility_widgets/cellrendererlist/cellrendererlist.h>
+#include <glom/utility_widgets/adddel/treeviewcolumn_glom.h>
 #include <libglom/data_structure/glomconversions.h>
-#include "../../dialog_invalid_data.h"
+#include <glom/dialog_invalid_data.h>
+#include <glom/utils_ui.h>
 #include <libglom/utils.h>
 //#include <glom/bakery/app_gtk.h>
 #include <iostream> //For debug output.
