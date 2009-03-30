@@ -21,6 +21,7 @@
 #include "imageglom.h"
 #include <glibmm/i18n.h>
 #include <glom/application.h>
+#include <glom/utils_ui.h>
 #include <libglom/data_structure/glomconversions.h>
 //#include <sstream> //For stringstream
 
@@ -156,7 +157,7 @@ void ImageGlom::set_pixbuf(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf)
 
 void ImageGlom::set_value(const Gnome::Gda::Value& value)
 {
-  Glib::RefPtr<Gdk::Pixbuf> pixbuf = Conversions::get_pixbuf_for_gda_value(value);
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf = Utils::get_pixbuf_for_gda_value(value);
   if(pixbuf)
   {
     set_pixbuf(pixbuf);

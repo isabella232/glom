@@ -23,7 +23,6 @@
 
 #include "layoutitem.h"
 #include <libgdamm/value.h>
-#include <gdkmm/pixbuf.h>
 
 namespace Glom
 {

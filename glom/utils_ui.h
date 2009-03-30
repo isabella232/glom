@@ -63,6 +63,8 @@ void show_window_until_hide(Gtk::Window* window);
 /// For instance, to create bold primary text for a dialog box, without marking the markup for translation.
 Glib::ustring bold_message(const Glib::ustring& message);
 
+Glib::RefPtr<Gdk::Pixbuf> get_pixbuf_for_gda_value(const Gnome::Gda::Value& value);
+
 } //namespace Utils
 
 } //namespace Glom

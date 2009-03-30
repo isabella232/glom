@@ -417,8 +417,6 @@ public:
 
 
 #ifndef SWIG //Hide this API from swig.
-  void set_parent_window(Gtk::Window* window);
-
   Glib::ustring build_and_get_contents() const;
 
 protected:
@@ -613,8 +611,6 @@ private:
   bool m_opened_from_browse;
 
   Glib::ustring m_active_layout_platform; //empty (means normal), or "maemo".
-
-  Gtk::Window* m_parent_window; //Needed by BusyCursor.
 };
 
 } //namespace Glom

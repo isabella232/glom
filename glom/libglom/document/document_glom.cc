@@ -33,8 +33,7 @@
 #include <libglom/data_structure/layout/layoutitem_line.h>
 #include <libglom/standard_table_prefs_fields.h>
 #include <giomm.h>
-#include <libglom/busy_cursor.h>
-#include <gtkmm/pagesetup.h>
+//#include <libglom/busy_cursor.h>
 
 #include <libglom/connectionpool.h>
 
@@ -243,8 +242,7 @@ Document_Glom::Document_Glom()
   m_allow_auto_save(true), //Save all changes immediately, by default.
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_is_example(false),
-  m_opened_from_browse(false),
-  m_parent_window(0)
+  m_opened_from_browse(false)
 {
   m_document_format_version = get_latest_known_document_format_version(); //Default to this for new documents.
 
@@ -2296,12 +2294,15 @@ void Document_Glom::load_after_print_layout_position(const xmlpp::Element* nodeI
 
 bool Document_Glom::load_after()
 {
+  //TODO: Use some callback UI to show a busy cursor?
+  /*
   //Use a std::auto_ptr<> to avoid even unncessarily instantiating a BusyCursor,
   //which would require GTK+ to be initialized:
   std::auto_ptr<BusyCursor> auto_cursor;
   if(m_parent_window)
     auto_cursor = std::auto_ptr<BusyCursor>( new BusyCursor(m_parent_window) );
-
+  */
+  
   m_block_modified_set = true; //Prevent the set_ functions from trigerring a save.
 
   bool result = GlomBakery::Document_XML::load_after();  
@@ -3181,12 +3182,15 @@ void Document_Glom::save_before_print_layout_position(xmlpp::Element* nodeItem, 
 
 bool Document_Glom::save_before()
 {
+  //TODO: Use some callback UI to show a busy cursor?
+  /*
   //Use a std::auto_ptr<> to avoid even unncessarily instantiating a BusyCursor,
   //which would require GTK+ to be initialized:
   std::auto_ptr<BusyCursor> auto_cursor;
   if(m_parent_window)
     auto_cursor = std::auto_ptr<BusyCursor>( new BusyCursor(m_parent_window) );
-
+  */
+  
   xmlpp::Element* nodeRoot = get_node_document();
 
   if(nodeRoot)
@@ -3943,11 +3947,6 @@ void Document_Glom::fill_translatable_layout_items(const sharedptr<LayoutGroup>&
       }
     }
   }
-}
-
-void Document_Glom::set_parent_window(Gtk::Window* window)
-{
-  m_parent_window = window;
 }
 
 void Document_Glom::set_file_uri(const Glib::ustring& file_uri, bool bEnforceFileExtension /* = false */)

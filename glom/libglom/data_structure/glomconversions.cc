@@ -21,13 +21,10 @@
 
 #include <libglom/libglom_config.h> // For HAVE_STRPTIME
 
-#include <libgda/gda-blob-op.h> // For gda_blob_op_read_all()
-
 #include "glomconversions.h"
 #include <libglom/connectionpool.h>
 #include <libglom/utils.h>
-#include <gdkmm/pixbufloader.h>
-#include <libglom/data_structure/layout/layoutitem_image.h> // For GLOM_IMAGE_FORMAT
+
 #include <glibmm/i18n.h>
 #include <sstream> //For stringstream
 
@@ -976,103 +973,6 @@ Gnome::Gda::Value Conversions::convert_value(const Gnome::Gda::Value& value, Fie
   }
 
   return value;
-}
-
-Glib::RefPtr<Gdk::Pixbuf> Conversions::get_pixbuf_for_gda_value(const Gnome::Gda::Value& value)
-{
-  Glib::RefPtr<Gdk::Pixbuf> result;
-
-  if(value.get_value_type() == GDA_TYPE_BINARY || value.get_value_type() == GDA_TYPE_BLOB)
-  {
-    glong buffer_binary_length;
-    gconstpointer buffer_binary;
-    if(value.get_value_type() == GDA_TYPE_BLOB)
-    {
-      const GdaBlob* blob = value.get_blob();
-      if(gda_blob_op_read_all(blob->op, const_cast<GdaBlob*>(blob)))
-      {
-        buffer_binary_length = blob->data.binary_length;
-        buffer_binary = blob->data.data;
-      }
-      else
-      {
-        buffer_binary_length = 0;
-        buffer_binary = NULL;
-        g_warning("Conversions::get_pixbuf_for_gda_value(): Failed to read BLOB data");
-      }
-    }
-    else
-    {
-      buffer_binary = value.get_binary(buffer_binary_length);
-    }
-
-    /* Note that this is regular binary data, not escaped text representing the binary data: */
-    if(buffer_binary && buffer_binary_length)
-    {
-      //typedef std::list<Gdk::PixbufFormat> type_list_formats;
-      //const type_list_formats formats = Gdk::Pixbuf::get_formats();
-      //std::cout << "Debug: Supported pixbuf formats:" << std::endl;
-      //for(type_list_formats::const_iterator iter = formats.begin(); iter != formats.end(); ++iter)
-      //{
-      //  std::cout << " name=" << iter->get_name() << ", writable=" << iter->is_writable() << std::endl;
-      //}
-
-      Glib::RefPtr<Gdk::PixbufLoader> refPixbufLoader;
-      try
-      {
-        refPixbufLoader = Gdk::PixbufLoader::create(GLOM_IMAGE_FORMAT);
-      }
-      catch(const Gdk::PixbufError& ex)
-      {
-        refPixbufLoader.reset();
-        std::cerr << "PixbufLoader::create failed: " << ex.what() << std::endl;
-      }
-
-      if(refPixbufLoader)
-      {
-        guint8* puiData = (guint8*)buffer_binary;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-        try
-        {
-
-          //g_warning("ImageGlom::set_value(): debug: from db: ");
-          //for(int i = 0; i < 10; ++i)
-          //  g_warning("%02X (%c), ", (guint8)puiData[i], (char)puiData[i]);
-
-          refPixbufLoader->write(puiData, (glong)buffer_binary_length);
-          result = refPixbufLoader->get_pixbuf();
-
-          refPixbufLoader->close(); //This throws if write() threw, so it must be inside the try block.
-        }
-#else
-        std::auto_ptr<Glib::Error> error;
-        refPixbufLoader->write(puiData, (glong)buffer_binary_length, error);
-        if(error.get() == NULL)
-        {
-          result = refPixbufLoader->get_pixbuf();
-          refPixbufLoader->close(error);
-        }
-#endif
-
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-        catch(const Glib::Exception& ex)
-        {
-#else
-        if(error.get() != NULL)
-        {
-          const Glib::Exception& ex = *error.get();        
-#endif
-          g_warning("Conversions::get_pixbuf_for_gda_value(): PixbufLoader::write() failed: %s", ex.what().c_str());
-        }
-      }
-
-      //TODO: load the image, using the mime type stored elsewhere.
-      //pixbuf = Gdk::Pixbuf::create_from_data(
-    }
-
-  }
-
-  return result;
 }
 
 } //namespace Glom

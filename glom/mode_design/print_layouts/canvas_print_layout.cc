@@ -756,7 +756,7 @@ void Canvas_PrintLayout::set_canvas_item_field_value(const Glib::RefPtr<Goocanva
     if(!canvas_image)
       return;
 
-    Glib::RefPtr<Gdk::Pixbuf> pixbuf = Conversions::get_pixbuf_for_gda_value(value);
+    Glib::RefPtr<Gdk::Pixbuf> pixbuf = Utils::get_pixbuf_for_gda_value(value);
     canvas_image->property_pixbuf() = pixbuf;
   }
   else //text, numbers, date, time, boolean:

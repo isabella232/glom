@@ -1,5 +1,18 @@
 2009-03-30  Murray Cumming  <murrayc@murrayc.com>
 
+	* configure.ac: Remove the gtkmm dependency from libglom.
+	
+	* glom/libglom/Makefile.am:
+	* glom/bakery/Makefile.am:
+	* glom/libglom/busy_cursor.[h|cc]: Moved this to glom/bakery/.
+	
+	* glom/libglom/data_structure/glomconversions.[h|cc]:
+	Moved get_pixbuf_for_gda_value() to glom/utils_ui.[h|cc].
+	
+	* glom/libglom/*.[h|cc]: Adapted, and removed any gtkmm or gdkmm headers.
+
+2009-03-30  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/glade_utils.cc: Added missing file to fix the build.
 	
 	* glom/Makefile.am:

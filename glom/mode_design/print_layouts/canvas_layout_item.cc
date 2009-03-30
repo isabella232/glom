@@ -33,6 +33,7 @@
 #include <libglom/data_structure/layout/layoutitem_portal.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 #include <libglom/data_structure/glomconversions.h>
+#include <glom/utils_ui.h>
 #include <glibmm/i18n.h>
 #include <math.h>
 #include <algorithm> //For std::max().
@@ -193,7 +194,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
     if(image)
     {
       Glib::RefPtr<CanvasImageMovable> canvas_item = CanvasImageMovable::create();
-      Glib::RefPtr<Gdk::Pixbuf> pixbuf = Conversions::get_pixbuf_for_gda_value(image->m_image);
+      Glib::RefPtr<Gdk::Pixbuf> pixbuf = Utils::get_pixbuf_for_gda_value(image->m_image);
       if(pixbuf)
         canvas_item->set_image(pixbuf);
       else
@@ -403,7 +404,7 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
       double height = 0;
       canvas_item->get_width_height(width, height);
       
-      Glib::RefPtr<Gdk::Pixbuf> pixbuf = Conversions::get_pixbuf_for_gda_value(value);
+      Glib::RefPtr<Gdk::Pixbuf> pixbuf = Utils::get_pixbuf_for_gda_value(value);
       if(pixbuf) //TODO: Remove this if() check when goocanvas has my patch to avoid crashes when this is NULL.
         canvas_item->set_image(pixbuf);
      

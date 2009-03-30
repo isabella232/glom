@@ -889,7 +889,7 @@ void App_Glom::init_create_document()
   {
     Document_Glom* document_glom = new Document_Glom();
     m_pDocument = document_glom;
-    document_glom->set_parent_window(this); //So that it can show a BusyCursor when loading and saving.
+    //document_glom->set_parent_window(this); //So that it can show a BusyCursor when loading and saving.
 
     //Tell document about view:
     m_pDocument->set_view(m_pFrame);

@@ -22,7 +22,7 @@
 #include "box_withbuttons.h" //For Box_WithButtons::connect_to_server().
 #include <libglom/standard_table_prefs_fields.h>
 #include <libglom/data_structure/glomconversions.h>
-#include <libglom/busy_cursor.h>
+#include <glom/bakery/busy_cursor.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

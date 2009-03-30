@@ -34,7 +34,7 @@
 #include <libglom/utils.h>
 #include <libglom/calcinprogress.h>
 #include <libglom/document/bakery/view/view.h>
-#include <libglom/busy_cursor.h>
+#include <glom/bakery/busy_cursor.h>
 
 namespace Glom
 {

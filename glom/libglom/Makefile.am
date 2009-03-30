@@ -26,7 +26,6 @@ h_sources_public = libglom_config.h \
                      appstate.h
                      
 h_sources = $(h_sources_public) \
-                     busy_cursor.h \
                      calcinprogress.h \
                      connectionpool.h \
                      spawn_with_feedback.h \
@@ -34,7 +33,6 @@ h_sources = $(h_sources_public) \
                      gst-package.h
 
 cc_sources = appstate.cc \
-                     busy_cursor.cc \
                      calcinprogress.cc \
                      connectionpool.cc \
                      spawn_with_feedback.cc \

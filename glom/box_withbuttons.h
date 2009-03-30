@@ -27,8 +27,7 @@
 #include <libglom/document/document_glom.h>
 #include <libglom/connectionpool.h>
 #include <libglom/appstate.h>
-#include "base_db.h"
-#include <libglom/busy_cursor.h>
+#include <glom/base_db.h>
 #include <gtkmm/builder.h>
 
 namespace Glom
