@@ -24,6 +24,7 @@
 #include <Python.h> //Include it before anything else to avoid "_POSIX_C_SOURCE redefined".
 
 //#include <gnome.h>
+#include <glom/libglom/init.h>
 #include <gtkmm/main.h>
 #include <gtkmm/messagedialog.h>
 #include <giomm.h>
@@ -264,9 +265,8 @@ main(int argc, char* argv[])
   bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
   textdomain(GETTEXT_PACKAGE);
 
-  g_thread_init(NULL); //So we can use GMutex.
-
-  Gnome::Gda::init();
+  Glom::libglom_init();
+   
 #ifdef GLOM_ENABLE_MAEMO
   Hildon::init();
 #endif
@@ -445,11 +445,7 @@ main(int argc, char* argv[])
   }
 #endif // GLIBMM_EXCEPTIONS_ENABLED
 
-  //We use python for calculated-fields:
-  Py_Finalize();
-
-  //Clean up singletons:
-  Glom::ConnectionPool::delete_instance();
+  Glom::libglom_deinit();
 
   //These fail, probably because of previous things that are causing leaks:
   //cairo_debug_reset_static_data(); //This crashes with _cairo_hash_table_destroy: Assertion `hash_table->live_entries == 0' failed.

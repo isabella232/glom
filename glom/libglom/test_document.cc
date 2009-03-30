@@ -19,14 +19,12 @@
  */
 
 #include <libglom/document/document_glom.h>
-#include <giomm.h>
-#include <glibmm.h>
+#include <libglom/init.h>
 
 int
 main()
 {
-  Gnome::Gda::init();
-  Gio::init();
+  Glom::libglom_init();
 
   Glib::ustring uri;
 
@@ -56,6 +54,9 @@ main()
   {
     std::cout << "Table: " << *iter << std::endl;
   }
+  
+  Glom::libglom_deinit();
+
 
   return 0;
 }

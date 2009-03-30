@@ -1,5 +1,14 @@
 2009-03-30  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/Makefile.am:
+	* glom/libglom/init.[h|cc]: Added this file with libglom_init() and 
+	libglom_deinit(), containing some code that was in main(). This allows 
+	code other than Glom to use libglom.
+	* glom/main.cc: Call the new functions, replacing some code.
+	* glom/libglom/test_document.cc: Call the new functions.
+
+2009-03-30  Murray Cumming  <murrayc@murrayc.com>
+
 	* configure.ac: Remove the gtkmm dependency from libglom.
 	
 	* glom/libglom/Makefile.am:
