@@ -57,7 +57,7 @@ glom/libglom/data_structure/layout/report_parts/layoutitem_header.cc
 glom/libglom/data_structure/layout/report_parts/layoutitem_summary.cc
 glom/libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.cc
 glom/libglom/data_structure/translatable_item.cc
-glom/libglom/document/document_glom.cc
+glom/libglom/document/document.cc
 glom/libglom/document/bakery/document.cc
 glom/libglom/document/bakery/document_xml.cc
 glom/libglom/document/bakery/view/viewbase.cc
