@@ -76,7 +76,7 @@ private:
   type_signal_finished m_signal_finished;
 };
 
-class Document_Glom;
+class Document;
 
 /** This is a singleton.
  * Use get_instance().
@@ -91,7 +91,7 @@ private:
   
 public:
   typedef ConnectionPoolBackends::Backend Backend;
-  typedef Backend::type_vecConstFields type_vecConstFields;
+  typedef Backend::type_vec_const_fields type_vec_const_fields;
 
   /** Get the singleton instance.
    * Use delete_instance() when the program quits.
@@ -205,9 +205,9 @@ public:
 #endif
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-  bool change_columns(const Glib::ustring& table_name, const type_vecConstFields& old_fields, const type_vecConstFields& fields);
+  bool change_columns(const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& fields);
 #else
-  bool change_columns(const Glib::ustring& table_name, const type_vecConstFields& old_fields, const type_vecConstFields& fields, std::auto_ptr<Glib::Error>& error);
+  bool change_columns(const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& fields, std::auto_ptr<Glib::Error>& error);
 #endif
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -215,7 +215,7 @@ public:
    * This callback avoids Connection having to link to App_Glom,
    * and avoids us worrying about whether a previously-set document (via a set_document() method) is still valid.
    */ 
-  typedef sigc::slot<Document_Glom*> SlotGetDocument; 
+  typedef sigc::slot<Document*> SlotGetDocument; 
   void set_get_document_func(const SlotGetDocument& slot);
 
 #ifndef G_OS_WIN32
@@ -239,7 +239,7 @@ private:
    */
   //static int discover_first_free_port(int start_port, int end_port);
 
-  Document_Glom* get_document();
+  Document* get_document();
 
 #ifndef G_OS_WIN32
   /** Advertize self-hosting via avahi:

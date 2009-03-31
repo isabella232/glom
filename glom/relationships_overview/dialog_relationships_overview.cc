@@ -157,7 +157,7 @@ void Dialog_RelationshipsOverview::draw_tables()
   while(m_group_tables->get_n_children() > 0)
     m_group_tables->remove_child(0);
   
-  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  Document* document = dynamic_cast<Document*>(get_document());
   if(document)
   {
     double max_table_height = 0;
@@ -165,8 +165,8 @@ void Dialog_RelationshipsOverview::draw_tables()
     double sizey = 10;
 
     //Create tables canvas items, with lists of fields:
-    Document_Glom::type_listTableInfo tables = document->get_tables();
-    for(Document_Glom::type_listTableInfo::iterator iter = tables.begin(); iter != tables.end(); ++iter)
+    Document::type_listTableInfo tables = document->get_tables();
+    for(Document::type_listTableInfo::iterator iter = tables.begin(); iter != tables.end(); ++iter)
     {
       sharedptr<TableInfo> info = *iter;
       const Glib::ustring table_name = info->get_name();
@@ -182,7 +182,7 @@ void Dialog_RelationshipsOverview::draw_tables()
         m_modified = true;
       }
  
-      Document_Glom::type_vecFields fields = document->get_table_fields(table_name);
+      Document::type_vec_fields fields = document->get_table_fields(table_name);
 
       Glib::RefPtr<CanvasGroupDbTable> table_group = 
         CanvasGroupDbTable::create(info->get_name(), info->get_title_or_name(), fields, table_x, table_y);
@@ -213,20 +213,20 @@ void Dialog_RelationshipsOverview::draw_lines()
   while(m_group_lines->get_n_children() > 0)
     m_group_lines->remove_child(0);
    
-  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  Document* document = dynamic_cast<Document*>(get_document());
   if(document)
   { 
     //Create the lines linking tables to show relationships:
-    Document_Glom::type_listTableInfo tables = document->get_tables();
-    for(Document_Glom::type_listTableInfo::iterator iter = tables.begin(); iter != tables.end(); ++iter)
+    Document::type_listTableInfo tables = document->get_tables();
+    for(Document::type_listTableInfo::iterator iter = tables.begin(); iter != tables.end(); ++iter)
     {
       sharedptr<TableInfo> info = *iter;
       const Glib::ustring table_name = info->get_name();
 
-      Document_Glom::type_vecRelationships m_relationships = document->get_relationships(table_name);
-      Document_Glom::type_vecFields fields = document->get_table_fields(table_name);
+      Document::type_vec_relationships m_relationships = document->get_relationships(table_name);
+      Document::type_vec_fields fields = document->get_table_fields(table_name);
       
-      for(Document_Glom::type_vecRelationships::const_iterator rit = m_relationships.begin(); rit != m_relationships.end(); rit++)
+      for(Document::type_vec_relationships::const_iterator rit = m_relationships.begin(); rit != m_relationships.end(); rit++)
       {
         sharedptr<const Relationship> relationship = *rit;
         if(!relationship)
@@ -415,7 +415,7 @@ Glib::RefPtr<CanvasGroupDbTable> Dialog_RelationshipsOverview::get_table_group(c
 
 void Dialog_RelationshipsOverview::on_table_moved(const Glib::RefPtr<CanvasGroupDbTable>& table)
 {
-  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  Document* document = dynamic_cast<Document*>(get_document());
   if(document && table)
   {
     //Save the new position in the document:

@@ -32,10 +32,10 @@ namespace GlomBakery
 class HelpInfo
 {
 public:
-  typedef std::vector<Glib::ustring> type_vecStrings;	
+  typedef std::vector<Glib::ustring> type_vec_strings;	
   Glib::ustring m_strVersion, m_strCopyright, m_strDescription, m_strTranslatorCredits;
 
-  type_vecStrings m_vecAuthors, m_vecDocumenters;
+  type_vec_strings m_vecAuthors, m_vecDocumenters;
 };
 #endif //DOXYGEN_SHOULD_SKIP_THIS
 
@@ -72,9 +72,9 @@ public:
   virtual void init(); //Sets it up and shows it.
 
   //'About Box' information:
-  typedef std::vector<Glib::ustring> type_vecStrings;	
-  static void set_about_information(const Glib::ustring& strVersion, const type_vecStrings& vecAuthors, const Glib::ustring& strCopyright, const Glib::ustring& strDescription);
-  static void set_about_information(const Glib::ustring& strVersion, const type_vecStrings& vecAuthors, const Glib::ustring& strCopyright, const Glib::ustring& strDescription, const type_vecStrings& vecDocumenters, const Glib::ustring& strTranslatorCredits);
+  typedef std::vector<Glib::ustring> type_vec_strings;	
+  static void set_about_information(const Glib::ustring& strVersion, const type_vec_strings& vecAuthors, const Glib::ustring& strCopyright, const Glib::ustring& strDescription);
+  static void set_about_information(const Glib::ustring& strVersion, const type_vec_strings& vecAuthors, const Glib::ustring& strCopyright, const Glib::ustring& strDescription, const type_vec_strings& vecDocumenters, const Glib::ustring& strTranslatorCredits);
   virtual Glib::ustring get_version() const;
 
   static void set_command_line_args(int argc, char** &argv); //Needed for session management.
@@ -160,11 +160,6 @@ protected:
   static Glib::ustring m_strCommandLine_0;
 
   type_signal_hide m_signal_hide;
-
-
-  
-  //typedef std::vector<poptOption> type_vecPoptOptions;
-  //type_vecPoptOptions m_vecPoptOptions;
 };
 
 } //namespace

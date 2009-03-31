@@ -101,7 +101,7 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& bu
   m_menu_print_layouts_ui_merge_id(0),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_ui_save_extra_showextras(false),
-  m_ui_save_extra_newdb_hosting_mode(Document_Glom::DEFAULT_HOSTED),
+  m_ui_save_extra_newdb_hosting_mode(Document::DEFAULT_HOSTED),
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_avahi_progress_dialog(0),
@@ -203,7 +203,7 @@ void App_Glom::on_connection_avahi_done()
 
 bool App_Glom::init(const Glib::ustring& document_uri)
 {
-  type_vecStrings vecAuthors;
+  type_vec_strings vecAuthors;
   vecAuthors.push_back("Murray Cumming <murrayc@murrayc.com>");
   set_about_information(VERSION, vecAuthors, _("(C) 2000-2005 Murray Cumming"), _("A Database GUI"));
 
@@ -216,7 +216,7 @@ bool App_Glom::init(const Glib::ustring& document_uri)
 
   if(document_uri.empty())
   {
-    Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
+    Document* pDocument = static_cast<Document*>(get_document());
     if(pDocument && pDocument->get_connection_database().empty()) //If it is a new (default) document.
     {
       return offer_new_or_existing();
@@ -719,7 +719,7 @@ void App_Glom::open_browsed_document(const EpcServiceInfo* server, const Glib::u
   if(document_contents && length)
   {
     //Create a temporary Document instance, so we can manipulate the data:
-    Document_Glom document_temp;
+    Document document_temp;
     const bool loaded = document_temp.load_from_data((const guchar*)document_contents, length);
     if(loaded)
     {
@@ -727,8 +727,8 @@ void App_Glom::open_browsed_document(const EpcServiceInfo* server, const Glib::u
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #ifdef GLOM_ENABLE_POSTGRESQL
       //Stop the document from being self-hosted (it's already hosted by the other networked Glom instance):
-      if(document_temp.get_hosting_mode() == Document_Glom::HOSTING_MODE_POSTGRES_SELF)
-        document_temp.set_hosting_mode(Document_Glom::HOSTING_MODE_POSTGRES_CENTRAL);
+      if(document_temp.get_hosting_mode() == Document::HOSTING_MODE_POSTGRES_SELF)
+        document_temp.set_hosting_mode(Document::HOSTING_MODE_POSTGRES_CENTRAL);
 #endif //GLOM_ENABLE_POSTGRESQL
 #endif // !GLOM_ENABLE_CLIENT_ONLY
       // TODO: Error out in case this is a sqlite database, since we probably
@@ -762,7 +762,7 @@ void App_Glom::open_browsed_document(const EpcServiceInfo* server, const Glib::u
     //so we don't think that opening has failed because it has no URI,
     //and to stop us from allowing developer mode
     //(that would require changes to the original document).
-    Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+    Document* document = dynamic_cast<Document*>(get_document());
     if(document)
     {
       document->set_opened_from_browse();
@@ -887,7 +887,7 @@ void App_Glom::init_create_document()
 {
   if(!m_pDocument)
   {
-    Document_Glom* document_glom = new Document_Glom();
+    Document* document_glom = new Document();
     m_pDocument = document_glom;
     //document_glom->set_parent_window(this); //So that it can show a BusyCursor when loading and saving.
 
@@ -896,7 +896,7 @@ void App_Glom::init_create_document()
 
     //Tell view about document:
     //(This calls set_document() in the child views too.)
-    m_pFrame->set_document(static_cast<Document_Glom*>(m_pDocument));
+    m_pFrame->set_document(static_cast<Document*>(m_pDocument));
   }
 
   type_base::init_create_document(); //Sets window title. Doesn't recreate doc.
@@ -907,7 +907,7 @@ bool App_Glom::on_document_load()
   //Link to the database described in the document.
   //Need to ask user for user/password:
   //m_pFrame->load_from_document();
-  Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
+  Document* pDocument = static_cast<Document*>(get_document());
   if(!pDocument)
   {
     return false;
@@ -955,7 +955,7 @@ bool App_Glom::on_document_load()
         m_ui_save_extra_title = _("Creating From Example File");
         m_ui_save_extra_message = _("To use this example file you must save an editable copy of the file. A new database will also be created on the server.");
         m_ui_save_extra_newdb_title = "TODO";
-        m_ui_save_extra_newdb_hosting_mode = Document_Glom::DEFAULT_HOSTED;
+        m_ui_save_extra_newdb_hosting_mode = Document::DEFAULT_HOSTED;
 
         
         // Reinit cancelled state
@@ -972,7 +972,7 @@ bool App_Glom::on_document_load()
           //Get the results from the extended save dialog:
           pDocument->set_database_title(m_ui_save_extra_newdb_title);
           pDocument->set_hosting_mode(m_ui_save_extra_newdb_hosting_mode);
-          m_ui_save_extra_newdb_hosting_mode = Document_Glom::DEFAULT_HOSTED;
+          m_ui_save_extra_newdb_hosting_mode = Document::DEFAULT_HOSTED;
           pDocument->set_is_example_file(false);
           // We have a valid uri, so we can set it to !new and modified here
         }        
@@ -998,9 +998,9 @@ bool App_Glom::on_document_load()
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
       //Warn about read-only files, because users will otherwise wonder why they can't use Developer mode:
-      Document_Glom::userLevelReason reason = Document_Glom::USER_LEVEL_REASON_UNKNOWN;
+      Document::userLevelReason reason = Document::USER_LEVEL_REASON_UNKNOWN;
       const AppState::userlevels userlevel = pDocument->get_userlevel(reason);
-      if( (userlevel == AppState::USERLEVEL_OPERATOR) && (reason == Document_Glom::USER_LEVEL_REASON_FILE_READ_ONLY) )
+      if( (userlevel == AppState::USERLEVEL_OPERATOR) && (reason == Document::USER_LEVEL_REASON_FILE_READ_ONLY) )
       {
         Gtk::MessageDialog dialog(Utils::bold_message(_("Opening Read-Only File.")), true,  Gtk::MESSAGE_INFO, Gtk::BUTTONS_NONE);
         dialog.set_secondary_text(_("This file is read only, so you will not be able to enter Developer mode to make design changes."));
@@ -1268,7 +1268,7 @@ bool App_Glom::offer_new_or_existing()
       }
 
       //Check that a document was opened:
-      Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+      Document* document = dynamic_cast<Document*>(get_document());
       if(!document->get_file_uri().empty() || (document->get_opened_from_browse()))
         ask_again = false;
     }
@@ -1295,25 +1295,25 @@ void App_Glom::existing_or_new_new()
   Glib::ustring db_title;
 
   m_ui_save_extra_showextras = true; //Offer self-hosting or central hosting, and offer the database title.
-  m_ui_save_extra_newdb_hosting_mode = Document_Glom::DEFAULT_HOSTED; /* Default to self-hosting */
+  m_ui_save_extra_newdb_hosting_mode = Document::DEFAULT_HOSTED; /* Default to self-hosting */
   m_ui_save_extra_newdb_title.clear();
   offer_saveas();
 
   //Check that the document was given a location:
-  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  Document* document = dynamic_cast<Document*>(get_document());
   if(!document->get_file_uri().empty())
   {
     //Get details from the extended save dialog:
     const Glib::ustring db_title = m_ui_save_extra_newdb_title;
-    Document_Glom::HostingMode hosting_mode = m_ui_save_extra_newdb_hosting_mode;
+    Document::HostingMode hosting_mode = m_ui_save_extra_newdb_hosting_mode;
     m_ui_save_extra_newdb_title.clear();
-    m_ui_save_extra_newdb_hosting_mode = Document_Glom::DEFAULT_HOSTED;
+    m_ui_save_extra_newdb_hosting_mode = Document::DEFAULT_HOSTED;
 
     //Make sure that the user can do something with his new document:
     document->set_userlevel(AppState::USERLEVEL_DEVELOPER);
     // Try various ports if connecting to an existing database server instead
     // of self-hosting one:
-    document->set_connection_try_other_ports(m_ui_save_extra_newdb_hosting_mode == Document_Glom::DEFAULT_HOSTED);
+    document->set_connection_try_other_ports(m_ui_save_extra_newdb_hosting_mode == Document::DEFAULT_HOSTED);
 
     //Each new document must have an associated new database,
     //so choose a name
@@ -1418,7 +1418,7 @@ void App_Glom::on_menu_help_contents()
 bool App_Glom::recreate_database(bool& user_cancelled)
 {
   //Create a database, based on the information in the current document:
-  Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
+  Document* pDocument = static_cast<Document*>(get_document());
   if(!pDocument)
     return false;
 
@@ -1543,14 +1543,14 @@ bool App_Glom::recreate_database(bool& user_cancelled)
   dialog_progress->pulse();
 
   //Create each table:
-  Document_Glom::type_listTableInfo tables = pDocument->get_tables();
-  for(Document_Glom::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
+  Document::type_listTableInfo tables = pDocument->get_tables();
+  for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
     sharedptr<const TableInfo> table_info = *iter;
 
     //Create SQL to describe all fields in this table:
     Glib::ustring sql_fields;
-    Document_Glom::type_vecFields fields = pDocument->get_table_fields(table_info->get_name());
+    Document::type_vec_fields fields = pDocument->get_table_fields(table_info->get_name());
 
     dialog_progress->pulse();
     const bool table_creation_succeeded = m_pFrame->create_table(table_info, fields);
@@ -1572,7 +1572,7 @@ bool App_Glom::recreate_database(bool& user_cancelled)
   if(!test)
     return false;
 
-  for(Document_Glom::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
+  for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
     sharedptr<const TableInfo> table_info = *iter;
 
@@ -1603,7 +1603,7 @@ bool App_Glom::recreate_database(bool& user_cancelled)
 
 AppState::userlevels App_Glom::get_userlevel() const
 {
-  const Document_Glom* document = dynamic_cast<const Document_Glom*>(get_document());
+  const Document* document = dynamic_cast<const Document*>(get_document());
   if(document)
   {
     return document->get_userlevel();
@@ -1662,9 +1662,9 @@ void App_Glom::fill_menu_tables()
     "      <menu action='Glom_Menu_Tables'>"
     "        <placeholder name='Menu_Tables_Dynamic'>";
 
-  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
-  const Document_Glom::type_listTableInfo tables = document->get_tables();
-  for(Document_Glom::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
+  Document* document = dynamic_cast<Document*>(get_document());
+  const Document::type_listTableInfo tables = document->get_tables();
+  for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
     sharedptr<const TableInfo> table_info = *iter;
     if(!table_info->m_hidden)
@@ -1751,9 +1751,9 @@ void App_Glom::fill_menu_reports(const Glib::ustring& table_name)
     "     <menu action='Glom_Menu_Reports'>"
     "        <placeholder name='Menu_Reports_Dynamic'>";
 
-  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
-  const Document_Glom::type_listReports tables = document->get_report_names(table_name);
-  for(Document_Glom::type_listReports::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
+  Document* document = dynamic_cast<Document*>(get_document());
+  const Document::type_listReports tables = document->get_report_names(table_name);
+  for(Document::type_listReports::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
     sharedptr<Report> report = document->get_report(table_name, *iter);
     if(report)
@@ -1850,13 +1850,13 @@ void App_Glom::fill_menu_print_layouts(const Glib::ustring& table_name)
     "        <menu action='GlomAction_Menu_File_Print'>"
     "          <placeholder name='Menu_PrintLayouts_Dynamic'>";
 
-  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
-  const Document_Glom::type_listPrintLayouts tables = document->get_print_layout_names(table_name);
+  Document* document = dynamic_cast<Document*>(get_document());
+  const Document::type_listPrintLayouts tables = document->get_print_layout_names(table_name);
 
   // TODO_clientonly: Should this be available in client only mode? We need to
   // depend on goocanvas in client only mode then:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  for(Document_Glom::type_listPrintLayouts::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
+  for(Document::type_listPrintLayouts::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
     sharedptr<PrintLayout> print_layout = document->get_print_layout(table_name, *iter);
     if(print_layout)
@@ -1933,14 +1933,14 @@ void App_Glom::on_menu_file_save_as_example()
   ui_bring_to_front();
 
   //Show the save dialog:
-  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  Document* document = dynamic_cast<Document*>(get_document());
   const Glib::ustring& file_uriOld = document->get_file_uri();
 
   m_ui_save_extra_showextras = false;
   m_ui_save_extra_title.clear();
   m_ui_save_extra_message.clear();
   m_ui_save_extra_newdb_title.clear();
-  m_ui_save_extra_newdb_hosting_mode = Document_Glom::DEFAULT_HOSTED;
+  m_ui_save_extra_newdb_hosting_mode = Document::DEFAULT_HOSTED;
 
   Glib::ustring file_uri = ui_file_select_save(file_uriOld); //Also asks for overwrite confirmation.
   if(!file_uri.empty())
@@ -1965,19 +1965,19 @@ void App_Glom::on_menu_file_save_as_example()
       document->set_is_example_file();
 
       //Save all data from all tables into the document:
-      Document_Glom::type_listTableInfo list_table_info = document->get_tables();
-      for(Document_Glom::type_listTableInfo::const_iterator iter = list_table_info.begin(); iter != list_table_info.end(); ++iter)
+      Document::type_listTableInfo list_table_info = document->get_tables();
+      for(Document::type_listTableInfo::const_iterator iter = list_table_info.begin(); iter != list_table_info.end(); ++iter)
       {
         const Glib::ustring table_name = (*iter)->get_name();
 
-        //const type_vecFields vec_fields = document->get_table_fields(table_name);
+        //const type_vec_fields vec_fields = document->get_table_fields(table_name);
 
         //export_data_to_stream() needs a type_list_layout_groups;
-        Document_Glom::type_list_layout_groups sequence = document->get_data_layout_groups_default("list", table_name, "" /* layout_platform */);
+        Document::type_list_layout_groups sequence = document->get_data_layout_groups_default("list", table_name, "" /* layout_platform */);
 
         //std::cout << "debug: table_name=" << table_name << std::endl;
 
-        Document_Glom::type_example_rows example_rows;
+        Document::type_example_rows example_rows;
         FoundSet found_set;
         found_set.m_table_name = table_name;
         m_pFrame->export_data_to_vector(example_rows, found_set, sequence);
@@ -2144,7 +2144,7 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
     
 
     //Start with something suitable:
-    Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+    Document* document = dynamic_cast<Document*>(get_document());
     g_assert(document);
     const Glib::ustring filename = document->get_name(); //Get the filename without the path and extension.
 
@@ -2262,12 +2262,12 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
       bool is_self_hosted = false;
 
 #ifdef GLOM_ENABLE_POSTGRESQL
-      if(m_ui_save_extra_newdb_hosting_mode == Document_Glom::HOSTING_MODE_POSTGRES_SELF)
+      if(m_ui_save_extra_newdb_hosting_mode == Document::HOSTING_MODE_POSTGRES_SELF)
         is_self_hosted = true;
 #endif //GLOM_ENABLE_POSTGRESQL
 
 #ifdef GLOM_ENABLE_SQLITE
-      if(m_ui_save_extra_newdb_hosting_mode == Document_Glom::HOSTING_MODE_SQLITE)
+      if(m_ui_save_extra_newdb_hosting_mode == Document::HOSTING_MODE_SQLITE)
         is_self_hosted = true;
 #endif // GLOM_ENABLE_SQLITE
 
@@ -2322,7 +2322,7 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
 
 void App_Glom::stop_self_hosting_of_document_database()
 {
-  Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
+  Document* pDocument = static_cast<Document*>(get_document());
   if(pDocument)
   {
     ConnectionPool* connection_pool = ConnectionPool::get_instance();
@@ -2372,7 +2372,7 @@ void App_Glom::on_menu_developer_translations()
     {
       m_pFrame->add_view(m_window_translations);
       m_window_translations->set_transient_for(*this);
-      m_window_translations->set_document(static_cast<Document_Glom*>(m_pDocument));
+      m_window_translations->set_document(static_cast<Document*>(m_pDocument));
       m_window_translations->load_from_document();
       m_window_translations->show();
 
@@ -2388,7 +2388,7 @@ void App_Glom::on_menu_developer_translations()
 
 void App_Glom::on_menu_developer_active_platform_normal()
 {
-  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  Document* document = dynamic_cast<Document*>(get_document());
   if(document)
    document->set_active_layout_platform("");
 
@@ -2397,7 +2397,7 @@ void App_Glom::on_menu_developer_active_platform_normal()
 
 void App_Glom::on_menu_developer_active_platform_maemo()
 {
-  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  Document* document = dynamic_cast<Document*>(get_document());
   if(document)
    document->set_active_layout_platform("maemo");
 
@@ -2452,9 +2452,9 @@ void App_Glom::do_menu_developer_relationships(Gtk::Window& parent, const Glib::
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-Document_Glom* App_Glom::on_connection_pool_get_document()
+Document* App_Glom::on_connection_pool_get_document()
 {
-  return dynamic_cast<Document_Glom*>(get_document());
+  return dynamic_cast<Document*>(get_document());
 }
 #endif
 

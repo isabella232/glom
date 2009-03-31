@@ -35,8 +35,8 @@ public:
   Dialog_ChooseUser(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_ChooseUser();
 
-  typedef std::vector<Glib::ustring> type_vecStrings;
-  void set_user_list(const type_vecStrings& users);
+  typedef std::vector<Glib::ustring> type_vec_strings;
+  void set_user_list(const type_vec_strings& users);
 
   Glib::ustring get_user() const;
 

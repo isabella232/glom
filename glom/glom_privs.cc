@@ -29,9 +29,9 @@ Privs::type_map_privileges Privs::m_privileges_cache;
 
 Privs::type_map_cache_timeouts Privs::m_map_cache_timeouts;
 
-Privs::type_vecStrings Privs::get_database_groups()
+Privs::type_vec_strings Privs::get_database_groups()
 {
-  type_vecStrings result;
+  type_vec_strings result;
 
   const Glib::ustring strQuery = "SELECT \"pg_group\".\"groname\" FROM \"pg_group\"";
   Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery);
@@ -49,11 +49,11 @@ Privs::type_vecStrings Privs::get_database_groups()
   return result;
 }
 
-Privs::type_vecStrings Privs::get_database_users(const Glib::ustring& group_name)
+Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_name)
 {
   BusyCursor cursor(App_Glom::get_application());
 
-  type_vecStrings result;
+  type_vec_strings result;
 
   if(group_name.empty())
   {
@@ -87,8 +87,8 @@ Privs::type_vecStrings Privs::get_database_users(const Glib::ustring& group_name
         if(!value.is_null())
           group_list = value.get_string();
 
-        type_vecStrings vecUserIds = pg_list_separate(group_list);
-        for(type_vecStrings::const_iterator iter = vecUserIds.begin(); iter != vecUserIds.end(); ++iter)
+        type_vec_strings vecUserIds = pg_list_separate(group_list);
+        for(type_vec_strings::const_iterator iter = vecUserIds.begin(); iter != vecUserIds.end(); ++iter)
         {
           //TODO_Performance: Can we do this in one SQL SELECT?
           const Glib::ustring strQuery = "SELECT \"pg_user\".\"usename\" FROM \"pg_user\" WHERE \"pg_user\".\"usesysid\" = '" + *iter + "'";
@@ -208,8 +208,8 @@ Privileges Privs::get_table_privileges(const Glib::ustring& group_name, const Gl
     //Parse the strange postgres permissions format:
     //For instance, "{murrayc=arwdxt/murrayc,operators=r/murrayc}" (Postgres 8.x)
     //For instance, "{murrayc=arwdxt/murrayc,group operators=r/murrayc}" (Postgres <8.x)
-    const type_vecStrings vecItems = pg_list_separate(access_details);
-    for(type_vecStrings::const_iterator iterItems = vecItems.begin(); iterItems != vecItems.end(); ++iterItems)
+    const type_vec_strings vecItems = pg_list_separate(access_details);
+    for(type_vec_strings::const_iterator iterItems = vecItems.begin(); iterItems != vecItems.end(); ++iterItems)
     {
       Glib::ustring item = *iterItems;
       //std::cout << "DEBUG: item:" << item << std::endl;
@@ -237,7 +237,7 @@ Privileges Privs::get_table_privileges(const Glib::ustring& group_name, const Gl
         //std::cout << "DEBUG: user permissions:" << item << std::endl;
 
         //Get the parts before and after the =:
-        const type_vecStrings vecParts = Utils::string_separate(item, "=");
+        const type_vec_strings vecParts = Utils::string_separate(item, "=");
         if(vecParts.size() == 2)
         {
           const Glib::ustring this_group_name = vecParts[0];
@@ -246,7 +246,7 @@ Privileges Privs::get_table_privileges(const Glib::ustring& group_name, const Gl
             Glib::ustring group_permissions = vecParts[1];
 
             //Get the part before the /user_who_granted_the_privileges:
-            const type_vecStrings vecParts = Utils::string_separate(group_permissions, "/");
+            const type_vec_strings vecParts = Utils::string_separate(group_permissions, "/");
             if(!vecParts.empty())
               group_permissions = vecParts[0];
 
@@ -293,15 +293,15 @@ Glib::ustring Privs::get_user_visible_group_name(const Glib::ustring& group_name
   return result;
 }
 
-Base_DB::type_vecStrings Privs::get_groups_of_user(const Glib::ustring& user)
+Base_DB::type_vec_strings Privs::get_groups_of_user(const Glib::ustring& user)
 {
   //TODO_Performance
 
-  type_vecStrings result;
+  type_vec_strings result;
 
   //Look at each group:
-  type_vecStrings groups = get_database_groups();
-  for(type_vecStrings::const_iterator iter = groups.begin(); iter != groups.end(); ++iter)
+  type_vec_strings groups = get_database_groups();
+  for(type_vec_strings::const_iterator iter = groups.begin(); iter != groups.end(); ++iter)
   {
     //See whether the user is in this group:
     if(get_user_is_in_group(user, *iter))
@@ -316,8 +316,8 @@ Base_DB::type_vecStrings Privs::get_groups_of_user(const Glib::ustring& user)
 
 bool Privs::get_user_is_in_group(const Glib::ustring& user, const Glib::ustring& group)
 {
-  const type_vecStrings users = get_database_users(group);
-  type_vecStrings::const_iterator iterFind = std::find(users.begin(), users.end(), user);
+  const type_vec_strings users = get_database_users(group);
+  type_vec_strings::const_iterator iterFind = std::find(users.begin(), users.end(), user);
   return (iterFind != users.end());
 }
 
@@ -363,8 +363,8 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
 
   //Is the user in the special developers group?
   /*
-  type_vecStrings developers = get_database_users(GLOM_STANDARD_GROUP_NAME_DEVELOPER);
-  type_vecStrings::const_iterator iterFind = std::find(developers.begin(), developers.end(), current_user);
+  type_vec_strings developers = get_database_users(GLOM_STANDARD_GROUP_NAME_DEVELOPER);
+  type_vec_strings::const_iterator iterFind = std::find(developers.begin(), developers.end(), current_user);
   if(iterFind != developers.end())
   {
     result.m_developer = true;
@@ -375,8 +375,8 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
   if(sharedconnection && sharedconnection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS))
   {
     //Get the "true" rights for any groups that the user is in:
-    type_vecStrings groups = get_groups_of_user(current_user);
-    for(type_vecStrings::const_iterator iter = groups.begin(); iter != groups.end(); ++iter)
+    type_vec_strings groups = get_groups_of_user(current_user);
+    for(type_vec_strings::const_iterator iter = groups.begin(); iter != groups.end(); ++iter)
     {
       Privileges privs = get_table_privileges(*iter, table_name);
 

@@ -42,7 +42,7 @@ public:
 
   //PyObject* m_fields_dict; //Dictionary (map) of field names (string) to field values (Gnome::Gda::Value).
   //PyGObject* m_py_gda_connection; //"derived" from PyObject.
-  Document_Glom* m_document;
+  Document* m_document;
   Glib::ustring* m_table_name;
 
   PyGlomRelated* m_related;
@@ -57,7 +57,7 @@ public:
 
 PyTypeObject* PyGlomRecord_GetPyType();
 
-void PyGlomRecord_SetFields(PyGlomRecord* self, const PyGlomRecord::type_map_field_values& field_values, Document_Glom* document, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection);
+void PyGlomRecord_SetFields(PyGlomRecord* self, const PyGlomRecord::type_map_field_values& field_values, Document* document, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection);
 
 } //namespace Glom
 

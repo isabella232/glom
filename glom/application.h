@@ -113,7 +113,7 @@ private:
   virtual Glib::ustring ui_file_select_save(const Glib::ustring& old_file_uri); //overridden.
   void on_userlevel_changed(AppState::userlevels userlevel);
 
-  Document_Glom* on_connection_pool_get_document();
+  Document* on_connection_pool_get_document();
 
   bool recreate_database(bool& user_cancelled); //return indicates success.
   void stop_self_hosting_of_document_database();
@@ -181,7 +181,7 @@ private:
 
   Glib::ustring m_ui_save_extra_newdb_title;
 
-  Document_Glom::HostingMode m_ui_save_extra_newdb_hosting_mode;
+  Document::HostingMode m_ui_save_extra_newdb_hosting_mode;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   // This is set to the URI of an example file that is loaded to be able to

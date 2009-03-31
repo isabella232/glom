@@ -80,7 +80,7 @@ Dialog_Layout_List_Related::~Dialog_Layout_List_Related()
 }
 
 
-void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document_Glom* document, const sharedptr<const LayoutItem_Portal>& portal, const Glib::ustring& from_table)
+void Dialog_Layout_List_Related::set_document(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const sharedptr<const LayoutItem_Portal>& portal, const Glib::ustring& from_table)
 {
   //Ignore the provided from_table if the portal has one:
   Glib::ustring actual_from_table;
@@ -116,7 +116,7 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
   const Glib::ustring related_table_name = m_portal->get_table_used(Glib::ustring() /* parent table - not relevant*/);
 
   //Update the tree models from the document
-  Document_Glom* document = get_document();
+  Document* document = get_document();
   if(document)
   {
     //Fill the relationships combo:
@@ -146,7 +146,7 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
 
     //Set the table name and title:
     //sharedptr<LayoutItem_Portal> portal_temp = m_portal;
-    Document_Glom::type_list_layout_groups mapGroups;
+    Document::type_list_layout_groups mapGroups;
     if(m_portal)
     {
       m_combo_relationship->set_selected_relationship(m_portal->get_relationship(), m_portal->get_related_relationship()); 
@@ -160,7 +160,7 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
 
     m_model_items->clear();
 
-    for(Document_Glom::type_list_layout_groups::const_iterator iter = mapGroups.begin(); iter != mapGroups.end(); ++iter)
+    for(Document::type_list_layout_groups::const_iterator iter = mapGroups.begin(); iter != mapGroups.end(); ++iter)
     {
       sharedptr<const LayoutGroup> group = *iter;
       sharedptr<const LayoutGroup> portal = sharedptr<const LayoutItem_Portal>::cast_dynamic(group);
@@ -186,7 +186,7 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
   }
 
   //Show the navigation information:
-  //const Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(m_portal->get_relationship()->get_from_table());
+  //const Document::type_vec_relationships vecRelationships = document->get_relationships(m_portal->get_relationship()->get_from_table());
   m_combo_navigation_specify->set_relationships(document, related_table_name, true /* show related relationships */, false /* don't show parent table */); //TODO: Don't show the hidden tables, and don't show relationships that are not used by any fields.
   //m_combo_navigation_specify->set_display_parent_table(""); //This would be superfluous, and a bit confusing.
 
@@ -252,7 +252,7 @@ void Dialog_Layout_List_Related::save_to_document()
     //Get the data from the TreeView and store it in the document:
 
     //Get the groups and their fields:
-    Document_Glom::type_list_layout_groups mapGroups;
+    Document::type_list_layout_groups mapGroups;
 
     //Add the fields to the portal:
     //The code that created this dialog must read m_portal back out again.

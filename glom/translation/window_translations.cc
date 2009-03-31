@@ -208,7 +208,7 @@ void Window_Translations::load_from_document()
 {
   m_model->clear(); //Remove all rows.
 
-  Document_Glom* document = get_document();
+  Document* document = get_document();
   if(!document)
     return;
 
@@ -219,8 +219,8 @@ void Window_Translations::load_from_document()
   m_label_source_locale->set_text(original_locale_name);
 
   //Add tables:
-  Document_Glom::type_listTableInfo tables = document->get_tables();
-  for(Document_Glom::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
+  Document::type_listTableInfo tables = document->get_tables();
+  for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
     sharedptr<TableInfo> tableinfo = *iter;
     const Glib::ustring table_name = tableinfo->get_name();
@@ -233,8 +233,8 @@ void Window_Translations::load_from_document()
     row[m_columns.m_col_parent_table] = Glib::ustring(); //Not used for tables.
 
     //The table's field titles:
-    Document_Glom::type_vecFields fields = document->get_table_fields(table_name);
-    for(Document_Glom::type_vecFields::iterator iter = fields.begin(); iter != fields.end(); ++iter)
+    Document::type_vec_fields fields = document->get_table_fields(table_name);
+    for(Document::type_vec_fields::iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
       Gtk::TreeModel::iterator iterTree = m_model->append();
       Gtk::TreeModel::Row row = *iterTree;
@@ -247,8 +247,8 @@ void Window_Translations::load_from_document()
     }
 
     //The table's relationships:
-    Document_Glom::type_vecRelationships relationships = document->get_relationships(table_name);
-    for(Document_Glom::type_vecRelationships::iterator iter = relationships.begin(); iter != relationships.end(); ++iter)
+    Document::type_vec_relationships relationships = document->get_relationships(table_name);
+    for(Document::type_vec_relationships::iterator iter = relationships.begin(); iter != relationships.end(); ++iter)
     {
       sharedptr<Relationship> relationship = *iter;
       if(relationship)
@@ -263,8 +263,8 @@ void Window_Translations::load_from_document()
     }
 
     //The table's report titles:
-    Document_Glom::type_listReports listReports = document->get_report_names(table_name);
-    for(Document_Glom::type_listReports::iterator iter = listReports.begin(); iter != listReports.end(); ++iter)
+    Document::type_listReports listReports = document->get_report_names(table_name);
+    for(Document::type_listReports::iterator iter = listReports.begin(); iter != listReports.end(); ++iter)
     {
       const Glib::ustring report_name = *iter;
       sharedptr<Report> report = document->get_report(table_name, report_name);
@@ -279,8 +279,8 @@ void Window_Translations::load_from_document()
         row[m_columns.m_col_parent_table] = table_name;
 
         //Translatable report items:
-        Document_Glom::type_list_translatables list_layout_items = document->get_translatable_report_items(table_name, report_name);
-        for(Document_Glom::type_list_translatables::iterator iter = list_layout_items.begin(); iter != list_layout_items.end(); ++iter)
+        Document::type_list_translatables list_layout_items = document->get_translatable_report_items(table_name, report_name);
+        for(Document::type_list_translatables::iterator iter = list_layout_items.begin(); iter != list_layout_items.end(); ++iter)
         {
           sharedptr<TranslatableItem> item = *iter;
           if(item)
@@ -300,8 +300,8 @@ void Window_Translations::load_from_document()
     }
 
     //The table's translatable layout items:
-    Document_Glom::type_list_translatables list_layout_items = document->get_translatable_layout_items(table_name);
-    for(Document_Glom::type_list_translatables::iterator iter = list_layout_items.begin(); iter != list_layout_items.end(); ++iter)
+    Document::type_list_translatables list_layout_items = document->get_translatable_layout_items(table_name);
+    for(Document::type_list_translatables::iterator iter = list_layout_items.begin(); iter != list_layout_items.end(); ++iter)
     {
       sharedptr<TranslatableItem> item = *iter;
       if(item)

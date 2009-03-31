@@ -328,7 +328,7 @@ void Dialog_Layout_Report::add_group(const Glib::RefPtr<type_model>& model_parts
   }
 }
 
-//void Dialog_Layout_Report::set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields)
+//void Dialog_Layout_Report::set_document(const Glib::ustring& layout, Document* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields)
 void Dialog_Layout_Report::set_report(const Glib::ustring& table_name, const sharedptr<const Report>& report)
 {
   m_modified = false;

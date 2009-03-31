@@ -62,7 +62,7 @@ void Box_DB_Table_Definition::init()
   //Set Type choices:
 
   Field::type_map_type_names mapFieldTypes = Field::get_usable_type_names();
-  AddDel::type_vecStrings vecTypes;
+  AddDel::type_vec_strings vecTypes;
   for(Field::type_map_type_names ::iterator iter = mapFieldTypes.begin(); iter != mapFieldTypes.end();++iter)
   {
     const Glib::ustring& name = (*iter).second;
@@ -138,7 +138,7 @@ bool Box_DB_Table_Definition::fill_from_database()
 
     Field::type_map_type_names mapFieldTypes = Field::get_type_names_ui();
 
-    for(type_vecFields::iterator iter = m_vecFields.begin(); iter != m_vecFields.end(); iter++)
+    for(type_vec_fields::iterator iter = m_vecFields.begin(); iter != m_vecFields.end(); iter++)
     {
       const sharedptr<const Field>& field = *iter;
 
@@ -189,11 +189,11 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
       // unnecessary extra stuff just to get the field added into the
       // document:
 
-      Document_Glom* pDoc = static_cast<Document_Glom*>(get_document());
+      Document* pDoc = static_cast<Document*>(get_document());
       if(pDoc)
       {
         std::cout << field->get_glom_type() << std::endl;
-        Document_Glom::type_vecFields vecFields = pDoc->get_table_fields(m_table_name);
+        Document::type_vec_fields vecFields = pDoc->get_table_fields(m_table_name);
         vecFields.push_back(field);
         pDoc->set_table_fields(m_table_name, vecFields);
       }
@@ -341,7 +341,7 @@ bool Box_DB_Table_Definition::check_field_change(const sharedptr<const Field>& f
 void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint /* col */)
 {
   //Get old field definition:
-  Document_Glom* pDoc = static_cast<Document_Glom*>(get_document());
+  Document* pDoc = static_cast<Document*>(get_document());
   if(pDoc)
   {
     const Glib::ustring strFieldNameBeingEdited = m_AddDel.get_value_key(row);
@@ -350,7 +350,7 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
     m_Field_BeingEdited = constfield;
 
     //Get DB field info: (TODO: This might be unnecessary).
-    type_vecFields::const_iterator iterFind = std::find_if( m_vecFields.begin(), m_vecFields.end(), predicate_FieldHasName<Field>(strFieldNameBeingEdited) );
+    type_vec_fields::const_iterator iterFind = std::find_if( m_vecFields.begin(), m_vecFields.end(), predicate_FieldHasName<Field>(strFieldNameBeingEdited) );
     if(iterFind == m_vecFields.end()) //If it was not found:
       std::cerr << "Box_DB_Table_Definition::on_adddel_changed(): field not found: " << strFieldNameBeingEdited << std::endl;
     else
@@ -410,11 +410,11 @@ sharedptr<Field> Box_DB_Table_Definition::get_field_definition(const Gtk::TreeMo
   const Glib::ustring strFieldNameBeforeEdit = m_AddDel.get_value_key(row);
 
   //Glom field definition:
-  Document_Glom* pDoc = static_cast<Document_Glom*>(get_document());
+  Document* pDoc = static_cast<Document*>(get_document());
   if(pDoc)
   {
-    Document_Glom::type_vecFields vecFields= pDoc->get_table_fields(m_table_name);
-    Document_Glom::type_vecFields::iterator iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(strFieldNameBeforeEdit) );
+    Document::type_vec_fields vecFields= pDoc->get_table_fields(m_table_name);
+    Document::type_vec_fields::iterator iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(strFieldNameBeforeEdit) );
 
     if((iterFind != vecFields.end()) && (*iterFind)) //If it was found:
     {
@@ -507,8 +507,8 @@ sharedptr<Field> Box_DB_Table_Definition::change_definition(const sharedptr<cons
   if(!fieldOld || !field)
     return result;
 
-  type_vecConstFields old_fields;
-  type_vecFields new_fields;
+  type_vec_const_fields old_fields;
+  type_vec_fields new_fields;
 
   if(fieldOld->get_primary_key() != field->get_primary_key())
   {
@@ -530,7 +530,7 @@ sharedptr<Field> Box_DB_Table_Definition::change_definition(const sharedptr<cons
 
     //Forget the remembered currently-viewed primary key value, 
     //because it will be useless with a different field as the primary key, or with no field as primary key:
-    Document_Glom* document = get_document();
+    Document* document = get_document();
     document->forget_layout_record_viewed(m_table_name);
   }
 
@@ -558,17 +558,17 @@ sharedptr<Field> Box_DB_Table_Definition::change_definition(const sharedptr<cons
   }
 
   //Extra Glom field definitions:
-  Document_Glom* pDoc = static_cast<Document_Glom*>(get_document());
+  Document* pDoc = static_cast<Document*>(get_document());
   if(pDoc)
   {
     //Get Table's fields:
-    Document_Glom::type_vecFields vecFields = pDoc->get_table_fields(m_table_name);
+    Document::type_vec_fields vecFields = pDoc->get_table_fields(m_table_name);
 
     for(unsigned int i = 0; i < old_fields.size(); ++ i)
     {
       //Find old field:
       const Glib::ustring field_name_old = old_fields[i]->get_name();
-      Document_Glom::type_vecFields::iterator iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(field_name_old) );
+      Document::type_vec_fields::iterator iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(field_name_old) );
       if(iterFind != vecFields.end()) //If it was found:
       {
         //Change it to the new Fields's value:

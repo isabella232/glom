@@ -72,12 +72,12 @@ bool Box_DB_Table_Relationships::fill_from_database()
 
   bool result = Box_DB_Table::fill_from_database();
 
-  Document_Glom* document = get_document();
+  Document* document = get_document();
   if(!document)
     return false;
 
   //Get relationships from the document:
-  Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(m_table_name);
+  Document::type_vec_relationships vecRelationships = document->get_relationships(m_table_name);
 
   m_AddDel.remove_all();
 
@@ -89,14 +89,14 @@ bool Box_DB_Table_Relationships::fill_from_database()
     //Set combo choices:
     m_AddDel.set_column_choices(m_colFromField, util_vecStrings_from_Fields(get_fields_for_table(m_table_name)));
 
-    type_vecStrings vecTableNames = document->get_table_names(false /* ignore_system_tables */);
-    type_vecStrings vecTableNames_ustring(vecTableNames.begin(), vecTableNames.end());
+    type_vec_strings vecTableNames = document->get_table_names(false /* ignore_system_tables */);
+    type_vec_strings vecTableNames_ustring(vecTableNames.begin(), vecTableNames.end());
     m_AddDel.set_column_choices(m_colToTable, vecTableNames_ustring);
 
     //To Field choices are different for each row: set in on_adddel_signal_user_activated.
 
     //Add the relationships:
-    for(Document_Glom::type_vecRelationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); iter++)
+    for(Document::type_vec_relationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); iter++)
     {
       sharedptr<const Relationship> relationship = *iter;
       if(relationship)
@@ -130,9 +130,9 @@ bool Box_DB_Table_Relationships::fill_from_database()
 void Box_DB_Table_Relationships::save_to_document()
 { 
   //Build relationships from AddDel:
-  Document_Glom::type_vecRelationships vecRelationships;
+  Document::type_vec_relationships vecRelationships;
 
-  const Document_Glom* document = get_document();
+  const Document* document = get_document();
 
   for(Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().begin(); iter != m_AddDel.get_model()->children().end(); ++iter)
   {
@@ -240,7 +240,7 @@ void Box_DB_Table_Relationships::on_adddel_user_activated(const Gtk::TreeModel::
       {
         Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
 
-        type_vecStrings vecFields = util_vecStrings_from_Fields(get_fields_for_table(table_name));
+        type_vec_strings vecFields = util_vecStrings_from_Fields(get_fields_for_table(table_name));
 
         //This would cause a lot of tedious re-filling:
         //m_AddDel.set_column_choices(m_colToField, vecFields);
@@ -270,7 +270,7 @@ void Box_DB_Table_Relationships::on_adddel_user_requested_delete(const Gtk::Tree
     m_AddDel.remove_item(iter);
 
     //Remove it from any layouts, reports, field lookups, etc:
-    Document_Glom* document = get_document();
+    Document* document = get_document();
     if(document)
     {
       sharedptr<const Relationship> relationship = document->get_relationship(m_table_name, relationship_name);

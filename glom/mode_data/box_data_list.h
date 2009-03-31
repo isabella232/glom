@@ -81,7 +81,7 @@ protected:
 
   //Overrides of functions from Box_Data:
   virtual void create_layout(); //override
-  virtual Document_Glom::type_list_layout_groups create_layout_get_layout();
+  virtual Document::type_list_layout_groups create_layout_get_layout();
   void create_layout_add_group(const sharedptr<LayoutGroup>& layout_group);
     
   virtual bool fill_from_database(); //override.

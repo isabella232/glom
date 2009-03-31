@@ -85,7 +85,7 @@ void Dialog_Notebook::set_notebook(const sharedptr<const LayoutItem_Notebook>& s
   m_layout_item = start_notebook; //So we can preserve information for later.
   m_modified = false;
 
-  //Document_Glom* document = get_document();
+  //Document* document = get_document();
 
   guint sequence = 1;
   for(LayoutGroup::type_list_items::const_iterator iter = start_notebook->m_list_items.begin(); iter != start_notebook->m_list_items.end(); ++iter)

@@ -65,7 +65,7 @@ class Backend
   friend class Glom::ConnectionPool;
 public:
   virtual ~Backend() {}
-  typedef std::vector<sharedptr<const Field> > type_vecConstFields;
+  typedef std::vector<sharedptr<const Field> > type_vec_const_fields;
 
   enum InitErrors
   {
@@ -150,7 +150,7 @@ protected:
 
   virtual bool drop_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const Glib::ustring& field_name, std::auto_ptr<Glib::Error>& error);
 
-  virtual bool change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vecConstFields& old_fields, const type_vecConstFields& new_fields, std::auto_ptr<Glib::Error>& error);
+  virtual bool change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields, std::auto_ptr<Glib::Error>& error);
 
   /** This method is called to create a new database on the
    * database server. */

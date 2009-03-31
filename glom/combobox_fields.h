@@ -38,27 +38,27 @@ public:
   ComboBox_Fields(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~ComboBox_Fields();
 
-  typedef std::vector< sharedptr<Field> > type_vecFields;
+  typedef std::vector< sharedptr<Field> > type_vec_fields;
     
   /** Fill the combo box with fields.
    * @param fields The fields to show in the combo box.
    * @param with_none_type Whether to show an extra None item.
    */
-  void set_fields(const type_vecFields& fields, bool with_none_item = false);
+  void set_fields(const type_vec_fields& fields, bool with_none_item = false);
 
   /** Fill the combo box with fields.
    * @param document The Document, used to get the list of fields.
    * @param parent_table_name The table whose fields should be shown.
    * @param field_type Show only fields of this type.
    */
-  void set_fields(Document_Glom* document, const Glib::ustring parent_table_name);
+  void set_fields(Document* document, const Glib::ustring parent_table_name);
     
   /** Fill the combo box with fields, but only fields of a certain type.
    * @param document The Document, used to get the list of fields.
    * @param parent_table_name The table whose fields should be shown.
    * @param field_type Show only fields of this type.
    */
-  void set_fields(Document_Glom* document, const Glib::ustring parent_table_name, Field::glom_field_type field_type);
+  void set_fields(Document* document, const Glib::ustring parent_table_name, Field::glom_field_type field_type);
 
   void set_selected_field(const sharedptr<const Field>& field);
   void set_selected_field(const Glib::ustring& field_name);

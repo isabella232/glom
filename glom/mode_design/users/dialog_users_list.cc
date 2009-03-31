@@ -220,9 +220,9 @@ void Dialog_UsersList::on_button_user_add()
       std::cerr << "Dialog_UsersList::on_button_user_add(): ALTER GROUP failed." << std::endl;
 
     //Remove any user rights, so that all rights come from the user's presence in the group:
-    Document_Glom::type_listTableInfo table_list = get_document()->get_tables();
+    Document::type_listTableInfo table_list = get_document()->get_tables();
 
-    for(Document_Glom::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
+    for(Document::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
     {
       const Glib::ustring strQuery = "REVOKE ALL PRIVILEGES ON \"" + (*iter)->get_name() + "\" FROM \"" + user + "\"";
       const bool test = query_execute(strQuery);
@@ -327,8 +327,8 @@ void Dialog_UsersList::on_button_user_edit()
       //Fill groups:
       dialog->m_combo_group->clear_items();
 
-      type_vecStrings group_list = Privs::get_database_groups();
-      for(type_vecStrings::const_iterator iter = group_list.begin(); iter != group_list.end(); ++iter)
+      type_vec_strings group_list = Privs::get_database_groups();
+      for(type_vec_strings::const_iterator iter = group_list.begin(); iter != group_list.end(); ++iter)
       {
          dialog->m_combo_group->append_text(*iter);
       }
@@ -404,8 +404,8 @@ void Dialog_UsersList::fill_list()
   if(m_combo_group)
   {
     const Glib::ustring group_name = m_combo_group->get_active_text();
-    const type_vecStrings user_list = Privs::get_database_users(group_name);
-    for(type_vecStrings::const_iterator iter = user_list.begin(); iter != user_list.end(); ++iter)
+    const type_vec_strings user_list = Privs::get_database_users(group_name);
+    for(type_vec_strings::const_iterator iter = user_list.begin(); iter != user_list.end(); ++iter)
     {
       Gtk::TreeModel::iterator iterTree = m_model_users->append();
       Gtk::TreeModel::Row row = *iterTree;
@@ -420,8 +420,8 @@ void Dialog_UsersList::set_group(const Glib::ustring& group_name)
   //Fill the list of groups:
   m_combo_group->clear_items();
 
-  type_vecStrings group_list = Privs::get_database_groups();
-  for(type_vecStrings::const_iterator iter = group_list.begin(); iter != group_list.end(); ++iter)
+  type_vec_strings group_list = Privs::get_database_groups();
+  for(type_vec_strings::const_iterator iter = group_list.begin(); iter != group_list.end(); ++iter)
   {
     m_combo_group->append_text(*iter);
   }

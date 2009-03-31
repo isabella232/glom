@@ -68,13 +68,13 @@ public:
   static sharedptr<SharedConnection> connect_to_server(Gtk::Window* parent_window, std::auto_ptr<ExceptionConnection>& error);
 #endif // GLIBMM_EXCEPTIONS_ENABLED
 
-  virtual void set_document(Document_Glom* pDocument); //View override
+  virtual void set_document(Document* pDocument); //View override
   virtual void load_from_document(); //View override
 
-  typedef std::vector< sharedptr<Field> > type_vecFields;
-  typedef std::vector< sharedptr<const Field> > type_vecConstFields;
+  typedef std::vector< sharedptr<Field> > type_vec_fields;
+  typedef std::vector< sharedptr<const Field> > type_vec_const_fields;
 
-  static type_vecFields get_fields_for_table_from_database(const Glib::ustring& table_name, bool including_system_fields = false);
+  static type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_name, bool including_system_fields = false);
   static bool get_field_exists_in_database(const Glib::ustring& table_name, const Glib::ustring& field_name);
 
 
@@ -97,8 +97,8 @@ public:
   bool add_standard_groups();
   bool add_standard_tables() const;
 
-  bool create_table(const sharedptr<const TableInfo>& table_info, const Document_Glom::type_vecFields& fields) const;
-  bool create_table_add_missing_fields(const sharedptr<const TableInfo>& table_info, const Document_Glom::type_vecFields& fields) const;
+  bool create_table(const sharedptr<const TableInfo>& table_info, const Document::type_vec_fields& fields) const;
+  bool create_table_add_missing_fields(const sharedptr<const TableInfo>& table_info, const Document::type_vec_fields& fields) const;
 
   /// Also saves the table information in the document:
   bool create_table_with_default_fields(const Glib::ustring& table_name);
@@ -111,7 +111,7 @@ public:
 
   sharedptr<Field> change_column(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, Gtk::Window* parent_window) const;
 
-  bool change_columns(const Glib::ustring& table_name, const type_vecConstFields& old_fields, type_vecFields& fields, Gtk::Window* parent_window) const;
+  bool change_columns(const Glib::ustring& table_name, const type_vec_const_fields& old_fields, type_vec_fields& fields, Gtk::Window* parent_window) const;
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
   bool insert_example_data(const Glib::ustring& table_name) const;
@@ -134,8 +134,8 @@ protected:
 
   void fill_full_field_details(const Glib::ustring& parent_table_name, sharedptr<LayoutItem_Field>& layout_item);
 
-  typedef std::vector<Glib::ustring> type_vecStrings;
-  type_vecStrings get_table_names_from_database(bool ignore_system_tables = false) const;
+  typedef std::vector<Glib::ustring> type_vec_strings;
+  type_vec_strings get_table_names_from_database(bool ignore_system_tables = false) const;
 
   bool get_table_exists_in_database(const Glib::ustring& table_name) const;
   bool get_relationship_exists(const Glib::ustring& table_name, const Glib::ustring& relationship_name);
@@ -146,7 +146,7 @@ protected:
    * @param including_system_fields Whether extra non-user-visible fields should be included in the list.
    * @result A list of fields.
    */
-  type_vecFields get_fields_for_table(const Glib::ustring& table_name, bool including_system_fields = false) const;
+  type_vec_fields get_fields_for_table(const Glib::ustring& table_name, bool including_system_fields = false) const;
 
   /** Get a single field definition for a table, even if the field is in the datasbase but not yet known in the document.
    *
@@ -177,7 +177,7 @@ protected:
     {
     }
 
-    FieldInRecord(const sharedptr<const LayoutItem_Field>& layout_item, const Glib::ustring& parent_table_name, const sharedptr<const Field>& parent_key, const Gnome::Gda::Value& key_value, const Document_Glom& document)
+    FieldInRecord(const sharedptr<const LayoutItem_Field>& layout_item, const Glib::ustring& parent_table_name, const sharedptr<const Field>& parent_key, const Gnome::Gda::Value& key_value, const Document& document)
     : m_key_value(key_value)
     {
       m_field = layout_item->get_full_field_details();
@@ -236,7 +236,7 @@ protected:
       m_key = parent_key;
     }
 
-    FieldInRecord get_fieldinrecord(const Document_Glom& document) const
+    FieldInRecord get_fieldinrecord(const Document& document) const
     {
       return FieldInRecord(m_field, m_table_name, m_key, m_key_value, document);
     }
@@ -340,8 +340,8 @@ protected:
 
   virtual void on_userlevel_changed(AppState::userlevels userlevel);
 
-  type_vecLayoutFields get_table_fields_to_show_for_sequence(const Glib::ustring& table_name, const Document_Glom::type_list_layout_groups& mapGroupSequence) const;
-  void get_table_fields_to_show_for_sequence_add_group(const Glib::ustring& table_name, const Privileges& table_privs, const type_vecFields& all_db_fields, const sharedptr<LayoutGroup>& group, type_vecLayoutFields& vecFields) const;
+  type_vecLayoutFields get_table_fields_to_show_for_sequence(const Glib::ustring& table_name, const Document::type_list_layout_groups& mapGroupSequence) const;
+  void get_table_fields_to_show_for_sequence_add_group(const Glib::ustring& table_name, const Privileges& table_privs, const type_vec_fields& all_db_fields, const sharedptr<LayoutGroup>& group, type_vecLayoutFields& vecFields) const;
 
   /** Get the relationship into which the row button should navigate,
    * or the relationship itself, if the navigation_main output parameter is set to true after calling this method.
@@ -371,10 +371,10 @@ protected:
   
   static Glib::RefPtr<Gnome::Gda::Connection> get_connection();
 
-  static bool get_field_primary_key_index_for_fields(const type_vecFields& fields, guint& field_column);
+  static bool get_field_primary_key_index_for_fields(const type_vec_fields& fields, guint& field_column);
   static bool get_field_primary_key_index_for_fields(const type_vecLayoutFields& fields, guint& field_column);
 
-  static type_vecStrings util_vecStrings_from_Fields(const type_vecFields& fields);
+  static type_vec_strings util_vecStrings_from_Fields(const type_vec_fields& fields);
 
 
   static void handle_error(const Glib::Exception& ex);

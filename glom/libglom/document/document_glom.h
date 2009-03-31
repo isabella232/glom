@@ -50,11 +50,11 @@ class Window;
 namespace Glom
 {
 
-class Document_Glom : public GlomBakery::Document_XML
+class Document : public GlomBakery::Document_XML
 {
 public: 
-  Document_Glom();
-  virtual ~Document_Glom();
+  Document();
+  virtual ~Document();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void set_modified(bool value = true);
@@ -156,9 +156,9 @@ public:
    */
   Glib::ustring get_translation_original_locale() const;
 
-  typedef std::vector< sharedptr<Relationship> > type_vecRelationships;
-  type_vecRelationships get_relationships(const Glib::ustring& table_name, bool plus_system_prefs = false) const;
-  void set_relationships(const Glib::ustring& table_name, const type_vecRelationships& vecRelationships);
+  typedef std::vector< sharedptr<Relationship> > type_vec_relationships;
+  type_vec_relationships get_relationships(const Glib::ustring& table_name, bool plus_system_prefs = false) const;
+  void set_relationships(const Glib::ustring& table_name, const type_vec_relationships& vecRelationships);
 
   sharedptr<Relationship> get_relationship(const Glib::ustring& table_name, const Glib::ustring& relationship_name) const;
   void set_relationship(const Glib::ustring& table_name, const sharedptr<Relationship>& relationship);
@@ -175,9 +175,9 @@ public:
    */
   sharedptr<Relationship> get_field_used_in_relationship_to_one(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& layout_field) const;
 
-  typedef std::vector< sharedptr<Field> > type_vecFields;
-  type_vecFields get_table_fields(const Glib::ustring& table_name) const;
-  void set_table_fields(const Glib::ustring& table_name, const type_vecFields& vecFields);
+  typedef std::vector< sharedptr<Field> > type_vec_fields;
+  type_vec_fields get_table_fields(const Glib::ustring& table_name) const;
+  void set_table_fields(const Glib::ustring& table_name, const type_vec_fields& vecFields);
 
   sharedptr<Field> get_field(const Glib::ustring& table_name, const Glib::ustring& strFieldName) const;
 
@@ -195,7 +195,7 @@ public:
    * @param layout_platform The platform for which this layout should be used. Possible values are an empty string (meaning normal platforms) or "maemo" meaning "normal". 
    * @result A list of layout groups at the top-level of the requested layout.
    */
-  type_list_layout_groups get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform) const;
+  type_list_layout_groups get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform = Glib::ustring()) const;
 
   /** Discover whether there are any fields in the layout.
    * @param layout_name The name of the layout, such as list or details.
@@ -203,7 +203,7 @@ public:
    * @param layout_platform The platform for which this layout should be used. Possible values are an empty string (meaning normal platforms) or "maemo" meaning "normal". 
    * @result true if there is at least one field in the layout group or its sub groups.
    */
-  bool get_data_layout_groups_have_any_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform) const;
+  bool get_data_layout_groups_have_any_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform = Glib::ustring()) const;
 
   /** Set the layout groups for a layout.
    * @param layout_name The name of the layout, such as list or details.
@@ -218,9 +218,9 @@ public:
    * @para parent_table_name The name of the table on whose layout the layout appears.
    * @param layout_platform The platform for which this layout should be used. Possible values are an empty string (meaning normal platforms) or "maemo" meaning "normal". 
    */
-  type_list_layout_groups get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform) const;
+  type_list_layout_groups get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform = Glib::ustring()) const;
 
-  type_list_layout_groups get_data_layout_groups_default(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform) const;
+  type_list_layout_groups get_data_layout_groups_default(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform = Glib::ustring()) const;
 
   typedef std::list< sharedptr<TranslatableItem> > type_list_translatables;
   type_list_translatables get_translatable_layout_items(const Glib::ustring& table_name);
@@ -393,7 +393,7 @@ public:
 
   /** This is transitory information, not saved to disk.
    */
-  void set_active_layout_platform(const Glib::ustring& layout_platform);
+  void set_active_layout_platform(const Glib::ustring& layout_platform = Glib::ustring());
 
 
 
@@ -419,7 +419,7 @@ protected:
 #ifndef SWIG
 public:
   static sharedptr<TableInfo> create_table_system_preferences();
-  static sharedptr<TableInfo> create_table_system_preferences(type_vecFields& fields);
+  static sharedptr<TableInfo> create_table_system_preferences(type_vec_fields& fields);
   static sharedptr<Relationship> create_relationship_system_preferences(const Glib::ustring& table_name);
   static bool get_relationship_is_system_properties(const sharedptr<const Relationship>& relationship);
 #endif //SWIG
@@ -541,8 +541,8 @@ private:
 
     sharedptr<TableInfo> m_info;
 
-    type_vecFields m_fields;
-    type_vecRelationships m_relationships;
+    type_vec_fields m_fields;
+    type_vec_relationships m_relationships;
 
     typedef std::list< LayoutInfo > type_layouts;
     type_layouts m_layouts;

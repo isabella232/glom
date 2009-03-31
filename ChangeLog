@@ -1,5 +1,10 @@
 2009-03-31  Murray Cumming  <murrayc@murrayc.com>
 
+	* Renamed Document_Glom to Document, and type_vec* to type_vec_* in all 
+	lower case, to make the API more consistent.
+	
+2009-03-31  Murray Cumming  <murrayc@murrayc.com>
+
 	* config.h.in: Remove definitions that are in 
 	glom/libglom/libglom_config_h.in
 	* configure.ac: Depend on pygobject instead of pygtk and remove duplicate 

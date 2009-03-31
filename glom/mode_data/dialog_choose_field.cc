@@ -68,7 +68,7 @@ Dialog_ChooseField::~Dialog_ChooseField()
 {
 }
 
-void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& field)
+void Dialog_ChooseField::set_document(Document* document, const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& field)
 {
   set_document(document, table_name);
 
@@ -111,7 +111,7 @@ void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustri
   }
 }
 
-void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustring& table_name)
+void Dialog_ChooseField::set_document(Document* document, const Glib::ustring& table_name)
 {
   m_document = document;
   m_table_name = table_name;
@@ -144,8 +144,8 @@ void Dialog_ChooseField::set_document(Document_Glom* document, const Glib::ustri
 
     //Fill the treeview:
     m_model->clear();
-    Document_Glom::type_vecFields vecFields = document->get_table_fields(table_name);
-    for(Document_Glom::type_vecFields::const_iterator iter = vecFields.begin(); iter != vecFields.end(); ++iter)
+    Document::type_vec_fields vecFields = document->get_table_fields(table_name);
+    for(Document::type_vec_fields::const_iterator iter = vecFields.begin(); iter != vecFields.end(); ++iter)
     {
       Gtk::TreeModel::iterator iterRow = m_model->append();
       Gtk::TreeModel::Row row = *iterRow;
@@ -242,12 +242,12 @@ void Dialog_ChooseField::on_combo_relationship_changed()
 {
   sharedptr<Relationship> relationship = m_combo_relationship->get_selected_relationship();
 
-  Document_Glom* pDocument = m_document;
+  Document* pDocument = m_document;
   if(pDocument)
   {
     //Show the list of fields from this relationship:
 
-    Document_Glom::type_vecFields vecFields;
+    Document::type_vec_fields vecFields;
     if(!relationship)
       vecFields = pDocument->get_table_fields(m_table_name);
     else
@@ -256,7 +256,7 @@ void Dialog_ChooseField::on_combo_relationship_changed()
     }
 
     m_model->clear();
-    for(Document_Glom::type_vecFields::const_iterator iter = vecFields.begin(); iter != vecFields.end(); ++iter)
+    for(Document::type_vec_fields::const_iterator iter = vecFields.begin(); iter != vecFields.end(); ++iter)
     {
       Gtk::TreeModel::iterator iterRow = m_model->append();
       Gtk::TreeModel::Row row = *iterRow;

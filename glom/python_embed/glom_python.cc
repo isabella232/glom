@@ -136,13 +136,13 @@ void ShowTrace()
   g_free(chrRetval);
 }
 
-void glom_execute_python_function_implementation(const Glib::ustring& func_impl, const type_map_fields& field_values, Document_Glom* pDocument, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
+void glom_execute_python_function_implementation(const Glib::ustring& func_impl, const type_map_fields& field_values, Document* pDocument, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
 {
   glom_evaluate_python_function_implementation(Field::TYPE_TEXT, func_impl, field_values, pDocument, table_name, opened_connection);
 }
 
 Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type, const Glib::ustring& func_impl,
-    const type_map_fields& field_values, Document_Glom* pDocument, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
+    const type_map_fields& field_values, Document* pDocument, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
 {
   //std::cout << "glom_evaluate_python_function_implementation()" << std::endl;
   //for(type_map_fields::const_iterator iter = field_values.begin(); iter != field_values.end(); ++iter)

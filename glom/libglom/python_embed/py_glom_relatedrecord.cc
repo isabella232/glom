@@ -463,7 +463,7 @@ PyTypeObject* PyGlomRelatedRecord_GetPyType()
 }
 
 
-void PyGlomRelatedRecord_SetRelationship(PyGlomRelatedRecord* self, const sharedptr<const Relationship>& relationship, const Glib::ustring& from_key_value_sqlized,  Document_Glom* document)
+void PyGlomRelatedRecord_SetRelationship(PyGlomRelatedRecord* self, const sharedptr<const Relationship>& relationship, const Glib::ustring& from_key_value_sqlized,  Document* document)
 {
   self->m_relationship = new sharedptr<const Relationship>(relationship);
 

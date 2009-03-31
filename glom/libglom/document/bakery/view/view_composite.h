@@ -58,7 +58,7 @@ public:
 
   virtual void remove_view(type_view* pView)
   {
-    typename type_vecViews::iterator iter = std::find(m_vecViews.begin(), m_vecViews.end(), pView);
+    typename type_vec_views::iterator iter = std::find(m_vecViews.begin(), m_vecViews.end(), pView);
     if(iter != m_vecViews.end())
       m_vecViews.erase(iter);
   }
@@ -69,7 +69,7 @@ public:
     View<T_Document>::set_document(pDocument);
 
     //Change the document in the child views.
-    for(typename type_vecViews::iterator iter = m_vecViews.begin(); iter != m_vecViews.end(); iter++)
+    for(typename type_vec_views::iterator iter = m_vecViews.begin(); iter != m_vecViews.end(); iter++)
     {
       type_view* pView = *iter;
       if(pView)
@@ -80,7 +80,7 @@ public:
   virtual void load_from_document()
   {
     //Delegate to the child views:
-    for(typename type_vecViews::iterator iter = m_vecViews.begin(); iter != m_vecViews.end(); iter++)
+    for(typename type_vec_views::iterator iter = m_vecViews.begin(); iter != m_vecViews.end(); iter++)
     {
       type_view* pView = *iter;
       if(pView)
@@ -91,7 +91,7 @@ public:
   virtual void save_to_document()
   {
     //Delegate to the child views:
-    for(typename type_vecViews::iterator iter = m_vecViews.begin(); iter != m_vecViews.end(); iter++)
+    for(typename type_vec_views::iterator iter = m_vecViews.begin(); iter != m_vecViews.end(); iter++)
     {
       type_view* pView = *iter;
       if(pView)
@@ -100,8 +100,8 @@ public:
   }
 
 protected:
-  typedef std::vector<type_view*> type_vecViews;
-  type_vecViews m_vecViews;    
+  typedef std::vector<type_view*> type_vec_views;
+  type_vec_views m_vecViews;    
 };
 
 } //namespace

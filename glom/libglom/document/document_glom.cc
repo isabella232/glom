@@ -231,7 +231,7 @@ private:
 };
 
 
-Document_Glom::Document_Glom()
+Document::Document()
 :
   m_hosting_mode(DEFAULT_HOSTED),
   m_connection_port(0),
@@ -265,24 +265,24 @@ Document_Glom::Document_Glom()
 
   set_translation_original_locale(TranslatableItem::get_current_locale()); //By default, we assume that the original is in the current locale. We must do this here so that TranslatableItem::set/get_title() knows.
 
-  m_app_state.signal_userlevel_changed().connect( sigc::mem_fun(*this, &Document_Glom::on_app_state_userlevel_changed) );
+  m_app_state.signal_userlevel_changed().connect( sigc::mem_fun(*this, &Document::on_app_state_userlevel_changed) );
 }
 
-Document_Glom::~Document_Glom()
+Document::~Document()
 {
 }
 
-Document_Glom::HostingMode Document_Glom::get_hosting_mode() const
+Document::HostingMode Document::get_hosting_mode() const
 {
   return m_hosting_mode;
 }
 
-std::string Document_Glom::get_connection_self_hosted_directory_uri() const
+std::string Document::get_connection_self_hosted_directory_uri() const
 {
   const std::string uri_file = get_file_uri();
   if(uri_file.empty())
   {
-    g_warning("Document_Glom::get_connection_self_hosted_directory_uri(): file_uri is empty.");
+    g_warning("Document::get_connection_self_hosted_directory_uri(): file_uri is empty.");
     return std::string();
   }
   else
@@ -321,36 +321,36 @@ std::string Document_Glom::get_connection_self_hosted_directory_uri() const
     }
   }
 
-  g_warning("Document_Glom::get_connection_self_hosted_directory_uri(): returning empty string.");
+  g_warning("Document::get_connection_self_hosted_directory_uri(): returning empty string.");
   return std::string();
 }
 
-Glib::ustring Document_Glom::get_connection_user() const
+Glib::ustring Document::get_connection_user() const
 {
   return m_connection_user;
 }
 
-Glib::ustring Document_Glom::get_connection_server() const
+Glib::ustring Document::get_connection_server() const
 {
   return m_connection_server;
 }
 
-Glib::ustring Document_Glom::get_connection_database() const
+Glib::ustring Document::get_connection_database() const
 {
   return m_connection_database;
 }
 
-int Document_Glom::get_connection_port() const
+int Document::get_connection_port() const
 {
   return m_connection_port;
 }
 
-bool Document_Glom::get_connection_try_other_ports() const
+bool Document::get_connection_try_other_ports() const
 {
   return m_connection_try_other_ports;
 }
 
-void Document_Glom::set_connection_user(const Glib::ustring& strVal)
+void Document::set_connection_user(const Glib::ustring& strVal)
 {
   if(strVal != m_connection_user)
   {
@@ -359,7 +359,7 @@ void Document_Glom::set_connection_user(const Glib::ustring& strVal)
   }
 }
 
-void Document_Glom::set_hosting_mode(HostingMode mode)
+void Document::set_hosting_mode(HostingMode mode)
 {
   if(mode != m_hosting_mode)
   {
@@ -368,7 +368,7 @@ void Document_Glom::set_hosting_mode(HostingMode mode)
   }
 }
 
-void Document_Glom::set_connection_server(const Glib::ustring& strVal)
+void Document::set_connection_server(const Glib::ustring& strVal)
 {
   if(strVal != m_connection_server)
   {
@@ -377,7 +377,7 @@ void Document_Glom::set_connection_server(const Glib::ustring& strVal)
   }
 }
 
-void Document_Glom::set_connection_database(const Glib::ustring& strVal)
+void Document::set_connection_database(const Glib::ustring& strVal)
 {
   if(strVal != m_connection_database)
   {
@@ -386,7 +386,7 @@ void Document_Glom::set_connection_database(const Glib::ustring& strVal)
   }
 }
 
-void Document_Glom::set_connection_port(int port_number)
+void Document::set_connection_port(int port_number)
 {
   if(port_number != m_connection_port)
   {
@@ -395,7 +395,7 @@ void Document_Glom::set_connection_port(int port_number)
   }
 }
 
-void Document_Glom::set_connection_try_other_ports(bool val)
+void Document::set_connection_try_other_ports(bool val)
 {
   if(val != m_connection_try_other_ports)
   {
@@ -405,7 +405,7 @@ void Document_Glom::set_connection_try_other_ports(bool val)
 }
 
 
-void Document_Glom::set_relationship(const Glib::ustring& table_name, const sharedptr<Relationship>& relationship)
+void Document::set_relationship(const Glib::ustring& table_name, const sharedptr<Relationship>& relationship)
 {
   //Find the existing relationship:
   type_tables::iterator iterFind = m_tables.find(table_name);
@@ -417,7 +417,7 @@ void Document_Glom::set_relationship(const Glib::ustring& table_name, const shar
     bool existing = false;
     const Glib::ustring relationship_name = glom_get_sharedptr_name(relationship);
 
-    for(type_vecRelationships::iterator iter = info.m_relationships.begin(); iter != info.m_relationships.end(); ++iter)
+    for(type_vec_relationships::iterator iter = info.m_relationships.begin(); iter != info.m_relationships.end(); ++iter)
     {
       if((*iter)->get_name() == relationship_name)
       {
@@ -434,7 +434,7 @@ void Document_Glom::set_relationship(const Glib::ustring& table_name, const shar
   }
 }
 
-sharedptr<Relationship> Document_Glom::create_relationship_system_preferences(const Glib::ustring& table_name)
+sharedptr<Relationship> Document::create_relationship_system_preferences(const Glib::ustring& table_name)
 {
   sharedptr<Relationship> relationship = sharedptr<Relationship>::create();
   relationship->set_name(GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES);
@@ -446,13 +446,13 @@ sharedptr<Relationship> Document_Glom::create_relationship_system_preferences(co
   return relationship;
 }
 
-sharedptr<TableInfo> Document_Glom::create_table_system_preferences()
+sharedptr<TableInfo> Document::create_table_system_preferences()
 {
-  type_vecFields fields_ignored;
+  type_vec_fields fields_ignored;
   return create_table_system_preferences(fields_ignored);
 }
 
-sharedptr<TableInfo> Document_Glom::create_table_system_preferences(type_vecFields& fields)
+sharedptr<TableInfo> Document::create_table_system_preferences(type_vec_fields& fields)
 {
   sharedptr<TableInfo> prefs_table_info = sharedptr<TableInfo>::create();
   prefs_table_info->set_name(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
@@ -524,12 +524,12 @@ sharedptr<TableInfo> Document_Glom::create_table_system_preferences(type_vecFiel
   return prefs_table_info;
 }
 
-bool Document_Glom::get_relationship_is_system_properties(const sharedptr<const Relationship>& relationship)
+bool Document::get_relationship_is_system_properties(const sharedptr<const Relationship>& relationship)
 {
   return relationship->get_name() == GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES;
 }
 
-sharedptr<Relationship> Document_Glom::get_relationship(const Glib::ustring& table_name, const Glib::ustring& relationship_name) const
+sharedptr<Relationship> Document::get_relationship(const Glib::ustring& table_name, const Glib::ustring& relationship_name) const
 {
   sharedptr<Relationship> result;
 
@@ -544,7 +544,7 @@ sharedptr<Relationship> Document_Glom::get_relationship(const Glib::ustring& tab
     const DocumentTableInfo& info = iterFind->second;
 
     //Look for the relationship with this name:
-    for(type_vecRelationships::const_iterator iter = info.m_relationships.begin(); iter != info.m_relationships.end(); ++iter)
+    for(type_vec_relationships::const_iterator iter = info.m_relationships.begin(); iter != info.m_relationships.end(); ++iter)
     {
       if(*iter && ((*iter)->get_name() == relationship_name))
       {
@@ -556,12 +556,12 @@ sharedptr<Relationship> Document_Glom::get_relationship(const Glib::ustring& tab
   return result;
 }
 
-Document_Glom::type_vecRelationships Document_Glom::get_relationships(const Glib::ustring& table_name, bool plus_system_prefs) const
+Document::type_vec_relationships Document::get_relationships(const Glib::ustring& table_name, bool plus_system_prefs) const
 {
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
   {
-    type_vecRelationships result = iterFind->second.m_relationships;
+    type_vec_relationships result = iterFind->second.m_relationships;
 
     //Add the system properties if necessary:
     if(plus_system_prefs)
@@ -573,10 +573,10 @@ Document_Glom::type_vecRelationships Document_Glom::get_relationships(const Glib
     return result;
   }
   else
-    return type_vecRelationships(); 
+    return type_vec_relationships(); 
 }
 
-void Document_Glom::set_relationships(const Glib::ustring& table_name, const type_vecRelationships& vecRelationships) //TODO_shared_relationships
+void Document::set_relationships(const Glib::ustring& table_name, const type_vec_relationships& vecRelationships) //TODO_shared_relationships
 {
   if(!table_name.empty())
   {
@@ -587,7 +587,7 @@ void Document_Glom::set_relationships(const Glib::ustring& table_name, const typ
   }
 }
 
-void Document_Glom::remove_relationship(const sharedptr<const Relationship>& relationship)
+void Document::remove_relationship(const sharedptr<const Relationship>& relationship)
 {
   //Get the table that this relationship is part of:
   type_tables::iterator iter = m_tables.find(relationship->get_from_table());
@@ -598,7 +598,7 @@ void Document_Glom::remove_relationship(const sharedptr<const Relationship>& rel
     const Glib::ustring relationship_name = glom_get_sharedptr_name(relationship);
 
     //Find the relationship and remove it:
-    type_vecRelationships::iterator iterRel = std::find_if(info.m_relationships.begin(), info.m_relationships.end(), predicate_FieldHasName<Relationship>(relationship_name));
+    type_vec_relationships::iterator iterRel = std::find_if(info.m_relationships.begin(), info.m_relationships.end(), predicate_FieldHasName<Relationship>(relationship_name));
     if(iterRel != info.m_relationships.end())
     {
       info.m_relationships.erase(iterRel);
@@ -649,14 +649,14 @@ void Document_Glom::remove_relationship(const sharedptr<const Relationship>& rel
   }
 }
 
-void Document_Glom::remove_field(const Glib::ustring& table_name, const Glib::ustring& field_name)
+void Document::remove_field(const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
   //Remove the field itself:
   type_tables::iterator iterFindTable = m_tables.find(table_name);
   if(iterFindTable != m_tables.end())
   {
-    type_vecFields& vecFields = iterFindTable->second.m_fields;
-    type_vecFields::iterator iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(field_name) );
+    type_vec_fields& vecFields = iterFindTable->second.m_fields;
+    type_vec_fields::iterator iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(field_name) );
     if(iterFind != vecFields.end()) //If it was found:
     {
       //Remove it:
@@ -673,7 +673,7 @@ void Document_Glom::remove_field(const Glib::ustring& table_name, const Glib::us
 
     if(!(info.m_relationships.empty()))
     {
-      type_vecRelationships::iterator iterRel = info.m_relationships.begin();
+      type_vec_relationships::iterator iterRel = info.m_relationships.begin();
       bool something_changed = true;
       while(something_changed && !info.m_relationships.empty())
       {
@@ -732,7 +732,7 @@ void Document_Glom::remove_field(const Glib::ustring& table_name, const Glib::us
   }
 }
 
-void Document_Glom::remove_table(const Glib::ustring& table_name)
+void Document::remove_table(const Glib::ustring& table_name)
 {
   type_tables::iterator iter = m_tables.find(table_name);
   if(iter != m_tables.end())
@@ -748,7 +748,7 @@ void Document_Glom::remove_table(const Glib::ustring& table_name)
 
     if(!(info.m_relationships.empty()))
     {
-      type_vecRelationships::iterator iterRel = info.m_relationships.begin();
+      type_vec_relationships::iterator iterRel = info.m_relationships.begin();
       bool something_changed = true;
       while(something_changed && !info.m_relationships.empty())
       {
@@ -776,9 +776,9 @@ void Document_Glom::remove_table(const Glib::ustring& table_name)
 }
 
 
-Document_Glom::type_vecFields Document_Glom::get_table_fields(const Glib::ustring& table_name) const
+Document::type_vec_fields Document::get_table_fields(const Glib::ustring& table_name) const
 {
-  type_vecFields result;
+  type_vec_fields result;
 
   if(!table_name.empty())
   {
@@ -787,7 +787,7 @@ Document_Glom::type_vecFields Document_Glom::get_table_fields(const Glib::ustrin
     {
       if(iterFind->second.m_fields.empty())
       {
-         g_warning("Document_Glom::get_table_fields: table found, but m_fields is empty");
+         g_warning("Document::get_table_fields: table found, but m_fields is empty");
       }
 
       return iterFind->second.m_fields;
@@ -797,36 +797,36 @@ Document_Glom::type_vecFields Document_Glom::get_table_fields(const Glib::ustrin
       //It's a standard table, not saved in the document:
       if(table_name == GLOM_STANDARD_TABLE_PREFS_TABLE_NAME)
       {
-        type_vecFields fields;
+        type_vec_fields fields;
         sharedptr<TableInfo> temp = create_table_system_preferences(fields);
         result = fields;
       }
       else
       {
-        //g_warning("Document_Glom::get_table_fields: table not found in document: %s", table_name.c_str());
+        //g_warning("Document::get_table_fields: table not found in document: %s", table_name.c_str());
       }
     }
   }
   else
   {
-    //g_warning("Document_Glom::get_table_fields: table name is empty.");
+    //g_warning("Document::get_table_fields: table name is empty.");
   }
 
   //Hide any system fields:
-  type_vecFields::iterator iterFind = std::find_if(result.begin(), result.end(), predicate_FieldHasName<Field>(GLOM_STANDARD_FIELD_LOCK));
+  type_vec_fields::iterator iterFind = std::find_if(result.begin(), result.end(), predicate_FieldHasName<Field>(GLOM_STANDARD_FIELD_LOCK));
   if(iterFind != result.end())
     result.erase(iterFind);
 
   return result;
 }
 
-void Document_Glom::set_table_fields(const Glib::ustring& table_name, const type_vecFields& vecFields)
+void Document::set_table_fields(const Glib::ustring& table_name, const type_vec_fields& vecFields)
 {
   if(!table_name.empty())
   {
     if(vecFields.empty())
     {
-      g_warning("Document_Glom::set_table_fields(): vecFields is empty: table_name=%s", table_name.c_str());
+      g_warning("Document::set_table_fields(): vecFields is empty: table_name=%s", table_name.c_str());
     }
 
     DocumentTableInfo& info = get_table_info_with_add(table_name);
@@ -837,10 +837,10 @@ void Document_Glom::set_table_fields(const Glib::ustring& table_name, const type
   }
 }
 
-sharedptr<Field> Document_Glom::get_field(const Glib::ustring& table_name, const Glib::ustring& strFieldName) const
+sharedptr<Field> Document::get_field(const Glib::ustring& table_name, const Glib::ustring& strFieldName) const
 {
-  type_vecFields vecFields = get_table_fields(table_name);
-  type_vecFields::iterator iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(strFieldName) );
+  type_vec_fields vecFields = get_table_fields(table_name);
+  type_vec_fields::iterator iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(strFieldName) );
   if(iterFind != vecFields.end()) //If it was found:
   {
     return  *iterFind; //A reference, not a copy.
@@ -850,14 +850,14 @@ sharedptr<Field> Document_Glom::get_field(const Glib::ustring& table_name, const
 }
 
 
-void Document_Glom::change_field_name(const Glib::ustring& table_name, const Glib::ustring& strFieldNameOld, const Glib::ustring& strFieldNameNew)
+void Document::change_field_name(const Glib::ustring& table_name, const Glib::ustring& strFieldNameOld, const Glib::ustring& strFieldNameNew)
 {
   type_tables::iterator iterFindTable = m_tables.find(table_name);
   if(iterFindTable != m_tables.end())
   {
     //Fields:
-    type_vecFields& vecFields = iterFindTable->second.m_fields;
-    type_vecFields::iterator iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(strFieldNameOld) );
+    type_vec_fields& vecFields = iterFindTable->second.m_fields;
+    type_vec_fields::iterator iterFind = std::find_if( vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(strFieldNameOld) );
     if(iterFind != vecFields.end()) //If it was found:
     {
       //Change it:
@@ -870,7 +870,7 @@ void Document_Glom::change_field_name(const Glib::ustring& table_name, const Gli
     for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
     {
       //Look at each relationship in the table:
-      for(type_vecRelationships::iterator iterRels = iter->second.m_relationships.begin(); iterRels != iter->second.m_relationships.end(); ++iterRels)
+      for(type_vec_relationships::iterator iterRels = iter->second.m_relationships.begin(); iterRels != iter->second.m_relationships.end(); ++iterRels)
       {
         sharedptr<Relationship> relationship = *iterRels;
 
@@ -894,7 +894,7 @@ void Document_Glom::change_field_name(const Glib::ustring& table_name, const Gli
       }
 
       //Look at all field formatting:
-      for(type_vecFields::iterator iterFields = iter->second.m_fields.begin(); iterFields != iter->second.m_fields.end(); ++iterFields)
+      for(type_vec_fields::iterator iterFields = iter->second.m_fields.begin(); iterFields != iter->second.m_fields.end(); ++iterFields)
       {
         (*iterFields)->m_default_formatting.change_field_name(table_name, strFieldNameOld, strFieldNameNew);
       }
@@ -942,7 +942,7 @@ void Document_Glom::change_field_name(const Glib::ustring& table_name, const Gli
   }
 }
 
-void Document_Glom::change_table_name(const Glib::ustring& table_name_old, const Glib::ustring& table_name_new)
+void Document::change_table_name(const Glib::ustring& table_name_old, const Glib::ustring& table_name_new)
 {
   type_tables::iterator iterFindTable = m_tables.find(table_name_old);
   if(iterFindTable != m_tables.end())
@@ -963,7 +963,7 @@ void Document_Glom::change_table_name(const Glib::ustring& table_name_old, const
     for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
     {
       //Look at each relationship in the table:
-      for(type_vecRelationships::iterator iterRels = iter->second.m_relationships.begin(); iterRels != iter->second.m_relationships.end(); ++iterRels)
+      for(type_vec_relationships::iterator iterRels = iter->second.m_relationships.begin(); iterRels != iter->second.m_relationships.end(); ++iterRels)
       {
         sharedptr<Relationship> relationship = *iterRels;
 
@@ -987,13 +987,13 @@ void Document_Glom::change_table_name(const Glib::ustring& table_name_old, const
   }
 }
 
-void Document_Glom::change_relationship_name(const Glib::ustring& table_name, const Glib::ustring& name, const Glib::ustring& name_new)
+void Document::change_relationship_name(const Glib::ustring& table_name, const Glib::ustring& name, const Glib::ustring& name_new)
 {
   type_tables::iterator iterFindTable = m_tables.find(table_name);
   if(iterFindTable != m_tables.end())
   {
     //Change the relationship name:
-    type_vecRelationships::iterator iterRelFind = std::find_if( iterFindTable->second.m_relationships.begin(), iterFindTable->second.m_relationships.end(), predicate_FieldHasName<Relationship>(name) );
+    type_vec_relationships::iterator iterRelFind = std::find_if( iterFindTable->second.m_relationships.begin(), iterFindTable->second.m_relationships.end(), predicate_FieldHasName<Relationship>(name) );
     if(iterRelFind != iterFindTable->second.m_relationships.end())
       (*iterRelFind)->set_name(name_new);
 
@@ -1006,7 +1006,7 @@ void Document_Glom::change_relationship_name(const Glib::ustring& table_name, co
     {
       /*
        //Look at all field formatting:
-      for(type_vecFields::iterator iterFields = iter->second.m_fields.begin(); iterFields != iter->second.m_fields.end(); ++iterFields)
+      for(type_vec_fields::iterator iterFields = iter->second.m_fields.begin(); iterFields != iter->second.m_fields.end(); ++iterFields)
       {
         (*iterFields)->m_default_formatting.change_relationship_name(table_name, name, name_new);
       }
@@ -1048,7 +1048,7 @@ void Document_Glom::change_relationship_name(const Glib::ustring& table_name, co
  }
 
 
-bool Document_Glom::get_node_attribute_value_as_bool(const xmlpp::Element* node, const Glib::ustring& strAttributeName, bool value_default)
+bool Document::get_node_attribute_value_as_bool(const xmlpp::Element* node, const Glib::ustring& strAttributeName, bool value_default)
 {
   bool result = value_default;
   const Glib::ustring value_string = get_node_attribute_value(node, strAttributeName);
@@ -1062,7 +1062,7 @@ bool Document_Glom::get_node_attribute_value_as_bool(const xmlpp::Element* node,
   return result;
 }
 
-Glib::ustring Document_Glom::get_child_text_node(const xmlpp::Element* node, const Glib::ustring& child_node_name) const
+Glib::ustring Document::get_child_text_node(const xmlpp::Element* node, const Glib::ustring& child_node_name) const
 {
   const xmlpp::Element* child = get_node_child_named(node, child_node_name);
   if(child)
@@ -1075,7 +1075,7 @@ Glib::ustring Document_Glom::get_child_text_node(const xmlpp::Element* node, con
   return Glib::ustring();
 }
 
-void Document_Glom::set_child_text_node(xmlpp::Element* node, const Glib::ustring& child_node_name, const Glib::ustring& text)
+void Document::set_child_text_node(xmlpp::Element* node, const Glib::ustring& child_node_name, const Glib::ustring& text)
 {
   xmlpp::Element* child = get_node_child_named(node, child_node_name);
   if(!child)
@@ -1089,7 +1089,7 @@ void Document_Glom::set_child_text_node(xmlpp::Element* node, const Glib::ustrin
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void Document_Glom::set_node_attribute_value_as_bool(xmlpp::Element* node, const Glib::ustring& strAttributeName, bool value, bool value_default)
+void Document::set_node_attribute_value_as_bool(xmlpp::Element* node, const Glib::ustring& strAttributeName, bool value, bool value_default)
 {
   if((value == value_default) && !node->get_attribute(strAttributeName))
     return; //Use the non-existance of an attribute to mean zero, to save space.
@@ -1098,7 +1098,7 @@ void Document_Glom::set_node_attribute_value_as_bool(xmlpp::Element* node, const
   set_node_attribute_value(node, strAttributeName, strValue);
 }
 
-void Document_Glom::set_node_attribute_value_as_decimal(xmlpp::Element* node, const Glib::ustring& strAttributeName, guint value, guint value_default)
+void Document::set_node_attribute_value_as_decimal(xmlpp::Element* node, const Glib::ustring& strAttributeName, guint value, guint value_default)
 {
   if((value == value_default) && !node->get_attribute(strAttributeName))
     return; //Use the non-existance of an attribute to mean zero, to save space.
@@ -1113,7 +1113,7 @@ void Document_Glom::set_node_attribute_value_as_decimal(xmlpp::Element* node, co
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-void Document_Glom::set_node_attribute_value_as_decimal_double(xmlpp::Element* node, const Glib::ustring& strAttributeName, double value)
+void Document::set_node_attribute_value_as_decimal_double(xmlpp::Element* node, const Glib::ustring& strAttributeName, double value)
 {
   if(!value && !node->get_attribute(strAttributeName))
     return; //Use the non-existance of an attribute to mean zero, to save space.
@@ -1127,7 +1127,7 @@ void Document_Glom::set_node_attribute_value_as_decimal_double(xmlpp::Element* n
   set_node_attribute_value(node, strAttributeName, value_string);
 }
 
-guint Document_Glom::get_node_attribute_value_as_decimal(const xmlpp::Element* node, const Glib::ustring& strAttributeName, guint value_default)
+guint Document::get_node_attribute_value_as_decimal(const xmlpp::Element* node, const Glib::ustring& strAttributeName, guint value_default)
 {
   guint result = value_default;
   const Glib::ustring value_string = get_node_attribute_value(node, strAttributeName);
@@ -1144,7 +1144,7 @@ guint Document_Glom::get_node_attribute_value_as_decimal(const xmlpp::Element* n
   return result;
 }
 
-double Document_Glom::get_node_attribute_value_as_decimal_double(const xmlpp::Element* node, const Glib::ustring& strAttributeName)
+double Document::get_node_attribute_value_as_decimal_double(const xmlpp::Element* node, const Glib::ustring& strAttributeName)
 {
   double result = 0;
   const Glib::ustring value_string = get_node_attribute_value(node, strAttributeName);
@@ -1162,7 +1162,7 @@ double Document_Glom::get_node_attribute_value_as_decimal_double(const xmlpp::El
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void Document_Glom::set_node_attribute_value_as_float(xmlpp::Element* node, const Glib::ustring& strAttributeName, float value)
+void Document::set_node_attribute_value_as_float(xmlpp::Element* node, const Glib::ustring& strAttributeName, float value)
 {
     if(value == std::numeric_limits<float>::infinity() && !node->get_attribute(strAttributeName))
     return; //Use the non-existance of an attribute to mean "invalid"/infinity, to save space.
@@ -1177,7 +1177,7 @@ void Document_Glom::set_node_attribute_value_as_float(xmlpp::Element* node, cons
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-float Document_Glom::get_node_attribute_value_as_float(const xmlpp::Element* node, const Glib::ustring& strAttributeName)
+float Document::get_node_attribute_value_as_float(const xmlpp::Element* node, const Glib::ustring& strAttributeName)
 {
   float result = std::numeric_limits<float>::infinity();
   const Glib::ustring value_string = get_node_attribute_value(node, strAttributeName);
@@ -1195,7 +1195,7 @@ float Document_Glom::get_node_attribute_value_as_float(const xmlpp::Element* nod
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void Document_Glom::set_node_attribute_value_as_value(xmlpp::Element* node, const Glib::ustring& strAttributeName, const Gnome::Gda::Value& value,  Field::glom_field_type field_type)
+void Document::set_node_attribute_value_as_value(xmlpp::Element* node, const Glib::ustring& strAttributeName, const Gnome::Gda::Value& value,  Field::glom_field_type field_type)
 {
   NumericFormat format_ignored; //Because we use ISO format.
   const Glib::ustring value_as_text = Field::to_file_format(value, field_type);
@@ -1204,7 +1204,7 @@ void Document_Glom::set_node_attribute_value_as_value(xmlpp::Element* node, cons
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void Document_Glom::set_node_text_child_as_value(xmlpp::Element* node, const Gnome::Gda::Value& value, Field::glom_field_type field_type)
+void Document::set_node_text_child_as_value(xmlpp::Element* node, const Gnome::Gda::Value& value, Field::glom_field_type field_type)
 {
   const Glib::ustring value_as_text = Field::to_file_format(value, field_type);
   if(node)
@@ -1212,7 +1212,7 @@ void Document_Glom::set_node_text_child_as_value(xmlpp::Element* node, const Gno
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-Gnome::Gda::Value Document_Glom::get_node_attribute_value_as_value(const xmlpp::Element* node, const Glib::ustring& strAttributeName, Field::glom_field_type field_type)
+Gnome::Gda::Value Document::get_node_attribute_value_as_value(const xmlpp::Element* node, const Glib::ustring& strAttributeName, Field::glom_field_type field_type)
 {
   const Glib::ustring value_string = get_node_attribute_value(node, strAttributeName);
 
@@ -1224,7 +1224,7 @@ Gnome::Gda::Value Document_Glom::get_node_attribute_value_as_value(const xmlpp::
     return Gnome::Gda::Value();
 }
 
-Gnome::Gda::Value Document_Glom::get_node_text_child_as_value(const xmlpp::Element* node, Field::glom_field_type field_type)
+Gnome::Gda::Value Document::get_node_text_child_as_value(const xmlpp::Element* node, Field::glom_field_type field_type)
 {
   const xmlpp::TextNode* text_child = node->get_child_text();
   if(!text_child)
@@ -1240,14 +1240,14 @@ Gnome::Gda::Value Document_Glom::get_node_text_child_as_value(const xmlpp::Eleme
     return Gnome::Gda::Value();
 }
 
-Document_Glom::type_listTableInfo Document_Glom::get_tables(bool plus_system_prefs) const
+Document::type_listTableInfo Document::get_tables(bool plus_system_prefs) const
 {
   type_listTableInfo result;
 
   for(type_tables::const_iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
   {
     result.push_back(iter->second.m_info);
-    //std::cout << "Document_Glom::get_tables(): title=" << iter->second.m_info->get_title() << std::endl;
+    //std::cout << "Document::get_tables(): title=" << iter->second.m_info->get_title() << std::endl;
   }
 
   //Add the system properties if necessary:
@@ -1260,7 +1260,7 @@ Document_Glom::type_listTableInfo Document_Glom::get_tables(bool plus_system_pre
   return result;
 }
 
-std::vector<Glib::ustring> Document_Glom::get_table_names(bool plus_system_prefs) const
+std::vector<Glib::ustring> Document::get_table_names(bool plus_system_prefs) const
 {
   type_listTableInfo list_full = get_tables(plus_system_prefs);
   std::vector<Glib::ustring> result;
@@ -1274,7 +1274,7 @@ std::vector<Glib::ustring> Document_Glom::get_table_names(bool plus_system_prefs
   return result;
 }
 
-sharedptr<TableInfo> Document_Glom::get_table(const Glib::ustring& table_name) const
+sharedptr<TableInfo> Document::get_table(const Glib::ustring& table_name) const
 {
   type_tables::const_iterator iterfind = m_tables.find(table_name);
   if(iterfind != m_tables.end())
@@ -1283,7 +1283,7 @@ sharedptr<TableInfo> Document_Glom::get_table(const Glib::ustring& table_name) c
     return sharedptr<TableInfo>();
 }
 
-void Document_Glom::add_table(const sharedptr<TableInfo>& table_info)
+void Document::add_table(const sharedptr<TableInfo>& table_info)
 {
   if(!table_info)
     return;
@@ -1298,7 +1298,7 @@ void Document_Glom::add_table(const sharedptr<TableInfo>& table_info)
   }
 }
 
-bool Document_Glom::get_table_overview_position(const Glib::ustring& table_name, float& x, float& y) const
+bool Document::get_table_overview_position(const Glib::ustring& table_name, float& x, float& y) const
 {
   type_tables::const_iterator it = m_tables.find(table_name);
   if(it != m_tables.end())
@@ -1319,7 +1319,7 @@ bool Document_Glom::get_table_overview_position(const Glib::ustring& table_name,
   }
 }
     
-void Document_Glom::set_table_overview_position(const Glib::ustring &table_name, float x, float y)
+void Document::set_table_overview_position(const Glib::ustring &table_name, float x, float y)
 {
   type_tables::iterator it = m_tables.find(table_name);
   if(it != m_tables.end())
@@ -1329,7 +1329,7 @@ void Document_Glom::set_table_overview_position(const Glib::ustring &table_name,
   }
 }
     
-void Document_Glom::set_tables(const type_listTableInfo& tables)
+void Document::set_tables(const type_listTableInfo& tables)
 {
   //We avoid adding information about tables that we don't know about - that should be done explicitly.
   //Look at each "table":
@@ -1358,7 +1358,7 @@ void Document_Glom::set_tables(const type_listTableInfo& tables)
     set_modified();
 }
 
-void Document_Glom::fill_layout_field_details(const Glib::ustring& parent_table_name, const sharedptr<LayoutGroup>& layout_group) const
+void Document::fill_layout_field_details(const Glib::ustring& parent_table_name, const sharedptr<LayoutGroup>& layout_group) const
 {
   //Get the full field information for the LayoutItem_Fields in this group:
 
@@ -1386,7 +1386,7 @@ void Document_Glom::fill_layout_field_details(const Glib::ustring& parent_table_
   }
 }
 
-void Document_Glom::fill_layout_field_details(const Glib::ustring& parent_table_name, type_list_layout_groups& groups) const
+void Document::fill_layout_field_details(const Glib::ustring& parent_table_name, type_list_layout_groups& groups) const
 {
   for(type_list_layout_groups::iterator iterGroups = groups.begin(); iterGroups != groups.end(); ++iterGroups)
   {
@@ -1396,9 +1396,9 @@ void Document_Glom::fill_layout_field_details(const Glib::ustring& parent_table_
   }
 }
 
-Document_Glom::type_list_layout_groups Document_Glom::get_data_layout_groups_default(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& /* layout_platform */) const
+Document::type_list_layout_groups Document::get_data_layout_groups_default(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& /* layout_platform */) const
 {
-  //std::cout << "debug: Document_Glom::get_data_layout_groups_default(): table_name = " << parent_table_name << std::endl;
+  //std::cout << "debug: Document::get_data_layout_groups_default(): table_name = " << parent_table_name << std::endl;
 
   type_list_layout_groups result;
 
@@ -1441,8 +1441,8 @@ Document_Glom::type_list_layout_groups Document_Glom::get_data_layout_groups_def
 
 
   //Discover new fields, and add them:
-  type_vecFields all_fields = get_table_fields(parent_table_name);
-  for(type_vecFields::const_iterator iter = all_fields.begin(); iter != all_fields.end(); ++iter)
+  type_vec_fields all_fields = get_table_fields(parent_table_name);
+  for(type_vec_fields::const_iterator iter = all_fields.begin(); iter != all_fields.end(); ++iter)
   {
     const Glib::ustring field_name = (*iter)->get_name();
     if(!field_name.empty())
@@ -1479,7 +1479,7 @@ Document_Glom::type_list_layout_groups Document_Glom::get_data_layout_groups_def
   return result;
 }
 
-Document_Glom::type_list_layout_groups Document_Glom::get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform) const
+Document::type_list_layout_groups Document::get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform) const
 {
   type_list_layout_groups result = get_data_layout_groups(layout_name, parent_table_name, layout_platform);
 
@@ -1494,7 +1494,7 @@ Document_Glom::type_list_layout_groups Document_Glom::get_data_layout_groups_plu
     result = get_data_layout_groups_default(layout_name, parent_table_name, layout_platform);
     
     //Store this so we don't have to recreate it next time:
-    Document_Glom* nonconst_this = const_cast<Document_Glom*>(this); //TODO: This is not ideal.
+    Document* nonconst_this = const_cast<Document*>(this); //TODO: This is not ideal.
     nonconst_this->set_data_layout_groups(layout_name, parent_table_name, layout_platform, result);
     nonconst_this->set_modified(false); //This might have happened in operator mode, but in that case we don't really need to save it, or mark the document as unsaved.
   }
@@ -1502,9 +1502,9 @@ Document_Glom::type_list_layout_groups Document_Glom::get_data_layout_groups_plu
   return result;  
 }
 
-Document_Glom::type_list_layout_groups Document_Glom::get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform) const
+Document::type_list_layout_groups Document::get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform) const
 {
-  //std::cout << "DEBUG: Document_Glom::get_data_layout_groups(): layout_name=" << layout_name << ", parent_table_name=" << parent_table_name << ", layout_platform=" << layout_platform << std::endl;
+  //std::cout << "DEBUG: Document::get_data_layout_groups(): layout_name=" << layout_name << ", parent_table_name=" << parent_table_name << ", layout_platform=" << layout_platform << std::endl;
 
   type_tables::const_iterator iterFind = m_tables.find(parent_table_name);
   if(iterFind != m_tables.end())
@@ -1522,7 +1522,7 @@ Document_Glom::type_list_layout_groups Document_Glom::get_data_layout_groups(con
   return type_list_layout_groups(); //not found
 }
 
-bool Document_Glom::get_data_layout_groups_have_any_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform) const
+bool Document::get_data_layout_groups_have_any_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform) const
 {
   //TODO_Performance: This could make the response to some button slow, such as the Add button, which does a check for this.
   type_list_layout_groups layout_groups = get_data_layout_groups(layout_name, parent_table_name, layout_platform);
@@ -1536,12 +1536,12 @@ bool Document_Glom::get_data_layout_groups_have_any_fields(const Glib::ustring& 
   return false;
 }
 
-void Document_Glom::set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform, const type_list_layout_groups& groups)
+void Document::set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform, const type_list_layout_groups& groups)
 {
-  //std::cout << "DEBUG: Document_Glom::set_data_layout_groups(): layout_name=" << layout_name << ", parent_table_name=" << parent_table_name << ", layout_platform=" << layout_platform << std::endl;
+  //std::cout << "DEBUG: Document::set_data_layout_groups(): layout_name=" << layout_name << ", parent_table_name=" << parent_table_name << ", layout_platform=" << layout_platform << std::endl;
   const Glib::ustring child_table_name = parent_table_name; //TODO: Remove this cruft.
 
-  //g_warning("Document_Glom::set_data_layout_groups(): ADDING layout for table %s (child_table=%s), for layout %s", parent_table_name.c_str(), child_table_name.c_str(), layout_name.c_str());
+  //g_warning("Document::set_data_layout_groups(): ADDING layout for table %s (child_table=%s), for layout %s", parent_table_name.c_str(), child_table_name.c_str(), layout_name.c_str());
 
 
   if(!parent_table_name.empty())
@@ -1563,7 +1563,7 @@ void Document_Glom::set_data_layout_groups(const Glib::ustring& layout_name, con
   }
 }
 
-Document_Glom::DocumentTableInfo& Document_Glom::get_table_info_with_add(const Glib::ustring& table_name)
+Document::DocumentTableInfo& Document::get_table_info_with_add(const Glib::ustring& table_name)
 {
   type_tables::iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
@@ -1578,7 +1578,7 @@ Document_Glom::DocumentTableInfo& Document_Glom::get_table_info_with_add(const G
   }
 }
 
-Glib::ustring Document_Glom::get_table_title(const Glib::ustring& table_name) const
+Glib::ustring Document::get_table_title(const Glib::ustring& table_name) const
 {
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
@@ -1587,9 +1587,9 @@ Glib::ustring Document_Glom::get_table_title(const Glib::ustring& table_name) co
     return Glib::ustring();
 }
 
-void Document_Glom::set_table_title(const Glib::ustring& table_name, const Glib::ustring& value)
+void Document::set_table_title(const Glib::ustring& table_name, const Glib::ustring& value)
 {
-  //std::cout << "debug: Document_Glom::set_table_title(): table_name=" << table_name << ", value=" << value << std::endl;
+  //std::cout << "debug: Document::set_table_title(): table_name=" << table_name << ", value=" << value << std::endl;
   if(!table_name.empty())
   {
     DocumentTableInfo& info = get_table_info_with_add(table_name);
@@ -1601,7 +1601,7 @@ void Document_Glom::set_table_title(const Glib::ustring& table_name, const Glib:
   }
 }
 
-void Document_Glom::set_table_example_data(const Glib::ustring& table_name, const type_example_rows& rows)
+void Document::set_table_example_data(const Glib::ustring& table_name, const type_example_rows& rows)
 {
   if(!table_name.empty())
   {
@@ -1614,7 +1614,7 @@ void Document_Glom::set_table_example_data(const Glib::ustring& table_name, cons
   }
 }
 
-Document_Glom::type_example_rows Document_Glom::get_table_example_data(const Glib::ustring& table_name) const
+Document::type_example_rows Document::get_table_example_data(const Glib::ustring& table_name) const
 {
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
@@ -1623,13 +1623,13 @@ Document_Glom::type_example_rows Document_Glom::get_table_example_data(const Gli
     return type_example_rows();
 }
 
-bool Document_Glom::get_table_is_known(const Glib::ustring& table_name) const
+bool Document::get_table_is_known(const Glib::ustring& table_name) const
 {
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   return (iterFind != m_tables.end());
 }
 
-bool Document_Glom::get_table_is_hidden(const Glib::ustring& table_name) const
+bool Document::get_table_is_hidden(const Glib::ustring& table_name) const
 {
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
@@ -1638,13 +1638,13 @@ bool Document_Glom::get_table_is_hidden(const Glib::ustring& table_name) const
     return false; //It's not even known.
 }
 
-AppState::userlevels Document_Glom::get_userlevel() const
+AppState::userlevels Document::get_userlevel() const
 {
   userLevelReason reason;
   return get_userlevel(reason);
 }
 
-AppState::userlevels Document_Glom::get_userlevel(userLevelReason& reason) const
+AppState::userlevels Document::get_userlevel(userLevelReason& reason) const
 {
   //Initialize output parameter:
   reason = USER_LEVEL_REASON_UNKNOWN;
@@ -1674,23 +1674,23 @@ AppState::userlevels Document_Glom::get_userlevel(userLevelReason& reason) const
   }
 }
 
-Document_Glom::type_signal_userlevel_changed Document_Glom::signal_userlevel_changed()
+Document::type_signal_userlevel_changed Document::signal_userlevel_changed()
 {
   return m_signal_userlevel_changed;
 }
 
-void Document_Glom::on_app_state_userlevel_changed(AppState::userlevels userlevel)
+void Document::on_app_state_userlevel_changed(AppState::userlevels userlevel)
 {
   m_signal_userlevel_changed.emit(userlevel);
 }
 
-bool Document_Glom::set_userlevel(AppState::userlevels userlevel)
+bool Document::set_userlevel(AppState::userlevels userlevel)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Prevent incorrect user level:
   if((userlevel == AppState::USERLEVEL_DEVELOPER) && get_read_only())
   {
-    std::cout << "DEBUG: Document_Glom::set_userlevel(): Developer mode denied because get_read_only() returned true." << std::endl;
+    std::cout << "DEBUG: Document::set_userlevel(): Developer mode denied because get_read_only() returned true." << std::endl;
     std::cout << "  DEBUG: get_read_only()=" << get_read_only() << std::endl;
     std::cout << "  DEBUG: get_file_uri()=" << get_file_uri() << std::endl;
 
@@ -1709,12 +1709,12 @@ bool Document_Glom::set_userlevel(AppState::userlevels userlevel)
   }
 }
 
-void Document_Glom::emit_userlevel_changed()
+void Document::emit_userlevel_changed()
 {
   m_signal_userlevel_changed.emit(m_app_state.get_userlevel());
 }
 
-Glib::ustring Document_Glom::get_default_layout_platform()
+Glib::ustring Document::get_default_layout_platform()
 {
   //Make Glom use the special "maemo" layouts if they exist.
   #ifdef GLOM_ENABLE_MAEMO
@@ -1724,7 +1724,7 @@ Glib::ustring Document_Glom::get_default_layout_platform()
   #endif
 }
 
-Glib::ustring Document_Glom::get_active_layout_platform() const
+Glib::ustring Document::get_active_layout_platform() const
 {
   if(m_active_layout_platform.empty())
     return get_default_layout_platform();
@@ -1732,12 +1732,12 @@ Glib::ustring Document_Glom::get_active_layout_platform() const
     return m_active_layout_platform;
 }
 
-void Document_Glom::set_active_layout_platform(const Glib::ustring& layout_platform)
+void Document::set_active_layout_platform(const Glib::ustring& layout_platform)
 {
   m_active_layout_platform = layout_platform;
 }
 
-Glib::ustring Document_Glom::get_default_table() const
+Glib::ustring Document::get_default_table() const
 {
   for(type_tables::const_iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
   {
@@ -1755,7 +1755,7 @@ Glib::ustring Document_Glom::get_default_table() const
   return Glib::ustring();
 }
 
-Glib::ustring Document_Glom::get_first_table() const
+Glib::ustring Document::get_first_table() const
 {
   if(m_tables.empty())
     return Glib::ustring();
@@ -1765,7 +1765,7 @@ Glib::ustring Document_Glom::get_first_table() const
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void Document_Glom::set_allow_autosave(bool value)
+void Document::set_allow_autosave(bool value)
 {
   if(m_allow_auto_save == value)
     return;
@@ -1779,7 +1779,7 @@ void Document_Glom::set_allow_autosave(bool value)
   }
 }
 
-void Document_Glom::save_changes()
+void Document::save_changes()
 {
   //Save changes automatically
   //(when in developer mode - no changes should even be possible when not in developer mode)
@@ -1791,7 +1791,7 @@ void Document_Glom::save_changes()
     bool test = save_before();
     if(test)
     {
-      //std::cout << "Document_Glom::save_changes(): calling write_to_disk()." << std::endl;
+      //std::cout << "Document::save_changes(): calling write_to_disk()." << std::endl;
       test = write_to_disk();
       if(test)
       {
@@ -1801,17 +1801,17 @@ void Document_Glom::save_changes()
   }
   else
   {
-    //std::cout << "Document_Glom::save_changes(): Not saving, because not AppState::USERLEVEL_DEVELOPER" << std::endl;
+    //std::cout << "Document::save_changes(): Not saving, because not AppState::USERLEVEL_DEVELOPER" << std::endl;
   }
 }
 
-void Document_Glom::set_modified(bool value)
+void Document::set_modified(bool value)
 {
-  //std::cout << "Document_Glom::set_modified()" << std::endl;
+  //std::cout << "Document::set_modified()" << std::endl;
 
   if(value && m_block_modified_set) //For instance, don't save changes while loading.
   {
-    //std::cout << "  Document_Glom::set_modified() m_block_modified_set" << std::endl;
+    //std::cout << "  Document::set_modified() m_block_modified_set" << std::endl;
     return;
   }
 
@@ -1832,14 +1832,14 @@ void Document_Glom::set_modified(bool value)
 
     if(value)
     {
-      //std::cout << "  Document_Glom::set_modified() save_changes" << std::endl;
+      //std::cout << "  Document::set_modified() save_changes" << std::endl;
       save_changes();
     }
   //}
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-void Document_Glom::load_after_layout_item_formatting(const xmlpp::Element* element, FieldFormatting& format, Field::glom_field_type field_type, const Glib::ustring& table_name, const Glib::ustring& field_name)
+void Document::load_after_layout_item_formatting(const xmlpp::Element* element, FieldFormatting& format, Field::glom_field_type field_type, const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
   //Numeric formatting:
   if(!field_name.empty())
@@ -1914,7 +1914,7 @@ void Document_Glom::load_after_layout_item_formatting(const xmlpp::Element* elem
   }
 }
 
-void Document_Glom::load_after_layout_item_usesrelationship(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<UsesRelationship>& item)
+void Document::load_after_layout_item_usesrelationship(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<UsesRelationship>& item)
 {
   if(!element || !item)
     return;
@@ -1929,7 +1929,7 @@ void Document_Glom::load_after_layout_item_usesrelationship(const xmlpp::Element
 
     if(!relationship)
     {
-      std::cerr << "Document_Glom::load_after_layout_item_usesrelationship(): relationship not found: " << relationship_name << ", in table:" << table_name << std::endl;
+      std::cerr << "Document::load_after_layout_item_usesrelationship(): relationship not found: " << relationship_name << ", in table:" << table_name << std::endl;
     }
   }
 
@@ -1938,13 +1938,13 @@ void Document_Glom::load_after_layout_item_usesrelationship(const xmlpp::Element
   {
     sharedptr<Relationship> related_relationship = get_relationship(relationship->get_to_table(), related_relationship_name);
     if(!related_relationship)
-      std::cerr << "Document_Glom::load_after_layout_item_field(): related relationship not found in table=" << relationship->get_to_table() << ",  name=" << related_relationship_name << std::endl;
+      std::cerr << "Document::load_after_layout_item_field(): related relationship not found in table=" << relationship->get_to_table() << ",  name=" << related_relationship_name << std::endl;
 
     item->set_related_relationship(related_relationship); 
   }
 }
 
-void Document_Glom::load_after_layout_item_field(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<LayoutItem_Field>& item)
+void Document::load_after_layout_item_field(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<LayoutItem_Field>& item)
 {
   const Glib::ustring name = get_node_attribute_value(element, GLOM_ATTRIBUTE_NAME);
   item->set_name(name);
@@ -1977,7 +1977,7 @@ void Document_Glom::load_after_layout_item_field(const xmlpp::Element* element, 
   }
 }
 
-void Document_Glom::load_after_sort_by(const xmlpp::Element* node, const Glib::ustring& table_name, LayoutItem_GroupBy::type_list_sort_fields& list_fields)
+void Document::load_after_sort_by(const xmlpp::Element* node, const Glib::ustring& table_name, LayoutItem_GroupBy::type_list_sort_fields& list_fields)
 {
   list_fields.clear();
 
@@ -2002,11 +2002,11 @@ void Document_Glom::load_after_sort_by(const xmlpp::Element* node, const Glib::u
   }
 }
 
-void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Glib::ustring& table_name, const sharedptr<LayoutGroup>& group, bool with_print_layout_positions)
+void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::ustring& table_name, const sharedptr<LayoutGroup>& group, bool with_print_layout_positions)
 {
   if(!node || !group)
   {
-    //g_warning("Document_Glom::load_after_layout_group(): node is NULL");
+    //g_warning("Document::load_after_layout_group(): node is NULL");
     return;
   }
 
@@ -2252,7 +2252,7 @@ void Document_Glom::load_after_layout_group(const xmlpp::Element* node, const Gl
   } //for
 }
 
-void Document_Glom::load_after_translations(const xmlpp::Element* element, TranslatableItem& item)
+void Document::load_after_translations(const xmlpp::Element* element, TranslatableItem& item)
 {
   if(!element)
     return;
@@ -2276,7 +2276,7 @@ void Document_Glom::load_after_translations(const xmlpp::Element* element, Trans
   }
 }
 
-void Document_Glom::load_after_print_layout_position(const xmlpp::Element* nodeItem, const sharedptr<LayoutItem>& item)
+void Document::load_after_print_layout_position(const xmlpp::Element* nodeItem, const sharedptr<LayoutItem>& item)
 {
   if(!nodeItem)
     return;
@@ -2292,7 +2292,7 @@ void Document_Glom::load_after_print_layout_position(const xmlpp::Element* nodeI
   }
 }
 
-bool Document_Glom::load_after()
+bool Document::load_after()
 {
   //TODO: Use some callback UI to show a busy cursor?
   /*
@@ -2318,7 +2318,7 @@ bool Document_Glom::load_after()
 
       if(m_document_format_version > get_latest_known_document_format_version())
       {
-        std::cerr << "Document_Glom::load_after(): Loading failed because format_version=" << m_document_format_version << ", but latest known format version is " << get_latest_known_document_format_version() << std::endl;
+        std::cerr << "Document::load_after(): Loading failed because format_version=" << m_document_format_version << ", but latest known format version is " << get_latest_known_document_format_version() << std::endl;
         return false; //TODO: Provide more information so the application (or Bakery) can say exactly why loading failed.
       }
       m_is_example = get_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_EXAMPLE);
@@ -2366,7 +2366,7 @@ bool Document_Glom::load_after()
           else
 #endif //GLOM_ENABLE_SQLITE
 	  {
-            std::cerr << "Document_Glom::load_after(): Hosting mode " << attr_mode << " is not supported" << std::endl;
+            std::cerr << "Document::load_after(): Hosting mode " << attr_mode << " is not supported" << std::endl;
             return false; //TODO: Provide more information so the application (or Bakery) can say exactly why loading failed.
 	  }
         }
@@ -2375,7 +2375,7 @@ bool Document_Glom::load_after()
 #ifdef GLOM_ENABLE_POSTGRESQL
         if(mode == HOSTING_MODE_POSTGRES_SELF) //TODO: Define these enums always and show a dialog saying that the feature is not enabled.
         {
-          std::cerr << "Document_Glom::load_after(): Loading failed because the document needs to be self-hosted, but self-hosting is not supported in client only mode" << std::endl;
+          std::cerr << "Document::load_after(): Loading failed because the document needs to be self-hosted, but self-hosting is not supported in client only mode" << std::endl;
           return false; //TODO: Provide more information so the application (or Bakery) can say exactly why loading failed.
         }
 #endif //GLOM_ENABLE_POSTGRESQL
@@ -2802,7 +2802,7 @@ bool Document_Glom::load_after()
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void Document_Glom::save_before_layout_item_formatting(xmlpp::Element* nodeItem, const FieldFormatting& format, Field::glom_field_type field_type)
+void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, const FieldFormatting& format, Field::glom_field_type field_type)
 {
   //Numeric format:
   if(field_type != Field::TYPE_INVALID) //These options are only for fields:
@@ -2854,7 +2854,7 @@ void Document_Glom::save_before_layout_item_formatting(xmlpp::Element* nodeItem,
   }
 }
 
-void Document_Glom::save_before_layout_item_usesrelationship(xmlpp::Element* nodeItem, const sharedptr<const UsesRelationship>& item)
+void Document::save_before_layout_item_usesrelationship(xmlpp::Element* nodeItem, const sharedptr<const UsesRelationship>& item)
 {
   if(!item)
     return;
@@ -2863,7 +2863,7 @@ void Document_Glom::save_before_layout_item_usesrelationship(xmlpp::Element* nod
   set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_RELATED_RELATIONSHIP_NAME, item->get_related_relationship_name());
 }
 
-void Document_Glom::save_before_layout_item_field(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem_Field>& field)
+void Document::save_before_layout_item_field(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem_Field>& field)
 {
   if(!field)
     return;
@@ -2887,7 +2887,7 @@ void Document_Glom::save_before_layout_item_field(xmlpp::Element* nodeItem, cons
   }
 }
 
-void Document_Glom::save_before_sort_by(xmlpp::Element* node, const LayoutItem_GroupBy::type_list_sort_fields& list_fields)
+void Document::save_before_sort_by(xmlpp::Element* node, const LayoutItem_GroupBy::type_list_sort_fields& list_fields)
 {
   if(!node)
     return;
@@ -2903,7 +2903,7 @@ void Document_Glom::save_before_sort_by(xmlpp::Element* node, const LayoutItem_G
   }
 }
 
-void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedptr<const LayoutGroup>& group, bool with_print_layout_positions)
+void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<const LayoutGroup>& group, bool with_print_layout_positions)
 {
   if(!node || !group)
     return;
@@ -3138,7 +3138,7 @@ void Document_Glom::save_before_layout_group(xmlpp::Element* node, const sharedp
   } 
 }
 
-void Document_Glom::save_before_translations(xmlpp::Element* element, const TranslatableItem& item)
+void Document::save_before_translations(xmlpp::Element* element, const TranslatableItem& item)
 {
   if(!element)
     return;
@@ -3160,7 +3160,7 @@ void Document_Glom::save_before_translations(xmlpp::Element* element, const Tran
   }
 }
 
-void Document_Glom::save_before_print_layout_position(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem>& item)
+void Document::save_before_print_layout_position(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem>& item)
 {
   xmlpp::Element* child = nodeItem->add_child(GLOM_NODE_POSITION);
  
@@ -3180,7 +3180,7 @@ void Document_Glom::save_before_print_layout_position(xmlpp::Element* nodeItem, 
     nodeItem->remove_child(child);
 }
 
-bool Document_Glom::save_before()
+bool Document::save_before()
 {
   //TODO: Use some callback UI to show a busy cursor?
   /*
@@ -3251,7 +3251,7 @@ bool Document_Glom::save_before()
 
       const Glib::ustring table_name = doctableinfo.m_info->get_name();
       if(table_name.empty())
-        g_warning("Document_Glom::save_before(): table name is empty.");
+        g_warning("Document::save_before(): table name is empty.");
 
       if(!table_name.empty())
       {
@@ -3296,7 +3296,7 @@ bool Document_Glom::save_before()
 
         const Field::type_map_type_names type_names = Field::get_type_names();
 
-        for(type_vecFields::const_iterator iter = doctableinfo.m_fields.begin(); iter != doctableinfo.m_fields.end(); ++iter)
+        for(type_vec_fields::const_iterator iter = doctableinfo.m_fields.begin(); iter != doctableinfo.m_fields.end(); ++iter)
         {
           sharedptr<const Field> field = *iter;
 
@@ -3341,7 +3341,7 @@ bool Document_Glom::save_before()
         xmlpp::Element* elemRelationships = nodeTable->add_child(GLOM_NODE_RELATIONSHIPS);
 
         //Add each <relationship> node:
-        for(type_vecRelationships::const_iterator iter = doctableinfo.m_relationships.begin(); iter != doctableinfo.m_relationships.end(); iter++)
+        for(type_vec_relationships::const_iterator iter = doctableinfo.m_relationships.begin(); iter != doctableinfo.m_relationships.end(); iter++)
         {
           sharedptr<const Relationship> relationship = *iter;
           if(relationship)
@@ -3496,12 +3496,12 @@ bool Document_Glom::save_before()
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-Glib::ustring Document_Glom::get_database_title() const
+Glib::ustring Document::get_database_title() const
 {
   return m_database_title;
 }
 
-void Document_Glom::set_database_title(const Glib::ustring& title)
+void Document::set_database_title(const Glib::ustring& title)
 {
   if(m_database_title != title)
   {
@@ -3510,7 +3510,7 @@ void Document_Glom::set_database_title(const Glib::ustring& title)
   }
 }
 
-Glib::ustring Document_Glom::get_name() const
+Glib::ustring Document::get_name() const
 {
   //Show the database title in the window title bar:
   if(m_database_title.empty())
@@ -3519,7 +3519,7 @@ Glib::ustring Document_Glom::get_name() const
     return m_database_title;
 }
 
-Document_Glom::type_list_groups Document_Glom::get_groups() const
+Document::type_list_groups Document::get_groups() const
 {
   type_list_groups result;
   for(type_map_groups::const_iterator iter = m_groups.begin(); iter != m_groups.end(); ++iter)
@@ -3531,7 +3531,7 @@ Document_Glom::type_list_groups Document_Glom::get_groups() const
 }
 
 ///This adds the group if necessary.
-void Document_Glom::set_group(GroupInfo& group)
+void Document::set_group(GroupInfo& group)
 {
   const Glib::ustring name = group.get_name();
   type_map_groups::iterator iter = m_groups.find(name);
@@ -3552,7 +3552,7 @@ void Document_Glom::set_group(GroupInfo& group)
   }
 }
 
-void Document_Glom::remove_group(const Glib::ustring& group_name)
+void Document::remove_group(const Glib::ustring& group_name)
 {
   type_map_groups::iterator iter = m_groups.find(group_name);
   if(iter != m_groups.end())
@@ -3562,7 +3562,7 @@ void Document_Glom::remove_group(const Glib::ustring& group_name)
   }
 }
 
-Document_Glom::type_listReports Document_Glom::get_report_names(const Glib::ustring& table_name) const
+Document::type_listReports Document::get_report_names(const Glib::ustring& table_name) const
 {
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
@@ -3579,7 +3579,7 @@ Document_Glom::type_listReports Document_Glom::get_report_names(const Glib::ustr
     return type_listReports(); 
 }
 
-void Document_Glom::remove_all_reports(const Glib::ustring& table_name)
+void Document::remove_all_reports(const Glib::ustring& table_name)
 {
   type_tables::iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
@@ -3589,7 +3589,7 @@ void Document_Glom::remove_all_reports(const Glib::ustring& table_name)
   }
 }
 
-void Document_Glom::set_report(const Glib::ustring& table_name, const sharedptr<Report>& report)
+void Document::set_report(const Glib::ustring& table_name, const sharedptr<Report>& report)
 {
   type_tables::iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
@@ -3599,7 +3599,7 @@ void Document_Glom::set_report(const Glib::ustring& table_name, const sharedptr<
   }
 }
 
-sharedptr<Report> Document_Glom::get_report(const Glib::ustring& table_name, const Glib::ustring& report_name) const
+sharedptr<Report> Document::get_report(const Glib::ustring& table_name, const Glib::ustring& report_name) const
 {
   type_tables::const_iterator iterFindTable = m_tables.find(table_name);
   if(iterFindTable != m_tables.end())
@@ -3614,7 +3614,7 @@ sharedptr<Report> Document_Glom::get_report(const Glib::ustring& table_name, con
   return sharedptr<Report>();
 }
 
-void Document_Glom::remove_report(const Glib::ustring& table_name, const Glib::ustring& report_name)
+void Document::remove_report(const Glib::ustring& table_name, const Glib::ustring& report_name)
 {
   type_tables::iterator iterFindTable = m_tables.find(table_name);
   if(iterFindTable != m_tables.end())
@@ -3630,7 +3630,7 @@ void Document_Glom::remove_report(const Glib::ustring& table_name, const Glib::u
 }
 
 
-Document_Glom::type_listPrintLayouts Document_Glom::get_print_layout_names(const Glib::ustring& table_name) const
+Document::type_listPrintLayouts Document::get_print_layout_names(const Glib::ustring& table_name) const
 {
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
@@ -3647,7 +3647,7 @@ Document_Glom::type_listPrintLayouts Document_Glom::get_print_layout_names(const
     return type_listReports(); 
 }
 
-void Document_Glom::remove_all_print_layouts(const Glib::ustring& table_name)
+void Document::remove_all_print_layouts(const Glib::ustring& table_name)
 {
   type_tables::iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
@@ -3657,7 +3657,7 @@ void Document_Glom::remove_all_print_layouts(const Glib::ustring& table_name)
   }
 }
 
-void Document_Glom::set_print_layout(const Glib::ustring& table_name, const sharedptr<PrintLayout>& print_layout)
+void Document::set_print_layout(const Glib::ustring& table_name, const sharedptr<PrintLayout>& print_layout)
 {
   type_tables::iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
@@ -3667,7 +3667,7 @@ void Document_Glom::set_print_layout(const Glib::ustring& table_name, const shar
   }
 }
 
-sharedptr<PrintLayout> Document_Glom::get_print_layout(const Glib::ustring& table_name, const Glib::ustring& print_layout_name) const
+sharedptr<PrintLayout> Document::get_print_layout(const Glib::ustring& table_name, const Glib::ustring& print_layout_name) const
 {
   type_tables::const_iterator iterFindTable = m_tables.find(table_name);
   if(iterFindTable != m_tables.end())
@@ -3682,7 +3682,7 @@ sharedptr<PrintLayout> Document_Glom::get_print_layout(const Glib::ustring& tabl
   return sharedptr<PrintLayout>();
 }
 
-void Document_Glom::remove_print_layout(const Glib::ustring& table_name, const Glib::ustring& print_layout_name)
+void Document::remove_print_layout(const Glib::ustring& table_name, const Glib::ustring& print_layout_name)
 {
   type_tables::iterator iterFindTable = m_tables.find(table_name);
   if(iterFindTable != m_tables.end())
@@ -3699,7 +3699,7 @@ void Document_Glom::remove_print_layout(const Glib::ustring& table_name, const G
 
 
 
-bool Document_Glom::get_relationship_is_to_one(const Glib::ustring& table_name, const Glib::ustring& relationship_name) const
+bool Document::get_relationship_is_to_one(const Glib::ustring& table_name, const Glib::ustring& relationship_name) const
 {
   sharedptr<const Relationship> relationship = get_relationship(table_name, relationship_name);
   if(relationship)
@@ -3712,7 +3712,7 @@ bool Document_Glom::get_relationship_is_to_one(const Glib::ustring& table_name, 
   return false;
 }
 
-sharedptr<Relationship> Document_Glom::get_field_used_in_relationship_to_one(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& layout_field) const
+sharedptr<Relationship> Document::get_field_used_in_relationship_to_one(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& layout_field) const
 {
   sharedptr<Relationship> result;
 
@@ -3732,7 +3732,7 @@ sharedptr<Relationship> Document_Glom::get_field_used_in_relationship_to_one(con
 
   //Look at each relationship:
   const Glib::ustring field_name = layout_field->get_name();
-  for(type_vecRelationships::const_iterator iterRel = iterFind->second.m_relationships.begin(); iterRel != iterFind->second.m_relationships.end(); ++iterRel)
+  for(type_vec_relationships::const_iterator iterRel = iterFind->second.m_relationships.begin(); iterRel != iterFind->second.m_relationships.end(); ++iterRel)
   {
     sharedptr<Relationship> relationship = *iterRel;
     if(relationship)
@@ -3756,7 +3756,7 @@ sharedptr<Relationship> Document_Glom::get_field_used_in_relationship_to_one(con
   return result;
 }
 
-void Document_Glom::forget_layout_record_viewed(const Glib::ustring& table_name)
+void Document::forget_layout_record_viewed(const Glib::ustring& table_name)
 {
   type_tables::iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
@@ -3765,7 +3765,7 @@ void Document_Glom::forget_layout_record_viewed(const Glib::ustring& table_name)
   }
 }
 
-void Document_Glom::set_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name, const Gnome::Gda::Value& primary_key_value)
+void Document::set_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name, const Gnome::Gda::Value& primary_key_value)
 {
   type_tables::iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
@@ -3774,7 +3774,7 @@ void Document_Glom::set_layout_record_viewed(const Glib::ustring& table_name, co
   }
 }
 
-Gnome::Gda::Value Document_Glom::get_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name) const
+Gnome::Gda::Value Document::get_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name) const
 {
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
@@ -3788,7 +3788,7 @@ Gnome::Gda::Value Document_Glom::get_layout_record_viewed(const Glib::ustring& t
   return Gnome::Gda::Value(); //not found.
 }
 
-void Document_Glom::set_layout_current(const Glib::ustring& table_name, const Glib::ustring& layout_name)
+void Document::set_layout_current(const Glib::ustring& table_name, const Glib::ustring& layout_name)
 {
   type_tables::iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
@@ -3798,7 +3798,7 @@ void Document_Glom::set_layout_current(const Glib::ustring& table_name, const Gl
   }
 }
 
-void Document_Glom::set_criteria_current(const Glib::ustring& table_name, const FoundSet& found_set)
+void Document::set_criteria_current(const Glib::ustring& table_name, const FoundSet& found_set)
 {
   type_tables::iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
@@ -3808,7 +3808,7 @@ void Document_Glom::set_criteria_current(const Glib::ustring& table_name, const 
   }
 }
 
-Glib::ustring Document_Glom::get_layout_current(const Glib::ustring& table_name) const
+Glib::ustring Document::get_layout_current(const Glib::ustring& table_name) const
 {
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
@@ -3820,7 +3820,7 @@ Glib::ustring Document_Glom::get_layout_current(const Glib::ustring& table_name)
   return Glib::ustring(); //not found.
 }
 
-FoundSet Document_Glom::get_criteria_current(const Glib::ustring& table_name) const
+FoundSet Document::get_criteria_current(const Glib::ustring& table_name) const
 {
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
@@ -3833,12 +3833,12 @@ FoundSet Document_Glom::get_criteria_current(const Glib::ustring& table_name) co
 }
 
 
-bool Document_Glom::get_is_example_file() const
+bool Document::get_is_example_file() const
 {
   return m_is_example;
 }
 
-void Document_Glom::set_is_example_file(bool value)
+void Document::set_is_example_file(bool value)
 {
   if(m_is_example != value)
   {
@@ -3848,7 +3848,7 @@ void Document_Glom::set_is_example_file(bool value)
 }
 
 
-void Document_Glom::set_translation_original_locale(const Glib::ustring& locale)
+void Document::set_translation_original_locale(const Glib::ustring& locale)
 {
   m_translation_original_locale = locale;
   TranslatableItem::set_original_locale(m_translation_original_locale);
@@ -3856,12 +3856,12 @@ void Document_Glom::set_translation_original_locale(const Glib::ustring& locale)
 }
 
 
-Glib::ustring Document_Glom::get_translation_original_locale() const
+Glib::ustring Document::get_translation_original_locale() const
 {
   return m_translation_original_locale;
 }
 
-Document_Glom::type_list_translatables Document_Glom::get_translatable_layout_items(const Glib::ustring& table_name)
+Document::type_list_translatables Document::get_translatable_layout_items(const Glib::ustring& table_name)
 {
   type_list_translatables result;
 
@@ -3887,9 +3887,9 @@ Document_Glom::type_list_translatables Document_Glom::get_translatable_layout_it
 }
 
 
-Document_Glom::type_list_translatables Document_Glom::get_translatable_report_items(const Glib::ustring& table_name, const Glib::ustring& report_title)
+Document::type_list_translatables Document::get_translatable_report_items(const Glib::ustring& table_name, const Glib::ustring& report_title)
 {
-  Document_Glom::type_list_translatables the_list;
+  Document::type_list_translatables the_list;
 
   sharedptr<Report> report = get_report(table_name, report_title);
   if(report)
@@ -3898,7 +3898,7 @@ Document_Glom::type_list_translatables Document_Glom::get_translatable_report_it
   return the_list;
 }
 
-void Document_Glom::fill_translatable_layout_items(const sharedptr<LayoutGroup>& group, type_list_translatables& the_list)
+void Document::fill_translatable_layout_items(const sharedptr<LayoutGroup>& group, type_list_translatables& the_list)
 {
   the_list.push_back(group);
 
@@ -3949,7 +3949,7 @@ void Document_Glom::fill_translatable_layout_items(const sharedptr<LayoutGroup>&
   }
 }
 
-void Document_Glom::set_file_uri(const Glib::ustring& file_uri, bool bEnforceFileExtension /* = false */)
+void Document::set_file_uri(const Glib::ustring& file_uri, bool bEnforceFileExtension /* = false */)
 {
   //We override this because set_modified() triggers a save (to the old filename) in this derived class.
 
@@ -3968,12 +3968,12 @@ void Document_Glom::set_file_uri(const Glib::ustring& file_uri, bool bEnforceFil
     set_modified(); //Ready to save() for a Save As.
 }
 
-guint Document_Glom::get_document_format_version()
+guint Document::get_document_format_version()
 {
   return m_document_format_version;
 }
 
-guint Document_Glom::get_latest_known_document_format_version()
+guint Document::get_latest_known_document_format_version()
 {
   // History:
   // Version 0: The first document format. (And the default version number when no version number was saved in the .XML)
@@ -3984,7 +3984,7 @@ guint Document_Glom::get_latest_known_document_format_version()
   return 3;
 }
 
-std::vector<Glib::ustring> Document_Glom::get_library_module_names() const
+std::vector<Glib::ustring> Document::get_library_module_names() const
 {
   std::vector<Glib::ustring> result;
   for(type_map_library_scripts::const_iterator iter = m_map_library_scripts.begin(); iter != m_map_library_scripts.end(); ++iter)
@@ -3995,7 +3995,7 @@ std::vector<Glib::ustring> Document_Glom::get_library_module_names() const
   return result;
 }
 
-void Document_Glom::set_library_module(const Glib::ustring& name, const Glib::ustring& script)
+void Document::set_library_module(const Glib::ustring& name, const Glib::ustring& script)
 {
   if(name.empty())
     return;
@@ -4018,7 +4018,7 @@ void Document_Glom::set_library_module(const Glib::ustring& name, const Glib::us
   }
 }
 
-Glib::ustring Document_Glom::get_library_module(const Glib::ustring& name) const
+Glib::ustring Document::get_library_module(const Glib::ustring& name) const
 {
   type_map_library_scripts::const_iterator iter = m_map_library_scripts.find(name);
   if(iter != m_map_library_scripts.end())
@@ -4029,7 +4029,7 @@ Glib::ustring Document_Glom::get_library_module(const Glib::ustring& name) const
   return Glib::ustring();
 }
 
-void Document_Glom::remove_library_module(const Glib::ustring& name)
+void Document::remove_library_module(const Glib::ustring& name)
 {
   type_map_library_scripts::iterator iter = m_map_library_scripts.find(name);
   if(iter != m_map_library_scripts.end())
@@ -4039,16 +4039,16 @@ void Document_Glom::remove_library_module(const Glib::ustring& name)
   }
 }
 
-Glib::ustring Document_Glom::build_and_get_contents() const
+Glib::ustring Document::build_and_get_contents() const
 {
   //save_before() probably should be const because it doesn't change much of the external behaviour:
-  Document_Glom* unconst = const_cast<Document_Glom*>(this);
+  Document* unconst = const_cast<Document*>(this);
 
   unconst->save_before(); //This is the part of the Document_XML overrides that sets the contents string from the XML tree.
   return get_contents();
 }
 
-void Document_Glom::set_opened_from_browse(bool val)
+void Document::set_opened_from_browse(bool val)
 {
   m_opened_from_browse = val;
 
@@ -4058,12 +4058,12 @@ void Document_Glom::set_opened_from_browse(bool val)
     m_app_state.set_userlevel(AppState::USERLEVEL_OPERATOR);
 }
 
-bool Document_Glom::get_opened_from_browse() const
+bool Document::get_opened_from_browse() const
 {
   return m_opened_from_browse;
 }
 
-bool Document_Glom::load()
+bool Document::load()
 {
   return GlomBakery::Document_XML::load();
 }

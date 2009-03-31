@@ -103,7 +103,7 @@ public:
    * for instance, if the user chose a new field for a DataWidget, 
    * or a new relationship for a portal.
    */
-  void get_layout_groups(Document_Glom::type_list_layout_groups& groups);
+  void get_layout_groups(Document::type_list_layout_groups& groups);
   sharedptr<LayoutGroup> get_layout_group();
 
   /** For instance,

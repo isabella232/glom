@@ -219,7 +219,7 @@ void Dialog_Import_CSV::import(const Glib::ustring& uri, const Glib::ustring& in
 {
   clear();
 
-  Document_Glom* document = get_document();
+  Document* document = get_document();
   if(!document)
   {
     show_error_dialog(_("No Document Available"), _("You need to open a document to import the data into a table."));
@@ -240,8 +240,8 @@ void Dialog_Import_CSV::import(const Glib::ustring& uri, const Glib::ustring& in
     Gtk::TreeModel::iterator tree_iter = m_field_model->append();
     (*tree_iter)[m_field_columns.m_col_field_name] = _("<None>");
 
-    const Document_Glom::type_vecFields fields(document->get_table_fields(into_table));
-    for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++ iter)
+    const Document::type_vec_fields fields(document->get_table_fields(into_table));
+    for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++ iter)
     {
       sharedptr<Field> field = *iter;
       if(!field)

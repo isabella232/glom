@@ -64,7 +64,7 @@ private:
 
   Dialog_FieldDefinition* m_pDialog;
   sharedptr<const Field> m_Field_BeingEdited; //TODO_FieldShared
-  type_vecFields m_vecFields;
+  type_vec_fields m_vecFields;
 };
 
 } //namespace Glom

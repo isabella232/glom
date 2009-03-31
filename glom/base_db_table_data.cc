@@ -80,7 +80,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
 
   //Add values for all fields, not just the shown ones:
   //For instance, we must always add the primary key, and fields with default/calculated/lookup values:
-  for(type_vecFields::const_iterator iter = m_TableFields.begin(); iter != m_TableFields.end(); ++iter)
+  for(type_vec_fields::const_iterator iter = m_TableFields.begin(); iter != m_TableFields.end(); ++iter)
   {
     //TODO: Search for the non-related field with the name, not just the field with the name:
     type_vecLayoutFields::const_iterator iterFind = std::find_if(fieldsToAdd.begin(), fieldsToAdd.end(), predicate_FieldHasName<LayoutItem_Field>((*iter)->get_name()));
@@ -93,7 +93,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
     }
   }
 
-  Document_Glom* document = get_document();
+  Document* document = get_document();
 
   //Calculate any necessary field values and enter them:
   for(type_vecLayoutFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
@@ -539,7 +539,7 @@ Base_DB_Table_Data::type_vecLayoutFields Base_DB_Table_Data::get_related_fields(
 {
   type_vecLayoutFields result;
 
-  const Document_Glom* document = dynamic_cast<const Document_Glom*>(get_document());
+  const Document* document = dynamic_cast<const Document*>(get_document());
   if(document)
   {
     const Glib::ustring field_name = field->get_name(); //At the moment, relationships can not be based on related fields on the from side.

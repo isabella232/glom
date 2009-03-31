@@ -486,7 +486,7 @@ Window_PrintLayout_Edit::~Window_PrintLayout_Edit()
 
 bool Window_PrintLayout_Edit::init_db_details(const Glib::ustring& table_name)
 {
-  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  Document* document = dynamic_cast<Document*>(get_document());
   if(!document)
     return false;
 

@@ -89,7 +89,7 @@ protected:
       
   FoundSet m_found_set;
 
-  type_vecFields m_TableFields; //A cache, so we don't have to repeatedly get them from the Document.
+  type_vec_fields m_TableFields; //A cache, so we don't have to repeatedly get them from the Document.
   type_vecLayoutFields m_FieldsShown; //And any extra keys needed by shown fields.
 
   type_signal_record_changed m_signal_record_changed;

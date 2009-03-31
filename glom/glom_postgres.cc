@@ -23,7 +23,7 @@
 namespace Glom
 {
 
-GlomPostgres::type_vecStrings GlomPostgres::pg_list_separate(const Glib::ustring& str)
+GlomPostgres::type_vec_strings GlomPostgres::pg_list_separate(const Glib::ustring& str)
 {
   //Remove the first { and the last }:
   Glib::ustring without_brackets = Utils::string_trim(str, "{");

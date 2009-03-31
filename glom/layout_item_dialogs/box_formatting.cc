@@ -165,10 +165,10 @@ void Box_Formatting::set_formatting(const FieldFormatting& format)
   {
     m_checkbutton_choices_restricted->set_active(format.get_choices_restricted());
 
-    const Document_Glom* document = get_document();
+    const Document* document = get_document();
 
     //Fill the list of relationships:
-    const Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(m_table_name);
+    const Document::type_vec_relationships vecRelationships = document->get_relationships(m_table_name);
     m_combo_choices_relationship->set_relationships(vecRelationships);
 
     sharedptr<Relationship> choices_relationship;
@@ -271,13 +271,13 @@ void Box_Formatting::on_combo_choices_relationship_changed()
 {
   sharedptr<Relationship> relationship = m_combo_choices_relationship->get_selected_relationship();
 
-  Document_Glom* pDocument = get_document();
+  Document* pDocument = get_document();
   if(pDocument)
   {
     //Show the list of formats from this relationship:
     if(relationship)
     {
-      Document_Glom::type_vecFields vecFields = pDocument->get_table_fields(relationship->get_to_table());
+      Document::type_vec_fields vecFields = pDocument->get_table_fields(relationship->get_to_table());
 
       m_combo_choices_field->set_fields(vecFields);
       m_combo_choices_field_second->set_fields(vecFields, true /* with_none_item */); //We add a "None" item so this GtkComboBox can be cleared by the user.

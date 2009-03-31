@@ -117,7 +117,7 @@ void App::on_about_close()
   m_bAboutShown = false;
 }
 
-void App::set_about_information(const Glib::ustring& strVersion, const type_vecStrings& vecAuthors, const Glib::ustring& strCopyright, const Glib::ustring& strDescription)
+void App::set_about_information(const Glib::ustring& strVersion, const type_vec_strings& vecAuthors, const Glib::ustring& strCopyright, const Glib::ustring& strDescription)
 {
   m_HelpInfo.m_strVersion = strVersion;
   m_HelpInfo.m_vecAuthors = vecAuthors;
@@ -125,7 +125,7 @@ void App::set_about_information(const Glib::ustring& strVersion, const type_vecS
   m_HelpInfo.m_strDescription = strDescription;
 }
 
-void App::set_about_information(const Glib::ustring& strVersion, const type_vecStrings& vecAuthors, const Glib::ustring& strCopyright, const Glib::ustring& strDescription, const type_vecStrings& vecDocumenters, const Glib::ustring& strTranslatorCredits)
+void App::set_about_information(const Glib::ustring& strVersion, const type_vec_strings& vecAuthors, const Glib::ustring& strCopyright, const Glib::ustring& strDescription, const type_vec_strings& vecDocumenters, const Glib::ustring& strTranslatorCredits)
 {
   m_HelpInfo.m_strVersion = strVersion;
   m_HelpInfo.m_vecAuthors = vecAuthors;

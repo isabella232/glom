@@ -40,7 +40,7 @@ public:
    * @param document The document, so that the dialog can load the previous layout, and save changes.
    * @param portal The layout item, which knows its from_table, for instance.
    */
-  virtual void set_document(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document_Glom* document, const sharedptr<const LayoutItem_Portal>& portal, const Glib::ustring& from_table);
+  virtual void set_document(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const sharedptr<const LayoutItem_Portal>& portal, const Glib::ustring& from_table);
 
   virtual void update_ui(bool including_relationships_list = true);
 

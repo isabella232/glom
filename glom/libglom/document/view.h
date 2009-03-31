@@ -28,9 +28,9 @@ namespace Glom
 {
 
 ///The base View for the document.
-typedef GlomBakery::View<Document_Glom> View_Glom;
+typedef GlomBakery::View<Document> View_Glom;
 
-typedef GlomBakery::View_Composite<Document_Glom> View_Composite_Glom;
+typedef GlomBakery::View_Composite<Document> View_Composite_Glom;
 
 } //namespace Glom
 

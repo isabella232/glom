@@ -100,7 +100,7 @@ void Dialog_GroupBy_SecondaryFields::set_fields(const Glib::ustring& table_name,
   m_modified = false;
   m_table_name = table_name;
 
-  Document_Glom* document = get_document();
+  Document* document = get_document();
 
   //Update the tree models from the document
   if(document)

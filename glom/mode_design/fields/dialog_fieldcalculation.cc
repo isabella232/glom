@@ -110,11 +110,11 @@ void Dialog_FieldCalculation::on_button_test()
 
   type_map_fields field_values;
 
-  Document_Glom* document = get_document();
+  Document* document = get_document();
   if(document)
   {
-    const Document_Glom::type_vecFields fields = document->get_table_fields(m_table_name);
-    for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+    const Document::type_vec_fields fields = document->get_table_fields(m_table_name);
+    for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
       const sharedptr<const Field> field = *iter;
       const Gnome::Gda::Value example_value = Conversions::get_example_value(field->get_glom_type());

@@ -54,7 +54,7 @@ Glib::ustring Dialog_NewSelfHostedConnection::get_password() const
 
 void Dialog_NewSelfHostedConnection::load_from_document()
 {
-  Document_Glom* document = get_document();
+  Document* document = get_document();
   if(document)
   {
     Glib::ustring user = document->get_connection_user(); //TODO: Offer a drop-down list of users.

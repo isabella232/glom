@@ -40,7 +40,7 @@ public:
    * @param document The document, so that the dialog can load the previous layout, and save changes.
    * @param table_name The table name.
    */
-  virtual void set_document(Document_Glom* document, const Glib::ustring& table_name);
+  virtual void set_document(Document* document, const Glib::ustring& table_name);
 
   void select_item(const sharedptr<const Relationship>& relationship);
 
@@ -70,7 +70,7 @@ private:
 
   Glib::ustring m_table_name;
 
-  Document_Glom* m_document;
+  Document* m_document;
 };
 
 } //namespace Glom

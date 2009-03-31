@@ -95,7 +95,7 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
 
     //Show the previously-shown record, if there is one, if this is not a new found-set (via a new where_clause)
     //so that returning to this table will return the user to the same record:
-    Document_Glom* document = get_document();
+    Document* document = get_document();
     if(document)
     {
       Gnome::Gda::Value primary_key_for_details;
@@ -155,7 +155,7 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
     Glib::ustring current_layout;
     if(!details_record_specified)
     {
-      Document_Glom* document = get_document(); 
+      Document* document = get_document(); 
       if(document)
         current_layout = document->get_layout_current(m_table_name);
     }
@@ -305,7 +305,7 @@ void Notebook_Data::on_switch_page_handler(GtkNotebookPage* pPage, guint uiPageN
   Box_Data* box = dynamic_cast<Box_Data*>(get_nth_page(uiPageNumber));
   if(box)
   {
-    Document_Glom* document = get_document();
+    Document* document = get_document();
     if(document)
       document->set_layout_current(m_table_name, box->get_layout_name());
 

@@ -68,7 +68,7 @@ private:
   Glib::ustring m_table_name;
   Glib::ustring m_layout_platform;
 
-  Document_Glom* m_document;
+  Document* m_document;
   Gnome::Gda::Value m_id_chosen;
 
   Box_Data_Details_Find m_box_find;

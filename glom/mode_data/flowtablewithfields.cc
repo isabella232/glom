@@ -245,7 +245,7 @@ Box_Data_List_Related* FlowTableWithFields::create_related(const sharedptr<Layou
   if(!portal)
     return 0;
 
-  Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
+  Document* pDocument = static_cast<Document*>(get_document());
   if(pDocument)
   {
     Box_Data_List_Related* portal_box = Gtk::manage(new Box_Data_List_Related);
@@ -284,7 +284,7 @@ Box_Data_Calendar_Related* FlowTableWithFields::create_related_calendar(const sh
   if(!portal)
     return 0;
 
-  Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
+  Document* pDocument = static_cast<Document*>(get_document());
   if(pDocument)
   {
     Box_Data_Calendar_Related* portal_box = Gtk::manage(new Box_Data_Calendar_Related);
@@ -699,7 +699,7 @@ void FlowTableWithFields::add_imageobject_at_position(const sharedptr<LayoutItem
   }
 }
 
-void FlowTableWithFields::get_layout_groups(Document_Glom::type_list_layout_groups& groups)
+void FlowTableWithFields::get_layout_groups(Document::type_list_layout_groups& groups)
 {
   sharedptr<LayoutGroup> group(get_layout_group());
   if(group)
@@ -1454,7 +1454,7 @@ sharedptr<LayoutItem_Portal> FlowTableWithFields::get_portal_relationship()
     
     if(dialog)
     {
-      Document_Glom* pDocument = static_cast<Document_Glom*>(get_document());
+      Document* pDocument = static_cast<Document*>(get_document());
       dialog->set_document(pDocument, m_table_name);
       //TODO: dialog->set_transient_for(*get_app_window());
       const int response = dialog->run();

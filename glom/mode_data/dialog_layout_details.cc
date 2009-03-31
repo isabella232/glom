@@ -316,7 +316,7 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
   }
 }
 
-void Dialog_Layout_Details::set_document(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document_Glom* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields)
+void Dialog_Layout_Details::set_document(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields)
 {
   m_modified = false;
 
@@ -329,7 +329,7 @@ void Dialog_Layout_Details::set_document(const Glib::ustring& layout_name, const
     m_label_table_name->set_text(table_name);
     m_entry_table_title->set_text( document->get_table_title(table_name) );
 
-    Document_Glom::type_list_layout_groups list_groups = document->get_data_layout_groups_plus_new_fields(m_layout_name, m_table_name, m_layout_platform);
+    Document::type_list_layout_groups list_groups = document->get_data_layout_groups_plus_new_fields(m_layout_name, m_table_name, m_layout_platform);
     document->fill_layout_field_details(m_table_name, list_groups); //Update with full field information.
 
     //If no information is stored in the document, add a default group
@@ -348,7 +348,7 @@ void Dialog_Layout_Details::set_document(const Glib::ustring& layout_name, const
 
     m_model_items->clear();
 
-    for(Document_Glom::type_list_layout_groups::const_iterator iter = list_groups.begin(); iter != list_groups.end(); ++iter)
+    for(Document::type_list_layout_groups::const_iterator iter = list_groups.begin(); iter != list_groups.end(); ++iter)
     {
       sharedptr<const LayoutGroup> group = *iter;
       sharedptr<const LayoutGroup> portal = sharedptr<const LayoutItem_Portal>::cast_dynamic(group);
@@ -1083,7 +1083,7 @@ void Dialog_Layout_Details::save_to_document()
   if(m_modified)
   {
     //Set the table name and title:
-    Document_Glom* document = get_document();
+    Document* document = get_document();
     if(document)
       document->set_table_title( m_table_name, m_entry_table_title->get_text() );
 
@@ -1094,7 +1094,7 @@ void Dialog_Layout_Details::save_to_document()
     m_model_items->fill_sequences();
 
     //Get the groups and their fields:
-    Document_Glom::type_list_layout_groups list_groups;
+    Document::type_list_layout_groups list_groups;
 
     //Add the layout items:
     for(Gtk::TreeModel::iterator iterFields = m_model_items->children().begin(); iterFields != m_model_items->children().end(); ++iterFields)

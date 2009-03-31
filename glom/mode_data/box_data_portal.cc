@@ -162,10 +162,10 @@ void Box_Data_Portal::on_record_added(const Gnome::Gda::Value& /* primary_key_va
 
 Box_Data_Portal::type_vecLayoutFields Box_Data_Portal::get_fields_to_show() const
 {
-  const Document_Glom* document = get_document();
+  const Document* document = get_document();
   if(document && m_portal)
   {
-    Document_Glom::type_list_layout_groups mapGroups;
+    Document::type_list_layout_groups mapGroups;
     mapGroups.push_back(m_portal);
 
     sharedptr<const Relationship> relationship = m_portal->get_relationship();
@@ -232,7 +232,7 @@ void Box_Data_Portal::get_suitable_table_to_view_details(Glib::ustring& table_na
   //else
   //  std::cout << "debug: get_suitable_table_to_view_details(): Using specific nav." << std::endl;
 
-  const Document_Glom* document = get_document();
+  const Document* document = get_document();
   if(!document)
     return;
 
@@ -348,9 +348,9 @@ void Box_Data_Portal::get_suitable_record_to_view_details(const Gnome::Gda::Valu
   }
 }
 
-Document_Glom::type_list_layout_groups Box_Data_Portal::create_layout_get_layout()
+Document::type_list_layout_groups Box_Data_Portal::create_layout_get_layout()
 {
-  Document_Glom::type_list_layout_groups result;
+  Document::type_list_layout_groups result;
 
   if(m_portal)
     result.push_back(m_portal);

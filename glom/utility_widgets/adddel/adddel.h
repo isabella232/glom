@@ -53,8 +53,8 @@ public:
   Glib::ustring m_id;
   Field::glom_field_type m_field_type; //If any.
 
-  typedef std::vector<Glib::ustring> type_vecStrings;
-  type_vecStrings m_choices;
+  typedef std::vector<Glib::ustring> type_vec_strings;
+  type_vec_strings m_choices;
 
   bool m_editable;
   bool m_visible;
@@ -142,12 +142,12 @@ public:
 
   Glib::ustring get_column_field(guint column_index) const;
 
-  typedef AddDelColumnInfo::type_vecStrings type_vecStrings;
+  typedef AddDelColumnInfo::type_vec_strings type_vec_strings;
 
   /** Retrieves the column order, even after they have been reordered by the user.
    * @result a vector of column_id. These column_ids were provided in the call to add_column().
    */
-  type_vecStrings get_columns_order() const;
+  type_vec_strings get_columns_order() const;
 
   void remove_all_columns();
   //void set_columns_count(guint count);
@@ -155,7 +155,7 @@ public:
   void set_column_width(guint col, guint width);
 
   /// For popup cells.
-  void set_column_choices(guint col, const type_vecStrings& vecStrings);
+  void set_column_choices(guint col, const type_vec_strings& vecStrings);
 
   void construct_specified_columns(); //Delay actual use of set_column_*() stuff until this method is called.
 
@@ -285,7 +285,7 @@ protected:
   bool m_bPreventUserSignals;
   bool m_bIgnoreSheetSignals;
 
-  type_vecStrings m_vecColumnIDs; //We give each ViewColumn a special ID, so we know where they are after a reorder.
+  type_vec_strings m_vecColumnIDs; //We give each ViewColumn a special ID, so we know where they are after a reorder.
 
   Glib::ustring m_strTextActiveCell; //value before the change
   Gtk::Menu* m_pMenuPopup;

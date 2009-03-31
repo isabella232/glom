@@ -389,7 +389,7 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
       //Start with the last-used found set (sort order and where clause)
       //for this layout:
       //(This would be ignored anyway if a details primary key is specified.)
-      Document_Glom* document = get_document(); 
+      Document* document = get_document(); 
       if(document)
         found_set = document->get_criteria_current(m_table_name);
 
@@ -481,7 +481,7 @@ void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction
 {
   if(action && action->get_active())
   {
-    Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+    Document* document = dynamic_cast<Document*>(get_document());
     if(document)
     {
       //Check whether the current user has developer privileges:
@@ -528,7 +528,7 @@ void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction
           dialog.run();
         }
       }
-      else if(document->get_document_format_version() < Document_Glom::get_latest_known_document_format_version())
+      else if(document->get_document_format_version() < Document::get_latest_known_document_format_version())
       {
         Gtk::MessageDialog dialog(Utils::bold_message(_("Saving in New Document Format")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
         dialog.set_secondary_text(_("The document was created by an earlier version of the application. Making changes to the document will mean that the document cannot be opened by some earlier versions of the application."));
@@ -556,7 +556,7 @@ void Frame_Glom::on_menu_userlevel_Operator(const Glib::RefPtr<Gtk::RadioAction>
 {
   if(action &&  action->get_active())
   {
-    Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+    Document* document = dynamic_cast<Document*>(get_document());
     if(document)
     {
       //Avoid double signals:
@@ -570,11 +570,11 @@ void Frame_Glom::on_menu_file_export()
 {
   //Start with a sequence based on the Details view:
   //The user can changed this by clicking the button in the FileChooser:
-  Document_Glom* document = get_document();
+  Document* document = get_document();
   if(!document)
     return;
 
-  Document_Glom::type_list_layout_groups mapGroupSequence = document->get_data_layout_groups_plus_new_fields("details", m_table_name, document->get_active_layout_platform());
+  Document::type_list_layout_groups mapGroupSequence = document->get_data_layout_groups_plus_new_fields("details", m_table_name, document->get_active_layout_platform());
 
   Gtk::Window* pWindowApp = get_app_window();
   g_assert(pWindowApp);
@@ -618,7 +618,7 @@ void Frame_Glom::on_menu_file_export()
 }
 
 //TODO: Reduce copy/pasting in these export_data_to_*() methods:
-void Frame_Glom::export_data_to_vector(Document_Glom::type_example_rows& the_vector, const FoundSet& found_set, const Document_Glom::type_list_layout_groups& sequence)
+void Frame_Glom::export_data_to_vector(Document::type_example_rows& the_vector, const FoundSet& found_set, const Document::type_list_layout_groups& sequence)
 {
   type_vecLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(found_set.m_table_name, sequence);
 
@@ -643,7 +643,7 @@ void Frame_Glom::export_data_to_vector(Document_Glom::type_example_rows& the_vec
 
     for(guint row_index = 0; row_index < rows_count; ++row_index)
     {
-        Document_Glom::type_row_data row_data;
+        Document::type_row_data row_data;
 
         for(guint col_index = 0; col_index < columns_count; ++col_index)
         {
@@ -668,7 +668,7 @@ void Frame_Glom::export_data_to_vector(Document_Glom::type_example_rows& the_vec
   }
 }
 
-void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const FoundSet& found_set, const Document_Glom::type_list_layout_groups& sequence)
+void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const FoundSet& found_set, const Document::type_list_layout_groups& sequence)
 {
   type_vecLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(found_set.m_table_name, sequence);
 
@@ -720,7 +720,7 @@ void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const FoundSet
   }
 }
 
-void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet& found_set, const Document_Glom::type_list_layout_groups& sequence)
+void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet& found_set, const Document::type_list_layout_groups& sequence)
 {
   type_vecLayoutFields fieldsSequence = get_table_fields_to_show_for_sequence(found_set.m_table_name, sequence);
 
@@ -1025,7 +1025,7 @@ void Frame_Glom::on_dialog_add_related_table_response(int response)
       relationship->set_allow_edit(true);
       relationship->set_auto_create(true);
 
-      Document_Glom* document = get_document();
+      Document* document = get_document();
       if(!document)
         return;
 
@@ -1221,7 +1221,7 @@ void Frame_Glom::show_table_title()
     Glib::ustring table_label = get_document()->get_table_title(m_table_name);
     if(!table_label.empty())
     {
-      Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+      Document* document = dynamic_cast<Document*>(get_document());
       if(document)
       {
         if(document->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
@@ -1250,27 +1250,27 @@ void Frame_Glom::update_table_in_document_from_database()
   //TODO_performance: There are a lot of temporary Field and Column instances here, with a lot of string copying.
 
   //For instance, changed field details, or new fields, or removed fields.
-  typedef Box_DB_Table::type_vecFields type_vecFields;
+  typedef Box_DB_Table::type_vec_fields type_vec_fields;
 
   //Get the fields information from the database:
-  Base_DB::type_vecFields fieldsDatabase = Base_DB::get_fields_for_table_from_database(m_table_name);
+  Base_DB::type_vec_fields fieldsDatabase = Base_DB::get_fields_for_table_from_database(m_table_name);
 
-  Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
+  Document* pDoc = dynamic_cast<const Document*>(get_document());
   if(pDoc)
   {
     bool document_must_be_updated = false;
 
     //Get the fields information from the document.
     //and add to, or update Document's list of fields:
-    type_vecFields fieldsDocument = pDoc->get_table_fields(m_table_name);
+    type_vec_fields fieldsDocument = pDoc->get_table_fields(m_table_name);
 
-    for(Base_DB::type_vecFields::const_iterator iter = fieldsDatabase.begin(); iter != fieldsDatabase.end(); ++iter)
+    for(Base_DB::type_vec_fields::const_iterator iter = fieldsDatabase.begin(); iter != fieldsDatabase.end(); ++iter)
     {
       sharedptr<Field> field_database = *iter;
       if(field_database)
       {
         //Is the field already in the document?
-        type_vecFields::iterator iterFindDoc = std::find_if( fieldsDocument.begin(), fieldsDocument.end(), predicate_FieldHasName<Field>( field_database->get_name() ) );
+        type_vec_fields::iterator iterFindDoc = std::find_if( fieldsDocument.begin(), fieldsDocument.end(), predicate_FieldHasName<Field>( field_database->get_name() ) );
         if(iterFindDoc == fieldsDocument.end()) //If it was not found:
         {
           //Add it
@@ -1309,13 +1309,13 @@ void Frame_Glom::update_table_in_document_from_database()
 
     //Remove fields that are no longer in the database:
     //TODO_performance: This is incredibly inefficient - but it's difficut to erase() items while iterating over them.
-    type_vecFields fieldsActual;
-    for(type_vecFields::const_iterator iter = fieldsDocument.begin(); iter != fieldsDocument.end(); ++iter)
+    type_vec_fields fieldsActual;
+    for(type_vec_fields::const_iterator iter = fieldsDocument.begin(); iter != fieldsDocument.end(); ++iter)
     {
       sharedptr<Field> field = *iter;
 
       //Check whether it's in the database:
-      type_vecFields::iterator iterFindDatabase = std::find_if( fieldsDatabase.begin(), fieldsDatabase.end(), predicate_FieldHasName<Field>( field->get_name() ) );
+      type_vec_fields::iterator iterFindDatabase = std::find_if( fieldsDatabase.begin(), fieldsDatabase.end(), predicate_FieldHasName<Field>( field->get_name() ) );
       if(iterFindDatabase != fieldsDatabase.end()) //If it was found
       {
         fieldsActual.push_back(field);
@@ -1332,11 +1332,11 @@ void Frame_Glom::update_table_in_document_from_database()
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-void Frame_Glom::set_document(Document_Glom* pDocument)
+void Frame_Glom::set_document(Document* pDocument)
 {
   View_Composite_Glom::set_document(pDocument);
 
-  Document_Glom* document = get_document();
+  Document* document = get_document();
   if(document)
   {
     //Connect to a signal that is only on the derived document class:
@@ -1349,7 +1349,7 @@ void Frame_Glom::set_document(Document_Glom* pDocument)
 
 void Frame_Glom::load_from_document()
 {
-  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  Document* document = dynamic_cast<Document*>(get_document());
   if(document)
   {
     //Call base class:
@@ -1662,7 +1662,7 @@ void Frame_Glom::on_developer_dialog_hide()
 
 namespace 
 {
-  void setup_connection_pool_from_document(Document_Glom* document)
+  void setup_connection_pool_from_document(Document* document)
   {
     ConnectionPool* connection_pool = ConnectionPool::get_instance();
     switch(document->get_hosting_mode())
@@ -1670,7 +1670,7 @@ namespace
 #ifdef GLOM_ENABLE_POSTGRESQL
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-    case Document_Glom::HOSTING_MODE_POSTGRES_SELF:
+    case Document::HOSTING_MODE_POSTGRES_SELF:
       {
         ConnectionPoolBackends::PostgresSelfHosted* backend = new ConnectionPoolBackends::PostgresSelfHosted;
         backend->set_self_hosting_data_uri(document->get_connection_self_hosted_directory_uri());
@@ -1679,7 +1679,7 @@ namespace
       break;
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
-    case Document_Glom::HOSTING_MODE_POSTGRES_CENTRAL:
+    case Document::HOSTING_MODE_POSTGRES_CENTRAL:
       {
         ConnectionPoolBackends::PostgresCentralHosted* backend = new ConnectionPoolBackends::PostgresCentralHosted;
         backend->set_host(document->get_connection_server());
@@ -1691,7 +1691,7 @@ namespace
 #endif //GLOM_ENABLE_POSTGRESQL
 
 #ifdef GLOM_ENABLE_SQLITE
-    case Document_Glom::HOSTING_MODE_SQLITE:
+    case Document::HOSTING_MODE_SQLITE:
       {
         ConnectionPoolBackends::Sqlite* backend = new ConnectionPoolBackends::Sqlite;
         backend->set_database_directory_uri(document->get_connection_self_hosted_directory_uri());
@@ -1768,7 +1768,7 @@ bool Frame_Glom::handle_connection_initialize_errors(ConnectionPool::InitErrors 
 
 bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 {
-  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  Document* document = dynamic_cast<Document*>(get_document());
   if(!document)
     return false;
 
@@ -1786,7 +1786,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   switch(document->get_hosting_mode())
   {
 #ifdef GLOM_ENABLE_POSTGRESQL
-  case Document_Glom::HOSTING_MODE_POSTGRES_SELF:
+  case Document::HOSTING_MODE_POSTGRES_SELF:
     {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
       Dialog_NewSelfHostedConnection* dialog = 0;
@@ -1876,7 +1876,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     }
 
     break;
-  case Document_Glom::HOSTING_MODE_POSTGRES_CENTRAL:
+  case Document::HOSTING_MODE_POSTGRES_CENTRAL:
     {
       //Ask for connection details:
       m_pDialogConnection->load_from_document(); //Get good defaults.
@@ -1902,7 +1902,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     break;
 #endif //GLOM_ENABLE_POSTGRESQL
 #ifdef GLOM_ENABLE_SQLITE
-  case Document_Glom::HOSTING_MODE_SQLITE:
+  case Document::HOSTING_MODE_SQLITE:
     {
       // sqlite
       ConnectionPool::SlotProgress slot_ignored;
@@ -1988,7 +1988,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 
         // Remember host if the document is not self hosted
         #ifdef GLOM_ENABLE_POSTGRESQL
-        if(document->get_hosting_mode() == Document_Glom::HOSTING_MODE_POSTGRES_CENTRAL)
+        if(document->get_hosting_mode() == Document::HOSTING_MODE_POSTGRES_CENTRAL)
         {
           ConnectionPool::Backend* backend = connection_pool->get_backend();
           ConnectionPoolBackends::PostgresCentralHosted* central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
@@ -2004,7 +2004,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
         // connect_to_server_with_connection_settings, which is just not
         // executed because it failed with no database present. We should
         // somehow avoid this code duplication.
-        else if(document->get_hosting_mode() == Document_Glom::HOSTING_MODE_POSTGRES_SELF)
+        else if(document->get_hosting_mode() == Document::HOSTING_MODE_POSTGRES_SELF)
         {
           ConnectionPool::Backend* backend = connection_pool->get_backend();
           ConnectionPoolBackends::PostgresSelfHosted* self = dynamic_cast<ConnectionPoolBackends::PostgresSelfHosted*>(backend);
@@ -2044,7 +2044,7 @@ bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring kno
 bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring known_username, const Glib::ustring& known_password, std::auto_ptr<ExceptionConnection>& error)
 #endif
 {
-  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  Document* document = dynamic_cast<Document*>(get_document());
   if(!document)
     return false;
 
@@ -2085,7 +2085,7 @@ bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring kno
     // libgda, but gda_connection_supports_feature() requires a GdaConnection
     // which we don't have at this point.
 #ifdef GLOM_ENABLE_SQLITE
-    if(document->get_hosting_mode() != Document_Glom::HOSTING_MODE_SQLITE)
+    if(document->get_hosting_mode() != Document::HOSTING_MODE_SQLITE)
 #endif
     {
       if(known_username.empty() && known_password.empty())
@@ -2267,7 +2267,7 @@ void Frame_Glom::on_menu_report_selected(const Glib::ustring& report_name)
     return;
   }
 
-  Document_Glom* document = get_document();
+  Document* document = get_document();
   sharedptr<Report> report = document->get_report(m_table_name, report_name);
   if(!report)
     return;
@@ -2291,7 +2291,7 @@ void Frame_Glom::on_menu_print_layout_selected(const Glib::ustring& print_layout
     return;
   }
 
-  Document_Glom* document = get_document();
+  Document* document = get_document();
   sharedptr<PrintLayout> print_layout = document->get_print_layout(m_table_name, print_layout_name);
   if(!print_layout)
     return;
@@ -2348,7 +2348,7 @@ void Frame_Glom::on_menu_print_layout_selected(const Glib::ustring& print_layout
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void Frame_Glom::on_dialog_layout_report_hide()
 {
-  Document_Glom* document = get_document();
+  Document* document = get_document();
 
   if(document && true) //m_pDialogLayoutReport->get_modified())
   {
@@ -2368,7 +2368,7 @@ void Frame_Glom::on_dialog_layout_report_hide()
 
 void Frame_Glom::on_dialog_layout_print_hide()
 {
-  Document_Glom* document = get_document();
+  Document* document = get_document();
 
   if(document && true) //m_pDialogLayoutReport->get_modified())
   {
@@ -2406,7 +2406,7 @@ void Frame_Glom::on_dialog_print_layouts_hide()
 void Frame_Glom::on_dialog_tables_hide()
 {
   //If tables could have been added or removed, update the tables menu:
-  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  Document* document = dynamic_cast<Document*>(get_document());
   if(document)
   {
     // This is never true in client only mode, so we can as well save the

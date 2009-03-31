@@ -111,7 +111,7 @@ Dialog_GroupsList::~Dialog_GroupsList()
 }
 
 /*
-void Dialog_GroupsList::set_document(const Glib::ustring& layout, Document_Glom* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields)
+void Dialog_GroupsList::set_document(const Glib::ustring& layout, Document* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields)
 {
   m_modified = false;
 
@@ -125,7 +125,7 @@ void Dialog_GroupsList::set_document(const Glib::ustring& layout, Document_Glom*
     m_label_table_name->set_text(table_name);
     m_entry_table_title->set_text( document->get_table_title(table_name) );
 
-    Document_Glom::type_list_layout_groups mapGroups = document->get_data_layout_groups_plus_new_fields(layout, m_table_name, m_layout_platform);
+    Document::type_list_layout_groups mapGroups = document->get_data_layout_groups_plus_new_fields(layout, m_table_name, m_layout_platform);
 
     //If no information is stored in the document, then start with something:
 
@@ -153,7 +153,7 @@ void Dialog_GroupsList::set_document(const Glib::ustring& layout, Document_Glom*
 
     m_model_groups->clear();
 
-    for(Document_Glom::type_list_layout_groups::const_iterator iter = mapGroups.begin(); iter != mapGroups.end(); ++iter)
+    for(Document::type_list_layout_groups::const_iterator iter = mapGroups.begin(); iter != mapGroups.end(); ++iter)
     {
       sharedptr<const LayoutGroup> group = iter->second;
 
@@ -268,9 +268,9 @@ void Dialog_GroupsList::on_button_group_new()
     priv.m_view = true;
     priv.m_edit = true;
 
-    Document_Glom::type_listTableInfo table_list = get_document()->get_tables(true /* plus system prefs */);
+    Document::type_listTableInfo table_list = get_document()->get_tables(true /* plus system prefs */);
 
-    for(Document_Glom::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
+    for(Document::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
     {
       Privs::set_table_privileges(group_name, (*iter)->get_name(), priv);
     }
@@ -366,8 +366,8 @@ void Dialog_GroupsList::fill_group_list()
   //Fill the model rows:
   m_model_groups->clear();
 
-  type_vecStrings group_list = Privs::get_database_groups();
-  for(type_vecStrings::const_iterator iter = group_list.begin(); iter != group_list.end(); ++iter)
+  type_vec_strings group_list = Privs::get_database_groups();
+  for(type_vec_strings::const_iterator iter = group_list.begin(); iter != group_list.end(); ++iter)
   {
     Gtk::TreeModel::iterator iterTree = m_model_groups->append();
     Gtk::TreeModel::Row row = *iterTree;
@@ -398,7 +398,7 @@ void Dialog_GroupsList::fill_table_list(const Glib::ustring& group_name)
   //Fill the model rows:
   m_model_tables->clear();
 
-  Document_Glom* pDocument = get_document();
+  Document* pDocument = get_document();
   if(pDocument)
   {
     // Make sure that these are in the document,
@@ -406,9 +406,9 @@ void Dialog_GroupsList::fill_table_list(const Glib::ustring& group_name)
     GroupInfo group_info;
     group_info.set_name(group_name);
 
-    Document_Glom::type_listTableInfo table_list = pDocument->get_tables(true /* plus system prefs */);
+    Document::type_listTableInfo table_list = pDocument->get_tables(true /* plus system prefs */);
 
-    for(Document_Glom::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
+    for(Document::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
     {
       Gtk::TreeModel::iterator iterTree = m_model_tables->append();
       Gtk::TreeModel::Row row = *iterTree;

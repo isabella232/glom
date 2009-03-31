@@ -43,8 +43,8 @@ public:
    * @param table_name The table name.
    * @param field The starting field information.
    */
-  virtual void set_document(Document_Glom* document, const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& field);
-  virtual void set_document(Document_Glom* document, const Glib::ustring& table_name);
+  virtual void set_document(Document* document, const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& field);
+  virtual void set_document(Document* document, const Glib::ustring& table_name);
 
 
   //void select_item(const sharedptr<const Field>& field);
@@ -82,7 +82,7 @@ private:
   Glib::ustring m_table_name;
   sharedptr<LayoutItem_Field> m_start_field; //stored so we can preserve extra information that's not changed here.
 
-  Document_Glom* m_document;
+  Document* m_document;
 };
 
 } //namespace Glom

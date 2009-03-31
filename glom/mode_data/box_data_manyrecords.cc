@@ -54,7 +54,7 @@ void Box_Data_ManyRecords::refresh_data_from_database_blank()
 }
 
 /*
-Document_Glom::type_list_layout_groups Box_Data_ManyRecords::create_layout_get_layout()
+Document::type_list_layout_groups Box_Data_ManyRecords::create_layout_get_layout()
 {
   //Overriden in Box_Data_ManyRecords_Related:
   return get_data_layout_groups(m_layout_name); 

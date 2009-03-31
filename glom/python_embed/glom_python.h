@@ -29,10 +29,10 @@ namespace Glom
 
 typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_fields;
 
-void glom_execute_python_function_implementation(const Glib::ustring& func_impl, const type_map_fields& field_values, Document_Glom* pDocument, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection);
+void glom_execute_python_function_implementation(const Glib::ustring& func_impl, const type_map_fields& field_values, Document* pDocument, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection);
 
 Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type, const Glib::ustring& func_impl,
-  const type_map_fields& field_values, Document_Glom* pDocument, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection);
+  const type_map_fields& field_values, Document* pDocument, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection);
 
 } //namespace Glom
 

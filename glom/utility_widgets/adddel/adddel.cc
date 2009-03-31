@@ -653,8 +653,8 @@ void AddDel::construct_specified_columns()
           CellRendererList* pCellRenderer = Gtk::manage( new CellRendererList() );
 
           //Add the choices:
-          const type_vecStrings vecStrings = m_ColumnTypes[model_column_index].m_choices;
-          for(type_vecStrings::const_iterator iter = vecStrings.begin(); iter != vecStrings.end(); ++iter)
+          const type_vec_strings vecStrings = m_ColumnTypes[model_column_index].m_choices;
+          for(type_vec_strings::const_iterator iter = vecStrings.begin(); iter != vecStrings.end(); ++iter)
           {
             pCellRenderer->append_list_item(*iter);
           }
@@ -954,7 +954,7 @@ void AddDel::set_prevent_user_signals(bool bVal)
   m_bPreventUserSignals = bVal;
 }
 
-void AddDel::set_column_choices(guint col, const type_vecStrings& vecStrings)
+void AddDel::set_column_choices(guint col, const type_vec_strings& vecStrings)
 {
   InnerIgnore innerIgnore(this); //Stop on_treeview_columns_changed() from doing anything when it is called just because we add new columns.
 
@@ -969,7 +969,7 @@ void AddDel::set_column_choices(guint col, const type_vecStrings& vecStrings)
     {
       //Add the choices:
       pCellRenderer->remove_all_list_items();
-      for(type_vecStrings::const_iterator iter = vecStrings.begin(); iter != vecStrings.end(); ++iter)
+      for(type_vec_strings::const_iterator iter = vecStrings.begin(); iter != vecStrings.end(); ++iter)
       {
         pCellRenderer->append_list_item(*iter);
       }
@@ -1411,7 +1411,7 @@ void AddDel::on_treeview_columns_changed()
   }
 }
 
-AddDel::type_vecStrings AddDel::get_columns_order() const
+AddDel::type_vec_strings AddDel::get_columns_order() const
 {
   //This list is rebuilt in on_treeview_columns_changed, but maybe we could just build it here.
   return m_vecColumnIDs;

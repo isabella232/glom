@@ -236,21 +236,21 @@ Box_Data::type_vecLayoutFields Box_Data::get_fields_to_show() const
 
 Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::ustring& table_name) const
 {
-  const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
+  const Document* pDoc = dynamic_cast<const Document*>(get_document());
   if(pDoc)
   {
-    Document_Glom::type_list_layout_groups mapGroupSequence = pDoc->get_data_layout_groups_plus_new_fields(m_layout_name, table_name, m_layout_platform);
+    Document::type_list_layout_groups mapGroupSequence = pDoc->get_data_layout_groups_plus_new_fields(m_layout_name, table_name, m_layout_platform);
     return get_table_fields_to_show_for_sequence(table_name, mapGroupSequence);
   }
   else
     return type_vecLayoutFields();
 }
 
-Document_Glom::type_list_layout_groups Box_Data::get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& layout_platform)
+Document::type_list_layout_groups Box_Data::get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& layout_platform)
 {
-  Document_Glom::type_list_layout_groups layout_groups;
+  Document::type_list_layout_groups layout_groups;
 
-  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  Document* document = dynamic_cast<Document*>(get_document());
   if(document)
   {
     if(!m_table_name.empty())
@@ -261,7 +261,7 @@ Document_Glom::type_list_layout_groups Box_Data::get_data_layout_groups(const Gl
       const Privileges table_privs = Privs::get_current_privs(m_table_name);
 
       //Fill in the field information for the fields mentioned in the layout:
-      for(Document_Glom::type_list_layout_groups::iterator iterGroups = layout_groups.begin(); iterGroups != layout_groups.end(); ++iterGroups)
+      for(Document::type_list_layout_groups::iterator iterGroups = layout_groups.begin(); iterGroups != layout_groups.end(); ++iterGroups)
       {
         fill_layout_group_field_info(*iterGroups, table_privs);
 
@@ -279,7 +279,7 @@ void Box_Data::fill_layout_group_field_info(const sharedptr<LayoutGroup>& group,
   if(!group)
    return;
 
-  const Document_Glom* document = get_document();
+  const Document* document = get_document();
 
   LayoutGroup::type_list_items items = group->get_items();
   for(LayoutGroup::type_list_items::iterator iter = items.begin(); iter != items.end(); ++iter)

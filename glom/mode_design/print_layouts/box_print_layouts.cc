@@ -97,12 +97,12 @@ bool Box_Print_Layouts::fill_from_database()
   //Glib::ustring strTitle = Glib::ustring("<b>") + _("Tables from Database: ") + get_database_name() + "");
   //m_pLabelFrameTitle->set_markup(strTitle);
 
-  Document_Glom::type_listPrintLayouts listItems;
-  Document_Glom* document = get_document();
+  Document::type_listPrintLayouts listItems;
+  Document* document = get_document();
   if(document)
   {
     listItems = document->get_print_layout_names(m_table_name);
-    for(Document_Glom::type_listPrintLayouts::const_iterator iter = listItems.begin(); iter != listItems.end(); ++iter)
+    for(Document::type_listPrintLayouts::const_iterator iter = listItems.begin(); iter != listItems.end(); ++iter)
     {
       sharedptr<PrintLayout> item = document->get_print_layout(m_table_name, *iter);
       if(item)
@@ -161,7 +161,7 @@ void Box_Print_Layouts::on_adddel_user_requested_edit(const Gtk::TreeModel::iter
 {
   Glib::ustring name = m_AddDel.get_value_key(row);
 
-  Document_Glom* document = get_document();
+  Document* document = get_document();
   if(document)
   {
      save_to_document();
@@ -176,7 +176,7 @@ void Box_Print_Layouts::save_to_document()
   if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
     //Add any that are not in the document:
-    Document_Glom::type_listPrintLayouts listItems = get_document()->get_print_layout_names(m_table_name);
+    Document::type_listPrintLayouts listItems = get_document()->get_print_layout_names(m_table_name);
 
     bool modified = false;
     for(Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().begin(); iter != m_AddDel.get_model()->children().end(); ++iter)
@@ -205,7 +205,7 @@ void Box_Print_Layouts::on_adddel_user_changed(const Gtk::TreeModel::iterator& r
   if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
     const Glib::ustring name = m_AddDel.get_value_key(row);
-    Document_Glom* document = get_document();
+    Document* document = get_document();
 
     sharedptr<PrintLayout> item = document->get_print_layout(m_table_name, name);
     if(item)

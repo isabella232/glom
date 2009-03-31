@@ -38,7 +38,7 @@ namespace Glom
 double CanvasGroupDbTable::m_table_width = 200; //TODO: Calculate based on the title text's width.
 double margin = 5.0;
 
-CanvasGroupDbTable::CanvasGroupDbTable(const Glib::ustring& table_name, const Glib::ustring& table_title, const Document_Glom::type_vecFields& fields, double x, double y)
+CanvasGroupDbTable::CanvasGroupDbTable(const Glib::ustring& table_name, const Glib::ustring& table_title, const Document::type_vec_fields& fields, double x, double y)
 : m_table_height(0) 
 {
   m_table_name = table_name;
@@ -79,7 +79,7 @@ CanvasGroupDbTable::CanvasGroupDbTable(const Glib::ustring& table_name, const Gl
 
   //Add the table's fields:
   double field_y = field_height;
-  for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+  for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
   {
     sharedptr<Field> field = *iter;
 
@@ -109,7 +109,7 @@ CanvasGroupDbTable::~CanvasGroupDbTable()
 {
 }
 
-Glib::RefPtr<CanvasGroupDbTable> CanvasGroupDbTable::create(const Glib::ustring& table_name, const Glib::ustring& table_title, const Document_Glom::type_vecFields& fields, double x, double y)
+Glib::RefPtr<CanvasGroupDbTable> CanvasGroupDbTable::create(const Glib::ustring& table_name, const Glib::ustring& table_title, const Document::type_vec_fields& fields, double x, double y)
 {
   return Glib::RefPtr<CanvasGroupDbTable>(new CanvasGroupDbTable(table_name, table_title, fields, x, y));
 }

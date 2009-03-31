@@ -194,22 +194,22 @@ void Box_Data_List::set_primary_key_value(const Gtk::TreeModel::iterator& row, c
 
 void Box_Data_List::on_adddel_user_reordered_columns()
 {
-  Document_Glom* pDoc = dynamic_cast<Document_Glom*>(get_document());
+  Document* pDoc = dynamic_cast<Document*>(get_document());
   if(pDoc)
   {
     sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::create();
     group->set_name("toplevel");
 
-    AddDel::type_vecStrings vec_field_names = m_AddDel.get_columns_order();
+    AddDel::type_vec_strings vec_field_names = m_AddDel.get_columns_order();
 
-    for(AddDel::type_vecStrings::iterator iter = vec_field_names.begin(); iter != vec_field_names.end(); ++iter)
+    for(AddDel::type_vec_strings::iterator iter = vec_field_names.begin(); iter != vec_field_names.end(); ++iter)
     {
       sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
       layout_item->set_name(*iter);
       group->add_item(layout_item); 
     }
 
-    Document_Glom::type_list_layout_groups mapGroups;
+    Document::type_list_layout_groups mapGroups;
     mapGroups[1] = group;
 
     pDoc->set_data_layout_groups("list", m_table_name, m_layout_platform, mapGroups);  
@@ -441,7 +441,7 @@ void Box_Data_List::create_layout_add_group(const sharedptr<LayoutGroup>& layout
   }
 }
 
-Document_Glom::type_list_layout_groups Box_Data_List::create_layout_get_layout()
+Document::type_list_layout_groups Box_Data_List::create_layout_get_layout()
 {
   //This method is overriden in Box_Data_List_Related.
 
@@ -452,7 +452,7 @@ void Box_Data_List::create_layout()
 {
   Box_Data::create_layout(); //Fills m_TableFields.
 
-  const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
+  const Document* pDoc = dynamic_cast<const Document*>(get_document());
   if(pDoc)
   {
     //Field Names:
@@ -474,10 +474,10 @@ void Box_Data_List::create_layout()
       m_AddDel.set_key_field(field_primary_key);
  
       //This map of layout groups will also contain the field information from the database:
-      Document_Glom::type_list_layout_groups layout_groups = create_layout_get_layout();
+      Document::type_list_layout_groups layout_groups = create_layout_get_layout();
 
       //int debug_count = 0;
-      for(Document_Glom::type_list_layout_groups::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
+      for(Document::type_list_layout_groups::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
       {
         //std::cout << "Box_Data_List::create_layout() group number=" << debug_count;
         //debug_count++;
@@ -591,7 +591,7 @@ void Box_Data_List::on_adddel_user_sort_clause_changed()
 
   m_found_set = m_AddDel.get_found_set();
 
-  Document_Glom* document = get_document(); 
+  Document* document = get_document(); 
   if(document)
     document->set_criteria_current(m_table_name, m_found_set);
 }

@@ -146,9 +146,9 @@ Record__get_related(PyObject* self, void* /* closure */)
     Py_DECREF(new_args);
 
     //Fill it:
-    Document_Glom::type_vecRelationships vecRelationships = self_record->m_document->get_relationships(*(self_record->m_table_name));
+    Document::type_vec_relationships vecRelationships = self_record->m_document->get_relationships(*(self_record->m_table_name));
     PyGlomRelated::type_map_relationships map_relationships;
-    for(Document_Glom::type_vecRelationships::const_iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); ++iter)
+    for(Document::type_vec_relationships::const_iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); ++iter)
     {
       if(*iter)
         map_relationships[(*iter)->get_name()] = *iter;
@@ -314,7 +314,7 @@ static void Record_HandlePythonError()
 */
 
 
-void PyGlomRecord_SetFields(PyGlomRecord* self, const PyGlomRecord::type_map_field_values& field_values, Document_Glom* document, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
+void PyGlomRecord_SetFields(PyGlomRecord* self, const PyGlomRecord::type_map_field_values& field_values, Document* document, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
 {
   *(self->m_pMap_field_values) = field_values; //This was allocated in Record_new().
 

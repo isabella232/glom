@@ -86,7 +86,7 @@ protected:
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 protected:
-  virtual Document_Glom::type_list_layout_groups create_layout_get_layout(); //override.
+  virtual Document::type_list_layout_groups create_layout_get_layout(); //override.
 
   Gtk::Frame m_Frame;
   Gtk::Alignment m_Alignment;

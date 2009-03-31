@@ -87,14 +87,14 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
     //Set the connection details in the ConnectionPool singleton.
     //The ConnectionPool will now use these every time it tries to connect.
 
-    const Document_Glom* document = get_document();
+    const Document* document = get_document();
     if(document)
     {
       //std::cout << "debug: Dialog_Connection::connect_to_server_with_connection_settings(): m_database_name=" << m_database_name << std::endl;
       connection_pool->set_database(m_database_name);
 
 #ifdef GLOM_ENABLE_POSTGRESQL
-      if(document->get_hosting_mode() == Document_Glom::HOSTING_MODE_POSTGRES_CENTRAL)
+      if(document->get_hosting_mode() == Document::HOSTING_MODE_POSTGRES_CENTRAL)
       {
         ConnectionPool::Backend* backend = connection_pool->get_backend();
         ConnectionPoolBackends::PostgresCentralHosted* central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
@@ -126,9 +126,9 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
       //Remember the port, 
       //to make opening faster next time,
       //and so we can tell connecting clients (using browse network) what port to use:
-      Document_Glom* unconst = const_cast<Document_Glom*>(document);
+      Document* unconst = const_cast<Document*>(document);
 
-      if(document->get_hosting_mode() == Document_Glom::HOSTING_MODE_POSTGRES_CENTRAL)
+      if(document->get_hosting_mode() == Document::HOSTING_MODE_POSTGRES_CENTRAL)
       {
         ConnectionPool::Backend* backend = connection_pool->get_backend();
         ConnectionPoolBackends::PostgresCentralHosted* central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
@@ -138,7 +138,7 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
       }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-      else if(document->get_hosting_mode() == Document_Glom::HOSTING_MODE_POSTGRES_SELF)
+      else if(document->get_hosting_mode() == Document::HOSTING_MODE_POSTGRES_SELF)
       {
         ConnectionPool::Backend* backend = connection_pool->get_backend();
         ConnectionPoolBackends::PostgresSelfHosted* self = dynamic_cast<ConnectionPoolBackends::PostgresSelfHosted*>(backend);
@@ -166,13 +166,13 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
 
 void Dialog_Connection::load_from_document()
 {
-  Document_Glom* document = get_document();
+  Document* document = get_document();
   if(document)
   {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #ifdef GLOM_ENABLE_POSTGRESQL
     //Load server and user:
-    if(document->get_hosting_mode() != Document_Glom::HOSTING_MODE_POSTGRES_CENTRAL)
+    if(document->get_hosting_mode() != Document::HOSTING_MODE_POSTGRES_CENTRAL)
     {
        m_entry_host->set_text("(self hosted)");
        m_entry_host->set_sensitive(false);

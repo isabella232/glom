@@ -34,13 +34,13 @@ class Privs : public GlomPostgres
 {
 public:
 
-  static type_vecStrings get_database_groups();
-  static type_vecStrings get_database_users(const Glib::ustring& group_name = Glib::ustring());
+  static type_vec_strings get_database_groups();
+  static type_vec_strings get_database_users(const Glib::ustring& group_name = Glib::ustring());
   static Privileges get_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name);
   static void set_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name, const Privileges& privs, bool developer_privs = false);
   static Glib::ustring get_user_visible_group_name(const Glib::ustring& group_name);
 
-  static type_vecStrings get_groups_of_user(const Glib::ustring& user);
+  static type_vec_strings get_groups_of_user(const Glib::ustring& user);
   static bool get_user_is_in_group(const Glib::ustring& user, const Glib::ustring& group);
   static Privileges get_current_privs(const Glib::ustring& table_name);
 

@@ -368,9 +368,9 @@ void Box_Data_List_Related::set_primary_key_value(const Gtk::TreeModel::iterator
 }
 
 
-Document_Glom::type_list_layout_groups Box_Data_List_Related::create_layout_get_layout()
+Document::type_list_layout_groups Box_Data_List_Related::create_layout_get_layout()
 {
-  Document_Glom::type_list_layout_groups result;
+  Document::type_list_layout_groups result;
 
   //Do not use get_data_layout_groups(m_layout_name).
   //instead do this:
@@ -386,7 +386,7 @@ void Box_Data_List_Related::create_layout()
 {
   Box_Data::create_layout(); //Fills m_TableFields.
 
-  const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
+  const Document* pDoc = dynamic_cast<const Document*>(get_document());
   if(pDoc)
   {
     //Field Names:
@@ -406,10 +406,10 @@ void Box_Data_List_Related::create_layout()
       m_AddDel.set_key_field(field_primary_key);
  
       //This map of layout groups will also contain the field information from the database:
-      Document_Glom::type_list_layout_groups layout_groups = create_layout_get_layout();
+      Document::type_list_layout_groups layout_groups = create_layout_get_layout();
       
       //int debug_count = 0;
-      for(Document_Glom::type_list_layout_groups::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
+      for(Document::type_list_layout_groups::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
       {
         //std::cout << "Box_Data_List::create_layout() group number=" << debug_count;
         //debug_count++;

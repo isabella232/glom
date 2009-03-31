@@ -103,7 +103,7 @@ protected:
 
   /** Get the layout groups, with the Field information filled in.
    */
-  Document_Glom::type_list_layout_groups get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& layout_platform);
+  Document::type_list_layout_groups get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& layout_platform);
   void fill_layout_group_field_info(const sharedptr<LayoutGroup>& group, const Privileges& table_privs);
 
   void execute_button_script(const sharedptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key_value);

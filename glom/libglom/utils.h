@@ -81,8 +81,8 @@ Glib::ustring string_from_decimal(guint decimal);
  */
 Glib::ustring title_from_string(const Glib::ustring& text);
 
-typedef std::vector<Glib::ustring> type_vecStrings;
-type_vecStrings string_separate(const Glib::ustring& str, const Glib::ustring& separator, bool ignore_quoted_separator = false);
+typedef std::vector<Glib::ustring> type_vec_strings;
+type_vec_strings string_separate(const Glib::ustring& str, const Glib::ustring& separator, bool ignore_quoted_separator = false);
 
 Glib::ustring string_trim(const Glib::ustring& str, const Glib::ustring& to_remove);
 

@@ -137,8 +137,8 @@ bool Box_Tables::fill_from_database()
 
   //Get the list of hidden tables:
 
-  Document_Glom::type_listTableInfo listTablesDocument;
-  Document_Glom* document = get_document();
+  Document::type_listTableInfo listTablesDocument;
+  Document* document = get_document();
   if(document)
   {
     listTablesDocument = document->get_tables();
@@ -160,16 +160,16 @@ bool Box_Tables::fill_from_database()
     m_AddDel.remove_all();
     Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
 
-    const type_vecStrings vecTables = get_table_names_from_database();
+    const type_vec_strings vecTables = get_table_names_from_database();
 
-    for(type_vecStrings::const_iterator iter = vecTables.begin(); iter != vecTables.end(); iter++)
+    for(type_vec_strings::const_iterator iter = vecTables.begin(); iter != vecTables.end(); iter++)
     {
       const Glib::ustring strName = *iter;
 
       sharedptr<TableInfo> table_info;
 
       //Check whether it should be hidden:
-      Document_Glom::type_listTableInfo::const_iterator iterFind = std::find_if(listTablesDocument.begin(), listTablesDocument.end(), predicate_FieldHasName<TableInfo>(strName));
+      Document::type_listTableInfo::const_iterator iterFind = std::find_if(listTablesDocument.begin(), listTablesDocument.end(), predicate_FieldHasName<TableInfo>(strName));
       if(iterFind != listTablesDocument.end())
       {
         table_info = *iterFind;
@@ -254,7 +254,7 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
   {
     //Show the new information for this whole row:
     
-    Document_Glom* document = get_document();
+    Document* document = get_document();
     if(document)
     {
       sharedptr<TableInfo> table_info = document->get_table(table_name);
@@ -263,7 +263,7 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
       //Save the field information directly into the database, because we cannot get all the correct information from the database.
       //Otherwise some information would be forgotten:
 
-      type_vecFields fields = document->get_table_fields(table_name);
+      type_vec_fields fields = document->get_table_fields(table_name);
       document->set_table_fields(table_name, fields);
 
       //TODO: Just let create_table_with_default_fields() update the document, and then reload the row.
@@ -286,7 +286,7 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
 
     if(!table_name.empty())
     {
-      Document_Glom* document = get_document();
+      Document* document = get_document();
       if(document)
       {
         //Don't open a table that the document does not know about, because we need information from the document:
@@ -387,7 +387,7 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
             set_modified();
 
             //Tell the document that this table's name has changed:
-            Document_Glom* document = get_document();
+            Document* document = get_document();
             if(document)
               document->change_table_name(table_name, table_name_new);
 
@@ -404,7 +404,7 @@ void Box_Tables::on_adddel_Edit(const Gtk::TreeModel::iterator& row)
 {
   Glib::ustring table_name = m_AddDel.get_value_key(row);
 
-  Document_Glom* document = get_document();
+  Document* document = get_document();
   if(document)
   {
     //Don't open a table that the document does not know about, because we need information from the document:
@@ -433,9 +433,9 @@ void Box_Tables::save_to_document()
   if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
     //Save the hidden tables. TODO_usermode: Only if we are in developer mode.
-    Document_Glom::type_listTableInfo listTables;
+    Document::type_listTableInfo listTables;
 
-    Document_Glom* document = get_document();
+    Document* document = get_document();
 
     for(Gtk::TreeModel::iterator iter = m_AddDel.get_model()->children().begin(); iter != m_AddDel.get_model()->children().end(); ++iter)
     {

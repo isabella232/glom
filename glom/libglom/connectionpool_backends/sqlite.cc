@@ -159,7 +159,7 @@ bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::Serve
   return true;
 }
 
-bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vecStrings& fields_removed, const type_vecConstFields& fields_added, const type_mapFieldChanges& fields_changed, std::auto_ptr<Glib::Error>& error)
+bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_strings& fields_removed, const type_vec_const_fields& fields_added, const type_mapFieldChanges& fields_changed, std::auto_ptr<Glib::Error>& error)
 {
   static const gchar* TEMPORARY_TABLE_NAME = "GLOM_TEMP_TABLE"; // TODO: Make sure this is unique.
   static const gchar* TRANSACTION_NAME = "GLOM_RECREATE_TABLE_TRANSACTION";
@@ -190,7 +190,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
     {
       // If it was removed, and added again, then it has changed, so use the
       // definition from the added_fields vector.
-      type_vecFields::const_iterator iter = std::find_if(fields_added.begin(), fields_added.end(), predicate_FieldHasName<Field>(column->column_name));
+      type_vec_fields::const_iterator iter = std::find_if(fields_added.begin(), fields_added.end(), predicate_FieldHasName<Field>(column->column_name));
       if(iter == fields_added.end())
         continue;
       else
@@ -277,12 +277,12 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
     }
   }
 
-  for(type_vecConstFields::const_iterator iter = fields_added.begin(); iter != fields_added.end(); ++ iter)
+  for(type_vec_const_fields::const_iterator iter = fields_added.begin(); iter != fields_added.end(); ++ iter)
   {
     // Add new fields to the table. Fields that have changed have already
     // been handled above.
     const sharedptr<const Field>& field = *iter;
-    type_vecStrings::const_iterator removed_iter = std::find(fields_removed.begin(), fields_removed.end(), field->get_name());
+    type_vec_strings::const_iterator removed_iter = std::find(fields_removed.begin(), fields_removed.end(), field->get_name());
     if(removed_iter == fields_removed.end())
     {
       if(!add_column_to_server_operation(operation, field, i++, error))
@@ -354,23 +354,23 @@ bool Sqlite::add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, 
   }
   else
   {
-    return recreate_table(connection, table_name, type_vecStrings(), type_vecConstFields(1, field), type_mapFieldChanges(), error);
+    return recreate_table(connection, table_name, type_vec_strings(), type_vec_const_fields(1, field), type_mapFieldChanges(), error);
   }
 }
 
 bool Sqlite::drop_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const Glib::ustring& field_name, std::auto_ptr<Glib::Error>& error)
 {
-  return recreate_table(connection, table_name, type_vecStrings(1, field_name), type_vecConstFields(), type_mapFieldChanges(), error);
+  return recreate_table(connection, table_name, type_vec_strings(1, field_name), type_vec_const_fields(), type_mapFieldChanges(), error);
 }
 
-bool Sqlite::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vecConstFields& old_fields, const type_vecConstFields& new_fields, std::auto_ptr<Glib::Error>& error)
+bool Sqlite::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields, std::auto_ptr<Glib::Error>& error)
 {
   type_mapFieldChanges fields_changed;
 
-  for(type_vecConstFields::size_type i = 0; i < old_fields.size(); ++ i)
+  for(type_vec_const_fields::size_type i = 0; i < old_fields.size(); ++ i)
     fields_changed[old_fields[i]->get_name()] = new_fields[i];
 
-  return recreate_table(connection, table_name, type_vecStrings(), type_vecConstFields(), fields_changed, error);
+  return recreate_table(connection, table_name, type_vec_strings(), type_vec_const_fields(), fields_changed, error);
 }
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY

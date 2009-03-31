@@ -62,7 +62,7 @@ private:
   virtual Glib::ustring get_string_find_operator() const { return "ILIKE"; } // ILIKE is a postgres extension for locale-dependent case-insensitive matches.
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual bool change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vecConstFields& old_fields, const type_vecConstFields& new_fields, std::auto_ptr<Glib::Error>& error);
+  virtual bool change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields, std::auto_ptr<Glib::Error>& error);
 
 protected:
   bool attempt_create_database(const Glib::ustring& database_name, const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error);

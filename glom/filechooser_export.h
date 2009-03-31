@@ -36,9 +36,9 @@ public:
   FileChooser_Export();
   virtual ~FileChooser_Export();
 
-  void set_export_layout(const Document_Glom::type_list_layout_groups& layout_groups, const Glib::ustring& table_name, Document_Glom* document);
+  void set_export_layout(const Document::type_list_layout_groups& layout_groups, const Glib::ustring& table_name, Document* document);
 
-  void get_layout_groups(Document_Glom::type_list_layout_groups& layout_groups) const;
+  void get_layout_groups(Document::type_list_layout_groups& layout_groups) const;
 
 private:
 
@@ -51,8 +51,8 @@ private:
   Glib::ustring m_table_name;
   Dialog_Layout_Export* m_pDialogLayout;
 
-  Document_Glom::type_list_layout_groups m_layout_groups;
-  Document_Glom* m_document;
+  Document::type_list_layout_groups m_layout_groups;
+  Document* m_document;
 };
 
 } //namespace Glom

@@ -166,21 +166,21 @@ void FileChooserDialog_SaveExtras::set_extra_newdb_title(const Glib::ustring& ti
   m_entry_title.set_text(title);
 }
 
-void FileChooserDialog_SaveExtras::set_extra_newdb_hosting_mode(Document_Glom::HostingMode mode)
+void FileChooserDialog_SaveExtras::set_extra_newdb_hosting_mode(Document::HostingMode mode)
 {
   switch(mode)
   {
 #ifdef GLOM_ENABLE_POSTGRESQL
-  case Document_Glom::HOSTING_MODE_POSTGRES_CENTRAL:
+  case Document::HOSTING_MODE_POSTGRES_CENTRAL:
     m_radiobutton_server_postgres_central.set_active();
     break;
-  case Document_Glom::HOSTING_MODE_POSTGRES_SELF:
+  case Document::HOSTING_MODE_POSTGRES_SELF:
     m_radiobutton_server_postgres_selfhosted.set_active();
     break;
 #endif //GLOM_ENABLE_POSTGRESQL
 
 #ifdef GLOM_ENABLE_SQLITE
-  case Document_Glom::HOSTING_MODE_SQLITE:
+  case Document::HOSTING_MODE_SQLITE:
     m_radiobutton_server_sqlite.set_active();
     break;
 #endif //GLOM_ENABLE_SQLITE
@@ -195,26 +195,26 @@ Glib::ustring FileChooserDialog_SaveExtras::get_extra_newdb_title() const
   return m_entry_title.get_text();
 }
 
-Document_Glom::HostingMode FileChooserDialog_SaveExtras::get_extra_newdb_hosting_mode() const
+Document::HostingMode FileChooserDialog_SaveExtras::get_extra_newdb_hosting_mode() const
 {
 #ifdef GLOM_ENABLE_POSTGRESQL
   if(m_radiobutton_server_postgres_central.get_active())
-    return Document_Glom::HOSTING_MODE_POSTGRES_CENTRAL;
+    return Document::HOSTING_MODE_POSTGRES_CENTRAL;
   else if(m_radiobutton_server_postgres_selfhosted.get_active())
-    return Document_Glom::HOSTING_MODE_POSTGRES_SELF;
+    return Document::HOSTING_MODE_POSTGRES_SELF;
 #endif //GLOM_ENABLE_POSTGRESQL
 
 #ifdef GLOM_ENABLE_SQLITE
   if(m_radiobutton_server_sqlite.get_active())
-    return Document_Glom::HOSTING_MODE_SQLITE;
+    return Document::HOSTING_MODE_SQLITE;
 #endif //GLOM_ENABLE_SQLITE
 
   g_assert_not_reached();
 
 #ifdef GLOM_ENABLE_SQLITE
-  return Document_Glom::HOSTING_MODE_SQLITE; //Arbitrary
+  return Document::HOSTING_MODE_SQLITE; //Arbitrary
 #else
-  return Document_Glom::HOSTING_MODE_POSTGRES_SELF; //Arbitrary.
+  return Document::HOSTING_MODE_POSTGRES_SELF; //Arbitrary.
 #endif //GLOM_ENABLE_SQLITE
 }
 

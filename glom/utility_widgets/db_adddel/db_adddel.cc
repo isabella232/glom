@@ -748,7 +748,7 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
           const sharedptr<LayoutItem_Field> layout_field_second = sharedptr<LayoutItem_Field>::create();
           if(use_second)
           {
-            Document_Glom* document = get_document();
+            Document* document = get_document();
             if(document)
             {
               sharedptr<Field> field_second = document->get_field(to_table, choice_second); //TODO: Actually show this in the combo:
@@ -1236,7 +1236,7 @@ void DbAddDel::set_prevent_user_signals(bool bVal)
   m_bPreventUserSignals = bVal;
 }
 
-void DbAddDel::set_column_choices(guint col, const type_vecStrings& vecStrings)
+void DbAddDel::set_column_choices(guint col, const type_vec_strings& vecStrings)
 {
   InnerIgnore innerIgnore(this); //Stop on_treeview_columns_changed() from doing anything when it is called just because we add new columns.
 
@@ -1251,7 +1251,7 @@ void DbAddDel::set_column_choices(guint col, const type_vecStrings& vecStrings)
     {
       //Add the choices:
       pCellRenderer->remove_all_list_items();
-      for(type_vecStrings::const_iterator iter = vecStrings.begin(); iter != vecStrings.end(); ++iter)
+      for(type_vec_strings::const_iterator iter = vecStrings.begin(); iter != vecStrings.end(); ++iter)
       {
         pCellRenderer->append_list_item(*iter);
       }
@@ -1813,7 +1813,7 @@ void DbAddDel::on_treeview_columns_changed()
   }
 }
 
-DbAddDel::type_vecStrings DbAddDel::get_columns_order() const
+DbAddDel::type_vec_strings DbAddDel::get_columns_order() const
 {
   //This list is rebuilt in on_treeview_columns_changed, but maybe we could just build it here.
   return m_vecColumnIDs;
@@ -2191,7 +2191,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
         //plus how to identify the record in that table.
         const Glib::ustring relationship_name = layout_field->get_relationship_name();
 
-        Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+        Document* document = dynamic_cast<Document*>(get_document());
 
         sharedptr<Relationship> relationship = document->get_relationship(m_found_set.m_table_name, relationship_name);
         if(relationship)

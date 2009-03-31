@@ -152,12 +152,12 @@ void ComboBox_Relationship::set_selected_relationship(const Glib::ustring& relat
     unset_active();
 }
 
-void ComboBox_Relationship::set_relationships(Document_Glom* document, const Glib::ustring parent_table_name, bool show_related_relationships, bool show_parent_table_name)
+void ComboBox_Relationship::set_relationships(Document* document, const Glib::ustring parent_table_name, bool show_related_relationships, bool show_parent_table_name)
 {
   if(!document)
     return;
 
-  const Document_Glom::type_vecRelationships relationships = document->get_relationships(parent_table_name, true /* plus system properties */);
+  const Document::type_vec_relationships relationships = document->get_relationships(parent_table_name, true /* plus system properties */);
 
   m_model->clear();
 
@@ -165,7 +165,7 @@ void ComboBox_Relationship::set_relationships(Document_Glom* document, const Gli
     set_display_parent_table(parent_table_name, document->get_table_title(parent_table_name));
 
   //Fill the model:
-  for(type_vecRelationships::const_iterator iter = relationships.begin(); iter != relationships.end(); ++iter)
+  for(type_vec_relationships::const_iterator iter = relationships.begin(); iter != relationships.end(); ++iter)
   {
     Gtk::TreeModel::iterator tree_iter = m_model->append();
     Gtk::TreeModel::Row row = *tree_iter;
@@ -175,10 +175,10 @@ void ComboBox_Relationship::set_relationships(Document_Glom* document, const Gli
     row[m_model_columns.m_separator] = false;
 
     //Children:
-    if(show_related_relationships && !Document_Glom::get_relationship_is_system_properties(rel))
+    if(show_related_relationships && !Document::get_relationship_is_system_properties(rel))
     {
-      const Document_Glom::type_vecRelationships sub_relationships = document->get_relationships(rel->get_to_table(), false /* plus system properties */);
-      for(type_vecRelationships::const_iterator iter = sub_relationships.begin(); iter != sub_relationships.end(); ++iter)
+      const Document::type_vec_relationships sub_relationships = document->get_relationships(rel->get_to_table(), false /* plus system properties */);
+      for(type_vec_relationships::const_iterator iter = sub_relationships.begin(); iter != sub_relationships.end(); ++iter)
       {
         Gtk::TreeModel::iterator tree_iter_child = m_model->append(tree_iter->children());
         Gtk::TreeModel::Row row = *tree_iter_child;
@@ -191,14 +191,14 @@ void ComboBox_Relationship::set_relationships(Document_Glom* document, const Gli
   }
 }
 
-void ComboBox_Relationship::set_relationships(const type_vecRelationships& relationships, const Glib::ustring& parent_table_name, const Glib::ustring& parent_table_title)
+void ComboBox_Relationship::set_relationships(const type_vec_relationships& relationships, const Glib::ustring& parent_table_name, const Glib::ustring& parent_table_title)
 {
   m_model->clear();
 
   set_display_parent_table(parent_table_name, parent_table_title);
 
   //Fill the model:
-  for(type_vecRelationships::const_iterator iter = relationships.begin(); iter != relationships.end(); ++iter)
+  for(type_vec_relationships::const_iterator iter = relationships.begin(); iter != relationships.end(); ++iter)
   {
     Gtk::TreeModel::iterator tree_iter = m_model->append();
     Gtk::TreeModel::Row row = *tree_iter;

@@ -845,13 +845,13 @@ Glib::RefPtr<Goocanvas::Item> Canvas_PrintLayout::get_canvas_table_cell_child(co
 
 Base_DB::type_vecLayoutFields Canvas_PrintLayout::get_portal_fields_to_show(const sharedptr<LayoutItem_Portal>& portal)
 {
-  const Document_Glom* document = get_document();
+  const Document* document = get_document();
   if(!document)
     std::cerr << "Canvas_PrintLayout::get_portal_fields_to_show(): document is NULL." << std::endl;
 
   if(document && portal)
   {
-    Document_Glom::type_list_layout_groups mapGroups;
+    Document::type_list_layout_groups mapGroups;
     mapGroups.push_back(portal);
 
     sharedptr<const Relationship> relationship = portal->get_relationship();

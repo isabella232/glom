@@ -593,11 +593,11 @@ Glib::ustring Utils::title_from_string(const Glib::ustring& text)
   return result;
 }
 
-Utils::type_vecStrings Utils::string_separate(const Glib::ustring& str, const Glib::ustring& separator, bool ignore_quoted_separator)
+Utils::type_vec_strings Utils::string_separate(const Glib::ustring& str, const Glib::ustring& separator, bool ignore_quoted_separator)
 {
   //std::cout << "Utils::string_separate(): separator=" << separator << std::endl;
 
-  type_vecStrings result;
+  type_vec_strings result;
 
   const Glib::ustring::size_type size = str.size();
   const Glib::ustring::size_type size_separator = separator.size();

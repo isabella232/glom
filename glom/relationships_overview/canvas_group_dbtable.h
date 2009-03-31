@@ -31,11 +31,11 @@ namespace Glom
 class CanvasGroupDbTable : public CanvasGroupMovable
 {
 private:
-  CanvasGroupDbTable(const Glib::ustring& table_name, const Glib::ustring& table_title, const Document_Glom::type_vecFields& fields, double x = 0.0, double y = 0.0);
+  CanvasGroupDbTable(const Glib::ustring& table_name, const Glib::ustring& table_title, const Document::type_vec_fields& fields, double x = 0.0, double y = 0.0);
   virtual ~CanvasGroupDbTable();
 
 public:
-  static Glib::RefPtr<CanvasGroupDbTable> create(const Glib::ustring& table_name, const Glib::ustring& table_title, const Document_Glom::type_vecFields& fields, double x = 0.0, double y = 0.0);
+  static Glib::RefPtr<CanvasGroupDbTable> create(const Glib::ustring& table_name, const Glib::ustring& table_title, const Document::type_vec_fields& fields, double x = 0.0, double y = 0.0);
  
   //TODO: Use bounds instead?
   double get_table_height() const;

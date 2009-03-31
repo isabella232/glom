@@ -94,7 +94,7 @@ Dialog_Layout_Export::~Dialog_Layout_Export()
 {
 }
 
-void Dialog_Layout_Export::set_layout_groups(Document_Glom::type_list_layout_groups& mapGroups, Document_Glom* document, const Glib::ustring& table_name)
+void Dialog_Layout_Export::set_layout_groups(Document::type_list_layout_groups& mapGroups, Document* document, const Glib::ustring& table_name)
 {
   Base_DB::set_document(document);
 
@@ -138,7 +138,7 @@ void Dialog_Layout_Export::set_layout_groups(Document_Glom::type_list_layout_gro
     m_model_fields->clear();
 
     guint field_sequence = 1; //0 means no sequence
-    for(Document_Glom::type_list_layout_groups::const_iterator iter = mapGroups.begin(); iter != mapGroups.end(); ++iter)
+    for(Document::type_list_layout_groups::const_iterator iter = mapGroups.begin(); iter != mapGroups.end(); ++iter)
     {
       sharedptr<const LayoutGroup> group = *iter;
       if(!group)
@@ -219,12 +219,12 @@ void Dialog_Layout_Export::on_button_down()
   move_treeview_selection_down(m_treeview_fields, m_ColumnsFields.m_col_sequence);
 }
 
-void Dialog_Layout_Export::get_layout_groups(Document_Glom::type_list_layout_groups& layout_groups) const
+void Dialog_Layout_Export::get_layout_groups(Document::type_list_layout_groups& layout_groups) const
 {
   //Get the data from the TreeView and store it in the document:
 
   //Get the groups and their fields:
-  Document_Glom::type_list_layout_groups groups;
+  Document::type_list_layout_groups groups;
 
   //Add the fields to the one group:
   sharedptr<LayoutGroup> others = sharedptr<LayoutGroup>::create();

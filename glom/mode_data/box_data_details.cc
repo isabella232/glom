@@ -199,15 +199,15 @@ void Box_Data_Details::create_layout()
   //Remove existing child widgets:
   m_FlowTable.remove_all();
 
-  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  Document* document = dynamic_cast<Document*>(get_document());
   if(document)
   {
     m_FlowTable.set_table(m_table_name); //This allows portals to get full Relationship information
 
     //This map of layout groups will also contain the field information from the database:
-    Document_Glom::type_list_layout_groups layout_groups = get_data_layout_groups(m_layout_name, m_layout_platform);
+    Document::type_list_layout_groups layout_groups = get_data_layout_groups(m_layout_name, m_layout_platform);
 
-    for(Document_Glom::type_list_layout_groups::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
+    for(Document::type_list_layout_groups::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
     {
       m_FlowTable.add_layout_group(*iter);
     }
@@ -336,11 +336,11 @@ bool Box_Data_Details::fill_from_database()
 
         if((result && result->get_n_rows()) || primary_key_is_empty) //either a working result or no result needed.
         {
-          const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
+          const Document* pDoc = dynamic_cast<const Document*>(get_document());
           if(pDoc)
           {
             //Get glom-specific field info:
-            //Document_Glom::type_vecFields vecFields = pDoc->get_table_fields(m_table_name);
+            //Document::type_vec_fields vecFields = pDoc->get_table_fields(m_table_name);
 
             const int row_number = 0; //The only row.
             int cols_count = 0;
@@ -403,7 +403,7 @@ void Box_Data_Details::on_button_new()
   {
     //Warn the user that they won't see anything if there are no fields on the layout,
     //doing an extra check:
-    Document_Glom* document = get_document();
+    Document* document = get_document();
     if( document && !(document->get_data_layout_groups_have_any_fields(m_layout_name, m_table_name, m_layout_platform)) )
     {
       Gtk::Window* parent_window = get_app_window();
@@ -506,7 +506,7 @@ void Box_Data_Details::recalculate_fields_for_related_records(const Glib::ustrin
 
   //Check all fields in the parent table:
   const Gnome::Gda::Value primary_key_value = get_primary_key_value_selected();
-  for(type_vecFields::iterator iter = m_TableFields.begin(); iter != m_TableFields.end(); ++iter)
+  for(type_vec_fields::iterator iter = m_TableFields.begin(); iter != m_TableFields.end(); ++iter)
   {
     const sharedptr<const Field> field = *iter;
 
@@ -600,11 +600,11 @@ void Box_Data_Details::on_flowtable_layout_changed()
 {
   //Get new layout:
 #if 0
-  Document_Glom::type_list_layout_groups layout_groups;
+  Document::type_list_layout_groups layout_groups;
   m_FlowTable.get_layout_groups(layout_groups);
 
   //Store it in the document:
-  Document_Glom* document = get_document();
+  Document* document = get_document();
   if(document)
     document->set_data_layout_groups(m_layout_name, m_table_name, m_layout_platform, layout_groups);
   //Build the view again from the new layout:
@@ -612,7 +612,7 @@ void Box_Data_Details::on_flowtable_layout_changed()
   create_layout();
 
   //Store it in the document:
-  Document_Glom* document = get_document();
+  Document* document = get_document();
   if(document)
     document->set_modified();
     
@@ -691,7 +691,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
 
   Gtk::Window* window = get_app_window();
 
-  Document_Glom* document = dynamic_cast<Document_Glom*>(get_document());
+  Document* document = dynamic_cast<Document*>(get_document());
 
   Gnome::Gda::Value primary_key_value = get_primary_key_value_selected();
   //std::cout << "Box_Data_Details::on_flowtable_field_edited(): primary_key_value=" << primary_key_value.to_string() << std::endl;
@@ -801,8 +801,8 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
         //If this is a foreign key then refresh the related records:
         /*
         bool bIsForeignKey = false;
-        Document_Glom::type_vecRelationships vecRelationships = get_document()->get_relationships(m_table_name);
-        for(Document_Glom::type_vecRelationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); iter++)
+        Document::type_vec_relationships vecRelationships = get_document()->get_relationships(m_table_name);
+        for(Document::type_vec_relationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); iter++)
         {
           const Relationship& relationship = *iter;
 
@@ -985,8 +985,8 @@ void Box_Data_Details::print_layout()
     //The groups:
     xmlpp::Element* nodeParent = nodeRoot;
 
-    Document_Glom::type_list_layout_groups layout_groups = get_data_layout_groups(m_layout_name, m_layout_platform);
-    for(Document_Glom::type_list_layout_groups::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
+    Document::type_list_layout_groups layout_groups = get_data_layout_groups(m_layout_name, m_layout_platform);
+    for(Document::type_list_layout_groups::const_iterator iter = layout_groups.begin(); iter != layout_groups.end(); ++iter)
     {
       sharedptr<const LayoutGroup> layout_group = *iter;
       print_layout_group(nodeParent, layout_group);

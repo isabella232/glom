@@ -106,12 +106,12 @@ void ComboBox_Fields::set_selected_field(const Glib::ustring& field_name)
     unset_active();
 }
 
-void ComboBox_Fields::set_fields(Document_Glom* document, const Glib::ustring parent_table_name)
+void ComboBox_Fields::set_fields(Document* document, const Glib::ustring parent_table_name)
 {
   if(!document)
     return;
 
-  const Document_Glom::type_vecFields fields = document->get_table_fields(parent_table_name);
+  const Document::type_vec_fields fields = document->get_table_fields(parent_table_name);
 
   if(!m_model)
     return;
@@ -119,7 +119,7 @@ void ComboBox_Fields::set_fields(Document_Glom* document, const Glib::ustring pa
   m_model->clear();
 
   //Fill the model:
-  for(type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+  for(type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
   {
     Gtk::TreeModel::iterator tree_iter = m_model->append();
     Gtk::TreeModel::Row row = *tree_iter;
@@ -130,12 +130,12 @@ void ComboBox_Fields::set_fields(Document_Glom* document, const Glib::ustring pa
   }
 }
 
-void ComboBox_Fields::set_fields(Document_Glom* document, const Glib::ustring parent_table_name, Field::glom_field_type field_type)
+void ComboBox_Fields::set_fields(Document* document, const Glib::ustring parent_table_name, Field::glom_field_type field_type)
 {
   if(!document)
     return;
 
-  const Document_Glom::type_vecFields fields = document->get_table_fields(parent_table_name);
+  const Document::type_vec_fields fields = document->get_table_fields(parent_table_name);
 
   if(!m_model)
     return;
@@ -143,7 +143,7 @@ void ComboBox_Fields::set_fields(Document_Glom* document, const Glib::ustring pa
   m_model->clear();
 
   //Fill the model:
-  for(type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+  for(type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
   {
     sharedptr<Field> rel = *iter;
     if(rel && (rel->get_glom_type() == field_type))
@@ -159,7 +159,7 @@ void ComboBox_Fields::set_fields(Document_Glom* document, const Glib::ustring pa
   }
 }
 
-void ComboBox_Fields::set_fields(const type_vecFields& fields, bool with_none_item)
+void ComboBox_Fields::set_fields(const type_vec_fields& fields, bool with_none_item)
 {
   if(!m_model)
     return;
@@ -185,7 +185,7 @@ void ComboBox_Fields::set_fields(const type_vecFields& fields, bool with_none_it
   }
 
   //Fill the model:
-  for(type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+  for(type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
   {
     Gtk::TreeModel::iterator tree_iter = m_model->append();
     Gtk::TreeModel::Row row = *tree_iter;

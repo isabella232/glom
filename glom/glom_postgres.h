@@ -36,7 +36,7 @@ public:
 
 protected:
   //Utility functions to help with the odd formats of postgres internal catalog fields:
-  static type_vecStrings pg_list_separate(const Glib::ustring& str);
+  static type_vec_strings pg_list_separate(const Glib::ustring& str);
 
 };
 

@@ -43,7 +43,7 @@ class DataWidget
 {
 public:
   //explicit DataWidget(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  explicit DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ustring& table_name, const Document_Glom* document);
+  explicit DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ustring& table_name, const Document* document);
   virtual ~DataWidget();
 
   virtual Gtk::Label* get_label();
@@ -60,7 +60,7 @@ public:
   virtual void set_editable(bool editable = true);
   virtual void set_viewable(bool viewable = true);
 
-  static sharedptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field, Document_Glom* document, App_Glom* app);
+  static sharedptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field, Document* document, App_Glom* app);
   sharedptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name);
   sharedptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field);
 #ifndef GLOM_ENABLE_CLIENT_ONLY

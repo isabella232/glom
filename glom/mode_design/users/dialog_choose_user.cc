@@ -34,9 +34,9 @@ Dialog_ChooseUser::~Dialog_ChooseUser()
 {
 }
 
-void Dialog_ChooseUser::set_user_list(const type_vecStrings& users)
+void Dialog_ChooseUser::set_user_list(const type_vec_strings& users)
 {
-  for(type_vecStrings::const_iterator iter = users.begin(); iter != users.end(); ++iter)
+  for(type_vec_strings::const_iterator iter = users.begin(); iter != users.end(); ++iter)
   {
     m_combo_name->append_text(*iter);
   }

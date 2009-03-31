@@ -60,7 +60,7 @@ Dialog_ChooseRelationship::~Dialog_ChooseRelationship()
 {
 }
 
-void Dialog_ChooseRelationship::set_document(Document_Glom* document, const Glib::ustring& table_name)
+void Dialog_ChooseRelationship::set_document(Document* document, const Glib::ustring& table_name)
 {
   m_document = document;
   m_table_name = table_name;
@@ -73,8 +73,8 @@ void Dialog_ChooseRelationship::set_document(Document_Glom* document, const Glib
 
     //Fill the treeview:
     m_model->clear();
-    Document_Glom::type_vecRelationships vecRelationships = document->get_relationships(table_name);
-    for(Document_Glom::type_vecRelationships::const_iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); ++iter)
+    Document::type_vec_relationships vecRelationships = document->get_relationships(table_name);
+    for(Document::type_vec_relationships::const_iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); ++iter)
     {
       Gtk::TreeModel::iterator iterRow = m_model->append();
       Gtk::TreeModel::Row row = *iterRow;

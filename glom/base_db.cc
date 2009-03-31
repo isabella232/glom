@@ -370,15 +370,15 @@ bool Base_DB::get_table_exists_in_database(const Glib::ustring& table_name) cons
 {
   //TODO_Performance
 
-  type_vecStrings tables = get_table_names_from_database();
-  type_vecStrings::const_iterator iterFind = std::find(tables.begin(), tables.end(), table_name);
+  type_vec_strings tables = get_table_names_from_database();
+  type_vec_strings::const_iterator iterFind = std::find(tables.begin(), tables.end(), table_name);
   return (iterFind != tables.end());
 }
 
 //TODO_Performance: Avoid calling this so often.
-Base_DB::type_vecStrings Base_DB::get_table_names_from_database(bool ignore_system_tables) const
+Base_DB::type_vec_strings Base_DB::get_table_names_from_database(bool ignore_system_tables) const
 {
-  type_vecStrings result;
+  type_vec_strings result;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   sharedptr<SharedConnection> sharedconnection = connect_to_server();
 #else
@@ -452,7 +452,7 @@ Base_DB::type_vecStrings Base_DB::get_table_names_from_database(bool ignore_syst
 
 AppState::userlevels Base_DB::get_userlevel() const
 {
-  const Document_Glom* document = dynamic_cast<const Document_Glom*>(get_document());
+  const Document* document = dynamic_cast<const Document*>(get_document());
   if(document)
   {
     return document->get_userlevel();
@@ -466,7 +466,7 @@ AppState::userlevels Base_DB::get_userlevel() const
 
 void Base_DB::set_userlevel(AppState::userlevels value)
 {
-  Document_Glom* document = get_document();
+  Document* document = get_document();
   if(document)
   {
     document->set_userlevel(value);
@@ -480,12 +480,12 @@ void Base_DB::on_userlevel_changed(AppState::userlevels /* userlevel */)
 
 
 
-void Base_DB::set_document(Document_Glom* pDocument)
+void Base_DB::set_document(Document* pDocument)
 {
   View_Composite_Glom::set_document(pDocument);
 
   //Connect to a signal that is only on the derived document class:
-  Document_Glom* document = get_document();
+  Document* document = get_document();
   if(document)
   {
     document->signal_userlevel_changed().connect( sigc::mem_fun(*this, &Base_DB::on_userlevel_changed) );
@@ -499,12 +499,12 @@ void Base_DB::set_document(Document_Glom* pDocument)
 
 
 //static:
-Base_DB::type_vecStrings Base_DB::util_vecStrings_from_Fields(const type_vecFields& fields)
+Base_DB::type_vec_strings Base_DB::util_vecStrings_from_Fields(const type_vec_fields& fields)
 {
   //Get vector of field names, suitable for a combo box:
 
-  type_vecStrings vecNames;
-  for(type_vecFields::size_type i = 0; i < fields.size(); i++)
+  type_vec_strings vecNames;
+  for(type_vec_fields::size_type i = 0; i < fields.size(); i++)
   {
     vecNames.push_back(fields[i]->get_name());
   }
@@ -514,14 +514,14 @@ Base_DB::type_vecStrings Base_DB::util_vecStrings_from_Fields(const type_vecFiel
 
 bool Base_DB::get_field_exists_in_database(const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
-  type_vecFields vecFields = get_fields_for_table_from_database(table_name);
-  type_vecFields::const_iterator iterFind = std::find_if(vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(field_name));
+  type_vec_fields vecFields = get_fields_for_table_from_database(table_name);
+  type_vec_fields::const_iterator iterFind = std::find_if(vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(field_name));
   return iterFind != vecFields.end();
 }
 
-Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::ustring& table_name, bool /* including_system_fields */)
+Base_DB::type_vec_fields Base_DB::get_fields_for_table_from_database(const Glib::ustring& table_name, bool /* including_system_fields */)
 {
-  type_vecFields result;
+  type_vec_fields result;
 
   if(table_name.empty())
     return result;
@@ -666,36 +666,36 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
   }
 
   //Hide system fields.
-  type_vecFields::iterator iterFind = std::find_if(result.begin(), result.end(), predicate_FieldHasName<Field>(GLOM_STANDARD_FIELD_LOCK));
+  type_vec_fields::iterator iterFind = std::find_if(result.begin(), result.end(), predicate_FieldHasName<Field>(GLOM_STANDARD_FIELD_LOCK));
   if(iterFind != result.end())
     result.erase(iterFind);
 
   return result;
 }
 
-Base_DB::type_vecFields Base_DB::get_fields_for_table(const Glib::ustring& table_name, bool including_system_fields) const
+Base_DB::type_vec_fields Base_DB::get_fields_for_table(const Glib::ustring& table_name, bool including_system_fields) const
 {
   //Get field definitions from the database:
-  type_vecFields fieldsDatabase = get_fields_for_table_from_database(table_name, including_system_fields);
+  type_vec_fields fieldsDatabase = get_fields_for_table_from_database(table_name, including_system_fields);
 
-  const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
+  const Document* pDoc = dynamic_cast<const Document*>(get_document());
   if(!pDoc)
     return fieldsDatabase; //This should never happen.
   else
   {
-    type_vecFields result;
+    type_vec_fields result;
 
-    type_vecFields fieldsDocument = pDoc->get_table_fields(table_name);
+    type_vec_fields fieldsDocument = pDoc->get_table_fields(table_name);
 
     //Look at each field in the database:
-    for(type_vecFields::iterator iter = fieldsDocument.begin(); iter != fieldsDocument.end(); ++iter)
+    for(type_vec_fields::iterator iter = fieldsDocument.begin(); iter != fieldsDocument.end(); ++iter)
     {
       sharedptr<Field> field = *iter;
       const Glib::ustring field_name = field->get_name();
 
       //Get the field info from the database:
       //This is in the document as well, but it _might_ have changed.
-      type_vecFields::const_iterator iterFindDatabase = std::find_if(fieldsDatabase.begin(), fieldsDatabase.end(), predicate_FieldHasName<Field>(field_name));
+      type_vec_fields::const_iterator iterFindDatabase = std::find_if(fieldsDatabase.begin(), fieldsDatabase.end(), predicate_FieldHasName<Field>(field_name));
 
       if(iterFindDatabase != fieldsDatabase.end() ) //Ignore fields that don't exist in the database anymore.
       {
@@ -720,12 +720,12 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table(const Glib::ustring& table
     }
 
     //Add any fields that are in the database, but not in the document:
-    for(type_vecFields::iterator iter = fieldsDatabase.begin(); iter != fieldsDatabase.end(); ++iter)
+    for(type_vec_fields::iterator iter = fieldsDatabase.begin(); iter != fieldsDatabase.end(); ++iter)
     {
       Glib::ustring field_name = (*iter)->get_name();
 
        //Look in the result so far:
-       type_vecFields::const_iterator iterFind = std::find_if(result.begin(), result.end(), predicate_FieldHasName<Field>(field_name));
+       type_vec_fields::const_iterator iterFind = std::find_if(result.begin(), result.end(), predicate_FieldHasName<Field>(field_name));
 
        //Add it if it is not there:
        if(iterFind == result.end() )
@@ -933,8 +933,8 @@ bool Base_DB::add_standard_tables() const
   try
 #endif // GLIBMM_EXCEPTIONS_ENABLED
   {
-    Document_Glom::type_vecFields pref_fields;
-    sharedptr<TableInfo> prefs_table_info = Document_Glom::create_table_system_preferences(pref_fields);
+    Document::type_vec_fields pref_fields;
+    sharedptr<TableInfo> prefs_table_info = Document::create_table_system_preferences(pref_fields);
 
     //Name, address, etc:
     if(!get_table_exists_in_database(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME))
@@ -978,7 +978,7 @@ bool Base_DB::add_standard_tables() const
       table_info->set_title("System: Auto Increments"); //TODO: Provide standard translations.
       table_info->m_hidden = true;
 
-      Document_Glom::type_vecFields fields;
+      Document::type_vec_fields fields;
 
       sharedptr<Field> primary_key(new Field()); //It's not used, because there's only one record, but we must have one.
       primary_key->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_ID);
@@ -1048,8 +1048,8 @@ bool Base_DB::add_standard_groups()
   // If the connection doesn't support users we can skip this step
   if(sharedconnection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS))
   {
-    const type_vecStrings vecGroups = Privs::get_database_groups();
-    type_vecStrings::const_iterator iterFind = std::find(vecGroups.begin(), vecGroups.end(), devgroup);
+    const type_vec_strings vecGroups = Privs::get_database_groups();
+    type_vec_strings::const_iterator iterFind = std::find(vecGroups.begin(), vecGroups.end(), devgroup);
     if(iterFind == vecGroups.end())
     {
       bool test = query_execute("CREATE GROUP \"" GLOM_STANDARD_GROUP_NAME_DEVELOPER "\"");
@@ -1078,9 +1078,9 @@ bool Base_DB::add_standard_groups()
       priv_devs.m_create = true;
       priv_devs.m_delete = true;
 
-      Document_Glom::type_listTableInfo table_list = get_document()->get_tables(true /* including system prefs */);
+      Document::type_listTableInfo table_list = get_document()->get_tables(true /* including system prefs */);
 
-      for(Document_Glom::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
+      for(Document::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
       {
         sharedptr<const TableInfo> table_info = *iter;
         if(table_info)
@@ -1183,7 +1183,7 @@ bool Base_DB::create_table_with_default_fields(const Glib::ustring& table_name)
   field_primary_key->set_glom_type(Field::TYPE_NUMERIC);
   //std::cout << "field_primary_key->get_auto_increment():" << field_primary_key->get_auto_increment() << std::endl;
 
-  type_vecFields fields;
+  type_vec_fields fields;
   fields.push_back(field_primary_key);
 
   //Description:
@@ -1224,7 +1224,7 @@ bool Base_DB::create_table_with_default_fields(const Glib::ustring& table_name)
   if(created)
   {
     //Save the changes in the document:
-    Document_Glom* document = get_document();
+    Document* document = get_document();
     if(document)
     {
       document->add_table(table_info);
@@ -1235,14 +1235,14 @@ bool Base_DB::create_table_with_default_fields(const Glib::ustring& table_name)
   return created;
 }
 
-bool Base_DB::create_table(const sharedptr<const TableInfo>& table_info, const Document_Glom::type_vecFields& fields_in) const
+bool Base_DB::create_table(const sharedptr<const TableInfo>& table_info, const Document::type_vec_fields& fields_in) const
 {
   //std::cout << "Base_DB::create_table(): " << table_info->get_name() << ", title=" << table_info->get_title() << std::endl;
 
   bool table_creation_succeeded = false;
 
 
-  Document_Glom::type_vecFields fields = fields_in;
+  Document::type_vec_fields fields = fields_in;
 
   //Create the standard field too:
   //(We don't actually use this yet)
@@ -1256,7 +1256,7 @@ bool Base_DB::create_table(const sharedptr<const TableInfo>& table_info, const D
 
   //Create SQL to describe all fields in this table:
   Glib::ustring sql_fields;
-  for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+  for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
   {
     //Create SQL to describe this field:
     sharedptr<Field> field = *iter;
@@ -1311,11 +1311,11 @@ bool Base_DB::create_table(const sharedptr<const TableInfo>& table_info, const D
   return table_creation_succeeded;
 }
 
-bool Base_DB::create_table_add_missing_fields(const sharedptr<const TableInfo>& table_info, const Document_Glom::type_vecFields& fields) const
+bool Base_DB::create_table_add_missing_fields(const sharedptr<const TableInfo>& table_info, const Document::type_vec_fields& fields) const
 {
   const Glib::ustring table_name = table_info->get_name();
 
-  for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+  for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
   {
     sharedptr<const Field> field = *iter;
     if(!get_field_exists_in_database(table_name, field->get_name()))
@@ -1452,11 +1452,11 @@ sharedptr<Field> Base_DB::change_column(const Glib::ustring& table_name, const s
   return result;
 }
 
-bool Base_DB::change_columns(const Glib::ustring& table_name, const type_vecConstFields& old_fields, type_vecFields& fields, Gtk::Window* /* parent_window */) const
+bool Base_DB::change_columns(const Glib::ustring& table_name, const type_vec_const_fields& old_fields, type_vec_fields& fields, Gtk::Window* /* parent_window */) const
 {
   g_assert(old_fields.size() == fields.size());
 
-  type_vecConstFields pass_fields(fields.size());
+  type_vec_const_fields pass_fields(fields.size());
   for(unsigned int i = 0; i < fields.size(); ++i)
   {
     fields[i] = check_field_change_constraints(old_fields[i], fields[i]);
@@ -1525,7 +1525,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Base_DB::get_connection()
 bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
 {
   //TODO_Performance: Avoid copying:
-  const Document_Glom::type_example_rows example_rows = get_document()->get_table_example_data(table_name);
+  const Document::type_example_rows example_rows = get_document()->get_table_example_data(table_name);
   if(example_rows.empty())
   {
     //std::cout << "debug: Base_DB::insert_example_data(): No example data available." << std::endl;
@@ -1543,19 +1543,19 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
 
 
   //Get field names:
-  Document_Glom::type_vecFields vec_fields = get_document()->get_table_fields(table_name);
+  Document::type_vec_fields vec_fields = get_document()->get_table_fields(table_name);
 
   //Actually insert the data:
   //std::cout << "  debug: Base_DB::insert_example_data(): number of rows of data: " << vec_rows.size() << std::endl;
   
   //std::cout << "DEBUG: example_row size = " << example_rows.size() << std::endl;
 
-  for(Document_Glom::type_example_rows::const_iterator iter = example_rows.begin(); iter != example_rows.end(); ++iter)
+  for(Document::type_example_rows::const_iterator iter = example_rows.begin(); iter != example_rows.end(); ++iter)
   {
     //Check that the row contains the correct number of columns.
     //This check will slow this down, but it seems useful:
     //TODO: This can only work if we can distinguish , inside "" and , outside "":
-    const Document_Glom::type_row_data& row_data = *iter;
+    const Document::type_row_data& row_data = *iter;
     Glib::ustring strNames;
     Glib::ustring strVals;
     if(row_data.empty())
@@ -1610,7 +1610,7 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
       break;
   }
 
-  for(Document_Glom::type_vecFields::const_iterator iter = vec_fields.begin(); iter != vec_fields.end(); ++iter)
+  for(Document::type_vec_fields::const_iterator iter = vec_fields.begin(); iter != vec_fields.end(); ++iter)
   {
     if((*iter)->get_auto_increment())
       recalculate_next_auto_increment_value(table_name, (*iter)->get_name());
@@ -1833,7 +1833,7 @@ void Base_DB::fill_full_field_details(const Glib::ustring& parent_table_name, sh
 
   const Glib::ustring table_name = layout_item->get_table_used(parent_table_name);
 
-  Document_Glom* document = get_document();
+  Document* document = get_document();
   if(!document)
   {
     std::cerr << "Base_DB::fill_full_field_details(): document was null." << std::endl;
@@ -1867,14 +1867,14 @@ Glib::ustring Base_DB::get_find_where_clause_quick(const Glib::ustring& table_na
 {
   Glib::ustring strClause;
 
-  const Document_Glom* document = get_document();
+  const Document* document = get_document();
   if(document)
   {
     //TODO: Cache the list of all fields, as well as caching (m_Fields) the list of all visible fields:
-    const Document_Glom::type_vecFields fields = document->get_table_fields(table_name);
+    const Document::type_vec_fields fields = document->get_table_fields(table_name);
 
     type_vecLayoutFields fieldsToGet;
-    for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+    for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
       Glib::ustring strClausePart;
 
@@ -1913,8 +1913,8 @@ sharedptr<Field> Base_DB::get_fields_for_table_one_field(const Glib::ustring& ta
   if(field_name.empty() || table_name.empty())
     return result;
 
-  type_vecFields fields = get_fields_for_table(table_name);
-  type_vecFields::iterator iter = std::find_if(fields.begin(), fields.end(), predicate_FieldHasName<Field>(field_name));
+  type_vec_fields fields = get_fields_for_table(table_name);
+  type_vec_fields::iterator iter = std::find_if(fields.begin(), fields.end(), predicate_FieldHasName<Field>(field_name));
   if(iter != fields.end()) //TODO: Handle error?
   {
     return *iter;
@@ -1924,7 +1924,7 @@ sharedptr<Field> Base_DB::get_fields_for_table_one_field(const Glib::ustring& ta
 }
 
 //static:
-bool Base_DB::get_field_primary_key_index_for_fields(const type_vecFields& fields, guint& field_column)
+bool Base_DB::get_field_primary_key_index_for_fields(const type_vec_fields& fields, guint& field_column)
 {
   //Initialize input parameter:
   field_column = 0;
@@ -1975,13 +1975,13 @@ bool Base_DB::get_field_primary_key_index_for_fields(const type_vecLayoutFields&
 
 sharedptr<Field> Base_DB::get_field_primary_key_for_table(const Glib::ustring& table_name) const
 {
-  const Document_Glom* document = get_document();
+  const Document* document = get_document();
   if(document)
   {
     //TODO_Performance: Cache this result?
-    Document_Glom::type_vecFields fields = document->get_table_fields(table_name);
+    Document::type_vec_fields fields = document->get_table_fields(table_name);
     //std::cout << "Base_DB::get_field_primary_key_for_table(): table=" << table_name << ", fields count=" << fields.size() << std::endl;
-    for(Document_Glom::type_vecFields::iterator iter = fields.begin(); iter != fields.end(); ++iter)
+    for(Document::type_vec_fields::iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
       sharedptr<Field> field = *iter;
       if(!field)
@@ -1997,7 +1997,7 @@ sharedptr<Field> Base_DB::get_field_primary_key_for_table(const Glib::ustring& t
   return sharedptr<Field>();
 }
 
-void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustring& table_name, const Privileges& table_privs, const type_vecFields& all_db_fields, const sharedptr<LayoutGroup>& group, Base_DB::type_vecLayoutFields& vecFields) const
+void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustring& table_name, const Privileges& table_privs, const type_vec_fields& all_db_fields, const sharedptr<LayoutGroup>& group, Base_DB::type_vecLayoutFields& vecFields) const
 {
   //g_warning("Box_Data::get_table_fields_to_show_for_sequence_add_group(): table_name=%s, all_db_fields.size()=%d, group->name=%s", table_name.c_str(), all_db_fields.size(), group->get_name().c_str());
 
@@ -2036,7 +2036,7 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
       }
       else //It's a regular field in the table:
       {
-        type_vecFields::const_iterator iterFind = std::find_if(all_db_fields.begin(), all_db_fields.end(), predicate_FieldHasName<Field>(field_name));
+        type_vec_fields::const_iterator iterFind = std::find_if(all_db_fields.begin(), all_db_fields.end(), predicate_FieldHasName<Field>(field_name));
 
         //If the field does not exist anymore then we won't try to show it:
         if(iterFind != all_db_fields.end() )
@@ -2075,16 +2075,16 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
   }
 }
 
-Base_DB::type_vecLayoutFields Base_DB::get_table_fields_to_show_for_sequence(const Glib::ustring& table_name, const Document_Glom::type_list_layout_groups& mapGroupSequence) const
+Base_DB::type_vecLayoutFields Base_DB::get_table_fields_to_show_for_sequence(const Glib::ustring& table_name, const Document::type_list_layout_groups& mapGroupSequence) const
 {
   //Get field definitions from the database, with corrections from the document:
-  type_vecFields all_fields = get_fields_for_table(table_name);
+  type_vec_fields all_fields = get_fields_for_table(table_name);
 
   const Privileges table_privs = Privs::get_current_privs(table_name);
 
   //Get fields that the document says we should show:
   type_vecLayoutFields result;
-  const Document_Glom* pDoc = dynamic_cast<const Document_Glom*>(get_document());
+  const Document* pDoc = dynamic_cast<const Document*>(get_document());
   if(pDoc)
   {
     if(mapGroupSequence.empty())
@@ -2113,7 +2113,7 @@ Base_DB::type_vecLayoutFields Base_DB::get_table_fields_to_show_for_sequence(con
       }
 
       //Add the rest:
-      for(type_vecFields::const_iterator iter = all_fields.begin(); iter != all_fields.end(); ++iter)
+      for(type_vec_fields::const_iterator iter = all_fields.begin(); iter != all_fields.end(); ++iter)
       {
         sharedptr<Field> field_info = *iter;
 
@@ -2134,10 +2134,10 @@ Base_DB::type_vecLayoutFields Base_DB::get_table_fields_to_show_for_sequence(con
     }
     else
     {
-      type_vecFields vecFieldsInDocument = pDoc->get_table_fields(table_name);
+      type_vec_fields vecFieldsInDocument = pDoc->get_table_fields(table_name);
 
       //We will show the fields that the document says we should:
-      for(Document_Glom::type_list_layout_groups::const_iterator iter = mapGroupSequence.begin(); iter != mapGroupSequence.end(); ++iter)
+      for(Document::type_list_layout_groups::const_iterator iter = mapGroupSequence.begin(); iter != mapGroupSequence.end(); ++iter)
       {
         sharedptr<LayoutGroup> group = *iter;
 
@@ -2316,7 +2316,7 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
           //Add it to the database (even if it is not shown in the view)
           //Using true for the last parameter means we use existing calculations where possible,
           //instead of recalculating a field that is being calculated already, and for which this dependent field is being calculated anyway.
-          Document_Glom* document = get_document();
+          Document* document = get_document();
           if(document)
           {
             LayoutFieldInRecord field_in_record_layout(layout_item, field_in_record.m_table_name /* parent */, field_in_record.m_key, field_in_record.m_key_value);
@@ -2334,15 +2334,15 @@ Base_DB::type_map_fields Base_DB::get_record_field_values_for_calculation(const 
 {
   type_map_fields field_values;
 
-  Document_Glom* document = get_document();
+  Document* document = get_document();
   if(document)
   {
     //TODO: Cache the list of all fields, as well as caching (m_Fields) the list of all visible fields:
-    const Document_Glom::type_vecFields fields = document->get_table_fields(table_name);
+    const Document::type_vec_fields fields = document->get_table_fields(table_name);
 
     //TODO: This seems silly. We should just have a build_sql_select() that can take this container:
     type_vecLayoutFields fieldsToGet;
-    for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+    for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
       sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
       layout_item->set_full_field_details(*iter);
@@ -2371,7 +2371,7 @@ Base_DB::type_map_fields Base_DB::get_record_field_values_for_calculation(const 
       if(data_model && data_model->get_n_rows())
       {
         int col_index = 0;
-        for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+        for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
         {
           //There should be only 1 row. Well, there could be more but we will ignore them.
           sharedptr<const Field> field = *iter;
@@ -2398,7 +2398,7 @@ Base_DB::type_map_fields Base_DB::get_record_field_values_for_calculation(const 
     if(field_values.empty()) //Maybe there was no primary key, or maybe the record is not yet in the database.
     {
       //Create appropriate empty values:
-      for(Document_Glom::type_vecFields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+      for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
       {
         sharedptr<const Field> field = *iter;
         field_values[field->get_name()] = Conversions::get_empty_value(field->get_glom_type());
@@ -2427,7 +2427,7 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& field_in_re
 
 bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value, bool use_current_calculations, Gtk::Window* /* parent_window */)
 {
-  Document_Glom* document = get_document();
+  Document* document = get_document();
   g_assert(document);
 
   const FieldInRecord field_in_record = layoutfield_in_record.get_fieldinrecord(*document);
@@ -2625,16 +2625,16 @@ Base_DB::type_list_const_field_items Base_DB::get_calculated_fields(const Glib::
 
   type_list_const_field_items result;
 
-  const Document_Glom* document = dynamic_cast<const Document_Glom*>(get_document());
+  const Document* document = dynamic_cast<const Document*>(get_document());
   if(document)
   {
     //Look at each field in the table, and get lists of what fields trigger their calculations, 
     //so we can see if our field is in any of those lists:
 
-    const type_vecFields fields = document->get_table_fields(table_name); //TODO_Performance: Cache this?
+    const type_vec_fields fields = document->get_table_fields(table_name); //TODO_Performance: Cache this?
     //Examine all fields, not just the the shown fields.
     //TODO: How do we trigger relcalculation of related fields if necessary?
-    for(type_vecFields::const_iterator iter = fields.begin(); iter != fields.end();  ++iter)
+    for(type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end();  ++iter)
     {
       sharedptr<Field> field_to_examine = *iter;
       sharedptr<LayoutItem_Field> layoutitem_field_to_examine = sharedptr<LayoutItem_Field>::create();
@@ -2677,7 +2677,7 @@ Base_DB::type_list_const_field_items Base_DB::get_calculation_fields(const Glib:
   if(calculation.empty())
     return result;
 
-  Document_Glom* document = get_document();
+  Document* document = get_document();
   if(!document)
     return result;
 
@@ -2787,13 +2787,13 @@ Base_DB::type_list_lookups Base_DB::get_lookup_fields(const Glib::ustring& table
 {
   type_list_lookups result;
 
-  const Document_Glom* document = dynamic_cast<const Document_Glom*>(get_document());
+  const Document* document = dynamic_cast<const Document*>(get_document());
   if(document)
   {
     //Examine all fields, not just the the shown fields (m_Fields):
-    const type_vecFields fields = document->get_table_fields(table_name); //TODO_Performance: Cache this?
+    const type_vec_fields fields = document->get_table_fields(table_name); //TODO_Performance: Cache this?
     //Examine all fields, not just the the shown fields.
-    for(type_vecFields::const_iterator iter = fields.begin(); iter != fields.end();  ++iter)
+    for(type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end();  ++iter)
     {
       sharedptr<Field> field = *iter;
 
@@ -2915,7 +2915,7 @@ bool Base_DB::check_entered_value_for_uniqueness(const Glib::ustring& table_name
 
 bool Base_DB::get_relationship_exists(const Glib::ustring& table_name, const Glib::ustring& relationship_name)
 {
-  Document_Glom* document = get_document();
+  Document* document = get_document();
   if(document)
   { 
     sharedptr<Relationship> relationship = document->get_relationship(table_name, relationship_name);
@@ -2934,7 +2934,7 @@ sharedptr<const LayoutItem_Field> Base_DB::get_field_is_from_non_hidden_related_
   if(!portal)
     return result;
 
-  const Document_Glom* document = get_document();
+  const Document* document = get_document();
   if(!document)
     return result;
 
@@ -2964,7 +2964,7 @@ sharedptr<const LayoutItem_Field> Base_DB::get_field_identifies_non_hidden_relat
   //Find the first field that is from a non-hidden related table.
   sharedptr<LayoutItem_Field> result;
 
-  const Document_Glom* document = get_document();
+  const Document* document = get_document();
   if(!document)
     return result;
 
@@ -3000,7 +3000,7 @@ sharedptr<const UsesRelationship> Base_DB::get_portal_navigation_relationship_au
   //Initialize output parameters:
   navigation_main = false;
 
-  const Document_Glom* document = get_document();
+  const Document* document = get_document();
   
   //If the related table is not hidden then we can just navigate to that:
   const Glib::ustring direct_related_table_name = portal->get_table_used(Glib::ustring() /* parent table - not relevant */);

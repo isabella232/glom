@@ -707,8 +707,8 @@ bool ConnectionPool::change_column(const Glib::ustring& table_name, const shared
 bool ConnectionPool::change_column(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, std::auto_ptr<Glib::Error>& error)
 #endif
 {
-  type_vecConstFields old_fields(1, field_old);
-  type_vecConstFields new_fields(1, field);
+  type_vec_const_fields old_fields(1, field_old);
+  type_vec_const_fields new_fields(1, field);
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   return change_columns(table_name, old_fields, new_fields);
@@ -718,9 +718,9 @@ bool ConnectionPool::change_column(const Glib::ustring& table_name, const shared
 }
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_vecConstFields& old_fields, const type_vecConstFields& new_fields)
+bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields)
 #else
-bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_vecConstFields& old_fields, const type_vecConstFields& new_fields, std::auto_ptr<Glib::Error>& error)
+bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields, std::auto_ptr<Glib::Error>& error)
 #endif
 {
   sharedptr<SharedConnection> conn;
@@ -764,7 +764,7 @@ ConnectionPool::InitErrors ConnectionPool::initialize(const SlotProgress& slot_p
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-Document_Glom* ConnectionPool::get_document()
+Document* ConnectionPool::get_document()
 {
   if(!m_slot_get_document)
   {
@@ -785,7 +785,7 @@ EpcContents* ConnectionPool::on_publisher_document_requested(EpcPublisher* /* pu
   if(!connection_pool)
     return 0;
 
-  const Document_Glom* document = connection_pool->get_document();
+  const Document* document = connection_pool->get_document();
   if(!document)
     return 0;
 
@@ -879,7 +879,7 @@ void ConnectionPool::avahi_start_publishing()
 #endif
   
   //Publish the document contents over HTTPS (discoverable via avahi):
-  const Document_Glom* document = get_document();
+  const Document* document = get_document();
   if(!document)
     return;
 

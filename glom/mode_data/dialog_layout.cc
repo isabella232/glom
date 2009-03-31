@@ -50,7 +50,7 @@ Dialog_Layout::~Dialog_Layout()
 {
 }
 
-void Dialog_Layout::set_document(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document_Glom* /* document */, const Glib::ustring& table_name, const type_vecLayoutFields& /* table_fields */)
+void Dialog_Layout::set_document(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* /* document */, const Glib::ustring& table_name, const type_vecLayoutFields& /* table_fields */)
 {
   m_modified = false;
 

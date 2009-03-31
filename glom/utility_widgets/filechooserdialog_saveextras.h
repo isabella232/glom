@@ -47,14 +47,14 @@ public:
   void set_extra_message(const Glib::ustring& message);
   void set_extra_newdb_title(const Glib::ustring& title);
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  void set_extra_newdb_hosting_mode(Document_Glom::HostingMode mode);
+  void set_extra_newdb_hosting_mode(Document::HostingMode mode);
   //void set_extra_newdb_self_hosted(bool self_hosted = true);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   Glib::ustring get_extra_newdb_title() const;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  Document_Glom::HostingMode get_extra_newdb_hosting_mode() const;
+  Document::HostingMode get_extra_newdb_hosting_mode() const;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 private:

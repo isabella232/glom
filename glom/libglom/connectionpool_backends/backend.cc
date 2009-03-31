@@ -238,7 +238,7 @@ bool Backend::drop_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection
 //operations at once, maybe optimizing them. For example, for SQLite we need
 //to recreate the whole table when changing columns, so we only need to do
 //this once instead of twice when changing the primary key. armin.
-bool Backend::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vecConstFields& old_fields, const type_vecConstFields& new_fields, std::auto_ptr<Glib::Error>& error)
+bool Backend::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields, std::auto_ptr<Glib::Error>& error)
 {
   static const char* TRANSACTION_NAME = "glom_change_columns_transaction";
   static const gchar* TEMP_COLUMN_NAME = "glom_temp_column"; // TODO: Find a unique name.

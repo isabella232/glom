@@ -45,7 +45,7 @@ DataWidget::DataWidget(Field::glom_field_type glom_type, const Glib::ustring& ti
   m_pMenuPopup(0)
 */
 
-DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ustring& table_name, const Document_Glom* document)
+DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ustring& table_name, const Document* document)
 {
   const Field::glom_field_type glom_type = field->get_glom_type();
   set_layout_item(field, table_name);
@@ -584,7 +584,7 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& ta
   return offer_field_list (table_name, start_field, get_document(), get_application());
 }
 
-sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field, Document_Glom* document, App_Glom* app)
+sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field, Document* document, App_Glom* app)
 {
   sharedptr<LayoutItem_Field> result;
 

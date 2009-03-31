@@ -41,7 +41,7 @@ public:
   //PyObject* m_fields_dict; //Dictionary (map) of field names (string) to field values (Gnome::Gda::Value).
   PyGObject* m_py_gda_connection; //"derived" from PyObject.
   //PyGlomRecord* m_record_parent;
-  Document_Glom* m_document;
+  Document* m_document;
 
   sharedptr<const Relationship>* m_relationship;
   Glib::ustring* m_from_key_value_sqlized;
@@ -55,7 +55,7 @@ public:
 PyTypeObject* PyGlomRelatedRecord_GetPyType();
 
 
-void PyGlomRelatedRecord_SetRelationship(PyGlomRelatedRecord* self, const sharedptr<const Relationship>& relationship, const Glib::ustring& from_key_value_sqlized, Document_Glom* document);
+void PyGlomRelatedRecord_SetRelationship(PyGlomRelatedRecord* self, const sharedptr<const Relationship>& relationship, const Glib::ustring& from_key_value_sqlized, Document* document);
 
 /*
 void PyGlomRelatedRecord_SetConnection(PyGlomRelatedRecord* self, const Glib::RefPtr<Gnome::Gda::Connection>& connection);
