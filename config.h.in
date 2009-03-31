@@ -101,21 +101,6 @@
 /* The domain name to use with gettext. */
 #undef GETTEXT_PACKAGE
 
-/* "definition of GLOM_DTD_INSTALL_DIR" */
-#undef GLOM_DTD_INSTALL_DIR
-
-/* Whether to disable support for self-hosting and developer mode */
-#undef GLOM_ENABLE_CLIENT_ONLY
-
-/* Whether to enable support for the maemo platform */
-#undef GLOM_ENABLE_MAEMO
-
-/* Whether to enable support for PostgreSQL databases. */
-#undef GLOM_ENABLE_POSTGRESQL
-
-/* Whether to enable support for SQLite databases. */
-#undef GLOM_ENABLE_SQLITE
-
 /* Define to 1 if you have the `bind_textdomain_codeset' function. */
 #undef HAVE_BIND_TEXTDOMAIN_CODESET
 

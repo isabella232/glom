@@ -1,3 +1,13 @@
+2009-03-31  Murray Cumming  <murrayc@murrayc.com>
+
+	* config.h.in: Remove definitions that are in 
+	glom/libglom/libglom_config_h.in
+	* configure.ac: Depend on pygobject instead of pygtk and remove duplicate 
+	dependencies in Glom and libglom.
+	* glom/libglom/document/document_glom.h: Remove SWIG directives because I 
+	am now using a separate SWIG .i file.
+	* po/POTFILES.in: Updated.
+
 2009-03-30  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/Makefile.am:

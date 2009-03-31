@@ -105,7 +105,7 @@ if test "$enable_postgresql" = "yes"; then
 fi
 
 # Libraries used by libglom:
-REQUIRED_LIBGLOM_LIBS="giomm-2.4 gthread-2.0 libxml++-2.6 pygda-4.0 >= 2.25.3 pygtk-2.0 >= 2.6.0 libgdamm-4.0 >= 3.99.14 libgda-4.0 >= 4.0.0 libgda-postgres-4.0"
+REQUIRED_LIBGLOM_LIBS="giomm-2.4 gthread-2.0 libxml++-2.6 pygda-4.0 >= 2.25.3 pygobject-2.0 >= 2.6.0 libgdamm-4.0 >= 3.99.14 libgda-4.0 >= 4.0.0 libgda-postgres-4.0"
 
 if test "$enable_maemo" = "yes"; then
 	REQUIRED_LIBGLOM_LIBS="$REQUIRED_LIBGLOM_LIBS ibepc-1.0 >= 0.3.1 avahi-ui";
@@ -117,7 +117,7 @@ fi
 
 
 # Libraries used by Glom:
-REQUIRED_GLOM_LIBS="gtkmm-2.4 >= 2.14 gthread-2.0 gconfmm-2.6 libxml++-2.6 libxslt >= 1.1.10 pygda-4.0 >= 2.25.3 pygtk-2.0 >= 2.6.0 libgdamm-4.0 >= 3.99.14 libgda-4.0 >= 4.0.0 libgda-postgres-4.0 goocanvasmm-1.0 >= 0.14.0"
+REQUIRED_GLOM_LIBS="gtkmm-2.4 >= 2.14 gthread-2.0 gconfmm-2.6 libxml++-2.6 libxslt >= 1.1.10 goocanvasmm-1.0 >= 0.14.0"
 
 REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS $REQUIRED_LIBGLOM_LIBS"
 	
