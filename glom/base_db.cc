@@ -512,6 +512,24 @@ Base_DB::type_vecStrings Base_DB::util_vecStrings_from_Fields(const type_vecFiel
   return vecNames;
 }
 
+static bool meta_table_column_is_primary_key(GdaMetaTable* meta_table, const Glib::ustring column_name)
+{
+  if(!meta_table)
+    return false;
+    
+  for(GSList* item = meta_table->columns; item != NULL; item = item->next)
+  {
+    GdaMetaTableColumn* column = GDA_META_TABLE_COLUMN(item->data);
+    if(!column)
+      continue;
+      
+    if(column->column_name && (column_name == column->column_name))
+      return column->pkey;
+  }
+  
+  return false;
+}    
+    
 bool Base_DB::get_field_exists_in_database(const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
   type_vecFields vecFields = get_fields_for_table_from_database(table_name);
@@ -592,6 +610,20 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
     }
     else
     {
+      //We also use the GdaMetaTable to discover primary keys.
+      //Both these libgda APIs are awful, and it's awful that we must use two APIs. murrayc.
+      Glib::RefPtr<Gnome::Gda::MetaStore> store = connection->get_meta_store();
+      Glib::RefPtr<Gnome::Gda::MetaStruct> metastruct = 
+        Gnome::Gda::MetaStruct::create(store, Gnome::Gda::META_STRUCT_FEATURE_NONE);
+    
+      GdaMetaDbObject* meta_dbobject = metastruct->complement(Gnome::Gda::META_DB_TABLE, 
+        Gnome::Gda::Value(), /* catalog */
+        Gnome::Gda::Value(), /* schema */
+        Gnome::Gda::Value(table_name)); //It's a static instance inside the MetaStore. 
+      GdaMetaTable* meta_table = GDA_META_TABLE(meta_dbobject);
+   
+   
+      //Examine each field:
       guint row = 0;
       guint rows_count = data_model_fields->get_n_rows();
       while(row < rows_count)
@@ -617,6 +649,7 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
           field_info->set_g_type(gdatype);
         }
 
+        
         //Get the default value:
         /* libgda does not return this correctly yet. TODO: check bug http://bugzilla.gnome.org/show_bug.cgi?id=143576
         Gnome::Gda::Value value_defaultvalue = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_DEFAULTVALUE, row);
@@ -630,8 +663,16 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
           field_info->set_allow_null(value_notnull.get_boolean());
 
 
+        sharedptr<Field> field = sharedptr<Field>::create(); //TODO: Get glom-specific information from the document?
+        field->set_field_info(field_info);
+        
+
         //Get whether it is a primary key:
-#if 0 // TODO_gda
+        field->set_primary_key( 
+          meta_table_column_is_primary_key(meta_table, field_info->get_name()) );
+  
+        
+#if 0 // This was with libgda-3.0:
         Gnome::Gda::Value value_primarykey = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_PRIMARYKEY, row);
         if(value_primarykey.get_value_type() ==  G_TYPE_BOOLEAN)
           field_info->set_primary_key( value_primarykey.get_boolean() );
@@ -651,8 +692,7 @@ Base_DB::type_vecFields Base_DB::get_fields_for_table_from_database(const Glib::
         */
 #endif
 
-        sharedptr<Field> field(new Field()); //TODO: Get glom-specific information from the document?
-        field->set_field_info(field_info);
+        
         result.push_back(field);
 
         ++row;

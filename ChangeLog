@@ -1,5 +1,12 @@
 2009-03-31  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/base_db.cc: get_fields_for_table_from_database(): Use the libgda 
+	metastore API (almost as nasty as the schema API) to get the primarykeyness, 
+	because the schema API does not give us this, for no good reason that I can 
+	see. Anyway, it works, allowing us to use pre-existing databases.
+
+2009-03-31  Murray Cumming  <murrayc@murrayc.com>
+
 	* configure.ac: Require libgda 4.0.1 because previous versions are broken 
 	if the sqlite provider is not installed.
 
