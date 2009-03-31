@@ -25,7 +25,7 @@
 #include <glom/mode_design/print_layouts/canvas_print_layout.h>
 #include <glom/mode_design/print_layouts/print_layout_toolbar.h>
 #include <glom/mode_design/print_layouts/print_layout_toolbar_button.h>
-#include <libglom/document/document_glom.h>
+#include <libglom/document/document.h>
 #include <gtkmm/window.h>
 #include <gtkmm/entry.h>
 #include <gtkmm/label.h>

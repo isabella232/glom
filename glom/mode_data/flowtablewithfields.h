@@ -37,7 +37,7 @@
 #include <libglom/data_structure/layout/layoutitem_text.h>
 #include <libglom/data_structure/layout/layoutitem_placeholder.h>
 #include <libglom/data_structure/field.h>
-#include <libglom/document/document_glom.h>
+#include <libglom/document/document.h>
 #include <glom/utility_widgets/layoutwidgetbase.h>
 #include <glom/utility_widgets/layoutwidgetutils.h>
 #include <glom/mode_data/box_data_list_related.h>

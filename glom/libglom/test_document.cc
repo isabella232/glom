@@ -21,7 +21,7 @@
 // Compile this like so:
 // g++ test_document.cc `pkg-config glom-1.0 --libs --cflags`
 
-#include <libglom/document/document_glom.h>
+#include <libglom/document/document.h>
 #include <libglom/init.h>
 
 void print_layout_group(const Glom::sharedptr<Glom::LayoutGroup>& layout_group, const Glib::ustring& indent)

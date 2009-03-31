@@ -24,7 +24,7 @@
 #include <gtkmm/combobox.h>
 #include <gtkmm/builder.h>
 #include <libglom/data_structure/relationship.h>
-#include <libglom/document/document_glom.h>
+#include <libglom/document/document.h>
 #include <libglom/sharedptr.h>
 
 #include <gtkmm/treestore.h>

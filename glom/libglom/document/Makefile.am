@@ -2,8 +2,8 @@ SUBDIRS = bakery
 
 AM_CPPFLAGS = -I@top_srcdir@/ -I@top_srcdir@/glom $(LIBGLOM_CFLAGS) $(GLOM_WARNING_FLAGS)
 
-h_sources = document_glom.h view.h
-cc_sources = document_glom.cc
+h_sources = document.h view.h
+cc_sources = document.cc
 
 library_includedir=$(includedir)/glom-1.0/libglom/document
 library_include_HEADERS = $(h_sources)

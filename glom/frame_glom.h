@@ -25,7 +25,7 @@
 
 #include <gtkmm/frame.h>
 #include <libglom/document/bakery/view/view_composite.h>
-#include <libglom/document/document_glom.h>
+#include <libglom/document/document.h>
 
 #include "dialog_glom.h"
 #include "navigation/box_tables.h"

@@ -21,7 +21,7 @@
 #ifndef DOCUMENT_GLOM_VIEW_H
 #define DOCUMENT_GLOM_VIEW_H
 
-#include <libglom/document/document_glom.h>
+#include <libglom/document/document.h>
 #include <libglom/document/bakery/view/view_composite.h>
 
 namespace Glom

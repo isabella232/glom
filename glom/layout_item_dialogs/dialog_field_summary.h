@@ -23,7 +23,7 @@
 
 #include <gtkmm.h>
 #include "../utility_widgets/dialog_properties.h"
-#include <libglom/document/document_glom.h>
+#include <libglom/document/document.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 #include "../box_withbuttons.h"
 #include "../utility_widgets/combo_textglade.h"

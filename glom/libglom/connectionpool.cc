@@ -21,7 +21,7 @@
 #include <libglom/libglom_config.h> // For GLOM_ENABLE_MAEMO
  
 #include <libglom/connectionpool.h>
-#include <libglom/document/document_glom.h>
+#include <libglom/document/document.h>
 #include <libglom/utils.h>
 //#include <libgdamm/connectionevent.h>
 #include <glibmm/i18n.h>

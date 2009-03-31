@@ -22,7 +22,7 @@
 
 #include "iso_codes.h"
 #include <libxml++/libxml++.h>
-#include <libglom/document/document_glom.h>
+#include <libglom/document/document.h>
 #include <libglom/utils.h>
 #include <glibmm/i18n.h>
 

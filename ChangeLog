@@ -1,5 +1,10 @@
 2009-03-31  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/document/document_glom.[h|cc]: Renamed to document.[h|cc]:
+	* *.[h|cc]: Adapted.
+
+2009-03-31  Murray Cumming  <murrayc@murrayc.com>
+
 	* Renamed Document_Glom to Document, and type_vec* to type_vec_* in all 
 	lower case, to make the API more consistent.
 	

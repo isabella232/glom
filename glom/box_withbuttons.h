@@ -24,7 +24,7 @@
 #include <gtkmm.h>
 #include "utility_widgets/adddel/adddel_withbuttons.h"
 
-#include <libglom/document/document_glom.h>
+#include <libglom/document/document.h>
 #include <libglom/connectionpool.h>
 #include <libglom/appstate.h>
 #include <glom/base_db.h>

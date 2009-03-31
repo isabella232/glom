@@ -26,7 +26,7 @@
 
 #include <Python.h>
 
-#include <libglom/document/document_glom.h>
+#include <libglom/document/document.h>
 #include <libglom/data_structure/field.h>
 #include <glibmm/ustring.h>
 

@@ -25,7 +25,7 @@
 #include <libglom/data_structure/layout/layoutitem_field.h>
 #include <libgdamm.h>
 #include "glom_db_treemodel.h"
-#include <libglom/document/document_glom.h>
+#include <libglom/document/document.h>
 #include <glom/base_db_table_data.h>
 
 #include <vector>

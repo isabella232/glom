@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <libglom/document/document_glom.h>
+#include <libglom/document/document.h>
 #include <libglom/utils.h>
 //#include <libglom/data_structure/glomconversions.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_summary.h>

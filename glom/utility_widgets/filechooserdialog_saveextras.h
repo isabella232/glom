@@ -23,7 +23,7 @@
 
 #include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY, GLOM_ENABLE_SQLITE
 
-#include <libglom/document/document_glom.h>
+#include <libglom/document/document.h>
 
 #include <gtkmm/filechooserdialog.h>
 #include <gtkmm/label.h>

@@ -24,7 +24,7 @@
 #include "application.h" //App_Glom.
 #include <libglom/appstate.h>
 #include <libglom/standard_table_prefs_fields.h>
-#include <libglom/document/document_glom.h>
+#include <libglom/document/document.h>
 #include <libglom/data_structure/glomconversions.h>
 #include "mode_data/dialog_choose_field.h"
 
