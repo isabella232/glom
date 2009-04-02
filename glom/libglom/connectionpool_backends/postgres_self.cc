@@ -458,22 +458,22 @@ int PostgresSelfHosted::discover_first_free_port(int start_port, int end_port)
       #ifdef EPORTINUSE //Linux doesn't have this.
       available = (errno != EPORTINUSE);
       #endif
-
-      if(available)
-      {
-        #ifdef G_OS_WIN32
-        closesocket(fd);
-        #else
-        close(fd);
-        #endif //G_OS_WIN32
-
-        //std::cout << "debug: ConnectionPool::discover_first_free_port(): Found: returning " << port_to_try << std::endl;
-        return port_to_try;
-      }
     }
     else
     {
       //std::cout << "debug: ConnectionPool::discover_first_free_port(): port in use: " << port_to_try << std::endl;
+    }
+
+    if(available)
+    {
+      #ifdef G_OS_WIN32
+      closesocket(fd);
+      #else
+      close(fd);
+      #endif //G_OS_WIN32
+
+      //std::cout << "debug: ConnectionPool::discover_first_free_port(): Found: returning " << port_to_try << std::endl;
+      return port_to_try;
     }
 
     ++port_to_try;
