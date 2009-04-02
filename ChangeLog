@@ -1,3 +1,9 @@
+2009-04-02  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/connectionpool_backends/postgres_self.cc
+	(discover_first_free_port): Fixed the logic in this function to allow
+	two different glom instances to self-host a database at the same time.
+
 2009-03-31  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db.cc: get_fields_for_table_from_database(): Use the libgda 
