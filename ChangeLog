@@ -1,3 +1,12 @@
+2009-04-03  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/frame_glom.cc: connection_request_password_and_attempt():
+	When the password fails, just loop around the while again to ask again, 
+	instead of showing a one-off extra dialog. That fixes the problem of being 
+	asked twice when the first try failed.
+	Load the document outside of the while() instead of each time we ask for the 
+	password.
+
 2009-04-02  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/connectionpool_backends/postgres_self.cc

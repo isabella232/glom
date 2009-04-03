@@ -1881,6 +1881,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
       //Ask for connection details:
       m_pDialogConnection->load_from_document(); //Get good defaults.
       m_pDialogConnection->set_transient_for(*get_app_window());
+ 
       const int response = Glom::Utils::dialog_run_with_help(m_pDialogConnection, "dialog_connection");
       m_pDialogConnection->hide();
 
@@ -2053,7 +2054,18 @@ bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring kno
     Utils::get_glade_widget_derived_with_warning("dialog_connection", m_pDialogConnection);
     add_view(m_pDialogConnection); //Also a composite view.
   }
+  
+  m_pDialogConnection->load_from_document(); //Get good defaults.
+  m_pDialogConnection->set_transient_for(*get_app_window());
 
+  if(!known_username.empty())
+    m_pDialogConnection->set_username(known_username);
+
+  if(!known_password.empty())
+    m_pDialogConnection->set_password(known_password);
+
+
+  //Start a self-hosted server if necessary:
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   setup_connection_pool_from_document(document);
   if(!connection_pool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) ))
@@ -2065,18 +2077,10 @@ bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring kno
     m_dialog_progess_connection_startup = 0;
   }
 
+
+  //Ask for connection details: 
   while(true) //Loop until a return
   {
-    //Ask for connection details:
-    m_pDialogConnection->load_from_document(); //Get good defaults.
-    m_pDialogConnection->set_transient_for(*get_app_window());
-
-    if(!known_username.empty())
-      m_pDialogConnection->set_username(known_username);
-
-    if(!known_password.empty())
-      m_pDialogConnection->set_password(known_password);
-
     //Only show the dialog if we don't know the correct username/password yet:
     int response = Gtk::RESPONSE_OK;
 
@@ -2095,6 +2099,7 @@ bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring kno
       }
     }
 
+    //Try to use the entered username/password:
     if(response == Gtk::RESPONSE_OK)
     {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -2122,13 +2127,7 @@ bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring kno
           //Warn the user, and let him try again:
           Utils::show_ok_dialog(_("Connection Failed"), _("Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."), *(get_app_window()), Gtk::MESSAGE_ERROR); //TODO: Add help button.
 
-          response = Glom::Utils::dialog_run_with_help(m_pDialogConnection, "dialog_connection");
-          m_pDialogConnection->hide();
-          if(response != Gtk::RESPONSE_OK)
-          {
-            cleanup_connection();
-            return false; //The user cancelled.
-          }
+          //The while() loop will run again, showing the username/password dialog again.
         }
         else
         {
