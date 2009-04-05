@@ -96,7 +96,7 @@ static inline const char* glom_get_locale_date_format()
      * and default to %d/%m/%Y" if it detects a problem, but that might not be 
      * correct for your locale.
      * Thanks.
-     */
+     * xgettext:no-c-format */
     c_locale_date_format = _("%x");
   }
 

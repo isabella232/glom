@@ -1,3 +1,9 @@
+2009-04-05  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* glom/libglom/data_structure/glomconversions.cc: Add
+	xgettext:no-c-format to a string used with strftime which gettext is
+	erroneously marking as c-format. (Closes: #578013)
+
 2009-04-03  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/frame_glom.cc: connection_request_password_and_attempt():
