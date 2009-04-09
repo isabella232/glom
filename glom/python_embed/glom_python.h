@@ -22,10 +22,21 @@
 #define GLOM_PYTHON_H
 
 #include <libglom/data_structure/field.h>
+#include <libglom/document/document.h>
 #include <glibmm/ustring.h>
 
 namespace Glom
 {
+
+/** Check that Python can really import the Glom module, 
+ * as a runtime sanity check.
+ */
+bool glom_python_module_is_available();
+
+/** Check that Python can really import the gda module, 
+ * as a runtime sanity check.
+ */
+bool gda_python_module_is_available();
 
 typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_fields;
 

@@ -38,7 +38,8 @@
 #endif //GLOM_ENABLE_POSTGRESQL
 
 // For sanity checks:
-#include <libglom/data_structure/glomconversions.h> // For GLOM_IMAGE_FORMAT
+#include <libglom/data_structure/glomconversions.h>
+#include <glom/python_embed/glom_python.h>
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #include <gtksourceviewmm/init.h>
@@ -103,7 +104,7 @@ OptionGroup::OptionGroup()
 }
 
 #ifdef GLOM_ENABLE_POSTGRESQL
-bool check_user_is_not_root()
+bool check_user_is_not_root_with_warning()
 {
   Glib::ustring message;
 #ifdef G_OS_WIN32
@@ -119,7 +120,7 @@ bool check_user_is_not_root()
     message = ex.what();
   }
 #else
-  //std::cout << "ConnectionPool::check_user_is_not_root(): geteuid()=" << geteuid() << ", getgid()=" << getgid() << std::endl;
+  //std::cout << "ConnectionPool::check_user_is_not_root_with_warning(): geteuid()=" << geteuid() << ", getgid()=" << getgid() << std::endl;
 
   //This is very linux-specific. We should ifdef this out for other platforms.
   if(geteuid() == 0)
@@ -202,6 +203,42 @@ bool check_postgres_is_available_with_warning()
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
 #endif //GLOM_ENABLE_POSTGRESQL
+
+bool check_pyglom_is_available_with_warning()
+{
+  if(glom_python_module_is_available())
+    return true;
+
+   /* The python module could not be imported by Glom, so warn the user: */
+   const Glib::ustring message = _("Your installation of Glom is not complete, because the Glom Python module is not available on your system.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
+      
+#ifndef GLOM_ENABLE_MAEMO
+  Gtk::MessageDialog dialog(Utils::bold_message(_("Glom Python Module Not Installed")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
+  dialog.set_secondary_text(message);
+  dialog.run();
+#else
+  Hildon::Note note(Hildon::NOTE_TYPE_INFORMATION, message);
+  note.run();
+#endif //GLOM_ENABLE_MAEMO
+}
+
+bool check_pygda_is_available_with_warning()
+{
+  if(glom_python_module_is_available())
+    return true;
+
+   /* The python module could not be imported by Glom, so warn the user: */
+   const Glib::ustring message = _("Your installation of Glom is not complete, because the gda Python module is not available on your system.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
+      
+#ifndef GLOM_ENABLE_MAEMO
+  Gtk::MessageDialog dialog(Utils::bold_message(_("gda Python Module Not Installed")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
+  dialog.set_secondary_text(message);
+  dialog.run();
+#else
+  Hildon::Note note(Hildon::NOTE_TYPE_INFORMATION, message);
+  note.run();
+#endif //GLOM_ENABLE_MAEMO
+}
 
 } //namespace Glom
 
@@ -388,9 +425,15 @@ main(int argc, char* argv[])
       
     // Postgres can't be started as root. initdb complains.
     // So just prevent this in general. It is safer anyway.
-    if(!Glom::check_user_is_not_root())
+    if(!Glom::check_user_is_not_root_with_warning())
       return -1;
 #endif //GLOM_ENABLE_POSTGRESQL
+
+    if(!Glom::check_pyglom_is_available_with_warning())
+      return -1;
+
+    if(!Glom::check_pygda_is_available_with_warning())
+      return -1;
 
 
     // Some more sanity checking:

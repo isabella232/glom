@@ -1,3 +1,11 @@
+2009-04-09  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/python_embed/glom_python.[h|cc]: 
+	Added glom_python_module_is_available() and 
+	gda_python_module_is_available().
+	* glom/main.cc: Use them to do some extra runtime sanity checking, 
+	warning the user if their install is broken.
+
 2009-04-09  Michael Hasselmann <michaelh@openismus.com>
 
 	* glom/libglom/connectionpool_backends/backend.h:

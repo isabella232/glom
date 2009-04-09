@@ -136,6 +136,20 @@ void ShowTrace()
   g_free(chrRetval);
 }
 
+bool glom_python_module_is_available()
+{
+  PyObject* module_glom = PyImport_ImportModule((char*)"glom"); //TODO: unref this?
+  return module_glom != 0;
+}
+
+bool gda_python_module_is_available()
+{
+  PyObject* module_glom = PyImport_ImportModule((char*)"gda"); //TODO: unref this?
+  return module_glom != 0;
+}
+
+
+
 void glom_execute_python_function_implementation(const Glib::ustring& func_impl, const type_map_fields& field_values, Document* pDocument, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
 {
   glom_evaluate_python_function_implementation(Field::TYPE_TEXT, func_impl, field_values, pDocument, table_name, opened_connection);
