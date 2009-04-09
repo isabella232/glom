@@ -1,7 +1,7 @@
 2009-04-09  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/connectionpool.cc: get_and_connect(): Check that 
-	m_backend is not null, to avoid a critical warning.
+	m_backend is not null, to avoid a critical warning at startup.
 
 2009-04-09  Murray Cumming  <murrayc@murrayc.com>
 
