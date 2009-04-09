@@ -39,7 +39,8 @@ public:
   enum failure_type
   {
     FAILURE_NO_SERVER, //Either there was no attempt to connect to a specific database, or the connection failed both with and without specifying the database.
-    FAILURE_NO_DATABASE //Connection without specifying the database was possible.
+    FAILURE_NO_DATABASE, //Connection without specifying the database was possible.
+    FAILURE_NO_BACKEND //No backend instance available. Should never happen.
   };
 
   ExceptionConnection(failure_type failure);
@@ -142,7 +143,9 @@ protected:
    * so we don't need #ifdefs all over the code. This part of the API is only
    * used by the ConnectionPool which will translate the error back into
    * an exception in case exceptions are enabled.
-    */
+   * If this method doesn't return a connection handle then error will be
+   * non-zero (and vice versa).
+   */
   virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error) = 0;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

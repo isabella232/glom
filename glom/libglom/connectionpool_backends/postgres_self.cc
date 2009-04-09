@@ -402,7 +402,10 @@ void PostgresSelfHosted::cleanup(const SlotProgress& slot_progress)
 Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error)
 {
   if(!get_self_hosting_active())
+  {
+    error.reset(new ExceptionConnection(ExceptionConnection::FAILURE_NO_BACKEND));
     return Glib::RefPtr<Gnome::Gda::Connection>();
+  }
 
   return attempt_connect("localhost", port_as_string(m_port), database, username, password, error);
 

@@ -358,6 +358,7 @@ void Base_DB::load_from_document()
 {
   if(get_document())
   {
+    // TODO: When is it *ever* correct to call fill_from_database() from here?
     if(ConnectionPool::get_instance()->get_ready_to_connect())
       fill_from_database(); //virtual.
 

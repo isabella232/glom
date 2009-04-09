@@ -1,3 +1,24 @@
+2009-04-09  Michael Hasselmann <michaelh@openismus.com>
+
+	* glom/libglom/connectionpool_backends/backend.h:
+	Introduced new error code FAILURE_NO_BACKEND which shall be used to
+	detect logical errors in the backend implementations.
+	* glom/libglom/connectionpool_backends/postgres_self.cc (connect):
+	Set error correctly if no self-hosted instance is active.
+	* glom/libglom/connectionpool.cc (connect, cleanup):
+	Added a g_return_val_if_fail to check whether there is a backend to
+	connect to. Also reset m_ready_to_connect flag to false during
+	cleanup, which stops Glom from behaving funnily if the user supplies
+	wrong credentials (see bug #577821):
+	- The user enters wrong credentials, gets a 'Connection failed' dialog
+	  the first time. Then, enters wrong credentials a second time, gets no
+	  dialog (but gets dialog for next try and so on).
+	- Glom would crash if the user tried to open another document, then decides
+	  to abort and only opens another document (much) later (which would
+	  look like a random crash then).
+	The ConnectionPool class could perhaps be made more robust concerning
+	that flag since it currently allows inconsistent states.
+
 2009-04-05  Philip Withnall  <philip@tecnocode.co.uk>
 
 	* glom/libglom/data_structure/glomconversions.cc: Add

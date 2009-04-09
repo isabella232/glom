@@ -324,6 +324,9 @@ sharedptr<SharedConnection> ConnectionPool::connect()
 sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConnection>& error)
 #endif
 {
+  //Don't try to connect if we don't have a backend to connect to.
+  g_return_val_if_fail(m_backend.get(), sharedptr<SharedConnection>(0));
+
   if(get_ready_to_connect())
   {
     //If the connection is already open (because it is being used by somebody):
@@ -355,8 +358,7 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
       std::auto_ptr<ExceptionConnection> error;
 #endif
-      if(m_backend.get())
-        m_refGdaConnection = m_backend->connect(m_database, get_user(), get_password(), error);
+      m_refGdaConnection = m_backend->connect(m_database, get_user(), get_password(), error);
 
       if(!m_refGdaConnection)
       {
@@ -610,11 +612,21 @@ bool ConnectionPool::startup(const SlotProgress& slot_progress)
 
 void ConnectionPool::cleanup(const SlotProgress& slot_progress)
 {
+  // Without a valid backend instance we should not state that we are ready to
+  // connect. Fixes crash described in #577821.
+
+  // TODO: Implement checks in set_ready_to_connect() to only set the flag to
+  // "true" when the ConnectionPool instance is in a consistent state
+  // afterwards. Or, have a private set_ready_to_connect() and a public
+  // set_not_ready_to_connect()?
+  set_ready_to_connect(false);
+
   if(m_backend.get())
     m_backend->cleanup(slot_progress);
 
   //Make sure that connect() makes a new connection:
   connection_cached.clear();
+
 
 #ifndef G_OS_WIN32
   /* Stop advertising the self-hosting database server via avahi: */
