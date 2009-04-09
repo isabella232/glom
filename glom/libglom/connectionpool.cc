@@ -287,14 +287,17 @@ sharedptr<SharedConnection> ConnectionPool::get_and_connect(std::auto_ptr<Except
   sharedptr<SharedConnection> result(0);
 
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
-  if(connection_pool)
-  {
+  if(!connection_pool)
+    return result;
+
+  if(!(connection_pool->m_backend.get()))
+    return result; //TODO: Return a FAILURE_NO_BACKEND erro?, though that would be tedious.
+  
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-    result = connection_pool->connect();
+  result = connection_pool->connect();
 #else
-    result = connection_pool->connect(error);
+  result = connection_pool->connect(error);
 #endif // GLIBMM_EXCEPTIONS_ENABLED
-  }
 
   return result;
 }
