@@ -170,20 +170,42 @@ public:
   
   /** Do one-time initialization, such as  creating required database
    * files on disk for later use by their own  database server instance.
+   *
+   * @param slot_progress A callback to call while the work is still happening.
+   * @param network_shared Whether the database (and document) should be available to other users over the network, 
+   * if possible. 
    * @param parent_window A parent window to use as the transient window when displaying errors.
    */
-  InitErrors initialize(const SlotProgress& slot_progress);
+  InitErrors initialize(const SlotProgress& slot_progress, bool network_shared = false);
 
   /** Start a database server instance for the exisiting database files.
+   *
+   * @param slot_progress A callback to call while the work is still happening.
+   * @param network_shared Whether the database (and document) should be available to other users over the network, 
+   * if possible. 
    * @param parent_window The parent window (transient for) of any dialogs shown during this operation.
    * @result Whether the operation was successful.
    */
-  bool startup(const SlotProgress& slot_progress);
+  bool startup(const SlotProgress& slot_progress, bool network_shared = false);
 
   /** Stop the database server instance for the database files.
+   *
+   * @param slot_progress A callback to call while the work is still happening.
    * @param parent_window The parent window (transient for) of any dialogs shown during this operation.
    */
   void cleanup(const SlotProgress& slot_progress);
+
+  /** Change the database server's configration to allow or prevent access from 
+   * other users on the network.
+   *
+   * For current backends, you may use this only before startup(), 
+   * or after cleanup().
+   *
+   * @param slot_progress A callback to call while the work is still happening.
+   * @param network_shared Whether the database (and document) should be available to other users over the network, 
+   * if possible. 
+   */
+  virtual bool set_network_shared(const SlotProgress& slot_progress, bool network_shared = true);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -232,6 +254,11 @@ public:
 
 private:
   void on_sharedconnection_finished();
+
+  /** We call this when we know that the current connection will no longer work, 
+   * for instance after we have stopped the server.
+   */
+  void invalidate_connection();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   /** Examine ports one by one, starting at @a starting_port, in increasing order,

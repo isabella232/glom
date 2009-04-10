@@ -74,12 +74,25 @@ namespace Glom
 namespace ConnectionPoolBackends
 {
 
-#define DEFAULT_CONFIG_PG_HBA "local   all         postgres                          ident sameuser\n\
+//TODO: Do we need these sameuser lines?
+#define DEFAULT_CONFIG_PG_HBA_LOCAL \
+"local   all         postgres                          ident sameuser\n\
 \n\
 # TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD\n\
 \n\
 # local is for Unix domain socket connections only\n\
+# These are just here to make debugging with psql easier:\n\
 local   all         all                               ident sameuser\n\
+local   all         all                               md5\n\
+local   all         postgres                          ident sameuser\n\
+\n\
+# TCP connections from the same computer, with a password:\n\
+# TODO: IPv6 too.\n\
+host    all         all         127.0.0.1    255.255.255.255    md5\n"
+
+#define DEFAULT_CONFIG_PG_HBA_REMOTE \
+DEFAULT_CONFIG_PG_HBA_LOCAL \
+"\n\
 # IPv4 local connections:\n\
 host    all         all         0.0.0.0/0          md5\n\
 # IPv6 local connections:\n\
@@ -91,8 +104,8 @@ host    all         all         ::1/128               md5\n"
 #define DEFAULT_CONFIG_PG_IDENT ""
 
 PostgresSelfHosted::PostgresSelfHosted()
-:
-  m_port(0)
+: m_port(0),
+   m_network_shared(false)
 {
 }
 
@@ -182,8 +195,10 @@ bool PostgresSelfHosted::install_postgres(const SlotProgress& /* slot_progress *
 #endif // #if 0
 }
 
-Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_progress, const Glib::ustring& initial_username, const Glib::ustring& password)
+Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_progress, const Glib::ustring& initial_username, const Glib::ustring& password, bool network_shared)
 {
+  m_network_shared = network_shared;
+
   if(m_self_hosting_data_uri.empty())
   {
     std::cerr << "PostgresSelfHosted::initialize: m_self_hosting_data_uri is empty." << std::endl;
@@ -230,13 +245,7 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
   }
 
   //Create these files: environment  pg_hba.conf  pg_ident.conf  start.conf
-
-  const std::string dbdir_uri_config = dbdir_uri + "/config";
-  const bool hba_conf_creation_succeeded = create_text_file(dbdir_uri_config + "/pg_hba.conf", DEFAULT_CONFIG_PG_HBA);
-  g_assert(hba_conf_creation_succeeded);
-
-  const bool ident_conf_creation_succeeded = create_text_file(dbdir_uri_config + "/pg_ident.conf", DEFAULT_CONFIG_PG_IDENT);
-  g_assert(ident_conf_creation_succeeded);
+  set_network_shared(slot_progress, m_network_shared); //Creates pg_hba.conf and pg_ident.conf
 
   //Check that there is not an existing data directory:
   const std::string dbdir_data = dbdir + "/data";
@@ -271,8 +280,10 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
   return result ? INITERROR_NONE : INITERROR_COULD_NOT_START_SERVER;
 }
 
-bool PostgresSelfHosted::startup(const SlotProgress& slot_progress)
+bool PostgresSelfHosted::startup(const SlotProgress& slot_progress, bool network_shared)
 {
+   m_network_shared = network_shared;
+
   // Don't risk random crashes, although this really shouldn't be called
   // twice of course.
   //g_assert(!get_self_hosting_active());
@@ -288,6 +299,9 @@ bool PostgresSelfHosted::startup(const SlotProgress& slot_progress)
     std::cerr << "ConnectionPool::create_self_hosting(): The data directory could not be found: " << dbdir_uri << std::endl;
     return false;
   }
+
+  //Attempt to ensure that the config files are correct:
+  set_network_shared(slot_progress, m_network_shared); //Creates pg_hba.conf and pg_ident.conf
 
   const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
   g_assert(!dbdir.empty());
@@ -399,11 +413,31 @@ void PostgresSelfHosted::cleanup(const SlotProgress& slot_progress)
   m_port = 0;
 }
 
+bool PostgresSelfHosted::set_network_shared(const SlotProgress& slot_progress, bool network_shared)
+{
+  m_network_shared = network_shared;
+
+  const std::string dbdir_uri = m_self_hosting_data_uri;
+  const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
+
+  const std::string dbdir_uri_config = dbdir_uri + "/config";
+  const char* default_conf_contents = m_network_shared ? DEFAULT_CONFIG_PG_HBA_REMOTE : DEFAULT_CONFIG_PG_HBA_LOCAL;
+  const bool hba_conf_creation_succeeded = create_text_file(dbdir_uri_config + "/pg_hba.conf", default_conf_contents);
+  g_assert(hba_conf_creation_succeeded);
+  if(!hba_conf_creation_succeeded)
+    return false;
+
+  const bool ident_conf_creation_succeeded = create_text_file(dbdir_uri_config + "/pg_ident.conf", DEFAULT_CONFIG_PG_IDENT);
+  g_assert(ident_conf_creation_succeeded);
+
+  return hba_conf_creation_succeeded;
+}
+
 Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error)
 {
   if(!get_self_hosting_active())
   {
-    error.reset(new ExceptionConnection(ExceptionConnection::FAILURE_NO_BACKEND));
+    error.reset(new ExceptionConnection(ExceptionConnection::FAILURE_NO_BACKEND)); //TODO: But there is a backend. It's just not ready.
     return Glib::RefPtr<Gnome::Gda::Connection>();
   }
 

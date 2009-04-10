@@ -24,6 +24,7 @@
 #include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY
 
 #include <gtkmm/frame.h>
+#include <gtkmm/toggleaction.h>
 #include <libglom/document/bakery/view/view_composite.h>
 #include <libglom/document/document.h>
 
@@ -77,8 +78,9 @@ public:
   void on_menu_file_export();
   void on_menu_file_import();
   void on_menu_file_print_edit_layouts();
-
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+
+  void on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>& action);
   void on_menu_file_print();
 
   void on_menu_Mode_Data();

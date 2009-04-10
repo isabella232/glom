@@ -121,15 +121,27 @@ public:
    */
   void set_hosting_mode(HostingMode mode);
 
+  /** This returns how the database is hosted.
+   */
+  HostingMode get_hosting_mode() const;
+
+  /** Whether the database (and document) is shared over the network.
+   * This setting is saved in the file, allowing the database to be 
+   * shared immediately after opening the document.
+   * @param shared true if the database should be shared.
+   */
+  void set_network_shared(bool shared = true);
+
+  /** See set_network_shared().
+   * @result true if the database is (or should be) shared over the network.
+   */
+  bool get_network_shared() const;
+
   void set_connection_server(const Glib::ustring& strVal);
   void set_connection_user(const Glib::ustring& strVal);
   void set_connection_database(const Glib::ustring& strVal);
   void set_connection_port(int port_number);
   void set_connection_try_other_ports(bool val);
-
-  /** This returns how the database is hosted.
-   */
-  HostingMode get_hosting_mode() const;
 
   /** If the database should be hosted, this provides the 
     * path to the directory that contains all the files needed to do that.
@@ -478,6 +490,7 @@ private:
   type_signal_userlevel_changed m_signal_userlevel_changed;
 
   HostingMode m_hosting_mode;
+  bool m_network_shared;
 
   Glib::ustring m_connection_server, m_connection_user, m_connection_database;
   int m_connection_port; //0 means any port. Ignored when self-hosting (which may use a different port each time).

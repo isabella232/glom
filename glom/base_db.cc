@@ -236,7 +236,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute_select(const Glib::us
   }
   catch(const Gnome::Gda::ServerProviderError& ex)
   {
-    std::cout << "debug: Base_DB::query_execute_select(): ServerProviderError: exception from statement_execute_select(): " << ex.what() << std::endl;
+    std::cout << "debug: Base_DB::query_execute_select(): ServerProviderError: exception from statement_execute_select(): code=" << ex.code() << "message=" << ex.what() << std::endl;
   }
   catch(const Glib::Error& ex)
   {

@@ -59,10 +59,16 @@ public:
   void set_mode_data();
   void set_mode_find();
 
+  /** Show in the UI whether the database is shared on the network.
+   */
+  void update_network_shared_ui();
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void add_developer_action(const Glib::RefPtr<Gtk::Action>& refAction);
   void remove_developer_action(const Glib::RefPtr<Gtk::Action>& refAction);
 
+  /** Show in the UI whether the document is in developer or operator mode.
+   */
   void update_userlevel_ui();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -99,6 +105,7 @@ private:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void existing_or_new_new();
 
+  void on_menu_file_toggle_share();
   void on_menu_userlevel_developer();
   void on_menu_userlevel_operator();
   void on_menu_file_save_as_example();
@@ -159,6 +166,9 @@ private:
   Glib::RefPtr<Gtk::RadioAction> m_action_menu_userlevel_developer, m_action_menu_userlevel_operator;
   Glib::RefPtr<Gtk::ToggleAction> m_action_show_layout_toolbar;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+
+  Glib::RefPtr<Gtk::ToggleAction> m_toggleaction_network_shared;
+  sigc::connection m_connection_toggleaction_network_shared;
 
   Gtk::VBox* m_pBoxTop;
   Gtk::VBox* m_pBoxSidebar;

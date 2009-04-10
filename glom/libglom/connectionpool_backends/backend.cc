@@ -45,18 +45,23 @@ ExceptionConnection::failure_type ExceptionConnection::get_failure_type() const
 namespace ConnectionPoolBackends
 {
 
-Backend::InitErrors Backend::initialize(const SlotProgress& /* slot_progress */, const Glib::ustring& /* initial_username */, const Glib::ustring& /* password */)
+Backend::InitErrors Backend::initialize(const SlotProgress& /* slot_progress */, const Glib::ustring& /* initial_username */, const Glib::ustring& /* password */, bool /* network_shared */)
 {
   return INITERROR_NONE;
 }
 
-bool Backend::startup(const SlotProgress& /* slot_progress */)
+bool Backend::startup(const SlotProgress& /* slot_progress */, bool /* network_shared */)
 {
   return true;
 }
 
 void Backend::cleanup(const SlotProgress& /* slot_progress */)
 {
+}
+
+bool Backend::set_network_shared(const SlotProgress& slot_progress, bool /* network_shared */)
+{
+  return true; //Success at doing nothing.
 }
 
 bool Backend::set_server_operation_value(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, const Glib::ustring& path, const Glib::ustring& value, std::auto_ptr<Glib::Error>& error)

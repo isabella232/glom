@@ -53,6 +53,7 @@ namespace Glom
 #define GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_CENTRAL "postgres_central"
 #define GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_SELF "postgres_self"
 #define GLOM_ATTRIBUTE_CONNECTION_HOSTING_SQLITE "sqlite"
+#define GLOM_ATTRIBUTE_CONNECTION_NETWORK_SHARED "network_shared"
 #define GLOM_ATTRIBUTE_CONNECTION_SERVER "server"
 #define GLOM_ATTRIBUTE_CONNECTION_PORT "port"
 #define GLOM_ATTRIBUTE_CONNECTION_TRY_OTHER_PORTS "try_other_ports"
@@ -234,6 +235,7 @@ private:
 Document::Document()
 :
   m_hosting_mode(DEFAULT_HOSTED),
+  m_network_shared(false),
   m_connection_port(0),
   m_connection_try_other_ports(false),
   m_block_cache_update(false),
@@ -275,6 +277,29 @@ Document::~Document()
 Document::HostingMode Document::get_hosting_mode() const
 {
   return m_hosting_mode;
+}
+
+void Document:: set_network_shared(bool shared)
+{
+  if(shared != m_network_shared)
+  {
+    m_network_shared = shared;
+    set_modified();
+  }
+}
+
+bool Document::get_network_shared() const
+{
+  bool shared = m_network_shared;
+
+  //Enforce constraints:
+  const HostingMode hosting_mode = get_hosting_mode();
+  if(hosting_mode == HOSTING_MODE_POSTGRES_CENTRAL)
+    shared = true; //Central hosting means that it must be shared on the network.
+  else if(hosting_mode == HOSTING_MODE_SQLITE)
+    shared = false; //sqlite does not allow network sharing.
+
+  return m_network_shared;
 }
 
 std::string Document::get_connection_self_hosted_directory_uri() const
@@ -2331,6 +2356,8 @@ bool Document::load_after()
       if(nodeConnection)
       {
         //Connection information:
+        m_network_shared = get_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_NETWORK_SHARED, false /* default */);
+
         m_connection_server = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SERVER);
         m_connection_port = get_node_attribute_value_as_decimal(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_PORT);
         m_connection_try_other_ports = get_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_TRY_OTHER_PORTS, true /* default */);
@@ -3232,6 +3259,8 @@ bool Document::save_before()
       g_assert_not_reached();
       break;
     }
+
+    set_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_NETWORK_SHARED, m_network_shared);
 
     set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SERVER, m_connection_server);
     set_node_attribute_value_as_decimal(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_PORT, m_connection_port);

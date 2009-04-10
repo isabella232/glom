@@ -422,8 +422,12 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
 #else
   std::auto_ptr<ExceptionConnection> conn_error;
   sharedptr<SharedConnection> connection = ConnectionPool::get_instance()->connect(conn_error);
-  if(conn_error.get() != NULL) return list_values;
+  if(conn_error.get())
+    return list_values;
 #endif
+
+  if(!connection)
+    return list_values;
 
   //std::cout << "get_choice_values: Executing SQL: " << sql_query << std::endl;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED

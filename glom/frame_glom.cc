@@ -289,13 +289,6 @@ void Frame_Glom::set_mode_widget(Gtk::Widget& widget)
 
     m_pBox_Mode->add(widget);
     widget.show();
-
-    //Show help text:
-    //Notebook_Glom* pNotebook = dynamic_cast<Notebook_Glom*>(&widget);
-    //if(pNotebook)
-   // {
-   //   pNotebook->show_hint();
-   // }
   }
 }
 
@@ -838,6 +831,99 @@ void Frame_Glom::on_menu_file_import()
   }
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+
+void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>& action)
+{
+  if(!action)
+  {
+    std::cerr << "rame_Glom::on_menu_file_toggle_share(): action was null." << std::endl;
+  }
+
+
+  bool shared = action->get_active(); //Whether it should be shared.
+  bool change = true;
+
+  //Ask user for confirmation:
+  //TODO: Warn that this will be saved as the default if doing this in developer mode?
+  if(shared)
+  {
+    Gtk::MessageDialog dialog(Utils::bold_message(_("Share On Network")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+    dialog.set_secondary_text(_("Are you sure that you wish to allow other users on the network to use this database?"));
+    dialog.set_transient_for(*get_app_window());
+    dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+    dialog.add_button(_("_Share"), Gtk::RESPONSE_OK);
+
+    const int response = dialog.run();
+    if(response == Gtk::RESPONSE_OK)
+      shared = true;
+    else
+    {
+      shared = false;
+      change = false;
+    }
+  }
+  else
+  {
+    //TODO: Warn about connected users if possible.
+    Gtk::MessageDialog dialog(Utils::bold_message(_("Stop Sharing On Network")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+    dialog.set_secondary_text(_("Are you sure that you wish to prevent other users on the network from using this database?"));
+    dialog.set_transient_for(*get_app_window());
+    dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+    dialog.add_button(_("_Share"), Gtk::RESPONSE_OK);
+
+    const int response = dialog.run();
+    if(response == Gtk::RESPONSE_OK)
+      shared = false;
+    else
+    {
+      shared = true;
+      change = false;
+    }
+  }
+
+
+  Document* document = get_document();
+  if(document)
+   document->set_network_shared(shared);
+
+
+  //Stop the self-hosted database server,
+  //change its configuration,
+  //and start it again:
+  if(change)
+  {
+    ConnectionPool* connectionpool = ConnectionPool::get_instance();
+    sharedptr<SharedConnection> sharedconnection = connectionpool->connect();
+    if(sharedconnection)
+    {
+      sharedconnection->close();
+      sharedconnection.clear();
+    }	
+
+    connectionpool->cleanup( sigc::mem_fun(*this, &Frame_Glom::on_connection_cleanup_progress) );
+
+    if(m_dialog_progess_connection_cleanup)
+    {
+      delete m_dialog_progess_connection_cleanup;
+      m_dialog_progess_connection_cleanup = 0;
+    }
+
+    connectionpool->set_network_shared(sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress), shared);
+    connectionpool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) );
+    connectionpool->set_ready_to_connect();
+
+    if(m_dialog_progess_connection_startup)
+    {
+      delete m_dialog_progess_connection_startup;
+      m_dialog_progess_connection_startup = 0;
+    }
+  }
+
+  //Update the UI:
+  App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+  if(pApp)
+    pApp->update_network_shared_ui();
+}
 
 void Frame_Glom::on_menu_file_print()
 {

@@ -25,7 +25,7 @@
 #include <glibmm/i18n.h>
 
 // Uncomment to see debug messages
-// #define GLOM_CONNECTION_DEBUG
+//#define GLOM_CONNECTION_DEBUG
 
 namespace
 {
@@ -35,7 +35,7 @@ static Glib::ustring create_auth_string(const Glib::ustring& username, const Gli
   return "USERNAME=" + username + ";PASSWORD=" + password;
 }
 
-}
+} //anonymous namespace
 
 namespace Glom
 {
@@ -74,7 +74,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    Glib::ustring auth_string = create_auth_string(username, password);
+    const Glib::ustring auth_string = create_auth_string(username, password);
     connection = Gnome::Gda::Connection::open_from_string("PostgreSQL", cnc_string, auth_string);
     
     connection->statement_execute_non_select("SET DATESTYLE = 'ISO'");
@@ -84,14 +84,14 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
   {
 #else
   std::auto_ptr<Glib::Error> error;
-  Glib::ustring auth_string = create_auth_string(username, password);
+  const Glib::ustring auth_string = create_auth_string(username, password);
   connection = Gnome::Gda::Connection::open_from_string("PostgreSQL", cnc_string, auth_string, Gnome::Gda::CONNECTION_OPTIONS_NONE, error);
   
   if(!error)
-      connection->statement_execute_non_select("SET DATESTYLE = 'ISO'", error);
+    connection->statement_execute_non_select("SET DATESTYLE = 'ISO'", error);
 
   if(!error)
-      data_model = connection->statement_execute_select("SELECT version()", error);
+    data_model = connection->statement_execute_select("SELECT version()", error);
 
   if(glib_error.get())
   {

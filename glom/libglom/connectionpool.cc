@@ -291,7 +291,10 @@ sharedptr<SharedConnection> ConnectionPool::get_and_connect(std::auto_ptr<Except
     return result;
 
   if(!(connection_pool->m_backend.get()))
+  {
+    std::cerr << "ConnectionPool::get_and_connect(): m_backend is null." << std::endl;
     return result; //TODO: Return a FAILURE_NO_BACKEND erro?, though that would be tedious.
+  }
   
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   result = connection_pool->connect();
@@ -393,7 +396,9 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
         //to avoid duplicates.
         //TODO: Only advertize if it makes sense for the backend,
         //it does not for sqlite
-        avahi_start_publishing(); //Stopped in the signal_finished handler.
+        Document* document = get_document();
+        if(document && document->get_network_shared())
+          avahi_start_publishing(); //Stopped in the signal_finished handler.
 #endif // !G_OS_WIN32
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -495,6 +500,13 @@ Glib::ustring ConnectionPool::get_string_find_operator() const
   return m_backend->get_string_find_operator();
 }
 
+void ConnectionPool::invalidate_connection()
+{
+  connection_cached.clear();
+  m_refGdaConnection.reset();
+  m_sharedconnection_refcount = 0;
+}
+
 void ConnectionPool::on_sharedconnection_finished()
 {
   //g_warning("ConnectionPool::on_sharedconnection_finished().");
@@ -593,12 +605,12 @@ static void on_linux_signal(int signum)
   }
 }
 
-bool ConnectionPool::startup(const SlotProgress& slot_progress)
+bool ConnectionPool::startup(const SlotProgress& slot_progress, bool network_shared)
 {
   if(!m_backend.get())
     return false;
 
-  if(!m_backend->startup(slot_progress))
+  if(!m_backend->startup(slot_progress, network_shared))
     return false;
 
 #ifndef G_OS_WIN32
@@ -627,8 +639,8 @@ void ConnectionPool::cleanup(const SlotProgress& slot_progress)
   if(m_backend.get())
     m_backend->cleanup(slot_progress);
 
-  //Make sure that connect() makes a new connection:
-  connection_cached.clear();
+  //Make sure that connect() tries to make a new connection:
+  invalidate_connection();
 
 
 #ifndef G_OS_WIN32
@@ -639,6 +651,15 @@ void ConnectionPool::cleanup(const SlotProgress& slot_progress)
   //We don't need the segfault handler anymore:
   signal(SIGSEGV, previous_sig_handler);
   previous_sig_handler = SIG_DFL; /* Arbitrary default */
+}
+
+
+bool ConnectionPool::set_network_shared(const SlotProgress& slot_progress, bool network_shared)
+{
+  if(m_backend.get())
+    return m_backend->set_network_shared(slot_progress, network_shared);
+  else
+    return false;
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -770,10 +791,10 @@ bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-ConnectionPool::InitErrors ConnectionPool::initialize(const SlotProgress& slot_progress)
+ConnectionPool::InitErrors ConnectionPool::initialize(const SlotProgress& slot_progress, bool network_shared)
 {
   if(m_backend.get())
-    return m_backend->initialize(slot_progress, get_user(), get_password());
+    return m_backend->initialize(slot_progress, get_user(), get_password(), network_shared);
   else
     return Backend::INITERROR_OTHER;
 }
@@ -952,7 +973,7 @@ void ConnectionPool::avahi_stop_publishing()
   epc_publisher_quit(m_epc_publisher);
 #endif // !G_OS_WIN32
   g_object_unref(m_epc_publisher);
-  m_epc_publisher = NULL;
+  m_epc_publisher = 0;
 }
 #endif // !G_OS_WIN32
 

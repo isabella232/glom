@@ -1,3 +1,33 @@
+2009-04-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.[h|cc] init_menus_file(): Add a File/Share On Network 
+	toggle menu item. Added update_network_shared_ui() to ensure that it 
+	is checked when appropriate.
+	open_browsed_document(), on_document_load(): 
+	Call update_network_shared_ui().
+	* glom/frame_glom.[h|cc]: on_menu_file_toggle_share(): Handle the 
+	new menu item, to change the configration and restart the server.
+
+	* glom/libglom/document/document.cc: Added set_network_shared(), 
+	get_network_shared(). load_after(), save_before(): Save it in the 
+	document. This is the default that will be used when opening a document.
+	It defaults to not shared.
+	* glom/glom_document.dtd: Document the new network_shared XML attribute.
+
+	* glom/libglom/connectionpool.[h|cc]: get_and_connect(): Only start avahi 
+	publishing if we are shared on the network.
+	set_network_shared(): Added this private function to change the configuration.
+	initialize(), startup(): Added network_shared parameter.
+	cleanup(): Call invalidate_connection() to prevent use of a connection 
+	to a stopped server., 
+	* glom/libglom/connectionpool_backends/backend.[h|cc]: initialize,
+	  startup, set_network_shared(): Same change as for ConnectionPool.
+	* glom/libglom/connectionpool_backends/postgres_self.[h|cc]:
+	initialize(): set_network_share(): Move config file writing to 
+	set_network_share() and use different pg_hba.conf contents depending on 
+	whether we are shared on the network.
+	startup(): Ensure that the configuration is correct.
+
 2009-04-09  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/connectionpool.cc: get_and_connect(): Check that 

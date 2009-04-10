@@ -118,25 +118,41 @@ protected:
    * storage. There is no need to implement this function if the data is centrally
    * hosted rather than hosted by Glom.
    *
-   * @slot_progress A callback to call while the work is still happening.
+   * @param slot_progress A callback to call while the work is still happening.
+   * @param network_shared Whether the database (and document) should be available to other users over the network, 
+   * if possible. 
    */
-  virtual InitErrors initialize(const SlotProgress& slot_progress, const Glib::ustring& initial_username, const Glib::ustring& password);
+  virtual InitErrors initialize(const SlotProgress& slot_progress, const Glib::ustring& initial_username, const Glib::ustring& password, bool network_shared = false);
 
   /** This method is called before the backend is used otherwise. This can
    * be used to start a self-hosted database server. There is no need to implement
    * this function if there is no need for extra startup code.
    *
-   * @slot_progress A callback to call while the work is still happening.
+   * @param slot_progress A callback to call while the work is still happening.
+   * @param network_shared Whether the database (and document) should be available to other users over the network, 
+   * if possible. 
    */
-  virtual bool startup(const SlotProgress& slot_progress);
+  virtual bool startup(const SlotProgress& slot_progress, bool network_shared = false);
 
   /** This method is called when the backend is no longer used. This can be
    * used to shut down a self-hosted database server. There is no need to
    * implement this function if there is no need for extra cleanup code.
    *
-   * @slot_progress A callback to call while the work is still happening.
+   * @param slot_progress A callback to call while the work is still happening.
    */
   virtual void cleanup(const SlotProgress& slot_progress);
+
+  /** Change the database server's configration to allow or prevent access from 
+   * other users on the network.
+   *
+   * For current backends, you may use this only before startup(), 
+   * or after cleanup().
+   *
+   * @param slot_progress A callback to call while the work is still happening.
+   * @param network_shared Whether the database (and document) should be available to other users over the network, 
+   * if possible. 
+   */
+  virtual bool set_network_shared(const SlotProgress& slot_progress, bool network_shared = true);
 
   /** This method is called to create a connection to the database server.
    * There exists only the variant with an error variable as last parameter
