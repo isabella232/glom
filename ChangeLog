@@ -1,3 +1,11 @@
+2009-04-11  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/base_db.cc: add_standard_groups(): Give the developer group 
+	SUPERUSER rights, fixing a problem in another patch I am working on. 
+	I am surprised that this was not a problem before - maybe because the 
+	user (instead of the group) always had superuser rights via the 
+	command line database initialization. 
+
 2009-04-10  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/application.[h|cc] init_menus_file(): Add a File/Share On Network 

@@ -1093,7 +1093,7 @@ bool Base_DB::add_standard_groups()
     type_vec_strings::const_iterator iterFind = std::find(vecGroups.begin(), vecGroups.end(), devgroup);
     if(iterFind == vecGroups.end())
     {
-      bool test = query_execute("CREATE GROUP \"" GLOM_STANDARD_GROUP_NAME_DEVELOPER "\"");
+      bool test = query_execute("CREATE GROUP \"" GLOM_STANDARD_GROUP_NAME_DEVELOPER "\" WITH SUPERUSER");
       if(!test)
       {
         std::cerr << "Glom Base_DB::add_standard_groups(): CREATE GROUP failed when adding the developer group." << std::endl;
