@@ -5,10 +5,10 @@
 //#include <gtk/gtkcalendar.h>
 #include <gtkmm/calendar.h>
 #include <gtk/gtk.h>
-#if GTK_CHECK_VERSION(2,16,0)
+#if GTK_CHECK_VERSION(2,14,0)
 namespace GlomGtk
 {
-  typedef GlomGtk::Calendar Calendar;
+  typedef Gtk::Calendar Calendar;
 }
 #else
 
@@ -310,13 +310,12 @@ public:
    * @newin2p16
    */
   void set_detail_func(const SlotDetails& slot);
-  ;
-  	 
+  
   
   void set_detail_width_chars(int chars);
   
   void set_detail_height_rows(int rows);
-	  	 
+ 
   
   int get_detail_width_chars() const;
   

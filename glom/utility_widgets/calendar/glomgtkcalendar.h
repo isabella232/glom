@@ -3,7 +3,7 @@
  * the GNOME release schedule.
  */
 #include <gtk/gtkcalendar.h>
-#if GTK_CHECK_VERSION(2,16,0)
+#if GTK_CHECK_VERSION(2,14,0)
 typedef GlomGlomGtkCalendar GlomGlomGtkCalendar; 
 #else
 /* GTK - The GIMP Toolkit
@@ -80,7 +80,7 @@ typedef enum
   GLOM_GTK_CALENDAR_NO_MONTH_CHANGE		= 1 << 2,
   GLOM_GTK_CALENDAR_SHOW_WEEK_NUMBERS	= 1 << 3,
   GLOM_GTK_CALENDAR_WEEK_START_MONDAY	= 1 << 4,
-  GLOM_GTK_CALENDAR_SHOW_DETAILS		= 1 << 5,
+  GLOM_GTK_CALENDAR_SHOW_DETAILS		= 1 << 5
 } GlomGtkCalendarDisplayOptions;
 
 /**
@@ -212,4 +212,4 @@ G_END_DECLS
 
 #endif /* __GLOM_GTK_CALENDAR_H__ */
 
-#endif //!GTK_CHECK_VERSION(2.16.0)
+#endif /* !GTK_CHECK_VERSION(2.16.0) */

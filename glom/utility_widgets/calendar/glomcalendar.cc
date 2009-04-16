@@ -1,7 +1,7 @@
 #include "glomcalendar.h"
 
 #include <gtk/gtk.h>
-#if !GTK_CHECK_VERSION(2,16,0)
+#if !GTK_CHECK_VERSION(2,14,0)
 
 #include <gtkmm/private/widget_p.h>
 
@@ -84,7 +84,7 @@ protected:
 #include <gtk/gtkcalendar.h>
 
 
-static gchar* SignalProxy_Details_gtk_callback(GlomGtkCalendar* model, guint year, guint month, guint day, gpointer user_data)
+static gchar* SignalProxy_Details_gtk_callback(GlomGtkCalendar* /* model */, guint year, guint month, guint day, gpointer user_data)
 {
   GlomGtk::Calendar::SlotDetails* the_slot = static_cast<GlomGtk::Calendar::SlotDetails*>(user_data);
 

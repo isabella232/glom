@@ -1,3 +1,14 @@
+1.8.8:
+
+2009-04-14  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/calendar/glomcalendar.[h|cc]:
+	* glom/utility_widgets/calendar/glomgtkcalendar.[h|c]: Check for GTK+ 2.14, 
+	not GTK+ 2.16, because the GtkCalendar details_func API is in 2.14.
+	Correct a typedef to fix the build in that case.
+
+1.8.7:
+
 2009-02-24  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/mode_data/flowtablewithfields.cc (add_field_at_position): Don't

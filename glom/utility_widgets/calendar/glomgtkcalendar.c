@@ -3,9 +3,9 @@
  * the GNOME release schedule.
  */
 #include <gtk/gtk.h>
-#if !GTK_CHECK_VERSION(2,16,0)
+#if !GTK_CHECK_VERSION(2,14,0)
 
-#include <config.h>
+#include "config.h"
 
 #ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
@@ -86,7 +86,7 @@
  * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
  */
 
-#include <config.h>
+#include <libglom/libglom_config.h>
 
 #ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>

@@ -1,3 +1,18 @@
+1.8.8:
+
+* Fix the build with GTK+ 2.16. (errors in GlomGtkCalendar).
+  (Murray Cumming)
+
+1.8.7:
+
+* Details:
+  - Avoid vast extra space when using 3 or more columns. 
+    Bug #539369 (maximiliano)
+  - Avoid showing scientific e notation for up to 15 digits, instead of 7.
+   (Murray Cumming)
+* Avoid leaking a Gtk::EventBox.
+  (Armin Burgmeier)
+      
 1.8.6:
 
 * Main window: Correct the order of the widgets at the bottom-right that 
