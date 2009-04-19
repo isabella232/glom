@@ -1155,24 +1155,14 @@ void FlowTableWithFields::on_portal_user_requested_details(Gnome::Gda::Value pri
   if(!portal)
     return;
 
-  const Glib::ustring related_table = portal->get_table_used(Glib::ustring() /* parent table - not relevant */);
-  if(related_table.empty())
-    return;
+  //Try to find a related (or doubly related) table that is not hidden, and open that,
+  //based on the navigation options for the portal:
+  Glib::ustring table_name;
+  Gnome::Gda::Value primary_key;
+  portal_box->get_suitable_record_to_view_details(primary_key_value, table_name, primary_key);
 
-  if(get_document()->get_table_is_hidden(related_table))
-  {
-    //Try to find a doubly-related table that is not hidden, and open that instead:
-    Glib::ustring doubly_related_table_name;
-    Gnome::Gda::Value doubly_related_primary_key;
-    portal_box->get_suitable_record_to_view_details(primary_key_value, doubly_related_table_name, doubly_related_primary_key);
-
-    if(!(doubly_related_table_name.empty()) && !Conversions::value_is_empty(doubly_related_primary_key))
-       signal_requested_related_details().emit(doubly_related_table_name, doubly_related_primary_key);
-  }
-  else
-  {
-    signal_requested_related_details().emit(related_table, primary_key_value);
-  }
+  if(!(table_name.empty()) && !Conversions::value_is_empty(primary_key))
+    signal_requested_related_details().emit(table_name, primary_key);
 }
 
 

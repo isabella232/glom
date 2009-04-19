@@ -1,3 +1,13 @@
+2009-04-17  Murray Cumming  <murrayc@murrayc.com>
+
+	Makes navigation work to alternate specified relationships.
+
+	* glom/mode_data/flowtablewithfields.cc: on_portal_user_requested_details():
+	Don't default to navigating to just the immediate related table. Instead, 
+	always use the navigation options, by always calling 
+	LayoutItem_Portal::get_suitable_record_to_view_details().
+	Bug #579172 (Michael Hasselmann)
+
 2009-04-11  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db.cc: add_standard_groups(): Give the developer group 
