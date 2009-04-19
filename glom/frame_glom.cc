@@ -836,11 +836,24 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
 {
   if(!action)
   {
-    std::cerr << "rame_Glom::on_menu_file_toggle_share(): action was null." << std::endl;
+    std::cerr << "Frame_Glom::on_menu_file_toggle_share(): action was null." << std::endl;
   }
 
+  //Prevent this change if not in developer mode,
+  //though the menu item should be disabled then anyway.
+  Document* document = dynamic_cast<Document*>(get_document());
+  if(!document || document->get_userlevel() != AppState::USERLEVEL_DEVELOPER)
+    return;
 
   bool shared = action->get_active(); //Whether it should be shared.
+  if(shared == document->get_network_shared())
+  {
+    //Do nothing, because things are already as requested.
+    //This is probably just an extra signal emitted when we set the toggle in the UI.
+    //So we avoid the endless loop:
+    return;
+  }
+
   bool change = true;
 
   //Ask user for confirmation:
@@ -854,26 +867,126 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
     dialog.add_button(_("_Share"), Gtk::RESPONSE_OK);
 
     const int response = dialog.run();
+    dialog.hide();
     if(response == Gtk::RESPONSE_OK)
+    {
       shared = true;
+
+      //Ask for a user/password if none is set:
+      const bool real_user_exists = Privs::get_developer_user_exists_with_password();
+      if(!real_user_exists)
+      {
+        //Ask for an initial user:
+        Glib::ustring user, password;
+        const bool initial_password_provided = connection_request_initial_password(user, password);
+        bool added = false;
+        if(initial_password_provided)
+          added = add_user(user, password, GLOM_STANDARD_GROUP_NAME_DEVELOPER);
+        
+        if(initial_password_provided && added)
+        {
+          //Use the new user/password from now on:
+          ConnectionPool* connectionpool = ConnectionPool::get_instance();      
+          connectionpool->set_user(user);
+          connectionpool->set_password(password);
+        }
+        else
+        {
+          shared = false;
+          change = false;
+        }
+      }
+      else
+      {
+        //Ask for the password of a developer user, to 
+        //a) Check that the user knows it, so he won't lose access.
+        //b) Reconnect as that user so we can remove the default user.
+        //TODO: Check that this user is a developer.
+        bool database_not_found = false; //Ignored;
+        const bool dev_password_known = connection_request_password_and_attempt(database_not_found, "" ,"", true /* alternative text */);
+        if(!dev_password_known)
+        {
+          shared = false;
+          change = false;
+        }
+      }
+
+      if(change) //If nothing has gone wrong so far.
+      {
+        //Remove the default no-password user, because that would be a security hole:
+        //We do this after adding/using the non-default user, because we can't 
+        //remove a currently-used user.
+        const bool default_user_exists = Privs::get_default_developer_user_exists();
+        if(default_user_exists)
+        {
+          //Force a reconnection with the new password:
+          //ConnectionPool* connectionpool = ConnectionPool::get_instance();      
+
+          //Remove it, after stopping it from being the database owner: 
+          bool disabled = true;
+          Glib::ustring default_password;
+          const Glib::ustring default_user = Privs::get_default_developer_user_name(default_password);
+
+          ConnectionPool* connectionpool = ConnectionPool::get_instance();
+          const bool reowned = set_database_owner_user(connectionpool->get_user());
+          bool removed = false;
+          if(reowned)
+            removed = remove_user(default_user);
+
+          if(!removed)
+          {
+            //This is a workaround.
+            //Try to revoke it instead.
+            //TODO: Discover how to make remove_user() succeed.
+            disabled = disable_user(default_user);
+          }
+
+          if(!reowned || !(removed || disabled))
+          {
+            std::cerr << "Frame_Glom::on_menu_file_toggle_share(): Failed to reown and remove/revoke default user." << std::endl;
+            shared = false;
+            change = false;
+          }
+        }
+      }
+    }
     else
     {
       shared = false;
       change = false;
     }
   }
-  else
+  else //not shared:
   {
     //TODO: Warn about connected users if possible.
     Gtk::MessageDialog dialog(Utils::bold_message(_("Stop Sharing On Network")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
     dialog.set_secondary_text(_("Are you sure that you wish to prevent other users on the network from using this database?"));
     dialog.set_transient_for(*get_app_window());
     dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-    dialog.add_button(_("_Share"), Gtk::RESPONSE_OK);
+    dialog.add_button(_("_Stop Sharing"), Gtk::RESPONSE_OK);
 
     const int response = dialog.run();
+    dialog.hide();
     if(response == Gtk::RESPONSE_OK)
+    {
       shared = false;
+
+      //Make sure the default no-password user exists:
+      const bool default_user_exists = Privs::get_default_developer_user_exists();
+      if(!default_user_exists)
+      {
+        //Add it:
+        Glib::ustring default_password;
+        const Glib::ustring default_user = Privs::get_default_developer_user_name(default_password);
+
+        const bool added = add_user(default_user, default_password, GLOM_STANDARD_GROUP_NAME_DEVELOPER);
+        if(!added)
+        {
+           shared = true;
+           change = false;
+        }
+      }
+    }
     else
     {
       shared = true;
@@ -881,10 +994,8 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
     }
   }
 
-
-  Document* document = get_document();
   if(document)
-   document->set_network_shared(shared);
+    document->set_network_shared(shared);
 
 
   //Stop the self-hosted database server,
@@ -922,7 +1033,9 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
   //Update the UI:
   App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
   if(pApp)
+  {
     pApp->update_network_shared_ui();
+  }
 }
 
 void Frame_Glom::on_menu_file_print()
@@ -1852,6 +1965,85 @@ bool Frame_Glom::handle_connection_initialize_errors(ConnectionPool::InitErrors 
   return false;
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+bool Frame_Glom::connection_request_initial_password(Glib::ustring& user, Glib::ustring& password)
+{
+  //Intialze output parameters:
+  user = Glib::ustring();
+  password = Glib::ustring();
+
+  Document* document = dynamic_cast<Document*>(get_document());
+  if(!document)
+    return false;
+
+  //This is only useful for self-hosted postgres:
+  if(document->get_hosting_mode() != Document::HOSTING_MODE_POSTGRES_SELF)
+    return false;
+
+  //Ask for a new username and password to specify when creating a new self-hosted database.
+  Dialog_NewSelfHostedConnection* dialog = 0;
+  Glib::RefPtr<Gtk::Builder> refXml;
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_new_self_hosted_connection");
+  }
+  catch(const Gtk::BuilderError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+    return false;
+  }
+#else
+  std::auto_ptr<Gtk::BuilderError> error;
+  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_new_self_hosted_connection", error);
+  if(error.get())
+  {
+    std::cerr << error->what() << std::endl;
+    return false;
+  }
+#endif //GLIBMM_EXCEPTIONS_ENABLED
+
+  refXml->get_widget_derived("dialog_new_self_hosted_connection", dialog);
+  if(!dialog)
+    return false;
+
+  add_view(dialog);
+
+
+  int response = Gtk::RESPONSE_OK;
+  bool keep_trying = true;
+  while(keep_trying)
+  {
+    response = Utils::dialog_run_with_help(dialog, "dialog_new_self_hosted_connection");
+
+    //Check the password is acceptable:
+    if(response == Gtk::RESPONSE_OK)
+    {
+      const bool password_ok = dialog->check_password();
+      if(password_ok)
+      {
+        user = dialog->get_user();
+        password = dialog->get_password();
+
+        keep_trying = false; //Everything is OK.
+      }
+    }
+    else
+    {
+      keep_trying = false; //The user cancelled.
+    }
+
+    dialog->hide();
+  }
+
+  remove_view(dialog);
+  delete dialog;
+  dialog = 0;
+
+  return (response == Gtk::RESPONSE_OK);
+}
+
 bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 {
   Document* document = dynamic_cast<Document*>(get_document());
@@ -1867,102 +2059,54 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     add_view(m_pDialogConnection); //Also a composite view.
   }
 
-  //Ask either for the existing username and password to use an existing database server,
-  //or ask for a new username and password to specify when creating a new self-hosted database.
   switch(document->get_hosting_mode())
   {
-#ifdef GLOM_ENABLE_POSTGRESQL
-  case Document::HOSTING_MODE_POSTGRES_SELF:
+    case Document::HOSTING_MODE_POSTGRES_SELF:
     {
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-      Dialog_NewSelfHostedConnection* dialog = 0;
-      Glib::RefPtr<Gtk::Builder> refXml;
+      Glib::ustring user, password;
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-      try
+      if(document->get_network_shared()) //Usually not the case when creating new documents.
       {
-        refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_new_self_hosted_connection");
+        const bool test = connection_request_initial_password(user, password);
+        if(!test)
+          return false;
       }
-      catch(const Gtk::BuilderError& ex)
+      else
       {
-        std::cerr << ex.what() << std::endl;
-        return false;
+        //Use the default user because we are not network shared:
+        user = Privs::get_default_developer_user_name(password);
       }
-#else
-      std::auto_ptr<Gtk::BuilderError> error;
-      refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_new_self_hosted_connection", error);
-      if(error.get())
-      {
-        std::cerr << error->what() << std::endl;
-        return false;
-      }
-#endif //GLIBMM_EXCEPTIONS_ENABLED
-
-      refXml->get_widget_derived("dialog_new_self_hosted_connection", dialog);
-      if(!dialog) return false;
-
-      add_view(dialog);
-
-
-      int response = Gtk::RESPONSE_OK;
-      bool keep_trying = true;
-      while(keep_trying)
-      {
-        response = Utils::dialog_run_with_help(dialog, "dialog_new_self_hosted_connection");
-
-        //Check the password is acceptable:
-        if(response == Gtk::RESPONSE_OK)
-        {
-          const bool password_ok = dialog->check_password();
-          if(password_ok)
-          {
-            keep_trying = false; //Everything is OK.
-          }
-        }
-        else
-          keep_trying = false; //The user cancelled.
-
-      }
-
-      dialog->hide();
  
       // Create the requested self-hosting database:
-      if(response == Gtk::RESPONSE_OK)
-      {
-        //Set the connection details in the ConnectionPool singleton.
-        //The ConnectionPool will now use these every time it tries to connect.
-        connection_pool->set_user(dialog->get_user());
-        connection_pool->set_password(dialog->get_password());
       
-        const bool initialized = handle_connection_initialize_errors( connection_pool->initialize(
-          sigc::mem_fun(*this, &Frame_Glom::on_connection_initialize_progress) ) );
+      //Set the connection details in the ConnectionPool singleton.
+      //The ConnectionPool will now use these every time it tries to connect.
+      connection_pool->set_user(user);
+      connection_pool->set_password(password);
+      
+      const bool initialized = handle_connection_initialize_errors( connection_pool->initialize(
+        sigc::mem_fun(*this, &Frame_Glom::on_connection_initialize_progress) ) );
 
-        if(m_dialog_progess_connection_initialize)
-        {
-          delete m_dialog_progess_connection_initialize;
-          m_dialog_progess_connection_initialize = 0;
-        }
-
-        if(!initialized)
-          return false;
-
-        //Put the details into m_pDialogConnection too, because that's what we use to connect.
-        //This is a bit of a hack:
-        m_pDialogConnection->set_self_hosted_user_and_password(connection_pool->get_user(), connection_pool->get_password());
+      if(m_dialog_progess_connection_initialize)
+      {
+        delete m_dialog_progess_connection_initialize;
+        m_dialog_progess_connection_initialize = 0;
       }
 
-      remove_view(dialog);
+      if(!initialized)
+        return false;
+
+      //Put the details into m_pDialogConnection too, because that's what we use to connect.
+      //This is a bit of a hack:
+      m_pDialogConnection->set_self_hosted_user_and_password(connection_pool->get_user(), connection_pool->get_password());
 
       //std::cout << "DEBUG: after connection_pool->initialize(). The database cluster should now exist." << std::endl;
-
-#else
-      // Self-hosted postgres not supported in client only mode
-      g_assert_not_reached();
-#endif // !GLOM_ENABLE_CLIENT_ONLY
     }
 
     break;
-  case Document::HOSTING_MODE_POSTGRES_CENTRAL:
+
+#ifdef GLOM_ENABLE_POSTGRES
+    case Document::HOSTING_MODE_POSTGRES_CENTRAL:
     {
       //Ask for connection details:
       m_pDialogConnection->load_from_document(); //Get good defaults.
@@ -2055,7 +2199,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     if(error.get())
     {
       const ExceptionConnection& ex = *error;
-#endif
+#endif //GLIBMM_EXCEPTIONS_ENABLED
       //g_warning("Frame_Glom::connection_request_password_and_choose_new_database_name(): caught exception.");
 
       if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
@@ -2084,7 +2228,6 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
           document->set_connection_server(central->get_host());
         }
 
-        #ifndef GLOM_ENABLE_CLIENT_ONLY
         // Remember port if the document is self-hosted, so that remote
         // connections to the database (usinc browse network) know what port to use.
         // TODO: There is already similar code in
@@ -2099,7 +2242,6 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 
           document->set_connection_port(self->get_port());
         }
-        #endif //GLOM_ENABLE_CLIENT_ONLY
 
         #endif //GLOM_ENABLE_POSTGRESQL
 
@@ -2112,6 +2254,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   
   return false;
 }
+#endif //GLOM_ENABLE_CLIENT_ONLY
 
 void Frame_Glom::cleanup_connection()
 {
@@ -2125,30 +2268,14 @@ void Frame_Glom::cleanup_connection()
   }
 }
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring known_username, const Glib::ustring& known_password)
-#else
-bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring known_username, const Glib::ustring& known_password, std::auto_ptr<ExceptionConnection>& error)
-#endif
+bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_found, const Glib::ustring known_username, const Glib::ustring& known_password, bool confirm_known_user)
 {
+  //Initialize output parameter:
+  database_not_found = false;
+
   Document* document = dynamic_cast<Document*>(get_document());
   if(!document)
     return false;
-
-  if(!m_pDialogConnection)
-  {
-    Utils::get_glade_widget_derived_with_warning("dialog_connection", m_pDialogConnection);
-    add_view(m_pDialogConnection); //Also a composite view.
-  }
-  
-  m_pDialogConnection->load_from_document(); //Get good defaults.
-  m_pDialogConnection->set_transient_for(*get_app_window());
-
-  if(!known_username.empty())
-    m_pDialogConnection->set_username(known_username);
-
-  if(!known_password.empty())
-    m_pDialogConnection->set_password(known_password);
 
 
   //Start a self-hosted server if necessary:
@@ -2163,6 +2290,41 @@ bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring kno
     m_dialog_progess_connection_startup = 0;
   }
 
+  //Only ask for the password if we are shared on the network.
+  //Otherwise, no password question is necessary, due to how our self-hosted database server is configured.
+  if(document->get_network_shared()
+    && (document->get_hosting_mode() != Document::HOSTING_MODE_SQLITE) ) //TODO: The sqlite check may be unnecessary.
+  {
+    //We recreate the dialog each time to make sure it is clean of any changes:
+    if(m_pDialogConnection)
+    {
+      delete m_pDialogConnection;
+      m_pDialogConnection = 0;
+    }
+
+    Utils::get_glade_widget_derived_with_warning("dialog_connection", m_pDialogConnection);
+    add_view(m_pDialogConnection); //Also a composite view.
+  
+    m_pDialogConnection->load_from_document(); //Get good defaults.
+    m_pDialogConnection->set_transient_for(*get_app_window());
+
+    //Show alternative text if necessary:
+    if(confirm_known_user)
+      m_pDialogConnection->set_confirm_existing_user_note();
+
+    if(!known_username.empty())
+      m_pDialogConnection->set_username(known_username);
+
+    if(!known_password.empty())
+      m_pDialogConnection->set_password(known_password);
+  }
+  else if(m_pDialogConnection)
+  {
+    //Later, if m_pDialogConnection is null then we assume we should use the known user/password:
+    delete m_pDialogConnection;
+    m_pDialogConnection = 0;
+  }
+
 
   //Ask for connection details: 
   while(true) //Loop until a return
@@ -2170,19 +2332,10 @@ bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring kno
     //Only show the dialog if we don't know the correct username/password yet:
     int response = Gtk::RESPONSE_OK;
 
-    // Don't ask for user/password for sqlite databases, since sqlite does
-    // not support authentication. I'd prefer to get that information from
-    // libgda, but gda_connection_supports_feature() requires a GdaConnection
-    // which we don't have at this point.
-#ifdef GLOM_ENABLE_SQLITE
-    if(document->get_hosting_mode() != Document::HOSTING_MODE_SQLITE)
-#endif
+    if(m_pDialogConnection && known_username.empty() && known_password.empty())
     {
-      if(known_username.empty() && known_password.empty())
-      {
-        response = Glom::Utils::dialog_run_with_help(m_pDialogConnection, "dialog_connection");
-        m_pDialogConnection->hide();
-      }
+      response = Glom::Utils::dialog_run_with_help(m_pDialogConnection, "dialog_connection");
+      m_pDialogConnection->hide();
     }
 
     //Try to use the entered username/password:
@@ -2192,8 +2345,30 @@ bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring kno
       try
       {
         //TODO: Remove any previous database setting?
-        sharedptr<SharedConnection> sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings();
-        return true; //Succeeded, because no exception was thrown.
+        if(m_pDialogConnection)
+        {
+          sharedptr<SharedConnection> sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings();
+          return true; //Succeeded, because no exception was thrown.
+        }
+        else
+        {
+          //Use the known password:
+          ConnectionPool* connectionpool = ConnectionPool::get_instance();
+          connectionpool->set_user(known_username);
+          connectionpool->set_password(known_password);
+    
+          #ifdef GLIBMM_EXCEPTIONS_ENABLED
+          Base_DB::connect_to_server(get_app_window());
+          return true; //Succeeded, because no exception was thrown.
+          #else
+          std::auto_ptr<ExceptionConnection> error;
+          const bool connected = Base_DB::connect_to_server(get_app_window(), error);
+          if(!connected || error)
+            return false;
+          else
+            return true;
+          #endif
+        }
       }
       catch(const ExceptionConnection& ex)
       {
@@ -2208,25 +2383,26 @@ bool Frame_Glom::connection_request_password_and_attempt(const Glib::ustring kno
 #endif
         g_warning("Frame_Glom::connection_request_password_and_attempt(): caught exception.");
 
-        if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
+        if(m_pDialogConnection && ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
         {
           //Warn the user, and let him try again:
           Utils::show_ok_dialog(_("Connection Failed"), _("Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."), *(get_app_window()), Gtk::MESSAGE_ERROR); //TODO: Add help button.
-
+         
           //The while() loop will run again, showing the username/password dialog again.
+        }
+        else if (ex.get_failure_type() == ExceptionConnection::FAILURE_NO_DATABASE)
+        {
+          cleanup_connection();
+
+          //The connection to the server might be OK, but the specified database does not exist:
+          //Or the connection failed when trying without a password.
+          database_not_found = true; //Tell the caller about this error.
+          return false;
         }
         else
         {
-          g_warning("Frame_Glom::connection_request_password_and_attempt(): rethrowing exception.");
-
+          std::cerr << "Frame_Glom::connection_request_password_and_attempt(): Unexpected exception: " << ex.what() << std::endl;
           cleanup_connection();
-
-          //The connection to the server is OK, but the specified database does not exist:
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-          throw ex; //Pass it on for the caller to handle.
-#else
-          error = local_error; //Pass it on for the caller to handle.
-#endif
           return false;
         }
       }

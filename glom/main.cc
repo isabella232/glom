@@ -220,6 +220,8 @@ bool check_pyglom_is_available_with_warning()
   Hildon::Note note(Hildon::NOTE_TYPE_INFORMATION, message);
   note.run();
 #endif //GLOM_ENABLE_MAEMO
+
+  return false;
 }
 
 bool check_pygda_is_available_with_warning()
@@ -238,6 +240,8 @@ bool check_pygda_is_available_with_warning()
   Hildon::Note note(Hildon::NOTE_TYPE_INFORMATION, message);
   note.run();
 #endif //GLOM_ENABLE_MAEMO
+
+  return false;
 }
 
 } //namespace Glom

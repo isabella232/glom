@@ -144,17 +144,20 @@ public:
 
   static void show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window& parent, Gtk::MessageType message_type = Gtk::MESSAGE_INFO);
 
-  //Show the dialog to request the password, and check whether it works.
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  bool connection_request_password_and_attempt(const Glib::ustring known_username = Glib::ustring(), const Glib::ustring& known_password = Glib::ustring());
-#else
-  bool connection_request_password_and_attempt(const Glib::ustring known_username = Glib::ustring(), const Glib::ustring& known_password = Glib::ustring(), std::auto_ptr<ExceptionConnection>& error);
-#endif
+  /** Show the dialog to request the password, and check whether it works.
+   *
+   * @param database_not_found true if the connection failed only because the database was not found on the server.
+   * @param known_username The username if known. Otherwise, the user will be asked via a dialog.
+   * @param known_password The password if known. Otherwise, the user will be asked via a dialog.
+   * @param confirm_existing_user If true then an alternative message text will be shown.
+   * @result true if the connection succeeded and the database was found on the server.
+   */
+  bool connection_request_password_and_attempt(bool& database_not_found, const Glib::ustring known_username = Glib::ustring(), const Glib::ustring& known_password = Glib::ustring(), bool confirm_existing_user = false);
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   //Show the dialog to request the password, and choose an unused database name.
   bool connection_request_password_and_choose_new_database_name();
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
   ///Create the database for new documents, showing the Connection dialog
   bool create_database(const Glib::ustring& database_name, const Glib::ustring& title);
   void show_layout_toolbar(bool show = true);
@@ -172,6 +175,8 @@ public:
   bool get_viewing_details() const;
 
 protected:
+
+  
 
   //virtual void set_document(Document* pDocument); //override
 
@@ -195,9 +200,13 @@ protected:
   void show_no_table();
 
   void show_table_title();
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+  bool connection_request_initial_password(Glib::ustring& user, Glib::ustring& password);
+
   void update_table_in_document_from_database();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+
   virtual void set_mode_widget(Gtk::Widget& widget); //e.g. show the design mode notebook.
   virtual bool set_mode(enumModes mode); //bool indicates that there was a change.
 

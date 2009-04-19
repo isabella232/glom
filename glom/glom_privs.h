@@ -34,14 +34,46 @@ class Privs : public GlomPostgres
 {
 public:
 
+  /** Get the groups with access to the database.
+   */
   static type_vec_strings get_database_groups();
+
+  /** Get users with access to the database.
+   * @param group_name Get only users in this group.
+   */
   static type_vec_strings get_database_users(const Glib::ustring& group_name = Glib::ustring());
+
+
+  /** Discover whether there is already a user with a real password,
+   * instead of just a default glom user and default password,
+   * The user should be forced to choose a user/password when network sharing is active.
+   */
+  static bool get_developer_user_exists_with_password();
+
+  /** Discover whether the default developer user exists (which has a known password).
+   * The user should be forced to choose a user/password when network sharing is active,
+   * and this default user should no longer exist in that case.
+   */
+  static bool get_default_developer_user_exists();
+
+  /** Get the standard username and password used for the no-password user,
+   * which should only be used when network sharing is not active.
+   */
+  static Glib::ustring get_default_developer_user_name(Glib::ustring& password);
+
   static Privileges get_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name);
   static void set_table_privileges(const Glib::ustring& group_name, const Glib::ustring& table_name, const Privileges& privs, bool developer_privs = false);
+
   static Glib::ustring get_user_visible_group_name(const Glib::ustring& group_name);
 
+  /** Get the groups that the user is a member of.
+   */
   static type_vec_strings get_groups_of_user(const Glib::ustring& user);
+
   static bool get_user_is_in_group(const Glib::ustring& user, const Glib::ustring& group);
+
+  /** Get the privileges (access rights) that the current user has.
+   */
   static Privileges get_current_privs(const Glib::ustring& table_name);
 
 private:

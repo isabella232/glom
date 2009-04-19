@@ -38,30 +38,29 @@ Dialog_Connection::Dialog_Connection(BaseObjectType* cobject, const Glib::RefPtr
   m_entry_host(0),
   m_entry_user(0),
   m_entry_password(0),
-  m_label_database(0)
+  m_label_database(0),
+  m_label_note(0)
 {
   builder->get_widget("entry_host", m_entry_host);
   builder->get_widget("entry_user", m_entry_user);
   builder->get_widget("entry_password", m_entry_password);
   builder->get_widget("label_database", m_label_database);
+  builder->get_widget("connection_note", m_label_note);
 
 #ifdef GLOM_ENABLE_MAEMO
   // Make the bold title the window title (which cannot be empty in maemo
   // because it displays <Untitled window> instead). This also helps to
   // make the dialog smaller in height, so we save a bit screen space required
   // by the onscreen keyboard.
-  Gtk::Label* title;
-  Gtk::Label* note;
-
+  Gtk::Label* title = 0;
   builder->get_widget("connection_title", title);
-  builder->get_widget("connection_note", note);
 
   set_title(title->get_text());
   title->hide();
 
   // Without size request, this label enlarges the dialog significantly,
   // and the text is still truncated.
-  note->set_size_request(400, -1);
+  m_label_note->set_size_request(400, -1);
 #endif
 }
 
@@ -98,7 +97,7 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
       {
         ConnectionPool::Backend* backend = connection_pool->get_backend();
         ConnectionPoolBackends::PostgresCentralHosted* central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
-        g_assert(central != NULL);
+        g_assert(central);
 
         central->set_host(m_entry_host->get_text());
       }
@@ -245,6 +244,11 @@ void Dialog_Connection::get_username_and_password(Glib::ustring& username, Glib:
 {
   username = m_entry_user->get_text();
   password = m_entry_password->get_text();
+}
+
+void Dialog_Connection::set_confirm_existing_user_note()
+{
+  m_label_note->set_text(_(""));
 }
 
 } //namespace Glom

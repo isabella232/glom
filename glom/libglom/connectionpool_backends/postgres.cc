@@ -32,7 +32,10 @@ namespace
 
 static Glib::ustring create_auth_string(const Glib::ustring& username, const Glib::ustring& password)
 {
-  return "USERNAME=" + username + ";PASSWORD=" + password;
+  if(username.empty() and password.empty())
+    return Glib::ustring();
+  else
+    return "USERNAME=" + username + ";PASSWORD=" + password; //TODO: How should we quote and escape these?
 }
 
 } //anonymous namespace
@@ -71,10 +74,16 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
   Glib::RefPtr<Gnome::Gda::Connection> connection;
   Glib::RefPtr<Gnome::Gda::DataModel> data_model;
 
+  const Glib::ustring auth_string = create_auth_string(username, password);   
+ 
+#ifdef GLOM_CONNECTION_DEBUG
+  std::cout << "DEBUG: ConnectionPoolBackends::Postgres::attempt_connect(): cnc_string=" << cnc_string << std::endl;
+  std::cout << "  DEBUG: auth_string=" << auth_string << std::endl;
+#endif
+
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    const Glib::ustring auth_string = create_auth_string(username, password);
     connection = Gnome::Gda::Connection::open_from_string("PostgreSQL", cnc_string, auth_string);
     
     connection->statement_execute_non_select("SET DATESTYLE = 'ISO'");
@@ -84,7 +93,6 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
   {
 #else
   std::auto_ptr<Glib::Error> error;
-  const Glib::ustring auth_string = create_auth_string(username, password);
   connection = Gnome::Gda::Connection::open_from_string("PostgreSQL", cnc_string, auth_string, Gnome::Gda::CONNECTION_OPTIONS_NONE, error);
   
   if(!error)
@@ -99,8 +107,8 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
 #endif
 
 #ifdef GLOM_CONNECTION_DEBUG
-    std::cout << "ConnectionPoolBackends::PostgresCentralHosted::attempt_connect(): Attempt to connect to database failed on port=" << port << ", database=" << database << ": " << ex.what() << std::endl;
-    std::cout << "ConnectionPoolBackends::PostgresCentralHosted::attempt_connect(): Attempting to connect without specifying the database." << std::endl;
+    std::cout << "ConnectionPoolBackends::Postgres::attempt_connect(): Attempt to connect to database failed on port=" << port << ", database=" << database << ": " << ex.what() << std::endl;
+    std::cout << "ConnectionPoolBackends::Postgres::attempt_connect(): Attempting to connect without specifying the database." << std::endl;
 #endif
 
     Glib::ustring cnc_string = cnc_string_main + ";DB_NAME=" + default_database;

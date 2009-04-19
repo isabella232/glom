@@ -76,15 +76,13 @@ namespace ConnectionPoolBackends
 
 //TODO: Do we need these sameuser lines?
 #define DEFAULT_CONFIG_PG_HBA_LOCAL \
-"local   all         postgres                          ident sameuser\n\
-\n\
-# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD\n\
+"# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD\n\
 \n\
 # local is for Unix domain socket connections only\n\
-# These are just here to make debugging with psql easier:\n\
+# trust allows connection from the current PC without a password:\n\
+local   all         all                               trust\n\
 local   all         all                               ident sameuser\n\
 local   all         all                               md5\n\
-local   all         postgres                          ident sameuser\n\
 \n\
 # TCP connections from the same computer, with a password:\n\
 # TODO: IPv6 too.\n\

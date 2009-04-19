@@ -48,6 +48,12 @@ public:
   ///Disable irrelevant fields:
   void set_connect_to_browsed();
 
+  /** Change the main message text of the dialog, so we can use the dialog 
+   * to confirm that the user knows a password before disconnecting, when 
+   * switching to network sharing.
+   */
+  void set_confirm_existing_user_note();
+
   void set_username(const Glib::ustring& username);
   void set_password(const Glib::ustring& password);
   void get_username_and_password(Glib::ustring& user, Glib::ustring& password) const;
@@ -66,6 +72,7 @@ private:
   Gtk::Entry* m_entry_user;
   Gtk::Entry* m_entry_password;
   Gtk::Label* m_label_database;
+  Gtk::Label* m_label_note;
   Glib::ustring m_database_name;
 };
 

@@ -1093,6 +1093,8 @@ bool Base_DB::add_standard_groups()
     type_vec_strings::const_iterator iterFind = std::find(vecGroups.begin(), vecGroups.end(), devgroup);
     if(iterFind == vecGroups.end())
     {
+      //The "SUPERUSER" here has no effect because SUPERUSER is not "inherited" to member users.
+      //But let's keep it to make the purpose of this group obvious.
       bool test = query_execute("CREATE GROUP \"" GLOM_STANDARD_GROUP_NAME_DEVELOPER "\" WITH SUPERUSER");
       if(!test)
       {
@@ -3280,5 +3282,136 @@ void Base_DB::update_gda_metastore_for_table(const Glib::ustring& table_name) co
   //This does work, though it takes ages: gda_connection->update_meta_store();
   std::cout << "DEBUG: Base_DB::update_gda_metastore_for_table(): ... Finished calling Gda::Connection::update_meta_store_table()" << std::endl;
 }
+
+bool Base_DB::add_user(const Glib::ustring& user, const Glib::ustring& password, const Glib::ustring& group)
+{
+  if(user.empty() || password.empty() || group.empty())
+    return false;
+
+  //Create the user:
+  //Note that ' around the user fails, so we use ".
+  Glib::ustring strQuery = "CREATE USER \"" + user + "\" PASSWORD '" + password + "'" ; //TODO: Escape the password.
+  if(group == GLOM_STANDARD_GROUP_NAME_DEVELOPER)
+    strQuery += " SUPERUSER CREATEDB CREATEROLE"; //Because SUPERUSER is not "inherited" from groups to members.
+  
+
+  //Glib::ustring strQuery = "CREATE USER \"" + user + "\"";
+  //if(group == GLOM_STANDARD_GROUP_NAME_DEVELOPER)
+  //  strQuery += " WITH SUPERUSER"; //Because SUPERUSER is not "inherited" from groups to members.
+  //strQuery +=  " PASSWORD '" + password + "'" ; //TODO: Escape the password.
+
+
+  bool test = query_execute(strQuery);
+  if(!test)
+  {
+    std::cerr << "Base_DB::add_user(): CREATE USER failed." << std::endl;
+    return false;
+  }
+
+  //Add it to the group:
+  strQuery = "ALTER GROUP \"" + group + "\" ADD USER \"" + user + "\"";
+  test = query_execute(strQuery);
+  if(!test)
+  {
+    std::cerr << "Base_DB::add_user(): ALTER GROUP failed." << std::endl;
+    return false;
+  }
+
+  //Remove any user rights, so that all rights come from the user's presence in the group:
+  Document* document = get_document();
+  if(!document)
+    return true;
+
+  Document::type_listTableInfo table_list = document->get_tables();
+
+  for(Document::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
+  {
+    const Glib::ustring strQuery = "REVOKE ALL PRIVILEGES ON \"" + (*iter)->get_name() + "\" FROM \"" + user + "\"";
+    const bool test = query_execute(strQuery);
+    if(!test)
+      std::cerr << "Base_DB::add_user(): REVOKE failed." << std::endl;
+  }
+
+  return true;
+}
+
+
+bool Base_DB::remove_user(const Glib::ustring& user)
+{
+  if(user.empty())
+    return false;
+
+  const Glib::ustring strQuery = "DROP USER \"" + user + "\"";
+  const bool test = query_execute(strQuery);
+  if(!test)
+  {
+    std::cerr << "Base_DB::remove_user(): DROP USER failed" << std::endl;
+    return false;
+  }
+
+  return true;
+}
+
+bool Base_DB::remove_user_from_group(const Glib::ustring& user, const Glib::ustring& group)
+{
+  if(user.empty() || group.empty())
+    return false;
+
+  const Glib::ustring strQuery = "ALTER GROUP \"" + group + "\" DROP USER \"" + user + "\"";
+  const bool test = query_execute(strQuery);
+  if(!test)
+  {
+    std::cerr << "Base_DB::remove_user_from_group(): ALTER GROUP failed." << std::endl;
+    return false;
+  }
+
+  return true;
+}
+
+bool Base_DB::set_database_owner_user(const Glib::ustring& user)
+{
+  if(user.empty())
+    return false;
+
+  ConnectionPool* connectionpool = ConnectionPool::get_instance();
+  const Glib::ustring database_name = connectionpool->get_database();
+  if(database_name.empty())
+    return false;
+
+  const Glib::ustring strQuery = "ALTER DATABASE \"" + database_name + "\" OWNER TO \"" + user + "\"";
+  const bool test = query_execute(strQuery);
+  if(!test)
+  {
+    std::cerr << "Base_DB::set_database_owner_user(): ALTER DATABSE failed." << std::endl;
+    return false;
+  }
+
+  return true;
+}
+
+
+bool Base_DB::disable_user(const Glib::ustring& user)
+{
+  if(user.empty())
+    return false;
+
+  type_vec_strings vecGroups = Privs::get_groups_of_user(user);
+  for(type_vec_strings::const_iterator iter = vecGroups.begin(); iter != vecGroups.end(); ++iter)
+  {
+    const Glib::ustring group = *iter;
+    remove_user_from_group(user, group);
+  }
+
+  const Glib::ustring strQuery = "ALTER ROLE \"" + user + "\" NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE";
+  const bool test = query_execute(strQuery);
+  if(!test)
+  {
+    std::cerr << "Base_DB::remove_user(): DROP USER failed" << std::endl;
+    return false;
+  }
+
+  return true;
+}
+
 
 } //namespace Glom

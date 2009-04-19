@@ -20,8 +20,8 @@
 
 #include <config.h> //For VERSION, GLOM_ENABLE_CLIENT_ONLY, GLOM_ENABLE_SQLITE
 
-#include "application.h"
-#include "dialog_existing_or_new.h"
+#include <glom/application.h>
+#include <glom/dialog_existing_or_new.h>
 
 #include <glom/dialog_progress_creating.h>
 
@@ -33,6 +33,7 @@
 
 #include <glom/utils_ui.h>
 #include <glom/glade_utils.h>
+#include <glom/glom_privs.h>
 
 #include <cstdio>
 #include <memory> //For std::auto_ptr<>
@@ -332,6 +333,7 @@ void App_Glom::init_menus_file()
   m_connection_toggleaction_network_shared = 
     m_toggleaction_network_shared->signal_toggled().connect(
       sigc::mem_fun(*this, &App_Glom::on_menu_file_toggle_share) );
+  m_listDeveloperActions.push_back(m_toggleaction_network_shared);
 
   m_refFileActionGroup->add(Gtk::Action::create("GlomAction_Menu_File_Print", Gtk::Stock::PRINT));
   m_refFileActionGroup->add(Gtk::Action::create("GlomAction_File_Print", _("_Standard")),
@@ -1048,56 +1050,49 @@ bool App_Glom::on_document_load()
 
         //Attempt to connect to the specified database:
         bool test = false;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-        try
-#else
-        std::auto_ptr<ExceptionConnection> error;
-#endif
-        {
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-          if(is_example)
-          {
-            //The user has already had the chance to specify a new filename and database name.
-            test = m_pFrame->connection_request_password_and_choose_new_database_name();
-          }
-          else
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-            //Ask for the username/password and connect:
-            //Note that m_temp_username and m_temp_password are set if 
-            //we already asked for them when getting the document over the network: 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-            test = m_pFrame->connection_request_password_and_attempt(m_temp_username, m_temp_password);
-#else
-            test = m_pFrame->connection_request_password_and_attempt(m_temp_username, m_temp_password, error);
-#endif
-            m_temp_username = Glib::ustring();
-            m_temp_password = Glib::ustring();
+        if(is_example)
+        {
+          //The user has already had the chance to specify a new filename and database name.
+          test = m_pFrame->connection_request_password_and_choose_new_database_name();
         }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-        catch(const ExceptionConnection& ex)
+        else
+#endif // !GLOM_ENABLE_CLIENT_ONLY
         {
-#else
-        if(error.get())
-        {
-          const ExceptionConnection& ex = *error.get();
-#endif
-          if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_DATABASE) //This is the only FAILURE_* type that connection_request_password_and_attempt() throws.
+          //Ask for the username/password and connect:
+          //Note that m_temp_username and m_temp_password are set if 
+          //we already asked for them when getting the document over the network:
+
+          //Use the default username/password if opening as non network-shared:
+          if(!(pDocument->get_network_shared()))
           {
-#ifndef GLOM_ENABLE_CLIENT_ONLY
+            m_temp_username = Privs::get_default_developer_user_name(m_temp_password);
+          }
+
+          bool database_not_found = false;
+          test = m_pFrame->connection_request_password_and_attempt(database_not_found, m_temp_username, m_temp_password);
+          m_temp_username = Glib::ustring();
+          m_temp_password = Glib::ustring();
+
+          if(!test && database_not_found)
+          {
+            #ifndef GLOM_ENABLE_CLIENT_ONLY
             if(!is_example)
             {
               //The connection to the server is OK, but the database is not there yet.
               Frame_Glom::show_ok_dialog(_("Database Not Found On Server"), _("The database could not be found on the server. Please consult your system administrator."), *this, Gtk::MESSAGE_ERROR);
             }
             else
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-              std::cerr << "App_Glom::on_document_load(): unexpected ExceptionConnection when opening example." << std::endl;
+            #endif // !GLOM_ENABLE_CLIENT_ONLY
+              std::cerr << "App_Glom::on_document_load(): unexpected database_not_found error when opening example." << std::endl;
           }
           else
-            std::cerr << "App_Glom::on_document_load(): unexpected ExceptionConnection failure type." << std::endl;
+            std::cerr << "App_Glom::on_document_load(): unexpected error." << std::endl;
+
         }
 
-        if(!test) //It usually throws an exception instead of returning false.
+        if(!test)
           return false; //Failed. Close the document.
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -1204,9 +1199,9 @@ void App_Glom::update_network_shared_ui()
   //Show the status in the UI:
   //(get_network_shared() already enforces constraints).
   const bool shared = document->get_network_shared();
+  //TODO: Our use of block() does not seem to work. The signal actually seems to be emitted some time later instead.
   m_connection_toggleaction_network_shared.block(); //Prevent signal handling.
   m_toggleaction_network_shared->set_active(shared);
-  m_connection_toggleaction_network_shared.unblock();
  
   //Do not allow impossible changes:
   const Document::HostingMode hosting_mode = document->get_hosting_mode();
@@ -1215,6 +1210,8 @@ void App_Glom::update_network_shared_ui()
   {
     m_toggleaction_network_shared->set_sensitive(false);
   }
+
+  m_connection_toggleaction_network_shared.unblock();
 }
 
 void App_Glom::update_userlevel_ui()

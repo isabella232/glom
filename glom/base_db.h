@@ -376,6 +376,28 @@ protected:
 
   static type_vec_strings util_vecStrings_from_Fields(const type_vec_fields& fields);
 
+  /** Add a @a user to the database, with the specified @a password, in the specified @a group.
+   * @result true if the addition succeeded.
+   */
+  bool add_user(const Glib::ustring& user, const Glib::ustring& password, const Glib::ustring& group);
+
+  /** Remove the @a user from the database.
+   * @result true if the removal succeeded.
+   */
+  bool remove_user(const Glib::ustring& user);
+
+  bool remove_user_from_group(const Glib::ustring& user, const Glib::ustring& group);
+
+  bool set_database_owner_user(const Glib::ustring& user);
+
+  /** Revoke any login rights from the user and remove it from any groups.
+   * This is a workaround for these problems:
+   * 1. We can only specify a superuser _user_, not a role, to initdb (because it needs a password, but groups have no password),
+   *    so that user is then the owner of various objects.
+   * 2. Even when changing the owner of these objects we still get this error "cannot drop role glom_default_developer_user because it is required by the database system"
+   */
+  bool disable_user(const Glib::ustring& user);
+
 
   static void handle_error(const Glib::Exception& ex);
   static void handle_error(const std::exception& ex); //TODO_port: This is probably useless now.

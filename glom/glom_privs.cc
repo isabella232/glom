@@ -49,6 +49,44 @@ Privs::type_vec_strings Privs::get_database_groups()
   return result;
 }
 
+bool Privs::get_default_developer_user_exists()
+{
+  Glib::ustring default_password;
+  const Glib::ustring default_user = get_default_developer_user_name(default_password);
+
+  const type_vec_strings users = get_database_users();
+  type_vec_strings::const_iterator iterFind = std::find(users.begin(), users.end(), default_user);
+  if(iterFind != users.end())
+    return true; //We assume that the password is what it should be and that it has developer rights.
+
+  return false; //The default user is not there.
+}
+
+bool Privs::get_developer_user_exists_with_password()
+{
+  Glib::ustring default_password;
+  const Glib::ustring default_user = get_default_developer_user_name(default_password);
+
+  const type_vec_strings users = get_database_users();
+  for(type_vec_strings::const_iterator iter = users.begin(); iter != users.end(); iter++)
+  {
+    const Glib::ustring user = *iter;
+    if(user == default_user)
+      continue;
+
+    if(get_user_is_in_group(user, GLOM_STANDARD_GROUP_NAME_DEVELOPER))
+      return true;
+  }
+
+  return false;
+}
+
+Glib::ustring Privs::get_default_developer_user_name(Glib::ustring& password)
+{
+  password = "glom_default_developer_password";
+  return "glom_default_developer_user";
+}
+
 Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_name)
 {
   BusyCursor cursor(App_Glom::get_application());

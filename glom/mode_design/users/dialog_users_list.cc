@@ -129,10 +129,7 @@ void Dialog_UsersList::on_button_user_remove()
         const Glib::ustring user = row[m_model_columns_users.m_col_name];
         if(!user.empty())
         {
-          Glib::ustring strQuery = "ALTER GROUP \"" + m_combo_group->get_active_text() + "\" DROP USER \"" + user + "\"";
-          const bool test = query_execute(strQuery);
-          if(!test)
-            std::cerr << "Dialog_UsersList::on_button_user_remove(): ALTER GROUP failed." << std::endl;
+          remove_user_from_group(user, m_combo_group->get_active_text());
 
           fill_list();
         }
@@ -168,11 +165,7 @@ void Dialog_UsersList::on_button_user_delete()
 
           if(response == Gtk::RESPONSE_OK)
           {
-            const Glib::ustring strQuery = "DROP USER \"" + user + "\"";
-            const bool test = query_execute(strQuery);
-            if(!test)
-              std::cerr << "Dialog_UsersList::on_button_user_delete(): DROP USER failed" << std::endl;
-
+            remove_user(user);
             fill_list();
           }
         }
@@ -276,23 +269,8 @@ void Dialog_UsersList::on_button_user_new()
   if(response != Gtk::RESPONSE_OK)
     return;
 
-
-  if(!user.empty() && !password.empty())
-  {
-    //Create the user:
-    Glib::ustring strQuery = "CREATE USER \"" + user + "\" PASSWORD '" + password + "'" ; //TODO: Escape the password.
-    bool test = query_execute(strQuery);
-    if(!test)
-       std::cerr << "Dialog_UsersList::on_button_user_new(): CREATE USER failed." << std::endl;
-
-    //Add it to the group:
-    strQuery = "ALTER GROUP \"" + m_combo_group->get_active_text() + "\" ADD USER \"" + user + "\"";
-    test = query_execute(strQuery);
-    if(!test)
-       std::cerr << "Dialog_UsersList::on_button_user_new(): ALTER GROUP failed." << std::endl;
-
-    fill_list();
-  }
+  add_user(user, password, m_combo_group->get_active_text() /* group */);
+  fill_list();
 }
 
 void Dialog_UsersList::on_button_user_edit()

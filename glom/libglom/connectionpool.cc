@@ -380,8 +380,18 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
         std::cout << "DEBUG: Calling update_meta_store_data_types() ..." << std::endl;
         m_refGdaConnection->update_meta_store_data_types();
         std::cout << "DEBUG: ... update_meta_store_data_types() has finished." << std::endl;
+
         std::cout << "DEBUG: Calling update_meta_store_table_names() ..." << std::endl;
-        m_refGdaConnection->update_meta_store_table_names();
+        try
+        {
+          //update_meta_store_table_names() has been known to throw an exception.
+          //Glom is mostly unusable when it fails, but that's still better than a crash.
+          m_refGdaConnection->update_meta_store_table_names();
+        }
+        catch(const Glib::Error& ex)
+        {
+          std::cerr << "update_meta_store_table_names() failed: " << ex.what() << std::endl;
+        }
         std::cout << "DEBUG: ... update_meta_store_table_names() has finished." << std::endl;
 
         // Connection succeeded
@@ -449,7 +459,7 @@ void ConnectionPool::set_user(const Glib::ustring& value)
   m_user = value;
 
   //Make sure that connect() makes a new connection:
-  connection_cached.clear();
+  invalidate_connection();
 }
 
 void ConnectionPool::set_password(const Glib::ustring& value)
@@ -457,7 +467,7 @@ void ConnectionPool::set_password(const Glib::ustring& value)
   m_password = value;
   
   //Make sure that connect() makes a new connection:
-  connection_cached.clear();
+  invalidate_connection();
 }
 
 void ConnectionPool::set_database(const Glib::ustring& value)
@@ -465,7 +475,7 @@ void ConnectionPool::set_database(const Glib::ustring& value)
   m_database = value;
 
   //Make sure that connect() makes a new connection:
-  connection_cached.clear();
+  invalidate_connection();
 }
 
 Glib::ustring ConnectionPool::get_user() const
