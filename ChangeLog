@@ -37,6 +37,7 @@
 	save_to_document(): Replaced calls to
 	LayoutItem_Portal::[set|get]_navigation_relationship_specific() that still
 	used a boolean output parameter.
+	Bug #574360.
 
 2009-04-17  Murray Cumming  <murrayc@murrayc.com>
 
