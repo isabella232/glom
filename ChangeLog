@@ -1,5 +1,15 @@
 2009-04-23  Murray Cumming  <murrayc@murrayc.com>
 
+	Fix loading of old self-hosted files, broken since defaulting to no sharing.
+	
+	* glom/libglom/document/document.cc: 
+	get_latest_known_document_format_version(): Increase the number because we 
+	have added nodes/attributes.
+	load_after(): For older document formats, read network_sharing as on if it 
+	is false (not mentioned).
+
+2009-04-23  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.cc: on_document_load(): Avoid false unexpected error warning. 
 
 2009-04-22  Michael Hasselmann  <michaelh@openismus.com>

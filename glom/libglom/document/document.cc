@@ -2354,6 +2354,7 @@ bool Document::load_after()
         std::cerr << "Document::load_after(): Loading failed because format_version=" << m_document_format_version << ", but latest known format version is " << get_latest_known_document_format_version() << std::endl;
         return false; //TODO: Provide more information so the application (or Bakery) can say exactly why loading failed.
       }
+      
       m_is_example = get_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_EXAMPLE);
       m_database_title = get_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_CONNECTION_DATABASE_TITLE);
 
@@ -2365,6 +2366,14 @@ bool Document::load_after()
       {
         //Connection information:
         m_network_shared = get_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_NETWORK_SHARED, false /* default */);
+        
+        //Older documents always defaulted to network-sharing with self-hosting.
+        if(!m_network_shared && (get_document_format_version() < 4))
+        {
+          //Otherwise we would assume that the default user already exists,
+          //and fail to ask for the user/password:
+          m_network_shared = true;
+        }
 
         m_connection_server = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SERVER);
         m_connection_port = get_node_attribute_value_as_decimal(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_PORT);
@@ -4027,9 +4036,10 @@ guint Document::get_latest_known_document_format_version()
   // Version 0: The first document format. (And the default version number when no version number was saved in the .XML)
   // Version 1: Saved scripts and other multiline text in text nodes instead of attributes. Can open Version 1 documents.
   // Version 2: hosting_mode="postgres-central|postgres-self|sqlite" instead of self_hosted="true|false". Can open Version 1 documents, by falling back to the self_hosted attribute if hosting_mode is not set.
-  // Version 3: Support for the old one-big-string example_rows format was removed, and we now use (unquoted) non-postgres libgda escaping. 
+  // Version 3: (Glom 1.10). Support for the old one-big-string example_rows format was removed, and we now use (unquoted) non-postgres libgda escaping. 
+  // Version 4: (Glom 1.12). Portal navigation options were simplified, with a "none" option. network_sharing was added, defaulting to off.
 
-  return 3;
+  return 4;
 }
 
 std::vector<Glib::ustring> Document::get_library_module_names() const
