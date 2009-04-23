@@ -1087,9 +1087,10 @@ bool App_Glom::on_document_load()
             #endif // !GLOM_ENABLE_CLIENT_ONLY
               std::cerr << "App_Glom::on_document_load(): unexpected database_not_found error when opening example." << std::endl;
           }
-          else
+          else if(!test)
+          {
             std::cerr << "App_Glom::on_document_load(): unexpected error." << std::endl;
-
+          }
         }
 
         if(!test)

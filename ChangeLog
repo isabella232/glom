@@ -1,3 +1,7 @@
+2009-04-23  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc: on_document_load(): Avoid false unexpected error warning. 
+
 2009-04-22  Michael Hasselmann  <michaelh@openismus.com>
 
 	Allow to disable navigation in the related record layout.
