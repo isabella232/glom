@@ -66,6 +66,7 @@ protected:
   sharedptr<LayoutItem_Portal> m_portal;
 
   Gtk::RadioButton* m_radio_navigation_automatic;
+  Gtk::RadioButton* m_radio_navigation_none;
   Gtk::RadioButton* m_radio_navigation_specify;
   Gtk::Label* m_label_navigation_automatic;
   ComboBox_Relationship* m_combo_navigation_specify;

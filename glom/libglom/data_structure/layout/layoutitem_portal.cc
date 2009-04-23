@@ -25,17 +25,17 @@ namespace Glom
 {
 
 LayoutItem_Portal::LayoutItem_Portal()
-: m_navigation_relationship_specific_main(false),
-  m_print_layout_row_height(20) //arbitrary default.
+: m_print_layout_row_height(20), //arbitrary default.
+  m_navigation_type(LayoutItem_Portal::NAVIGATION_AUTOMATIC)
 {
 }
 
 LayoutItem_Portal::LayoutItem_Portal(const LayoutItem_Portal& src)
 : LayoutGroup(src),
   UsesRelationship(src),
-  m_navigation_relationship_specific_main(src.m_navigation_relationship_specific_main),
   m_navigation_relationship_specific(src.m_navigation_relationship_specific),
-  m_print_layout_row_height(src.m_print_layout_row_height)
+  m_print_layout_row_height(src.m_print_layout_row_height),
+  m_navigation_type(src.m_navigation_type)
 {
 }
 
@@ -54,9 +54,9 @@ LayoutItem_Portal& LayoutItem_Portal::operator=(const LayoutItem_Portal& src)
   LayoutGroup::operator=(src);
   UsesRelationship::operator=(src);
 
-  m_navigation_relationship_specific_main = src.m_navigation_relationship_specific_main;
   m_navigation_relationship_specific = src.m_navigation_relationship_specific;
   m_print_layout_row_height = src.m_print_layout_row_height;
+  m_navigation_type = src.m_navigation_type;
 
   return *this;
 }
@@ -102,41 +102,42 @@ void LayoutItem_Portal::change_field_item_name(const Glib::ustring& table_name, 
   }
 }
 
-sharedptr<UsesRelationship> LayoutItem_Portal::get_navigation_relationship_specific(bool& main_relationship)
+sharedptr<UsesRelationship> LayoutItem_Portal::get_navigation_relationship_specific()
 {
-  main_relationship = m_navigation_relationship_specific_main;
-  if(!main_relationship)
+  if(this->get_navigation_type() == LayoutItem_Portal::NAVIGATION_SPECIFIC)
     return m_navigation_relationship_specific;
   else
     return sharedptr<UsesRelationship>();
 }
 
-sharedptr<const UsesRelationship> LayoutItem_Portal::get_navigation_relationship_specific(bool& main_relationship) const
+sharedptr<const UsesRelationship> LayoutItem_Portal::get_navigation_relationship_specific() const
 {
-  main_relationship = m_navigation_relationship_specific_main;
-  if(!main_relationship)
+  if(this->get_navigation_type() == LayoutItem_Portal::NAVIGATION_SPECIFIC)
     return m_navigation_relationship_specific;
   else
     return sharedptr<UsesRelationship>();
 }
 
-void LayoutItem_Portal::set_navigation_relationship_specific(bool main_relationship, const sharedptr<UsesRelationship>& relationship)
+void LayoutItem_Portal::set_navigation_relationship_specific(const sharedptr<UsesRelationship>& relationship)
 {
-  m_navigation_relationship_specific_main = main_relationship;
-  if(!m_navigation_relationship_specific_main)
-    m_navigation_relationship_specific = relationship;
-  else
+  m_navigation_relationship_specific = relationship;
+  m_navigation_type = LayoutItem_Portal::NAVIGATION_SPECIFIC;
+}
+
+void LayoutItem_Portal::reset_navigation_relationship()
+{
     m_navigation_relationship_specific = sharedptr<UsesRelationship>();
+    m_navigation_type = LayoutItem_Portal::NAVIGATION_AUTOMATIC;
 }
 
 Glib::ustring LayoutItem_Portal::get_from_table() const
 {
   Glib::ustring from_table;
-  
+
   sharedptr<const Relationship> relationship = get_relationship();
   if(relationship)
     from_table = relationship->get_from_table();
-  
+
   return from_table;
 }
 
@@ -148,6 +149,16 @@ double LayoutItem_Portal::get_print_layout_row_height() const
 void LayoutItem_Portal::set_print_layout_row_height(double row_height)
 {
   m_print_layout_row_height = row_height;
+}
+
+LayoutItem_Portal::navigation_type LayoutItem_Portal::get_navigation_type() const
+{
+  return m_navigation_type;
+}
+
+void LayoutItem_Portal::set_navigation_type(LayoutItem_Portal::navigation_type type)
+{
+  m_navigation_type = type;
 }
 
 /*

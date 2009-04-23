@@ -74,6 +74,7 @@ namespace Glom
 #define GLOM_NODE_DATA_LAYOUT_PORTAL "data_layout_portal"
 #define GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP "portal_navigation_relationship"
 #define GLOM_ATTRIBUTE_PORTAL_NAVIGATIONRELATIONSHIP_MAIN "navigation_main"
+#define GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE "navigation_type"
 #define GLOM_NODE_DATA_LAYOUT_CALENDAR_PORTAL "data_layout_calendar_portal"
 #define GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_HEIGHT "row_height"
 #define GLOM_ATTRIBUTE_PORTAL_CALENDAR_DATE_FIELD "date_field"
@@ -2168,28 +2169,35 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
           portal = calendar_portal;
         }
 
-        load_after_layout_item_usesrelationship(element, table_name, portal); 
-       
-        sharedptr<UsesRelationship> relationship_navigation_specific;
-        bool relationship_navigation_specific_main = false;
+        load_after_layout_item_usesrelationship(element, table_name, portal);
+
         xmlpp::Element* elementNavigationRelationshipSpecific = get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP);
         if(elementNavigationRelationshipSpecific)
         {
-           relationship_navigation_specific = sharedptr<UsesRelationship>::create();
-           load_after_layout_item_usesrelationship(elementNavigationRelationshipSpecific, portal->get_table_used(table_name), relationship_navigation_specific);
-           relationship_navigation_specific_main = get_node_attribute_value_as_bool(elementNavigationRelationshipSpecific, GLOM_ATTRIBUTE_PORTAL_NAVIGATIONRELATIONSHIP_MAIN);
-
-           if(relationship_navigation_specific)
-           {
-            std::cout << "  debug: relationship_navigation_specific->relationship=" << relationship_navigation_specific->get_relationship_name() << std::endl;
-
-           }
+          const Glib::ustring navigation_type_as_string = get_node_attribute_value(elementNavigationRelationshipSpecific, GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE);
+          // If no GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE was found, or if the
+          // string it contains could not be mapped then we stick with the
+          // portal class' default for its navigation_type member,
+          // LayoutItem_Portal::NAVIGATION_AUTOMATIC. This keeps us
+          // read-compatible with older versions of Glom files.
+          if(0 == navigation_type_as_string.compare("automatic"))
+          {
+            portal->set_navigation_type(LayoutItem_Portal::NAVIGATION_AUTOMATIC);
+          }
+          else if(0 == navigation_type_as_string.compare("none"))
+          {
+            portal->set_navigation_type(LayoutItem_Portal::NAVIGATION_NONE);
+          }
+          else if(0 == navigation_type_as_string.compare("specific"))
+          {
+            sharedptr<UsesRelationship>relationship_navigation_specific = sharedptr<UsesRelationship>::create();
+            load_after_layout_item_usesrelationship(elementNavigationRelationshipSpecific, portal->get_table_used(table_name), relationship_navigation_specific);
+            portal->set_navigation_relationship_specific(relationship_navigation_specific);
+          }
         }
 
-        portal->set_navigation_relationship_specific(relationship_navigation_specific_main, relationship_navigation_specific);
-
         load_after_layout_group(element, portal->get_table_used(table_name), portal, with_print_layout_positions);
-        
+
         //Get the calendar portal's date field:
         if(calendar_portal)
         {
@@ -3012,14 +3020,25 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
               save_before_layout_item_usesrelationship(child, portal);
 
               //Portal navigation details:
-              bool navigation_specific_main = false;
-              sharedptr<const UsesRelationship> relationship_navigation_specific = portal->get_navigation_relationship_specific(navigation_specific_main);
-              if(navigation_specific_main || relationship_navigation_specific) //Avoid wasting a node if these are not even specified.
+              xmlpp::Element* child_navigation_relationship = child->add_child(GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP);
+              if(portal->get_navigation_type() == LayoutItem_Portal::NAVIGATION_AUTOMATIC)
               {
-                xmlpp::Element* child_navigation_relationship_specific = child->add_child(GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP);
-
-                save_before_layout_item_usesrelationship(child_navigation_relationship_specific, relationship_navigation_specific);
-                set_node_attribute_value_as_bool(child_navigation_relationship_specific, GLOM_ATTRIBUTE_PORTAL_NAVIGATIONRELATIONSHIP_MAIN, navigation_specific_main);
+                sharedptr<const UsesRelationship> relationship_navigation_none;
+                save_before_layout_item_usesrelationship(child_navigation_relationship, relationship_navigation_none);
+                set_node_attribute_value(child_navigation_relationship, GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE, "automatic");
+              }
+              else if(portal->get_navigation_type() == LayoutItem_Portal::NAVIGATION_NONE)
+              {
+                sharedptr<const UsesRelationship> relationship_navigation_none;
+                save_before_layout_item_usesrelationship(child_navigation_relationship, relationship_navigation_none);
+                set_node_attribute_value(child_navigation_relationship, GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE, "none");
+              }
+              else if(portal->get_navigation_type() == LayoutItem_Portal::NAVIGATION_SPECIFIC)
+              {
+                sharedptr<const UsesRelationship> relationship_navigation_specific = portal->get_navigation_relationship_specific();
+                save_before_layout_item_usesrelationship(child_navigation_relationship, relationship_navigation_specific);
+                set_node_attribute_value_as_bool(child_navigation_relationship, GLOM_ATTRIBUTE_PORTAL_NAVIGATIONRELATIONSHIP_MAIN, false);
+                set_node_attribute_value(child_navigation_relationship, GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE, "specific");
               }
 
               //Print Layout specific stuff:

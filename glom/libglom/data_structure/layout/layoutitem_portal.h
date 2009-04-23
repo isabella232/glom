@@ -51,9 +51,10 @@ public:
 
   //virtual void debug(guint level = 0) const;
 
-  sharedptr<UsesRelationship> get_navigation_relationship_specific(bool& main_relationship);
-  sharedptr<const UsesRelationship> get_navigation_relationship_specific(bool& main_relationship) const;
-  void set_navigation_relationship_specific(bool main_relationship, const sharedptr<UsesRelationship>& relationship);
+  sharedptr<UsesRelationship> get_navigation_relationship_specific();
+  sharedptr<const UsesRelationship> get_navigation_relationship_specific() const;
+  void set_navigation_relationship_specific(const sharedptr<UsesRelationship>& relationship);
+  void reset_navigation_relationship();
 
   /// This is used only for the print layouts.
   double get_print_layout_row_height() const;
@@ -61,19 +62,28 @@ public:
   /// This is used only for the print layouts.
   void set_print_layout_row_height(double row_height);
 
+  enum navigation_type
+  {
+    NAVIGATION_NONE,
+    NAVIGATION_AUTOMATIC,
+    NAVIGATION_SPECIFIC
+  };
+
+  navigation_type get_navigation_type() const;
+  void set_navigation_type(navigation_type type);
+
 private:
 
-  //If no navigation relationship has been specified then it will be automatically chosen: 
-  bool m_navigation_relationship_specific_main;
   sharedptr<UsesRelationship> m_navigation_relationship_specific;
 
   // This is used only for the print layouts.
   double m_print_layout_row_height;
+
+  //If no navigation relationship has been specified then it will be automatically chosen or navigation will be disabled:
+  navigation_type m_navigation_type;
 };
 
 } //namespace Glom
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTITEM_PORTAL_H
-
-
 

@@ -199,12 +199,9 @@ void Dialog_Layout_Calendar_Related::update_ui(bool including_relationship_list)
   //m_combo_navigation_specify->set_display_parent_table(""); //This would be superfluous, and a bit confusing.
 
   bool navigation_is_automatic = false;
-  bool navigation_specific_main = false;
-  sharedptr<UsesRelationship> navrel = m_portal->get_navigation_relationship_specific(navigation_specific_main);
-  if(navigation_specific_main)
-    m_combo_navigation_specify->set_selected_parent_table(related_table_name);
-  else if(navrel)
+  if(m_portal->get_navigation_type() == LayoutItem_Portal::NAVIGATION_SPECIFIC)
   {
+    sharedptr<UsesRelationship> navrel = m_portal->get_navigation_relationship_specific();
     //std::cout << "debug navrel=" << navrel->get_relationship()->get_name() << std::endl;
     m_combo_navigation_specify->set_selected_relationship(navrel->get_relationship(), navrel->get_related_relationship());
   }
@@ -227,7 +224,7 @@ void Dialog_Layout_Calendar_Related::update_ui(bool including_relationship_list)
   bool navigation_automatic_main = false;
   relationship_navigation_automatic = get_portal_navigation_relationship_automatic(m_portal, navigation_automatic_main);
   Glib::ustring automatic_navigation_description;
-  
+
   if(navigation_automatic_main)
     automatic_navigation_description = m_portal->get_relationship_name_used();
   else if(relationship_navigation_automatic)
@@ -300,14 +297,15 @@ void Dialog_Layout_Calendar_Related::save_to_document()
       uses_rel->set_relationship(rel);
       uses_rel->set_related_relationship(rel_related);
 
-      m_portal->set_navigation_relationship_specific(specify_main, uses_rel);
+      if (rel || rel_related)
+        m_portal->set_navigation_relationship_specific(uses_rel);
       //std::cout << "debug99 main=specify_main" << ", relationship=" << (rel ? rel->get_name() : "none") << std::endl;
     }
     else
     {
       //std::cout << "debug: set_navigation_relationship_specific(false, none)" << std::endl;
       sharedptr<UsesRelationship> none;
-      m_portal->set_navigation_relationship_specific(false, none);
+      m_portal->set_navigation_relationship_specific(none);
     }
     
     m_portal->set_date_field( m_combobox_date_field->get_selected_field() );

@@ -1,3 +1,29 @@
+2009-04-22  Michael Hasselmann  <michaelh@openismus.com>
+
+	Allow to disable navigation in the related record layout.
+
+	* glom/libglom/data_structure/layout/layoutitem_portal.[h|cc] ctor(),
+	[set|get]_navigation_relationship_specific(), [set|get]_navigation_type(),
+	set_navigation_type(): Replaced the flag for whether a specific navigation
+	relationship should be used with an enum type, since we now have an
+	additional state (no navigation relationship) in the Glom::LayoutItem_Portal
+	class. Additionally, this internal state no longer needs to be exported so
+	[set|get]_navigation_relationship_specific() can now be called without
+	supplying a boolean output parameter.
+	* glom/libglom/document/document.cc load_after_layout_group(),
+	save_before_layout_group(): Added load and save support for the
+	no-navigation-relationship option.
+	* glom/mode_data/box_data_portal.cc get_suitable_table_to_view_details():
+	Return an empty table name if the navigation relationship type was set to
+	none.
+	* glom/mode_data/dialog_layout_list_related.[h,cc] ctor(), update_ui(),
+	save_to_document(), glom/glom_developer.glade: Insert a third choice ("none")
+	for the navigation radio buttons.
+	* glom/mode_data/dialog_layout_calendar_related.cc update_ui(),
+	save_to_document(): Replaced calls to
+	LayoutItem_Portal::[set|get]_navigation_relationship_specific() that still
+	used a boolean output parameter.
+
 2009-04-17  Murray Cumming  <murrayc@murrayc.com>
 
 	Makes navigation work to alternate specified relationships.

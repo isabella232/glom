@@ -35,6 +35,7 @@ Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, 
   m_combo_relationship(0),
   m_checkbutton_show_child_relationships(0),
   m_radio_navigation_automatic(0),
+  m_radio_navigation_none(0),
   m_radio_navigation_specify(0),
   m_label_navigation_automatic(0),
   m_combo_navigation_specify(0)
@@ -55,6 +56,8 @@ Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, 
   builder->get_widget("radiobutton_navigation_automatic", m_radio_navigation_automatic);
   builder->get_widget("label_navigation_automatic", m_label_navigation_automatic);
   make_sensitivity_depend_on_toggle_button(*m_radio_navigation_automatic, *m_label_navigation_automatic);
+
+  builder->get_widget("radiobutton_navigation_none", m_radio_navigation_none);
 
   builder->get_widget("radiobutton_navigation_specify", m_radio_navigation_specify);
   builder->get_widget_derived("combobox_navigation_specify", m_combo_navigation_specify);
@@ -190,29 +193,34 @@ void Dialog_Layout_List_Related::update_ui(bool including_relationship_list)
   m_combo_navigation_specify->set_relationships(document, related_table_name, true /* show related relationships */, false /* don't show parent table */); //TODO: Don't show the hidden tables, and don't show relationships that are not used by any fields.
   //m_combo_navigation_specify->set_display_parent_table(""); //This would be superfluous, and a bit confusing.
 
-  bool navigation_is_automatic = false;
-  bool navigation_specific_main = false;
-  sharedptr<UsesRelationship> navrel = m_portal->get_navigation_relationship_specific(navigation_specific_main);
-  if(navigation_specific_main)
-    m_combo_navigation_specify->set_selected_parent_table(related_table_name);
-  else if(navrel)
+  if(m_portal->get_navigation_type() == LayoutItem_Portal::NAVIGATION_SPECIFIC)
   {
+    sharedptr<UsesRelationship> navrel = m_portal->get_navigation_relationship_specific();
     //std::cout << "debug navrel=" << navrel->get_relationship()->get_name() << std::endl;
     m_combo_navigation_specify->set_selected_relationship(navrel->get_relationship(), navrel->get_related_relationship());
   }
   else
   {
-    navigation_is_automatic = true;
-
     sharedptr<const Relationship> none;
     m_combo_navigation_specify->set_selected_relationship(none);
   }
 
   //Set the appropriate radio button:
-  //std::cout << "debug: navigation_is_automatic=" << navigation_is_automatic << std::endl;
-  m_radio_navigation_automatic->set_active(navigation_is_automatic); 
-  m_radio_navigation_specify->set_active(!navigation_is_automatic); 
+  //std::cout << "debug: navrel_type=" << m_portal->get_navigation_relationship_type() << std::endl;
+  switch(m_portal->get_navigation_type())
+  {
+    case LayoutItem_Portal::NAVIGATION_NONE:
+      m_radio_navigation_none->set_active(true);
+      break;
 
+    case LayoutItem_Portal::NAVIGATION_AUTOMATIC:
+      m_radio_navigation_automatic->set_active(true);
+      break;
+
+    case LayoutItem_Portal::NAVIGATION_SPECIFIC:
+      m_radio_navigation_specify->set_active(true);
+      break;
+  }
 
   //Describe the automatic navigation:
   sharedptr<const UsesRelationship> relationship_navigation_automatic;
@@ -279,20 +287,34 @@ void Dialog_Layout_List_Related::save_to_document()
       sharedptr<Relationship> rel, rel_related;
       rel = m_combo_navigation_specify->get_selected_relationship(rel_related);
 
-      bool specify_main = (!rel && !rel_related);
       sharedptr<UsesRelationship> uses_rel = sharedptr<UsesRelationship>::create();
       uses_rel->set_relationship(rel);
       uses_rel->set_related_relationship(rel_related);
 
-      m_portal->set_navigation_relationship_specific(specify_main, uses_rel);
+      if(rel || rel_related)
+        m_portal->set_navigation_relationship_specific(uses_rel);
       //std::cout << "debug99 main=specify_main" << ", relationship=" << (rel ? rel->get_name() : "none") << std::endl;
     }
     else
     {
+      // TODO: Get rid of the else branch. Cleanup code for the relations should
+      // go into the Glom::LayoutItem_Portal::set_navigation_relationship_type_* functions.
+
       //std::cout << "debug: set_navigation_relationship_specific(false, none)" << std::endl;
       sharedptr<UsesRelationship> none;
-      m_portal->set_navigation_relationship_specific(false, none);
+      m_portal->set_navigation_relationship_specific(none);
     }
+
+    if (m_radio_navigation_automatic->get_active())
+      m_portal->set_navigation_type(LayoutItem_Portal::NAVIGATION_AUTOMATIC);
+
+    if(m_radio_navigation_none->get_active())
+    {
+      sharedptr<UsesRelationship> uses_rel = sharedptr<UsesRelationship>::create();
+      uses_rel->set_related_relationship(sharedptr<Relationship>());
+      m_portal->set_navigation_type(LayoutItem_Portal::NAVIGATION_NONE);
+    }
+
   }
 }
 

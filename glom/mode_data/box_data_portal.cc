@@ -211,21 +211,21 @@ bool Box_Data_Portal::get_has_suitable_record_to_view_details() const
 
 void Box_Data_Portal::get_suitable_table_to_view_details(Glib::ustring& table_name, sharedptr<const UsesRelationship>& relationship) const
 {
- 
   //Initialize output parameters:
   table_name = Glib::ustring();
 
   if(!m_portal)
     return;
 
+
+  sharedptr<const UsesRelationship> navigation_relationship = m_portal->get_navigation_relationship_specific();
+
   //Check whether a relationship was specified:
-  bool navigation_relationship_main = false;
-  sharedptr<const UsesRelationship> navigation_relationship = m_portal->get_navigation_relationship_specific(navigation_relationship_main);
-  if(!navigation_relationship_main && !navigation_relationship)
+  if(m_portal->get_navigation_type() == LayoutItem_Portal::NAVIGATION_AUTOMATIC)
   {
     //std::cout << "debug: decide automatically." << std::endl;
     //Decide automatically:
-    navigation_relationship_main = false;
+    bool navigation_relationship_main = false; // no longer used
     navigation_relationship = get_portal_navigation_relationship_automatic(m_portal, navigation_relationship_main);
     //std::cout << "debug: auto main=" << navigation_relationship_main << ", navigation_relationship=" << (navigation_relationship ? navigation_relationship->get_name() : navigation_relationship->get_relationship()->get_name()) << std::endl;
   }
@@ -239,20 +239,22 @@ void Box_Data_Portal::get_suitable_table_to_view_details(Glib::ustring& table_na
 
   //Get the navigation table name from the chosen relationship:
   const Glib::ustring directly_related_table_name = m_portal->get_table_used(Glib::ustring() /* not relevant */);
- 
+
+  // The navigation_table_name (and therefore, the table_name output parameter,
+  // as well) stays empty if the navrel type was set to none.
   Glib::ustring navigation_table_name;
-  if(navigation_relationship_main)
+  if(m_portal->get_navigation_type() == LayoutItem_Portal::NAVIGATION_AUTOMATIC)
   {
     navigation_table_name = directly_related_table_name;
   }
-  else if(navigation_relationship)
+  else if(m_portal->get_navigation_type() == LayoutItem_Portal::NAVIGATION_SPECIFIC)
   {
     navigation_table_name = navigation_relationship->get_table_used(directly_related_table_name);
   }
 
   if(navigation_table_name.empty())
   {
-    std::cerr << "Box_Data_Portal::get_suitable_table_to_view_details(): navigation_table_name is empty." << std::endl;
+    //std::cerr << "Box_Data_Portal::get_suitable_table_to_view_details(): navigation_table_name is empty." << std::endl;
     return;
   }
 
