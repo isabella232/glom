@@ -1,3 +1,11 @@
+2009-04-24  Murray Cumming  <murrayc@murrayc.com>
+
+	Don't network share new documents from (old) examples.
+	
+	* glom/libglom/document/document.cc: load_after(): Only assume network-sharing 
+	for older documents if it's not an example, so we don't have to resave all the 
+	examples.
+
 2009-04-23  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix loading of old self-hosted files, broken since defaulting to no sharing.

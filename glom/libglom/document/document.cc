@@ -2368,7 +2368,7 @@ bool Document::load_after()
         m_network_shared = get_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_NETWORK_SHARED, false /* default */);
         
         //Older documents always defaulted to network-sharing with self-hosting.
-        if(!m_network_shared && (get_document_format_version() < 4))
+        if(!m_network_shared && !m_is_example && (get_document_format_version() < 4))
         {
           //Otherwise we would assume that the default user already exists,
           //and fail to ask for the user/password:
