@@ -11,10 +11,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glom HEAD\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glom&component=general\n"
-"POT-Creation-Date: 2009-03-19 10:22+0000\n"
-"PO-Revision-Date: 2009-03-23 17:27+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-04-26 11:45+0200\n"
+"PO-Revision-Date: 2009-04-26 11:52+0100\n"
 "Last-Translator: Mario Blättermann <mariobl@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -22,174 +21,189 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../glom/application.cc:173
+#: ../glom/application.cc:182
+msgid "Glom: Generating Encryption Certificates"
+msgstr "Glom: Verschlüsselungszertifikate werden erzeugt"
+
+#: ../glom/application.cc:183
+msgid ""
+"Please wait while Glom prepares your system for publishing over the network."
+msgstr ""
+"Bitte warten Sie, während Glom das System für das Veröffentlichen im Netzwerk "
+"vorbereitet."
+
+#: ../glom/application.cc:209
 msgid "(C) 2000-2005 Murray Cumming"
 msgstr "(c) 2000-2005 Murray Cumming"
 
-#: ../glom/application.cc:173
+#: ../glom/application.cc:209
 msgid "A Database GUI"
 msgstr "Eine grafische Datenbankschnittstelle"
 
-#: ../glom/application.cc:286 ../glom/bakery/App_WithDoc_Gtk.cc:150
+#: ../glom/application.cc:308 ../glom/bakery/app_withdoc_gtk.cc:280
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:123
 #: ../glom/relationships_overview/dialog_relationships_overview.cc:54
 #: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:675
 msgid "_File"
 msgstr "_Datei"
 
-#: ../glom/application.cc:287 ../glom/bakery/App_WithDoc_Gtk.cc:151
+#: ../glom/application.cc:309 ../glom/bakery/app_withdoc_gtk.cc:281
 msgid "_Recent Files"
 msgstr "_Zuletzt geöffnet"
 
-#: ../glom/application.cc:295
+#: ../glom/application.cc:317
 msgid "Save As Example"
 msgstr "Als Beispiel speichern"
 
-#: ../glom/application.cc:302
+#: ../glom/application.cc:324
 msgid "_Export"
 msgstr "_Exportieren"
 
 #. Note to translators: "Import" here is an action verb - it's a button.
-#: ../glom/application.cc:305 ../glom/glom_developer.glade.h:148
+#: ../glom/application.cc:327 ../glom/glom_developer.glade.h:148
 #: ../glom/translation/window_translations.cc:596
 msgid "Import"
 msgstr "Importieren"
 
-#: ../glom/application.cc:310
+#: ../glom/application.cc:331
+msgid "Shared On Network"
+msgstr "Im Netzwerk freigegeben"
+
+#: ../glom/application.cc:339
 msgid "_Standard"
 msgstr "_Standard"
 
-#: ../glom/application.cc:314
+#: ../glom/application.cc:343
 msgid "_Edit Print Layouts"
 msgstr "_Drucklayouts bearbeiten"
 
 #. "Tables" menu:
-#: ../glom/application.cc:380
+#: ../glom/application.cc:409
 msgid "_Tables"
 msgstr "_Tabellen"
 
-#: ../glom/application.cc:390
+#: ../glom/application.cc:419
 msgid "_Edit Tables"
 msgstr "Tabellen b_earbeiten"
 
-#: ../glom/application.cc:395
+#: ../glom/application.cc:424
 msgid "Add _Related Table"
 msgstr "_Bezugstabelle hinzufügen"
 
 #. "Reports" menu:
-#: ../glom/application.cc:402
+#: ../glom/application.cc:431
 msgid "_Reports"
 msgstr "_Berichte"
 
-#: ../glom/application.cc:405
+#: ../glom/application.cc:434
 msgid "_Edit Reports"
 msgstr "_Berichte bearbeiten"
 
 #. "UserLevel" menu:
-#: ../glom/application.cc:413
+#: ../glom/application.cc:442
 msgid "_User Level"
 msgstr "_Benutzerebene"
 
-#: ../glom/application.cc:416 ../glom/application.cc:440
+#: ../glom/application.cc:445 ../glom/application.cc:469
 msgid "_Developer"
 msgstr "_Entwickler"
 
-#: ../glom/application.cc:420
+#: ../glom/application.cc:449
 msgid "_Operator"
 msgstr "_Operator"
 
 #. "Mode" menu:
-#: ../glom/application.cc:426
+#: ../glom/application.cc:455
 msgid "_Mode"
 msgstr "_Modus"
 
 #. We remember this action, so that it can be explicitly activated later.
-#: ../glom/application.cc:431
+#: ../glom/application.cc:460
 msgid "D_ata"
 msgstr "D_aten"
 
-#: ../glom/application.cc:435
+#: ../glom/application.cc:464
 msgid "_Find"
 msgstr "_Suchen"
 
-#: ../glom/application.cc:444
+#: ../glom/application.cc:473
 msgid "_Database Preferences"
 msgstr "_Datenbankeinstellungen"
 
-#: ../glom/application.cc:449
+#: ../glom/application.cc:478
 msgid "_Fields"
 msgstr "_Felder"
 
-#: ../glom/application.cc:453
+#: ../glom/application.cc:482
 msgid "_Relationships Overview"
 msgstr "Übersicht über Be_ziehungen"
 
-#: ../glom/application.cc:457
+#: ../glom/application.cc:486
 msgid "_Relationships for this Table"
 msgstr "Be_ziehungen dieser Tabelle"
 
-#: ../glom/application.cc:461
+#: ../glom/application.cc:490
 msgid "_Users"
 msgstr "Be_nutzer"
 
-#: ../glom/application.cc:465
+#: ../glom/application.cc:494
 msgid "_Print Layouts"
 msgstr "_Drucklayouts"
 
-#: ../glom/application.cc:469
+#: ../glom/application.cc:498
 msgid "R_eports"
 msgstr "B_erichte"
 
-#: ../glom/application.cc:473
+#: ../glom/application.cc:502
 msgid "Script _Library"
 msgstr "Skript-_Bibliothek"
 
-#: ../glom/application.cc:478
+#: ../glom/application.cc:507
 msgid "_Layout"
 msgstr "A_ufbau"
 
-#: ../glom/application.cc:482
+#: ../glom/application.cc:511
 msgid "_Test Translation"
 msgstr "Übersetzung _testen"
 
-#: ../glom/application.cc:486
+#: ../glom/application.cc:515
 msgid "_Translations"
 msgstr "_Übersetzungen"
 
 #. "Active Platform" menu:
-#: ../glom/application.cc:492
+#: ../glom/application.cc:521
 msgid "_Active Platform"
 msgstr "_Aktive Plattform"
 
-#: ../glom/application.cc:497
+#: ../glom/application.cc:526
 msgid "_Normal"
 msgstr "_Normal"
 
-#: ../glom/application.cc:497
+#: ../glom/application.cc:526
 msgid "The layout to use for normal desktop environments."
 msgstr "Das in gewöhnlichen Desktop-Umgebungen zu verwendende Layout."
 
-#: ../glom/application.cc:502
+#: ../glom/application.cc:531
 msgid "_Maemo"
 msgstr "_Maemo"
 
-#: ../glom/application.cc:502
+#: ../glom/application.cc:531
 msgid "The layout to use for Maemo devices."
 msgstr "Das für Maemo-Geräte zu verwendende Layout."
 
-#: ../glom/application.cc:507
+#: ../glom/application.cc:536
 msgid "_Show Layout Toolbar"
 msgstr "_Layout-Werkzeugleiste anzeigen"
 
 #. std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED" << std::endl;
 #. Warn the user, and let him try again:
-#: ../glom/application.cc:679 ../glom/frame_glom.cc:1885
-#: ../glom/frame_glom.cc:2012
+#: ../glom/application.cc:716 ../glom/frame_glom.cc:2208
+#: ../glom/frame_glom.cc:2389
 msgid "Connection Failed"
 msgstr "Verbindung gescheitert"
 
-#: ../glom/application.cc:679 ../glom/frame_glom.cc:1885
-#: ../glom/frame_glom.cc:2012
+#: ../glom/application.cc:716 ../glom/frame_glom.cc:2208
+#: ../glom/frame_glom.cc:2389
 msgid ""
 "Glom could not connect to the database server. Maybe you entered an incorrect "
 "user name or password, or maybe the postgres database server is not running."
@@ -198,11 +212,11 @@ msgstr ""
 "Sie einen falschen Benutzernamen oder ein ungültiges Passwort eingegeben, "
 "möglich wäre auch,dass der Postgres-Datenbank-Server nicht läuft."
 
-#: ../glom/application.cc:936
+#: ../glom/application.cc:976
 msgid "Creating From Example File"
 msgstr "Aus Beispieldatei erstellen"
 
-#: ../glom/application.cc:937
+#: ../glom/application.cc:977
 msgid ""
 "To use this example file you must save an editable copy of the file. A new "
 "database will also be created on the server."
@@ -211,11 +225,11 @@ msgstr ""
 "Kopie dieser Datei abspeichern. Weiterhin wird eine neue Datenbank auf dem "
 "Server erstellt."
 
-#: ../glom/application.cc:986
+#: ../glom/application.cc:1026
 msgid "Opening Read-Only File."
 msgstr "Schreibgeschützte Datei öffnen."
 
-#: ../glom/application.cc:987
+#: ../glom/application.cc:1027
 msgid ""
 "This file is read only, so you will not be able to enter Developer mode to "
 "make design changes."
@@ -223,16 +237,16 @@ msgstr ""
 "Diese Datei ist nur lesbar, somit können Sie nicht in den Entwicklermodus "
 "wechseln, um Änderungen an der Struktur vorzunehmen."
 
-#: ../glom/application.cc:990
+#: ../glom/application.cc:1030
 msgid "Continue without Developer Mode"
 msgstr "Ohne Entwicklermodus fortsetzen"
 
 #. The connection to the server is OK, but the database is not there yet.
-#: ../glom/application.cc:1052
+#: ../glom/application.cc:1084
 msgid "Database Not Found On Server"
 msgstr "Die Datenbank wurde auf diesem Server nicht gefunden"
 
-#: ../glom/application.cc:1052
+#: ../glom/application.cc:1084
 msgid ""
 "The database could not be found on the server. Please consult your system "
 "administrator."
@@ -240,56 +254,56 @@ msgstr ""
 "Die Datenbank wurde auf dem Server nicht gefunden. Bitte fragen Sie Ihren "
 "Systemadministrator."
 
-#: ../glom/application.cc:1348
+#: ../glom/application.cc:1426
 msgid "_Contents"
 msgstr "_Inhalt"
 
-#: ../glom/application.cc:1348
+#: ../glom/application.cc:1426
 msgid "Help with the application"
 msgstr "Hilfe zu dieser Anwendung"
 
-#: ../glom/application.cc:1453
+#: ../glom/application.cc:1531
 msgid "Creating Glom Database"
 msgstr "Glom-Datenbank wird erstellt"
 
-#: ../glom/application.cc:1453
+#: ../glom/application.cc:1531
 msgid "Creating Glom database from example file."
 msgstr "Glom-Datenbank wird aus Beispieldatei erstellt."
 
 #. The save failed. Tell the user and don't do anything else:
-#: ../glom/application.cc:1958 ../glom/bakery/App_WithDoc.cc:278
-#: ../glom/bakery/App_WithDoc.cc:329
+#: ../glom/application.cc:2036 ../glom/bakery/app_withdoc.cc:232
+#: ../glom/bakery/app_withdoc.cc:283
 msgid "Save failed."
 msgstr "Speichern fehlgeschlagen"
 
-#: ../glom/application.cc:1958 ../glom/bakery/App_WithDoc.cc:278
-#: ../glom/bakery/App_WithDoc.cc:329
+#: ../glom/application.cc:2036 ../glom/bakery/app_withdoc.cc:232
+#: ../glom/bakery/app_withdoc.cc:283
 msgid ""
 "There was an error while saving the file. Your changes have not been saved."
 msgstr ""
 "Beim Speichern der Datei ist ein Fehler aufgetreten. Ihre Änderungen wurden "
 "nicht gespeichert."
 
-#: ../glom/application.cc:2005 ../glom/bakery/GtkDialogs.cc:65
+#: ../glom/application.cc:2083 ../glom/bakery/app_withdoc_gtk.cc:531
 msgid "Open Document"
 msgstr "Dokument öffnen"
 
 #. Show Avahi's stock dialog for choosing a publisher service:
-#: ../glom/application.cc:2025
+#: ../glom/application.cc:2103
 msgid "Choose a running Glom database"
 msgstr "Eine laufende Glom-Datenbank auswählen"
 
-#: ../glom/application.cc:2080 ../glom/application.cc:2085
-#: ../glom/bakery/GtkDialogs.cc:125
+#: ../glom/application.cc:2158 ../glom/application.cc:2163
+#: ../glom/bakery/app_withdoc_gtk.cc:591
 msgid "Save Document"
 msgstr "Dokument speichern"
 
 #. Warn the user:
-#: ../glom/application.cc:2187 ../glom/bakery/GtkDialogs.cc:188
+#: ../glom/application.cc:2265 ../glom/bakery/app_withdoc_gtk.cc:654
 msgid "Read-only File."
 msgstr "Schreibgeschützte Datei."
 
-#: ../glom/application.cc:2187 ../glom/bakery/GtkDialogs.cc:188
+#: ../glom/application.cc:2265 ../glom/bakery/app_withdoc_gtk.cc:654
 msgid ""
 "You may not overwrite the existing file, because you do not have sufficient "
 "access rights."
@@ -298,11 +312,11 @@ msgstr ""
 "nötigen Zugriffsrechte fehlen."
 
 #. Warn the user:
-#: ../glom/application.cc:2201 ../glom/bakery/GtkDialogs.cc:202
+#: ../glom/application.cc:2279 ../glom/bakery/app_withdoc_gtk.cc:668
 msgid "Read-only Directory."
 msgstr "Schreibgeschützter Ordner."
 
-#: ../glom/application.cc:2201 ../glom/bakery/GtkDialogs.cc:202
+#: ../glom/application.cc:2279 ../glom/bakery/app_withdoc_gtk.cc:668
 msgid ""
 "You may not create a file in this directory, because you do not have "
 "sufficient access rights."
@@ -310,21 +324,19 @@ msgstr ""
 "Sie können keine Datei in diesem Ordner erstellen, da Ihnen die nötigen "
 "Zugriffsrechte fehlen."
 
-#: ../glom/application.cc:2218
+#: ../glom/application.cc:2296
 msgid "Database Title missing"
 msgstr "Datenbank-Titel fehlt"
 
-#: ../glom/application.cc:2218
+#: ../glom/application.cc:2296
 msgid "You must specify a title for the new database."
 msgstr "Sie müssen einen Titel für die neue Datenbank angeben."
 
-#: ../glom/application.cc:2247
-#: ../glom/libglom/connectionpool_backends/postgres_self.cc:248
+#: ../glom/application.cc:2325 ../glom/frame_glom.cc:1949
 msgid "Directory Already Exists"
 msgstr "Ordner besteht bereits"
 
-#: ../glom/application.cc:2247
-#: ../glom/libglom/connectionpool_backends/postgres_self.cc:248
+#: ../glom/application.cc:2325 ../glom/frame_glom.cc:1950
 msgid ""
 "There is an existing directory with the same name as the directory that "
 "should be created for the new database files. You should specify a different "
@@ -335,36 +347,35 @@ msgstr ""
 "anderen Dateinamen ein, um einen neue Ordner zu nutzen."
 
 #: ../glom/base_db.cc:136 ../glom/base_db.cc:149
-#: ../glom/libglom/connectionpool.cc:569
 msgid "Internal error"
 msgstr "Interner Fehler"
 
-#: ../glom/base_db.cc:1192 ../glom/mode_design/users/dialog_groups_list.cc:64
+#: ../glom/base_db.cc:1235 ../glom/mode_design/users/dialog_groups_list.cc:64
 msgid "Description"
 msgstr "Beschreibung"
 
-#: ../glom/base_db.cc:1199
+#: ../glom/base_db.cc:1242
 msgid "Comments"
 msgstr "Kommentare"
 
-#: ../glom/base_db.cc:1849
+#: ../glom/base_db.cc:1892
 msgid "Your find criteria did not match any records in the table."
 msgstr ""
 "Ihre Suchkriterien stimmen mit keinem der Datensätze dieser Tabelle überein."
 
-#: ../glom/base_db.cc:1854
+#: ../glom/base_db.cc:1897
 msgid "No Records Found"
 msgstr "Keine Datensätze gefunden"
 
-#: ../glom/base_db.cc:1860
+#: ../glom/base_db.cc:1903
 msgid "New Find"
 msgstr "Neue Suche"
 
-#: ../glom/base_db.cc:2905
+#: ../glom/base_db.cc:2948
 msgid "Value Is Not Unique"
 msgstr "Wert ist nicht eindeutig"
 
-#: ../glom/base_db.cc:2905
+#: ../glom/base_db.cc:2948
 msgid ""
 "The field's value must be unique, but a record with this value already exists."
 msgstr ""
@@ -373,7 +384,7 @@ msgstr ""
 
 #. Warn the user:
 #. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
-#: ../glom/base_db_table_data.cc:307
+#: ../glom/base_db_table_data.cc:308
 msgid ""
 "Data may not be entered into this related field, because the related record "
 "does not yet exist, and the relationship does not allow automatic creation of "
@@ -383,13 +394,13 @@ msgstr ""
 "Bezugsdatensatz noch nicht existiert und die Beziehungseigenschaften das "
 "Erstellen neuer Bezugsdatensätze nicht erlaubt."
 
-#: ../glom/base_db_table_data.cc:311
+#: ../glom/base_db_table_data.cc:312
 msgid "Related Record Does Not Exist"
 msgstr "Der Bezugsdatensatz existiert nicht"
 
 #. Warn the user:
 #. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
-#: ../glom/base_db_table_data.cc:331
+#: ../glom/base_db_table_data.cc:332
 msgid ""
 "Data may not be entered into this related field, because the related record "
 "does not yet exist, and the key in the related record is auto-generated and "
@@ -400,12 +411,12 @@ msgstr ""
 "automatisch angelegt wird und somit nicht mit dem angegeben Schlüsselwert "
 "erstellt werden kann."
 
-#: ../glom/base_db_table_data.cc:336
+#: ../glom/base_db_table_data.cc:337
 msgid "Related Record Cannot Be Created"
 msgstr "Bezugsdatensatz konnte nicht angelegt werden"
 
 #. Ask the user for confirmation:
-#: ../glom/base_db_table_data.cc:438
+#: ../glom/base_db_table_data.cc:439
 msgid ""
 "Are you sure that you would like to delete this record? The data in this "
 "record will then be permanently lost."
@@ -413,7 +424,7 @@ msgstr ""
 "Sind Sie sicher, dass Sie diesen Datensatz löschen möchten? Alle Daten des "
 "Datensatzes werden unwiederbringlich verloren gehen."
 
-#: ../glom/base_db_table_data.cc:442
+#: ../glom/base_db_table_data.cc:443
 msgid "Delete record"
 msgstr "Datensatz löschen"
 
@@ -488,7 +499,7 @@ msgstr "Eine anwenderfreundliche Datenbankumgebung."
 msgid "Glom"
 msgstr "Glom"
 
-#: ../glom/dialog_connection.cc:239
+#: ../glom/dialog_connection.cc:238
 msgid "Not yet created."
 msgstr "Noch nicht fertiggestellt."
 
@@ -763,20 +774,20 @@ msgstr ""
 "Fehler beim Importieren von Zeile %1. Importieren ist unmöglcih, weil der "
 "Primärschlüssel leer ist.\n"
 
-#: ../glom/dialog_new_self_hosted_connection.cc:104
+#: ../glom/dialog_new_self_hosted_connection.cc:81
 msgid "Username Is Empty"
 msgstr "Benutzername ist leer"
 
-#: ../glom/dialog_new_self_hosted_connection.cc:104
+#: ../glom/dialog_new_self_hosted_connection.cc:81
 msgid "Please enter a login name for the new user."
 msgstr "Bitte geben Sie einen Anmeldenamen für den neuen Benutzer an."
 
-#: ../glom/dialog_new_self_hosted_connection.cc:109
+#: ../glom/dialog_new_self_hosted_connection.cc:86
 #: ../glom/mode_design/users/dialog_user.cc:50
 msgid "Passwords Do Not Match"
 msgstr "Passwörter stimmen nicht überein"
 
-#: ../glom/dialog_new_self_hosted_connection.cc:109
+#: ../glom/dialog_new_self_hosted_connection.cc:86
 #: ../glom/mode_design/users/dialog_user.cc:50
 msgid ""
 "The entered password does not match the entered password confirmation. Please "
@@ -785,12 +796,12 @@ msgstr ""
 "Das eingegebene Passwort stimmt nicht mit der eingegebenen "
 "Passwortbestätigung überein. Bitte versuchen Sie es noch einmal."
 
-#: ../glom/dialog_new_self_hosted_connection.cc:114
+#: ../glom/dialog_new_self_hosted_connection.cc:91
 #: ../glom/mode_design/users/dialog_user.cc:55
 msgid "Password Is Empty"
 msgstr "Passwort ist leer"
 
-#: ../glom/dialog_new_self_hosted_connection.cc:114
+#: ../glom/dialog_new_self_hosted_connection.cc:91
 #: ../glom/mode_design/users/dialog_user.cc:55
 msgid "Please enter a password for this user."
 msgstr "Bitte geben Sie ein Passwort für diesen Benutzer ein."
@@ -810,34 +821,34 @@ msgstr "Exportieren"
 
 #. TODO: Obviously this document should have been deleted when the database-creation was cancelled.
 #. Note that "canceled" is the correct US spelling.
-#: ../glom/frame_glom.cc:329
+#: ../glom/frame_glom.cc:343
 msgid "No table"
 msgstr "Keine Tabelle"
 
-#: ../glom/frame_glom.cc:329
+#: ../glom/frame_glom.cc:343
 msgid "This database has no tables yet."
 msgstr "Diese Datenbank enthält bis jetzt noch keine Tabellen."
 
-#: ../glom/frame_glom.cc:365 ../glom/glom.glade.h:18
+#: ../glom/frame_glom.cc:379 ../glom/glom.glade.h:18
 msgid "Data"
 msgstr "Daten"
 
-#: ../glom/frame_glom.cc:416
+#: ../glom/frame_glom.cc:430
 msgid "Find"
 msgstr "Suchen"
 
-#: ../glom/frame_glom.cc:424
+#: ../glom/frame_glom.cc:438
 #: ../glom/libglom/data_structure/translatable_item.cc:306
 #: ../glom/translation/window_translations.cc:218
 msgid "Unknown"
 msgstr "Unbekannt"
 
 #. TODO: Obviously this could be possible but it would require a network protocol and some work:
-#: ../glom/frame_glom.cc:497
+#: ../glom/frame_glom.cc:511
 msgid "Developer Mode Not Available."
 msgstr "Entwicklermodus nicht verfügbar."
 
-#: ../glom/frame_glom.cc:498
+#: ../glom/frame_glom.cc:512
 msgid ""
 "Developer mode is not available because the file was opened over the network "
 "from a running Glom. Only the original file may be edited."
@@ -846,11 +857,11 @@ msgstr ""
 "von einer laufenden Glom-Instanz geöffnet wurde. Nur die Original-Datei kann "
 "bearbeitet werden."
 
-#: ../glom/frame_glom.cc:504
+#: ../glom/frame_glom.cc:518
 msgid "Developer Mode Not Available"
 msgstr "Entwicklermodus nicht verfügbar"
 
-#: ../glom/frame_glom.cc:505
+#: ../glom/frame_glom.cc:519
 msgid ""
 "Developer mode is not available. Check that you have sufficient database "
 "access rights and that the glom file is not read-only."
@@ -859,11 +870,11 @@ msgstr ""
 "die notwendigen Datenbankrechte besitzen und ob die glom-Datei nicht "
 "schreibgeschützt ist."
 
-#: ../glom/frame_glom.cc:512
+#: ../glom/frame_glom.cc:526
 msgid "Saving in New Document Format"
 msgstr "In neuem Dokumentenformat speichern"
 
-#: ../glom/frame_glom.cc:513
+#: ../glom/frame_glom.cc:527
 msgid ""
 "The document was created by an earlier version of the application. Making "
 "changes to the document will mean that the document cannot be opened by some "
@@ -873,15 +884,15 @@ msgstr ""
 "Sie Änderungen an diesem Dokument vornehmen, so kann dieses Dokument nicht "
 "mehr von früheren Versionen dieser Anwendung geöffnet werden."
 
-#: ../glom/frame_glom.cc:516
+#: ../glom/frame_glom.cc:530
 msgid "Continue"
 msgstr "Fortfahren"
 
-#: ../glom/frame_glom.cc:565
+#: ../glom/frame_glom.cc:579
 msgid "Export Not Allowed."
 msgstr "Export ist nicht erlaubt."
 
-#: ../glom/frame_glom.cc:565
+#: ../glom/frame_glom.cc:579
 msgid ""
 "You do not have permission to view the data in this table, so you may not "
 "export the data."
@@ -889,31 +900,64 @@ msgstr ""
 "Sie haben nicht das Recht, die Daten aus dieser Tabelle zu sehen, deshalb "
 "können Sie diese auch nicht exportieren."
 
-#: ../glom/frame_glom.cc:592
+#: ../glom/frame_glom.cc:606
 msgid "Could Not Create File."
 msgstr "Datei konnte nicht erstellt werden."
 
-#: ../glom/frame_glom.cc:592
+#: ../glom/frame_glom.cc:606
 msgid "Glom could not create the specified file."
 msgstr "Glom konnte die angegebene Datei nicht erstellen."
 
-#: ../glom/frame_glom.cc:766
+#: ../glom/frame_glom.cc:780
 msgid "Choose a CSV file to open"
 msgstr "Wählen Sie eine zu öffnende CSV-Datei"
 
-#: ../glom/frame_glom.cc:770
+#: ../glom/frame_glom.cc:784
 msgid "CSV files"
 msgstr "CSV-Dateien"
 
-#: ../glom/frame_glom.cc:774
+#: ../glom/frame_glom.cc:788
 msgid "All files"
 msgstr "Alle Dateien"
 
-#: ../glom/frame_glom.cc:955
+#: ../glom/frame_glom.cc:863
+msgid "Share On Network"
+msgstr "Im Netzwerk freigeben"
+
+#: ../glom/frame_glom.cc:864
+msgid ""
+"Are you sure that you wish to allow other users on the network to use this "
+"database?"
+msgstr ""
+"Sind Sie sicher, dass Sie anderen Benutzern im Netzwerk die Nutzung dieser "
+"Datenbank erlauben möchten?"
+
+#: ../glom/frame_glom.cc:867
+msgid "_Share"
+msgstr "_Freigeben"
+
+#. TODO: Warn about connected users if possible.
+#: ../glom/frame_glom.cc:962
+msgid "Stop Sharing On Network"
+msgstr "Freigabe im Netzwerk beenden"
+
+#: ../glom/frame_glom.cc:963
+msgid ""
+"Are you sure that you wish to prevent other users on the network from using "
+"this database?"
+msgstr ""
+"Sind Sie sicher, dass Sie anderen Benutzern im Netzwerk die Nutzung dieser "
+"Datenbank verweigern möchten?"
+
+#: ../glom/frame_glom.cc:966
+msgid "_Stop Sharing"
+msgstr "Freigabe _beenden"
+
+#: ../glom/frame_glom.cc:1175
 msgid "Table Exists Already"
 msgstr "Tabelle existiert bereits"
 
-#: ../glom/frame_glom.cc:955
+#: ../glom/frame_glom.cc:1175
 msgid ""
 "A table with this name already exists in the database. Please choose a "
 "different table name."
@@ -921,11 +965,11 @@ msgstr ""
 "Eine Tabelle mit diesem Namen existiert bereits in der Datenbank. Bitte "
 "wählen Sie einen anderen Namen für diese Tabelle."
 
-#: ../glom/frame_glom.cc:959
+#: ../glom/frame_glom.cc:1179
 msgid "Relationship Exists Already"
 msgstr "Beziehung existiert bereits"
 
-#: ../glom/frame_glom.cc:959
+#: ../glom/frame_glom.cc:1179
 msgid ""
 "A relationship with this name already exists for this table. Please choose a "
 "different relationship name."
@@ -933,43 +977,76 @@ msgstr ""
 "Eine Beziehung mit diesem Namen existiert bereits für diese Tabelle. Bitte "
 "wählen Sie einen anderen Namen für diese Beziehung."
 
-#: ../glom/frame_glom.cc:963
+#: ../glom/frame_glom.cc:1183
 msgid "More information needed"
 msgstr "Weitere Informationen benötigt"
 
-#: ../glom/frame_glom.cc:963
+#: ../glom/frame_glom.cc:1183
 msgid "You must specify a field, a table name, and a relationship name."
 msgstr ""
 "Sie müssen ein Feld, einen Tabellennamen, und einen Beziehungsnamen angeben."
 
-#: ../glom/frame_glom.cc:1017
+#: ../glom/frame_glom.cc:1237
 msgid "Related Table Created"
 msgstr "Bezugstabelle wurde erstellt"
 
-#: ../glom/frame_glom.cc:1017
+#: ../glom/frame_glom.cc:1237
 msgid "The new related table has been created."
 msgstr "Die neue Bezugstabelle wurde erstellt."
 
-#: ../glom/frame_glom.cc:1120 ../glom/utility_widgets/dialog_choose_id.cc:105
+#: ../glom/frame_glom.cc:1340 ../glom/utility_widgets/dialog_choose_id.cc:105
 msgid "You have not entered any quick find criteria."
 msgstr "Sie haben keinerlei Schnellsuchkriterium angegeben."
 
-#: ../glom/frame_glom.cc:1125 ../glom/mode_data/box_data.cc:142
+#: ../glom/frame_glom.cc:1345 ../glom/mode_data/box_data.cc:142
 #: ../glom/utility_widgets/dialog_choose_id.cc:109
 msgid "No Find Criteria"
 msgstr "Keine Suchkriterien"
 
 #. show user level:
-#: ../glom/frame_glom.cc:1185
+#: ../glom/frame_glom.cc:1405
 msgid "Operator"
 msgstr "Operator"
 
-#: ../glom/frame_glom.cc:1187
+#: ../glom/frame_glom.cc:1407
 msgid "Developer"
 msgstr "Entwickler"
 
+#: ../glom/frame_glom.cc:1918
+msgid "Initializing Database Data"
+msgstr "Datenbank-Daten werden initialisiert"
+
+#: ../glom/frame_glom.cc:1927
+msgid "Starting Database Server"
+msgstr "Datenbank-Server wird gestartet"
+
+#: ../glom/frame_glom.cc:1935
+msgid "Stopping Database Server"
+msgstr "Datenbank-Server wird angehalten"
+
+#: ../glom/frame_glom.cc:1954
+msgid "Could Not Create Directory"
+msgstr "Ordner konnte nicht erstellt werden"
+
+#: ../glom/frame_glom.cc:1955
+msgid ""
+"There was an error when attempting to create the directory for the new "
+"database files."
+msgstr ""
+"Beim Erstellen des Ordners für die neuen Datenbank-Dateien ist ein Fehler "
+"aufgetreten."
+
+#: ../glom/frame_glom.cc:1959
+msgid "Could Not Start Database Server"
+msgstr "Datenbank-Server konnte nicht gestartet werden"
+
+#: ../glom/frame_glom.cc:1960
+msgid "There was an error when attempting to start the database server."
+msgstr ""
+"Beim Versuch, den Datenbankserver zu starten, ist ein Fehler aufgetreten."
+
 #. Show 0 instead of "all" when all of no records are found, to avoid confusion.
-#: ../glom/frame_glom.cc:2345
+#: ../glom/frame_glom.cc:2730
 msgid "All"
 msgstr "Alle"
 
@@ -1204,8 +1281,8 @@ msgstr ""
 msgid ""
 "<span weight=\"bold\" size=\"larger\">First User</span>\n"
 "\n"
-"Please enter the initial connection details for your new database. You may "
-"add additional users later. Remember to keep this password secret because it "
+"Please enter the initial connection details for your database. You may add "
+"additional users later. Remember to keep this password secret because it "
 "allows access to your data from other computers on the network."
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Erster Benutzer</span>\n"
@@ -1549,8 +1626,8 @@ msgstr "»From«-Feld:"
 
 #: ../glom/glom_developer.glade.h:133
 #: ../glom/libglom/data_structure/layout/layoutgroup.cc:377
-#: ../glom/mode_data/flowtablewithfields.cc:1212
-#: ../glom/mode_data/flowtablewithfields.cc:1239
+#: ../glom/mode_data/flowtablewithfields.cc:1202
+#: ../glom/mode_data/flowtablewithfields.cc:1229
 #: ../glom/utility_widgets/layouttoolbar.cc:57
 #: ../glom/utility_widgets/layouttoolbar.cc:73
 #: ../glom/utility_widgets/notebooklabelglom.cc:74
@@ -1637,7 +1714,7 @@ msgstr "Sprache:"
 #. Don't add ContextLayout in client only mode because it would never
 #. be sensitive anyway
 #: ../glom/glom_developer.glade.h:150
-#: ../glom/mode_data/box_data_calendar_related.cc:486
+#: ../glom/mode_data/box_data_calendar_related.cc:487
 #: ../glom/utility_widgets/db_adddel/db_adddel.cc:241
 msgid "Layout"
 msgstr "Aufbau"
@@ -1683,56 +1760,60 @@ msgstr "Name:"
 msgid "No Choices"
 msgstr "Keine Auswahl"
 
-#: ../glom/glom_developer.glade.h:163 ../glom/glom.glade.h:30
+#: ../glom/glom_developer.glade.h:163
+msgid "None"
+msgstr "Nichts"
+
+#: ../glom/glom_developer.glade.h:164 ../glom/glom.glade.h:30
 #: ../glom/mode_design/dialog_design.cc:54
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:493
 msgid "None selected"
 msgstr "Nichts markiert"
 
-#: ../glom/glom_developer.glade.h:164
+#: ../glom/glom_developer.glade.h:165
 #: ../glom/mode_data/dialog_layout_details.cc:990
 msgid "Notebook Tabs"
 msgstr "Reiter der Mappe"
 
-#: ../glom/glom_developer.glade.h:165
+#: ../glom/glom_developer.glade.h:166
 msgid "Organisation"
 msgstr "Organisation"
 
-#: ../glom/glom_developer.glade.h:166
+#: ../glom/glom_developer.glade.h:167
 msgid "Password"
 msgstr "Passwort"
 
-#: ../glom/glom_developer.glade.h:167
+#: ../glom/glom_developer.glade.h:168
 msgid "Primary Key"
 msgstr "Primärschlüssel"
 
-#: ../glom/glom_developer.glade.h:168
+#: ../glom/glom_developer.glade.h:169
 msgid "Print Layout Editor"
 msgstr "Drucklayout-Editor"
 
-#: ../glom/glom_developer.glade.h:169
+#: ../glom/glom_developer.glade.h:170
 msgid "Print Layouts"
 msgstr "Drucklayouts"
 
-#: ../glom/glom_developer.glade.h:170
+#: ../glom/glom_developer.glade.h:171
 #: ../glom/utility_widgets/layoutwidgetutils.cc:37
 msgid "Properties"
 msgstr "Eigenschaften"
 
-#: ../glom/glom_developer.glade.h:171
+#: ../glom/glom_developer.glade.h:172
 #: ../glom/libglom/data_structure/translatable_item.cc:286
 msgid "Relationship"
 msgstr "Beziehung"
 
-#: ../glom/glom_developer.glade.h:172
+#: ../glom/glom_developer.glade.h:173
 msgid "Relationship:"
 msgstr "Beziehung:"
 
-#: ../glom/glom_developer.glade.h:173
+#: ../glom/glom_developer.glade.h:174
 msgid "Relationships Overview"
 msgstr "Übersicht über Beziehungen"
 
-#: ../glom/glom_developer.glade.h:174
+#: ../glom/glom_developer.glade.h:175
 msgid ""
 "Remove the item from the layout. If you remove a field layout item, it will "
 "not remove the field from the table itself. It just will not be seen on the "
@@ -1742,57 +1823,57 @@ msgstr ""
 "»Feld«entfernt nicht das Feld aus der Tabelle, sondern das Feld wird nicht im "
 "Layout dargestellt."
 
-#: ../glom/glom_developer.glade.h:175
+#: ../glom/glom_developer.glade.h:176
 msgid "Report Layout"
 msgstr "Berichtaufbau"
 
-#: ../glom/glom_developer.glade.h:176
+#: ../glom/glom_developer.glade.h:177
 msgid "Reports"
 msgstr "Berichte"
 
-#: ../glom/glom_developer.glade.h:177
+#: ../glom/glom_developer.glade.h:178
 msgid "Restrict data to these choices"
 msgstr "Daten auf diese Auswahlmöglichkeiten begrenzen"
 
-#: ../glom/glom_developer.glade.h:178
+#: ../glom/glom_developer.glade.h:179
 msgid "Script name:"
 msgstr "Skriptname:"
 
-#: ../glom/glom_developer.glade.h:179
+#: ../glom/glom_developer.glade.h:180
 msgid "Secondary Fields:"
 msgstr "Sekundäre Felder:"
 
-#: ../glom/glom_developer.glade.h:180
+#: ../glom/glom_developer.glade.h:181
 #: ../glom/utility_widgets/dialog_choose_id.cc:88
-#: ../glom/utility_widgets/imageglom.cc:391
+#: ../glom/utility_widgets/imageglom.cc:392
 msgid "Select"
 msgstr "Auswählen"
 
-#: ../glom/glom_developer.glade.h:181
+#: ../glom/glom_developer.glade.h:182
 msgid "Select Field"
 msgstr "Feld auswählen"
 
-#: ../glom/glom_developer.glade.h:182
+#: ../glom/glom_developer.glade.h:183
 msgid "Select Relationship"
 msgstr "Beziehung auswählen"
 
-#: ../glom/glom_developer.glade.h:183
+#: ../glom/glom_developer.glade.h:184
 msgid "Show Related Relationships"
 msgstr "Zugehörige Beziehungen anzeigen"
 
-#: ../glom/glom_developer.glade.h:184
+#: ../glom/glom_developer.glade.h:185
 msgid "Show Table Title"
 msgstr "Tabellentitel zeigen"
 
-#: ../glom/glom_developer.glade.h:185
+#: ../glom/glom_developer.glade.h:186
 msgid "Show child relationships"
 msgstr "Kindesbeziehungen anzeigen"
 
-#: ../glom/glom_developer.glade.h:186
+#: ../glom/glom_developer.glade.h:187
 msgid "Sort Fields:"
 msgstr "Felder sortieren:"
 
-#: ../glom/glom_developer.glade.h:187
+#: ../glom/glom_developer.glade.h:188
 msgid ""
 "Start a translation for this target locale by copying the strings from "
 "another target locale."
@@ -1800,55 +1881,55 @@ msgstr ""
 "Eine Übersetzung für diese Zielsprache starten, indem die Zeichenketten aus "
 "einer anderen Zielsprache kopiert werden."
 
-#: ../glom/glom_developer.glade.h:188
+#: ../glom/glom_developer.glade.h:189
 msgid "State/County:"
 msgstr "Bundesland/Provinz:"
 
-#: ../glom/glom_developer.glade.h:189
+#: ../glom/glom_developer.glade.h:190
 msgid "Street (Line 2):"
 msgstr "Straße (Zusatz):"
 
-#: ../glom/glom_developer.glade.h:190
+#: ../glom/glom_developer.glade.h:191
 msgid "Street:"
 msgstr "Straße:"
 
-#: ../glom/glom_developer.glade.h:191
+#: ../glom/glom_developer.glade.h:192
 msgid "Summary Type:"
 msgstr "Übersichttyp"
 
-#: ../glom/glom_developer.glade.h:192
+#: ../glom/glom_developer.glade.h:193
 msgid "System Name:"
 msgstr "Systemname:"
 
-#: ../glom/glom_developer.glade.h:193
+#: ../glom/glom_developer.glade.h:194
 msgid "Table Name"
 msgstr "Tabellenname"
 
-#: ../glom/glom_developer.glade.h:194 ../glom/glom.glade.h:40
+#: ../glom/glom_developer.glade.h:195 ../glom/glom.glade.h:40
 msgid "Table:"
 msgstr "Tabelle:"
 
-#: ../glom/glom_developer.glade.h:195
+#: ../glom/glom_developer.glade.h:196
 msgid "Table: "
 msgstr "Tabelle: "
 
-#: ../glom/glom_developer.glade.h:196
+#: ../glom/glom_developer.glade.h:197
 msgid "Test"
 msgstr "Test"
 
-#: ../glom/glom_developer.glade.h:197
+#: ../glom/glom_developer.glade.h:198
 msgid "Test Translation"
 msgstr "Übersetzung testen"
 
-#: ../glom/glom_developer.glade.h:198
+#: ../glom/glom_developer.glade.h:199
 msgid "Text Format"
 msgstr "Textformat"
 
-#: ../glom/glom_developer.glade.h:199
+#: ../glom/glom_developer.glade.h:200
 msgid "Text Object"
 msgstr "Textobjekt"
 
-#: ../glom/glom_developer.glade.h:200
+#: ../glom/glom_developer.glade.h:201
 msgid ""
 "The field value will be the return value of the python function, which you "
 "implement here."
@@ -1856,7 +1937,7 @@ msgstr ""
 "Das Feld hat erhält den Wert, der von der Python-Funktion zurückgeliefert "
 "wird, die Sie hier implementieren."
 
-#: ../glom/glom_developer.glade.h:201
+#: ../glom/glom_developer.glade.h:202
 msgid ""
 "These modules will be available to your button scripts and field calculations "
 "via the python import keyword."
@@ -1864,11 +1945,11 @@ msgstr ""
 "Diese Module werden über das Python-Import-Schlüsselwort für Ihre Knopf-"
 "Skripte und Feldberechnungen verfügbar sein."
 
-#: ../glom/glom_developer.glade.h:202
+#: ../glom/glom_developer.glade.h:203
 msgid "This field will be used to decide which records to show in the calendar."
 msgstr "Dieses Feld bestimmt, welche Einträge im Kalender angezeigt werden."
 
-#: ../glom/glom_developer.glade.h:203
+#: ../glom/glom_developer.glade.h:204
 msgid ""
 "This will add a new table and add a relationship that refers to the new  "
 "table, as a convenient alternative to doing this in separate steps.\n"
@@ -1883,69 +1964,69 @@ msgstr ""
 "Falls eine passende Bezugstabelle bereits existiert, so sollten Sie nun "
 "abbrechen und stattdessen nur eine Beziehung hinzufügen."
 
-#: ../glom/glom_developer.glade.h:206
+#: ../glom/glom_developer.glade.h:207
 msgid "Title:"
 msgstr "Titel:"
 
-#: ../glom/glom_developer.glade.h:207
+#: ../glom/glom_developer.glade.h:208
 msgid "Town:"
 msgstr "Stadt:"
 
-#: ../glom/glom_developer.glade.h:208
+#: ../glom/glom_developer.glade.h:209
 msgid "Translations"
 msgstr "Übersetzungen"
 
-#: ../glom/glom_developer.glade.h:209
+#: ../glom/glom_developer.glade.h:210
 msgid "Triggered by:"
 msgstr "Ausgelöst durch:"
 
-#: ../glom/glom_developer.glade.h:210
+#: ../glom/glom_developer.glade.h:211
 msgid "Type:"
 msgstr "Typ:"
 
-#: ../glom/glom_developer.glade.h:211
+#: ../glom/glom_developer.glade.h:212
 msgid "Unique"
 msgstr "Eindeutig"
 
-#: ../glom/glom_developer.glade.h:212
+#: ../glom/glom_developer.glade.h:213
 msgid "Use 1000s separator"
 msgstr "Tausender-Trennzeichen verwenden"
 
-#: ../glom/glom_developer.glade.h:213
+#: ../glom/glom_developer.glade.h:214
 msgid "Use custom formatting"
 msgstr "Benutzerdefinierte Formatierung verwenden"
 
-#: ../glom/glom_developer.glade.h:214
+#: ../glom/glom_developer.glade.h:215
 msgid "Use custom title:"
 msgstr "Benutzerdefinierten Titel verwenden:"
 
-#: ../glom/glom_developer.glade.h:215
+#: ../glom/glom_developer.glade.h:216
 msgid "Use default field title: "
 msgstr "Standardfeldtitel verwenden"
 
-#: ../glom/glom_developer.glade.h:216
+#: ../glom/glom_developer.glade.h:217
 msgid "Use default formatting"
 msgstr "Standardformatierung verwenden"
 
 #. Append the View columns:
-#: ../glom/glom_developer.glade.h:217
+#: ../glom/glom_developer.glade.h:218
 #: ../glom/mode_design/users/dialog_users_list.cc:64
 msgid "User"
 msgstr "Benutzer"
 
-#: ../glom/glom_developer.glade.h:218
+#: ../glom/glom_developer.glade.h:219
 msgid "User Entry"
 msgstr "Benutzereingabe"
 
-#: ../glom/glom_developer.glade.h:219
+#: ../glom/glom_developer.glade.h:220
 msgid "Users"
 msgstr "Benutzer"
 
-#: ../glom/glom_developer.glade.h:220
+#: ../glom/glom_developer.glade.h:221
 msgid "Value"
 msgstr "Wert"
 
-#: ../glom/glom_developer.glade.h:221
+#: ../glom/glom_developer.glade.h:222
 msgid ""
 "When the button is clicked it will run the python function which you "
 "implement here."
@@ -1953,7 +2034,7 @@ msgstr ""
 "Wenn der Schalter angeklickt wird, wird die hier implementierte Python-"
 "Funktion ausgeführt."
 
-#: ../glom/glom_developer.glade.h:222
+#: ../glom/glom_developer.glade.h:223
 msgid ""
 "When this is checked the table's title will be shown at the top of the report "
 "in addition to the report title."
@@ -1961,7 +2042,7 @@ msgstr ""
 "Falls ausgewählt, so wird der Tabellentitel zu Beginn des Berichts zusätzlich "
 "zum Reporttitel angezeigt."
 
-#: ../glom/glom_developer.glade.h:223
+#: ../glom/glom_developer.glade.h:224
 msgid ""
 "When this is selected you will see extra relationships in the Table list, "
 "allowing you to choose fields from relationships in related tables, instead "
@@ -1971,31 +2052,31 @@ msgstr ""
 "angezeigt, die es Ihnen erlauben, Felder aus Beziehungen von Bezugstabellen "
 "auszuwählen, anstatt nur reguläre Felder aus diesen Bezugstabellen."
 
-#: ../glom/glom_developer.glade.h:224
+#: ../glom/glom_developer.glade.h:225
 msgid "Zip/Postal Code:"
 msgstr "Postleitzahl:"
 
-#: ../glom/glom_developer.glade.h:225
+#: ../glom/glom_developer.glade.h:226
 msgid "_Confirm Password"
 msgstr "_Passwort bestätigen"
 
-#: ../glom/glom_developer.glade.h:226 ../glom/glom.glade.h:45
+#: ../glom/glom_developer.glade.h:227 ../glom/glom.glade.h:45
 msgid "_Password"
 msgstr "_Passwort"
 
-#: ../glom/glom_developer.glade.h:227 ../glom/glom.glade.h:47
+#: ../glom/glom_developer.glade.h:228 ../glom/glom.glade.h:47
 msgid "_User"
 msgstr "Be_nutzer"
 
-#: ../glom/glom_developer.glade.h:228
+#: ../glom/glom_developer.glade.h:229
 msgid "field name"
 msgstr "Feldname"
 
-#: ../glom/glom_developer.glade.h:229
+#: ../glom/glom_developer.glade.h:230
 msgid "table name"
 msgstr "Tabellenname"
 
-#: ../glom/glom_developer.glade.h:230
+#: ../glom/glom_developer.glade.h:231
 msgid "the title"
 msgstr "der Titel"
 
@@ -2107,11 +2188,10 @@ msgstr ""
 "Server zu verbinden."
 
 #: ../glom/glom.glade.h:34
-#| msgid "Please wait, your data is being imported…"
 msgid "Please wait, your data is being imported&#x2026;"
 msgstr "Bitte warten Sie, Ihre Daten werden importiert&#x2026;"
 
-#: ../glom/glom.glade.h:35 ../glom/libglom/spawn_with_feedback.cc:367
+#: ../glom/glom.glade.h:35 ../glom/glade_utils.cc:51
 msgid "Processing"
 msgstr "Verarbeitung läuft …"
 
@@ -2167,63 +2247,50 @@ msgstr "Beschriftung"
 msgid "table_name"
 msgstr "Tabellen_name"
 
-#: ../glom/bakery/App_WithDoc_Gtk.cc:227
-msgid " (read-only)"
-msgstr "(schreibgeschützt)"
+#: ../glom/utils_ui.cc:137
+msgid "No help file available"
+msgstr "Keine Hilfe-Datei verfügbar"
 
-#: ../glom/bakery/App_Gtk.cc:247
-#| msgid "_File"
-msgid "File"
-msgstr "Datei"
+#: ../glom/utils_ui.cc:155
+msgid "Could not display help: "
+msgstr "Hilfe kann nicht angezeigt werden: "
 
-#: ../glom/bakery/App_Gtk.cc:290
-#| msgid "Edit"
+#: ../glom/bakery/app_withdoc_gtk.cc:344
 msgid "_Edit"
 msgstr "_Bearbeiten"
 
-#: ../glom/bakery/App_Gtk.cc:333
+#: ../glom/bakery/app_withdoc_gtk.cc:387
 #: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:683
 msgid "_Help"
 msgstr "_Hilfe"
 
-#: ../glom/bakery/App_Gtk.cc:337
-#| msgid "_Layout"
+#: ../glom/bakery/app_withdoc_gtk.cc:391
 msgid "_About"
 msgstr "_Info"
 
-#: ../glom/bakery/App_Gtk.cc:337
-#| msgid "Help with the application"
+#: ../glom/bakery/app_withdoc_gtk.cc:391
 msgid "About the application"
 msgstr "Info zu dieser Anwendung"
 
-#: ../glom/bakery/App_WithDoc.cc:93 ../glom/bakery/App_WithDoc.cc:185
-#| msgid "Save failed."
+#: ../glom/bakery/app_withdoc_gtk.cc:493
+msgid " (read-only)"
+msgstr "(schreibgeschützt)"
+
+#: ../glom/bakery/app_withdoc.cc:95 ../glom/bakery/app_withdoc.cc:148
 msgid "Open failed."
 msgstr "Öffnen gescheitert."
 
-#: ../glom/bakery/App_WithDoc.cc:93 ../glom/bakery/App_WithDoc.cc:185
-#| msgid "The image file could not be opened:\n"
+#: ../glom/bakery/app_withdoc.cc:95 ../glom/bakery/app_withdoc.cc:148
 msgid "The document could not be opened."
 msgstr "Das Dokument konnte nicht geöffnet werden."
 
-#. Tell user that it's already open:
-#: ../glom/bakery/App_WithDoc.cc:132
-#| msgid "No Document Available"
-msgid "Document already open"
-msgstr "Dokument ist bereits geöffnet"
-
-#: ../glom/bakery/App_WithDoc.cc:132
-msgid "This document is already open."
-msgstr "Das Dokument ist bereits geöffnet."
-
-#: ../glom/bakery/Dialog_OfferSave.cc:30
+#: ../glom/bakery/dialog_offersave.cc:30
 msgid "This document has unsaved changes. Would you like to save the document?"
 msgstr ""
 "Dieses Dokument enthält ungespeicherte Änderungen. Möchten Sie das Dokument "
 "speichern?"
 
-#: ../glom/bakery/Dialog_OfferSave.cc:32
-#| msgid "Open Document"
+#: ../glom/bakery/dialog_offersave.cc:32
 msgid ""
 "\n"
 "\n"
@@ -2233,11 +2300,11 @@ msgstr ""
 "\n"
 "Dokument:\n"
 
-#: ../glom/bakery/Dialog_OfferSave.cc:45
+#: ../glom/bakery/dialog_offersave.cc:45
 msgid "Close without Saving"
 msgstr "Schließen, ohne zu speichern"
 
-#: ../glom/bakery/Dialog_OfferSave.cc:54
+#: ../glom/bakery/dialog_offersave.cc:54
 msgid "Discard"
 msgstr "Verwerfen"
 
@@ -2257,157 +2324,6 @@ msgstr "Hintergrundfarbe"
 #: ../glom/layout_item_dialogs/dialog_groupby_sortfields.cc:56
 msgid "Ascending"
 msgstr "Aufsteigend"
-
-#: ../glom/libglom/connectionpool.cc:800
-msgid ""
-"You seem to be running Glom as a user with administrator privileges. Glom may "
-"not be run with such privileges for security reasons.\n"
-"Please login to your system as a normal user."
-msgstr ""
-"Es scheint, als ob Glom vom Administrator gestartet wurde. Glom darf aus "
-"Sicherheitsgründen\n"
-"nicht als Administrator ausgeführt werden.\n"
-"Bitte melden Sie sich an Ihrem System als normaler Benutzer an."
-
-#. Warn the user:
-#: ../glom/libglom/connectionpool.cc:814
-msgid ""
-"You seem to be running Glom as root. Glom may not be run as root.\n"
-"Please login to your system as a normal user."
-msgstr ""
-"Es scheint, als ob Glom vom Administrator gestartet wurde. Glom sollte nicht "
-"als Administrator ausgeführt werden.\n"
-"Bitte melden Sie sich an Ihrem System als normaler Benutzer an."
-
-#: ../glom/libglom/connectionpool.cc:821
-msgid "Running As Root"
-msgstr "Nutzung als Administrator"
-
-#: ../glom/libglom/connectionpool.cc:916
-msgid "Glom: Generating Encryption Certificates"
-msgstr "Glom: Verschlüsselungszertifikate werden erzeugt"
-
-#: ../glom/libglom/connectionpool.cc:917
-msgid ""
-"Please wait while Glom prepares your system for publishing over the network."
-msgstr ""
-"Bitte warten Sie, während Glom das System für das Veröffentlichen im Netzwerk "
-"vorbereitet."
-
-#: ../glom/libglom/connectionpool_backends/postgres.cc:452
-msgid ""
-"Your installation of Glom is not complete, because the PostgreSQL libgda "
-"provider is not available on your system. This provider is needed to access "
-"Postgres database servers.\n"
-"\n"
-"Please report this bug to your vendor, or your system administrator so it can "
-"be corrected."
-msgstr ""
-"Ihre Glom-Installation ist nicht komplett, da der PostgreSQL-libgda-Provider "
-"nicht verfügbar ist. Dieser Provider wird benötigt, um auf Postgres-"
-"Datenbanken zuzugreifen.\n"
-"\n"
-"Bitte berichten Sie diesen Fehler an Ihren Distributor oder Ihren System-"
-"Administrator, damit der Fehler berichtigt werden kann."
-
-#. The Postgres provider was not found, so warn the user:
-#. Show message to the user about the broken installation:
-#. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
-#. Show message to the user about the broken installation:
-#: ../glom/libglom/connectionpool_backends/postgres.cc:455
-#: ../glom/libglom/connectionpool_backends/postgres_self.cc:173
-#: ../glom/libglom/connectionpool_backends/postgres_self.cc:186
-msgid "Incomplete Glom Installation"
-msgstr "Unvollständige Glom-Installation"
-
-#. use_markup
-#. modal
-#: ../glom/libglom/connectionpool_backends/postgres_self.cc:174
-msgid ""
-"Your installation of Glom is not complete, because PostgreSQL is not "
-"available on your system. PostgreSQL is needed for self-hosting of Glom "
-"databases.\n"
-"\n"
-"You may now install PostgreSQL to complete the Glom installation."
-msgstr ""
-"Ihre Glom-Installation ist nicht komplett, da PostgreSQL nicht verfügbar ist. "
-"PostgreSQL wird benötigt, um Glom-Datenbanken lokal betreiben zu können.\n"
-"\n"
-"Sie können nun PostgreSQL installieren, um die Installation von Glom "
-"erfolgreich zu beenden."
-
-#: ../glom/libglom/connectionpool_backends/postgres_self.cc:176
-msgid "Install PostgreSQL"
-msgstr "PostgreSQL installieren"
-
-#. use_markup
-#. modal
-#: ../glom/libglom/connectionpool_backends/postgres_self.cc:187
-msgid ""
-"Your installation of Glom is not complete, because PostgreSQL is not "
-"available on your system. PostgreSQL is needed for self-hosting of Glom "
-"databases.\n"
-"\n"
-"Please report this bug to your vendor, or your system administrator so it can "
-"be corrected."
-msgstr ""
-"Ihre Glom-Installation ist nicht komplett, da PostgreSQL nicht verfügbar ist. "
-"PostgreSQL wird benötigt, um Glom-Datenbanken lokal betreiben zu können.\n"
-"\n"
-"Bitte berichten Sie diesen Fehler an Ihren Distributor oder Ihren System-"
-"Administrator, damit der Fehler berichtigt werden kann."
-
-#: ../glom/libglom/connectionpool_backends/postgres_self.cc:268
-msgid "Could Not Create Directory"
-msgstr "Ordner konnte nicht erstellt werden"
-
-#: ../glom/libglom/connectionpool_backends/postgres_self.cc:268
-msgid ""
-"There was an error when attempting to create the directory for the new "
-"database files."
-msgstr ""
-"Beim Erstellen des Ordners für die neuen Datenbank-Dateien ist ein Fehler "
-"aufgetreten."
-
-#: ../glom/libglom/connectionpool_backends/postgres_self.cc:284
-msgid "Could Not Create Configuration Directory"
-msgstr "Konfigurationsordner konnte nicht erstellt werden"
-
-#: ../glom/libglom/connectionpool_backends/postgres_self.cc:284
-msgid ""
-"There was an error when attempting to create the configuration directory for "
-"the new database files."
-msgstr ""
-"Es ist ein Fehler aufgetreten beim Versuch, den Konfigurationsordner für die "
-"neuen Datenbank-Dateien zu erstellen."
-
-#. Note that --pwfile takes the password from the first line of a file. It's an alternative to supplying it when prompted on stdin.
-#: ../glom/libglom/connectionpool_backends/postgres_self.cc:325
-msgid "Creating Database Data"
-msgstr "Datenbank-Daten werden erstellt"
-
-#. For postgres 8.1, this is "postmaster is running".
-#. For postgres 8.2, this is "server is running".
-#. This is a big hack that we should avoid. murrayc.
-#.
-#. pg_ctl actually seems to return a 0 result code for "is running" and a 1 for not running, at least with Postgres 8.2,
-#. so maybe we can avoid this in future.
-#. Please do test it with your postgres version, using "echo $?" to see the result code of the last command.
-#. TODO: This is not a stable API. Also, watch out for localisation.
-#. The first command does not return, but the second command can check whether it succeeded:
-#: ../glom/libglom/connectionpool_backends/postgres_self.cc:408
-msgid "Starting Database Server"
-msgstr "Datenbank-Server wird gestartet"
-
-#: ../glom/libglom/connectionpool_backends/postgres_self.cc:448
-msgid "Stopping Database Server"
-msgstr "Datenbank-Server wird angehalten"
-
-#. I've seen it fail when running under valgrind, and there are reports of failures in bug #420962.
-#. Maybe it will help to try again:
-#: ../glom/libglom/connectionpool_backends/postgres_self.cc:455
-msgid "Stopping Database Server (retrying)"
-msgstr "Datenbank-Server wird angehalten (weiterer Versuch)"
 
 #: ../glom/libglom/data_structure/field.cc:613
 #: ../glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc:143
@@ -2456,14 +2372,13 @@ msgstr "Bild"
 #. * and default to %d/%m/%Y" if it detects a problem, but that might not be
 #. * correct for your locale.
 #. * Thanks.
-#.
-#: ../glom/libglom/data_structure/glomconversions.cc:103
-#, c-format
+#: ../glom/libglom/data_structure/glomconversions.cc:100
+#, no-c-format
 msgid "%x"
 msgstr "%x"
 
 #. Note to translators: If you see this error in the terminal at startup then you need to translate the %x elsewhere.
-#: ../glom/libglom/data_structure/glomconversions.cc:150
+#: ../glom/libglom/data_structure/glomconversions.cc:147
 msgid ""
 "ERROR: sanity_check_date_parsing(): Sanity check failed: Glom could not parse "
 "a date's text representation that it generated itself, in this locale."
@@ -2473,7 +2388,7 @@ msgstr ""
 "dieser Spracheinstellung (\"locale\") einlesen."
 
 #. Note to translators: If you see this error in the terminal at startup then you need to translate the %x elsewhere.
-#: ../glom/libglom/data_structure/glomconversions.cc:182
+#: ../glom/libglom/data_structure/glomconversions.cc:179
 msgid ""
 "ERROR: sanity_check_date_text_representation_uses_4_digit_year(): Sanity "
 "check failed: Glom does not seem to use 4 digits to display years in a date's "
@@ -2502,7 +2417,7 @@ msgstr "Kalenderportal"
 
 #. Note to translators: "Notebook" means a GtkNotebook-type widget.
 #: ../glom/libglom/data_structure/layout/layoutitem_notebook.cc:56
-#: ../glom/mode_data/flowtablewithfields.cc:1208
+#: ../glom/mode_data/flowtablewithfields.cc:1198
 #: ../glom/utility_widgets/layouttoolbar.cc:60
 msgid "Notebook"
 msgstr "Reitermappe"
@@ -2563,49 +2478,48 @@ msgstr "Strukturgruppe"
 msgid "Field Title"
 msgstr "Feldtitel"
 
-#: ../glom/libglom/document/document_glom.cc:451
-#: ../glom/libglom/document/document_glom.cc:469
+#: ../glom/libglom/document/document.cc:467
+#: ../glom/libglom/document/document.cc:485
 msgid "System Preferences"
 msgstr "Systemeinstellungen"
 
-#: ../glom/libglom/document/document_glom.cc:482
+#: ../glom/libglom/document/document.cc:498
 msgid "System Name"
 msgstr "Systemname"
 
-#: ../glom/libglom/document/document_glom.cc:488
+#: ../glom/libglom/document/document.cc:504
 msgid "Organisation Name"
 msgstr "Organisationsname"
 
-#: ../glom/libglom/document/document_glom.cc:494
+#: ../glom/libglom/document/document.cc:510
 msgid "Organisation Logo"
 msgstr "Organisationslogo"
 
-#: ../glom/libglom/document/document_glom.cc:500
+#: ../glom/libglom/document/document.cc:516
 msgid "Street"
 msgstr "Straße"
 
-#: ../glom/libglom/document/document_glom.cc:506
+#: ../glom/libglom/document/document.cc:522
 msgid "Street (line 2)"
 msgstr "Straße (Zusatz)"
 
-#: ../glom/libglom/document/document_glom.cc:512
+#: ../glom/libglom/document/document.cc:528
 msgid "City"
 msgstr "Stadt"
 
-#: ../glom/libglom/document/document_glom.cc:518
+#: ../glom/libglom/document/document.cc:534
 msgid "State"
 msgstr "Land"
 
-#: ../glom/libglom/document/document_glom.cc:524
+#: ../glom/libglom/document/document.cc:540
 msgid "Country"
 msgstr "Land"
 
-#: ../glom/libglom/document/document_glom.cc:530
+#: ../glom/libglom/document/document.cc:546
 msgid "Zip Code"
 msgstr "Postleitzahl"
 
-#: ../glom/libglom/document/bakery/Document.cc:360
-#| msgid "Title"
+#: ../glom/libglom/document/bakery/document.cc:360
 msgid "Untitled"
 msgstr "Unbenannt"
 
@@ -2619,46 +2533,162 @@ msgstr ""
 "Die benötigten Anwendungen zum Installieren des Pakets konnten nicht gefunden "
 "werden."
 
-#: ../glom/libglom/utils.cc:862
-msgid "No help file available"
-msgstr "Keine Hilfe-Datei verfügbar"
-
-#: ../glom/libglom/utils.cc:880
-msgid "Could not display help: "
-msgstr "Hilfe kann nicht angezeigt werden: "
-
-#: ../glom/main.cc:79
+#: ../glom/main.cc:84
 msgid "Glom options"
 msgstr "Glom-Optionen"
 
-#: ../glom/main.cc:79
+#: ../glom/main.cc:84
 msgid "Command-line options for glom"
 msgstr "Befehlszeilenoptionen für glom"
 
-#: ../glom/main.cc:86
+#: ../glom/main.cc:91
 msgid "The Filename"
 msgstr "Der Dateiname"
 
-#: ../glom/main.cc:92
+#: ../glom/main.cc:97
 msgid "The version of this application."
 msgstr "Die Version dieser Anwendung."
 
-#: ../glom/main.cc:97
+#: ../glom/main.cc:102
 msgid "Show the generated SQL queries on stdout, for debugging."
 msgstr "Die erzeugten SQL-Anfragen auf dem stdout für Debug-Zwecke ausgeben."
 
-#: ../glom/main.cc:203
+#: ../glom/main.cc:115
+msgid ""
+"You seem to be running Glom as a user with administrator privileges. Glom may "
+"not be run with such privileges for security reasons.\n"
+"Please login to your system as a normal user."
+msgstr ""
+"Es scheint, als ob Glom vom Administrator gestartet wurde. Glom darf aus "
+"Sicherheitsgründen\n"
+"nicht als Administrator ausgeführt werden.\n"
+"Bitte melden Sie sich an Ihrem System als normaler Benutzer an."
+
+#. Warn the user:
+#: ../glom/main.cc:129
+msgid ""
+"You seem to be running Glom as root. Glom may not be run as root.\n"
+"Please login to your system as a normal user."
+msgstr ""
+"Es scheint, als ob Glom vom Administrator gestartet wurde. Glom sollte nicht "
+"als Administrator ausgeführt werden.\n"
+"Bitte melden Sie sich an Ihrem System als normaler Benutzer an."
+
+#: ../glom/main.cc:136
+msgid "Running As Root"
+msgstr "Nutzung als Administrator"
+
+#. Show message to the user about the broken installation:
+#. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
+#. Show message to the user about the broken installation:
+#: ../glom/main.cc:183 ../glom/main.cc:196 ../glom/main.cc:413
+msgid "Incomplete Glom Installation"
+msgstr "Unvollständige Glom-Installation"
+
+#. use_markup
+#. modal
+#: ../glom/main.cc:184
+msgid ""
+"Your installation of Glom is not complete, because PostgreSQL is not "
+"available on your system. PostgreSQL is needed for self-hosting of Glom "
+"databases.\n"
+"\n"
+"You may now install PostgreSQL to complete the Glom installation."
+msgstr ""
+"Ihre Glom-Installation ist nicht komplett, da PostgreSQL nicht verfügbar ist. "
+"PostgreSQL wird benötigt, um Glom-Datenbanken lokal betreiben zu können.\n"
+"\n"
+"Sie können nun PostgreSQL installieren, um die Installation von Glom "
+"erfolgreich zu beenden."
+
+#: ../glom/main.cc:186
+msgid "Install PostgreSQL"
+msgstr "PostgreSQL installieren"
+
+#. use_markup
+#. modal
+#: ../glom/main.cc:197
+msgid ""
+"Your installation of Glom is not complete, because PostgreSQL is not "
+"available on your system. PostgreSQL is needed for self-hosting of Glom "
+"databases.\n"
+"\n"
+"Please report this bug to your vendor, or your system administrator so it can "
+"be corrected."
+msgstr ""
+"Ihre Glom-Installation ist nicht komplett, da PostgreSQL nicht verfügbar ist. "
+"PostgreSQL wird benötigt, um Glom-Datenbanken lokal betreiben zu können.\n"
+"\n"
+"Bitte berichten Sie diesen Fehler an Ihren Distributor oder Ihren System-"
+"Administrator, damit der Fehler berichtigt werden kann."
+
+#. The python module could not be imported by Glom, so warn the user:
+#: ../glom/main.cc:213
+msgid ""
+"Your installation of Glom is not complete, because the Glom Python module is "
+"not available on your system.\n"
+"\n"
+"Please report this bug to your vendor, or your system administrator so it can "
+"be corrected."
+msgstr ""
+"Ihre Glom-Installation ist nicht komplett, da PostgreSQL nicht verfügbar "
+"ist.\n"
+"\n"
+"Bitte berichten Sie diesen Fehler an Ihren Distributor oder Ihren System-"
+"Administrator, damit der Fehler berichtigt werden kann."
+
+#: ../glom/main.cc:216
+msgid "Glom Python Module Not Installed"
+msgstr "Glom-Python-Modul ist nicht installiert"
+
+#. The python module could not be imported by Glom, so warn the user:
+#: ../glom/main.cc:233
+msgid ""
+"Your installation of Glom is not complete, because the gda Python module is "
+"not available on your system.\n"
+"\n"
+"Please report this bug to your vendor, or your system administrator so it can "
+"be corrected."
+msgstr ""
+"Ihre Glom-Installation ist nicht komplett, da das gda-Python-Modul nicht "
+"verfügbar ist.\n"
+"\n"
+"Bitte berichten Sie diesen Fehler an Ihren Distributor oder Ihren System-"
+"Administrator, damit der Fehler berichtigt werden kann."
+
+#: ../glom/main.cc:236
+msgid "gda Python Module Not Installed"
+msgstr "gda-Python-Modul ist nicht installiert"
+
+#: ../glom/main.cc:348
 msgid "Error while parsing command-line options: "
 msgstr "Fehler beim Einlesen der Befehlszeilenoptionen: "
 
-#: ../glom/main.cc:204
+#: ../glom/main.cc:349
 msgid "Use --help to see a list of available command-line options."
 msgstr ""
 "Benutzen Sie --help um eine Liste der verfügbaren Befehlszeilenoptionen zu "
 "erhalten."
 
+#. The Postgres provider was not found, so warn the user:
+#: ../glom/main.cc:410
+msgid ""
+"Your installation of Glom is not complete, because the PostgreSQL libgda "
+"provider is not available on your system. This provider is needed to access "
+"Postgres database servers.\n"
+"\n"
+"Please report this bug to your vendor, or your system administrator so it can "
+"be corrected."
+msgstr ""
+"Ihre Glom-Installation ist nicht komplett, da der PostgreSQL-libgda-Provider "
+"nicht verfügbar ist. Dieser Provider wird benötigt, um auf Postgres-"
+"Datenbanken zuzugreifen.\n"
+"\n"
+"Bitte berichten Sie diesen Fehler an Ihren Distributor oder Ihren System-"
+"Administrator, damit der Fehler berichtigt werden kann."
+
 #. Note to translators: This text is shown instead of a table title, when the table has not yet been chosen.
-#: ../glom/mode_data/box_data_calendar_related.cc:95
+#: ../glom/mode_data/box_data_calendar_related.cc:96
 #: ../glom/mode_data/box_data_list_related.cc:89
 #: ../glom/mode_data/box_data_portal.cc:86
 msgid "Undefined Table"
@@ -2753,11 +2783,11 @@ msgstr ""
 msgid "List"
 msgstr "Liste"
 
-#: ../glom/mode_data/box_data_portal.cc:347
+#: ../glom/mode_data/box_data_portal.cc:349
 msgid "No Corresponding Record Exists"
 msgstr "Es existiert kein korrespondierender Datensatz"
 
-#: ../glom/mode_data/box_data_portal.cc:347
+#: ../glom/mode_data/box_data_portal.cc:349
 msgid ""
 "No record with this value exists. Therefore navigation to the related record "
 "is not possible."
@@ -2765,8 +2795,8 @@ msgstr ""
 "Ex existiert kein Datensatz mit diesem Wert, daher ist die Navigation zu "
 "diesem Bezugsdatensatz nicht möglich."
 
-#: ../glom/mode_data/dialog_layout_calendar_related.cc:246
-#: ../glom/mode_data/dialog_layout_list_related.cc:238
+#: ../glom/mode_data/dialog_layout_calendar_related.cc:243
+#: ../glom/mode_data/dialog_layout_list_related.cc:246
 msgid "None: No visible tables are specified by the fields."
 msgstr "Nichts: Es sind keine sichtbaren Tabellen durch die Felder festgelegt."
 
@@ -2784,7 +2814,7 @@ msgstr "Anzeigebreite"
 
 #: ../glom/mode_data/dialog_layout_details.cc:699
 #: ../glom/mode_data/flowtablewithfields.cc:1121
-#: ../glom/mode_data/flowtablewithfields.cc:1252
+#: ../glom/mode_data/flowtablewithfields.cc:1242
 msgid "New Button"
 msgstr "Neuer Schalter"
 
@@ -2827,8 +2857,8 @@ msgid "(Notebook)"
 msgstr "(Reitermappe)"
 
 #: ../glom/mode_data/flowtablewithfields.cc:1092
-#: ../glom/mode_data/flowtablewithfields.cc:1211
-#: ../glom/mode_data/flowtablewithfields.cc:1238
+#: ../glom/mode_data/flowtablewithfields.cc:1201
+#: ../glom/mode_data/flowtablewithfields.cc:1228
 #: ../glom/utility_widgets/notebooklabelglom.cc:73
 #: ../glom/utility_widgets/notebooklabelglom.cc:113
 msgid "New Group"
@@ -2850,30 +2880,30 @@ msgstr "Schalter"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
 #: ../glom/mode_data/flowtablewithfields.cc:1127
-#: ../glom/mode_data/flowtablewithfields.cc:1265
+#: ../glom/mode_data/flowtablewithfields.cc:1255
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:380
 msgid "text"
 msgstr "Text"
 
 #: ../glom/mode_data/flowtablewithfields.cc:1128
-#: ../glom/mode_data/flowtablewithfields.cc:1266
+#: ../glom/mode_data/flowtablewithfields.cc:1256
 msgid "New Text"
 msgstr "Neuer Text"
 
 #. TODO: Avoid this error message
-#: ../glom/mode_data/flowtablewithfields.cc:1345
+#: ../glom/mode_data/flowtablewithfields.cc:1335
 msgid "You cannot drop anything here. Try to add a group first"
 msgstr ""
 "An dieser Stelle kann nichts abgelegt werden. Fügen Sie zuerst eine Gruppe "
 "hinzu"
 
 #. TODO: Use a real English sentence here?
-#: ../glom/mode_data/flowtablewithfields.cc:1408
+#: ../glom/mode_data/flowtablewithfields.cc:1398
 msgid "Delete whole group \"%1\"?"
 msgstr "Gesamte Gruppe »%1« löschen?"
 
 #. TODO: Use a real English sentence here:
-#: ../glom/mode_data/flowtablewithfields.cc:1414
+#: ../glom/mode_data/flowtablewithfields.cc:1404
 msgid "Delete whole group?"
 msgstr "Gesamte Gruppe löschen?"
 
@@ -3026,7 +3056,7 @@ msgstr "Ergebnis wird berechnet"
 msgid "The result of the calculation is:\n"
 msgstr "Das Ergebnis der Berechnung ist:\n"
 
-#: ../glom/mode_design/fields/dialog_fielddefinition.cc:156
+#: ../glom/mode_design/fields/dialog_fielddefinition.cc:157
 msgid "Default Value"
 msgstr "Vorgabewert"
 
@@ -3050,12 +3080,12 @@ msgstr "<b>Drucklayout umbenennen</b>"
 msgid "Rename"
 msgstr "Umbenennen"
 
-#: ../glom/mode_design/print_layouts/canvas_layout_item.cc:252
+#: ../glom/mode_design/print_layouts/canvas_layout_item.cc:253
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:38
 msgid "Choose Field"
 msgstr "Feld wählen"
 
-#: ../glom/mode_design/print_layouts/canvas_print_layout.cc:220
+#: ../glom/mode_design/print_layouts/canvas_print_layout.cc:231
 msgid "_Formatting"
 msgstr "_Formatieren"
 
@@ -3193,11 +3223,11 @@ msgstr "Maßstab 25%"
 msgid "Insert"
 msgstr "Einfügen"
 
-#: ../glom/mode_design/script_library/dialog_script_library.cc:132
+#: ../glom/mode_design/script_library/dialog_script_library.cc:133
 msgid "Remove library script"
 msgstr "Bibliothekskript entfernen"
 
-#: ../glom/mode_design/script_library/dialog_script_library.cc:133
+#: ../glom/mode_design/script_library/dialog_script_library.cc:134
 msgid "Do you really want to delete this script? This data can not be recovered"
 msgstr ""
 "Möchten Sie dieses Skript wirklich entfernen? Diese Daten können nicht wieder "
@@ -3227,19 +3257,19 @@ msgstr "Sind Sie sicher, dass Sie diese Gruppe löschen möchten?"
 msgid "Full access."
 msgstr "Vollzugriff"
 
-#: ../glom/mode_design/users/dialog_users_list.cc:162
+#: ../glom/mode_design/users/dialog_users_list.cc:159
 msgid "Delete User"
 msgstr "Benutzer löschen"
 
-#: ../glom/mode_design/users/dialog_users_list.cc:163
+#: ../glom/mode_design/users/dialog_users_list.cc:160
 msgid "Are your sure that you wish to delete this user?"
 msgstr "Sind Sie sicher, dass Sie diesen Benutzer löschen möchten?"
 
-#: ../glom/mode_design/users/dialog_users_list.cc:444
+#: ../glom/mode_design/users/dialog_users_list.cc:422
 msgid "Developer group may not be empty."
 msgstr "Die Entwicklergruppe darf nicht leer sein."
 
-#: ../glom/mode_design/users/dialog_users_list.cc:445
+#: ../glom/mode_design/users/dialog_users_list.cc:423
 msgid "The developer group must contain at least one user."
 msgstr "Die Entwicklergruppe muss mindestens einen Benutzer enthalten."
 
@@ -3377,11 +3407,11 @@ msgstr ".po-Dateinamen auswählen"
 msgid "Po files"
 msgstr "Po-Dateien"
 
-#: ../glom/utility_widgets/adddel/adddel.cc:153
+#: ../glom/utility_widgets/adddel/adddel.cc:154
 msgid "This item already exists. Please try again."
 msgstr "Dieses Element existiert bereits. Bitte versuchen Sie es erneut."
 
-#: ../glom/utility_widgets/adddel/adddel.cc:160
+#: ../glom/utility_widgets/adddel/adddel.cc:161
 msgid "Duplicate"
 msgstr "Duplikat"
 
@@ -3557,23 +3587,23 @@ msgstr ""
 "Datenbank auf einem externen Datenbank-Server erstellen, der im nächsten "
 "Schritt angegeben wird."
 
-#: ../glom/utility_widgets/imageglom.cc:382
+#: ../glom/utility_widgets/imageglom.cc:383
 msgid "Choose Image"
 msgstr "Bild wählen"
 
-#: ../glom/utility_widgets/imageglom.cc:386
+#: ../glom/utility_widgets/imageglom.cc:387
 msgid "Images"
 msgstr "Bilder"
 
-#: ../glom/utility_widgets/imageglom.cc:437
+#: ../glom/utility_widgets/imageglom.cc:438
 msgid "Image loading failed"
 msgstr "Fehler beim Laden des Bildes"
 
-#: ../glom/utility_widgets/imageglom.cc:437
+#: ../glom/utility_widgets/imageglom.cc:438
 msgid "The image file could not be opened:\n"
 msgstr "Die Bilddatei konnte nicht geöffnet werden:\n"
 
-#: ../glom/utility_widgets/imageglom.cc:532
+#: ../glom/utility_widgets/imageglom.cc:533
 msgid "Choose File"
 msgstr "Datei wählen"
 
@@ -3629,90 +3659,3 @@ msgstr "Bericht fertiggestellt"
 #: ../glom/xsl_utils.cc:139
 msgid "The report will now be opened in your web browser."
 msgstr "Der Bericht wird nun in Ihrem Webbrowser geöffnet."
-
-#~ msgid "calendar:MY"
-#~ msgstr "calendar:MY"
-
-#~ msgid "calendar:week_start:0"
-#~ msgstr "calendar:week_start:1"
-
-#~ msgid "year measurement template|2000"
-#~ msgstr "2000"
-
-#~ msgid "calendar:day:digits|%d"
-#~ msgstr "%d"
-
-#~ msgid "calendar:week:digits|%d"
-#~ msgstr "%d"
-
-#~ msgid "calendar year format|%Y"
-#~ msgstr "%Y"
-
-#~ msgid "True"
-#~ msgstr "Wahr"
-
-#~ msgid "False"
-#~ msgstr "Falsch"
-
-#~ msgid ""
-#~ "SQLite is more light-weight than postgresql, but it does not support "
-#~ "authentication or remote access."
-#~ msgstr ""
-#~ "SQLite ist ressourcenschonender als Postgresql, aber Legitimierung oder "
-#~ "Fernzugriff werden nicht unterstützt."
-
-#~ msgid ""
-#~ "Applies the currently selected item. Depending on the item, this might "
-#~ "create a new document or open an existing document."
-#~ msgstr ""
-#~ "Wird auf das aktuell ausgewählte Objekt angewendet. Abhängig vom Objekt "
-#~ "führt dies zur Erstellung eines neuen Dokuments oder zum Öffnen eines "
-#~ "existierenden Dokuments."
-
-#~ msgid "gtk-cancel"
-#~ msgstr "gtk-cancel"
-
-#~ msgid "gtk-help"
-#~ msgstr "gtk-help"
-
-#~ msgid "gtk-ok"
-#~ msgstr "gtk-ok"
-
-#~ msgid "%X"
-#~ msgstr "%X"
-
-#~ msgid "Columns Count"
-#~ msgstr "Spalten zählen"
-
-#~ msgid "You may not specify more than one field as the primary key."
-#~ msgstr "Sie können nicht mehr als ein Feld als Primärschlüssel angeben."
-
-#~ msgid ""
-#~ "<span weight=\"bold\" size=\"larger\">Open existing document, or create "
-#~ "new document</span>\n"
-#~ "\n"
-#~ "Would you like to open an existing document, to connect to an existing "
-#~ "database?\n"
-#~ "\n"
-#~ "Or would you like to create a new document, to design a new database?\n"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">Vorhandenes Dokument öffnen oder ein "
-#~ "neues Dokument anlegen</span>\n"
-#~ "\n"
-#~ "Möchten Sie ein vorhandenes Dokument öffnen, um sich mit einer "
-#~ "existierenden Datenbank zu verbinden?\n"
-#~ "\n"
-#~ "Oder möchten Sie ein neues Dokument anlegen, um eine neue Datenbank zu "
-#~ "erstellen?\n"
-
-#~ msgid "Details Layout"
-#~ msgstr "Layout der Detailansicht"
-
-#~ msgid "Choose columns"
-#~ msgstr "Spalte wählen"
-
-#~ msgid "<b>Please enter the information for the new field: </b>"
-#~ msgstr "<b>Bitte geben Sie die Information für das neue Feld ein: </b>"
-
-#~ msgid "Add layout item"
-#~ msgstr "Layoutelement hinzufügen"
