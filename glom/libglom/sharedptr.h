@@ -79,6 +79,7 @@ public:
   virtual ~sharedptr();
 
   inline bool operator==(const sharedptr<T_obj>& src) const;
+  inline bool operator!=(const sharedptr<T_obj>& src) const;
 
   ///Forget the instance.
   virtual void clear();
@@ -266,6 +267,12 @@ template <class T_obj>
 inline bool sharedptr<T_obj>::operator==(const sharedptr<T_obj>& src) const
 {
   return m_pobj == src.m_pobj;
+}
+
+template <class T_obj>
+inline bool sharedptr<T_obj>::operator!=(const sharedptr<T_obj>& src) const
+{
+  return m_pobj != src.m_pobj;
 }
 
 

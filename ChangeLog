@@ -1,3 +1,29 @@
+2009-05-05  Armin Burgmeier  <armin@arbur.net>
+
+	* glom/libglom/sharedptr.h: Added operator!=.
+
+	* glom/mode_data/flowtablewithfields.h:
+	* glom/mode_data/flowtablewithfields.cc: Added set_other_field_value
+	which is the same as set_field_value except that it does not set the
+	value for widget that belongs to the passed layout item's widget
+	itself. This can be used if that very widget already contains the new
+	value to avoid setting it again. Especially when dealing with large
+	images this brings an essential speedup.
+
+	* glom/mode_data/box_data_details.cc (on_flowtable_field_edited): Use
+	set_other_field_value, so that we don't set the value for the field
+	which the user already changed again.
+
+	* glom/utility_widgets/imageglom.h:
+	* glom/utility_widgets/imageglom.cc: Store the original data of the
+	image file, and return it in get_value(), instead of creating a PNG
+	from the raw image data, to speed up loading a large image file.
+
+	* glom/utils_ui.cc (get_pixbuf_for_gda_value): When loading images
+	from the database, allow all image types, not just PNGs.
+
+	* glom/xsl_utils.cc: Include gtk/gtk.h to fix the build for me.
+
 2009-04-24  Murray Cumming  <murrayc@murrayc.com>
 
 	Don't network share new documents from (old) examples.

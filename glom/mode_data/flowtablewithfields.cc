@@ -742,8 +742,36 @@ void FlowTableWithFields::remove_field(const Glib::ustring& id)
 
 void FlowTableWithFields::set_field_value(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
 {
+  // TODO: Avoid duplication. Maybe we can call set_other_field_value plus
+  // set the value for field's widget directly.
   //Set widgets which should show the value of this field:
-  type_list_widgets list_widgets = get_field(field);
+  type_list_widgets list_widgets = get_field(field, true);
+  for(type_list_widgets::iterator iter = list_widgets.begin(); iter != list_widgets.end(); ++iter)
+  {
+    DataWidget* datawidget = dynamic_cast<DataWidget*>(*iter);
+    if(datawidget)
+    {
+      datawidget->set_value(value);
+    }
+  }
+
+  //Refresh widgets which should show the related records for relationships that use this field:
+  type_portals list_portals = get_portals(field /* from_key field name */);
+  for(type_portals::iterator iter = list_portals.begin(); iter != list_portals.end(); ++iter)
+  {
+    Box_Data_Portal* portal = *iter;
+    if(portal)
+    {
+      //g_warning("FlowTableWithFields::set_field_value: foreign_key_value=%s", value.to_string().c_str());
+      portal->refresh_data_from_database_with_foreign_key(value /* foreign key value */);
+    }
+  }
+}
+
+void FlowTableWithFields::set_other_field_value(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
+{
+  //Set widgets which should show the value of this field:
+  type_list_widgets list_widgets = get_field(field, false);
   for(type_list_widgets::iterator iter = list_widgets.begin(); iter != list_widgets.end(); ++iter)
   {
     DataWidget* datawidget = dynamic_cast<DataWidget*>(*iter);
@@ -768,7 +796,7 @@ void FlowTableWithFields::set_field_value(const sharedptr<const LayoutItem_Field
 
 Gnome::Gda::Value FlowTableWithFields::get_field_value(const sharedptr<const LayoutItem_Field>& field) const
 {
-  type_list_const_widgets list_widgets = get_field(field);
+  type_list_const_widgets list_widgets = get_field(field, true);
   if(!list_widgets.empty())
   {
     const DataWidget* datawidget = dynamic_cast<const DataWidget*>(*(list_widgets.begin()));
@@ -783,7 +811,7 @@ Gnome::Gda::Value FlowTableWithFields::get_field_value(const sharedptr<const Lay
 
 void FlowTableWithFields::set_field_editable(const sharedptr<const LayoutItem_Field>& field, bool editable)
 {
-  type_list_widgets list_widgets = get_field(field);
+  type_list_widgets list_widgets = get_field(field, true);
   for(type_list_widgets::iterator iter = list_widgets.begin(); iter != list_widgets.end(); ++iter)
   {
     DataWidget* datawidget = dynamic_cast<DataWidget*>(*iter);
@@ -840,21 +868,31 @@ FlowTableWithFields::type_portals FlowTableWithFields::get_portals(const sharedp
   return result;
 }
 
-FlowTableWithFields::type_list_const_widgets FlowTableWithFields::get_field(const sharedptr<const LayoutItem_Field>& layout_item) const
+namespace
+{
+  // Get the direct widgets represesenting a given layout item
+  // from a flowtable, without considering subflowtables:
+  template<typename InputIterator, typename OutputIterator>
+  void get_direct_fields(InputIterator begin, InputIterator end, OutputIterator out, const sharedptr<const LayoutItem_Field>& layout_item, bool include_item)
+  {
+    for(InputIterator iter = begin; iter != end; ++iter)
+    {
+      if(iter->m_field->is_same_field(layout_item) && (include_item || iter->m_field != layout_item))
+      {
+        if(iter->m_checkbutton)
+          *out++ = iter->m_checkbutton;
+        else
+          *out++ = iter->m_second;
+      }
+    }
+  }
+}
+
+FlowTableWithFields::type_list_const_widgets FlowTableWithFields::get_field(const sharedptr<const LayoutItem_Field>& layout_item, bool include_item) const
 {
   type_list_const_widgets result;
 
-  for(type_listFields::const_iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
-  {
-    if( (iter->m_field->is_same_field(layout_item)) )
-    {
-      const Info& info = *iter;
-      if(info.m_checkbutton)
-        result.push_back(info.m_checkbutton);
-      else
-        result.push_back(info.m_second);
-    }
-  }
+  get_direct_fields(m_listFields.begin(), m_listFields.end(), std::back_inserter(result), layout_item, include_item);
 
   //Check the sub-flowtables:
   for(type_sub_flow_tables::const_iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
@@ -862,7 +900,7 @@ FlowTableWithFields::type_list_const_widgets FlowTableWithFields::get_field(cons
     const FlowTableWithFields* subtable = *iter;
     if(subtable)
     {
-      type_list_const_widgets sub_list = subtable->get_field(layout_item);
+      type_list_const_widgets sub_list = subtable->get_field(layout_item, include_item);
       if(!sub_list.empty())
       {
         //Add to the main result:
@@ -874,22 +912,13 @@ FlowTableWithFields::type_list_const_widgets FlowTableWithFields::get_field(cons
   return result;
 }
 
-FlowTableWithFields::type_list_widgets FlowTableWithFields::get_field(const sharedptr<const LayoutItem_Field>& layout_item)
+FlowTableWithFields::type_list_widgets FlowTableWithFields::get_field(const sharedptr<const LayoutItem_Field>& layout_item, bool include_item)
 {
-  //TODO: Avoid duplication
   type_list_widgets result;
 
-  for(type_listFields::const_iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
-  {
-    if( (iter->m_field->is_same_field(layout_item)) )
-    {
-      const Info& info = *iter;
-      if(info.m_checkbutton)
-        result.push_back(info.m_checkbutton);
-      else
-        result.push_back(info.m_second);
-    }
-  }
+  get_direct_fields(m_listFields.begin(), m_listFields.end(), std::back_inserter(result), layout_item, include_item);
+
+  //TODO: Avoid duplication
 
   //Check the sub-flowtables:
   for(type_sub_flow_tables::const_iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
@@ -897,7 +926,7 @@ FlowTableWithFields::type_list_widgets FlowTableWithFields::get_field(const shar
     FlowTableWithFields* subtable = *iter;
     if(subtable)
     {
-      type_list_widgets sub_list = subtable->get_field(layout_item);
+      type_list_widgets sub_list = subtable->get_field(layout_item, include_item);
       if(!sub_list.empty())
       {
         //Add to the main result:

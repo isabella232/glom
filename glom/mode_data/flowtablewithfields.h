@@ -87,7 +87,7 @@ public:
   //virtual Gnome::Gda::Value get_field_value(const Glib::ustring& id) const;
   virtual void set_field_value(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
   //virtual void set_field_value(const Glib::ustring& id, const Gnome::Gda::Value& value);
-
+  virtual void set_other_field_value(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
 
   typedef std::list<Gtk::Widget*> type_list_widgets;
   typedef std::list<const Gtk::Widget*> type_list_const_widgets;
@@ -138,8 +138,10 @@ public:
   
 private:
 
-  type_list_widgets get_field(const sharedptr<const LayoutItem_Field>& field);
-  type_list_const_widgets get_field(const sharedptr<const LayoutItem_Field>& field) const;
+  // If include_item is set, then the output list will contain field's widget,
+  // otherwise not.
+  type_list_widgets get_field(const sharedptr<const LayoutItem_Field>& field, bool include_item);
+  type_list_const_widgets get_field(const sharedptr<const LayoutItem_Field>& field, bool include_item) const;
 
   typedef std::list< Box_Data_Portal* > type_portals;
     

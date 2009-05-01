@@ -259,7 +259,7 @@ Glib::RefPtr<Gdk::Pixbuf> Utils::get_pixbuf_for_gda_value(const Gnome::Gda::Valu
       Glib::RefPtr<Gdk::PixbufLoader> refPixbufLoader;
       try
       {
-        refPixbufLoader = Gdk::PixbufLoader::create(GLOM_IMAGE_FORMAT);
+        refPixbufLoader = Gdk::PixbufLoader::create();
       }
       catch(const Gdk::PixbufError& ex)
       {
