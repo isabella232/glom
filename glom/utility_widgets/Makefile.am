@@ -32,6 +32,7 @@ libutility_widgets_a_SOURCES = alignment_justified.cc alignment_justified.h \
                                labelglom.h labelglom.cc \
                                dialog_choose_id.cc dialog_choose_id.h \
                                dialog_choose_date.cc dialog_choose_date.h \
+			       dialog_image_progress.cc dialog_image_progress.h \
                                checkglom.h checkglom.cc \
                                layoutwidgetutils.h layoutwidgetutils.cc \
                                dialog_layoutitem_properties.cc dialog_layoutitem_properties.h \

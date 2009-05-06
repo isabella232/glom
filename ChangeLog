@@ -1,3 +1,15 @@
+2009-05-07  Armin Burgmeier  <armin@arbur.net>
+
+	* glom/glom.glade:
+	* glom/utility_widgets/dialog_image_progress.h:
+	* glom/utility_widgets/dialog_image_progress.cc:
+	* glom/utility_widgets/Makefile.am: Added a dialog which loads an
+	image and shows progress of the operation.
+
+	* glom/utility_widgets/imageglom.h:
+	* glom/utility_widgets/imageglom.cc: Use this dialog when the user
+	selects an image to load, to indicate progress for large images.
+
 2009-05-05  Armin Burgmeier  <armin@arbur.net>
 
 	* glom/libglom/sharedptr.h: Added operator!=.
