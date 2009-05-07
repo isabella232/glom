@@ -1095,8 +1095,8 @@ void FlowTable::on_realize()
 
 void FlowTable::on_unrealize()
 {
-  m_refGdkWindow.clear();
-  m_refGC.clear();
+  m_refGdkWindow.reset();
+  m_refGC.reset();
 
 #ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   Gtk::Container::on_unrealize();

@@ -541,19 +541,19 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
     catch(const Glib::Exception& ex)
     {
       std::cerr << "DbTreeModel::refresh_from_database(): Glib::Exception caught." << std::endl;
-      m_gda_datamodel.clear(); //So that it is 0, so we can handle it below.
+      m_gda_datamodel.reset(); //So that it is 0, so we can handle it below.
     }
     catch(const std::exception& ex)
     {
       std::cerr << "DbTreeModel::refresh_from_database(): std::exception caught." << std::endl;
-      m_gda_datamodel.clear(); //So that it is 0, so we can handle it below.
+      m_gda_datamodel.reset(); //So that it is 0, so we can handle it below.
     }
 #else
     std::auto_ptr<Glib::Error> error;
     m_gda_datamodel = m_connection->get_gda_connection()->statement_execute_select(stmt, set, error);
     if(error.get())
     {
-      m_gda_datamodel.clear(); //So that it is 0, so we can handle it below.
+      m_gda_datamodel.reset(); //So that it is 0, so we can handle it below.
     }
 #endif //GLIBMM_EXCEPTIONS_ENABLED
 

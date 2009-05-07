@@ -20,7 +20,7 @@ AM_CPPFLAGS = -I@top_srcdir@/ -I@top_srcdir@/glom $(LIBGLOM_CFLAGS) $(GLOM_WARNI
            -DGLOM_ICON_DIR=\""$(glom_icon_dir)"\"
 
 # These are installed, for use by other applications/utilties:
-h_sources_public = libglom_config.h \ 
+h_sources_public = libglom_config.h \
                      init.h \
                      sharedptr.h \
                      standard_table_prefs_fields.h \

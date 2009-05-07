@@ -292,7 +292,6 @@ void Dialog_Layout_Calendar_Related::save_to_document()
       sharedptr<Relationship> rel, rel_related;
       rel = m_combo_navigation_specify->get_selected_relationship(rel_related);
 
-      bool specify_main = (!rel && !rel_related);
       sharedptr<UsesRelationship> uses_rel = sharedptr<UsesRelationship>::create();
       uses_rel->set_relationship(rel);
       uses_rel->set_related_relationship(rel_related);

@@ -59,7 +59,7 @@ void Backend::cleanup(const SlotProgress& /* slot_progress */)
 {
 }
 
-bool Backend::set_network_shared(const SlotProgress& slot_progress, bool /* network_shared */)
+bool Backend::set_network_shared(const SlotProgress& /* slot_progress */, bool /* network_shared */)
 {
   return true; //Success at doing nothing.
 }

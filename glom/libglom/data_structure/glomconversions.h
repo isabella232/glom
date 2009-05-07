@@ -45,7 +45,7 @@ namespace Conversions
   Glib::ustring format_date(const tm& tm_data);
   Glib::ustring format_date(const tm& tm_data, const std::locale& locale, bool iso_format = false);
 
-  Gnome::Gda::Value parse_value(double number);
+  Gnome::Gda::Value parse_value(double number);  
   Gnome::Gda::Value parse_value(Field::glom_field_type glom_type, const Glib::ustring& text, bool& success, bool iso_format = false);
   Gnome::Gda::Value parse_value(Field::glom_field_type glom_type, const Glib::ustring& text, const NumericFormat& numeric_format, bool& success, bool iso_format = false);
 

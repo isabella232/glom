@@ -239,7 +239,6 @@ protected:
 
   void on_MenuPopup_activate_Edit();
   void on_MenuPopup_activate_Delete();
-  void on_MenuPopup_activate_ChooseColumns();
 
   void on_treeview_button_press_event(GdkEventButton* event);
 

@@ -124,12 +124,12 @@ bool Sqlite::create_database(const Glib::ustring& database_name, const Glib::ust
 
 bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, GdaMetaTableColumn* column, unsigned int i, std::auto_ptr<Glib::Error>& error)
 {
-  Glib::ustring name_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_NAME/%1", i);
-  Glib::ustring type_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_TYPE/%1", i);
-  Glib::ustring pkey_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_PKEY/%1", i);
-  Glib::ustring nnul_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_NNUL/%1", i);
+  const Glib::ustring name_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_NAME/%1", i);
+  const Glib::ustring type_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_TYPE/%1", i);
+  const Glib::ustring pkey_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_PKEY/%1", i);
+  const Glib::ustring nnul_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_NNUL/%1", i);
   // TODO: Find out whether the column is unique.
-  Glib::ustring default_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_DEFAULT/%1", i);
+  const Glib::ustring default_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_DEFAULT/%1", i);
 
   if(!set_server_operation_value(operation, name_path, column->column_name, error)) return false;
   if(!set_server_operation_value(operation, type_path, column->column_type, error)) return false;
@@ -137,19 +137,21 @@ bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::Serve
   if(!set_server_operation_value(operation, nnul_path, !column->nullok ? "TRUE" : "FALSE", error)) return false;
 
   if(column->default_value)
+  {
     if(!set_server_operation_value(operation, default_path, column->default_value, error))
       return false;
-
+  }
+  
   return true;
 }
 
 bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, const sharedptr<const Field>& column, unsigned int i, std::auto_ptr<Glib::Error>& error)
 {
-  Glib::ustring name_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_NAME/%1", i);
-  Glib::ustring type_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_TYPE/%1", i);
-  Glib::ustring pkey_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_PKEY/%1", i);
-  Glib::ustring unique_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_UNIQUE/%1", i);
-  Glib::ustring default_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_DEFAULT/%1", i);
+  const Glib::ustring name_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_NAME/%1", i);
+  const Glib::ustring type_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_TYPE/%1", i);
+  const Glib::ustring pkey_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_PKEY/%1", i);
+  const Glib::ustring unique_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_UNIQUE/%1", i);
+  const Glib::ustring default_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_DEFAULT/%1", i);
 
   if(!set_server_operation_value(operation, name_path, column->get_name(), error)) return false;
   if(!set_server_operation_value(operation, type_path, column->get_sql_type(), error)) return false;
@@ -167,10 +169,12 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
   Glib::RefPtr<Gnome::Gda::MetaStore> store = connection->get_meta_store();
   Glib::RefPtr<Gnome::Gda::MetaStruct> metastruct = Gnome::Gda::MetaStruct::create(store, Gnome::Gda::META_STRUCT_FEATURE_NONE);
   GdaMetaDbObject* object = metastruct->complement(Gnome::Gda::META_DB_TABLE, Gnome::Gda::Value(), Gnome::Gda::Value(), Gnome::Gda::Value(table_name));
-  if(!object) return false;
+  if(!object)
+    return false;
 
   Glib::RefPtr<Gnome::Gda::ServerOperation> operation = create_server_operation(connection->get_provider(), connection, Gnome::Gda::SERVER_OPERATION_CREATE_TABLE, error);
-  if(!operation) return false;
+  if(!operation)
+    return false;
 
   if(!set_server_operation_value(operation, "/TABLE_DEF_P/TABLE_NAME", TEMPORARY_TABLE_NAME, error)) return false;
 

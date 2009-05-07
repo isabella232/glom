@@ -72,22 +72,27 @@ public:
    * @param layoutitem_field The layout item that describes this field,
    * @param table_name The table on which this layout appears.
    */
-  virtual void add_field(const sharedptr<LayoutItem_Field>& layoutitem_field, const Glib::ustring& table_name);
-  virtual void remove_field(const Glib::ustring& id);
+  void add_field(const sharedptr<LayoutItem_Field>& layoutitem_field, const Glib::ustring& table_name);
+
+  void remove_field(const Glib::ustring& id);
 
   typedef std::map<int, Field> type_map_field_sequence;
   //virtual void add_group(const Glib::ustring& group_name, const Glib::ustring& group_title, const type_map_field_sequence& fields);
 
-  virtual void add_layout_item(const sharedptr<LayoutItem>& item);
-  virtual void add_layout_group(const sharedptr<LayoutGroup>& group);
+  void add_layout_item(const sharedptr<LayoutItem>& item);
+  void add_layout_group(const sharedptr<LayoutGroup>& group);
 
-  virtual void set_field_editable(const sharedptr<const LayoutItem_Field>& field, bool editable = true);
+  void set_field_editable(const sharedptr<const LayoutItem_Field>& field, bool editable = true);
 
-  virtual Gnome::Gda::Value get_field_value(const sharedptr<const LayoutItem_Field>& field) const;
-  //virtual Gnome::Gda::Value get_field_value(const Glib::ustring& id) const;
-  virtual void set_field_value(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
-  //virtual void set_field_value(const Glib::ustring& id, const Gnome::Gda::Value& value);
-  virtual void set_other_field_value(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
+  Gnome::Gda::Value get_field_value(const sharedptr<const LayoutItem_Field>& field) const;
+
+  /** Set the displayed @a value in any instances of the specified @a field.
+   */
+  void set_field_value(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
+
+  /** Set the displayed @a value in any instances of the field other than the specified @a layout_field.
+   */
+  void set_other_field_value(const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& value);
 
   typedef std::list<Gtk::Widget*> type_list_widgets;
   typedef std::list<const Gtk::Widget*> type_list_const_widgets;
@@ -209,25 +214,26 @@ private:
   void add_layout_portal_at_position(const sharedptr<LayoutItem_Portal>& portal, const type_list_layoutwidgets::iterator& add_before);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+
   virtual void on_dnd_add_placeholder(LayoutWidgetBase* above);
   virtual void on_dnd_remove_placeholder();
     
   // Methods for the different layout object
-  virtual void on_dnd_add_layout_item_field (LayoutWidgetBase* above);
+  virtual void on_dnd_add_layout_item_field(LayoutWidgetBase* above);
   virtual void on_dnd_add_layout_group(LayoutWidgetBase* above);
-  virtual void on_dnd_add_layout_item_button (LayoutWidgetBase* above);
-  virtual void on_dnd_add_layout_item_text (LayoutWidgetBase* above);
-  virtual void on_dnd_add_layout_item_image (LayoutWidgetBase* above);
-  virtual void on_dnd_add_layout_notebook (LayoutWidgetBase* above);
-  virtual void on_dnd_add_layout_portal (LayoutWidgetBase* above);
-  virtual void on_dnd_add_layout_item (LayoutWidgetBase* above,
-                                       sharedptr<LayoutItem>& item);
+  virtual void on_dnd_add_layout_item_button(LayoutWidgetBase* above);
+  virtual void on_dnd_add_layout_item_text(LayoutWidgetBase* above);
+  virtual void on_dnd_add_layout_item_image(LayoutWidgetBase* above);
+  virtual void on_dnd_add_layout_notebook(LayoutWidgetBase* above);
+  virtual void on_dnd_add_layout_portal(LayoutWidgetBase* above);
+
+  //TODO: Why isn't this a const sharedptr&?
+  virtual void on_dnd_add_layout_item(LayoutWidgetBase* above, sharedptr<LayoutItem>& item);
   
-  sharedptr<LayoutItem_Portal> get_portal_relationship ();
+  sharedptr<LayoutItem_Portal> get_portal_relationship();
+
   void dnd_notify_failed_drop();
-  bool dnd_add_to_layout_group (sharedptr<LayoutItem>& item, 
-                                LayoutWidgetBase* layoutwidget,
-                                bool ignore_error = false);
+  bool dnd_add_to_layout_group(sharedptr<LayoutItem>& item, LayoutWidgetBase* layoutwidget, bool ignore_error = false);
   
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   

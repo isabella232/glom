@@ -471,7 +471,7 @@ void ImageGlom::on_clipboard_clear()
   if(m_read_only)
     return;
 
-  m_pixbuf_clipboard.clear();
+  m_pixbuf_clipboard.reset();
 }
 
 void ImageGlom::on_menupopup_activate_copy()
@@ -482,7 +482,7 @@ void ImageGlom::on_menupopup_activate_copy()
     m_pixbuf_clipboard = m_pixbuf_original->copy(); //TODO: Get it from the DB, when we stop storing the original here instead of just the preview.
   }
   else
-    m_pixbuf_clipboard.clear();
+    m_pixbuf_clipboard.reset();
 
   Glib::RefPtr<Gtk::Clipboard> refClipboard = Gtk::Clipboard::get();
 
@@ -530,7 +530,7 @@ void ImageGlom::on_menupopup_activate_clear()
   if(m_read_only)
     return;
 
-  m_pixbuf_original.clear();
+  m_pixbuf_original.reset();
   m_image.set(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG);
   signal_edited().emit();
 }

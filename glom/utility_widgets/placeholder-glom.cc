@@ -125,7 +125,7 @@ void PlaceholderGlom::on_realize()
 
 void PlaceholderGlom::on_unrealize()
 {
-  m_refGdkWindow.clear();
+  m_refGdkWindow.reset();
 
   Gtk::Widget::on_unrealize();
 }
@@ -134,7 +134,6 @@ bool PlaceholderGlom::on_expose_event(GdkEventExpose* event)
 {
   if(m_refGdkWindow)
   {
-
     Cairo::RefPtr<Cairo::Context> cr = m_refGdkWindow->create_cairo_context();
     if(event)
     {

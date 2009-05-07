@@ -411,8 +411,10 @@ void PostgresSelfHosted::cleanup(const SlotProgress& slot_progress)
   m_port = 0;
 }
 
-bool PostgresSelfHosted::set_network_shared(const SlotProgress& slot_progress, bool network_shared)
+bool PostgresSelfHosted::set_network_shared(const SlotProgress& /* slot_progress */, bool network_shared)
 {
+  //TODO: Use slot_progress, while doing async IO for create_text_file().
+
   m_network_shared = network_shared;
 
   const std::string dbdir_uri = m_self_hosting_data_uri;

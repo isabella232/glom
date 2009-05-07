@@ -1687,7 +1687,7 @@ void App_Glom::fill_menu_tables()
   if(m_refNavTablesActionGroup)
   {
     m_refUIManager->remove_action_group(m_refNavTablesActionGroup);
-    m_refNavTablesActionGroup.clear();
+    m_refNavTablesActionGroup.reset();
   }
 
   m_refNavTablesActionGroup = Gtk::ActionGroup::create("NavTablesActions");
@@ -1776,7 +1776,7 @@ void App_Glom::fill_menu_reports(const Glib::ustring& table_name)
   if(m_refNavReportsActionGroup)
   {
     m_refUIManager->remove_action_group(m_refNavReportsActionGroup);
-    m_refNavReportsActionGroup.clear();
+    m_refNavReportsActionGroup.reset();
   }
 
   m_refNavReportsActionGroup = Gtk::ActionGroup::create("NavReportsActions");
@@ -1874,7 +1874,7 @@ void App_Glom::fill_menu_print_layouts(const Glib::ustring& table_name)
   if(m_refNavPrintLayoutsActionGroup)
   {
     m_refUIManager->remove_action_group(m_refNavPrintLayoutsActionGroup);
-    m_refNavPrintLayoutsActionGroup.clear();
+    m_refNavPrintLayoutsActionGroup.reset();
   }
 
   m_refNavPrintLayoutsActionGroup = Gtk::ActionGroup::create("NavPrintLayoutsActions");

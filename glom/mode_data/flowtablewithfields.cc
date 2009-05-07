@@ -1213,6 +1213,7 @@ void FlowTableWithFields::on_dnd_add_layout_item_field(LayoutWidgetBase* above)
     realize();
     return;
   }
+
   sharedptr<LayoutItem> item = sharedptr<LayoutItem>::cast_dynamic(layout_item_field);
   dnd_add_to_layout_group (item, above);
   
@@ -1303,10 +1304,9 @@ void FlowTableWithFields::on_dnd_add_layout_item_image(LayoutWidgetBase* above)
   signal_layout_changed().emit();
 }
 
-void FlowTableWithFields::on_dnd_add_layout_item (LayoutWidgetBase* above,
-                                                  sharedptr<LayoutItem>& item)
+void FlowTableWithFields::on_dnd_add_layout_item(LayoutWidgetBase* above, sharedptr<LayoutItem>& item)
 {
-  dnd_add_to_layout_group (item, above);
+  dnd_add_to_layout_group(item, above);
   
   // Don't do this here - it's done in the drag_end handler
   // signal_layout_changed().emit();

@@ -832,7 +832,7 @@ void DbAddDel::construct_specified_columns()
   {
     //std::cout << "debug: DbAddDel::construct_specified_columns(): showing hint model: m_find_mode=" << m_find_mode << std::endl;
 
-    m_refListStore.clear();
+    m_refListStore.reset();
     if(m_table_name.empty())
       m_TreeView.set_model(m_refListStore); // clear old model from treeview
     else
@@ -932,7 +932,10 @@ void DbAddDel::construct_specified_columns()
     m_treeviewcolumn_button->pack_start(*pCellButton);
 
 
-    int x_offset, y_offset, width, height;
+    int x_offset = 0;
+    int y_offset = 0;
+    int width = 0;
+    int height = 0;
     pCellButton->get_size(m_TreeView, x_offset, y_offset, width, height);
 
     m_treeviewcolumn_button->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED); //Need by fixed-height mode.

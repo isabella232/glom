@@ -36,8 +36,6 @@
 #include <hildonmm/note.h>
 #endif // GLOM_ENABLE_MAEMO
 
-#include "eggcolumnchooser/eggcolumnchooserdialog.h"
-
 namespace Glom
 {
 
@@ -209,14 +207,6 @@ AddDel::on_MenuPopup_activate_Edit()
     }
 
   }
-}
-
-void AddDel::on_MenuPopup_activate_ChooseColumns()
-{
-  GtkDialog* pDialog = GTK_DIALOG( egg_column_chooser_dialog_new(m_TreeView.gobj()) );
-  gtk_widget_show_all( GTK_WIDGET(pDialog) );
-  gtk_dialog_run(pDialog); //It will delete itself. The C API is funny like that.
-  pDialog = 0;
 }
 
 void AddDel::on_MenuPopup_activate_Delete()
