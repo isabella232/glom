@@ -166,6 +166,8 @@ protected:
   virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
 
 
+  /** This identifies a specific field in specific row of a table.
+   */
   class FieldInRecord
   {
   public:
@@ -304,6 +306,9 @@ protected:
   bool set_field_value_in_database(const LayoutFieldInRecord& field_in_record, const Gnome::Gda::Value& field_value, bool use_current_calculations = false, Gtk::Window* parent_window = 0);
   bool set_field_value_in_database(const LayoutFieldInRecord& field_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value, bool use_current_calculations = false, Gtk::Window* parent_window = 0);
 
+  bool set_record_creation_fields(const LayoutFieldInRecord& layoutfield_in_record, const Gtk::TreeModel::iterator& row, Gtk::Window* parent_window);
+  bool set_record_modification_fields(const LayoutFieldInRecord& layoutfield_in_record, const Gtk::TreeModel::iterator& row, Gtk::Window* parent_window);
+
   ///Get a single field value from the database.
   Gnome::Gda::Value get_field_value_in_database(const LayoutFieldInRecord& field_in_record, Gtk::Window* parent_window);
 
@@ -404,6 +409,12 @@ protected:
   static bool handle_error();
 
   type_field_calcs m_FieldsCalculationInProgress; //Prevent circular calculations and recalculations.
+  
+  //Extra creation/modification fields to set:
+  typedef std::pair<GType, Gnome::Gda::Value> FieldTypeValue;
+  typedef std::map<const gchar*, FieldTypeValue> type_extra_field_values;
+  static type_extra_field_values m_extra_field_values;
+
 };
 
 } //namespace Glom

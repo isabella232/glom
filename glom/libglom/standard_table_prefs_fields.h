@@ -46,6 +46,13 @@ namespace Glom
 
 #define GLOM_STANDARD_FIELD_LOCK "glom_lock" //Text. In every table. Not used yet.
 
+#define GLOM_STANDARD_DEFAULT_FIELD_CREATION_DATE "creation_date" //Date. In every table. Not used yet.
+#define GLOM_STANDARD_DEFAULT_FIELD_CREATION_TIME "creation_time" //Time. In every table. Not used yet.
+#define GLOM_STANDARD_DEFAULT_FIELD_CREATION_USER "creation_user" //Text. In every table. Not used yet.
+#define GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_DATE "modification_date" //Text. In every table. Not used yet.
+#define GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_TIME "modification_time" //Time. In every table. Not used yet.
+#define GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_USER "modification_user" //Text. In every table. Not used yet.
+
 } //namespace Glom
 
 #endif //GLOM_STANDARD_TABLE_PREFS_FIELDS_H

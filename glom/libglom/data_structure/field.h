@@ -165,6 +165,11 @@ public:
    */
   Glib::ustring get_gda_holder_string(const Glib::ustring& name = Glib::ustring()) const;
 
+  /** TODO: Documentation.
+   */
+  static Glib::ustring get_gda_holder_string_generic(const Glib::ustring& name, GType type);
+  
+
   /** Escape and quote the value so that it can be used in a SQL command.
    */
   Glib::ustring sql(const Gnome::Gda::Value& value, const Glib::RefPtr<Gnome::Gda::Connection>& connection) const;
