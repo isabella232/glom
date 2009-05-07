@@ -1195,28 +1195,6 @@ void Base_DB::set_database_preferences(const SystemPrefs& prefs)
   get_document()->set_database_title(prefs.m_name);
 }
 
-
-static sharedptr<Field> create_field(const Glib::ustring& name, const Glib::ustring& description, Field::glom_field_type field_type)
-{
-  sharedptr<Field> field = sharedptr<Field>::create();
-  field->set_name(name);
-  field->set_title(description);
-  field->set_glom_type(field_type);
-
-  return field;
-}
-
-///Adds the field to the vector if it is not already there.
-static void add_field(Base_DB::type_vec_fields& vec, const Glib::ustring& name, const Glib::ustring& description, Field::glom_field_type field_type)
-{
-  if(std::find_if(vec.begin(), vec.end(), predicate_FieldHasName<Field>(name)) != vec.end())
-    return;
-  
-  sharedptr<Field> field = create_field(name, description, field_type);
-  vec.push_back(field);
-}
-
-
 static sharedptr<Field> create_field(const Glib::ustring& name, const Glib::ustring& description, Field::glom_field_type field_type)
 {
   sharedptr<Field> field = sharedptr<Field>::create();
@@ -2514,8 +2492,21 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& field_in_re
   return set_field_value_in_database(field_in_record, Gtk::TreeModel::iterator(), field_value, use_current_calculations, parent_window);
 }
 
+void Base_DB::init_extra_fields()
+{
+  if(!m_extra_field_values.empty())
+    return;
+  
+  //Fill the field information:
+  m_extra_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_DATE] = 
+    FieldTypeValue(G_TYPE_DATE, Gnome::Gda::Value());
+  m_extra_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_TIME] = 
+    FieldTypeValue(GDA_TYPE_TIME, Gnome::Gda::Value());
+  m_extra_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_USER] = 
+    FieldTypeValue(G_TYPE_STRING, Gnome::Gda::Value());
+}
 
-bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value, bool use_current_calculations, Gtk::Window*  parent_window)
+bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value, bool use_current_calculations, Gtk::Window* /* parent_window */)
 {
   Document* document = get_document();
   g_assert(document);
@@ -2548,33 +2539,20 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
   Glib::ustring strQuery = "UPDATE \"" + field_in_record.m_table_name + "\"";
   strQuery += " SET \"" + field_in_record.m_field->get_name() + "\" = " + field_in_record.m_field->get_gda_holder_string();
 
-  //Set these too, each time we change a value:
+
+  //Set these extra fields too, each time we change a value:
   //We check for existence because the user may delete these fields:
   //TODO: Only do this if not using Postgres? 
   //  And use the Postgres cleverness to do it instead? Maybe like this:
   //  http://blog.revsys.com/2006/08/automatically_u.html
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
-
-  if(m_extra_field_values.empty())
-  {
-    //Fill the field information:
-    m_extra_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_DATE] = 
-      FieldTypeValue(G_TYPE_DATE, Utils::get_current_date_utc_as_value());
-    m_extra_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_TIME] = 
-      FieldTypeValue(GDA_TYPE_TIME, Utils::get_current_time_utc_as_value());
-    m_extra_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_USER] = 
-      FieldTypeValue(G_TYPE_STRING, Gnome::Gda::Value(connection_pool->get_user()));
-  }
-  else
-  {
-    //Just fill the values:
-    m_extra_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_DATE].second = 
-      Utils::get_current_date_utc_as_value();
-    m_extra_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_TIME].second = 
-      Utils::get_current_time_utc_as_value();
-    m_extra_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_USER].second = 
-      Gnome::Gda::Value(connection_pool->get_user());
-  }
+  init_extra_fields();
+  m_extra_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_DATE].second = 
+    Utils::get_current_date_utc_as_value();
+  m_extra_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_TIME].second = 
+    Utils::get_current_time_utc_as_value();
+  m_extra_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_USER].second = 
+    Gnome::Gda::Value(connection_pool->get_user());
   
   for(type_extra_field_values::const_iterator iter = m_extra_field_values.begin(); iter != m_extra_field_values.end(); ++iter)
   {
@@ -2590,7 +2568,7 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
   strQuery += " WHERE \"" + field_in_record.m_key->get_name() + "\" = " + field_in_record.m_key->get_gda_holder_string();
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try //TODO: The exceptions are probably already handled by query_execute(0.
+  try //TODO: The exceptions are probably already handled by query_execute().
 #endif
   {
     const bool test = query_execute(strQuery, params); //TODO: Respond to failure.
@@ -2629,7 +2607,7 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
     do_calculations(layoutfield_in_record, !use_current_calculations);
   }
 
- //For the extra fields, 
+  //For the extra fields, 
   //show the new database values in the UI, if the fields are on the layout:
   for(type_extra_field_values::const_iterator iter = m_extra_field_values.begin(); iter != m_extra_field_values.end(); ++iter)
   {
@@ -2644,7 +2622,7 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
   return true;
 }
 
-bool Base_DB::set_record_creation_fields(const LayoutFieldInRecord& layoutfield_in_record, const Gtk::TreeModel::iterator& row, Gtk::Window* parent_window)
+bool Base_DB::set_record_creation_fields(const LayoutFieldInRecord& layoutfield_in_record, const Gtk::TreeModel::iterator& row, Gtk::Window* /* parent_window */)
 {
   const Glib::ustring table_name = layoutfield_in_record.m_field ? 
     layoutfield_in_record.m_field->get_table_used(layoutfield_in_record.m_table_name) :
@@ -2672,35 +2650,6 @@ bool Base_DB::set_record_creation_fields(const LayoutFieldInRecord& layoutfield_
 
   return true;
 }
- 
-bool Base_DB::set_record_modification_fields(const LayoutFieldInRecord& layoutfield_in_record, const Gtk::TreeModel::iterator& row, Gtk::Window* parent_window)
-{
-  const Glib::ustring table_name = layoutfield_in_record.m_field ? 
-    layoutfield_in_record.m_field->get_table_used(layoutfield_in_record.m_table_name) :
-    layoutfield_in_record.m_table_name;
-    
-  //Set the values in the database:
-  const Gnome::Gda::Value value_date = Utils::get_current_date_utc_as_value();
-  const Gnome::Gda::Value value_time = Utils::get_current_time_utc_as_value();
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
-  const Gnome::Gda::Value value_user(connection_pool->get_user());
-
-  
-  
-  //Show the new database values in the UI, if the fields are on the layout:
-  sharedptr<LayoutItem_Field> layout_item = glom_sharedptr_clone(layoutfield_in_record.m_field);
-  layout_item->set_full_field_details(
-    get_fields_for_table_one_field(table_name, GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_DATE) );
-  set_entered_field_data(row, layout_item, value_date);
-  layout_item->set_full_field_details(
-    get_fields_for_table_one_field(table_name, GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_TIME) );
-  set_entered_field_data(row, layout_item, value_time);
-  layout_item->set_full_field_details(
-    get_fields_for_table_one_field(table_name, GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_USER) );
-  set_entered_field_data(row, layout_item, value_user);
-
-  return true;
-}  
 
 Gnome::Gda::Value Base_DB::get_field_value_in_database(const LayoutFieldInRecord& field_in_record, Gtk::Window* /* parent_window */)
 {

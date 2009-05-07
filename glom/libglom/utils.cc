@@ -802,7 +802,7 @@ bool Utils::file_exists(const Glib::ustring& uri)
 Gnome::Gda::Value Utils::get_current_time_utc_as_value()
 {
   time_t t = time(0); //Gets the current unix time.
-  tm the_c_time = {0, };
+  tm the_c_time = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
   gmtime_r(&t, &the_c_time); //gmtime_r gets the UTC time. (UTC-like),
 
   Gnome::Gda::Time gda_time = {0, 0, 0, 0, 0};
