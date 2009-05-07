@@ -2311,7 +2311,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
     else
     {
       //A field value was entered, but the record has not been added yet, because not enough information exists yet.
-       g_warning("Box_Data_List::on_adddel_user_changed(): debug: record not yet added.");
+      g_warning("Box_Data_List::on_adddel_user_changed(): debug: record not yet added.");
     }
   }
 }

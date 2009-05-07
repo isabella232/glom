@@ -720,7 +720,7 @@ Base_DB::type_vec_fields Base_DB::get_fields_for_table_from_database(const Glib:
 Base_DB::type_vec_fields Base_DB::get_fields_for_table(const Glib::ustring& table_name, bool including_system_fields) const
 {
   //Get field definitions from the database:
-  type_vec_fields fieldsDatabase = get_fields_for_table_from_database(table_name, including_system_fields);
+  const type_vec_fields fieldsDatabase = get_fields_for_table_from_database(table_name, including_system_fields);
 
   const Document* pDoc = dynamic_cast<const Document*>(get_document());
   if(!pDoc)
@@ -764,9 +764,9 @@ Base_DB::type_vec_fields Base_DB::get_fields_for_table(const Glib::ustring& tabl
     }
 
     //Add any fields that are in the database, but not in the document:
-    for(type_vec_fields::iterator iter = fieldsDatabase.begin(); iter != fieldsDatabase.end(); ++iter)
+    for(type_vec_fields::const_iterator iter = fieldsDatabase.begin(); iter != fieldsDatabase.end(); ++iter)
     {
-      Glib::ustring field_name = (*iter)->get_name();
+      const Glib::ustring field_name = (*iter)->get_name();
 
        //Look in the result so far:
        type_vec_fields::const_iterator iterFind = std::find_if(result.begin(), result.end(), predicate_FieldHasName<Field>(field_name));
@@ -2492,17 +2492,17 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& field_in_re
   return set_field_value_in_database(field_in_record, Gtk::TreeModel::iterator(), field_value, use_current_calculations, parent_window);
 }
 
-void Base_DB::init_extra_fields()
+void Base_DB::init_extra_modification_fields()
 {
-  if(!m_extra_field_values.empty())
+  if(!m_extra_modification_field_values.empty())
     return;
   
   //Fill the field information:
-  m_extra_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_DATE] = 
+  m_extra_modification_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_DATE] = 
     FieldTypeValue(G_TYPE_DATE, Gnome::Gda::Value());
-  m_extra_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_TIME] = 
+  m_extra_modification_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_TIME] = 
     FieldTypeValue(GDA_TYPE_TIME, Gnome::Gda::Value());
-  m_extra_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_USER] = 
+  m_extra_modification_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_USER] = 
     FieldTypeValue(G_TYPE_STRING, Gnome::Gda::Value());
 }
 
@@ -2537,7 +2537,7 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
 
   const Glib::ustring table_name = field_in_record.m_table_name;
   Glib::ustring strQuery = "UPDATE \"" + field_in_record.m_table_name + "\"";
-  strQuery += " SET \"" + field_in_record.m_field->get_name() + "\" = " + field_in_record.m_field->get_gda_holder_string();
+  strQuery += " SET \"" + field_name + "\" = " + field_in_record.m_field->get_gda_holder_string();
 
 
   //Set these extra fields too, each time we change a value:
@@ -2546,17 +2546,23 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
   //  And use the Postgres cleverness to do it instead? Maybe like this:
   //  http://blog.revsys.com/2006/08/automatically_u.html
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
-  init_extra_fields();
-  m_extra_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_DATE].second = 
+  init_extra_modification_fields();
+  m_extra_modification_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_DATE].second = 
     Utils::get_current_date_utc_as_value();
-  m_extra_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_TIME].second = 
+  m_extra_modification_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_TIME].second = 
     Utils::get_current_time_utc_as_value();
-  m_extra_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_USER].second = 
+  m_extra_modification_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_USER].second = 
     Gnome::Gda::Value(connection_pool->get_user());
   
-  for(type_extra_field_values::const_iterator iter = m_extra_field_values.begin(); iter != m_extra_field_values.end(); ++iter)
+  for(type_extra_field_values::const_iterator iter = m_extra_modification_field_values.begin(); iter != m_extra_modification_field_values.end(); ++iter)
   {
+    //In the unlikely (impossible?) event that the main field being changed 
+    //is one of the extra modification fields, don't try to specify it again:
+    if(iter->first == field_name)
+      continue;
+
     const FieldTypeValue& item = iter->second;
+
     if(get_field_exists_in_database(table_name, iter->first))
     {
       strQuery += ", \"" + Glib::ustring(iter->first) /* name */ + "\" = " + 
@@ -2609,8 +2615,14 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
 
   //For the extra fields, 
   //show the new database values in the UI, if the fields are on the layout:
-  for(type_extra_field_values::const_iterator iter = m_extra_field_values.begin(); iter != m_extra_field_values.end(); ++iter)
+  for(type_extra_field_values::const_iterator iter = m_extra_modification_field_values.begin(); iter != m_extra_modification_field_values.end(); ++iter)
   {
+    //In the unlikely (impossible?) event that the main field being changed 
+    //was one of the extra modification fields, don't try to change its 
+    //displayed value. We ignore it above anyway.
+    if(iter->first == field_name)
+      continue;
+
     const FieldTypeValue& item = iter->second;
     
     sharedptr<LayoutItem_Field> layout_item = glom_sharedptr_clone(layoutfield_in_record.m_field);

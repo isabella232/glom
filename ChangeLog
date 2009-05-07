@@ -162,6 +162,18 @@
 
 2009-05-07  Murray Cumming  <murrayc@murrayc.com>
 
+	Tables now have creation and modification fields, appropriately set.
+
+	* glom/base_db.[h|cc]: Added static m_extra_modification_field_values, 
+	to store the field information for the extra modification fields, filled in 
+	init_extra_modification_fields.
+	set_field_value_in_database(): Also set the extra modification field 
+	values.
+	* glom/base_db_table_data.cc: record_new(): Set values for the extra 
+	creation fields, and show them if they are on the layout.
+
+2009-05-07  Murray Cumming  <murrayc@murrayc-x61>
+
 	Allow non-network-shared connections when using IPv6.
 
 	* glom/libglom/connectionpool_backends/postgres_self.cc: 

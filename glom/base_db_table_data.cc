@@ -18,10 +18,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "base_db_table_data.h"
+#include <glom/base_db_table_data.h>
 #include <libglom/data_structure/glomconversions.h>
+#include <libglom/standard_table_prefs_fields.h>
 #include <glom/application.h>
-#include "python_embed/glom_python.h"
+#include <glom/python_embed/glom_python.h>
 #include <glom/utils_ui.h>
 #include <sstream>
 #include <glibmm/i18n.h>
@@ -94,12 +95,13 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
   }
 
   Document* document = get_document();
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
 
   //Calculate any necessary field values and enter them:
   for(type_vecLayoutFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
   {
     sharedptr<LayoutItem_Field> layout_item = *iter;
-
+    
     //If the user did not enter something in this field:
     Gnome::Gda::Value value = get_entered_field_data(layout_item);
 
@@ -182,6 +184,24 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
               value = get_entered_field_data(layout_item);
           }
 
+          //Handle the special creation fields:
+          //TODO_performance: Avoid these string comparisons for each field: 
+          if(field_name == GLOM_STANDARD_DEFAULT_FIELD_CREATION_DATE)
+          {
+            value =  Utils::get_current_date_utc_as_value();
+            set_entered_field_data(layout_item, value);
+          }
+          else if(field_name == GLOM_STANDARD_DEFAULT_FIELD_CREATION_TIME)
+          {
+            value = Utils::get_current_time_utc_as_value();
+            set_entered_field_data(layout_item, value);
+          }
+          else if(field_name == GLOM_STANDARD_DEFAULT_FIELD_CREATION_USER)
+          {
+            value = Gnome::Gda::Value(connection_pool->get_user());
+            set_entered_field_data(layout_item, value);
+          }
+
           /* //TODO: This would be too many small queries when adding one record.
           //Check whether the value meets uniqueness constraints:
           if(field->get_primary_key() || field->get_unique_key())
@@ -202,7 +222,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
   
             strNames += "\"" + field_name + "\"";
             strValues += field->get_gda_holder_string();
-            Glib::RefPtr<Gnome::Gda::Holder> holder = field->get_holder(value);
+            const Glib::RefPtr<Gnome::Gda::Holder> holder = field->get_holder(value);
             params->add_holder(holder);
   
             map_added[field_name] = true;
