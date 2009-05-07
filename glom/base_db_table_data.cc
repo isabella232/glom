@@ -369,14 +369,17 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
     else
     {
       //TODO: Calculate values, and do lookups?
+      //TODO: Extra creation fields.
 
       //Create the related record:
       if(key_is_auto_increment)
       {
         primary_key_value = get_next_auto_increment_value(relationship->get_to_table(), primary_key_field->get_name());
 
-        //Generate the new key value;
+        //Generate the new key value.
       }
+
+      //TODO: Use record_new() to avoid (incomplete) duplication?
       Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
       params->add_holder(primary_key_field->get_holder(primary_key_value));
       const Glib::ustring strQuery = "INSERT INTO \"" + relationship->get_to_table() + "\" (\"" + primary_key_field->get_name() + "\") VALUES (" + primary_key_field->get_gda_holder_string() + ")";
