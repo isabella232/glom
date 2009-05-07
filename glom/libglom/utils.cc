@@ -799,5 +799,26 @@ bool Utils::file_exists(const Glib::ustring& uri)
   }
 }
 
+Gnome::Gda::Value Utils::get_current_time_utc_as_value()
+{
+  time_t t = time(0); //Gets the current unix time.
+  tm the_c_time = {0, };
+  gmtime_r(&t, &the_c_time); //gmtime_r gets the UTC time. (UTC-like),
+
+  Gnome::Gda::Time gda_time = {0, 0, 0, 0, 0};
+  gda_time.hour = the_c_time.tm_hour;
+  gda_time.minute = the_c_time.tm_min;
+  gda_time.second = the_c_time.tm_sec;
+  return Gnome::Gda::Value(gda_time);
+}
+
+Gnome::Gda::Value Utils::get_current_date_utc_as_value()
+{
+  Glib::TimeVal now;
+  now.assign_current_time(); //This is current unix time (UTC-like), I think.
+  Glib::Date date_now;
+  date_now.set_time(now);
+  return Gnome::Gda::Value(date_now);
+}
 
 } //namespace Glom

@@ -158,7 +158,7 @@ void Field::set_field_info(const Glib::RefPtr<Gnome::Gda::Column>& fieldinfo)
     }
   }
 
-  if(cur_type == G_TYPE_NONE)
+  if( (cur_type == G_TYPE_NONE) && (fieldinfo->get_g_type() != G_TYPE_NONE) )
     set_glom_type( get_glom_type_for_gda_type(fieldinfo->get_g_type()) );
 
   Gnome::Gda::Value value = get_default_value();
@@ -529,7 +529,13 @@ Glib::RefPtr<Gnome::Gda::Holder> Field::get_holder(const Gnome::Gda::Value& valu
 Glib::ustring Field::get_gda_holder_string(const Glib::ustring& name) const
 {
   const Glib::ustring real_name = name.empty() ? get_name() : name;
-  return "##" + real_name + "::" + get_gda_type_name();
+  return get_gda_holder_string_generic(real_name, m_field_info->get_g_type());
+}
+
+Glib::ustring Field::get_gda_holder_string_generic(const Glib::ustring& name, GType type)
+{
+  //This is the libgda syntax for SQL placeholder values:
+  return "##" + name + "::" + g_type_name(type);
 }
 
 /// Ignores any part of FieldAttributes that libgda does not properly fill.

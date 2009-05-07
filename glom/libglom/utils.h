@@ -90,6 +90,9 @@ Glib::ustring string_remove_suffix(const Glib::ustring& str, const Glib::ustring
 
 bool file_exists(const Glib::ustring& uri);
 
+Gnome::Gda::Value get_current_date_utc_as_value();
+Gnome::Gda::Value get_current_time_utc_as_value();
+
 } //namespace Utils
 
 } //namespace Glom

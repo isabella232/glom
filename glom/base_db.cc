@@ -62,7 +62,7 @@
 namespace Glom
 {
 
-
+ 
 template<class T_Element>
 class predicate_LayoutItemIsEqual
 {
@@ -90,6 +90,9 @@ public:
 private:
   sharedptr<const T_Element> m_layout_item;
 };
+
+//Intializing static members:
+Base_DB::type_extra_field_values Base_DB::m_extra_field_values;
 
 
 Base_DB::Base_DB()
@@ -1021,22 +1024,22 @@ bool Base_DB::add_standard_tables() const
 
       Document::type_vec_fields fields;
 
-      sharedptr<Field> primary_key(new Field()); //It's not used, because there's only one record, but we must have one.
+      sharedptr<Field> primary_key = sharedptr<Field>::create(); //It's not used, because there's only one record, but we must have one.
       primary_key->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_ID);
       primary_key->set_glom_type(Field::TYPE_NUMERIC);
       fields.push_back(primary_key);
 
-      sharedptr<Field> field_table_name(new Field());
+      sharedptr<Field> field_table_name = sharedptr<Field>::create();
       field_table_name->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME);
       field_table_name->set_glom_type(Field::TYPE_TEXT);
       fields.push_back(field_table_name);
 
-      sharedptr<Field> field_field_name(new Field());
+      sharedptr<Field> field_field_name = sharedptr<Field>::create();
       field_field_name->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME);
       field_field_name->set_glom_type(Field::TYPE_TEXT);
       fields.push_back(field_field_name);
 
-      sharedptr<Field> field_next_value(new Field());
+      sharedptr<Field> field_next_value = sharedptr<Field>::create();
       field_next_value->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE);
       field_next_value->set_glom_type(Field::TYPE_TEXT);
       fields.push_back(field_next_value);
@@ -1169,18 +1172,18 @@ void Base_DB::set_database_preferences(const SystemPrefs& prefs)
   if(get_field_exists_in_database(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME, GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO))
   {
     params->add_holder("org_logo", prefs.m_org_logo);
-    optional_part_logo =  "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO "\" = ##org_logo::GDA_TYPE_BINARY, ";
+    optional_part_logo =  "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO "\" = " + Field::get_gda_holder_string_generic(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO, GDA_TYPE_BINARY) + ", ";
   }  
   const Glib::ustring sql_query = "UPDATE \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\" SET "
-      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_NAME "\" = ##name::gchararray, "
-      + optional_part_logo +
-      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET "\" = ##street::gchararray, "
-      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2 "\" = ##street2::gchararray, "
-      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN "\" = ##town::gchararray, "
-      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY "\" = ##county::gchararray, "
-      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY "\" = ##country::gchararray, "
-      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE "\" = ##postcode::gchararray"
-      " WHERE \"" GLOM_STANDARD_TABLE_PREFS_FIELD_ID "\" = 1";
+      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_NAME "\" = " + Field::get_gda_holder_string_generic(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET, G_TYPE_STRING) + ", "
+      + optional_part_logo
+      + "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET "\"" = Field::get_gda_holder_string_generic(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET, G_TYPE_STRING) + ", "
+      + "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2 "\"" = Field::get_gda_holder_string_generic(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2, G_TYPE_STRING) + ", "
+      + "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN "\"" = Field::get_gda_holder_string_generic(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN, G_TYPE_STRING) + ", "
+      + "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY "\"" = Field::get_gda_holder_string_generic(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY, G_TYPE_STRING) + ", "
+      + "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY "\"" = Field::get_gda_holder_string_generic(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY, G_TYPE_STRING) + ", "
+      + "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE "\"" = Field::get_gda_holder_string_generic(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE, G_TYPE_STRING)
+      + " WHERE \"" GLOM_STANDARD_TABLE_PREFS_FIELD_ID "\" = 1";
 
   bool test = false;
   test = query_execute(sql_query, params);
@@ -1190,6 +1193,48 @@ void Base_DB::set_database_preferences(const SystemPrefs& prefs)
   
   //Set some information in the document too, so we can use it to recreate the database:
   get_document()->set_database_title(prefs.m_name);
+}
+
+
+static sharedptr<Field> create_field(const Glib::ustring& name, const Glib::ustring& description, Field::glom_field_type field_type)
+{
+  sharedptr<Field> field = sharedptr<Field>::create();
+  field->set_name(name);
+  field->set_title(description);
+  field->set_glom_type(field_type);
+
+  return field;
+}
+
+///Adds the field to the vector if it is not already there.
+static void add_field(Base_DB::type_vec_fields& vec, const Glib::ustring& name, const Glib::ustring& description, Field::glom_field_type field_type)
+{
+  if(std::find_if(vec.begin(), vec.end(), predicate_FieldHasName<Field>(name)) != vec.end())
+    return;
+  
+  sharedptr<Field> field = create_field(name, description, field_type);
+  vec.push_back(field);
+}
+
+
+static sharedptr<Field> create_field(const Glib::ustring& name, const Glib::ustring& description, Field::glom_field_type field_type)
+{
+  sharedptr<Field> field = sharedptr<Field>::create();
+  field->set_name(name);
+  field->set_title(description);
+  field->set_glom_type(field_type);
+
+  return field;
+}
+
+///Adds the field to the vector if it is not already there.
+static void add_field(Base_DB::type_vec_fields& vec, const Glib::ustring& name, const Glib::ustring& description, Field::glom_field_type field_type)
+{
+  if(std::find_if(vec.begin(), vec.end(), predicate_FieldHasName<Field>(name)) != vec.end())
+    return;
+  
+  sharedptr<Field> field = create_field(name, description, field_type);
+  vec.push_back(field);
 }
 
 bool Base_DB::create_table_with_default_fields(const Glib::ustring& table_name)
@@ -1213,9 +1258,8 @@ bool Base_DB::create_table_with_default_fields(const Glib::ustring& table_name)
   bool created = false;
 
   //Primary key:
-  sharedptr<Field> field_primary_key(new Field());
-  field_primary_key->set_name(table_name + "_id");
-  field_primary_key->set_title(table_name + " ID");
+  sharedptr<Field> field_primary_key = 
+    create_field(table_name + "_id", table_name + " ID", Field::TYPE_NUMERIC);
   field_primary_key->set_primary_key();
   field_primary_key->set_auto_increment();
 
@@ -1230,17 +1274,12 @@ bool Base_DB::create_table_with_default_fields(const Glib::ustring& table_name)
   fields.push_back(field_primary_key);
 
   //Description:
-  sharedptr<Field> field_description(new Field());
-  field_description->set_name("description");
-  field_description->set_title(_("Description")); //Use a translation, because the original locale will be marked as non-English if the current locale is non-English.
-  field_description->set_glom_type(Field::TYPE_TEXT);
-  fields.push_back(field_description);
+  //Use a translation for the title, because the original locale will be marked as non-English if the current locale is non-English.
+  add_field(fields, "description", _("Description"), Field::TYPE_TEXT);
 
   //Comments:
-  sharedptr<Field> field_comments(new Field());
-  field_comments->set_name("comments");
-  field_comments->set_title(_("Comments"));
-  field_comments->set_glom_type(Field::TYPE_TEXT);
+  sharedptr<Field> field_comments = 
+    create_field("comments", _("Comments"), Field::TYPE_TEXT);
   field_comments->m_default_formatting.set_text_format_multiline();
   fields.push_back(field_comments);
 
@@ -1287,15 +1326,22 @@ bool Base_DB::create_table(const sharedptr<const TableInfo>& table_info, const D
 
   Document::type_vec_fields fields = fields_in;
 
-  //Create the standard field too:
+  //Create the standard fields too:
+  //We do this here instead of in create_table_with_default_fields() so they 
+  //are added even when creating from examples that don't mention them.
+  
   //(We don't actually use this yet)
-  if(std::find_if(fields.begin(), fields.end(), predicate_FieldHasName<Field>(GLOM_STANDARD_FIELD_LOCK)) == fields.end())
-  {
-    sharedptr<Field> field = sharedptr<Field>::create();
-    field->set_name(GLOM_STANDARD_FIELD_LOCK);
-    field->set_glom_type(Field::TYPE_TEXT);
-    fields.push_back(field);
-  }
+  add_field(fields, GLOM_STANDARD_FIELD_LOCK, _("Record Lock (Internal)"), Field::TYPE_TEXT);
+ 
+  //Creation/Modification Date/Time:
+  //These are filled with appropriate values by Glom at appropriate times.
+  //TODO: The titles are not used.
+  add_field(fields, GLOM_STANDARD_DEFAULT_FIELD_CREATION_DATE, _("Creation Date"), Field::TYPE_DATE);
+  add_field(fields, GLOM_STANDARD_DEFAULT_FIELD_CREATION_TIME, _("Creation Time"), Field::TYPE_TIME);
+  add_field(fields, GLOM_STANDARD_DEFAULT_FIELD_CREATION_USER, _("Creation User"), Field::TYPE_TEXT);
+  add_field(fields, GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_DATE, _("Modification Date"), Field::TYPE_DATE);
+  add_field(fields, GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_TIME, _("Modification Time"), Field::TYPE_TIME);
+  add_field(fields, GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_USER, _("Modification User"), Field::TYPE_TEXT);
 
   //Create SQL to describe all fields in this table:
   Glib::ustring sql_fields;
@@ -2468,7 +2514,8 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& field_in_re
   return set_field_value_in_database(field_in_record, Gtk::TreeModel::iterator(), field_value, use_current_calculations, parent_window);
 }
 
-bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value, bool use_current_calculations, Gtk::Window* /* parent_window */)
+
+bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield_in_record, const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& field_value, bool use_current_calculations, Gtk::Window*  parent_window)
 {
   Document* document = get_document();
   g_assert(document);
@@ -2489,59 +2536,171 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
   }
 
   const Glib::ustring field_name = field_in_record.m_field->get_name();
-  if(!field_name.empty()) //This should not happen.
-  { 
-    Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
-    params->add_holder(field_in_record.m_field->get_holder(field_value));
-    params->add_holder(field_in_record.m_key->get_holder(field_in_record.m_key_value));
+  if(field_name.empty()) //This should not happen.
+   return false;
 
-    Glib::ustring strQuery = "UPDATE \"" + field_in_record.m_table_name + "\"";
-    strQuery += " SET \"" + field_in_record.m_field->get_name() + "\" = " + field_in_record.m_field->get_gda_holder_string();
-    strQuery += " WHERE \"" + field_in_record.m_key->get_name() + "\" = " + field_in_record.m_key->get_gda_holder_string();
+  
+  Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
+  params->add_holder(field_in_record.m_field->get_holder(field_value));
+  params->add_holder(field_in_record.m_key->get_holder(field_in_record.m_key_value));
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-    try //TODO: The exceptions are probably already handled by query_execute(0.
-#endif
+  const Glib::ustring table_name = field_in_record.m_table_name;
+  Glib::ustring strQuery = "UPDATE \"" + field_in_record.m_table_name + "\"";
+  strQuery += " SET \"" + field_in_record.m_field->get_name() + "\" = " + field_in_record.m_field->get_gda_holder_string();
+
+  //Set these too, each time we change a value:
+  //We check for existence because the user may delete these fields:
+  //TODO: Only do this if not using Postgres? 
+  //  And use the Postgres cleverness to do it instead? Maybe like this:
+  //  http://blog.revsys.com/2006/08/automatically_u.html
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+
+  if(m_extra_field_values.empty())
+  {
+    //Fill the field information:
+    m_extra_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_DATE] = 
+      FieldTypeValue(G_TYPE_DATE, Utils::get_current_date_utc_as_value());
+    m_extra_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_TIME] = 
+      FieldTypeValue(GDA_TYPE_TIME, Utils::get_current_time_utc_as_value());
+    m_extra_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_USER] = 
+      FieldTypeValue(G_TYPE_STRING, Gnome::Gda::Value(connection_pool->get_user()));
+  }
+  else
+  {
+    //Just fill the values:
+    m_extra_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_DATE].second = 
+      Utils::get_current_date_utc_as_value();
+    m_extra_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_TIME].second = 
+      Utils::get_current_time_utc_as_value();
+    m_extra_field_values[GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_USER].second = 
+      Gnome::Gda::Value(connection_pool->get_user());
+  }
+  
+  for(type_extra_field_values::const_iterator iter = m_extra_field_values.begin(); iter != m_extra_field_values.end(); ++iter)
+  {
+    const FieldTypeValue& item = iter->second;
+    if(get_field_exists_in_database(table_name, iter->first))
     {
-      const bool test = query_execute(strQuery, params); //TODO: Respond to failure.
-      if(!test)
-      {
-        std::cerr << "Box_Data::set_field_value_in_database(): UPDATE failed." << std::endl;
-        return false; //failed.
-      }
-    }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-    catch(const Glib::Exception& ex)
-    {
-      handle_error(ex);
-      return false;
-    }
-    catch(const std::exception& ex)
-    {
-      handle_error(ex);
-      return false;
-    }
-#endif
-
-    //Get-and-set values for lookup fields, if this field triggers those relationships:
-    do_lookups(layoutfield_in_record, row, field_value);
-
-    //Update related fields, if this field is used in the relationship:
-    refresh_related_fields(layoutfield_in_record, row, field_value);
-
-    //Calculate any dependent fields.
-    //TODO: Make lookups part of this?
-    //Prevent circular calculations during the recursive do_calculations:
-    {
-      //Recalculate any calculated fields that depend on this calculated field.
-      //g_warning("Box_Data::set_field_value_in_database(): calling do_calculations");
-
-      do_calculations(layoutfield_in_record, !use_current_calculations);
+      strQuery += ", \"" + Glib::ustring(iter->first) /* name */ + "\" = " + 
+        Field::get_gda_holder_string_generic(iter->first /* name */, item.first /* gtype */);
+      params->add_holder_as_value(iter->first /* name */, item.second /* value */);
     }
   }
 
+  strQuery += " WHERE \"" + field_in_record.m_key->get_name() + "\" = " + field_in_record.m_key->get_gda_holder_string();
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try //TODO: The exceptions are probably already handled by query_execute(0.
+#endif
+  {
+    const bool test = query_execute(strQuery, params); //TODO: Respond to failure.
+    if(!test)
+    {
+      std::cerr << "Box_Data::set_field_value_in_database(): UPDATE failed." << std::endl;
+      return false; //failed.
+    }
+  }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  catch(const Glib::Exception& ex)
+  {
+    handle_error(ex);
+    return false;
+  }
+  catch(const std::exception& ex)
+  {
+    handle_error(ex);
+    return false;
+  }
+#endif
+
+  //Get-and-set values for lookup fields, if this field triggers those relationships:
+  do_lookups(layoutfield_in_record, row, field_value);
+
+  //Update related fields, if this field is used in the relationship:
+  refresh_related_fields(layoutfield_in_record, row, field_value);
+
+  //Calculate any dependent fields.
+  //TODO: Make lookups part of this?
+  //Prevent circular calculations during the recursive do_calculations:
+  {
+    //Recalculate any calculated fields that depend on this calculated field.
+    //g_warning("Box_Data::set_field_value_in_database(): calling do_calculations");
+
+    do_calculations(layoutfield_in_record, !use_current_calculations);
+  }
+
+ //For the extra fields, 
+  //show the new database values in the UI, if the fields are on the layout:
+  for(type_extra_field_values::const_iterator iter = m_extra_field_values.begin(); iter != m_extra_field_values.end(); ++iter)
+  {
+    const FieldTypeValue& item = iter->second;
+    
+    sharedptr<LayoutItem_Field> layout_item = glom_sharedptr_clone(layoutfield_in_record.m_field);
+    layout_item->set_full_field_details(
+      get_fields_for_table_one_field(table_name, iter->first /* name */) );
+    set_entered_field_data(row, layout_item, item.second /* value */);
+  } 
+
   return true;
 }
+
+bool Base_DB::set_record_creation_fields(const LayoutFieldInRecord& layoutfield_in_record, const Gtk::TreeModel::iterator& row, Gtk::Window* parent_window)
+{
+  const Glib::ustring table_name = layoutfield_in_record.m_field ? 
+    layoutfield_in_record.m_field->get_table_used(layoutfield_in_record.m_table_name) :
+    layoutfield_in_record.m_table_name;
+    
+  //Set the values in the database:
+  const Gnome::Gda::Value value_date = Utils::get_current_date_utc_as_value();
+  const Gnome::Gda::Value value_time = Utils::get_current_time_utc_as_value();
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  const Gnome::Gda::Value value_user(connection_pool->get_user());
+
+  
+  
+  //Show the new database values in the UI, if the fields are on the layout:
+  sharedptr<LayoutItem_Field> layout_item = glom_sharedptr_clone(layoutfield_in_record.m_field);
+  layout_item->set_full_field_details(
+    get_fields_for_table_one_field(table_name, GLOM_STANDARD_DEFAULT_FIELD_CREATION_DATE) );
+  set_entered_field_data(row, layout_item, value_date);
+  layout_item->set_full_field_details(
+    get_fields_for_table_one_field(table_name, GLOM_STANDARD_DEFAULT_FIELD_CREATION_TIME) );
+  set_entered_field_data(row, layout_item, value_time);
+  layout_item->set_full_field_details(
+    get_fields_for_table_one_field(table_name, GLOM_STANDARD_DEFAULT_FIELD_CREATION_USER) );
+  set_entered_field_data(row, layout_item, value_user);
+
+  return true;
+}
+ 
+bool Base_DB::set_record_modification_fields(const LayoutFieldInRecord& layoutfield_in_record, const Gtk::TreeModel::iterator& row, Gtk::Window* parent_window)
+{
+  const Glib::ustring table_name = layoutfield_in_record.m_field ? 
+    layoutfield_in_record.m_field->get_table_used(layoutfield_in_record.m_table_name) :
+    layoutfield_in_record.m_table_name;
+    
+  //Set the values in the database:
+  const Gnome::Gda::Value value_date = Utils::get_current_date_utc_as_value();
+  const Gnome::Gda::Value value_time = Utils::get_current_time_utc_as_value();
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  const Gnome::Gda::Value value_user(connection_pool->get_user());
+
+  
+  
+  //Show the new database values in the UI, if the fields are on the layout:
+  sharedptr<LayoutItem_Field> layout_item = glom_sharedptr_clone(layoutfield_in_record.m_field);
+  layout_item->set_full_field_details(
+    get_fields_for_table_one_field(table_name, GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_DATE) );
+  set_entered_field_data(row, layout_item, value_date);
+  layout_item->set_full_field_details(
+    get_fields_for_table_one_field(table_name, GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_TIME) );
+  set_entered_field_data(row, layout_item, value_time);
+  layout_item->set_full_field_details(
+    get_fields_for_table_one_field(table_name, GLOM_STANDARD_DEFAULT_FIELD_MODIFICATION_USER) );
+  set_entered_field_data(row, layout_item, value_user);
+
+  return true;
+}  
 
 Gnome::Gda::Value Base_DB::get_field_value_in_database(const LayoutFieldInRecord& field_in_record, Gtk::Window* /* parent_window */)
 {
