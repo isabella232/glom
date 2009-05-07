@@ -51,10 +51,17 @@ public:
 
 protected:
 
+  typedef std::pair< sharedptr<Field>, Gnome::Gda::Value> type_field_and_value;
+  typedef std::list<type_field_and_value> type_field_values; 
+
   /** Create a new record with all the entered field values from the currently-active details/row.
+   * @param The table to which to add a new record.
+   * @param use_entered_data Whether the record should contain data already entered in the UI by the user, if table_name is m_table_name.
+   * @param primary_key_value The new primary key value for the new record. Otherwise the primary key value must be in the entered data or in the @a field_values parameter.
+   * @param field_values Values to use for fields, instead of entered data.
    * @result true if the record was added to the database.
    */
-  bool record_new(bool use_entered_data = true, const Gnome::Gda::Value& primary_key_value = Gnome::Gda::Value()); 
+  bool record_new(const Glib::ustring& table_name, bool use_entered_data = true, const Gnome::Gda::Value& primary_key_value = Gnome::Gda::Value(), const type_field_values& field_values = type_field_values()); 
 
   Gnome::Gda::Value get_entered_field_data_field_only(const sharedptr<const Field>& field) const;
   virtual Gnome::Gda::Value get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const;

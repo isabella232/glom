@@ -57,7 +57,7 @@ void Dialog_Import_CSV_Progress::import(Dialog_Import_CSV& data_source)
   {
   case Dialog_Import_CSV::PARSING:
     // Wait for the parsing to finish. We do not start importing before the file has been
-    // parsed completely since we would not to rollback our changes in case of a
+    // parsed completely since we would not be able to roll back our changes in case of a
     // parsing error.
     m_progress_bar->set_text(Glib::ustring::compose(_("Parsing CSV file %1"), data_source.get_filename()));
     m_ready_connection = data_source.signal_state_changed().connect(sigc::mem_fun(*this, &Dialog_Import_CSV_Progress::on_state_changed));
@@ -195,13 +195,13 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
   
   if(Glom::Conversions::value_is_empty(primary_key_value))
   {
-    Glib::ustring message(Glib::ustring::compose(_("Error importing row %1: Cannot import the row because the primary key is empty.\n"), m_current_row + 1));
+    const Glib::ustring message(Glib::ustring::compose(_("Error importing row %1: Cannot import the row because the primary key is empty.\n"), m_current_row + 1));
     add_text(message);
   }
   else
   {
     std::cout << "Dialog_Import_CSV_Progress::on_idle_import(): Calling record_new() with primary_key_value=" << primary_key_value.to_string() << " ..." << std::endl;
-    record_new(true /* use_entered_data */, primary_key_value);
+    record_new(m_table_name, true /* use_entered_data */, primary_key_value);
     std::cout << "Dialog_Import_CSV_Progress::on_idle_import(): ... Finished calling record_new()" << std::endl;
   }
 

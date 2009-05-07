@@ -68,20 +68,91 @@ Gtk::TreeModel::iterator Base_DB_Table_Data::get_row_selected()
   return Gtk::TreeModel::iterator();
 }
 
-
-bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Value& primary_key_value)
+/** A predicate for use with std::find_if() to find a std::pair whose 
+ * first item is the same field.
+ */
+class predicate_pair_has_field
 {
-  sharedptr<const Field> fieldPrimaryKey = get_field_primary_key();
+public:
+  predicate_pair_has_field(const sharedptr<const Field>& field)
+  {
+    m_field = field;
+  }
+
+  template <class T_Second>
+  bool operator() (const std::pair<sharedptr<Field>, T_Second>& element)
+  {
+    sharedptr<Field> field = element.first;
+
+    if(!field && !m_field)
+      return true;
+
+    if(!field || !m_field)
+      return false;
+
+    //TODO: Check more than just the name:
+    return (m_field->get_name() == field->get_name());
+  }
+    
+private:
+  sharedptr<const Field> m_field;
+};
+
+
+bool Base_DB_Table_Data::record_new(const Glib::ustring& table_name, bool use_entered_data, const Gnome::Gda::Value& primary_key_value, const type_field_values& field_values)
+{
+  //TODO: Remove these ugly optimizations:
+  sharedptr<const Field> fieldPrimaryKey;
+  if(table_name == m_table_name)
+  {
+    //An optimization:
+    fieldPrimaryKey = get_field_primary_key();
+  }
+  else
+    fieldPrimaryKey = get_field_primary_key_for_table(table_name);
+
 
   const Glib::ustring primary_key_name = fieldPrimaryKey->get_name();
 
-  type_vecLayoutFields fieldsToAdd = m_FieldsShown;
-  if(m_TableFields.empty())
-    m_TableFields = get_fields_for_table(m_table_name);
+  //Default to adding data for all fields that are on the layout,
+  //if they contain data:
+  type_vecLayoutFields fieldsToAdd;
+  if(table_name == m_table_name)
+  {
+    //An optimization:
+    //get_table_fields_to_show() needs knowledge of a layout, 
+    //which is only in a derived class,
+    //but that class will have already set m_FieldsShown.
+    //if(!m_FieldsShown.empty())
+    //  m_FieldsShown = get_table_fields_to_show(table_name);
+    
+    fieldsToAdd = m_FieldsShown;
+  }
+  
+  //use_entered_data is not expected to work if table_name != m_table_name:
+  //if(fieldsToAdd
+  //  fieldsToAdd = get_table_fields_to_show(table_name);
 
-  //Add values for all fields, not just the shown ones:
+
+  //Get a list of all fields in the table, 
+  //not just the ones on the layout:
+  type_vec_fields all_fields;
+  if(table_name == m_table_name)
+  {
+    //An optimization:
+    if(m_TableFields.empty())
+      m_TableFields = get_fields_for_table(table_name);
+    
+    all_fields = m_TableFields;
+  }
+  
+  if(all_fields.empty())
+    all_fields = get_fields_for_table(table_name);
+
+
+  //Add values for all fields that default to something, not just the shown ones:
   //For instance, we must always add the primary key, and fields with default/calculated/lookup values:
-  for(type_vec_fields::const_iterator iter = m_TableFields.begin(); iter != m_TableFields.end(); ++iter)
+  for(type_vec_fields::const_iterator iter = all_fields.begin(); iter != all_fields.end(); ++iter)
   {
     //TODO: Search for the non-related field with the name, not just the field with the name:
     type_vecLayoutFields::const_iterator iterFind = std::find_if(fieldsToAdd.begin(), fieldsToAdd.end(), predicate_FieldHasName<LayoutItem_Field>((*iter)->get_name()));
@@ -101,20 +172,34 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
   for(type_vecLayoutFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
   {
     sharedptr<LayoutItem_Field> layout_item = *iter;
+    if(!layout_item)
+      continue;
+
+    const sharedptr<const Field>& field = layout_item->get_full_field_details();
+    if(!field)
+      continue;
     
     //If the user did not enter something in this field:
-    Gnome::Gda::Value value = get_entered_field_data(layout_item);
+    Gnome::Gda::Value value;
+
+    //If the caller supplied a field value the use it,
+    //otherwise try to get it from the UI:
+    type_field_values::const_iterator iterFind = 
+      std::find_if(field_values.begin(), field_values.end(), predicate_pair_has_field(field));
+    if(iterFind != field_values.end())
+      value = iterFind->second;
+    else
+      value = get_entered_field_data(layout_item);
 
     if(Conversions::value_is_empty(value)) //This deals with empty strings too.
     {
-      const sharedptr<const Field>& field = layout_item->get_full_field_details();
-      if(field)
+      if(field) //TODO: Remove this check: we already check it above.
       {
         //If the default value should be calculated, then calculate it:
         if(field->get_has_calculation())
         {
           const Glib::ustring calculation = field->get_calculation();
-          const type_map_fields field_values = get_record_field_values_for_calculation(m_table_name, fieldPrimaryKey, primary_key_value);
+          const type_map_fields field_values = get_record_field_values_for_calculation(table_name, fieldPrimaryKey, primary_key_value);
 
           //We need the connection when we run the script, so that the script may use it.
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -128,7 +213,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
             // Don't evaluate function on error
 #endif // GLIBMM_EXCEPTIONS_ENABLED
 
-            const Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field->get_glom_type(), calculation, field_values, document, m_table_name, sharedconnection->get_gda_connection());
+            const Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field->get_glom_type(), calculation, field_values, document, table_name, sharedconnection->get_gda_connection());
             set_entered_field_data(layout_item, value);
 #ifndef GLIBMM_EXCEPTIONS_ENABLED
           }
@@ -206,7 +291,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
           //Check whether the value meets uniqueness constraints:
           if(field->get_primary_key() || field->get_unique_key())
           {
-            if(!get_field_value_is_unique(m_table_name, layout_item, value))
+            if(!get_field_value_is_unique(table_name, layout_item, value))
             {
               //Ignore this field value. TODO: Warn the user about it.
             } 
@@ -235,7 +320,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
   //Put it all together to create the record with these field values:
   if(!strNames.empty() && !strValues.empty())
   {
-    const Glib::ustring strQuery = "INSERT INTO \"" + m_table_name + "\" (" + strNames + ") VALUES (" + strValues + ")";
+    const Glib::ustring strQuery = "INSERT INTO \"" + table_name + "\" (" + strNames + ") VALUES (" + strValues + ")";
     const bool test = query_execute(strQuery, params);
     if(!test)
       std::cerr << "Box_Data::record_new(): INSERT failed." << std::endl;
@@ -252,7 +337,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
         //TODO_Performance: We just set this with set_entered_field_data() above. Maybe we could just remember it.
         const Gnome::Gda::Value field_value = get_entered_field_data(layout_item);
 
-        LayoutFieldInRecord field_in_record(layout_item, m_table_name, fieldPrimaryKey, primary_key_value);
+        LayoutFieldInRecord field_in_record(layout_item, table_name, fieldPrimaryKey, primary_key_value);
 
         //Get-and-set values for lookup fields, if this field triggers those relationships:
         do_lookups(field_in_record, row, field_value);
@@ -368,9 +453,6 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
     }
     else
     {
-      //TODO: Calculate values, and do lookups?
-      //TODO: Extra creation fields.
-
       //Create the related record:
       if(key_is_auto_increment)
       {
@@ -379,20 +461,15 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
         //Generate the new key value.
       }
 
-      //TODO: Use record_new() to avoid (incomplete) duplication?
-      Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
-      params->add_holder(primary_key_field->get_holder(primary_key_value));
-      const Glib::ustring strQuery = "INSERT INTO \"" + relationship->get_to_table() + "\" (\"" + primary_key_field->get_name() + "\") VALUES (" + primary_key_field->get_gda_holder_string() + ")";
-      const bool test = query_execute(strQuery, params);
-      if(!test)
+      const bool added = record_new(relationship->get_to_table(), false /* use_entered_field_data */, primary_key_value);
+      if(!added)
       {
-        std::cerr << "Base_DB_Table_Data::add_related_record_for_field(): INSERT failed." << std::endl;
-        return false;
+        std::cerr << "Base_DB_Table_Data::add_related_record_for_field(): record_new() failed." << std::endl;
       }
 
       if(key_is_auto_increment)
       {
-        //Set the key in the parent table
+        //Set the key in the parent table:
         sharedptr<LayoutItem_Field> item_from_key = sharedptr<LayoutItem_Field>::create();
         item_from_key->set_name(relationship->get_from_field());
 
@@ -423,6 +500,8 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
           }
           else
           {
+            Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
+            params->add_holder(primary_key_field->get_holder(primary_key_value));
             params->add_holder(parent_primary_key_field->get_holder(parent_primary_key_value));
             const Glib::ustring strQuery = "UPDATE \"" + relationship->get_from_table() + "\" SET \"" + relationship->get_from_field() + "\" = " + primary_key_field->get_gda_holder_string() +
               " WHERE \"" + relationship->get_from_table() + "\".\"" + parent_primary_key_field->get_name() + "\" = " +  parent_primary_key_field->get_gda_holder_string();

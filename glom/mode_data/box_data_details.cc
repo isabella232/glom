@@ -419,7 +419,7 @@ void Box_Data_Details::on_button_new()
     //Just make a new record, and show it:
     Gnome::Gda::Value primary_key_value = get_next_auto_increment_value(m_table_name, m_field_primary_key->get_name()); //TODO: This should return a Gda::Value
 
-    record_new(false /* use entered field data */, primary_key_value);
+    record_new(m_table_name, false /* use entered field data */, primary_key_value);
     refresh_data_from_database_with_primary_key(primary_key_value);
   }
   else
@@ -849,7 +849,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
         //Make a new record, and show it:
         Gnome::Gda::Value primary_key_value = get_next_auto_increment_value(m_table_name, m_field_primary_key->get_name());
 
-        record_new(true /* use entered field data */, primary_key_value);
+        record_new(m_table_name, true /* use entered field data */, primary_key_value);
         refresh_data_from_database_with_primary_key(primary_key_value);
       }
     }
@@ -870,7 +870,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
           //Create new record with this primary key,
           //and all the other field values too.
           //see comments after 'else':
-          record_new(true /* use entered field data */);
+          record_new(m_table_name, true /* use entered field data */);
         }
       }
       else
