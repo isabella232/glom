@@ -92,7 +92,7 @@ private:
 };
 
 //Intializing static members:
-Base_DB::type_extra_field_values Base_DB::m_extra_field_values;
+Base_DB::type_extra_field_values Base_DB::m_extra_modification_field_values;
 
 
 Base_DB::Base_DB()
@@ -1651,7 +1651,7 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
 
       strNames += field->get_name();
 
-      Gnome::Gda::Value value = row_data[i];
+      const Gnome::Gda::Value value = row_data[i];
       //std::cout << "  DEBUG: example: field=" << field->get_name() << ", value=" << value.to_string() << std::endl;
 
       //Add a SQL parameter for the value:
@@ -1682,6 +1682,7 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
     if((*iter)->get_auto_increment())
       recalculate_next_auto_increment_value(table_name, (*iter)->get_name());
   }
+
   return insert_succeeded;
 }
 

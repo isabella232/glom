@@ -2382,7 +2382,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
       if(m_find_mode)
         return;
     
-      const bool added = record_new(true /* use entered field data*/, primary_key_value);
+      const bool added = record_new(m_table_name, true /* use entered field data*/, primary_key_value);
       if(added)
       {
         //Save the primary key value for later use:
