@@ -85,12 +85,13 @@ local   all         all                               ident sameuser\n\
 local   all         all                               md5\n\
 \n\
 # TCP connections from the same computer, with a password:\n\
-# TODO: IPv6 too.\n\
-host    all         all         127.0.0.1    255.255.255.255    md5\n"
+host    all         all         127.0.0.1    255.255.255.255    md5\n\
+# IPv6 local connections:\n\
+host    all         all         ::1/128               md5\n"
 
 #define DEFAULT_CONFIG_PG_HBA_REMOTE \
-DEFAULT_CONFIG_PG_HBA_LOCAL \
-"\n\
+"DEFAULT_CONFIG_PG_HBA_LOCAL \
+\n\
 # IPv4 local connections:\n\
 host    all         all         0.0.0.0/0          md5\n\
 # IPv6 local connections:\n\

@@ -1,3 +1,11 @@
+2009-05-07  Murray Cumming  <murrayc@murrayc-x61>
+
+	Allow non-network-shared connections when using IPv6.
+
+	* glom/libglom/connectionpool_backends/postgres_self.cc: 
+	DEFAULT_CONFIG_PG_HBA_LOCAL: Add an entry in IPv6 syntax, because 
+	something seems to be more IPv6-like in Ubuntu Jaunty.
+
 2009-05-07  Murray Cumming  <murrayc@murrayc.com>
 
 	Pass some sharedptr&s as const.
