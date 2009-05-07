@@ -71,7 +71,7 @@ private:
   virtual void on_dnd_add_layout_item_image(LayoutWidgetBase* above) = 0;
   virtual void on_dnd_add_layout_notebook(LayoutWidgetBase* above) = 0;
   virtual void on_dnd_add_layout_portal(LayoutWidgetBase* above) = 0;
-  virtual void on_dnd_add_layout_item(LayoutWidgetBase* above, sharedptr<LayoutItem>& item) = 0;
+  virtual void on_dnd_add_layout_item(LayoutWidgetBase* above, const sharedptr<LayoutItem>& item) = 0;
 
 
   virtual void on_dnd_add_placeholder(LayoutWidgetBase* above) = 0;
