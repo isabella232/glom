@@ -410,7 +410,7 @@ protected:
 
 private:
   /// Fill m_extra_field_values with the extra field definitions. 
-  void init_extra_fields();
+  void init_extra_modification_fields();
 
 protected:
 
@@ -419,7 +419,7 @@ protected:
   //Extra creation/modification fields to set:
   typedef std::pair<GType, Gnome::Gda::Value> FieldTypeValue;
   typedef std::map<const gchar*, FieldTypeValue> type_extra_field_values;
-  static type_extra_field_values m_extra_field_values;
+  static type_extra_field_values m_extra_modification_field_values;
 
 };
 
