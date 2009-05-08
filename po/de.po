@@ -12,14 +12,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-26 11:45+0200\n"
-"PO-Revision-Date: 2009-04-26 11:52+0100\n"
+"POT-Creation-Date: 2009-05-08 20:40+0200\n"
+"PO-Revision-Date: 2009-05-08 20:43+0100\n"
 "Last-Translator: Mario Blättermann <mariobl@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
 
 #: ../glom/application.cc:182
 msgid "Glom: Generating Encryption Certificates"
@@ -371,11 +373,11 @@ msgstr "Keine Datensätze gefunden"
 msgid "New Find"
 msgstr "Neue Suche"
 
-#: ../glom/base_db.cc:2948
+#: ../glom/base_db.cc:2949
 msgid "Value Is Not Unique"
 msgstr "Wert ist nicht eindeutig"
 
-#: ../glom/base_db.cc:2948
+#: ../glom/base_db.cc:2949
 msgid ""
 "The field's value must be unique, but a record with this value already exists."
 msgstr ""
@@ -1626,8 +1628,8 @@ msgstr "»From«-Feld:"
 
 #: ../glom/glom_developer.glade.h:133
 #: ../glom/libglom/data_structure/layout/layoutgroup.cc:377
-#: ../glom/mode_data/flowtablewithfields.cc:1202
-#: ../glom/mode_data/flowtablewithfields.cc:1229
+#: ../glom/mode_data/flowtablewithfields.cc:1232
+#: ../glom/mode_data/flowtablewithfields.cc:1259
 #: ../glom/utility_widgets/layouttoolbar.cc:57
 #: ../glom/utility_widgets/layouttoolbar.cc:73
 #: ../glom/utility_widgets/notebooklabelglom.cc:74
@@ -1764,7 +1766,7 @@ msgstr "Keine Auswahl"
 msgid "None"
 msgstr "Nichts"
 
-#: ../glom/glom_developer.glade.h:164 ../glom/glom.glade.h:30
+#: ../glom/glom_developer.glade.h:164 ../glom/glom.glade.h:31
 #: ../glom/mode_design/dialog_design.cc:54
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:493
 msgid "None selected"
@@ -1845,7 +1847,7 @@ msgstr "Sekundäre Felder:"
 
 #: ../glom/glom_developer.glade.h:181
 #: ../glom/utility_widgets/dialog_choose_id.cc:88
-#: ../glom/utility_widgets/imageglom.cc:392
+#: ../glom/utility_widgets/imageglom.cc:403
 msgid "Select"
 msgstr "Auswählen"
 
@@ -1905,7 +1907,7 @@ msgstr "Systemname:"
 msgid "Table Name"
 msgstr "Tabellenname"
 
-#: ../glom/glom_developer.glade.h:195 ../glom/glom.glade.h:40
+#: ../glom/glom_developer.glade.h:195 ../glom/glom.glade.h:41
 msgid "Table:"
 msgstr "Tabelle:"
 
@@ -2060,11 +2062,11 @@ msgstr "Postleitzahl:"
 msgid "_Confirm Password"
 msgstr "_Passwort bestätigen"
 
-#: ../glom/glom_developer.glade.h:227 ../glom/glom.glade.h:45
+#: ../glom/glom_developer.glade.h:227 ../glom/glom.glade.h:46
 msgid "_Password"
 msgstr "_Passwort"
 
-#: ../glom/glom_developer.glade.h:228 ../glom/glom.glade.h:47
+#: ../glom/glom_developer.glade.h:228 ../glom/glom.glade.h:48
 msgid "_User"
 msgstr "Be_nutzer"
 
@@ -2170,80 +2172,88 @@ msgid "Importing Data"
 msgstr "Daten werden importiert"
 
 #: ../glom/glom.glade.h:29
+msgid "Loading image"
+msgstr "Bild wird geladen"
+
+#: ../glom/glom.glade.h:30
 msgid "Mode:"
 msgstr "Modus:"
 
-#: ../glom/glom.glade.h:31
+#: ../glom/glom.glade.h:32
 msgid "Number of sample rows:"
 msgstr "Anzahl der Beispielzeilen:"
 
-#: ../glom/glom.glade.h:32
+#: ../glom/glom.glade.h:33
 msgid "Open Existing Document"
 msgstr "Bestehendes Dokument öffnen"
 
-#: ../glom/glom.glade.h:33
+#: ../glom/glom.glade.h:34
 msgid "Please enter the connection details for your database server."
 msgstr ""
 "Bitte geben Sie die notwendigen Angaben ein, um sich mit Ihrem Datenbank-"
 "Server zu verbinden."
 
-#: ../glom/glom.glade.h:34
+#: ../glom/glom.glade.h:35
 msgid "Please wait, your data is being imported&#x2026;"
 msgstr "Bitte warten Sie, Ihre Daten werden importiert&#x2026;"
 
-#: ../glom/glom.glade.h:35 ../glom/glade_utils.cc:51
+#: ../glom/glom.glade.h:36 ../glom/glade_utils.cc:51
 msgid "Processing"
 msgstr "Verarbeitung läuft …"
 
-#: ../glom/glom.glade.h:36
+#: ../glom/glom.glade.h:37
 msgid "Quick Find"
 msgstr "Schnellsuche"
 
-#: ../glom/glom.glade.h:37
+#: ../glom/glom.glade.h:38
 msgid "Records: "
 msgstr "Datensätze: "
 
-#: ../glom/glom.glade.h:38
+#: ../glom/glom.glade.h:39
 msgid "Revert"
 msgstr "Rückgängig"
 
-#: ../glom/glom.glade.h:39
+#: ../glom/glom.glade.h:40
 msgid "Show hidden tables"
 msgstr "Versteckte Tabellen anzeigen"
 
-#: ../glom/glom.glade.h:41
+#: ../glom/glom.glade.h:42
 msgid "_Encoding:"
 msgstr "_Zeichensatz:"
 
-#: ../glom/glom.glade.h:42
+#: ../glom/glom.glade.h:43
 msgid "_First line as title"
 msgstr "_Erste Zeile als Titel"
 
-#: ../glom/glom.glade.h:43
+#: ../glom/glom.glade.h:44
 msgid "_Host"
 msgstr "_Host"
 
-#: ../glom/glom.glade.h:44
+#: ../glom/glom.glade.h:45
 msgid "_Import"
 msgstr "_Importieren"
 
-#: ../glom/glom.glade.h:46
+#: ../glom/glom.glade.h:47
 msgid "_Select"
 msgstr "_Auswählen"
 
-#: ../glom/glom.glade.h:48
+#: ../glom/glom.glade.h:49
 msgid "bla.blub - Import from CSV"
 msgstr "bla.blub - Aus CSV importieren"
 
-#: ../glom/glom.glade.h:49
+#: ../glom/glom.glade.h:50
 msgid "example data format"
 msgstr "Beispieldatenformatierung"
 
-#: ../glom/glom.glade.h:50
+#: ../glom/glom.glade.h:51
+msgid "gtk-cancel"
+msgstr "gtk-cancel"
+
+#: ../glom/glom.glade.h:52
 msgid "label"
 msgstr "Beschriftung"
 
-#: ../glom/glom.glade.h:51
+#: ../glom/glom.glade.h:53
 msgid "table_name"
 msgstr "Tabellen_name"
 
@@ -2417,7 +2427,7 @@ msgstr "Kalenderportal"
 
 #. Note to translators: "Notebook" means a GtkNotebook-type widget.
 #: ../glom/libglom/data_structure/layout/layoutitem_notebook.cc:56
-#: ../glom/mode_data/flowtablewithfields.cc:1198
+#: ../glom/mode_data/flowtablewithfields.cc:1228
 #: ../glom/utility_widgets/layouttoolbar.cc:60
 msgid "Notebook"
 msgstr "Reitermappe"
@@ -2813,8 +2823,8 @@ msgid "Display Width"
 msgstr "Anzeigebreite"
 
 #: ../glom/mode_data/dialog_layout_details.cc:699
-#: ../glom/mode_data/flowtablewithfields.cc:1121
-#: ../glom/mode_data/flowtablewithfields.cc:1242
+#: ../glom/mode_data/flowtablewithfields.cc:1150
+#: ../glom/mode_data/flowtablewithfields.cc:1272
 msgid "New Button"
 msgstr "Neuer Schalter"
 
@@ -2827,7 +2837,7 @@ msgid "Image Title"
 msgstr "Bildtitel"
 
 #: ../glom/mode_data/dialog_layout_details.cc:775
-#: ../glom/mode_data/flowtablewithfields.cc:1098
+#: ../glom/mode_data/flowtablewithfields.cc:1127
 msgid "notebook"
 msgstr "Reitermappe"
 
@@ -2856,54 +2866,54 @@ msgstr "Feld:"
 msgid "(Notebook)"
 msgstr "(Reitermappe)"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1092
-#: ../glom/mode_data/flowtablewithfields.cc:1201
-#: ../glom/mode_data/flowtablewithfields.cc:1228
+#: ../glom/mode_data/flowtablewithfields.cc:1121
+#: ../glom/mode_data/flowtablewithfields.cc:1231
+#: ../glom/mode_data/flowtablewithfields.cc:1258
 #: ../glom/utility_widgets/notebooklabelglom.cc:73
 #: ../glom/utility_widgets/notebooklabelglom.cc:113
 msgid "New Group"
 msgstr "Neue Gruppe"
 
 #. Note to translators: This is the default name (not seen by most users) for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1104
+#: ../glom/mode_data/flowtablewithfields.cc:1133
 msgid "tab1"
 msgstr "Reiter1"
 
 #. Note to translators: This is the default label text for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1107
+#: ../glom/mode_data/flowtablewithfields.cc:1136
 msgid "Tab One"
 msgstr "Reiter Eins"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1120
+#: ../glom/mode_data/flowtablewithfields.cc:1149
 msgid "button"
 msgstr "Schalter"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
-#: ../glom/mode_data/flowtablewithfields.cc:1127
-#: ../glom/mode_data/flowtablewithfields.cc:1255
+#: ../glom/mode_data/flowtablewithfields.cc:1156
+#: ../glom/mode_data/flowtablewithfields.cc:1285
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:380
 msgid "text"
 msgstr "Text"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1128
-#: ../glom/mode_data/flowtablewithfields.cc:1256
+#: ../glom/mode_data/flowtablewithfields.cc:1157
+#: ../glom/mode_data/flowtablewithfields.cc:1286
 msgid "New Text"
 msgstr "Neuer Text"
 
 #. TODO: Avoid this error message
-#: ../glom/mode_data/flowtablewithfields.cc:1335
+#: ../glom/mode_data/flowtablewithfields.cc:1364
 msgid "You cannot drop anything here. Try to add a group first"
 msgstr ""
 "An dieser Stelle kann nichts abgelegt werden. Fügen Sie zuerst eine Gruppe "
 "hinzu"
 
 #. TODO: Use a real English sentence here?
-#: ../glom/mode_data/flowtablewithfields.cc:1398
+#: ../glom/mode_data/flowtablewithfields.cc:1425
 msgid "Delete whole group \"%1\"?"
 msgstr "Gesamte Gruppe »%1« löschen?"
 
 #. TODO: Use a real English sentence here:
-#: ../glom/mode_data/flowtablewithfields.cc:1404
+#: ../glom/mode_data/flowtablewithfields.cc:1431
 msgid "Delete whole group?"
 msgstr "Gesamte Gruppe löschen?"
 
@@ -3407,11 +3417,11 @@ msgstr ".po-Dateinamen auswählen"
 msgid "Po files"
 msgstr "Po-Dateien"
 
-#: ../glom/utility_widgets/adddel/adddel.cc:154
+#: ../glom/utility_widgets/adddel/adddel.cc:152
 msgid "This item already exists. Please try again."
 msgstr "Dieses Element existiert bereits. Bitte versuchen Sie es erneut."
 
-#: ../glom/utility_widgets/adddel/adddel.cc:161
+#: ../glom/utility_widgets/adddel/adddel.cc:159
 msgid "Duplicate"
 msgstr "Duplikat"
 
@@ -3445,16 +3455,16 @@ msgstr ""
 "Geben Sie Suchkriterien ein um Datensätze in der anderen Tabelle zu suchen, "
 "um eine ID für dieses Feld festzulegen."
 
-#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2102
+#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2105
 msgid "Right-click to layout, to specify the related fields."
 msgstr "Rechtsklick auf Layout, um die Bezugsfelder festzulegen."
 
 #. Tell user that they can't do that:
-#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2325
+#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2328
 msgid "Extra Related Records Not Possible"
 msgstr "Zusätzliche Bezugsdatensätze nicht möglich"
 
-#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2326
+#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2329
 msgid ""
 "You attempted to add a new related record, but there can only be one related "
 "record, because the relationship uses a unique key."
@@ -3587,23 +3597,15 @@ msgstr ""
 "Datenbank auf einem externen Datenbank-Server erstellen, der im nächsten "
 "Schritt angegeben wird."
 
-#: ../glom/utility_widgets/imageglom.cc:383
+#: ../glom/utility_widgets/imageglom.cc:394
 msgid "Choose Image"
 msgstr "Bild wählen"
 
-#: ../glom/utility_widgets/imageglom.cc:387
+#: ../glom/utility_widgets/imageglom.cc:398
 msgid "Images"
 msgstr "Bilder"
 
-#: ../glom/utility_widgets/imageglom.cc:438
-msgid "Image loading failed"
-msgstr "Fehler beim Laden des Bildes"
-
-#: ../glom/utility_widgets/imageglom.cc:438
-msgid "The image file could not be opened:\n"
-msgstr "Die Bilddatei konnte nicht geöffnet werden:\n"
-
-#: ../glom/utility_widgets/imageglom.cc:533
+#: ../glom/utility_widgets/imageglom.cc:537
 msgid "Choose File"
 msgstr "Datei wählen"
 
@@ -3619,7 +3621,7 @@ msgstr "Ziehen Sie dies in das Layout, um einen neuen Reiter hinzuzufügen."
 #: ../glom/utility_widgets/layouttoolbar.cc:67
 msgid "Drag this to the layout to add a new Related Record."
 msgstr ""
-"Ziehen Sie dies in das Layout, um einen  neuen relativen Datensatz zu "
+"Ziehen Sie dies in das Layout, um einen neuen relativen Datensatz zu "
 "erstellen."
 
 #: ../glom/utility_widgets/layouttoolbar.cc:70
@@ -3652,10 +3654,16 @@ msgstr "Gesamte Reitermappe »%1« löschen?"
 msgid "Delete whole notebook?"
 msgstr "Gesamte Reitermappe löschen?"
 
-#: ../glom/xsl_utils.cc:139
+#: ../glom/xsl_utils.cc:140
 msgid "Report Finished"
 msgstr "Bericht fertiggestellt"
 
-#: ../glom/xsl_utils.cc:139
+#: ../glom/xsl_utils.cc:140
 msgid "The report will now be opened in your web browser."
 msgstr "Der Bericht wird nun in Ihrem Webbrowser geöffnet."
+
+#~ msgid "Image loading failed"
+#~ msgstr "Fehler beim Laden des Bildes"
+
+#~ msgid "The image file could not be opened:\n"
+#~ msgstr "Die Bilddatei konnte nicht geöffnet werden:\n"
