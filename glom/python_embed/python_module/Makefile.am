@@ -10,7 +10,7 @@ pyexec_LTLIBRARIES = glom.la
 glom_la_LDFLAGS = $(common_ldflags) -export-symbols-regex initglom
 
 glom_la_LIBADD = $(top_builddir)/glom/libglom/libglom-1.0.la \
-                 $(GLOM_LIBS) $(PYTHON_LDFLAGS)
+                 $(GLOM_LIBS) $(BOOST_PYTHON_LIBS) $(PYTHON_LDFLAGS)
 
 if !WIN32
 glom_la_LIBADD += -lutil

@@ -92,7 +92,7 @@ glom_LDADD += bakery/libbakery_app.a \
 
 glom_LDADD += python_embed/libpython_embed.a \
               $(top_builddir)/glom/libglom/libglom-1.0.la \
-              $(GLOM_LIBS) $(PYTHON_LDFLAGS) $(MAEMO_LAUNCHER_LIBS)
+              $(GLOM_LIBS) $(BOOST_PYTHON_LIBS) $(PYTHON_LDFLAGS) $(MAEMO_LAUNCHER_LIBS)
 
 if !WIN32
 glom_LDADD += -lutil
@@ -113,6 +113,9 @@ glom_LDADD += -lgettextpo
 
 test_pyembed_SOURCES = test_pyembed.cc
 test_pyembed_LDADD = $(GLOM_LIBS) $(PYTHON_LDFLAGS)
+
+test_pyembed_boost_SOURCES = test_pyembed_boost.cc
+test_pyembed_boost_LDADD = $(GLOM_LIBS) $(BOOST_PYTHON_LIBS) $(PYTHON_LDFLAGS)
 
 if !WIN32
 test_pyembed_LDADD += -lutil

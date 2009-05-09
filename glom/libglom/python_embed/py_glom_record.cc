@@ -34,27 +34,10 @@
 namespace Glom
 {
 
-//Allocate a new object:
-//TODO: Why not parse the args here as well as in Record_init()?
-static PyObject *
-Record_new(PyTypeObject *type, PyObject * /* args */, PyObject * /* kwds */)
-{
-  PyGlomRecord *self  = (PyGlomRecord*)type->tp_alloc(type, 0);
-  if(self)
-  {
-    self->m_related = 0;
-
-    self->m_pMap_field_values = new PyGlomRecord::type_map_field_values();
-  }
-
-  return (PyObject*)self;
-}
-
 //Set the object's member data, from the parameters supplied when creating the object:
-static int
-Record_init(PyObject *self, PyObject * /* args */, PyObject * /* kwds */)
+PyGlomRecord::PyGlomRecord()
 {
-  PyGlomRecord *self_record = (PyGlomRecord*)self;
+  PyGlomRecord *self_record = this;
 
   //static char *kwlist[] = {"test", NULL};
 
@@ -65,18 +48,13 @@ Record_init(PyObject *self, PyObject * /* args */, PyObject * /* kwds */)
   if(self_record)
   {
     self_record->m_related = 0;
-
-    if(self_record->m_pMap_field_values == 0)
-      self_record->m_pMap_field_values = new PyGlomRecord::type_map_field_values();
+    self_record->m_pMap_field_values = new PyGlomRecord::type_map_field_values();
   }
-
-  return 0;
 }
 
-static void
-Record_dealloc(PyObject* self)
+PyGlomRecord::~PyGlomRecord()
 {
-  PyGlomRecord *self_record = (PyGlomRecord*)self;
+  PyGlomRecord *self_record = this;
 
   if(self_record->m_pMap_field_values)
   {
@@ -95,55 +73,36 @@ Record_dealloc(PyObject* self)
     delete self_record->m_connection;
     self_record->m_connection = 0;
   }
-
-  self_record->ob_type->tp_free((PyObject*)self_record);
 }
 
-static PyObject *
-Record__get_connection(PyObject* self, void* /* closure */)
+boost::python::object PyGlomRecord::get_connection()
 {
-  PyGlomRecord *self_record = (PyGlomRecord*)self;
+  PyGlomRecord *self_record = this;
 
   if( !self_record->m_connection || !(*(self_record->m_connection)) )
   {
-    Py_INCREF(Py_None);
-    return Py_None;
+    PyObject* cobject = Py_None;
+
+    //TODO: Is there some way to take the extra reference with boost::python, withour using borrowed()?
+    Py_INCREF(cobject);
+    return boost::python::object( boost::python::borrowed(cobject) );
   }
   else
   {
-   return pygobject_new( G_OBJECT( (*(self_record->m_connection))->gobj()) ); //Creates a pygda Connection object.
+    PyObject* cobject = pygobject_new( G_OBJECT( (*(self_record->m_connection))->gobj()) ); //Creates a pygda Connection object.
+    return boost::python::object( boost::python::borrowed(cobject) );
   }
 }
 
-static PyObject *
-Record__get_table_name(PyObject* self, void* /* closure */)
+boost::python::object PyGlomRecord::get_related()
 {
-  PyGlomRecord *self_record = (PyGlomRecord*)self;
-
-  if( !self_record->m_table_name || (*(self_record->m_table_name)).empty() )
-  {
-    Py_INCREF(Py_None);
-    return Py_None;
-  }
-  else
-  {
-   const Glib::ustring& the_text = *(self_record->m_table_name); //Avoid that ugly dereference.
-   return PyString_FromString(the_text.c_str());
-  }
-}
-
-static PyObject *
-Record__get_related(PyObject* self, void* /* closure */)
-{
-  PyGlomRecord *self_record = (PyGlomRecord*)self;
+  PyGlomRecord *self_record = this;
 
   //We initialize it here, so that this work never happens if it's not needed:
   if(!(self_record->m_related))
   {
     //Return a new RelatedRecord:
-    PyObject* new_args = PyTuple_New(0);
-    self_record->m_related = (PyGlomRelated*)PyObject_Call((PyObject*)PyGlomRelated_GetPyType(), new_args, 0);
-    Py_DECREF(new_args);
+    self_record->m_related = new PyGlomRelated();
 
     //Fill it:
     Document::type_vec_relationships vecRelationships = self_record->m_document->get_relationships(*(self_record->m_table_name));
@@ -157,48 +116,24 @@ Record__get_related(PyObject* self, void* /* closure */)
     PyGlomRelated_SetRelationships(self_record->m_related, map_relationships);
 
     self_record->m_related->m_record = self_record;
-    Py_XINCREF(self_record); //unreffed in the self->m_related's _dealloc. //TODO: Is this a circular reference?
   }
 
-  Py_INCREF(self_record->m_related); //Should we do this?
-  return (PyObject*)self_record->m_related;
+  PyObject* cobject = (PyObject*)self_record->m_related;
+  //TODO: Py_INCREF(cobject); //Should we do this?
+  return boost::python::object( boost::python::borrowed(cobject) );
 }
 
-
-static PyGetSetDef Record_getseters[] = {
-    {(char*)"related",
-     (getter)Record__get_related, (setter)0, 0, 0
-    },
-    {(char*)"connection",
-     (getter)Record__get_connection, (setter)0, 0, 0
-    },
-    {(char*)"table_name",
-     (getter)Record__get_table_name, (setter)0, 0, 0
-    },
-    {NULL, 0, 0, 0, 0, }  // Sentinel
-};
-
-//Adapt to API changes in Python 2.5:
-#if defined(PY_VERSION_HEX) && (PY_VERSION_HEX >= 0x02050000) /* Python 2.5 */
-static Py_ssize_t
-Record_tp_as_mapping_length(PyObject *self)
+long PyGlomRecord::length() const
 {
-  PyGlomRecord *self_record = (PyGlomRecord*)self;
+  const PyGlomRecord *self_record = this;
   return self_record->m_pMap_field_values->size();
 }
-#else
-static int
-Record_tp_as_mapping_length(PyObject *self)
-{
-  PyGlomRecord *self_record = (PyGlomRecord*)self;
-  return (int)(self_record->m_pMap_field_values->size());
-}
-#endif
 
-static PyObject *
-Record_tp_as_mapping_getitem(PyObject *self, PyObject *item)
+boost::python::object PyGlomRecord::getitem(boost::python::object cppitem)
 {
-  PyGlomRecord *self_record = (PyGlomRecord*)self;
+  PyGlomRecord *self_record = this;
+
+  PyObject* item = cppitem.ptr();
 
   if(PyString_Check(item))
   {
@@ -211,11 +146,13 @@ Record_tp_as_mapping_getitem(PyObject *self, PyObject *item)
         PyGlomRecord::type_map_field_values::const_iterator iterFind = self_record->m_pMap_field_values->find(key);
         if(iterFind != self_record->m_pMap_field_values->end())
         {
-          return pygda_value_as_pyobject(iterFind->second.gobj(), true /* copy */);
+          PyObject* cobject = pygda_value_as_pyobject(iterFind->second.gobj(), true /* copy */);
+          //Py_INCREF((PyObject*)cobject);
+          return boost::python::object(boost::python::borrowed(cobject));
         }
         else
         {
-          g_warning("Record_tp_as_mapping_getitem(): item not found in m_pMap_field_values. size=%d, item=%s", (int)self_record->m_pMap_field_values->size(), pchKey);
+          g_warning("Record_tp_as__getitem(): item not found in m_pMap_field_values. size=%d, item=%s", (int)self_record->m_pMap_field_values->size(), pchKey);
         }
       }
       else
@@ -236,7 +173,7 @@ Record_tp_as_mapping_getitem(PyObject *self, PyObject *item)
 
   g_warning("Record_tp_as_mapping_getitem(): return null.");
   PyErr_SetString(PyExc_IndexError, "field not found");
-  return NULL;
+  return boost::python::object(); //TODO: NULL;
 }
 
 /*
@@ -247,62 +184,6 @@ Record_tp_as_mapping_setitem(PyGObject *self, PyObject *item, PyObject *value)
   return Py_None;
 }
 */
-
-static PyMappingMethods Record_tp_as_mapping = {
-    Record_tp_as_mapping_length,
-    Record_tp_as_mapping_getitem,
-    (objobjargproc)0 /* Record_tp_as_mapping_setitem */
-};
-
-
-static PyTypeObject pyglom_RecordType = {
-    PyObject_HEAD_INIT(NULL)
-    0,                         /*ob_size*/
-    (char*)"glom.Record",             /*tp_name*/
-    sizeof(PyGlomRecord), /*tp_basicsize*/
-    0,                         /*tp_itemsize*/
-    (destructor)Record_dealloc, /*tp_dealloc*/
-    0,                         /*tp_print*/
-    0,                         /*tp_getattr*/
-    0,                         /*tp_setattr*/
-    0,                         /*tp_compare*/
-    0,                         /*tp_repr*/
-    0,                         /*tp_as_number*/
-    0,                         /*tp_as_sequence*/
-    &Record_tp_as_mapping,      /*tp_as_mapping*/
-    0,                         /*tp_hash */
-    0,                         /*tp_call*/
-    0,                         /*tp_str*/
-    0,                         /*tp_getattro*/
-    0,                         /*tp_setattro*/
-    0,                         /*tp_as_buffer*/
-    Py_TPFLAGS_DEFAULT,        /*tp_flags*/
-    (char*)"Glom objects",           /* tp_doc */
-    0,                  /* tp_traverse */
-    0,                   /* tp_clear */
-    0,                   /* tp_richcompare */
-    0,                   /* tp_weaklistoffset */
-    0,                   /* tp_iter */
-    0,                   /* tp_iternext */
-    0 /* Record_methods */,             /* tp_methods */
-    0 /* Record_members */,             /* tp_members */
-    Record_getseters,                   /* tp_getset */
-    0,                         /* tp_base */
-    0,                         /* tp_dict */
-    0,                         /* tp_descr_get */
-    0,                         /* tp_descr_set */
-    0,                         /* tp_dictoffset */
-    (initproc)Record_init,      /* tp_init */
-    0,                         /* tp_alloc */
-    Record_new,                 /* tp_new */
-    0, 0, 0, 0, 0, 0, 0, 0,
-};
-
-PyTypeObject* PyGlomRecord_GetPyType()
-{
-  return &pyglom_RecordType;
-}
-
 
 
 /*

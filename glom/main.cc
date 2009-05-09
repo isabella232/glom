@@ -21,7 +21,8 @@
 #include <config.h> //For VERSION.
 
 //We use Python for calculated fields.
-#include <Python.h> //Include it before anything else to avoid "_POSIX_C_SOURCE redefined".
+//#include <Python.h> //Include it before anything else to avoid "_POSIX_C_SOURCE redefined".
+#include <boost/python.hpp>
 
 //#include <gnome.h>
 #include <glom/libglom/init.h>

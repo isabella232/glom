@@ -37,12 +37,9 @@
 namespace Glom
 {
 
-//Allocate a new object:
-//TODO: Why not parse the args here as well as in RelatedRecord_init()?
-static PyObject *
-RelatedRecord_new(PyTypeObject *type, PyObject * /* args */, PyObject * /* kwds */)
+PyGlomRelatedRecord::PyGlomRelatedRecord()
 {
-  PyGlomRelatedRecord *self  = (PyGlomRelatedRecord*)type->tp_alloc(type, 0);
+  PyGlomRelatedRecord *self = this;
   if(self)
   {
     self->m_py_gda_connection = 0;
@@ -54,39 +51,12 @@ RelatedRecord_new(PyTypeObject *type, PyObject * /* args */, PyObject * /* kwds 
 
     self->m_pMap_field_values = new PyGlomRelatedRecord::type_map_field_values();
   }
-
-  return (PyObject*)self;
 }
 
-//Set the object's member data, from the parameters supplied when creating the object:
-static int
-RelatedRecord_init(PyGlomRelatedRecord *self, PyObject * /* args */, PyObject * /* kwds */)
+PyGlomRelatedRecord::~PyGlomRelatedRecord()
 {
-  //static char *kwlist[] = {"test", NULL};
+  PyGlomRelatedRecord *self = this;
 
-  //if(!PyArg_ParseTupleAndKeywords(args, kwds, "|i", kwlist,
-   //                                 &self->m_test))
-   // return -1;
-
-  if(self)
-  {
-    self->m_py_gda_connection = 0;
-    self->m_document = 0;
-    self->m_relationship = 0;
-    self->m_from_key_value_sqlized = 0;
-
-    //self->m_record_parent = 0;
-
-    if(self->m_pMap_field_values == 0)
-      self->m_pMap_field_values = new PyGlomRelatedRecord::type_map_field_values();
-  }
-
-  return 0;
-}
-
-static void
-RelatedRecord_dealloc(PyGlomRelatedRecord* self)
-{
   if(self->m_pMap_field_values)
   {
     delete self->m_pMap_field_values;
@@ -110,8 +80,6 @@ RelatedRecord_dealloc(PyGlomRelatedRecord* self)
     Py_XDECREF( (PyObject*)(self->m_py_gda_connection));
     self->m_py_gda_connection = 0;
   }
-
-  self->ob_type->tp_free((PyObject*)self);
 }
 
 /*
@@ -131,31 +99,6 @@ RelatedRecord__get_fields(PyGlomRelatedRecord *self, void * closure )
 }
 */
 
-/*
-static PyGetSetDef RelatedRecord_getseters[] = {
-    {"fields",
-     (getter)RelatedRecord__get_fields, (setter)0, 0, 0
-    },
-    {NULL, 0, 0, 0, 0, }  // Sentinel
-};
-*/
-
-//Adapt to API changes in Python 2.5:
-#if defined(PY_VERSION_HEX) && (PY_VERSION_HEX >= 0x02050000) /* Python 2.5 */
-static Py_ssize_t
-RelatedRecord_tp_as_mapping_length(PyObject *self)
-{
-  PyGlomRelatedRecord* self_derived = (PyGlomRelatedRecord*)self;
-  return self_derived->m_pMap_field_values->size();
-}
-#else
-static int
-RelatedRecord_tp_as_mapping_length(PyObject *self)
-{
-  PyGlomRelatedRecord* self_derived = (PyGlomRelatedRecord*)self;
-  return (int)(self_derived->m_pMap_field_values->size());
-}
-#endif
 
 static void RelatedRecord_HandlePythonError()
 {
@@ -163,10 +106,15 @@ static void RelatedRecord_HandlePythonError()
     PyErr_Print();
 }
 
-static PyObject *
-RelatedRecord_tp_as_mapping_getitem(PyObject *self, PyObject *item)
+long PyGlomRelatedRecord::length() const
 {
-  PyGlomRelatedRecord* self_derived = (PyGlomRelatedRecord*)self;
+  const PyGlomRelatedRecord* self_derived = this;
+  return self_derived->m_pMap_field_values->size();
+}
+
+PyObject* PyGlomRelatedRecord::getitem(PyObject *item)
+{
+  PyGlomRelatedRecord* self_derived = this;
 
   if(PyString_Check(item))
   {
@@ -266,38 +214,11 @@ RelatedRecord_tp_as_mapping_getitem(PyObject *self, PyObject *item)
   return NULL;
 }
 
-/*
-static int
-RelatedRecord_tp_as_mapping_setitem(PyGObject *self, PyObject *item, PyObject *value)
+boost::python::object PyGlomRelatedRecord::generic_aggregate(const std::string& field_name, const std::string& aggregate) const
 {
-  Py_INCREF(Py_None);
-  return Py_None;
-}
-*/
+  const PyGlomRelatedRecord* self = this;
 
-static PyMappingMethods RelatedRecord_tp_as_mapping = {
-    RelatedRecord_tp_as_mapping_length,
-    RelatedRecord_tp_as_mapping_getitem,
-    (objobjargproc)0 /* RelatedRecord_tp_as_mapping_setitem */
-};
-
-static PyObject *
-RelatedRecord_generic_aggregate(PyGlomRelatedRecord* self, PyObject *args, PyObject *kwargs, const Glib::ustring& aggregate)
-{
-  typedef const char* type_pch;
-  static type_pch kwlist[] = { "field_name", 0 };
-  PyObject* py_field_name = 0;
-
-  if(!PyArg_ParseTupleAndKeywords(args, kwargs, (char*)"O:RelatedRecord.sum", (char**)kwlist, &py_field_name))
-    return NULL;
-
-  if(!(PyString_Check(py_field_name)))
-    return NULL;
-
-  const char* pchKey = PyString_AsString(py_field_name);
-  if(pchKey)
   {
-    const Glib::ustring field_name(pchKey);
     const Glib::ustring related_table = (*(self->m_relationship))->get_to_table();
 
     //Check whether the field exists in the table.
@@ -324,7 +245,11 @@ RelatedRecord_generic_aggregate(PyGlomRelatedRecord* self, PyObject *args, PyObj
 
         //Do not try to get a value based on a null key value:
         if(!(self->m_from_key_value_sqlized))
-          return Py_None;
+        {
+          PyObject* cobject = Py_None;
+          Py_INCREF(cobject); //TODO: Use boost::python for this somehow.
+          return boost::python::object( boost::python::borrowed(cobject) );
+        }
        
         //Get the aggregate value from the related records:
         const Glib::ustring sql_query = "SELECT " + aggregate + "(\"" + related_table + "\".\"" + field_name + "\") FROM \"" + related_table + "\""
@@ -347,7 +272,9 @@ RelatedRecord_generic_aggregate(PyGlomRelatedRecord* self, PyObject *args, PyObj
 
           //Cache it, in case it's asked-for again.
           (*(self->m_pMap_field_values))[field_name] = value;
-          return pygda_value_as_pyobject(value.gobj(), true /* copy */);
+          
+          PyObject* cobject = pygda_value_as_pyobject(value.gobj(), true /* copy */);
+          return boost::python::object( boost::python::borrowed(cobject) );
         }
         else if(!datamodel)
         {
@@ -362,104 +289,30 @@ RelatedRecord_generic_aggregate(PyGlomRelatedRecord* self, PyObject *args, PyObj
       }
     }
   }
-
-  Py_INCREF(Py_None);
-  return Py_None;
+   
+  PyObject* cobject = Py_None;
+  Py_INCREF(cobject); //TODO: Use boost::python for this somehow.
+  return boost::python::object( boost::python::borrowed(cobject) );
 }
-
-static PyObject *
-RelatedRecord_sum(PyObject* self, PyObject *args, PyObject *kwargs)
+  
+boost::python::object PyGlomRelatedRecord::sum(const std::string& field_name) const
 {
-  PyGlomRelatedRecord* self_derived = (PyGlomRelatedRecord*)self;
-  return RelatedRecord_generic_aggregate(self_derived, args, kwargs, "sum");
+  return generic_aggregate(field_name, "sum");
 }
-
-static PyObject *
-RelatedRecord_count(PyObject* self, PyObject *args, PyObject *kwargs)
+  
+boost::python::object PyGlomRelatedRecord::count(const std::string& field_name) const
 {
-  PyGlomRelatedRecord* self_derived = (PyGlomRelatedRecord*)self;
-  return RelatedRecord_generic_aggregate(self_derived, args, kwargs, "count");
+  return generic_aggregate(field_name, "count");
 }
-
-static PyObject *
-RelatedRecord_min(PyObject* self, PyObject *args, PyObject *kwargs)
+  
+boost::python::object PyGlomRelatedRecord::min(const std::string& field_name) const
 {
-  PyGlomRelatedRecord* self_derived = (PyGlomRelatedRecord*)self;
-  return RelatedRecord_generic_aggregate(self_derived, args, kwargs, "min");
+  return generic_aggregate(field_name, "min");
 }
-
-static PyObject *
-RelatedRecord_max(PyObject* self, PyObject *args, PyObject *kwargs)
+  
+boost::python::object PyGlomRelatedRecord::max(const std::string& field_name) const
 {
-  PyGlomRelatedRecord* self_derived = (PyGlomRelatedRecord*)self;
-  return RelatedRecord_generic_aggregate(self_derived, args, kwargs, "max");
-}
-
-static PyMethodDef RelatedRecord_methods[] = {
-    {(char*)"sum", (PyCFunction)RelatedRecord_sum, METH_VARARGS | METH_KEYWORDS,
-     (char*)"Add all values of the field in the related records."
-    },
-    {(char*)"count", (PyCFunction)RelatedRecord_count, METH_VARARGS | METH_KEYWORDS,
-     (char*)"Count all values in the field in the related records."
-    },
-    {(char*)"min", (PyCFunction)RelatedRecord_min, METH_VARARGS | METH_KEYWORDS,
-     (char*)"Minimum of all values of the field in the related records."
-    },
-    {(char*)"max", (PyCFunction)RelatedRecord_max, METH_VARARGS | METH_KEYWORDS,
-     (char*)"Maximum of all values of the field in the related records."
-    },
-    {NULL, 0, 0, 0}  /* Sentinel */
-};
-
-
-
-
-static PyTypeObject pyglom_RelatedRecordType = {
-    PyObject_HEAD_INIT(NULL)
-    0,                         /*ob_size*/
-    (char*)"glom.RelatedRecord",             /*tp_name*/
-    sizeof(PyGlomRelatedRecord), /*tp_basicsize*/
-    0,                         /*tp_itemsize*/
-    (destructor)RelatedRecord_dealloc, /*tp_dealloc*/
-    0,                         /*tp_print*/
-    0,                         /*tp_getattr*/
-    0,                         /*tp_setattr*/
-    0,                         /*tp_compare*/
-    0,                         /*tp_repr*/
-    0,                         /*tp_as_number*/
-    0,                         /*tp_as_sequence*/
-    &RelatedRecord_tp_as_mapping,      /*tp_as_mapping*/
-    0,                         /*tp_hash */
-    0,                         /*tp_call*/
-    0,                         /*tp_str*/
-    0,                         /*tp_getattro*/
-    0,                         /*tp_setattro*/
-    0,                         /*tp_as_buffer*/
-    Py_TPFLAGS_DEFAULT,        /*tp_flags*/
-    (char*)"Glom objects",           /* tp_doc */
-    0,                  /* tp_traverse */
-    0,                   /* tp_clear */
-    0,                   /* tp_richcompare */
-    0,                   /* tp_weaklistoffset */
-    0,                   /* tp_iter */
-    0,                   /* tp_iternext */
-    RelatedRecord_methods,             /* tp_methods */
-    0 /* RelatedRecord_members */,             /* tp_members */
-    0, /* RelatedRecord_getseters, */                   /* tp_getset */
-    0,                         /* tp_base */
-    0,                         /* tp_dict */
-    0,                         /* tp_descr_get */
-    0,                         /* tp_descr_set */
-    0,                         /* tp_dictoffset */
-    (initproc)RelatedRecord_init,      /* tp_init */
-    0,                         /* tp_alloc */
-    RelatedRecord_new,                 /* tp_new */
-    0, 0, 0, 0, 0, 0, 0, 0,
-};
-
-PyTypeObject* PyGlomRelatedRecord_GetPyType()
-{
-  return &pyglom_RelatedRecordType;
+  return generic_aggregate(field_name, "max");
 }
 
 

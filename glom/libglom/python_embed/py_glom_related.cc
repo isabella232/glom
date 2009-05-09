@@ -36,12 +36,9 @@
 namespace Glom
 {
 
-//Allocate a new object:
-//TODO: Why not parse the args here as well as in Related_init()?
-static PyObject *
-Related_new(PyTypeObject *type, PyObject * /* args */, PyObject * /* kwds */)
+PyGlomRelated::PyGlomRelated()
 {
-  PyGlomRelated *self  = (PyGlomRelated*)type->tp_alloc(type, 0);
+  PyGlomRelated *self  = this;
   if(self)
   {
     self->m_record = 0;
@@ -49,34 +46,11 @@ Related_new(PyTypeObject *type, PyObject * /* args */, PyObject * /* kwds */)
     self->m_pMap_relationships = new PyGlomRelated::type_map_relationships();
     self->m_pMap_relatedrecords = new PyGlomRelated::type_map_relatedrecords();
   }
-
-  return (PyObject*)self;
 }
 
-//Set the object's member data, from the parameters supplied when creating the object:
-static int
-Related_init(PyObject *self, PyObject* /* args */, PyObject* /* kwds */)
+PyGlomRelated::~PyGlomRelated()
 {
-  PyGlomRelated *self_related = (PyGlomRelated*)self;
-
-  if(self_related)
-  {
-    self_related->m_record = 0;
-
-    if(self_related->m_pMap_relationships == 0)
-      self_related->m_pMap_relationships = new PyGlomRelated::type_map_relationships();
-
-    if(self_related->m_pMap_relatedrecords == 0)
-      self_related->m_pMap_relatedrecords = new PyGlomRelated::type_map_relatedrecords();
-  }
-
-  return 0;
-}
-
-static void
-Related_dealloc(PyObject* self)
-{
-  PyGlomRelated *self_related = (PyGlomRelated*)self;
+  PyGlomRelated *self_related = this;
 
   if(self_related->m_pMap_relationships)
   {
@@ -101,32 +75,20 @@ Related_dealloc(PyObject* self)
     delete self_related->m_pMap_relatedrecords;
     self_related->m_pMap_relatedrecords = 0;
   }
-
-  self_related->ob_type->tp_free((PyObject*)self);
 }
 
 
-//Adapt to API changes in Python 2.5:
-#if defined(PY_VERSION_HEX) && (PY_VERSION_HEX >= 0x02050000) /* Python 2.5 */
-static Py_ssize_t
-Related_tp_as_mapping_length(PyObject *self)
+long PyGlomRelated::length() const
 {
-  PyGlomRelated *self_related = (PyGlomRelated*)self;
+  const PyGlomRelated *self_related = this;
   return self_related->m_pMap_relationships->size();
 }
-#else
-static int
-Related_tp_as_mapping_length(PyObject *self)
-{
-  PyGlomRelated *self_related = (PyGlomRelated*)self;
-  return (int)(self_related->m_pMap_relationships->size());
-}
-#endif
 
-static PyObject *
-Related_tp_as_mapping_getitem(PyObject *self, PyObject *item)
+boost::python::object PyGlomRelated::getitem(boost::python::object cppitem)
 {
-  PyGlomRelated *self_related = (PyGlomRelated*)self;
+  PyGlomRelated *self_related = this;
+
+  PyObject* item = cppitem.ptr(); //TODO: Just use the C++ object.
 
   if(PyString_Check(item))
   {
@@ -141,8 +103,10 @@ Related_tp_as_mapping_getitem(PyObject *self, PyObject *item)
       {
         //Return a reference to the cached item:
         PyGlomRelatedRecord* pyRelatedRecord = iterCacheFind->second;
+
+        PyObject* cobject = (PyObject*)pyRelatedRecord;
         Py_INCREF((PyObject*)pyRelatedRecord);
-        return (PyObject*)pyRelatedRecord;
+        return boost::python::object(boost::python::borrowed(cobject));
       }
       else
       {
@@ -151,9 +115,7 @@ Related_tp_as_mapping_getitem(PyObject *self, PyObject *item)
         if(iterFind != self_related->m_pMap_relationships->end())
         {
           //Return a new RelatedRecord:
-          PyObject* new_args = PyTuple_New(0);
-          PyGlomRelatedRecord* pyRelatedRecord = (PyGlomRelatedRecord*)PyObject_Call((PyObject*)PyGlomRelatedRecord_GetPyType(), new_args, 0);
-          Py_DECREF(new_args);
+          PyGlomRelatedRecord* pyRelatedRecord = new PyGlomRelatedRecord();
 
           //Fill it.
 
@@ -183,7 +145,9 @@ Related_tp_as_mapping_getitem(PyObject *self, PyObject *item)
               Py_INCREF((PyObject*)pyRelatedRecord); //Dereferenced in _dealloc().
               (*(self_related->m_pMap_relatedrecords))[key] = pyRelatedRecord;
 
-              return (PyObject*)pyRelatedRecord; //TODO: pygda_value_as_pyobject(iterFind->second.gobj(), true /* copy */);
+              PyObject* cobject = (PyObject*)pyRelatedRecord;
+              Py_INCREF((PyObject*)cobject);
+              return boost::python::object(boost::python::borrowed(cobject));
             }
           }
         }
@@ -192,81 +156,8 @@ Related_tp_as_mapping_getitem(PyObject *self, PyObject *item)
   }
 
   PyErr_SetString(PyExc_IndexError, "relationship not found");
-  return NULL;
+  return boost::python::object(); //Is this the same as returning a NULL PyObject*, meaning an error occurred?
 }
-
-/*
-static int
-Related_tp_as_mapping_setitem(PyGObject *self, PyObject *item, PyObject *value)
-{
-  Py_INCREF(Py_None);
-  return Py_None;
-}
-*/
-
-static PyMappingMethods Related_tp_as_mapping = {
-    Related_tp_as_mapping_length,
-    Related_tp_as_mapping_getitem,
-    (objobjargproc)0 /* Related_tp_as_mapping_setitem */
-};
-
-
-static PyTypeObject pyglom_RelatedType = {
-    PyObject_HEAD_INIT(NULL)
-    0,                         /*ob_size*/
-    (char*)"glom.Related",             /*tp_name*/
-    sizeof(PyGlomRelated), /*tp_basicsize*/
-    0,                         /*tp_itemsize*/
-    (destructor)Related_dealloc, /*tp_dealloc*/
-    0,                         /*tp_print*/
-    0,                         /*tp_getattr*/
-    0,                         /*tp_setattr*/
-    0,                         /*tp_compare*/
-    0,                         /*tp_repr*/
-    0,                         /*tp_as_number*/
-    0,                         /*tp_as_sequence*/
-    &Related_tp_as_mapping,                         /*tp_as_mapping*/
-    0,                         /*tp_hash */
-    0,                         /*tp_call*/
-    0,                         /*tp_str*/
-    0,                         /*tp_getattro*/
-    0,                         /*tp_setattro*/
-    0,                         /*tp_as_buffer*/
-    Py_TPFLAGS_DEFAULT,        /*tp_flags*/
-    (char*)"Glom objects",           /* tp_doc */
-    0,                  /* tp_traverse */
-    0,                   /* tp_clear */
-    0,                   /* tp_richcompare */
-    0,                   /* tp_weaklistoffset */
-    0,                   /* tp_iter */
-    0,                   /* tp_iternext */
-    0 /* Related_methods */,             /* tp_methods */
-    0 /* Related_members */,             /* tp_members */
-    0,                   /* tp_getset */
-    0,                         /* tp_base */
-    0,                         /* tp_dict */
-    0,                         /* tp_descr_get */
-    0,                         /* tp_descr_set */
-    0,                         /* tp_dictoffset */
-    (initproc)Related_init,      /* tp_init */
-    0,                         /* tp_alloc */
-    Related_new,                 /* tp_new */
-    0, 0, 0, 0, 0, 0, 0, 0,
-};
-
-PyTypeObject* PyGlomRelated_GetPyType()
-{
-  return &pyglom_RelatedType;
-}
-
-/*
-static void Related_HandlePythonError()
-{
-  if(PyErr_Occurred())
-    PyErr_Print();
-}
-*/
-
 
 void PyGlomRelated_SetRelationships(PyGlomRelated* self, const PyGlomRelated::type_map_relationships& relationships)
 {

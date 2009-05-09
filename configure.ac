@@ -163,6 +163,13 @@ AC_DEFINE_UNQUOTED([ISO_CODES_PREFIX],["`$PKG_CONFIG --variable=prefix iso-codes
 # Get the CFLAGS and LIBS for python's embedding API:
 AM_CHECK_PYTHON_HEADERS(,[AC_MSG_ERROR(could not find Python headers)])
 
+BOOST_PYTHON_LIBS="-lboost_python-gcc43-mt-1_39"
+AC_SUBST([BOOST_PYTHON_LIBS])
+
+#These don't work. pyconfig.h can't be found when using python.hpp.
+#AX_PYTHON()
+#AX_BOOST_PYTHON()
+
 # We don't have this on mingw, for example
 AC_CHECK_FUNCS(strptime)
 

@@ -22,12 +22,10 @@
 #include <libglom/python_embed/py_glom_record.h>
 #include <libglom/python_embed/pygdavalue_conversions.h>
 
-#define NO_IMPORT_PYGTK //To avoid a multiple definition in pygtk.
-#include <pygtk/pygtk.h> //For the PyGObject and PyGBoxed struct definitions.
-
-#include <Python.h>
-#include <compile.h> /* for the PyCodeObject */
-#include <eval.h> /* for PyEval_EvalCode */
+//#include <Python.h>
+//#include <compile.h> /* for the PyCodeObject */
+//#include <eval.h> /* for PyEval_EvalCode */
+#include <boost/python.hpp>
 
 #include "glom_python.h"
 #include <libglom/data_structure/glomconversions.h>
@@ -40,7 +38,7 @@
 namespace Glom
 {
 
-std::list<Glib::ustring> ustring_tokenize(const Glib::ustring& msg, const Glib::ustring& separators, int maxParts)
+static std::list<Glib::ustring> ustring_tokenize(const Glib::ustring& msg, const Glib::ustring& separators, int maxParts)
 {
   std::list<Glib::ustring> result;
   Glib::ustring str = msg;
@@ -64,33 +62,36 @@ std::list<Glib::ustring> ustring_tokenize(const Glib::ustring& msg, const Glib::
 }
 
 // Use this for errors not (directly) caused by the user
-void HandlePythonError()
+static void HandlePythonError()
 {
   if(PyErr_Occurred())
     PyErr_Print();
 }
 
 // Show python coding errors of the user
-void ShowTrace()
+static void ShowTrace()
 {
   // Python equivilant:
   // import traceback, sys
   // return "".join(traceback.format_exception(sys.exc_type,
   //    sys.exc_value, sys.exc_traceback))
 
-  PyObject *type, *value, *traceback;
-
+  PyObject* type = 0;
+  PyObject* value = 0;
+  PyObject* traceback = 0;
   PyErr_Fetch(&type, &value, &traceback);
   
   if(!traceback)
   {
     std::cerr << "traceback = 0" << std::endl;
+    return;
   }
 
   PyObject *tracebackModule = PyImport_ImportModule((char*)"traceback");
   gchar* chrRetval = 0;
   if(tracebackModule != NULL)
   {
+      //TODO: What is the boost::python equivalent of PyObject_CallMethod()?
       PyObject* tbList = PyObject_CallMethod(
           tracebackModule,
           (char*)"format_exception",
@@ -101,18 +102,17 @@ void ShowTrace()
       
       if(!tbList)
       {
-        std::cerr << "format_exception failed" << std::endl;
+        std::cerr << "Glom: format_exception failed" << std::endl;
         return;
       }
 
-      PyObject* emptyString = PyString_FromString("");
-      PyObject* strRetval = PyObject_CallMethod(emptyString, (char*)"join",
+      boost::python::str emptyString("");
+      PyObject* strRetval = PyObject_CallMethod(emptyString.ptr(), (char*)"join",
             (char*)"O", tbList);
       if(strRetval)
         chrRetval = g_strdup(PyString_AsString(strRetval));
     
       Py_DECREF(tbList);
-      Py_DECREF(emptyString);
       Py_DECREF(strRetval);
       Py_DECREF(tracebackModule);
     }
@@ -186,9 +186,8 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   func_def = "def " + func_name + "(record):\n  import glom\n  import gda\n" + func_def;
   //We did this in main(): Py_Initialize();
 
-  PyObject* pMain = PyImport_AddModule((char*)"__main__");
-  PyObject* pDict = PyModule_GetDict(pMain);
-
+  boost::python::object pMain = boost::python::import("__main__");
+  boost::python::dict pDict = boost::python::extract<boost::python::dict>( pMain.attr("__dict__") ); //TODO: Does boost::python have an equivalent for PyModule_GetDict()?
 
   //Allow the function to import from our script library:
   if(pDocument)
@@ -200,6 +199,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
       const Glib::ustring script = pDocument->get_library_module(name);
       if(!name.empty() && !script.empty())
       {
+        //TODO: Is there a boost::python equivalent for Py_CompileString()?
         PyObject* objectCompiled = Py_CompileString(script.c_str(), name.c_str() /* "filename", for debugging info */,  Py_file_input /* "start token" for multiple lines of code. */); //Returns a reference.
   
         if(!objectCompiled)
@@ -252,7 +252,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
 
 
   //Create the function definition:
-  PyObject* pyValue = PyRun_String(func_def.c_str(), Py_file_input, pDict, pDict);
+  PyObject* pyValue = PyRun_String(func_def.c_str(), Py_file_input, pDict.ptr(), pDict.ptr());
   if(pyValue)
   {
     Py_DECREF(pyValue);
@@ -265,7 +265,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
 
   //Call the function:
   {
-    PyObject* pFunc = PyDict_GetItemString(pDict, func_name.c_str()); //The result is borrowed, so should not be dereferenced.
+    PyObject* pFunc = PyDict_GetItemString(pDict.ptr(), func_name.c_str()); //The result is borrowed, so should not be dereferenced.
     if(!pFunc)
     {
       HandlePythonError();
@@ -286,9 +286,11 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
     PyGlomRecord* pParam = (PyGlomRecord*)PyObject_Call((PyObject*)pyTypeGlomRecord, new_args, 0);
     //PyGlomRecord* pParam = (PyGlomRecord*)PyObject_Call((PyObject*)PyGlomRecord_GetPyType(), new_args, 0);
     Py_DECREF(new_args);
+    new_args = 0;
+
     if(pParam)
     {
-      Py_INCREF(pParam); //TODO: As I understand it, PyObject_New() should return a new reference, so this should not be necessary.
+      Py_INCREF((PyObject*)pParam); //TODO: As I understand it, PyObject_New() should return a new reference, so this should not be necessary.
 
       //Fill the record's details:
       PyGlomRecord_SetFields(pParam, field_values, pDocument, table_name, opened_connection);
@@ -333,7 +335,6 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
           //instead of returning 0.
           if(pyResult == Py_None) //Direct comparison is possible and recommended, because there is only one pyNone object.
           {
- 
             //The result should be an appropriate empty value for this field type:
             valueResult = Conversions::get_empty_value(result_type);
             //std::cout << "DEBUG: glom_evaluate_python_function_implementation(): empty value Gda type=" << g_type_name(valueResult.get_value_type()) << std::endl;
@@ -344,26 +345,28 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
             //(though I don't think this code is ever reached. murrayc)
 
             //Treat this as a string or something that can be converted to a string:
-            PyObject* pyObjectResult = PyObject_Str(pyResult);
-            if(PyString_Check(pyObjectResult))
+            const char* pchResult = 0;
+            try
             {
-              const char* pchResult = PyString_AsString(pyObjectResult);
-              if(pchResult)
-              {
-                bool success = false;
-                valueResult = Conversions::parse_value(result_type, pchResult, success, true /* iso_format */);
-                std::cout << "DEBUG: glom_evaluate_python_function_implementation(): parsed value Gda type=" << g_type_name(valueResult.get_value_type()) << std::endl;
- 
-              }
-              else
-                HandlePythonError();
+              pchResult = boost::python::extract<const char*>(pyResult);
+            }
+            catch(const boost::python::error_already_set& ex)
+            {
+              std::cerr << "Glom: Exception caught from boost::python::extract() while converting result to a const char*." << std::endl << func_name << std::endl;
+              ShowTrace();
+              return valueResult;
+            }
+
+            if(pchResult)
+            {
+              bool success = false;
+              valueResult = Conversions::parse_value(result_type, pchResult, success, true /* iso_format */);
+              std::cout << "DEBUG: glom_evaluate_python_function_implementation(): parsed value Gda type=" << g_type_name(valueResult.get_value_type()) << std::endl;
             }
             else
               HandlePythonError();
           }
         }
-
-        Py_DECREF(pyResult);
       }
     }
   }

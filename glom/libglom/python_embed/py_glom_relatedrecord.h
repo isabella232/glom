@@ -22,6 +22,7 @@
 #define GLOM_PYTHON_GLOM_RELATEDRECORD_H
 
 #define NO_IMPORT_PYGTK //To avoid a multiple definition in pygtk.
+#include <boost/python.hpp>
 #include <pygtk/pygtk.h> //For the PyGObject and PyGBoxed struct definitions.
 
 #include <libglom/document/document.h>
@@ -33,10 +34,24 @@ namespace Glom
 
 class PyGlomRecord;
 
-struct PyGlomRelatedRecord
+class PyGlomRelatedRecord
 {
 public:
-  PyObject_HEAD
+  PyGlomRelatedRecord();
+  ~PyGlomRelatedRecord();
+
+  boost::python::object sum(const std::string& field_name) const;
+  boost::python::object count(const std::string& field_name) const;
+  boost::python::object min(const std::string& field_name) const;
+  boost::python::object max(const std::string& field_name) const;
+
+  //[] notation:
+  long length() const;
+  PyObject* getitem(PyObject *item); //TODO: use a string parameter?
+
+//TODO: protected:
+
+  boost::python::object generic_aggregate(const std::string& field_name, const std::string& aggregate) const;
 
   //PyObject* m_fields_dict; //Dictionary (map) of field names (string) to field values (Gnome::Gda::Value).
   PyGObject* m_py_gda_connection; //"derived" from PyObject.
