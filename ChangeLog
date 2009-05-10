@@ -1,3 +1,12 @@
+2009-05-10  Murray Cumming  <murrayc@murrayc-x61>
+
+	Disables the Open button next to ID fields if the field is empty.
+
+	* glom/utility_widgets/datawidget.[h|cc]: 
+	Added private update_go_to_details_button_sensitivity() method and 
+	called it whenever the value is changed by the user or set via 
+	set_value(). Fixes bug #565023.
+
 2009-05-07  Murray Cumming  <murrayc@murrayc-x61>
 
 	Allow non-network-shared connections when using IPv6.

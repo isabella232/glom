@@ -113,11 +113,16 @@ private:
    */
   bool offer_related_record_id_find(Gnome::Gda::Value& chosen_id);
 
+private:
+  void update_go_to_details_button_sensitivity();
+
+protected:
   type_signal_edited m_signal_edited;
   type_signal_open_details_requested m_signal_open_details_requested;
 
   Gtk::Label m_label;
   Gtk::Widget* m_child;
+  Gtk::Button* m_button_go_to_details;
 };
 
 } //namespace Glom

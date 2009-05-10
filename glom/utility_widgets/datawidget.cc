@@ -46,6 +46,8 @@ DataWidget::DataWidget(Field::glom_field_type glom_type, const Glib::ustring& ti
 */
 
 DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ustring& table_name, const Document* document)
+:  m_child(0),
+   m_button_go_to_details(0)
 {
   const Field::glom_field_type glom_type = field->get_glom_type();
   set_layout_item(field, table_name);
@@ -240,10 +242,10 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     if((field_used_in_relationship_to_one || field_is_related_primary_key) && hbox_parent)
     {
       //Add a button for related record navigation:
-      Gtk::Button* button_go_to_details = Gtk::manage(new Gtk::Button(Gtk::Stock::OPEN));
-      button_go_to_details->set_tooltip_text(_("Open the record identified by this ID, in the other table."));
-      hbox_parent->pack_start(*button_go_to_details);
-      button_go_to_details->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_open_details));
+      m_button_go_to_details = Gtk::manage(new Gtk::Button(Gtk::Stock::OPEN));
+      m_button_go_to_details->set_tooltip_text(_("Open the record identified by this ID, in the other table."));
+      hbox_parent->pack_start(*m_button_go_to_details);
+      m_button_go_to_details->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_open_details));
 
       //Add a button to make it easier to choose an ID for this field.
       //Don't add this for simple related primary key fields, because they 
@@ -276,6 +278,7 @@ DataWidget::~DataWidget()
 void DataWidget::on_widget_edited()
 {
   m_signal_edited.emit(get_value());
+  update_go_to_details_button_sensitivity();
 }
 
 DataWidget::type_signal_edited DataWidget::signal_edited()
@@ -306,6 +309,20 @@ void DataWidget::set_value(const Gnome::Gda::Value& value)
 
       checkbutton->set_active( bValue );
     }
+  }
+
+  update_go_to_details_button_sensitivity();
+}
+
+void DataWidget::update_go_to_details_button_sensitivity()
+{
+  //If there is a Go-To-Details "Open" button, only enable it if there is 
+  //an ID:
+  if(m_button_go_to_details)
+  {
+    const Gnome::Gda::Value value = get_value();
+    const bool enabled = !Conversions::value_is_empty(value);
+    m_button_go_to_details->set_sensitive(enabled);
   }
 }
 
