@@ -1268,7 +1268,7 @@ bool Base_DB::create_table_with_default_fields(const Glib::ustring& table_name)
   created = create_table(table_info, fields);
 
     //Create a table with 1 "ID" field:
-   //MSYQL:
+    //MSYQL:
     //query_execute( "CREATE TABLE \"" + table_name + "\" (" + primary_key_name + " INT NOT NULL AUTO_INCREMENT PRIMARY KEY)" );
     //query_execute( "INSERT INTO \"" + table_name + "\" VALUES (0)" );
 
