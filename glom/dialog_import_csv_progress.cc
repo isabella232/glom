@@ -201,7 +201,7 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
   else
   {
     std::cout << "Dialog_Import_CSV_Progress::on_idle_import(): Calling record_new() with primary_key_value=" << primary_key_value.to_string() << " ..." << std::endl;
-    record_new(m_table_name, true /* use_entered_data */, primary_key_value);
+    record_new_with_entered_data(primary_key_value);
     std::cout << "Dialog_Import_CSV_Progress::on_idle_import(): ... Finished calling record_new()" << std::endl;
   }
 
@@ -251,7 +251,7 @@ Gnome::Gda::Value Dialog_Import_CSV_Progress::get_primary_key_value_selected() c
 // in Base_DB_Table_Data.
 void Dialog_Import_CSV_Progress::set_primary_key_value(const Gtk::TreeModel::iterator& /* row */, const Gnome::Gda::Value& /* value */)
 {
-  // This is actually called by Base_DB_Table_Data::record_new(), but we can safely ignore it.
+  // This is actually called by Base_DB_Table_Data::record_new_with_entered_data(), but we can safely ignore it.
   //throw std::logic_error("Dialog_Import_CSV_Progress::set_primary_key_value() called");
 }
 

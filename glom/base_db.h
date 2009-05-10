@@ -114,6 +114,17 @@ public:
   bool change_columns(const Glib::ustring& table_name, const type_vec_const_fields& old_fields, type_vec_fields& fields, Gtk::Window* parent_window) const;
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
+  typedef std::pair< sharedptr<Field>, Gnome::Gda::Value> type_field_and_value;
+  typedef std::list<type_field_and_value> type_field_values; 
+
+  /** Create a new record with all the specified field values.
+   * @param The table to which to add a new record.
+   * @param primary_key_value The new primary key value for the new record. Otherwise the primary key values must be in the the @a field_values parameter.
+   * @param field_values Values to use for fields, instead of entered data.
+   * @result true if the record was added to the database.
+   */
+  bool record_new(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value = Gnome::Gda::Value(), const type_field_values& field_values = type_field_values()); 
+
   bool insert_example_data(const Glib::ustring& table_name) const;
 
   typedef std::vector< sharedptr<LayoutItem_Field> > type_vecLayoutFields;

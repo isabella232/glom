@@ -1589,6 +1589,240 @@ Glib::RefPtr<Gnome::Gda::Connection> Base_DB::get_connection()
   return gda_connection;
 }
 
+
+/** A predicate for use with std::find_if() to find a std::pair whose 
+ * first item is the same field.
+ */
+class predicate_pair_has_field
+{
+public:
+  predicate_pair_has_field(const sharedptr<const Field>& field)
+  {
+    m_field = field;
+  }
+
+  template <class T_Second>
+  bool operator() (const std::pair<sharedptr<Field>, T_Second>& element)
+  {
+    sharedptr<Field> field = element.first;
+
+    if(!field && !m_field)
+      return true;
+
+    if(!field || !m_field)
+      return false;
+
+    //TODO: Check more than just the name:
+    return (m_field->get_name() == field->get_name());
+  }
+    
+private:
+  sharedptr<const Field> m_field;
+};
+
+bool Base_DB::record_new(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value, const type_field_values& field_values)
+{
+  sharedptr<const Field> fieldPrimaryKey = get_field_primary_key_for_table(table_name);
+  const Glib::ustring primary_key_name = fieldPrimaryKey->get_name();
+
+  type_field_values field_values_plus_others = field_values;
+ 
+  //Add values for all fields that default to something, not just the shown ones:
+  //For instance, we must always add the primary key, and fields with default/calculated/lookup values:
+  type_vec_fields all_fields = get_fields_for_table(table_name);
+  for(type_vec_fields::const_iterator iter = all_fields.begin(); iter != all_fields.end(); ++iter)
+  {
+    //TODO: Search for the non-related field with the name, not just the field with the name:
+    sharedptr<Field> field = *iter;
+    type_field_values::const_iterator iterFind = std::find_if(field_values_plus_others.begin(), field_values_plus_others.end(), predicate_pair_has_field(field));
+    if(iterFind == field_values_plus_others.end())
+    {
+      //The actual appropriate field value will be filled in below:
+      field_values_plus_others.push_back( type_field_and_value(field, Gnome::Gda::Value()) );
+    }
+  }
+
+
+  Document* document = get_document();
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+
+  //Calculate any necessary field values and remember them:
+  for(type_field_values::iterator iter = field_values_plus_others.begin(); iter != field_values_plus_others.end(); ++iter)
+  {
+    const sharedptr<const Field>& field = iter->first;
+    if(!field)
+      continue;
+
+    //If the caller supplied a field value then use it:
+    Gnome::Gda::Value value = iter->second;
+
+    if(Conversions::value_is_empty(value)) //This deals with empty strings too.
+    {
+      if(field) //TODO: Remove this check: we already check it above.
+      {
+        //If the default value should be calculated, then calculate it:
+        if(field->get_has_calculation())
+        {
+          const Glib::ustring calculation = field->get_calculation();
+          const type_map_fields field_values = get_record_field_values_for_calculation(table_name, fieldPrimaryKey, primary_key_value);
+
+          //We need the connection when we run the script, so that the script may use it.
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+          // TODO: Is this function supposed to throw an exception?
+          sharedptr<SharedConnection> sharedconnection = connect_to_server(App_Glom::get_application());
+#else
+          std::auto_ptr<ExceptionConnection> error;
+          sharedptr<SharedConnection> sharedconnection = connect_to_server(App_Glom::get_application(), error);
+          if(error.get() == NULL)
+          {
+            // Don't evaluate function on error
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+
+            const Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field->get_glom_type(), calculation, field_values, document, table_name, sharedconnection->get_gda_connection());
+            iter->second = value;
+#ifndef GLIBMM_EXCEPTIONS_ENABLED
+          }
+#endif // !GLIBMM_EXCEPTIONS_ENABLED
+        }
+
+        //Use default values (These are also specified in postgres as part of the field definition,
+        //so we could theoretically just not specify it here.)
+        //TODO_Performance: Add has_default_value()?
+        if(Conversions::value_is_empty(value))
+        {
+          const Gnome::Gda::Value default_value = field->get_default_value();
+          if(!Conversions::value_is_empty(default_value))
+          {
+            iter->second = default_value;
+          }
+        }
+      }
+    }
+  }
+
+  //Get all entered field name/value pairs:
+  Glib::ustring strNames;
+  Glib::ustring strValues;
+
+  //Avoid specifying the same field twice:
+  typedef std::map<Glib::ustring, bool> type_map_added;
+  type_map_added map_added;
+  Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
+  
+  for(type_field_values::const_iterator iter = field_values_plus_others.begin(); iter != field_values_plus_others.end(); ++iter)
+  {
+    sharedptr<Field> field = iter->first;
+    //sharedptr<LayoutItem_Field> layout_item = *iter;
+    const Glib::ustring field_name = field->get_name();
+    if(true) //!layout_item->get_has_relationship_name()) //TODO: Allow people to add a related record also by entering new data in a related field of the related record.
+    {
+      type_map_added::const_iterator iterFind = map_added.find(field_name);
+      if(iterFind == map_added.end()) //If it was not added already
+      {
+        Gnome::Gda::Value value;
+      
+        if(field) //TODO: Check above instead.
+        {
+          //Use the specified (generated) primary key value, if there is one:
+          if(primary_key_name == field_name && !Conversions::value_is_empty(primary_key_value))
+          {
+            value = primary_key_value;
+          }
+          //Handle the special creation fields:
+          //TODO_performance: Avoid these string comparisons for each field: 
+          else if(field_name == GLOM_STANDARD_DEFAULT_FIELD_CREATION_DATE)
+          {
+            value =  Utils::get_current_date_utc_as_value();
+          }
+          else if(field_name == GLOM_STANDARD_DEFAULT_FIELD_CREATION_TIME)
+          {
+            value = Utils::get_current_time_utc_as_value();
+          }
+          else if(field_name == GLOM_STANDARD_DEFAULT_FIELD_CREATION_USER)
+          {
+            value = Gnome::Gda::Value(connection_pool->get_user());
+          }
+
+          /* //TODO: This would be too many small queries when adding one record.
+          //Check whether the value meets uniqueness constraints:
+          if(field->get_primary_key() || field->get_unique_key())
+          {
+            if(!get_field_value_is_unique(table_name, layout_item, value))
+            {
+              //Ignore this field value. TODO: Warn the user about it.
+            } 
+          }
+          */
+          if(!value.is_null())
+          {
+            sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+            layout_item->set_full_field_details(field);
+            set_entered_field_data(layout_item, value);
+
+            if(!strNames.empty())
+            {
+              strNames += ", ";
+              strValues += ", ";
+            }
+  
+            strNames += "\"" + field_name + "\"";
+            strValues += field->get_gda_holder_string();
+            const Glib::RefPtr<Gnome::Gda::Holder> holder = field->get_holder(value);
+            params->add_holder(holder);
+  
+            map_added[field_name] = true;
+          }
+        }
+      }
+    }
+  }
+
+  //Put it all together to create the record with these field values:
+  if(!strNames.empty() && !strValues.empty())
+  {
+    const Glib::ustring strQuery = "INSERT INTO \"" + table_name + "\" (" + strNames + ") VALUES (" + strValues + ")";
+    const bool test = query_execute(strQuery, params);
+    if(!test)
+      std::cerr << "Box_Data::record_new(): INSERT failed." << std::endl;
+    else
+    {
+      //TODO: Previously needed by by DbAddDel::user_changed(). Is that still true?
+      //Gtk::TreeModel::iterator row = get_row_selected(); //Null and ignored for details views.
+      //set_primary_key_value(row, primary_key_value); //Needed by DbAddDel::user_changed().
+
+      //Update any lookups, related fields, or calculations:
+      for(type_field_values::const_iterator iter = field_values_plus_others.begin(); iter != field_values_plus_others.end(); ++iter)
+      {
+        //sharedptr<const LayoutItem_Field> layout_item = *iter;
+         
+        const Gnome::Gda::Value& field_value = iter->second;
+
+        sharedptr<Field> field = iter->first;
+        sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+        layout_item->set_full_field_details(field);
+        LayoutFieldInRecord field_in_record(layout_item, table_name, fieldPrimaryKey, primary_key_value);
+
+        //TODO: This is meaningless for this any-table_name version of this function:
+        Gtk::TreeModel::iterator row = get_row_selected(); //Null and ignored for details views.
+
+        //Get-and-set values for lookup fields, if this field triggers those relationships:
+        do_lookups(field_in_record, row, field_value);
+
+        //Update related fields, if this field is used in the relationship:
+        refresh_related_fields(field_in_record, row, field_value);
+
+        //TODO: Put the inserted row into result, somehow? murrayc
+      }
+
+      return true; //success
+    }
+  }
+  else
+    std::cerr << "Base_DB_Table_Data::record_new(): Empty field names or values." << std::endl;
+
+  return false; //Failed.
+}
+
 bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
 {
   //TODO_Performance: Avoid copying:
