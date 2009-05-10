@@ -874,7 +874,7 @@ void DbAddDel::construct_specified_columns()
     }
   }
   
-  m_FieldsShown = fields; //Needed by Base_DB_Table_Data::record_new().
+  m_FieldsShown = fields; //Needed by Base_DB_Table_Data::record_new_with_entered_data().
 
   {
     //Find the primary key:
@@ -2234,7 +2234,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
 
       //Update the field in the record (the record with this primary key):
       const Gnome::Gda::Value field_value = get_value(row, layout_field);
-      //std::cout << "Box_Data_List::on_adddel_user_changed(): field_value = " << field_value.to_string() << std::endl;
+      //std::cout << "DbAddDel::user_changed(): field_value = " << field_value.to_string() << std::endl;
       //const sharedptr<const Field>& field = layout_field->m_field;
       //const Glib::ustring strFieldName = layout_field->get_name();
 
@@ -2311,7 +2311,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
     else
     {
       //A field value was entered, but the record has not been added yet, because not enough information exists yet.
-      g_warning("Box_Data_List::on_adddel_user_changed(): debug: record not yet added.");
+      g_warning("DbAddDel::user_changed(): debug: record not yet added.");
     }
   }
 }
@@ -2382,7 +2382,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
       if(m_find_mode)
         return;
     
-      const bool added = record_new(m_table_name, true /* use entered field data*/, primary_key_value);
+      const bool added = record_new_with_entered_data(primary_key_value);
       if(added)
       {
         //Save the primary key value for later use:
