@@ -79,7 +79,7 @@ public:
 OptionGroup::OptionGroup()
 : Glib::OptionGroup("Glom", _("Glom options"), _("Command-line options for glom")),
   m_arg_version(false),
-  m_arg_debug_sql(false)
+  m_arg_debug_sql(false),
   m_arg_debug_date_check(false)
 {
   Glib::OptionEntry entry;
