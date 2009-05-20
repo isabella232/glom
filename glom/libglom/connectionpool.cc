@@ -386,7 +386,7 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
         {
           //update_meta_store_table_names() has been known to throw an exception.
           //Glom is mostly unusable when it fails, but that's still better than a crash.
-          m_refGdaConnection->update_meta_store_table_names();
+          m_refGdaConnection->update_meta_store_table_names(m_backend->get_public_schema_name());
         }
         catch(const Glib::Error& ex)
         {
@@ -700,11 +700,11 @@ bool ConnectionPool::add_column(const Glib::ustring& table_name, const sharedptr
   const bool result = m_backend->add_column(m_refGdaConnection, table_name, field, error);
   if(error.get()) throw *error;
 
-  m_refGdaConnection->update_meta_store_table(table_name);
+  m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name());
 #else
   const bool result = m_backend->add_column(m_refGdaConnection, table_name, field, error);
   if(result)
-    result = m_refGdaConnection->update_meta_store_table(table_name, error);
+    result = m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name(), error);
 #endif
 
   return result;
@@ -737,11 +737,11 @@ bool ConnectionPool::drop_column(const Glib::ustring& table_name, const Glib::us
   const bool result = m_backend->drop_column(m_refGdaConnection, table_name, field_name, error);
   if(error.get()) throw *error;
 
-  m_refGdaConnection->update_meta_store_table(table_name);
+  m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name());
 #else
   const bool result = m_backend->drop_column(m_refGdaConnection, table_name, field_name, error);
   if(result)
-    result = m_refGdaConnection->update_meta_store_table(table_name, error);
+    result = m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name(), error);
 #endif
 
   return result;
@@ -790,11 +790,11 @@ bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_
   const bool result = m_backend->change_columns(m_refGdaConnection, table_name, old_fields, new_fields, error);
   if(error.get()) throw *error;
 
-  m_refGdaConnection->update_meta_store_table(table_name);
+  m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name());
 #else
   const bool result = m_backend->change_columns(m_refGdaConnection, table_name, old_fields, new_fields, error);
   if(result)
-    result = m_refGdaConnection->update_meta_store_table(table_name, error);
+    result = m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name(), error);
 #endif
 
   return result;

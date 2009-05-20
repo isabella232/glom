@@ -1,3 +1,16 @@
+2009-05-20  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/connectionpool_backends/backend.h:
+	* glom/libglom/connectionpool_backends/postgres.h:
+	* glom/libglom/connectionpool_backends/sqlite.h: Added
+	get_public_schema_name() virtual function and implementations for both
+	backends.
+
+	* glom/libglom/connectionpool.cc: Only update the meta store tables
+	for the public schema of the corresponding backend. This considerably
+	speeds up the initial meta store update. This requires latest libgdamm
+	from git.
+
 2009-05-10  Murray Cumming  <murrayc@murrayc-x61>
 
 	Disables the Open button next to ID fields if the field is empty.

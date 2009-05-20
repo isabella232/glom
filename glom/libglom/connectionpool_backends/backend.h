@@ -109,6 +109,13 @@ protected:
    */
   virtual Glib::ustring get_string_find_operator() const = 0;
 
+  /** This specifies the database schema which contains the non-internal
+   * tables. This is used to speedup the libgda meta store update by only
+   * updating the non-internal tables. libgda might later be able to do this
+   * without us specifying it explicitely. See #575235.
+   */
+  virtual const char* get_public_schema_name() const = 0;
+
   /** This callback should show UI to indicate that work is still happening.
    * For instance, a pulsing ProgressBar.
    */
