@@ -1,3 +1,10 @@
+2009-05-25  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/dialog_existing_or_new.cc (constructor): Create the top level
+	list elements before setting the cell data func, to avoid the cell
+	data func being called before all the list elements have been added.
+	This happended when Glom was launched via LDTP, leading to a crash.
+
 2009-05-20  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/connectionpool_backends/backend.h:

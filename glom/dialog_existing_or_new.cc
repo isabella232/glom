@@ -115,26 +115,6 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   m_new_model = Gtk::TreeStore::create(m_new_columns);
   m_new_view->set_model(m_new_model);
 
-  m_existing_column_title.set_expand(true);
-  m_existing_column_title.pack_start(m_existing_icon_renderer, false);
-  m_existing_column_title.pack_start(m_existing_title_renderer, true);
-  m_existing_column_title.set_cell_data_func(m_existing_icon_renderer, sigc::mem_fun(*this, &Dialog_ExistingOrNew::existing_icon_data_func));
-  m_existing_column_title.set_cell_data_func(m_existing_title_renderer, sigc::mem_fun(*this, &Dialog_ExistingOrNew::existing_title_data_func));
-  m_existing_view->append_column(m_existing_column_title);
-
-
-  m_new_column_title.set_expand(true);
-  m_new_column_title.pack_start(m_new_icon_renderer, false);
-  m_new_column_title.pack_start(m_new_title_renderer, true);
-  m_new_column_title.set_cell_data_func(m_new_icon_renderer, sigc::mem_fun(*this, &Dialog_ExistingOrNew::new_icon_data_func));
-  m_new_column_title.set_cell_data_func(m_new_title_renderer, sigc::mem_fun(*this, &Dialog_ExistingOrNew::new_title_data_func));
-  m_new_view->append_column(m_new_column_title);
-
-  m_existing_view->set_headers_visible(false);
-  m_existing_view->signal_row_activated().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_existing_row_activated));
-  m_new_view->set_headers_visible(false);
-  m_new_view->signal_row_activated().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_new_row_activated));
-
   m_iter_existing_other = m_existing_model->append();
   (*m_iter_existing_other)[m_existing_columns.m_col_title] = _("Select File");
 
@@ -152,6 +132,24 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   m_iter_new_template = m_new_model->append();
   (*m_iter_new_template)[m_new_columns.m_col_title] = _("New From Template");
 
+  m_existing_column_title.set_expand(true);
+  m_existing_column_title.pack_start(m_existing_icon_renderer, false);
+  m_existing_column_title.pack_start(m_existing_title_renderer, true);
+  m_existing_column_title.set_cell_data_func(m_existing_icon_renderer, sigc::mem_fun(*this, &Dialog_ExistingOrNew::existing_icon_data_func));
+  m_existing_column_title.set_cell_data_func(m_existing_title_renderer, sigc::mem_fun(*this, &Dialog_ExistingOrNew::existing_title_data_func));
+  m_existing_view->append_column(m_existing_column_title);
+
+  m_new_column_title.set_expand(true);
+  m_new_column_title.pack_start(m_new_icon_renderer, false);
+  m_new_column_title.pack_start(m_new_title_renderer, true);
+  m_new_column_title.set_cell_data_func(m_new_icon_renderer, sigc::mem_fun(*this, &Dialog_ExistingOrNew::new_icon_data_func));
+  m_new_column_title.set_cell_data_func(m_new_title_renderer, sigc::mem_fun(*this, &Dialog_ExistingOrNew::new_title_data_func));
+  m_new_view->append_column(m_new_column_title);
+
+  m_existing_view->set_headers_visible(false);
+  m_existing_view->signal_row_activated().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_existing_row_activated));
+  m_new_view->set_headers_visible(false);
+  m_new_view->signal_row_activated().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_new_row_activated));
 
  // Load example files:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
