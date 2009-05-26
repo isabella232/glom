@@ -1,3 +1,9 @@
+2009-05-26  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/glom.glade: Added a window title to the initial dialog, and
+	accessible names for the two tree views in it, so they are easily
+	accessible from LDTP.
+
 2009-05-25  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/dialog_existing_or_new.cc (constructor): Create the top level
