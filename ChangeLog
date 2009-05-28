@@ -1,9 +1,11 @@
-2009-02-24  Murray Cumming  <murrayc@murrayc.com>
+2009-05-07 Murray Cumming <murrayc@murrayc.com>
 
-	* glom/utility_widgets/flowtable.cc: on_size_allocate(): Change an 
-	accidental += to the = that it should be, to stop columns getting 
-	increasingly large amounts of extra width when there are >2 columns.
-	Bug #539369 (maximiliano)
+	Pass some sharedptr&s as const.
+
+	* glom/utility_widgets/flowtable_dnd.h: on_dnd_add_layout_item()
+	* glom/mode_data/flowtablewithfields.[h|cc]: on_dnd_add_layout_item(),
+	on_entry_edited(), on_entry_open_details_requested(),
+	on_dnd_add_layout_item(): Pass the sharedptr& as const.
 
 2009-04-02  Armin Burgmeier  <armin@openismus.com>
 
