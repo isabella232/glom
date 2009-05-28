@@ -989,12 +989,12 @@ void FlowTableWithFields::on_script_button_clicked(const sharedptr< LayoutItem_B
   m_signal_script_button_clicked.emit(layout_item);
 }
 
-void FlowTableWithFields::on_entry_edited(const Gnome::Gda::Value& value, sharedptr<const LayoutItem_Field> field)
+void FlowTableWithFields::on_entry_edited(const Gnome::Gda::Value& value, const sharedptr<const LayoutItem_Field> field)
 {
   m_signal_field_edited.emit(field, value);
 }
 
-void FlowTableWithFields::on_entry_open_details_requested(const Gnome::Gda::Value& value, sharedptr<const LayoutItem_Field> field)
+void FlowTableWithFields::on_entry_open_details_requested(const Gnome::Gda::Value& value, const sharedptr<const LayoutItem_Field> field)
 {
   m_signal_field_open_details_requested.emit(field, value);
 }
@@ -1195,7 +1195,7 @@ void FlowTableWithFields::on_dnd_add_layout_item_field(LayoutWidgetBase* above)
     return;
   }
   sharedptr<LayoutItem> item = sharedptr<LayoutItem>::cast_dynamic(layout_item_field);
-  dnd_add_to_layout_group (item, above);
+  dnd_add_to_layout_group(item, above);
   
   //Tell the parent to tell the document to save the layout
   signal_layout_changed().emit();
@@ -1212,7 +1212,7 @@ void FlowTableWithFields::on_dnd_add_layout_notebook (LayoutWidgetBase* above)
   group->set_name (_("Group"));
   notebook->m_list_items.push_back(group);
   
-  dnd_add_to_layout_group (item, above);
+  dnd_add_to_layout_group(item, above);
   
   //Tell the parent to tell the document to save the layout
   signal_layout_changed().emit();
@@ -1284,8 +1284,7 @@ void FlowTableWithFields::on_dnd_add_layout_item_image(LayoutWidgetBase* above)
   signal_layout_changed().emit();
 }
 
-void FlowTableWithFields::on_dnd_add_layout_item (LayoutWidgetBase* above,
-                                                  sharedptr<LayoutItem>& item)
+void FlowTableWithFields::on_dnd_add_layout_item(LayoutWidgetBase* above, const sharedptr<LayoutItem>& item)
 {
   dnd_add_to_layout_group (item, above);
   
@@ -1307,8 +1306,8 @@ void FlowTableWithFields::on_dnd_add_placeholder(LayoutWidgetBase* above)
                                                             above);
   sharedptr<LayoutItem_Placeholder> placeholder_field(new LayoutItem_Placeholder);
   sharedptr<LayoutItem> item = sharedptr<LayoutItem>::cast_dynamic(placeholder_field);  
-  add_layout_item_at_position (placeholder_field, cur_widget);
-  dnd_add_to_layout_group (item, above, true /* ignore error*/);
+  add_layout_item_at_position(placeholder_field, cur_widget);
+  dnd_add_to_layout_group(item, above, true /* ignore error*/);
 }
 
 void FlowTableWithFields::on_dnd_remove_placeholder()
@@ -1345,9 +1344,7 @@ void FlowTableWithFields::dnd_notify_failed_drop()
   dialog.run();
 }
 
-bool FlowTableWithFields::dnd_add_to_layout_group (sharedptr<LayoutItem>& item, 
-                                                   LayoutWidgetBase* layoutwidget,
-                                                   bool ignore_error)
+bool FlowTableWithFields::dnd_add_to_layout_group(const sharedptr<LayoutItem>& item,  LayoutWidgetBase* layoutwidget, bool ignore_error)
 {
   //Get the layout group that the "above" widget's layout item is in:
   sharedptr<LayoutGroup> layout_group = get_layout_group();

@@ -148,8 +148,8 @@ protected:
 
   //int get_suitable_width(Field::glom_field_type field_type);
 
-  void on_entry_edited(const Gnome::Gda::Value& value, sharedptr<const LayoutItem_Field> field);
-  void on_entry_open_details_requested(const Gnome::Gda::Value& value, sharedptr<const LayoutItem_Field> field);
+  void on_entry_edited(const Gnome::Gda::Value& value, const sharedptr<const LayoutItem_Field> field);
+  void on_entry_open_details_requested(const Gnome::Gda::Value& value, const sharedptr<const LayoutItem_Field> field);
   void on_flowtable_entry_edited(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
   void on_flowtable_entry_open_details_requested(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value); 
   void on_flowtable_related_record_changed(const Glib::ustring& relationship_name);
@@ -213,19 +213,18 @@ protected:
   // Methods for the different layout object
   virtual void on_dnd_add_layout_item_field (LayoutWidgetBase* above);
   virtual void on_dnd_add_layout_group(LayoutWidgetBase* above);
-  virtual void on_dnd_add_layout_item_button (LayoutWidgetBase* above);
-  virtual void on_dnd_add_layout_item_text (LayoutWidgetBase* above);
-  virtual void on_dnd_add_layout_item_image (LayoutWidgetBase* above);
-  virtual void on_dnd_add_layout_notebook (LayoutWidgetBase* above);
-  virtual void on_dnd_add_layout_portal (LayoutWidgetBase* above);
-  virtual void on_dnd_add_layout_item (LayoutWidgetBase* above,
-                                       sharedptr<LayoutItem>& item);
+
+  virtual void on_dnd_add_layout_item_button(LayoutWidgetBase* above);
+  virtual void on_dnd_add_layout_item_text(LayoutWidgetBase* above);
+  virtual void on_dnd_add_layout_item_image(LayoutWidgetBase* above);
+  virtual void on_dnd_add_layout_notebook(LayoutWidgetBase* above);
+  virtual void on_dnd_add_layout_portal(LayoutWidgetBase* above);
+  virtual void on_dnd_add_layout_item(LayoutWidgetBase* above, const sharedptr<LayoutItem>& item);
+
   
   sharedptr<LayoutItem_Portal> get_portal_relationship ();
   void dnd_notify_failed_drop();
-  bool dnd_add_to_layout_group (sharedptr<LayoutItem>& item, 
-                                LayoutWidgetBase* layoutwidget,
-                                bool ignore_error = false);
+  bool dnd_add_to_layout_group(const sharedptr<LayoutItem>& item, LayoutWidgetBase* layoutwidget, bool ignore_error = false);
   
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
