@@ -1,3 +1,8 @@
+1.8.9:
+
+* Fix crash in initial dialog, experienced on some systems. 
+  (Armin Burgmeir) Bug #584022 (Keir Lawson)
+  
 1.8.8:
 
 * Fix the build with GTK+ 2.16. (errors in GlomGtkCalendar).
