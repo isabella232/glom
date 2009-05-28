@@ -295,7 +295,6 @@ AC_CONFIG_FILES([
     glom/utility_widgets/Makefile \
       glom/utility_widgets/cellrendererlist/Makefile \
       glom/utility_widgets/adddel/Makefile \
-        glom/utility_widgets/adddel/eggcolumnchooser/Makefile \
       glom/utility_widgets/canvas/Makefile \
       glom/utility_widgets/db_adddel/Makefile \
       glom/utility_widgets/egg/Makefile
