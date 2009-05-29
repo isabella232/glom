@@ -310,8 +310,10 @@ sharedptr<SharedConnection> ConnectionPool::get_and_connect(std::auto_ptr<Except
 // Store the connection for a few seconds in case it 
 // is immediately requested again, to avoid making a new connection 
 // and introspecting again, which is slow. 
+// TODO: Why aren't these member variables?
 static sharedptr<SharedConnection> connection_cached;
 static sigc::connection connection_cached_timeout_connection;
+static sigc::connection connection_cached_finished_connection;
 
 static bool on_connection_pool_cache_timeout()
 {
@@ -335,13 +337,24 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
 
   if(get_ready_to_connect())
   {
+    if(connection_cached)
+    {
+      //Avoid a reconnection immediately after disconnecting:
+      return connection_cached;
+    }
     //If the connection is already open (because it is being used by somebody):
-    if(m_refGdaConnection)
+    else if(m_refGdaConnection)
     {
       sharedptr<SharedConnection> sharedConnection( new SharedConnection(m_refGdaConnection) );
 
       //Ask for notification when the SharedConnection has been finished with:
-      sharedConnection->signal_finished().connect( sigc::mem_fun(*this, &ConnectionPool::on_sharedconnection_finished) );
+      //TODO: Note that we are overwriting the connection to a signal of a
+      //previous sharedconnection here. This can be problematic when
+      //invalidate_connection() is called, because then we don't disconnect
+      //from the signal of the previous instance, and when the signal
+      //handler is called later we might decrement the reference count for
+      //a completely different shared connection.
+      connection_cached_finished_connection = sharedConnection->signal_finished().connect( sigc::mem_fun(*this, &ConnectionPool::on_sharedconnection_finished) );
 
       //Remember that somebody is using it:
       m_sharedconnection_refcount++;
@@ -353,11 +366,6 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
       connection_cached_timeout_connection = Glib::signal_timeout().connect_seconds(&on_connection_pool_cache_timeout, 30 /* seconds */);
 
       return sharedConnection;
-    }
-    else if(connection_cached)
-    {
-      //Avoid a reconnection immediately after disconnecting:
-      return connection_cached;
     }
     else
     {
@@ -513,6 +521,8 @@ Glib::ustring ConnectionPool::get_string_find_operator() const
 void ConnectionPool::invalidate_connection()
 {
   connection_cached.clear();
+  connection_cached_timeout_connection.disconnect();
+  connection_cached_finished_connection.disconnect();
   m_refGdaConnection.reset();
   m_sharedconnection_refcount = 0;
 }

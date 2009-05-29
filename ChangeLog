@@ -1,3 +1,13 @@
+2009-05-29  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/libglom/connectionpool.cc: After invalidating a cached
+	connection, disconnect from the cached connection's "finished" signal,
+	to prevent the signal handler from being called later (other code
+	might still have a reference to the connection at the
+	invalidate_connection point). Also added a TODO comment, because this
+	can still happen in rare cases. This fixes initial records not being
+	shown after creating a database from an example file.
+
 2009-05-27  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/mode_data/notebook_data.cc: Added an accessible name for the
