@@ -1,3 +1,8 @@
+2009-05-27  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/mode_data/notebook_data.cc: Added an accessible name for the
+	notebook, so that it can be accessed via LDTP.
+
 2009-05-28  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.ac: Remove the mention of the eggcolumnchooser subdirectory, to 

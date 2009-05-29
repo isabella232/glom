@@ -34,6 +34,9 @@ Notebook_Data::Notebook_Data()
   pages().push_back(Gtk::Notebook_Helpers::TabElem(m_Box_Details, _("Details")));
   m_iPage_Details = 1;
 
+  // Set accessible name for the notebook, to be able to access it via LDTP
+  get_accessible()->set_name(_("List Or Details View"));
+
 
   //Connect signals:
 
