@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-08 20:40+0200\n"
-"PO-Revision-Date: 2009-05-08 20:43+0100\n"
+"POT-Creation-Date: 2009-06-01 11:05+0200\n"
+"PO-Revision-Date: 2009-06-01 11:06+0100\n"
 "Last-Translator: Mario Blättermann <mariobl@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -536,28 +536,28 @@ msgstr "Keine Vorlagen vorhanden."
 msgid "No sessions found on the local network."
 msgstr "Es wurden keine Sitzungen im lokalen Netzwerk gefunden."
 
-#: ../glom/dialog_existing_or_new.cc:139
+#: ../glom/dialog_existing_or_new.cc:119
 msgid "Select File"
 msgstr "Datei auswählen"
 
-#: ../glom/dialog_existing_or_new.cc:143
+#: ../glom/dialog_existing_or_new.cc:123
 msgid "Local Network"
 msgstr "Lokales Netzwerk"
 
-#: ../glom/dialog_existing_or_new.cc:147
+#: ../glom/dialog_existing_or_new.cc:127
 msgid "Recently Opened"
 msgstr "Zuletzt geöffnet"
 
-#: ../glom/dialog_existing_or_new.cc:150
+#: ../glom/dialog_existing_or_new.cc:130
 msgid "New Empty Document"
 msgstr "Neues leeres Dokument"
 
-#: ../glom/dialog_existing_or_new.cc:153
+#: ../glom/dialog_existing_or_new.cc:133
 msgid "New From Template"
 msgstr "Neu aus Vorlage"
 
 #. Translator hint: This is <Service Name> on <Host> (via Network Interface such as eth0).
-#: ../glom/dialog_existing_or_new.cc:723
+#: ../glom/dialog_existing_or_new.cc:721
 #, c-format
 msgid "%s on %s (via %s)"
 msgstr "%s auf %s (per %s)"
@@ -1907,7 +1907,7 @@ msgstr "Systemname:"
 msgid "Table Name"
 msgstr "Tabellenname"
 
-#: ../glom/glom_developer.glade.h:195 ../glom/glom.glade.h:41
+#: ../glom/glom_developer.glade.h:195 ../glom/glom.glade.h:42
 msgid "Table:"
 msgstr "Tabelle:"
 
@@ -2062,11 +2062,11 @@ msgstr "Postleitzahl:"
 msgid "_Confirm Password"
 msgstr "_Passwort bestätigen"
 
-#: ../glom/glom_developer.glade.h:227 ../glom/glom.glade.h:46
+#: ../glom/glom_developer.glade.h:227 ../glom/glom.glade.h:48
 msgid "_Password"
 msgstr "_Passwort"
 
-#: ../glom/glom_developer.glade.h:228 ../glom/glom.glade.h:48
+#: ../glom/glom_developer.glade.h:228 ../glom/glom.glade.h:50
 msgid "_User"
 msgstr "Be_nutzer"
 
@@ -2188,72 +2188,80 @@ msgid "Open Existing Document"
 msgstr "Bestehendes Dokument öffnen"
 
 #: ../glom/glom.glade.h:34
+msgid "Open or create Document"
+msgstr "Dokument öffnen oder anlegen"
+
+#: ../glom/glom.glade.h:35
 msgid "Please enter the connection details for your database server."
 msgstr ""
 "Bitte geben Sie die notwendigen Angaben ein, um sich mit Ihrem Datenbank-"
 "Server zu verbinden."
 
-#: ../glom/glom.glade.h:35
+#: ../glom/glom.glade.h:36
 msgid "Please wait, your data is being imported&#x2026;"
 msgstr "Bitte warten Sie, Ihre Daten werden importiert&#x2026;"
 
-#: ../glom/glom.glade.h:36 ../glom/glade_utils.cc:51
+#: ../glom/glom.glade.h:37 ../glom/glade_utils.cc:51
 msgid "Processing"
 msgstr "Verarbeitung läuft …"
 
-#: ../glom/glom.glade.h:37
+#: ../glom/glom.glade.h:38
 msgid "Quick Find"
 msgstr "Schnellsuche"
 
-#: ../glom/glom.glade.h:38
+#: ../glom/glom.glade.h:39
 msgid "Records: "
 msgstr "Datensätze: "
 
-#: ../glom/glom.glade.h:39
+#: ../glom/glom.glade.h:40
 msgid "Revert"
 msgstr "Rückgängig"
 
-#: ../glom/glom.glade.h:40
+#: ../glom/glom.glade.h:41
 msgid "Show hidden tables"
 msgstr "Versteckte Tabellen anzeigen"
 
-#: ../glom/glom.glade.h:42
+#: ../glom/glom.glade.h:43
+msgid "Welcome to Glom"
+msgstr "Willkommen bei Glom"
+
+#: ../glom/glom.glade.h:44
 msgid "_Encoding:"
 msgstr "_Zeichensatz:"
 
-#: ../glom/glom.glade.h:43
+#: ../glom/glom.glade.h:45
 msgid "_First line as title"
 msgstr "_Erste Zeile als Titel"
 
-#: ../glom/glom.glade.h:44
+#: ../glom/glom.glade.h:46
 msgid "_Host"
 msgstr "_Host"
 
-#: ../glom/glom.glade.h:45
+#: ../glom/glom.glade.h:47
 msgid "_Import"
 msgstr "_Importieren"
 
-#: ../glom/glom.glade.h:47
+#: ../glom/glom.glade.h:49
 msgid "_Select"
 msgstr "_Auswählen"
 
-#: ../glom/glom.glade.h:49
+#: ../glom/glom.glade.h:51
 msgid "bla.blub - Import from CSV"
 msgstr "bla.blub - Aus CSV importieren"
 
-#: ../glom/glom.glade.h:50
+#: ../glom/glom.glade.h:52
 msgid "example data format"
 msgstr "Beispieldatenformatierung"
 
-#: ../glom/glom.glade.h:51
+#: ../glom/glom.glade.h:53
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: ../glom/glom.glade.h:52
+#: ../glom/glom.glade.h:54
 msgid "label"
 msgstr "Beschriftung"
 
-#: ../glom/glom.glade.h:53
+#: ../glom/glom.glade.h:55
 msgid "table_name"
 msgstr "Tabellen_name"
 
@@ -2923,6 +2931,11 @@ msgstr "Gesamte Gruppe löschen?"
 msgid "Details"
 msgstr "Details"
 
+#. Set accessible name for the notebook, to be able to access it via LDTP
+#: ../glom/mode_data/notebook_data.cc:38
+msgid "List Or Details View"
+msgstr "Listen- oder Detailansicht"
+
 #. Don't allow a relationship to be added twice.
 #: ../glom/mode_design/box_db_table_relationships.cc:45
 msgid ""
@@ -3434,20 +3447,20 @@ msgid "This field may not be edited here."
 msgstr "Dieses Feld kann hier nicht bearbeitet werden."
 
 #. Let the user choose a date from a calendar dialog:
-#: ../glom/utility_widgets/datawidget.cc:233
+#: ../glom/utility_widgets/datawidget.cc:235
 msgid "..."
 msgstr "…"
 
 #. TODO: A better label/icon for "Choose Date".
-#: ../glom/utility_widgets/datawidget.cc:234
+#: ../glom/utility_widgets/datawidget.cc:236
 msgid "Choose a date from an on-screen calendar."
 msgstr "Wählen Sie ein Datum aus dem Bildschirm-Kalender aus."
 
-#: ../glom/utility_widgets/datawidget.cc:244
+#: ../glom/utility_widgets/datawidget.cc:246
 msgid "Open the record identified by this ID, in the other table."
 msgstr "Den zu dieser ID gehörenden Datensatz in der anderen Tabelle öffnen."
 
-#: ../glom/utility_widgets/datawidget.cc:254
+#: ../glom/utility_widgets/datawidget.cc:256
 msgid ""
 "Enter search criteria to identify records in the other table, to choose an ID "
 "for this field."
