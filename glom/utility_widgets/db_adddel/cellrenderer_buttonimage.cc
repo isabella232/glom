@@ -23,35 +23,6 @@
 #include <gtk/gtkcellrenderer.h>
 #include <gtk/gtkcellrendererpixbuf.h>
 
-#ifndef GLIBMM_VFUNCS_ENABLED
-namespace
-{
-  GtkCellRendererPixbufClass* parent_class;
-}
-#endif
-
-namespace Glom
-{
-
-#ifndef GLIBMM_VFUNCS_ENABLED
-  gboolean GlomCellRenderer_ButtonImage::activate_impl(GtkCellRenderer* cell, GdkEvent* event, GtkWidget* widget, const gchar* path, GdkRectangle* background_area, GdkRectangle* cell_area, GtkCellRendererState flags)
-  {
-    Glib::ObjectBase* const obj_base = static_cast<Glib::ObjectBase*>(Glib::ObjectBase::_get_current_wrapper((GObject*)cell));
-    if(obj_base)
-    {
-      GlomCellRenderer_ButtonImage* const obj = dynamic_cast<GlomCellRenderer_ButtonImage*>(obj_base);
-      if(obj)
-      {
-       return obj->activate_vfunc(event, *Glib::wrap(widget), path, Glib::wrap(background_area), Glib::wrap(cell_area), static_cast<Gtk::CellRendererState>(flags));
-      }
-    }
-    else if(GTK_CELL_RENDERER_CLASS(parent_class)->activate)
-      return GTK_CELL_RENDERER_CLASS(parent_class)->activate(cell, event, widget, path, background_area, cell_area, flags);
-    else
-      return FALSE;
-  }
-#endif
-} // namespace Glom
 
 namespace Glom
 {
@@ -59,15 +30,6 @@ namespace Glom
 GlomCellRenderer_ButtonImage::GlomCellRenderer_ButtonImage():
   Glib::ObjectBase("GlomCellRenderer_ButtonImage") // Create a new GType for us
 {
-#ifndef GLIBMM_VFUNCS_ENABLED
-  if(parent_class == NULL)
-  {
-    GtkCellRendererClass* klass = GTK_CELL_RENDERER_GET_CLASS(gobj());
-    klass->activate = &GlomCellRenderer_ButtonImage::activate_impl;
-    parent_class = GTK_CELL_RENDERER_PIXBUF_CLASS(g_type_class_peek_parent(klass));
-  }
-#endif
-
   const Gtk::StockID stock_id = Gtk::Stock::OPEN; //A default.
 
   set_property("stock_id", stock_id.get_string());
@@ -88,13 +50,7 @@ bool GlomCellRenderer_ButtonImage::activate_vfunc(GdkEvent* event, Gtk::Widget& 
   //TODO: It would be nice to depress this like a real button.
 
   //Call base class:
-  bool result = false;
-#ifdef GLIBMM_VFUNCS_ENABLED
-  result = CellRendererPixbuf::activate_vfunc(event, widget, path, background_area, cell_area, flags);
-#else
-  if(GTK_CELL_RENDERER_CLASS(parent_class)->activate)
-    result = GTK_CELL_RENDERER_CLASS(parent_class)->activate(GTK_CELL_RENDERER(gobj()), event, widget.gobj(), path.c_str(), const_cast<GdkRectangle*>(background_area.gobj()), const_cast<GdkRectangle*>(cell_area.gobj()), static_cast<GtkCellRendererState>(flags));
-#endif
+  bool result = CellRendererPixbuf::activate_vfunc(event, widget, path, background_area, cell_area, flags);
 
   m_signal_clicked.emit( Gtk::TreeModel::Path(path) );
 

@@ -59,12 +59,7 @@ public:
   void forall(const ForallSlot& slot);
 
 protected:
-#ifndef GLIBMM_VFUNCS_ENABLED
-  // These are the hand-coded C vfunc implementations in case the
-  // corresponding glibmm API has been disabled
-  static void glom_forall_impl(GtkContainer* container, gboolean include_internals, GtkCallback callback, gpointer callback_data);
-  static GType glom_child_type_impl(GtkContainer* container);
-#endif
+
 #ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   // These are the hand-coded C default signal handlers in case the
   // corresponding glibmm API has been disabled

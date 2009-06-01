@@ -46,9 +46,7 @@ private:
   void on_button_del();
   void on_button_edit();
 
-#ifdef GLIBMM_VFUNCS_ENABLED
   virtual void show_all_vfunc();
-#endif
 
   //member widgets:
   Gtk::HBox m_HBox;

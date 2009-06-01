@@ -110,7 +110,6 @@ void DbAddDel_WithButtons::setup_buttons()
   m_HBox.show();
 }
 
-#ifdef GLIBMM_VFUNCS_ENABLED
 // TODO_maemo: Why is this show_all_vfunc, and not on_show()? Where is the
 // difference? If this was on_show we could just connect to signal_show()
 // when vfuncs and/or default signal handlers are not available.
@@ -122,7 +121,6 @@ void DbAddDel_WithButtons::show_all_vfunc()
   //Hide some stuff:
   setup_buttons();
 }
-#endif
 
 void DbAddDel_WithButtons::set_allow_view_details(bool val)
 {

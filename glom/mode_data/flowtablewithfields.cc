@@ -50,13 +50,13 @@ FlowTableWithFields::Info::Info()
 
 FlowTableWithFields::FlowTableWithFields(const Glib::ustring& table_name)
 :
-#if !defined(GLIBMM_VFUNCS_ENABLED) || !defined(GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED)
+#if !defined(GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED)
   // This creates a custom GType for us, to override vfuncs and default
   // signal handlers even with the reduced API (done in flowtable.cc).
   // TODO: It is necessary to do this in all derived classes which is
   // rather annoying, though I don't see another possibility at the moment. armin.
   Glib::ObjectBase("Glom_FlowTable"),
-#endif // !defined(GLIBMM_VFUNCS_ENABLED) || !defined(GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED)
+#endif // !defined(GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED)
   m_placeholder(0),
   m_table_name(table_name)
 {
