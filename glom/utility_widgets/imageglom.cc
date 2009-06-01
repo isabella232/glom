@@ -156,11 +156,7 @@ void ImageGlom::set_pixbuf(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf)
 
 void ImageGlom::set_value(const Gnome::Gda::Value& value)
 {
-  // Remember original data 
-  m_original_data = Gnome::Gda::Value();
-  m_original_data = value;
-  Glib::RefPtr<Gdk::Pixbuf> pixbuf = Utils::get_pixbuf_for_gda_value(value);
-
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf = Conversions::get_pixbuf_for_gda_value(value);
   if(pixbuf)
   {
     set_pixbuf(pixbuf);
@@ -222,8 +218,7 @@ Gnome::Gda::Value ImageGlom::get_value() const
 {
   //TODO: Return the data from the file that was just chosen.
   //Don't store the original here any longer than necessary,
-  if(m_original_data.get_value_type() != G_TYPE_NONE)
-    return m_original_data;
+  Gnome::Gda::Value result;
   
   if(m_pixbuf_original)
   {
@@ -249,16 +244,11 @@ Gnome::Gda::Value ImageGlom::get_value() const
       //for(int i = 0; i < 10; ++i)
       //  g_warning("%02X (%c), ", (guint8)buffer[i], buffer[i]);
 
-      GdaBinary* bin = g_new(GdaBinary, 1);
-      bin->data = reinterpret_cast<guchar*>(buffer);
-      bin->binary_length = buffer_size;
+      result.Glib::ValueBase::init(GDA_TYPE_BINARY);
+      result.set(reinterpret_cast<const guchar*>(buffer), buffer_size);
 
-      m_original_data = Gnome::Gda::Value();
-      m_original_data.Glib::ValueBase::init(GDA_TYPE_BINARY);
-      gda_value_take_binary(m_original_data.gobj(), bin);
-
+      g_free(buffer);
       buffer = 0;
-      return m_original_data;
     }
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     catch(const Glib::Exception& ex)
@@ -268,7 +258,7 @@ Gnome::Gda::Value ImageGlom::get_value() const
 #endif // GLIBMM_EXCEPTIONS_ENABLED
   }
 
-  return Gnome::Gda::Value();
+  return result;
 }
 
 bool ImageGlom::on_expose_event(GdkEventExpose* event)
@@ -407,41 +397,44 @@ void ImageGlom::on_menupopup_activate_select_file()
     const std::string filepath = dialog.get_filename();
     if(!filepath.empty())
     {
-      // TODO: We might want to show a progress dialog here, and read
-      // the data asynchronously
-      // We use the C API here to avoid unnecessary copying
-      gchar* data;
-      gsize length;
-      GError* error = NULL;
-      if(!g_file_get_contents(filepath.c_str(), &data, &length, &error))
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+      try
+#else
+      std::auto_ptr<Glib::Error> error;
+#endif // GLIBMM_EXCEPTIONS_ENABLED
       {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+        m_pixbuf_original = Gdk::Pixbuf::create_from_file(filepath);
+#else
+        m_pixbuf_original = Gdk::Pixbuf::create_from_file(filepath, error);
+        if(error.get() != NULL)
+        {
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+          if(m_pixbuf_original)
+          {
+            m_image.set(m_pixbuf_original); //Load the image.
+            scale();
+            signal_edited().emit();
+          }
+          else
+          {
+            g_warning("ImageGlom::on_menupopup_activate_select_file(): file load failed.");
+          }
+#ifndef GLIBMM_EXCEPTIONS_ENABLED
+        }
+#endif // !GLIBMM_EXCEPTIONS_ENABLED
+      }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+      catch(const Glib::Exception& ex)
+      {
+#else
+      if(error.get() != NULL)
+      {
+        const Glib::Exception& ex = *error.get();
+#endif
         App_Glom* pApp = get_application();
         if(pApp)
-          Frame_Glom::show_ok_dialog(_("Image loading failed"), _("The image file could not be opened:\n") + Glib::ustring(error->message), *pApp, Gtk::MESSAGE_ERROR);
-        g_error_free(error);
-      }
-      else
-      {
-        GdaBinary* bin = g_new(GdaBinary, 1);
-        bin->data = reinterpret_cast<guchar*>(data);
-        bin->binary_length = length;
-
-        m_original_data = Gnome::Gda::Value();
-        m_original_data.Glib::ValueBase::init(GDA_TYPE_BINARY);
-        gda_value_take_binary(m_original_data.gobj(), bin);
-
-        m_pixbuf_original = Utils::get_pixbuf_for_gda_value(m_original_data);
-        if(m_pixbuf_original)
-        {
-          m_image.set(m_pixbuf_original); //Load the image.
-          scale();
-          signal_edited().emit();
-        }
-        else
-        {
-	  m_original_data = Gnome::Gda::Value();
-          g_warning("ImageGlom::on_menupopup_activate_select_file(): file load failed.");
-        }
+          Frame_Glom::show_ok_dialog(_("Image loading failed"), _("The image file could not be opened:\n") + ex.what(), *pApp, Gtk::MESSAGE_ERROR);
       }
     }
   }
@@ -500,9 +493,6 @@ void ImageGlom::on_clipboard_received_image(const Glib::RefPtr<Gdk::Pixbuf>& pix
 
   if(pixbuf)
   {
-    // Clear original data of previous image
-    m_original_data = Gnome::Gda::Value();
-
     m_pixbuf_original = pixbuf;
 
     m_image.set(m_pixbuf_original); //Load the image.

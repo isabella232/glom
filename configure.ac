@@ -5,7 +5,7 @@ AC_CONFIG_SRCDIR([glom/main.cc])
 AC_CONFIG_HEADERS([config.h glom/libglom/libglom_config.h])
 
 # Package name and version number:
-AM_INIT_AUTOMAKE(glom, 1.10.1)
+AM_INIT_AUTOMAKE(glom, 1.10.0)
 
 AM_MAINTAINER_MODE
 

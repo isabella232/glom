@@ -81,7 +81,6 @@ private:
  
   Gtk::Image m_image;
   Gtk::Frame m_frame;
-  mutable Gnome::Gda::Value m_original_data; // Original file data (mutable so that we can create it in get_value() if it does not exist yet)
   Glib::RefPtr<Gdk::Pixbuf> m_pixbuf_original; //Only stored temporarily, because it could be big.
   Glib::RefPtr<Gdk::Pixbuf> m_pixbuf_clipboard; //When copy is used, store it here until it is pasted.
 

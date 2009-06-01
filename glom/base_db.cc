@@ -2490,8 +2490,7 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
   { 
     Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
     params->add_holder(field_in_record.m_field->get_holder(field_value));
-    params->add_holder(field_in_record.m_key->get_holder(field_in_record.m_key_value));
-
+    params->add_holder(field_in_record.m_key->get_holder(field_in_record.m_key_value));  
     Glib::ustring strQuery = "UPDATE \"" + field_in_record.m_table_name + "\"";
     strQuery += " SET \"" + field_in_record.m_field->get_name() + "\" = " + field_in_record.m_field->get_gda_holder_string();
     strQuery += " WHERE \"" + field_in_record.m_key->get_name() + "\" = " + field_in_record.m_key->get_gda_holder_string();
