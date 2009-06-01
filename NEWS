@@ -1,3 +1,43 @@
+1.11.0 (unstable):
+
+* Network sharing of self-hosted databases is now off by default, and can be 
+  enabled by the new File/Share On Network menu item.
+  (Murray Cumming)
+* Performance improvement when first connecting to the database.
+  (Armin Burgmeier)
+* Fix crash if the "Connect to Server" dialog is cancelled and then a document 
+  is opened.
+  (Michael Hasselmann)
+* Related Records:
+  - Allow navigation to be disabled.
+    (Michael Hasselmann)
+  - Navigation now works to alternate specified relationships.
+	  (Murray Cumming) Bug #579172 (Michael Hasselmann)
+* Details:
+  - Image fields: Performance improvements and user feedback.
+    (Armin Burgmeier)
+  - Disable the Open button next to ID fields if the field is empty.
+    (Murray Cumming) Bug #565023.	
+* Requires gtkmm 2.14 rather than gtkmm 2.10.
+* Removed Bakery dependency (by including a fork of that code).
+* Removed libglade dependency (using Gtk::Builder instead).
+* Require a newer goocanvasmm.
+* Add runtime checks for the Python module.
+* libglom: Removed dependencies on UI libraries such as GTK+.
+  (Murray Cumming) 
+  
+1.10.1 (stable):
+
+* Fix crash in initial dialog, experienced on some systems. 
+  (Armin Burgmeir) Bug #584022 (Keir Lawson)
+* Self-Hosting: Allow multiple glom instances to self-host on the same PC, 
+  by correcting the discovery of available network ports.
+  (Armin Burgmeir)
+* Allow Glom to use existing database tables again (though there is still no 
+  UI for this).
+* Restore the check for the necessary libgda provider plugin.
+  (Murray Cumming)
+ 
 1.10.0 (stable):
 
 What's new in Glom 1.10:

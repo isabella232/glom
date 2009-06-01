@@ -1,3 +1,5 @@
+1.11.0:
+
 2009-06-01  Murray Cumming  <murrayc@murrayc.com>
 
 	Remove ifdefs for disabled gtkmm vfuncs. 
@@ -247,6 +249,8 @@
 
 2009-04-09  Michael Hasselmann <michaelh@openismus.com>
 
+	Fix crash if "Connect to Server" is cancelled and then a document is opened.
+	
 	* glom/libglom/connectionpool_backends/backend.h:
 	Introduced new error code FAILURE_NO_BACKEND which shall be used to
 	detect logical errors in the backend implementations.
