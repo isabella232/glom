@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-01 11:05+0200\n"
-"PO-Revision-Date: 2009-06-01 11:06+0100\n"
+"POT-Creation-Date: 2009-06-02 20:37+0200\n"
+"PO-Revision-Date: 2009-06-02 20:39+0100\n"
 "Last-Translator: Mario Blättermann <mariobl@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -3484,6 +3484,18 @@ msgid ""
 msgstr ""
 "Sie versuchen einen neuen Bezugsdatensatz hinzuzufügen, jedoch kann es nur "
 "einen Bezugsdatensatz geben, da die Beziehung eindeutige Schlüssel verwendet."
+
+#: ../glom/utility_widgets/dialog_image_progress.cc:114
+msgid "Not enough memory available to load the image"
+msgstr "Nicht genügend Speicher zum Laden des Bildes verfügbar"
+
+#: ../glom/utility_widgets/dialog_image_progress.cc:162
+msgid "Error loading %1"
+msgstr "Fehler beim Laden von %1"
+
+#: ../glom/utility_widgets/dialog_image_progress.cc:163
+msgid "Error loading image"
+msgstr "Fehler beim Laden des Bildes"
 
 #: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:367
 msgid "Not implemented yet."
