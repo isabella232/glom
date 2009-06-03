@@ -13,13 +13,13 @@ msgstr ""
 "Project-Id-Version: glom.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&component=general\n"
-"POT-Creation-Date: 2009-05-07 18:00+0000\n"
-"PO-Revision-Date: 2009-05-08 10:08+0200\n"
+"POT-Creation-Date: 2009-06-01 12:32+0000\n"
+"PO-Revision-Date: 2009-05-28 23:44+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
-"Language-Team: ES <gnome-es@gnome.org>\n"
+"Language-Team: Español <Gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
 #: ../glom/application.cc:182
@@ -533,28 +533,28 @@ msgstr "No hay plantillas disponibles."
 msgid "No sessions found on the local network."
 msgstr "No se encontraron sesiones en la red local."
 
-#: ../glom/dialog_existing_or_new.cc:139
+#: ../glom/dialog_existing_or_new.cc:119
 msgid "Select File"
 msgstr "Seleccionar archivo"
 
-#: ../glom/dialog_existing_or_new.cc:143
+#: ../glom/dialog_existing_or_new.cc:123
 msgid "Local Network"
 msgstr "Red local"
 
-#: ../glom/dialog_existing_or_new.cc:147
+#: ../glom/dialog_existing_or_new.cc:127
 msgid "Recently Opened"
 msgstr "Archivos abiertos recientemente"
 
-#: ../glom/dialog_existing_or_new.cc:150
+#: ../glom/dialog_existing_or_new.cc:130
 msgid "New Empty Document"
 msgstr "Documento vacío nuevo"
 
-#: ../glom/dialog_existing_or_new.cc:153
+#: ../glom/dialog_existing_or_new.cc:133
 msgid "New From Template"
 msgstr "Nuevo desde plantilla"
 
 #. Translator hint: This is <Service Name> on <Host> (via Network Interface such as eth0).
-#: ../glom/dialog_existing_or_new.cc:723
+#: ../glom/dialog_existing_or_new.cc:721
 #, c-format
 msgid "%s on %s (via %s)"
 msgstr "%s en %s (vía %s)"
@@ -1619,8 +1619,8 @@ msgstr "Del campo:"
 
 #: ../glom/glom_developer.glade.h:133
 #: ../glom/libglom/data_structure/layout/layoutgroup.cc:377
-#: ../glom/mode_data/flowtablewithfields.cc:1231
-#: ../glom/mode_data/flowtablewithfields.cc:1258
+#: ../glom/mode_data/flowtablewithfields.cc:1232
+#: ../glom/mode_data/flowtablewithfields.cc:1259
 #: ../glom/utility_widgets/layouttoolbar.cc:57
 #: ../glom/utility_widgets/layouttoolbar.cc:73
 #: ../glom/utility_widgets/notebooklabelglom.cc:74
@@ -1752,7 +1752,6 @@ msgid "No Choices"
 msgstr "Sin opciones"
 
 #: ../glom/glom_developer.glade.h:163
-#| msgid "(None)"
 msgid "None"
 msgstr "Ninguno"
 
@@ -1897,7 +1896,7 @@ msgstr "Nombre del sistema:"
 msgid "Table Name"
 msgstr "Nombre de la tabla"
 
-#: ../glom/glom_developer.glade.h:195 ../glom/glom.glade.h:41
+#: ../glom/glom_developer.glade.h:195 ../glom/glom.glade.h:42
 msgid "Table:"
 msgstr "Tabla:"
 
@@ -2055,11 +2054,11 @@ msgstr "Código postal:"
 msgid "_Confirm Password"
 msgstr "_Confirmar contraseña"
 
-#: ../glom/glom_developer.glade.h:227 ../glom/glom.glade.h:46
+#: ../glom/glom_developer.glade.h:227 ../glom/glom.glade.h:48
 msgid "_Password"
 msgstr "_Contraseña"
 
-#: ../glom/glom_developer.glade.h:228 ../glom/glom.glade.h:48
+#: ../glom/glom_developer.glade.h:228 ../glom/glom.glade.h:50
 msgid "_User"
 msgstr "_Usuario"
 
@@ -2165,7 +2164,6 @@ msgid "Importing Data"
 msgstr "Importando datos"
 
 #: ../glom/glom.glade.h:29
-#| msgid "Language:"
 msgid "Loading image"
 msgstr "Cargando imagen"
 
@@ -2182,71 +2180,79 @@ msgid "Open Existing Document"
 msgstr "Abrir un documento existente"
 
 #: ../glom/glom.glade.h:34
+msgid "Open or create Document"
+msgstr "Abrir o crear documento"
+
+#: ../glom/glom.glade.h:35
 msgid "Please enter the connection details for your database server."
 msgstr ""
 "Introduzca los detalles de conexión con el servidor de su base de datos."
 
-#: ../glom/glom.glade.h:35
+#: ../glom/glom.glade.h:36
 msgid "Please wait, your data is being imported&#x2026;"
 msgstr "Espere; se están importando sus datos#x2026;"
 
-#: ../glom/glom.glade.h:36 ../glom/glade_utils.cc:51
+#: ../glom/glom.glade.h:37 ../glom/glade_utils.cc:51
 msgid "Processing"
 msgstr "Procesando"
 
-#: ../glom/glom.glade.h:37
+#: ../glom/glom.glade.h:38
 msgid "Quick Find"
 msgstr "Búsqueda rápida"
 
-#: ../glom/glom.glade.h:38
+#: ../glom/glom.glade.h:39
 msgid "Records: "
 msgstr "Registros: "
 
-#: ../glom/glom.glade.h:39
+#: ../glom/glom.glade.h:40
 msgid "Revert"
 msgstr "Revertir"
 
-#: ../glom/glom.glade.h:40
+#: ../glom/glom.glade.h:41
 msgid "Show hidden tables"
 msgstr "Mostrar tablas ocultas"
 
-#: ../glom/glom.glade.h:42
+#: ../glom/glom.glade.h:43
+msgid "Welcome to Glom"
+msgstr "Bienvenido a Glom"
+
+#: ../glom/glom.glade.h:44
 msgid "_Encoding:"
 msgstr "_Codificación:"
 
-#: ../glom/glom.glade.h:43
+#: ../glom/glom.glade.h:45
 msgid "_First line as title"
 msgstr "_Primera línea como título"
 
-#: ../glom/glom.glade.h:44
+#: ../glom/glom.glade.h:46
 msgid "_Host"
 msgstr "_Host"
 
-#: ../glom/glom.glade.h:45
+#: ../glom/glom.glade.h:47
 msgid "_Import"
 msgstr "_Importar"
 
-#: ../glom/glom.glade.h:47
+#: ../glom/glom.glade.h:49
 msgid "_Select"
 msgstr "_Seleccionar"
 
-#: ../glom/glom.glade.h:49
+#: ../glom/glom.glade.h:51
 msgid "bla.blub - Import from CSV"
 msgstr "bla.blub - Importar desde CSV"
 
-#: ../glom/glom.glade.h:50
+#: ../glom/glom.glade.h:52
 msgid "example data format"
 msgstr "formato de datos de ejemplo"
 
-#: ../glom/glom.glade.h:51
+#: ../glom/glom.glade.h:53
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: ../glom/glom.glade.h:52
+#: ../glom/glom.glade.h:54
 msgid "label"
 msgstr "etiqueta"
 
-#: ../glom/glom.glade.h:53
+#: ../glom/glom.glade.h:55
 msgid "table_name"
 msgstr "nombre_de_la_tabla"
 
@@ -2417,7 +2423,7 @@ msgstr "Calendario del portal"
 
 #. Note to translators: "Notebook" means a GtkNotebook-type widget.
 #: ../glom/libglom/data_structure/layout/layoutitem_notebook.cc:56
-#: ../glom/mode_data/flowtablewithfields.cc:1227
+#: ../glom/mode_data/flowtablewithfields.cc:1228
 #: ../glom/utility_widgets/layouttoolbar.cc:60
 msgid "Notebook"
 msgstr "Cuaderno"
@@ -2813,7 +2819,7 @@ msgstr "Mostrar ancho"
 
 #: ../glom/mode_data/dialog_layout_details.cc:699
 #: ../glom/mode_data/flowtablewithfields.cc:1150
-#: ../glom/mode_data/flowtablewithfields.cc:1271
+#: ../glom/mode_data/flowtablewithfields.cc:1272
 msgid "New Button"
 msgstr "Botón nuevo"
 
@@ -2855,8 +2861,8 @@ msgid "(Notebook)"
 msgstr "(Cuaderno)"
 
 #: ../glom/mode_data/flowtablewithfields.cc:1121
-#: ../glom/mode_data/flowtablewithfields.cc:1230
-#: ../glom/mode_data/flowtablewithfields.cc:1257
+#: ../glom/mode_data/flowtablewithfields.cc:1231
+#: ../glom/mode_data/flowtablewithfields.cc:1258
 #: ../glom/utility_widgets/notebooklabelglom.cc:73
 #: ../glom/utility_widgets/notebooklabelglom.cc:113
 msgid "New Group"
@@ -2878,13 +2884,13 @@ msgstr "botón"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
 #: ../glom/mode_data/flowtablewithfields.cc:1156
-#: ../glom/mode_data/flowtablewithfields.cc:1284
+#: ../glom/mode_data/flowtablewithfields.cc:1285
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:380
 msgid "text"
 msgstr "texto"
 
 #: ../glom/mode_data/flowtablewithfields.cc:1157
-#: ../glom/mode_data/flowtablewithfields.cc:1285
+#: ../glom/mode_data/flowtablewithfields.cc:1286
 msgid "New Text"
 msgstr "Texto nuevo"
 
@@ -2894,12 +2900,12 @@ msgid "You cannot drop anything here. Try to add a group first"
 msgstr "No puede arrastrar nada aquí. Intente añadir primero un grupo."
 
 #. TODO: Use a real English sentence here?
-#: ../glom/mode_data/flowtablewithfields.cc:1427
+#: ../glom/mode_data/flowtablewithfields.cc:1425
 msgid "Delete whole group \"%1\"?"
 msgstr "¿Borrar el grupo «%1» entero?"
 
 #. TODO: Use a real English sentence here:
-#: ../glom/mode_data/flowtablewithfields.cc:1433
+#: ../glom/mode_data/flowtablewithfields.cc:1431
 msgid "Delete whole group?"
 msgstr "¿Borrar el grupo entero?"
 
@@ -2908,6 +2914,11 @@ msgstr "¿Borrar el grupo entero?"
 #: ../glom/reports/dialog_layout_report.cc:207
 msgid "Details"
 msgstr "Detalles"
+
+#. Set accessible name for the notebook, to be able to access it via LDTP
+#: ../glom/mode_data/notebook_data.cc:38
+msgid "List Or Details View"
+msgstr ""
 
 #. Don't allow a relationship to be added twice.
 #: ../glom/mode_design/box_db_table_relationships.cc:45
@@ -3397,11 +3408,11 @@ msgstr "Elija el nombre de archivo .po"
 msgid "Po files"
 msgstr "Archivos po"
 
-#: ../glom/utility_widgets/adddel/adddel.cc:154
+#: ../glom/utility_widgets/adddel/adddel.cc:152
 msgid "This item already exists. Please try again."
 msgstr "Este elemento ya existe. Inténtelo de nuevo."
 
-#: ../glom/utility_widgets/adddel/adddel.cc:161
+#: ../glom/utility_widgets/adddel/adddel.cc:159
 msgid "Duplicate"
 msgstr "Duplicar"
 
@@ -3414,20 +3425,20 @@ msgid "This field may not be edited here."
 msgstr "Este campo no debe editarse aquí."
 
 #. Let the user choose a date from a calendar dialog:
-#: ../glom/utility_widgets/datawidget.cc:233
+#: ../glom/utility_widgets/datawidget.cc:235
 msgid "..."
 msgstr "…"
 
 #. TODO: A better label/icon for "Choose Date".
-#: ../glom/utility_widgets/datawidget.cc:234
+#: ../glom/utility_widgets/datawidget.cc:236
 msgid "Choose a date from an on-screen calendar."
 msgstr "Elegir una fecha desde un calendario en pantalla."
 
-#: ../glom/utility_widgets/datawidget.cc:244
+#: ../glom/utility_widgets/datawidget.cc:246
 msgid "Open the record identified by this ID, in the other table."
 msgstr "Abrir el registro identificado por este ID en la otra tabla."
 
-#: ../glom/utility_widgets/datawidget.cc:254
+#: ../glom/utility_widgets/datawidget.cc:256
 msgid ""
 "Enter search criteria to identify records in the other table, to choose an "
 "ID for this field."
@@ -3435,24 +3446,38 @@ msgstr ""
 "Introduzca un criterio de búsqueda para identificar registros en la otra "
 "tabla, para elegir un ID para este campo."
 
-#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2102
+#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2105
 msgid "Right-click to layout, to specify the related fields."
 msgstr ""
 "Pulse con el botón derecho en la disposición, para especificar los campos "
 "relacionados."
 
 #. Tell user that they can't do that:
-#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2325
+#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2328
 msgid "Extra Related Records Not Possible"
 msgstr "No son posibles adicionales registros relacionados"
 
-#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2326
+#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2329
 msgid ""
 "You attempted to add a new related record, but there can only be one related "
 "record, because the relationship uses a unique key."
 msgstr ""
 "Está intentando introducir un nuevo registro relacionado, pero sólo puede "
 "haber uno porque la relación usa una clave única."
+
+#: ../glom/utility_widgets/dialog_image_progress.cc:114
+msgid "Not enough memory available to load the image"
+msgstr ""
+
+#: ../glom/utility_widgets/dialog_image_progress.cc:162
+msgid "Error loading %1"
+msgstr ""
+
+#: ../glom/utility_widgets/dialog_image_progress.cc:163
+#, fuzzy
+#| msgid "Loading image"
+msgid "Error loading image"
+msgstr "Cargando imagen"
 
 #: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:367
 msgid "Not implemented yet."
