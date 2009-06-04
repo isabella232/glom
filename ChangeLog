@@ -1,5 +1,22 @@
 2009-06-04  Murray Cumming  <murrayc@murrayc-x61>
 
+	Clean up the code to load/save portal navigation options.
+
+	* glom/libglom/document/document.cc: load_after_layout_group(): 
+	Loading the portal's navigation options: Use == instead of 
+	ustring::compare() because this is not C.
+	Explicitly default to automatic, removing the comment about defaulting 
+	to the default in the Portal's class to preserve the deprecated file 
+	format. This is more obvious.
+	save_before_layout_group(): Simplify the code.
+	Do not write GLOM_ATTRIBUTE_PORTAL_NAVIGATIONRELATIONSHIP_MAIN because 
+	a) It is deprecated (should be read but not written) and b) It is not 
+	read or used anywhere else anyway.
+	Use constants for the possible attribute values, instead of copy/pasting 
+	the same string constants in several places.
+
+2009-06-04  Murray Cumming  <murrayc@murrayc-x61>
+
 	Store script module code in child text nodes.
 
 	* glom/libglom/document/document.cc: load_after(), save_before(): 
