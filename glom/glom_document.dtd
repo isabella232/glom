@@ -341,13 +341,27 @@ TODO: Test this by trying to validate some real documents against this DTD.
 <!-- A data_layout_portal is the essential information, a short and quick list of values
   that are probably of interest to others (e.g. contact information, name, etc). -->
 
-    <!ELEMENT data_layout_portal ANY >
+    <!ELEMENT data_layout_portal (portal_navigation_relationship)* >
     <!ATTLIST data_layout_portal
         name CDATA #REQUIRED
         relationship CDATA #REQUIRED
         sequence CDATA #REQUIRED
         hide CDATA #IMPLIED
         columns_count CDATA #IMPLIED >
+
+<!-- portal_navigation_relationship determines what happens when the user 
+     activates a row in a related records portal.
+     portal_navigation_relationship: "automatic", "specific" or "none".
+     relationship: If portal_navigation_relationship is "specific" then this is 
+     the relationship to which to navigate.
+     related_relationship: If portal_navigation_relationship is "specific" then 
+     this may be a related (to relationship) relationship to which to navigate. -->
+
+    <!ELEMENT portal_navigation_relationship ANY >
+    <!ATTLIST portal_navigation_relationship
+        navigation_type CDATA #REQUIRED
+        relationship CDATA #REQUIRED
+        related_relationship CDATA #REQUIRED >
 
 <!-- reports and data reports make short sheets of important information that
   distill a larger database. data_report(s) is the old interface; use reports if you are

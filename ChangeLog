@@ -1,5 +1,15 @@
 2009-06-04  Murray Cumming  <murrayc@murrayc-x61>
 
+	Update the DTD for portal navigation and save space in XML.
+
+	* glom/glom_document.dtd: Update for the portal navigation changes, 
+	as promised in bug #574360
+	* glom/libglom/document/document.cc: save_before_layout_group(): 
+	Do not even create the portal_navigation_relationship node if it is the 
+	default ("automatic"), to save space in the XML file.
+
+2009-06-04  Murray Cumming  <murrayc@murrayc-x61>
+
 	Clean up the code to load/save portal navigation options.
 
 	* glom/libglom/document/document.cc: load_after_layout_group(): 

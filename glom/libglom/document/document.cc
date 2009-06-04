@@ -3043,15 +3043,13 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
               save_before_layout_item_usesrelationship(child, portal);
 
               //Portal navigation details:
-              xmlpp::Element* child_navigation_relationship = child->add_child(GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP);
-
-              Glib::ustring navigation_type_string = GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_AUTOMATIC; //Default.
+              Glib::ustring navigation_type_string;
               sharedptr<const UsesRelationship> relationship_navigation_specific;
 
               switch(portal->get_navigation_type())
               {
                 case LayoutItem_Portal::NAVIGATION_AUTOMATIC:
-                  navigation_type_string = GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_AUTOMATIC;
+                  //We leave this blank to use the default.
                   break;
                 case LayoutItem_Portal::NAVIGATION_NONE:
                   navigation_type_string = GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_NONE;
@@ -3063,9 +3061,17 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
                   break;
               }
    
-              save_before_layout_item_usesrelationship(child_navigation_relationship, relationship_navigation_specific);
-              set_node_attribute_value(child_navigation_relationship, 
-                GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE, navigation_type_string);
+              //Empty means the default ("automatic")
+              //In that case we don't even write the node, to keep the XML small:   
+              if(!navigation_type_string.empty())
+              {
+                xmlpp::Element* child_navigation_relationship = child->add_child(GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP);
+
+                save_before_layout_item_usesrelationship(child_navigation_relationship, relationship_navigation_specific);
+                set_node_attribute_value(child_navigation_relationship, 
+                  GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE, navigation_type_string);
+              }              
+
 
               //Print Layout specific stuff:
               set_node_attribute_value_as_decimal(child, GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_HEIGHT, portal->get_print_layout_row_height());
