@@ -203,7 +203,7 @@ namespace Glom
 #define GLOM_NODE_LIBRARY_MODULES "library_modules"
 #define GLOM_NODE_LIBRARY_MODULE "module"
 #define GLOM_ATTRIBUTE_LIBRARY_MODULE_NAME "name"
-#define GLOM_ATTRIBUTE_LIBRARY_MODULE_SCRIPT "script"
+#define GLOM_ATTRIBUTE_LIBRARY_MODULE_SCRIPT "script" //deprecated
 
 //A built-in relationship that is available for every table:
 #define GLOM_RELATIONSHIP_NAME_SYSTEM_PROPERTIES "system_properties"
@@ -2825,10 +2825,21 @@ bool Document::load_after()
               xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(*iter);
               if(node)
               {
-                const Glib::ustring table_name = get_node_attribute_value(node, GLOM_ATTRIBUTE_LIBRARY_MODULE_NAME);
-                const Glib::ustring script = get_node_attribute_value(node, GLOM_ATTRIBUTE_LIBRARY_MODULE_SCRIPT);
+                //The name is in an attribute:
+                const Glib::ustring module_name = get_node_attribute_value(node, GLOM_ATTRIBUTE_LIBRARY_MODULE_NAME);
 
-                m_map_library_scripts[table_name] = script;
+                //The string is in a child text node:
+                Glib::ustring script;
+
+                const xmlpp::TextNode* text_child = node->get_child_text();
+                if(text_child)
+                  script = text_child->get_content();
+
+                //Fall back to the deprecated attribute:
+                if(script.empty())
+                  script = get_node_attribute_value(node, GLOM_ATTRIBUTE_LIBRARY_MODULE_SCRIPT);
+
+                m_map_library_scripts[module_name] = script;
               }
             }
           }
@@ -3541,8 +3552,15 @@ bool Document::save_before()
 
       xmlpp::Element* nodeModule = nodeModules->add_child(GLOM_NODE_LIBRARY_MODULE);
 
+      //The name is in an attribute:
       set_node_attribute_value(nodeModule, GLOM_ATTRIBUTE_LIBRARY_MODULE_NAME, name);
-      set_node_attribute_value(nodeModule, GLOM_ATTRIBUTE_LIBRARY_MODULE_SCRIPT, script);
+
+      //The script is in a child text node:
+      xmlpp::TextNode* text_child = nodeModule->get_child_text();
+      if(!text_child)
+        nodeModule->add_child_text(script);
+      else
+       text_child->set_content(script);
     }
   }
 

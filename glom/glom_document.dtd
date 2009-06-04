@@ -2,6 +2,8 @@
 <!--
 DTD for glom documents.
 TODO: Make sure that all the comments list all the attributes and their meaning.
+TODO: Should we specify the presence of child text nodes in the ELEMENT somehow?
+TODO: Test this by trying to validate some real documents against this DTD.
 -->
 
 
@@ -178,14 +180,6 @@ TODO: Make sure that all the comments list all the attributes and their meaning.
     <!ELEMENT calculation ANY>
     <!ATTLIST calculation>
 
-<!-- TODO. -->
-
-    <!ELEMENT field_view EMPTY >
-    <!ATTLIST field_view
-        name CDATA #REQUIRED
-        relationship CDATA #REQUIRED
-        field CDATA #REQUIRED >
-
 <!-- data layouts determine the order of items and sorting of the fields. There are many
   different ways that they are grouped with the various data_layout* possibilities, but the idea is
   the same. They all have a sequence, which tells when they are displayed. In addition, there is a column_count
@@ -202,7 +196,7 @@ TODO: Make sure that all the comments list all the attributes and their meaning.
     <!ELEMENT data_layout_groups (data_layout_group)*>
     <!ATTLIST data_layout_groups>
 
-<!-- a data_layout_group is just a the setup of fields to be shown. It encapsulates everything else. -->
+<!-- A data_layout_group is just a the setup of fields to be shown. It encapsulates everything else. -->
 
     <!ELEMENT data_layout_group (trans_set | data_layout_group | data_layout_item | data_layout_portal |
         data_layout_item_groupby | data_layout_button | data_layout_notebook | data_layout_item_header | 
@@ -213,7 +207,7 @@ TODO: Make sure that all the comments list all the attributes and their meaning.
         sequence CDATA #IMPLIED
         columns_count CDATA #REQUIRED >
 
-<!-- a data_layout_notebook is the tabbed display of tables in the glom interface. -->
+<!-- A data_layout_notebook is the tabbed display of tables in the glom interface. -->
 
     <!ELEMENT data_layout_notebook (data_layout_group|data_layout_portal)*>
     <!ATTLIST data_layout_notebook
@@ -222,7 +216,7 @@ TODO: Make sure that all the comments list all the attributes and their meaning.
         sequence CDATA #IMPLIED
         title CDATA #IMPLIED >
 
-<!-- a data_layout_item_groupby is a data_layout_group that sorts -->
+<!-- A data_layout_item_groupby is a data_layout_group that sorts -->
 
     <!ELEMENT data_layout_item_groupby (trans_set | groupby | sortby | data_layout_group | data_layout_item |
         data_layout_portal | data_layout_button | data_layout_item_groupby | secondary_fields | 
@@ -314,7 +308,7 @@ TODO: Make sure that all the comments list all the attributes and their meaning.
         related_relationship CDATA #IMPLIED
         sort_ascending (true|false) "false" >
         
-<!-- a data_layout_item_header is the items that go at the very top of the database (e.g. the
+<!-- A data_layout_item_header is the items that go at the very top of the database (e.g. the
   organization name and logo in example_film_manager.glom). -->
 
     <!ELEMENT data_layout_item_header (data_layout_item)*>
@@ -332,19 +326,19 @@ TODO: Make sure that all the comments list all the attributes and their meaning.
         sequence CDATA #IMPLIED
         script CDATA #IMPLIED >
 
-<!-- a script node is used to embed python code into the custom button. -->
+<!-- A script node is used to embed python code into the custom button. -->
 
     <!ELEMENT script ANY>
     <!ATTLIST script>
     
-<!-- a title_custom is used to give a different name next to a field than normal. -->
+<!-- A title_custom is used to give a different name next to a field than normal. -->
 
     <!ELEMENT title_custom ANY>
     <!ATTLIST title_custom
         title CDATA #IMPLIED
         use_custom (true|false) "true" >
         
-<!-- a data_layout_portal is the essential information, a short and quick list of values
+<!-- A data_layout_portal is the essential information, a short and quick list of values
   that are probably of interest to others (e.g. contact information, name, etc). -->
 
     <!ELEMENT data_layout_portal ANY >
@@ -375,16 +369,19 @@ TODO: Make sure that all the comments list all the attributes and their meaning.
         title CDATA #IMPLIED
         show_table_title (true|false) "false" >
 
-<!-- The library_modules node contains the code of python modules that are used while scripting the database. -->
+<!-- The library_modules node contains python code that may be used in scripts and 
+     calculations via the python import keyword. -->
 
     <!ELEMENT library_modules ANY>
     <!ATTLIST library_modules >
 
-<!-- library_module nodes contain python code that may be used in scripts and calculation.
+<!-- library_module nodes contain python code that may be used in scripts and 
+     calculations via the python import keyword. The source code is in the 
+     child text node.
      name: The name of the module, to be used with the python import command.
-     script: The code of the python module. TODO: Use a child node. -->
-    <!ELEMENT library_module ANY>
-    <!ATTLIST library_module
+     script: Deprecated in Glom 1.12. The code of the python module. -->
+    <!ELEMENT module ANY>
+    <!ATTLIST module
         name CDATA #REQUIRED
-        script CDATA #IMPLIED >
+     >
 

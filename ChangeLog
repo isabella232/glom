@@ -1,3 +1,13 @@
+2009-06-04  Murray Cumming  <murrayc@murrayc-x61>
+
+	Store script module code in child text nodes.
+
+	* glom/libglom/document/document.cc: load_after(), save_before(): 
+	Store the (importable) python script library modules in a child text 
+	node instead of an attribute, as we do elsewhere, dealing with a TODO 
+	that I found in the DTD.
+	* glom/glom_document.dtd: Update appropriately.
+
 1.11.0:
 
 2009-06-01  Murray Cumming  <murrayc@murrayc.com>
