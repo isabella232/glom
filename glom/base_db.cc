@@ -1590,6 +1590,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Base_DB::get_connection()
 }
 
 
+
 bool Base_DB::record_new(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value, const type_field_values& field_values)
 {
   sharedptr<const Field> fieldPrimaryKey = get_field_primary_key_for_table(table_name);
@@ -2735,7 +2736,6 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
   if(field_name.empty()) //This should not happen.
    return false;
 
-  
   Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
   params->add_holder(field_in_record.m_field->get_holder(field_value));
   params->add_holder(field_in_record.m_key->get_holder(field_in_record.m_key_value));
@@ -2743,7 +2743,6 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
   const Glib::ustring table_name = field_in_record.m_table_name;
   Glib::ustring strQuery = "UPDATE \"" + field_in_record.m_table_name + "\"";
   strQuery += " SET \"" + field_name + "\" = " + field_in_record.m_field->get_gda_holder_string();
-
 
   //Set these extra fields too, each time we change a value:
   //We check for existence because the user may delete these fields:

@@ -459,7 +459,6 @@ private:
   sharedptr<const Field> m_field;
 };
 
-
   type_field_calcs m_FieldsCalculationInProgress; //Prevent circular calculations and recalculations.
   
   //Extra creation/modification fields to set:
