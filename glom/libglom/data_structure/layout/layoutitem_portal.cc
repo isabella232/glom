@@ -104,7 +104,7 @@ void LayoutItem_Portal::change_field_item_name(const Glib::ustring& table_name, 
 
 sharedptr<UsesRelationship> LayoutItem_Portal::get_navigation_relationship_specific()
 {
-  if(this->get_navigation_type() == LayoutItem_Portal::NAVIGATION_SPECIFIC)
+  if(get_navigation_type() == LayoutItem_Portal::NAVIGATION_SPECIFIC)
     return m_navigation_relationship_specific;
   else
     return sharedptr<UsesRelationship>();
@@ -112,7 +112,7 @@ sharedptr<UsesRelationship> LayoutItem_Portal::get_navigation_relationship_speci
 
 sharedptr<const UsesRelationship> LayoutItem_Portal::get_navigation_relationship_specific() const
 {
-  if(this->get_navigation_type() == LayoutItem_Portal::NAVIGATION_SPECIFIC)
+  if(get_navigation_type() == LayoutItem_Portal::NAVIGATION_SPECIFIC)
     return m_navigation_relationship_specific;
   else
     return sharedptr<UsesRelationship>();

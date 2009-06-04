@@ -1,5 +1,11 @@
 2009-06-04  Murray Cumming  <murrayc@murrayc-x61>
 
+	* glom/libglom/data_structure/layout/layoutitem_portal.cc:
+	get_navigation_relationship_specific(): Remove unnecessary this-> to 
+	be consistent with the rest of the code.
+
+2009-06-04  Murray Cumming  <murrayc@murrayc-x61>
+
 	Related records portal: Hide the row button when navigation is none.
  
 	* glom/libglom/data_structure/layout/layoutitem_portal.h: 
