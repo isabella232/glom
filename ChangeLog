@@ -159,6 +159,9 @@
 	Added private update_go_to_details_button_sensitivity() method and 
 	called it whenever the value is changed by the user or set via 
 	set_value(). Fixes bug #565023.
+
+2009-05-8  Murray Cumming  <murrayc@murrayc.com>
+
 	record_new(): Take a table_name.
 
 	* glom/base_db_table_data.[h|cc]: record_new(): Take a table_name, 
@@ -183,7 +186,7 @@
 	* glom/base_db_table_data.cc: record_new(): Set values for the extra 
 	creation fields, and show them if they are on the layout.
 
-2009-05-07  Murray Cumming  <murrayc@murrayc-x61>
+2009-05-07  Murray Cumming  <murrayc@murrayc.com>
 
 	Allow non-network-shared connections when using IPv6.
 
