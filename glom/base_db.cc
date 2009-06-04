@@ -1590,36 +1590,6 @@ Glib::RefPtr<Gnome::Gda::Connection> Base_DB::get_connection()
 }
 
 
-/** A predicate for use with std::find_if() to find a std::pair whose 
- * first item is the same field.
- */
-class predicate_pair_has_field
-{
-public:
-  predicate_pair_has_field(const sharedptr<const Field>& field)
-  {
-    m_field = field;
-  }
-
-  template <class T_Second>
-  bool operator() (const std::pair<sharedptr<Field>, T_Second>& element)
-  {
-    sharedptr<Field> field = element.first;
-
-    if(!field && !m_field)
-      return true;
-
-    if(!field || !m_field)
-      return false;
-
-    //TODO: Check more than just the name:
-    return (m_field->get_name() == field->get_name());
-  }
-    
-private:
-  sharedptr<const Field> m_field;
-};
-
 bool Base_DB::record_new(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value, const type_field_values& field_values)
 {
   sharedptr<const Field> fieldPrimaryKey = get_field_primary_key_for_table(table_name);
@@ -1633,7 +1603,7 @@ bool Base_DB::record_new(const Glib::ustring& table_name, const Gnome::Gda::Valu
   for(type_vec_fields::const_iterator iter = all_fields.begin(); iter != all_fields.end(); ++iter)
   {
     //TODO: Search for the non-related field with the name, not just the field with the name:
-    sharedptr<Field> field = *iter;
+    sharedptr<const Field> field = *iter;
     type_field_values::const_iterator iterFind = std::find_if(field_values_plus_others.begin(), field_values_plus_others.end(), predicate_pair_has_field(field));
     if(iterFind == field_values_plus_others.end())
     {
@@ -1711,7 +1681,7 @@ bool Base_DB::record_new(const Glib::ustring& table_name, const Gnome::Gda::Valu
   
   for(type_field_values::const_iterator iter = field_values_plus_others.begin(); iter != field_values_plus_others.end(); ++iter)
   {
-    sharedptr<Field> field = iter->first;
+    sharedptr<const Field> field = iter->first;
     //sharedptr<LayoutItem_Field> layout_item = *iter;
     const Glib::ustring field_name = field->get_name();
     if(true) //!layout_item->get_has_relationship_name()) //TODO: Allow people to add a related record also by entering new data in a related field of the related record.
@@ -1797,7 +1767,7 @@ bool Base_DB::record_new(const Glib::ustring& table_name, const Gnome::Gda::Valu
          
         const Gnome::Gda::Value& field_value = iter->second;
 
-        sharedptr<Field> field = iter->first;
+        sharedptr<const Field> field = iter->first;
         sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
         layout_item->set_full_field_details(field);
         LayoutFieldInRecord field_in_record(layout_item, table_name, fieldPrimaryKey, primary_key_value);

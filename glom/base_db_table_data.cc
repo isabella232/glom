@@ -75,12 +75,12 @@ bool Base_DB_Table_Data::record_new_with_entered_data(const Gnome::Gda::Value& p
   //Add values for all fields that default to something, not just the shown ones:
   //For instance, we must always add the primary key, and fields with default/calculated/lookup values:
   const type_vecLayoutFields fieldsOnLayout = m_FieldsShown;
-  for(type_vecLayoutFields::iterator iter = fieldsOnLayout.begin(); iter != fieldsOnLayout.end(); ++iter)
+  for(type_vecLayoutFields::const_iterator iter = fieldsOnLayout.begin(); iter != fieldsOnLayout.end(); ++iter)
   {
     //Check that we don't have a value for this field already:
     //(This gives priority to specified fields values rather than entered field values.)
     //TODO: Search for the non-related field with the name, not just the field with the name:
-    type_field_values::const_iterator iterFind = std::find_if(field_values_plus_entered.begin(), field_values_plus_entered.end(), predicate_FieldHasName<LayoutItem_Field>((*iter)->get_name()));
+    type_field_values::const_iterator iterFind = std::find_if(field_values_plus_entered.begin(), field_values_plus_entered.end(), predicate_pair_has_field((*iter)->get_full_field_details()));
     if(iterFind == field_values_plus_entered.end())
     {
       sharedptr<const LayoutItem_Field> layoutitem = *iter;

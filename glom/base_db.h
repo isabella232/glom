@@ -114,7 +114,7 @@ public:
   bool change_columns(const Glib::ustring& table_name, const type_vec_const_fields& old_fields, type_vec_fields& fields, Gtk::Window* parent_window) const;
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
-  typedef std::pair< sharedptr<Field>, Gnome::Gda::Value> type_field_and_value;
+  typedef std::pair< sharedptr<const Field>, Gnome::Gda::Value> type_field_and_value;
   typedef std::list<type_field_and_value> type_field_values; 
 
   /** Create a new record with all the specified field values.
@@ -428,6 +428,37 @@ private:
   virtual Gtk::TreeModel::iterator get_row_selected();
 
 protected:
+
+/** A predicate for use with std::find_if() to find a std::pair whose 
+ * first item is the same field.
+ */
+class predicate_pair_has_field
+{
+public:
+  predicate_pair_has_field(const sharedptr<const Field>& field)
+  {
+    m_field = field;
+  }
+
+  template <class T_Second>
+  bool operator() (const std::pair<sharedptr<const Field>, T_Second>& element)
+  {
+    sharedptr<const Field> field = element.first;
+
+    if(!field && !m_field)
+      return true;
+
+    if(!field || !m_field)
+      return false;
+
+    //TODO: Check more than just the name:
+    return (m_field->get_name() == field->get_name());
+  }
+    
+private:
+  sharedptr<const Field> m_field;
+};
+
 
   type_field_calcs m_FieldsCalculationInProgress; //Prevent circular calculations and recalculations.
   
