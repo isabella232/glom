@@ -1,10 +1,10 @@
-2009-06-04  Murray Cumming  <murrayc@murrayc-x61>
+2009-06-04  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/data_structure/layout/layoutitem_portal.cc:
 	get_navigation_relationship_specific(): Remove unnecessary this-> to 
 	be consistent with the rest of the code.
 
-2009-06-04  Murray Cumming  <murrayc@murrayc-x61>
+2009-06-04  Murray Cumming  <murrayc@murrayc.com>
 
 	Related records portal: Hide the row button when navigation is none.
  
@@ -21,7 +21,7 @@
 	called.
 	This completes bug #574360.
 
-2009-06-04  Murray Cumming  <murrayc@murrayc-x61>
+2009-06-04  Murray Cumming  <murrayc@murrayc.com>
 
 	Update the DTD for portal navigation and save space in XML.
 
@@ -31,7 +31,7 @@
 	Do not even create the portal_navigation_relationship node if it is the 
 	default ("automatic"), to save space in the XML file.
 
-2009-06-04  Murray Cumming  <murrayc@murrayc-x61>
+2009-06-04  Murray Cumming  <murrayc@murrayc.com>
 
 	Clean up the code to load/save portal navigation options.
 
@@ -48,7 +48,7 @@
 	Use constants for the possible attribute values, instead of copy/pasting 
 	the same string constants in several places.
 
-2009-06-04  Murray Cumming  <murrayc@murrayc-x61>
+2009-06-04  Murray Cumming  <murrayc@murrayc.com>
 
 	Store script module code in child text nodes.
 
@@ -123,7 +123,7 @@
 	speeds up the initial meta store update. This requires latest libgdamm
 	from git.
 
-2009-05-10  Murray Cumming  <murrayc@murrayc-x61>
+2009-05-10  Murray Cumming  <murrayc@murrayc.com>
 
 	Disables the Open button next to ID fields if the field is empty.
 
@@ -132,7 +132,7 @@
 	called it whenever the value is changed by the user or set via 
 	set_value(). Fixes bug #565023.
 
-2009-05-07  Murray Cumming  <murrayc@murrayc-x61>
+2009-05-07  Murray Cumming  <murrayc@murrayc.com>
 
 	Allow non-network-shared connections when using IPv6.
 
