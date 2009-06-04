@@ -1,5 +1,22 @@
 2009-06-04  Murray Cumming  <murrayc@murrayc-x61>
 
+	Related records portal: Hide the row button when navigation is none.
+ 
+	* glom/libglom/data_structure/layout/layoutitem_portal.h: 
+	Add documentation for get/set_navigation_relationship_specific(), 
+	get/set_navigation_type() and the enum.
+
+	* glom/mode_data/box_data_list_related.cc: enable_buttons(): 
+	Disable editing of details when the portal has NAVIGATION_NONE.
+	* glom/utility_widgets/db_adddel/db_adddel.cc: 
+	construct_specified_columns(): Set the button column visibility 
+	according to the member variable set in set_allow_view_details(), 
+	because the button column often does not exist when that is actually 
+	called.
+	This completes bug #574360.
+
+2009-06-04  Murray Cumming  <murrayc@murrayc-x61>
+
 	Update the DTD for portal navigation and save space in XML.
 
 	* glom/glom_document.dtd: Update for the portal navigation changes, 

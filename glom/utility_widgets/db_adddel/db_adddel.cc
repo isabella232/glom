@@ -931,14 +931,13 @@ void DbAddDel::construct_specified_columns()
     m_treeviewcolumn_button = Gtk::manage(new Gtk::TreeViewColumn());
     m_treeviewcolumn_button->pack_start(*pCellButton);
 
-
     int x_offset = 0;
     int y_offset = 0;
     int width = 0;
     int height = 0;
     pCellButton->get_size(m_TreeView, x_offset, y_offset, width, height);
 
-    m_treeviewcolumn_button->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED); //Need by fixed-height mode.
+    m_treeviewcolumn_button->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED); //Needed by fixed-height mode.
 
     // TODO: I am not sure whether this is always correct. Perhaps, we also
     // have to take into account the xpad property of the cell renderer and
@@ -947,7 +946,7 @@ void DbAddDel::construct_specified_columns()
     m_TreeView.get_style_property("horizontal-separator", horizontal_separator);
     m_treeviewcolumn_button->set_fixed_width(width + horizontal_separator*2);
 
-    m_treeviewcolumn_button->set_property("visible", true);
+    m_treeviewcolumn_button->set_visible(m_allow_view_details);
 
     m_TreeView.append_column(*m_treeviewcolumn_button);
 
@@ -2054,9 +2053,10 @@ void DbAddDel::set_allow_view_details(bool val)
 {
   m_allow_view_details = val;
 
-  //Hide it if it was visible:
+  //Hide it if it was visible, if it exists,
+  //otherwise do that later after creating it:
   if(m_treeviewcolumn_button)
-    g_object_set(m_treeviewcolumn_button->gobj(), "visible", get_allow_view_details() ? TRUE : FALSE, (gpointer)NULL);
+    m_treeviewcolumn_button->set_visible(val);
 }
 
 bool DbAddDel::get_allow_view_details() const

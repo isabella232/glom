@@ -57,7 +57,10 @@ Box_Data_List_Related::Box_Data_List_Related()
 
 void Box_Data_List_Related::enable_buttons()
 {
-  const bool view_details_possible = get_has_suitable_record_to_view_details();
+  const bool view_details_possible = 
+    get_has_suitable_record_to_view_details() && 
+    (m_portal->get_navigation_type() != LayoutItem_Portal::NAVIGATION_NONE);
+
   m_AddDel.set_allow_view_details(view_details_possible); //Don't allow the user to go to a record in a hidden table.
 }
 

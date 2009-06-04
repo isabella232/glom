@@ -51,10 +51,43 @@ public:
 
   //virtual void debug(guint level = 0) const;
 
+  /** Gets the relationship to use for navigation if get_navigation_type() is 
+   * NAVIGATION_NONE.
+   */
   sharedptr<UsesRelationship> get_navigation_relationship_specific();
+
+  /** Get the @a relationship to use for navigation if get_navigation_type() is 
+   * NAVIGATION_NONE.
+   */
   sharedptr<const UsesRelationship> get_navigation_relationship_specific() const;
+
+  /** Set the @a relationship to use for navigation if get_navigation_type() is 
+   * NAVIGATION_NONE.
+   */
   void set_navigation_relationship_specific(const sharedptr<UsesRelationship>& relationship);
+
   void reset_navigation_relationship();
+
+  /** The navigation (if any) that should be used when the user 
+   * activates a related record row.
+   */
+  enum navigation_type
+  {
+    NAVIGATION_NONE, /**< No navigation will be offered. */
+    NAVIGATION_AUTOMATIC, /**< The destination related table will be chosen automatically based on the relationship and the visible fields. */
+    NAVIGATION_SPECIFIC /**< The destination related table will be determined by a specified relationship. */
+  };
+
+  /** Discover what @a type (if any) navigation should be used when the user 
+   * activates a related record row.
+   */
+  navigation_type get_navigation_type() const;
+
+  /** Set what @a type (if any) navigation should be used when the user 
+   * activates a related record row.
+   */
+  void set_navigation_type(navigation_type type);
+
 
   /// This is used only for the print layouts.
   double get_print_layout_row_height() const;
@@ -62,15 +95,6 @@ public:
   /// This is used only for the print layouts.
   void set_print_layout_row_height(double row_height);
 
-  enum navigation_type
-  {
-    NAVIGATION_NONE,
-    NAVIGATION_AUTOMATIC,
-    NAVIGATION_SPECIFIC
-  };
-
-  navigation_type get_navigation_type() const;
-  void set_navigation_type(navigation_type type);
 
 private:
 
