@@ -34,9 +34,12 @@ Document_XML::~Document_XML()
   //m_pDOM_Document is owned by m_DOM_Document;
 }
 
-bool Document_XML::load_after()
+bool Document_XML::load_after(int& failure_code)
 {
-  bool bTest = type_base::load_after();
+  //Initialize the output parameter:
+  failure_code = 0;
+
+  const bool bTest = type_base::load_after(failure_code);
   if(!bTest)
     return false; //Failed.
 

@@ -38,7 +38,7 @@ public:
   virtual ~Document_XML();
 
   //overrides:
-  virtual bool load_after();
+  virtual bool load_after(int& failure_code);
   virtual bool save_before();
 
   void set_dtd_name(const std::string& strVal); //e.g. "glom.dtd"

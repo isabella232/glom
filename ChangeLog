@@ -1,5 +1,33 @@
 2009-06-04  Murray Cumming  <murrayc@murrayc.com>
 
+	Show a specific error message when the flie format is too new.
+
+	* glom/libglom/document/bakery/document.[h|cc]: 
+	* glom/libglom/document/bakery/document_xml.[h|cc]: load(), 
+	load_after(): Take a int& failure_code output parameter to allow 
+	derived document classes to report a custom failure code.
+	* glom/libglom/document/document.[h|cc]: load_after(): Return a 
+	custom failure_code for a too-new file version.
+	* glom/bakery/app_withdoc.[h|cc]:
+	Add a virtual ui_warning_load_failed(int failure_code) method that 
+	derived classes can override to respond to their own failure codes, 
+	with a generic default error message.
+	open_document(), open_document_from_data(): Use the new method instead 
+	of hard-coding the error message.
+
+	* glom/application.[h|cc]:
+	open_browsed_document(), on_menu_developer_changelanguage(): Adapt.
+	Add an override of ui_warning_load_failed() to show 
+	our custom error dialog in response to our custom failure code.
+	* glom/libglom/test_document.cc: Apapted.
+
+	Exceptions might be purer and need less code changes, but they would 
+	just be a container for an int failure code and it would be easier to 
+	not catch the error.
+	This fixed bug #567102.
+
+2009-06-04  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/data_structure/layout/layoutitem_portal.cc:
 	get_navigation_relationship_specific(): Remove unnecessary this-> to 
 	be consistent with the rest of the code.

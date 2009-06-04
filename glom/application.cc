@@ -670,6 +670,18 @@ static bool hostname_is_localhost(const Glib::ustring& hostname)
   return true;
 }
 
+void App_Glom::ui_warning_load_failed(int failure_code)
+{
+  if(failure_code == Document::LOAD_FAILURE_CODE_FILE_VERSION_TOO_NEW)
+  {
+    ui_warning(_("Open Failed."), 
+      _("The document could not be opened because it was created or modified by a newer version of Glom."));
+  }
+  else
+    GlomBakery::App_WithDoc_Gtk::ui_warning_load_failed();
+}
+
+
 #ifndef G_OS_WIN32
 void App_Glom::open_browsed_document(const EpcServiceInfo* server, const Glib::ustring& service_name)
 {
@@ -738,7 +750,8 @@ void App_Glom::open_browsed_document(const EpcServiceInfo* server, const Glib::u
   {
     //Create a temporary Document instance, so we can manipulate the data:
     Document document_temp;
-    const bool loaded = document_temp.load_from_data((const guchar*)document_contents, length);
+    int failure_code = 0;
+    const bool loaded = document_temp.load_from_data((const guchar*)document_contents, length, failure_code);
     if(loaded)
     {
       // Connection is always remote-hosted in client only mode:
@@ -758,13 +771,13 @@ void App_Glom::open_browsed_document(const EpcServiceInfo* server, const Glib::u
       if(hostname_is_localhost(host))
         document_temp.set_connection_server( epc_service_info_get_host(server) );
 
-      //Make sure that we only use the specified port instead of connectin to some other postgres instance 
+      //Make sure that we only use the specified port instead of connecting to some other postgres instance 
       //on the same server:
       document_temp.set_connection_try_other_ports(false);
     }
     else
     {
-      std::cerr << "Could not parse the document that was retrieved over the network." << std::endl;
+      std::cerr << "Could not parse the document that was retrieved over the network: failure_code=" << failure_code << std::endl;
     }
 
     g_free(document_contents);
@@ -2393,7 +2406,8 @@ void App_Glom::on_menu_developer_changelanguage()
 
        //Get the translations from the document (in Operator mode, we only load the necessary translations.)
        //This also updates the UI, so we show all the translated titles:
-       get_document()->load();
+       int failure_code = 0;
+       get_document()->load(failure_code);
 
        m_pFrame->show_table_refresh(); //load() doesn't seem to refresh the view.
       }

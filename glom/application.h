@@ -89,6 +89,9 @@ public:
 
   static App_Glom* get_application();
 
+protected:
+  virtual void ui_warning_load_failed(int failure_code = 0); //Override.
+
 private:
   virtual void init_layout(); //override.
   virtual void init_menus_file(); //override.

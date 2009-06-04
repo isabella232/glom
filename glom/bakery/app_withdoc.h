@@ -148,6 +148,13 @@ protected:
   virtual void after_successful_save(); //e.g. disable File|Save.
 
   virtual void ui_warning(const Glib::ustring& text, const Glib::ustring& secondary_text) = 0;
+
+  /** Warn the user about a failure while loading a document.
+   * Override this to show a specific message in response to your application's 
+   * custom @a failure_code.
+   */
+  virtual void ui_warning_load_failed(int failure_code = 0);
+
   virtual Glib::ustring ui_file_select_open(const Glib::ustring& ui_file_select_open = Glib::ustring()) = 0;
 
   /** Present a user interface that allows the user to select a location to save the file.

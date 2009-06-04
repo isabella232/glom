@@ -66,7 +66,7 @@ public:
    * bool indicates success.
    * This is just here so the SWIG Java API generator does not need to wrap methods from the base classes.
    */
-  bool load();
+  bool load(int& failure_code);
   
   
   /** Whether the document was opened from another networked glom instance, 
@@ -436,6 +436,12 @@ public:
   static bool get_relationship_is_system_properties(const sharedptr<const Relationship>& relationship);
 #endif //SWIG
 
+  /// Failure codes that could be returned by load_after()
+  enum load_failure_codes
+  {
+    LOAD_FAILURE_CODE_FILE_VERSION_TOO_NEW
+  };
+
 private:
   //Overrides:
 
@@ -453,7 +459,7 @@ private:
   void save_changes();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  virtual bool load_after();
+  virtual bool load_after(int& failure_code);
   void load_after_layout_group(const xmlpp::Element* node, const Glib::ustring& table_name, const sharedptr<LayoutGroup>& group, bool with_print_layout_positions = false);
   void load_after_sort_by(const xmlpp::Element* node, const Glib::ustring& table_name, LayoutItem_GroupBy::type_list_sort_fields& list_fields);
   void load_after_layout_item_usesrelationship(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<UsesRelationship>& item);

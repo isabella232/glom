@@ -70,7 +70,8 @@ void App_WithDoc::on_menu_file_close()
 
 bool App_WithDoc::open_document_from_data(const guchar* data, std::size_t length)
 {
-  const bool bTest = m_pDocument->load_from_data(data, length);
+  int failure_code = 0;
+  const bool bTest = m_pDocument->load_from_data(data, length, failure_code);
 
   bool bOpenFailed = false;
   if(!bTest) //if open failed.
@@ -92,7 +93,7 @@ bool App_WithDoc::open_document_from_data(const guchar* data, std::size_t length
 
   if(bOpenFailed)
   {
-    ui_warning(_("Open failed."), _("The document could not be opened."));
+    ui_warning_load_failed(failure_code);
 
     return false; //failed.
   }
@@ -117,7 +118,8 @@ bool App_WithDoc::open_document(const Glib::ustring& file_uri)
 
     //Open it.
     pApp->m_pDocument->set_file_uri(file_uri);
-    bool bTest = pApp->m_pDocument->load();
+    int failure_code = 0;
+    const bool bTest = pApp->m_pDocument->load(failure_code);
 
     bool bOpenFailed = false;
     if(!bTest) //if open failed.
@@ -145,7 +147,7 @@ bool App_WithDoc::open_document(const Glib::ustring& file_uri)
 
     if(bOpenFailed)
     {
-      ui_warning(_("Open failed."), _("The document could not be opened."));
+      ui_warning_load_failed(failure_code);
 
       //re-initialize document.
       delete pApp->m_pDocument;
@@ -486,6 +488,11 @@ void App_WithDoc::document_history_add(const Glib::ustring& /* file_uri */)
 void App_WithDoc::document_history_remove(const Glib::ustring& /* file_uri */)
 {
   //Override this.
+}
+
+void App_WithDoc::ui_warning_load_failed(int failure_code)
+{
+  ui_warning(_("Open Failed."), _("The document could not be opened."));
 }
 
 } //namespace

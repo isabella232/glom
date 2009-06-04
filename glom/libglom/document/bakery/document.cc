@@ -117,12 +117,15 @@ bool Document::get_modified() const
   return m_bModified;
 }
 
-bool Document::load()
+bool Document::load(int& failure_code)
 {
+  //Initialize the output parameter:
+  failure_code = 0;
+
   bool bTest = read_from_disk();
   if(bTest)
   {
-    bTest = load_after(); //may be overridden.
+    bTest = load_after(failure_code); //may be overridden.
     if(bTest)
     {
       //Tell the View to show the new data:
@@ -134,14 +137,17 @@ bool Document::load()
   return bTest;
 }
 
-bool Document::load_from_data(const guchar* data, std::size_t length)
+bool Document::load_from_data(const guchar* data, std::size_t length, int& failure_code)
 {
   if(!data || !length)
     return false;
 
+  //Initialize the output parameter:
+  failure_code = 0;
+
   m_strContents = Glib::ustring((char*)data, length);
  
-  const bool bTest = load_after(); //may be overridden.
+  const bool bTest = load_after(failure_code); //may be overridden.
   if(bTest)
   {
     //Tell the View to show the new data:
@@ -154,13 +160,14 @@ bool Document::load_from_data(const guchar* data, std::size_t length)
 
 
 
-bool Document::load_after()
+bool Document::load_after(int& failure_code)
 {
   //Called after text is read from disk, but before updating view.
 
   //Override this if necessary.
   //For instance, Document_XML parses the XML.
 
+  failure_code = 0;
   return true;
 }
 

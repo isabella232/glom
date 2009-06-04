@@ -2328,8 +2328,11 @@ void Document::load_after_print_layout_position(const xmlpp::Element* nodeItem, 
   }
 }
 
-bool Document::load_after()
+bool Document::load_after(int& failure_code)
 {
+  //Initialize the output variable:
+  failure_code = 0;
+
   //TODO: Use some callback UI to show a busy cursor?
   /*
   //Use a std::auto_ptr<> to avoid even unncessarily instantiating a BusyCursor,
@@ -2341,7 +2344,7 @@ bool Document::load_after()
   
   m_block_modified_set = true; //Prevent the set_ functions from trigerring a save.
 
-  bool result = GlomBakery::Document_XML::load_after();  
+  bool result = GlomBakery::Document_XML::load_after(failure_code);  
 
   m_block_cache_update = true; //Don't waste time repeatedly updating this until we have finished.
 
@@ -2355,7 +2358,8 @@ bool Document::load_after()
       if(m_document_format_version > get_latest_known_document_format_version())
       {
         std::cerr << "Document::load_after(): Loading failed because format_version=" << m_document_format_version << ", but latest known format version is " << get_latest_known_document_format_version() << std::endl;
-        return false; //TODO: Provide more information so the application (or Bakery) can say exactly why loading failed.
+        failure_code = LOAD_FAILURE_CODE_FILE_VERSION_TOO_NEW;
+        return false;
       }
       
       m_is_example = get_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_EXAMPLE);
@@ -4151,9 +4155,9 @@ bool Document::get_opened_from_browse() const
   return m_opened_from_browse;
 }
 
-bool Document::load()
+bool Document::load(int& failure_code)
 {
-  return GlomBakery::Document_XML::load();
+  return GlomBakery::Document_XML::load(failure_code);
 }
 
 

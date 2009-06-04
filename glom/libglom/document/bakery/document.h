@@ -47,15 +47,15 @@ public:
 
   /* Loads data from disk, using the URI (set with set_file_uri()) then asks the View to update itself.
    * bool indicates success.
+   * @param failure_code Used to return a custom error code that is understood by your application.
    */
-  bool load();
+  bool load(int& failure_code);
 
-  //This can't be virtual because that would break ABI.
-  //Hopefully it doesn't need to be.
   /* Loads data from disk, using the URI (set with set_file_uri()) then asks the View to update itself.
    * bool indicates success.
+   * @param failure_code Used to return a custom error code that is understood by your application.
    */
-  bool load_from_data(const guchar* data, std::size_t length);
+  bool load_from_data(const guchar* data, std::size_t length, int& failure_code);
 
 
   bool get_modified() const;
@@ -108,10 +108,12 @@ public:
   ///Allow app to update icons/title bar.
 
 protected:
+
   /** overrideable.
    * Does anything which should be done after the data has been loaded from disk, but before updating the View.
+   * @param failure_code Used to return a custom error code that is understood by your application.
    */
-  virtual bool load_after();
+  virtual bool load_after(int& failure_code);
 
   /** overrideable.
    * Does anything which should be done before the view has saved its data, before writing to disk..

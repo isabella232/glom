@@ -92,7 +92,8 @@ int main()
   // Load the document:
   Glom::Document document;
   document.set_file_uri(uri);
-  bool test = document.load();
+  int failure_code = 0;
+  const bool test = document.load(failure_code);
   std::cout << "Document load result=" << test << std::endl;
 
   if(!test)
