@@ -3769,5 +3769,9 @@ bool Base_DB::disable_user(const Glib::ustring& user)
   return true;
 }
 
+Gtk::TreeModel::iterator Base_DB::get_row_selected()
+{
+  return Gtk::TreeModel::iterator();
+}
 
 } //namespace Glom

@@ -423,6 +423,10 @@ private:
   /// Fill m_extra_field_values with the extra field definitions. 
   void init_extra_modification_fields();
 
+  //TODO: This probably shouldn't be here, but is needed because 
+  //record_new() calls methods that need to data that is entered in the UI. 
+  virtual Gtk::TreeModel::iterator get_row_selected();
+
 protected:
 
   type_field_calcs m_FieldsCalculationInProgress; //Prevent circular calculations and recalculations.

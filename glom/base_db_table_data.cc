@@ -75,7 +75,7 @@ bool Base_DB_Table_Data::record_new_with_entered_data(const Gnome::Gda::Value& p
   //Add values for all fields that default to something, not just the shown ones:
   //For instance, we must always add the primary key, and fields with default/calculated/lookup values:
   const type_vecLayoutFields fieldsOnLayout = m_FieldsShown;
-  for(type_vecLayoutFields::const_iterator iter = fieldsOnLayout.begin(); iter != fieldsOnLayout.end(); ++iter)
+  for(type_vecLayoutFields::iterator iter = fieldsOnLayout.begin(); iter != fieldsOnLayout.end(); ++iter)
   {
     //Check that we don't have a value for this field already:
     //(This gives priority to specified fields values rather than entered field values.)
@@ -83,7 +83,10 @@ bool Base_DB_Table_Data::record_new_with_entered_data(const Gnome::Gda::Value& p
     type_field_values::const_iterator iterFind = std::find_if(field_values_plus_entered.begin(), field_values_plus_entered.end(), predicate_FieldHasName<LayoutItem_Field>((*iter)->get_name()));
     if(iterFind == field_values_plus_entered.end())
     {
-      field_values_plus_entered.push_back(*iter);
+      sharedptr<const LayoutItem_Field> layoutitem = *iter;
+      sharedptr<const Field> field = layoutitem->get_full_field_details();
+      type_field_and_value field_and_value(field, Gnome::Gda::Value());
+      field_values_plus_entered.push_back(field_and_value);
     }
   }
 
@@ -193,7 +196,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
         //Generate the new key value.
       }
 
-      const bool added = record_new(relationship->get_to_table(), false /* use_entered_field_data */, primary_key_value);
+      const bool added = record_new(relationship->get_to_table(), primary_key_value, type_field_values());
       if(!added)
       {
         std::cerr << "Base_DB_Table_Data::add_related_record_for_field(): record_new() failed." << std::endl;
