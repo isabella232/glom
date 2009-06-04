@@ -67,6 +67,7 @@ public:
    */
   void close();
 
+  //TODO: Document this:
   typedef sigc::signal<void> type_signal_finished;
   type_signal_finished signal_finished();
 
