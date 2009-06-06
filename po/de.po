@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-02 20:37+0200\n"
-"PO-Revision-Date: 2009-06-02 20:39+0100\n"
+"POT-Creation-Date: 2009-06-06 16:20+0200\n"
+"PO-Revision-Date: 2009-06-06 16:20+0100\n"
 "Last-Translator: Mario Blättermann <mariobl@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -197,14 +197,26 @@ msgstr "Das für Maemo-Geräte zu verwendende Layout."
 msgid "_Show Layout Toolbar"
 msgstr "_Layout-Werkzeugleiste anzeigen"
 
+#: ../glom/application.cc:677 ../glom/bakery/app_withdoc.cc:495
+msgid "Open Failed."
+msgstr "Öffnen gescheitert."
+
+#: ../glom/application.cc:678
+msgid ""
+"The document could not be opened because it was created or modified by a "
+"newer version of Glom."
+msgstr ""
+"Das Dokument konnte nicht geöffnet werden, weil es mit einer neueren Version "
+"von Glom erstellt wurde."
+
 #. std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED" << std::endl;
 #. Warn the user, and let him try again:
-#: ../glom/application.cc:716 ../glom/frame_glom.cc:2208
+#: ../glom/application.cc:728 ../glom/frame_glom.cc:2208
 #: ../glom/frame_glom.cc:2389
 msgid "Connection Failed"
 msgstr "Verbindung gescheitert"
 
-#: ../glom/application.cc:716 ../glom/frame_glom.cc:2208
+#: ../glom/application.cc:728 ../glom/frame_glom.cc:2208
 #: ../glom/frame_glom.cc:2389
 msgid ""
 "Glom could not connect to the database server. Maybe you entered an incorrect "
@@ -214,11 +226,11 @@ msgstr ""
 "Sie einen falschen Benutzernamen oder ein ungültiges Passwort eingegeben, "
 "möglich wäre auch,dass der Postgres-Datenbank-Server nicht läuft."
 
-#: ../glom/application.cc:976
+#: ../glom/application.cc:989
 msgid "Creating From Example File"
 msgstr "Aus Beispieldatei erstellen"
 
-#: ../glom/application.cc:977
+#: ../glom/application.cc:990
 msgid ""
 "To use this example file you must save an editable copy of the file. A new "
 "database will also be created on the server."
@@ -227,11 +239,11 @@ msgstr ""
 "Kopie dieser Datei abspeichern. Weiterhin wird eine neue Datenbank auf dem "
 "Server erstellt."
 
-#: ../glom/application.cc:1026
+#: ../glom/application.cc:1039
 msgid "Opening Read-Only File."
 msgstr "Schreibgeschützte Datei öffnen."
 
-#: ../glom/application.cc:1027
+#: ../glom/application.cc:1040
 msgid ""
 "This file is read only, so you will not be able to enter Developer mode to "
 "make design changes."
@@ -239,16 +251,16 @@ msgstr ""
 "Diese Datei ist nur lesbar, somit können Sie nicht in den Entwicklermodus "
 "wechseln, um Änderungen an der Struktur vorzunehmen."
 
-#: ../glom/application.cc:1030
+#: ../glom/application.cc:1043
 msgid "Continue without Developer Mode"
 msgstr "Ohne Entwicklermodus fortsetzen"
 
 #. The connection to the server is OK, but the database is not there yet.
-#: ../glom/application.cc:1084
+#: ../glom/application.cc:1097
 msgid "Database Not Found On Server"
 msgstr "Die Datenbank wurde auf diesem Server nicht gefunden"
 
-#: ../glom/application.cc:1084
+#: ../glom/application.cc:1097
 msgid ""
 "The database could not be found on the server. Please consult your system "
 "administrator."
@@ -256,56 +268,56 @@ msgstr ""
 "Die Datenbank wurde auf dem Server nicht gefunden. Bitte fragen Sie Ihren "
 "Systemadministrator."
 
-#: ../glom/application.cc:1426
+#: ../glom/application.cc:1439
 msgid "_Contents"
 msgstr "_Inhalt"
 
-#: ../glom/application.cc:1426
+#: ../glom/application.cc:1439
 msgid "Help with the application"
 msgstr "Hilfe zu dieser Anwendung"
 
-#: ../glom/application.cc:1531
+#: ../glom/application.cc:1544
 msgid "Creating Glom Database"
 msgstr "Glom-Datenbank wird erstellt"
 
-#: ../glom/application.cc:1531
+#: ../glom/application.cc:1544
 msgid "Creating Glom database from example file."
 msgstr "Glom-Datenbank wird aus Beispieldatei erstellt."
 
 #. The save failed. Tell the user and don't do anything else:
-#: ../glom/application.cc:2036 ../glom/bakery/app_withdoc.cc:232
-#: ../glom/bakery/app_withdoc.cc:283
+#: ../glom/application.cc:2049 ../glom/bakery/app_withdoc.cc:234
+#: ../glom/bakery/app_withdoc.cc:285
 msgid "Save failed."
 msgstr "Speichern fehlgeschlagen"
 
-#: ../glom/application.cc:2036 ../glom/bakery/app_withdoc.cc:232
-#: ../glom/bakery/app_withdoc.cc:283
+#: ../glom/application.cc:2049 ../glom/bakery/app_withdoc.cc:234
+#: ../glom/bakery/app_withdoc.cc:285
 msgid ""
 "There was an error while saving the file. Your changes have not been saved."
 msgstr ""
 "Beim Speichern der Datei ist ein Fehler aufgetreten. Ihre Änderungen wurden "
 "nicht gespeichert."
 
-#: ../glom/application.cc:2083 ../glom/bakery/app_withdoc_gtk.cc:531
+#: ../glom/application.cc:2096 ../glom/bakery/app_withdoc_gtk.cc:531
 msgid "Open Document"
 msgstr "Dokument öffnen"
 
 #. Show Avahi's stock dialog for choosing a publisher service:
-#: ../glom/application.cc:2103
+#: ../glom/application.cc:2116
 msgid "Choose a running Glom database"
 msgstr "Eine laufende Glom-Datenbank auswählen"
 
-#: ../glom/application.cc:2158 ../glom/application.cc:2163
+#: ../glom/application.cc:2171 ../glom/application.cc:2176
 #: ../glom/bakery/app_withdoc_gtk.cc:591
 msgid "Save Document"
 msgstr "Dokument speichern"
 
 #. Warn the user:
-#: ../glom/application.cc:2265 ../glom/bakery/app_withdoc_gtk.cc:654
+#: ../glom/application.cc:2278 ../glom/bakery/app_withdoc_gtk.cc:654
 msgid "Read-only File."
 msgstr "Schreibgeschützte Datei."
 
-#: ../glom/application.cc:2265 ../glom/bakery/app_withdoc_gtk.cc:654
+#: ../glom/application.cc:2278 ../glom/bakery/app_withdoc_gtk.cc:654
 msgid ""
 "You may not overwrite the existing file, because you do not have sufficient "
 "access rights."
@@ -314,11 +326,11 @@ msgstr ""
 "nötigen Zugriffsrechte fehlen."
 
 #. Warn the user:
-#: ../glom/application.cc:2279 ../glom/bakery/app_withdoc_gtk.cc:668
+#: ../glom/application.cc:2292 ../glom/bakery/app_withdoc_gtk.cc:668
 msgid "Read-only Directory."
 msgstr "Schreibgeschützter Ordner."
 
-#: ../glom/application.cc:2279 ../glom/bakery/app_withdoc_gtk.cc:668
+#: ../glom/application.cc:2292 ../glom/bakery/app_withdoc_gtk.cc:668
 msgid ""
 "You may not create a file in this directory, because you do not have "
 "sufficient access rights."
@@ -326,19 +338,19 @@ msgstr ""
 "Sie können keine Datei in diesem Ordner erstellen, da Ihnen die nötigen "
 "Zugriffsrechte fehlen."
 
-#: ../glom/application.cc:2296
+#: ../glom/application.cc:2309
 msgid "Database Title missing"
 msgstr "Datenbank-Titel fehlt"
 
-#: ../glom/application.cc:2296
+#: ../glom/application.cc:2309
 msgid "You must specify a title for the new database."
 msgstr "Sie müssen einen Titel für die neue Datenbank angeben."
 
-#: ../glom/application.cc:2325 ../glom/frame_glom.cc:1949
+#: ../glom/application.cc:2338 ../glom/frame_glom.cc:1949
 msgid "Directory Already Exists"
 msgstr "Ordner besteht bereits"
 
-#: ../glom/application.cc:2325 ../glom/frame_glom.cc:1950
+#: ../glom/application.cc:2338 ../glom/frame_glom.cc:1950
 msgid ""
 "There is an existing directory with the same name as the directory that "
 "should be created for the new database files. You should specify a different "
@@ -2294,11 +2306,7 @@ msgstr "Info zu dieser Anwendung"
 msgid " (read-only)"
 msgstr "(schreibgeschützt)"
 
-#: ../glom/bakery/app_withdoc.cc:95 ../glom/bakery/app_withdoc.cc:148
-msgid "Open failed."
-msgstr "Öffnen gescheitert."
-
-#: ../glom/bakery/app_withdoc.cc:95 ../glom/bakery/app_withdoc.cc:148
+#: ../glom/bakery/app_withdoc.cc:495
 msgid "The document could not be opened."
 msgstr "Das Dokument konnte nicht geöffnet werden."
 
@@ -2496,48 +2504,48 @@ msgstr "Strukturgruppe"
 msgid "Field Title"
 msgstr "Feldtitel"
 
-#: ../glom/libglom/document/document.cc:467
-#: ../glom/libglom/document/document.cc:485
+#: ../glom/libglom/document/document.cc:471
+#: ../glom/libglom/document/document.cc:489
 msgid "System Preferences"
 msgstr "Systemeinstellungen"
 
-#: ../glom/libglom/document/document.cc:498
+#: ../glom/libglom/document/document.cc:502
 msgid "System Name"
 msgstr "Systemname"
 
-#: ../glom/libglom/document/document.cc:504
+#: ../glom/libglom/document/document.cc:508
 msgid "Organisation Name"
 msgstr "Organisationsname"
 
-#: ../glom/libglom/document/document.cc:510
+#: ../glom/libglom/document/document.cc:514
 msgid "Organisation Logo"
 msgstr "Organisationslogo"
 
-#: ../glom/libglom/document/document.cc:516
+#: ../glom/libglom/document/document.cc:520
 msgid "Street"
 msgstr "Straße"
 
-#: ../glom/libglom/document/document.cc:522
+#: ../glom/libglom/document/document.cc:526
 msgid "Street (line 2)"
 msgstr "Straße (Zusatz)"
 
-#: ../glom/libglom/document/document.cc:528
+#: ../glom/libglom/document/document.cc:532
 msgid "City"
 msgstr "Stadt"
 
-#: ../glom/libglom/document/document.cc:534
+#: ../glom/libglom/document/document.cc:538
 msgid "State"
 msgstr "Land"
 
-#: ../glom/libglom/document/document.cc:540
+#: ../glom/libglom/document/document.cc:544
 msgid "Country"
 msgstr "Land"
 
-#: ../glom/libglom/document/document.cc:546
+#: ../glom/libglom/document/document.cc:550
 msgid "Zip Code"
 msgstr "Postleitzahl"
 
-#: ../glom/libglom/document/bakery/document.cc:360
+#: ../glom/libglom/document/bakery/document.cc:367
 msgid "Untitled"
 msgstr "Unbenannt"
 
@@ -2707,7 +2715,7 @@ msgstr ""
 
 #. Note to translators: This text is shown instead of a table title, when the table has not yet been chosen.
 #: ../glom/mode_data/box_data_calendar_related.cc:96
-#: ../glom/mode_data/box_data_list_related.cc:89
+#: ../glom/mode_data/box_data_list_related.cc:92
 #: ../glom/mode_data/box_data_portal.cc:86
 msgid "Undefined Table"
 msgstr "Unbekannte Tabelle"
