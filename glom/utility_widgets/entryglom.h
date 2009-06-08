@@ -42,6 +42,8 @@ public:
   explicit EntryGlom(Field::glom_field_type glom_type = Field::TYPE_TEXT);
   virtual ~EntryGlom();
 
+  virtual void set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name);
+
   void set_glom_type(Field::glom_field_type glom_type);
 
   //Override this so we can store the text to compare later.

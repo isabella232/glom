@@ -77,6 +77,11 @@ ImageGlom::~ImageGlom()
 {
 }
 
+void ImageGlom::set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name)
+{
+  LayoutWidgetField::set_layout_item(layout_item, table_name);
+  get_accessible()->set_name(layout_item->get_name());
+}
 
 bool ImageGlom::on_button_press_event(GdkEventButton *event)
 {

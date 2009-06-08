@@ -1,5 +1,16 @@
 2009-06-08  Armin Burgmeier  <armin@openismus.com>
 
+	* glom/utility_widgets/db_adddel/db_adddel.cc: Added an accessible
+	name for the TreeView.
+
+	* glom/utility_widgets/imageglom.h:
+	* glom/utility_widgets/imageglom.cc:
+	* glom/utility_widgets/entryglom.h:
+	* glom/utility_widgets/entryglom.cc: Set an accessible name, based on
+	the layout item's name.
+
+2009-06-08  Armin Burgmeier  <armin@openismus.com>
+
 	* glom/utility_widgets/layoutwidgetbase.cc: Initialize m_pLayoutItem
 	in client only mode, to avoid an uninitialized pointer in that case.
 

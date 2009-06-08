@@ -90,6 +90,10 @@ DbAddDel::DbAddDel()
   //set_columns_count(1);
   //construct_specified_columns();
   
+  // Give the TreeView an accessible name, to access it in LDTP
+  // TODO: Maybe this should be a constructor parameter, so that multiple
+  // DbAddDels in a single Window can be addressed separately.
+  m_TreeView.get_accessible()->set_name(_("Table Content"));
 
   m_ScrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
   m_ScrolledWindow.add(m_TreeView);

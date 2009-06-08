@@ -42,6 +42,8 @@ public:
 
 
   virtual ~ImageGlom();
+  
+  virtual void set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name);
 
   virtual void set_value(const Gnome::Gda::Value& value);
   virtual Gnome::Gda::Value get_value() const;

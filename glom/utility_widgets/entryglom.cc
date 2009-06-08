@@ -71,6 +71,12 @@ void EntryGlom::init()
 #endif // !GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 }
 
+void EntryGlom::set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name)
+{
+  LayoutWidgetField::set_layout_item(layout_item, table_name);
+  get_accessible()->set_name(layout_item->get_name());
+}
+
 void EntryGlom::set_glom_type(Field::glom_field_type glom_type)
 {
   m_glom_type = glom_type;
