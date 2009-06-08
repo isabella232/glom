@@ -1,3 +1,8 @@
+2009-06-08  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/utility_widgets/layoutwidgetbase.cc: Initialize m_pLayoutItem
+	in client only mode, to avoid an uninitialized pointer in that case.
+
 2009-06-04  Murray Cumming  <murrayc@murrayc.com>
 
 	Show a specific error message when the flie format is too new.
