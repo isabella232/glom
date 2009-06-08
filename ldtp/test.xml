@@ -1,0 +1,13 @@
+<ldtp>
+	<logfileoverwrite>1</logfileoverwrite>
+	<logfile>glom-test-log.xml</logfile>
+
+	<group>
+		<testcaseid>database-creation</testcaseid>
+		<comment>Test whether creation of a new database work for all available backends</comment>
+		<script>
+			<name>database-creation/self-hosted.py</name>
+		</script>
+	</group>
+
+</ldtp>

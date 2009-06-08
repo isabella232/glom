@@ -1,5 +1,14 @@
 2009-06-08  Armin Burgmeier  <armin@openismus.com>
 
+	* ldtp/database-creation/self-hosted.py: Added a LDTP test script
+	which checks creation of a new self-hosted database from the Small
+	Business Example file.
+
+	* ldtp/test.xml: Added an XML file for ldtprunner. Run "ldtprunner
+	test.xml" to execute the test.
+
+2009-06-08  Armin Burgmeier  <armin@openismus.com>
+
 	* glom/utility_widgets/db_adddel/db_adddel.cc: Added an accessible
 	name for the TreeView.
 
