@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-06 16:20+0200\n"
-"PO-Revision-Date: 2009-06-06 16:20+0100\n"
+"POT-Creation-Date: 2009-06-09 20:13+0200\n"
+"PO-Revision-Date: 2009-06-09 20:13+0100\n"
 "Last-Translator: Mario Blättermann <mariobl@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -1729,7 +1729,7 @@ msgstr "Sprache:"
 #. be sensitive anyway
 #: ../glom/glom_developer.glade.h:150
 #: ../glom/mode_data/box_data_calendar_related.cc:487
-#: ../glom/utility_widgets/db_adddel/db_adddel.cc:241
+#: ../glom/utility_widgets/db_adddel/db_adddel.cc:245
 msgid "Layout"
 msgstr "Aufbau"
 
@@ -1859,7 +1859,7 @@ msgstr "Sekundäre Felder:"
 
 #: ../glom/glom_developer.glade.h:181
 #: ../glom/utility_widgets/dialog_choose_id.cc:88
-#: ../glom/utility_widgets/imageglom.cc:403
+#: ../glom/utility_widgets/imageglom.cc:408
 msgid "Select"
 msgstr "Auswählen"
 
@@ -3476,16 +3476,26 @@ msgstr ""
 "Geben Sie Suchkriterien ein um Datensätze in der anderen Tabelle zu suchen, "
 "um eine ID für dieses Feld festzulegen."
 
-#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2105
+#. Start with a useful default TreeModel:
+#. set_columns_count(1);
+#. construct_specified_columns();
+#. Give the TreeView an accessible name, to access it in LDTP
+#. TODO: Maybe this should be a constructor parameter, so that multiple
+#. DbAddDels in a single Window can be addressed separately.
+#: ../glom/utility_widgets/db_adddel/db_adddel.cc:96
+msgid "Table Content"
+msgstr "Tabelleninhalt"
+
+#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2109
 msgid "Right-click to layout, to specify the related fields."
 msgstr "Rechtsklick auf Layout, um die Bezugsfelder festzulegen."
 
 #. Tell user that they can't do that:
-#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2328
+#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2332
 msgid "Extra Related Records Not Possible"
 msgstr "Zusätzliche Bezugsdatensätze nicht möglich"
 
-#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2329
+#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2333
 msgid ""
 "You attempted to add a new related record, but there can only be one related "
 "record, because the relationship uses a unique key."
@@ -3630,15 +3640,15 @@ msgstr ""
 "Datenbank auf einem externen Datenbank-Server erstellen, der im nächsten "
 "Schritt angegeben wird."
 
-#: ../glom/utility_widgets/imageglom.cc:394
+#: ../glom/utility_widgets/imageglom.cc:399
 msgid "Choose Image"
 msgstr "Bild wählen"
 
-#: ../glom/utility_widgets/imageglom.cc:398
+#: ../glom/utility_widgets/imageglom.cc:403
 msgid "Images"
 msgstr "Bilder"
 
-#: ../glom/utility_widgets/imageglom.cc:537
+#: ../glom/utility_widgets/imageglom.cc:542
 msgid "Choose File"
 msgstr "Datei wählen"
 
