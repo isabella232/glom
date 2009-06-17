@@ -1,0 +1,11 @@
+To run all the tests, simply execute
+
+	ldtprunner test.xml
+
+This produces a glom-test-log.xml log file with the test results. To run a
+single test, simply launch the corresponding python script, such as
+
+	database-creation/self-hosted.py
+
+To add a new test, create a corresponding python script file and it to the
+list in test.xml.

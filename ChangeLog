@@ -1,5 +1,9 @@
 2009-06-17  Armin Burgmeier  <armin@openismus.com>
 
+	* ldtp/README: Added a README file explaining how to run the tests.
+
+2009-06-17  Armin Burgmeier  <armin@openismus.com>
+
 	* ldtp/common.py: Added a common function to launch glom and wait for
 	its windows to appear into a new separate python script file.
 
