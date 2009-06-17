@@ -1,3 +1,19 @@
+2009-06-17  Armin Burgmeier  <armin@openismus.com>
+
+	* ldtp/common.py: Added a common function to launch glom and wait for
+	its windows to appear into a new separate python script file.
+
+	* ldtp/database-creation/create_db.py: Added a function to create a
+	new database, with the backend to use as an argument. This allows to
+	reuse the existing code to test other backends.
+
+	* ldtp/database-creation/self-hosted.py: Adapted accordingly.
+
+	* ldtp/database-creation/sqlite.py: Added a test file to check whether
+	SQLite database creation works.
+
+	* ldty/test.xml: Added the test to create an SQLite database.
+
 2009-06-08  Armin Burgmeier  <armin@openismus.com>
 
 	* ldtp/database-creation/self-hosted.py: Added a LDTP test script
