@@ -7,5 +7,18 @@ single test, simply launch the corresponding python script, such as
 
 	database-creation/self-hosted.py
 
-To add a new test, create a corresponding python script file and it to the
-list in test.xml.
+Make sure to execute all scripts from the glom/ldtp directory, they might not
+find required files otherwise. For the tests which test central hosting,
+create a file called central-info.xml in the same directory as this README
+file, with the following content:
+
+	<data>
+		<hostname>localhost</hostname>
+		<username>username</username>
+		<password>password</password>
+	</data>
+
+This provides the required information for the database to connect to.
+
+To add a new test, create a corresponding python script file, and add it to
+the list in test.xml.

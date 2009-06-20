@@ -6,6 +6,10 @@
 		<testcaseid>database-creation</testcaseid>
 		<comment>Test whether creation of a new database work for all available backends</comment>
 		<script>
+			<name>database-creation/create-central-db.py</name>
+			<data>database-creation/postgres-central.xml</data>
+		</script>
+		<script>
 			<name>database-creation/create-db.py</name>
 			<data>database-creation/postgres-self.xml</data>
 		</script>

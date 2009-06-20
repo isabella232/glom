@@ -15,6 +15,9 @@ try:
 
 	common.launch_glom()
 
+	# Read info for database connection
+	(hostname, username, password) = common.read_central_info()
+
 	# Create a new document from the Small Business Example:
 	# The notebook and treeview widgets are accessed via their
 	# "accessible name". It can be set in Glade on the Accessibility tab,
@@ -31,29 +34,34 @@ try:
 	# Buttons (prefix: 'btn') are addressed via their label text:
 	click(common.initial_dialog, 'btnSelect')
 
-	# Create a directory into which to create the new Glom document:
-	if not os.path.exists('TestDatabase'):
-		os.mkdir('TestDatabase')
-
 	# Wait for the file chooser dialog to appear:
 	if waittillguiexist('Creating From Example File') == 0:
 		raise LdtpExecutionError('File chooser does not show up')
 
-	# Navigate into the newly created folder:
-	doubleclickrow('Creating From Example File', 'tblFiles', 'TestDatabase')
-
 	# Call the new document 'Test':
 	settextvalue('Creating From Example File', 'txtName', 'Test');
 
-	# Make sure we use the correct backend:
+	# Select the correct backend
 	common.select_backend(backend, button_texts)
-
-	# Make sure the Glom main window still exists
-	if not guiexist(common.main_window):
-		raise LdtpExecutionError('The Glom main window does not exist anymore')
 
 	# Acknowledge the dialog:
 	click('Creating From Example File', 'btnSave')
+
+	# Wait until it asks to enter the credentials
+	if waittillguiexist('Connection Details') == 0:
+		raise LdtpExecutionError('Connection details dialog does not show up')
+
+	# Set connection details
+	settextvalue('Connection Details', 'txtHost', hostname)
+	settextvalue('Connection Details', 'txtUser', username)
+	settextvalue('Connection Details', 'txtPassword', password)
+
+	# Remember the database glom is going to create on the central server,
+	# so we can delete it again later.
+	database = getlabel('Connection Details', 'lblDatabase')
+
+	# Acknowledge the dialog
+	click('Connection Details', 'btnConnect')
 
 	# Wait until the database has been created:
 	common.wait_for_database_open()
@@ -68,15 +76,19 @@ try:
 	# test database is going to work.
 	wait(2)
 
-	# Remove the test database again
-       	shutil.rmtree('TestDatabase')
+	# Remove the test Glom file
+	os.unlink('Test.glom')
 
 except LdtpExecutionError, msg:
 	log(msg, 'fail')
 
-	# Remove the created directory also on error, so that the test
-	# does not fail because of the database already existing next time
-	shutil.rmtree('TestDatabase')
+	# Remove the test glom file also on error, so that the test
+	# does not fail because of the file already existing next time
+	try:
+		os.unlink('Test.glom')
+	# Ignore if this fails, for example if the file does not exist
+	except OSError, err:
+		pass
 
         raise LdtpExecutionError (msg)
         # TODO: Terminate the Glom application

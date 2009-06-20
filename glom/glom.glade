@@ -414,6 +414,7 @@
     </action-widgets>
   </object>
   <object class="GtkDialog" id="dialog_connection">
+    <property name="title" translatable="yes">Connection Details</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="vbox27">
@@ -487,6 +488,11 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x2022;</property>
+                        <child internal-child="accessible">
+                          <object class="AtkObject" id="entry_host-atkobject">
+                            <property name="AtkObject::accessible-name" translatable="yes">Host</property>
+                          </object>
+                        </child>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -502,6 +508,11 @@
                         <property name="visibility">False</property>
                         <property name="invisible_char">&#x2022;</property>
                         <property name="activates_default">True</property>
+                        <child internal-child="accessible">
+                          <object class="AtkObject" id="entry_password-atkobject">
+                            <property name="AtkObject::accessible-name" translatable="yes">Password</property>
+                          </object>
+                        </child>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -516,6 +527,11 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x2022;</property>
+                        <child internal-child="accessible">
+                          <object class="AtkObject" id="entry_user-atkobject">
+                            <property name="AtkObject::accessible-name" translatable="yes">User</property>
+                          </object>
+                        </child>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -594,6 +610,12 @@
                       <object class="GtkLabel" id="label_database">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
+                        <property name="selectable">True</property>
+                        <child internal-child="accessible">
+                          <object class="AtkObject" id="label_database-atkobject">
+                            <property name="AtkObject::accessible-name" translatable="yes">Database</property>
+                          </object>
+                        </child>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>

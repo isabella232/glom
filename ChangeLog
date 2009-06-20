@@ -1,5 +1,26 @@
 2009-06-24  Armin Burgmeier  <armin@openismus.com>
 
+	* glom/glom.glade: Added a title to the connection dialog window, and
+	added accessible names for the entries, to be able to use them via
+	LDTP.
+
+	* ldtp/README: Describe how to set the login credentials required
+	to test creating a centrally hosted database.
+
+	* ldtp/common.py: Moved useful code from
+	ldtp/database-creation/create-db.py into functions in this file, so
+	other tests can use them, too.
+
+	* ldtp/database-creation/create-db.py: Adapt accordingly.
+
+	* ldtp/database-creation/create-central-db.py:
+	* ldtp/database-creation/postgres-central.xml: Added a new test script
+	and data XML which tests creating a centrally hosted database.
+
+	* ldtp/test.xml: Added the new script file.
+
+2009-06-24  Armin Burgmeier  <armin@openismus.com>
+
 	* glom/application.cc (on_document_load): Only provide a known user
 	name and password for self-hosted databases, and ask the user for the
 	database password for centrally-hosted ones.
