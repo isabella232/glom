@@ -1,3 +1,17 @@
+2009-06-20  Armin Burgmeier  <armin@openismus.com>
+
+	* ldtp/database-creation/create-db.py: Read the data what backend to
+	use from the a data XML file, instead of as a function's argument.
+
+	* ldtp/database-creation/self-hosted.py:
+	* ldtp/database-creation/sqlite.py: So we don't need these anymore.
+
+	* ldtp/database-creation/postgres-self.xml:
+	* ldtp/database-creation/sqlite.xml: Instead, the data is specified in
+	these data XML files.
+
+	* ldtp/test.xml: Adapt accordingly.
+
 2009-06-17  Armin Burgmeier  <armin@openismus.com>
 
 	* ldtp/README: Added a README file explaining how to run the tests.

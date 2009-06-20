@@ -6,8 +6,12 @@
 		<testcaseid>database-creation</testcaseid>
 		<comment>Test whether creation of a new database work for all available backends</comment>
 		<script>
-			<name>database-creation/self-hosted.py</name>
-			<name>database-creation/sqlite.py</name>
+			<name>database-creation/create-db.py</name>
+			<data>database-creation/postgres-self.xml</data>
+		</script>
+		<script>
+			<name>database-creation/create-db.py</name>
+			<data>database-creation/sqlite.xml</data>
 		</script>
 	</group>
 
