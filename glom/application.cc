@@ -1008,6 +1008,13 @@ bool App_Glom::on_document_load()
           pDocument->set_hosting_mode(m_ui_save_extra_newdb_hosting_mode);
           m_ui_save_extra_newdb_hosting_mode = Document::DEFAULT_HOSTED;
           pDocument->set_is_example_file(false);
+
+          // For self-hosting, we will choose a port later. For central
+          // hosting, try several default ports. Don't use the values that
+          // are set in the example file.
+          pDocument->set_connection_port(0);
+          pDocument->set_connection_try_other_ports(true);
+
           // We have a valid uri, so we can set it to !new and modified here
         }        
         

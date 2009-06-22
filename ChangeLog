@@ -1,5 +1,27 @@
 2009-06-22  Armin Burgmeier  <armin@openismus.com>
 
+	* glom/application.cc (on_document_load): If we load an example file,
+	set the connection port in the document to 0, and enable trying other
+	ports, instead of using the (arbitrary) values from the example file.
+	This allows trying out various standard ports for postgresql when
+	centrally-hosting the document and fixed creating a centrally-hosted
+	database from an example file.
+
+	* glom/dialog_connection.cc (connect_to_server_with_connection): On a
+	successful connection, set try other ports to false in the document,
+	as we found a working port and don't need to try all the other ports
+	next time.
+
+	* glom/frame_glom.cc
+	(connection_request_password_and_choose_new_database_name): When
+	creating a centrally-hosted database, remember the user name in the
+	document, to be able to connect to the database from the saved
+	document later. Actually, we would also need to save the password to
+	do this correctly, though I wonder whether it's a good idea to save
+	the user's database password in the .glom file.
+
+2009-06-22  Armin Burgmeier  <armin@openismus.com>
+
 	* glom/frame_glom.cc:
 	(connection_request_password_and_choose_new_database_name): Fixed a
 	mistyped #ifdef, so that creating a centrally-hosted database does not

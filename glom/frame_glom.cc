@@ -2122,6 +2122,13 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
         ConnectionPool::SlotProgress slot_ignored;
         if(!handle_connection_initialize_errors( connection_pool->initialize(slot_ignored)) )
           return false;
+
+        // Remember the user name in the document, to be able to open the
+        // document again later:
+        Glib::ustring username, password;
+        m_pDialogConnection->get_username_and_password(username, password);
+        document->set_connection_user(username);
+
       }
       else
       {

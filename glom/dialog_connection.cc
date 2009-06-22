@@ -134,6 +134,9 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
         g_assert(central != NULL);
 
         unconst->set_connection_port(central->get_port() );
+	// As we know the port of the database already, we don't need to try
+	// other ports anymore:
+        unconst->set_connection_try_other_ports(false);
       }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -144,6 +147,7 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
         g_assert(self != NULL);
 
         unconst->set_connection_port(self->get_port() );
+        unconst->set_connection_try_other_ports(false);
       }
 #endif //GLOM_ENABLE_CLIENT_ONLY
     }
