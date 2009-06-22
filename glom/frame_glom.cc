@@ -2105,7 +2105,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 
     break;
 
-#ifdef GLOM_ENABLE_POSTGRES
+#ifdef GLOM_ENABLE_POSTGRESQL
     case Document::HOSTING_MODE_POSTGRES_CENTRAL:
     {
       //Ask for connection details:

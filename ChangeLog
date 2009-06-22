@@ -1,3 +1,10 @@
+2009-06-22  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/frame_glom.cc:
+	(connection_request_password_and_choose_new_database_name): Fixed a
+	mistyped #ifdef, so that creating a centrally-hosted database does not
+	lead to a crash.
+
 2009-06-20  Armin Burgmeier  <armin@openismus.com>
 
 	* ldtp/database-creation/create-db.py: Read the data what backend to
