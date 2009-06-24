@@ -1,5 +1,3 @@
 <data>
 	<backend>SQLite</backend>
-	<button_text>CreateSQLitedatabaseinitsownfolder,tobehostedbythiscomputer.</button_text>
-	<button_text>Createdatabaseinitsownfolder,tobehostedbythiscomputer,usingSQLite.</button_text>
 </data>

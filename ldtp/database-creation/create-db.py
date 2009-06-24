@@ -8,10 +8,45 @@ import common
 import os
 import shutil
 
+import xml.parsers.expat
+import gda
+
+def delete_database(backend):
+	if backend == 'PostgresCentral':
+		# Read glom file to find out database name and port
+		xml_info = []
+
+		def start_element(name, attrs):
+			if name == 'connection':
+				xml_info.append(attrs['database'])
+				xml_info.append(attrs['port'])
+
+		file = open('TestDatabase/Test.glom', 'r')
+		content = file.read(1024)
+
+		parser = xml.parsers.expat.ParserCreate()
+		parser.StartElementHandler = start_element
+		parser.Parse(content)
+
+		if len(xml_info) < 2:
+			raise LdtpExecutionError('Glom file does not contain port or database of centrally hosted database')
+
+		(database, port) = (xml_info[0], xml_info[1])
+		(hostname, username, password) = common.read_central_info()
+
+		# Remove the database from the central PostgreSQL server
+		op = gda.gda_prepare_drop_database('PostgreSQL', database)
+		op.set_value_at('/SERVER_CNX_P/HOST', hostname)
+		op.set_value_at('/SERVER_CNX_P/PORT', port)
+		op.set_value_at('/SERVER_CNX_P/ADM_LOGIN', username)
+		op.set_value_at('/SERVER_CNX_P/ADM_PASSWORD', password)
+		gda.gda_perform_drop_database('PostgreSQL', op)
+
+       	shutil.rmtree('TestDatabase')
+
 try:
-	xml = LdtpDataFileParser(datafilename)
-	backend = xml.gettagvalue('backend')[0]
-	button_texts = xml.gettagvalue('button_text')
+	parser = LdtpDataFileParser(datafilename)
+	backend = parser.gettagvalue('backend')[0]
 
 	common.launch_glom()
 
@@ -46,14 +81,13 @@ try:
 	settextvalue('Creating From Example File', 'txtName', 'Test');
 
 	# Make sure we use the correct backend:
-	common.select_backend(backend, button_texts)
-
-	# Make sure the Glom main window still exists
-	if not guiexist(common.main_window):
-		raise LdtpExecutionError('The Glom main window does not exist anymore')
+	common.select_backend(backend)
 
 	# Acknowledge the dialog:
 	click('Creating From Example File', 'btnSave')
+
+	# Enter the connection credentials for the centrally hosted database
+	common.enter_connection_credentials(backend)
 
 	# Wait until the database has been created:
 	common.wait_for_database_open()
@@ -69,15 +103,15 @@ try:
 	wait(2)
 
 	# Remove the test database again
-       	shutil.rmtree('TestDatabase')
+	delete_database(backend)
 
 except LdtpExecutionError, msg:
 	log(msg, 'fail')
 
 	# Remove the created directory also on error, so that the test
 	# does not fail because of the database already existing next time
-	shutil.rmtree('TestDatabase')
+	delete_database(backend)
 
-        raise LdtpExecutionError (msg)
-        # TODO: Terminate the Glom application
+	raise LdtpExecutionError (msg)
+	# TODO: Terminate the Glom application
 	# os.kill(whatpid?, signal.SIGTERM)

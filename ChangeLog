@@ -1,5 +1,24 @@
 2009-06-24  Armin Burgmeier  <armin@openismus.com>
 
+	* ldtp/common.py: Work around bug #586291, added a function to enter
+	the connection credentials into the connection dialog if using a
+	centrally hosted database. Added mapping of backend name to button
+	texts in the database creation dialog.
+
+	* ldtp/database-creation/postgres-central.xml:
+	* ldtp/database-creation/postgres-self.xml:
+	* ldtp/database-creation/sqlite.xml: Removed the button texts from
+	the data XML files.
+
+	* ldtp/database-creation/create-db.py: Generalized the script so that
+	it also handles central hosting. Delete the newly created centrally
+	hosted database at the end. This requires pygda from git for now.
+
+	* ldtp/database-creation/create-central-db.py: Removed, as central
+	hosting is also handled by create-db.py now.
+
+2009-06-24  Armin Burgmeier  <armin@openismus.com>
+
 	* glom/glom.glade: Added a title to the connection dialog window, and
 	added accessible names for the entries, to be able to use them via
 	LDTP.

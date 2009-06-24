@@ -1,5 +1,3 @@
 <data>
-	<backend>Postgres Self-Hosted</backend>
-	<button_text>CreatePostgreSQLdatabaseinitsownfolder,tobehostedbythiscomputer.</button_text>
-	<button_text>Createdatabaseinitsownfolder,tobehostedbythiscomputer.</button_text>
+	<backend>PostgresSelf</backend>
 </data>

@@ -1,8 +1,3 @@
 <data>
-	<backend>Postgres Central-Hosted</backend>
-	<button_text>CreatedatabaseonanexternalPostgreSQLdatabaseserver,tobespecifiedinthenextstep.</button_text>
-	<button_text>Createdatabaseonanexternaldatabaseserver,tobespecifiedinthenextstep.</button_text>
-	<hostname>localhost</hostname>
-	<username>ck</username>
-	<password>078175511</password>
+	<backend>PostgresCentral</backend>
 </data>
