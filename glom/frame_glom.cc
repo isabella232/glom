@@ -2128,7 +2128,6 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
         Glib::ustring username, password;
         m_pDialogConnection->get_username_and_password(username, password);
         document->set_connection_user(username);
-
       }
       else
       {
@@ -2297,10 +2296,10 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
     m_dialog_progess_connection_startup = 0;
   }
 
-  //Only ask for the password if we are shared on the network.
+  //Only ask for the password if we are shared on the network, or we are using a centrally hosted server.
   //Otherwise, no password question is necessary, due to how our self-hosted database server is configured.
   if(document->get_network_shared()
-    && (document->get_hosting_mode() != Document::HOSTING_MODE_SQLITE) ) //TODO: The sqlite check may be unnecessary.
+    || document->get_hosting_mode() == Document::HOSTING_MODE_POSTGRES_CENTRAL)
   {
     //We recreate the dialog each time to make sure it is clean of any changes:
     if(m_pDialogConnection)
@@ -2339,7 +2338,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
     //Only show the dialog if we don't know the correct username/password yet:
     int response = Gtk::RESPONSE_OK;
 
-    if(m_pDialogConnection && known_username.empty() && known_password.empty())
+    if(m_pDialogConnection)
     {
       response = Glom::Utils::dialog_run_with_help(m_pDialogConnection, "dialog_connection");
       m_pDialogConnection->hide();
@@ -2355,6 +2354,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
         if(m_pDialogConnection)
         {
           sharedptr<SharedConnection> sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings();
+          // TODO: Save username in document?
           return true; //Succeeded, because no exception was thrown.
         }
         else

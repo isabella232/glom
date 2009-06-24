@@ -1,3 +1,14 @@
+2009-06-24  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/application.cc (on_document_load): Only provide a known user
+	name and password for self-hosted databases, and ask the user for the
+	database password for centrally-hosted ones.
+
+	* glom/frame_glom.cc (connection_request_password_and_attempt): Show
+	the connection dialog for centrally hosted connections, and fix trying
+	to login with the same (wrong) credentials all the time without giving
+	the user a chance to correct them. This fixes bug #586684.
+
 2009-06-22  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/application.cc (on_document_load): If we load an example file,

@@ -1087,7 +1087,11 @@ bool App_Glom::on_document_load()
           //Use the default username/password if opening as non network-shared:
           if(!(pDocument->get_network_shared()))
           {
-            m_temp_username = Privs::get_default_developer_user_name(m_temp_password);
+            // If the document is centrally hosted, don't pretend to know the
+            // username or password, because we don't. The user will enter
+            // the login credentials in a dialog.
+            if(pDocument->get_hosting_mode() != Document::HOSTING_MODE_POSTGRES_CENTRAL)
+              m_temp_username = Privs::get_default_developer_user_name(m_temp_password);
           }
 
           bool database_not_found = false;
