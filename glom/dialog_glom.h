@@ -32,7 +32,7 @@ class Dialog_Glom :
   public Gtk::Dialog
 {
 public: 
-  Dialog_Glom(Box_WithButtons* pBox);
+  Dialog_Glom(Box_WithButtons* pBox, const Glib::ustring& title = Glib::ustring());
   virtual ~Dialog_Glom();
 
   //Signal handlers:

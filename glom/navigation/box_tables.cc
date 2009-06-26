@@ -40,6 +40,9 @@ Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   builder->get_widget("button_cancel", pButtonCancel);
   set_button_cancel(*pButtonCancel);
 
+  // Set a name for the AddDel TreeView, so it can be accessed by LDTP
+  m_AddDel.set_treeview_accessible_name("Tables");
+
   Gtk::Alignment* pAligmentPlaceholder = 0;
   builder->get_widget("alignment_placeholder_adddel", pAligmentPlaceholder);
   pAligmentPlaceholder->add(m_AddDel);

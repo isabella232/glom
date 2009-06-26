@@ -95,6 +95,7 @@ void FileChooserDialog_SaveExtras::create_child_widgets()
   box_label->pack_start(*label_title, Gtk::PACK_SHRINK);
   label_title->show();
   box_label->pack_start(m_entry_title);
+  m_entry_title.get_accessible()->set_name(_("Title"));
   m_entry_title.show();
   box_label->show();
   vbox->pack_start(*box_label);

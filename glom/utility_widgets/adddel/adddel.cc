@@ -144,6 +144,11 @@ AddDel::~AddDel()
 {
 }
 
+void AddDel::set_treeview_accessible_name(const Glib::ustring& name)
+{
+  m_TreeView.get_accessible()->set_name(name);
+}
+
 void AddDel::warn_about_duplicate()
 {
   Glib::ustring message;

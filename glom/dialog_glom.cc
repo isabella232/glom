@@ -24,8 +24,11 @@
 namespace Glom
 {
 
-Dialog_Glom::Dialog_Glom(Box_WithButtons* pBox)
+Dialog_Glom::Dialog_Glom(Box_WithButtons* pBox, const Glib::ustring& title)
 {
+  if(!title.empty())
+    set_title(title);
+
   set_border_width(Utils::DEFAULT_SPACING_SMALL);
 
   m_pBox = pBox;

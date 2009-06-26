@@ -39,7 +39,7 @@ def launch_glom():
 def exit_glom():
 	ldtp.selectmenuitem(main_window, 'mnuFile;mnuClose')
 
-	if ldtp.waittillguinotexist('Glom-SmallBusinessExample') == 0:
+	if ldtp.waittillguinotexist('*Glom*') == 0:
 		raise ldtp.LdtpExecutionError('The Glom Window does not disappear after closing the application')
 
 # Reads hostname, username and password to use for access to a
@@ -78,15 +78,15 @@ def enter_connection_credentials(backend_name):
 			raise ldtp.LdtpExecutionError('Connection details dialog does not disappear')
 
 # Selects one of the backends in button_texts in the database creation dialog
-def select_backend(backend_name):
+def select_backend(dialog_title, backend_name):
 	try:
 		button_texts = backend_create_db_button_texts[backend_name]
 	except KeyError:
 		raise ldtp.LdtpExecutionError('Backend "' + backend + '" does not exist')
 
 	for text in button_texts:
-		if ldtp.objectexist('Creating From Example File', 'rbtn' + text):
-			ldtp.click('Creating From Example File', 'rbtn' + text)
+		if ldtp.objectexist(dialog_title, 'rbtn' + text):
+			ldtp.click(dialog_title, 'rbtn' + text)
 			break
 	else:
 		raise ldtp.LdtpExecutionError('Backend "' + backend + '" not supported')
@@ -100,7 +100,7 @@ def wait_for_database_open():
 	# TODO: Maybe we can use setcontext(), to avoid this.
 	# TODO: Or maybe this has been fixed in LDTP in the meanwhile,
 	# see bug #583021.
-	while not ldtp.guiexist('Glom-SmallBusinessExample') or not ldtp.objectexist('Glom-SmallBusinessExample', 'ptlListOrDetailsView'):
+	while not ldtp.guiexist('Glom-Test') or not ldtp.objectexist('Glom-Test', 'ptlListOrDetailsView'):
 		# onwindowcreate calls the callback in a new thread, which
 		# does not really help us since we don't have a mainloop the
 		# callback thread could notify, so we would need to have to

@@ -5,17 +5,31 @@
 	<group>
 		<testcaseid>database-creation</testcaseid>
 		<comment>Test whether creation of a new database work for all available backends</comment>
+
 		<script>
 			<name>database-creation/create-db.py</name>
-			<data>database-creation/postgres-self.xml</data>
+			<data>database-creation/postgres-self-empty.xml</data>
 		</script>
 		<script>
 			<name>database-creation/create-db.py</name>
-			<data>database-creation/postgres-central.xml</data>
+			<data>database-creation/postgres-central-empty.xml</data>
 		</script>
 		<script>
 			<name>database-creation/create-db.py</name>
-			<data>database-creation/sqlite.xml</data>
+			<data>database-creation/sqlite-empty.xml</data>
+		</script>
+
+		<script>
+			<name>database-creation/create-db.py</name>
+			<data>database-creation/postgres-self-example.xml</data>
+		</script>
+		<script>
+			<name>database-creation/create-db.py</name>
+			<data>database-creation/postgres-central-example.xml</data>
+		</script>
+		<script>
+			<name>database-creation/create-db.py</name>
+			<data>database-creation/sqlite-example.xml</data>
 		</script>
 	</group>
 

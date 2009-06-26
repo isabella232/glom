@@ -72,6 +72,9 @@ public:
   AddDel(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~AddDel();
 
+  // Set the accessible name for the TreeView widget
+  void set_treeview_accessible_name(const Glib::ustring& name);
+
   void set_allow_user_actions(bool bVal = true);
   bool get_allow_user_actions() const;
 

@@ -1,3 +1,50 @@
+2009-06-26  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/dialog_glom.h:
+	* glom/dialog_glom.cc: Added an optional second parameter to the
+	constructor, to specify a title name for the dialog.
+
+	* glom/frame_glom.cc: Set the title of the tables dialog to "Tables",
+	so that it can be accessed via LDTP.
+
+	* glom/glom.glade: Also change the title of that dialog, even though
+	it's not used, since only the window's child widget is loaded from the
+	glade file.
+
+	* glom/utility_widgets/adddel/adddel.h:
+	* glom/utility_widgets/adddel/adddel.cc: Added a
+	set_treeview_accessible_name() function, to set the accessible name of
+	the AddDel's TreeView.
+
+	* glom/navigation/box_tables.cc: Set an accessible name for the
+	TreeView, to be able to access it via LDTP.
+
+	* glom/utility_widgets/filechooserdialog_saveextras.cc: Set an
+	accessible name for the database title text entry.
+
+	* ldtp/common.py (select_backend): Added a dialog_title parameter, as
+	the dialog has a different title when creating a new, empty document.
+	(wait_for_database_open): Rely on the database title being 'Test', not
+	'Small Business Example'.
+
+	* ldtp/database-creation/create-db.py: Change the database title of
+	the newly created database to 'Test'. Support creating new, empty
+	documents, and reopen the document after it has been closed, to make
+	sure the document has been saved correctly.
+
+	* ldtp/database-creation/postgres-central-example.xml:
+	* ldtp/database-creation/postgres-self-example.xml:
+	* ldtp/database-creation/sqlite-example.xml: Moved from the files
+	without -example, set the <example> tag to 1.
+
+	* ldtp/database-creation/postgres-central-example.xml:
+	* ldtp/database-creation/postgres-self-example.xml:
+	* ldtp/database-creation/sqlite-example.xml: Same with <example> set
+	to 0.
+
+	* ldtp/test.xml: Added the three new files which create an empty
+	document instead of creating one from the Small Business Example.
+
 2009-06-24  Armin Burgmeier  <armin@openismus.com>
 
 	* ldtp/common.py: Work around bug #586291, added a function to enter

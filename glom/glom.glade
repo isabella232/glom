@@ -4,7 +4,7 @@
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkWindow" id="window_tables">
     <property name="border_width">12</property>
-    <property name="title" translatable="yes">window1</property>
+    <property name="title" translatable="yes">Tables</property>
     <child>
       <object class="GtkVBox" id="box_navigation_tables">
         <property name="visible">True</property>

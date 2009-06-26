@@ -47,6 +47,7 @@ def delete_database(backend):
 try:
 	parser = LdtpDataFileParser(datafilename)
 	backend = parser.gettagvalue('backend')[0]
+	example = int(parser.gettagvalue('example')[0])
 
 	common.launch_glom()
 
@@ -61,7 +62,10 @@ try:
 	# believe) prefix, for example notebooks are prefixed by 'ptl' and
 	# treeviews are prefixed by 'ttbl'.
 	selecttab(common.initial_dialog, 'ptlOpenorcreateDocument', 'Create New Document')
-	selectrow(common.initial_dialog, 'ttblCreateNewDocument', 'Small Business Example')
+	if example:
+		selectrow(common.initial_dialog, 'ttblCreateNewDocument', 'Small Business Example')
+	else:
+		selectrow(common.initial_dialog, 'ttblCreateNewDocument', 'New Empty Document')
 
 	# Buttons (prefix: 'btn') are addressed via their label text:
 	click(common.initial_dialog, 'btnSelect')
@@ -70,35 +74,83 @@ try:
 	if not os.path.exists('TestDatabase'):
 		os.mkdir('TestDatabase')
 
+	# The file chooser dialog has a different title depending on whether
+	# we create an empty document, or an example document.
+	creation_dialog = ''
+	if example:
+		creation_dialog = 'Creating From Example File'
+	else:
+		creation_dialog = 'Save Document'
+
 	# Wait for the file chooser dialog to appear:
-	if waittillguiexist('Creating From Example File') == 0:
+	if waittillguiexist(creation_dialog) == 0:
 		raise LdtpExecutionError('File chooser does not show up')
 
 	# Navigate into the newly created folder:
-	doubleclickrow('Creating From Example File', 'tblFiles', 'TestDatabase')
+	doubleclickrow(creation_dialog, 'tblFiles', 'TestDatabase')
 
-	# Call the new document 'Test':
-	settextvalue('Creating From Example File', 'txtName', 'Test');
+	# Call the new document 'Test', and save it as 'Test.glom':
+	settextvalue(creation_dialog, 'txtName', 'Test');
+	settextvalue(creation_dialog, 'txtTitle', 'Test');
 
 	# Make sure we use the correct backend:
-	common.select_backend(backend)
+	common.select_backend(creation_dialog, backend)
 
 	# Acknowledge the dialog:
-	click('Creating From Example File', 'btnSave')
+	click(creation_dialog, 'btnSave')
 
 	# Enter the connection credentials for the centrally hosted database
 	common.enter_connection_credentials(backend)
 
-	# Wait until the database has been created:
-	common.wait_for_database_open()
+	if not example:
+		# Wait for the Tables dialog to appear
+		if waittillguiexist('Tables') == 0:
+			raise LdtpExecutionError('Tables dialog does not appear')
 
-	# Everything finished, so check the created database for consistency.
-	common.check_small_business_integrity()
+		# Create an initial table
+		click('Tables', 'Add')
+		# This does not seem to work here, I'm not sure why.
+		# getcellvalue works.
+		#setcellvalue('Tables', 'tblTables', 0, 0, 'TestTable')
+		generatekeyevent('TestTable<enter>')
+		click('Tables', 'Close')
+
+		common.wait_for_database_open()
+	else:
+		# Wait until the database has been created:
+		common.wait_for_database_open()
+		# Check that the example database has been loaded correctly:
+		common.check_small_business_integrity()
 
 	# Exit the application.
 	common.exit_glom()
 
-	# Wait until Glom has cleaned up everything, so that removing the 
+	# Now, open the newly created database, making sure the document was
+	# saved correctly and we can open it:
+	common.launch_glom()
+
+	# It should be in the Recent document list in the recently
+	# used documents:
+	selectrow(common.initial_dialog, 'ttblOpenExistingDocument', 'Test.glom')
+
+	# Buttons (prefix: 'btn') are addressed via their label text:
+	click(common.initial_dialog, 'btnSelect')
+
+	# Enter the connection credentials for the centrally hosted database
+	common.enter_connection_credentials(backend)
+
+	# Wait until the database has been opened:
+	common.wait_for_database_open()
+
+	# Everything finished, check that no information has been lost in
+	# the database:
+	if example:
+		common.check_small_business_integrity()
+
+	# Exit the application.
+	common.exit_glom()
+
+	# Wait until Glom has cleaned up everything, so that removing the
 	# test database is going to work.
 	wait(2)
 
