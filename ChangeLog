@@ -1,4 +1,10 @@
-2009-05-26  Armin Burgmeier  <armin@openismus.com>
+2009-06-26  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/application.cc (existing_or_new_new): When the new database
+	could be created successfully, then add the document to the recent
+	files list.
+
+2009-06-26  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/frame_glom.cc
 	(connection_request_password_and_choose_new_database_name): Remember

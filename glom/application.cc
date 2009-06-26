@@ -1418,6 +1418,9 @@ void App_Glom::existing_or_new_new()
         ConnectionPool::get_instance()->set_database(database_name_used);
         document->set_database_title(db_title);
         m_pFrame->set_databases_selected(database_name_used);
+
+        // Add the document to recent files
+	document_history_add(document->get_file_uri());
       }
       else
       {
