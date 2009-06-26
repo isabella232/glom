@@ -110,9 +110,10 @@ try:
 		# Create an initial table
 		click('Tables', 'Add')
 		# This does not seem to work here, I'm not sure why.
-		# getcellvalue works.
+		# getcellvalue works, though:
 		#setcellvalue('Tables', 'tblTables', 0, 0, 'TestTable')
-		generatekeyevent('TestTable<enter>')
+		# Use this as a workaround:
+		generatekeyevent('test_table<enter>')
 		click('Tables', 'Close')
 
 		common.wait_for_database_open()

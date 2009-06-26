@@ -1,3 +1,13 @@
+2009-05-26  Armin Burgmeier  <armin@openismus.com>
+
+	* glom/frame_glom.cc
+	(connection_request_password_and_choose_new_database_name): Remember
+	the port also for centrally hosted documents when a successful
+	connection could be made.
+
+	* ldtp/database-creation/create-db.py: For empty documents, call the
+	initial table 'test_table', not 'TestTable', because of bug #587051.
+
 2009-06-26  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/dialog_glom.h:

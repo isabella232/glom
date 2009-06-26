@@ -2223,7 +2223,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
         std::cout << "debug: unused database name found: " << database_name_possible << std::endl;
         document->set_connection_database(database_name_possible);
 
-        // Remember host if the document is not self hosted
+        // Remember host and port if the document is not self hosted
         #ifdef GLOM_ENABLE_POSTGRESQL
         if(document->get_hosting_mode() == Document::HOSTING_MODE_POSTGRES_CENTRAL)
         {
@@ -2232,6 +2232,8 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
           g_assert(central != NULL);
 
           document->set_connection_server(central->get_host());
+          document->set_connection_port(central->get_port());
+          document->set_connection_try_other_ports(false);
         }
 
         // Remember port if the document is self-hosted, so that remote
@@ -2247,6 +2249,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
           g_assert(self != NULL);
 
           document->set_connection_port(self->get_port());
+          document->set_connection_try_other_ports(false);
         }
 
         #endif //GLOM_ENABLE_POSTGRESQL
