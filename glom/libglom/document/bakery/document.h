@@ -47,13 +47,13 @@ public:
 
   /* Loads data from disk, using the URI (set with set_file_uri()) then asks the View to update itself.
    * bool indicates success.
-   * @param failure_code Used to return a custom error code that is understood by your application.
+   * @param failure_code Used to return a custom error code that is understood by your application. This must be greater than zero.
    */
   bool load(int& failure_code);
 
   /* Loads data from disk, using the URI (set with set_file_uri()) then asks the View to update itself.
    * bool indicates success.
-   * @param failure_code Used to return a custom error code that is understood by your application.
+   * @param failure_code Used to return a custom error code that is understood by your application. This must be greater than zero.
    */
   bool load_from_data(const guchar* data, std::size_t length, int& failure_code);
 
@@ -111,7 +111,7 @@ protected:
 
   /** overrideable.
    * Does anything which should be done after the data has been loaded from disk, but before updating the View.
-   * @param failure_code Used to return a custom error code that is understood by your application.
+   * @param failure_code Used to return a custom error code that is understood by your application. This must be greater than zero.
    */
   virtual bool load_after(int& failure_code);
 

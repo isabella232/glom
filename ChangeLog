@@ -1,5 +1,17 @@
 2009-06-26  Armin Burgmeier  <armin@openismus.com>
 
+	* glom/libglom/document/bakery/document.h: Document that failure_code
+	should be >= 1, so that we can detect whether the document could not
+	be opened because it couldn't be read from disk, or a custom error
+	code was set.
+
+	* glom/libglom/document/document.h: Set the value of
+	LOAD_FAILURE_CODE_FILE_VERSION_TOO_NEW to 1, to honor the requirement
+	explained above. This fixes showing the wrong error message when the
+	document could not be loaded from disk.
+
+2009-06-26  Armin Burgmeier  <armin@openismus.com>
+
 	* glom/application.cc (existing_or_new_new): When the new database
 	could be created successfully, then add the document to the recent
 	files list.
