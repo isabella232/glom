@@ -1,3 +1,11 @@
+2009-06-26  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix an error check.
+
+	* glom/xsl_utils.cc: transform_and_open(): Fix the check for a failed 
+	gtk_show_uri(), so we really check. Noticed while stealing this code 
+	for vidrot.
+
 2009-06-26  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/document/bakery/document.h: Document that failure_code
