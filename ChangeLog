@@ -1,3 +1,15 @@
+2009-06-27  Armin Burgmeier  <armin@openismus.com>
+
+	* ldtp/database-creation/postgres-central-empty.xml:
+	* ldtp/database-creation/postgres-self-empty.xml:
+	* ldtp/database-creation/sqlite-empty.xml: Added missing files.
+
+	* ldtp/database-creation/create-db.py: Allow passing the datafilename
+	as an argument when the script is called directly, not by ldtprunner.
+
+	* ldtp/README: Updated the section on how to execute a single test
+	script.
+
 2009-06-26  Armin Burgmeier  <armin@openismus.com>
 
 	* glom/libglom/document/bakery/document.h: Document that failure_code

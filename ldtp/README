@@ -3,9 +3,10 @@ To run all the tests, simply execute
 	ldtprunner test.xml
 
 This produces a glom-test-log.xml log file with the test results. To run a
-single test, simply launch the corresponding python script, such as
+single test, simply launch the corresponding python script, optionally with
+the data XML file as an argument, such as
 
-	database-creation/self-hosted.py
+	database-creation/create-db.py database-creation/postgres-self-empty.xml
 
 Make sure to execute all scripts from the glom/ldtp directory, they might not
 find required files otherwise. For the tests which test central hosting,
