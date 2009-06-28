@@ -32,9 +32,9 @@ def launch_glom():
 	# code for each window.
 	# Wildcard (* and ?) can be used.
 	if ldtp.waittillguiexist(main_window) == 0:
-		raise ldtp.LdtpExecutionError('Glom main window does not show up')
+		raise ldtp.LdtpExecutionError('The Glom main window did not appear.')
 	if ldtp.waittillguiexist(initial_dialog) == 0:
-		raise ldtp.LdtpExecutionError('Glom initial dialog does not show up')
+		raise ldtp.LdtpExecutionError('The Glom initial dialog did not appear.')
 
 def exit_glom():
 	ldtp.selectmenuitem(main_window, 'mnuFile;mnuClose')
@@ -61,7 +61,7 @@ def read_central_info():
 def enter_connection_credentials(backend_name):
 	if backend_name == 'PostgresCentral':
 		if ldtp.waittillguiexist('Connection Details') == 0:
-			raise ldtp.LdtpExecutionError('Connection details dialog does not show up')
+			raise ldtp.LdtpExecutionError('The Glom connection details dialog did not appear.')
 
 		(hostname, username, password) = read_central_info()
 

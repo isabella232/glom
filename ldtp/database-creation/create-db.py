@@ -13,7 +13,7 @@ import gda
 
 def delete_database(backend):
 	if backend == 'PostgresCentral':
-		# Read glom file to find out database name and port
+		# Read the glom file to find out the database name and port:
 		xml_info = []
 
 		def start_element(name, attrs):
@@ -34,7 +34,7 @@ def delete_database(backend):
 		(database, port) = (xml_info[0], xml_info[1])
 		(hostname, username, password) = common.read_central_info()
 
-		# Remove the database from the central PostgreSQL server
+		# Remove the database from the central PostgreSQL server:
 		op = gda.gda_prepare_drop_database('PostgreSQL', database)
 		op.set_value_at('/SERVER_CNX_P/HOST', hostname)
 		op.set_value_at('/SERVER_CNX_P/PORT', port)
@@ -97,7 +97,7 @@ try:
 
 	# Wait for the file chooser dialog to appear:
 	if waittillguiexist(creation_dialog) == 0:
-		raise LdtpExecutionError('File chooser does not show up')
+		raise LdtpExecutionError('The file chooser dialog does not appear.')
 
 	# Navigate into the newly created folder:
 	doubleclickrow(creation_dialog, 'tblFiles', 'TestDatabase')
@@ -112,7 +112,7 @@ try:
 	# Acknowledge the dialog:
 	click(creation_dialog, 'btnSave')
 
-	# Enter the connection credentials for the centrally hosted database
+	# Enter the connection credentials for the centrally hosted database:
 	common.enter_connection_credentials(backend)
 
 	if not example:
@@ -150,7 +150,7 @@ try:
 	# Buttons (prefix: 'btn') are addressed via their label text:
 	click(common.initial_dialog, 'btnSelect')
 
-	# Enter the connection credentials for the centrally hosted database
+	# Enter the connection credentials for the centrally hosted database:
 	common.enter_connection_credentials(backend)
 
 	# Wait until the database has been opened:
@@ -165,17 +165,23 @@ try:
 	common.exit_glom()
 
 	# Wait until Glom has cleaned up everything, so that removing the
-	# test database is going to work.
+	# test database is going to work:
 	wait(2)
 
-	# Remove the test database again
+	# Remove the test database again:
 	delete_database(backend)
 
 except LdtpExecutionError, msg:
 	log(msg, 'fail')
 
+	# Print the exception to stdout because it does not seem to appear 
+	# in the log file: TODO: Fix that. murrayc.
+	print "LdtpExecutionError:"
+	print msg
+	print "\n"
+
 	# Remove the created directory also on error, so that the test
-	# does not fail because of the database already existing next time
+	# does not fail because of the database already existing next time:
 	delete_database(backend)
 
 	raise LdtpExecutionError (msg)

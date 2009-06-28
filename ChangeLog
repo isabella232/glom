@@ -1,5 +1,13 @@
 2009-06-28  Murray Cumming  <murrayc@murrayc.com>
 
+	Print exception messages to stdout.
+
+	* ldtp/database-creation/create-db.py: When catching the exception, 
+	print it to stdout, because it does not seem to appear in the log file.
+	* ldtp/common.py: Corrected the English of some exception messages.
+
+2009-06-28  Murray Cumming  <murrayc@murrayc.com>
+
 	Fix an error check.
 
 	* glom/xsl_utils.cc: transform_and_open(): Fix the check for a failed 
