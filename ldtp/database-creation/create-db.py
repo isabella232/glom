@@ -2,7 +2,7 @@
 from ldtp import *
 from ldtputils import *
 
-sys.path = ['..'] + sys.path
+sys.path = ['..'] + ['.'] + sys.path
 import common
 
 import os
@@ -42,12 +42,25 @@ def delete_database(backend):
 		op.set_value_at('/SERVER_CNX_P/ADM_PASSWORD', password)
 		gda.gda_perform_drop_database('PostgreSQL', op)
 
-       	shutil.rmtree('TestDatabase')
+	try:
+	       	shutil.rmtree('TestDatabase')
+	except OSError:
+		pass
 
 try:
+	# Load data XML from command line when called directly:
+	if sys.argv[0].find('ldtprunner') == -1 and len(sys.argv) > 1:
+		datafilename = sys.argv[1]
+
 	parser = LdtpDataFileParser(datafilename)
-	backend = parser.gettagvalue('backend')[0]
-	example = int(parser.gettagvalue('example')[0])
+	backend = parser.gettagvalue('backend')
+	example = parser.gettagvalue('example')
+
+	if len(backend) == 0 or len(example) == 0:
+		raise LdtpExecutionError('<backend> or <example> tag not set in "' + datafilename + '"')
+
+	backend = backend[0]
+	example = int(example[0])
 
 	common.launch_glom()
 

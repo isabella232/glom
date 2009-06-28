@@ -1,10 +1,22 @@
-2009-06-26  Murray Cumming  <murrayc@murrayc.com>
+2009-06-28  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix an error check.
 
 	* glom/xsl_utils.cc: transform_and_open(): Fix the check for a failed 
 	gtk_show_uri(), so we really check. Noticed while stealing this code 
 	for vidrot.
+
+2009-06-27  Armin Burgmeier  <armin@openismus.com>
+
+	* ldtp/database-creation/postgres-central-empty.xml:
+	* ldtp/database-creation/postgres-self-empty.xml:
+	* ldtp/database-creation/sqlite-empty.xml: Added missing files.
+
+	* ldtp/database-creation/create-db.py: Allow passing the datafilename
+	as an argument when the script is called directly, not by ldtprunner.
+
+	* ldtp/README: Updated the section on how to execute a single test
+	script.
 
 2009-06-26  Armin Burgmeier  <armin@openismus.com>
 
