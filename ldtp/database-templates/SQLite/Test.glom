@@ -1,0 +1,1180 @@
+<?xml version="1.0"?>
+<glom_document database_title="Test" is_example="false" translation_original_locale="en_US" format_version="4">
+  <connection server="localhost" user="" database="glom_example_smallbusiness_v2" self_hosted="true" port="0" try_other_ports="true" hosting_mode="sqlite"/>
+  <table name="contacts" default="true" title="Contacts">
+    <trans_set>
+      <trans loc="de_AT" val="Kontakten"/>
+      <trans loc="de_DE" val="Kontakten"/>
+    </trans_set>
+    <fields>
+      <field name="contact_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Contact ID">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
+        <trans_set>
+          <trans loc="de_AT" val="Kontakt ID"/>
+          <trans loc="de_DE" val="Kontakt ID"/>
+        </trans_set>
+      </field>
+      <field name="name_first" type="Text" title="First Name">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+        <trans_set>
+          <trans loc="de_AT" val="Vorname"/>
+          <trans loc="de_DE" val="Vorname"/>
+        </trans_set>
+      </field>
+      <field name="name_middle" type="Text" title="Middle Name">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+        <trans_set>
+          <trans loc="de_AT" val="Zweite Name"/>
+          <trans loc="de_DE" val="Zweite Name"/>
+        </trans_set>
+      </field>
+      <field name="name_last" type="Text" title="Last Name">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+        <trans_set>
+          <trans loc="de_AT" val="Familiename"/>
+          <trans loc="de_DE" val="Familiename"/>
+        </trans_set>
+      </field>
+      <field name="name_title" type="Text" title="Title">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" choices_custom="true" format_text_multiline_height_lines="6">
+          <custom_choice_list>
+            <custom_choice value="Mr"/>
+            <custom_choice value="Mrs"/>
+            <custom_choice value="Ms"/>
+            <custom_choice value="Miss"/>
+            <custom_choice value="Dr"/>
+            <custom_choice value="Prof"/>
+          </custom_choice_list>
+        </formatting>
+        <trans_set>
+          <trans loc="de_DE" val="Titel"/>
+        </trans_set>
+      </field>
+      <field name="address_street" type="Text" title="Street">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+        <trans_set>
+          <trans loc="de_AT" val="Strasse"/>
+          <trans loc="de_DE" val="Strasse"/>
+        </trans_set>
+      </field>
+      <field name="address_town" type="Text" title="Town">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+        <trans_set>
+          <trans loc="de_AT" val="Ort"/>
+          <trans loc="de_DE" val="Ort"/>
+        </trans_set>
+      </field>
+      <field name="address_state" type="Text" title="State">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+        <trans_set>
+          <trans loc="de_AT" val="Bundesland/Kanton"/>
+          <trans loc="de_DE" val="Bundesland/Kanton"/>
+        </trans_set>
+      </field>
+      <field name="address_country" type="Text" title="Country">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+        <trans_set>
+          <trans loc="de_AT" val="Land"/>
+          <trans loc="de_DE" val="Land"/>
+        </trans_set>
+      </field>
+      <field name="address_postcode" type="Text" title="Postcode">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+        <trans_set>
+          <trans loc="de_AT" val="Postleitzahl"/>
+          <trans loc="de_DE" val="Postleitzahl"/>
+        </trans_set>
+      </field>
+      <field name="date_of_birth" type="Date" title="Date of Birth">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
+        <trans_set>
+          <trans loc="de_AT" val="Geburtsdatum"/>
+          <trans loc="de_DE" val="Geburtsdatum"/>
+        </trans_set>
+      </field>
+      <field name="comments" type="Text" title="Comments">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" format_text_multiline_height_lines="6"/>
+        <trans_set>
+          <trans loc="de_AT" val="Kommentar"/>
+          <trans loc="de_DE" val="Kommentar"/>
+        </trans_set>
+      </field>
+      <field name="name_full" type="Text" title="Full Name">
+        <calculation>return record["name_first"] + " " + record["name_last"];</calculation>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+        <trans_set>
+          <trans loc="de_AT" val="Vollname"/>
+          <trans loc="de_DE" val="Vollname"/>
+        </trans_set>
+      </field>
+      <field name="picture" type="Image" title="Picture">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
+        <trans_set>
+          <trans loc="de_AT" val="Bild"/>
+          <trans loc="de_DE" val="Bild"/>
+        </trans_set>
+      </field>
+      <field name="email" type="Text" title="Email Address">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+        <trans_set>
+          <trans loc="de_AT" val="E-mail Addresse"/>
+          <trans loc="de_DE" val="E-mail Addresse"/>
+        </trans_set>
+      </field>
+      <field name="website" type="Text" title="Web Site">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+        <trans_set>
+          <trans loc="de_AT" val="Website"/>
+          <trans loc="de_DE" val="Website"/>
+        </trans_set>
+      </field>
+      <field name="tel_home" type="Text" title="Home Telephone">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+      </field>
+      <field name="tel_work" type="Text" title="Work Telephone">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+      </field>
+      <field name="tel_mobile" type="Text" title="Mobile Telephone">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+      </field>
+      <field name="tel_fax" type="Text" title="Fax">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+        <trans_set>
+          <trans loc="de_AT" val="Fax"/>
+          <trans loc="de_DE" val="Fax"/>
+        </trans_set>
+      </field>
+    </fields>
+    <relationships/>
+    <data_layouts>
+      <data_layout name="details" parent_table="contacts">
+        <data_layout_groups>
+          <data_layout_group name="header" columns_count="2" title="Overview">
+            <trans_set>
+              <trans loc="de_AT" val="Ubersicht"/>
+              <trans loc="de_BE" val="Overview"/>
+              <trans loc="de_DE" val="Ubersicht"/>
+              <trans loc="en_GB" val="Overview"/>
+              <trans loc="en_US" val="Overview"/>
+            </trans_set>
+            <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="name_full" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+          </data_layout_group>
+          <data_layout_group name="main" columns_count="2">
+            <data_layout_group name="name" title="Name">
+              <trans_set>
+                <trans loc="de_AT" val="Name"/>
+                <trans loc="de_BE" val="Name"/>
+                <trans loc="de_DE" val="Name"/>
+                <trans loc="en_GB" val="Name"/>
+                <trans loc="en_US" val="Name"/>
+              </trans_set>
+              <data_layout_item name="name_title" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              </data_layout_item>
+              <data_layout_item name="name_first" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              </data_layout_item>
+              <data_layout_item name="name_middle" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              </data_layout_item>
+              <data_layout_item name="name_last" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              </data_layout_item>
+            </data_layout_group>
+            <data_layout_group name="address" title="Address">
+              <trans_set>
+                <trans loc="de_AT" val="Addresse"/>
+                <trans loc="de_BE" val="Address"/>
+                <trans loc="de_DE" val="Addresse"/>
+                <trans loc="en_GB" val="Address"/>
+                <trans loc="en_US" val="Address"/>
+              </trans_set>
+              <data_layout_item name="address_street" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              </data_layout_item>
+              <data_layout_item name="address_town" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              </data_layout_item>
+              <data_layout_item name="address_state" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              </data_layout_item>
+              <data_layout_item name="address_postcode" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              </data_layout_item>
+              <data_layout_item name="address_country" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              </data_layout_item>
+            </data_layout_group>
+            <data_layout_group name="telephone" title="Telephone">
+              <trans_set>
+                <trans loc="de_AT" val="Telefon"/>
+                <trans loc="de_BE" val="Telephone"/>
+                <trans loc="de_DE" val="Telefon"/>
+                <trans loc="en_GB" val="Telephone"/>
+                <trans loc="en_US" val="Telephone"/>
+              </trans_set>
+              <data_layout_item name="tel_work" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              </data_layout_item>
+              <data_layout_item name="tel_mobile" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              </data_layout_item>
+              <data_layout_item name="tel_home" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              </data_layout_item>
+              <data_layout_item name="tel_fax" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              </data_layout_item>
+            </data_layout_group>
+            <data_layout_item name="date_of_birth" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="picture" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="comments" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+            <data_layout_item name="website" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+            <data_layout_item name="email" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+            <data_layout_button title="Test Button">
+              <script># example helloworld.py
+
+import pygtk
+pygtk.require('2.0')
+import gtk
+
+class HelloWorld:
+
+    # This is a callback function. The data arguments are ignored
+    # in this example. More on callbacks below.
+    def hello(self, widget, data=None):
+        print "Hello World"
+
+    def delete_event(self, widget, event, data=None):
+        # If you return FALSE in the "delete_event" signal handler,
+        # GTK will emit the "destroy" signal. Returning TRUE means
+        # you don't want the window to be destroyed.
+        # This is useful for popping up 'are you sure you want to quit?'
+        # type dialogs.
+
+        # Change FALSE to TRUE and the main window will not be destroyed
+        # with a "delete_event".
+        return False
+
+    def destroy(self, widget, data=None):
+        gtk.main_quit()
+
+    def __init__(self):
+        # create a new window
+        self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+    
+        # When the window is given the "delete_event" signal (this is given
+        # by the window manager, usually by the "close" option, or on the
+        # titlebar), we ask it to call the delete_event () function
+        # as defined above. The data passed to the callback
+        # function is NULL and is ignored in the callback function.
+        self.window.connect("delete_event", self.delete_event)
+    
+        # Here we connect the "destroy" event to a signal handler.  
+        # This event occurs when we call gtk_widget_destroy() on the window,
+        # or if we return FALSE in the "delete_event" callback.
+        self.window.connect("destroy", self.destroy)
+    
+        # Sets the border width of the window.
+        self.window.set_border_width(10)
+    
+        # Creates a new button with the label "Hello World".
+        contact_name = record["name_full"];
+        self.button = gtk.Button("Hello World, " + contact_name)
+    
+        # When the button receives the "clicked" signal, it will call the
+        # function hello() passing it None as its argument.  The hello()
+        # function is defined above.
+        self.button.connect("clicked", self.hello, None)
+    
+        # This will cause the window to be destroyed by calling
+        # gtk_widget_destroy(window) when "clicked".  Again, the destroy
+        # signal could come from here, or the window manager.
+        self.button.connect_object("clicked", gtk.Widget.destroy, self.window)
+    
+        # This packs the button into the window (a GTK container).
+        self.window.add(self.button)
+    
+        # The final step is to display this newly created widget.
+        self.button.show()
+    
+        # and the window
+        self.window.show()
+
+    def main(self):
+        # All PyGTK applications must have a gtk.main(). Control ends here
+        # and waits for an event to occur (like a key press or mouse event).
+        gtk.main()
+
+# If the program is run directly or passed as an argument to the python
+# interpreter then create a HelloWorld instance and show it
+if __name__ == "__main__":
+    hello = HelloWorld()
+    hello.main()
+</script>
+            </data_layout_button>
+          </data_layout_group>
+        </data_layout_groups>
+      </data_layout>
+      <data_layout name="list" parent_table="contacts">
+        <data_layout_groups>
+          <data_layout_group name="main">
+            <data_layout_item name="contact_id" use_default_formatting="true" column_width="100">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="name_title" editable="true" use_default_formatting="true" column_width="100">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+            <data_layout_item name="name_first" editable="true" use_default_formatting="true" column_width="100">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+            <data_layout_item name="name_last" editable="true" use_default_formatting="true" column_width="100">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+            <data_layout_item name="address_country" editable="true" use_default_formatting="true" column_width="100">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+            <data_layout_item name="comments" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+          </data_layout_group>
+        </data_layout_groups>
+      </data_layout>
+    </data_layouts>
+    <reports>
+      <report name="by_country" title="Contacts By Country">
+        <data_layout_groups>
+          <data_layout_group>
+            <data_layout_item_groupby>
+              <groupby name="address_country" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              </groupby>
+              <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
+              </data_layout_item>
+              <data_layout_item name="name_full" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              </data_layout_item>
+            </data_layout_item_groupby>
+          </data_layout_group>
+        </data_layout_groups>
+      </report>
+      <report name="by_country_by_town" title="By Country, By Town">
+        <data_layout_groups>
+          <data_layout_group>
+            <data_layout_item_groupby>
+              <groupby name="address_country" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              </groupby>
+              <data_layout_item_groupby>
+                <groupby name="address_town" editable="true" use_default_formatting="true">
+                  <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+                </groupby>
+                <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
+                  <formatting format_thousands_separator="true" format_decimal_places="2"/>
+                </data_layout_item>
+                <data_layout_item name="name_full" editable="true" use_default_formatting="true">
+                  <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+                </data_layout_item>
+                <data_layout_item name="address_postcode" editable="true" use_default_formatting="true">
+                  <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+                </data_layout_item>
+              </data_layout_item_groupby>
+            </data_layout_item_groupby>
+          </data_layout_group>
+        </data_layout_groups>
+      </report>
+    </reports>
+    <print_layouts/>
+  </table>
+  <table name="invoice_lines" hidden="true">
+    <fields>
+      <field name="invoice_lines_id" primary_key="true" unique="true" auto_increment="true" type="Number">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
+      </field>
+      <field name="product_name" type="Text" title="Product Name">
+        <calculation/>
+        <field_lookup relationship="products" field="name"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+        <trans_set>
+          <trans loc="de_AT" val="Produkt Name"/>
+          <trans loc="de_DE" val="Produkt Name"/>
+        </trans_set>
+      </field>
+      <field name="product_id" type="Number" title="Product Id">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" choices_related="true" choices_related_relationship="products" choices_related_field="product_id" choices_related_second="name"/>
+        <trans_set>
+          <trans loc="de_AT" val="Produkt ID"/>
+          <trans loc="de_DE" val="Produkt ID"/>
+        </trans_set>
+      </field>
+      <field name="product_price" type="Number" title="Product Price">
+        <calculation/>
+        <field_lookup relationship="products" field="price"/>
+        <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" format_currency_symbol="EUR"/>
+        <trans_set>
+          <trans loc="de_AT" val="Produkt Preis"/>
+          <trans loc="de_DE" val="Produkt Preis"/>
+        </trans_set>
+      </field>
+      <field name="invoice_id" type="Number" title="Invoice ID">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
+        <trans_set>
+          <trans loc="de_AT" val="Rechnung ID"/>
+          <trans loc="de_DE" val="Rechnung ID"/>
+        </trans_set>
+      </field>
+      <field name="count" default_value="1" type="Number" title="Number Of">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
+        <trans_set>
+          <trans loc="de_AT" val="Menge"/>
+          <trans loc="de_DE" val="Menge"/>
+        </trans_set>
+      </field>
+      <field name="total_price" type="Number" title="Total Price">
+        <calculation>return record["count"] * record["product_price"];</calculation>
+        <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" format_currency_symbol="EUR"/>
+        <trans_set>
+          <trans loc="de_AT" val="Gesamtpreis"/>
+          <trans loc="de_DE" val="Gesamtpreis"/>
+        </trans_set>
+      </field>
+      <field name="vat_percentage" type="Number" title="VAT Percentage">
+        <calculation/>
+        <field_lookup relationship="products" field="vat_percent"/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
+        <trans_set>
+          <trans loc="de_AT" val="MwST Prozent"/>
+          <trans loc="de_DE" val="MwST Prozent"/>
+        </trans_set>
+      </field>
+      <field name="total_price_vat" type="Number" title="Total VAT">
+        <calculation>return record["total_price"] * (record["vat_percentage"] / 100);</calculation>
+        <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" format_currency_symbol="EUR"/>
+        <trans_set>
+          <trans loc="de_AT" val="Gesamt MwST"/>
+          <trans loc="de_DE" val="Gesamt MwST"/>
+        </trans_set>
+      </field>
+    </fields>
+    <relationships>
+      <relationship name="products" key="product_id" other_table="products" other_key="product_id">
+        <trans_set>
+          <trans loc="de_AT" val="Produkten"/>
+          <trans loc="de_DE" val="Produkten"/>
+        </trans_set>
+      </relationship>
+    </relationships>
+    <data_layouts>
+      <data_layout name="details" parent_table="invoice_lines">
+        <data_layout_groups>
+          <data_layout_group name="main">
+            <data_layout_item name="invoice_lines_id" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="invoice_id" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="product_id" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="product_name" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+            <data_layout_item name="product_price" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="count" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="total_price" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="vat_percentage" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="total_price_vat" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+          </data_layout_group>
+        </data_layout_groups>
+      </data_layout>
+      <data_layout name="list" parent_table="invoice_lines">
+        <data_layout_groups>
+          <data_layout_group name="main">
+            <data_layout_item name="invoice_lines_id" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="invoice_id" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="product_id" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="product_name" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+            <data_layout_item name="product_price" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="count" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="total_price" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+          </data_layout_group>
+        </data_layout_groups>
+      </data_layout>
+    </data_layouts>
+    <reports/>
+    <print_layouts/>
+  </table>
+  <table name="invoices" title="Invoices">
+    <trans_set>
+      <trans loc="de_AT" val="Rechnungen"/>
+      <trans loc="de_DE" val="Rechnungen"/>
+    </trans_set>
+    <fields>
+      <field name="invoice_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Invoice ID">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
+        <trans_set>
+          <trans loc="de_AT" val="Rechnung ID"/>
+          <trans loc="de_DE" val="Rechnung ID"/>
+        </trans_set>
+      </field>
+      <field name="contact_id" type="Number" title="Contact ID">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
+        <trans_set>
+          <trans loc="de_AT" val="Kontakt ID"/>
+          <trans loc="de_DE" val="Kontakt ID"/>
+        </trans_set>
+      </field>
+      <field name="date" type="Date" title="Date">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
+        <trans_set>
+          <trans loc="de_AT" val="Datum"/>
+          <trans loc="de_DE" val="Datum"/>
+        </trans_set>
+      </field>
+      <field name="comment" type="Text" title="Comment">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline="true" format_text_multiline_height_lines="6"/>
+        <trans_set>
+          <trans loc="de_AT" val="Kommentar"/>
+          <trans loc="de_DE" val="Kommentar"/>
+        </trans_set>
+      </field>
+      <field name="price_total" type="Number" title="Total Price">
+        <calculation>return record.related["invoice_lines"].sum("total_price");</calculation>
+        <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" format_currency_symbol="EUR"/>
+        <trans_set>
+          <trans loc="de_AT" val="Gesamtpreis"/>
+          <trans loc="de_DE" val="Gesamtpreis"/>
+        </trans_set>
+      </field>
+      <field name="vat_total" default_value="16" type="Number" title="Total VAT">
+        <calculation>return record.related["invoice_lines"].sum("total_price_vat");</calculation>
+        <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" format_currency_symbol="EUR"/>
+        <trans_set>
+          <trans loc="de_AT" val="Gesamt MwST"/>
+          <trans loc="de_DE" val="Gesamt MwST"/>
+        </trans_set>
+      </field>
+      <field name="price_total_with_vat" type="Number" title="Total Price With Vat">
+        <calculation>return record["price_total"] + record["vat_total"];</calculation>
+        <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" format_currency_symbol="EUR"/>
+        <trans_set>
+          <trans loc="de_AT" val="Gesamtpreis mit MwST"/>
+          <trans loc="de_DE" val="Gesamtpreis mit MwST"/>
+        </trans_set>
+      </field>
+    </fields>
+    <relationships>
+      <relationship name="invoice_lines" key="invoice_id" other_table="invoice_lines" other_key="invoice_id" auto_create="true" allow_edit="true" title="Invoice Lines">
+        <trans_set>
+          <trans loc="de_AT" val="Rechnung Reihen"/>
+          <trans loc="de_DE" val="Rechnung Reihen"/>
+        </trans_set>
+      </relationship>
+      <relationship name="contacts" key="contact_id" other_table="contacts" other_key="contact_id" title="Contacts">
+        <trans_set>
+          <trans loc="de_AT" val="Kontakten"/>
+          <trans loc="de_DE" val="Kontakten"/>
+        </trans_set>
+      </relationship>
+    </relationships>
+    <data_layouts>
+      <data_layout name="details" parent_table="invoices">
+        <data_layout_groups>
+          <data_layout_group name="header" columns_count="2" title="Overview">
+            <trans_set>
+              <trans loc="de_AT" val="&#xDC;bersicht"/>
+              <trans loc="de_BE" val="Overview"/>
+              <trans loc="de_DE" val="&#xDC;bersicht"/>
+              <trans loc="en_GB" val="Overview"/>
+              <trans loc="en_US" val="Overview"/>
+            </trans_set>
+            <data_layout_item name="invoice_id" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="date" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+          </data_layout_group>
+          <data_layout_group name="main">
+            <data_layout_group name="customer" columns_count="2" title="Customer">
+              <trans_set>
+                <trans loc="de_AT" val="Kunde"/>
+                <trans loc="de_BE" val="Customer"/>
+                <trans loc="de_DE" val="Kunde"/>
+                <trans loc="en_GB" val="Customer"/>
+                <trans loc="en_US" val="Customer"/>
+              </trans_set>
+              <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
+              </data_layout_item>
+              <data_layout_item name="name_full" relationship="contacts" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              </data_layout_item>
+            </data_layout_group>
+            <data_layout_portal relationship="invoice_lines">
+              <data_layout_item name="product_id" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
+              </data_layout_item>
+              <data_layout_item name="product_name" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              </data_layout_item>
+              <data_layout_item name="product_price" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
+              </data_layout_item>
+              <data_layout_item name="vat_percentage" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
+              </data_layout_item>
+              <data_layout_item name="count" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
+              </data_layout_item>
+              <data_layout_item name="total_price" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
+              </data_layout_item>
+              <data_layout_item name="total_price_vat" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
+              </data_layout_item>
+            </data_layout_portal>
+            <data_layout_item name="price_total" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" format_currency_symbol="CAD"/>
+            </data_layout_item>
+            <data_layout_item name="vat_total" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="price_total_with_vat" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="comment" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+          </data_layout_group>
+        </data_layout_groups>
+      </data_layout>
+      <data_layout name="list" parent_table="invoices">
+        <data_layout_groups>
+          <data_layout_group name="main">
+            <data_layout_item name="invoice_id" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="name_full" relationship="contacts" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+            <data_layout_item name="price_total" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="date" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="comment" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+          </data_layout_group>
+        </data_layout_groups>
+      </data_layout>
+      <data_layout name="list_related_related_invoice_lines" parent_table="invoices">
+        <data_layout_groups>
+          <data_layout_group name="main">
+            <data_layout_item name="product_id" editable="true" use_default_formatting="true">
+              <formatting/>
+            </data_layout_item>
+            <data_layout_item name="product_name" editable="true" use_default_formatting="true">
+              <formatting/>
+            </data_layout_item>
+            <data_layout_item name="product_price" editable="true" use_default_formatting="true">
+              <formatting/>
+            </data_layout_item>
+            <data_layout_item name="count" editable="true" use_default_formatting="true">
+              <formatting/>
+            </data_layout_item>
+            <data_layout_item name="total_price" use_default_formatting="true">
+              <formatting/>
+            </data_layout_item>
+            <data_layout_item name="vat_percentage" editable="true" use_default_formatting="true">
+              <formatting/>
+            </data_layout_item>
+            <data_layout_item name="total_price_vat" use_default_formatting="true">
+              <formatting/>
+            </data_layout_item>
+          </data_layout_group>
+        </data_layout_groups>
+      </data_layout>
+      <data_layout name="list_related_related_invoice_lines" parent_table="invoice_lines">
+        <data_layout_groups>
+          <data_layout_group name="main">
+            <data_layout_item name="product_id" editable="true" use_default_formatting="true">
+              <formatting/>
+            </data_layout_item>
+            <data_layout_item name="product_name" editable="true" use_default_formatting="true">
+              <formatting/>
+            </data_layout_item>
+            <data_layout_item name="product_price" editable="true" use_default_formatting="true">
+              <formatting/>
+            </data_layout_item>
+            <data_layout_item name="count" editable="true" use_default_formatting="true">
+              <formatting/>
+            </data_layout_item>
+            <data_layout_item name="total_price" use_default_formatting="true">
+              <formatting/>
+            </data_layout_item>
+            <data_layout_item name="vat_percentage" editable="true" use_default_formatting="true">
+              <formatting/>
+            </data_layout_item>
+            <data_layout_item name="total_price_vat" use_default_formatting="true">
+              <formatting/>
+            </data_layout_item>
+          </data_layout_group>
+        </data_layout_groups>
+      </data_layout>
+    </data_layouts>
+    <reports>
+      <report name="By Customer" title="By Customer">
+        <data_layout_groups>
+          <data_layout_group>
+            <data_layout_item_groupby>
+              <groupby name="contact_id" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
+              </groupby>
+              <secondary_fields>
+                <data_layout_group>
+                  <data_layout_item name="name_full" relationship="contacts" editable="true" use_default_formatting="true">
+                    <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+                  </data_layout_item>
+                </data_layout_group>
+              </secondary_fields>
+              <data_layout_item name="invoice_id" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
+              </data_layout_item>
+              <data_layout_item name="date" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
+              </data_layout_item>
+              <data_layout_item name="price_total" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
+              </data_layout_item>
+              <data_layout_item name="price_total_with_vat" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
+              </data_layout_item>
+              <data_layout_item_summary>
+                <data_layout_item_fieldsummary name="price_total" editable="true" use_default_formatting="true" summarytype="SUM">
+                  <formatting format_thousands_separator="true" format_decimal_places="2"/>
+                </data_layout_item_fieldsummary>
+                <data_layout_item_fieldsummary name="price_total_with_vat" editable="true" use_default_formatting="true" summarytype="SUM">
+                  <formatting format_thousands_separator="true" format_decimal_places="2"/>
+                </data_layout_item_fieldsummary>
+              </data_layout_item_summary>
+            </data_layout_item_groupby>
+          </data_layout_group>
+        </data_layout_groups>
+      </report>
+    </reports>
+    <print_layouts/>
+  </table>
+  <table name="products" title="Products">
+    <trans_set>
+      <trans loc="de_AT" val="Produkten"/>
+      <trans loc="de_DE" val="Produkten"/>
+    </trans_set>
+    <fields>
+      <field name="product_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Product ID">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
+        <trans_set>
+          <trans loc="de_AT" val="Produkt ID"/>
+          <trans loc="de_DE" val="Produkt ID"/>
+        </trans_set>
+      </field>
+      <field name="comment" type="Text" title="Comment">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+        <trans_set>
+          <trans loc="de_AT" val="Kommentar"/>
+          <trans loc="de_DE" val="Kommentar"/>
+        </trans_set>
+      </field>
+      <field name="description" type="Text" title="Description">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+        <trans_set>
+          <trans loc="de_AT" val="Beschreibung"/>
+          <trans loc="de_DE" val="Beschreibung"/>
+        </trans_set>
+      </field>
+      <field name="name" type="Text" title="Name">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+        <trans_set>
+          <trans loc="de_AT" val="Name"/>
+          <trans loc="de_DE" val="Name"/>
+        </trans_set>
+      </field>
+      <field name="price" type="Number" title="Price">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places_restricted="true" format_decimal_places="2" format_currency_symbol="EUR"/>
+        <trans_set>
+          <trans loc="de_AT" val="Preis"/>
+          <trans loc="de_DE" val="Preis"/>
+        </trans_set>
+      </field>
+      <field name="vat_percent" default_value="16" type="Number" title="Vat Percent">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
+        <trans_set>
+          <trans loc="de_AT" val="MwST Prozent"/>
+          <trans loc="de_DE" val="MwST Prozent"/>
+        </trans_set>
+      </field>
+    </fields>
+    <relationships/>
+    <data_layouts>
+      <data_layout name="details" parent_table="products">
+        <data_layout_groups>
+          <data_layout_group name="header" columns_count="2" title="Overview">
+            <trans_set>
+              <trans loc="de_AT" val="Overview"/>
+              <trans loc="de_BE" val="Overview"/>
+              <trans loc="de_DE" val="Overview"/>
+              <trans loc="en_GB" val="Overview"/>
+              <trans loc="en_US" val="Overview"/>
+            </trans_set>
+            <data_layout_item name="product_id" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="name" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+          </data_layout_group>
+          <data_layout_group name="main" columns_count="2" title="Details">
+            <trans_set>
+              <trans loc="de_AT" val="Details"/>
+              <trans loc="de_BE" val="Details"/>
+              <trans loc="de_DE" val="Details"/>
+              <trans loc="en_GB" val="Details"/>
+              <trans loc="en_US" val="Details"/>
+            </trans_set>
+            <data_layout_item name="description" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+            <data_layout_item name="price" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="vat_percent" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="comment" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+          </data_layout_group>
+        </data_layout_groups>
+      </data_layout>
+      <data_layout name="list" parent_table="products">
+        <data_layout_groups>
+          <data_layout_group name="main">
+            <data_layout_item name="product_id" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="name" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+            <data_layout_item name="price" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="description" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+            <data_layout_item name="comment" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+          </data_layout_group>
+        </data_layout_groups>
+      </data_layout>
+    </data_layouts>
+    <reports/>
+    <print_layouts/>
+  </table>
+  <table name="staff" title="Staff">
+    <fields>
+      <field name="staff_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Staff ID">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
+      </field>
+      <field name="name_title" type="Text" title="Title">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" choices_custom="true" format_text_multiline_height_lines="6">
+          <custom_choice_list>
+            <custom_choice value="Mr"/>
+            <custom_choice value="Mrs"/>
+            <custom_choice value="Miss"/>
+            <custom_choice value="Dr"/>
+            <custom_choice value="Prof"/>
+          </custom_choice_list>
+        </formatting>
+      </field>
+      <field name="name_first" type="Text" title="First Name">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+        <trans_set>
+          <trans loc="de_AT" val="Vorname"/>
+          <trans loc="de_DE" val="Vorname"/>
+        </trans_set>
+      </field>
+      <field name="name_second" type="Text" title="Second Name">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+        <trans_set>
+          <trans loc="de_AT" val="Zweite Name"/>
+          <trans loc="de_DE" val="Zweite Name"/>
+        </trans_set>
+      </field>
+      <field name="name_last" type="Text" title="Last Name">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+        <trans_set>
+          <trans loc="de_AT" val="Familiename"/>
+          <trans loc="de_DE" val="Familiename"/>
+        </trans_set>
+      </field>
+      <field name="address_street" type="Text" title="Street">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+        <trans_set>
+          <trans loc="de_AT" val="Strasse"/>
+          <trans loc="de_DE" val="Strasse"/>
+        </trans_set>
+      </field>
+      <field name="address_town" type="Text" title="Town">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+        <trans_set>
+          <trans loc="de_AT" val="Ort"/>
+          <trans loc="de_DE" val="Ort"/>
+        </trans_set>
+      </field>
+      <field name="address_state" type="Text" title="State">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+        <trans_set>
+          <trans loc="de_AT" val="Bundesland/Kanton"/>
+          <trans loc="de_DE" val="Bundesland/Kanton"/>
+        </trans_set>
+      </field>
+      <field name="address_country" type="Text" title="Country">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+        <trans_set>
+          <trans loc="de_AT" val="Staat"/>
+          <trans loc="de_DE" val="Staat"/>
+        </trans_set>
+      </field>
+      <field name="address_postcode" type="Text" title="Postcode">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+        <trans_set>
+          <trans loc="de_AT" val="Postleitzahl"/>
+          <trans loc="de_DE" val="Postleitzahl"/>
+        </trans_set>
+      </field>
+      <field name="date_of_birth" type="Date" title="Date Of Birth">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
+        <trans_set>
+          <trans loc="de_AT" val="Geburtsdatum"/>
+          <trans loc="de_DE" val="Geburtsdatum"/>
+        </trans_set>
+      </field>
+      <field name="position" type="Text" title="Position">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+      </field>
+    </fields>
+    <relationships/>
+    <data_layouts>
+      <data_layout name="details" parent_table="staff">
+        <data_layout_groups>
+          <data_layout_group name="header" columns_count="2" title="Overview">
+            <trans_set>
+              <trans loc="de_AT" val="Overview"/>
+              <trans loc="de_BE" val="Overview"/>
+              <trans loc="de_DE" val="Overview"/>
+              <trans loc="en_GB" val="Overview"/>
+              <trans loc="en_US" val="Overview"/>
+            </trans_set>
+            <data_layout_item name="staff_id" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="name_last" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+          </data_layout_group>
+          <data_layout_group name="main" columns_count="2">
+            <data_layout_item name="position" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+            <data_layout_group name="name" title="Name">
+              <trans_set>
+                <trans loc="de_AT" val="Name"/>
+                <trans loc="de_BE" val="Name"/>
+                <trans loc="de_DE" val="Name"/>
+                <trans loc="en_GB" val="Name"/>
+                <trans loc="en_US" val="Name"/>
+              </trans_set>
+              <data_layout_item name="name_title" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              </data_layout_item>
+              <data_layout_item name="name_first" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              </data_layout_item>
+              <data_layout_item name="name_second" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              </data_layout_item>
+              <data_layout_item name="name_last" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              </data_layout_item>
+            </data_layout_group>
+            <data_layout_group name="address" title="Address">
+              <trans_set>
+                <trans loc="de_AT" val="Address"/>
+                <trans loc="de_BE" val="Address"/>
+                <trans loc="de_DE" val="Address"/>
+                <trans loc="en_GB" val="Address"/>
+                <trans loc="en_US" val="Address"/>
+              </trans_set>
+              <data_layout_item name="address_state" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              </data_layout_item>
+              <data_layout_item name="address_street" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              </data_layout_item>
+              <data_layout_item name="address_country" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              </data_layout_item>
+              <data_layout_item name="address_postcode" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              </data_layout_item>
+              <data_layout_item name="address_town" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              </data_layout_item>
+            </data_layout_group>
+            <data_layout_item name="date_of_birth" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+          </data_layout_group>
+        </data_layout_groups>
+      </data_layout>
+      <data_layout name="list" parent_table="staff">
+        <data_layout_groups>
+          <data_layout_group name="main">
+            <data_layout_item name="staff_id" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="name_first" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+            <data_layout_item name="name_last" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+            <data_layout_item name="position" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+          </data_layout_group>
+        </data_layout_groups>
+      </data_layout>
+    </data_layouts>
+    <reports/>
+    <print_layouts/>
+  </table>
+  <groups><!--These are only used when recreating a database from an example file. The actual access-control is on the server, of course.-->
+    <group/>
+    <table_privs table_name="contacts" priv_view="true" priv_edit="true"/>
+    <table_privs table_name="invoice_lines" priv_view="true" priv_edit="true"/>
+    <table_privs table_name="invoices" priv_view="true" priv_edit="true"/>
+    <table_privs table_name="products" priv_view="true"/>
+    <table_privs table_name="staff" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+    <group name="accounts"/>
+    <table_privs table_name="contacts" priv_view="true" priv_edit="true"/>
+    <table_privs table_name="invoice_lines" priv_view="true" priv_edit="true"/>
+    <table_privs table_name="invoices" priv_view="true" priv_edit="true"/>
+    <table_privs table_name="products" priv_view="true"/>
+    <table_privs table_name="staff" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+    <group name="glom_developer" developer="true"/>
+    <table_privs table_name="contacts" priv_view="true" priv_edit="true"/>
+    <table_privs table_name="invoice_lines" priv_view="true" priv_edit="true"/>
+    <table_privs table_name="invoices" priv_view="true" priv_edit="true"/>
+    <table_privs table_name="products" priv_view="true"/>
+    <table_privs table_name="staff" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+    <group name="personnel_department"/>
+    <table_privs table_name="contacts" priv_view="true" priv_edit="true"/>
+    <table_privs table_name="invoice_lines" priv_view="true" priv_edit="true"/>
+    <table_privs table_name="invoices" priv_view="true" priv_edit="true"/>
+    <table_privs table_name="products" priv_view="true"/>
+    <table_privs table_name="staff" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+  </groups>
+  <library_modules/></glom_document>

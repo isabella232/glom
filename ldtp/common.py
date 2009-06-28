@@ -1,8 +1,13 @@
 #!/usr/bin/python
 
-import threading
 import ldtp
 import ldtputils
+
+import os
+import tempfile
+import shutil
+import xml.parsers.expat
+import gda
 
 main_window = '*Glom*'
 initial_dialog = 'WelcometoGlom'
@@ -125,3 +130,70 @@ def check_small_business_integrity():
 	# TODO: Check that there is an image present.
 	# Accerciser shows the Image Size for the widget which we may use to
 	# check this. However, LDTP does not implement this yet.
+
+# Replace $hostname and $username with the corresponding values the user
+# has set for hostname and username in central-info.
+def process_central_file(file):
+	(hostname, username, password) = read_central_info()
+	output = tempfile.NamedTemporaryFile()
+
+	for line in open(file, 'r'):
+		line = line.replace('$hostname', hostname)
+		line = line.replace('$username', username)
+		output.write(line)
+	output.flush()
+	shutil.copy(output.name, file)
+
+# Create a new database for the given backend, to test Glom functionality
+# with it. The .glom file will end up in TestDatabase/Test.glom
+def create_test_database(backend):
+	# Copy Database template
+	shutil.copytree('database-templates/' + backend, 'TestDatabase')
+
+	if backend == 'PostgresCentral':
+		# Replace username and hostname in .glom file and in SQL data
+		process_central_file('TestDatabase/data')
+		process_central_file('TestDatabase/Test.glom')
+
+		# TODO: Does this require user/password? If so, do this with pygda.
+		if os.system('createdb glom_test') != 0:
+			raise ldtp.LdtpExecutionError('createdb failed')
+		if os.system('cat TestDatabase/data | psql glom_test') != 0:
+			raise ldtp.LdtpExecutionError('psql failed')
+
+# Deletes a database created with create_test_database again.
+def delete_test_database(backend):
+	if backend == 'PostgresCentral':
+		# Read glom file to find out database name and port
+		xml_info = []
+
+		def start_element(name, attrs):
+			if name == 'connection':
+				xml_info.append(attrs['database'])
+				xml_info.append(attrs['port'])
+
+		file = open('TestDatabase/Test.glom', 'r')
+		content = file.read(1024)
+
+		parser = xml.parsers.expat.ParserCreate()
+		parser.StartElementHandler = start_element
+		parser.Parse(content)
+
+		if len(xml_info) < 2:
+			raise LdtpExecutionError('Glom file does not contain port or database of centrally hosted database')
+
+		(database, port) = (xml_info[0], xml_info[1])
+		(hostname, username, password) = read_central_info()
+
+		# Remove the database from the central PostgreSQL server
+		op = gda.gda_prepare_drop_database('PostgreSQL', database)
+		op.set_value_at('/SERVER_CNX_P/HOST', hostname)
+		op.set_value_at('/SERVER_CNX_P/PORT', port)
+		op.set_value_at('/SERVER_CNX_P/ADM_LOGIN', username)
+		op.set_value_at('/SERVER_CNX_P/ADM_PASSWORD', password)
+		gda.gda_perform_drop_database('PostgreSQL', op)
+
+	try:
+	       	shutil.rmtree('TestDatabase')
+	except OSError:
+		pass

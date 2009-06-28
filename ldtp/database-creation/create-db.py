@@ -8,45 +8,6 @@ import common
 import os
 import shutil
 
-import xml.parsers.expat
-import gda
-
-def delete_database(backend):
-	if backend == 'PostgresCentral':
-		# Read the glom file to find out the database name and port:
-		xml_info = []
-
-		def start_element(name, attrs):
-			if name == 'connection':
-				xml_info.append(attrs['database'])
-				xml_info.append(attrs['port'])
-
-		file = open('TestDatabase/Test.glom', 'r')
-		content = file.read(1024)
-
-		parser = xml.parsers.expat.ParserCreate()
-		parser.StartElementHandler = start_element
-		parser.Parse(content)
-
-		if len(xml_info) < 2:
-			raise LdtpExecutionError('Glom file does not contain port or database of centrally hosted database')
-
-		(database, port) = (xml_info[0], xml_info[1])
-		(hostname, username, password) = common.read_central_info()
-
-		# Remove the database from the central PostgreSQL server:
-		op = gda.gda_prepare_drop_database('PostgreSQL', database)
-		op.set_value_at('/SERVER_CNX_P/HOST', hostname)
-		op.set_value_at('/SERVER_CNX_P/PORT', port)
-		op.set_value_at('/SERVER_CNX_P/ADM_LOGIN', username)
-		op.set_value_at('/SERVER_CNX_P/ADM_PASSWORD', password)
-		gda.gda_perform_drop_database('PostgreSQL', op)
-
-	try:
-	       	shutil.rmtree('TestDatabase')
-	except OSError:
-		pass
-
 try:
 	# Load data XML from command line when called directly:
 	if sys.argv[0].find('ldtprunner') == -1 and len(sys.argv) > 1:
@@ -169,7 +130,7 @@ try:
 	wait(2)
 
 	# Remove the test database again:
-	delete_database(backend)
+	common.delete_test_database(backend)
 
 except LdtpExecutionError, msg:
 	log(msg, 'fail')
@@ -182,7 +143,7 @@ except LdtpExecutionError, msg:
 
 	# Remove the created directory also on error, so that the test
 	# does not fail because of the database already existing next time:
-	delete_database(backend)
+	common.delete_test_database(backend)
 
 	raise LdtpExecutionError (msg)
 	# TODO: Terminate the Glom application

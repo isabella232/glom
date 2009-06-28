@@ -1,3 +1,17 @@
+2009-06-28  Armin Burgmeier  <armin@openismus.com>
+
+	* ldtp/database-templates/SQLite:
+	* ldtp/database-templates/PostgresCentral: Added database templates
+	for two of the three backends. These can be copied and then opened to
+	have a database available for LDTP tests to test.
+
+	* ldtp/common.py: Added create_test_database and delete_test_database
+	functions which create or remove a database to test, from such a
+	template database, respectively.
+
+	* ldtp/database-creation/create-db.py: Use the delete_test_database
+	function from common on cleanup, remove own delete_database function.
+
 2009-06-30  Armin Burgmeier  <armin@openismus.com>
 
 	* ldtp/database-creation/create-db.py: Changed the name of the created
