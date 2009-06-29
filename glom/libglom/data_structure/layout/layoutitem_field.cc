@@ -270,9 +270,13 @@ void LayoutItem_Field::set_title_custom(const sharedptr<CustomTitle>& title)
 
 bool LayoutItem_Field::is_same_field(const sharedptr<const LayoutItem_Field>& field) const
 {
+  const UsesRelationship* uses_a = this;
+  const UsesRelationship* uses_b = &(*field);
+  if(!uses_a || !uses_b)
+    return false; //Shouldn't happen.
+    
   return (get_name() == field->get_name()) &&
-         (get_relationship_name() == field->get_relationship_name()) &&
-         (get_related_relationship_name() == field->get_related_relationship_name());
+         (*uses_a == *uses_b);
 }
 
 Glib::ustring LayoutItem_Field::get_sql_name(const Glib::ustring& parent_table) const

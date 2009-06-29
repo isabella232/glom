@@ -1661,12 +1661,12 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
   return insert_succeeded;
 }
 
-sharedptr<LayoutItem_Field> Base_DB::offer_field_list(const Glib::ustring& table_name, Gtk::Window* transient_for)
+sharedptr<LayoutItem_Field> Base_DB::offer_field_list_select_one_field(const Glib::ustring& table_name, Gtk::Window* transient_for)
 {
-  return offer_field_list(sharedptr<LayoutItem_Field>(), table_name, transient_for);
+  return offer_field_list_select_one_field(sharedptr<LayoutItem_Field>(), table_name, transient_for);
 }
 
-sharedptr<LayoutItem_Field> Base_DB::offer_field_list(const sharedptr<const LayoutItem_Field>& start_field, const Glib::ustring& table_name, Gtk::Window* transient_for)
+sharedptr<LayoutItem_Field> Base_DB::offer_field_list_select_one_field(const sharedptr<const LayoutItem_Field>& start_field, const Glib::ustring& table_name, Gtk::Window* transient_for)
 {
   sharedptr<LayoutItem_Field> result;
 
@@ -1701,7 +1701,6 @@ sharedptr<LayoutItem_Field> Base_DB::offer_field_list(const sharedptr<const Layo
       dialog->set_transient_for(*transient_for);
 
     dialog->set_document(get_document(), table_name, start_field);
-    //TODO: dialog->set_transient_for(*get_app_window());
     const int response = dialog->run();
     if(response == Gtk::RESPONSE_OK)
     {
@@ -1710,6 +1709,54 @@ sharedptr<LayoutItem_Field> Base_DB::offer_field_list(const sharedptr<const Layo
     }
     else if(start_field) //Cancel means use the old one:
       result = glom_sharedptr_clone(start_field);
+
+    delete dialog;
+  }
+
+  return result;
+}
+
+Base_DB::type_list_field_items Base_DB::offer_field_list(const Glib::ustring& table_name, Gtk::Window* transient_for)
+{
+  type_list_field_items result;
+
+  Glib::RefPtr<Gtk::Builder> refXml;
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_field");
+  }
+  catch(const Gtk::BuilderError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+    return result;
+  }
+#else
+  std::auto_ptr<Gtk::BuilderError> error;
+  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_field", "", error);
+  if(error.get())
+  {
+    std::cerr << error->what() << std::endl;
+    return result;
+  }
+#endif
+
+  Dialog_ChooseField* dialog = 0;
+  refXml->get_widget_derived("dialog_choose_field", dialog);
+
+  if(dialog)
+  {
+    if(transient_for)
+      dialog->set_transient_for(*transient_for);
+
+    dialog->set_document(get_document(), table_name);
+    const int response = dialog->run();
+    if(response == Gtk::RESPONSE_OK)
+    {
+      //Get the chosen field:
+      result = dialog->get_fields_chosen();
+    }
 
     delete dialog;
   }

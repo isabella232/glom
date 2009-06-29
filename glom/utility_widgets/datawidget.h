@@ -63,6 +63,7 @@ public:
   static sharedptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field, Document* document, App_Glom* app);
   sharedptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name);
   sharedptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field);
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   sharedptr<LayoutItem_Field> offer_field_layout(const sharedptr<const LayoutItem_Field>& start_field);
 #endif // !GLOM_ENABLE_CLIENT_ONLY

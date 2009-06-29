@@ -1,5 +1,22 @@
 2009-06-29  Murray Cumming  <murrayc@murrayc.com>
 
+	Allow many fields to be added to layouts (or the export format) at once.
+	
+	* glom/mode_data/dialog_choose_field.[h|cc]: Added get_fields_list() in 
+	addition to the existing get_field_list(), and allow multiple selection.
+	* glom/base_db.[h|cc]: offer_field_list(): Rename to 
+	offer_field_list_select_one_field().
+	Added offer_field_list() that returns a list of fields, allowing multiple 
+	selection.
+
+	* *.[h|cc]: Adapted to use the appropriate function, allowing, for instance, 
+	the export dialog to use multiple selection to add many fields at once.
+
+	Ubuntu Launchpad bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/393231
+	(elmergato)
+	
+2009-06-29  Murray Cumming  <murrayc@murrayc.com>
+
 	Export: Offer File overwrite confirmation.
 	
 	* glom/frame_glom.cc: on_menu_file_export():

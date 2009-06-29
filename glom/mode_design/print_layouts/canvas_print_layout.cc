@@ -345,7 +345,7 @@ void Canvas_PrintLayout::on_context_menu_edit()
   sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
   if(field)
   {
-    sharedptr<LayoutItem_Field> field_chosen = offer_field_list(field, m_table_name, parent);
+    sharedptr<LayoutItem_Field> field_chosen = offer_field_list_select_one_field(field, m_table_name, parent);
     if(field_chosen)
       m_context_item->set_layout_item(field_chosen);
   }

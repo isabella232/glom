@@ -869,7 +869,7 @@ void Dialog_Layout_Report::on_button_edit()
         sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(item);
         if(field)
         {
-          sharedptr<LayoutItem_Field> chosenitem = offer_field_list(field, m_table_name, this);
+          sharedptr<LayoutItem_Field> chosenitem = offer_field_list_select_one_field(field, m_table_name, this);
           if(chosenitem)
           {
             *field = *chosenitem; //TODO_Performance.

@@ -120,8 +120,25 @@ public:
   typedef std::vector< sharedptr<const LayoutItem_Field> > type_vecConstLayoutFields;
 
 protected:
-  sharedptr<LayoutItem_Field> offer_field_list(const Glib::ustring& table_name, Gtk::Window* transient_for = 0);
-  sharedptr<LayoutItem_Field> offer_field_list(const sharedptr<const LayoutItem_Field>& start_field, const Glib::ustring& table_name, Gtk::Window* transient_for = 0);
+
+  /** Allow the user to select a field from the list of fields for the table.
+   */
+  sharedptr<LayoutItem_Field> offer_field_list_select_one_field(const Glib::ustring& table_name, Gtk::Window* transient_for = 0);
+  
+  /** Allow the user to select a field from the list of fields for the table, 
+   * with @a start_field selected by default.
+   */
+  sharedptr<LayoutItem_Field> offer_field_list_select_one_field(const sharedptr<const LayoutItem_Field>& start_field, const Glib::ustring& table_name, Gtk::Window* transient_for = 0);
+  
+    
+  typedef std::list< sharedptr<LayoutItem_Field> > type_list_field_items;
+  typedef std::list< sharedptr<const LayoutItem_Field> > type_list_const_field_items;
+  
+  /** Allow the user to select fields from the list of fields for the table.
+   */
+  type_list_field_items offer_field_list(const Glib::ustring& table_name, Gtk::Window* transient_for = 0);
+  
+  
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   sharedptr<LayoutItem_Field> offer_field_formatting(const sharedptr<const LayoutItem_Field>& start_field, const Glib::ustring& table_name, Gtk::Window* transient_for = 0);
   sharedptr<LayoutItem_Text> offer_textobject(const sharedptr<LayoutItem_Text>& start_textobject, Gtk::Window* transient_for = 0, bool show_title = true);
@@ -260,8 +277,6 @@ protected:
 
   typedef std::map<Glib::ustring, CalcInProgress> type_field_calcs;
 
-  typedef std::list< sharedptr<LayoutItem_Field> > type_list_field_items;
-  typedef std::list< sharedptr<const LayoutItem_Field> > type_list_const_field_items;
 
   /** Get the fields whose values should be recalculated when @a field_name changes.
    */

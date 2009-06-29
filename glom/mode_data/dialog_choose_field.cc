@@ -85,6 +85,13 @@ void Dialog_ChooseField::set_document(Document* document, const Glib::ustring& t
   else
     m_combo_relationship->set_selected_parent_table(table_name, document->get_table_title(table_name)); 
 
+  //If one start field was specified, then multiple selection would not make 
+  //much sense. The caller probably wants single selection.
+  //Make this explicit in the API if that is not always suitable.
+  Glib::RefPtr<Gtk::TreeView::Selection> selection = m_treeview->get_selection();
+  selection->set_mode((field && !(field->get_name().empty()))
+    ? Gtk::SELECTION_SINGLE : Gtk::SELECTION_MULTIPLE); 
+   
   //Select the current field at the start:
   if(field)
   {
@@ -103,7 +110,8 @@ void Dialog_ChooseField::set_document(Document* document, const Glib::ustring& t
 
     if(iterFound != m_model->children().end())
     {
-      m_treeview->get_selection()->select(iterFound);
+      
+      selection->select(iterFound);
 
       //Make sure that it is scrolled into view:
       m_treeview->scroll_to_row(Gtk::TreeModel::Path(iterFound));
@@ -126,6 +134,10 @@ void Dialog_ChooseField::set_document(Document* document, const Glib::ustring& t
   {
     g_warning("Dialog_ChooseField::set_document(): table_name is empty");
   }
+  
+  Glib::RefPtr<Gtk::TreeView::Selection> selection = m_treeview->get_selection();
+  selection->set_mode(Gtk::SELECTION_MULTIPLE); 
+   
 
   //Update the tree models from the document
   if(document)
@@ -183,37 +195,69 @@ sharedptr<LayoutItem_Field> Dialog_ChooseField::get_field_chosen() const
 {
   sharedptr<LayoutItem_Field> field;
 
+  type_list_field_items list_fields = get_fields_chosen();
+  if(!(list_fields.empty()))
+  {
+    field = *(list_fields.begin()); 
+  }
+  
+  return field;
+}
+
+Dialog_ChooseField::type_list_field_items Dialog_ChooseField::get_fields_chosen() const
+{
+  type_list_field_items list_fields;
+
   //Field:
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_treeview->get_selection();
-  if(refTreeSelection)
+  if(!refTreeSelection)
+    return list_fields;
+    
+  //Relationship:
+  //Note that a null relationship means that the parent table was selected instead.
+  sharedptr<Relationship> related_relationship;
+  sharedptr<Relationship> relationship = m_combo_relationship->get_selected_relationship(related_relationship);
+
+    
+  typedef std::list<Gtk::TreeModel::Path> type_list_paths;
+  type_list_paths list_paths = refTreeSelection->get_selected_rows();
+  for(type_list_paths::const_iterator iter = list_paths.begin(); iter != list_paths.end(); iter++)
   {
-    Gtk::TreeModel::iterator iter = refTreeSelection->get_selected();
-    if(iter)
-    {
-      if(m_start_field)
-        field = m_start_field; //Start with this, to preserve extra information such as Translations.
-      else
-        field = sharedptr<LayoutItem_Field>::create();
+    const Gtk::TreeModel::Path path = *iter;
+    Gtk::TreeModel::iterator tree_iter = m_model->get_iter(path);
+    if(!tree_iter)
+      continue;
+      
 
-      //Relationship:
-      //Note that a null relationship means that the parent table was selected instead.
-      sharedptr<Relationship> related_relationship;
-      sharedptr<Relationship> relationship = m_combo_relationship->get_selected_relationship(related_relationship);
+    // Setup a LayoutItem_Field for the Field, 
+    // so is_same_field() can work:
+    sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::create();
+    field->set_relationship(relationship);
+    field->set_related_relationship(related_relationship);
+      
+    Gtk::TreeModel::Row row = *tree_iter;
+    sharedptr<Field> field_details = row[m_ColumnsFields.m_col_field];
+    field->set_full_field_details(field_details); 
+      
+    // Start with the original LayoutItem_Field, 
+    // to preserve extra information such as Translations:
+    if(m_start_field && m_start_field->is_same_field(field))
+      field = m_start_field; 
+    else
+      field = sharedptr<LayoutItem_Field>::create();
 
-      //field.set_relationship_name(relationship_name);
+    //Use the chosen field:
+    field->set_relationship(relationship);
+    field->set_related_relationship(related_relationship);
+    field->set_full_field_details(field_details); //So is_same_field() can work.
 
-      field->set_relationship(relationship);
-      field->set_related_relationship(related_relationship);
-
-
-      Gtk::TreeModel::Row row = *iter;
-      sharedptr<Field> field_details = row[m_ColumnsFields.m_col_field];
-      field->set_full_field_details(field_details);
-      field->set_name(row[m_ColumnsFields.m_col_name]);
-    }
+    field->set_full_field_details(field_details);
+    field->set_name(row[m_ColumnsFields.m_col_name]);
+    
+    list_fields.push_back(field);
   }
 
-  return field;
+  return list_fields;
 }
 
 void Dialog_ChooseField::on_row_activated(const Gtk::TreeModel::Path& /* path */, Gtk::TreeViewColumn* /* view_column */)
@@ -272,6 +316,7 @@ void Dialog_ChooseField::on_combo_relationship_changed()
 
 void Dialog_ChooseField::on_treeview_selection_changed()
 {
+#if 0
   Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview->get_selection();
   if(refSelection)
   {
@@ -289,6 +334,7 @@ void Dialog_ChooseField::on_treeview_selection_changed()
       */
     }
   }
+#endif
 }
 
 } //namespace Glom

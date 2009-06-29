@@ -50,6 +50,9 @@ public:
   //void select_item(const sharedptr<const Field>& field);
 
   sharedptr<LayoutItem_Field> get_field_chosen() const;
+  
+  typedef std::list< sharedptr<LayoutItem_Field> > type_list_field_items;
+  type_list_field_items get_fields_chosen() const;
 
 private:
 

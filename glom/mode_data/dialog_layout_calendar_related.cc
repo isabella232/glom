@@ -375,9 +375,13 @@ void Dialog_Layout_Calendar_Related::on_button_add_field()
   //std::cout << "debug: related relationship=" << glom_get_sharedptr_name(m_portal->get_related_relationship()) << std::endl;
   //std::cout << "debug table used =" << m_portal->get_table_used(m_table_name) << std::endl;
 
-  sharedptr<LayoutItem_Field> field = offer_field_list(m_portal->get_table_used(m_table_name), this);
-  if(field)
+  type_list_field_items fields_list = offer_field_list(m_table_name, this);
+  for(type_list_field_items::iterator iter_chosen = fields_list.begin(); iter_chosen != fields_list.end(); iter_chosen++) 
   {
+    sharedptr<LayoutItem_Field> field = *iter_chosen;
+    if(!field)
+      continue;
+
     //Add the field details to the layout treeview:
     Gtk::TreeModel::iterator iter =  m_model_items->append();
     if(iter)
@@ -409,7 +413,7 @@ void Dialog_Layout_Calendar_Related::on_button_edit()
       sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
 
       //Get the chosen field:
-      sharedptr<LayoutItem_Field> field_chosen = offer_field_list(field, m_portal->get_table_used(m_table_name), this);
+      sharedptr<LayoutItem_Field> field_chosen = offer_field_list_select_one_field(field, m_portal->get_table_used(m_table_name), this);
       if(field_chosen)
       {
         //Set the field details in the layout treeview:

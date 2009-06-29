@@ -215,10 +215,14 @@ void Dialog_GroupBy_SecondaryFields::on_treeview_fields_selection_changed()
 
 void Dialog_GroupBy_SecondaryFields::on_button_add_field()
 {
-  //Get the chosen field:
-  sharedptr<LayoutItem_Field> field = offer_field_list(m_table_name, this);
-  if(field)
+  //Get the chosen fields:
+  type_list_field_items fields_list = offer_field_list(m_table_name, this);
+  for(type_list_field_items::iterator iter_chosen = fields_list.begin(); iter_chosen != fields_list.end(); iter_chosen++) 
   {
+    sharedptr<LayoutItem_Field> field = *iter_chosen; 
+    if(!field)
+      continue;
+  
     //Add the field details to the layout treeview:
     Gtk::TreeModel::iterator iter =  m_model_fields->append();
 
@@ -287,12 +291,12 @@ void Dialog_GroupBy_SecondaryFields::on_button_edit_field()
       sharedptr<const LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
 
       //Get the chosen field:
-      sharedptr<LayoutItem_Field> field_chosen = offer_field_list(field, m_table_name, this);
-      if(field_chosen)
+      sharedptr<LayoutItem_Field> field_chosen = 
+        offer_field_list_select_one_field(field, m_table_name, this);
 
       //Set the field details in the layout treeview:
-
-      row[m_ColumnsFields.m_col_layout_item] = field_chosen;
+      if(field_chosen)
+        row[m_ColumnsFields.m_col_layout_item] = field_chosen;
 
       //Scroll to, and select, the new row:
       /*

@@ -105,7 +105,7 @@ sharedptr<LayoutItem_GroupBy> Dialog_GroupBy::get_item() const
 
 void Dialog_GroupBy::on_button_field_group_by()
 {
-  sharedptr<LayoutItem_Field> field = offer_field_list(m_layout_item->get_field_group_by(), m_table_name, this);
+  sharedptr<LayoutItem_Field> field = offer_field_list_select_one_field(m_layout_item->get_field_group_by(), m_table_name, this);
   if(field)
   {
     m_layout_item->set_field_group_by(field);

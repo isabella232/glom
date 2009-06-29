@@ -45,15 +45,10 @@ public:
 
   bool operator() (const sharedptr<const T_Element>& element)
   {
-    const bool result = (m_layout_item->get_name() == element->get_name());
-    
-    if(!result)
-      return false;
-    
-    //Compare the relationship and related relationshp:
-    sharedptr<const UsesRelationship> uses_a = m_layout_item;
-    sharedptr<const UsesRelationship> uses_b = element;
-    return (*uses_a == *uses_b);
+    if(!m_layout_item && !element)
+      return true;
+       
+    return m_layout_item && m_layout_item->is_same_field(element);
   }
     
 private:
