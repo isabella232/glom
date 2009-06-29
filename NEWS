@@ -1,3 +1,10 @@
+1.8.10:
+
+* Export: Offer File overwrite confirmation.
+  (Murray Cumming)
+	Ubuntu Launchpad bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/393229
+	(elmergato)
+	
 1.8.9:
 
 * Fix crash in initial dialog, experienced on some systems. 
