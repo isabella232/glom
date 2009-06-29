@@ -1,4 +1,13 @@
-1.8.9:
+2009-06-29  Murray Cumming  <murrayc@murrayc.com>
+
+	Export: Offer File overwrite confirmation.
+	
+	* glom/frame_glom.cc: on_menu_file_export():
+	* glom/translation/window_translations.cc: on_button_export(): 
+	Call Gtk::FileChooser::set_do_overwrite_confirmation() so the user is 
+	warned when overwriting a file.
+	Ubuntu Launchpad bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/393229
+	(elmergato)
 
 2009-05-25  Armin Burgmeier  <armin@openismus.com>
 
