@@ -9,6 +9,8 @@
 	Ubuntu Launchpad bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/393229
 	(elmergato)
 
+1.8.9:
+
 2009-05-25  Armin Burgmeier  <armin@openismus.com>
 
 	Fixed a crash when Glom was lanuched via LDTP:ChangeLog
