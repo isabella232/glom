@@ -293,7 +293,7 @@ sharedptr<SharedConnection> ConnectionPool::get_and_connect(std::auto_ptr<Except
   if(!(connection_pool->m_backend.get()))
   {
     std::cerr << "ConnectionPool::get_and_connect(): m_backend is null." << std::endl;
-    return result; //TODO: Return a FAILURE_NO_BACKEND erro?, though that would be tedious.
+    return result; //TODO: Return a FAILURE_NO_BACKEND error?, though that would be tedious.
   }
   
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -385,11 +385,11 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
       {
         //Allow get_meta_store_data() to succeed:
         //Hopefully this (and the update_meta_store_for_table() calls) is all we need.
-        std::cout << "DEBUG: Calling update_meta_store_data_types() ..." << std::endl;
+        //std::cout << "DEBUG: Calling update_meta_store_data_types() ..." << std::endl;
         m_refGdaConnection->update_meta_store_data_types();
-        std::cout << "DEBUG: ... update_meta_store_data_types() has finished." << std::endl;
+        //std::cout << "DEBUG: ... update_meta_store_data_types() has finished." << std::endl;
 
-        std::cout << "DEBUG: Calling update_meta_store_table_names() ..." << std::endl;
+        //std::cout << "DEBUG: Calling update_meta_store_table_names() ..." << std::endl;
         try
         {
           //update_meta_store_table_names() has been known to throw an exception.
@@ -400,7 +400,7 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
         {
           std::cerr << "update_meta_store_table_names() failed: " << ex.what() << std::endl;
         }
-        std::cout << "DEBUG: ... update_meta_store_table_names() has finished." << std::endl;
+        //std::cout << "DEBUG: ... update_meta_store_table_names() has finished." << std::endl;
 
         // Connection succeeded
         // Create the fieldtypes member if it has not already been done:
