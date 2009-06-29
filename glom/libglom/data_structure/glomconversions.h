@@ -70,7 +70,7 @@ namespace Conversions
    *
    * @result true if 4 digits are used.
    */
-  bool sanity_check_date_text_representation_uses_4_digit_years();
+  bool sanity_check_date_text_representation_uses_4_digit_years(bool debug_output = false);
 
   Glib::ustring format_tm(const tm& tm_data, const std::locale& locale, const char* format);
   //static tm parse_tm(const Glib::ustring& text, const std::locale& locale, char format);

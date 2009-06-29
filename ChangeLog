@@ -1,3 +1,18 @@
+2009-06-29  Murray Cumming  <murrayc@murrayc.com>
+
+	Reduce debug output.
+	
+	* glom/libglom/data_structure/glomconversions.[h|cc]: 
+	sanity_check_date_text_representation_uses_4_digit_years(): Make the debug 
+	output optional.
+	* glom/main.cc: Added a --debug-date-check option, to avoid the debug out 
+	about 4-digit dates normally.
+	
+	* glom/dialog_existing_or_new.cc: list_examples_at_path(): Comment out debug 
+	output.
+	* glom/libglom/connectionpool.cc: connect(): Comment out debug output that 
+	showed the (previously slow) meta update calls.
+	
 1.10.1:
 
 2009-05-25  Armin Burgmeier  <armin@openismus.com>

@@ -241,7 +241,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 bool Dialog_ExistingOrNew::list_examples_at_path(const std::string& path)
 {
-  std::cout << "Dialog_ExistingOrNew::list_examples_at_path(): path=" << path << std::endl;
+  //std::cout << "Debug: Dialog_ExistingOrNew::list_examples_at_path(): path=" << path << std::endl;
 
   m_examples_dir = Gio::File::create_for_path(path);
 

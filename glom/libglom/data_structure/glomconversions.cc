@@ -157,7 +157,7 @@ bool Conversions::sanity_check_date_parsing()
   return true;
 }
 
-bool Conversions::sanity_check_date_text_representation_uses_4_digit_years()
+bool Conversions::sanity_check_date_text_representation_uses_4_digit_years(bool debug_output)
 {
   //A date that is really really the date that we mean:
   tm the_c_time;
@@ -170,7 +170,9 @@ bool Conversions::sanity_check_date_text_representation_uses_4_digit_years()
 
   //Get the current locale's text representation:
   const Glib::ustring date_text = format_date(the_c_time);
-  std::cout << "DEBUG: 22nd November 2008 in this locale has this text represention: " << date_text << std::endl;
+
+  if(debug_output)
+    std::cout << "DEBUG: 22nd November 2008 in this locale has this text represention: " << date_text << std::endl;
 
   //See if the year appears in full in that date.
   //There are probably some locales for which this fails.
