@@ -78,12 +78,14 @@ public:
   std::string m_arg_filename;
   bool m_arg_version;
   bool m_arg_debug_sql;
+  bool m_arg_debug_date_check;
 };
 
 OptionGroup::OptionGroup()
 : Glib::OptionGroup("Glom", _("Glom options"), _("Command-line options for glom")),
   m_arg_version(false),
   m_arg_debug_sql(false)
+  m_arg_debug_date_check(false)
 {
   Glib::OptionEntry entry;
   entry.set_long_name("file");
@@ -98,9 +100,14 @@ OptionGroup::OptionGroup()
   add_entry(entry_version, m_arg_version);
 
   Glib::OptionEntry entry_debug_sql;
-  entry_version.set_long_name("debug_sql");
-  entry_version.set_description(_("Show the generated SQL queries on stdout, for debugging."));
-  add_entry(entry_version, m_arg_debug_sql);
+  entry_debug_sql.set_long_name("debug_sql");
+  entry_debug_sql.set_description(_("Show the generated SQL queries on stdout, for debugging."));
+  add_entry(entry_debug_sql, m_arg_debug_sql);
+  
+  Glib::OptionEntry entry_debug_date_check;
+  entry_debug_date_check.set_long_name("debug-date-check");
+  entry_debug_date_check.set_description(_("Show how Glom outputs a date in this locale, then stop."));
+  add_entry(entry_debug_date_check, m_arg_debug_date_check);
 }
 
 #ifdef GLOM_ENABLE_POSTGRESQL
@@ -443,12 +450,16 @@ main(int argc, char* argv[])
     // Some more sanity checking:
     // These print errors to the stdout if they fail.
     // In future we might refuse to start if they fail.
-    const bool test1 = Glom::Conversions::sanity_check_date_text_representation_uses_4_digit_years();
+    const bool test1 = 
+      Glom::Conversions::sanity_check_date_text_representation_uses_4_digit_years(group.m_arg_debug_date_check);
     const bool test2 = Glom::Conversions::sanity_check_date_parsing();
     if(!test1 || !test2)
     {
       std::cerr << "Glom: ERROR: Date parsing sanity checks failed. Glom will not display dates correctly or interperet entered dates correctly. This needs attention from a translator. Please file a bug. See http://www.glom.org." << std::endl;
     }
+    
+    if(group.m_arg_debug_date_check)
+      return 0; //This command-line option is documented as stopping afterwards.
 
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
