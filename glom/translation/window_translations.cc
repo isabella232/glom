@@ -506,6 +506,7 @@ void Window_Translations::on_button_export()
   
   //Show the file-chooser dialog, to select an output .po file:
   Gtk::FileChooserDialog file_dlg(_("Choose .po File Name"), Gtk::FILE_CHOOSER_ACTION_SAVE);
+  file_dlg.set_do_overwrite_confirmation();
   
   // Only po files
   Gtk::FileFilter filter;
