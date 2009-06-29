@@ -1,5 +1,9 @@
 2009-06-29  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/spawn_with_feedback.cc: ifdef out the debug output.
+
+2009-06-29  Murray Cumming  <murrayc@murrayc.com>
+
 	Reduce debug output.
 	
 	* glom/libglom/data_structure/glomconversions.[h|cc]: 

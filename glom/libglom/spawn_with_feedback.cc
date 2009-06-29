@@ -37,6 +37,8 @@
 #define DATADIR SAVE_DATADIR
 #endif
 
+// Uncomment to see debug messages
+//#define GLOM_SPAWN_DEBUG
 
 namespace Glom
 {
@@ -417,14 +419,19 @@ namespace
       // is probably defined on the system already and that definition would override our LANG:  
       // (Note that we can not just do "LANG=C;the_command", as on the command line, because g_spawn() does not support that.)
 
+      #ifdef GLOM_SPAWN_DEBUG
       std::cout << std::endl << "debug: temporarily setting LANG and LANGUAGE environment variables to \"C\"" << std::endl;
+      #endif //GLOM_SPAWN_DEBUG
+      
       stored_env_lang = Glib::getenv("LANG");
       stored_env_language = Glib::getenv("LANGUAGE");
       Glib::setenv("LANG", "C", true /* overwrite */);
       Glib::setenv("LANGUAGE", "C", true /* overwrite */);
     }
 
+    #ifdef GLOM_SPAWN_DEBUG
     std::cout << std::endl << "debug: command_line (second): " << second_command << std::endl << std::endl;
+    #endif //GLOM_SPAWN_DEBUG
 
     int return_status = 0;
     std::string stdout_output;
@@ -435,7 +442,7 @@ namespace
     }
     catch(const Impl::SpawnError& ex)
     {
-      std::cerr << "Glom::execute_command_line_and_wait_until_second_command_returns_success() Exception while calling Glib::spawn_command_line_sync(): " << ex.what() << std::endl;
+      std::cerr << "Glom::execute_command_line_and_wait_until_second_command_returns_success(): Exception while calling Glib::spawn_command_line_sync(): " << ex.what() << std::endl;
       // TODO: We should cancel the whole call if this fails three times in 
       // a row or so.
     }
@@ -446,7 +453,10 @@ namespace
     if(!success_text.empty())
     {
       // Restore the previous environment variable values:
+      #ifdef GLOM_SPAWN_DEBUG
       std::cout << std::endl << "debug: restoring the LANG and LANGUAGE environment variables." << std::endl;
+      #endif //GLOM_SPAWN_DEBUG
+      
       Glib::setenv("LANG", stored_env_lang, true /* overwrite */);
       Glib::setenv("LANGUAGE", stored_env_language, true /* overwrite */);
     }
@@ -456,14 +466,20 @@ namespace
       bool success = true; //Just check the return code.
       if(!success_text.empty()) //Check the output too.
       {
+        #ifdef GLOM_SPAWN_DEBUG
         std::cout << " debug: output=" << stdout_output << ", waiting for=" << success_text << std::endl;
+        #endif //GLOM_SPAWN_DEBUG
+        
         if(stdout_output.find(success_text) == std::string::npos)
           success = false;
       }
 
       if(success)
       {
+        #ifdef GLOM_SPAWN_DEBUG
         std::cout << "debug: Success, do response" << std::endl;
+        #endif //GLOM_SPAWN_DEBUG
+        
         // Exit from run() in execute_command_line_and_wait_until_second_command_returns_success().
         mainloop->quit();
         // Cancel timeout. Actually, we also could return true here since
@@ -473,7 +489,9 @@ namespace
     }
     else
     {
+       #ifdef GLOM_SPAWN_DEBUG
        std::cout << " debug: second command failed. output=" << stdout_output << std::endl;
+       #endif //GLOM_SPAWN_DEBUG
     }
 
     slot_progress(); //Show UI progress feedback.
@@ -493,8 +511,10 @@ static bool on_timeout_delay(const Glib::RefPtr<Glib::MainLoop>& mainloop)
 
 bool execute_command_line_and_wait_until_second_command_returns_success(const std::string& command, const std::string& second_command, const SlotProgress& slot_progress, const std::string& success_text)
 {
+  #ifdef GLOM_SPAWN_DEBUG
   std::cout << "debug: Command: " << command << std::endl;
-
+  #endif //GLOM_SPAWN_DEBUG
+  
   std::auto_ptr<const Impl::SpawnInfo> info = Impl::spawn_async(command, Impl::REDIRECT_STDERR);
 
   // While we wait for the second command to finish we
@@ -564,36 +584,6 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
     return false;
   }
 }
-
-#if 0
-bool execute_command_line_and_wait_fixed_seconds(const std::string& command, unsigned int seconds, const Glib::ustring& message, Gtk::Window* parent_window)
-{
-  Gtk::MessageDialog dialog(Utils::bold_message(message), true, Gtk::MESSAGE_INFO, Gtk::BUTTONS_NONE, true /* modal */); 
-  if(parent_window)
-    dialog.set_transient_for(*parent_window);
-
-  dialog.show();
-
-  //Allow GTK+ to perform all updates for us
-  //Without this, the dialog will seem empty.
-  while(Gtk::Main::instance()->events_pending())
-    Gtk::Main::instance()->iteration();
-
-  std::cout << std::endl << "debug: command_line: " << command << std::endl << std::endl;
-
-  try
-  {
-    Glib::spawn_command_line_async(command);
-  }
-  catch(const Glib::SpawnError& ex)
-  {
-    std::cerr << "Glom::Spawn::execute_command_line_and_wait_fixed_seconds() Exception while calling lib::spawn_command_line_async(): " << ex.what() << std::endl;
-  }
-
-  sleep(seconds); //Give the command enough time to make something ready for us to continue.
-  return true;
-}
-#endif
 
 } //Spawn
 
