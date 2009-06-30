@@ -572,7 +572,7 @@ static bool meta_table_column_is_primary_key(GdaMetaTable* meta_table, const Gli
     if(!column)
       continue;
       
-    if(column->column_name && (column_name == column->column_name))
+    if(column->column_name && (column_name == remove_quotes(column->column_name)))
       return column->pkey;
   }
   
@@ -626,7 +626,19 @@ Base_DB::type_vec_fields Base_DB::get_fields_for_table_from_database(const Glib:
     Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
 
     Glib::RefPtr<Gnome::Gda::Holder> holder_table_name = Gnome::Gda::Holder::create(G_TYPE_STRING, "name");
-    holder_table_name->set_value(table_name);
+    Glib::ustring quoted_table_name;
+    if(gda_sql_identifier_needs_quotes(table_name.c_str()))
+    {
+      gchar* quoted_table_name_c = gda_sql_identifier_add_quotes(table_name.c_str());
+      quoted_table_name = quoted_table_name_c;
+      g_free(quoted_table_name_c);
+    }
+    else
+    {
+      quoted_table_name = table_name;
+    }
+
+    holder_table_name->set_value(quoted_table_name);
     std::list< Glib::RefPtr<Gnome::Gda::Holder> > holder_list;
     holder_list.push_back(holder_table_name);
 
@@ -668,7 +680,7 @@ Base_DB::type_vec_fields Base_DB::get_fields_for_table_from_database(const Glib:
       GdaMetaDbObject* meta_dbobject = metastruct->complement(Gnome::Gda::META_DB_TABLE, 
         Gnome::Gda::Value(), /* catalog */
         Gnome::Gda::Value(), /* schema */
-        Gnome::Gda::Value(table_name)); //It's a static instance inside the MetaStore. 
+        Gnome::Gda::Value(quoted_table_name)); //It's a static instance inside the MetaStore. 
       GdaMetaTable* meta_table = GDA_META_TABLE(meta_dbobject);
    
    
@@ -686,7 +698,9 @@ Base_DB::type_vec_fields Base_DB::get_fields_for_table_from_database(const Glib:
           if(value_name.get_string().empty())
             g_warning("Base_DB::get_fields_for_table_from_database(): value_name is empty.");
 
-          field_info->set_name( value_name.get_string() ); //TODO: get_string() is a dodgy choice. murrayc.
+          Glib::ustring field_name = value_name.get_string(); //TODO: get_string() is a dodgy choice. murrayc.
+          field_name = remove_quotes(field_name);
+          field_info->set_name(field_name);
         }
 
         //Get the field type:
