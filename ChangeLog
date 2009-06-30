@@ -1,3 +1,16 @@
+2009-09-30  Armin Burgmeier  <armin@openismus.com>
+
+	* ldtp/fields-edit/fields-edit.py: Added a new test which tests adding
+	a new field to an existing table. More operations to test, such as
+	changing and removing existing fields, can be added later.
+
+	* ldtp/fields-edit/postgres-central.xml:
+	* ldtp/fields-edit/postgres-self.xml:
+	* ldtp/fields-edit/sqlite.xml: XML Data files for the new test.
+
+	* ldtp/test.xml: Added it to the test suite, so that it can be run
+	with ldtprunner.
+
 2009-06-28  Armin Burgmeier  <armin@openismus.com>
 
 	* ldtp/database-templates/SQLite:

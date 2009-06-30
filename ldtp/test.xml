@@ -3,6 +3,23 @@
 	<logfile>glom-test-log.xml</logfile>
 
 	<group>
+		<testcaseid>fields-edit</testcaseid>
+		<comment>Test whether table fields can be edited without problems for all available backends</comment>
+
+<!--		<script>
+			<name>fields-edit/fields-edit.py</name>
+			<data>fields-edit/postgres-self.xml</data>
+		</script> -->
+		<script>
+			<name>fields-edit/fields-edit.py</name>
+			<data>fields-edit/postgres-central.xml</data>
+		</script>
+		<script>
+			<name>fields-edit/fields-edit.py</name>
+			<data>fields-edit/sqlite.xml</data>
+		</script>
+	</group>
+	<group>
 		<testcaseid>database-creation</testcaseid>
 		<comment>Test whether creation of a new database work for all available backends</comment>
 
