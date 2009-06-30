@@ -51,6 +51,9 @@
 #include <glibmm/i18n.h>
 //#include <libgnomeui/gnome-app-helper.h>
 
+
+#include <sql-parser/gda-sql-parser.h> //For gda_sql_identifier_remove_quotes().
+
 #ifdef GLOM_ENABLE_MAEMO
 #include <hildonmm/note.h>
 #endif
@@ -376,7 +379,45 @@ bool Base_DB::get_table_exists_in_database(const Glib::ustring& table_name) cons
   return (iterFind != tables.end());
 }
 
+namespace { //anonymous
+
+//If the string has quotes around it, remove them
+static Glib::ustring remove_quotes(const Glib::ustring& str)
+{
+  //If we call gda_sql_identifier_remove_quotes() unnecessarily,
+  //it will convert the string to lowercase, annoyingly.
+  //so we must check for that:
+          
+  //TODO: But see http://bugzilla.gnome.org/show_bug.cgi?id=587440:
+  //if(gda_sql_identifier_needs_quotes(table_name.c_str())) //Means has no quotes already.
+  //  return str;
+  
+  const gchar* quote = "\"";
+  const Glib::ustring::size_type posQuoteStart = str.find(quote);
+  if(posQuoteStart != 0)
+    return str;
+    
+  const Glib::ustring::size_type posQuoteEnd = str.find(quote, 1);
+  if(posQuoteEnd != (str.size() - 1))
+    return str;
+  
+  //Actually remove the quotes:
+  gchar* quoted = g_strdup(str.c_str());
+  std::cout << "  quoted=" << quoted << std::endl;
+  gchar* unquoted = gda_sql_identifier_remove_quotes(quoted); //Changes quoted. unquoted is the same string so should not be freed.
+  std::cout << "  unquoted= " << unquoted << std::endl;
+  if(unquoted)
+    return unquoted;
+      
+  g_free(quoted);
+  
+  return str;
+}
+
+} //anonymous namespace
+
 //TODO_Performance: Avoid calling this so often.
+//TODO: Put this in libgdamm.
 Base_DB::type_vec_strings Base_DB::get_table_names_from_database(bool ignore_system_tables) const
 {
   type_vec_strings result;
@@ -415,7 +456,14 @@ Base_DB::type_vec_strings Base_DB::get_table_names_from_database(bool ignore_sys
         Glib::ustring table_name;
         if(G_VALUE_TYPE(value.gobj()) ==  G_TYPE_STRING)
         {
+          //These gda_sql_identifier_*_quotes() functions are awful, 
+          //and it's awful that we need to use them at all.
           table_name = value.get_string();
+          
+          table_name = remove_quotes(table_name);
+          
+          //TODO: Unescape the string with gda_server_provider_unescape_string()?
+            
           //std::cout << "DEBUG: Found table: " << table_name << std::endl;
 
           if(ignore_system_tables)
@@ -1330,6 +1378,8 @@ bool Base_DB::create_table(const sharedptr<const TableInfo>& table_info, const D
   //Actually create the table
   try
   {
+    //TODO: Escape the table name?
+    //TODO: Use GDA_SERVER_OPERATION_CREATE_TABLE instead?
     table_creation_succeeded = query_execute( "CREATE TABLE \"" + table_info->get_name() + "\" (" + sql_fields + ");" );
     if(!table_creation_succeeded)
       std::cerr << "Base_DB::create_table(): CREATE TABLE failed." << std::endl;
