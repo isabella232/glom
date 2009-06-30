@@ -403,9 +403,9 @@ static Glib::ustring remove_quotes(const Glib::ustring& str)
   
   //Actually remove the quotes:
   gchar* quoted = g_strdup(str.c_str());
-  std::cout << "  quoted=" << quoted << std::endl;
+  //std::cout << "  quoted=" << quoted << std::endl;
   gchar* unquoted = gda_sql_identifier_remove_quotes(quoted); //Changes quoted. unquoted is the same string so should not be freed.
-  std::cout << "  unquoted= " << unquoted << std::endl;
+  //std::cout << "  unquoted= " << unquoted << std::endl;
   if(unquoted)
     return unquoted;
       
