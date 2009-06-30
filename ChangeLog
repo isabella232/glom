@@ -1,5 +1,11 @@
 2009-06-30  Armin Burgmeier  <armin@openismus.com>
 
+	* ldtp/database-creation/create-db.py: Changed the name of the created
+	database table (for empty databases) to TestTable, so that we test
+	that table names with capital letters work correctly.
+
+2009-06-30  Armin Burgmeier  <armin@openismus.com>
+
 	* glom/base_db.cc (get_fields_for_table_from_database): Make this work
 	for table names which need quotation, and return unquoted field names.
 	This fixes bug #587051.

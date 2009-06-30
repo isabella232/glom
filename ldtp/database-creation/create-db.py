@@ -126,7 +126,7 @@ try:
 		# getcellvalue works, though:
 		#setcellvalue('Tables', 'tblTables', 0, 0, 'TestTable')
 		# Use this as a workaround:
-		generatekeyevent('test_table<enter>')
+		generatekeyevent('TestTable<enter>')
 		click('Tables', 'Close')
 
 		common.wait_for_database_open()
