@@ -26,7 +26,8 @@ AM_CPPFLAGS = -I@top_srcdir@/ -I@top_srcdir@/glom $(GLOM_CFLAGS) $(GLOM_WARNING_
            -DGLOM_XSLTDIR=\""$(glomxsltdir)/"\" \
            -DGLOM_EXAMPLES_DIR=\""$(glom_examples_dir)"\" \
            -DGLOM_EXAMPLES_DIR_ALTERNATIVE=\""$(glom_examples_dir_alternative)"\" \
-           -DGLOM_ICON_DIR=\""$(glom_icon_dir)"\"
+           -DGLOM_ICON_DIR=\""$(glom_icon_dir)"\" \
+           -DGLOM_ABI_VERSION=\""$(GLOM_ABI_VERSION)\""
 
 glom_SOURCES = main.cc \
                application.cc application.h \
@@ -91,7 +92,7 @@ glom_LDADD += bakery/libbakery_app.a \
               utility_widgets/egg/util/libeggutil.la
 
 glom_LDADD += python_embed/libpython_embed.a \
-              $(top_builddir)/glom/libglom/libglom-1.0.la \
+              $(top_builddir)/glom/libglom/libglom-$(GLOM_ABI_VERSION).la \
               $(GLOM_LIBS) $(PYTHON_LDFLAGS) $(MAEMO_LAUNCHER_LIBS)
 
 if !WIN32

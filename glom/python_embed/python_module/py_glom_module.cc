@@ -49,7 +49,7 @@ initglom(void)
     return;
 
 
-  m = Py_InitModule3((char*)"glom", pyglom_methods,
+  m = Py_InitModule3((char*)"glom-" GLOM_ABI_VERSION, pyglom_methods,
                       (char*)"Python module for Glom caluclated fields.");
 
 

@@ -133,7 +133,7 @@ try:
 	common.delete_test_database(backend)
 
 except LdtpExecutionError, msg:
-	log(msg, 'fail')
+	log(msg, 'cause')
 
 	# Print the exception to stdout because it does not seem to appear 
 	# in the log file: TODO: Fix that. murrayc.

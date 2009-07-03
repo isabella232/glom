@@ -1,4 +1,5 @@
-AM_CPPFLAGS = -I@top_srcdir@/ -I@top_srcdir@/glom $(GLOM_CFLAGS) $(GLOM_WARNING_FLAGS) $(PYTHON_INCLUDES)
+AM_CPPFLAGS = -I@top_srcdir@/ -I@top_srcdir@/glom $(GLOM_CFLAGS) $(GLOM_WARNING_FLAGS) $(PYTHON_INCLUDES) \
+           -DGLOM_ABI_VERSION=\""$(GLOM_ABI_VERSION)\""
 
 SUBDIRS = python_module
 

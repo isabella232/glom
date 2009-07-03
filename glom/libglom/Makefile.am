@@ -41,20 +41,20 @@ cc_sources = appstate.cc \
                      utils.cc \
                      gst-package.c
 
-library_includedir=$(includedir)/glom-1.0/libglom
+library_includedir=$(includedir)/glom-$(GLOM_ABI_VERSION)/libglom
 library_include_HEADERS = $(h_sources_public)
 
-lib_LTLIBRARIES = libglom-1.0.la
-libglom_1_0_la_SOURCES = $(h_sources) $(cc_sources)
+lib_LTLIBRARIES = libglom-1.12.la
+libglom_1_12_la_SOURCES = $(h_sources) $(cc_sources)
 
-libglom_1_0_la_LDFLAGS = -no-undefined
+libglom_1_12_la_LDFLAGS = -no-undefined
 
 # Link libglom statically on maemo and windows for now.
 if GLOM_ENABLE_MAEMO
-libglom_1_0_la_LDFLAGS += -static
+libglom_1_12_la_LDFLAGS += -static
 endif
 
-libglom_1_0_la_LIBADD  = document/libdocument.la \
+libglom_1_12_la_LIBADD  = document/libdocument.la \
                      document/bakery/libdocument_bakery.la \
                      document/bakery/view/libdocument_bakery_view.la \
                      connectionpool_backends/libconnectionpool_backends.la \
@@ -65,7 +65,7 @@ libglom_1_0_la_LIBADD  = document/libdocument.la \
                      $(LIBGLOM_LIBS) $(PYTHON_LDFLAGS)
 
 if !WIN32
-libglom_1_0_la_LIBADD += -lutil
+libglom_1_12_la_LIBADD += -lutil
 endif
 
 pkgconfigdir = $(libdir)/pkgconfig
@@ -77,15 +77,15 @@ pkgconfig_DATA = glom-1.0.pc
 noinst_PROGRAMS = test_sharedptr_layoutitem test_connectionpool test_document
 
 test_sharedptr_layoutitem_SOURCES = test_sharedptr_layoutitem.cc
-test_sharedptr_layoutitem_LDADD =  libglom-1.0.la \
+test_sharedptr_layoutitem_LDADD =  libglom-1.12.la \
               $(LIBGLOM_LIBS)
 
 test_connectionpool_SOURCES = test_connectionpool.cc
-test_connectionpool_LDADD =  libglom-1.0.la \
+test_connectionpool_LDADD =  libglom-1.12.la \
               $(LIBGLOM_LIBS)
 
 test_document_SOURCES = test_document.cc
-test_document_LDADD =  libglom-1.0.la \
+test_document_LDADD =  libglom-1.12.la \
               $(LIBGLOM_LIBS)
 
 if !WIN32

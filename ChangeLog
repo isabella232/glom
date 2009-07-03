@@ -1,3 +1,35 @@
+2009-07-03  Murray Cumming  <murrayc@murrayc.com>
+
+	Allow parallel installs of libglom major versions.
+
+	* configure.ac: Define GLOM_ABI_VERSION as 1.12.
+	* glom/Makefile.am:
+	* glom/libglom/Makefile.am:
+        * glom/python_embed/Makefile.am 
+	* glom/python_embed/python_module/Makefile.am: 
+	* regression_tests/Makefile.am: Add a 1.12 suffix to 
+	the libglom shared library name and the glom python module name.
+	This must be changed in several places when the ABI version changes 
+	because we cannot use a variable in most of these places.
+	Define it also as a macro for the .cc files, so Glom can import the 
+	correct version of the Glom python module
+	- for instance, import glom-1.12.  
+	* glom/python_embed/glom_python.cc:
+	* glom/python_embed/python_module/py_glom_module.cc: Import the 
+	correct version in python.
+
+2009-07-03  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.ac: 
+	* glom/Makefile.am:
+	* glom/libglom/Makefile.am:
+	* glom/libglom/python_embed/Makefile.am:
+	* glom/python_embed/glom_python.cc:
+	* glom/python_embed/python_module/Makefile.am: 
+	* glom/python_embed/python_module/py_glom_module.cc:
+	* ldtp/database-creation/create-db.py:
+	* regression_tests/Makefile.am:
+
 2009-09-30  Armin Burgmeier  <armin@openismus.com>
 
 	* ldtp/fields-edit/fields-edit.py: Added a new test which tests adding

@@ -138,7 +138,7 @@ void ShowTrace()
 
 bool glom_python_module_is_available()
 {
-  PyObject* module_glom = PyImport_ImportModule((char*)"glom"); //TODO: unref this?
+  PyObject* module_glom = PyImport_ImportModule((char*)"glom-" GLOM_ABI_VERSION); //TODO: unref this?
   return module_glom != 0;
 }
 
@@ -183,7 +183,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
 
   //prefix the def line:
   const Glib::ustring func_name = "glom_calc_field_value";
-  func_def = "def " + func_name + "(record):\n  import glom\n  import gda\n" + func_def;
+  func_def = "def " + func_name + "(record):\n  import glom-" GLOM_ABI_VERSION "\n  import gda\n" + func_def;
   //We did this in main(): Py_Initialize();
 
   PyObject* pMain = PyImport_AddModule((char*)"__main__");
@@ -218,7 +218,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   }
 
 
-  PyObject* module_glom = PyImport_ImportModule((char*)"glom");
+  PyObject* module_glom = PyImport_ImportModule((char*)"glom-" GLOM_ABI_VERSION);
   if(!module_glom)
   {
     g_warning("Could not import python glom module.");

@@ -16,6 +16,12 @@ AC_LIBTOOL_WIN32_DLL
 AM_PROG_LIBTOOL
 AM_SANITY_CHECK
 
+# Used for the install directories for headers.
+# The same number is used in the library name, which must be kept in sync,
+# but variables can't be used with that.
+GLOM_ABI_VERSION=1.12
+AC_SUBST([GLOM_ABI_VERSION])
+
 # libgettext-po changed its API, changing the error handler struct from po_error_handler to po_xerror_handler:
 AC_CHECK_MEMBER([struct po_xerror_handler.xerror], [have_gettext_po_xerror="yes"], [have_gettext_po_xerror="no"], [#include <gettext-po.h>])
 if test "$have_gettext_po_xerror" = "yes"; then

@@ -13,7 +13,7 @@ AM_CPPFLAGS = -I@top_srcdir@/ -I@top_srcdir@/glom $(GLOM_CFLAGS) $(GLOM_WARNING_
 noinst_PROGRAMS = test_parsing_time test_signal_reemit
 
 test_parsing_time_SOURCES = test_parsing_time.cc
-test_parsing_time_LDADD = $(GLOM_LIBS) $(top_builddir)/glom/libglom/libglom-1.0.la
+test_parsing_time_LDADD = $(GLOM_LIBS) $(top_builddir)/glom/libglom/libglom-1.12.la
 
 test_signal_reemit_SOURCES = test_signal_reemit.cc
 test_signal_reemit_LDADD = $(GLOM_LIBS) 
