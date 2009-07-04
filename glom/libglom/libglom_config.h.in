@@ -11,10 +11,4 @@
 /* Whether to enable support for the maemo platform */
 #undef GLOM_ENABLE_MAEMO
 
-/* Whether to enable support for PostgreSQL databases. */
-#undef GLOM_ENABLE_POSTGRESQL
-
-/* Whether to enable support for SQLite databases. */
-#undef GLOM_ENABLE_SQLITE
-
 #endif /* GLOM_LIBGLOM_CONFIG_H */

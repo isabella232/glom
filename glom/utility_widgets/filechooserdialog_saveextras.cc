@@ -18,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "config.h"
 #include <glom/utility_widgets/filechooserdialog_saveextras.h>
 #include <glom/utils_ui.h>
 #include <gtkmm/alignment.h>

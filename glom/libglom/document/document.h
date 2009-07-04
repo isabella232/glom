@@ -21,7 +21,7 @@
 #ifndef DOCUMENT_GLOM_H
 #define DOCUMENT_GLOM_H
 
-#include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY, GLOM_ENABLE_SQLITE
+#include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY
 
 #include <libglom/document/bakery/document_xml.h>
 #include <libglom/data_structure/relationship.h>
@@ -100,21 +100,14 @@ public:
   /// How the database is hosted.
   enum HostingMode
   {
-    //Only enabled if GLOM_ENABLE_POSTGRESQL is defined:
     HOSTING_MODE_POSTGRES_CENTRAL, /*!< The database is hosted on an external postgresql server. */
     
-    //Only enabled if GLOM_ENABLE_POSTGRESQL is defined and GLOM_ENABLE_CLIENT_ONLY is not defined:
+    //Only enabled if GLOM_ENABLE_CLIENT_ONLY is not defined:
     HOSTING_MODE_POSTGRES_SELF, /*!< A new postgres database process is spawned that hosts the data. */
 
-    //Only enabled if GLOM_ENABLE_SQLITE is defined:
     HOSTING_MODE_SQLITE, /*!< A sqlite database file is used. */
 
-    //This reduces the ifdefs elsewhere:
-#ifdef GLOM_ENABLE_POSTGRESQL
-    DEFAULT_HOSTED = HOSTING_MODE_POSTGRES_SELF
-#else
-    DEFAULT_HOSTED = HOSTING_MODE_SQLITE
-#endif
+    HOSTING_MODE_DEFAULT = HOSTING_MODE_POSTGRES_SELF /*!- Arbitrary default. */
   };
 
   /** Set the hosting mode of the database. 

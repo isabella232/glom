@@ -102,7 +102,7 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& bu
   m_menu_print_layouts_ui_merge_id(0),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_ui_save_extra_showextras(false),
-  m_ui_save_extra_newdb_hosting_mode(Document::DEFAULT_HOSTED),
+  m_ui_save_extra_newdb_hosting_mode(Document::HOSTING_MODE_DEFAULT),
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_avahi_progress_dialog(0),
@@ -989,7 +989,7 @@ bool App_Glom::on_document_load()
         m_ui_save_extra_title = _("Creating From Example File");
         m_ui_save_extra_message = _("To use this example file you must save an editable copy of the file. A new database will also be created on the server.");
         m_ui_save_extra_newdb_title = "TODO";
-        m_ui_save_extra_newdb_hosting_mode = Document::DEFAULT_HOSTED;
+        m_ui_save_extra_newdb_hosting_mode = Document::HOSTING_MODE_DEFAULT;
 
         
         // Reinit cancelled state
@@ -1006,7 +1006,7 @@ bool App_Glom::on_document_load()
           //Get the results from the extended save dialog:
           pDocument->set_database_title(m_ui_save_extra_newdb_title);
           pDocument->set_hosting_mode(m_ui_save_extra_newdb_hosting_mode);
-          m_ui_save_extra_newdb_hosting_mode = Document::DEFAULT_HOSTED;
+          m_ui_save_extra_newdb_hosting_mode = Document::HOSTING_MODE_DEFAULT;
           pDocument->set_is_example_file(false);
 
           // For self-hosting, we will choose a port later. For central
@@ -1360,7 +1360,7 @@ void App_Glom::existing_or_new_new()
   Glib::ustring db_title;
 
   m_ui_save_extra_showextras = true; //Offer self-hosting or central hosting, and offer the database title.
-  m_ui_save_extra_newdb_hosting_mode = Document::DEFAULT_HOSTED; /* Default to self-hosting */
+  m_ui_save_extra_newdb_hosting_mode = Document::HOSTING_MODE_DEFAULT; /* Default to self-hosting */
   m_ui_save_extra_newdb_title.clear();
   offer_saveas();
 
@@ -1372,13 +1372,13 @@ void App_Glom::existing_or_new_new()
     const Glib::ustring db_title = m_ui_save_extra_newdb_title;
     Document::HostingMode hosting_mode = m_ui_save_extra_newdb_hosting_mode;
     m_ui_save_extra_newdb_title.clear();
-    m_ui_save_extra_newdb_hosting_mode = Document::DEFAULT_HOSTED;
+    m_ui_save_extra_newdb_hosting_mode = Document::HOSTING_MODE_DEFAULT;
 
     //Make sure that the user can do something with his new document:
     document->set_userlevel(AppState::USERLEVEL_DEVELOPER);
     // Try various ports if connecting to an existing database server instead
     // of self-hosting one:
-    document->set_connection_try_other_ports(m_ui_save_extra_newdb_hosting_mode == Document::DEFAULT_HOSTED);
+    document->set_connection_try_other_ports(m_ui_save_extra_newdb_hosting_mode == Document::HOSTING_MODE_DEFAULT);
 
     //Each new document must have an associated new database,
     //so choose a name
@@ -2008,7 +2008,7 @@ void App_Glom::on_menu_file_save_as_example()
   m_ui_save_extra_title.clear();
   m_ui_save_extra_message.clear();
   m_ui_save_extra_newdb_title.clear();
-  m_ui_save_extra_newdb_hosting_mode = Document::DEFAULT_HOSTED;
+  m_ui_save_extra_newdb_hosting_mode = Document::HOSTING_MODE_DEFAULT;
 
   Glib::ustring file_uri = ui_file_select_save(file_uriOld); //Also asks for overwrite confirmation.
   if(!file_uri.empty())

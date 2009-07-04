@@ -1,3 +1,28 @@
+2009-07-04  Murray Cumming  <murrayc@murrayc.com>
+
+	Remove ifdefs from libglom to allow parallel install of full and 
+	client-only versions.
+
+	* glom/libglom/connectionpool_backends/postgres.h:
+	* glom/libglom/connectionpool_backends/postgres_central.h:
+	* glom/libglom/connectionpool_backends/sqlite.h:
+	* glom/libglom/document/document.[h|cc]: 
+	* glom/libglom/test_connectionpool.cc: Remove ifdefs that remove 
+	PostgreSQL or Sqlite API so that libglom always offers all features and 
+	always has the same ABI (ignoring no-exceptions/no-vfuncs 
+	alternative-glibmm-api versions). This will allow us to parallel install 
+	the full and client-only versions.
+
+	* glom/libglom/libglom_config.h.in: Move GLOM_ENABLE_POSTGRESQL/SQLITE 
+	config.h.in because we now only use it in the application, not in libglom.
+	* glom/application.cc:
+	* glom/dialog_connection.cc:
+	* glom/frame_glom.cc:
+	* glom/utility_widgets/filechooserdialog_saveextras.cc:
+	* glom/utility_widgets/filechooserdialog_saveextras.h:
+	Include config.h to get these 
+	definitions.
+
 2009-07-03  Murray Cumming  <murrayc@murrayc.com>
 
 	Allow parallel installs of libglom major versions.

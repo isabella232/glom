@@ -24,11 +24,7 @@
 #include <libgdamm.h>
 #include <libglom/connectionpool_backends/backend.h>
 
-#include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY, GLOM_ENABLE_SQLITE
-
-#ifndef GLOM_ENABLE_SQLITE
-# error The Glom <sqlite.h> backend has been included even though sqlite support is disabled
-#endif
+#include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY
 
 namespace Glom
 {

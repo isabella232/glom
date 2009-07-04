@@ -21,6 +21,8 @@
 #include <libgdamm/init.h>
 #include <libglom/connectionpool.h>
 
+#define GLOM_ENABLE_POSTGRESQL
+
 #ifdef GLOM_ENABLE_POSTGRESQL
 #include <libglom/connectionpool_backends/postgres_central.h>
 #else

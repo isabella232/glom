@@ -238,8 +238,7 @@ private:
 
 
 Document::Document()
-:
-  m_hosting_mode(DEFAULT_HOSTED),
+: m_hosting_mode(HOSTING_MODE_DEFAULT),
   m_network_shared(false),
   m_connection_port(0),
   m_connection_try_other_ports(false),
@@ -327,20 +326,15 @@ std::string Document::get_connection_self_hosted_directory_uri() const
     {
       switch(m_hosting_mode)
       {
-#ifdef GLOM_ENABLE_POSTGRESQL
       case HOSTING_MODE_POSTGRES_SELF:
         datadir = parent->get_child("glom_postgres_data");
         break;
       case HOSTING_MODE_POSTGRES_CENTRAL:
         datadir = parent;
         break;
-#endif //GLOM_ENABLE_POSTGRESQL
-
-#ifdef GLOM_ENABLE_SQLITE
       case HOSTING_MODE_SQLITE:
         datadir = parent;
         break;
-#endif //GLOM_ENABLE_SQLITE
       default:
         g_assert_not_reached();
         break;
@@ -2390,32 +2384,24 @@ bool Document::load_after(int& failure_code)
 
         const Glib::ustring attr_mode = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE);
 
-        HostingMode mode = DEFAULT_HOSTED;
+        HostingMode mode = HOSTING_MODE_DEFAULT;
 
         if(attr_mode.empty())
         {
-#ifdef GLOM_ENABLE_POSTGRESQL
           // If no hosting mode is set, then try the self_hosted flag which
           // was used before sqlite support was implemented.
           const bool self_hosted = get_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SELF_HOSTED);
           mode = self_hosted ? HOSTING_MODE_POSTGRES_SELF : HOSTING_MODE_POSTGRES_CENTRAL;
-#endif //GLOM_ENABLE_POSTGRESQL
         }
         else
         {
-#ifdef GLOM_ENABLE_POSTGRESQL
           if(attr_mode == GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_CENTRAL)
             mode = HOSTING_MODE_POSTGRES_CENTRAL;
           else if(attr_mode == GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_SELF)
             mode = HOSTING_MODE_POSTGRES_SELF;
-          else
-#endif //GLOM_ENABLE_POSTGRESQL
-
-#ifdef GLOM_ENABLE_SQLITE
-          if(attr_mode == GLOM_ATTRIBUTE_CONNECTION_HOSTING_SQLITE)
+          else if(attr_mode == GLOM_ATTRIBUTE_CONNECTION_HOSTING_SQLITE)
             mode = HOSTING_MODE_SQLITE;
           else
-#endif //GLOM_ENABLE_SQLITE
 	  {
             std::cerr << "Document::load_after(): Hosting mode " << attr_mode << " is not supported" << std::endl;
             return false; //TODO: Provide more information so the application (or Bakery) can say exactly why loading failed.
@@ -2423,13 +2409,11 @@ bool Document::load_after(int& failure_code)
         }
 
 #ifdef GLOM_ENABLE_CLIENT_ONLY
-#ifdef GLOM_ENABLE_POSTGRESQL
         if(mode == HOSTING_MODE_POSTGRES_SELF) //TODO: Define these enums always and show a dialog saying that the feature is not enabled.
         {
           std::cerr << "Document::load_after(): Loading failed because the document needs to be self-hosted, but self-hosting is not supported in client only mode" << std::endl;
           return false; //TODO: Provide more information so the application (or Bakery) can say exactly why loading failed.
         }
-#endif //GLOM_ENABLE_POSTGRESQL
 #endif
         m_hosting_mode = mode;
       }
@@ -3296,20 +3280,15 @@ bool Document::save_before()
 
     switch(m_hosting_mode)
     {
-#ifdef GLOM_ENABLE_POSTGRESQL
     case HOSTING_MODE_POSTGRES_CENTRAL:
       set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_CENTRAL);
       break;
     case HOSTING_MODE_POSTGRES_SELF:
       set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_SELF);
       break;
-#endif //GLOM_ENABLE_POSTGRESQL
-
-#ifdef GLOM_ENABLE_SQLITE
     case HOSTING_MODE_SQLITE:
       set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE, GLOM_ATTRIBUTE_CONNECTION_HOSTING_SQLITE);
       break;
-#endif
     default:
       g_assert_not_reached();
       break;
