@@ -1,4 +1,19 @@
-2009-07-04  Murray Cumming  <murrayc@murrayc-x61>
+2009-07-04  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix loading of the versioned python module.
+
+	* configure.ac:
+	* glom/Makefile.am:
+	* glom/python_embed/Makefile.am:
+	* glom/python_embed/glom_python.cc:
+	* glom/python_embed/python_module/Makefile.am:
+	* glom/python_embed/python_module/py_glom_module.cc:
+	* glom/python_embed/python_module/py_glom_module.h: Use glom_1_12 
+	instead of glom-1.12 because - and . are not valid in python module 
+	names. I wish I knew of any standard way to do parallel install of 
+	different versions of python modules.
+
+2009-07-04  Murray Cumming  <murrayc@murrayc.com>
 
 	libglom: Remove use of GLOM_ENABLE_MAEMO because it is about UI.
 

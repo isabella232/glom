@@ -22,6 +22,11 @@ AM_SANITY_CHECK
 GLOM_ABI_VERSION=1.12
 AC_SUBST([GLOM_ABI_VERSION])
 
+#Python modules can't be called glom-1.x, so we use underlines.
+#There might be a better way to do this, but I can't find any example of it. murrayc.
+GLOM_ABI_VERSION_UNDERLINED=1_12
+AC_SUBST([GLOM_ABI_VERSION_UNDERLINED])
+
 # libgettext-po changed its API, changing the error handler struct from po_error_handler to po_xerror_handler:
 AC_CHECK_MEMBER([struct po_xerror_handler.xerror], [have_gettext_po_xerror="yes"], [have_gettext_po_xerror="no"], [#include <gettext-po.h>])
 if test "$have_gettext_po_xerror" = "yes"; then

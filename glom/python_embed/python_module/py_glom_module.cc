@@ -33,7 +33,7 @@ static PyMethodDef pyglom_methods[] = {
 };
 
 PyMODINIT_FUNC
-initglom(void) 
+initglom_1_12(void) 
 {
   PyObject* m;
 
@@ -49,7 +49,7 @@ initglom(void)
     return;
 
 
-  m = Py_InitModule3((char*)"glom-" GLOM_ABI_VERSION, pyglom_methods,
+  m = Py_InitModule3((char*)"glom_" GLOM_ABI_VERSION_UNDERLINED, pyglom_methods,
                       (char*)"Python module for Glom caluclated fields.");
 
 

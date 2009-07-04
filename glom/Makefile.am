@@ -27,7 +27,8 @@ AM_CPPFLAGS = -I@top_srcdir@/ -I@top_srcdir@/glom $(GLOM_CFLAGS) $(GLOM_WARNING_
            -DGLOM_EXAMPLES_DIR=\""$(glom_examples_dir)"\" \
            -DGLOM_EXAMPLES_DIR_ALTERNATIVE=\""$(glom_examples_dir_alternative)"\" \
            -DGLOM_ICON_DIR=\""$(glom_icon_dir)"\" \
-           -DGLOM_ABI_VERSION=\""$(GLOM_ABI_VERSION)\""
+           -DGLOM_ABI_VERSION=\""$(GLOM_ABI_VERSION)\"" \
+           -DGLOM_ABI_VERSION_UNDERLINED=\""$(GLOM_ABI_VERSION_UNDERLINED)\""
 
 glom_SOURCES = main.cc \
                application.cc application.h \
