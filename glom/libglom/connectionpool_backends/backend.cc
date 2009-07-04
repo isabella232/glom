@@ -189,7 +189,6 @@ bool Backend::query_execute(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
 #endif
 }
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 bool Backend::add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const sharedptr<const Field>& field, std::auto_ptr<Glib::Error>& error)
 {
   Glib::RefPtr<Gnome::Gda::ServerProvider> provider = connection->get_provider();
@@ -293,7 +292,6 @@ bool Backend::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connect
 
   return true;
 }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 } // namespace ConnectionPoolBackends
 

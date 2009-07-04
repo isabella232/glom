@@ -91,7 +91,6 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
   return connection;
 }
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 bool Sqlite::create_database(const Glib::ustring& database_name, const Glib::ustring& /* username */, const Glib::ustring& /* password */, std::auto_ptr<Glib::Error>& error)
 {
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(m_database_directory_uri);
@@ -120,7 +119,6 @@ bool Sqlite::create_database(const Glib::ustring& database_name, const Glib::ust
 }
 #endif
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 
 bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, GdaMetaTableColumn* column, unsigned int i, std::auto_ptr<Glib::Error>& error)
 {
@@ -377,7 +375,6 @@ bool Sqlite::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
   return recreate_table(connection, table_name, type_vec_strings(), type_vec_const_fields(), fields_changed, error);
 }
 
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 } // namespace ConnectionPoolBackends
 

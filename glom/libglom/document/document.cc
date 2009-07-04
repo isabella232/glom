@@ -244,9 +244,7 @@ Document::Document()
   m_connection_try_other_ports(false),
   m_block_cache_update(false),
   m_block_modified_set(false),
-#ifndef GLOM_ENABLE_CLIENT_ONLY
   m_allow_auto_save(true), //Save all changes immediately, by default.
-#endif // !GLOM_ENABLE_CLIENT_ONLY
   m_is_example(false),
   m_opened_from_browse(false)
 {
@@ -1112,7 +1110,6 @@ void Document::set_child_text_node(xmlpp::Element* node, const Glib::ustring& ch
     text_child->set_content(text);
 }
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 void Document::set_node_attribute_value_as_bool(xmlpp::Element* node, const Glib::ustring& strAttributeName, bool value, bool value_default)
 {
   if((value == value_default) && !node->get_attribute(strAttributeName))
@@ -1135,7 +1132,6 @@ void Document::set_node_attribute_value_as_decimal(xmlpp::Element* node, const G
 
   set_node_attribute_value(node, strAttributeName, value_string);
 }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 void Document::set_node_attribute_value_as_decimal_double(xmlpp::Element* node, const Glib::ustring& strAttributeName, double value)
 {
@@ -1185,7 +1181,6 @@ double Document::get_node_attribute_value_as_decimal_double(const xmlpp::Element
   return result;
 }
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 void Document::set_node_attribute_value_as_float(xmlpp::Element* node, const Glib::ustring& strAttributeName, float value)
 {
     if(value == std::numeric_limits<float>::infinity() && !node->get_attribute(strAttributeName))
@@ -1199,7 +1194,6 @@ void Document::set_node_attribute_value_as_float(xmlpp::Element* node, const Gli
 
   set_node_attribute_value(node, strAttributeName, value_string);
 }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 float Document::get_node_attribute_value_as_float(const xmlpp::Element* node, const Glib::ustring& strAttributeName)
 {
@@ -1218,23 +1212,19 @@ float Document::get_node_attribute_value_as_float(const xmlpp::Element* node, co
   return result;
 }
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 void Document::set_node_attribute_value_as_value(xmlpp::Element* node, const Glib::ustring& strAttributeName, const Gnome::Gda::Value& value,  Field::glom_field_type field_type)
 {
   NumericFormat format_ignored; //Because we use ISO format.
   const Glib::ustring value_as_text = Field::to_file_format(value, field_type);
   set_node_attribute_value(node, strAttributeName, value_as_text);
 }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 void Document::set_node_text_child_as_value(xmlpp::Element* node, const Gnome::Gda::Value& value, Field::glom_field_type field_type)
 {
   const Glib::ustring value_as_text = Field::to_file_format(value, field_type);
   if(node)
     node->set_child_text(value_as_text);
 }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 Gnome::Gda::Value Document::get_node_attribute_value_as_value(const xmlpp::Element* node, const Glib::ustring& strAttributeName, Field::glom_field_type field_type)
 {
@@ -1685,12 +1675,7 @@ AppState::userlevels Document::get_userlevel(userLevelReason& reason) const
   }
   else if(m_file_uri.empty()) //If it has never been saved then this is a new default document, so the user created it, so the user can be a developer.
   {
-#ifdef GLOM_ENABLE_CLIENT_ONLY
-    // Client only mode doesn't support developer mode:
-    return AppState::USERLEVEL_OPERATOR;
-#else
     return AppState::USERLEVEL_DEVELOPER;
-#endif
   }
   else
   {
@@ -1710,7 +1695,6 @@ void Document::on_app_state_userlevel_changed(AppState::userlevels userlevel)
 
 bool Document::set_userlevel(AppState::userlevels userlevel)
 {
-#ifndef GLOM_ENABLE_CLIENT_ONLY
   //Prevent incorrect user level:
   if((userlevel == AppState::USERLEVEL_DEVELOPER) && get_read_only())
   {
@@ -1726,7 +1710,7 @@ bool Document::set_userlevel(AppState::userlevels userlevel)
     m_app_state.set_userlevel(AppState::USERLEVEL_OPERATOR);
     return false;
   }
-#endif
+
   {
     m_app_state.set_userlevel(userlevel);
     return true;
@@ -1788,7 +1772,6 @@ Glib::ustring Document::get_first_table() const
   return iter->second.m_info->get_name();
 }
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 void Document::set_allow_autosave(bool value)
 {
   if(m_allow_auto_save == value)
@@ -1861,7 +1844,6 @@ void Document::set_modified(bool value)
     }
   //}
 }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 void Document::load_after_layout_item_formatting(const xmlpp::Element* element, FieldFormatting& format, Field::glom_field_type field_type, const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
@@ -2408,13 +2390,12 @@ bool Document::load_after(int& failure_code)
 	  }
         }
 
-#ifdef GLOM_ENABLE_CLIENT_ONLY
         if(mode == HOSTING_MODE_POSTGRES_SELF) //TODO: Define these enums always and show a dialog saying that the feature is not enabled.
         {
           std::cerr << "Document::load_after(): Loading failed because the document needs to be self-hosted, but self-hosting is not supported in client only mode" << std::endl;
           return false; //TODO: Provide more information so the application (or Bakery) can say exactly why loading failed.
         }
-#endif
+
         m_hosting_mode = mode;
       }
 
@@ -2847,7 +2828,6 @@ bool Document::load_after(int& failure_code)
   return result;
 }
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, const FieldFormatting& format, Field::glom_field_type field_type)
 {
   //Numeric format:
@@ -3564,7 +3544,6 @@ bool Document::save_before()
 
   return GlomBakery::Document_XML::save_before();  
 }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 Glib::ustring Document::get_database_title() const
 {

@@ -208,7 +208,6 @@ public:
    */
   virtual bool set_network_shared(const SlotProgress& slot_progress, bool network_shared = true);
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   bool add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field);
 #else
@@ -232,7 +231,6 @@ public:
 #else
   bool change_columns(const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& fields, std::auto_ptr<Glib::Error>& error);
 #endif
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   /** Specify a callback that the ConnectionPool can call to get a pointer to the document.
    * This callback avoids Connection having to link to App_Glom,
@@ -261,7 +259,6 @@ private:
    */
   void invalidate_connection();
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
   /** Examine ports one by one, starting at @a starting_port, in increasing order,
    * and return the first one that is available.
    */
@@ -275,14 +272,11 @@ private:
   void avahi_start_publishing();
   void avahi_stop_publishing();
 #endif // !G_OS_WIN32
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 private:
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
   EpcPublisher* m_epc_publisher;
   Gtk::Dialog* m_dialog_epc_progress; //For progress while generating certificates.
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   std::auto_ptr<Backend> m_backend;
   Glib::RefPtr<Gnome::Gda::Connection> m_refGdaConnection;
@@ -295,9 +289,7 @@ private:
 private:
 
   static ConnectionPool* m_instance;
-#ifndef GLOM_ENABLE_CLIENT_ONLY
   SlotGetDocument m_slot_get_document;
-#endif
 
   type_void_slot m_epc_slot_begin, m_epc_slot_progress, m_epc_slot_done;
 };

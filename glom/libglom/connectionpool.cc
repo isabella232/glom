@@ -40,10 +40,8 @@
 
 #include <signal.h> //To catch segfaults
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 #ifndef G_OS_WIN32
 static EpcProtocol publish_protocol = EPC_PROTOCOL_HTTPS;
-#endif
 #endif
 
 // Uncomment to see debug messages
@@ -208,10 +206,8 @@ ConnectionPool* ConnectionPool::m_instance = 0;
 
 ConnectionPool::ConnectionPool()
 :
-#ifndef GLOM_ENABLE_CLIENT_ONLY
   m_epc_publisher(0),
   m_dialog_epc_progress(0),
-#endif // !GLOM_ENABLE_CLIENT_ONLY
   m_backend(0),
   m_sharedconnection_refcount(0),
   m_ready_to_connect(false),
@@ -407,7 +403,6 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
         if(!m_pFieldTypes)
           m_pFieldTypes = new FieldTypes(m_refGdaConnection);
           
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 #ifndef G_OS_WIN32
         //Let other clients discover this server via avahi:
         //TODO: Only advertize if we are the first to open the document,
@@ -418,7 +413,6 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
         if(document && document->get_network_shared())
           avahi_start_publishing(); //Stopped in the signal_finished handler.
 #endif // !G_OS_WIN32
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
         return connect(); //Call this method recursively. This time m_refGdaConnection exists.
@@ -436,7 +430,6 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
   return sharedptr<SharedConnection>(0);
 }
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
 void ConnectionPool::create_database(const Glib::ustring& database_name)
 #else
@@ -453,7 +446,6 @@ void ConnectionPool::create_database(const Glib::ustring& database_name, std::au
   if(error.get()) throw *error;
 #endif
 }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 void ConnectionPool::set_user(const Glib::ustring& value)
 {
@@ -544,11 +536,9 @@ void ConnectionPool::on_sharedconnection_finished()
 
     m_refGdaConnection.reset();
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 #ifndef G_OS_WIN32
     //TODO: this should only even be started if we are the first to open the .glom file:
     avahi_stop_publishing();
-#endif
 #endif
 
     //g_warning("ConnectionPool: connection closed");
@@ -682,7 +672,6 @@ bool ConnectionPool::set_network_shared(const SlotProgress& slot_progress, bool 
     return false;
 }
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
 bool ConnectionPool::add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field)
 #else
@@ -809,7 +798,6 @@ bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_
 
   return result;
 }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 ConnectionPool::InitErrors ConnectionPool::initialize(const SlotProgress& slot_progress, bool network_shared)
 {
@@ -819,7 +807,6 @@ ConnectionPool::InitErrors ConnectionPool::initialize(const SlotProgress& slot_p
     return Backend::INITERROR_OTHER;
 }
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 Document* ConnectionPool::get_document()
 {
   if(!m_slot_get_document)
@@ -830,9 +817,7 @@ Document* ConnectionPool::get_document()
 
   return m_slot_get_document();
 }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 #ifndef G_OS_WIN32
 //static
 EpcContents* ConnectionPool::on_publisher_document_requested(EpcPublisher* /* publisher */, const gchar* /* key */, gpointer user_data)
@@ -1001,8 +986,6 @@ void ConnectionPool::set_get_document_func(const SlotGetDocument& slot)
 {
   m_slot_get_document = slot;
 }
-
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 
 } //namespace Glom

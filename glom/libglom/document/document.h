@@ -56,9 +56,7 @@ public:
   Document();
   virtual ~Document();
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void set_modified(bool value = true);
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   virtual void set_file_uri(const Glib::ustring& file_uri, bool bEnforceFileExtension = false);
 
@@ -75,13 +73,11 @@ public:
   void set_opened_from_browse(bool val = true);
   bool get_opened_from_browse() const;
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
   /** The document usually saves itself when you call set_modified().
    * Pass false to this function to prevent that temporarily.
    * The document will be saved, if necessary, after you call this function with true.
    */
   void set_allow_autosave(bool value = true);
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   bool get_is_example_file() const;
   void set_is_example_file(bool value = true);
@@ -101,12 +97,8 @@ public:
   enum HostingMode
   {
     HOSTING_MODE_POSTGRES_CENTRAL, /*!< The database is hosted on an external postgresql server. */
-    
-    //Only enabled if GLOM_ENABLE_CLIENT_ONLY is not defined:
     HOSTING_MODE_POSTGRES_SELF, /*!< A new postgres database process is spawned that hosts the data. */
-
     HOSTING_MODE_SQLITE, /*!< A sqlite database file is used. */
-
     HOSTING_MODE_DEFAULT = HOSTING_MODE_POSTGRES_SELF /*!- Arbitrary default. */
   };
 
@@ -411,10 +403,8 @@ protected:
   //TODO: Remove this:
   friend class ReportBuilder;
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
   ///If value is equal to the default then no attribute will be set, to save text space in the XML file.
   static void set_node_attribute_value_as_decimal(xmlpp::Element* node, const Glib::ustring& strAttributeName, guint value, guint value_default = 0);
-#endif // !GLOM_ENABLE_CLIENT_ONLY
   
   // This is required by the report builder, so it cannot be disabled
   // in client only mode
@@ -439,7 +429,6 @@ public:
 private:
   //Overrides:
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual bool save_before();
   void save_before_layout_group(xmlpp::Element* node, const sharedptr<const LayoutGroup>& group, bool with_print_layout_positions = false);
   void save_before_sort_by(xmlpp::Element* node, const LayoutItem_GroupBy::type_list_sort_fields& list_fields);
@@ -451,7 +440,6 @@ private:
   void save_before_print_layout_position(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem>& item);
 
   void save_changes();
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   virtual bool load_after(int& failure_code);
   void load_after_layout_group(const xmlpp::Element* node, const Glib::ustring& table_name, const sharedptr<LayoutGroup>& group, bool with_print_layout_positions = false);
@@ -474,12 +462,11 @@ private:
   static double get_node_attribute_value_as_decimal_double(const xmlpp::Element* node, const Glib::ustring& strAttributeName);
   static float get_node_attribute_value_as_float(const xmlpp::Element* node, const Glib::ustring& strAttributeName);
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
   static void set_node_attribute_value_as_bool(xmlpp::Element* node, const Glib::ustring& strAttributeName, bool value = true, bool value_default = false);
   static void set_node_attribute_value_as_float( xmlpp::Element* node, const Glib::ustring& strAttributeName, float value );
   static void set_node_attribute_value_as_value(xmlpp::Element* node, const Glib::ustring& strAttributeName, const Gnome::Gda::Value& value, Field::glom_field_type field_type);
   static void set_node_text_child_as_value(xmlpp::Element* node, const Gnome::Gda::Value& value, Field::glom_field_type field_type);
-#endif // !GLOM_ENABLE_CLIENT_ONLY
+
   static Gnome::Gda::Value get_node_attribute_value_as_value(const xmlpp::Element* node, const Glib::ustring& strAttributeName, Field::glom_field_type field_type);
   static Gnome::Gda::Value get_node_text_child_as_value(const xmlpp::Element* node, Field::glom_field_type field_type);
 
@@ -596,9 +583,7 @@ private:
 
   bool m_block_cache_update; //For efficiency.
   bool m_block_modified_set;
-#ifndef GLOM_ENABLE_CLIENT_ONLY
   bool m_allow_auto_save;
-#endif // !GLOM_ENABLE_CLIENT_ONLY
   bool m_is_example;
   guint m_document_format_version;
 

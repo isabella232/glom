@@ -158,12 +158,10 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::connect(const Glib::
   return connection;
 }
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 bool PostgresCentralHosted::create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error)
 {
   return attempt_create_database(database_name, get_host(), port_as_string(m_port), username, password, error);
 }
-#endif //GLOM_ENABLE_CLIENT_ONLY
 
 }
 

@@ -158,7 +158,6 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
   return connection;
 }
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields, std::auto_ptr<Glib::Error>& error)
 {
   static const char* TRANSACTION_NAME = "glom_change_columns_transaction";
@@ -411,7 +410,7 @@ bool Postgres::attempt_create_database(const Glib::ustring& database_name, const
     error.reset(new Glib::Error(ex));
     return false;
   }
-#else
+#else //GLIBMM_EXCEPTIONS_ENABLED
   op->set_value_at("/SERVER_CNX_P/HOST", host, error);
   op->set_value_at("/SERVER_CNX_P/PORT", port, error);
   op->set_value_at("/SERVER_CNX_P/ADM_LOGIN", username, error);
@@ -421,11 +420,10 @@ bool Postgres::attempt_create_database(const Glib::ustring& database_name, const
     op->perform_create_database("PostgreSQL");
   else
     return false;
-#endif
+#endif //GLIBMM_EXCEPTIONS_ENABLED
 
   return true;
 }
-#endif
 
 bool Postgres::check_postgres_gda_client_is_available()
 {

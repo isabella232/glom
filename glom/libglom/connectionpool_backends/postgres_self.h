@@ -70,9 +70,7 @@ private:
 
   virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error);
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual bool create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error);
-#endif
 
 private:
   /** Examine ports one by one, starting at @a starting_port, in increasing
