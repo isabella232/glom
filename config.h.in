@@ -8,6 +8,12 @@
 /* Whether to enable support for SQLite databases. */
 #undef GLOM_ENABLE_SQLITE
 
+/* Whether to disable support for self-hosting and developer mode */
+#undef GLOM_ENABLE_CLIENT_ONLY
+
+/* Whether to enable support for the maemo platform */
+#undef GLOM_ENABLE_MAEMO
+
 /* always defined to indicate that i18n is enabled */
 #undef ENABLE_NLS
 

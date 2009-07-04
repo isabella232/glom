@@ -94,7 +94,7 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
     // Ignore error, sharedconnection is not used directly within this function
 #endif
 
-    result = m_Box_List.init_db_details(found_set, get_document()->get_active_layout_platform()); //TODO: Select the last selected record.
+    result = m_Box_List.init_db_details(found_set, get_active_layout_platform(get_document())); //TODO: Select the last selected record.
 
     //Show the previously-shown record, if there is one, if this is not a new found-set (via a new where_clause)
     //so that returning to this table will return the user to the same record:
@@ -133,7 +133,7 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
         }
       }
 
-      m_Box_Details.init_db_details(found_set, get_document()->get_active_layout_platform(), primary_key_for_details);
+      m_Box_Details.init_db_details(found_set, get_active_layout_platform(get_document()), primary_key_for_details);
     }
     else
       std::cerr << "Notebook_Data::init_db_details(): document is NULL" << std::endl;

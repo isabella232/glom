@@ -116,6 +116,10 @@ public:
 
   bool insert_example_data(const Glib::ustring& table_name) const;
 
+  //TODO: This is not a very good place for this function.
+  /// Get the active layout platform for the document, or get a suitable default.
+  static Glib::ustring get_active_layout_platform(Document* document);
+
   typedef std::vector< sharedptr<LayoutItem_Field> > type_vecLayoutFields;
   typedef std::vector< sharedptr<const LayoutItem_Field> > type_vecConstLayoutFields;
 

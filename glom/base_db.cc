@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY
+#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 #include "base_db.h"
 #include "application.h" //App_Glom.
@@ -3523,6 +3523,23 @@ bool Base_DB::disable_user(const Glib::ustring& user)
   }
 
   return true;
+}
+
+Glib::ustring Base_DB::get_active_layout_platform(Document* document)
+{
+  Glib::ustring result;
+  if(document)
+    result = document->get_active_layout_platform();
+
+  if(result.empty())
+  {
+    //Make Glom use the special "maemo" layouts if they exist.
+    #ifdef GLOM_ENABLE_MAEMO
+    return "maemo"
+    #endif
+  }
+
+  return result;
 }
 
 

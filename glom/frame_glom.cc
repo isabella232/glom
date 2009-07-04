@@ -429,7 +429,7 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
     case(MODE_Find):
     {
       strMode = _("Find");
-      m_Notebook_Find.init_db_details(m_table_name, get_document()->get_active_layout_platform());
+      m_Notebook_Find.init_db_details(m_table_name, get_active_layout_platform(get_document()));
       set_mode_widget(m_Notebook_Find);
       break;
     }
@@ -568,7 +568,7 @@ void Frame_Glom::on_menu_file_export()
   if(!document)
     return;
 
-  Document::type_list_layout_groups mapGroupSequence = document->get_data_layout_groups_plus_new_fields("details", m_table_name, document->get_active_layout_platform());
+  Document::type_list_layout_groups mapGroupSequence = document->get_data_layout_groups_plus_new_fields("details", m_table_name, get_active_layout_platform(document));
 
   Gtk::Window* pWindowApp = get_app_window();
   g_assert(pWindowApp);

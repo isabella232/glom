@@ -5,10 +5,4 @@
 /* "definition of GLOM_DTD_INSTALL_DIR" */
 #undef GLOM_DTD_INSTALL_DIR
 
-/* Whether to disable support for self-hosting and developer mode */
-#undef GLOM_ENABLE_CLIENT_ONLY
-
-/* Whether to enable support for the maemo platform */
-#undef GLOM_ENABLE_MAEMO
-
 #endif /* GLOM_LIBGLOM_CONFIG_H */

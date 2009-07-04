@@ -1,5 +1,31 @@
 2009-07-04  Murray Cumming  <murrayc@murrayc-x61>
 
+	libglom: Remove use of GLOM_ENABLE_MAEMO because it is about UI.
+
+	* glom/libglom/utils.cc:
+	* glom/libglom/connectionpool.cc: Remove use of GLOM_ENABLE_MAEMO so 
+	because there should be no UI-specific login in libglom.
+	* glom/libglom/document/document.[h|cc]: Remove 
+	get_active_layout_platform() because we no longer use GLOM_ENABLE_MAEMO.
+	* glom/base_db.[h|cc]: Add a get_active_layout_platform(document) 
+	here instead.
+	* glom/libglom/libglom_config.h.in: Moved GLOM_ENABLE_MAEMO to 
+	config.h.in because it is now only used in the app, not in libglom.
+
+	* glom/base_db_table_data.cc:
+	* glom/frame_glom.cc:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/notebook_data.cc:
+	* glom/relationships_overview/dialog_relationships_overview.cc:
+	* glom/utility_widgets/adddel/adddel.cc:
+	* glom/utility_widgets/datawidget.cc:
+	* glom/utility_widgets/dialog_choose_id.cc:
+	* glom/utils_ui.h:
+	* glom/xsl_utils.cc: Adapted, using config.h instead of libglom_config.h
+
+2009-07-04  Murray Cumming  <murrayc@murrayc-x61>
+
 	libglom: Always enable developer-mode (!client-only) API.
  
 	* glom/libglom/*.[h|cc]: Remove use of ENABLE_CLIENT_ONLY ifdefs, 

@@ -18,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "config.h"
 #include <glom/mode_data/box_data_details.h>
 #include <glom/frame_glom.h> //For show_ok_dialog().
 #include <libglom/data_structure/field.h>

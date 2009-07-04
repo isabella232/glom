@@ -21,6 +21,7 @@
 #ifndef GLOM_UTILS_UI_H
 #define GLOM_UTILS_UI_H
 
+#include "config.h"
 #include <libglom/data_structure/field.h>
 #include <libglom/data_structure/numeric_format.h>
 

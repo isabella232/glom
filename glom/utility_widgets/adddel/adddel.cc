@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <libglom/libglom_config.h> // For GLOM_ENABLE_MAEMO
+#include "config.h" // For GLOM_ENABLE_MAEMO
 
 #include <glom/utility_widgets/adddel/adddel.h>
 #include <algorithm> //For std::find.

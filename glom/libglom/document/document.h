@@ -382,8 +382,6 @@ public:
   void emit_userlevel_changed();
 #endif //SWIG
 
-  static Glib::ustring get_default_layout_platform();
-
   /** This is transitory information, not saved to disk.
    */
   Glib::ustring get_active_layout_platform() const;

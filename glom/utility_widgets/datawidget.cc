@@ -18,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "config.h"
 #include "datawidget.h"
 #include "entryglom.h"
 #include "checkglom.h"
@@ -887,7 +888,7 @@ bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)
     else
       g_warning("get_layout_item() was not a LayoutItem_Field");
 
-    dialog->init_db_details(related_table_name, get_document()->get_active_layout_platform());
+    dialog->init_db_details(related_table_name, Base_DB::get_active_layout_platform(get_document()));
 
 
     const int response = dialog->run();

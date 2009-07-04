@@ -1722,22 +1722,9 @@ void Document::emit_userlevel_changed()
   m_signal_userlevel_changed.emit(m_app_state.get_userlevel());
 }
 
-Glib::ustring Document::get_default_layout_platform()
-{
-  //Make Glom use the special "maemo" layouts if they exist.
-  #ifdef GLOM_ENABLE_MAEMO
-  return "maemo"
-  #else
-  return Glib::ustring();
-  #endif
-}
-
 Glib::ustring Document::get_active_layout_platform() const
 {
-  if(m_active_layout_platform.empty())
-    return get_default_layout_platform();
-  else
-    return m_active_layout_platform;
+  return m_active_layout_platform;
 }
 
 void Document::set_active_layout_platform(const Glib::ustring& layout_platform)

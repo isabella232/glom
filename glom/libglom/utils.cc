@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <libglom/libglom_config.h> // For GLOM_ENABLE_MAEMO
+#include <libglom/libglom_config.h>
 
 #include <libglom/utils.h>
 #include <libglom/connectionpool.h>
@@ -28,10 +28,6 @@
 #include <glibmm/i18n.h>
 
 #include <giomm.h>
-
-#ifdef GLOM_ENABLE_MAEMO
-#include <hildonmm/note.h>
-#endif
 
 #include <string.h> // for strchr
 #include <sstream> //For stringstream

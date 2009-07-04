@@ -18,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "config.h"
 #include "dialog_relationships_overview.h"
 #include "glom/utility_widgets/canvas/canvas_line_movable.h"
 #include "glom/utility_widgets/canvas/canvas_text_movable.h"
