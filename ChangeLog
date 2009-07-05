@@ -1,5 +1,10 @@
 2009-07-05  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/application.cc: init_menus_file(): Initialize 
+	m_toggleaction_network_shared to avoid a crash.
+
+2009-07-05  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.cc:
 	* glom/bakery/app_withdoc_gtk.[h|cc]: Remove the toolbar widget because 
 	we hide it anyway.

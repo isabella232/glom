@@ -318,9 +318,10 @@ void App_Glom::init_menus_file()
   m_refFileActionGroup->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_import));
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
   m_toggleaction_network_shared = Gtk::ToggleAction::create("BakeryAction_Menu_File_Share", _("Shared On Network"));
   m_refFileActionGroup->add(m_toggleaction_network_shared);
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   m_connection_toggleaction_network_shared = 
     m_toggleaction_network_shared->signal_toggled().connect(
       sigc::mem_fun(*this, &App_Glom::on_menu_file_toggle_share) );
