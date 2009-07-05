@@ -1,5 +1,10 @@
 2009-07-05  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/dialog_existing_or_new.h: #include config.h to avoid a crash 
+	with the client-only build due to ABI code-size confusion.
+
+2009-07-05  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.cc: init_menus_file(): Initialize 
 	m_toggleaction_network_shared to avoid a crash.
 

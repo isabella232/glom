@@ -21,6 +21,7 @@
 #ifndef GLOM_DIALOG_EXISTING_OR_NEW_H
 #define GLOM_DIALOG_EXISTING_OR_NEW_H
 
+#include "config.h"
 #include <memory>
 #include <ctime> // for time_t
 #include <giomm/asyncresult.h>
