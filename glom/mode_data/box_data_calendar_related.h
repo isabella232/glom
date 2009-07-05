@@ -21,7 +21,7 @@
 #ifndef BOX_DATA_CALENDAR_RELATED_H
 #define BOX_DATA_CALENDAR_RELATED_H
 
-#include <libglom/libglom_config.h> // GLOM_ENABLE_CLIENT_ONLY
+#include "config.h" // GLOM_ENABLE_CLIENT_ONLY
 
 #include "box_data_portal.h"
 #include <libglom/data_structure/layout/layoutitem_calendarportal.h>

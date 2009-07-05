@@ -1,5 +1,9 @@
 2009-07-05  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/*.[h|cc]: Move some ifndefs around to fix the client-only build.
+
+2009-07-05  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/document/document.cc: load_after(): Remove old code 
 	to check for developer mode in client-only builds.
 

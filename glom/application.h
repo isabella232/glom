@@ -24,7 +24,7 @@
 #include <glom/bakery/app_withdoc_gtk.h>
 #include "frame_glom.h"
 
-#include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY
+#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 
 //Avoid including the header here:
@@ -105,6 +105,7 @@ private:
   bool offer_new_or_existing();
 
   void on_menu_help_contents();
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void existing_or_new_new();
 
@@ -195,6 +196,8 @@ private:
   Glib::ustring m_ui_save_extra_newdb_title;
 
   Document::HostingMode m_ui_save_extra_newdb_hosting_mode;
+
+  Gtk::MessageDialog* m_avahi_progress_dialog;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   // This is set to the URI of an example file that is loaded to be able to
@@ -207,8 +210,6 @@ private:
   //so we can use them again when connecting directly to the database:
   Glib::ustring m_temp_username, m_temp_password;
 
-  Gtk::MessageDialog* m_avahi_progress_dialog;
-  
   bool m_show_sql_debug;
 };
 

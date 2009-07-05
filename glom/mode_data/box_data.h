@@ -21,7 +21,7 @@
 #ifndef BOX_DATA_H
 #define BOX_DATA_H
 
-#include <libglom/libglom_config.h> // GLOM_ENABLE_CLIENT_ONLY
+#include "config.h" // GLOM_ENABLE_CLIENT_ONLY
 
 #include <glom/box_withbuttons.h>
 #include <glom/base_db_table_data.h>

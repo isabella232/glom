@@ -21,7 +21,7 @@
 #ifndef BASE_DB_H
 #define BASE_DB_H
 
-#include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY
+#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 #include <gtkmm.h>
 

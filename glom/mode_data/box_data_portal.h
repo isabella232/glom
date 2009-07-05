@@ -21,7 +21,7 @@
 #ifndef BOX_DATA_PORTAL_H
 #define BOX_DATA_PORTAL_H
 
-#include <libglom/libglom_config.h> // GLOM_ENABLE_CLIENT_ONLY
+#include "config.h" // GLOM_ENABLE_CLIENT_ONLY
 
 #include "box_data_manyrecords.h"
 #include "../utility_widgets/layoutwidgetbase.h"

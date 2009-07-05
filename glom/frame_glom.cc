@@ -102,11 +102,11 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_pDialog_Relationships(0),
   m_dialog_addrelatedtable(0),
   m_dialog_relationships_overview(0),
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-  m_pDialogConnection(0),
   m_dialog_progess_connection_initialize(0),
+#endif // !GLOM_ENABLE_CLIENT_ONLY
   m_dialog_progess_connection_startup(0),
-  m_dialog_progess_connection_cleanup(0)
+  m_dialog_progess_connection_cleanup(0),
+  m_pDialogConnection(0)
 {
   //Load widgets from glade file:
   builder->get_widget("label_table_name", m_pLabel_Table);
@@ -182,11 +182,6 @@ Frame_Glom::~Frame_Glom()
     m_pDialogConnection = 0;
   }
   
-  if(m_dialog_progess_connection_initialize)
-  {
-    delete m_dialog_progess_connection_initialize;
-    m_dialog_progess_connection_initialize = 0;
-  }
   
   if(m_dialog_progess_connection_startup)
   {
@@ -201,6 +196,12 @@ Frame_Glom::~Frame_Glom()
   }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+  if(m_dialog_progess_connection_initialize)
+  {
+    delete m_dialog_progess_connection_initialize;
+    m_dialog_progess_connection_initialize = 0;
+  }
+
   if(m_pBox_Reports)
     remove_view(m_pBox_Reports);
 
@@ -832,7 +833,6 @@ void Frame_Glom::on_menu_file_import()
     }
   }
 }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>& action)
 {
@@ -1039,6 +1039,7 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
     pApp->update_network_shared_ui();
   }
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 void Frame_Glom::on_menu_file_print()
 {
@@ -1914,6 +1915,7 @@ namespace
   }
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void Frame_Glom::on_connection_initialize_progress()
 {
   if(!m_dialog_progess_connection_initialize)
@@ -1921,7 +1923,7 @@ void Frame_Glom::on_connection_initialize_progress()
         
   m_dialog_progess_connection_initialize->pulse();
 }
-
+#endif //GLOM_ENABLE_CLIENT_ONLY
 
 void Frame_Glom::on_connection_startup_progress()
 {

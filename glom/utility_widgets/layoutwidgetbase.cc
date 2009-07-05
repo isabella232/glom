@@ -26,9 +26,9 @@ namespace Glom
 {
 
 LayoutWidgetBase::LayoutWidgetBase()
-: m_pLayoutItem(0),
+: m_pLayoutItem(0)
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_drag_in_progress(false)
+  , m_drag_in_progress(false)
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 {
 }

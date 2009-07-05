@@ -21,7 +21,7 @@
 #ifndef GLOM_UTILITYWIDGETS_FLOWTABLEWITHFIELDS_H
 #define GLOM_UTILITYWIDGETS_FLOWTABLEWITHFIELDS_H
 
-#include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY
+#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 #ifdef GLOM_ENABLE_CLIENT_ONLY
 #include <glom/utility_widgets/flowtable.h>

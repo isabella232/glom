@@ -21,7 +21,7 @@
 #ifndef FRAME_GLOM_H
 #define FRAME_GLOM_H
 
-#include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY
+#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 #include <gtkmm/frame.h>
 #include <gtkmm/toggleaction.h>
@@ -53,8 +53,9 @@ class Dialog_Layout_Report;
 class Window_PrintLayout_Edit;
 class Dialog_AddRelatedTable;
 class Dialog_RelationshipsOverview;
-class Dialog_ProgressCreating;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+
+class Dialog_ProgressCreating; //TODO: Rename this because it's not just about creating databases.
 
 class Frame_Glom :
   public PlaceHolder,
@@ -278,12 +279,13 @@ protected:
   Dialog_AddRelatedTable* m_dialog_addrelatedtable;
   Dialog_RelationshipsOverview* m_dialog_relationships_overview;
     
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-  Dialog_Connection* m_pDialogConnection;
   Dialog_ProgressCreating* m_dialog_progess_connection_initialize;
+#endif //GLOM_ENABLE_CLIENT_ONLY
+
   Dialog_ProgressCreating* m_dialog_progess_connection_startup;
   Dialog_ProgressCreating* m_dialog_progess_connection_cleanup;
+
+  Dialog_Connection* m_pDialogConnection;
 };
 
 } //namespace Glom

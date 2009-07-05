@@ -103,9 +103,8 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& bu
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_ui_save_extra_showextras(false),
   m_ui_save_extra_newdb_hosting_mode(Document::HOSTING_MODE_DEFAULT),
-
-#endif // !GLOM_ENABLE_CLIENT_ONLY
   m_avahi_progress_dialog(0),
+#endif // !GLOM_ENABLE_CLIENT_ONLY
   m_show_sql_debug(false)
 {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -140,8 +139,9 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& bu
   add_mime_type("application/x-glom"); //TODO: make this actually work - we need to register it properly.
 
   //Hide the toolbar because it doesn't contain anything useful for this app.
-  m_HandleBox_Toolbar.hide();
+  m_HandleBox_Toolbar.hide(); //TODO: Remove this from our fork of Bakery.
   
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   //Install UI hooks for this:
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   if(!connection_pool)
@@ -149,7 +149,8 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& bu
       sigc::mem_fun(*this, &App_Glom::on_connection_avahi_begin),
       sigc::mem_fun(*this, &App_Glom::on_connection_avahi_progress),
       sigc::mem_fun(*this, &App_Glom::on_connection_avahi_done) );     
-  
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+
   global_application = this;
 }
 
@@ -161,15 +162,16 @@ App_Glom::~App_Glom()
     m_pFrame->remove_view(m_window_translations);
     delete m_window_translations;
   }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
   if(m_avahi_progress_dialog)
   {
     delete m_avahi_progress_dialog;
     m_avahi_progress_dialog = 0;
   }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void App_Glom::on_connection_avahi_begin()
 {
   //Create the dialog:
@@ -201,6 +203,7 @@ void App_Glom::on_connection_avahi_done()
     m_avahi_progress_dialog = 0;
   }
 }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 bool App_Glom::init(const Glib::ustring& document_uri)
 {
@@ -328,12 +331,14 @@ void App_Glom::init_menus_file()
   m_refFileActionGroup->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_import));
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   m_toggleaction_network_shared = Gtk::ToggleAction::create("BakeryAction_Menu_File_Share", _("Shared On Network"));
   m_refFileActionGroup->add(m_toggleaction_network_shared);
   m_connection_toggleaction_network_shared = 
     m_toggleaction_network_shared->signal_toggled().connect(
       sigc::mem_fun(*this, &App_Glom::on_menu_file_toggle_share) );
   m_listDeveloperActions.push_back(m_toggleaction_network_shared);
+#endif //!GLOM_ENABLE_CLIENT_ONLY
 
   m_refFileActionGroup->add(Gtk::Action::create("GlomAction_Menu_File_Print", Gtk::Stock::PRINT));
   m_refFileActionGroup->add(Gtk::Action::create("GlomAction_File_Print", _("_Standard")),
@@ -614,6 +619,7 @@ void App_Glom::init_menus()
   fill_menu_tables();
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void App_Glom::on_menu_file_toggle_share()
 {
   if(!m_pFrame)
@@ -622,7 +628,6 @@ void App_Glom::on_menu_file_toggle_share()
   m_pFrame->on_menu_file_toggle_share(m_toggleaction_network_shared);
 }
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 void App_Glom::on_menu_userlevel_developer()
 {
   if(!m_pFrame)
@@ -797,12 +802,13 @@ void App_Glom::open_browsed_document(const EpcServiceInfo* server, const Glib::u
     if(document)
     {
       document->set_opened_from_browse();
+      document->set_userlevel(AppState::USERLEVEL_OPERATOR); //TODO: This should happen automatically.
 
       document->set_network_shared(true); //It is shared by the computer that we opened this from.
-      update_network_shared_ui();
 
-      document->set_userlevel(AppState::USERLEVEL_OPERATOR); //TODO: This should happen automatically.
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+      update_network_shared_ui(); //TODO: Maybe we should show this for client-only mode too.
+
       update_userlevel_ui();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
     }
@@ -1168,9 +1174,9 @@ bool App_Glom::on_document_load()
     //List the non-hidden tables in the menu:
     fill_menu_tables();
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
     update_network_shared_ui();
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
     pDocument->set_allow_autosave(true);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

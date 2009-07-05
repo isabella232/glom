@@ -31,7 +31,7 @@
 #include <vector>
 #include <map>
 
-#include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY
+#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 namespace Glom
 {

@@ -22,7 +22,7 @@
 #define GLOM_UTILITY_WIDGETS_FILECHOOSERDIALOG_SAVEEXTRAS_H
 
 #include "config.h" //For GLOM_ENABLE_SQLITE
-#include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY,
+#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY,
 
 #include <libglom/document/document.h>
 
