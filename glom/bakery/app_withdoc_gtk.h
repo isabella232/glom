@@ -133,12 +133,6 @@ protected:
   Gtk::VBox* m_pVBox;
   Gtk::VBox m_VBox_PlaceHolder;
 
-  //Gtk::MenuBar m_MenuBar;
-  //Gtk::Menu m_Menu_File, m_Menu_Edit, m_Menu_Help;
-
-  Gtk::HandleBox m_HandleBox_Toolbar;
-  //Gtk::Toolbar m_Toolbar;
-
   Gtk::Window* m_pAbout; //About box.
 
   //Menu stuff:

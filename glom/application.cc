@@ -137,9 +137,6 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& bu
   builder->get_widget_derived("vbox_frame", m_pFrame); //This one is derived. There's a lot happening here.
 
   add_mime_type("application/x-glom"); //TODO: make this actually work - we need to register it properly.
-
-  //Hide the toolbar because it doesn't contain anything useful for this app.
-  m_HandleBox_Toolbar.hide(); //TODO: Remove this from our fork of Bakery.
   
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Install UI hooks for this:
@@ -215,9 +212,6 @@ bool App_Glom::init(const Glib::ustring& document_uri)
 
   //m_pFrame->set_shadow_type(Gtk::SHADOW_IN);
 
-  //Hide the toolbar because it doesn't contain anything useful for this app.
-  //m_HandleBox_Toolbar.hide();
-
   if(document_uri.empty())
   {
     Document* pDocument = static_cast<Document*>(get_document());
@@ -261,14 +255,7 @@ void App_Glom::init_layout()
   m_pBoxTop->pack_start(*pMenuBar, Gtk::PACK_SHRINK);
 #endif
 
-  //Do not create the toolbar because it doesn't contain anything useful for this app.
-  //Gtk::Toolbar* pToolBar = static_cast<Gtk::Toolbar*>(m_refUIManager->get_widget("/Bakery_ToolBar"));
-  //m_HandleBox_Toolbar.add(*pToolBar);
-  //m_HandleBox_Toolbar.show();
-
   add_accel_group(m_refUIManager->get_accel_group());
-
-  //m_pBoxTop->pack_start(m_HandleBox_Toolbar, Gtk::PACK_SHRINK);
 
   //Add placeholder, to be used by add():
   //m_pBoxTop->pack_start(m_VBox_PlaceHolder);

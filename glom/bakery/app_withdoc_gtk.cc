@@ -125,18 +125,6 @@ void App_WithDoc_Gtk::init_layout()
   m_pVBox->pack_start(*pMenuBar, Gtk::PACK_SHRINK);
 #endif
 
-  Gtk::Toolbar* pToolBar = static_cast<Gtk::Toolbar*>(m_refUIManager->get_widget("/Bakery_ToolBar"));
-  if(pToolBar)
-  {
-#ifdef GLOM_ENABLE_MAEMO
-    add_toolbar(*pToolBar);
-#else
-    m_HandleBox_Toolbar.add(*pToolBar);
-    m_HandleBox_Toolbar.show();
-    m_pVBox->pack_start(m_HandleBox_Toolbar, Gtk::PACK_SHRINK);
-#endif
-  }
-
   add_accel_group(m_refUIManager->get_accel_group());
 
 
