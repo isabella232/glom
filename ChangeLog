@@ -1,3 +1,8 @@
+2009-07-05  Murray Cumming  <murrayc@murrayc-x61>
+
+	* glom/application.cc: update_network_shared_ui(): Un-ifndef this for 
+	client-only.
+
 2009-07-05  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/*.[h|cc]: Move some ifndefs around to fix the client-only build.

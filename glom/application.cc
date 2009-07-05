@@ -805,9 +805,9 @@ void App_Glom::open_browsed_document(const EpcServiceInfo* server, const Glib::u
       document->set_userlevel(AppState::USERLEVEL_OPERATOR); //TODO: This should happen automatically.
 
       document->set_network_shared(true); //It is shared by the computer that we opened this from.
+      update_network_shared_ui();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-      update_network_shared_ui(); //TODO: Maybe we should show this for client-only mode too.
 
       update_userlevel_ui();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
@@ -1174,8 +1174,9 @@ bool App_Glom::on_document_load()
     //List the non-hidden tables in the menu:
     fill_menu_tables();
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
     update_network_shared_ui();
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 
     pDocument->set_allow_autosave(true);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
@@ -1215,12 +1216,6 @@ void App_Glom::statusbar_clear()
 */
 
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-void App_Glom::on_userlevel_changed(AppState::userlevels /* userlevel */)
-{
-  update_userlevel_ui();
-}
-
 void App_Glom::update_network_shared_ui()
 {
   Document* document = dynamic_cast<Document*>(get_document());
@@ -1243,6 +1238,12 @@ void App_Glom::update_network_shared_ui()
   }
 
   m_connection_toggleaction_network_shared.unblock();
+}
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+void App_Glom::on_userlevel_changed(AppState::userlevels /* userlevel */)
+{
+  update_userlevel_ui();
 }
 
 void App_Glom::update_userlevel_ui()
