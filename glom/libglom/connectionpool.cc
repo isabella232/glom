@@ -382,7 +382,14 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
         //Allow get_meta_store_data() to succeed:
         //Hopefully this (and the update_meta_store_for_table() calls) is all we need.
         //std::cout << "DEBUG: Calling update_meta_store_data_types() ..." << std::endl;
-        m_refGdaConnection->update_meta_store_data_types();
+        try
+        {
+          m_refGdaConnection->update_meta_store_data_types();
+        }
+        catch(const Glib::Error& ex)
+        {
+          std::cerr << "ConnectionPool::connect(): update_meta_store_data_types() failed: " << ex.what() << std::endl;
+        }
         //std::cout << "DEBUG: ... update_meta_store_data_types() has finished." << std::endl;
 
         //std::cout << "DEBUG: Calling update_meta_store_table_names() ..." << std::endl;
@@ -394,7 +401,7 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
         }
         catch(const Glib::Error& ex)
         {
-          std::cerr << "update_meta_store_table_names() failed: " << ex.what() << std::endl;
+          std::cerr << "ConnectionPool::connect(): update_meta_store_table_names() failed: " << ex.what() << std::endl;
         }
         //std::cout << "DEBUG: ... update_meta_store_table_names() has finished." << std::endl;
 

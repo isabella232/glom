@@ -51,7 +51,7 @@
 #include <glibmm/i18n.h>
 //#include <libgnomeui/gnome-app-helper.h>
 
-
+//#include <libgdamm/metastore.h> //For MetaStoreError
 #include <sql-parser/gda-sql-parser.h> //For gda_sql_identifier_remove_quotes().
 
 #ifdef GLOM_ENABLE_MAEMO
@@ -432,8 +432,20 @@ Base_DB::type_vec_strings Base_DB::get_table_names_from_database(bool ignore_sys
   {
     Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
 
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model_tables;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_TABLES);
+    try
+    {
+      data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_TABLES);
+    }
+    catch(const Gnome::Gda::MetaStoreError& ex)
+    {
+      std::cerr << "Base_DB::get_table_names_from_database(): MetaStoreError: " << ex.what() << std::endl;
+    }
+    catch(const Glib::Error& ex)
+    {
+      std::cerr << "Base_DB::get_table_names_from_database(): Error: " << ex.what() << std::endl;
+    }
 #else
     std::auto_ptr<Glib::Error> error;
     Glib::RefPtr<Gnome::Gda::DataModel> data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_TABLES, error);
@@ -644,14 +656,21 @@ Base_DB::type_vec_fields Base_DB::get_fields_for_table_from_database(const Glib:
 
     Glib::RefPtr<Gnome::Gda::DataModel> data_model_fields;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-    if(true) //Already done in ConnectionPool::connect(): connection->update_meta_store())
+    try
     {
       data_model_fields = connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_FIELDS, holder_list);
     }
+    catch(const Gnome::Gda::MetaStoreError& ex)
+    {
+      std::cerr << "Base_DB::get_fields_for_table_from_database(): MetaStoreError: " << ex.what() << std::endl;
+    }
+    catch(const Glib::Error& ex)
+    {
+      std::cerr << "Base_DB::get_fields_for_table_from_database(): Error: " << ex.what() << std::endl;
+    }
 #else
     std::auto_ptr<Glib::Error> error;
-    if(true) //Already done in ConnectionPool::connect(): connection->update_meta_store(error))
-      data_model_fields = connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_FIELDS, holder_list, error);
+    data_model_fields = connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_FIELDS, holder_list, error);
 
     // Ignore error, data_model_fields presence is checked below
 #endif
