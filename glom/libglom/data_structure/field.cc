@@ -289,7 +289,10 @@ Glib::ustring Field::to_file_format(const Gnome::Gda::Value& value, glom_field_t
   }
   
   NumericFormat format_ignored; //Because we use ISO format.
-  return Conversions::get_text_for_gda_value(glom_type, value, std::locale() /* SQL uses the C locale */, format_ignored, true /* ISO standard */);
+  const Glib::ustring result = Conversions::get_text_for_gda_value(glom_type, value, std::locale() /* SQL uses the C locale */, format_ignored, true /* ISO standard */);
+  
+  //Escape " as "", as specified by the CSV RFC:
+  return Utils::string_replace(result, "\"", "\"\"");
 }
 
 namespace

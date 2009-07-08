@@ -134,14 +134,21 @@ Glib::ustring Utils::trim_whitespace(const Glib::ustring& text)
 
 Glib::ustring Utils::string_replace(const Glib::ustring& src, const Glib::ustring search_for, const Glib::ustring& replace_with)
 {
+  //std::cout << "debug: Utils::string_replace(): src=" << src << ", search_for=" << search_for << ", replace_with=" << replace_with << std::endl;
+
   std::string result = src;
 
   std::string::size_type pos = 0;
-  std::string::size_type len= search_for.size();
+  std::string::size_type len_search = search_for.size();
+  std::string::size_type len_replace = replace_with.size();
 
-  while((pos = result.find(search_for)) != std::string::npos)
+  std::string::size_type pos_after_prev = 0;
+  while((pos = result.find(search_for, pos_after_prev)) != std::string::npos)
   {
-   result.replace(pos, len, replace_with);
+    //std::cout << "  debug: before: result =" << result << ", pos_after_prev=pos_after_prev" << std::endl;
+    result.replace(pos, len_search, replace_with);
+    //std::cout << "  after: before: result = result" << std::endl;
+    pos_after_prev = pos + len_replace;
   }
 
   return result;

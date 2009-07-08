@@ -754,7 +754,22 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
               row_string += ",";
 
             //Output data in canonical SQL format, ignoring the user's locale, and ignoring the layout formatting:
-            row_string += layout_item->get_full_field_details()->to_file_format(value);
+            sharedptr<const Field> field = layout_item->get_full_field_details();
+            if(!field)
+            {
+              std::cerr << "Glom: Frame_Glom::export_data_to_stream(): A field was null." << std::endl;
+              return;
+            }
+
+            const Glib::ustring field_text = field->to_file_format(value);
+
+            if(layout_item->get_glom_type() == Field::TYPE_TEXT)
+            {
+              //The CSV RFC says text may be quoted and should be if it has newlines:
+              row_string += ("\"" + field_text + "\""); 
+            }
+            else
+              row_string += field_text;
 
             if(layout_item->get_glom_type() == Field::TYPE_IMAGE) //This is too much data.
             {
@@ -775,8 +790,7 @@ void Frame_Glom::on_menu_file_import()
 {
   if(m_table_name.empty())
   {
-    Gtk::MessageDialog dialog(*get_app_window(), "There is no table to import data into", false, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
-    dialog.run();
+    Utils::show_ok_dialog(_("No Table"), _("There is no table in to which data could be imported."), *get_app_window(), Gtk::MESSAGE_ERROR);
   }
   else
   {

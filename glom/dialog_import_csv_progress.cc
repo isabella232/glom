@@ -144,11 +144,11 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
     const sharedptr<Field>& field = m_data_source->get_field_for_column(i);
     if(field)
     {
-      // We always assume exported data is in postgres format, since
+      // We always assume exported data is in standard CSV format, since
       // we export it this way.
-      // TODO: Document what that format is.
+      const Glib::ustring str = m_data_source->get_data(m_current_row, i);
       bool success = false;
-      Gnome::Gda::Value value = field->from_file_format(m_data_source->get_data(m_current_row, i), success);
+      Gnome::Gda::Value value = field->from_file_format(str, success);
 
       if(success)
       {

@@ -1,3 +1,18 @@
+2009-07-08  Murray Cumming  <murrayc@murrayc.com>
+
+	Correct the export to use the CSV format as per the RFC "specification".
+
+	* glom/frame_glom.cc: export_data_to_stream(): For text fields, add 
+	" as per the CSV RFC.
+	* glom/libglom/data_structure/field.cc: to_file_format(): Escape 
+	" as "". Note that we do not try to escape newlines. This is per the 
+	CSV RFC.
+	* glom/libglom/utils.cc: string_replace(): In the loop, do not check 
+	what has already been processed, to avoid an infinite loop.
+
+	Ubuntu bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/394894
+	(elmergato)
+
 2009-07-07  Murray Cumming  <murrayc@murrayc.com>
 
 	Catch libgda meta-store exceptions.
