@@ -810,8 +810,16 @@ void Frame_Glom::on_menu_file_import()
     {
       file_chooser.hide();
 
+      //GtkBuilder can't find top-level objects (GtkAdjustments in this case),
+      //that one top-level object references.
+      //See http://bugzilla.gnome.org/show_bug.cgi?id=575714
+      //so we need to this silliness. murrayc.
+      std::list<Glib::ustring> builder_ids;
+      builder_ids.push_back("dialog_import_csv");
+      builder_ids.push_back("adjustment1");
+
       Dialog_Import_CSV* dialog = 0;
-      Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_import_csv");
+      Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), builder_ids);
       refXml->get_widget_derived("dialog_import_csv", dialog);
       add_view(dialog);
 
