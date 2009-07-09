@@ -33,7 +33,7 @@
 #include <gtkmm/combobox.h>
 #include <gtkmm/spinbutton.h>
 #include <gtkmm/builder.h>
-#include <libgdamm/datamodelimport.h>
+//#include <libgdamm/datamodelimport.h>
 
 
 namespace Glom
@@ -162,15 +162,17 @@ private:
 
   // We use the low-level Glib::IConv routines to progressively convert the
   // input data in an idle handler.
-  struct Parser {
+  class Parser
+  {
+  public:
+    Parser(const char* encoding): conv("UTF-8", encoding), input_position(0), line_number(0) {}
+    ~Parser() { idle_connection.disconnect(); }
+
     Glib::IConv conv;
     std::vector<char>::size_type input_position;
     std::string current_line;
     sigc::connection idle_connection;
     unsigned int line_number;
-
-    Parser(const char* encoding): conv("UTF-8", encoding), input_position(0), line_number(0) {}
-    ~Parser() { idle_connection.disconnect(); }
   };
 
   std::auto_ptr<Parser> m_parser;

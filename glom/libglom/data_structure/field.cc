@@ -265,6 +265,8 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
   return Glib::ustring();
 }
 
+#define GLOM_QUOTE_FOR_FILE_FORMAT "\""
+
 Glib::ustring Field::to_file_format(const Gnome::Gda::Value& value) const
 {
   return to_file_format(value, m_glom_type);
@@ -292,7 +294,7 @@ Glib::ustring Field::to_file_format(const Gnome::Gda::Value& value, glom_field_t
   const Glib::ustring result = Conversions::get_text_for_gda_value(glom_type, value, std::locale() /* SQL uses the C locale */, format_ignored, true /* ISO standard */);
   
   //Escape " as "", as specified by the CSV RFC:
-  return Utils::string_replace(result, "\"", "\"\"");
+  return Utils::string_replace(result, GLOM_QUOTE_FOR_FILE_FORMAT, GLOM_QUOTE_FOR_FILE_FORMAT GLOM_QUOTE_FOR_FILE_FORMAT);
 }
 
 namespace

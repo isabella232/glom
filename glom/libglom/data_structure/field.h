@@ -177,6 +177,7 @@ public:
 
   /** Get the canonical format for a file, for instance for 
    * a default value or for example data.
+   * This does not add quotes for text fields so the caller may need to do that.
    * Note that this does not do any extra escaping such as an XML file might need.
    */
   Glib::ustring to_file_format(const Gnome::Gda::Value& value) const;
@@ -184,6 +185,7 @@ public:
   static Glib::ustring to_file_format(const Gnome::Gda::Value& value, glom_field_type glom_type);
 
   /** Parse the value from the canonical file format. See to_file_format()
+   * This does note remove quotes from text values so the caller may need to do that.
    */
   Gnome::Gda::Value from_file_format(const Glib::ustring& str, bool& success) const;
 

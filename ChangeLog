@@ -1,3 +1,14 @@
+2009-07-09  Murray Cumming  <murrayc@murrayc.com>
+
+	Import: " is the only quote character, as per the CSV RFC.
+
+	* glom/dialog_import_csv.cc: advance_field(): Parse only " as 
+	start/end quotes, not ', as per the CSV RFC.
+
+	Part of Ubuntu bug 
+	https://bugs.launchpad.net/ubuntu/+source/glom/+bug/394894
+	(elmergato)
+
 2009-07-08  Murray Cumming  <murrayc@murrayc.com>
 
 	Correct the export to use the CSV format as per the RFC "specification".

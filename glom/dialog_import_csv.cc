@@ -38,45 +38,42 @@ namespace
 
 const gunichar DELIMITER = ',';
 
-
-Glib::ustring::const_iterator advance_field(const Glib::ustring::const_iterator& iter, const Glib::ustring::const_iterator& end, Glib::ustring& field)
+//Parse the field in a comma-separated line, returning the field including the quotes:
+static Glib::ustring::const_iterator advance_field(const Glib::ustring::const_iterator& iter, const Glib::ustring::const_iterator& end, Glib::ustring& field)
 {
-  Glib::ustring::const_iterator walk = iter;
-
-  gunichar quote_char = 0;
-  bool escaped = false;
+  bool inside_quotes = false;
+  const gunichar quote_char = (gunichar)'\"';
 
   field.clear();
 
-  for(; walk != end; ++ walk)
+  Glib::ustring::const_iterator walk;
+  for(walk = iter; walk != end; ++ walk)
   {
     gunichar c = *walk;
 
-    // Skip escape sequences
-    if(escaped)
+    // End of quoted string
+    if(inside_quotes && c == quote_char)
     {
-      field += c;
-      escaped = false;
+      inside_quotes = false;
       continue;
     }
-
-    // Escaped stuff in quoted strings:
-    if(quote_char && c == '\\')
-      escaped = true;
-    // End of quoted string
-    else if(quote_char && c == quote_char)
-      quote_char = 0;
     // Begin of quoted string.
-    else if(!quote_char && (c == '\'' || c == '\"'))
-      quote_char = c;
+    else if(!inside_quotes && (c == quote_char))
+    {
+      inside_quotes = true;
+      continue;
+    }
     // End of field:
-    else if(!quote_char && c == DELIMITER)
+    else if(!inside_quotes && c == DELIMITER)
+    {
       break;
+    }
 
     field += c; // Just so that we don't need to iterate through the field again, since there is no Glib::ustring::substr(iter, iter)
   }
 
   // TODO: Throw error if still inside a quoted string?
+  std::cout << "debug: field=" << field << std::endl;
   return walk;
 }
 
@@ -709,7 +706,9 @@ bool Dialog_Import_CSV::on_idle_parse()
 
 void Dialog_Import_CSV::handle_line(const Glib::ustring& line, guint line_number)
 {
-  if(line.empty()) return;
+  std::cout << "debug: handle_line=" << line << std::endl;
+  if(line.empty())
+   return;
 
   m_rows.push_back(std::vector<Glib::ustring>());
   std::vector<Glib::ustring>& row = m_rows.back();
@@ -787,7 +786,7 @@ void Dialog_Import_CSV::handle_line(const Glib::ustring& line, guint line_number
 
 void Dialog_Import_CSV::line_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
 {
-  int row = (*iter)[m_sample_columns.m_col_row];
+  const int row = (*iter)[m_sample_columns.m_col_row];
   Gtk::CellRendererText* renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
   if(!renderer_text)
     throw std::logic_error("CellRenderer is not a CellRendererText in line_data_func");
@@ -817,7 +816,7 @@ void Dialog_Import_CSV::field_data_func(Gtk::CellRenderer* renderer, const Gtk::
   else
   {
     // Convert to currently chosen field, if any, and back, too see how it
-    // looks like when imported
+    // looks like when imported:
     sharedptr<Field> field = m_fields[column_number];
     const Glib::ustring& orig_text = m_rows[row][column_number];
 

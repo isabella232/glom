@@ -28,7 +28,9 @@ namespace Glom
 {
 
 Dialog_Import_CSV_Progress::Dialog_Import_CSV_Progress(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
-: Gtk::Dialog(cobject), m_data_source(NULL), m_current_row(0)
+: Gtk::Dialog(cobject), 
+  m_data_source(0), 
+  m_current_row(0)
 {
   builder->get_widget("import_csv_progress_progress_bar", m_progress_bar);
   builder->get_widget("import_csv_progress_textview", m_text_view);
@@ -81,7 +83,7 @@ void Dialog_Import_CSV_Progress::clear()
   m_progress_connection.disconnect();
   m_ready_connection.disconnect();
 
-  m_data_source = NULL;
+  m_data_source = 0;
   m_current_row = 0;
 }
 
