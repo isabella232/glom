@@ -547,6 +547,7 @@ void Frame_Glom::on_menu_file_export()
 
   //Ask the user for the new file location, and to optionally modify the format:
   FileChooser_Export dialog;
+  dialog.set_transient_for(*get_app_window());
   dialog.set_do_overwrite_confirmation();
   dialog.set_export_layout(mapGroupSequence, m_table_name, get_document());
   const int response = dialog.run();
