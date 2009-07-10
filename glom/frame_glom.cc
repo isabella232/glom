@@ -66,7 +66,7 @@
 #include <hildonmm/note.h>
 #endif
 
-#include "filechooser_export.h"
+#include <glom/filechooser_export.h>
 #include <glom/glom_privs.h>
 #include <sstream> //For stringstream.
 #include <fstream>

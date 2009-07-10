@@ -25,6 +25,7 @@
 
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/cellrenderercombo.h>
+#include <glom/utils_ui.h>
 #include <glibmm/i18n.h>
 #include <cerrno>
 
@@ -372,10 +373,8 @@ void Dialog_Import_CSV::clear()
 
 void Dialog_Import_CSV::show_error_dialog(const Glib::ustring& primary, const Glib::ustring& secondary)
 {
-  Gtk::MessageDialog dialog(*this, primary, false, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
-  dialog.set_title(_("Error Importing CSV File"));
-  dialog.set_secondary_text(secondary);
-  dialog.run();
+  Utils::show_ok_dialog(_("Error Importing CSV File"),
+     secondary, *this, Gtk::MESSAGE_ERROR);
 }
 
 void Dialog_Import_CSV::encoding_data_func(const Gtk::TreeModel::iterator& iter, Gtk::CellRendererText& renderer)
