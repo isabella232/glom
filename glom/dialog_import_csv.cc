@@ -85,9 +85,7 @@ static Glib::ustring::const_iterator advance_field(const Glib::ustring::const_it
         {
           //This is "" so it's not an end quote. Just add one quote:
           field += c;
-          ++walk; //Skip the first "
-          if(walk != end)
-            ++walk; //Skip the second " because we added it here.
+          ++walk; //Skip the second ".
         }
         else
         {
