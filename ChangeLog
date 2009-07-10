@@ -1,5 +1,16 @@
 2009-07-10  Murray Cumming  <murrayc@murrayc.com>
 
+	Really save field changes again.
+	
+	* glom/libglom/document/document_glom.cc: set_table_fields():
+	Avoid the broken attempt at optimization, so that field changes are always 
+	saved, for instance when changing them via the Field Definition dialog.
+	Ubuntu Launchpad bug 
+	https://bugs.launchpad.net/ubuntu/+source/glom/+bug/394507
+	(elmergato)
+
+2009-07-10  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/dialog_import_csv.cc: advance_field(): Do not skip characters after 
 	the ".
 
