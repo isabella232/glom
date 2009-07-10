@@ -88,6 +88,10 @@ private:
   void encoding_error();
 
   bool on_idle_parse();
+  
+  /** Parse a row from a .cvs file. Note that this "line" might have newline 
+   * characters inside one field value, inside quotes.
+   */
   void handle_line(const Glib::ustring& line, unsigned int line_number);
 
   void line_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);

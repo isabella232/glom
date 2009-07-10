@@ -37,13 +37,12 @@ namespace
 {
 
 const gunichar DELIMITER = ',';
+const gunichar QUOTE = '\"';
 
 static bool next_char_is_quote(const Glib::ustring::const_iterator& iter, const Glib::ustring::const_iterator& end)
 {
   if(iter == end)
     return false;
-    
-  const gunichar quote_char = (gunichar)'\"';
   
   //Look at the next character to see if it's really "" (an escaped "):
   Glib::ustring::const_iterator iter_next = iter;
@@ -51,7 +50,7 @@ static bool next_char_is_quote(const Glib::ustring::const_iterator& iter, const 
   if(iter_next != end)
   {
     const gunichar c_next = *iter_next;
-    if(c_next == quote_char)
+    if(c_next == QUOTE)
     {
       return true;
     }
@@ -63,7 +62,6 @@ static bool next_char_is_quote(const Glib::ustring::const_iterator& iter, const 
 //Parse the field in a comma-separated line, returning the field including the quotes:
 static Glib::ustring::const_iterator advance_field(const Glib::ustring::const_iterator& iter, const Glib::ustring::const_iterator& end, Glib::ustring& field)
 {
-  const gunichar quote_char = (gunichar)'\"';
   bool inside_quotes = false;
   //bool string_finished = false; //Ignore anything after "something", such as "something"else,
 
@@ -80,7 +78,7 @@ static Glib::ustring::const_iterator advance_field(const Glib::ustring::const_it
     if(inside_quotes)
     {
       // End of quoted string?
-      if(c == quote_char)
+      if(c == QUOTE)
       {
         if(next_char_is_quote(walk, end))
         {
@@ -102,7 +100,7 @@ static Glib::ustring::const_iterator advance_field(const Glib::ustring::const_it
     else
     {
       // Start of quoted string:
-      if((c == quote_char))
+      if((c == QUOTE))
       {
         inside_quotes = true;
         continue;
@@ -657,7 +655,7 @@ void Dialog_Import_CSV::encoding_error()
 
 bool Dialog_Import_CSV::on_idle_parse()
 {
-  // The amount of bytes to process in one pass of the idle handler
+  // The amount of bytes to process in one pass of the idle handler:
   static const guint CONVERT_BUFFER_SIZE = 1024;
 
   const char* inbuffer = &m_raw[m_parser->input_position];
@@ -701,25 +699,67 @@ bool Dialog_Import_CSV::on_idle_parse()
   m_parser->input_position += (inbuf - inbuffer);
 
   // We now have outbuf - outbuffer bytes of valid UTF-8 in outbuffer.
-  const char* prev = outbuffer;
-  const char* pos;
-  const char to_find[] = { '\r', '\n', '\0' };
+  const char* prev_line_end = outbuffer;
+  const char* prev = prev_line_end;
 
-  while( (pos = std::find_first_of<const char*>(prev, outbuf, to_find, to_find + sizeof(to_find))) != outbuf)
+  //Identify the record rows in the .cvs file.
+  //We can't just search for newlines because they may be inside quotes too. 
+  //TODO: Use a regex instead, to more easily handle quotes?
+  bool in_quotes = false;
+  while(true)
   {
-    if(*pos == '\0')
+    //Note that, unlike std::string::find*, std::find* returns an iterator (char*), not a position.
+    //It returns outbuf if none is found.
+    const char newline_to_find[] = { '\r', '\n', '\0' };
+    const char* pos_newline = std::find_first_of<const char*>(prev, outbuf, newline_to_find, newline_to_find + sizeof(newline_to_find));
+    
+    const char quote_to_find[] = {(char)QUOTE};
+    const char* pos_quote = std::find_first_of<const char*>(prev, outbuf, quote_to_find, quote_to_find + sizeof(quote_to_find));
+    
+    //Examine the first character (quote or newline) that was found:
+    const char* pos = pos_newline;
+    if((pos_quote != outbuf) && pos_quote < pos)
+      pos = pos_quote;
+      
+    if(pos == outbuf)
+      break;
+    
+    char ch = *pos;   
+    
+    if(ch == '\0')
     {
-      // There is a nullbyte in the conversion. As normal text files don't
-      // contain nullbytes, this only occurs when converting for example a UTF-16
-      // file from ISO-8859-1 to UTF-8 (note that the UTF-16 file is valid ISO-8859-1,
+      // There is a null byte in the conversion. Because normal text files don't
+      // contain null bytes this only occurs when converting, for example, a UTF-16
+      // file from ISO-8859-1 to UTF-8 (note that the UTF-16 file is valid ISO-8859-1 - 
       // it just contains lots of nullbytes). We therefore produce an error here.
       encoding_error();
       return false;
     }
+    else if(in_quotes)
+    {
+      //Ignore newlines inside quotes.
+      
+      //End quote:
+      if(ch == (char)QUOTE)
+        in_quotes = false;
+        
+      prev = pos + 1;
+      continue;
+    }
     else
     {
-      m_parser->current_line.append(prev, pos - prev);
-      ++ m_parser->line_number;
+      //Start quote:
+      if(ch == (char)QUOTE)
+      {
+        in_quotes = true;
+        prev = pos + 1;
+        continue;
+      }
+    
+      //Found a newline (outside of quotes) that marks the end of the line:
+      m_parser->current_line.append(prev_line_end, pos - prev_line_end);
+      ++(m_parser->line_number);
+      
       if(!m_parser->current_line.empty())
         handle_line(m_parser->current_line, m_parser->line_number);
 
@@ -729,7 +769,13 @@ bool Dialog_Import_CSV::on_idle_parse()
       prev = pos + 1;
 
       // Skip DOS-style linebreak (\r\n)
-      if(*pos == '\r' && prev != outbuf && *prev == '\n') ++ prev;
+      if(ch == '\r' 
+         && prev != outbuf && *prev == '\n')
+      {
+         ++prev;
+      }
+      
+      prev_line_end = prev;
     }
   }
 
@@ -737,7 +783,8 @@ bool Dialog_Import_CSV::on_idle_parse()
   m_parser->current_line.append(prev, outbuf - prev);
   if(!m_stream && m_raw.size() == m_parser->input_position)
   {
-    ++ m_parser->line_number;
+    ++(m_parser->line_number);
+    
     // Handle last line, if nonempty
     if(m_parser->current_line.empty())
       handle_line(m_parser->current_line, m_parser->line_number);
@@ -872,7 +919,7 @@ void Dialog_Import_CSV::field_data_func(Gtk::CellRenderer* renderer, const Gtk::
     {
       sharedptr<Field> field = m_fields[column_number];
  
-      if(row < m_rows.size())
+      if(row != -1 && (unsigned int)row < m_rows.size())
       {
         const type_row_strings& row_strings = m_rows[row];
         if(column_number < row_strings.size())

@@ -1,5 +1,10 @@
 2009-07-10  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/dialog_import_csv.cc: on_idle_parse(): Ignore newlines in quotes when 
+	dividing the input into "lines" to give to handle_line().
+
+2009-07-10  Murray Cumming  <murrayc@murrayc.com>
+
 	Import: Handle "" as ". Fix a crash.
 	
 	* glom/dialog_import_csv.[h|cc]: Use typedefs to simplify code.
