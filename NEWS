@@ -1,3 +1,14 @@
+1.8.11:
+
+* Field Definition: Really save field changes again (removing a bad optimization 
+  that stopped it from working).
+	Ubuntu Launchpad bug 
+	https://bugs.launchpad.net/ubuntu/+source/glom/+bug/394507
+	(elmergato)
+* Export: Don't open the format dialog behind the FileChooser dialog.
+  Ubuntu Launchpad bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/397409
+	(elmergato)
+	
 1.8.10:
 
 * Export: Offer File overwrite confirmation.
