@@ -38,35 +38,82 @@ namespace
 
 const gunichar DELIMITER = ',';
 
+static bool next_char_is_quote(const Glib::ustring::const_iterator& iter, const Glib::ustring::const_iterator& end)
+{
+  if(iter == end)
+    return false;
+    
+  const gunichar quote_char = (gunichar)'\"';
+  
+  //Look at the next character to see if it's really "" (an escaped "):
+  Glib::ustring::const_iterator iter_next = iter;
+  ++iter_next;
+  if(iter_next != end)
+  {
+    const gunichar c_next = *iter_next;
+    if(c_next == quote_char)
+    {
+      return true;
+    }
+  }
+  
+  return false;
+}
+
 //Parse the field in a comma-separated line, returning the field including the quotes:
 static Glib::ustring::const_iterator advance_field(const Glib::ustring::const_iterator& iter, const Glib::ustring::const_iterator& end, Glib::ustring& field)
 {
-  bool inside_quotes = false;
   const gunichar quote_char = (gunichar)'\"';
+  bool inside_quotes = false;
+  //bool string_finished = false; //Ignore anything after "something", such as "something"else,
 
   field.clear();
 
   Glib::ustring::const_iterator walk;
-  for(walk = iter; walk != end; ++ walk)
+  for(walk = iter; walk != end; ++walk)
   {
-    gunichar c = *walk;
+    const gunichar c = *walk;
+    
+    //if(string_finished)
+    //  continue;
 
-    // End of quoted string
-    if(inside_quotes && c == quote_char)
+    if(inside_quotes)
     {
-      inside_quotes = false;
-      continue;
+      // End of quoted string?
+      if(c == quote_char)
+      {
+        if(next_char_is_quote(walk, end))
+        {
+          //This is "" so it's not an end quote. Just add one quote:
+          field += c;
+          ++walk; //Skip the first "
+          if(walk != end)
+            ++walk; //Skip the second " because we added it here.
+        }
+        else
+        {
+          inside_quotes = false;
+          //string_finished = true; //Ignore anything else before the next comma.
+        }
+        
+        continue;
+      }
     }
-    // Begin of quoted string.
-    else if(!inside_quotes && (c == quote_char))
+    else
     {
-      inside_quotes = true;
+      // Start of quoted string:
+      if((c == quote_char))
+      {
+        inside_quotes = true;
+        continue;
+      }
+      // End of field:
+      else if(!inside_quotes && c == DELIMITER)
+      {
+        break;
+      }
+      
       continue;
-    }
-    // End of field:
-    else if(!inside_quotes && c == DELIMITER)
-    {
-      break;
     }
 
     field += c; // Just so that we don't need to iterate through the field again, since there is no Glib::ustring::substr(iter, iter)
@@ -710,8 +757,8 @@ void Dialog_Import_CSV::handle_line(const Glib::ustring& line, guint line_number
   if(line.empty())
    return;
 
-  m_rows.push_back(std::vector<Glib::ustring>());
-  std::vector<Glib::ustring>& row = m_rows.back();
+  m_rows.push_back(type_row_strings());
+  type_row_strings& row = m_rows.back();
 
   Glib::ustring field;
   //Gtk::TreeModelColumnRecord record;
@@ -803,62 +850,78 @@ void Dialog_Import_CSV::field_data_func(Gtk::CellRenderer* renderer, const Gtk::
   Gtk::CellRendererCombo* renderer_combo = dynamic_cast<Gtk::CellRendererCombo*>(renderer);
   if(!renderer_combo) throw std::logic_error("CellRenderer is not a CellRendererCombo in field_data_func");
 
+  Glib::ustring text;
+  bool editable = false;
+  
   if(row == -1)
   {
     sharedptr<Field> field = m_fields[column_number];
     if(field)
-      renderer_combo->set_property("text", field->get_name());
+      text = field->get_name();
     else
-      renderer_combo->set_property("text", Glib::ustring("<None>"));
+      text = _("<None>");
 
-    renderer_combo->set_property("editable", true);
+    editable = true;
   }
   else
   {
     // Convert to currently chosen field, if any, and back, too see how it
     // looks like when imported:
-    sharedptr<Field> field = m_fields[column_number];
-    const Glib::ustring& orig_text = m_rows[row][column_number];
-
-    Glib::ustring text;
-    if(field)
+    
+    if(column_number < m_fields.size())
     {
-      bool success;
-
-      if(field->get_glom_type() != Field::TYPE_IMAGE)
+      sharedptr<Field> field = m_fields[column_number];
+ 
+      if(row < m_rows.size())
       {
-        /* Exported data is always stored in postgres format */
-        const Gnome::Gda::Value value = field->from_file_format(orig_text, success);
+        const type_row_strings& row_strings = m_rows[row];
+        if(column_number < row_strings.size())
+        {
+      
+          const Glib::ustring& orig_text = row_strings[column_number];
+
+          if(field)
+          {
+            if(field->get_glom_type() != Field::TYPE_IMAGE)
+            {
+              /* Exported data is always stored in postgres format */
+              bool success = false;
+              const Gnome::Gda::Value value = field->from_file_format(orig_text, success);
         
-        if(!success)
-          text = _("<Import Failure>");
-        else
-          text = Glom::Conversions::get_text_for_gda_value(field->get_glom_type(), value);
-      }
-      else
-      {
-        // TODO: It is too slow to create the picture here. Maybe we should
-        // create it once and cache it. We could also think about using a
-        // GtkCellRendererPixbuf to show it, then.
-        if(!orig_text.empty() && orig_text != "NULL")
-          text = _("<Picture>");
-      }
-    }
-    else
-    {
-      // TODO: Should we unescape the field's content?
-      text = orig_text;
-    }
+              if(!success)
+                text = _("<Import Failure>");
+              else
+                text = Glom::Conversions::get_text_for_gda_value(field->get_glom_type(), value);
+            }
+            else
+            {
+              // TODO: It is too slow to create the picture here. Maybe we should
+              // create it once and cache it. We could also think about using a
+              // GtkCellRendererPixbuf to show it, then.
+              if(!orig_text.empty() && orig_text != "NULL")
+                text = _("<Picture>");
+            }
+          }
+          else
+          {
+            // TODO: Should we unescape the field's content?
+            text = orig_text;
+          }
 
-    if(text.length() > 32)
-    {
-      text.erase(32);
-      text.append("…");
-    }
+          if(text.length() > 32)
+          {
+            text.erase(32);
+            text.append("…");
+          }
 
-    renderer_combo->set_property("text", text);
-    renderer_combo->set_property("editable", false);
+          editable = false;
+        }
+      }
+    }
   }
+  
+  renderer_combo->set_property("text", text);
+  renderer_combo->set_property("editable", editable);
 }
 
 void Dialog_Import_CSV::on_field_edited(const Glib::ustring& path, const Glib::ustring& new_text, guint column_number)

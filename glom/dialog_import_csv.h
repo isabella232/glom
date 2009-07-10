@@ -179,7 +179,9 @@ private:
   State m_state;
 
   // Parsed data:
-  std::vector<std::vector<Glib::ustring> > m_rows;
+  typedef std::vector<Glib::ustring> type_row_strings;
+  typedef std::vector<type_row_strings> type_rows;
+  type_rows m_rows;
 
   // The fields into which to import the data:
   typedef std::vector< sharedptr<Field> > type_vec_fields;

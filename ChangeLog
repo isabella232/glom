@@ -1,3 +1,11 @@
+2009-07-10  Murray Cumming  <murrayc@murrayc.com>
+
+	Import: Handle "" as ". Fix a crash.
+	
+	* glom/dialog_import_csv.[h|cc]: Use typedefs to simplify code.
+	advance_field(): Handle "" (escaped ") inside quotes.
+	field_data_func(): Avoid a crash if not enough data was found.
+
 2009-07-09  Murray Cumming  <murrayc@murrayc.com>
 
 	Import: " is the only quote character, as per the CSV RFC.
