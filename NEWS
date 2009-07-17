@@ -1,3 +1,20 @@
+1.10.2 (stable):
+
+* Field Definition: Really save field changes again (removing a bad optimization 
+  that stopped it from working).
+	Ubuntu Launchpad bug 
+	https://bugs.launchpad.net/ubuntu/+source/glom/+bug/394507
+	(elmergato)
+* Export: Don't open the format dialog behind the FileChooser dialog.
+  Ubuntu Launchpad bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/397409
+	(elmergato)\
+* Export: Offer File overwrite confirmation.
+  (Murray Cumming)
+	Ubuntu Launchpad bug https://bugs.launchpad.net/ubuntu/+source/glom/+bug/393229
+	(elmergato)
+* Performance improvement when first connecting to the database.
+  (Armin Burgmeier)
+  
 1.10.1 (stable):
 
 * Fix crash in initial dialog, experienced on some systems. 
