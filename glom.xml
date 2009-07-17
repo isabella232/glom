@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- This is a MIME-type registration file.-->
 <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
   <mime-type type="application/x-glom">
     <comment>Glom</comment>
@@ -6,9 +7,13 @@
 
     <glob pattern="*.glom"/>
 
+    <!-- We keep this string match for systems that maybe don't support root-XML, 
+         and for old .glom files that don't mention our xmlns ID. --> 
     <magic priority="80">
       <match type="string" value="&lt;glom_document" offset="0:100"/>
     </magic>
+    
+    <root-XML namespaceURI="http://glom.org/glom_document" localName="glom_document"/>
 
   </mime-type>
 </mime-info>

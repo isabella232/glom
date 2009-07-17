@@ -21,6 +21,7 @@ desktop_DATA = $(desktop_in_files:.desktop.in.in=.desktop)
 
 # This is the old MIME-type system.
 # GNOME 2.6 seems to require that we register with both the old and the new MIME-type systems.
+# TODO: Try removing this?
 mimeinfodir = $(datadir)/mime-info
 mimeinfo_DATA = glom.keys glom.mime
 

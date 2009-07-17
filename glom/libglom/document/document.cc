@@ -256,7 +256,11 @@ Document::Document()
   set_dtd_name("glom_document.dtd");
   //set_DTD_Location(GLOM_DTD_INSTALL_DIR); //Determined at configure time. It still looks in the working directory first.
 
-  set_dtd_root_node_name("glom_document");
+  //The xmlns URI does not need to be something that actually exists.
+  //I think it is just a unique ID. murrayc.
+  //It helps the MIME-type system to recognize the file type.
+  set_dtd_root_node_name("glom_document", 
+    "http://glom.org/glom_document" /* xmlns ID */);
 
   //We don't use set_write_formatted() because it doesn't handle text nodes well.
   //We use add_indenting_white_space_to_node() instead later.

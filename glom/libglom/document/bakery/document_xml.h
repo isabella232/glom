@@ -44,7 +44,12 @@ public:
   void set_dtd_name(const std::string& strVal); //e.g. "glom.dtd"
   std::string get_dtd_name() const;
 
-  void set_dtd_root_node_name(const Glib::ustring& strVal);
+  /** Set the root node name and (optionally) the xmlns ID to be written 
+   * when writing the document.
+   * The root node name is also used when reading documents.
+   */
+  void set_dtd_root_node_name(const Glib::ustring& strVal, const Glib::ustring& xmlns = Glib::ustring());
+  
   Glib::ustring get_dtd_root_node_name() const;
 
   /** Whether to add extra whitespace when writing the XML to disk.
@@ -84,7 +89,7 @@ protected:
   xmlpp::Document* m_pDOM_Document; //1-to-1 with the m_DOM_Parser.
   
   std::string m_strDTD_Name;
-  Glib::ustring m_strRootNodeName;
+  Glib::ustring m_strRootNodeName, m_root_xmlns;
   bool m_write_formatted;
 };
 

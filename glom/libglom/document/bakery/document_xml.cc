@@ -214,9 +214,10 @@ std::string Document_XML::get_dtd_name() const
   return m_strDTD_Name;
 }
 
-void Document_XML::set_dtd_root_node_name(const Glib::ustring& strVal)
+void Document_XML::set_dtd_root_node_name(const Glib::ustring& strVal, const Glib::ustring& xmlns)
 {
   m_strRootNodeName = strVal;
+  m_root_xmlns = xmlns;
 }
 
 Glib::ustring Document_XML::get_dtd_root_node_name() const
@@ -240,7 +241,7 @@ xmlpp::Element* Document_XML::get_node_document()
   if(!nodeRoot)
   {
     //Add it if it isn't there already:
-    return m_pDOM_Document->create_root_node(m_strRootNodeName);
+    return m_pDOM_Document->create_root_node(m_strRootNodeName, m_root_xmlns);
   }
   else
     return nodeRoot;

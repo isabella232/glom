@@ -1,3 +1,17 @@
+2009-07-17  Murray Cumming  <murrayc@murrayc.com>
+
+	Use an xmlns ID for the MIME-type registration.
+	
+	* glom/libglom/document/bakery/document_xml.[h|cc]: set_dtd_root_node_name():
+	Take an optional xmlns ID and write this in the document.
+	* glom/libglom/document/document.cc: Constructor: Specify a 
+	http://glom.org/glom_document xmlns ID. I don't think this needs to exist.
+	This will make it easier for the MIME-type system to detect the file's MIME 
+	type.
+	* glom.xml: (MIME-type detection rules): Add a root-XML rule, that checks 
+	for the xmlns and the root node name. We keep the string check too for 
+	legacy.
+
 2009-07-10  Murray Cumming  <murrayc@murrayc.com>
 
 	Export: Don't open the format dialog behind the FileChooser dialog.
