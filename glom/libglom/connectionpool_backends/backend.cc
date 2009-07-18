@@ -195,6 +195,7 @@ bool Backend::add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection,
   Glib::RefPtr<Gnome::Gda::ServerOperation> operation = create_server_operation(provider, connection, Gnome::Gda::SERVER_OPERATION_ADD_COLUMN, error);
   if(!operation) return false;
 
+  //TODO: Quote table_name and field_name?
   if(!set_server_operation_value(operation, "/COLUMN_DEF_P/TABLE_NAME", table_name, error))
     return false;
 
@@ -223,6 +224,7 @@ bool Backend::drop_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection
   if(!operation)
     return false;
 
+  //TODO: Quote table name and column name?
   if(!set_server_operation_value(operation, "/COLUMN_DESC_P/TABLE_NAME", table_name, error))
     return false;
 

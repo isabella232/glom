@@ -122,6 +122,7 @@ bool Sqlite::create_database(const Glib::ustring& database_name, const Glib::ust
 
 bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, GdaMetaTableColumn* column, unsigned int i, std::auto_ptr<Glib::Error>& error)
 {
+  //TODO: Quote column name?
   const Glib::ustring name_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_NAME/%1", i);
   const Glib::ustring type_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_TYPE/%1", i);
   const Glib::ustring pkey_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_PKEY/%1", i);
@@ -145,6 +146,7 @@ bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::Serve
 
 bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, const sharedptr<const Field>& column, unsigned int i, std::auto_ptr<Glib::Error>& error)
 {
+  //TODO: Quote column name?
   const Glib::ustring name_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_NAME/%1", i);
   const Glib::ustring type_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_TYPE/%1", i);
   const Glib::ustring pkey_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_PKEY/%1", i);
@@ -174,6 +176,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
   if(!operation)
     return false;
 
+  //TODO: Quote table name?
   if(!set_server_operation_value(operation, "/TABLE_DEF_P/TABLE_NAME", TEMPORARY_TABLE_NAME, error)) return false;
 
   GdaMetaTable* table = GDA_META_TABLE(object);
