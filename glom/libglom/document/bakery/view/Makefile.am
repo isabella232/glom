@@ -11,7 +11,7 @@ AM_CPPFLAGS = -I@top_srcdir@/ -I@top_srcdir@/glom $(LIBGLOM_CFLAGS) $(GLOM_WARNI
 h_sources = view.h viewbase.h view_composite.h 
 cc_sources = view.cc viewbase.cc view_composite.cc 
 
-library_includedir=$(includedir)/glom-1.0/libglom/document/bakery/view
+library_includedir=$(includedir)/glom-$(GLOM_ABI_VERSION)/libglom/document/bakery/view
 library_include_HEADERS = $(h_sources)
 
 noinst_LTLIBRARIES = libdocument_bakery_view.la

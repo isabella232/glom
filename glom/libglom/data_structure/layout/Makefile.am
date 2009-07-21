@@ -35,7 +35,7 @@ cc_sources = layoutitem.cc \
                               custom_title.cc \
                               layoutitem_placeholder.cc
 
-library_includedir=$(includedir)/glom-1.0/libglom/data_structure/layout
+library_includedir=$(includedir)/glom-$(GLOM_ABI_VERSION)/libglom/data_structure/layout
 library_include_HEADERS = $(h_sources)
 
 libdata_structure_layout_la_SOURCES = $(h_sources) $(cc_sources)

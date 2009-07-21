@@ -16,7 +16,7 @@ cc_sources = layoutitem_groupby.cc \
                               layoutitem_footer.cc \
                               layoutitem_verticalgroup.cc
 
-library_includedir=$(includedir)/glom-1.0/libglom/data_structure/layout/report_parts
+library_includedir=$(includedir)/glom-$(GLOM_ABI_VERSION)/libglom/data_structure/layout/report_parts
 library_include_HEADERS = $(h_sources)
 
 libdata_structure_layout_reportparts_la_SOURCES = $(h_sources) $(cc_sources)

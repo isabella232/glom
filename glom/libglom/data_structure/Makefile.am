@@ -33,7 +33,7 @@ cc_sources = field.cc \
                               translatable_item.cc \
                               parameternamegenerator.cc
 
-library_includedir=$(includedir)/glom-1.0/libglom/data_structure
+library_includedir=$(includedir)/glom-$(GLOM_ABI_VERSION)/libglom/data_structure
 library_include_HEADERS = $(h_sources)
 
 noinst_LTLIBRARIES = libdata_structure.la
