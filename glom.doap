@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:foaf="http://xmlns.com/foaf/0.1/"
+         xmlns:gnome="http://api.gnome.org/doap-extensions#"
+         xmlns="http://usefulinc.com/ns/doap#">
+  <name xml:lang="en">Glom</name>
+  <shortdesc xml:lang="en">User-friendly database application.</shortdesc>
+
+  <homepage rdf:resource="http://www.glom.org/" />
+  <mailing-list rdf:resource="http://mail.gnome.org/mailman/listinfo/glom-devel-list" />
+  <download-page rdf:resource="http://www.glom.org/wiki/index.php?title=Download" />
+  <bug-database rdf:resource="http://bugzilla.gnome.org/browse.cgi?product=glom" />
+  <category rdf:resource="http://api.gnome.org/doap-extensions#productivity" />
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Murray CUmming</foaf:name>
+      <foaf:mbox rdf:resource="mailto:murrayc@murrayc.com" />
+      <gnome:userid>murrayc</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
+</Project>
+
