@@ -119,7 +119,7 @@ fi
 REQUIRED_LIBGLOM_LIBS="giomm-2.4 gthread-2.0 libxml++-2.6 pygda-4.0 >= 2.25.3 pygobject-2.0 >= 2.6.0 libgdamm-4.0 >= 3.99.14 libgda-4.0 >= 4.0.0 libgda-postgres-4.0"
 
 if test "$enable_maemo" = "yes"; then
-	REQUIRED_LIBGLOM_LIBS="$REQUIRED_LIBGLOM_LIBS ibepc-1.0 >= 0.3.1 avahi-ui";
+	REQUIRED_LIBGLOM_LIBS="$REQUIRED_LIBGLOM_LIBS libepc-1.0 >= 0.3.1 avahi-ui";
 elif test "$win32" = "true"; then
 	REQUIRED_LIBGLOM_LIBS="$REQUIRED_LIBGLOM_LIBS";
 else
