@@ -1,3 +1,8 @@
+2009-07-22  David King  <davidk@openismus.com>
+
+	* glom/libglom/glom-1.0.pc.in: Add libxml++ dependency, needed for
+	Bakery headers.
+
 2009-07-23  David King  <davidk@openismus.com>
 
 	* glom/libglom/init.cc: Check that GThread is supported before calling
