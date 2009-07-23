@@ -295,7 +295,7 @@ static PyTypeObject pyglom_RecordType = {
     (initproc)Record_init,      /* tp_init */
     0,                         /* tp_alloc */
     Record_new,                 /* tp_new */
-    0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, //TODO: or one more 0 if using a newer Python.
 };
 
 PyTypeObject* PyGlomRecord_GetPyType()
