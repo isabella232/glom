@@ -251,7 +251,7 @@ static PyTypeObject pyglom_RelatedType = {
     (initproc)Related_init,      /* tp_init */
     0,                         /* tp_alloc */
     Related_new,                 /* tp_new */
-    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0,
 };
 
 PyTypeObject* PyGlomRelated_GetPyType()

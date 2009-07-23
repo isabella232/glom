@@ -129,13 +129,13 @@ void Dialog_Image_Progress::on_stream_read(const Glib::RefPtr<Gio::AsyncResult>&
     gssize size = m_stream->read_finish(result);
     g_assert(size >= 0); // Would have thrown an exception otherwise
     // Cannot read more data than there is available in the file:
-    g_assert(offset + size <= static_cast<gsize>(m_data->binary_length));
+    g_assert(offset + size <= static_cast<gssize>(m_data->binary_length));
     // Load image
     m_loader->write(m_data->data + offset, size);
     // Set progress
     m_progress_bar->set_fraction(static_cast<double>(offset + size) / m_data->binary_length);
     // Read next chunk, if any
-    if(offset + size < static_cast<gsize>(m_data->binary_length))
+    if(offset + size < static_cast<gssize>(m_data->binary_length))
       // Even if choose a priority lower than GDK_PRIORITY_REDRAW + 10 for the
       // read_async we don't see the progressbar progressing while the image
       // is loading. Therefore we put an idle inbetween.

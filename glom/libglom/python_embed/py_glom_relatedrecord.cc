@@ -454,7 +454,7 @@ static PyTypeObject pyglom_RelatedRecordType = {
     (initproc)RelatedRecord_init,      /* tp_init */
     0,                         /* tp_alloc */
     RelatedRecord_new,                 /* tp_new */
-    0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0,
 };
 
 PyTypeObject* PyGlomRelatedRecord_GetPyType()

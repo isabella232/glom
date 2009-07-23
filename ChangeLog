@@ -1,5 +1,16 @@
 2009-07-23  Daniel Elstner  <danielk@openismus.com>
 
+	* glom/bakery/app_withdoc.cc: Fix build with -Werror.
+	* glom/dialog_import_csv.cc: ditto,
+	* glom/libglom/python_embed/py_glom_record.cc: ditto,
+	* glom/libglom/python_embed/py_glom_related.cc: ditto,
+	* glom/libglom/python_embed/py_glom_relatedrecord.cc: ditto,
+	* glom/libglom/python_embed/pygdavalue_conversions.c: ditto,
+	* glom/mode_design/fields/dialog_fielddefinition.cc: ditto,
+	* glom/utility_widgets/dialog_image_progress.cc: ditto.
+
+2009-07-23  Daniel Elstner  <danielk@openismus.com>
+
 	Switch to non-recursive build process
 
 	* macros/mm-pkg.m4: New file, defining the MM_PKG_CONFIG_SUBST macro.

@@ -369,7 +369,7 @@ void Dialog_Import_CSV::clear()
   validate_primary_key();
 }
 
-void Dialog_Import_CSV::show_error_dialog(const Glib::ustring& primary, const Glib::ustring& secondary)
+void Dialog_Import_CSV::show_error_dialog(const Glib::ustring&, const Glib::ustring& secondary)
 {
   Utils::show_ok_dialog(_("Error Importing CSV File"),
      secondary, *this, Gtk::MESSAGE_ERROR);

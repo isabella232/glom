@@ -490,7 +490,7 @@ void App_WithDoc::document_history_remove(const Glib::ustring& /* file_uri */)
   //Override this.
 }
 
-void App_WithDoc::ui_warning_load_failed(int failure_code)
+void App_WithDoc::ui_warning_load_failed(int)
 {
   ui_warning(_("Open Failed."), _("The document could not be opened."));
 }

@@ -373,7 +373,8 @@ void Dialog_FieldDefinition::on_combo_lookup_relationship_changed()
 void Dialog_FieldDefinition::on_button_edit_calculation()
 {
   //TODO: Share a global instance, to make this quicker?
-  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(GLOM_GLADEDIR "glom_developer.glade", "window_field_calculation");
+  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(
+      Utils::get_glade_file_path("glom_developer.glade"), "window_field_calculation");
   if(refXml)
   {
     Dialog_FieldCalculation* dialog = 0;
