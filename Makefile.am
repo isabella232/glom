@@ -763,4 +763,6 @@ endif
 .PHONY: install-update-icon-cache uninstall-update-icon-cache \
 	install-update-mime-database uninstall-update-mime-database
 
+# Instruct GNU make to delete the targets of a rule after it failed, in
+# order to avoid the complication of handling that situation manually.
 .DELETE_ON_ERROR:
