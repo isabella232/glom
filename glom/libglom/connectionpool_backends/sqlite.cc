@@ -64,13 +64,17 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
-      connection = Gnome::Gda::Connection::open_from_string("SQLite", cnc_string, auth_string);
+      connection = Gnome::Gda::Connection::open_from_string("SQLite", 
+        cnc_string, auth_string,
+        CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
     }
     catch(const Glib::Error& ex)
     {
 #else
     std::auto_ptr<Glib::Error> error;
-    connection = Gnome::Gda::Connection::open_from_string("SQLite", cnc_string, username, auth_string, Gnome::Gda::CONNECTION_OPTIONS_NONE, error);
+    connection = Gnome::Gda::Connection::open_from_string("SQLite", 
+      cnc_string, auth_string, 
+      CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE, error);
     if(error.get())
     {
       const Glib::Error& ex = *error.get();
@@ -101,7 +105,9 @@ bool Sqlite::create_database(const Glib::ustring& database_name, const Glib::ust
   try
   {
     Glib::RefPtr<Gnome::Gda::Connection> cnc = 
-      Gnome::Gda::Connection::open_from_string("SQLite", cnc_string, "");
+      Gnome::Gda::Connection::open_from_string("SQLite", 
+        cnc_string, "",
+        CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
   }
   catch(const Glib::Error& ex)
   {
@@ -110,7 +116,9 @@ bool Sqlite::create_database(const Glib::ustring& database_name, const Glib::ust
   }
 #else
   Glib::RefPtr<Gnome::Gda::Connection> cnc = 
-    Gnome::Gda::Connection::open_from_string("SQLite", cnc_string, "", Gnome::Gda::CONNECTION_OPTIONS_NONE, error);
+    Gnome::Gda::Connection::open_from_string("SQLite", 
+      cnc_string, "", 
+      CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE, error);
   if(error.get() != 0)
     return false
 #endif

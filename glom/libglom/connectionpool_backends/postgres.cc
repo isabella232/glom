@@ -81,10 +81,13 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
   std::cout << "  DEBUG: auth_string=" << auth_string << std::endl;
 #endif
 
+  //TODO: Use CONNECTION_OPTIONS_READ_ONLY in the client-only build:
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    connection = Gnome::Gda::Connection::open_from_string("PostgreSQL", cnc_string, auth_string);
+    connection = Gnome::Gda::Connection::open_from_string("PostgreSQL", 
+      cnc_string, auth_string, 
+      Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
     
     connection->statement_execute_non_select("SET DATESTYLE = 'ISO'");
     data_model = connection->statement_execute_select("SELECT version()");
@@ -93,7 +96,8 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
   {
 #else
   std::auto_ptr<Glib::Error> error;
-  connection = Gnome::Gda::Connection::open_from_string("PostgreSQL", cnc_string, auth_string, Gnome::Gda::CONNECTION_OPTIONS_NONE, error);
+  connection = Gnome::Gda::Connection::open_from_string("PostgreSQL", 
+    cnc_string, auth_string, Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE, error);
   
   if(!error)
     connection->statement_execute_non_select("SET DATESTYLE = 'ISO'", error);
@@ -117,10 +121,16 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
-      temp_conn = Gnome::Gda::Connection::open_from_string("PostgreSQL", cnc_string, auth_string);
-    } catch(const Glib::Error& ex) {}
+      temp_conn = Gnome::Gda::Connection::open_from_string("PostgreSQL", 
+        cnc_string, auth_string, 
+        Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
+    }
+    catch(const Glib::Error& ex)
+    {}
 #else
-    temp_conn = client->open_connection_from_string("PostgreSQL", cnc_string, auth_string, Gnome::Gda::CONNECTION_OPTIONS_NONE, glib_error);
+    temp_conn = client->open_connection_from_string("PostgreSQL", 
+      cnc_string, auth_string, 
+      Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE, glib_error);
 #endif
 
 #ifdef GLOM_CONNECTION_DEBUG
