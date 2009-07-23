@@ -1,5 +1,17 @@
 2009-07-23  Daniel Elstner  <danielk@openismus.com>
 
+	Make libegg object files depend on eggmarshalers
+
+	* Makefile.am ($(*libegg*_a_OBJECTS)): Make all object files of
+	libeggutil.a and libeggtoolpalette.a depend on the generated source
+	files eggmarshalers.[ch].  This ensures that the marshaler files are
+	generated before any of the libegg objects are compiled, but avoids
+	having to resort to BUILT_SOURCES for that purpose.
+	(*_libeggtoolpalette_a_LIBADD): Remove dependency on libeggutil.a
+	again, as it is not required for linking the static library itself.
+
+2009-07-23  Daniel Elstner  <danielk@openismus.com>
+
 	* Makefile.am (*_libeggtoolpalette_a_LIBADD): List libeggutil.a as
 	dependency.
 

@@ -248,8 +248,6 @@ glom_utility_widgets_egg_toolpalette_libeggtoolpalette_a_SOURCES =	\
 	glom/utility_widgets/egg/toolpalette/eggtoolpaletteprivate.h
 
 glom_utility_widgets_egg_toolpalette_libeggtoolpalette_a_CPPFLAGS = $(libegg_cppflags)
-glom_utility_widgets_egg_toolpalette_libeggtoolpalette_a_LIBADD = \
-	glom/utility_widgets/egg/util/libeggutil.a
 
 glom_utility_widgets_egg_util_libeggutil_a_SOURCES =	\
 	glom/utility_widgets/egg/util/egg-marshal.c	\
@@ -743,7 +741,11 @@ uninstall-update-mime-database:
 	@$(POST_UNINSTALL)
 	test -n "$(DESTDIR)" || $(update_mime_database) "$(mimedir)"
 
-$(eggutildir)/egg-marshal.c: $(eggutildir)/eggmarshalers.c $(eggutildir)/eggmarshalers.h
+# Make all object files of libeggutil and libeggtoolpalette depend on
+# eggmarshalers.[ch], in preference to resorting to BUILT_SOURCES.
+$(glom_utility_widgets_egg_util_libeggutil_a_OBJECTS) \
+$(glom_utility_widgets_egg_toolpalette_libeggtoolpalette_a_OBJECTS): \
+	$(eggutildir)/eggmarshalers.c $(eggutildir)/eggmarshalers.h
 
 $(eggutildir)/eggmarshalers.h: $(eggmarshalers_list)
 	$(GLIB_GENMARSHAL) --prefix=_egg_marshal --header "$(eggmarshalers_list)" >'$@'
