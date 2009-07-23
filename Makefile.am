@@ -248,6 +248,8 @@ glom_utility_widgets_egg_toolpalette_libeggtoolpalette_a_SOURCES =	\
 	glom/utility_widgets/egg/toolpalette/eggtoolpaletteprivate.h
 
 glom_utility_widgets_egg_toolpalette_libeggtoolpalette_a_CPPFLAGS = $(libegg_cppflags)
+glom_utility_widgets_egg_toolpalette_libeggtoolpalette_a_LIBADD = \
+	glom/utility_widgets/egg/util/libeggutil.a
 
 glom_utility_widgets_egg_util_libeggutil_a_SOURCES =	\
 	glom/utility_widgets/egg/util/egg-marshal.c	\
