@@ -1,3 +1,60 @@
+2009-07-23  Daniel Elstner  <danielk@openismus.com>
+
+	Switch to non-recursive build process
+
+	* macros/mm-pkg.m4: New file, defining the MM_PKG_CONFIG_SUBST macro.
+	* macros/mm-python.m4: New file, defining the MM_CHECK_MODULE_PYTHON
+	macro to replace the old and messy AM_CHECK_PYTHON_HEADERS.
+	* acinclude.m4: Remove file which defined AM_CHECK_PYTHON_HEADERS.
+
+	* Makefile.am: Merge the contents of the Makefile.am files from all
+	subdirectories into a single top-level Makefile.am, with the exception
+	of docs/user-guide/Makefile.am.  Add the full subdirectory prefix to
+	all listed files and change the Automake variable names accordingly.
+	Get rid of the intermediate static libraries previously created for
+	each source subdirectory, and list the source files directly in the
+	toplevel target's SOURCES variable.  Overall, refactor and modernize
+	the build rules and organization.
+	* **/Makefile.am: Except for docs/user-guide/Makefile.am, remove the
+	Makefile.am files recursively from all subdirectories.
+
+	* config.h.in: Remove file, and use autoheader to generate it.
+	* autogen.sh: Replace with a modern minimalistic script which lets
+	autoreconf do the bulk of the work.
+	* configure.ac: Massive refactoring.  Adapt to the new non-recursive
+	build organization.  Modernize the M4 and shell code, and make use of
+	newer Autoconf and Automake constructs to simplify many checks.  Also
+	make minor corrections to a number of tests and definitions.
+
+	* glom/application.cc: Remove the need for GLOM_ICON_DIR by setting
+	the window icon by name instead of loading the image file directly.
+	Use PACKAGE_VERSION in place of VERSION.
+	* glom/dialog_existing_or_new.cc: Use a subdirectory of GLOM_DOCDIR
+	in place of GLOM_EXAMPLES_DIR.  Remove GLOM_EXAMPLES_DIR_ALTERNATIVE.
+
+	* glom/utils_ui.cc: Replace DATADIR by GLOM_DATADIR.
+	* glom/libglom/connectionpool.cc: Remove GLOM_SAVE_DATADIR hack, which
+	is not necessary anymore as DATADIR is not globally defined anymore.
+	* glom/libglom/connectionpool_backends/postgres_self.cc: ditto,
+	* glom/libglom/spawn_with_feedback.cc: ditto,
+	* glom/main.cc: ditto. Also replace LOCALEDIR by GLOM_LOCALEDIR, and
+	output PACKAGE_STRING instead of VERSION in response to the --version
+	command-line option.  Replace PACKAGE and VERSION by their modern
+	Automake equivalents.
+	* glom/xsl_utils.cc: Remove GLOM_SAVE_DATADIR hack, and replace
+	GLOM_XSLTDIR with a subdirectory of GLOM_PKGDATADIR.
+
+	* glom/mode_data/box_data_calendar_related.cc: Replace GLOM_GLADEDIR
+	by a combination of GLOM_PKGDATADIR and a subdirectory name.
+	* glom/mode_design/print_layouts/print_layout_toolbar_button.cc: Use
+	a subdirectory of GLOM_PKGDATADIR in place of GLOM_ICON_DIR.
+	* glom/utility_widgets/layouttoolbar.cc: ditto,
+	* glom/utility_widgets/layouttoolbarbutton.cc: ditto.
+
+	* glom/python_embed/glom_python.cc: Include generated config.h for the
+	definition of GLOM_ABI_VERSION_UNDERLINED.
+	* glom/python_embed/python_module/py_glom_module.cc: ditto.
+
 2009-07-22  David King  <davidk@openismus.com>
 
 	* glom/libglom/glom-1.0.pc.in: Add libxml++ dependency, needed for

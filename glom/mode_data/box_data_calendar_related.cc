@@ -344,7 +344,9 @@ void Box_Data_Calendar_Related::on_dialog_layout_hide()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 Dialog_Layout* Box_Data_Calendar_Related::create_layout_dialog() const
 {
-  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(GLOM_GLADEDIR "glom_developer.glade", "window_data_layout");
+  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(
+      GLOM_PKGDATADIR G_DIR_SEPARATOR_S "glade" G_DIR_SEPARATOR_S "glom_developer.glade",
+      "window_data_layout");
   if(refXml)
   {
     Dialog_Layout_Calendar_Related* dialog = 0;

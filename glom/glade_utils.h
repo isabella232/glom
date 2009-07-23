@@ -39,7 +39,7 @@ inline std::string get_glade_file_path(const std::string& filename)
   g_free(directory);
   return result;
 #else
-  return GLOM_GLADEDIR + filename;
+  return Glib::build_filename(GLOM_PKGDATADIR G_DIR_SEPARATOR_S "glade", filename);
 #endif
 }
 

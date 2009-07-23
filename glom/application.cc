@@ -107,29 +107,8 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& bu
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_show_sql_debug(false)
 {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-#else
-  std::auto_ptr<Glib::Error> error;
-#endif
-  {
-    //Show the icon in the window manager's window title bar and in the list of running applications:
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-    set_icon_from_file(GLOM_ICON_DIR "/glom.png");
-#else
-    set_icon_from_file(GLOM_ICON_DIR "/glom.png", error);
-#endif
-  }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  catch(const Glib::Error& ex)
-  {
-#else
-  if(error.get() != NULL)
-  {
-    const Glib::Error& ex = *error.get();
-#endif
-    std::cerr << "App_Glom::App_Glom(): Could not set icon: " << ex.what() << std::endl;
-  } 
+  // TODO: Wrap missing method in gtkmm
+  gtk_window_set_icon_name(gobj(), "glom");
 
   //Load widgets from glade file:
   builder->get_widget("bakery_vbox", m_pBoxTop);
@@ -206,7 +185,7 @@ bool App_Glom::init(const Glib::ustring& document_uri)
 {
   type_vec_strings vecAuthors;
   vecAuthors.push_back("Murray Cumming <murrayc@murrayc.com>");
-  set_about_information(VERSION, vecAuthors, _("(C) 2000-2005 Murray Cumming"), _("A Database GUI"));
+  set_about_information(PACKAGE_VERSION, vecAuthors, _("(C) 2000-2005 Murray Cumming"), _("A Database GUI"));
 
   type_base::init(); //calls init_menus() and init_toolbars()
 

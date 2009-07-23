@@ -44,26 +44,23 @@
 
 // For ShellExecute:
 #ifdef G_OS_WIN32
-# define GLOM_SAVE_DATADIR DATADIR
-# undef DATADIR
 # include <windows.h>
-# define DATADIR GLOM_SAVE_DATADIR
 #endif
 
 namespace
 {
-	Glib::ustring get_xslt_file(const Glib::ustring& xsl_file)
-	{
+  Glib::ustring get_xslt_file(const Glib::ustring& xsl_file)
+  {
 #ifdef G_OS_WIN32
-		gchar* directory;
-		directory = g_win32_get_package_installation_directory_of_module(NULL);
-		Glib::ustring xsltdir = Glib::build_filename(directory, "share/glom/xslt/" + xsl_file);
-		g_free(directory);
-		return xsltdir;
+    gchar* directory = g_win32_get_package_installation_directory_of_module(0);
+    Glib::ustring xsltdir = Glib::build_filename(directory,
+        "share" G_DIR_SEPARATOR_S "glom" G_DIR_SEPARATOR_S "xslt", xsl_file);
+    g_free(directory);
+    return xsltdir;
 #else
-		return GLOM_XSLTDIR + xsl_file;
+    return Glib::build_filename(GLOM_PKGDATADIR G_DIR_SEPARATOR_S "xslt", xsl_file);
 #endif
-	}
+  }
 }
 
 namespace Glom

@@ -30,21 +30,14 @@
 
 #include <libglom/gst-package.h>
 
-#ifndef G_OS_WIN32
-#include <sys/types.h>
-#include <sys/socket.h> 
-#include <errno.h>
-
-#include <netinet/in.h> //For sockaddr_in
+#ifdef G_OS_WIN32
+# include <windows.h>
+# include <winsock2.h>
 #else
-
-// This includes objidl.h which has a structure called DATADIR. This fails to
-// compile with the DATADIR define, so undef it for the inclusion.
-#define GLOM_SAVE_DATADIR DATADIR
-#undef DATADIR
-#include <windows.h>
-#include <winsock2.h>
-#define DATADIR GLOM_SAVE_DATADIR
+# include <sys/types.h>
+# include <sys/socket.h> 
+# include <errno.h>
+# include <netinet/in.h> //For sockaddr_in
 #endif
 
 #include <signal.h> //To catch segfaults

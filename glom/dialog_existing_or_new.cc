@@ -155,25 +155,19 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 
 #ifdef G_OS_WIN32
-  gchar* dir = g_win32_get_package_installation_directory_of_module(NULL);
-  std::string path = Glib::build_filename(dir, "share/glom/doc/examples");
+  gchar* dir = g_win32_get_package_installation_directory_of_module(0);
+  std::string path = Glib::build_filename(dir, "share" G_DIR_SEPARATOR_S "doc"
+                                                       G_DIR_SEPARATOR_S "glom"
+                                                       G_DIR_SEPARATOR_S "examples");
   g_free(dir);
 
   if(!Glib::file_test(path, Glib::FILE_TEST_EXISTS))
-    path = GLOM_EXAMPLES_DIR;
+    path = GLOM_DOCDIR G_DIR_SEPARATOR_S "examples";
 #else
-  const char* path = GLOM_EXAMPLES_DIR;
+  const char *const path = GLOM_DOCDIR G_DIR_SEPARATOR_S "examples";
 #endif //G_OS_WIN32
 
-  if(!list_examples_at_path(path))
-  {
-    // If that directory did not exist, then try this one instead:
-    // (An Ubuntu package puts the example files here for some reason.
-    // TODO: Find out what Makefile.am variable to use to just use this automatically instead.
-    #ifndef G_OS_WIN32
-    list_examples_at_path(GLOM_EXAMPLES_DIR_ALTERNATIVE);
-    #endif //G_OS_WIN32
-  }
+  list_examples_at_path(path);
 
 #endif //!GLOM_ENABLE_CLIENT_ONLY
 

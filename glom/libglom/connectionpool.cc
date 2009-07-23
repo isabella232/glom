@@ -26,16 +26,11 @@
 //#include <libgdamm/connectionevent.h>
 #include <glibmm/i18n.h>
 
-#ifndef G_OS_WIN32
+#ifdef G_OS_WIN32
+# include <windows.h>
+#else
 # include <libepc/shell.h> //For epc_shell_set_progress_hooks().
 # include <libepc/publisher.h>
-#else
-// objidl.h, included by windows.h, defines a type called DATADIR, so we need
-// to undef it temporarily.
-# define GLOM_SAVE_DATADIR DATADIR
-# undef DATADIR
-# include <windows.h>
-# define DATADIR GLOM_SAVE_DATADIR
 #endif
 
 #include <signal.h> //To catch segfaults

@@ -31,10 +31,7 @@
 #include <iostream>
 
 #ifdef G_OS_WIN32
-#define SAVE_DATADIR DATADIR
-#undef DATADIR
-#include <windows.h>
-#define DATADIR SAVE_DATADIR
+# include <windows.h>
 #endif
 
 // Uncomment to see debug messages

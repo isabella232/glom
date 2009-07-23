@@ -1,3 +1,5 @@
+AUTOMAKE_OPTIONS = -Wno-portability
+
 include $(top_srcdir)/gnome-doc-utils.make
 dist-hook: doc-dist-hook
 

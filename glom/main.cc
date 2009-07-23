@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <config.h> //For VERSION.
+#include <config.h>
 
 //We use Python for calculated fields.
 #include <Python.h> //Include it before anything else to avoid "_POSIX_C_SOURCE redefined".
@@ -56,13 +56,10 @@
 #include <glom/glade_utils.h>
 #include <glom/utils_ui.h>
 
-#ifndef G_OS_WIN32
-#include <fontconfig/fontconfig.h> //For cleanup.
-#else
-#define SAVE_DATADIR DATADIR
-#undef DATADIR
+#ifdef G_OS_WIN32
 #include <winsock2.h>
-#define DATADIR SAVE_DATADIR
+#else
+#include <fontconfig/fontconfig.h> //For cleanup.
 #endif
 
 namespace Glom
@@ -305,10 +302,11 @@ main(int argc, char* argv[])
 
 #ifdef G_OS_WIN32
   // Load translations relative to glom.exe on Windows
-  bindtextdomain(GETTEXT_PACKAGE, Glib::build_filename(installation_dir, "share/locale").c_str());
+  bindtextdomain(GETTEXT_PACKAGE,
+      Glib::build_filename(installation_dir, "share" G_DIR_SEPARATOR_S "locale").c_str());
 #else
   //Make this application use the current locale for _() translation:
-  bindtextdomain(GETTEXT_PACKAGE, LOCALEDIR);  //LOCALEDIR is defined in the Makefile.am
+  bindtextdomain(GETTEXT_PACKAGE, GLOM_LOCALEDIR);
 #endif
   bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
   textdomain(GETTEXT_PACKAGE);
@@ -370,7 +368,7 @@ main(int argc, char* argv[])
 
   if(group.m_arg_version)
   {
-    std::cout << VERSION << std::endl;
+    std::cout << PACKAGE_STRING << std::endl;
     return 0;
   }
 
@@ -380,7 +378,7 @@ main(int argc, char* argv[])
   {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     gtksourceview::init();
-    Goocanvas::init(PACKAGE, VERSION, argc, argv ) ;
+    Goocanvas::init(PACKAGE_NAME, PACKAGE_VERSION, argc, argv);
 #endif //!GLOM_ENABLE_CLIENT_ONLY
 
     //Get command-line parameters, if any:
