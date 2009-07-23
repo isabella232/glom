@@ -29,7 +29,7 @@ namespace Glom
 
 void libglom_init()
 {
-  g_thread_init(NULL); //So we can use GMutex.
+  if (!Glib::thread_supported()) Glib::thread_init(0); //So we can use GMutex.
   Gnome::Gda::init();
   Gio::init();
 
