@@ -1,5 +1,15 @@
 2009-07-24  Daniel Elstner  <danielk@openismus.com>
 
+	Assign copyright of my work to Openismus GmbH
+
+	* configure.ac: Reassign the copyright which I had assigned to myself
+	temporarily to Openismus GmbH instead, as I did the work in my position
+	as an employee.
+	* *.am: ditto,
+	* macros/mm-python.m4: ditto.
+
+2009-07-24  Daniel Elstner  <danielk@openismus.com>
+
 	Split Makefile.am into logically separate parts
 
 	* glom.am: New file for building the glom binary itself.

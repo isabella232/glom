@@ -1,4 +1,4 @@
-## Copyright (c) 2009  Daniel Elstner <daniel.kitta@gmail.com>
+## Copyright (c) 2009  Openismus GmbH  <http://www.openismus.com/>
 ##
 ## This file is part of Glom.
 ##
