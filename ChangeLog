@@ -1,3 +1,12 @@
+2009-07-24  Daniel Elstner  <danielk@openismus.com>
+
+	Suppress warning for missing field initializers
+
+	* configure.ac (GLOM_WXXFLAGS): Add -Wno-missing-field-initializers to
+	the warning options at level max or higher, so that the Python module
+	code will build with both Python 2.5 and Python 2.6 without producing
+	warnings.
+
 2009-07-24  Murray Cumming  <murrayc@murrayc.com>
 
 	Catch unknown command-line options.
