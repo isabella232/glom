@@ -1,5 +1,15 @@
 2009-07-24  Daniel Elstner  <danielk@openismus.com>
 
+	Use format "%lu" for GType and add cast
+
+	* glom/libglom/python_embed/pygdavalue_conversions.c: Change format
+	specifier in g_warning() message back from "%u" to "%lu", and add an
+	explicit cast to unsigned long.  Looks like GLib silently changed the
+	type of GType from gulong to gsize, except when using a C++ compiler
+	with a 64 bit target.  (Yes, really.)
+
+2009-07-24  Daniel Elstner  <danielk@openismus.com>
+
 	Suppress warning for missing field initializers
 
 	* configure.ac (GLOM_WXXFLAGS): Add -Wno-missing-field-initializers to
