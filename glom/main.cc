@@ -324,7 +324,17 @@ main(int argc, char* argv[])
   //We use python for calculated-fields:
   Py_Initialize();
   PySys_SetArgv(argc, argv);
-  Gtk::Main mainInstance(argc, argv, context);
+
+  std::auto_ptr<Gtk::Main> mainInstance;
+  try
+  {
+    mainInstance = std::auto_ptr<Gtk::Main>( new Gtk::Main(argc, argv, context) );
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << "Glom: Error while initializing gtkmm: " << ex.what() << std::endl;
+    return 0;
+  }
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
