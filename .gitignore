@@ -32,6 +32,8 @@ Makefile.in
 /intltool-merge.in
 /intltool-update.in
 /gnome-doc-utils.make
+/omf.make
+/xmldocs.make
 
 /glom.desktop
 /glom.desktop.in

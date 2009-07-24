@@ -1,5 +1,12 @@
 2009-07-24  Daniel Elstner  <danielk@openismus.com>
 
+	Invoke gnome-doc-common from autogen.sh
+
+	* autogen.sh: Execute "gnome-doc-common --copy" to install the files
+	omf.make and xmldocs.make into the source tree.
+
+2009-07-24  Daniel Elstner  <danielk@openismus.com>
+
 	Use G_GSIZE_FORMAT instead of a cast
 
 	* glom/libglom/python_embed/pygdavalue_conversions.c: Change format
