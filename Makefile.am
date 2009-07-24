@@ -19,8 +19,7 @@
 ## to build the entire tree (excluding po and docs/user-guide as gettext and
 ## gnome-doc-utils come with their own build systems).  Read Peter Miller's
 ## excellent paper to learn why recursive make invocations are both slow and
-## error-prone:
-## http://members.pcug.org.au/~millerp/rmch/recu-make-cons-harm.html
+## error-prone:  http://miller.emu.id.au/pmiller/books/rmch/
 
 AUTOMAKE_OPTIONS = subdir-objects
 ACLOCAL_AMFLAGS  = -I macros ${ACLOCAL_FLAGS}
