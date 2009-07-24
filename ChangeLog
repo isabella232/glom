@@ -1,5 +1,16 @@
 2009-07-24  Daniel Elstner  <danielk@openismus.com>
 
+	Split Makefile.am into logically separate parts
+
+	* glom.am: New file for building the glom binary itself.
+	* libglom.am: New file for building the libglom library.
+	* libegg.am: New file for building the libegg static library.
+	* tests.am: New file for building the test programs.
+	* Makefile.am: Move logical chunks into the separate files listed
+	above, and pull them in as Automake include files.
+
+2009-07-24  Daniel Elstner  <danielk@openismus.com>
+
 	Invoke gnome-doc-common from autogen.sh
 
 	* autogen.sh: Execute "gnome-doc-common --copy" to install the files

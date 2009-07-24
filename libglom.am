@@ -1,0 +1,175 @@
+## Copyright (c) 2009  Daniel Elstner <daniel.kitta@gmail.com>
+##
+## This file is part of Glom.
+##
+## Glom is free software: you can redistribute it and/or modify it
+## under the terms of the GNU General Public License as published
+## by the Free Software Foundation, either version 2 of the License,
+## or (at your option) any later version.
+##
+## Glom is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+## See the GNU General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+libglom_includedir = $(includedir)/glom-$(GLOM_ABI_VERSION)/libglom
+libglom_include_HEADERS =			\
+	glom/libglom/appstate.h			\
+	glom/libglom/init.h			\
+	glom/libglom/libglom_config.h		\
+	glom/libglom/sharedptr.h		\
+	glom/libglom/standard_table_prefs_fields.h
+
+libglom_data_structure_includedir = $(libglom_includedir)/data_structure
+libglom_data_structure_include_HEADERS =			\
+	glom/libglom/data_structure/field.h			\
+	glom/libglom/data_structure/fieldtypes.h		\
+	glom/libglom/data_structure/foundset.h			\
+	glom/libglom/data_structure/glomconversions.h		\
+	glom/libglom/data_structure/groupinfo.h			\
+	glom/libglom/data_structure/iso_codes.h			\
+	glom/libglom/data_structure/numeric_format.h		\
+	glom/libglom/data_structure/parameternamegenerator.h	\
+	glom/libglom/data_structure/print_layout.h		\
+	glom/libglom/data_structure/privileges.h		\
+	glom/libglom/data_structure/relationship.h		\
+	glom/libglom/data_structure/report.h			\
+	glom/libglom/data_structure/system_prefs.h		\
+	glom/libglom/data_structure/tableinfo.h			\
+	glom/libglom/data_structure/translatable_item.h
+
+libglom_ds_layout_includedir = $(libglom_data_structure_includedir)/layout
+libglom_ds_layout_include_HEADERS =					\
+	glom/libglom/data_structure/layout/custom_title.h		\
+	glom/libglom/data_structure/layout/fieldformatting.h		\
+	glom/libglom/data_structure/layout/layoutgroup.h		\
+	glom/libglom/data_structure/layout/layoutitem.h			\
+	glom/libglom/data_structure/layout/layoutitem_button.h		\
+	glom/libglom/data_structure/layout/layoutitem_calendarportal.h	\
+	glom/libglom/data_structure/layout/layoutitem_field.h		\
+	glom/libglom/data_structure/layout/layoutitem_image.h		\
+	glom/libglom/data_structure/layout/layoutitem_line.h		\
+	glom/libglom/data_structure/layout/layoutitem_notebook.h	\
+	glom/libglom/data_structure/layout/layoutitem_placeholder.h	\
+	glom/libglom/data_structure/layout/layoutitem_portal.h		\
+	glom/libglom/data_structure/layout/layoutitem_text.h		\
+	glom/libglom/data_structure/layout/usesrelationship.h
+
+libglom_ds_l_report_parts_includedir = $(libglom_ds_layout_includedir)/report_parts
+libglom_ds_l_report_parts_include_HEADERS =						\
+	glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h	\
+	glom/libglom/data_structure/layout/report_parts/layoutitem_footer.h		\
+	glom/libglom/data_structure/layout/report_parts/layoutitem_groupby.h		\
+	glom/libglom/data_structure/layout/report_parts/layoutitem_header.h		\
+	glom/libglom/data_structure/layout/report_parts/layoutitem_summary.h		\
+	glom/libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.h
+
+libglom_document_includedir = $(libglom_includedir)/document
+libglom_document_include_HEADERS =		\
+	glom/libglom/document/document.h	\
+	glom/libglom/document/view.h
+
+libglom_d_bakery_includedir = $(libglom_document_includedir)/bakery
+libglom_d_bakery_include_HEADERS =			\
+	glom/libglom/document/bakery/document.h		\
+	glom/libglom/document/bakery/document_xml.h
+
+libglom_d_b_view_includedir = $(libglom_d_bakery_includedir)/view
+libglom_d_b_view_include_HEADERS =				\
+	glom/libglom/document/bakery/view/view.h		\
+	glom/libglom/document/bakery/view/view_composite.h	\
+	glom/libglom/document/bakery/view/viewbase.h
+
+glom_libglom_libglom_1_12_la_SOURCES =					\
+	glom/libglom/appstate.cc					\
+	glom/libglom/calcinprogress.cc					\
+	glom/libglom/calcinprogress.h					\
+	glom/libglom/connectionpool.cc					\
+	glom/libglom/connectionpool.h					\
+	glom/libglom/gst-package.c					\
+	glom/libglom/gst-package.h					\
+	glom/libglom/init.cc						\
+	glom/libglom/spawn_with_feedback.cc				\
+	glom/libglom/spawn_with_feedback.h				\
+	glom/libglom/utils.cc						\
+	glom/libglom/utils.h						\
+	glom/libglom/connectionpool_backends/backend.cc			\
+	glom/libglom/connectionpool_backends/backend.h			\
+	glom/libglom/data_structure/field.cc				\
+	glom/libglom/data_structure/fieldtypes.cc			\
+	glom/libglom/data_structure/foundset.cc				\
+	glom/libglom/data_structure/glomconversions.cc			\
+	glom/libglom/data_structure/groupinfo.cc			\
+	glom/libglom/data_structure/iso_codes.cc			\
+	glom/libglom/data_structure/numeric_format.cc			\
+	glom/libglom/data_structure/parameternamegenerator.cc		\
+	glom/libglom/data_structure/print_layout.cc			\
+	glom/libglom/data_structure/privileges.cc			\
+	glom/libglom/data_structure/relationship.cc			\
+	glom/libglom/data_structure/report.cc				\
+	glom/libglom/data_structure/system_prefs.cc			\
+	glom/libglom/data_structure/tableinfo.cc			\
+	glom/libglom/data_structure/translatable_item.cc		\
+	glom/libglom/data_structure/layout/custom_title.cc		\
+	glom/libglom/data_structure/layout/fieldformatting.cc		\
+	glom/libglom/data_structure/layout/layoutgroup.cc		\
+	glom/libglom/data_structure/layout/layoutitem.cc		\
+	glom/libglom/data_structure/layout/layoutitem_button.cc		\
+	glom/libglom/data_structure/layout/layoutitem_calendarportal.cc	\
+	glom/libglom/data_structure/layout/layoutitem_field.cc		\
+	glom/libglom/data_structure/layout/layoutitem_image.cc		\
+	glom/libglom/data_structure/layout/layoutitem_line.cc		\
+	glom/libglom/data_structure/layout/layoutitem_notebook.cc	\
+	glom/libglom/data_structure/layout/layoutitem_placeholder.cc	\
+	glom/libglom/data_structure/layout/layoutitem_portal.cc		\
+	glom/libglom/data_structure/layout/layoutitem_text.cc		\
+	glom/libglom/data_structure/layout/usesrelationship.cc		\
+	glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc	\
+	glom/libglom/data_structure/layout/report_parts/layoutitem_footer.cc		\
+	glom/libglom/data_structure/layout/report_parts/layoutitem_groupby.cc		\
+	glom/libglom/data_structure/layout/report_parts/layoutitem_header.cc		\
+	glom/libglom/data_structure/layout/report_parts/layoutitem_summary.cc		\
+	glom/libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.cc	\
+	glom/libglom/document/document.cc				\
+	glom/libglom/document/bakery/document.cc			\
+	glom/libglom/document/bakery/document_xml.cc			\
+	glom/libglom/document/bakery/view/view.cc			\
+	glom/libglom/document/bakery/view/view_composite.cc		\
+	glom/libglom/document/bakery/view/viewbase.cc			\
+	glom/libglom/python_embed/py_glom_record.cc			\
+	glom/libglom/python_embed/py_glom_record.h			\
+	glom/libglom/python_embed/py_glom_related.cc			\
+	glom/libglom/python_embed/py_glom_related.h			\
+	glom/libglom/python_embed/py_glom_relatedrecord.cc		\
+	glom/libglom/python_embed/py_glom_relatedrecord.h		\
+	glom/libglom/python_embed/pygdavalue_conversions.c		\
+	glom/libglom/python_embed/pygdavalue_conversions.h
+
+if GLOM_ENABLE_POSTGRESQL
+glom_libglom_libglom_1_12_la_SOURCES +=				\
+	glom/libglom/connectionpool_backends/postgres.cc	\
+	glom/libglom/connectionpool_backends/postgres.h		\
+	glom/libglom/connectionpool_backends/postgres_central.cc\
+	glom/libglom/connectionpool_backends/postgres_central.h
+if !GLOM_ENABLE_CLIENT_ONLY
+glom_libglom_libglom_1_12_la_SOURCES +=				\
+	glom/libglom/connectionpool_backends/postgres_self.cc	\
+	glom/libglom/connectionpool_backends/postgres_self.h
+endif
+endif
+if GLOM_ENABLE_SQLITE
+glom_libglom_libglom_1_12_la_SOURCES +=				\
+	glom/libglom/connectionpool_backends/sqlite.cc		\
+	glom/libglom/connectionpool_backends/sqlite.h
+endif
+
+glom_libglom_libglom_1_12_la_LIBADD = $(LIBGLOM_LIBS) $(PYTHON_LIBS)
+
+if GLOM_ENABLE_MAEMO
+glom_libglom_libglom_1_12_la_LDFLAGS = -no-undefined -static
+else
+glom_libglom_libglom_1_12_la_LDFLAGS = -no-undefined
+endif
