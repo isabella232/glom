@@ -1,5 +1,14 @@
 2009-07-24  Daniel Elstner  <danielk@openismus.com>
 
+	Use G_GSIZE_FORMAT instead of a cast
+
+	* glom/libglom/python_embed/pygdavalue_conversions.c: Change format
+	specifier for GType to "%" G_GSIZE_FORMAT and remove the explicit cast
+	again.  I forgot that this is C code, so GType will always be gsize --
+	at least with recent versions of GLib.
+
+2009-07-24  Daniel Elstner  <danielk@openismus.com>
+
 	Use format "%lu" for GType and add cast
 
 	* glom/libglom/python_embed/pygdavalue_conversions.c: Change format
