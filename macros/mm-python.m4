@@ -67,7 +67,7 @@ AS_IF([test "x$PYTHON_LIBS" = x],
   do
     AS_IF([test -f "$mm_dir/lib$mm_pylib.so" || \
            test -f "$mm_dir/lib$mm_pylib.a"],
-          [AS_CASE([$mm_dir], [/usr/lib|/usr/local/lib],
+          [AS_CASE([$mm_dir], [[/usr/lib|/usr/lib64]],
                    [PYTHON_LIBS="$PYTHON_LIBS -l$mm_pylib"; break],
                    [PYTHON_LIBS="$PYTHON_LIBS -L$mm_dir -l$mm_pylib"; break])],
           [test -f "$mm_dir/lib$mm_pylib_win.dll.a" || \
