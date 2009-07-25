@@ -638,19 +638,14 @@ Base_DB::type_vec_fields Base_DB::get_fields_for_table_from_database(const Glib:
     Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
 
     Glib::RefPtr<Gnome::Gda::Holder> holder_table_name = Gnome::Gda::Holder::create(G_TYPE_STRING, "name");
-    Glib::ustring quoted_table_name;
-    if(gda_sql_identifier_needs_quotes(table_name.c_str()))
-    {
-      gchar* quoted_table_name_c = gda_sql_identifier_add_quotes(table_name.c_str());
-      quoted_table_name = quoted_table_name_c;
-      g_free(quoted_table_name_c);
-    }
-    else
-    {
-      quoted_table_name = table_name;
-    }
+    gchar* quoted_table_name_c = gda_meta_store_sql_identifier_quote(table_name.c_str(), connection->gobj());
+    g_assert(quoted_table_name_c);
+    Glib::ustring quoted_table_name(quoted_table_name_c);
+    g_free (quoted_table_name_c);
+    quoted_table_name_c = 0;
 
     holder_table_name->set_value(quoted_table_name);
+
     std::list< Glib::RefPtr<Gnome::Gda::Holder> > holder_list;
     holder_list.push_back(holder_table_name);
 
