@@ -1,5 +1,12 @@
 2009-07-25  Daniel Elstner  <danielk@openismus.com>
 
+	List auto-generated files in MAINTAINERCLEANFILES
+
+	* Makefile.am (MAINTAINERCLEANFILES): Clean up the macros/*.m4 files
+	installed by autogen.sh, as well as the eggmarshalers.[ch] files.
+
+2009-07-25  Daniel Elstner  <danielk@openismus.com>
+
 	Pass --automake option to gnome-doc-prepare
 
 	* autogen.sh: Invoke gnome-doc-prepare with the --automake option to

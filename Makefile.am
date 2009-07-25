@@ -145,7 +145,13 @@ dist_noinst_SCRIPTS = autogen.sh win32/build-installer
 
 CLEANFILES = $(desktop_DATA) $(win_resfile)
 DISTCLEANFILES = intltool-extract intltool-merge intltool-update
-MAINTAINERCLEANFILES = $(dist_docutils) $(dist_intltool)
+MAINTAINERCLEANFILES = \
+	$(dist_docutils) $(dist_intltool) \
+	glom/utility_widgets/egg/util/eggmarshalers.c \
+	glom/utility_widgets/egg/util/eggmarshalers.h \
+	macros/gnome-doc-utils.m4 macros/intltool.m4 \
+	macros/libtool.m4 macros/ltoptions.m4 macros/ltsugar.m4 \
+	macros/ltversion.m4 macros/lt~obsolete.m4
 
 # The location of the gettext catalogs as defined by intltool.
 glom_localedir = $(prefix)/$(DATADIRNAME)/locale
