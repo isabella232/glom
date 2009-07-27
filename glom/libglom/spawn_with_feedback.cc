@@ -544,7 +544,7 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
     Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
     sigc::connection connection_timeout = Glib::signal_timeout().connect(
      sigc::bind(sigc::ptr_fun(&on_timeout_delay), sigc::ref(mainloop)), 
-     3000);
+     8000);
     mainloop->run();
 
     connection_timeout.disconnect();

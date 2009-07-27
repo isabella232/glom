@@ -356,7 +356,7 @@ bool PostgresSelfHosted::startup(const SlotProgress& slot_progress, bool network
   }
 
   m_port = available_port; //Remember it for later.
-
+  
   return true;
 }
 
