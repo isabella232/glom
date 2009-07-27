@@ -45,7 +45,7 @@ def exit_glom():
 	ldtp.selectmenuitem(main_window, 'mnuFile;mnuClose')
 
 	if ldtp.waittillguinotexist('*Glom*') == 0:
-		raise ldtp.LdtpExecutionError('The Glom Window does not disappear after closing the application')
+		raise ldtp.LdtpExecutionError('The Glom Window did not disappear after closing the application.')
 
 # Reads hostname, username and password to use for access to a
 # centrally hosted database server
@@ -80,7 +80,7 @@ def enter_connection_credentials(backend_name):
 
 		# Make sure it's gone
 		if ldtp.waittillguinotexist('Connection Details') == 0:
-			raise ldtp.LdtpExecutionError('Connection details dialog does not disappear')
+			raise ldtp.LdtpExecutionError('The cnnection details dialog did not disappear')
 
 # Selects one of the backends in button_texts in the database creation dialog
 def select_backend(dialog_title, backend_name):

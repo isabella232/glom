@@ -58,7 +58,7 @@ try:
 
 	# Wait for the file chooser dialog to appear:
 	if waittillguiexist(creation_dialog) == 0:
-		raise LdtpExecutionError('The file chooser dialog does not appear.')
+		raise LdtpExecutionError('The file chooser dialog window did not appear.')
 
 	# Navigate into the newly created folder:
 	doubleclickrow(creation_dialog, 'tblFiles', 'TestDatabase')
@@ -79,7 +79,7 @@ try:
 	if not example:
 		# Wait for the Tables dialog to appear
 		if waittillguiexist('Tables') == 0:
-			raise LdtpExecutionError('Tables dialog does not appear')
+			raise LdtpExecutionError('The tables dialog window did not appear.')
 
 		# Create an initial table
 		click('Tables', 'Add')

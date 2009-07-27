@@ -1,5 +1,13 @@
 2009-07-27  Murray Cumming  <murrayc@murrayc.com>
 
+	ldtp tests: Correct the English in the error messages.
+	
+	* ldtp/common.py:
+	* ldtp/database-creation/create-db.py:
+	* ldtp/fields-edit/fields-edit.py: Correct the English in the error messages.
+
+2009-07-27  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/dialog_image_progress.cc: on_stream_read(): Add casts 
 	to avoid compiler warnings, to fix distcheck.
 

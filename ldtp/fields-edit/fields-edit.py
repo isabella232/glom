@@ -58,7 +58,7 @@ try:
 
 	field_definitions = 'Field Definitions'
 	if waittillguiexist(field_definitions) == 0:
-		raise LdtpExecutionError('Field Definitions dialog did not appear.')
+		raise LdtpExecutionError('The Field Definitions dialog window did not appear.')
 
 	# Add a new field:
 	click(field_definitions, 'btnAdd')
