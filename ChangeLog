@@ -1,5 +1,10 @@
 2009-07-27  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/dialog_image_progress.cc: on_stream_read(): Add casts 
+	to avoid compiler warnings, to fix distcheck.
+
+2009-07-27  Murray Cumming  <murrayc@murrayc.com>
+
 	Add more delay so that self-hosting does not fail sometimes.
 	
 	* glom/libglom/spawn_with_feedback.cc: 
