@@ -29,8 +29,12 @@ AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_CXX
 
-LT_PREREQ([2.2.0])
-LT_INIT([disable-static win32-dll])
+dnl Maemo still ships with the ancient libtool 1.4
+dnl LT_PREREQ([2.2.0])
+dnl LT_INIT([disable-static win32-dll])
+AC_DISABLE_STATIC
+AC_LIBTOOL_WIN32_DLL
+AC_PROG_LIBTOOL
 
 # Used for the install directories for headers.  The same number is used in
 # the library name, which must be kept in sync, but variables can't be used

@@ -1,3 +1,14 @@
+2009-07-28  Daniel Elstner  <danielk@openismus.com>
+
+	Use deprecated libtool macros for Maemo's sake
+
+	* configure.ac (LT_PREREQ), (LT_INIT): Comment-out.
+	(AC_PROG_LIBTOOL): Use old-style and deprecated M4 macro to initialize
+	libtool because the Maemo development environment still ships with the
+	ancient libtool 1.4.
+	(AC_DISABLE_STATIC), (AC_LIBTOOL_WIN32_DLL): Call old-style macros to
+	set libtool options, instead of passing flag arguments to LT_INIT().
+
 2009-07-27  Murray Cumming  <murrayc@murrayc.com>
 
 	ldtp tests: Correct the English in the error messages.
