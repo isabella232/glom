@@ -21,8 +21,17 @@
 ## excellent paper to learn why recursive make invocations are both slow and
 ## error-prone:  http://miller.emu.id.au/pmiller/books/rmch/
 
+# Put compiled object files into the same sub-directory as their sources
 AUTOMAKE_OPTIONS = subdir-objects
+
+# Use .cc as default extension if no _SOURCES have been defined
+AM_DEFAULT_SOURCE_EXT = .cc
+
+# Point to our macro directory and pick up user flags from the environment
 ACLOCAL_AMFLAGS  = -I macros ${ACLOCAL_FLAGS}
+
+# Make warnings always fatal at distcheck time, and disable execution
+# of tools that change files not installed by the package itself
 DISTCHECK_CONFIGURE_FLAGS = --enable-warnings=fatal \
 --disable-scrollkeeper --disable-update-mime-database
 
@@ -43,16 +52,6 @@ SUFFIXES = .rc .res
 bin_PROGRAMS = glom/glom
 lib_LTLIBRARIES = glom/libglom/libglom-1.12.la
 pyexec_LTLIBRARIES = glom/python_embed/python_module/glom_1_12.la
-
-noinst_PROGRAMS =						\
-	glom/libglom/test_connectionpool			\
-	glom/libglom/test_document				\
-	glom/libglom/test_sharedptr_layoutitem			\
-	glom/utility_widgets/test_flowtable			\
-	glom/utility_widgets/egg/toolpalette/testtoolpalette	\
-	glom/test_pyembed					\
-	regression_tests/test_parsing_time			\
-	regression_tests/test_signal_reemit
 
 noinst_LIBRARIES =						\
 	glom/utility_widgets/egg/toolpalette/libeggtoolpalette.a\

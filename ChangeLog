@@ -1,5 +1,16 @@
 2009-07-28  Daniel Elstner  <danielk@openismus.com>
 
+	Build and run tests on make check
+
+	* Makefile.am (AM_DEFAULT_SOURCE_EXT): Make use of the Automake default
+	_SOURCES feature for building single-source-file programs.
+	(noinst_PROGRAMS): Move to tests.am.
+	* tests.am (check_PROGRAMS): List all test executables here, so they
+	are only built on make check.
+	(TESTS): List unit test programs from the regression_tests/ directory.
+
+2009-07-28  Daniel Elstner  <danielk@openismus.com>
+
 	Use deprecated libtool macros for Maemo's sake
 
 	* configure.ac (LT_PREREQ), (LT_INIT): Comment-out.
