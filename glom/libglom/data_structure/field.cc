@@ -253,8 +253,23 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value, const Glib::RefPtr<Gnom
 
 Glib::ustring Field::sql(const Gnome::Gda::Value& value) const
 {
-  //TODO: Handle exceptions as in BaseDB::connect().
-  sharedptr<SharedConnection> connection = ConnectionPool::get_instance()->connect();
+  sharedptr<SharedConnection> connection;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    connection = ConnectionPool::get_instance()->connect();
+  }
+  catch (Glom::ExceptionConnection& ex)
+  {
+    //TODO: Do something more useful here
+    std::cerr << "Field::sql, connection failed: " << ex.what() << std::endl;
+  }
+#else
+  std::auto_ptr<Glom::ExceptionConnection> ex;
+  connection = ConnectionPool::get_instance()->connect(ex);
+  if (ex.get())
+    std::cerr << "Field::sql, connection failed: " << ex->what() << std::endl;
+#endif
   if(connection)
   {
     Glib::RefPtr<Gnome::Gda::Connection> gda_connection = connection->get_gda_connection();
@@ -527,7 +542,12 @@ Glib::RefPtr<Gnome::Gda::Holder> Field::get_holder(const Gnome::Gda::Value& valu
   */
 
   Glib::RefPtr<Gnome::Gda::Holder> holder = Gnome::Gda::Holder::create(gtype, real_name);
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   holder->set_value_as_value(value);
+#else
+  std::auto_ptr<Glib::Error> ex;
+  holder->set_value_as_value(value, ex);
+#endif
   return holder;
 }
 

@@ -168,7 +168,13 @@ private:
     channel->set_flags(Glib::IO_FLAG_NONBLOCK, error);
 #endif // !GLIBMM_EXCEPTIONS_ENABLED
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     channel->set_encoding("");
+#else
+    channel->set_encoding("", error);
+    if (error.get())
+      std::cerr << "Error: " << error->what() << std::endl;
+#endif
     channel->set_buffered(false);
 
     Glib::signal_io().connect(sigc::bind(sigc::mem_fun(*this, &SpawnInfo::on_io), channel, sigc::ref(string)), channel, Glib::IO_IN);
@@ -220,8 +226,14 @@ public:
       std::vector<std::string> arguments = Glib::shell_parse_argv(command_line);
       int child_stdout;
       int child_stderr;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
       Glib::spawn_async_with_pipes(Glib::get_current_dir(), arguments, Glib::SPAWN_DO_NOT_REAP_CHILD, sigc::slot<void>(), &pid, NULL, redirect & REDIRECT_STDOUT ? &child_stdout : NULL, redirect & REDIRECT_STDERR ? &child_stderr : NULL);
-
+#else
+      std::auto_ptr<Glib::Error> error;
+      Glib::spawn_async_with_pipes(Glib::get_current_dir(), arguments, Glib::SPAWN_DO_NOT_REAP_CHILD, sigc::slot<void>(), &pid, NULL, redirect & REDIRECT_STDOUT ? &child_stdout : NULL, redirect & REDIRECT_STDERR ? &child_stderr : NULL, error);
+      if (error.get())
+        std::cerr << "Spawn Error: " << error->what() << std::endl;
+#endif
       if(redirect & REDIRECT_STDOUT)
         redirect_to_string(child_stdout, stdout_text);
       if(redirect & REDIRECT_STDERR)
@@ -444,7 +456,7 @@ namespace
       // a row or so.
     }
 #else
-    Impl::spawn_sync(second_commands, &stdout_output, NULL, &return_status);
+    Impl::spawn_sync(second_command, &stdout_output, NULL);
 #endif
 
     if(!success_text.empty())

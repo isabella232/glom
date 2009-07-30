@@ -213,8 +213,8 @@ bool Document::read_from_disk()
     return false; //print_error(ex, input_uri_string);
   }
 #else
-  std::auto_ptr<Gio::Error> error;
-  Glib::RefPtr<FileInputStream> stream = file.read(error);
+  std::auto_ptr<Glib::Error> error;
+  stream = file->read(error);
   if(error.get() != NULL)
     return false; //print_error(ex, input_uri_string);
 #endif
@@ -234,8 +234,9 @@ bool Document::read_from_disk()
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
       bytes_read = stream->read(buffer, BYTES_TO_PROCESS);
 #else
-      bytes_read = stream->read(buffer, BYTES_TO_PROCESS, error);
-      if(error.get() != NULL) break;
+      std::auto_ptr<Glib::Error> gerror;
+      bytes_read = stream->read(buffer, BYTES_TO_PROCESS, gerror);
+      if(gerror.get() != NULL) break;
 #endif
 
       if(bytes_read == 0)
@@ -253,7 +254,7 @@ bool Document::read_from_disk()
 #else
   if(error.get() != NULL)
   {
-    Gio::Error& ex = *error.get();
+    std::cerr << "Error: " << error->what() << std::endl;
 #endif
     // If the operation was not successful, print the error and abort
     return false; //print_error(ex, input_uri_string);
@@ -292,11 +293,11 @@ bool Document::write_to_disk()
     catch(const Gio::Error& ex)
     {
 #else
-    std::auto_ptr<Gio::Error> error;
-    stream.create(error);
+    std::auto_ptr<Glib::Error> error;
+    stream = file->replace(std::string(), false, Gio::FILE_CREATE_NONE, error);
     if(error.get() != NULL)
     {
-      const Gio::Error& ex = *error.get();
+      std::cout << "Error: " << error->what() << std::endl;
 #endif
      // If the operation was not successful, print the error and abort
      return false; // print_error(ex, output_uri_string);
@@ -321,10 +322,11 @@ bool Document::write_to_disk()
     catch(const Gio::Error& ex)
     {
 #else
-    stream->write(m_strContents.data(), m_strContents.bytes(), error);
-    if(error.get() != NULL)
+    std::auto_ptr<Glib::Error> gerror;
+    stream->write(m_strContents.data(), m_strContents.bytes(), gerror);
+    if(gerror.get() != NULL)
     {
-      Gio::Error& ex = *error.get();
+      std::cerr << "Error: "<< gerror.get() << std::endl;
 #endif
       // If the operation was not successful, print the error and abort
       return false; //print_error(ex, output_uri_string);
@@ -404,8 +406,8 @@ bool Document::get_read_only() const
         return false; //We should at least be able to read the permissions, so maybe the location is invalid. I'm not sure what the best return result here is.
       }
 #else
-      std::auto_ptr<Gio::Error> error;
-      info = file.query_info(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE, Gio::FILE_QUERY_INFO_NONE, error);
+      std::auto_ptr<Glib::Error> error;
+      info = file->query_info(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE, Gio::FILE_QUERY_INFO_NONE, error);
       if(error.get() != NULL)
         return false;
 #endif

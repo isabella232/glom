@@ -71,7 +71,11 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
 
       for(int i = 0; i < rows; ++i)
       {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
         const Gnome::Gda::Value value_name = data_model_tables->get_value_at(DATAMODEL_FIELDS_COL_NAME, i);
+#else
+        const Gnome::Gda::Value value_name = data_model_tables->get_value_at(DATAMODEL_FIELDS_COL_NAME, i, error);
+#endif
 
         //Get the types's string representation:
         Glib::ustring schema_type_string;
@@ -80,7 +84,11 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
         
         if(!schema_type_string.empty())
         {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
           Gnome::Gda::Value value_gdatype = data_model_tables->get_value_at(DATAMODEL_FIELDS_COL_GTYPE, i);
+#else
+          Gnome::Gda::Value value_gdatype = data_model_tables->get_value_at(DATAMODEL_FIELDS_COL_GTYPE, i, error);
+#endif
           if(value_gdatype.get_value_type() == G_TYPE_STRING)
           {
             Glib::ustring type_string = value_gdatype.get_string();

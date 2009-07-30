@@ -437,7 +437,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
   Glib::RefPtr<Gnome::Gda::DataModel> datamodel = connection->get_gda_connection()->statement_execute_select(sql_query);
 #else
   std::auto_ptr<Glib::Error> error;
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = connection->get_gda_connection()->statement_execute_select(sql_query, error);
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = connection->get_gda_connection()->statement_execute_select(sql_query, Gnome::Gda::STATEMENT_MODEL_RANDOM_ACCESS, error);
 #endif
 
   if(datamodel)
@@ -446,13 +446,20 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
     //std::cout << "  result: count=" << count << std::endl;
     for(guint row = 0; row < count; ++row)
     {
+
       std::pair<Gnome::Gda::Value, Gnome::Gda::Value> itempair;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
       itempair.first = datamodel->get_value_at(0, row);
 
       if(with_second)
         itempair.second = datamodel->get_value_at(1, row);
+#else
+      itempair.first = datamodel->get_value_at(0, row, error);
 
+      if(with_second)
+        itempair.second = datamodel->get_value_at(1, row, error);
       list_values.push_back(itempair);
+#endif      
     }
   }
   else
@@ -796,8 +803,7 @@ bool Utils::file_exists(const Glib::ustring& uri)
       return false; //Something went wrong. It does not exist.
     }
 #else
-      std::auto_ptr<Gio::Error> error;
-      retrun file->query_exists(error);
+      return file->query_exists();
 #endif
   }
 }

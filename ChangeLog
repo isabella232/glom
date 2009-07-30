@@ -1,3 +1,15 @@
+2009-07-30  Johannes Schmid <jschmid@openismus.com>
+
+	* autogen.sh: Use automake-1.10 explicitly
+	* glom/libglom/connectionpool.cc
+	* glom/libglom/connectionpool_backends/postgres.cc
+	* glom/libglom/data_structure/field.cc
+	* glom/libglom/data_structure/fieldtypes.cc
+	* glom/libglom/document/bakery/document.cc           |   28 ++++++-----
+	* glom/libglom/python_embed/py_glom_relatedrecord.cc |   12 ++++-
+	* glom/libglom/spawn_with_feedback.cc                |   16 ++++++-
+	* glom/libglom/utils.cc                              |   12 ++++-
+
 2009-07-28  Daniel Elstner  <danielk@openismus.com>
 
 	Build and run tests on make check

@@ -81,33 +81,36 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
   std::cout << "  DEBUG: auth_string=" << auth_string << std::endl;
 #endif
 
-  //TODO: Use CONNECTION_OPTIONS_READ_ONLY in the client-only build:
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     connection = Gnome::Gda::Connection::open_from_string("PostgreSQL", 
       cnc_string, auth_string, 
-      Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
-    
+      Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+      | Gnome::Gda::CONNECTION_OPTIONS_READ_ONLY
+#endif
+      );
     connection->statement_execute_non_select("SET DATESTYLE = 'ISO'");
     data_model = connection->statement_execute_select("SELECT version()");
   }
   catch(const Glib::Error& ex)
   {
 #else
-  std::auto_ptr<Glib::Error> error;
+  std::auto_ptr<Glib::Error> ex;
   connection = Gnome::Gda::Connection::open_from_string("PostgreSQL", 
-    cnc_string, auth_string, Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE, error);
+    cnc_string, auth_string,
+    Gnome::Gda::CONNECTION_OPTIONS_READ_ONLY,
+    ex);
   
-  if(!error)
-    connection->statement_execute_non_select("SET DATESTYLE = 'ISO'", error);
+  if(!ex.get())
+    connection->statement_execute_non_select("SET DATESTYLE = 'ISO'", ex);
 
-  if(!error)
-    data_model = connection->statement_execute_select("SELECT version()", error);
+  if(!ex.get())
+    data_model = connection->statement_execute_select("SELECT version()", Gnome::Gda::STATEMENT_MODEL_RANDOM_ACCESS, ex);
 
-  if(glib_error.get())
+  if(!ex.get())
   {
-    const Glib::Error& ex = *glib_error;
 #endif
 
 #ifdef GLOM_CONNECTION_DEBUG
@@ -128,9 +131,9 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
     catch(const Glib::Error& ex)
     {}
 #else
-    temp_conn = client->open_connection_from_string("PostgreSQL", 
+    temp_conn = Gnome::Gda::Connection::open_from_string("PostgreSQL", 
       cnc_string, auth_string, 
-      Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE, glib_error);
+      Gnome::Gda::CONNECTION_OPTIONS_READ_ONLY, ex);
 #endif
 
 #ifdef GLOM_CONNECTION_DEBUG
@@ -146,7 +149,11 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
 
   if(data_model && data_model->get_n_rows() && data_model->get_n_columns())
   {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     Gnome::Gda::Value value = data_model->get_value_at(0, 0);
+#else
+    Gnome::Gda::Value value = data_model->get_value_at(0, 0, ex);
+#endif
     if(value.get_value_type() == G_TYPE_STRING)
     {
       const Glib::ustring version_text = value.get_string();
@@ -393,17 +400,20 @@ bool Postgres::attempt_create_database(const Glib::ustring& database_name, const
     return false;
   }
 #else
-  std::auto_ptr<Glib::Error> error;
+  std::auto_ptr<Glib::Error> ex;
   op = Gnome::Gda::ServerOperation::prepare_create_database("PostgreSQL",
                                                             database_name,
-                                                            error);
-  if(error)
+                                                            ex);
+  if(ex.get())
     return false;
 
   //TODO: Why is this here but not in the EXCEPTIONS_ENABLED part?
-  op = cnc->create_operation(Gnome::Gda::SERVER_OPERATION_CREATE_DB, set, error);
-  if(error)
+  // jhs: Does look like a bug to me, shouldn't be there
+#if 0
+  op = cnc->create_operation(Gnome::Gda::SERVER_OPERATION_CREATE_DB, set, ex.get());
+  if(ex.get())
     return false;
+#endif
 #endif
   g_assert(op);
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -427,8 +437,10 @@ bool Postgres::attempt_create_database(const Glib::ustring& database_name, const
   op->set_value_at("/SERVER_CNX_P/ADM_PASSWORD", password, error);
 
   if(error.get() == 0)
-    op->perform_create_database("PostgreSQL");
+    op->perform_create_database("PostgreSQL", ex);
   else
+    return false;
+  if (error.get())
     return false;
 #endif //GLIBMM_EXCEPTIONS_ENABLED
 

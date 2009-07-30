@@ -377,6 +377,7 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
         //Allow get_meta_store_data() to succeed:
         //Hopefully this (and the update_meta_store_for_table() calls) is all we need.
         //std::cout << "DEBUG: Calling update_meta_store_data_types() ..." << std::endl;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
         try
         {
           m_refGdaConnection->update_meta_store_data_types();
@@ -386,8 +387,14 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
           std::cerr << "ConnectionPool::connect(): update_meta_store_data_types() failed: " << ex.what() << std::endl;
         }
         //std::cout << "DEBUG: ... update_meta_store_data_types() has finished." << std::endl;
-
+#else
+        std::auto_ptr<Glib::Error> ex;
+        m_refGdaConnection->update_meta_store_data_types(ex);
+        if (ex.get())
+          std::cerr << "ConnectionPool::connect(): update_meta_store_data_types() failed: " << ex->what() << std::endl;
+#endif
         //std::cout << "DEBUG: Calling update_meta_store_table_names() ..." << std::endl;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
         try
         {
           //update_meta_store_table_names() has been known to throw an exception.
@@ -399,6 +406,11 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
           std::cerr << "ConnectionPool::connect(): update_meta_store_table_names() failed: " << ex.what() << std::endl;
         }
         //std::cout << "DEBUG: ... update_meta_store_table_names() has finished." << std::endl;
+#else
+        m_refGdaConnection->update_meta_store_table_names(m_backend->get_public_schema_name(), ex);
+        if (ex.get())
+          std::cerr << "ConnectionPool::connect(): update_meta_store_data_types() failed: " << ex->what() << std::endl;
+#endif
 
         // Connection succeeded
         // Create the fieldtypes member if it has not already been done:
@@ -695,19 +707,20 @@ bool ConnectionPool::add_column(const Glib::ustring& table_name, const sharedptr
 
   if(!m_refGdaConnection)
     return false;
-
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   std::auto_ptr<Glib::Error> error;
+#endif
   const bool result = m_backend->add_column(m_refGdaConnection, table_name, field, error);
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   if(error.get()) throw *error;
-
   m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name());
 #else
-  const bool result = m_backend->add_column(m_refGdaConnection, table_name, field, error);
-  if(result)
-    result = m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name(), error);
+  if(error.get())
+    std::cerr << "Error: " << error->what() << std::endl; 
+  m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name(), error);
+  if(error.get())
+    std::cerr << "Error: " << error->what() << std::endl;   
 #endif
-
   return result;
 }
 
@@ -735,16 +748,18 @@ bool ConnectionPool::drop_column(const Glib::ustring& table_name, const Glib::us
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   std::auto_ptr<Glib::Error> error;
+#endif
   const bool result = m_backend->drop_column(m_refGdaConnection, table_name, field_name, error);
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   if(error.get()) throw *error;
-
   m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name());
 #else
-  const bool result = m_backend->drop_column(m_refGdaConnection, table_name, field_name, error);
-  if(result)
-    result = m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name(), error);
+  if(error.get())
+    std::cerr << "Error: " << error->what() << std::endl; 
+  m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name(), error);
+  if(error.get())
+    std::cerr << "Error: " << error->what() << std::endl; 
 #endif
-
   return result;
 }
 
@@ -788,16 +803,17 @@ bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   std::auto_ptr<Glib::Error> error;
-  const bool result = m_backend->change_columns(m_refGdaConnection, table_name, old_fields, new_fields, error);
-  if(error.get()) throw *error;
-
-  m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name());
-#else
-  const bool result = m_backend->change_columns(m_refGdaConnection, table_name, old_fields, new_fields, error);
-  if(result)
-    result = m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name(), error);
 #endif
+  const bool result = m_backend->change_columns(m_refGdaConnection, table_name, old_fields, new_fields, error);
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  if(error.get()) throw *error;
+  m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name());
 
+#else
+  if(error.get())
+    std::cerr << "Error: " << error->what() << std::endl; 
+  m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name(), error);
+#endif
   return result;
 }
 

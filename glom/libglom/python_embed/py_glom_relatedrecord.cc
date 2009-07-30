@@ -233,12 +233,16 @@ RelatedRecord_tp_as_mapping_getitem(PyObject *self, PyObject *item)
             Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->statement_execute_select(sql_query);
 #else
             std::auto_ptr<Glib::Error> error;
-            Glib::RefPtr<Gnome::Gda::DataModel> datamodel =  gda_connection->statement_execute_select(sql_query, error);
+            Glib::RefPtr<Gnome::Gda::DataModel> datamodel =  gda_connection->statement_execute_select(sql_query, Gnome::Gda::STATEMENT_MODEL_RANDOM_ACCESS, error);
             // Ignore error, datamodel return value is checked below
 #endif
             if(datamodel && datamodel->get_n_rows())
             {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED            
               Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
+#else
+              Gnome::Gda::Value value = datamodel->get_value_at(0, 0, error);
+#endif                            
               //g_warning("RelatedRecord_tp_as_mapping_getitem(): value from datamodel = %s", value.to_string().c_str());
 
               //Cache it, in case it's asked-for again.
@@ -335,14 +339,18 @@ RelatedRecord_generic_aggregate(PyGlomRelatedRecord* self, PyObject *args, PyObj
         Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->statement_execute_select(sql_query);
 #else
         std::auto_ptr<Glib::Error> error;
-        Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->execute_select_command(sql_query, error);
+        Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->statement_execute_select(sql_query, Gnome::Gda::STATEMENT_MODEL_RANDOM_ACCESS, error);
 
         // Ignore the error: The case that the command execution didn't return
         // a datamodel is handled below.
 #endif
         if(datamodel && datamodel->get_n_rows())
         {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED        
           Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
+#else
+          Gnome::Gda::Value value = datamodel->get_value_at(0, 0, error);
+#endif          
           //g_warning("RelatedRecord_generic_aggregate(): value from datamodel = %s", value.to_string().c_str());
 
           //Cache it, in case it's asked-for again.
