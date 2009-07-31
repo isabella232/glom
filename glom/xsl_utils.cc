@@ -98,11 +98,17 @@ void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const
   catch(const Gio::Error& ex)
   {
 #else
-  std::auto_ptr<Gio::Error> error;
-  stream.create(error);
+  std::auto_ptr<Glib::Error> error;
+  if (file->query_exists())
+  {
+    stream = file->replace("" /* etag */, false /*make_backup*/, Gio::FILE_CREATE_NONE, error);
+  }
+  else
+  {
+    stream = file->create_file(Gio::FILE_CREATE_NONE, error);
+  }
   if(error.get() != NULL)
   {
-    const Gio::Error& ex = *error.get();
 #endif
     // If the operation was not successful, print the error and abort
     return; // false; // print_error(ex, output_uri_string);
@@ -122,7 +128,6 @@ void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const
   bytes_written = stream->write(result.data(), result_bytes, error);
   if(error.get() != NULL)
   {
-    Gio::Error& ex = *error.get();
 #endif
     // If the operation was not successful, print the error and abort
     return; // false; //print_error(ex, output_uri_string);

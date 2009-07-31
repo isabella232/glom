@@ -43,6 +43,7 @@
 
 #ifdef GLOM_ENABLE_MAEMO
 #include <hildon/hildon-window.h>
+#include <hildon-fmmm.h>
 #endif // GLOM_ENABLE_MAEMO
 
 #ifndef G_OS_WIN32
@@ -108,7 +109,7 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& bu
   m_show_sql_debug(false)
 {
   // TODO: Wrap missing method in gtkmm
-  gtk_window_set_icon_name(gobj(), "glom");
+  gtk_window_set_icon_name(GTK_WINDOW(gobj()), "glom");
 
   //Load widgets from glade file:
   builder->get_widget("bakery_vbox", m_pBoxTop);
@@ -226,6 +227,7 @@ void App_Glom::init_layout()
 
   //Add menu bar at the top:
   //These were defined in init_uimanager().
+#undef GLOM_ENABLE_MAEMO // TODO: Fix menu!
 #ifdef GLOM_ENABLE_MAEMO
   Gtk::Menu* pMenu = static_cast<Gtk::Menu*>(m_refUIManager->get_widget("/Bakery_MainMenu"));
   set_menu(*pMenu);
@@ -1256,15 +1258,8 @@ Glib::RefPtr<Gtk::UIManager> App_Glom::get_ui_manager()
 
 bool App_Glom::offer_new_or_existing()
 {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   //Offer to load an existing document, or start a new one.
   Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_existing_or_new");
-#else
-  std::auto_ptr<Glib::Error> error;
-  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_existing_or_new", "", error);
-  if(error.get())
-    return false;
-#endif
 
   Dialog_ExistingOrNew* dialog_raw = 0;
   refXml->get_widget_derived("dialog_existing_or_new", dialog_raw);

@@ -35,6 +35,8 @@
 //#include <gtk/gtkfilesel.h>
 
 
+#undef GLOM_ENABLE_MAEMO
+
 namespace GlomBakery
 {
 
@@ -555,7 +557,7 @@ static bool uri_is_writable(const Glib::RefPtr<const Gio::File>& uri)
     return false;
   }
 #else
-  std::auto_ptr<Gio::Error> error;
+  std::auto_ptr<Glib::Error> error;
   file_info = uri->query_info(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE, Gio::FILE_QUERY_INFO_NONE, error);
   if(error.get())
     return false;

@@ -32,17 +32,7 @@ namespace Glom
 bool glom_show_dialog_invalid_data(Field::glom_field_type glom_type)
 {
   //TODO: Share a global instance, to make this quicker?
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_data_invalid_format");
-#else
-  std::auto_ptr<Glib::Error> error;
-  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_data_invalid_format", "", error);
-  if(error.get())
-  {
-    std::cerr << "glom_show_dialog_invalid_data() failed: " << error->what() << std::endl;
-    return false;
-  }
-#endif
 
   Dialog_InvalidData* dialog = 0;
   refXml->get_widget_derived("dialog_data_invalid_format", dialog);

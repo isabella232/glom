@@ -313,8 +313,12 @@ void Box_Data_Portal::get_suitable_record_to_view_details(const Gnome::Gda::Valu
   {
     //Set the output parameters:
     table_name = navigation_table_name;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED    
     table_primary_key_value = data_model->get_value_at(0, 0);
-
+#else
+    std::auto_ptr<Glib::Error> error;    
+    table_primary_key_value = data_model->get_value_at(0, 0, error);
+#endif    
     //std::cout << "Box_Data_Portal::get_suitable_record_to_view_details(): table_primary_key_value=" << table_primary_key_value.to_string() << std::endl;
 
     //The value is empty when there there is no record to match the key in the related table:

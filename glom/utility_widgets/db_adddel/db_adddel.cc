@@ -93,7 +93,9 @@ DbAddDel::DbAddDel()
   // Give the TreeView an accessible name, to access it in LDTP
   // TODO: Maybe this should be a constructor parameter, so that multiple
   // DbAddDels in a single Window can be addressed separately.
+#ifndef GLOM_ENABLE_MAEMO
   m_TreeView.get_accessible()->set_name(_("Table Content"));
+#endif  
 
   m_ScrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
   m_ScrolledWindow.add(m_TreeView);
@@ -813,15 +815,27 @@ void DbAddDel::apply_formatting(Gtk::CellRenderer* renderer, const FieldFormatti
   //Use the text formatting:
   const Glib::ustring font_desc = formatting.get_text_format_font();
   if(!font_desc.empty())
+#ifdef GLIBMM_PROPERTIES_ENABLED  
     text_renderer->property_font() = font_desc;
+#else
+    text_renderer->set_property("font", font_desc);
+#endif        
 
   const Glib::ustring fg = formatting.get_text_format_color_foreground();
   if(!fg.empty())
+#ifdef GLIBMM_PROPERTIES_ENABLED  
     text_renderer->property_foreground() = fg;
-
+#else    
+    text_renderer->set_property("foreground", fg);
+#endif
+    
   const Glib::ustring bg = formatting.get_text_format_color_background();
   if(!bg.empty())
+#ifdef GLIBMM_PROPERTIES_ENABLED
     text_renderer->property_background() = bg;
+#else    
+    text_renderer->set_property("background", bg);
+#endif
 }
 
 void DbAddDel::construct_specified_columns()
@@ -2368,7 +2382,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
     sharedptr<SharedConnection> sharedconnection = connect_to_server(get_application()); //Keep it alive while we need the data_model.
 #else
     std::auto_ptr<ExceptionConnection> error;
-    sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window(), error); //Keep it alive while we need the data_model.
+    sharedptr<SharedConnection> sharedconnection = connect_to_server(get_application(), error); //Keep it alive while we need the data_model.
     // Ignore error - sharedconnection is checked for NULL instead:
 #endif
     if(sharedconnection)

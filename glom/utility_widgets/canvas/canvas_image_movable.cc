@@ -70,14 +70,24 @@ Glib::RefPtr<CanvasImageMovable> CanvasImageMovable::create(double x, double y)
 
 void CanvasImageMovable::get_xy(double& x, double& y) const
 {
+#ifdef GLIBMM_PROPERTIES_ENABLED
   x = property_x();
   y = property_y();
+#else
+  get_property("x", x);
+  get_property("y", y);
+#endif
 }
 
 void CanvasImageMovable::set_xy(double x, double y)
 {
+#ifdef GLIBMM_PROPERTIES_ENABLED
   property_x() = x;
   property_y() = y;
+#else
+  set_property("x", x);
+  set_property("y", y);
+#endif
 }
 
 void CanvasImageMovable::get_width_height(double& width, double& height) const
@@ -85,14 +95,24 @@ void CanvasImageMovable::get_width_height(double& width, double& height) const
   //TODO: This only works when it is on a canvas already,
   //and this is apparently incorrect when the "coordinate space" of the item changes, whatever that means. murrayc.
   
+#ifdef GLIBMM_PROPERTIES_ENABLED
   width = property_width();
   height = property_height();
+#else
+  get_property("width", width);
+  get_property("height", height);
+#endif 
 }
 
 void CanvasImageMovable::set_width_height(double width, double height)
 {
+#ifdef GLIBMM_PROPERTIES_ENABLED
   property_width() = width;
   property_height() = height;
+#else
+  set_property("width", width);
+  set_property("height", height);
+#endif 
 }
 
 void CanvasImageMovable::snap_position(double& x, double& y) const
@@ -111,7 +131,11 @@ void CanvasImageMovable::snap_position(double& x, double& y) const
       corner_y_offset = 0;
       break;
     case CORNER_TOP_RIGHT:
+#ifdef GLIBMM_PROPERTIES_ENABLED    
       corner_x_offset = property_width();
+#else
+      get_property("width", corner_x_offset);
+#endif      
       corner_y_offset = 0;
       break;
     case CORNER_BOTTOM_LEFT:
@@ -154,7 +178,11 @@ void CanvasImageMovable::set_snap_corner(Corners corner)
 
 void CanvasImageMovable::set_image(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf, bool scale)
 {
+#ifdef GLIBMM_PROPERTIES_ENABLED
   property_pixbuf() = pixbuf;
+#else
+  set_property("pixbuf", pixbuf);
+#endif    
   m_pixbuf = pixbuf;
 
   if(scale)
@@ -176,7 +204,11 @@ void CanvasImageMovable::scale_to_size()
   if(width && height)
   {
     Glib::RefPtr<Gdk::Pixbuf> pixbuf = ImageGlom::scale_keeping_ratio(m_pixbuf, (int)height, (int)width);
+#ifdef GLIBMM_PROPERTIES_ENABLED
     property_pixbuf() = pixbuf;
+#else
+    set_property("pixbuf", pixbuf);
+#endif 
   }
 
   //Make sure that the size stays the same even if the scaling wasn't exact:
@@ -196,8 +228,11 @@ void CanvasImageMovable::set_image_empty()
   Glib::RefPtr<Gdk::Pixbuf> pixbuf;
   if(widget)
     pixbuf = widget->render_icon(Gtk::Stock::MISSING_IMAGE, Gtk::ICON_SIZE_DIALOG);
-
-  property_pixbuf() = pixbuf;
+#ifdef GLIBMM_PROPERTIES_ENABLED
+    property_pixbuf() = pixbuf;
+#else
+    set_property("pixbuf", pixbuf);
+#endif
 }
 
 bool CanvasImageMovable::get_image_empty() const

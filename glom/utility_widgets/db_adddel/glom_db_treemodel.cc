@@ -242,7 +242,12 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
     }
 
     //Add at least an initial row:
-    m_gda_datamodel->append_row(); //TODO: Handle adding.
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  m_gda_datamodel->append_row(); //TODO: Handle adding.
+#else
+  std::auto_ptr<Glib::Error> error;
+  m_gda_datamodel->append_row(error); //TODO: Handle adding. 
+#endif  
     return true;
   }
 
@@ -286,10 +291,10 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
     }
 
     Glib::RefPtr<Gnome::Gda::SqlParser> parser = m_connection->get_gda_connection()->create_parser();
-    Glib::RefPtr<Gnome::Gda::Statement> stmt = parser->parse_string(sql_query);
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
+      Glib::RefPtr<Gnome::Gda::Statement> stmt = parser->parse_string(sql_query);
       //Specify the STATEMENT_MODEL_CURSOR, so that libgda only gets the rows that we actually use.
       m_gda_datamodel = m_connection->get_gda_connection()->statement_execute_select(stmt, Gnome::Gda::STATEMENT_MODEL_CURSOR_FORWARD);
 
@@ -329,7 +334,8 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
     }
 #else
     std::auto_ptr<Glib::Error> error;
-    m_gda_datamodel = m_connection->get_gda_connection()->statement_execute_select(stmt, set, error);
+    Glib::RefPtr<Gnome::Gda::Statement> stmt = parser->parse_string(sql_query, error);
+    m_gda_datamodel = m_connection->get_gda_connection()->statement_execute_select(stmt, Gnome::Gda::STATEMENT_MODEL_CURSOR_FORWARD, error);
     if(error.get())
     {
       m_gda_datamodel.reset(); //So that it is 0, so we can handle it below.
@@ -955,12 +961,13 @@ void DbTreeModel::get_record_counts(gulong& total, gulong& found) const
       //TODO: Apparently, this is very slow:
       const Glib::ustring sql_query = "SELECT count(*) FROM \"" + m_found_set.m_table_name + "\"";
       Glib::RefPtr<Gnome::Gda::SqlParser> parser = m_connection->get_gda_connection()->create_parser();
-      Glib::RefPtr<Gnome::Gda::Statement> stmt = parser->parse_string(sql_query);
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
+      Glib::RefPtr<Gnome::Gda::Statement> stmt = parser->parse_string(sql_query);
       Glib::RefPtr<Gnome::Gda::DataModel> datamodel = m_connection->get_gda_connection()->statement_execute_select(stmt);
 #else
       std::auto_ptr<Glib::Error> error;
-      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = m_connection->get_gda_connection()->statement_execute_select(stmt, error);
+      Glib::RefPtr<Gnome::Gda::Statement> stmt = parser->parse_string(sql_query, error);
+      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = m_connection->get_gda_connection()->statement_execute_select(stmt, Gnome::Gda::STATEMENT_MODEL_RANDOM_ACCESS, error);
       // Ignore error, datamodel presence is checked below
 #endif //GLIBMM_EXCEPTIONS_ENABLED
 
@@ -968,7 +975,12 @@ void DbTreeModel::get_record_counts(gulong& total, gulong& found) const
       {
         if(datamodel->get_n_rows())
         {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED        
           Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
+#else
+          std::auto_ptr<Glib::Error> value_error;
+          Gnome::Gda::Value value = datamodel->get_value_at(0, 0, value_error);
+#endif
           total = (gulong)value.get_int64(); //I discovered that it's a int64 by trying it.
         }
       }

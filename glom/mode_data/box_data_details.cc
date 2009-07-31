@@ -355,7 +355,14 @@ bool Box_Data_Details::fill_from_database()
             {
               if(index_primary_key < cols_count)
               {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED              
                 m_primary_key_value = result->get_value_at(index_primary_key, row_number);
+#else
+              {
+                std::auto_ptr<Glib::Error> value_error;
+                m_primary_key_value = result->get_value_at(index_primary_key, row_number, value_error);
+              }
+#endif 
                 set_found_set_from_primary_key_value();
               }
             }
@@ -369,7 +376,14 @@ bool Box_Data_Details::fill_from_database()
               Gnome::Gda::Value value;
 
               if(!primary_key_is_empty)
+#ifdef GLIBMM_EXCEPTIONS_ENABLED              
                 value = result->get_value_at(i, row_number);
+#else
+              {
+                std::auto_ptr<Glib::Error> value_error;
+                value = result->get_value_at(i, row_number, value_error);
+              }
+#endif               
               else
               {
                 value = Conversions::get_empty_value(layout_item->get_glom_type());

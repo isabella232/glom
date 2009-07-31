@@ -202,14 +202,26 @@ bool Box_Data_Calendar_Related::fill_from_database()
        continue;
        
       //Get the date value for this row:
-      Gnome::Gda::Value value_date = datamodel->get_value_at(m_query_column_date_field, row_index);     
+#ifdef GLIBMM_EXCEPTIONS_ENABLED      
+      Gnome::Gda::Value value_date = datamodel->get_value_at(m_query_column_date_field, row_index);
+#else
+      std::auto_ptr<Glib::Error> error;      
+      Gnome::Gda::Value value_date = datamodel->get_value_at(m_query_column_date_field, row_index, error);
+#endif      
       const Glib::Date date = value_date.get_date();
       
       //Get all the values for this row:
       type_vector_values* pVector = new type_vector_values(m_FieldsShown.size());
       for(int column_index = 0; column_index < columns_count; ++column_index)
       {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED 
         (*pVector)[column_index] = datamodel->get_value_at(column_index, row_index);
+#else
+        std::auto_ptr<Glib::Error> error;      
+          (*pVector)[column_index] = datamodel->get_value_at(column_index, row_index, error);
+        if (error.get())
+          break;
+#endif 
       }
       
       m_map_values[date].push_back(pVector);

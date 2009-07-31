@@ -35,8 +35,10 @@ Dialog_Import_CSV_Progress::Dialog_Import_CSV_Progress(BaseObjectType* cobject, 
   builder->get_widget("import_csv_progress_progress_bar", m_progress_bar);
   builder->get_widget("import_csv_progress_textview", m_text_view);
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   if(!m_progress_bar || !m_text_view)
     throw std::runtime_error("Missing widgets from glade file for Dialog_Import_CSV_Progress");
+#endif    
 }
 
 bool Dialog_Import_CSV_Progress::init_db_details(const Glib::ustring& table_name)
@@ -259,7 +261,9 @@ void Dialog_Import_CSV_Progress::set_primary_key_value(const Gtk::TreeModel::ite
 
 Gnome::Gda::Value Dialog_Import_CSV_Progress::get_primary_key_value(const Gtk::TreeModel::iterator& /* row */) const
 {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   throw std::logic_error("Dialog_Import_CSV_Progress::get_primary_key_value() called");
+#endif
 }
 
 } //namespace Glom

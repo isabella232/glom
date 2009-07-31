@@ -35,7 +35,9 @@ Notebook_Data::Notebook_Data()
   m_iPage_Details = 1;
 
   // Set accessible name for the notebook, to be able to access it via LDTP
+#ifndef GLOM_ENABLE_MAEMO  
   get_accessible()->set_name(_("List Or Details View"));
+#endif  
 
 
   //Connect signals:

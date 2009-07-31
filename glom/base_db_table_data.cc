@@ -307,6 +307,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
     //Warn the user:
     //TODO: Make the field insensitive until it can receive data, so people never see this dialog.
     const Glib::ustring message = _("Data may not be entered into this related field, because the related record does not yet exist, and the relationship does not allow automatic creation of new related records.");
+#undef GLOM_ENABLE_MAEMO
 #ifdef GLOM_ENABLE_MAEMO
     Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, *App_Glom::get_application(), message);
 #else
@@ -511,7 +512,12 @@ void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field
 
         for(guint uiCol = 0; uiCol < cols_count; uiCol++)
         {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED        
           const Gnome::Gda::Value value = result->get_value_at(uiCol, 0 /* row */);
+#else          
+          std::auto_ptr<Glib::Error> value_error;
+          const Gnome::Gda::Value value = result->get_value_at(uiCol, 0 /* row */, value_error);
+#endif          
           sharedptr<LayoutItem_Field> layout_item = *iterFields;
           if(!layout_item)
             std::cerr << "Base_DB_Table_Data::refresh_related_fields(): The layout_item was null." << std::endl;

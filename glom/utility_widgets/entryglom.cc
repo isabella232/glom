@@ -74,7 +74,9 @@ void EntryGlom::init()
 void EntryGlom::set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name)
 {
   LayoutWidgetField::set_layout_item(layout_item, table_name);
+#ifndef GLOM_ENABLE_MAEMO  
   get_accessible()->set_name(layout_item->get_name());
+#endif  
 }
 
 void EntryGlom::set_glom_type(Field::glom_field_type glom_type)

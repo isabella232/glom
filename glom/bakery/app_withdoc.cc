@@ -198,8 +198,7 @@ bool App_WithDoc::file_exists(const Glib::ustring& uri)
       return false; //Something went wrong. It does not exist.
     }
 #else
-      std::auto_ptr<Gio::Error> error;
-      retrun file->query_exists(error);
+      return file->query_exists();
 #endif
   }
 }

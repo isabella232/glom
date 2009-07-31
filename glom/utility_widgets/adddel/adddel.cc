@@ -146,7 +146,9 @@ AddDel::~AddDel()
 
 void AddDel::set_treeview_accessible_name(const Glib::ustring& name)
 {
+#ifndef GLOM_ENABLE_MAEMO
   m_TreeView.get_accessible()->set_name(name);
+#endif  
 }
 
 void AddDel::warn_about_duplicate()

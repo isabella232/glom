@@ -163,6 +163,7 @@ void Utils::show_help(const Glib::ustring& id)
 
 void Utils::show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window* parent, Gtk::MessageType message_type)
 {
+#undef GLOM_ENABLE_MAEMO
 #ifdef GLOM_ENABLE_MAEMO
   // TODO_maemo: Map message_type to a senseful stock_id?
   Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, parent, message);
@@ -258,7 +259,7 @@ Glib::RefPtr<Gdk::Pixbuf> Utils::get_pixbuf_for_gda_value(const Gnome::Gda::Valu
       //  std::cout << " name=" << iter->get_name() << ", writable=" << iter->is_writable() << std::endl;
       //}
 
-      Glib::RefPtr<Gdk::PixbufLoader> refPixbufLoader;
+      Glib::RefPtr<Gdk::PixbufLoader> refPixbufLoader;      
       try
       {
         refPixbufLoader = Gdk::PixbufLoader::create();
@@ -266,7 +267,9 @@ Glib::RefPtr<Gdk::Pixbuf> Utils::get_pixbuf_for_gda_value(const Gnome::Gda::Valu
       catch(const Gdk::PixbufError& ex)
       {
         refPixbufLoader.reset();
+#ifdef GLIBMM_EXCEPTIONS_ENABLED        
         std::cerr << "PixbufLoader::create failed: " << ex.what() << std::endl;
+#endif        
       }
 
       if(refPixbufLoader)

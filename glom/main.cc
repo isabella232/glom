@@ -326,15 +326,25 @@ main(int argc, char* argv[])
   PySys_SetArgv(argc, argv);
 
   std::auto_ptr<Gtk::Main> mainInstance;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED  
   try
+#endif  
   {
     mainInstance = std::auto_ptr<Gtk::Main>( new Gtk::Main(argc, argv, context) );
   }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED  
   catch(const Glib::Error& ex)
   {
     std::cerr << "Glom: Error while initializing gtkmm: " << ex.what() << std::endl;
     return 0;
   }
+#else
+  if (!mainInstance.get())
+  {
+    std::cerr << "Glom: Error while initializing gtkmm" << std::endl;
+    return 0;
+  }
+#endif      
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
@@ -469,19 +479,9 @@ main(int argc, char* argv[])
     if(group.m_arg_debug_date_check)
       return 0; //This command-line option is documented as stopping afterwards.
 
-
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     // Main app
     Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Glom::Utils::get_glade_file_path("glom.glade"), "window_main");
-#else
-    std::auto_ptr<Glib::Error> error;
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Glom::Utils::get_glade_file_path("glom.glade"), "window_main", "", error);
-    if(error.get())
-    {
-      std::cerr << "Glom: exception: \n  " << error->what() << std::endl;
-      return -1;
-    }
-#endif
+
 
 
     Glom::App_Glom* pApp_Glom = 0;

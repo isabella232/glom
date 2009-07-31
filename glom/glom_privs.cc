@@ -40,7 +40,12 @@ Privs::type_vec_strings Privs::get_database_groups()
     const int rows_count = data_model->get_n_rows();
     for(int row = 0; row < rows_count; ++row)
     {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED    
       const Gnome::Gda::Value value = data_model->get_value_at(0, row);
+#else
+      std::auto_ptr<Glib::Error> value_error;
+      const Gnome::Gda::Value value = data_model->get_value_at(0, row, value_error); 
+#endif           
       const Glib::ustring name = value.get_string();
       result.push_back(name);
     }
@@ -103,8 +108,13 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
       const int rows_count = data_model->get_n_rows();
       for(int row = 0; row < rows_count; ++row)
       {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED      
         const Gnome::Gda::Value value = data_model->get_value_at(0, row);
-        const Glib::ustring name = value.get_string();
+#else
+        std::auto_ptr<Glib::Error> value_error;       
+        const Gnome::Gda::Value value = data_model->get_value_at(0, row, value_error);
+#endif         
+        const Glib::ustring name = value.get_string();        
         result.push_back(name);
       }
     }
@@ -118,7 +128,12 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
       const int rows_count = data_model->get_n_rows();
       for(int row = 0; row < rows_count; ++row)
       {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED      
         const Gnome::Gda::Value value = data_model->get_value_at(1, row); //Column 1 is the /* the user list.
+#else
+        std::auto_ptr<Glib::Error> value_error;
+        const Gnome::Gda::Value value = data_model->get_value_at(1, row, value_error); //Column 1 is the /* the user list.
+#endif        
         //pg_group is a string, formatted, bizarrely, like so: "{100, 101}".
 
         Glib::ustring group_list;
@@ -133,7 +148,12 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
           Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery);
           if(data_model)
           {
-            const Gnome::Gda::Value value = data_model->get_value_at(0, 0); 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED          
+            const Gnome::Gda::Value value = data_model->get_value_at(0, 0);
+#else
+            std::auto_ptr<Glib::Error> value_error;
+            const Gnome::Gda::Value value = data_model->get_value_at(0, 0, value_error);            
+#endif            
             result.push_back(value.get_string());
           }
         }
@@ -179,6 +199,7 @@ void Privs::set_table_privileges(const Glib::ustring& group_name, const Glib::us
     if(privs.m_create)
     {
       if(!strPrivilege.empty())
+      
         strPrivilege += ", ";
 
       strPrivilege += "INSERT";
@@ -236,7 +257,13 @@ Privileges Privs::get_table_privileges(const Glib::ustring& group_name, const Gl
   Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery);
   if(data_model && data_model->get_n_rows())
   {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     const Gnome::Gda::Value value = data_model->get_value_at(0, 0);
+#else
+    std::auto_ptr<Glib::Error> value_error;
+    const Gnome::Gda::Value value = data_model->get_value_at(0, 0, value_error);
+#endif
+    
     Glib::ustring access_details;
     if(!value.is_null())
       access_details = value.get_string();
@@ -408,8 +435,12 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
     result.m_developer = true;
   }
   */
-
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   sharedptr<SharedConnection> sharedconnection = connection_pool->connect();
+#else
+  std::auto_ptr<ExceptionConnection> ex;  
+  sharedptr<SharedConnection> sharedconnection = connection_pool->connect(ex);
+#endif  
   if(sharedconnection && sharedconnection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS))
   {
     //Get the "true" rights for any groups that the user is in:

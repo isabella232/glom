@@ -35,6 +35,12 @@ Notebook_Glom::Notebook_Glom()
   //signal_leave_page().connect(sigc::mem_fun(*this, &Notebook_Glom::on_leave_page));
 
   m_destructor_in_progress = false;
+
+#ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
+  signal_show().connect(sigc::mem_fun(*this, &Notebook_Glom::on_show));
+#endif  
+  
+
 }
 
 Notebook_Glom::~Notebook_Glom()
@@ -43,7 +49,9 @@ Notebook_Glom::~Notebook_Glom()
 
 void Notebook_Glom::on_show()
 {
+#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   Gtk::Notebook::on_show();
+#endif  
 
   //We do this only in on_show() because otherwise GtkNotebook emits the signal (and we catch it) during show:
   if(!m_connection_switch_page)

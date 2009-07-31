@@ -47,13 +47,7 @@ FileChooser_Export::FileChooser_Export()
   m_extra_widget.show();
 
   //TODO: Use a generic layout dialog?
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_data_layout_export");
-#else
-  std::auto_ptr<Gtk::BuilderError> error;
-  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_data_layout_export", "", error);
-  // Ignore error, refXml is checked below
-#endif
 
   if(refXml)
   {

@@ -31,6 +31,9 @@ namespace Glom
 {
 
 #ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
+
+GtkContainerClass* parent_class = NULL;
+
   // TODO: It is probably OK doing static_cast here.
   void FlowTable::glom_size_request_impl(GtkWidget* widget, GtkRequisition* requisition)
   {

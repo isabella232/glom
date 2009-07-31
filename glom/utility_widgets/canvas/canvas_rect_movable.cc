@@ -68,26 +68,46 @@ Glib::RefPtr<CanvasRectMovable> CanvasRectMovable::create(double x, double y, do
 
 void CanvasRectMovable::get_xy(double& x, double& y) const
 {
+#ifdef GLIBMM_PROPERTIES_ENABLED
   x = property_x();
   y = property_y();
+#else
+  get_property("x", x);
+  get_property("y", y);
+#endif
 }
 
 void CanvasRectMovable::set_xy(double x, double y)
 {
+#ifdef GLIBMM_PROPERTIES_ENABLED
   property_x() = x;
   property_y() = y;
+#else
+  set_property("x", x);
+  set_property("y", y);
+#endif
 }
 
 void CanvasRectMovable::get_width_height(double& width, double& height) const
 {
+#ifdef GLIBMM_PROPERTIES_ENABLED
   width = property_width();
   height = property_height();
+#else
+  get_property("width", width);
+  get_property("height", height);
+#endif
 }
 
 void CanvasRectMovable::set_width_height(double width, double height)
 {
-  property_height() = height;
+#ifdef GLIBMM_PROPERTIES_ENABLED
   property_width() = width;
+  property_height() = height;
+#else
+  set_property("width", width);
+  set_property("height", height);
+#endif
 }
 
 void CanvasRectMovable::snap_position_one_corner(Corners corner, double& x, double& y) const
@@ -102,16 +122,32 @@ void CanvasRectMovable::snap_position_one_corner(Corners corner, double& x, doub
       corner_y_offset = 0;
       break;
     case CORNER_TOP_RIGHT:
+#ifdef GLIBMM_PROPERTIES_ENABLED    
       corner_x_offset = property_width();
+#else
+      get_property("width", corner_x_offset);
+#endif            
       corner_y_offset = 0;
       break;
     case CORNER_BOTTOM_LEFT:
       corner_x_offset = 0;
+#ifdef GLIBMM_PROPERTIES_ENABLED    
       corner_y_offset = property_height();
+#else
+      get_property("height", corner_y_offset);
+#endif            
       break;
     case CORNER_BOTTOM_RIGHT:
+#ifdef GLIBMM_PROPERTIES_ENABLED    
       corner_x_offset = property_width();
+#else
+      get_property("width", corner_x_offset);
+#endif            
+#ifdef GLIBMM_PROPERTIES_ENABLED    
       corner_y_offset = property_height();
+#else
+      get_property("height", corner_y_offset);
+#endif
       break;
     default:
       break;

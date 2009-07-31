@@ -39,8 +39,10 @@ Dialog_Image_Progress::Dialog_Image_Progress(BaseObjectType* cobject, const Glib
 {
   builder->get_widget("image_loading_progress_bar", m_progress_bar);
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   if(!m_progress_bar)
     throw std::runtime_error("Missing widgets from glade file for Dialog_Image_Progress");
+#endif    
 }
 
 Dialog_Image_Progress::~Dialog_Image_Progress()
@@ -49,6 +51,7 @@ Dialog_Image_Progress::~Dialog_Image_Progress()
     g_free(m_data->data);
   if(m_loader)
   {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED  
     try
     {
       m_loader->close();
@@ -59,6 +62,10 @@ Dialog_Image_Progress::~Dialog_Image_Progress()
       // not yet been loaded completely, for example when cancelling the
       // dialog.
     }
+#else
+    std::auto_ptr<Glib::Error> error;
+    m_loader->close(error);
+#endif    
   }
 
   // TODO: Cancel outstanding async operations in destructor?
@@ -77,6 +84,7 @@ void Dialog_Image_Progress::load(const Glib::ustring& uri)
   m_file = Gio::File::create_for_uri(uri);
   m_progress_bar->set_text(Glib::ustring::compose("Loading %1...", m_file->get_parse_name()));
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     // Open the file for reading:
@@ -86,10 +94,14 @@ void Dialog_Image_Progress::load(const Glib::ustring& uri)
   {
     error(ex.what());
   }
+#else
+  m_file->read_async(sigc::mem_fun(*this, &Dialog_Image_Progress::on_file_read));
+#endif    
 }
 
 void Dialog_Image_Progress::on_file_read(const Glib::RefPtr<Gio::AsyncResult>& result)
 {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     m_stream = m_file->read_finish(result);
@@ -100,10 +112,19 @@ void Dialog_Image_Progress::on_file_read(const Glib::RefPtr<Gio::AsyncResult>& r
   {
     error(ex.what());
   }
+#else
+    std::auto_ptr<Glib::Error> ex;
+    m_stream = m_file->read_finish(result, ex);
+    // Query size of the file, so that we can show progress:
+    m_stream->query_info_async(sigc::mem_fun(*this, &Dialog_Image_Progress::on_query_info), G_FILE_ATTRIBUTE_STANDARD_SIZE);
+    if (ex.get())
+      error(ex->what());
+#endif      
 }
 
 void Dialog_Image_Progress::on_query_info(const Glib::RefPtr<Gio::AsyncResult>& result)
 {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     Glib::RefPtr<Gio::FileInfo> info = m_stream->query_info_finish(result);
@@ -120,10 +141,27 @@ void Dialog_Image_Progress::on_query_info(const Glib::RefPtr<Gio::AsyncResult>& 
   {
     error(ex.what());
   }
+#else
+  std::auto_ptr<Glib::Error> ex;
+  Glib::RefPtr<Gio::FileInfo> info = m_stream->query_info_finish(result, ex);
+  if (ex.get())
+  {
+    error(ex->what());
+    return;
+  }
+  m_data->binary_length = info->get_size();
+  // We need to use the glib allocater here:
+  m_data->data = static_cast<guchar*>(g_try_malloc(m_data->binary_length));
+  if(!m_data->data)
+    error(_("Not enough memory available to load the image"));
+  // Read the first chunk from the file
+  m_stream->read_async(m_data->data, std::min<gsize>(CHUNK_SIZE, m_data->binary_length), sigc::bind(sigc::mem_fun(*this, &Dialog_Image_Progress::on_stream_read), 0));
+#endif
 }
 
 void Dialog_Image_Progress::on_stream_read(const Glib::RefPtr<Gio::AsyncResult>& result, unsigned int offset)
 {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     gssize size = m_stream->read_finish(result);
@@ -148,6 +186,35 @@ void Dialog_Image_Progress::on_stream_read(const Glib::RefPtr<Gio::AsyncResult>&
   {
     error(ex.what());
   }
+#else
+    std::auto_ptr<Glib::Error> ex;
+    gssize size = m_stream->read_finish(result, ex);
+    if (ex.get())
+    {
+      error(ex->what());
+      return;
+    }
+    g_assert(size >= 0); // Would have thrown an exception otherwise
+    // Cannot read more data than there is available in the file:
+    g_assert( static_cast<gssize>(offset + size) <= static_cast<gssize>(m_data->binary_length));
+    // Load image
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    m_loader->write(m_data->data + offset, size);
+#else
+    m_loader->write(m_data->data + offset, size, ex);
+#endif
+    // Set progress
+    m_progress_bar->set_fraction(static_cast<double>(offset + size) / m_data->binary_length);
+    // Read next chunk, if any
+    if(  static_cast<gssize>(offset + size) < static_cast<gssize>(m_data->binary_length))
+      // Even if choose a priority lower than GDK_PRIORITY_REDRAW + 10 for the
+      // read_async we don't see the progressbar progressing while the image
+      // is loading. Therefore we put an idle inbetween.
+      Glib::signal_idle().connect(sigc::bind_return(sigc::bind(sigc::mem_fun(*this, &Dialog_Image_Progress::on_read_next), offset + size), false));
+    else
+      // We are done loading the image, close the progress dialog
+      response(Gtk::RESPONSE_ACCEPT);
+#endif
 }
 
 void Dialog_Image_Progress::on_read_next(unsigned int at)

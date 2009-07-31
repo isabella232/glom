@@ -63,8 +63,13 @@ void CanvasGroupResizable::create_manipulators()
 void CanvasGroupResizable::create_rect_manipulators()
 {
   m_rect = Goocanvas::Rect::create(0, 0, 0, 0);
+#ifdef GLIBMM_PROPERTIES_ENABLED  
   m_rect->property_line_width() = 0;
   m_rect->property_fill_color() = "white";
+#else
+  m_rect->set_property("line-width", 0);
+  m_rect->set_property("fill-color", Glib::ustring("white"));
+#endif  
   add_child(m_rect);
 
   //Allow dragging of the rect to move everything:
@@ -191,11 +196,19 @@ void CanvasGroupResizable::position_rect_manipulators()
 
 
   //Show the size of this item (not always the same as the child size):
+#ifdef GLIBMM_PROPERTIES_ENABLED  
   m_rect->property_x() = child_x;
   m_rect->property_y() = child_y;
   m_rect->property_width() = child_width;
   m_rect->property_height() = child_height;
   m_rect->property_fill_color() = "white";
+#else
+  m_rect->set_property("x", child_x);
+  m_rect->set_property("y", child_y);
+  m_rect->set_property("width", child_width);
+  m_rect->set_property("height",child_height);
+  m_rect->set_property("fill_color", Glib::ustring("white"));
+#endif
 
   const double x2 = child_x + child_width;
   const double y2 = child_y + child_height;
@@ -230,7 +243,12 @@ void CanvasGroupResizable::position_line_manipulators()
   if(!line)
     return;
 
+#ifdef GLIBMM_PROPERTIES_ENABLED
   const Goocanvas::Points points = line->property_points();
+#else
+  Goocanvas::Points points;
+  line->get_property("points", points);
+#endif
   if(points.get_num_points() < 2)
     return;
 
@@ -423,13 +441,23 @@ void CanvasGroupResizable::on_manipulator_corner_moved(Manipulators manipulator_
 
   switch(manipulator_id)
   {
+#ifndef GLIBMM_PROPERTIES_ENABLED
+    // The compiler probably already does exactly this...
+    int x, y;
+    manipulator->get_property("x", x);
+    manipulator->get_property("y", y);
+#endif       
     case(MANIPULATOR_CORNER_TOP_LEFT):
     {
       const double new_x = std::min(manipulator_x, child_x + child_width);
       const double new_y = std::min(manipulator_y, child_y + child_height);
+#ifdef GLIBMM_PROPERTIES_ENABLED      
       const double new_height = std::max(child_y + child_height - manipulator->property_y(), 0.0);
       const double new_width = std::max(child_x + child_width - manipulator->property_x(), 0.0);
-
+#else      
+      const double new_height = std::max(child_y + child_height - y, 0.0);
+      const double new_width = std::max(child_x + child_width - x, 0.0);
+#endif
       set_xy(new_x, new_y);
       set_width_height(new_width, new_height);
 
@@ -438,8 +466,13 @@ void CanvasGroupResizable::on_manipulator_corner_moved(Manipulators manipulator_
     case(MANIPULATOR_CORNER_TOP_RIGHT):
     {
       const double new_y = std::min(manipulator_y, child_y + child_height);
+#ifdef GLIBMM_PROPERTIES_ENABLED
       const double new_height = std::max(child_y + child_height - manipulator->property_y(), 0.0);
       const double new_width = std::max(manipulator->property_x() + manipulator_corner_size - child_x, 0.0);
+#else      
+      const double new_height = std::max(child_y + child_height - y, 0.0);
+      const double new_width = std::max(x + manipulator_corner_size - child_x, 0.0);
+#endif
 
       set_xy(child_x, new_y);
       set_width_height(new_width, new_height);
@@ -449,9 +482,13 @@ void CanvasGroupResizable::on_manipulator_corner_moved(Manipulators manipulator_
     case(MANIPULATOR_CORNER_BOTTOM_LEFT):
     {
       const double new_x = std::min(manipulator_x, child_x + child_width);
+#ifdef GLIBMM_PROPERTIES_ENABLED
       const double new_height = std::max(manipulator->property_y() + manipulator_corner_size - child_y, 0.0);
       const double new_width = std::max(child_x + child_width - manipulator->property_x(), 0.0);
-
+#else
+      const double new_height = std::max(y + manipulator_corner_size - child_y, 0.0);
+      const double new_width = std::max(child_x + child_width - x, 0.0);
+#endif
       set_xy(new_x, child_y);
       set_width_height(new_width, new_height);
 
@@ -459,9 +496,13 @@ void CanvasGroupResizable::on_manipulator_corner_moved(Manipulators manipulator_
     }
     case(MANIPULATOR_CORNER_BOTTOM_RIGHT):
     {
+#ifdef GLIBMM_PROPERTIES_ENABLED    
       const double new_height = std::max(manipulator->property_y() + manipulator_corner_size - child_y, 0.0);
       const double new_width = std::max(manipulator->property_x() + manipulator_corner_size - child_x, 0.0);
-
+#else
+      const double new_height = std::max(y + manipulator_corner_size - child_y, 0.0);
+      const double new_width = std::max(x + manipulator_corner_size - child_x, 0.0);
+#endif
       set_width_height(new_width, new_height);
 
       break;
@@ -497,14 +538,24 @@ void CanvasGroupResizable::on_manipulator_line_end_moved(Manipulators manipulato
   double manipulator_y = 0;
   manipulator->get_xy(manipulator_x, manipulator_y);
 
+#ifdef GLIBMM_PROPERTIES_ENABLED
   Goocanvas::Points points = line->property_points();
+#else
+  Goocanvas::Points points;
+  line->get_property("points", points);
+#endif
+  
   if(points.get_num_points() < 2)
     return;
 
   const int point_index = (manipulator_id == MANIPULATOR_START) ? 0 : 1;
   const double half_size = manipulator_corner_size / 2;
   points.set_coordinate(point_index, manipulator_x + half_size, manipulator_y + half_size);
+#ifdef GLIBMM_PROPERTIES_ENABLED  
   line->property_points() = points; //TODO: Add a way to do this without getting and setting the points property.
+#else  
+  line->set_property("points", points); //TODO: Add a way to do this without getting and setting the points property.
+#endif
 
   position_manipulators();
 }
@@ -534,7 +585,12 @@ void CanvasGroupResizable::on_manipulator_edge_moved(Manipulators manipulator_id
   
   //std::cout << "CanvasGroupResizable::on_manipulator_edge_moved(): manipulator=" << manipulator_id << std::endl;
 
+#ifdef GLIBMM_PROPERTIES_ENABLED
   Goocanvas::Points points = manipulator->property_points();
+#else  
+  Goocanvas::Points points;
+  manipulator->get_property("points", points);
+#endif
   double x1 = 0;
   double y1 = 0;
   points.get_coordinate(0, x1, y1);
@@ -644,8 +700,11 @@ void CanvasGroupResizable::set_manipulators_visibility(Goocanvas::ItemVisibility
     return;
 
   //For testing: visibility = Goocanvas::ITEM_VISIBLE;
-
+#ifdef GLIBMM_PROPERTIES_ENABLED
   m_group_manipulators->property_visibility() = visibility;
+#else  
+  m_group_manipulators->set_property("visibility", visibility);
+#endif
 }
 
 bool CanvasGroupResizable::on_rect_enter_notify_event(const Glib::RefPtr<Goocanvas::Item>& /* target */, GdkEventCrossing* /* event */)
@@ -695,22 +754,34 @@ bool CanvasGroupResizable::on_resizer_leave_notify_event(const Glib::RefPtr<Gooc
 Glib::RefPtr<CanvasRectMovable> CanvasGroupResizable::create_corner_manipulator()
 {
   Glib::RefPtr<CanvasRectMovable> result = CanvasRectMovable::create();
+#ifdef GLIBMM_PROPERTIES_ENABLED  
   result->property_fill_color() = manipulator_corner_fill_color; //This makes the whole area clickable, not just the outline stroke:
   result->property_line_width() = manipulator_stroke_width;
   result->property_stroke_color() = manipulator_stroke_color;
 
   result->property_height() = manipulator_corner_size;
   result->property_width() = manipulator_corner_size;
- 
+#else
+  result->set_property("fill-color", manipulator_corner_fill_color); //This makes the whole area clickable, not just the outline stroke:
+  result->set_property("line-width", manipulator_stroke_width);
+  result->set_property("stroke_color", manipulator_stroke_color);
+
+  result->set_property("height", manipulator_corner_size);
+  result->set_property("width", manipulator_corner_size);
+#endif
   return result;
 }
 
 Glib::RefPtr<CanvasLineMovable> CanvasGroupResizable::create_edge_manipulator()
 {
   Glib::RefPtr<Glom::CanvasLineMovable> line = Glom::CanvasLineMovable::create();
+#ifdef GLIBMM_PROPERTIES_ENABLED  
   line->property_line_width() = manipulator_stroke_width;
   line->property_stroke_color() = manipulator_stroke_color;
-
+#else
+  line->set_property("line-width", manipulator_stroke_width);
+  line->set_property("stroke-color", manipulator_stroke_color);
+#endif
   return line;
 }
 
@@ -718,7 +789,11 @@ void CanvasGroupResizable::set_edge_points(const Glib::RefPtr<Glom::CanvasLineMo
 {
   double points_coordinates[] = {x1, y1, x2, y2};
   Goocanvas::Points points(2, points_coordinates);
+#ifdef GLIBMM_PROPERTIES_ENABLED  
   line->property_points() = points;
+#else  
+  line->set_property("points", points);
+#endif
 }
 
 void CanvasGroupResizable::get_xy(double& x, double& y) const
