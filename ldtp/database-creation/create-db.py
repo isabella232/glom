@@ -78,7 +78,7 @@ try:
 
 	if not example:
 		# Wait for the Tables dialog to appear
-		if waittillguiexist('Tables') == 0:
+		if waittillguiexist('Tables', guiTimeOut = 500) == 0:
 			raise LdtpExecutionError('The tables dialog window did not appear.')
 
 		# Create an initial table
