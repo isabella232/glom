@@ -57,10 +57,10 @@ noinst_LIBRARIES =						\
 	glom/utility_widgets/egg/toolpalette/libeggtoolpalette.a\
 	glom/utility_widgets/egg/util/libeggutil.a
 
-include libegg.am
-include libglom.am
-include glom.am
-include tests.am
+include Makefile_libegg.am
+include Makefile_libglom.am
+include Makefile_glom.am
+include Makefile_tests.am
 
 glom_python_embed_python_module_glom_1_12_la_SOURCES =		\
 	glom/python_embed/python_module/py_glom_module.cc	\

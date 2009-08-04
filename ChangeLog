@@ -1,3 +1,10 @@
+2009-08-04  Murray Cumming  <murrayc@murrayc.com>
+
+	Rename included .am files.
+	 
+	* *.am: Rename to Makefile_*.am so they are grouped together.
+	* Makefile.am: Include the new filenames.
+	
 2009-07-31  Johannes Schmid <jschmid@openismus.com>
 
 	* configure.ac: Add dependency on hildon-fmmm
