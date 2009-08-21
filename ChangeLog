@@ -1,3 +1,10 @@
+2009-08-21  Daniel Elstner  <danielk@openismus.com>
+
+	Do not use .pyd extension on non-Windows systems
+
+	* Makefile.am (pymod_ldflags): Set variable conditionally and use
+	the "-shrext .pyd" option only on Windows hosts.
+
 2009-08-21  Michael Hasselmann  <michaelh@openismus.com>
 
 	* glom/libglom/connectionpool_backends/sqlite.cc: Fix typos to fix the build.

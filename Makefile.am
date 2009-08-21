@@ -70,9 +70,11 @@ glom_python_embed_python_module_glom_1_12_la_LIBADD = \
 	glom/libglom/libglom-$(GLOM_ABI_VERSION).la \
 	$(LIBGLOM_LIBS) $(PYTHON_LIBS)
 
-# TODO: Verify that -shrext really does the trick on Windows, or if the
-# install-exec-hook rule needs to be resurrected to rename the .dll file.
+if HOST_WIN32
 pymod_ldflags = -module -avoid-version -no-undefined -shrext .pyd
+else
+pymod_ldflags = -module -avoid-version -no-undefined
+endif
 glom_pyexport = -export-symbols-regex '^_*initglom'
 glom_python_embed_python_module_glom_1_12_la_LDFLAGS = $(pymod_ldflags) $(glom_pyexport)
 
