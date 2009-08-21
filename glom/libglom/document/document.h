@@ -123,10 +123,16 @@ public:
   bool get_network_shared() const;
 
   void set_connection_server(const Glib::ustring& strVal);
-  void set_connection_user(const Glib::ustring& strVal);
   void set_connection_database(const Glib::ustring& strVal);
   void set_connection_port(int port_number);
   void set_connection_try_other_ports(bool val);
+
+ /** Temporarily set a username in the document.
+   * Note that this is not saved in the document's file.
+   *
+   * TODO: Remove this, and just store it in ConnectionPool?
+   */
+  void set_connection_user(const Glib::ustring& strVal);
 
   /** If the database should be hosted, this provides the 
     * path to the directory that contains all the files needed to do that.
@@ -137,10 +143,16 @@ public:
   std::string get_connection_self_hosted_directory_uri() const;
 
   Glib::ustring get_connection_server() const;
-  Glib::ustring get_connection_user() const;
   Glib::ustring get_connection_database() const;
   int get_connection_port() const;
   bool get_connection_try_other_ports() const;
+
+  /** Retrieve a username previously set in the document.
+   * Note that this is not saved in the document's file.
+   *
+   * TODO: Remove this, and just store it in ConnectionPool?
+   */
+  Glib::ustring get_connection_user() const;
 
   /** Set the language/locale used by original titles.
    * Title translations are translations of the text in this language.
@@ -477,7 +489,8 @@ private:
   HostingMode m_hosting_mode;
   bool m_network_shared;
 
-  Glib::ustring m_connection_server, m_connection_user, m_connection_database;
+  Glib::ustring m_connection_server, m_connection_database;
+  Glib::ustring m_connection_user; //Don't save the user.
   int m_connection_port; //0 means any port. Ignored when self-hosting (which may use a different port each time).
   bool m_connection_try_other_ports; //Set to false for self-hosted or browsed-from-network documents.
 

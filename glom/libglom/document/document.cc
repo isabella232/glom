@@ -381,7 +381,8 @@ void Document::set_connection_user(const Glib::ustring& strVal)
   if(strVal != m_connection_user)
   {
     m_connection_user = strVal;
-    set_modified();
+    
+    //We don't call set_modified(), because this is not saved in the document: set_modified();
   }
 }
 
@@ -2352,7 +2353,6 @@ bool Document::load_after(int& failure_code)
         m_connection_server = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SERVER);
         m_connection_port = get_node_attribute_value_as_decimal(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_PORT);
         m_connection_try_other_ports = get_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_TRY_OTHER_PORTS, true /* default */);
-        m_connection_user = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_USER);
         m_connection_database = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_DATABASE);
 
         const Glib::ustring attr_mode = get_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE);
@@ -3264,7 +3264,6 @@ bool Document::save_before()
     set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_SERVER, m_connection_server);
     set_node_attribute_value_as_decimal(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_PORT, m_connection_port);
     set_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_TRY_OTHER_PORTS, m_connection_try_other_ports, true /* default */);
-    set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_USER, m_connection_user);
     set_node_attribute_value(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_DATABASE, m_connection_database);
 
     //Remove existing tables:

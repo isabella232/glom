@@ -1,3 +1,13 @@
+2009-08-21  Murray Cumming  <murrayc@murrayc.com>
+
+	Document::get/set_connection_user(): Don't save this in the document.
+	
+	* glom/libglom/document/document.[h|cc]: get/set_connection_user(): 
+	Document these as not being saved in the document, because it makes no sense 
+	to save a single user there, because Glom is a multi-user system.
+	* glom/dialog_connection.cc: load_after(), save_before(): Don't save the user 
+	in the document.
+
 2009-08-19  David King  <davidk@openismus.com>
 
 	* glom.am:

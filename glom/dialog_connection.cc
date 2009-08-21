@@ -153,14 +153,6 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
 #endif //GLOM_ENABLE_CLIENT_ONLY
     }
 #endif //GLOM_ENABLE_POSTGRESQL
-
-    /*
-    if(document)
-    {
-      document->set_connection_server(m_entry_host->get_text());
-      document->set_connection_user(m_entry_user->get_text());
-    }
-    */
   }
   else
      std::cerr << "Dialog_Connection::connect_to_server_with_connection_settings(): ConnectionPool::get_instance() failed." << std::endl;
