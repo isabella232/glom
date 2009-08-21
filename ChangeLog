@@ -1,3 +1,8 @@
+2009-08-21  Michael Hasselmann  <michaelh@openismus.com>
+
+	* glom/libglom/connectionpool_backends/sqlite.cc: Fix typos to fix the build.
+	Bug #592576 
+
 2009-08-21  Murray Cumming  <murrayc@murrayc.com>
 
 	Document::get/set_connection_user(): Don't save this in the document.
