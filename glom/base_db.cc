@@ -52,7 +52,8 @@
 //#include <libgnomeui/gnome-app-helper.h>
 
 //#include <libgdamm/metastore.h> //For MetaStoreError
-#include <sql-parser/gda-sql-parser.h> //For gda_sql_identifier_remove_quotes().
+//#undef GDA_DISABLE_DEPRECATED
+//#include <sql-parser/gda-statement-struct-util.h> //For gda_sql_identifier_remove_quotes().
 
 #ifdef GLOM_ENABLE_MAEMO
 #include <hildonmm/note.h>
@@ -406,11 +407,14 @@ static Glib::ustring remove_quotes(const Glib::ustring& str)
   if(posQuoteEnd != (str.size() - 1))
     return str;
   
+  std::cerr << "Glom: remove_quotes(): Unimplemented quote removal for string: " << str << std::endl;
   //Actually remove the quotes:
+/* Removed because gda_sql_identifier_remove_quotes() is not even defined in recent libgda builds. 
   gchar* quoted = g_strdup(str.c_str());
   //std::cout << "  quoted=" << quoted << std::endl;
 // Hack because we need a newer libgdamm version
 #ifndef GLOM_ENABLE_MAEMO
+  //TODO: This is deprecated, so avoid using it:
   gchar* unquoted = gda_sql_identifier_remove_quotes(quoted); //Changes quoted. unquoted is the same string so should not be freed.  
   //std::cout << "  unquoted= " << unquoted << std::endl;
   if(unquoted)
@@ -418,6 +422,7 @@ static Glib::ustring remove_quotes(const Glib::ustring& str)
 #endif
       
   g_free(quoted);
+*/
 
   return str;
 }

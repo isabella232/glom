@@ -1,3 +1,12 @@
+2009-08-25  Murray Cumming  <murrayc@murrayc.com>
+
+	Comment out use of gda_sql_identifier_remove_quotes().
+
+	* glom/base_db.cc: remove_quotes(): Comment out use of 
+	gda_sql_identifier_remove_quotes() with a stdcerr warning because 
+	it is deprecated and I get a weird undefined reference error and we 
+	need to change how we use this anyway. To fix the build.
+
 2009-08-25  Johannes Schmid <jschmid@openismus.com>
 
 	Fixed remaing maemo build problems
