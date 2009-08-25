@@ -33,8 +33,12 @@ Dialog_ProgressCreating* get_and_show_pulse_dialog(const Glib::ustring& message,
   if(!parent_window)
     std::cerr << "debug: Glom: get_and_show_pulse_dialog(): parent_window is NULL" << std::endl;
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "window_progress");
-
+#else  
+  std::auto_ptr<Glib::Error> error;
+  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "window_progress", error);
+#endif
 
   if(refXml)
   {

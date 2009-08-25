@@ -58,7 +58,12 @@ void get_glade_widget_derived_with_warning(const Glib::ustring& id, T_Widget*& w
     std::cerr << ex.what() << std::endl;
   }
 #else
-  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), id);
+  std::auto_ptr<Glib::Error> error;
+  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), id, error);
+  if (error.get())
+  {
+    std::cerr << error->what() << std::endl;
+  }
 #endif
 
   if(refXml)
@@ -82,7 +87,12 @@ void get_glade_developer_widget_derived_with_warning(const Glib::ustring& id, T_
     std::cerr << ex.what() << std::endl;
   }
 #else
-  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), id);
+  std::auto_ptr<Glib::Error> error;
+  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), id, error);
+  if (error.get())
+  {
+    std::cerr << error->what() << std::endl;
+  }
 #endif
 
   if(refXml)
@@ -106,7 +116,12 @@ void get_glade_widget_with_warning(const Glib::ustring& id, T_Widget*& widget)
     std::cerr << ex.what() << std::endl;
   }
 #else
-  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), id);
+  std::auto_ptr<Glib::Error> error;
+  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), id, error);
+  if (error.get())
+  {
+    std::cerr << error->what() << std::endl;
+  }
 #endif
 
   if(refXml)

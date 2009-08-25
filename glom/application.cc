@@ -1259,7 +1259,12 @@ Glib::RefPtr<Gtk::UIManager> App_Glom::get_ui_manager()
 bool App_Glom::offer_new_or_existing()
 {
   //Offer to load an existing document, or start a new one.
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_existing_or_new");
+#else
+  std::auto_ptr<Glib::Error> error;
+  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_existing_or_new", error);
+#endif      
 
   Dialog_ExistingOrNew* dialog_raw = 0;
   refXml->get_widget_derived("dialog_existing_or_new", dialog_raw);

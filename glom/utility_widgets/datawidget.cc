@@ -619,7 +619,13 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& ta
     return result;
   }
 #else
-  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_field");
+  std::auto_ptr<Glib::Error> error;
+  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_field", error);
+  if (error.get())
+  {
+    std::cerr << error->what() << std::endl;
+    return result;
+  }  
 #endif
   
   Dialog_ChooseField* dialog = 0;
@@ -795,7 +801,13 @@ void DataWidget::on_button_choose_date()
     return;
   }
 #else
-  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_date");
+  std::auto_ptr<Glib::Error> error;
+  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_date", error);
+  if (error.get())
+  {
+    std::cerr << error->what() << std::endl;
+    return;
+  } 
 #endif
 
   Dialog_ChooseDate* dialog = 0;
@@ -846,7 +858,13 @@ bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)
     return result;
   }
 #else
-  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_find_id");
+  std::auto_ptr<Glib::Error> error;
+  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_find_id", error);
+  if (error.get())
+  {
+    std::cerr << error->what() << std::endl;
+    return result;
+  }
 #endif
 
   Dialog_ChooseID* dialog = 0;

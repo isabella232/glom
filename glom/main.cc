@@ -480,7 +480,12 @@ main(int argc, char* argv[])
       return 0; //This command-line option is documented as stopping afterwards.
 
     // Main app
+#ifdef GLIBMM_EXCEPTIONS_ENABLED    
     Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Glom::Utils::get_glade_file_path("glom.glade"), "window_main");
+#else
+    std::auto_ptr<Glib::Error> error;
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Glom::Utils::get_glade_file_path("glom.glade"), "window_main", error);
+#endif     
 
 
 

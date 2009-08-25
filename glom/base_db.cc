@@ -409,13 +409,16 @@ static Glib::ustring remove_quotes(const Glib::ustring& str)
   //Actually remove the quotes:
   gchar* quoted = g_strdup(str.c_str());
   //std::cout << "  quoted=" << quoted << std::endl;
-  gchar* unquoted = gda_sql_identifier_remove_quotes(quoted); //Changes quoted. unquoted is the same string so should not be freed.
+// Hack because we need a newer libgdamm version
+#ifndef GLOM_ENABLE_MAEMO
+  gchar* unquoted = gda_sql_identifier_remove_quotes(quoted); //Changes quoted. unquoted is the same string so should not be freed.  
   //std::cout << "  unquoted= " << unquoted << std::endl;
   if(unquoted)
     return unquoted;
+#endif
       
   g_free(quoted);
-  
+
   return str;
 }
 
@@ -1823,7 +1826,13 @@ sharedptr<LayoutItem_Field> Base_DB::offer_field_list_select_one_field(const sha
     return result;
   }
 #else
-  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_field");
+  std::auto_ptr<Glib::Error> error;
+  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_field", error);
+  if (error.get())
+  {
+    std::cerr << error->what() << std::endl;
+    return result;
+  }
 #endif
 
   Dialog_ChooseField* dialog = 0;
@@ -1867,7 +1876,13 @@ Base_DB::type_list_field_items Base_DB::offer_field_list(const Glib::ustring& ta
     return result;
   }
 #else
-  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_field");
+  std::auto_ptr<Glib::Error> error;
+  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_field", error);
+  if (error.get())
+  {
+    std::cerr << error->what() << std::endl;
+    return result;
+  }  
 #endif
 
   Dialog_ChooseField* dialog = 0;

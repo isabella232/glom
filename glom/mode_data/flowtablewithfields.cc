@@ -209,8 +209,10 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
     Gtk::EventBox* event_box = Gtk::manage( new Gtk::EventBox() ); //TODO_Leak: Valgrind says this is possibly leaked.
     event_box->add(*flow_table);
     event_box->set_visible_window(false);
+#ifndef GLOM_ENABLE_CLIENT_ONLY
     event_box->signal_button_press_event().connect (sigc::mem_fun (*flow_table,
       &FlowTableWithFields::on_button_press_event));
+#endif      
     event_box->show();
     
     alignment->add(*event_box);
@@ -393,8 +395,10 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
         Gtk::EventBox* event_box = Gtk::manage( new Gtk::EventBox() ); //TODO_Leak: Valgrind says this is possibly leaked.
         event_box->add(*flow_table);
         event_box->set_visible_window(false);
+#ifndef GLOM_ENABLE_CLIENT_ONLY        
         event_box->signal_button_press_event().connect (sigc::mem_fun (*flow_table,
                                                                        &FlowTableWithFields::on_button_press_event));
+#endif                                                                       
         event_box->show();
         //This doesn't work (probably because we haven't implmented it in our custom container),
         //so we put the flowtable in an alignment and give that a border instead.
