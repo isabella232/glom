@@ -14,7 +14,7 @@ int main()
   if(!success)
   {
     std::cerr << "Failed: parse_value() failed." << std::endl;
-    return -1; //Failed.
+    return EXIT_FAILURE;
   }
 
   const Gnome::Gda::Time parsed_time = value.get_time();
@@ -29,7 +29,7 @@ int main()
   if(parsed_time.minute != 0)
   {
     std::cerr << "Failed: The parsed minute was " <<  parsed_time.minute << "instead of 0" << std::endl;
-    return -1; //Failed.
+    return EXIT_FAILURE;
   }
 
   const Glib::ustring time_text_parsed = 
@@ -37,11 +37,11 @@ int main()
 
 
   std::cout << "time_text_parsed=" << time_text_parsed << std::endl;
-  return 0; //Success.
+  return EXIT_SUCCESS;
 
   //This extra check would fail if :00 seconds are added to the text:
   //if(time_text_input == time_text_parsed)
-  //   return 0; //Success.
+  //   return EXIT_SUCCESS;
   //else
-  //   return -1; //Failed.
+  //   return EXIT_FAILURE;
 }

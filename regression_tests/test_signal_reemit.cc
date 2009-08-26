@@ -1,14 +1,20 @@
 #include <glom/signal_reemitter.h>
 #include <iostream>
+#include <stdlib.h>
+
+bool success_reemit_void = false;
+bool success_reemit_int = false;
 
 void on_reemit_void()
 {
-  std::cout << "Success: signal_to_reemit_void was emitted when signal_first_emit was emitted." << std::endl;
+  //std::cout << "Success: signal_to_reemit_void was emitted when signal_first_emit was emitted." << std::endl;
+  success_reemit_void = true;
 }
 
 void on_reemit_int(int param)
 {
-  std::cout << "Success: signal_to_reemit_int was emitted when signal_first_emit was emitted. param=" << param << std::endl;
+  //std::cout << "Success: signal_to_reemit_int was emitted when signal_first_emit was emitted. param=" << param << std::endl;
+  success_reemit_int = true;
 }
 
 int main()
@@ -32,4 +38,9 @@ int main()
 
     signal_first_emit.emit(1);
   }
+
+  if(success_reemit_void && success_reemit_int)
+    return EXIT_SUCCESS;
+  else
+    return EXIT_FAILURE;
 }

@@ -1,4 +1,12 @@
-2009-08-26  Murray Cumming  <murrayc@murrayc-desktop>
+2009-08-26  Murray Cumming  <murrayc@murrayc.com>
+
+	Tests: Correct the return values.
+
+	* regression_tests/test_parsing_time.cc:
+	* regression_tests/test_signal_reemit.cc: Return EXIT_SUCCESS or 
+	EXIT_FAILURE properly.
+
+2009-08-26  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/base_db.cc: remove_quotes(): Implement this simply, just removing 
 	start and end quotes. However, I do not think this should be 
