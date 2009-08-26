@@ -1,6 +1,6 @@
 #include <glom/signal_reemitter.h>
 #include <iostream>
-#include <stdlib.h>
+#include <cstdlib>
 
 bool success_reemit_void = false;
 bool success_reemit_int = false;

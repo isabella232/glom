@@ -764,7 +764,7 @@ tm Conversions::parse_time(const Glib::ustring& text, bool& success)
 
 tm Conversions::parse_time(const Glib::ustring& text, const std::locale& locale, bool& success)
 {
-  //std::cout << "parse_time(): text=" << text << std::endl;
+  std::cout << "parse_time(): text=" << text << std::endl;
   //The sequence of statements here seems to be very fragile. If you move things then it stops working.
 
   //return parse_tm(text, locale, 'X' /* time */);
@@ -809,6 +809,7 @@ tm Conversions::parse_time(const Glib::ustring& text, const std::locale& locale,
   
 #ifdef HAVE_STRPTIME
   //Fall back to strptime():
+  //This fallback will be used in most cases. TODO: Remove the useless? time_get<> code then?
   //It seems to be well known that time_get<> can parse much less than what time_put<> can generate:
   // http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2006/n2070.html
   //

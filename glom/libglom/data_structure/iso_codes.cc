@@ -18,9 +18,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <config.h> //For ISO_CODES_PREFIX.
+#include <libglom/libglom_config.h> //For ISO_CODES_PREFIX.
 
-#include "iso_codes.h"
+#include <libglom/data_structure/iso_codes.h>
 #include <libxml++/libxml++.h>
 #include <libglom/document/document.h>
 #include <libglom/utils.h>

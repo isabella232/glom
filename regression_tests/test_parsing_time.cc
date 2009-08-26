@@ -8,6 +8,18 @@ int main()
   std::cout << "time_text_input=" << time_text_input << std::endl;
 
   bool success = false;
+
+  //We try parse_time() though parse_value() calls it anyway, 
+  //to give us a clue if parse_value would fail.
+  struct tm value_as_tm = 
+    Glom::Conversions::parse_time(time_text_input, success);
+  if(!success)
+  {
+    std::cerr << "Failed: parse_time() failed." << std::endl;
+    return EXIT_FAILURE;
+  }
+
+  success = false;
   const Gnome::Gda::Value value = 
     Glom::Conversions::parse_value(Glom::Field::TYPE_TIME, time_text_input, success);
 
@@ -22,13 +34,13 @@ int main()
 
   if(parsed_time.hour != 13)
   {
-    std::cerr << "Failed: The parsed hour was " <<  parsed_time.hour << "instead of 13" << std::endl;
+    std::cerr << "Failed: The parsed hour was " <<  parsed_time.hour << " instead of 13" << std::endl;
     return -1; //Failed.
   }
 
   if(parsed_time.minute != 0)
   {
-    std::cerr << "Failed: The parsed minute was " <<  parsed_time.minute << "instead of 0" << std::endl;
+    std::cerr << "Failed: The parsed minute was " <<  parsed_time.minute << " instead of 0" << std::endl;
     return EXIT_FAILURE;
   }
 
