@@ -390,41 +390,17 @@ namespace { //anonymous
 //If the string has quotes around it, remove them
 static Glib::ustring remove_quotes(const Glib::ustring& str)
 {
-  //If we call gda_sql_identifier_remove_quotes() unnecessarily,
-  //it will convert the string to lowercase, annoyingly.
-  //so we must check for that:
-          
-  //TODO: But see http://bugzilla.gnome.org/show_bug.cgi?id=587440:
-  //if(gda_sql_identifier_needs_quotes(table_name.c_str())) //Means has no quotes already.
-  //  return str;
-  
   const gchar* quote = "\"";
   const Glib::ustring::size_type posQuoteStart = str.find(quote);
   if(posQuoteStart != 0)
     return str;
-    
+
+  const Glib::ustring::size_type size = str.size();    
   const Glib::ustring::size_type posQuoteEnd = str.find(quote, 1);
-  if(posQuoteEnd != (str.size() - 1))
+  if(posQuoteEnd != (size - 1))
     return str;
   
-  std::cerr << "Glom: remove_quotes(): Unimplemented quote removal for string: " << str << std::endl;
-  //Actually remove the quotes:
-/* Removed because gda_sql_identifier_remove_quotes() is not even defined in recent libgda builds. 
-  gchar* quoted = g_strdup(str.c_str());
-  //std::cout << "  quoted=" << quoted << std::endl;
-// Hack because we need a newer libgdamm version
-#ifndef GLOM_ENABLE_MAEMO
-  //TODO: This is deprecated, so avoid using it:
-  gchar* unquoted = gda_sql_identifier_remove_quotes(quoted); //Changes quoted. unquoted is the same string so should not be freed.  
-  //std::cout << "  unquoted= " << unquoted << std::endl;
-  if(unquoted)
-    return unquoted;
-#endif
-      
-  g_free(quoted);
-*/
-
-  return str;
+  return str.substr(1, size - 2);
 }
 
 } //anonymous namespace
@@ -484,10 +460,9 @@ Base_DB::type_vec_strings Base_DB::get_table_names_from_database(bool ignore_sys
         Glib::ustring table_name;
         if(G_VALUE_TYPE(value.gobj()) ==  G_TYPE_STRING)
         {
-          //These gda_sql_identifier_*_quotes() functions are awful, 
-          //and it's awful that we need to use them at all.
           table_name = value.get_string();
           
+          //The table names have quotes sometimes. See http://bugzilla.gnome.org/show_bug.cgi?id=593154
           table_name = remove_quotes(table_name);
           
           //TODO: Unescape the string with gda_server_provider_unescape_string()?
@@ -718,7 +693,7 @@ Base_DB::type_vec_fields Base_DB::get_fields_for_table_from_database(const Glib:
    
       //Examine each field:
       guint row = 0;
-      guint rows_count = data_model_fields->get_n_rows();
+      const guint rows_count = data_model_fields->get_n_rows();
       while(row < rows_count)
       {
         Glib::RefPtr<Gnome::Gda::Column> field_info = Gnome::Gda::Column::create();
@@ -738,6 +713,7 @@ Base_DB::type_vec_fields Base_DB::get_fields_for_table_from_database(const Glib:
           Glib::ustring field_name = value_name.get_string(); //TODO: get_string() is a dodgy choice. murrayc.
           field_name = remove_quotes(field_name);
           field_info->set_name(field_name);
+          //std::cout << "  debug: field_name=" << field_name << std::endl;
         }
 
         //Get the field type:
@@ -3517,7 +3493,7 @@ void Base_DB::update_gda_metastore_for_table(const Glib::ustring& table_name) co
     return;
   }
 
-  std::cout << "DEBUG: Base_DB::update_gda_metastore_for_table(): Calling Gda::Connection::update_meta_store_table() ..." << std::endl;
+  std::cout << "DEBUG: Base_DB::update_gda_metastore_for_table(): Calling Gda::Connection::update_meta_store_table(" << table_name << ") ..." << std::endl;
   //TODO: This doesn't seem to quite work yet:
 #ifdef GLIBMM_EXCEPTIONS_ENABLED  
   gda_connection->update_meta_store_table(table_name);

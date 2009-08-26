@@ -1,3 +1,10 @@
+2009-08-26  Murray Cumming  <murrayc@murrayc-desktop>
+
+	* glom/base_db.cc: remove_quotes(): Implement this simply, just removing 
+	start and end quotes. However, I do not think this should be 
+	necessary:
+	http://bugzilla.gnome.org/show_bug.cgi?id=593154
+
 2009-08-25  Murray Cumming  <murrayc@murrayc.com>
 
 	Comment out use of gda_sql_identifier_remove_quotes().
