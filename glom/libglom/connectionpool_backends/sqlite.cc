@@ -73,7 +73,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
     std::auto_ptr<Glib::Error> error;
     connection = Gnome::Gda::Connection::open_from_string("SQLite", 
       cnc_string, auth_string, 
-      Gnome::Gda::CONNECTION_OPTIONS_NONE /* Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE */, error);
+      Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE, error);
     if(error.get())
     {
       const Glib::Error& ex = *error.get();
@@ -117,7 +117,7 @@ bool Sqlite::create_database(const Glib::ustring& database_name, const Glib::ust
   Glib::RefPtr<Gnome::Gda::Connection> cnc = 
     Gnome::Gda::Connection::open_from_string("SQLite", 
       cnc_string, "", 
-      Gnome::Gda::CONNECTION_OPTIONS_NONE /* Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE */, error);
+      Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE, error);
   if(error.get() != 0)
     return false;
 #endif

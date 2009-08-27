@@ -1,5 +1,14 @@
 2009-08-27  Murray Cumming  <murrayc@murrayc.com>
 
+	Remove a nasty hack that would become a runtime bug.
+
+	* glom/libglom/connectionpool_backends/sqlite.cc: Revert the previous 
+	hack by Johannes, which misused GLIBMM_EXCEPTIONS_ENABLE to 
+	avoid use of CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE. We will 
+	just update libgdamm on Maemo Fremantle instead.
+
+2009-08-27  Murray Cumming  <murrayc@murrayc.com>
+
 	Really never use config.h in libglom.
 
 	* glom/libglom/*.cc: Remove some remaining includes of config.h 
