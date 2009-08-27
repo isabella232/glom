@@ -74,7 +74,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
     std::auto_ptr<Glib::Error> error;
     connection = Gnome::Gda::Connection::open_from_string("SQLite", 
       cnc_string, auth_string, 
-      Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE, error);
+      Gnome::Gda::CONNECTION_OPTIONS_NONE /* Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE */, error);
     if(error.get())
     {
       const Glib::Error& ex = *error.get();
@@ -118,9 +118,9 @@ bool Sqlite::create_database(const Glib::ustring& database_name, const Glib::ust
   Glib::RefPtr<Gnome::Gda::Connection> cnc = 
     Gnome::Gda::Connection::open_from_string("SQLite", 
       cnc_string, "", 
-      Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE, error);
+      Gnome::Gda::CONNECTION_OPTIONS_NONE /* Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE */, error);
   if(error.get() != 0)
-    return false
+    return false;
 #endif
 
   return true;
@@ -175,7 +175,12 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
 
   Glib::RefPtr<Gnome::Gda::MetaStore> store = connection->get_meta_store();
   Glib::RefPtr<Gnome::Gda::MetaStruct> metastruct = Gnome::Gda::MetaStruct::create(store, Gnome::Gda::META_STRUCT_FEATURE_NONE);
+#ifdef GLIBMM_EXCEPTIONS_ENABLED  
   GdaMetaDbObject* object = metastruct->complement(Gnome::Gda::META_DB_TABLE, Gnome::Gda::Value(), Gnome::Gda::Value(), Gnome::Gda::Value(table_name));
+#else
+  GdaMetaDbObject* object = metastruct->complement(Gnome::Gda::META_DB_TABLE, Gnome::Gda::Value(), Gnome::Gda::Value(), Gnome::Gda::Value(table_name), error);
+#endif
+  
   if(!object)
     return false;
 
