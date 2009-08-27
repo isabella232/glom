@@ -1,5 +1,17 @@
 2009-08-27  Murray Cumming  <murrayc@murrayc.com>
 
+	Avoid GTK+ warnings.
+
+	* glom/glom_developer.glade: Set GtkAdjustment page_size to 0 to 
+	avoid new GTK+ warnings.
+	* glom/layout_item_dialogs/dialog_field_layout.cc:
+	* glom/mode_design/fields/dialog_fielddefinition.cc:
+	* glom/mode_design/print_layouts/dialog_text_formatting.cc:
+	More nasty workarounds for GtkBuilder bug #575714, which is still not 
+	fixed.
+
+2009-08-27  Murray Cumming  <murrayc@murrayc.com>
+
 	Remove a nasty hack that would become a runtime bug.
 
 	* glom/libglom/connectionpool_backends/sqlite.cc: Revert the previous 

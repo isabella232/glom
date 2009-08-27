@@ -2007,7 +2007,15 @@ sharedptr<LayoutItem_Notebook> Base_DB::offer_notebook(const sharedptr<LayoutIte
 
   try
   {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_notebook");
+    //GtkBuilder can't find top-level objects (GtkAdjustments in this case),
+    //that one top-level object references.
+    //See http://bugzilla.gnome.org/show_bug.cgi?id=575714
+    //so we need to this silliness. murrayc.
+    std::list<Glib::ustring> builder_ids;
+    builder_ids.push_back("dialog_notebook");
+    builder_ids.push_back("adjustment2");
+
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), builder_ids);
 
     Dialog_Notebook* dialog = 0;
     refXml->get_widget_derived("dialog_notebook", dialog);
@@ -3493,7 +3501,7 @@ void Base_DB::update_gda_metastore_for_table(const Glib::ustring& table_name) co
     return;
   }
 
-  std::cout << "DEBUG: Base_DB::update_gda_metastore_for_table(): Calling Gda::Connection::update_meta_store_table(" << table_name << ") ..." << std::endl;
+  //std::cout << "DEBUG: Base_DB::update_gda_metastore_for_table(): Calling Gda::Connection::update_meta_store_table(" << table_name << ") ..." << std::endl;
   //TODO: This doesn't seem to quite work yet:
 #ifdef GLIBMM_EXCEPTIONS_ENABLED  
   gda_connection->update_meta_store_table(table_name);
@@ -3503,7 +3511,7 @@ void Base_DB::update_gda_metastore_for_table(const Glib::ustring& table_name) co
 #endif  
   
   //This does work, though it takes ages: gda_connection->update_meta_store();
-  std::cout << "DEBUG: Base_DB::update_gda_metastore_for_table(): ... Finished calling Gda::Connection::update_meta_store_table()" << std::endl;
+  //std::cout << "DEBUG: Base_DB::update_gda_metastore_for_table(): ... Finished calling Gda::Connection::update_meta_store_table()" << std::endl;
 }
 
 bool Base_DB::add_user(const Glib::ustring& user, const Glib::ustring& password, const Glib::ustring& group)
