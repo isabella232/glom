@@ -1,3 +1,23 @@
+2009-08-27  Murray Cumming  <murrayc@murrayc.com>
+
+	Really never use config.h in libglom.
+
+	* glom/libglom/*.cc: Remove some remaining includes of config.h 
+	instead of libglom_config.h. 
+	* glom/libglom/libglom_config.h.in: Add GETTEXT_PACKAGE, 
+	PACKAGE_TARNAME, though I suspect that libglom requires different 
+	build stuff for translations.
+	Added POSTGRES_UTILS_PATH and EXEEXT.
+
+2009-08-27  Murray Cumming  <murrayc@murrayc.com>
+
+	Update NEWS and increase version.
+
+	* NEWS:
+	* configure.ac: Update in anticipation of a release.
+	* regression_tests/test_signal_reemit.cc: Avoid an unused parameter 
+	warning.
+
 2009-08-27  Johannes Schmid <jschmid@openismus.com>
 
 	* glom/libglom/connectionpool_backends/sqlite.c:

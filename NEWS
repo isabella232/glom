@@ -1,3 +1,61 @@
+1.11.1 (unstable):
+
+* Really save field definition changes again.
+  Ubuntu Launchpad bug 
+  https://bugs.launchpad.net/ubuntu/+source/glom/+bug/394507 (elmergato)
+* Allow table and field names to use uppercase characters.
+  (requires the latest libgda - either libgda 4.0.4 or libgda 4.1.2.)
+  Bug #587051
+* Do not fail too soon when self-starting a PostgreSQL instance, though the 
+  time to wait until PostgreSQL should be ready is still a hard-coded number.
+* Export:
+  - Correct the export to use the CSV specification
+    https://bugs.launchpad.net/ubuntu/+source/glom/+bug/394894 elmergato)
+  - Don't open the format dialog behind the FileChooser dialog.
+    Ubuntu Launchpad bug
+    https://bugs.launchpad.net/ubuntu/+source/glom/+bug/397409 (elmergato)
+  - Offer File overwrite confirmation.
+    Ubuntu Launchpad bug
+    https://bugs.launchpad.net/ubuntu/+source/glom/+bug/393229 (elmergato)
+  - Allow many fields to be added to the format at once.
+    Ubuntu Launchpad bug
+    https://bugs.launchpad.net/ubuntu/+source/glom/+bug/393231 (elmergato)
+* Import:
+  - Handle commas inside quotes, and escaped quotes, as per the CSV 
+    specification.
+    https://bugs.launchpad.net/ubuntu/+source/glom/+bug/394894 (elmergato)
+* Complain about unknown command-line options instead of crashing.
+* Document's MIME-type registration: Us an xmlns ID.
+* Related Records: Navigation option: Hide the navigation button when the new 
+  "None" option is used. Bug #574360
+  (Murray Cumming, Openismus)
+* Various corrections to the automatic use of ports when self-hosting.
+  (Armin Burgmeier, Openismus)
+* When the file format is too new, show an error message that actually says so.
+  (Murray Cumming)
+* Initial ldtp test scripts, to test the UI.
+  (Armin Burgmeier, Openismus)
+* libglom:
+  - Add an ABI version (1.2) to the shared library and the headers location, 
+    so we may break ABI painlessly when we need to.
+  - Remove any client-only or PostgreSQL/SQLite ifdefs, so that libglom always 
+    offers all functionality, to avoid the need to have multiple versions of 
+    libglom installed if you have multiple Glom builds installed. Only the 
+    no-exceptions build option remains, because they will never be on the same 
+    system.
+  - Remove any Maemo-specific ifdefs because libglom is non-UI.
+  - Fix the pkg-config .pc file.
+  - Avoid calling g_thread_init() twice, fixing a crash.
+  - Correct the headers' installation location.
+ (David King, Openismus)
+* Build:
+  - Use non-recursive build and run tests during make check.
+  (Daniel Elstner, Openismus)
+  - Fix crashes in the client-only build.
+  (Armin Burgmeier, Openismus)
+  - Fix the build on Maemo 5 (Fremantle).
+  (Johannes Schmid, Openismus)
+
 1.11.0 (unstable):
 
 * Network sharing of self-hosted databases is now off by default, and can be 

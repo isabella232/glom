@@ -5,6 +5,8 @@
 bool success_reemit_void = false;
 bool success_reemit_int = false;
 
+const int param_value = 1;
+
 void on_reemit_void()
 {
   //std::cout << "Success: signal_to_reemit_void was emitted when signal_first_emit was emitted." << std::endl;
@@ -14,7 +16,7 @@ void on_reemit_void()
 void on_reemit_int(int param)
 {
   //std::cout << "Success: signal_to_reemit_int was emitted when signal_first_emit was emitted. param=" << param << std::endl;
-  success_reemit_int = true;
+  success_reemit_int = (param_value == param);
 }
 
 int main()
@@ -36,7 +38,7 @@ int main()
     Glom::signal_connect_for_reemit_1arg(signal_first_emit, signal_to_reemit);
     signal_to_reemit.connect( sigc::ptr_fun(&on_reemit_int) );
 
-    signal_first_emit.emit(1);
+    signal_first_emit.emit(param_value);
   }
 
   if(success_reemit_void && success_reemit_int)
