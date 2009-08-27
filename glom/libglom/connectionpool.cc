@@ -18,12 +18,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <libglom/libglom_config.h>
- 
+
 #include <libglom/connectionpool.h>
 #include <libglom/document/document.h>
 #include <libglom/utils.h>
 //#include <libgdamm/connectionevent.h>
+#include <libglom/libglom_config.h>
 #include <glibmm/i18n.h>
 
 #ifdef G_OS_WIN32

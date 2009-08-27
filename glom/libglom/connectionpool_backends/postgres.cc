@@ -18,10 +18,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <libglom/libglom_config.h>
 
 #include <libglom/connectionpool_backends/postgres.h>
 #include <libglom/utils.h>
+#include <libglom/libglom_config.h>
 #include <glibmm/i18n.h>
 
 // Uncomment to see debug messages
@@ -81,15 +81,14 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
   std::cout << "  DEBUG: auth_string=" << auth_string << std::endl;
 #endif
 
+//TODO: Allow the client-only build to specify a read-only connection, 
+//so we can use Gnome::Gda::CONNECTION_OPTIONS_READ_ONLY?
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     connection = Gnome::Gda::Connection::open_from_string("PostgreSQL", 
       cnc_string, auth_string, 
       Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-      | Gnome::Gda::CONNECTION_OPTIONS_READ_ONLY
-#endif
       );
     connection->statement_execute_non_select("SET DATESTYLE = 'ISO'");
     data_model = connection->statement_execute_select("SELECT version()");

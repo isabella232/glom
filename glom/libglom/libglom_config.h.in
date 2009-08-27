@@ -5,8 +5,15 @@
 /* "definition of GLOM_DTD_INSTALL_DIR" */
 #undef GLOM_DTD_INSTALL_DIR
 
+//TODO: Should libglom have separate translations than Glom itself? How? murrayc.
 /* Define to 1 if you have the `dcgettext' function. */
 #undef HAVE_DCGETTEXT
+
+/* Define to the gettext package name. */
+#undef GETTEXT_PACKAGE
+
+/* Define to the one symbol short name of this package. */
+#undef PACKAGE_TARNAME
 
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #undef HAVE_DLFCN_H
@@ -19,5 +26,11 @@
 
 /* Define to the installation prefix of the iso-codes module. */
 #undef ISO_CODES_PREFIX
+
+/* Define to the location of the PostgreSQL utilities. */
+#undef POSTGRES_UTILS_PATH
+
+/* Define to the file extension of executables on the target. */
+#undef EXEEXT
 
 #endif /* GLOM_LIBGLOM_CONFIG_H */

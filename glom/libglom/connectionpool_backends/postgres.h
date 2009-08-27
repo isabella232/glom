@@ -21,10 +21,10 @@
 #ifndef GLOM_BACKEND_POSTGRES_H
 #define GLOM_BACKEND_POSTGRES_H
 
-#include <libgdamm.h>
-#include <libglom/connectionpool_backends/backend.h>
 
-#include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY
+#include <libglom/libglom_config.h>
+#include <libglom/connectionpool_backends/backend.h>
+#include <libgdamm.h>
 
 namespace Glom
 {

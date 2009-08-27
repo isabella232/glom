@@ -21,13 +21,12 @@
 #ifndef GLOM_CONNECTIONPOOL_H
 #define GLOM_CONNECTIONPOOL_H
 
-#include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY
-
 #include <libgdamm.h>
 #include <libglom/sharedptr.h>
 #include <libglom/data_structure/fieldtypes.h>
 #include <libglom/data_structure/field.h>
 #include <libglom/connectionpool_backends/backend.h>
+#include <libglom/libglom_config.h>
 
 #include <memory> // For std::auto_ptr
 

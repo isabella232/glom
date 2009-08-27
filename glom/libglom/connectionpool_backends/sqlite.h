@@ -23,8 +23,7 @@
 
 #include <libgdamm.h>
 #include <libglom/connectionpool_backends/backend.h>
-
-#include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY
+#include <libglom/libglom_config.h>
 
 namespace Glom
 {

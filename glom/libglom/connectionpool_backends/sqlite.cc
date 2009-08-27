@@ -18,11 +18,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <libglom/libglom_config.h>
 
 #include <libglom/connectionpool_backends/sqlite.h>
-
 #include <giomm/file.h>
+#include <libglom/libglom_config.h>
 
 namespace Glom
 {
