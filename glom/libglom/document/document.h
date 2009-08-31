@@ -21,6 +21,8 @@
 #ifndef DOCUMENT_GLOM_H
 #define DOCUMENT_GLOM_H
 
+#include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY
+
 #include <libglom/document/bakery/document_xml.h>
 #include <libglom/data_structure/relationship.h>
 #include <libglom/data_structure/field.h>
@@ -36,7 +38,6 @@
 #include <libglom/data_structure/print_layout.h>
 #include <libglom/data_structure/foundset.h>
 #include <libglom/appstate.h>
-#include <libglom/libglom_config.h>
 #include <vector>
 #include <map>
 #include <limits> // for numeric_limits

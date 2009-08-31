@@ -21,10 +21,10 @@
 #ifndef GLOM_BACKEND_BACKEND_H
 #define GLOM_BACKEND_BACKEND_H
 
+#include <libglom/libglom_config.h> // For GLOM_ENABLE_CLIENT_ONLY
 
 #include <libglom/sharedptr.h>
 #include <libglom/data_structure/field.h>
-#include <libglom/libglom_config.h>
 
 #include <memory>
 

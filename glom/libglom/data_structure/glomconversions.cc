@@ -19,11 +19,11 @@
  */
 
 
+#include <libglom/libglom_config.h> // For HAVE_STRPTIME
 
 #include "glomconversions.h"
 #include <libglom/connectionpool.h>
 #include <libglom/utils.h>
-#include <libglom/libglom_config.h> // For HAVE_STRPTIME
 
 #include <glibmm/i18n.h>
 #include <sstream> //For stringstream

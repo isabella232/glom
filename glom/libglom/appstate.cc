@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <libglom/appstate.h>
-#include <libglom/libglom_config.h>
+#include <libglom/libglom_config.h> // GLOM_ENABLE_CLIENT_ONLY
+#include "appstate.h"
 
 
 namespace Glom

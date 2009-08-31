@@ -18,8 +18,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <libglom/connectionpool_backends/postgres_central.h>
 #include <libglom/libglom_config.h>
+
+#include <libglom/connectionpool_backends/postgres_central.h>
 #include <glibmm/i18n.h>
 
 // Uncomment to see debug messages

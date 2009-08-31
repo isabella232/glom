@@ -18,12 +18,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <libglom/libglom_config.h> //For ISO_CODES_PREFIX.
 
 #include <libglom/data_structure/iso_codes.h>
 #include <libxml++/libxml++.h>
 #include <libglom/document/document.h>
 #include <libglom/utils.h>
-#include <libglom/libglom_config.h> //For ISO_CODES_PREFIX.
 #include <glibmm/i18n.h>
 
 namespace Glom
