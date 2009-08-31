@@ -1,3 +1,9 @@
+2009-08-31  Johannes Schmid  <jschmid@openismus.com>
+	
+	* Makefile_test.am: Fixed make dist (probably automake-1.11 is more
+	clever but it does not build with automake-1.10 because it assumes
+	that the test programs have sources in form of xxx.c and not xxx.cc
+
 2009-08-27  Murray Cumming  <murrayc@murrayc.com>
 
 	Avoid GTK+ warnings.

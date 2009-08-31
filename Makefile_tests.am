@@ -30,10 +30,16 @@ TESTS =	regression_tests/test_parsing_time	\
 
 tests_ldadd = glom/libglom/libglom-$(GLOM_ABI_VERSION).la $(LIBGLOM_LIBS)
 
-glom_libglom_test_connectionpool_LDADD = $(tests_ldadd)
+glom_libglom_test_connectionpool_SOURCES = glom/libglom/test_connectionpool.cc
+glom_libglom_test_document_SOURCES = glom/libglom/test_document.cc
+glom_libglom_test_sharedptr_layoutitem_SOURCES = glom/libglom/test_sharedptr_layoutitem.cc
+glom_test_pyembed_SOURCES = glom/test_pyembed.cc
+regression_tests_test_parsing_time_SOURCES = regression_tests/test_parsing_time.cc
+regression_tests_test_signal_reemit_SOURCES = regression_tests/test_signal_reemit.cc
+
+glom_libglom_test_connectionpool_LDADD = $(testsb_ldadd)
 glom_libglom_test_document_LDADD = $(tests_ldadd)
 glom_libglom_test_sharedptr_layoutitem_LDADD = $(tests_ldadd)
-
 glom_utility_widgets_test_flowtable_SOURCES =	\
 	glom/utility_widgets/flowtable.cc	\
 	glom/utility_widgets/flowtable.h	\
