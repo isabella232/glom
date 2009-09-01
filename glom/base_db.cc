@@ -635,8 +635,13 @@ Base_DB::type_vec_fields Base_DB::get_fields_for_table_from_database(const Glib:
     g_free (quoted_table_name_c);
     quoted_table_name_c = 0;
 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED    
     holder_table_name->set_value(quoted_table_name);
-
+#else
+    std::auto_ptr<Glib::Error> error;
+    holder_table_name->set_value(quoted_table_name, error);
+#endif
+    
     std::list< Glib::RefPtr<Gnome::Gda::Holder> > holder_list;
     holder_list.push_back(holder_table_name);
 
@@ -655,7 +660,6 @@ Base_DB::type_vec_fields Base_DB::get_fields_for_table_from_database(const Glib:
       std::cerr << "Base_DB::get_fields_for_table_from_database(): Error: " << ex.what() << std::endl;
     }
 #else
-    std::auto_ptr<Glib::Error> error;
     data_model_fields = connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_FIELDS, holder_list, error);
 
     // Ignore error, data_model_fields presence is checked below

@@ -1,5 +1,9 @@
 2009-09-01  Johannes Schmid  <jschmid@openismus.com>
 
+	* glom/base_db.cc: Fixed small build problem with disabled exceptions
+
+2009-09-01  Johannes Schmid  <jschmid@openismus.com>
+
 	* glom/libglom/connectionpool_backends/postgres.cc:
 	Also use SQL_IDENTIFIERS_CASE_SENSITIVE on maemo
 	* glom/base_db.cc:
