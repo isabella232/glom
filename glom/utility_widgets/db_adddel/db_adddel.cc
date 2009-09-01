@@ -658,7 +658,7 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
        if(pixbuf)
          pixbuf_renderer->set_property("pixbuf", pixbuf);
        else
-         pixbuf_renderer->set_property("stock-id", Gtk::Stock::MISSING_IMAGE);
+         pixbuf_renderer->set_property("stock-id", Gtk::StockID(Gtk::Stock::MISSING_IMAGE));
 
        pCellRenderer = pixbuf_renderer;
      }
