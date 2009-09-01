@@ -1036,7 +1036,6 @@
                   <object class="GtkEntry" id="entry_quickfind">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="has_focus">True</property>
                     <property name="invisible_char">&#x2022;</property>
                   </object>
                   <packing>

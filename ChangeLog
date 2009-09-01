@@ -1,5 +1,11 @@
 2009-09-01  David King  <davidk@openismus.com>
 
+	* glom/glom.glade: Fix an interesting warning, where the quickfind
+	Gtk::Entry was described in the glade file as having focus, even
+	though it was set to be not visible, and therefore not realized.
+
+2009-09-01  David King  <davidk@openismus.com>
+
 	* glom/dialog_existing_or_new.cc:
 	* glom/utility_widgets/db_adddel/db_adddel.cc: Use Gtk::StockID
 	constructor with builtin stock items so that GTK+ warnings are not
