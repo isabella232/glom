@@ -100,7 +100,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
   std::auto_ptr<Glib::Error> ex;
   connection = Gnome::Gda::Connection::open_from_string("PostgreSQL", 
     cnc_string, auth_string,
-    Gnome::Gda::CONNECTION_OPTIONS_READ_ONLY,
+    Gnome::Gda::CONNECTION_OPTIONS_READ_ONLY | Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE,
     ex);
   
   if(!ex.get())
@@ -133,7 +133,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
 #else
     temp_conn = Gnome::Gda::Connection::open_from_string("PostgreSQL", 
       cnc_string, auth_string, 
-      Gnome::Gda::CONNECTION_OPTIONS_READ_ONLY, ex);
+      Gnome::Gda::CONNECTION_OPTIONS_READ_ONLY | Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE, ex);
 #endif
 
 #ifdef GLOM_CONNECTION_DEBUG
