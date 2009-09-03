@@ -103,7 +103,7 @@ glom_glom_SOURCES =							\
 	glom/navigation/box_tables.cc					\
 	glom/navigation/box_tables.h					\
 	glom/print_layout/canvas_layout_item.cc				\
-	glom/print_layoutscanvas_layout_item.h				\
+	glom/print_layout/canvas_layout_item.h				\
 	glom/print_layout/canvas_print_layout.cc			\
 	glom/print_layout/canvas_print_layout.h				\
 	glom/python_embed/glom_python.cc				\

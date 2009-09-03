@@ -1,3 +1,5 @@
+1.11.1:
+
 2009-09-03  Murray Cumming  <murrayc@murrayc.com>
 
 	* Makefile_tests.am: Fixed a tiny typo to fix the tests build.
