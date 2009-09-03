@@ -118,8 +118,6 @@ glom_glom_SOURCES =							\
 	glom/utility_widgets/checkglom.h				\
 	glom/utility_widgets/combo_textglade.cc				\
 	glom/utility_widgets/combo_textglade.h				\
-	glom/utility_widgets/comboentry_currency.cc			\
-	glom/utility_widgets/comboentry_currency.h			\
 	glom/utility_widgets/comboentryglom.cc				\
 	glom/utility_widgets/comboentryglom.h				\
 	glom/utility_widgets/comboglom.cc				\
@@ -221,6 +219,8 @@ glom_glom_SOURCES +=							\
 	glom/mode_design/dialog_fields.h				\
 	glom/mode_design/dialog_relationships.cc			\
 	glom/mode_design/dialog_relationships.h				\
+	glom/mode_design/iso_codes.cc					\
+	glom/mode_design/iso_codes.h					\
 	glom/mode_design/fields/box_db_table_definition.cc		\
 	glom/mode_design/fields/box_db_table_definition.h		\
 	glom/mode_design/fields/combo_fieldtype.cc			\
@@ -309,16 +309,18 @@ glom_glom_SOURCES +=							\
 	glom/mode_design/users/dialog_user.h				\
 	glom/mode_design/users/dialog_users_list.cc			\
 	glom/mode_design/users/dialog_users_list.h			\
-	glom/translation/combobox_locale.cc				\
-	glom/translation/combobox_locale.h				\
-	glom/translation/dialog_change_language.cc			\
-	glom/translation/dialog_change_language.h			\
-	glom/translation/dialog_copy_translation.cc			\
-	glom/translation/dialog_copy_translation.h			\
-	glom/translation/dialog_identify_original.cc			\
-	glom/translation/dialog_identify_original.h			\
-	glom/translation/window_translations.cc				\
-	glom/translation/window_translations.h				\
+	glom/mode_design/comboentry_currency.cc				\
+	glom/mode_design/comboentry_currency.h				\
+	glom/mode_design/translation/combobox_locale.cc				\
+	glom/mode_design/translation/combobox_locale.h				\
+	glom/mode_design/translation/dialog_change_language.cc			\
+	glom/mode_design/translation/dialog_change_language.h			\
+	glom/mode_design/translation/dialog_copy_translation.cc			\
+	glom/mode_design/translation/dialog_copy_translation.h			\
+	glom/mode_design/translation/dialog_identify_original.cc			\
+	glom/mode_design/translation/dialog_identify_original.h			\
+	glom/mode_design/translation/window_translations.cc				\
+	glom/mode_design/translation/window_translations.h				\
 	glom/utility_widgets/filechooserdialog_saveextras.cc		\
 	glom/utility_widgets/filechooserdialog_saveextras.h		\
 	glom/utility_widgets/flowtable_dnd.cc				\

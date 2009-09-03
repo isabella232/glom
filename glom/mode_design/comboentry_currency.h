@@ -21,7 +21,6 @@
 #ifndef GLOM_MODE_DESIGN_COMBOENTRY_CURRENCY_HH
 #define GLOM_MODE_DESIGN_COMBOENTRY_CURRENCY_HH
 
-#include <libglom/data_structure/iso_codes.h>
 #include <gtkmm/comboboxentry.h>
 #include <gtkmm/builder.h>
 
@@ -31,6 +30,7 @@
 namespace Glom
 {
 
+/// A ComboBox that allows the user to choose, or enter, a currency symbol.
 class ComboEntry_Currency : public Gtk::ComboBoxEntry
 {
 public:

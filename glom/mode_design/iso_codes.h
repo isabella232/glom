@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_DATASTRUCTURE_ISO_CODES_H
-#define GLOM_DATASTRUCTURE_ISO_CODES_H
+#ifndef GLOM_MODE_DESIGN_ISO_CODES_H
+#define GLOM_MODE_DESIGN_ISO_CODES_H
 
 #include <libglom/data_structure/field.h>
 #include <libglom/data_structure/numeric_format.h>
@@ -55,5 +55,5 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id);
 
 } //namespace Glom
 
-#endif //GLOM_DATASTRUCTURE_ISO_CODES_H
+#endif //GLOM_MODE_DESIGN_ISO_CODES_H
 

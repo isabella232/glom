@@ -108,9 +108,9 @@ glom/navigation/box_tables.cc
 glom/print_layout/canvas_layout_item.cc
 glom/print_layout/canvas_print_layout.cc
 glom/python_embed/glom_python.cc
-glom/translation/combobox_locale.cc
-glom/translation/dialog_change_language.cc
-glom/translation/window_translations.cc
+glom/mode_design/translation/combobox_locale.cc
+glom/mode_design/translation/dialog_change_language.cc
+glom/mode_design/translation/window_translations.cc
 glom/utility_widgets/adddel/adddel.cc
 glom/utility_widgets/comboentryglom.cc
 glom/utility_widgets/datawidget.cc

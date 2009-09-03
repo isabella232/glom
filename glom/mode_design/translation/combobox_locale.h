@@ -21,7 +21,7 @@
 #ifndef GLOM_TRANSLATION_COMBOBOX_LOCALE_HH
 #define GLOM_TRANSLATION_COMBOBOX_LOCALE_HH
 
-#include <libglom/data_structure/iso_codes.h>
+#include <glom/mode_design/iso_codes.h>
 #include <gtkmm/combobox.h>
 #include <gtkmm/builder.h>
 
@@ -31,6 +31,7 @@
 namespace Glom
 {
 
+/// A ComboBox that allows the user to choose a locale.
 class ComboBox_Locale : public Gtk::ComboBox
 {
 public:

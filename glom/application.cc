@@ -26,8 +26,8 @@
 #include <glom/dialog_progress_creating.h>
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-#include <glom/translation/dialog_change_language.h>
-#include <glom/translation/window_translations.h>
+#include <glom/mode_design/translation/dialog_change_language.h>
+#include <glom/mode_design/translation/window_translations.h>
 #include <glom/utility_widgets/filechooserdialog_saveextras.h>
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

@@ -27,7 +27,7 @@
 #include <glom/box_withbuttons.h>
 #include <glom/utility_widgets/combo_textglade.h>
 #include <glom/mode_design/layout/combobox_relationship.h>
-#include <glom/utility_widgets/comboentry_currency.h>
+#include <glom/mode_design/comboentry_currency.h>
 
 namespace Glom
 {

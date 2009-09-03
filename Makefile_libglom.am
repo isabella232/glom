@@ -30,7 +30,6 @@ libglom_data_structure_include_HEADERS =			\
 	glom/libglom/data_structure/foundset.h			\
 	glom/libglom/data_structure/glomconversions.h		\
 	glom/libglom/data_structure/groupinfo.h			\
-	glom/libglom/data_structure/iso_codes.h			\
 	glom/libglom/data_structure/numeric_format.h		\
 	glom/libglom/data_structure/parameternamegenerator.h	\
 	glom/libglom/data_structure/print_layout.h		\
@@ -103,7 +102,6 @@ glom_libglom_libglom_1_12_la_SOURCES =					\
 	glom/libglom/data_structure/foundset.cc				\
 	glom/libglom/data_structure/glomconversions.cc			\
 	glom/libglom/data_structure/groupinfo.cc			\
-	glom/libglom/data_structure/iso_codes.cc			\
 	glom/libglom/data_structure/numeric_format.cc			\
 	glom/libglom/data_structure/parameternamegenerator.cc		\
 	glom/libglom/data_structure/print_layout.cc			\
@@ -148,23 +146,21 @@ glom_libglom_libglom_1_12_la_SOURCES =					\
 	glom/libglom/python_embed/pygdavalue_conversions.c		\
 	glom/libglom/python_embed/pygdavalue_conversions.h
 
-if GLOM_ENABLE_POSTGRESQL
 glom_libglom_libglom_1_12_la_SOURCES +=				\
 	glom/libglom/connectionpool_backends/postgres.cc	\
 	glom/libglom/connectionpool_backends/postgres.h		\
 	glom/libglom/connectionpool_backends/postgres_central.cc\
 	glom/libglom/connectionpool_backends/postgres_central.h
+
 if !GLOM_ENABLE_CLIENT_ONLY
 glom_libglom_libglom_1_12_la_SOURCES +=				\
 	glom/libglom/connectionpool_backends/postgres_self.cc	\
 	glom/libglom/connectionpool_backends/postgres_self.h
 endif
-endif
-if GLOM_ENABLE_SQLITE
+
 glom_libglom_libglom_1_12_la_SOURCES +=				\
 	glom/libglom/connectionpool_backends/sqlite.cc		\
 	glom/libglom/connectionpool_backends/sqlite.h
-endif
 
 glom_libglom_libglom_1_12_la_LIBADD = $(LIBGLOM_LIBS) $(PYTHON_LIBS)
 

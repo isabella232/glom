@@ -26,7 +26,7 @@
 #include <libglom/document/document.h>
 #include <glom/box_withbuttons.h>
 #include <glom/utility_widgets/combo_textglade.h>
-#include <glom/utility_widgets/comboentry_currency.h>
+#include <glom/mode_design/comboentry_currency.h>
 #include "dialog_groupby_secondaryfields.h"
 #include "dialog_groupby_sortfields.h"
 #include "comboentry_borderwidth.h"

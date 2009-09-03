@@ -20,7 +20,7 @@
 
 #include "combobox_locale.h"
 #include <gtk/gtkcomboboxentry.h>
-#include <libglom/data_structure/iso_codes.h>
+#include <glom/mode_design/iso_codes.h>
 
 namespace Glom
 {
