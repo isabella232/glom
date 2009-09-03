@@ -590,7 +590,6 @@ bool DataWidget::on_button_press_event(GdkEventButton *event)
 
   return Gtk::EventBox::on_button_press_event(event);
 }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
 sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name)
 {
@@ -649,7 +648,6 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& ta
   return result;
 }
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 sharedptr<LayoutItem_Field> DataWidget::offer_field_layout(const sharedptr<const LayoutItem_Field>& start_field)
 {
   sharedptr<LayoutItem_Field> result;
@@ -685,16 +683,7 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_layout(const sharedptr<const
 
   return result;
 }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
-/*
-void DataWidget::on_menupopup_add_item(LayoutWidgetBase::enumType item)
-{
-  signal_layout_item_added().emit(item);
-}
-*/
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 void DataWidget::on_menupopup_activate_layout()
 {
   //finish_editing();

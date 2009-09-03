@@ -48,7 +48,9 @@ Canvas_PrintLayout::Canvas_PrintLayout()
 : m_modified(false),
   m_dialog_format(0)
 {
+  #ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_context_menu();
+  #endif
 
   //Use millimeters, because that's something that is meaningful to the user,
   //and we can use it with Gtk::PageSetup too:
@@ -149,12 +151,14 @@ void Canvas_PrintLayout::add_canvas_layout_item(const Glib::RefPtr<CanvasLayoutI
   CanvasEditable::add_item(item, m_items_group);
   item->raise();
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   //Connect signals handlers:
   //TODO: Avoid the bind of a RefPtr. It has been known to cause memory/ref-counting problems: 
   item->signal_show_context().connect(
     sigc::bind(
       sigc::mem_fun(*this, &Canvas_PrintLayout::on_item_show_context_menu), 
       item) );
+#endif //GLOM_ENABLE_CLIENT_ONLY
 
 }
 
@@ -209,7 +213,7 @@ void Canvas_PrintLayout::fill_layout_group(const sharedptr<LayoutGroup>& group)
   }
 }
 
-
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void Canvas_PrintLayout::setup_context_menu()
 {
   m_context_menu_action_group = Gtk::ActionGroup::create();
@@ -283,23 +287,6 @@ void Canvas_PrintLayout::on_item_show_context_menu(guint button, guint32 activat
   m_context_item = item;
 
   m_context_menu->popup(button, activate_time);
-}
-
-void Canvas_PrintLayout::update_layout_position_from_canvas(const sharedptr<LayoutItem> layout_item, const Glib::RefPtr<const CanvasLayoutItem>& canvas_item)
-{
-  if(!layout_item || !canvas_item)
-    return;
-
-  //Get the actual position:
-  double x = 0;
-  double y = 0;
-  canvas_item->get_xy(x, y);
-  //std::cout << "Canvas_PrintLayout::update_layout_position_from_canvas(): x=" << x << std::endl;
-
-  double width = 0;
-  double height = 0;
-  canvas_item->get_width_height(width, height);
-  layout_item->set_print_layout_position(x, y, width, height); 
 }
 
 sharedptr<LayoutItem_Portal> Canvas_PrintLayout::offer_related_records(const sharedptr<LayoutItem_Portal>& portal, Gtk::Window* parent)
@@ -458,6 +445,26 @@ void Canvas_PrintLayout::on_dialog_format_hide()
 
   delete m_dialog_format;
   m_dialog_format = 0;
+}
+
+#endif //GLOM_ENABLE_CLIENT_ONLY
+
+
+void Canvas_PrintLayout::update_layout_position_from_canvas(const sharedptr<LayoutItem> layout_item, const Glib::RefPtr<const CanvasLayoutItem>& canvas_item)
+{
+  if(!layout_item || !canvas_item)
+    return;
+
+  //Get the actual position:
+  double x = 0;
+  double y = 0;
+  canvas_item->get_xy(x, y);
+  //std::cout << "Canvas_PrintLayout::update_layout_position_from_canvas(): x=" << x << std::endl;
+
+  double width = 0;
+  double height = 0;
+  canvas_item->get_width_height(width, height);
+  layout_item->set_print_layout_position(x, y, width, height); 
 }
 
 Glib::RefPtr<Goocanvas::Polyline> Canvas_PrintLayout::create_margin_line(double x1, double y1, double x2, double y2)

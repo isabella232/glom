@@ -17,7 +17,7 @@
 #ifndef GLOM_PRINT_OPERATION_PRINT_LAYOUT_H
 #define GLOM_PRINT_OPERATION_PRINT_LAYOUT_H
 
-#include <glom/mode_design/print_layouts/canvas_print_layout.h>
+#include <glom/print_layout/canvas_print_layout.h>
 #include <gtkmm/printoperation.h>
 #include <vector>
 

@@ -22,7 +22,7 @@
 #define WINDOW_PRINT_LAYOUT_EDIT_H
 
 #include <libglom/data_structure/print_layout.h>
-#include <glom/mode_design/print_layouts/canvas_print_layout.h>
+#include <glom/print_layout/canvas_print_layout.h>
 #include <glom/mode_design/print_layouts/print_layout_toolbar.h>
 #include <glom/mode_design/print_layouts/print_layout_toolbar_button.h>
 #include <libglom/document/document.h>

@@ -1685,6 +1685,8 @@ Glib::RefPtr<Gnome::Gda::Connection> Base_DB::get_connection()
   return gda_connection;
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+
 bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
 {
   //TODO_Performance: Avoid copying:
@@ -1889,7 +1891,6 @@ Base_DB::type_list_field_items Base_DB::offer_field_list(const Glib::ustring& ta
   return result;
 }
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 sharedptr<LayoutItem_Field> Base_DB::offer_field_formatting(const sharedptr<const LayoutItem_Field>& start_field, const Glib::ustring& table_name, Gtk::Window* transient_for)
 {
   sharedptr<LayoutItem_Field> result;

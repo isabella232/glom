@@ -23,7 +23,7 @@
 
 #include <glom/base_db.h>
 #include <glom/utility_widgets/canvas/canvas_editable.h>
-#include <glom/mode_design/print_layouts/canvas_layout_item.h>
+#include <glom/print_layout/canvas_layout_item.h>
 #include <libglom/data_structure/print_layout.h>
 #include <gtkmm/uimanager.h>
 #include <gtkmm/toggleaction.h>
@@ -66,7 +66,10 @@ public:
   
 private:
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   void setup_context_menu();
+#endif
+
   void add_layout_group(const sharedptr<LayoutGroup>& group, bool is_top_level = false);
   void add_layout_group_children(const sharedptr<LayoutGroup>& group);
   void fill_layout_group(const sharedptr<LayoutGroup>& group);
@@ -80,6 +83,7 @@ private:
   
   type_vecLayoutFields get_portal_fields_to_show(const sharedptr<LayoutItem_Portal>& portal);
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   sharedptr<LayoutItem_Portal> offer_related_records(const sharedptr<LayoutItem_Portal>& portal, Gtk::Window* parent);
 
   void on_item_show_context_menu(guint button, guint32 activate_time, Glib::RefPtr<CanvasLayoutItem> item);
@@ -88,6 +92,7 @@ private:
   void on_context_menu_delete();
 
   void on_dialog_format_hide();
+#endif
 
   Glib::RefPtr<Goocanvas::Polyline> create_margin_line(double x1, double y1, double x2, double y2);
   static void update_layout_position_from_canvas(const sharedptr<LayoutItem> layout_item, const Glib::RefPtr<const CanvasLayoutItem>& canvas_item);

@@ -112,9 +112,10 @@ public:
   sharedptr<Field> change_column(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, Gtk::Window* parent_window) const;
 
   bool change_columns(const Glib::ustring& table_name, const type_vec_const_fields& old_fields, type_vec_fields& fields, Gtk::Window* parent_window) const;
-#endif //GLOM_ENABLE_CLIENT_ONLY
 
   bool insert_example_data(const Glib::ustring& table_name) const;
+
+#endif //GLOM_ENABLE_CLIENT_ONLY
 
   //TODO: This is not a very good place for this function.
   /// Get the active layout platform for the document, or get a suitable default.
@@ -125,6 +126,10 @@ public:
 
 protected:
 
+  typedef std::list< sharedptr<LayoutItem_Field> > type_list_field_items;
+  typedef std::list< sharedptr<const LayoutItem_Field> > type_list_const_field_items;
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   /** Allow the user to select a field from the list of fields for the table.
    */
   sharedptr<LayoutItem_Field> offer_field_list_select_one_field(const Glib::ustring& table_name, Gtk::Window* transient_for = 0);
@@ -134,16 +139,12 @@ protected:
    */
   sharedptr<LayoutItem_Field> offer_field_list_select_one_field(const sharedptr<const LayoutItem_Field>& start_field, const Glib::ustring& table_name, Gtk::Window* transient_for = 0);
   
-    
-  typedef std::list< sharedptr<LayoutItem_Field> > type_list_field_items;
-  typedef std::list< sharedptr<const LayoutItem_Field> > type_list_const_field_items;
   
   /** Allow the user to select fields from the list of fields for the table.
    */
   type_list_field_items offer_field_list(const Glib::ustring& table_name, Gtk::Window* transient_for = 0);
   
-  
-#ifndef GLOM_ENABLE_CLIENT_ONLY
+
   sharedptr<LayoutItem_Field> offer_field_formatting(const sharedptr<const LayoutItem_Field>& start_field, const Glib::ustring& table_name, Gtk::Window* transient_for = 0);
   sharedptr<LayoutItem_Text> offer_textobject(const sharedptr<LayoutItem_Text>& start_textobject, Gtk::Window* transient_for = 0, bool show_title = true);
   sharedptr<LayoutItem_Image> offer_imageobject(const sharedptr<LayoutItem_Image>& start_imageobject, Gtk::Window* transient_for = 0, bool show_title = true);

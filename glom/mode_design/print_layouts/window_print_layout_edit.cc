@@ -21,7 +21,7 @@
 
 #include "window_print_layout_edit.h"
 #include <glom/box_db_table.h>
-#include "canvas_layout_item.h"
+#include <glom/print_layout/canvas_layout_item.h>
 #include <libglom/data_structure/layout/layoutitem_line.h>
 #include <libglom/data_structure/layout/layoutitem_portal.h>
 //#include <libgnome/gnome-i18n.h>

@@ -42,14 +42,20 @@ public:
 
 private:
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   void on_button_define_layout();
   void on_dialog_layout_hide();
+#endif
 
   //Member widgets:
   Gtk::HBox m_extra_widget;
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   Gtk::Button m_button_format;
-  Glib::ustring m_table_name;
   Dialog_Layout_Export* m_pDialogLayout;
+#endif //GLOM_ENABLE_CLIENT_ONLY
+
+  Glib::ustring m_table_name;
 
   Document::type_list_layout_groups m_layout_groups;
   Document* m_document;

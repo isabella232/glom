@@ -1,5 +1,16 @@
 2009-09-03  Murray Cumming  <murrayc@murrayc.com>
 
+	Move some non-layout print_layout code back out of mode_design
+
+	* glom/mode_design/print_layouts/canvas_layout_item.[h|cc]:
+	* glom/mode_design/print_layouts/canvas_print_layout.[h|cc]:
+	Moved to glom/print_layout/, because they are used by client-only mode 
+	too.
+	* glom/Makefile_glom.am, *.[h|cc]: Adapted.
+	* po/POTFILES.in: Update for moved files.
+
+2009-09-03  Murray Cumming  <murrayc@murrayc.com>
+
 	Moved many developer-mode files into glom/mode_design/ now that our 
 	non-recursive build allows that without linker errors.
 

@@ -102,6 +102,10 @@ glom_glom_SOURCES =							\
 	glom/mode_find/notebook_find.h					\
 	glom/navigation/box_tables.cc					\
 	glom/navigation/box_tables.h					\
+	glom/print_layout/canvas_layout_item.cc				\
+	glom/print_layoutscanvas_layout_item.h				\
+	glom/print_layout/canvas_print_layout.cc			\
+	glom/print_layout/canvas_print_layout.h				\
 	glom/python_embed/glom_python.cc				\
 	glom/python_embed/glom_python.h					\
 	glom/report_builder.cc						\
@@ -279,10 +283,6 @@ glom_glom_SOURCES +=							\
 	glom/mode_design/relationships_overview/printoperation_relationshipsoverview.h	\
 	glom/mode_design/print_layouts/box_print_layouts.cc		\
 	glom/mode_design/print_layouts/box_print_layouts.h		\
-	glom/mode_design/print_layouts/canvas_layout_item.cc		\
-	glom/mode_design/print_layouts/canvas_layout_item.h		\
-	glom/mode_design/print_layouts/canvas_print_layout.cc		\
-	glom/mode_design/print_layouts/canvas_print_layout.h		\
 	glom/mode_design/print_layouts/dialog_text_formatting.cc	\
 	glom/mode_design/print_layouts/dialog_text_formatting.h		\
 	glom/mode_design/print_layouts/print_layout_toolbar.cc		\
