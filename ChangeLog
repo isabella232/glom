@@ -1,5 +1,9 @@
 2009-09-03  Murray Cumming  <murrayc@murrayc.com>
 
+	* Makefile_tests.am: Fixed a tiny typo to fix the tests build.
+
+2009-09-03  Murray Cumming  <murrayc@murrayc.com>
+
 	Move some non-layout print_layout code back out of mode_design
 
 	* glom/mode_design/print_layouts/canvas_layout_item.[h|cc]:
