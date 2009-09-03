@@ -21,7 +21,7 @@
 #include "base_db_table.h"
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/application.h>
-#include "python_embed/glom_python.h"
+#include <glom/python_embed/glom_python.h>
 #include <sstream>
 
 namespace Glom

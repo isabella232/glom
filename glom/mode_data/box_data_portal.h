@@ -24,7 +24,7 @@
 #include "config.h" // GLOM_ENABLE_CLIENT_ONLY
 
 #include "box_data_manyrecords.h"
-#include "../utility_widgets/layoutwidgetbase.h"
+#include <glom/utility_widgets/layoutwidgetbase.h>
 
 namespace Glom
 {

@@ -24,7 +24,7 @@
 #include <libglom/connectionpool.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 #include <libglom/data_structure/glomconversions.h>
-#include "frame_glom.h"
+#include <glom/frame_glom.h>
 #include <libxml++/libxml++.h>
 #include <libxslt/transform.h>
 //#include <libexslt/exslt.h> //For exsltRegisterAll().

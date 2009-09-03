@@ -21,7 +21,7 @@
 #ifndef GLOM_DIALOG_IMPORT_CSV_H
 #define GLOM_DIALOG_IMPORT_CSV_H
 
-#include "base_db.h"
+#include <glom/base_db.h>
 
 #include <memory>
 #include <giomm/asyncresult.h>

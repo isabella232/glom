@@ -23,7 +23,7 @@
 
 #include <gtkmm.h>
 #include <gtkmm/builder.h>
-#include "../../base_db.h"
+#include <glom/base_db.h>
 #include "../../utility_widgets/combo_textglade.h"
 
 namespace Glom

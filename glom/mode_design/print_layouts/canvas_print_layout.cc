@@ -23,7 +23,7 @@
 #include <glom/utils_ui.h> //For bold_message()).
 #include <gtkmm/stock.h>
 #include <glom/mode_design/print_layouts/dialog_text_formatting.h>
-#include <glom/mode_data/dialog_layout_list_related.h>
+#include <glom/mode_design/layout/dialog_layout_list_related.h>
 
 //TODO: Remove these when we can just use a CanvasLayoutItem in a GooCanvasTable:
 #include <glom/utility_widgets/canvas/canvas_table_movable.h>

@@ -20,22 +20,21 @@
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
-#include "base_db.h"
+#include <glom/base_db.h>
 #include "application.h" //App_Glom.
 #include <libglom/appstate.h>
 #include <libglom/standard_table_prefs_fields.h>
 #include <libglom/document/document.h>
 #include <libglom/data_structure/glomconversions.h>
-#include "mode_data/dialog_choose_field.h"
+#include <glom/mode_design/layout/dialog_choose_field.h>
 
 //#ifndef GLOM_ENABLE_CLIENT_ONLY
-#include "layout_item_dialogs/dialog_field_layout.h"
-#include "layout_item_dialogs/dialog_notebook.h"
-#include "layout_item_dialogs/dialog_textobject.h"
-#include "layout_item_dialogs/dialog_imageobject.h"
+#include <glom/mode_design/layout/layout_item_dialogs/dialog_field_layout.h>
+#include <glom/mode_design/layout/layout_item_dialogs/dialog_notebook.h>
+#include <glom/mode_design/layout/layout_item_dialogs/dialog_textobject.h>
+#include <glom/mode_design/layout/layout_item_dialogs/dialog_imageobject.h>
 //#endif // !GLOM_ENABLE_CLIENT_ONLY
 
-//#include "reports/dialog_layout_report.h"
 #include <glom/utils_ui.h>
 #include <glom/glade_utils.h>
 #include <libglom/data_structure/glomconversions.h>
@@ -45,7 +44,7 @@
 #include <libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_header.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_footer.h>
-#include "python_embed/glom_python.h"
+#include <glom/python_embed/glom_python.h>
 #include <glom/glom_postgres.h>
 #include <glom/glom_privs.h>
 #include <glibmm/i18n.h>

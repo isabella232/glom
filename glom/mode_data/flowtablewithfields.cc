@@ -32,7 +32,7 @@
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/glade_utils.h>
 #include <glom/mode_data/box_data_list_related.h>
-#include <glom/mode_data/dialog_choose_relationship.h>
+#include <glom/mode_design/layout/dialog_choose_relationship.h>
 #include <glom/utils_ui.h> //For bold_message()).
 #include <libglom/data_structure/layout/layoutitem_placeholder.h>
 #include <glom/signal_reemitter.h>

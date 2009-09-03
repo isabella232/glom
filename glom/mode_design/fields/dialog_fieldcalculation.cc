@@ -21,8 +21,8 @@
 
 #include "dialog_fieldcalculation.h"
 #include "../../box_db_table.h"
-#include "../../frame_glom.h"
-#include "../../python_embed/glom_python.h"
+#include <glom/frame_glom.h>
+#include <glom/python_embed/glom_python.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <gtksourceviewmm/sourcelanguagemanager.h>
 

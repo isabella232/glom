@@ -24,7 +24,7 @@
 #include <gtkmm.h>
 #include <gtkmm/builder.h>
 #include "../mode_data/flowtablewithfields.h"
-#include "../base_db.h"
+#include <glom/base_db.h>
 
 namespace Glom
 {

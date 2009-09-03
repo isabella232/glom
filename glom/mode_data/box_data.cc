@@ -25,7 +25,7 @@
 #include <glom/utils_ui.h>
 #include <libglom/data_structure/layout/layoutitem_field.h>
 #include <glom/glom_privs.h>
-#include "../python_embed/glom_python.h"
+#include <glom/python_embed/glom_python.h>
 #include <algorithm> //For std::find()
 #include <libglom/libglom_config.h>
 #include <glibmm/i18n.h>

@@ -20,7 +20,7 @@
 
 
 #include "dialog_script_library.h"
-#include "../../python_embed/glom_python.h"
+#include <glom/python_embed/glom_python.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/glade_utils.h>
 #include <glom/utils_ui.h>

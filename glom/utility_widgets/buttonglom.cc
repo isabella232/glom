@@ -22,10 +22,9 @@
 #include <gtkmm/messagedialog.h>
 #include <glom/application.h>
 #include <glom/glade_utils.h>
-#include <glom/utility_widgets/dialog_layoutitem_properties.h>
 #include <glom/utils_ui.h>
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-#include <glom/layout_item_dialogs/dialog_buttonscript.h>
+#include <glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.h>
 #endif
 #include <glibmm/i18n.h>
 //#include <sstream> //For stringstream

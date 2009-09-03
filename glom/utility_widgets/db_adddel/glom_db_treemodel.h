@@ -25,7 +25,7 @@
 #include <gtkmm/treepath.h>
 #include <libglom/data_structure/layout/layoutitem_field.h>
 #include <libglom/connectionpool.h>
-#include "../../base_db.h"
+#include <glom/base_db.h>
 
 namespace Glom
 {

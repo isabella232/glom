@@ -20,7 +20,6 @@
 
 #include "config.h" //For GLOM_ENABLE_POSTGRESQL
 #include "dialog_connection.h"
-#include "box_withbuttons.h" //For Box_WithButtons::connect_to_server().
 #include <glibmm/i18n.h>
 
 #include <libglom/connectionpool.h>

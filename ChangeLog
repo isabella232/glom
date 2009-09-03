@@ -1,5 +1,34 @@
 2009-09-03  Murray Cumming  <murrayc@murrayc.com>
 
+	Moved many developer-mode files into glom/mode_design/ now that our 
+	non-recursive build allows that without linker errors.
+
+	* glom/combobox_fields.[h|cc]:
+	* glom/combobox_relationship.[h|cc]:
+	* glom/layout_item_dialogs/:
+	* glom/mode_data/dialog_choose_field.[h|cc]:
+	* glom/mode_data/dialog_choose_relationship.[h|cc]:
+	* glom/mode_data/dialog_layout*.[h|cc]:
+	* glom/mode_data/treestore_layout.[h|cc]:
+	* glom/layout_item_dialogs/:
+	Moved to glom/mode_design/layout/
+	* glom/reports/report_builder.[h|cc]: Moved to glom/
+	* glom/reports/dialog_layout_report.[h|cc]"
+	* glom/reports/treestore_report_layout.[h|cc]:
+	Moved to glom/mode_design/report_layout/
+	* glom/database_preferences.[h|cc]:
+	* glom/relationships_overview/: Moved to 
+	glom/mode_design/
+	* glom/glom_developer.glade:
+	* glom/dialog_new_self_hosted_connection.[h|cc]:Rename to 
+	glom/mode_design/dialog_initial_password.[h|cc], renaming the class too, 
+	because that's what this is now.
+	* glom/utility_widgets/dialog_layoutitem_properties.[h|cc]: Removed 
+	this unused class.
+	* glom/Makefile_glom.am, *.[h|cc]: Adapted.
+
+2009-09-03  Murray Cumming  <murrayc@murrayc.com>
+
 	libglom: Avoid client-only build changes: partial recommit of revert.
 
 	* glom/libglom/appstate.cc:

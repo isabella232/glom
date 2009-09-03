@@ -23,15 +23,15 @@
 
 #include <gtkmm.h>
 #include "../../utility_widgets/combo_textglade.h"
-#include "../../combobox_relationship.h"
+#include <glom/mode_design/layout/combobox_relationship.h>
 #include "combo_fieldtype.h"
 #include "../../utility_widgets/table_columns.h"
 //#include "../../utility_widgets/entry_numerical.h"
 #include "../../utility_widgets/dialog_properties.h"
 #include "../../utility_widgets/datawidget.h"
 #include <libglom/data_structure/field.h>
-#include "../../layout_item_dialogs/box_formatting.h"
-#include "../../base_db.h"
+#include <glom/mode_design/layout/layout_item_dialogs/box_formatting.h>
+#include <glom/base_db.h>
 #include <gtksourceviewmm/sourceview.h>
 
 namespace Glom

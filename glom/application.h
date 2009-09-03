@@ -22,7 +22,7 @@
 #define HEADER_APP_GLOM
 
 #include <glom/bakery/app_withdoc_gtk.h>
-#include "frame_glom.h"
+#include <glom/frame_glom.h>
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 

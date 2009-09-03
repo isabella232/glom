@@ -30,10 +30,6 @@ glom_glom_SOURCES =							\
 	glom/box_reports.h						\
 	glom/box_withbuttons.cc						\
 	glom/box_withbuttons.h						\
-	glom/combobox_fields.cc						\
-	glom/combobox_fields.h						\
-	glom/combobox_relationship.cc					\
-	glom/combobox_relationship.h					\
 	glom/dialog_connection.cc					\
 	glom/dialog_connection.h					\
 	glom/dialog_existing_or_new.cc					\
@@ -68,6 +64,8 @@ glom_glom_SOURCES =							\
 	glom/variablesmap.h						\
 	glom/xsl_utils.cc						\
 	glom/xsl_utils.h						\
+	glom/printoperation_printlayout.cc				\
+	glom/printoperation_printlayout.h				\
 	glom/bakery/app.cc						\
 	glom/bakery/app.h						\
 	glom/bakery/app_withdoc.cc					\
@@ -92,14 +90,6 @@ glom_glom_SOURCES =							\
 	glom/mode_data/box_data_manyrecords.h				\
 	glom/mode_data/box_data_portal.cc				\
 	glom/mode_data/box_data_portal.h				\
-	glom/mode_data/dialog_choose_field.cc				\
-	glom/mode_data/dialog_choose_field.h				\
-	glom/mode_data/dialog_choose_relationship.cc			\
-	glom/mode_data/dialog_choose_relationship.h			\
-	glom/mode_data/dialog_layout.cc					\
-	glom/mode_data/dialog_layout.h					\
-	glom/mode_data/dialog_layout_export.cc				\
-	glom/mode_data/dialog_layout_export.h				\
 	glom/mode_data/flowtablewithfields.cc				\
 	glom/mode_data/flowtablewithfields.h				\
 	glom/mode_data/notebook_data.cc					\
@@ -114,8 +104,8 @@ glom_glom_SOURCES =							\
 	glom/navigation/box_tables.h					\
 	glom/python_embed/glom_python.cc				\
 	glom/python_embed/glom_python.h					\
-	glom/reports/report_builder.cc					\
-	glom/reports/report_builder.h					\
+	glom/report_builder.cc						\
+	glom/report_builder.h						\
 	glom/utility_widgets/alignment_justified.cc			\
 	glom/utility_widgets/alignment_justified.h			\
 	glom/utility_widgets/buttonglom.cc				\
@@ -142,8 +132,6 @@ glom_glom_SOURCES =							\
 	glom/utility_widgets/dialog_flowtable.h				\
 	glom/utility_widgets/dialog_image_progress.cc			\
 	glom/utility_widgets/dialog_image_progress.h			\
-	glom/utility_widgets/dialog_layoutitem_properties.cc		\
-	glom/utility_widgets/dialog_layoutitem_properties.h		\
 	glom/utility_widgets/dialog_properties.cc			\
 	glom/utility_widgets/dialog_properties.h			\
 	glom/utility_widgets/entryglom.cc				\
@@ -215,46 +203,10 @@ glom_glom_SOURCES =							\
 
 if !GLOM_ENABLE_CLIENT_ONLY
 glom_glom_SOURCES +=							\
-	glom/dialog_database_preferences.cc				\
-	glom/dialog_database_preferences.h				\
-	glom/dialog_new_self_hosted_connection.cc			\
-	glom/dialog_new_self_hosted_connection.h			\
-	glom/printoperation_printlayout.cc				\
-	glom/printoperation_printlayout.h				\
-	glom/layout_item_dialogs/box_formatting.cc			\
-	glom/layout_item_dialogs/box_formatting.h			\
-	glom/layout_item_dialogs/combo_summarytype.cc			\
-	glom/layout_item_dialogs/combo_summarytype.h			\
-	glom/layout_item_dialogs/comboentry_borderwidth.cc		\
-	glom/layout_item_dialogs/comboentry_borderwidth.h		\
-	glom/layout_item_dialogs/dialog_buttonscript.cc			\
-	glom/layout_item_dialogs/dialog_buttonscript.h			\
-	glom/layout_item_dialogs/dialog_field_layout.cc			\
-	glom/layout_item_dialogs/dialog_field_layout.h			\
-	glom/layout_item_dialogs/dialog_field_summary.cc		\
-	glom/layout_item_dialogs/dialog_field_summary.h			\
-	glom/layout_item_dialogs/dialog_group_by.cc			\
-	glom/layout_item_dialogs/dialog_group_by.h			\
-	glom/layout_item_dialogs/dialog_groupby_secondaryfields.cc	\
-	glom/layout_item_dialogs/dialog_groupby_secondaryfields.h	\
-	glom/layout_item_dialogs/dialog_groupby_sortfields.cc		\
-	glom/layout_item_dialogs/dialog_groupby_sortfields.h		\
-	glom/layout_item_dialogs/dialog_imageobject.cc			\
-	glom/layout_item_dialogs/dialog_imageobject.h			\
-	glom/layout_item_dialogs/dialog_notebook.cc			\
-	glom/layout_item_dialogs/dialog_notebook.h			\
-	glom/layout_item_dialogs/dialog_textobject.cc			\
-	glom/layout_item_dialogs/dialog_textobject.h			\
-	glom/mode_data/dialog_layout_calendar_related.cc		\
-	glom/mode_data/dialog_layout_calendar_related.h			\
-	glom/mode_data/dialog_layout_details.cc				\
-	glom/mode_data/dialog_layout_details.h				\
-	glom/mode_data/dialog_layout_list.cc				\
-	glom/mode_data/dialog_layout_list.h				\
-	glom/mode_data/dialog_layout_list_related.cc			\
-	glom/mode_data/dialog_layout_list_related.h			\
-	glom/mode_data/treestore_layout.cc				\
-	glom/mode_data/treestore_layout.h				\
+	glom/mode_design/dialog_database_preferences.cc				\
+	glom/mode_design/dialog_database_preferences.h				\
+	glom/mode_design/dialog_initial_password.cc					\
+	glom/mode_design/dialog_initial_password.h					\
 	glom/mode_design/box_db_table_relationships.cc			\
 	glom/mode_design/box_db_table_relationships.h			\
 	glom/mode_design/dialog_add_related_table.cc			\
@@ -273,6 +225,58 @@ glom_glom_SOURCES +=							\
 	glom/mode_design/fields/dialog_fieldcalculation.h		\
 	glom/mode_design/fields/dialog_fielddefinition.cc		\
 	glom/mode_design/fields/dialog_fielddefinition.h		\
+	glom/mode_design/layout/combobox_fields.cc			\
+	glom/mode_design/layout/combobox_fields.h			\
+	glom/mode_design/layout/combobox_relationship.cc		\
+	glom/mode_design/layout/combobox_relationship.h			\
+	glom/mode_design/layout/dialog_choose_field.cc				\
+	glom/mode_design/layout/dialog_choose_field.h				\
+	glom/mode_design/layout/dialog_choose_relationship.cc			\
+	glom/mode_design/layout/dialog_choose_relationship.h			\
+	glom/mode_design/layout/dialog_layout.cc				\
+	glom/mode_design/layout/dialog_layout.h					\
+	glom/mode_design/layout/dialog_layout_export.cc				\
+	glom/mode_design/layout/dialog_layout_export.h				\
+	glom/mode_design/layout/dialog_layout_calendar_related.cc		\
+	glom/mode_design/layout/dialog_layout_calendar_related.h		\
+	glom/mode_design/layout/dialog_layout_details.cc			\
+	glom/mode_design/layout/dialog_layout_details.h				\
+	glom/mode_design/layout/dialog_layout_list.cc				\
+	glom/mode_design/layout/dialog_layout_list.h				\
+	glom/mode_design/layout/dialog_layout_list_related.cc			\
+	glom/mode_design/layout/dialog_layout_list_related.h			\
+	glom/mode_design/layout/treestore_layout.cc				\
+	glom/mode_design/layout/treestore_layout.h				\
+	glom/mode_design/layout/layout_item_dialogs/box_formatting.cc			\
+	glom/mode_design/layout/layout_item_dialogs/box_formatting.h			\
+	glom/mode_design/layout/layout_item_dialogs/combo_summarytype.cc		\
+	glom/mode_design/layout/layout_item_dialogs/combo_summarytype.h			\
+	glom/mode_design/layout/layout_item_dialogs/comboentry_borderwidth.cc		\
+	glom/mode_design/layout/layout_item_dialogs/comboentry_borderwidth.h		\
+	glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.cc		\
+	glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.h		\
+	glom/mode_design/layout/layout_item_dialogs/dialog_field_layout.cc		\
+	glom/mode_design/layout/layout_item_dialogs/dialog_field_layout.h		\
+	glom/mode_design/layout/layout_item_dialogs/dialog_field_summary.cc		\
+	glom/mode_design/layout/layout_item_dialogs/dialog_field_summary.h		\
+	glom/mode_design/layout/layout_item_dialogs/dialog_group_by.cc			\
+	glom/mode_design/layout/layout_item_dialogs/dialog_group_by.h			\
+	glom/mode_design/layout/layout_item_dialogs/dialog_groupby_secondaryfields.cc	\
+	glom/mode_design/layout/layout_item_dialogs/dialog_groupby_secondaryfields.h	\
+	glom/mode_design/layout/layout_item_dialogs/dialog_groupby_sortfields.cc	\
+	glom/mode_design/layout/layout_item_dialogs/dialog_groupby_sortfields.h		\
+	glom/mode_design/layout/layout_item_dialogs/dialog_imageobject.cc		\
+	glom/mode_design/layout/layout_item_dialogs/dialog_imageobject.h		\
+	glom/mode_design/layout/layout_item_dialogs/dialog_notebook.cc			\
+	glom/mode_design/layout/layout_item_dialogs/dialog_notebook.h			\
+	glom/mode_design/layout/layout_item_dialogs/dialog_textobject.cc		\
+	glom/mode_design/layout/layout_item_dialogs/dialog_textobject.h			\
+	glom/mode_design/relationships_overview/canvas_group_dbtable.cc			\
+	glom/mode_design/relationships_overview/canvas_group_dbtable.h			\
+	glom/mode_design/relationships_overview/dialog_relationships_overview.cc	\
+	glom/mode_design/relationships_overview/dialog_relationships_overview.h		\
+	glom/mode_design/relationships_overview/printoperation_relationshipsoverview.cc	\
+	glom/mode_design/relationships_overview/printoperation_relationshipsoverview.h	\
 	glom/mode_design/print_layouts/box_print_layouts.cc		\
 	glom/mode_design/print_layouts/box_print_layouts.h		\
 	glom/mode_design/print_layouts/canvas_layout_item.cc		\
@@ -287,6 +291,10 @@ glom_glom_SOURCES +=							\
 	glom/mode_design/print_layouts/print_layout_toolbar_button.h	\
 	glom/mode_design/print_layouts/window_print_layout_edit.cc	\
 	glom/mode_design/print_layouts/window_print_layout_edit.h	\
+	glom/mode_design/report_layout/dialog_layout_report.cc		\
+	glom/mode_design/report_layout/dialog_layout_report.h		\
+	glom/mode_design/report_layout/treestore_report_layout.cc	\
+	glom/mode_design/report_layout/treestore_report_layout.h	\
 	glom/mode_design/script_library/dialog_new_script.cc		\
 	glom/mode_design/script_library/dialog_new_script.h		\
 	glom/mode_design/script_library/dialog_script_library.cc	\
@@ -301,16 +309,6 @@ glom_glom_SOURCES +=							\
 	glom/mode_design/users/dialog_user.h				\
 	glom/mode_design/users/dialog_users_list.cc			\
 	glom/mode_design/users/dialog_users_list.h			\
-	glom/relationships_overview/canvas_group_dbtable.cc		\
-	glom/relationships_overview/canvas_group_dbtable.h		\
-	glom/relationships_overview/dialog_relationships_overview.cc	\
-	glom/relationships_overview/dialog_relationships_overview.h	\
-	glom/relationships_overview/printoperation_relationshipsoverview.cc	\
-	glom/relationships_overview/printoperation_relationshipsoverview.h	\
-	glom/reports/dialog_layout_report.cc				\
-	glom/reports/dialog_layout_report.h				\
-	glom/reports/treestore_report_layout.cc				\
-	glom/reports/treestore_report_layout.h				\
 	glom/translation/combobox_locale.cc				\
 	glom/translation/combobox_locale.h				\
 	glom/translation/dialog_change_language.cc			\

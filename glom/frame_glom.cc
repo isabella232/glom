@@ -39,14 +39,14 @@
 #endif
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-#include "mode_design/users/dialog_groups_list.h"
-#include "dialog_database_preferences.h"
-#include "reports/dialog_layout_report.h"
+#include <glom/mode_design/users/dialog_groups_list.h>
+#include <glom/mode_design/dialog_database_preferences.h>
+#include <glom/mode_design/report_layout/dialog_layout_report.h>
 #include <glom/mode_design/print_layouts/window_print_layout_edit.h>
 #include <glom/mode_design/dialog_add_related_table.h>
 #include <glom/mode_design/script_library/dialog_script_library.h>
-#include <glom/dialog_new_self_hosted_connection.h>
-#include "relationships_overview/dialog_relationships_overview.h"
+#include <glom/mode_design/dialog_initial_password.h>
+#include <glom/mode_design/relationships_overview/dialog_relationships_overview.h>
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #include <glom/utils_ui.h>
@@ -55,7 +55,7 @@
 #include <libglom/data_structure/layout/report_parts/layoutitem_summary.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 
-#include <glom/reports/report_builder.h>
+#include <glom/report_builder.h>
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #include <glom/mode_design/dialog_add_related_table.h>
 #include <glom/mode_design/script_library/dialog_script_library.h>
@@ -2008,13 +2008,13 @@ bool Frame_Glom::connection_request_initial_password(Glib::ustring& user, Glib::
     return false;
 
   //Ask for a new username and password to specify when creating a new self-hosted database.
-  Dialog_NewSelfHostedConnection* dialog = 0;
+  Dialog_InitialPassword* dialog = 0;
   Glib::RefPtr<Gtk::Builder> refXml;
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_new_self_hosted_connection");
+    refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_initial_password");
   }
   catch(const Gtk::BuilderError& ex)
   {
@@ -2023,7 +2023,7 @@ bool Frame_Glom::connection_request_initial_password(Glib::ustring& user, Glib::
   }
 #else
   std::auto_ptr<Gtk::BuilderError> error;
-  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_new_self_hosted_connection", error);
+  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_initial_password", error);
   if(error.get())
   {
     std::cerr << error->what() << std::endl;
@@ -2031,7 +2031,7 @@ bool Frame_Glom::connection_request_initial_password(Glib::ustring& user, Glib::
   }
 #endif //GLIBMM_EXCEPTIONS_ENABLED
 
-  refXml->get_widget_derived("dialog_new_self_hosted_connection", dialog);
+  refXml->get_widget_derived("dialog_initial_password", dialog);
   if(!dialog)
     return false;
 

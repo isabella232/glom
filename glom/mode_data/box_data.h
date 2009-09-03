@@ -25,7 +25,7 @@
 
 #include <glom/box_withbuttons.h>
 #include <glom/base_db_table_data.h>
-#include "dialog_layout.h"
+#include <glom/mode_design/layout/dialog_layout.h>
 
 namespace Glom
 {

@@ -25,7 +25,7 @@
 
 #include "box_data_portal.h"
 #include <libglom/data_structure/layout/layoutitem_calendarportal.h>
-#include "../utility_widgets/layoutwidgetbase.h"
+#include <glom/utility_widgets/layoutwidgetbase.h>
 #include <gtkmm/calendar.h>
 
 namespace Glom

@@ -23,7 +23,7 @@
 
 #include <libglom/data_structure/layout/layoutitem.h>
 #include <gtkmm.h>
-#include "../mode_data/treestore_layout.h" //Forthe enum.
+#include <glom/mode_design/layout/treestore_layout.h> //Forthe enum.
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 

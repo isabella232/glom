@@ -24,7 +24,7 @@
 #include <gtkmm.h>
 #include <gtkmm/builder.h>
 #include <libglom/data_structure/field.h>
-#include "../../base_db.h"
+#include <glom/base_db.h>
 #include <gtksourceviewmm/sourceview.h>
 
 namespace Glom

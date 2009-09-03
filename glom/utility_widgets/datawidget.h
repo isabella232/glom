@@ -29,7 +29,7 @@
 #include <libglom/data_structure/field.h>
 #include <libglom/document/view.h>
 #include <libglom/data_structure/layout/layoutitem_field.h>
-#include "../mode_data/treestore_layout.h" //Forthe enum.
+#include <glom/mode_design/layout/treestore_layout.h> //Forthe enum.
 
 namespace Glom
 {

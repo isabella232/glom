@@ -29,10 +29,10 @@
 #include "imageglom.h"
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/application.h>
-#include "../mode_data/dialog_choose_field.h"
+#include <glom/mode_design/layout/dialog_choose_field.h>
 #include "dialog_choose_id.h"
 #include "dialog_choose_date.h"
-#include "../layout_item_dialogs/dialog_field_layout.h"
+#include <glom/mode_design/layout/layout_item_dialogs/dialog_field_layout.h>
 #include <glom/utils_ui.h>
 #include <glom/glade_utils.h>
 #include <glibmm/i18n.h>

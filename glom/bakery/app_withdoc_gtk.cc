@@ -119,7 +119,7 @@ void App_WithDoc_Gtk::init_layout()
 
   //Add menu bar at the top:
   //These were defined in init_uimanager().
-#ifdef GLOM_ENABLE_MAEMO
+#ifdef GLOM_ENABLE_MAEMO //TODO: Use Hildon::AppMenu
   Gtk::Menu* pMenu = static_cast<Gtk::Menu*>(m_refUIManager->get_widget("/Bakery_MainMenu"));
   set_menu(*pMenu);
 #else

@@ -24,7 +24,7 @@
 #include <gtkmm.h>
 #include <gtkmm/builder.h>
 #include <libglom/document/document.h>
-#include <glom/layout_item_dialogs/box_formatting.h>
+#include <glom/mode_design/layout/layout_item_dialogs/box_formatting.h>
 
 namespace Glom
 {

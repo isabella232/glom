@@ -24,7 +24,7 @@
 #include <libglom/data_structure/field.h>
 #include <libglom/data_structure/relationship.h>
 #include <libglom/data_structure/glomconversions.h>
-#include <glom/mode_data/dialog_layout_details.h>
+#include <glom/mode_design/layout/dialog_layout_details.h>
 #include <glom/glade_utils.h>
 #include <glom/utils_ui.h>
 #include <glom/glom_privs.h>

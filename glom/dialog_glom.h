@@ -21,7 +21,7 @@
 #ifndef DIALOG_GLOM_H
 #define DIALOG_GLOM_H
 
-#include "box_withbuttons.h"
+#include <glom/box_withbuttons.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/button.h>
 
