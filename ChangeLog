@@ -1,3 +1,23 @@
+2009-09-03  Murray Cumming  <murrayc@murrayc.com>
+
+	libglom: Avoid client-only build changes: partial recommit of revert.
+
+	* glom/libglom/appstate.cc:
+	* glom/libglom/connectionpool.h: 
+	* glom/libglom/connectionpool_backends/backend.h:
+	* glom/libglom/connectionpool_backends/postgres.h:
+	* glom/libglom/connectionpool_backends/postgres_central.h:
+	* glom/libglom/connectionpool_backends/postgres_self.h:
+	* glom/libglom/connectionpool_backends/sqlite.h:
+	* glom/libglom/document/document.h: Remove mention of 
+	GLOM_ENABLE_CLIENT_ONLY from comments because we no longer use it in 
+	libglom.
+	* glom/libglom/connectionpool_backends/postgres.cc: attempt_connect():
+	Do not use Gda::CONNECTION_OPTIONS_READ_ONLY just because exceptions 
+	are disabled in the build. Please stop using vaguely-related ifdefs 
+	to hack changes in. In this case it would be GLOM_ENABLE_CLIENT_ONLY, 
+	but we don't want that option in libglom anymore.
+
 2009-09-01  David King  <davidk@openismus.com>
 
 	* glom/glom.glade: Fix an interesting warning, where the quickfind

@@ -81,15 +81,16 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
   std::cout << "  DEBUG: auth_string=" << auth_string << std::endl;
 #endif
 
+//TODO: Allow the client-only build to specify a read-only connection, 
+//so we can use Gnome::Gda::CONNECTION_OPTIONS_READ_ONLY?
+//But this must be a runtime thing - it can't be a build-time change, 
+//because libglom has no client-only build. It always offers everything.
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     connection = Gnome::Gda::Connection::open_from_string("PostgreSQL", 
       cnc_string, auth_string, 
       Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-      | Gnome::Gda::CONNECTION_OPTIONS_READ_ONLY
-#endif
       );
     connection->statement_execute_non_select("SET DATESTYLE = 'ISO'");
     data_model = connection->statement_execute_select("SELECT version()");
@@ -100,7 +101,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
   std::auto_ptr<Glib::Error> ex;
   connection = Gnome::Gda::Connection::open_from_string("PostgreSQL", 
     cnc_string, auth_string,
-    Gnome::Gda::CONNECTION_OPTIONS_READ_ONLY | Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE,
+    Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE,
     ex);
   
   if(!ex.get())
@@ -133,7 +134,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
 #else
     temp_conn = Gnome::Gda::Connection::open_from_string("PostgreSQL", 
       cnc_string, auth_string, 
-      Gnome::Gda::CONNECTION_OPTIONS_READ_ONLY | Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE, ex);
+      Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE, ex);
 #endif
 
 #ifdef GLOM_CONNECTION_DEBUG
