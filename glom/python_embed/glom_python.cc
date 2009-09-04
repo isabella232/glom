@@ -139,13 +139,27 @@ void ShowTrace()
 
 bool glom_python_module_is_available()
 {
-  PyObject* module_glom = PyImport_ImportModule((char*)"glom_" GLOM_ABI_VERSION_UNDERLINED); //TODO: unref this?
+  const gchar* name = "glom_" GLOM_ABI_VERSION_UNDERLINED;
+  PyObject* module_glom = PyImport_ImportModule((char*)name); //TODO: unref this?
+
+  if(!module_glom)
+  {
+    g_warning("Glom: A python import of %s failed.\n", name);
+  }
+
   return module_glom != 0;
 }
 
 bool gda_python_module_is_available()
 {
-  PyObject* module_glom = PyImport_ImportModule((char*)"gda"); //TODO: unref this?
+  const gchar* name = "gda";
+  PyObject* module_glom = PyImport_ImportModule((char*)name); //TODO: unref this?
+
+  if(!module_glom)
+  {
+    g_warning("Glom: A python import of %s failed.\n", name);
+  }
+
   return module_glom != 0;
 }
 

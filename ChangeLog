@@ -8,6 +8,15 @@
 
 2009-09-04  Murray Cumming  <murrayc@murrayc.com>
 
+	Mention the failed python module name on stdcerr.
+
+	* glom/python_embed/glom_python.cc: glom_python_module_is_available(), 
+	gda_python_module_is_available(): Output a hint to the command-line too, 
+	in case maemo crashes when showing UI as mine does at the moment, 	
+	and to mention the exact python module name that failed.
+
+2009-09-04  Murray Cumming  <murrayc@murrayc.com>
+
 	Fix the client-only non-maemo build on maemo.
 
 	* configure.ac: Correct the AS_IF() calls so that we really do not 
