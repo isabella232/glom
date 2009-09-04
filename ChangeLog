@@ -1,3 +1,16 @@
+2009-09-09  Michael Hasselmann <michaelh@openismus.com>
+
+	Refactoring Glom::Dialog_Import_CSV
+	
+	* ChangeLog, Makefile_glom.am, glom/dialog_import_csv.[h|cc],
+	glom/import_csv.[h|cc], glom/dialog_import_csv_progress.cc: Moved the inlined
+	Parser class from the Dialog_Import_CSV class to the new CsvParser class.  The
+	CsvParser already handles the line scanning and encoding conversion but is
+	supposed to take over the file reading responsibility as well.  In order to
+	allow the Dialog_Import_CSV class to parse a scanned line into its tree model
+	the parser emits a lineScanned signal, with the currently scanned line as
+	parameter.
+
 2009-09-08  Johannes Schmid <jschmid@openismus.com>
 
 	 Bug 594357 -  Maemo: sqlite behaves strange

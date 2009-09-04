@@ -54,6 +54,8 @@ glom_glom_SOURCES =							\
 	glom/glom_postgres.h						\
 	glom/glom_privs.cc						\
 	glom/glom_privs.h						\
+	glom/import_csv.cc					\
+	glom/import_csv.h					\
 	glom/main.cc							\
 	glom/notebook_glom.cc						\
 	glom/notebook_glom.h						\

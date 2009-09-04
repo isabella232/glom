@@ -21,12 +21,12 @@
 #ifndef GLOM_DIALOG_IMPORT_CSV_H
 #define GLOM_DIALOG_IMPORT_CSV_H
 
+#include "import_csv.h"
 #include <glom/base_db.h>
 
 #include <memory>
 #include <giomm/asyncresult.h>
 #include <giomm/file.h>
-#include <giomm/inputstream.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/treeview.h>
 #include <gtkmm/liststore.h>
@@ -46,20 +46,14 @@ class Dialog_Import_CSV
 public:
   typedef sigc::signal<void> SignalStateChanged;
 
-  enum State {
-    NONE,
-    PARSING,
-    ENCODING_ERROR,
-    PARSED
-  };
-
   Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 
   void import(const Glib::ustring& uri, const Glib::ustring& into_table);
-  
-  State get_state() const { return m_state; }
-  Glib::ustring get_target_table_name() const { return m_target_table->get_text(); }
-  const Glib::ustring& get_filename() const { return m_filename; }
+
+  //TODO: move into parser?
+  CsvParser::State get_parser_state() const;
+  Glib::ustring get_target_table_name() const;
+  const Glib::ustring& get_filename() const;
 
   unsigned int get_row_count() const;
   unsigned int get_column_count() const;
@@ -85,20 +79,20 @@ private:
 
   Glib::ustring get_current_encoding() const;
   void begin_parse();
-  void encoding_error();
+  void on_encoding_error();
 
   bool on_idle_parse();
-  
-  /** Parse a row from a .cvs file. Note that this "line" might have newline 
-   * characters inside one field value, inside quotes.
-   */
-  void handle_line(const Glib::ustring& line, unsigned int line_number);
+
+  void on_line_scanned(const Glib::ustring& line, unsigned int line_number);
+  void setup_sample_model(CsvParser::type_row_strings& row);
+  Gtk::TreeViewColumn* column_factory(const Glib::ustring& title, guint index);
+  Gtk::CellRendererCombo* cell_factory(guint index);
 
   void line_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
   void field_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, unsigned int column_number);
   void on_field_edited(const Glib::ustring& path, const Glib::ustring& new_text, unsigned int column_number);
 
-  void set_state(State state);
+  void set_parser_state(CsvParser::State state);
   void validate_primary_key();
 
   class EncodingColumns: public Gtk::TreeModelColumnRecord
@@ -127,6 +121,8 @@ private:
     Gtk::TreeModelColumn<int> m_col_row;
   };
 
+  std::auto_ptr<CsvParser> m_parser;
+
   EncodingColumns m_encoding_columns;
   Glib::RefPtr<Gtk::ListStore> m_encoding_model;
 
@@ -146,13 +142,7 @@ private:
   Gtk::Label* m_error_label;
 
   Glib::RefPtr<Gio::File> m_file;
-  Glib::RefPtr<Gio::FileInputStream> m_stream;
   Glib::ustring m_filename;
-
-  // The raw data in the original encoding. We keep this so we can convert
-  // from the user-selected encoding to UTF-8 every time the user changes
-  // the encoding.
-  std::vector<char> m_raw;
 
   struct Buffer {
     char buf[1024];
@@ -163,29 +153,6 @@ private:
   // encoding that we currently try to read the data with, or -1 if
   // auto-detection is disabled.
   int m_auto_detect_encoding;
-
-  // We use the low-level Glib::IConv routines to progressively convert the
-  // input data in an idle handler.
-  class Parser
-  {
-  public:
-    Parser(const char* encoding): conv("UTF-8", encoding), input_position(0), line_number(0) {}
-    ~Parser() { idle_connection.disconnect(); }
-
-    Glib::IConv conv;
-    std::vector<char>::size_type input_position;
-    std::string current_line;
-    sigc::connection idle_connection;
-    unsigned int line_number;
-  };
-
-  std::auto_ptr<Parser> m_parser;
-  State m_state;
-
-  // Parsed data:
-  typedef std::vector<Glib::ustring> type_row_strings;
-  typedef std::vector<type_row_strings> type_rows;
-  type_rows m_rows;
 
   // The fields into which to import the data:
   typedef std::vector< sharedptr<Field> > type_vec_fields;
