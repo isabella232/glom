@@ -693,7 +693,7 @@ Base_DB::type_vec_fields Base_DB::get_fields_for_table_from_database(const Glib:
           Gnome::Gda::Value(), /* schema */
           Gnome::Gda::Value(quoted_table_name)); //It's a static instance inside the MetaStore.
       }
-      catch(const Gnome::Gda::MetaStructError& ex)
+      catch(const Glib::Error& ex)
       {
         handle_error(ex);
         //TODO: Really fail.

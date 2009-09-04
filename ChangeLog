@@ -1,3 +1,11 @@
+2009-09-04  Daniel Elstner  <daniel.kitta@gmail.com>
+
+	Do not try to catch non-existing MetaStructError
+
+	* glom/base_db.cc (Base_DB::get_fields_for_table_from_database):
+	For now, catch Glib::Error instead of Gnome::Gda::MetaStructError,
+	which does not exist.
+
 2009-09-04  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix the client-only non-maemo build on maemo.
