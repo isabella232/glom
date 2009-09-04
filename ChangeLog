@@ -1,5 +1,11 @@
 2009-09-05  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/print_layout/canvas_print_layout.cc:
+	* glom/utility_widgets/imageglom.cc: Fix the build when -fno-exceptions 
+	is used.
+
+2009-09-05  Murray Cumming  <murrayc@murrayc.com>
+
 	Added dlopen test of the python library.
 
 	* glom/libglom/test_connectionpool.cc:

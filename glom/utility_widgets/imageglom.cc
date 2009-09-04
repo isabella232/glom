@@ -139,6 +139,8 @@ bool ImageGlom::on_button_press_event(GdkEventButton *event)
 
 #ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   return Gtk::EventBox::on_button_press_event(event);
+#else
+  return false;
 #endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 }
 

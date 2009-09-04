@@ -638,9 +638,12 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
   
   bool records_found = false;
   Glib::RefPtr<Gnome::Gda::DataModel> datamodel;
+  #ifdef GLIBMM_EXCEPTIONS_ENABLED //TODO: Catch the error somehow?
   try
   {
+  #endif
     datamodel = query_execute_select(sql_query);
+  #ifdef GLIBMM_EXCEPTIONS_ENABLED
   }
   catch(const Glib::Exception& ex)
   {
@@ -650,6 +653,7 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
   {
     std::cout << "Canvas_PrintLayout::fill_with_data: exception: " << ex.what() << std::endl;
   }
+  #endif
 
   if(datamodel)
   {
