@@ -182,7 +182,10 @@ DK_ARG_ENABLE_WARNINGS([GLOM_WXXFLAGS],
 		       [-Wall], [-Wall -Wextra -Wno-missing-field-initializers],
                        [G GDK GDK_PIXBUF GTK GLIBMM GTKMM])
 AC_CHECK_FUNCS([strptime])
-# Get the compiler and linker flags for embedding Python
+
+# Get the compiler and linker flags for embedding Python.
+# To specify a particular python version set an environment variable.
+# For instance: PYTHON=python2.5
 MM_CHECK_MODULE_PYTHON
 
 AC_ARG_ENABLE([update-mime-database],

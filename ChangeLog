@@ -8,6 +8,18 @@
 
 2009-09-04  Murray Cumming  <murrayc@murrayc.com>
 
+	Avoid compiler warnings.
+
+	* configure.ac: Add a comment about using the PYTHON environment 
+	variable to specify the python version.
+	* glom/dialog_existing_or_new.cc:
+	* glom/dialog_import_csv_progress.cc:
+	* glom/utility_widgets/canvas/canvas_group_resizable.cc: Avoid some 
+	compiler warnings, mostly about missing returns in unlikely 
+	situations.
+
+2009-09-04  Murray Cumming  <murrayc@murrayc.com>
+
 	Mention the failed python module name on stdcerr.
 
 	* glom/python_embed/glom_python.cc: glom_python_module_is_available(), 

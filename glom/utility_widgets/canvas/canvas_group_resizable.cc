@@ -439,14 +439,16 @@ void CanvasGroupResizable::on_manipulator_corner_moved(Manipulators manipulator_
   double child_height = 0;
   get_width_height(child_width, child_height);
 
-  switch(manipulator_id)
-  {
 #ifndef GLIBMM_PROPERTIES_ENABLED
-    // The compiler probably already does exactly this...
-    int x, y;
-    manipulator->get_property("x", x);
-    manipulator->get_property("y", y);
-#endif       
+  // The compiler probably already does exactly this...
+  int x = 0;
+  int y = 0;
+  manipulator->get_property("x", x);
+  manipulator->get_property("y", y);
+#endif  
+
+  switch(manipulator_id)
+  {     
     case(MANIPULATOR_CORNER_TOP_LEFT):
     {
       const double new_x = std::min(manipulator_x, child_x + child_width);

@@ -264,6 +264,8 @@ Gnome::Gda::Value Dialog_Import_CSV_Progress::get_primary_key_value(const Gtk::T
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   throw std::logic_error("Dialog_Import_CSV_Progress::get_primary_key_value() called");
 #endif
+
+  return Gnome::Gda::Value();
 }
 
 } //namespace Glom

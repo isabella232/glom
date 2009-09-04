@@ -368,6 +368,8 @@ Glib::ustring Dialog_ExistingOrNew::get_uri() const
     throw std::logic_error("Dialog_ExistingOrNew::get_uri: action is neither NEW_FROM_TEMPLATE nor OPEN_URI");
 #endif    
   }
+
+  return Glib::ustring();
 }
 
 #ifndef G_OS_WIN32
@@ -381,7 +383,9 @@ EpcServiceInfo* Dialog_ExistingOrNew::get_service_info() const
 #ifdef GLIBMM_EXCEPTIONS_ENABLED    
   else
     throw std::logic_error("Dialog_ExistingOrNew::get_service_info: action is not OPEN_REMOTE");
-#endif    
+#endif
+
+  return 0;
 }
 
 Glib::ustring Dialog_ExistingOrNew::get_service_name() const
@@ -394,7 +398,9 @@ Glib::ustring Dialog_ExistingOrNew::get_service_name() const
 #ifdef GLIBMM_EXCEPTIONS_ENABLED    
   else
     throw std::logic_error("Dialog_ExistingOrNew::get_service_name: action is not OPEN_REMOTE");
-#endif    
+#endif
+
+  return Glib::ustring();
 }
 #endif
 
