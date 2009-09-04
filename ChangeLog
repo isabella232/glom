@@ -1,5 +1,13 @@
 2009-09-05  Murray Cumming  <murrayc@murrayc.com>
 
+	offer_new_or_existing(): Add Gtk::Builder error handling .
+
+	* glom/application.cc: offer_new_or_existing(): Add error handling to 
+	show how GtkBuilder complains about Atk objects in .glade files on 
+	Maemo, and actually fails.
+
+2009-09-05  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/print_layout/canvas_print_layout.cc:
 	* glom/utility_widgets/imageglom.cc: Fix the build when -fno-exceptions 
 	is used.

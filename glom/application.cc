@@ -1259,12 +1259,27 @@ Glib::RefPtr<Gtk::UIManager> App_Glom::get_ui_manager()
 bool App_Glom::offer_new_or_existing()
 {
   //Offer to load an existing document, or start a new one.
+  const Glib::ustring glade_path = Utils::get_glade_file_path("glom.glade");
+  Glib::RefPtr<Gtk::Builder> refXml;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_existing_or_new");
+  try
+  {
+    refXml = Gtk::Builder::create_from_file(glade_path, "dialog_existing_or_new");
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << "App_Glom::offer_new_or_existing(): Gtk::Builder::create_from_file() failed: " << ex.what() << std::endl;
+  }
 #else
-  std::auto_ptr<Glib::Error> error;
-  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_existing_or_new", error);
-#endif      
+  std::auto_ptr<Glib::Error> ex;
+  refXml = Gtk::Builder::create_from_file(glade_path, "dialog_existing_or_new", ex);
+  if(ex.get())
+  {
+    std::cerr << "App_Glom::offer_new_or_existing(): Gtk::Builder::create_from_file() failed:" << ex->what() << std::endl;
+  }
+#endif
+
+  g_assert(refXml);
 
   Dialog_ExistingOrNew* dialog_raw = 0;
   refXml->get_widget_derived("dialog_existing_or_new", dialog_raw);
