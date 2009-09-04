@@ -21,8 +21,6 @@
 #ifndef DIALOG_BUTTONSCRIPT_H
 #define DIALOG_BUTTONSCRIPT_H
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-
 #include <gtkmm.h>
 #include <gtkmm/builder.h>
 #include <libglom/data_structure/layout/layoutitem_button.h>
@@ -59,5 +57,4 @@ private:
 
 } //namespace Glom
 
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 #endif //DIALOG_BUTTONSCRIPT_H

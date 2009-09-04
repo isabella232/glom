@@ -1,5 +1,10 @@
 2009-09-04  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.h:
+	Removed unnecessary GLOM_ENABLE_CLIENT_ONLY ifndef.
+
+2009-09-04  Murray Cumming  <murrayc@murrayc.com>
+
 	Moved more design-only classes to glom/mode_design/
 
 	* glom/libglom/data_structure/iso_codes.[h|cc]:
