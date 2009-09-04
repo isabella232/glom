@@ -1,3 +1,13 @@
+2009-09-05  Murray Cumming  <murrayc@murrayc.com>
+
+	Added dlopen test of the python library.
+
+	* glom/libglom/test_connectionpool.cc:
+	* glom/libglom/test_document.cc: Fixed the build without exceptions.
+	* Makefile_tests.am: Added test_load_python_library, using dlopen() 
+	to show the numpunct linker error (bug #594142) without actually using 
+	python.
+
 2009-09-04  Daniel Elstner  <daniel.kitta@gmail.com>
 
 	Do not try to catch non-existing MetaStructError

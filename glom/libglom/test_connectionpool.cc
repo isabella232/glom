@@ -67,7 +67,7 @@ main()
     #ifdef GLIBMM_EXCEPTIONS_ENABLED
     connection = Glom::ConnectionPool::get_and_connect();
     #else
-    std::auto_ptr<ExceptionConnection> error;
+    std::auto_ptr<Glom::ExceptionConnection> error;
     connection = Glom::ConnectionPool::get_and_connect(error);
     #endif
 
