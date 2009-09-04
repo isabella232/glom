@@ -1,5 +1,29 @@
 2009-09-04  Murray Cumming  <murrayc@murrayc.com>
 
+	Fix the client-only non-maemo build on maemo.
+
+	* configure.ac: Correct the AS_IF() calls so that we really do not 
+	need iso-codes in client-only mode.
+	* glom/print_layout/canvas_layout_item.cc:
+	* glom/print_layout/canvas_print_layout.cc:
+	* glom/printoperation_printlayout.cc: Fix the build without 
+	exceptions, without properties and without default signal handlers, 
+	with ifdefs.
+
+	* glom/base_db.cc: get_fields_for_table_from_database(): Actually add 
+	a no-exceptions ifdef for the use of Gda::MetaStruct::complement() 
+	instead of just ifdefing it out for Maemo.
+	* glom/mode_data/notebook_data.cc:
+	* glom/utility_widgets/adddel/adddel.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/entryglom.cc:
+	* glom/utility_widgets/imageglom.cc:
+	Likewise, ifdef the use of get_accessible on GTKMM_ATKMM_ENABLED instead 
+	of GLOM_ENABLE_MAEMO, to fix the client-only non-maemo build on Maemo.
+	Again, please stop abusing the MAEMO ifdef for hacks without even a TODO.
+
+2009-09-04  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.h:
 	Removed unnecessary GLOM_ENABLE_CLIENT_ONLY ifndef.
 

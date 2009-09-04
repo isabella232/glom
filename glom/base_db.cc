@@ -684,13 +684,32 @@ Base_DB::type_vec_fields Base_DB::get_fields_for_table_from_database(const Glib:
       Glib::RefPtr<Gnome::Gda::MetaStore> store = connection->get_meta_store();
       Glib::RefPtr<Gnome::Gda::MetaStruct> metastruct = 
         Gnome::Gda::MetaStruct::create(store, Gnome::Gda::META_STRUCT_FEATURE_NONE);
-#ifndef GLOM_ENABLE_MAEMO
-      GdaMetaDbObject* meta_dbobject = metastruct->complement(Gnome::Gda::META_DB_TABLE, 
+      GdaMetaDbObject* meta_dbobject = 0;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+      try
+      {
+        meta_dbobject = metastruct->complement(Gnome::Gda::META_DB_TABLE, 
+          Gnome::Gda::Value(), /* catalog */
+          Gnome::Gda::Value(), /* schema */
+          Gnome::Gda::Value(quoted_table_name)); //It's a static instance inside the MetaStore.
+      }
+      catch(const Gnome::Gda::MetaStructError& ex)
+      {
+        handle_error(ex);
+        //TODO: Really fail.
+      }
+#else
+      std::auto_ptr<Glib::Error> ex;
+      meta_dbobject = metastruct->complement(Gnome::Gda::META_DB_TABLE, 
         Gnome::Gda::Value(), /* catalog */
         Gnome::Gda::Value(), /* schema */
-        Gnome::Gda::Value(quoted_table_name)); //It's a static instance inside the MetaStore. 
-      GdaMetaTable* meta_table = GDA_META_TABLE(meta_dbobject);
-#endif   
+        Gnome::Gda::Value(quoted_table_name), ex); //It's a static instance inside the MetaStore. 
+       if(error.get())
+       {
+         handle_error(*ex);
+       }
+#endif //GLIBMM_EXCEPTIONS_ENABLED
+      GdaMetaTable* meta_table = GDA_META_TABLE(meta_dbobject); 
    
       //Examine each field:
       guint row = 0;
@@ -700,7 +719,7 @@ Base_DB::type_vec_fields Base_DB::get_fields_for_table_from_database(const Glib:
         Glib::RefPtr<Gnome::Gda::Column> field_info = Gnome::Gda::Column::create();
 
         //Get the field name:
-#ifdef GLIBMM_EXCEPTIONS_ENABLED        
+#ifdef GLIBMM_EXCEPTIONS_ENABLED //TODO: Actually catch exceptions.      
         Gnome::Gda::Value value_name = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_NAME, row);
 #else
         std::auto_ptr<Glib::Error> value_error;

@@ -93,7 +93,7 @@ DbAddDel::DbAddDel()
   // Give the TreeView an accessible name, to access it in LDTP
   // TODO: Maybe this should be a constructor parameter, so that multiple
   // DbAddDels in a single Window can be addressed separately.
-#ifndef GLOM_ENABLE_MAEMO
+#ifdef GTKMM_ATKMM_ENABLED
   m_TreeView.get_accessible()->set_name(_("Table Content"));
 #endif  
 

@@ -54,7 +54,11 @@ Canvas_PrintLayout::Canvas_PrintLayout()
 
   //Use millimeters, because that's something that is meaningful to the user,
   //and we can use it with Gtk::PageSetup too:
+  #ifdef GLIBMM_PROPERTIES_ENABLED
   property_units() = Gtk::UNIT_MM;
+  #else
+  set_property("units", Gtk::UNIT_MM);
+  #endif
 
   m_items_group = Goocanvas::Group::create();
   //m_items_group->signal_button_press_event().connect( sigc::ptr_fun(&on_group_button_press_event), false );
@@ -471,8 +475,14 @@ Glib::RefPtr<Goocanvas::Polyline> Canvas_PrintLayout::create_margin_line(double 
 {
   Glib::RefPtr<Goocanvas::Polyline> line = 
     Goocanvas::Polyline::create(x1, y1, x2, y2);
+  #ifdef GLIBMM_PROPERTIES_ENABLED
   line->property_line_width() = 0.5;
   line->property_stroke_color() = "light gray";
+  #else
+  line->set_property("line-width", 0.5);
+  line->set_property("stroke-color", Glib::ustring("light gray"));
+  #endif
+
   m_bounds_group->add_child(line);
   return line;
 }
@@ -489,7 +499,13 @@ void Canvas_PrintLayout::set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page
   bounds.set_x1(0);
   bounds.set_y1(0);
 
+  #ifdef GLIBMM_PROPERTIES_ENABLED
   const Gtk::Unit units = property_units();
+  #else
+  Gtk::Unit units = Gtk::UNIT_MM;
+  get_property("units", units);
+  #endif
+
   //std::cout << "Canvas_PrintLayout::set_page_setup(): width=" << paper_size.get_width(units) << ", height=" paper_size.get_height(units) << std::endl;
 
   if(m_page_setup->get_orientation() == Gtk::PAGE_ORIENTATION_PORTRAIT) //TODO: Handle the reverse orientations too?
@@ -508,7 +524,11 @@ void Canvas_PrintLayout::set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page
   set_bounds(bounds);
 
   //Show the bounds with a rectangle, because the scrolled window might contain extra empty space.
+  #ifdef GLIBMM_PROPERTIES_ENABLED
   property_background_color() = "light gray";
+  #else
+  set_property("background-color", Glib::ustring("light gray"));
+  #endif
   if(m_bounds_group)
   {
     m_bounds_group->remove();
@@ -521,8 +541,13 @@ void Canvas_PrintLayout::set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page
   
  
   m_bounds_rect = Goocanvas::Rect::create(bounds.get_x1(), bounds.get_y1(), bounds.get_x2(), bounds.get_y2());
+  #ifdef GLIBMM_PROPERTIES_ENABLED
   m_bounds_rect->property_fill_color() = "white";
   m_bounds_rect->property_line_width() = 0;
+  #else
+  m_bounds_rect->set_property("fill-color", Glib::ustring("white"));
+  m_bounds_rect->set_property("line-width", 0);
+  #endif
   m_bounds_group->add_child(m_bounds_rect);
 
   //Make sure that the bounds rect is at the bottom, 
@@ -657,7 +682,14 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
       {
         //Set the data from the database:
         const guint col_index = iterFind->second;
+
+        #ifdef GLIBMM_EXCEPTIONS_ENABLED
+        //TODO: Actually catch exception:
         const Gnome::Gda::Value value = datamodel->get_value_at(col_index, 0);
+        #else
+        std::auto_ptr<Glib::Error> ex;
+        const Gnome::Gda::Value value = datamodel->get_value_at(col_index, 0, ex);
+        #endif
         canvas_item->set_db_data(value);
       }
     }
@@ -740,7 +772,15 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
       {
         Gnome::Gda::Value db_value;
         if( row < datamodel->get_n_rows() )
+        {
+          #ifdef GLIBMM_EXCEPTIONS_ENABLED
+          //TODO: Actually catch exception.
           db_value = datamodel->get_value_at(db_col, row);
+          #else
+          std::auto_ptr<Glib::Error> ex;
+          db_value = datamodel->get_value_at(db_col, row, ex);
+          #endif
+        }
           
         set_canvas_item_field_value(canvas_child, field, db_value);
         ++db_col;
@@ -764,7 +804,11 @@ void Canvas_PrintLayout::set_canvas_item_field_value(const Glib::RefPtr<Goocanva
       return;
 
     Glib::RefPtr<Gdk::Pixbuf> pixbuf = Utils::get_pixbuf_for_gda_value(value);
+    #ifdef GLIBMM_PROPERTIES_ENABLED
     canvas_image->property_pixbuf() = pixbuf;
+    #else
+    canvas_image->set_property("pixbuf", pixbuf);
+    #endif
   }
   else //text, numbers, date, time, boolean:
   {
@@ -802,7 +846,11 @@ guint Canvas_PrintLayout::get_zoom_percent() const
 
 void Canvas_PrintLayout::hide_page_bounds()
 {
+  #ifdef GLIBMM_PROPERTIES_ENABLED
   m_bounds_group->property_visibility() = Goocanvas::ITEM_HIDDEN;
+  #else
+  m_bounds_group->set_property("visibility", Goocanvas::ITEM_HIDDEN);
+  #endif
 }
 
 void Canvas_PrintLayout::set_grid_gap(double gap)

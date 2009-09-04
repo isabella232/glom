@@ -27,6 +27,15 @@ PrintOperationPrintLayout::PrintOperationPrintLayout()
   set_use_full_page(true); //Because we show the margins on our canvas.
 
   set_n_pages(1); //There is always at least one page.
+
+#ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
+  signal_begin_print().connect(
+    sigc::mem_fun(*this, &PrintOperationPrintLayout::on_begin_print));
+  signal_paginate().connect(
+    sigc::mem_fun(*this, &PrintOperationPrintLayout::on_paginate));
+  signal_draw_page().connect(
+    sigc::mem_fun(*this, &PrintOperationPrintLayout::on_draw_page));
+#endif
 }
 
 PrintOperationPrintLayout::~PrintOperationPrintLayout()
@@ -41,8 +50,10 @@ Glib::RefPtr<PrintOperationPrintLayout> PrintOperationPrintLayout::create()
 void PrintOperationPrintLayout::on_begin_print(
         const Glib::RefPtr<Gtk::PrintContext>& print_context)
 {
+#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   //Call base class:
   Gtk::PrintOperation::on_begin_print(print_context);
+#endif
 }
 
 bool PrintOperationPrintLayout::on_paginate(const Glib::RefPtr<Gtk::PrintContext>& print_context)
@@ -51,8 +62,10 @@ bool PrintOperationPrintLayout::on_paginate(const Glib::RefPtr<Gtk::PrintContext
 
   set_n_pages(1); //on_draw_page() will be called for any new pages.
 
+#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   //Call base class:
   Gtk::PrintOperation::on_paginate(print_context);
+#endif
 
   return true; //Pagination has finished. Don't call this again.
 }
@@ -73,8 +86,10 @@ void PrintOperationPrintLayout::on_draw_page(
   if(m_canvas)
     m_canvas->render(cairo_context);
 
+#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   //Call base class:
   Gtk::PrintOperation::on_draw_page(print_context, page_nr);
+#endif
 }
 
 void PrintOperationPrintLayout::set_canvas(Canvas_PrintLayout* canvas)

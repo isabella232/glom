@@ -80,7 +80,7 @@ ImageGlom::~ImageGlom()
 void ImageGlom::set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name)
 {
   LayoutWidgetField::set_layout_item(layout_item, table_name);
-#ifndef GLOM_ENABLE_MAEMO  
+#ifdef GTKMM_ATKMM_ENABLED
   get_accessible()->set_name(layout_item->get_name());
 #endif  
 }

@@ -146,7 +146,7 @@ AddDel::~AddDel()
 
 void AddDel::set_treeview_accessible_name(const Glib::ustring& name)
 {
-#ifndef GLOM_ENABLE_MAEMO
+#ifdef GTKMM_ATKMM_ENABLED
   m_TreeView.get_accessible()->set_name(name);
 #endif  
 }

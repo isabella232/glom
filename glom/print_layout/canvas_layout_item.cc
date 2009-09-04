@@ -94,11 +94,23 @@ void CanvasLayoutItem::check_and_apply_formatting(const Glib::RefPtr<CanvasTextM
   //TODO: Are these sensible properties? Maybe we need to use markup:
   const Glib::ustring fg = formatting.get_text_format_color_foreground();
   if(!fg.empty())
+  {
+    #ifdef GLIBMM_PROPERTIES_ENABLED
     canvas_item->property_stroke_color() = fg;
+    #else
+    canvas_item->set_property("stroke-color", fg);
+    #endif
+  }
 
   const Glib::ustring bg = formatting.get_text_format_color_background();
   if(!bg.empty())
+  {
+    #ifdef GLIBMM_PROPERTIES_ENABLED
     canvas_item->property_fill_color() = bg;
+    #else
+    canvas_item->set_property("fill-color", bg);
+    #endif
+  }
 }
 
 void CanvasLayoutItem::on_resized()
@@ -179,7 +191,11 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
   if(text)
   {
     Glib::RefPtr<CanvasTextMovable> canvas_item = CanvasTextMovable::create();
+    #ifdef GLIBMM_PROPERTIES_ENABLED
     canvas_item->property_line_width() = 0;
+    #else
+    canvas_item->set_property("line-width", 0);
+    #endif
 
     FieldFormatting& formatting = text->m_formatting;
     check_and_apply_formatting(canvas_item, formatting);
@@ -200,7 +216,12 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
       else
         canvas_item->set_image_empty(); //show a no-image picture.
 
+      #ifdef GLIBMM_PROPERTIES_ENABLED
       canvas_item->property_fill_color() = "white"; //This makes the whole area clickable, not just the outline stroke.
+      #else
+      canvas_item->set_property("fill-color", Glib::ustring("white")); //This makes the whole area clickable, not just the outline stroke.
+      #endif
+
       child = canvas_item;
       child_item = canvas_item;
     }
@@ -216,13 +237,22 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
         line->get_coordinates(start_x, start_y, end_x, end_y);
         
         Glib::RefPtr<CanvasLineMovable> canvas_item = CanvasLineMovable::create();
+        #ifdef GLIBMM_PROPERTIES_ENABLED
         canvas_item->property_line_width() = 1;
         canvas_item->property_stroke_color() = "black";
+        #else
+        canvas_item->set_property("line-width", 1);
+        canvas_item->set_property("stroke-color", Glib::ustring("black"));
+        #endif
 
         Goocanvas::Points points(2);
         points.set_coordinate(0, start_x, start_y);
         points.set_coordinate(0, end_x, end_y);
+        #ifdef GLIBMM_PROPERTIES_ENABLED
         canvas_item->property_points() = points;
+        #else
+        canvas_item->set_property("points", points);
+        #endif
         child = canvas_item;
         child_item = canvas_item;
       }
@@ -243,7 +273,11 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
           else //text, numbers, date, time, boolean:
           {
             Glib::RefPtr<CanvasTextMovable> canvas_item = CanvasTextMovable::create();
+            #ifdef GLIBMM_PROPERTIES_ENABLED
             canvas_item->property_line_width() = 0;
+            #else
+            canvas_item->set_property("line-width", 0);
+            #endif
          
             FieldFormatting& formatting = field->m_formatting;
             check_and_apply_formatting(canvas_item, formatting);
@@ -264,9 +298,15 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
           if(portal)
           {
             Glib::RefPtr<CanvasTableMovable> canvas_item = CanvasTableMovable::create();
+            #ifdef GLIBMM_PROPERTIES_ENABLED
             canvas_item->property_vert_grid_line_width() = 1;
             canvas_item->property_horz_grid_line_width() = 1;
             canvas_item->property_stroke_color() = "black";
+            #else
+            canvas_item->set_property("vert-grid-line-width", 1);
+            canvas_item->set_property("horz-grid-line-width", 1);
+            canvas_item->set_property("stroke-color", Glib::ustring("black"));
+            #endif
 
             //Show as many rows as can fit in the height.
             double row_height = 0;
@@ -426,7 +466,11 @@ void CanvasLayoutItem::remove_empty_indicators()
     if(canvas_image->get_image_empty())
     {
       Glib::RefPtr<Gdk::Pixbuf> really_empty;
+      #ifdef GLIBMM_PROPERTIES_ENABLED
       canvas_image->property_pixbuf() = really_empty;
+      #else
+      canvas_image->set_property("pixbuf", really_empty);
+      #endif
     }
   }
 }
