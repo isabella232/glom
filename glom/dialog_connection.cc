@@ -81,81 +81,71 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
   sharedptr<SharedConnection> result(0);
 
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
-  if(connection_pool)
-  {
-    //Set the connection details in the ConnectionPool singleton.
-    //The ConnectionPool will now use these every time it tries to connect.
+  g_assert(connection_pool);
+  
+  //Set the connection details in the ConnectionPool singleton.
+  //The ConnectionPool will now use these every time it tries to connect.
 
-    const Document* document = get_document();
-    if(document)
-    {
-      //std::cout << "debug: Dialog_Connection::connect_to_server_with_connection_settings(): m_database_name=" << m_database_name << std::endl;
-      connection_pool->set_database(m_database_name);
+  const Document* document = get_document();
+  if(!document)
+    return result;
+
+  //std::cout << "debug: Dialog_Connection::connect_to_server_with_connection_settings(): m_database_name=" << m_database_name << std::endl;
+  connection_pool->set_database(m_database_name);
 
 #ifdef GLOM_ENABLE_POSTGRESQL
-      if(document->get_hosting_mode() == Document::HOSTING_MODE_POSTGRES_CENTRAL)
-      {
-        ConnectionPool::Backend* backend = connection_pool->get_backend();
-        ConnectionPoolBackends::PostgresCentralHosted* central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
-        g_assert(central);
+  if(document->get_hosting_mode() == Document::HOSTING_MODE_POSTGRES_CENTRAL)
+  {
+    ConnectionPool::Backend* backend = connection_pool->get_backend();
+    ConnectionPoolBackends::PostgresCentralHosted* central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
+    g_assert(central);
 
-        central->set_host(m_entry_host->get_text());
-      }
+    central->set_host(m_entry_host->get_text());
+  }
 #endif //GLOM_ENABLE_POSTGRESQL
 
-      connection_pool->set_user(m_entry_user->get_text());
-      connection_pool->set_password(m_entry_password->get_text());
-
-      //if(document)
-      //{
-      //  connection_pool->set_database(document->get_connection_database());
-      //}
-    }
+  connection_pool->set_user(m_entry_user->get_text());
+  connection_pool->set_password(m_entry_password->get_text());
 
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-    result = Base_DB::connect_to_server(const_cast<Dialog_Connection*>(this));
+  result = Base_DB::connect_to_server(const_cast<Dialog_Connection*>(this));
 #else
-    result = Base_DB::connect_to_server(const_cast<Dialog_Connection*>(this), error);
+  result = Base_DB::connect_to_server(const_cast<Dialog_Connection*>(this), error);
 #endif
 
 #ifdef GLOM_ENABLE_POSTGRESQL
-    if(document)
-    {
-      //Remember the port, 
-      //to make opening faster next time,
-      //and so we can tell connecting clients (using browse network) what port to use:
-      Document* unconst = const_cast<Document*>(document);
+  //Remember the port, 
+  //to make opening faster next time,
+  //and so we can tell connecting clients (using browse network) what port to use:
+  Document* unconst = const_cast<Document*>(document);
 
-      if(document->get_hosting_mode() == Document::HOSTING_MODE_POSTGRES_CENTRAL)
-      {
-        ConnectionPool::Backend* backend = connection_pool->get_backend();
-        ConnectionPoolBackends::PostgresCentralHosted* central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
-        g_assert(central != NULL);
+  if(document->get_hosting_mode() == Document::HOSTING_MODE_POSTGRES_CENTRAL)
+  {
+    ConnectionPool::Backend* backend = connection_pool->get_backend();
+    ConnectionPoolBackends::PostgresCentralHosted* central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
+    g_assert(central);
 
-        unconst->set_connection_port(central->get_port() );
-	// As we know the port of the database already, we don't need to try
-	// other ports anymore:
-        unconst->set_connection_try_other_ports(false);
-      }
+    unconst->set_connection_port(central->get_port() );
+    // As we know the port of the database already, we don't need to try
+    // other ports anymore:
+    unconst->set_connection_try_other_ports(false);
+  }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-      else if(document->get_hosting_mode() == Document::HOSTING_MODE_POSTGRES_SELF)
-      {
-        ConnectionPool::Backend* backend = connection_pool->get_backend();
-        ConnectionPoolBackends::PostgresSelfHosted* self = dynamic_cast<ConnectionPoolBackends::PostgresSelfHosted*>(backend);
-        g_assert(self != NULL);
+  else if(document->get_hosting_mode() == Document::HOSTING_MODE_POSTGRES_SELF)
+  {
+    ConnectionPool::Backend* backend = connection_pool->get_backend();
+    ConnectionPoolBackends::PostgresSelfHosted* self = dynamic_cast<ConnectionPoolBackends::PostgresSelfHosted*>(backend);
+    g_assert(self);
 
-        unconst->set_connection_port(self->get_port() );
-        unconst->set_connection_try_other_ports(false);
-      }
-#endif //GLOM_ENABLE_CLIENT_ONLY
-    }
-#endif //GLOM_ENABLE_POSTGRESQL
+    unconst->set_connection_port(self->get_port() );
+    unconst->set_connection_try_other_ports(false);
   }
-  else
-     std::cerr << "Dialog_Connection::connect_to_server_with_connection_settings(): ConnectionPool::get_instance() failed." << std::endl;
-
+#endif //GLOM_ENABLE_CLIENT_ONLY
+ 
+#endif //GLOM_ENABLE_POSTGRESQL
+ 
   return result;
 }
 
