@@ -265,11 +265,13 @@
                   <object class="GtkNotebook" id="existing_or_new_notebook">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <!--
                     <child internal-child="accessible">
                       <object class="AtkObject" id="existing_or_new_notebook-atkobject">
                         <property name="AtkObject::accessible-name" translatable="yes">Open or create Document</property>
                       </object>
                     </child>
+                    -->
                     <child>
                       <object class="GtkScrolledWindow" id="scrolledwindow2">
                         <property name="visible">True</property>
@@ -282,11 +284,13 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                            <!--
                             <child internal-child="accessible">
                               <object class="AtkObject" id="existing_or_new_existing_treeview-atkobject">
                                 <property name="AtkObject::accessible-name" translatable="yes">Open Existing Document</property>
                               </object>
                             </child>
+                            -->
                           </object>
                         </child>
                       </object>
@@ -313,11 +317,13 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                            <!--
                             <child internal-child="accessible">
                               <object class="AtkObject" id="existing_or_new_new_treeview-atkobject">
                                 <property name="AtkObject::accessible-name" translatable="yes">Create New Document</property>
                               </object>
                             </child>
+                            -->
                           </object>
                         </child>
                       </object>
@@ -488,11 +494,13 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x2022;</property>
+                        <!--
                         <child internal-child="accessible">
                           <object class="AtkObject" id="entry_host-atkobject">
                             <property name="AtkObject::accessible-name" translatable="yes">Host</property>
                           </object>
                         </child>
+                        -->
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -508,11 +516,13 @@
                         <property name="visibility">False</property>
                         <property name="invisible_char">&#x2022;</property>
                         <property name="activates_default">True</property>
+                        <!--
                         <child internal-child="accessible">
                           <object class="AtkObject" id="entry_password-atkobject">
                             <property name="AtkObject::accessible-name" translatable="yes">Password</property>
                           </object>
                         </child>
+                        -->
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -527,11 +537,13 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x2022;</property>
+                        <!--
                         <child internal-child="accessible">
                           <object class="AtkObject" id="entry_user-atkobject">
                             <property name="AtkObject::accessible-name" translatable="yes">User</property>
                           </object>
                         </child>
+                        -->
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -611,11 +623,13 @@
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
                         <property name="selectable">True</property>
+                        <!--
                         <child internal-child="accessible">
                           <object class="AtkObject" id="label_database-atkobject">
                             <property name="AtkObject::accessible-name" translatable="yes">Database</property>
                           </object>
                         </child>
+                        -->
                       </object>
                       <packing>
                         <property name="left_attach">1</property>

@@ -235,6 +235,15 @@ protected:
   void on_connection_cleanup_progress();
   void cleanup_connection();
   bool handle_connection_initialize_errors(ConnectionPool::InitErrors error);
+
+private:
+
+  /**
+   * @result Whether to try again.
+   */
+  bool handle_request_password_connection_error(bool asked_for_password, const ExceptionConnection& ex, bool& database_not_found);
+
+protected:
   
   //Member data:
   Glib::ustring m_table_name;

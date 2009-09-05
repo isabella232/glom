@@ -16,8 +16,6 @@
  * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#include <config.h>
-
 #include <glom/bakery/app_withdoc_gtk.h>
 #include <glom/bakery/dialog_offersave.h>
 //#include <libgnomevfsmm/utils.h> //For escape_path_string()
@@ -30,12 +28,16 @@
 #include <gtkmm/aboutdialog.h>
 #include <giomm.h>
 #include <algorithm>
+
+#include <config.h>
+
+#ifdef GLOM_ENABLE_MAEMO
+#include <hildon-fmmm/file-chooser-dialog.h>
+#endif // GLOM_ENABLE_MAEMO
+
 #include <glibmm/i18n-lib.h>
 
 //#include <gtk/gtkfilesel.h>
-
-
-#undef GLOM_ENABLE_MAEMO
 
 namespace GlomBakery
 {
@@ -119,9 +121,10 @@ void App_WithDoc_Gtk::init_layout()
 
   //Add menu bar at the top:
   //These were defined in init_uimanager().
-#ifdef GLOM_ENABLE_MAEMO //TODO: Use Hildon::AppMenu
-  Gtk::Menu* pMenu = static_cast<Gtk::Menu*>(m_refUIManager->get_widget("/Bakery_MainMenu"));
-  set_menu(*pMenu);
+#ifdef GLOM_ENABLE_MAEMO
+  //TODO: Use Hildon::AppMenu
+  //Gtk::Menu* pMenu = static_cast<Gtk::Menu*>(m_refUIManager->get_widget("/Bakery_MainMenu"));
+  //set_menu(*pMenu);
 #else
   Gtk::MenuBar* pMenuBar = static_cast<Gtk::MenuBar*>(m_refUIManager->get_widget("/Bakery_MainMenu"));
   m_pVBox->pack_start(*pMenuBar, Gtk::PACK_SHRINK);
@@ -491,7 +494,7 @@ void App_WithDoc_Gtk::ui_warning(const Glib::ustring& text, const Glib::ustring&
   Gtk::Window* pWindow = this;
 
 #ifdef GLOM_ENABLE_MAEMO
-  Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, text, Gtk::Stock::DIALOG_WARNING);
+  Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, *pWindow, text);
 #else
   Gtk::MessageDialog dialog(App_WithDoc_Gtk::util_bold_message(text), true /* use markup */, Gtk::MESSAGE_WARNING);
   dialog.set_secondary_text(secondary_text);
@@ -606,24 +609,10 @@ Glib::ustring App_WithDoc_Gtk::ui_file_select_save(const Glib::ustring& old_file
     }
   }
 
-
-  //bool tried_once_already = false;
-
   bool try_again = true;
   while(try_again)
   {
     try_again = false;
-
-    //Work around bug #330680 "GtkFileChooserDialog is too small when shown a second time.":
-    //(Commented-out because the workaround doesn't work)
-    /*
-    if(tried_once_already)
-    {
-      fileChooser_Save.set_default_size(-1, 600); 
-    }
-    else
-      tried_once_already = true;
-    */
 
     const int response_id = fileChooser_Save.run();
     fileChooser_Save.hide();

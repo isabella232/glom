@@ -1,5 +1,56 @@
 2009-09-05  Murray Cumming  <murrayc@murrayc.com>
 
+	connection_request_password_and_attempt(): Fix a crash in client-only mode.
+
+	* glom/frame_glom.[h|cc]: connection_request_password_and_attempt(): 
+	Move some decision-making into handle_request_password_connection_error, 
+	to allow us to handle the no-exception API better, though this is 
+	clearer anyway, or would be without the ifdefs.
+
+2009-09-05  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc: on_document_load(): Add a ! to really check 
+	for unsupported backends.
+
+2009-09-05  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc: check_document_hosting_mode_is_supported():
+	Correct and ifdef to an ifndef.
+
+2009-09-05  Murray Cumming  <murrayc@murrayc.com>
+
+	Maemo: Use Hildon::FileChooserDialog for opening files.
+
+	* glom/application.[h|cc]: Remove unused (and unnecessary since the new 
+	initial dialog) on_menu_file_open() and on_menu_file_close() overrides 
+	and ui_file_select_open_with_browse().
+	* glom/dialog_existing_or_new.cc: on_select_clicked(): Use 
+	Hildon::FileChooserDialog on Maemo.
+	* glom/bakery/app_withdoc_gtk.cc: Remove the uncommented undef of 
+	GLOM_ENABLE_MAEMO - no more nasty hacks please. Instead comment-out 
+	the set_menu() call with a TODO, leaving the rest of the maemo-specific 
+	code working.
+
+2009-09-05  Murray Cumming  <murrayc@murrayc.com>
+
+	Check for unsupported hosting modes.
+
+	* glom/application.[h|cc]:
+	Added check_document_hosting_mode_is_supported() to warn the user 
+	if the build cannot use the hosting mode in the file, and call it from 
+	on_document_load().
+	* glom/libglom/document/bakery/document.cc: load(), load_from_data(): 
+	Call set_is_new(false) so we can check for this in 
+	App/View::on_document_load(), to avoid complaining about an unused 
+	default hosting mode.
+
+2009-09-05  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc: offer_new_or_existing(): In the client-only build, 
+	actually handle the enum for opening an existing file in client mode.
+
+2009-09-05  Murray Cumming  <murrayc@murrayc.com>
+
 	offer_new_or_existing(): Add Gtk::Builder error handling .
 
 	* glom/application.cc: offer_new_or_existing(): Add error handling to 

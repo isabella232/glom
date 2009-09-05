@@ -785,40 +785,6 @@ void App_Glom::open_browsed_document(const EpcServiceInfo* server, const Glib::u
 }
 #endif // !G_OS_WIN32
 
-//We override this so we can show the custom FileChooserDialog with the Browse Network button:
-void App_Glom::on_menu_file_open()
-{
-  //Display File Open dialog and respond to choice:
-
-  //Bring document window to front, to make it clear which document is being changed:
-  ui_bring_to_front();
-
-  //Ask user to choose file to open:
-  bool browsed = false;
-#ifndef G_OS_WIN32
-  EpcServiceInfo* browsed_server = 0;
-  Glib::ustring browsed_service_name;
-  Glib::ustring file_uri = ui_file_select_open_with_browse(browsed, browsed_server, browsed_service_name);
-#else
-  Glib::ustring file_uri = ui_file_select_open();
-#endif // !G_OS_WIN32
-  if(!file_uri.empty() && !browsed)
-    open_document(file_uri);
-#ifndef G_OS_WIN32
-  else if(browsed)
-    open_browsed_document(browsed_server, browsed_service_name);
-
- if(browsed_server)
-    epc_service_info_unref(browsed_server);
-#endif // !G_OS_WIN32
-}
-
-void App_Glom::on_menu_file_close() //override
-{
-  // Call the base class implementation:
-  GlomBakery::App_WithDoc_Gtk::on_menu_file_close();
-}
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 //Copied from bakery:
 static bool uri_is_writable(const Glib::RefPtr<const Gio::File>& uri)
@@ -911,6 +877,59 @@ void App_Glom::init_create_document()
   type_base::init_create_document(); //Sets window title. Doesn't recreate doc.
 }
 
+bool App_Glom::check_document_hosting_mode_is_supported(Document* document)
+{
+  //Check that the file's hosting mode is supported by this build:
+  Glib::ustring error_message;
+  switch(document->get_hosting_mode())
+  {
+    case Document::HOSTING_MODE_POSTGRES_SELF:
+    {
+      #ifdef GLOM_ENABLE_CLIENT_ONLY
+      error_message = _("The file cannot be opened because this version of Glom does not support self-hosting of databases.");
+      break;
+      #endif //GLOM_ENABLE_CLIENT_ONLY
+
+      #ifndef GLOM_ENABLE_POSTGRESQL
+      error_message = _("The file cannot be opened because this version of Glom does not support PostgreSQL databases.");
+      break;
+      #endif //GLOM_ENABLE_POSTGRESQL
+
+      break;
+    }
+    case Document::HOSTING_MODE_POSTGRES_CENTRAL:
+    {
+      #ifndef GLOM_ENABLE_POSTGRESQL
+      error_message = _("The file cannot be opened because this version of Glom does not support PostgreSQL databases.");
+      #endif //GLOM_ENABLE_POSTGRESQL
+
+      break;
+    }
+    case Document::HOSTING_MODE_SQLITE:
+    {
+      #ifndef GLOM_ENABLE_SQLITE
+      error_message = _("The file cannot be opened because this version of Glom does not support SQLite databases.");
+      #endif //GLOM_ENABLE_SQLITE
+
+      break;
+    }
+    default:
+    {
+      //on_document_load() should have checked for this already, informing the user.
+      std::cerr << "Glom: setup_connection_pool_from_document(): Unhandled hosting mode: " << document->get_hosting_mode() << std::endl;
+     g_assert_not_reached();
+     break;
+    }
+  }
+
+  if(error_message.empty())
+    return true;
+
+  //Warn the user.
+  Frame_Glom::show_ok_dialog(_("File Uses Unsupported Database Backend"), error_message, *this, Gtk::MESSAGE_ERROR);
+  return false;
+}
+
 bool App_Glom::on_document_load()
 {
   //Link to the database described in the document.
@@ -918,240 +937,239 @@ bool App_Glom::on_document_load()
   //m_pFrame->load_from_document();
   Document* pDocument = static_cast<Document*>(get_document());
   if(!pDocument)
-  {
     return false;
+
+  if(!pDocument->get_is_new() && !check_document_hosting_mode_is_supported(pDocument))
+    return false;
+ 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  //Connect signals:
+  pDocument->signal_userlevel_changed().connect( sigc::mem_fun(*this, &App_Glom::on_userlevel_changed) );
+
+  //Disable/Enable actions, depending on userlevel:
+  pDocument->emit_userlevel_changed();
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+
+  if(pDocument->get_connection_database().empty()) //If it is a new (default) document.
+  {
+    //offer_new_or_existing();
   }
   else
   {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-    //Connect signals:
-    pDocument->signal_userlevel_changed().connect( sigc::mem_fun(*this, &App_Glom::on_userlevel_changed) );
-
-    //Disable/Enable actions, depending on userlevel:
-    pDocument->emit_userlevel_changed();
+    //Prevent saving until we are sure that everything worked.
+    //This also stops us from losing the example data as soon as we say the new file (created from the example) is not an example.
+    pDocument->set_allow_autosave(false);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-    if(pDocument->get_connection_database().empty()) //If it is a new (default) document.
+    // Example files are not supported in client only mode because they
+    // would need to be saved, but saving support is disabled.
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+    const bool is_example = pDocument->get_is_example_file();
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+    if(pDocument->get_is_example_file())
     {
-      //offer_new_or_existing();
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+      // Remember the URI to the example file to be able to prevent
+      // adding the URI to the recently used files in document_history_add.
+      // We want to add the document that is created from the example
+      // instead of the example itself.
+      // TODO: This is a weird hack. Find a nicer way. murrayc.
+      m_example_uri = pDocument->get_file_uri();
+
+      pDocument->set_file_uri(Glib::ustring()); //Prevent it from defaulting to the read-only examples directory when offering saveas.
+      //m_ui_save_extra_* are used by offer_saveas() if it's not empty:
+      m_ui_save_extra_showextras = true;
+      m_ui_save_extra_title = _("Creating From Example File");
+      m_ui_save_extra_message = _("To use this example file you must save an editable copy of the file. A new database will also be created on the server.");
+      m_ui_save_extra_newdb_title = "TODO";
+      m_ui_save_extra_newdb_hosting_mode = Document::HOSTING_MODE_DEFAULT;
+
+        
+      // Reinit cancelled state
+      set_operation_cancelled(false);
+        
+      offer_saveas();
+      // Note that bakery will try to add the example file itself to the
+      // recently used documents, which is not what we want.
+      m_ui_save_extra_message.clear();
+      m_ui_save_extra_title.clear();
+
+      if(!get_operation_cancelled())
+      {	
+        //Get the results from the extended save dialog:
+        pDocument->set_database_title(m_ui_save_extra_newdb_title);
+        pDocument->set_hosting_mode(m_ui_save_extra_newdb_hosting_mode);
+        m_ui_save_extra_newdb_hosting_mode = Document::HOSTING_MODE_DEFAULT;
+        pDocument->set_is_example_file(false);
+
+        // For self-hosting, we will choose a port later. For central
+        // hosting, try several default ports. Don't use the values that
+        // are set in the example file.
+        pDocument->set_connection_port(0);
+        pDocument->set_connection_try_other_ports(true);
+
+        // We have a valid uri, so we can set it to !new and modified here
+      }        
+        
+      m_ui_save_extra_newdb_title.clear();
+      m_ui_save_extra_showextras = false;
+
+      if(get_operation_cancelled())
+      {
+        pDocument->set_modified(false);
+        pDocument->set_is_new(true);
+        std::cout << "debug: user cancelled creating database" << std::endl;
+        return false;
+      }
+        
+#else // !GLOM_ENABLE_CLIENT_ONLY
+      // TODO_clientonly: Tell the user that opening example files is
+      // not supported. This could alternatively also be done in
+      // Document_after::load_after, I am not sure which is better.
+      return false;
+#endif // GLOM_ENABLE_CLIENT_ONLY
     }
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+    //Warn about read-only files, because users will otherwise wonder why they can't use Developer mode:
+    const Document::userLevelReason reason = Document::USER_LEVEL_REASON_UNKNOWN;
+    const AppState::userlevels userlevel = pDocument->get_userlevel(reason);
+    if( (userlevel == AppState::USERLEVEL_OPERATOR) && (reason == Document::USER_LEVEL_REASON_FILE_READ_ONLY) )
+    {
+      Gtk::MessageDialog dialog(Utils::bold_message(_("Opening Read-Only File.")), true,  Gtk::MESSAGE_INFO, Gtk::BUTTONS_NONE);
+      dialog.set_secondary_text(_("This file is read only, so you will not be able to enter Developer mode to make design changes."));
+      dialog.set_transient_for(*this);
+      dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+      dialog.add_button(_("Continue without Developer Mode"), Gtk::RESPONSE_OK); //arbitrary response code.
+
+      const int response = dialog.run();
+      dialog.hide();
+      if((response == Gtk::RESPONSE_CANCEL)  || (response == Gtk::RESPONSE_DELETE_EVENT))
+        return false;
+    }
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+
+    //Read the connection information from the document:
+    ConnectionPool* connection_pool = ConnectionPool::get_instance();
+    if(!connection_pool)
+      return false; //Impossible anyway.
     else
     {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-      //Prevent saving until we are sure that everything worked.
-      //This also stops us from losing the example data as soon as we say the new file (created from the example) is not an example.
-      pDocument->set_allow_autosave(false);
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-      // Example files are not supported in client only mode because they
-      // would need to be saved, but saving support is disabled.
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-      const bool is_example = pDocument->get_is_example_file();
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-      if(pDocument->get_is_example_file())
-      {
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-        // Remember the URI to the example file to be able to prevent
-        // adding the URI to the recently used files in document_history_add.
-        // We want to add the document that is created from the example
-        // instead of the example itself.
-        // TODO: This is a weird hack. Find a nicer way. murrayc.
-        m_example_uri = pDocument->get_file_uri();
-
-        pDocument->set_file_uri(Glib::ustring()); //Prevent it from defaulting to the read-only examples directory when offering saveas.
-        //m_ui_save_extra_* are used by offer_saveas() if it's not empty:
-        m_ui_save_extra_showextras = true;
-        m_ui_save_extra_title = _("Creating From Example File");
-        m_ui_save_extra_message = _("To use this example file you must save an editable copy of the file. A new database will also be created on the server.");
-        m_ui_save_extra_newdb_title = "TODO";
-        m_ui_save_extra_newdb_hosting_mode = Document::HOSTING_MODE_DEFAULT;
-
-        
-        // Reinit cancelled state
-        set_operation_cancelled(false);
-        
-        offer_saveas();
-        // Note that bakery will try to add the example file itself to the
-        // recently used documents, which is not what we want.
-        m_ui_save_extra_message.clear();
-        m_ui_save_extra_title.clear();
-
-        if(!get_operation_cancelled())
-        {	
-          //Get the results from the extended save dialog:
-          pDocument->set_database_title(m_ui_save_extra_newdb_title);
-          pDocument->set_hosting_mode(m_ui_save_extra_newdb_hosting_mode);
-          m_ui_save_extra_newdb_hosting_mode = Document::HOSTING_MODE_DEFAULT;
-          pDocument->set_is_example_file(false);
-
-          // For self-hosting, we will choose a port later. For central
-          // hosting, try several default ports. Don't use the values that
-          // are set in the example file.
-          pDocument->set_connection_port(0);
-          pDocument->set_connection_try_other_ports(true);
-
-          // We have a valid uri, so we can set it to !new and modified here
-        }        
-        
-        m_ui_save_extra_newdb_title.clear();
-        m_ui_save_extra_showextras = false;
-
-        if(get_operation_cancelled())
-        {
-          pDocument->set_modified(false);
-          pDocument->set_is_new(true);
-          std::cout << "debug: user cancelled creating database" << std::endl;
-          return false;
-        }
-        
-#else // !GLOM_ENABLE_CLIENT_ONLY
-        // TODO_clientonly: Tell the user that opening example files is
-        // not supported. This could alternatively also be done in
-        // Document_after::load_after, I am not sure which is better.
-        return false;
-#endif // GLOM_ENABLE_CLIENT_ONLY
-      }
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-      //Warn about read-only files, because users will otherwise wonder why they can't use Developer mode:
-      Document::userLevelReason reason = Document::USER_LEVEL_REASON_UNKNOWN;
-      const AppState::userlevels userlevel = pDocument->get_userlevel(reason);
-      if( (userlevel == AppState::USERLEVEL_OPERATOR) && (reason == Document::USER_LEVEL_REASON_FILE_READ_ONLY) )
-      {
-        Gtk::MessageDialog dialog(Utils::bold_message(_("Opening Read-Only File.")), true,  Gtk::MESSAGE_INFO, Gtk::BUTTONS_NONE);
-        dialog.set_secondary_text(_("This file is read only, so you will not be able to enter Developer mode to make design changes."));
-        dialog.set_transient_for(*this);
-        dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-        dialog.add_button(_("Continue without Developer Mode"), Gtk::RESPONSE_OK); //arbitrary response code.
-
-        const int response = dialog.run();
-        dialog.hide();
-        if((response == Gtk::RESPONSE_CANCEL)  || (response == Gtk::RESPONSE_DELETE_EVENT))
-          return false;
-      }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-      //Read the connection information from the document:
-      ConnectionPool* connection_pool = ConnectionPool::get_instance();
-      if(!connection_pool)
-        return false; //Impossible anyway.
-      else
-      {
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-        connection_pool->set_get_document_func( sigc::mem_fun(*this, &App_Glom::on_connection_pool_get_document) );
+      connection_pool->set_get_document_func( sigc::mem_fun(*this, &App_Glom::on_connection_pool_get_document) );
 #endif
 
-        connection_pool->set_ready_to_connect(true); //connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
+      connection_pool->set_ready_to_connect(true); //connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
 
-        //Attempt to connect to the specified database:
-        bool test = false;
+      //Attempt to connect to the specified database:
+      bool test = false;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-        if(is_example)
-        {
-          //The user has already had the chance to specify a new filename and database name.
-          test = m_pFrame->connection_request_password_and_choose_new_database_name();
-        }
-        else
+      if(is_example)
+      {
+        //The user has already had the chance to specify a new filename and database name.
+        test = m_pFrame->connection_request_password_and_choose_new_database_name();
+      }
+      else
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+      {
+        //Ask for the username/password and connect:
+        //Note that m_temp_username and m_temp_password are set if 
+        //we already asked for them when getting the document over the network:
+
+        //Use the default username/password if opening as non network-shared:
+        if(!(pDocument->get_network_shared()))
         {
-          //Ask for the username/password and connect:
-          //Note that m_temp_username and m_temp_password are set if 
-          //we already asked for them when getting the document over the network:
-
-          //Use the default username/password if opening as non network-shared:
-          if(!(pDocument->get_network_shared()))
-          {
-            // If the document is centrally hosted, don't pretend to know the
-            // username or password, because we don't. The user will enter
-            // the login credentials in a dialog.
-            if(pDocument->get_hosting_mode() != Document::HOSTING_MODE_POSTGRES_CENTRAL)
-              m_temp_username = Privs::get_default_developer_user_name(m_temp_password);
-          }
-
-          bool database_not_found = false;
-          test = m_pFrame->connection_request_password_and_attempt(database_not_found, m_temp_username, m_temp_password);
-          m_temp_username = Glib::ustring();
-          m_temp_password = Glib::ustring();
-
-          if(!test && database_not_found)
-          {
-            #ifndef GLOM_ENABLE_CLIENT_ONLY
-            if(!is_example)
-            {
-              //The connection to the server is OK, but the database is not there yet.
-              Frame_Glom::show_ok_dialog(_("Database Not Found On Server"), _("The database could not be found on the server. Please consult your system administrator."), *this, Gtk::MESSAGE_ERROR);
-            }
-            else
-            #endif // !GLOM_ENABLE_CLIENT_ONLY
-              std::cerr << "App_Glom::on_document_load(): unexpected database_not_found error when opening example." << std::endl;
-          }
-          else if(!test)
-          {
-            std::cerr << "App_Glom::on_document_load(): unexpected error." << std::endl;
-          }
+          // If the document is centrally hosted, don't pretend to know the
+          // username or password, because we don't. The user will enter
+          // the login credentials in a dialog.
+          if(pDocument->get_hosting_mode() != Document::HOSTING_MODE_POSTGRES_CENTRAL)
+            m_temp_username = Privs::get_default_developer_user_name(m_temp_password);
         }
 
-        if(!test)
-          return false; //Failed. Close the document.
+        bool database_not_found = false;
+        test = m_pFrame->connection_request_password_and_attempt(database_not_found, m_temp_username, m_temp_password);
+        m_temp_username = Glib::ustring();
+        m_temp_password = Glib::ustring();
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-        if(is_example)
+        if(!test && database_not_found)
         {
-          //Create the example database:
-          //connection_request_password_and_choose_new_database_name() has already change the database name to a new unused one:
-          bool user_cancelled = false;
-          const bool test = recreate_database(user_cancelled);
-          if(!test)
+          #ifndef GLOM_ENABLE_CLIENT_ONLY
+          if(!is_example)
           {
-            // TODO: Do we need to call connection_pool->cleanup() here, for
-            // stopping self-hosted databases? armin.
-            connection_pool->cleanup( sigc::mem_fun(*this, &App_Glom::on_connection_close_progress) );
-            //If the database was not successfully recreated:
-            if(!user_cancelled)
-            {
-              //Let the user try again.
-              //A warning has already been shown.
-              //TODO: No, I don't think there is a warning.
-              std::cerr << "App_Glom::on_document_load(): recreate_database() failed." << std::endl;
-              return offer_new_or_existing();
-            }
-            else
-              return false;
+            //The connection to the server is OK, but the database is not there yet.
+            Frame_Glom::show_ok_dialog(_("Database Not Found On Server"), _("The database could not be found on the server. Please consult your system administrator."), *this, Gtk::MESSAGE_ERROR);
           }
           else
-          {
-            //Make sure that the changes (mark as non example, and save the new database name) are really saved:
-            //Change the user level temporarily so that save_changes() actually saves:
-            const AppState::userlevels user_level = pDocument->get_userlevel();
-            pDocument->set_userlevel(AppState::USERLEVEL_DEVELOPER);
-            pDocument->set_modified(true);
-            pDocument->set_userlevel(user_level); //Change it back.
-          }
+          #endif // !GLOM_ENABLE_CLIENT_ONLY
+            std::cerr << "App_Glom::on_document_load(): unexpected database_not_found error when opening example." << std::endl;
         }
+        else if(!test)
+        {
+          std::cerr << "App_Glom::on_document_load(): unexpected error." << std::endl;
+        }
+      }
+
+      if(!test)
+        return false; //Failed. Close the document.
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+      if(is_example)
+      {
+        //Create the example database:
+        //connection_request_password_and_choose_new_database_name() has already change the database name to a new unused one:
+        bool user_cancelled = false;
+        const bool test = recreate_database(user_cancelled);
+        if(!test)
+        {
+          // TODO: Do we need to call connection_pool->cleanup() here, for
+          // stopping self-hosted databases? armin.
+          connection_pool->cleanup( sigc::mem_fun(*this, &App_Glom::on_connection_close_progress) );
+          //If the database was not successfully recreated:
+          if(!user_cancelled)
+          {
+            //Let the user try again.
+            //A warning has already been shown.
+            //TODO: No, I don't think there is a warning.
+            std::cerr << "App_Glom::on_document_load(): recreate_database() failed." << std::endl;
+            return offer_new_or_existing();
+          }
+          else
+            return false;
+        }
+        else
+        {
+          //Make sure that the changes (mark as non example, and save the new database name) are really saved:
+          //Change the user level temporarily so that save_changes() actually saves:
+          const AppState::userlevels user_level = pDocument->get_userlevel();
+          pDocument->set_userlevel(AppState::USERLEVEL_DEVELOPER);
+          pDocument->set_modified(true);
+          pDocument->set_userlevel(user_level); //Change it back.
+        }
+      }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-        //Switch to operator mode when opening new documents:
-        pDocument->set_userlevel(AppState::USERLEVEL_OPERATOR);
+      //Switch to operator mode when opening new documents:
+      pDocument->set_userlevel(AppState::USERLEVEL_OPERATOR);
 
-        //Open default table, or show list of tables instead:
-        m_pFrame->do_menu_Navigate_Table(true /* open the default if there is one */);
+      //Open default table, or show list of tables instead:
+      m_pFrame->do_menu_Navigate_Table(true /* open the default if there is one */);
 
-      }
     }
+  }
 
-    //List the non-hidden tables in the menu:
-    fill_menu_tables();
+  //List the non-hidden tables in the menu:
+  fill_menu_tables();
 
-    update_network_shared_ui();
+  update_network_shared_ui();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 
-    pDocument->set_allow_autosave(true);
+  pDocument->set_allow_autosave(true);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-    return true; //Loading of the document into the application succeeded.
-  }
+  return true; //Loading of the document into the application succeeded.
 }
 
 void App_Glom::on_connection_close_progress()
@@ -1300,29 +1318,35 @@ bool App_Glom::offer_new_or_existing()
     {
       switch(dialog->get_action())
       {
-      case Dialog_ExistingOrNew::NONE:
-        // This should not happen
-        break;
 #ifndef GLOM_ENABLE_CLIENT_ONLY
       case Dialog_ExistingOrNew::NEW_EMPTY:
         existing_or_new_new();
         break;
       case Dialog_ExistingOrNew::NEW_FROM_TEMPLATE:
+#endif // !GLOM_ENABLE_CLIENT_ONLY
       case Dialog_ExistingOrNew::OPEN_URI:
         open_document(dialog->get_uri());
         break;
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 #ifndef G_OS_WIN32
       case Dialog_ExistingOrNew::OPEN_REMOTE:
         open_browsed_document(dialog->get_service_info(), dialog->get_service_name());
         break;
 #endif
+      case Dialog_ExistingOrNew::NONE:
       default:
+	std::cerr << "App_Glom::offer_new_or_existing(): Unhandled action: " << dialog->get_action() << std::endl;
+        g_assert_not_reached();
         break;
       }
 
       //Check that a document was opened:
       Document* document = dynamic_cast<Document*>(get_document());
+      if(!document)
+      {
+        std::cerr << "App_Glom::offer_new_or_existing(): document was NULL." << std::endl;
+        return false;
+      }
+
       if(!document->get_file_uri().empty() || (document->get_opened_from_browse()))
         ask_again = false;
     }
@@ -2080,85 +2104,6 @@ void App_Glom::on_menu_file_save_as_example()
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-#ifndef G_OS_WIN32
-//This is replaced (not overridden) so we can use our custom FileChooserDialog:
-Glib::ustring App_Glom::ui_file_select_open_with_browse(bool& browsed, EpcServiceInfo*& browsed_server, Glib::ustring& browsed_service_name, const Glib::ustring& starting_folder_uri)
-{
-  g_return_val_if_fail(browsed_server == 0, "");
-
-  //Initialize output parameter:
-  browsed = false;
-
-  Gtk::Window* pWindow = this;
-
-#ifdef GLOM_ENABLE_MAEMO
-  //TODO: Put the browse button on the initial dialog for Maemo, 
-  //because Hildon::FileChooserDialog does not allow extra widgets.
-  Hildon::FileChooserDialog fileChooser_Open(Gtk::FILE_CHOOSER_ACTION_OPEN);
-#else
-  Gtk::FileChooserDialog fileChooser_Open(gettext("Open Document"), Gtk::FILE_CHOOSER_ACTION_OPEN);
-  fileChooser_Open.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  fileChooser_Open.add_button(("Browse Network"), GLOM_RESPONSE_BROWSE_NETWORK);
-  fileChooser_Open.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
-  fileChooser_Open.set_default_response(Gtk::RESPONSE_OK);
-#endif // GLOM_ENABLE_MAEMO
-
-  if(pWindow)
-    fileChooser_Open.set_transient_for(*pWindow);
-
-  if(!starting_folder_uri.empty())
-    fileChooser_Open.set_current_folder_uri(starting_folder_uri);
-
-  const int response_id = fileChooser_Open.run();
-  fileChooser_Open.hide();
-  if((response_id != Gtk::RESPONSE_CANCEL) || (response_id != Gtk::RESPONSE_DELETE_EVENT))
-  {
-    if(response_id == GLOM_RESPONSE_BROWSE_NETWORK)
-    {
-      // Show Avahi's stock dialog for choosing a publisher service:
-      AuiServiceDialog* dialog = AUI_SERVICE_DIALOG (aui_service_dialog_new(_("Choose a running Glom database"), GTK_WINDOW(gobj()),
-        GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-        GTK_STOCK_CONNECT, GTK_RESPONSE_ACCEPT,
-        NULL));
-
-      //Browse for the same service type as advertized in Glom::ConnectionPool:
-      gchar* service_type = epc_service_type_new (EPC_PROTOCOL_HTTPS, "glom");
-      aui_service_dialog_set_browse_service_types(dialog, service_type, NULL);
-      g_free(service_type);
-      service_type = NULL;
-
-      //This is not needed because the type column is hidden when there is just one type:
-      //aui_service_dialog_set_service_type_name(AUI_SERVICE_DIALOG (dialog), service_type, "Glom");
-
-      const int response = gtk_dialog_run(GTK_DIALOG(dialog));
-      if(response == GTK_RESPONSE_ACCEPT)
-      {
-        //Tell the caller that a networked document should be used instead:
-        browsed = true;
-
-        browsed_server = epc_service_info_new(
-          aui_service_dialog_get_service_type(dialog),
-          aui_service_dialog_get_host_name(dialog),
-          aui_service_dialog_get_port(dialog),
-          aui_service_dialog_get_txt_data(dialog) );
-              
-        const gchar *service_name = aui_service_dialog_get_service_name(dialog);
-        browsed_service_name = service_name ? service_name : Glib::ustring();
-      }
-
-      gtk_widget_destroy(GTK_WIDGET(dialog));
-      dialog = NULL;
-    }
-    else
-    {
-      return fileChooser_Open.get_uri();
-    }
-  }
-
-  return Glib::ustring();
-}
-#endif // !G_OS_WIN32
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) //override
 {
@@ -2243,17 +2188,6 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
   while(try_again)
   {
     try_again = false;
-
-    //Work around bug #330680 "GtkFileChooserDialog is too small when shown a second time.":
-    //(Commented-out because the workaround doesn't work)
-    /*
-    if(tried_once_already)
-    {
-      fileChooser_Save->set_default_size(-1, 600); 
-    }
-    else
-      tried_once_already = true;
-    */
 
     const int response_id = fileChooser_Save->run();
     fileChooser_Save->hide();
