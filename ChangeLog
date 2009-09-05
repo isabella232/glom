@@ -1,5 +1,18 @@
 2009-09-05  Murray Cumming  <murrayc@murrayc.com>
 
+	Check for unsupported hosting modes.
+
+	* glom/application.[h|cc]:
+	Added check_document_hosting_mode_is_supported() to warn the user 
+	if the build cannot use the hosting mode in the file, and call it from 
+	on_document_load().
+	* glom/libglom/document/bakery/document.cc: load(), load_from_data(): 
+	Call set_is_new(false) so we can check for this in 
+	App/View::on_document_load(), to avoid complaining about an unused 
+	default hosting mode.
+
+2009-09-05  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.cc: offer_new_or_existing(): In the client-only build, 
 	actually handle the enum for opening an existing file in client mode.
 

@@ -134,6 +134,7 @@ bool Document::load(int& failure_code)
     }
   }
 
+  set_is_new(false);
   return bTest;
 }
 
@@ -155,6 +156,7 @@ bool Document::load_from_data(const guchar* data, std::size_t length, int& failu
       m_pView->load_from_document();
   }
 
+  set_is_new(false);
   return bTest;
 }
 

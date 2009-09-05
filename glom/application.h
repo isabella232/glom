@@ -106,6 +106,11 @@ private:
 
   void on_menu_help_contents();
 
+  /** Check that the file's hosting mode is supported by this build and 
+   * tell the user if necessary.
+   */
+  bool check_document_hosting_mode_is_supported(Document* document);
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void existing_or_new_new();
 

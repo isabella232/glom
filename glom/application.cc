@@ -911,6 +911,59 @@ void App_Glom::init_create_document()
   type_base::init_create_document(); //Sets window title. Doesn't recreate doc.
 }
 
+bool App_Glom::check_document_hosting_mode_is_supported(Document* document)
+{
+  //Check that the file's hosting mode is supported by this build:
+  Glib::ustring error_message;
+  switch(document->get_hosting_mode())
+  {
+    case Document::HOSTING_MODE_POSTGRES_SELF:
+    {
+      #ifdef GLOM_ENABLE_CLIENT_ONLY
+      error_message = _("The file cannot be opened because this version of Glom does not support self-hosting of databases.");
+      break;
+      #endif //GLOM_ENABLE_CLIENT_ONLY
+
+      #ifndef GLOM_ENABLE_POSTGRESQL
+      error_message = _("The file cannot be opened because this version of Glom does not support PostgreSQL databases.");
+      break;
+      #endif //GLOM_ENABLE_POSTGRESQL
+
+      break;
+    }
+    case Document::HOSTING_MODE_POSTGRES_CENTRAL:
+    {
+      #ifndef GLOM_ENABLE_POSTGRESQL
+      error_message = _("The file cannot be opened because this version of Glom does not support PostgreSQL databases.");
+      #endif //GLOM_ENABLE_POSTGRESQL
+
+      break;
+    }
+    case Document::HOSTING_MODE_SQLITE:
+    {
+      #ifdef GLOM_ENABLE_SQLITE
+      error_message = _("The file cannot be opened because this version of Glom does not support SQLite databases.");
+      #endif //GLOM_ENABLE_SQLITE
+
+      break;
+    }
+    default:
+    {
+      //on_document_load() should have checked for this already, informing the user.
+      std::cerr << "Glom: setup_connection_pool_from_document(): Unhandled hosting mode: " << document->get_hosting_mode() << std::endl;
+     g_assert_not_reached();
+     break;
+    }
+  }
+
+  if(error_message.empty())
+    return true;
+
+  //Warn the user.
+  Frame_Glom::show_ok_dialog(_("File Uses Unsupported Database Backend"), error_message, *this, Gtk::MESSAGE_ERROR);
+  return false;
+}
+
 bool App_Glom::on_document_load()
 {
   //Link to the database described in the document.
@@ -918,6 +971,10 @@ bool App_Glom::on_document_load()
   //m_pFrame->load_from_document();
   Document* pDocument = static_cast<Document*>(get_document());
   if(!pDocument)
+    return false;
+
+  std::cout << "debug: is_new(): " << pDocument->get_is_new() << std::endl;
+  if(!pDocument->get_is_new() && check_document_hosting_mode_is_supported(pDocument))
     return false;
  
 #ifndef GLOM_ENABLE_CLIENT_ONLY
