@@ -929,7 +929,6 @@ void Dialog_ExistingOrNew::on_select_clicked()
     if(response_id == Gtk::RESPONSE_OK)
     {
       m_chosen_uri = dialog.get_uri();
-      std::cout << "DEBUG: m_chosen_uri = " << m_chosen_uri << std::endl;
       response(Gtk::RESPONSE_ACCEPT);
     }
   }

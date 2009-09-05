@@ -939,7 +939,7 @@ bool App_Glom::on_document_load()
   if(!pDocument)
     return false;
 
-  if(!pDocument->get_is_new() && check_document_hosting_mode_is_supported(pDocument))
+  if(!pDocument->get_is_new() && !check_document_hosting_mode_is_supported(pDocument))
     return false;
  
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -1341,6 +1341,12 @@ bool App_Glom::offer_new_or_existing()
 
       //Check that a document was opened:
       Document* document = dynamic_cast<Document*>(get_document());
+      if(!document)
+      {
+        std::cerr << "App_Glom::offer_new_or_existing(): document was NULL." << std::endl;
+        return false;
+      }
+
       if(!document->get_file_uri().empty() || (document->get_opened_from_browse()))
         ask_again = false;
     }
