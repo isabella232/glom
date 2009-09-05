@@ -2222,14 +2222,16 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
+      g_assert(m_pDialogConnection);
       sharedptr<SharedConnection> sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings();
       //If no exception was thrown then the database exists.
       //But we are looking for an unused database name, so we will try again.
     }
     catch(const ExceptionConnection& ex)
     {
-#else
+#else //GLIBMM_EXCEPTIONS_ENABLED
     std::auto_ptr<ExceptionConnection> error;
+    g_assert(m_pDialogConnection);
     sharedptr<SharedConnection> sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings(error);
     if(error.get())
     {
@@ -2306,6 +2308,36 @@ void Frame_Glom::cleanup_connection()
   }
 }
 
+bool Frame_Glom::handle_request_password_connection_error(bool asked_for_password, const ExceptionConnection& ex, bool& database_not_found)
+{
+  g_warning("Frame_Glom::connection_request_password_and_attempt(): caught exception.");
+
+  //Initialize input parameter:
+  database_not_found = false;
+
+  if(asked_for_password && ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
+  {
+    //Warn the user, and let him try again:
+    Utils::show_ok_dialog(_("Connection Failed"), _("Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."), *(get_app_window()), Gtk::MESSAGE_ERROR); //TODO: Add help button.
+    return true;
+  }
+  else if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_DATABASE)
+  {
+    cleanup_connection();
+
+    //The connection to the server might be OK, but the specified database does not exist:
+    //Or the connection failed when trying without a password.
+    database_not_found = true; //Tell the caller about this error.
+    return false;
+  }
+  else
+  {
+    std::cerr << "Frame_Glom::connection_request_password_and_attempt(): Unexpected exception: " << ex.what() << std::endl;
+    cleanup_connection();
+    return false;
+  }
+}
+
 bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_found, const Glib::ustring known_username, const Glib::ustring& known_password, bool confirm_known_user)
 {
   //Initialize output parameter:
@@ -2379,71 +2411,63 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
     //Try to use the entered username/password:
     if(response == Gtk::RESPONSE_OK)
     {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-      try
+      sharedptr<SharedConnection> sharedconnection;
+
+      //Ask for the user/password if necessary:
+      //TODO: Remove any previous database setting?
+      if(m_pDialogConnection)
       {
-        //TODO: Remove any previous database setting?
-        if(m_pDialogConnection)
+        #ifdef GLIBMM_EXCEPTIONS_ENABLED
+        try
         {
-          sharedptr<SharedConnection> sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings();
+          sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings();
           // TODO: Save username in document?
           return true; //Succeeded, because no exception was thrown.
         }
-        else
+        catch(const ExceptionConnection& ex)
         {
-          //Use the known password:
-          ConnectionPool* connectionpool = ConnectionPool::get_instance();
-          connectionpool->set_user(known_username);
-          connectionpool->set_password(known_password);
-    
-          #ifdef GLIBMM_EXCEPTIONS_ENABLED
-          Base_DB::connect_to_server(get_app_window());
-          return true; //Succeeded, because no exception was thrown.
-          #else
-          std::auto_ptr<ExceptionConnection> error;
-          const bool connected = Base_DB::connect_to_server(get_app_window(), error);
-          if(!connected || error)
+          if(!handle_request_password_connection_error(true, ex, database_not_found);)
             return false;
-          else
-            return true;
-          #endif
         }
+        #else //GLIBMM_EXCEPTIONS_ENABLED
+        std::auto_ptr<ExceptionConnection> local_error;
+        sharedconnection = 
+          m_pDialogConnection->connect_to_server_with_connection_settings(local_error);
+        if(!local_error.get())
+          return true;
+        else if(!handle_request_password_connection_error(true, *local_error, database_not_found))
+          return false;
+        #endif //GLIBMM_EXCEPTIONS_ENABLED
       }
-      catch(const ExceptionConnection& ex)
-      {
-#else
-      std::auto_ptr<ExceptionConnection> local_error;
-      sharedptr<SharedConnection> sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings(local_error);
-      if(!local_error.get())
-        return true;
       else
       {
-        const ExceptionConnection& ex = *local_error;
-#endif
-        g_warning("Frame_Glom::connection_request_password_and_attempt(): caught exception.");
-
-        if(m_pDialogConnection && ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
+        //Use the known password:
+        ConnectionPool* connectionpool = ConnectionPool::get_instance();
+        connectionpool->set_user(known_username);
+        connectionpool->set_password(known_password);
+    
+        #ifdef GLIBMM_EXCEPTIONS_ENABLED
+        try
         {
-          //Warn the user, and let him try again:
-          Utils::show_ok_dialog(_("Connection Failed"), _("Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."), *(get_app_window()), Gtk::MESSAGE_ERROR); //TODO: Add help button.
-         
-          //The while() loop will run again, showing the username/password dialog again.
+          Base_DB::connect_to_server(get_app_window());
+          return true; //Succeeded, because no exception was thrown.
         }
-        else if (ex.get_failure_type() == ExceptionConnection::FAILURE_NO_DATABASE)
+        catch(const ExceptionConnection& ex)
         {
-          cleanup_connection();
-
-          //The connection to the server might be OK, but the specified database does not exist:
-          //Or the connection failed when trying without a password.
-          database_not_found = true; //Tell the caller about this error.
-          return false;
+          if(!handle_request_password_connection_error(false, ex, database_not_found))
+            return false;
+        }
+        #else
+        std::auto_ptr<ExceptionConnection> error;
+        const bool connected = Base_DB::connect_to_server(get_app_window(), error);
+        if(!connected || error.get())
+        {
+          if(!handle_request_password_connection_error(false, *error, database_not_found))
+            return false;
         }
         else
-        {
-          std::cerr << "Frame_Glom::connection_request_password_and_attempt(): Unexpected exception: " << ex.what() << std::endl;
-          cleanup_connection();
-          return false;
-        }
+          return true;
+        #endif
       }
 
       //Try again.

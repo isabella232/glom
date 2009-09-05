@@ -1,5 +1,14 @@
 2009-09-05  Murray Cumming  <murrayc@murrayc.com>
 
+	connection_request_password_and_attempt(): Fix a crash in client-only mode.
+
+	* glom/frame_glom.[h|cc]: connection_request_password_and_attempt(): 
+	Move some decision-making into handle_request_password_connection_error, 
+	to allow us to handle the no-exception API better, though this is 
+	clearer anyway, or would be without the ifdefs.
+
+2009-09-05  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/application.cc: on_document_load(): Add a ! to really check 
 	for unsupported backends.
 
