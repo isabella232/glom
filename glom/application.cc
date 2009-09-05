@@ -227,10 +227,9 @@ void App_Glom::init_layout()
 
   //Add menu bar at the top:
   //These were defined in init_uimanager().
-#undef GLOM_ENABLE_MAEMO // TODO: Fix menu!
 #ifdef GLOM_ENABLE_MAEMO
-  Gtk::Menu* pMenu = static_cast<Gtk::Menu*>(m_refUIManager->get_widget("/Bakery_MainMenu"));
-  set_menu(*pMenu);
+  //TODO: Use Hildon::AppMenu: Gtk::Menu* pMenu = static_cast<Gtk::Menu*>(m_refUIManager->get_widget("/Bakery_MainMenu"));
+  //set_menu(*pMenu);
 #else
   Gtk::MenuBar* pMenuBar = static_cast<Gtk::MenuBar*>(m_refUIManager->get_widget("/Bakery_MainMenu"));
   m_pBoxTop->pack_start(*pMenuBar, Gtk::PACK_SHRINK);
@@ -266,6 +265,7 @@ void App_Glom::init_toolbars()
 */
 }
 
+#ifndef GLOM_ENABLE_MAEMO
 void App_Glom::init_menus_file()
 {
   //Overridden to remove the Save and Save-As menu items,
@@ -327,11 +327,7 @@ void App_Glom::init_menus_file()
   //Build part of the menu structure, to be merged in by using the "PH" placeholders:
   static const Glib::ustring ui_description =
     "<ui>"
-#ifdef GLOM_ENABLE_MAEMO
-    "  <popup name='Bakery_MainMenu'>"
-#else
     "  <menubar name='Bakery_MainMenu'>"
-#endif
     "    <placeholder name='Bakery_MenuPH_File'>"
     "      <menu action='BakeryAction_Menu_File'>"
     "        <menuitem action='BakeryAction_File_New' />"
@@ -357,11 +353,7 @@ void App_Glom::init_menus_file()
     "        <menuitem action='BakeryAction_File_Close' />"
     "      </menu>"
     "    </placeholder>"
-#ifdef GLOM_ENABLE_MAEMO
-    "  </popup>"
-#else
     "  </menubar>"
-#endif
     "</ui>";
 
   //Add menu:
@@ -370,7 +362,14 @@ void App_Glom::init_menus_file()
   //Add recent-files submenu:
   init_menus_file_recentfiles("/Bakery_MainMenu/Bakery_MenuPH_File/BakeryAction_Menu_File/BakeryAction_Menu_File_RecentFiles");
 }
+#endif //GLOM_ENABLE_MAEMO
 
+#ifdef GLOM_ENABLE_MAEMO
+void App_Glom::init_menus()
+{
+  //There is no real menu on Maemo. We use HildonAppMenu instead.
+}
+#else
 void App_Glom::init_menus()
 {
   init_menus_file();
@@ -518,11 +517,7 @@ void App_Glom::init_menus()
   //Build part of the menu structure, to be merged in by using the "Bakery_MenuPH_Others" placeholder:
   static const Glib::ustring ui_description =
     "<ui>"
-#ifdef GLOM_ENABLE_MAEMO
-    "  <popup name='Bakery_MainMenu'>"
-#else
     "  <menubar name='Bakery_MainMenu'>"
-#endif
     "    <placeholder name='Bakery_MenuPH_Others'>"
     "      <menu action='Glom_Menu_Tables'>"
     "        <placeholder name='Menu_Tables_Dynamic' />"
@@ -571,11 +566,7 @@ void App_Glom::init_menus()
     "      </menu>"
 #endif // !GLOM_ENABLE_CLIENT_ONLY
     "    </placeholder>"
-#ifdef GLOM_ENABLE_MAEMO
-    "  </popup>"
-#else
     "  </menubar>"
-#endif
     "</ui>";
 
 /*  "        <menuitem action='GlomAction_Menu_Developer_RelationshipsOverview' />" */
@@ -587,6 +578,7 @@ void App_Glom::init_menus()
 
   fill_menu_tables();
 }
+#endif //GLOM_ENABLE_MAEMO
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void App_Glom::on_menu_file_toggle_share()
@@ -1209,6 +1201,10 @@ void App_Glom::update_network_shared_ui()
   if(!document)
     return;
 
+  //This is not used (yet) on Maemo:
+  if(!m_connection_toggleaction_network_shared)
+    return;
+
   //Show the status in the UI:
   //(get_network_shared() already enforces constraints).
   const bool shared = document->get_network_shared();
@@ -1457,7 +1453,7 @@ void App_Glom::set_mode_find()
   m_action_mode_find->activate();
 }
 
-
+#ifndef GLOM_ENABLE_MAEMO
 void App_Glom::init_menus_help()
 {
   //Call base class:
@@ -1469,21 +1465,13 @@ void App_Glom::init_menus_help()
   //Build part of the menu structure, to be merged in by using the "PH" plaeholders:
   static const Glib::ustring ui_description =
     "<ui>"
-#ifdef GLOM_ENABLE_MAEMO
-    "  <popup name='Bakery_MainMenu'>"
-#else
     "  <menubar name='Bakery_MainMenu'>"
-#endif
     "    <placeholder name='Bakery_MenuPH_Help'>"
     "      <menu action='BakeryAction_Menu_Help'>"
     "        <menuitem action='BakeryAction_Help_Contents' />"
     "      </menu>"
     "    </placeholder>"
-#ifdef GLOM_ENABLE_MAEMO
-    "  </popup>"
-#else
     "  </menubar>"
-#endif
     "</ui>";
 
   //Add menu:
@@ -1494,6 +1482,7 @@ void App_Glom::on_menu_help_contents()
 {
   Glom::Utils::show_help();
 }
+#endif //GLOM_ENABLE_MAEMO
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 bool App_Glom::recreate_database(bool& user_cancelled)
@@ -1716,6 +1705,12 @@ void App_Glom::remove_developer_action(const Glib::RefPtr<Gtk::Action>& refActio
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
+#ifdef GLOM_ENABLE_MAEMO
+void App_Glom::fill_menu_tables()
+{
+  //TODO: Change the Hildon::AppMenu.
+}
+#else
 void App_Glom::fill_menu_tables()
 {
   //TODO: There must be a better way than building a ui_string like this:
@@ -1803,8 +1798,14 @@ void App_Glom::fill_menu_tables()
     std::cerr << "   The ui_description was: " <<  ui_description << std::endl;
   }
 }
+#endif //GLOM_ENABLE_MAEMO
 
-
+#ifdef GLOM_ENABLE_MAEMO
+void App_Glom::fill_menu_reports(const Glib::ustring& table_name)
+{
+  //TODO: Change the Hildon::AppMenu.
+}
+#else
 void App_Glom::fill_menu_reports(const Glib::ustring& table_name)
 {
   //TODO: There must be a better way than building a ui_string like this:
@@ -1895,7 +1896,14 @@ void App_Glom::fill_menu_reports(const Glib::ustring& table_name)
     std::cerr << " App_Glom::fill_menu_reports(): building menus failed: " <<  ex.what();
   }
 }
+#endif //GLOM_ENABLE_MAEMO
 
+#ifdef GLOM_ENABLE_MAEMO
+void App_Glom::fill_menu_print_layouts(const Glib::ustring& table_name)
+{
+  //TODO: Change the Hildon::AppMenu.
+}
+#else
 void App_Glom::fill_menu_print_layouts(const Glib::ustring& table_name)
 {
   //TODO: This is copy/pasted from fill_menu_print_reports. Can we generalize it?
@@ -2000,7 +2008,7 @@ void App_Glom::fill_menu_print_layouts(const Glib::ustring& table_name)
     std::cerr << " App_Glom::fill_menu_reports(): building menus failed: " <<  ex.what();
   }
 }
-
+#endif //GLOM_ENABLE_MAEMO
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void App_Glom::on_menu_file_save_as_example()

@@ -1,5 +1,15 @@
 2009-09-05  Murray Cumming  <murrayc@murrayc.com>
 
+	Maemo: ifdef out useless menu code.
+
+	* glom/application.[h|c]]: Ifdef out any menu-building code because 
+	it must be completely replaced by Hildon::AppMenu code on Maemo.
+	* glom/mode_data/notebook_data.cc: Constructor: Hide the notebook 
+	tabs, in preparation for just showing the list, with the details in a 
+	separate window on Maemo.
+
+2009-09-05  Murray Cumming  <murrayc@murrayc.com>
+
 	connection_request_password_and_attempt(): Fix a crash in client-only mode.
 
 	* glom/frame_glom.[h|cc]: connection_request_password_and_attempt(): 

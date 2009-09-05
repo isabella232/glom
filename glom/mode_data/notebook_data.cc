@@ -67,6 +67,11 @@ Notebook_Data::Notebook_Data()
   //This is hidden by default,
   m_Box_Details.show_layout_toolbar(false);
 #endif //GLOM_ENABLE_CLIENT_ONLY
+
+#ifdef GLOM_ENABLE_MAEMO
+  //TODO: Actually, show the details in a separate window.
+  set_show_tabs(false);
+#endif //GLOM_ENABLE_MAEMO
 }
 
 Notebook_Data::~Notebook_Data()
