@@ -1033,7 +1033,7 @@ bool App_Glom::on_document_load()
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     //Warn about read-only files, because users will otherwise wonder why they can't use Developer mode:
-    const Document::userLevelReason reason = Document::USER_LEVEL_REASON_UNKNOWN;
+    Document::userLevelReason reason = Document::USER_LEVEL_REASON_UNKNOWN;
     const AppState::userlevels userlevel = pDocument->get_userlevel(reason);
     if( (userlevel == AppState::USERLEVEL_OPERATOR) && (reason == Document::USER_LEVEL_REASON_FILE_READ_ONLY) )
     {
