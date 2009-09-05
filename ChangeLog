@@ -1,5 +1,10 @@
 2009-09-05  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/application.cc: offer_new_or_existing(): In the client-only build, 
+	actually handle the enum for opening an existing file in client mode.
+
+2009-09-05  Murray Cumming  <murrayc@murrayc.com>
+
 	offer_new_or_existing(): Add Gtk::Builder error handling .
 
 	* glom/application.cc: offer_new_or_existing(): Add error handling to 

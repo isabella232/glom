@@ -1926,6 +1926,8 @@ namespace
 #endif // GLOM_ENABLE_SQLITE
 
     default:
+      //on_document_load() should have checked for this already, informing the user.
+      std::cerr << "Glom: setup_connection_pool_from_document(): Unhandled hosting mode: " << document->get_hosting_mode() << std::endl;
       g_assert_not_reached();
       break;
     }
