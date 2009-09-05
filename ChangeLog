@@ -1,5 +1,10 @@
 2009-09-05  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/application.cc: check_document_hosting_mode_is_supported():
+	Correct and ifdef to an ifndef.
+
+2009-09-05  Murray Cumming  <murrayc@murrayc.com>
+
 	Maemo: Use Hildon::FileChooserDialog for opening files.
 
 	* glom/application.[h|cc]: Remove unused (and unnecessary since the new 

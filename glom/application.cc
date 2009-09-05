@@ -907,7 +907,7 @@ bool App_Glom::check_document_hosting_mode_is_supported(Document* document)
     }
     case Document::HOSTING_MODE_SQLITE:
     {
-      #ifdef GLOM_ENABLE_SQLITE
+      #ifndef GLOM_ENABLE_SQLITE
       error_message = _("The file cannot be opened because this version of Glom does not support SQLite databases.");
       #endif //GLOM_ENABLE_SQLITE
 
@@ -939,7 +939,6 @@ bool App_Glom::on_document_load()
   if(!pDocument)
     return false;
 
-  std::cout << "debug: is_new(): " << pDocument->get_is_new() << std::endl;
   if(!pDocument->get_is_new() && check_document_hosting_mode_is_supported(pDocument))
     return false;
  
