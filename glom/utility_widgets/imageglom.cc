@@ -400,6 +400,7 @@ void ImageGlom::on_menupopup_activate_select_file()
   if(m_read_only)
     return;
 
+  //TODO: Use Hildon::FileChooser for Maemo.
   Gtk::FileChooserDialog dialog(_("Choose Image"), Gtk::FILE_CHOOSER_ACTION_OPEN);
 
   //Get image formats only:

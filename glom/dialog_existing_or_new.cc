@@ -30,6 +30,10 @@
 #include <gtkmm/filechooserdialog.h>
 #include <gtkmm/stock.h>
 
+#ifdef GLOM_ENABLE_MAEMO
+#include <hildon-fmmm/file-chooser-dialog.h>
+#endif // GLOM_ENABLE_MAEMO
+
 #ifdef G_OS_WIN32
 # include <glib/gwin32.h>
 #else
@@ -907,19 +911,25 @@ void Dialog_ExistingOrNew::on_select_clicked()
 
   if(action == OPEN_URI && iter == m_iter_existing_other)
   {
+    #ifdef GLOM_ENABLE_MAEMO
+    Hildon::FileChooserDialog dialog(Gtk::FILE_CHOOSER_ACTION_OPEN);
+    #else
     Gtk::FileChooserDialog dialog(*this, "Choose a glom file to open");
+    dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+    dialog.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
+    dialog.set_default_response(Gtk::RESPONSE_OK);
+    #endif // GLOM_ENABLE_MAEMO
+
     Gtk::FileFilter filter;
     filter.add_mime_type("application/x-glom");
     filter.set_name("Glom files");
     dialog.add_filter(filter);
 
-    dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-    dialog.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
-    //dialog.set_default_response(Gtk::RESPONSE_ACCEPT);
-
-    if(dialog.run() == Gtk::RESPONSE_ACCEPT)
+    const int response_id = dialog.run();
+    if(response_id == Gtk::RESPONSE_OK)
     {
       m_chosen_uri = dialog.get_uri();
+      std::cout << "DEBUG: m_chosen_uri = " << m_chosen_uri << std::endl;
       response(Gtk::RESPONSE_ACCEPT);
     }
   }

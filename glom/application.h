@@ -147,8 +147,6 @@ private:
   Glib::ustring ui_file_select_open_with_browse(bool& browsed, EpcServiceInfo*& browsed_server, Glib::ustring& browsed_service_name, const Glib::ustring& starting_folder_uri = Glib::ustring());
 #endif // !G_OS_WIN32
 
-  virtual void on_menu_file_open(); //overridden.
-  virtual void on_menu_file_close(); //override.
   virtual void document_history_add(const Glib::ustring& file_uri); //overridden.
 
   virtual void new_instance(const Glib::ustring& uri = Glib::ustring()); //Override

@@ -1,5 +1,19 @@
 2009-09-05  Murray Cumming  <murrayc@murrayc.com>
 
+	Maemo: Use Hildon::FileChooserDialog for opening files.
+
+	* glom/application.[h|cc]: Remove unused (and unnecessary since the new 
+	initial dialog) on_menu_file_open() and on_menu_file_close() overrides 
+	and ui_file_select_open_with_browse().
+	* glom/dialog_existing_or_new.cc: on_select_clicked(): Use 
+	Hildon::FileChooserDialog on Maemo.
+	* glom/bakery/app_withdoc_gtk.cc: Remove the uncommented undef of 
+	GLOM_ENABLE_MAEMO - no more nasty hacks please. Instead comment-out 
+	the set_menu() call with a TODO, leaving the rest of the maemo-specific 
+	code working.
+
+2009-09-05  Murray Cumming  <murrayc@murrayc.com>
+
 	Check for unsupported hosting modes.
 
 	* glom/application.[h|cc]:

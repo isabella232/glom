@@ -785,40 +785,6 @@ void App_Glom::open_browsed_document(const EpcServiceInfo* server, const Glib::u
 }
 #endif // !G_OS_WIN32
 
-//We override this so we can show the custom FileChooserDialog with the Browse Network button:
-void App_Glom::on_menu_file_open()
-{
-  //Display File Open dialog and respond to choice:
-
-  //Bring document window to front, to make it clear which document is being changed:
-  ui_bring_to_front();
-
-  //Ask user to choose file to open:
-  bool browsed = false;
-#ifndef G_OS_WIN32
-  EpcServiceInfo* browsed_server = 0;
-  Glib::ustring browsed_service_name;
-  Glib::ustring file_uri = ui_file_select_open_with_browse(browsed, browsed_server, browsed_service_name);
-#else
-  Glib::ustring file_uri = ui_file_select_open();
-#endif // !G_OS_WIN32
-  if(!file_uri.empty() && !browsed)
-    open_document(file_uri);
-#ifndef G_OS_WIN32
-  else if(browsed)
-    open_browsed_document(browsed_server, browsed_service_name);
-
- if(browsed_server)
-    epc_service_info_unref(browsed_server);
-#endif // !G_OS_WIN32
-}
-
-void App_Glom::on_menu_file_close() //override
-{
-  // Call the base class implementation:
-  GlomBakery::App_WithDoc_Gtk::on_menu_file_close();
-}
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 //Copied from bakery:
 static bool uri_is_writable(const Glib::RefPtr<const Gio::File>& uri)
@@ -2133,85 +2099,6 @@ void App_Glom::on_menu_file_save_as_example()
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-#ifndef G_OS_WIN32
-//This is replaced (not overridden) so we can use our custom FileChooserDialog:
-Glib::ustring App_Glom::ui_file_select_open_with_browse(bool& browsed, EpcServiceInfo*& browsed_server, Glib::ustring& browsed_service_name, const Glib::ustring& starting_folder_uri)
-{
-  g_return_val_if_fail(browsed_server == 0, "");
-
-  //Initialize output parameter:
-  browsed = false;
-
-  Gtk::Window* pWindow = this;
-
-#ifdef GLOM_ENABLE_MAEMO
-  //TODO: Put the browse button on the initial dialog for Maemo, 
-  //because Hildon::FileChooserDialog does not allow extra widgets.
-  Hildon::FileChooserDialog fileChooser_Open(Gtk::FILE_CHOOSER_ACTION_OPEN);
-#else
-  Gtk::FileChooserDialog fileChooser_Open(gettext("Open Document"), Gtk::FILE_CHOOSER_ACTION_OPEN);
-  fileChooser_Open.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  fileChooser_Open.add_button(("Browse Network"), GLOM_RESPONSE_BROWSE_NETWORK);
-  fileChooser_Open.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
-  fileChooser_Open.set_default_response(Gtk::RESPONSE_OK);
-#endif // GLOM_ENABLE_MAEMO
-
-  if(pWindow)
-    fileChooser_Open.set_transient_for(*pWindow);
-
-  if(!starting_folder_uri.empty())
-    fileChooser_Open.set_current_folder_uri(starting_folder_uri);
-
-  const int response_id = fileChooser_Open.run();
-  fileChooser_Open.hide();
-  if((response_id != Gtk::RESPONSE_CANCEL) || (response_id != Gtk::RESPONSE_DELETE_EVENT))
-  {
-    if(response_id == GLOM_RESPONSE_BROWSE_NETWORK)
-    {
-      // Show Avahi's stock dialog for choosing a publisher service:
-      AuiServiceDialog* dialog = AUI_SERVICE_DIALOG (aui_service_dialog_new(_("Choose a running Glom database"), GTK_WINDOW(gobj()),
-        GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-        GTK_STOCK_CONNECT, GTK_RESPONSE_ACCEPT,
-        NULL));
-
-      //Browse for the same service type as advertized in Glom::ConnectionPool:
-      gchar* service_type = epc_service_type_new (EPC_PROTOCOL_HTTPS, "glom");
-      aui_service_dialog_set_browse_service_types(dialog, service_type, NULL);
-      g_free(service_type);
-      service_type = NULL;
-
-      //This is not needed because the type column is hidden when there is just one type:
-      //aui_service_dialog_set_service_type_name(AUI_SERVICE_DIALOG (dialog), service_type, "Glom");
-
-      const int response = gtk_dialog_run(GTK_DIALOG(dialog));
-      if(response == GTK_RESPONSE_ACCEPT)
-      {
-        //Tell the caller that a networked document should be used instead:
-        browsed = true;
-
-        browsed_server = epc_service_info_new(
-          aui_service_dialog_get_service_type(dialog),
-          aui_service_dialog_get_host_name(dialog),
-          aui_service_dialog_get_port(dialog),
-          aui_service_dialog_get_txt_data(dialog) );
-              
-        const gchar *service_name = aui_service_dialog_get_service_name(dialog);
-        browsed_service_name = service_name ? service_name : Glib::ustring();
-      }
-
-      gtk_widget_destroy(GTK_WIDGET(dialog));
-      dialog = NULL;
-    }
-    else
-    {
-      return fileChooser_Open.get_uri();
-    }
-  }
-
-  return Glib::ustring();
-}
-#endif // !G_OS_WIN32
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) //override
 {
@@ -2296,17 +2183,6 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
   while(try_again)
   {
     try_again = false;
-
-    //Work around bug #330680 "GtkFileChooserDialog is too small when shown a second time.":
-    //(Commented-out because the workaround doesn't work)
-    /*
-    if(tried_once_already)
-    {
-      fileChooser_Save->set_default_size(-1, 600); 
-    }
-    else
-      tried_once_already = true;
-    */
 
     const int response_id = fileChooser_Save->run();
     fileChooser_Save->hide();
