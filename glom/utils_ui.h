@@ -66,6 +66,8 @@ Glib::ustring bold_message(const Glib::ustring& message);
 
 Glib::RefPtr<Gdk::Pixbuf> get_pixbuf_for_gda_value(const Gnome::Gda::Value& value);
 
+int get_suitable_field_width_for_widget(Gtk::Widget& widget, const sharedptr<const LayoutItem_Field>& field_layout);
+
 } //namespace Utils
 
 } //namespace Glom
