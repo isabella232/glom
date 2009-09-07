@@ -78,8 +78,10 @@ public:
   void fill_menu_reports(const Glib::ustring& table_name);
   void fill_menu_print_layouts(const Glib::ustring& table_name);
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   void do_menu_developer_fields(Gtk::Window& parent, const Glib::ustring table_name);
   void do_menu_developer_relationships(Gtk::Window& parent, const Glib::ustring table_name);
+#endif //GLOM_ENABLE_CLIENT_ONLY
 
   ///Whether to show the generated SQL queries on stdout, for debugging.
   bool get_show_sql_debug() const;
@@ -94,17 +96,22 @@ protected:
 
 private:
   virtual void init_layout(); //override.
-  virtual void init_menus_file(); //override.
   virtual void init_menus(); //override.
-  virtual void init_menus_help(); //override
   virtual void init_toolbars(); //override
   virtual void init_create_document(); //override
   virtual bool on_document_load(); //override.
   virtual void on_document_close(); //override.
 
+#ifndef GLOM_ENABLE_MAEMO
+  virtual void init_menus_file(); //override.
+  virtual void init_menus_help(); //override
+#endif //GLOM_ENABLE_MAEMO
+
   bool offer_new_or_existing();
 
+#ifndef GLOM_ENABLE_MAEMO
   void on_menu_help_contents();
+#endif //GLOM_ENABLE_MAEMO
 
   /** Check that the file's hosting mode is supported by this build and 
    * tell the user if necessary.
