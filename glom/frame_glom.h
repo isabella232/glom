@@ -178,6 +178,8 @@ public:
   ///Whether we are viewing the details or list.
   bool get_viewing_details() const;
 
+  Glib::ustring get_shown_table_name() const;
+
 protected:
 
   

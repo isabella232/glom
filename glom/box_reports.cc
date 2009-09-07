@@ -200,7 +200,7 @@ void Box_Reports::save_to_document()
      get_document()->set_modified(true);
   }
 }
-#endif GLOM_ENABLE_CLIENT_ONLY
+#endif //GLOM_ENABLE_CLIENT_ONLY
 
 void Box_Reports::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint column)
 {

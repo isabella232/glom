@@ -21,10 +21,23 @@
 #ifndef HEADER_APP_GLOM
 #define HEADER_APP_GLOM
 
+#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
+
+//TODO: Remove this when maemomm's gtkmm has been updated. 7th September 2009.
+#ifdef GLOM_ENABLE_MAEMO
+//Because earlier versions of gtkmm/enums.h did not include this, so  
+//GTKMM_MAEMO_EXTENSIONS_ENABLED was not defined, 
+//leading to a compiler error in hildonmm/button.h
+#include <gtkmmconfig.h>
+#include <gtkmm/enums.h>
+
+#include <hildonmm/app-menu.h>
+#include <hildonmm/button.h>
+#endif //GLOM_ENABLE_MAEMO
+
 #include <glom/bakery/app_withdoc_gtk.h>
 #include <glom/frame_glom.h>
 
-#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 
 //Avoid including the header here:
@@ -101,6 +114,7 @@ private:
   virtual void init_create_document(); //override
   virtual bool on_document_load(); //override.
   virtual void on_document_close(); //override.
+  virtual void update_window_title(); //override.
 
 #ifndef GLOM_ENABLE_MAEMO
   virtual void init_menus_file(); //override.
@@ -180,6 +194,11 @@ private:
   Glib::RefPtr<Gtk::RadioAction> m_action_menu_userlevel_developer, m_action_menu_userlevel_operator;
   Glib::RefPtr<Gtk::ToggleAction> m_action_show_layout_toolbar;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+
+#ifdef GLOM_ENABLE_MAEMO
+  Hildon::AppMenu m_maemo_appmenu;
+  Hildon::Button m_appmenu_button_table;
+#endif //GLOM_ENABLE_MAEMO
 
   Glib::RefPtr<Gtk::ToggleAction> m_toggleaction_network_shared;
   sigc::connection m_connection_toggleaction_network_shared;

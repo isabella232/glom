@@ -42,7 +42,8 @@
 #include <glibmm/i18n.h>
 
 #ifdef GLOM_ENABLE_MAEMO
-#include <hildon/hildon-window.h>
+#include <hildon/hildon.h>
+#include <hildonmm/program.h>
 #include <hildon-fmmm.h>
 #endif // GLOM_ENABLE_MAEMO
 
@@ -60,28 +61,6 @@
 
 #include <gtk/gtkuimanager.h>
 
-#ifdef GLOM_ENABLE_MAEMO
-namespace //anonymous namespace
-{
-
-HildonWindow* turn_gtk_window_into_hildon_window(GtkWindow* cobject)
-{
-  GtkWidget* child = cobject->bin.child;
-  g_assert(child);
-
-  g_object_ref(G_OBJECT(child));
-  gtk_container_remove(GTK_CONTAINER(cobject), child);
-
-  GtkWidget* window = hildon_window_new();
-  gtk_container_add(GTK_CONTAINER(window), child);
-  g_object_unref(G_OBJECT(child));
-
-  gtk_widget_destroy(GTK_WIDGET(cobject));
-  return HILDON_WINDOW(window);
-}
-
-} //anonymous namespace
-#endif // GLOM_ENABLE_MAEMO
 
 namespace Glom
 {
@@ -108,7 +87,7 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& bu
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_show_sql_debug(false)
 {
-  // TODO: Wrap missing method in gtkmm
+  // TODO: Use the C++ method when we can use gtkmm 2.18:
   gtk_window_set_icon_name(GTK_WINDOW(gobj()), "glom");
 
   //Load widgets from glade file:
@@ -227,10 +206,7 @@ void App_Glom::init_layout()
 
   //Add menu bar at the top:
   //These were defined in init_uimanager().
-#ifdef GLOM_ENABLE_MAEMO
-  //TODO: Use Hildon::AppMenu: Gtk::Menu* pMenu = static_cast<Gtk::Menu*>(m_refUIManager->get_widget("/Bakery_MainMenu"));
-  //set_menu(*pMenu);
-#else
+#ifndef GLOM_ENABLE_MAEMO //Maemo uses Hildon::AppMenu instead.
   Gtk::MenuBar* pMenuBar = static_cast<Gtk::MenuBar*>(m_refUIManager->get_widget("/Bakery_MainMenu"));
   m_pBoxTop->pack_start(*pMenuBar, Gtk::PACK_SHRINK);
 #endif
@@ -368,6 +344,13 @@ void App_Glom::init_menus_file()
 void App_Glom::init_menus()
 {
   //There is no real menu on Maemo. We use HildonAppMenu instead.
+
+  m_appmenu_button_table.show();
+  m_appmenu_button_table.set_title(_("Table"));
+  m_maemo_appmenu.append(m_appmenu_button_table);
+
+  //set_app_menu(*appmenu); //TODO: Use this instead?
+  Hildon::Program::get_instance()->set_common_app_menu(m_maemo_appmenu);
 }
 #else
 void App_Glom::init_menus()
@@ -2110,9 +2093,7 @@ void App_Glom::on_menu_file_save_as_example()
     cancel_close_or_exit();
   }
 }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) //override
 {
   //Reimplement this whole function, just so we can use our custom FileChooserDialog class:
@@ -2165,10 +2146,7 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
       m_ui_save_extra_newdb_title = Utils::title_from_string( filename ); //Start with something suitable.
 
     fileChooser_SaveExtras->set_extra_newdb_title(m_ui_save_extra_newdb_title); 
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
     fileChooser_SaveExtras->set_extra_newdb_hosting_mode(m_ui_save_extra_newdb_hosting_mode);
-#endif // !GLOM_ENABLE_CLIENT_ONLY
   }
 
 
@@ -2449,14 +2427,55 @@ void App_Glom::do_menu_developer_relationships(Gtk::Window& parent, const Glib::
 {
   m_pFrame->do_menu_developer_relationships(parent, table_name);
 }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 Document* App_Glom::on_connection_pool_get_document()
 {
   return dynamic_cast<Document*>(get_document());
 }
-#endif
+#endif //GLOM_ENABLE_CLIENT_ONLY
+
+//overriden to show the current table name in the window's title:
+void App_Glom::update_window_title()
+{
+  //Set application's main window title:
+
+  Document* document = dynamic_cast<Document*>(get_document());
+  if(!document)
+    return;
+
+  if(!m_pFrame)
+    return;
+
+  //Show the table title:
+  const Glib::ustring table_name = m_pFrame->get_shown_table_name();
+  Glib::ustring table_label = document->get_table_title(table_name);
+  if(!table_label.empty())
+  {
+    #ifndef GLOM_ENABLE_CLIENT_ONLY
+    if(document->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+      table_label += " (" + table_name + ")"; //Show the table name as well, if in developer mode.
+    #endif // GLOM_ENABLE_CLIENT_ONLY
+  }
+  else //Use the table name if there is no table title.
+    table_label = table_name;
+
+  Glib::ustring strTitle = document->get_name() + ": " + table_label;
+
+  #ifndef GLOM_ENABLE_CLIENT_ONLY
+  //Indicate unsaved changes:
+  if(document->get_modified())
+    strTitle += " *";
+
+  //Indicate read-only files:
+  if(document->get_read_only())
+    strTitle += _(" (read-only)");
+  #endif //GLOM_ENABLE_CLIENT_ONLY
+
+  strTitle +=  " - " + m_strAppName;
+
+  set_title(strTitle);
+}
+
 
 
 } //namespace Glom

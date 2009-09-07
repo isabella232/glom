@@ -56,6 +56,7 @@ class App_WithDoc_Gtk
 #ifdef GLOM_ENABLE_MAEMO
     public Hildon::Window //inherit virtually to share sigc::trackable.
 #else
+    thisshouldneverbecompiled
     public Gtk::Window //inherit virtually to share sigc::trackable.
 #endif
 {
@@ -63,6 +64,7 @@ public:
 #ifdef GLOM_ENABLE_MAEMO
   typedef Hildon::Window ParentWindow;
 #else
+  breakifthishappens
   typedef Gtk::Window ParentWindow;
 #endif
 

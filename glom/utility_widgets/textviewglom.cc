@@ -108,16 +108,14 @@ void TextViewGlom::check_for_change()
   }
 }
 
-
+#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 bool TextViewGlom::on_textview_focus_out_event(GdkEventFocus* event)
 {
-  // TODO: Does the call below make sense even when compiled with
-  // default signal handlers? This function is a normal signal handler in
-  // any case.
-#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   //Call base class:
   bool result = Gtk::ScrolledWindow::on_focus_out_event(event);
 #else
+bool TextViewGlom::on_textview_focus_out_event(GdkEventFocus* /* event */)
+{
   bool result = false;
 #endif
 

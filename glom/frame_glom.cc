@@ -1457,30 +1457,32 @@ void Frame_Glom::on_userlevel_changed(AppState::userlevels userlevel)
 
 void Frame_Glom::show_table_title()
 {
-  if(get_document())
+  Document* document = dynamic_cast<Document*>(get_document());
+  if(!document)
+    return;
+
+  //Show the table title:
+  Glib::ustring table_label = document->get_table_title(m_table_name);
+  if(!table_label.empty())
   {
-    //Show the table title:
-    Glib::ustring table_label = get_document()->get_table_title(m_table_name);
-    if(!table_label.empty())
-    {
-      Document* document = dynamic_cast<Document*>(get_document());
-      if(document)
-      {
-        if(document->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
-          table_label += " (" + m_table_name + ")"; //Show the table name as well, if in developer mode.
-      }
-    }
-    else //Use the table name if there is no table title.
-      table_label = m_table_name;
+    if(document->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+      table_label += " (" + m_table_name + ")"; //Show the table name as well, if in developer mode.
+  }
+  else //Use the table name if there is no table title.
+    table_label = m_table_name;
 
 #ifdef GLOM_ENABLE_MAEMO
-    // xx-large is too large on maemo, taking away too much (vertical)
-    // screen estate
-    m_pLabel_Table->set_markup("<b>" + table_label + "</b>");
+  //Show the system's human-readable title and the table title in 
+  //the window's title bar:
+  Gtk::Window* app = get_app_window();
+  if(app)
+    app->set_title(document->get_name() + ": " + table_label);
+
+  // xx-large is too large on maemo, using far too much (vertical) space.
+  // We hide this anyway: m_pLabel_Table->set_markup("<b>" + table_label + "</b>");
 #else
-    m_pLabel_Table->set_markup("<b><span size=\"xx-large\">" + table_label + "</span></b>"); //Show the table title in large text, because it's very important to the user.
+  m_pLabel_Table->set_markup("<b><span size=\"xx-large\">" + table_label + "</span></b>"); //Show the table title in large text, because it's very important to the user.
 #endif
-  }
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -2836,6 +2838,11 @@ void Frame_Glom::on_button_find_all()
 bool Frame_Glom::get_viewing_details() const
 {
   return (m_Notebook_Data.get_current_view() == Notebook_Data::DATA_VIEW_Details);
+}
+
+Glib::ustring Frame_Glom::get_shown_table_name() const
+{
+  return m_table_name;
 }
 
 } //namespace Glom
