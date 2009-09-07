@@ -771,11 +771,9 @@ Base_DB::type_vec_fields Base_DB::get_fields_for_table_from_database(const Glib:
         field->set_field_info(field_info);
         
 
-        //Get whether it is a primary key:
-#ifndef GLOM_ENABLE_MAEMO // TODO        
+        //Get whether it is a primary key:      
         field->set_primary_key( 
-          meta_table_column_is_primary_key(meta_table, field_info->get_name()) );
-#endif          
+          meta_table_column_is_primary_key(meta_table, field_info->get_name()) );         
   
         
 #if 0 // This was with libgda-3.0:

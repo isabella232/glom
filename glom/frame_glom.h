@@ -68,7 +68,10 @@ public:
 
   void set_databases_selected(const Glib::ustring& strName);
 
+#ifndef GLOM_ENABLE_MAEMO
   void on_box_tables_selected(const Glib::ustring& strName);
+#endif
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void on_box_reports_selected(const Glib::ustring& strName);
   void on_box_print_layouts_selected(const Glib::ustring& strName);
@@ -250,6 +253,7 @@ protected:
 
   //Child widgets:
   Gtk::Label* m_pLabel_Table;
+  Gtk::HBox* m_box_header;
   Gtk::HBox* m_box_footer;
   Gtk::Label* m_pLabel_Mode;
   Gtk::Label* m_pLabel_userlevel;
@@ -265,13 +269,14 @@ protected:
 
   PlaceHolder* m_pBox_Mode; //Contains e.g. design mode notebook.
 
+#ifndef GLOM_ENABLE_MAEMO
+  //Navigation:
   Box_Tables* m_pBox_Tables;
+  Dialog_Glom* m_pDialog_Tables;
+#endif //GLOM_ENABLE_MAEMO
 
   Notebook_Data m_Notebook_Data;
   Notebook_Find m_Notebook_Find;
-
-  //Navigation:
-  Dialog_Glom* m_pDialog_Tables;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Developer:

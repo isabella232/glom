@@ -178,7 +178,7 @@ bool Box_Data::confirm_discard_unstored_data() const
 {
   if(get_unstored_data())
   {
-    Glib::ustring message = _("This data cannot be stored in the database because you have not provided a primary key.\nDo you really want to discard this data?");
+    const Glib::ustring message = _("This data cannot be stored in the database because you have not provided a primary key.\nDo you really want to discard this data?");
     //Ask user to confirm loss of data:
 #ifdef GLOM_ENABLE_MAEMO
     //Hildon::Note dialog(Hildon::NOTE_TYPE_CONFIRMATION, *get_app_window(), message);
