@@ -112,7 +112,7 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& bu
 
 App_Glom::~App_Glom()
 {
-#ifndef GLOM_ENABLE_CLIENT_ONLY
+  #ifndef GLOM_ENABLE_CLIENT_ONLY
   if(m_window_translations)
   {
     m_pFrame->remove_view(m_window_translations);
@@ -124,7 +124,11 @@ App_Glom::~App_Glom()
     delete m_avahi_progress_dialog;
     m_avahi_progress_dialog = 0;
   }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
+  #endif // !GLOM_ENABLE_CLIENT_ONLY
+
+  #ifdef GLOM_ENABLE_MAEMO
+  m_pFrame->remove_view(&m_appmenu_button_table);
+  #endif
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -341,12 +345,24 @@ void App_Glom::init_menus_file()
 #endif //GLOM_ENABLE_MAEMO
 
 #ifdef GLOM_ENABLE_MAEMO
+void App_Glom::on_appmenu_button_table_value_changed()
+{
+  const Glib::ustring table_name = m_appmenu_button_table.get_table_name();
+  if(m_pFrame)
+    m_pFrame->on_box_tables_selected(table_name);
+}
+
+#endif //GLOM_ENABLE_MAEMO
+
+#ifdef GLOM_ENABLE_MAEMO
 void App_Glom::init_menus()
 {
   //There is no real menu on Maemo. We use HildonAppMenu instead.
 
+  m_pFrame->add_view(&m_appmenu_button_table);
   m_appmenu_button_table.show();
-  m_appmenu_button_table.set_title(_("Table"));
+  m_appmenu_button_table.signal_value_changed().connect(
+    sigc::mem_fun(*this, &App_Glom::on_appmenu_button_table_value_changed) );
   m_maemo_appmenu.append(m_appmenu_button_table);
 
   //set_app_menu(*appmenu); //TODO: Use this instead?
@@ -1691,7 +1707,7 @@ void App_Glom::remove_developer_action(const Glib::RefPtr<Gtk::Action>& refActio
 #ifdef GLOM_ENABLE_MAEMO
 void App_Glom::fill_menu_tables()
 {
-  //TODO: Change the Hildon::AppMenu.
+  m_appmenu_button_table.fill_from_database();
 }
 #else
 void App_Glom::fill_menu_tables()
@@ -2060,7 +2076,7 @@ void App_Glom::on_menu_file_save_as_example()
 
       document->set_allow_autosave(true);
 
-      bool bTest  = document->save();
+      bool bTest = document->save();
 
       if(!bTest)
       {
@@ -2434,7 +2450,7 @@ Document* App_Glom::on_connection_pool_get_document()
 }
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
-//overriden to show the current table name in the window's title:
+//overridden to show the current table name in the window's title:
 void App_Glom::update_window_title()
 {
   //Set application's main window title:

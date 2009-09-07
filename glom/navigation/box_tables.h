@@ -42,9 +42,9 @@ public:
   virtual ~Box_Tables();
 
 private:
-  virtual bool fill_from_database(); //override
+  bool fill_from_database(); //override
 
-  virtual void fill_table_row(const Gtk::TreeModel::iterator& iter, const sharedptr<const TableInfo>& table_info);
+  void fill_table_row(const Gtk::TreeModel::iterator& iter, const sharedptr<const TableInfo>& table_info);
 
   //Signal handlers:
 #ifndef GLOM_ENABLE_CLIENT_ONLY

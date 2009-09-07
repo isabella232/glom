@@ -32,7 +32,7 @@
 #include <gtkmm/enums.h>
 
 #include <hildonmm/app-menu.h>
-#include <hildonmm/button.h>
+#include <glom/navigation/maemo/pickerbutton_table.h>
 #endif //GLOM_ENABLE_MAEMO
 
 #include <glom/bakery/app_withdoc_gtk.h>
@@ -197,7 +197,9 @@ private:
 
 #ifdef GLOM_ENABLE_MAEMO
   Hildon::AppMenu m_maemo_appmenu;
-  Hildon::Button m_appmenu_button_table;
+  PickerButton_Table m_appmenu_button_table;
+
+  void on_appmenu_button_table_value_changed();
 #endif //GLOM_ENABLE_MAEMO
 
   Glib::RefPtr<Gtk::ToggleAction> m_toggleaction_network_shared;

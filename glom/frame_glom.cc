@@ -271,15 +271,15 @@ void Frame_Glom::set_databases_selected(const Glib::ustring& strName)
   do_menu_Navigate_Table(true /* open default */);
 }
 
-#ifndef GLOM_ENABLE_MAEMO
 void Frame_Glom::on_box_tables_selected(const Glib::ustring& strName)
 {
+#ifndef GLOM_ENABLE_MAEMO
   if(m_pDialog_Tables)
     m_pDialog_Tables->hide();
+#endif //GLOM_ENABLE_MAEMO
 
   show_table(strName);
 }
-#endif //GLOM_ENABLE_MAEMO
 
 void Frame_Glom::set_mode_widget(Gtk::Widget& widget)
 {

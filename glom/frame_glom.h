@@ -29,7 +29,11 @@
 #include <libglom/document/document.h>
 
 #include "dialog_glom.h"
+
+#ifndef GLOM_ENABLE_MAEMO
 #include "navigation/box_tables.h"
+#endif
+
 #include "mode_data/notebook_data.h"
 #include "mode_find/notebook_find.h"
 
@@ -68,9 +72,7 @@ public:
 
   void set_databases_selected(const Glib::ustring& strName);
 
-#ifndef GLOM_ENABLE_MAEMO
   void on_box_tables_selected(const Glib::ustring& strName);
-#endif
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void on_box_reports_selected(const Glib::ustring& strName);
