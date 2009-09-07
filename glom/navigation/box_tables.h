@@ -46,10 +46,10 @@ private:
 
   virtual void fill_table_row(const Gtk::TreeModel::iterator& iter, const sharedptr<const TableInfo>& table_info);
 
-  virtual void save_to_document();
-
   //Signal handlers:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+  virtual void save_to_document();
+
   void on_adddel_Add(const Gtk::TreeModel::iterator& row);
   void on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator& rowEnd);
   void on_adddel_changed(const Gtk::TreeModel::iterator& row, guint column);

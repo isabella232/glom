@@ -431,6 +431,7 @@ void Box_Tables::on_adddel_Edit(const Gtk::TreeModel::iterator& row)
   }
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void Box_Tables::save_to_document()
 {
   if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
@@ -464,6 +465,7 @@ void Box_Tables::save_to_document()
       document->set_tables(listTables); //TODO: Don't save all new tables - just the ones already in the document.
   }
 }
+#endif //GLOM_ENABLE_CLIENT_ONLY
 
 void Box_Tables::on_show_hidden_toggled()
 {
