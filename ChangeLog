@@ -1,3 +1,8 @@
+2009-09-07  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc:
+	* glom/frame_glom.cc: Fix tiny typos to fix the non-maemo build.
+
 2009-09-05  Murray Cumming  <murrayc@murrayc.com>
 
 	connection_request_password_and_attempt(): Fix a crash in client-only mode.
