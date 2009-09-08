@@ -297,22 +297,6 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
       Glib::RefPtr<Gnome::Gda::Statement> stmt = parser->parse_string(sql_query);
       //Specify the STATEMENT_MODEL_CURSOR, so that libgda only gets the rows that we actually use.
       m_gda_datamodel = m_connection->get_gda_connection()->statement_execute_select(stmt, Gnome::Gda::STATEMENT_MODEL_CURSOR_FORWARD);
-
-      // Use a DataAccessWrapper to allow random access. This is necessary
-      // since we use move_to_row() on a created iterator in
-      // fill_values_if_necessary(), which does not work if the iterator
-      // does not support it (for example the one for Sqlite recordsets does
-      // not). The alternative would be to acquire a random-access model
-      // directly here for SQLite, but this would
-      // a) make this code dependent on the database backend used.
-      // b) fetch rows we perhaps don't need, if only the first few rows of
-      // a table are accessed.
-      // TODO_Performance: The unnecessary (for PostgreSQL) extra indirection might theoretically make this slower.
-      m_gda_datamodel = Gnome::Gda::DataAccessWrapper::create(m_gda_datamodel);
-
-      if(app && app->get_show_sql_debug())
-        std::cout << "  Debug: DbTreeModel::refresh_from_database(): The query execution has finished." << std::endl;
-
       //Examine the columns in the returned DataModel:
       /*
       for(int col = 0; col < m_gda_datamodel->get_n_columns(); ++col)
@@ -342,6 +326,9 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
     }
 #endif //GLIBMM_EXCEPTIONS_ENABLED
 
+    if(app && app->get_show_sql_debug())
+      std::cout << "  Debug: DbTreeModel::refresh_from_database(): The query execution has finished." << std::endl;
+
     if(!m_gda_datamodel)
     {
       m_data_model_rows_count = 0;
@@ -353,6 +340,18 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
     }
     else
     {
+      // Use a DataAccessWrapper to allow random access. This is necessary
+      // since we use move_to_row() on a created iterator in
+      // fill_values_if_necessary(), which does not work if the iterator
+      // does not support it (for example the one for Sqlite recordsets does
+      // not). The alternative would be to acquire a random-access model
+      // directly here for SQLite, but this would
+      // a) make this code dependent on the database backend used.
+      // b) fetch rows we perhaps don't need, if only the first few rows of
+      // a table are accessed.
+      // TODO_Performance: The unnecessary (for PostgreSQL) extra indirection might theoretically make this slower.
+      m_gda_datamodel = Gnome::Gda::DataAccessWrapper::create(m_gda_datamodel);
+
       //This doesn't work with cursor-based models: const int count = m_gda_datamodel->get_n_rows();
       //because rows count is -1 until we have iterated to the last row.
       const Glib::ustring sql_query_without_sort = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_column_fields, m_found_set.m_where_clause, m_found_set.m_extra_join, type_sort_clause(), m_found_set.m_extra_group_by);
