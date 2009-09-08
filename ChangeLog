@@ -1,3 +1,14 @@
+2009-09-08  Johannes Schmid <jschmid@openismus.com>
+
+	 Bug 594357 -  Maemo: sqlite behaves strange
+
+	 * glom/utility_widgets/db_addel/glom_db_treemodel.cc:
+	 DbTreeModel::create():
+	 Create the correct DataAccessWrapper in both codepaths and not only
+	 in the exception code path. That makes no difference for postgres but
+	 is needed for sqlite.
+
+
 2009-09-07  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/box_reports.[h|cc]:
