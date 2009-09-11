@@ -1,3 +1,16 @@
+2009-09-11  Michael Hasselmann <michaelh@openismus.com>
+
+	Refactoring Glom::Dialog_Import_CSV: first parser tests created
+
+	* Makefile_tests.am, tests/import.sh,
+	tests/import/test_parsing.cc: The first tests for the CsvParser
+	are ready. Basic input is tested but no real world examples yet. Run with 'make
+	check TESTS=tests/import.sh' to run tests with valgrind.
+
+	Renamed regression_tests folder to tests
+
+	* tests, Makefile_tests.am: Changed paths accordingly.
+
 2009-09-09  Michael Hasselmann <michaelh@openismus.com>
 
 	Refactoring Glom::Dialog_Import_CSV

@@ -22,13 +22,16 @@ check_PROGRAMS =						\
 	glom/utility_widgets/test_flowtable			\
 	glom/utility_widgets/egg/toolpalette/testtoolpalette	\
 	glom/test_pyembed					\
-	regression_tests/test_parsing_time			\
-	regression_tests/test_signal_reemit			\
-	regression_tests/test_load_python_library
+	tests/test_parsing_time			\
+	tests/test_signal_reemit			\
+	tests/test_load_python_library\
+	tests/import/test_parsing
 
-TESTS =	regression_tests/test_parsing_time	\
-	regression_tests/test_signal_reemit	\
-	regression_tests/test_load_python_library
+TESTS =	tests/test_parsing_time	\
+	tests/test_signal_reemit	\
+	tests/test_load_python_library\
+	tests/import/test_parsing\
+	tests/import.sh
 
 tests_ldadd = glom/libglom/libglom-$(GLOM_ABI_VERSION).la $(LIBGLOM_LIBS)
 
@@ -36,9 +39,13 @@ glom_libglom_test_connectionpool_SOURCES = glom/libglom/test_connectionpool.cc
 glom_libglom_test_document_SOURCES = glom/libglom/test_document.cc
 glom_libglom_test_sharedptr_layoutitem_SOURCES = glom/libglom/test_sharedptr_layoutitem.cc
 glom_test_pyembed_SOURCES = glom/test_pyembed.cc
-regression_tests_test_parsing_time_SOURCES = regression_tests/test_parsing_time.cc
-regression_tests_test_signal_reemit_SOURCES = regression_tests/test_signal_reemit.cc
-regression_tests_test_load_python_library_SOURCES = regression_tests/test_load_python_library.cc
+tests_test_parsing_time_SOURCES = tests/test_parsing_time.cc
+tests_test_signal_reemit_SOURCES = tests/test_signal_reemit.cc
+tests_test_load_python_library_SOURCES = tests/test_load_python_library.cc
+tests_import_test_parsing_SOURCES =	\
+	glom/import_csv.cc	\
+	glom/import_csv.h	\
+	tests/import/test_parsing.cc
 
 glom_libglom_test_connectionpool_LDADD = $(tests_ldadd)
 glom_libglom_test_document_LDADD = $(tests_ldadd)
@@ -60,6 +67,7 @@ glom_utility_widgets_egg_toolpalette_testtoolpalette_LDADD =	\
 
 glom_test_pyembed_LDADD = $(LIBGLOM_LIBS) $(PYTHON_LIBS)
 
-regression_tests_test_parsing_time_LDADD = $(tests_ldadd)
-regression_tests_test_signal_reemit_LDADD = $(LIBGLOM_LIBS)
-regression_tests_test_load_python_library_LDADD = $(LIBGLOM_LIBS)
+tests_test_parsing_time_LDADD = $(tests_ldadd)
+tests_test_signal_reemit_LDADD = $(LIBGLOM_LIBS)
+tests_test_load_python_library_LDADD = $(LIBGLOM_LIBS)
+tests_import_test_parsing_LDADD = $(LIBGLOM_LIBS)
