@@ -1,3 +1,11 @@
+2009-09-14  Murray Cumming  <murrayc@murrayc.com>
+
+	Main Window: Correct (again) the order of Records/Found widgets.
+
+	* glom/glom.glade: main_window: Put the Records:/Found: widgets in 
+	sub-hboxes, and change their order by hand in the .glade file because 
+	GtkBuilder and Glade do not seem to interpret the file in the same way.
+
 1.11.2:
 
 2009-09-14  Murray Cumming  <murrayc@murray.com>
