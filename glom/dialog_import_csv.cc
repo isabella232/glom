@@ -430,9 +430,9 @@ void Dialog_Import_CSV::on_stream_read(const Glib::RefPtr<Gio::AsyncResult>& res
 
       // If the parser already exists, but it is currently not parsing because it waits
       // for new input, then continue parsing.
-      if(m_parser.get() && !m_parser->idle_connection.connected())
+      if(m_parser.get() && !m_parser->m_idle_connection.connected())
       {
-        m_parser->idle_connection = Glib::signal_idle().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_idle_parse));
+        m_parser->m_idle_connection = Glib::signal_idle().connect(sigc::mem_fun(*m_parser.get(), &CsvParser::on_idle_parse));
       }
       // If the parser does not exist yet, then create a new parser, except when the
       // current encoding does not work for the file ,in which case the user must first
