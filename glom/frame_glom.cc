@@ -2426,7 +2426,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
         }
         catch(const ExceptionConnection& ex)
         {
-          if(!handle_request_password_connection_error(true, ex, database_not_found));
+          if(!handle_request_password_connection_error(true, ex, database_not_found))
             return false;
         }
         #else //GLIBMM_EXCEPTIONS_ENABLED

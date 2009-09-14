@@ -1,3 +1,11 @@
+1.11.2:
+
+2009-09-14  Murray Cumming  <murrayc@murray.com>
+
+	* glom/frame_glom.cc:
+	* glom/utility_widgets/flowtable.cc: Fixed warnings-as-errors build 
+	problems with the latest gtkmm.
+
 2009-09-09  Michael Hasselmann <michaelh@openismus.com>
 
 	Refactoring Glom::Dialog_Import_CSV
@@ -10,6 +18,7 @@
 	allow the Dialog_Import_CSV class to parse a scanned line into its tree model
 	the parser emits a lineScanned signal, with the currently scanned line as
 	parameter.
+	Bug #588233.
 
 2009-09-08  Johannes Schmid <jschmid@openismus.com>
 
