@@ -1,5 +1,12 @@
 2009-09-17  Johannes Schmid  <jschmid@openismus.com>
 
+	* glom/application.cc: offer_new_or_existing():
+	Replace a TODO comment with g_assert_val_if_reached() because
+	reaching this branch would mean that the dialog returned
+	an unhandled response.
+
+2009-09-17  Johannes Schmid  <jschmid@openismus.com>
+
 	* regression_tests/test_python_module.cc:
 	* Makefile_tests.am:
 	Added a regression test for the loading of the python modules.

@@ -1356,7 +1356,8 @@ bool App_Glom::offer_new_or_existing()
     }
     else
     {
-      //Do nothing. TODO: Do something?
+      // This would mean that we got a unhandled response from the dialog
+      g_return_val_if_reached(false);
     }
   }
 
