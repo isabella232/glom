@@ -230,7 +230,7 @@ bool check_pyglom_is_available_with_warning()
 
 bool check_pygda_is_available_with_warning()
 {
-  if(glom_python_module_is_available())
+  if(gda_python_module_is_available())
     return true;
 
    /* The python module could not be imported by Glom, so warn the user: */

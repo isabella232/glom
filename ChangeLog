@@ -1,3 +1,10 @@
+2009-09-17  Johannes Schmid  <jschmid@openismus.com>
+
+	* glom/main.cc:
+	Really check if pygda module is available. A typo caused
+	the check for the glom module twice while the gda module
+	wasn't checked at all
+
 2009-09-14  Johannes Schmid  <jschmid@openismus.com>
 
 	* glom/dialog_import_csv.cc:
