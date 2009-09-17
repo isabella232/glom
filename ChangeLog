@@ -1,3 +1,23 @@
+2009-09-17  Michael Hasselmann <michaelh@openismus.com>
+
+Refactoring Dialog_Import_CSV: created testcase for the CsvParser's signal emission
+	
+	* Makefile_tests.am: all tests now run within valgrind by default since mem
+	leaks in testcases are potential mem leaks in the application. Parameters might
+	need tweaking.
+	
+	* glom/import_csv.cc (CsvParser::on_idle_parse): Fixed a missing negation in a
+	conditional, which was wrongfully leading to signal emissions. Found by the
+	import signals testcase.
+	
+	* test/import/test_parsing.cc: Fixed a null byte issue when setting the raw
+	contents of the parser.
+	
+	* test/import/test_signals.cc: This testcase checks the CsvParser's signal
+	emission on varying input. The basic idea was to have on testcase for each
+	code path that leads to a signal emission in glom/import_csv.cc, even if that
+	leads to overlapping code coverage tests with the parser testcase.
+
 2009-09-17  Johannes Schmid  <jschmid@openismus.com>
 
 	* Makefile_libglom.am: Don't link libglom
@@ -45,6 +65,19 @@
 	* glom/frame_glom.cc:
 	* glom/utility_widgets/flowtable.cc: Fixed warnings-as-errors build 
 	problems with the latest gtkmm.
+
+2009-09-11  Michael Hasselmann <michaelh@openismus.com>
+
+	Refactoring Glom::Dialog_Import_CSV: first parser tests created
+
+	* Makefile_tests.am, tests/import.sh,
+	tests/import/test_parsing.cc: The first tests for the CsvParser
+	are ready. Basic input is tested but no real world examples yet. Run with 'make
+	check TESTS=tests/import.sh' to run tests with valgrind.
+
+	Renamed regression_tests folder to tests
+
+	* tests, Makefile_tests.am: Changed paths accordingly.
 
 2009-09-09  Michael Hasselmann <michaelh@openismus.com>
 
