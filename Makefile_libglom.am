@@ -164,8 +164,4 @@ glom_libglom_libglom_1_12_la_SOURCES +=				\
 
 glom_libglom_libglom_1_12_la_LIBADD = $(LIBGLOM_LIBS) $(PYTHON_LIBS)
 
-if GLOM_ENABLE_MAEMO
-glom_libglom_libglom_1_12_la_LDFLAGS = -no-undefined -static
-else
 glom_libglom_libglom_1_12_la_LDFLAGS = -no-undefined
-endif
