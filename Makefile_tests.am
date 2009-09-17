@@ -24,11 +24,13 @@ check_PROGRAMS =						\
 	glom/test_pyembed					\
 	regression_tests/test_parsing_time			\
 	regression_tests/test_signal_reemit			\
-	regression_tests/test_load_python_library
+	regression_tests/test_load_python_library \
+	regression_tests/test_python_module
 
 TESTS =	regression_tests/test_parsing_time	\
 	regression_tests/test_signal_reemit	\
-	regression_tests/test_load_python_library
+	regression_tests/test_load_python_library \
+	regression_tests/test_python_module
 
 tests_ldadd = glom/libglom/libglom-$(GLOM_ABI_VERSION).la $(LIBGLOM_LIBS)
 
@@ -63,3 +65,4 @@ glom_test_pyembed_LDADD = $(LIBGLOM_LIBS) $(PYTHON_LIBS)
 regression_tests_test_parsing_time_LDADD = $(tests_ldadd)
 regression_tests_test_signal_reemit_LDADD = $(LIBGLOM_LIBS)
 regression_tests_test_load_python_library_LDADD = $(LIBGLOM_LIBS)
+regression_tests_test_python_module_LDADD = $(LIBGLOM_LIBS) $(PYTHON_LIBS) glom/libglom/libglom-$(GLOM_ABI_VERSION).la

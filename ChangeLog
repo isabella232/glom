@@ -1,5 +1,13 @@
 2009-09-17  Johannes Schmid  <jschmid@openismus.com>
 
+	* regression_tests/test_python_module.cc:
+	* Makefile_tests.am:
+	Added a regression test for the loading of the python modules.
+	Unfortunately this test doesn't trigger the crash bug that
+	happens on exit() on the maemo platform.
+
+2009-09-17  Johannes Schmid  <jschmid@openismus.com>
+
 	* glom/main.cc:
 	Really check if pygda module is available. A typo caused
 	the check for the glom module twice while the gda module
