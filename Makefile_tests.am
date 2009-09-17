@@ -25,13 +25,17 @@ check_PROGRAMS =						\
 	tests/test_parsing_time			\
 	tests/test_signal_reemit			\
 	tests/test_load_python_library\
-	tests/import/test_parsing
+	tests/import/test_parsing\
+	tests/import/test_signals
 
 TESTS =	tests/test_parsing_time	\
 	tests/test_signal_reemit	\
 	tests/test_load_python_library\
 	tests/import/test_parsing\
+	tests/import/test_signals\
 	tests/import.sh
+
+TESTS_ENVIRONMENT=which valgrind && valgrind --tool=memcheck --leak-check=full --leak-resolution=high --trace-children=yes --num-callers=30
 
 tests_ldadd = glom/libglom/libglom-$(GLOM_ABI_VERSION).la $(LIBGLOM_LIBS)
 
@@ -46,6 +50,10 @@ tests_import_test_parsing_SOURCES =	\
 	glom/import_csv.cc	\
 	glom/import_csv.h	\
 	tests/import/test_parsing.cc
+tests_import_test_signals_SOURCES =	\
+	glom/import_csv.cc	\
+	glom/import_csv.h	\
+	tests/import/test_signals.cc
 
 glom_libglom_test_connectionpool_LDADD = $(tests_ldadd)
 glom_libglom_test_document_LDADD = $(tests_ldadd)
@@ -71,3 +79,4 @@ tests_test_parsing_time_LDADD = $(tests_ldadd)
 tests_test_signal_reemit_LDADD = $(LIBGLOM_LIBS)
 tests_test_load_python_library_LDADD = $(LIBGLOM_LIBS)
 tests_import_test_parsing_LDADD = $(LIBGLOM_LIBS)
+tests_import_test_signals_LDADD = $(LIBGLOM_LIBS)

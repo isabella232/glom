@@ -43,8 +43,8 @@ bool check_tokens(Glib::RefPtr<Glib::Regex> check)
 
 void set_parser_contents(Glom::CsvParser& parser, const char* input, guint size)
 {
-
-  parser.m_raw = std::vector<char>(input, input + size);
+  // Do not read terminating null byte.
+  parser.m_raw = std::vector<char>(input, input + size -1);
 }
 
 void on_line_scanned(const Glib::ustring& line, guint /*line_number*/)

@@ -265,7 +265,7 @@ bool CsvParser::on_idle_parse()
 
       // Found a newline (outside of quotes) that marks the end of the line:
       m_current_line.append(prev_line_end, pos - prev_line_end);
-      ++(m_line_number);
+      ++m_line_number;
 
       if(!m_current_line.empty())
       {
@@ -295,10 +295,10 @@ bool CsvParser::on_idle_parse()
   m_current_line.append(prev, outbuf - prev);
   if(!m_stream && m_raw.size() == m_input_position)
   {
-    ++(m_line_number);
+    ++m_line_number;
 
     // Handle last line, if nonempty
-    if(m_current_line.empty())
+    if(!m_current_line.empty())
     {
       signal_line_scanned().emit(m_current_line, m_line_number);
     }
