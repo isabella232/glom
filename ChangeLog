@@ -1,3 +1,9 @@
+2009-09-18  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.ac: Add a full configure example for maemo in a comment, 
+		to help my memory.
+	* glom/dialog_import_csv.cc: Fix a typo to fix the build on maemo. 
+
 2009-09-18  Murray Cumming  <murrayc@murrayc-desktop>
 
 	CsvParser: Made some API private.

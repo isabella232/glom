@@ -439,7 +439,7 @@ void Dialog_Import_CSV::on_stream_read(const Glib::RefPtr<Gio::AsyncResult>& res
       // If the parser does not exist yet, then create a new parser, except when the
       // current encoding does not work for the file ,in which case the user must first
       // choose another encoding.
-      else if(!m_parser.get() && get_parser_state() != CsvParser::ENCODING_ERROR)
+      else if(!m_parser.get() && get_parser_state() != CsvParser::STATE_ENCODING_ERROR)
       {
         begin_parse();
       }
