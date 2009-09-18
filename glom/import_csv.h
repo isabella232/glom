@@ -43,12 +43,11 @@ public:
 
   ~CsvParser();
 
-  // TODO: prefix enums with STATE_* ?
   enum State {
-    NONE,
-    PARSING,
-    ENCODING_ERROR,
-    PARSED
+    STATE_NONE, 
+    STATE_PARSING,  /**< Parsing is in progress. */
+    STATE_ENCODING_ERROR, /**< An error happened while parsing. */
+    STATE_PARSED /**< Finished parsing. */
   };
 
   static const gunichar DELIMITER = ',';
@@ -57,14 +56,14 @@ public:
   static bool next_char_is_quote(const Glib::ustring::const_iterator& iter, const Glib::ustring::const_iterator& end);
   static Glib::ustring::const_iterator advance_field(const Glib::ustring::const_iterator& iter, const Glib::ustring::const_iterator& end, Glib::ustring& field);
 
-  // Signals
-  typedef sigc::signal<void> SignalEncodingError;
-  SignalEncodingError signal_encoding_error() const;
+  // Signals:
+  typedef sigc::signal<void> type_signal_encoding_error;
+  type_signal_encoding_error signal_encoding_error() const;
 
-  typedef sigc::signal<void, std::string, unsigned int> SignalLineScanned;
-  SignalLineScanned signal_line_scanned() const;
+  typedef sigc::signal<void, std::string, unsigned int> type_signal_line_scanned;
+  type_signal_line_scanned signal_line_scanned() const;
 
-  // Make parser object reusable.
+  /// Make parser object reusable.
   void clear();
 
   // In order to not make the UI feel sluggish during larger imports we parse
@@ -93,8 +92,8 @@ public:
   typedef std::vector<type_row_strings> type_rows;
   type_rows m_rows;
 
-  SignalEncodingError m_encoding_error;
-  SignalLineScanned m_line_scanned;
+  type_signal_encoding_error m_signal_encoding_error;
+  type_signal_line_scanned m_signal_line_scanned;
 };
 
 } //namespace Glom

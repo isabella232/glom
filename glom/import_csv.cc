@@ -57,7 +57,7 @@ CsvParser::CsvParser(const char* encoding)
   m_input_position(0),
   m_idle_connection(),
   m_line_number(0),
-  m_state(NONE),
+  m_state(STATE_NONE),
   m_stream(),
   m_rows()
 {}
@@ -67,14 +67,14 @@ CsvParser::~CsvParser()
   m_idle_connection.disconnect();
 }
 
-CsvParser::SignalEncodingError CsvParser::signal_encoding_error() const
+CsvParser::type_signal_encoding_error CsvParser::signal_encoding_error() const
 {
-  return m_encoding_error;
+  return m_signal_encoding_error;
 }
 
-CsvParser::SignalLineScanned CsvParser::signal_line_scanned() const
+CsvParser::type_signal_line_scanned CsvParser::signal_line_scanned() const
 {
-  return m_line_scanned;
+  return m_signal_line_scanned;
 }
 
 void CsvParser::set_encoding(const char* encoding)
@@ -140,7 +140,7 @@ Glib::ustring::const_iterator CsvParser::advance_field(const Glib::ustring::cons
   }
 
   // TODO: Throw error if still inside a quoted string?
-  std::cout << "debug: field=" << field << std::endl;
+  //std::cout << "debug: field=" << field << std::endl;
   return walk;
 }
 
@@ -155,7 +155,7 @@ void CsvParser::clear()
   // Disconnect signal handlers, too? Nah, I don't think so ...
   //m_idle_connection.disconnect();
   m_line_number = 0;
-  m_state = NONE;
+  m_state = STATE_NONE;
 }
 
 bool CsvParser::on_idle_parse()
@@ -303,8 +303,8 @@ bool CsvParser::on_idle_parse()
       signal_line_scanned().emit(m_current_line, m_line_number);
     }
 
-    // Parsed whole file, done
-    m_state = PARSED;
+    // We have parsed the whole file. We have finished.
+    m_state = STATE_PARSED;
   }
 
   // Continue if there are more bytes to process

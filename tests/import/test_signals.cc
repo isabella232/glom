@@ -8,6 +8,7 @@ namespace {
 
 typedef std::vector<std::string> Encodings;
 
+/// This takes a @a size argument so we can test parsing of null bytes.
 void set_parser_contents(Glom::CsvParser& parser, const char* input, guint size)
 {
   // Do not read terminating null byte.
@@ -156,7 +157,7 @@ int main()
     parser.clear();
   }
 
-  std::cout << results.rdbuf();
+  std::cout << results.rdbuf() << std::endl;
   return (test_ignore_quoted_newlines &&
           test_ignore_empty_lines &&
           test_wrong_encoding &&

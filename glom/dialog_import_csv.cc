@@ -130,7 +130,7 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
   for(guint i = 0; i < N_ENCODINGS; ++ i)
   {
     iter = m_encoding_model->append();
-    if(ENCODINGS[i].name != NULL)
+    if(ENCODINGS[i].name != 0)
     {
       (*iter)[m_encoding_columns.m_col_name] = _(ENCODINGS[i].name);
       (*iter)[m_encoding_columns.m_col_charset] = ENCODINGS[i].charset;
@@ -247,7 +247,7 @@ void Dialog_Import_CSV::import(const Glib::ustring& uri, const Glib::ustring& in
     // Query the display name of the file to set in the title:
     m_file->query_info_async(sigc::mem_fun(*this, &Dialog_Import_CSV::on_query_info), G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME);
 
-    set_parser_state(CsvParser::PARSING);
+    set_parser_state(CsvParser::STATE_PARSING);
   }
 }
 
@@ -289,16 +289,16 @@ void Dialog_Import_CSV::clear()
   m_fields.clear();
   m_file.reset();
   m_filename.clear();
-  m_buffer.reset(NULL);
+  m_buffer.reset(0);
   m_parser->clear();
-  //m_parser.reset(NULL);
+  //m_parser.reset(0);
   m_encoding_info->set_text("");
   m_sample_view->set_sensitive(false);
   m_encoding_combo->set_sensitive(false);
   m_first_line_as_title->set_sensitive(false);
   m_sample_rows->set_sensitive(false);
 
-  set_parser_state(CsvParser::NONE);
+  set_parser_state(CsvParser::STATE_NONE);
   validate_primary_key();
 }
 
@@ -397,7 +397,7 @@ void Dialog_Import_CSV::on_stream_read(const Glib::RefPtr<Gio::AsyncResult>& res
     // If the parser does not exist yet, then create a new parser, except when the
     // current encoding does not work for the file ,in which case the user must first
     // choose another encoding.
-    else if(!m_parser.get() && get_parser_state() != CsvParser::ENCODING_ERROR)
+    else if(!m_parser.get() && get_parser_state() != CsvParser::STATE_ENCODING_ERROR)
     {
       begin_parse();
     }
@@ -410,7 +410,7 @@ void Dialog_Import_CSV::on_stream_read(const Glib::RefPtr<Gio::AsyncResult>& res
     else
     {
       // Finished reading
-      m_buffer.reset(NULL);
+      m_buffer.reset(0);
       m_parser->m_stream.reset();
       m_file.reset();
     }
@@ -450,7 +450,7 @@ void Dialog_Import_CSV::on_stream_read(const Glib::RefPtr<Gio::AsyncResult>& res
       else
       {
         // Finished reading
-        m_buffer.reset(NULL);
+        m_buffer.reset(0);
         m_parser->m_stream.reset();
         m_file.reset();
       }
@@ -482,7 +482,7 @@ void Dialog_Import_CSV::on_encoding_changed()
 
   // Reset current parsing process
   // TODO: Troublesome. Parser now contains a bit more members, not sure we can simply reset it like that.
-  //m_parser.reset(NULL);
+  //m_parser.reset(0);
   //m_parser->clear();
   //m_parser->set_encoding(get_current_encoding().c_str());
 
@@ -616,7 +616,7 @@ void Dialog_Import_CSV::begin_parse()
   m_parser->clear();
 
   m_parser->set_encoding(get_current_encoding().c_str());
-  set_parser_state(CsvParser::PARSING);
+  set_parser_state(CsvParser::STATE_PARSING);
 
   // Allow the Import button to be pressed when a field for the primary key
   // field is set. When the import button is pressed without the file being
@@ -635,7 +635,7 @@ void Dialog_Import_CSV::on_encoding_error()
   m_sample_view->set_model(m_sample_model); // Empty model
 
   // TODO: move into parser.
-  set_parser_state(CsvParser::ENCODING_ERROR);
+  set_parser_state(CsvParser::STATE_ENCODING_ERROR);
 
   // Don't allow the import button to be pressed when an error occured. This
   // would not make sense since we cleared all the parsed row data anyway.
@@ -915,7 +915,7 @@ void Dialog_Import_CSV::set_parser_state(CsvParser::State state)
 
 void Dialog_Import_CSV::validate_primary_key()
 {
-  if(get_parser_state() == (CsvParser::NONE | CsvParser::ENCODING_ERROR))
+  if(get_parser_state() == (CsvParser::STATE_NONE | CsvParser::STATE_ENCODING_ERROR))
   {
     m_error_label->hide();
     set_response_sensitive(Gtk::RESPONSE_ACCEPT, false);

@@ -1,5 +1,16 @@
 2009-09-18  Murray Cumming  <murrayc@murrayc.com>
 
+	CSV Import: Minor code style changes.
+
+	* glom/dialog_import_csv.cc:
+	* glom/dialog_import_csv_progress.cc:
+	* glom/import_csv.[h]cc]: Prefix the state enum with STATE_. 
+	Use 0 instead of NULL because this is C++. Remove some debug output.
+	Make signal type and variable names consistent with other code.
+	* tests/import/test_signals.cc: Add a last std::endl.
+
+2009-09-18  Murray Cumming  <murrayc@murrayc.com>
+
 	Tests: Stop using valgrind by default.
 
 	* Makefile_tests.am: Do not run all tests under valgrind. valgrind is 
