@@ -36,10 +36,6 @@ glom_glom_SOURCES =							\
 	glom/dialog_existing_or_new.h					\
 	glom/dialog_glom.cc						\
 	glom/dialog_glom.h						\
-	glom/dialog_import_csv.cc					\
-	glom/dialog_import_csv.h					\
-	glom/dialog_import_csv_progress.cc				\
-	glom/dialog_import_csv_progress.h				\
 	glom/dialog_invalid_data.cc					\
 	glom/dialog_invalid_data.h					\
 	glom/dialog_progress_creating.cc				\
@@ -54,8 +50,6 @@ glom_glom_SOURCES =							\
 	glom/glom_postgres.h						\
 	glom/glom_privs.cc						\
 	glom/glom_privs.h						\
-	glom/import_csv.cc					\
-	glom/import_csv.h					\
 	glom/main.cc							\
 	glom/notebook_glom.cc						\
 	glom/notebook_glom.h						\
@@ -78,6 +72,14 @@ glom_glom_SOURCES =							\
 	glom/bakery/busy_cursor.h					\
 	glom/bakery/dialog_offersave.cc					\
 	glom/bakery/dialog_offersave.h					\
+	glom/import_csv/dialog_import_csv.cc				\
+	glom/import_csv/dialog_import_csv.h				\
+	glom/import_csv/dialog_import_csv_progress.cc			\
+	glom/import_csv/dialog_import_csv_progress.h			\
+	glom/import_csv/file_encodings.cc				\
+	glom/import_csv/file_encodings.h				\
+	glom/import_csv/csv_parser.cc					\
+	glom/import_csv/csv_parser.h					\
 	glom/mode_data/box_data.cc					\
 	glom/mode_data/box_data.h					\
 	glom/mode_data/box_data_calendar_related.cc			\

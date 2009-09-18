@@ -8,8 +8,6 @@ glom/box_reports.cc
 glom.desktop.in.in
 glom/dialog_connection.cc
 glom/dialog_existing_or_new.cc
-glom/dialog_import_csv.cc
-glom/dialog_import_csv_progress.cc
 glom/filechooser_export.cc
 glom/frame_glom.cc
 glom/glom_developer.glade
@@ -20,6 +18,9 @@ glom/bakery/app.cc
 glom/bakery/app_withdoc_gtk.cc
 glom/bakery/app_withdoc.cc
 glom/bakery/dialog_offersave.cc
+glom/import_csv/dialog_import_csv.cc
+glom/import_csv/dialog_import_csv_progress.cc
+glom/import_csv/file_encodings.cc
 glom/libglom/connectionpool.cc
 glom/libglom/connectionpool_backends/postgres.cc
 glom/libglom/connectionpool_backends/postgres_central.cc

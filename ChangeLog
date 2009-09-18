@@ -1,3 +1,22 @@
+2009-09-18  Murray Cumming  <murrayc@murrayc.com>
+
+	CsvParser: Make this an actual parser, with a sane API.
+
+	* glom/dialog_import_csv.[h|cc]:
+	* glom/dialog_import_csv_progress.[h|cc]: Move into glom/import_csv/
+	* glom/import_csv/: Added file_encodings.[h|cc], moving the encodings 
+	list into it. This is similar to mode_design/iso_codes.[h|cc].
+	* glom/import_csv.[h|cc]: Rename to glom/import_csv/csv_parser.[h|cc] 
+	to match the class name.
+	Move actual parsing (and the vector of row/column data) into 
+	CsvParser, leaving the dialogs to just respond to signals and get 
+	data via get methods.
+
+	However, this breaks the import tests, because they add data to 
+	the parser directly using m_raw. They must be changed to read actual 
+	files, or maybe we could add some intermediate level of API that they 
+	could test.
+
 2009-09-18  Murray Cumming  <murrayc@murrayc-desktop>
 
 	CsvParser: Made some API private.
