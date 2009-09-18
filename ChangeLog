@@ -1,3 +1,11 @@
+2009-09-18  Murray Cumming  <murrayc@murrayc.com>
+
+	Tests: Stop using valgrind by default.
+
+	* Makefile_tests.am: Do not run all tests under valgrind. valgrind is 
+	for humans to read, and make check has no way to know if the result is 
+	appopriate or not. Run things under valgrind when you want to.
+
 2009-09-17  Michael Hasselmann <michaelh@openismus.com>
 
 Refactoring Dialog_Import_CSV: created testcase for the CsvParser's signal emission

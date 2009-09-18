@@ -52,13 +52,13 @@ void on_line_scanned(const Glib::ustring& line, guint /*line_number*/)
   Glib::ustring field;
   Glib::ustring::const_iterator line_iter(line.begin());
 
-  while (line_iter != line.end())
+  while(line_iter != line.end())
   {
     line_iter = Glom::CsvParser::advance_field(line_iter, line.end(), field);
     get_tokens_instance().push_back(field);
 
     // Manually have to skip separators.
-    if (',' == *line_iter)
+    if(',' == *line_iter)
     {
       get_tokens_instance().push_back(",");
       ++line_iter;
@@ -179,7 +179,7 @@ int main()
     parser.clear();
   }
 
-  std::cout << results.rdbuf();
+  std::cout << results.rdbuf() << std::endl;
 
   return (test_dquoted_string &&
           test_skip_on_no_ending_newline &&
