@@ -179,7 +179,7 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
 
 CsvParser::State Dialog_Import_CSV::get_parser_state() const
 {
-  return m_parser->m_state;
+  return m_parser->get_state();
 }
 
 Glib::ustring Dialog_Import_CSV::get_target_table_name() const
@@ -253,10 +253,12 @@ void Dialog_Import_CSV::import(const Glib::ustring& uri, const Glib::ustring& in
 
 guint Dialog_Import_CSV::get_row_count() const
 {
-  if(m_first_line_as_title->get_active() && m_parser->m_rows.size() > 1)
-    return m_parser->m_rows.size() - 1;
+  const guint parser_count = m_parser->get_rows_count();
 
-  return m_parser->m_rows.size();
+  if(m_first_line_as_title->get_active() && parser_count > 1)
+    return parser_count - 1;
+  else
+    return parser_count;
 }
 
 guint Dialog_Import_CSV::get_column_count() const
@@ -264,7 +266,7 @@ guint Dialog_Import_CSV::get_column_count() const
   return m_fields.size();
 }
 
-const sharedptr<Field>& Dialog_Import_CSV::get_field_for_column(guint col)
+sharedptr<const Field> Dialog_Import_CSV::get_field_for_column(guint col) const
 {
   return m_fields[col];
 }
@@ -512,7 +514,7 @@ void Dialog_Import_CSV::on_first_line_as_title_toggled()
 
       // Add another row to the end, if one is loaded.
       const guint last_index = m_sample_model->children().size();
-      if(last_index < m_parser->m_rows.size())
+      if(last_index < m_parser->get_rows_count())
       {
         iter = m_sample_model->append();
         (*iter)[m_sample_columns.m_col_row] = last_index;
@@ -577,7 +579,8 @@ void Dialog_Import_CSV::on_sample_rows_changed()
     if(m_first_line_as_title->get_active())
       ++row_index;
 
-    for(guint i = current_sample_rows; i < new_sample_rows && row_index < m_parser->m_rows.size(); ++i, ++row_index)
+    const guint rows_count = m_parser->get_rows_count();
+    for(guint i = current_sample_rows; i < new_sample_rows && row_index < rows_count; ++i, ++row_index)
     {
       Gtk::TreeModel::iterator iter = m_sample_model->append();
       (*iter)[m_sample_columns.m_col_row] = row_index;
@@ -700,15 +703,16 @@ void Dialog_Import_CSV::on_line_scanned(const Glib::ustring& line, guint line_nu
   // Add the row to the treeview if there are not yet as much sample rows
   // as the user has chosen (note the first row is to choose the target fields,
   // not a sample row, which is why we do -1 here).
-  guint sample_rows = m_sample_model->children().size() - 1;
+  const guint sample_rows = m_sample_model->children().size() - 1;
 
   // Don't add if this is the first line and m_first_line_as_title is active:
+  const guint parser_rows_count = m_parser->get_rows_count();
   if(line_number > 1 || !m_first_line_as_title->get_active())
   {
     if(sample_rows < static_cast<guint>(m_sample_rows->get_value_as_int()))
     {
       Gtk::TreeModel::iterator tree_iter = m_sample_model->append();
-      (*tree_iter)[m_sample_columns.m_col_row] = m_parser->m_rows.size() - 1;
+      (*tree_iter)[m_sample_columns.m_col_row] = parser_rows_count - 1;
     }
   }
 }
@@ -808,7 +812,7 @@ void Dialog_Import_CSV::field_data_func(Gtk::CellRenderer* renderer, const Gtk::
     {
       sharedptr<Field> field = m_fields[column_number];
 
-      if(row != -1 && (unsigned int)row < m_parser->m_rows.size())
+      if(row != -1 && (unsigned int)row < m_parser->get_rows_count())
       {
         const CsvParser::type_row_strings& row_strings = m_parser->m_rows[row];
         if(column_number < row_strings.size())
@@ -905,7 +909,7 @@ void Dialog_Import_CSV::on_field_edited(const Glib::ustring& path, const Glib::u
 void Dialog_Import_CSV::set_parser_state(CsvParser::State state)
 {
   // Calling the member of a member, introduced by refactoring. TODO: clean up set_parser_state() interface.
-  if(m_parser->m_state != state)
+  if(m_parser->get_state() != state)
   {
     m_parser->m_state = state;
     // Should be emitted by parser?

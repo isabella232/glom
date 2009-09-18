@@ -145,7 +145,7 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
   // Update the current row values map:
   for(unsigned int i = 0; i < m_data_source->get_column_count(); ++ i)
   {
-    const sharedptr<Field>& field = m_data_source->get_field_for_column(i);
+    sharedptr<const Field> field = m_data_source->get_field_for_column(i);
     if(field)
     {
       // We always assume exported data is in standard CSV format, since

@@ -57,7 +57,7 @@ public:
 
   unsigned int get_row_count() const;
   unsigned int get_column_count() const;
-  const sharedptr<Field>& get_field_for_column(unsigned int col);
+  sharedptr<const Field> get_field_for_column(unsigned int col) const;
   const Glib::ustring& get_data(unsigned int row, unsigned int col);
 
   SignalStateChanged signal_state_changed() const { return m_signal_state_changed; }

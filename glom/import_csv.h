@@ -50,28 +50,50 @@ public:
     STATE_PARSED /**< Finished parsing. */
   };
 
-  static const gunichar DELIMITER = ',';
-  static const gunichar QUOTE = '\"';
+  /// Get the current state of the parser.
+  State get_state() const;
 
-  static bool next_char_is_quote(const Glib::ustring::const_iterator& iter, const Glib::ustring::const_iterator& end);
-  static Glib::ustring::const_iterator advance_field(const Glib::ustring::const_iterator& iter, const Glib::ustring::const_iterator& end, Glib::ustring& field);
+  /// Get the number of rows parsed so far.
+  guint get_rows_count() const;
 
   // Signals:
   typedef sigc::signal<void> type_signal_encoding_error;
+
+  /** This signal will be emitted when the parser encounters an error while parsing.
+   * TODO: How do we discover what the error is?
+   */
   type_signal_encoding_error signal_encoding_error() const;
 
   typedef sigc::signal<void, std::string, unsigned int> type_signal_line_scanned;
+
+  /** This signal will be emitted each time the parser has scanned a line. TODO: Do we mean row instead of line? - A row contain a newline.
+   */
   type_signal_line_scanned signal_line_scanned() const;
 
   /// Make parser object reusable.
   void clear();
 
+  void set_encoding(const char* encoding);
+
+  //TODO: Make this private?
+  typedef std::vector<Glib::ustring> type_row_strings;
+  typedef std::vector<type_row_strings> type_rows;
+
+//TODO: private:
   // In order to not make the UI feel sluggish during larger imports we parse
   // on chunk at a time in the idle handler.
   bool on_idle_parse();
 
-  void set_encoding(const char* encoding);
+private:
+  static const gunichar DELIMITER = ',';
+  static const gunichar QUOTE = '\"';
 
+  static bool next_char_is_quote(const Glib::ustring::const_iterator& iter, const Glib::ustring::const_iterator& end);
+
+public:
+  static Glib::ustring::const_iterator advance_field(const Glib::ustring::const_iterator& iter, const Glib::ustring::const_iterator& end, Glib::ustring& field);
+
+public:
 //For now, everything's public. Until we know how our interface will look like.
 //private:
   // The raw data in the original encoding. We keep this so we can convert
@@ -79,19 +101,25 @@ public:
   // the encoding.
   std::vector<char> m_raw;
 
+private:
   std::string m_encoding;
   std::vector<char>::size_type m_input_position;
   std::string m_current_line;
+
+public:
   sigc::connection m_idle_connection;
+
+private:
   unsigned int m_line_number;
+
+public:
   State m_state;
   Glib::RefPtr<Gio::FileInputStream> m_stream;
 
   // Parsed data:
-  typedef std::vector<Glib::ustring> type_row_strings;
-  typedef std::vector<type_row_strings> type_rows;
   type_rows m_rows;
 
+private:
   type_signal_encoding_error m_signal_encoding_error;
   type_signal_line_scanned m_signal_line_scanned;
 };

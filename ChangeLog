@@ -1,3 +1,14 @@
+2009-09-18  Murray Cumming  <murrayc@murrayc-desktop>
+
+	CsvParser: Made some API private.
+
+	* glom/dialog_import_csv.[h|cc]: get_field_for_column(): Return a 
+	sharedptr<const>, not a silly const sharedptr<>&.
+	* glom/dialog_import_csv_progress.cc:
+	* glom/import_csv.[h|cc]: add get_state() and get_rows_count(). Make 
+	some API private to make it clearer what needs to be done to make 
+	this a real self-contained class.
+
 2009-09-18  Murray Cumming  <murrayc@murrayc.com>
 
 	CSV Import: Minor code style changes.

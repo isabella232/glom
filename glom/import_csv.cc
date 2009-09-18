@@ -67,6 +67,16 @@ CsvParser::~CsvParser()
   m_idle_connection.disconnect();
 }
 
+CsvParser::State CsvParser::get_state() const
+{
+  return m_state;
+}
+
+guint CsvParser::get_rows_count() const
+{
+  return m_rows.size();
+}
+
 CsvParser::type_signal_encoding_error CsvParser::signal_encoding_error() const
 {
   return m_signal_encoding_error;
