@@ -156,7 +156,6 @@ Refactoring Dialog_Import_CSV: created testcase for the CsvParser's signal emiss
 	 in the exception code path. That makes no difference for postgres but
 	 is needed for sqlite.
 
-
 2009-09-07  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/box_reports.[h|cc]:
