@@ -35,7 +35,12 @@ namespace Glom
 {
 
 EntryGlom::EntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
-: Gtk::Entry(cobject),
+:
+#ifdef GLOM_ENABLE_MAEMO
+  Hildon::Entry(cobject),
+#else
+  Gtk::Entry(cobject),
+#endif
   m_glom_type(Field::TYPE_TEXT)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -45,7 +50,11 @@ EntryGlom::EntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
 }
 
 EntryGlom::EntryGlom(Field::glom_field_type glom_type)
-: m_glom_type(glom_type)
+:
+#ifdef GLOM_ENABLE_MAEMO
+  Hildon::Entry(Gtk::Hildon::SIZE_AUTO),
+#endif
+ m_glom_type(glom_type)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();

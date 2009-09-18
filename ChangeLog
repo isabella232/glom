@@ -1,5 +1,12 @@
 2009-09-18  Murray Cumming  <murrayc@murrayc.com>
 
+	Maemo: Use some Hildon widgets.
+	
+	* glom/utility_widgets/entryglom.[h|cc]:
+	* glom/utility_widgets/textviewglom.h: Use Hildon::TextView and Hildon::Entry.
+
+2009-09-18  Murray Cumming  <murrayc@murrayc.com>
+
 	* configure.ac: Add a full configure example for maemo in a comment, 
 		to help my memory.
 	* glom/dialog_import_csv.cc: Fix a typo to fix the build on maemo. 

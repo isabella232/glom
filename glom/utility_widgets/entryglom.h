@@ -28,13 +28,23 @@
 #include "layoutwidgetfield.h"
 #include <gtkmm/builder.h>
 
+#ifdef GLOM_ENABLE_MAEMO
+#include <hildonmm/entry.h>
+#endif
+
 namespace Glom
 {
 
 class App_Glom;
 
+
 class EntryGlom
-: public Gtk::Entry,
+:
+#ifdef GLOM_ENABLE_MAEMO
+  public Hildon::Entry,
+#else
+  public Gtk::Entry,
+#endif
   public LayoutWidgetField
 {
 public:

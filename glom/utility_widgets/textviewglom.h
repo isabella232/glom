@@ -28,6 +28,10 @@
 #include "layoutwidgetfield.h"
 #include <gtkmm/builder.h>
 
+#ifdef GLOM_ENABLE_MAEMO
+#include <hildonmm/text-view.h>
+#endif
+
 namespace Glom
 {
 
@@ -75,7 +79,12 @@ private:
   Field::glom_field_type m_glom_type; //Store the type so we can validate the text accordingly.
 
   //Gnome::Gda::Value m_value; //The last-stored value. We have this because the displayed value might be unparseable.
+
+#ifdef GLOM_ENABLE_MAEMO
+  Hildon::TextView m_TextView;
+#else
   Gtk::TextView m_TextView;
+#endif
 };
 
 } //namespace Glom
