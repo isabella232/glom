@@ -15,7 +15,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([Glom], [1.11.1], [http://bugzilla.gnome.org/enter_bug.cgi?product=Glom], [glom])
+AC_INIT([Glom], [1.11.2], [http://bugzilla.gnome.org/enter_bug.cgi?product=Glom], [glom])
 AC_PREREQ([2.60])
 
 AC_CONFIG_SRCDIR([glom/main.cc])
@@ -73,6 +73,9 @@ AS_IF([test "x$glom_host_win32" = xyes],
 
 AM_CONDITIONAL([HOST_WIN32], [test "x$glom_host_win32" = xyes])
 
+# In most cases, you'll want all these options for the maemo build:
+# ./configure --prefix=/usr --enable-postgesql --enable-sqlite --enable-maemo;make all install
+# And you might need to do export CXXFLAGS="-fno-execptions"
 AC_ARG_ENABLE([maemo],
               [AS_HELP_STRING([--enable-maemo],
                               [build with support for the Maemo platform

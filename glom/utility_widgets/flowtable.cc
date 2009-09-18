@@ -852,11 +852,12 @@ void FlowTable::on_add(Gtk::Widget* child)
 }
 
 
+
 void FlowTable::on_remove(Gtk::Widget* child)
 {
   if(child)
   {
-    const bool visible = child->is_visible();
+    const bool visible = child_is_visible(child);
 
   //g_warning("FlowTable::on_remove");
     for(type_vecChildren::iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
@@ -920,7 +921,11 @@ void FlowTable::set_padding(guint padding)
 
 bool FlowTable::child_is_visible(const Gtk::Widget* widget) const
 {
+  #if GTKMM_MICRO_VERSION >= 11
+  return widget && widget->get_visible();
+  #else
   return widget && widget->is_visible();
+  #endif
 }
 
 void FlowTable::remove(Gtk::Widget& first)

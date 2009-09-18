@@ -1,3 +1,151 @@
+2009-09-18  Murray Cumming  <murrayc@murrayc.com>
+
+	Maemo: Use some Hildon widgets.
+	
+	* glom/utility_widgets/entryglom.[h|cc]:
+	* glom/utility_widgets/textviewglom.h: Use Hildon::TextView and Hildon::Entry.
+
+2009-09-18  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.ac: Add a full configure example for maemo in a comment, 
+		to help my memory.
+	* glom/dialog_import_csv.cc: Fix a typo to fix the build on maemo. 
+
+2009-09-18  Murray Cumming  <murrayc@murrayc-desktop>
+
+	CsvParser: Made some API private.
+
+	* glom/dialog_import_csv.[h|cc]: get_field_for_column(): Return a 
+	sharedptr<const>, not a silly const sharedptr<>&.
+	* glom/dialog_import_csv_progress.cc:
+	* glom/import_csv.[h|cc]: add get_state() and get_rows_count(). Make 
+	some API private to make it clearer what needs to be done to make 
+	this a real self-contained class.
+
+2009-09-18  Murray Cumming  <murrayc@murrayc.com>
+
+	CSV Import: Minor code style changes.
+
+	* glom/dialog_import_csv.cc:
+	* glom/dialog_import_csv_progress.cc:
+	* glom/import_csv.[h]cc]: Prefix the state enum with STATE_. 
+	Use 0 instead of NULL because this is C++. Remove some debug output.
+	Make signal type and variable names consistent with other code.
+	* tests/import/test_signals.cc: Add a last std::endl.
+
+2009-09-18  Murray Cumming  <murrayc@murrayc.com>
+
+	Tests: Stop using valgrind by default.
+
+	* Makefile_tests.am: Do not run all tests under valgrind. valgrind is 
+	for humans to read, and make check has no way to know if the result is 
+	appopriate or not. Run things under valgrind when you want to.
+
+2009-09-17  Michael Hasselmann <michaelh@openismus.com>
+
+Refactoring Dialog_Import_CSV: created testcase for the CsvParser's signal emission
+	
+	* Makefile_tests.am: all tests now run within valgrind by default since mem
+	leaks in testcases are potential mem leaks in the application. Parameters might
+	need tweaking.
+	
+	* glom/import_csv.cc (CsvParser::on_idle_parse): Fixed a missing negation in a
+	conditional, which was wrongfully leading to signal emissions. Found by the
+	import signals testcase.
+	
+	* test/import/test_parsing.cc: Fixed a null byte issue when setting the raw
+	contents of the parser.
+	
+	* test/import/test_signals.cc: This testcase checks the CsvParser's signal
+	emission on varying input. The basic idea was to have on testcase for each
+	code path that leads to a signal emission in glom/import_csv.cc, even if that
+	leads to overlapping code coverage tests with the parser testcase.
+
+2009-09-17  Johannes Schmid  <jschmid@openismus.com>
+
+	* Makefile_libglom.am: Don't link libglom
+	statically on maemo. (#594355)
+
+2009-09-17  Johannes Schmid  <jschmid@openismus.com>
+
+	* glom/application.cc: offer_new_or_existing():
+	Replace a TODO comment with g_assert_val_if_reached() because
+	reaching this branch would mean that the dialog returned
+	an unhandled response.
+
+2009-09-17  Johannes Schmid  <jschmid@openismus.com>
+
+	* regression_tests/test_python_module.cc:
+	* Makefile_tests.am:
+	Added a regression test for the loading of the python modules.
+	Unfortunately this test doesn't trigger the crash bug that
+	happens on exit() on the maemo platform.
+
+2009-09-17  Johannes Schmid  <jschmid@openismus.com>
+
+	* glom/main.cc:
+	Really check if pygda module is available. A typo caused
+	the check for the glom module twice while the gda module
+	wasn't checked at all
+
+2009-09-14  Johannes Schmid  <jschmid@openismus.com>
+
+	* glom/dialog_import_csv.cc:
+	Fixed maemo non-exception build of CsvParser refactoring.
+
+2009-09-14  Murray Cumming  <murrayc@murrayc.com>
+
+	Main Window: Correct (again) the order of Records/Found widgets.
+
+	* glom/glom.glade: main_window: Put the Records:/Found: widgets in 
+	sub-hboxes, and change their order by hand in the .glade file because 
+	GtkBuilder and Glade do not seem to interpret the file in the same way.
+
+1.11.2:
+
+2009-09-14  Murray Cumming  <murrayc@murray.com>
+
+	* glom/frame_glom.cc:
+	* glom/utility_widgets/flowtable.cc: Fixed warnings-as-errors build 
+	problems with the latest gtkmm.
+
+2009-09-11  Michael Hasselmann <michaelh@openismus.com>
+
+	Refactoring Glom::Dialog_Import_CSV: first parser tests created
+
+	* Makefile_tests.am, tests/import.sh,
+	tests/import/test_parsing.cc: The first tests for the CsvParser
+	are ready. Basic input is tested but no real world examples yet. Run with 'make
+	check TESTS=tests/import.sh' to run tests with valgrind.
+
+	Renamed regression_tests folder to tests
+
+	* tests, Makefile_tests.am: Changed paths accordingly.
+
+2009-09-09  Michael Hasselmann <michaelh@openismus.com>
+
+	Refactoring Glom::Dialog_Import_CSV
+	
+	* ChangeLog, Makefile_glom.am, glom/dialog_import_csv.[h|cc],
+	glom/import_csv.[h|cc], glom/dialog_import_csv_progress.cc: Moved the inlined
+	Parser class from the Dialog_Import_CSV class to the new CsvParser class.  The
+	CsvParser already handles the line scanning and encoding conversion but is
+	supposed to take over the file reading responsibility as well.  In order to
+	allow the Dialog_Import_CSV class to parse a scanned line into its tree model
+	the parser emits a lineScanned signal, with the currently scanned line as
+	parameter.
+	Bug #588233.
+
+2009-09-08  Johannes Schmid <jschmid@openismus.com>
+
+	 Bug 594357 -  Maemo: sqlite behaves strange
+
+	 * glom/utility_widgets/db_addel/glom_db_treemodel.cc:
+	 DbTreeModel::create():
+	 Create the correct DataAccessWrapper in both codepaths and not only
+	 in the exception code path. That makes no difference for postgres but
+	 is needed for sqlite.
+
 2009-09-08  Johannes Schmid <jschmid@openismus.com>
 
 	 Bug 594357 -  Maemo: sqlite behaves strange
