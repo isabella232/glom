@@ -1,5 +1,13 @@
 2009-09-21  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/dialog_import_csv.cc: get_data(): Avoid out-of-bounds crashes 
+	when accessing the vector of vectors. Note that this check is 
+	already in the appropriate place in the import_csv_refactored branch.
+	This makes bug #593304 slighly clearer, though it is now an endless 
+	loop with debug output.
+
+2009-09-21  Murray Cumming  <murrayc@murrayc.com>
+
 	Import dialog: Set the number of sample rows to 2 by default.
 
 	* glom/dialog_import_csv.cc: Set the number of sample rows to 2 
