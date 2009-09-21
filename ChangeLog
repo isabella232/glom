@@ -1,3 +1,9 @@
+2009-09-21  Johannes Schmid <jschmid@openismus.com>
+
+	* Makefile_tests.am:
+	Fixed make dist. The sources of tests/test_python_module weren't
+	given which broke at least with automake-1.10
+
 2009-09-21  Murray Cumming  <murrayc@murrayc.com>
 
 	Export: Use .csv file extension to match the filter when importing.
