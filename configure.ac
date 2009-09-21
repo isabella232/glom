@@ -231,6 +231,6 @@ AC_CONFIG_FILES([Makefile
                  docs/user-guide/Makefile
                  po/Makefile.in
                  glom.desktop.in
-                 glom/libglom/glom-1.0.pc
+                 glom/libglom/glom-1.12.pc
                  win32/glom.iss])
 AC_OUTPUT

@@ -47,13 +47,18 @@ glom_test_pyembed_SOURCES = glom/test_pyembed.cc
 tests_test_parsing_time_SOURCES = tests/test_parsing_time.cc
 tests_test_signal_reemit_SOURCES = tests/test_signal_reemit.cc
 tests_test_load_python_library_SOURCES = tests/test_load_python_library.cc
+tests_test_python_module_SOURCES = tests/test_python_module.cc
 tests_import_test_parsing_SOURCES =	\
 	glom/import_csv.cc	\
 	glom/import_csv.h	\
+	tests/import/utils.cc\
+	tests/import/utils.h\
 	tests/import/test_parsing.cc
 tests_import_test_signals_SOURCES =	\
 	glom/import_csv.cc	\
 	glom/import_csv.h	\
+	tests/import/utils.cc\
+	tests/import/utils.h\
 	tests/import/test_signals.cc
 
 glom_libglom_test_connectionpool_LDADD = $(tests_ldadd)

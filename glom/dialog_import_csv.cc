@@ -137,6 +137,8 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
     }
   }
 
+  m_sample_rows->set_value(2); //A sensible default.
+
   Gtk::CellRendererText* renderer = Gtk::manage(new Gtk::CellRendererText);
   m_encoding_combo->set_model(m_encoding_model);
   m_encoding_combo->pack_start(*renderer);
@@ -276,7 +278,22 @@ const Glib::ustring& Dialog_Import_CSV::get_data(guint row, guint col)
   if(m_first_line_as_title->get_active())
     ++row;
 
-  return m_parser->m_rows[row][col];
+  static Glib::ustring empty_result;
+
+  if(row >= m_parser->m_rows.size())
+  {
+    std::cerr << "Dialog_Import_CSV::get_data(): row out of range." << std::endl;
+    return empty_result;
+  }
+
+  const CsvParser::type_row_strings& row_data = m_parser->m_rows[row];
+  if(col >= row_data.size())
+  {
+    std::cerr << "Dialog_Import_CSV::get_data(): col out of range." << std::endl;
+    return empty_result;
+  }
+
+  return row_data[col];
 }
 
 void Dialog_Import_CSV::clear()

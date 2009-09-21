@@ -1,3 +1,49 @@
+2009-09-21  Johannes Schmid <jschmid@openismus.com>
+
+	* Makefile_tests.am:
+	Fixed make dist. The sources of tests/test_python_module weren't
+	given which broke at least with automake-1.10
+
+2009-09-21  Murray Cumming  <murrayc@murrayc.com>
+
+	Export: Use .csv file extension to match the filter when importing.
+
+	* glom/utils_ui.[h]cc]: Added get_filepath_with_extension() to add 
+	(if necessary) a specified file extension to a filepath.
+	* glom/frame_glom.cc: on_menu_file_export(): Add a .csv file 
+	extension if not already specified, so we automatically see the 
+	export file in the file chooser when importing.
+
+2009-09-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/dialog_import_csv.cc: get_data(): Avoid out-of-bounds crashes 
+	when accessing the vector of vectors. Note that this check is 
+	already in the appropriate place in the import_csv_refactored branch.
+	This makes bug #593304 slighly clearer, though it is now an endless 
+	loop with debug output.
+
+2009-09-21  Murray Cumming  <murrayc@murrayc.com>
+
+	Import dialog: Set the number of sample rows to 2 by default.
+
+	* glom/dialog_import_csv.cc: Set the number of sample rows to 2 
+	by default, not 0.
+	* glom/frame_glom.cc: Hack around another (!) GtkBuilder warning about 
+	a secondary top-level object (textbuffer). 
+
+2009-09-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/glom-1.0.pc.in: Rename to glom-1.12.pc.in to match 
+	the .so name and header install location. Noticed by Chris Coulson.
+
+2009-09-18  Michael Hasselmann  <michaelh@openismus.com>
+
+	Import tests: made them quiet
+	
+	* Makefile_tests.am, test/import/utils.[cc|h],
+	tests/import/test_[parsing|signals].cc: Only report on failure. Moved common
+	parts into an utility namespace.
+
 2009-09-18  Murray Cumming  <murrayc@murrayc.com>
 
 	Maemo: Use some Hildon widgets.

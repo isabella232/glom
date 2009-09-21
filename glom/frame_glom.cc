@@ -603,9 +603,11 @@ void Frame_Glom::on_menu_file_export()
   if((response == Gtk::RESPONSE_CANCEL) || (response == Gtk::RESPONSE_DELETE_EVENT))
     return;
 
-  const std::string filepath = dialog.get_filename();
+  std::string filepath = dialog.get_filename();
   if(filepath.empty())
     return;
+
+  filepath = Utils::get_filepath_with_extension(filepath, "csv");
 
   dialog.get_layout_groups(mapGroupSequence);
   //std::cout << "DEBUG 0: mapGroupSequence.size()=" << mapGroupSequence.size() << std::endl;
@@ -840,7 +842,16 @@ void Frame_Glom::on_menu_file_import()
         dialog->hide();
 
         Dialog_Import_CSV_Progress* progress_dialog = 0;
-        Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_import_csv_progress");
+
+        //GtkBuilder can't find top-level objects (GtkTextBuffer in this case),
+        //that one top-level object references.
+        //See http://bugzilla.gnome.org/show_bug.cgi?id=575714
+        //so we need to this silliness. murrayc.
+        std::list<Glib::ustring> builder_ids;
+        builder_ids.push_back("dialog_import_csv_progress");
+        builder_ids.push_back("textbuffer1");
+
+        Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), builder_ids);
         refXml->get_widget_derived("dialog_import_csv_progress", progress_dialog);
         add_view(progress_dialog);
 
