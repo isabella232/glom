@@ -79,7 +79,7 @@ glom_pyexport = -export-symbols-regex '^_*initglom'
 glom_python_embed_python_module_glom_1_12_la_LDFLAGS = $(pymod_ldflags) $(glom_pyexport)
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = glom/libglom/glom-1.0.pc
+pkgconfig_DATA = glom/libglom/glom-1.12.pc
 
 dist_pkgdata_DATA = glom/glom_document.dtd
 

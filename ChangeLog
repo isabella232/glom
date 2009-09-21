@@ -1,3 +1,8 @@
+2009-09-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/glom-1.0.pc.in: Rename to glom-1.12.pc.in to match 
+	the .so name and header install location. Noticed by Chris Coulson.
+
 2009-09-18  Michael Hasselmann  <michaelh@openismus.com>
 
 	Import tests: made them quiet
