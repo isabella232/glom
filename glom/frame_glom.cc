@@ -78,6 +78,7 @@ namespace Glom
 Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : PlaceHolder(cobject, builder),
   m_pLabel_Table(0),
+  m_box_header(0),
   m_box_footer(0),
   m_pLabel_Mode(0),
   m_pLabel_userlevel(0),
@@ -89,8 +90,10 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_pLabel_FoundCount(0),
   m_pButton_FindAll(0),
   m_pBox_Mode(0),
+#ifndef GLOM_ENABLE_MAEMO
   m_pBox_Tables(0),
   m_pDialog_Tables(0),
+#endif //GLOM_ENABLE_MAEMO
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_pDialog_Reports(0),
   m_pDialogLayoutReport(0),
@@ -111,13 +114,15 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   //Load widgets from glade file:
   builder->get_widget("label_table_name", m_pLabel_Table);
 
+  builder->get_widget("hbox_header", m_box_header);
   builder->get_widget("hbox_footer", m_box_footer);
   builder->get_widget("label_mode", m_pLabel_Mode);
   builder->get_widget("label_user_level", m_pLabel_userlevel);
   
-  //Hide the footer on maemo (It takes too much space),
+  //Hide unnecessary widgets on maemo that take too much space,
   //and reduce the border width:
   #ifdef GLOM_ENABLE_MAEMO
+  m_box_header->hide();
   m_box_footer->hide();
   set_border_width(Glom::Utils::DEFAULT_SPACING_LARGE);
   #endif
@@ -163,17 +168,20 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
 
 Frame_Glom::~Frame_Glom()
 {
+#ifndef GLOM_ENABLE_MAEMO
   if(m_pBox_Tables)
     remove_view(m_pBox_Tables);
-
-  remove_view(&m_Notebook_Data); //Also a composite view.
-  remove_view(&m_Notebook_Find); //Also a composite view.
 
   if(m_pDialog_Tables)
   {
     delete m_pDialog_Tables;
     m_pDialog_Tables = 0;
   }
+#endif //GLOM_ENABLE_MAEMO
+
+  remove_view(&m_Notebook_Data); //Also a composite view.
+  remove_view(&m_Notebook_Find); //Also a composite view.
+
 
   if(m_pDialogConnection)
   {
@@ -265,8 +273,10 @@ void Frame_Glom::set_databases_selected(const Glib::ustring& strName)
 
 void Frame_Glom::on_box_tables_selected(const Glib::ustring& strName)
 {
+#ifndef GLOM_ENABLE_MAEMO
   if(m_pDialog_Tables)
     m_pDialog_Tables->hide();
+#endif //GLOM_ENABLE_MAEMO
 
   show_table(strName);
 }
@@ -1296,6 +1306,7 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
   if(open_default)
     default_table_name = get_document()->get_default_table();
   
+#ifndef GLOM_ENABLE_MAEMO
   //Create the dialog, if it has not already been created:
   if(!m_pBox_Tables)
   {
@@ -1320,6 +1331,7 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
     BusyCursor busy_cursor(get_app_window());
     m_pBox_Tables->init_db_details();
   }
+  #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   //Let the user choose a table:
   //m_pDialog_Tables->set_policy(false, true, false); //TODO_port
@@ -1331,8 +1343,13 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
   }
   else
   {
+    #ifndef GLOM_ENABLE_CLIENT_ONLY
     m_pDialog_Tables->show();
+    #else
+    //For Maemo: TODO
+    #endif // !GLOM_ENABLE_CLIENT_ONLY
   }
+
 }
 
 const Gtk::Window* Frame_Glom::get_app_window() const
@@ -1451,30 +1468,32 @@ void Frame_Glom::on_userlevel_changed(AppState::userlevels userlevel)
 
 void Frame_Glom::show_table_title()
 {
-  if(get_document())
+  Document* document = dynamic_cast<Document*>(get_document());
+  if(!document)
+    return;
+
+  //Show the table title:
+  Glib::ustring table_label = document->get_table_title(m_table_name);
+  if(!table_label.empty())
   {
-    //Show the table title:
-    Glib::ustring table_label = get_document()->get_table_title(m_table_name);
-    if(!table_label.empty())
-    {
-      Document* document = dynamic_cast<Document*>(get_document());
-      if(document)
-      {
-        if(document->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
-          table_label += " (" + m_table_name + ")"; //Show the table name as well, if in developer mode.
-      }
-    }
-    else //Use the table name if there is no table title.
-      table_label = m_table_name;
+    if(document->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+      table_label += " (" + m_table_name + ")"; //Show the table name as well, if in developer mode.
+  }
+  else //Use the table name if there is no table title.
+    table_label = m_table_name;
 
 #ifdef GLOM_ENABLE_MAEMO
-    // xx-large is too large on maemo, taking away too much (vertical)
-    // screen estate
-    m_pLabel_Table->set_markup("<b>" + table_label + "</b>");
+  //Show the system's human-readable title and the table title in 
+  //the window's title bar:
+  Gtk::Window* app = get_app_window();
+  if(app)
+    app->set_title(document->get_name() + ": " + table_label);
+
+  // xx-large is too large on maemo, using far too much (vertical) space.
+  // We hide this anyway: m_pLabel_Table->set_markup("<b>" + table_label + "</b>");
 #else
-    m_pLabel_Table->set_markup("<b><span size=\"xx-large\">" + table_label + "</span></b>"); //Show the table title in large text, because it's very important to the user.
+  m_pLabel_Table->set_markup("<b><span size=\"xx-large\">" + table_label + "</span></b>"); //Show the table title in large text, because it's very important to the user.
 #endif
-  }
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -2830,6 +2849,11 @@ void Frame_Glom::on_button_find_all()
 bool Frame_Glom::get_viewing_details() const
 {
   return (m_Notebook_Data.get_current_view() == Notebook_Data::DATA_VIEW_Details);
+}
+
+Glib::ustring Frame_Glom::get_shown_table_name() const
+{
+  return m_table_name;
 }
 
 } //namespace Glom

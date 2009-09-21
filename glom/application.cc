@@ -42,7 +42,8 @@
 #include <glibmm/i18n.h>
 
 #ifdef GLOM_ENABLE_MAEMO
-#include <hildon/hildon-window.h>
+#include <hildon/hildon.h>
+#include <hildonmm/program.h>
 #include <hildon-fmmm.h>
 #endif // GLOM_ENABLE_MAEMO
 
@@ -60,28 +61,6 @@
 
 #include <gtk/gtkuimanager.h>
 
-#ifdef GLOM_ENABLE_MAEMO
-namespace //anonymous namespace
-{
-
-HildonWindow* turn_gtk_window_into_hildon_window(GtkWindow* cobject)
-{
-  GtkWidget* child = cobject->bin.child;
-  g_assert(child);
-
-  g_object_ref(G_OBJECT(child));
-  gtk_container_remove(GTK_CONTAINER(cobject), child);
-
-  GtkWidget* window = hildon_window_new();
-  gtk_container_add(GTK_CONTAINER(window), child);
-  g_object_unref(G_OBJECT(child));
-
-  gtk_widget_destroy(GTK_WIDGET(cobject));
-  return HILDON_WINDOW(window);
-}
-
-} //anonymous namespace
-#endif // GLOM_ENABLE_MAEMO
 
 namespace Glom
 {
@@ -108,7 +87,7 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& bu
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_show_sql_debug(false)
 {
-  // TODO: Wrap missing method in gtkmm
+  // TODO: Use the C++ method when we can use gtkmm 2.18:
   gtk_window_set_icon_name(GTK_WINDOW(gobj()), "glom");
 
   //Load widgets from glade file:
@@ -133,7 +112,7 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& bu
 
 App_Glom::~App_Glom()
 {
-#ifndef GLOM_ENABLE_CLIENT_ONLY
+  #ifndef GLOM_ENABLE_CLIENT_ONLY
   if(m_window_translations)
   {
     m_pFrame->remove_view(m_window_translations);
@@ -145,7 +124,11 @@ App_Glom::~App_Glom()
     delete m_avahi_progress_dialog;
     m_avahi_progress_dialog = 0;
   }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
+  #endif // !GLOM_ENABLE_CLIENT_ONLY
+
+  #ifdef GLOM_ENABLE_MAEMO
+  m_pFrame->remove_view(&m_appmenu_button_table);
+  #endif
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -227,11 +210,7 @@ void App_Glom::init_layout()
 
   //Add menu bar at the top:
   //These were defined in init_uimanager().
-#undef GLOM_ENABLE_MAEMO // TODO: Fix menu!
-#ifdef GLOM_ENABLE_MAEMO
-  Gtk::Menu* pMenu = static_cast<Gtk::Menu*>(m_refUIManager->get_widget("/Bakery_MainMenu"));
-  set_menu(*pMenu);
-#else
+#ifndef GLOM_ENABLE_MAEMO //Maemo uses Hildon::AppMenu instead.
   Gtk::MenuBar* pMenuBar = static_cast<Gtk::MenuBar*>(m_refUIManager->get_widget("/Bakery_MainMenu"));
   m_pBoxTop->pack_start(*pMenuBar, Gtk::PACK_SHRINK);
 #endif
@@ -266,6 +245,7 @@ void App_Glom::init_toolbars()
 */
 }
 
+#ifndef GLOM_ENABLE_MAEMO
 void App_Glom::init_menus_file()
 {
   //Overridden to remove the Save and Save-As menu items,
@@ -327,11 +307,7 @@ void App_Glom::init_menus_file()
   //Build part of the menu structure, to be merged in by using the "PH" placeholders:
   static const Glib::ustring ui_description =
     "<ui>"
-#ifdef GLOM_ENABLE_MAEMO
-    "  <popup name='Bakery_MainMenu'>"
-#else
     "  <menubar name='Bakery_MainMenu'>"
-#endif
     "    <placeholder name='Bakery_MenuPH_File'>"
     "      <menu action='BakeryAction_Menu_File'>"
     "        <menuitem action='BakeryAction_File_New' />"
@@ -357,11 +333,7 @@ void App_Glom::init_menus_file()
     "        <menuitem action='BakeryAction_File_Close' />"
     "      </menu>"
     "    </placeholder>"
-#ifdef GLOM_ENABLE_MAEMO
-    "  </popup>"
-#else
     "  </menubar>"
-#endif
     "</ui>";
 
   //Add menu:
@@ -370,7 +342,33 @@ void App_Glom::init_menus_file()
   //Add recent-files submenu:
   init_menus_file_recentfiles("/Bakery_MainMenu/Bakery_MenuPH_File/BakeryAction_Menu_File/BakeryAction_Menu_File_RecentFiles");
 }
+#endif //GLOM_ENABLE_MAEMO
 
+#ifdef GLOM_ENABLE_MAEMO
+void App_Glom::on_appmenu_button_table_value_changed()
+{
+  const Glib::ustring table_name = m_appmenu_button_table.get_table_name();
+  if(m_pFrame)
+    m_pFrame->on_box_tables_selected(table_name);
+}
+
+#endif //GLOM_ENABLE_MAEMO
+
+#ifdef GLOM_ENABLE_MAEMO
+void App_Glom::init_menus()
+{
+  //There is no real menu on Maemo. We use HildonAppMenu instead.
+
+  m_pFrame->add_view(&m_appmenu_button_table);
+  m_appmenu_button_table.show();
+  m_appmenu_button_table.signal_value_changed().connect(
+    sigc::mem_fun(*this, &App_Glom::on_appmenu_button_table_value_changed) );
+  m_maemo_appmenu.append(m_appmenu_button_table);
+
+  //set_app_menu(*appmenu); //TODO: Use this instead?
+  Hildon::Program::get_instance()->set_common_app_menu(m_maemo_appmenu);
+}
+#else
 void App_Glom::init_menus()
 {
   init_menus_file();
@@ -518,11 +516,7 @@ void App_Glom::init_menus()
   //Build part of the menu structure, to be merged in by using the "Bakery_MenuPH_Others" placeholder:
   static const Glib::ustring ui_description =
     "<ui>"
-#ifdef GLOM_ENABLE_MAEMO
-    "  <popup name='Bakery_MainMenu'>"
-#else
     "  <menubar name='Bakery_MainMenu'>"
-#endif
     "    <placeholder name='Bakery_MenuPH_Others'>"
     "      <menu action='Glom_Menu_Tables'>"
     "        <placeholder name='Menu_Tables_Dynamic' />"
@@ -571,11 +565,7 @@ void App_Glom::init_menus()
     "      </menu>"
 #endif // !GLOM_ENABLE_CLIENT_ONLY
     "    </placeholder>"
-#ifdef GLOM_ENABLE_MAEMO
-    "  </popup>"
-#else
     "  </menubar>"
-#endif
     "</ui>";
 
 /*  "        <menuitem action='GlomAction_Menu_Developer_RelationshipsOverview' />" */
@@ -587,6 +577,7 @@ void App_Glom::init_menus()
 
   fill_menu_tables();
 }
+#endif //GLOM_ENABLE_MAEMO
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void App_Glom::on_menu_file_toggle_share()
@@ -1209,6 +1200,10 @@ void App_Glom::update_network_shared_ui()
   if(!document)
     return;
 
+  //This is not used (yet) on Maemo:
+  if(!m_connection_toggleaction_network_shared)
+    return;
+
   //Show the status in the UI:
   //(get_network_shared() already enforces constraints).
   const bool shared = document->get_network_shared();
@@ -1458,7 +1453,7 @@ void App_Glom::set_mode_find()
   m_action_mode_find->activate();
 }
 
-
+#ifndef GLOM_ENABLE_MAEMO
 void App_Glom::init_menus_help()
 {
   //Call base class:
@@ -1470,21 +1465,13 @@ void App_Glom::init_menus_help()
   //Build part of the menu structure, to be merged in by using the "PH" plaeholders:
   static const Glib::ustring ui_description =
     "<ui>"
-#ifdef GLOM_ENABLE_MAEMO
-    "  <popup name='Bakery_MainMenu'>"
-#else
     "  <menubar name='Bakery_MainMenu'>"
-#endif
     "    <placeholder name='Bakery_MenuPH_Help'>"
     "      <menu action='BakeryAction_Menu_Help'>"
     "        <menuitem action='BakeryAction_Help_Contents' />"
     "      </menu>"
     "    </placeholder>"
-#ifdef GLOM_ENABLE_MAEMO
-    "  </popup>"
-#else
     "  </menubar>"
-#endif
     "</ui>";
 
   //Add menu:
@@ -1495,6 +1482,7 @@ void App_Glom::on_menu_help_contents()
 {
   Glom::Utils::show_help();
 }
+#endif //GLOM_ENABLE_MAEMO
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 bool App_Glom::recreate_database(bool& user_cancelled)
@@ -1717,6 +1705,12 @@ void App_Glom::remove_developer_action(const Glib::RefPtr<Gtk::Action>& refActio
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
+#ifdef GLOM_ENABLE_MAEMO
+void App_Glom::fill_menu_tables()
+{
+  m_appmenu_button_table.fill_from_database();
+}
+#else
 void App_Glom::fill_menu_tables()
 {
   //TODO: There must be a better way than building a ui_string like this:
@@ -1804,8 +1798,14 @@ void App_Glom::fill_menu_tables()
     std::cerr << "   The ui_description was: " <<  ui_description << std::endl;
   }
 }
+#endif //GLOM_ENABLE_MAEMO
 
-
+#ifdef GLOM_ENABLE_MAEMO
+void App_Glom::fill_menu_reports(const Glib::ustring& table_name)
+{
+  //TODO: Change the Hildon::AppMenu.
+}
+#else
 void App_Glom::fill_menu_reports(const Glib::ustring& table_name)
 {
   //TODO: There must be a better way than building a ui_string like this:
@@ -1896,7 +1896,14 @@ void App_Glom::fill_menu_reports(const Glib::ustring& table_name)
     std::cerr << " App_Glom::fill_menu_reports(): building menus failed: " <<  ex.what();
   }
 }
+#endif //GLOM_ENABLE_MAEMO
 
+#ifdef GLOM_ENABLE_MAEMO
+void App_Glom::fill_menu_print_layouts(const Glib::ustring& table_name)
+{
+  //TODO: Change the Hildon::AppMenu.
+}
+#else
 void App_Glom::fill_menu_print_layouts(const Glib::ustring& table_name)
 {
   //TODO: This is copy/pasted from fill_menu_print_reports. Can we generalize it?
@@ -2001,7 +2008,7 @@ void App_Glom::fill_menu_print_layouts(const Glib::ustring& table_name)
     std::cerr << " App_Glom::fill_menu_reports(): building menus failed: " <<  ex.what();
   }
 }
-
+#endif //GLOM_ENABLE_MAEMO
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void App_Glom::on_menu_file_save_as_example()
@@ -2070,7 +2077,7 @@ void App_Glom::on_menu_file_save_as_example()
 
       document->set_allow_autosave(true);
 
-      bool bTest  = document->save();
+      bool bTest = document->save();
 
       if(!bTest)
       {
@@ -2103,9 +2110,7 @@ void App_Glom::on_menu_file_save_as_example()
     cancel_close_or_exit();
   }
 }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) //override
 {
   //Reimplement this whole function, just so we can use our custom FileChooserDialog class:
@@ -2158,10 +2163,7 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
       m_ui_save_extra_newdb_title = Utils::title_from_string( filename ); //Start with something suitable.
 
     fileChooser_SaveExtras->set_extra_newdb_title(m_ui_save_extra_newdb_title); 
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
     fileChooser_SaveExtras->set_extra_newdb_hosting_mode(m_ui_save_extra_newdb_hosting_mode);
-#endif // !GLOM_ENABLE_CLIENT_ONLY
   }
 
 
@@ -2442,14 +2444,55 @@ void App_Glom::do_menu_developer_relationships(Gtk::Window& parent, const Glib::
 {
   m_pFrame->do_menu_developer_relationships(parent, table_name);
 }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
 Document* App_Glom::on_connection_pool_get_document()
 {
   return dynamic_cast<Document*>(get_document());
 }
-#endif
+#endif //GLOM_ENABLE_CLIENT_ONLY
+
+//overridden to show the current table name in the window's title:
+void App_Glom::update_window_title()
+{
+  //Set application's main window title:
+
+  Document* document = dynamic_cast<Document*>(get_document());
+  if(!document)
+    return;
+
+  if(!m_pFrame)
+    return;
+
+  //Show the table title:
+  const Glib::ustring table_name = m_pFrame->get_shown_table_name();
+  Glib::ustring table_label = document->get_table_title(table_name);
+  if(!table_label.empty())
+  {
+    #ifndef GLOM_ENABLE_CLIENT_ONLY
+    if(document->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+      table_label += " (" + table_name + ")"; //Show the table name as well, if in developer mode.
+    #endif // GLOM_ENABLE_CLIENT_ONLY
+  }
+  else //Use the table name if there is no table title.
+    table_label = table_name;
+
+  Glib::ustring strTitle = document->get_name() + ": " + table_label;
+
+  #ifndef GLOM_ENABLE_CLIENT_ONLY
+  //Indicate unsaved changes:
+  if(document->get_modified())
+    strTitle += " *";
+
+  //Indicate read-only files:
+  if(document->get_read_only())
+    strTitle += _(" (read-only)");
+  #endif //GLOM_ENABLE_CLIENT_ONLY
+
+  strTitle +=  " - " + m_strAppName;
+
+  set_title(strTitle);
+}
+
 
 
 } //namespace Glom

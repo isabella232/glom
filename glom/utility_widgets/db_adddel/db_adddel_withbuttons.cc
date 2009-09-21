@@ -53,17 +53,21 @@ DbAddDel_WithButtons::~DbAddDel_WithButtons()
 
 void DbAddDel_WithButtons::on_button_add()
 {
+#ifndef GLOM_ENABLE_MAEMO
   on_MenuPopup_activate_Add();
+#endif
 }
 
 void DbAddDel_WithButtons::on_button_del()
 {
+#ifndef GLOM_ENABLE_MAEMO
   on_MenuPopup_activate_Delete();
+#endif
 }
 
 void DbAddDel_WithButtons::on_button_edit()
 {
-  on_MenuPopup_activate_Edit();
+  do_user_requested_edit();
 }
 
 void DbAddDel_WithButtons::set_allow_add(bool val)

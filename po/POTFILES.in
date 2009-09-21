@@ -105,6 +105,7 @@ glom/mode_find/box_data_details_find.cc
 glom/mode_find/box_data_list_find.cc
 glom/mode_find/notebook_find.cc
 glom/navigation/box_tables.cc
+glom/navigation/maemo/pickerbutton_table.cc
 glom/print_layout/canvas_layout_item.cc
 glom/print_layout/canvas_print_layout.cc
 glom/python_embed/glom_python.cc

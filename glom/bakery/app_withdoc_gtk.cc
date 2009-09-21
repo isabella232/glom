@@ -33,6 +33,7 @@
 
 #ifdef GLOM_ENABLE_MAEMO
 #include <hildon-fmmm/file-chooser-dialog.h>
+#include <hildon/hildon-window.h>
 #endif // GLOM_ENABLE_MAEMO
 
 #include <glibmm/i18n-lib.h>
@@ -66,6 +67,11 @@ App_WithDoc_Gtk::App_WithDoc_Gtk(BaseObjectType* cobject, const Glib::ustring& a
   m_pAbout(0)
 {
   init_app_name(appname);
+
+  #ifdef GLOM_ENABLE_MAEMO
+  //The .glade file needs to specify HildonWindow or features such as HildonAppMenu won't work.
+  g_assert(HILDON_IS_WINDOW(gobj()));
+  #endif //GLOM_ENABLE_MAEMO
 
 #ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   signal_hide().connect(sigc::mem_fun(*this, &App_WithDoc_Gtk::on_hide));
@@ -471,22 +477,22 @@ void App_WithDoc_Gtk::update_window_title()
 {
   //Set application's main window title:
 
-  Glib::ustring strTitle = m_strAppName;
   Document* pDoc = get_document();
-  if(pDoc)
-  {
-    strTitle += " - " + pDoc->get_name();
+  if(!pDoc)
+    return;
 
-    //Indicate unsaved changes:
-    if(pDoc->get_modified())
-      strTitle += " *";
+  Glib::ustring strTitle = m_strAppName;
+  strTitle += " - " + pDoc->get_name();
 
-    //Indicate read-only files:
-    if(pDoc->get_read_only())
-      strTitle += _(" (read-only)");
+  //Indicate unsaved changes:
+  if(pDoc->get_modified())
+    strTitle += " *";
 
-    set_title(strTitle);
-  }
+  //Indicate read-only files:
+  if(pDoc->get_read_only())
+    strTitle += _(" (read-only)");
+
+  set_title(strTitle);
 }
 
 void App_WithDoc_Gtk::ui_warning(const Glib::ustring& text, const Glib::ustring& secondary_text)

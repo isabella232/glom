@@ -33,7 +33,6 @@ Box_Data_List_Related::Box_Data_List_Related()
 {
   set_size_request(400, -1); //An arbitrary default.
 
-  m_AddDel.set_rules_hint(); //Use alternating row colors when the theme does that.
   m_Alignment.add(m_AddDel);
   add_view(&m_AddDel); //Give it access to the document.
   m_AddDel.show();

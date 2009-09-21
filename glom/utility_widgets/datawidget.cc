@@ -381,71 +381,7 @@ void DataWidget::set_child_size_by_field(const sharedptr<const LayoutItem_Field>
 
 int DataWidget::get_suitable_width(const sharedptr<const LayoutItem_Field>& field_layout)
 {
-  int result = 150;
-
-  const Field::glom_field_type field_type = field_layout->get_glom_type();
-
-  Glib::ustring example_text;
-  switch(field_type)
-  {
-    case(Field::TYPE_DATE):
-    {
-      Glib::Date date(31, Glib::Date::Month(12), 2000);
-      example_text = Conversions::get_text_for_gda_value(field_type, Gnome::Gda::Value(date));
-      break;
-    }
-    case(Field::TYPE_TIME):
-    {
-      Gnome::Gda::Time time = {0, 0, 0, 0, 0};
-      time.hour = 24;
-      time.minute = 59;
-      time.second = 59;
-      example_text = Conversions::get_text_for_gda_value(field_type, Gnome::Gda::Value(time));
-      break;
-    }
-    case(Field::TYPE_NUMERIC):
-    {
-#ifdef GLOM_ENABLE_MAEMO
-      //Maemo's screen is not so big, so don't be so generous:
-      example_text = "EUR 9999999";
-#else
-      example_text = "EUR 9999999999";
-#endif
-      break;
-    }
-    case(Field::TYPE_TEXT):
-    case(Field::TYPE_IMAGE): //Give images the same width as text fields, so they will often line up.
-    {
-      //if(!field_layout->get_text_format_multiline()) //Use the full width for multi-line text.
-#ifdef GLOM_ENABLE_MAEMO
-        //Maemo's screen is not so big, so don't be so generous:
-        example_text = "AAAAAAAAAAAAAAAA";
-#else
-        example_text = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-#endif
-      break;
-    }
-    default:
-    {
-      break;
-    }
-  }
-
-
-  if(!example_text.empty())
-  {
-    //Get the width required for this string in the current font:
-    Glib::RefPtr<Pango::Layout> refLayout = create_pango_layout(example_text);
-    int width = 0;
-    int height = 0;
-    refLayout->get_pixel_size(width, height);
-    result = width;
-
-    //Add a bit more:
-    result += 10;
-  }
-
-  return result;
+  return Utils::get_suitable_field_width_for_widget(*this, field_layout);
 }
 
 void DataWidget::set_viewable(bool viewable)

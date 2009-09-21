@@ -77,7 +77,6 @@ private:
   virtual void on_changed(); //From Gtk::Entry.
   virtual void on_activate(); //From Gtk::Entry.
   virtual bool on_focus_out_event(GdkEventFocus* event); //From Gtk::Widget
-  virtual void on_insert_text(const Glib::ustring& text, int* position); //From Gtk::Editable
 
   virtual void check_for_change();
 

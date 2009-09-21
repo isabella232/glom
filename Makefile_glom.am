@@ -102,8 +102,6 @@ glom_glom_SOURCES =							\
 	glom/mode_find/box_data_list_find.h				\
 	glom/mode_find/notebook_find.cc					\
 	glom/mode_find/notebook_find.h					\
-	glom/navigation/box_tables.cc					\
-	glom/navigation/box_tables.h					\
 	glom/print_layout/canvas_layout_item.cc				\
 	glom/print_layout/canvas_layout_item.h				\
 	glom/print_layout/canvas_print_layout.cc			\
@@ -335,6 +333,16 @@ glom_glom_SOURCES +=							\
 	glom/utility_widgets/notebooklabelglom.h			\
 	glom/utility_widgets/sidebar.cc					\
 	glom/utility_widgets/sidebar.h
+endif
+
+if !GLOM_ENABLE_MAEMO
+glom_glom_SOURCES +=							\
+	glom/navigation/box_tables.cc					\
+	glom/navigation/box_tables.h
+else
+glom_glom_SOURCES +=							\
+	glom/navigation/maemo/pickerbutton_table.cc			\
+	glom/navigation/maemo/pickerbutton_table.h
 endif
 
 glom_glom_LDADD = $(win_resfile) \
