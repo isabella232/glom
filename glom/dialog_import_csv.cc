@@ -137,6 +137,8 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
     }
   }
 
+  m_sample_rows->set_value(2); //A sensible default.
+
   Gtk::CellRendererText* renderer = Gtk::manage(new Gtk::CellRendererText);
   m_encoding_combo->set_model(m_encoding_model);
   m_encoding_combo->pack_start(*renderer);

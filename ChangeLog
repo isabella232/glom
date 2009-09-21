@@ -1,5 +1,14 @@
 2009-09-21  Murray Cumming  <murrayc@murrayc.com>
 
+	Import dialog: Set the number of sample rows to 2 by default.
+
+	* glom/dialog_import_csv.cc: Set the number of sample rows to 2 
+	by default, not 0.
+	* glom/frame_glom.cc: Hack around another (!) GtkBuilder warning about 
+	a secondary top-level object (textbuffer). 
+
+2009-09-21  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/glom-1.0.pc.in: Rename to glom-1.12.pc.in to match 
 	the .so name and header install location. Noticed by Chris Coulson.
 
