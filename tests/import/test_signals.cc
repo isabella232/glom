@@ -7,7 +7,7 @@
 
 namespace {
 
-typedef std::vector<std::string> Encodings;
+typedef std::vector<std::string> type_encodings;
 
 guint& get_line_scanned_count_instance()
 {
@@ -83,7 +83,7 @@ int main()
     while(parser.on_idle_parse())
     {}
 
-    bool passed = (2 == get_line_scanned_count_instance() &&
+    const bool passed = (2 == get_line_scanned_count_instance() &&
                    0 == get_encoding_error_count_instance());
 
     if(!ImportTests::check("test_ignore_empty_lines", passed, report))
@@ -96,16 +96,17 @@ int main()
   // test_wrong_encoding
   {
     const char* const encoding_arr[] = {"UTF-8", "UCS-2"};
-    Encodings encodings(encoding_arr, encoding_arr + G_N_ELEMENTS(encoding_arr));
+    type_encodings encodings(encoding_arr, encoding_arr + G_N_ELEMENTS(encoding_arr));
 
     // An invalid Unicode sequence.
     const char raw[] = "\0xc0\0x00\n";
     ImportTests::set_parser_contents(parser, raw, sizeof(raw));
 
-    for (Encodings::const_iterator iter = encodings.begin();
+    for (type_encodings::const_iterator iter = encodings.begin();
          iter != encodings.end();
          ++iter)
     {
+      #ifdef GLIBMM_EXCEPTIONS_ENABLED
       try
       {
         while(parser.on_idle_parse())
@@ -113,16 +114,22 @@ int main()
 
         parser.clear();
       }
-      catch (Glib::ConvertError& exception)
+      catch(const Glib::ConvertError& exception)
       {
         std::cout << exception.what() << std::endl;
       }
+      #else
+      while(parser.on_idle_parse())
+      {}
+
+      parser.clear();
+      #endif
 
       parser.set_encoding((*iter).c_str());
     }
 
 
-    bool passed = (2 == get_encoding_error_count_instance() &&
+    const bool passed = (2 == get_encoding_error_count_instance() &&
                    0 == get_line_scanned_count_instance());
 
     if(!ImportTests::check("test_wrong_encoding", passed, report))
@@ -141,7 +148,7 @@ int main()
     while(parser.on_idle_parse())
     {}
 
-    bool passed = (1 == get_encoding_error_count_instance() &&
+    const bool passed = (1 == get_encoding_error_count_instance() &&
                    0 == get_line_scanned_count_instance());
 
     if(!ImportTests::check("test_incomplete_chars", passed, report))

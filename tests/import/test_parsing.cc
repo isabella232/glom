@@ -8,11 +8,11 @@
 namespace
 {
 
-typedef std::vector<std::string> Tokens;
+typedef std::vector<std::string> type_tokens;
 
-Tokens& get_tokens_instance()
+type_tokens& get_tokens_instance()
 {
-  static Tokens tokens;
+  static type_tokens tokens;
   return tokens;
 }
 
@@ -21,7 +21,7 @@ void on_line_scanned(const Glib::ustring& line, guint line_number);
 
 void print_tokens()
 {
-  for(Tokens::const_iterator iter = get_tokens_instance().begin();
+  for(type_tokens::const_iterator iter = get_tokens_instance().begin();
        iter != get_tokens_instance().end();
        ++iter)
   {
@@ -31,13 +31,39 @@ void print_tokens()
   std::cout << std::endl;
 }
 
-bool check_tokens(Glib::RefPtr<Glib::Regex> check)
+bool check_tokens(const std::string& regex)
 {
-  for(Tokens::const_iterator iter = get_tokens_instance().begin();
+  Glib::RefPtr<Glib::Regex> check;
+  
+  #ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    check = Glib::Regex::create(regex)
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << "Glib::Regex::create() failed: " << ex.what() << std::endl;
+    return false;
+  } 
+  #else
+  std::auto_ptr<Glib::Error> ex;
+  check = Glib::Regex::create(regex, static_cast<Glib::RegexCompileFlags>(0), static_cast<Glib::RegexMatchFlags>(0), ex);
+  if(ex.get())
+  {
+    std::cerr << "Glib::Regex::create() failed: " << ex->what() << std::endl;
+    return false;
+  }
+  #endif
+ 
+  if(!check)
+    return false;
+     
+  for(type_tokens::const_iterator iter = get_tokens_instance().begin();
        iter != get_tokens_instance().end();
        ++iter)
   {
-    if(!check->match(*iter)) return false;
+    if(!check->match(*iter))
+      return false;
   }
 
   return true;
@@ -81,7 +107,7 @@ int main()
     while(parser.on_idle_parse())
     {}
 
-    bool passed = check_tokens(Glib::Regex::create("^(a \"quoted\" token|,|sans quotes)$"));
+    bool passed = check_tokens("^(a \"quoted\" token|,|sans quotes)$");
     if(!ImportTests::check("test_dquoted_string", passed, report))
       result = false;
 
@@ -113,7 +139,7 @@ int main()
     while(parser.on_idle_parse())
     {}
 
-    bool passed = check_tokens(Glib::Regex::create("^(|,)$"));
+    bool passed = check_tokens("^(|,)$");
     if(!ImportTests::check("test_skip_on_no_quotes_around_token", passed, report))
       result = false;
 
@@ -145,7 +171,7 @@ int main()
     while(parser.on_idle_parse())
     {}
 
-    bool passed = check_tokens(Glib::Regex::create("^cannottokenizethis$"));
+    bool passed = check_tokens("^cannottokenizethis$");
     if(!ImportTests::check("test_fail_on_non_comma_separators", passed, report))
       result = false;
 
@@ -161,7 +187,7 @@ int main()
     while(parser.on_idle_parse())
     {}
 
-    bool passed = check_tokens(Glib::Regex::create("^(cell with\nnewline|token on next line)$"));
+    bool passed = check_tokens("^(cell with\nnewline|token on next line)$");
     if(!ImportTests::check("test_parse_newline_inside_quotes", passed, report))
       result = false;
 

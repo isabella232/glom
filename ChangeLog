@@ -1,3 +1,10 @@
+2009-09-21  Murray Cumming  <murrayc@murrayc.com>
+
+	import tests: Fix the no-exceptions build.
+	
+	* tests/import/test_parsing.cc:
+	* tests/import/test_signals.cc: Fix the build without exceptions.
+
 2009-09-18  Michael Hasselmann  <michaelh@openismus.com>
 
 	Import tests: made them quiet
