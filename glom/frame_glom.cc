@@ -593,9 +593,11 @@ void Frame_Glom::on_menu_file_export()
   if((response == Gtk::RESPONSE_CANCEL) || (response == Gtk::RESPONSE_DELETE_EVENT))
     return;
 
-  const std::string filepath = dialog.get_filename();
+  std::string filepath = dialog.get_filename();
   if(filepath.empty())
     return;
+
+  filepath = Utils::get_filepath_with_extension(filepath, "csv");
 
   dialog.get_layout_groups(mapGroupSequence);
   //std::cout << "DEBUG 0: mapGroupSequence.size()=" << mapGroupSequence.size() << std::endl;

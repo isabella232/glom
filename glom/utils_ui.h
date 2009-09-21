@@ -66,6 +66,9 @@ Glib::ustring bold_message(const Glib::ustring& message);
 
 Glib::RefPtr<Gdk::Pixbuf> get_pixbuf_for_gda_value(const Gnome::Gda::Value& value);
 
+/// Add the @a extension if no extension is there already:
+std::string get_filepath_with_extension(const std::string& filepath, const std::string& extension);
+
 } //namespace Utils
 
 } //namespace Glom

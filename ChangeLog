@@ -1,5 +1,15 @@
 2009-09-21  Murray Cumming  <murrayc@murrayc.com>
 
+	Export: Use .csv file extension to match the filter when importing.
+
+	* glom/utils_ui.[h]cc]: Added get_filepath_with_extension() to add 
+	(if necessary) a specified file extension to a filepath.
+	* glom/frame_glom.cc: on_menu_file_export(): Add a .csv file 
+	extension if not already specified, so we automatically see the 
+	export file in the file chooser when importing.
+
+2009-09-21  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/dialog_import_csv.cc: get_data(): Avoid out-of-bounds crashes 
 	when accessing the vector of vectors. Note that this check is 
 	already in the appropriate place in the import_csv_refactored branch.

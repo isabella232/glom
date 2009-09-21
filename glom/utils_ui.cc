@@ -319,4 +319,31 @@ Glib::RefPtr<Gdk::Pixbuf> Utils::get_pixbuf_for_gda_value(const Gnome::Gda::Valu
   return result;
 }
 
+std::string Utils::get_filepath_with_extension(const std::string& filepath, const std::string& extension)
+{
+  std::string result = filepath;
+
+  bool add_ext = false;
+  const std::string str_ext = "." + extension;
+
+  if(result.size() < str_ext.size()) //It can't have the ext already if it's not long enough.
+  {
+    add_ext = true; //It isn't there already.
+  }
+  else
+  {
+    const Glib::ustring strEnd = result.substr(result.size() - str_ext.size());
+    if(strEnd != str_ext) //If it doesn't already have the extension
+      add_ext = true;
+  }
+
+  //Add extension if necessay.
+  if(add_ext)
+    result += str_ext;
+
+  //TODO: Do not replace existing extensions, so it could be e.g. 'something.blah.theext'
+
+  return result;
+}
+
 } //namespace Glom
