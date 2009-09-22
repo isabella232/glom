@@ -74,8 +74,10 @@ AS_IF([test "x$glom_host_win32" = xyes],
 AM_CONDITIONAL([HOST_WIN32], [test "x$glom_host_win32" = xyes])
 
 # In most cases, you'll want all these options for the maemo build:
-# ./configure --prefix=/usr --enable-postgesql --enable-sqlite --enable-maemo;make all install
-# And you might need to do export CXXFLAGS="-fno-execptions"
+#   ./configure --prefix=/usr --enable-postgesql --enable-sqlite --enable-maemo;make all install
+# And you might need to do:
+#   export PYTHON=python2.5
+#   export CXXFLAGS="-fno-execptions"
 AC_ARG_ENABLE([maemo],
               [AS_HELP_STRING([--enable-maemo],
                               [build with support for the Maemo platform

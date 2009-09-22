@@ -153,7 +153,6 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
 
   m_Notebook_Find.signal_find_criteria.connect(sigc::mem_fun(*this, &Frame_Glom::on_notebook_find_criteria));
   m_Notebook_Find.show();
-
   m_Notebook_Data.signal_record_details_requested().connect(sigc::mem_fun(*this, &Frame_Glom::on_notebook_data_record_details_requested));
   m_Notebook_Data.signal_switch_page().connect(sigc::mem_fun(*this, &Frame_Glom::on_notebook_data_switch_page));
   m_Notebook_Data.show();

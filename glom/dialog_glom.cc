@@ -38,6 +38,8 @@ Dialog_Glom::Dialog_Glom(Box_WithButtons* pBox, const Glib::ustring& title)
     m_pBox->signal_cancelled.connect(sigc::mem_fun(*this, &Dialog_Glom::on_box_cancelled));
     m_pBox->show();
   }
+  else
+    std::cerr << "Dialog_Glom::Dialog_Glom(): pBox was NULL." << std::endl;
 
   //Set the default button, if there is one:
   Gtk::Widget* default_button = m_pBox->get_default_button();

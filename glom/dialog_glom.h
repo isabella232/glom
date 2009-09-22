@@ -28,6 +28,9 @@
 namespace Glom
 {
 
+//TODO: Use a Window instead of a Dialog?
+/** A window that can hold a Box_WithButtons.
+ */
 class Dialog_Glom :
   public Gtk::Dialog
 {
@@ -35,6 +38,7 @@ public:
   Dialog_Glom(Box_WithButtons* pBox, const Glib::ustring& title = Glib::ustring());
   virtual ~Dialog_Glom();
 
+//TODO: Make this private and non-virtual?
   //Signal handlers:
   virtual void on_box_cancelled();
 
