@@ -114,6 +114,12 @@ DbAddDel::DbAddDel()
   m_ScrolledWindow.add(m_TreeView);
   pack_start(m_ScrolledWindow);
   #else
+  //Do not let the treeview emit activated as soon as a row is pressed.
+  //TODO: Allow this default mamoe behaviour?
+  g_object_set(m_TreeView.gobj(), "hildon-ui-mode", HILDON_UI_MODE_NORMAL, (void*)0);
+  
+  //Let get_selected() and get_active() to work:
+  m_TreeView.set_column_selection_mode(Hildon::TOUCH_SELECTOR_SELECTION_MODE_SINGLE);
   pack_start(m_TreeView);
   #endif //GLOM_ENABLE_MAEMO
 
@@ -439,7 +445,12 @@ Gtk::TreeModel::iterator DbAddDel::get_item_selected()
 Gtk::TreeModel::iterator DbAddDel::get_item_selected() const
 {
   #ifdef GLOM_ENABLE_MAEMO
-  return m_TreeView.get_active();
+  Hildon::TouchSelector& unconst = const_cast<Hildon::TouchSelector&>(m_TreeView);
+  return unconst.get_selected(0);
+  
+  //TODO: What would this mean?
+  //See https://bugs.maemo.org/show_bug.cgi?id=4641
+  // return m_TreeView.get_active();
   #else
   Glib::RefPtr<const Gtk::TreeSelection> refTreeSelection = m_TreeView.get_selection();
   if(refTreeSelection)

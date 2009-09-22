@@ -1,3 +1,11 @@
+2009-09-22  Murray Cumming  <murrayc@murrayc.com>
+
+	On Maemo, show the details in a separate window.
+	
+	* glom/mode_data/notebook_data.[h|cc]: On maemo, hide the tabs, and don't 
+	add the details box to the notebook. Instead add it to a window and show that 	
+	window instead of switching to a details tab when details are requested.
+
 2009-09-21  Murray Cumming  <murrayc@murrayc.com>
 
 	import tests: Fix the no-exceptions build.
