@@ -40,7 +40,7 @@ Notebook_Data::Notebook_Data()
   m_iPage_Details = 1;
   #else
   //On Maemo, we add the box to m_window_maemo_details instead:
-  m_window_maemo_details = new Dialog_Glom(&m_Box_Details, _("Details"));
+  m_window_maemo_details = new Window_BoxHolder(&m_Box_Details, _("Details"));
   
   Gtk::Window* pWindow = get_app_window();
   if(pWindow)

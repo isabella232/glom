@@ -26,7 +26,7 @@
 #include <glom/mode_data/box_data_details.h>
 
 #ifdef GLOM_ENABLE_MAEMO 
-#include <glom/dialog_glom.h>
+#include <glom/window_boxholder.h>
 #endif
 
 namespace Glom
@@ -93,7 +93,7 @@ protected:
   Box_Data_Details m_Box_Details;
   
   #ifdef GLOM_ENABLE_MAEMO //Details are in a separate window on Maemo.
-  Dialog_Glom* m_window_maemo_details;
+  Window_BoxHolder* m_window_maemo_details;
   #endif
   
   guint m_iPage_Details, m_iPage_List;

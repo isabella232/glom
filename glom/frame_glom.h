@@ -28,7 +28,7 @@
 #include <libglom/document/bakery/view/view_composite.h>
 #include <libglom/document/document.h>
 
-#include "dialog_glom.h"
+#include "window_boxholder.h"
 
 #ifndef GLOM_ENABLE_MAEMO
 #include "navigation/box_tables.h"
@@ -276,7 +276,7 @@ protected:
 #ifndef GLOM_ENABLE_MAEMO
   //Navigation:
   Box_Tables* m_pBox_Tables;
-  Dialog_Glom* m_pDialog_Tables;
+  Window_BoxHolder* m_pDialog_Tables;
 #endif //GLOM_ENABLE_MAEMO
 
   Notebook_Data m_Notebook_Data;
@@ -284,11 +284,11 @@ protected:
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Developer:
-  Dialog_Glom* m_pDialog_Reports;
+  Window_BoxHolder* m_pDialog_Reports;
   Dialog_Layout_Report* m_pDialogLayoutReport;
   Box_Reports* m_pBox_Reports;
   
-  Dialog_Glom* m_pDialog_PrintLayouts;
+  Window_BoxHolder* m_pDialog_PrintLayouts;
   Window_PrintLayout_Edit* m_pDialogLayoutPrint;
   Box_Print_Layouts* m_pBox_PrintLayouts;
 

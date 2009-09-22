@@ -1310,7 +1310,7 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
   if(!m_pBox_Tables)
   {
     Utils::get_glade_widget_derived_with_warning("box_navigation_tables", m_pBox_Tables);
-    m_pDialog_Tables = new Dialog_Glom(m_pBox_Tables, _("Tables"));
+    m_pDialog_Tables = new Window_BoxHolder(m_pBox_Tables, _("Tables"));
     m_pDialog_Tables->signal_hide().connect(sigc::mem_fun(*this, &Frame_Glom::on_dialog_tables_hide));
 
     Gtk::Window* pWindow = get_app_window();
@@ -1801,7 +1801,7 @@ void Frame_Glom::on_menu_developer_reports()
   if(!m_pBox_Reports)
   {
     Utils::get_glade_developer_widget_derived_with_warning("box_reports", m_pBox_Reports);
-    m_pDialog_Reports = new Dialog_Glom(m_pBox_Reports);
+    m_pDialog_Reports = new Window_BoxHolder(m_pBox_Reports);
     m_pDialog_Reports->set_transient_for(*(get_app_window()));
 
     Utils::get_glade_developer_widget_derived_with_warning("window_report_layout", m_pDialogLayoutReport);
@@ -1833,7 +1833,7 @@ void Frame_Glom::on_menu_developer_print_layouts()
   if(!m_pBox_PrintLayouts)
   {
     Utils::get_glade_developer_widget_derived_with_warning("box_print_layouts", m_pBox_PrintLayouts);
-    m_pDialog_PrintLayouts = new Dialog_Glom(m_pBox_PrintLayouts);
+    m_pDialog_PrintLayouts = new Window_BoxHolder(m_pBox_PrintLayouts);
 
     m_pDialog_PrintLayouts->set_default_size(300, 400);
     m_pBox_PrintLayouts->show_all();

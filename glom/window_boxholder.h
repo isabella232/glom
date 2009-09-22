@@ -18,32 +18,37 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef DIALOG_GLOM_H
-#define DIALOG_GLOM_H
+#ifndef GLOM_WINDOW_BOXHOLDER_H
+#define GLOM_WINDOW_BOXHOLDER_H
 
 #include <glom/box_withbuttons.h>
 #include <gtkmm/window.h>
 #include <gtkmm/button.h>
+
+#ifdef GLOM_ENABLE_MAEMO
+#include <hildonmm/window.h>
+#endif
 
 namespace Glom
 {
 
 /** A window that can hold a Box_WithButtons.
  */
-class Dialog_Glom :
+class Window_BoxHolder :
+#ifndef GLOM_ENABLE_MAEMO
   public Gtk::Window
+#else
+  public Hildon::Window
+#endif
 {
 public: 
-  Dialog_Glom(Box_WithButtons* pBox, const Glib::ustring& title = Glib::ustring());
-  virtual ~Dialog_Glom();
+  Window_BoxHolder(Box_WithButtons* pBox, const Glib::ustring& title = Glib::ustring());
+  virtual ~Window_BoxHolder();
 
 private:
 
   //Signal handlers:
   void on_box_cancelled();
-
-  //Member widgets:
-  Box_WithButtons* m_pBox;
 };
 
 } //namespace Glom
