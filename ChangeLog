@@ -1,5 +1,15 @@
 2009-09-22  Murray Cumming  <murrayc@murrayc.com>
 
+	Dialog_Glom: Make this a little less stupid, so we can ifdef for Maemo.
+
+	* glom/dialog_glom.[h|cc]: Derive from Window, not Dialog.
+	Constructor: Add the provided box instead of requiring us to add it 
+	explicitly (to the Dialog's vbox).
+	* glom/frame_glom.cc:
+	* glom/mode_data/notebook_data.cc: Adapt.
+
+2009-09-22  Murray Cumming  <murrayc@murrayc.com>
+
 	On Maemo, show the details in a separate window.
 	
 	* glom/mode_data/notebook_data.[h|cc]: On maemo, hide the tabs, and don't 

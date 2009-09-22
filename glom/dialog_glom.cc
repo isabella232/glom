@@ -32,21 +32,17 @@ Dialog_Glom::Dialog_Glom(Box_WithButtons* pBox, const Glib::ustring& title)
   set_border_width(Utils::DEFAULT_SPACING_SMALL);
 
   m_pBox = pBox;
+  g_assert(m_pBox);
 
-  if(m_pBox)
-  {
-    m_pBox->signal_cancelled.connect(sigc::mem_fun(*this, &Dialog_Glom::on_box_cancelled));
-    m_pBox->show();
-  }
-  else
-    std::cerr << "Dialog_Glom::Dialog_Glom(): pBox was NULL." << std::endl;
+  m_pBox->signal_cancelled.connect(sigc::mem_fun(*this, &Dialog_Glom::on_box_cancelled));
+
+  add(*m_pBox);
+  m_pBox->show();
 
   //Set the default button, if there is one:
   Gtk::Widget* default_button = m_pBox->get_default_button();
   if(default_button)
     set_default(*default_button);
-
-  set_has_separator(false);
 }
 
 Dialog_Glom::~Dialog_Glom()

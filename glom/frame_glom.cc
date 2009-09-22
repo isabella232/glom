@@ -1317,7 +1317,6 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
     if(pWindow)
       m_pDialog_Tables->set_transient_for(*pWindow);
 
-    m_pDialog_Tables->get_vbox()->pack_start(*m_pBox_Tables);
     m_pDialog_Tables->set_default_size(300, 400);
     m_pBox_Tables->show_all();
     add_view(m_pBox_Tables);
@@ -1810,7 +1809,6 @@ void Frame_Glom::on_menu_developer_reports()
     m_pDialogLayoutReport->set_transient_for(*(get_app_window()));
     m_pDialogLayoutReport->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_layout_report_hide) );
 
-    m_pDialog_Reports->get_vbox()->pack_start(*m_pBox_Reports);
     m_pDialog_Reports->set_default_size(300, 400);
     m_pBox_Reports->show_all();
 
@@ -1837,7 +1835,6 @@ void Frame_Glom::on_menu_developer_print_layouts()
     Utils::get_glade_developer_widget_derived_with_warning("box_print_layouts", m_pBox_PrintLayouts);
     m_pDialog_PrintLayouts = new Dialog_Glom(m_pBox_PrintLayouts);
 
-    m_pDialog_PrintLayouts->get_vbox()->pack_start(*m_pBox_PrintLayouts);
     m_pDialog_PrintLayouts->set_default_size(300, 400);
     m_pBox_PrintLayouts->show_all();
     add_view(m_pBox_PrintLayouts);

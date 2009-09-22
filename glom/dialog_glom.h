@@ -22,27 +22,25 @@
 #define DIALOG_GLOM_H
 
 #include <glom/box_withbuttons.h>
-#include <gtkmm/dialog.h>
+#include <gtkmm/window.h>
 #include <gtkmm/button.h>
 
 namespace Glom
 {
 
-//TODO: Use a Window instead of a Dialog?
 /** A window that can hold a Box_WithButtons.
  */
 class Dialog_Glom :
-  public Gtk::Dialog
+  public Gtk::Window
 {
 public: 
   Dialog_Glom(Box_WithButtons* pBox, const Glib::ustring& title = Glib::ustring());
   virtual ~Dialog_Glom();
 
-//TODO: Make this private and non-virtual?
-  //Signal handlers:
-  virtual void on_box_cancelled();
+private:
 
-protected:
+  //Signal handlers:
+  void on_box_cancelled();
 
   //Member widgets:
   Box_WithButtons* m_pBox;

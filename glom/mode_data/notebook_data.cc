@@ -27,7 +27,7 @@ namespace Glom
 
 Notebook_Data::Notebook_Data()
 : m_iPage_Details(0), m_iPage_List(0)
-  #ifndef GLOM_ENABLE_MAEMO
+  #ifdef GLOM_ENABLE_MAEMO
   , m_window_maemo_details(0)
   #endif
 {
@@ -46,8 +46,6 @@ Notebook_Data::Notebook_Data()
   if(pWindow)
     m_window_maemo_details->set_transient_for(*pWindow);
 
-  //TODO: Avoid having to add this to the Dialog_Glom _again_:
-  m_window_maemo_details->get_vbox()->pack_start(m_Box_Details);
   m_Box_Details.show_all();
   #endif //GLOM_ENABLE_MAEMO
 
@@ -98,8 +96,10 @@ Notebook_Data::~Notebook_Data()
   remove_view(&m_Box_List);
   remove_view(&m_Box_Details);
 
+#ifdef GLOM_ENABLE_MAEMO
   if(m_window_maemo_details)
     delete m_window_maemo_details;
+#endif //GLOM_ENABLE_MAEMO
 }
 
 bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda::Value& primary_key_value_for_details)
