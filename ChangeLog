@@ -1,5 +1,13 @@
 2009-09-23  Murray Cumming  <murrayc@murrayc.com>
 
+	Maemo: Details: Do not show buttons.
+
+	* glom/mode_data/box_data_details.[h|cc]: ifdef out the buttons for maemo.
+	* glom/glom.glade: Hack a HildonStackableWindow into the maemo5 branch 
+	to avoid a warning with our get_widget_derived() call.
+
+2009-09-23  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/mode_data/box_data_details.cc: Rename the HBox member variables 
 	to make their purposes clearer.
 

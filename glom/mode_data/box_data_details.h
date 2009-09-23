@@ -48,6 +48,7 @@ public:
 
  
   //Signals:
+#ifndef GLOM_ENABLE_MAEMO
   typedef sigc::signal<void> type_signal_void;
   type_signal_void signal_nav_first();
   type_signal_void signal_nav_prev();
@@ -56,6 +57,7 @@ public:
 
   typedef sigc::signal<void, const Gnome::Gda::Value&> type_signal_record_deleted; //arg is PrimaryKey.
   type_signal_record_deleted signal_record_deleted();
+#endif
 
    /** For instance,
     * void on_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
@@ -89,14 +91,19 @@ protected:
 
   void print_layout_group(xmlpp::Element* node_parent, const sharedptr<const LayoutGroup>& group);
 
+private:
   //Signal handlers:
-  virtual void on_button_new();
-  virtual void on_button_del();
+#ifndef GLOM_ENABLE_MAEMO
+  void on_button_new();
+  void on_button_del();
 
-  virtual void on_button_nav_first();
-  virtual void on_button_nav_prev();
-  virtual void on_button_nav_next();
-  virtual void on_button_nav_last();
+  void on_button_nav_first();
+  void on_button_nav_prev();
+  void on_button_nav_next();
+  void on_button_nav_last();
+#endif //GLOM_ENABLE_MAEMO
+
+protected:
 
   virtual void on_userlevel_changed(AppState::userlevels user_level); //override
 
@@ -129,37 +136,35 @@ protected:
 
   //Member widgets:
   Gtk::ScrolledWindow m_ScrolledWindow;
-  Gtk::HBox m_HBox;
-  Gtk::HBox m_HBox_Sidebar;
-  Gtk::Button m_Button_New;
-  Gtk::Button m_Button_Del;
+  Gtk::HBox m_hbox_content;
+  FlowTableWithFields m_FlowTable;
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   LayoutToolbar m_Dragbar;
 #endif
 
-  /*
-  Gtk::Frame m_Frame_Related;
-  Gtk::Alignment m_Alignment_Related;
-  Gtk::Label m_Label_Related;
-  Gtk::Notebook m_Notebook_Related;
-  */
-
+#ifndef GLOM_ENABLE_MAEMO
+  Gtk::HBox m_hbox_buttons;
+  Gtk::Button m_Button_New;
+  Gtk::Button m_Button_Del;
   Gtk::Button m_Button_Nav_First;
   Gtk::Button m_Button_Nav_Prev;
   Gtk::Button m_Button_Nav_Next;
   Gtk::Button m_Button_Nav_Last;
-  FlowTableWithFields m_FlowTable;
-
+#endif
   guint m_ColumnName, m_ColumnValue;
   bool m_bDoNotRefreshRelated; //Stops us from refreshing related records in response to an addition of a related record.
   bool m_ignore_signals;
 
+#ifndef GLOM_ENABLE_MAEMO
   type_signal_void m_signal_nav_first;
   type_signal_void m_signal_nav_prev;
   type_signal_void m_signal_nav_next;
   type_signal_void m_signal_nav_last;
 
   type_signal_record_deleted m_signal_record_deleted;
+
+#endif //GLOM_ENABLE_MAEMO
   type_signal_requested_related_details m_signal_requested_related_details;
   
 #ifndef GLOM_ENABLE_CLIENT_ONLY

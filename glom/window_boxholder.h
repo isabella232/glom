@@ -26,7 +26,7 @@
 #include <gtkmm/button.h>
 
 #ifdef GLOM_ENABLE_MAEMO
-#include <hildonmm/stackablewindow.h>
+#include <hildonmm/stackable-window.h>
 #endif
 
 namespace Glom

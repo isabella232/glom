@@ -29,10 +29,10 @@ namespace Glom
 Box_Data_Details_Find::Box_Data_Details_Find()
 : Box_Data_Details(false)
 {
-   //m_strHint = _("Enter the search criteria and click [Find]\n Glom will then change to Data mode to display the results.");
-
   //Instead of nav buttons:
-  m_HBox.pack_end(m_Button_Find, Gtk::PACK_SHRINK);
+  #ifndef GLOM_ENABLE_MAEMO //TODO_Maemo: Really have this buttons somewhere?
+  m_hbox_buttons.pack_end(m_Button_Find, Gtk::PACK_SHRINK);
+  #endif
 
   g_object_set(m_Button_Find.gobj(), "can-default", TRUE, (gpointer)NULL); //TODO: Make this a real method in gtkmm?
 

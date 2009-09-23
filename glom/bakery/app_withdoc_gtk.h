@@ -24,7 +24,7 @@
 #include <glom/bakery/app.h>
 
 #ifdef GLOM_ENABLE_MAEMO
-#include <hildonmm/stackablewindow.h>
+#include <hildonmm/stackable-window.h>
 #endif
 
 #include <gtkmm/menubar.h>

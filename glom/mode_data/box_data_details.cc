@@ -37,29 +37,23 @@ namespace Glom
 {
 
 Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
-: m_hbox_buttons(false, Utils::DEFAULT_SPACING_SMALL),
-  m_hbox_content(false, Utils::DEFAULT_SPACING_SMALL),
+: m_hbox_content(false, Utils::DEFAULT_SPACING_SMALL),
+#ifndef GLOM_ENABLE_MAEMO
+  m_hbox_buttons(false, Utils::DEFAULT_SPACING_SMALL),
   m_Button_New(Gtk::Stock::ADD),
   m_Button_Del(Gtk::Stock::DELETE),
   m_Button_Nav_First(Gtk::Stock::GOTO_FIRST),
   m_Button_Nav_Prev(Gtk::Stock::GO_BACK),
   m_Button_Nav_Next(Gtk::Stock::GO_FORWARD),
   m_Button_Nav_Last(Gtk::Stock::GOTO_LAST),
+#endif //GLOM_ENABLE_MAEMO
   m_bDoNotRefreshRelated(false),
   m_ignore_signals(true)
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  ,m_design_mode(false)
+  , m_design_mode(false)
 #endif
 {
   m_layout_name = "details";
-
-  m_Button_New.set_tooltip_text(_("Create a new record."));
-  m_Button_Del.set_tooltip_text(_("Remove this record."));
-  m_Button_Nav_First.set_tooltip_text(_("View the first record in the list."));
-  m_Button_Nav_Prev.set_tooltip_text(_("View the previous record in the list."));
-  m_Button_Nav_Next.set_tooltip_text(_("View the next record in the list."));
-  m_Button_Nav_Last.set_tooltip_text(_("View the last record in the list."));
-  
 
   add_view(&m_FlowTable); //Allow this to access the document too.
 
@@ -71,9 +65,14 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
 
   //m_ScrolledWindow.set_border_width(Utils::DEFAULT_SPACING_SMALL);
 #ifdef GLOM_ENABLE_MAEMO
-  m_ScrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC); /* Allow horizontal scrolling in maemo because the screen is rather small and there might be some database UIs that don't fit horizontally. Such a UI may be concidered non-maemo-friendly, but it can still be fully viewed this way. */
+  // Allow horizontal scrolling in maemo because the screen is rather small and 
+  // there might be some database UIs that don't fit horizontally. Such a UI may 
+  // be considered non-maemo-friendly, but it can still be fully viewed this way.
+  // TODO: Prevent the need for horizontal scrolling.
+  m_ScrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 #else
-  m_ScrolledWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC); /* Allow vertical scrolling, but never scroll horizontally. */
+  // Allow vertical scrolling, but never scroll horizontally:
+  m_ScrolledWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC); 
 #endif
   m_ScrolledWindow.set_shadow_type(Gtk::SHADOW_NONE); //SHADOW_IN is Recommended by the GNOME HIG, but looks odd.
 
@@ -87,13 +86,41 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   // The FlowTable does not support native scrolling, so gtkmm adds it to a
   // viewport first that also has some shadow we do not want.
   Gtk::Viewport* viewport = dynamic_cast<Gtk::Viewport*>(m_FlowTable.get_parent());
-  if(viewport) viewport->set_shadow_type(Gtk::SHADOW_NONE);
+  if(viewport)
+    viewport->set_shadow_type(Gtk::SHADOW_NONE);
+
+
+  pack_start(m_hbox_content);
+
+  m_FlowTable.signal_field_edited().connect( sigc::mem_fun(*this,  &Box_Data_Details::on_flowtable_field_edited) );
+  m_FlowTable.signal_field_open_details_requested().connect( sigc::mem_fun(*this,  &Box_Data_Details::on_flowtable_field_open_details_requested) );
+  show_all();
+
+  m_FlowTable.signal_related_record_changed().connect( sigc::mem_fun(*this, &Box_Data_Details::on_flowtable_related_record_changed) );
+
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  m_FlowTable.signal_layout_changed().connect( sigc::mem_fun(*this, &Box_Data_Details::on_flowtable_layout_changed) );
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+
+  m_FlowTable.signal_requested_related_details().connect( sigc::mem_fun(*this, &Box_Data_Details::on_flowtable_requested_related_details) );
+
+  m_FlowTable.signal_script_button_clicked().connect( sigc::mem_fun(*this, &Box_Data_Details::on_flowtable_script_button_clicked) );
+
+
+#ifndef GLOM_ENABLE_MAEMO
+  m_Button_New.set_tooltip_text(_("Create a new record."));
+  m_Button_Del.set_tooltip_text(_("Remove this record."));
+  m_Button_Nav_First.set_tooltip_text(_("View the first record in the list."));
+  m_Button_Nav_Prev.set_tooltip_text(_("View the previous record in the list."));
+  m_Button_Nav_Next.set_tooltip_text(_("View the next record in the list."));
+  m_Button_Nav_Last.set_tooltip_text(_("View the last record in the list."));
 
   //Add or delete record:
   m_hbox_buttons.pack_start(m_Button_New, Gtk::PACK_SHRINK);
   m_hbox_buttons.pack_start(m_Button_Del,  Gtk::PACK_SHRINK);
 
-   //Link buttons to handlers:
+  //Link buttons to handlers:
   m_Button_New.signal_clicked().connect(sigc::mem_fun(*this, &Box_Data_Details::on_button_new));
   m_Button_Del.signal_clicked().connect(sigc::mem_fun(*this, &Box_Data_Details::on_button_del));
 
@@ -112,23 +139,8 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_Button_Nav_Next.signal_clicked().connect(sigc::mem_fun(*this, &Box_Data_Details::on_button_nav_next));
   m_Button_Nav_Last.signal_clicked().connect(sigc::mem_fun(*this, &Box_Data_Details::on_button_nav_last));
 
-  pack_start(m_hbox_content);
   pack_start(m_hbox_buttons, Gtk::PACK_SHRINK);
-
-  m_FlowTable.signal_field_edited().connect( sigc::mem_fun(*this,  &Box_Data_Details::on_flowtable_field_edited) );
-  m_FlowTable.signal_field_open_details_requested().connect( sigc::mem_fun(*this,  &Box_Data_Details::on_flowtable_field_open_details_requested) );
-  show_all();
-
-  m_FlowTable.signal_related_record_changed().connect( sigc::mem_fun(*this, &Box_Data_Details::on_flowtable_related_record_changed) );
-
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_FlowTable.signal_layout_changed().connect( sigc::mem_fun(*this, &Box_Data_Details::on_flowtable_layout_changed) );
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-  m_FlowTable.signal_requested_related_details().connect( sigc::mem_fun(*this, &Box_Data_Details::on_flowtable_requested_related_details) );
-
-  m_FlowTable.signal_script_button_clicked().connect( sigc::mem_fun(*this, &Box_Data_Details::on_flowtable_script_button_clicked) );
+#endif //GLOM_ENABLE_MAEMO
 
   m_ignore_signals = false;
 }
@@ -285,8 +297,10 @@ bool Box_Data_Details::fill_from_database()
       Privileges table_privs = Privs::get_current_privs(m_table_name);
 
       //Enable/Disable record creation and deletion:
+      #ifndef GLOM_ENABLE_MAEMO
       m_Button_New.set_sensitive(table_privs.m_create);
       m_Button_Del.set_sensitive(table_privs.m_delete);
+      #endif //GLOM_ENABLE_MAEMO
 
       if(table_privs.m_view)
       {
@@ -408,6 +422,7 @@ bool Box_Data_Details::fill_from_database()
   return bResult;
 }
 
+#ifndef GLOM_ENABLE_MAEMO
 void Box_Data_Details::on_button_new()
 {
   if(!confirm_discard_unstored_data())
@@ -494,6 +509,7 @@ void Box_Data_Details::on_button_nav_last()
   if(confirm_discard_unstored_data())
     signal_nav_last().emit();
 }
+#endif //GLOM_ENABLE_MAEMO
 
 Gnome::Gda::Value Box_Data_Details::get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const
 {
@@ -580,6 +596,7 @@ void Box_Data_Details::on_related_record_added(Gnome::Gda::Value /* strKeyValue 
   m_bDoNotRefreshRelated = bDoNotRefreshRelated;
 }
 
+#ifndef GLOM_ENABLE_MAEMO
 Box_Data_Details::type_signal_void Box_Data_Details::signal_nav_first()
 {
   return m_signal_nav_first;
@@ -604,6 +621,7 @@ Box_Data_Details::type_signal_record_deleted Box_Data_Details::signal_record_del
 {
   return m_signal_record_deleted; 
 }
+#endif //GLOM_ENABLE_MAEMO
 
 Box_Data_Details::type_signal_requested_related_details Box_Data_Details::signal_requested_related_details()
 {
@@ -691,8 +709,10 @@ void Box_Data_Details::on_flowtable_script_button_clicked(const sharedptr<const 
     }
     else
     {
+      #ifndef GLOM_ENABLE_MAEMO
       //Tell the parent to do something appropriate, such as show another record:
       signal_record_deleted().emit(primary_key_value);
+      #endif
     }
   }
 }
