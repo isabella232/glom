@@ -1,5 +1,7 @@
 #include <glom/import_csv/csv_parser.h>
+#include <tests/import/utils.h>
 //#include <glibmm/regex.h>
+#include <glibmm/regex.h>
 #include <iostream>
 #include <cstdlib>
 
@@ -41,12 +43,6 @@ bool check_tokens(Glib::RefPtr<Glib::Regex> check)
   return true;
 }
 
-void set_parser_contents(Glom::CsvParser& parser, const char* input, guint size)
-{
-  // Do not read terminating null byte.
-  parser.m_raw = std::vector<char>(input, input + size -1);
-}
-
 void on_line_scanned(const Glib::ustring& line, guint /*line_number*/)
 {
   Glib::ustring field;
@@ -74,26 +70,20 @@ int main()
   Glom::CsvParser parser("UTF-8");
   parser.signal_line_scanned().connect(sigc::ptr_fun(&on_line_scanned));
 
-  bool test_dquoted_string = false;
-  bool test_skip_on_no_ending_newline = false;
-  bool test_skip_on_no_quotes_around_token = false;
-  bool test_skip_spaces_around_separators = false;
-  bool test_fail_on_non_comma_separators = false;
-  bool test_parse_newline_inside_quotes = false;
-
-  std::stringstream results;
+  bool result = true;
+  std::stringstream report;
 
   // test_dquoted_string
   {
     const char raw_line[] = "\"a \"\"quoted\"\" token\",\"sans quotes\"\n";
-    set_parser_contents(parser, raw_line, sizeof(raw_line));
+    ImportTests::set_parser_contents(parser, raw_line, sizeof(raw_line));
 
     while(parser.on_idle_parse())
     {}
 
-    results << "test_dquoted_string: "
-            << (test_dquoted_string = check_tokens(Glib::Regex::create("^(a \"quoted\" token|,|sans quotes)$")))
-            << std::endl;
+    bool passed = check_tokens(Glib::Regex::create("^(a \"quoted\" token|,|sans quotes)$"));
+    if(!ImportTests::check("test_dquoted_string", passed, report))
+      result = false;
 
     get_tokens_instance().clear();
     parser.clear();
@@ -102,14 +92,14 @@ int main()
   // test_skip_on_no_ending_newline
   {
     const char raw_line[] = "\"this\",\"line\",\"will\",\"be\",\"skipped\"";
-    set_parser_contents(parser, raw_line, sizeof(raw_line));
+    ImportTests::set_parser_contents(parser, raw_line, sizeof(raw_line));
 
     while(parser.on_idle_parse())
     {}
 
-    results << "test_skip_on_no_ending_newline: "
-            << (test_skip_on_no_ending_newline = (get_tokens_instance().size() == 0))
-            << std::endl;
+    bool passed = (get_tokens_instance().size() == 0);
+    if(!ImportTests::check("test_skip_on_no_ending_newline", passed, report))
+      result = false;
 
     get_tokens_instance().clear();
     parser.clear();
@@ -118,14 +108,14 @@ int main()
   // test_skip_on_no_quotes_around_token
   {
     const char raw_line[] = "this,line,contains,only,empty,tokens\n";
-    set_parser_contents(parser, raw_line, sizeof(raw_line));
+    ImportTests::set_parser_contents(parser, raw_line, sizeof(raw_line));
 
     while(parser.on_idle_parse())
     {}
 
-    results << "test_skip_on_no_quotes_around_token: "
-            << (test_skip_on_no_quotes_around_token = check_tokens(Glib::Regex::create("^(|,)$")))
-            << std::endl;
+    bool passed = check_tokens(Glib::Regex::create("^(|,)$"));
+    if(!ImportTests::check("test_skip_on_no_quotes_around_token", passed, report))
+      result = false;
 
     get_tokens_instance().clear();
     parser.clear();
@@ -134,14 +124,14 @@ int main()
   // test_skip_spaces_around_separators
   {
     const char raw_line[] = "\"spaces\" , \"around\", \"separators\"\n";
-    set_parser_contents(parser, raw_line, sizeof(raw_line));
+    ImportTests::set_parser_contents(parser, raw_line, sizeof(raw_line));
 
     while(parser.on_idle_parse())
     {}
 
-    results << "test_skip_spaces_around_separators: "
-            << (test_skip_spaces_around_separators = (get_tokens_instance().size() == 5))
-            << std::endl;
+    bool passed = (get_tokens_instance().size() == 5);
+    if(!ImportTests::check("test_skip_spaces_around_separators", passed, report))
+      result = false;
 
     get_tokens_instance().clear();
     parser.clear();
@@ -150,14 +140,14 @@ int main()
   // test_fail_on_non_comma_separators
   {
     const char raw_line[] = "\"cannot\"\t\"tokenize\"\t\"this\"\n";
-    set_parser_contents(parser, raw_line, sizeof(raw_line));
+    ImportTests::set_parser_contents(parser, raw_line, sizeof(raw_line));
 
     while(parser.on_idle_parse())
     {}
 
-    results << "test_fail_on_non_comma_separators: "
-            << (test_fail_on_non_comma_separators = check_tokens(Glib::Regex::create("^cannottokenizethis$")))
-            << std::endl;
+    bool passed = check_tokens(Glib::Regex::create("^cannottokenizethis$"));
+    if(!ImportTests::check("test_fail_on_non_comma_separators", passed, report))
+      result = false;
 
     get_tokens_instance().clear();
     parser.clear();
@@ -166,26 +156,21 @@ int main()
   // test_parse_newline_inside_quotes
   {
     const char raw_line[] = "\"cell with\nnewline\"\n\"token on next line\"";
-    set_parser_contents(parser, raw_line, sizeof(raw_line));
+    ImportTests::set_parser_contents(parser, raw_line, sizeof(raw_line));
 
     while(parser.on_idle_parse())
     {}
 
-    results << "test_parse_newline_inside_quotes: "
-            << (test_parse_newline_inside_quotes = check_tokens(Glib::Regex::create("^(cell with\nnewline|token on next line)$")))
-            << std::endl;
+    bool passed = check_tokens(Glib::Regex::create("^(cell with\nnewline|token on next line)$"));
+    if(!ImportTests::check("test_parse_newline_inside_quotes", passed, report))
+      result = false;
 
     get_tokens_instance().clear();
     parser.clear();
   }
 
-  std::cout << results.rdbuf() << std::endl;
+  if(!result)
+    std::cout << report.rdbuf() << std::endl;
 
-  return (test_dquoted_string &&
-          test_skip_on_no_ending_newline &&
-          test_skip_on_no_quotes_around_token &&
-          test_skip_spaces_around_separators &&
-          test_fail_on_non_comma_separators &&
-          test_parse_newline_inside_quotes) ? EXIT_SUCCESS
-                                            : EXIT_FAILURE;
+  return result ? EXIT_SUCCESS : EXIT_FAILURE;
 }

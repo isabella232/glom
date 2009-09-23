@@ -50,10 +50,14 @@ tests_test_load_python_library_SOURCES = tests/test_load_python_library.cc
 tests_import_test_parsing_SOURCES =	\
 	glom/import/csv_parser.cc	\
 	glom/import/csv_parser.h	\
+	tests/import/utils.cc\
+	tests/import/utils.h\
 	tests/import/test_parsing.cc
 tests_import_test_signals_SOURCES =	\
 	glom/import/csv_parser.cc	\
 	glom/import/csv_parser.h	\
+	tests/import/utils.cc\
+	tests/import/utils.h\
 	tests/import/test_signals.cc
 
 glom_libglom_test_connectionpool_LDADD = $(tests_ldadd)

@@ -1,3 +1,11 @@
+2009-09-18  Michael Hasselmann  <michaelh@openismus.com>
+
+	Import tests: made them quiet
+	
+	* Makefile_tests.am, test/import/utils.[cc|h],
+	tests/import/test_[parsing|signals].cc: Only report on failure. Moved common
+	parts into an utility namespace.
+
 2009-09-18  Murray Cumming  <murrayc@murrayc.com>
 
 	CsvParser: Make this an actual parser, with a sane API.
