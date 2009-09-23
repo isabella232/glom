@@ -133,8 +133,10 @@ private:
 
   // In order to not make the UI feel sluggish during larger imports we parse
   // on chunk at a time in the idle handler.
+public:  // public because it is needed for testing => no main loop
   bool on_idle_parse();
 
+private:
   void begin_parse();
 
   static const gunichar DELIMITER = ',';
@@ -145,8 +147,10 @@ private:
   void do_line_scanned(const Glib::ustring& current_line, guint line_number);
 
   //TODO: Document this:
+public: // public because it is needed for testing => no main loop
   static Glib::ustring::const_iterator advance_field(const Glib::ustring::const_iterator& iter, const Glib::ustring::const_iterator& end, Glib::ustring& field);
 
+private:
   void on_file_read(const Glib::RefPtr<Gio::AsyncResult>& result);
   void on_stream_read(const Glib::RefPtr<Gio::AsyncResult>& result);
   void on_file_query_info(const Glib::RefPtr<Gio::AsyncResult>& result);

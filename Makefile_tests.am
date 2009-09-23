@@ -48,14 +48,14 @@ tests_test_parsing_time_SOURCES = tests/test_parsing_time.cc
 tests_test_signal_reemit_SOURCES = tests/test_signal_reemit.cc
 tests_test_load_python_library_SOURCES = tests/test_load_python_library.cc
 tests_import_test_parsing_SOURCES =	\
-	glom/import/csv_parser.cc	\
-	glom/import/csv_parser.h	\
+	glom/import_csv/csv_parser.cc	\
+	glom/import_csv/csv_parser.h	\
 	tests/import/utils.cc\
 	tests/import/utils.h\
 	tests/import/test_parsing.cc
 tests_import_test_signals_SOURCES =	\
-	glom/import/csv_parser.cc	\
-	glom/import/csv_parser.h	\
+	glom/import_csv/csv_parser.cc	\
+	glom/import_csv/csv_parser.h	\
 	tests/import/utils.cc\
 	tests/import/utils.h\
 	tests/import/test_signals.cc
@@ -84,5 +84,5 @@ tests_test_parsing_time_LDADD = $(tests_ldadd)
 tests_test_signal_reemit_LDADD = $(LIBGLOM_LIBS)
 tests_test_load_python_library_LDADD = $(LIBGLOM_LIBS)
 tests_test_python_module_LDADD = $(LIBGLOM_LIBS) $(PYTHON_LIBS) glom/libglom/libglom-$(GLOM_ABI_VERSION).la
-tests_import_test_parsing_LDADD = $(LIBGLOM_LIBS)
-tests_import_test_signals_LDADD = $(LIBGLOM_LIBS)
+tests_import_test_parsing_LDADD = $(LIBGLOM_LIBS) $(GLOM_LIBS)
+tests_import_test_signals_LDADD = $(LIBGLOM_LIBS) $(GLOM_LIBS)

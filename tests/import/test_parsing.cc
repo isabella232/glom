@@ -1,7 +1,7 @@
 #include <glom/import_csv/csv_parser.h>
 #include <tests/import/utils.h>
 //#include <glibmm/regex.h>
-#include <glibmm/regex.h>
+#include <gtkmm.h>
 #include <iostream>
 #include <cstdlib>
 
@@ -38,7 +38,7 @@ bool check_tokens(const std::string& regex)
   #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    check = Glib::Regex::create(regex)
+    check = Glib::Regex::create(regex);
   }
   catch(const Glib::Error& ex)
   {
@@ -91,8 +91,10 @@ void on_line_scanned(const Glib::ustring& line, guint /*line_number*/)
 } // namespace
 
 // Testcases
-int main()
+int main(int argc, char* argv[])
 {
+  Gtk::Main gtk(argc, argv);
+
   Glom::CsvParser parser("UTF-8");
   parser.signal_line_scanned().connect(sigc::ptr_fun(&on_line_scanned));
 
@@ -103,6 +105,8 @@ int main()
   {
     const char raw_line[] = "\"a \"\"quoted\"\" token\",\"sans quotes\"\n";
     ImportTests::set_parser_contents(parser, raw_line, sizeof(raw_line));
+
+    parser.set_file_and_start_parsing("./tests/import/data/dquoted_string.csv");
 
     while(parser.on_idle_parse())
     {}

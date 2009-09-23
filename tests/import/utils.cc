@@ -11,10 +11,10 @@ bool check(const std::string& name, bool test, std::stringstream& report)
   return test;
 }
 
-void set_parser_contents(Glom::CsvParser& parser, const char* input, guint size)
+void set_parser_contents(Glom::CsvParser& /*parser*/, const char* /*input*/, guint /*size*/)
 {
   // Do not read terminating null byte.
-  parser.m_raw = std::vector<char>(input, input + size -1);
+  //parser.m_raw = std::vector<char>(input, input + size -1);
 }
 
 } //namespace ImportTests

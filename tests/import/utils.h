@@ -1,7 +1,7 @@
 #ifndef TEST_IMPORT_UTILS_H
 #define TEST_IMPORT_UTILS_H
 
-#include <glom/import_csv.h>
+#include <glom/import_csv/csv_parser.h>
 #include <iostream>
 
 namespace ImportTests

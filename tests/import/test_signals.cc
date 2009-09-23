@@ -1,6 +1,7 @@
 #include <glom/import_csv/csv_parser.h>
 #include <tests/import/utils.h>
 //#include <glibmm/regex.h>
+#include <gtkmm.h>
 #include <iostream>
 #include <stdexcept>
 #include <cstdlib>
@@ -46,8 +47,10 @@ void print_signal_counts()
 } // namespace
 
 // Testcases
-int main()
+int main(int argc, char* argv[])
 {
+  Gtk::Main gtk(argc, argv);
+
   Glom::CsvParser parser("UTF-8");
   parser.signal_line_scanned().connect(sigc::hide(sigc::hide(&on_line_scanned)));
   parser.signal_encoding_error().connect(sigc::ptr_fun(&on_encoding_error));
