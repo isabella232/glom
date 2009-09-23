@@ -24,7 +24,7 @@
 #include <glom/bakery/app.h>
 
 #ifdef GLOM_ENABLE_MAEMO
-#include <hildonmm/window.h>
+#include <hildonmm/stackablewindow.h>
 #endif
 
 #include <gtkmm/menubar.h>
@@ -54,14 +54,14 @@ namespace GlomBakery
 class App_WithDoc_Gtk
   : public App_WithDoc,
 #ifdef GLOM_ENABLE_MAEMO
-    public Hildon::Window //inherit virtually to share sigc::trackable.
+    public Hildon::StackableWindow //inherit virtually to share sigc::trackable.
 #else
     public Gtk::Window //inherit virtually to share sigc::trackable.
 #endif
 {
 public:
 #ifdef GLOM_ENABLE_MAEMO
-  typedef Hildon::Window ParentWindow;
+  typedef Hildon::StackableWindow ParentWindow;
 #else
   typedef Gtk::Window ParentWindow;
 #endif

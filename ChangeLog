@@ -1,3 +1,11 @@
+2009-09-23  Murray Cumming  <murrayc@murrayc.com
+
+	Maemo: Use Hildon::StackableWindow.
+
+	* glom/bakery/app_withdoc_gtk.h:
+	* glom/window_boxholder.h: Use Hildon::StackableWindow instead of just 
+	Hildon::Window because this always seems to be the right thing to do.
+
 2009-09-23  Murray Cumming  <murrayc@murrayc.com>
 
 	Renamed Dialog_Glom to Window_BoxHolder.

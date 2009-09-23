@@ -26,7 +26,7 @@
 #include <gtkmm/button.h>
 
 #ifdef GLOM_ENABLE_MAEMO
-#include <hildonmm/window.h>
+#include <hildonmm/stackablewindow.h>
 #endif
 
 namespace Glom
@@ -38,7 +38,7 @@ class Window_BoxHolder :
 #ifndef GLOM_ENABLE_MAEMO
   public Gtk::Window
 #else
-  public Hildon::Window
+  public Hildon::StackableWindow
 #endif
 {
 public: 
