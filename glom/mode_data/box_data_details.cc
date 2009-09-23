@@ -1,6 +1,6 @@
 /* Glom
  *
- * Copyright (C) 2001-2004 Murray Cumming
+ * Copyright (C) 2001-2009 Murray Cumming
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -37,8 +37,8 @@ namespace Glom
 {
 
 Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
-: m_HBox(false, Utils::DEFAULT_SPACING_SMALL),
-  m_HBox_Sidebar (false, Utils::DEFAULT_SPACING_SMALL),
+: m_hbox_buttons(false, Utils::DEFAULT_SPACING_SMALL),
+  m_hbox_content(false, Utils::DEFAULT_SPACING_SMALL),
   m_Button_New(Gtk::Stock::ADD),
   m_Button_Del(Gtk::Stock::DELETE),
   m_Button_Nav_First(Gtk::Stock::GOTO_FIRST),
@@ -78,11 +78,11 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_ScrolledWindow.set_shadow_type(Gtk::SHADOW_NONE); //SHADOW_IN is Recommended by the GNOME HIG, but looks odd.
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_HBox_Sidebar.pack_start(m_Dragbar, Gtk::PACK_SHRINK);
+  m_hbox_content.pack_start(m_Dragbar, Gtk::PACK_SHRINK);
   m_Dragbar.hide();
 #endif
 
-  m_HBox_Sidebar.pack_start(m_ScrolledWindow);
+  m_hbox_content.pack_start(m_ScrolledWindow);
   m_ScrolledWindow.add(m_FlowTable);
   // The FlowTable does not support native scrolling, so gtkmm adds it to a
   // viewport first that also has some shadow we do not want.
@@ -90,8 +90,8 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   if(viewport) viewport->set_shadow_type(Gtk::SHADOW_NONE);
 
   //Add or delete record:
-  m_HBox.pack_start(m_Button_New, Gtk::PACK_SHRINK);
-  m_HBox.pack_start(m_Button_Del,  Gtk::PACK_SHRINK);
+  m_hbox_buttons.pack_start(m_Button_New, Gtk::PACK_SHRINK);
+  m_hbox_buttons.pack_start(m_Button_Del,  Gtk::PACK_SHRINK);
 
    //Link buttons to handlers:
   m_Button_New.signal_clicked().connect(sigc::mem_fun(*this, &Box_Data_Details::on_button_new));
@@ -100,10 +100,10 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   //Navigation:
   if(bWithNavButtons)
   {
-    m_HBox.pack_end(m_Button_Nav_Last, Gtk::PACK_SHRINK);
-    m_HBox.pack_end(m_Button_Nav_Next, Gtk::PACK_SHRINK);
-    m_HBox.pack_end(m_Button_Nav_Prev, Gtk::PACK_SHRINK);
-    m_HBox.pack_end(m_Button_Nav_First, Gtk::PACK_SHRINK);
+    m_hbox_buttons.pack_end(m_Button_Nav_Last, Gtk::PACK_SHRINK);
+    m_hbox_buttons.pack_end(m_Button_Nav_Next, Gtk::PACK_SHRINK);
+    m_hbox_buttons.pack_end(m_Button_Nav_Prev, Gtk::PACK_SHRINK);
+    m_hbox_buttons.pack_end(m_Button_Nav_First, Gtk::PACK_SHRINK);
   }
 
   //Link buttons to handlers:
@@ -112,8 +112,8 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_Button_Nav_Next.signal_clicked().connect(sigc::mem_fun(*this, &Box_Data_Details::on_button_nav_next));
   m_Button_Nav_Last.signal_clicked().connect(sigc::mem_fun(*this, &Box_Data_Details::on_button_nav_last));
 
-  pack_start(m_HBox_Sidebar);
-  pack_start(m_HBox, Gtk::PACK_SHRINK);
+  pack_start(m_hbox_content);
+  pack_start(m_hbox_buttons, Gtk::PACK_SHRINK);
 
   m_FlowTable.signal_field_edited().connect( sigc::mem_fun(*this,  &Box_Data_Details::on_flowtable_field_edited) );
   m_FlowTable.signal_field_open_details_requested().connect( sigc::mem_fun(*this,  &Box_Data_Details::on_flowtable_field_open_details_requested) );
