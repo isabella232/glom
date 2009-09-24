@@ -427,6 +427,16 @@ bool PostgresSelfHosted::set_network_shared(const SlotProgress& /* slot_progress
   return hba_conf_creation_succeeded;
 }
 
+static bool on_timeout_delay(const Glib::RefPtr<Glib::MainLoop>& mainloop)
+{
+  //Allow our mainloop.run() to return:
+  if(mainloop)
+    mainloop->quit();
+    
+  return false;
+}
+
+
 Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error)
 {
   if(!get_self_hosting_active())
@@ -435,8 +445,49 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ust
     return Glib::RefPtr<Gnome::Gda::Connection>();
   }
 
-  return attempt_connect("localhost", port_as_string(m_port), database, username, password, error);
+  std::auto_ptr<ExceptionConnection> ex;
 
+  Glib::RefPtr<Gnome::Gda::Connection> result;
+  bool keep_trying = true;
+  guint count_retries = 0;
+  const guint MAX_RETRIES_KNOWN_PASSWORD = 30; /* seconds */
+  const guint MAX_RETRIES_EVER = 60; /* seconds */
+  while(keep_trying)
+  { 
+    result = attempt_connect("localhost", port_as_string(m_port), database, username, password, ex);
+    if(!result && 
+      ex.get() && (ex->get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER))
+    {
+      //It must be using a default password, so any failure would not be due to a wrong password.
+      //However, pg_ctl sometimes reports success before it is really ready to let us connect, 
+      //so in this case we can just keep trying until it works, with a very long timeout.
+      count_retries++;
+      const guint max_retries = m_network_shared ? MAX_RETRIES_EVER : MAX_RETRIES_KNOWN_PASSWORD;
+      if(count_retries > max_retries)
+      {
+        keep_trying = false;
+        continue;
+      }
+
+      std::cout << "DEBUG: Glom::PostgresSelfHosted::connect(): Waiting and retrying the connection due to suspected too-early success of pg_ctl." << std::endl; 
+
+      //Wait:
+      Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
+        sigc::connection connection_timeout = Glib::signal_timeout().connect(
+        sigc::bind(sigc::ptr_fun(&on_timeout_delay), sigc::ref(mainloop)), 
+        1000 /* 1 second */);
+      mainloop->run();
+      connection_timeout.disconnect();
+      
+      keep_trying = true;
+      continue;
+    }
+    
+    keep_trying = false;
+  }
+
+  error = ex;
+  return result;
 }
 
 bool PostgresSelfHosted::create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error)

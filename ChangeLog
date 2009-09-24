@@ -1,3 +1,20 @@
+2009-09-24  Murray Cumming  <murrayc@murrayc.com>
+
+	Self-Hosting: Retry the connection just-long-enough.
+
+	* glom/libglom/connectionpool_backends/postgres.[h|cc]: attempt_connect(): 
+	Add a throw() declaration because we know that this really never throws, 
+	though other similar methods do.
+	* glom/libglom/connectionpool_backends/postgres_self.cc: connect():
+	If not network-shared then retry every second when the connection fails, 
+	because the (default) password really must be correct. Seems to work, 
+	requiring 6 retries on my system. 
+	However, we must still wait a hard-coded time to be sure of failure 
+	if the password is not the default one, for instance when network sharing.
+	* glom/libglom/spawn_with_feedback.cc: 
+	execute_command_line_and_wait_until_second_command_returns_success():
+	Remove the hacked 8-second wait here. 
+
 2009-09-23  Murray Cumming  <murrayc@murrayc.com>
 
 	Renamed Dialog_Glom to Window_BoxHolder.

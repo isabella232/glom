@@ -509,6 +509,7 @@ namespace
 
 } //Anonymous namespace
 
+/*
 static bool on_timeout_delay(const Glib::RefPtr<Glib::MainLoop>& mainloop)
 {
   //Allow our mainloop.run() to return:
@@ -517,6 +518,7 @@ static bool on_timeout_delay(const Glib::RefPtr<Glib::MainLoop>& mainloop)
     
   return false;
 }
+*/
 
 bool execute_command_line_and_wait_until_second_command_returns_success(const std::string& command, const std::string& second_command, const SlotProgress& slot_progress, const std::string& success_text)
 {
@@ -552,6 +554,10 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
 
   if(success) //response == Gtk::RESPONSE_OK)
   {
+    /* Don't sleep here. Instead we just keep trying to connect until it succeeds, 
+     * timing out during that if necessary.
+     *
+     *
     //Sleep for a bit more, because I think that pg_ctl sometimes reports success too early.
     Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
     sigc::connection connection_timeout = Glib::signal_timeout().connect(
@@ -560,7 +566,8 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
     mainloop->run();
 
     connection_timeout.disconnect();
-    
+    */
+
     return true;
   }
   else
