@@ -1,5 +1,17 @@
 2009-09-24  Murray Cumming  <murrayc@murrayc.com>
 
+	Self-Hosting: Use the new ident configuration for PostgreSQL 8.4.
+
+	* glom/libglom/spawn_with_feedback.[h|cc]: Added an 
+	execute_command_line_and_wait() overload that has an output parameter 
+	for the stdout from the command.
+	* glom/libglom/connectionpool_backends/postgres_self.[h|cc]:
+	Added a get_postgresql_utils_version_as_number() utiltity method, 
+	and use it in set_network_shared() to use a different syntax for 
+	Postgres 8.4, hopefully fixing bug #595608
+
+2009-09-24  Murray Cumming  <murrayc@murrayc.com>
+
 	Self-Hosting: Retry the connection just-long-enough.
 
 	* glom/libglom/connectionpool_backends/postgres.[h|cc]: attempt_connect(): 

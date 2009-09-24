@@ -285,7 +285,7 @@ Document::HostingMode Document::get_hosting_mode() const
   return m_hosting_mode;
 }
 
-void Document:: set_network_shared(bool shared)
+void Document::set_network_shared(bool shared)
 {
   if(shared != m_network_shared)
   {
