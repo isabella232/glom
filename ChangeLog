@@ -27,7 +27,7 @@
 	* glom/libglom/connectionpool_backends/postgres_self.[h|cc]:
 	Added a get_postgresql_utils_version_as_number() utiltity method, 
 	and use it in set_network_shared() to use a different syntax for 
-	Postgres 8.4, hopefully fixing bug #595608
+	Postgres 8.4, hopefully fixing bug #595608 (Fryderyk Dziarmagowski)
 
 2009-09-24  Murray Cumming  <murrayc@murrayc.com>
 
