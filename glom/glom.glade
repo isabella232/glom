@@ -947,7 +947,7 @@
       </object>
     </child>
   </object>
-  <object class="HildonWindow" id="window_main">
+  <object class="GtkWindow" id="window_main">
     <property name="title" translatable="yes">Glom</property>
     <property name="default_width">900</property>
     <property name="default_height">700</property>

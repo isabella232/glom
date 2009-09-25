@@ -73,39 +73,39 @@ namespace ConnectionPoolBackends
 // incompatibly: http://www.postgresql.org/about/press/features84#security
  
 #define DEFAULT_CONFIG_PG_HBA_LOCAL_8p3 \
-"# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD\n\
-\n\
-# local is for Unix domain socket connections only\n\
-# trust allows connection from the current PC without a password:\n\
-local   all         all                               trust\n\
-local   all         all                               ident sameuser\n\
-local   all         all                               md5\n\
-\n\
-# TCP connections from the same computer, with a password:\n\
-host    all         all         127.0.0.1    255.255.255.255    md5\n\
-# IPv6 local connections:\n\
-host    all         all         ::1/128               md5\n"
+"# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD\n" \
+"\n" \
+"# local is for Unix domain socket connections only\n" \
+"# trust allows connection from the current PC without a password:\n" \
+"local   all         all                               trust\n" \
+"local   all         all                               ident sameuser\n" \
+"local   all         all                               md5\n" \
+"\n" \
+"# TCP connections from the same computer, with a password:\n" \
+"host    all         all         127.0.0.1    255.255.255.255    md5\n" \
+"# IPv6 local connections:\n" \
+"host    all         all         ::1/128               md5\n"
 
 #define DEFAULT_CONFIG_PG_HBA_LOCAL_8p4 \
-"# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD\n\
-\n\
-# local is for Unix domain socket connections only\n\
-# trust allows connection from the current PC without a password:\n\
-local   all         all                               trust\n\
-local   all         all                               ident\n\
-local   all         all                               md5\n\
-\n\
-# TCP connections from the same computer, with a password:\n\
-host    all         all         127.0.0.1    255.255.255.255    md5\n\
-# IPv6 local connections:\n\
-host    all         all         ::1/128               md5\n"
+"# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD\n" \
+"\n" \
+"# local is for Unix domain socket connections only\n" \
+"# trust allows connection from the current PC without a password:\n" \
+"local   all         all                               trust\n" \
+"local   all         all                               ident\n" \
+"local   all         all                               md5\n" \
+"\n" \
+"# TCP connections from the same computer, with a password:\n" \
+"host    all         all         127.0.0.1    255.255.255.255    md5\n" \
+"# IPv6 local connections:\n" \
+"host    all         all         ::1/128               md5\n"
 
 #define DEFAULT_CONFIG_PG_HBA_REMOTE_EXTRA \
-"\n\
-# IPv4 local connections:\n\
-host    all         all         0.0.0.0/0          md5\n\
-# IPv6 local connections:\n\
-host    all         all         ::1/128               md5\n"
+"\n" \
+"# IPv4 local connections:\n" \
+"host    all         all         0.0.0.0/0          md5\n" \
+"# IPv6 local connections:\n" \
+"host    all         all         ::1/128               md5\n"
 
 #define PORT_POSTGRESQL_SELF_HOSTED_START 5433
 #define PORT_POSTGRESQL_SELF_HOSTED_END 5500

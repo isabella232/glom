@@ -1,3 +1,11 @@
+2009-09-25  Murray Cumming  <murrayc@murrayc-desktop>
+
+	Cleanup.
+
+	* glom/glom.glade: Really revert a bad merge from the maemo5 branch.
+	* glom/libglom/connectionpool_backends/postgres_self.cc: Do not have 
+	actual newlines in string literals.
+
 2009-09-25  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix the build with gtkmm < 2.18.
