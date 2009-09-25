@@ -48,6 +48,9 @@ class CsvParser
 {
 public:
 
+  typedef std::vector<Glib::ustring> type_row_strings;
+  typedef std::vector<type_row_strings> type_rows;
+
   //TODO: Avoid having to specify an initial encoding.
   explicit CsvParser(const std::string& encoding_charset);
 
@@ -99,11 +102,18 @@ public:
   type_signal_encoding_error signal_encoding_error() const;
 
 
-  typedef sigc::signal<void, std::string, unsigned int> type_signal_line_scanned;
+  typedef sigc::signal<void, type_row_strings, unsigned int> type_signal_line_scanned;
 
   /** This signal will be emitted each time the parser has scanned a line. TODO: Do we mean row instead of line? - A row contain a newline.
    */
   type_signal_line_scanned signal_line_scanned() const;
+
+
+  typedef sigc::signal<void> type_signal_finished_parsing;
+
+  /** This signal will be emitted when the parser successfully finished to parse a file.
+   */
+  type_signal_finished_parsing signal_finished_parsing() const;
 
 
   typedef sigc::signal<void> type_signal_state_changed;
@@ -126,17 +136,10 @@ public:
   void set_file_and_start_parsing(const std::string& uri);
 
 private:
-
-  typedef std::vector<Glib::ustring> type_row_strings;
-  typedef std::vector<type_row_strings> type_rows;
-
-
   // In order to not make the UI feel sluggish during larger imports we parse
   // on chunk at a time in the idle handler.
-public:  // public because it is needed for testing => no main loop
   bool on_idle_parse();
 
-private:
   void begin_parse();
 
   static const gunichar DELIMITER = ',';
@@ -147,12 +150,11 @@ private:
   void do_line_scanned(const Glib::ustring& current_line, guint line_number);
 
   //TODO: Document this:
-public: // public because it is needed for testing => no main loop
   static Glib::ustring::const_iterator advance_field(const Glib::ustring::const_iterator& iter, const Glib::ustring::const_iterator& end, Glib::ustring& field);
 
-private:
   void on_file_read(const Glib::RefPtr<Gio::AsyncResult>& result);
-  void on_stream_read(const Glib::RefPtr<Gio::AsyncResult>& result);
+  void copy_buffer_and_continue_reading(gssize size);
+  void on_buffer_read(const Glib::RefPtr<Gio::AsyncResult>& result);
   void on_file_query_info(const Glib::RefPtr<Gio::AsyncResult>& result);
 
   void set_state(State state);
@@ -180,6 +182,7 @@ private:
   type_signal_have_display_name m_signal_have_display_name;
   type_signal_encoding_error m_signal_encoding_error;
   type_signal_line_scanned m_signal_line_scanned;
+  type_signal_finished_parsing m_finished_parsing;
   type_signal_state_changed m_signal_state_changed;
 
   Glib::RefPtr<Gio::File> m_file;

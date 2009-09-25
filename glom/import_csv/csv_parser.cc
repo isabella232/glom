@@ -140,6 +140,11 @@ CsvParser::type_signal_encoding_error CsvParser::signal_encoding_error() const
   return m_signal_encoding_error;
 }
 
+CsvParser::type_signal_finished_parsing CsvParser::signal_finished_parsing() const
+{
+  return m_finished_parsing;
+}
+
 CsvParser::type_signal_line_scanned CsvParser::signal_line_scanned() const
 {
   return m_signal_line_scanned;
@@ -236,8 +241,8 @@ void CsvParser::clear()
   // Set to current encoding I guess ...
   //m_conv("UTF-8", encoding),
   m_input_position= 0;
-  // Disconnect signal handlers, too? Nah, I don't think so ...
-  //m_idle_connection.disconnect();
+  // Disconnect signal handlers, too.
+  m_idle_connection.disconnect();
   m_line_number = 0;
   set_state(STATE_NONE);
 }
@@ -388,7 +393,9 @@ bool CsvParser::on_idle_parse()
     }
 
     // We have parsed the whole file. We have finished.
+    // TODO: To only emit signal_finished_parsing here is *not* enough.
     set_state(STATE_PARSED);
+    signal_finished_parsing().emit();
   }
 
   // Continue if there are more bytes to process
@@ -424,132 +431,98 @@ void CsvParser::do_line_scanned(const Glib::ustring& line, guint line_number)
     row.push_back(field);
   }
 
-  signal_line_scanned().emit(line, line_number);
+  signal_line_scanned().emit(row, line_number);
 }
 
 void CsvParser::on_file_read(const Glib::RefPtr<Gio::AsyncResult>& result)
 {
+  // TODO: Introduce CsvParser::is_idle_handler_connected() instead?
+  if(!m_idle_connection.connected())
+  {
+    m_idle_connection = Glib::signal_idle().connect(sigc::mem_fun(*this, &CsvParser::on_idle_parse));
+  }
+
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     m_stream = m_file->read_finish(result);
 
     m_buffer.reset(new Buffer);
-    m_stream->read_async(m_buffer->buf, sizeof(m_buffer->buf), sigc::mem_fun(*this, &CsvParser::on_stream_read));
+    m_stream->read_async(m_buffer->buf, sizeof(m_buffer->buf), sigc::mem_fun(*this, &CsvParser::on_buffer_read));
   }
-  catch(const Glib::Exception& error)
+  catch(const Glib::Exception& ex)
   {
-    signal_file_read_error().emit( error.what() );
+    signal_file_read_error().emit(ex.what());
     clear();
-    // TODO: Response?
   }
 #else
-    std::auto_ptr<Glib::Error> error;
-    m_stream = m_file->read_finish(result, error);
-    if (!error.get())
-    {
-      m_buffer.reset(new Buffer);
-      m_stream->read_async(m_buffer->buf, sizeof(m_buffer->buf), sigc::mem_fun(*this, &CsvParser::on_stream_read));
-    }
-    else
-    {
-      signal_file_read_error().emit( error->what() );
-      clear();
-    }
-#endif    
+  std::auto_ptr<Glib::Error> error;
+  m_stream = m_file->read_finish(result, error);
+  if (!error.get())
+  {
+    m_buffer.reset(new Buffer);
+    m_stream->read_async(m_buffer->buf, sizeof(m_buffer->buf), sigc::mem_fun(*this, &CsvParser::on_buffer_read));
+  }
+  else
+  {
+    signal_file_read_error().emit(error->what());
+    clear();
+  }
+#endif
 }
 
+void CsvParser::copy_buffer_and_continue_reading(gssize size)
+{
+  if(size > 0)
+  {
+    m_raw.insert(m_raw.end(), m_buffer->buf, m_buffer->buf + size);
 
-void CsvParser::on_stream_read(const Glib::RefPtr<Gio::AsyncResult>& result)
+    m_buffer.reset(new Buffer);
+    m_stream->read_async(m_buffer->buf, sizeof(m_buffer->buf), sigc::mem_fun(*this, &CsvParser::on_buffer_read));
+  }
+  else // When size == 0 we finished reading.
+  {
+    //TODO: put in proper data reset method?
+    m_buffer.reset(0);
+    m_stream.reset();
+    m_file.reset();
+  }
+}
+
+void CsvParser::on_buffer_read(const Glib::RefPtr<Gio::AsyncResult>& result)
 {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     const gssize size = m_stream->read_finish(result);
-    m_raw.insert(m_raw.end(), m_buffer->buf, m_buffer->buf + size);
-
-    // If the parser already exists, but it is currently not parsing because it waits
-    // for new input, then continue parsing.
-    // TODO: Introduce CsvParser::is_idle_handler_connected() instead?
-    if(!m_idle_connection.connected())
-    {
-      m_idle_connection = Glib::signal_idle().connect(sigc::mem_fun(*this, &CsvParser::on_idle_parse));
-    }
-    // If the parser does not exist yet, then create a new parser, except when the
-    // current encoding does not work for the file, in which case the user must first
-    // choose another encoding.
-    else if(m_state != CsvParser::STATE_ENCODING_ERROR)
-    {
-      begin_parse();
-    }
-
-    if(size > 0)
-    {
-      // Read the next few bytes
-      m_stream->read_async(m_buffer->buf, sizeof(m_buffer->buf), sigc::mem_fun(*this, &CsvParser::on_stream_read));
-    }
-    else
-    {
-      // Finished reading
-      m_buffer.reset(0);
-      m_stream.reset();
-      m_file.reset();
-    }
+    copy_buffer_and_continue_reading(size);
   }
-  catch(const Glib::Exception& error)
+  catch(const Glib::Exception& ex)
   {
-    signal_file_read_error().emit( error.what() );
+     signal_file_read_error().emit(ex.what());
     clear();
-    // TODO: Response?
   }
 #else
-    std::auto_ptr<Glib::Error> error;
-    const gssize size = m_stream->read_finish(result, error);
-    if (!error.get())
-    {
-      m_raw.insert(m_raw.end(), m_buffer->buf, m_buffer->buf + size);
-
-      // If the parser already exists, but it is currently not parsing because it waits
-      // for new input, then continue parsing.
-      if(!m_idle_connection.connected())
-      {
-        m_idle_connection = Glib::signal_idle().connect(sigc::mem_fun(*m_parser.get(), &CsvParser::on_idle_parse));
-      }
-      // If the parser does not exist yet, then create a new parser, except when the
-      // current encoding does not work for the file ,in which case the user must first
-      // choose another encoding.
-      else if(m_state != CsvParser::ENCODING_ERROR)
-      {
-        begin_parse();
-      }
-
-      if(size > 0)
-      {
-        // Read the next few bytes
-        m_stream->read_async(m_buffer->buf, sizeof(m_buffer->buf), sigc::mem_fun(*this, &CsvParser::on_stream_read));
-      }
-      else
-      {
-        // Finished reading
-        m_buffer.reset(0);
-        m_stream.reset();
-        m_file.reset();
-      }
-    }
-    if (error.get())
-    {
-      signal_file_read_error().emit( error->what() );
-      clear();
-    }
+  std::auto_ptr<Glib::Error> error;
+  const gssize size = m_stream->read_finish(result, error);
+  if (!error.get())
+  {
+    copy_buffer_and_continue_reading(size)
+  }
+  else
+  {
+    signal_file_read_error().emit(error->what());
+    clear();
+  }
 #endif
 }
-
 
 void CsvParser::on_file_query_info(const Glib::RefPtr<Gio::AsyncResult>& result)
 {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
+    // Why is m_file null? Did we clear the parser before reading the file info?
     Glib::RefPtr<Gio::FileInfo> info = m_file->query_info_finish(result);
     if(info)
       signal_have_display_name().emit(info->get_display_name());
@@ -568,17 +541,7 @@ void CsvParser::on_file_query_info(const Glib::RefPtr<Gio::AsyncResult>& result)
   }
   else
     std::cerr << "Failed to fetch display name of uri " << m_file->get_uri() << ": " << error->what() << std::endl;
-#endif    
-}
-
-
-//TODO This seems to be superfluous - we already connect the idle handler elsewhere.
-void CsvParser::begin_parse()
-{
-  clear();
-
-  set_state(STATE_PARSING);
-  m_idle_connection = Glib::signal_idle().connect(sigc::mem_fun(*this, &CsvParser::on_idle_parse));
+#endif
 }
 
 void CsvParser::set_state(State state)

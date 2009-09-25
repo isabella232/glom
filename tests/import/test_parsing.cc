@@ -8,22 +8,32 @@
 namespace
 {
 
+void print_tokens();
+
 typedef std::vector<std::string> type_tokens;
 
 type_tokens& get_tokens_instance()
 {
-  static type_tokens tokens;
-  return tokens;
+  static type_tokens type_tokens;
+  return type_tokens;
 }
 
 
-void on_line_scanned(const Glib::ustring& line, guint line_number);
+void on_line_scanned(const std::vector<Glib::ustring>& row, guint /*line_number*/)
+{
+  for(std::vector<Glib::ustring>::const_iterator iter = row.begin();
+      iter != row.end();
+      ++iter)
+  {
+    get_tokens_instance().push_back(*iter);
+  }
+}
 
 void print_tokens()
 {
   for(type_tokens::const_iterator iter = get_tokens_instance().begin();
-       iter != get_tokens_instance().end();
-       ++iter)
+      iter != get_tokens_instance().end();
+      ++iter)
   {
     std::cout << " [" << *iter << "] ";
   }
@@ -34,7 +44,7 @@ void print_tokens()
 bool check_tokens(const std::string& regex)
 {
   Glib::RefPtr<Glib::Regex> check;
-  
+
   #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
@@ -44,7 +54,7 @@ bool check_tokens(const std::string& regex)
   {
     std::cerr << "Glib::Regex::create() failed: " << ex.what() << std::endl;
     return false;
-  } 
+  }
   #else
   std::auto_ptr<Glib::Error> ex;
   check = Glib::Regex::create(regex, static_cast<Glib::RegexCompileFlags>(0), static_cast<Glib::RegexMatchFlags>(0), ex);
@@ -54,10 +64,10 @@ bool check_tokens(const std::string& regex)
     return false;
   }
   #endif
- 
-  if(!check)
+
+  if(!check && 0 == get_tokens_instance().size())
     return false;
-     
+
   for(type_tokens::const_iterator iter = get_tokens_instance().begin();
        iter != get_tokens_instance().end();
        ++iter)
@@ -69,23 +79,9 @@ bool check_tokens(const std::string& regex)
   return true;
 }
 
-void on_line_scanned(const Glib::ustring& line, guint /*line_number*/)
+void connect_signals(Glom::CsvParser& parser)
 {
-  Glib::ustring field;
-  Glib::ustring::const_iterator line_iter(line.begin());
-
-  while(line_iter != line.end())
-  {
-    line_iter = Glom::CsvParser::advance_field(line_iter, line.end(), field);
-    get_tokens_instance().push_back(field);
-
-    // Manually have to skip separators.
-    if(',' == *line_iter)
-    {
-      get_tokens_instance().push_back(",");
-      ++line_iter;
-    }
-  }
+  parser.signal_line_scanned().connect(sigc::ptr_fun(&on_line_scanned));
 }
 
 } // namespace
@@ -93,110 +89,109 @@ void on_line_scanned(const Glib::ustring& line, guint /*line_number*/)
 // Testcases
 int main(int argc, char* argv[])
 {
+  Glib::thread_init();
   Gtk::Main gtk(argc, argv);
-
-  Glom::CsvParser parser("UTF-8");
-  parser.signal_line_scanned().connect(sigc::ptr_fun(&on_line_scanned));
 
   bool result = true;
   std::stringstream report;
 
   // test_dquoted_string
   {
-    const char raw_line[] = "\"a \"\"quoted\"\" token\",\"sans quotes\"\n";
-    ImportTests::set_parser_contents(parser, raw_line, sizeof(raw_line));
+    const char raw[] = "\"a \"\"quoted\"\" token\",\"sans quotes\"\n";
+    bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
 
-    parser.set_file_and_start_parsing("./tests/import/data/dquoted_string.csv");
+    bool passed = (finished_parsing &&
+                   check_tokens("^(a \"quoted\" token|sans quotes)$") &&
+                   2 == get_tokens_instance().size());
+    get_tokens_instance().clear();
 
-    while(parser.on_idle_parse())
-    {}
-
-    bool passed = check_tokens("^(a \"quoted\" token|,|sans quotes)$");
     if(!ImportTests::check("test_dquoted_string", passed, report))
       result = false;
-
-    get_tokens_instance().clear();
-    parser.clear();
   }
 
   // test_skip_on_no_ending_newline
   {
-    const char raw_line[] = "\"this\",\"line\",\"will\",\"be\",\"skipped\"";
-    ImportTests::set_parser_contents(parser, raw_line, sizeof(raw_line));
+    const char raw[] = "\"token in first line\"\n\"2nd token\", \"but\", \"this\",\"line\",\"will\",\"be\",\"skipped\"";
+    bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
 
-    while(parser.on_idle_parse())
-    {}
+    bool passed = (finished_parsing &&
+                   check_tokens("token in first line") &&
+                   1 == get_tokens_instance().size());
+    get_tokens_instance().clear();
 
-    bool passed = (get_tokens_instance().size() == 0);
     if(!ImportTests::check("test_skip_on_no_ending_newline", passed, report))
       result = false;
-
-    get_tokens_instance().clear();
-    parser.clear();
   }
 
   // test_skip_on_no_quotes_around_token
   {
-    const char raw_line[] = "this,line,contains,only,empty,tokens\n";
-    ImportTests::set_parser_contents(parser, raw_line, sizeof(raw_line));
+    const char raw[] = "this,line,contains,only,empty,tokens\n";
+    bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
 
-    while(parser.on_idle_parse())
-    {}
+    bool passed = (finished_parsing &&
+                   check_tokens("^$") &&
+                   6 == get_tokens_instance().size());
+    get_tokens_instance().clear();
 
-    bool passed = check_tokens("^(|,)$");
     if(!ImportTests::check("test_skip_on_no_quotes_around_token", passed, report))
       result = false;
-
-    get_tokens_instance().clear();
-    parser.clear();
   }
 
   // test_skip_spaces_around_separators
   {
-    const char raw_line[] = "\"spaces\" , \"around\", \"separators\"\n";
-    ImportTests::set_parser_contents(parser, raw_line, sizeof(raw_line));
+    const char raw[] = "\"spaces\" , \"around\", \"separators\"\n";
+    bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
 
-    while(parser.on_idle_parse())
-    {}
+    bool passed = (finished_parsing &&
+                   check_tokens("^(spaces|around|separators)$") &&
+                   3 == get_tokens_instance().size());
+    get_tokens_instance().clear();
 
-    bool passed = (get_tokens_instance().size() == 5);
     if(!ImportTests::check("test_skip_spaces_around_separators", passed, report))
       result = false;
 
-    get_tokens_instance().clear();
-    parser.clear();
   }
 
   // test_fail_on_non_comma_separators
   {
-    const char raw_line[] = "\"cannot\"\t\"tokenize\"\t\"this\"\n";
-    ImportTests::set_parser_contents(parser, raw_line, sizeof(raw_line));
+    const char raw[] = "\"cannot\"\t\"tokenize\"\t\"this\"\n";
+    bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
 
-    while(parser.on_idle_parse())
-    {}
+    bool passed = (finished_parsing &&
+                   check_tokens("^cannottokenizethis$") &&
+                   1 == get_tokens_instance().size());
+    get_tokens_instance().clear();
 
-    bool passed = check_tokens("^cannottokenizethis$");
     if(!ImportTests::check("test_fail_on_non_comma_separators", passed, report))
       result = false;
-
-    get_tokens_instance().clear();
-    parser.clear();
   }
 
   // test_parse_newline_inside_quotes
   {
-    const char raw_line[] = "\"cell with\nnewline\"\n\"token on next line\"";
-    ImportTests::set_parser_contents(parser, raw_line, sizeof(raw_line));
+    const char raw[] = "\"cell with\nnewline\"\n\"token on next line\"\n";
+    bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
 
-    while(parser.on_idle_parse())
-    {}
+    bool passed = (finished_parsing &&
+                   check_tokens("^(cell with\nnewline|token on next line)$") &&
+                   2 == get_tokens_instance().size());
+    get_tokens_instance().clear();
 
-    bool passed = check_tokens("^(cell with\nnewline|token on next line)$");
     if(!ImportTests::check("test_parse_newline_inside_quotes", passed, report))
       result = false;
+  }
 
+  // test_fail_on_non_matching_quotes
+  {
+    const char raw[] = "\"token\"\nthis quote has no partner\",\"token\"\n";
+    bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
+
+    bool passed = (finished_parsing &&
+                   check_tokens("token") &&
+                   1 == get_tokens_instance().size());
     get_tokens_instance().clear();
-    parser.clear();
+
+    if(!ImportTests::check("test_fail_on_non_matching_quotes", passed, report))
+      result = false;
   }
 
   if(!result)
