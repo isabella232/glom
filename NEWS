@@ -1,3 +1,19 @@
+1.12.0 (stable):
+
+What's new in Glom 1.12:
+
+* Network sharing of self-hosted databases is now off by default, and can be 
+  enabled by the new File/Share On Network menu item. So you will not be 
+  asked for an initial password when creating a new file.
+  (Murray Cumming)
+* Allow field table and field anmes to use uppercase characters.
+* Import and Export: Corrected the .csv file format.
+* Related Records: Added a None navigation option.
+* Opening: When the file format is too new, actually say so.
+* libglom: Make this parallel-installable.
+* Bug-fixes from Glom 1.10.
+* Build: Removed the Bakery and libglade dependencies.
+
 1.11.2 (unstable):
 
 * Fixed deprecated-disabled build with latest gtkmm.

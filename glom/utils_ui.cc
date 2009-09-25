@@ -319,4 +319,102 @@ Glib::RefPtr<Gdk::Pixbuf> Utils::get_pixbuf_for_gda_value(const Gnome::Gda::Valu
   return result;
 }
 
+int Utils::get_suitable_field_width_for_widget(Gtk::Widget& widget, const sharedptr<const LayoutItem_Field>& field_layout)
+{
+  int result = 150;
+
+  const Field::glom_field_type field_type = field_layout->get_glom_type();
+
+  Glib::ustring example_text;
+  switch(field_type)
+  {
+    case(Field::TYPE_DATE):
+    {
+      Glib::Date date(31, Glib::Date::Month(12), 2000);
+      example_text = Conversions::get_text_for_gda_value(field_type, Gnome::Gda::Value(date));
+      break;
+    }
+    case(Field::TYPE_TIME):
+    {
+      Gnome::Gda::Time time = {0, 0, 0, 0, 0};
+      time.hour = 24;
+      time.minute = 59;
+      time.second = 59;
+      example_text = Conversions::get_text_for_gda_value(field_type, Gnome::Gda::Value(time));
+      break;
+    }
+    case(Field::TYPE_NUMERIC):
+    {
+#ifdef GLOM_ENABLE_MAEMO
+      //Maemo's screen is not so big, so don't be so generous:
+      example_text = "EUR 9999999";
+#else
+      example_text = "EUR 9999999999";
+#endif
+      break;
+    }
+    case(Field::TYPE_TEXT):
+    case(Field::TYPE_IMAGE): //Give images the same width as text fields, so they will often line up.
+    {
+      //if(!field_layout->get_text_format_multiline()) //Use the full width for multi-line text.
+#ifdef GLOM_ENABLE_MAEMO
+        //Maemo's screen is not so big, so don't be so generous:
+        example_text = "AAAAAAAAAAAAAAAA";
+#else
+        example_text = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+#endif
+      break;
+    }
+    default:
+    {
+      break;
+    }
+  }
+
+
+  if(!example_text.empty())
+  {
+    //Get the width required for this string in the current font:
+    Glib::RefPtr<Pango::Layout> refLayout = widget.create_pango_layout(example_text);
+    int width = 0;
+    int height = 0;
+    refLayout->get_pixel_size(width, height);
+    result = width;
+
+    //Add a bit more:
+    result += 10;
+  }
+
+  return result;
+}
+
+
+std::string Utils::get_filepath_with_extension(const std::string& filepath, const std::string& extension)
+{
+  std::string result = filepath;
+
+  bool add_ext = false;
+  const std::string str_ext = "." + extension;
+
+  if(result.size() < str_ext.size()) //It can't have the ext already if it's not long enough.
+  {
+    add_ext = true; //It isn't there already.
+  }
+  else
+  {
+    const Glib::ustring strEnd = result.substr(result.size() - str_ext.size());
+    if(strEnd != str_ext) //If it doesn't already have the extension
+      add_ext = true;
+  }
+
+  //Add extension if necessay.
+  if(add_ext)
+    result += str_ext;
+
+  //TODO: Do not replace existing extensions, so it could be e.g. 'something.blah.theext'
+
+  return result;
+}
+
+
 } //namespace Glom

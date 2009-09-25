@@ -55,12 +55,129 @@
 	* tests/import/test_[parsing,signals].cc: Fixed the tests to fit new parser
 	API.
 
+1.12.0:
+
+2009-09-25  Murray Cumming  <murrayc@murrayc.com>
+
+	Command spawning: Really check the return value.
+
+	* glom/libglom/spawn_with_feedback.cc:
+	execute_command_line_and_wait_until_second_command_returns_success():
+	Actually check the return value of the first command, so we can fail 
+	immediately (with stderr output) when, for instance, postgresql 
+	fails to read the configuration file due to changed options, such as 
+	no longer recognizing max_fsm_pages in PostgreSQL 8.4
+
+2009-09-25  Murray Cumming  <murrayc@murrayc.com>
+
+	Replace some NULLs with 0 because this is C++, not C.
+
+	* glom/libglom/connectionpool_backends/postgres.cc:
+	* glom/libglom/connectionpool_backends/postgres_self.cc:
+	* glom/libglom/spawn_with_feedback.cc: Replace NULLs with 0.
+
+2009-09-24  Murray Cumming  <murrayc@murrayc.com>
+
+	Self-Hosting: Use the new ident configuration for PostgreSQL 8.4.
+
+	* glom/libglom/spawn_with_feedback.[h|cc]: Added an 
+	execute_command_line_and_wait() overload that has an output parameter 
+	for the stdout from the command.
+	* glom/libglom/connectionpool_backends/postgres_self.[h|cc]:
+	Added a get_postgresql_utils_version_as_number() utiltity method, 
+	and use it in set_network_shared() to use a different syntax for 
+	Postgres 8.4, hopefully fixing bug #595608 (Fryderyk Dziarmagowski)
+
+2009-09-24  Murray Cumming  <murrayc@murrayc.com>
+
+	Self-Hosting: Retry the connection just-long-enough.
+
+	* glom/libglom/connectionpool_backends/postgres.[h|cc]: attempt_connect(): 
+	Add a throw() declaration because we know that this really never throws, 
+	though other similar methods do.
+	* glom/libglom/connectionpool_backends/postgres_self.cc: connect():
+	If not network-shared then retry every second when the connection fails, 
+	because the (default) password really must be correct. Seems to work, 
+	requiring 6 retries on my system. 
+	However, we must still wait a hard-coded time to be sure of failure 
+	if the password is not the default one, for instance when network sharing.
+	* glom/libglom/spawn_with_feedback.cc: 
+	execute_command_line_and_wait_until_second_command_returns_success():
+	Remove the hacked 8-second wait here. 
+
+2009-09-23  Murray Cumming  <murrayc@murrayc.com>
+
+	Renamed Dialog_Glom to Window_BoxHolder.
+
+	* glom/dialog_glom.[h|cc]: Renamed to window_boxholder.[h|cc] to make 
+	its purpose clearer.
+	* glom/frame_glom.[h|cc]:
+	* glom/mode_data/notebook_data.[h|cc]:
+	* Makefile_glom.am: Adapted.
+
+2009-09-22  Murray Cumming  <murrayc@murrayc.com>
+
+	Dialog_Glom: Make this a little less stupid, so we can ifdef for Maemo.
+
+	* glom/dialog_glom.[h|cc]: Derive from Window, not Dialog.
+	Constructor: Add the provided box instead of requiring us to add it 
+	explicitly (to the Dialog's vbox).
+	* glom/frame_glom.cc:
+	* glom/mode_data/notebook_data.cc: Adapt.
+
+2009-09-22  Murray Cumming  <murrayc@murrayc.com>
+
+	On Maemo, show the details in a separate window.
+	
+	* glom/mode_data/notebook_data.[h|cc]: On maemo, hide the tabs, and don't 
+	add the details box to the notebook. Instead add it to a window and show that 	
+	window instead of switching to a details tab when details are requested.
+
+
 2009-09-21  Murray Cumming  <murrayc@murrayc.com>
 
 	import tests: Fix the no-exceptions build.
 	
 	* tests/import/test_parsing.cc:
 	* tests/import/test_signals.cc: Fix the build without exceptions.
+
+2009-09-21  Johannes Schmid <jschmid@openismus.com>
+
+	* Makefile_tests.am:
+	Fixed make dist. The sources of tests/test_python_module weren't
+	given which broke at least with automake-1.10
+
+2009-09-21  Murray Cumming  <murrayc@murrayc.com>
+
+	Export: Use .csv file extension to match the filter when importing.
+
+	* glom/utils_ui.[h]cc]: Added get_filepath_with_extension() to add 
+	(if necessary) a specified file extension to a filepath.
+	* glom/frame_glom.cc: on_menu_file_export(): Add a .csv file 
+	extension if not already specified, so we automatically see the 
+	export file in the file chooser when importing.
+
+2009-09-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/dialog_import_csv.cc: get_data(): Avoid out-of-bounds crashes 
+	when accessing the vector of vectors. Note that this check is 
+	already in the appropriate place in the import_csv_refactored branch.
+	This makes bug #593304 slighly clearer, though it is now an endless 
+	loop with debug output.
+
+2009-09-21  Murray Cumming  <murrayc@murrayc.com>
+
+	Import dialog: Set the number of sample rows to 2 by default.
+
+	* glom/dialog_import_csv.cc: Set the number of sample rows to 2 
+	by default, not 0.
+	* glom/frame_glom.cc: Hack around another (!) GtkBuilder warning about 
+	a secondary top-level object (textbuffer). 
+
+2009-09-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/glom-1.0.pc.in: Rename to glom-1.12.pc.in to match 
+	the .so name and header install location. Noticed by Chris Coulson.
 
 2009-09-18  Michael Hasselmann  <michaelh@openismus.com>
 
@@ -88,6 +205,19 @@
 	the parser directly using m_raw. They must be changed to read actual 
 	files, or maybe we could add some intermediate level of API that they 
 	could test.
+
+2009-09-18  Murray Cumming  <murrayc@murrayc.com>
+
+	Maemo: Use some Hildon widgets.
+	
+	* glom/utility_widgets/entryglom.[h|cc]:
+	* glom/utility_widgets/textviewglom.h: Use Hildon::TextView and Hildon::Entry.
+
+2009-09-18  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.ac: Add a full configure example for maemo in a comment, 
+		to help my memory.
+	* glom/dialog_import_csv.cc: Fix a typo to fix the build on maemo. 
 
 2009-09-18  Murray Cumming  <murrayc@murrayc-desktop>
 
@@ -223,6 +353,37 @@ Refactoring Dialog_Import_CSV: created testcase for the CsvParser's signal emiss
 	 Create the correct DataAccessWrapper in both codepaths and not only
 	 in the exception code path. That makes no difference for postgres but
 	 is needed for sqlite.
+
+2009-09-08  Johannes Schmid <jschmid@openismus.com>
+
+	 Bug 594357 -  Maemo: sqlite behaves strange
+
+	 * glom/utility_widgets/db_addel/glom_db_treemodel.cc:
+	 DbTreeModel::create():
+	 Create the correct DataAccessWrapper in both codepaths and not only
+	 in the exception code path. That makes no difference for postgres but
+	 is needed for sqlite.
+
+2009-09-07  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/box_reports.[h|cc]:
+	* glom/navigation/box_tables.[h|cc]: Comment out some save_to_document() 
+	methods in client-only mode.
+
+2009-09-07  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.cc:
+	* glom/frame_glom.cc: Fix tiny typos to fix the non-maemo build.
+
+2009-09-05  Murray Cumming  <murrayc@murrayc.com>
+
+	Maemo: ifdef out useless menu code.
+
+	* glom/application.[h|c]]: Ifdef out any menu-building code because 
+	it must be completely replaced by Hildon::AppMenu code on Maemo.
+	* glom/mode_data/notebook_data.cc: Constructor: Hide the notebook 
+	tabs, in preparation for just showing the list, with the details in a 
+	separate window on Maemo.
 
 2009-09-05  Murray Cumming  <murrayc@murrayc.com>
 

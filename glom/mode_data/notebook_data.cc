@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "notebook_data.h"
+#include <glom/mode_data/notebook_data.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <glibmm/i18n.h>
 
@@ -26,13 +26,28 @@ namespace Glom
 {
 
 Notebook_Data::Notebook_Data()
+: m_iPage_Details(0), m_iPage_List(0)
+  #ifdef GLOM_ENABLE_MAEMO
+  , m_window_maemo_details(0)
+  #endif
 {
   //Add Pages:
   pages().push_back(Gtk::Notebook_Helpers::TabElem(m_Box_List, _("List")));
   m_iPage_List = 0;
 
+  #ifndef GLOM_ENABLE_MAEMO
   pages().push_back(Gtk::Notebook_Helpers::TabElem(m_Box_Details, _("Details")));
   m_iPage_Details = 1;
+  #else
+  //On Maemo, we add the box to m_window_maemo_details instead:
+  m_window_maemo_details = new Window_BoxHolder(&m_Box_Details, _("Details"));
+  
+  Gtk::Window* pWindow = get_app_window();
+  if(pWindow)
+    m_window_maemo_details->set_transient_for(*pWindow);
+
+  m_Box_Details.show_all();
+  #endif //GLOM_ENABLE_MAEMO
 
   // Set accessible name for the notebook, to be able to access it via LDTP
 #ifdef GTKMM_ATKMM_ENABLED
@@ -46,6 +61,7 @@ Notebook_Data::Notebook_Data()
   m_Box_List.signal_user_requested_details().connect(sigc::mem_fun(*this, &Notebook_Data::on_list_user_requested_details));
 
   //Allow Details to ask List to ask Details to show a different record:
+  #ifndef GLOM_ENABLE_MAEMO //These navigation buttons are not visible on Maemo.
   m_Box_Details.signal_nav_first().connect(sigc::mem_fun(m_Box_List, &Box_Data_List::on_details_nav_first));
   m_Box_Details.signal_nav_prev().connect(sigc::mem_fun(m_Box_List, &Box_Data_List::on_details_nav_previous));
   m_Box_Details.signal_nav_next().connect(sigc::mem_fun(m_Box_List, &Box_Data_List::on_details_nav_next));
@@ -53,7 +69,8 @@ Notebook_Data::Notebook_Data()
 
   //Allow Details to tell List about record deletion:
   m_Box_Details.signal_record_deleted().connect(sigc::mem_fun(m_Box_List, &Box_Data_List::on_details_record_deleted));
-
+  #endif //GLOM_ENABLE_MAEMO
+  
   //Allow Details to ask to show a different record in a different table:
   m_Box_Details.signal_requested_related_details().connect(sigc::mem_fun(*this, &Notebook_Data::on_details_user_requested_related_details));
 
@@ -67,12 +84,22 @@ Notebook_Data::Notebook_Data()
   //This is hidden by default,
   m_Box_Details.show_layout_toolbar(false);
 #endif //GLOM_ENABLE_CLIENT_ONLY
+
+#ifdef GLOM_ENABLE_MAEMO
+  //TODO: Actually, show the details in a separate window.
+  set_show_tabs(false);
+#endif //GLOM_ENABLE_MAEMO
 }
 
 Notebook_Data::~Notebook_Data()
 {
   remove_view(&m_Box_List);
   remove_view(&m_Box_Details);
+
+#ifdef GLOM_ENABLE_MAEMO
+  if(m_window_maemo_details)
+    delete m_window_maemo_details;
+#endif //GLOM_ENABLE_MAEMO
 }
 
 bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda::Value& primary_key_value_for_details)
@@ -114,7 +141,7 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
       {
         primary_key_for_details = primary_key_value_for_details;
       }
-
+      
       //If the specified (or remembered) primary key value is not in the found set, 
       //then ignore it:
       if(!found_set.m_where_clause.empty() && !get_primary_key_is_in_foundset(found_set, primary_key_for_details))
@@ -184,26 +211,32 @@ FoundSet Notebook_Data::get_found_set() const
   return m_Box_List.get_found_set();
 }
 
-FoundSet Notebook_Data::get_found_set_details() const
-{
-  return m_Box_Details.get_found_set();
-}
-  
-
-void Notebook_Data::on_list_user_requested_details(const Gnome::Gda::Value& primary_key_value)
+void Notebook_Data::show_details(const Gnome::Gda::Value& primary_key_value)
 {
   //Prevent n_switch_page_handler() from doing the same thing:
   if(m_connection_switch_page)
     m_connection_switch_page.block();
-    
-  m_Box_Details.refresh_data_from_database_with_primary_key(primary_key_value);
   
+  std::cout << "DEBUG: Notebook_Data::show_details() primary_key_value=" << primary_key_value.to_string() << std::endl;
+  m_Box_Details.refresh_data_from_database_with_primary_key(primary_key_value);
+
+#if GLOM_ENABLE_MAEMO
+  //Details are shown in a separate window on Maemo,
+  //though that window contains the regular m_Box_Details.
+  m_window_maemo_details->show();
+#else  
   if(get_current_view() != DATA_VIEW_Details)
     set_current_view(DATA_VIEW_Details);
+#endif
   
   //Re-enable this handler, so we can respond to notebook page changes:
   if(m_connection_switch_page)
-    m_connection_switch_page.unblock();
+    m_connection_switch_page.unblock();  
+}
+
+void Notebook_Data::on_list_user_requested_details(const Gnome::Gda::Value& primary_key_value)
+{
+  show_details(primary_key_value);
 }
 
 void Notebook_Data::on_details_user_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value)
@@ -218,6 +251,12 @@ void Notebook_Data::on_details_user_requested_related_details(const Glib::ustrin
   on_list_user_requested_details(primary_key_value);
   */
 }
+
+FoundSet Notebook_Data::get_found_set_details() const
+{
+  return m_Box_Details.get_found_set();
+}
+
 
 void Notebook_Data::set_current_view(dataview view)
 {
@@ -293,12 +332,6 @@ Notebook_Data::dataview Notebook_Data::get_current_view() const
 Notebook_Data::type_signal_record_details_requested Notebook_Data::signal_record_details_requested()
 {
   return m_signal_record_details_requested;
-}
-
-void Notebook_Data::show_details(const Gnome::Gda::Value& primary_key_value)
-{
-  //Reuse this implementation:
-  on_list_user_requested_details(primary_key_value);
 }
 
 void Notebook_Data::on_switch_page_handler(GtkNotebookPage* pPage, guint uiPageNumber)

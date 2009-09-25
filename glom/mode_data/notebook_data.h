@@ -21,9 +21,13 @@
 #ifndef NOTEBOOK_DATA_H
 #define NOTEBOOK_DATA_H
 
-#include "../notebook_glom.h"
-#include "box_data_list.h"
-#include "box_data_details.h"
+#include <glom/notebook_glom.h>
+#include <glom/mode_data/box_data_list.h>
+#include <glom/mode_data/box_data_details.h>
+
+#ifdef GLOM_ENABLE_MAEMO 
+#include <glom/window_boxholder.h>
+#endif
 
 namespace Glom
 {
@@ -47,7 +51,7 @@ public:
   ///Get the found set for the currently-visible record in the details tab:
   FoundSet get_found_set_details() const;
 
-  ///Show the details for a particular record, without affecting the list view:
+  ///Show the details for a particular record, without affecting the list view.
   void show_details(const Gnome::Gda::Value& primary_key_value);
 
   void select_page_for_find_results(); //Details for 1, List for > 1.
@@ -72,7 +76,7 @@ public:
 
   typedef sigc::signal<void, const Glib::ustring&, Gnome::Gda::Value> type_signal_record_details_requested;
   type_signal_record_details_requested signal_record_details_requested();
-
+  
 protected:
 
   ///Show the counts of all records and found records.
@@ -87,9 +91,14 @@ protected:
   //Member widgets:
   Box_Data_List m_Box_List;
   Box_Data_Details m_Box_Details;
-
+  
+  #ifdef GLOM_ENABLE_MAEMO //Details are in a separate window on Maemo.
+  Window_BoxHolder* m_window_maemo_details;
+  #endif
+  
   guint m_iPage_Details, m_iPage_List;
   Glib::ustring m_table_name;
+  
   type_signal_record_details_requested m_signal_record_details_requested;
 };
 

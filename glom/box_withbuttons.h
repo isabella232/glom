@@ -35,7 +35,7 @@ namespace Glom
 
 /** A Gtk::VBox base widget class, 
  * with some extra signals to allow derived classes to be used generically in 
- * Dialog_Glom, allowing the dialog to respond to buttons in the box.
+ * Window_BoxHolder, allowing the dialog to respond to buttons in the box.
  */
 class Box_WithButtons :
   public Gtk::VBox

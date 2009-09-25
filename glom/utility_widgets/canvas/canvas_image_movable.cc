@@ -18,10 +18,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
+//We include this at the top to use a temporary GTKMM_MAEMO_EXTENSIONS_ENABLED-related fix. 
+#include <glom/application.h> // For get_application().
+
 #include "canvas_image_movable.h"
 #include <goocanvasmm/canvas.h>
 #include <gtkmm/stock.h>
-#include <glom/application.h> // For get_application().
 #include <glom/utility_widgets/imageglom.h> //For ImageGlom::scale_keeping_ratio().
 #include <iostream>
 

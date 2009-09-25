@@ -282,11 +282,13 @@ Gnome::Gda::Value ImageGlom::get_value() const
   return Gnome::Gda::Value();
 }
 
+#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 bool ImageGlom::on_expose_event(GdkEventExpose* event)
 {
-#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   const bool result = Gtk::EventBox::on_expose_event(event);
 #else
+bool ImageGlom::on_expose_event(GdkEventExpose* /* event */)
+{
   const bool result = false;
 #endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   scale();

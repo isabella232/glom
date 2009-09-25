@@ -18,40 +18,37 @@
  * Boston, MA 02111-1307, USA.
  */
  
-#include <glom/dialog_glom.h>
+#include <glom/window_boxholder.h>
 #include <glom/utils_ui.h>
 
 namespace Glom
 {
 
-Dialog_Glom::Dialog_Glom(Box_WithButtons* pBox, const Glib::ustring& title)
+Window_BoxHolder::Window_BoxHolder(Box_WithButtons* pBox, const Glib::ustring& title)
 {
+  g_assert(pBox);
+
   if(!title.empty())
     set_title(title);
 
   set_border_width(Utils::DEFAULT_SPACING_SMALL);
 
-  m_pBox = pBox;
+  pBox->signal_cancelled.connect(sigc::mem_fun(*this, &Window_BoxHolder::on_box_cancelled));
 
-  if(m_pBox)
-  {
-    m_pBox->signal_cancelled.connect(sigc::mem_fun(*this, &Dialog_Glom::on_box_cancelled));
-    m_pBox->show();
-  }
+  add(*pBox);
+  pBox->show();
 
   //Set the default button, if there is one:
-  Gtk::Widget* default_button = m_pBox->get_default_button();
+  Gtk::Widget* default_button = pBox->get_default_button();
   if(default_button)
     set_default(*default_button);
-
-  set_has_separator(false);
 }
 
-Dialog_Glom::~Dialog_Glom()
+Window_BoxHolder::~Window_BoxHolder()
 {
 }
 
-void Dialog_Glom::on_box_cancelled()
+void Window_BoxHolder::on_box_cancelled()
 {
   hide();
 }

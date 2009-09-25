@@ -42,7 +42,6 @@ Box_Data_List::Box_Data_List()
 
   pack_start(m_AddDel);
   add_view(&m_AddDel); //Give it access to the document.
-  m_AddDel.set_rules_hint(); //Use alternating row colors when the theme does that.
 
   //Connect signals:
   //The Add and Delete buttons are handled by the DbAddDel widget itself.

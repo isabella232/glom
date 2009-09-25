@@ -50,6 +50,7 @@
 #ifdef GLOM_ENABLE_MAEMO
 #include <hildonmm/init.h>
 #include <hildonmm/note.h>
+#include <hildonmm/program.h>
 #endif
 
 #include <glom/application.h>
@@ -495,7 +496,13 @@ main(int argc, char* argv[])
     pApp_Glom->set_command_line_args(argc, argv);
     pApp_Glom->set_show_sql_debug(group.m_arg_debug_sql);
 
-    bool test = pApp_Glom->init(input_uri); //Sets it up and shows it.
+    const bool test = pApp_Glom->init(input_uri); //Sets it up and shows it.
+
+    #ifdef GLOM_ENABLE_MAEMO
+    //TODO: What is this really for?
+    Hildon::Program::get_instance()->add_window(*pApp_Glom);
+    #endif
+
     if(test) //The user could cancel the offer of a new or existing database.
       Gtk::Main::run(*pApp_Glom); //Quit when the window is closed.
 

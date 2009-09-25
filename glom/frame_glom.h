@@ -28,8 +28,12 @@
 #include <libglom/document/bakery/view/view_composite.h>
 #include <libglom/document/document.h>
 
-#include "dialog_glom.h"
+#include "window_boxholder.h"
+
+#ifndef GLOM_ENABLE_MAEMO
 #include "navigation/box_tables.h"
+#endif
+
 #include "mode_data/notebook_data.h"
 #include "mode_find/notebook_find.h"
 
@@ -69,6 +73,7 @@ public:
   void set_databases_selected(const Glib::ustring& strName);
 
   void on_box_tables_selected(const Glib::ustring& strName);
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void on_box_reports_selected(const Glib::ustring& strName);
   void on_box_print_layouts_selected(const Glib::ustring& strName);
@@ -175,6 +180,8 @@ public:
   ///Whether we are viewing the details or list.
   bool get_viewing_details() const;
 
+  Glib::ustring get_shown_table_name() const;
+
 protected:
 
   
@@ -250,6 +257,7 @@ protected:
 
   //Child widgets:
   Gtk::Label* m_pLabel_Table;
+  Gtk::HBox* m_box_header;
   Gtk::HBox* m_box_footer;
   Gtk::Label* m_pLabel_Mode;
   Gtk::Label* m_pLabel_userlevel;
@@ -265,21 +273,22 @@ protected:
 
   PlaceHolder* m_pBox_Mode; //Contains e.g. design mode notebook.
 
+#ifndef GLOM_ENABLE_MAEMO
+  //Navigation:
   Box_Tables* m_pBox_Tables;
+  Window_BoxHolder* m_pDialog_Tables;
+#endif //GLOM_ENABLE_MAEMO
 
   Notebook_Data m_Notebook_Data;
   Notebook_Find m_Notebook_Find;
 
-  //Navigation:
-  Dialog_Glom* m_pDialog_Tables;
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Developer:
-  Dialog_Glom* m_pDialog_Reports;
+  Window_BoxHolder* m_pDialog_Reports;
   Dialog_Layout_Report* m_pDialogLayoutReport;
   Box_Reports* m_pBox_Reports;
   
-  Dialog_Glom* m_pDialog_PrintLayouts;
+  Window_BoxHolder* m_pDialog_PrintLayouts;
   Window_PrintLayout_Edit* m_pDialogLayoutPrint;
   Box_Print_Layouts* m_pBox_PrintLayouts;
 

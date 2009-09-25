@@ -99,6 +99,8 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
     row[m_encoding_columns.m_col_charset] = encoding.get_charset();
   }
 
+  m_sample_rows->set_value(2); //A sensible default.
+
   Gtk::CellRendererText* renderer = Gtk::manage(new Gtk::CellRendererText);
   m_encoding_combo->set_model(m_encoding_model);
   m_encoding_combo->pack_start(*renderer);
@@ -282,6 +284,7 @@ bool Dialog_Import_CSV::row_separator_func(const Glib::RefPtr<Gtk::TreeModel>& /
 void Dialog_Import_CSV::on_combo_encoding_changed()
 {
   const int active = m_encoding_combo->get_active_row_number();
+
   switch(active)
   {
   case -1: // No active item

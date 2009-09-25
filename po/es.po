@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: glom.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&component=general\n"
-"POT-Creation-Date: 2009-09-10 08:43+0000\n"
-"PO-Revision-Date: 2009-09-13 14:37+0200\n"
+"POT-Creation-Date: 2009-09-19 16:10+0000\n"
+"PO-Revision-Date: 2009-09-20 12:27+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -296,45 +296,45 @@ msgstr ""
 "No se encontró la base de datos en el servidor. Consulte al administrador "
 "del sistema."
 
-#: ../glom/application.cc:1466
+#: ../glom/application.cc:1467
 msgid "_Contents"
 msgstr "_Contenido"
 
-#: ../glom/application.cc:1466
+#: ../glom/application.cc:1467
 msgid "Help with the application"
 msgstr "Ayuda con la aplicación"
 
-#: ../glom/application.cc:1571
+#: ../glom/application.cc:1572
 msgid "Creating Glom Database"
 msgstr "Crear la base de datos de Glom"
 
-#: ../glom/application.cc:1571
+#: ../glom/application.cc:1572
 msgid "Creating Glom database from example file."
 msgstr "Creando base de datos Glom desde un archivo de ejemplo."
 
 #. The save failed. Tell the user and don't do anything else:
-#: ../glom/application.cc:2076 ../glom/bakery/app_withdoc.cc:233
+#: ../glom/application.cc:2077 ../glom/bakery/app_withdoc.cc:233
 #: ../glom/bakery/app_withdoc.cc:284
 msgid "Save failed."
 msgstr "Fallo al guardar."
 
-#: ../glom/application.cc:2076 ../glom/bakery/app_withdoc.cc:233
+#: ../glom/application.cc:2077 ../glom/bakery/app_withdoc.cc:233
 #: ../glom/bakery/app_withdoc.cc:284
 msgid ""
 "There was an error while saving the file. Your changes have not been saved."
 msgstr "Ocurrió un error al grabar el archivo. Sus cambios no se han guardado."
 
-#: ../glom/application.cc:2119 ../glom/application.cc:2124
+#: ../glom/application.cc:2120 ../glom/application.cc:2125
 #: ../glom/bakery/app_withdoc_gtk.cc:584
 msgid "Save Document"
 msgstr "Guardando el documento"
 
 #. Warn the user:
-#: ../glom/application.cc:2215 ../glom/bakery/app_withdoc_gtk.cc:633
+#: ../glom/application.cc:2216 ../glom/bakery/app_withdoc_gtk.cc:633
 msgid "Read-only File."
 msgstr "Archivo de sólo lectura."
 
-#: ../glom/application.cc:2215 ../glom/bakery/app_withdoc_gtk.cc:633
+#: ../glom/application.cc:2216 ../glom/bakery/app_withdoc_gtk.cc:633
 msgid ""
 "You may not overwrite the existing file, because you do not have sufficient "
 "access rights."
@@ -343,11 +343,11 @@ msgstr ""
 "permisos de acceso."
 
 #. Warn the user:
-#: ../glom/application.cc:2229 ../glom/bakery/app_withdoc_gtk.cc:647
+#: ../glom/application.cc:2230 ../glom/bakery/app_withdoc_gtk.cc:647
 msgid "Read-only Directory."
 msgstr "Directorio de sólo lectura."
 
-#: ../glom/application.cc:2229 ../glom/bakery/app_withdoc_gtk.cc:647
+#: ../glom/application.cc:2230 ../glom/bakery/app_withdoc_gtk.cc:647
 msgid ""
 "You may not create a file in this directory, because you do not have "
 "sufficient access rights."
@@ -355,19 +355,19 @@ msgstr ""
 "No puede crear un archivo en este directorio porque no tiene suficientes "
 "permisos de acceso."
 
-#: ../glom/application.cc:2246
+#: ../glom/application.cc:2247
 msgid "Database Title missing"
 msgstr "Falta el título de la base de datos"
 
-#: ../glom/application.cc:2246
+#: ../glom/application.cc:2247
 msgid "You must specify a title for the new database."
 msgstr "Debe especificar un título para la nueva base de datos."
 
-#: ../glom/application.cc:2275 ../glom/frame_glom.cc:1978
+#: ../glom/application.cc:2276 ../glom/frame_glom.cc:1978
 msgid "Directory Already Exists"
 msgstr "El directorio ya existe"
 
-#: ../glom/application.cc:2275 ../glom/frame_glom.cc:1979
+#: ../glom/application.cc:2276 ../glom/frame_glom.cc:1979
 msgid ""
 "There is an existing directory with the same name as the directory that "
 "should be created for the new database files. You should specify a different "
@@ -659,44 +659,44 @@ msgstr "Necesita abrir un documento para importar los datos en una tabla."
 msgid "Import From CSV File"
 msgstr "Importar desde un archivo CSV"
 
-#: ../glom/dialog_import_csv.cc:218 ../glom/dialog_import_csv.cc:798
+#: ../glom/dialog_import_csv.cc:218 ../glom/dialog_import_csv.cc:802
 msgid "<None>"
 msgstr "<Ninguno>"
 
-#: ../glom/dialog_import_csv.cc:307
+#: ../glom/dialog_import_csv.cc:309
 msgid "Error Importing CSV File"
 msgstr "Error al importar el archivo CSV"
 
-#: ../glom/dialog_import_csv.cc:331 ../glom/dialog_import_csv.cc:343
+#: ../glom/dialog_import_csv.cc:333 ../glom/dialog_import_csv.cc:345
 msgid " - Import From CSV File"
 msgstr " - Importar desde un archivo CSV"
 
-#: ../glom/dialog_import_csv.cc:362 ../glom/dialog_import_csv.cc:376
+#: ../glom/dialog_import_csv.cc:364 ../glom/dialog_import_csv.cc:378
 msgid "Could Not Open file"
 msgstr "No se pudo abrir el archivo"
 
-#: ../glom/dialog_import_csv.cc:362 ../glom/dialog_import_csv.cc:376
+#: ../glom/dialog_import_csv.cc:364 ../glom/dialog_import_csv.cc:378
 msgid "The file at \"%1\" could not be opened: %2"
 msgstr "El archivo en «%1» no se pudo abrir: «%2»"
 
-#: ../glom/dialog_import_csv.cc:420 ../glom/dialog_import_csv.cc:460
+#: ../glom/dialog_import_csv.cc:422 ../glom/dialog_import_csv.cc:462
 msgid "Could Not Read File"
 msgstr "No se pudo leer el archivo"
 
-#: ../glom/dialog_import_csv.cc:420 ../glom/dialog_import_csv.cc:460
+#: ../glom/dialog_import_csv.cc:422 ../glom/dialog_import_csv.cc:462
 msgid "The file at \"%1\" could not be read: %2"
 msgstr "El archivo de «%1» no se pudo leer: «%2»"
 
-#: ../glom/dialog_import_csv.cc:607
+#: ../glom/dialog_import_csv.cc:610
 msgid "Encoding detected as: %1"
 msgstr "Codificación detectada como: %1"
 
-#: ../glom/dialog_import_csv.cc:651
+#: ../glom/dialog_import_csv.cc:654
 msgid "Encoding detection failed. Please manually choose one from the box."
 msgstr ""
 "Falló la detección de la codificación. Seleccione una manualmente de la caja."
 
-#: ../glom/dialog_import_csv.cc:655
+#: ../glom/dialog_import_csv.cc:658
 msgid ""
 "The file contains data not in the specified encoding. Please choose another "
 "one, or try \"Auto Detect\"."
@@ -705,24 +705,24 @@ msgstr ""
 "una codificación, o pruebe «Autodetectar»."
 
 #. Note to translators: This is a straight line, not a database row.
-#: ../glom/dialog_import_csv.cc:728
+#: ../glom/dialog_import_csv.cc:732
 #: ../glom/libglom/data_structure/layout/layoutitem_line.cc:82
 msgid "Line"
 msgstr "Línea"
 
-#: ../glom/dialog_import_csv.cc:776
+#: ../glom/dialog_import_csv.cc:780
 msgid "Target Field"
 msgstr "Campo destino"
 
-#: ../glom/dialog_import_csv.cc:828
+#: ../glom/dialog_import_csv.cc:832
 msgid "<Import Failure>"
 msgstr "<Fallo al importar>"
 
-#: ../glom/dialog_import_csv.cc:838
+#: ../glom/dialog_import_csv.cc:842
 msgid "<Picture>"
 msgstr "<Imagen>"
 
-#: ../glom/dialog_import_csv.cc:949
+#: ../glom/dialog_import_csv.cc:953
 msgid ""
 "One column needs to be assigned the table's primary key (<b>%1</b>) as "
 "target field before importing"
@@ -1538,7 +1538,7 @@ msgstr "Lugares para los decimales"
 msgid "Default Formatting"
 msgstr "Formato predeterminado"
 
-#: ../glom/glom_developer.glade.h:116 ../glom/glom.glade.h:22
+#: ../glom/glom_developer.glade.h:116 ../glom/glom.glade.h:21
 #: ../glom/mode_design/users/dialog_groups_list.cc:73
 msgid "Edit"
 msgstr "Editar"
@@ -2131,9 +2131,9 @@ msgstr "Crear un documento nuevo"
 msgid "Database"
 msgstr "Base de datos"
 
-#: ../glom/glom.glade.h:21
-msgid "Detected as: UTF-8"
-msgstr "Detectado como: UTF-8"
+#: ../glom/glom.glade.h:22
+msgid "Encoding detected as: UTF-8"
+msgstr "Codificación detectada como: UTF-8"
 
 #: ../glom/glom.glade.h:23
 msgid "Find All"
@@ -2242,14 +2242,10 @@ msgid "example data format"
 msgstr "formato de datos de ejemplo"
 
 #: ../glom/glom.glade.h:58
-msgid "gtk-cancel"
-msgstr "gtk-cancel"
-
-#: ../glom/glom.glade.h:59
 msgid "label"
 msgstr "etiqueta"
 
-#: ../glom/glom.glade.h:60
+#: ../glom/glom.glade.h:59
 msgid "table_name"
 msgstr "nombre_de_la_tabla"
 
@@ -3728,6 +3724,12 @@ msgstr "Informe finalizado"
 #: ../glom/xsl_utils.cc:142
 msgid "The report will now be opened in your web browser."
 msgstr "El informe se abrirá ahora en su navegador web."
+
+#~ msgid "Detected as: UTF-8"
+#~ msgstr "Detectado como: UTF-8"
+
+#~ msgid "gtk-cancel"
+#~ msgstr "gtk-cancel"
 
 #~ msgid "Choose a running Glom database"
 #~ msgstr "Elija una base de datos Glom en ejecución"

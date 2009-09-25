@@ -35,7 +35,12 @@ namespace Glom
 {
 
 EntryGlom::EntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
-: Gtk::Entry(cobject),
+:
+#ifdef GLOM_ENABLE_MAEMO
+  Hildon::Entry(cobject),
+#else
+  Gtk::Entry(cobject),
+#endif
   m_glom_type(Field::TYPE_TEXT)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -45,7 +50,11 @@ EntryGlom::EntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
 }
 
 EntryGlom::EntryGlom(Field::glom_field_type glom_type)
-: m_glom_type(glom_type)
+:
+#ifdef GLOM_ENABLE_MAEMO
+  Hildon::Entry(Gtk::Hildon::SIZE_AUTO),
+#endif
+ m_glom_type(glom_type)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
@@ -67,7 +76,6 @@ void EntryGlom::init()
   signal_focus_out_event().connect(sigc::mem_fun(*this, &EntryGlom::on_focus_out_event));
   signal_activate().connect(sigc::mem_fun(*this, &EntryGlom::on_activate));
   signal_changed().connect(sigc::mem_fun(*this, &EntryGlom::on_changed));
-  signal_insert_text().connect(sigc::mem_fun(*this, &EntryGlom::on_insert_text));
 #endif // !GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 }
 
@@ -115,12 +123,14 @@ void EntryGlom::check_for_change()
   }
 }
 
+#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 bool EntryGlom::on_focus_out_event(GdkEventFocus* event)
 {
-#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
-  bool result = Gtk::Entry::on_focus_out_event(event);
+  const bool result = Gtk::Entry::on_focus_out_event(event);
 #else
-  bool result = false;
+bool EntryGlom::on_focus_out_event(GdkEventFocus* /* event */)
+{
+  const bool result = false;
 #endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 
   //The user has finished editing.
@@ -148,13 +158,6 @@ void EntryGlom::on_changed()
 #ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   //Call base class:
   Gtk::Entry::on_changed();
-#endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
-}
-
-void EntryGlom::on_insert_text(const Glib::ustring& text, int* position)
-{
-#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
-  Gtk::Entry::on_insert_text(text, position);
 #endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 }
 

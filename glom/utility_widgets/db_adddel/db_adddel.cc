@@ -35,6 +35,11 @@
 #include <gtk/gtktreeview.h>
 #include <gtk/gtkstock.h>
 
+#ifdef GLOM_ENABLE_MAEMO
+//TODO: Remove this when we don't need to call C hildon functions:
+#include <hildon/hildon.h>
+#endif
+
 namespace Glom
 {
 
@@ -67,7 +72,9 @@ DbAddDel::DbAddDel()
 : m_column_is_sorted(false),
   m_column_sorted_direction(false),
   m_column_sorted(0),
+#ifndef GLOM_ENABLE_MAEMO
   m_pMenuPopup(0),
+#endif //GLOM_ENABLE_MAEMO
   m_bAllowUserActions(true),
   m_bPreventUserSignals(false),
   m_bIgnoreTreeViewSignals(false),
@@ -78,7 +85,9 @@ DbAddDel::DbAddDel()
   m_columns_ready(false),
   m_allow_view(true),
   m_allow_view_details(false),
+#ifndef GLOM_ENABLE_MAEMO
   m_treeviewcolumn_button(0),
+#endif
   m_fixed_cell_height(0)
 {
   set_prevent_user_signals();
@@ -97,14 +106,24 @@ DbAddDel::DbAddDel()
   m_TreeView.get_accessible()->set_name(_("Table Content"));
 #endif  
 
+  #ifndef GLOM_ENABLE_MAEMO
   m_ScrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-  m_ScrolledWindow.add(m_TreeView);
   m_ScrolledWindow.set_shadow_type(Gtk::SHADOW_IN);
-
   m_TreeView.set_fixed_height_mode(); //This allows some optimizations.
-  m_TreeView.show();
-
+  m_TreeView.set_rules_hint();
+  m_ScrolledWindow.add(m_TreeView);
   pack_start(m_ScrolledWindow);
+  #else
+  //Do not let the treeview emit activated as soon as a row is pressed.
+  //TODO: Allow this default mamoe behaviour?
+  g_object_set(m_TreeView.gobj(), "hildon-ui-mode", HILDON_UI_MODE_NORMAL, (void*)0);
+  
+  //Let get_selected() and get_active() to work:
+  m_TreeView.set_column_selection_mode(Hildon::TOUCH_SELECTOR_SELECTION_MODE_SINGLE);
+  pack_start(m_TreeView);
+  #endif //GLOM_ENABLE_MAEMO
+
+  m_TreeView.show();
 
   //Make sure that the TreeView doesn't start out only big enough for zero items.
   m_TreeView.set_size_request(-1, 150);
@@ -112,15 +131,16 @@ DbAddDel::DbAddDel()
   //Allow the user to change the column order:
   //m_TreeView.set_column_drag_function( sigc::mem_fun(*this, &DbAddDel::on_treeview_column_drop) );
 
-
+  #ifndef GLOM_ENABLE_MAEMO
   m_TreeView.add_events(Gdk::BUTTON_PRESS_MASK); //Allow us to catch button_press_event and button_release_event
   m_TreeView.signal_button_press_event().connect_notify( sigc::mem_fun(*this, &DbAddDel::on_treeview_button_press_event) );
-
   m_TreeView.signal_columns_changed().connect( sigc::mem_fun(*this, &DbAddDel::on_treeview_columns_changed) );
+  signal_button_press_event().connect(sigc::mem_fun(*this, &DbAddDel::on_button_press_event_Popup));
+  #endif //GLOM_ENABLE_MAEMO
   //add_blank();
 
   setup_menu();
-  signal_button_press_event().connect(sigc::mem_fun(*this, &DbAddDel::on_button_press_event_Popup));
+
 
   set_prevent_user_signals(false);
   set_ignore_treeview_signals(false);
@@ -149,52 +169,37 @@ DbAddDel::~DbAddDel()
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
-void
-DbAddDel::on_MenuPopup_activate_Edit()
+void DbAddDel::do_user_requested_edit()
 {
-  Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_TreeView.get_selection();
-  if(refSelection)
+  Gtk::TreeModel::iterator iter = get_item_selected();
+  if(iter)
   {
-    Gtk::TreeModel::iterator iter = refSelection->get_selected();
-    if(iter)
-    {
-      //Discover whether it's the last (empty) row:
-      //if(get_is_placeholder_row(iter))
-     // {
-        //This is a new entry:
-       // if(m_allow_add)
-       //   signal_user_added().emit(iter, 0);
-
-        /*
-        bool bRowAdded = true;
-
-        //The rows might be re-ordered:
-        Gtk::TreeModel::iterator rowAdded = iter;
-        Glib::ustring strValue_Added =  get_value_key(iter);
-        if(strValue_Added != strValue)
-          rowAdded = get_row(strValue);
-
-        if(bRowAdded)
-          signal_user_requested_edit()(rowAdded);
-        */
-     // }
-     // else
-     // {
-        //Value changed:
-        signal_user_requested_edit()(iter);
-     // }
-    }
-
+    signal_user_requested_edit()(iter);
   }
+  else
+    std::cerr << "DbAddDel::do_user_requested_edit(): No item was selected." << std::endl;
 }
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-void DbAddDel::on_MenuPopup_activate_layout()
+#ifndef GLOM_ENABLE_MAEMO
+
+void DbAddDel::on_cell_button_clicked(const Gtk::TreeModel::Path& path)
 {
-  finish_editing();
-  signal_user_requested_layout().emit();
+  if(!m_refListStore)
+    return;
+
+  Gtk::TreeModel::iterator iter = m_refListStore->get_iter(path);
+  if(iter)
+  {
+    select_item(iter, false /* start_editing */);
+  }
+
+  on_MenuPopup_activate_Edit();
 }
-#endif // !GLOM_ENABLE_CLIENT_ONLY
+
+void DbAddDel::on_MenuPopup_activate_Edit()
+{
+  do_user_requested_edit();
+}
 
 void DbAddDel::on_MenuPopup_activate_Add()
 {
@@ -217,7 +222,21 @@ void DbAddDel::on_MenuPopup_activate_Delete()
     }
   }
 }
+#endif //GLOM_ENABLE_MAEMO
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+void DbAddDel::on_MenuPopup_activate_layout()
+{
+  finish_editing();
+  signal_user_requested_layout().emit();
+}
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+
+#ifdef GLOM_ENABLE_MAEMO
+void DbAddDel::setup_menu()
+{
+}
+#else
 void DbAddDel::setup_menu()
 {
   m_refActionGroup = Gtk::ActionGroup::create();
@@ -354,6 +373,7 @@ bool DbAddDel::on_button_press_event_Popup(GdkEventButton *event)
 
   return  false; //Not handled. TODO: Call base class?
 }
+#endif //GLOM_ENABLE_MAEMO
 
 Gtk::TreeModel::iterator DbAddDel::get_item_placeholder()
 {
@@ -406,6 +426,9 @@ Gnome::Gda::Value DbAddDel::get_value_selected(const sharedptr<const LayoutItem_
 
 Gtk::TreeModel::iterator DbAddDel::get_item_selected()
 {
+  #ifdef GLOM_ENABLE_MAEMO
+  return m_TreeView.get_active();
+  #else
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_TreeView.get_selection();
   if(refTreeSelection)
   {
@@ -416,10 +439,19 @@ Gtk::TreeModel::iterator DbAddDel::get_item_selected()
     return m_refListStore->children().end();
   else
     return Gtk::TreeModel::iterator();
+  #endif //GLOM_ENABLE_MAEMO
 }
 
 Gtk::TreeModel::iterator DbAddDel::get_item_selected() const
 {
+  #ifdef GLOM_ENABLE_MAEMO
+  Hildon::TouchSelector& unconst = const_cast<Hildon::TouchSelector&>(m_TreeView);
+  return unconst.get_selected(0);
+  
+  //TODO: What would this mean?
+  //See https://bugs.maemo.org/show_bug.cgi?id=4641
+  // return m_TreeView.get_active();
+  #else
   Glib::RefPtr<const Gtk::TreeSelection> refTreeSelection = m_TreeView.get_selection();
   if(refTreeSelection)
   {
@@ -431,6 +463,7 @@ Gtk::TreeModel::iterator DbAddDel::get_item_selected() const
     return m_refListStore->children().end();
   else
     return Gtk::TreeModel::iterator();
+  #endif //GLOM_ENABLE_MAEMO
 }
 
 
@@ -490,29 +523,35 @@ bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, const sharedptr
 
     treemodel_col += get_count_hidden_system_columns();
 
+    #ifdef GLOM_ENABLE_MAEMO
+    m_TreeView.select_iter(0, iter, true);
+    #else
     Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_TreeView.get_selection();
-    if(refTreeSelection)
+    g_assert(refTreeSelection);
+    refTreeSelection->select(iter);
+    
+    Gtk::TreeModel::Path path = m_refListStore->get_path(iter);
+
+    guint view_column_index = 0;
+    const bool test = get_view_column_index(treemodel_col, view_column_index);
+    if(test)
     {
-      refTreeSelection->select(iter);
-
-      Gtk::TreeModel::Path path = m_refListStore->get_path(iter);
-
-      guint view_column_index = 0;
-      const bool test = get_view_column_index(treemodel_col, view_column_index);
-      if(test)
+      Gtk::TreeView::Column* pColumn = m_TreeView.get_column(view_column_index);
+      if(pColumn)
       {
-        Gtk::TreeView::Column* pColumn = m_TreeView.get_column(view_column_index);
-        if(pColumn)
+        #ifndef GLOM_ENABLE_MAEMO
+        if(pColumn != m_treeviewcolumn_button) //This would activate the button. Let's avoid this, though it should never happen.
+        #endif //GLOM_ENABLE_MAEMO
         {
-          if(pColumn != m_treeviewcolumn_button) //This would activate the button. Let's avoid this, though it should never happen.
-            m_TreeView.set_cursor(path, *pColumn, start_editing);
+          m_TreeView.set_cursor(path, *pColumn, start_editing);
         }
-        else
-           g_warning("DbAddDel::select_item:TreeViewColumn not found.");
       }
       else
-           g_warning("DbAddDel::select_item:TreeViewColumn index not found. column=%d", treemodel_col);
+       g_warning("DbAddDel::select_item:TreeViewColumn not found.");
     }
+    else
+       g_warning("DbAddDel::select_item:TreeViewColumn index not found. column=%d", treemodel_col);
+    #endif //GLOM_ENABLE_MAEMO
 
     bResult = true;
   }
@@ -537,9 +576,40 @@ guint DbAddDel::get_count() const
   return iCount;
 }
 
+#ifdef GLOM_ENABLE_MAEMO
+Glib::RefPtr<Hildon::TouchSelectorColumn> DbAddDel::touch_selector_get_column()
+{
+  if(m_TreeView.get_num_columns() == 0)
+  {
+    //TODO: Needs a newer hildonmm: m_TreeView.append_column(m_refListStore);
+    hildon_touch_selector_append_column(m_TreeView.gobj(), m_refListStore->gobj(), 0, static_cast<char*>(0), true);
+  }
+
+  return m_TreeView.get_column(0);
+}
+
+Glib::RefPtr<const Hildon::TouchSelectorColumn> DbAddDel::touch_selector_get_column() const
+{
+  if(m_TreeView.get_num_columns() == 0)
+    return Glib::RefPtr<const Hildon::TouchSelectorColumn>();
+
+  return m_TreeView.get_column(0);
+}
+
+#endif //GLOM_ENABLE_MAEMO
+
 guint DbAddDel::get_columns_count() const
 {
+  #ifdef GLOM_ENABLE_MAEMO
+  Glib::RefPtr<const Hildon::TouchSelectorColumn> column = touch_selector_get_column();
+  if(!column)
+    return 0;
+
+  std::list<const Gtk::CellRenderer*> cells = column->get_cells();
+  return cells.size();
+  #else
   return m_TreeView.get_columns().size();
+  #endif //GLOM_ENABLE_MAEMO
 }
 
 /*
@@ -579,23 +649,6 @@ int DbAddDel::get_fixed_cell_height()
 
     m_fixed_cell_height = height;
     return m_fixed_cell_height;
-  }
-}
-
-void DbAddDel::on_cell_layout_button_clicked(const Gtk::TreeModel::Path& path, int model_column_index)
-{
-  if(!m_refListStore)
-    return;
-
-  Gtk::TreeModel::iterator iter = m_refListStore->get_iter(path);
-  if(iter)
-  {
-    sharedptr<const LayoutItem> layout_item = m_ColumnTypes[model_column_index].m_item;
-    sharedptr<const LayoutItem_Button> item_button = sharedptr<const LayoutItem_Button>::cast_dynamic(layout_item);
-    if(item_button)
-    {
-      m_signal_script_button_clicked.emit(item_button, iter);
-    }
   }
 }
 
@@ -681,8 +734,10 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
            pCellButton->set_property("text", item_button->get_title_or_name());
            //pCellButton->set_fixed_width(50); //Otherwise it doesn't show up. TODO: Discover the width of the contents.
 
+           #ifndef GLOM_ENABLE_MAEMO
            pCellButton->signal_clicked().connect(
              sigc::bind( sigc::mem_fun(*this, &DbAddDel::on_cell_layout_button_clicked), model_column_index) );
+           #endif //GLOM_ENABLE_MAEMO
 
            pCellRenderer = pCellButton;
          }
@@ -702,8 +757,11 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
 
     //Restrict the height, to prevent multiline text cells,
     //and to allow TreeView performance optimisation:
-    pCellRendererText->set_fixed_size(-1, get_fixed_cell_height() );
+    int suitable_width = 0;
+    pCellRendererText->get_property("width", suitable_width);
+    pCellRendererText->set_fixed_size(suitable_width, get_fixed_cell_height() );
 
+    #ifndef GLOM_ENABLE_MAEMO //List views are non-editable on Maemo.
     //Connect to edited signal:
     if(item_field) //Only fields can be edited:
     {
@@ -717,8 +775,8 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
       //Connect to its signal:
       pCellRendererText->signal_edited().connect(
         sigc::bind( sigc::mem_fun(*this, &DbAddDel::on_treeview_cell_edited), model_column_index, data_model_column_index) );
-
     }
+    #endif //GLOM_ENABLE_MAEMO
 
     //Choices:
     CellRendererList* pCellRendererCombo = dynamic_cast<CellRendererList*>(pCellRenderer);
@@ -788,9 +846,11 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
 
       if(item_field) //Only fields can be edited:
       {
+        #ifndef GLOM_ENABLE_MAEMO //There's no direct editing via the list view on Maemo.
         //Connect to its signal:
         pCellRendererToggle->signal_toggled().connect(
         sigc::bind( sigc::mem_fun(*this, &DbAddDel::on_treeview_cell_edited_bool), model_column_index, data_model_column_index ) );
+        #endif //GLOM_ENABLE_MAEMO
       }
     }
     else
@@ -852,7 +912,15 @@ void DbAddDel::construct_specified_columns()
 
     m_refListStore.reset();
     if(m_table_name.empty())
+    {
+      #ifdef GLOM_ENABLE_MAEMO
+      //TODO: Needs a newer hildonmm: m_TreeView.append_column(m_refListStore);
+      //TODO: Remove all previous columns?
+      hildon_touch_selector_append_column(m_TreeView.gobj(), m_refListStore->gobj(), 0, static_cast<char*>(0), true);
+      #else
       m_TreeView.set_model(m_refListStore); // clear old model from treeview
+      #endif
+    }
     else
       show_hint_model();
     return;
@@ -932,19 +1000,28 @@ void DbAddDel::construct_specified_columns()
     }
   }
  
-  m_TreeView.set_model(m_refListStore);
-
+  #ifdef GLOM_ENABLE_MAEMO
+  //Remove all View columns:
+  Glib::RefPtr<Hildon::TouchSelectorColumn> column = touch_selector_get_column();
+  g_assert(column);
+  column->clear();
+  #else
+  m_TreeView.set_model(m_refListStore); // clear old model from treeview
 
   //Remove all View columns:
   m_TreeView.remove_all_columns();
+  #endif
+
 
   //Add new View Colums:
   int model_column_index = 0; //Not including the hidden internal columns.
   int view_column_index = 0;
+
+  #ifndef GLOM_ENABLE_MAEMO
   {
     GlomCellRenderer_ButtonImage* pCellButton = Gtk::manage(new GlomCellRenderer_ButtonImage());
-    pCellButton->signal_clicked().connect(sigc::mem_fun(*this, &DbAddDel::on_cell_button_clicked));
 
+    pCellButton->signal_clicked().connect(sigc::mem_fun(*this, &DbAddDel::on_cell_button_clicked));
 
     m_treeviewcolumn_button = Gtk::manage(new Gtk::TreeViewColumn());
     m_treeviewcolumn_button->pack_start(*pCellButton);
@@ -960,7 +1037,7 @@ void DbAddDel::construct_specified_columns()
     // TODO: I am not sure whether this is always correct. Perhaps, we also
     // have to take into account the xpad property of the cell renderer and
     // the spacing property of the treeviewcolumn.
-    int horizontal_separator;
+    int horizontal_separator = 0;
     m_TreeView.get_style_property("horizontal-separator", horizontal_separator);
     m_treeviewcolumn_button->set_fixed_width(width + horizontal_separator*2);
 
@@ -970,6 +1047,7 @@ void DbAddDel::construct_specified_columns()
 
     ++view_column_index;
   }
+  #endif //GLOM_ENABLE_MAEMO
 
   bool no_columns_used = true;
   int data_model_column_index = 0;
@@ -1030,11 +1108,15 @@ void DbAddDel::construct_specified_columns()
   }
   else
   {
+    #ifndef GLOM_ENABLE_MAEMO
     //We must set this each time, because show_hint_model() might unset it:
     m_TreeView.set_fixed_height_mode(); //This allows some optimizations.
+    #endif //GLOM_ENABLE_MAEMO
   }
 
+  #ifndef GLOM_ENABLE_MAEMO
   m_TreeView.columns_autosize();
+  #endif
 
   //Make sure there's a blank row after the database rows that have just been added.
   //add_blank();
@@ -1263,10 +1345,19 @@ void DbAddDel::set_column_choices(guint col, const type_vec_strings& vecStrings)
   m_ColumnTypes[col].m_choices = vecStrings;
 
   guint view_column_index = 0;
-  bool test = get_view_column_index(col, view_column_index);
+  const bool test = get_view_column_index(col, view_column_index);
   if(test)
   { 
-    CellRendererList* pCellRenderer = dynamic_cast<CellRendererList*>( m_TreeView.get_column_cell_renderer(view_column_index) );
+    #ifdef GLOM_ENABLE_MAEMO
+    Glib::RefPtr<Hildon::TouchSelectorColumn> column = touch_selector_get_column();
+    g_assert(column);
+    std::vector<Gtk::CellRenderer*> list_renderers = column->get_cells();
+    g_assert(!list_renderers.empty());
+    CellRendererList* pCellRenderer = dynamic_cast<CellRendererList*>(list_renderers[0]);
+    #else
+    CellRendererList* pCellRenderer = 
+      dynamic_cast<CellRendererList*>( m_TreeView.get_column_cell_renderer(view_column_index) );
+    #endif //GLOM_ENABLE_MAEMO
     if(pCellRenderer)
     {
       //Add the choices:
@@ -1288,7 +1379,10 @@ void DbAddDel::set_column_choices(guint col, const type_vec_strings& vecStrings)
 void DbAddDel::set_allow_add(bool val)
 {
   m_allow_add = val;
+
+  #ifndef GLOM_ENABLE_MAEMO
   m_refContextAdd->set_sensitive(val);
+  #endif //GLOM_ENABLE_MAEMO
 }
 
 void DbAddDel::set_allow_delete(bool val)
@@ -1304,11 +1398,6 @@ void DbAddDel::set_allow_user_actions(bool bVal)
 bool DbAddDel::get_allow_user_actions() const
 {
   return m_bAllowUserActions;
-}
-
-void DbAddDel::set_show_column_titles(bool bVal)
-{
-  m_TreeView.set_headers_visible(bVal);
 }
 
 void DbAddDel::set_find_mode(bool val)
@@ -1423,6 +1512,52 @@ Gnome::Gda::Value DbAddDel::treeview_get_key(const Gtk::TreeModel::iterator& row
   }
 
   return value;
+}
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+DbAddDel::type_signal_user_requested_layout DbAddDel::signal_user_requested_layout()
+{
+  return m_signal_user_requested_layout;
+}
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+
+DbAddDel::type_signal_user_requested_edit DbAddDel::signal_user_requested_edit()
+{
+  return m_signal_user_requested_edit;
+}
+
+
+DbAddDel::type_signal_script_button_clicked DbAddDel::signal_script_button_clicked()
+{
+  return m_signal_script_button_clicked;
+}
+
+DbAddDel::type_signal_record_added DbAddDel::signal_record_added()
+{
+  return m_signal_record_added;
+}
+
+DbAddDel::type_signal_sort_clause_changed DbAddDel::signal_sort_clause_changed()
+{
+  return m_signal_sort_clause_changed;
+}
+
+#ifndef GLOM_ENABLE_MAEMO
+void DbAddDel::on_cell_layout_button_clicked(const Gtk::TreeModel::Path& path, int model_column_index)
+{
+  if(!m_refListStore)
+    return;
+
+  Gtk::TreeModel::iterator iter = m_refListStore->get_iter(path);
+  if(iter)
+  {
+    sharedptr<const LayoutItem> layout_item = m_ColumnTypes[model_column_index].m_item;
+    sharedptr<const LayoutItem_Button> item_button = sharedptr<const LayoutItem_Button>::cast_dynamic(layout_item);
+    if(item_button)
+    {
+      m_signal_script_button_clicked.emit(item_button, iter);
+    }
+  }
 }
 
 void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, int model_column_index, int data_model_column_index)
@@ -1655,34 +1790,6 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
   }
 }
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-DbAddDel::type_signal_user_requested_layout DbAddDel::signal_user_requested_layout()
-{
-  return m_signal_user_requested_layout;
-}
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-DbAddDel::type_signal_user_requested_edit DbAddDel::signal_user_requested_edit()
-{
-  return m_signal_user_requested_edit;
-}
-
-
-DbAddDel::type_signal_script_button_clicked DbAddDel::signal_script_button_clicked()
-{
-  return m_signal_script_button_clicked;
-}
-
-DbAddDel::type_signal_record_added DbAddDel::signal_record_added()
-{
-  return m_signal_record_added;
-}
-
-DbAddDel::type_signal_sort_clause_changed DbAddDel::signal_sort_clause_changed()
-{
-  return m_signal_sort_clause_changed;
-}
-
 void DbAddDel::on_treeview_button_press_event(GdkEventButton* event)
 {
   on_button_press_event_Popup(event);
@@ -1704,54 +1811,6 @@ bool DbAddDel::on_treeview_column_drop(Gtk::TreeView* /* treeview */, Gtk::TreeV
 {
   return true;
 }
-
-guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRenderer& cellrenderer, int model_column_index, int data_model_column_index)
-{
-  DbTreeViewColumnGlom* pViewColumn = Gtk::manage( new DbTreeViewColumnGlom(Utils::string_escape_underscores(title), cellrenderer) );
-  pViewColumn->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED); //Need by fixed-height mode.
-
-  guint cols_count = m_TreeView.append_column(*pViewColumn);
-
-  sharedptr<const LayoutItem> layout_item = m_ColumnTypes[model_column_index].m_item;
-  sharedptr<const LayoutItem_Field> layout_item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
-
-  //Tell the Treeview.how to render the Gnome::Gda::Values:
-  if(layout_item_field)
-  {
-    pViewColumn->set_cell_data_func(cellrenderer, 
-      sigc::bind( sigc::mem_fun(*this, &DbAddDel::treeviewcolumn_on_cell_data), model_column_index, data_model_column_index) );
-  }
-
-  //Allow the column to be reordered by dragging and dropping the column header:
-  pViewColumn->set_reorderable();
-
-  //Allow the column to be resized:
-  pViewColumn->set_resizable();
-  
-  guint column_width = 0;
-  if(!layout_item->get_display_width(column_width))
-     column_width = 100; //Fairly sensible default. TODO: Choose a width based on the first 100 values.
-
-  pViewColumn->set_fixed_width((int)column_width); //This is the only way to set the width, so we need to set it as resizable again immediately afterwards.
-  pViewColumn->set_resizable();
-  //This property is read only: pViewColumn->property_width() = (int)column_width;
-
-  //Save the extra ID, using the title if the column_id is empty:
-  Glib::ustring column_id = m_ColumnTypes[model_column_index].m_item->get_name();
-  pViewColumn->set_column_id( (column_id.empty() ? title : column_id) );
-
-  //TODO pViewColumn->signal_button_press_event().connect( sigc::mem_fun(*this, &DbAddDel::on_treeview_columnheader_button_press_event) );
-
-  //Let the user click on the column header to sort.
-  pViewColumn->set_clickable();
-  pViewColumn->signal_clicked().connect(
-    sigc::bind( sigc::mem_fun(*this, &DbAddDel::on_treeview_column_clicked), model_column_index) );
-
-  pViewColumn->connect_property_changed("width", sigc::bind(sigc::mem_fun(*this, &DbAddDel::on_treeview_column_resized), model_column_index, pViewColumn) );
-
-  return cols_count;
-}
-
 
 void DbAddDel::on_treeview_column_resized(int model_column_index, DbTreeViewColumnGlom* view_column)
 {
@@ -1832,6 +1891,78 @@ void DbAddDel::on_treeview_columns_changed()
     //TODO: If this is ever wanted: m_signal_user_reordered_columns.emit();
   }
 }
+#endif //GLOM_ENABLE_MAEMO
+
+guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRenderer& cellrenderer, int model_column_index, int data_model_column_index)
+{
+  #ifndef GLOM_ENABLE_MAEMO
+  DbTreeViewColumnGlom* pViewColumn = Gtk::manage( new DbTreeViewColumnGlom(Utils::string_escape_underscores(title), cellrenderer) );
+  pViewColumn->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED); //Need by fixed-height mode.
+
+  guint cols_count = m_TreeView.append_column(*pViewColumn);
+  #else
+  Glib::RefPtr<Hildon::TouchSelectorColumn> pViewColumn = touch_selector_get_column();
+  pViewColumn->pack_start(cellrenderer, false);
+  g_assert(pViewColumn);
+  guint cols_count = get_columns_count();
+  #endif //GLOM_ENABLE_MAEMO
+
+  sharedptr<const LayoutItem> layout_item = m_ColumnTypes[model_column_index].m_item;
+  sharedptr<const LayoutItem_Field> layout_item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
+
+  //Tell the Treeview.how to render the Gnome::Gda::Values:
+  if(layout_item_field)
+  {
+    pViewColumn->set_cell_data_func(cellrenderer, 
+      sigc::bind( sigc::mem_fun(*this, &DbAddDel::treeviewcolumn_on_cell_data), model_column_index, data_model_column_index) );
+  }
+
+  #ifndef GLOM_ENABLE_MAEMO
+  //Allow the column to be reordered by dragging and dropping the column header:
+  pViewColumn->set_reorderable();
+
+  //Allow the column to be resized:
+  pViewColumn->set_resizable();
+  #endif //GLOM_ENABLE_MAEMO
+  
+  guint column_width = 0;
+  if(!layout_item->get_display_width(column_width))
+  {
+    //TODO: Choose a width based on the first 100 values.
+    if(layout_item_field)
+    {
+     column_width = Utils::get_suitable_field_width_for_widget(*this, layout_item_field);
+     column_width = column_width / 3;
+     //std::cout << "DEBUG: column_width=" << column_width << std::endl;
+    }
+    else
+     column_width = 100;
+  }
+
+  #ifdef GLOM_ENABLE_MAEMO
+  cellrenderer.set_property("width", (int)column_width);
+  #else
+  pViewColumn->set_fixed_width((int)column_width); //This is the only way to set the width, so we need to set it as resizable again immediately afterwards.
+  pViewColumn->set_resizable();
+  //This property is read only: pViewColumn->property_width() = (int)column_width;
+
+  //Save the extra ID, using the title if the column_id is empty:
+  const Glib::ustring column_id = m_ColumnTypes[model_column_index].m_item->get_name();
+  pViewColumn->set_column_id( (column_id.empty() ? title : column_id) );
+
+  //TODO pViewColumn->signal_button_press_event().connect( sigc::mem_fun(*this, &DbAddDel::on_treeview_columnheader_button_press_event) );
+
+  //Let the user click on the column header to sort.
+  pViewColumn->set_clickable();
+  pViewColumn->signal_clicked().connect(
+    sigc::bind( sigc::mem_fun(*this, &DbAddDel::on_treeview_column_clicked), model_column_index) );
+
+  pViewColumn->connect_property_changed("width", sigc::bind(sigc::mem_fun(*this, &DbAddDel::on_treeview_column_resized), model_column_index, pViewColumn) );
+  #endif //GLOM_ENABLE_MAEMO
+
+  return cols_count;
+}
+
 
 DbAddDel::type_vec_strings DbAddDel::get_columns_order() const
 {
@@ -1951,12 +2082,15 @@ bool DbAddDel::get_view_column_index(guint model_column_index, guint& view_colum
     return false;
 
   view_column_index = model_column_index;
+
+  #ifndef GLOM_ENABLE_MAEMO
   if(m_treeviewcolumn_button)
   {
     ++view_column_index;
   }
   else
     std::cout << "m_treeviewcolumn_button is null." << std::endl;
+  #endif //GLOM_ENABLE_MAEMO
 
   return true;
 }
@@ -1966,11 +2100,6 @@ guint DbAddDel::get_count_hidden_system_columns() const
   return 0; //The key now has explicit API in the model.
   //return 1; //The key.
   //return 2; //The key and the placeholder boolean.
-}
-
-void DbAddDel::set_rules_hint(bool val)
-{
-  m_TreeView.set_rules_hint(val);
 }
 
 sharedptr<Field> DbAddDel::get_key_field() const
@@ -1983,10 +2112,20 @@ void DbAddDel::set_key_field(const sharedptr<Field>& field)
   m_key_field = field;
 }
 
+#ifdef GLOM_ENABLE_MAEMO
+void DbAddDel::treeviewcolumn_on_cell_data(const Gtk::TreeModel::iterator& iter, int model_column_index, int data_model_column_index)
+#else
 void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, int model_column_index, int data_model_column_index)
+#endif
 {
+#ifdef GLOM_ENABLE_MAEMO
+  Glib::RefPtr<Hildon::TouchSelectorColumn> column = touch_selector_get_column();
+  g_assert(column);
+  std::vector<Gtk::CellRenderer*> cells = column->get_cells();
+  Gtk::CellRenderer* renderer = cells[model_column_index];
+#endif
+  
   //std::cout << "debug: DbAddDel::treeviewcolumn_on_cell_data()" << std::endl; 
-
 
   if(iter)
   {
@@ -2071,10 +2210,12 @@ void DbAddDel::set_allow_view_details(bool val)
 {
   m_allow_view_details = val;
 
+  #ifndef GLOM_ENABLE_MAEMO
   //Hide it if it was visible, if it exists,
   //otherwise do that later after creating it:
   if(m_treeviewcolumn_button)
     m_treeviewcolumn_button->set_visible(val);
+  #endif //GLOM_ENABLE_MAEMO
 }
 
 bool DbAddDel::get_allow_view_details() const
@@ -2082,22 +2223,8 @@ bool DbAddDel::get_allow_view_details() const
   return m_allow_view_details;
 }
 
-void DbAddDel::on_cell_button_clicked(const Gtk::TreeModel::Path& path)
-{
-  if(!m_refListStore)
-    return;
-
-  Gtk::TreeModel::iterator iter = m_refListStore->get_iter(path);
-  if(iter)
-  {
-    select_item(iter, false /* start_editing */);
-  }
-
-  on_MenuPopup_activate_Edit();
-}
-
 #ifdef GLOM_ENABLE_CLIENT_ONLY 
-void DbAddDel::on_self_style_changed(const Glib::RefPtr<Gtk::Style>& style)
+void DbAddDel::on_self_style_changed(const Glib::RefPtr<Gtk::Style>& /* style */)
 {
   // Reset fixed cell height because the font might have changed due to the new style:
   m_fixed_cell_height = 0;
@@ -2115,17 +2242,28 @@ void DbAddDel::set_open_button_title(const Glib::ustring& title)
 
 void DbAddDel::show_hint_model()
 {
+  #ifdef GLOM_ENABLE_MAEMO
+  Glib::RefPtr<Hildon::TouchSelectorColumn> column = touch_selector_get_column();
+  g_assert(column);
+  column->clear();
+  #else
   m_TreeView.remove_all_columns();
   m_treeviewcolumn_button = 0; //When we removed the view columns, this was deleted because it's manage()ed.
+  #endif //GLOM_ENABLE_MAEMO
 
   m_model_hint = Gtk::ListStore::create(m_columns_hint);
   Gtk::TreeModel::iterator iter = m_model_hint->append();
   (*iter)[m_columns_hint.m_col_hint] = _("Right-click to layout, to specify the related fields.");
 
+  #ifdef GLOM_ENABLE_MAEMO
+  column = touch_selector_get_column();
+  g_assert(column);
+  column->pack_start(m_columns_hint.m_col_hint);
+  #else
   m_TreeView.set_model(m_model_hint);
-
   m_TreeView.set_fixed_height_mode(false); //fixed_height mode is incompatible with the default append_column() helper method.
   m_TreeView.append_column("", m_columns_hint.m_col_hint);
+  #endif
 }
 
 bool DbAddDel::start_new_record()

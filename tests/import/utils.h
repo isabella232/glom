@@ -25,4 +25,6 @@ bool run_parser_from_buffer(const FuncConnectParserSignals& connect_parser_signa
 bool run_parser_from_buffer(const FuncConnectParserSignals& connect_parser_signals, const std::string& input);
 
 } //namespace ImportTests
-#endif
+
+#endif //TEST_IMPORT_UTILS_H
+

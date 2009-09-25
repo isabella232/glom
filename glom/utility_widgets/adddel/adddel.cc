@@ -1000,11 +1000,6 @@ bool AddDel::get_allow_user_actions() const
   return m_bAllowUserActions;
 }
 
-void AddDel::set_show_column_titles(bool bVal)
-{
-  m_TreeView.set_headers_visible(bVal);
-}
-
 
 void AddDel::set_column_width(guint /* col */, guint /*width*/)
 {
@@ -1591,11 +1586,6 @@ guint AddDel::get_count_hidden_system_columns()
     ++hidden_count;
 
   return hidden_count;
-}
-
-void AddDel::set_rules_hint(bool val)
-{
-  m_TreeView.set_rules_hint(val);
 }
 
 void AddDel::prevent_duplicates(guint column_number)

@@ -63,8 +63,10 @@ private:
 protected:
   bool attempt_create_database(const Glib::ustring& database_name, const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error);
 
-protected:
-  Glib::RefPtr<Gnome::Gda::Connection> attempt_connect(const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error);
+  /** Attempt to connect to the database with the specified criteria.
+   * @param error An error if the correction failed.
+   */ 
+  Glib::RefPtr<Gnome::Gda::Connection> attempt_connect(const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error) throw();
 
 private:
   float m_postgres_server_version;

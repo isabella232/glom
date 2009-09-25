@@ -162,8 +162,6 @@ public:
 
   void construct_specified_columns(); //Delay actual use of set_column_*() stuff until this method is called.
 
-  void set_show_column_titles(bool bVal = true);
-
   Gtk::TreeModel::iterator get_row(const Glib::ustring& key);
 
   void finish_editing(); //Closes active edit controls and commits the data to the cell.
@@ -178,8 +176,6 @@ public:
 
   Glib::RefPtr<Gtk::TreeModel> get_model();
   Glib::RefPtr<const Gtk::TreeModel> get_model() const;
-
-  void set_rules_hint(bool val = true);
 
   //Signals:
   //row number.

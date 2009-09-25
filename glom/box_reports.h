@@ -38,7 +38,9 @@ private:
 
   virtual void fill_row(const Gtk::TreeModel::iterator& iter, const sharedptr<const Report>& report);
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void save_to_document();
+#endif
 
   //Signal handlers:
   virtual void on_adddel_Add(const Gtk::TreeModel::iterator& row);
