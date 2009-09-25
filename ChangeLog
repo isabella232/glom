@@ -1,3 +1,12 @@
+2009-09-25  Murray Cumming  <murrayc@murrayc-desktop>
+
+	Import tests: Handle encoding errors.
+
+	* tests/import/utils.cc: Handle signal_encoding_error too, because this
+	is one way that the parser can stop.
+	Increase the timeout because an infinite loop is unlikely (and not 
+	currently happening).
+
 2009-09-25  Murray Cumming  <murrayc@murrayc.com>
 
 	tests/import/: Small cleanup.

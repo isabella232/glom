@@ -47,6 +47,16 @@ static void on_mainloop_killed_by_watchdog()
   get_mainloop_instance()->quit();
 }
 
+static void on_parser_encoding_error()
+{
+  std::cerr << "debug: utils.cc: on_parser_encoding_error()" << std::endl;
+
+  get_result_instance() = false;
+  //Quit the mainloop that we ran because the parser uses an idle handler.
+  get_mainloop_instance()->quit();
+}
+
+
 static void on_parser_finished()
 {
   //Quit the mainloop that we ran because the parser uses an idle handler.
@@ -64,13 +74,14 @@ bool run_parser_from_buffer(const FuncConnectParserSignals& connect_parser_signa
 
   Glom::CsvParser parser("UTF-8");
 
+  parser.signal_encoding_error().connect(&on_parser_encoding_error);
   parser.signal_finished_parsing().connect(&on_parser_finished);
 
   // Install a watchdog for the mainloop. No test should need longer than 3
   // seconds. Also, we need to avoid being stuck in the mainloop.
   // Infinitely running tests are useless.
   get_mainloop_instance()->get_context()->signal_timeout().connect_seconds_once(
-    sigc::ptr_fun(&on_mainloop_killed_by_watchdog), 3);
+    sigc::ptr_fun(&on_mainloop_killed_by_watchdog), 300);
 
   connect_parser_signals(parser);
 

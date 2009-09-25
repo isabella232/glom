@@ -271,7 +271,7 @@ bool CsvParser::on_idle_parse()
       // Invalid text in the current encoding.
       set_state(STATE_ENCODING_ERROR);
       signal_encoding_error().emit();
-      return false;
+      return false; //Stop calling the idle handler.
     }
 
     // If EINVAL is set, this means that an incomplete multibyte sequence was at
@@ -285,7 +285,7 @@ bool CsvParser::on_idle_parse()
         // should not end with an incomplete multibyte sequence.
         set_state(STATE_ENCODING_ERROR);
         signal_encoding_error().emit();
-        return false;
+        return false; //Stop calling the idle handler.
       }
       else
       {
@@ -332,7 +332,7 @@ bool CsvParser::on_idle_parse()
       // it just contains lots of nullbytes). We therefore produce an error here.
       set_state(STATE_ENCODING_ERROR);
       signal_encoding_error().emit();
-      return false;
+      return false;  //Stop calling the idle handler.
     }
     else if(in_quotes)
     {
@@ -399,7 +399,7 @@ bool CsvParser::on_idle_parse()
   }
 
   // Continue if there are more bytes to process
-  return more_to_process;
+  return more_to_process; //false means stop calling the idle handler.
 }
 
 void CsvParser::do_line_scanned(const Glib::ustring& line, guint line_number)
@@ -439,7 +439,8 @@ void CsvParser::on_file_read(const Glib::RefPtr<Gio::AsyncResult>& result)
   // TODO: Introduce CsvParser::is_idle_handler_connected() instead?
   if(!m_idle_connection.connected())
   {
-    m_idle_connection = Glib::signal_idle().connect(sigc::mem_fun(*this, &CsvParser::on_idle_parse));
+    m_idle_connection = Glib::signal_idle().connect(
+      sigc::mem_fun(*this, &CsvParser::on_idle_parse));
   }
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -499,7 +500,7 @@ void CsvParser::on_buffer_read(const Glib::RefPtr<Gio::AsyncResult>& result)
   }
   catch(const Glib::Exception& ex)
   {
-     signal_file_read_error().emit(ex.what());
+    signal_file_read_error().emit(ex.what());
     clear();
   }
 #else

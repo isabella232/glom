@@ -19,13 +19,13 @@ type_tokens& get_tokens_instance()
 
 void on_line_scanned(const std::vector<Glib::ustring>& row, guint /*line_number*/)
 {
-  std::cout << "debug: on_line_scanned(): row.size()=" << row.size() << std::endl;
+  //std::cout << "debug: on_line_scanned(): row.size()=" << row.size() << std::endl;
  
   for(std::vector<Glib::ustring>::const_iterator iter = row.begin();
       iter != row.end();
       ++iter)
   {
-    std::cout << "  debug: on_line_scanned(): item=" << *iter << std::endl;
+    //std::cout << "  debug: on_line_scanned(): item=" << *iter << std::endl;
 
     get_tokens_instance().push_back(*iter);
   }
@@ -84,6 +84,7 @@ bool check_tokens(const std::string& regex)
 void connect_signals(Glom::CsvParser& parser)
 {
   parser.signal_line_scanned().connect(sigc::ptr_fun(&on_line_scanned));
+  //parser.signal_encoding_error().connect(sigc::ptr_fun(&on_encoding_error));
 }
 
 } // namespace
