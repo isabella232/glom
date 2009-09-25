@@ -1933,7 +1933,7 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
     {
      column_width = Utils::get_suitable_field_width_for_widget(*this, layout_item_field);
      column_width = column_width / 3;
-     std::cout << "DEBUG: column_width=" << column_width << std::endl;
+     //std::cout << "DEBUG: column_width=" << column_width << std::endl;
     }
     else
      column_width = 100;

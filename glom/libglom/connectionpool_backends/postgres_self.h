@@ -83,6 +83,14 @@ private:
   //bool directory_exists_filepath(const std::string& filepath);
   bool directory_exists_uri(const std::string& uri);
 
+  /** Run the command-line with the --version option to discover what version 
+   * of PostgreSQL is installed, so we can use the appropriate configuration 
+   * options when self-hosting.
+   */
+  Glib::ustring get_postgresql_utils_version(const SlotProgress& slot_progress);
+
+  float get_postgresql_utils_version_as_number(const SlotProgress& slot_progress);
+
   std::string m_self_hosting_data_uri;
   int m_port;
   bool m_network_shared;

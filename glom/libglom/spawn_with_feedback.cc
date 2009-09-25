@@ -184,6 +184,8 @@ private:
 public:
   typedef sigc::signal<void> SignalFinished;
 
+  /** TODO: Document the redirect parameter.
+   */
   SpawnInfo(const Glib::ustring& command_line, int redirect):
     running(false), return_status(0)
   {
@@ -380,7 +382,6 @@ int spawn_sync(const Glib::ustring& command_line, std::string* stdout_text, std:
 
 } // namespace Impl
 
-
 bool execute_command_line_and_wait(const std::string& command, const SlotProgress& slot_progress)
 {
   //Show UI progress feedback while we wait for the command to finish:
@@ -404,9 +405,56 @@ bool execute_command_line_and_wait(const std::string& command, const SlotProgres
   timeout_connection.disconnect();
   
   int return_status = false;
-  const bool returned = Impl::spawn_async_end(info, NULL, NULL, &return_status);
+  const bool returned = Impl::spawn_async_end(info, 0, 0, &return_status);
   if(!returned)
     return false; // User closed the dialog prematurely?
+
+  return (return_status == 0);
+}
+
+bool execute_command_line_and_wait(const std::string& command, const SlotProgress& slot_progress, std::string& output)
+{
+  //Initialize output parameter:
+  output = std::string();
+
+  //Show UI progress feedback while we wait for the command to finish:
+  
+  std::auto_ptr<const Impl::SpawnInfo> info = Impl::spawn_async(command, Impl::REDIRECT_STDOUT | Impl::REDIRECT_STDERR);
+  
+  Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
+  info->signal_finished().connect(
+    sigc::bind(sigc::ptr_fun(&on_spawn_info_finished), sigc::ref(mainloop) ) );
+
+  // Pulse two times a second:
+  sigc::connection timeout_connection = Glib::signal_timeout().connect(
+    sigc::bind_return( slot_progress, true),
+    500);
+  slot_progress(); //Make sure it is called at least once.
+
+  //Block until signal_finished is called.
+  mainloop->run();
+
+  //Stop the timeout callback:
+  timeout_connection.disconnect();
+  
+  int return_status = false;
+  std::string stdout_text, stderr_text;
+  const bool returned = Impl::spawn_async_end(info, &stdout_text, &stderr_text, &return_status);
+  if(!returned)
+    return false; // User closed the dialog prematurely?
+
+  //std::cout << "DEBUG: command=" << command << std::endl;
+  //std::cout << "  DEBUG: stdout_text=" << stdout_text << std::endl;
+  //std::cout << "  DEBUG: stderr_text=" << stderr_text << std::endl;
+
+  output = stdout_text;
+
+  if(!stderr_text.empty())
+  {
+    std::cerr << "Glom: execute_command_line_and_wait(): command produced stderr text: " << std::endl <<
+      "  command: " << command << std::endl << 
+      "  error text: " << stderr_text << std::endl;
+  }
 
   return (return_status == 0);
 }
@@ -509,6 +557,7 @@ namespace
 
 } //Anonymous namespace
 
+/*
 static bool on_timeout_delay(const Glib::RefPtr<Glib::MainLoop>& mainloop)
 {
   //Allow our mainloop.run() to return:
@@ -517,6 +566,7 @@ static bool on_timeout_delay(const Glib::RefPtr<Glib::MainLoop>& mainloop)
     
   return false;
 }
+*/
 
 bool execute_command_line_and_wait_until_second_command_returns_success(const std::string& command, const std::string& second_command, const SlotProgress& slot_progress, const std::string& success_text)
 {
@@ -552,6 +602,10 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
 
   if(success) //response == Gtk::RESPONSE_OK)
   {
+    /* Don't sleep here. Instead we just keep trying to connect until it succeeds, 
+     * timing out during that if necessary.
+     *
+     *
     //Sleep for a bit more, because I think that pg_ctl sometimes reports success too early.
     Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
     sigc::connection connection_timeout = Glib::signal_timeout().connect(
@@ -560,7 +614,8 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
     mainloop->run();
 
     connection_timeout.disconnect();
-    
+    */
+
     return true;
   }
   else

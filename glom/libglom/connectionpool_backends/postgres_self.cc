@@ -68,7 +68,11 @@ namespace ConnectionPoolBackends
 {
 
 //TODO: Do we need these sameuser lines?
-#define DEFAULT_CONFIG_PG_HBA_LOCAL \
+
+// We need both <=8.3 and >=8.4 versions, because the ident line changed syntax 
+// incompatibly: http://www.postgresql.org/about/press/features84#security
+ 
+#define DEFAULT_CONFIG_PG_HBA_LOCAL_8p3 \
 "# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD\n\
 \n\
 # local is for Unix domain socket connections only\n\
@@ -82,13 +86,38 @@ host    all         all         127.0.0.1    255.255.255.255    md5\n\
 # IPv6 local connections:\n\
 host    all         all         ::1/128               md5\n"
 
-#define DEFAULT_CONFIG_PG_HBA_REMOTE \
-"DEFAULT_CONFIG_PG_HBA_LOCAL \
+#define DEFAULT_CONFIG_PG_HBA_LOCAL_8p4 \
+"# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD\n\
 \n\
+# local is for Unix domain socket connections only\n\
+# trust allows connection from the current PC without a password:\n\
+local   all         all                               trust\n\
+local   all         all                               ident\n\
+local   all         all                               md5\n\
+\n\
+# TCP connections from the same computer, with a password:\n\
+host    all         all         127.0.0.1    255.255.255.255    md5\n\
+# IPv6 local connections:\n\
+host    all         all         ::1/128               md5\n"
+
+#define DEFAULT_CONFIG_PG_HBA_REMOTE_EXTRA \
+"\n\
 # IPv4 local connections:\n\
 host    all         all         0.0.0.0/0          md5\n\
 # IPv6 local connections:\n\
 host    all         all         ::1/128               md5\n"
+
+#define PORT_POSTGRESQL_SELF_HOSTED_START 5433
+#define PORT_POSTGRESQL_SELF_HOSTED_END 5500
+
+
+#define DEFAULT_CONFIG_PG_HBA_REMOTE_8p3 \
+DEFAULT_CONFIG_PG_HBA_LOCAL_8p3 \
+DEFAULT_CONFIG_PG_HBA_REMOTE_EXTRA
+
+#define DEFAULT_CONFIG_PG_HBA_REMOTE_8p4 \
+DEFAULT_CONFIG_PG_HBA_LOCAL_8p3 \
+DEFAULT_CONFIG_PG_HBA_REMOTE_EXTRA
 
 #define PORT_POSTGRESQL_SELF_HOSTED_START 5433
 #define PORT_POSTGRESQL_SELF_HOSTED_END 5500
@@ -272,9 +301,138 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
   return result ? INITERROR_NONE : INITERROR_COULD_NOT_START_SERVER;
 }
 
+Glib::ustring PostgresSelfHosted::get_postgresql_utils_version(const SlotProgress& slot_progress)
+{
+  Glib::ustring result;
+
+  const std::string command = "\"" + get_path_to_postgres_executable("pg_ctl") + "\" --version";
+
+  //The first command does not return, but the second command can check whether it succeeded:
+  std::string output;
+  const bool spawn_result = Glom::Spawn::execute_command_line_and_wait(command, slot_progress, output);
+  if(!spawn_result)
+  {
+    std::cerr << "Error while attempting to discover the pg_ctl version." << std::endl;
+    return result;
+  }
+
+  //Use a regex to get the version number:
+  Glib::RefPtr<Glib::Regex> regex;
+
+  //We want the characters at the end:  
+  const gchar* VERSION_REGEX = "pg_ctl \\(PostgreSQL\\) (.*)";
+
+  #ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    regex = Glib::Regex::create(VERSION_REGEX);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << "Glom: Glib::Regex::create() failed: " << ex.what() << std::endl;
+    return result;
+  } 
+  #else
+  std::auto_ptr<Glib::Error> ex;
+  regex = Glib::Regex::create(VERSION_REGEX, static_cast<Glib::RegexCompileFlags>(0), static_cast<Glib::RegexMatchFlags>(0), ex);
+  if(ex.get())
+  {
+    std::cerr << "Glom: Glib::Regex::create() failed: " << ex->what() << std::endl;
+    return result;
+  }
+  #endif
+ 
+  if(!regex)
+    return result;
+
+  typedef std::vector<Glib::ustring> type_vec_strings;
+  const type_vec_strings vec = regex->split(output, Glib::REGEX_MATCH_NOTEMPTY);
+  //std::cout << "DEBUG: output == " << output << std::endl;
+  //std::cout << "DEBUG: vec.size() == " << vec.size() << std::endl;
+
+  // We get, for instance, "\n" and 8.4.1" and "\n".
+  for(type_vec_strings::const_iterator iter = vec.begin();
+       iter != vec.end();
+       ++iter)
+  {
+    const Glib::ustring str = *iter;
+    if(!str.empty())
+      return str; //Found.
+  }
+ 
+  return result;
+}
+
+float PostgresSelfHosted::get_postgresql_utils_version_as_number(const SlotProgress& slot_progress)
+{
+  float result = 0;
+
+  const Glib::ustring version_str = get_postgresql_utils_version(slot_progress);
+
+  Glib::RefPtr<Glib::Regex> regex;
+
+  //We want the characters at the end:  
+  const gchar* VERSION_REGEX = "^(\\d*)\\.(\\d*)";
+
+  #ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    regex = Glib::Regex::create(VERSION_REGEX);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << "Glom: Glib::Regex::create() failed: " << ex.what() << std::endl;
+    return result;
+  } 
+  #else
+  std::auto_ptr<Glib::Error> ex;
+  regex = Glib::Regex::create(VERSION_REGEX, static_cast<Glib::RegexCompileFlags>(0), static_cast<Glib::RegexMatchFlags>(0), ex);
+  if(ex.get())
+  {
+    std::cerr << "Glom: Glib::Regex::create() failed: " << ex->what() << std::endl;
+    return result;
+  }
+  #endif
+ 
+  if(!regex)
+    return result;
+
+  typedef std::vector<Glib::ustring> type_vec_strings;
+  const type_vec_strings vec = regex->split(version_str, Glib::REGEX_MATCH_NOTEMPTY);
+  //std::cout << "DEBUG: str == " << version_str << std::endl;
+  //std::cout << "DEBUG: vec.size() == " << vec.size() << std::endl;
+
+  //We need to loop over the numbers because we get some "" items that we want to ignore:
+  guint count = 0; //We want 2 numbers.
+  for(type_vec_strings::const_iterator iter = vec.begin();
+       iter != vec.end();
+       ++iter)
+  {
+    //std::cout << "regex item: START" << *iter << "END" << std::endl;
+
+    const Glib::ustring str = *iter;
+    if(str.empty())
+      continue;
+
+    const float num = atoi(str.c_str());
+    if(count == 0)
+      result = num;
+    else if(count == 1)
+    {
+      result += (0.1 * num);
+      break;
+    }
+
+    ++count;
+  }
+
+  return result;
+}
+
+
 bool PostgresSelfHosted::startup(const SlotProgress& slot_progress, bool network_shared)
 {
-   m_network_shared = network_shared;
+  m_network_shared = network_shared;
 
   // Don't risk random crashes, although this really shouldn't be called
   // twice of course.
@@ -405,7 +563,9 @@ void PostgresSelfHosted::cleanup(const SlotProgress& slot_progress)
   m_port = 0;
 }
 
-bool PostgresSelfHosted::set_network_shared(const SlotProgress& /* slot_progress */, bool network_shared)
+
+
+bool PostgresSelfHosted::set_network_shared(const SlotProgress& slot_progress, bool network_shared)
 {
   //TODO: Use slot_progress, while doing async IO for create_text_file().
 
@@ -415,7 +575,20 @@ bool PostgresSelfHosted::set_network_shared(const SlotProgress& /* slot_progress
   const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
 
   const std::string dbdir_uri_config = dbdir_uri + "/config";
-  const char* default_conf_contents = m_network_shared ? DEFAULT_CONFIG_PG_HBA_REMOTE : DEFAULT_CONFIG_PG_HBA_LOCAL;
+  const char* default_conf_contents = 0;
+
+  // Choose the configuration contents based on the postgresql version 
+  // and whether we want to be network-shared:
+  const float postgresql_version = get_postgresql_utils_version_as_number(slot_progress);
+  //std::cout << "DEBUG: postgresql_version=" << postgresql_version << std::endl;
+
+  if(postgresql_version >= 8.4f)
+    default_conf_contents = m_network_shared ? DEFAULT_CONFIG_PG_HBA_REMOTE_8p4 : DEFAULT_CONFIG_PG_HBA_LOCAL_8p4;
+  else
+    default_conf_contents = m_network_shared ? DEFAULT_CONFIG_PG_HBA_REMOTE_8p3 : DEFAULT_CONFIG_PG_HBA_LOCAL_8p3;
+
+  //std::cout << "DEBUG: default_conf_contents=" << default_conf_contents << std::endl;
+
   const bool hba_conf_creation_succeeded = create_text_file(dbdir_uri_config + "/pg_hba.conf", default_conf_contents);
   g_assert(hba_conf_creation_succeeded);
   if(!hba_conf_creation_succeeded)
@@ -427,6 +600,16 @@ bool PostgresSelfHosted::set_network_shared(const SlotProgress& /* slot_progress
   return hba_conf_creation_succeeded;
 }
 
+static bool on_timeout_delay(const Glib::RefPtr<Glib::MainLoop>& mainloop)
+{
+  //Allow our mainloop.run() to return:
+  if(mainloop)
+    mainloop->quit();
+    
+  return false;
+}
+
+
 Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error)
 {
   if(!get_self_hosting_active())
@@ -435,8 +618,49 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ust
     return Glib::RefPtr<Gnome::Gda::Connection>();
   }
 
-  return attempt_connect("localhost", port_as_string(m_port), database, username, password, error);
+  std::auto_ptr<ExceptionConnection> ex;
 
+  Glib::RefPtr<Gnome::Gda::Connection> result;
+  bool keep_trying = true;
+  guint count_retries = 0;
+  const guint MAX_RETRIES_KNOWN_PASSWORD = 30; /* seconds */
+  const guint MAX_RETRIES_EVER = 60; /* seconds */
+  while(keep_trying)
+  { 
+    result = attempt_connect("localhost", port_as_string(m_port), database, username, password, ex);
+    if(!result && 
+      ex.get() && (ex->get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER))
+    {
+      //It must be using a default password, so any failure would not be due to a wrong password.
+      //However, pg_ctl sometimes reports success before it is really ready to let us connect, 
+      //so in this case we can just keep trying until it works, with a very long timeout.
+      count_retries++;
+      const guint max_retries = m_network_shared ? MAX_RETRIES_EVER : MAX_RETRIES_KNOWN_PASSWORD;
+      if(count_retries > max_retries)
+      {
+        keep_trying = false;
+        continue;
+      }
+
+      std::cout << "DEBUG: Glom::PostgresSelfHosted::connect(): Waiting and retrying the connection due to suspected too-early success of pg_ctl." << std::endl; 
+
+      //Wait:
+      Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
+        sigc::connection connection_timeout = Glib::signal_timeout().connect(
+        sigc::bind(sigc::ptr_fun(&on_timeout_delay), sigc::ref(mainloop)), 
+        1000 /* 1 second */);
+      mainloop->run();
+      connection_timeout.disconnect();
+      
+      keep_trying = true;
+      continue;
+    }
+    
+    keep_trying = false;
+  }
+
+  error = ex;
+  return result;
 }
 
 bool PostgresSelfHosted::create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error)

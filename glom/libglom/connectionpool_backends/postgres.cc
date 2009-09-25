@@ -57,7 +57,7 @@ float Postgres::get_postgres_server_version() const
   return m_postgres_server_version;
 }
 
-Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error)
+Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error) throw()
 {
   //We must specify _some_ database even when we just want to create a database.
   //This _might_ be different on some systems. I hope not. murrayc
@@ -66,25 +66,17 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
   const Glib::ustring cnc_string_main = "HOST=" + host + ";PORT=" + port;
   Glib::ustring cnc_string = cnc_string_main + ";DB_NAME=" + database;
 
-  //std::cout << "debug: connecting: cnc string: " << cnc_string << std::endl;
-#ifdef GLOM_CONNECTION_DEBUG          
-  std::cout << std::endl << "Glom: trying to connect on port=" << port << std::endl;
-#endif
-
   Glib::RefPtr<Gnome::Gda::Connection> connection;
   Glib::RefPtr<Gnome::Gda::DataModel> data_model;
 
   const Glib::ustring auth_string = create_auth_string(username, password);   
  
-#ifdef GLOM_CONNECTION_DEBUG
+#ifdef GLOM_CONNECTION_DEBUG          
+  std::cout << std::endl << "DEBUG: Glom: trying to connect on port=" << port << std::endl;
   std::cout << "DEBUG: ConnectionPoolBackends::Postgres::attempt_connect(): cnc_string=" << cnc_string << std::endl;
   std::cout << "  DEBUG: auth_string=" << auth_string << std::endl;
 #endif
 
-//TODO: Allow the client-only build to specify a read-only connection, 
-//so we can use Gnome::Gda::CONNECTION_OPTIONS_READ_ONLY?
-//But this must be a runtime thing - it can't be a build-time change, 
-//because libglom has no client-only build. It always offers everything.
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
