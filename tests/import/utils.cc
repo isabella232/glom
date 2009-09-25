@@ -3,6 +3,9 @@
 namespace ImportTests
 {
 
+//The result just shows whether it finished before the timeout.
+static bool finished_parsing = true;
+
 bool check(const std::string& name, bool test, std::stringstream& report)
 {
   if(!test)
@@ -14,54 +17,40 @@ bool check(const std::string& name, bool test, std::stringstream& report)
 // Returns the file name of the temporary created file, which will contain the buffer's contents.
 static std::string create_file_from_buffer(const char* input, guint input_size)
 {
-  //std::cout << "debug: input: " << input << std::endl;
-
   // Use Glib's file utilities to get a unique temporary filename:
   std::string tmp_filename;
   const int tmp_file_handle = Glib::file_open_tmp(tmp_filename, "glom_testdata");
-
-  const std::string uri = Glib::filename_to_uri(tmp_filename);
-  if(0 < tmp_file_handle)
-  {
-    ssize_t result = write(tmp_file_handle, input, input_size);
-    g_assert(-1 != result); // g_return_with_val would still be wrong here, I think?
-
+  if(-1 < tmp_file_handle)
     close(tmp_file_handle);
-  }
 
-  return uri;
+  const std::string file_uri = Glib::filename_to_uri(tmp_filename);
+  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(file_uri);
+  gssize result = file->append_to()->write(input, input_size);
+  g_return_val_if_fail(-1 < result, "");
+
+  return file_uri;
 }
 
-static Glib::RefPtr<Glib::MainLoop>& get_mainloop_instance()
+static void on_mainloop_killed_by_watchdog(MainLoopRp mainloop)
 {
-  static Glib::RefPtr<Glib::MainLoop> mainloop(0);
-  return mainloop;
-}
-
-static bool& get_result_instance()
-{
-  static bool result = true;
-  return result;
-}
-
-static void on_mainloop_killed_by_watchdog()
-{
-  get_result_instance() = false;
-  get_mainloop_instance()->quit();
-}
-
-static void on_parser_encoding_error()
-{
-  get_result_instance() = true; //The result just shows whether it finished before the timeout.
+  finished_parsing = false;
   //Quit the mainloop that we ran because the parser uses an idle handler.
-  get_mainloop_instance()->quit();
+  mainloop->quit();
+}
+
+static void on_parser_encoding_error(MainLoopRp mainloop)
+{
+  finished_parsing = true;
+  //Quit the mainloop that we ran because the parser uses an idle handler.
+  mainloop->quit();
 }
 
 
-static void on_parser_finished()
+static void on_parser_finished(MainLoopRp mainloop)
 {
+  finished_parsing = true;
   //Quit the mainloop that we ran because the parser uses an idle handler.
-  get_mainloop_instance()->quit();
+  mainloop->quit();
 }
 
 bool run_parser_from_buffer(const FuncConnectParserSignals& connect_parser_signals, const std::string& input)
@@ -71,36 +60,33 @@ bool run_parser_from_buffer(const FuncConnectParserSignals& connect_parser_signa
 
 bool run_parser_from_buffer(const FuncConnectParserSignals& connect_parser_signals, const char* input, guint input_size)
 {
-  get_result_instance() = true;
+  finished_parsing = true;
 
   //Start a mainloop because the parser uses an idle handler.
   //TODO: Stop the parser from doing that.
-  get_mainloop_instance().reset();
-  get_mainloop_instance() = Glib::MainLoop::create();
-
+  MainLoopRp mainloop = Glib::MainLoop::create();
   Glom::CsvParser parser("UTF-8");
 
-  parser.signal_encoding_error().connect(&on_parser_encoding_error);
-  parser.signal_finished_parsing().connect(&on_parser_finished);
+  parser.signal_encoding_error().connect(sigc::bind(&on_parser_encoding_error, mainloop));
+  parser.signal_finished_parsing().connect(sigc::bind(&on_parser_finished, mainloop));
 
-  // Install a watchdog for the mainloop. No test should need longer than 3
+  // Install a watchdog for the mainloop. No test should need longer than 300
   // seconds. Also, we need to avoid being stuck in the mainloop.
   // Infinitely running tests are useless.
-  get_mainloop_instance()->get_context()->signal_timeout().connect_seconds_once(
-    sigc::ptr_fun(&on_mainloop_killed_by_watchdog), 300);
+  mainloop->get_context()->signal_timeout().connect_seconds_once(sigc::bind(&on_mainloop_killed_by_watchdog, mainloop), 300);
 
   connect_parser_signals(parser);
 
   const std::string file_uri = create_file_from_buffer(input, input_size);
   parser.set_file_and_start_parsing(file_uri);
 
-  get_mainloop_instance()->run();
+  mainloop->run();
 
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(file_uri);
   const bool removed = file->remove();
   g_assert(removed);
 
-  return get_result_instance();
+  return finished_parsing;
 }
 
 } //namespace ImportTests

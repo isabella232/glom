@@ -1,3 +1,12 @@
+2009-09-25  Michael Hasselmann  <michaelh@openismus.com>
+
+	Import: More code cleanup in tests
+	
+	* glom/import_csv/csv_parser.cc (set_file_and_start_parsing): Fail on empty
+	file uri.
+	
+	* tests/import/*: Removed the ugly mainloop singleton, among other cleanups.
+
 2009-09-25  Murray Cumming  <murrayc@murrayc-desktop>
 
 	Cleanup.

@@ -102,11 +102,10 @@ int main(int argc, char* argv[])
   {
     const char* raw = "\"a \"\"quoted\"\" token\",\"sans quotes\"\n";
     const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
-    g_assert(finished_parsing);
 
     const bool passed = (finished_parsing &&
-                   check_tokens("^(a \"quoted\" token|sans quotes)$") &&
-                   2 == get_tokens_instance().size());
+                         check_tokens("^(a \"quoted\" token|sans quotes)$") &&
+                         2 == get_tokens_instance().size());
     get_tokens_instance().clear();
 
     if(!ImportTests::check("test_dquoted_string", passed, report))
@@ -119,8 +118,8 @@ int main(int argc, char* argv[])
     const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
 
     const bool passed = (finished_parsing &&
-                   check_tokens("token in first line") &&
-                   1 == get_tokens_instance().size());
+                         check_tokens("token in first line") &&
+                         1 == get_tokens_instance().size());
     get_tokens_instance().clear();
 
     if(!ImportTests::check("test_skip_on_no_ending_newline", passed, report))
@@ -133,8 +132,8 @@ int main(int argc, char* argv[])
     const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
 
     const bool passed = (finished_parsing &&
-                   check_tokens("^$") &&
-                   6 == get_tokens_instance().size());
+                         check_tokens("^$") &&
+                         6 == get_tokens_instance().size());
     get_tokens_instance().clear();
 
     if(!ImportTests::check("test_skip_on_no_quotes_around_token", passed, report))
@@ -147,8 +146,8 @@ int main(int argc, char* argv[])
     const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
 
     const bool passed = (finished_parsing &&
-                   check_tokens("^(spaces|around|separators)$") &&
-                   3 == get_tokens_instance().size());
+                         check_tokens("^(spaces|around|separators)$") &&
+                         3 == get_tokens_instance().size());
     get_tokens_instance().clear();
 
     if(!ImportTests::check("test_skip_spaces_around_separators", passed, report))
@@ -162,8 +161,8 @@ int main(int argc, char* argv[])
     const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
 
     const bool passed = (finished_parsing &&
-                   check_tokens("^cannottokenizethis$") &&
-                   1 == get_tokens_instance().size());
+                         check_tokens("^cannottokenizethis$") &&
+                         1 == get_tokens_instance().size());
     get_tokens_instance().clear();
 
     if(!ImportTests::check("test_fail_on_non_comma_separators", passed, report))
@@ -176,8 +175,8 @@ int main(int argc, char* argv[])
     const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
 
     const bool passed = (finished_parsing &&
-                   check_tokens("^(cell with\nnewline|token on next line)$") &&
-                   2 == get_tokens_instance().size());
+                         check_tokens("^(cell with\nnewline|token on next line)$") &&
+                         2 == get_tokens_instance().size());
     get_tokens_instance().clear();
 
     if(!ImportTests::check("test_parse_newline_inside_quotes", passed, report))
@@ -190,8 +189,8 @@ int main(int argc, char* argv[])
     const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
 
     const bool passed = (finished_parsing &&
-                   check_tokens("token") &&
-                   1 == get_tokens_instance().size());
+                         check_tokens("token") &&
+                         1 == get_tokens_instance().size());
     get_tokens_instance().clear();
 
     if(!ImportTests::check("test_fail_on_non_matching_quotes", passed, report))

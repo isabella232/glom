@@ -65,6 +65,9 @@ CsvParser::CsvParser(const std::string& encoding_charset)
 
 void CsvParser::set_file_and_start_parsing(const std::string& file_uri)
 {
+  // TODO: Also fail on file:///?
+  g_return_if_fail(!file_uri.empty());
+
   m_file = Gio::File::create_for_uri(file_uri);
   m_file->read_async(sigc::mem_fun(*this, &CsvParser::on_file_read));
   set_state(CsvParser::STATE_PARSING);
@@ -73,7 +76,7 @@ void CsvParser::set_file_and_start_parsing(const std::string& file_uri)
   m_file->query_info_async(sigc::mem_fun(*this, &CsvParser::on_file_query_info), G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME);
 }
 
- 
+
 CsvParser::~CsvParser()
 {
   m_idle_connection.disconnect();

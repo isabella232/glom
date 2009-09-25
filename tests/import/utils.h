@@ -2,10 +2,7 @@
 #define TEST_IMPORT_UTILS_H
 
 #include <glom/import_csv/csv_parser.h>
-//#include <sigc++/sigc++.h>
 #include <iostream>
-#include <unistd.h>
-#include <errno.h>
 
 namespace ImportTests
 {
@@ -13,6 +10,7 @@ namespace ImportTests
 bool check(const std::string& name, bool test, std::stringstream& report);
 
 typedef sigc::slot<void, Glom::CsvParser&> FuncConnectParserSignals;
+typedef Glib::RefPtr<Glib::MainLoop> MainLoopRp;
 
 /**
  * @result Whether the parser finished without being killed by a timeout.
