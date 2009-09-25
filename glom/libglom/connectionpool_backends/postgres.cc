@@ -156,7 +156,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
       if(posName != Glib::ustring::npos)
       {
         const Glib::ustring versionPart = version_text.substr(namePart.size());
-        m_postgres_server_version = strtof(versionPart.c_str(), NULL);
+        m_postgres_server_version = strtof(versionPart.c_str(), 0);
 
 #ifdef GLOM_CONNECTION_DEBUG
         std::cout << "  Postgres Server version: " << m_postgres_server_version << std::endl;

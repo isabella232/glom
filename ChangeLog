@@ -1,3 +1,24 @@
+1.12.0:
+
+2009-09-25  Murray Cumming  <murrayc@murrayc.com>
+
+	Command spawning: Really check the return value.
+
+	* glom/libglom/spawn_with_feedback.cc:
+	execute_command_line_and_wait_until_second_command_returns_success():
+	Actually check the return value of the first command, so we can fail 
+	immediately (with stderr output) when, for instance, postgresql 
+	fails to read the configuration file due to changed options, such as 
+	no longer recognizing max_fsm_pages in PostgreSQL 8.4
+
+2009-09-25  Murray Cumming  <murrayc@murrayc.com>
+
+	Replace some NULLs with 0 because this is C++, not C.
+
+	* glom/libglom/connectionpool_backends/postgres.cc:
+	* glom/libglom/connectionpool_backends/postgres_self.cc:
+	* glom/libglom/spawn_with_feedback.cc: Replace NULLs with 0.
+
 2009-09-25  Murray Cumming  <murrayc@murrayc.com>
 
 	Maemo: Fix the non-exceptions build again.
@@ -15,7 +36,7 @@
 	* glom/libglom/connectionpool_backends/postgres_self.[h|cc]:
 	Added a get_postgresql_utils_version_as_number() utiltity method, 
 	and use it in set_network_shared() to use a different syntax for 
-	Postgres 8.4, hopefully fixing bug #595608
+	Postgres 8.4, hopefully fixing bug #595608 (Fryderyk Dziarmagowski)
 
 2009-09-24  Murray Cumming  <murrayc@murrayc.com>
 

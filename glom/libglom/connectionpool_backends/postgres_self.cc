@@ -144,7 +144,7 @@ std::string PostgresSelfHosted::get_path_to_postgres_executable(const std::strin
   // share/postgresql which would be nice to separate the postgres stuff
   // from the other shared data. We can perhaps still change this later by
   // building postgres with another prefix than /local/pgsql.
-  gchar* installation_directory = g_win32_get_package_installation_directory_of_module(NULL);
+  gchar* installation_directory = g_win32_get_package_installation_directory_of_module(0);
   std::string test = Glib::build_filename(installation_directory, Glib::build_filename("bin", real_program));
   g_free(installation_directory);
 
@@ -195,7 +195,7 @@ bool PostgresSelfHosted::install_postgres(const SlotProgress& /* slot_progress *
   //Also, Glom will start its own instance of PostgreSQL, on its own port, when it needs to,
   //so there is no need to start a Glom service after installation at system startup, 
   //though it will not hurt Glom if you do that.
-  const gchar *packages[] = { "postgresql-8.1", NULL };
+  const gchar *packages[] = { "postgresql-8.1", 0 };
   const bool result = gst_packages_install(parent_window->gobj() /* parent window */, packages);
   if(result)
   {
@@ -769,7 +769,7 @@ bool PostgresSelfHosted::create_text_file(const std::string& file_uri, const std
 #else
   std::auto_ptr<Gio::Error> error;
   stream.create(error);
-  if(error.get() != NULL)
+  if(error.get())
   {
     const Gio::Error& ex = *error.get();
 #endif
@@ -797,7 +797,7 @@ bool PostgresSelfHosted::create_text_file(const std::string& file_uri, const std
   {
 #else
   bytes_written = stream->write(contents.data(), contents_size, error);
-  if(error.get() != NULL)
+  if(error.get())
   {
     Gio::Error& ex = *error.get();
 #endif
