@@ -2,6 +2,7 @@
 #define TEST_IMPORT_UTILS_H
 
 #include <glom/import_csv/csv_parser.h>
+//#include <sigc++/sigc++.h>
 #include <iostream>
 #include <unistd.h>
 #include <errno.h>
@@ -17,7 +18,8 @@ void set_parser_contents(Glom::CsvParser& parser, const char* input, guint size)
 // Returns the file name of the temporary created file, which will contain the buffer's contents.
 std::string create_file_from_buffer(const char* input, guint size);
 
-bool run_parser_from_buffer(void (*connect_parser_signals)(Glom::CsvParser& parser), const char* input, guint size);
+typedef sigc::slot<void, Glom::CsvParser&> FuncConnectParserSignals;
+bool run_parser_from_buffer(const FuncConnectParserSignals& connect_parser_signals, const char* input, guint size);
 
 void on_mainloop_killed_by_watchdog();
 Glib::RefPtr<Glib::MainLoop>& get_mainloop_instance();

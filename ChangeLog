@@ -1,5 +1,13 @@
 2009-09-25  Murray Cumming  <murrayc@murrayc.com>
 
+	tests/import/: Small cleanup.
+
+	* tests/import/test_parsing.cc:
+	* tests/import/utils.[h|cc]: Use a sigc::slot instead of the ugly 
+	(because not typedefed) function pointer type.
+
+2009-09-25  Murray Cumming  <murrayc@murrayc.com>
+
 	Removed some debug output.
 
 	* glom/libglom/data_structure/glomconversions.cc: parse_time():

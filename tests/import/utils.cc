@@ -50,7 +50,9 @@ void on_mainloop_killed_by_watchdog()
   get_mainloop_instance()->quit();
 }
 
-bool run_parser_from_buffer(void (*connect_parser_signals)(Glom::CsvParser& parser), const char* input, guint size)
+typedef sigc::slot<void, Glom::CsvParser&> FuncConnectParserSignals;
+
+bool run_parser_from_buffer(const FuncConnectParserSignals& connect_parser_signals, const char* input, guint size)
 {
     get_result_instance() = true;
 
@@ -60,12 +62,13 @@ bool run_parser_from_buffer(void (*connect_parser_signals)(Glom::CsvParser& pars
     Glom::CsvParser parser("UTF-8");
 
     parser.signal_finished_parsing().connect(sigc::mem_fun(*get_mainloop_instance().operator->(), &Glib::MainLoop::quit));
+
     // Install a watchdog for the mainloop, no test should need longer than 3
     // seconds. Also, we need to guard against being stuck in the mainloop.
     // Infinitely running tests are useless.
     get_mainloop_instance()->get_context()->signal_timeout().connect_seconds_once(sigc::ptr_fun(&on_mainloop_killed_by_watchdog), 3);
 
-    (*connect_parser_signals)(parser);
+    connect_parser_signals(parser);
 
     const std::string file_name = create_file_from_buffer(input, size);
     parser.set_file_and_start_parsing(file_name);

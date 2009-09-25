@@ -97,6 +97,7 @@ int main(int argc, char* argv[])
   {
     const char raw[] = "\"a \"\"quoted\"\" token\",\"sans quotes\"\n";
     const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
+    g_assert(finished_parsing);
 
     const bool passed = (finished_parsing &&
                    check_tokens("^(a \"quoted\" token|sans quotes)$") &&
