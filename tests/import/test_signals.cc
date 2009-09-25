@@ -64,8 +64,8 @@ int main(int argc, char* argv[])
   // test_ignore_quoted_newlines
   {
     // 2 CSV lines, first one contains newlines inside quotes
-    const char raw[] = "\"some\n quoted\r\n newlines\n\", \"token2\"\n\"token3\"\n";
-    const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
+    const char* raw = "\"some\n quoted\r\n newlines\n\", \"token2\"\n\"token3\"\n";
+    const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
 
     const bool passed = (finished_parsing &&
                    2 == get_line_scanned_count_instance() &&
@@ -80,8 +80,8 @@ int main(int argc, char* argv[])
   // test_ignore_empty_lines
   {
     // 5 CSV lines, but only 2 contain data
-    const char raw[] = "token1\n\n\n\ntoken2, token3\n";
-    const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
+    const char* raw = "token1\n\n\n\ntoken2, token3\n";
+    const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw);
 
     const bool passed = (finished_parsing &&
                    2 == get_line_scanned_count_instance() &&
@@ -100,8 +100,8 @@ int main(int argc, char* argv[])
     type_encodings encodings(encoding_arr, encoding_arr + G_N_ELEMENTS(encoding_arr));
 
     // An invalid Unicode sequence.
-    const char raw[] = "\0xc0\0x00\n";
-    ImportTests::set_parser_contents(parser, raw, sizeof(raw));
+    const char* raw = "\0xc0\0x00\n";
+    ImportTests::set_parser_contents(parser, raw);
 
     for (type_encodings::const_iterator iter = encodings.begin();
          iter != encodings.end();
@@ -145,7 +145,7 @@ int main(int argc, char* argv[])
   {
     // An incomplete Unicode sequence.
     const char raw[] = "\0xc0\n";
-    const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
+    const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, G_N_ELEMENTS(raw));
 
     const bool passed = (finished_parsing &&
                    1 == get_encoding_error_count_instance() &&

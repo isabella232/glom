@@ -12,21 +12,24 @@ bool check(const std::string& name, bool test, std::stringstream& report)
 }
 
 // Returns the file name of the temporary created file, which will contain the buffer's contents.
-static std::string create_file_from_buffer(const char* input, guint size)
+static std::string create_file_from_buffer(const char* input, guint input_size)
 {
+  //std::cout << "debug: input: " << input << std::endl;
+
   // Use Glib's file utilities to get a unique temporary filename:
   std::string tmp_filename;
   const int tmp_file_handle = Glib::file_open_tmp(tmp_filename, "glom_testdata");
 
+  const std::string uri = Glib::filename_to_uri(tmp_filename);
   if(0 < tmp_file_handle)
   {
-    ssize_t result = write(tmp_file_handle, input, size);
+    ssize_t result = write(tmp_file_handle, input, input_size);
     g_assert(-1 != result); // g_return_with_val would still be wrong here, I think?
 
     close(tmp_file_handle);
   }
 
-  return Glib::filename_to_uri(tmp_filename);
+  return uri;
 }
 
 static Glib::RefPtr<Glib::MainLoop>& get_mainloop_instance()
@@ -43,15 +46,13 @@ static bool& get_result_instance()
 
 static void on_mainloop_killed_by_watchdog()
 {
-  get_result_instance() = false; // Comment out if you want to run tests and get useful results even with a non-working finished_parsing signal.
+  get_result_instance() = false;
   get_mainloop_instance()->quit();
 }
 
 static void on_parser_encoding_error()
 {
-  std::cerr << "debug: utils.cc: on_parser_encoding_error()" << std::endl;
-
-  get_result_instance() = false;
+  get_result_instance() = true; //The result just shows whether it finished before the timeout.
   //Quit the mainloop that we ran because the parser uses an idle handler.
   get_mainloop_instance()->quit();
 }
@@ -63,7 +64,12 @@ static void on_parser_finished()
   get_mainloop_instance()->quit();
 }
 
-bool run_parser_from_buffer(const FuncConnectParserSignals& connect_parser_signals, const char* input, guint size)
+bool run_parser_from_buffer(const FuncConnectParserSignals& connect_parser_signals, const std::string& input)
+{
+  return run_parser_from_buffer(connect_parser_signals, input.data(), input.size());
+}
+
+bool run_parser_from_buffer(const FuncConnectParserSignals& connect_parser_signals, const char* input, guint input_size)
 {
   get_result_instance() = true;
 
@@ -85,7 +91,7 @@ bool run_parser_from_buffer(const FuncConnectParserSignals& connect_parser_signa
 
   connect_parser_signals(parser);
 
-  const std::string file_uri = create_file_from_buffer(input, size);
+  const std::string file_uri = create_file_from_buffer(input, input_size);
   parser.set_file_and_start_parsing(file_uri);
 
   get_mainloop_instance()->run();

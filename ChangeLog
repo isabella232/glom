@@ -1,5 +1,16 @@
 2009-09-25  Murray Cumming  <murrayc@murrayc-desktop>
 
+	Import tests: Fixed.
+
+	* tests/import/utils.[h|cc]: run_parser_from_buffer(): Added a 
+	version that takes a std::string, to make the common case more robust.
+	* tests/import/test_parsing.cc:
+	* tests/import/test_signals.cc: Fix the tests by not incorrectly 
+	taking the length of the raw arrays, which caused the temp files to 
+	contain garbage.
+
+2009-09-25  Murray Cumming  <murrayc@murrayc-desktop>
+
 	Import tests: Handle encoding errors.
 
 	* tests/import/utils.cc: Handle signal_encoding_error too, because this
