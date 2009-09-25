@@ -1,3 +1,10 @@
+2009-09-25  Murray Cumming  <murrayc@murrayc.com>
+
+	Removed some debug output.
+
+	* glom/libglom/data_structure/glomconversions.cc: parse_time():
+	* tests/test_parsing_time.cc: Removed debug output.
+
 2009-09-25  Michael Hasselmann  <michaelh@openismus.com>
 
 	Import: Changed the signature of line_scanned handler

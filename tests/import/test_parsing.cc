@@ -8,8 +8,6 @@
 namespace
 {
 
-void print_tokens();
-
 typedef std::vector<std::string> type_tokens;
 
 type_tokens& get_tokens_instance()
@@ -98,9 +96,9 @@ int main(int argc, char* argv[])
   // test_dquoted_string
   {
     const char raw[] = "\"a \"\"quoted\"\" token\",\"sans quotes\"\n";
-    bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
+    const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
 
-    bool passed = (finished_parsing &&
+    const bool passed = (finished_parsing &&
                    check_tokens("^(a \"quoted\" token|sans quotes)$") &&
                    2 == get_tokens_instance().size());
     get_tokens_instance().clear();
@@ -112,9 +110,9 @@ int main(int argc, char* argv[])
   // test_skip_on_no_ending_newline
   {
     const char raw[] = "\"token in first line\"\n\"2nd token\", \"but\", \"this\",\"line\",\"will\",\"be\",\"skipped\"";
-    bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
+    const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
 
-    bool passed = (finished_parsing &&
+    const bool passed = (finished_parsing &&
                    check_tokens("token in first line") &&
                    1 == get_tokens_instance().size());
     get_tokens_instance().clear();
@@ -126,9 +124,9 @@ int main(int argc, char* argv[])
   // test_skip_on_no_quotes_around_token
   {
     const char raw[] = "this,line,contains,only,empty,tokens\n";
-    bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
+    const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
 
-    bool passed = (finished_parsing &&
+    const bool passed = (finished_parsing &&
                    check_tokens("^$") &&
                    6 == get_tokens_instance().size());
     get_tokens_instance().clear();
@@ -140,9 +138,9 @@ int main(int argc, char* argv[])
   // test_skip_spaces_around_separators
   {
     const char raw[] = "\"spaces\" , \"around\", \"separators\"\n";
-    bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
+    const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
 
-    bool passed = (finished_parsing &&
+    const bool passed = (finished_parsing &&
                    check_tokens("^(spaces|around|separators)$") &&
                    3 == get_tokens_instance().size());
     get_tokens_instance().clear();
@@ -155,9 +153,9 @@ int main(int argc, char* argv[])
   // test_fail_on_non_comma_separators
   {
     const char raw[] = "\"cannot\"\t\"tokenize\"\t\"this\"\n";
-    bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
+    const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
 
-    bool passed = (finished_parsing &&
+    const bool passed = (finished_parsing &&
                    check_tokens("^cannottokenizethis$") &&
                    1 == get_tokens_instance().size());
     get_tokens_instance().clear();
@@ -169,9 +167,9 @@ int main(int argc, char* argv[])
   // test_parse_newline_inside_quotes
   {
     const char raw[] = "\"cell with\nnewline\"\n\"token on next line\"\n";
-    bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
+    const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
 
-    bool passed = (finished_parsing &&
+    const bool passed = (finished_parsing &&
                    check_tokens("^(cell with\nnewline|token on next line)$") &&
                    2 == get_tokens_instance().size());
     get_tokens_instance().clear();
@@ -183,9 +181,9 @@ int main(int argc, char* argv[])
   // test_fail_on_non_matching_quotes
   {
     const char raw[] = "\"token\"\nthis quote has no partner\",\"token\"\n";
-    bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
+    const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
 
-    bool passed = (finished_parsing &&
+    const bool passed = (finished_parsing &&
                    check_tokens("token") &&
                    1 == get_tokens_instance().size());
     get_tokens_instance().clear();

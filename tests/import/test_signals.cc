@@ -65,9 +65,9 @@ int main(int argc, char* argv[])
   {
     // 2 CSV lines, first one contains newlines inside quotes
     const char raw[] = "\"some\n quoted\r\n newlines\n\", \"token2\"\n\"token3\"\n";
-    bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
+    const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
 
-    bool passed = (finished_parsing &&
+    const bool passed = (finished_parsing &&
                    2 == get_line_scanned_count_instance() &&
                    0 == get_encoding_error_count_instance());
 
@@ -81,9 +81,9 @@ int main(int argc, char* argv[])
   {
     // 5 CSV lines, but only 2 contain data
     const char raw[] = "token1\n\n\n\ntoken2, token3\n";
-    bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
+    const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
 
-    bool passed = (finished_parsing &&
+    const bool passed = (finished_parsing &&
                    2 == get_line_scanned_count_instance() &&
                    0 == get_encoding_error_count_instance());
 
@@ -130,7 +130,7 @@ int main(int argc, char* argv[])
     }
 
 
-    const bool passed = (2 == get_encoding_error_count_instance() &&
+    const const bool passed = (2 == get_encoding_error_count_instance() &&
                    0 == get_line_scanned_count_instance());
 
     if(!ImportTests::check("test_wrong_encoding", passed, report))
@@ -145,9 +145,9 @@ int main(int argc, char* argv[])
   {
     // An incomplete Unicode sequence.
     const char raw[] = "\0xc0\n";
-    bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
+    const bool finished_parsing = ImportTests::run_parser_from_buffer(&connect_signals, raw, sizeof(raw));
 
-    bool passed = (finished_parsing &&
+    const bool passed = (finished_parsing &&
                    1 == get_encoding_error_count_instance() &&
                    0 == get_line_scanned_count_instance());
 

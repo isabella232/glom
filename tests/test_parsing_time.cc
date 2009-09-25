@@ -5,7 +5,7 @@ int main()
   Gnome::Gda::init();
 
   const Glib::ustring time_text_input = "01:00 PM";
-  std::cout << "time_text_input=" << time_text_input << std::endl;
+  //std::cout << "time_text_input=" << time_text_input << std::endl;
 
   bool success = false;
 
@@ -48,7 +48,7 @@ int main()
     Glom::Conversions::get_text_for_gda_value(Glom::Field::TYPE_TIME, value);
 
 
-  std::cout << "time_text_parsed=" << time_text_parsed << std::endl;
+  //std::cout << "time_text_parsed=" << time_text_parsed << std::endl;
   return EXIT_SUCCESS;
 
   //This extra check would fail if :00 seconds are added to the text:
