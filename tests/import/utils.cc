@@ -52,33 +52,34 @@ void on_mainloop_killed_by_watchdog()
 
 typedef sigc::slot<void, Glom::CsvParser&> FuncConnectParserSignals;
 
+
 bool run_parser_from_buffer(const FuncConnectParserSignals& connect_parser_signals, const char* input, guint size)
 {
-    get_result_instance() = true;
+  get_result_instance() = true;
 
-    get_mainloop_instance().reset();
-    get_mainloop_instance() = Glib::MainLoop::create();
+  get_mainloop_instance().reset();
+  get_mainloop_instance() = Glib::MainLoop::create();
 
-    Glom::CsvParser parser("UTF-8");
+  Glom::CsvParser parser("UTF-8");
 
-    parser.signal_finished_parsing().connect(sigc::mem_fun(*get_mainloop_instance().operator->(), &Glib::MainLoop::quit));
+  parser.signal_finished_parsing().connect(sigc::mem_fun(*get_mainloop_instance().operator->(), &Glib::MainLoop::quit));
 
-    // Install a watchdog for the mainloop, no test should need longer than 3
-    // seconds. Also, we need to guard against being stuck in the mainloop.
-    // Infinitely running tests are useless.
-    get_mainloop_instance()->get_context()->signal_timeout().connect_seconds_once(sigc::ptr_fun(&on_mainloop_killed_by_watchdog), 3);
+  // Install a watchdog for the mainloop, no test should need longer than 3
+  // seconds. Also, we need to guard against being stuck in the mainloop.
+  // Infinitely running tests are useless.
+  get_mainloop_instance()->get_context()->signal_timeout().connect_seconds_once(sigc::ptr_fun(&on_mainloop_killed_by_watchdog), 3);
 
-    connect_parser_signals(parser);
+  connect_parser_signals(parser);
 
-    const std::string file_name = create_file_from_buffer(input, size);
-    parser.set_file_and_start_parsing(file_name);
+  const std::string file_name = create_file_from_buffer(input, size);
+  parser.set_file_and_start_parsing(file_name);
 
-    get_mainloop_instance()->run();
+  get_mainloop_instance()->run();
 
-    int result = unlink(Glib::filename_from_uri(file_name).c_str());
-    g_assert(-1 != result);
+  int result = unlink(Glib::filename_from_uri(file_name).c_str());
+  g_assert(-1 != result);
 
-    return get_result_instance();
+  return get_result_instance();
 }
 
 } //namespace ImportTests
