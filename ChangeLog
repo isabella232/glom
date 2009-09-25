@@ -1,3 +1,10 @@
+2009-09-25  Murray Cumming  <murrayc@murrayc.com>
+
+	Maemo: Fix the non-exceptions build again.
+	
+	* glom/print_layout/canvas_print_layout.cc: Added ifdefs around KeyFile 
+	calls. I wonder why I only noticed this now.
+
 2009-09-24  Murray Cumming  <murrayc@murrayc.com>
 
 	Self-Hosting: Use the new ident configuration for PostgreSQL 8.4.

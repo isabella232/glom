@@ -89,7 +89,15 @@ void Canvas_PrintLayout::set_print_layout(const Glib::ustring& table_name, const
   if(!key_file_text.empty())
   {
     Glib::KeyFile key_file;
+    
+    #ifdef GLIBMM_EXCEPTIONS_ENABLED
+    //TODO: Catch an exception
     key_file.load_from_data(key_file_text);
+    #else
+    std::auto_ptr<Glib::Error> ex;
+    key_file.load_from_data(key_file_text, Glib::KEY_FILE_NONE, ex);
+    #endif
+    
     //TODO: Use this when gtkmm and GTK+ have been fixed: page_setup = Gtk::PageSetup::create(key_file);
     page_setup = Glib::wrap(gtk_page_setup_new_from_key_file(key_file.gobj(), NULL, NULL));
   }
@@ -107,7 +115,17 @@ sharedptr<PrintLayout> Canvas_PrintLayout::get_print_layout()
   //Page Setup:
   Glib::KeyFile key_file;
   m_page_setup->save_to_key_file(key_file);
-  result->set_page_setup(key_file.to_data());
+ 
+  Glib::ustring data;
+  #ifdef GLIBMM_EXCEPTIONS_ENABLED
+  //TODO: Catch an exception
+  data = key_file.to_data();
+  #else
+  std::auto_ptr<Glib::Error> ex;
+  data = key_file.to_data(ex);
+  #endif
+  
+  result->set_page_setup(data);
 
   return result;
 }
