@@ -37,7 +37,7 @@ bool check_tokens(const std::string& regex)
   #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    check = Glib::Regex::create(regex)
+    check = Glib::Regex::create(regex);
   }
   catch(const Glib::Error& ex)
   {

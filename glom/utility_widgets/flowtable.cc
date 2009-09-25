@@ -921,7 +921,7 @@ void FlowTable::set_padding(guint padding)
 
 bool FlowTable::child_is_visible(const Gtk::Widget* widget) const
 {
-  #if GTKMM_MICRO_VERSION >= 11
+  #if GTKMM_MINOR_VERSION >= 11
   return widget && widget->get_visible();
   #else
   return widget && widget->is_visible();
