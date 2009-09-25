@@ -21,7 +21,7 @@
 #ifndef GLOM_DIALOG_IMPORT_CSV_H
 #define GLOM_DIALOG_IMPORT_CSV_H
 
-#include "import_csv.h"
+#include <glom/import_csv/csv_parser.h>
 #include <glom/base_db.h>
 
 #include <memory>
@@ -44,13 +44,10 @@ class Dialog_Import_CSV
     public Base_DB
 {
 public:
-  typedef sigc::signal<void> SignalStateChanged;
-
   Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 
   void import(const Glib::ustring& uri, const Glib::ustring& into_table);
 
-  //TODO: move into parser?
   CsvParser::State get_parser_state() const;
   Glib::ustring get_target_table_name() const;
   const Glib::ustring& get_filename() const;
@@ -60,39 +57,42 @@ public:
   sharedptr<const Field> get_field_for_column(unsigned int col) const;
   const Glib::ustring& get_data(unsigned int row, unsigned int col);
 
-  SignalStateChanged signal_state_changed() const { return m_signal_state_changed; }
+  typedef sigc::signal<void> type_signal_state_changed;
+
+  /** This signal will be emitted when the parser's state changes.
+   */
+  type_signal_state_changed signal_state_changed() const;
+
 
 private:
   void clear();
   void show_error_dialog(const Glib::ustring& primary, const Glib::ustring& secondary);
 
-  void encoding_data_func(const Gtk::TreeModel::iterator& iter, Gtk::CellRendererText& renderer);
-  bool row_separator_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::iterator& iter) const;
-
-  void on_query_info(const Glib::RefPtr<Gio::AsyncResult>& result);
-  void on_file_read(const Glib::RefPtr<Gio::AsyncResult>& result);
-  void on_stream_read(const Glib::RefPtr<Gio::AsyncResult>& result);
-
-  void on_encoding_changed();
-  void on_first_line_as_title_toggled();
-  void on_sample_rows_changed();
-
   Glib::ustring get_current_encoding() const;
   void begin_parse();
-  void on_encoding_error();
 
-  bool on_idle_parse();
-
-  void on_line_scanned(const Glib::ustring& line, unsigned int line_number);
-  void setup_sample_model(CsvParser::type_row_strings& row);
+  void setup_sample_model(guint data_row_number);
   Gtk::TreeViewColumn* column_factory(const Glib::ustring& title, guint index);
   Gtk::CellRendererCombo* cell_factory(guint index);
 
+  //CellRenderer cell_data_func callbacks:
   void line_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
   void field_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, unsigned int column_number);
   void on_field_edited(const Glib::ustring& path, const Glib::ustring& new_text, unsigned int column_number);
 
-  void set_parser_state(CsvParser::State state);
+  void encoding_data_func(const Gtk::TreeModel::iterator& iter, Gtk::CellRendererText& renderer);
+  bool row_separator_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::iterator& iter) const;
+
+  void on_parser_file_read_error(const Glib::ustring& error_message);
+  void on_parser_have_display_name(const Glib::ustring& display_name);
+  void on_parser_encoding_error();
+  void on_parser_line_scanned(CsvParser::type_row_strings row, unsigned int row_number);
+  void on_parser_state_changed();
+
+  void on_combo_encoding_changed();
+  void on_first_line_as_title_toggled();
+  void on_sample_rows_changed();
+
   void validate_primary_key();
 
   class EncodingColumns: public Gtk::TreeModelColumnRecord
@@ -141,13 +141,7 @@ private:
   Gtk::Label* m_advice_label;
   Gtk::Label* m_error_label;
 
-  Glib::RefPtr<Gio::File> m_file;
   Glib::ustring m_filename;
-
-  struct Buffer {
-    char buf[1024];
-  };
-  std::auto_ptr<Buffer> m_buffer;
 
   // Index into the ENCODINGS array (see dialog_import_csv.cc) for the
   // encoding that we currently try to read the data with, or -1 if
@@ -158,7 +152,7 @@ private:
   typedef std::vector< sharedptr<Field> > type_vec_fields;
   type_vec_fields m_fields;
 
-  SignalStateChanged m_signal_state_changed;
+  type_signal_state_changed m_signal_state_changed;
 };
 
 } //namespace Glom

@@ -5,6 +5,63 @@
 	* glom/utility_widgets/flowtable.cc: Correct the use of 
 	GTKMM_MINOR_VERSION to fix the build with older gtkmm versions.
 
+2009-09-25  Murray Cumming  <murrayc@murrayc-desktop>
+
+	Import tests: Fixed.
+
+	* tests/import/utils.[h|cc]: run_parser_from_buffer(): Added a 
+	version that takes a std::string, to make the common case more robust.
+	* tests/import/test_parsing.cc:
+	* tests/import/test_signals.cc: Fix the tests by not incorrectly 
+	taking the length of the raw arrays, which caused the temp files to 
+	contain garbage.
+
+2009-09-25  Murray Cumming  <murrayc@murrayc-desktop>
+
+	Import tests: Handle encoding errors.
+
+	* tests/import/utils.cc: Handle signal_encoding_error too, because this
+	is one way that the parser can stop.
+	Increase the timeout because an infinite loop is unlikely (and not 
+	currently happening).
+
+2009-09-25  Murray Cumming  <murrayc@murrayc.com>
+
+	tests/import/: Small cleanup.
+
+	* tests/import/test_parsing.cc:
+	* tests/import/utils.[h|cc]: Use a sigc::slot instead of the ugly 
+	(because not typedefed) function pointer type.
+
+2009-09-25  Murray Cumming  <murrayc@murrayc.com>
+
+	Removed some debug output.
+
+	* glom/libglom/data_structure/glomconversions.cc: parse_time():
+	* tests/test_parsing_time.cc: Removed debug output.
+
+2009-09-25  Michael Hasselmann  <michaelh@openismus.com>
+
+	Import: Changed the signature of line_scanned handler
+	
+	* glom/import_csv/dialog_import_csv.[h|cc]: Changed the signare of
+	on_parser_line_scanned, to use CsvParser::type_row_strings. It does not
+	change anything, as the handler didn't even use the parameters.
+
+	Import: Fixed tests to fit new parser API
+	
+	* glom/import_csv/csv_parser.[h|cc]: Added a finished_parsing signal since the
+	max_row count logic is flawed
+	(https://bugzilla.gnome.org/show_bug.cgi?id=588233#c16). Also moved common
+	parts of on_stream_read(.) (now on_buffer_read(.)) into
+	copy_buffer_and_continue_reading(.), to avoid copy'n'paste bugs.
+	
+	* tests/import/utils.[h|cc]: Added mainloop functionality to trigger the idle
+	parse sequence of the CsvParser for the testcases.
+	
+	* tests/import/test_[parsing,signals].cc: Fixed the tests to fit new parser
+	API.
+
 1.12.0:
 
 2009-09-25  Murray Cumming  <murrayc@murrayc.com>
@@ -111,6 +168,7 @@
 	add the details box to the notebook. Instead add it to a window and show that 	
 	window instead of switching to a details tab when details are requested.
 
+
 2009-09-21  Murray Cumming  <murrayc@murrayc.com>
 
 	import tests: Fix the no-exceptions build.
@@ -163,6 +221,25 @@
 	* Makefile_tests.am, test/import/utils.[cc|h],
 	tests/import/test_[parsing|signals].cc: Only report on failure. Moved common
 	parts into an utility namespace.
+
+2009-09-18  Murray Cumming  <murrayc@murrayc.com>
+
+	CsvParser: Make this an actual parser, with a sane API.
+
+	* glom/dialog_import_csv.[h|cc]:
+	* glom/dialog_import_csv_progress.[h|cc]: Move into glom/import_csv/
+	* glom/import_csv/: Added file_encodings.[h|cc], moving the encodings 
+	list into it. This is similar to mode_design/iso_codes.[h|cc].
+	* glom/import_csv.[h|cc]: Rename to glom/import_csv/csv_parser.[h|cc] 
+	to match the class name.
+	Move actual parsing (and the vector of row/column data) into 
+	CsvParser, leaving the dialogs to just respond to signals and get 
+	data via get methods.
+
+	However, this breaks the import tests, because they add data to 
+	the parser directly using m_raw. They must be changed to read actual 
+	files, or maybe we could add some intermediate level of API that they 
+	could test.
 
 2009-09-18  Murray Cumming  <murrayc@murrayc.com>
 

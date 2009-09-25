@@ -764,7 +764,7 @@ tm Conversions::parse_time(const Glib::ustring& text, bool& success)
 
 tm Conversions::parse_time(const Glib::ustring& text, const std::locale& locale, bool& success)
 {
-  std::cout << "parse_time(): text=" << text << std::endl;
+  //std::cout << "parse_time(): text=" << text << std::endl;
   //The sequence of statements here seems to be very fragile. If you move things then it stops working.
 
   //return parse_tm(text, locale, 'X' /* time */);

@@ -1,6 +1,6 @@
 /* Glom
  *
- * Copyright (C) 2001-2005 Murray Cumming
+ * Copyright (C) 2009  Openismus GmbH
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -18,43 +18,45 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_MODE_DESIGN_ISO_CODES_H
-#define GLOM_MODE_DESIGN_ISO_CODES_H
+#ifndef GLOM_IMPORT_CSV_FILE_ENCODINGS_H
+#define GLOM_IMPORT_CSV_FILE_ENCODINGS_H
 
-#include <libglom/data_structure/field.h>
-#include <libglom/data_structure/numeric_format.h>
+#include <glibmm/ustring.h>
+#include <list>
 
 namespace Glom
 {
 
-namespace IsoCodes
+namespace FileEncodings
 {
 
-class Currency
-{
-public:
-  Glib::ustring m_symbol;
-  Glib::ustring m_name;
-};
-
-typedef std::list<Currency> type_list_currencies;
-type_list_currencies get_list_of_currency_symbols();
-
-class Locale
+class Encoding
 {
 public:
-  Glib::ustring m_identifier;
-  Glib::ustring m_name;
+  Encoding(const char* name, const char* charset);
+
+  Glib::ustring get_charset() const;
+  Glib::ustring get_name() const;
+
+private:
+  const char* m_name;
+  const char* m_charset;
 };
 
-typedef std::list<Locale> type_list_locales;
-type_list_locales get_list_of_locales();
+typedef std::list<Encoding> type_list_encodings;
 
-Glib::ustring get_locale_name(const Glib::ustring& locale_id);
+/** Get a list of file encodings to offer to the user.
+ */
+type_list_encodings get_list_of_encodings();
 
-} //namespace IsoCodes
+/** Discover the human-readable name (such as "Western") of a charset 
+ * (such as "ISO-8859-1")
+ */
+Glib::ustring get_name_of_charset(const Glib::ustring& charset);
+
+} //namespace FileEncodings
 
 } //namespace Glom
 
-#endif //GLOM_MODE_DESIGN_ISO_CODES_H
+#endif //GLOM_IMPORT_CSV_FILE_ENCODINGS_H
 

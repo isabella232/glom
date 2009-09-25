@@ -23,8 +23,8 @@
 
 #include <glom/frame_glom.h>
 #include <glom/application.h>
-#include <glom/dialog_import_csv.h>
-#include <glom/dialog_import_csv_progress.h>
+#include <glom/import_csv/dialog_import_csv.h>
+#include <glom/import_csv/dialog_import_csv_progress.h>
 #include <libglom/appstate.h>
 
 #include <libglom/connectionpool.h>

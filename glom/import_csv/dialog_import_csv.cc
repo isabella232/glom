@@ -19,6 +19,7 @@
  */
 
 #include "dialog_import_csv.h"
+#include <glom/import_csv/file_encodings.h>
 #include <libglom/libglom_config.h>
 
 #include <libglom/data_structure/glomconversions.h>
@@ -32,62 +33,19 @@
 namespace
 {
 
-struct Encoding {
-  const char* name;
-  const char* charset;
-};
-
-//TODO: Can we get this from anywhere else, such as iso-codes? murrayc
-const Encoding ENCODINGS[] = {
-  { N_("Unicode"), "UTF-8" },
-  { N_("Unicode"), "UTF-16" },
-  { N_("Unicode"), "UTF-16BE" },
-  { N_("Unicode"), "UTF-16LE" },
-  { N_("Unicode"), "UTF-32" },
-  { N_("Unicode"), "UTF-7" },
-  { N_("Unicode"), "UCS-2" },
-  { N_("Unicode"), "UCS-4" },
-  { NULL, NULL }, // This just adds a separator in the combo box
-  { N_("Western"), "ISO-8859-1" },
-  { N_("Central European"), "ISO-8859-2" },
-  { N_("South European"), "ISO-8859-3" },
-  { N_("Baltic"), "ISO-8859-4" },
-  { N_("Cyrillic"), "ISO-8859-5" },
-  { N_("Arabic"), "ISO-8859-6" },
-  { N_("Greek"), "ISO-8859-7" },
-  { N_("Hebrew Visual"), "ISO-8859-8" },
-  { N_("Hebrew"), "ISO-8859-8-I" },
-  { N_("Turkish"), "ISO-8859-9" },
-  { N_("Nordic"), "ISO-8859-10" },
-  { N_("Baltic"), "ISO-8859-13" },
-  { N_("Celtic"), "ISO-8859-14" },
-  { N_("Western"), "ISO-8859-15" },
-  { N_("Romanian"), "ISO-8859-16" },
-  { NULL, NULL },
-  { N_("Central European"), "WINDOWS-1250" },
-  { N_("Cyrillic"), "WINDOWS-1251" },
-  { N_("Western"), "WINDOWS-1252" },
-  { N_("Greek"), "WINDOWS-1253" },
-  { N_("Turkish"), "WINDOWS-1254" },
-  { N_("Hebrew"), "WINDOWS-1255" },
-  { N_("Arabic"), "WINDOWS-1256" },
-  { N_("Baltic"), "WINDOWS-1257" },
-  { N_("Vietnamese"), "WINDOWS-1258" }
-};
-
 // When auto-detecting the encoding, we try to read the file in these
 // encodings, in order:
-const Encoding AUTODETECT_ENCODINGS[] = {
-  { N_("Unicode"), "UTF-8" },
-  { N_("Western"), "ISO-8859-1" },
-  { N_("Western"), "ISO-8859-15" },
-  { N_("Unicode"), "UTF-16" },
-  { N_("Unicode"), "UCS-2" },
-  { N_("Unicode"), "UCS-4" }
+const char* AUTODETECT_ENCODINGS_CHARSETS[] = {
+  "UTF-8",
+  "ISO-8859-1",
+  "ISO-8859-15",
+  "UTF-16",
+  "UCS-2",
+  "UCS-4"
 };
 
-const guint N_ENCODINGS = sizeof(ENCODINGS)/sizeof(ENCODINGS[0]);
-const guint N_AUTODETECT_ENCODINGS = sizeof(AUTODETECT_ENCODINGS)/sizeof(AUTODETECT_ENCODINGS[0]);
+const guint N_AUTODETECT_ENCODINGS_CHARSETS = sizeof(AUTODETECT_ENCODINGS_CHARSETS)/sizeof(AUTODETECT_ENCODINGS_CHARSETS[0]);
+
 
 Glib::ustring encoding_display(const Glib::ustring& name, const Glib::ustring& charset)
 {
@@ -119,6 +77,7 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
     throw std::runtime_error("Missing widgets from glade file for Dialog_Import_CSV");
 #endif
 
+  //Fill the list of encodings:
   m_encoding_model = Gtk::ListStore::create(m_encoding_columns);
 
   Gtk::TreeModel::iterator iter = m_encoding_model->append();
@@ -127,14 +86,17 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
   // Separator:
   m_encoding_model->append();
 
-  for(guint i = 0; i < N_ENCODINGS; ++ i)
+  const FileEncodings::type_list_encodings list_encodings =  FileEncodings::get_list_of_encodings();
+  for(FileEncodings::type_list_encodings::const_iterator encodings_iter = list_encodings.begin(); encodings_iter  != list_encodings.end(); encodings_iter ++)
   {
+    const FileEncodings::Encoding encoding = *encodings_iter;
+    if(encoding.get_name().empty())
+      continue;
+
     iter = m_encoding_model->append();
-    if(ENCODINGS[i].name != 0)
-    {
-      (*iter)[m_encoding_columns.m_col_name] = _(ENCODINGS[i].name);
-      (*iter)[m_encoding_columns.m_col_charset] = ENCODINGS[i].charset;
-    }
+    Gtk::TreeModel::Row row = *iter;
+    row[m_encoding_columns.m_col_name] = encoding.get_name();
+    row[m_encoding_columns.m_col_charset] = encoding.get_charset();
   }
 
   m_sample_rows->set_value(2); //A sensible default.
@@ -146,12 +108,15 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
   m_encoding_combo->set_row_separator_func(sigc::mem_fun(*this, &Dialog_Import_CSV::row_separator_func));
   m_encoding_combo->set_active(0);
 
-  m_encoding_combo->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_encoding_changed));
+  m_encoding_combo->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_combo_encoding_changed));
 
   // TODO: Reset parser encoding on selection changed.
   m_parser = std::auto_ptr<CsvParser>(new CsvParser(get_current_encoding().c_str()));
-  m_parser->signal_encoding_error().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_encoding_error));
-  m_parser->signal_line_scanned().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_line_scanned));
+  m_parser->signal_file_read_error().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_parser_file_read_error));
+  m_parser->signal_have_display_name().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_parser_have_display_name));
+  m_parser->signal_encoding_error().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_parser_encoding_error));
+  m_parser->signal_line_scanned().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_parser_line_scanned));
+  m_parser->signal_state_changed().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_parser_state_changed));
 
   m_first_line_as_title->signal_toggled().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_first_line_as_title_toggled));
   m_sample_rows->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_sample_rows_changed));
@@ -242,14 +207,7 @@ void Dialog_Import_CSV::import(const Glib::ustring& uri, const Glib::ustring& in
     m_field_model_sorted = Gtk::TreeModelSort::create(m_field_model);
     m_field_model_sorted->set_sort_column(m_field_columns.m_col_field_name, Gtk::SORT_ASCENDING);
 
-
-    m_file = Gio::File::create_for_uri(uri);
-    m_file->read_async(sigc::mem_fun(*this, &Dialog_Import_CSV::on_file_read));
-
-    // Query the display name of the file to set in the title:
-    m_file->query_info_async(sigc::mem_fun(*this, &Dialog_Import_CSV::on_query_info), G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME);
-
-    set_parser_state(CsvParser::STATE_PARSING);
+    m_parser->set_file_and_start_parsing(uri);
   }
 }
 
@@ -278,22 +236,7 @@ const Glib::ustring& Dialog_Import_CSV::get_data(guint row, guint col)
   if(m_first_line_as_title->get_active())
     ++row;
 
-  static Glib::ustring empty_result;
-
-  if(row >= m_parser->m_rows.size())
-  {
-    std::cerr << "Dialog_Import_CSV::get_data(): row out of range." << std::endl;
-    return empty_result;
-  }
-
-  const CsvParser::type_row_strings& row_data = m_parser->m_rows[row];
-  if(col >= row_data.size())
-  {
-    std::cerr << "Dialog_Import_CSV::get_data(): col out of range." << std::endl;
-    return empty_result;
-  }
-
-  return row_data[col];
+  return m_parser->get_data(row, col);
 }
 
 void Dialog_Import_CSV::clear()
@@ -306,9 +249,7 @@ void Dialog_Import_CSV::clear()
   m_field_model.reset();
   m_field_model_sorted.reset();
   m_fields.clear();
-  m_file.reset();
   m_filename.clear();
-  m_buffer.reset(0);
   m_parser->clear();
   //m_parser.reset(0);
   m_encoding_info->set_text("");
@@ -317,7 +258,6 @@ void Dialog_Import_CSV::clear()
   m_first_line_as_title->set_sensitive(false);
   m_sample_rows->set_sensitive(false);
 
-  set_parser_state(CsvParser::STATE_NONE);
   validate_primary_key();
 }
 
@@ -340,151 +280,11 @@ bool Dialog_Import_CSV::row_separator_func(const Glib::RefPtr<Gtk::TreeModel>& /
   return (*iter)[m_encoding_columns.m_col_name] == "";
 }
 
-void Dialog_Import_CSV::on_query_info(const Glib::RefPtr<Gio::AsyncResult>& result)
+
+void Dialog_Import_CSV::on_combo_encoding_changed()
 {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    Glib::RefPtr<Gio::FileInfo> info = m_file->query_info_finish(result);
-    m_filename = info->get_display_name();
-    set_title(m_filename + _(" - Import From CSV File"));
-  }
-  catch(const Glib::Exception& ex)
-  {
-    std::cerr << "Failed to fetch display name of uri " << m_file->get_uri() << ": " << ex.what() << std::endl;
-  }
-#else
-  std::auto_ptr<Glib::Error> error;
-  Glib::RefPtr<Gio::FileInfo> info = m_file->query_info_finish(result, error);
-  if (!error.get())
-  {
-    m_filename = info->get_display_name();
-    set_title(m_filename + _(" - Import From CSV File"));
-  }
-  else
-    std::cerr << "Failed to fetch display name of uri " << m_file->get_uri() << ": " << error->what() << std::endl;
-#endif    
-}
+  const int active = m_encoding_combo->get_active_row_number();
 
-void Dialog_Import_CSV::on_file_read(const Glib::RefPtr<Gio::AsyncResult>& result)
-{
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    m_parser->m_stream = m_file->read_finish(result);
-
-    m_buffer.reset(new Buffer);
-    m_parser->m_stream->read_async(m_buffer->buf, sizeof(m_buffer->buf), sigc::mem_fun(*this, &Dialog_Import_CSV::on_stream_read));
-  }
-  catch(const Glib::Exception& error)
-  {
-    show_error_dialog(_("Could Not Open file"), Glib::ustring::compose(_("The file at \"%1\" could not be opened: %2"), m_file->get_uri(), error.what()));
-    clear();
-    // TODO: Response?
-  }
-#else
-    std::auto_ptr<Glib::Error> error;
-    m_parser->m_stream = m_file->read_finish(result, error);
-    if (!error.get())
-    {
-      m_buffer.reset(new Buffer);
-      m_parser->m_stream->read_async(m_buffer->buf, sizeof(m_buffer->buf), sigc::mem_fun(*this, &Dialog_Import_CSV::on_stream_read));
-    }
-    else
-    {
-      show_error_dialog(_("Could Not Open file"), Glib::ustring::compose(_("The file at \"%1\" could not be opened: %2"), m_file->get_uri(), error->what()));
-      clear();
-    }
-#endif    
-}
-
-void Dialog_Import_CSV::on_stream_read(const Glib::RefPtr<Gio::AsyncResult>& result)
-{
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    const gssize size = m_parser->m_stream->read_finish(result);
-    m_parser->m_raw.insert(m_parser->m_raw.end(), m_buffer->buf, m_buffer->buf + size);
-
-    // If the parser already exists, but it is currently not parsing because it waits
-    // for new input, then continue parsing.
-    // TODO: Introduce CsvParser::is_idle_handler_connected() instead?
-    if(m_parser.get() && !m_parser->m_idle_connection.connected())
-    {
-      m_parser->m_idle_connection = Glib::signal_idle().connect(sigc::mem_fun(*m_parser.get(), &CsvParser::on_idle_parse));
-    }
-    // If the parser does not exist yet, then create a new parser, except when the
-    // current encoding does not work for the file ,in which case the user must first
-    // choose another encoding.
-    else if(!m_parser.get() && get_parser_state() != CsvParser::STATE_ENCODING_ERROR)
-    {
-      begin_parse();
-    }
-
-    if(size > 0)
-    {
-      // Read the next few bytes
-      m_parser->m_stream->read_async(m_buffer->buf, sizeof(m_buffer->buf), sigc::mem_fun(*this, &Dialog_Import_CSV::on_stream_read));
-    }
-    else
-    {
-      // Finished reading
-      m_buffer.reset(0);
-      m_parser->m_stream.reset();
-      m_file.reset();
-    }
-  }
-  catch(const Glib::Exception& error)
-  {
-    show_error_dialog(_("Could Not Read File"), Glib::ustring::compose(_("The file at \"%1\" could not be read: %2"), m_file->get_uri(), error.what()));
-    clear();
-    // TODO: Response?
-  }
-#else
-    std::auto_ptr<Glib::Error> error;
-    const gssize size = m_parser->m_stream->read_finish(result, error);
-    if (!error.get())
-    {
-      m_parser->m_raw.insert(m_parser->m_raw.end(), m_buffer->buf, m_buffer->buf + size);
-
-      // If the parser already exists, but it is currently not parsing because it waits
-      // for new input, then continue parsing.
-      if(m_parser.get() && !m_parser->m_idle_connection.connected())
-      {
-        m_parser->m_idle_connection = Glib::signal_idle().connect(sigc::mem_fun(*m_parser.get(), &CsvParser::on_idle_parse));
-      }
-      // If the parser does not exist yet, then create a new parser, except when the
-      // current encoding does not work for the file ,in which case the user must first
-      // choose another encoding.
-      else if(!m_parser.get() && get_parser_state() != CsvParser::STATE_ENCODING_ERROR)
-      {
-        begin_parse();
-      }
-
-      if(size > 0)
-      {
-        // Read the next few bytes
-        m_parser->m_stream->read_async(m_buffer->buf, sizeof(m_buffer->buf), sigc::mem_fun(*this, &Dialog_Import_CSV::on_stream_read));
-      }
-      else
-      {
-        // Finished reading
-        m_buffer.reset(0);
-        m_parser->m_stream.reset();
-        m_file.reset();
-      }
-    }
-    if (error.get())
-    {
-      show_error_dialog(_("Could Not Read File"), Glib::ustring::compose(_("The file at \"%1\" could not be read: %2"), m_file->get_uri(), error->what()));
-      clear();
-    }
-#endif
-}
-
-void Dialog_Import_CSV::on_encoding_changed()
-{
-  int active = m_encoding_combo->get_active_row_number();
   switch(active)
   {
   case -1: // No active item
@@ -499,16 +299,9 @@ void Dialog_Import_CSV::on_encoding_changed()
     break;
   }
 
-  // Reset current parsing process
-  // TODO: Troublesome. Parser now contains a bit more members, not sure we can simply reset it like that.
-  //m_parser.reset(0);
-  //m_parser->clear();
-  //m_parser->set_encoding(get_current_encoding().c_str());
-
-  // Parse from beginning with new encoding if we have already some data to
-  // parse.
-  if(!m_parser->m_raw.empty())
-    begin_parse();
+  // Parse from beginning with new encoding:
+  m_parser->set_encoding(get_current_encoding());
+  m_parser->set_file_and_start_parsing(m_filename);
 }
 
 void Dialog_Import_CSV::on_first_line_as_title_toggled()
@@ -546,7 +339,7 @@ void Dialog_Import_CSV::on_first_line_as_title_toggled()
     Gtk::TreeModel::Path path("1");
     Gtk::TreeModel::iterator iter = m_sample_model->get_iter(path);
 
-    if((!iter || (*iter)[m_sample_columns.m_col_row] != 0) && !m_parser->m_rows.empty() && m_sample_rows->get_value_as_int() > 0)
+    if((!iter || (*iter)[m_sample_columns.m_col_row] != 0) && !m_parser->get_rows_empty() && m_sample_rows->get_value_as_int() > 0)
     {
       // Add first row to model
       if(!iter)
@@ -614,17 +407,20 @@ Glib::ustring Dialog_Import_CSV::get_current_encoding() const
   {
     // Auto-Detect:
     g_assert(m_auto_detect_encoding != -1);
-    return AUTODETECT_ENCODINGS[m_auto_detect_encoding].charset;
+    return AUTODETECT_ENCODINGS_CHARSETS[m_auto_detect_encoding];
   }
 
-  // TODO: change return type?
-  return encoding.c_str();
+  return encoding;
 }
 
 void Dialog_Import_CSV::begin_parse()
 {
   if(m_auto_detect_encoding != -1)
-    m_encoding_info->set_text(Glib::ustring::compose(_("Encoding detected as: %1"), encoding_display(gettext(AUTODETECT_ENCODINGS[m_auto_detect_encoding].name), AUTODETECT_ENCODINGS[m_auto_detect_encoding].charset)));
+  {
+    const char* encoding_charset = AUTODETECT_ENCODINGS_CHARSETS[m_auto_detect_encoding];
+    const Glib::ustring encoding_name = FileEncodings::get_name_of_charset(encoding_charset);
+    m_encoding_info->set_text(Glib::ustring::compose(_("Encoding detected as: %1"), encoding_display(encoding_name, encoding_charset)));
+  }
   else
     m_encoding_info->set_text("");
 
@@ -636,26 +432,20 @@ void Dialog_Import_CSV::begin_parse()
   m_parser->clear();
 
   m_parser->set_encoding(get_current_encoding().c_str());
-  set_parser_state(CsvParser::STATE_PARSING);
 
   // Allow the Import button to be pressed when a field for the primary key
   // field is set. When the import button is pressed without the file being
   // fully loaded, the import progress waits for us to load the rest.
   validate_primary_key();
-
-  m_parser->m_idle_connection = Glib::signal_idle().connect(sigc::mem_fun(*m_parser.get(), &CsvParser::on_idle_parse));
 }
 
-void Dialog_Import_CSV::on_encoding_error()
+void Dialog_Import_CSV::on_parser_encoding_error()
 {
   m_parser->clear();
   // Clear sample preview (TODO: Let it visible, and only remove when reparsing?)
   m_sample_model.reset();
   m_sample_view->remove_all_columns();
   m_sample_view->set_model(m_sample_model); // Empty model
-
-  // TODO: move into parser.
-  set_parser_state(CsvParser::STATE_ENCODING_ERROR);
 
   // Don't allow the import button to be pressed when an error occured. This
   // would not make sense since we cleared all the parsed row data anyway.
@@ -665,7 +455,7 @@ void Dialog_Import_CSV::on_encoding_error()
   if(m_auto_detect_encoding != -1)
   {
     ++ m_auto_detect_encoding;
-    if(static_cast<guint>(m_auto_detect_encoding) < N_AUTODETECT_ENCODINGS)
+    if(static_cast<guint>(m_auto_detect_encoding) < N_AUTODETECT_ENCODINGS_CHARSETS)
       begin_parse();
     else
       m_encoding_info->set_text(_("Encoding detection failed. Please manually choose one from the box."));
@@ -679,39 +469,12 @@ void Dialog_Import_CSV::on_encoding_error()
 /*
  * No, this is wrong. Creating the tree model and handling a line from the CSV file are two separate steps. Proposal: Construct tree model *after* parsing, using row[0].
  */
-void Dialog_Import_CSV::on_line_scanned(const Glib::ustring& line, guint line_number)
+void Dialog_Import_CSV::on_parser_line_scanned(CsvParser::type_row_strings /*row*/, unsigned int row_number)
 {
-  std::cout << "debug: on_line_scanned=" << line << std::endl;
-  if(line.empty())
-   return;
-
-  m_parser->m_rows.push_back(CsvParser::type_row_strings());
-  CsvParser::type_row_strings& row = m_parser->m_rows.back();
-
-  Glib::ustring field;
-  //Gtk::TreeModelColumnRecord record;
-
-  // Parse first field:
-  Glib::ustring::const_iterator line_iter = CsvParser::advance_field(line.begin(), line.end(), field);
-  row.push_back(field);
-
-  // Parse more fields:
-  while(line_iter != line.end())
-  {
-    // Skip delimiter:
-    ++line_iter;
-
-    // Read field:
-    line_iter = CsvParser::advance_field(line_iter, line.end(), field);
-
-    // Add field to current row:
-    row.push_back(field);
-  }
-
   // This is the first line read if there is no model yet:
   if(!m_sample_model)
   {
-    setup_sample_model(row);
+    setup_sample_model(row_number);
     Gtk::TreeModel::iterator iter = m_sample_model->append();
     // -1 means the row to select target fields (see special handling in cell data funcs)
     (*iter)[m_sample_columns.m_col_row] = -1;
@@ -724,7 +487,7 @@ void Dialog_Import_CSV::on_line_scanned(const Glib::ustring& line, guint line_nu
 
   // Don't add if this is the first line and m_first_line_as_title is active:
   const guint parser_rows_count = m_parser->get_rows_count();
-  if(line_number > 1 || !m_first_line_as_title->get_active())
+  if(row_number > 1 || !m_first_line_as_title->get_active())
   {
     if(sample_rows < static_cast<guint>(m_sample_rows->get_value_as_int()))
     {
@@ -734,7 +497,7 @@ void Dialog_Import_CSV::on_line_scanned(const Glib::ustring& line, guint line_nu
   }
 }
 
-void Dialog_Import_CSV::setup_sample_model(CsvParser::type_row_strings& row)
+void Dialog_Import_CSV::setup_sample_model(guint data_row_number)
 {
   m_sample_model = Gtk::ListStore::create(m_sample_columns);
   m_sample_view->set_model(m_sample_model);
@@ -742,7 +505,7 @@ void Dialog_Import_CSV::setup_sample_model(CsvParser::type_row_strings& row)
   // Create field vector that contains the fields into which to import
   // the data.
   //m_fields.resize(row.size());
-  m_fields.resize(row.size());
+  m_fields.resize(m_parser->get_rows_count());
 
   // Start with a column showing the line number.
   Gtk::CellRendererText* text = Gtk::manage(new Gtk::CellRendererText);
@@ -751,9 +514,11 @@ void Dialog_Import_CSV::setup_sample_model(CsvParser::type_row_strings& row)
   col->set_cell_data_func(*text, sigc::mem_fun(*this, &Dialog_Import_CSV::line_data_func));
   m_sample_view->append_column(*col);
 
-  for(guint i = 0; i < row.size(); ++ i)
+  const guint cols_count = m_parser->get_cols_count(data_row_number);
+  for(guint i = 0; i < cols_count; ++ i)
   {
-    m_sample_view->append_column(*Gtk::manage(column_factory(row[i], i)));
+    const Glib::ustring& data = m_parser->get_data(data_row_number, i);
+    m_sample_view->append_column(*Gtk::manage(column_factory(data, i)));
   }
 }
 
@@ -831,11 +596,7 @@ void Dialog_Import_CSV::field_data_func(Gtk::CellRenderer* renderer, const Gtk::
 
       if(row != -1 && (unsigned int)row < m_parser->get_rows_count())
       {
-        const CsvParser::type_row_strings& row_strings = m_parser->m_rows[row];
-        if(column_number < row_strings.size())
-        {
-
-          const Glib::ustring& orig_text = row_strings[column_number];
+          const Glib::ustring& orig_text = m_parser->get_data(row, column_number);
 
           if(field)
           {
@@ -872,7 +633,6 @@ void Dialog_Import_CSV::field_data_func(Gtk::CellRenderer* renderer, const Gtk::
           }
 
           editable = false;
-        }
       }
     }
   }
@@ -923,17 +683,6 @@ void Dialog_Import_CSV::on_field_edited(const Glib::ustring& path, const Glib::u
   }
 }
 
-void Dialog_Import_CSV::set_parser_state(CsvParser::State state)
-{
-  // Calling the member of a member, introduced by refactoring. TODO: clean up set_parser_state() interface.
-  if(m_parser->get_state() != state)
-  {
-    m_parser->m_state = state;
-    // Should be emitted by parser?
-    m_signal_state_changed.emit();
-  }
-}
-
 void Dialog_Import_CSV::validate_primary_key()
 {
   if(get_parser_state() == (CsvParser::STATE_NONE | CsvParser::STATE_ENCODING_ERROR))
@@ -954,7 +703,7 @@ void Dialog_Import_CSV::validate_primary_key()
       // and the m_fields array is not up to date. It is set in handle_line()
       // when the first line is parsed.
       primary_key_selected = false;
-      if(!m_parser->m_rows.empty())
+      if(!m_parser->get_rows_empty())
       {
         for(type_vec_fields::iterator iter = m_fields.begin(); iter != m_fields.end(); ++ iter)
         {
@@ -982,6 +731,28 @@ void Dialog_Import_CSV::validate_primary_key()
     else
       m_error_label->show();
   }
+}
+
+void Dialog_Import_CSV::on_parser_file_read_error(const Glib::ustring& error_message)
+{
+  show_error_dialog(_("Could Not Open file"), 
+    Glib::ustring::compose(_("The file at \"%1\" could not be opened: %2"), m_filename, error_message) );
+}
+
+void Dialog_Import_CSV::on_parser_have_display_name(const Glib::ustring& display_name)
+{
+  set_title(display_name + _(" - Import From CSV File"));
+}
+
+void Dialog_Import_CSV::on_parser_state_changed()
+{
+  //Remit (via our similarly-named signal) this so that the progress dialog can respond:
+  signal_state_changed().emit();
+}
+
+Dialog_Import_CSV::type_signal_state_changed Dialog_Import_CSV::signal_state_changed() const
+{
+  return m_signal_state_changed;
 }
 
 } //namespace Glom
