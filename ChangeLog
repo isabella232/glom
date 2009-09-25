@@ -1,3 +1,11 @@
+2009-09-25  Murray Cumming  <murrayc@murrayc.com>
+
+	Replace some NULLs with 0 because this is C++, not C.
+
+	* glom/libglom/connectionpool_backends/postgres.cc:
+	* glom/libglom/connectionpool_backends/postgres_self.cc:
+	* glom/libglom/spawn_with_feedback.cc: Replace NULLs with 0.
+
 2009-09-24  Murray Cumming  <murrayc@murrayc.com>
 
 	Self-Hosting: Use the new ident configuration for PostgreSQL 8.4.

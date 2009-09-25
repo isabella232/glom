@@ -106,10 +106,10 @@ private:
     // it can write to it.
     SECURITY_ATTRIBUTES security_attr;
     security_attr.nLength = sizeof(security_attr);
-    security_attr.lpSecurityDescriptor = NULL;
+    security_attr.lpSecurityDescriptor = 0;
     security_attr.bInheritHandle = TRUE;
 
-    HANDLE result = CreateFile(filename.c_str(), GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_DELETE, &security_attr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+    HANDLE result = CreateFile(filename.c_str(), GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_DELETE, &security_attr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     if(!result) throw SpawnError(win32_error_message());
 #endif // GLIBMM_EXCEPTIONS_ENABLED
@@ -192,11 +192,11 @@ public:
 #ifdef G_OS_WIN32
     startup_info.cb = sizeof(startup_info);
     startup_info.dwFlags = STARTF_USESTDHANDLES;
-    startup_info.lpReserved = NULL;
-    startup_info.lpDesktop = NULL;
-    startup_info.lpTitle = NULL;
+    startup_info.lpReserved = 0;
+    startup_info.lpDesktop = 0;
+    startup_info.lpTitle = 0;
     startup_info.cbReserved2 = 0;
-    startup_info.lpReserved2 = NULL;
+    startup_info.lpReserved2 = 0;
     startup_info.hStdInput = INVALID_HANDLE_VALUE;
 
     if(redirect & REDIRECT_STDOUT)
@@ -214,7 +214,7 @@ public:
     std::copy(command_line.data(), command_line.data() + command_line.length(), command.begin());
     command[command_line.length()] = '\0';
 
-    if(!CreateProcess(NULL, &command[0], NULL, NULL, TRUE, CREATE_NO_WINDOW, NULL, NULL, &startup_info, &process_info))
+    if(!CreateProcess(0, &command[0], 0, 0, TRUE, CREATE_NO_WINDOW, 0, 0, &startup_info, &process_info))
     {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
       throw SpawnError(win32_error_message());
@@ -229,10 +229,10 @@ public:
       int child_stdout;
       int child_stderr;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-      Glib::spawn_async_with_pipes(Glib::get_current_dir(), arguments, Glib::SPAWN_DO_NOT_REAP_CHILD, sigc::slot<void>(), &pid, NULL, redirect & REDIRECT_STDOUT ? &child_stdout : NULL, redirect & REDIRECT_STDERR ? &child_stderr : NULL);
+      Glib::spawn_async_with_pipes(Glib::get_current_dir(), arguments, Glib::SPAWN_DO_NOT_REAP_CHILD, sigc::slot<void>(), &pid, 0, redirect & REDIRECT_STDOUT ? &child_stdout : 0, redirect & REDIRECT_STDERR ? &child_stderr : 0);
 #else
       std::auto_ptr<Glib::Error> error;
-      Glib::spawn_async_with_pipes(Glib::get_current_dir(), arguments, Glib::SPAWN_DO_NOT_REAP_CHILD, sigc::slot<void>(), &pid, NULL, redirect & REDIRECT_STDOUT ? &child_stdout : NULL, redirect & REDIRECT_STDERR ? &child_stderr : NULL, error);
+      Glib::spawn_async_with_pipes(Glib::get_current_dir(), arguments, Glib::SPAWN_DO_NOT_REAP_CHILD, sigc::slot<void>(), &pid, 0, redirect & REDIRECT_STDOUT ? &child_stdout : 0, redirect & REDIRECT_STDERR ? &child_stderr : 0, error);
       if (error.get())
         std::cerr << "Spawn Error: " << error->what() << std::endl;
 #endif
@@ -342,7 +342,7 @@ std::auto_ptr<const SpawnInfo> spawn_async(const Glib::ustring& command_line, in
   return std::auto_ptr<const SpawnInfo>(new SpawnInfo(command_line, redirect));
 }
 
-bool spawn_async_end(std::auto_ptr<const SpawnInfo> info, std::string* stdout_text = NULL, std::string* stderr_text = NULL, int* return_status = NULL)
+bool spawn_async_end(std::auto_ptr<const SpawnInfo> info, std::string* stdout_text = 0, std::string* stderr_text = 0, int* return_status = 0)
 {
   if(stdout_text)
     info->get_stdout(*stdout_text);
@@ -495,7 +495,7 @@ namespace
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
-      return_status = Impl::spawn_sync(second_command, &stdout_output, NULL);
+      return_status = Impl::spawn_sync(second_command, &stdout_output, 0);
     }
     catch(const Impl::SpawnError& ex)
     {
@@ -504,7 +504,7 @@ namespace
       // a row or so.
     }
 #else
-    Impl::spawn_sync(second_command, &stdout_output, NULL);
+    return_status = Impl::spawn_sync(second_command, &stdout_output, 0);
 #endif
 
     if(!success_text.empty())
@@ -598,7 +598,7 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
 
   std::string stderr_text;
 
-  const bool success = Impl::spawn_async_end(info, NULL, &stderr_text, NULL);
+  const bool success = Impl::spawn_async_end(info, 0, &stderr_text, 0);
 
   if(success) //response == Gtk::RESPONSE_OK)
   {
