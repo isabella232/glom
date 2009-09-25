@@ -1,3 +1,25 @@
+2009-09-25  Michael Hasselmann  <michaelh@openismus.com>
+
+	Import: Changed the signature of line_scanned handler
+	
+	* glom/import_csv/dialog_import_csv.[h|cc]: Changed the signare of
+	on_parser_line_scanned, to use CsvParser::type_row_strings. It does not
+	change anything, as the handler didn't even use the parameters.
+
+	Import: Fixed tests to fit new parser API
+	
+	* glom/import_csv/csv_parser.[h|cc]: Added a finished_parsing signal since the
+	max_row count logic is flawed
+	(https://bugzilla.gnome.org/show_bug.cgi?id=588233#c16). Also moved common
+	parts of on_stream_read(.) (now on_buffer_read(.)) into
+	copy_buffer_and_continue_reading(.), to avoid copy'n'paste bugs.
+	
+	* tests/import/utils.[h|cc]: Added mainloop functionality to trigger the idle
+	parse sequence of the CsvParser for the testcases.
+	
+	* tests/import/test_[parsing,signals].cc: Fixed the tests to fit new parser
+	API.
+
 2009-09-21  Murray Cumming  <murrayc@murrayc.com>
 
 	import tests: Fix the no-exceptions build.
