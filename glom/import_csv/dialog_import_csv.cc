@@ -466,7 +466,7 @@ void Dialog_Import_CSV::on_parser_encoding_error()
 /*
  * No, this is wrong. Creating the tree model and handling a line from the CSV file are two separate steps. Proposal: Construct tree model *after* parsing, using row[0].
  */
-void Dialog_Import_CSV::on_parser_line_scanned(const Glib::ustring& /*line*/, guint row_number)
+void Dialog_Import_CSV::on_parser_line_scanned(CsvParser::type_row_strings /*row*/, unsigned int row_number)
 {
   // This is the first line read if there is no model yet:
   if(!m_sample_model)

@@ -86,7 +86,7 @@ private:
   void on_parser_file_read_error(const Glib::ustring& error_message);
   void on_parser_have_display_name(const Glib::ustring& display_name);
   void on_parser_encoding_error();
-  void on_parser_line_scanned(const Glib::ustring& line, unsigned int row_number);
+  void on_parser_line_scanned(CsvParser::type_row_strings row, unsigned int row_number);
   void on_parser_state_changed();
 
   void on_combo_encoding_changed();
