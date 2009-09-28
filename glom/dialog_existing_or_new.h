@@ -179,7 +179,7 @@ private:
   Gtk::CellRendererPixbuf m_existing_icon_renderer;
   Gtk::CellRendererText m_existing_title_renderer;
 
-
+  //Iterators to the parent nodes:
   Gtk::TreeModel::iterator m_iter_existing_recent;
 #ifndef G_OS_WIN32
   Gtk::TreeModel::iterator m_iter_existing_network;
