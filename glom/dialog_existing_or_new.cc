@@ -101,6 +101,13 @@ namespace Glom
 Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject)
 {
+#ifdef GLOM_ENABLE_CLIENT_ONLY
+  //Don't mention creation of new documents in client-only mode:
+  Gtk::Label* label = 0;
+  builder->get_widget("existing_or_new_label", label);
+  label->set_text(_("Open a Document"));
+#endif //GLOM_ENABLE_CLIENT_ONLY
+  
   builder->get_widget("existing_or_new_existing_treeview", m_existing_view);
   builder->get_widget("existing_or_new_new_treeview", m_new_view);
 

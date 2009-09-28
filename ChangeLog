@@ -1,3 +1,10 @@
+2009-09-28  Murray Cumming  <murrayc@murrayc.com>
+
+	Client-only mode: Change the initial dialog label.
+	 
+	* glom/dialog_existing_or_new.cc: Constructor: Change the label text if in 
+	client-only mode, to avoid mentioning creation of documents.
+
 2009-09-25  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix the build with gtkmm < 2.18.
