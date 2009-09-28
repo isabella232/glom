@@ -50,8 +50,11 @@ namespace
 {
 
 const char* RECENT_DUMMY_TEXT = N_("No recently used documents available.");
-const char* TEMPLATE_DUMMY_TEXT = N_("No templates available.");
 const char* NETWORK_DUMMY_TEXT = N_("No sessions found on the local network.");
+
+#ifdef GLOM_ENABLE_CLIENT_ONLY
+const char* TEMPLATE_DUMMY_TEXT = N_("No templates available.");
+#endif
 
 //TODO_Performance: A DomParser or XmlReader might be faster, or even a regex.
 /// Reads the title of an example from the first few characters of the XML.
@@ -249,6 +252,11 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   m_notebook->set_show_tabs(false);
 #endif /* !GLOM_ENABLE_CLIENT_ONLY */
     
+  //Make sure the first item is visible, 
+  //which is not always the case on Maemo. 
+  m_existing_view->scroll_to_row( 
+    Gtk::TreeModel::Path(m_iter_existing_other) );
+
   update_ui_sensitivity();
 }
 

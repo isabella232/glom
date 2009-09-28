@@ -92,13 +92,13 @@ void PickerButton_Table::set_table_name(const Glib::ustring& table_name)
 
     if(this_text == table_name)
     {
-      //TODO: set_selected(iter);
+      m_touchselector.set_active(0, iter);
       return; //success
     }
   }
 
   //Not found, so mark it as blank:
-  std::cerr << "PickerButton_Table::set_table_name(): table_name not found in list: " << table_name << std::endl;
+  //std::cerr << "PickerButton_Table::set_table_name(): table_name not found in list: " << table_name << std::endl;
   //TODO: unset_active();
 }
 

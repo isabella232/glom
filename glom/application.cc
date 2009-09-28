@@ -364,7 +364,18 @@ void App_Glom::init_menus()
   m_appmenu_button_table.signal_value_changed().connect(
     sigc::mem_fun(*this, &App_Glom::on_appmenu_button_table_value_changed) );
   m_maemo_appmenu.append(m_appmenu_button_table);
-
+  
+  Hildon::Button* find_button = 
+    Gtk::manage(new Hildon::Button(
+      Gtk::Hildon::SIZE_AUTO, 
+      Hildon::BUTTON_ARRANGEMENT_VERTICAL,
+      _("Find"),
+      _("Search for records in the table.")));
+  find_button->show();
+  find_button->signal_clicked().connect(
+    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Mode_Find) );
+  m_maemo_appmenu.append(*find_button);
+  
   //set_app_menu(*appmenu); //TODO: Use this instead?
   Hildon::Program::get_instance()->set_common_app_menu(m_maemo_appmenu);
 }
@@ -2491,6 +2502,11 @@ void App_Glom::update_window_title()
   strTitle +=  " - " + m_strAppName;
 
   set_title(strTitle);
+  
+  #ifdef GLOM_ENABLE_MAEMO
+  //Update the picker button too:
+  m_appmenu_button_table.set_table_name(table_name);
+  #endif //GLOM_ENABLE_MAEMO
 }
 
 

@@ -1,5 +1,17 @@
 2009-09-28  Murray Cumming  <murrayc@murrayc.com>
 
+	Maemo: Show the table name in the AppMenu. Added a Find Button.
+	
+	* glom/application.cc: update_window_title(): Update the picker button here 
+	too.
+	init_menus(): Add a Find button for the AppMenu.
+	* glom/navigation/maemo/pickerbutton_table.cc: set_table_name(): Actually 
+	set the row as active.
+	* glom/dialog_existing_or_new.cc: Make sure the first row is visible, 
+	even on Maemo. Otherwise it looks strange.
+	
+2009-09-28  Murray Cumming  <murrayc@murrayc.com>
+
 	Initial dialog: Expand the network item.
 
 	* glom/dialog_existing_or_new.cc: Constructor: Expand the Network 
