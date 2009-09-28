@@ -86,7 +86,7 @@ Notebook_Data::Notebook_Data()
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
 #ifdef GLOM_ENABLE_MAEMO
-  //TODO: Actually, show the details in a separate window.
+  //On Maemo we show the details in a separate window.
   set_show_tabs(false);
 #endif //GLOM_ENABLE_MAEMO
 }

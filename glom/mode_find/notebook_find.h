@@ -51,7 +51,11 @@ private:
   void on_page_find_criteria(const Glib::ustring& where_clause);
 
   //Member widgets:
+  #ifndef GLOM_ENABLE_MAEMO
+  //The list view has no way to enter data on Maemo:
   Box_Data_List_Find m_Box_List;
+  #endif //GLOM_ENABLE_MAEMO
+  
   Box_Data_Details_Find m_Box_Details;
 
   guint m_iPage_Details, m_iPage_List;

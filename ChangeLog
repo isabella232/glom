@@ -1,5 +1,12 @@
 2009-09-28  Murray Cumming  <murrayc@murrayc.com>
 
+	Maemo: Find: Use only the details view.
+	
+	* glom/mode_find/notebook_find.[h|cc]: Hide the list view (and tabs) on Maemo.
+	This needs to be a separate window too.
+
+2009-09-28  Murray Cumming  <murrayc@murrayc.com>
+
 	Maemo: Show the table name in the AppMenu. Added a Find Button.
 	
 	* glom/application.cc: update_window_title(): Update the picker button here 
