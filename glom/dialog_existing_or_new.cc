@@ -468,10 +468,10 @@ void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, 
 #endif
   else if(iter == m_iter_existing_other)
     pixbuf_renderer->property_stock_id() = Gtk::StockID(Gtk::Stock::OPEN);
-  else if(m_iter_existing_recent_dummy.get() != NULL && iter == *m_iter_existing_recent_dummy)
+  else if(m_iter_existing_recent_dummy.get() && iter == *m_iter_existing_recent_dummy)
     pixbuf_renderer->property_stock_id() = Gtk::StockID(Gtk::Stock::DIALOG_ERROR); // TODO: Use Stock::STOP instead?
 #ifndef G_OS_WIN32
-  else if(m_iter_existing_network_dummy.get() != NULL && iter == *m_iter_existing_network_dummy)
+  else if(m_iter_existing_network_dummy.get() && iter == *m_iter_existing_network_dummy)
     pixbuf_renderer->property_stock_id() = Gtk::StockID(Gtk::Stock::DIALOG_ERROR); // TODO: Use Stock::STOP instead?
 #endif
 
@@ -489,10 +489,10 @@ void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, 
 #endif
   else if(iter == m_iter_existing_other)
     pixbuf_renderer->set_property("stock-id", Gtk::StockID(Gtk::Stock::OPEN));
-  else if(m_iter_existing_recent_dummy.get() != NULL && iter == *m_iter_existing_recent_dummy)
+  else if(m_iter_existing_recent_dummy.get() && iter == *m_iter_existing_recent_dummy)
     pixbuf_renderer->set_property("stock-id", Gtk::StockID(Gtk::Stock::DIALOG_ERROR)); // TODO: Use Stock::STOP instead?
 #ifndef G_OS_WIN32
-  else if(m_iter_existing_network_dummy.get() != NULL && iter == *m_iter_existing_network_dummy)
+  else if(m_iter_existing_network_dummy.get() && iter == *m_iter_existing_network_dummy)
     pixbuf_renderer->set_property("stock-id", Gtk::StockID(Gtk::Stock::DIALOG_ERROR)); // TODO: Use Stock::STOP instead?
 #endif
 
@@ -584,7 +584,7 @@ void Dialog_ExistingOrNew::new_icon_data_func(Gtk::CellRenderer* renderer, const
     pixbuf_renderer->property_stock_id() = Gtk::Stock::NEW.id;
   else if(iter == m_iter_new_template)
     pixbuf_renderer->property_stock_id() = Gtk::Stock::EDIT.id; // TODO: More meaningful icon?
-  else if(m_iter_new_template_dummy.get() != NULL && iter == *m_iter_new_template_dummy)
+  else if(m_iter_new_template_dummy.get() && iter == *m_iter_new_template_dummy)
     pixbuf_renderer->property_stock_id() = Gtk::Stock::DIALOG_ERROR.id; // TODO: Use Stock::STOP instead?
   else
   {
@@ -608,7 +608,7 @@ void Dialog_ExistingOrNew::new_icon_data_func(Gtk::CellRenderer* renderer, const
     pixbuf_renderer->set_property("stock-id", Gtk::StockID(Gtk::Stock::NEW));
   else if(iter == m_iter_new_template)
     pixbuf_renderer->set_property("stock-id", Gtk::StockID(Gtk::Stock::EDIT)); // TODO: More meaningful icon?
-  else if(m_iter_new_template_dummy.get() != NULL && iter == *m_iter_new_template_dummy)
+  else if(m_iter_new_template_dummy.get() && iter == *m_iter_new_template_dummy)
     pixbuf_renderer->set_property("stock-id", Gtk::StockID(Gtk::Stock::DIALOG_ERROR)); // TODO: Use Stock::STOP instead?
   else
   {
@@ -820,7 +820,7 @@ void Dialog_ExistingOrNew::on_stream_read(const Glib::RefPtr<Gio::AsyncResult>& 
     }
     else
     {
-      const bool is_first_item = m_iter_new_template_dummy.get() != NULL;
+      const bool is_first_item = m_iter_new_template_dummy.get();
 
       // Add to list
       Gtk::TreeModel::iterator iter = m_new_model->append(m_iter_new_template->children());

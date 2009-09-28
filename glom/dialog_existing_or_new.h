@@ -150,7 +150,6 @@ private:
   Gtk::TreeView* m_existing_view;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-
   class NewModelColumns : public Gtk::TreeModel::ColumnRecord
   {
   public:
