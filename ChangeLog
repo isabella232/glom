@@ -1,5 +1,14 @@
 2009-09-28  Murray Cumming  <murrayc@murrayc.com>
 
+	Create QuickFind buttons in code, instead of Glade.
+
+	* glom/frame_glom.cc:
+	* glom/glom.glade: Create the QuickFind widgets in code instead of in 
+	Glade so we can adapt them for Maemo and put them in the separate Find 
+	window.
+
+2009-09-28  Murray Cumming  <murrayc@murrayc.com>
+
 	Initial dialog: Expand the network item.
 
 	* glom/dialog_existing_or_new.cc: Constructor: Expand the Network 
