@@ -68,6 +68,7 @@
           <object class="GtkHButtonBox" id="hbuttonbox3">
             <property name="visible">True</property>
             <property name="layout_style">end</property>
+            <!-- Maemo: Dialogs should have no quit or cancel dialogs since Maemo5:
             <child>
               <object class="GtkButton" id="button_cancel">
                 <property name="label">gtk-close</property>
@@ -83,6 +84,7 @@
                 <property name="position">0</property>
               </packing>
             </child>
+            -->
           </object>
           <packing>
             <property name="expand">False</property>
@@ -222,6 +224,7 @@
           <object class="GtkHButtonBox" id="dialog-action_area1">
             <property name="visible">True</property>
             <property name="layout_style">end</property>
+            <!-- Maemo: Dialogs should have no quit or cancel dialogs since Maemo5:
             <child>
               <object class="GtkButton" id="cancelbutton1">
                 <property name="label">gtk-quit</property>
@@ -237,6 +240,7 @@
                 <property name="position">0</property>
               </packing>
             </child>
+            -->
             <child>
               <object class="GtkButton" id="existing_or_new_button_select">
                 <property name="label" translatable="yes">_Select</property>
@@ -261,7 +265,9 @@
       </object>
     </child>
     <action-widgets>
+      <!-- Maemo: Dialogs should have no quit or cancel dialogs since Maemo5:
       <action-widget response="-7">cancelbutton1</action-widget>
+      -->
       <action-widget response="0">existing_or_new_button_select</action-widget>
     </action-widgets>
   </object>
@@ -482,6 +488,7 @@
           <object class="GtkHButtonBox" id="hbuttonbox16">
             <property name="visible">True</property>
             <property name="layout_style">end</property>
+            <!-- Maemo: Dialogs should have no quit or cancel dialogs since Maemo5:
             <child>
               <object class="GtkButton" id="button12">
                 <property name="label">gtk-cancel</property>
@@ -497,6 +504,7 @@
                 <property name="position">0</property>
               </packing>
             </child>
+            -->
             <child>
               <object class="GtkButton" id="button13">
                 <property name="visible">True</property>
@@ -706,6 +714,7 @@
           <object class="GtkHButtonBox" id="hbuttonbox39">
             <property name="visible">True</property>
             <property name="layout_style">end</property>
+             <!-- Maemo: Dialogs should have no quit or cancel dialogs since Maemo5:
             <child>
               <object class="GtkButton" id="button_cancel">
                 <property name="label">gtk-cancel</property>
@@ -721,6 +730,7 @@
                 <property name="position">0</property>
               </packing>
             </child>
+            -->
           </object>
           <packing>
             <property name="expand">False</property>
@@ -731,7 +741,9 @@
       </object>
     </child>
     <action-widgets>
+      <!-- Maemo: Dialogs should have no quit or cancel dialogs since Maemo5:
       <action-widget response="-6">button_cancel</action-widget>
+      -->
     </action-widgets>
   </object>
   <object class="GtkWindow" id="window_progress">
@@ -1315,6 +1327,7 @@
           <object class="GtkHButtonBox" id="dialog-action_area5">
             <property name="visible">True</property>
             <property name="layout_style">end</property>
+            <!-- Maemo: Dialogs should have no quit or cancel dialogs since Maemo5:
             <child>
               <object class="GtkButton" id="import_csv_cancel_button">
                 <property name="label">gtk-cancel</property>
@@ -1329,6 +1342,7 @@
                 <property name="position">0</property>
               </packing>
             </child>
+            -->
             <child>
               <object class="GtkButton" id="import_csv_import_button">
                 <property name="visible">True</property>
@@ -1376,7 +1390,9 @@
       </object>
     </child>
     <action-widgets>
+      <!-- Maemo: Dialogs should have no quit or cancel dialogs since Maemo5:
       <action-widget response="-6">import_csv_cancel_button</action-widget>
+      -->
       <action-widget response="-3">import_csv_import_button</action-widget>
     </action-widgets>
   </object>
@@ -1600,6 +1616,7 @@ The data in the field was not recognized. Please try to correct the data or reve
           <object class="GtkHButtonBox" id="dialog-action_area7">
             <property name="visible">True</property>
             <property name="layout_style">end</property>
+            <!-- Maemo: We want a cancel button on this progress dialog even on Maemo. -->
             <child>
               <object class="GtkButton" id="import_csv_progress_cancel_button">
                 <property name="label">gtk-cancel</property>
@@ -1673,6 +1690,7 @@ The data in the field was not recognized. Please try to correct the data or reve
           <object class="GtkHButtonBox" id="dialog-action_area7">
             <property name="visible">True</property>
             <property name="layout_style">end</property>
+            <!-- Maemo: We want a cancel button on this progress dialog even on Maemo. -->
             <child>
               <object class="GtkButton" id="button1">
                 <property name="label">gtk-cancel</property>

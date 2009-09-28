@@ -534,9 +534,10 @@ void Dialog_ExistingOrNew::existing_title_data_func(Gtk::CellRenderer* renderer,
 #ifdef GLIBMM_PROPERTIES_ENABLED
   text_renderer->property_text() = (*iter)[m_existing_columns.m_col_title];
 
-  // Default: Use default color
+  // Default: Use default color:
   text_renderer->property_foreground_set() = false;
-  // Use grey if parent item has no children
+  
+  // Use grey if parent item has no children:
 #ifndef G_OS_WIN32
   if( (iter == m_iter_existing_network && m_iter_existing_network_dummy.get()) ||
       (iter == m_iter_existing_recent && m_iter_existing_recent_dummy.get()))
