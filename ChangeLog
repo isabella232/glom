@@ -1,5 +1,12 @@
 2009-09-28  Murray Cumming  <murrayc@murrayc.com>
 
+	Fix a crash.
+
+	* glom/dialog_existing_or_new.cc: Move some assertions so this works 
+	again in non-client-only mode.
+
+2009-09-28  Murray Cumming  <murrayc@murrayc.com>
+
 	client-only mode: Ifdef out unused code.
 	
 	* glom/dialog_existing_or_new.[h|cc]: Ifdef out unused code for the new 

@@ -109,11 +109,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
 #endif //GLOM_ENABLE_CLIENT_ONLY
   
   builder->get_widget("existing_or_new_existing_treeview", m_existing_view);
-
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  if(!m_existing_view || !m_new_view)
-    throw std::runtime_error("Glade file does not contain treeviews for ExistingOrNew dialog.");
-#endif    
+  g_assert(m_existing_view);
 
   builder->get_widget("existing_or_new_notebook", m_notebook);
   builder->get_widget("existing_or_new_button_select", m_select_button);
@@ -221,6 +217,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   builder->get_widget("existing_or_new_new_treeview", m_new_view);
+  g_assert(m_new_view);
   m_new_model = Gtk::TreeStore::create(m_new_columns);
   m_new_view->set_model(m_new_model);
   
