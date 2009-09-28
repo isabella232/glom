@@ -1,5 +1,11 @@
 2009-09-28  Murray Cumming  <murrayc@murrayc.com>
 
+	Maemo: Removed icons from dialogs.
+	
+	* glom/glom.glade: Comment out icons in our maemo5 branch.
+
+2009-09-28  Murray Cumming  <murrayc@murrayc.com>
+
 	Client-only mode: Change the initial dialog label.
 	 
 	* glom/dialog_existing_or_new.cc: Constructor: Change the label text if in 
