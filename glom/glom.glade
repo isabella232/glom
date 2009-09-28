@@ -362,7 +362,7 @@
             <property name="visible">True</property>
             <property name="layout_style">end</property>
             <child>
-              <object class="GtkButton" id="helpbutton1">
+              <object class="GtkButton" id="helpbutton">
                 <property name="label">gtk-help</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -414,7 +414,7 @@
       </object>
     </child>
     <action-widgets>
-      <action-widget response="-11">helpbutton1</action-widget>
+      <action-widget response="-11">helpbutton</action-widget>
       <action-widget response="-7">cancelbutton1</action-widget>
       <action-widget response="0">existing_or_new_button_select</action-widget>
     </action-widgets>
@@ -663,7 +663,7 @@
             <property name="visible">True</property>
             <property name="layout_style">end</property>
             <child>
-              <object class="GtkButton" id="button11">
+              <object class="GtkButton" id="helpbutton">
                 <property name="label">gtk-help</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -1563,7 +1563,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="import_csv_help_button">
+              <object class="GtkButton" id="helpbutton">
                 <property name="label">gtk-help</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -1588,7 +1588,7 @@
     <action-widgets>
       <action-widget response="-6">import_csv_cancel_button</action-widget>
       <action-widget response="-3">import_csv_import_button</action-widget>
-      <action-widget response="-11">import_csv_help_button</action-widget>
+      <action-widget response="-11">helpbutton</action-widget>
     </action-widgets>
   </object>
   <object class="GtkDialog" id="dialog_data_invalid_format">
@@ -1667,7 +1667,7 @@ The data in the field was not recognized. Please try to correct the data or reve
             <property name="visible">True</property>
             <property name="layout_style">end</property>
             <child>
-              <object class="GtkButton" id="button1">
+              <object class="GtkButton" id="helpbutton">
                 <property name="label">gtk-help</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>

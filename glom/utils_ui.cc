@@ -91,12 +91,11 @@ std::string locate_help_file(const std::string& path, const std::string& doc_nam
 namespace Glom
 {
 
-/* Run dialog and response on Help if appropriate */
-
+// Run dialog and response on Help if appropriate.
 int Utils::dialog_run_with_help(Gtk::Dialog* dialog, const Glib::ustring& id)
 {
-  int result = dialog->run();
-  while (result == Gtk::RESPONSE_HELP)
+  const int result = dialog->run();
+  while(result == Gtk::RESPONSE_HELP)
   {
     show_help(id);
     result = dialog->run();
