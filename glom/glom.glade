@@ -543,7 +543,7 @@
                             <property name="AtkObject::accessible-name" translatable="yes">User</property>
                           </object>
                         </child>
-                        --->
+                        -->
                       </object>
                       <packing>
                         <property name="left_attach">1</property>

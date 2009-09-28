@@ -94,8 +94,8 @@ namespace Glom
 // Run dialog and response on Help if appropriate.
 int Utils::dialog_run_with_help(Gtk::Dialog* dialog, const Glib::ustring& id)
 {
-  const int result = dialog->run();
-  while(result == Gtk::RESPONSE_HELP)
+  int result = dialog->run();
+  while (result == Gtk::RESPONSE_HELP)
   {
     show_help(id);
     result = dialog->run();
