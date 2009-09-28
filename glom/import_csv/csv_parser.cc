@@ -511,7 +511,7 @@ void CsvParser::on_buffer_read(const Glib::RefPtr<Gio::AsyncResult>& result)
   const gssize size = m_stream->read_finish(result, error);
   if (!error.get())
   {
-    copy_buffer_and_continue_reading(size)
+    copy_buffer_and_continue_reading(size);
   }
   else
   {
