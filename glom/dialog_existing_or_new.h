@@ -68,24 +68,29 @@ private:
   Action get_action_impl(Gtk::TreeModel::iterator& iter) const;
 
   std::auto_ptr<Gtk::TreeModel::iterator> create_dummy_item_existing(const Gtk::TreeModel::iterator& parent, const Glib::ustring& text);
-  std::auto_ptr<Gtk::TreeModel::iterator> create_dummy_item_new(const Gtk::TreeModel::iterator& parent, const Glib::ustring& text);
 
 
   void existing_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
   void existing_title_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
-  void new_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
-  void new_title_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
 
   void on_switch_page(GtkNotebookPage* page, guint page_num);
   void on_existing_selection_changed();
-  void on_new_selection_changed();
+
 
   bool on_existing_select_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::Path& path, bool path_currently_selected);
-  bool on_new_select_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::Path& path, bool path_currently_selected);
 
   void update_ui_sensitivity();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+  std::auto_ptr<Gtk::TreeModel::iterator> create_dummy_item_new(const Gtk::TreeModel::iterator& parent, const Glib::ustring& text);
+  void on_new_selection_changed();
+  void new_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
+  void new_title_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
+  bool on_new_select_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::Path& path, bool path_currently_selected);
+  void on_new_row_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column);
+  void on_new_button_clicked(const Gtk::TreeModel::Path& path);
+
+  
   bool list_examples_at_path(const std::string& path);
   void on_enumerate_children(const Glib::RefPtr<Gio::AsyncResult>& res);
   void on_next_files(const Glib::RefPtr<Gio::AsyncResult>& res);
@@ -103,10 +108,11 @@ private:
 
   void on_existing_row_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column);
   void on_existing_button_clicked(const Gtk::TreeModel::Path& path);
-  void on_new_row_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column);
-  void on_new_button_clicked(const Gtk::TreeModel::Path& path);
-
   void on_select_clicked();
+  
+  
+  Gtk::Notebook* m_notebook;
+  Gtk::Button* m_select_button;
 
   class ExistingModelColumns : public Gtk::TreeModel::ColumnRecord
   {
@@ -138,6 +144,13 @@ private:
     Gtk::TreeModelColumn< Glib::RefPtr<Gtk::RecentInfo> > m_col_recent_info;
   };
   
+
+  ExistingModelColumns m_existing_columns;
+  Glib::RefPtr<Gtk::TreeStore> m_existing_model;
+  Gtk::TreeView* m_existing_view;
+
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+
   class NewModelColumns : public Gtk::TreeModel::ColumnRecord
   {
   public:
@@ -148,43 +161,38 @@ private:
     Gtk::TreeModelColumn<Glib::ustring> m_col_title;
     Gtk::TreeModelColumn<Glib::ustring> m_col_template_uri;
   };
-
-  Gtk::Notebook* m_notebook;
-  Gtk::Button* m_select_button;
-
-  ExistingModelColumns m_existing_columns;
-  Glib::RefPtr<Gtk::TreeStore> m_existing_model;
-  Gtk::TreeView* m_existing_view;
-
+  
   NewModelColumns m_new_columns;
   Gtk::TreeView* m_new_view;
   Glib::RefPtr<Gtk::TreeStore> m_new_model;
+  
+  Gtk::TreeViewColumn m_new_column_title;
+  Gtk::TreeViewColumn m_new_column_button;
+  Gtk::CellRendererPixbuf m_new_icon_renderer;
+  Gtk::CellRendererText m_new_title_renderer;
+  Gtk::TreeModel::iterator m_iter_new_empty;
+  Gtk::TreeModel::iterator m_iter_new_template;
+  std::auto_ptr<Gtk::TreeModel::iterator> m_iter_new_template_dummy;
+#endif //GLOM_ENABLE_CLIENT_ONLY
 
   Gtk::TreeViewColumn m_existing_column_title;
   Gtk::TreeViewColumn m_existing_column_button;
   Gtk::CellRendererPixbuf m_existing_icon_renderer;
   Gtk::CellRendererText m_existing_title_renderer;
 
-  Gtk::TreeViewColumn m_new_column_title;
-  Gtk::TreeViewColumn m_new_column_button;
-  Gtk::CellRendererPixbuf m_new_icon_renderer;
-  Gtk::CellRendererText m_new_title_renderer;
 
   Gtk::TreeModel::iterator m_iter_existing_recent;
 #ifndef G_OS_WIN32
   Gtk::TreeModel::iterator m_iter_existing_network;
 #endif
   Gtk::TreeModel::iterator m_iter_existing_other;
-
-  Gtk::TreeModel::iterator m_iter_new_empty;
-  Gtk::TreeModel::iterator m_iter_new_template;
-
+ 
   // Dummy children to indicate that a parent item has no (real) children
 #ifndef G_OS_WIN32
   std::auto_ptr<Gtk::TreeModel::iterator> m_iter_existing_network_dummy;
 #endif
   std::auto_ptr<Gtk::TreeModel::iterator> m_iter_existing_recent_dummy;
-  std::auto_ptr<Gtk::TreeModel::iterator> m_iter_new_template_dummy;
+
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   Glib::RefPtr<Gio::File> m_examples_dir;

@@ -1,5 +1,12 @@
 2009-09-28  Murray Cumming  <murrayc@murrayc.com>
 
+	client-only mode: Ifdef out unused code.
+	
+	* glom/dialog_existing_or_new.[h|cc]: Ifdef out unused code for the new 
+	document notebook tab in client-only mode.
+
+2009-09-28  Murray Cumming  <murrayc@murrayc.com>
+
 	Maemo: Removed icons from dialogs.
 	
 	* glom/glom.glade: Comment out icons in our maemo5 branch.
