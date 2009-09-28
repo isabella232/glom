@@ -101,8 +101,14 @@ namespace Glom
 Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject)
 {
+#ifdef GLOM_ENABLE_CLIENT_ONLY
+  //Don't mention creation of new documents in client-only mode:
+  Gtk::Label* label = 0;
+  builder->get_widget("existing_or_new_label", label);
+  label->set_text(_("Open a Document"));
+#endif //GLOM_ENABLE_CLIENT_ONLY
+  
   builder->get_widget("existing_or_new_existing_treeview", m_existing_view);
-  builder->get_widget("existing_or_new_new_treeview", m_new_view);
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   if(!m_existing_view || !m_new_view)
@@ -120,8 +126,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   m_existing_model->set_sort_column(m_existing_columns.m_col_time, Gtk::SORT_DESCENDING);
   m_existing_view->set_model(m_existing_model);
 
-  m_new_model = Gtk::TreeStore::create(m_new_columns);
-  m_new_view->set_model(m_new_model);
+ 
 
   m_iter_existing_other = m_existing_model->append();
   (*m_iter_existing_other)[m_existing_columns.m_col_title] = _("Select File");
@@ -134,11 +139,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   m_iter_existing_recent = m_existing_model->append();
   (*m_iter_existing_recent)[m_existing_columns.m_col_title] = _("Recently Opened");
   
-  m_iter_new_empty = m_new_model->append();
-  (*m_iter_new_empty)[m_new_columns.m_col_title] = _("New Empty Document");
-
-  m_iter_new_template = m_new_model->append();
-  (*m_iter_new_template)[m_new_columns.m_col_title] = _("New From Template");
+ 
 
   m_existing_column_title.set_expand(true);
   m_existing_column_title.pack_start(m_existing_icon_renderer, false);
@@ -147,18 +148,9 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   m_existing_column_title.set_cell_data_func(m_existing_title_renderer, sigc::mem_fun(*this, &Dialog_ExistingOrNew::existing_title_data_func));
   m_existing_view->append_column(m_existing_column_title);
 
-  m_new_column_title.set_expand(true);
-  m_new_column_title.pack_start(m_new_icon_renderer, false);
-  m_new_column_title.pack_start(m_new_title_renderer, true);
-  m_new_column_title.set_cell_data_func(m_new_icon_renderer, sigc::mem_fun(*this, &Dialog_ExistingOrNew::new_icon_data_func));
-  m_new_column_title.set_cell_data_func(m_new_title_renderer, sigc::mem_fun(*this, &Dialog_ExistingOrNew::new_title_data_func));
-  m_new_view->append_column(m_new_column_title);
-
   m_existing_view->set_headers_visible(false);
   m_existing_view->signal_row_activated().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_existing_row_activated));
-  m_new_view->set_headers_visible(false);
-  m_new_view->signal_row_activated().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_new_row_activated));
-
+ 
  // Load example files:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 
@@ -212,8 +204,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   m_iter_existing_network_dummy = create_dummy_item_existing(m_iter_existing_network, _(NETWORK_DUMMY_TEXT));
 #endif
 
-  m_iter_new_template_dummy = create_dummy_item_new(m_iter_new_template, _(TEMPLATE_DUMMY_TEXT));
-
+ 
   // Expand recently used files
   m_existing_view->expand_row(m_existing_model->get_path(m_iter_existing_recent), false);
 
@@ -229,6 +220,28 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   existing_view_selection->set_select_function( sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_existing_select_func) ); 
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+  builder->get_widget("existing_or_new_new_treeview", m_new_view);
+  m_new_model = Gtk::TreeStore::create(m_new_columns);
+  m_new_view->set_model(m_new_model);
+  
+  m_iter_new_empty = m_new_model->append();
+  (*m_iter_new_empty)[m_new_columns.m_col_title] = _("New Empty Document");
+
+  m_iter_new_template = m_new_model->append();
+  (*m_iter_new_template)[m_new_columns.m_col_title] = _("New From Template");
+  
+  m_new_column_title.set_expand(true);
+  m_new_column_title.pack_start(m_new_icon_renderer, false);
+  m_new_column_title.pack_start(m_new_title_renderer, true);
+  m_new_column_title.set_cell_data_func(m_new_icon_renderer, sigc::mem_fun(*this, &Dialog_ExistingOrNew::new_icon_data_func));
+  m_new_column_title.set_cell_data_func(m_new_title_renderer, sigc::mem_fun(*this, &Dialog_ExistingOrNew::new_title_data_func));
+  m_new_view->append_column(m_new_column_title);
+  
+  m_new_view->set_headers_visible(false);
+  m_new_view->signal_row_activated().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_new_row_activated));
+
+  m_iter_new_template_dummy = create_dummy_item_new(m_iter_new_template, _(TEMPLATE_DUMMY_TEXT));
+ 
   Glib::RefPtr<Gtk::TreeView::Selection> new_view_selection = m_new_view->get_selection();
   new_view_selection->signal_changed().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_new_selection_changed));
   new_view_selection->set_select_function( sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_new_select_func) );
@@ -295,6 +308,7 @@ bool Dialog_ExistingOrNew::on_existing_select_func(const Glib::RefPtr<Gtk::TreeM
   return true;
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 bool Dialog_ExistingOrNew::on_new_select_func(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::Path& path, bool /* path_currently_selected */)
 {
   Gtk::TreeModel::iterator iter = model->get_iter(path);
@@ -303,7 +317,7 @@ bool Dialog_ExistingOrNew::on_new_select_func(const Glib::RefPtr<Gtk::TreeModel>
   else
     return true;
 }
-
+#endif //GLOM_ENABLE_CLIENT_ONLY
 
 Dialog_ExistingOrNew::Action Dialog_ExistingOrNew::get_action_impl(Gtk::TreeModel::iterator& iter) const
 {
@@ -326,6 +340,7 @@ Dialog_ExistingOrNew::Action Dialog_ExistingOrNew::get_action_impl(Gtk::TreeMode
   }
   else
   {
+    #ifndef GLOM_ENABLE_CLIENT_ONLY
     if(m_new_view->get_selection()->count_selected_rows() == 0)
       return NONE;
 
@@ -336,7 +351,10 @@ Dialog_ExistingOrNew::Action Dialog_ExistingOrNew::get_action_impl(Gtk::TreeMode
       return NEW_EMPTY;
     else
       return NONE;
+    #endif //GLOM_ENABLE_CLIENT_ONLY
   }
+  
+  return NONE;
 }
 
 Dialog_ExistingOrNew::Action Dialog_ExistingOrNew::get_action() const
@@ -348,13 +366,16 @@ Dialog_ExistingOrNew::Action Dialog_ExistingOrNew::get_action() const
 Glib::ustring Dialog_ExistingOrNew::get_uri() const
 {
   Gtk::TreeModel::iterator iter;
-  Action action = get_action_impl(iter);
+  const Action action = get_action_impl(iter);
 
+  #ifndef GLOM_ENABLE_CLIENT_ONLY
   if(action == NEW_FROM_TEMPLATE)
   {
     return (*iter)[m_new_columns.m_col_template_uri];
   }
-  else if(action == OPEN_URI)
+  else 
+  #endif //GLOM_ENABLE_CLIENT_ONLY
+  if(action == OPEN_URI)
   {
     if(iter == m_iter_existing_other)
     {
@@ -415,12 +436,14 @@ std::auto_ptr<Gtk::TreeModel::iterator> Dialog_ExistingOrNew::create_dummy_item_
   return std::auto_ptr<Gtk::TreeModel::iterator>(new Gtk::TreeModel::iterator(iter));
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 std::auto_ptr<Gtk::TreeModel::iterator> Dialog_ExistingOrNew::create_dummy_item_new(const Gtk::TreeModel::iterator& parent, const Glib::ustring& text)
 {
   Gtk::TreeModel::iterator iter = m_new_model->append(parent->children());
   (*iter)[m_new_columns.m_col_title] = text;
   return std::auto_ptr<Gtk::TreeModel::iterator>(new Gtk::TreeModel::iterator(iter));
 }
+#endif //GLOM_ENABLE_CLIENT_ONLY
 
 void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
 {
@@ -445,10 +468,10 @@ void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, 
 #endif
   else if(iter == m_iter_existing_other)
     pixbuf_renderer->property_stock_id() = Gtk::StockID(Gtk::Stock::OPEN);
-  else if(m_iter_existing_recent_dummy.get() != NULL && iter == *m_iter_existing_recent_dummy)
+  else if(m_iter_existing_recent_dummy.get() && iter == *m_iter_existing_recent_dummy)
     pixbuf_renderer->property_stock_id() = Gtk::StockID(Gtk::Stock::DIALOG_ERROR); // TODO: Use Stock::STOP instead?
 #ifndef G_OS_WIN32
-  else if(m_iter_existing_network_dummy.get() != NULL && iter == *m_iter_existing_network_dummy)
+  else if(m_iter_existing_network_dummy.get() && iter == *m_iter_existing_network_dummy)
     pixbuf_renderer->property_stock_id() = Gtk::StockID(Gtk::Stock::DIALOG_ERROR); // TODO: Use Stock::STOP instead?
 #endif
 
@@ -466,10 +489,10 @@ void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, 
 #endif
   else if(iter == m_iter_existing_other)
     pixbuf_renderer->set_property("stock-id", Gtk::StockID(Gtk::Stock::OPEN));
-  else if(m_iter_existing_recent_dummy.get() != NULL && iter == *m_iter_existing_recent_dummy)
+  else if(m_iter_existing_recent_dummy.get() && iter == *m_iter_existing_recent_dummy)
     pixbuf_renderer->set_property("stock-id", Gtk::StockID(Gtk::Stock::DIALOG_ERROR)); // TODO: Use Stock::STOP instead?
 #ifndef G_OS_WIN32
-  else if(m_iter_existing_network_dummy.get() != NULL && iter == *m_iter_existing_network_dummy)
+  else if(m_iter_existing_network_dummy.get() && iter == *m_iter_existing_network_dummy)
     pixbuf_renderer->set_property("stock-id", Gtk::StockID(Gtk::Stock::DIALOG_ERROR)); // TODO: Use Stock::STOP instead?
 #endif
 
@@ -511,9 +534,10 @@ void Dialog_ExistingOrNew::existing_title_data_func(Gtk::CellRenderer* renderer,
 #ifdef GLIBMM_PROPERTIES_ENABLED
   text_renderer->property_text() = (*iter)[m_existing_columns.m_col_title];
 
-  // Default: Use default color
+  // Default: Use default color:
   text_renderer->property_foreground_set() = false;
-  // Use grey if parent item has no children
+  
+  // Use grey if parent item has no children:
 #ifndef G_OS_WIN32
   if( (iter == m_iter_existing_network && m_iter_existing_network_dummy.get()) ||
       (iter == m_iter_existing_recent && m_iter_existing_recent_dummy.get()))
@@ -541,6 +565,7 @@ void Dialog_ExistingOrNew::existing_title_data_func(Gtk::CellRenderer* renderer,
 #endif // PROPERTIES_ENABLED
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void Dialog_ExistingOrNew::new_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
 {
   Gtk::CellRendererPixbuf* pixbuf_renderer = dynamic_cast<Gtk::CellRendererPixbuf*>(renderer);
@@ -560,7 +585,7 @@ void Dialog_ExistingOrNew::new_icon_data_func(Gtk::CellRenderer* renderer, const
     pixbuf_renderer->property_stock_id() = Gtk::Stock::NEW.id;
   else if(iter == m_iter_new_template)
     pixbuf_renderer->property_stock_id() = Gtk::Stock::EDIT.id; // TODO: More meaningful icon?
-  else if(m_iter_new_template_dummy.get() != NULL && iter == *m_iter_new_template_dummy)
+  else if(m_iter_new_template_dummy.get() && iter == *m_iter_new_template_dummy)
     pixbuf_renderer->property_stock_id() = Gtk::Stock::DIALOG_ERROR.id; // TODO: Use Stock::STOP instead?
   else
   {
@@ -584,7 +609,7 @@ void Dialog_ExistingOrNew::new_icon_data_func(Gtk::CellRenderer* renderer, const
     pixbuf_renderer->set_property("stock-id", Gtk::StockID(Gtk::Stock::NEW));
   else if(iter == m_iter_new_template)
     pixbuf_renderer->set_property("stock-id", Gtk::StockID(Gtk::Stock::EDIT)); // TODO: More meaningful icon?
-  else if(m_iter_new_template_dummy.get() != NULL && iter == *m_iter_new_template_dummy)
+  else if(m_iter_new_template_dummy.get() && iter == *m_iter_new_template_dummy)
     pixbuf_renderer->set_property("stock-id", Gtk::StockID(Gtk::Stock::DIALOG_ERROR)); // TODO: Use Stock::STOP instead?
   else
   {
@@ -635,6 +660,7 @@ void Dialog_ExistingOrNew::new_title_data_func(Gtk::CellRenderer* renderer, cons
   }
 #endif    
 }
+#endif //GLOM_ENABLE_CLIENT_ONLY
 
 void Dialog_ExistingOrNew::on_switch_page(GtkNotebookPage* /* page */, guint /* page_num */)
 {
@@ -646,10 +672,12 @@ void Dialog_ExistingOrNew::on_existing_selection_changed()
   update_ui_sensitivity();
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void Dialog_ExistingOrNew::on_new_selection_changed()
 {
   update_ui_sensitivity();
 }
+#endif //GLOM_ENABLE_CLIENT_ONLY
 
 void Dialog_ExistingOrNew::update_ui_sensitivity()
 {
@@ -677,6 +705,7 @@ void Dialog_ExistingOrNew::update_ui_sensitivity()
 #endif
     }
   }
+  #ifndef GLOM_ENABLE_CLIENT_ONLY
   else
   {
     const int count = m_new_view->get_selection()->count_selected_rows();
@@ -692,6 +721,7 @@ void Dialog_ExistingOrNew::update_ui_sensitivity()
                      (!m_iter_new_template_dummy.get() || sel != *m_iter_new_template_dummy));
     }
   }
+  #endif //GLOM_ENABLE_CLIENT_ONLY
 
   m_select_button->set_sensitive(sensitivity);
 }
@@ -791,7 +821,7 @@ void Dialog_ExistingOrNew::on_stream_read(const Glib::RefPtr<Gio::AsyncResult>& 
     }
     else
     {
-      const bool is_first_item = m_iter_new_template_dummy.get() != NULL;
+      const bool is_first_item = m_iter_new_template_dummy.get();
 
       // Add to list
       Gtk::TreeModel::iterator iter = m_new_model->append(m_iter_new_template->children());
@@ -890,6 +920,7 @@ void Dialog_ExistingOrNew::on_existing_button_clicked(const Gtk::TreeModel::Path
     on_select_clicked();
 }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 void Dialog_ExistingOrNew::on_new_row_activated(const Gtk::TreeModel::Path& /* path */, Gtk::TreeViewColumn* /* column */)
 {
   if(m_select_button->is_sensitive())
@@ -903,6 +934,7 @@ void Dialog_ExistingOrNew::on_new_button_clicked(const Gtk::TreeModel::Path& pat
   if(m_select_button->is_sensitive())
     on_select_clicked();
 }
+#endif //GLOM_ENABLE_CLIENT_ONLY
 
 void Dialog_ExistingOrNew::on_select_clicked()
 {

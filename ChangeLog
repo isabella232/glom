@@ -1,3 +1,30 @@
+2009-09-28  Murray Cumming  <murrayc@murrayc.com>
+
+	client-only mode: Ifdef out unused code.
+	
+	* glom/dialog_existing_or_new.[h|cc]: Ifdef out unused code for the new 
+	document notebook tab in client-only mode.
+
+2009-09-28  Murray Cumming  <murrayc@murrayc.com>
+
+	Maemo: Removed icons from dialogs.
+	
+	* glom/glom.glade: Comment out icons in our maemo5 branch.
+
+2009-09-28  Murray Cumming  <murrayc@murrayc.com>
+
+	Client-only mode: Change the initial dialog label.
+	 
+	* glom/dialog_existing_or_new.cc: Constructor: Change the label text if in 
+	client-only mode, to avoid mentioning creation of documents.
+
+2009-09-25  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix the build with gtkmm < 2.18.
+	
+	* glom/utility_widgets/flowtable.cc: Correct the use of 
+	GTKMM_MINOR_VERSION to fix the build with older gtkmm versions.
+
 2009-09-25  Michael Hasselmann  <michaelh@openismus.com>
 
 	Import: More code cleanup in tests

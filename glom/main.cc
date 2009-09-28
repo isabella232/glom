@@ -492,6 +492,7 @@ main(int argc, char* argv[])
 
     Glom::App_Glom* pApp_Glom = 0;
     refXml->get_widget_derived("window_main", pApp_Glom);
+    g_assert(pApp_Glom);
 
     pApp_Glom->set_command_line_args(argc, argv);
     pApp_Glom->set_show_sql_debug(group.m_arg_debug_sql);

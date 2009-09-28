@@ -40,9 +40,9 @@ public:
   Dialog_InvalidData(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_InvalidData();
 
-  /** Show appropriate example data for this field type
+  /** Show appropriate example data for this field type.
    */
-  virtual void set_example_data(Field::glom_field_type glom_type);
+  void set_example_data(Field::glom_field_type glom_type);
 
 private:
   Gtk::Label* m_label;

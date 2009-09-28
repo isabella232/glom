@@ -91,16 +91,20 @@ std::string locate_help_file(const std::string& path, const std::string& doc_nam
 namespace Glom
 {
 
-/* Run dialog and response on Help if appropriate */
-
+// Run dialog and response on Help if appropriate.
 int Utils::dialog_run_with_help(Gtk::Dialog* dialog, const Glib::ustring& id)
 {
   int result = dialog->run();
+  
+  //Maemo has no help system since Maemo 5, 
+  //so we hide the buttons in anyway.
+  #ifndef GLOM_ENABLE_MAEMO
   while (result == Gtk::RESPONSE_HELP)
   {
     show_help(id);
     result = dialog->run();
   }
+  #endif //GLOM_ENABLE_MAEMO
 
   dialog->hide();
   return result;
@@ -113,10 +117,10 @@ int Utils::dialog_run_with_help(Gtk::Dialog* dialog, const Glib::ustring& id)
  * If the help cannot be found an error dialog will be shown
  */
 
+// Maemo has no help system since Maemo 5 (Fremantle).
+#ifndef GLOM_ENABLE_MAEMO
 void Utils::show_help(const Glib::ustring& id)
 {
-  // TODO_maemo: Show help on maemo by some other means
-#ifndef GLOM_ENABLE_MAEMO
   GError* err = 0;
   const gchar* pId;
   if(id.length())
@@ -158,14 +162,14 @@ void Utils::show_help(const Glib::ustring& id)
     Gtk::MessageDialog dialog(message, false, Gtk::MESSAGE_ERROR);
     dialog.run();
   }
-#endif
 }
+#endif //GLOM_ENABLE_MAEMO
 
 void Utils::show_ok_dialog(const Glib::ustring& title, const Glib::ustring& message, Gtk::Window* parent, Gtk::MessageType message_type)
 {
 #undef GLOM_ENABLE_MAEMO
 #ifdef GLOM_ENABLE_MAEMO
-  // TODO_maemo: Map message_type to a senseful stock_id?
+  // TODO_maemo: Map message_type to a sensible stock_id?
   Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, parent, message);
 #else
   Gtk::MessageDialog dialog("<b>" + title + "</b>", true /* markup */, message_type, Gtk::BUTTONS_OK);
