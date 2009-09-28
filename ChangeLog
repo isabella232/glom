@@ -1,5 +1,13 @@
 2009-09-28  Murray Cumming  <murrayc@murrayc.com>
 
+	Initial dialog: Expand the network item.
+
+	* glom/dialog_existing_or_new.cc: Constructor: Expand the Network 
+	item, because it helps to explain what it is, particularly on Maemo 
+	where there are no treeview row arrows.
+
+2009-09-28  Murray Cumming  <murrayc@murrayc.com>
+
 	Fix a crash.
 
 	* glom/dialog_existing_or_new.cc: Move some assertions so this works 

@@ -201,8 +201,10 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
 #endif
 
  
-  // Expand recently used files
+  // Expand recently used files and the networked files,
+  // because the contents help to explain what this is: 
   m_existing_view->expand_row(m_existing_model->get_path(m_iter_existing_recent), false);
+  m_existing_view->expand_row(m_existing_model->get_path(m_iter_existing_network), false);
 
   m_select_button->signal_clicked().connect(sigc::mem_fun(*this, &Dialog_ExistingOrNew::on_select_clicked));
   m_select_button->set_image(*Gtk::manage(new Gtk::Image(Gtk::Stock::APPLY, Gtk::ICON_SIZE_BUTTON)));
