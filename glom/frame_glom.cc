@@ -82,9 +82,6 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_box_footer(0),
   m_pLabel_Mode(0),
   m_pLabel_userlevel(0),
-  m_pBox_QuickFind(0),
-  m_pEntry_QuickFind(0),
-  m_pButton_QuickFind(0),
   m_pBox_RecordsCount(0),
   m_pLabel_RecordsCount(0),
   m_pLabel_FoundCount(0),
@@ -94,6 +91,9 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_pBox_Tables(0),
   m_pDialog_Tables(0),
 #endif //GLOM_ENABLE_MAEMO
+  m_pBox_QuickFind(0),
+  m_pEntry_QuickFind(0),
+  m_pButton_QuickFind(0),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_pDialog_Reports(0),
   m_pDialogLayoutReport(0),
@@ -163,6 +163,12 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   add_view(&m_Notebook_Find); //Also a composite view.
 
   on_userlevel_changed(AppState::USERLEVEL_OPERATOR); //A default to show before a document is created or loaded.
+  
+  #ifdef GLOM_ENABLE_MAEMO
+  m_maemo_window.set_title(_("Glom: Find"));
+  m_maemo_window_find.add(m_Notebook_Find);
+  m_Notebook_Find.show();
+  #endif
 }
 
 Frame_Glom::~Frame_Glom()
@@ -282,6 +288,12 @@ void Frame_Glom::on_box_tables_selected(const Glib::ustring& strName)
 
 void Frame_Glom::set_mode_widget(Gtk::Widget& widget)
 {
+  #ifdef GLOM_ENABLE_MAEMO
+  //On Maemo, the find UI is always shown in a separate window instead.
+  if(&widget == &m_Notebook_Find)
+    return;
+  #endif
+
   //Remove current contents.
   //I wish that there was a better way to do this:
   //Trying to remove all of them leads to warnings,
@@ -1126,16 +1138,25 @@ void Frame_Glom::on_menu_Mode_Find()
   if(previously_in_data_mode && (list_or_details == Notebook_Data::DATA_VIEW_Details))
     m_Notebook_Data.set_current_view(Notebook_Data::DATA_VIEW_List);
 
-  if(set_mode(MODE_Find))
-  {
-    show_table(m_table_name);
+  if(!set_mode(MODE_Find))
+    return;
+  
+  show_table(m_table_name);
 
-    if(previously_in_data_mode)
-    {
-      //Show the same layout in Find mode as was just being viewed in Data mode:
-      m_Notebook_Find.set_current_view(list_or_details);
-    }
+  if(previously_in_data_mode)
+  {
+    //Show the same layout in Find mode as was just being viewed in Data mode:
+    m_Notebook_Find.set_current_view(list_or_details);
   }
+  
+  #ifdef GLOM_ENABLE_CLIENT_ONLY
+  Gtk::Window* parent = get_app_window();
+  g_assert(parent);
+  if(parent)
+    m_maemo_window_find.set_transient_for(*parent);
+    
+  m_maemo_window_find.show(); //TODO: Switch back to data on hide?
+  #endif
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

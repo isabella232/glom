@@ -1,5 +1,9 @@
 2009-09-28  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/frame_glom.[h|cc]: Maemo: Show the Find UI in a separate window.
+
+2009-09-28  Murray Cumming  <murrayc@murrayc.com>
+
 	Maemo: Find: Use only the details view.
 	
 	* glom/mode_find/notebook_find.[h|cc]: Hide the list view (and tabs) on Maemo.

@@ -215,11 +215,11 @@ protected:
   void update_table_in_document_from_database();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  virtual void set_mode_widget(Gtk::Widget& widget); //e.g. show the design mode notebook.
-  virtual bool set_mode(enumModes mode); //bool indicates that there was a change.
+  void set_mode_widget(Gtk::Widget& widget); //e.g. show the design mode notebook.
+  bool set_mode(enumModes mode); //bool indicates that there was a change.
 
-  virtual Gtk::Window* get_app_window();
-  virtual const Gtk::Window* get_app_window() const;
+  Gtk::Window* get_app_window();
+  const Gtk::Window* get_app_window() const;
 
   void update_records_count();
 
@@ -249,8 +249,6 @@ private:
    * @result Whether to try again.
    */
   bool handle_request_password_connection_error(bool asked_for_password, const ExceptionConnection& ex, bool& database_not_found);
-
-protected:
   
   //Member data:
   Glib::ustring m_table_name;
@@ -261,10 +259,6 @@ protected:
   Gtk::HBox* m_box_footer;
   Gtk::Label* m_pLabel_Mode;
   Gtk::Label* m_pLabel_userlevel;
-
-  Gtk::HBox* m_pBox_QuickFind; //Only show this when in Find mode.
-  Gtk::Entry* m_pEntry_QuickFind;
-  Gtk::Button* m_pButton_QuickFind;
 
   Gtk::HBox* m_pBox_RecordsCount; //Only show this when in Data mode.
   Gtk::Label* m_pLabel_RecordsCount;
@@ -280,8 +274,16 @@ protected:
 #endif //GLOM_ENABLE_MAEMO
 
   Notebook_Data m_Notebook_Data;
+  
+  Gtk::HBox* m_pBox_QuickFind; //Only show this when in Find mode.
+  Gtk::Entry* m_pEntry_QuickFind;
+  Gtk::Button* m_pButton_QuickFind;
   Notebook_Find m_Notebook_Find;
-
+  
+  #ifdef GLOM_ENABLE_MAEMO
+  Hildon::StackableWindow m_maemo_window_find;
+  #endif
+  
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Developer:
   Window_BoxHolder* m_pDialog_Reports;
