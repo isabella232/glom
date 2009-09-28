@@ -127,16 +127,30 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   set_border_width(Glom::Utils::DEFAULT_SPACING_LARGE);
   #endif
 
-  builder->get_widget("hbox_quickfind", m_pBox_QuickFind);
-  m_pBox_QuickFind->hide();
-
-  builder->get_widget("entry_quickfind", m_pEntry_QuickFind);
+  //QuickFind widgets:
+  //We don't use Glade for these, so it easier to modify them for the Maemo port.
+  m_pBox_QuickFind = Gtk::manage(new Gtk::HBox(false, 6));
+  Gtk::Label* label = Gtk::manage(new Gtk::Label(_("Quick Find")));
+  m_pBox_QuickFind->pack_start(*label, Gtk::PACK_SHRINK);
+  m_pEntry_QuickFind = Gtk::manage(new Gtk::Entry());
   m_pEntry_QuickFind->signal_activate().connect(
    sigc::mem_fun(*this, &Frame_Glom::on_button_quickfind) ); //Pressing Enter here is like pressing Find.
 
-  builder->get_widget("button_quickfind", m_pButton_QuickFind);
+  m_pBox_QuickFind->pack_start(*m_pEntry_QuickFind, Gtk::PACK_EXPAND_WIDGET);
+  m_pButton_QuickFind = Gtk::manage(new Gtk::Button(_("_Find"), true));
   m_pButton_QuickFind->signal_clicked().connect(
     sigc::mem_fun(*this, &Frame_Glom::on_button_quickfind) );
+  m_pBox_QuickFind->pack_start(*m_pButton_QuickFind, Gtk::PACK_SHRINK);
+  
+  m_pBox_QuickFind->show_all_children();
+  m_pBox_QuickFind->hide();
+
+  #ifndef GLOM_ENABLE_MAEMO
+  PlaceHolder* placeholder_quickfind = 0;
+  builder->get_widget_derived("vbox_quickfind", placeholder_quickfind);
+  placeholder_quickfind->add(*m_pBox_QuickFind);
+  #endif //GLOM_ENABLE_MAEMO
+
 
   builder->get_widget("hbox_records_count", m_pBox_RecordsCount);
   builder->get_widget("label_records_count", m_pLabel_RecordsCount);
