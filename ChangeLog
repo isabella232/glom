@@ -1,5 +1,12 @@
 2009-09-28  Murray Cumming  <murrayc@murrayc.com>
 
+	Maemo: Find: Show the quickfind.
+	
+	* glom/frame_glom.cc: Constructor: On Maemo, put the quickfind widgets in 
+	the separate find window.
+
+2009-09-28  Murray Cumming  <murrayc@murrayc.com>
+
 	Create QuickFind buttons in code, instead of Glade.
 
 	* glom/frame_glom.cc:

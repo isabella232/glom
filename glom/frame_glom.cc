@@ -129,15 +129,25 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
 
   //QuickFind widgets:
   //We don't use Glade for these, so it easier to modify them for the Maemo port.
-  m_pBox_QuickFind = Gtk::manage(new Gtk::HBox(false, 6));
+  m_pBox_QuickFind = Gtk::manage(new Gtk::HBox(false, Utils::DEFAULT_SPACING_SMALL));
   Gtk::Label* label = Gtk::manage(new Gtk::Label(_("Quick Find")));
   m_pBox_QuickFind->pack_start(*label, Gtk::PACK_SHRINK);
+  
+  #ifdef GLOM_ENABLE_MAEMO
   m_pEntry_QuickFind = Gtk::manage(new Gtk::Entry());
+  #else
+  m_pEntry_QuickFind = Gtk::manage(new Hildon::Entry());
+  #endif
   m_pEntry_QuickFind->signal_activate().connect(
    sigc::mem_fun(*this, &Frame_Glom::on_button_quickfind) ); //Pressing Enter here is like pressing Find.
 
   m_pBox_QuickFind->pack_start(*m_pEntry_QuickFind, Gtk::PACK_EXPAND_WIDGET);
+  #ifdef GLOM_ENABLE_MAEMO
   m_pButton_QuickFind = Gtk::manage(new Gtk::Button(_("_Find"), true));
+  #else
+  m_pButton_QuickFind = Gtk::manage(new Hildon::Button(Gtk::Hildon::SIZE_AUTO, 
+    Hildon::BUTTON_ARRANGEMENT_VERTICAL, _("Find")));
+  #endif
   m_pButton_QuickFind->signal_clicked().connect(
     sigc::mem_fun(*this, &Frame_Glom::on_button_quickfind) );
   m_pBox_QuickFind->pack_start(*m_pButton_QuickFind, Gtk::PACK_SHRINK);
@@ -179,10 +189,14 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   on_userlevel_changed(AppState::USERLEVEL_OPERATOR); //A default to show before a document is created or loaded.
   
   #ifdef GLOM_ENABLE_MAEMO
-  m_maemo_window.set_title(_("Glom: Find"));
-  m_maemo_window_find.add(m_Notebook_Find);
-  m_Notebook_Find.show();
-  #endif
+  m_maemo_window_find.set_title(_("Glom: Find"));
+  
+  Gtk::VBox* vbox = Gtk::manage(new Gtk::VBox(false, Utils::DEFAULT_SPACING_SMALL));
+  vbox->pack_start(*m_pBox_QuickFind, Gtk::PACK_SHRINK);
+  vbox->pack_start(m_Notebook_Find, Gtk::PACK_EXPAND_WIDGET);
+  m_maemo_window_find.add(*vbox);
+  m_maemo_window_find.show_all_children();
+  #endif //GLOM_ENABLE_MAEMO
 }
 
 Frame_Glom::~Frame_Glom()
@@ -306,6 +320,11 @@ void Frame_Glom::set_mode_widget(Gtk::Widget& widget)
   //On Maemo, the find UI is always shown in a separate window instead.
   if(&widget == &m_Notebook_Find)
     return;
+  else
+  {
+    //Make sure that this is hidden:
+    m_maemo_window_find.hide();
+  }
   #endif
 
   //Remove current contents.
