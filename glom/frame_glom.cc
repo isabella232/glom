@@ -133,7 +133,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   Gtk::Label* label = Gtk::manage(new Gtk::Label(_("Quick Find")));
   m_pBox_QuickFind->pack_start(*label, Gtk::PACK_SHRINK);
   
-  #ifdef GLOM_ENABLE_MAEMO
+  #ifndef GLOM_ENABLE_MAEMO
   m_pEntry_QuickFind = Gtk::manage(new Gtk::Entry());
   #else
   m_pEntry_QuickFind = Gtk::manage(new Hildon::Entry());
@@ -142,7 +142,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
    sigc::mem_fun(*this, &Frame_Glom::on_button_quickfind) ); //Pressing Enter here is like pressing Find.
 
   m_pBox_QuickFind->pack_start(*m_pEntry_QuickFind, Gtk::PACK_EXPAND_WIDGET);
-  #ifdef GLOM_ENABLE_MAEMO
+  #ifndef GLOM_ENABLE_MAEMO
   m_pButton_QuickFind = Gtk::manage(new Gtk::Button(_("_Find"), true));
   #else
   m_pButton_QuickFind = Gtk::manage(new Hildon::Button(Gtk::Hildon::SIZE_AUTO, 

@@ -52,7 +52,7 @@ namespace
 const char* RECENT_DUMMY_TEXT = N_("No recently used documents available.");
 const char* NETWORK_DUMMY_TEXT = N_("No sessions found on the local network.");
 
-#ifdef GLOM_ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY
 const char* TEMPLATE_DUMMY_TEXT = N_("No templates available.");
 #endif
 

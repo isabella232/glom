@@ -338,7 +338,7 @@ void Dialog_Layout_Details::set_document(const Glib::ustring& layout_name, const
     {
       sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::create();
       group->set_name("main");
-      group->m_columns_count = 1;
+      group->set_columns_count(1);
 
       list_groups.push_back(group);
     }      
@@ -1300,7 +1300,7 @@ void Dialog_Layout_Details::on_cell_data_group_columns(Gtk::CellRenderer* render
       Glib::ustring text;
       if(is_group)
       {
-        text = Utils::string_from_decimal(layout_group->m_columns_count);
+        text = Utils::string_from_decimal(layout_group->get_columns_count());
       }
       else
       {
@@ -1421,7 +1421,7 @@ void Dialog_Layout_Details::on_treeview_cell_edited_group_columns(const Glib::us
         new_value = 1;
 
       //Store the user's new text in the model:
-      layout_group->m_columns_count = new_value;
+      layout_group->set_columns_count(new_value);
 
       m_modified = true;
     }
