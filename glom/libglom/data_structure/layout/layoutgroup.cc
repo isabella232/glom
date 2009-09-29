@@ -415,7 +415,16 @@ void LayoutGroup::debug(guint level) const
 }
 */
 
+guint LayoutGroup::get_columns_count() const
+{
+  return m_columns_count;
+}
 
+void LayoutGroup::set_columns_count(guint columns_count)
+{
+  m_columns_count = columns_count;
+}
+  
 double LayoutGroup::get_border_width() const
 {
   return m_border_width;

@@ -92,8 +92,9 @@ public:
 
   guint get_items_count() const;
 
-  guint m_columns_count;
-
+  guint get_columns_count() const;
+  void set_columns_count(guint columns_count);
+  
   typedef std::vector< sharedptr<LayoutItem> > type_list_items;
   type_list_items get_items();
 
@@ -108,6 +109,8 @@ public:
   type_list_items m_list_items;
 
 private:
+
+  guint m_columns_count;
 
   double m_border_width; //For use on reports.
 };

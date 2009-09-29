@@ -1428,7 +1428,7 @@ Document::type_list_layout_groups Document::get_data_layout_groups_default(const
 
   sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::create();
   group->set_name("main");
-  group->m_columns_count = 1;
+  group->set_columns_count(1);
   result.push_back(group);
   pTopLevel = group;
 
@@ -1437,7 +1437,7 @@ Document::type_list_layout_groups Document::get_data_layout_groups_default(const
     sharedptr<LayoutGroup> overview = sharedptr<LayoutGroup>::create();;
     overview->set_name("overview");
     overview->set_title_original("Overview"); //Don't translate this, but TODO: add standard translations.
-    overview->m_columns_count = 2;
+    overview->set_columns_count(2);
 
     pTopLevel->add_item(overview);
     pOverview = sharedptr<LayoutGroup>::cast_dynamic(overview);
@@ -1445,7 +1445,7 @@ Document::type_list_layout_groups Document::get_data_layout_groups_default(const
     sharedptr<LayoutGroup> details = sharedptr<LayoutGroup>::create();
     details->set_name("details");
     details->set_title_original("Details"); //Don't translate this, but TODO: add standard translations.
-    details->m_columns_count = 2;
+    details->set_columns_count(2);
     
     pTopLevel->add_item(details);
     pDetails = sharedptr<LayoutGroup>::cast_dynamic(details);
@@ -2011,7 +2011,8 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
   //Get the group details:
   group->set_name( get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME) );
   group->set_title( get_node_attribute_value(node, GLOM_ATTRIBUTE_TITLE) );
-  group->m_columns_count = get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_COLUMNS_COUNT, 1); //default to 1, because 0 is meaningless.
+  group->set_columns_count(
+    get_node_attribute_value_as_decimal(node, GLOM_ATTRIBUTE_COLUMNS_COUNT, 1)); //default to 1, because 0 is meaningless.
   group->set_border_width( get_node_attribute_value_as_decimal_double(node, GLOM_ATTRIBUTE_BORDER_WIDTH) );
 
   //Translations:
@@ -3051,7 +3052,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
     return;
 
   set_node_attribute_value(child, GLOM_ATTRIBUTE_NAME, group->get_name());
-  set_node_attribute_value_as_decimal(child, GLOM_ATTRIBUTE_COLUMNS_COUNT, group->m_columns_count, 1); //Default to 1 because 0 is meaningless.
+  set_node_attribute_value_as_decimal(child, GLOM_ATTRIBUTE_COLUMNS_COUNT, group->get_columns_count(), 1); //Default to 1 because 0 is meaningless.
 
   set_node_attribute_value_as_decimal_double(child, GLOM_ATTRIBUTE_BORDER_WIDTH, group->get_border_width());
 

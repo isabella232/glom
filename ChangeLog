@@ -1,5 +1,16 @@
 2009-09-29  Murray Cumming  <murrayc@murrayc.com>
 
+	LayoutGroup: Added accessors for columns count, hiding the member variable.
+	
+	* glom/libglom/data_structure/layout/layoutgroup.[h|cc]: Made m_columns_count 
+	private and added get/set_columns_count() so I can see when this is changing.
+	* glom/libglom/data_structure/layout/layoutgroup.h:
+	* glom/libglom/document/document.cc:
+	* glom/mode_data/flowtablewithfields.cc:
+	* glom/utility_widgets/dialog_flowtable.cc: Adapted.
+
+2009-09-29  Murray Cumming  <murrayc@murrayc.com>
+
 	Maemo: Actually allow details to be opened.
 	
 	* glom/utility_widgets/db_adddel/db_adddel.cc: get_item_selected():

@@ -202,7 +202,7 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
     add_view(flow_table); //Allow these sub-flowtables to access the document too.
     flow_table->set_table(m_table_name);
 
-    flow_table->set_columns_count(group->m_columns_count);
+    flow_table->set_columns_count(group->get_columns_count());
     flow_table->set_padding(Utils::DEFAULT_SPACING_SMALL);
     flow_table->show();
     
@@ -387,7 +387,7 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
         add_view(flow_table); //Allow these sub-flowtables to access the document too.
         flow_table->set_table(m_table_name);
 
-        flow_table->set_columns_count(group->m_columns_count);
+        flow_table->set_columns_count(group->get_columns_count());
         flow_table->set_padding(Utils::DEFAULT_SPACING_SMALL);
         flow_table->show();
         
@@ -1406,7 +1406,7 @@ void FlowTableWithFields::on_menu_properties_activate()
       if(response == Gtk::RESPONSE_OK)
       {
         sharedptr<LayoutGroup> group = get_layout_group();
-        group->m_columns_count = dialog->get_columns_count();
+        group->set_columns_count( dialog->get_columns_count() );
         group->set_title(dialog->get_title());
         signal_layout_changed().emit();
       }
