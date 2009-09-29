@@ -32,118 +32,118 @@ namespace Glom
 
 #ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 
-GtkContainerClass* parent_class = NULL;
+GtkContainerClass* parent_class = 0;
 
-  // TODO: It is probably OK doing static_cast here.
-  void FlowTable::glom_size_request_impl(GtkWidget* widget, GtkRequisition* requisition)
+// TODO: It is probably OK doing static_cast here.
+void FlowTable::glom_size_request_impl(GtkWidget* widget, GtkRequisition* requisition)
+{
+  Glib::ObjectBase *const obj_base = static_cast<Glib::ObjectBase*>(
+    Glib::ObjectBase::_get_current_wrapper((GObject*)widget));
+
+  if(obj_base)
   {
-    Glib::ObjectBase *const obj_base = static_cast<Glib::ObjectBase*>(
-      Glib::ObjectBase::_get_current_wrapper((GObject*)widget));
-
-    if(obj_base)
-    {
-      Glom::FlowTable* table = dynamic_cast<Glom::FlowTable*>(obj_base);
-      g_assert(table);
-      table->on_size_request(requisition);
-    }
-    else if(GTK_WIDGET_CLASS(parent_class)->size_request)
-      GTK_WIDGET_CLASS(parent_class)->size_request(widget, requisition);
+    Glom::FlowTable* table = dynamic_cast<Glom::FlowTable*>(obj_base);
+    g_assert(table);
+    table->on_size_request(requisition);
   }
+  else if(GTK_WIDGET_CLASS(parent_class)->size_request)
+    GTK_WIDGET_CLASS(parent_class)->size_request(widget, requisition);
+}
 
-  void FlowTable::glom_size_allocate_impl(GtkWidget* widget, GtkAllocation* allocation)
+void FlowTable::glom_size_allocate_impl(GtkWidget* widget, GtkAllocation* allocation)
+{
+  Glib::ObjectBase *const obj_base = static_cast<Glib::ObjectBase*>(
+    Glib::ObjectBase::_get_current_wrapper((GObject*)widget));
+
+  if(obj_base)
   {
-    Glib::ObjectBase *const obj_base = static_cast<Glib::ObjectBase*>(
-      Glib::ObjectBase::_get_current_wrapper((GObject*)widget));
+    Glom::FlowTable* table = dynamic_cast<Glom::FlowTable*>(obj_base);
+    g_assert(table);
 
-    if(obj_base)
-    {
-      Glom::FlowTable* table = dynamic_cast<Glom::FlowTable*>(obj_base);
-      g_assert(table);
-
-      Gtk::Allocation cpp_allocation = Glib::wrap(allocation);
-      table->on_size_allocate(cpp_allocation);
-      *allocation = *cpp_allocation.gobj();
-    }
-    else if(GTK_WIDGET_CLASS(parent_class)->size_allocate)
-      GTK_WIDGET_CLASS(parent_class)->size_allocate(widget, allocation);
+    Gtk::Allocation cpp_allocation = Glib::wrap(allocation);
+    table->on_size_allocate(cpp_allocation);
+    *allocation = *cpp_allocation.gobj();
   }
+  else if(GTK_WIDGET_CLASS(parent_class)->size_allocate)
+    GTK_WIDGET_CLASS(parent_class)->size_allocate(widget, allocation);
+}
 
-  void FlowTable::glom_add_impl(GtkContainer* container, GtkWidget* widget)
+void FlowTable::glom_add_impl(GtkContainer* container, GtkWidget* widget)
+{
+  Glib::ObjectBase *const obj_base = static_cast<Glib::ObjectBase*>(
+    Glib::ObjectBase::_get_current_wrapper((GObject*)container));
+
+  if(obj_base)
   {
-    Glib::ObjectBase *const obj_base = static_cast<Glib::ObjectBase*>(
-      Glib::ObjectBase::_get_current_wrapper((GObject*)container));
-
-    if(obj_base)
-    {
-      Glom::FlowTable* table = dynamic_cast<Glom::FlowTable*>(obj_base);
-      g_assert(table);
-      table->on_add(Glib::wrap(widget));
-    }
-    else if(parent_class->add)
-      parent_class->add(container, widget);
+    Glom::FlowTable* table = dynamic_cast<Glom::FlowTable*>(obj_base);
+    g_assert(table);
+    table->on_add(Glib::wrap(widget));
   }
+  else if(parent_class->add)
+    parent_class->add(container, widget);
+}
 
-  void FlowTable::glom_remove_impl(GtkContainer* container, GtkWidget* widget)
+void FlowTable::glom_remove_impl(GtkContainer* container, GtkWidget* widget)
+{
+  Glib::ObjectBase *const obj_base = static_cast<Glib::ObjectBase*>(
+    Glib::ObjectBase::_get_current_wrapper((GObject*)container));
+
+  if(obj_base)
   {
-    Glib::ObjectBase *const obj_base = static_cast<Glib::ObjectBase*>(
-      Glib::ObjectBase::_get_current_wrapper((GObject*)container));
-
-    if(obj_base)
-    {
-      Glom::FlowTable* table = dynamic_cast<Glom::FlowTable*>(obj_base);
-      g_assert(table);
-      table->on_remove(Glib::wrap(widget));
-    }
-    else if(parent_class->remove)
-      parent_class->remove(container, widget);
+    Glom::FlowTable* table = dynamic_cast<Glom::FlowTable*>(obj_base);
+    g_assert(table);
+    table->on_remove(Glib::wrap(widget));
   }
+  else if(parent_class->remove)
+    parent_class->remove(container, widget);
+}
 
-  void FlowTable::glom_realize_impl(GtkWidget* widget)
+void FlowTable::glom_realize_impl(GtkWidget* widget)
+{
+  Glib::ObjectBase *const obj_base = static_cast<Glib::ObjectBase*>(
+    Glib::ObjectBase::_get_current_wrapper((GObject*)widget));
+
+  if(obj_base)
   {
-    Glib::ObjectBase *const obj_base = static_cast<Glib::ObjectBase*>(
-      Glib::ObjectBase::_get_current_wrapper((GObject*)widget));
-
-    if(obj_base)
-    {
-      Glom::FlowTable* table = dynamic_cast<Glom::FlowTable*>(obj_base);
-      g_assert(table);
-      table->on_realize();
-    }
-    else if(GTK_WIDGET_CLASS(parent_class)->realize)
-      GTK_WIDGET_CLASS(parent_class)->realize(widget);
+    Glom::FlowTable* table = dynamic_cast<Glom::FlowTable*>(obj_base);
+    g_assert(table);
+    table->on_realize();
   }
+  else if(GTK_WIDGET_CLASS(parent_class)->realize)
+    GTK_WIDGET_CLASS(parent_class)->realize(widget);
+}
 
-  void FlowTable::glom_unrealize_impl(GtkWidget* widget)
+void FlowTable::glom_unrealize_impl(GtkWidget* widget)
+{
+  Glib::ObjectBase *const obj_base = static_cast<Glib::ObjectBase*>(
+    Glib::ObjectBase::_get_current_wrapper((GObject*)widget));
+
+  if(obj_base)
   {
-    Glib::ObjectBase *const obj_base = static_cast<Glib::ObjectBase*>(
-      Glib::ObjectBase::_get_current_wrapper((GObject*)widget));
-
-    if(obj_base)
-    {
-      Glom::FlowTable* table = dynamic_cast<Glom::FlowTable*>(obj_base);
-      g_assert(table);
-      table->on_unrealize();
-    }
-    else if(GTK_WIDGET_CLASS(parent_class)->unrealize)
-      GTK_WIDGET_CLASS(parent_class)->unrealize(widget);
+    Glom::FlowTable* table = dynamic_cast<Glom::FlowTable*>(obj_base);
+    g_assert(table);
+    table->on_unrealize();
   }
+  else if(GTK_WIDGET_CLASS(parent_class)->unrealize)
+    GTK_WIDGET_CLASS(parent_class)->unrealize(widget);
+}
 
-  gboolean FlowTable::glom_expose_event_impl(GtkWidget* widget, GdkEventExpose* event)
+gboolean FlowTable::glom_expose_event_impl(GtkWidget* widget, GdkEventExpose* event)
+{
+  Glib::ObjectBase *const obj_base = static_cast<Glib::ObjectBase*>(
+    Glib::ObjectBase::_get_current_wrapper((GObject*)widget));
+
+  if(obj_base)
   {
-    Glib::ObjectBase *const obj_base = static_cast<Glib::ObjectBase*>(
-      Glib::ObjectBase::_get_current_wrapper((GObject*)widget));
-
-    if(obj_base)
-    {
-      Glom::FlowTable* table = dynamic_cast<Glom::FlowTable*>(obj_base);
-      g_assert(table);
-      return table->on_expose_event(event);
-    }
-    else if(GTK_WIDGET_CLASS(parent_class)->expose_event)
-      return GTK_WIDGET_CLASS(parent_class)->expose_event(widget, event);
-    else
-      return FALSE;
+    Glom::FlowTable* table = dynamic_cast<Glom::FlowTable*>(obj_base);
+    g_assert(table);
+    return table->on_expose_event(event);
   }
+  else if(GTK_WIDGET_CLASS(parent_class)->expose_event)
+    return GTK_WIDGET_CLASS(parent_class)->expose_event(widget, event);
+  else
+    return FALSE;
+}
 #endif // !GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 } //namespace Glom
 
