@@ -3474,7 +3474,7 @@ void Base_DB::set_found_set_where_clause_for_portal(FoundSet& found_set, const s
     found_set.m_extra_join = "LEFT OUTER JOIN \"" + relationship->get_to_table() + "\" AS \"" + uses_rel_temp->get_sql_join_alias_name() + "\" ON (\"" + uses_rel_temp->get_sql_join_alias_name() + "\".\"" + relationship_related->get_from_field() + "\" = \"" + relationship_related->get_to_table() + "\".\"" + relationship_related->get_to_field() + "\")";
 
     //Add an extra GROUP BY to ensure that we get no repeated records from the doubly-related table:
-    sharedptr<Field> to_table_primary_key = get_field_primary_key_for_table( relationship->get_to_table() );
+    sharedptr<Field> to_table_primary_key = get_field_primary_key_for_table( relationship_related->get_to_table() );
     if(to_table_primary_key)
       found_set.m_extra_group_by = "GROUP BY \"" + found_set.m_table_name + "\".\"" + to_table_primary_key->get_name() + "\"";
 

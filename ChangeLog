@@ -1,5 +1,16 @@
 2009-09-29  Murray Cumming  <murrayc@murrayc.com>
 
+  Doubly-related Records: Correct the SQL.
+  
+	* glom/base_db.cc: set_found_set_where_clause_for_portal():
+	For doubly-related records, use the correct relationship for the GROUP BY to 
+	avoid a SQL error about a non-existant field. We must have been lucky before.
+	
+	However, we now need to fix the SQL error (maybe new in a recent PostgreSQL 
+	version) about not mentioning all viewed fields in the GROUP BY.
+
+2009-09-29  Murray Cumming  <murrayc@murrayc.com>
+
   Design: Related Records Portal: Prevent use of inappropriate relationships.
   
 	* glom/mode_design/layout/dialog_layout_list_related.cc: 
