@@ -21,7 +21,8 @@
 #include <glom/mode_design/layout/dialog_layout_list_related.h>
 #include <glom/mode_design/layout/dialog_choose_field.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_field_layout.h>
-#include <libglom/utils.h> //For bold_message()).
+#include <libglom/utils.h> //For bold_message().
+#include <glom/utils_ui.h> //For show_ok_dialog().
 
 //#include <libgnome/gnome-i18n.h>
 #include <gtkmm/togglebutton.h>
@@ -330,27 +331,68 @@ void Dialog_Layout_List_Related::on_combo_relationship_changed()
 
   sharedptr<Relationship> relationship_related;
   sharedptr<Relationship> relationship = m_combo_relationship->get_selected_relationship(relationship_related);
-  if(relationship)
+  if(!relationship)
+    return;
+    
+  //Check that the relationship is appropriate for use in a related records portal.
+  //The relationship's to field may not be a unique field, because that would 
+  //prevent the portal from having multiple records.
+  sharedptr<Field> to_key_field = 
+    get_fields_for_table_one_field(relationship->get_to_table(), 
+      relationship->get_to_field());
+  bool relationship_invalid = false;
+  if(!to_key_field)
   {
-    //Clear the list of fields if the relationship has changed, because the fields could not possible be correct for the new table:
-    bool relationship_changed = false;
-    const Glib::ustring old_relationship_name = glom_get_sharedptr_name(m_portal->get_relationship());
-    const Glib::ustring old_relationship_related_name = glom_get_sharedptr_name(m_portal->get_related_relationship());
-    if( (old_relationship_name != glom_get_sharedptr_name(relationship)) ||
-        (old_relationship_related_name != glom_get_sharedptr_name(relationship_related)) )
-      relationship_changed = true;
-
-    m_portal->set_relationship(relationship);
-    m_portal->set_related_relationship(relationship_related);
-
-    if(relationship_changed)
-      m_portal->remove_all_items();
-
-    //Refresh everything for the new relationship:
-    update_ui(false /* not including the list of relationships */);
-
-    m_modified = true;
+    Utils::show_ok_dialog(_("Invalid Relationship"), 
+      _("The relationship may not be used to show related records because the relationship does not specify a field in the related table."),
+     *this, Gtk::MESSAGE_ERROR);
+    relationship_invalid = true;
   }
+  else if(to_key_field->get_primary_key())
+  {
+    Utils::show_ok_dialog(_("Relationship Uses a Related Primary Key"), 
+      _("The relationship may not be used to show related records because the relationship uses a primary key field in the related table, which must contain unique values. This would prevent the relationship from specifying multiple related records."),
+     *this, Gtk::MESSAGE_ERROR);
+    relationship_invalid = true;
+  }
+  else if(to_key_field->get_unique_key())
+  {
+    Utils::show_ok_dialog(_("Relationship Uses a Related Unique Field"), 
+      _("The relationship may not be used to show related records because the relationship uses a unique-values field in the related table. This would prevent the relationship from specifying multiple related records."),
+     *this, Gtk::MESSAGE_ERROR);
+    relationship_invalid = true;
+  }
+  
+  //Reset the previous value if the choice was bad:
+  if(relationship_invalid)
+  {
+    m_combo_relationship->set_selected_relationship(
+       m_portal->get_relationship(), m_portal->get_related_relationship()); 
+    return;
+  }
+
+  //Clear the list of fields if the relationship has changed, 
+  //because the fields could not possible be correct for the new table:
+  bool relationship_changed = false;
+  const Glib::ustring old_relationship_name = glom_get_sharedptr_name(m_portal->get_relationship());
+  const Glib::ustring old_relationship_related_name = glom_get_sharedptr_name(m_portal->get_related_relationship());
+  if( (old_relationship_name != glom_get_sharedptr_name(relationship)) ||
+      (old_relationship_related_name != glom_get_sharedptr_name(relationship_related)) )
+  {
+    relationship_changed = true;
+  }
+
+
+  m_portal->set_relationship(relationship);
+  m_portal->set_related_relationship(relationship_related);
+
+  if(relationship_changed)
+    m_portal->remove_all_items();
+
+  //Refresh everything for the new relationship:
+  update_ui(false /* not including the list of relationships */);
+
+  m_modified = true;
 }
 
 sharedptr<Relationship> Dialog_Layout_List_Related::get_relationship() const

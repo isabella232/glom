@@ -1,5 +1,14 @@
 2009-09-29  Murray Cumming  <murrayc@murrayc.com>
 
+  Design: Related Records Portal: Prevent use of inappropriate relationships.
+  
+	* glom/mode_design/layout/dialog_layout_list_related.cc: 
+	on_combo_relationship_changed(): Do not allow the related record to show 
+	relationships that would require duplicate values in unique fields to show 
+	multiple records. Noticed by Alessio C.
+
+2009-09-29  Murray Cumming  <murrayc@murrayc.com>
+
 	LayoutGroup: Added accessors for columns count, hiding the member variable.
 	
 	* glom/libglom/data_structure/layout/layoutgroup.[h|cc]: Made m_columns_count 
