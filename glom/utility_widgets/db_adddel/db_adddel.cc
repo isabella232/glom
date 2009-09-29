@@ -118,7 +118,7 @@ DbAddDel::DbAddDel()
   //TODO: Allow this default mamoe behaviour?
   g_object_set(m_TreeView.gobj(), "hildon-ui-mode", HILDON_UI_MODE_NORMAL, (void*)0);
   
-  //Let get_selected() and get_active() to work:
+  //Allow get_selected() and get_active() to work:
   m_TreeView.set_column_selection_mode(Hildon::TOUCH_SELECTOR_SELECTION_MODE_SINGLE);
   pack_start(m_TreeView);
   #endif //GLOM_ENABLE_MAEMO
@@ -427,7 +427,10 @@ Gnome::Gda::Value DbAddDel::get_value_selected(const sharedptr<const LayoutItem_
 Gtk::TreeModel::iterator DbAddDel::get_item_selected()
 {
   #ifdef GLOM_ENABLE_MAEMO
-  return m_TreeView.get_active();
+  //TODO: See bug https://bugs.maemo.org/show_bug.cgi?id=4640
+  //about the get_selected()/get_active() confusion.
+  return m_TreeView.get_selected(0);
+  //This doesn't seem to work for anything but the first item: return m_TreeView.get_active();
   #else
   Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_TreeView.get_selection();
   if(refTreeSelection)

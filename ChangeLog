@@ -1,3 +1,13 @@
+2009-09-29  Murray Cumming  <murrayc@murrayc.com>
+
+	Maemo: Actually allow details to be opened.
+	
+	* glom/utility_widgets/db_adddel/db_adddel.cc: get_item_selected():
+	Use Hildon::TouchSelector::get_selected() instead of get_active() so it 
+	actually works for rows other than the first one. 
+	See hildon bug https://bugs.maemo.org/show_bug.cgi?id=4640,
+	though the error might be in our maemomm C++ code to work around that.
+
 2009-09-28  Murray Cumming  <murrayc@murrayc.com>
 
 	Maemo: Find: Show the quickfind.
