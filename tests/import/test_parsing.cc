@@ -20,7 +20,7 @@ type_tokens& get_tokens_instance()
 void on_line_scanned(const std::vector<Glib::ustring>& row, guint /*line_number*/)
 {
   //std::cout << "debug: on_line_scanned(): row.size()=" << row.size() << std::endl;
- 
+
   for(std::vector<Glib::ustring>::const_iterator iter = row.begin();
       iter != row.end();
       ++iter)

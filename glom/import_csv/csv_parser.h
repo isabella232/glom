@@ -66,16 +66,24 @@ public:
   /// Get the current state of the parser.
   State get_state() const;
 
+/*
   /// Get the number of rows parsed so far.
   guint get_rows_count() const;
+*/
 
   bool get_rows_empty() const;
 
+/*
   /// Get the number of columns of data in this row.
   guint get_cols_count(guint row_number) const;
+*/
 
-  //The nasty reference return is for performance.
+  // The nasty reference return is for performance.
   const Glib::ustring& get_data(guint row, guint col);
+
+  const type_row_strings fetch_next_row();
+
+  void reset_row_index();
 
   // Signals:
   typedef sigc::signal<void, const Glib::ustring&> type_signal_file_read_error;
@@ -177,6 +185,8 @@ private:
 
   // Parsed data:
   type_rows m_rows;
+
+  guint m_row_index;
 
   type_signal_file_read_error m_signal_file_read_error;
   type_signal_have_display_name m_signal_have_display_name;

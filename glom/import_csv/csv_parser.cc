@@ -59,7 +59,8 @@ CsvParser::CsvParser(const std::string& encoding_charset)
   m_line_number(0),
   m_state(STATE_NONE),
   m_stream(),
-  m_rows()
+  m_rows(),
+  m_row_index(0)
 {
 }
 
@@ -87,29 +88,19 @@ CsvParser::State CsvParser::get_state() const
   return m_state;
 }
 
-guint CsvParser::get_rows_count() const
-{
-  return m_rows.size();
-}
-
 bool CsvParser::get_rows_empty() const
 {
   return m_rows.empty();
 }
 
-
-/// Get the number of columns of data in this row.
-guint CsvParser::get_cols_count(guint row_number) const
-{
-  if(row_number >= m_rows.size())
-    return 0;
-
-  return m_rows[row_number].size();
-}
-
 const Glib::ustring& CsvParser::get_data(guint row, guint col)
 {
   static Glib::ustring empty_result;
+
+  // TODO: Why do we complain here? We cannot (and don't need to) restrict
+  // our clients to only call this method with valid rows & cols, it falls in
+  // our responsibility to check the access, which we do. Handing out an
+  // empty result is perfectly fine!
 
   if(row >= m_rows.size())
   {
@@ -127,6 +118,37 @@ const Glib::ustring& CsvParser::get_data(guint row, guint col)
   return row_data[col];
 }
 
+const CsvParser::type_row_strings CsvParser::fetch_next_row()
+{
+  const type_row_strings empty;
+
+  g_return_val_if_fail(m_state == (CsvParser::STATE_PARSING | CsvParser::STATE_PARSED), empty);
+
+  // We cannot fetch the next row, but since we are still parsing we might just have to parse a bit more!
+  if(m_state == CsvParser::STATE_PARSING && m_row_index >= m_rows.size())
+  {
+    on_idle_parse();
+    // The final recursion guard is m_state == CsvParser::STATE_PARSING
+    return fetch_next_row();
+  }
+
+  if(m_state == CsvParser::STATE_PARSED && m_row_index >= m_rows.size())
+  {
+    return empty;
+  }
+
+  if(m_row_index < m_rows.size())
+  {
+    return m_rows[m_row_index++];
+  }
+
+  g_return_val_if_reached(empty);
+}
+
+void CsvParser::reset_row_index()
+{
+  m_row_index = 0;
+}
 
 CsvParser::type_signal_file_read_error CsvParser::signal_file_read_error() const
 {

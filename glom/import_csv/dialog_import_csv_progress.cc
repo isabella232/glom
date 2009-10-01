@@ -97,8 +97,7 @@ void Dialog_Import_CSV_Progress::add_text(const Glib::ustring& text)
 
 void Dialog_Import_CSV_Progress::begin_import()
 {
-  //Note to translators: This is a progress indication, showing how many rows have been imported, of the total number of rows.
-  m_progress_bar->set_text(Glib::ustring::compose(_("%1 / %2"), m_current_row, m_data_source->get_row_count()));
+  m_progress_bar->set_text("0");
   m_progress_bar->set_fraction(0.0);
 
   m_progress_connection = Glib::signal_idle().connect(sigc::mem_fun(*this, &Dialog_Import_CSV_Progress::on_idle_import));
@@ -128,11 +127,13 @@ void Dialog_Import_CSV_Progress::on_state_changed()
 
 bool Dialog_Import_CSV_Progress::on_idle_import()
 {
-  //Note to translators: This is a progress indication, showing how many rows have been imported, of the total number of rows.
-  m_progress_bar->set_text(Glib::ustring::compose(_("%1 / %2"), m_current_row, m_data_source->get_row_count()));
-  m_progress_bar->set_fraction(static_cast<double>(m_current_row) / static_cast<double>(m_data_source->get_row_count()));
+  //Note to translators: This is a progress indication, showing how many rows have been imported.
+  //TODO: replace with pulsing progress bar, or have a heuristic based on file size.
+  m_progress_bar->set_text(Glib::ustring::format(m_current_row));
 
-  if(m_current_row == m_data_source->get_row_count())
+  const CsvParser::type_row_strings row = m_data_source->get_parser().fetch_next_row();
+
+  if(row.empty())
   {
     // Don't do the response immediately, so the user has a chance to read the
     // warnings and errors, if any.
@@ -143,16 +144,18 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
   }
 
   // Update the current row values map:
-  for(unsigned int i = 0; i < m_data_source->get_column_count(); ++ i)
+  guint col_index = 0;
+  for(CsvParser::type_row_strings::const_iterator iter = row.begin();
+      iter != row.end();
+      ++iter)
   {
-    sharedptr<const Field> field = m_data_source->get_field_for_column(i);
+    sharedptr<const Field> field = m_data_source->get_field_for_column(col_index++);
     if(field)
     {
       // We always assume exported data is in standard CSV format, since
       // we export it this way.
-      const Glib::ustring str = m_data_source->get_data(m_current_row, i);
       bool success = false;
-      Gnome::Gda::Value value = field->from_file_format(str, success);
+      Gnome::Gda::Value value = field->from_file_format(*iter, success);
 
       if(success)
       {
@@ -174,7 +177,7 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
       }
       else
       {
-        const Glib::ustring message(Glib::ustring::compose(_("Warning: Importing row %1: The value for field %2, \"%3\" could not be converted to the field's type. The value will not be imported.\n"), m_current_row + 1, field->get_name(), m_data_source->get_data(m_current_row, i)));
+        const Glib::ustring message(Glib::ustring::compose(_("Warning: Importing row %1: The value for field %2, \"%3\" could not be converted to the field's type. The value will not be imported.\n"), m_current_row + 1, field->get_name(), *iter));
         add_text(message);
       }
     }
@@ -196,7 +199,7 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
     if(!get_field_value_is_unique(m_table_name, layout_item, primary_key_value))
       primary_key_value = Gnome::Gda::Value();
   }
-  
+
   if(Glom::Conversions::value_is_empty(primary_key_value))
   {
     Glib::ustring message(Glib::ustring::compose(_("Error importing row %1: Cannot import the row because the primary key is empty.\n"), m_current_row + 1));

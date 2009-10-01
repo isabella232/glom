@@ -62,7 +62,8 @@ namespace Glom
 
 Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
-  m_auto_detect_encoding()
+  m_auto_detect_encoding(),
+  m_cols_count(-1)
 {
   builder->get_widget("import_csv_fields", m_sample_view);
   builder->get_widget("import_csv_target_table", m_target_table);
@@ -207,23 +208,20 @@ void Dialog_Import_CSV::import(const Glib::ustring& uri, const Glib::ustring& in
     m_field_model_sorted = Gtk::TreeModelSort::create(m_field_model);
     m_field_model_sorted->set_sort_column(m_field_columns.m_col_field_name, Gtk::SORT_ASCENDING);
 
+    m_filename = uri;
     m_parser->set_file_and_start_parsing(uri);
   }
 }
 
+// TODO:remove me.
 guint Dialog_Import_CSV::get_row_count() const
 {
-  const guint parser_count = m_parser->get_rows_count();
-
-  if(m_first_line_as_title->get_active() && parser_count > 1)
-    return parser_count - 1;
-  else
-    return parser_count;
+  return -1;
 }
 
 guint Dialog_Import_CSV::get_column_count() const
 {
-  return m_fields.size();
+  return m_cols_count;
 }
 
 sharedptr<const Field> Dialog_Import_CSV::get_field_for_column(guint col) const
@@ -237,6 +235,11 @@ const Glib::ustring& Dialog_Import_CSV::get_data(guint row, guint col)
     ++row;
 
   return m_parser->get_data(row, col);
+}
+
+CsvParser& Dialog_Import_CSV::get_parser()
+{
+  return *(m_parser.get());
 }
 
 void Dialog_Import_CSV::clear()
@@ -324,11 +327,8 @@ void Dialog_Import_CSV::on_first_line_as_title_toggled()
 
       // Add another row to the end, if one is loaded.
       const guint last_index = m_sample_model->children().size();
-      if(last_index < m_parser->get_rows_count())
-      {
-        iter = m_sample_model->append();
-        (*iter)[m_sample_columns.m_col_row] = last_index;
-      }
+      iter = m_sample_model->append();
+      (*iter)[m_sample_columns.m_col_row] = last_index;
     }
   }
   else
@@ -339,7 +339,9 @@ void Dialog_Import_CSV::on_first_line_as_title_toggled()
     Gtk::TreeModel::Path path("1");
     Gtk::TreeModel::iterator iter = m_sample_model->get_iter(path);
 
-    if((!iter || (*iter)[m_sample_columns.m_col_row] != 0) && !m_parser->get_rows_empty() && m_sample_rows->get_value_as_int() > 0)
+    //if((!iter || (*iter)[m_sample_columns.m_col_row] != 0) && !m_parser->get_rows_empty() && m_sample_rows->get_value_as_int() > 0)
+    if((!iter || (*iter)[m_sample_columns.m_col_row] != 0) &&
+        m_sample_rows->get_value_as_int() > 0)
     {
       // Add first row to model
       if(!iter)
@@ -389,8 +391,7 @@ void Dialog_Import_CSV::on_sample_rows_changed()
     if(m_first_line_as_title->get_active())
       ++row_index;
 
-    const guint rows_count = m_parser->get_rows_count();
-    for(guint i = current_sample_rows; i < new_sample_rows && row_index < rows_count; ++i, ++row_index)
+    for(guint i = current_sample_rows; i < new_sample_rows; ++i, ++row_index)
     {
       Gtk::TreeModel::iterator iter = m_sample_model->append();
       (*iter)[m_sample_columns.m_col_row] = row_index;
@@ -469,12 +470,12 @@ void Dialog_Import_CSV::on_parser_encoding_error()
 /*
  * No, this is wrong. Creating the tree model and handling a line from the CSV file are two separate steps. Proposal: Construct tree model *after* parsing, using row[0].
  */
-void Dialog_Import_CSV::on_parser_line_scanned(CsvParser::type_row_strings /*row*/, unsigned int row_number)
+void Dialog_Import_CSV::on_parser_line_scanned(CsvParser::type_row_strings row, unsigned int row_number)
 {
   // This is the first line read if there is no model yet:
   if(!m_sample_model)
   {
-    setup_sample_model(row_number);
+    setup_sample_model(row);
     Gtk::TreeModel::iterator iter = m_sample_model->append();
     // -1 means the row to select target fields (see special handling in cell data funcs)
     (*iter)[m_sample_columns.m_col_row] = -1;
@@ -486,26 +487,24 @@ void Dialog_Import_CSV::on_parser_line_scanned(CsvParser::type_row_strings /*row
   const guint sample_rows = m_sample_model->children().size() - 1;
 
   // Don't add if this is the first line and m_first_line_as_title is active:
-  const guint parser_rows_count = m_parser->get_rows_count();
   if(row_number > 1 || !m_first_line_as_title->get_active())
   {
     if(sample_rows < static_cast<guint>(m_sample_rows->get_value_as_int()))
     {
       Gtk::TreeModel::iterator tree_iter = m_sample_model->append();
-      (*tree_iter)[m_sample_columns.m_col_row] = parser_rows_count - 1;
+      (*tree_iter)[m_sample_columns.m_col_row] = row_number;
     }
   }
 }
 
-void Dialog_Import_CSV::setup_sample_model(guint data_row_number)
+void Dialog_Import_CSV::setup_sample_model(CsvParser::type_row_strings& row)
 {
   m_sample_model = Gtk::ListStore::create(m_sample_columns);
   m_sample_view->set_model(m_sample_model);
 
   // Create field vector that contains the fields into which to import
   // the data.
-  //m_fields.resize(row.size());
-  m_fields.resize(m_parser->get_rows_count());
+  m_fields.resize(row.size());
 
   // Start with a column showing the line number.
   Gtk::CellRendererText* text = Gtk::manage(new Gtk::CellRendererText);
@@ -514,25 +513,26 @@ void Dialog_Import_CSV::setup_sample_model(guint data_row_number)
   col->set_cell_data_func(*text, sigc::mem_fun(*this, &Dialog_Import_CSV::line_data_func));
   m_sample_view->append_column(*col);
 
-  const guint cols_count = m_parser->get_cols_count(data_row_number);
-  for(guint i = 0; i < cols_count; ++ i)
+  m_cols_count = row.size();
+
+  for(guint i = 0; i < m_cols_count; ++ i)
   {
-    const Glib::ustring& data = m_parser->get_data(data_row_number, i);
-    m_sample_view->append_column(*Gtk::manage(column_factory(data, i)));
+    const Glib::ustring& data = row[i];
+    m_sample_view->append_column(*Gtk::manage(create_sample_column(data, i)));
   }
 }
 
-Gtk::TreeViewColumn* Dialog_Import_CSV::column_factory(const Glib::ustring& title, guint index)
+Gtk::TreeViewColumn* Dialog_Import_CSV::create_sample_column(const Glib::ustring& title, guint index)
 {
   Gtk::TreeViewColumn* col = new Gtk::TreeViewColumn(title);
-  Gtk::CellRendererCombo* cell = cell_factory(index);
+  Gtk::CellRendererCombo* cell = create_sample_cell(index);
   col->pack_start(*Gtk::manage(cell), true);
   col->set_cell_data_func(*cell, sigc::bind(sigc::mem_fun(*this, &Dialog_Import_CSV::field_data_func), index));
   col->set_sizing(Gtk::TREE_VIEW_COLUMN_AUTOSIZE);
   return col;
 }
 
-Gtk::CellRendererCombo* Dialog_Import_CSV::cell_factory(guint index)
+Gtk::CellRendererCombo* Dialog_Import_CSV::create_sample_cell(guint index)
 {
   Gtk::CellRendererCombo* cell = new Gtk::CellRendererCombo;
 #ifdef GLIBMM_PROPERTIES_ENABLED
@@ -594,7 +594,7 @@ void Dialog_Import_CSV::field_data_func(Gtk::CellRenderer* renderer, const Gtk::
     {
       sharedptr<Field> field = m_fields[column_number];
 
-      if(row != -1 && (unsigned int)row < m_parser->get_rows_count())
+      if(row != -1) // && static_cast<unsigned int>(row) < m_parser->get_rows_count())
       {
           const Glib::ustring& orig_text = m_parser->get_data(row, column_number);
 
@@ -605,7 +605,6 @@ void Dialog_Import_CSV::field_data_func(Gtk::CellRenderer* renderer, const Gtk::
               /* Exported data is always stored in postgres format */
               bool success = false;
               const Gnome::Gda::Value value = field->from_file_format(orig_text, success);
-        
               if(!success)
                 text = _("<Import Failure>");
               else
@@ -663,7 +662,7 @@ void Dialog_Import_CSV::on_field_edited(const Glib::ustring& path, const Glib::u
       if(vec_field_iter != m_fields.end()) *vec_field_iter = sharedptr<Field>();
 
       m_fields[column_number] = field;
-      
+
       // Update the rows, so they are redrawn, doing a conversion to the new type.
       const Gtk::TreeNodeChildren& sample_children = m_sample_model->children();
       // Create a TreeModel::Path with initial index 0. We need a TreeModel::Path for the row_changed() call

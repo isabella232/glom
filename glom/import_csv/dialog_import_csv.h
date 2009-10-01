@@ -57,6 +57,8 @@ public:
   sharedptr<const Field> get_field_for_column(unsigned int col) const;
   const Glib::ustring& get_data(unsigned int row, unsigned int col);
 
+  CsvParser& get_parser();
+
   typedef sigc::signal<void> type_signal_state_changed;
 
   /** This signal will be emitted when the parser's state changes.
@@ -71,9 +73,9 @@ private:
   Glib::ustring get_current_encoding() const;
   void begin_parse();
 
-  void setup_sample_model(guint data_row_number);
-  Gtk::TreeViewColumn* column_factory(const Glib::ustring& title, guint index);
-  Gtk::CellRendererCombo* cell_factory(guint index);
+  void setup_sample_model(CsvParser::type_row_strings& row);
+  Gtk::TreeViewColumn* create_sample_column(const Glib::ustring& title, guint index);
+  Gtk::CellRendererCombo* create_sample_cell(guint index);
 
   //CellRenderer cell_data_func callbacks:
   void line_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
@@ -103,7 +105,7 @@ private:
     Gtk::TreeModelColumn<Glib::ustring> m_col_name;
     Gtk::TreeModelColumn<Glib::ustring> m_col_charset;
   };
-  
+
   class FieldColumns: public Gtk::TreeModelColumnRecord
   {
   public:
@@ -147,6 +149,11 @@ private:
   // encoding that we currently try to read the data with, or -1 if
   // auto-detection is disabled.
   int m_auto_detect_encoding;
+
+  // The first row decides the amount of columns in our model, during  model
+  // setup. We implicitly fill up every row that is shorter, and cut longer
+  // rows.
+  guint m_cols_count;
 
   // The fields into which to import the data:
   typedef std::vector< sharedptr<Field> > type_vec_fields;

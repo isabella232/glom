@@ -1,3 +1,17 @@
+2009-10-01  Michael Hasselmann  <michaelh@openismus.com>
+
+	Import: Made import working again, changed import logic
+
+	* glom/import_csv/csv_parser.[h|cc] (fetch_next_row): This method allows
+	iterating over the parser's cache without the need for a max row/column
+	count. Potential issue with valid empty rows during import needs to be fixed.
+
+	* glom/import_csv/dialog_import_csv.[h|cc]: Removed logic based on row counts.
+	It turned out that most places didn't need access to get_row_count() anyway.
+
+	* glom/import_csv/dialog_import_csv_progess.cc: Switched import to use the
+	parser's new fetch_next_row() API. Not tested for large files yet.
+
 2009-09-29  Murray Cumming  <murrayc@murrayc.com>
 
   Doubly-related Records: Correct the SQL.
