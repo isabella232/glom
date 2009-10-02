@@ -943,7 +943,13 @@ bool App_Glom::on_document_load()
 
   if(!pDocument->get_is_new() && !check_document_hosting_mode_is_supported(pDocument))
     return false;
- 
+    
+  #ifdef GLOM_ENABLE_MAEMO
+  //On Maemo, make regular (not specifically maemo) layouts single-column,
+  //so they are more appropriate by default:
+  pDocument->maemo_restrict_layouts_to_single_column();
+  #endif //GLOM_ENABLE_MAEMO
+  
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Connect signals:
   pDocument->signal_userlevel_changed().connect( sigc::mem_fun(*this, &App_Glom::on_userlevel_changed) );

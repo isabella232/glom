@@ -4103,6 +4103,62 @@ bool Document::load(int& failure_code)
   return GlomBakery::Document_XML::load(failure_code);
 }
 
+void Document::maemo_restrict_layouts_to_single_column_group(const sharedptr<LayoutGroup>& layout_group)
+{
+  if(!layout_group)
+    return;
+    
+  std::cout << "debug: group columns=" << layout_group->get_columns_count() << std::endl;
+
+  //Change it to a single column group:
+  if(layout_group->get_columns_count() > 1)
+  {     
+    layout_group->set_columns_count(1);
+    std::cout << "  debug: changed group columns=" << layout_group->get_columns_count() << std::endl;
+  }
+     
+  //Do the same with any child groups:
+  for(LayoutGroup::type_list_items::iterator iter = layout_group->m_list_items.begin(); iter != layout_group->m_list_items.end(); ++iter)
+  {
+    sharedptr<LayoutItem> layout_item = *iter;
+
+    sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(layout_item);
+    if(group)
+      maemo_restrict_layouts_to_single_column_group(group);
+  } 
+}
+
+void Document::maemo_restrict_layouts_to_single_column()
+{
+  //Look at every table:
+  for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
+  {
+    DocumentTableInfo& info = iter->second;
+    //std::cout << "debug: table: " << info.m_info->m_name << std::endl;
+      
+    //Look at every layout:
+    for(DocumentTableInfo::type_layouts::iterator iterLayouts = info.m_layouts.begin();
+      iterLayouts != info.m_layouts.end(); ++iterLayouts)
+    {
+      LayoutInfo& layout_info = *iterLayouts;
+      std::cout << "debug: layout: " << layout_info.m_layout_name << std::endl;
+      
+      //Allow specifically-designed maemo layouts to have multiple columns,
+      //but resize the others.
+      if(true)//layout_info.m_layout_platform != "maemo")
+      {
+        //Look at every group, recursively:
+        for(type_list_layout_groups::iterator iterGroups = layout_info.m_layout_groups.begin(); 
+          iterGroups != layout_info.m_layout_groups.end(); ++iterGroups)
+        {
+          sharedptr<LayoutGroup> group = *iterGroups;
+          maemo_restrict_layouts_to_single_column_group(group);
+        }
+      }
+    }
+  }      
+}
+
 
 } //namespace Glom
 

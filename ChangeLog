@@ -1,5 +1,14 @@
 2009-10-02  Murray Cumming  <murrayc@murrayc.com>
 
+	Maemo: Avoid multi-column details layouts.
+	 
+	* glom/libglom/document/document.[h|cc]:
+	Added maemo_restrict_layouts_to_single_column_group().
+	* glom/application.cc: on_document_load(): On maemo, call it to make the 
+	layout more suitable by default, if no custom maemo layout is defined. 
+
+2009-10-02  Murray Cumming  <murrayc@murrayc.com>
+
 	Maemo: Fix the build.
 	
 	* glom/frame_glom.cc:
