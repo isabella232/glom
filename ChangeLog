@@ -1,5 +1,13 @@
 2009-10-02  Murray Cumming  <murrayc@murrayc.com>
 
+	Maemo: Really fall back to the standard layout if there is no maemo layout.
+	
+	* glom/libglom/document/document.cc: get_data_layout_groups_plus_new_fields():
+	Really fall back to the standard layout if there is no maemo layout. 
+	When creating a default layout, restrict the column count to 1. 
+
+2009-10-02  Murray Cumming  <murrayc@murrayc.com>
+
 	Maemo: Avoid multi-column details layouts.
 	 
 	* glom/libglom/document/document.[h|cc]:

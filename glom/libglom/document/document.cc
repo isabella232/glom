@@ -1417,8 +1417,6 @@ void Document::fill_layout_field_details(const Glib::ustring& parent_table_name,
 
 Document::type_list_layout_groups Document::get_data_layout_groups_default(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& /* layout_platform */) const
 {
-  //std::cout << "debug: Document::get_data_layout_groups_default(): table_name = " << parent_table_name << std::endl;
-
   type_list_layout_groups result;
 
   //Add one if necessary:
@@ -1504,13 +1502,29 @@ Document::type_list_layout_groups Document::get_data_layout_groups_plus_new_fiel
 
   //If there are no fields in the layout, then add a default:
   bool create_default = false;
+  if(result.empty() && !layout_name.empty())
+  {
+    //Fall back to a general layout instead of one for a specific platform:
+    result = get_data_layout_groups(layout_name, parent_table_name, Glib::ustring());
+  }
+  
   if(result.empty())
+  {
     create_default = true;
+  }
   //TODO: Also set create_default if all groups have no fields.
 
   if(create_default)
   {
+    std::cout << "DEBUG: Document::get_data_layout_groups_plus_new_fields(): Creating a default layout." << std::endl;
     result = get_data_layout_groups_default(layout_name, parent_table_name, layout_platform);
+    
+    //Make the default layout suitable for the special platform:
+    if(layout_platform == "maemo")
+    {
+      for(type_list_layout_groups::iterator iter = result.begin(); iter != result.end(); ++iter)
+      maemo_restrict_layouts_to_single_column_group(*iter);
+    }
     
     //Store this so we don't have to recreate it next time:
     Document* nonconst_this = const_cast<Document*>(this); //TODO: This is not ideal.
@@ -4107,8 +4121,6 @@ void Document::maemo_restrict_layouts_to_single_column_group(const sharedptr<Lay
 {
   if(!layout_group)
     return;
-    
-  std::cout << "debug: group columns=" << layout_group->get_columns_count() << std::endl;
 
   //Change it to a single column group:
   if(layout_group->get_columns_count() > 1)
