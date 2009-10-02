@@ -1,3 +1,17 @@
+2009-10-02  Murray Cumming  <murrayc@murrayc.com>
+
+	Related Records: Fix doubly-related records portals, such as a list of 
+	an Artist's publishers (via their albums).
+
+	* glom/libglom/utils.[h|cc]: build_sql_select_with_where_clause(): 
+	Move some code into build_sql_select_fields_to_get(), so we can get the 
+	list of fields to get without the rest of the SQL.
+	* glom/base_db.cc: set_found_set_where_clause_for_portal(): 
+	Use build_sql_select_fields_to_get() to GROUP BY the full field list 
+	instead of just the primary key, as required by recent PostgreSQL, 
+	and probably by the SQL specification.
+	We should investigate SELECT DISTINCT again to simplify this. 
+
 2009-10-02  Michael Hasselmann  <michaelh@openismus.com>
 
 	Import: Cleanup, added comments.

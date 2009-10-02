@@ -3473,10 +3473,24 @@ void Base_DB::set_found_set_where_clause_for_portal(FoundSet& found_set, const s
     //found_set.m_extra_join = uses_rel_temp->get_sql_join_alias_definition();
     found_set.m_extra_join = "LEFT OUTER JOIN \"" + relationship->get_to_table() + "\" AS \"" + uses_rel_temp->get_sql_join_alias_name() + "\" ON (\"" + uses_rel_temp->get_sql_join_alias_name() + "\".\"" + relationship_related->get_from_field() + "\" = \"" + relationship_related->get_to_table() + "\".\"" + relationship_related->get_to_field() + "\")";
 
+
     //Add an extra GROUP BY to ensure that we get no repeated records from the doubly-related table:
-    sharedptr<Field> to_table_primary_key = get_field_primary_key_for_table( relationship_related->get_to_table() );
-    if(to_table_primary_key)
-      found_set.m_extra_group_by = "GROUP BY \"" + found_set.m_table_name + "\".\"" + to_table_primary_key->get_name() + "\"";
+    LayoutGroup::type_list_items portal_items = portal->get_items();
+    Utils::type_vecConstLayoutFields fields;
+    for(LayoutGroup::type_list_items::iterator iter = portal_items.begin(); iter != portal_items.end(); ++iter)
+    {
+      sharedptr<LayoutItem_Field> item_field = sharedptr<LayoutItem_Field>::cast_dynamic(*iter);
+      if(item_field)
+        fields.push_back(item_field);
+    }
+
+    Glib::ustring sql_part_from;
+    Glib::ustring sql_part_leftouterjoin;
+    const Glib::ustring sql_part_fields = Utils::build_sql_select_fields_to_get(
+      found_set.m_table_name, fields, found_set.m_extra_join, 
+      found_set.m_sort_clause, sql_part_from, sql_part_leftouterjoin);
+    found_set.m_extra_group_by = "GROUP BY " + sql_part_fields;
+
 
     //Adjust the WHERE clause appropriately for the extra JOIN:
     where_clause_to_table_name = uses_rel_temp->get_sql_join_alias_name();

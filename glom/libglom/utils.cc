@@ -230,9 +230,12 @@ static void add_to_relationships_list(type_list_relationships& list_relationship
  
 }
 
-Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const Glib::ustring& extra_join, const type_sort_clause& sort_clause, const Glib::ustring& extra_group_by)
+
+Glib::ustring Utils::build_sql_select_fields_to_get(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const Glib::ustring& extra_join, const type_sort_clause& sort_clause, Glib::ustring& sql_part_from, Glib::ustring& sql_part_leftouterjoin)
 {
-  Glib::ustring result;
+  //Initialize output parameters:
+  sql_part_from = Glib::ustring();
+  sql_part_leftouterjoin = Glib::ustring();
 
   //Get all relationships used in the query:
   typedef std::list< sharedptr<const UsesRelationship> > type_list_relationships;
@@ -252,7 +255,6 @@ Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& tab
 
 
   Glib::ustring sql_part_fields;
-  Glib::ustring sql_part_from;
 
   for(type_vecConstLayoutFields::const_iterator iter = fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
   {
@@ -287,17 +289,12 @@ Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& tab
 
   if(sql_part_fields.empty())
   {
-    std::cerr << "Utils::build_sql_select_with_where_clause(): sql_part_fields.empty(): fieldsToGet.size()=" << fieldsToGet.size() << std::endl;
-    return result;
-  }
-  else
-  {
-    result =  "SELECT " + sql_part_fields +
-      " FROM \"" + table_name + "\"";
+    std::cerr << "Utils::build_sql_select_fields_to_get(): sql_part_fields.empty(): fieldsToGet.size()=" << fieldsToGet.size() << std::endl;
+    return sql_part_fields;
   }
 
-  //LEFT OUTER JOIN will get the field values from the other tables, and give us our fields for this table even if there is no corresponding value in the other table.
-  Glib::ustring sql_part_leftouterjoin; 
+  //LEFT OUTER JOIN will get the field values from the other tables, 
+  //and give us our fields for this table even if there is no corresponding value in the other table.
   for(type_list_relationships::const_iterator iter = list_relationships.begin(); iter != list_relationships.end(); ++iter)
   {
     sharedptr<const UsesRelationship> uses_relationship = *iter;
@@ -316,17 +313,34 @@ Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& tab
     }
   }
 
-  if(!extra_join.empty())
-  {
-    sql_part_leftouterjoin += (" " + extra_join + " ");
-  }
+  return sql_part_fields;
+}
+
+
+Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const Glib::ustring& extra_join, const type_sort_clause& sort_clause, const Glib::ustring& extra_group_by)
+{
+  //Get the list of fields to SELECT, plus the tables that they are selected FROM.
+  Glib::ustring sql_part_from;
+  Glib::ustring sql_part_leftouterjoin;
+  const Glib::ustring sql_part_fields = Utils::build_sql_select_fields_to_get(
+    table_name, fieldsToGet, extra_join, sort_clause, sql_part_from, sql_part_leftouterjoin);
+
+  //Build the whole SQL statement:
+  Glib::ustring result = 
+    "SELECT " + sql_part_fields +
+    " FROM \"" + table_name + "\"";
 
   if(!sql_part_from.empty())
     result += ("," + sql_part_from);
 
+  if(!extra_join.empty())
+    sql_part_leftouterjoin += (" " + extra_join + " ");
+
   if(!sql_part_leftouterjoin.empty())
     result += (" " + sql_part_leftouterjoin);
 
+
+  //Add the WHERE clause:
   if(!where_clause.empty())
     result += " WHERE " + where_clause;
 
