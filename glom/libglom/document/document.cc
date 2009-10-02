@@ -4123,11 +4123,8 @@ void Document::maemo_restrict_layouts_to_single_column_group(const sharedptr<Lay
     return;
 
   //Change it to a single column group:
-  if(layout_group->get_columns_count() > 1)
-  {     
+  if(layout_group->get_columns_count() > 1)  
     layout_group->set_columns_count(1);
-    std::cout << "  debug: changed group columns=" << layout_group->get_columns_count() << std::endl;
-  }
      
   //Do the same with any child groups:
   for(LayoutGroup::type_list_items::iterator iter = layout_group->m_list_items.begin(); iter != layout_group->m_list_items.end(); ++iter)
@@ -4153,8 +4150,7 @@ void Document::maemo_restrict_layouts_to_single_column()
       iterLayouts != info.m_layouts.end(); ++iterLayouts)
     {
       LayoutInfo& layout_info = *iterLayouts;
-      std::cout << "debug: layout: " << layout_info.m_layout_name << std::endl;
-      
+
       //Allow specifically-designed maemo layouts to have multiple columns,
       //but resize the others.
       if(true)//layout_info.m_layout_platform != "maemo")
