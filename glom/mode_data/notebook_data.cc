@@ -217,7 +217,7 @@ void Notebook_Data::show_details(const Gnome::Gda::Value& primary_key_value)
   if(m_connection_switch_page)
     m_connection_switch_page.block();
   
-  std::cout << "DEBUG: Notebook_Data::show_details() primary_key_value=" << primary_key_value.to_string() << std::endl;
+  //std::cout << "DEBUG: Notebook_Data::show_details() primary_key_value=" << primary_key_value.to_string() << std::endl;
   m_Box_Details.refresh_data_from_database_with_primary_key(primary_key_value);
 
 #if GLOM_ENABLE_MAEMO
