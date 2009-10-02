@@ -1,3 +1,12 @@
+2009-10-02  Murray Cumming  <murrayc@murrayc.com>
+
+	Maemo: Fix the build.
+	
+	* glom/frame_glom.cc:
+	* glom/import_csv/dialog_import_csv.cc:
+	* glom/import_csv/dialog_import_csv_progress.cc: Added no-exceptions ifdefs, 
+	and corrected the hildonmm code.
+
 1.12.1:
 
 2009-10-02  Murray Cumming  <murrayc@murrayc.com>

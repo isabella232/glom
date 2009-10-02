@@ -64,6 +64,9 @@
 
 #ifdef GLOM_ENABLE_MAEMO
 #include <hildonmm/note.h>
+#include <hildonmm/entry.h>
+#include <hildonmm/text-view.h>
+#include <hildonmm/button.h>
 #endif
 
 #include <glom/filechooser_export.h>
@@ -136,7 +139,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   #ifndef GLOM_ENABLE_MAEMO
   m_pEntry_QuickFind = Gtk::manage(new Gtk::Entry());
   #else
-  m_pEntry_QuickFind = Gtk::manage(new Hildon::Entry());
+  m_pEntry_QuickFind = Gtk::manage(new Hildon::Entry(Gtk::Hildon::SIZE_AUTO));
   #endif
   m_pEntry_QuickFind->signal_activate().connect(
    sigc::mem_fun(*this, &Frame_Glom::on_button_quickfind) ); //Pressing Enter here is like pressing Find.
@@ -146,7 +149,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_pButton_QuickFind = Gtk::manage(new Gtk::Button(_("_Find"), true));
   #else
   m_pButton_QuickFind = Gtk::manage(new Hildon::Button(Gtk::Hildon::SIZE_AUTO, 
-    Hildon::BUTTON_ARRANGEMENT_VERTICAL, _("Find")));
+    Hildon::BUTTON_ARRANGEMENT_VERTICAL, _("Find"), _("Search for records")));
   #endif
   m_pButton_QuickFind->signal_clicked().connect(
     sigc::mem_fun(*this, &Frame_Glom::on_button_quickfind) );

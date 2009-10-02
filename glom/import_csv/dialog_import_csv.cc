@@ -725,8 +725,23 @@ void Dialog_Import_CSV::validate_primary_key()
 
 void Dialog_Import_CSV::on_parser_file_read_error(const Glib::ustring& error_message)
 {
+  std::string filename;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    filename = Glib::filename_from_uri(m_file_uri);
+  }
+  catch(const Glib::ConvertError& ex)
+  {
+    std::cerr << "Glib::filename_from_uri() failed: " << ex.what() << std::endl;
+  }
+#else
+  std::auto_ptr<Glib::Error> error;
+  filename = Glib::filename_from_uri(m_file_uri, error);
+#endif
+  
   show_error_dialog(_("Could Not Open file"),
-    Glib::ustring::compose(_("The file at \"%1\" could not be opened: %2"), Glib::filename_from_uri(m_file_uri), error_message) );
+    Glib::ustring::compose(_("The file at \"%1\" could not be opened: %2"), filename, error_message) );
 }
 
 void Dialog_Import_CSV::on_parser_have_display_name(const Glib::ustring& display_name)
