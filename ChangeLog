@@ -1,3 +1,7 @@
+2009-10-02  Michael Hasselmann  <michaelh@openismus.com>
+
+	Import: Cleanup, added comments.
+
 2009-10-01  Michael Hasselmann  <michaelh@openismus.com>
 
 	Import: Made import working again, changed import logic

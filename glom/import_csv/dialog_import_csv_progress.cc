@@ -63,7 +63,7 @@ void Dialog_Import_CSV_Progress::import(Dialog_Import_CSV& data_source)
     // Wait for the parsing to finish. We do not start importing before the file has been
     // parsed completely since we would not to rollback our changes in case of a
     // parsing error.
-    m_progress_bar->set_text(Glib::ustring::compose(_("Parsing CSV file %1"), data_source.get_filename()));
+    m_progress_bar->set_text(Glib::ustring::compose(_("Parsing CSV file %1"), Glib::filename_from_uri(data_source.get_file_uri())));
     m_ready_connection = data_source.signal_state_changed().connect(sigc::mem_fun(*this, &Dialog_Import_CSV_Progress::on_state_changed));
     break;
   case CsvParser::STATE_PARSED:
@@ -133,6 +133,8 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
 
   const CsvParser::type_row_strings row = m_data_source->get_parser().fetch_next_row();
 
+  // TODO: Perhaps abort on 0 == row instead, so that we do not stop import on
+  // empty rows that are in between other rows.
   if(row.empty())
   {
     // Don't do the response immediately, so the user has a chance to read the

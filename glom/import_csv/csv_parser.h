@@ -36,6 +36,13 @@ namespace Glom
 // We use the low-level Glib::IConv routines to progressively convert the
 // input data in an idle handler.
 
+// TODO: Kill the caching of complete files within m_rows (too costly for big
+// files) and instead only fill it with n rows (and stop parsing until the row
+// buffer has some room again). For accessing parsed rows, one could have two
+// methods: fetch_next_row/take_next_row. The first would use an index, whereas
+// the latter would return the first row in the row buffer and delete it from
+// the buffer.
+
 /** Parses .csv (comma-separated values) text files.
  * See http://en.wikipedia.org/wiki/Comma-separated_values for the file format.
  *
@@ -66,23 +73,20 @@ public:
   /// Get the current state of the parser.
   State get_state() const;
 
-/*
-  /// Get the number of rows parsed so far.
-  guint get_rows_count() const;
-*/
-
   bool get_rows_empty() const;
-
-/*
-  /// Get the number of columns of data in this row.
-  guint get_cols_count(guint row_number) const;
-*/
 
   // The nasty reference return is for performance.
   const Glib::ustring& get_data(guint row, guint col);
 
+  /**  Fetches the next row from the parser's cache. It will block until enough
+    *  data was parsed to return a row. An empty row indicates the last row was
+    *  fetched.
+    */
+  // TODO: Fix to cope with valid empty rows in between, without requiring the
+  // client of this method to check for the parser's state/cache size.
   const type_row_strings fetch_next_row();
 
+  /// Resets the internal row index used for fetch_next_row().
   void reset_row_index();
 
   // Signals:
@@ -186,6 +190,7 @@ private:
   // Parsed data:
   type_rows m_rows;
 
+  // Indicates which row to fetch next:
   guint m_row_index;
 
   type_signal_file_read_error m_signal_file_read_error;

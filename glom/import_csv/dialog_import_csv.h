@@ -50,13 +50,13 @@ public:
 
   CsvParser::State get_parser_state() const;
   Glib::ustring get_target_table_name() const;
-  const Glib::ustring& get_filename() const;
+  const Glib::ustring& get_file_uri() const;
 
-  unsigned int get_row_count() const;
   unsigned int get_column_count() const;
   sharedptr<const Field> get_field_for_column(unsigned int col) const;
   const Glib::ustring& get_data(unsigned int row, unsigned int col);
 
+  // TODO: perhaps it would be safer to just wrap the needed parser API here.
   CsvParser& get_parser();
 
   typedef sigc::signal<void> type_signal_state_changed;
@@ -73,7 +73,7 @@ private:
   Glib::ustring get_current_encoding() const;
   void begin_parse();
 
-  void setup_sample_model(CsvParser::type_row_strings& row);
+  void setup_sample_model(const CsvParser::type_row_strings& row);
   Gtk::TreeViewColumn* create_sample_column(const Glib::ustring& title, guint index);
   Gtk::CellRendererCombo* create_sample_cell(guint index);
 
@@ -143,7 +143,7 @@ private:
   Gtk::Label* m_advice_label;
   Gtk::Label* m_error_label;
 
-  Glib::ustring m_filename;
+  Glib::ustring m_file_uri;
 
   // Index into the ENCODINGS array (see dialog_import_csv.cc) for the
   // encoding that we currently try to read the data with, or -1 if

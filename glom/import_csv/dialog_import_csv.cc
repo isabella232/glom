@@ -155,9 +155,9 @@ Glib::ustring Dialog_Import_CSV::get_target_table_name() const
   return m_target_table->get_text();
 }
 
-const Glib::ustring& Dialog_Import_CSV::get_filename() const
+const Glib::ustring& Dialog_Import_CSV::get_file_uri() const
 {
-  return m_filename;
+  return m_file_uri;
 }
 
 void Dialog_Import_CSV::import(const Glib::ustring& uri, const Glib::ustring& into_table)
@@ -208,15 +208,9 @@ void Dialog_Import_CSV::import(const Glib::ustring& uri, const Glib::ustring& in
     m_field_model_sorted = Gtk::TreeModelSort::create(m_field_model);
     m_field_model_sorted->set_sort_column(m_field_columns.m_col_field_name, Gtk::SORT_ASCENDING);
 
-    m_filename = uri;
+    m_file_uri = uri;
     m_parser->set_file_and_start_parsing(uri);
   }
-}
-
-// TODO:remove me.
-guint Dialog_Import_CSV::get_row_count() const
-{
-  return -1;
 }
 
 guint Dialog_Import_CSV::get_column_count() const
@@ -252,7 +246,7 @@ void Dialog_Import_CSV::clear()
   m_field_model.reset();
   m_field_model_sorted.reset();
   m_fields.clear();
-  m_filename.clear();
+  m_file_uri.clear();
   m_parser->clear();
   //m_parser.reset(0);
   m_encoding_info->set_text("");
@@ -304,7 +298,7 @@ void Dialog_Import_CSV::on_combo_encoding_changed()
 
   // Parse from beginning with new encoding:
   m_parser->set_encoding(get_current_encoding());
-  m_parser->set_file_and_start_parsing(m_filename);
+  m_parser->set_file_and_start_parsing(m_file_uri);
 }
 
 void Dialog_Import_CSV::on_first_line_as_title_toggled()
@@ -467,9 +461,6 @@ void Dialog_Import_CSV::on_parser_encoding_error()
   }
 }
 
-/*
- * No, this is wrong. Creating the tree model and handling a line from the CSV file are two separate steps. Proposal: Construct tree model *after* parsing, using row[0].
- */
 void Dialog_Import_CSV::on_parser_line_scanned(CsvParser::type_row_strings row, unsigned int row_number)
 {
   // This is the first line read if there is no model yet:
@@ -497,7 +488,7 @@ void Dialog_Import_CSV::on_parser_line_scanned(CsvParser::type_row_strings row, 
   }
 }
 
-void Dialog_Import_CSV::setup_sample_model(CsvParser::type_row_strings& row)
+void Dialog_Import_CSV::setup_sample_model(const CsvParser::type_row_strings& row)
 {
   m_sample_model = Gtk::ListStore::create(m_sample_columns);
   m_sample_view->set_model(m_sample_model);
@@ -734,8 +725,8 @@ void Dialog_Import_CSV::validate_primary_key()
 
 void Dialog_Import_CSV::on_parser_file_read_error(const Glib::ustring& error_message)
 {
-  show_error_dialog(_("Could Not Open file"), 
-    Glib::ustring::compose(_("The file at \"%1\" could not be opened: %2"), m_filename, error_message) );
+  show_error_dialog(_("Could Not Open file"),
+    Glib::ustring::compose(_("The file at \"%1\" could not be opened: %2"), Glib::filename_from_uri(m_file_uri), error_message) );
 }
 
 void Dialog_Import_CSV::on_parser_have_display_name(const Glib::ustring& display_name)
