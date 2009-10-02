@@ -1,3 +1,11 @@
+2.12.1:
+
+2009-10-02  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/utils.h|cc]: build_sql_select_fields_to_get(): 
+	Removed the unused extra_join parameter.
+	* glom/base_db.cc: Adapted.
+
 2009-10-02  Murray Cumming  <murrayc@murrayc.com>
 
 	Related Records: Fix doubly-related records portals, such as a list of 
