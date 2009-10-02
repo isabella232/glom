@@ -231,7 +231,7 @@ static void add_to_relationships_list(type_list_relationships& list_relationship
 }
 
 
-Glib::ustring Utils::build_sql_select_fields_to_get(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const Glib::ustring& extra_join, const type_sort_clause& sort_clause, Glib::ustring& sql_part_from, Glib::ustring& sql_part_leftouterjoin)
+Glib::ustring Utils::build_sql_select_fields_to_get(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const type_sort_clause& sort_clause, Glib::ustring& sql_part_from, Glib::ustring& sql_part_leftouterjoin)
 {
   //Initialize output parameters:
   sql_part_from = Glib::ustring();
@@ -323,7 +323,7 @@ Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& tab
   Glib::ustring sql_part_from;
   Glib::ustring sql_part_leftouterjoin;
   const Glib::ustring sql_part_fields = Utils::build_sql_select_fields_to_get(
-    table_name, fieldsToGet, extra_join, sort_clause, sql_part_from, sql_part_leftouterjoin);
+    table_name, fieldsToGet, sort_clause, sql_part_from, sql_part_leftouterjoin);
 
   //Build the whole SQL statement:
   Glib::ustring result = 

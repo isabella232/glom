@@ -45,7 +45,7 @@ typedef std::vector< sharedptr<LayoutItem_Field> > type_vecLayoutFields;
 typedef std::vector< sharedptr<const LayoutItem_Field> > type_vecConstLayoutFields;
 
 //TODO: Move these to their own file:
-Glib::ustring build_sql_select_fields_to_get(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const Glib::ustring& extra_join, const type_sort_clause& sort_clause, Glib::ustring& sql_part_from, Glib::ustring& sql_part_leftouterjoin);
+Glib::ustring build_sql_select_fields_to_get(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const type_sort_clause& sort_clause, Glib::ustring& sql_part_from, Glib::ustring& sql_part_leftouterjoin);
 
 Glib::ustring build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause = Glib::ustring(), const Glib::ustring& extra_join = Glib::ustring(), const type_sort_clause& sort_clause = type_sort_clause(), const Glib::ustring& extra_group_by = Glib::ustring());
 Glib::ustring build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const Glib::ustring& where_clause = Glib::ustring(), const Glib::ustring& extra_join = Glib::ustring(), const type_sort_clause& sort_clause = type_sort_clause(), const Glib::ustring& extra_group_by = Glib::ustring());
