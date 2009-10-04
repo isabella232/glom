@@ -472,8 +472,9 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
 
       if(with_second)
         itempair.second = datamodel->get_value_at(1, row, error);
-      list_values.push_back(itempair);
-#endif      
+#endif
+
+      list_values.push_back(itempair);      
     }
   }
   else

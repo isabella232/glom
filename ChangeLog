@@ -1,3 +1,12 @@
+2009-10-04  Murray Cumming  <murrayc@murrayc.com>
+
+  Fix regression: Actually show field choices again in combo boxes.
+  
+	* glom/libglom/utils.cc: get_choice_values(): Move the list_values.push_back() 
+	out of the ifdef block so we actually show field choices again in the combo 
+	boxes. This was broken by the commit from Johannes on 2009-07-30.
+	Hopefully ldtp tests will avoid this in future.
+
 2009-10-02  Murray Cumming  <murrayc@murrayc.com>
 
 	Maemo: Avoid multi-column details layouts.
