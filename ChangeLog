@@ -1,5 +1,12 @@
 2009-10-05  Murray Cumming  <murrayc@murrayc.com>
 
+	Maemo: Allow editing of hidden tables (only) via its details window.
+
+	* glom/mode_data/box_data_list_related.cc: enable_buttons(): Add a maemo 
+	ifdef around m_AddDel.set_allow_view_details().
+
+2009-10-05  Murray Cumming  <murrayc@murrayc.com>
+
 	Maemo: List: Use only 2 columns by default, so some have enough space.
 	
 	* glom/libglom/document/document.cc: get_data_layout_groups_plus_new_fields():
