@@ -66,7 +66,7 @@ CsvParser::CsvParser(const std::string& encoding_charset)
 
 void CsvParser::set_file_and_start_parsing(const std::string& file_uri)
 {
-  // TODO: Also fail on file:///?
+  // TODO: Check URI validity?
   g_return_if_fail(!file_uri.empty());
 
   m_file = Gio::File::create_for_uri(file_uri);
@@ -281,7 +281,10 @@ bool CsvParser::on_idle_parse()
 
   const char* inbuffer = &m_raw[m_input_position];
   char* inbuf = const_cast<char*>(inbuffer);
+
+  g_return_val_if_fail(m_input_position <= m_raw.size(), true);
   gsize inbytes = m_raw.size() - m_input_position;
+
   char outbuffer[CONVERT_BUFFER_SIZE];
   char* outbuf = outbuffer;
   gsize outbytes = CONVERT_BUFFER_SIZE;

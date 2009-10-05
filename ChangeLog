@@ -1,3 +1,33 @@
+2009-10-05  Murray Cumming  <murrayc@murrayc-desktop>
+
+	Export: Correct problems in the binary data for images: Escape newlines.
+
+	* glom/libglom/data_structure/field.cc: to_file_format(): Escape 
+	newlines as \012 instead of removing them, because this is probably 
+	what gda_binary_to_string() intends. 
+
+2009-10-05  Murray Cumming  <murrayc@murrayc.com>
+
+	Export: Correct problems in the binary data for images.
+
+	* glom/libglom/data_structure/field.cc: to_file_format(): Escape 
+	newlines and quotes in binary data text, to workaround libgda bug 
+	https://bugzilla.gnome.org/show_bug.cgi?id=597390
+	* glom/frame_glom.cc: export_data_to_stream(): Double check that 
+	image data contains no newlines or quotes.
+	* glom/libglom/utils.cc: string_replace(): Avoid an endless loop 
+	when the search_for input parameter is empty.
+	This fixes bug #593304 (Michael Hasselmann)
+
+2009-10-04  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix regression: Actually show field choices again in combo boxes.
+  
+	* glom/libglom/utils.cc: get_choice_values(): Move the list_values.push_back() 
+	out of the ifdef block so we actually show field choices again in the combo 
+	boxes. This was broken by the commit from Johannes on 2009-07-30.
+	Hopefully ldtp tests will avoid this in future.
+
 2009-10-02  Murray Cumming  <murrayc@murrayc.com>
 
 	Maemo: Really fall back to the standard layout if there is no maemo layout.

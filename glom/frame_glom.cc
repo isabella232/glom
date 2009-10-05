@@ -823,6 +823,28 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
 
             const Glib::ustring field_text = field->to_file_format(value);
 
+            if(layout_item->get_glom_type() == Field::TYPE_IMAGE) //This is too much data.
+            {
+              // Some extra debug checks, 
+              // though we believe that all these problems are now fixed in File::to_file_format():
+
+              const char* newline_to_find = "\r\n";
+              size_t pos = field_text.find_first_of(newline_to_find);
+              if(pos != std::string::npos)
+              {
+                std::cerr << "export: binary data field text contains an unexpected newline: " << field_text << std::endl;
+                continue;
+              }
+
+              const char* quote_to_find = """";
+              pos = field_text.find_first_of(newline_to_find);
+              if(pos != std::string::npos)
+              {
+                std::cerr << "export: binary data field text contains an unexpected quote: " << field_text << std::endl;
+                continue;
+              }
+            }
+            
             if(layout_item->get_glom_type() == Field::TYPE_TEXT)
             {
               //The CSV RFC says text may be quoted and should be if it has newlines:
@@ -831,11 +853,7 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
             else
               row_string += field_text;
 
-            if(layout_item->get_glom_type() == Field::TYPE_IMAGE) //This is too much data.
-            {
-              if(!Conversions::value_is_empty(value))
-                std::cout << "  field name=" << layout_item->get_name() << ", image value not empty=" << std::endl;
-            }
+           
             //std::cout << "  field name=" << layout_item->get_name() << ", value=" << layout_item->m_field.sql(value) << std::endl;
           //}
         }
