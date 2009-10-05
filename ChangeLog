@@ -9,7 +9,7 @@
 	image data contains no newlines or quotes.
 	* glom/libglom/utils.cc: string_replace(): Avoid an endless loop 
 	when the search_for input parameter is empty.
-	This fixes bug #593304 (Mathias Hasselmann)
+	This fixes bug #593304 (Michael Hasselmann)
 
 2009-10-04  Murray Cumming  <murrayc@murrayc.com>
 
