@@ -1523,7 +1523,21 @@ Document::type_list_layout_groups Document::get_data_layout_groups_plus_new_fiel
     if(layout_platform == "maemo")
     {
       for(type_list_layout_groups::iterator iter = result.begin(); iter != result.end(); ++iter)
-      maemo_restrict_layouts_to_single_column_group(*iter);
+      {
+        sharedptr<LayoutGroup> layout_group = *iter;
+        if(!layout_group)
+          continue;
+        
+        if(layout_name == "list")
+        {
+          //Don't try to show more than 3 items on the list view:
+          if(layout_group->get_items_count() >= 2)
+            layout_group->m_list_items.resize(2);
+        }
+        
+        maemo_restrict_layouts_to_single_column_group(layout_group);
+        
+      }
     }
     
     //Store this so we don't have to recreate it next time:
@@ -4156,15 +4170,24 @@ void Document::maemo_restrict_layouts_to_single_column()
 
       //Allow specifically-designed maemo layouts to have multiple columns,
       //but resize the others.
-      if(true)//layout_info.m_layout_platform != "maemo")
+      if(layout_info.m_layout_platform == "maemo")
+        continue;
+      
+      //Look at every group, recursively:
+      for(type_list_layout_groups::iterator iterGroups = layout_info.m_layout_groups.begin(); 
+        iterGroups != layout_info.m_layout_groups.end(); ++iterGroups)
       {
-        //Look at every group, recursively:
-        for(type_list_layout_groups::iterator iterGroups = layout_info.m_layout_groups.begin(); 
-          iterGroups != layout_info.m_layout_groups.end(); ++iterGroups)
+        sharedptr<LayoutGroup> group = *iterGroups;
+        
+        if(layout_info.m_layout_name == "list")
         {
-          sharedptr<LayoutGroup> group = *iterGroups;
-          maemo_restrict_layouts_to_single_column_group(group);
+          //Don't try to show more than 2 items on the list view:
+          //TODO: This is rather harsh. murrayc
+          if(group->get_items_count() >= 2)
+            group->m_list_items.resize(2);
         }
+        
+        maemo_restrict_layouts_to_single_column_group(group);
       }
     }
   }      

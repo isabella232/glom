@@ -760,6 +760,7 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
 
     //Restrict the height, to prevent multiline text cells,
     //and to allow TreeView performance optimisation:
+    //TODO: Avoid specifying a width for the last column?
     int suitable_width = 0;
     pCellRendererText->get_property("width", suitable_width);
     pCellRendererText->set_fixed_size(suitable_width, get_fixed_cell_height() );
