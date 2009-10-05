@@ -836,8 +836,8 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
                 continue;
               }
 
-              const char* quote_to_find = """";
-              pos = field_text.find_first_of(newline_to_find);
+              const char* quote_to_find = "\"";
+              pos = field_text.find_first_of(quote_to_find);
               if(pos != std::string::npos)
               {
                 std::cerr << "export: binary data field text contains an unexpected quote: " << field_text << std::endl;

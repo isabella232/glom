@@ -1,3 +1,5 @@
+1.12.2:
+
 2009-10-05  Murray Cumming  <murrayc@murrayc.com>
 
 	Import: Handle large unquoted text (binary image data).
@@ -106,7 +108,7 @@
 
 2009-09-29  Murray Cumming  <murrayc@murrayc.com>
 
-  Doubly-related Records: Correct the SQL.
+	Doubly-related Records: Correct the SQL.
   
 	* glom/base_db.cc: set_found_set_where_clause_for_portal():
 	For doubly-related records, use the correct relationship for the GROUP BY to 
@@ -117,7 +119,7 @@
 
 2009-09-29  Murray Cumming  <murrayc@murrayc.com>
 
-  Design: Related Records Portal: Prevent use of inappropriate relationships.
+	Design: Related Records Portal: Prevent use of inappropriate relationships.
   
 	* glom/mode_design/layout/dialog_layout_list_related.cc: 
 	on_combo_relationship_changed(): Do not allow the related record to show 
