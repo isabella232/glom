@@ -134,7 +134,10 @@ Glib::ustring TranslatableItem::get_title() const
         //This would be quite unusual.
         type_map_locale_to_translations::const_iterator iter = m_map_translations.begin();
         if(iter != m_map_translations.end())
+        {
+          //std::cout << "debug: TranslatableItem::get_title() falling back to the first translation: locale=" << iter->first << std::endl;
           return iter->second;
+        }
       }
       else
       {
@@ -186,11 +189,22 @@ void TranslatableItem::set_title_original(const Glib::ustring& title)
   m_title = title;
 }
 
+void TranslatableItem::clear_title_in_all_locales()
+{
+  m_title.clear();
+  
+  for(type_map_locale_to_translations::iterator iter = m_map_translations.begin(); iter != m_map_translations.end(); ++iter)
+  {
+    Glib::ustring& translation = iter->second;
+    translation.clear();
+  }
+}
+
 Glib::ustring TranslatableItem::get_current_locale()
 {
   if(m_current_locale.empty())
   {
-    char* cLocale = setlocale(LC_ALL, NULL); //Passing NULL means query, instead of set.
+    const char* cLocale = setlocale(LC_ALL, NULL); //Passing NULL means query, instead of set.
     if(cLocale)
     {
       //std::cout << "TranslatableItem::get_current_locale(): locale=" << cLocale << std::endl;

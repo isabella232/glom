@@ -4125,7 +4125,10 @@ void Document::maemo_restrict_layouts_to_single_column_group(const sharedptr<Lay
   //Change it to a single column group:
   if(layout_group->get_columns_count() > 1)  
     layout_group->set_columns_count(1);
-     
+   
+  //Remove the title, as it uses too much space on a Maemo screen:
+  layout_group->clear_title_in_all_locales();
+ 
   //Do the same with any child groups:
   for(LayoutGroup::type_list_items::iterator iter = layout_group->m_list_items.begin(); iter != layout_group->m_list_items.end(); ++iter)
   {
@@ -4134,7 +4137,7 @@ void Document::maemo_restrict_layouts_to_single_column_group(const sharedptr<Lay
     sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(layout_item);
     if(group)
       maemo_restrict_layouts_to_single_column_group(group);
-  } 
+  }
 }
 
 void Document::maemo_restrict_layouts_to_single_column()

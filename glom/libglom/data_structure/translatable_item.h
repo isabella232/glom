@@ -78,8 +78,12 @@ public:
    */
   void set_title_original(const Glib::ustring& title);
 
+  //TODO: Rename to set_title_translation()?
   void set_translation(const Glib::ustring& locale, const Glib::ustring& translation);
   Glib::ustring get_translation(const Glib::ustring& locale) const;
+  
+  /// Clear the original title and any translations of the title.
+  void clear_title_in_all_locales();
 
   typedef std::map<Glib::ustring, Glib::ustring> type_map_locale_to_translations;
 

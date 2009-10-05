@@ -1,3 +1,13 @@
+2009-10-05  Murray Cumming  <murrayc@murrayc.com>
+
+	Maemo: Hide group titles by default.
+	
+	* glom/libglom/data_structure/translatable_item.[h|cc]:
+	Added clear_title_in_all_locales().
+	* glom/libglom/document/document.cc:
+	maemo_restrict_layouts_to_single_column_group(): Also clear the group titles 
+	to make the default maemo layout more compact.
+	
 2009-10-05  Murray Cumming  <murrayc@murrayc-desktop>
 
 	Export: Correct problems in the binary data for images: Escape newlines.
