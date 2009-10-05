@@ -1,5 +1,12 @@
 2009-10-05  Murray Cumming  <murrayc@murrayc.com>
 
+	Maemo: Related Records / AddDel: Use icon-only Hildon buttons.
+	
+	* glom/utility_widgets/db_adddel/db_adddel_withbuttons.[h|cc]: Use Hildon 
+	Buttons, with only icons.
+
+2009-10-05  Murray Cumming  <murrayc@murrayc.com>
+
 	Maemo: Hide group titles by default.
 	
 	* glom/libglom/data_structure/translatable_item.[h|cc]:

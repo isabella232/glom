@@ -26,9 +26,15 @@ namespace Glom
 
 DbAddDel_WithButtons::DbAddDel_WithButtons()
 : m_HBox(false, Utils::DEFAULT_SPACING_SMALL),
+#ifndef GLOM_ENABLE_MAEMO
   m_Button_Add(Gtk::Stock::ADD),
   m_Button_Del(Gtk::Stock::DELETE),
   m_Button_Edit(Gtk::Stock::OPEN)
+#else
+  m_Button_Add(Gtk::Hildon::SIZE_FINGER_HEIGHT, Hildon::BUTTON_ARRANGEMENT_HORIZONTAL),
+  m_Button_Del(Gtk::Hildon::SIZE_FINGER_HEIGHT, Hildon::BUTTON_ARRANGEMENT_HORIZONTAL),
+  m_Button_Edit(Gtk::Hildon::SIZE_FINGER_HEIGHT, Hildon::BUTTON_ARRANGEMENT_HORIZONTAL)
+#endif
 {
   m_HBox.set_spacing(Utils::DEFAULT_SPACING_SMALL);
 
@@ -43,6 +49,22 @@ DbAddDel_WithButtons::DbAddDel_WithButtons()
   m_HBox.pack_end(m_Button_Edit, Gtk::PACK_SHRINK);
   m_HBox.pack_end(m_Button_Del, Gtk::PACK_SHRINK);
   m_HBox.pack_end(m_Button_Add, Gtk::PACK_SHRINK);
+
+#ifdef GLOM_ENABLE_MAEMO
+  //Use smaller icon-only buttons for these infrequently-clicked buttons,
+  //to save screen space.
+  
+  //Note that icons of size Gtk::ICON_SIZE_MENU are smaller, 
+  //but it seems impossible to have Hildon::Buttons smaller than Gtk::Hildon::SIZE_FINGER_HEIGHT.
+  Gtk::Image* image = Gtk::manage(new Gtk::Image(Gtk::Stock::ADD, Gtk::ICON_SIZE_SMALL_TOOLBAR));
+  m_Button_Add.set_image(*image);
+  
+  image = Gtk::manage(new Gtk::Image(Gtk::Stock::DELETE, Gtk::ICON_SIZE_SMALL_TOOLBAR));
+  m_Button_Del.set_image(*image);
+  
+  image = Gtk::manage(new Gtk::Image(Gtk::Stock::OPEN, Gtk::ICON_SIZE_SMALL_TOOLBAR));
+  m_Button_Edit.set_image(*image);
+#endif //GLOM_ENABLE_MAEMO
 
   setup_buttons();
 }

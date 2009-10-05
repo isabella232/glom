@@ -23,6 +23,10 @@
 
 #include "db_adddel.h"
 
+#ifdef GLOM_ENABLE_MAEMO
+#include <hildonmm/button.h>
+#endif
+
 namespace Glom
 {
 
@@ -50,9 +54,16 @@ private:
 
   //member widgets:
   Gtk::HBox m_HBox;
-  Gtk::Button m_Button_Add;
-  Gtk::Button m_Button_Del;
-  Gtk::Button m_Button_Edit;
+  
+#ifndef GLOM_ENABLE_MAEMO
+  typedef Gtk::Button type_button; 
+#else
+  typedef Hildon::Button type_button; 
+#endif
+
+  type_button m_Button_Add;
+  type_button m_Button_Del;
+  type_button m_Button_Edit;
 };
 
 } //namespace Glom
