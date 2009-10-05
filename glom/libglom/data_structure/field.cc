@@ -300,8 +300,16 @@ Glib::ustring Field::to_file_format(const Gnome::Gda::Value& value, glom_field_t
     else
     {
       gchar* str = gda_binary_to_string(gdabinary, 0);
-      return (str) ? Glib::ustring(Glib::ScopedPtr<char>(str).get())
-        : Glib::ustring();
+      Glib::ustring result = (str) ? 
+        Glib::ustring(Glib::ScopedPtr<char>(str).get()) : Glib::ustring();
+
+      //Avoid arbitrary newlines in this text.
+      //See libgda bug: https://bugzilla.gnome.org/show_bug.cgi?id=597390
+      result = Utils::string_replace(result, "\n", "");
+
+      //Escape any quotes in this text:
+      //See libgda bug: https://bugzilla.gnome.org/show_bug.cgi?id=597390
+      return Utils::string_replace(result, "\"", "\\042");
     }
   }
   
