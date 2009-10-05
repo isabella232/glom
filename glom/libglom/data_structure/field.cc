@@ -305,7 +305,7 @@ Glib::ustring Field::to_file_format(const Gnome::Gda::Value& value, glom_field_t
 
       //Avoid arbitrary newlines in this text.
       //See libgda bug: https://bugzilla.gnome.org/show_bug.cgi?id=597390
-      result = Utils::string_replace(result, "\n", "");
+      result = Utils::string_replace(result, "\n", "\\012");
 
       //Escape any quotes in this text:
       //See libgda bug: https://bugzilla.gnome.org/show_bug.cgi?id=597390

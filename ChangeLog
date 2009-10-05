@@ -1,3 +1,11 @@
+2009-10-05  Murray Cumming  <murrayc@murrayc-desktop>
+
+	Export: Correct problems in the binary data for images: Escape newlines.
+
+	* glom/libglom/data_structure/field.cc: to_file_format(): Escape 
+	newlines as \012 instead of removing them, because this is probably 
+	what gda_binary_to_string() intends. 
+
 2009-10-05  Murray Cumming  <murrayc@murrayc.com>
 
 	Export: Correct problems in the binary data for images.
