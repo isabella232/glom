@@ -1,5 +1,16 @@
 2009-10-06  Murray Cumming  <murrayc@murrayc.com>
 
+	Maemo: List: Click to view details.
+	
+	* glom/utility_widgets/db_adddel/db_adddel.[h|cc]: Connect to 
+	TouchSelector::signal_changed to respond to clicks on the list. Note that 
+	a drag to pan (scroll) does not cause that signal to be emitted.
+	* glom/utility_widgets/db_adddel/db_adddel_withbuttons.[h|cc]: On Mameo, 
+	remove the Delete and Edit buttons because deleting can be done via the 
+	details window (viewable on Maemo). The Add button is still there and is ugly. 
+
+2009-10-06  Murray Cumming  <murrayc@murrayc.com>
+
 	DbAddDel: Expand an appropriate column.
 	
 	* glom/libglom/data_structure/layout/layoutitem.[h|cc]: get_display_width(): 

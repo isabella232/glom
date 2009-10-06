@@ -31,9 +31,7 @@ DbAddDel_WithButtons::DbAddDel_WithButtons()
   m_Button_Del(Gtk::Stock::DELETE),
   m_Button_Edit(Gtk::Stock::OPEN)
 #else
-  m_Button_Add(Gtk::Hildon::SIZE_FINGER_HEIGHT, Hildon::BUTTON_ARRANGEMENT_HORIZONTAL),
-  m_Button_Del(Gtk::Hildon::SIZE_FINGER_HEIGHT, Hildon::BUTTON_ARRANGEMENT_HORIZONTAL),
-  m_Button_Edit(Gtk::Hildon::SIZE_FINGER_HEIGHT, Hildon::BUTTON_ARRANGEMENT_HORIZONTAL)
+  m_Button_Add(Gtk::Hildon::SIZE_FINGER_HEIGHT, Hildon::BUTTON_ARRANGEMENT_HORIZONTAL)
 #endif
 {
   m_HBox.set_spacing(Utils::DEFAULT_SPACING_SMALL);
@@ -43,14 +41,17 @@ DbAddDel_WithButtons::DbAddDel_WithButtons()
 
   //Link buttons to handlers:
   m_Button_Add.signal_clicked().connect(sigc::mem_fun(*this, &DbAddDel_WithButtons::on_button_add));
+  m_HBox.pack_end(m_Button_Add, Gtk::PACK_SHRINK);
+    
+  #ifndef GLOM_ENABLE_MAEMO
   m_Button_Del.signal_clicked().connect(sigc::mem_fun(*this, &DbAddDel_WithButtons::on_button_del));
   m_Button_Edit.signal_clicked().connect(sigc::mem_fun(*this, &DbAddDel_WithButtons::on_button_edit));
 
   m_HBox.pack_end(m_Button_Edit, Gtk::PACK_SHRINK);
   m_HBox.pack_end(m_Button_Del, Gtk::PACK_SHRINK);
-  m_HBox.pack_end(m_Button_Add, Gtk::PACK_SHRINK);
+  #endif //GLOM_ENABLE_MAEMO
 
-#ifdef GLOM_ENABLE_MAEMO
+  #ifdef GLOM_ENABLE_MAEMO
   //Use smaller icon-only buttons for these infrequently-clicked buttons,
   //to save screen space.
   
@@ -58,13 +59,7 @@ DbAddDel_WithButtons::DbAddDel_WithButtons()
   //but it seems impossible to have Hildon::Buttons smaller than Gtk::Hildon::SIZE_FINGER_HEIGHT.
   Gtk::Image* image = Gtk::manage(new Gtk::Image(Gtk::Stock::ADD, Gtk::ICON_SIZE_SMALL_TOOLBAR));
   m_Button_Add.set_image(*image);
-  
-  image = Gtk::manage(new Gtk::Image(Gtk::Stock::DELETE, Gtk::ICON_SIZE_SMALL_TOOLBAR));
-  m_Button_Del.set_image(*image);
-  
-  image = Gtk::manage(new Gtk::Image(Gtk::Stock::OPEN, Gtk::ICON_SIZE_SMALL_TOOLBAR));
-  m_Button_Edit.set_image(*image);
-#endif //GLOM_ENABLE_MAEMO
+  #endif //GLOM_ENABLE_MAEMO
 
   setup_buttons();
 }
@@ -80,17 +75,17 @@ void DbAddDel_WithButtons::on_button_add()
 #endif
 }
 
+#ifndef GLOM_ENABLE_MAEMO
 void DbAddDel_WithButtons::on_button_del()
 {
-#ifndef GLOM_ENABLE_MAEMO
   on_MenuPopup_activate_Delete();
-#endif
 }
 
 void DbAddDel_WithButtons::on_button_edit()
 {
   do_user_requested_edit();
 }
+#endif //GLOM_ENABLE_MAEMO
 
 void DbAddDel_WithButtons::set_allow_add(bool val)
 {
@@ -122,16 +117,20 @@ void DbAddDel_WithButtons::setup_buttons()
   const bool allow_del = get_allow_user_actions() && m_allow_delete;
   const bool allow_add = get_allow_user_actions() && m_allow_add;
  
-  m_Button_Edit.show();
-  m_Button_Del.show();
   m_Button_Add.show();
-  
-  m_Button_Edit.set_property("visible", allow_edit);
-  m_Button_Del.set_property("visible", allow_del);
   m_Button_Add.set_property("visible", allow_add);
+ 
+   
+  #ifndef GLOM_ENABLE_MAEMO
+  m_Button_Edit.show();
+  m_Button_Edit.set_property("visible", allow_edit);
   
   if(!m_open_button_title.empty())
     m_Button_Edit.set_label(m_open_button_title);
+ 
+  m_Button_Del.show();
+  m_Button_Del.set_property("visible", allow_del);
+  #endif //GLOM_ENABLE_MAEMO
   
   m_HBox.show();
 }

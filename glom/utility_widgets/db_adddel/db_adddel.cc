@@ -115,12 +115,14 @@ DbAddDel::DbAddDel()
   pack_start(m_ScrolledWindow);
   #else
   //Do not let the treeview emit activated as soon as a row is pressed.
-  //TODO: Allow this default mamoe behaviour?
+  //TODO: Allow this default maemo behaviour?
   g_object_set(m_TreeView.gobj(), "hildon-ui-mode", HILDON_UI_MODE_NORMAL, (void*)0);
   
   //Allow get_selected() and get_active() to work:
   m_TreeView.set_column_selection_mode(Hildon::TOUCH_SELECTOR_SELECTION_MODE_SINGLE);
   pack_start(m_TreeView);
+  
+  m_TreeView.signal_changed().connect(sigc::mem_fun(*this, &DbAddDel::on_maemo_touchselector_changed));
   #endif //GLOM_ENABLE_MAEMO
 
   m_TreeView.show();
@@ -231,6 +233,14 @@ void DbAddDel::on_MenuPopup_activate_layout()
   signal_user_requested_layout().emit();
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+
+#ifdef GLOM_ENABLE_MAEMO
+void DbAddDel::on_maemo_touchselector_changed(int /* column */)
+{
+  if(!m_bIgnoreTreeViewSignals)
+    do_user_requested_edit();
+}
+#endif //GLOM_ENABLE_MAEMO
 
 #ifdef GLOM_ENABLE_MAEMO
 void DbAddDel::setup_menu()

@@ -302,6 +302,7 @@ private:
   //Signal handlers:
   #ifdef GLOM_ENABLE_MAEMO
   void treeviewcolumn_on_cell_data(const Gtk::TreeModel::iterator& iter, int model_column_index, int data_model_column_index);
+  void on_maemo_touchselector_changed(int column);
   #else
   void treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, int model_column_index, int data_model_column_index);
   #endif //GLOM_ENABLE_MAEMO
