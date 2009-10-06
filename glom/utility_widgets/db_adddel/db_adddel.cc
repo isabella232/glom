@@ -1056,6 +1056,10 @@ void DbAddDel::construct_specified_columns()
   bool no_columns_used = true;
   int data_model_column_index = 0;
   
+  guint column_to_expand = 0;
+  const bool has_expandable_column = get_column_to_expand(column_to_expand);
+  //std::cout << "DEBUG: column_to_expand=" << column_to_expand  << ", has=" << has_expandable_column << std::endl;
+  
   for(type_vecModelColumns::iterator iter = vecModelColumns.begin(); iter != vecModelColumns.end(); ++iter)
   {
     const DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
@@ -1082,7 +1086,12 @@ void DbAddDel::construct_specified_columns()
       if(pCellRenderer)
       {
         //Get the index of the field in the query, if it is a field:
-        treeview_append_column(column_name, *pCellRenderer, model_column_index, item_data_model_column_index);
+        //std::cout << "debug: model_column_index=" << model_column_index << ", item_data_model_column_index=" << item_data_model_column_index << std::endl;
+        const bool expand = column_to_expand && (column_to_expand == model_column_index);
+        treeview_append_column(column_name, 
+          *pCellRenderer, 
+          model_column_index, item_data_model_column_index, 
+          expand);
 
         if(column_info.m_editable)
         {
@@ -1897,7 +1906,44 @@ void DbAddDel::on_treeview_columns_changed()
 }
 #endif //GLOM_ENABLE_MAEMO
 
-guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRenderer& cellrenderer, int model_column_index, int data_model_column_index)
+bool DbAddDel::get_column_to_expand(guint& column_to_expand) const
+{
+  //Initialize output parameter:
+  column_to_expand = 0;
+  bool result = false;
+  
+  //Discover the right-most text column: 
+  guint i = 0;
+  for(type_ColumnTypes::const_iterator iter = m_ColumnTypes.begin(); iter != m_ColumnTypes.end(); ++iter)
+  {
+    sharedptr<LayoutItem> layout_item = iter->m_item;
+           
+    sharedptr<LayoutItem_Field> layout_item_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
+    if(layout_item_field)
+    {  
+      //Only text columns should expand.
+      //Number fields are right-aligned, so expansion is annoying.
+      //Time and date fields don't vary their width much.
+      if(layout_item_field->get_glom_type() == Field::TYPE_TEXT)
+      {
+        //Check that no specific width has been specified:
+        const guint column_width = layout_item_field->get_display_width();
+        if(!column_width) //TODO: Ignore these on maemo?
+        {
+          column_to_expand = i;
+          result = true;
+        }
+        
+      }
+    }
+    
+    ++i;
+  }
+  
+  return result;
+}
+
+guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRenderer& cellrenderer, int model_column_index, int data_model_column_index, bool expand)
 {
   #ifndef GLOM_ENABLE_MAEMO
   DbTreeViewColumnGlom* pViewColumn = Gtk::manage( new DbTreeViewColumnGlom(Utils::string_escape_underscores(title), cellrenderer) );
@@ -1906,7 +1952,7 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   guint cols_count = m_TreeView.append_column(*pViewColumn);
   #else
   Glib::RefPtr<Hildon::TouchSelectorColumn> pViewColumn = touch_selector_get_column();
-  pViewColumn->pack_start(cellrenderer, false);
+  pViewColumn->pack_start(cellrenderer, expand);
   g_assert(pViewColumn);
   guint cols_count = get_columns_count();
   #endif //GLOM_ENABLE_MAEMO
@@ -1929,18 +1975,22 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   pViewColumn->set_resizable();
   #endif //GLOM_ENABLE_MAEMO
   
-  guint column_width = 0;
-  if(!layout_item->get_display_width(column_width))
+  guint column_width = -1; //Means expand.
+  if(!expand)
   {
-    //TODO: Choose a width based on the first 100 values.
-    if(layout_item_field)
+    column_width = layout_item->get_display_width();
+    if(!column_width)
     {
-     column_width = Utils::get_suitable_field_width_for_widget(*this, layout_item_field);
-     column_width = column_width / 3;
-     //std::cout << "DEBUG: column_width=" << column_width << std::endl;
+      //TODO: Choose a width based on the first 100 values.
+      if(layout_item_field)
+      {
+       column_width = Utils::get_suitable_field_width_for_widget(*this, layout_item_field);
+       column_width = column_width / 3;
+       //std::cout << "DEBUG: column_width=" << column_width << std::endl;
+      }
+      else
+        column_width = 100; //TODO: Don't save this default in the document.
     }
-    else
-     column_width = 100;
   }
 
   #ifdef GLOM_ENABLE_MAEMO

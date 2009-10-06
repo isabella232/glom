@@ -145,12 +145,9 @@ Glib::ustring LayoutItem::get_report_part_id() const
   return "unexpected_report_part_id"; //This should never be used.
 }
 
-bool LayoutItem::get_display_width(guint& width) const
+guint LayoutItem::get_display_width() const
 {
-  //Initialize output variable:
-  width = m_display_width;
-
-  return (m_display_width != 0); //Tell the caller whether a display width has even been specified.
+  return m_display_width;
 }
 
 void LayoutItem::set_display_width(guint value)

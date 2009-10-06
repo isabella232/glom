@@ -3185,8 +3185,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
       if(nodeItem)
       {
         //Attributes that any layout item could have:
-        guint column_width = 0;
-        item->get_display_width(column_width);
+        const guint column_width = item->get_display_width();
         set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_LAYOUT_ITEM_COLUMN_WIDTH, column_width);
 
         if(with_print_layout_positions)

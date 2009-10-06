@@ -1,3 +1,21 @@
+2009-10-06  Murray Cumming  <murrayc@murrayc.com>
+
+	DbAddDel: Expand an appropriate column.
+	
+	* glom/libglom/data_structure/layout/layoutitem.[h|cc]: get_display_width(): 
+	Remove the bool return and just return the value, because 0 already means no 
+	specified width.
+	* glom/libglom/document/document.cc:
+	* glom/mode_design/layout/dialog_layout_details.cc:
+	* glom/print_layout/canvas_layout_item.cc: Adapt.
+	
+	* glom/utility_widgets/db_adddel/db_adddel.[h|cc]:
+	Added get_column_to_expand() to choose the last expandable (text, no specified 
+	width) column.
+	treeview_append_column(): Add a bool expand property and use it.
+	construct_specified_columns(): Expand the expandable column, to avoid 
+	wasting space or expanding an inappropriate column.
+
 2009-10-05  Murray Cumming  <murrayc@murrayc.com>
 
 	Maemo: Allow editing of hidden tables (only) via its details window.

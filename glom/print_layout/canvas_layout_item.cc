@@ -329,8 +329,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
                 if(cell)
                 {
                   //Make sure that the width is sensible:
-                  guint width = 0;
-                  layout_item->get_display_width(width);
+                  guint width = layout_item->get_display_width();
                   width = std::max(width, (guint)10);
                   cell->set_width_height(width, row_height);
                   std::cout << "DEBUG: width=" << width << std::endl;
