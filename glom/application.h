@@ -125,6 +125,8 @@ private:
 
 #ifndef GLOM_ENABLE_MAEMO
   void on_menu_help_contents();
+#else
+  void on_menu_add_record();
 #endif //GLOM_ENABLE_MAEMO
 
   /** Check that the file's hosting mode is supported by this build and 

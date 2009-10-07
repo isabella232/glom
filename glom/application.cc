@@ -355,6 +355,22 @@ void App_Glom::on_appmenu_button_table_value_changed()
 #endif //GLOM_ENABLE_MAEMO
 
 #ifdef GLOM_ENABLE_MAEMO
+static void add_button_to_appmenu(Hildon::AppMenu& appmenu, const Glib::ustring& title, const Glib::ustring& secondary, const sigc::slot<void>& clicked_handler)
+{
+  Hildon::Button* button = 
+    Gtk::manage(new Hildon::Button(
+      Gtk::Hildon::SIZE_AUTO, 
+      Hildon::BUTTON_ARRANGEMENT_VERTICAL,
+      title, secondary));
+  button->show();
+  button->signal_clicked().connect(clicked_handler);
+  appmenu.append(*button);
+}
+
+void App_Glom::on_menu_add_record()
+{
+}
+
 void App_Glom::init_menus()
 {
   //There is no real menu on Maemo. We use HildonAppMenu instead.
@@ -365,17 +381,15 @@ void App_Glom::init_menus()
     sigc::mem_fun(*this, &App_Glom::on_appmenu_button_table_value_changed) );
   m_maemo_appmenu.append(m_appmenu_button_table);
   
-  Hildon::Button* find_button = 
-    Gtk::manage(new Hildon::Button(
-      Gtk::Hildon::SIZE_AUTO, 
-      Hildon::BUTTON_ARRANGEMENT_VERTICAL,
-      _("Find"),
-      _("Search for records in the table.")));
-  find_button->show();
-  find_button->signal_clicked().connect(
+  add_button_to_appmenu(m_maemo_appmenu, 
+    _("Find"), _("Search for records in the table"),
     sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Mode_Find) );
-  m_maemo_appmenu.append(*find_button);
-  
+    
+  //TODO:
+  //add_button_to_appmenu(m_maemo_appmenu, 
+  //  _("Add Record"), _("Create a new record in the table"),
+  //  sigc::mem_fun(*this, &App_Glom::on_menu_add_record) );
+
   //set_app_menu(*appmenu); //TODO: Use this instead?
   Hildon::Program::get_instance()->set_common_app_menu(m_maemo_appmenu);
 }
@@ -1818,7 +1832,7 @@ void App_Glom::fill_menu_tables()
 #endif //GLOM_ENABLE_MAEMO
 
 #ifdef GLOM_ENABLE_MAEMO
-void App_Glom::fill_menu_reports(const Glib::ustring& table_name)
+void App_Glom::fill_menu_reports(const Glib::ustring& /* table_name */)
 {
   //TODO: Change the Hildon::AppMenu.
 }
@@ -1916,7 +1930,7 @@ void App_Glom::fill_menu_reports(const Glib::ustring& table_name)
 #endif //GLOM_ENABLE_MAEMO
 
 #ifdef GLOM_ENABLE_MAEMO
-void App_Glom::fill_menu_print_layouts(const Glib::ustring& table_name)
+void App_Glom::fill_menu_print_layouts(const Glib::ustring& /* table_name */)
 {
   //TODO: Change the Hildon::AppMenu.
 }
