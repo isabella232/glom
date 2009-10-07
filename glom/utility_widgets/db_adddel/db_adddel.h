@@ -302,6 +302,7 @@ private:
   //Signal handlers:
   #ifdef GLOM_ENABLE_MAEMO
   void treeviewcolumn_on_cell_data(const Gtk::TreeModel::iterator& iter, int model_column_index, int data_model_column_index);
+  void on_maemo_touchselector_changed(int column);
   #else
   void treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter, int model_column_index, int data_model_column_index);
   #endif //GLOM_ENABLE_MAEMO
@@ -366,7 +367,7 @@ private:
   guint get_count_hidden_system_columns() const;
 
   //The column_id is extra information that we can use later to discover what the column shows, even when columns have been reordered.
-  guint treeview_append_column(const Glib::ustring& title, Gtk::CellRenderer& cellrenderer, int model_column_index, int data_model_column_index);
+  guint treeview_append_column(const Glib::ustring& title, Gtk::CellRenderer& cellrenderer, int model_column_index, int data_model_column_index, bool expand);
 
   /** Show a model that gives a visual hint to the developer,
    * when he has not yet specified fields to show.
@@ -506,6 +507,9 @@ private:
     
     
 private:
+  
+  /// Discover the right-most text column, so we can make it expand.
+  bool get_column_to_expand(guint& column_to_expand) const;
   
   //TODO_refactor: Give these better names, and document them:
   bool start_new_record();

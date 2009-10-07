@@ -1,3 +1,9 @@
+2009-10-07  Murray Cumming  <murrayc@murrayc.com>
+
+  Tests: Import: Fixed the no-exceptions build.
+  
+	* tests/import/utils.cc: Fixed the no-exceptions build.
+	
 2009-10-06  Daniel Elstner  <daniel.kitta@gmail.com>
 
 	Support Automake silent rules
@@ -27,6 +33,66 @@
 	test_skip_on_no_ending_newline test, because I see no reason why we 
 	would want to ignore last lines with no newline.
 
+2009-10-06  Murray Cumming  <murrayc@murrayc.com>
+
+	Maemo: List: Click to view details.
+	
+	* glom/utility_widgets/db_adddel/db_adddel.[h|cc]: Connect to 
+	TouchSelector::signal_changed to respond to clicks on the list. Note that 
+	a drag to pan (scroll) does not cause that signal to be emitted.
+	* glom/utility_widgets/db_adddel/db_adddel_withbuttons.[h|cc]: On Mameo, 
+	remove the Delete and Edit buttons because deleting can be done via the 
+	details window (viewable on Maemo). The Add button is still there and is ugly. 
+
+2009-10-06  Murray Cumming  <murrayc@murrayc.com>
+
+	DbAddDel: Expand an appropriate column.
+	
+	* glom/libglom/data_structure/layout/layoutitem.[h|cc]: get_display_width(): 
+	Remove the bool return and just return the value, because 0 already means no 
+	specified width.
+	* glom/libglom/document/document.cc:
+	* glom/mode_design/layout/dialog_layout_details.cc:
+	* glom/print_layout/canvas_layout_item.cc: Adapt.
+	
+	* glom/utility_widgets/db_adddel/db_adddel.[h|cc]:
+	Added get_column_to_expand() to choose the last expandable (text, no specified 
+	width) column.
+	treeview_append_column(): Add a bool expand property and use it.
+	construct_specified_columns(): Expand the expandable column, to avoid 
+	wasting space or expanding an inappropriate column.
+
+2009-10-05  Murray Cumming  <murrayc@murrayc.com>
+
+	Maemo: Allow editing of hidden tables (only) via its details window.
+
+	* glom/mode_data/box_data_list_related.cc: enable_buttons(): Add a maemo 
+	ifdef around m_AddDel.set_allow_view_details().
+
+2009-10-05  Murray Cumming  <murrayc@murrayc.com>
+
+	Maemo: List: Use only 2 columns by default, so some have enough space.
+	
+	* glom/libglom/document/document.cc: get_data_layout_groups_plus_new_fields():
+	Restrict maemo to 2 list columns by default.
+
+2009-10-05  Murray Cumming  <murrayc@murrayc.com>
+
+	Maemo: Related Records / AddDel: Use icon-only Hildon buttons.
+	
+	* glom/utility_widgets/db_adddel/db_adddel_withbuttons.[h|cc]: Use Hildon 
+	Buttons, with only icons.
+
+2009-10-05  Murray Cumming  <murrayc@murrayc.com>
+
+	Maemo: Hide group titles by default.
+	
+	* glom/libglom/data_structure/translatable_item.[h|cc]:
+	Added clear_title_in_all_locales().
+	* glom/libglom/document/document.cc:
+	maemo_restrict_layouts_to_single_column_group(): Also clear the group titles 
+	to make the default maemo layout more compact.
+	
 2009-10-05  Murray Cumming  <murrayc@murrayc-desktop>
 
 	Export: Correct problems in the binary data for images: Escape newlines.
@@ -56,6 +122,14 @@
 	out of the ifdef block so we actually show field choices again in the combo 
 	boxes. This was broken by the commit from Johannes on 2009-07-30.
 	Hopefully ldtp tests will avoid this in future.
+
+2009-10-02  Murray Cumming  <murrayc@murrayc.com>
+
+	Maemo: Really fall back to the standard layout if there is no maemo layout.
+	
+	* glom/libglom/document/document.cc: get_data_layout_groups_plus_new_fields():
+	Really fall back to the standard layout if there is no maemo layout. 
+	When creating a default layout, restrict the column count to 1. 
 
 2009-10-02  Murray Cumming  <murrayc@murrayc.com>
 

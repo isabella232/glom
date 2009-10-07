@@ -1417,8 +1417,6 @@ void Document::fill_layout_field_details(const Glib::ustring& parent_table_name,
 
 Document::type_list_layout_groups Document::get_data_layout_groups_default(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& /* layout_platform */) const
 {
-  //std::cout << "debug: Document::get_data_layout_groups_default(): table_name = " << parent_table_name << std::endl;
-
   type_list_layout_groups result;
 
   //Add one if necessary:
@@ -1504,13 +1502,43 @@ Document::type_list_layout_groups Document::get_data_layout_groups_plus_new_fiel
 
   //If there are no fields in the layout, then add a default:
   bool create_default = false;
+  if(result.empty() && !layout_name.empty())
+  {
+    //Fall back to a general layout instead of one for a specific platform:
+    result = get_data_layout_groups(layout_name, parent_table_name, Glib::ustring());
+  }
+  
   if(result.empty())
+  {
     create_default = true;
+  }
   //TODO: Also set create_default if all groups have no fields.
 
   if(create_default)
   {
+    std::cout << "DEBUG: Document::get_data_layout_groups_plus_new_fields(): Creating a default layout." << std::endl;
     result = get_data_layout_groups_default(layout_name, parent_table_name, layout_platform);
+    
+    //Make the default layout suitable for the special platform:
+    if(layout_platform == "maemo")
+    {
+      for(type_list_layout_groups::iterator iter = result.begin(); iter != result.end(); ++iter)
+      {
+        sharedptr<LayoutGroup> layout_group = *iter;
+        if(!layout_group)
+          continue;
+        
+        if(layout_name == "list")
+        {
+          //Don't try to show more than 3 items on the list view:
+          if(layout_group->get_items_count() >= 2)
+            layout_group->m_list_items.resize(2);
+        }
+        
+        maemo_restrict_layouts_to_single_column_group(layout_group);
+        
+      }
+    }
     
     //Store this so we don't have to recreate it next time:
     Document* nonconst_this = const_cast<Document*>(this); //TODO: This is not ideal.
@@ -3157,8 +3185,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
       if(nodeItem)
       {
         //Attributes that any layout item could have:
-        guint column_width = 0;
-        item->get_display_width(column_width);
+        const guint column_width = item->get_display_width();
         set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_LAYOUT_ITEM_COLUMN_WIDTH, column_width);
 
         if(with_print_layout_positions)
@@ -4107,16 +4134,14 @@ void Document::maemo_restrict_layouts_to_single_column_group(const sharedptr<Lay
 {
   if(!layout_group)
     return;
-    
-  std::cout << "debug: group columns=" << layout_group->get_columns_count() << std::endl;
 
   //Change it to a single column group:
-  if(layout_group->get_columns_count() > 1)
-  {     
+  if(layout_group->get_columns_count() > 1)  
     layout_group->set_columns_count(1);
-    std::cout << "  debug: changed group columns=" << layout_group->get_columns_count() << std::endl;
-  }
-     
+   
+  //Remove the title, as it uses too much space on a Maemo screen:
+  layout_group->clear_title_in_all_locales();
+ 
   //Do the same with any child groups:
   for(LayoutGroup::type_list_items::iterator iter = layout_group->m_list_items.begin(); iter != layout_group->m_list_items.end(); ++iter)
   {
@@ -4125,7 +4150,7 @@ void Document::maemo_restrict_layouts_to_single_column_group(const sharedptr<Lay
     sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(layout_item);
     if(group)
       maemo_restrict_layouts_to_single_column_group(group);
-  } 
+  }
 }
 
 void Document::maemo_restrict_layouts_to_single_column()
@@ -4141,19 +4166,27 @@ void Document::maemo_restrict_layouts_to_single_column()
       iterLayouts != info.m_layouts.end(); ++iterLayouts)
     {
       LayoutInfo& layout_info = *iterLayouts;
-      std::cout << "debug: layout: " << layout_info.m_layout_name << std::endl;
-      
+
       //Allow specifically-designed maemo layouts to have multiple columns,
       //but resize the others.
-      if(true)//layout_info.m_layout_platform != "maemo")
+      if(layout_info.m_layout_platform == "maemo")
+        continue;
+      
+      //Look at every group, recursively:
+      for(type_list_layout_groups::iterator iterGroups = layout_info.m_layout_groups.begin(); 
+        iterGroups != layout_info.m_layout_groups.end(); ++iterGroups)
       {
-        //Look at every group, recursively:
-        for(type_list_layout_groups::iterator iterGroups = layout_info.m_layout_groups.begin(); 
-          iterGroups != layout_info.m_layout_groups.end(); ++iterGroups)
+        sharedptr<LayoutGroup> group = *iterGroups;
+        
+        if(layout_info.m_layout_name == "list")
         {
-          sharedptr<LayoutGroup> group = *iterGroups;
-          maemo_restrict_layouts_to_single_column_group(group);
+          //Don't try to show more than 2 items on the list view:
+          //TODO: This is rather harsh. murrayc
+          if(group->get_items_count() >= 2)
+            group->m_list_items.resize(2);
         }
+        
+        maemo_restrict_layouts_to_single_column_group(group);
       }
     }
   }      

@@ -1268,7 +1268,7 @@ void Dialog_Layout_Details::on_cell_data_column_width(Gtk::CellRenderer* rendere
         const bool editable = (layout_field || layout_button || layout_text); //Only these have column widths that can be edited.
         renderer_text->property_editable() = editable;
       
-        layout_item->get_display_width(column_width);
+        column_width = layout_item->get_display_width();
       }
 
       Glib::ustring text; 

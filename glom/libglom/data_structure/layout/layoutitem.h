@@ -54,7 +54,7 @@ public:
    */
   virtual Glib::ustring get_report_part_id() const;
 
-  bool get_display_width(guint& width) const;
+  guint get_display_width() const;
   void set_display_width(guint value);
 
   /// This is used only for the print layouts.

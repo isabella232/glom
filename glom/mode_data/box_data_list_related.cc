@@ -60,7 +60,11 @@ void Box_Data_List_Related::enable_buttons()
     get_has_suitable_record_to_view_details() && 
     (m_portal->get_navigation_type() != LayoutItem_Portal::NAVIGATION_NONE);
 
-  m_AddDel.set_allow_view_details(view_details_possible); //Don't allow the user to go to a record in a hidden table.
+  #ifndef GLOM_ENABLE_MAEMO
+  // Don't allow the user to go to a record in a hidden table.
+  // Unless we are on Maemo - then we want to allow editing in a separate window only.
+  m_AddDel.set_allow_view_details(view_details_possible); 
+  #endif //GLOM_ENABLE_MAEMO
 }
 
 bool Box_Data_List_Related::init_db_details(const sharedptr<const LayoutItem_Portal>& portal, bool show_title)

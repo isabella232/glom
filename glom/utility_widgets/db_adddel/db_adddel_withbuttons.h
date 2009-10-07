@@ -23,6 +23,10 @@
 
 #include "db_adddel.h"
 
+#ifdef GLOM_ENABLE_MAEMO
+#include <hildonmm/button.h>
+#endif
+
 namespace Glom
 {
 
@@ -43,16 +47,30 @@ private:
   void setup_buttons();
 
   void on_button_add();
+  
+  #ifndef GLOM_ENABLE_MAEMO
   void on_button_del();
   void on_button_edit();
+  #endif //GLOM_ENABLE_MAEMO
 
   virtual void show_all_vfunc();
 
   //member widgets:
   Gtk::HBox m_HBox;
-  Gtk::Button m_Button_Add;
-  Gtk::Button m_Button_Del;
-  Gtk::Button m_Button_Edit;
+  
+#ifndef GLOM_ENABLE_MAEMO
+  typedef Gtk::Button type_button; 
+#else
+  typedef Hildon::Button type_button;
+
+  //We don't need these buttons on Maemo because the user can 
+  //- click to got to details.
+  //- go to the details and then del.
+  type_button m_Button_Del;
+  type_button m_Button_Edit;
+#endif
+
+  type_button m_Button_Add;
 };
 
 } //namespace Glom
