@@ -27,9 +27,9 @@ namespace Glom
 DbAddDel_WithButtons::DbAddDel_WithButtons()
 : m_HBox(false, Utils::DEFAULT_SPACING_SMALL),
 #ifndef GLOM_ENABLE_MAEMO
-  m_Button_Add(Gtk::Stock::ADD),
   m_Button_Del(Gtk::Stock::DELETE),
-  m_Button_Edit(Gtk::Stock::OPEN)
+  m_Button_Edit(Gtk::Stock::OPEN),
+  m_Button_Add(Gtk::Stock::ADD)
 #else
   m_Button_Add(Gtk::Hildon::SIZE_FINGER_HEIGHT, Hildon::BUTTON_ARRANGEMENT_HORIZONTAL)
 #endif
