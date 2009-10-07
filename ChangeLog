@@ -1,3 +1,9 @@
+2009-10-07  Murray Cumming  <murrayc@murrayc.com>
+
+  Tests: Import: Fixed the no-exceptions build.
+  
+	* tests/import/utils.cc: Fixed the no-exceptions build.
+
 2009-10-06  Murray Cumming  <murrayc@murrayc.com>
 
 	Maemo: List: Click to view details.
