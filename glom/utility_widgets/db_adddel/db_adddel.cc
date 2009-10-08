@@ -1958,6 +1958,10 @@ bool DbAddDel::get_column_to_expand(guint& column_to_expand) const
 guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRenderer& cellrenderer, int model_column_index, int data_model_column_index, bool expand)
 {
   #ifndef GLOM_ENABLE_MAEMO
+  //Mathias Hasselmann says that this is required for the Maemo 5 style, 
+  //though we don't know yet where that is documented. murrayc.
+  cellrenderer->set_property("x-pad", HILDON_MARGIN_DEFAULT);
+  
   DbTreeViewColumnGlom* pViewColumn = Gtk::manage( new DbTreeViewColumnGlom(Utils::string_escape_underscores(title), cellrenderer) );
   pViewColumn->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED); //Need by fixed-height mode.
 

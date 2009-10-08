@@ -1,3 +1,11 @@
+2009-10-08  Murray Cumming  <murrayc@murrayc-x61>
+
+  Maemo 5: List view: Subtly improve the separating lines.
+  
+	* glom/utility_widgets/db_adddel/db_adddel.cc: treeview_append_column(): 
+	On Maemo, use an "x-pad" of HILDON_MARGIN_DEFAULT for the cell renderers, 
+	because Mathias Hasselmann says that is required for Maemo 5.
+
 2009-10-08  Murray Cumming  <murrayc@murrayc.com>
 
   Maemo: Use a PickerButton with TouchSelector for combo boxes on details views.
