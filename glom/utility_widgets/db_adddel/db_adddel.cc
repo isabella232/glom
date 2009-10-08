@@ -1000,6 +1000,7 @@ void DbAddDel::construct_specified_columns()
     {
       //Create the model from the ColumnRecord:
       //Note that the model will use a dummy Gda DataModel if m_find_mode is true.
+      //std::cout << "debug: Creating new type_model_store() for table=" << m_found_set.m_table_name << std::endl;
       m_refListStore = type_model_store::create(record, m_found_set, fields, column_index_key, m_allow_view, m_find_mode);
     }
     else
@@ -1016,9 +1017,10 @@ void DbAddDel::construct_specified_columns()
  
   #ifdef GLOM_ENABLE_MAEMO
   //Remove all View columns:
-  Glib::RefPtr<Hildon::TouchSelectorColumn> column = touch_selector_get_column();
-  g_assert(column);
-  column->clear();
+  while(m_TreeView.get_num_columns())
+  {
+    m_TreeView.remove_column(0);
+  }
   #else
   m_TreeView.set_model(m_refListStore); // clear old model from treeview
 

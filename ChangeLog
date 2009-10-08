@@ -1,3 +1,12 @@
+2009-10-08  Murray Cumming  <murrayc@murrayc.com>
+
+  Maemo: Actually show new list views and related records portals.
+  
+	* glom/utility_widgets/db_adddel/db_adddel.cc: construct_specified_columns():
+	Use while(TouchSelector::remove_column()) to actually remove old view columns, 
+	so we actually see an effect when navigating to a new table, and so we don't 
+	see old data in related records tables.
+
 2009-10-07  Murray Cumming  <murrayc@murrayc.com>
 
   Tests: Import: Fixed the no-exceptions build.
