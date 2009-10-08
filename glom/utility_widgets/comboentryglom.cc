@@ -31,6 +31,10 @@
 #include <ctime>     // for struct tm
 #include <iostream>   // for cout, endl
 
+#ifdef GLOM_ENABLE_MAEMO
+#include <hildon/hildon-touch-selector-entry.h>
+#endif
+
 namespace Glom
 {
 
@@ -81,10 +85,20 @@ void ComboEntryGlom::init()
   //Maemo:
   set_selector(m_maemo_selector);
  
-  Glib::RefPtr<Hildon::TouchSelectorColumn> column =
-    m_maemo_selector.append_text_column(m_refModel);
+  //We don't use append_text_column(), because we want to specify no expand.
+  //Glib::RefPtr<Hildon::TouchSelectorColumn> column =
+  //  m_maemo_selector.append_text_column(m_refModel);
+  // Only in the latest hildonmm: Glib::RefPtr<Hildon::TouchSelectorColumn> column =
+  //  m_maemo_selector.append_column(m_refModel);
+  Glib::RefPtr<Hildon::TouchSelectorColumn> column = Glib::wrap(hildon_touch_selector_append_column(
+      HILDON_TOUCH_SELECTOR(m_maemo_selector.gobj()), GTK_TREE_MODEL(Glib::unwrap(m_refModel)), 0, static_cast<char*>(0)), true);
+      
   column->pack_start(m_Columns.m_col_first, false);
-  //column->set_property("text-column", 0); // TODO: Add a TextSelectorEntry::set_text_column() method?
+  //Only in the latest hildonmm: column->set_text_column(m_Columns.m_col_first);
+  column->set_property("text_column", 0);
+  
+  //Only in the latest hildonmm: m_maemo_selector->set_text_column(m_Columns.m_col_first);
+  m_maemo_selector.set_text_column(0);
 
   
   //m_maemo_selector.set_model(0, m_refModel);

@@ -1,3 +1,8 @@
+2009-10-08  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/comboentryglom.cc: init(): On Maemo, remove the 
+	duplicate first column and do not expand the first column.
+
 2009-10-08  Murray Cumming  <murrayc@murrayc-x61>
 
   Maemo 5: List view: Subtly improve the separating lines.
