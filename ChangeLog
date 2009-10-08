@@ -1,5 +1,15 @@
 2009-10-08  Murray Cumming  <murrayc@murrayc.com>
 
+  Maemo: Use a PickerButton with TouchSelector for combo boxes on details views.
+  
+	* glom/utility_widgets/comboentryglom.[h|cc]:
+	* glom/utility_widgets/comboglom.[h|cc]: On Maemo, derive from 
+	Hildon::PickerButton instead of Gtk::ComboBox*, with a member TouchSelector/
+	TouchSelector.
+	However, the ID field seems to be shown twice.
+
+2009-10-08  Murray Cumming  <murrayc@murrayc.com>
+
   Maemo: Actually show new list views and related records portals.
   
 	* glom/utility_widgets/db_adddel/db_adddel.cc: construct_specified_columns():

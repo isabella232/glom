@@ -54,17 +54,41 @@ ComboEntryGlom::ComboEntryGlom(const sharedptr<LayoutItem_Field>& field_second)
   init();
 }
 
+Gtk::Entry* ComboEntryGlom::get_entry()
+{
+  #ifndef GLOM_ENABLE_MAEMO
+  return Gtk::ComboBoxEntry::get_entry();
+  #else
+  return m_maemo_selector.get_entry();
+  #endif
+}
+
+const Gtk::Entry* ComboEntryGlom::get_entry() const
+{
+  #ifndef GLOM_ENABLE_MAEMO
+  return Gtk::ComboBoxEntry::get_entry();
+  #else
+  return m_maemo_selector.get_entry();
+  #endif
+}
+
 void ComboEntryGlom::init()
 {
 #ifndef GLOM_ENABLE_MAEMO
   set_model(m_refModel);
-
   set_text_column(m_Columns.m_col_first);
 #else
   //Maemo:
-  set_model(0, m_refModel);
+  set_selector(m_maemo_selector);
+ 
+  Glib::RefPtr<Hildon::TouchSelectorColumn> column =
+    m_maemo_selector.append_text_column(m_refModel);
+  column->pack_start(m_Columns.m_col_first, false);
+  //column->set_property("text-column", 0); // TODO: Add a TextSelectorEntry::set_text_column() method?
 
-  set_text_column(0);
+  
+  //m_maemo_selector.set_model(0, m_refModel);
+  //m_maemo_selector.set_text_column(0);
 #endif
 
   //We use connect(slot, false) to connect before the default signal handler, because the default signal handler prevents _further_ handling.
@@ -76,7 +100,11 @@ void ComboEntryGlom::init()
   get_entry()->signal_activate().connect(sigc::mem_fun(*this, &ComboEntryGlom::on_entry_activate));
 
 #ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
+  #ifndef GLOM_ENABLE_MAEMO
   signal_changed().connect(sigc::mem_fun(*this, &ComboEntryGlom::on_changed));
+  #else
+  m_maemo_selector.signal_changed().connect(sigc::mem_fun(*this, &ComboEntryGlom::on_changed));
+  #endif
 #endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 
   if(m_with_second)
@@ -100,7 +128,7 @@ void ComboEntryGlom::init()
     add_attribute(*cell_second, cell_second->_property_renderable(), m_Columns.m_col_second);
     #endif
     #else //GLOM_ENABLE_MAEMO
-    //TODO: Add the second cell renderer.
+    column->pack_start(m_Columns.m_col_second, false);
     #endif //GLOM_ENABLE_MAEMO
   }
 }
@@ -208,6 +236,18 @@ void ComboEntryGlom::set_value(const Gnome::Gda::Value& value)
 void ComboEntryGlom::set_text(const Glib::ustring& text)
 {
   m_old_text = text;
+  
+  #if GLOM_ENABLE_MAEMO
+  for(Gtk::TreeModel::iterator iter = m_refModel->children().begin(); iter != m_refModel->children().end(); ++iter)
+  {
+    const Glib::ustring& this_text = (*iter)[m_Columns.m_col_first];
+
+    if(this_text == text)
+    {
+      m_maemo_selector.set_active(0, iter);
+    }
+  }
+  #endif //GLOM_ENABLE_MAEMO
 
   //Call base class:
   get_entry()->set_text(text);
@@ -267,7 +307,7 @@ App_Glom* ComboEntryGlom::get_application()
 #ifndef GLOM_ENABLE_MAEMO
 void ComboEntryGlom::on_changed()
 #else
-void ComboEntryGlom::on_changed(int column)
+void ComboEntryGlom::on_changed(int /* column */)
 #endif 
 {
 #ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
@@ -277,7 +317,14 @@ void ComboEntryGlom::on_changed(int column)
 
   //This signal is emitted for every key press, but sometimes it's just to say that the active item has changed to "no active item",
   //if the text is not in the dropdown list:
+  #ifndef GLOM_ENABLE_MAEMO
   Gtk::TreeModel::iterator iter = get_active();
+  #else
+   //TODO: See bug https://bugs.maemo.org/show_bug.cgi?id=4640
+  //about the get_selected()/get_active() confusion.
+  Gtk::TreeModel::iterator iter = m_maemo_selector.get_selected(0);
+  #endif //GLOM_ENABLE_MAEMO
+  
   if(iter)
   {
     //This is either a choice from the dropdown menu, or someone has typed in something that is in the drop-down menu.

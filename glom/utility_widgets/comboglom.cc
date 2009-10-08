@@ -56,16 +56,34 @@ ComboGlom::ComboGlom(const sharedptr<LayoutItem_Field>& field_second)
 
 void ComboGlom::init()
 {
+  #ifndef GLOM_ENABLE_MAEMO
   set_model(m_refModel);
-
   pack_start(m_Columns.m_col_first);
+  #else
+  //Maemo:
+  set_selector(m_maemo_selector);
+  m_maemo_selector.set_model(0, m_refModel);
+  
+  Glib::RefPtr<Hildon::TouchSelectorColumn> column =
+    m_maemo_selector.append_text_column(m_refModel);
+  column->set_property("text-column", 0); // TODO: Add a TextSelectorColumn::set_text_column() method?
 
-#ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
+  column->pack_start(m_Columns.m_col_first, false);
+  #endif //GLOM_ENABLE_MAEMO
+
+
+
+  #ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
+  #ifndef GLOM_ENABLE_MAEMO
   signal_changed().connect(sigc::mem_fun(*this, &ComboGlom::on_changed));
-#endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
+  #else
+  m_maemo_selector.signal_changed().connect(sigc::mem_fun(*this, &ComboGlom::on_changed));
+  #endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
+  #endif //GLOM_ENABLE_MAEMO
 
   if(m_with_second)
   {
+    #ifndef GLOM_ENABLE_MAEMO
     //We don't use this convenience method, because we want more control over the renderer.
     //and CellLayout gives no way to get the renderer back afterwards.
     //(well, maybe set_cell_data_func(), but that's a bit awkward.)
@@ -78,11 +96,15 @@ void ComboGlom::init()
     pack_start(*cell_second);
 
     //Make the renderer render the column:
-#ifdef GLIBMM_PROPERTIES_ENABLED
+    #ifdef GLIBMM_PROPERTIES_ENABLED
     add_attribute(cell_second->_property_renderable(), m_Columns.m_col_second);
-#else
+    #else
     add_attribute(*cell_second, cell_second->_property_renderable(), m_Columns.m_col_second);
-#endif
+    #endif
+    #else
+    //Maemo:
+    column->pack_start(m_Columns.m_col_second);
+    #endif //GLOM_ENABLE_MAEMO
   }
 
   //if(m_glom_type == Field::TYPE_NUMERIC)
@@ -149,7 +171,11 @@ void ComboGlom::set_text(const Glib::ustring& text)
   g_warning("ComboGlom::set_text(): no item found for: %s", text.c_str());
 
   //Not found, so mark it as blank:
+  #ifndef GLOM_ENABLE_MAEMO
   unset_active();
+  #else
+  m_maemo_selector.unset_active(0);
+  #endif
 }
 
 Gnome::Gda::Value ComboGlom::get_value() const
@@ -164,10 +190,18 @@ Gnome::Gda::Value ComboGlom::get_value() const
 Glib::ustring ComboGlom::get_text() const
 {
   //Get the active row:
-  Gtk::TreeModel::iterator active_row = get_active();
-  if(active_row)
+  #ifndef GLOM_ENABLE_MAEMO
+  Gtk::TreeModel::iterator iter = get_active();
+  #else
+  //TODO: See bug https://bugs.maemo.org/show_bug.cgi?id=4640
+  //about the get_selected()/get_active() confusion.
+  Hildon::TouchSelector& unconst = const_cast<Hildon::TouchSelector&>(m_maemo_selector);
+  Gtk::TreeModel::iterator iter = unconst.get_selected(0);
+  #endif //GLOM_ENABLE_MAEMO
+  
+  if(iter)
   {
-    Gtk::TreeModel::Row row = *active_row;
+    Gtk::TreeModel::Row row = *iter;
     return row[m_Columns.m_col_first];
   }
 
@@ -219,7 +253,12 @@ App_Glom* ComboGlom::get_application()
   return dynamic_cast<App_Glom*>(pWindow);
 }
 
+
+#ifndef GLOM_ENABLE_MAEMO
 void ComboGlom::on_changed()
+#else
+void ComboGlom::on_changed(int /* column */)
+#endif 
 {
 #ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   //Call base class:
@@ -228,7 +267,14 @@ void ComboGlom::on_changed()
 
   //This signal is emitted for every key press, but sometimes it's just to say that the active item has changed to "no active item",
   //if the text is not in the dropdown list:
+  #ifndef GLOM_ENABLE_MAEMO
   Gtk::TreeModel::iterator iter = get_active();
+  #else
+   //TODO: See bug https://bugs.maemo.org/show_bug.cgi?id=4640
+  //about the get_selected()/get_active() confusion.
+  Gtk::TreeModel::iterator iter = m_maemo_selector.get_selected(0);
+  #endif //GLOM_ENABLE_MAEMO
+  
   if(iter)
   {
     //This is either a choice from the dropdown menu, or someone has typed in something that is in the drop-down menu.

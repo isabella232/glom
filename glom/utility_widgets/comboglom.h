@@ -26,7 +26,11 @@
 #include <gtkmm.h>
 #include <libglom/data_structure/field.h>
 #include "comboglomchoicesbase.h"
-#include <gtkmm/builder.h>
+
+#ifdef GLOM_ENABLE_MAEMO
+#include <hildonmm/picker-button.h>
+#include <hildonmm/touch-selector-entry.h>
+#endif //GLOM_ENABLE_MAEMO
 
 namespace Glom
 {
@@ -37,7 +41,12 @@ class App_Glom;
  * Use this when the user should only be allowed to enter values that are in the choices.
  */
 class ComboGlom
-: public Gtk::ComboBox,
+: 
+#ifndef GLOM_ENABLE_MAEMO
+  public Gtk::ComboBox,
+#else
+  public Hildon::PickerButton,
+#endif
   public ComboGlomChoicesBase
 {
 public:
@@ -68,9 +77,13 @@ public:
 private:
   void init();
 
-  // Note this is a normal signal handlers when compiled without default
-  // signal handlers
+  #ifndef GLOM_ENABLE_MAEMO
+  // Note that this is a normal signal handler when glibmm was complied
+  // without default signal handlers
   virtual void on_changed(); //From Gtk::ComboBox
+  #else
+  void on_changed(int column);
+  #endif //GLOM_ENABLE_MAEMO
 
   virtual void check_for_change();
 
@@ -83,6 +96,10 @@ private:
 
   Glib::ustring m_old_text;
   //Gnome::Gda::Value m_value; //The last-stored value. We have this because the displayed value might be unparseable.
+  
+  #ifdef GLOM_ENABLE_MAEMO
+  Hildon::TouchSelector m_maemo_selector;
+  #endif
 };
 
 } //namespace Glom
