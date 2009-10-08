@@ -34,16 +34,6 @@
 namespace Glom
 {
 
-ComboGlom::ComboGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
-: Gtk::ComboBox(cobject)
-{
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  setup_menu();
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-  init();
-}
-
 ComboGlom::ComboGlom()
 : ComboGlomChoicesBase()
 {

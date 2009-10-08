@@ -28,20 +28,31 @@
 #include "comboglomchoicesbase.h"
 #include <gtkmm/builder.h>
 
+#ifdef GLOM_ENABLE_MAEMO
+#include <hildonmm/touch-selector-entry.h>
+#endif //GLOM_ENABLE_MAEMO
+
 namespace Glom
 {
 
 class App_Glom;
 
+/** A Gtk::ComboBoxEntry that can show choices of field values.
+ * Use this when the user should be allowed to enter values directly too,
+ * including values that are not in the choices.
+ */
 class ComboEntryGlom
-: public Gtk::ComboBoxEntry,
+: 
+#ifndef GLOM_ENABLE_MAEMO
+  public Gtk::ComboBoxEntry,
+#else
+  public Hildon::TouchSelectorEntry,
+#endif
   public ComboGlomChoicesBase
 {
 public:
-  explicit ComboEntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-
   ///You must call set_layout_item() to specify the field type and formatting of the main column.
-  explicit ComboEntryGlom();
+  ComboEntryGlom();
 
   ///You must call set_layout_item() to specify the field type and formatting of the main column.
   explicit ComboEntryGlom(const sharedptr<LayoutItem_Field>& field_second);
@@ -72,9 +83,15 @@ private:
   virtual void on_entry_activate(); //From Gtk::Entry.
   virtual bool on_entry_focus_out_event(GdkEventFocus* event); //From Gtk::Widget
 
+  
+  #ifndef GLOM_ENABLE_MAEMO
   // Note that this is a normal signal handler when glibmm was complied
   // without default signal handlers
   virtual void on_changed(); //From Gtk::ComboBox
+  #else
+  void on_changed(int column);
+  #endif
+  
 
   virtual void check_for_change();
 

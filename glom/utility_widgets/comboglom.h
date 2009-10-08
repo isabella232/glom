@@ -33,15 +33,17 @@ namespace Glom
 
 class App_Glom;
 
+/** A Gtk::ComboBox that can show choices of field values.
+ * Use this when the user should only be allowed to enter values that are in the choices.
+ */
 class ComboGlom
 : public Gtk::ComboBox,
   public ComboGlomChoicesBase
 {
 public:
-  explicit ComboGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 
   ///You must call set_layout_item() to specify the field type and formatting of the main column.
-  explicit ComboGlom();
+  ComboGlom();
 
   ///You must call set_layout_item() to specify the field type and formatting of the main column.
   explicit ComboGlom(const sharedptr<LayoutItem_Field>& field_second);

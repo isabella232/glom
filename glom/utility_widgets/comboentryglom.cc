@@ -34,16 +34,6 @@
 namespace Glom
 {
 
-ComboEntryGlom::ComboEntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
-: Gtk::ComboBoxEntry(cobject)
-{
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  setup_menu();
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-  init();
-}
-
 ComboEntryGlom::ComboEntryGlom()
 : ComboGlomChoicesBase()
 {
@@ -66,9 +56,16 @@ ComboEntryGlom::ComboEntryGlom(const sharedptr<LayoutItem_Field>& field_second)
 
 void ComboEntryGlom::init()
 {
+#ifndef GLOM_ENABLE_MAEMO
   set_model(m_refModel);
 
   set_text_column(m_Columns.m_col_first);
+#else
+  //Maemo:
+  set_model(0, m_refModel);
+
+  set_text_column(0);
+#endif
 
   //We use connect(slot, false) to connect before the default signal handler, because the default signal handler prevents _further_ handling.
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -84,6 +81,7 @@ void ComboEntryGlom::init()
 
   if(m_with_second)
   {
+    #ifndef GLOM_ENABLE_MAEMO
     //We don't use this convenience method, because we want more control over the renderer.
     //and CellLayout gives no way to get the renderer back afterwards.
     //(well, maybe set_cell_data_func(), but that's a bit awkward.)
@@ -96,11 +94,14 @@ void ComboEntryGlom::init()
     pack_start(*cell_second);
 
     //Make the renderer render the column:
-#ifdef GLIBMM_PROPERTIES_ENABLED
+    #ifdef GLIBMM_PROPERTIES_ENABLED
     add_attribute(cell_second->_property_renderable(), m_Columns.m_col_second);
-#else
+    #else
     add_attribute(*cell_second, cell_second->_property_renderable(), m_Columns.m_col_second);
-#endif
+    #endif
+    #else //GLOM_ENABLE_MAEMO
+    //TODO: Add the second cell renderer.
+    #endif //GLOM_ENABLE_MAEMO
   }
 }
 
@@ -263,7 +264,11 @@ App_Glom* ComboEntryGlom::get_application()
   return dynamic_cast<App_Glom*>(pWindow);
 }
 
+#ifndef GLOM_ENABLE_MAEMO
 void ComboEntryGlom::on_changed()
+#else
+void ComboEntryGlom::on_changed(int column)
+#endif 
 {
 #ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   //Call base class:
