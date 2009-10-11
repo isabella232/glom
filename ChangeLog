@@ -1,3 +1,9 @@
+2009-10-11  Murray Cumming  <murrayc@murrayc.com>
+
+  Maemo: Use Hildon buttons for Open, Find and ... buttons.
+  
+	* glom/utility_widgets/datawidget.cc: Constructor: Use Hildon::Buttons.
+
 2009-10-08  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/comboentryglom.cc: init(): On Maemo, remove the 

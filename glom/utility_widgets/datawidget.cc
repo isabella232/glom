@@ -35,6 +35,11 @@
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_field_layout.h>
 #include <glom/utils_ui.h>
 #include <glom/glade_utils.h>
+
+#ifdef GLOM_ENABLE_MAEMO
+#include <hildonmm/button.h>
+#endif //GLOM_ENABLE_MAEMO
+
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -233,7 +238,11 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     if(glom_type == Field::TYPE_DATE)
     {
       //Let the user choose a date from a calendar dialog:
-      Gtk::Button* button_date = Gtk::manage(new Gtk::Button(_("..."))); //TODO: A better label/icon for "Choose Date". 
+      #ifndef GLOM_ENABLE_MAEMO
+      Gtk::Button* button_date = Gtk::manage(new Gtk::Button(_("..."))); //TODO: A better label/icon for "Choose Date".
+      #else
+      Gtk::Button* button_date = Gtk::manage(new Hildon::Button(Gtk::Hildon::SIZE_FINGER_HEIGHT, Hildon::BUTTON_ARRANGEMENT_HORIZONTAL, _("..."), ""));
+      #endif
       button_date->set_tooltip_text(_("Choose a date from an on-screen calendar.")); 
       button_date->show();
       hbox_parent->pack_start(*button_date);
@@ -243,7 +252,11 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     if((field_used_in_relationship_to_one || field_is_related_primary_key) && hbox_parent)
     {
       //Add a button for related record navigation:
+      #ifndef GLOM_ENABLE_MAEMO
       m_button_go_to_details = Gtk::manage(new Gtk::Button(Gtk::Stock::OPEN));
+      #else
+      m_button_go_to_details = Gtk::manage(new Hildon::Button(Gtk::Hildon::SIZE_FINGER_HEIGHT, Hildon::BUTTON_ARRANGEMENT_HORIZONTAL, _("Open"), ""));
+      #endif
       m_button_go_to_details->set_tooltip_text(_("Open the record identified by this ID, in the other table."));
       hbox_parent->pack_start(*m_button_go_to_details);
       m_button_go_to_details->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_open_details));
@@ -253,7 +266,12 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
       //can generally not be edited via another table's layout.
       if(field_used_in_relationship_to_one)
       {
+        #ifndef GLOM_ENABLE_MAEMO
         Gtk::Button* button_select = Gtk::manage(new Gtk::Button(Gtk::Stock::FIND));
+        #else
+        Gtk::Button* button_select = Gtk::manage(new Hildon::Button(Gtk::Hildon::SIZE_FINGER_HEIGHT, 
+           Hildon::BUTTON_ARRANGEMENT_HORIZONTAL, _("Find"), ""));
+        #endif
         button_select->set_tooltip_text(_("Enter search criteria to identify records in the other table, to choose an ID for this field."));
         hbox_parent->pack_start(*button_select);
         button_select->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_select_id));
