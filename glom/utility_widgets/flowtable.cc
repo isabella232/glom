@@ -441,7 +441,7 @@ int FlowTable::get_column_height(guint start_widget, guint widget_count, int& to
   for(i = start_widget; i < (start_widget+widget_count);  ++i)
   {
     const FlowTableItem& item = m_children[i];
-    int item_height = get_item_requested_height(item);
+    const int item_height = get_item_requested_height(item);
 
     int item_width_first = 0;
     int item_width_second = 0;
@@ -452,6 +452,7 @@ int FlowTable::get_column_height(guint start_widget, guint widget_count, int& to
     //Add the padding if it's not the first widget, and if one is visible:
     if( (i != start_widget) && item_height)
     {
+      std::cout << "debug: row padding=" << m_padding << std::endl;
       column_height += m_padding;
     }
 
@@ -459,8 +460,8 @@ int FlowTable::get_column_height(guint start_widget, guint widget_count, int& to
     {
       if(child_is_visible(item.m_second))
       {
-        column_width_first =MAX(column_width_first, item_width_first);
-        column_width_second =MAX(column_width_second, item_width_second);
+        column_width_first = MAX(column_width_first, item_width_first);
+        column_width_second = MAX(column_width_second, item_width_second);
       }
       else
       {

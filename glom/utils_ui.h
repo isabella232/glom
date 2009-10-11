@@ -30,6 +30,10 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/messagedialog.h>
 
+#ifdef GLOM_ENABLE_MAEMO
+#include <hildon/hildon-defines.h>
+#endif
+
 namespace Glom
 {
 
@@ -40,8 +44,8 @@ enum DefaultSpacings
 {
   #ifdef GLOM_ENABLE_MAEMO
   //We use different spacings on Maemo because the screen is smaller:
-  DEFAULT_SPACING_LARGE = 1,
-  DEFAULT_SPACING_SMALL = 1
+  DEFAULT_SPACING_LARGE = HILDON_MARGIN_DEFAULT,
+  DEFAULT_SPACING_SMALL = HILDON_MARGIN_HALF
   #else
   DEFAULT_SPACING_LARGE = 12,
   DEFAULT_SPACING_SMALL = 6

@@ -31,7 +31,12 @@ Window_BoxHolder::Window_BoxHolder(Box_WithButtons* pBox, const Glib::ustring& t
   if(!title.empty())
     set_title(title);
 
+#ifndef GLOM_ENABLE_MAEMO
   set_border_width(Utils::DEFAULT_SPACING_SMALL);
+#else
+  //Maemo has wide border margins:
+  set_border_width(HILDON_MARGIN_DOUBLE);
+#endif
 
   pBox->signal_cancelled.connect(sigc::mem_fun(*this, &Window_BoxHolder::on_box_cancelled));
 

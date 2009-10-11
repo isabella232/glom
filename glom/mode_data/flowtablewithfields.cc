@@ -36,6 +36,7 @@
 #include <glom/utils_ui.h> //For bold_message()).
 #include <libglom/data_structure/layout/layoutitem_placeholder.h>
 #include <glom/signal_reemitter.h>
+
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -203,7 +204,11 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
     flow_table->set_table(m_table_name);
 
     flow_table->set_columns_count(group->get_columns_count());
+    #ifndef GLOM_ENABLE_MAEMO
     flow_table->set_padding(Utils::DEFAULT_SPACING_SMALL);
+    #else
+    flow_table->set_padding(0);HILDON_MARGIN_HALF);
+    #endif
     flow_table->show();
     
     Gtk::EventBox* event_box = Gtk::manage( new Gtk::EventBox() ); //TODO_Leak: Valgrind says this is possibly leaked.
@@ -388,7 +393,11 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
         flow_table->set_table(m_table_name);
 
         flow_table->set_columns_count(group->get_columns_count());
+        #ifndef GLOM_ENABLE_MAEMO
         flow_table->set_padding(Utils::DEFAULT_SPACING_SMALL);
+        #else
+        flow_table->set_padding(HILDON_MARGIN_HALF);
+        #endif
         flow_table->show();
         
         // Put the new flowtable in an event box to catch events
