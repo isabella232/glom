@@ -15,7 +15,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([Glom], [1.12.1], [http://bugzilla.gnome.org/enter_bug.cgi?product=Glom], [glom])
+AC_INIT([Glom], [1.12.2], [http://bugzilla.gnome.org/enter_bug.cgi?product=Glom], [glom])
 AC_PREREQ([2.60])
 
 AC_CONFIG_SRCDIR([glom/main.cc])
@@ -23,6 +23,7 @@ AC_CONFIG_MACRO_DIR([macros])
 AC_CONFIG_HEADERS([config.h glom/libglom/libglom_config.h])
 
 AM_INIT_AUTOMAKE([1.10 check-news no-define nostdinc])
+m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
 AC_ARG_VAR([ACLOCAL_FLAGS], [aclocal flags, e.g. -I <macro dir>])
 
 AC_PROG_CC

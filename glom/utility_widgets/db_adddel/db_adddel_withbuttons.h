@@ -59,15 +59,15 @@ private:
   Gtk::HBox m_HBox;
   
 #ifndef GLOM_ENABLE_MAEMO
-  typedef Gtk::Button type_button; 
-#else
-  typedef Hildon::Button type_button;
+  typedef Gtk::Button type_button;
 
   //We don't need these buttons on Maemo because the user can 
   //- click to got to details.
   //- go to the details and then del.
   type_button m_Button_Del;
   type_button m_Button_Edit;
+#else
+  typedef Hildon::Button type_button;
 #endif
 
   type_button m_Button_Add;

@@ -104,14 +104,14 @@ const Glib::ustring& CsvParser::get_data(guint row, guint col)
 
   if(row >= m_rows.size())
   {
-    std::cerr << "CsvParser::get_data(): row out of range." << std::endl;
+    //std::cerr << "CsvParser::get_data(): row out of range." << std::endl;
     return empty_result;
   }
 
   const type_row_strings& row_data = m_rows[row];
   if(col >= row_data.size())
   {
-    std::cerr << "CsvParser::get_data(): col out of range." << std::endl;
+    //std::cerr << "CsvParser::get_data(): col out of range." << std::endl;
     return empty_result;
   }
 
@@ -334,6 +334,8 @@ bool CsvParser::on_idle_parse()
   bool in_quotes = false;
   while(true)
   {
+    //std::cout << "debug: checking start: " << std::string(prev, 10) << std::endl;
+
     // Note that, unlike std::string::find*, std::find* returns an iterator (char*), not a position.
     // It returns outbuf if none is found.
     const char newline_to_find[] = { '\r', '\n', '\0' };
@@ -348,9 +350,13 @@ bool CsvParser::on_idle_parse()
       pos = pos_quote;
 
     if(pos == outbuf)
+    {
+      //std::cout << "debug: not found. stopping" << std::endl;
       break;
+    }
 
-    char ch = *pos;   
+    char ch = *pos;
+    //std::cout << "debug: ch=START" << ch << "END" << std::endl;
 
     if(ch == '\0')
     {
@@ -358,6 +364,7 @@ bool CsvParser::on_idle_parse()
       // contain null bytes this only occurs when converting, for example, a UTF-16
       // file from ISO-8859-1 to UTF-8 (note that the UTF-16 file is valid ISO-8859-1 - 
       // it just contains lots of nullbytes). We therefore produce an error here.
+      //std::cerr << "CsvParser::on_idle_parse(): Encoding error" << std::endl;
       set_state(STATE_ENCODING_ERROR);
       signal_encoding_error().emit();
       return false;  //Stop calling the idle handler.
@@ -368,7 +375,19 @@ bool CsvParser::on_idle_parse()
 
       // End quote:
       if(ch == (char)QUOTE)
+      {
         in_quotes = false;
+
+        /*
+        const size_t len = pos - prev;
+        std::string quoted_text;
+        if(len)
+          quoted_text = std::string(prev, len);
+        std::cout << "DEBUG: Quoted=" << quoted_text << std::endl;
+        */
+      }
+      //else
+      //  std::cout << "Ignoring a newline in quotes." << std::endl;
 
       prev = pos + 1;
       continue;
@@ -389,6 +408,7 @@ bool CsvParser::on_idle_parse()
 
       if(!m_current_line.empty())
       {
+        //std::cout << "debug: intermediate chunk" << std::endl;
         do_line_scanned(m_current_line, m_line_number);
       }
 
@@ -408,8 +428,9 @@ bool CsvParser::on_idle_parse()
     }
   }
 
-  // Append last chunk of this line
-  m_current_line.append(prev, outbuf - prev);
+  // We reached the end of buffer (instead of ending with a newline):
+  m_current_line.append(prev_line_end, outbuf - prev_line_end);
+
   if(!m_stream && m_raw.size() == m_input_position)
   {
     ++m_line_number;
@@ -417,6 +438,7 @@ bool CsvParser::on_idle_parse()
     // Handle last line, if nonempty
     if(!m_current_line.empty())
     {
+      //std::cout << "debug: last chunk" << std::endl;
       do_line_scanned(m_current_line, m_line_number);
     }
 
@@ -425,6 +447,11 @@ bool CsvParser::on_idle_parse()
     set_state(STATE_PARSED);
     signal_finished_parsing().emit();
   }
+  else
+  {
+    //TODO: Make in_quotes static, so that quotes work across calls to this chunk parser.
+    //std::cout << "Waiting for next read: so far size=" << m_current_line.size() << ", start=" << m_current_line.substr(0, 40) << std::endl;
+  }
 
   // Continue if there are more bytes to process
   return more_to_process; //false means stop calling the idle handler.
@@ -432,7 +459,7 @@ bool CsvParser::on_idle_parse()
 
 void CsvParser::do_line_scanned(const Glib::ustring& line, guint line_number)
 {
-  //std::cout << "debug: on_line_scanned=" << line_number << std::endl;
+  //std::cout << "debug: on_line_scanned=" << line_number << ", line start=" << line.substr(0, 40) << std::endl;
   if(line.empty())
    return;
 

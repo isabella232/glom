@@ -197,7 +197,7 @@ uninstall-update-mime-database:
 
 if HOST_WIN32
 .rc.res:
-	$(WINDRES) -i '$<' --input-format=rc -o '$@' -O coff
+	$(AM_V_GEN)$(WINDRES) -i '$<' --input-format=rc -o '$@' -O coff
 endif
 
 @INTLTOOL_DESKTOP_RULE@

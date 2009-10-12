@@ -1,7 +1,16 @@
+1.12.2 (stable):
+
+* Details: Choices: Actually show choices drop-down lists again, 
+  fixing a regression in Glom 1.12.
+* Export, Import: Better handling of binary image data.
+  (Murray Cumming)
+
 1.12.1 (stable):
 
-* Related Records: Fix doubly-related records portals, such as a list of 
+* Related Records:
+  - Fix doubly-related records portals, such as a list of 
   an Artist's publishers (via their albums).
+  - Portals: Prevent use of inappropriate relationships.
 * Maemo: More work on the port to the Maemo 5 UI, using simpel separate windows.
 * Build: Fix the build with gtkmm < 2.18.
   (Murray Cumming)

@@ -1,2 +1,6 @@
-test_parsing_time
-test_signal_reemit
+/test_load_python_library
+/test_parsing_time
+/test_python_module
+/test_signal_reemit
+/import/test_parsing
+/import/test_signals

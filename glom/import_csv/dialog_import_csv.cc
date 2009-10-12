@@ -119,6 +119,7 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
   m_parser->signal_line_scanned().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_parser_line_scanned));
   m_parser->signal_state_changed().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_parser_state_changed));
 
+  m_first_line_as_title->set_active(false);
   m_first_line_as_title->signal_toggled().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_first_line_as_title_toggled));
   m_sample_rows->signal_changed().connect(sigc::mem_fun(*this, &Dialog_Import_CSV::on_sample_rows_changed));
 

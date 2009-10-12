@@ -50,7 +50,7 @@ $(glom_utility_widgets_egg_toolpalette_libeggtoolpalette_a_OBJECTS): \
 	$(eggutildir)/eggmarshalers.c $(eggutildir)/eggmarshalers.h
 
 $(eggutildir)/eggmarshalers.h: $(eggmarshalers_list)
-	$(GLIB_GENMARSHAL) --prefix=_egg_marshal --header "$(eggmarshalers_list)" >'$@'
+	$(AM_V_GEN)$(GLIB_GENMARSHAL) --prefix=_egg_marshal --header "$(eggmarshalers_list)" >'$@'
 
 $(eggutildir)/eggmarshalers.c: $(eggmarshalers_list)
-	$(GLIB_GENMARSHAL) --prefix=_egg_marshal --body "$(eggmarshalers_list)" >'$@'
+	$(AM_V_GEN)$(GLIB_GENMARSHAL) --prefix=_egg_marshal --body "$(eggmarshalers_list)" >'$@'

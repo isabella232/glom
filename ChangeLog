@@ -56,6 +56,35 @@
   Tests: Import: Fixed the no-exceptions build.
   
 	* tests/import/utils.cc: Fixed the no-exceptions build.
+	
+2009-10-06  Daniel Elstner  <daniel.kitta@gmail.com>
+
+	Support Automake silent rules
+
+	* configure.ac: Call the AM_SILENT_RULES macro if it is defined.
+	* Makefile.am (.rc.res): Prefix command with $(AM_V_GEN) to suppress
+	the echoing of the command line if silent rules are enabled.
+	* Makefile_libegg.am (eggmarshalers.h), (eggmarshalers.c): ditto.
+
+1.12.2:
+
+2009-10-05  Murray Cumming  <murrayc@murrayc.com>
+
+	Import: Handle large unquoted text (binary image data).
+
+	* glom/import_csv/csv_parser.cc: on_idle_parse(): When we reach the 
+	end of the buffer without finding a newline, store all of the remaining 
+	text instead of just since the last quote, so we don't discard parts 
+	of large unquoted text, such as parts of binary image data.  
+	This seems to break the test_fail_on_non_matching_quotes test, but 
+	the tests are too hard to run until we have removed the idle handling 
+	(and its timing problems) from CSvParser.
+  	
+	* glom/libglom/data_structure/field.cc: to_file_format(): Also 
+	escape carriage-returns, just in case.
+	* tests/import/test_parsing.cc: Comment out the 
+	test_skip_on_no_ending_newline test, because I see no reason why we 
+	would want to ignore last lines with no newline.
 
 2009-10-06  Murray Cumming  <murrayc@murrayc.com>
 
@@ -215,7 +244,7 @@
 
 2009-09-29  Murray Cumming  <murrayc@murrayc.com>
 
-  Doubly-related Records: Correct the SQL.
+	Doubly-related Records: Correct the SQL.
   
 	* glom/base_db.cc: set_found_set_where_clause_for_portal():
 	For doubly-related records, use the correct relationship for the GROUP BY to 
@@ -226,7 +255,7 @@
 
 2009-09-29  Murray Cumming  <murrayc@murrayc.com>
 
-  Design: Related Records Portal: Prevent use of inappropriate relationships.
+	Design: Related Records Portal: Prevent use of inappropriate relationships.
   
 	* glom/mode_design/layout/dialog_layout_list_related.cc: 
 	on_combo_relationship_changed(): Do not allow the related record to show 
