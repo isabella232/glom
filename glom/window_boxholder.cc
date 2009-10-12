@@ -32,7 +32,7 @@ Window_BoxHolder::Window_BoxHolder(Box_WithButtons* pBox, const Glib::ustring& t
     set_title(title);
 
 #ifndef GLOM_ENABLE_MAEMO
-  set_border_width(Utils::DEFAULT_SPACING_SMALL);
+
 #else
   //Maemo has wide border margins:
   set_border_width(HILDON_MARGIN_DOUBLE);
@@ -40,7 +40,18 @@ Window_BoxHolder::Window_BoxHolder(Box_WithButtons* pBox, const Glib::ustring& t
 
   pBox->signal_cancelled.connect(sigc::mem_fun(*this, &Window_BoxHolder::on_box_cancelled));
 
+  #ifndef GLOM_ENABLE_MAEMO
+  set_border_width(Utils::DEFAULT_SPACING_SMALL);
   add(*pBox);
+  #else
+  //Maemo has wide borders, but not on the right-hand side when there is a scrollbar:
+  set_border_width(0);
+  add(m_alignment);
+  m_alignment.set_padding(HILDON_MARGIN_DOUBLE, HILDON_MARGIN_DOUBLE, HILDON_MARGIN_DOUBLE, 0);
+  m_alignment.show();
+  m_alignment.add(*pBox);
+  #endif
+
   pBox->show();
 
   //Set the default button, if there is one:

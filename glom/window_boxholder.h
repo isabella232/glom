@@ -26,6 +26,7 @@
 #include <gtkmm/button.h>
 
 #ifdef GLOM_ENABLE_MAEMO
+#include <gtkmm/alignment.h>
 #include <hildonmm/stackable-window.h>
 #endif
 
@@ -46,6 +47,10 @@ public:
   virtual ~Window_BoxHolder();
 
 private:
+
+  #ifdef GLOM_ENABLE_MAEMO
+  Gtk::Alignment m_alignment;
+  #endif
 
   //Signal handlers:
   void on_box_cancelled();

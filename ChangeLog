@@ -1,5 +1,12 @@
 2009-10-12  Murray Cumming  <murrayc@murrayc.com>
 
+  Maemo: Details: Put scrollbar against the right edge, as per spec.
+  
+	* glom/window_boxholder.[h|cc]: On Maemo, use an Alignment with no padding 
+	at the right, instead of just a window border, to match the UI spec.
+
+2009-10-12  Murray Cumming  <murrayc@murrayc.com>
+
   Maemo: Details: More correct padding, maybe.
   
 	* glom/utility_widgets/flowtable.[h|cc]: Change set_padding() to 
