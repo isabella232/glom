@@ -70,7 +70,7 @@ public:
   typedef sigc::slot<void, Widget&> ForallSlot;
   void forall(const ForallSlot& slot);
 
-protected:
+private:
 
   #ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   // These are the hand-coded C default signal handlers in case the
@@ -99,6 +99,7 @@ protected:
   virtual void on_unrealize();
   virtual bool on_expose_event(GdkEventExpose* event);
 
+protected:
   int get_column_height(guint start_widget, guint widget_count, int& total_width) const;
 
   /** 
@@ -127,7 +128,7 @@ protected:
     Gtk::Allocation m_second_allocation;
   };
 
-  typedef std::vector<FlowTableItem> type_vecChildren;
+private:
   void insert_before(FlowTableItem& item, Gtk::Widget& before);
 
   int get_item_requested_height(const FlowTableItem& item) const;
@@ -139,7 +140,10 @@ protected:
   Gtk::Allocation assign_child(Gtk::Widget* widget, int x, int y);
   Gtk::Allocation assign_child(Gtk::Widget* widget, int x, int y, int width, int height);
 
+protected:
+  typedef std::vector<FlowTableItem> type_vecChildren;
   type_vecChildren m_children;
+private:
   guint m_columns_count;
   guint m_column_padding, m_row_padding;
   bool m_design_mode;

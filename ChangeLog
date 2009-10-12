@@ -1,5 +1,12 @@
 2009-10-12  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/flowtable.h:
+	* glom/utility_widgets/flowtable_dnd.cc: Correct non-maemo build 
+	problems after merging from the maemo5 branch.
+
+2009-10-12  Murray Cumming  <murrayc@murrayc.com>
+
   Maemo: Details: Put scrollbar against the right edge, as per spec.
   
 	* glom/window_boxholder.[h|cc]: On Maemo, use an Alignment with no padding 

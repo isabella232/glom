@@ -244,7 +244,7 @@ FlowTableDnd::dnd_item_at_position(int drag_x, int drag_y)
     {
       Gdk::Rectangle second_rect = cur_item->m_second->get_allocation();
       rect.set_height(MAX(rect.get_height(), second_rect.get_height()));
-      rect.set_width(rect.get_width() + m_padding + second_rect.get_width());
+      rect.set_width(rect.get_width() + get_column_padding() + second_rect.get_width());
     }
     
     int cur_column = 0;
