@@ -45,7 +45,8 @@ main(int argc, char* argv[])
   //Gtk::VBox flowtable;
   Glom::FlowTable flowtable;
   flowtable.set_columns_count(3);
-  flowtable.set_padding(5);
+  flowtable.set_column_padding(100);
+  flowtable.set_row_padding(0);
 
   Gtk::Entry button7; button7.set_text("seven");
   button7.show();
@@ -72,9 +73,6 @@ main(int argc, char* argv[])
   window.add(flowtable);
   flowtable.set_design_mode();
   flowtable.show();
-
-
-  flowtable.set_padding(20);
 
 //  Glom::DragWindow drag_window;
 //  drag_window.show();

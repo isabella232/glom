@@ -194,7 +194,12 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
     Gtk::Alignment* alignment = Gtk::manage( new Gtk::Alignment ); //TODO_leak: This is possibly leaked, according to valgrind.
 
     if(!group->get_title().empty()) //Don't indent if it has no title, to allow use of groups just for positioning.
+    {
       alignment->set_padding(Glom::Utils::DEFAULT_SPACING_SMALL, 0, 6, 0); //Use left-padding of 6 even on Maemo because indentation is important.
+      #ifdef GLOM_ENABLE_MAEMO
+      std::cerr << "DEBUG: Unexpected group with title causing extra spacing on Maemo." << std::endl;
+      #endif
+    }
 
     alignment->show();
     frame->add(*alignment);
@@ -204,11 +209,10 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
     flow_table->set_table(m_table_name);
 
     flow_table->set_columns_count(group->get_columns_count());
-    #ifndef GLOM_ENABLE_MAEMO
-    flow_table->set_padding(Utils::DEFAULT_SPACING_SMALL);
-    #else
-    flow_table->set_padding(0);HILDON_MARGIN_HALF);
-    #endif
+    
+    //Use the parent table's padding:
+    flow_table->set_column_padding(get_column_padding());
+    flow_table->set_row_padding(get_row_padding());
     flow_table->show();
     
     Gtk::EventBox* event_box = Gtk::manage( new Gtk::EventBox() ); //TODO_Leak: Valgrind says this is possibly leaked.
@@ -393,11 +397,8 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
         flow_table->set_table(m_table_name);
 
         flow_table->set_columns_count(group->get_columns_count());
-        #ifndef GLOM_ENABLE_MAEMO
-        flow_table->set_padding(Utils::DEFAULT_SPACING_SMALL);
-        #else
-        flow_table->set_padding(HILDON_MARGIN_HALF);
-        #endif
+        flow_table->set_column_padding(get_column_padding());
+        flow_table->set_row_padding(get_row_padding());
         flow_table->show();
         
         // Put the new flowtable in an event box to catch events
@@ -485,7 +486,8 @@ void FlowTableWithFields::add_group(const Glib::ustring& group_name, const Glib:
     FlowTableWithFields* flow_table = Gtk::manage( new FlowTableWithFields() );
 
     flow_table->set_columns_count(1);
-    flow_table->set_padding(Utils::DEFAULT_SPACING_SMALL);
+    flow_table->set_column_padding(get_column_padding());
+    flow_table->set_row_padding(get_row_padding());
     flow_table->show();
     alignment->add(*flow_table);
 

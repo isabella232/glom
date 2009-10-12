@@ -1,3 +1,11 @@
+2009-10-12  Murray Cumming  <murrayc@murrayc.com>
+
+  Maemo: Details: More correct padding, maybe.
+  
+	* glom/utility_widgets/flowtable.[h|cc]: Change set_padding() to 
+	set_column_padding() and set_row_padding(), allowing different padding 
+	between rows and between columns, as per Maemo's UI specifications.
+
 2009-10-11  Murray Cumming  <murrayc@murrayc.com>
 
   Maemo: Use Hildon buttons for Open, Find and ... buttons.

@@ -44,9 +44,21 @@ public:
 
   void set_columns_count(guint value);
 
-  /** Sets the padding to put between the child widgets.
+  /** Sets the padding to put between the columns of widgets.
    */
-  virtual void set_padding(guint padding);
+  void set_column_padding(guint padding);
+  
+  /** Gets the padding between the columns of widgets.
+   */
+  guint get_column_padding() const;
+  
+  /** Sets the padding to put between the rows of widgets.
+   */
+  void set_row_padding(guint padding);
+  
+  /** Gets the padding between the rows of widgets.
+   */
+  guint get_row_padding() const;
 
   /** Show extra UI that is useful in RAD tools:
    */
@@ -60,7 +72,7 @@ public:
 
 protected:
 
-#ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
+  #ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   // These are the hand-coded C default signal handlers in case the
   // corresponding glibmm API has been disabled
   static void glom_size_request_impl(GtkWidget* widget, GtkRequisition* requisition);
@@ -71,7 +83,7 @@ protected:
   static void glom_realize_impl(GtkWidget* widget);
   static void glom_unrealize_impl(GtkWidget* widget);
   static gboolean glom_expose_event_impl(GtkWidget* widget, GdkEventExpose* event);
-#endif
+  #endif
   //Overrides:
 
   //Handle child widgets:
@@ -129,7 +141,7 @@ protected:
 
   type_vecChildren m_children;
   guint m_columns_count;
-  guint m_padding;
+  guint m_column_padding, m_row_padding;
   bool m_design_mode;
 
   //Lines to draw in on_expose_event:

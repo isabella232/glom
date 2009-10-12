@@ -24,6 +24,7 @@
 #include <gdk/gdktypes.h>
 #include <iostream>
 #include <gdkmm/window.h>
+#include <glom/utils_ui.h>
 #include <gtk/gtk.h>
 
 
@@ -201,7 +202,8 @@ FlowTable::FlowTable()
   Glib::ObjectBase("Glom_FlowTable"),
 #endif // ! !defined(GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED)
   m_columns_count(1),
-  m_padding(0),
+  m_column_padding(Utils::DEFAULT_SPACING_SMALL), //A sane default.
+  m_row_padding(Utils::DEFAULT_SPACING_SMALL), //A sane default.
   m_design_mode(false)
 {
 #if !defined(GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED)
@@ -452,8 +454,7 @@ int FlowTable::get_column_height(guint start_widget, guint widget_count, int& to
     //Add the padding if it's not the first widget, and if one is visible:
     if( (i != start_widget) && item_height)
     {
-      std::cout << "debug: row padding=" << m_padding << std::endl;
-      column_height += m_padding;
+      column_height += m_row_padding;
     }
 
     if(item_height) //If one was visible.
@@ -479,7 +480,7 @@ int FlowTable::get_column_height(guint start_widget, guint widget_count, int& to
    total_width = MAX(total_width, column_width_singles);
 
    if( (column_width_first > 0) && (column_width_second > 0) ) //Add padding if necessary.
-     total_width += m_padding;
+     total_width += m_column_padding;
 
   return column_height;
 }  
@@ -522,7 +523,7 @@ int FlowTable::get_minimum_column_height(guint start_widget, guint columns_count
       if( others_column_start_widget  < m_children.size())
       {
         minimum_column_height_nextcolumns = get_minimum_column_height(others_column_start_widget, columns_count - 1, others_column_width);
-        others_column_width += m_padding; //Add the padding between the previous column and this one.
+        others_column_width += m_column_padding; //Add the padding between the previous column and this one.
 
         minimum_column_height_sofar = MAX(first_column_height, minimum_column_height_nextcolumns);
       }
@@ -626,7 +627,7 @@ void FlowTable::get_item_max_width_requested(guint start, guint height, guint& f
     guint padding_above = 0;
     //Add padding above the item, if it is after another one.
     if( first_item_added && (child_is_visible(first) || child_is_visible(second)) )
-       padding_above += m_padding;
+       padding_above += m_row_padding;
 
     guint item_first_width = 0;
     guint singles_width = 0;
@@ -709,10 +710,10 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
 
   int column_x_start_second = column_x_start + first_max_width;
   if(first_max_width > 0) //Add padding between first and second sub sets of items, if there is a first set.
-    column_x_start_second += m_padding;
+    column_x_start_second += m_column_padding;
 
   //Used for drawing horizontal lines:
-  guint column_max_width = MAX(first_max_width + m_padding + second_max_width, singles_max_width);
+  guint column_max_width = MAX(first_max_width + m_column_padding + second_max_width, singles_max_width);
   //Use the whole remaining width if there is no column after this:
   if(is_last_column)
   {
@@ -737,10 +738,10 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
       int column_x_start_plus_singles = column_x_start + singles_max_width;
       column_x_start = column_x_start_second + second_max_width;
       column_x_start = MAX(column_x_start, column_x_start_plus_singles); //Maybe the single items take up even more width.
-      column_x_start += m_padding;
+      column_x_start += m_column_padding;
 
       //Draw vertical line to separate the columns, in the middle of the padding:
-      const int line_x = column_x_start - (m_padding / 2);
+      const int line_x = column_x_start - (m_column_padding / 2);
       const int line_height = allocation.get_height();
       m_lines_vertical.push_back( type_line( Gdk::Point(line_x, allocation.get_y()), Gdk::Point(line_x, allocation.get_y() + line_height) ) );
 
@@ -755,10 +756,10 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
 
         column_x_start_second = column_x_start + first_max_width;
         if(first_max_width > 0) //Add padding between first and second sub sets of items, if there is a first set.
-          column_x_start_second += m_padding;
+          column_x_start_second += m_column_padding;
 
         //Used for drawing horizontal lines:
-        column_max_width = MAX(first_max_width + m_padding + second_max_width, singles_max_width);
+        column_max_width = MAX(first_max_width + m_column_padding + second_max_width, singles_max_width);
 
         //Use the whole remaining width if there is no column after this:
         if(is_last_column)
@@ -795,7 +796,7 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
           item.m_second_allocation = assign_child(second, column_x_start_second, column_child_y_start);
         else
         {
-          const int second_width_available = column_max_width - first_max_width - m_padding;
+          const int second_width_available = column_max_width - first_max_width - m_column_padding;
           item.m_second_allocation = assign_child(second, column_x_start_second, column_child_y_start, second_width_available, item_height);
         }
 
@@ -821,10 +822,10 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
     {
       //Start the next child below this child, plus the padding
       column_child_y_start += item_height;
-      column_child_y_start += m_padding; //Ignored if this is the last item - we will just start a new column when we find that column_child_y_start is too much.
+      column_child_y_start += m_row_padding; //Ignored if this is the last item - we will just start a new column when we find that column_child_y_start is too much.
 
       //Add horizontal line in the middle of the padding:
-      const guint line_y = column_child_y_start - (m_padding / 2);
+      const guint line_y = column_child_y_start - (m_row_padding / 2);
       const guint line_width = column_max_width;
       m_lines_horizontal.push_back( type_line( Gdk::Point(column_x_start, line_y), Gdk::Point(column_x_start + line_width, line_y) ) );
     }
@@ -913,11 +914,24 @@ void FlowTable::forall(const ForallSlot& slot)
   gtk_container_forall(gobj(), &container_forall_callback, &slot_copy);
 }
 
-/** Sets the padding to put between the child widgets.
- */
-void FlowTable::set_padding(guint padding)
+void FlowTable::set_column_padding(guint padding)
 {
-  m_padding = padding; 
+  m_column_padding = padding; 
+}
+
+guint FlowTable::get_column_padding() const
+{
+  return m_column_padding;
+}
+
+void FlowTable::set_row_padding(guint padding)
+{
+  m_row_padding = padding; 
+}
+
+guint FlowTable::get_row_padding() const
+{
+  return m_row_padding;
 }
 
 bool FlowTable::child_is_visible(const Gtk::Widget* widget) const
@@ -1040,5 +1054,4 @@ bool FlowTable::on_expose_event(GdkEventExpose* event)
 }
 
 } //namespace Glom
-
 
