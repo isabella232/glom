@@ -22,14 +22,19 @@
 #include <libglom/data_structure/glomconversions.h>
 #include <glibmm/i18n.h>
 
+#ifdef GLOM_ENABLE_MAEMO
+#include <hildonmm/program.h>
+#endif
+
 namespace Glom
 {
 
 Notebook_Data::Notebook_Data()
-: m_iPage_Details(0), m_iPage_List(0)
+: 
   #ifdef GLOM_ENABLE_MAEMO
-  , m_window_maemo_details(0)
+  m_window_maemo_details(0),
   #endif
+  m_iPage_Details(0), m_iPage_List(0)
 {
   //Add Pages:
   pages().push_back(Gtk::Notebook_Helpers::TabElem(m_Box_List, _("List")));
@@ -41,6 +46,9 @@ Notebook_Data::Notebook_Data()
   #else
   //On Maemo, we add the box to m_window_maemo_details instead:
   m_window_maemo_details = new Window_BoxHolder(&m_Box_Details, _("Details"));
+  
+  //Let this window have the main AppMenu:
+  Hildon::Program::get_instance()->add_window(*m_window_maemo_details);
   
   Gtk::Window* pWindow = get_app_window();
   if(pWindow)
@@ -222,7 +230,7 @@ void Notebook_Data::show_details(const Gnome::Gda::Value& primary_key_value)
 
 #if GLOM_ENABLE_MAEMO
   //Details are shown in a separate window on Maemo,
-  //though that window contains the regular m_Box_Details.
+  //though that window contains the regular m_Box_Details. 
   m_window_maemo_details->show();
 #else  
   if(get_current_view() != DATA_VIEW_Details)
@@ -370,6 +378,12 @@ void Notebook_Data::on_switch_page_handler(GtkNotebookPage* pPage, guint uiPageN
 void Notebook_Data::get_record_counts(gulong& total, gulong& found)
 {
   m_Box_List.get_record_counts(total, found);
+}
+
+void Notebook_Data::do_menu_file_add_record()
+{
+  show_details(Gnome::Gda::Value());
+  m_Box_Details.do_new_record();
 }
 
 } //namespace Glom

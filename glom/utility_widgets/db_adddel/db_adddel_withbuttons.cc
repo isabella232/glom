@@ -40,15 +40,18 @@ DbAddDel_WithButtons::DbAddDel_WithButtons()
   pack_start(m_HBox, Gtk::PACK_SHRINK);
 
   //Link buttons to handlers:
-  m_Button_Add.signal_clicked().connect(sigc::mem_fun(*this, &DbAddDel_WithButtons::on_button_add));
-  m_HBox.pack_end(m_Button_Add, Gtk::PACK_SHRINK);
     
   #ifndef GLOM_ENABLE_MAEMO
+  m_Button_Add.signal_clicked().connect(sigc::mem_fun(*this, &DbAddDel_WithButtons::on_button_add));
+  m_HBox.pack_end(m_Button_Add, Gtk::PACK_SHRINK);
+ 
   m_Button_Del.signal_clicked().connect(sigc::mem_fun(*this, &DbAddDel_WithButtons::on_button_del));
   m_Button_Edit.signal_clicked().connect(sigc::mem_fun(*this, &DbAddDel_WithButtons::on_button_edit));
 
   m_HBox.pack_end(m_Button_Edit, Gtk::PACK_SHRINK);
   m_HBox.pack_end(m_Button_Del, Gtk::PACK_SHRINK);
+  #else
+  m_HBox.hide();
   #endif //GLOM_ENABLE_MAEMO
 
   #ifdef GLOM_ENABLE_MAEMO
@@ -68,14 +71,12 @@ DbAddDel_WithButtons::~DbAddDel_WithButtons()
 {
 }
 
+#ifndef GLOM_ENABLE_MAEMO
 void DbAddDel_WithButtons::on_button_add()
 {
-#ifndef GLOM_ENABLE_MAEMO
   on_MenuPopup_activate_Add();
-#endif
 }
 
-#ifndef GLOM_ENABLE_MAEMO
 void DbAddDel_WithButtons::on_button_del()
 {
   on_MenuPopup_activate_Delete();

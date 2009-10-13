@@ -1213,6 +1213,17 @@ void Frame_Glom::on_menu_Mode_Find()
   #endif
 }
 
+#ifdef GLOM_ENABLE_MAEMO
+void Frame_Glom::on_menu_add_record()
+{
+  BusyCursor busy_cursor(get_app_window());
+  
+  //Note: This should only be called in Data mode.
+  m_Notebook_Data.do_menu_file_add_record();
+}
+#endif //GLOM_ENABLE_MAEMO
+
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void Frame_Glom::on_menu_Reports_EditReports()
 {

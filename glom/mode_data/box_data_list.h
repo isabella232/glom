@@ -61,6 +61,7 @@ public:
 
 
   //Signal Handlers:
+  //TODO: Remove virtual?
   virtual void on_details_nav_first();
   virtual void on_details_nav_previous();
   virtual void on_details_nav_next();

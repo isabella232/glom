@@ -259,6 +259,12 @@ public:
   virtual Gtk::TreeModel::iterator get_last_row() const;
 
   virtual void set_open_button_title(const Glib::ustring& title);
+  
+  
+  /** Add a new row to the list, for the user to enter record details,
+   * adding the generated primary key if necessary.
+   */
+  bool start_new_record();
 
 private:
   
@@ -430,7 +436,7 @@ private:
   bool m_bIgnoreTreeViewSignals;
 
   type_vec_strings m_vecColumnIDs; //We give each ViewColumn a special ID, so we know where they are after a reorder.
-
+  
 protected:
   bool m_allow_add;
   bool m_allow_delete;
@@ -504,15 +510,13 @@ private:
   Glib::RefPtr<Gtk::ListStore> m_model_hint;
 
   int m_fixed_cell_height;
-    
-    
+  
 private:
   
   /// Discover the right-most text column, so we can make it expand.
   bool get_column_to_expand(guint& column_to_expand) const;
   
   //TODO_refactor: Give these better names, and document them:
-  bool start_new_record();
   void user_changed(const Gtk::TreeModel::iterator& row, guint col);
   void user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator&  /* rowEnd TODO */);
 

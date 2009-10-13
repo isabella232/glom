@@ -429,7 +429,6 @@ bool Box_Data_Details::fill_from_database()
   return bResult;
 }
 
-#ifndef GLOM_ENABLE_MAEMO
 void Box_Data_Details::on_button_new()
 {
   if(!confirm_discard_unstored_data())
@@ -467,6 +466,7 @@ void Box_Data_Details::on_button_new()
   }
 }
 
+#ifndef GLOM_ENABLE_MAEMO
 void Box_Data_Details::on_button_del()
 {
   if( Conversions::value_is_empty(get_primary_key_value_selected()) )
@@ -1067,5 +1067,12 @@ void Box_Data_Details::show_layout_toolbar(bool show)
 }
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+
+#ifdef GLOM_ENABLE_MAEMO
+void Box_Data_Details::do_new_record()
+{
+  on_button_new();
+}
+#endif
 
 } //namespace Glom

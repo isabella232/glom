@@ -45,10 +45,9 @@ public:
 
 private:
   void setup_buttons();
-
-  void on_button_add();
   
   #ifndef GLOM_ENABLE_MAEMO
+  void on_button_add();
   void on_button_del();
   void on_button_edit();
   #endif //GLOM_ENABLE_MAEMO

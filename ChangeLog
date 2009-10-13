@@ -1,5 +1,21 @@
 2009-10-13  Murray Cumming  <murrayc@murrayc.com>
 
+	Maemo: Add a Add Record to the App Menu and remove it from the List View.
+
+	* glom/application.cc: init_menus(): Add an Add Record item to the AppMenu 
+	on Maemo.
+	* glom/frame_glom.[h|cc]: Added on_menu_add_record() on Maemo, calling 
+	Notebook_Data::do_menu_file_add_record().
+	* glom/mode_data/box_data_details.[h|cc]: Added do_new_record().
+	* glom/mode_data/notebook_data.[h|cc]: Added do_menu_file_add_record() to call 
+	the Box_Data_Details::do_new_record().
+	* glom/utility_widgets/db_adddel/db_adddel.h: Made start_new_record() public 
+	and documented it.
+	* glom/utility_widgets/db_adddel/db_adddel_withbuttons.[h|cc]: Remove the 
+	Add button on Maemo.
+
+2009-10-13  Murray Cumming  <murrayc@murrayc.com>
+
 	* *.cc: Replace use of NULL with 0, because this is C++.
 	Replace use of != NULL with nothing. 
 

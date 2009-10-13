@@ -385,10 +385,9 @@ void App_Glom::init_menus()
     _("Find"), _("Search for records in the table"),
     sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Mode_Find) );
     
-  //TODO:
-  //add_button_to_appmenu(m_maemo_appmenu, 
-  //  _("Add Record"), _("Create a new record in the table"),
-  //  sigc::mem_fun(*this, &App_Glom::on_menu_add_record) );
+  add_button_to_appmenu(m_maemo_appmenu, 
+    _("Add Record"), _("Create a new record in the table"),
+    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_add_record) );
 
   //set_app_menu(*appmenu); //TODO: Use this instead?
   Hildon::Program::get_instance()->set_common_app_menu(m_maemo_appmenu);

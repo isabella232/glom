@@ -91,7 +91,11 @@ public:
 
   void on_menu_Mode_Data();
   void on_menu_Mode_Find();
-
+  
+  #ifdef GLOM_ENABLE_MAEMO
+  void on_menu_add_record();
+  #endif
+  
   void on_menu_report_selected(const Glib::ustring& report_name);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

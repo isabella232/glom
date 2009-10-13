@@ -69,6 +69,10 @@ public:
   void show_layout_toolbar(bool show = true);
 #endif
 
+  #ifdef GLOM_ENABLE_MAEMO
+  void do_new_record();
+  #endif
+
 protected:
 
 
@@ -90,11 +94,12 @@ protected:
   void set_found_set_from_primary_key_value();
 
   void print_layout_group(xmlpp::Element* node_parent, const sharedptr<const LayoutGroup>& group);
-
+  
 private:
   //Signal handlers:
-#ifndef GLOM_ENABLE_MAEMO
   void on_button_new();
+    
+#ifndef GLOM_ENABLE_MAEMO
   void on_button_del();
 
   void on_button_nav_first();

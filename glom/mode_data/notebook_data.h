@@ -62,7 +62,11 @@ public:
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   virtual void do_menu_file_print(); //override
-
+  
+  #ifdef GLOM_ENABLE_MAEMO
+  void do_menu_file_add_record();
+  #endif
+  
   void get_record_counts(gulong& total, gulong& found);
 
   enum dataview
