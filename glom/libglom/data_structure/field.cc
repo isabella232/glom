@@ -145,7 +145,7 @@ void Field::set_field_info(const Glib::RefPtr<Gnome::Gda::Column>& fieldinfo)
   {
     cur_type = get_gda_type_for_glom_type(get_glom_type());
 
-    const FieldTypes* pFieldTypes = NULL;
+    const FieldTypes* pFieldTypes = 0;
 
     ConnectionPool* pConnectionPool = ConnectionPool::get_instance();
     if(pConnectionPool)
@@ -168,7 +168,7 @@ void Field::set_field_info(const Glib::RefPtr<Gnome::Gda::Column>& fieldinfo)
     // TODO: Basically copied from set_default_value(). Maybe this check should
     // be moved into an extra function.
     GType cur_type = get_gda_type_for_glom_type(get_glom_type());
-    const FieldTypes* pFieldTypes = NULL;
+    const FieldTypes* pFieldTypes = 0;
 
     ConnectionPool* pConnectionPool = ConnectionPool::get_instance();
     if(pConnectionPool)
@@ -477,7 +477,7 @@ void Field::set_default_value(const Gnome::Gda::Value& value)
 
   // Verify that the value matches the type of the field.
   GType cur_type = get_gda_type_for_glom_type(get_glom_type());
-  const FieldTypes* pFieldTypes = NULL;
+  const FieldTypes* pFieldTypes = 0;
 
   ConnectionPool* pConnectionPool = ConnectionPool::get_instance();
   if(pConnectionPool)

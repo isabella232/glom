@@ -174,7 +174,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   // Browse local network
 #ifndef G_OS_WIN32
   gchar* service_type = epc_service_type_new(EPC_PROTOCOL_HTTPS, "glom");
-  m_service_monitor = epc_service_monitor_new_for_types(NULL, service_type, NULL);
+  m_service_monitor = epc_service_monitor_new_for_types(0, service_type, 0);
   g_signal_connect(m_service_monitor, "service-found", G_CALLBACK(on_service_found_static), this);
   g_signal_connect(m_service_monitor, "service-removed", G_CALLBACK(on_service_removed_static), this);
   g_free(service_type);
@@ -288,7 +288,7 @@ Dialog_ExistingOrNew::~Dialog_ExistingOrNew()
   if(m_service_monitor)
   {
     g_object_unref(m_service_monitor);
-    m_service_monitor = NULL;
+    m_service_monitor = 0;
   }
 
   // Release the service infos in the treestore
@@ -876,7 +876,7 @@ void Dialog_ExistingOrNew::on_service_found(const Glib::ustring& name, EpcServic
   gchar* title = g_strdup_printf(_("%s on %s (via %s)"), name.c_str(), epc_service_info_get_host(info), epc_service_info_get_interface(info));
   Gtk::TreeModel::iterator iter = m_existing_model->prepend(m_iter_existing_network->children());
   (*iter)[m_existing_columns.m_col_title] = title;
-  (*iter)[m_existing_columns.m_col_time] = std::time(NULL); /* sort more recently discovered items above */
+  (*iter)[m_existing_columns.m_col_time] = std::time(0); /* sort more recently discovered items above */
   (*iter)[m_existing_columns.m_col_service_name] = name;
   (*iter)[m_existing_columns.m_col_service_info] = info;
 

@@ -122,7 +122,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
 #else
           std::auto_ptr<ExceptionConnection> error;
           sharedptr<SharedConnection> sharedconnection = connect_to_server(App_Glom::get_application(), error);
-          if(error.get() == NULL)
+          if(!error.get())
           {
             // Don't evaluate function on error
 #endif // GLIBMM_EXCEPTIONS_ENABLED

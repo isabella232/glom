@@ -56,7 +56,7 @@ Record_init(PyObject *self, PyObject * /* args */, PyObject * /* kwds */)
 {
   PyGlomRecord *self_record = (PyGlomRecord*)self;
 
-  //static char *kwlist[] = {"test", NULL};
+  //static char *kwlist[] = {"test", 0};
 
   //if(!PyArg_ParseTupleAndKeywords(args, kwds, "|i", kwlist,
    //                                 &self->m_test))
@@ -175,7 +175,7 @@ static PyGetSetDef Record_getseters[] = {
     {(char*)"table_name",
      (getter)Record__get_table_name, (setter)0, 0, 0
     },
-    {NULL, 0, 0, 0, 0, }  // Sentinel
+    {0, 0, 0, 0, 0, }  // Sentinel
 };
 
 //Adapt to API changes in Python 2.5:
@@ -236,7 +236,7 @@ Record_tp_as_mapping_getitem(PyObject *self, PyObject *item)
 
   g_warning("Record_tp_as_mapping_getitem(): return null.");
   PyErr_SetString(PyExc_IndexError, "field not found");
-  return NULL;
+  return 0;
 }
 
 /*
@@ -256,7 +256,7 @@ static PyMappingMethods Record_tp_as_mapping = {
 
 
 static PyTypeObject pyglom_RecordType = {
-    PyObject_HEAD_INIT(NULL)
+    PyObject_HEAD_INIT(0)
     0,                         /*ob_size*/
     (char*)"glom.Record",             /*tp_name*/
     sizeof(PyGlomRecord), /*tp_basicsize*/

@@ -600,7 +600,7 @@ void ImageGlom::setup_menu_usermode()
   catch(const Glib::Error& ex)
   {
 #else
-  if(error.get() != NULL)
+  if(error.get())
   {
     const Glib::Error& ex = *error.get();
 #endif

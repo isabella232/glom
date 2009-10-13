@@ -160,7 +160,7 @@ void App_WithDoc_Gtk::add_ui_from_string(const Glib::ustring& ui_description)
 #else
   std::auto_ptr<Glib::Error> error;
   m_refUIManager->add_ui_from_string(ui_description, error);
-  if(error.get() != NULL) std::cerr << "building menus failed: " << error->what();
+  if(error.get()) std::cerr << "building menus failed: " << error->what();
 #endif
 }
 
@@ -668,15 +668,14 @@ Glib::ustring App_WithDoc_Gtk::ui_file_select_save(const Glib::ustring& old_file
 
 void App_WithDoc_Gtk::ui_show_modification_status()
 {
-  bool modified = m_pDocument->get_modified();
+  const bool modified = m_pDocument->get_modified();
 
   //Enable Save and SaveAs menu items:
   if(m_action_save)
-    g_object_set(G_OBJECT(m_action_save->gobj()), "sensitive", modified, NULL); // TODO: Use a set_sensitive(modified)?
+    m_action_save->set_sensitive(modified);
 
   if(m_action_saveas)
-    g_object_set(G_OBJECT(m_action_saveas->gobj()), "sensitive", modified, NULL); // TODO: Use a set_sensitive(modified)?
-
+    m_action_saveas->set_sensitive(modified);
 }
 
 App_WithDoc_Gtk::enumSaveChanges App_WithDoc_Gtk::ui_offer_to_save_changes()

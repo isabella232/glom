@@ -33,7 +33,7 @@ main(int argc, char* argv[])
   {
     std::string stdout_output;
     int return_status = 0;
-    Glib::spawn_command_line_sync(command, &stdout_output, NULL, &return_status);
+    Glib::spawn_command_line_sync(command, &stdout_output, 0, &return_status);
     std::cout << " debug: output=" << stdout_output << std::endl;
   }
   catch(const Glib::Error& ex)

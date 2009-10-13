@@ -617,7 +617,7 @@ Dialog_Layout* Box_Data_List::create_layout_dialog() const
     return dialog;
   }
 
-  return NULL;
+  return 0;
 }
 
 void Box_Data_List::prepare_layout_dialog(Dialog_Layout* dialog)

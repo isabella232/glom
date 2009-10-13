@@ -107,7 +107,7 @@ void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const
   {
     stream = file->create_file(Gio::FILE_CREATE_NONE, error);
   }
-  if(error.get() != NULL)
+  if(error.get())
   {
 #endif
     // If the operation was not successful, print the error and abort
@@ -126,7 +126,7 @@ void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const
   {
 #else
   bytes_written = stream->write(result.data(), result_bytes, error);
-  if(error.get() != NULL)
+  if(error.get())
   {
 #endif
     // If the operation was not successful, print the error and abort
@@ -145,7 +145,7 @@ void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const
   // gtk_show_uri doesn't seem to work on Win32, at least not for local files
   // We use Windows API instead.
   // TODO: Check it again and file a bug if necessary.
-  ShellExecute(NULL, "open", file->get_path().c_str(), NULL, NULL, SW_SHOW);
+  ShellExecute(0, "open", file->get_path().c_str(), 0, 0, SW_SHOW);
 #else
   //Use the GNOME browser:
   GError* gerror = 0;

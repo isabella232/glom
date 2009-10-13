@@ -568,7 +568,7 @@ static bool meta_table_column_is_primary_key(GdaMetaTable* meta_table, const Gli
   if(!meta_table)
     return false;
     
-  for(GSList* item = meta_table->columns; item != NULL; item = item->next)
+  for(GSList* item = meta_table->columns; item != 0; item = item->next)
   {
     GdaMetaTableColumn* column = GDA_META_TABLE_COLUMN(item->data);
     if(!column)

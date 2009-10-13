@@ -114,7 +114,7 @@ public:
                                        "column", 0,
                                        "x-fill", TRUE, 
                                        "x-expand", TRUE, 
-                                       NULL);
+                                       0);
     Glib::RefPtr<Glom::CanvasRectMovable> innerrect2 = Glom::CanvasRectMovable::create();
     innerrect2->property_fill_color() = "white"; //This makes the whole area clickable, not just the outline stroke.
     innerrect2->property_line_width() = 1;
@@ -126,7 +126,7 @@ public:
                                        "column", 0,
                                        "x-fill", TRUE, 
                                        "x-expand", TRUE, 
-                                       NULL);
+                                       0);
     add_item(table, true);
 
   }
@@ -186,7 +186,7 @@ private:
     #else
     std::auto_ptr<Glib::Error> error;
     m_context_menu_uimanager->add_ui_from_string(ui_info, error);
-    if(error.get() != NULL)
+    if(error.get())
     {
       std::cerr << "building menus failed: " << error->what();
     }

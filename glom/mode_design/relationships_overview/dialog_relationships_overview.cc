@@ -102,7 +102,7 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
   #else
   std::auto_ptr<Glib::Error> error;
   m_refUIManager->add_ui_from_string(ui_info, error);
-  if(error.get() != NULL)
+  if(error.get())
   {
     std::cerr << "building menus failed: " << error->what();
   }
@@ -489,7 +489,7 @@ void Dialog_RelationshipsOverview::setup_context_menu()
   #else
   std::auto_ptr<Glib::Error> error;
   m_context_menu_uimanager->add_ui_from_string(ui_info, error);
-  if(error.get() != NULL)
+  if(error.get())
   {
     std::cerr << "building menus failed: " << error->what();
   }

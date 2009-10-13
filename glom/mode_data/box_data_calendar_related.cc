@@ -331,7 +331,7 @@ Box_Data_Calendar_Related::type_vecLayoutFields Box_Data_Calendar_Related::get_f
 void Box_Data_Calendar_Related::on_dialog_layout_hide()
 {
   Dialog_Layout_Calendar_Related* dialog_related = dynamic_cast<Dialog_Layout_Calendar_Related*>(m_pDialogLayout);
-  g_assert(dialog_related != NULL);
+  g_assert(dialog_related);
   m_portal = dialog_related->get_portal_layout();
 
 
@@ -366,13 +366,13 @@ Dialog_Layout* Box_Data_Calendar_Related::create_layout_dialog() const
     return dialog;
   }
 
-  return NULL;
+  return 0;
 }
 
 void Box_Data_Calendar_Related::prepare_layout_dialog(Dialog_Layout* dialog)
 {
   Dialog_Layout_Calendar_Related* related_dialog = dynamic_cast<Dialog_Layout_Calendar_Related*>(dialog);
-  g_assert(related_dialog != NULL);
+  g_assert(related_dialog);
   
   sharedptr<LayoutItem_CalendarPortal> derived_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(m_portal);
   if(derived_portal && derived_portal->get_has_relationship_name())
@@ -541,7 +541,7 @@ void Box_Data_Calendar_Related::setup_menu()
 #else
   std::auto_ptr<Glib::Error> error;
   m_refUIManager->add_ui_from_string(ui_info, error);
-  if(error.get() != NULL)
+  if(error.get())
   {
     std::cerr << "building menus failed: " << error->what();
   }

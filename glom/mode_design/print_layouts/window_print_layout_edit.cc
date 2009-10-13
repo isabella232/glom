@@ -640,7 +640,7 @@ void Window_PrintLayout_Edit::setup_context_menu()
   #else
   std::auto_ptr<Glib::Error> error;
   m_context_menu_uimanager->add_ui_from_string(ui_info, error);
-  if(error.get() != NULL)
+  if(error.get())
   {
     std::cerr << "building menus failed: " << error->what();
   }

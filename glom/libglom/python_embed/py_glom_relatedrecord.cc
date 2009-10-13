@@ -62,7 +62,7 @@ RelatedRecord_new(PyTypeObject *type, PyObject * /* args */, PyObject * /* kwds 
 static int
 RelatedRecord_init(PyGlomRelatedRecord *self, PyObject * /* args */, PyObject * /* kwds */)
 {
-  //static char *kwlist[] = {"test", NULL};
+  //static char *kwlist[] = {"test", 0};
 
   //if(!PyArg_ParseTupleAndKeywords(args, kwds, "|i", kwlist,
    //                                 &self->m_test))
@@ -136,7 +136,7 @@ static PyGetSetDef RelatedRecord_getseters[] = {
     {"fields",
      (getter)RelatedRecord__get_fields, (setter)0, 0, 0
     },
-    {NULL, 0, 0, 0, 0, }  // Sentinel
+    {0, 0, 0, 0, 0, }  // Sentinel
 };
 */
 
@@ -267,7 +267,7 @@ RelatedRecord_tp_as_mapping_getitem(PyObject *self, PyObject *item)
 
   g_warning("RelatedRecord_tp_as_mapping_getitem(): return null.");
   PyErr_SetString(PyExc_IndexError, "field not found");
-  return NULL;
+  return 0;
 }
 
 /*
@@ -293,10 +293,10 @@ RelatedRecord_generic_aggregate(PyGlomRelatedRecord* self, PyObject *args, PyObj
   PyObject* py_field_name = 0;
 
   if(!PyArg_ParseTupleAndKeywords(args, kwargs, (char*)"O:RelatedRecord.sum", (char**)kwlist, &py_field_name))
-    return NULL;
+    return 0;
 
   if(!(PyString_Check(py_field_name)))
-    return NULL;
+    return 0;
 
   const char* pchKey = PyString_AsString(py_field_name);
   if(pchKey)
@@ -416,14 +416,14 @@ static PyMethodDef RelatedRecord_methods[] = {
     {(char*)"max", (PyCFunction)RelatedRecord_max, METH_VARARGS | METH_KEYWORDS,
      (char*)"Maximum of all values of the field in the related records."
     },
-    {NULL, 0, 0, 0}  /* Sentinel */
+    {0, 0, 0, 0}  /* Sentinel */
 };
 
 
 
 
 static PyTypeObject pyglom_RelatedRecordType = {
-    PyObject_HEAD_INIT(NULL)
+    PyObject_HEAD_INIT(0)
     0,                         /*ob_size*/
     (char*)"glom.RelatedRecord",             /*tp_name*/
     sizeof(PyGlomRelatedRecord), /*tp_basicsize*/

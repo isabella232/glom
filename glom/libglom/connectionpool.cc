@@ -52,7 +52,7 @@ pgwin32_get_dynamic_tokeninfo(HANDLE token, TOKEN_INFORMATION_CLASS class_,
 {
   DWORD    InfoBufferSize;
 
-  if(GetTokenInformation(token, class_, NULL, 0, &InfoBufferSize))
+  if(GetTokenInformation(token, class_, 0, 0, &InfoBufferSize))
   {
     snprintf(errbuf, errsize, "could not get token information: got zero size\n");
     return FALSE;
@@ -66,7 +66,7 @@ pgwin32_get_dynamic_tokeninfo(HANDLE token, TOKEN_INFORMATION_CLASS class_,
   }
 
   *InfoBuffer = static_cast<char*>(malloc(InfoBufferSize));
-  if(*InfoBuffer == NULL)
+  if(*InfoBuffer == 0)
   {
     snprintf(errbuf, errsize, "could not allocate %d bytes for token information\n",
          (int) InfoBufferSize);
@@ -88,7 +88,7 @@ int
 pgwin32_is_admin(void)
 {
   HANDLE    AccessToken;
-  char     *InfoBuffer = NULL;
+  char     *InfoBuffer = 0;
   char    errbuf[256];
   PTOKEN_GROUPS Groups;
   PSID    AdministratorsSid;
@@ -942,22 +942,22 @@ void ConnectionPool::avahi_start_publishing()
   if(!document)
     return;
 
-  m_epc_publisher = epc_publisher_new(document->get_database_title().c_str(), "glom", NULL);
+  m_epc_publisher = epc_publisher_new(document->get_database_title().c_str(), "glom", 0);
   epc_publisher_set_protocol(m_epc_publisher, publish_protocol);
   
-  epc_publisher_add_handler(m_epc_publisher, "document", on_publisher_document_requested, this /* user_data */, NULL);
+  epc_publisher_add_handler(m_epc_publisher, "document", on_publisher_document_requested, this /* user_data */, 0);
 
   //Password-protect the document,
   //because the document's structure could be considered as a business secret:
   epc_publisher_set_auth_flags(m_epc_publisher, EPC_AUTH_PASSWORD_TEXT_NEEDED);
-  epc_publisher_set_auth_handler(m_epc_publisher, "document", on_publisher_document_authentication, this /* user_data */, NULL);
+  epc_publisher_set_auth_handler(m_epc_publisher, "document", on_publisher_document_authentication, this /* user_data */, 0);
 
   //Install progress callback, so we can keep the UI responsive while libepc is generating certificates for the first time:
   EpcShellProgressHooks callbacks;
   callbacks.begin = &ConnectionPool::on_epc_progress_begin;
   callbacks.update = &ConnectionPool::on_epc_progress_update;
   callbacks.end = &ConnectionPool::on_epc_progress_end;
-  epc_shell_set_progress_hooks(&callbacks, this, NULL);
+  epc_shell_set_progress_hooks(&callbacks, this, 0);
       
   //Prevent the consumer from seeing duplicates,
   //if multiple client computers advertize the same document:

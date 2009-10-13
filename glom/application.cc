@@ -65,10 +65,10 @@
 namespace Glom
 {
 
-static const int GLOM_RESPONSE_BROWSE_NETWORK = 1;
+//static const int GLOM_RESPONSE_BROWSE_NETWORK = 1;
 
 // Global application variable
-App_Glom* global_application = NULL;
+App_Glom* global_application = 0;
 
 App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : type_base(cobject, "Glom"),
@@ -702,7 +702,7 @@ void App_Glom::open_browsed_document(const EpcServiceInfo* server, const Glib::u
       epc_consumer_set_username(consumer, username.c_str());
       epc_consumer_set_password(consumer, password.c_str());
 
-      GError *error = NULL;
+      GError *error = 0;
       document_contents = (gchar*)epc_consumer_lookup(consumer, "document", &length, &error);
       if(error)
       {
@@ -731,7 +731,7 @@ void App_Glom::open_browsed_document(const EpcServiceInfo* server, const Glib::u
     }
 
     delete dialog_connection;
-    dialog_connection = NULL;
+    dialog_connection = 0;
 
   }
 
@@ -1544,7 +1544,7 @@ bool App_Glom::recreate_database(bool& user_cancelled)
     sharedptr<SharedConnection> sharedconnection = connection_pool->connect();
 #else
     sharedptr<SharedConnection> sharedconnection = connection_pool->connect(error);
-    if(error.get() == NULL)
+    if(!error.get())
     {
 #endif // GLIBMM_EXCEPTIONS_ENABLED
       g_warning("App_Glom::recreate_database(): Failed because database exists already.");
@@ -1558,7 +1558,7 @@ bool App_Glom::recreate_database(bool& user_cancelled)
   catch(const ExceptionConnection& ex)
   {
 #else
-  if(error.get() != NULL)
+  if(error.get())
   {
     const ExceptionConnection* exptr = dynamic_cast<ExceptionConnection*>(error.get());
     if(exptr)
@@ -1625,7 +1625,7 @@ bool App_Glom::recreate_database(bool& user_cancelled)
     sharedconnection = connection_pool->connect();
 #else
     sharedconnection = connection_pool->connect(error);
-    if(error.get() == NULL)
+    if(!error.get())
 #endif // GLIBMM_EXCEPTIONS_ENABLED
       connection_pool->set_database(db_name); //The database was successfully created, so specify it when connecting from now on.
   }
@@ -1633,7 +1633,7 @@ bool App_Glom::recreate_database(bool& user_cancelled)
   catch(const ExceptionConnection& ex)
   {
 #else
-  if(error.get() != NULL)
+  if(error.get())
   {
     const std::exception& ex = *error.get();
 #endif // GLIBMM_EXCEPTIONS_ENABLED
@@ -1821,7 +1821,7 @@ void App_Glom::fill_menu_tables()
   catch(const Glib::Error& ex)
   {
 #else
-  if(error.get() != NULL)
+  if(error.get())
   {
     const Glib::Error& ex = *error.get();
 #endif // GLIBMM_EXCEPTIONS_ENABLED
@@ -1920,7 +1920,7 @@ void App_Glom::fill_menu_reports(const Glib::ustring& table_name)
   catch(const Glib::Error& ex)
   {
 #else
-  if(error.get() != NULL)
+  if(error.get())
   {
     const Glib::Error& ex = *error.get();
 #endif // GLIBMM_EXCEPTIONS_ENABLED
@@ -2032,7 +2032,7 @@ void App_Glom::fill_menu_print_layouts(const Glib::ustring& table_name)
   catch(const Glib::Error& ex)
   {
 #else
-  if(error.get() != NULL)
+  if(error.get())
   {
     const Glib::Error& ex = *error.get();
 #endif // GLIBMM_EXCEPTIONS_ENABLED

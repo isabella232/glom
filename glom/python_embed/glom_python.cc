@@ -90,15 +90,15 @@ void ShowTrace()
 
   PyObject *tracebackModule = PyImport_ImportModule((char*)"traceback");
   gchar* chrRetval = 0;
-  if(tracebackModule != NULL)
+  if(tracebackModule)
   {
       PyObject* tbList = PyObject_CallMethod(
           tracebackModule,
           (char*)"format_exception",
           (char*)"OOO",
           type,
-          value == NULL ? Py_None : value,
-          traceback == NULL ? Py_None : traceback);
+          value == 0 ? Py_None : value,
+          traceback == 0 ? Py_None : traceback);
       
       if(!tbList)
       {

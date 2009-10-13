@@ -1,3 +1,8 @@
+2009-10-13  Murray Cumming  <murrayc@murrayc.com>
+
+	* *.cc: Replace use of NULL with 0, because this is C++.
+	Replace use of != NULL with nothing. 
+
 2009-10-12  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/db_adddel/db_adddel.cc:

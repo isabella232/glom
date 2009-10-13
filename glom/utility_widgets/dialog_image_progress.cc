@@ -78,7 +78,7 @@ void Dialog_Image_Progress::load(const Glib::ustring& uri)
 
   m_loader = Gdk::PixbufLoader::create();
   m_data.reset(new GdaBinary);
-  m_data->data = NULL;
+  m_data->data = 0;
   m_data->binary_length = 0;
 
   m_file = Gio::File::create_for_uri(uri);

@@ -62,18 +62,18 @@ std::string locate_help_file(const std::string& path, const std::string& doc_nam
   // g_get_language_names seems not to be wrapped by glibmm
   const char* const* lang_list = g_get_language_names ();
 
-  for(unsigned int j = 0; lang_list[j] != NULL; ++j)
+  for(unsigned int j = 0; lang_list[j] != 0; ++j)
   {
     const char* lang = lang_list[j];
 
-    /* This has to be a valid language AND a language with
+    /* This must be a valid language AND a language with
      * no encoding postfix.  The language will come up without
      * encoding next. */
-    if(lang == NULL || strchr(lang, '.') != NULL)
+    if(lang == 0 || strchr(lang, '.') != 0)
       continue;
 
-    const char* exts[] = { "", ".xml", ".docbook", ".sgml", ".html", NULL };
-    for(unsigned i = 0; exts[i] != NULL; ++i)
+    const char* exts[] = { "", ".xml", ".docbook", ".sgml", ".html", 0 };
+    for(unsigned i = 0; exts[i] != 0; ++i)
     {
       std::string name = doc_name + exts[i];
       std::string full = Glib::build_filename(path, Glib::build_filename(lang, name));
@@ -148,7 +148,7 @@ void Utils::show_help(const Glib::ustring& id)
       if(pId) { uri += "?"; uri += pId; }
 
       // g_app_info_launch_default_for_uri seems not to be wrapped by giomm
-      if(!g_app_info_launch_default_for_uri(uri.c_str(), NULL, &err))
+      if(!g_app_info_launch_default_for_uri(uri.c_str(), 0, &err))
       {
         std::string message(err->message);
         g_error_free(err);
@@ -243,7 +243,7 @@ Glib::RefPtr<Gdk::Pixbuf> Utils::get_pixbuf_for_gda_value(const Gnome::Gda::Valu
       else
       {
         buffer_binary_length = 0;
-        buffer_binary = NULL;
+        buffer_binary = 0;
         g_warning("Conversions::get_pixbuf_for_gda_value(): Failed to read BLOB data");
       }
     }
@@ -295,7 +295,7 @@ Glib::RefPtr<Gdk::Pixbuf> Utils::get_pixbuf_for_gda_value(const Gnome::Gda::Valu
 #else
         std::auto_ptr<Glib::Error> error;
         refPixbufLoader->write(puiData, (glong)buffer_binary_length, error);
-        if(error.get() == NULL)
+        if(!error.get())
         {
           result = refPixbufLoader->get_pixbuf();
           refPixbufLoader->close(error);
@@ -306,7 +306,7 @@ Glib::RefPtr<Gdk::Pixbuf> Utils::get_pixbuf_for_gda_value(const Gnome::Gda::Valu
         catch(const Glib::Exception& ex)
         {
 #else
-        if(error.get() != NULL)
+        if(error.get())
         {
           const Glib::Exception& ex = *error.get();        
 #endif

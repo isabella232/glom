@@ -99,7 +99,7 @@ void Canvas_PrintLayout::set_print_layout(const Glib::ustring& table_name, const
     #endif
     
     //TODO: Use this when gtkmm and GTK+ have been fixed: page_setup = Gtk::PageSetup::create(key_file);
-    page_setup = Glib::wrap(gtk_page_setup_new_from_key_file(key_file.gobj(), NULL, NULL));
+    page_setup = Glib::wrap(gtk_page_setup_new_from_key_file(key_file.gobj(), 0, 0));
   }
 
   set_page_setup(page_setup);
@@ -290,7 +290,7 @@ void Canvas_PrintLayout::setup_context_menu()
   #else
   std::auto_ptr<Glib::Error> error;
   m_context_menu_uimanager->add_ui_from_string(ui_info, error);
-  if(error.get() != NULL)
+  if(error.get())
   {
     std::cerr << "building menus failed: " << error->what();
   }

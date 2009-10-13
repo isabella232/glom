@@ -30,7 +30,7 @@
 #include <libglom/python_embed/py_glom_relatedrecord.h>
 
 static PyMethodDef pyglom_methods[] = {
-    {NULL, 0, 0, 0}  /* Sentinel */
+    {0, 0, 0, 0}  /* Sentinel */
 };
 
 PyMODINIT_FUNC

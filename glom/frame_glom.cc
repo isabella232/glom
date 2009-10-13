@@ -2361,7 +2361,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
         {
           ConnectionPool::Backend* backend = connection_pool->get_backend();
           ConnectionPoolBackends::PostgresCentralHosted* central = dynamic_cast<ConnectionPoolBackends::PostgresCentralHosted*>(backend);
-          g_assert(central != NULL);
+          g_assert(central);
 
           document->set_connection_server(central->get_host());
           document->set_connection_port(central->get_port());
@@ -2378,7 +2378,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
         {
           ConnectionPool::Backend* backend = connection_pool->get_backend();
           ConnectionPoolBackends::PostgresSelfHosted* self = dynamic_cast<ConnectionPoolBackends::PostgresSelfHosted*>(backend);
-          g_assert(self != NULL);
+          g_assert(self);
 
           document->set_connection_port(self->get_port());
           document->set_connection_try_other_ports(false);
@@ -2740,7 +2740,7 @@ void Frame_Glom::on_menu_print_layout_selected(const Glib::ustring& print_layout
     Glib::KeyFile key_file;
     key_file.load_from_data(key_file_text);
     //TODO: Use this when gtkmm and GTK+ have been fixed: page_setup = Gtk::PageSetup::create(key_file);
-    page_setup = Glib::wrap(gtk_page_setup_new_from_key_file(key_file.gobj(), NULL, NULL));
+    page_setup = Glib::wrap(gtk_page_setup_new_from_key_file(key_file.gobj(), 0, 0));
   }
   
   print->set_default_page_setup(page_setup);

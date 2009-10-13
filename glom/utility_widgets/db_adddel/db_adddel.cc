@@ -318,7 +318,7 @@ void DbAddDel::setup_menu()
 #else
   std::auto_ptr<Glib::Error> error;
   m_refUIManager->add_ui_from_string(ui_info, error);
-  if(error.get() != NULL)
+  if(error.get())
   {
     std::cerr << "building menus failed: " << error->what();
   }
@@ -766,7 +766,7 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
     //Use an ellipze to indicate excessive text, 
     //so that similar values do not look equal, 
     //and to avoid multi-line comments. TODO: Is there a better way to restrict the height? This doesn't actually truncate multilines anyway.
-    g_object_set(pCellRendererText->gobj(), "ellipsize", PANGO_ELLIPSIZE_END, (gpointer)NULL);
+    g_object_set(pCellRendererText->gobj(), "ellipsize", PANGO_ELLIPSIZE_END, (gpointer)0);
 
     //Restrict the height, to prevent multiline text cells,
     //and to allow TreeView performance optimisation:
@@ -2237,7 +2237,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
             if(pixbuf)
               pixbuf = ImageGlom::scale_keeping_ratio(pixbuf,  get_fixed_cell_height(), pixbuf->get_width());
 
-            g_object_set(pDerived->gobj(), "pixbuf", pixbuf ? pixbuf->gobj() : NULL, (gpointer)NULL);
+            g_object_set(pDerived->gobj(), "pixbuf", pixbuf ? pixbuf->gobj() : 0, (gpointer)0);
           }
           else
             g_warning("Field::sql(): glom_type is TYPE_IMAGE but gda type is not VALUE_TYPE_BINARY");
@@ -2253,7 +2253,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
             //std::cout << "  debug: DbAddDel::treeviewcolumn_on_cell_data(): field name=" << field->get_name() << ", glom type=" << field->get_glom_type() << std::endl;
             const Glib::ustring text = Conversions::get_text_for_gda_value(field->get_glom_type(), value, field->get_formatting_used().m_numeric_format);
             //g_assert(text != "NULL");
-            g_object_set(pDerived->gobj(), "text", text.c_str(), (gpointer)NULL);
+            g_object_set(pDerived->gobj(), "text", text.c_str(), (gpointer)0);
           }
 
           break;

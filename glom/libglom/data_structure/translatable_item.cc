@@ -204,7 +204,7 @@ Glib::ustring TranslatableItem::get_current_locale()
 {
   if(m_current_locale.empty())
   {
-    const char* cLocale = setlocale(LC_ALL, NULL); //Passing NULL means query, instead of set.
+    const char* cLocale = setlocale(LC_ALL, 0); //Passing NULL means query, instead of set.
     if(cLocale)
     {
       //std::cout << "TranslatableItem::get_current_locale(): locale=" << cLocale << std::endl;

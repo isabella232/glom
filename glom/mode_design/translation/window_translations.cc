@@ -420,10 +420,10 @@ static jmp_buf jump;
 static void show_gettext_error(int severity, const char* filename, const gchar* message)
 {
   std::ostringstream msg_stream;
-  if(filename != NULL)
+  if(filename)
     msg_stream << filename << ": ";
 
-  if(message != NULL)
+  if(message)
    msg_stream << message;
 
   switch(severity)
@@ -537,7 +537,7 @@ void Window_Translations::on_button_export()
 
 
       po_file_t po_file = po_file_create();
-      po_message_iterator_t msg_iter = po_message_iterator(po_file, NULL);
+      po_message_iterator_t msg_iter = po_message_iterator(po_file, 0);
       
       for(Gtk::TreeModel::iterator iter = m_model->children().begin(); iter != m_model->children().end(); ++iter)
       {
@@ -624,7 +624,7 @@ void Window_Translations::on_button_import()
 
       //Look at each domain (could there be more than one?):
       const char* const* domains = po_file_domains(po_file);
-      for (int i = 0; domains[i] != NULL; i++)
+      for (int i = 0; domains[i] != 0; i++)
       {
         //Look at each message:
         po_message_iterator_t iter = po_message_iterator(po_file, domains[i]);

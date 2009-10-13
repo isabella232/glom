@@ -217,7 +217,7 @@ bool Document::read_from_disk()
 #else
   std::auto_ptr<Glib::Error> error;
   stream = file->read(error);
-  if(error.get() != NULL)
+  if(error.get())
     return false; //print_error(ex, input_uri_string);
 #endif
 
@@ -238,7 +238,7 @@ bool Document::read_from_disk()
 #else
       std::auto_ptr<Glib::Error> gerror;
       bytes_read = stream->read(buffer, BYTES_TO_PROCESS, gerror);
-      if(gerror.get() != NULL) break;
+      if(gerror.get()) break;
 #endif
 
       if(bytes_read == 0)
@@ -254,7 +254,7 @@ bool Document::read_from_disk()
   catch(const Gio::Error& ex)
   {
 #else
-  if(error.get() != NULL)
+  if(error.get())
   {
     std::cerr << "Error: " << error->what() << std::endl;
 #endif
@@ -297,7 +297,7 @@ bool Document::write_to_disk()
 #else
     std::auto_ptr<Glib::Error> error;
     stream = file->replace(std::string(), false, Gio::FILE_CREATE_NONE, error);
-    if(error.get() != NULL)
+    if(error.get())
     {
       std::cout << "Error: " << error->what() << std::endl;
 #endif
@@ -326,7 +326,7 @@ bool Document::write_to_disk()
 #else
     std::auto_ptr<Glib::Error> gerror;
     stream->write(m_strContents.data(), m_strContents.bytes(), gerror);
-    if(gerror.get() != NULL)
+    if(gerror.get())
     {
       std::cerr << "Error: "<< gerror.get() << std::endl;
 #endif
@@ -410,7 +410,7 @@ bool Document::get_read_only() const
 #else
       std::auto_ptr<Glib::Error> error;
       info = file->query_info(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE, Gio::FILE_QUERY_INFO_NONE, error);
-      if(error.get() != NULL)
+      if(error.get())
         return false;
 #endif
 

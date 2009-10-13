@@ -360,7 +360,7 @@ void Box_Data::execute_button_script(const sharedptr<const LayoutItem_Button>& l
 #else
   std::auto_ptr<ExceptionConnection> error;
   sharedptr<SharedConnection> sharedconnection = connect_to_server(0 /* parent window */, error);
-  if(error.get() == NULL)
+  if(!error.get())
   {
 #endif // GLIBMM_EXCEPTIONS_ENABLED
 

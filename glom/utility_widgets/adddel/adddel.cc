@@ -276,7 +276,7 @@ void AddDel::setup_menu()
 #else
   std::auto_ptr<Glib::Error> error;
   m_refUIManager->add_ui_from_string(ui_info, error);
-  if(error.get() != NULL)
+  if(error.get())
   {
     std::cerr << "building menus failed: " << error->what();
   }
@@ -699,7 +699,7 @@ void AddDel::construct_specified_columns()
           if(pCellRenderer)
           {
             //Make it editable:
-            g_object_set(pCellRenderer->gobj(), "editable", TRUE, (gpointer)NULL);
+            g_object_set(pCellRenderer->gobj(), "editable", TRUE, (gpointer)0);
 
             //Connect to its signal:
             pCellRenderer->signal_edited().connect(
@@ -711,7 +711,7 @@ void AddDel::construct_specified_columns()
            Gtk::CellRendererToggle* pCellRenderer = dynamic_cast<Gtk::CellRendererToggle*>(m_TreeView.get_column_cell_renderer(view_column_index));
            if(pCellRenderer)
            {
-             g_object_set(pCellRenderer->gobj(), "activatable", TRUE, (gpointer)NULL);
+             g_object_set(pCellRenderer->gobj(), "activatable", TRUE, (gpointer)0);
 
              //Connect to its signal:
              pCellRenderer->signal_toggled().connect(

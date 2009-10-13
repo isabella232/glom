@@ -192,7 +192,7 @@ Related_tp_as_mapping_getitem(PyObject *self, PyObject *item)
   }
 
   PyErr_SetString(PyExc_IndexError, "relationship not found");
-  return NULL;
+  return 0;
 }
 
 /*
@@ -212,7 +212,7 @@ static PyMappingMethods Related_tp_as_mapping = {
 
 
 static PyTypeObject pyglom_RelatedType = {
-    PyObject_HEAD_INIT(NULL)
+    PyObject_HEAD_INIT(0)
     0,                         /*ob_size*/
     (char*)"glom.Related",             /*tp_name*/
     sizeof(PyGlomRelated), /*tp_basicsize*/

@@ -271,7 +271,7 @@ main(int argc, char* argv[])
     return -1;
   }
 
-  gchar* installation_dir_c = g_win32_get_package_installation_directory_of_module(NULL);
+  gchar* installation_dir_c = g_win32_get_package_installation_directory_of_module(0);
   const std::string installation_dir(installation_dir_c);
   g_free(installation_dir_c);
 #endif
@@ -362,7 +362,7 @@ main(int argc, char* argv[])
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   catch(const Glib::OptionError& ex)
 #else
-  if(error.get() != NULL)
+  if(error.get())
 #endif
   {
 #ifndef GLIBMM_EXCEPTIONS_ENABLED
