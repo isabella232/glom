@@ -1,3 +1,10 @@
+Requirements:
+
+ldtp-runner (In the python-ldtp package in Ubuntu.)
+
+
+Running Tests:
+
 To run all the tests, simply execute
 
 	ldtprunner test.xml

@@ -84,6 +84,7 @@ namespace Glom
 #define GLOM_ATTRIBUTE_PORTAL_CALENDAR_DATE_FIELD "date_field"
 #define GLOM_NODE_DATA_LAYOUT_ITEM "data_layout_item" //A field.
 #define GLOM_NODE_LAYOUT_ITEM_CUSTOM_TITLE "title_custom"
+#define GLOM_NODE_TABLE_TITLE_SINGULAR "title_singular" //such as "Customer" instead of "Customers".
 #define GLOM_ATTRIBUTE_LAYOUT_ITEM_CUSTOM_TITLE_USE "use_custom"
 #define GLOM_ATTRIBUTE_LAYOUT_ITEM_COLUMN_WIDTH "column_width"
 #define GLOM_NODE_DATA_LAYOUT_BUTTON "data_layout_button"
@@ -3345,6 +3346,11 @@ bool Document::save_before()
 
         //Translations:
         save_before_translations(nodeTable, *(doctableinfo.m_info));
+
+        //Save the singular table name:
+        xmlpp::Element* nodeTableSingluar = nodeTable->add_child(GLOM_NODE_TABLE_TITLE_SINGULAR);
+        save_before_translations(nodeTableSingluar, *(doctableinfo.m_info->m_title_singular));
+
 
         //Fields:
         xmlpp::Element* elemFields = nodeTable->add_child(GLOM_NODE_FIELDS);

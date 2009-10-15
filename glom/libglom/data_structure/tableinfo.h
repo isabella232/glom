@@ -37,6 +37,26 @@ public:
   guint m_sequence; //TODO: Use this?
   bool m_hidden;
   bool m_default;
+
+  /** Get the (translation of the) singular form of the title, in the current locale, 
+   * if specified.
+   */
+  Glib::ustring get_title_singular() const;
+
+  /** Get the (translation of the) singular form of the title, in the current locale, 
+   * if specified, falling back to the non-singular title, and 
+   * then falling back to the table name.
+   */
+  Glib::ustring get_title_singular_with_fallback() const;
+
+  /** Set the singular title's translation for the current locale.
+   */
+  void set_title_singular(const Glib::ustring& title);
+
+  /** For instance, "Customer" if the table is titled "Customers".
+   * This is useful in some UI strings.
+   */
+  sharedptr<TranslatableItem> m_title_singular;
 };
 
 } //namespace Glom
