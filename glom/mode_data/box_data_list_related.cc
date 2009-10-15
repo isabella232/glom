@@ -283,26 +283,15 @@ void Box_Data_List_Related::on_adddel_record_added(const Gtk::TreeModel::iterato
     //Create the link by setting the foreign key
     if(m_key_field && m_portal)
     {
-      Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
-      params->add_holder(m_key_field->get_holder(m_key_value));
-      params->add_holder(field_primary_key->get_holder(primary_key_value));
-      Glib::ustring strQuery = "UPDATE \"" + m_portal->get_table_used(Glib::ustring() /* not relevant */) + "\"";
-      strQuery += " SET \"" +  /* get_table_name() + "." +*/ m_key_field->get_name() + "\" = " + m_key_field->get_gda_holder_string();
-      strQuery += " WHERE \"" + get_table_name() + "\".\"" + field_primary_key->get_name() + "\" = " + field_primary_key->get_gda_holder_string();
-      //std::cout << "Box_Data_List_Related::on_adddel_record_added(): setting value in db=" << primary_key_value.to_string() << std::endl;
-      const bool test = query_execute(strQuery, params);
-      if(test)
-      {
-        //Show it on the view, if it's visible:
-        sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
-        layout_item->set_full_field_details(m_key_field);
+      make_record_related(primary_key_value);
+      
+      //Show it on the view, if it's visible:
+      sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+      layout_item->set_full_field_details(m_key_field);
 
-        //TODO: Although the to-field value is visible on the new related record, get_value() returns NULL so you can't immediately navigate to the new record: 
-        //std::cout << "DEBUG: Box_Data_List_Related::on_record_added(): setting field=" << layout_item->get_name() << "m_key_value=" << m_key_value.to_string() << std::endl; 
-        m_AddDel.set_value(row, layout_item, m_key_value);
-      }
-      else
-        std::cerr << "Box_Data_List_Related::on_record_added(): SQL query failed: " << strQuery << std::endl;
+      //TODO: Although the to-field value is visible on the new related record, get_value() returns NULL so you can't immediately navigate to the new record: 
+      //std::cout << "DEBUG: Box_Data_List_Related::on_record_added(): setting field=" << layout_item->get_name() << "m_key_value=" << m_key_value.to_string() << std::endl; 
+      m_AddDel.set_value(row, layout_item, m_key_value);
     }
     else
       std::cerr << "Box_Data_List_Related::on_record_added(): m_key_field is NULL" << std::endl;
@@ -490,12 +479,5 @@ void Box_Data_List_Related::create_layout_add_group(const sharedptr<LayoutGroup>
     }
   }
 }
-
-#ifdef GLOM_ENABLE_MAEMO
-void Box_Data_List_Related::do_add_record()
-{
-  m_AddDel.start_new_record();
-}
-#endif //GLOM_ENABLE_MAEMO
 
 } //namespace Glom

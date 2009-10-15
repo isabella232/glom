@@ -1,5 +1,19 @@
 2009-10-15  Murray Cumming  <murrayc@murrayc.com>
 
+	Maemo: Show a new Details window when adding related records.
+	
+	* glom/mode_data/box_data_portal.[h|cc]:
+	* glom/mode_data/box_data_calendar_related.[h|cc]:
+	* glom/mode_data/box_data_list_related.[h|cc]:
+	Remove the just-added do_add_record() virtual method.
+	Instead add a Box_Data_Details and parent window to Box_Data_Portal, 
+	used to show a details window for a new related record in 
+	on_maemo_appmenubutton_add().
+	Move some code from Box_Data_List_Related::on_adddel_record_added() to  
+	Box_Data_Portal::make_record_related() to make this easier.
+	
+2009-10-15  Murray Cumming  <murrayc@murrayc.com>
+
 	Developer: Tables: Add singular title.
 
 	* glom/libglom/data_structure/tableinfo.[h|cc]: Add 

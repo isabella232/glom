@@ -28,11 +28,15 @@
 
 #ifdef GLOM_ENABLE_MAEMO
 #include <hildonmm/button.h>
-#endif
+//#include <glom/mode_data/box_data_details.h>
+#include <glom/window_boxholder.h>
+#endif //GLOM_ENABLE_MAEMO
 
 
 namespace Glom
 {
+
+class Box_Data_Details;
 
 /** This is a base class for data widgets that should show multiple related records.
  */
@@ -42,7 +46,8 @@ class Box_Data_Portal :
 {
 public: 
   Box_Data_Portal();
-
+  virtual ~Box_Data_Portal();
+  
   /**
    * @param portal: The full portal details
    */
@@ -93,6 +98,8 @@ protected:
 protected:
   virtual Document::type_list_layout_groups create_layout_get_layout(); //override.
 
+  void make_record_related(const Gnome::Gda::Value& related_record_primary_key_value);
+
   Glib::ustring get_title() const;
 
   Gtk::Frame m_Frame;
@@ -101,6 +108,9 @@ protected:
 
   sharedptr<LayoutItem_Portal> m_portal;
   Glib::ustring m_parent_table; //A duplicate of the from_table in m_portal, but only when m_portal is not null.
+  
+  // m_key_field and m_key_value are the field and its value in this table that 
+  // must match another field in the parent table.
   sharedptr<Field> m_key_field;
   Gnome::Gda::Value m_key_value;
     
@@ -112,13 +122,12 @@ private:
   void on_unrealize();
   void on_maemo_appmenubutton_add();
   
-  /** Create a new (related) record.
-   */
-  virtual void do_add_record() = 0;
-  
   //Each related-records portal adds its own Add Something button 
   //to the application's AppMenu when the portal is visible.
   Hildon::Button m_maemo_appmenubutton_add;
+  
+  Window_BoxHolder* m_window_maemo_details;
+  Box_Data_Details* m_box_maemo_details;
   #endif //GLOM_ENABLE_MAEMO
 };
 

@@ -110,12 +110,6 @@ private:
   typedef std::map<Glib::Date, type_list_vectors> type_map_values;
   type_map_values m_map_values;
   mutable int m_query_column_date_field;
-  
-private:
-
-  #ifdef GLOM_ENABLE_MAEMO
-  virtual void do_add_record(); //override
-  #endif
 };
 
 } //namespace Glom

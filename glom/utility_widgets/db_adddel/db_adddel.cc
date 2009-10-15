@@ -2564,7 +2564,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
 
   Gnome::Gda::Value primary_key_value;
 
-  sharedptr<Field> primary_key_field = get_key_field();
+  sharedptr<const Field> primary_key_field = get_key_field();
 
   //Get the new primary key value, if one is available now:
   if(primary_key_field->get_auto_increment())

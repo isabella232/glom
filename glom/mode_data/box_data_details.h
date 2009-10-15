@@ -77,7 +77,10 @@ protected:
 
 
   //Implementations of pure virtual methods from Base_DB_Table_Data:
+public:
   virtual Gnome::Gda::Value get_primary_key_value_selected() const; //Value in the primary key's cell.
+  
+protected:
   virtual void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value);
   virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const; //Actual primary key value of this record.
     

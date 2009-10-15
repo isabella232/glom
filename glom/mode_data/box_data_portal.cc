@@ -24,6 +24,13 @@
 #include <glom/frame_glom.h> //For show_ok_dialog()
 #include <glom/utils_ui.h> //For bold_message()).
 #include <glom/application.h>
+
+#ifdef GLOM_ENABLE_MAEMO
+#include <glom/mode_data/box_data_details.h>
+#include <glom/window_boxholder.h>
+#include <hildonmm/program.h>
+#endif //GLOM_ENABLE_MAEMO
+
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -31,7 +38,9 @@ namespace Glom
 
 Box_Data_Portal::Box_Data_Portal()
 #ifdef GLOM_ENABLE_MAEMO
-: m_maemo_appmenubutton_add(Gtk::Hildon::SIZE_AUTO, Hildon::BUTTON_ARRANGEMENT_VERTICAL)
+: m_maemo_appmenubutton_add(Gtk::Hildon::SIZE_AUTO, Hildon::BUTTON_ARRANGEMENT_VERTICAL),
+  m_window_maemo_details(0),
+  m_box_maemo_details(0)
 #endif
 {
   set_size_request(400, -1); //An arbitrary default.
@@ -64,12 +73,97 @@ Box_Data_Portal::Box_Data_Portal()
   #endif //GLOM_ENABLE_MAEMO
 }
 
-void Box_Data_Portal::on_maemo_appmenubutton_add()
+Box_Data_Portal::~Box_Data_Portal()
 {
-  do_add_record();
+  if(m_window_maemo_details)
+    delete m_window_maemo_details;
+    
+  if(m_box_maemo_details)
+  {
+    remove_view(m_box_maemo_details);
+    delete m_box_maemo_details;
+  }
 }
 
+void Box_Data_Portal::make_record_related(const Gnome::Gda::Value& related_record_primary_key_value)
+{
+  sharedptr<Field> field_primary_key = get_field_primary_key();
+
+  //Create the link by setting the foreign key
+  if(!m_key_field)
+  {
+    std::cerr << "Box_Data_Portal::make_record_related(): m_key_field was null." << std::endl;
+  }
+  
+  if(!m_portal)
+  {
+    std::cerr << "Box_Data_Portal::make_record_related(): m_portal was null." << std::endl;
+  } 
+
+  Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
+  params->add_holder(m_key_field->get_holder(m_key_value));
+  params->add_holder(field_primary_key->get_holder(related_record_primary_key_value));
+  Glib::ustring strQuery = "UPDATE \"" + m_portal->get_table_used(Glib::ustring() /* not relevant */) + "\"";
+  strQuery += " SET \"" +  /* get_table_name() + "." +*/ m_key_field->get_name() + "\" = " + m_key_field->get_gda_holder_string();
+  strQuery += " WHERE \"" + get_table_name() + "\".\"" + field_primary_key->get_name() + "\" = " + field_primary_key->get_gda_holder_string();
+  //std::cout << "Box_Data_Portal::make_record_related(): setting value in db=" << primary_key_value.to_string() << std::endl;
+  const bool test = query_execute(strQuery, params);
+  if(!test)
+  {
+    std::cerr << "Box_Data_Portal::make_record_related(): SQL query failed: " << strQuery << std::endl;
+  }
+}
+
+
 #ifdef GLOM_ENABLE_MAEMO
+void Box_Data_Portal::on_maemo_appmenubutton_add()
+{
+  if(m_window_maemo_details)
+    delete m_window_maemo_details;
+    
+  if(m_box_maemo_details)
+  {
+    remove_view(m_box_maemo_details);
+    delete m_box_maemo_details;
+  }
+  
+  m_box_maemo_details = new Box_Data_Details();
+  add_view(m_box_maemo_details);
+  m_box_maemo_details->show_all();
+  
+  m_window_maemo_details = new Window_BoxHolder(m_box_maemo_details, _("Details"));
+  
+  //Let this window have the main AppMenu:
+  Hildon::Program::get_instance()->add_window(*m_window_maemo_details);
+  
+  Gtk::Window* pWindow = get_app_window();
+  if(pWindow)
+    m_window_maemo_details->set_transient_for(*pWindow);
+
+  const Glib::ustring title = 
+    Glib::ustring::compose(_("New Related %1"), 
+      get_title());
+  pWindow->set_title(title);
+  
+  FoundSet found_set;
+  found_set.m_table_name = m_portal->get_table_used(Glib::ustring());
+  Gnome::Gda::Value related_record_primary_key_value; //null for a new record.
+  m_box_maemo_details->init_db_details(found_set, 
+    get_active_layout_platform(get_document()), 
+    related_record_primary_key_value);
+    
+  m_box_maemo_details->do_new_record(); //Doesn't block.
+  
+  //Make the new record related:
+  //TODO: Test that this works if the primary key is not auto-generated.
+  related_record_primary_key_value = 
+    m_box_maemo_details->get_primary_key_value_selected();
+  make_record_related(related_record_primary_key_value);
+  
+  std::cout << "DEBUG: Showing details for new related record." << std::endl;
+  m_window_maemo_details->show();
+}
+
 void Box_Data_Portal::on_realize()
 {
   // Add an Add Related Something button to the application's AppMenu.
