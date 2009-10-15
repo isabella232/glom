@@ -66,6 +66,7 @@ private:
   guint m_colHidden;
   guint m_colTitle;
   guint m_colDefault;
+  guint m_colTitleSingular;
 
   mutable AddDel_WithButtons m_AddDel; //mutable because its get_ methods aren't const.
 };

@@ -33,7 +33,8 @@ Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_colTableName(0),
   m_colHidden(0),
   m_colTitle(0),
-  m_colDefault(0)
+  m_colDefault(0),
+  m_colTitleSingular(0)
 {
   //Get the Glade-instantiated widgets, and connect signal handlers:
   Gtk::Button* pButtonCancel = 0;
@@ -86,6 +87,7 @@ void Box_Tables::fill_table_row(const Gtk::TreeModel::iterator& iter, const shar
     {
       //std::cout << "Box_Tables::fill_table_row(): dev title=" << table_info->get_title() << std::endl;
       m_AddDel.set_value(iter, m_colTitle, table_info->get_title());
+      m_AddDel.set_value(iter, m_colTitleSingular, table_info->get_title_singular());
     }
     else
     {
@@ -131,8 +133,10 @@ bool Box_Tables::fill_from_database()
   m_colTitle =  m_AddDel.add_column(_("Title"), AddDelColumnInfo::STYLE_Text, editable, true);
 
   //TODO: This should really be a radio, but the use of AddDel makes it awkward to change that CellRenderer property.
-  m_colDefault =  m_AddDel.add_column(_("Default"), AddDelColumnInfo::STYLE_Boolean, editable, visible_extras);
+  m_colDefault = m_AddDel.add_column(_("Default"), AddDelColumnInfo::STYLE_Boolean, editable, visible_extras);
 
+  if(developer_mode)
+    m_colTitleSingular = m_AddDel.add_column(_("Title (Singular Form)"), AddDelColumnInfo::STYLE_Text, editable, true);
 
   //_("Server: ") +  m_strServerName + ", " + 
   //Glib::ustring strTitle = Glib::ustring("<b>") + _("Tables from Database: ") + get_database_name() + "");
@@ -348,6 +352,10 @@ void Box_Tables::on_adddel_changed(const Gtk::TreeModel::iterator& row, guint co
     {
       save_to_document();
     }
+    else if(column == m_colTitleSingular)
+    {
+      save_to_document();
+    }
     else if(column == m_colDefault)
     {
       //Only one table can be the default, so ensure that:
@@ -453,6 +461,7 @@ void Box_Tables::save_to_document()
         {
           table_info->m_hidden = m_AddDel.get_value_as_bool(iter, m_colHidden);
           table_info->set_title( m_AddDel.get_value(iter, m_colTitle) ); //TODO_Translations: Store the TableInfo in the TreeView.
+          table_info->set_title_singular( m_AddDel.get_value(iter, m_colTitleSingular) ); //TODO_Translations: Store the TableInfo in the TreeView.
           //std::cout << "save_to_document(): title=" << table_info->get_title() << std::endl;
           table_info->m_default = m_AddDel.get_value_as_bool(iter, m_colDefault);
 

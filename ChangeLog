@@ -1,3 +1,18 @@
+2009-10-15  Murray Cumming  <murrayc@murrayc.com>
+
+	Developer: Tables: Add singular title.
+
+	* glom/libglom/data_structure/tableinfo.[h|cc]: Add 
+	get/set_title_singular(), using a member TranslatableItem, to hold 
+	the singular form (such as Album instead of Albums) for use in the UI 
+	for users.
+	* glom/libglom/document/document.cc: save_before(), load_after(): 
+	Load and save the singular table titles as a new node.
+	* glom/glom_document.dtd: Mentin the new node, though I don't think 
+	we document translation nodes properly.
+	* glom/navigation/box_tables.[h|cc]: In developer mode, show the column 
+	so the user can enter a singular title.
+
 2009-10-12  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/db_adddel/db_adddel.cc:

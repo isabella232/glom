@@ -84,7 +84,7 @@ TODO: Test this by trying to validate some real documents against this DTD.
   default: can specify that the table should be opened when the file is opened. Only one table should have default=true.
   example_rows: deprecated in 1.6 (and support removed in 1.10) - use the child node instead.
 -->
-    <!ELEMENT table (example_rows | fields | relationships | data_layouts | reports | trans_set)* >
+    <!ELEMENT table (title_singular | example_rows | fields | relationships | data_layouts | reports | trans_set)* >
     <!ATTLIST table
         name CDATA #REQUIRED
         title CDATA #IMPLIED
