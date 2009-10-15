@@ -2548,6 +2548,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
   std::cout << "DEBUG: DbAddDel::user_added()" << std::endl;
 
   //Prevent impossible multiple related records:
+  //The developer-mode UI now prevents the developer from using such a relationship anyway.
   if(m_allow_only_one_related_record && (get_count() > 0))
   {
     //Tell user that they can't do that:
@@ -2584,59 +2585,60 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
   }
 
   //If no primary key value is available yet, then don't add the record yet:
-  if(!Conversions::value_is_empty(primary_key_value))
-  {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-    sharedptr<SharedConnection> sharedconnection = connect_to_server(get_application()); //Keep it alive while we need the data_model.
-#else
-    std::auto_ptr<ExceptionConnection> error;
-    sharedptr<SharedConnection> sharedconnection = connect_to_server(get_application(), error); //Keep it alive while we need the data_model.
-    // Ignore error - sharedconnection is checked for NULL instead:
-#endif
-    if(sharedconnection)
-    {
-      sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::create();
-      layout_field->set_full_field_details(primary_key_field);
-      if(!check_entered_value_for_uniqueness(m_found_set.m_table_name, layout_field, primary_key_value, get_application()))
-      {
-        //Revert to a blank value.
-        primary_key_value = Conversions::get_empty_value(layout_field->get_full_field_details()->get_glom_type());
-        set_entered_field_data(row, layout_field, primary_key_value);
-        return;
-      }
-
-      if(m_find_mode)
-        return;
+  if(Conversions::value_is_empty(primary_key_value))
+    return;
     
-      const bool added = record_new(true /* use entered field data*/, primary_key_value);
-      if(added)
-      {
-        //Save the primary key value for later use:
-        set_value_key(row, primary_key_value);
-
-        //Show the primary key in the row, if the primary key is visible:
-
-        //If it's an auto-increment, then get the value and show it:
-        if(primary_key_field->get_auto_increment())
-        {
-          sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
-          layout_item->set_full_field_details(primary_key_field);
-          set_value(row, layout_item, primary_key_value);
-        }
-
-        //Allow a parent widget to link the new record by setting the foreign key:
-        signal_record_added().emit(row, primary_key_value);
-      }
-      else
-        handle_error();
-    }
-    else
-    {
-      //Add Record failed.
-      //Replace with correct values:
-      fill_from_database();
-    }
+  #ifdef GLIBMM_EXCEPTIONS_ENABLED
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(get_application()); //Keep it alive while we need the data_model.
+  #else
+  std::auto_ptr<ExceptionConnection> error;
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(get_application(), error); //Keep it alive while we need the data_model.
+  // Ignore error - sharedconnection is checked for NULL instead:
+  #endif
+  if(!sharedconnection)
+  {
+    //Add Record failed.
+    //Replace with correct values:
+    fill_from_database();
+    return;
   }
+  
+
+  sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::create();
+  layout_field->set_full_field_details(primary_key_field);
+  if(!check_entered_value_for_uniqueness(m_found_set.m_table_name, layout_field, primary_key_value, get_application()))
+  {
+    //Revert to a blank value.
+    primary_key_value = Conversions::get_empty_value(layout_field->get_full_field_details()->get_glom_type());
+    set_entered_field_data(row, layout_field, primary_key_value);
+    return;
+  }
+
+  if(m_find_mode)
+    return;
+
+  const bool added = record_new(true /* use entered field data*/, primary_key_value);
+  if(!added)
+  {
+    handle_error();
+    return;
+  }
+  
+  //Save the primary key value for later use:
+  set_value_key(row, primary_key_value);
+
+  //Show the primary key in the row, if the primary key is visible:
+
+  //If it's an auto-increment, then get the value and show it:
+  if(primary_key_field->get_auto_increment())
+  {
+    sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
+    layout_item->set_full_field_details(primary_key_field);
+    set_value(row, layout_item, primary_key_value);
+  }
+
+  //Allow a parent widget to link the new record by setting the foreign key:
+  signal_record_added().emit(row, primary_key_value);
 }
 
 void DbAddDel::user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator&  /* rowEnd TODO */)
