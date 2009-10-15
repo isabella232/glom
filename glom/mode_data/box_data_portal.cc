@@ -23,12 +23,16 @@
 #include <glom/glade_utils.h>
 #include <glom/frame_glom.h> //For show_ok_dialog()
 #include <glom/utils_ui.h> //For bold_message()).
+#include <glom/application.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
 {
 
 Box_Data_Portal::Box_Data_Portal()
+#ifdef GLOM_ENABLE_MAEMO
+: m_maemo_appmenubutton_add(Gtk::Hildon::SIZE_AUTO, Hildon::BUTTON_ARRANGEMENT_VERTICAL)
+#endif
 {
   set_size_request(400, -1); //An arbitrary default.
 
@@ -48,8 +52,67 @@ Box_Data_Portal::Box_Data_Portal()
   add(m_Frame);
 
   m_layout_name = "list_portal"; //Replaced by derived classes.
+  
+  #ifdef GLOM_ENABLE_MAEMO
+  #ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
+  signal_realize().connect(sigc::mem_fun(*this, &Box_Data_Portal::on_realize));
+  signal_unrealize().connect(sigc::mem_fun(*this, &Box_Data_Portal::on_unrealize));  
+  #endif //GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
+
+  m_maemo_appmenubutton_add.signal_clicked().connect(
+    sigc::mem_fun(*this, &Box_Data_Portal::on_maemo_appmenubutton_add));
+  #endif //GLOM_ENABLE_MAEMO
 }
 
+void Box_Data_Portal::on_maemo_appmenubutton_add()
+{
+  do_add_record();
+}
+
+#ifdef GLOM_ENABLE_MAEMO
+void Box_Data_Portal::on_realize()
+{
+  // Add an Add Related Something button to the application's AppMenu.
+  // This will be removed when the portal is hidden.
+  //TODO: Use the ustring compose thingy. murrayc.
+  //TODO: Allow the designer to specify a singluar form for tables (and portals), 
+  //so we can say Add Related Something instead of Somethings: Add Related.
+  const Glib::ustring title = 
+    Glib::ustring::compose(_("%1: Add Related"), get_title());
+  m_maemo_appmenubutton_add.set_title(title);
+  m_maemo_appmenubutton_add.set_value(_("Add related record"));
+  App_Glom* app = App_Glom::get_application();
+  g_assert(app);
+  if(app)
+  {
+    Hildon::AppMenu* appmenu = app->get_maemo_appmenu();
+    g_assert(appmenu);
+    if(appmenu)
+    {
+      m_maemo_appmenubutton_add.show();
+      appmenu->append(m_maemo_appmenubutton_add);
+    }
+  }
+}
+
+void Box_Data_Portal::on_unrealize()
+{
+  // Remove the AppMenu button when the portal is no longer shown: 
+  App_Glom* app = App_Glom::get_application();
+  g_assert(app);
+  if(app)
+  {
+    Hildon::AppMenu* appmenu = app->get_maemo_appmenu();
+    g_assert(appmenu);
+    if(appmenu)
+    {
+      m_maemo_appmenubutton_add.hide();
+      Gtk::Container* container = appmenu;
+      container->remove(m_maemo_appmenubutton_add);
+    }
+  }
+}
+#endif //GLOM_ENABLE_MAEMO
 
 bool Box_Data_Portal::init_db_details(const sharedptr<const LayoutItem_Portal>& portal, bool show_title)
 {
@@ -58,8 +121,23 @@ bool Box_Data_Portal::init_db_details(const sharedptr<const LayoutItem_Portal>& 
   Glib::ustring parent_table;
   if(m_portal)
     parent_table = m_portal->get_from_table();
-
+      
   return init_db_details(parent_table, show_title);
+}
+
+Glib::ustring Box_Data_Portal::get_title() const
+{
+  //TODO: This same code is in box_data_related_list.cc. Remove the duplication.
+  Glib::ustring relationship_title;
+  if(m_portal && m_portal->get_has_relationship_name())
+    relationship_title = m_portal->get_title_used(Glib::ustring() /* parent title - not relevant */);
+  else
+  {
+    //Note to translators: This text is shown instead of a table title, when the table has not yet been chosen.
+    relationship_title = _("Undefined Table");
+  }
+  
+  return relationship_title;
 }
 
 //TODO: Is this base class implemenation actually called by anything?
@@ -76,17 +154,7 @@ bool Box_Data_Portal::init_db_details(const Glib::ustring& parent_table, bool sh
 
   if(show_title)
   {
-    //TODO: This same code is in box_data_related_list.cc. Remove the duplication.
-    Glib::ustring relationship_title;
-    if(m_portal && m_portal->get_has_relationship_name())
-      relationship_title = m_portal->get_title_used(Glib::ustring() /* parent title - not relevant */);
-    else
-    {
-      //Note to translators: This text is shown instead of a table title, when the table has not yet been chosen.
-      relationship_title = _("Undefined Table");
-    }
-
-    m_Label.set_markup(Utils::bold_message(relationship_title));
+    m_Label.set_markup(Utils::bold_message( get_title() ));
     m_Label.show();
 
     m_Alignment.set_padding(Utils::DEFAULT_SPACING_SMALL /* top */, 0, Utils::DEFAULT_SPACING_LARGE /* left */, 0);

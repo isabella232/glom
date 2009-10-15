@@ -65,7 +65,11 @@ public:
   //virtual void statusbar_clear();
 
   /// Get the UIManager so we can merge new menus in.
+  #ifndef GLOM_ENABLE_MAEMO
   Glib::RefPtr<Gtk::UIManager> get_ui_manager();
+  #else
+  Hildon::AppMenu* get_maemo_appmenu();
+  #endif //GLOM_ENABLE_MAEMO
 
   /** Changes the mode to Data mode, as if the user had selected the Data Mode menu item.
    */
@@ -125,8 +129,6 @@ private:
 
 #ifndef GLOM_ENABLE_MAEMO
   void on_menu_help_contents();
-#else
-  void on_menu_add_record();
 #endif //GLOM_ENABLE_MAEMO
 
   /** Check that the file's hosting mode is supported by this build and 

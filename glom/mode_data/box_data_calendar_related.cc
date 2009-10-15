@@ -625,7 +625,13 @@ void Box_Data_Calendar_Related::set_primary_key_value(const Gtk::TreeModel::iter
 {
   //TODO
 }
-    
+
+#ifdef GLOM_ENABLE_MAEMO
+void Box_Data_Calendar_Related::do_add_record()
+{
+  std::cerr << "Box_Data_Calendar_Related::do_add_record(): TODO: Unimplemented." << std::endl;
+}
+#endif //GLOM_ENABLE_MAEMO
 
 
 

@@ -1,3 +1,15 @@
+2009-10-15  Murray Cumming  <murrayc@murrayc.com>
+
+	Maemo: Show Add Related buttons when showing portals on details.
+
+	* glom/application.[h|cc]: Removed unused on_menu_add_record().
+	* glom/mode_data/box_data_portal.[h|cc]: On Maemo, add a Hildon::Button 
+	to the application's AppMenu on realize, removing it on unrealize.
+	Added a virtual do_add_record() that is called when the button is clicked.
+	* glom/mode_data/box_data_calendar_related.[h|cc]:
+	* glom/mode_data/box_data_list_related.[h|cc]: Added do_add_record() 
+	overrides, though they are empty so far.
+	
 2009-10-13  Murray Cumming  <murrayc@murrayc.com>
 
 	Maemo: Add a Add Record to the App Menu and remove it from the List View.

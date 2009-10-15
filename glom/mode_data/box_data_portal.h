@@ -26,6 +26,11 @@
 #include "box_data_manyrecords.h"
 #include <glom/utility_widgets/layoutwidgetbase.h>
 
+#ifdef GLOM_ENABLE_MAEMO
+#include <hildonmm/button.h>
+#endif
+
+
 namespace Glom
 {
 
@@ -88,6 +93,8 @@ protected:
 protected:
   virtual Document::type_list_layout_groups create_layout_get_layout(); //override.
 
+  Glib::ustring get_title() const;
+
   Gtk::Frame m_Frame;
   Gtk::Alignment m_Alignment;
   Gtk::Label m_Label;
@@ -98,6 +105,21 @@ protected:
   Gnome::Gda::Value m_key_value;
     
   type_signal_portal_record_changed m_signal_portal_record_changed;
+  
+private:
+  #ifdef GLOM_ENABLE_MAEMO
+  void on_realize();
+  void on_unrealize();
+  void on_maemo_appmenubutton_add();
+  
+  /** Create a new (related) record.
+   */
+  virtual void do_add_record() = 0;
+  
+  //Each related-records portal adds its own Add Something button 
+  //to the application's AppMenu when the portal is visible.
+  Hildon::Button m_maemo_appmenubutton_add;
+  #endif //GLOM_ENABLE_MAEMO
 };
 
 } //namespace Glom

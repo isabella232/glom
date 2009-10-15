@@ -87,6 +87,12 @@ protected:
     
   //Member widgets:
   mutable DbAddDel_WithButtons m_AddDel; //mutable because its get_ methods aren't const.
+  
+private:
+
+  #ifdef GLOM_ENABLE_MAEMO
+  virtual void do_add_record(); //override
+  #endif
 };
 
 } //namespace Glom

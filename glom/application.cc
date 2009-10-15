@@ -367,10 +367,6 @@ static void add_button_to_appmenu(Hildon::AppMenu& appmenu, const Glib::ustring&
   appmenu.append(*button);
 }
 
-void App_Glom::on_menu_add_record()
-{
-}
-
 void App_Glom::init_menus()
 {
   //There is no real menu on Maemo. We use HildonAppMenu instead.
@@ -1294,10 +1290,18 @@ void App_Glom::update_userlevel_ui()
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
+#ifndef GLOM_ENABLE_MAEMO
 Glib::RefPtr<Gtk::UIManager> App_Glom::get_ui_manager()
 {
   return m_refUIManager;
 }
+#else
+Hildon::AppMenu* App_Glom::get_maemo_appmenu()
+{
+  return &m_maemo_appmenu;
+}
+#endif //GLOM_ENABLE_MAEMO
+
 
 bool App_Glom::offer_new_or_existing()
 {

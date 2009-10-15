@@ -95,9 +95,10 @@ private:
   virtual void on_remove(Gtk::Widget* child);
 
   //Do extra drawing:
-  virtual void on_realize();
-  virtual void on_unrealize();
-  virtual bool on_expose_event(GdkEventExpose* event);
+  //Virtual method overrides:
+  void on_realize();
+  void on_unrealize();
+  bool on_expose_event(GdkEventExpose* event);
 
 protected:
   int get_column_height(guint start_widget, guint widget_count, int& total_width) const;
