@@ -231,6 +231,14 @@ void Notebook_Data::show_details(const Gnome::Gda::Value& primary_key_value)
 #if GLOM_ENABLE_MAEMO
   //Details are shown in a separate window on Maemo,
   //though that window contains the regular m_Box_Details. 
+  //TODO: Use the singular form when it's available from the document.
+  Document* document = get_document();
+  g_assert(document);
+  const Glib::ustring title = 
+    Glib::ustring::compose(_("%1 Details"), 
+      document->get_table_title(m_table_name));
+  m_window_maemo_details->set_title(title);
+  
   m_window_maemo_details->show();
 #else  
   if(get_current_view() != DATA_VIEW_Details)

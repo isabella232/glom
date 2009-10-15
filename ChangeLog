@@ -1,5 +1,13 @@
 2009-10-15  Murray Cumming  <murrayc@murrayc.com>
 
+	Maemo: Details: Show table title in window title.
+	
+	* glom/mode_data/notebook_data.cc: show_details(): On Maemo, mention the 
+	table title in the window title, though this again shows that we need to 
+	ask the designer for the singular form for the table's items.
+
+2009-10-15  Murray Cumming  <murrayc@murrayc.com>
+
 	Maemo: Show Add Related buttons when showing portals on details.
 
 	* glom/application.[h|cc]: Removed unused on_menu_add_record().
