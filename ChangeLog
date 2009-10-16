@@ -1,5 +1,10 @@
 2009-10-16  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/document/document.cc: load_after(), save_before(): 
+	Avoid crashes when load/saving singular_titles.
+
+2009-10-16  Murray Cumming  <murrayc@murrayc.com>
+
 	Maemo: Allow Relationships to have singular titles too. Use them.
 	
 	* glom/libglom/data_structure/has_title_singular.[h|cc]: Added this new 
