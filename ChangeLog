@@ -1,3 +1,21 @@
+2009-10-16  Murray Cumming  <murrayc@murrayc.com>
+
+	Maemo: Allow Relationships to have singular titles too. Use them.
+	
+	* glom/libglom/data_structure/has_title_singular.[h|cc]: Added this new 
+	base class, to be inherited by any TranslatableItem that could also have a 
+	singular form. 
+	* glom/libglom/data_structure/table_info.[h|cc]:
+	* glom/libglom/data_structure/relationship.[h|cc]: Derive 
+	from HasTitleSingular, instead of just having the methods in TableInfo.
+	* glom/libglom/document/document.[h|cc]: Added get_table_title_singular() to 
+	match the existing get_table_title().
+	* glom/mode_data/box_data_portal.[h|cc]: Added get_title_singular() to match 
+	the existing get_title() and use it in the details window title and AppMenu 
+	Add Related button.
+	* glom/mode_data/notebook_data.cc: Use the singular table title for the 
+	details window title.
+
 2009-10-15  Murray Cumming  <murrayc@murrayc.com>
 
 	Maemo: Show a new Details window when adding related records.

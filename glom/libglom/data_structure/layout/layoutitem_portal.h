@@ -21,9 +21,10 @@
 #ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_PORTAL_H
 #define GLOM_DATASTRUCTURE_LAYOUTITEM_PORTAL_H
 
-#include "layoutgroup.h"
+#include <libglom/data_structure/layout/layoutgroup.h>
 #include <libglom/data_structure/field.h>
 #include <libglom/data_structure/relationship.h>
+//#include <libglom/data_structure/has_title_singular.h>
 
 namespace Glom
 {
@@ -31,6 +32,9 @@ namespace Glom
 class LayoutItem_Portal
 : public LayoutGroup,
   public UsesRelationship
+  
+  //TODO: Allow portals to have custom titles that override the relationship titles?
+  //public HasTitleSingular
 {
 public:
 

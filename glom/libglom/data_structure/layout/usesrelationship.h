@@ -66,7 +66,15 @@ public:
    */
   Glib::ustring get_table_used(const Glib::ustring& parent_table) const;
 
+  /** Get the title of the relationship that is actually used,
+   * falling back to the relationship's name.
+   */
   Glib::ustring get_title_used(const Glib::ustring& parent_table_title) const;
+  
+  /** Get the singular title of the relationship that is actually used,
+   * falling back to the regular (plural) title, and then to the relationship's name.
+   */
+  Glib::ustring get_title_singular_used(const Glib::ustring& parent_table_title) const;
 
   Glib::ustring get_to_field_used() const;
 

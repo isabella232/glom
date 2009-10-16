@@ -28,6 +28,7 @@ libglom_data_structure_include_HEADERS =			\
 	glom/libglom/data_structure/field.h			\
 	glom/libglom/data_structure/fieldtypes.h		\
 	glom/libglom/data_structure/foundset.h			\
+	glom/libglom/data_structure/has_title_singular.h
 	glom/libglom/data_structure/glomconversions.h		\
 	glom/libglom/data_structure/groupinfo.h			\
 	glom/libglom/data_structure/numeric_format.h		\
@@ -102,6 +103,7 @@ glom_libglom_libglom_1_12_la_SOURCES =					\
 	glom/libglom/data_structure/foundset.cc				\
 	glom/libglom/data_structure/glomconversions.cc			\
 	glom/libglom/data_structure/groupinfo.cc			\
+	glom/libglom/data_structure/has_title_singular.cc		\
 	glom/libglom/data_structure/numeric_format.cc			\
 	glom/libglom/data_structure/parameternamegenerator.cc		\
 	glom/libglom/data_structure/print_layout.cc			\

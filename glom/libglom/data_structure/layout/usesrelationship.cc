@@ -145,6 +145,22 @@ Glib::ustring UsesRelationship::get_title_used(const Glib::ustring& parent_table
     return parent_table_title;
 }
 
+Glib::ustring UsesRelationship::get_title_singular_used(const Glib::ustring& parent_table_title) const
+{
+  sharedptr<Relationship> used = m_related_relationship;
+  if(!used)
+    used = m_relationship;
+    
+  if(!used)
+    return Glib::ustring();
+    
+  const Glib::ustring result = used->get_title_singular();
+  if(!result.empty())
+    return result;
+  else
+    return get_title_used(parent_table_title);
+}
+
 Glib::ustring UsesRelationship::get_to_field_used() const
 {
   if(m_related_relationship)

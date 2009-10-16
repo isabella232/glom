@@ -33,51 +33,24 @@ TableInfo::TableInfo()
 
 TableInfo::TableInfo(const TableInfo& src)
 : TranslatableItem(src),
+  HasTitleSingular(src),
   m_sequence(src.m_sequence),
   m_hidden(src.m_hidden),
-  m_default(src.m_default),
-  m_title_singular(src.m_title_singular)
+  m_default(src.m_default)
 {
 }
 
 TableInfo& TableInfo::operator=(const TableInfo& src)
 {
   TranslatableItem::operator=(src);
-
+  HasTitleSingular::operator=(src);
+  
   m_sequence = src.m_sequence;
   m_hidden = src.m_hidden;
   m_default = src.m_default;
-  m_title_singular = src.m_title_singular;
 
   return *this;
 }
-
-Glib::ustring TableInfo::get_title_singular() const
-{
-  Glib::ustring result;
-  if(m_title_singular)
-    result = m_title_singular->get_title();
-
-  return result;
-}
-
-Glib::ustring TableInfo::get_title_singular_with_fallback() const
-{
-  const Glib::ustring result = get_title_singular();
-  if(result.empty())
-    return get_title_or_name();
-
-  return result;
-}
-
-void TableInfo::set_title_singular(const Glib::ustring& title)
-{
-  if(!m_title_singular)
-    m_title_singular = sharedptr<TranslatableItem>::create();
-
-  m_title_singular->set_title(title);
-}
-
 
 
 } //namespace Glom
