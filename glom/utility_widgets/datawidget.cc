@@ -376,26 +376,33 @@ const Gtk::Label* DataWidget::get_label() const
 void DataWidget::set_child_size_by_field(const sharedptr<const LayoutItem_Field>& field)
 {
   const Field::glom_field_type glom_type = field->get_glom_type();
-  const int width = get_suitable_width(field);
+  int width = get_suitable_width(field);
 
   if(glom_type == Field::TYPE_IMAGE) //GtkImage widgets default to no size (invisible) if they are empty.
     m_child->set_size_request(width, width);
   else
   {
-    #ifndef GLOM_ENABLE_MAEMO //On Maemo, TextView widgets expand automatically.
     int height = -1; //auto.
     if((glom_type == Field::TYPE_TEXT) && (field->get_formatting_used().get_text_format_multiline()))
     {
+      #ifndef GLOM_ENABLE_MAEMO 
       int example_width = 0;
       int example_height = 0;
       Glib::RefPtr<Pango::Layout> refLayout = create_pango_layout("example"); //TODO: Use different text, according to the current locale, or allow the user to choose an example?
       refLayout->get_pixel_size(example_width, example_height);
+      
       if(example_height > 0)
         height = example_height * field->get_formatting_used().get_text_format_multiline_height_lines();
+      #else
+      //On Maemo, TextView widgets expand automatically.
+      //TODO: Expansion only happens if both are -1, and vertical expansion never happens.
+      //See bug https://bugs.maemo.org/show_bug.cgi?id=5515
+      width = -1;
+      height = -1; 
+      #endif //GLOM_ENABLE_MAEMO
     }
 
     m_child->set_size_request(width, height);
-    #endif //GLOM_ENABLE_MAEMO
   }
 }
 

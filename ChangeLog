@@ -1,5 +1,12 @@
 2009-10-16  Murray Cumming  <murrayc@murrayc.com>
 
+  Maemo: Fix my previous commit.
+  
+	* glom/utility_widgets/datawidget.cc: set_child_size_by_field(): Move the 
+	ifdefs around so normal fields get sensible sizes again on Maemo.
+
+2009-10-16  Murray Cumming  <murrayc@murrayc.com>
+
 	Maemo: Make TextViews small to begin with.
 	
 	* glom/utility_widgets/datawidget.cc: set_child_size_by_field(): On Maemo, 
