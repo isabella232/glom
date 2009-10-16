@@ -75,6 +75,7 @@ Box_Data_Portal::Box_Data_Portal()
 
 Box_Data_Portal::~Box_Data_Portal()
 {
+  #ifdef GLOM_ENABLE_MAEMO
   if(m_window_maemo_details)
     delete m_window_maemo_details;
     
@@ -83,6 +84,7 @@ Box_Data_Portal::~Box_Data_Portal()
     remove_view(m_box_maemo_details);
     delete m_box_maemo_details;
   }
+  #endif //GLOM_ENABLE_MAEMO
 }
 
 void Box_Data_Portal::make_record_related(const Gnome::Gda::Value& related_record_primary_key_value)
