@@ -2324,6 +2324,10 @@ void Document::load_after_translations(const xmlpp::Element* element, Translatab
   if(has_title_singular)
   {
     const xmlpp::Element* nodeTitleSingular = get_node_child_named(element, GLOM_NODE_TABLE_TITLE_SINGULAR);
+
+    if(!has_title_singular->m_title_singular)
+     has_title_singular->m_title_singular = sharedptr<TranslatableItem>::create();
+
     load_after_translations(nodeTitleSingular, *(has_title_singular->m_title_singular));
   }
 }
@@ -3240,7 +3244,7 @@ void Document::save_before_translations(xmlpp::Element* element, const Translata
   //If it has a singular title, then save that too:
   const HasTitleSingular* has_title_singular = 
     dynamic_cast<const HasTitleSingular*>(&item);
-  if(has_title_singular)
+  if(has_title_singular && has_title_singular->m_title_singular)
   {
     xmlpp::Element* nodeTitleSingular = element->add_child(GLOM_NODE_TABLE_TITLE_SINGULAR);
     save_before_translations(nodeTitleSingular, *(has_title_singular->m_title_singular));

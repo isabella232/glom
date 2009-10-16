@@ -388,10 +388,12 @@ void Notebook_Data::get_record_counts(gulong& total, gulong& found)
   m_Box_List.get_record_counts(total, found);
 }
 
+#ifdef GLOM_ENABLE_MAEMO
 void Notebook_Data::do_menu_file_add_record()
 {
   show_details(Gnome::Gda::Value());
   m_Box_Details.do_new_record();
 }
+#endif //GLOM_ENABLE_MAEMO
 
 } //namespace Glom
