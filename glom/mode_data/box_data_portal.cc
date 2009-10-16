@@ -171,10 +171,13 @@ void Box_Data_Portal::on_maemo_appmenubutton_add()
   m_box_maemo_details->do_new_record(); //Doesn't block.
   
   //Make the new record related:
-  //TODO: Test that this works if the primary key is not auto-generated.
+  //TODO: This only makes sense if the primary key is not auto-generated.
   related_record_primary_key_value = 
     m_box_maemo_details->get_primary_key_value_selected();
   make_record_related(related_record_primary_key_value);
+  
+  //Show the data in the UI:
+  m_box_maemo_details->refresh_data_from_database_with_primary_key(related_record_primary_key_value);
   
   m_window_maemo_details->show();
 }
