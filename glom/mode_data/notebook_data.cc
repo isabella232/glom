@@ -53,6 +53,10 @@ Notebook_Data::Notebook_Data()
   Gtk::Window* pWindow = get_app_window();
   if(pWindow)
     m_window_maemo_details->set_transient_for(*pWindow);
+    
+  //Refresh the list when the details window is closed:
+  m_window_maemo_details->signal_hide().connect(
+    sigc::mem_fun(*this, &Notebook_Data::on_window_maemo_details_closed));
 
   m_Box_Details.show_all();
   #endif //GLOM_ENABLE_MAEMO
@@ -109,6 +113,16 @@ Notebook_Data::~Notebook_Data()
     delete m_window_maemo_details;
 #endif //GLOM_ENABLE_MAEMO
 }
+
+#ifdef GLOM_ENABLE_MAEMO
+void Notebook_Data::on_window_maemo_details_closed()
+{
+  //Show the changed record in the list:
+  const Gnome::Gda::Value primary_key_selected = m_Box_List.get_primary_key_value_selected();
+  m_Box_List.refresh_data_from_database();
+  m_Box_List.set_primary_key_value_selected(primary_key_selected);
+}
+#endif //GLOM_ENABLE_MAEMO
 
 bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda::Value& primary_key_value_for_details)
 {

@@ -1,5 +1,14 @@
 2009-10-16  Murray Cumming  <murrayc@murrayc.com>
 
+	Maemo: Actually show new related record in the list.
+	
+	* glom/mode_data/box_data_portal.[h|cc]: on_maemo_appmenubutton_add():
+	* glom/mode_data/notebook_data.[h|cc]: Constructor: 
+	Update the window when the maemo details window is hidden, for instance to 
+	show the new related record in the portal.
+
+2009-10-16  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/document/document.cc: load_after(), save_before(): 
 	Avoid crashes when load/saving singular_titles.
 

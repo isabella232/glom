@@ -92,6 +92,12 @@ protected:
 
   virtual void on_switch_page_handler(GtkNotebookPage* pPage, guint uiPageNumber);
 
+private:
+  #ifdef GLOM_ENABLE_MAEMO
+  void on_window_maemo_details_closed();
+  #endif
+  
+protected:
   //Member widgets:
   Box_Data_List m_Box_List;
   Box_Data_Details m_Box_Details;

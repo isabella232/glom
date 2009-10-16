@@ -127,6 +127,7 @@ private:
   void on_realize();
   void on_unrealize();
   void on_maemo_appmenubutton_add();
+  void on_window_maemo_details_closed();
   
   //Each related-records portal adds its own Add Something button 
   //to the application's AppMenu when the portal is visible.

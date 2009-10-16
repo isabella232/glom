@@ -97,6 +97,12 @@ void Box_Data_Portal::make_record_related(const Gnome::Gda::Value& related_recor
     std::cerr << "Box_Data_Portal::make_record_related(): m_key_field was null." << std::endl;
   }
   
+  if(Conversions::value_is_empty(m_key_value))
+  {
+    std::cerr << "Box_Data_Portal::make_record_related(): m_key_value was empty." << std::endl;
+  }
+  
+  
   if(!m_portal)
   {
     std::cerr << "Box_Data_Portal::make_record_related(): m_portal was null." << std::endl;
@@ -144,11 +150,16 @@ void Box_Data_Portal::on_maemo_appmenubutton_add()
   Gtk::Window* pWindow = get_app_window();
   if(pWindow)
     m_window_maemo_details->set_transient_for(*pWindow);
+    
+  //Refresh the portal when the window is closed:
+  //TODO: Refresh the parent Details too.
+  m_window_maemo_details->signal_hide().connect(
+    sigc::mem_fun(*this, &Box_Data_Portal::on_window_maemo_details_closed));
 
   const Glib::ustring title = 
     Glib::ustring::compose(_("New Related %1"), 
       get_title_singular());
-  pWindow->set_title(title);
+  m_window_maemo_details->set_title(title);
   
   FoundSet found_set;
   found_set.m_table_name = m_portal->get_table_used(Glib::ustring());
@@ -165,8 +176,14 @@ void Box_Data_Portal::on_maemo_appmenubutton_add()
     m_box_maemo_details->get_primary_key_value_selected();
   make_record_related(related_record_primary_key_value);
   
-  std::cout << "DEBUG: Showing details for new related record." << std::endl;
   m_window_maemo_details->show();
+}
+
+void Box_Data_Portal::on_window_maemo_details_closed()
+{
+  std::cout << "DEBUG: Box_Data_Portal::on_window_maemo_details_closed()" << std::endl;
+  //Show the new added record in the portal:
+  fill_from_database();
 }
 
 void Box_Data_Portal::on_realize()
@@ -256,7 +273,7 @@ Glib::ustring Box_Data_Portal::get_title_singular() const
   return relationship_title;
 }
 
-//TODO: Is this base class implemenation actually called by anything?
+//TODO: Is this base class implementation actually called by anything?
 bool Box_Data_Portal::init_db_details(const Glib::ustring& parent_table, bool show_title)
 {
   m_parent_table = parent_table;
@@ -293,6 +310,7 @@ bool Box_Data_Portal::init_db_details(const Glib::ustring& parent_table, bool sh
 bool Box_Data_Portal::refresh_data_from_database_with_foreign_key(const Gnome::Gda::Value& foreign_key_value)
 {
   m_key_value = foreign_key_value;
+  std::cout << "DEBUG: Box_Data_Portal::refresh_data_from_database_with_foreign_key(): m_key_value=" << m_key_value.to_string() << std::endl;
   
 
   if(m_key_field && m_portal)
