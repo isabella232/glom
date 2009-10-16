@@ -1,5 +1,14 @@
 2009-10-16  Murray Cumming  <murrayc@murrayc.com>
 
+  Maemo: Fix the build for the latest hildonmm.
+  
+	* glom/navigation/maemo/pickerbutton_table.cc:
+	* glom/utility_widgets/comboentryglom.cc:
+	* glom/utility_widgets/comboglom.cc: Adapt to changed (simpler) TouchSelector 
+	API.
+
+2009-10-16  Murray Cumming  <murrayc@murrayc.com>
+
   Maemo: Fix my previous commit.
   
 	* glom/utility_widgets/datawidget.cc: set_child_size_by_field(): Move the 

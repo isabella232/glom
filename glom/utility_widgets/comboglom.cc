@@ -174,7 +174,7 @@ void ComboGlom::set_text(const Glib::ustring& text)
   #ifndef GLOM_ENABLE_MAEMO
   unset_active();
   #else
-  m_maemo_selector.unset_active(0);
+  m_maemo_selector.unselect_all(0);
   #endif
 }
 

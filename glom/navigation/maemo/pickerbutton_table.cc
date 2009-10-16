@@ -92,7 +92,7 @@ void PickerButton_Table::set_table_name(const Glib::ustring& table_name)
 
     if(this_text == table_name)
     {
-      m_touchselector.set_active(0, iter);
+      m_touchselector.set_selected(0, iter);
       return; //success
     }
   }

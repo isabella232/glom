@@ -258,7 +258,7 @@ void ComboEntryGlom::set_text(const Glib::ustring& text)
 
     if(this_text == text)
     {
-      m_maemo_selector.set_active(0, iter);
+      m_maemo_selector.set_selected(0, iter);
     }
   }
   #endif //GLOM_ENABLE_MAEMO
