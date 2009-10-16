@@ -1,5 +1,13 @@
 2009-10-16  Murray Cumming  <murrayc@murrayc.com>
 
+	Maemo: Make TextViews small to begin with.
+	
+	* glom/utility_widgets/datawidget.cc: set_child_size_by_field(): On Maemo, 
+	do not increase the height of the TextView, even if specified in the layout, 
+	because HildonTextViews expand automatically on Maemo when entering more text.
+
+2009-10-16  Murray Cumming  <murrayc@murrayc.com>
+
 	Maemo: When adding related records, show the foreign key value.
 	
 	* glom/mode_data/box_data_portal.cc: on_maemo_appmenubutton_add():

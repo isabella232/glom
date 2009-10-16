@@ -382,6 +382,7 @@ void DataWidget::set_child_size_by_field(const sharedptr<const LayoutItem_Field>
     m_child->set_size_request(width, width);
   else
   {
+    #ifndef GLOM_ENABLE_MAEMO //On Maemo, TextView widgets expand automatically.
     int height = -1; //auto.
     if((glom_type == Field::TYPE_TEXT) && (field->get_formatting_used().get_text_format_multiline()))
     {
@@ -394,6 +395,7 @@ void DataWidget::set_child_size_by_field(const sharedptr<const LayoutItem_Field>
     }
 
     m_child->set_size_request(width, height);
+    #endif //GLOM_ENABLE_MAEMO
   }
 }
 
