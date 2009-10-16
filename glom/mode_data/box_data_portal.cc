@@ -118,6 +118,9 @@ void Box_Data_Portal::make_record_related(const Gnome::Gda::Value& related_recor
 #ifdef GLOM_ENABLE_MAEMO
 void Box_Data_Portal::on_maemo_appmenubutton_add()
 {
+  if(!m_portal)
+    return;
+    
   if(m_window_maemo_details)
     delete m_window_maemo_details;
     
@@ -142,7 +145,7 @@ void Box_Data_Portal::on_maemo_appmenubutton_add()
 
   const Glib::ustring title = 
     Glib::ustring::compose(_("New Related %1"), 
-      get_title());
+      get_title_singular());
   pWindow->set_title(title);
   
   FoundSet found_set;
@@ -166,13 +169,16 @@ void Box_Data_Portal::on_maemo_appmenubutton_add()
 
 void Box_Data_Portal::on_realize()
 {
+  if(!m_portal)
+    return;
+    
   // Add an Add Related Something button to the application's AppMenu.
   // This will be removed when the portal is hidden.
   //TODO: Use the ustring compose thingy. murrayc.
   //TODO: Allow the designer to specify a singluar form for tables (and portals), 
   //so we can say Add Related Something instead of Somethings: Add Related.
   const Glib::ustring title = 
-    Glib::ustring::compose(_("%1: Add Related"), get_title());
+    Glib::ustring::compose(_("Add Related %1"), get_title_singular());
   m_maemo_appmenubutton_add.set_title(title);
   m_maemo_appmenubutton_add.set_value(_("Add related record"));
   App_Glom* app = App_Glom::get_application();
@@ -225,6 +231,20 @@ Glib::ustring Box_Data_Portal::get_title() const
   Glib::ustring relationship_title;
   if(m_portal && m_portal->get_has_relationship_name())
     relationship_title = m_portal->get_title_used(Glib::ustring() /* parent title - not relevant */);
+  else
+  {
+    //Note to translators: This text is shown instead of a table title, when the table has not yet been chosen.
+    relationship_title = _("Undefined Table");
+  }
+  
+  return relationship_title;
+}
+
+Glib::ustring Box_Data_Portal::get_title_singular() const
+{
+  Glib::ustring relationship_title;
+  if(m_portal && m_portal->get_has_relationship_name())
+    relationship_title = m_portal->get_title_singular_used(Glib::ustring() /* parent title - not relevant */);
   else
   {
     //Note to translators: This text is shown instead of a table title, when the table has not yet been chosen.

@@ -100,8 +100,14 @@ protected:
 
   void make_record_related(const Gnome::Gda::Value& related_record_primary_key_value);
 
+  /** Get the title of the relationship used by the portal.
+   */
   Glib::ustring get_title() const;
-
+  
+  /** Get the singular title of the relationship used by the portal.
+   */
+  Glib::ustring get_title_singular() const;  
+  
   Gtk::Frame m_Frame;
   Gtk::Alignment m_Alignment;
   Gtk::Label m_Label;

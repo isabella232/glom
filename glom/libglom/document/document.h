@@ -270,6 +270,8 @@ public:
   Glib::ustring get_table_title(const Glib::ustring& table_name) const;
   void set_table_title(const Glib::ustring& table_name, const Glib::ustring& value);
 
+  Glib::ustring get_table_title_singular(const Glib::ustring& table_name) const;
+  
   typedef std::vector< Gnome::Gda::Value > type_row_data;
   typedef std::vector< type_row_data > type_example_rows;
 

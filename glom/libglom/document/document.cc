@@ -1635,6 +1635,15 @@ Glib::ustring Document::get_table_title(const Glib::ustring& table_name) const
     return Glib::ustring();
 }
 
+Glib::ustring Document::get_table_title_singular(const Glib::ustring& table_name) const
+{
+  type_tables::const_iterator iterFind = m_tables.find(table_name);
+  if(iterFind != m_tables.end())
+    return iterFind->second.m_info->get_title_singular_with_fallback();
+  else
+    return Glib::ustring();
+}
+
 void Document::set_table_title(const Glib::ustring& table_name, const Glib::ustring& value)
 {
   //std::cout << "debug: Document::set_table_title(): table_name=" << table_name << ", value=" << value << std::endl;
@@ -2307,6 +2316,15 @@ void Document::load_after_translations(const xmlpp::Element* element, Translatab
         item.set_translation(locale, translation);
       }
     }
+  }
+  
+  //If it has a singular title, then load that too:
+  HasTitleSingular* has_title_singular = 
+    dynamic_cast<HasTitleSingular*>(&item);
+  if(has_title_singular)
+  {
+    const xmlpp::Element* nodeTitleSingular = get_node_child_named(element, GLOM_NODE_TABLE_TITLE_SINGULAR);
+    load_after_translations(nodeTitleSingular, *(has_title_singular->m_title_singular));
   }
 }
 
@@ -3218,6 +3236,15 @@ void Document::save_before_translations(xmlpp::Element* element, const Translata
     set_node_attribute_value(childItem, GLOM_ATTRIBUTE_TRANSLATION_LOCALE, iter->first);
     set_node_attribute_value(childItem, GLOM_ATTRIBUTE_TRANSLATION_VALUE, iter->second);
   }
+  
+  //If it has a singular title, then save that too:
+  const HasTitleSingular* has_title_singular = 
+    dynamic_cast<const HasTitleSingular*>(&item);
+  if(has_title_singular)
+  {
+    xmlpp::Element* nodeTitleSingular = element->add_child(GLOM_NODE_TABLE_TITLE_SINGULAR);
+    save_before_translations(nodeTitleSingular, *(has_title_singular->m_title_singular));
+  }
 }
 
 void Document::save_before_print_layout_position(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem>& item)
@@ -3346,11 +3373,6 @@ bool Document::save_before()
 
         //Translations:
         save_before_translations(nodeTable, *(doctableinfo.m_info));
-
-        //Save the singular table name:
-        xmlpp::Element* nodeTableSingluar = nodeTable->add_child(GLOM_NODE_TABLE_TITLE_SINGULAR);
-        save_before_translations(nodeTableSingluar, *(doctableinfo.m_info->m_title_singular));
-
 
         //Fields:
         xmlpp::Element* elemFields = nodeTable->add_child(GLOM_NODE_FIELDS);

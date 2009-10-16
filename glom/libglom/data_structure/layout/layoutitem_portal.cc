@@ -33,6 +33,7 @@ LayoutItem_Portal::LayoutItem_Portal()
 LayoutItem_Portal::LayoutItem_Portal(const LayoutItem_Portal& src)
 : LayoutGroup(src),
   UsesRelationship(src),
+  //HasTitleSingular(src),
   m_navigation_relationship_specific(src.m_navigation_relationship_specific),
   m_print_layout_row_height(src.m_print_layout_row_height),
   m_navigation_type(src.m_navigation_type)
@@ -53,6 +54,7 @@ LayoutItem_Portal& LayoutItem_Portal::operator=(const LayoutItem_Portal& src)
 {
   LayoutGroup::operator=(src);
   UsesRelationship::operator=(src);
+  //HasTitleSingular::operator=(src);
 
   m_navigation_relationship_specific = src.m_navigation_relationship_specific;
   m_print_layout_row_height = src.m_print_layout_row_height;

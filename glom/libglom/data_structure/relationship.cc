@@ -30,7 +30,8 @@ Relationship::Relationship()
 }
 
 Relationship::Relationship(const Relationship& src)
-: TranslatableItem(src)
+: TranslatableItem(src),
+  HasTitleSingular(src)
 {
   operator=(src); //TODO_Performance: Implement properly.
 }
@@ -42,6 +43,7 @@ Relationship::~Relationship()
 Relationship& Relationship::operator=(const Relationship& src)
 {
   TranslatableItem::operator=(src);
+  HasTitleSingular::operator=(src);
 
   m_strFrom_Table = src.m_strFrom_Table;
   m_strFrom_Field = src.m_strFrom_Field;
@@ -56,6 +58,7 @@ Relationship& Relationship::operator=(const Relationship& src)
 bool Relationship::operator==(const Relationship& src) const
 {
   return TranslatableItem::operator==(src)
+         && HasTitleSingular::operator==(src)
          && (m_strFrom_Table == src.m_strFrom_Table)
          && (m_strFrom_Field == src.m_strFrom_Field)
          && (m_strTo_Table == src.m_strTo_Table)

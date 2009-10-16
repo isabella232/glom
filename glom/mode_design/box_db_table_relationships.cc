@@ -52,6 +52,9 @@ void Box_DB_Table_Relationships::init()
   m_colToField = m_AddDel.add_column(_("To Field"), AddDelColumnInfo::STYLE_Choices);
   m_colAllowEdit = m_AddDel.add_column(_("Allow Editing"),  AddDelColumnInfo::STYLE_Boolean);
   m_colAutoCreate = m_AddDel.add_column(_("Automatic Creation"),  AddDelColumnInfo::STYLE_Boolean);
+  
+  m_colTitleSingular = m_AddDel.add_column(_("Title (Singular Form)"));
+  
 
   //Connect signals:
   m_AddDel.signal_user_activated().connect(sigc::mem_fun(*this, &Box_DB_Table_Relationships::on_adddel_user_activated));
@@ -107,6 +110,7 @@ bool Box_DB_Table_Relationships::fill_from_database()
 
         //Title:
         m_AddDel.set_value(iterTree, m_colTitle, relationship->get_title());
+        m_AddDel.set_value(iterTree, m_colTitleSingular, relationship->get_title_singular());
 
         //From Field:
         m_AddDel.set_value(iterTree, m_colFromField, relationship->get_from_field());
@@ -153,6 +157,7 @@ void Box_DB_Table_Relationships::save_to_document()
 
         relationship->set_name(name);
         relationship->set_title(m_AddDel.get_value(iter, m_colTitle));
+        relationship->set_title_singular(m_AddDel.get_value(iter, m_colTitleSingular));
         relationship->set_from_table(m_table_name);
         relationship->set_from_field(m_AddDel.get_value(iter, m_colFromField));
         relationship->set_to_table(m_AddDel.get_value(iter, m_colToTable));

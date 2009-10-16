@@ -21,13 +21,16 @@
 #ifndef RELATIONSHIP_H
 #define RELATIONSHIP_H
 
-#include "translatable_item.h"
+#include <libglom/data_structure/translatable_item.h>
+#include <libglom/data_structure/has_title_singular.h>
 #include <glibmm/ustring.h>
 
 namespace Glom
 {
 
-class Relationship : public TranslatableItem
+class Relationship
+ : public TranslatableItem,
+   public HasTitleSingular
 {
 public: 
   Relationship();

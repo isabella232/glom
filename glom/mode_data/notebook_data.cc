@@ -236,7 +236,7 @@ void Notebook_Data::show_details(const Gnome::Gda::Value& primary_key_value)
   g_assert(document);
   const Glib::ustring title = 
     Glib::ustring::compose(_("%1 Details"), 
-      document->get_table_title(m_table_name));
+      document->get_table_title_singular(m_table_name));
   m_window_maemo_details->set_title(title);
   
   m_window_maemo_details->show();

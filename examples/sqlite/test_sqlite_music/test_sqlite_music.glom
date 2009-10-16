@@ -2,6 +2,7 @@
 <glom_document translation_original_locale="en_US" database_title="Music Collection" is_example="false" format_version="4">
   <connection server="localhost" database="glom_musiccollection21" port="0" self_hosted="true" try_other_ports="true" hosting_mode="sqlite"/>
   <table name="albums" overview_x="15" overview_y="9" title="Albums">
+    <title_singular title="Album" />
     <fields>
       <field name="album_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Album ID">
         <calculation/>
@@ -31,7 +32,9 @@
     <relationships>
       <relationship name="artist" key="artist_id" other_table="artists" other_key="artist_id" title="Artist"/>
       <relationship name="publisher" key="publisher_id" other_table="publishers" other_key="publishers_id" title="Publisher"/>
-      <relationship name="songs" key="album_id" other_table="songs" other_key="album_id" auto_create="true" allow_edit="true" title="Songs"/>
+      <relationship name="songs" key="album_id" other_table="songs" other_key="album_id" auto_create="true" allow_edit="true" title="Songs">
+        <title_singular title="Song" />
+      </relationship>
     </relationships>
     <data_layouts>
       <data_layout name="details" parent_table="albums">
@@ -132,6 +135,7 @@
     <print_layouts/>
   </table>
   <table name="artists" default="true" overview_x="407" overview_y="119" title="Artists">
+    <title_singular title="Artist" />
     <fields>
       <field name="artist_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Artist ID">
         <calculation/>
@@ -151,7 +155,9 @@
       </field>
     </fields>
     <relationships>
-      <relationship name="albums" key="artist_id" other_table="albums" other_key="artist_id" auto_create="true" allow_edit="true" title="Albums"/>
+      <relationship name="albums" key="artist_id" other_table="albums" other_key="artist_id" auto_create="true" allow_edit="true" title="Albums">
+        <title_singular title="Album" />
+      </relationship>
     </relationships>
     <data_layouts>
       <data_layout name="details" parent_table="artists">
@@ -213,6 +219,7 @@
     <print_layouts/>
   </table>
   <table name="publishers" overview_x="411" overview_y="235" title="Publishers">
+    <title_singular title="Publisher" />
     <fields>
       <field name="publishers_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Publisher ID">
         <calculation/>
@@ -287,6 +294,7 @@
     <print_layouts/>
   </table>
   <table name="songs" overview_x="407" overview_y="7" title="Songs">
+    <title_singular title="Song" />
     <fields>
       <field name="songs_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Song ID">
         <calculation/>
