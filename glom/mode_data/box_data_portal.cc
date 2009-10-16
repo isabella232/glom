@@ -184,7 +184,6 @@ void Box_Data_Portal::on_maemo_appmenubutton_add()
 
 void Box_Data_Portal::on_window_maemo_details_closed()
 {
-  std::cout << "DEBUG: Box_Data_Portal::on_window_maemo_details_closed()" << std::endl;
   //Show the new added record in the portal:
   fill_from_database();
 }
