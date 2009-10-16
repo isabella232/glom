@@ -1965,7 +1965,7 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   #else
   //Mathias Hasselmann says that this is required for the Maemo 5 style, 
   //though we don't know yet where that is documented. murrayc.
-  cellrenderer.set_property("x-pad", HILDON_MARGIN_DEFAULT);
+  cellrenderer.set_property("xpad", HILDON_MARGIN_DEFAULT);
 
   Glib::RefPtr<Hildon::TouchSelectorColumn> pViewColumn = touch_selector_get_column();
   pViewColumn->pack_start(cellrenderer, expand);
