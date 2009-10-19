@@ -206,6 +206,8 @@ void Box_Data_Portal::on_realize()
   g_assert(app);
   if(app)
   {
+    //TODO: Use a per-window appmenu instead,
+    //so we don't get irrelevant Add Related buttons when opening extra windows above this one.
     Hildon::AppMenu* appmenu = app->get_maemo_appmenu();
     g_assert(appmenu);
     if(appmenu)
