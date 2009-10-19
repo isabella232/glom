@@ -1,3 +1,12 @@
+2009-10-19  Murray Cumming  <murrayc@murrayc.com>
+
+	Maemo: Adapt for latest hildonmm changes.
+	
+	* glom/utility_widgets/comboentryglom.cc:
+	* glom/utility_widgets/comboglom.cc: get/set_active() changed to 
+	set_selected() and we now have an iter-base get/set_selected() for the 
+	PickerButton so we don't need to get the TouchSelector. 
+
 2009-10-16  Murray Cumming  <murrayc@murrayc.com>
 
   Maemo: Fix the build for the latest hildonmm.

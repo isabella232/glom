@@ -258,7 +258,7 @@ void ComboEntryGlom::set_text(const Glib::ustring& text)
 
     if(this_text == text)
     {
-      m_maemo_selector.set_selected(0, iter);
+      set_selected(iter);
     }
   }
   #endif //GLOM_ENABLE_MAEMO
@@ -334,9 +334,7 @@ void ComboEntryGlom::on_changed(int /* column */)
   #ifndef GLOM_ENABLE_MAEMO
   Gtk::TreeModel::iterator iter = get_active();
   #else
-   //TODO: See bug https://bugs.maemo.org/show_bug.cgi?id=4640
-  //about the get_selected()/get_active() confusion.
-  Gtk::TreeModel::iterator iter = m_maemo_selector.get_selected(0);
+  Gtk::TreeModel::iterator iter = get_selected();
   #endif //GLOM_ENABLE_MAEMO
   
   if(iter)

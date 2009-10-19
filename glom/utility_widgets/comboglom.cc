@@ -163,7 +163,11 @@ void ComboGlom::set_text(const Glib::ustring& text)
 
     if(this_text == text)
     {
+      #ifndef GLOM_ENABLE_MAEMO
       set_active(iter);
+      #else
+      set_selected(iter);
+      #endif //GLOM_ENABLE_MAEMO
       return; //success
     }
   }
@@ -174,7 +178,7 @@ void ComboGlom::set_text(const Glib::ustring& text)
   #ifndef GLOM_ENABLE_MAEMO
   unset_active();
   #else
-  m_maemo_selector.unselect_all(0);
+  unselect();
   #endif
 }
 
@@ -193,10 +197,8 @@ Glib::ustring ComboGlom::get_text() const
   #ifndef GLOM_ENABLE_MAEMO
   Gtk::TreeModel::iterator iter = get_active();
   #else
-  //TODO: See bug https://bugs.maemo.org/show_bug.cgi?id=4640
-  //about the get_selected()/get_active() confusion.
-  Hildon::TouchSelector& unconst = const_cast<Hildon::TouchSelector&>(m_maemo_selector);
-  Gtk::TreeModel::iterator iter = unconst.get_selected(0);
+  ComboGlom* unconst = const_cast<ComboGlom*>(this);
+  Gtk::TreeModel::iterator iter = unconst->get_selected();
   #endif //GLOM_ENABLE_MAEMO
   
   if(iter)
@@ -270,9 +272,7 @@ void ComboGlom::on_changed(int /* column */)
   #ifndef GLOM_ENABLE_MAEMO
   Gtk::TreeModel::iterator iter = get_active();
   #else
-   //TODO: See bug https://bugs.maemo.org/show_bug.cgi?id=4640
-  //about the get_selected()/get_active() confusion.
-  Gtk::TreeModel::iterator iter = m_maemo_selector.get_selected(0);
+  Gtk::TreeModel::iterator iter = get_selected();
   #endif //GLOM_ENABLE_MAEMO
   
   if(iter)
