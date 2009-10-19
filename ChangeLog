@@ -1,3 +1,8 @@
+2009-10-19  David King  <davidk@openismus.com>
+
+	* Makefile_libglom.am: Add missing backslash, fixing commit
+	e38fcaab322d4774faae2ecb707cdf67f84dd6ea.
+
 2009-10-19  Murray Cumming  <murrayc@murrayc.com>
 
 	Maemo: Adapt for latest hildonmm changes.
@@ -9,27 +14,28 @@
 
 2009-10-16  Murray Cumming  <murrayc@murrayc.com>
 
-  Maemo: Fix the build for the latest hildonmm.
-  
+	Maemo: Fix the build for the latest hildonmm.
+
 	* glom/navigation/maemo/pickerbutton_table.cc:
 	* glom/utility_widgets/comboentryglom.cc:
-	* glom/utility_widgets/comboglom.cc: Adapt to changed (simpler) TouchSelector 
-	API.
+	* glom/utility_widgets/comboglom.cc: Adapt to changed (simpler)
+	TouchSelector API.
 
 2009-10-16  Murray Cumming  <murrayc@murrayc.com>
 
-  Maemo: Fix my previous commit.
-  
-	* glom/utility_widgets/datawidget.cc: set_child_size_by_field(): Move the 
-	ifdefs around so normal fields get sensible sizes again on Maemo.
+	Maemo: Fix my previous commit.
+
+	* glom/utility_widgets/datawidget.cc: set_child_size_by_field(): Move
+	the ifdefs around so normal fields get sensible sizes again on Maemo.
 
 2009-10-16  Murray Cumming  <murrayc@murrayc.com>
 
 	Maemo: Make TextViews small to begin with.
 	
-	* glom/utility_widgets/datawidget.cc: set_child_size_by_field(): On Maemo, 
-	do not increase the height of the TextView, even if specified in the layout, 
-	because HildonTextViews expand automatically on Maemo when entering more text.
+	* glom/utility_widgets/datawidget.cc: set_child_size_by_field(): On
+	Maemo, do not increase the height of the TextView, even if specified in
+	the layout, because HildonTextViews expand automatically on Maemo when
+	entering more text.
 
 2009-10-16  Murray Cumming  <murrayc@murrayc.com>
 
@@ -46,8 +52,8 @@
 	
 	* glom/mode_data/box_data_portal.[h|cc]: on_maemo_appmenubutton_add():
 	* glom/mode_data/notebook_data.[h|cc]: Constructor: 
-	Update the window when the maemo details window is hidden, for instance to 
-	show the new related record in the portal.
+	Update the window when the maemo details window is hidden, for instance
+	to show the new related record in the portal.
 
 2009-10-16  Murray Cumming  <murrayc@murrayc.com>
 
@@ -58,17 +64,17 @@
 
 	Maemo: Allow Relationships to have singular titles too. Use them.
 	
-	* glom/libglom/data_structure/has_title_singular.[h|cc]: Added this new 
-	base class, to be inherited by any TranslatableItem that could also have a 
-	singular form. 
+	* glom/libglom/data_structure/has_title_singular.[h|cc]: Added this new
+	base class, to be inherited by any TranslatableItem that could also have
+	a singular form. 
 	* glom/libglom/data_structure/table_info.[h|cc]:
 	* glom/libglom/data_structure/relationship.[h|cc]: Derive 
 	from HasTitleSingular, instead of just having the methods in TableInfo.
-	* glom/libglom/document/document.[h|cc]: Added get_table_title_singular() to 
-	match the existing get_table_title().
-	* glom/mode_data/box_data_portal.[h|cc]: Added get_title_singular() to match 
-	the existing get_title() and use it in the details window title and AppMenu 
-	Add Related button.
+	* glom/libglom/document/document.[h|cc]: Added
+	get_table_title_singular() to match the existing get_table_title().
+	* glom/mode_data/box_data_portal.[h|cc]: Added get_title_singular() to
+	match the existing get_title() and use it in the details window title
+	and AppMenu Add Related button.
 	* glom/mode_data/notebook_data.cc: Use the singular table title for the 
 	details window title.
 
@@ -116,7 +122,8 @@
 	* glom/application.[h|cc]: Removed unused on_menu_add_record().
 	* glom/mode_data/box_data_portal.[h|cc]: On Maemo, add a Hildon::Button 
 	to the application's AppMenu on realize, removing it on unrealize.
-	Added a virtual do_add_record() that is called when the button is clicked.
+	Added a virtual do_add_record() that is called when the button is
+	clicked.
 	* glom/mode_data/box_data_calendar_related.[h|cc]:
 	* glom/mode_data/box_data_list_related.[h|cc]: Added do_add_record() 
 	overrides, though they are empty so far.
@@ -125,17 +132,17 @@
 
 	Maemo: Add a Add Record to the App Menu and remove it from the List View.
 
-	* glom/application.cc: init_menus(): Add an Add Record item to the AppMenu 
-	on Maemo.
+	* glom/application.cc: init_menus(): Add an Add Record item to the
+	AppMenu on Maemo.
 	* glom/frame_glom.[h|cc]: Added on_menu_add_record() on Maemo, calling 
 	Notebook_Data::do_menu_file_add_record().
 	* glom/mode_data/box_data_details.[h|cc]: Added do_new_record().
-	* glom/mode_data/notebook_data.[h|cc]: Added do_menu_file_add_record() to call 
-	the Box_Data_Details::do_new_record().
-	* glom/utility_widgets/db_adddel/db_adddel.h: Made start_new_record() public 
-	and documented it.
-	* glom/utility_widgets/db_adddel/db_adddel_withbuttons.[h|cc]: Remove the 
-	Add button on Maemo.
+	* glom/mode_data/notebook_data.[h|cc]: Added do_menu_file_add_record()
+	to call the Box_Data_Details::do_new_record().
+	* glom/utility_widgets/db_adddel/db_adddel.h: Made start_new_record()
+	public and documented it.
+	* glom/utility_widgets/db_adddel/db_adddel_withbuttons.[h|cc]: Remove
+	the Add button on Maemo.
 
 2009-10-13  Murray Cumming  <murrayc@murrayc.com>
 
@@ -151,23 +158,24 @@
 
 2009-10-12  Murray Cumming  <murrayc@murrayc.com>
 
-  Maemo: Details: Put scrollbar against the right edge, as per spec.
-  
-	* glom/window_boxholder.[h|cc]: On Maemo, use an Alignment with no padding 
-	at the right, instead of just a window border, to match the UI spec.
+	Maemo: Details: Put scrollbar against the right edge, as per spec.
+
+	* glom/window_boxholder.[h|cc]: On Maemo, use an Alignment with no
+	padding at the right, instead of just a window border, to match the UI
+	spec.
 
 2009-10-12  Murray Cumming  <murrayc@murrayc.com>
 
-  Maemo: Details: More correct padding, maybe.
-  
-	* glom/utility_widgets/flowtable.[h|cc]: Change set_padding() to 
-	set_column_padding() and set_row_padding(), allowing different padding 
+	Maemo: Details: More correct padding, maybe.
+
+	* glom/utility_widgets/flowtable.[h|cc]: Change set_padding() to
+	set_column_padding() and set_row_padding(), allowing different padding
 	between rows and between columns, as per Maemo's UI specifications.
 
 2009-10-11  Murray Cumming  <murrayc@murrayc.com>
 
-  Maemo: Use Hildon buttons for Open, Find and ... buttons.
-  
+	Maemo: Use Hildon buttons for Open, Find and ... buttons.
+
 	* glom/utility_widgets/datawidget.cc: Constructor: Use Hildon::Buttons.
 
 2009-10-08  Murray Cumming  <murrayc@murrayc.com>
@@ -177,35 +185,36 @@
 
 2009-10-08  Murray Cumming  <murrayc@murrayc-x61>
 
-  Maemo 5: List view: Subtly improve the separating lines.
-  
-	* glom/utility_widgets/db_adddel/db_adddel.cc: treeview_append_column(): 
-	On Maemo, use an "x-pad" of HILDON_MARGIN_DEFAULT for the cell renderers, 
-	because Mathias Hasselmann says that is required for Maemo 5.
+	Maemo 5: List view: Subtly improve the separating lines.
+
+	* glom/utility_widgets/db_adddel/db_adddel.cc: treeview_append_column():
+	On Maemo, use an "x-pad" of HILDON_MARGIN_DEFAULT for the cell
+	renderers, because Mathias Hasselmann says that is required for Maemo 5.
 
 2009-10-08  Murray Cumming  <murrayc@murrayc.com>
 
-  Maemo: Use a PickerButton with TouchSelector for combo boxes on details views.
-  
+	Maemo: Use a PickerButton with TouchSelector for combo boxes on details views.
+
 	* glom/utility_widgets/comboentryglom.[h|cc]:
-	* glom/utility_widgets/comboglom.[h|cc]: On Maemo, derive from 
-	Hildon::PickerButton instead of Gtk::ComboBox*, with a member TouchSelector/
-	TouchSelector.
-	However, the ID field seems to be shown twice.
+	* glom/utility_widgets/comboglom.[h|cc]: On Maemo, derive from
+	Hildon::PickerButton instead of Gtk::ComboBox*, with a member
+	TouchSelector/TouchSelector. However, the ID field seems to be shown
+	twice.
 
 2009-10-08  Murray Cumming  <murrayc@murrayc.com>
 
-  Maemo: Actually show new list views and related records portals.
-  
-	* glom/utility_widgets/db_adddel/db_adddel.cc: construct_specified_columns():
-	Use while(TouchSelector::remove_column()) to actually remove old view columns, 
-	so we actually see an effect when navigating to a new table, and so we don't 
-	see old data in related records tables.
+	Maemo: Actually show new list views and related records portals.
+
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	construct_specified_columns(): Use while(TouchSelector::remove_column())
+	to actually remove old view columns, so we actually see an effect when
+	navigating to a new table, and so we don't see old data in related
+	records tables.
 
 2009-10-07  Murray Cumming  <murrayc@murrayc.com>
 
-  Tests: Import: Fixed the no-exceptions build.
-  
+	Tests: Import: Fixed the no-exceptions build.
+
 	* tests/import/utils.cc: Fixed the no-exceptions build.
 	
 2009-10-06  Daniel Elstner  <daniel.kitta@gmail.com>
@@ -230,7 +239,7 @@
 	This seems to break the test_fail_on_non_matching_quotes test, but 
 	the tests are too hard to run until we have removed the idle handling 
 	(and its timing problems) from CSvParser.
-  	
+
 	* glom/libglom/data_structure/field.cc: to_file_format(): Also 
 	escape carriage-returns, just in case.
 	* tests/import/test_parsing.cc: Comment out the 
