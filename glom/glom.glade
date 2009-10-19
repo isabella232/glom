@@ -68,7 +68,6 @@
           <object class="GtkHButtonBox" id="hbuttonbox3">
             <property name="visible">True</property>
             <property name="layout_style">end</property>
-            <!-- Maemo: Dialogs should have no quit or cancel dialogs since Maemo5:
             <child>
               <object class="GtkButton" id="button_cancel">
                 <property name="label">gtk-close</property>
@@ -84,7 +83,6 @@
                 <property name="position">0</property>
               </packing>
             </child>
-            -->
           </object>
           <packing>
             <property name="expand">False</property>
@@ -109,7 +107,6 @@
             <property name="visible">True</property>
             <property name="border_width">12</property>
             <property name="spacing">6</property>
-            <!-- Maemo: No icons in dialogs.
             <child>
               <object class="GtkImage" id="image3">
                 <property name="visible">True</property>
@@ -124,7 +121,6 @@
                 <property name="position">0</property>
               </packing>
             </child>
-            -->
             <child>
               <object class="GtkVBox" id="vbox4">
                 <property name="visible">True</property>
@@ -149,6 +145,11 @@
                   <object class="GtkNotebook" id="existing_or_new_notebook">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <child internal-child="accessible">
+                      <object class="AtkObject" id="existing_or_new_notebook-atkobject">
+                        <property name="AtkObject::accessible-name" translatable="yes">Open or create Document</property>
+                      </object>
+                    </child>
                     <child>
                       <object class="GtkScrolledWindow" id="scrolledwindow2">
                         <property name="visible">True</property>
@@ -161,6 +162,11 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                            <child internal-child="accessible">
+                              <object class="AtkObject" id="existing_or_new_existing_treeview-atkobject">
+                                <property name="AtkObject::accessible-name" translatable="yes">Open Existing Document</property>
+                              </object>
+                            </child>
                           </object>
                         </child>
                       </object>
@@ -187,6 +193,11 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                            <child internal-child="accessible">
+                              <object class="AtkObject" id="existing_or_new_new_treeview-atkobject">
+                                <property name="AtkObject::accessible-name" translatable="yes">Create New Document</property>
+                              </object>
+                            </child>
                           </object>
                         </child>
                       </object>
@@ -224,7 +235,20 @@
           <object class="GtkHButtonBox" id="dialog-action_area1">
             <property name="visible">True</property>
             <property name="layout_style">end</property>
-            <!-- Maemo: Dialogs should have no quit or cancel dialogs since Maemo5:
+            <child>
+              <object class="GtkButton" id="helpbutton1">
+                <property name="label">gtk-help</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
             <child>
               <object class="GtkButton" id="cancelbutton1">
                 <property name="label">gtk-quit</property>
@@ -237,10 +261,9 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">0</property>
+                <property name="position">1</property>
               </packing>
             </child>
-            -->
             <child>
               <object class="GtkButton" id="existing_or_new_button_select">
                 <property name="label" translatable="yes">_Select</property>
@@ -252,7 +275,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">1</property>
+                <property name="position">2</property>
               </packing>
             </child>
           </object>
@@ -265,9 +288,8 @@
       </object>
     </child>
     <action-widgets>
-      <!-- Maemo: Dialogs should have no quit or cancel dialogs since Maemo5:
+      <action-widget response="-11">helpbutton1</action-widget>
       <action-widget response="-7">cancelbutton1</action-widget>
-      -->
       <action-widget response="0">existing_or_new_button_select</action-widget>
     </action-widgets>
   </object>
@@ -282,7 +304,6 @@
             <property name="visible">True</property>
             <property name="border_width">12</property>
             <property name="spacing">6</property>
-            <!-- Maemo: No icons in dialogs.
             <child>
               <object class="GtkImage" id="image12">
                 <property name="visible">True</property>
@@ -297,7 +318,6 @@
                 <property name="position">0</property>
               </packing>
             </child>
-            -->
             <child>
               <object class="GtkVBox" id="vbox28">
                 <property name="visible">True</property>
@@ -348,6 +368,11 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x2022;</property>
+                        <child internal-child="accessible">
+                          <object class="AtkObject" id="entry_host-atkobject">
+                            <property name="AtkObject::accessible-name" translatable="yes">Host</property>
+                          </object>
+                        </child>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -363,6 +388,11 @@
                         <property name="visibility">False</property>
                         <property name="invisible_char">&#x2022;</property>
                         <property name="activates_default">True</property>
+                        <child internal-child="accessible">
+                          <object class="AtkObject" id="entry_password-atkobject">
+                            <property name="AtkObject::accessible-name" translatable="yes">Password</property>
+                          </object>
+                        </child>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -377,6 +407,11 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x2022;</property>
+                        <child internal-child="accessible">
+                          <object class="AtkObject" id="entry_user-atkobject">
+                            <property name="AtkObject::accessible-name" translatable="yes">User</property>
+                          </object>
+                        </child>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -456,6 +491,11 @@
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
                         <property name="selectable">True</property>
+                        <child internal-child="accessible">
+                          <object class="AtkObject" id="label_database-atkobject">
+                            <property name="AtkObject::accessible-name" translatable="yes">Database</property>
+                          </object>
+                        </child>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -488,10 +528,9 @@
           <object class="GtkHButtonBox" id="hbuttonbox16">
             <property name="visible">True</property>
             <property name="layout_style">end</property>
-            <!-- Maemo: Dialogs should have no quit or cancel dialogs since Maemo5:
             <child>
-              <object class="GtkButton" id="button12">
-                <property name="label">gtk-cancel</property>
+              <object class="GtkButton" id="button11">
+                <property name="label">gtk-help</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -504,7 +543,21 @@
                 <property name="position">0</property>
               </packing>
             </child>
-            -->
+            <child>
+              <object class="GtkButton" id="button12">
+                <property name="label">gtk-cancel</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="receives_default">False</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
             <child>
               <object class="GtkButton" id="button13">
                 <property name="visible">True</property>
@@ -552,7 +605,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">1</property>
+                <property name="position">2</property>
               </packing>
             </child>
           </object>
@@ -565,6 +618,7 @@
       </object>
     </child>
     <action-widgets>
+      <action-widget response="-11">button11</action-widget>
       <action-widget response="-6">button12</action-widget>
       <action-widget response="-5">button13</action-widget>
     </action-widgets>
@@ -714,7 +768,6 @@
           <object class="GtkHButtonBox" id="hbuttonbox39">
             <property name="visible">True</property>
             <property name="layout_style">end</property>
-             <!-- Maemo: Dialogs should have no quit or cancel dialogs since Maemo5:
             <child>
               <object class="GtkButton" id="button_cancel">
                 <property name="label">gtk-cancel</property>
@@ -730,7 +783,6 @@
                 <property name="position">0</property>
               </packing>
             </child>
-            -->
           </object>
           <packing>
             <property name="expand">False</property>
@@ -741,9 +793,7 @@
       </object>
     </child>
     <action-widgets>
-      <!-- Maemo: Dialogs should have no quit or cancel dialogs since Maemo5:
       <action-widget response="-6">button_cancel</action-widget>
-      -->
     </action-widgets>
   </object>
   <object class="GtkWindow" id="window_progress">
@@ -777,7 +827,7 @@
       </object>
     </child>
   </object>
-  <object class="HildonWindow" id="window_main">
+  <object class="GtkWindow" id="window_main">
     <property name="title" translatable="yes">Glom</property>
     <property name="default_width">900</property>
     <property name="default_height">700</property>
@@ -923,39 +973,6 @@
                     <property name="visible">True</property>
                     <property name="spacing">6</property>
                     <child>
-                      <object class="GtkHBox" id="hbox_found">
-                        <property name="visible">True</property>
-                        <property name="spacing">6</property>
-                        <child>
-                          <object class="GtkLabel" id="label204">
-                            <property name="visible">True</property>
-                            <property name="label" translatable="yes">Found:</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label_records_found_count">
-                            <property name="visible">True</property>
-                            <property name="label" translatable="yes">0</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">2</property>
-                          </packing>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="pack_type">end</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                    <child>
                       <object class="GtkHBox" id="hbox_records">
                         <property name="visible">True</property>
                         <property name="spacing">6</property>
@@ -986,6 +1003,39 @@
                         <property name="expand">False</property>
                         <property name="pack_type">end</property>
                         <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkHBox" id="hbox_found">
+                        <property name="visible">True</property>
+                        <property name="spacing">6</property>
+                        <child>
+                          <object class="GtkLabel" id="label204">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Found:</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label_records_found_count">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">0</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="pack_type">end</property>
+                        <property name="position">1</property>
                       </packing>
                     </child>
                     <child>
@@ -1294,7 +1344,6 @@
           <object class="GtkHButtonBox" id="dialog-action_area5">
             <property name="visible">True</property>
             <property name="layout_style">end</property>
-            <!-- Maemo: Dialogs should have no quit or cancel dialogs since Maemo5:
             <child>
               <object class="GtkButton" id="import_csv_cancel_button">
                 <property name="label">gtk-cancel</property>
@@ -1309,7 +1358,6 @@
                 <property name="position">0</property>
               </packing>
             </child>
-            -->
             <child>
               <object class="GtkButton" id="import_csv_import_button">
                 <property name="visible">True</property>
@@ -1347,6 +1395,20 @@
                 <property name="position">1</property>
               </packing>
             </child>
+            <child>
+              <object class="GtkButton" id="import_csv_help_button">
+                <property name="label">gtk-help</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -1357,10 +1419,9 @@
       </object>
     </child>
     <action-widgets>
-      <!-- Maemo: Dialogs should have no quit or cancel dialogs since Maemo5:
       <action-widget response="-6">import_csv_cancel_button</action-widget>
-      -->
       <action-widget response="-3">import_csv_import_button</action-widget>
+      <action-widget response="-11">import_csv_help_button</action-widget>
     </action-widgets>
   </object>
   <object class="GtkDialog" id="dialog_data_invalid_format">
@@ -1373,7 +1434,6 @@
             <property name="visible">True</property>
             <property name="border_width">12</property>
             <property name="spacing">6</property>
-            <!-- Maemo: No icons in dialogs.
             <child>
               <object class="GtkImage" id="image4">
                 <property name="visible">True</property>
@@ -1388,7 +1448,6 @@
                 <property name="position">0</property>
               </packing>
             </child>
-            -->
             <child>
               <object class="GtkVBox" id="vbox18">
                 <property name="visible">True</property>
@@ -1441,6 +1500,21 @@ The data in the field was not recognized. Please try to correct the data or reve
             <property name="visible">True</property>
             <property name="layout_style">end</property>
             <child>
+              <object class="GtkButton" id="button1">
+                <property name="label">gtk-help</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="receives_default">False</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkButton" id="button_revert">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -1486,7 +1560,7 @@ The data in the field was not recognized. Please try to correct the data or reve
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">0</property>
+                <property name="position">1</property>
               </packing>
             </child>
             <child>
@@ -1502,7 +1576,7 @@ The data in the field was not recognized. Please try to correct the data or reve
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">1</property>
+                <property name="position">2</property>
               </packing>
             </child>
           </object>
@@ -1515,6 +1589,7 @@ The data in the field was not recognized. Please try to correct the data or reve
       </object>
     </child>
     <action-widgets>
+      <action-widget response="-11">button1</action-widget>
       <action-widget response="2">button_revert</action-widget>
       <action-widget response="-5">button4</action-widget>
     </action-widgets>
@@ -1583,7 +1658,6 @@ The data in the field was not recognized. Please try to correct the data or reve
           <object class="GtkHButtonBox" id="dialog-action_area7">
             <property name="visible">True</property>
             <property name="layout_style">end</property>
-            <!-- Maemo: We want a cancel button on this progress dialog even on Maemo. -->
             <child>
               <object class="GtkButton" id="import_csv_progress_cancel_button">
                 <property name="label">gtk-cancel</property>
@@ -1657,7 +1731,6 @@ The data in the field was not recognized. Please try to correct the data or reve
           <object class="GtkHButtonBox" id="dialog-action_area7">
             <property name="visible">True</property>
             <property name="layout_style">end</property>
-            <!-- Maemo: We want a cancel button on this progress dialog even on Maemo. -->
             <child>
               <object class="GtkButton" id="button1">
                 <property name="label">gtk-cancel</property>
@@ -1686,4 +1759,5 @@ The data in the field was not recognized. Please try to correct the data or reve
     </action-widgets>
   </object>
 </interface>
+
 
