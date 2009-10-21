@@ -41,10 +41,14 @@ cp /bundle/bin/gspawn-win32-helper.exe installer/bin || exit
 cp /bundle/bin/gspawn-win32-helper-console.exe installer/bin || exit
 
 cp /bundle/bin/libatk-1.0-0.dll installer/bin || exit
+cp /bundle/bin/libxml2-2.dll installer/bin || exit
+cp /bundle/bin/libfontconfig-1.dll installer/bin || exit
+cp /bundle/bin/libexpat-1.dll installer/bin || exit
+cp /bundle/bin/freetype6.dll installer/bin || exit
 cp /bundle/bin/libcairo-2.dll installer/bin || exit
 cp /bundle/bin/libpng12-0.dll installer/bin || exit
-cp /bundle/bin/jpeg62.dll installer/bin || exit
-cp /bundle/bin/libtiff3.dll installer/bin || exit
+cp /bundle/bin/libjpeg-7.dll installer/bin || exit
+cp /bundle/bin/libtiff-3.dll installer/bin || exit
 
 cp /bundle/bin/libpango-1.0-0.dll installer/bin || exit
 cp /bundle/bin/libpangocairo-1.0-0.dll installer/bin || exit
@@ -56,44 +60,43 @@ cp /bundle/bin/libgdk_pixbuf-2.0-0.dll installer/bin || exit
 cp /bundle/bin/libgtk-win32-2.0-0.dll installer/bin || exit
 cp /gtksourceview/bin/libgtksourceview-2.0-0.dll installer/bin || exit
 
-cp /bin/libORBit-2-0.dll installer/bin || exit
-cp /bin/libORBitCosNaming-2-0.dll installer/bin || exit
-cp /bin/libORBit-imodule-2-0.dll installer/bin || exit
+#cp /bin/libORBit-2-0.dll installer/bin || exit
+#cp /bin/libORBitCosNaming-2-0.dll installer/bin || exit
+#cp /bin/libORBit-imodule-2-0.dll installer/bin || exit
 
-cp /bin/libgconf-2-4.dll installer/bin || exit
-cp /libglade/bin/libglade-2.0-0.dll installer/bin || exit
+#cp /bin/libgconf-2-4.dll installer/bin || exit
+#cp /libglade/bin/libglade-2.0-0.dll installer/bin || exit
 cp /goocanvas/bin/libgoocanvas-3.dll installer/bin || exit
 
 cp /libgda/bin/libgda-4.0-4.dll installer/bin || exit
 #cp /libgda/bin/libgdasql-3.0-2.dll installer/bin || exit
 cp /libgda/bin/libgda-report-4.0-4.dll installer/bin || exit
 
-cp /local/bin/libsigc-2.0-0.dll installer/bin || exit
-cp /local/bin/libglibmm-2.4-1.dll installer/bin || exit
-cp /local/bin/libgiomm-2.4-1.dll installer/bin || exit
-cp /local/bin/libatkmm-1.6-1.dll installer/bin || exit
-cp /local/bin/libcairomm-1.0-1.dll installer/bin || exit
-cp /local/bin/libpangomm-1.4-1.dll installer/bin || exit
-cp /local/bin/libgdkmm-2.4-1.dll installer/bin || exit
-cp /local/bin/libxml++-2.6-2.dll installer/bin || exit
-cp /local/bin/libgtkmm-2.4-1.dll installer/bin || exit
+cp /gtkmm_release/bin/libsigc-2.0-0.dll installer/bin || exit
+cp /gtkmm_release/bin/libglibmm-2.4-1.dll installer/bin || exit
+cp /gtkmm_release/bin/libgiomm-2.4-1.dll installer/bin || exit
+cp /gtkmm_release/bin/libatkmm-1.6-1.dll installer/bin || exit
+cp /gtkmm_release/bin/libcairomm-1.0-1.dll installer/bin || exit
+cp /gtkmm_release/bin/libpangomm-1.4-1.dll installer/bin || exit
+cp /gtkmm_release/bin/libgdkmm-2.4-1.dll installer/bin || exit
+cp /gtkmm_release/bin/libxml++-2.6-2.dll installer/bin || exit
+cp /gtkmm_release/bin/libgtkmm-2.4-1.dll installer/bin || exit
 cp /local/bin/libgtksourceviewmm-2.0-2.dll installer/bin || exit
-cp /local/bin/libgoocanvasmm-0.1-4.dll installer/bin || exit
-cp /local/bin/libgconfmm-2.6-1.dll installer/bin || exit
-cp /local/bin/libgdamm-4.0-10.dll installer/bin || exit
-cp /local/bin/libglademm-2.4-1.dll installer/bin || exit
+cp /local/bin/libgoocanvasmm-1.0-5.dll installer/bin || exit
+#cp /local/bin/libgconfmm-2.6-1.dll installer/bin || exit
+cp /local/bin/libgdamm-4.0-12.dll installer/bin || exit
+#cp /gtkmm_release/bin/libglademm-2.4-1.dll installer/bin || exit
 
-cp /local/bin/libbakery-2.6--6-1.dll installer/bin || exit
-cp /local/bin/libglom-1.0-0.dll installer/bin || exit
+# cp /local/bin/libbakery-2.6--6-1.dll installer/bin || exit
+cp /local/bin/libglom-1.12-0.dll installer/bin || exit
 
 echo "Stripping DLL files..."
 strip installer/bin/*.dll || exit
 strip installer/bin/*.exe || exit
 
-# stripping libxml2.dll renders it unusable (although not changing it in size).
-# We therefore copy it after having stripped the rest. Same with the other DLLs
-# here. Perhaps those were built with MSVC.
-cp /bundle/bin/libxml2.dll installer/bin || exit
+# stripping these render them unusable (although no changing in size).
+# We therefore copy them after having stripped the rest. Same with the other
+# Perhaps those were built with MSVC.
 cp /bundle/bin/intl.dll installer/bin || exit
 cp /bundle/bin/iconv.dll installer/bin || exit
 cp /bundle/bin/zlib1.dll installer/bin || exit
@@ -176,14 +179,13 @@ cp /bundle/share/locale installer/share -R || exit # GTK+ + deps
 cp /share/locale installer/share -R || exit # GConf2
 cp /local/share/locale installer/share -R || exit # bakery, glom
 cp /libgda/share/locale installer/share -R || exit # libgda-4.0
-# TODO: Switch to >=GtkSourceView 2.5, which has locales in share/
-cp /gtksourceview/lib/locale installer/lib -R || exit # gtksourceview
+cp /gtksourceview/share/locale installer/share -R || exit # gtksourceview
 # TODO: Bail if a translation file is missing
 
 TRANSLATIONS="glib20.mo gtk20-properties.mo atk10.mo gtk20.mo gtksourceview-2.0.mo GConf2.mo libgda-4.0.mo bakery.mo glom.mo"
 
-find installer/lib/locale/ -type f | grep -v atk10.mo | grep -v gtk20.mo | grep -v bakery.mo | grep -v GConf2.mo | grep -v glib20.mo | grep -v glom.mo | grep -v gtk20.mo | grep -v gtk20-properties.mo | grep -v gtksourceview-2.0.mo |  grep -v libgda-4.0.mo | xargs rm
-find installer/lib/locale -type d | xargs rmdir -p --ignore-fail-on-non-empty
+#find installer/lib/locale/ -type f | grep -v atk10.mo | grep -v gtk20.mo | grep -v bakery.mo | grep -v GConf2.mo | grep -v glib20.mo | grep -v glom.mo | grep -v gtk20.mo | grep -v gtk20-properties.mo | grep -v gtksourceview-2.0.mo |  grep -v libgda-4.0.mo | xargs rm
+#find installer/lib/locale -type d | xargs rmdir -p --ignore-fail-on-non-empty
 
 find installer/share/locale/ -type f | grep -v atk10.mo | grep -v gtk20.mo | grep -v bakery.mo | grep -v GConf2.mo | grep -v glib20.mo | grep -v glom.mo | grep -v gtk20.mo | grep -v gtk20-properties.mo | grep -v gtksourceview-2.0.mo |  grep -v libgda-4.0.mo | xargs rm
 find installer/share/locale -type d | xargs rmdir -p --ignore-fail-on-non-empty

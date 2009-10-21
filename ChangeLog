@@ -1,5 +1,35 @@
 2009-10-21  Armin Burgmeier  <armin@arbur.net>
 
+	* Makefile_libglom.am: Link against winsock on Windows.
+
+	* glom/application.cc (constructor): ifdefed out the avahi callbacks
+	setup on Windows.
+
+	* glom/dialog_existing_or_new.cc (constructor): ifdefed out the code
+	that expands the network item on Windows (because it doesn't exist
+	there).
+
+	* glom/libglom/connectionpool.h:
+	* glom/libglom/connectionpool.cc: ifdefed out the avahi callback setup
+	function, moved pgwin32_is_admin to main.cc.
+
+	* glom/main.cc: Moved pgwin32_is_admin from connectionpool.cc.
+
+	* glom/libglom/spawn_with_feedback.cc: Added <glibmm/fileutils.h>
+	include, required for the Windows build.
+
+	* glom/mode_design/print_layouts/print_layout_toolbar_button.cc:
+	* glom/utility_widgets/layouttoolbar.cc:
+	* glom/utility_widgets/layouttoolbarbutton.cc:
+	* glom/xsl_utils.cc: Fixed the construction to path files
+	relative to the executable on Windows: Glib::build_filename does take
+	only two arguments, not three.
+
+	* win32/build-installer:
+	* win32/glom.iss.in: Updated.
+
+2009-10-21  Armin Burgmeier  <armin@arbur.net>
+
 	* macros/mm-python.m4: Fix the python library lookup on Windows: Avoid
 	a python error if get_config_var('LIBS') is None and include
 	$PREFIX/libs and $EXEC_PREFIX/libs in the search path because this is

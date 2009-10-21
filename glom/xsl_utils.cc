@@ -53,8 +53,8 @@ namespace
   {
 #ifdef G_OS_WIN32
     gchar* directory = g_win32_get_package_installation_directory_of_module(0);
-    Glib::ustring xsltdir = Glib::build_filename(directory,
-        "share" G_DIR_SEPARATOR_S "glom" G_DIR_SEPARATOR_S "xslt", xsl_file);
+    Glib::ustring xsltdir = Glib::build_filename(Glib::build_filename(directory,
+        "share" G_DIR_SEPARATOR_S "glom" G_DIR_SEPARATOR_S "xslt"), xsl_file);
     g_free(directory);
     return xsltdir;
 #else
