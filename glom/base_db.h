@@ -83,6 +83,8 @@ public:
    */
   static Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::ustring& strQuery, 
                                                                   const Glib::RefPtr<Gnome::Gda::Set>& params = Glib::RefPtr<Gnome::Gda::Set>(0));
+  static Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder,
+                                                                  const Glib::RefPtr<Gnome::Gda::Set>& params = Glib::RefPtr<Gnome::Gda::Set>(0));
 
 
   /** Execute a SQL non-select command, returning true if it succeeded.
@@ -90,7 +92,9 @@ public:
    */
   static bool query_execute(const Glib::ustring& strQuery,
                             const Glib::RefPtr<Gnome::Gda::Set>& params = Glib::RefPtr<Gnome::Gda::Set>(0));
-
+  static bool query_execute(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder,
+                            const Glib::RefPtr<Gnome::Gda::Set>& params = Glib::RefPtr<Gnome::Gda::Set>(0));
+  
   static int count_rows_returned_by(const Glib::ustring& sql_query);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

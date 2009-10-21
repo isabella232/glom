@@ -266,6 +266,107 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute_select(const Glib::us
 }
 
 //static:
+Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute_select(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder,
+                                                                  const Glib::RefPtr<Gnome::Gda::Set>& params)
+{
+  Glib::RefPtr<Gnome::Gda::DataModel> result;
+
+  //TODO: BusyCursor busy_cursor(get_app_window());
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  sharedptr<SharedConnection> sharedconnection = connect_to_server();
+#else
+  std::auto_ptr<ExceptionConnection> error;
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(0, error);
+  if(error.get())
+  {
+    g_warning("Base_DB::query_execute_select() failed (query was: %s): %s", strQuery.c_str(), error->what());
+    // TODO: Rethrow? 
+  }
+#endif
+  if(!sharedconnection)
+  {
+    std::cerr << "Base_DB::query_execute_select(): No connection yet." << std::endl;
+    return result;
+  }
+
+  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
+  Glib::RefPtr<Gnome::Gda::Statement> stmt;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    stmt = builder->get_statement();
+  }
+  catch(const Gnome::Gda::SqlBuilderError& ex)
+  {
+    std::cout << "debug: Base_DB::query_execute_select(): SqlParserError: exception from parse_string(): " << ex.what() << std::endl;
+  }
+#else
+  std::auto_ptr<Glib::Error> ex;
+  stmt = builder->get_statement(ex);
+  if(error.get())
+     std::cout << "debug: Base_DB::query_execute_select(): SqlParserError: exception from parse_string(): " << error->what() << std::endl;
+#endif //GLIBMM_EXCEPTIONS_ENABLED
+
+
+  //Debug output:
+  const App_Glom* app = App_Glom::get_application();
+  if(stmt && app && app->get_show_sql_debug())
+  {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    try
+    {
+      const Glib::ustring full_query = stmt->to_sql(params);
+      std::cout << "Debug: Base_DB::query_execute_select():  " << full_query << std::endl;
+    }
+    catch(const Glib::Exception& ex)
+    {
+      std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
+    }
+#else
+      const Glib::ustring full_query = stmt->to_sql(params, ex);
+      std::cout << "Debug: Base_DB::query_execute_select():  " << full_query << std::endl;
+      if (ex.get())
+        std::cout << "Debug: query string could not be converted to std::cout: " << ex->what() << std::endl;
+      
+#endif
+  }
+
+  
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    result = gda_connection->statement_execute_select(stmt, params);
+  }
+  catch(const Gnome::Gda::ConnectionError& ex)
+  {
+    std::cout << "debug: Base_DB::query_execute_select(): ConnectionError: exception from statement_execute_select(): " << ex.what() << std::endl;
+  }
+  catch(const Gnome::Gda::ServerProviderError& ex)
+  {
+    std::cout << "debug: Base_DB::query_execute_select(): ServerProviderError: exception from statement_execute_select(): code=" << ex.code() << "message=" << ex.what() << std::endl;
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cout << "debug: Base_DB::query_execute_select(): Error: exception from statement_execute_select(): " << ex.what() << std::endl;
+  }
+
+#else
+  result = gda_connection->statement_execute_select(stmt, params, ex);
+  if(ex.get())
+    std::cout << "debug: Base_DB::query_execute_select(): Glib::Error from statement_execute_select(): " << ex->what() << std::endl;
+#endif //GLIBMM_EXCEPTIONS_ENABLED
+
+  if(!result)
+  {
+    std::cerr << "Glom  Base_DB::query_execute_select(): Error while executing SQL" << std::endl << std::endl;
+    handle_error();
+  }
+
+  return result;
+}
+
+//static:
 bool Base_DB::query_execute(const Glib::ustring& strQuery,
                             const Glib::RefPtr<Gnome::Gda::Set>& params)
 {
@@ -308,6 +409,98 @@ bool Base_DB::query_execute(const Glib::ustring& strQuery,
     return false;
   }
 #endif
+
+
+  //Debug output:
+  const App_Glom* app = App_Glom::get_application();
+  if(stmt && app && app->get_show_sql_debug())
+  {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    try
+    {
+      //TODO: full_query still seems to contain ## parameter names, 
+      //though it works for our SELECT queries in query_execute_select(): 
+      const Glib::ustring full_query = stmt->to_sql(params);
+      std::cerr << "Debug: Base_DB::query_execute(): " << full_query << std::endl;
+    }
+    catch(const Glib::Exception& ex)
+    {
+      std::cerr << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
+    }
+#else
+    const Glib::ustring full_query = stmt->to_sql(params, sql_error);
+    std::cerr << "Debug: Base_DB::query_execute(): " << full_query << std::endl;
+    if (sql_error.get())
+      std::cerr << "Debug: query string could not be converted to std::cout: " << sql_error->what() << std::endl;
+#endif
+  }
+
+
+  int exec_retval = -1;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    exec_retval = gda_connection->statement_execute_non_select(stmt, params);
+  }
+  catch(const Glib::Error& error)
+  {
+    std::cerr << "BaseDB::query_execute: ConnectionError: " << error.what() << std::endl;
+    const Glib::ustring full_query = stmt->to_sql(params);
+    std::cerr << "  full_query: " << full_query << std::endl;
+    return false;
+  }
+#else
+  std::auto_ptr<Glib::Error> exec_error;
+  exec_retval = gda_connection->statement_execute_non_select (stmt, params, exec_error);
+  if(exec_error.get())
+  {
+    std::cerr << "BaseDB::query_execute: ConnectionError: " << exec_error->what() << std::endl;
+    const Glib::ustring full_query = stmt->to_sql(params, exec_error);
+    std::cerr << "  full_query: " << full_query << std::endl;
+    return false;
+  }
+#endif
+  return (exec_retval >= 0);
+}
+
+//static:
+bool Base_DB::query_execute(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder,
+                            const Glib::RefPtr<Gnome::Gda::Set>& params)
+{
+  #ifdef GLIBMM_EXCEPTIONS_ENABLED
+  sharedptr<SharedConnection> sharedconnection = connect_to_server();
+#else
+  std::auto_ptr<ExceptionConnection> error;
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(0, error);
+  if(error.get())
+  {
+    g_warning("Base_DB::query_execute() failed (query was: %s): %s", strQuery.c_str(), error->what());
+    // TODO: Rethrow? 
+  }
+#endif
+  if(!sharedconnection)
+  {
+    std::cerr << "Base_DB::query_execute(): No connection yet." << std::endl;
+    return false;
+  }
+  
+  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
+  Glib::RefPtr<Gnome::Gda::Statement> stmt;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    stmt = builder->get_statement();
+  }
+  catch(const Gnome::Gda::SqlBuilderError& ex)
+  {
+    std::cout << "debug: Base_DB::query_execute_select(): SqlParserError: exception from parse_string(): " << ex.what() << std::endl;
+  }
+#else
+  std::auto_ptr<Glib::Error> ex;
+  stmt = builder->get_statement(ex);
+  if(error.get())
+     std::cout << "debug: Base_DB::query_execute_select(): SqlParserError: exception from parse_string(): " << error->what() << std::endl;
+#endif //GLIBMM_EXCEPTIONS_ENABLED
 
 
   //Debug output:
@@ -891,25 +1084,35 @@ Gnome::Gda::Value Base_DB::auto_increment_insert_first_if_necessary(const Glib::
     //This should not happen:
     std::cerr << "Glom: Base_DB::auto_increment_insert_first_if_necessary(): The current user may not edit the autoincrements table. Any user who has create rights for a table should have edit rights to the autoincrements table." << std::endl;
   }
-  Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
-  params->add_holder("table_name", table_name);
-  params->add_holder("field_name", field_name);
   
-  const Glib::ustring sql_query = "SELECT \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\".\"next_value\" FROM \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\""
-   " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = ##table_name::gchararray AND "
-          "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\" = ##field_name::gchararray";
-
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query, params);
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+  builder->add_field(builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME ".next_value"));
+  builder->select_add_target(builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME));
+  builder->set_where(builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_AND,
+                                       builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+                                                         builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME),
+                                                         builder->add_expr(Gnome::Gda::Value(table_name))),
+                                       builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+                                                         builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME),
+                                                         builder->add_expr(Gnome::Gda::Value(field_name)))));
+  
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(builder);
   if(!datamodel || (datamodel->get_n_rows() == 0))
-  {
+  {                       
     //Start with zero:
+    builder.reset();
 
     //Insert the row if it's not there.
-    const Glib::ustring sql_query = "INSERT INTO \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\" ("
-      GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME ", " GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME ", " GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE
-      ") VALUES (##table_name::gchararray, ##field_name::gchararray, 0)";
+    builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_INSERT);
+    builder->set_table(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
+    builder->add_field(builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME),
+                       builder->add_expr(Gnome::Gda::Value(table_name)));
+    builder->add_field(builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME),
+                       builder->add_expr(Gnome::Gda::Value(field_name)));
+    builder->add_field(builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE),
+                       builder->add_expr(Gnome::Gda::Value(0)));
 
-    const bool test = query_execute(sql_query, params);
+    const bool test = query_execute(builder);
     if(!test)
       std::cerr << "Base_DB::auto_increment_insert_first_if_necessary(): INSERT of new row failed." << std::endl;
 
@@ -943,8 +1146,13 @@ void Base_DB::recalculate_next_auto_increment_value(const Glib::ustring& table_n
   auto_increment_insert_first_if_necessary(table_name, field_name);
 
   //Get the max key value in the database:
-  const Glib::ustring sql_query = "SELECT MAX(\"" + table_name + "\".\"" + field_name + "\") FROM \"" + table_name + "\"";
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query);
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+  std::list<guint> args;
+  args.push_back(builder->add_id(table_name + "." + field_name));
+  builder->add_field(builder->add_function("MAX", args));
+  builder->select_add_target(builder->add_id(table_name));
+  
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(builder);
   if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
   {
     //Increment it:
@@ -959,12 +1167,21 @@ void Base_DB::recalculate_next_auto_increment_value(const Glib::ustring& table_n
 
     //Set it in the glom system table:
     const Gnome::Gda::Value next_value = Conversions::parse_value(num_max);
-    const Glib::ustring sql_query = "UPDATE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\" SET "
-      "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE "\" = " + next_value.to_string() + //TODO: Don't use to_string().
-      " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = '" + table_name + "' AND "
-      "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\" = '" + field_name + "'";
-    
-    const bool test = query_execute(sql_query);
+
+    builder.reset();
+    builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
+    builder->set_table(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
+    builder->add_field(builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE),
+                       builder->add_expr(Gnome::Gda::Value(next_value)));
+    builder->set_where(builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_AND,
+                                         builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+                                                           builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME),
+                                                           builder->add_expr(Gnome::Gda::Value(table_name))),
+                                         builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+                                                           builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME),
+                                                           builder->add_expr(Gnome::Gda::Value(field_name)))));
+        
+    const bool test = query_execute(builder);
     if(!test)
       std::cerr << "Base_DB::recalculate_next_auto_increment_value(): UPDATE failed." << std::endl;
   }
@@ -981,16 +1198,19 @@ Gnome::Gda::Value Base_DB::get_next_auto_increment_value(const Glib::ustring& ta
   //Increment the next_value:
   ++num_result;
   const Gnome::Gda::Value next_value = Conversions::parse_value(num_result);
-  Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
-  params->add_holder("table_name", table_name);
-  params->add_holder("field_name", field_name);
-  params->add_holder("next_value", next_value);
-  const Glib::ustring sql_query = "UPDATE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\" SET "
-      "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE "\" = ##next_value::gchararray"
-      " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = ##table_name::gchararray AND "
-            "\""  GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\" = ##field_name::gchararray";
 
-  const bool test = query_execute(sql_query, params);
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
+  builder->set_table(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
+  builder->add_field(builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE),
+                     builder->add_expr(next_value));
+  builder->set_where(builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_AND,
+                                       builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+                                                         builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME),
+                                                         builder->add_expr(Gnome::Gda::Value(table_name))),
+                                       builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+                                                         builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME),
+                                                         builder->add_expr(Gnome::Gda::Value(field_name)))));  
+  const bool test = query_execute(builder);
   if(!test)
     std::cerr << "Base_DB::get_next_auto_increment_value(): Increment failed." << std::endl;
 
