@@ -1,3 +1,10 @@
+2009-10-21  Armin Burgmeier  <armin@arbur.net>
+
+	* macros/mm-python.m4: Fix the python library lookup on Windows: Avoid
+	a python error if get_config_var('LIBS') is None and include
+	$PREFIX/libs and $EXEC_PREFIX/libs in the search path because this is
+	where the official Python installer puts the library in.
+
 2009-10-19  David King  <davidk@openismus.com>
 
 	* Makefile_libglom.am: Add missing backslash, fixing commit
