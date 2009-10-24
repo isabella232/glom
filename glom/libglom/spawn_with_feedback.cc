@@ -24,6 +24,7 @@
 #include <glibmm/thread.h>
 #include <glibmm/iochannel.h>
 #include <glibmm/shell.h>
+#include <glibmm/fileutils.h>
 #include <glibmm/miscutils.h>
 #include <glibmm/i18n.h>
 #include <memory> //For auto_ptr.

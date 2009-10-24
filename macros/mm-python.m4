@@ -23,7 +23,7 @@ m4_define([_MM_PYTHON_SYSCONFIG],
 [dnl
 mm_val=`$PYTHON -c "dnl
 [import sys; from distutils import sysconfig; sys.stdout.write]dnl
-([sysconfig.]$1)" 2>&AS_MESSAGE_LOG_FD`
+([sysconfig.]$1 or '')" 2>&AS_MESSAGE_LOG_FD`
 AS_IF([test "[$]?" -eq 0 && test "x$mm_val" != x], [$2], [$3])[]dnl
 ])
 
@@ -55,8 +55,9 @@ AS_IF([test "x$PYTHON_LIBS" = x],
 [
   _MM_PYTHON_SYSCONFIG([[get_config_var('LIBS')]], [PYTHON_LIBS=$mm_val])
   set X
-  _MM_PYTHON_SYSCONFIG([[EXEC_PREFIX]], [set "[$]@" "$mm_val/lib" "$mm_val/lib64"])
-  _MM_PYTHON_SYSCONFIG([[PREFIX]],      [set "[$]@" "$mm_val/lib" "$mm_val/lib64"])
+dnl On Windows the library is in libs/, not in lib/, so check there as well:
+  _MM_PYTHON_SYSCONFIG([[EXEC_PREFIX]], [set "[$]@" "$mm_val/lib" "$mm_val/libs" "$mm_val/lib64"])
+  _MM_PYTHON_SYSCONFIG([[PREFIX]],      [set "[$]@" "$mm_val/lib" "$mm_val/libs" "$mm_val/lib64"])
   _MM_PYTHON_SYSCONFIG([[get_python_lib(True, True)]],  [set "[$]@" "$mm_val/config" "$mm_val"])
   _MM_PYTHON_SYSCONFIG([[get_python_lib(False, True)]], [set "[$]@" "$mm_val/config" "$mm_val"])
   shift

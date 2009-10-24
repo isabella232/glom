@@ -165,5 +165,8 @@ glom_libglom_libglom_1_12_la_SOURCES +=				\
 	glom/libglom/connectionpool_backends/sqlite.h
 
 glom_libglom_libglom_1_12_la_LIBADD = $(LIBGLOM_LIBS) $(PYTHON_LIBS)
+if HOST_WIN32
+glom_libglom_libglom_1_12_la_LIBADD += -lws2_32
+endif
 
 glom_libglom_libglom_1_12_la_LDFLAGS = -no-undefined

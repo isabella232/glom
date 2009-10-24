@@ -63,6 +63,115 @@
 #include <fontconfig/fontconfig.h> //For cleanup.
 #endif
 
+namespace
+{
+
+#ifdef G_OS_WIN32
+static BOOL
+pgwin32_get_dynamic_tokeninfo(HANDLE token, TOKEN_INFORMATION_CLASS class_,
+                char **InfoBuffer, char *errbuf, int errsize)
+{
+  DWORD    InfoBufferSize;
+
+  if(GetTokenInformation(token, class_, 0, 0, &InfoBufferSize))
+  {
+    snprintf(errbuf, errsize, "could not get token information: got zero size\n");
+    return FALSE;
+  }
+
+  if(GetLastError() != ERROR_INSUFFICIENT_BUFFER)
+  {
+    snprintf(errbuf, errsize, "could not get token information: error code %d\n",
+         (int) GetLastError());
+    return FALSE;
+  }
+
+  *InfoBuffer = static_cast<char*>(malloc(InfoBufferSize));
+  if(*InfoBuffer == 0)
+  {
+    snprintf(errbuf, errsize, "could not allocate %d bytes for token information\n",
+         (int) InfoBufferSize);
+    return FALSE;
+  }
+
+  if(!GetTokenInformation(token, class_, *InfoBuffer,
+               InfoBufferSize, &InfoBufferSize))
+  {
+    snprintf(errbuf, errsize, "could not get token information: error code %d\n",
+         (int) GetLastError());
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
+int
+pgwin32_is_admin(void)
+{
+  HANDLE    AccessToken;
+  char     *InfoBuffer = 0;
+  char    errbuf[256];
+  PTOKEN_GROUPS Groups;
+  PSID    AdministratorsSid;
+  PSID    PowerUsersSid;
+  SID_IDENTIFIER_AUTHORITY NtAuthority = {SECURITY_NT_AUTHORITY};
+  UINT    x;
+  BOOL    success;
+
+  if(!OpenProcessToken(GetCurrentProcess(), TOKEN_READ, &AccessToken))
+  {
+    throw std::runtime_error(Glib::ustring::compose("Could not open process token: error code %1", (int)GetLastError()));
+  }
+
+  if(!pgwin32_get_dynamic_tokeninfo(AccessToken, TokenGroups,
+                     &InfoBuffer, errbuf, sizeof(errbuf)))
+  {
+    CloseHandle(AccessToken);
+    throw std::runtime_error(errbuf);
+  }
+
+  Groups = (PTOKEN_GROUPS) InfoBuffer;
+
+  CloseHandle(AccessToken);
+
+  if(!AllocateAndInitializeSid(&NtAuthority, 2,
+     SECURITY_BUILTIN_DOMAIN_RID, DOMAIN_ALIAS_RID_ADMINS, 0, 0, 0, 0, 0,
+                  0, &AdministratorsSid))
+  {
+    free(InfoBuffer);
+    throw std::runtime_error(Glib::ustring::compose("could not get SID for Administrators group: error code %1", (int)GetLastError()));
+  }
+
+  if(!AllocateAndInitializeSid(&NtAuthority, 2,
+  SECURITY_BUILTIN_DOMAIN_RID, DOMAIN_ALIAS_RID_POWER_USERS, 0, 0, 0, 0, 0,
+                  0, &PowerUsersSid))
+  {
+    free(InfoBuffer);
+    FreeSid(AdministratorsSid);
+    throw std::runtime_error(Glib::ustring::compose("could not get SID for PowerUsers group: error code %1", (int) GetLastError()));
+  }
+
+  success = FALSE;
+
+  for (x = 0; x < Groups->GroupCount; x++)
+  {
+    if((EqualSid(AdministratorsSid, Groups->Groups[x].Sid) && (Groups->Groups[x].Attributes & SE_GROUP_ENABLED)) ||
+      (EqualSid(PowerUsersSid, Groups->Groups[x].Sid) && (Groups->Groups[x].Attributes & SE_GROUP_ENABLED)))
+    {
+      success = TRUE;
+      break;
+    }
+  }
+
+  free(InfoBuffer);
+  FreeSid(AdministratorsSid);
+  FreeSid(PowerUsersSid);
+  return success;
+}
+
+#endif // G_OS_WIN32
+} // anonymous namespace
+
 namespace Glom
 {
 

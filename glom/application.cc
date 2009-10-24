@@ -98,6 +98,7 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& bu
   add_mime_type("application/x-glom"); //TODO: make this actually work - we need to register it properly.
   
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+#ifndef G_OS_WIN32
   //Install UI hooks for this:
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   if(!connection_pool)
@@ -105,6 +106,7 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& bu
       sigc::mem_fun(*this, &App_Glom::on_connection_avahi_begin),
       sigc::mem_fun(*this, &App_Glom::on_connection_avahi_progress),
       sigc::mem_fun(*this, &App_Glom::on_connection_avahi_done) );     
+#endif
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   global_application = this;

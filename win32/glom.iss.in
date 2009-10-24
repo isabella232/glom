@@ -38,10 +38,13 @@ Source: "bin\intl.dll"; DestDir: "{app}\bin"; Components: gtk
 Source: "bin\iconv.dll"; DestDir: "{app}\bin"; Components: gtk
 Source: "bin\zlib1.dll"; DestDir: "{app}\bin"; Components: gtk
 Source: "bin\libpng12-0.dll"; DestDir: "{app}\bin"; Components: gtk
-Source: "bin\jpeg62.dll"; DestDir: "{app}\bin"; Components: gtk
-Source: "bin\libtiff3.dll"; DestDir: "{app}\bin"; Components: gtk
-Source: "bin\libxml2.dll"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\libjpeg-7.dll"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\libtiff-3.dll"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\libxml2-2.dll"; DestDir: "{app}\bin"; Components: gtk
 Source: "bin\libxslt-1.dll"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\libfontconfig-1.dll"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\libexpat-1.dll"; DestDir: "{app}\bin"; Components: gtk
+Source: "bin\freetype6.dll"; DestDir: "{app}\bin"; Components: gtk
 Source: "bin\libglib-2.0-0.dll"; DestDir: "{app}\bin"; Components: gtk
 Source: "bin\libgobject-2.0-0.dll"; DestDir: "{app}\bin"; Components: gtk
 Source: "bin\libgio-2.0-0.dll"; DestDir: "{app}\bin"; Components: gtk
@@ -59,28 +62,28 @@ Source: "bin\libgdk_pixbuf-2.0-0.dll"; DestDir: "{app}\bin"; Components: gtk
 Source: "bin\libgtk-win32-2.0-0.dll"; DestDir: "{app}\bin"; Components: gtk
 
 ; Other glom dependency DLLs
-Source: "bin\libORBit-2-0.dll"; DestDir: "{app}\bin"; Components: main
-Source: "bin\libORBit-imodule-2-0.dll"; DestDir: "{app}\bin"; Components: main
-Source: "bin\libORBitCosNaming-2-0.dll"; DestDir: "{app}\bin"; Components: main
-Source: "bin\libgconf-2-4.dll"; DestDir: "{app}\bin"; Components: main
+;Source: "bin\libORBit-2-0.dll"; DestDir: "{app}\bin"; Components: main
+;Source: "bin\libORBit-imodule-2-0.dll"; DestDir: "{app}\bin"; Components: main
+;Source: "bin\libORBitCosNaming-2-0.dll"; DestDir: "{app}\bin"; Components: main
+;Source: "bin\libgconf-2-4.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libgda-4.0-4.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libgda-report-4.0-4.dll"; DestDir: "{app}\bin"; Components: main
 ;Source: "bin\libgdasql-4.0-4.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libgettextpo-0.dll"; DestDir: "{app}\bin"; Components: main
-Source: "bin\libglade-2.0-0.dll"; DestDir: "{app}\bin"; Components: main
+;Source: "bin\libglade-2.0-0.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libgoocanvas-3.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libgtksourceview-2.0-0.dll"; DestDir: "{app}\bin"; Components: main
 
 Source: "bin\libatkmm-1.6-1.dll"; DestDir: "{app}\bin"; Components: main
-Source: "bin\libbakery-2.6--6-1.dll"; DestDir: "{app}\bin"; Components: main
+;Source: "bin\libbakery-2.6--6-1.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libcairomm-1.0-1.dll"; DestDir: "{app}\bin"; Components: main
-Source: "bin\libgconfmm-2.6-1.dll"; DestDir: "{app}\bin"; Components: main
-Source: "bin\libgdamm-4.0-10.dll"; DestDir: "{app}\bin"; Components: main
+;Source: "bin\libgconfmm-2.6-1.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libgdamm-4.0-12.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libgdkmm-2.4-1.dll"; DestDir: "{app}\bin"; Components: main
-Source: "bin\libglademm-2.4-1.dll"; DestDir: "{app}\bin"; Components: main
+;Source: "bin\libglademm-2.4-1.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libglibmm-2.4-1.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libgiomm-2.4-1.dll"; DestDir: "{app}\bin"; Components: main
-Source: "bin\libgoocanvasmm-0.1-4.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libgoocanvasmm-1.0-5.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libgtkmm-2.4-1.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libgtksourceviewmm-2.0-2.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\libpangomm-1.4-1.dll"; DestDir: "{app}\bin"; Components: main
@@ -119,7 +122,7 @@ Source: "python/*.py"; DestDir: "{app}\bin"; Components: python; Flags: recurses
 Source: "python/*.pyd"; DestDir: "{app}\bin"; Components: python; Flags: recursesubdirs
 
 ; Glom executables
-Source: "bin\libglom-1.0-0.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libglom-1.12-0.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\Glom.exe"; DestDir: "{app}\bin"; Components: main
 
 ; Modules
@@ -148,7 +151,6 @@ Source: "share/gtksourceview-2.0/styles/*"; DestDir: "{app}/share/gtksourceview-
 ; libgda
 Source: "share/libgda-4.0/*"; DestDir: "{app}/share/libgda-4.0"; Components: main
 Source: "share/libgda-4.0/dtd/*"; DestDir: "{app}/share/libgda-4.0/dtd"; Components: main
-; TODO: We only need postgresql and SQLite providers
 Source: "lib/libgda-4.0/providers/*"; DestDir: "{app}/lib/libgda-4.0/providers"; Components: main
 Source: "etc/libgda-4.0/config"; DestDir: "{app}/etc/libgda-4.0"; Components: main
 
@@ -166,7 +168,7 @@ Source: "share/glom/xslt/*"; DestDir: "{app}/share/glom/xslt/"; Components: main
 ;Source: "share/themes/MS-Windows/*"; DestDir: "{app}/share/themes/MS-Windows"; Flags: recursesubdirs; Components: gtk
 
 ; Locales
-Source: "lib\locale\*"; DestDir: "{app}\lib\locale\"; Flags: recursesubdirs; Components: locale
+;Source: "lib\locale\*"; DestDir: "{app}\lib\locale\"; Flags: recursesubdirs; Components: locale
 Source: "share\locale\*"; DestDir: "{app}\share\locale\"; Flags: recursesubdirs; Components: locale
 
 ; Register .glom file type if we install for all users. Is there a possibility

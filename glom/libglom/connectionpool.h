@@ -104,6 +104,7 @@ public:
   
   typedef sigc::slot<void> type_void_slot;
   
+#ifndef G_OS_WIN32
   /** Set callbacks that will be called to show UI while starting to advertise 
    * on the network via Avahi.
    *
@@ -112,7 +113,8 @@ public:
    * @param slot_done Stop showing the message.
    */ 
   void set_avahi_publish_callbacks(const type_void_slot& slot_begin, const type_void_slot& slot_progress, const type_void_slot& slot_done);
-  
+#endif
+
 
   bool get_ready_to_connect() const;
   void set_ready_to_connect(bool val = true);
