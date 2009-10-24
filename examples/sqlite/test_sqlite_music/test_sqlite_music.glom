@@ -2,7 +2,6 @@
 <glom_document translation_original_locale="en_US" database_title="Music Collection" is_example="false" format_version="4">
   <connection server="localhost" database="glom_musiccollection21" port="0" self_hosted="true" try_other_ports="true" hosting_mode="sqlite"/>
   <table name="albums" overview_x="15" overview_y="9" title="Albums">
-    <title_singular title="Album" />
     <fields>
       <field name="album_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Album ID">
         <calculation/>
@@ -32,9 +31,7 @@
     <relationships>
       <relationship name="artist" key="artist_id" other_table="artists" other_key="artist_id" title="Artist"/>
       <relationship name="publisher" key="publisher_id" other_table="publishers" other_key="publishers_id" title="Publisher"/>
-      <relationship name="songs" key="album_id" other_table="songs" other_key="album_id" auto_create="true" allow_edit="true" title="Songs">
-        <title_singular title="Song" />
-      </relationship>
+      <relationship name="songs" key="album_id" other_table="songs" other_key="album_id" auto_create="true" allow_edit="true" title="Songs"/>
     </relationships>
     <data_layouts>
       <data_layout name="details" parent_table="albums">
@@ -95,8 +92,8 @@
       <data_layout name="list" parent_table="albums">
         <data_layout_groups>
           <data_layout_group name="toplevel">
-            <data_layout_item name="album_id" editable="false" use_default_formatting="true">
-              <formatting format_thousands_separator="true" format_decimal_places="0"/>
+            <data_layout_item name="album_id" use_default_formatting="true">
+              <formatting format_thousands_separator="true"/>
             </data_layout_item>
             <data_layout_item name="name" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
@@ -135,7 +132,6 @@
     <print_layouts/>
   </table>
   <table name="artists" default="true" overview_x="407" overview_y="119" title="Artists">
-    <title_singular title="Artist" />
     <fields>
       <field name="artist_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Artist ID">
         <calculation/>
@@ -153,11 +149,13 @@
         <calculation/>
         <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
       </field>
+      <field name="somenum" type="Number" title="Somenum">
+        <calculation/>
+        <formatting format_thousands_separator="true" format_decimal_places="2"/>
+      </field>
     </fields>
     <relationships>
-      <relationship name="albums" key="artist_id" other_table="albums" other_key="artist_id" auto_create="true" allow_edit="true" title="Albums">
-        <title_singular title="Album" />
-      </relationship>
+      <relationship name="albums" key="artist_id" other_table="albums" other_key="artist_id" auto_create="true" allow_edit="true" title="Albums"/>
     </relationships>
     <data_layouts>
       <data_layout name="details" parent_table="artists">
@@ -183,7 +181,7 @@
               </data_layout_item>
               <data_layout_portal relationship="albums">
                 <data_layout_item name="name" editable="true" use_default_formatting="true">
-                  <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6" column_width="300"/>
+                  <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
                 </data_layout_item>
                 <data_layout_item name="year" editable="true" use_default_formatting="true">
                   <formatting format_thousands_separator="true" format_decimal_places="2"/>
@@ -199,14 +197,17 @@
       <data_layout name="list" parent_table="artists">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="artist_id" editable="true" use_default_formatting="true">
+            <data_layout_item name="artist_id" editable="true" use_default_formatting="true" column_width="40">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="name" editable="true" use_default_formatting="true">
+            <data_layout_item name="name" editable="true" use_default_formatting="true" column_width="93">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="description" editable="true" use_default_formatting="true">
+            <data_layout_item name="description" editable="true" use_default_formatting="true" column_width="93">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+            <data_layout_item name="somenum" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
@@ -219,7 +220,6 @@
     <print_layouts/>
   </table>
   <table name="publishers" overview_x="411" overview_y="235" title="Publishers">
-    <title_singular title="Publisher" />
     <fields>
       <field name="publishers_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Publisher ID">
         <calculation/>
@@ -294,7 +294,6 @@
     <print_layouts/>
   </table>
   <table name="songs" overview_x="407" overview_y="7" title="Songs">
-    <title_singular title="Song" />
     <fields>
       <field name="songs_id" primary_key="true" unique="true" auto_increment="true" type="Number" title="Song ID">
         <calculation/>
