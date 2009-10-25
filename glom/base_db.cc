@@ -543,7 +543,7 @@ bool Base_DB::query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& bu
   }
 #else
   std::auto_ptr<Glib::Error> exec_error;
-  exec_retval = gda_connection->statement_execute_non_select (stmt, params, exec_error);
+  exec_retval = gda_connection->statement_execute_non_select(stmt, params, exec_error);
   if(exec_error.get())
   {
     std::cerr << "BaseDB::query_execute: ConnectionError: " << exec_error->what() << std::endl;
@@ -1251,11 +1251,13 @@ SystemPrefs Base_DB::get_database_preferences() const
       builder->add_id(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "." GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY));
   builder->add_field(
       builder->add_id(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "." GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE));
+      
   if (optional_org_logo)
   {
-  builder->add_field(
+    builder->add_field(
       builder->add_id(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "." GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO));
   }
+  
   builder->select_add_target(builder->add_id(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME));
   
   int attempts = 0;
