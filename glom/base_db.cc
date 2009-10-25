@@ -266,8 +266,8 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute_select(const Glib::us
 }
 
 //static:
-Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute_select(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder,
-                                                                  const Glib::RefPtr<Gnome::Gda::Set>& params)
+Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute_select(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder,
+                                                                  const Glib::RefPtr<const Gnome::Gda::Set>& params)
 {
   Glib::RefPtr<Gnome::Gda::DataModel> result;
 
@@ -464,8 +464,8 @@ bool Base_DB::query_execute(const Glib::ustring& strQuery,
 }
 
 //static:
-bool Base_DB::query_execute(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder,
-                            const Glib::RefPtr<Gnome::Gda::Set>& params)
+bool Base_DB::query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder,
+                            const Glib::RefPtr<const Gnome::Gda::Set>& params)
 {
   #ifdef GLIBMM_EXCEPTIONS_ENABLED
   sharedptr<SharedConnection> sharedconnection = connect_to_server();
@@ -1085,20 +1085,22 @@ Gnome::Gda::Value Base_DB::auto_increment_insert_first_if_necessary(const Glib::
     std::cerr << "Glom: Base_DB::auto_increment_insert_first_if_necessary(): The current user may not edit the autoincrements table. Any user who has create rights for a table should have edit rights to the autoincrements table." << std::endl;
   }
   
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = 
+    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder->add_field(builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME ".next_value"));
   builder->select_add_target(builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME));
-  builder->set_where(builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_AND,
-                                       builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-                                                         builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME),
-                                                         builder->add_expr(Gnome::Gda::Value(table_name))),
-                                       builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-                                                         builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME),
-                                                         builder->add_expr(Gnome::Gda::Value(field_name)))));
+  builder->set_where(
+    builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_AND,
+      builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+        builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME),
+        builder->add_expr(Gnome::Gda::Value(table_name))),
+      builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+        builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME),
+        builder->add_expr(Gnome::Gda::Value(field_name)))));
   
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(builder);
+  const Glib::RefPtr<const Gnome::Gda::DataModel> datamodel = query_execute_select(builder);
   if(!datamodel || (datamodel->get_n_rows() == 0))
-  {                       
+  {
     //Start with zero:
     builder.reset();
 
@@ -1106,11 +1108,11 @@ Gnome::Gda::Value Base_DB::auto_increment_insert_first_if_necessary(const Glib::
     builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_INSERT);
     builder->set_table(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
     builder->add_field(builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME),
-                       builder->add_expr(Gnome::Gda::Value(table_name)));
+      builder->add_expr(Gnome::Gda::Value(table_name)));
     builder->add_field(builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME),
-                       builder->add_expr(Gnome::Gda::Value(field_name)));
+      builder->add_expr(Gnome::Gda::Value(field_name)));
     builder->add_field(builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE),
-                       builder->add_expr(Gnome::Gda::Value(0)));
+      builder->add_expr(Gnome::Gda::Value(0)));
 
     const bool test = query_execute(builder);
     if(!test)

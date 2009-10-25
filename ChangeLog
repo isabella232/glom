@@ -1,3 +1,10 @@
+2009-10-25  Murray Cumming  <murrayc@murrayc.com>
+
+	BaseDb::query_execute*(): Const corrections.
+  
+	* glom/base_db.[h|cc]: query_execute(), query_execute_select(): 
+	Const corrections and indentation corrections.
+
 2009-10-21  Armin Burgmeier  <armin@arbur.net>
 
 	* Makefile_libglom.am: Link against winsock on Windows.
