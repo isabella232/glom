@@ -1,3 +1,8 @@
+2009-10-27  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/db_adddel/db_adddel.cc: treeview_append_column(): 
+	Don't try to put -1 in a guint for the column width.
+
 2009-10-21  Armin Burgmeier  <armin@arbur.net>
 
 	* Makefile_libglom.am: Link against winsock on Windows.

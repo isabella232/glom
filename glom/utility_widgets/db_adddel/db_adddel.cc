@@ -1991,11 +1991,11 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   pViewColumn->set_resizable();
   #endif //GLOM_ENABLE_MAEMO
   
-  guint column_width = -1; //Means expand.
+  int column_width = -1; //Means expand.
   if(!expand)
   {
     column_width = layout_item->get_display_width();
-    if(!column_width)
+    if(!(column_width > 0))
     {
       //TODO: Choose a width based on the first 100 values.
       if(layout_item_field)
