@@ -7,6 +7,14 @@
 
 2009-10-27  Murray Cumming  <murrayc@murrayc.com>
 
+  Avoid runtime warnings about 0 size TreeViewColumn.
+  
+	* glom/utility_widgets/db_adddel/db_adddel.cc: construct_specified_columns(), 
+	treeview_append_column(): Avoid calling TreeViewColumn::set_fixed_width() 
+	with a 0 size, avoiding a runtime assertion.
+
+2009-10-27  Murray Cumming  <murrayc@murrayc.com>
+
   Fix some warnings.
   
 	* glom/dialog_existing_or_new.cc: get_service_info(): Replace a 0 with 

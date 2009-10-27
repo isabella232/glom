@@ -1055,7 +1055,9 @@ void DbAddDel::construct_specified_columns()
     // the spacing property of the treeviewcolumn.
     int horizontal_separator = 0;
     m_TreeView.get_style_property("horizontal-separator", horizontal_separator);
-    m_treeviewcolumn_button->set_fixed_width(width + horizontal_separator*2);
+    const int button_width = width + horizontal_separator*2;
+    if(button_width > 0) //Otherwise an assertion fails.
+      m_treeviewcolumn_button->set_fixed_width(button_width);
 
     m_treeviewcolumn_button->set_visible(m_allow_view_details);
 
@@ -2012,7 +2014,9 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   #ifdef GLOM_ENABLE_MAEMO
   cellrenderer.set_property("width", (int)column_width);
   #else
-  pViewColumn->set_fixed_width((int)column_width); //This is the only way to set the width, so we need to set it as resizable again immediately afterwards.
+  if(column_width > 0) //Otherwise there's an assertion fails.
+    pViewColumn->set_fixed_width((int)column_width); //This is the only way to set the width, so we need to set it as resizable again immediately afterwards.
+    
   pViewColumn->set_resizable();
   //This property is read only: pViewColumn->property_width() = (int)column_width;
 
