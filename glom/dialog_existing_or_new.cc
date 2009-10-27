@@ -174,7 +174,7 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   // Browse local network
 #ifndef G_OS_WIN32
   gchar* service_type = epc_service_type_new(EPC_PROTOCOL_HTTPS, "glom");
-  m_service_monitor = epc_service_monitor_new_for_types(0, service_type, 0);
+  m_service_monitor = epc_service_monitor_new_for_types(0, service_type, (void*)0);
   g_signal_connect(m_service_monitor, "service-found", G_CALLBACK(on_service_found_static), this);
   g_signal_connect(m_service_monitor, "service-removed", G_CALLBACK(on_service_removed_static), this);
   g_free(service_type);

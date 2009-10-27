@@ -7,6 +7,15 @@
 
 2009-10-27  Murray Cumming  <murrayc@murrayc.com>
 
+  Fix some warnings.
+  
+	* glom/dialog_existing_or_new.cc: get_service_info(): Replace a 0 with 
+	(void*)0 to avoid a warning after my change on 2009-10-13.
+	* glom/libglom/data_structure/has_title_singular.cc(): 
+	operator==(): Actually use the src parameter.
+
+2009-10-27  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/utility_widgets/db_adddel/db_adddel.cc: treeview_append_column(): 
 	Don't try to put -1 in a guint for the column width.
 
