@@ -7,6 +7,17 @@
 
 2009-10-27  Murray Cumming  <murrayc@murrayc.com>
 
+  Trying to ignore unwanted column resize signals.
+  
+	* glom/utility_widgets/db_adddel/db_adddel.[h|cc]: 
+	Removed unused set_column_width().
+	construct_specified_columns_cellrenderer(): Added an InnerIgnore, though 
+	we already use one in construct_specified_columns().
+	on_treeview_column_resized(): Check if we should ignore signals.
+	Do not cast an int size to a guint, because it could be -1.
+
+2009-10-27  Murray Cumming  <murrayc@murrayc.com>
+
   Avoid runtime warnings about 0 size TreeViewColumn.
   
 	* glom/utility_widgets/db_adddel/db_adddel.cc: construct_specified_columns(), 

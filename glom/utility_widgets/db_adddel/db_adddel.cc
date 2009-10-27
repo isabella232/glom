@@ -667,6 +667,8 @@ int DbAddDel::get_fixed_cell_height()
 
 Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const sharedptr<LayoutItem>& layout_item, int model_column_index, int data_model_column_index)
 {
+  InnerIgnore innerIgnore(this); //see comments for InnerIgnore class
+
   Gtk::CellRenderer* pCellRenderer = 0;
 
   //Create the appropriate cellrenderer type:
@@ -1445,13 +1447,6 @@ void DbAddDel::set_allow_only_one_related_record(bool val)
   m_allow_only_one_related_record = val;
 }
 
-
-void DbAddDel::set_column_width(guint /* col */, guint /*width*/)
-{
-//  if( col < (guint)m_Sheet.get_columns_count())
-//    m_Sheet.set_column_width(col, width);
-}
-
 void DbAddDel::finish_editing()
 {
 //  bool bIgnoreSheetSignals = get_ignore_treeview_signals(); //The deactivate signals seems to cause the current cell to revert to it's previsous value.
@@ -1843,6 +1838,10 @@ void DbAddDel::on_treeview_column_resized(int model_column_index, DbTreeViewColu
 {
   if(!view_column)
     return;
+  
+  //Ignore this property change signal handler if we are setting the size in code:
+  if(m_bIgnoreTreeViewSignals)
+    return;
 
   //We do not save the column width if this is the last column, 
   //because that must always be automatic, 
@@ -1854,9 +1853,12 @@ void DbAddDel::on_treeview_column_resized(int model_column_index, DbTreeViewColu
 
   DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
 
-  const guint width = (guint)view_column->get_width();
+  const int width = view_column->get_width();
   //std::cout << "  DbAddDel::on_treeview_column_resized(): width=" << width << std::endl;
 
+  if(width == -1) //Means automatic.
+    return;
+    
   if(column_info.m_item)
       column_info.m_item->set_display_width(width);
 }
@@ -1959,6 +1961,8 @@ bool DbAddDel::get_column_to_expand(guint& column_to_expand) const
 
 guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRenderer& cellrenderer, int model_column_index, int data_model_column_index, bool expand)
 {
+  InnerIgnore innerIgnore(this); //see comments for InnerIgnore class
+
   #ifndef GLOM_ENABLE_MAEMO 
   DbTreeViewColumnGlom* pViewColumn = Gtk::manage( new DbTreeViewColumnGlom(Utils::string_escape_underscores(title), cellrenderer) );
   pViewColumn->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED); //Need by fixed-height mode.
