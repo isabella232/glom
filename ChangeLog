@@ -1,3 +1,13 @@
+2009-10-28  David King  <davidk@openismus.com>
+
+	* configure.ac:
+	* Makefile.am:
+	* glom.desktop.in.in:
+	* glom.service.in: Add DBus service file for Maemo 5, and install to
+	the correct location as determined by the osso-af-settings pkg-config
+	file. Adjust the installation location of the glom.desktop file on
+	Maemo.
+
 2009-10-28  Murray Cumming  <murrayc@murrayc.com>
 
 	Do not mark an empty string for translation.

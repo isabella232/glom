@@ -162,7 +162,9 @@ AS_IF([test "x$glom_enable_client_only" != xyes],
 AS_IF([test "x$glom_enable_sqlite" = xyes],
       [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS libgda-sqlite-4.0"])
 AS_IF([test "x$glom_enable_maemo" = xyes],
-      [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS hildonmm hildon-fmmm"])
+      [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS hildonmm hildon-fmmm osso-af-settings"
+      MM_PKG_CONFIG_SUBST([OSSO_SERVICEDIR], [--variable=dbusservicedir osso-af-settings])
+      MM_PKG_CONFIG_SUBST([OSSO_DESKTOPDIR], [--variable=desktopentrydir osso-af-settings])])
 AS_IF([test "x$glom_maemo_launcher" = xyes],
       [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS maemo-launcher-app"])
 
