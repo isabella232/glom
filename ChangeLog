@@ -1,3 +1,10 @@
+2009-10-28  Murray Cumming  <murrayc@murrayc.com>
+
+	Do not mark an empty string for translation.
+
+	* glom/dialog_connection.cc: set_confirm_existing_user_note():
+	Do not do _(""), fixing bug #599868 (André Klapper).
+
 2009-10-27  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/utility_widgets/db_adddel/db_adddel.cc: treeview_append_column(): 

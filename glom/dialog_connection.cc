@@ -234,7 +234,7 @@ void Dialog_Connection::get_username_and_password(Glib::ustring& username, Glib:
 
 void Dialog_Connection::set_confirm_existing_user_note()
 {
-  m_label_note->set_text(_(""));
+  m_label_note->set_text(Glib::ustring());
 }
 
 } //namespace Glom
