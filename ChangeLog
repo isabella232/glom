@@ -18,6 +18,12 @@
 	because that does not seem to be possible with fixed-height-mode, 
 	which we use for performance.
 
+2009-10-30  David King  <davidk@openismus.com>
+
+	* configure.ac:
+	* glom/main.cc: Initialize libossomm on Maemo, to register a DBus
+	service.
+
 2009-10-28  David King  <davidk@openismus.com>
 
 	* configure.ac:
@@ -38,7 +44,7 @@
 2009-10-27  Murray Cumming  <murrayc@murrayc.com>
 
 	Trying to ignore unwanted column resize signals.
-  
+
 	* glom/utility_widgets/db_adddel/db_adddel.[h|cc]: 
 	Removed unused set_column_width().
 	construct_specified_columns_cellrenderer(): Added an InnerIgnore, though 
@@ -49,7 +55,7 @@
 2009-10-27  Murray Cumming  <murrayc@murrayc.com>
 
 	Avoid runtime warnings about 0 size TreeViewColumn.
-  
+
 	* glom/utility_widgets/db_adddel/db_adddel.cc: construct_specified_columns(), 
 	treeview_append_column(): Avoid calling TreeViewColumn::set_fixed_width() 
 	with a 0 size, avoiding a runtime assertion.
@@ -57,7 +63,7 @@
 2009-10-27  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix some warnings.
-  
+
 	* glom/dialog_existing_or_new.cc: get_service_info(): Replace a 0 with 
 	(void*)0 to avoid a warning after my change on 2009-10-13.
 	* glom/libglom/data_structure/has_title_singular.cc(): 
