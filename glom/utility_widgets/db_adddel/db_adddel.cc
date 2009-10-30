@@ -1965,7 +1965,10 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
 
   #ifndef GLOM_ENABLE_MAEMO 
   DbTreeViewColumnGlom* pViewColumn = Gtk::manage( new DbTreeViewColumnGlom(Utils::string_escape_underscores(title), cellrenderer) );
-  pViewColumn->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED); //Need by fixed-height mode.
+
+  //This is needed by fixed-height mode. We get critical warnings otherwise.
+  //But we must call set_fixed_width() later or we will have a zero-width column.
+  pViewColumn->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED);
 
   guint cols_count = m_TreeView.append_column(*pViewColumn);
   #else
@@ -1997,6 +2000,13 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   pViewColumn->set_resizable();
   #endif //GLOM_ENABLE_MAEMO
   
+  #ifndef GLOM_ENABLE_MAEMO
+  //GtkTreeView's fixed-height-mode does not allow us to have anything but 
+  //the last column as expandable.
+  //TODO: Can we get the total size and calculate a starting size instead?
+  expand = false;
+  #endif
+
   int column_width = -1; //Means expand.
   if(!expand)
   {

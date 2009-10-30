@@ -1,3 +1,12 @@
+2009-10-30  Murray Cumming  <murrayc@murrayc.com>
+
+	List views and related records portals: Avoid zero-width columns.
+
+	* glom/utility_widgets/db_adddel/db_adddel.cc: treeview_append_column():
+	Except on maemo, don't try to auto-expand a non-rightmost column, 
+	because that does not seem to be possible with fixed-height-mode, 
+	which we use for performance.
+
 2009-10-28  David King  <davidk@openismus.com>
 
 	* configure.ac:
@@ -17,7 +26,7 @@
 
 2009-10-27  Murray Cumming  <murrayc@murrayc.com>
 
-  Trying to ignore unwanted column resize signals.
+	Trying to ignore unwanted column resize signals.
   
 	* glom/utility_widgets/db_adddel/db_adddel.[h|cc]: 
 	Removed unused set_column_width().
@@ -28,7 +37,7 @@
 
 2009-10-27  Murray Cumming  <murrayc@murrayc.com>
 
-  Avoid runtime warnings about 0 size TreeViewColumn.
+	Avoid runtime warnings about 0 size TreeViewColumn.
   
 	* glom/utility_widgets/db_adddel/db_adddel.cc: construct_specified_columns(), 
 	treeview_append_column(): Avoid calling TreeViewColumn::set_fixed_width() 
@@ -36,7 +45,7 @@
 
 2009-10-27  Murray Cumming  <murrayc@murrayc.com>
 
-  Fix some warnings.
+	Fix some warnings.
   
 	* glom/dialog_existing_or_new.cc: get_service_info(): Replace a 0 with 
 	(void*)0 to avoid a warning after my change on 2009-10-13.
