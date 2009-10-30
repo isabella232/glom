@@ -323,7 +323,22 @@ Glib::RefPtr<Gdk::Pixbuf> Utils::get_pixbuf_for_gda_value(const Gnome::Gda::Valu
   return result;
 }
 
-int Utils::get_suitable_field_width_for_widget(Gtk::Widget& widget, const sharedptr<const LayoutItem_Field>& field_layout)
+static int get_width_for_text(Gtk::Widget& widget, const Glib::ustring& text)
+{
+  //Get the width required for this string in the current font:
+  Glib::RefPtr<Pango::Layout> refLayout = widget.create_pango_layout(text);
+  int width = 0;
+  int height = 0;
+  refLayout->get_pixel_size(width, height);
+  int result = width;
+
+  //Add a bit more:
+  result += 10;
+
+  return result;
+}
+
+int Utils::get_suitable_field_width_for_widget(Gtk::Widget& widget, const sharedptr<const LayoutItem_Field>& field_layout, bool or_title)
 {
   int result = 150;
 
@@ -379,14 +394,15 @@ int Utils::get_suitable_field_width_for_widget(Gtk::Widget& widget, const shared
   if(!example_text.empty())
   {
     //Get the width required for this string in the current font:
-    Glib::RefPtr<Pango::Layout> refLayout = widget.create_pango_layout(example_text);
-    int width = 0;
-    int height = 0;
-    refLayout->get_pixel_size(width, height);
-    result = width;
+    result += get_width_for_text(widget, example_text);
+  }
 
-    //Add a bit more:
-    result += 10;
+  if(or_title)
+  {
+    //Make sure that there's enough space for the title too.
+    const int title_width = get_width_for_text(widget, field_layout->get_title());
+    if(title_width > result)
+      result = title_width;
   }
 
   return result;

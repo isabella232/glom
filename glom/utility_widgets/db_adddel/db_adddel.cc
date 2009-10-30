@@ -2016,7 +2016,7 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
       //TODO: Choose a width based on the first 100 values.
       if(layout_item_field)
       {
-       column_width = Utils::get_suitable_field_width_for_widget(*this, layout_item_field);
+       column_width = Utils::get_suitable_field_width_for_widget(*this, layout_item_field, true /* or_title */);
        column_width = column_width / 3;
        //std::cout << "DEBUG: column_width=" << column_width << std::endl;
       }

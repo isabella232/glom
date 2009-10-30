@@ -73,8 +73,14 @@ Glib::ustring bold_message(const Glib::ustring& message);
 
 Glib::RefPtr<Gdk::Pixbuf> get_pixbuf_for_gda_value(const Gnome::Gda::Value& value);
 
-
-int get_suitable_field_width_for_widget(Gtk::Widget& widget, const sharedptr<const LayoutItem_Field>& field_layout);
+/** Get the width required for typical data of this type in the current font.
+ * 
+ * @widget The widget whose font should be used.
+ * @field_layout The layout item whose data type should be used.
+ * @or_title If true, check the width of the item's title too, returning the larger of the two values.
+ * @result The width in pixels.
+ */
+int get_suitable_field_width_for_widget(Gtk::Widget& widget, const sharedptr<const LayoutItem_Field>& field_layout, bool or_title = false);
 
 /// Add the @a extension if no extension is there already:
 std::string get_filepath_with_extension(const std::string& filepath, const std::string& extension);

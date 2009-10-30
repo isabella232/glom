@@ -1,5 +1,16 @@
 2009-10-30  Murray Cumming  <murrayc@murrayc.com>
 
+	List views and related records portals: Enough space for titles.
+
+	* glom/utils_ui.[h|cc]: get_suitable_field_width_for_widget():
+	Optionally calculate enough space for the title too, for TreeView 
+	columns.
+	* glom/utility_widgets/db_adddel/db_adddel.cc: treeview_append_column():
+	When choosing a default column width, make sure there's enough for the 
+	title too.
+
+2009-10-30  Murray Cumming  <murrayc@murrayc.com>
+
 	List views and related records portals: Avoid zero-width columns.
 
 	* glom/utility_widgets/db_adddel/db_adddel.cc: treeview_append_column():
