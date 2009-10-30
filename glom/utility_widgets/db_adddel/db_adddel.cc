@@ -2016,13 +2016,13 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   }
 
   #ifdef GLOM_ENABLE_MAEMO
-  cellrenderer.set_property("width", (int)column_width);
+  cellrenderer.set_property("width", column_width);
   #else
   if(column_width > 0) //Otherwise there's an assertion fails.
-    pViewColumn->set_fixed_width((int)column_width); //This is the only way to set the width, so we need to set it as resizable again immediately afterwards.
+    pViewColumn->set_fixed_width(column_width); //This is the only way to set the width, so we need to set it as resizable again immediately afterwards.
     
   pViewColumn->set_resizable();
-  //This property is read only: pViewColumn->property_width() = (int)column_width;
+  //This property is read only: pViewColumn->property_width() = column_width;
 
   //Save the extra ID, using the title if the column_id is empty:
   const Glib::ustring column_id = m_ColumnTypes[model_column_index].m_item->get_name();
