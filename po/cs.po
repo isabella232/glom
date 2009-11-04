@@ -1,5 +1,5 @@
 # Czech translation of glom.
-# Copyright (C) 2004, 2005, 2008 the author(s) of glom.
+# Copyright (C) 2004, 2005, 2008, 2009 the author(s) of glom.
 # Copyright (C) 2004, 2005 Miloslav Trmac <mitr@volny.cz>.
 # This file is distributed under the same license as the glom package.
 # Miloslav Trmac <mitr@volny.cz>, 2004, 2005.
@@ -8,14 +8,12 @@
 # Lucas Lommer <llommer@svn.gnome.org>, 2009.
 # Marek Černocký <marek@manet.cz>, 2009.
 #
-#: ../glom/dialog_connection.cc:237
 msgid ""
 msgstr ""
 "Project-Id-Version: glom gnome-master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glom&component=general\n"
-"POT-Creation-Date: 2009-10-27 16:28+0000\n"
-"PO-Revision-Date: 2009-10-17 23:06+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-11-04 20:49+0100\n"
+"PO-Revision-Date: 2009-11-04 11:52+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -107,7 +105,7 @@ msgstr "_Upravit tabulky"
 
 #: ../glom/application.cc:418
 msgid "Add _Related Table"
-msgstr "Přidat související tabulku"
+msgstr "_Přidat související tabulku"
 
 #. "Reports" menu:
 #: ../glom/application.cc:425
@@ -585,7 +583,7 @@ msgstr "Exportovat do souboru."
 
 #: ../glom/filechooser_export.cc:35
 msgid "Define Data _Format"
-msgstr "Definice formátu dat"
+msgstr "Definice _formátu dat"
 
 #: ../glom/filechooser_export.cc:41 ../glom/glom_developer.glade.h:118
 #: ../glom/mode_design/translation/window_translations.cc:518
@@ -1915,7 +1913,7 @@ msgstr ""
 
 #: ../glom/glom.glade.h:16
 msgid "C_onnect"
-msgstr "Připojit"
+msgstr "Přip_ojit"
 
 #: ../glom/glom.glade.h:17
 msgid "Connection Details"
@@ -2518,32 +2516,32 @@ msgstr "Nelze nainstalovat balíček"
 msgid "The necessary applications to install the package could not be found."
 msgstr "Aplikace důležité pro instalaci balíčku nebyly nalezeny."
 
-#: ../glom/main.cc:192
+#: ../glom/main.cc:193
 msgid "Glom options"
 msgstr "Volby programu Glom"
 
-#: ../glom/main.cc:192
+#: ../glom/main.cc:193
 msgid "Command-line options for glom"
 msgstr "Parametry příkazového řádku pro glom"
 
-#: ../glom/main.cc:200
+#: ../glom/main.cc:201
 msgid "The Filename"
 msgstr "Název souboru"
 
-#: ../glom/main.cc:206
+#: ../glom/main.cc:207
 msgid "The version of this application."
 msgstr "Verze tohoto programu."
 
-#: ../glom/main.cc:211
+#: ../glom/main.cc:212
 msgid "Show the generated SQL queries on stdout, for debugging."
 msgstr "Zobrazit vygenerované SQL dotazy na standartním výstupu, pro lazení."
 
-#: ../glom/main.cc:216
+#: ../glom/main.cc:217
 msgid "Show how Glom outputs a date in this locale, then stop."
 msgstr ""
 "Ukáže, jak bude vypadat výstupní formám data pro tuto lokalizaci a skončí."
 
-#: ../glom/main.cc:229
+#: ../glom/main.cc:230
 msgid ""
 "You seem to be running Glom as a user with administrator privileges. Glom "
 "may not be run with such privileges for security reasons.\n"
@@ -2554,7 +2552,7 @@ msgstr ""
 "Prosím přihlaste se do systému jako obyčejný uživatel."
 
 #. Warn the user:
-#: ../glom/main.cc:243
+#: ../glom/main.cc:244
 msgid ""
 "You seem to be running Glom as root. Glom may not be run as root.\n"
 "Please login to your system as a normal user."
@@ -2562,20 +2560,20 @@ msgstr ""
 "Zdá se, že Glom běží jako root. Glom nemůže být spuštěn jako root.\n"
 "Prosím přihlašte se k vašemu systému jako běžný uživatel."
 
-#: ../glom/main.cc:250
+#: ../glom/main.cc:251
 msgid "Running As Root"
 msgstr "Běžící jako root"
 
 #. Show message to the user about the broken installation:
 #. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
 #. Show message to the user about the broken installation:
-#: ../glom/main.cc:297 ../glom/main.cc:310 ../glom/main.cc:548
+#: ../glom/main.cc:298 ../glom/main.cc:311 ../glom/main.cc:554
 msgid "Incomplete Glom Installation"
 msgstr "Nekompletní instalace programu Glom"
 
 #. use_markup
 #. modal
-#: ../glom/main.cc:298
+#: ../glom/main.cc:299
 msgid ""
 "Your installation of Glom is not complete, because PostgreSQL is not "
 "available on your system. PostgreSQL is needed for self-hosting of Glom "
@@ -2588,13 +2586,13 @@ msgstr ""
 "\n"
 "Nyní můžete nainstalovat PostgreSQL a instalace Glomu bude dokončena."
 
-#: ../glom/main.cc:300
+#: ../glom/main.cc:301
 msgid "Install PostgreSQL"
 msgstr "Instalovat PostgreSQL"
 
 #. use_markup
 #. modal
-#: ../glom/main.cc:311
+#: ../glom/main.cc:312
 msgid ""
 "Your installation of Glom is not complete, because PostgreSQL is not "
 "available on your system. PostgreSQL is needed for self-hosting of Glom "
@@ -2610,7 +2608,7 @@ msgstr ""
 "nápravy."
 
 #. The python module could not be imported by Glom, so warn the user:
-#: ../glom/main.cc:327
+#: ../glom/main.cc:328
 msgid ""
 "Your installation of Glom is not complete, because the Glom Python module is "
 "not available on your system.\n"
@@ -2624,12 +2622,12 @@ msgstr ""
 "Prosím nahlaste tuto chybu vašemu dodavateli nebo správci systému za účelem "
 "nápravy."
 
-#: ../glom/main.cc:330
+#: ../glom/main.cc:331
 msgid "Glom Python Module Not Installed"
 msgstr "Modul Glom pro jazyk Python není nainstalovaný"
 
 #. The python module could not be imported by Glom, so warn the user:
-#: ../glom/main.cc:347
+#: ../glom/main.cc:348
 msgid ""
 "Your installation of Glom is not complete, because the gda Python module is "
 "not available on your system.\n"
@@ -2643,20 +2641,20 @@ msgstr ""
 "Prosím nahlaste tuto chybu vašemu dodavateli nebo správci systému za účelem "
 "nápravy."
 
-#: ../glom/main.cc:350
+#: ../glom/main.cc:351
 msgid "gda Python Module Not Installed"
 msgstr "Modul gda pro jazyk Python není nainstalovaný"
 
-#: ../glom/main.cc:483
+#: ../glom/main.cc:489
 msgid "Error while parsing command-line options: "
 msgstr "Chyba při analýze parametrů příkazové řádky: "
 
-#: ../glom/main.cc:484
+#: ../glom/main.cc:490
 msgid "Use --help to see a list of available command-line options."
 msgstr "Použijte --help pro zobrazení dostupných voleb příkazové řádky."
 
 #. The Postgres provider was not found, so warn the user:
-#: ../glom/main.cc:545
+#: ../glom/main.cc:551
 msgid ""
 "Your installation of Glom is not complete, because the PostgreSQL libgda "
 "provider is not available on your system. This provider is needed to access "
@@ -2774,19 +2772,15 @@ msgstr "Podrobnosti"
 
 #: ../glom/mode_data/box_data_portal.cc:160
 msgid "New Related %1"
-msgstr ""
+msgstr "Nový související %1"
 
 #: ../glom/mode_data/box_data_portal.cc:202
-#, fuzzy
-#| msgid "Add Related Table"
 msgid "Add Related %1"
-msgstr "Přidat související tabulku"
+msgstr "Přidat související %1"
 
 #: ../glom/mode_data/box_data_portal.cc:204
-#, fuzzy
-#| msgid "Add Related Records"
 msgid "Add related record"
-msgstr "Přidat související záznamy"
+msgstr "Přidat související záznam"
 
 #: ../glom/mode_data/box_data_portal.cc:559
 msgid "No Corresponding Record Exists"
@@ -3298,7 +3292,7 @@ msgstr "Vložit _svislou čáru"
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:61
 #: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:682
 msgid "_View"
-msgstr "Zobrazení"
+msgstr "_Zobrazení"
 
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:148
 msgid "Show Grid"
@@ -3338,7 +3332,7 @@ msgstr "Upravit _pole"
 
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:464
 msgid "Edit _Relationships"
-msgstr "Upravit vztahy"
+msgstr "Up_ravit vztahy"
 
 #: ../glom/mode_design/script_library/dialog_script_library.cc:133
 msgid "Remove library script"
@@ -3552,17 +3546,17 @@ msgstr ""
 msgid "Table Content"
 msgstr "Obsah tabulky"
 
-#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2326
+#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2344
 msgid "Right-click to layout, to specify the related fields."
 msgstr ""
 "Pokud chcete vybrat související pole, klepněte pravým tlačítkem na plochu."
 
 #. Tell user that they can't do that:
-#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2555
+#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2573
 msgid "Extra Related Records Not Possible"
 msgstr "Další související záznamy nejsou možné"
 
-#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2556
+#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2574
 msgid ""
 "You attempted to add a new related record, but there can only be one related "
 "record, because the relationship uses a unique key."
@@ -3767,150 +3761,3 @@ msgstr "Sestava dokončena"
 #: ../glom/xsl_utils.cc:142
 msgid "The report will now be opened in your web browser."
 msgstr "Report bude nyní otevřen ve vašem prohlížeči WWW."
-
-#~ msgid "Choose a running Glom database"
-#~ msgstr "Vyberte spuštěnou databázi Glom"
-
-#~ msgid "Could Not Read File"
-#~ msgstr "Soubor nelze číst"
-
-#~ msgid "The file at \"%1\" could not be read: %2"
-#~ msgstr "Soubor \"%1\" nelze číst: %2"
-
-#~ msgid "%1 / %2"
-#~ msgstr "%1 / %2"
-
-#~ msgid "Detected as: UTF-8"
-#~ msgstr "Detekováno jako: UTF-8"
-
-#~ msgid "Could Not Create Configuration Directory"
-#~ msgstr "Nelze vytvořit konfigurační adresář"
-
-#~ msgid ""
-#~ "There was an error when attempting to create the configuration directory "
-#~ "for the new database files."
-#~ msgstr ""
-#~ "Vyskytla se chyba při pokusu o vytvoření konfiguračního adresáře pro "
-#~ "soubory nové databáze."
-
-#~ msgid "Stopping Database Server (retrying)"
-#~ msgstr "Zastavuje se databázový server (opakování)"
-
-#~ msgid "calendar:MY"
-#~ msgstr "calendar:MY"
-
-#~ msgid "calendar:week_start:0"
-#~ msgstr "calendar:week_start:1"
-
-#~ msgid "year measurement template|2000"
-#~ msgstr "2000"
-
-#~ msgid "calendar:day:digits|%d"
-#~ msgstr "%d"
-
-#~ msgid "calendar:week:digits|%d"
-#~ msgstr "%d"
-
-#~ msgid "calendar year format|%Y"
-#~ msgstr "%Y"
-
-#~ msgid "Image loading failed"
-#~ msgstr "Načítání obrázku selhalo"
-
-#~ msgid ""
-#~ "SQLite is more light-weight than postgresql, but it does not support "
-#~ "authentication or remote access."
-#~ msgstr ""
-#~ "SQLite má menší nároky než postgresql, ale nepodporuje authentifikaci "
-#~ "nebo vzdálený přístup."
-
-#~ msgid "Columns Count"
-#~ msgstr "Počet sloupců"
-
-#~ msgid "*"
-#~ msgstr "*"
-
-#~ msgid "<b>Connection</b>"
-#~ msgstr "<b>Připojení</b>"
-
-#~ msgid "<b>Table Name</b>"
-#~ msgstr "<b>Název tabulky</b>"
-
-#~ msgid ""
-#~ "<span weight=\"bold\" size=\"larger\">Database does not exist</span>\n"
-#~ "\n"
-#~ "The database does not yet exist on the database server. Would you like to "
-#~ "create the database with an empty structure?"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">Databáze neexistuje</span>\n"
-#~ "\n"
-#~ "Databáze ještě na databázovém serveru neexistuje. Chcete vytvořit "
-#~ "databázi s prázdnou strukturou?"
-
-#~ msgid ""
-#~ "<span weight=\"bold\" size=\"larger\">New Database</span>\n"
-#~ "\n"
-#~ "Please choose a name and title for the new database. The name should not "
-#~ "contain any spaces."
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">Nová databáze</span>\n"
-#~ "\n"
-#~ "Zvolte prosím název a nadpis nové databáze. Název by neměl obsahovat "
-#~ "žádné mezery."
-
-#~ msgid ""
-#~ "<span weight=\"bold\" size=\"larger\">Open existing document, or create "
-#~ "new document</span>\n"
-#~ "\n"
-#~ "Would you like to open an existing document, to connect to an existing "
-#~ "database?\n"
-#~ "\n"
-#~ "Or would you like to create a new document, to design a new database?\n"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">Otevřít existující dokument nebo "
-#~ "vytvořit nový</span>\n"
-#~ "\n"
-#~ "Chcete otevřít existující dkument, připojit se k existující databázi?\n"
-#~ "\n"
-#~ "Nebo chcete vytvořit nový dokument, navrhnout novou databázi?\n"
-
-#~ msgid "Details Layout"
-#~ msgstr "Podrobné rozložení"
-
-#~ msgid "Related Records Layout"
-#~ msgstr "Rozložení souvisejících záznamů"
-
-#~ msgid ""
-#~ "import glom\n"
-#~ "\n"
-#~ "<b>def calculate_field_value(record):</b>"
-#~ msgstr ""
-#~ "import glom\n"
-#~ "\n"
-#~ "<b>def calculate_field_value(record):</b>"
-
-#~ msgid "System: Auto Increments"
-#~ msgstr "Systém: Automaticky inkrementovat"
-
-#~ msgid ""
-#~ "This document does not specify any database. Maybe the document creation "
-#~ "was canceled before the database could be created."
-#~ msgstr ""
-#~ "Tento dokument neurčuje žádnou databázi. Možná byla tvorba dokumentu "
-#~ "přerušena, než mohla být databáze vytvořena."
-
-#~ msgid "Choose columns"
-#~ msgstr "Zvolte sloupce"
-
-#~ msgid "<b>Mode:</b>"
-#~ msgstr "<b>Režim:</b>"
-
-#~ msgid "Choices"
-#~ msgstr "Možnosti"
-
-#~ msgid "_Navigate"
-#~ msgstr "_Navigovat"
-
-#~ msgid "Edit Definition"
-#~ msgstr "Upravit definici"
-
