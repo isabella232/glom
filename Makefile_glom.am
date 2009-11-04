@@ -351,7 +351,12 @@ glom_glom_LDADD = $(win_resfile) \
 	glom/utility_widgets/egg/toolpalette/libeggtoolpalette.a \
 	glom/utility_widgets/egg/util/libeggutil.a \
 	glom/libglom/libglom-$(GLOM_ABI_VERSION).la \
-	$(GLOM_LIBS) $(PYTHON_LIBS) $(INTLLIBS) -lgettextpo
+	$(GLOM_LIBS) $(PYTHON_LIBS) $(INTLLIBS)
+if GLOM_ENABLE_MAEMO
+glom_glom_LDADD += /usr/lib/libgettextpo.a
+else
+glom_glom_LDADD += -lgettextpo
+endif
 
 if HOST_WIN32
 # Suppress console window

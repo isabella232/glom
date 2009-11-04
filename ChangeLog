@@ -1,3 +1,8 @@
+2009-11-04  David King  <davidk@openismus.com>
+
+	* Makefile_glom.am: Statically link to libgettextpo on Maemo, as
+	Gettext is available in the SDK and autobuilder but not on the device.
+
 1.12.3:
 
 2009-10-30  Murray Cumming  <murrayc@murrayc.com>
