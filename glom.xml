@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- This is a MIME-type registration file.-->
-<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info" xmlns:osso="http://nokia.com/osso/mime-categories">
   <mime-type type="application/x-glom">
     <comment>Glom</comment>
     <comment xml:lang="en">Glom</comment>
+    <osso:category name="documents"/>
 
     <glob pattern="*.glom"/>
 

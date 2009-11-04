@@ -1,5 +1,10 @@
 2009-11-04  David King  <davidk@openismus.com>
 
+	* glom.xml: Add Maemo-specific category for classification of .glom
+	files as "documents".
+
+2009-11-04  David King  <davidk@openismus.com>
+
 	* Makefile_glom.am: Statically link to libgettextpo on Maemo, as
 	Gettext is available in the SDK and autobuilder but not on the device.
 
