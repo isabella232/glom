@@ -339,7 +339,7 @@ bool Box_Data_Details::fill_from_database()
             if(element->get_name() != layout_item->get_name())
               continue;
             
-            //Compare the relationship and related relationshp:
+            //Compare the relationship and related relationship:
             sharedptr<const UsesRelationship> uses_a = layout_item;
             sharedptr<const UsesRelationship> uses_b = element;
             if(*uses_a == *uses_b)

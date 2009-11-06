@@ -1,3 +1,11 @@
+2009-11-06  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix a crash when specifying a static image on the layout.
+
+	* glom/utility_widgets/imageglom.cc: on_menupopup_activate_select_file():
+	Check for a null parent window pointer to avoid a crash, fixing bug 
+	#600954 (Michael Hasselmann).
+
 2009-11-04  David King  <davidk@openismus.com>
 
 	* glom.xml: Add Maemo-specific category for classification of .glom

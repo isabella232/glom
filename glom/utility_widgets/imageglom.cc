@@ -435,7 +435,9 @@ void ImageGlom::on_menupopup_activate_select_file()
         std::auto_ptr<Gtk::Dialog> dialog_keeper(dialog);
 
         App_Glom* pApp = get_application();
-        dialog->set_transient_for(*pApp);
+        if(pApp)
+          dialog->set_transient_for(*pApp);
+
         dialog->load(uri);
 
         if(dialog->run() == Gtk::RESPONSE_ACCEPT)
