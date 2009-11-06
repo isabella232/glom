@@ -6,6 +6,12 @@
 	Check for a null parent window pointer to avoid a crash, fixing bug 
 	#600954 (Michael Hasselmann).
 
+2009-11-06  David King  <davidk@openismus.com>
+
+	* configure.ac:
+	* Makefile_glom.am: Do not link to libgettextpo on Maemo, and
+	additionally do not check for it either.
+
 2009-11-04  David King  <davidk@openismus.com>
 
 	* glom.xml: Add Maemo-specific category for classification of .glom
