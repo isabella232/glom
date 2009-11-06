@@ -352,9 +352,7 @@ glom_glom_LDADD = $(win_resfile) \
 	glom/utility_widgets/egg/util/libeggutil.a \
 	glom/libglom/libglom-$(GLOM_ABI_VERSION).la \
 	$(GLOM_LIBS) $(PYTHON_LIBS) $(INTLLIBS)
-if GLOM_ENABLE_MAEMO
-glom_glom_LDADD += /usr/lib/libgettextpo.a
-else
+if !GLOM_ENABLE_MAEMO
 glom_glom_LDADD += -lgettextpo
 endif
 

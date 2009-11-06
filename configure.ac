@@ -47,17 +47,21 @@ AC_DEFINE_UNQUOTED([GLOM_ABI_VERSION], ["$GLOM_ABI_VERSION"],
 AC_DEFINE_UNQUOTED([GLOM_ABI_VERSION_UNDERLINED], ["AS_TR_SH([$GLOM_ABI_VERSION])"],
                    [Define to the Glom ABI version with '.' replaced by '_'.])
 
-# libgettext-po changed its API, changing the error handler struct
-# from po_error_handler to po_xerror_handler:
-AC_CACHE_CHECK([for po_xerror_handler], [glom_cv_has_po_xerror_handler],
+# Only check for libgettextpo on non-Maemo platforms.
+AS_IF([test "x$glom_enable_maemo" = xyes],
+      [
+        # libgettext-po changed its API, changing the error handler struct
+        # from po_error_handler to po_xerror_handler:
+        AC_CACHE_CHECK([for po_xerror_handler], [glom_cv_has_po_xerror_handler],
                [AC_CHECK_MEMBER([struct po_xerror_handler.xerror],
                                 [glom_cv_has_po_xerror_handler=yes],
                                 [glom_cv_has_po_xerror_handler=no],
                                 [#include <gettext-po.h>])])
 
-AS_IF([test "x$glom_cv_has_po_xerror_handler" = xyes],
-      [AC_DEFINE([HAVE_GETTEXTPO_XERROR], [1],
-                 [Define if libgettextpo provides the new po_xerror_handler struct.])])
+        AS_IF([test "x$glom_cv_has_po_xerror_handler" = xyes],
+          [AC_DEFINE([HAVE_GETTEXTPO_XERROR], [1],
+          [Define if libgettextpo provides the new po_xerror_handler struct.])])
+])
 
 IT_PROG_INTLTOOL([0.35])
 AC_SUBST([GETTEXT_PACKAGE], [glom])
