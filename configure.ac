@@ -121,7 +121,7 @@ AC_ARG_ENABLE([sqlite],
 
 AM_CONDITIONAL([GLOM_ENABLE_SQLITE], [test "x$glom_enable_sqlite" = xyes])
 
-AS_IF([test "x$glom_enable_sqlite" = xyes],
+AS_IF([test "x$glom_enable_sqlite" != xyes],
       [AC_DEFINE([GLOM_ENABLE_SQLITE], [1],
                  [Whether to enable support for SQLite databases.])])
 

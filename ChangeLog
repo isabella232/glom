@@ -1,3 +1,7 @@
+2009-11-10  David King  <davidk@openismus.com>
+
+	* configure.ac: Fix incorrect conditional for Maemo libgettextpo check.
+
 2009-11-06  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix a crash when specifying a static image on the layout.
