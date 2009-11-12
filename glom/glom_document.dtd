@@ -3,7 +3,8 @@
 DTD for glom documents.
 TODO: Make sure that all the comments list all the attributes and their meaning.
 TODO: Should we specify the presence of child text nodes in the ELEMENT somehow?
-TODO: Test this by trying to validate some real documents against this DTD.
+TODO: Add 'print_layouts' element.
+TODO: Add 'title_singular' element.
 -->
 
 
@@ -16,16 +17,18 @@ TODO: Test this by trying to validate some real documents against this DTD.
   is_example: Whether this is an example document. Opening an example document causes a new database (and document) to be created.
 -->
     <!ELEMENT glom_document (connection?, table*, groups?, library_modules?) >
-    <!ATTLIST glom_document>
+    <!ATTLIST glom_document
         database_title CDATA #IMPLIED
         translation_original_locale CDATA #IMPLIED
         format_version CDATA #IMPLIED
-        is_example (true|false) "false" >
+        is_example (true|false) "false">
 
 <!-- This describes the (PostgreSQL) connection details for the database.
      server: The hostname of the PostgreSQL server.
      user: The PostgreSQL user.
      database: The name of the database to connect to on the PostgreSQL server.
+     port: The port to connect to on the PostgreSQL server.
+     try_other_ports: ?
      self_hosted: Whether a local instance of PostgreSQL should be started, to serve the data that is in a glom_postgres_data directory. Deprecated in favor of hosting_mode.
      hosting_mode: Can be "postgres_central" (self hosted via a local instance of PostgreSQL), "postgres_self" (a central PostgreSQL instance is used) or "sqlite" (self-hosted via a SQLite file).   
      network_shared: true if the database (and document) should be shared over the network for use by other users.
@@ -35,6 +38,8 @@ TODO: Test this by trying to validate some real documents against this DTD.
         server CDATA "localhost"
         user CDATA #IMPLIED
         database CDATA #REQUIRED
+	port CDATA #REQUIRED
+	try_other_ports (true|false) "true"
         self_hosted (true|false) "false" 
         hosting_mode CDATA #IMPLIED
         network_shared (true|false) "false">
@@ -43,7 +48,7 @@ TODO: Test this by trying to validate some real documents against this DTD.
       However, these are just initial permissions for examples. The real permissions are 
       always in the database.
 -->
-    <!ELEMENT groups (group|table_privs)* >
+    <!ELEMENT groups (group|table_privs)*>
     <!ATTLIST groups>
 
 <!-- The group node specifies a group of users and lists the permissions for that group for each table.
@@ -52,10 +57,10 @@ TODO: Test this by trying to validate some real documents against this DTD.
      name: The name of this group of users.
      developer: Whether users in this group may use the developer features in Glom to change the database.
 -->
-    <!ELEMENT group EMPTY >
+    <!ELEMENT group EMPTY>
     <!ATTLIST group
         name CDATA #REQUIRED
-        developer (true|false) "false" >
+        developer (true|false) "false">
 
 <!-- table_privs are the permissions for each table for a group.
      However, these are just initial permissions for examples. The real permissions are 
@@ -84,14 +89,14 @@ TODO: Test this by trying to validate some real documents against this DTD.
   default: can specify that the table should be opened when the file is opened. Only one table should have default=true.
   example_rows: deprecated in 1.6 (and support removed in 1.10) - use the child node instead.
 -->
-    <!ELEMENT table (title_singular | example_rows | fields | relationships | data_layouts | reports | trans_set)* >
+    <!ELEMENT table (title_singular | example_rows | fields | relationships | data_layouts | reports | trans_set)*>
     <!ATTLIST table
         name CDATA #REQUIRED
         title CDATA #IMPLIED
         hidden (true|false) "false"
         overview_x CDATA #IMPLIED
         overview_y CDATA #IMPLIED
-        default (true|false) "false" >
+        default (true|false) "false">
 
 <!-- example_rows are comma separated lists of data (in the child text node) to load into the table 
      when it is first created. -->
@@ -100,9 +105,9 @@ TODO: Test this by trying to validate some real documents against this DTD.
 
 <!-- relationships describe connections between databases. -->
 
-    <!ELEMENT relationships (relationship*) >
+    <!ELEMENT relationships (relationship*)>
     
-    <!ELEMENT relationship ANY >
+    <!ELEMENT relationship ANY>
     <!ATTLIST relationship
         name CDATA #REQUIRED
         title CDATA #IMPLIED
@@ -110,7 +115,7 @@ TODO: Test this by trying to validate some real documents against this DTD.
         other_table CDATA #REQUIRED
         other_key CDATA #IMPLIED
         auto_create CDATA #IMPLIED
-        allow_edit (true|false) "false" >
+        allow_edit (true|false) "false">
 
 <!-- fields define what type of data the database stores. There are different types of
   fields - numbers, strings, images, etc. The primary_key option is set to true when this field is
@@ -124,9 +129,9 @@ TODO: Test this by trying to validate some real documents against this DTD.
   default_value: New records will have this value in this field when they are first created.
   calculation: deprecated - use the child node instead.
 -->
-    <!ELEMENT fields (field | field_view)* >
+    <!ELEMENT fields (field | field_view)*>
 
-    <!ELEMENT field (field_lookup|calculation|formatting|trans_set)* >
+    <!ELEMENT field (field_lookup|calculation|formatting|trans_set)*>
     <!ATTLIST field
         name CDATA #REQUIRED
         type CDATA #IMPLIED
@@ -136,16 +141,16 @@ TODO: Test this by trying to validate some real documents against this DTD.
         auto_increment (true|false) "true"
         allow_edit (true|false) "false"
         default_value CDATA #IMPLIED
-        calculation CDATA #IMPLIED >
+        calculation CDATA #IMPLIED>
 
 <!-- field_lookups specify that a value should be take from a related field when the associated ID changes.
      relationship: The name of the relationship from which to look up a value.
      field: The name of the field in the related table from which to look up a value.
 -->
-    <!ELEMENT field_lookup EMPTY >
+    <!ELEMENT field_lookup EMPTY>
     <!ATTLIST field_lookup
         relationship CDATA #REQUIRED
-        field CDATA #REQUIRED >
+        field CDATA #REQUIRED>
 
 <!-- formatting is the formatting of a field. Most of the options are for multiline text or numbers,
   since normal text boxes are relatively simple. The choices_* options are for defining the custom choice
@@ -163,7 +168,7 @@ TODO: Test this by trying to validate some real documents against this DTD.
         choices_related_second CDATA #IMPLIED
         choices_custom (true|false) "false"
         format_decimal_places_restricted (true|false) "false"
-        format_currency_symbol CDATA #IMPLIED >
+        format_currency_symbol CDATA #IMPLIED>
 
 <!-- A custom_choice is a drop down menu that can be selected (for example, Mrs., Mr., Ms., etc) from
   a set of options. -->
@@ -191,7 +196,7 @@ TODO: Test this by trying to validate some real documents against this DTD.
     <!ELEMENT data_layout (data_layout_groups)>
     <!ATTLIST data_layout
         name CDATA #REQUIRED
-        parent_table CDATA #IMPLIED >
+        parent_table CDATA #IMPLIED>
 
     <!ELEMENT data_layout_groups (data_layout_group)*>
     <!ATTLIST data_layout_groups>
@@ -200,43 +205,43 @@ TODO: Test this by trying to validate some real documents against this DTD.
 
     <!ELEMENT data_layout_group (trans_set | data_layout_group | data_layout_item | data_layout_portal |
         data_layout_item_groupby | data_layout_button | data_layout_notebook | data_layout_item_header | 
-        trans_set | data_layout_text)* >
+        trans_set | data_layout_text)*>
     <!ATTLIST data_layout_group
-        name CDATA #REQUIRED
+        name CDATA #IMPLIED
         title CDATA #IMPLIED
         sequence CDATA #IMPLIED
-        columns_count CDATA #REQUIRED >
+        columns_count CDATA #IMPLIED>
 
 <!-- A data_layout_notebook is the tabbed display of tables in the glom interface. -->
 
     <!ELEMENT data_layout_notebook (data_layout_group|data_layout_portal)*>
     <!ATTLIST data_layout_notebook
         name CDATA #REQUIRED
-        columns_count CDATA #REQUIRED
+        columns_count CDATA #IMPLIED
         sequence CDATA #IMPLIED
-        title CDATA #IMPLIED >
+        title CDATA #IMPLIED>
 
 <!-- A data_layout_item_groupby is a data_layout_group that sorts -->
 
     <!ELEMENT data_layout_item_groupby (trans_set | groupby | sortby | data_layout_group | data_layout_item |
         data_layout_portal | data_layout_button | data_layout_item_groupby | secondary_fields | 
-        data_layout_item_summary | data_layout_item_verticalgroup)* >
+        data_layout_item_summary | data_layout_item_verticalgroup)*>
     <!ATTLIST data_layout_item_groupby
-        name CDATA #REQUIRED
+        name CDATA #IMPLIED
         title CDATA #IMPLIED
         sequence CDATA #IMPLIED
-        columns_count CDATA #REQUIRED
-        border_width CDATA #IMPLIED >
+        columns_count CDATA #IMPLIED
+        border_width CDATA #IMPLIED>
 
 <!-- data_layout_text and text are for displaying text. -->
 
-    <!ELEMENT data_layout_text (text)*>
+    <!ELEMENT data_layout_text (formatting | text)*>
     <!ATTLIST data_layout_text
-        sequence CDATA #REQUIRED >
+        sequence CDATA #IMPLIED>
 
     <!ELEMENT text EMPTY>
     <!ATTLIST text
-        title CDATA #REQUIRED >
+        title CDATA #REQUIRED>
         
 <!-- sortby describes what a data_layout_item_groupby sorts by. -->
 
@@ -247,9 +252,9 @@ TODO: Test this by trying to validate some real documents against this DTD.
 
     <!ELEMENT data_layout_item_verticalgroup (data_layout_item)*>
     <!ATTLIST data_layout_item_verticalgroup
-        name CDATA #REQUIRED
-        columns_count CDATA #REQUIRED
-        sequence CDATA #REQUIRED >
+        name CDATA #IMPLIED
+        columns_count CDATA #IMPLIED
+        sequence CDATA #IMPLIED>
         
 <!-- data_layout_item_summary and data_layout_item_fieldsummary summarize other
   fields. A good example of this is the total price in example_smallbusiness.glom. -->
@@ -258,7 +263,7 @@ TODO: Test this by trying to validate some real documents against this DTD.
     <!ATTLIST data_layout_item_summary
         name CDATA #REQUIRED
         columns_count CDATA #REQUIRED
-        sequence CDATA #IMPLIED >
+        sequence CDATA #IMPLIED>
 
     <!ELEMENT data_layout_item_fieldsummary (formatting)>
     <!ATTLIST data_layout_item_fieldsummary
@@ -266,7 +271,7 @@ TODO: Test this by trying to validate some real documents against this DTD.
         editable (true|false) "false"
         use_default_formatting (true|false) "true"
         sequence CDATA #IMPLIED
-        summarytype CDATA #REQUIRED >
+        summarytype CDATA #REQUIRED>
         
 <!-- groupby is used to determine how data_layout_item_groupby items group. -->
 
@@ -275,9 +280,9 @@ TODO: Test this by trying to validate some real documents against this DTD.
         name CDATA #REQUIRED
         editable (true|false) "false"
         use_default_formatting (true|false) "true"
-        relationship CDATA #IMPLIED >
+        relationship CDATA #IMPLIED>
 
-<!-- secondary fields are fields derived from other fields -- this is a list of them. -->
+<!-- secondary fields are fields derived from other fields - this is a list of them. -->
 
     <!ELEMENT secondary_fields (data_layout_group)>
     <!ATTLIST secondary_fields>
@@ -292,7 +297,7 @@ TODO: Test this by trying to validate some real documents against this DTD.
     <!ELEMENT trans EMPTY>
     <!ATTLIST trans
         loc CDATA #REQUIRED
-        val CDATA #REQUIRED >
+        val CDATA #REQUIRED>
         
 <!-- A data_layout_item is a single entry in the display formatting, which tells how a single
   field is displayed. -->
@@ -305,17 +310,18 @@ TODO: Test this by trying to validate some real documents against this DTD.
         sequence CDATA #IMPLIED
         editable CDATA #IMPLIED
         use_default_formatting (true|false) "true"
+	column_width CDATA #IMPLIED
         related_relationship CDATA #IMPLIED
-        sort_ascending (true|false) "false" >
+        sort_ascending (true|false) "false">
         
 <!-- A data_layout_item_header is the items that go at the very top of the database (e.g. the
   organization name and logo in example_film_manager.glom). -->
 
     <!ELEMENT data_layout_item_header (data_layout_item)*>
     <!ATTLIST data_layout_item_header
-        name CDATA #REQUIRED
-        columns_count CDATA #REQUIRED
-        sequence CDATA #REQUIRED >
+        name CDATA #IMPLIED
+        columns_count CDATA #IMPLIED
+        sequence CDATA #IMPLIED>
 
 <!-- data_layout_button is a way to have a custom script (python) control the
   display and effect of a button in the database. -->
@@ -324,7 +330,7 @@ TODO: Test this by trying to validate some real documents against this DTD.
     <!ATTLIST data_layout_button
         title CDATA #REQUIRED
         sequence CDATA #IMPLIED
-        script CDATA #IMPLIED >
+        script CDATA #IMPLIED>
 
 <!-- A script node is used to embed python code into the custom button. -->
 
@@ -336,18 +342,18 @@ TODO: Test this by trying to validate some real documents against this DTD.
     <!ELEMENT title_custom ANY>
     <!ATTLIST title_custom
         title CDATA #IMPLIED
-        use_custom (true|false) "true" >
+        use_custom (true|false) "true">
         
 <!-- A data_layout_portal is the essential information, a short and quick list of values
   that are probably of interest to others (e.g. contact information, name, etc). -->
 
-    <!ELEMENT data_layout_portal (portal_navigation_relationship)* >
+    <!ELEMENT data_layout_portal (portal_navigation_relationship | data_layout_item)* >
     <!ATTLIST data_layout_portal
-        name CDATA #REQUIRED
+        name CDATA #IMPLIED
         relationship CDATA #REQUIRED
-        sequence CDATA #REQUIRED
+        sequence CDATA #IMPLIED
         hide CDATA #IMPLIED
-        columns_count CDATA #IMPLIED >
+        columns_count CDATA #IMPLIED>
 
 <!-- portal_navigation_relationship determines what happens when the user 
      activates a row in a related records portal.
@@ -357,22 +363,22 @@ TODO: Test this by trying to validate some real documents against this DTD.
      related_relationship: If portal_navigation_relationship is "specific" then 
      this may be a related (to relationship) relationship to which to navigate. -->
 
-    <!ELEMENT portal_navigation_relationship ANY >
+    <!ELEMENT portal_navigation_relationship ANY>
     <!ATTLIST portal_navigation_relationship
         navigation_type CDATA #REQUIRED
         relationship CDATA #REQUIRED
-        related_relationship CDATA #REQUIRED >
+        related_relationship CDATA #REQUIRED>
 
 <!-- reports and data reports make short sheets of important information that
   distill a larger database. data_report(s) is the old interface; use reports if you are
   writing a new XML document. -->
 
-    <!ELEMENT data_reports (data_report)* >
+    <!ELEMENT data_reports (data_report)*>
 
     <!ELEMENT data_report (data_layout_groups)>
     <!ATTLIST data_report
         name CDATA #REQUIRED
-        title CDATA #REQUIRED >
+        title CDATA #REQUIRED>
 
     <!ELEMENT reports (report)*>
     <!ATTLIST reports>
@@ -381,13 +387,13 @@ TODO: Test this by trying to validate some real documents against this DTD.
     <!ATTLIST report
         name CDATA #REQUIRED
         title CDATA #IMPLIED
-        show_table_title (true|false) "false" >
+        show_table_title (true|false) "false">
 
 <!-- The library_modules node contains python code that may be used in scripts and 
      calculations via the python import keyword. -->
 
     <!ELEMENT library_modules ANY>
-    <!ATTLIST library_modules >
+    <!ATTLIST library_modules>
 
 <!-- library_module nodes contain python code that may be used in scripts and 
      calculations via the python import keyword. The source code is in the 
@@ -396,6 +402,5 @@ TODO: Test this by trying to validate some real documents against this DTD.
      script: Deprecated in Glom 1.12. The code of the python module. -->
     <!ELEMENT module ANY>
     <!ATTLIST module
-        name CDATA #REQUIRED
-     >
+        name CDATA #REQUIRED>
 

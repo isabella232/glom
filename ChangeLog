@@ -1,3 +1,11 @@
+2009-11-12  David King  <davidk@openismus.com>
+
+	* glom/glom_document.dtd: Update to more completely validate example
+	documents.
+	* Makefile_tests.am:
+	* tests/dtd/test_example_sqlite: Add a test that attempts to validate
+	an example SQLite Glom document against glom_document.dtd.
+
 2009-11-10  David King  <davidk@openismus.com>
 
 	* configure.ac: Fix incorrect conditional for Maemo libgettextpo check.
