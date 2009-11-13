@@ -48,7 +48,7 @@ AC_DEFINE_UNQUOTED([GLOM_ABI_VERSION_UNDERLINED], ["AS_TR_SH([$GLOM_ABI_VERSION]
                    [Define to the Glom ABI version with '.' replaced by '_'.])
 
 # Only check for libgettextpo on non-Maemo platforms.
-AS_IF([test "x$glom_enable_maemo" = xyes],
+AS_IF([test "x$glom_enable_maemo" != xyes],
       [
         # libgettext-po changed its API, changing the error handler struct
         # from po_error_handler to po_xerror_handler:
@@ -121,7 +121,7 @@ AC_ARG_ENABLE([sqlite],
 
 AM_CONDITIONAL([GLOM_ENABLE_SQLITE], [test "x$glom_enable_sqlite" = xyes])
 
-AS_IF([test "x$glom_enable_sqlite" != xyes],
+AS_IF([test "x$glom_enable_sqlite" = xyes],
       [AC_DEFINE([GLOM_ENABLE_SQLITE], [1],
                  [Whether to enable support for SQLite databases.])])
 

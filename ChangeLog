@@ -1,3 +1,7 @@
+2009-11-13  David King  <davidk@openismus.com>
+
+	* configure.ac: Fix check for SQLite and libgettextpo.
+
 2009-11-12  David King  <davidk@openismus.com>
 
 	* glom/glom_document.dtd: Update to more completely validate example
