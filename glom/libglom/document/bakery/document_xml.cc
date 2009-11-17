@@ -237,6 +237,13 @@ xmlpp::Element* Document_XML::get_node_document()
   if(!m_pDOM_Document)
     m_pDOM_Document = m_DOM_Parser.get_document();
   
+  //Make sure that it has the DTD declaration:
+  //TODO: Put this in a better place, where it's more guaranteed to always be set?
+  //TODO: Add API to specify the PUBLIC URI, if the document should write this:
+  //SYSTEM (local) DTDs do not seem very useful.
+  //- means non-registered, which is commonly used.
+  //m_pDOM_Document->set_internal_subset(m_strRootNodeName, "-//glom/" + m_strDTD_Name, m_strDTD_Name);
+
   xmlpp::Element* nodeRoot = m_pDOM_Document->get_root_node();
   if(!nodeRoot)
   {

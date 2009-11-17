@@ -1,5 +1,19 @@
 2009-11-17  Murray Cumming  <murrayc@murrayc.com>
 
+	tests: dtd: Now passes.
+
+	* glom/libglom/document/bakery/document_xml.cc: get_node_document():
+	Added commented-out code to write the DOCTYPE declaration, if we ever 
+	want to specify the PUBLIC DTD idenitifier and URI in each document.
+	Let's avoid that for now because we'd have to make sure that it's 	
+	hosted properly. 
+	* tests/dtd/test_example_sqlite: Do not use --valid because that 
+	seems to always require a DTD in the document's DOCTYPE declaration.
+	--dtdvalid seems to do the same thing already, but with the specified 
+	DTD.
+
+2009-11-17  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/glom_document.dtd: Mention the xmlns attribute because DTD 
 	validation doesn't know about XML namespaces.
 
