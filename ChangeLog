@@ -1,5 +1,21 @@
 2009-11-17  Murray Cumming  <murrayc@murrayc.com>
 
+	Document: Ensure that the xmlns ID is always in saved documents.
+
+	* glom/libglom/document/bakery/document_xml.cc: get_node_document():
+	Make sure that the xmlns ID is added, even when the root node already 
+	exists, for instance when opening existing documents.
+
+	* examples/example_film_manager.glom:
+	* examples/example_lesson_planner.glom:
+	* examples/example_music_collection.glom:
+	* examples/example_project_manager.glom:
+	* examples/example_smallbusiness.glom:
+	* examples/sqlite/test_sqlite_music/test_sqlite_music.glom:
+	Add the xmnls ID, to help to identify the MIME type of these documents.
+
+2009-11-17  Murray Cumming  <murrayc@murrayc.com>
+
 	Document saving: Remove unncessary empty singular_title nodes.
 
 	* glom/libglom/document/document.cc: save_before_translations(): 

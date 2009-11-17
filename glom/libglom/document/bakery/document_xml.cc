@@ -241,10 +241,13 @@ xmlpp::Element* Document_XML::get_node_document()
   if(!nodeRoot)
   {
     //Add it if it isn't there already:
-    return m_pDOM_Document->create_root_node(m_strRootNodeName, m_root_xmlns);
+    nodeRoot = m_pDOM_Document->create_root_node(m_strRootNodeName, m_root_xmlns);
   }
-  else
-    return nodeRoot;
+  
+  //Make sure that it has the root name name and xmlns:
+  nodeRoot->set_namespace_declaration(m_root_xmlns);
+
+  return nodeRoot;
 }
 
 void Document_XML::set_write_formatted(bool formatted)
