@@ -1,5 +1,13 @@
 2009-11-17  Murray Cumming  <murrayc@murrayc.com>
 
+	Document saving: Remove unncessary empty singular_title nodes.
+
+	* glom/libglom/document/document.cc: save_before_translations(): 
+	Do not create empty singular_title nodes.
+	* examples/example_smallbusiness.glom: Resaved.
+
+2009-11-17  Murray Cumming  <murrayc@murrayc.com>
+
 	Partly fix the DTD validation test.
 
 	* glom/glom_document.dtd: table: Correct the syntax for the child 

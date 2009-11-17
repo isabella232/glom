@@ -3244,7 +3244,8 @@ void Document::save_before_translations(xmlpp::Element* element, const Translata
   //If it has a singular title, then save that too:
   const HasTitleSingular* has_title_singular = 
     dynamic_cast<const HasTitleSingular*>(&item);
-  if(has_title_singular && has_title_singular->m_title_singular)
+  if(has_title_singular && has_title_singular->m_title_singular
+    && !(has_title_singular->m_title_singular->get_title_original().empty()))
   {
     xmlpp::Element* nodeTitleSingular = element->add_child(GLOM_NODE_TABLE_TITLE_SINGULAR);
     save_before_translations(nodeTitleSingular, *(has_title_singular->m_title_singular));
