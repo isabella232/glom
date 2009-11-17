@@ -30,12 +30,12 @@ check_PROGRAMS =						\
 	tests/import/test_signals
 
 TESTS =	tests/test_parsing_time	\
-	tests/test_signal_reemit	\
-	tests/test_load_python_library\
-	tests/test_python_module\
-	tests/import/test_parsing\
-	tests/import/test_signals\
-        tests/dtd/test_example_sqlite
+	tests/test_signal_reemit \
+        tests/dtd/test_example_sqlite \
+	tests/test_load_python_library \
+	tests/test_python_module \
+	tests/import/test_parsing \
+	tests/import/test_signals
 
 #TESTS_ENVIRONMENT=which valgrind && valgrind --tool=memcheck --leak-check=full --leak-resolution=high --trace-children=yes --num-callers=30
 

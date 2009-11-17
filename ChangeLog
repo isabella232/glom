@@ -1,3 +1,14 @@
+2009-11-17  Murray Cumming  <murrayc@murrayc.com>
+
+	Partly fix the DTD validation test.
+
+	* glom/glom_document.dtd: table: Correct the syntax for the child 
+	elements, to use ?, instead of | because they are all optional, instead 
+	of being alternatives for each other.
+	Add the print_layouts element.
+	* Makefile_tests.am: Change the order so the sometimes-hanging import 
+	tests are at the end, to make the tests more useful.
+
 2009-11-13  David King  <davidk@openismus.com>
 
 	* configure.ac: Fix check for SQLite and libgettextpo.

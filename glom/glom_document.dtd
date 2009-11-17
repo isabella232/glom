@@ -3,7 +3,6 @@
 DTD for glom documents.
 TODO: Make sure that all the comments list all the attributes and their meaning.
 TODO: Should we specify the presence of child text nodes in the ELEMENT somehow?
-TODO: Add 'print_layouts' element.
 TODO: Add 'title_singular' element.
 -->
 
@@ -89,7 +88,7 @@ TODO: Add 'title_singular' element.
   default: can specify that the table should be opened when the file is opened. Only one table should have default=true.
   example_rows: deprecated in 1.6 (and support removed in 1.10) - use the child node instead.
 -->
-    <!ELEMENT table (title_singular | example_rows | fields | relationships | data_layouts | reports | trans_set)*>
+    <!ELEMENT table (title_singular?, example_rows?, fields+, relationships?, data_layouts+, reports?, print_layouts?, trans_set?)>
     <!ATTLIST table
         name CDATA #REQUIRED
         title CDATA #IMPLIED
@@ -365,9 +364,9 @@ TODO: Add 'title_singular' element.
 
     <!ELEMENT portal_navigation_relationship ANY>
     <!ATTLIST portal_navigation_relationship
-        navigation_type CDATA #REQUIRED
-        relationship CDATA #REQUIRED
-        related_relationship CDATA #REQUIRED>
+        navigation_type CDATA #IMPLIED
+        relationship CDATA #IMPLIED
+        related_relationship CDATA #IMPLIED>
 
 <!-- reports and data reports make short sheets of important information that
   distill a larger database. data_report(s) is the old interface; use reports if you are
@@ -388,6 +387,17 @@ TODO: Add 'title_singular' element.
         name CDATA #REQUIRED
         title CDATA #IMPLIED
         show_table_title (true|false) "false">
+
+<!-- print layouts are for perfectly-positioned printing of single record details. -->
+    <!ELEMENT print_layouts (print_layout*)>
+    <!ELEMENT print_layout (print_layout_groups)>
+    <!ATTLIST print_layout
+        name CDATA #REQUIRED
+        parent_table CDATA #IMPLIED>
+
+    <!ELEMENT print_layout_groups (print_layout_group)*>
+    <!ATTLIST print_layout_groups>
+
 
 <!-- The library_modules node contains python code that may be used in scripts and 
      calculations via the python import keyword. -->
