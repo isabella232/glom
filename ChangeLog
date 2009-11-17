@@ -1,5 +1,10 @@
 2009-11-17  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/glom_document.dtd: Mention the xmlns attribute because DTD 
+	validation doesn't know about XML namespaces.
+
+2009-11-17  Murray Cumming  <murrayc@murrayc.com>
+
 	Document: Ensure that the xmlns ID is always in saved documents.
 
 	* glom/libglom/document/bakery/document_xml.cc: get_node_document():

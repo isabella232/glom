@@ -17,6 +17,7 @@ TODO: Add 'title_singular' element.
 -->
     <!ELEMENT glom_document (connection?, table*, groups?, library_modules?) >
     <!ATTLIST glom_document
+        xmlns CDATA #IMPLIED
         database_title CDATA #IMPLIED
         translation_original_locale CDATA #IMPLIED
         format_version CDATA #IMPLIED
