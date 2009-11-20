@@ -46,7 +46,7 @@ public:
    * @param table_name The table name.
    * @param table_fields: The actual fields in the table, in case the document does not yet know about them all.
    */
-  virtual void set_document(Document::LayoutName layout_name, const Glib::ustring& layout_platform, Document* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields);
+  void set_document(Document::LayoutName layout_name, const Glib::ustring& layout_platform, Document* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields);
 
   virtual bool get_modified() const;
 
@@ -60,14 +60,21 @@ protected:
   void move_treeview_selection_down(Gtk::TreeView* treeview, const Gtk::TreeModelColumn<guint>& sequence_column);
   void move_treeview_selection_up(Gtk::TreeView* treeview, const Gtk::TreeModelColumn<guint>& sequence_column);
 
+
   //signal handlers:
   virtual void on_treemodel_row_changed(const Gtk::TreeModel::Path& path, const Gtk::TreeModel::iterator& iter);
+
+private:
   virtual void on_entry_table_title_changed();
   virtual void on_button_close();
 
+protected:
   void make_sensitivity_depend_on_toggle_button(Gtk::ToggleButton& toggle_button, Gtk::Widget& widget);
+
+private:
   void on_sensitivity_toggle_button(Gtk::ToggleButton* toggle_button, Gtk::Widget* widget);
 
+protected:
   Gtk::Entry* m_entry_table_title;
   Gtk::Label* m_label_table_title;
 

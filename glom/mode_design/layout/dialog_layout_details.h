@@ -40,17 +40,19 @@ public:
    * @param table_name The table name.
    * @param table_fields: The actual fields in the table, in case the document does not yet know about them all.
    */
-  virtual void set_document(Document::LayoutName layout_name, const Glib::ustring& layout_platform, Document* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields);
+  void set_document(Document::LayoutName layout_name, const Glib::ustring& layout_platform, Document* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields);
 
 protected:
 
-  virtual void add_group(const Gtk::TreeModel::iterator& parent, const sharedptr<const LayoutGroup>& group);
-  virtual void fill_group(const Gtk::TreeModel::iterator& iter, sharedptr<LayoutGroup>& group);
+  void add_group(const Gtk::TreeModel::iterator& parent, const sharedptr<const LayoutGroup>& group);
+
+private:
+  void fill_group(const Gtk::TreeModel::iterator& iter, sharedptr<LayoutGroup>& group);
 
   //Enable/disable buttons, depending on treeview selection:
-  virtual void enable_buttons();
+  virtual void enable_buttons(); //overridden.
 
-  virtual void save_to_document();
+  virtual void save_to_document(); //overridden.
 
   sharedptr<Relationship> offer_relationship_list();
   sharedptr<Relationship> offer_relationship_list(const sharedptr<const Relationship>& relationship);
@@ -86,6 +88,7 @@ protected:
 
   Gtk::TreeModel::iterator append_appropriate_row();
 
+protected:
   Gtk::TreeView* m_treeview_fields;
   Gtk::TreeView::Column* m_treeview_column_title;
   Gtk::TreeView::Column* m_treeview_column_group_columns;
