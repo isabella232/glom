@@ -206,7 +206,7 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
   else
   {
     //Get information abvout the the last-viewed layout:
-    Glib::ustring current_layout;
+    Document::LayoutName current_layout = Document::LAYOUT_LIST; //Arbitrary default.
     if(!details_record_specified)
     {
       Document* document = get_document(); 
@@ -215,9 +215,9 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
     }
 
     //Set the layout:
-    if( (current_layout.empty() || (current_layout == "list")) && (current_view != DATA_VIEW_List) )
+    if( (current_layout == Document::LAYOUT_LIST) && (current_view != DATA_VIEW_List) )
       set_current_view(DATA_VIEW_List);
-    else if( (current_layout == "details") && (current_view != DATA_VIEW_Details) )
+    else if( (current_layout == Document::LAYOUT_DETAILS) && (current_view != DATA_VIEW_Details) )
       set_current_view(DATA_VIEW_Details);
   }
 

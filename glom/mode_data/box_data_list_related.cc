@@ -48,10 +48,6 @@ Box_Data_List_Related::Box_Data_List_Related()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_AddDel.signal_user_requested_layout().connect(sigc::mem_fun(*this, &Box_Data_List_Related::on_adddel_user_requested_layout));
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-
-  //We do not actually use this, 
-  //so it is a bug if this appears in the .glom file:
-  m_layout_name = "list_related";
 }
 
 void Box_Data_List_Related::enable_buttons()
@@ -344,7 +340,7 @@ void Box_Data_List_Related::prepare_layout_dialog(Dialog_Layout* dialog)
   Dialog_Layout_List_Related* related_dialog = dynamic_cast<Dialog_Layout_List_Related*>(dialog);
   g_assert(related_dialog);
 
-  related_dialog->set_document(m_layout_name, m_layout_platform, get_document(), m_portal, m_parent_table);
+  related_dialog->set_document(get_document(), m_portal, m_parent_table);
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

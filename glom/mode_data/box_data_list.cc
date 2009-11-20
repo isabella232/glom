@@ -36,7 +36,7 @@ Box_Data_List::Box_Data_List()
 : m_has_one_or_more_records(false),
   m_read_only(false)
 {
-  m_layout_name = "list";
+  m_layout_name = Document::LAYOUT_LIST;
 
   //m_strHint = _("When you change the data in a field the database is updated immediately.\n Click [Add] or enter data into the last row to add a new record.\n Leave automatic ID fields empty - they will be filled for you.\nOnly the first 100 records are shown.");
 
@@ -211,7 +211,7 @@ void Box_Data_List::on_adddel_user_reordered_columns()
     Document::type_list_layout_groups mapGroups;
     mapGroups[1] = group;
 
-    pDoc->set_data_layout_groups("list", m_table_name, m_layout_platform, mapGroups);  
+    pDoc->set_data_layout_groups(Document::LAYOUT_LIST, m_table_name, m_layout_platform, mapGroups);  
   }
 }
 

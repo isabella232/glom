@@ -90,7 +90,7 @@ Dialog_Layout_Calendar_Related::~Dialog_Layout_Calendar_Related()
 }
 
 
-void Dialog_Layout_Calendar_Related::set_document(const Glib::ustring& layout, const Glib::ustring& layout_platform, Document* document, const sharedptr<const LayoutItem_CalendarPortal>& portal)
+void Dialog_Layout_Calendar_Related::set_document(Document* document, const sharedptr<const LayoutItem_CalendarPortal>& portal)
 {
   m_portal = glom_sharedptr_clone(portal);
   
@@ -98,10 +98,10 @@ void Dialog_Layout_Calendar_Related::set_document(const Glib::ustring& layout, c
   if(portal)
     from_table = portal->get_from_table();
 
-  set_document(layout, layout_platform, document, from_table);
+  set_document(document, from_table);
 }
 
-void Dialog_Layout_Calendar_Related::set_document(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const Glib::ustring& from_table)
+void Dialog_Layout_Calendar_Related::set_document(Document* document, const Glib::ustring& from_table)
 {
   if(!m_portal)
   {
@@ -111,7 +111,7 @@ void Dialog_Layout_Calendar_Related::set_document(const Glib::ustring& layout_na
   type_vecLayoutFields empty_fields; //Just to satisfy the base class.
 
   
-  Dialog_Layout::set_document(layout_name, layout_platform, document, from_table, empty_fields);
+  Dialog_Layout::set_document(Document::LAYOUT_LIST /* unused */, "" /* unused layout plaform */, document, from_table, empty_fields);
   //m_table_name is now actually the parent_table_name.
 
   update_ui();

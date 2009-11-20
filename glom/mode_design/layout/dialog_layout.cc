@@ -29,6 +29,7 @@ Dialog_Layout::Dialog_Layout(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Bu
 : Gtk::Dialog(cobject),
   m_entry_table_title(0),
   m_label_table_title(0),
+  m_layout_name(Document::LAYOUT_LIST), //Arbitrary default.
   m_modified(false)
 {
   Gtk::Button* button = 0;
@@ -50,7 +51,7 @@ Dialog_Layout::~Dialog_Layout()
 {
 }
 
-void Dialog_Layout::set_document(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* /* document */, const Glib::ustring& table_name, const type_vecLayoutFields& /* table_fields */)
+void Dialog_Layout::set_document(Document::LayoutName layout_name, const Glib::ustring& layout_platform, Document* /* document */, const Glib::ustring& table_name, const type_vecLayoutFields& /* table_fields */)
 {
   m_modified = false;
 

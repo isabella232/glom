@@ -37,14 +37,16 @@ public:
   Dialog_Layout(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder, bool with_table_title = true);
   virtual ~Dialog_Layout();
 
+  //TODO: layout_name and layout_platform only make sense for whole layouts. Put these somewhere higher in the hierarchy?
+
   /**
-   * @param layout_name "list" or "details"
+   * @param layout_name list or details
    * @param layout_platform As in the document. Empty or "maemo".
    * @param document The document, so that the dialog can load the previous layout, and save changes.
    * @param table_name The table name.
    * @param table_fields: The actual fields in the table, in case the document does not yet know about them all.
    */
-  virtual void set_document(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields);
+  virtual void set_document(Document::LayoutName layout_name, const Glib::ustring& layout_platform, Document* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields);
 
   virtual bool get_modified() const;
 
@@ -70,7 +72,11 @@ protected:
   Gtk::Label* m_label_table_title;
 
   Glib::ustring m_table_name;
-  Glib::ustring m_layout_name, m_layout_platform; //As in the document.
+
+ //TODO: layout_name and layout_platform only make sense for whole layouts. Put these somewhere higher in the hierarchy?
+
+  Document::LayoutName m_layout_name;
+  Glib::ustring m_layout_platform; //As in the document.
  
   bool m_modified;
 };

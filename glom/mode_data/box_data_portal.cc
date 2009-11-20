@@ -60,8 +60,6 @@ Box_Data_Portal::Box_Data_Portal()
 
   add(m_Frame);
 
-  m_layout_name = "list_portal"; //Replaced by derived classes.
-  
   #ifdef GLOM_ENABLE_MAEMO
   #ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   signal_realize().connect(sigc::mem_fun(*this, &Box_Data_Portal::on_realize));

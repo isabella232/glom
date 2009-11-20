@@ -316,7 +316,7 @@ void Dialog_Layout_Details::add_group(const Gtk::TreeModel::iterator& parent, co
   }
 }
 
-void Dialog_Layout_Details::set_document(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields)
+void Dialog_Layout_Details::set_document(Document::LayoutName layout_name, const Glib::ustring& layout_platform, Document* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields)
 {
   m_modified = false;
 

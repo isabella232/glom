@@ -198,13 +198,19 @@ public:
 
   typedef std::vector< sharedptr<LayoutGroup> > type_list_layout_groups;
 
+  enum LayoutName
+  {
+    LAYOUT_LIST,
+    LAYOUT_DETAILS,
+  };
+
   /** Get the layout groups for a layout.
    * @param layout_name The name of the layout, such as list or details.
    * @param parent_table_name The name of the table for which this layout should appear.
    * @param layout_platform The platform for which this layout should be used. Possible values are an empty string (meaning normal platforms) or "maemo" meaning "normal". 
    * @result A list of layout groups at the top-level of the requested layout.
    */
-  type_list_layout_groups get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform = Glib::ustring()) const;
+  type_list_layout_groups get_data_layout_groups(LayoutName layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform = Glib::ustring()) const;
 
   /** Discover whether there are any fields in the layout.
    * @param layout_name The name of the layout, such as list or details.
@@ -212,7 +218,7 @@ public:
    * @param layout_platform The platform for which this layout should be used. Possible values are an empty string (meaning normal platforms) or "maemo" meaning "normal". 
    * @result true if there is at least one field in the layout group or its sub groups.
    */
-  bool get_data_layout_groups_have_any_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform = Glib::ustring()) const;
+  bool get_data_layout_groups_have_any_fields(LayoutName layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform = Glib::ustring()) const;
 
   /** Set the layout groups for a layout.
    * @param layout_name The name of the layout, such as list or details.
@@ -220,16 +226,16 @@ public:
    * @param layout_platform The platform for which this layout should be used. Possible values are an empty string (meaning normal platforms) or "maemo" meaning "normal". 
    * @param groups A list of layout groups at the top-level of the requested layout.
    */
-  void set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform, const type_list_layout_groups& groups);
+  void set_data_layout_groups(LayoutName layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform, const type_list_layout_groups& groups);
 
   /**
-   * @para The layout_name, such as "details", "list".
+   * @para The layout_name, such as details, list.
    * @para parent_table_name The name of the table on whose layout the layout appears.
    * @param layout_platform The platform for which this layout should be used. Possible values are an empty string (meaning normal platforms) or "maemo" meaning "normal". 
    */
-  type_list_layout_groups get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform = Glib::ustring()) const;
+  type_list_layout_groups get_data_layout_groups_plus_new_fields(LayoutName layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform = Glib::ustring()) const;
 
-  type_list_layout_groups get_data_layout_groups_default(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform = Glib::ustring()) const;
+  type_list_layout_groups get_data_layout_groups_default(LayoutName layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform = Glib::ustring()) const;
 
   typedef std::list< sharedptr<TranslatableItem> > type_list_translatables;
   type_list_translatables get_translatable_layout_items(const Glib::ustring& table_name);
@@ -323,9 +329,9 @@ public:
   sharedptr<PrintLayout> get_print_layout(const Glib::ustring& table_name, const Glib::ustring& print_layout_name) const;
   void remove_print_layout(const Glib::ustring& table_name, const Glib::ustring& print_layout_name);
 
-  void set_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name, const Gnome::Gda::Value& primary_key_value);
+  void set_layout_record_viewed(const Glib::ustring& table_name, LayoutName layout_name, const Gnome::Gda::Value& primary_key_value);
   void forget_layout_record_viewed(const Glib::ustring& table_name);
-  Gnome::Gda::Value get_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name) const;
+  Gnome::Gda::Value get_layout_record_viewed(const Glib::ustring& table_name, LayoutName layout_name) const;
 
   //TODO: Rename set_layout_current() and set_criteria_current().
 
@@ -333,9 +339,9 @@ public:
    * so we can show the same layout when navigating back to this table later.
    * 
    * @param table_name The table.
-   * @param layout_name The layout name, such as "list" or "details".
+   * @param layout_name The layout name, such as list" or details.
    */
-  void set_layout_current(const Glib::ustring& table_name, const Glib::ustring& layout_name);
+  void set_layout_current(const Glib::ustring& table_name, LayoutName layout_name);
 
   /** Temporarily save (but not in the document) the last-viewed criteria for the table,
    * so we can show the same criteria (sort order, where clause) when navigating back to this table later.
@@ -345,7 +351,7 @@ public:
    */
   void set_criteria_current(const Glib::ustring& table_name,const FoundSet& found_set);
 
-  Glib::ustring get_layout_current(const Glib::ustring& table_name) const;
+  LayoutName get_layout_current(const Glib::ustring& table_name) const;
 
   FoundSet get_criteria_current(const Glib::ustring& table_name) const;
 
@@ -508,7 +514,11 @@ private:
   class LayoutInfo
   {
   public:
-    Glib::ustring m_layout_name;
+    LayoutInfo()
+      : m_layout_name(LAYOUT_LIST)
+    {}
+
+    LayoutName m_layout_name;
     Glib::ustring m_layout_platform; //Empty string (meaning normal platforms), or "maemo", or something else.
     Glib::ustring m_parent_table;
 
@@ -519,7 +529,8 @@ private:
   {
   public:
     DocumentTableInfo()
-      : m_overviewx ( std::numeric_limits<float>::infinity () ),
+      : m_layout_current(LAYOUT_LIST),
+        m_overviewx ( std::numeric_limits<float>::infinity () ),
         m_overviewy ( std::numeric_limits<float>::infinity () )
     {
       m_info = sharedptr<TableInfo>(new TableInfo()); //Avoid a null sharedptr.
@@ -579,9 +590,9 @@ private:
     type_example_rows m_example_rows;
 
     //Per-session, not saved in document:
-    typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_layout_primarykeys;
+    typedef std::map<LayoutName, Gnome::Gda::Value> type_map_layout_primarykeys;
     type_map_layout_primarykeys m_map_current_record; //The record last viewed in each layout.
-    Glib::ustring m_layout_current;
+    LayoutName m_layout_current;
     FoundSet m_foundset_current;
     
     float m_overviewx, m_overviewy;

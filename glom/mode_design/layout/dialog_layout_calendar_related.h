@@ -37,14 +37,13 @@ public:
   virtual ~Dialog_Layout_Calendar_Related();
 
   /**
-   * @param layout "list" or "details"
    * @param document The document, so that the dialog can load the previous layout, and save changes.
    * @param table_name The table name.
    * @param table_fields: The actual fields in the table, in case the document does not yet know about them all.
    */
-  virtual void set_document(const Glib::ustring& layout, const Glib::ustring& layout_platform, Document* document, const sharedptr<const LayoutItem_CalendarPortal>& portal);
+  void set_document(Document* document, const sharedptr<const LayoutItem_CalendarPortal>& portal);
 
-  virtual void set_document(const Glib::ustring& layout, const Glib::ustring& layout_platform, Document* document, const Glib::ustring& parent_table);
+  void set_document(Document* document, const Glib::ustring& parent_table);
 
   virtual void update_ui(bool including_relationships_list = true);
 

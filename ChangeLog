@@ -1,3 +1,32 @@
+2009-11-20  Murray Cumming  <murrayc@murrayc.com>
+
+	Use an enum for list/details instead of a string.
+
+	* glom/libglom/document/document.[h|cc]: Add a LayoutName enum and 
+	use it, for instance in get_data_layout_groups(), instead of using a 
+	string that contains either "list" or "details".
+	* glom/mode_design/layout/dialog_layout_calendar_related.[h|cc]:
+	* glom/mode_design/layout/dialog_layout_details.[h|cc]:
+	* glom/mode_design/layout/dialog_layout_list_related.[h|cc]:
+	set_document(): Don't take the layout name or layout platform as 
+	parameter because these only make sense for whole layouts.
+	This method should probably not be virtual. 
+	* glom/application.cc:
+	* glom/frame_glom.cc:
+	* glom/libglom/test_document.cc:
+	* glom/mode_data/box_data.[h|cc]:
+	* glom/mode_data/box_data_calendar_related.cc:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_list_related.cc:
+	* glom/mode_data/box_data_manyrecords.cc:
+	* glom/mode_data/box_data_portal.cc:
+	* glom/mode_data/notebook_data.cc:
+	* glom/mode_design/layout/dialog_layout.[h|cc]:
+	* glom/mode_design/users/dialog_groups_list.h:
+	* glom/mode_design/users/dialog_user.h:
+	* glom/print_layout/canvas_print_layout.cc: Adapted.
+
 2009-11-17  Murray Cumming  <murrayc@murrayc.com>
 
 	tests: dtd: Now passes.

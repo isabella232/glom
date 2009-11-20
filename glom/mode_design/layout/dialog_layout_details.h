@@ -34,13 +34,13 @@ public:
   virtual ~Dialog_Layout_Details();
 
   /**
-   * @param layout_name "list" or "details"
+   * @param layout_name list or details
    * @param layout_platform As in the document. Empty or "maemo".
    * @param document The document, so that the dialog can load the previous layout, and save changes.
    * @param table_name The table name.
    * @param table_fields: The actual fields in the table, in case the document does not yet know about them all.
    */
-  virtual void set_document(const Glib::ustring& layout_name, const Glib::ustring& layout_platform, Document* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields);
+  virtual void set_document(Document::LayoutName layout_name, const Glib::ustring& layout_platform, Document* document, const Glib::ustring& table_name, const type_vecLayoutFields& table_fields);
 
 protected:
 

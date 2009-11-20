@@ -69,7 +69,7 @@ public:
   void show_layout_dialog();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  Glib::ustring get_layout_name() const;
+  Document::LayoutName get_layout_name() const;
 
   //Signals:
 
@@ -103,7 +103,7 @@ protected:
 
   /** Get the layout groups, with the Field information filled in.
    */
-  Document::type_list_layout_groups get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& layout_platform);
+  Document::type_list_layout_groups get_data_layout_groups(Document::LayoutName layout_name, const Glib::ustring& layout_platform);
   void fill_layout_group_field_info(const sharedptr<LayoutGroup>& group, const Privileges& table_privs);
 
   void execute_button_script(const sharedptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key_value);
@@ -127,8 +127,9 @@ protected:
   Dialog_Layout* m_pDialogLayout;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  /// "details" or "list", as specified in the Document's XML.
-  Glib::ustring m_layout_name;
+  //TODO: Move this somewhere higher? It is only meaningful for whole layouts.
+  /// details or list, as specified in the Document's XML.
+  Document::LayoutName m_layout_name;
 
   /// Empty string or "maemo" as specified in the Document's XML.
   Glib::ustring m_layout_platform;

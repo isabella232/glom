@@ -53,7 +53,7 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   , m_design_mode(false)
 #endif
 {
-  m_layout_name = "details";
+  m_layout_name = Document::LAYOUT_DETAILS;
 
   add_view(&m_FlowTable); //Allow this to access the document too.
 

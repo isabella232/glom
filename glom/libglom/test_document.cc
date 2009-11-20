@@ -147,12 +147,12 @@ int main()
 
     //Show the layouts for this table:
     const Glom::Document::type_list_layout_groups layout_list = 
-      document.get_data_layout_groups("list", table_name);
+      document.get_data_layout_groups(Document::LAYOUT_LIST, table_name);
     std::cout << "  Layout: List:" << std::endl;
     print_layout(layout_list);
     
     const Glom::Document::type_list_layout_groups layout_details = 
-      document.get_data_layout_groups("details", table_name);
+      document.get_data_layout_groups(Document::LAYOUT_DETAILS, table_name);
     std::cout << "  Layout: Details:" << std::endl;
     print_layout(layout_details);
   }

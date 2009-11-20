@@ -219,7 +219,7 @@ template<class T_Element>
 class predicate_Layout
 {
 public:
-  predicate_Layout(const Glib::ustring& parent_table, const Glib::ustring& layout_name, const Glib::ustring& layout_platform)
+  predicate_Layout(const Glib::ustring& parent_table, Document::LayoutName layout_name, const Glib::ustring& layout_platform)
   : m_parent_table(parent_table),
     m_layout_name(layout_name),
     m_layout_platform(layout_platform)
@@ -234,7 +234,9 @@ public:
   }
 
 private:
-  Glib::ustring m_parent_table, m_layout_name, m_layout_platform;
+  Glib::ustring m_parent_table;
+  Document::LayoutName m_layout_name;
+  Glib::ustring m_layout_platform;
 };
 
 
@@ -1416,7 +1418,7 @@ void Document::fill_layout_field_details(const Glib::ustring& parent_table_name,
   }
 }
 
-Document::type_list_layout_groups Document::get_data_layout_groups_default(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& /* layout_platform */) const
+Document::type_list_layout_groups Document::get_data_layout_groups_default(LayoutName layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& /* layout_platform */) const
 {
   type_list_layout_groups result;
 
@@ -1431,7 +1433,7 @@ Document::type_list_layout_groups Document::get_data_layout_groups_default(const
   result.push_back(group);
   pTopLevel = group;
 
-  if(layout_name == "details") //The Details default layout is a bit more complicated.
+  if(layout_name == Document::LAYOUT_DETAILS) //The Details default layout is a bit more complicated.
   {
     sharedptr<LayoutGroup> overview = sharedptr<LayoutGroup>::create();;
     overview->set_name("overview");
@@ -1497,13 +1499,13 @@ Document::type_list_layout_groups Document::get_data_layout_groups_default(const
   return result;
 }
 
-Document::type_list_layout_groups Document::get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform) const
+Document::type_list_layout_groups Document::get_data_layout_groups_plus_new_fields(LayoutName layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform) const
 {
   type_list_layout_groups result = get_data_layout_groups(layout_name, parent_table_name, layout_platform);
 
   //If there are no fields in the layout, then add a default:
   bool create_default = false;
-  if(result.empty() && !layout_name.empty())
+  if(result.empty())
   {
     //Fall back to a general layout instead of one for a specific platform:
     result = get_data_layout_groups(layout_name, parent_table_name, Glib::ustring());
@@ -1529,7 +1531,7 @@ Document::type_list_layout_groups Document::get_data_layout_groups_plus_new_fiel
         if(!layout_group)
           continue;
         
-        if(layout_name == "list")
+        if(layout_name == Document::LAYOUT_LIST)
         {
           //Don't try to show more than 3 items on the list view:
           if(layout_group->get_items_count() >= 2)
@@ -1550,7 +1552,7 @@ Document::type_list_layout_groups Document::get_data_layout_groups_plus_new_fiel
   return result;  
 }
 
-Document::type_list_layout_groups Document::get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform) const
+Document::type_list_layout_groups Document::get_data_layout_groups(LayoutName layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform) const
 {
   //std::cout << "DEBUG: Document::get_data_layout_groups(): layout_name=" << layout_name << ", parent_table_name=" << parent_table_name << ", layout_platform=" << layout_platform << std::endl;
 
@@ -1570,7 +1572,7 @@ Document::type_list_layout_groups Document::get_data_layout_groups(const Glib::u
   return type_list_layout_groups(); //not found
 }
 
-bool Document::get_data_layout_groups_have_any_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform) const
+bool Document::get_data_layout_groups_have_any_fields(LayoutName layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform) const
 {
   //TODO_Performance: This could make the response to some button slow, such as the Add button, which does a check for this.
   type_list_layout_groups layout_groups = get_data_layout_groups(layout_name, parent_table_name, layout_platform);
@@ -1584,7 +1586,7 @@ bool Document::get_data_layout_groups_have_any_fields(const Glib::ustring& layou
   return false;
 }
 
-void Document::set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform, const type_list_layout_groups& groups)
+void Document::set_data_layout_groups(LayoutName layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform, const type_list_layout_groups& groups)
 {
   //std::cout << "DEBUG: Document::set_data_layout_groups(): layout_name=" << layout_name << ", parent_table_name=" << parent_table_name << ", layout_platform=" << layout_platform << std::endl;
   const Glib::ustring child_table_name = parent_table_name; //TODO: Remove this cruft.
@@ -2639,7 +2641,8 @@ bool Document::load_after(int& failure_code)
               xmlpp::Element* node = dynamic_cast<xmlpp::Element*>(*iter);
               if(node)
               {
-                const Glib::ustring layout_name = get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
+                const Glib::ustring layout_name_str = get_node_attribute_value(node, GLOM_ATTRIBUTE_NAME);
+                const LayoutName layout_name = (layout_name_str == "list" ? LAYOUT_LIST : LAYOUT_DETAILS);   
                 const Glib::ustring layout_platform = get_node_attribute_value(node, GLOM_ATTRIBUTE_LAYOUT_PLATFORM);
 
                 Glib::ustring parent_table = get_node_attribute_value(node, GLOM_ATTRIBUTE_PARENT_TABLE_NAME);
@@ -3455,7 +3458,8 @@ bool Document::save_before()
         for(DocumentTableInfo::type_layouts::const_iterator iter = doctableinfo.m_layouts.begin(); iter != doctableinfo.m_layouts.end(); ++iter)
         {
           xmlpp::Element* nodeLayout = nodeDataLayouts->add_child(GLOM_NODE_DATA_LAYOUT);
-          set_node_attribute_value(nodeLayout, GLOM_ATTRIBUTE_NAME, iter->m_layout_name);
+          const Glib::ustring layout_name_str = (iter->m_layout_name == LAYOUT_LIST ? "list" : "details");
+          set_node_attribute_value(nodeLayout, GLOM_ATTRIBUTE_NAME, layout_name_str);
           set_node_attribute_value(nodeLayout, GLOM_ATTRIBUTE_LAYOUT_PLATFORM, iter->m_layout_platform);
           set_node_attribute_value(nodeLayout, GLOM_ATTRIBUTE_PARENT_TABLE_NAME, iter->m_parent_table);
 
@@ -3859,7 +3863,7 @@ void Document::forget_layout_record_viewed(const Glib::ustring& table_name)
   }
 }
 
-void Document::set_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name, const Gnome::Gda::Value& primary_key_value)
+void Document::set_layout_record_viewed(const Glib::ustring& table_name, LayoutName layout_name, const Gnome::Gda::Value& primary_key_value)
 {
   type_tables::iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
@@ -3868,7 +3872,7 @@ void Document::set_layout_record_viewed(const Glib::ustring& table_name, const G
   }
 }
 
-Gnome::Gda::Value Document::get_layout_record_viewed(const Glib::ustring& table_name, const Glib::ustring& layout_name) const
+Gnome::Gda::Value Document::get_layout_record_viewed(const Glib::ustring& table_name, LayoutName layout_name) const
 {
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
@@ -3882,7 +3886,7 @@ Gnome::Gda::Value Document::get_layout_record_viewed(const Glib::ustring& table_
   return Gnome::Gda::Value(); //not found.
 }
 
-void Document::set_layout_current(const Glib::ustring& table_name, const Glib::ustring& layout_name)
+void Document::set_layout_current(const Glib::ustring& table_name, LayoutName layout_name)
 {
   type_tables::iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
@@ -3902,7 +3906,7 @@ void Document::set_criteria_current(const Glib::ustring& table_name, const Found
   }
 }
 
-Glib::ustring Document::get_layout_current(const Glib::ustring& table_name) const
+Document::LayoutName Document::get_layout_current(const Glib::ustring& table_name) const
 {
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
@@ -3911,7 +3915,7 @@ Glib::ustring Document::get_layout_current(const Glib::ustring& table_name) cons
     return table_info.m_layout_current;
   }
 
-  return Glib::ustring(); //not found.
+  return LAYOUT_LIST; //A sensible default.
 }
 
 FoundSet Document::get_criteria_current(const Glib::ustring& table_name) const
@@ -4211,7 +4215,7 @@ void Document::maemo_restrict_layouts_to_single_column()
       {
         sharedptr<LayoutGroup> group = *iterGroups;
         
-        if(layout_info.m_layout_name == "list")
+        if(layout_info.m_layout_name == Document::LAYOUT_LIST)
         {
           //Don't try to show more than 2 items on the list view:
           //TODO: This is rather harsh. murrayc

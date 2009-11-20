@@ -40,7 +40,7 @@ public:
   virtual void load_from_document();
 
   /**
-   * @param layout "list" or "details"
+   * @param layout list or details
    * @param document The document, so that the dialog can load the previous layout, and save changes.
    * @param table_name The table name.
    * @param table_fields: The actual fields in the table, in case the document does not yet know about them all.

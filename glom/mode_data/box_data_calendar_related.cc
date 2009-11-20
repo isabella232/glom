@@ -50,8 +50,6 @@ Box_Data_Calendar_Related::Box_Data_Calendar_Related()
   setup_menu();
   //m_calendar.add_events(Gdk::BUTTON_PRESS_MASK); //Allow us to catch button_press_event and button_release_event
   m_calendar.signal_button_press_event().connect_notify( sigc::mem_fun(*this, &Box_Data_Calendar_Related::on_calendar_button_press_event) );
-
-  m_layout_name = "list_related_calendar"; //TODO: We need a unique name when 2 portals use the same table.
 }
 
 Box_Data_Calendar_Related::~Box_Data_Calendar_Related()
@@ -377,11 +375,11 @@ void Box_Data_Calendar_Related::prepare_layout_dialog(Dialog_Layout* dialog)
   sharedptr<LayoutItem_CalendarPortal> derived_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(m_portal);
   if(derived_portal && derived_portal->get_has_relationship_name())
   {
-    related_dialog->set_document(m_layout_name, m_layout_platform, get_document(), derived_portal);
+    related_dialog->set_document(get_document(), derived_portal);
   }
   else
   {
-    related_dialog->set_document(m_layout_name, m_layout_platform, get_document(), m_parent_table);
+    related_dialog->set_document(get_document(), m_parent_table);
   }
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY

@@ -40,8 +40,9 @@ namespace Glom
 Box_Data::Box_Data()
 : m_Button_Find(Gtk::Stock::FIND)
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  ,m_pDialogLayout(0)
+  ,m_pDialogLayout(0),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+   m_layout_name(Document::LAYOUT_LIST) //Arbitrary default.
 {
   m_bUnstoredData = false;
 
@@ -246,7 +247,7 @@ Box_Data::type_vecLayoutFields Box_Data::get_table_fields_to_show(const Glib::us
     return type_vecLayoutFields();
 }
 
-Document::type_list_layout_groups Box_Data::get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& layout_platform)
+Document::type_list_layout_groups Box_Data::get_data_layout_groups(Document::LayoutName layout_name, const Glib::ustring& layout_platform)
 {
   Document::type_list_layout_groups layout_groups;
 
@@ -345,7 +346,7 @@ void Box_Data::print_layout()
   dialog.run();
 }
 
-Glib::ustring Box_Data::get_layout_name() const
+Document::LayoutName Box_Data::get_layout_name() const
 {
   return m_layout_name;
 }
