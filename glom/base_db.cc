@@ -1087,16 +1087,16 @@ Gnome::Gda::Value Base_DB::auto_increment_insert_first_if_necessary(const Glib::
   
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = 
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
-  builder->add_field(builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME ".next_value"));
+  builder->select_add_field("next_value", GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
   builder->select_add_target(builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME));
   builder->set_where(
     builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_AND,
       builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
         builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME),
-        builder->add_expr(Gnome::Gda::Value(table_name))),
+        builder->add_expr(table_name)),
       builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
         builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME),
-        builder->add_expr(Gnome::Gda::Value(field_name)))));
+        builder->add_expr(field_name))));
   
   const Glib::RefPtr<const Gnome::Gda::DataModel> datamodel = query_execute_select(builder);
   if(!datamodel || (datamodel->get_n_rows() == 0))
@@ -1107,12 +1107,9 @@ Gnome::Gda::Value Base_DB::auto_increment_insert_first_if_necessary(const Glib::
     //Insert the row if it's not there.
     builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_INSERT);
     builder->set_table(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
-    builder->add_field(builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME),
-      builder->add_expr(Gnome::Gda::Value(table_name)));
-    builder->add_field(builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME),
-      builder->add_expr(Gnome::Gda::Value(field_name)));
-    builder->add_field(builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE),
-      builder->add_expr(Gnome::Gda::Value(0)));
+    builder->add_field_value(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME, table_name);
+    builder->add_field_value(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME, field_name);
+    builder->add_field_value(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE, 0);
 
     const bool test = query_execute(builder);
     if(!test)
@@ -1151,7 +1148,7 @@ void Base_DB::recalculate_next_auto_increment_value(const Glib::ustring& table_n
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   std::list<guint> args;
   args.push_back(builder->add_id(table_name + "." + field_name));
-  builder->add_field(builder->add_function("MAX", args));
+  builder->add_field_id(builder->add_function("MAX", args));
   builder->select_add_target(builder->add_id(table_name));
   
   Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(builder);
@@ -1173,15 +1170,14 @@ void Base_DB::recalculate_next_auto_increment_value(const Glib::ustring& table_n
     builder.reset();
     builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
     builder->set_table(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
-    builder->add_field(builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE),
-                       builder->add_expr(Gnome::Gda::Value(next_value)));
+    builder->add_field_value_as_value(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE, next_value);
     builder->set_where(builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_AND,
                                          builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
                                                            builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME),
-                                                           builder->add_expr(Gnome::Gda::Value(table_name))),
+                                                           builder->add_expr(table_name)),
                                          builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
                                                            builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME),
-                                                           builder->add_expr(Gnome::Gda::Value(field_name)))));
+                                                           builder->add_expr(field_name))));
         
     const bool test = query_execute(builder);
     if(!test)
@@ -1203,15 +1199,14 @@ Gnome::Gda::Value Base_DB::get_next_auto_increment_value(const Glib::ustring& ta
 
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
   builder->set_table(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
-  builder->add_field(builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE),
-                     builder->add_expr(next_value));
+  builder->add_field_value_as_value(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE, next_value);
   builder->set_where(builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_AND,
                                        builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
                                                          builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME),
-                                                         builder->add_expr(Gnome::Gda::Value(table_name))),
+                                                         builder->add_expr(table_name)),
                                        builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
                                                          builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME),
-                                                         builder->add_expr(Gnome::Gda::Value(field_name)))));  
+                                                         builder->add_expr(field_name))));  
   const bool test = query_execute(builder);
   if(!test)
     std::cerr << "Base_DB::get_next_auto_increment_value(): Increment failed." << std::endl;
@@ -1235,27 +1230,18 @@ SystemPrefs Base_DB::get_database_preferences() const
 
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = 
         Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
-  builder->add_field(
-      builder->add_id(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "." GLOM_STANDARD_TABLE_PREFS_FIELD_NAME));
-  builder->add_field(
-      builder->add_id(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "." GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_NAME));
-  builder->add_field(
-      builder->add_id(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "." GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET));
-  builder->add_field(
-      builder->add_id(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "." GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2));
-  builder->add_field(
-      builder->add_id(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "." GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN));
-  builder->add_field(
-      builder->add_id(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "." GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY));
-  builder->add_field(
-      builder->add_id(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "." GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY));
-  builder->add_field(
-      builder->add_id(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "." GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE));
+  builder->select_add_field(GLOM_STANDARD_TABLE_PREFS_FIELD_NAME, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
+  builder->select_add_field(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_NAME, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
+  builder->select_add_field(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
+  builder->select_add_field(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
+  builder->select_add_field(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
+  builder->select_add_field(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
+  builder->select_add_field(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
+  builder->select_add_field(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
       
-  if (optional_org_logo)
+  if(optional_org_logo)
   {
-    builder->add_field(
-      builder->add_id(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "." GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO));
+    builder->select_add_field(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
   }
   
   builder->select_add_target(builder->add_id(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME));
@@ -1359,8 +1345,7 @@ bool Base_DB::add_standard_tables() const
         //Add the single record:
         Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_INSERT);
         builder->set_table(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
-        builder->add_field(builder->add_id(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME),
-                           builder->add_expr(Gnome::Gda::Value(1)));
+        builder->add_field_value(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME, 1);
         const bool test = query_execute(builder);
         if(!test)
           std::cerr << "Base_DB::add_standard_tables(): INSERT failed." << std::endl;
@@ -1371,11 +1356,10 @@ bool Base_DB::add_standard_tables() const
         {
           Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
           builder->set_table(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
-          builder->add_field(builder->add_id(GLOM_STANDARD_TABLE_PREFS_FIELD_NAME),
-                             builder->add_expr(Gnome::Gda::Value(system_name)));
+          builder->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_NAME, system_name);
           builder->set_where(builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ, 
                                                builder->add_id(GLOM_STANDARD_TABLE_PREFS_FIELD_ID),
-                                               builder->add_expr(Gnome::Gda::Value(1))));
+                                               builder->add_expr(1)));
           const bool test = query_execute(builder);
           if(!test)
             std::cerr << "Base_DB::add_standard_tables(): UPDATE failed." << std::endl;
@@ -1542,28 +1526,20 @@ void Base_DB::set_database_preferences(const SystemPrefs& prefs)
 
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
   builder->set_table(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
-  builder->add_field(builder->add_id(GLOM_STANDARD_TABLE_PREFS_FIELD_NAME),
-                     builder->add_expr(Gnome::Gda::Value(prefs.m_name)));
-  builder->add_field(builder->add_id(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET),
-                     builder->add_expr(Gnome::Gda::Value(prefs.m_org_address_street)));
-  builder->add_field(builder->add_id(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2),
-                     builder->add_expr(Gnome::Gda::Value(prefs.m_org_address_street2)));
-  builder->add_field(builder->add_id(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN),
-                     builder->add_expr(Gnome::Gda::Value(prefs.m_org_address_town)));
-  builder->add_field(builder->add_id(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY),
-                     builder->add_expr(Gnome::Gda::Value(prefs.m_org_address_county)));
-  builder->add_field(builder->add_id(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY),
-                     builder->add_expr(Gnome::Gda::Value(prefs.m_org_address_country)));
-  builder->add_field(builder->add_id(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE),
-                     builder->add_expr(Gnome::Gda::Value(prefs.m_org_address_postcode)));
+  builder->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_NAME, prefs.m_name);
+  builder->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET, prefs.m_org_address_street);
+  builder->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2, prefs.m_org_address_street2);
+  builder->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN, prefs.m_org_address_town);
+  builder->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY, prefs.m_org_address_county);
+  builder->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY, prefs.m_org_address_country);
+  builder->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE, prefs.m_org_address_postcode);
   if(get_field_exists_in_database(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME, GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO))
   {
-    builder->add_field(builder->add_id(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO),
-                       builder->add_expr(Gnome::Gda::Value(prefs.m_org_logo)));
+    builder->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO, prefs.m_org_logo);
   } 
   builder->set_where(builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
                                        builder->add_id(GLOM_STANDARD_TABLE_PREFS_FIELD_ID),
-                                       builder->add_expr(Gnome::Gda::Value(1))));
+                                       builder->add_expr(1)));
   bool test = false;
   test = query_execute(builder);
 
@@ -2005,8 +1981,7 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
         break;
       }
 
-      builder->add_field(builder->add_id(field->get_name()),
-                         builder->add_expr(Gnome::Gda::Value(row_data[i])));
+      builder->add_field_value_as_value(field->get_name(), row_data[i]);
     }
     insert_succeeded = query_execute(builder);
     if(!insert_succeeded)
@@ -2626,7 +2601,7 @@ void Base_DB::calculate_field_in_all_records(const Glib::ustring& table_name, co
 
   //Get primary key values for every record:
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
-  builder->add_field(builder->add_id(table_name + "." + primary_key->get_name()));
+  builder->select_add_field(primary_key->get_name(), table_name);
   builder->select_add_target(builder->add_id(table_name));
     
   Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(builder);
@@ -2928,11 +2903,10 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
   { 
     Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
     builder->set_table(field_in_record.m_table_name);
-    builder->add_field(builder->add_id(field_in_record.m_field->get_name()),
-                       builder->add_expr(field_value));
+    builder->add_field_value_as_value(field_in_record.m_field->get_name(), field_value);
     builder->set_where(builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
                                          builder->add_id(field_in_record.m_key->get_name()),
-                                         builder->add_expr(field_in_record.m_key_value)));
+                                         builder->add_expr_as_value(field_in_record.m_key_value)));
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try //TODO: The exceptions are probably already handled by query_execute(0.

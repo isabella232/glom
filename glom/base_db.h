@@ -36,6 +36,9 @@
 #include <libglom/document/bakery/view/view.h>
 #include <glom/bakery/busy_cursor.h>
 
+#include <libgdamm/set.h>
+#include <libgdamm/sqlbuilder.h>
+
 namespace Glom
 {
 

@@ -1,3 +1,9 @@
+2009-12-02  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix the build.
+
+	* glom/base_db.[h|cc]: Correct the use of Gda::SqlBuilder for the latest API.
+
 2009-10-25  Murray Cumming  <murrayc@murrayc.com>
 
 	BaseDb::query_execute*(): Const corrections.
