@@ -1,3 +1,11 @@
+2009-12-03  Murray Cumming  <murrayc@murrayc.com>
+
+	Allow use of example documents that mention an unsupported backend.
+
+	* glom/application.cc: check_document_hosting_mode_is_supported():
+	Don't check the backend if it is an example document because the user 
+	will choose it when saving anyway.
+
 2009-11-17  Murray Cumming  <murrayc@murrayc.com>
 
 	tests: dtd: Now passes.

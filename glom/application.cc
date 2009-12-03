@@ -892,6 +892,11 @@ void App_Glom::init_create_document()
 
 bool App_Glom::check_document_hosting_mode_is_supported(Document* document)
 {
+  //If it's an example then the document's hosting mode doesn't matter, 
+  //because the user will be asked to choose one when saving anyway.
+  if(document->get_is_example_file())
+    return true;
+
   //Check that the file's hosting mode is supported by this build:
   Glib::ustring error_message;
   switch(document->get_hosting_mode())
