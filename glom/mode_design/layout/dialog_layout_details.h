@@ -58,6 +58,13 @@ protected:
   Gtk::TreeModel::iterator get_selected_group_parent() const;
   sharedptr<LayoutItem_Button> offer_button_script_edit(const sharedptr<const LayoutItem_Button>& button);
 
+  /** Get the table that the fields belong to.
+   * This is usually the regular table name (m_table_name),
+   * but for related records portals (Dialog_Layout_List_Related),
+   * it's the to table of the relationship.
+   */
+  virtual Glib::ustring get_fields_table() const;
+
   //signal handlers:
   void on_button_up();
   void on_button_down();

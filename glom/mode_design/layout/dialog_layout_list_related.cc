@@ -478,6 +478,13 @@ void Dialog_Layout_List_Related::on_button_edit()
   }
 }
 
+Glib::ustring Dialog_Layout_List_Related::get_fields_table() const
+{
+  if(!m_portal)
+    return Glib::ustring();
+
+  return m_portal->get_table_used(m_table_name);
+}
 
 } //namespace Glom
 

@@ -944,7 +944,7 @@ void Dialog_Layout_Details::on_button_field_formatting()
       sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
       if(field)
       {
-        sharedptr<LayoutItem_Field> chosenitem = offer_field_formatting(field, m_table_name, this);
+        sharedptr<LayoutItem_Field> chosenitem = offer_field_formatting(field, get_fields_table(), this);
         if(chosenitem)
         {
           *field = *chosenitem; //TODO_Performance.
@@ -1426,6 +1426,12 @@ void Dialog_Layout_Details::on_treeview_cell_edited_group_columns(const Glib::us
       m_modified = true;
     }
   }
+}
+
+
+Glib::ustring Dialog_Layout_Details::get_fields_table() const
+{
+  return m_table_name;
 }
 
 } //namespace Glom

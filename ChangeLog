@@ -1,5 +1,19 @@
 2009-12-03  Murray Cumming  <murrayc@murrayc.com>
 
+	Related Records layout: Field formatting: Choices: Fix related choices.
+
+	* glom/mode_design/layout/dialog_layout_details.[h|cc]
+	* glom/mode_design/layout/dialog_layout_list_related.[h|cc]:
+	Add virtual get_fields_table() and use this in 
+	on_button_field_formatting() so that the formatting dialog shows 
+	relationships for the to table instead of the parent table, when 
+	editing formatting for a field in a related records portal.
+	Bug noticed by Michael Hasselmann and Andrew Ruthven.
+	* glom/mode_design/layout/layout_item_dialogs/dialog_field_layout.c:
+	Removed some debug output.
+
+2009-12-03  Murray Cumming  <murrayc@murrayc.com>
+
 	Allow use of example documents that mention an unsupported backend.
 
 	* glom/application.cc: check_document_hosting_mode_is_supported():
