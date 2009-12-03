@@ -179,7 +179,6 @@ void ComboBox_Fields::set_fields(const type_vec_fields& fields, bool with_none_i
     tree_iter = m_model->append();
     row = *tree_iter;
 
-    std::cout << "DEBUG: ComboBox_Fields::set_fields(): adding none item." << std::endl;
     row[m_model_columns.m_field] = sharedptr<Field>(); 
     row[m_model_columns.m_separator] = true;
   }
