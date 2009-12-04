@@ -1088,7 +1088,7 @@ Gnome::Gda::Value Base_DB::auto_increment_insert_first_if_necessary(const Glib::
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = 
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder->select_add_field("next_value", GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
-  builder->select_add_target(builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME));
+  builder->select_add_target(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
   builder->set_where(
     builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_AND,
       builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
@@ -1149,7 +1149,7 @@ void Base_DB::recalculate_next_auto_increment_value(const Glib::ustring& table_n
   std::list<guint> args;
   args.push_back(builder->add_id(table_name + "." + field_name));
   builder->add_field_id(builder->add_function("MAX", args));
-  builder->select_add_target(builder->add_id(table_name));
+  builder->select_add_target(table_name);
   
   Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(builder);
   if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
@@ -1244,7 +1244,7 @@ SystemPrefs Base_DB::get_database_preferences() const
     builder->select_add_field(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
   }
   
-  builder->select_add_target(builder->add_id(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME));
+  builder->select_add_target(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
   
   int attempts = 0;
   while(attempts < 2)
@@ -2602,7 +2602,7 @@ void Base_DB::calculate_field_in_all_records(const Glib::ustring& table_name, co
   //Get primary key values for every record:
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder->select_add_field(primary_key->get_name(), table_name);
-  builder->select_add_target(builder->add_id(table_name));
+  builder->select_add_target(table_name);
     
   Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(builder);
   if(!data_model || !data_model->get_n_rows() || !data_model->get_n_columns())

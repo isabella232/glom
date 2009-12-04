@@ -1,3 +1,10 @@
+2009-12-04  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix the build.
+
+	* glom/base_db.cc.[h|cc]: Use the newer simpler 
+	SqlBuilder::select_add_target() method.
+
 2009-12-02  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix the build.
