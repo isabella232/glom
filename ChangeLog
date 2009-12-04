@@ -1,5 +1,14 @@
 2009-12-04  Murray Cumming  <murrayc@murrayc.com>
 
+	Field Definitions: Default value: Fix crash when selecting a date.
+
+	* glom/utility_widgets/datawidget.cc: offer_field_list(), 
+	offer_field_layout(), offer_related_record_id_find(): Avoid crashes 
+	caused by calling set_transient_for() with a null parent window, 
+	for instance from the field definitions dialog.
+
+2009-12-04  Murray Cumming  <murrayc@murrayc.com>
+
 	Field Definitions: Show default value widget for date fields.
 
 	* glom/utility_widgets/datawidget.cc: Constructor: show the 
