@@ -17,7 +17,7 @@
  * Returns: 0 on success, -1 on error.
  */
 int
-pygda_value_from_pyobject(GValue *boxed, PyObject *input)
+glom_pygda_value_from_pyobject(GValue *boxed, PyObject *input)
 {
     /* Use an appropriate gda_value_set_*() function.
        We can not know what GValue type is actually wanted, so
@@ -88,7 +88,7 @@ pygda_value_from_pyobject(GValue *boxed, PyObject *input)
  * Returns: a PyObject representing the value.
  */
 PyObject *
-pygda_value_as_pyobject(const GValue *boxed, gboolean copy_boxed)
+glom_pygda_value_as_pyobject(const GValue *boxed, gboolean copy_boxed)
 {
     copy_boxed = FALSE; //Just to avoid the "unused paramter" and "parameter name omitted" warnings.
 

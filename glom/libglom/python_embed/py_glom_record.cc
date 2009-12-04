@@ -211,7 +211,7 @@ Record_tp_as_mapping_getitem(PyObject *self, PyObject *item)
         PyGlomRecord::type_map_field_values::const_iterator iterFind = self_record->m_pMap_field_values->find(key);
         if(iterFind != self_record->m_pMap_field_values->end())
         {
-          return pygda_value_as_pyobject(iterFind->second.gobj(), true /* copy */);
+          return glom_pygda_value_as_pyobject(iterFind->second.gobj(), true /* copy */);
         }
         else
         {

@@ -178,7 +178,7 @@ RelatedRecord_tp_as_mapping_getitem(PyObject *self, PyObject *item)
       if(iterFind != self_derived->m_pMap_field_values->end())
       {
         //If the value has already been stored, then just return it again:
-        return pygda_value_as_pyobject(iterFind->second.gobj(), true /* copy */);
+        return glom_pygda_value_as_pyobject(iterFind->second.gobj(), true /* copy */);
       }
       else
       {
@@ -247,7 +247,7 @@ RelatedRecord_tp_as_mapping_getitem(PyObject *self, PyObject *item)
 
               //Cache it, in case it's asked-for again.
               (*(self_derived->m_pMap_field_values))[field_name] = value;
-              return pygda_value_as_pyobject(value.gobj(), true /* copy */);
+              return glom_pygda_value_as_pyobject(value.gobj(), true /* copy */);
             }
             else if(!datamodel)
             {
@@ -355,7 +355,7 @@ RelatedRecord_generic_aggregate(PyGlomRelatedRecord* self, PyObject *args, PyObj
 
           //Cache it, in case it's asked-for again.
           (*(self->m_pMap_field_values))[field_name] = value;
-          return pygda_value_as_pyobject(value.gobj(), true /* copy */);
+          return glom_pygda_value_as_pyobject(value.gobj(), true /* copy */);
         }
         else if(!datamodel)
         {
