@@ -191,9 +191,6 @@ public:
   type_vec_strings get_columns_order() const;
 
   void remove_all_columns();
-  //virtual void set_columns_count(guint count);
-  //virtual void set_column_title(guint col, const Glib::ustring& strText);
-  void set_column_width(guint col, guint width);
 
   /// For popup cells.
   void set_column_choices(guint col, const type_vec_strings& vecStrings);

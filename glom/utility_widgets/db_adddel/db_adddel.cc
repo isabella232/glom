@@ -667,6 +667,8 @@ int DbAddDel::get_fixed_cell_height()
 
 Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const sharedptr<LayoutItem>& layout_item, int model_column_index, int data_model_column_index)
 {
+  InnerIgnore innerIgnore(this); //see comments for InnerIgnore class
+
   Gtk::CellRenderer* pCellRenderer = 0;
 
   //Create the appropriate cellrenderer type:
@@ -1055,7 +1057,9 @@ void DbAddDel::construct_specified_columns()
     // the spacing property of the treeviewcolumn.
     int horizontal_separator = 0;
     m_TreeView.get_style_property("horizontal-separator", horizontal_separator);
-    m_treeviewcolumn_button->set_fixed_width(width + horizontal_separator*2);
+    const int button_width = width + horizontal_separator*2;
+    if(button_width > 0) //Otherwise an assertion fails.
+      m_treeviewcolumn_button->set_fixed_width(button_width);
 
     m_treeviewcolumn_button->set_visible(m_allow_view_details);
 
@@ -1441,13 +1445,6 @@ void DbAddDel::set_find_mode(bool val)
 void DbAddDel::set_allow_only_one_related_record(bool val)
 {
   m_allow_only_one_related_record = val;
-}
-
-
-void DbAddDel::set_column_width(guint /* col */, guint /*width*/)
-{
-//  if( col < (guint)m_Sheet.get_columns_count())
-//    m_Sheet.set_column_width(col, width);
 }
 
 void DbAddDel::finish_editing()
@@ -1841,6 +1838,10 @@ void DbAddDel::on_treeview_column_resized(int model_column_index, DbTreeViewColu
 {
   if(!view_column)
     return;
+  
+  //Ignore this property change signal handler if we are setting the size in code:
+  if(m_bIgnoreTreeViewSignals)
+    return;
 
   //We do not save the column width if this is the last column, 
   //because that must always be automatic, 
@@ -1852,9 +1853,12 @@ void DbAddDel::on_treeview_column_resized(int model_column_index, DbTreeViewColu
 
   DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
 
-  const guint width = (guint)view_column->get_width();
+  const int width = view_column->get_width();
   //std::cout << "  DbAddDel::on_treeview_column_resized(): width=" << width << std::endl;
 
+  if(width == -1) //Means automatic.
+    return;
+    
   if(column_info.m_item)
       column_info.m_item->set_display_width(width);
 }
@@ -1957,9 +1961,14 @@ bool DbAddDel::get_column_to_expand(guint& column_to_expand) const
 
 guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRenderer& cellrenderer, int model_column_index, int data_model_column_index, bool expand)
 {
+  InnerIgnore innerIgnore(this); //see comments for InnerIgnore class
+
   #ifndef GLOM_ENABLE_MAEMO 
   DbTreeViewColumnGlom* pViewColumn = Gtk::manage( new DbTreeViewColumnGlom(Utils::string_escape_underscores(title), cellrenderer) );
-  pViewColumn->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED); //Need by fixed-height mode.
+
+  //This is needed by fixed-height mode. We get critical warnings otherwise.
+  //But we must call set_fixed_width() later or we will have a zero-width column.
+  pViewColumn->set_sizing(Gtk::TREE_VIEW_COLUMN_FIXED);
 
   guint cols_count = m_TreeView.append_column(*pViewColumn);
   #else
@@ -1991,16 +2000,23 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   pViewColumn->set_resizable();
   #endif //GLOM_ENABLE_MAEMO
   
-  guint column_width = -1; //Means expand.
+  #ifndef GLOM_ENABLE_MAEMO
+  //GtkTreeView's fixed-height-mode does not allow us to have anything but 
+  //the last column as expandable.
+  //TODO: Can we get the total size and calculate a starting size instead?
+  expand = false;
+  #endif
+
+  int column_width = -1; //Means expand.
   if(!expand)
   {
     column_width = layout_item->get_display_width();
-    if(!column_width)
+    if(!(column_width > 0))
     {
       //TODO: Choose a width based on the first 100 values.
       if(layout_item_field)
       {
-       column_width = Utils::get_suitable_field_width_for_widget(*this, layout_item_field);
+       column_width = Utils::get_suitable_field_width_for_widget(*this, layout_item_field, true /* or_title */);
        column_width = column_width / 3;
        //std::cout << "DEBUG: column_width=" << column_width << std::endl;
       }
@@ -2010,11 +2026,13 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   }
 
   #ifdef GLOM_ENABLE_MAEMO
-  cellrenderer.set_property("width", (int)column_width);
+  cellrenderer.set_property("width", column_width);
   #else
-  pViewColumn->set_fixed_width((int)column_width); //This is the only way to set the width, so we need to set it as resizable again immediately afterwards.
+  if(column_width > 0) //Otherwise there's an assertion fails.
+    pViewColumn->set_fixed_width(column_width); //This is the only way to set the width, so we need to set it as resizable again immediately afterwards.
+    
   pViewColumn->set_resizable();
-  //This property is read only: pViewColumn->property_width() = (int)column_width;
+  //This property is read only: pViewColumn->property_width() = column_width;
 
   //Save the extra ID, using the title if the column_id is empty:
   const Glib::ustring column_id = m_ColumnTypes[model_column_index].m_item->get_name();

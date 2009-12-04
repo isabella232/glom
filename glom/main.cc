@@ -48,6 +48,7 @@
 #include <glibmm/i18n.h>
 
 #ifdef GLOM_ENABLE_MAEMO
+#include <libossomm/init.h>
 #include <hildonmm/init.h>
 #include <hildonmm/note.h>
 #include <hildonmm/program.h>
@@ -424,6 +425,11 @@ main(int argc, char* argv[])
   Glom::libglom_init();
    
 #ifdef GLOM_ENABLE_MAEMO
+  if(!(Osso::initialize("org.maemo.glom", PACKAGE_NAME)))
+  {
+    std::cerr << "Glom: Error while initializing libossomm" << std::endl;
+    return 0;
+  }
   Hildon::init();
 #endif
 

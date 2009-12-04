@@ -169,7 +169,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
         TextViewGlom* textview = Gtk::manage(new TextViewGlom(glom_type));
         pFieldWidget = textview;
       }
-      else
+      else  //TYPE_DATE, TYPE_NUMBER, etc.
       {
         EntryGlom* entry = Gtk::manage(new EntryGlom(glom_type));
         pFieldWidget = entry;
@@ -230,6 +230,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
       hbox_parent->set_spacing(Utils::DEFAULT_SPACING_SMALL);
 
       hbox_parent->pack_start(*m_child);
+      hbox_parent->show();
       add(*hbox_parent);
 
       child_added = true;
@@ -596,8 +597,10 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& ta
   if(dialog)
   {
     dialog->set_document(document, table_name, start_field);
-    dialog->set_transient_for(*app);
-    int response = dialog->run();
+    if(app)
+      dialog->set_transient_for(*app);
+
+    const int response = dialog->run();
     dialog->hide();
     if(response == Gtk::RESPONSE_OK)
     {
@@ -626,7 +629,11 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_layout(const sharedptr<const
     {
       add_view(dialog); //Give it access to the document.
       dialog->set_field(start_field, m_table_name);
-      dialog->set_transient_for(*get_application());
+
+      Gtk::Window* parent = get_application();
+      if(parent)
+        dialog->set_transient_for(*parent);
+
       const int response = dialog->run();
       dialog->hide();
       if(response == Gtk::RESPONSE_OK)
@@ -767,7 +774,9 @@ void DataWidget::on_button_choose_date()
 
   if(dialog)
   {
-    dialog->set_transient_for(*get_application());
+    Gtk::Window* parent = get_application(); //This doesn't work (and would be wrong) when the widget is in a Field Definitions dialog.
+    if(parent)
+      dialog->set_transient_for(*parent);
     dialog->set_date_chosen(get_value());
 
     const int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_choose_date");
@@ -825,7 +834,9 @@ bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)
   if(dialog)
   {
     //dialog->set_document(get_document(), table_name, field);
-    dialog->set_transient_for(*get_application());
+    Gtk::Window* parent = get_application();
+    if(parent)
+      dialog->set_transient_for(*parent);
     add_view(dialog);
 
     //Discover the related table, in the relationship that uses this ID field:

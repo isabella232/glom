@@ -314,7 +314,7 @@ bool Box_Data_Portal::init_db_details(const Glib::ustring& parent_table, bool sh
 bool Box_Data_Portal::refresh_data_from_database_with_foreign_key(const Gnome::Gda::Value& foreign_key_value)
 {
   m_key_value = foreign_key_value;
-  std::cout << "DEBUG: Box_Data_Portal::refresh_data_from_database_with_foreign_key(): m_key_value=" << m_key_value.to_string() << std::endl;
+  //std::cout << "DEBUG: Box_Data_Portal::refresh_data_from_database_with_foreign_key(): m_key_value=" << m_key_value.to_string() << std::endl;
   
 
   if(m_key_field && m_portal)

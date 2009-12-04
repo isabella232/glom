@@ -5,11 +5,223 @@
 	* glom/base_db.cc.[h|cc]: Use the newer simpler 
 	SqlBuilder::select_add_target() method.
 
-2009-12-02  Murray Cumming  <murrayc@murrayc.com>
+2009-12-04  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix the build.
 
 	* glom/base_db.[h|cc]: Correct the use of Gda::SqlBuilder for the latest API.
+
+2009-12-04  Murray Cumming  <murrayc@murrayc.com>
+
+	Field Definitions: Default value: Fix crash when selecting a date.
+
+	* glom/utility_widgets/datawidget.cc: offer_field_list(), 
+	offer_field_layout(), offer_related_record_id_find(): Avoid crashes 
+	caused by calling set_transient_for() with a null parent window, 
+	for instance from the field definitions dialog.
+
+2009-12-04  Murray Cumming  <murrayc@murrayc.com>
+
+	Field Definitions: Show default value widget for date fields.
+
+	* glom/utility_widgets/datawidget.cc: Constructor: show the 
+	hbox_parent widget, so the widgets always show up for the default value 
+	in the field definitio dialog for date fields. The details view must 
+	be doing this via a show_all() somewhere. 	
+
+2009-12-03  Murray Cumming  <murrayc@murrayc.com>
+
+	Related Records layout: Field formatting: Choices: Fix related choices.
+
+	* glom/mode_design/layout/dialog_layout_details.[h|cc]
+	* glom/mode_design/layout/dialog_layout_list_related.[h|cc]:
+	Add virtual get_fields_table() and use this in 
+	on_button_field_formatting() so that the formatting dialog shows 
+	relationships for the to table instead of the parent table, when 
+	editing formatting for a field in a related records portal.
+	Bug noticed by Michael Hasselmann and Andrew Ruthven.
+	* glom/mode_design/layout/layout_item_dialogs/dialog_field_layout.c:
+	Removed some debug output.
+
+2009-12-03  Murray Cumming  <murrayc@murrayc.com>
+
+	Allow use of example documents that mention an unsupported backend.
+
+	* glom/application.cc: check_document_hosting_mode_is_supported():
+	Don't check the backend if it is an example document because the user 
+	will choose it when saving anyway.
+
+2009-11-17  Murray Cumming  <murrayc@murrayc.com>
+
+	tests: dtd: Now passes.
+
+	* glom/libglom/document/bakery/document_xml.cc: get_node_document():
+	Added commented-out code to write the DOCTYPE declaration, if we ever 
+	want to specify the PUBLIC DTD idenitifier and URI in each document.
+	Let's avoid that for now because we'd have to make sure that it's 	
+	hosted properly. 
+	* tests/dtd/test_example_sqlite: Do not use --valid because that 
+	seems to always require a DTD in the document's DOCTYPE declaration.
+	--dtdvalid seems to do the same thing already, but with the specified 
+	DTD.
+
+2009-11-17  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/glom_document.dtd: Mention the xmlns attribute because DTD 
+	validation doesn't know about XML namespaces.
+
+2009-11-17  Murray Cumming  <murrayc@murrayc.com>
+
+	Document: Ensure that the xmlns ID is always in saved documents.
+
+	* glom/libglom/document/bakery/document_xml.cc: get_node_document():
+	Make sure that the xmlns ID is added, even when the root node already 
+	exists, for instance when opening existing documents.
+
+	* examples/example_film_manager.glom:
+	* examples/example_lesson_planner.glom:
+	* examples/example_music_collection.glom:
+	* examples/example_project_manager.glom:
+	* examples/example_smallbusiness.glom:
+	* examples/sqlite/test_sqlite_music/test_sqlite_music.glom:
+	Add the xmnls ID, to help to identify the MIME type of these documents.
+
+2009-11-17  Murray Cumming  <murrayc@murrayc.com>
+
+	Document saving: Remove unncessary empty singular_title nodes.
+
+	* glom/libglom/document/document.cc: save_before_translations(): 
+	Do not create empty singular_title nodes.
+	* examples/example_smallbusiness.glom: Resaved.
+
+2009-11-17  Murray Cumming  <murrayc@murrayc.com>
+
+	Partly fix the DTD validation test.
+
+	* glom/glom_document.dtd: table: Correct the syntax for the child 
+	elements, to use ?, instead of | because they are all optional, instead 
+	of being alternatives for each other.
+	Add the print_layouts element.
+	* Makefile_tests.am: Change the order so the sometimes-hanging import 
+	tests are at the end, to make the tests more useful.
+
+2009-11-13  David King  <davidk@openismus.com>
+
+	* configure.ac: Fix check for SQLite and libgettextpo.
+
+2009-11-12  David King  <davidk@openismus.com>
+
+	* glom/glom_document.dtd: Update to more completely validate example
+	documents.
+	* Makefile_tests.am:
+	* tests/dtd/test_example_sqlite: Add a test that attempts to validate
+	an example SQLite Glom document against glom_document.dtd.
+
+2009-11-10  David King  <davidk@openismus.com>
+
+	* configure.ac: Fix incorrect conditional for Maemo libgettextpo check.
+
+2009-11-06  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix a crash when specifying a static image on the layout.
+
+	* glom/utility_widgets/imageglom.cc: on_menupopup_activate_select_file():
+	Check for a null parent window pointer to avoid a crash, fixing bug 
+	#600954 (Michael Hasselmann).
+
+2009-11-06  David King  <davidk@openismus.com>
+
+	* configure.ac:
+	* Makefile_glom.am: Do not link to libgettextpo on Maemo, and
+	additionally do not check for it either.
+
+2009-11-04  David King  <davidk@openismus.com>
+
+	* glom.xml: Add Maemo-specific category for classification of .glom
+	files as "documents".
+
+2009-11-04  David King  <davidk@openismus.com>
+
+	* Makefile_glom.am: Statically link to libgettextpo on Maemo, as
+	Gettext is available in the SDK and autobuilder but not on the device.
+
+1.12.3:
+
+2009-10-30  Murray Cumming  <murrayc@murrayc.com>
+
+	List views and related records portals: Enough space for titles.
+
+	* glom/utils_ui.[h|cc]: get_suitable_field_width_for_widget():
+	Optionally calculate enough space for the title too, for TreeView 
+	columns.
+	* glom/utility_widgets/db_adddel/db_adddel.cc: treeview_append_column():
+	When choosing a default column width, make sure there's enough for the 
+	title too.
+
+2009-10-30  Murray Cumming  <murrayc@murrayc.com>
+
+	List views and related records portals: Avoid zero-width columns.
+
+	* glom/utility_widgets/db_adddel/db_adddel.cc: treeview_append_column():
+	Except on maemo, don't try to auto-expand a non-rightmost column, 
+	because that does not seem to be possible with fixed-height-mode, 
+	which we use for performance.
+
+2009-10-30  David King  <davidk@openismus.com>
+
+	* configure.ac:
+	* glom/main.cc: Initialize libossomm on Maemo, to register a DBus
+	service.
+
+2009-10-28  David King  <davidk@openismus.com>
+
+	* configure.ac:
+	* Makefile.am:
+	* glom.desktop.in.in:
+	* glom.service.in: Add DBus service file for Maemo 5, and install to
+	the correct location as determined by the osso-af-settings pkg-config
+	file. Adjust the installation location of the glom.desktop file on
+	Maemo.
+
+2009-10-28  Murray Cumming  <murrayc@murrayc.com>
+
+	Do not mark an empty string for translation.
+
+	* glom/dialog_connection.cc: set_confirm_existing_user_note():
+	Do not do _(""), fixing bug #599868 (André Klapper).
+
+2009-10-27  Murray Cumming  <murrayc@murrayc.com>
+
+	Trying to ignore unwanted column resize signals.
+
+	* glom/utility_widgets/db_adddel/db_adddel.[h|cc]: 
+	Removed unused set_column_width().
+	construct_specified_columns_cellrenderer(): Added an InnerIgnore, though 
+	we already use one in construct_specified_columns().
+	on_treeview_column_resized(): Check if we should ignore signals.
+	Do not cast an int size to a guint, because it could be -1.
+
+2009-10-27  Murray Cumming  <murrayc@murrayc.com>
+
+	Avoid runtime warnings about 0 size TreeViewColumn.
+
+	* glom/utility_widgets/db_adddel/db_adddel.cc: construct_specified_columns(), 
+	treeview_append_column(): Avoid calling TreeViewColumn::set_fixed_width() 
+	with a 0 size, avoiding a runtime assertion.
+
+2009-10-27  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix some warnings.
+
+	* glom/dialog_existing_or_new.cc: get_service_info(): Replace a 0 with 
+	(void*)0 to avoid a warning after my change on 2009-10-13.
+	* glom/libglom/data_structure/has_title_singular.cc(): 
+	operator==(): Actually use the src parameter.
+
+2009-10-27  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/utility_widgets/db_adddel/db_adddel.cc: treeview_append_column(): 
+	Don't try to put -1 in a guint for the column width.
 
 2009-10-25  Murray Cumming  <murrayc@murrayc.com>
 

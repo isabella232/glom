@@ -1,3 +1,28 @@
+1.12.3 (stable):
+
+* List: Fix zero-width columns. That regression was introduced in 1.12.2.
+  (Murray Cumming)
+* Developer Mode: Tables, Relationships: Allow a singular title to be specified,
+  though it is currently only used on Maemo.
+  (Murray Cumming)
+* Windows Build:
+  - Builds for Windows again. (Armin Burgmeier)
+* Build: Support Automake silent rules. (Daniel Elstner)
+* Maemo Build:
+  - Adapted for latest hildonmm API.
+  - AppMenu: Add "Add" and "Add Related" buttons, instead of having + 
+    buttons in the window. This does not work perfectly and needs some work.
+  - Make TextViews small initially.
+  - Details:
+    - Show the table name in the window title.
+    - Use PickerButtons instead of ComboBoxes.
+  - Widget spacing improvements to match the Maemo UI spec.
+   (Murray Cumming)
+  - Create a libosso D-Bus service and register it, so Glom can run in the 
+  background like a normal Maemo application.
+  - Show the application and its icon in the applications menu.
+  (David King)
+  
 1.12.2 (stable):
 
 * Details: Choices: Actually show choices drop-down lists again, 

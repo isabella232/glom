@@ -15,7 +15,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([Glom], [1.12.2], [http://bugzilla.gnome.org/enter_bug.cgi?product=Glom], [glom])
+AC_INIT([Glom], [1.12.3], [http://bugzilla.gnome.org/enter_bug.cgi?product=Glom], [glom])
 AC_PREREQ([2.60])
 
 AC_CONFIG_SRCDIR([glom/main.cc])
@@ -47,17 +47,21 @@ AC_DEFINE_UNQUOTED([GLOM_ABI_VERSION], ["$GLOM_ABI_VERSION"],
 AC_DEFINE_UNQUOTED([GLOM_ABI_VERSION_UNDERLINED], ["AS_TR_SH([$GLOM_ABI_VERSION])"],
                    [Define to the Glom ABI version with '.' replaced by '_'.])
 
-# libgettext-po changed its API, changing the error handler struct
-# from po_error_handler to po_xerror_handler:
-AC_CACHE_CHECK([for po_xerror_handler], [glom_cv_has_po_xerror_handler],
+# Only check for libgettextpo on non-Maemo platforms.
+AS_IF([test "x$glom_enable_maemo" != xyes],
+      [
+        # libgettext-po changed its API, changing the error handler struct
+        # from po_error_handler to po_xerror_handler:
+        AC_CACHE_CHECK([for po_xerror_handler], [glom_cv_has_po_xerror_handler],
                [AC_CHECK_MEMBER([struct po_xerror_handler.xerror],
                                 [glom_cv_has_po_xerror_handler=yes],
                                 [glom_cv_has_po_xerror_handler=no],
                                 [#include <gettext-po.h>])])
 
-AS_IF([test "x$glom_cv_has_po_xerror_handler" = xyes],
-      [AC_DEFINE([HAVE_GETTEXTPO_XERROR], [1],
-                 [Define if libgettextpo provides the new po_xerror_handler struct.])])
+        AS_IF([test "x$glom_cv_has_po_xerror_handler" = xyes],
+          [AC_DEFINE([HAVE_GETTEXTPO_XERROR], [1],
+          [Define if libgettextpo provides the new po_xerror_handler struct.])])
+])
 
 IT_PROG_INTLTOOL([0.35])
 AC_SUBST([GETTEXT_PACKAGE], [glom])
@@ -162,7 +166,9 @@ AS_IF([test "x$glom_enable_client_only" != xyes],
 AS_IF([test "x$glom_enable_sqlite" = xyes],
       [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS libgda-sqlite-4.0"])
 AS_IF([test "x$glom_enable_maemo" = xyes],
-      [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS hildonmm hildon-fmmm"])
+      [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS hildonmm hildon-fmmm libossomm osso-af-settings"
+      MM_PKG_CONFIG_SUBST([OSSO_SERVICEDIR], [--variable=dbusservicedir osso-af-settings])
+      MM_PKG_CONFIG_SUBST([OSSO_DESKTOPDIR], [--variable=desktopentrydir osso-af-settings])])
 AS_IF([test "x$glom_maemo_launcher" = xyes],
       [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS maemo-launcher-app"])
 

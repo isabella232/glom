@@ -127,14 +127,29 @@ dist_pixmap_DATA =				\
 	icons/16x16/glom-related-records.png	\
 	icons/16x16/glom-text.png
 
+if GLOM_ENABLE_MAEMO
+desktopdir = $(OSSO_DESKTOPDIR)
+dbusservicedir = $(OSSO_SERVICEDIR)
+glom.service: Makefile
+	$(AM_V_at)rm -f $@ $@.tmp
+	$(AM_V_at)srcdir=''; \
+	       test -f ./$@.in || srcdir=$(srcdir)/; \
+	       sed -e 's|@bindir[@]|$(bindir)|g' $${srcdir}$@.in >$@.tmp
+	$(AM_V_GEN)mv $@.tmp $@
+
+glom.service: $(srcdir)/glom.service.in
+dbusservice_DATA = glom.service
+else
 desktopdir = $(datadir)/applications
+endif
 desktop_DATA = glom.desktop
 
 mimedir = $(datadir)/mime
 mimepackagesdir = $(mimedir)/packages
 dist_mimepackages_DATA = glom.xml
 
-dist_template = glom/glom.rc glom/utility_widgets/egg/util/eggmarshalers.list
+dist_template = glom/glom.rc glom/utility_widgets/egg/util/eggmarshalers.list \
+                glom.service.in
 dist_docutils = gnome-doc-utils.make omf.make xmldocs.make
 dist_intltool = intltool-extract.in intltool-merge.in intltool-update.in
 dist_docfiles = docs/overview.txt docs/developer_documentation.txt \
@@ -144,7 +159,7 @@ dist_noinst_DATA = $(dist_template) $(noinst_icons) $(dist_docutils) \
 		   $(dist_intltool) $(dist_docfiles)
 dist_noinst_SCRIPTS = autogen.sh win32/build-installer
 
-CLEANFILES = $(desktop_DATA) $(win_resfile)
+CLEANFILES = $(dbusservice_DATA) $(desktop_DATA) $(win_resfile)
 DISTCLEANFILES = intltool-extract intltool-merge intltool-update
 MAINTAINERCLEANFILES = \
 	$(dist_docutils) $(dist_intltool) \
