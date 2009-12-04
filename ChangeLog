@@ -1,3 +1,12 @@
+2009-12-04  Murray Cumming  <murrayc@murrayc.com>
+
+	Field Definitions: Show default value widget for date fields.
+
+	* glom/utility_widgets/datawidget.cc: Constructor: show the 
+	hbox_parent widget, so the widgets always show up for the default value 
+	in the field definitio dialog for date fields. The details view must 
+	be doing this via a show_all() somewhere. 	
+
 2009-12-03  Murray Cumming  <murrayc@murrayc.com>
 
 	Related Records layout: Field formatting: Choices: Fix related choices.

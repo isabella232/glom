@@ -169,7 +169,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
         TextViewGlom* textview = Gtk::manage(new TextViewGlom(glom_type));
         pFieldWidget = textview;
       }
-      else
+      else  //TYPE_DATE, TYPE_NUMBER, etc.
       {
         EntryGlom* entry = Gtk::manage(new EntryGlom(glom_type));
         pFieldWidget = entry;
@@ -230,6 +230,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
       hbox_parent->set_spacing(Utils::DEFAULT_SPACING_SMALL);
 
       hbox_parent->pack_start(*m_child);
+      hbox_parent->show();
       add(*hbox_parent);
 
       child_added = true;
