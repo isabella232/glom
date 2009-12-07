@@ -19,6 +19,9 @@
  */
 
 #include <Python.h> //Include it before anything else to avoid "_POSIX_C_SOURCE redefined".
+#if PY_VERSION_HEX >= 0x02040000
+# include <datetime.h> /* From Python */
+#endif
 
 #include <glom/libglom/connectionpool.h>
 #include <giomm.h>
@@ -29,11 +32,15 @@ namespace Glom
 
 void libglom_init()
 {
-  if (!Glib::thread_supported()) Glib::thread_init(0); //So we can use GMutex.
+  if (!Glib::thread_supported())
+    Glib::thread_init(0); //So we can use GMutex.
+
   Gnome::Gda::init();
   Gio::init();
 
   Py_Initialize();
+  PyDateTime_IMPORT; //A macro, needed to use PyDate_Check(), PyDateTime_Check(), etc.
+  g_assert(PyDateTimeAPI); //This should have been set by the PyDateTime_IMPORT macro.
 }
 
 void libglom_deinit()

@@ -46,6 +46,7 @@ void evaluate_function_implementation(const Glib::ustring& func_impl)
   std::cout << func_def << std::endl;
   
   Py_Initialize();
+  //PyDateTime_IMPORT; //A macro, needed to use PyDate_Check(), PyDateTime_Check(), etc.
 
   PyObject* pMain = PyImport_AddModule((gchar*)"__main__");
   PyObject* pDict = PyModule_GetDict(pMain);

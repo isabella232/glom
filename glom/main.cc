@@ -22,6 +22,9 @@
 
 //We use Python for calculated fields.
 #include <Python.h> //Include it before anything else to avoid "_POSIX_C_SOURCE redefined".
+#if PY_VERSION_HEX >= 0x02040000
+# include <datetime.h> /* From Python */
+#endif
 
 //#include <gnome.h>
 #include <glom/libglom/init.h>
@@ -422,7 +425,7 @@ main(int argc, char* argv[])
   bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
   textdomain(GETTEXT_PACKAGE);
 
-  Glom::libglom_init();
+  Glom::libglom_init(); //Also initializes python.
    
 #ifdef GLOM_ENABLE_MAEMO
   if(!(Osso::initialize("org.maemo.glom", PACKAGE_NAME)))
@@ -437,8 +440,8 @@ main(int argc, char* argv[])
 
   Glom::OptionGroup group;
   context.set_main_group(group);
+
   //We use python for calculated-fields:
-  Py_Initialize();
   PySys_SetArgv(argc, argv);
 
   std::auto_ptr<Gtk::Main> mainInstance;

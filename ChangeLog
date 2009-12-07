@@ -1,3 +1,14 @@
+2009-12-07  Murray Cumming  <murrayc@murrayc.com>
+
+	Python: Trying to stop the PyDateTime_Check() crash.
+
+	* glom/libglom/init.cc: libglom_init(): Call the PyDateTime_IMPORT 
+	macro, which is needed to stop PyDateTime_Check() and PyDate_Check() 
+	from crashing, at least in my simple test case. It still crashes in 
+	Glom though.
+	* glom/main.cc: Do not initialize Python here because Glom::init() 
+	already did it, though doing it twice does not seem to be a problem.
+
 2009-12-04  Murray Cumming  <murrayc@murrayc-desktop>
 
 	Rename some functions to avoid fear of linking to the wrong one.
