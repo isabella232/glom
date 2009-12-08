@@ -1,3 +1,13 @@
+2009-12-08  Murray Cumming  <murrayc@murrayc.com>
+
+	Tests: Added glom_evaluate_python_function_implementation() tests.
+
+	* Makefile_tests.am:
+	* tests/test_python_execute_func.cc:
+	* tests/test_python_execute_func_date.cc: Added two unit tests for 
+	Glom::glom_evaluate_python_function_implementation(). The date one 
+	currently fails, as in bug #603686.
+
 2009-12-07  Murray Cumming  <murrayc@murrayc.com>
 
 	Python: Trying to stop the PyDateTime_Check() crash.

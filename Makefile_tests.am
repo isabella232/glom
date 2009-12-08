@@ -26,6 +26,8 @@ check_PROGRAMS =						\
 	tests/test_signal_reemit			\
 	tests/test_load_python_library\
 	tests/test_python_module \
+	tests/test_python_execute_func \
+	tests/test_python_execute_func_date \
 	tests/import/test_parsing\
 	tests/import/test_signals
 
@@ -34,6 +36,8 @@ TESTS =	tests/test_parsing_time	\
         tests/dtd/test_example_sqlite \
 	tests/test_load_python_library \
 	tests/test_python_module \
+	tests/test_python_execute_func \
+	tests/test_python_execute_func_date \
 	tests/import/test_parsing \
 	tests/import/test_signals
 
@@ -49,6 +53,10 @@ tests_test_parsing_time_SOURCES = tests/test_parsing_time.cc
 tests_test_signal_reemit_SOURCES = tests/test_signal_reemit.cc
 tests_test_load_python_library_SOURCES = tests/test_load_python_library.cc
 tests_test_python_module_SOURCES = tests/test_python_module.cc
+tests_test_python_execute_func_SOURCES = tests/test_python_execute_func.cc \
+	glom/python_embed/glom_python.cc
+tests_test_python_execute_func_date_SOURCES = tests/test_python_execute_func_date.cc \
+	glom/python_embed/glom_python.cc
 tests_import_test_parsing_SOURCES =	\
 	glom/import_csv/csv_parser.cc	\
 	glom/import_csv/csv_parser.h	\
@@ -85,6 +93,8 @@ glom_test_pyembed_LDADD = $(LIBGLOM_LIBS) $(PYTHON_LIBS)
 tests_test_parsing_time_LDADD = $(tests_ldadd)
 tests_test_signal_reemit_LDADD = $(LIBGLOM_LIBS)
 tests_test_load_python_library_LDADD = $(LIBGLOM_LIBS)
-tests_test_python_module_LDADD = $(LIBGLOM_LIBS) $(PYTHON_LIBS) glom/libglom/libglom-$(GLOM_ABI_VERSION).la
+tests_test_python_module_LDADD = $(tests_ldadd) $(PYTHON_LIBS)
+tests_test_python_execute_func_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
+tests_test_python_execute_func_date_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
 tests_import_test_parsing_LDADD = $(LIBGLOM_LIBS) $(GLOM_LIBS)
 tests_import_test_signals_LDADD = $(LIBGLOM_LIBS) $(GLOM_LIBS)
