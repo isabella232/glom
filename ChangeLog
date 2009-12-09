@@ -1,3 +1,12 @@
+2009-12-09  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix the crash when calling python functions that return dates.
+
+	* glom/libglom/python_embed/pygdavalue_conversions.c
+	(glom_pygda_value_from_pyobject): Call the macro PyDateTime_IMPORT here, 
+	though it was already called in libglom_init(). I don't know why this 
+	fixes the crash, but it does. Bug #603686. (Andrew Ruthven)
+
 2009-12-08  Murray Cumming  <murrayc@murrayc.com>
 
 	Tests: Added glom_evaluate_python_function_implementation() tests.
@@ -6,7 +15,7 @@
 	* tests/test_python_execute_func.cc:
 	* tests/test_python_execute_func_date.cc: Added two unit tests for 
 	Glom::glom_evaluate_python_function_implementation(). The date one 
-	currently fails, as in bug #603686.
+	currently fails, as in bug #603686. (Andrew Ruthven)
 
 2009-12-07  Murray Cumming  <murrayc@murrayc.com>
 

@@ -19,6 +19,12 @@
 int
 glom_pygda_value_from_pyobject(GValue *boxed, PyObject *input)
 {
+    // We shouldn't need to call PyDateTime_IMPORT again, 
+    // after already doing it in libglom_init(),
+    // but PyDate_Check crashes (with valgrind warnings) if we don't.
+    PyDateTime_IMPORT; //A macro, needed to use PyDate_Check(), PyDateTime_Check(), etc.
+    g_assert(PyDateTimeAPI); //This should have been set by the PyDateTime_IMPORT macro.
+
     /* Use an appropriate gda_value_set_*() function.
        We can not know what GValue type is actually wanted, so
        we must still have the get_*() functions in the python API.
