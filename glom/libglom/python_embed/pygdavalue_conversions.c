@@ -61,12 +61,13 @@ glom_pygda_value_from_pyobject(GValue *boxed, PyObject *input)
          gda.timezone = 0;
          gda_value_set_timestamp (boxed, &gda);
      } else if (PyDate_Check (input)) {
-         GDate gda;
-         gda.year = PyDateTime_GET_YEAR(input);
-         gda.month = PyDateTime_GET_MONTH(input);
-         gda.day = PyDateTime_GET_DAY(input);
+         GDate *gda = g_date_new_dmy(
+           PyDateTime_GET_DAY(input),
+           PyDateTime_GET_MONTH(input),
+           PyDateTime_GET_YEAR(input) );
          g_value_init (boxed, G_TYPE_DATE);
-         g_value_set_boxed(boxed, &gda);
+         g_value_set_boxed(boxed, gda);
+         g_date_free(gda);
      } else if (PyTime_Check (input)) {
          GdaTime gda;
          gda.hour = PyDateTime_TIME_GET_HOUR(input);

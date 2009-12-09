@@ -1,3 +1,14 @@
+2009-12-09  Murray Cumming  <murrayc@murrayc-desktop>
+
+	Tests: Complete the test_python_execute_func_date test.
+
+	* glom/libglom/python_embed/pygdavalue_conversions.c
+	(glom_pygda_value_from_pyobject): Use g_date_new_dmy() so the GDate 
+	is really completely initialized, avoiding errors about invalid dates.
+	* tests/test_python_execute_func_date.cc: Check the return type and 
+	value, by comparing the python result with the current date. 
+	Bug is now really fixed #603686. (Andrew Ruthven)
+
 2009-12-09  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix the crash when calling python functions that return dates.

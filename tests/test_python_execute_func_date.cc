@@ -25,16 +25,18 @@ int main()
     Glom::Field::TYPE_DATE, calculation, field_values, 
     0 /* document */, "" /* table name */, connection);
 
-  std::cout << "type=" << g_type_name(value.get_value_type()) << std::endl;
+  //std::cout << "type=" << g_type_name(value.get_value_type()) << std::endl;
 
   //Check that the return value is of the expected type:
-  //g_assert(value.get_value_type() == GDA_TYPE_NUMERIC);
+  g_assert(value.get_value_type() == G_TYPE_DATE);
 
   //Check that the return value is of the expected value:
-  //const double numeric = Glom::Conversions::get_double_for_gda_value_numeric(value);
-  //g_assert(numeric == 4950.0);
+  Glib::Date date_current;
+  date_current.set_time_current();
+  const Glib::Date date_result= value.get_date();
+  g_assert(date_current == date_result);
 
-  std::cout << "value=" << value.to_string() << std::endl;
+  //std::cout << "value=" << value.to_string() << std::endl;
 
   return EXIT_SUCCESS;
 }
