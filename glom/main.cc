@@ -22,9 +22,6 @@
 
 //We use Python for calculated fields.
 #include <Python.h> //Include it before anything else to avoid "_POSIX_C_SOURCE redefined".
-#if PY_VERSION_HEX >= 0x02040000
-# include <datetime.h> /* From Python */
-#endif
 
 //#include <gnome.h>
 #include <glom/libglom/init.h>

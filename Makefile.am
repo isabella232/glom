@@ -98,6 +98,8 @@ dist_example_DATA =				\
 	examples/example_project_manager.glom	\
 	examples/example_smallbusiness.glom
 
+dist_noinst_DATA = examples/sqlite/test_sqlite_music/test_sqlite_music.glom
+
 iconthemedir = $(datadir)/icons/hicolor
 appicon16dir = $(iconthemedir)/16x16/apps
 appicon22dir = $(iconthemedir)/22x22/apps
@@ -155,9 +157,11 @@ dist_intltool = intltool-extract.in intltool-merge.in intltool-update.in
 dist_docfiles = docs/overview.txt docs/developer_documentation.txt \
 		docs/postgres_test.c docs/postgres_gda_test.c win32/README
 
-dist_noinst_DATA = $(dist_template) $(noinst_icons) $(dist_docutils) \
+dist_noinst_DATA += $(dist_template) $(noinst_icons) $(dist_docutils) \
 		   $(dist_intltool) $(dist_docfiles)
-dist_noinst_SCRIPTS = autogen.sh win32/build-installer
+
+# We use += here because we already used = in Makefile_tests.am:
+dist_noinst_SCRIPTS += autogen.sh win32/build-installer
 
 CLEANFILES = $(dbusservice_DATA) $(desktop_DATA) $(win_resfile)
 DISTCLEANFILES = intltool-extract intltool-merge intltool-update

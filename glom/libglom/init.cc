@@ -27,6 +27,14 @@
 #include <giomm.h>
 #include <libgdamm.h>
 
+
+//TODO: Remove this redefine when Python fixes the compiler error in their macro:
+// http://bugs.python.org/issue7463
+#undef PyDateTime_IMPORT
+#define PyDateTime_IMPORT \
+        PyDateTimeAPI = (PyDateTime_CAPI*) PyCObject_Import((char*)"datetime", \
+                                                            (char*)"datetime_CAPI")
+
 namespace Glom
 {
 

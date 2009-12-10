@@ -1,3 +1,15 @@
+2009-12-10  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix distcheck.
+
+	* Makefile.am:
+	* Makefile_tests.am: Fix the distcheck by disting the DTD validation 
+	test script and the .glom file that it uses.
+	* glom/libglom/init.cc: Redefine Python's PyDateTime_IMPORT macro, 
+	to avoid a compiler warning. See http://bugs.python.org/issue7463
+	* glom/main.cc: Avoid including Python's datetime.h, to avoid the same 
+	compiler warning.
+
 2009-12-09  Murray Cumming  <murrayc@murrayc-desktop>
 
 	Tests: Complete the test_python_execute_func_date test.
