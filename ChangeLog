@@ -1,5 +1,10 @@
 2009-12-10  Murray Cumming  <murrayc@murrayc.com>
 
+	* examples/example_film_manager.glom: Added silly example data, 
+	fixing bug #600859 (Michael Hasselmann)
+
+2009-12-10  Murray Cumming  <murrayc@murrayc.com>
+
 	Tests: Validate all examples against the DTD, and correct the DTD.
 
 	* tests/dtd/test_example_sqlite: Renamed to test_file_validation.sh.

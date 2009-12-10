@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<glom_document xmlns="http://glom.org/glom_document" database_title="Openismus Film Manager" is_example="true" translation_original_locale="en_US" format_version="3">
-  <connection server="localhost" user="" database="glom_film_production_manager1" self_hosted="true" port="5435" try_other_ports="false" hosting_mode="postgres_self"/>
+<glom_document xmlns="http://glom.org/glom_document" database_title="Openismus Film Manager" is_example="true" translation_original_locale="en_US" format_version="4">
+  <connection server="localhost" user="" database="glom_film_production_manager" self_hosted="true" port="5434" try_other_ports="false" hosting_mode="postgres_self"/>
   <table name="accommodation" title="Accommodation">
     <example_rows/>
     <trans_set>
@@ -162,7 +162,32 @@
     <print_layouts/>
   </table>
   <table name="cars" title="Cars">
-    <example_rows/>
+    <example_rows>
+      <example_row>
+        <value column="car_id">0</value>
+        <value column="manufacturer">BMW</value>
+        <value column="model">E60</value>
+        <value column="registration"/>
+        <value column="description"/>
+        <value column="comment"/>
+      </example_row>
+      <example_row>
+        <value column="car_id">1</value>
+        <value column="manufacturer">BMW</value>
+        <value column="model">Z4</value>
+        <value column="registration"/>
+        <value column="description"/>
+        <value column="comment"/>
+      </example_row>
+      <example_row>
+        <value column="car_id">2</value>
+        <value column="manufacturer">Mercedes</value>
+        <value column="model">M111</value>
+        <value column="registration"/>
+        <value column="description"/>
+        <value column="comment"/>
+      </example_row>
+    </example_rows>
     <trans_set>
       <trans loc="de_DE" val="Autos"/>
       <trans loc="en_GB" val="Cars"/>
@@ -248,12 +273,65 @@
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
+      <data_layout name="list" parent_table="cars">
+        <data_layout_groups>
+          <data_layout_group name="main">
+            <data_layout_item name="car_id" editable="true" use_default_formatting="true" column_width="90">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="manufacturer" editable="true" use_default_formatting="true" column_width="143">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+            <data_layout_item name="model" editable="true" use_default_formatting="true" column_width="143">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+            <data_layout_item name="registration" editable="true" use_default_formatting="true" column_width="143">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+            <data_layout_item name="description" editable="true" use_default_formatting="true" column_width="143">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+            <data_layout_item name="comment" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+          </data_layout_group>
+        </data_layout_groups>
+      </data_layout>
     </data_layouts>
     <reports/>
     <print_layouts/>
   </table>
   <table name="characters" title="Characters">
-    <example_rows/>
+    <example_rows>
+      <example_row>
+        <value column="character_id">0</value>
+        <value column="character">Hero Protagonist</value>
+        <value column="comments"/>
+        <value column="contact_id">3</value>
+        <value column="mainpart">TRUE</value>
+      </example_row>
+      <example_row>
+        <value column="character_id">1</value>
+        <value column="character">Bar Owner</value>
+        <value column="comments"/>
+        <value column="contact_id">5</value>
+        <value column="mainpart">FALSE</value>
+      </example_row>
+      <example_row>
+        <value column="character_id">2</value>
+        <value column="character">Mysterious McEvil</value>
+        <value column="comments"/>
+        <value column="contact_id">4</value>
+        <value column="mainpart">FALSE</value>
+      </example_row>
+      <example_row>
+        <value column="character_id">3</value>
+        <value column="character">Sherif Heavypants</value>
+        <value column="comments">Would rather have late-night talk show.</value>
+        <value column="contact_id">6</value>
+        <value column="mainpart">FALSE</value>
+      </example_row>
+    </example_rows>
     <trans_set>
       <trans loc="de_DE" val="Besetzung"/>
       <trans loc="en_GB" val="Cast"/>
@@ -481,16 +559,16 @@
       <data_layout name="list" parent_table="characters">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="character_id" editable="true" use_default_formatting="true">
+            <data_layout_item name="character_id" editable="true" use_default_formatting="true" column_width="90">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="character" editable="true" use_default_formatting="true">
+            <data_layout_item name="character" editable="true" use_default_formatting="true" column_width="143">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
+            <data_layout_item name="contact_id" editable="true" use_default_formatting="true" column_width="90">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="name_full" relationship="contacts_actor" editable="true" use_default_formatting="true">
+            <data_layout_item name="name_full" relationship="contacts_actor" editable="true" use_default_formatting="true" column_width="143">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
               <title_custom use_custom="true" title="Actor"/>
             </data_layout_item>
@@ -560,7 +638,56 @@
     <print_layouts/>
   </table>
   <table name="companies" title="Companies">
-    <example_rows/>
+    <example_rows>
+      <example_row>
+        <value column="company_id">0</value>
+        <value column="name">Openismus GmbH</value>
+        <value column="comments">Creators of Glom</value>
+        <value column="description">Software Development</value>
+        <value column="logo"/>
+        <value column="website"/>
+      </example_row>
+      <example_row>
+        <value column="company_id">1</value>
+        <value column="name">Wombles Catering Ltd</value>
+        <value column="comments"/>
+        <value column="description"/>
+        <value column="logo"/>
+        <value column="website"/>
+      </example_row>
+      <example_row>
+        <value column="company_id">2</value>
+        <value column="name">Scooby Snack Catering Ltd</value>
+        <value column="comments"/>
+        <value column="description"/>
+        <value column="logo"/>
+        <value column="website"/>
+      </example_row>
+      <example_row>
+        <value column="company_id">3</value>
+        <value column="name">Management International</value>
+        <value column="comments"/>
+        <value column="description">Agents and Managers</value>
+        <value column="logo"/>
+        <value column="website"/>
+      </example_row>
+      <example_row>
+        <value column="company_id">4</value>
+        <value column="name">Talent Schmalent</value>
+        <value column="comments"/>
+        <value column="description">Agents and Managers</value>
+        <value column="logo"/>
+        <value column="website"/>
+      </example_row>
+      <example_row>
+        <value column="company_id">5</value>
+        <value column="name"/>
+        <value column="comments"/>
+        <value column="description"/>
+        <value column="logo"/>
+        <value column="website"/>
+      </example_row>
+    </example_rows>
     <trans_set>
       <trans loc="de_DE" val="Firmen"/>
       <trans loc="en_GB" val="Companies"/>
@@ -667,13 +794,13 @@
       <data_layout name="list" parent_table="companies">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="company_id" editable="true" use_default_formatting="true">
+            <data_layout_item name="company_id" editable="true" use_default_formatting="true" column_width="90">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="name" editable="true" use_default_formatting="true">
+            <data_layout_item name="name" editable="true" use_default_formatting="true" column_width="233">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="description" editable="true" use_default_formatting="true">
+            <data_layout_item name="description" editable="true" use_default_formatting="true" column_width="221">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
@@ -687,7 +814,242 @@
     <print_layouts/>
   </table>
   <table name="contacts" default="true" title="Contacts">
-    <example_rows/>
+    <example_rows>
+      <example_row>
+        <value column="contact_id">0</value>
+        <value column="name_first">Murray</value>
+        <value column="name_middle"/>
+        <value column="name_last">Cumming</value>
+        <value column="name_title"/>
+        <value column="address_street2"/>
+        <value column="address_town">Munich</value>
+        <value column="address_state">Bavaria</value>
+        <value column="address_country">Germany</value>
+        <value column="address_postcode">80400</value>
+        <value column="date_of_birth"/>
+        <value column="comments"/>
+        <value column="name_full">Murray Cumming</value>
+        <value column="company_id">0</value>
+        <value column="picture"/>
+        <value column="tel_home"/>
+        <value column="tel_mobile"/>
+        <value column="tel_fax"/>
+        <value column="tel_work"/>
+        <value column="email"/>
+        <value column="address_street1">Falschstrasse 123</value>
+        <value column="website"/>
+        <value column="agent_id"/>
+        <value column="stagename"/>
+      </example_row>
+      <example_row>
+        <value column="contact_id">1</value>
+        <value column="name_first">Jerry</value>
+        <value column="name_middle"/>
+        <value column="name_last">Maguire</value>
+        <value column="name_title"/>
+        <value column="address_street2"/>
+        <value column="address_town"/>
+        <value column="address_state"/>
+        <value column="address_country"/>
+        <value column="address_postcode"/>
+        <value column="date_of_birth"/>
+        <value column="comments"/>
+        <value column="name_full">Jerry Maguire</value>
+        <value column="company_id">3</value>
+        <value column="picture"/>
+        <value column="tel_home"/>
+        <value column="tel_mobile"/>
+        <value column="tel_fax"/>
+        <value column="tel_work"/>
+        <value column="email"/>
+        <value column="address_street1"/>
+        <value column="website"/>
+        <value column="agent_id"/>
+        <value column="stagename"/>
+      </example_row>
+      <example_row>
+        <value column="contact_id">2</value>
+        <value column="name_first">Johnny</value>
+        <value column="name_middle"/>
+        <value column="name_last">McAgent</value>
+        <value column="name_title"/>
+        <value column="address_street2"/>
+        <value column="address_town"/>
+        <value column="address_state"/>
+        <value column="address_country"/>
+        <value column="address_postcode"/>
+        <value column="date_of_birth"/>
+        <value column="comments"/>
+        <value column="name_full">Johnny McAgent</value>
+        <value column="company_id">4</value>
+        <value column="picture"/>
+        <value column="tel_home"/>
+        <value column="tel_mobile"/>
+        <value column="tel_fax"/>
+        <value column="tel_work"/>
+        <value column="email"/>
+        <value column="address_street1"/>
+        <value column="website"/>
+        <value column="agent_id"/>
+        <value column="stagename"/>
+      </example_row>
+      <example_row>
+        <value column="contact_id">3</value>
+        <value column="name_first">Andrew</value>
+        <value column="name_middle"/>
+        <value column="name_last">O'Actor</value>
+        <value column="name_title"/>
+        <value column="address_street2"/>
+        <value column="address_town"/>
+        <value column="address_state"/>
+        <value column="address_country"/>
+        <value column="address_postcode"/>
+        <value column="date_of_birth"/>
+        <value column="comments"/>
+        <value column="name_full">Andrew O'Actor</value>
+        <value column="company_id"/>
+        <value column="picture"/>
+        <value column="tel_home"/>
+        <value column="tel_mobile"/>
+        <value column="tel_fax"/>
+        <value column="tel_work"/>
+        <value column="email"/>
+        <value column="address_street1"/>
+        <value column="website"/>
+        <value column="agent_id"/>
+        <value column="stagename"/>
+      </example_row>
+      <example_row>
+        <value column="contact_id">4</value>
+        <value column="name_first">Sharon</value>
+        <value column="name_middle"/>
+        <value column="name_last">Von Schauspieler</value>
+        <value column="name_title"/>
+        <value column="address_street2"/>
+        <value column="address_town"/>
+        <value column="address_state"/>
+        <value column="address_country"/>
+        <value column="address_postcode"/>
+        <value column="date_of_birth"/>
+        <value column="comments"/>
+        <value column="name_full">Sharon Von Schauspieler</value>
+        <value column="company_id"/>
+        <value column="picture"/>
+        <value column="tel_home"/>
+        <value column="tel_mobile"/>
+        <value column="tel_fax"/>
+        <value column="tel_work"/>
+        <value column="email"/>
+        <value column="address_street1"/>
+        <value column="website"/>
+        <value column="agent_id"/>
+        <value column="stagename"/>
+      </example_row>
+      <example_row>
+        <value column="contact_id">5</value>
+        <value column="name_first">Mook</value>
+        <value column="name_middle"/>
+        <value column="name_last">Mookity</value>
+        <value column="name_title"/>
+        <value column="address_street2"/>
+        <value column="address_town"/>
+        <value column="address_state"/>
+        <value column="address_country"/>
+        <value column="address_postcode"/>
+        <value column="date_of_birth"/>
+        <value column="comments"/>
+        <value column="name_full">Mook Mookity</value>
+        <value column="company_id"/>
+        <value column="picture"/>
+        <value column="tel_home"/>
+        <value column="tel_mobile"/>
+        <value column="tel_fax"/>
+        <value column="tel_work"/>
+        <value column="email"/>
+        <value column="address_street1"/>
+        <value column="website"/>
+        <value column="agent_id"/>
+        <value column="stagename"/>
+      </example_row>
+      <example_row>
+        <value column="contact_id">6</value>
+        <value column="name_first">Rupert</value>
+        <value column="name_middle"/>
+        <value column="name_last">Pupkin</value>
+        <value column="name_title"/>
+        <value column="address_street2"/>
+        <value column="address_town"/>
+        <value column="address_state"/>
+        <value column="address_country"/>
+        <value column="address_postcode"/>
+        <value column="date_of_birth"/>
+        <value column="comments"/>
+        <value column="name_full">Rupert Pupkin</value>
+        <value column="company_id"/>
+        <value column="picture"/>
+        <value column="tel_home"/>
+        <value column="tel_mobile"/>
+        <value column="tel_fax"/>
+        <value column="tel_work"/>
+        <value column="email"/>
+        <value column="address_street1"/>
+        <value column="website"/>
+        <value column="agent_id"/>
+        <value column="stagename"/>
+      </example_row>
+      <example_row>
+        <value column="contact_id">7</value>
+        <value column="name_first">Cal</value>
+        <value column="name_middle"/>
+        <value column="name_last">McCamera</value>
+        <value column="name_title"/>
+        <value column="address_street2"/>
+        <value column="address_town"/>
+        <value column="address_state"/>
+        <value column="address_country"/>
+        <value column="address_postcode"/>
+        <value column="date_of_birth"/>
+        <value column="comments"/>
+        <value column="name_full">Cal McCamera</value>
+        <value column="company_id"/>
+        <value column="picture"/>
+        <value column="tel_home"/>
+        <value column="tel_mobile"/>
+        <value column="tel_fax"/>
+        <value column="tel_work"/>
+        <value column="email"/>
+        <value column="address_street1"/>
+        <value column="website"/>
+        <value column="agent_id">2</value>
+        <value column="stagename"/>
+      </example_row>
+      <example_row>
+        <value column="contact_id">8</value>
+        <value column="name_first">Sol</value>
+        <value column="name_middle"/>
+        <value column="name_last">McSound</value>
+        <value column="name_title"/>
+        <value column="address_street2"/>
+        <value column="address_town"/>
+        <value column="address_state"/>
+        <value column="address_country"/>
+        <value column="address_postcode"/>
+        <value column="date_of_birth"/>
+        <value column="comments"/>
+        <value column="name_full">Sol McSound</value>
+        <value column="company_id"/>
+        <value column="picture"/>
+        <value column="tel_home"/>
+        <value column="tel_mobile"/>
+        <value column="tel_fax"/>
+        <value column="tel_work"/>
+        <value column="email"/>
+        <value column="address_street1"/>
+        <value column="website"/>
+        <value column="agent_id">2</value>
+        <value column="stagename"/>
+      </example_row>
+    </example_rows>
     <trans_set>
       <trans loc="de_DE" val="Kontakte"/>
       <trans loc="en_GB" val="Contacts"/>
@@ -1053,19 +1415,15 @@
             <data_layout_item name="name_first" editable="true" use_default_formatting="true" column_width="100">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="name_last" editable="true" use_default_formatting="true" column_width="100">
+            <data_layout_item name="name_last" editable="true" use_default_formatting="true" column_width="162">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
             <data_layout_item name="address_country" editable="true" use_default_formatting="true" column_width="100">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="name" relationship="company" editable="true" use_default_formatting="true" column_width="100">
+            <data_layout_item name="name" relationship="company" editable="true" use_default_formatting="true" column_width="147">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
-              <title_custom title="Company Name">
-                <trans_set>
-                  <trans loc="de_DE" val="Firma Name"/>
-                </trans_set>
-              </title_custom>
+              <title_custom use_custom="true" title="Company Name"/>
             </data_layout_item>
             <data_layout_item name="comments" editable="true" use_default_formatting="true">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
@@ -1112,7 +1470,22 @@
     <print_layouts/>
   </table>
   <table name="crew" title="Crew">
-    <example_rows/>
+    <example_rows>
+      <example_row>
+        <value column="crew_id">0</value>
+        <value column="description">Main Camera Man</value>
+        <value column="comments"/>
+        <value column="dept_id">1</value>
+        <value column="contact_id">7</value>
+      </example_row>
+      <example_row>
+        <value column="crew_id">1</value>
+        <value column="description">Chief Sound Man</value>
+        <value column="comments"/>
+        <value column="dept_id">0</value>
+        <value column="contact_id">8</value>
+      </example_row>
+    </example_rows>
     <trans_set>
       <trans loc="en_GB" val="Crew"/>
     </trans_set>
@@ -1179,8 +1552,8 @@
                 <trans loc="de_DE" val="&#xDC;bersicht"/>
                 <trans loc="en_GB" val="Overview"/>
               </trans_set>
-              <data_layout_item name="department_id" editable="true" use_default_formatting="true">
-                <formatting/>
+              <data_layout_item name="crew_id" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
               </data_layout_item>
               <data_layout_item name="description" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
@@ -1252,10 +1625,10 @@
                 </data_layout_group>
               </data_layout_group>
               <data_layout_portal relationship="scenes">
-                <data_layout_item name="scene_id" editable="true" use_default_formatting="true">
+                <data_layout_item name="scene_id" use_default_formatting="true" column_width="90">
                   <formatting format_thousands_separator="true" format_decimal_places="2"/>
                 </data_layout_item>
-                <data_layout_item name="overview_name" relationship="scenes" editable="true" use_default_formatting="true">
+                <data_layout_item name="overview_name" relationship="scenes" use_default_formatting="true">
                   <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
                 </data_layout_item>
               </data_layout_portal>
@@ -1269,19 +1642,19 @@
       <data_layout name="list" parent_table="crew">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="crew_id" editable="true" use_default_formatting="true">
+            <data_layout_item name="crew_id" editable="true" use_default_formatting="true" column_width="90">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="description" editable="true" use_default_formatting="true">
+            <data_layout_item name="description" editable="true" use_default_formatting="true" column_width="143">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="contact_id" editable="true" use_default_formatting="true">
+            <data_layout_item name="contact_id" editable="true" use_default_formatting="true" column_width="90">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="name_full" relationship="contacts" editable="true" use_default_formatting="true">
+            <data_layout_item name="name_full" relationship="contacts" editable="true" use_default_formatting="true" column_width="143">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="dept_id" editable="true" use_default_formatting="true">
+            <data_layout_item name="dept_id" editable="true" use_default_formatting="true" column_width="90">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="name" relationship="departments" editable="true" use_default_formatting="true">
@@ -1463,13 +1836,13 @@
       <data_layout name="list" parent_table="deliveries">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="delivery_id" editable="true" use_default_formatting="true">
+            <data_layout_item name="delivery_id" editable="true" use_default_formatting="true" column_width="90">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="description" editable="true" use_default_formatting="true">
+            <data_layout_item name="description" editable="true" use_default_formatting="true" column_width="143">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="name_full" relationship="departure_contact" editable="true" use_default_formatting="true">
+            <data_layout_item name="name_full" relationship="departure_contact" editable="true" use_default_formatting="true" column_width="143">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
               <title_custom use_custom="true" title="Departure Name">
                 <trans_set>
@@ -1477,13 +1850,13 @@
                 </trans_set>
               </title_custom>
             </data_layout_item>
-            <data_layout_item name="departure_place" editable="true" use_default_formatting="true">
+            <data_layout_item name="departure_place" editable="true" use_default_formatting="true" column_width="143">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="departure_date" editable="true" use_default_formatting="true">
+            <data_layout_item name="departure_date" editable="true" use_default_formatting="true" column_width="77">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="name_full" relationship="arrival_contact" editable="true" use_default_formatting="true">
+            <data_layout_item name="name_full" relationship="arrival_contact" editable="true" use_default_formatting="true" column_width="143">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
               <title_custom use_custom="true" title="Arrival Name">
                 <trans_set>
@@ -1491,7 +1864,7 @@
                 </trans_set>
               </title_custom>
             </data_layout_item>
-            <data_layout_item name="arrival_place" editable="true" use_default_formatting="true">
+            <data_layout_item name="arrival_place" editable="true" use_default_formatting="true" column_width="143">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
             <data_layout_item name="arrival_date" editable="true" use_default_formatting="true">
@@ -1566,7 +1939,48 @@
     <print_layouts/>
   </table>
   <table name="departments" title="Departments">
-    <example_rows/>
+    <example_rows>
+      <example_row>
+        <value column="departments_id">0</value>
+        <value column="name">Sound</value>
+        <value column="comments"/>
+      </example_row>
+      <example_row>
+        <value column="departments_id">1</value>
+        <value column="name">Camera</value>
+        <value column="comments"/>
+      </example_row>
+      <example_row>
+        <value column="departments_id">2</value>
+        <value column="name">Set Design</value>
+        <value column="comments"/>
+      </example_row>
+      <example_row>
+        <value column="departments_id">3</value>
+        <value column="name">Lighting</value>
+        <value column="comments"/>
+      </example_row>
+      <example_row>
+        <value column="departments_id">4</value>
+        <value column="name">Makeup</value>
+        <value column="comments"/>
+      </example_row>
+      <example_row>
+        <value column="departments_id">5</value>
+        <value column="name">Costume</value>
+        <value column="comments"/>
+      </example_row>
+      <example_row>
+        <value column="departments_id">6</value>
+        <value column="name">Stunts</value>
+        <value column="comments"/>
+      </example_row>
+      <example_row>
+        <value column="departments_id">7</value>
+        <value column="name">Effects</value>
+        <value column="comments"/>
+      </example_row>
+    </example_rows>
     <trans_set>
       <trans loc="de_DE" val="Abteilungen"/>
       <trans loc="en_GB" val="Departments"/>
@@ -1656,12 +2070,43 @@
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
+      <data_layout name="list" parent_table="departments">
+        <data_layout_groups>
+          <data_layout_group name="main">
+            <data_layout_item name="departments_id" editable="true" use_default_formatting="true" column_width="90">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="name" editable="true" use_default_formatting="true" column_width="143">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+            <data_layout_item name="comments" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+          </data_layout_group>
+        </data_layout_groups>
+      </data_layout>
     </data_layouts>
     <reports/>
     <print_layouts/>
   </table>
   <table name="equipment" title="Equipment">
-    <example_rows/>
+    <example_rows>
+      <example_row>
+        <value column="equipment_id">0</value>
+        <value column="description">Smoke Machine</value>
+        <value column="comments"/>
+      </example_row>
+      <example_row>
+        <value column="equipment_id">1</value>
+        <value column="description">Jump Rig</value>
+        <value column="comments"/>
+      </example_row>
+      <example_row>
+        <value column="equipment_id">2</value>
+        <value column="description">Cardboard Boxes</value>
+        <value column="comments"/>
+      </example_row>
+    </example_rows>
     <trans_set>
       <trans loc="en_GB" val="Equipment"/>
     </trans_set>
@@ -1734,12 +2179,40 @@
           </data_layout_group>
         </data_layout_groups>
       </data_layout>
+      <data_layout name="list" parent_table="equipment">
+        <data_layout_groups>
+          <data_layout_group name="main">
+            <data_layout_item name="equipment_id" editable="true" use_default_formatting="true" column_width="90">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="description" editable="true" use_default_formatting="true" column_width="143">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+            <data_layout_item name="comments" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+          </data_layout_group>
+        </data_layout_groups>
+      </data_layout>
     </data_layouts>
     <reports/>
     <print_layouts/>
   </table>
   <table name="journeys" title="Journeys">
-    <example_rows/>
+    <example_rows>
+      <example_row>
+        <value column="journey_id">0</value>
+        <value column="comment"/>
+        <value column="description">Andrew from the Airport</value>
+        <value column="arrival_date">2009-12-10</value>
+        <value column="arrival_time">09:30:00</value>
+        <value column="arrival_place">Main Street, Munich</value>
+        <value column="departure_date">2009-12-10</value>
+        <value column="departure_time">08:00:00</value>
+        <value column="departure_place">Munich Airport</value>
+        <value column="contact_id">3</value>
+      </example_row>
+    </example_rows>
     <trans_set>
       <trans loc="de_DE" val="Fahrten"/>
       <trans loc="en_GB" val="Journeys"/>
@@ -1809,22 +2282,22 @@
       <data_layout name="list" parent_table="journeys">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="journey_id" editable="true" use_default_formatting="true">
+            <data_layout_item name="journey_id" editable="true" use_default_formatting="true" column_width="90">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="name_full" relationship="contacts" editable="true" use_default_formatting="true">
+            <data_layout_item name="name_full" relationship="contacts" editable="true" use_default_formatting="true" column_width="143">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="description" editable="true" use_default_formatting="true">
+            <data_layout_item name="description" editable="true" use_default_formatting="true" column_width="192">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="arrival_place" editable="true" use_default_formatting="true">
+            <data_layout_item name="arrival_place" editable="true" use_default_formatting="true" column_width="143">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="arrival_date" editable="true" use_default_formatting="true">
+            <data_layout_item name="arrival_date" editable="true" use_default_formatting="true" column_width="101">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="departure_place" editable="true" use_default_formatting="true">
+            <data_layout_item name="departure_place" editable="true" use_default_formatting="true" column_width="143">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
             <data_layout_item name="departure_date" editable="true" use_default_formatting="true">
@@ -1837,11 +2310,11 @@
         <data_layout_groups>
           <data_layout_group name="main">
             <data_layout_group name="overview" columns_count="2">
-              <data_layout_item name="description" editable="true" use_default_formatting="true">
-                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
-              </data_layout_item>
               <data_layout_item name="journey_id" editable="true" use_default_formatting="true">
                 <formatting format_thousands_separator="true" format_decimal_places="2"/>
+              </data_layout_item>
+              <data_layout_item name="description" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
               </data_layout_item>
             </data_layout_group>
             <data_layout_group name="details" columns_count="2">
@@ -1899,7 +2372,32 @@
     <print_layouts/>
   </table>
   <table name="locations" title="Locations">
-    <example_rows/>
+    <example_rows>
+      <example_row>
+        <value column="location_id">0</value>
+        <value column="name">Main Street</value>
+        <value column="address_street">Spielzeugstrasse 1</value>
+        <value column="address_town">Toy Town</value>
+        <value column="address_county">Bavaria</value>
+        <value column="address_country">Germany</value>
+        <value column="address_postcode"/>
+        <value column="comments"/>
+        <value column="contact_id"/>
+        <value column="rent"/>
+      </example_row>
+      <example_row>
+        <value column="location_id">1</value>
+        <value column="name">Tavern</value>
+        <value column="address_street">Keg Strasse 1</value>
+        <value column="address_town">Munich</value>
+        <value column="address_county">Bavaria</value>
+        <value column="address_country">Germany</value>
+        <value column="address_postcode"/>
+        <value column="comments"/>
+        <value column="contact_id"/>
+        <value column="rent"/>
+      </example_row>
+    </example_rows>
     <trans_set>
       <trans loc="en_GB" val="Locations"/>
     </trans_set>
@@ -2046,13 +2544,13 @@
       <data_layout name="list" parent_table="locations">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="location_id" editable="true" use_default_formatting="true">
+            <data_layout_item name="location_id" editable="true" use_default_formatting="true" column_width="90">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="name" editable="true" use_default_formatting="true">
+            <data_layout_item name="name" editable="true" use_default_formatting="true" column_width="143">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="address_town" editable="true" use_default_formatting="true">
+            <data_layout_item name="address_town" editable="true" use_default_formatting="true" column_width="143">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
             <data_layout_item name="address_country" editable="true" use_default_formatting="true">
@@ -2085,7 +2583,44 @@
     <print_layouts/>
   </table>
   <table name="scene_cast" hidden="true" title="Scene Cast">
-    <example_rows/>
+    <example_rows>
+      <example_row>
+        <value column="scene_cast_id">0</value>
+        <value column="comments"/>
+        <value column="cast_id">0</value>
+        <value column="scene_id">0</value>
+      </example_row>
+      <example_row>
+        <value column="scene_cast_id">2</value>
+        <value column="comments"/>
+        <value column="cast_id">2</value>
+        <value column="scene_id">0</value>
+      </example_row>
+      <example_row>
+        <value column="scene_cast_id">1</value>
+        <value column="comments"/>
+        <value column="cast_id">3</value>
+        <value column="scene_id">0</value>
+      </example_row>
+      <example_row>
+        <value column="scene_cast_id">3</value>
+        <value column="comments"/>
+        <value column="cast_id">1</value>
+        <value column="scene_id">1</value>
+      </example_row>
+      <example_row>
+        <value column="scene_cast_id">4</value>
+        <value column="comments"/>
+        <value column="cast_id">0</value>
+        <value column="scene_id">1</value>
+      </example_row>
+      <example_row>
+        <value column="scene_cast_id">5</value>
+        <value column="comments"/>
+        <value column="cast_id">2</value>
+        <value column="scene_id">1</value>
+      </example_row>
+    </example_rows>
     <trans_set>
       <trans loc="de_DE" val="Szene Besetzung"/>
       <trans loc="en_GB" val="Scene Cast"/>
@@ -2134,7 +2669,48 @@
         </trans_set>
       </relationship>
     </relationships>
-    <data_layouts/>
+    <data_layouts>
+      <data_layout name="list" parent_table="scene_cast">
+        <data_layout_groups>
+          <data_layout_group name="main">
+            <data_layout_item name="scene_cast_id" editable="true" use_default_formatting="true" column_width="90">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="comments" editable="true" use_default_formatting="true" column_width="143">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+            </data_layout_item>
+            <data_layout_item name="cast_id" editable="true" use_default_formatting="true" column_width="90">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="scene_id" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+          </data_layout_group>
+        </data_layout_groups>
+      </data_layout>
+      <data_layout name="details" parent_table="scene_cast">
+        <data_layout_groups>
+          <data_layout_group name="main">
+            <data_layout_group name="overview" columns_count="2" title="Overview">
+              <data_layout_item name="scene_cast_id" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
+              </data_layout_item>
+            </data_layout_group>
+            <data_layout_group name="details" columns_count="2" title="Details">
+              <data_layout_item name="comments" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              </data_layout_item>
+              <data_layout_item name="cast_id" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
+              </data_layout_item>
+              <data_layout_item name="scene_id" editable="true" use_default_formatting="true">
+                <formatting format_thousands_separator="true" format_decimal_places="2"/>
+              </data_layout_item>
+            </data_layout_group>
+          </data_layout_group>
+        </data_layout_groups>
+      </data_layout>
+    </data_layouts>
     <reports/>
     <print_layouts/>
   </table>
@@ -2164,7 +2740,14 @@
     <print_layouts/>
   </table>
   <table name="scene_crew" hidden="true" title="Scene Crew">
-    <example_rows/>
+    <example_rows>
+      <example_row>
+        <value column="scene_crew_id">0</value>
+        <value column="comments"/>
+        <value column="scene_id">1</value>
+        <value column="department_id"/>
+      </example_row>
+    </example_rows>
     <trans_set>
       <trans loc="de_DE" val="Szene Crew"/>
       <trans loc="en_GB" val="Scene Crew"/>
@@ -2243,7 +2826,26 @@
     <print_layouts/>
   </table>
   <table name="scene_equipment" hidden="true">
-    <example_rows/>
+    <example_rows>
+      <example_row>
+        <value column="scene_equipment_id">0</value>
+        <value column="comments"/>
+        <value column="equipment_id">0</value>
+        <value column="scene_id">0</value>
+      </example_row>
+      <example_row>
+        <value column="scene_equipment_id">1</value>
+        <value column="comments"/>
+        <value column="equipment_id">2</value>
+        <value column="scene_id">0</value>
+      </example_row>
+      <example_row>
+        <value column="scene_equipment_id">2</value>
+        <value column="comments"/>
+        <value column="equipment_id">1</value>
+        <value column="scene_id">1</value>
+      </example_row>
+    </example_rows>
     <trans_set>
       <trans loc="en_GB" val="Scene Equipment"/>
     </trans_set>
@@ -2424,7 +3026,38 @@
     <print_layouts/>
   </table>
   <table name="scenes" title="Scenes">
-    <example_rows/>
+    <example_rows>
+      <example_row>
+        <value column="scene_id">1</value>
+        <value column="comments"/>
+        <value column="description"/>
+        <value column="location_id">1</value>
+        <value column="date">2009-12-11</value>
+        <value column="time"/>
+        <value column="minutes"/>
+        <value column="day_or_night">Nacht</value>
+        <value column="interior_or_exterior">Interior</value>
+        <value column="name"/>
+        <value column="overview_name">Tavern</value>
+        <value column="pages">3</value>
+        <value column="script_day"/>
+      </example_row>
+      <example_row>
+        <value column="scene_id">0</value>
+        <value column="comments"/>
+        <value column="description"/>
+        <value column="location_id">4</value>
+        <value column="date">2009-12-10</value>
+        <value column="time"/>
+        <value column="minutes"/>
+        <value column="day_or_night">Tag</value>
+        <value column="interior_or_exterior">Exterior</value>
+        <value column="name"/>
+        <value column="overview_name">Mexican Standoff</value>
+        <value column="pages">4</value>
+        <value column="script_day"/>
+      </example_row>
+    </example_rows>
     <trans_set>
       <trans loc="de_DE" val="Szenen"/>
       <trans loc="en_GB" val="Scenes"/>
@@ -2720,22 +3353,22 @@ else:
       <data_layout name="list" parent_table="scenes">
         <data_layout_groups>
           <data_layout_group name="main">
-            <data_layout_item name="scene_id" editable="true" use_default_formatting="true">
+            <data_layout_item name="scene_id" editable="true" use_default_formatting="true" column_width="90">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="overview_name" editable="true" use_default_formatting="true">
+            <data_layout_item name="overview_name" editable="true" use_default_formatting="true" column_width="143">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="interior_or_exterior" editable="true" use_default_formatting="true">
+            <data_layout_item name="interior_or_exterior" editable="true" use_default_formatting="true" column_width="143">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="day_or_night" editable="true" use_default_formatting="true">
+            <data_layout_item name="day_or_night" editable="true" use_default_formatting="true" column_width="143">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="date" editable="true" use_default_formatting="true">
+            <data_layout_item name="date" editable="true" use_default_formatting="true" column_width="77">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
-            <data_layout_item name="minutes" editable="true" use_default_formatting="true">
+            <data_layout_item name="minutes" editable="true" use_default_formatting="true" column_width="90">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
             </data_layout_item>
             <data_layout_item name="description" editable="true" use_default_formatting="true">
@@ -2816,80 +3449,8 @@ else:
     <print_layouts/>
   </table>
   <groups><!--These are only used when recreating a database from an example file. The actual access-control is on the server, of course.-->
-    <group name="accounts">
-    <table_privs table_name="accommodation" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="cars" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="cast" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="companies" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="contacts" priv_view="true" priv_edit="true"/>
-    <table_privs table_name="crew" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="deliveries" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="departments" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="equipment" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="glom_system_preferences" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="invoice_lines" priv_view="true" priv_edit="true"/>
-    <table_privs table_name="invoices" priv_view="true" priv_edit="true"/>
-    <table_privs table_name="journeys" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="locations" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="products" priv_view="true"/>
-    <table_privs table_name="roles" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="scene_cast" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="scene_crew" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="scene_equipment" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="scenes" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="staff" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="teams" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="test" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    </group>
-    <group name="glom_developer" developer="true">
-    <table_privs table_name="accommodation" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="cars" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="cast" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="companies" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="contacts" priv_view="true" priv_edit="true"/>
-    <table_privs table_name="crew" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="deliveries" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="departments" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="equipment" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="glom_system_preferences" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="invoice_lines" priv_view="true" priv_edit="true"/>
-    <table_privs table_name="invoices" priv_view="true" priv_edit="true"/>
-    <table_privs table_name="journeys" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="locations" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="products" priv_view="true"/>
-    <table_privs table_name="roles" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="scene_cast" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="scene_crew" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="scene_equipment" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="scenes" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="staff" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="teams" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="test" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    </group>
-    <group name="personnel_department">
-    <table_privs table_name="accommodation" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="cars" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="cast" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="companies" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="contacts" priv_view="true" priv_edit="true"/>
-    <table_privs table_name="crew" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="deliveries" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="departments" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="equipment" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="glom_system_preferences" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="invoice_lines" priv_view="true" priv_edit="true"/>
-    <table_privs table_name="invoices" priv_view="true" priv_edit="true"/>
-    <table_privs table_name="journeys" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="locations" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="products" priv_view="true"/>
-    <table_privs table_name="roles" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="scene_cast" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="scene_crew" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="scene_equipment" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="scenes" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="staff" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="teams" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="test" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    </group>
+    <group name="accounts"/>
+    <group name="glom_developer" developer="true"/>
+    <group name="personnel_department"/>
   </groups>
   <library_modules/></glom_document>
