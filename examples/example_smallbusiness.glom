@@ -1474,29 +1474,26 @@ if __name__ == "__main__":
     <print_layouts/>
   </table>
   <groups><!--These are only used when recreating a database from an example file. The actual access-control is on the server, of course.-->
-    <group/>
-    <table_privs table_name="contacts" priv_view="true" priv_edit="true"/>
-    <table_privs table_name="invoice_lines" priv_view="true" priv_edit="true"/>
-    <table_privs table_name="invoices" priv_view="true" priv_edit="true"/>
-    <table_privs table_name="products" priv_view="true"/>
-    <table_privs table_name="staff" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <group name="accounts"/>
-    <table_privs table_name="contacts" priv_view="true" priv_edit="true"/>
-    <table_privs table_name="invoice_lines" priv_view="true" priv_edit="true"/>
-    <table_privs table_name="invoices" priv_view="true" priv_edit="true"/>
-    <table_privs table_name="products" priv_view="true"/>
-    <table_privs table_name="staff" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <group name="glom_developer" developer="true"/>
-    <table_privs table_name="contacts" priv_view="true" priv_edit="true"/>
-    <table_privs table_name="invoice_lines" priv_view="true" priv_edit="true"/>
-    <table_privs table_name="invoices" priv_view="true" priv_edit="true"/>
-    <table_privs table_name="products" priv_view="true"/>
-    <table_privs table_name="staff" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <group name="personnel_department"/>
-    <table_privs table_name="contacts" priv_view="true" priv_edit="true"/>
-    <table_privs table_name="invoice_lines" priv_view="true" priv_edit="true"/>
-    <table_privs table_name="invoices" priv_view="true" priv_edit="true"/>
-    <table_privs table_name="products" priv_view="true"/>
-    <table_privs table_name="staff" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+    <group name="accounts">
+      <table_privs table_name="contacts" priv_view="true" priv_edit="true"/>
+      <table_privs table_name="invoice_lines" priv_view="true" priv_edit="true"/>
+      <table_privs table_name="invoices" priv_view="true" priv_edit="true"/>
+      <table_privs table_name="products" priv_view="true"/>
+      <table_privs table_name="staff" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+    </group>
+    <group name="glom_developer" developer="true">
+      <table_privs table_name="contacts" priv_view="true" priv_edit="true"/>
+      <table_privs table_name="invoice_lines" priv_view="true" priv_edit="true"/>
+      <table_privs table_name="invoices" priv_view="true" priv_edit="true"/>
+      <table_privs table_name="products" priv_view="true"/>
+      <table_privs table_name="staff" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+    </group>
+    <group name="personnel_department">
+      <table_privs table_name="contacts" priv_view="true" priv_edit="true"/>
+      <table_privs table_name="invoice_lines" priv_view="true" priv_edit="true"/>
+      <table_privs table_name="invoices" priv_view="true" priv_edit="true"/>
+      <table_privs table_name="products" priv_view="true"/>
+      <table_privs table_name="staff" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+    </group>
   </groups>
   <library_modules/></glom_document>

@@ -2816,7 +2816,7 @@ else:
     <print_layouts/>
   </table>
   <groups><!--These are only used when recreating a database from an example file. The actual access-control is on the server, of course.-->
-    <group/>
+    <group name="accounts">
     <table_privs table_name="accommodation" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
     <table_privs table_name="cars" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
     <table_privs table_name="cast" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
@@ -2840,7 +2840,8 @@ else:
     <table_privs table_name="staff" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
     <table_privs table_name="teams" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
     <table_privs table_name="test" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <group name="accounts"/>
+    </group>
+    <group name="glom_developer" developer="true">
     <table_privs table_name="accommodation" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
     <table_privs table_name="cars" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
     <table_privs table_name="cast" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
@@ -2864,7 +2865,8 @@ else:
     <table_privs table_name="staff" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
     <table_privs table_name="teams" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
     <table_privs table_name="test" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <group name="glom_developer" developer="true"/>
+    </group>
+    <group name="personnel_department">
     <table_privs table_name="accommodation" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
     <table_privs table_name="cars" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
     <table_privs table_name="cast" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
@@ -2888,29 +2890,6 @@ else:
     <table_privs table_name="staff" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
     <table_privs table_name="teams" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
     <table_privs table_name="test" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <group name="personnel_department"/>
-    <table_privs table_name="accommodation" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="cars" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="cast" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="companies" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="contacts" priv_view="true" priv_edit="true"/>
-    <table_privs table_name="crew" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="deliveries" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="departments" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="equipment" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="glom_system_preferences" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="invoice_lines" priv_view="true" priv_edit="true"/>
-    <table_privs table_name="invoices" priv_view="true" priv_edit="true"/>
-    <table_privs table_name="journeys" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="locations" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="products" priv_view="true"/>
-    <table_privs table_name="roles" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="scene_cast" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="scene_crew" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="scene_equipment" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="scenes" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="staff" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="teams" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
-    <table_privs table_name="test" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+    </group>
   </groups>
   <library_modules/></glom_document>

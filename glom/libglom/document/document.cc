@@ -3538,14 +3538,22 @@ bool Document::save_before()
     {
       const GroupInfo& group_info = iter->second;
 
+      const Glib::ustring group_name = group_info.get_name();
+      if(group_name.empty())
+      {
+        //I saw this in at least one .glom file. murrayc.
+        std::cerr << "Document::save_before(): The group name is empty." << std::endl;
+        continue;
+      }
+
       xmlpp::Element* nodeGroup = nodeGroups->add_child(GLOM_NODE_GROUP);
-      set_node_attribute_value(nodeGroup, GLOM_ATTRIBUTE_NAME, group_info.get_name());
+      set_node_attribute_value(nodeGroup, GLOM_ATTRIBUTE_NAME, group_name);
       set_node_attribute_value_as_bool(nodeGroup, GLOM_ATTRIBUTE_DEVELOPER, group_info.m_developer);
 
       //The privileges for each table, for this group:
       for(GroupInfo::type_map_table_privileges::const_iterator iter = group_info.m_map_privileges.begin(); iter != group_info.m_map_privileges.end(); ++iter)
       {
-        xmlpp::Element* nodeTablePrivs = nodeGroups->add_child(GLOM_NODE_TABLE_PRIVS);
+        xmlpp::Element* nodeTablePrivs = nodeGroup->add_child(GLOM_NODE_TABLE_PRIVS);
 
         set_node_attribute_value(nodeTablePrivs, GLOM_ATTRIBUTE_TABLE_NAME, iter->first);
 

@@ -48,7 +48,7 @@ TODO: Add 'title_singular' element.
       However, these are just initial permissions for examples. The real permissions are 
       always in the database.
 -->
-    <!ELEMENT groups (group|table_privs)*>
+    <!ELEMENT groups (group*)>
     <!ATTLIST groups>
 
 <!-- The group node specifies a group of users and lists the permissions for that group for each table.
@@ -57,7 +57,7 @@ TODO: Add 'title_singular' element.
      name: The name of this group of users.
      developer: Whether users in this group may use the developer features in Glom to change the database.
 -->
-    <!ELEMENT group EMPTY>
+    <!ELEMENT group (table_privs*)>
     <!ATTLIST group
         name CDATA #REQUIRED
         developer (true|false) "false">
@@ -89,7 +89,7 @@ TODO: Add 'title_singular' element.
   default: can specify that the table should be opened when the file is opened. Only one table should have default=true.
   example_rows: deprecated in 1.6 (and support removed in 1.10) - use the child node instead.
 -->
-    <!ELEMENT table (title_singular?, example_rows?, fields+, relationships?, data_layouts+, reports?, print_layouts?, trans_set?)>
+    <!ELEMENT table (title_singular?, example_rows?, trans_set?, fields+, relationships?, data_layouts+, reports?, print_layouts?)>
     <!ATTLIST table
         name CDATA #REQUIRED
         title CDATA #IMPLIED
@@ -100,14 +100,19 @@ TODO: Add 'title_singular' element.
 
 <!-- example_rows are comma separated lists of data (in the child text node) to load into the table 
      when it is first created. -->
-    <!ELEMENT example_rows ANY>
-    <!ATTLIST example_rows>
+    <!ELEMENT example_rows (example_row*)>
+
+    <!ELEMENT example_row (value*)>
+
+    <!ELEMENT value (#PCDATA)>
+    <!ATTLIST value
+        column CDATA #REQUIRED>
 
 <!-- relationships describe connections between databases. -->
 
     <!ELEMENT relationships (relationship*)>
     
-    <!ELEMENT relationship ANY>
+    <!ELEMENT relationship (trans_set?)>
     <!ATTLIST relationship
         name CDATA #REQUIRED
         title CDATA #IMPLIED
@@ -129,9 +134,9 @@ TODO: Add 'title_singular' element.
   default_value: New records will have this value in this field when they are first created.
   calculation: deprecated - use the child node instead.
 -->
-    <!ELEMENT fields (field | field_view)*>
+    <!ELEMENT fields (field*)>
 
-    <!ELEMENT field (field_lookup|calculation|formatting|trans_set)*>
+    <!ELEMENT field (calculation?, field_lookup?, formatting?, trans_set?)>
     <!ATTLIST field
         name CDATA #REQUIRED
         type CDATA #IMPLIED
@@ -156,7 +161,7 @@ TODO: Add 'title_singular' element.
   since normal text boxes are relatively simple. The choices_* options are for defining the custom choice
   boxes. -->
 
-    <!ELEMENT formatting ANY>
+    <!ELEMENT formatting (custom_choice_list*)>
     <!ATTLIST formatting
         format_thousands_separator (true|false) "true"
         format_text_multiline (true|false) "true"
@@ -173,7 +178,7 @@ TODO: Add 'title_singular' element.
 <!-- A custom_choice is a drop down menu that can be selected (for example, Mrs., Mr., Ms., etc) from
   a set of options. -->
 
-    <!ELEMENT custom_choice_list (custom_choice)*>
+    <!ELEMENT custom_choice_list (custom_choice*)>
     <!ATTLIST custom_choice_list>
 
     <!ELEMENT custom_choice EMPTY>
@@ -182,7 +187,7 @@ TODO: Add 'title_singular' element.
 
 <!-- The calculation node specifies python code that should be used to 
      calculate a value for this field. They python code is in a child text node. -->
-    <!ELEMENT calculation ANY>
+    <!ELEMENT calculation (#PCDATA)>
     <!ATTLIST calculation>
 
 <!-- data layouts determine the order of items and sorting of the fields. There are many
@@ -191,21 +196,20 @@ TODO: Add 'title_singular' element.
   on the grouping subnodes, which is the number of columns wide the element should be. 
   The name of the data_layout will be either "list" or "details".-->
 
-    <!ELEMENT data_layouts (data_layout_details | data_layout_list | data_layout)* >
+    <!ELEMENT data_layouts (data_layout*) >
 
     <!ELEMENT data_layout (data_layout_groups)>
     <!ATTLIST data_layout
         name CDATA #REQUIRED
         parent_table CDATA #IMPLIED>
 
-    <!ELEMENT data_layout_groups (data_layout_group)*>
+    <!ELEMENT data_layout_groups (data_layout_group*)>
     <!ATTLIST data_layout_groups>
 
 <!-- A data_layout_group is just a the setup of fields to be shown. It encapsulates everything else. -->
 
-    <!ELEMENT data_layout_group (trans_set | data_layout_group | data_layout_item | data_layout_portal |
-        data_layout_item_groupby | data_layout_button | data_layout_notebook | data_layout_item_header | 
-        trans_set | data_layout_text)*>
+    <!-- TODO: The comma separator specifies a fixed child node sequence, but we don't want to enforce that. -->
+    <!ELEMENT data_layout_group (trans_set?, (data_layout_group | data_layout_item | data_layout_portal | data_layout_calendar_portal | data_layout_item_groupby | data_layout_button | data_layout_notebook | data_layout_item_header | data_layout_text)*)>
     <!ATTLIST data_layout_group
         name CDATA #IMPLIED
         title CDATA #IMPLIED
@@ -214,7 +218,7 @@ TODO: Add 'title_singular' element.
 
 <!-- A data_layout_notebook is the tabbed display of tables in the glom interface. -->
 
-    <!ELEMENT data_layout_notebook (data_layout_group|data_layout_portal)*>
+    <!ELEMENT data_layout_notebook (data_layout_group*, data_layout_portal*)>
     <!ATTLIST data_layout_notebook
         name CDATA #REQUIRED
         columns_count CDATA #IMPLIED
@@ -223,9 +227,7 @@ TODO: Add 'title_singular' element.
 
 <!-- A data_layout_item_groupby is a data_layout_group that sorts -->
 
-    <!ELEMENT data_layout_item_groupby (trans_set | groupby | sortby | data_layout_group | data_layout_item |
-        data_layout_portal | data_layout_button | data_layout_item_groupby | secondary_fields | 
-        data_layout_item_summary | data_layout_item_verticalgroup)*>
+    <!ELEMENT data_layout_item_groupby (trans_set?, groupby?, sortby?, (data_layout_group |  data_layout_item | data_layout_portal | data_layout_calendar_portal | data_layout_button | data_layout_item_groupby |  secondary_fields | data_layout_item_summary | data_layout_item_verticalgroup)*)>
     <!ATTLIST data_layout_item_groupby
         name CDATA #IMPLIED
         title CDATA #IMPLIED
@@ -235,7 +237,7 @@ TODO: Add 'title_singular' element.
 
 <!-- data_layout_text and text are for displaying text. -->
 
-    <!ELEMENT data_layout_text (formatting | text)*>
+    <!ELEMENT data_layout_text (formatting?, text?)>
     <!ATTLIST data_layout_text
         sequence CDATA #IMPLIED>
 
@@ -245,12 +247,12 @@ TODO: Add 'title_singular' element.
         
 <!-- sortby describes what a data_layout_item_groupby sorts by. -->
 
-    <!ELEMENT sortby (data_layout_item)*>
+    <!ELEMENT sortby (data_layout_item*)>
     <!ATTLIST sortby>
     
 <!-- data_layout_item_verticalgroup is used to display a vertical group of fields. -->
 
-    <!ELEMENT data_layout_item_verticalgroup (data_layout_item)*>
+    <!ELEMENT data_layout_item_verticalgroup (data_layout_item*)>
     <!ATTLIST data_layout_item_verticalgroup
         name CDATA #IMPLIED
         columns_count CDATA #IMPLIED
@@ -259,13 +261,9 @@ TODO: Add 'title_singular' element.
 <!-- data_layout_item_summary and data_layout_item_fieldsummary summarize other
   fields. A good example of this is the total price in example_smallbusiness.glom. -->
 
-    <!ELEMENT data_layout_item_summary (data_layout_item_fieldsummary)*>
-    <!ATTLIST data_layout_item_summary
-        name CDATA #REQUIRED
-        columns_count CDATA #REQUIRED
-        sequence CDATA #IMPLIED>
+    <!ELEMENT data_layout_item_summary (data_layout_item_fieldsummary*)>
 
-    <!ELEMENT data_layout_item_fieldsummary (formatting)>
+    <!ELEMENT data_layout_item_fieldsummary (formatting?)>
     <!ATTLIST data_layout_item_fieldsummary
         name CDATA #REQUIRED
         editable (true|false) "false"
@@ -275,7 +273,7 @@ TODO: Add 'title_singular' element.
         
 <!-- groupby is used to determine how data_layout_item_groupby items group. -->
 
-    <!ELEMENT groupby (formatting|title_custom)*>
+    <!ELEMENT groupby (formatting?, title_custom?)>
     <!ATTLIST groupby
         name CDATA #REQUIRED
         editable (true|false) "false"
@@ -284,7 +282,7 @@ TODO: Add 'title_singular' element.
 
 <!-- secondary fields are fields derived from other fields - this is a list of them. -->
 
-    <!ELEMENT secondary_fields (data_layout_group)>
+    <!ELEMENT secondary_fields (data_layout_group*)>
     <!ATTLIST secondary_fields>
 
 
@@ -302,7 +300,7 @@ TODO: Add 'title_singular' element.
 <!-- A data_layout_item is a single entry in the display formatting, which tells how a single
   field is displayed. -->
 
-    <!ELEMENT data_layout_item (formatting|title_custom)* >
+    <!ELEMENT data_layout_item (formatting?, title_custom?) >
     <!ATTLIST data_layout_item
         name CDATA #REQUIRED
         relationship CDATA #IMPLIED
@@ -317,7 +315,7 @@ TODO: Add 'title_singular' element.
 <!-- A data_layout_item_header is the items that go at the very top of the database (e.g. the
   organization name and logo in example_film_manager.glom). -->
 
-    <!ELEMENT data_layout_item_header (data_layout_item)*>
+    <!ELEMENT data_layout_item_header (data_layout_item*)>
     <!ATTLIST data_layout_item_header
         name CDATA #IMPLIED
         columns_count CDATA #IMPLIED
@@ -334,12 +332,12 @@ TODO: Add 'title_singular' element.
 
 <!-- A script node is used to embed python code into the custom button. -->
 
-    <!ELEMENT script ANY>
+    <!ELEMENT script (#PCDATA)>
     <!ATTLIST script>
     
 <!-- A title_custom is used to give a different name next to a field than normal. -->
 
-    <!ELEMENT title_custom ANY>
+    <!ELEMENT title_custom (trans_set?)>
     <!ATTLIST title_custom
         title CDATA #IMPLIED
         use_custom (true|false) "true">
@@ -347,10 +345,19 @@ TODO: Add 'title_singular' element.
 <!-- A data_layout_portal is the essential information, a short and quick list of values
   that are probably of interest to others (e.g. contact information, name, etc). -->
 
-    <!ELEMENT data_layout_portal (portal_navigation_relationship | data_layout_item)* >
+    <!ELEMENT data_layout_portal (portal_navigation_relationship?, data_layout_item*) >
     <!ATTLIST data_layout_portal
         name CDATA #IMPLIED
         relationship CDATA #REQUIRED
+        sequence CDATA #IMPLIED
+        hide CDATA #IMPLIED
+        columns_count CDATA #IMPLIED>
+
+ <!ELEMENT data_layout_calendar_portal (portal_navigation_relationship?, data_layout_item*) >
+    <!ATTLIST data_layout_calendar_portal
+        name CDATA #IMPLIED
+        relationship CDATA #REQUIRED
+        date_field CDATA #REQUIRED
         sequence CDATA #IMPLIED
         hide CDATA #IMPLIED
         columns_count CDATA #IMPLIED>
@@ -363,7 +370,7 @@ TODO: Add 'title_singular' element.
      related_relationship: If portal_navigation_relationship is "specific" then 
      this may be a related (to relationship) relationship to which to navigate. -->
 
-    <!ELEMENT portal_navigation_relationship ANY>
+    <!ELEMENT portal_navigation_relationship EMPTY>
     <!ATTLIST portal_navigation_relationship
         navigation_type CDATA #IMPLIED
         relationship CDATA #IMPLIED
@@ -373,17 +380,17 @@ TODO: Add 'title_singular' element.
   distill a larger database. data_report(s) is the old interface; use reports if you are
   writing a new XML document. -->
 
-    <!ELEMENT data_reports (data_report)*>
+    <!ELEMENT data_reports (data_report*)>
 
-    <!ELEMENT data_report (data_layout_groups)>
+    <!ELEMENT data_report (data_layout_groups*)>
     <!ATTLIST data_report
         name CDATA #REQUIRED
         title CDATA #REQUIRED>
 
-    <!ELEMENT reports (report)*>
+    <!ELEMENT reports (report*)>
     <!ATTLIST reports>
 
-    <!ELEMENT report (data_layout_groups|trans_set)*>
+    <!ELEMENT report (data_layout_groups*, trans_set?)>
     <!ATTLIST report
         name CDATA #REQUIRED
         title CDATA #IMPLIED
@@ -396,14 +403,14 @@ TODO: Add 'title_singular' element.
         name CDATA #REQUIRED
         parent_table CDATA #IMPLIED>
 
-    <!ELEMENT print_layout_groups (print_layout_group)*>
+    <!ELEMENT print_layout_groups (print_layout_group*)>
     <!ATTLIST print_layout_groups>
 
 
 <!-- The library_modules node contains python code that may be used in scripts and 
      calculations via the python import keyword. -->
 
-    <!ELEMENT library_modules ANY>
+    <!ELEMENT library_modules (module*)>
     <!ATTLIST library_modules>
 
 <!-- library_module nodes contain python code that may be used in scripts and 
@@ -411,7 +418,7 @@ TODO: Add 'title_singular' element.
      child text node.
      name: The name of the module, to be used with the python import command.
      script: Deprecated in Glom 1.12. The code of the python module. -->
-    <!ELEMENT module ANY>
+    <!ELEMENT module (#PCDATA)>
     <!ATTLIST module
         name CDATA #REQUIRED>
 

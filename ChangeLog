@@ -1,5 +1,19 @@
 2009-12-10  Murray Cumming  <murrayc@murrayc.com>
 
+	Tests: Validate all examples against the DTD, and correct the DTD.
+
+	* tests/dtd/test_example_sqlite: Renamed to test_file_validation.sh.
+	* glom/Makefile_tests.am: Adapted.
+	* glom/libglom/document/document.cc: save_before(): Correct the saving 
+	of group privileges so they are really inside the group nodes. Avoid 
+	saving unnamed groups, as seen in the example files.
+	* glom/glom_document.dtd: Several corrections to fix the validation of 
+	the example files, though I don't like that DTDs don't seem to give 
+	us any way to say that the sequence of child elements is irrelevant. 
+	I don't like enforcing the sequence.
+
+2009-12-10  Murray Cumming  <murrayc@murrayc.com>
+
 	Fix distcheck.
 
 	* Makefile.am:
