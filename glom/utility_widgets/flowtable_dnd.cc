@@ -146,12 +146,38 @@ bool FlowTableDnd::on_drag_motion(const Glib::RefPtr<Gdk::DragContext>& /* drag_
   y += get_allocation().get_y();
   
   m_current_dnd_item = dnd_item_at_position(x, y);  
-  LayoutWidgetBase* above = dnd_datawidget_from_item(0);
+  Gtk::Widget* above = dnd_datawidget_from_item(0);
 
   // above might be 0 here...
   on_dnd_add_placeholder(above);
   return false;
 }
+
+void FlowTableDnd::on_dnd_add_layout_item_by_type(int item_type, Gtk::Widget* above)
+{
+  //This is not pure virtual, so we can easily use this base class in unit tests.
+  std::cerr << "FlowTableDnd::on_dnd_add_layout_item_by_type(): Not implemented. Derived classes should implement this." << std::endl;
+}
+
+void FlowTableDnd::on_dnd_add_layout_item(LayoutWidgetBase* above, const sharedptr<LayoutItem>& item)
+{
+  //This is not pure virtual, so we can easily use this base class in unit tests.
+  std::cerr << "FlowTableDnd::on_dnd_add_layout_item(): Not implemented. Derived classes should implement this." << std::endl;
+
+}
+
+void FlowTableDnd::on_dnd_add_placeholder(Gtk::Widget* above)
+{
+  //This is not pure virtual, so we can easily use this base class in unit tests.
+  std::cerr << "FlowTableDnd::on_dnd_add_placeholder(): Not implemented. Derived classes should implement this." << std::endl;
+}
+
+void FlowTableDnd::on_dnd_remove_placeholder()
+{
+  //This is not pure virtual, so we can easily use this base class in unit tests.
+  std::cerr << "FlowTableDnd::on_dnd_remove_placeholder(): Not implemented. Derived classes should implement this." << std::endl;
+}
+
 
 void FlowTableDnd::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int /* drag_x */, int /* drag_y */, const Gtk::SelectionData& selection_data, guint, guint /* time */)
 {
@@ -160,42 +186,18 @@ void FlowTableDnd::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& d
     palette = palette->get_parent();
   
   on_dnd_remove_placeholder();
-  LayoutWidgetBase* above = dnd_datawidget_from_item(0);
+  Gtk::Widget* above = dnd_datawidget_from_item(0);
   if(palette)
   {
     GtkWidget* tool_item = egg_tool_palette_get_drag_item(EGG_TOOL_PALETTE(palette->gobj()), selection_data.gobj());
-    LayoutWidgetBase::enumType type = 
-      static_cast<LayoutWidgetBase::enumType>(GPOINTER_TO_INT(g_object_get_data(G_OBJECT(tool_item), "glom-type")));
-
-    switch(type)
-    {
-      case LayoutWidgetBase::TYPE_FIELD:
-        on_dnd_add_layout_item_field(above);
-        break;
-      case LayoutWidgetBase::TYPE_BUTTON:
-        on_dnd_add_layout_item_button(above);
-        break;
-      case LayoutWidgetBase::TYPE_TEXT:
-        on_dnd_add_layout_item_text(above);
-        break;
-      case LayoutWidgetBase::TYPE_IMAGE:
-        on_dnd_add_layout_item_image(above);
-        break;
-      case LayoutWidgetBase::TYPE_GROUP:
-        on_dnd_add_layout_group(above);
-        break;
-      case LayoutWidgetBase::TYPE_NOTEBOOK:
-        on_dnd_add_layout_notebook(above);
-        break;
-      case LayoutWidgetBase::TYPE_PORTAL:
-        on_dnd_add_layout_portal(above);
-        break;
-      default:
-        std::cerr << "Unknown drop type: " << type << std::endl;
-    }
+    const int type = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(tool_item), "glom-type"));
+    on_dnd_add_layout_item_by_type(type, above);
   }
   else
   {
+    //TODO: When is this code path taken?
+    std::cout << "DEBUG: FlowTableDnd::on_drag_data_received(): Unexpected code path." << std::endl;
+    /*
     gpointer* data = (gpointer*)selection_data.get_data();
     LayoutWidgetBase* base = (LayoutWidgetBase*)*data;
     if(base)
@@ -217,6 +219,7 @@ void FlowTableDnd::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& d
         base->set_dnd_in_progress(false);
       }
     }
+    */
   }
 }
 
@@ -271,11 +274,11 @@ FlowTableDnd::dnd_item_at_position(int drag_x, int drag_y)
   return 0;
 }
 
-LayoutWidgetBase* FlowTableDnd::dnd_datawidget_from_item(FlowTable::FlowTableItem* item)
+Gtk::Widget* FlowTableDnd::dnd_datawidget_from_item(FlowTable::FlowTableItem* item)
 {
   // Test if we have a datawidget below which we want to add
   LayoutWidgetBase* above = 0;
-  FlowTableItem* used_item;
+  FlowTableItem* used_item = 0;
   if(item)
     used_item = item;
   else
@@ -306,7 +309,8 @@ LayoutWidgetBase* FlowTableDnd::dnd_datawidget_from_item(FlowTable::FlowTableIte
       } 
     }
   }
-  return above;
+
+  return dynamic_cast<Gtk::Widget*>(above);
 }
 
 FlowTable::FlowTableItem* FlowTableDnd::find_current_dnd_item(Gtk::Widget* child, int /* x */, int y)
@@ -373,7 +377,7 @@ bool FlowTableDnd::on_child_drag_motion(const Glib::RefPtr<Gdk::DragContext>& /*
 {
   m_current_dnd_item = find_current_dnd_item(child, x, y);
   
-  LayoutWidgetBase* above = dnd_datawidget_from_item(0);
+  Gtk::Widget* above = dnd_datawidget_from_item(0);
   
   // above might be 0 here...
   on_dnd_add_placeholder(above);
@@ -397,14 +401,25 @@ void FlowTableDnd::on_child_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& 
                                           Gtk::Widget* child)
 {
   FlowTableItem* item = find_current_dnd_item(child);
-  LayoutWidgetBase* base = dnd_datawidget_from_item(item);
+  Gtk::Widget* base = dnd_datawidget_from_item(item);
 
   gpointer data = 0;
   if(base)
     data = base;
 
-  selection_data.set("LayoutWidgetBase*", 8, (guint8*)&data, 
+  selection_data.set("Gtk::Widget*", 8, (guint8*)&data, 
                       sizeof(gpointer*));
+}
+
+void FlowTableDnd::set_child_widget_dnd_in_progress(Gtk::Widget* child, bool in_progress)
+{
+  //To be reimplemented by derived classes.
+}
+
+bool FlowTableDnd::get_child_widget_dnd_in_progress(Gtk::Widget* child) const
+{
+  //To be reimplemented by derived classes.
+  return false;
 }
 
 void FlowTableDnd::on_child_drag_begin(const Glib::RefPtr<Gdk::DragContext>& drag_context,
@@ -423,8 +438,8 @@ void FlowTableDnd::on_child_drag_begin(const Glib::RefPtr<Gdk::DragContext>& dra
   if(item->m_second)
     item->m_second->hide();
 
-  LayoutWidgetBase* base = dnd_datawidget_from_item(item);
-  base->set_dnd_in_progress(); 
+  Gtk::Widget* base = dnd_datawidget_from_item(item);
+  set_child_widget_dnd_in_progress(base);
 }
 
 void FlowTableDnd::on_child_drag_end(const Glib::RefPtr<Gdk::DragContext>& /* drag_context */,
@@ -434,8 +449,11 @@ void FlowTableDnd::on_child_drag_end(const Glib::RefPtr<Gdk::DragContext>& /* dr
   if(!item)
     return;
 
-  LayoutWidgetBase* base = dnd_datawidget_from_item(item);
-  if(base->get_dnd_in_progress())
+  Gtk::Widget* base = dnd_datawidget_from_item(item);
+  if(!base)
+    return;
+
+  if(get_child_widget_dnd_in_progress(base))
   {
     if(!item)
       return;
@@ -446,9 +464,11 @@ void FlowTableDnd::on_child_drag_end(const Glib::RefPtr<Gdk::DragContext>& /* dr
   }
   else if(!m_internal_drag)
   {
-    sharedptr<LayoutItem> item = base->get_layout_item();
+    LayoutWidgetBase* base_layout = dynamic_cast<LayoutWidgetBase*>(base);
+    sharedptr<LayoutItem> item = base_layout->get_layout_item();
     sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(get_layout_item());
-    group->remove_item(item);
+    if(group)
+      group->remove_item(item);
   }
 
   signal_layout_changed().emit();

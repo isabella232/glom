@@ -114,6 +114,13 @@ void LayoutWidgetUtils::on_menu_delete_activate()
     signal_layout_changed().emit();
   }
 }
+
+void LayoutWidgetUtils::on_menu_properties_activate()
+{
+  //This is not pure virtual, so we can easily use this base class in unit tests.
+  std::cerr << "LayoutWidgetUtils::on_menu_properties_activate(): Not imlemented. Derived classes should override this." << std::endl;
+}
+
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 } // namespace Glom

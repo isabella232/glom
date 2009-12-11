@@ -1,5 +1,15 @@
 2009-12-10  Murray Cumming  <murrayc@murrayc.com>
 
+	FlowTableDnd: Some refactoring.
+
+	* glom/utility_widgets/flowtable_dnd.[h|cc],
+	* glom/mode_data/flowtable_withfields.[h|cc]: Make FlowTableDnd less 
+	aware of LayoutItems, though it is still not yet generic enough.
+	* glom/utility_widgets/test_flowtable_dnd.cc:
+	* glom/Makefile_tests.am: Added test_flowtable_dnd.
+
+2009-12-10  Murray Cumming  <murrayc@murrayc.com>
+
 	* examples/example_film_manager.glom: Added silly example data, 
 	fixing bug #600859 (Michael Hasselmann)
 

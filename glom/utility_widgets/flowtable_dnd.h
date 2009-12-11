@@ -39,6 +39,8 @@ class FlowTableDnd :
 public:
   FlowTableDnd();
   ~FlowTableDnd();
+
+  virtual void set_design_mode(bool value = true);
   
 private:
   virtual bool on_drag_motion(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, guint time);
@@ -58,32 +60,23 @@ private:
   void start_dnd(Gtk::Widget& child);
   void stop_dnd(Gtk::Widget& child);
 
-protected:
-  virtual void set_design_mode(bool value = true);
+  //To be implemented by the derived class:
+  virtual void on_dnd_add_layout_item_by_type(int item_type, Gtk::Widget* above);
+  virtual void on_dnd_add_layout_item(LayoutWidgetBase* above, const sharedptr<LayoutItem>& item);
 
-private:
-  // Methods for the different layout object,
-  // to be implemented in the derived class.
-  virtual void on_dnd_add_layout_item_field(LayoutWidgetBase* above) = 0;
-  virtual void on_dnd_add_layout_group(LayoutWidgetBase* above) = 0;
-  virtual void on_dnd_add_layout_item_button(LayoutWidgetBase* above) = 0;
-  virtual void on_dnd_add_layout_item_text(LayoutWidgetBase* above) = 0;
-  virtual void on_dnd_add_layout_item_image(LayoutWidgetBase* above) = 0;
-  virtual void on_dnd_add_layout_notebook(LayoutWidgetBase* above) = 0;
-  virtual void on_dnd_add_layout_portal(LayoutWidgetBase* above) = 0;
-  virtual void on_dnd_add_layout_item(LayoutWidgetBase* above, const sharedptr<LayoutItem>& item) = 0;
+  virtual void on_dnd_add_placeholder(Gtk::Widget* above);
+  virtual void on_dnd_remove_placeholder();
 
+  virtual void set_child_widget_dnd_in_progress(Gtk::Widget* child, bool in_progress = true);
+  virtual bool get_child_widget_dnd_in_progress(Gtk::Widget* child) const;
 
-  virtual void on_dnd_add_placeholder(LayoutWidgetBase* above) = 0;
-  virtual void on_dnd_remove_placeholder() = 0;    
   
   void dnd_remove_placeholder_idle();
   bool dnd_remove_placeholder_real();
   
   FlowTableItem* dnd_item_at_position(int x, int y);
-  LayoutWidgetBase* dnd_datawidget_from_item(FlowTableItem* item);
+  Gtk::Widget* dnd_datawidget_from_item(FlowTableItem* item);
     
-private:
   FlowTableItem* find_current_dnd_item (Gtk::Widget* child, int x = -1, int y = -1);
   FlowTableItem* m_current_dnd_item;
     

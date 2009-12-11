@@ -20,6 +20,7 @@ check_PROGRAMS =						\
 	glom/libglom/test_document				\
 	glom/libglom/test_sharedptr_layoutitem			\
 	glom/utility_widgets/test_flowtable			\
+	glom/utility_widgets/test_flowtable_dnd			\
 	glom/utility_widgets/egg/toolpalette/testtoolpalette	\
 	glom/test_pyembed					\
 	tests/test_parsing_time			\
@@ -47,7 +48,8 @@ dist_noinst_SCRIPTS = tests/dtd/test_file_validation.sh
 
 #TESTS_ENVIRONMENT=which valgrind && valgrind --tool=memcheck --leak-check=full --leak-resolution=high --trace-children=yes --num-callers=30
 
-tests_ldadd = glom/libglom/libglom-$(GLOM_ABI_VERSION).la $(LIBGLOM_LIBS)
+LIBGLOM_LA = glom/libglom/libglom-$(GLOM_ABI_VERSION).la $(LIBGLOM_LIBS)
+tests_ldadd = $(LIBGLOM_LA)
 
 glom_libglom_test_connectionpool_SOURCES = glom/libglom/test_connectionpool.cc
 glom_libglom_test_document_SOURCES = glom/libglom/test_document.cc
@@ -77,20 +79,38 @@ tests_import_test_signals_SOURCES =	\
 glom_libglom_test_connectionpool_LDADD = $(tests_ldadd)
 glom_libglom_test_document_LDADD = $(tests_ldadd)
 glom_libglom_test_sharedptr_layoutitem_LDADD = $(tests_ldadd)
+
 glom_utility_widgets_test_flowtable_SOURCES =	\
 	glom/utility_widgets/flowtable.cc	\
 	glom/utility_widgets/flowtable.h	\
 	glom/utility_widgets/test_flowtable.cc
-
 glom_utility_widgets_test_flowtable_LDADD = $(GLOM_LIBS)
+
+EGGTOOLPALETTE_LIBS = glom/utility_widgets/egg/toolpalette/libeggtoolpalette.a\
+	glom/utility_widgets/egg/util/libeggutil.a		\
+	$(EGG_LIBS)
+
+# You must remove PlaceholderGlom::get_application() to avoid having to specify 
+# a huge set of .cc files when building this test:
+glom_utility_widgets_test_flowtable_dnd_SOURCES =	\
+	glom/utility_widgets/flowtable.cc	\
+	glom/utility_widgets/flowtable.h	\
+	glom/utility_widgets/flowtable_dnd.cc	\
+	glom/utility_widgets/flowtable_dnd.h	\
+	glom/utility_widgets/layoutwidgetutils.h \
+	glom/utility_widgets/layoutwidgetutils.cc \
+	glom/utility_widgets/layoutwidgetbase.h \
+	glom/utility_widgets/layoutwidgetbase.cc \
+	glom/utility_widgets/placeholder-glom.h \
+	glom/utility_widgets/placeholder-glom.cc \
+	glom/utility_widgets/test_flowtable_dnd.cc
+glom_utility_widgets_test_flowtable_dnd_LDADD = $(LIBGLOM_LA) $(GLOM_LIBS) $(EGGTOOLPALETTE_LIBS)
 
 glom_utility_widgets_egg_toolpalette_testtoolpalette_SOURCES =	\
 	glom/utility_widgets/egg/toolpalette/testtoolpalette.c
-
 glom_utility_widgets_egg_toolpalette_testtoolpalette_LDADD =	\
-	glom/utility_widgets/egg/toolpalette/libeggtoolpalette.a\
-	glom/utility_widgets/egg/util/libeggutil.a		\
-	$(EGG_LIBS)
+	$(EGGTOOLPALETTE_LIBS)
+	
 
 glom_test_pyembed_LDADD = $(LIBGLOM_LIBS) $(PYTHON_LIBS)
 

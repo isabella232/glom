@@ -662,7 +662,7 @@ void FlowTableWithFields::add_placeholder_at_position(const sharedptr<LayoutItem
   m_placeholder->set(Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER);
   m_placeholder->show();
 
-  PlaceholderGlom* preview = Gtk::manage (new PlaceholderGlom);
+  PlaceholderGlom* preview = Gtk::manage(new PlaceholderGlom);
   preview->show();
 
   m_placeholder->add(*preview);
@@ -1217,6 +1217,42 @@ void FlowTableWithFields::on_flowtable_requested_related_details(const Glib::ust
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
+
+void FlowTableWithFields::on_dnd_add_layout_item_by_type(int item_type_num, Gtk::Widget* above_widget)
+{
+  LayoutWidgetBase::enumType item_type = static_cast<LayoutWidgetBase::enumType>(item_type_num);
+  LayoutWidgetBase* above = dynamic_cast<LayoutWidgetBase*>(above_widget);
+  if(!above)
+    return;
+
+  switch(item_type)
+  {
+    case LayoutWidgetBase::TYPE_FIELD:
+      on_dnd_add_layout_item_field(above);
+      break;
+    case LayoutWidgetBase::TYPE_BUTTON:
+      on_dnd_add_layout_item_button(above);
+      break;
+    case LayoutWidgetBase::TYPE_TEXT:
+      on_dnd_add_layout_item_text(above);
+      break;
+    case LayoutWidgetBase::TYPE_IMAGE:
+      on_dnd_add_layout_item_image(above);
+      break;
+    case LayoutWidgetBase::TYPE_GROUP:
+      on_dnd_add_layout_group(above);
+      break;
+    case LayoutWidgetBase::TYPE_NOTEBOOK:
+      on_dnd_add_layout_notebook(above);
+      break;
+    case LayoutWidgetBase::TYPE_PORTAL:
+      on_dnd_add_layout_portal(above);
+      break;
+    default:
+      std::cerr << "FlowTableWithFields::on_dnd_add_layout_item(): Unknown drop type: " << item_type << std::endl;
+   }
+}
+
 void FlowTableWithFields::on_dnd_add_layout_item_field(LayoutWidgetBase* above)
 {
   //Ask the user to choose the layout item
@@ -1301,7 +1337,7 @@ void FlowTableWithFields::on_dnd_add_layout_item_text(LayoutWidgetBase* above)
   textobject->set_text(_("New Text"));
   sharedptr<LayoutItem> layout_item = sharedptr<LayoutItem>::cast_dynamic(textobject);
 
-  dnd_add_to_layout_group (layout_item, above);
+  dnd_add_to_layout_group(layout_item, above);
   //Tell the parent to tell the document to save the layout
 
   signal_layout_changed().emit();
@@ -1313,7 +1349,7 @@ void FlowTableWithFields::on_dnd_add_layout_item_image(LayoutWidgetBase* above)
   sharedptr<LayoutItem_Image> image_object = sharedptr<LayoutItem_Image>::create();
   sharedptr<LayoutItem> layout_item = sharedptr<LayoutItem>::cast_dynamic(image_object);
 
-  dnd_add_to_layout_group (layout_item, above);
+  dnd_add_to_layout_group(layout_item, above);
   //Tell the parent to tell the document to save the layout
 
   signal_layout_changed().emit();
@@ -1327,8 +1363,12 @@ void FlowTableWithFields::on_dnd_add_layout_item(LayoutWidgetBase* above, const 
   // signal_layout_changed().emit();
 }
 
-void FlowTableWithFields::on_dnd_add_placeholder(LayoutWidgetBase* above)
+void FlowTableWithFields::on_dnd_add_placeholder(Gtk::Widget* above_widget)
 {
+  LayoutWidgetBase* above = dynamic_cast<LayoutWidgetBase*>(above_widget);
+  if(!above)
+    return;
+
   if(m_placeholder)
   {
     if(dynamic_cast<Glom::PlaceholderGlom*>(above))
@@ -1342,6 +1382,7 @@ void FlowTableWithFields::on_dnd_add_placeholder(LayoutWidgetBase* above)
   sharedptr<LayoutItem_Placeholder> placeholder_field(new LayoutItem_Placeholder);
   sharedptr<LayoutItem> item = sharedptr<LayoutItem>::cast_dynamic(placeholder_field);  
   add_layout_item_at_position(placeholder_field, cur_widget);
+
   dnd_add_to_layout_group(item, above, true /* ignore error*/);
 }
 
@@ -1512,6 +1553,26 @@ sharedptr<LayoutItem_Portal> FlowTableWithFields::get_portal_relationship()
   }
   return sharedptr<LayoutItem_Portal>();
 }
+
+void FlowTableWithFields::set_child_widget_dnd_in_progress(Gtk::Widget* child, bool in_progress)
+{
+  //To be reimplemented by derived classes.
+  LayoutWidgetBase* base = dynamic_cast<LayoutWidgetBase*>(child);
+  if(!child)
+    return;
+
+  base->set_dnd_in_progress(in_progress); 
+}
+
+bool FlowTableWithFields::get_child_widget_dnd_in_progress(Gtk::Widget* child) const
+{
+  LayoutWidgetBase* base = dynamic_cast<LayoutWidgetBase*>(child);
+  if(!base)
+    return false;
+  else
+    return base->get_dnd_in_progress();
+}
+
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 } //namespace Glom
