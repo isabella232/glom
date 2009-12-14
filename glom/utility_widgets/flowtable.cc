@@ -143,7 +143,7 @@ gboolean FlowTable::glom_expose_event_impl(GtkWidget* widget, GdkEventExpose* ev
   else if(GTK_WIDGET_CLASS(parent_class)->expose_event)
     return GTK_WIDGET_CLASS(parent_class)->expose_event(widget, event);
   else
-    return FALSE;
+    return false;
 }
 #endif // !GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 } //namespace Glom

@@ -108,7 +108,7 @@ private:
     SECURITY_ATTRIBUTES security_attr;
     security_attr.nLength = sizeof(security_attr);
     security_attr.lpSecurityDescriptor = 0;
-    security_attr.bInheritHandle = TRUE;
+    security_attr.bInheritHandle = true;
 
     HANDLE result = CreateFile(filename.c_str(), GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_DELETE, &security_attr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -215,7 +215,7 @@ public:
     std::copy(command_line.data(), command_line.data() + command_line.length(), command.begin());
     command[command_line.length()] = '\0';
 
-    if(!CreateProcess(0, &command[0], 0, 0, TRUE, CREATE_NO_WINDOW, 0, 0, &startup_info, &process_info))
+    if(!CreateProcess(0, &command[0], 0, 0, true, CREATE_NO_WINDOW, 0, 0, &startup_info, &process_info))
     {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
       throw SpawnError(win32_error_message());

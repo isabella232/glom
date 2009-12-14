@@ -77,14 +77,14 @@ pgwin32_get_dynamic_tokeninfo(HANDLE token, TOKEN_INFORMATION_CLASS class_,
   if(GetTokenInformation(token, class_, 0, 0, &InfoBufferSize))
   {
     snprintf(errbuf, errsize, "could not get token information: got zero size\n");
-    return FALSE;
+    return false;
   }
 
   if(GetLastError() != ERROR_INSUFFICIENT_BUFFER)
   {
     snprintf(errbuf, errsize, "could not get token information: error code %d\n",
          (int) GetLastError());
-    return FALSE;
+    return false;
   }
 
   *InfoBuffer = static_cast<char*>(malloc(InfoBufferSize));
@@ -92,7 +92,7 @@ pgwin32_get_dynamic_tokeninfo(HANDLE token, TOKEN_INFORMATION_CLASS class_,
   {
     snprintf(errbuf, errsize, "could not allocate %d bytes for token information\n",
          (int) InfoBufferSize);
-    return FALSE;
+    return false;
   }
 
   if(!GetTokenInformation(token, class_, *InfoBuffer,
@@ -100,10 +100,10 @@ pgwin32_get_dynamic_tokeninfo(HANDLE token, TOKEN_INFORMATION_CLASS class_,
   {
     snprintf(errbuf, errsize, "could not get token information: error code %d\n",
          (int) GetLastError());
-    return FALSE;
+    return false;
   }
 
-  return TRUE;
+  return true;
 }
 
 int
@@ -152,14 +152,14 @@ pgwin32_is_admin(void)
     throw std::runtime_error(Glib::ustring::compose("could not get SID for PowerUsers group: error code %1", (int) GetLastError()));
   }
 
-  success = FALSE;
+  success = false;
 
   for (x = 0; x < Groups->GroupCount; x++)
   {
     if((EqualSid(AdministratorsSid, Groups->Groups[x].Sid) && (Groups->Groups[x].Attributes & SE_GROUP_ENABLED)) ||
       (EqualSid(PowerUsersSid, Groups->Groups[x].Sid) && (Groups->Groups[x].Attributes & SE_GROUP_ENABLED)))
     {
-      success = TRUE;
+      success = true;
       break;
     }
   }

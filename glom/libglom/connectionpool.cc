@@ -750,18 +750,18 @@ EpcContents* ConnectionPool::on_publisher_document_requested(EpcPublisher* /* pu
 //static
 gboolean ConnectionPool::on_publisher_document_authentication(EpcAuthContext* context, const gchar* user_name, gpointer user_data)
 {
-  g_return_val_if_fail(context, FALSE);
+  g_return_val_if_fail(context, false);
 
   ConnectionPool* connection_pool = (ConnectionPool*)(user_data);
-  g_return_val_if_fail(connection_pool, FALSE);
+  g_return_val_if_fail(connection_pool, false);
 
   // Check if the username/password are correct:
   const gchar* password = epc_auth_context_get_password(context);
-  g_return_val_if_fail(password, FALSE); //TODO: This seems to happen once before this callback is called again properly.
+  g_return_val_if_fail(password, false); //TODO: This seems to happen once before this callback is called again properly.
 
   //std::cout << "ConnectionPool::on_publisher_document_authentication(): username=" << user_name << ", password=" << password << std::endl;
 
-  g_return_val_if_fail(connection_pool->m_backend.get(), FALSE);
+  g_return_val_if_fail(connection_pool->m_backend.get(), false);
  
   //Attempt a connection with this username/password:
   std::auto_ptr<ExceptionConnection> error;
