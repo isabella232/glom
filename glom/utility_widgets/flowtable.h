@@ -119,7 +119,7 @@ protected:
     bool m_expand_first_full;
     bool m_expand_second;
     
-    bool operator==(Gtk::Widget* child)
+    bool operator==(Gtk::Widget* child) const
     {
       return (child == m_first || child == m_second);
     }

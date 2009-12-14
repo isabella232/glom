@@ -43,7 +43,7 @@ class Window_BoxHolder :
 #endif
 {
 public: 
-  Window_BoxHolder(Box_WithButtons* pBox, const Glib::ustring& title = Glib::ustring());
+  explicit Window_BoxHolder(Box_WithButtons* pBox, const Glib::ustring& title = Glib::ustring());
   virtual ~Window_BoxHolder();
 
 private:

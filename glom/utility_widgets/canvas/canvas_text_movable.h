@@ -32,7 +32,7 @@ class CanvasTextMovable
     public CanvasItemMovable
 {
 private:
-  CanvasTextMovable(const Glib::ustring& string = Glib::ustring(), double x = 0.0, double y = 0.0, double width = 0.0, Gtk::AnchorType anchor = Gtk::ANCHOR_NORTH_WEST);
+  explicit CanvasTextMovable(const Glib::ustring& string = Glib::ustring(), double x = 0.0, double y = 0.0, double width = 0.0, Gtk::AnchorType anchor = Gtk::ANCHOR_NORTH_WEST);
   virtual ~CanvasTextMovable();
 
   void init();

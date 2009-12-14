@@ -34,11 +34,11 @@ class BusyCursor
 public:
   /** Associate a busy cursor with the window, for the lifetime of this object.
    */
-  BusyCursor(Gtk::Window& window, Gdk::CursorType cursor_type = Gdk::WATCH);
+  explicit BusyCursor(Gtk::Window& window, Gdk::CursorType cursor_type = Gdk::WATCH);
 
   /**  Associate a busy cursor with the window, for the lifetime of this object, if window is not 0.
    */
-  BusyCursor(Gtk::Window* window, Gdk::CursorType cursor_type = Gdk::WATCH);
+  explicit BusyCursor(Gtk::Window* window, Gdk::CursorType cursor_type = Gdk::WATCH);
 
   virtual ~BusyCursor();
 
