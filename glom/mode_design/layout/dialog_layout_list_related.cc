@@ -419,7 +419,7 @@ void Dialog_Layout_List_Related::on_button_add_field()
   //std::cout << "debug table used =" << m_portal->get_table_used(m_table_name) << std::endl;
 
   type_list_field_items fields_list = offer_field_list(m_portal->get_table_used(m_table_name), this);
-  for(type_list_field_items::iterator iter_chosen = fields_list.begin(); iter_chosen != fields_list.end(); iter_chosen++) 
+  for(type_list_field_items::iterator iter_chosen = fields_list.begin(); iter_chosen != fields_list.end(); ++iter_chosen) 
   {
     sharedptr<LayoutItem_Field> field = *iter_chosen;
     if(!field)

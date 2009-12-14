@@ -154,7 +154,7 @@ pgwin32_is_admin(void)
 
   success = false;
 
-  for (x = 0; x < Groups->GroupCount; x++)
+  for (x = 0; x < Groups->GroupCount; ++x)
   {
     if((EqualSid(AdministratorsSid, Groups->Groups[x].Sid) && (Groups->Groups[x].Attributes & SE_GROUP_ENABLED)) ||
       (EqualSid(PowerUsersSid, Groups->Groups[x].Sid) && (Groups->Groups[x].Attributes & SE_GROUP_ENABLED)))

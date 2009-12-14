@@ -624,7 +624,7 @@ void Window_Translations::on_button_import()
 
       //Look at each domain (could there be more than one?):
       const char* const* domains = po_file_domains(po_file);
-      for (int i = 0; domains[i] != 0; i++)
+      for (int i = 0; domains[i] != 0; ++i)
       {
         //Look at each message:
         po_message_iterator_t iter = po_message_iterator(po_file, domains[i]);

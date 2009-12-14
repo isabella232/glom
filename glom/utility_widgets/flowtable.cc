@@ -309,7 +309,7 @@ void FlowTable::insert_before(FlowTableItem& item, Gtk::Widget& before)
 {
   bool found = false;
   std::vector<FlowTableItem>::iterator pos;
-  for(pos = m_children.begin(); pos != m_children.end(); pos++)
+  for(pos = m_children.begin(); pos != m_children.end(); ++pos)
   {
     FlowTableItem* item = &(*pos);
     if(item->m_first)

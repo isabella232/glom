@@ -45,7 +45,7 @@ void Combo_FieldType::init()
   //Set Type choices:
   Field::type_map_type_names map_names = Field::get_usable_type_names();
     
-  for(Field::type_map_type_names::iterator iter = map_names.begin(); iter != map_names.end(); iter++)
+  for(Field::type_map_type_names::iterator iter = map_names.begin(); iter != map_names.end(); ++iter)
   {
     Gtk::TreeModel::iterator iterModel = m_refTreeModel->append();
     if(iterModel)

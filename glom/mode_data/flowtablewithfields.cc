@@ -1396,7 +1396,7 @@ void FlowTableWithFields::on_dnd_remove_placeholder()
     { 
       LayoutGroup::type_list_items items = layout_group->get_items();
       for (LayoutGroup::type_list_items::iterator item = items.begin();
-           item != items.end(); item++)
+           item != items.end(); ++item)
       {
         sharedptr<LayoutItem_Placeholder> placeholder = 
           sharedptr<LayoutItem_Placeholder>::cast_dynamic(*item);

@@ -1627,7 +1627,7 @@ bool AddDel::row_has_duplicates(const Gtk::TreeModel::iterator& iter) const
       //std::cout << "value_text=" << value_text << std::endl;
 
       //Look at each other row to see whether the value exists there already:
-      for(Gtk::TreeModel::iterator iterCheck = m_refListStore->children().begin(); iterCheck != m_refListStore->children().end(); iterCheck++)
+      for(Gtk::TreeModel::iterator iterCheck = m_refListStore->children().begin(); iterCheck != m_refListStore->children().end(); ++iterCheck)
       {
         if(iterCheck != iter) //Don't compare the row with itself
         {

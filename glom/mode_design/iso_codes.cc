@@ -58,7 +58,7 @@ type_list_currencies get_list_of_currency_symbols()
         const xmlpp::Node* nodeRoot = parser.get_document()->get_root_node(); //deleted by DomParser.
 
         xmlpp::Node::NodeList listNodes = nodeRoot->get_children("iso_4217_entry");
-        for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); iter++)
+        for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
         {
           xmlpp::Element* nodeEntry = dynamic_cast<xmlpp::Element*>(*iter);
           if(nodeEntry)
@@ -151,7 +151,7 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
         const xmlpp::Node* nodeRoot = parser.get_document()->get_root_node(); //deleted by DomParser.
 
         xmlpp::Node::NodeList listNodes = nodeRoot->get_children("iso_639_entry");
-        for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); iter++)
+        for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
         {
           xmlpp::Element* nodeEntry = dynamic_cast<xmlpp::Element*>(*iter);
           if(nodeEntry)
@@ -206,7 +206,7 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
         const xmlpp::Node* nodeRoot = parser.get_document()->get_root_node(); //deleted by DomParser.
 
         xmlpp::Node::NodeList listNodes = nodeRoot->get_children("iso_3166_entry");
-        for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); iter++)
+        for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
         {
           xmlpp::Element* nodeEntry = dynamic_cast<xmlpp::Element*>(*iter);
           if(nodeEntry)

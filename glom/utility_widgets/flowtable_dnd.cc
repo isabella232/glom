@@ -240,7 +240,7 @@ FlowTableDnd::dnd_item_at_position(int drag_x, int drag_y)
     column = drag_x / column_width;
   
   for(std::vector<FlowTableItem>::iterator cur_item = m_children.begin(); cur_item != m_children.end(); 
-       cur_item++)
+       ++cur_item)
   {
     Gdk::Rectangle rect = cur_item->m_first->get_allocation();
     if(cur_item->m_second)
@@ -318,7 +318,7 @@ FlowTable::FlowTableItem* FlowTableDnd::find_current_dnd_item(Gtk::Widget* child
   FlowTableItem* item;
   type_vecChildren::iterator cur_child;
   for(cur_child = m_children.begin();
-      cur_child != m_children.end(); cur_child++)
+      cur_child != m_children.end(); ++cur_child)
   {
     // The widget was added directly to the FlowTableDnd
     if(cur_child->m_first == child || 

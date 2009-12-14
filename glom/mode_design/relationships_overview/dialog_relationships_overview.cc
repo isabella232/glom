@@ -227,7 +227,7 @@ void Dialog_RelationshipsOverview::draw_lines()
       Document::type_vec_relationships m_relationships = document->get_relationships(table_name);
       Document::type_vec_fields fields = document->get_table_fields(table_name);
       
-      for(Document::type_vec_relationships::const_iterator rit = m_relationships.begin(); rit != m_relationships.end(); rit++)
+      for(Document::type_vec_relationships::const_iterator rit = m_relationships.begin(); rit != m_relationships.end(); ++rit)
       {
         sharedptr<const Relationship> relationship = *rit;
         if(!relationship)

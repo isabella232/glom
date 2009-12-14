@@ -88,7 +88,7 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
   m_encoding_model->append();
 
   const FileEncodings::type_list_encodings list_encodings =  FileEncodings::get_list_of_encodings();
-  for(FileEncodings::type_list_encodings::const_iterator encodings_iter = list_encodings.begin(); encodings_iter  != list_encodings.end(); encodings_iter ++)
+  for(FileEncodings::type_list_encodings::const_iterator encodings_iter = list_encodings.begin(); encodings_iter  != list_encodings.end(); ++encodings_iter)
   {
     const FileEncodings::Encoding encoding = *encodings_iter;
     if(encoding.get_name().empty())

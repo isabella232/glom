@@ -516,7 +516,7 @@ void Dialog_Layout_Details::on_button_down()
 void Dialog_Layout_Details::on_button_add_field()
 {
   type_list_field_items fields_list = offer_field_list(m_table_name, this);
-  for(type_list_field_items::iterator iter_chosen = fields_list.begin(); iter_chosen != fields_list.end(); iter_chosen++) 
+  for(type_list_field_items::iterator iter_chosen = fields_list.begin(); iter_chosen != fields_list.end(); ++iter_chosen) 
   {
     sharedptr<LayoutItem_Field> layout_item = *iter_chosen;
     if(!layout_item)

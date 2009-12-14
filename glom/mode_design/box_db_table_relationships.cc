@@ -99,7 +99,7 @@ bool Box_DB_Table_Relationships::fill_from_database()
     //To Field choices are different for each row: set in on_adddel_signal_user_activated.
 
     //Add the relationships:
-    for(Document::type_vec_relationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); iter++)
+    for(Document::type_vec_relationships::iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); ++iter)
     {
       sharedptr<const Relationship> relationship = *iter;
       if(relationship)

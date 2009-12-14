@@ -1355,7 +1355,7 @@ void Document::set_tables(const type_listTableInfo& tables)
   //Look at each "table":
 
   bool something_changed = false;
-  for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); iter++)
+  for(type_tables::iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
   {
     const DocumentTableInfo& doctableinfo = iter->second;
 
@@ -2441,7 +2441,7 @@ bool Document::load_after(int& failure_code)
 
       //Look at each "table" node.
       xmlpp::Node::NodeList listNodes = nodeRoot->get_children(GLOM_NODE_TABLE);
-      for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); iter++)
+      for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
       {
         xmlpp::Element* nodeTable = dynamic_cast<xmlpp::Element*>(*iter);
         if(nodeTable)
@@ -2470,7 +2470,7 @@ bool Document::load_after(int& failure_code)
           if(nodeRelationships)
           {
             const xmlpp::Node::NodeList listNodes = nodeRelationships->get_children(GLOM_NODE_RELATIONSHIP);
-            for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); iter++)
+            for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
             {
               const xmlpp::Element* nodeChild = dynamic_cast<xmlpp::Element*>(*iter);
               if(nodeChild)
@@ -2503,7 +2503,7 @@ bool Document::load_after(int& failure_code)
 
             //Loop through Field child nodes:
             xmlpp::Node::NodeList listNodes = nodeFields->get_children(GLOM_NODE_FIELD);
-            for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); iter++)
+            for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
             {
               const xmlpp::Element* nodeChild = dynamic_cast<xmlpp::Element*>(*iter);
               if(nodeChild)
@@ -2621,7 +2621,7 @@ bool Document::load_after(int& failure_code)
       //Look at each "table" node.
       //We do load the layouts separately, because we needed to load all the tables' relationships and tables 
       //before we can load layouts that can use them.
-      for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); iter++)
+      for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
       {
         xmlpp::Element* nodeTable = dynamic_cast<xmlpp::Element*>(*iter);
         if(nodeTable)
@@ -3429,7 +3429,7 @@ bool Document::save_before()
         xmlpp::Element* elemRelationships = nodeTable->add_child(GLOM_NODE_RELATIONSHIPS);
 
         //Add each <relationship> node:
-        for(type_vec_relationships::const_iterator iter = doctableinfo.m_relationships.begin(); iter != doctableinfo.m_relationships.end(); iter++)
+        for(type_vec_relationships::const_iterator iter = doctableinfo.m_relationships.begin(); iter != doctableinfo.m_relationships.end(); ++iter)
         {
           sharedptr<const Relationship> relationship = *iter;
           if(relationship)

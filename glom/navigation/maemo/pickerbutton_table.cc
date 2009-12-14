@@ -58,7 +58,7 @@ bool PickerButton_Table::fill_from_database()
   Document::type_listTableInfo listTablesDocument = document->get_tables();
 
   const type_vec_strings vecTables = get_table_names_from_database();
-  for(type_vec_strings::const_iterator iter = vecTables.begin(); iter != vecTables.end(); iter++)
+  for(type_vec_strings::const_iterator iter = vecTables.begin(); iter != vecTables.end(); ++iter)
   {
     const Glib::ustring strName = *iter;
     sharedptr<TableInfo> table_info;

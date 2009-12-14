@@ -510,7 +510,7 @@ void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field
           std::cerr << "Base_DB_Table_Data::refresh_related_fields(): The result had 0 columns" << std::endl;
         }
 
-        for(guint uiCol = 0; uiCol < cols_count; uiCol++)
+        for(guint uiCol = 0; uiCol < cols_count; ++uiCol)
         {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED        
           const Gnome::Gda::Value value = result->get_value_at(uiCol, 0 /* row */);
