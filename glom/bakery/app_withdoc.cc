@@ -475,7 +475,7 @@ void App_WithDoc::after_successful_save()
 
 Glib::ustring App_WithDoc::get_conf_fullkey(const Glib::ustring& key)
 {
-  return "/apps/" + m_strAppName + "/" + key;
+  return "/apps/" + m_strAppName + '/' + key;
 }
 
 

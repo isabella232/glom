@@ -216,7 +216,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
 #endif
 
     if(!trans_fields.empty())
-      trans_fields += ",";
+      trans_fields += ',';
 
     const type_mapFieldChanges::const_iterator changed_iter = fields_changed.find(column->column_name);
     if(changed_iter != fields_changed.end())
@@ -242,7 +242,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
                                               "WHEN "  + column->column_name + " != 0 THEN 1 "
                                               "WHEN "  + column->column_name + " IS NULL THEN 0 END)";
         else if(column->gtype == GDA_TYPE_BLOB || column->gtype == G_TYPE_DATE || column->gtype == GDA_TYPE_TIME)
-          trans_fields += "0";
+          trans_fields += '0';
         else
           trans_fields += Glib::ustring("CAST(") + column->column_name + " AS real)";
         break;
@@ -264,13 +264,13 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
         if(column->gtype == G_TYPE_BOOLEAN || column->gtype == GDA_TYPE_BLOB || column->gtype == G_TYPE_DOUBLE)
           trans_fields += "NULL";
         else
-          trans_fields += Glib::ustring("date(") + column->column_name + ")";
+          trans_fields += Glib::ustring("date(") + column->column_name + ')';
         break;
       case Field::TYPE_TIME:
         if(column->gtype == G_TYPE_BOOLEAN || column->gtype == GDA_TYPE_BLOB || column->gtype == G_TYPE_DOUBLE)
           trans_fields += "NULL";
         else
-          trans_fields += Glib::ustring("time(") + column->column_name + ")";
+          trans_fields += Glib::ustring("time(") + column->column_name + ')';
         break;
       case Field::TYPE_IMAGE:
         if(column->gtype == GDA_TYPE_BLOB)
@@ -305,7 +305,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
       if(!add_column_to_server_operation(operation, field, i++, error))
         return false;
       if(!trans_fields.empty())
-        trans_fields += ",";
+        trans_fields += ',';
       Gnome::Gda::Value default_value = field->get_default_value();
       if(default_value.get_value_type() != G_TYPE_NONE && !default_value.is_null())
         trans_fields += field->sql(default_value, connection);
@@ -314,10 +314,10 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
         switch(field->get_glom_type())
         {
         case Field::TYPE_NUMERIC:
-          trans_fields += "0";
+          trans_fields += '0';
           break;
         case Field::TYPE_BOOLEAN:
-          trans_fields += "0";
+          trans_fields += '0';
           break;
         case Field::TYPE_TEXT:
           trans_fields += "''";

@@ -135,7 +135,7 @@ Glib::ustring LayoutItem_GroupBy::get_layout_display_name() const
       sort_fields_names += iter->first->get_layout_display_name();
     }
 
-    result += sort_fields_names + ")";
+    result += sort_fields_names + ')';
   }
 
   return result;

@@ -123,7 +123,7 @@ void Dialog_AddRelatedTable::on_combo_field_name()
   possible_table_name = Utils::string_remove_suffix(possible_table_name, "_id", false /* not case sensitive */);
 
   //Add a "s" to the end, though this probably only makes sense in English. TODO: Don't do this?
-  possible_table_name += "s";
+  possible_table_name += 's';
 
   //Discover whether a table with this name exists already, 
   //and append a numerical prefix until we find one that doesn't exist:

@@ -211,7 +211,7 @@ Glib::ustring UsesRelationship::get_sql_join_alias_name() const
 
     if(get_has_related_relationship_name() && m_related_relationship->get_has_fields())
     {
-      result += ("_" + m_related_relationship->get_name());
+      result += ('_' + m_related_relationship->get_name());
     }
   }
 

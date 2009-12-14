@@ -145,7 +145,7 @@ void Utils::show_help(const Glib::ustring& id)
     else
     {
       std::string uri = "ghelp:" + help_file;
-      if(pId) { uri += "?"; uri += pId; }
+      if(pId) { uri += '?'; uri += pId; }
 
       // g_app_info_launch_default_for_uri seems not to be wrapped by giomm
       if(!g_app_info_launch_default_for_uri(uri.c_str(), 0, &err))

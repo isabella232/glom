@@ -448,7 +448,7 @@ static void show_gettext_error(int severity, const char* filename, const gchar* 
 
     default:
     {
-      Glib::ustring msg = Glib::ustring(_("Gettext-Error: ")) + " " + msg_stream.str();
+      Glib::ustring msg = Glib::ustring(_("Gettext-Error: ")) + ' ' + msg_stream.str();
       Gtk::MessageDialog dlg(msg, false, Gtk::MESSAGE_ERROR);
       dlg.run();
       break;
@@ -496,7 +496,7 @@ Glib::ustring Window_Translations::get_po_context_for_item(const sharedptr<Trans
 {
   // Note that this context string should use English rather than the translated strings,
   // or the context would change depending on the locale of the user doing the export:
-  return TranslatableItem::get_translatable_type_name_nontranslated(item->get_translatable_item_type()) + " (" + item->get_name() + ")";
+  return TranslatableItem::get_translatable_type_name_nontranslated(item->get_translatable_item_type()) + " (" + item->get_name() + ')';
 }
 
 void Window_Translations::on_button_export()

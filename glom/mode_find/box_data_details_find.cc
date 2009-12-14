@@ -34,7 +34,7 @@ Box_Data_Details_Find::Box_Data_Details_Find()
   m_hbox_buttons.pack_end(m_Button_Find, Gtk::PACK_SHRINK);
   #endif
 
-  g_object_set(m_Button_Find.gobj(), "can-default", tr, (gpointer)0); //TODO: Make this a real method in gtkmm?
+  g_object_set(m_Button_Find.gobj(), "can-default", TRUE, (gpointer)0); //TODO: Make this a real method in gtkmm?
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Hide this because it is useless for Find mode:

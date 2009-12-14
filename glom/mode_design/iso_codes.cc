@@ -264,7 +264,7 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
           {
             type_map_country::iterator iterFindCountry = map_country.find(id_country);
             if(iterFindCountry != map_country.end())
-              name += " (" + iterFindCountry->second + ")";
+              name += " (" + iterFindCountry->second + ')';
             else
               name = Glib::ustring(); //Ignore locales with unnamed countries.
           }

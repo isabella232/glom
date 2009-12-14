@@ -52,7 +52,7 @@ Glib::ustring encoding_display(const Glib::ustring& name, const Glib::ustring& c
   if(charset.empty())
     return name;
   else
-    return name + " (" + charset + ")";
+    return name + " (" + charset + ')';
 }
 
 } //anonymous namespace

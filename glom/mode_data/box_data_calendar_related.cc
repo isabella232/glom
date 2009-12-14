@@ -475,7 +475,7 @@ Glib::ustring Box_Data_Calendar_Related::on_calendar_details(guint year, guint m
     if(!row_text.empty())
     {
       if(!result.empty())
-        result += "\n";
+        result += '\n';
       
       result += row_text;
     }

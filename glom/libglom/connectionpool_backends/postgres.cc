@@ -217,9 +217,9 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
                                          "WHEN " + field_name_old_quoted + " IS NULL THEN false END)";
             }
             else if(old_field_type == Field::TYPE_TEXT)
-              conversion_command = "(" + field_name_old_quoted + " !~~* \'false\')"; // !~~* means ! ILIKE
+              conversion_command = '(' + field_name_old_quoted + " !~~* \'false\')"; // !~~* means ! ILIKE
             else // Dates and Times:
-              conversion_command = "(" + field_name_old_quoted + " IS NOT NULL)";
+              conversion_command = '(' + field_name_old_quoted + " IS NOT NULL)";
             break;
           }
 

@@ -54,7 +54,7 @@ Glib::ustring Document::get_file_uri_with_extension(const Glib::ustring& uri)
   if(!m_file_extension.empty())  //If there is an extension to enforce.
   {
     bool bAddExt = false;
-    Glib::ustring strExt = "." + get_file_extension();
+    const Glib::ustring strExt = '.' + get_file_extension();
 
     if(result.size() < strExt.size()) //It can't have the ext already if it's not long enough.
     {
@@ -62,7 +62,7 @@ Glib::ustring Document::get_file_uri_with_extension(const Glib::ustring& uri)
     }
     else
     {
-      Glib::ustring strEnd = result.substr(result.size() - strExt.size());
+      const Glib::ustring strEnd = result.substr(result.size() - strExt.size());
       if(strEnd != strExt) //If it doesn't already have the extension
         bAddExt = true;
     }
@@ -353,11 +353,11 @@ Glib::ustring Document::util_file_uri_get_name(const Glib::ustring& file_uri, co
   //TODO: Maybe filename_display_basename() should do this.
   if(!strResult.empty() && !file_extension.empty())
   {
-    const Glib::ustring strExt = "." + file_extension;
+    const Glib::ustring strExt = '.' + file_extension;
 
     if(strResult.size() >= file_extension.size()) //It can't have the ext already if it's not long enough.
     {
-      Glib::ustring strEnd = strResult.substr(strResult.size() - strExt.size());
+      const Glib::ustring strEnd = strResult.substr(strResult.size() - strExt.size());
       if(strEnd == strExt) //If it has the extension
       {
         strResult = strResult.substr(0, strResult.size() - strExt.size());

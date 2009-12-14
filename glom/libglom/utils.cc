@@ -276,13 +276,13 @@ Glib::ustring Utils::build_sql_select_fields_to_get(const Glib::ustring& table_n
 
     //Add, for instance, "SUM(":
     if(is_summary)
-      one_sql_part += fieldsummary->get_summary_type_sql() + "(";
+      one_sql_part += fieldsummary->get_summary_type_sql() + '(';
 
     one_sql_part += layout_item->get_sql_name(table_name);
 
     //Close the summary bracket if necessary.
     if(is_summary)
-      one_sql_part +=  ")";
+      one_sql_part +=  ')';
 
     //Append it to the big string of fields:
     if(!one_sql_part.empty())
@@ -335,16 +335,16 @@ Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& tab
   //Build the whole SQL statement:
   Glib::ustring result = 
     "SELECT " + sql_part_fields +
-    " FROM \"" + table_name + "\"";
+    " FROM \"" + table_name + '\"';
 
   if(!sql_part_from.empty())
-    result += ("," + sql_part_from);
+    result += (',' + sql_part_from);
 
   if(!extra_join.empty())
-    sql_part_leftouterjoin += (" " + extra_join + " ");
+    sql_part_leftouterjoin += (' ' + extra_join + ' ');
 
   if(!sql_part_leftouterjoin.empty())
-    result += (" " + sql_part_leftouterjoin);
+    result += (' ' + sql_part_leftouterjoin);
 
 
   //Add the WHERE clause:
@@ -354,7 +354,7 @@ Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& tab
   //Extra GROUP_BY clause for doubly-related records. This must be before the ORDER BY sort clause:
   if(!extra_group_by.empty())
   {
-    result += (" " + extra_group_by + " ");
+    result += (' ' + extra_group_by + ' ');
   }
 
   //Sort clause:
@@ -402,7 +402,7 @@ Glib::ustring Utils::build_sql_select_with_key(const Glib::ustring& table_name, 
   if(!Conversions::value_is_empty(key_value)) //If there is a record to show:
   {
     //TODO: Use a SQL parameter instead of using sql():
-    const Glib::ustring where_clause = "\"" + table_name + "\".\"" + key_field->get_name() + "\" = " + key_field->sql(key_value);
+    const Glib::ustring where_clause = '\"' + table_name + "\".\"" + key_field->get_name() + "\" = " + key_field->sql(key_value);
     return Utils::build_sql_select_with_where_clause(table_name, fieldsToGet, where_clause);
   }
 
@@ -430,14 +430,14 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
   }
 
   const bool with_second = !choice_second.empty();
-  const Glib::ustring sql_second = "\"" + to_table + "\".\"" + choice_second + "\"";
+  const Glib::ustring sql_second = "\"" + to_table + "\".\"" + choice_second + '\"';
 
   //Get possible values from database, sorted by the first column.
-  Glib::ustring sql_query = "SELECT \"" + to_table + "\".\"" + choice_field + "\"";
+  Glib::ustring sql_query = "SELECT \"" + to_table + "\".\"" + choice_field + '\"';
   if(with_second)
     sql_query += ", " + sql_second;
 
-  sql_query += " FROM \"" + choice_relationship->get_to_table() + "\" ORDER BY \"" + to_table + "\".\"" + choice_field + "\"";
+  sql_query += " FROM \"" + choice_relationship->get_to_table() + "\" ORDER BY \"" + to_table + "\".\"" + choice_field + '\"';
 
   //std::cout << "debug: get_choice_values(): query: " << sql_query << std::endl;
   //Connect to database:
@@ -522,14 +522,14 @@ Glib::ustring Utils::locale_simplify(const Glib::ustring& locale_id)
   Glib::ustring result = locale_id;
 
   //Get everything before the .:
-  Glib::ustring::size_type posDot = locale_id.find(".");
+  Glib::ustring::size_type posDot = locale_id.find('.');
   if(posDot != Glib::ustring::npos)
   {
     result = result.substr(0, posDot);
   }
 
   //Get everything before the @:
-  const Glib::ustring::size_type posAt = locale_id.find("@");
+  const Glib::ustring::size_type posAt = locale_id.find('@');
   if(posAt != Glib::ustring::npos)
   {
     result = result.substr(0, posAt);
@@ -542,7 +542,7 @@ Glib::ustring Utils::locale_language_id(const Glib::ustring& locale_id)
 {
   Glib::ustring result;
 
-  const Glib::ustring::size_type posUnderscore = locale_id.find("_");
+  const Glib::ustring::size_type posUnderscore = locale_id.find('_');
   if(posUnderscore != Glib::ustring::npos)
   {
     result = locale_id.substr(0, posUnderscore);

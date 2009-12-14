@@ -476,7 +476,7 @@ bool ConnectionPool::handle_error_cerr_only()
         if(event && (event->get_event_type() == Gnome::Gda::CONNECTION_EVENT_ERROR))
         {
           if(!error_details.empty())
-            error_details += "\n"; //Add newline after each error.
+            error_details += '\n'; //Add newline after each error.
 
           error_details += (*iter)->get_description();
           std::cerr << "Internal error (Database): " << error_details << std::endl;

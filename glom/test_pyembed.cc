@@ -35,7 +35,7 @@ void evaluate_function_implementation(const Glib::ustring& func_impl)
   type_listStrings listStrings = ustring_tokenize(func_impl, "\n", -1);
   for(type_listStrings::const_iterator iter = listStrings.begin(); iter != listStrings.end(); ++iter)
   {
-    func_def += "  " + *iter + "\n";
+    func_def += "  " + *iter + '\n';
   }
 
   //Indent the function implementation (required by python syntax):

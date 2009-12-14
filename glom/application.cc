@@ -859,7 +859,7 @@ void App_Glom::new_instance(const Glib::ustring& uri) //Override
 {
   Glib::ustring command = "glom";
   if(!uri.empty())
-    command += " " + uri;
+    command += ' ' + uri;
 
   GError* gerror = 0;
   gdk_spawn_command_line_on_screen(Glib::unwrap(get_screen()),

@@ -96,7 +96,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
   {
     //The GNOME HIG says that labels should have ":" at the end:
     //http://library.gnome.org/devel/hig-book/stable/design-text-labels.html.en
-    m_label.set_label(title + ":");
+    m_label.set_label(title + ':');
     m_label.set_alignment(0);
     m_label.show();
 

@@ -125,7 +125,7 @@ Glib::ustring LayoutItem_FieldSummary::get_layout_display_name() const
   if(m_summary_type == TYPE_INVALID)
     result = _("No summary chosen");
   else
-    result = get_summary_type_name(m_summary_type) + "(" + result + ")";
+    result = get_summary_type_name(m_summary_type) + '(' + result + ')';
 
   return result;
 }

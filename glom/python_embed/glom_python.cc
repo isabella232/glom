@@ -192,7 +192,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   type_listStrings listStrings = ustring_tokenize(func_impl, "\n", -1);
   for(type_listStrings::const_iterator iter = listStrings.begin(); iter != listStrings.end(); ++iter)
   {
-    func_def += "  " + *iter + "\n";
+    func_def += "  " + *iter + '\n';
   }
 
 

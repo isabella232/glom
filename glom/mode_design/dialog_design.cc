@@ -61,7 +61,7 @@ bool Dialog_Design::init_db_details(const Glib::ustring& table_name)
        if(table_title.empty())
          table_label = table_name;
        else
-         table_label = table_title + " (" + table_name + ")";
+         table_label = table_title + " (" + table_name + ')';
      }
 
     m_label_table->set_text(table_label);

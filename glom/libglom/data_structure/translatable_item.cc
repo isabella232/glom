@@ -211,7 +211,7 @@ Glib::ustring TranslatableItem::get_current_locale()
       m_current_locale = Utils::locale_simplify(cLocale);
     }
     else
-      m_current_locale = "C";
+      m_current_locale = 'C';
   }
 
   return m_current_locale;
