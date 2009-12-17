@@ -1,3 +1,12 @@
+2009-12-17  Murray Cumming  <murrayc@murrayc.com>
+
+	Use GtkToolPalette instead of EggToolPalette.
+
+	* Makefile_libegg.am:
+	* glom/utility_widgets/egg/: Removed.
+	* Other files: Use GtkToolPalette instead of EggToolPalette. 
+	Seems to work.
+
 2009-12-14  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom.desktop.in.in: Remove the Application category because 

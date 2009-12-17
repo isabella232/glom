@@ -53,11 +53,6 @@ bin_PROGRAMS = glom/glom
 lib_LTLIBRARIES = glom/libglom/libglom-1.12.la
 pyexec_LTLIBRARIES = glom/python_embed/python_module/glom_1_12.la
 
-noinst_LIBRARIES =						\
-	glom/utility_widgets/egg/toolpalette/libeggtoolpalette.a\
-	glom/utility_widgets/egg/util/libeggutil.a
-
-include Makefile_libegg.am
 include Makefile_libglom.am
 include Makefile_glom.am
 include Makefile_tests.am
@@ -150,8 +145,7 @@ mimedir = $(datadir)/mime
 mimepackagesdir = $(mimedir)/packages
 dist_mimepackages_DATA = glom.xml
 
-dist_template = glom/glom.rc glom/utility_widgets/egg/util/eggmarshalers.list \
-                glom.service.in
+dist_template = glom/glom.rc glom.service.in
 dist_docutils = gnome-doc-utils.make omf.make xmldocs.make
 dist_intltool = intltool-extract.in intltool-merge.in intltool-update.in
 dist_docfiles = docs/overview.txt docs/developer_documentation.txt \
@@ -167,8 +161,6 @@ CLEANFILES = $(dbusservice_DATA) $(desktop_DATA) $(win_resfile)
 DISTCLEANFILES = intltool-extract intltool-merge intltool-update
 MAINTAINERCLEANFILES = \
 	$(dist_docutils) $(dist_intltool) \
-	glom/utility_widgets/egg/util/eggmarshalers.c \
-	glom/utility_widgets/egg/util/eggmarshalers.h \
 	macros/gnome-doc-utils.m4 macros/intltool.m4 \
 	macros/libtool.m4 macros/ltoptions.m4 macros/ltsugar.m4 \
 	macros/ltversion.m4 macros/lt~obsolete.m4

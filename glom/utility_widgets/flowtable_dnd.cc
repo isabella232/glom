@@ -20,7 +20,7 @@
 
 #include "flowtable_dnd.h"
 #include "../mode_data/flowtablewithfields.h"
-#include "egg/toolpalette/eggtoolpalette.h"
+#include <gtk/gtktoolpalette.h>
 #include "placeholder-glom.h"
 #include "layouttoolbarbutton.h"
 #include "entryglom.h"
@@ -39,7 +39,7 @@ FlowTableDnd::FlowTableDnd() :
 {
   std::list<Gtk::TargetEntry> drag_targets;
 
-  const GtkTargetEntry* target_entry = egg_tool_palette_get_drag_target_item();
+  const GtkTargetEntry* target_entry = gtk_tool_palette_get_drag_target_item();
   Gtk::TargetEntry toolbar_target(*target_entry);
   drag_targets.push_back(toolbar_target);
 
@@ -88,7 +88,7 @@ void FlowTableDnd::start_dnd(Gtk::Widget& child)
   if(!(child.get_flags() & Gtk::NO_WINDOW))
   { 
     std::list<Gtk::TargetEntry> drag_targets;
-    const GtkTargetEntry* target_entry = egg_tool_palette_get_drag_target_item();
+    const GtkTargetEntry* target_entry = gtk_tool_palette_get_drag_target_item();
     Gtk::TargetEntry toolbar_target(*target_entry);
     Gtk::TargetEntry move_target(MOVE_TARGET);
     drag_targets.push_back(toolbar_target);
@@ -182,14 +182,14 @@ void FlowTableDnd::on_dnd_remove_placeholder()
 void FlowTableDnd::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int /* drag_x */, int /* drag_y */, const Gtk::SelectionData& selection_data, guint, guint /* time */)
 {
   Gtk::Widget* palette = drag_get_source_widget(drag_context);
-  while(palette && !EGG_IS_TOOL_PALETTE(palette->gobj()))
+  while(palette && !GTK_IS_TOOL_PALETTE(palette->gobj()))
     palette = palette->get_parent();
   
   on_dnd_remove_placeholder();
   Gtk::Widget* above = dnd_datawidget_from_item(0);
   if(palette)
   {
-    GtkWidget* tool_item = egg_tool_palette_get_drag_item(EGG_TOOL_PALETTE(palette->gobj()), selection_data.gobj());
+    GtkWidget* tool_item = gtk_tool_palette_get_drag_item(GTK_TOOL_PALETTE(palette->gobj()), selection_data.gobj());
     const int type = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(tool_item), "glom-type"));
     on_dnd_add_layout_item_by_type(type, above);
   }

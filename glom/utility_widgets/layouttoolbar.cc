@@ -25,7 +25,7 @@
 #include <libglom/libglom_config.h>
 
 #include "layoutwidgetbase.h"
-#include "egg/toolpalette/eggtoolitemgroup.h"
+#include <gtk/gtktoolitemgroup.h>
 
 namespace
 {
@@ -79,20 +79,20 @@ LayoutToolbar::LayoutToolbar()
   //TODO: Add a drag item for the related records item.
   
   //Note for translators: These are container layout items, containing child layout items, like container widgets in GTK+.
-  GtkContainer* container_group = GTK_CONTAINER(egg_tool_item_group_new(_("Containers")));
+  GtkContainer* container_group = GTK_CONTAINER(gtk_tool_item_group_new(_("Containers")));
   gtk_container_add(container_group, GTK_WIDGET(drag_group->gobj()));
   gtk_container_add(container_group, GTK_WIDGET(drag_notebook->gobj()));
 
   //Note for translators: These are layout items, like widgets in GTK+.
-  GtkContainer* fields_group = GTK_CONTAINER(egg_tool_item_group_new(_("Items")));
+  GtkContainer* fields_group = GTK_CONTAINER(gtk_tool_item_group_new(_("Items")));
   gtk_container_add(fields_group, GTK_WIDGET(drag_portal->gobj()));
   gtk_container_add(fields_group, GTK_WIDGET(drag_item->gobj()));
   gtk_container_add(fields_group, GTK_WIDGET(drag_button->gobj()));  
   gtk_container_add(fields_group, GTK_WIDGET(drag_text->gobj()));
   gtk_container_add(fields_group, GTK_WIDGET(drag_image->gobj()));
   
-  add_group(EGG_TOOL_ITEM_GROUP(container_group));
-  add_group(EGG_TOOL_ITEM_GROUP(fields_group));
+  add_group(GTK_TOOL_ITEM_GROUP(container_group));
+  add_group(GTK_TOOL_ITEM_GROUP(fields_group));
 
   set_drag_source();
   
