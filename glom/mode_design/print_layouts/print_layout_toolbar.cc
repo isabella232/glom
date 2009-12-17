@@ -25,7 +25,7 @@
 #include <libglom/libglom_config.h>
 
 //#include "layoutwidgetbase.h"
-#include <glom/utility_widgets/egg/toolpalette/eggtoolitemgroup.h>
+#include <gtk/gtktoolitemgroup.h>
 
 namespace Glom
 {
@@ -57,23 +57,23 @@ PrintLayoutToolbar::PrintLayoutToolbar()
                                         _("Related Records"), _("Drag this to the layout to add a new related records portal.")));
   
   //Note for translators: These are layout items, like widgets in GTK+.
-  GtkContainer* items_group = GTK_CONTAINER(egg_tool_item_group_new(_("Items")));
+  GtkContainer* items_group = GTK_CONTAINER(gtk_tool_item_group_new(_("Items")));
   gtk_container_add(items_group, GTK_WIDGET(drag_field->gobj()));
   gtk_container_add(items_group, GTK_WIDGET(drag_text->gobj()));
   gtk_container_add(items_group, GTK_WIDGET(drag_image->gobj()));
 
   //Note for translators: These are layout items, like widgets in GTK+.
-  GtkContainer* lines_group = GTK_CONTAINER(egg_tool_item_group_new(_("Lines")));
+  GtkContainer* lines_group = GTK_CONTAINER(gtk_tool_item_group_new(_("Lines")));
   gtk_container_add(lines_group, GTK_WIDGET(drag_line_horizontal->gobj()));
   gtk_container_add(lines_group, GTK_WIDGET(drag_line_vertical->gobj()));
   
   //Note for translators: These are layout items, like widgets in GTK+.
-  GtkContainer* related_group = GTK_CONTAINER(egg_tool_item_group_new(_("Records")));
+  GtkContainer* related_group = GTK_CONTAINER(gtk_tool_item_group_new(_("Records")));
   gtk_container_add(related_group, GTK_WIDGET(drag_related_records->gobj()));
 
-  add_group(EGG_TOOL_ITEM_GROUP(items_group));
-  add_group(EGG_TOOL_ITEM_GROUP(lines_group));
-  add_group(EGG_TOOL_ITEM_GROUP(related_group));
+  add_group(GTK_TOOL_ITEM_GROUP(items_group));
+  add_group(GTK_TOOL_ITEM_GROUP(lines_group));
+  add_group(GTK_TOOL_ITEM_GROUP(related_group));
 
   set_drag_source();
   

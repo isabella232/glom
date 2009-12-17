@@ -25,8 +25,8 @@
 #include <gtkmm/handlebox.h>
 #include <gtkmm/box.h>
 #include <gtkmm/button.h>
-#include "egg/toolpalette/eggtoolpalette.h"
-#include "egg/toolpalette/eggtoolitemgroup.h"
+#include "gtkmm/toolpalette.h"
+#include "gtk/gtktoolpalette.h"
 
 namespace Glom
 {
@@ -37,8 +37,8 @@ public:
   SideBar();
   ~SideBar();
     
-  void add_group(EggToolItemGroup* group);
-  void remove_group(EggToolItemGroup* group);
+  void add_group(GtkToolItemGroup* group);
+  void remove_group(GtkToolItemGroup* group);
   
   void set_drag_source();
 
@@ -47,7 +47,7 @@ private:
   virtual void on_child_attached(Gtk::Widget* child);
     
 private:
-  EggToolPalette* palette;
+  GtkToolPalette* palette;
     
   int m_width;
   int m_height;

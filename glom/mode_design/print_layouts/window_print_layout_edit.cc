@@ -78,7 +78,7 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   m_canvas.show();
 
   //Make the canvas a drag-and-drop destination:
-  const GtkTargetEntry* target_entry = egg_tool_palette_get_drag_target_item();
+  const GtkTargetEntry* target_entry = gtk_tool_palette_get_drag_target_item();
   Gtk::TargetEntry toolbar_target(*target_entry);
   m_drag_targets.push_back(toolbar_target);
 

@@ -30,8 +30,8 @@ SideBar::SideBar()
   set_handle_position(Gtk::POS_TOP);
   set_snap_edge(Gtk::POS_TOP);
   
-  palette = EGG_TOOL_PALETTE(egg_tool_palette_new());
-  egg_tool_palette_set_style (palette, GTK_TOOLBAR_BOTH_HORIZ);
+  palette = GTK_TOOL_PALETTE(gtk_tool_palette_new());
+  gtk_tool_palette_set_style (palette, GTK_TOOLBAR_BOTH_HORIZ);
   Gtk::Container* container = Glib::wrap(GTK_CONTAINER(palette));
   
   add(*container);
@@ -43,12 +43,12 @@ SideBar::~SideBar()
 {
 }
 
-void SideBar::add_group(EggToolItemGroup* group)
+void SideBar::add_group(GtkToolItemGroup* group)
 {
   gtk_container_add(GTK_CONTAINER(palette), GTK_WIDGET(group));
 }
 
-void SideBar::remove_group(EggToolItemGroup* group)
+void SideBar::remove_group(GtkToolItemGroup* group)
 {
   gtk_container_remove(GTK_CONTAINER(palette), GTK_WIDGET(group));
 }
@@ -56,7 +56,7 @@ void SideBar::remove_group(EggToolItemGroup* group)
 void SideBar::set_drag_source()
 {
   // It's important to call this AFTER all groups have been added
-  egg_tool_palette_set_drag_source(palette, EGG_TOOL_PALETTE_DRAG_ITEMS);
+  gtk_tool_palette_set_drag_source(palette, GTK_TOOL_PALETTE_DRAG_ITEMS);
 }
 
 void SideBar::on_child_detached(Gtk::Widget* child)

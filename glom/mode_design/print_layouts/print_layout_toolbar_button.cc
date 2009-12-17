@@ -19,7 +19,7 @@
  */
  
 #include "print_layout_toolbar_button.h"
-#include <glom/utility_widgets/egg/toolpalette/eggtoolpalette.h>
+#include <gtk/gtktoolpalette.h>
 #include <iostream>
 
 namespace
@@ -70,13 +70,13 @@ PrintLayoutToolbarButton::enumItems PrintLayoutToolbarButton::get_item_type_from
 
   //Put this code in the toolbar class:
   Gtk::Widget* palette = drag_get_source_widget(drag_context);
-  while(palette && !EGG_IS_TOOL_PALETTE (palette->gobj()))
+  while(palette && !GTK_IS_TOOL_PALETTE (palette->gobj()))
     palette = palette->get_parent();
   
   if(!palette)
     return result;
 
-  GtkWidget* tool_item = egg_tool_palette_get_drag_item(EGG_TOOL_PALETTE (palette->gobj()), selection_data.gobj());
+  GtkWidget* tool_item = gtk_tool_palette_get_drag_item(GTK_TOOL_PALETTE (palette->gobj()), selection_data.gobj());
   if(!tool_item)
     return result;
 
