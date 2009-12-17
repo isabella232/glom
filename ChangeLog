@@ -1,3 +1,8 @@
+2009-12-16  Armin Burgmeier  <armin@arbur.net>
+
+	* win32/build-installer:
+	* win32/glom.iss.in: Add missing libpangoft2-1.0-0.dll. Bug #599966.
+
 2009-12-14  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom.desktop.in.in: Remove the Application category because 

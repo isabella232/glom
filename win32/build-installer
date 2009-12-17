@@ -42,6 +42,8 @@ cp /bundle/bin/gspawn-win32-helper-console.exe installer/bin || exit
 
 cp /bundle/bin/libatk-1.0-0.dll installer/bin || exit
 cp /bundle/bin/libxml2-2.dll installer/bin || exit
+# TODO: Remove as soon as GtkSourceView is built against recent GTK+
+cp libxml2.dll installer/bin || exit
 cp /bundle/bin/libfontconfig-1.dll installer/bin || exit
 cp /bundle/bin/libexpat-1.dll installer/bin || exit
 cp /bundle/bin/freetype6.dll installer/bin || exit
@@ -51,6 +53,7 @@ cp /bundle/bin/libjpeg-7.dll installer/bin || exit
 cp /bundle/bin/libtiff-3.dll installer/bin || exit
 
 cp /bundle/bin/libpango-1.0-0.dll installer/bin || exit
+cp /bundle/bin/libpangoft2-1.0-0.dll installer/bin || exit
 cp /bundle/bin/libpangocairo-1.0-0.dll installer/bin || exit
 cp /bundle/bin/libpangowin32-1.0-0.dll installer/bin || exit
 
