@@ -19,7 +19,7 @@
  */
  
 #include "print_layout_toolbar_button.h"
-#include <gtk/gtktoolpalette.h>
+#include <gtkmm/toolpalette.h>
 #include <iostream>
 
 namespace
@@ -69,18 +69,21 @@ PrintLayoutToolbarButton::enumItems PrintLayoutToolbarButton::get_item_type_from
   PrintLayoutToolbarButton::enumItems result = ITEM_INVALID;
 
   //Put this code in the toolbar class:
-  Gtk::Widget* palette = drag_get_source_widget(drag_context);
-  while(palette && !GTK_IS_TOOL_PALETTE (palette->gobj()))
-    palette = palette->get_parent();
+  Gtk::Widget* palette_candidate = drag_get_source_widget(drag_context);
+  Gtk::ToolPalette* palette = dynamic_cast<Gtk::ToolPalette*>(palette_candidate);
+  while(palette_candidate && !palette) {
+    palette_candidate = palette_candidate->get_parent();
+    palette = dynamic_cast<Gtk::ToolPalette*>(palette_candidate);
+  }
   
   if(!palette)
     return result;
 
-  GtkWidget* tool_item = gtk_tool_palette_get_drag_item(GTK_TOOL_PALETTE (palette->gobj()), selection_data.gobj());
+  Gtk::Widget* tool_item = palette->get_drag_item(selection_data);
   if(!tool_item)
     return result;
 
-  result = static_cast<PrintLayoutToolbarButton::enumItems>(GPOINTER_TO_INT(g_object_get_data(G_OBJECT(tool_item), "glom-type")));
+  result = static_cast<PrintLayoutToolbarButton::enumItems>(GPOINTER_TO_INT(tool_item->get_data("glom-type")));
   return result;
 }
 

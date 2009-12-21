@@ -78,8 +78,7 @@ Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const 
   m_canvas.show();
 
   //Make the canvas a drag-and-drop destination:
-  const GtkTargetEntry* target_entry = gtk_tool_palette_get_drag_target_item();
-  Gtk::TargetEntry toolbar_target(*target_entry);
+  const Gtk::TargetEntry toolbar_target = Gtk::ToolPalette::get_drag_target_item();
   m_drag_targets.push_back(toolbar_target);
 
   //Note that we don't use Gtk::DEST_DEFAULT_DEFAULTS because that would prevent our signal handlers from being used:

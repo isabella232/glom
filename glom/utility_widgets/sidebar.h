@@ -26,7 +26,6 @@
 #include <gtkmm/box.h>
 #include <gtkmm/button.h>
 #include "gtkmm/toolpalette.h"
-#include "gtk/gtktoolpalette.h"
 
 namespace Glom
 {
@@ -47,7 +46,7 @@ private:
   virtual void on_child_attached(Gtk::Widget* child);
     
 private:
-  GtkToolPalette* palette;
+  Gtk::ToolPalette m_palette;
     
   int m_width;
   int m_height;
