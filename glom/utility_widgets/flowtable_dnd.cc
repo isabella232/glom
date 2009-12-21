@@ -20,7 +20,7 @@
 
 #include "flowtable_dnd.h"
 #include "../mode_data/flowtablewithfields.h"
-#include <gtk/gtktoolpalette.h>
+#include <gtkmm/toolpalette.h>
 #include "placeholder-glom.h"
 #include "layouttoolbarbutton.h"
 #include "entryglom.h"
@@ -39,11 +39,10 @@ FlowTableDnd::FlowTableDnd() :
 {
   std::list<Gtk::TargetEntry> drag_targets;
 
-  const GtkTargetEntry* target_entry = gtk_tool_palette_get_drag_target_item();
-  Gtk::TargetEntry toolbar_target(*target_entry);
+  const Gtk::TargetEntry toolbar_target = Gtk::ToolPalette::get_drag_target_item();
   drag_targets.push_back(toolbar_target);
 
-  Gtk::TargetEntry move_target(MOVE_TARGET);
+  const Gtk::TargetEntry move_target(MOVE_TARGET);
   drag_targets.push_back(move_target);
 
   drag_dest_set(drag_targets);
@@ -88,10 +87,9 @@ void FlowTableDnd::start_dnd(Gtk::Widget& child)
   if(!(child.get_flags() & Gtk::NO_WINDOW))
   { 
     std::list<Gtk::TargetEntry> drag_targets;
-    const GtkTargetEntry* target_entry = gtk_tool_palette_get_drag_target_item();
-    Gtk::TargetEntry toolbar_target(*target_entry);
-    Gtk::TargetEntry move_target(MOVE_TARGET);
+    const Gtk::TargetEntry toolbar_target = Gtk::ToolPalette::get_drag_target_item();
     drag_targets.push_back(toolbar_target);
+    const Gtk::TargetEntry move_target(MOVE_TARGET);
     drag_targets.push_back(move_target);
     
     Glib::RefPtr<Gtk::TargetList> targets = child.drag_dest_get_target_list();
@@ -181,16 +179,19 @@ void FlowTableDnd::on_dnd_remove_placeholder()
 
 void FlowTableDnd::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int /* drag_x */, int /* drag_y */, const Gtk::SelectionData& selection_data, guint, guint /* time */)
 {
-  Gtk::Widget* palette = drag_get_source_widget(drag_context);
-  while(palette && !GTK_IS_TOOL_PALETTE(palette->gobj()))
-    palette = palette->get_parent();
+  Gtk::Widget* palette_candidate = drag_get_source_widget(drag_context);
+  Gtk::ToolPalette* palette = dynamic_cast<Gtk::ToolPalette*>(palette_candidate);
+  while(palette_candidate && !palette) {
+    palette_candidate = palette_candidate->get_parent();
+    palette = dynamic_cast<Gtk::ToolPalette*>(palette_candidate);
+  }
   
   on_dnd_remove_placeholder();
   Gtk::Widget* above = dnd_datawidget_from_item(0);
   if(palette)
   {
-    GtkWidget* tool_item = gtk_tool_palette_get_drag_item(GTK_TOOL_PALETTE(palette->gobj()), selection_data.gobj());
-    const int type = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(tool_item), "glom-type"));
+    Gtk::Widget* tool_item = palette->get_drag_item(selection_data);
+    const int type = GPOINTER_TO_INT(tool_item->get_data("glom-type"));
     on_dnd_add_layout_item_by_type(type, above);
   }
   else
