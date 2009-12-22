@@ -19,7 +19,6 @@
  */
 
 #include "print_layout_toolbar.h"
-#include "print_layout_toolbar_button.h"
 #include <gtkmm/stock.h>
 #include <glibmm/i18n.h>
 #include <libglom/libglom_config.h>
@@ -33,43 +32,34 @@ namespace Glom
 PrintLayoutToolbar::PrintLayoutToolbar()
 :  m_group_items(_("Items")), 
    m_group_lines(_("Lines")), 
-   m_group_records(_("Records"))
+   m_group_records(_("Records")),
+   m_drag_field("glom-field.png", PrintLayoutToolbarButton::ITEM_FIELD,
+     _("Database Field"), _("Drag this to the layout to add a new database field.")),
+   m_drag_text("glom-text.png", PrintLayoutToolbarButton::ITEM_TEXT,
+     _("Text"), _("Drag this to the layout to add a new static text box.")),
+   m_drag_image("glom-image.png", PrintLayoutToolbarButton::ITEM_IMAGE,
+     _("Image"), _("Drag this to the layout to add a new static image.")),
+   m_drag_line_horizontal("glom-line-horizontal.png", PrintLayoutToolbarButton::ITEM_LINE_HORIZONTAL,
+     _("Horizontal Line"), _("Drag this to the layout to add a new horizontal line.")),
+   m_drag_line_vertical("glom-line-vertical.png", PrintLayoutToolbarButton::ITEM_LINE_VERTICAL,
+     _("Vertical Line"), _("Drag this to the layout to add a new vertical line.")),
+   m_drag_related_records("glom-related-records.png", PrintLayoutToolbarButton::ITEM_PORTAL,
+     _("Related Records"), _("Drag this to the layout to add a new related records portal."))
 {
   // Looks ugly otherwise:
   set_size_request(100, 200);
   
-  PrintLayoutToolbarButton* drag_field = 
-    Gtk::manage(new PrintLayoutToolbarButton("glom-field.png", PrintLayoutToolbarButton::ITEM_FIELD,
-                                        _("Database Field"), _("Drag this to the layout to add a new database field.")));
-  PrintLayoutToolbarButton* drag_text = 
-    Gtk::manage(new PrintLayoutToolbarButton("glom-text.png", PrintLayoutToolbarButton::ITEM_TEXT,
-                                        _("Text"), _("Drag this to the layout to add a new static text box.")));  
-  PrintLayoutToolbarButton* drag_image = 
-    Gtk::manage(new PrintLayoutToolbarButton("glom-image.png", PrintLayoutToolbarButton::ITEM_IMAGE,
-                                        _("Image"), _("Drag this to the layout to add a new static image.")));
+  //Note for translators: These are layout items, like widgets in GTK+.
+  m_group_items.add(m_drag_field);
+  m_group_items.add(m_drag_text);
+  m_group_items.add(m_drag_image);
 
-  PrintLayoutToolbarButton* drag_line_horizontal = 
-    Gtk::manage(new PrintLayoutToolbarButton("glom-line-horizontal.png", PrintLayoutToolbarButton::ITEM_LINE_HORIZONTAL,
-                                        _("Horizontal Line"), _("Drag this to the layout to add a new horizontal line.")));
-  PrintLayoutToolbarButton* drag_line_vertical = 
-    Gtk::manage(new PrintLayoutToolbarButton("glom-line-vertical.png", PrintLayoutToolbarButton::ITEM_LINE_VERTICAL,
-                                        _("Vertical Line"), _("Drag this to the layout to add a new vertical line.")));
-
-  PrintLayoutToolbarButton* drag_related_records = 
-    Gtk::manage(new PrintLayoutToolbarButton("glom-related-records.png", PrintLayoutToolbarButton::ITEM_PORTAL,
-                                        _("Related Records"), _("Drag this to the layout to add a new related records portal.")));
+  //Note for translators: These are layout items, like widgets in GTK+.
+  m_group_lines.add(m_drag_line_horizontal);
+  m_group_lines.add(m_drag_line_vertical);
   
   //Note for translators: These are layout items, like widgets in GTK+.
-  m_group_items.add(*drag_field);
-  m_group_items.add(*drag_text);
-  m_group_items.add(*drag_image);
-
-  //Note for translators: These are layout items, like widgets in GTK+.
-  m_group_lines.add(*drag_line_horizontal);
-  m_group_lines.add(*drag_line_vertical);
-  
-  //Note for translators: These are layout items, like widgets in GTK+.
-  m_group_records.add(*drag_related_records);
+  m_group_records.add(m_drag_related_records);
 
   add_group(m_group_items);
   add_group(m_group_lines);
