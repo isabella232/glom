@@ -191,8 +191,11 @@ void FlowTableDnd::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& d
   if(palette)
   {
     Gtk::Widget* tool_item = palette->get_drag_item(selection_data);
-    const int type = GPOINTER_TO_INT(tool_item->get_data("glom-type"));
-    on_dnd_add_layout_item_by_type(type, above);
+    if(tool_item)
+    {
+      const int type = GPOINTER_TO_INT(tool_item->get_data("glom-type"));
+      on_dnd_add_layout_item_by_type(type, above);
+    }
   }
   else
   {
