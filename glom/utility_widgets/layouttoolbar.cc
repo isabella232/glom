@@ -49,6 +49,8 @@ namespace Glom
 {
 
 LayoutToolbar::LayoutToolbar()
+:  m_group_items(_("Items")), 
+   m_group_containers(_("Containers"))
 {
   // Looks ugly otherwise:
   set_size_request(100, 200);
@@ -79,20 +81,18 @@ LayoutToolbar::LayoutToolbar()
   //TODO: Add a drag item for the related records item.
   
   //Note for translators: These are container layout items, containing child layout items, like container widgets in GTK+.
-  GtkContainer* container_group = GTK_CONTAINER(gtk_tool_item_group_new(_("Containers")));
-  gtk_container_add(container_group, GTK_WIDGET(drag_group->gobj()));
-  gtk_container_add(container_group, GTK_WIDGET(drag_notebook->gobj()));
+  m_group_containers.add(*drag_group);
+  m_group_containers.add(*drag_notebook);
 
   //Note for translators: These are layout items, like widgets in GTK+.
-  GtkContainer* fields_group = GTK_CONTAINER(gtk_tool_item_group_new(_("Items")));
-  gtk_container_add(fields_group, GTK_WIDGET(drag_portal->gobj()));
-  gtk_container_add(fields_group, GTK_WIDGET(drag_item->gobj()));
-  gtk_container_add(fields_group, GTK_WIDGET(drag_button->gobj()));  
-  gtk_container_add(fields_group, GTK_WIDGET(drag_text->gobj()));
-  gtk_container_add(fields_group, GTK_WIDGET(drag_image->gobj()));
+  m_group_items.add(*drag_portal);
+  m_group_items.add(*drag_item);
+  m_group_items.add(*drag_button);
+  m_group_items.add(*drag_text);
+  m_group_items.add(*drag_image);
   
-  add_group(GTK_TOOL_ITEM_GROUP(container_group));
-  add_group(GTK_TOOL_ITEM_GROUP(fields_group));
+  add_group(m_group_containers);
+  add_group(m_group_items);
 
   set_drag_source();
   

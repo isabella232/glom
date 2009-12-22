@@ -31,6 +31,9 @@ namespace Glom
 {
 
 PrintLayoutToolbar::PrintLayoutToolbar()
+:  m_group_items(_("Items")), 
+   m_group_lines(_("Lines")), 
+   m_group_records(_("Records"))
 {
   // Looks ugly otherwise:
   set_size_request(100, 200);
@@ -57,23 +60,20 @@ PrintLayoutToolbar::PrintLayoutToolbar()
                                         _("Related Records"), _("Drag this to the layout to add a new related records portal.")));
   
   //Note for translators: These are layout items, like widgets in GTK+.
-  GtkContainer* items_group = GTK_CONTAINER(gtk_tool_item_group_new(_("Items")));
-  gtk_container_add(items_group, GTK_WIDGET(drag_field->gobj()));
-  gtk_container_add(items_group, GTK_WIDGET(drag_text->gobj()));
-  gtk_container_add(items_group, GTK_WIDGET(drag_image->gobj()));
+  m_group_items.add(*drag_field);
+  m_group_items.add(*drag_text);
+  m_group_items.add(*drag_image);
 
   //Note for translators: These are layout items, like widgets in GTK+.
-  GtkContainer* lines_group = GTK_CONTAINER(gtk_tool_item_group_new(_("Lines")));
-  gtk_container_add(lines_group, GTK_WIDGET(drag_line_horizontal->gobj()));
-  gtk_container_add(lines_group, GTK_WIDGET(drag_line_vertical->gobj()));
+  m_group_lines.add(*drag_line_horizontal);
+  m_group_lines.add(*drag_line_vertical);
   
   //Note for translators: These are layout items, like widgets in GTK+.
-  GtkContainer* related_group = GTK_CONTAINER(gtk_tool_item_group_new(_("Records")));
-  gtk_container_add(related_group, GTK_WIDGET(drag_related_records->gobj()));
+  m_group_records.add(*drag_related_records);
 
-  add_group(GTK_TOOL_ITEM_GROUP(items_group));
-  add_group(GTK_TOOL_ITEM_GROUP(lines_group));
-  add_group(GTK_TOOL_ITEM_GROUP(related_group));
+  add_group(m_group_items);
+  add_group(m_group_lines);
+  add_group(m_group_records);
 
   set_drag_source();
   

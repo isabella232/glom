@@ -34,10 +34,10 @@ class SideBar : public Gtk::HandleBox
 {
 public:
   SideBar();
-  ~SideBar();
+  virtual ~SideBar();
     
-  void add_group(GtkToolItemGroup* group);
-  void remove_group(GtkToolItemGroup* group);
+  void add_group(Gtk::ToolItemGroup& group);
+  void remove_group(Gtk::ToolItemGroup& group);
   
   void set_drag_source();
 

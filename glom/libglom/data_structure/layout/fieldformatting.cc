@@ -20,6 +20,7 @@
 
 #include "fieldformatting.h"
 #include <libglom/data_structure/layout/fieldformatting.h>
+#include <libglom/data_structure/glomconversions.h>
 #include <glibmm/i18n.h>
 
 const guint MULTILINE_TEXT_DEFAULT_HEIGHT_LINES = 6;

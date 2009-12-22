@@ -24,6 +24,7 @@
 #include <gtkmm/window.h>
 #include <gtkmm/handlebox.h>
 #include <gtkmm/box.h>
+#include <gtkmm/toolitemgroup.h>
 
 #include <glom/utility_widgets/sidebar.h>
 
@@ -36,6 +37,8 @@ public:
   PrintLayoutToolbar();
   virtual ~PrintLayoutToolbar();
 
+private:
+  Gtk::ToolItemGroup m_group_items, m_group_lines, m_group_records;
 };
 
 } //namespace Glom

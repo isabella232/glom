@@ -144,7 +144,7 @@ bool FlowTableDnd::on_drag_motion(const Glib::RefPtr<Gdk::DragContext>& /* drag_
   y += get_allocation().get_y();
   
   m_current_dnd_item = dnd_item_at_position(x, y);  
-  Gtk::Widget* above = dnd_datawidget_from_item(0);
+  Gtk::Widget* above = dnd_datawidget_from_item(m_current_dnd_item);
 
   // above might be 0 here...
   on_dnd_add_placeholder(above);
@@ -187,12 +187,15 @@ void FlowTableDnd::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& d
   }
   
   on_dnd_remove_placeholder();
-  Gtk::Widget* above = dnd_datawidget_from_item(0);
-  if(palette)
+  Gtk::Widget* above = dnd_datawidget_from_item(m_current_dnd_item);
+  if(palette) //If the item was dragged from the palette.
   {
     Gtk::Widget* tool_item = palette->get_drag_item(selection_data);
-    const int type = GPOINTER_TO_INT(tool_item->get_data("glom-type"));
-    on_dnd_add_layout_item_by_type(type, above);
+    if(tool_item)
+    {
+      const int type = GPOINTER_TO_INT(tool_item->get_data("glom-type"));
+      on_dnd_add_layout_item_by_type(type, above);
+    }
   }
   else
   {
@@ -226,7 +229,6 @@ void FlowTableDnd::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& d
         base->set_dnd_in_progress(false);
       }
     }
-
   }
 }
 
@@ -285,11 +287,7 @@ Gtk::Widget* FlowTableDnd::dnd_datawidget_from_item(FlowTable::FlowTableItem* it
 {
   // Test if we have a datawidget below which we want to add
   LayoutWidgetBase* above = 0;
-  FlowTableItem* used_item = 0;
-  if(item)
-    used_item = item;
-  else
-    used_item = m_current_dnd_item;
+  FlowTableItem* used_item = item;
   
   if(used_item)
   {
@@ -384,7 +382,7 @@ bool FlowTableDnd::on_child_drag_motion(const Glib::RefPtr<Gdk::DragContext>& /*
 {
   m_current_dnd_item = find_current_dnd_item(child, x, y);
   
-  Gtk::Widget* above = dnd_datawidget_from_item(0);
+  Gtk::Widget* above = dnd_datawidget_from_item(m_current_dnd_item);
   
   // above might be 0 here...
   on_dnd_add_placeholder(above);
