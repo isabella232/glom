@@ -36,6 +36,8 @@ public:
   LayoutToolbar();
    ~LayoutToolbar();
 
+private:
+  Gtk::ToolItemGroup m_group_items, m_group_containers;
 };
 
 } //namespace Glom

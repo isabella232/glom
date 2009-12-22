@@ -33,22 +33,21 @@ SideBar::SideBar()
   m_palette.set_style(Gtk::TOOLBAR_BOTH_HORIZ);
   
   add(m_palette);
-  show_all_children();;
-
+  show_all_children();
 }
 
 SideBar::~SideBar()
 {
 }
 
-void SideBar::add_group(GtkToolItemGroup* group)
+void SideBar::add_group(Gtk::ToolItemGroup& group)
 {
-  m_palette.add(*Glib::wrap(GTK_WIDGET(group)));
+  m_palette.add(group);
 }
 
-void SideBar::remove_group(GtkToolItemGroup* group)
+void SideBar::remove_group(Gtk::ToolItemGroup& group)
 {
-  m_palette.remove(*Glib::wrap(GTK_WIDGET(group)));
+  m_palette.remove(group);
 }
 
 void SideBar::set_drag_source()
