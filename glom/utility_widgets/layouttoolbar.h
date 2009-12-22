@@ -21,6 +21,7 @@
 #ifndef GLOM_UTILITY_WIDGETS_LAYOUTTOOLBAR_H
 #define GLOM_UTILITY_WIDGETS_LAYOUTTOOLBAR_H
 
+#include <glom/utility_widgets/layouttoolbarbutton.h>
 #include <gtkmm/window.h>
 #include <gtkmm/handlebox.h>
 #include <gtkmm/box.h>
@@ -38,6 +39,9 @@ public:
 
 private:
   Gtk::ToolItemGroup m_group_items, m_group_containers;
+
+  LayoutToolbarButton m_drag_group, m_drag_notebook,
+    m_drag_item, m_drag_portal, m_drag_button, m_drag_text, m_drag_image;
 };
 
 } //namespace Glom
