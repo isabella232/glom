@@ -31,7 +31,7 @@
 namespace Glom
 {
 
-const std::string MOVE_TARGET = "FlowTableMoveTarget";
+const char* MOVE_TARGET = "FlowTableMoveTarget";
   
 FlowTableDnd::FlowTableDnd() :
   m_current_dnd_item(0),
@@ -383,6 +383,9 @@ FlowTable::FlowTableItem* FlowTableDnd::find_current_dnd_item(Gtk::Widget* child
 bool FlowTableDnd::on_child_drag_motion(const Glib::RefPtr<Gdk::DragContext>& /* drag_context */, int x, int y, guint /* time */,
                                         Gtk::Widget* child)
 {
+ std::cout << "DEBUG: FlowTableDnd::on_child_drag_motion()" << std::endl;
+
+
   m_current_dnd_item = find_current_dnd_item(child, x, y);
   
   Gtk::Widget* above = dnd_datawidget_from_item(m_current_dnd_item);
@@ -507,6 +510,7 @@ void FlowTableDnd::set_design_mode(bool value)
 
 void FlowTableDnd::dnd_remove_placeholder_idle()
 {
+  std::cout << "DEBUG: FlowTableDnd::dnd_remove_placeholder_idle()" << std::endl;
   static sigc::connection connection;
   if(connection)
     connection.disconnect();
@@ -516,6 +520,7 @@ void FlowTableDnd::dnd_remove_placeholder_idle()
 
 bool FlowTableDnd::dnd_remove_placeholder_real()
 {
+  std::cout << "DEBUG: FlowTableDnd::dnd_remove_placeholder_real()" << std::endl;
   on_dnd_remove_placeholder();
   queue_draw();
   return false; // remove from idle source

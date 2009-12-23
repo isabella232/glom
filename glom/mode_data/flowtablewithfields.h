@@ -41,6 +41,7 @@
 #include <glom/utility_widgets/layoutwidgetbase.h>
 #include <glom/utility_widgets/layoutwidgetutils.h>
 #include <glom/mode_data/box_data_list_related.h>
+#include <glom/utility_widgets/placeholder-glom.h>
 #include "box_data_calendar_related.h"
 #include <glom/mode_design/layout/treestore_layout.h> //Forthe enum.
 #include <map>
@@ -241,7 +242,10 @@ private:
   Box_Data_List_Related* create_related(const sharedptr<LayoutItem_Portal>& portal, bool show_title = true);
   Box_Data_Calendar_Related* create_related_calendar(const sharedptr<LayoutItem_CalendarPortal>& portal, bool show_title = true);
 
-  Gtk::Alignment* m_placeholder;
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  Gtk::Alignment m_placeholder_alignment;
+  PlaceholderGlom m_placeholder;
+#endif //GLOM_ENABLE_CLIENT_ONLY
   
   Glib::ustring m_table_name;
 

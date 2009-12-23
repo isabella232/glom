@@ -69,10 +69,27 @@ main(int argc, char* argv[])
   Gtk::Entry button12; button11.set_text("eleven");
   flowtable.add(button11, button12);
   button11.show(); button12.show();
+
+
+  Gtk::Entry* button13 = Gtk::manage(new Gtk::Entry()); button13->set_text("13");
+  Gtk::Entry* button14 = Gtk::manage(new Gtk::Entry()); button14->set_text("14");
+  flowtable.add(*button13, *button14);
+  button13->show(); button14->show();
+
+  Gtk::Entry* button15 = new Gtk::Entry(); button15->set_text("15");
+  flowtable.add(*button15);
+  button15->show();
   
   window.add(flowtable);
   flowtable.set_design_mode();
   flowtable.show();
+
+  flowtable.remove(*button13, *button14);
+  delete button13;
+  delete button14;
+
+  //flowtable.remove(*button15);
+  delete button15;
 
 //  Glom::DragWindow drag_window;
 //  drag_window.show();

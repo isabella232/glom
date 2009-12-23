@@ -119,10 +119,6 @@ glom/utility_widgets/datawidget.cc
 glom/utility_widgets/db_adddel/db_adddel.cc
 glom/utility_widgets/dialog_choose_id.cc
 glom/utility_widgets/dialog_image_progress.cc
-glom/utility_widgets/egg/toolpalette/eggenumaction.c
-glom/utility_widgets/egg/toolpalette/eggtoolitemgroup.c
-glom/utility_widgets/egg/toolpalette/eggtoolpalette.c
-glom/utility_widgets/egg/toolpalette/testtoolpalette.c
 glom/utility_widgets/entryglom.cc
 glom/utility_widgets/filechooserdialog_saveextras.cc
 glom/utility_widgets/imageglom.cc

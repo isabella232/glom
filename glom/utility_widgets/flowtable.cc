@@ -936,15 +936,19 @@ guint FlowTable::get_row_padding() const
 
 bool FlowTable::child_is_visible(const Gtk::Widget* widget) const
 {
+  if(!widget)
+    return false;
+
   #if GTKMM_MINOR_VERSION >= 18
-  return widget && widget->get_visible();
+  return widget->get_visible();
   #else
-  return widget && widget->is_visible();
+  return widget->is_visible();
   #endif
 }
 
 void FlowTable::remove(Gtk::Widget& first)
 {
+  std::cout << "DEBUG: FlowTable::remove() 1" << std::endl;
   //Gtk::Container::remove() does this too. We need to do it here too:
   if(first.is_managed_())
     first.reference();
@@ -955,12 +959,37 @@ void FlowTable::remove(Gtk::Widget& first)
   {
     if((iter->m_first == &first) && (iter->m_second == 0))
     {
-      //g_warning("FlowTable::remove(): removing %10X", (guint)&first);
+      g_warning("FlowTable::remove(): removing %10X", (guint)&first);
 
       m_children.erase(iter);
       break;
     }
   }
+
+ std::cout << "DEBUG: FlowTable::remove() 2" << std::endl;  
+}
+
+void FlowTable::remove(Gtk::Widget& first, Gtk::Widget& second)
+{
+  std::cout << "DEBUG: FlowTable::remove(2) 1" << std::endl;
+  //Gtk::Container::remove() does this too. We need to do it here too:
+  if(first.is_managed_())
+    first.reference();
+
+  gtk_widget_unparent(first.gobj());
+
+  for(type_vecChildren::iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
+  {
+    if((iter->m_first == &first) && (iter->m_second == &second))
+    {
+      g_warning("FlowTable::remove(2): removing %10X", (guint)&first);
+
+      m_children.erase(iter);
+      break;
+    }
+  }
+
+ std::cout << "DEBUG: FlowTable::remove(2) 2" << std::endl;  
 }
 
 void FlowTable::remove_all()
