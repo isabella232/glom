@@ -1,3 +1,10 @@
+2009-12-28  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix the build.
+
+	* glom/mode_design/print_layouts/print_layout_toolbar.cc:
+	* glom/utility_widgets/layouttoolbar.cc: Do not include individual GTK+ headers.
+
 2009-12-17  Murray Cumming  <murrayc@murrayc.com>
 
 	Use GtkToolPalette instead of EggToolPalette.
