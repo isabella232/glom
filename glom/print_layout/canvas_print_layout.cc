@@ -114,7 +114,8 @@ sharedptr<PrintLayout> Canvas_PrintLayout::get_print_layout()
 
   //Page Setup:
   Glib::KeyFile key_file;
-  m_page_setup->save_to_key_file(key_file);
+  if(m_page_setup)
+    m_page_setup->save_to_key_file(key_file);
  
   Glib::ustring data;
   #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -509,8 +510,11 @@ void Canvas_PrintLayout::set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page
 {
   m_page_setup = page_setup;
   if(!m_page_setup)
+  {
+    std::cerr << "Canvas_PrintLayout::set_page_setup(): page_setup is null." << std::endl;
     return;
-
+  }
+  
   //Change the scroll extents to match the page size:
   Gtk::PaperSize paper_size = m_page_setup->get_paper_size();
   Goocanvas::Bounds bounds;
