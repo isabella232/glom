@@ -678,8 +678,12 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
 
 void FlowTableWithFields::add_placeholder_at_position(const sharedptr<LayoutItem_Placeholder>& /* layoutitem_placeholder */, const Glib::ustring& /* table_name */, const type_list_layoutwidgets::iterator& add_before)
 {
-  //Remove the placeholder, 
-  remove(m_placeholder_alignment);
+  //Remove the placeholder:
+  if(m_placeholder_alignment.get_parent())
+  {
+    std::cerr << "FlowTableWithFields::add_placeholder_at_position(): placeholder already added." << std::endl;
+    return;
+  }
 
   m_list_layoutwidgets.insert(add_before, &m_placeholder);
 
@@ -1431,8 +1435,6 @@ void FlowTableWithFields::on_dnd_add_layout_item(LayoutWidgetBase* above, const 
 
 void FlowTableWithFields::on_dnd_add_placeholder(Gtk::Widget* above_widget)
 {
-   std::cout << "DEBUG: FlowTableWithFields::on_dnd_add_placeholder()" << std::endl;
-
   LayoutWidgetBase* above = dynamic_cast<LayoutWidgetBase*>(above_widget);
   if(!above)
     return;
@@ -1452,14 +1454,12 @@ void FlowTableWithFields::on_dnd_add_placeholder(Gtk::Widget* above_widget)
 
 void FlowTableWithFields::on_dnd_remove_placeholder()
 { 
-  std::cout << "DEBUG: FlowTableWithFields::on_dnd_remove_placeholder()" << std::endl;
-
   //Get the layout group that the "above" widget's layout item is in
   sharedptr<LayoutGroup> layout_group = get_layout_group();
   if(layout_group)
   { 
     LayoutGroup::type_list_items items = layout_group->get_items();
-    for (LayoutGroup::type_list_items::iterator item = items.begin();
+    for(LayoutGroup::type_list_items::iterator item = items.begin();
          item != items.end(); ++item)
     {
       sharedptr<LayoutItem_Placeholder> placeholder = 
@@ -1471,10 +1471,8 @@ void FlowTableWithFields::on_dnd_remove_placeholder()
       }  
     }
 
-std::cout << "DEBUG: FlowTableWithFields::on_dnd_remove_placeholder() 1" << std::endl;
-
-    remove(m_placeholder_alignment);
-std::cout << "DEBUG: FlowTableWithFields::on_dnd_remove_placeholder() 2" << std::endl;
+    if(m_placeholder_alignment.get_parent())
+      remove(m_placeholder_alignment);
   }
 }
 

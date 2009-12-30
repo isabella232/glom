@@ -199,14 +199,25 @@ void FlowTableDnd::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& d
   }
   else
   {
-    //If the item was dragged from an FlowTable.
+    //If the item was dragged from a FlowTable.
     std::cout << "DEBUG: FlowTableDnd::on_drag_data_received(): !palette" << std::endl;
     
-    gpointer* data = (gpointer*)selection_data.get_data();
+    gpointer* pdata = (gpointer*)selection_data.get_data();
+    if(!pdata)
+      return;
+    std::cout << "DEBUG: FlowTableDnd::on_drag_data_received(): typeid: " << typeid(pdata).name() << std::endl;
+
+    gpointer data = *pdata;
     if(!data)
       return;
+    std::cout << "DEBUG: FlowTableDnd::on_drag_data_received(): typeid: " << typeid(data).name() << std::endl;
 
-    LayoutWidgetBase* base = static_cast<LayoutWidgetBase*>(*data);
+    Gtk::Widget* widget = static_cast<Gtk::Widget*>(data);
+    std::cout << "DEBUG: FlowTableDnd::on_drag_data_received(): typeid: " << typeid(widget).name() << std::endl;
+std::cout << "DEBUG: FlowTableDnd::on_drag_data_received(): gobjecttype: " << G_OBJECT_TYPE_NAME(widget->gobj()) << std::endl;
+
+
+    LayoutWidgetBase* base = dynamic_cast<LayoutWidgetBase*>(widget);
     if(!base)
       return;
 
@@ -231,13 +242,18 @@ void FlowTableDnd::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& d
       base->set_dnd_in_progress(false);
     }
     else
-      std::cerr << "FlowTableDnd::on_drag_data_received(): above was not a LayoutWidgetBase." << std::endl;
+    {
+      std::cerr << "FlowTableDnd::on_drag_data_received(): above was not a LayoutWidgetBase: above = " << above << std::endl;
+    }
   }
+
+  queue_draw();
 }
 
 void FlowTableDnd::on_drag_leave(const Glib::RefPtr<Gdk::DragContext>& /* drag_context */, guint /* time */)
 {
-  dnd_remove_placeholder_idle();
+  on_dnd_remove_placeholder();
+  queue_draw();
 }
 
 // Calculate the nearest FlowTableDndItem below the current drag position
@@ -397,7 +413,8 @@ bool FlowTableDnd::on_child_drag_motion(const Glib::RefPtr<Gdk::DragContext>& /*
 
 void FlowTableDnd::on_child_drag_leave(const Glib::RefPtr<Gdk::DragContext>& /* drag_context */, guint /* time */)
 {
-  dnd_remove_placeholder_idle();
+  on_dnd_remove_placeholder();
+  queue_draw();
 }
 
 void FlowTableDnd::on_child_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& drag_context, int x, int y, 
@@ -500,30 +517,6 @@ void FlowTableDnd::set_design_mode(bool value)
     foreach(sigc::mem_fun(*this, &FlowTableDnd::start_dnd));
   else
     foreach(sigc::mem_fun(*this, &FlowTableDnd::stop_dnd));
-}
-
-/* This is a hack. The problem is that when you move the mouse down to the last
- item, the item gets the "drag-motion" signal but in the same moment, the placeholder
- is removed and the mouse pointer is no longer over the widget. Thus, it gets
- a "drag-leave" signal and it's impossible to drop an item at the end. Doing 
- the removal of the placeholder in an idle handler fixes it. */
-
-void FlowTableDnd::dnd_remove_placeholder_idle()
-{
-  std::cout << "DEBUG: FlowTableDnd::dnd_remove_placeholder_idle()" << std::endl;
-  static sigc::connection connection;
-  if(connection)
-    connection.disconnect();
-
-  Glib::signal_idle().connect( sigc::mem_fun(*this, &FlowTableDnd::dnd_remove_placeholder_real) );
-}
-
-bool FlowTableDnd::dnd_remove_placeholder_real()
-{
-  std::cout << "DEBUG: FlowTableDnd::dnd_remove_placeholder_real()" << std::endl;
-  on_dnd_remove_placeholder();
-  queue_draw();
-  return false; // remove from idle source
 }
 
 } // namspace Glom

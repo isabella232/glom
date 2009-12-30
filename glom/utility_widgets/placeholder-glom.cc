@@ -25,25 +25,15 @@
 #include "placeholder-glom.h"
 #include "labelglom.h"
 #include <gtkmm/messagedialog.h>
-//#include <glom/application.h>
+#include <glom/application.h>
 #include <glibmm/i18n.h>
 #include <string.h> // for memset
 
 namespace Glom
 {
 
-PlaceholderGlom::PlaceholderGlom() :
-  Glib::ObjectBase("glom_placeholder"),
-  Gtk::Widget()
+PlaceholderGlom::PlaceholderGlom()
 {
-  set_flags(Gtk::NO_WINDOW);
-#ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
-  signal_realize().connect(sigc::mem_fun(*this, &PlaceholderGlom::on_realize));
-  signal_unrealize().connect(sigc::mem_fun(*this, &PlaceholderGlom::on_unrealize));
-  signal_expose_event().connect(sigc::mem_fun(*this, &PlaceholderGlom::on_expose_event));
-  signal_size_request().connect(sigc::mem_fun(*this, &PlaceholderGlom::on_size_request));
-  signal_size_allocate().connect(sigc::mem_fun(*this, &PlaceholderGlom::on_size_allocate));
-#endif  
 }
 
 PlaceholderGlom::~PlaceholderGlom()
@@ -52,110 +42,11 @@ PlaceholderGlom::~PlaceholderGlom()
 
 App_Glom* PlaceholderGlom::get_application()
 {
-  //Gtk::Container* pWindow = get_toplevel();
+  Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
 
-  return 0; //dynamic_cast<App_Glom*>(pWindow);
+  return dynamic_cast<App_Glom*>(pWindow);
 }
 
-void PlaceholderGlom::on_size_request(Gtk::Requisition* requisition)
-{
-  //Initialize the output parameter:
-  *requisition = Gtk::Requisition();
-
-  // Take some mimimum size, we later want to cover the whole space available
-  requisition->height = 30;
-  requisition->width = 200;
-}
-
-void PlaceholderGlom::on_size_allocate(Gtk::Allocation& allocation)
-{
-  //Use the offered allocation for this container:
-  set_allocation(allocation);
-
-  if(m_refGdkWindow)
-  {
-    m_refGdkWindow->move_resize( allocation.get_x(), allocation.get_y(),
-            allocation.get_width(), allocation.get_height() );
-  }
-}
-
-void PlaceholderGlom::on_realize()
-{
-  //Call base class:
-#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED  
-  Gtk::Widget::on_realize();
-#endif  
-
-  ensure_style();
-
-
-  if(!m_refGdkWindow)
-  {
-    //Create the GdkWindow:
-    GdkWindowAttr attributes;
-    memset(&attributes, 0, sizeof(attributes));
-
-    Gtk::Allocation allocation = get_allocation();
-
-    //Set initial position and size of the Gdk::Window:
-    attributes.x = allocation.get_x();
-    attributes.y = allocation.get_y();
-    attributes.width = allocation.get_width();
-    attributes.height = allocation.get_height();
-
-    attributes.event_mask = get_events () | Gdk::EXPOSURE_MASK; 
-    attributes.window_type = GDK_WINDOW_CHILD;
-    attributes.wclass = GDK_INPUT_OUTPUT;
-
-
-    m_refGdkWindow = Gdk::Window::create(get_window() /* parent */, &attributes,
-            GDK_WA_X | GDK_WA_Y);
-    unset_flags(Gtk::NO_WINDOW);
-    set_window(m_refGdkWindow);
-
-    //set colors
-    modify_fg(Gtk::STATE_NORMAL , Gdk::Color("black"));
-
-    //make the widget receive expose events
-    m_refGdkWindow->set_user_data(gobj());
-  }
-}
-
-void PlaceholderGlom::on_unrealize()
-{
-  m_refGdkWindow.reset();
-#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED  
-  Gtk::Widget::on_unrealize();
-#endif  
-}
-
-bool PlaceholderGlom::on_expose_event(GdkEventExpose* event)
-{
-  if(m_refGdkWindow)
-  {
-    Cairo::RefPtr<Cairo::Context> cr = m_refGdkWindow->create_cairo_context();
-    if(event)
-    {
-      // clip to the area that needs to be re-exposed so we don't draw any
-      // more than we need to.
-      cr->rectangle(event->area.x, event->area.y,
-              event->area.width, event->area.height);
-      cr->clip();
-    }
-
-    // Paint the background:
-    Gdk::Cairo::set_source_color(cr, get_style()->get_bg(Gtk::STATE_NORMAL));
-    cr->paint();
-
-    // Draw the foreground:
-    Gdk::Cairo::set_source_color(cr, get_style()->get_fg(Gtk::STATE_NORMAL));
-    cr->set_line_width(4);
-    cr->rectangle(0, 0,  get_allocation().get_width(), get_allocation().get_height());
-    cr->stroke();
-  }
-
-  return true;
-}
 
 } // namespace Glom
