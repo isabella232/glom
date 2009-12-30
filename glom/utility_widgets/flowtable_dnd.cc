@@ -200,22 +200,15 @@ void FlowTableDnd::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& d
   else
   {
     //If the item was dragged from a FlowTable.
-    std::cout << "DEBUG: FlowTableDnd::on_drag_data_received(): !palette" << std::endl;
-    
     gpointer* pdata = (gpointer*)selection_data.get_data();
     if(!pdata)
       return;
-    std::cout << "DEBUG: FlowTableDnd::on_drag_data_received(): typeid: " << typeid(pdata).name() << std::endl;
 
     gpointer data = *pdata;
     if(!data)
       return;
-    std::cout << "DEBUG: FlowTableDnd::on_drag_data_received(): typeid: " << typeid(data).name() << std::endl;
 
     Gtk::Widget* widget = static_cast<Gtk::Widget*>(data);
-    std::cout << "DEBUG: FlowTableDnd::on_drag_data_received(): typeid: " << typeid(widget).name() << std::endl;
-std::cout << "DEBUG: FlowTableDnd::on_drag_data_received(): gobjecttype: " << G_OBJECT_TYPE_NAME(widget->gobj()) << std::endl;
-
 
     LayoutWidgetBase* base = dynamic_cast<LayoutWidgetBase*>(widget);
     if(!base)
@@ -223,27 +216,22 @@ std::cout << "DEBUG: FlowTableDnd::on_drag_data_received(): gobjecttype: " << G_
 
     sharedptr<LayoutItem> item = base->get_layout_item();
     if(!item)
-      return;
-
-    sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(get_layout_item());
-    LayoutGroup::type_list_items items = group->m_list_items;
-    if(std::find(items.begin(), items.end(), item) != items.end())
     {
-      m_internal_drag = true;
-      group->remove_item(item);
-    }
-    else
       m_internal_drag = false;
+      sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(get_layout_item());
+      if(group)
+      {
+        LayoutGroup::type_list_items items = group->m_list_items;
+        if(std::find(items.begin(), items.end(), item) != items.end())
+        {
+          m_internal_drag = true;
+          group->remove_item(item);
+        }
+      }
 
-    LayoutWidgetBase* above_layoutwidget = dynamic_cast<LayoutWidgetBase*>(above);
-    if(above_layoutwidget)
-    {
-      on_dnd_add_layout_item(above_layoutwidget, item);
+      LayoutWidgetBase* above_casted = dynamic_cast<LayoutWidgetBase*>(above);
+      on_dnd_add_layout_item(above_casted, item);
       base->set_dnd_in_progress(false);
-    }
-    else
-    {
-      std::cerr << "FlowTableDnd::on_drag_data_received(): above was not a LayoutWidgetBase: above = " << above << std::endl;
     }
   }
 

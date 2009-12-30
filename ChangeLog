@@ -1,5 +1,12 @@
 2009-12-30  Murray Cumming  <murrayc@murrayc.com>
 
+  Dnd layout: Avoid a crash when dragging to empty space.
+  
+	* glom/utility_widgets/flowtable_dnd.cc: on_drag_data_received():
+	Avoid dereferencing a null group.
+
+2009-12-30  Murray Cumming  <murrayc@murrayc.com>
+
 	FlowTable: Use foreach() instead of implementing forall().
 
 	* glom/utility_widgets/flowtable.[h|cc]:

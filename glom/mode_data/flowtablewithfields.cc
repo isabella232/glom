@@ -1478,7 +1478,8 @@ void FlowTableWithFields::on_dnd_remove_placeholder()
 
 void FlowTableWithFields::dnd_notify_failed_drop()
 {
-  // TODO: Avoid this error message
+  // TODO: Avoid this error message, maybe by adding a group.
+  // TODO: At least avoid losing the dragged item.
   Gtk::MessageDialog dialog(_("You cannot drop anything here. Try to add a group first"),
                       false, Gtk::MESSAGE_ERROR);
   dialog.run();
