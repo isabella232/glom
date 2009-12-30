@@ -1,3 +1,10 @@
+2009-12-30  Murray Cumming  <murrayc@murrayc.com>
+
+	Dnd layout: Avoid a crash.
+
+	* glom/utility_widgets/flowtable_dnd.cc: on_drag_data_received():
+	Use a dynamic_cast<> to avoid memory corruption with the MI class.
+
 2009-12-16  Armin Burgmeier  <armin@arbur.net>
 
 	* win32/build-installer:

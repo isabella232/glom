@@ -195,11 +195,14 @@ void FlowTableDnd::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& d
   }
   else
   {
-    //TODO: When is this code path taken?
-    std::cout << "DEBUG: FlowTableDnd::on_drag_data_received(): Unexpected code path." << std::endl;
-    /*
-    gpointer* data = (gpointer*)selection_data.get_data();
-    LayoutWidgetBase* base = (LayoutWidgetBase*)*data;
+    gpointer* pdata = (gpointer*)selection_data.get_data();
+    if(!pdata)
+      return;
+
+    Gtk::Widget* widget = static_cast<Gtk::Widget*>(*pdata); //The type that was set in on_child_drag_data_get().
+
+    //A dynamic cast (from Gtk::Widget) is necessary because of the virtual inheritance: 
+    LayoutWidgetBase* base = dynamic_cast<LayoutWidgetBase*>(widget);
     if(base)
     {
       sharedptr<LayoutItem> item = base->get_layout_item();
@@ -215,11 +218,12 @@ void FlowTableDnd::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& d
         else
           m_internal_drag = false;
 
-        on_dnd_add_layout_item(above, item);
+        LayoutWidgetBase* above_casted = dynamic_cast<LayoutWidgetBase*>(above);
+        on_dnd_add_layout_item(above_casted, item);
         base->set_dnd_in_progress(false);
       }
     }
-    */
+
   }
 }
 
