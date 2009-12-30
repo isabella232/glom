@@ -1001,6 +1001,12 @@ void FlowTableWithFields::forget_views()
     if(pSub)
     {
       remove_view(*iter);
+
+      //Remove these from their parents because they don't support auto-removal when their parents are destroyed:
+      //See https://bugzilla.gnome.org/show_bug.cgi?id=605728
+      pSub->reference();
+      pSub->unparent();
+      delete pSub;
     }
   }
   m_sub_flow_tables.clear();

@@ -71,8 +71,10 @@ main(int argc, char* argv[])
   button11.show(); button12.show();
   
   window.add(flowtable);
-  flowtable.set_design_mode();
+  flowtable.set_design_mode(true);
   flowtable.show();
+  flowtable.set_design_mode(false);
+  flowtable.set_design_mode(true);
 
 //  Glom::DragWindow drag_window;
 //  drag_window.show();
