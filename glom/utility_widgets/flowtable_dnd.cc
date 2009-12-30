@@ -208,15 +208,17 @@ void FlowTableDnd::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& d
       sharedptr<LayoutItem> item = base->get_layout_item();
       if(item)
       {
+        m_internal_drag = false;
         sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(get_layout_item());
-        LayoutGroup::type_list_items items = group->m_list_items;
-        if(std::find(items.begin(), items.end(), item) != items.end())
+        if(group)
         {
-          m_internal_drag = true;
-          group->remove_item(item);
+          LayoutGroup::type_list_items items = group->m_list_items;
+          if(std::find(items.begin(), items.end(), item) != items.end())
+          {
+            m_internal_drag = true;
+            group->remove_item(item);
+          }
         }
-        else
-          m_internal_drag = false;
 
         LayoutWidgetBase* above_casted = dynamic_cast<LayoutWidgetBase*>(above);
         on_dnd_add_layout_item(above_casted, item);
