@@ -1,6 +1,15 @@
+2009-12-30  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix the build with fatal warnings.
+
+	* glom/libglom/connectionpool.cc:
+	* glom/utility_widgets/flowtable_dnd.cc:
+	* glom/utility_widgets/layouttoolbar.cc:
+	* glom/utility_widgets/placeholder-glom.cc: Avoid unused parameters.
+
 2009-12-28  Murray Cumming  <murrayc@murrayc.com>
 
-  Print Layouts: Avoid crash when closing the editing window.
+	Print Layouts: Avoid crash when closing the editing window.
   
 	* glom/print_layout/canvas_print_layout.cc: get_print_layout():
 	Avoid a crash when m_page_setup is null, though we need to find out why it 

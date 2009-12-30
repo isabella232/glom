@@ -52,7 +52,7 @@ PlaceholderGlom::~PlaceholderGlom()
 
 App_Glom* PlaceholderGlom::get_application()
 {
-  Gtk::Container* pWindow = get_toplevel();
+  //Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
 
   return 0; //dynamic_cast<App_Glom*>(pWindow);
