@@ -40,12 +40,6 @@ public:
   void insert_before(Gtk::Widget& first, Gtk::Widget& second, Gtk::Widget& before, bool expand_second);
   void insert_before(Gtk::Widget& first, Gtk::Widget& before, bool expand);
 
-  /// Remove @a first if it was added without a second.
-  virtual void remove(Gtk::Widget& first); //override
-
-  /// Remove @a first and @a second if they were added together.
-  void remove(Gtk::Widget& first, Gtk::Widget& second);
-
   void set_columns_count(guint value);
 
   /** Sets the padding to put between the columns of widgets.

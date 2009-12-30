@@ -84,11 +84,14 @@ main(int argc, char* argv[])
   flowtable.set_design_mode();
   flowtable.show();
 
-  flowtable.remove(*button13, *button14);
+  flowtable.remove(*button13);
+  flowtable.remove(*button14);
   delete button13;
   delete button14;
 
-  //flowtable.remove(*button15);
+  // Gtk::Containers implemented in C++ can't do auto-removal-on-child-destruction 
+  // because that would require a Glib::wrap() on the underlying gobj of a being-deleted instance. 
+  flowtable.remove(*button15);
   delete button15;
 
 //  Glom::DragWindow drag_window;

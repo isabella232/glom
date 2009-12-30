@@ -861,10 +861,22 @@ void FlowTable::on_remove(Gtk::Widget* child)
   {
     const bool visible = child_is_visible(child);
 
-  //g_warning("FlowTable::on_remove");
-    for(type_vecChildren::iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
+    //g_warning("FlowTable::on_remove");
+    type_vecChildren::iterator iter = m_children.begin();
+    while(iter != m_children.end())
     {
       FlowTableItem& item = *iter;
+
+      //Forget the item if the child is the only widget in the item:
+      bool forget_item = false;
+      if((iter->m_first == child) && (iter->m_second == 0))
+      {
+        forget_item = true;
+      }
+      else if((iter->m_second == child) && (iter->m_first == 0))
+      {
+        forget_item = true;
+      }
 
       if(item.m_first == child)
       {
@@ -885,6 +897,12 @@ void FlowTable::on_remove(Gtk::Widget* child)
         if(visible)
           queue_resize();
       }
+
+      //Forget the item if all its widgets have been removed:
+      if(forget_item)
+        iter = m_children.erase(iter); //Returns the one after the removed one.
+      else
+        ++iter;
     }
   }
 
@@ -899,11 +917,11 @@ void FlowTable::forall_vfunc(gboolean /* include_internals */, GtkCallback callb
     FlowTableItem item = *iter;
 
     Gtk::Widget* first = item.m_first;
-    if(first)
+    if(first && first->gobj())
       callback(first->gobj(), callback_data);
 
     Gtk::Widget* second = item.m_second;
-    if(second)
+    if(second && second->gobj())
       callback(second->gobj(), callback_data);
   }
 }
@@ -946,80 +964,17 @@ bool FlowTable::child_is_visible(const Gtk::Widget* widget) const
   #endif
 }
 
-void FlowTable::remove(Gtk::Widget& first)
-{
-  std::cout << "DEBUG: FlowTable::remove() 1" << std::endl;
-  //Gtk::Container::remove() does this too. We need to do it here too:
-  if(first.is_managed_())
-    first.reference();
-
-  gtk_widget_unparent(first.gobj());
-
-  for(type_vecChildren::iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
-  {
-    if((iter->m_first == &first) && (iter->m_second == 0))
-    {
-      g_warning("FlowTable::remove(): removing %10X", (guint)&first);
-
-      m_children.erase(iter);
-      break;
-    }
-  }
-
- std::cout << "DEBUG: FlowTable::remove() 2" << std::endl;  
-}
-
-void FlowTable::remove(Gtk::Widget& first, Gtk::Widget& second)
-{
-  std::cout << "DEBUG: FlowTable::remove(2) 1" << std::endl;
-  //Gtk::Container::remove() does this too. We need to do it here too:
-  if(first.is_managed_())
-    first.reference();
-
-  gtk_widget_unparent(first.gobj());
-
-  for(type_vecChildren::iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
-  {
-    if((iter->m_first == &first) && (iter->m_second == &second))
-    {
-      g_warning("FlowTable::remove(2): removing %10X", (guint)&first);
-
-      m_children.erase(iter);
-      break;
-    }
-  }
-
- std::cout << "DEBUG: FlowTable::remove(2) 2" << std::endl;  
-}
-
 void FlowTable::remove_all()
 {
-
-  for(type_vecChildren::iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
+  while(!m_children.empty())
   {
+    type_vecChildren::iterator iter = m_children.begin();
     if(iter->m_first)
-    {
-      Gtk::Widget* widget = iter->m_first;
-
-      if(widget->is_managed_())
-        widget->reference();
-
-      gtk_widget_unparent(GTK_WIDGET(iter->m_first->gobj()));
-    }
+      remove(*(iter->m_first));
 
     if(iter->m_second)
-    {
-      Gtk::Widget* widget = iter->m_second;
-
-      if(widget->is_managed_())
-        widget->reference();
-
-      gtk_widget_unparent(GTK_WIDGET(iter->m_second->gobj()));
-    }
-
+      remove(*(iter->m_second));
   }
-
-  m_children.clear(); 
 }
 
 void FlowTable::on_realize()

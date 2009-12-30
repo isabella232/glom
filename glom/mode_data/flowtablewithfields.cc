@@ -69,17 +69,9 @@ FlowTableWithFields::FlowTableWithFields(const Glib::ustring& table_name)
 
 FlowTableWithFields::~FlowTableWithFields()
 {
-  //Remove views. The widgets are deleted automatically because they are managed.
-  for(type_listFields::iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
-  {
-    View_Composite_Glom* pViewFirst = dynamic_cast<View_Composite_Glom*>(iter->m_first);
-    if(pViewFirst)
-      remove_view(pViewFirst);
-
-   View_Composite_Glom* pViewSecond = dynamic_cast<View_Composite_Glom*>(iter->m_second);
-    if(pViewSecond)
-      remove_view(pViewSecond);
-  }
+  forget_views();
+  //We don't need to call delete_all_child_widgets() because managed widgets 
+  //will be deleted anyway, and maybe already were.
 }
 
 void FlowTableWithFields::set_table(const Glib::ustring& table_name)
@@ -240,6 +232,7 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
     }
     
     add(*frame, true /* expand */);
+    m_child_widgets.push_back(frame); //Remember it, to delete it later.
 
     m_sub_flow_tables.push_back(flow_table);
     flow_table->set_layout_item(group, m_table_name);
@@ -344,6 +337,7 @@ void FlowTableWithFields::add_layout_portal_at_position(const sharedptr<LayoutIt
   if(portal_box)
   {
     add(*portal_box, true /* expand */);
+    m_child_widgets.push_back(portal_box); //Remember it, to delete it later.
     add_layoutwidgetbase(portal_box, add_before);
   }
   else
@@ -459,8 +453,10 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
 
   if(widget)
     insert_before(*notebook_widget, *widget, true /* expand */);
-  else
+  else {
     add(*notebook_widget, true /* expand */);
+    m_child_widgets.push_back(notebook_widget); //Remember it, to delete it later.
+  }
 }
 
 /*
@@ -574,7 +570,11 @@ void FlowTableWithFields::add_field_at_position(const sharedptr<LayoutItem_Field
   if(widget)
     insert_before(*eventbox, *(info.m_second), *widget, expand_second);
   else
+  {
     add(*eventbox, *(info.m_second), expand_second);
+    m_child_widgets.push_back(eventbox); //Remember it, to delete it later.
+    m_child_widgets.push_back(info.m_second); //Remember it, to delete it later.
+  }
 
   info.m_second->signal_edited().connect( sigc::bind(sigc::mem_fun(*this, &FlowTableWithFields::on_entry_edited), layoutitem_field)  ); //TODO:  Is it a good idea to bind the LayoutItem? sigc::bind() probably stores a copy at this point.
 
@@ -611,8 +611,10 @@ void FlowTableWithFields::add_button_at_position(const sharedptr<LayoutItem_Butt
 
   if(widget)
     insert_before (*button, *widget, false /* expand */);
-  else
+  else {
     add(*button, false /* expand */);
+    m_child_widgets.push_back(button); //Remember it, to delete it later.
+  }
 }
 
 void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_Text>& layoutitem_text, const Glib::ustring& table_name , const type_list_layoutwidgets::iterator& add_before)
@@ -642,7 +644,10 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
     if(widget)
       insert_before(*alignment_label, *widget, false /* expand */);
     else
+    {
       add(*alignment_label, false /* expand */);
+      m_child_widgets.push_back(alignment_label); //Remember it, to delete it later.
+    }
   }
   else
   {
@@ -663,7 +668,11 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
     if(widget)
       insert_before (*alignment_title, *alignment_label, *widget, false /* expand */);
     else
+    {
       add(*alignment_title, *alignment_label, false /* expand */);
+      m_child_widgets.push_back(alignment_title); //Remember it, to delete it later.
+      m_child_widgets.push_back(alignment_label); //Remember it, to delete it later.
+    }
   }
 }
 
@@ -681,7 +690,10 @@ void FlowTableWithFields::add_placeholder_at_position(const sharedptr<LayoutItem
   if(widget)
     insert_before(m_placeholder_alignment, *widget, false /* expand */);
   else
+  {
     add(m_placeholder_alignment, false);
+    //m_child_widgets.push_back(m_placeholder_alignment); //Remember it, to delete it later.
+  }
 }
 
 void FlowTableWithFields::add_imageobject_at_position(const sharedptr<LayoutItem_Image>& layoutitem_image, const Glib::ustring& table_name , const type_list_layoutwidgets::iterator& add_before)
@@ -707,7 +719,10 @@ void FlowTableWithFields::add_imageobject_at_position(const sharedptr<LayoutItem
     if(widget)
       insert_before(*image, *widget, true /* expand */);
     else
+    {
       add(*image, true /* expand */);
+      m_child_widgets.push_back(image); //Remember it, to delete it later.
+    }
   }
   else
   {
@@ -726,7 +741,11 @@ void FlowTableWithFields::add_imageobject_at_position(const sharedptr<LayoutItem
     if(widget)
       insert_before(*alignment_title, *image, *widget, true /* expand */);
     else
+    {
       add(*alignment_title, *image, true /* expand */);
+      m_child_widgets.push_back(alignment_title); //Remember it, to delete it later.
+      m_child_widgets.push_back(image); //Remember it, to delete it later.
+    }
   }
 }
 
@@ -974,22 +993,16 @@ void FlowTableWithFields::change_group(const Glib::ustring& /* id */, const Glib
   //TODO.
 }
 
-void FlowTableWithFields::remove_all()
+void FlowTableWithFields::forget_views()
 {
-  m_listFields.clear();
-
   for(type_sub_flow_tables::iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
   {
     FlowTableWithFields* pSub = *iter;
     if(pSub)
     {
       remove_view(*iter);
-      remove(*pSub);
-
-      delete pSub;
     }
   }
- 
   m_sub_flow_tables.clear();
 
 
@@ -997,26 +1010,57 @@ void FlowTableWithFields::remove_all()
   {
     Box_Data_Portal* pPortal = *iter;
     remove_view(pPortal);
-    remove(*pPortal);
-    delete pPortal;
   }
   m_portals.clear();
 
   m_list_layoutwidgets.clear();
 
-  //Remove views. The widgets are deleted automatically because they are managed.
+  //Remove views:
   for(type_listFields::iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
   {
-    View_Composite_Glom* pViewFirst = dynamic_cast<View_Composite_Glom*>(iter->m_first);
+    Gtk::Label* label = iter->m_first;
+    View_Composite_Glom* pViewFirst = dynamic_cast<View_Composite_Glom*>(label);
     if(pViewFirst)
       remove_view(pViewFirst);
 
-   View_Composite_Glom* pViewSecond = dynamic_cast<View_Composite_Glom*>(iter->m_second);
+    DataWidget* datawidget = iter->m_second;
+    View_Composite_Glom* pViewSecond = dynamic_cast<View_Composite_Glom*>(datawidget);
     if(pViewSecond)
       remove_view(pViewSecond);
   }
+  m_listFields.clear();
 
-  FlowTable::remove_all();
+
+  for(type_portals::iterator iter = m_portals.begin(); iter != m_portals.end(); ++iter)
+  {
+    Box_Data_Portal* pPortal = *iter;
+    remove_view(pPortal);
+  }
+  m_portals.clear();
+}
+
+void FlowTableWithFields::delete_all_child_widgets()
+{
+  //Remove and delete the widgets.
+  //Any managed child widgets will be deleted too:
+  //We don't just use get_children() because there could be other children 
+  //in the base class that don't belong to us.
+  for(type_list_widgets::iterator iter = m_child_widgets.begin(); iter != m_child_widgets.end(); ++iter)
+  {
+    Gtk::Widget* widget = *iter;
+    remove(*widget);
+    delete widget;
+  }
+  m_child_widgets.clear();
+}
+
+void FlowTableWithFields::remove_all()
+{
+  //Forget other information,
+  //and actually delete the widgets (as documented for this method):
+  //making sure to call remove_view() on child views:
+  forget_views();
+  delete_all_child_widgets();
 }
 
 FlowTableWithFields::type_signal_field_edited FlowTableWithFields::signal_field_edited()

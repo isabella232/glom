@@ -95,14 +95,13 @@ public:
    */
   void set_other_field_value(const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& value);
 
-  typedef std::list<Gtk::Widget*> type_list_widgets;
-  typedef std::list<const Gtk::Widget*> type_list_const_widgets;
-
   virtual void change_group(const Glib::ustring& id, const Glib::ustring& new_group);
 
   virtual void set_design_mode(bool value = true);
 
-  virtual void remove_all();
+  /** Remove (and delete) any items.
+   */
+  void remove_all();
 
   /** Get the layout structure, which might have changed in the child widgets since 
    * the whole widget structure was built.
@@ -143,6 +142,9 @@ public:
   type_signal_script_button_clicked signal_script_button_clicked();
   
 private:
+
+  typedef std::list<Gtk::Widget*> type_list_widgets;
+  typedef std::list<const Gtk::Widget*> type_list_const_widgets;
 
   // If include_item is set, then the output list will contain field's widget,
   // otherwise not.
@@ -263,6 +265,13 @@ private:
   virtual void on_menu_delete_activate(); // override this to add a dialog box
   virtual bool on_button_press_event(GdkEventButton *event);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+
+  void forget_views();
+  void delete_all_child_widgets();
+
+  //Remember the direct child widgets that we create,
+  //so we can delete them later: 
+  type_list_widgets m_child_widgets;
 };
 
 } //namespace Glom

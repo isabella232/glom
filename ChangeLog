@@ -1,3 +1,19 @@
+2009-12-30  Murray Cumming  <murrayc@murrayc-desktop>
+
+	* glom/mode_data/flowtablewithfields.[h|cc]: Remember the child widgets 
+	in a special list and delete them simply in remove_all(). Destructor: 
+	Call remove_all().
+
+2009-12-30  Murray Cumming  <murrayc@murrayc.com>>
+
+	FlowTable: Simplify the remove() code.
+
+	* glom/utility_widgets/flowtable.[h|cc]: Remove the 2 remove() methods, 
+	because the underlying Gtk::Container::remove() is enough.
+	on_remove(): Remove the item if both widgets have been removed.
+	* glom/utility_widgets/test_flowtable.cc: Adapt now that 
+	remove(first, second) is gone.
+
 2009-12-30  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix the build with fatal warnings.
