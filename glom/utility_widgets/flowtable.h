@@ -63,11 +63,6 @@ public:
   virtual void set_design_mode(bool value = true);
 
   void remove_all();
-
-  // Implement forall which is not implemented in gtkmm:
-  typedef sigc::slot<void, Widget&> ForallSlot;
-  void forall(const ForallSlot& slot);
-
 private:
 
   #ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED

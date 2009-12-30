@@ -497,9 +497,9 @@ void FlowTableDnd::set_design_mode(bool value)
 
   // We only want to enable drag and drop when in design mode
   if(value)
-    forall(sigc::mem_fun(*this, &FlowTableDnd::start_dnd));
+    foreach(sigc::mem_fun(*this, &FlowTableDnd::start_dnd));
   else
-    forall(sigc::mem_fun(*this, &FlowTableDnd::stop_dnd));
+    foreach(sigc::mem_fun(*this, &FlowTableDnd::stop_dnd));
 }
 
 /* This is a hack. The problem is that when you move the mouse down to the last

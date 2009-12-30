@@ -150,28 +150,6 @@ gboolean FlowTable::glom_expose_event_impl(GtkWidget* widget, GdkEventExpose* ev
 
 namespace Glom
 {
-
-static void container_forall_callback(GtkWidget* widget_gobj, void* data)
-{
-  #ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-  #endif //GLIBMM_EXCEPTIONS_ENABLED
-    FlowTable::ForallSlot& slot = *static_cast<FlowTable::ForallSlot*>(data);
-    Gtk::Widget *const widget = Glib::wrap(widget_gobj);
-
-    g_return_if_fail(widget != 0);
-
-    slot(*widget);
-  #ifdef GLIBMM_EXCEPTIONS_ENABLED
-  }
-  catch(...)
-  {
-    Glib::exception_handlers_invoke();
-  }
-  #endif //GLIBMM_EXCEPTIONS_ENABLED
-}
-
   
 FlowTable::FlowTableItem::FlowTableItem(Gtk::Widget* first, FlowTable* /* flowtable */)
 : m_first(first),
@@ -910,6 +888,7 @@ void FlowTable::on_remove(Gtk::Widget* child)
 }
 
 
+//This allows foreach() to work.
 void FlowTable::forall_vfunc(gboolean /* include_internals */, GtkCallback callback, gpointer callback_data)
 {
   for(type_vecChildren::const_iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
@@ -924,12 +903,6 @@ void FlowTable::forall_vfunc(gboolean /* include_internals */, GtkCallback callb
     if(second && second->gobj())
       callback(second->gobj(), callback_data);
   }
-}
-
-void FlowTable::forall(const ForallSlot& slot)
-{
-  ForallSlot slot_copy(slot);
-  gtk_container_forall(gobj(), &container_forall_callback, &slot_copy);
 }
 
 void FlowTable::set_column_padding(guint padding)

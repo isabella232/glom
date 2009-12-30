@@ -1,3 +1,11 @@
+2009-12-30  Murray Cumming  <murrayc@murrayc.com>
+
+	FlowTable: Use foreach() instead of implementing forall().
+
+	* glom/utility_widgets/flowtable.[h|cc]:
+	* glom/utility_widgets/flowtable_dnd.cc: Use foreach() instead of 
+	implementing forall().
+
 2009-12-30  Murray Cumming  <murrayc@murrayc-desktop>
 
 	* glom/mode_data/flowtablewithfields.[h|cc]: Remember the child widgets 
