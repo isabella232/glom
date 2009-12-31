@@ -25,7 +25,7 @@
 #include "placeholder-glom.h"
 #include "labelglom.h"
 #include <gtkmm/messagedialog.h>
-//#include <glom/application.h>
+#include <glom/application.h>
 #include <glibmm/i18n.h>
 #include <string.h> // for memset
 
@@ -55,7 +55,7 @@ App_Glom* PlaceholderGlom::get_application()
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
 
-  return 0; //dynamic_cast<App_Glom*>(pWindow);
+  return dynamic_cast<App_Glom*>(pWindow);
 }
 
 void PlaceholderGlom::on_size_request(Gtk::Requisition* requisition)

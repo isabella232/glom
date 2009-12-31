@@ -1,9 +1,12 @@
+1.12.4:
+
 2009-12-30  Murray Cumming  <murrayc@murrayc.com>
 
   Dnd layout: Avoid a crash when dragging to empty space.
   
 	* glom/utility_widgets/flowtable_dnd.cc: on_drag_data_received():
 	Avoid dereferencing a null group.
+	Bug #599232
 
 2009-12-30  Murray Cumming  <murrayc@murrayc.com>
 
@@ -11,6 +14,7 @@
 
 	* glom/utility_widgets/flowtable_dnd.cc: on_drag_data_received():
 	Use a dynamic_cast<> to avoid memory corruption with the MI class.
+	Bug #599232
 
 2009-12-16  Armin Burgmeier  <armin@arbur.net>
 

@@ -1,3 +1,36 @@
+1.12.4 (stable):
+
+* Drag and drop layout: Fix some crashes. This feature still has some problems,
+  so the layout dialog is still available.
+   (Murray Cumming) Bug #599232
+* Field Definitions: Show the default value entry even for date fields. 
+* Python calculations/scripts:
+  Fix a crash when calling python functions that return dates.
+  (Murray Cumming) Bug #603686. (Andrew Ruthven)
+* Details layout:
+  - Related records layout definition: 
+  When defining drop-down choices in the custom formatting, show the correct 
+  relationships. Noticed by Michael Hasselmann and Andrew Ruthven.
+  (Murray Cumming)
+  - Fix a crash when specifying a static image on the layout.
+  (Murray Cumming) Bug #600954 (Michael Hasselmann).
+* Saving: Always add the xmlns ID to the document, to make MIME-type detection 
+  easier. (Murray Cumming)
+* Do not mark an empty string for translation.
+  (Murray Cumming) Bug #599868 (André Klapper).
+* Avoid some runtime warnings.
+  (Murray Cumming)
+* Examples: Film Manager: Add silly example data.
+  (Murray Cumming) Bug #600859 (Michael Hasselmann)
+* Windows build: Add missing libpangoft2-1.0-0.dll to the installer.
+  (Armin Burgmeier) Bug #599966 (Akishi Soda, Cinna)  
+* Maemo build: Don't depend on libgettextpo.
+  (David King)
+* Developer documentation:
+  Correct the DTD and add a unit test to make sure it and the 
+  examples are correct.
+  (Michael Hasselmann, Murray Cumming)
+  
 1.12.3 (stable):
 
 * List: Fix zero-width columns. That regression was introduced in 1.12.2.

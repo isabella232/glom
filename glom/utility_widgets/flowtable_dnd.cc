@@ -153,20 +153,20 @@ bool FlowTableDnd::on_drag_motion(const Glib::RefPtr<Gdk::DragContext>& /* drag_
   return false;
 }
 
-void FlowTableDnd::on_dnd_add_layout_item_by_type(int item_type, Gtk::Widget* above)
+void FlowTableDnd::on_dnd_add_layout_item_by_type(int /* item_type */, Gtk::Widget* /* above */)
 {
   //This is not pure virtual, so we can easily use this base class in unit tests.
   std::cerr << "FlowTableDnd::on_dnd_add_layout_item_by_type(): Not implemented. Derived classes should implement this." << std::endl;
 }
 
-void FlowTableDnd::on_dnd_add_layout_item(LayoutWidgetBase* above, const sharedptr<LayoutItem>& item)
+void FlowTableDnd::on_dnd_add_layout_item(LayoutWidgetBase* /* above */, const sharedptr<LayoutItem>& /* item */)
 {
   //This is not pure virtual, so we can easily use this base class in unit tests.
   std::cerr << "FlowTableDnd::on_dnd_add_layout_item(): Not implemented. Derived classes should implement this." << std::endl;
 
 }
 
-void FlowTableDnd::on_dnd_add_placeholder(Gtk::Widget* above)
+void FlowTableDnd::on_dnd_add_placeholder(Gtk::Widget* /* above */)
 {
   //This is not pure virtual, so we can easily use this base class in unit tests.
   std::cerr << "FlowTableDnd::on_dnd_add_placeholder(): Not implemented. Derived classes should implement this." << std::endl;
@@ -417,12 +417,12 @@ void FlowTableDnd::on_child_drag_data_get(const Glib::RefPtr<Gdk::DragContext>& 
                       sizeof(gpointer*));
 }
 
-void FlowTableDnd::set_child_widget_dnd_in_progress(Gtk::Widget* child, bool in_progress)
+void FlowTableDnd::set_child_widget_dnd_in_progress(Gtk::Widget* /* child */, bool /* in_progress */)
 {
   //To be reimplemented by derived classes.
 }
 
-bool FlowTableDnd::get_child_widget_dnd_in_progress(Gtk::Widget* child) const
+bool FlowTableDnd::get_child_widget_dnd_in_progress(Gtk::Widget* /* child */) const
 {
   //To be reimplemented by derived classes.
   return false;
