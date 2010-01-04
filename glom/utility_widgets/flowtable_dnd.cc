@@ -157,7 +157,7 @@ void FlowTableDnd::on_dnd_add_layout_item_by_type(int /* item_type */, Gtk::Widg
   std::cerr << "FlowTableDnd::on_dnd_add_layout_item_by_type(): Not implemented. Derived classes should implement this." << std::endl;
 }
 
-void FlowTableDnd::on_dnd_add_layout_item(LayoutWidgetBase* /* above */, const sharedptr<LayoutItem>& /* item */)
+void FlowTableDnd::on_dnd_add_layout_item(Gtk::Widget* /* dragged_widget */, Gtk::Widget* /* above */)
 {
   //This is not pure virtual, so we can easily use this base class in unit tests.
   std::cerr << "FlowTableDnd::on_dnd_add_layout_item(): Not implemented. Derived classes should implement this." << std::endl;
@@ -208,31 +208,8 @@ void FlowTableDnd::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& d
     if(!data)
       return;
 
-    Gtk::Widget* widget = static_cast<Gtk::Widget*>(data);
-
-    LayoutWidgetBase* base = dynamic_cast<LayoutWidgetBase*>(widget);
-    if(!base)
-      return;
-
-    sharedptr<LayoutItem> item = base->get_layout_item();
-    if(!item)
-    {
-      m_internal_drag = false;
-      sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(get_layout_item());
-      if(group)
-      {
-        LayoutGroup::type_list_items items = group->m_list_items;
-        if(std::find(items.begin(), items.end(), item) != items.end())
-        {
-          m_internal_drag = true;
-          group->remove_item(item);
-        }
-      }
-
-      LayoutWidgetBase* above_casted = dynamic_cast<LayoutWidgetBase*>(above);
-      on_dnd_add_layout_item(above_casted, item);
-      base->set_dnd_in_progress(false);
-    }
+    Gtk::Widget* dragged_widget = static_cast<Gtk::Widget*>(data);
+    on_dnd_add_layout_item(dragged_widget, above);
   }
 
   queue_draw();

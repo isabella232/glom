@@ -1425,9 +1425,32 @@ void FlowTableWithFields::on_dnd_add_layout_item_image(LayoutWidgetBase* above)
   signal_layout_changed().emit();
 }
 
-void FlowTableWithFields::on_dnd_add_layout_item(LayoutWidgetBase* above, const sharedptr<LayoutItem>& item)
+void FlowTableWithFields::on_dnd_add_layout_item(Gtk::Widget* dragged_widget, Gtk::Widget* above)
 {
-  dnd_add_to_layout_group(item, above);
+  LayoutWidgetBase* above_casted = dynamic_cast<LayoutWidgetBase*>(above);
+
+  LayoutWidgetBase* base = dynamic_cast<LayoutWidgetBase*>(dragged_widget);
+  if(!base)
+    return;
+
+  sharedptr<LayoutItem> item = base->get_layout_item();
+  if(!item)
+  {
+    m_internal_drag = false;
+    sharedptr<LayoutGroup> group = sharedptr<LayoutGroup>::cast_dynamic(get_layout_item());
+    if(group)
+    {
+      LayoutGroup::type_list_items items = group->m_list_items;
+      if(std::find(items.begin(), items.end(), item) != items.end())
+      {
+        m_internal_drag = true;
+        group->remove_item(item);
+      }
+    }
+
+    dnd_add_to_layout_group(item, above_casted);
+    base->set_dnd_in_progress(false);
+  }
   
   // Don't do this here - it's done in the drag_end handler
   // signal_layout_changed().emit();

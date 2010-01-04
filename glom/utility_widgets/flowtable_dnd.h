@@ -62,7 +62,7 @@ private:
 
   //To be implemented by the derived class:
   virtual void on_dnd_add_layout_item_by_type(int item_type, Gtk::Widget* above);
-  virtual void on_dnd_add_layout_item(LayoutWidgetBase* above, const sharedptr<LayoutItem>& item);
+  virtual void on_dnd_add_layout_item(Gtk::Widget* dragged_widget, Gtk::Widget* above);
 
   virtual void on_dnd_add_placeholder(Gtk::Widget* above);
   virtual void on_dnd_remove_placeholder();
@@ -79,7 +79,8 @@ private:
     
   FlowTableItem* find_current_dnd_item (Gtk::Widget* child, int x = -1, int y = -1);
   FlowTableItem* m_current_dnd_item;
-    
+  
+protected: //TODO: Make this private:  
   bool m_internal_drag;
 };
 

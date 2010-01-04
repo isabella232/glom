@@ -219,6 +219,7 @@ private:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 
   virtual void on_dnd_add_layout_item_by_type(int item_type_num, Gtk::Widget* above);
+  virtual void on_dnd_add_layout_item(Gtk::Widget* dragged_widget, Gtk::Widget* above);
   virtual void on_dnd_add_placeholder(Gtk::Widget* above);
   virtual void on_dnd_remove_placeholder();
   virtual void set_child_widget_dnd_in_progress(Gtk::Widget* child, bool in_progress);
@@ -232,8 +233,7 @@ private:
   void on_dnd_add_layout_item_image(LayoutWidgetBase* above);
   void on_dnd_add_layout_notebook(LayoutWidgetBase* above);
   void on_dnd_add_layout_portal(LayoutWidgetBase* above);
-  void on_dnd_add_layout_item(LayoutWidgetBase* above, const sharedptr<LayoutItem>& item);
-  
+ 
   sharedptr<LayoutItem_Portal> get_portal_relationship();
 
   void dnd_notify_failed_drop();
