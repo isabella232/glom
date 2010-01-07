@@ -42,7 +42,7 @@ cp /bundle/bin/gspawn-win32-helper-console.exe installer/bin || exit
 
 cp /bundle/bin/libatk-1.0-0.dll installer/bin || exit
 cp /bundle/bin/libxml2-2.dll installer/bin || exit
-# TODO: Remove as soon as GtkSourceView is built against recent GTK+
+# TODO: Remove as soon as libgda is built against recent libxml2
 cp libxml2.dll installer/bin || exit
 cp /bundle/bin/libfontconfig-1.dll installer/bin || exit
 cp /bundle/bin/libexpat-1.dll installer/bin || exit
@@ -119,8 +119,8 @@ cp $PYTHONDIR/Lib/*.py installer/python || exit
 mkdir -p installer/python/encodings || exit
 cp $PYTHONDIR/Lib/encodings/*.py installer/python/encodings || exit
 
-cp $PYTHONDIR/Lib/site-packages/glom.pyd installer/python || exit
-strip installer/python/glom.pyd || exit
+cp $PYTHONDIR/Lib/site-packages/glom_1_12.pyd installer/python || exit
+strip installer/python/glom_1_12.pyd || exit
 cp $PYTHONDIR/Lib/site-packages/gtk-2.0/gda.pyd installer/python || exit
 strip installer/python/gda.pyd || exit
 
@@ -141,9 +141,9 @@ cp $PYTHONDIR/Lib/site-packages/gtk-2.0/gtk/*.pyd installer/python/gtk || exit
 
 echo "Copying modules..."
 
-cp $PYTHONDIR/Lib/site-packages/glom.pyd installer/bin || exit
-cp $PYTHONDIR/Lib/site-packages/gtk-2.0/gda.pyd installer/bin || exit
-strip installer/bin/*.pyd || exit
+#cp $PYTHONDIR/Lib/site-packages/glom_1_12.pyd installer/bin || exit
+#cp $PYTHONDIR/Lib/site-packages/gtk-2.0/gda.pyd installer/bin || exit
+#strip installer/bin/*.pyd || exit
 
 #mkdir -p installer/lib/gtk-2.0/2.10.0/immodules || exit
 #cp /lib/gtk-2.0/2.10.0/immodules/*.dll installer/lib/gtk-2.0/2.10.0/immodules || exit

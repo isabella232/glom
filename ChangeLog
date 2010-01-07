@@ -1,3 +1,9 @@
+2010-01-07  Armin Burgmeier  <armin@arbur.net>
+
+	* win32/build-installer:
+	* win32/glom.iss.in: Install glom_1_12.pyd instead of glom.pyd. Bug
+	#605593.
+
 1.12.4:
 
 2009-12-30  Murray Cumming  <murrayc@murrayc.com>
