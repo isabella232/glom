@@ -1,3 +1,13 @@
+2010-01-07  Michael Hasselmann  <michaelh@openismus.com>
+
+	Fix potential encoding error for currency symbols
+
+	* glom/libglom/data_structure/glomconversions.cc (get_text_for_gda_value):
+	Glom's numeric type can be prefixed with a currency symbol. If the symbol
+	cannot be represented in the user's locale it would hide all data for the
+	column. This is fixed by using a fallback conversion for the symbol.
+	Fixes bug #606349.
+
 2010-01-07  Armin Burgmeier  <armin@arbur.net>
 
 	* win32/build-installer:

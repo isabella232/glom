@@ -436,7 +436,16 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
 
       if(!(numeric_format.m_currency_symbol.empty()))
       {
-        another_stream << numeric_format.m_currency_symbol << " ";
+        std::string charset;
+        Glib::get_charset(charset);
+        Glib::ustring currency_symbol = Glib::convert_with_fallback(numeric_format.m_currency_symbol, charset, "UTF-8");
+        // Uses convert_with_fallback(.) for the curreny symbol to avoid an
+        // exception where the operator<<'s automatic conversion fails.
+        // Incompatible encodings are possible since the currency symbol itself
+        // is stored in the Glom document (UTF-8), whereas the stream encoding
+        // depends on the user's locale (needed for the numeric value
+        // representation).
+        another_stream << currency_symbol << " ";
       }
     }
 
