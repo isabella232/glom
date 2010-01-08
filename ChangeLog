@@ -1,3 +1,18 @@
+2010-01-08  Murray Cumming  <murrayc@murrayc.com>
+
+	Correct use of locales when creating text representations.
+
+	* glom/main.cc:  Set std::locale::global() to the user's current locale,
+        forcing us to imbue streams to whatever we actually want.
+	* glom/libglom/connectionpool_backends/postgres_self.cc: startup():
+	Do not use Utils::string_from_decimal() for the port number, because it 
+	is meant to use the user's locale, but we need it in the C locale.
+	* glom/libglom/data_structure/field.cc: to_file_format(): Use 
+	std::locale::classic() when we want the C locale, not std::locale(), 
+	which means the user's locale, which was previously the C one by chance.
+	* glom/libglom/utils.cc: string_from_decimal(): Imbue the stream 
+	as wanted.
+
 2010-01-07  Michael Hasselmann  <michaelh@openismus.com>
 
 	Fix potential encoding error for currency symbols

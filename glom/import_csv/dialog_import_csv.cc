@@ -138,7 +138,7 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
   the_c_time.tm_mday = 22; //starts at 1
 
   //Get the ISO (not current locale) text representation:
-  const Glib::ustring date_text = Glom::Conversions::format_date(the_c_time, std::locale() /* ignored */, true /* iso_format */);
+  const Glib::ustring date_text = Glom::Conversions::format_date(the_c_time, std::locale::classic() /* ignored */, true /* iso_format */);
   const Glib::ustring advice = Glib::ustring::compose(_("Note that the source file should contain numbers and dates in international ISO format. For instance, 22nd November 2008 should be %1."), date_text);
   m_advice_label->set_text(advice);
   std::cout << "DEBUG: advice=" << advice << std::endl;

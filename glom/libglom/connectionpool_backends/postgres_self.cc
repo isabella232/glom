@@ -29,6 +29,7 @@
 #include <glibmm/i18n.h>
 
 #include <libglom/gst-package.h>
+#include <sstream> //For stringstream
 
 #ifdef G_OS_WIN32
 # include <windows.h>
@@ -475,8 +476,8 @@ bool PostgresSelfHosted::startup(const SlotProgress& slot_progress, bool network
     return false;
   }
 
-  const Glib::ustring port_as_text = Utils::string_from_decimal(available_port);
-
+  //TODO: Performance:
+  const std::string port_as_text = Glib::Ascii::dtostr(available_port);
 
   // -D specifies the data directory.
   // -c config_file= specifies the configuration file

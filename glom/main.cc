@@ -422,6 +422,12 @@ main(int argc, char* argv[])
   bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
   textdomain(GETTEXT_PACKAGE);
 
+  // Set the locale for any streams to the user's current locale,
+  // We should not rely on the default locale of 
+  // any streams (we should always do an explicit imbue()), 
+  // but this is maybe a good default in case we forget.
+  std::locale::global(std::locale(""));
+
   Glom::libglom_init(); //Also initializes python.
    
 #ifdef GLOM_ENABLE_MAEMO

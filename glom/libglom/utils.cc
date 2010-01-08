@@ -594,6 +594,7 @@ Glib::ustring Utils::string_from_decimal(guint decimal)
   //TODO_Performance:
 
   std::stringstream stream;
+  stream.imbue(std::locale("")); //Use the user's current locale.
   stream << decimal;
 
   Glib::ustring result;
