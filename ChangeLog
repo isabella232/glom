@@ -1,3 +1,10 @@
+2010-01-12  Murray Cumming  <murrayc@murrayc.com>
+
+	Music Collection Example: Changed a layout.
+
+	* examples/example_music_collection.glom: Albums: List View:
+	Add some related records to show a problem in Qlom.
+
 2010-01-08  Murray Cumming  <murrayc@murrayc.com>
 
 	Correct use of locales when creating text representations.

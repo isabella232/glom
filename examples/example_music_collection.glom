@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<glom_document xmlns="http://glom.org/glom_document" translation_original_locale="en_US" database_title="Music Collection" is_example="true" format_version="3">
-  <connection server="localhost" database="glom_musiccollection21" port="5435" self_hosted="true" try_other_ports="false" hosting_mode="postgres_self"/>
+<glom_document xmlns="http://glom.org/glom_document" translation_original_locale="en_US" database_title="Music Collection" is_example="true" format_version="4">
+  <connection server="localhost" database="glom_musiccollection211" port="5433" self_hosted="true" try_other_ports="false" hosting_mode="postgres_central"/>
   <table name="albums" overview_x="15" overview_y="9" title="Albums">
     <example_rows>
       <example_row>
@@ -134,11 +134,28 @@
       <data_layout name="list" parent_table="albums">
         <data_layout_groups>
           <data_layout_group name="toplevel">
-            <data_layout_item name="name" editable="true" use_default_formatting="true">
+            <data_layout_item name="name" editable="true" use_default_formatting="true" column_width="143">
               <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
-            <data_layout_item name="year" editable="true" use_default_formatting="true">
+            <data_layout_item name="year" editable="true" use_default_formatting="true" column_width="90">
               <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="artist_id" editable="true" use_default_formatting="true" column_width="90">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="name" relationship="artist" editable="true" use_default_formatting="true" column_width="143">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              <title_custom use_custom="true" title="Artist Name"/>
+            </data_layout_item>
+            <data_layout_item name="publisher_id" editable="true" use_default_formatting="true" column_width="90">
+              <formatting format_thousands_separator="true" format_decimal_places="2"/>
+            </data_layout_item>
+            <data_layout_item name="name" relationship="publisher" editable="true" use_default_formatting="true" column_width="143">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
+              <title_custom use_custom="true" title="Publisher Name"/>
+            </data_layout_item>
+            <data_layout_item name="comments" editable="true" use_default_formatting="true">
+              <formatting format_thousands_separator="true" format_decimal_places="2" format_text_multiline_height_lines="6"/>
             </data_layout_item>
           </data_layout_group>
         </data_layout_groups>
