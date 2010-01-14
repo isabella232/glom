@@ -55,6 +55,13 @@ namespace
 namespace Glom
 {
 
+
+int Conversions::get_stringstream_precision_default()
+{
+    static const int stringstream_precision_default = 15;
+    return stringstream_precision_default;
+}
+
 Glib::ustring Conversions::format_time(const tm& tm_data)
 {
   return format_time( tm_data, std::locale("") /* the user's current locale */ ); //Get the current locale.
