@@ -57,8 +57,7 @@ namespace Glom
 
 int Conversions::get_stringstream_precision_default()
 {
-    static const int stringstream_precision_default = 15;
-    return stringstream_precision_default;
+    return 15;
 }
 
 Glib::ustring Conversions::format_time(const tm& tm_data)

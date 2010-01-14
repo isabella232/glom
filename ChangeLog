@@ -1,3 +1,11 @@
+2010-01-14  Murray Cumming  <murrayc@murrayc.com>
+
+	Minor simplification.
+
+	* glom/libglom/data_structure/glomconversions.cc:
+	get_stringstream_precision_default(): Simplify this function, for 
+	Michael to see.
+
 2010-01-14  Michael Hasselmann  <michaelh@openismus.com>
 
 	Make the default precision used for stringstreams available for libglom users
