@@ -1,3 +1,13 @@
+2010-01-14  Michael Hasselmann  <michaelh@openismus.com>
+
+	Make the default precision used for stringstreams available for libglom users
+
+	* glom/libglom/data_structure/glomconversions.[h|cc]
+	(get_stringstream_precision_default): Wrap the constant used into a function
+	and export it in the headers. Users of libglom need it to show the same
+	precision for Glom's numeric type.
+
+
 2010-01-12  Murray Cumming  <murrayc@murrayc.com>
 
 	Music Collection Example: Changed a layout.
