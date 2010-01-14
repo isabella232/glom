@@ -40,6 +40,12 @@ public:
   bool operator==(const NumericFormat& src) const;
   bool operator!=(const NumericFormat& src) const;
 
+  /** Get the number of digits (even before the decimal point) we should allow
+   * to be shown until we show the awkward e syntax.
+   * This should not be used if m_decimal_places_restricted is true.
+   */
+  static guint get_default_precision();
+
   Glib::ustring m_currency_symbol;
   bool m_use_thousands_separator; //Setting this to false would override the locale, if it used a 1000s separator.
   bool m_decimal_places_restricted;

@@ -1,5 +1,16 @@
 2010-01-14  Murray Cumming  <murrayc@murrayc.com>
 
+	Rename get_stringstream_precision_default().
+
+	* glom/libglom/data_structure/glomconversions.[h|cc]:
+	get_stringstream_precision_default(): Rename this to the slighly-better 
+	named (because it's not mentioning implementation) 
+	NumericFormat::get_default_precision() in
+	* glom/libglom/data_structure/numeric_format.[h|cc]: and document it 
+	vaguely.
+
+2010-01-14  Murray Cumming  <murrayc@murrayc.com>
+
 	Minor simplification.
 
 	* glom/libglom/data_structure/glomconversions.cc:

@@ -62,4 +62,9 @@ bool NumericFormat::operator!=(const NumericFormat& src) const
   return !(operator==(src));
 }
 
+guint NumericFormat::get_default_precision()
+{
+  return 15;
+}
+
 } //namespace Glom
