@@ -1,5 +1,13 @@
 2010-01-14  Murray Cumming  <murrayc@murrayc.com>
 
+	libglom: Some API documentation.
+
+	* glom/libglom/data_structure/layout/layoutitem_field.h:
+	* glom/libglom/data_structure/layout/usesrelationship.h:
+	Added doxygen comments at request of Michael Hasselmann.
+
+2010-01-14  Murray Cumming  <murrayc@murrayc.com>
+
 	Rename get_stringstream_precision_default().
 
 	* glom/libglom/data_structure/glomconversions.[h|cc]:

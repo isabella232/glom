@@ -56,6 +56,9 @@ private:
 };
 
 /** A LayoutItem that shows the data from a table field.
+ * The field may be in a known table, or in a to table of a relationship 
+ * or related relatinoship. See UsesRelationship::get_relationship() and 
+ * UsesRelationship::get_related_relationship() in the base class.
  */
 class LayoutItem_Field 
  : public LayoutItem,
@@ -72,9 +75,17 @@ public:
 
   bool operator==(const LayoutItem_Field& src) const;
 
+  /** Set the non-user-visible name of the field.
+   */
   virtual void set_name(const Glib::ustring& name);
+
+  /** Get the non-user-visible name of the field.
+   */
   virtual Glib::ustring get_name() const; //For use with our std::find_if() predicate.
 
+  /** Get the user-visible title for the field, in the user's current locale.
+   * This returns the name if no title is set.
+   */
   virtual Glib::ustring get_title_or_name() const;
 
   Glib::ustring get_title_or_name_no_custom() const;
@@ -115,9 +126,19 @@ public:
 
   FieldFormatting m_formatting;
 
+  /** Discover whether to use the default formatting for this field, 
+   * instead of some custom per-layout-item field formatting.
+   */
   bool get_formatting_use_default() const;
+
+  /** Specify whether to use the default formatting for this field, 
+   * instead of some custom per-layout-item field formatting.
+   */
   void set_formatting_use_default(bool use_default = true);
 
+  /** Get the field formatting used by this layout item, which 
+   * may be either custom field formatting or the default field formatting.
+   */
   const FieldFormatting& get_formatting_used() const;
 
   /** Compare the name, relationship, and related_relationship.

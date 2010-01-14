@@ -56,10 +56,20 @@ public:
    */
   Glib::ustring get_related_relationship_name() const;
 
+  /** Return the relationship used by this item, if any, or a null sharedptr.
+   * See also get_has_relationship_name() which can prevent the need for your  
+   * own null sharedptr check.
+   */ 
   sharedptr<Relationship> get_relationship() const;
+
   void set_relationship(const sharedptr<Relationship>& relationship);
 
+  /** Return the related relationship used by this item, if any, or a null sharedptr.
+   * See also get_has_related_relationship_name() which can prevent the need for your  
+   * own null sharedptr check.
+   */ 
   sharedptr<Relationship> get_related_relationship() const;
+
   void set_related_relationship(const sharedptr<Relationship>& relationship);
 
   /** Returns either the @a parent_table, related to table, or doubly-related to-table.
@@ -68,23 +78,42 @@ public:
 
   /** Get the title of the relationship that is actually used,
    * falling back to the relationship's name.
+   * @param parent_table_title The title of table to which the item (or its relatinoships) belong.
    */
   Glib::ustring get_title_used(const Glib::ustring& parent_table_title) const;
   
   /** Get the singular title of the relationship that is actually used,
    * falling back to the regular (plural) title, and then to the relationship's name.
+   * @param parent_table_title The title of table to which the item (or its relatinoships) belong.
    */
   Glib::ustring get_title_singular_used(const Glib::ustring& parent_table_title) const;
 
   Glib::ustring get_to_field_used() const;
 
+  /** Get the name of the related relationship used, if any, or the relationship 
+   * if there is no related relationship, or an empty string if neither are 
+   * used by this item.
+   */ 
   Glib::ustring get_relationship_name_used() const;
 
+  /** Discover whether the relationship used allows the user to edit values 
+   * in its to table.
+   */
   bool get_relationship_used_allows_edit() const;
 
+  /** Get a name to use as an alias in SQL statements.
+   * This will always be the same string for items that have the same definition.
+   */ 
   Glib::ustring get_sql_join_alias_name() const;
+
+  /** Get a SQL fragment that defines the alias name as returned by 
+   * get_sql_join_alias_name().
+   */ 
   Glib::ustring get_sql_join_alias_definition() const;
 
+  /** Get the item's alias name, if it uses a relationship, or just get its table name.
+   * @param parent_table The table to which the item (or its relatinoships) belong.
+   */ 
   Glib::ustring get_sql_table_or_join_alias_name(const Glib::ustring& parent_table) const;
 
 private:
