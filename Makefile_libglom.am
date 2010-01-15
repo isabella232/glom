@@ -21,7 +21,8 @@ libglom_include_HEADERS =			\
 	glom/libglom/init.h			\
 	glom/libglom/libglom_config.h		\
 	glom/libglom/sharedptr.h		\
-	glom/libglom/standard_table_prefs_fields.h
+	glom/libglom/standard_table_prefs_fields.h\
+	glom/libglom/utils.h
 
 libglom_data_structure_includedir = $(libglom_includedir)/data_structure
 libglom_data_structure_include_HEADERS =			\

@@ -1,3 +1,10 @@
+2010-01-15  Michael Hasselmann  <michaelh@openismus.com>
+
+	Add forgotten header to libglom's Makefile
+
+	* Makefile_libglom.am: libglom_include_HEADERS forgot to mention utils.h
+	although it was mentioned in the *_la_SOURCES.
+
 2010-01-14  Murray Cumming  <murrayc@murrayc.com>
 
 	libglom: Some API documentation.
