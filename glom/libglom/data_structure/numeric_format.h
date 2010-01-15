@@ -40,10 +40,10 @@ public:
   bool operator==(const NumericFormat& src) const;
   bool operator!=(const NumericFormat& src) const;
 
-  /** Get the number of digits (even before the decimal point) we should allow
-   * to be shown until we show the awkward e syntax.
-   * This should not be used if m_decimal_places_restricted is true.
-   */
+  /** Get the number of decimal places we should allow to be shown until we
+    * show the awkward e syntax.  This should not be used if
+    * m_decimal_places_restricted is true.
+    */
   static guint get_default_precision();
 
   Glib::ustring m_currency_symbol;

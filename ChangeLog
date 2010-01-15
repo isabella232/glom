@@ -1,3 +1,11 @@
+2010-01-15  Michael Hasselmann  <michaelh@openismus.com>
+
+Updated the comment for NumericFormat's default precision
+
+	* glom/libglom/data_structure/numeric_format.h (get_default_precision): The
+	precision applies to the decimal places only, not the whole number. Comment
+	updated.
+
 2010-01-15  Murray Cumming  <murrayc@murrayc.com>
 
 	Field Formatting: Allow an alternative color for negative values.
