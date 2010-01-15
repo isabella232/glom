@@ -92,6 +92,7 @@ void CanvasLayoutItem::check_and_apply_formatting(const Glib::RefPtr<CanvasTextM
   canvas_item->set_font_points(font);
 
   //TODO: Are these sensible properties? Maybe we need to use markup:
+  //TODO: Use the negative color.
   const Glib::ustring fg = formatting.get_text_format_color_foreground();
   if(!fg.empty())
   {

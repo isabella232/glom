@@ -28,6 +28,12 @@ namespace Glom
 Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::VBox(cobject),
   m_vbox_numeric_format(0),
+  m_checkbox_format_use_thousands(0),
+  m_checkbox_format_use_decimal_places(0),
+  m_entry_format_decimal_places(0),
+  m_entry_currency_symbol(0),
+  m_checkbox_format_color_negatives(0),
+  m_colorbutton_negatives(0),
   m_vbox_text_format(0),
   m_checkbox_format_text_multiline(0),
   m_label_format_text_multiline_height(0),
@@ -55,6 +61,8 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
   builder->get_widget("checkbutton_format_use_decimal_places", m_checkbox_format_use_decimal_places);
   builder->get_widget("entry_format_decimal_places", m_entry_format_decimal_places);
   builder->get_widget_derived("entry_currency_symbol", m_entry_currency_symbol);
+  builder->get_widget("colorbutton_foreground_negatives", m_colorbutton_negatives);
+  builder->get_widget("checkbutton_foreground_negatives", m_checkbox_format_color_negatives);
 
   //Text formatting:
   builder->get_widget("vbox_text_format", m_vbox_text_format);
@@ -95,6 +103,7 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
   m_checkbox_format_text_font->signal_toggled().connect( sigc::mem_fun(*this, &Box_Formatting::on_checkbox) );
   m_checkbox_format_text_color_foreground->signal_toggled().connect( sigc::mem_fun(*this, &Box_Formatting::on_checkbox) );
   m_checkbox_format_text_color_background->signal_toggled().connect( sigc::mem_fun(*this, &Box_Formatting::on_checkbox) );
+  m_checkbox_format_color_negatives->signal_toggled().connect( sigc::mem_fun(*this, &Box_Formatting::on_checkbox) );
 
   show_all_children();
 }
@@ -142,6 +151,11 @@ void Box_Formatting::set_formatting(const FieldFormatting& format)
   m_entry_format_decimal_places->set_text(Glib::ustring(pchText));
 
   m_entry_currency_symbol->get_entry()->set_text(format.m_numeric_format.m_currency_symbol);
+
+  const Glib::ustring color_negatives = format.m_numeric_format.m_foreground_color_for_negatives;
+  m_checkbox_format_color_negatives->set_active(!color_negatives.empty());
+  m_colorbutton_negatives->set_color( Gdk::Color(color_negatives) );
+
 
   m_checkbox_format_text_multiline->set_active(format.get_text_format_multiline());
 
@@ -208,6 +222,11 @@ bool Box_Formatting::get_formatting(FieldFormatting& format) const
   m_format.m_numeric_format.m_decimal_places = atoi(strDecPlaces.c_str());
 
   m_format.m_numeric_format.m_currency_symbol = m_entry_currency_symbol->get_entry()->get_text();
+
+  Glib::ustring color_negatives;
+  if(m_checkbox_format_color_negatives->get_active())
+    color_negatives = m_colorbutton_negatives->get_color().to_string();
+  m_format.m_numeric_format.m_foreground_color_for_negatives = color_negatives;
 
   //Text formatting:
   m_format.set_text_format_multiline(m_checkbox_format_text_multiline->get_active());

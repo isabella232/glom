@@ -2234,7 +2234,8 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
          std::cout << "    GType name=\"" << g_type_name(debug_type) << "\"" << std::endl; 
       */
 
-      switch(field->get_glom_type())
+      const Field::glom_field_type type = field->get_glom_type();
+      switch(type)
       {
         case(Field::TYPE_BOOLEAN):
         {
@@ -2272,6 +2273,17 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
             const Glib::ustring text = Conversions::get_text_for_gda_value(field->get_glom_type(), value, field->get_formatting_used().m_numeric_format);
             //g_assert(text != "NULL");
             g_object_set(pDerived->gobj(), "text", text.c_str(), (gpointer)0);
+          }
+
+          //Show a different color if the value is numeric, if that's specified:
+          if(type == Field::TYPE_NUMERIC)
+          {
+             const Glib::ustring fg_color = 
+               field->get_formatting_used().get_text_format_color_foreground_to_use(value);
+             if(!fg_color.empty())
+                 g_object_set(pDerived->gobj(), "foreground", fg_color.c_str(), (gpointer)0);
+             else
+                 g_object_set(pDerived->gobj(), "foreground", (const char*)0, (gpointer)0);
           }
 
           break;

@@ -76,7 +76,19 @@ public:
    */
   Glib::ustring get_text_format_font() const;
 
+  /** Set the foreground color to use for text when displaying a field value.
+   */
   void set_text_format_color_foreground(const Glib::ustring& color);
+
+  /** Get the foreground color to use for text for the specified value,
+   * taking the negative-color into account, if specified.
+   */
+  Glib::ustring get_text_format_color_foreground_to_use(const Gnome::Gda::Value& value) const;
+
+  /** Get the foreground color to use for text when displaying a field value.
+   * This should be overriden by by m_numeric_formatting.m_foreground_color_for_negatives
+   * if that is active.
+   */
   Glib::ustring get_text_format_color_foreground() const;
 
   void set_text_format_color_background(const Glib::ustring& color);

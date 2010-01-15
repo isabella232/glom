@@ -50,6 +50,9 @@ public:
   bool m_use_thousands_separator; //Setting this to false would override the locale, if it used a 1000s separator.
   bool m_decimal_places_restricted;
   guint m_decimal_places;
+  
+  /// The foreground color to use for negative values.
+  Glib::ustring m_foreground_color_for_negatives;
 };
 
 } //namespace Glom

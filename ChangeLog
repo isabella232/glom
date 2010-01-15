@@ -1,3 +1,25 @@
+2010-01-15  Murray Cumming  <murrayc@murrayc.com>
+
+	Field Formatting: Allow an alternative color for negative values.
+
+	* glom/libglom/data_structure/numeric_format.[h|cc]: 
+	Added m_foreground_color_for_negatives.
+	* glom/libglom/data_structure/layout/fieldformatting.[h|cc]:
+	Added get_text_format_color_foreground_to_use().
+	* glom/libglom/document/document.cc: 
+	load_after_layout_item_formatting(), save_before_layout_item_formatting():
+	load/save the new setting.
+
+	* glom/glom_developer.glade: window_formatting: Added negatives color 
+	and checkbox to the numeric formatting tab.
+	* glom/mode_design/layout/layout_item_dialogs/box_formatting.[h|cc]:
+	Show/Save the color.
+	* glom/utility_widgets/db_adddel/db_adddel.cc: 
+	treeviewcolumn_on_cell_data()_
+	* glom/utility_widgets/entryglom.cc: set_value():
+	Use the color for negatives if appropriate. 
+	* glom/print_layout/canvas_layout_item.cc: Add a TODO to use it here too.
+
 2010-01-14  Murray Cumming  <murrayc@murrayc.com>
 
 	libglom: Some API documentation.
