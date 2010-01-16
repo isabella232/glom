@@ -144,10 +144,11 @@ Glib::ustring FieldFormatting::get_text_format_color_foreground() const
 
 Glib::ustring FieldFormatting::get_text_format_color_foreground_to_use(const Gnome::Gda::Value& value) const
 {
-  if(!m_numeric_format.m_foreground_color_for_negatives.empty())
+  if(m_numeric_format.m_alt_foreground_color_for_negatives)
   {
+    //TODO: Use some other color if the alternative color is too similar to the foreground color.
     if(Conversions::get_double_for_gda_value_numeric(value) < 0)
-      return m_numeric_format.m_foreground_color_for_negatives;
+      return NumericFormat::get_alternative_color_for_negatives();
   }
 
   return m_text_color_foreground;

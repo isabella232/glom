@@ -70,7 +70,6 @@ private:
   Gtk::Entry* m_entry_format_decimal_places;
   ComboEntry_Currency* m_entry_currency_symbol;
   Gtk::CheckButton* m_checkbox_format_color_negatives;
-  Gtk::ColorButton* m_colorbutton_negatives;
 
   Gtk::VBox* m_vbox_text_format;
   Gtk::CheckButton* m_checkbox_format_text_multiline;

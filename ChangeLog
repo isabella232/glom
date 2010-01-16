@@ -1,3 +1,21 @@
+2010-01-16  Murray Cumming  <murrayc@murrayc.com>
+
+  Field Formatting: Negative values color: Make this just a bool check box.
+  
+  * glom/libglom/data_structure/numeric_format.[h|cc]: Use just a bool 
+  to say if negative values should be shown in an alternative color.
+  Add static get_alternative_color_for_negatives() to get that color.
+ 	* glom/libglom/data_structure/layout/fieldformatting.cc:
+ 	get_text_format_color_foreground_to_use(): Updated the implementation.
+ 	* glom/libglom/document/document.cc:
+  load_after_layout_item_formatting(), save_before_layout_item_formatting():
+	Updated.
+	
+	* glom/glom_developer.glade: window_formatting: Show only a checkbox, not 
+	a color too, for the alternative color for negatives.
+	* glom/mode_design/layout/layout_item_dialogs/box_formatting.[h|cc]:
+	Updated.
+
 2010-01-15  Michael Hasselmann  <michaelh@openismus.com>
 
 	Add forgotten header to libglom's Makefile

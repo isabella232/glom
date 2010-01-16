@@ -26,7 +26,8 @@ namespace Glom
 NumericFormat::NumericFormat()
 : m_use_thousands_separator(true), //A sensible default.
   m_decimal_places_restricted(false),
-  m_decimal_places(2) //A sensible default.
+  m_decimal_places(2), //A sensible default.
+  m_alt_foreground_color_for_negatives(false)
 {
 }
 
@@ -45,7 +46,7 @@ NumericFormat& NumericFormat::operator=(const NumericFormat& src)
   m_use_thousands_separator = src.m_use_thousands_separator;
   m_decimal_places_restricted = src.m_decimal_places_restricted;
   m_decimal_places = src.m_decimal_places;
-  m_foreground_color_for_negatives = src.m_foreground_color_for_negatives;
+  m_alt_foreground_color_for_negatives = src.m_alt_foreground_color_for_negatives;
 
   return *this;
 }
@@ -56,7 +57,7 @@ bool NumericFormat::operator==(const NumericFormat& src) const
          (m_use_thousands_separator == src.m_use_thousands_separator) &&
          (m_decimal_places_restricted == src.m_decimal_places_restricted) &&
          (m_decimal_places == src.m_decimal_places) && 
-         (m_foreground_color_for_negatives == src.m_foreground_color_for_negatives);
+         (m_alt_foreground_color_for_negatives == src.m_alt_foreground_color_for_negatives);
 }
 
 bool NumericFormat::operator!=(const NumericFormat& src) const
@@ -68,5 +69,11 @@ guint NumericFormat::get_default_precision()
 {
   return 15;
 }
+
+Glib::ustring NumericFormat::get_alternative_color_for_negatives()
+{
+  return "#ffff00000000"; //red
+}
+
 
 } //namespace Glom

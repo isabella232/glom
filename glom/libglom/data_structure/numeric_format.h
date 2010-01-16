@@ -21,7 +21,7 @@
 #ifndef GLOM_DATA_STRUCTURE_NUMERIC_FORMAT_H
 #define GLOM_DATA_STRUCTURE_NUMERIC_FORMAT_H
 
-#include "privileges.h"
+#include <glom/libglom/data_structure/privileges.h>
 #include <glibmm/ustring.h>
 #include <map>
 
@@ -39,6 +39,11 @@ public:
 
   bool operator==(const NumericFormat& src) const;
   bool operator!=(const NumericFormat& src) const;
+  
+  /** The foreground color to use for negative values, 
+   * if m_alt_foreground_color_for_negatives is true.
+   */
+  static Glib::ustring get_alternative_color_for_negatives();
 
   /** Get the number of decimal places we should allow to be shown until we
     * show the awkward e syntax.  This should not be used if
@@ -51,8 +56,8 @@ public:
   bool m_decimal_places_restricted;
   guint m_decimal_places;
   
-  /// The foreground color to use for negative values.
-  Glib::ustring m_foreground_color_for_negatives;
+  /// Whether to use an alernative foreground color for negative values.
+  bool m_alt_foreground_color_for_negatives;
 };
 
 } //namespace Glom

@@ -175,7 +175,7 @@ namespace Glom
 #define GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED "format_decimal_places_restricted"
 #define GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES "format_decimal_places"
 #define GLOM_ATTRIBUTE_FORMAT_CURRENCY_SYMBOL "format_currency_symbol"
-#define GLOM_ATTRIBUTE_FORMAT_NEGATIVE_COLOR "color_fg_negative"
+#define GLOM_ATTRIBUTE_FORMAT_USE_ALT_NEGATIVE_COLOR "format_use_alt_negative_color" //Just a  bool, not a color.
 
 #define GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE "format_text_multiline"
 #define GLOM_ATTRIBUTE_FORMAT_TEXT_MULTILINE_HEIGHT_LINES "format_text_multiline_height_lines"
@@ -1885,8 +1885,8 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
     format.m_numeric_format.m_decimal_places_restricted = get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED);
     format.m_numeric_format.m_decimal_places = get_node_attribute_value_as_decimal(element, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES);
     format.m_numeric_format.m_currency_symbol = get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CURRENCY_SYMBOL);
-    format.m_numeric_format.m_foreground_color_for_negatives = 
-      get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_NEGATIVE_COLOR);
+    format.m_numeric_format.m_alt_foreground_color_for_negatives = 
+      get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_USE_ALT_NEGATIVE_COLOR);
   }
 
   //Text formatting:
@@ -2877,8 +2877,8 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
     set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED, format.m_numeric_format.m_decimal_places_restricted);
     set_node_attribute_value_as_decimal(nodeItem, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES, format.m_numeric_format.m_decimal_places);
     set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CURRENCY_SYMBOL, format.m_numeric_format.m_currency_symbol);
-    set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_NEGATIVE_COLOR,
-      format.m_numeric_format.m_foreground_color_for_negatives);
+    set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_USE_ALT_NEGATIVE_COLOR,
+      format.m_numeric_format.m_alt_foreground_color_for_negatives);
 
     set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED, format.get_choices_restricted());
     set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM, format.get_has_custom_choices());
