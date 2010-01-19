@@ -1,3 +1,5 @@
+1.12.5 (stable):
+
 2010-01-15  Michael Hasselmann  <michaelh@openismus.com>
 
 	Add forgotten header to libglom's Makefile

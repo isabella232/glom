@@ -1,3 +1,12 @@
+1.12.5 (stable):
+
+* Avoid problems when entering numbers with currency suffixes when using the 
+  C locale.
+  (Murray Cumming, Michael Hasselmann)
+* Windows: Install glom_1_12.pyd instead of glom.pyd.
+  (Armin Burgmeier) Bug #605593 (Karel Brucek)
+* libglom: Added NumericFormat::get_default_precision().
+
 1.12.4 (stable):
 
 * Drag and drop layout: Fix some crashes. This feature still has some problems,
