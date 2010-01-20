@@ -1,3 +1,14 @@
+2010-01-20  Murray Cumming  <murrayc@murrayc.com>
+
+	List View: Don't chop off the bottom of text when using large fonts.
+
+	* glom/utility_widgets/db_adddel/db_adddel.cc: get_fixed_cell_height():
+	Use the font description from the FieldFormatting, to get a more 
+	suitable max height for all columns.
+	remove_all_columns(): Set m_fixed_cell_height back to 0 so it 
+	will be recalculated for the new columns.
+	Fixes bug #607023 (Michael Hasselmann)
+
 1.12.5 (stable):
 
 2010-01-15  Michael Hasselmann  <michaelh@openismus.com>

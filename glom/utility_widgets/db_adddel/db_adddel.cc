@@ -650,19 +650,58 @@ void DbAddDel::set_column_title(guint col, const Glib::ustring& strText)
 
 int DbAddDel::get_fixed_cell_height()
 {
-  if(m_fixed_cell_height > 0)
-    return m_fixed_cell_height;
-  else
+  if(m_fixed_cell_height <= 0)
   {
-    //Discover a suitable height:
+    // Discover a suitable height, and cache it,
+    // by looking at the heights of all columns:
+    // Note that this is usually calculated during construct_specified_columns(), 
+    // when all columns are known.
+    
+    //Get a default:
     Glib::RefPtr<Pango::Layout> refLayout = create_pango_layout("example");
     int width = 0;
     int height = 0;
     refLayout->get_pixel_size(width, height);
-
     m_fixed_cell_height = height;
-    return m_fixed_cell_height;
+
+    //Look at each column:
+    for(type_ColumnTypes::iterator iter = m_ColumnTypes.begin(); iter != m_ColumnTypes.end(); ++iter)
+    {
+      Glib::ustring font_name;
+
+      sharedptr<LayoutItem_Field> item_field = sharedptr<LayoutItem_Field>::cast_dynamic(iter->m_item);
+      if(item_field)
+      {
+         const FieldFormatting& formatting = item_field->get_formatting_used();
+         font_name = formatting.get_text_format_font();
+      }
+      else
+      {
+        sharedptr<LayoutItem_Text> item_text = sharedptr<LayoutItem_Text>::cast_dynamic(iter->m_item);
+        if(item_text)
+        {
+          const FieldFormatting& formatting = item_field->get_formatting_used();
+          font_name = formatting.get_text_format_font();
+        }
+      }
+
+      if(font_name.empty())
+        continue;
+
+      // Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
+      Glib::RefPtr<Pango::Layout> refLayout = create_pango_layout(_("Example"));
+      const Pango::FontDescription font(font_name);
+      refLayout->set_font_description(font);
+      int width = 0;
+      int height = 0;
+      refLayout->get_pixel_size(width, height);
+
+      if(height > m_fixed_cell_height)
+        m_fixed_cell_height = height;
+    }
   }
+
+  return m_fixed_cell_height;
 }
 
 Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const sharedptr<LayoutItem>& layout_item, int model_column_index, int data_model_column_index)
@@ -1143,6 +1182,8 @@ void DbAddDel::construct_specified_columns()
     #endif //GLOM_ENABLE_MAEMO
   }
 
+  
+
   #ifndef GLOM_ENABLE_MAEMO
   m_TreeView.columns_autosize();
   #endif
@@ -1230,6 +1271,7 @@ void DbAddDel::remove_all_columns()
 {
   m_ColumnTypes.clear();
 
+  m_fixed_cell_height = 0; //Force it to be recalculated.
   m_columns_ready = false;
 }
 
