@@ -3888,3 +3888,4 @@ msgstr "Der Bericht wird nun in Ihrem Webbrowser geöffnet."
 
 #~ msgid "The image file could not be opened:\n"
 #~ msgstr "Die Bilddatei konnte nicht geöffnet werden:\n"
+
