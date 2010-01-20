@@ -680,7 +680,7 @@ int DbAddDel::get_fixed_cell_height()
         sharedptr<LayoutItem_Text> item_text = sharedptr<LayoutItem_Text>::cast_dynamic(iter->m_item);
         if(item_text)
         {
-          const FieldFormatting& formatting = item_field->get_formatting_used();
+          const FieldFormatting& formatting = item_text->get_formatting_used();
           font_name = formatting.get_text_format_font();
         }
       }
