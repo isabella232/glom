@@ -748,9 +748,8 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
     } //switch
 
     //Set font and colors:
-    const FieldFormatting& formatting = item_field->get_formatting_used();
     if(pCellRenderer)
-      apply_formatting(pCellRenderer, formatting);
+      apply_formatting(pCellRenderer, item_field);
   }
   else
   {
@@ -822,10 +821,6 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
     {
       //Make it editable:
       pCellRendererText->set_property("editable", true);
-
-      //Align numbers to the right: //TODO: Avoid this for ID keys.
-      if(item_field->get_glom_type() == Field::TYPE_NUMERIC )
-        pCellRendererText->set_property("xalign", 1.0);
 
       //Connect to its signal:
       pCellRendererText->signal_edited().connect(
@@ -921,13 +916,26 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
   return pCellRenderer;
 }
 
-void DbAddDel::apply_formatting(Gtk::CellRenderer* renderer, const FieldFormatting& formatting)
+void DbAddDel::apply_formatting(Gtk::CellRenderer* renderer, const sharedptr<LayoutItem_Field>& item_field)
 {
   Gtk::CellRendererText* text_renderer = dynamic_cast<Gtk::CellRendererText*>(renderer);
   if(!text_renderer)
     return;
 
   //Use the text formatting:
+
+  //Horizontal alignment:
+  const FieldFormatting::HorizontalAlignment alignment =
+    item_field->get_formatting_used_horizontal_alignment();
+  const float x_align = (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT ? 0.0 : 1.0);
+#ifdef GLIBMM_PROPERTIES_ENABLED  
+      text_renderer->property_xalign() = x_align;
+#else    
+      text_renderer->set_property("xalign", alignment);
+#endif
+
+  const FieldFormatting& formatting = item_field->get_formatting_used();
+
   const Glib::ustring font_desc = formatting.get_text_format_font();
   if(!font_desc.empty())
 #ifdef GLIBMM_PROPERTIES_ENABLED  

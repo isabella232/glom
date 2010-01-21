@@ -69,9 +69,6 @@ EntryGlom::~EntryGlom()
 
 void EntryGlom::init()
 {
-  if(m_glom_type == Field::TYPE_NUMERIC)
-    set_alignment(1.0); //Align numbers to the right.
-
 #ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   signal_focus_out_event().connect(sigc::mem_fun(*this, &EntryGlom::on_focus_out_event));
   signal_activate().connect(sigc::mem_fun(*this, &EntryGlom::on_activate));
@@ -84,7 +81,18 @@ void EntryGlom::set_layout_item(const sharedptr<LayoutItem>& layout_item, const 
   LayoutWidgetField::set_layout_item(layout_item, table_name);
 #ifdef GTKMM_ATKMM_ENABLED
   get_accessible()->set_name(layout_item->get_name());
-#endif  
+#endif
+
+  //Horizontal Alignment:
+  FieldFormatting::HorizontalAlignment alignment = 
+    FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT;
+  sharedptr<LayoutItem_Field> layout_field =
+    sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
+  if(layout_field)
+    alignment = layout_field->get_formatting_used_horizontal_alignment();
+
+  const float x_align = (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT ? 0.0 : 1.0);
+  set_alignment(x_align);
 }
 
 void EntryGlom::set_glom_type(Field::glom_field_type glom_type)

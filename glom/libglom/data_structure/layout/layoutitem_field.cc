@@ -219,6 +219,28 @@ const FieldFormatting& LayoutItem_Field::get_formatting_used() const
     return m_formatting;
 }
 
+FieldFormatting::HorizontalAlignment LayoutItem_Field::get_formatting_used_horizontal_alignment() const
+{
+  const FieldFormatting& format = get_formatting_used();
+  FieldFormatting::HorizontalAlignment alignment = 
+    format.get_horizontal_alignment();
+  
+  if(alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_AUTO)
+  {
+    //By default, right-align numbers unless they are ID fields:
+    if(m_field && !m_field->get_primary_key()) //TODO: Also prevent this when it is a foreign key.
+    {
+      //Align numbers to the right by default:
+      alignment == Field::TYPE_NUMERIC ? FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT : FieldFormatting::HORIZONTAL_ALIGNMENT_RIGHT;
+    }
+    else
+      alignment = FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT;
+  }
+  
+  return alignment;
+}
+
+
 void LayoutItem_Field::set_full_field_details(const sharedptr<const Field>& field)
 {
 

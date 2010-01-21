@@ -72,6 +72,7 @@ private:
   Gtk::CheckButton* m_checkbox_format_color_negatives;
 
   Gtk::VBox* m_vbox_text_format;
+  Gtk::ComboBox* m_combo_format_text_horizontal_alignment;
   Gtk::CheckButton* m_checkbox_format_text_multiline;
   Gtk::Label* m_label_format_text_multiline_height;
   Gtk::SpinButton* m_spinbutton_format_text_multiline_height;
@@ -103,6 +104,20 @@ private:
   //We show different options when 
   //showing this on a print layout.
   bool m_for_print_layout;
+
+
+  class AlignmentColumns: public Gtk::TreeModelColumnRecord
+  {
+  public:
+    AlignmentColumns()
+    { add(m_col_alignment); add(m_col_title); }
+
+    Gtk::TreeModelColumn<FieldFormatting::HorizontalAlignment> m_col_alignment;
+    Gtk::TreeModelColumn<Glib::ustring> m_col_title;
+  };
+
+  AlignmentColumns m_columns_alignment;
+  Glib::RefPtr<Gtk::ListStore> m_model_alignment;
 };
 
 } //namespace Glom

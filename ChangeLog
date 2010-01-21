@@ -1,3 +1,24 @@
+2010-01-21  Murray Cumming  <murrayc@murrayc.com>
+
+	Field Formatting: Text Formatting: Add horizontal alignment option.
+
+	* glom/libglom/data_structure/layout/fieldformatting.[h|cc]:
+	Added get/set_horizontal_alignment().
+	* glom/libglom/data_structure/layout/layoutitem_field.[h|cc]:
+	Added get_formatting_used_horizontal_alignment() to interpret the 
+	AUTO alignment depending on the fields details.
+	* glom/libglom/document/document.cc: 
+	load_after_layout_item_formatting(), save_before_layout_item_formatting():
+	load/save the new setting.
+
+	* glom/glom_developer.glade: window_formatting: Added the alignment combo.
+	* glom/mode_design/layout/layout_item_dialogs/box_formatting.[h|cc]:
+	Show/Save the alignment.
+	* glom/utility_widgets/db_adddel/db_adddel.cc: apply_formatting():
+	* glom/utility_widgets/entryglom.cc: set_layout_item():
+	* glom/utility_widgets/comboentryglom.cc: set_layout_item():
+	Set xalign from get_formatting_used_horizontal_alignment().
+
 2010-01-16  Murray Cumming  <murrayc@murrayc.com>
 
 	Field Formatting: Negative values color: Make this just a bool check box.

@@ -141,6 +141,12 @@ public:
    */
   const FieldFormatting& get_formatting_used() const;
 
+  /** Get the alignment for the formatting used (see get_formatting_used()),
+   * choosing an appropriate alignment if it is set to HORIZONTAL_ALIGNMENT_AUTO.
+   * Note that this never returns HORIZONTAL_ALIGNMENT_AUTO.
+   */
+  FieldFormatting::HorizontalAlignment get_formatting_used_horizontal_alignment() const;
+
   /** Compare the name, relationship, and related_relationship.
    */
   bool is_same_field(const sharedptr<const LayoutItem_Field>& field) const;

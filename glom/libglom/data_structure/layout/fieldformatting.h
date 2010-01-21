@@ -94,6 +94,16 @@ public:
   void set_text_format_color_background(const Glib::ustring& color);
   Glib::ustring get_text_format_color_background() const;
 
+  enum HorizontalAlignment
+  {
+    HORIZONTAL_ALIGNMENT_AUTO, //For instance, RIGHT for numeric fields.
+    HORIZONTAL_ALIGNMENT_LEFT,
+    HORIZONTAL_ALIGNMENT_RIGHT,
+  };
+
+  void set_horizontal_alignment(HorizontalAlignment alignment);
+  HorizontalAlignment get_horizontal_alignment() const;
+
   void change_field_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new);
 
   NumericFormat m_numeric_format; //Only used for numeric fields.
@@ -109,6 +119,7 @@ private:
   //Glib::ustring m_text_multiline_width_example; //An example string from which to calculate the width.
   Glib::ustring m_text_font;
   Glib::ustring m_text_color_foreground, m_text_color_background;
+  HorizontalAlignment m_horizontal_alignment;
 
   Glib::ustring m_choices_related_field, m_choices_related_field_second;
 };

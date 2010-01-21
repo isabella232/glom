@@ -34,6 +34,7 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
   m_entry_currency_symbol(0),
   m_checkbox_format_color_negatives(0),
   m_vbox_text_format(0),
+  m_combo_format_text_horizontal_alignment(0),
   m_checkbox_format_text_multiline(0),
   m_label_format_text_multiline_height(0),
   m_spinbutton_format_text_multiline_height(0),
@@ -64,6 +65,7 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
 
   //Text formatting:
   builder->get_widget("vbox_text_format", m_vbox_text_format);
+  builder->get_widget("combo_format_text_horizontal_alignment", m_combo_format_text_horizontal_alignment);
   builder->get_widget("checkbutton_format_text_multiline", m_checkbox_format_text_multiline);
   builder->get_widget("label_format_text_multiline", m_label_format_text_multiline_height);
   builder->get_widget("spinbutton_format_text_multiline_height", m_spinbutton_format_text_multiline_height);
@@ -77,7 +79,25 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
   builder->get_widget("colorbutton_background", m_colorbutton_background);
   builder->get_widget("checkbutton_color_background", m_checkbox_format_text_color_background);
 
+  //Fill the alignment combo:
+  m_model_alignment = Gtk::ListStore::create(m_columns_alignment);
 
+  Gtk::TreeModel::iterator iter = m_model_alignment->append();
+  (*iter)[m_columns_alignment.m_col_alignment] = FieldFormatting::HORIZONTAL_ALIGNMENT_AUTO;
+  //Translators: This is Automatic text alignment.
+  (*iter)[m_columns_alignment.m_col_title] = _("Automatic");
+  iter = m_model_alignment->append();
+  (*iter)[m_columns_alignment.m_col_alignment] = FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT;
+  //Translators: This is Left text alignment.
+  (*iter)[m_columns_alignment.m_col_title] = _("Left");
+  iter = m_model_alignment->append();
+  (*iter)[m_columns_alignment.m_col_alignment] = FieldFormatting::HORIZONTAL_ALIGNMENT_RIGHT;
+  //Translators: This is Right text alignment.
+  (*iter)[m_columns_alignment.m_col_title] = _("Right");
+
+  m_combo_format_text_horizontal_alignment->set_model(m_model_alignment);
+  m_combo_format_text_horizontal_alignment->pack_start(m_columns_alignment.m_col_title);
+  
 
   //Choices:
   builder->get_widget("vbox_choices", m_vbox_choices);
@@ -141,6 +161,7 @@ void Box_Formatting::set_formatting(const FieldFormatting& format)
 {
   m_format = format;
 
+  //Numeric formatting:
   m_checkbox_format_use_thousands->set_active( format.m_numeric_format.m_use_thousands_separator );
   m_checkbox_format_use_decimal_places->set_active( format.m_numeric_format.m_decimal_places_restricted );
 
@@ -153,6 +174,19 @@ void Box_Formatting::set_formatting(const FieldFormatting& format)
   m_checkbox_format_color_negatives->set_active(
     format.m_numeric_format.m_alt_foreground_color_for_negatives );
 
+  //Text formatting
+  const FieldFormatting::HorizontalAlignment alignment = 
+    format.get_horizontal_alignment();
+  Gtk::TreeModel::Children children = m_model_alignment->children(); 
+  for(Gtk::TreeModel::Children::iterator iter = children.begin(); iter != children.end(); ++iter)
+  {
+    Gtk::TreeModel::Row row = *iter;
+    if(row[m_columns_alignment.m_col_alignment] == alignment)
+    {
+      m_combo_format_text_horizontal_alignment->set_active(iter);
+      break;
+    }
+  }
 
   m_checkbox_format_text_multiline->set_active(format.get_text_format_multiline());
 
@@ -224,6 +258,12 @@ bool Box_Formatting::get_formatting(FieldFormatting& format) const
     m_checkbox_format_color_negatives->get_active();
 
   //Text formatting:
+  Gtk::TreeModel::iterator iter = m_combo_format_text_horizontal_alignment->get_active();
+  FieldFormatting::HorizontalAlignment alignment = FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT;
+  if(iter)
+    alignment = (*iter)[m_columns_alignment.m_col_alignment];
+  m_format.set_horizontal_alignment(alignment);
+
   m_format.set_text_format_multiline(m_checkbox_format_text_multiline->get_active());
   m_format.set_text_format_multiline_height_lines( m_spinbutton_format_text_multiline_height->get_value_as_int() );
 

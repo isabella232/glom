@@ -183,6 +183,11 @@ namespace Glom
 #define GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_FOREGROUND "color_fg"
 #define GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_BACKGROUND "color_bg"
 
+#define GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT "alignment_horizontal"
+#define GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_AUTO "auto"
+#define GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_LEFT "left"
+#define GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_RIGHT "right"
+
 #define GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED "choices_restricted"
 #define GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM "choices_custom"
 #define GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM_LIST "custom_choice_list"
@@ -1900,6 +1905,15 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
   format.set_text_format_color_foreground( get_node_attribute_value (element, GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_FOREGROUND) );
   format.set_text_format_color_background( get_node_attribute_value (element, GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_BACKGROUND) );
 
+  //Alignment. Not-specified means auto.
+  FieldFormatting::HorizontalAlignment alignment = FieldFormatting::HORIZONTAL_ALIGNMENT_AUTO;
+  const Glib::ustring alignment_str = get_node_attribute_value (element, GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT);
+  if(alignment_str == GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_LEFT)
+    alignment = FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT;
+  else if(alignment_str == GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_RIGHT)
+    alignment = FieldFormatting::HORIZONTAL_ALIGNMENT_RIGHT;
+
+  format.set_horizontal_alignment(alignment);
 
   //Choices:
   if(!field_name.empty())
@@ -2894,6 +2908,15 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
   set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_FONT, format.get_text_format_font());
   set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_FOREGROUND, format.get_text_format_color_foreground());
   set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_TEXT_COLOR_BACKGROUND, format.get_text_format_color_background());
+
+  //Alignment:
+  const FieldFormatting::HorizontalAlignment alignment = format.get_horizontal_alignment();
+  if(alignment != FieldFormatting::HORIZONTAL_ALIGNMENT_AUTO) //Save file-size by not even writing this.
+  {
+    const Glib::ustring alignment_str = 
+      (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT  ? GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_LEFT : GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_RIGHT);
+    set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT, alignment_str);
+  }
 
   //Choices:
   if(field_type != Field::TYPE_INVALID)

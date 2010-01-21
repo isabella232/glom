@@ -383,7 +383,7 @@ private:
   //TODO: Remove this and use AppGlom::get_application() instead?
   App_Glom* get_application();
 
-  static void apply_formatting(Gtk::CellRenderer* renderer, const FieldFormatting& formatting);
+  static void apply_formatting(Gtk::CellRenderer* renderer, const sharedptr<LayoutItem_Field>& item_field);
 
   typedef Gtk::VBox type_base;
 

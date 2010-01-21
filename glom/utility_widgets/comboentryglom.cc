@@ -156,10 +156,19 @@ void ComboEntryGlom::set_layout_item(const sharedptr<LayoutItem>& layout_item, c
   //Call base class:
   ComboGlomChoicesBase::set_layout_item(layout_item, table_name);
 
-  //Right-align numbers:
-  sharedptr<const LayoutItem_Field> layout_field = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
-  if(layout_field && layout_field->get_glom_type() == Field::TYPE_NUMERIC)
-      get_entry()->set_alignment(1.0); //Align numbers to the right.
+  if(!layout_item)
+    return;
+
+  //Horizontal Alignment:
+  FieldFormatting::HorizontalAlignment alignment = 
+    FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT;
+  sharedptr<LayoutItem_Field> layout_field =
+    sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
+  if(layout_field)
+    alignment = layout_field->get_formatting_used_horizontal_alignment();
+
+  const float x_align = (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT ? 0.0 : 1.0);
+  get_entry()->set_alignment(x_align); 
 }
 
 void ComboEntryGlom::check_for_change()

@@ -6427,6 +6427,36 @@ Which user should be added to this group?</property>
                 <property name="border_width">6</property>
                 <property name="spacing">6</property>
                 <child>
+                  <object class="GtkHBox" id="hbox_">
+                    <property name="visible">True</property>
+                    <property name="spacing">6</property>
+                    <child>
+                      <object class="GtkLabel" id="label_format_text_horizontal_alignment">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Horizontal Alignment:</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkComboBox" id="combo_format_text_horizontal_alignment">
+                        <property name="visible">True</property>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkCheckButton" id="checkbutton_format_text_multiline">
                     <property name="label" translatable="yes">Multi-line</property>
                     <property name="visible">True</property>
@@ -6439,7 +6469,7 @@ Which user should be added to this group?</property>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
-                    <property name="position">0</property>
+                    <property name="position">1</property>
                   </packing>
                 </child>
                 <child>
@@ -6473,7 +6503,7 @@ Which user should be added to this group?</property>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
-                    <property name="position">1</property>
+                    <property name="position">2</property>
                   </packing>
                 </child>
                 <child>
@@ -6511,7 +6541,7 @@ Which user should be added to this group?</property>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
-                    <property name="position">2</property>
+                    <property name="position">3</property>
                   </packing>
                 </child>
                 <child>
@@ -6549,7 +6579,7 @@ Which user should be added to this group?</property>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
-                    <property name="position">3</property>
+                    <property name="position">4</property>
                   </packing>
                 </child>
                 <child>
@@ -6587,7 +6617,7 @@ Which user should be added to this group?</property>
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
-                    <property name="position">4</property>
+                    <property name="position">5</property>
                   </packing>
                 </child>
               </object>

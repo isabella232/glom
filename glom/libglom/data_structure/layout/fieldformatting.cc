@@ -32,7 +32,8 @@ FieldFormatting::FieldFormatting()
   m_choices_custom(false),
   m_choices_related(false),
   m_text_format_multiline(false),
-  m_text_multiline_height_lines(MULTILINE_TEXT_DEFAULT_HEIGHT_LINES)
+  m_text_multiline_height_lines(MULTILINE_TEXT_DEFAULT_HEIGHT_LINES),
+  m_horizontal_alignment(HORIZONTAL_ALIGNMENT_AUTO)
 {
 }
 
@@ -48,6 +49,7 @@ FieldFormatting::FieldFormatting(const FieldFormatting& src)
   m_text_font(src.m_text_font),
   m_text_color_foreground(src.m_text_color_foreground),
   m_text_color_background(src.m_text_color_background),
+  m_horizontal_alignment(src.m_horizontal_alignment),
   m_choices_related_field(src.m_choices_related_field),
   m_choices_related_field_second(src.m_choices_related_field_second)
 {
@@ -71,7 +73,8 @@ bool FieldFormatting::operator==(const FieldFormatting& src) const
     (m_text_multiline_height_lines == src.m_text_multiline_height_lines) &&
     (m_text_font == src.m_text_font) &&
     (m_text_color_foreground == src.m_text_color_foreground) &&
-    (m_text_color_background == src.m_text_color_background);
+    (m_text_color_background == src.m_text_color_background) && 
+    (m_horizontal_alignment == src.m_horizontal_alignment);
 }
 
 
@@ -93,6 +96,7 @@ FieldFormatting& FieldFormatting::operator=(const FieldFormatting& src)
   m_text_font = src.m_text_font;
   m_text_color_foreground = src.m_text_color_foreground;
   m_text_color_background = src.m_text_color_background;
+  m_horizontal_alignment = src.m_horizontal_alignment;
 
 //g_warning("FieldFormatting::operator=: m_choices_related_relationship=%s, src.m_choices_related_relationship=%s", m_choices_related_relationship->c_str(), src.m_choices_related_relationship->c_str());
   return *this;
@@ -162,6 +166,16 @@ void FieldFormatting::set_text_format_color_background(const Glib::ustring& colo
 Glib::ustring FieldFormatting::get_text_format_color_background() const
 {
   return m_text_color_background;
+}
+
+void FieldFormatting::set_horizontal_alignment(HorizontalAlignment alignment)
+{
+  m_horizontal_alignment = alignment;
+}
+
+FieldFormatting::HorizontalAlignment FieldFormatting::get_horizontal_alignment() const
+{
+  return m_horizontal_alignment;
 }
 
 bool FieldFormatting::get_has_choices() const
