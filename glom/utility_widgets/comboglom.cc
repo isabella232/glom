@@ -149,8 +149,32 @@ void ComboGlom::check_for_change()
 void ComboGlom::set_value(const Gnome::Gda::Value& value)
 {
   sharedptr<const LayoutItem_Field> layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
-  if(layout_item)
-    set_text(Conversions::get_text_for_gda_value(layout_item->get_glom_type(), value, layout_item->get_formatting_used().m_numeric_format));
+  if(!layout_item)
+    return;
+
+  set_text(Conversions::get_text_for_gda_value(layout_item->get_glom_type(), value, layout_item->get_formatting_used().m_numeric_format));
+
+  //Show a different color if the value is numeric, if that's specified:
+  if(layout_item->get_glom_type() == Field::TYPE_NUMERIC)
+  {
+    std::vector<Gtk::CellRenderer*> cells = get_cells();
+    if(cells.empty())
+      return;
+
+    Gtk::CellRendererText* cell = dynamic_cast<Gtk::CellRendererText*>(cells[0]);
+    if(!cell)
+      return;
+
+    const Glib::ustring fg_color = 
+    layout_item->get_formatting_used().get_text_format_color_foreground_to_use(value);
+    if(fg_color.empty())
+    {
+      //GtkComboBox doesn't interpret "" as an unset. TODO: Fix that?
+      cell->property_foreground_set() = false;
+    }
+    else
+      cell->property_foreground() = fg_color;
+  }
 }
 
 void ComboGlom::set_text(const Glib::ustring& text)

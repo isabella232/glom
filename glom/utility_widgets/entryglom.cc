@@ -172,23 +172,21 @@ void EntryGlom::on_changed()
 void EntryGlom::set_value(const Gnome::Gda::Value& value)
 {
   sharedptr<const LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
-  if(layout_item)
+  if(!layout_item)
+    return;
+
+  const Glib::ustring text = Conversions::get_text_for_gda_value(m_glom_type, value, layout_item->get_formatting_used().m_numeric_format);
+  set_text(text);
+
+  //Show a different color if the value is numeric, if that's specified:
+  if(layout_item->get_glom_type() == Field::TYPE_NUMERIC)
   {
-    const Glib::ustring text = Conversions::get_text_for_gda_value(m_glom_type, value, layout_item->get_formatting_used().m_numeric_format);
-    set_text(text);
-
-    //Show a different color if the value is numeric, if that's specified:
-    if(layout_item->get_glom_type() == Field::TYPE_NUMERIC)
-    {
-      const Glib::ustring fg_color = 
-      layout_item->get_formatting_used().get_text_format_color_foreground_to_use(value);
-      if(!fg_color.empty())
-        modify_text(Gtk::STATE_NORMAL, Gdk::Color(fg_color));
-      else
-        modify_text(Gtk::STATE_NORMAL, Gdk::Color());
-    }
-
-    //std::cout << "debug: EntryGlom::set_value(): name=" << layout_item->get_name() << ", text=" << text << std::endl;
+    const Glib::ustring fg_color = 
+    layout_item->get_formatting_used().get_text_format_color_foreground_to_use(value);
+    if(!fg_color.empty())
+      modify_text(Gtk::STATE_NORMAL, Gdk::Color(fg_color));
+    else
+      modify_text(Gtk::STATE_NORMAL, Gdk::Color());
   }
 }
 

@@ -249,10 +249,25 @@ void ComboEntryGlom::on_entry_changed()
 
 void ComboEntryGlom::set_value(const Gnome::Gda::Value& value)
 {
-  sharedptr<const LayoutItem_Field> layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
-  if(layout_item)
+  sharedptr<const LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
+  if(!layout_item)
+    return;
+
+  set_text(Conversions::get_text_for_gda_value(layout_item->get_glom_type(), value, layout_item->get_formatting_used().m_numeric_format));
+
+  //Show a different color if the value is numeric, if that's specified:
+  if(layout_item->get_glom_type() == Field::TYPE_NUMERIC)
   {
-    set_text(Conversions::get_text_for_gda_value(layout_item->get_glom_type(), value, layout_item->get_formatting_used().m_numeric_format));
+    Gtk::Entry* entry = get_entry();
+    if(!entry)
+      return;
+
+    const Glib::ustring fg_color = 
+    layout_item->get_formatting_used().get_text_format_color_foreground_to_use(value);
+    if(!fg_color.empty())
+      entry->modify_text(Gtk::STATE_NORMAL, Gdk::Color(fg_color));
+    else
+      entry->modify_text(Gtk::STATE_NORMAL, Gdk::Color());
   }
 }
 
