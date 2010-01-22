@@ -37,9 +37,11 @@ class LabelGlom
   public LayoutWidgetUtils
 {
 public:
-  explicit LabelGlom();
+  LabelGlom();
   explicit LabelGlom(const Glib::ustring& label, float xalign, float yalign, bool mnemonic = false);
   virtual ~LabelGlom();
+  
+  Gtk::Label* get_label();
 
 private:
   void init();

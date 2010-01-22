@@ -22,6 +22,7 @@
 #include <glibmm/i18n.h>
 #include <glom/application.h>
 #include <glom/utility_widgets/textviewglom.h>
+#include <glom/utility_widgets/labelglom.h>
 
 namespace Glom
 {
@@ -92,11 +93,18 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<con
   Gtk::Button* button = dynamic_cast<Gtk::Button*>(&widget);
   if(button)
     widget_to_change = button->get_child();
-
-  Glom::TextViewGlom* textview = dynamic_cast<Glom::TextViewGlom*>(&widget);
-  if(textview)
-    widget_to_change = textview->get_textview();
-
+  else
+  {
+    TextViewGlom* textview = dynamic_cast<TextViewGlom*>(&widget);
+    if(textview)
+      widget_to_change = textview->get_textview();
+    else
+    {
+      LabelGlom* label = dynamic_cast<LabelGlom*>(&widget);
+      if(label)
+        widget_to_change = label->get_label();
+    }
+  }
 
   if(!layout_item)
     return;

@@ -115,4 +115,9 @@ bool LabelGlom::on_button_press_event(GdkEventButton *event)
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
+Gtk::Label* LabelGlom::get_label()
+{
+  return &m_label;
+}
+
 } //namespace Glom

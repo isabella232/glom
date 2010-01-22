@@ -37,7 +37,7 @@ class ButtonGlom
 {
 public:
   explicit ButtonGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  explicit ButtonGlom();
+  ButtonGlom();
   virtual ~ButtonGlom();
 
 private:
