@@ -21,7 +21,7 @@
 #ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_FIELD_H
 #define GLOM_DATASTRUCTURE_LAYOUTITEM_FIELD_H
 
-#include <libglom/data_structure/layout/layoutitem.h>
+#include <libglom/data_structure/layout/layoutitem_withformatting.h>
 #include <libglom/data_structure/layout/usesrelationship.h>
 #include <libglom/data_structure/field.h>
 #include <libglom/data_structure/numeric_format.h>
@@ -61,7 +61,7 @@ private:
  * UsesRelationship::get_related_relationship() in the base class.
  */
 class LayoutItem_Field 
- : public LayoutItem,
+ : public LayoutItem_WithFormatting,
    public UsesRelationship
 {
 public:
@@ -124,8 +124,6 @@ public:
   bool m_priv_view;
   bool m_priv_edit;
 
-  FieldFormatting m_formatting;
-
   /** Discover whether to use the default formatting for this field, 
    * instead of some custom per-layout-item field formatting.
    */
@@ -139,13 +137,13 @@ public:
   /** Get the field formatting used by this layout item, which 
    * may be either custom field formatting or the default field formatting.
    */
-  const FieldFormatting& get_formatting_used() const;
+  virtual const FieldFormatting& get_formatting_used() const;
 
   /** Get the alignment for the formatting used (see get_formatting_used()),
    * choosing an appropriate alignment if it is set to HORIZONTAL_ALIGNMENT_AUTO.
    * Note that this never returns HORIZONTAL_ALIGNMENT_AUTO.
    */
-  FieldFormatting::HorizontalAlignment get_formatting_used_horizontal_alignment() const;
+  virtual FieldFormatting::HorizontalAlignment get_formatting_used_horizontal_alignment() const;
 
   /** Compare the name, relationship, and related_relationship.
    */

@@ -200,7 +200,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
   if(m_child)
   {
     //Use the text formatting:
-    apply_formatting(*m_child, field->get_formatting_used());
+    apply_formatting(*m_child, field);
     
     bool child_added = false; //Don't use an extra container unless necessary.
 

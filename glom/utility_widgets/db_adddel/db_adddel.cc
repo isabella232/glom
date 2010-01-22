@@ -916,7 +916,7 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
   return pCellRenderer;
 }
 
-void DbAddDel::apply_formatting(Gtk::CellRenderer* renderer, const sharedptr<LayoutItem_Field>& item_field)
+void DbAddDel::apply_formatting(Gtk::CellRenderer* renderer, const sharedptr<const LayoutItem_WithFormatting>& layout_item)
 {
   Gtk::CellRendererText* text_renderer = dynamic_cast<Gtk::CellRendererText*>(renderer);
   if(!text_renderer)
@@ -926,7 +926,7 @@ void DbAddDel::apply_formatting(Gtk::CellRenderer* renderer, const sharedptr<Lay
 
   //Horizontal alignment:
   const FieldFormatting::HorizontalAlignment alignment =
-    item_field->get_formatting_used_horizontal_alignment();
+    layout_item->get_formatting_used_horizontal_alignment();
   const float x_align = (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT ? 0.0 : 1.0);
 #ifdef GLIBMM_PROPERTIES_ENABLED  
       text_renderer->property_xalign() = x_align;
@@ -934,7 +934,7 @@ void DbAddDel::apply_formatting(Gtk::CellRenderer* renderer, const sharedptr<Lay
       text_renderer->set_property("xalign", alignment);
 #endif
 
-  const FieldFormatting& formatting = item_field->get_formatting_used();
+  const FieldFormatting& formatting = layout_item->get_formatting_used();
 
   const Glib::ustring font_desc = formatting.get_text_format_font();
   if(!font_desc.empty())

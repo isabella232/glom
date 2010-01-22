@@ -842,7 +842,7 @@ void Canvas_PrintLayout::set_canvas_item_field_value(const Glib::RefPtr<Goocanva
     }
 
     //FieldFormatting& formatting = field->m_formatting;
-    //check_and_apply_formatting(canvas_item, formatting);
+    //apply_formatting(canvas_item, formatting);
     const Glib::ustring text = 
       Conversions::get_text_for_gda_value(field->get_glom_type(), value, field->m_formatting.m_numeric_format);
     canvas_text->set_text(text);

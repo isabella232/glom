@@ -74,10 +74,25 @@ sharedptr<LayoutItem> CanvasLayoutItem::get_layout_item()
   return m_layout_item;
 }
 
-void CanvasLayoutItem::check_and_apply_formatting(const Glib::RefPtr<CanvasTextMovable>& canvas_item, FieldFormatting& formatting)
+void CanvasLayoutItem::apply_formatting(const Glib::RefPtr<CanvasTextMovable>& canvas_item, const sharedptr<const LayoutItem_WithFormatting>& layout_item)
 {
   if(!canvas_item)
     return;
+
+  if(!layout_item)
+    return;
+
+  //Horizontal alignment:
+  const FieldFormatting::HorizontalAlignment alignment =
+    layout_item->get_formatting_used_horizontal_alignment();
+  const Pango::Alignment x_align = (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT ? Pango::ALIGN_LEFT : Pango::ALIGN_RIGHT);
+#ifdef GLIBMM_PROPERTIES_ENABLED  
+  //TODO: property_alignment() = x_align;
+#else    
+  //TODO: set_property("alignment", alignment);
+#endif
+
+  const FieldFormatting& formatting = layout_item->get_formatting_used();
 
   Glib::ustring font = formatting.get_text_format_font();
   if(font.empty())
@@ -86,7 +101,7 @@ void CanvasLayoutItem::check_and_apply_formatting(const Glib::RefPtr<CanvasTextM
 
     //Set it in the input parameter,
     //so that this is the default:
-    formatting.set_text_format_font(font);    
+    //TODO? formatting.set_text_format_font(font);    
   }
 
   canvas_item->set_font_points(font);
@@ -200,8 +215,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
     canvas_item->set_property("line-width", 0);
     #endif
 
-    FieldFormatting& formatting = text->m_formatting;
-    check_and_apply_formatting(canvas_item, formatting);
+    apply_formatting(canvas_item, text);
 
     canvas_item->set_text(text->get_text());
     child = canvas_item;
@@ -282,8 +296,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
             canvas_item->set_property("line-width", 0);
             #endif
          
-            FieldFormatting& formatting = field->m_formatting;
-            check_and_apply_formatting(canvas_item, formatting);
+            apply_formatting(canvas_item, field);
 
             Glib::ustring name = field->get_name();
             if(name.empty())

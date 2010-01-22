@@ -31,8 +31,7 @@ LayoutItem_Text::LayoutItem_Text()
 }
 
 LayoutItem_Text::LayoutItem_Text(const LayoutItem_Text& src)
-: LayoutItem(src),
-  m_formatting(src.m_formatting)
+: LayoutItem_WithFormatting(src)
 {
   //Copy the underlying TranslatableItem, not the shardptr to it:
   const TranslatableItem& src_item = *(src.m_text);
@@ -50,9 +49,8 @@ LayoutItem* LayoutItem_Text::clone() const
 
 bool LayoutItem_Text::operator==(const LayoutItem_Text& src) const
 {
-  bool result = LayoutItem::operator==(src) && 
-                (*m_text == *(src.m_text)) &&  //TODO: Compare the underlying item, not the smartpointer?
-                (m_formatting == src.m_formatting);
+  bool result = LayoutItem_WithFormatting::operator==(src) && 
+                (*m_text == *(src.m_text)); //TODO: Compare the underlying item, not the smartpointer?
 
   return result;
 }
@@ -60,13 +58,11 @@ bool LayoutItem_Text::operator==(const LayoutItem_Text& src) const
 //Avoid using this, for performance:
 LayoutItem_Text& LayoutItem_Text::operator=(const LayoutItem_Text& src)
 {
-  LayoutItem::operator=(src);
+  LayoutItem_WithFormatting::operator=(src);
 
   //Copy the underlying TranslatableItem, not the shardptr to it:
   const TranslatableItem& src_item = *(src.m_text);
   m_text = sharedptr<TranslatableItem>(new TranslatableItem(src_item));
-
-  m_formatting = src.m_formatting;
 
   return *this;
 }
@@ -89,11 +85,6 @@ Glib::ustring LayoutItem_Text::get_text() const
 void LayoutItem_Text::set_text(const Glib::ustring& text)
 {
   m_text->set_title(text);
-}
-
-const FieldFormatting& LayoutItem_Text::get_formatting_used() const
-{
-  return m_formatting;
 }
 
 } //namespace Glom

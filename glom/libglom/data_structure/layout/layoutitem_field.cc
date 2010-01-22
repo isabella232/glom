@@ -34,12 +34,11 @@ LayoutItem_Field::LayoutItem_Field()
 }
 
 LayoutItem_Field::LayoutItem_Field(const LayoutItem_Field& src)
-: LayoutItem(src),
+: LayoutItem_WithFormatting(src),
   UsesRelationship(src),
   m_priv_view(src.m_priv_view),
   m_priv_edit(src.m_priv_edit),
   //m_table_name(src.m_table_name),
-  m_formatting(src.m_formatting),
   m_field_cache_valid(src.m_field_cache_valid),
   m_hidden(src.m_hidden),
   m_formatting_use_default(src.m_formatting_use_default),
@@ -61,13 +60,12 @@ LayoutItem* LayoutItem_Field::clone() const
 
 bool LayoutItem_Field::operator==(const LayoutItem_Field& src) const
 {
-  bool result = LayoutItem::operator==(src) &&
+  bool result = LayoutItem_WithFormatting::operator==(src) &&
     UsesRelationship::operator==(src) &&
     (m_priv_view == src.m_priv_view) &&
     (m_priv_edit == src.m_priv_edit) &&
     (m_hidden == src.m_hidden) &&
     (m_formatting_use_default == src.m_formatting_use_default) &&
-    (m_formatting == src.m_formatting) &&
     (m_field_cache_valid == src.m_field_cache_valid);
 
   if(m_field && src.m_field)
@@ -86,7 +84,7 @@ bool LayoutItem_Field::operator==(const LayoutItem_Field& src) const
 //Avoid using this, for performance:
 LayoutItem_Field& LayoutItem_Field::operator=(const LayoutItem_Field& src)
 {
-  LayoutItem::operator=(src);
+  LayoutItem_WithFormatting::operator=(src);
   UsesRelationship::operator=(src);
 
   m_field = src.m_field;
@@ -98,7 +96,6 @@ LayoutItem_Field& LayoutItem_Field::operator=(const LayoutItem_Field& src)
   m_hidden = src.m_hidden;
 
   m_formatting_use_default = src.m_formatting_use_default;
-  m_formatting = src.m_formatting;
 
   m_title_custom = src.m_title_custom;
 
@@ -110,12 +107,12 @@ void LayoutItem_Field::set_name(const Glib::ustring& name)
   if(get_name() != name)
     m_field_cache_valid = false;
 
-  LayoutItem::set_name(name);
+  LayoutItem_WithFormatting::set_name(name);
 }
 
 Glib::ustring LayoutItem_Field::get_name() const
 {
-  return LayoutItem::get_name();
+  return LayoutItem_WithFormatting::get_name();
 }
 
 Glib::ustring LayoutItem_Field::get_title_or_name_no_custom() const
@@ -251,7 +248,7 @@ void LayoutItem_Field::set_full_field_details(const sharedptr<const Field>& fiel
     m_field = field;
     m_field_cache_valid = true;
 
-    LayoutItem::set_name(field->get_name()); //It seems to be OK to expect get_name() to work after setting _full_ details.
+    LayoutItem_WithFormatting::set_name(field->get_name()); //It seems to be OK to expect get_name() to work after setting _full_ details.
   }
   else
   {

@@ -22,7 +22,7 @@
 #define GLOM_MODE_DESIGN_PRINT_LAYOUTS_CANVAS_LAYOUT_ITEM_H
 
 #include <glom/utility_widgets/canvas/canvas_group_resizable.h>
-#include <libglom/data_structure/layout/layoutitem.h>
+#include <libglom/data_structure/layout/layoutitem_withformatting.h>
 #include <libgdamm/value.h>
 
 namespace Glom
@@ -67,7 +67,7 @@ private:
   /// Create the appropriate inner canvas item to represent the layout item.
   static Glib::RefPtr<CanvasItemMovable> create_canvas_item_for_layout_item(const sharedptr<LayoutItem>& layout_item);
 
-  static void check_and_apply_formatting(const Glib::RefPtr<CanvasTextMovable>& canvas_item, FieldFormatting& formatting);
+  static void apply_formatting(const Glib::RefPtr<CanvasTextMovable>& canvas_item, const sharedptr<const LayoutItem_WithFormatting>& layout_item);
   
   void on_resized();
 

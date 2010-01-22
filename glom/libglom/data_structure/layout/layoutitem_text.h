@@ -21,14 +21,14 @@
 #ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_TEXT_H
 #define GLOM_DATASTRUCTURE_LAYOUTITEM_TEXT_H
 
-#include "layoutitem.h"
+#include "layoutitem_withformatting.h"
 #include "fieldformatting.h"
 
 namespace Glom
 {
 
 class LayoutItem_Text 
- : public LayoutItem
+ : public LayoutItem_WithFormatting
 {
 public:
 
@@ -53,11 +53,6 @@ public:
   void set_text(const Glib::ustring& text);
 
   sharedptr<TranslatableItem> m_text; //Reuse the title concept of this class to give us translatable text.
-
-
-  FieldFormatting m_formatting;
-
-  const FieldFormatting& get_formatting_used() const;
 };
 
 } //namespace Glom

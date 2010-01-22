@@ -84,8 +84,19 @@ void LayoutWidgetBase::set_read_only(bool /* read_only */)
 {
 }
 
-void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const FieldFormatting& formatting)
+void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<const LayoutItem_WithFormatting>& layout_item)
 {
+  //Horizontal alignment:
+  const FieldFormatting::HorizontalAlignment alignment =
+    layout_item->get_formatting_used_horizontal_alignment();
+  const float x_align = (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT ? 0.0 : 1.0);
+  Gtk::Misc* misc = dynamic_cast<Gtk::Misc*>(&widget);
+  if(misc)
+    misc->set_alignment(x_align);
+
+
+  const FieldFormatting& formatting = layout_item->get_formatting_used();
+
   //Use the text formatting:
   const Glib::ustring font_desc = formatting.get_text_format_font();
   if(!font_desc.empty())

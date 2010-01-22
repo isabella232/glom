@@ -87,7 +87,7 @@ protected:
   virtual App_Glom* get_application() const; // = 0;
 
 
-  static void apply_formatting(Gtk::Widget& widget, const FieldFormatting& formatting);
+  static void apply_formatting(Gtk::Widget& widget, const sharedptr<const LayoutItem_WithFormatting>& layout_item);
 
 protected: //TODO: Add accessor?
   sharedptr<LayoutItem> m_pLayoutItem;

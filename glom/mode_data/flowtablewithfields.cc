@@ -615,7 +615,7 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
   label->show();
   alignment_label->add(*label);
   
-  apply_formatting(*label, layoutitem_text->get_formatting_used());
+  apply_formatting(*label, layoutitem_text);
 
   add_layoutwidgetbase(label, add_before);
 

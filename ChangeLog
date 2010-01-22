@@ -1,5 +1,20 @@
 2010-01-22  Murray Cumming  <murrayc@murrayc.com>
 
+	Add LayoutItem_WithFormatting as a Field/StaticText common base class.
+
+	* glom/libglom/data_structure/layout/layoutitem_withformatting.[h|cc]:
+	Added LayoutItem_WithFormatting.
+	* glom/libglom/data_structure/layout/layoutitem_text.[h|cc]:
+	* glom/libglom/data_structure/layout/layoutitem_field.[h|cc]:
+	Derive from Layout_WithFormatting, so we can use the base class 
+	polymorphically, making it easier to support formatting for static text 
+	items.
+	* glom/utility_widgets/layoutwidgetbase.[h|cc]: apply_formatting(),
+	* glom/print_layout/canvas_layout_item.[h|cc]: apply_formatting():
+	Make this generic for LayoutItem_WithFormatting.
+
+2010-01-22  Murray Cumming  <murrayc@murrayc.com>
+
 	Show the alternative colors for negatives in fields with choices too.
 
 	* glom/utility_widgets/comboentryglom.cc: set_value():
