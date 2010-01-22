@@ -219,4 +219,9 @@ App_Glom* TextViewGlom::get_application()
   return dynamic_cast<App_Glom*>(pWindow);
 }
 
+TextViewGlom::type_text_view* TextViewGlom::get_textview()
+{
+  return &m_TextView;
+}
+
 } //namespace Glom

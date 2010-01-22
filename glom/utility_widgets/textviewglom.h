@@ -58,6 +58,14 @@ public:
 
   virtual Gnome::Gda::Value get_value() const;
 
+#ifdef GLOM_ENABLE_MAEMO
+  typedef Hildon::TextView type_text_view;
+#else
+  typedef Gtk::TextView type_text_view;
+#endif
+  
+  type_text_view* get_textview();
+
 private:
   void init();
 
@@ -80,11 +88,7 @@ private:
 
   //Gnome::Gda::Value m_value; //The last-stored value. We have this because the displayed value might be unparseable.
 
-#ifdef GLOM_ENABLE_MAEMO
-  Hildon::TextView m_TextView;
-#else
-  Gtk::TextView m_TextView;
-#endif
+  type_text_view m_TextView;
 };
 
 } //namespace Glom

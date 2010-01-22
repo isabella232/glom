@@ -21,6 +21,7 @@
 #include "layoutwidgetbase.h"
 #include <glibmm/i18n.h>
 #include <glom/application.h>
+#include <glom/utility_widgets/textviewglom.h>
 
 namespace Glom
 {
@@ -86,6 +87,17 @@ void LayoutWidgetBase::set_read_only(bool /* read_only */)
 
 void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<const LayoutItem_WithFormatting>& layout_item)
 {
+  Gtk::Widget* widget_to_change = &widget;
+
+  Gtk::Button* button = dynamic_cast<Gtk::Button*>(&widget);
+  if(button)
+    widget_to_change = button->get_child();
+
+  Glom::TextViewGlom* textview = dynamic_cast<Glom::TextViewGlom*>(&widget);
+  if(textview)
+    widget_to_change = textview->get_textview();
+
+
   if(!layout_item)
     return;
 
@@ -93,7 +105,7 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<con
   const FieldFormatting::HorizontalAlignment alignment =
     layout_item->get_formatting_used_horizontal_alignment();
   const float x_align = (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT ? 0.0 : 1.0);
-  Gtk::Misc* misc = dynamic_cast<Gtk::Misc*>(&widget);
+  Gtk::Misc* misc = dynamic_cast<Gtk::Misc*>(widget_to_change);
   if(misc)
     misc->set_alignment(x_align);
 
@@ -103,17 +115,19 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<con
   //Use the text formatting:
   const Glib::ustring font_desc = formatting.get_text_format_font();
   if(!font_desc.empty())
-    widget.modify_font( Pango::FontDescription(font_desc) );
+  {
+    widget_to_change->modify_font( Pango::FontDescription(font_desc) );
+  }
 
   // "text" is the text color. "fg" doesn't seem to have any effect:
   const Glib::ustring fg = formatting.get_text_format_color_foreground();
   if(!fg.empty())
-    widget.modify_text(Gtk::STATE_NORMAL, Gdk::Color(fg));
+    widget_to_change->modify_text(Gtk::STATE_NORMAL, Gdk::Color(fg));
 
   // "base" is the background color. "bg" seems to change the border:
   const Glib::ustring bg = formatting.get_text_format_color_background();
   if(!bg.empty())
-    widget.modify_base(Gtk::STATE_NORMAL, Gdk::Color(bg));
+    widget_to_change->modify_base(Gtk::STATE_NORMAL, Gdk::Color(bg));
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

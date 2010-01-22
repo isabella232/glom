@@ -1,3 +1,13 @@
+2010-01-22  Murray Cumming  <murrayc@murrayc.com>
+
+	Really use formatting for multi-line fields.
+
+	* glom/utility_widgets/textviewglom.[h|cc]: Added get_textview().
+	* glom/utility_widgets/layoutwidgetbase.cc: apply_formatting(): 
+	Get the appropriate child for buttons and textviews, making this work 
+	for textviews (multi line fields), but it still does not work for 
+	labels (static text items) and buttons.
+
 2010-01-22  Murray Cumming  <murrayc@murrayc.com>>
 
 	Allow custom text formatting of Buttons as well as text items and fields.
