@@ -52,7 +52,7 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
   m_button_add_text(0),
   m_button_add_image(0),
   m_button_field_delete(0),
-  m_button_field_formatting(0),
+  m_button_formatting(0),
   m_button_edit(0),
   m_label_table_name(0)
 {
@@ -158,8 +158,8 @@ Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib
   builder->get_widget("button_field_delete", m_button_field_delete);
   m_button_field_delete->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_field_delete) );
 
-  builder->get_widget("button_formatting", m_button_field_formatting);
-  m_button_field_formatting->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_field_formatting) );
+  builder->get_widget("button_formatting", m_button_formatting);
+  m_button_formatting->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_formatting) );
 
   builder->get_widget("button_add_field", m_button_add_field);
   m_button_add_field->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout_Details::on_button_add_field) );
@@ -415,11 +415,11 @@ void Dialog_Layout_Details::enable_buttons()
 
       m_button_field_delete->set_sensitive(true);
 
-      //Only fields have formatting:
+      //Only some items have formatting:
       sharedptr<LayoutItem> layout_item = (*iter)[m_model_items->m_columns.m_col_layout_item];
-      sharedptr<LayoutItem_Field> layout_item_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
-      const bool is_field = layout_item_field;
-      m_button_field_formatting->set_sensitive(is_field);
+      sharedptr<LayoutItem_WithFormatting> layoutitem_withformatting = sharedptr<LayoutItem_WithFormatting>::cast_dynamic(layout_item);
+      const bool is_field = layoutitem_withformatting;
+      m_button_formatting->set_sensitive(is_field);
     }
     else
     {
@@ -427,7 +427,7 @@ void Dialog_Layout_Details::enable_buttons()
       m_button_down->set_sensitive(false);
       m_button_up->set_sensitive(false);
       m_button_field_delete->set_sensitive(false);
-      m_button_field_formatting->set_sensitive(false);
+      m_button_formatting->set_sensitive(false);
     }
   }
 
@@ -927,7 +927,7 @@ void Dialog_Layout_Details::on_button_add_group()
   enable_buttons();
 }
 
-void Dialog_Layout_Details::on_button_field_formatting()
+void Dialog_Layout_Details::on_button_formatting()
 {
   //TODO: Abstract this into the base class:
 
@@ -944,12 +944,24 @@ void Dialog_Layout_Details::on_button_field_formatting()
       sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
       if(field)
       {
+        //Handle field formatting, which includes more than the generic formatting stuff:
         sharedptr<LayoutItem_Field> chosenitem = offer_field_formatting(field, get_fields_table(), this);
         if(chosenitem)
         {
           *field = *chosenitem; //TODO_Performance.
           m_modified = true;
           //m_model_parts->row_changed(Gtk::TreeModel::Path(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
+        }
+      }
+      else
+      {
+        //Handle any other items that can have formatting:
+        sharedptr<LayoutItem_WithFormatting> withformatting = sharedptr<LayoutItem_WithFormatting>::cast_dynamic(layout_item);
+        if(withformatting)
+        {
+          const bool changed = offer_item_formatting(withformatting, this);
+          if(changed)
+            m_modified = true;
         }
       }
     }

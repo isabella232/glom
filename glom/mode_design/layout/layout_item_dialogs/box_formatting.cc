@@ -53,7 +53,9 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
   m_checkbutton_choices_restricted(0),
   m_adddel_choices_custom(0),
   m_col_index_custom_choices(0),
-  m_for_print_layout(false)
+  m_for_print_layout(false),
+  m_show_numeric(true),
+  m_show_choices(true)
 {
   //Numeric formatting:
   builder->get_widget("vbox_numeric_format", m_vbox_numeric_format);
@@ -133,6 +135,7 @@ Box_Formatting::~Box_Formatting()
 void Box_Formatting::set_is_for_print_layout()
 {
   m_for_print_layout = true;
+  m_show_choices = false;
 
   //Add labels (because we will hide the checkboxes): 
   Gtk::Label* label = Gtk::manage(new Gtk::Label(_("Font")));
@@ -157,9 +160,12 @@ void Box_Formatting::set_formatting(const FieldFormatting& format, const Glib::u
   set_formatting(format);
 }
 
-void Box_Formatting::set_formatting(const FieldFormatting& format)
+void Box_Formatting::set_formatting(const FieldFormatting& format, bool show_numeric, bool show_choices)
 {
   m_format = format;
+
+  m_show_numeric = show_numeric;
+  m_show_choices = show_choices;
 
   //Numeric formatting:
   m_checkbox_format_use_thousands->set_active( format.m_numeric_format.m_use_thousands_separator );
@@ -342,22 +348,19 @@ void Box_Formatting::on_combo_choices_relationship_changed()
 void Box_Formatting::enforce_constraints()
 {
   //Hide inappropriate UI:
-  bool is_numeric = false;
-  if(m_field && (m_field->get_glom_type() == Field::TYPE_NUMERIC))
-    is_numeric = true;
 
-  if(is_numeric)
-    m_vbox_numeric_format->show();
-  else
-    m_vbox_numeric_format->hide();
+  bool show_text = true;
+  if(m_field)
+  {
+    m_show_numeric = false;
+    if(m_field->get_glom_type() == Field::TYPE_NUMERIC)
+      m_show_numeric = true;
 
-
-  bool show_text = false;
-  if(m_field && (m_field->get_glom_type() != Field::TYPE_BOOLEAN) && (m_field->get_glom_type() != Field::TYPE_IMAGE)) //TODO: Allow text options when showing booleans as Yes/No on print layouts.
-    show_text = true;
-
-  if(m_for_print_layout)
-    show_text = true;
+    if((m_field->get_glom_type() == Field::TYPE_BOOLEAN) || (m_field->get_glom_type() == Field::TYPE_IMAGE)) //TODO: Allow text options when showing booleans as Yes/No on print layouts.
+    {
+      show_text = false;
+    }
+  }
 
   if(show_text)
   {
@@ -398,8 +401,12 @@ void Box_Formatting::enforce_constraints()
   m_colorbutton_foreground->set_sensitive( m_for_print_layout || m_checkbox_format_text_color_foreground->get_active() );
   m_colorbutton_background->set_sensitive( m_for_print_layout || m_checkbox_format_text_color_background->get_active() );
 
+  if(m_show_numeric)
+    m_vbox_numeric_format->show();
+  else
+    m_vbox_numeric_format->hide();
 
-  if(!m_for_print_layout)
+  if(m_show_choices)
     m_vbox_choices->show();
   else
     m_vbox_choices->hide();

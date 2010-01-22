@@ -1,3 +1,23 @@
+2010-01-22  Murray Cumming  <murrayc@murrayc.com>>
+
+	Allow editing of formatting for static text items.
+
+	* glom/mode_design/layout/layout_item_dialogs/dialog_formatting.[h|cc]:
+	Added generic formatting (not choices, not default/custom) dialog 
+	for static text items and maybe others.
+	* glom/mode_design/layout/layout_item_dialogs/box_formatting.[h|cc]:
+	set_formatting(): Add optional bool paramters to hide numeric formatting 
+	and choices.
+	* glom/base_db.[h|cc]: Added offer_item_formatting() to use this dialog.
+	* glom/mode_design/layout/dialog_layout_details.cc(): Allow editing of
+	the formatting for static text items instead of just fields.
+
+	* glom/utility_widgets/db_adddel/db_adddel.cc: 
+	construct_specified_columns_cellrenderer(): Apply the formatting to 
+	any LayoutItem_WithFormatting, not just fields.
+	* glom/mode_data/flowtablewithfields.cc: add_textobject_at_position():
+	Try to apply the formatting to the label, but it doesn't seem to work.
+
 2010-01-22  Murray Cumming  <murrayc@murrayc.com>
 
 	Add LayoutItem_WithFormatting as a Field/StaticText common base class.

@@ -86,7 +86,7 @@ Dialog_GroupBy_SecondaryFields::Dialog_GroupBy_SecondaryFields(BaseObjectType* c
   m_button_field_edit->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_GroupBy_SecondaryFields::on_button_edit_field) );
 
   builder->get_widget("button_field_formatting", m_button_field_formatting);
-  m_button_field_formatting->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_GroupBy_SecondaryFields::on_button_field_formatting) );
+  m_button_field_formatting->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_GroupBy_SecondaryFields::on_button_formatting) );
 
   show_all_children();
 }
@@ -312,7 +312,7 @@ void Dialog_GroupBy_SecondaryFields::on_button_edit_field()
   }
 }
 
-void Dialog_GroupBy_SecondaryFields::on_button_field_formatting()
+void Dialog_GroupBy_SecondaryFields::on_button_formatting()
 {
   Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
   if(refTreeSelection)

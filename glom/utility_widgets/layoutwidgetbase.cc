@@ -86,6 +86,9 @@ void LayoutWidgetBase::set_read_only(bool /* read_only */)
 
 void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<const LayoutItem_WithFormatting>& layout_item)
 {
+  if(!layout_item)
+    return;
+
   //Horizontal alignment:
   const FieldFormatting::HorizontalAlignment alignment =
     layout_item->get_formatting_used_horizontal_alignment();

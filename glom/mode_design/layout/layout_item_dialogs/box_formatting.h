@@ -43,7 +43,7 @@ public:
   /**
    * @param format The starting information.
    */
-  void set_formatting(const FieldFormatting& format);
+  void set_formatting(const FieldFormatting& format, bool show_numeric = true, bool show_choices = true);
   
   /**
    * @param format The starting information.
@@ -104,6 +104,9 @@ private:
   //We show different options when 
   //showing this on a print layout.
   bool m_for_print_layout;
+
+  bool m_show_numeric;
+  bool m_show_choices;
 
 
   class AlignmentColumns: public Gtk::TreeModelColumnRecord

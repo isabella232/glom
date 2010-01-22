@@ -77,7 +77,7 @@ protected:
   void on_button_add_button();
   void on_button_add_text();
   void on_button_add_image();
-  void on_button_field_formatting();
+  void on_button_formatting();
   virtual void on_button_edit(); //overridden in derived class
   void on_treeview_fields_selection_changed();
 
@@ -114,7 +114,7 @@ protected:
   Gtk::Button* m_button_add_text;
   Gtk::Button* m_button_add_image;
   Gtk::Button* m_button_field_delete;
-  Gtk::Button* m_button_field_formatting;
+  Gtk::Button* m_button_formatting;
   Gtk::Button* m_button_edit;
   Gtk::Label* m_label_table_name;
 

@@ -265,6 +265,8 @@ glom_glom_SOURCES +=							\
 	glom/mode_design/layout/layout_item_dialogs/dialog_field_layout.h		\
 	glom/mode_design/layout/layout_item_dialogs/dialog_field_summary.cc		\
 	glom/mode_design/layout/layout_item_dialogs/dialog_field_summary.h		\
+	glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc		\
+	glom/mode_design/layout/layout_item_dialogs/dialog_formatting.h		\
 	glom/mode_design/layout/layout_item_dialogs/dialog_group_by.cc			\
 	glom/mode_design/layout/layout_item_dialogs/dialog_group_by.h			\
 	glom/mode_design/layout/layout_item_dialogs/dialog_groupby_secondaryfields.cc	\

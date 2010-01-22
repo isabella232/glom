@@ -615,6 +615,9 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
   label->show();
   alignment_label->add(*label);
   
+  //TODO: Why isn't this formatting used?
+  //std::cout << "DEBUG: Applying formatting for text item: " << text << std::endl;
+  //std::cout << "  DEBUG: font: " << layoutitem_text->get_formatting_used().get_text_format_font() << std::endl;
   apply_formatting(*label, layoutitem_text);
 
   add_layoutwidgetbase(label, add_before);

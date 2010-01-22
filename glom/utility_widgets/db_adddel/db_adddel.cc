@@ -669,20 +669,11 @@ int DbAddDel::get_fixed_cell_height()
     {
       Glib::ustring font_name;
 
-      sharedptr<LayoutItem_Field> item_field = sharedptr<LayoutItem_Field>::cast_dynamic(iter->m_item);
-      if(item_field)
+      sharedptr<LayoutItem_WithFormatting> item_withformatting = sharedptr<LayoutItem_WithFormatting>::cast_dynamic(iter->m_item);
+      if(item_withformatting)
       {
-         const FieldFormatting& formatting = item_field->get_formatting_used();
+         const FieldFormatting& formatting = item_withformatting->get_formatting_used();
          font_name = formatting.get_text_format_font();
-      }
-      else
-      {
-        sharedptr<LayoutItem_Text> item_text = sharedptr<LayoutItem_Text>::cast_dynamic(iter->m_item);
-        if(item_text)
-        {
-          const FieldFormatting& formatting = item_text->get_formatting_used();
-          font_name = formatting.get_text_format_font();
-        }
       }
 
       if(font_name.empty())
@@ -746,10 +737,6 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
         break;
       }
     } //switch
-
-    //Set font and colors:
-    if(pCellRenderer)
-      apply_formatting(pCellRenderer, item_field);
   }
   else
   {
@@ -798,6 +785,12 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
      }
   }
 
+  //Use formatting:
+  sharedptr<LayoutItem_WithFormatting> item_withformatting = sharedptr<LayoutItem_WithFormatting>::cast_dynamic(layout_item);
+  if(item_withformatting && pCellRenderer)
+  {
+    apply_formatting(pCellRenderer, item_withformatting);
+  }
   
   //Set extra cellrenderer attributes, depending on the type used:
   Gtk::CellRendererText* pCellRendererText = dynamic_cast<Gtk::CellRendererText*>(pCellRenderer);

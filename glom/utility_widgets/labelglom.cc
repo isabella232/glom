@@ -110,6 +110,7 @@ bool LabelGlom::on_button_press_event(GdkEventButton *event)
       return true; //We handled this event.
     }
   }
+
   return Gtk::EventBox::on_button_press_event(event);
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY

@@ -30,6 +30,7 @@
 
 //#ifndef GLOM_ENABLE_CLIENT_ONLY
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_field_layout.h>
+#include <glom/mode_design/layout/layout_item_dialogs/dialog_formatting.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_notebook.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_textobject.h>
 #include <glom/mode_design/layout/layout_item_dialogs/dialog_imageobject.h>
@@ -1903,6 +1904,41 @@ Base_DB::type_list_field_items Base_DB::offer_field_list(const Glib::ustring& ta
     }
 
     delete dialog;
+  }
+
+  return result;
+}
+
+bool Base_DB::offer_item_formatting(const sharedptr<LayoutItem_WithFormatting>& layout_item, Gtk::Window* transient_for)
+{
+  bool result = false;
+
+  try
+  {
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_layout_field_properties");
+
+    Dialog_Formatting dialog;
+    if(transient_for)
+      dialog.set_transient_for(*transient_for);
+
+    add_view(&dialog);
+
+    dialog.set_item(layout_item);
+
+    const int response = dialog.run();
+    if(response == Gtk::RESPONSE_OK)
+    {
+      //Get the chosen formatting:
+       dialog.use_item_chosen(layout_item);
+       result = true;
+    }
+    //Cancel means use the old one:
+   
+    remove_view(&dialog);
+  }
+  catch(const Gtk::BuilderError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
   }
 
   return result;
