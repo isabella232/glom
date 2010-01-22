@@ -1881,6 +1881,26 @@ void Document::set_modified(bool value)
   //}
 }
 
+void Document::load_after_layout_item_formatting(const xmlpp::Element* element, const sharedptr<LayoutItem_WithFormatting>& layout_item, const Glib::ustring& table_name)
+{
+  if(!layout_item)
+    return;
+
+  FieldFormatting& format = layout_item->m_formatting;
+
+  sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
+
+  Field::glom_field_type field_type = Field::TYPE_INVALID;
+  if(field)
+    field_type = field->get_glom_type();
+
+  Glib::ustring field_name;
+  if(field)
+    field_name = field->get_name();
+
+  load_after_layout_item_formatting(element, format, field_type, table_name, field_name);
+}
+
 void Document::load_after_layout_item_formatting(const xmlpp::Element* element, FieldFormatting& format, Field::glom_field_type field_type, const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
   //Numeric formatting:
@@ -2009,13 +2029,6 @@ void Document::load_after_layout_item_field(const xmlpp::Element* element, const
 
   item->set_editable( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_EDITABLE) );
 
-  const xmlpp::Element* elementFormatting = get_node_child_named(element, GLOM_NODE_FORMAT);
-  if(elementFormatting)
-  {
-    //TODO: Provide the name of the relationship's table if there is a relationship:
-    load_after_layout_item_formatting(elementFormatting, item->m_formatting, item->get_glom_type(), table_name, name);
-  }
-
   item->set_formatting_use_default( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING) );
 
 
@@ -2108,10 +2121,6 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
       {
         sharedptr<LayoutItem_Text> item = sharedptr<LayoutItem_Text>::create();
         load_after_translations(element, *item);
-
-        const xmlpp::Element* elementFormatting = get_node_child_named(element, GLOM_NODE_FORMAT);
-        if(elementFormatting)
-          load_after_layout_item_formatting(elementFormatting, item->m_formatting);
 
         //The text can be translated too, so it has its own node:
         const xmlpp::Element* element_text = get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_TEXTOBJECT_TEXT);
@@ -2296,6 +2305,18 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
 
         item_added = child_group; 
       }
+    }
+
+    //Load formatting for any layout type that uses it:
+    sharedptr<LayoutItem_WithFormatting> withformatting = sharedptr<LayoutItem_WithFormatting>::cast_dynamic(item_added);
+    if(withformatting)
+    {
+       const xmlpp::Element* elementFormatting = get_node_child_named(element, GLOM_NODE_FORMAT);
+       if(elementFormatting)
+       {
+         //TODO: Provide the name of the relationship's table if there is a relationship:
+         load_after_layout_item_formatting(elementFormatting, withformatting, table_name);
+       }
     }
 
     //Add the new layout item to the group:
@@ -2882,10 +2903,26 @@ bool Document::load_after(int& failure_code)
   return result;
 }
 
+void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem_WithFormatting>& layout_item)
+{
+  if(!layout_item)
+    return;
+
+  const FieldFormatting& format = layout_item->m_formatting;
+
+  sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
+
+  Field::glom_field_type field_type = Field::TYPE_INVALID;
+  if(field)
+    field_type = field->get_glom_type();
+
+  save_before_layout_item_formatting(nodeItem, format, field_type);
+}
+
 void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, const FieldFormatting& format, Field::glom_field_type field_type)
 {
   //Numeric format:
-  if(field_type != Field::TYPE_INVALID) //These options are only for fields:
+  if(field_type != Field::TYPE_INVALID)  //These options are only for fields:
   {
     set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_THOUSANDS_SEPARATOR,  format.m_numeric_format.m_use_thousands_separator);
     set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED, format.m_numeric_format.m_decimal_places_restricted);
@@ -2962,9 +2999,6 @@ void Document::save_before_layout_item_field(xmlpp::Element* nodeItem, const sha
   set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_NAME, field->get_name());
   save_before_layout_item_usesrelationship(nodeItem, field);
   set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_EDITABLE, field->get_editable());
-
-  xmlpp::Element* elementFormat = nodeItem->add_child(GLOM_NODE_FORMAT);
-  save_before_layout_item_formatting(elementFormat, field->m_formatting, field->get_glom_type());
 
   set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_DATA_LAYOUT_ITEM_FIELD_USE_DEFAULT_FORMATTING, field->get_formatting_use_default());
 
@@ -3191,9 +3225,6 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
               nodeItem = child->add_child(GLOM_NODE_DATA_LAYOUT_TEXTOBJECT);
               save_before_translations(nodeItem, *textobject);
 
-              xmlpp::Element* elementFormat = nodeItem->add_child(GLOM_NODE_FORMAT);
-              save_before_layout_item_formatting(elementFormat, textobject->m_formatting);
-
               //The text is translatable too, so we use a node for it:
               xmlpp::Element* element_text = nodeItem->add_child(GLOM_NODE_DATA_LAYOUT_TEXTOBJECT_TEXT);
               save_before_translations(element_text, *(textobject->m_text));
@@ -3230,6 +3261,14 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
               }
             }
           }
+        }
+
+        //Save formatting for any layout items that use it:
+        sharedptr<const LayoutItem_WithFormatting> withformatting = sharedptr<const LayoutItem_WithFormatting>::cast_dynamic(item);
+        if(withformatting)
+        {
+          xmlpp::Element* elementFormat = nodeItem->add_child(GLOM_NODE_FORMAT);
+            save_before_layout_item_formatting(elementFormat, withformatting);
         }
       }
 

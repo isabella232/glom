@@ -30,7 +30,7 @@ LayoutItem_Button::LayoutItem_Button()
 }
 
 LayoutItem_Button::LayoutItem_Button(const LayoutItem_Button& src)
-: LayoutItem(src),
+: LayoutItem_WithFormatting(src),
   m_script(src.m_script)
 {
 }
@@ -46,7 +46,7 @@ LayoutItem* LayoutItem_Button::clone() const
 
 bool LayoutItem_Button::operator==(const LayoutItem_Button& src) const
 {
-  bool result = LayoutItem::operator==(src) && 
+  bool result = LayoutItem_WithFormatting::operator==(src) && 
                 (m_script == src.m_script);
 
   return result;
@@ -55,7 +55,7 @@ bool LayoutItem_Button::operator==(const LayoutItem_Button& src) const
 //Avoid using this, for performance:
 LayoutItem_Button& LayoutItem_Button::operator=(const LayoutItem_Button& src)
 {
-  LayoutItem::operator=(src);
+  LayoutItem_WithFormatting::operator=(src);
 
   m_script = src.m_script;
 

@@ -453,6 +453,7 @@ private:
   void save_before_layout_item_usesrelationship(xmlpp::Element* nodeItem, const sharedptr<const UsesRelationship>& item);
   void save_before_layout_item_field(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem_Field>& item);
   void save_before_layout_item_formatting(xmlpp::Element* nodeItem, const FieldFormatting& format, Field::glom_field_type field_type = Field::TYPE_INVALID);
+  void save_before_layout_item_formatting(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem_WithFormatting>& layout_item);
 
   void save_before_translations(xmlpp::Element* nodeItem, const TranslatableItem& item);
   void save_before_print_layout_position(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem>& item);
@@ -465,6 +466,7 @@ private:
   void load_after_layout_item_usesrelationship(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<UsesRelationship>& item);
   void load_after_layout_item_field(const xmlpp::Element* element, const Glib::ustring& table_name, const sharedptr<LayoutItem_Field>& item);
   void load_after_layout_item_formatting(const xmlpp::Element* element, FieldFormatting& format, Field::glom_field_type field_type = Field::TYPE_INVALID, const Glib::ustring& table_name = Glib::ustring(), const Glib::ustring& field_name = Glib::ustring());
+ void load_after_layout_item_formatting(const xmlpp::Element* element, const sharedptr<LayoutItem_WithFormatting>& layout_item, const Glib::ustring& table_name = Glib::ustring());
 
   void load_after_translations(const xmlpp::Element* element, TranslatableItem& item);
   void load_after_print_layout_position(const xmlpp::Element* nodeItem, const sharedptr<LayoutItem>& item);

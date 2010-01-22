@@ -21,13 +21,13 @@
 #ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_BUTTON_H
 #define GLOM_DATASTRUCTURE_LAYOUTITEM_BUTTON_H
 
-#include "layoutitem.h"
+#include "layoutitem_withformatting.h"
 
 namespace Glom
 {
 
 class LayoutItem_Button 
- : public LayoutItem
+ : public LayoutItem_WithFormatting
 {
 public:
 

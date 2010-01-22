@@ -600,6 +600,10 @@ void FlowTableWithFields::add_button_at_position(const sharedptr<LayoutItem_Butt
     insert_before (*button, *widget, false /* expand */);
   else
     add(*button, false /* expand */);
+
+  //TODO: This doesn't seem to work.
+  Gtk::Widget* label = button->get_child();
+  apply_formatting(*label, layoutitem_button);
 }
 
 void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_Text>& layoutitem_text, const Glib::ustring& table_name , const type_list_layoutwidgets::iterator& add_before)
@@ -1325,9 +1329,8 @@ void FlowTableWithFields::on_dnd_add_layout_item_button(LayoutWidgetBase* above)
   sharedptr<LayoutItem_Button> layout_item_button = sharedptr<LayoutItem_Button>::create();
   layout_item_button->set_title(_("New Button")); //Give the button a default title, so it is big enough, and so people see that they should change it.
   layout_item_button->set_name("new_button");
-  sharedptr<LayoutItem> layout_item = sharedptr<LayoutItem>::cast_dynamic(layout_item_button);
 
-  dnd_add_to_layout_group(layout_item, above);
+  dnd_add_to_layout_group(layout_item_button, above);
   //Tell the parent to tell the document to save the layout:
   signal_layout_changed().emit();
 }

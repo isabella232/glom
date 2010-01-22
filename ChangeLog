@@ -1,5 +1,18 @@
 2010-01-22  Murray Cumming  <murrayc@murrayc.com>>
 
+	Allow custom text formatting of Buttons as well as text items and fields.
+
+	* glom/libglom/data_structure/layout/layoutitem_button.[h|cc]:
+	Derive from LayoutItem_WithFormatting.
+	* glom/libglom/document/document.[h|cc]: Make loading/saving of 
+	formatting generic so we get it for free whenever a new class 
+	derives from LayoutItem_WithFormatting.
+	* glom/mode_data/flowtablewithfields.cc:
+	on_dnd_add_layout_item_button(): Try to apply the formatting to 
+	the button's label, though it doesn't seem to work.
+
+2010-01-22  Murray Cumming  <murrayc@murrayc.com>>
+
 	Allow editing of formatting for static text items.
 
 	* glom/mode_design/layout/layout_item_dialogs/dialog_formatting.[h|cc]:
