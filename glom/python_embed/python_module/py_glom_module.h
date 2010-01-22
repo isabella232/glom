@@ -37,7 +37,7 @@
  * - field values: for instance, name = record.related["contacts"]["name_first"];
  * - Summary functions: for instance, total = record.related["invoice_lines"].sum("price");
  */
-PyMODINIT_FUNC initglom_1_12(void);
+PyMODINIT_FUNC initglom_1_14(void);
 
 
 

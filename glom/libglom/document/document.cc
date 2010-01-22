@@ -4150,8 +4150,9 @@ guint Document::get_latest_known_document_format_version()
   // Version 2: hosting_mode="postgres-central|postgres-self|sqlite" instead of self_hosted="true|false". Can open Version 1 documents, by falling back to the self_hosted attribute if hosting_mode is not set.
   // Version 3: (Glom 1.10). Support for the old one-big-string example_rows format was removed, and we now use (unquoted) non-postgres libgda escaping. 
   // Version 4: (Glom 1.12). Portal navigation options were simplified, with a "none" option. network_sharing was added, defaulting to off.
+  // Version 5: (Glom 1.14). Extra layout item formatting options were added.
 
-  return 4;
+  return 5;
 }
 
 std::vector<Glib::ustring> Document::get_library_module_names() const

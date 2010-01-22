@@ -1,3 +1,15 @@
+1.13.1 (unstable):
+
+* Details and List layouts:
+  Allow custom formatting of static text and buttons instead of just fields.
+  (Murray Cumming) 
+* Field Formatting:
+  - Add the option to use a different text color for negative values.
+    (suggested by Mathias Hasselmann)
+  - Add a horizontal alignment option, though we still right-align numbers 
+    by default. #591125 (Patrick Chan)
+  (Murray Cumming)
+
 1.12.5 (stable):
 
 * List View: Don't chop off the bottom of text when using large fonts.

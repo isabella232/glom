@@ -34,7 +34,7 @@ static PyMethodDef pyglom_methods[] = {
 };
 
 PyMODINIT_FUNC
-initglom_1_12(void) 
+initglom_1_14(void) 
 {
   PyObject* m;
 

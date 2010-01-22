@@ -50,8 +50,8 @@ endif
 SUFFIXES = .rc .res
 
 bin_PROGRAMS = glom/glom
-lib_LTLIBRARIES = glom/libglom/libglom-1.12.la
-pyexec_LTLIBRARIES = glom/python_embed/python_module/glom_1_12.la
+lib_LTLIBRARIES = glom/libglom/libglom-1.14.la
+pyexec_LTLIBRARIES = glom/python_embed/python_module/glom_1_14.la
 
 noinst_LIBRARIES =						\
 	glom/utility_widgets/egg/toolpalette/libeggtoolpalette.a\
@@ -62,11 +62,11 @@ include Makefile_libglom.am
 include Makefile_glom.am
 include Makefile_tests.am
 
-glom_python_embed_python_module_glom_1_12_la_SOURCES =		\
+glom_python_embed_python_module_glom_1_14_la_SOURCES =		\
 	glom/python_embed/python_module/py_glom_module.cc	\
 	glom/python_embed/python_module/py_glom_module.h
 
-glom_python_embed_python_module_glom_1_12_la_LIBADD = \
+glom_python_embed_python_module_glom_1_14_la_LIBADD = \
 	glom/libglom/libglom-$(GLOM_ABI_VERSION).la \
 	$(LIBGLOM_LIBS) $(PYTHON_LIBS)
 
@@ -76,10 +76,10 @@ else
 pymod_ldflags = -module -avoid-version -no-undefined
 endif
 glom_pyexport = -export-symbols-regex '^_*initglom'
-glom_python_embed_python_module_glom_1_12_la_LDFLAGS = $(pymod_ldflags) $(glom_pyexport)
+glom_python_embed_python_module_glom_1_14_la_LDFLAGS = $(pymod_ldflags) $(glom_pyexport)
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = glom/libglom/glom-1.12.pc
+pkgconfig_DATA = glom/libglom/glom-1.14.pc
 
 dist_pkgdata_DATA = glom/glom_document.dtd
 

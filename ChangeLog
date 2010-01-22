@@ -1,5 +1,20 @@
 2010-01-22  Murray Cumming  <murrayc@murrayc.com>
 
+	Make libglom-1.14 install in parallel with libglom-1.12.
+
+	* glom/libglom/glom-1.12.pc.in: Rename to glom-1.14.pc.in
+	* configure.ac: Change the libglom ABI version variable and specify the 
+	changed .pc.in file.
+	* Makefile.am, Makefile_libglom.am: Adapt.
+	* glom/python_embed/python_module/py_glom_module.[h|cc]: Mention 
+	2.14 instead of 2.14.
+	* tests/test_load_python_library.cc: Adapt.
+
+	* glom/libglom/document/document.cc: 
+	get_latest_known_document_format_version(): Increment.
+
+2010-01-22  Murray Cumming  <murrayc@murrayc.com>
+
 	Really use formatting for multi-line fields.
 
 	* glom/utility_widgets/textviewglom.[h|cc]: Added get_textview().
