@@ -1,3 +1,14 @@
+2.13.1:
+
+2010-01-22  Murray Cumming  <murrayc@murrayc.com>
+
+  Fixed compiler warnings.
+  
+	* glom/libglom/data_structure/layout/layoutitem_field.cc: 
+	get_formatting_used_horizontal_alignment():
+	* glom/print_layout/canvas_layout_item.cc: apply_formatting(): Fixed 
+	compiler warnings.
+
 2010-01-22  Murray Cumming  <murrayc@murrayc.com>
 
 	Make libglom-1.14 install in parallel with libglom-1.12.

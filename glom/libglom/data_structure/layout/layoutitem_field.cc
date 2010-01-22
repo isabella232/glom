@@ -228,7 +228,7 @@ FieldFormatting::HorizontalAlignment LayoutItem_Field::get_formatting_used_horiz
     if(m_field && !m_field->get_primary_key()) //TODO: Also prevent this when it is a foreign key.
     {
       //Align numbers to the right by default:
-      alignment == Field::TYPE_NUMERIC ? FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT : FieldFormatting::HORIZONTAL_ALIGNMENT_RIGHT;
+      alignment = (m_field->get_glom_type() == Field::TYPE_NUMERIC ? FieldFormatting::HORIZONTAL_ALIGNMENT_RIGHT : FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT);
     }
     else
       alignment = FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT;

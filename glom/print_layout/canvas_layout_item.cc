@@ -82,14 +82,14 @@ void CanvasLayoutItem::apply_formatting(const Glib::RefPtr<CanvasTextMovable>& c
   if(!layout_item)
     return;
 
-  //Horizontal alignment:
+  //Horizontal alignment:   
   const FieldFormatting::HorizontalAlignment alignment =
     layout_item->get_formatting_used_horizontal_alignment();
   const Pango::Alignment x_align = (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT ? Pango::ALIGN_LEFT : Pango::ALIGN_RIGHT);
 #ifdef GLIBMM_PROPERTIES_ENABLED  
-  //TODO: property_alignment() = x_align;
+  canvas_item->property_alignment() = x_align;
 #else    
-  //TODO: set_property("alignment", alignment);
+  canvas_item->set_property("alignment", alignment);
 #endif
 
   const FieldFormatting& formatting = layout_item->get_formatting_used();
