@@ -1,5 +1,13 @@
 2010-01-23  Murray Cumming  <murrayc@murrayc.com>
 
+  Details: Buttons: Use background color from formatting.
+  
+	* glom/mode_data/flowtablewithfields.cc: add_button_at_position(): Call 
+	apply_formatting on the button, not the label, so it has a chance to do the 
+	right thing on the right widget.
+
+2010-01-23  Murray Cumming  <murrayc@murrayc.com>
+
   Details: Static Text items: Use background color from formatting.
   
 	* glom/utility_widgets/labelglom.cc: Do not call set_visible_window(false)

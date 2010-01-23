@@ -601,9 +601,7 @@ void FlowTableWithFields::add_button_at_position(const sharedptr<LayoutItem_Butt
   else
     add(*button, false /* expand */);
 
-  //TODO: This doesn't seem to work.
-  Gtk::Widget* label = button->get_child();
-  apply_formatting(*label, layoutitem_button);
+  apply_formatting(*button, layoutitem_button);
 }
 
 void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_Text>& layoutitem_text, const Glib::ustring& table_name , const type_list_layoutwidgets::iterator& add_before)
