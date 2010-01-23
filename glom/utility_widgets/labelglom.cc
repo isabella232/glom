@@ -49,8 +49,9 @@ void LabelGlom::init()
 {
   add(m_label);
   m_label.show();
-  set_events (Gdk::ALL_EVENTS_MASK);
-  set_visible_window (false);
+  set_events(Gdk::ALL_EVENTS_MASK);
+  //This would be more efficient if we were only using the (base) EventBox to get events, 
+  //but we also want to allow changing of the background color, so we don't use it: set_visible_window(false);
 }
 
 App_Glom* LabelGlom::get_application()

@@ -1,5 +1,13 @@
 2010-01-23  Murray Cumming  <murrayc@murrayc.com>
 
+  Details: Static Text items: Use background color from formatting.
+  
+	* glom/utility_widgets/labelglom.cc: Do not call set_visible_window(false)
+	because we really need a visible child X window to be able to change the 
+	background color.
+
+2010-01-23  Murray Cumming  <murrayc@murrayc.com>
+
   Details: Static Text items and Buttons: Use foreground color from formatting.
    
 	* glom/utility_widgets/layoutwidgetbase.cc: apply_formatting(): Use the 

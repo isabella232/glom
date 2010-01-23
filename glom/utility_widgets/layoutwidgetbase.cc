@@ -101,7 +101,6 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<con
       widget_to_change = textview->get_textview();
     else if(label)
       widget_to_change = label->get_label();
-    }
   }
 
   if(!layout_item)
@@ -137,18 +136,28 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<con
     widget_to_change->modify_fg(Gtk::STATE_NORMAL, Gdk::Color(fg));
   }
 
-  // "base" is the background color. "bg" seems to change the border:
+
   const Glib::ustring bg = formatting.get_text_format_color_background();
   if(!bg.empty())
   {
-    widget_to_change->modify_base(Gtk::STATE_NORMAL, Gdk::Color(bg));
-
-    //TODO: This doesn't seem to work.
+    if(!label && !button)
+    {
+      // "base" is the background color for GtkEntry. "bg" seems to change the border:
+      widget_to_change->modify_base(Gtk::STATE_NORMAL, Gdk::Color(bg));
+    }
     //According to the gtk_widget_modify_base() documentation, 
     //a GtkLabel can only have a background color by, for instance, placing it 
     //in a GtkEventBox. Luckily LabelGlom is actually derived from EventBox.
-    if(label)
-      label->modify_base(Gtk::STATE_NORMAL, Gdk::Color(bg));
+    else if(label)
+    {
+      //label->modify_base(Gtk::STATE_NORMAL, Gdk::Color("bg"));
+      label->modify_bg(Gtk::STATE_NORMAL, Gdk::Color(bg));
+    }
+    else if(button)
+    {
+      //button->modify_base(Gtk::STATE_NORMAL, Gdk::Color("bg"));
+      button->modify_bg(Gtk::STATE_NORMAL, Gdk::Color(bg));
+    }
   }
 }
 
