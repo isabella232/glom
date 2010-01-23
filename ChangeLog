@@ -1,3 +1,10 @@
+2010-01-23  Murray Cumming  <murrayc@murrayc.com>
+
+  Details: Static Text items and Buttons: Use foreground color from formatting.
+   
+	* glom/utility_widgets/layoutwidgetbase.cc: apply_formatting(): Use the 
+	foreground color for labels (static text items and buttons).
+
 2010-01-22  Murray Cumming  <murrayc@murrayc.com>
 
   Details: Static Text items: Use formatting.

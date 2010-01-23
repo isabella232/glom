@@ -91,6 +91,7 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<con
   Gtk::Widget* widget_to_change = &widget;
 
   Gtk::Button* button = dynamic_cast<Gtk::Button*>(&widget);
+  LabelGlom* label = dynamic_cast<LabelGlom*>(&widget);
   if(button)
     widget_to_change = button->get_child();
   else
@@ -98,11 +99,8 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<con
     TextViewGlom* textview = dynamic_cast<TextViewGlom*>(&widget);
     if(textview)
       widget_to_change = textview->get_textview();
-    else
-    {
-      LabelGlom* label = dynamic_cast<LabelGlom*>(&widget);
-      if(label)
-        widget_to_change = label->get_label();
+    else if(label)
+      widget_to_change = label->get_label();
     }
   }
 
@@ -127,15 +125,31 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<con
     widget_to_change->modify_font( Pango::FontDescription(font_desc) );
   }
 
-  // "text" is the text color. "fg" doesn't seem to have any effect:
+  
   const Glib::ustring fg = formatting.get_text_format_color_foreground();
   if(!fg.empty())
+  {
+    // "text" is the text color. (Works for GtkEntry and GtkTextView, 
+    // for which modify_fg() doesn't seem to have any effect.
     widget_to_change->modify_text(Gtk::STATE_NORMAL, Gdk::Color(fg));
+    
+    // This works for GtkLabel, for which modify_text() does not.
+    widget_to_change->modify_fg(Gtk::STATE_NORMAL, Gdk::Color(fg));
+  }
 
   // "base" is the background color. "bg" seems to change the border:
   const Glib::ustring bg = formatting.get_text_format_color_background();
   if(!bg.empty())
+  {
     widget_to_change->modify_base(Gtk::STATE_NORMAL, Gdk::Color(bg));
+
+    //TODO: This doesn't seem to work.
+    //According to the gtk_widget_modify_base() documentation, 
+    //a GtkLabel can only have a background color by, for instance, placing it 
+    //in a GtkEventBox. Luckily LabelGlom is actually derived from EventBox.
+    if(label)
+      label->modify_base(Gtk::STATE_NORMAL, Gdk::Color(bg));
+  }
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
