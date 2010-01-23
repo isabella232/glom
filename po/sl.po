@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glom&component=general\n"
-"POT-Creation-Date: 2010-01-17 18:57+0000\n"
-"PO-Revision-Date: 2010-01-18 13:38+0100\n"
+"POT-Creation-Date: 2010-01-22 22:52+0000\n"
+"PO-Revision-Date: 2010-01-23 11:39+0100\n"
 "Last-Translator: Andrej Žnidaršič <andrej.znidarsic@gmail.com>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -59,7 +59,7 @@ msgstr "_Izvozi"
 
 #. Note to translators: "Import" here is an action verb - it's a button.
 #: ../glom/application.cc:280
-#: ../glom/glom_developer.glade.h:150
+#: ../glom/glom_developer.glade.h:151
 #: ../glom/mode_design/translation/window_translations.cc:597
 msgid "Import"
 msgstr "Uvoz"
@@ -365,37 +365,37 @@ msgstr "Novo ustvarjena mapa za nove datoteke podatkovne zbirke ima enako ime ko
 msgid " (read-only)"
 msgstr " (le za branje)"
 
-#: ../glom/base_db.cc:139
-#: ../glom/base_db.cc:152
+#: ../glom/base_db.cc:140
+#: ../glom/base_db.cc:153
 msgid "Internal error"
 msgstr "Notranja napaka"
 
-#: ../glom/base_db.cc:1370
+#: ../glom/base_db.cc:1371
 #: ../glom/mode_design/users/dialog_groups_list.cc:64
 msgid "Description"
 msgstr "Opis"
 
-#: ../glom/base_db.cc:1377
+#: ../glom/base_db.cc:1378
 msgid "Comments"
 msgstr "Opombe"
 
-#: ../glom/base_db.cc:2090
+#: ../glom/base_db.cc:2126
 msgid "Your find criteria did not match any records in the table."
 msgstr "Vaši kriteriji iskanja se ne skladajo z nobenim zapisom v preglednici."
 
-#: ../glom/base_db.cc:2095
+#: ../glom/base_db.cc:2131
 msgid "No Records Found"
 msgstr "Zapisov ni mogoče najti"
 
-#: ../glom/base_db.cc:2101
+#: ../glom/base_db.cc:2137
 msgid "New Find"
 msgstr "Novo iskanje"
 
-#: ../glom/base_db.cc:3180
+#: ../glom/base_db.cc:3216
 msgid "Value Is Not Unique"
 msgstr "Vrednost ni edinstvena"
 
-#: ../glom/base_db.cc:3180
+#: ../glom/base_db.cc:3216
 msgid "The field's value must be unique, but a record with this value already exists."
 msgstr "Vrednost polja mora biti edinstvena, toda zapis s to vrednostjo že obstaja."
 
@@ -433,7 +433,7 @@ msgstr "Izbriši zapis"
 #. Name column:
 #. Append the View columns:
 #: ../glom/box_reports.cc:90
-#: ../glom/glom_developer.glade.h:160
+#: ../glom/glom_developer.glade.h:161
 #: ../glom/mode_design/box_db_table_relationships.cc:43
 #: ../glom/mode_design/fields/box_db_table_definition.cc:53
 #: ../glom/mode_design/layout/dialog_choose_field.cc:51
@@ -1225,7 +1225,7 @@ msgid "Export Format"
 msgstr "Oblika zapisa za izvoz"
 
 #: ../glom/glom_developer.glade.h:122
-#: ../glom/libglom/data_structure/layout/layoutitem_field.cc:196
+#: ../glom/libglom/data_structure/layout/layoutitem_field.cc:193
 #: ../glom/libglom/data_structure/translatable_item.cc:296
 #: ../glom/mode_design/dialog_database_preferences.cc:54
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:602
@@ -1272,6 +1272,7 @@ msgid "Foreground Color:"
 msgstr "Barva ospredja:"
 
 #: ../glom/glom_developer.glade.h:132
+#: ../glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:32
 msgid "Formatting"
 msgstr "Oblikovanje"
 
@@ -1282,8 +1283,8 @@ msgstr "Polje od:"
 
 #: ../glom/glom_developer.glade.h:135
 #: ../glom/libglom/data_structure/layout/layoutgroup.cc:377
-#: ../glom/mode_data/flowtablewithfields.cc:1283
-#: ../glom/mode_data/flowtablewithfields.cc:1310
+#: ../glom/mode_data/flowtablewithfields.cc:1290
+#: ../glom/mode_data/flowtablewithfields.cc:1317
 #: ../glom/utility_widgets/layouttoolbar.cc:58
 #: ../glom/utility_widgets/layouttoolbar.cc:74
 #: ../glom/utility_widgets/notebooklabelglom.cc:74
@@ -1325,257 +1326,261 @@ msgid "Height (lines)"
 msgstr "Višina (vrstice)"
 
 #: ../glom/glom_developer.glade.h:144
+msgid "Horizontal Alignment:"
+msgstr "Vodoravna poravnava:"
+
+#: ../glom/glom_developer.glade.h:145
 msgid "Identify Original"
 msgstr "Določi izvirnik"
 
-#: ../glom/glom_developer.glade.h:145
+#: ../glom/glom_developer.glade.h:146
 msgid "Identify Source"
 msgstr "Določi vir"
 
-#: ../glom/glom_developer.glade.h:146
+#: ../glom/glom_developer.glade.h:147
 msgid "If the text is not actually in this language, please choose the correct language."
 msgstr "V primeru da besedilo ni v tem jeziku, izberite pravilnega."
 
-#: ../glom/glom_developer.glade.h:147
+#: ../glom/glom_developer.glade.h:148
 msgid "If this is not selected then a thousands separator will not be used, even if your locale would normally use one. If it is selected then a thousands separator will be used only if your locale normally uses one."
 msgstr "Neizbrana možnost onemogoči uporabo ločilnika tisočic, tudi če vaše jezikovno določilo običajno uporablja ločilnik. Izbrana možnost omogoči ločilnik tisočic le če ga vaša jezikovna oznaka običajno uporablja. "
 
-#: ../glom/glom_developer.glade.h:148
+#: ../glom/glom_developer.glade.h:149
 msgid "If this is selected then the field value will be shown in a multi-line box with a scrollbar."
 msgstr "Izbrana možnost omogoči prikaz vrednosti polja v več vrstičnem oknu z drsnikom."
 
-#: ../glom/glom_developer.glade.h:149
+#: ../glom/glom_developer.glade.h:150
 msgid "Image Object"
 msgstr "Slikovni predmet"
 
-#: ../glom/glom_developer.glade.h:151
+#: ../glom/glom_developer.glade.h:152
 msgid "Language:"
 msgstr "Jezik:"
 
 #. Don't add ContextLayout in client only mode because it would never
 #. be sensitive anyway
-#: ../glom/glom_developer.glade.h:152
+#: ../glom/glom_developer.glade.h:153
 #: ../glom/mode_data/box_data_calendar_related.cc:501
 #: ../glom/utility_widgets/db_adddel/db_adddel.cc:276
 msgid "Layout"
 msgstr "Postavitev"
 
-#: ../glom/glom_developer.glade.h:153
+#: ../glom/glom_developer.glade.h:154
 msgid "Locale:"
 msgstr "Jezikovna oznaka:"
 
-#: ../glom/glom_developer.glade.h:154
+#: ../glom/glom_developer.glade.h:155
 msgid "Logo"
 msgstr "Logo"
 
-#: ../glom/glom_developer.glade.h:155
+#: ../glom/glom_developer.glade.h:156
 msgid "Lookup value when a field changes."
 msgstr "Poizvedba vrednosti po spremembi polja."
 
 #. Translators: The Main part of the report (not the footer or header)
-#: ../glom/glom_developer.glade.h:157
+#: ../glom/glom_developer.glade.h:158
 msgid "Main"
 msgstr "Glavni del"
 
-#: ../glom/glom_developer.glade.h:158
+#: ../glom/glom_developer.glade.h:159
 msgid "Module name:"
 msgstr "Ime modula:"
 
-#: ../glom/glom_developer.glade.h:159
+#: ../glom/glom_developer.glade.h:160
 msgid "Multi-line"
 msgstr "Večvrstično"
 
-#: ../glom/glom_developer.glade.h:161
+#: ../glom/glom_developer.glade.h:162
 msgid "Name of new related table:"
 msgstr "Ime nove povezane preglednice:"
 
-#: ../glom/glom_developer.glade.h:162
+#: ../glom/glom_developer.glade.h:163
 msgid "Name of new relationship:"
 msgstr "Ime novega razmerja:"
 
-#: ../glom/glom_developer.glade.h:163
+#: ../glom/glom_developer.glade.h:164
 msgid "Name:"
 msgstr "Ime:"
 
-#: ../glom/glom_developer.glade.h:164
+#: ../glom/glom_developer.glade.h:165
 msgid "No Choices"
 msgstr "Ni izbire"
 
-#: ../glom/glom_developer.glade.h:165
+#: ../glom/glom_developer.glade.h:166
 msgid "None"
 msgstr "Brez"
 
-#: ../glom/glom_developer.glade.h:166
+#: ../glom/glom_developer.glade.h:167
 #: ../glom/glom.glade.h:32
 #: ../glom/mode_design/dialog_design.cc:54
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:493
 msgid "None selected"
 msgstr "Brez izbora"
 
-#: ../glom/glom_developer.glade.h:167
-#: ../glom/mode_design/layout/dialog_layout_details.cc:994
+#: ../glom/glom_developer.glade.h:168
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1006
 msgid "Notebook Tabs"
 msgstr "Zavihki beležnice"
 
-#: ../glom/glom_developer.glade.h:168
+#: ../glom/glom_developer.glade.h:169
 msgid "Organisation"
 msgstr "Organizacija"
 
-#: ../glom/glom_developer.glade.h:169
+#: ../glom/glom_developer.glade.h:170
 #: ../glom/glom.glade.h:36
 msgid "Password"
 msgstr "Geslo"
 
-#: ../glom/glom_developer.glade.h:170
+#: ../glom/glom_developer.glade.h:171
 msgid "Primary Key"
 msgstr "Osnovni ključ"
 
-#: ../glom/glom_developer.glade.h:171
+#: ../glom/glom_developer.glade.h:172
 msgid "Print Layout Editor"
 msgstr "Urejevalnik razporeditev tiskanja"
 
-#: ../glom/glom_developer.glade.h:172
+#: ../glom/glom_developer.glade.h:173
 msgid "Print Layouts"
 msgstr "Razporeditve tiskanja"
 
-#: ../glom/glom_developer.glade.h:173
+#: ../glom/glom_developer.glade.h:174
 #: ../glom/utility_widgets/layoutwidgetutils.cc:37
 msgid "Properties"
 msgstr "Lastnosti"
 
-#: ../glom/glom_developer.glade.h:174
+#: ../glom/glom_developer.glade.h:175
 #: ../glom/libglom/data_structure/translatable_item.cc:300
 msgid "Relationship"
 msgstr "Razmerje"
 
-#: ../glom/glom_developer.glade.h:175
+#: ../glom/glom_developer.glade.h:176
 msgid "Relationship:"
 msgstr "Razmerje:"
 
-#: ../glom/glom_developer.glade.h:176
+#: ../glom/glom_developer.glade.h:177
 msgid "Relationships Overview"
 msgstr "Pregled razmerij"
 
-#: ../glom/glom_developer.glade.h:177
+#: ../glom/glom_developer.glade.h:178
 msgid "Remove the item from the layout. If you remove a field layout item, it will not remove the field from the table itself. It just will not be seen on the layout."
 msgstr "Odstranitev predmeta iz razporeditve. V primeru, da odstranite predmet razporeditve polja, polje ne bo odstranjeno iz preglednice. Polje samo ne bo prikazano na razporeditvi."
 
-#: ../glom/glom_developer.glade.h:178
+#: ../glom/glom_developer.glade.h:179
 msgid "Report Layout"
 msgstr "Razporeditev poročila"
 
-#: ../glom/glom_developer.glade.h:179
+#: ../glom/glom_developer.glade.h:180
 msgid "Reports"
 msgstr "Poročila"
 
-#: ../glom/glom_developer.glade.h:180
+#: ../glom/glom_developer.glade.h:181
 msgid "Restrict data to these choices"
 msgstr "Omejitev podatkov na te izbire"
 
-#: ../glom/glom_developer.glade.h:181
+#: ../glom/glom_developer.glade.h:182
 msgid "Script name:"
 msgstr "Ime skripta:"
 
-#: ../glom/glom_developer.glade.h:182
+#: ../glom/glom_developer.glade.h:183
 msgid "Secondary Fields:"
 msgstr "Dodatna polja:"
 
-#: ../glom/glom_developer.glade.h:183
+#: ../glom/glom_developer.glade.h:184
 #: ../glom/utility_widgets/dialog_choose_id.cc:88
 #: ../glom/utility_widgets/imageglom.cc:415
 msgid "Select"
 msgstr "Izberi"
 
-#: ../glom/glom_developer.glade.h:184
+#: ../glom/glom_developer.glade.h:185
 msgid "Select Field"
 msgstr "Izberi polje"
 
-#: ../glom/glom_developer.glade.h:185
+#: ../glom/glom_developer.glade.h:186
 msgid "Select Relationship"
 msgstr "Izberi razmerje"
 
-#: ../glom/glom_developer.glade.h:186
+#: ../glom/glom_developer.glade.h:187
 msgid "Show Related Relationships"
 msgstr "Pokaži povezana razmerja"
 
-#: ../glom/glom_developer.glade.h:187
+#: ../glom/glom_developer.glade.h:188
 msgid "Show Table Title"
 msgstr "Pokaži naslov tabele"
 
-#: ../glom/glom_developer.glade.h:188
+#: ../glom/glom_developer.glade.h:189
 msgid "Show child relationships"
 msgstr "Pokaži podrejena razmerja"
 
-#: ../glom/glom_developer.glade.h:189
+#: ../glom/glom_developer.glade.h:190
 msgid "Sort Fields:"
 msgstr "Razvrsti polja:"
 
-#: ../glom/glom_developer.glade.h:190
+#: ../glom/glom_developer.glade.h:191
 msgid "Start a translation for this target locale by copying the strings from another target locale."
 msgstr "Začnite prevod za to ciljno jezikovno oznako s kopiranjem nizov iz druge ciljne jezikovne oznake."
 
-#: ../glom/glom_developer.glade.h:191
+#: ../glom/glom_developer.glade.h:192
 msgid "State/County:"
 msgstr "Regija:"
 
-#: ../glom/glom_developer.glade.h:192
+#: ../glom/glom_developer.glade.h:193
 msgid "Street (Line 2):"
 msgstr "Ulica (druga vrstica):"
 
-#: ../glom/glom_developer.glade.h:193
+#: ../glom/glom_developer.glade.h:194
 msgid "Street:"
 msgstr "Ulica:"
 
-#: ../glom/glom_developer.glade.h:194
+#: ../glom/glom_developer.glade.h:195
 msgid "Summary Type:"
 msgstr "Vrsta povzetka:"
 
-#: ../glom/glom_developer.glade.h:195
+#: ../glom/glom_developer.glade.h:196
 msgid "System Name:"
 msgstr "Ime sistema:"
 
-#: ../glom/glom_developer.glade.h:196
+#: ../glom/glom_developer.glade.h:197
 msgid "Table Name"
 msgstr "Ime preglednice:"
 
-#: ../glom/glom_developer.glade.h:197
+#: ../glom/glom_developer.glade.h:198
 #: ../glom/glom.glade.h:44
 msgid "Table:"
 msgstr "Preglednica:"
 
-#: ../glom/glom_developer.glade.h:198
+#: ../glom/glom_developer.glade.h:199
 msgid "Table: "
 msgstr "Preglednica: "
 
-#: ../glom/glom_developer.glade.h:199
+#: ../glom/glom_developer.glade.h:200
 msgid "Test"
 msgstr "Preizkus"
 
-#: ../glom/glom_developer.glade.h:200
+#: ../glom/glom_developer.glade.h:201
 msgid "Test Translation"
 msgstr "Preizkus prevoda"
 
-#: ../glom/glom_developer.glade.h:201
+#: ../glom/glom_developer.glade.h:202
 msgid "Text Format"
 msgstr "Oblika besedila"
 
-#: ../glom/glom_developer.glade.h:202
+#: ../glom/glom_developer.glade.h:203
 msgid "Text Object"
 msgstr "Predmet besedila"
 
-#: ../glom/glom_developer.glade.h:203
+#: ../glom/glom_developer.glade.h:204
 msgid "The field value will be the return value of the python function, which you implement here."
 msgstr "Vrednost polja bo vrnjena vrednost tukaj podprte zmožnosti python."
 
-#: ../glom/glom_developer.glade.h:204
+#: ../glom/glom_developer.glade.h:205
 msgid "These modules will be available to your button scripts and field calculations via the python import keyword."
 msgstr "Ti moduli bodo razpoložljivi vašim gumbom skript in izračunom polja preko uvožene ključne besede pyhton."
 
-#: ../glom/glom_developer.glade.h:205
+#: ../glom/glom_developer.glade.h:206
 msgid "This field will be used to decide which records to show in the calendar."
 msgstr "To polje bo uporabljeno za odločitev kateri zapisi bodo prikazani v koledarju."
 
-#: ../glom/glom_developer.glade.h:206
+#: ../glom/glom_developer.glade.h:207
 msgid ""
 "This will add a new table and add a relationship that refers to the new  table, as a convenient alternative to doing this in separate steps.\n"
 "\n"
@@ -1585,108 +1590,108 @@ msgstr ""
 "\n"
 "V primeru da primerna povezana preglednica že obstaja, prekličite dejanje in dodajte samo razmerje.  "
 
-#: ../glom/glom_developer.glade.h:209
+#: ../glom/glom_developer.glade.h:210
 msgid "Title:"
 msgstr "Naslov:"
 
-#: ../glom/glom_developer.glade.h:210
+#: ../glom/glom_developer.glade.h:211
 msgid "Town:"
 msgstr "Mesto:"
 
-#: ../glom/glom_developer.glade.h:211
+#: ../glom/glom_developer.glade.h:212
 msgid "Translations"
 msgstr "Prevodi"
 
-#: ../glom/glom_developer.glade.h:212
+#: ../glom/glom_developer.glade.h:213
 msgid "Triggered by:"
 msgstr "Sprožil:"
 
-#: ../glom/glom_developer.glade.h:213
+#: ../glom/glom_developer.glade.h:214
 msgid "Type:"
 msgstr "Vrsta:"
 
-#: ../glom/glom_developer.glade.h:214
+#: ../glom/glom_developer.glade.h:215
 msgid "Unique"
 msgstr "Edinstveno"
 
-#: ../glom/glom_developer.glade.h:215
+#: ../glom/glom_developer.glade.h:216
 msgid "Use 1000s separator"
 msgstr "Ustvari ločnico tisočic"
 
-#: ../glom/glom_developer.glade.h:216
+#: ../glom/glom_developer.glade.h:217
 msgid "Use custom formatting"
 msgstr "Uporabi oblikovanje po meri"
 
-#: ../glom/glom_developer.glade.h:217
+#: ../glom/glom_developer.glade.h:218
 msgid "Use custom title:"
 msgstr "Uporabi privzet naslov:"
 
-#: ../glom/glom_developer.glade.h:218
+#: ../glom/glom_developer.glade.h:219
 msgid "Use default field title: "
 msgstr "Uporabi privzet naslov polja:"
 
-#: ../glom/glom_developer.glade.h:219
+#: ../glom/glom_developer.glade.h:220
 msgid "Use default formatting"
 msgstr "Uporabi privzeto oblikovanje"
 
 #. Append the View columns:
-#: ../glom/glom_developer.glade.h:220
+#: ../glom/glom_developer.glade.h:221
 #: ../glom/glom.glade.h:46
 #: ../glom/mode_design/users/dialog_users_list.cc:64
 msgid "User"
 msgstr "Uporabnik"
 
-#: ../glom/glom_developer.glade.h:221
+#: ../glom/glom_developer.glade.h:222
 msgid "User Entry"
 msgstr "Vnos uporabnika"
 
-#: ../glom/glom_developer.glade.h:222
+#: ../glom/glom_developer.glade.h:223
 msgid "Users"
 msgstr "Uporabniki"
 
-#: ../glom/glom_developer.glade.h:223
+#: ../glom/glom_developer.glade.h:224
 msgid "Value"
 msgstr "Vrednost"
 
-#: ../glom/glom_developer.glade.h:224
+#: ../glom/glom_developer.glade.h:225
 msgid "When the button is clicked it will run the python function which you implement here."
 msgstr "Ko je gumb kliknjen, zažene tukaj podprto zmožnost python."
 
-#: ../glom/glom_developer.glade.h:225
+#: ../glom/glom_developer.glade.h:226
 msgid "When this is checked the table's title will be shown at the top of the report in addition to the report title."
 msgstr "Izbrana možnost omogoči prikaz naslova preglednice na vrhu poročila poleg naslova poročila."
 
-#: ../glom/glom_developer.glade.h:226
+#: ../glom/glom_developer.glade.h:227
 msgid "When this is selected you will see extra relationships in the Table list, allowing you to choose fields from relationships in related tables, instead of just regular fields from those related tables."
 msgstr "Izbrana možnost omogoči ogled dodatnih razmerij v seznamu preglednic. To dovoli izbor polj iz razmerij v povezanih tabelah, namesto iz navadnih polj v povezanih tabelah."
 
-#: ../glom/glom_developer.glade.h:227
+#: ../glom/glom_developer.glade.h:228
 msgid "Zip/Postal Code:"
 msgstr "Poštna številka: "
 
-#: ../glom/glom_developer.glade.h:228
+#: ../glom/glom_developer.glade.h:229
 msgid "_Confirm Password"
 msgstr "_Potrdi geslo"
 
-#: ../glom/glom_developer.glade.h:229
+#: ../glom/glom_developer.glade.h:230
 #: ../glom/glom.glade.h:52
 msgid "_Password"
 msgstr "_Geslo"
 
-#: ../glom/glom_developer.glade.h:230
+#: ../glom/glom_developer.glade.h:231
 #: ../glom/glom.glade.h:54
 msgid "_User"
 msgstr "_Uporabnik"
 
-#: ../glom/glom_developer.glade.h:231
+#: ../glom/glom_developer.glade.h:232
 msgid "field name"
 msgstr "ime polja"
 
-#: ../glom/glom_developer.glade.h:232
+#: ../glom/glom_developer.glade.h:233
 msgid "table name"
 msgstr "ime preglednice"
 
-#: ../glom/glom_developer.glade.h:233
+#: ../glom/glom_developer.glade.h:234
 msgid "the title"
 msgstr "naslov"
 
@@ -2117,9 +2122,9 @@ msgid "Number"
 msgstr "Številka"
 
 #: ../glom/libglom/data_structure/field.cc:652
-#: ../glom/libglom/data_structure/layout/layoutitem_text.cc:76
+#: ../glom/libglom/data_structure/layout/layoutitem_text.cc:72
 #: ../glom/libglom/data_structure/translatable_item.cc:316
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1194
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1206
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:43
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:606
 msgid "Text"
@@ -2140,7 +2145,7 @@ msgstr "Boolean"
 #: ../glom/libglom/data_structure/field.cc:656
 #: ../glom/libglom/data_structure/layout/layoutitem_image.cc:69
 #: ../glom/libglom/data_structure/translatable_item.cc:318
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1201
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1213
 #: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:46
 #: ../glom/utility_widgets/layouttoolbar.cc:77
 msgid "Image"
@@ -2153,24 +2158,24 @@ msgstr "Slika"
 #. * and default to %d/%m/%Y" if it detects a problem, but that might not be
 #. * correct for your locale.
 #. * Thanks.
-#: ../glom/libglom/data_structure/glomconversions.cc:96
+#: ../glom/libglom/data_structure/glomconversions.cc:103
 #, no-c-format
 msgid "%x"
 msgstr "%d.%m.%Y"
 
 #. Note to translators: If you see this error in the terminal at startup then you need to translate the %x elsewhere.
-#: ../glom/libglom/data_structure/glomconversions.cc:143
+#: ../glom/libglom/data_structure/glomconversions.cc:150
 msgid "ERROR: sanity_check_date_parsing(): Sanity check failed: Glom could not parse a date's text representation that it generated itself, in this locale."
 msgstr "NAPAKA: sanity_check_date_parsing(): pregled je spodletel: s programom Glom, predstavitve besedila ustvarjenega datuma, ni mogoče razčleniti v tej jezikovni oznaki. "
 
 #. Note to translators: If you see this error in the terminal at startup then you need to translate the %x elsewhere.
-#: ../glom/libglom/data_structure/glomconversions.cc:177
+#: ../glom/libglom/data_structure/glomconversions.cc:184
 msgid "ERROR: sanity_check_date_text_representation_uses_4_digit_year(): Sanity check failed: Glom does not seem to use 4 digits to display years in a date's text representation, in this locale. Defaulting to dd/mm/yyyy though this might be incorrect for your locale. This needs attention from a translator. Please file a bug - see http://www.glom.org"
 msgstr "NAPAKA: sanity_check_date_text_representation_uses_4_digit_year(): Pregled je spodletel. Videti je, da v tej jezikovni oznaki Glom ne uporablja štirih številk za prikaz let. Uporabljanje privzetega dd/mm/llll, čeprav je to morda napačno za vašo jezikovno oznako. To mora videti prevajalec. Pošljite poročilo o hrošču - oglejte si http://www.glom.org "
 
 #: ../glom/libglom/data_structure/layout/layoutitem_button.cc:67
 #: ../glom/libglom/data_structure/translatable_item.cc:314
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1187
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1199
 #: ../glom/utility_widgets/layouttoolbar.cc:71
 msgid "Button"
 msgstr "Gumb"
@@ -2181,7 +2186,7 @@ msgstr "Portal koledarja"
 
 #. Note to translators: "Notebook" means a GtkNotebook-type widget.
 #: ../glom/libglom/data_structure/layout/layoutitem_notebook.cc:56
-#: ../glom/mode_data/flowtablewithfields.cc:1279
+#: ../glom/mode_data/flowtablewithfields.cc:1286
 #: ../glom/utility_widgets/layouttoolbar.cc:61
 msgid "Notebook"
 msgstr "Beležnica"
@@ -2251,44 +2256,44 @@ msgstr "Razporeditev skupine"
 msgid "Field Title"
 msgstr "Naslov polja"
 
-#: ../glom/libglom/document/document.cc:470
-#: ../glom/libglom/document/document.cc:488
+#: ../glom/libglom/document/document.cc:475
+#: ../glom/libglom/document/document.cc:493
 msgid "System Preferences"
 msgstr "Možnosti sistema"
 
-#: ../glom/libglom/document/document.cc:501
+#: ../glom/libglom/document/document.cc:506
 msgid "System Name"
 msgstr "Ime sistema"
 
-#: ../glom/libglom/document/document.cc:507
+#: ../glom/libglom/document/document.cc:512
 msgid "Organisation Name"
 msgstr "Ime organizacije"
 
-#: ../glom/libglom/document/document.cc:513
+#: ../glom/libglom/document/document.cc:518
 msgid "Organisation Logo"
 msgstr "Logotip organizacije"
 
-#: ../glom/libglom/document/document.cc:519
+#: ../glom/libglom/document/document.cc:524
 msgid "Street"
 msgstr "Ulica"
 
-#: ../glom/libglom/document/document.cc:525
+#: ../glom/libglom/document/document.cc:530
 msgid "Street (line 2)"
 msgstr "Ulica (druga vrstica)"
 
-#: ../glom/libglom/document/document.cc:531
+#: ../glom/libglom/document/document.cc:536
 msgid "City"
 msgstr "Mesto"
 
-#: ../glom/libglom/document/document.cc:537
+#: ../glom/libglom/document/document.cc:542
 msgid "State"
 msgstr "Regija"
 
-#: ../glom/libglom/document/document.cc:543
+#: ../glom/libglom/document/document.cc:548
 msgid "Country"
 msgstr "Država"
 
-#: ../glom/libglom/document/document.cc:549
+#: ../glom/libglom/document/document.cc:554
 msgid "Zip Code"
 msgstr "Poštna številka"
 
@@ -2551,64 +2556,64 @@ msgstr "Odgovarjajoči zapis ne obstaja"
 msgid "No record with this value exists. Therefore navigation to the related record is not possible."
 msgstr "Zapis s to vrednostjo ne obstaja. Zato krmarjenje na povezan zapis ni mogoče."
 
-#: ../glom/mode_data/flowtablewithfields.cc:1136
-#: ../glom/mode_data/flowtablewithfields.cc:1282
-#: ../glom/mode_data/flowtablewithfields.cc:1309
+#: ../glom/mode_data/flowtablewithfields.cc:1143
+#: ../glom/mode_data/flowtablewithfields.cc:1289
+#: ../glom/mode_data/flowtablewithfields.cc:1316
 #: ../glom/utility_widgets/notebooklabelglom.cc:73
 #: ../glom/utility_widgets/notebooklabelglom.cc:113
 msgid "New Group"
 msgstr "Nova skupina"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1142
+#: ../glom/mode_data/flowtablewithfields.cc:1149
 #: ../glom/mode_design/layout/dialog_layout_details.cc:779
 msgid "notebook"
 msgstr "beležnica"
 
 #. Note to translators: This is the default name (not seen by most users) for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1148
+#: ../glom/mode_data/flowtablewithfields.cc:1155
 msgid "tab1"
 msgstr "zavihek1"
 
 #. Note to translators: This is the default label text for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1151
+#: ../glom/mode_data/flowtablewithfields.cc:1158
 msgid "Tab One"
 msgstr "Zavihek ena"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1164
+#: ../glom/mode_data/flowtablewithfields.cc:1171
 msgid "button"
 msgstr "gumb"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1165
-#: ../glom/mode_data/flowtablewithfields.cc:1323
+#: ../glom/mode_data/flowtablewithfields.cc:1172
+#: ../glom/mode_data/flowtablewithfields.cc:1330
 #: ../glom/mode_design/layout/dialog_layout_details.cc:703
 msgid "New Button"
 msgstr "Nov gumb"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
-#: ../glom/mode_data/flowtablewithfields.cc:1171
-#: ../glom/mode_data/flowtablewithfields.cc:1336
+#: ../glom/mode_data/flowtablewithfields.cc:1178
+#: ../glom/mode_data/flowtablewithfields.cc:1342
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:380
 msgid "text"
 msgstr "besedilo"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1172
-#: ../glom/mode_data/flowtablewithfields.cc:1337
+#: ../glom/mode_data/flowtablewithfields.cc:1179
+#: ../glom/mode_data/flowtablewithfields.cc:1343
 msgid "New Text"
 msgstr "Novo besedilo"
 
 #. TODO: Avoid this error message, maybe by adding a group.
 #. TODO: At least avoid losing the dragged item.
-#: ../glom/mode_data/flowtablewithfields.cc:1421
+#: ../glom/mode_data/flowtablewithfields.cc:1427
 msgid "You cannot drop anything here. Try to add a group first"
 msgstr "Tu ni mogoče spustiti ničesar. Poskusite najprej dodati skupino"
 
 #. TODO: Use a real English sentence here?
-#: ../glom/mode_data/flowtablewithfields.cc:1482
+#: ../glom/mode_data/flowtablewithfields.cc:1488
 msgid "Delete whole group \"%1\"?"
 msgstr "Izbris celotne skupine \"%1\"?"
 
 #. TODO: Use a real English sentence here:
-#: ../glom/mode_data/flowtablewithfields.cc:1488
+#: ../glom/mode_data/flowtablewithfields.cc:1494
 msgid "Delete whole group?"
 msgstr "Izbris celotne skupine?"
 
@@ -2816,23 +2821,23 @@ msgstr "Naslov slike"
 msgid "group"
 msgstr "skupina"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:994
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1006
 msgid "Add child groups to the notebook to add tabs."
 msgstr "Za dodajanje zavihkov dodajte v beležnico podrejene skupine."
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1157
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1169
 msgid "Related Calendar: "
 msgstr "Povezan koledar:"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1159
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1171
 msgid "Related List: "
 msgstr "Povezan seznam:"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1176
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1188
 msgid "Field: "
 msgstr "Polje:"
 
-#: ../glom/mode_design/layout/dialog_layout_details.cc:1235
+#: ../glom/mode_design/layout/dialog_layout_details.cc:1247
 msgid "(Notebook)"
 msgstr "(Beležnica)"
 
@@ -2860,16 +2865,31 @@ msgstr "Razmerje uporablja edinstveno povezano polje"
 msgid "The relationship may not be used to show related records because the relationship uses a unique-values field in the related table. This would prevent the relationship from specifying multiple related records."
 msgstr "Razmerja ni mogoče uporabiti za prikaz povezanih zapisov, ker razmerje v povezani preglednici uporablja polje edinstvenih vrednosti. To razmerju prepreči določitev več povezanih zapisov. "
 
+#. Translators: This is Automatic text alignment.
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:90
+msgid "Automatic"
+msgstr "Samodejno"
+
+#. Translators: This is Left text alignment.
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:94
+msgid "Left"
+msgstr "Levo"
+
+#. Translators: This is Right text alignment.
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:98
+msgid "Right"
+msgstr "Desno"
+
 #. Add labels (because we will hide the checkboxes):
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:118
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:141
 msgid "Font"
 msgstr "Pisava"
 
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:121
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:144
 msgid "Foreground Color"
 msgstr "Barva ospredja"
 
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:124
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:147
 msgid "Background Color"
 msgstr "Barva ozadja"
 
@@ -3150,7 +3170,7 @@ msgstr "Neznana preglednica"
 msgid "You cannot open this table, because there is no information about this table in the document."
 msgstr "Te preglednice ni mogoče odpreti, ker v dokumentu ni podatkov o tej preglednici."
 
-#: ../glom/print_layout/canvas_layout_item.cc:288
+#: ../glom/print_layout/canvas_layout_item.cc:303
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:38
 msgid "Choose Field"
 msgstr "Izbor polja"
@@ -3204,11 +3224,11 @@ msgstr "Ta predmet že obstaja. Poskusite ponovno."
 msgid "Duplicate"
 msgstr "Podvoji"
 
-#: ../glom/utility_widgets/comboentryglom.cc:177
+#: ../glom/utility_widgets/comboentryglom.cc:186
 msgid "Read-only field."
 msgstr "Polje je le za branje."
 
-#: ../glom/utility_widgets/comboentryglom.cc:177
+#: ../glom/utility_widgets/comboentryglom.cc:186
 msgid "This field may not be edited here."
 msgstr "Polja tukaj ni mogoče urejati."
 
@@ -3237,16 +3257,21 @@ msgstr "Vnesite kriterije iskanja za določitev zapisov v drugi preglednici za i
 msgid "Table Content"
 msgstr "Vsebina preglednice"
 
-#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2356
+#. Translators: This is just some example text used to discover an appropriate height for user-entered text in the UI. This text itself is never shown to the user.
+#: ../glom/utility_widgets/db_adddel/db_adddel.cc:683
+msgid "Example"
+msgstr "Primer"
+
+#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2399
 msgid "Right-click to layout, to specify the related fields."
 msgstr "Za določitev povezanih polj desno kliknite na razporeditev."
 
 #. Tell user that they can't do that:
-#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2585
+#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2628
 msgid "Extra Related Records Not Possible"
 msgstr "Dodatni povezani zapisi niso mogoči"
 
-#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2586
+#: ../glom/utility_widgets/db_adddel/db_adddel.cc:2629
 msgid "You attempted to add a new related record, but there can only be one related record, because the relationship uses a unique key."
 msgstr "Poskusili ste dodati nov povezan zapis, toda obstaja lahko le en povezan zapis, ker razmerje uporablja edinstven ključ."
 
@@ -3424,5 +3449,4 @@ msgstr "Poročilo je končano"
 #: ../glom/xsl_utils.cc:142
 msgid "The report will now be opened in your web browser."
 msgstr "Poročilo bo sedaj odprto v vašem spletnem brskalniku."
-
 
