@@ -1,3 +1,9 @@
+1.13.2 (unstable):
+
+* Details layout: Really use the new formatting options (horizontal alignment, 
+  foreground color and background color) for static text items and buttons.
+  (Murray Cumming)
+  
 1.13.1 (unstable):
 
 * Details and List layouts:
