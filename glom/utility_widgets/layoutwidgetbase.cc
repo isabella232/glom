@@ -91,7 +91,7 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<con
   Gtk::Widget* widget_to_change = &widget;
 
   Gtk::Button* button = dynamic_cast<Gtk::Button*>(&widget);
-  LabelGlom* label = dynamic_cast<LabelGlom*>(&widget);
+  LabelGlom* labelglom = dynamic_cast<LabelGlom*>(&widget);
   if(button)
     widget_to_change = button->get_child();
   else
@@ -99,8 +99,8 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<con
     TextViewGlom* textview = dynamic_cast<TextViewGlom*>(&widget);
     if(textview)
       widget_to_change = textview->get_textview();
-    else if(label)
-      widget_to_change = label->get_label();
+    else if(labelglom)
+      widget_to_change = labelglom->get_label();
   }
 
   if(!layout_item)
@@ -113,7 +113,18 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<con
   Gtk::Misc* misc = dynamic_cast<Gtk::Misc*>(widget_to_change);
   if(misc)
     misc->set_alignment(x_align);
-
+    
+  //Set justification on labels:
+  //Assume that people want left/right justification of multi-line text if they chose 
+  //left/right alignment of the text itself.
+  {
+    Gtk::Label* label = dynamic_cast<Gtk::Label*>(widget_to_change);
+    if(label)
+    {    
+      const Gtk::Justification justification = (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT ? Gtk::JUSTIFY_LEFT : Gtk::JUSTIFY_RIGHT);
+      label->set_justify(justification);
+    }
+  }
 
   const FieldFormatting& formatting = layout_item->get_formatting_used();
 
@@ -140,7 +151,7 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<con
   const Glib::ustring bg = formatting.get_text_format_color_background();
   if(!bg.empty())
   {
-    if(!label && !button)
+    if(!labelglom && !button)
     {
       // "base" is the background color for GtkEntry. "bg" seems to change the border:
       widget_to_change->modify_base(Gtk::STATE_NORMAL, Gdk::Color(bg));
@@ -148,10 +159,10 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<con
     //According to the gtk_widget_modify_base() documentation, 
     //a GtkLabel can only have a background color by, for instance, placing it 
     //in a GtkEventBox. Luckily LabelGlom is actually derived from EventBox.
-    else if(label)
+    else if(labelglom)
     {
       //label->modify_base(Gtk::STATE_NORMAL, Gdk::Color("bg"));
-      label->modify_bg(Gtk::STATE_NORMAL, Gdk::Color(bg));
+      labelglom->modify_bg(Gtk::STATE_NORMAL, Gdk::Color(bg));
     }
     else if(button)
     {

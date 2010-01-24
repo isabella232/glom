@@ -38,6 +38,7 @@ class LabelGlom
 {
 public:
   LabelGlom();
+  explicit LabelGlom(const Glib::ustring& label, bool mnemonic = false);
   explicit LabelGlom(const Glib::ustring& label, float xalign, float yalign, bool mnemonic = false);
   virtual ~LabelGlom();
   

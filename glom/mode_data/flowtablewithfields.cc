@@ -595,6 +595,7 @@ void FlowTableWithFields::add_button_at_position(const sharedptr<LayoutItem_Butt
   add_layoutwidgetbase(button, add_before);
   //add_view(button); //So it can get the document.
 
+  //TODO: Align the button to the right of its space if using right alignment?
   Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
   if(widget)
     insert_before (*button, *widget, false /* expand */);
@@ -607,19 +608,20 @@ void FlowTableWithFields::add_button_at_position(const sharedptr<LayoutItem_Butt
 void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_Text>& layoutitem_text, const Glib::ustring& table_name , const type_list_layoutwidgets::iterator& add_before)
 {
   //Add the widget:
+  
+  const FieldFormatting::HorizontalAlignment alignment =
+    layoutitem_text->get_formatting_used_horizontal_alignment();
+  const Gtk::AlignmentEnum x_align = (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT ? Gtk::ALIGN_LEFT : Gtk::ALIGN_RIGHT);
   Gtk::Alignment* alignment_label = Gtk::manage(new Gtk::Alignment());
-  alignment_label->set(Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER);
+  alignment_label->set(x_align, Gtk::ALIGN_CENTER);
   alignment_label->show();
   
   const Glib::ustring text = layoutitem_text->get_text();
-  LabelGlom* label = Gtk::manage(new LabelGlom(text, 0.0 /* xalign */, 0.5 /* yalign */)); //The alignment here seems to be necessary as well (or instead of) the parent Gtk::Alignment.
+  LabelGlom* label = Gtk::manage(new LabelGlom(text));
   label->set_layout_item(layoutitem_text, table_name);
   label->show();
   alignment_label->add(*label);
   
-  //TODO: Why isn't this formatting used?
-  //std::cout << "DEBUG: Applying formatting for text item: " << text << std::endl;
-  //std::cout << "  DEBUG: font: " << layoutitem_text->get_formatting_used().get_text_format_font() << std::endl;
   apply_formatting(*label, layoutitem_text);
 
   add_layoutwidgetbase(label, add_before);
@@ -629,9 +631,9 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
   {
     Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
     if(widget)
-      insert_before(*alignment_label, *widget, false /* expand */);
+      insert_before(*alignment_label, *widget, true /* expand */);
     else
-      add(*alignment_label, false /* expand */);
+      add(*alignment_label, true /* expand */);
   }
   else
   {
@@ -647,9 +649,9 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
     
     Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
     if(widget)
-      insert_before (*alignment_title, *alignment_label, *widget, false /* expand */);
+      insert_before (*alignment_title, *alignment_label, *widget, true /* expand */);
     else
-      add(*alignment_title, *alignment_label, false /* expand */);
+      add(*alignment_title, *alignment_label, true /* expand */);
   }
 }
 

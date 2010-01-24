@@ -1,3 +1,17 @@
+2010-01-24  Murray Cumming  <murrayc@murrayc.com>
+
+  Details: Static Text items: Use horizontal alignment from formatting.
+  
+	* glom/utility_widgets/labelglom.[h|cc]: Add a constructor that does not 
+	take alignment values, like the Gtk::Label base class, so we can easily 
+	use the default for vertical alignment.
+	* glom/mode_data/flowtablewithfields.cc: add_textobject_at_position():
+	Use expand=true when adding the widget to the FlowTable, so that labels can 
+	have the full space in which to actually have alignment.
+	* glom/utility_widgets/layoutwidgetbase.cc: apply_formatting: Use appropriate 
+	multi-line justification for labels, as a user would expect when setting 
+	horizontal alignment.
+
 2010-01-23  Murray Cumming  <murrayc@murrayc.com>
 
   Details: Buttons: Use background color from formatting.

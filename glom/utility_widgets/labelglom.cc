@@ -35,6 +35,12 @@ LabelGlom::LabelGlom()
   init();
 }
 
+LabelGlom::LabelGlom(const Glib::ustring& label, bool mnemonic)
+: m_label(label, mnemonic)
+{
+  init();
+}
+
 LabelGlom::LabelGlom(const Glib::ustring& label, float xalign, float yalign, bool mnemonic)
 : m_label(label, xalign, yalign, mnemonic)
 {
