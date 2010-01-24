@@ -2596,7 +2596,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
 bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib::ustring& title)
 {
 #if 1
-  // This seems to increase the change that the database creation does not
+  // This seems to increase the chance that the database creation does not
   // fail due to the "source database is still in use" error. armin.
   //std::cout << "Going to sleep" << std::endl;
   Glib::usleep(500 * 1000);

@@ -399,14 +399,6 @@ bool Postgres::attempt_create_database(const Glib::ustring& database_name, const
                                                             ex);
   if(ex.get())
     return false;
-
-  //TODO: Why is this here but not in the EXCEPTIONS_ENABLED part?
-  // jhs: Does look like a bug to me, shouldn't be there
-#if 0
-  op = cnc->create_operation(Gnome::Gda::SERVER_OPERATION_CREATE_DB, set, ex.get());
-  if(ex.get())
-    return false;
-#endif
 #endif
   g_assert(op);
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
