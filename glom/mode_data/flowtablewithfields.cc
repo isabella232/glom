@@ -594,13 +594,32 @@ void FlowTableWithFields::add_button_at_position(const sharedptr<LayoutItem_Butt
     
   add_layoutwidgetbase(button, add_before);
   //add_view(button); //So it can get the document.
+  
+  const FieldFormatting::HorizontalAlignment alignment =
+    layoutitem_button->get_formatting_used_horizontal_alignment();
+  Gtk::Widget* widget_to_add = button;
+  bool expand = false;
+  if(alignment != FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT)
+  {
+    //Put the button in a Gtk::HBox so we can have non-default alignment in 
+    //its space. Note that we will need a different technique if we ever 
+    //support center alignment.
+    Gtk::HBox* box_button = Gtk::manage(new Gtk::HBox());
+    box_button->show();
+    if(alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_RIGHT)
+      box_button->pack_end(*button, Gtk::PACK_SHRINK);
+    else
+      box_button->pack_start(*button, Gtk::PACK_SHRINK);
+      
+    widget_to_add = box_button;
+    expand = true;
+  }
 
-  //TODO: Align the button to the right of its space if using right alignment?
   Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
   if(widget)
-    insert_before (*button, *widget, false /* expand */);
+    insert_before (*widget_to_add, *widget, expand);
   else
-    add(*button, false /* expand */);
+    add(*widget_to_add, expand);
 
   apply_formatting(*button, layoutitem_button);
 }
