@@ -1,5 +1,10 @@
 2010-01-25 Murray Cumming <murrayc@murrayc.com>
 
+	* glom/libglom/data_structure/numeric_format.h: Remove unnecessary
+	include of privileges.h.
+
+2010-01-25 Murray Cumming <murrayc@murrayc.com>
+
 	Allow new files to have quotes in their titles.
 
 	* glom/frame_glom.cc:
