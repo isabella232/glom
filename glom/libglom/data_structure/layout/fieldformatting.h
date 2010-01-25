@@ -60,38 +60,68 @@ public:
   void get_choices(sharedptr<Relationship>& relationship_name, Glib::ustring& field, Glib::ustring& field_second) const;
   void set_choices(const sharedptr<Relationship>& relationship_name, const Glib::ustring& field, const Glib::ustring& field_second);
 
+  /** Get whether the text should be displayed with multiple lines in the
+   * details view. Text is displayed with a single line in the list view.
+   * @returns whether the text should be displayed with multiple lines
+   */
   bool get_text_format_multiline() const;
+  /** Set whether the text should be displayed with multiple lines in the
+   * details view. Text is displayed with a single line in the list view.
+   * @param[in] value whether the text should be displayed with multiple lines
+   */
   void set_text_format_multiline(bool value = true);
 
+  /** Get the number of lines of text that should be displayed.
+   * @see get_text_format_multiline()
+   * @returns the number of lines of text
+   */
   guint get_text_format_multiline_height_lines() const;
+
+  /** Get the number of lines of text that should be displayed.
+   * @returns the number of lines of text
+   */
   void set_text_format_multiline_height_lines(guint value);
 
-  /** The font name, as returned from Gtk::FontButton::get_font_name(), 
-   * which may include the size and style.
+  /** Set the font description, as returned from
+   * Gtk::FontButton::get_font_name(), which may include the size and style.
+   * @param font_desc a Pango font description string
    */
   void set_text_format_font(const Glib::ustring& font_desc);
 
-  /** The font name, as returned from Gtk::FontButton::get_font_name(), 
-   * which may include the size and style.
+  /** Get the font description, as returned from
+   * Gtk::FontButton::get_font_name(), which may include the size and style.
+   * @returns a Pango font description string
    */
   Glib::ustring get_text_format_font() const;
 
   /** Set the foreground color to use for text when displaying a field value.
+   * @param[in] color the text foreground color, in a format recognised by
+   * XParseColor
    */
   void set_text_format_color_foreground(const Glib::ustring& color);
 
   /** Get the foreground color to use for text for the specified value,
    * taking the negative-color into account, if specified.
+   * @returns the text foreground color, in a format recognised by XParseColor
    */
   Glib::ustring get_text_format_color_foreground_to_use(const Gnome::Gda::Value& value) const;
 
   /** Get the foreground color to use for text when displaying a field value.
-   * This should be overriden by by m_numeric_formatting.m_foreground_color_for_negatives
-   * if that is active.
+   * This should be overriden by
+   * m_numeric_formatting.m_foreground_color_for_negatives if that is active.
+   * @returns the text foreground color, in a format recognised by XParseColor
    */
   Glib::ustring get_text_format_color_foreground() const;
 
+  /** Set the background color to use for text when displaying a field value.
+   * @param[in] color a text background color, in a format recognised by
+   * XParseColor
+   */
   void set_text_format_color_background(const Glib::ustring& color);
+
+  /** Get the background color to use for text when displaying a field value.
+   * @returns the text background color, in a format recognised by XParseColor
+   */
   Glib::ustring get_text_format_color_background() const;
 
   enum HorizontalAlignment

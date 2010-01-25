@@ -39,23 +39,43 @@ public:
   bool operator==(const NumericFormat& src) const;
   bool operator!=(const NumericFormat& src) const;
   
-  /** The foreground color to use for negative values, 
-   * if m_alt_foreground_color_for_negatives is true.
+  /** The foreground color to use for negative values, if
+   * m_alt_foreground_color_for_negatives is true.
+   * @returns the foreground color, in a format recognised by XParseColor
    */
   static Glib::ustring get_alternative_color_for_negatives();
 
-  /** Get the number of decimal places we should allow to be shown until we
-    * show the awkward e syntax.  This should not be used if
-    * m_decimal_places_restricted is true.
-    */
+  /** Get the number of significant figures we should allow to be shown until
+   * we show the awkward e syntax. This should not be used if
+   * m_decimal_places_restricted is true.
+   * @returns the number of significant figures to show
+   */
   static guint get_default_precision();
 
+  /** String to use as the currency symbol. When the symbol is shown in the UI,
+   * a space is appended to the string, and the result is prepended to the
+   * data from the database. Be aware that the string supplied by the Glom
+   * document might have no representation in the current user's locale.
+   */
   Glib::ustring m_currency_symbol;
-  bool m_use_thousands_separator; //Setting this to false would override the locale, if it used a 1000s separator.
+
+  /** Setting this to false would override the locale, if it used a 1000s
+   * separator.
+   */
+  bool m_use_thousands_separator;
+
+  /** Whether to restrict numeric precision. If true, a fixed precision is set
+   * according to m_decimal_places. If false, the maximum precision is used.
+   * However, the chosen fixed precision might exceed the maximum precision.
+   */
   bool m_decimal_places_restricted;
+
+  /** The number of decimal places to show, although it is only used if
+   * m_decimal_places_restricted is false.
+   */
   guint m_decimal_places;
   
-  /// Whether to use an alernative foreground color for negative values.
+  /** Whether to use an alternative foreground color for negative values. */
   bool m_alt_foreground_color_for_negatives;
 };
 
