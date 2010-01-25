@@ -221,6 +221,9 @@ guint Dialog_Import_CSV::get_column_count() const
 
 sharedptr<const Field> Dialog_Import_CSV::get_field_for_column(guint col) const
 {
+  if(col >= m_fields.size())
+    return sharedptr<const Field>();
+
   return m_fields[col];
 }
 
