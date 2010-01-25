@@ -1,3 +1,13 @@
+2010-01-25  Murray Cumming  <murrayc@murrayc.com>
+
+	Allow new files to have quotes in their titles.
+
+	* glom/frame_glom.cc: 
+	connection_request_password_and_choose_new_database_name(): 
+	Remove quotes (and other unusual characters) from the generated 
+	database name, to avoid errors from the database backend.
+	Bug #607957 (Michael Hasselmann) 
+
 2010-01-24  Murray Cumming  <murrayc@murrayc.com>
 
 	* ldtp/central-info.xml.example: Added an example central-info.xml, as 

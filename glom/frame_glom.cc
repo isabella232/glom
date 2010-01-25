@@ -2319,7 +2319,15 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   {
     Glib::ustring database_name_possible;
     if(extra_num == 0)
-      database_name_possible = database_name; //Try the original name first.
+    {
+      //Try the original name first,
+      //removing any characters that are likely to cause problems when used in a SQL identifier name:
+      database_name_possible = Utils::trim_whitespace(database_name);
+      database_name_possible = Utils::string_replace(database_name_possible, "\"", "");
+      database_name_possible = Utils::string_replace(database_name_possible, "'", "");
+      database_name_possible = Utils::string_replace(database_name_possible, "\t", "");
+      database_name_possible = Utils::string_replace(database_name_possible, "\n", "");
+    }
     else
     {
       //Create a new database name by appending a number to the original name:
@@ -2363,7 +2371,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
         //The connection to the server is OK, but the specified database does not exist.
         //That's good - we were looking for an unused database name.
 
-        std::cout << "debug: unused database name found: " << database_name_possible << std::endl;
+        //std::cout << "debug: unused database name found: " << database_name_possible << std::endl;
         document->set_connection_database(database_name_possible);
 
         // Remember host and port if the document is not self hosted
