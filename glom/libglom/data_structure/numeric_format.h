@@ -21,7 +21,6 @@
 #ifndef GLOM_DATA_STRUCTURE_NUMERIC_FORMAT_H
 #define GLOM_DATA_STRUCTURE_NUMERIC_FORMAT_H
 
-#include <glom/libglom/data_structure/privileges.h>
 #include <glibmm/ustring.h>
 #include <map>
 
