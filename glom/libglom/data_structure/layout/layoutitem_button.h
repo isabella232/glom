@@ -21,7 +21,7 @@
 #ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_BUTTON_H
 #define GLOM_DATASTRUCTURE_LAYOUTITEM_BUTTON_H
 
-#include "layoutitem.h"
+#include <libglom/data_structure/layout/layoutitem.h>
 
 namespace Glom
 {

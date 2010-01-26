@@ -1,3 +1,10 @@
+2010-01-26  Murray Cumming  <murrayc@murrayc.com>
+
+	libglom: Correct includes.
+
+	* glom/libglom/*.h: Use the full include libglom/ path for headers, to 
+	avoid confusion and make life easier for other users of libglom.
+
 2010-01-24  Michael Hasselmann  <michael@taschenorakel.de>
 
 	Fixed out-ouf-bounds access during CSV imports

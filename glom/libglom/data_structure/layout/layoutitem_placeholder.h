@@ -25,7 +25,7 @@
 #ifndef _LAYOUTITEM_PLACEHOLDER_H_
 #define _LAYOUTITEM_PLACEHOLDER_H_
 
-#include "layoutitem.h"
+#include <libglom/data_structure/layout/layoutitem.h>
 
 namespace Glom
 {

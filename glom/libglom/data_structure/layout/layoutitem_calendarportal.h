@@ -21,7 +21,7 @@
 #ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_CALENDAR_PORTAL_H
 #define GLOM_DATASTRUCTURE_LAYOUTITEM_CALENDAR_PORTAL_H
 
-#include "layoutitem_portal.h"
+#include <libglom/data_structure/layout/layoutitem_portal.h>
 
 namespace Glom
 {

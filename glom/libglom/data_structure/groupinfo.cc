@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "groupinfo.h"
+#include <libglom/data_structure/groupinfo.h>
 
 namespace Glom
 {

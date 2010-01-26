@@ -21,7 +21,7 @@
 #ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_NOTEBOOK_H
 #define GLOM_DATASTRUCTURE_LAYOUTITEM_NOTEBOOK_H
 
-#include "layoutgroup.h"
+#include <libglom/data_structure/layout/layoutgroup.h>
 #include <libglom/data_structure/field.h>
 #include <libglom/data_structure/relationship.h>
 

@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "layoutitem_line.h"
+#include <libglom/data_structure/layout/layoutitem_line.h>
 #include <libglom/utils.h>
 #include <glibmm/i18n.h>
 

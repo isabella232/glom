@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "numeric_format.h"
+#include <libglom/data_structure/numeric_format.h>
 
 namespace Glom
 {

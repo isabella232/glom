@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "has_title_singular.h"
+#include <libglom/data_structure/has_title_singular.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

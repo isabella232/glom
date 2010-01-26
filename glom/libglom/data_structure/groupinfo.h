@@ -21,8 +21,8 @@
 #ifndef GLOM_DATA_STRUCTURE_GROUPINFO_H
 #define GLOM_DATA_STRUCTURE_GROUPINFO_H
 
-#include "translatable_item.h"
-#include "privileges.h"
+#include <libglom/data_structure/translatable_item.h>
+#include <libglom/data_structure/privileges.h>
 #include <map>
 
 namespace Glom

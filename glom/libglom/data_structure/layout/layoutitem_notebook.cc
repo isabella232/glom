@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "layoutitem_notebook.h"
+#include <libglom/data_structure/layout/layoutitem_notebook.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
