@@ -70,6 +70,8 @@ void CsvParser::set_file_and_start_parsing(const std::string& file_uri)
   g_return_if_fail(!file_uri.empty());
 
   m_file = Gio::File::create_for_uri(file_uri);
+  g_return_if_fail(m_file->query_exists());
+
   m_file->read_async(sigc::mem_fun(*this, &CsvParser::on_file_read));
   set_state(CsvParser::STATE_PARSING);
 
