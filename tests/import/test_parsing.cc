@@ -201,7 +201,8 @@ int main(int argc, char* argv[])
 
   // test_import_csv_file
   {
-    std::string filename = Glib::get_current_dir() + "/tests/import/data/albums.csv";
+    // filename_to_uri expects absolute filenames
+    const std::string filename = Glib::build_filename(Glib::get_current_dir(), "tests/import/data/albums.csv");
     const bool finished_parsing = ImportTests::run_parser_on_file(&connect_signals, Glib::filename_to_uri(filename));
     const bool passed = (finished_parsing &&
                          8450 == get_tokens_instance().size());

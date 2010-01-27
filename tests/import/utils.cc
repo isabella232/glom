@@ -60,8 +60,14 @@ static void on_parser_encoding_error(MainLoopRp mainloop)
   mainloop->quit();
 }
 
-
 static void on_parser_finished(MainLoopRp mainloop)
+{
+  finished_parsing = true;
+  //Quit the mainloop that we ran because the parser uses an idle handler.
+  mainloop->quit();
+}
+
+static void on_file_read_error(const std::string& /*unused*/, MainLoopRp mainloop)
 {
   finished_parsing = true;
   //Quit the mainloop that we ran because the parser uses an idle handler.
@@ -100,7 +106,7 @@ bool run_parser_from_buffer(const FuncConnectParserSignals& connect_parser_signa
   mainloop->run();
 
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(file_uri);
-  
+
   #ifdef GLIBMM_EXCEPTIONS_ENABLED
   //TODO: Catch exception.
   const bool removed = file->remove();
@@ -124,6 +130,7 @@ bool run_parser_on_file(const FuncConnectParserSignals& connect_parser_signals, 
 
   parser.signal_encoding_error().connect(sigc::bind(&on_parser_encoding_error, mainloop));
   parser.signal_finished_parsing().connect(sigc::bind(&on_parser_finished, mainloop));
+  parser.signal_file_read_error().connect(sigc::bind(&on_file_read_error, mainloop));
 
   // Install a watchdog for the mainloop. No test should need longer than 300
   // seconds. Also, we need to avoid being stuck in the mainloop.
