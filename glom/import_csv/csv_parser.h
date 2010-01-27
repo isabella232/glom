@@ -164,10 +164,10 @@ private:
   //TODO: Document this:
   static Glib::ustring::const_iterator advance_field(const Glib::ustring::const_iterator& iter, const Glib::ustring::const_iterator& end, Glib::ustring& field);
 
-  void on_file_read(const Glib::RefPtr<Gio::AsyncResult>& result);
+  void on_file_read(const Glib::RefPtr<Gio::AsyncResult>& result, const Glib::RefPtr<Gio::File>& source);
   void copy_buffer_and_continue_reading(gssize size);
   void on_buffer_read(const Glib::RefPtr<Gio::AsyncResult>& result);
-  void on_file_query_info(const Glib::RefPtr<Gio::AsyncResult>& result);
+  void on_file_query_info(const Glib::RefPtr<Gio::AsyncResult>& result, const Glib::RefPtr<Gio::File>& source);
 
   void set_state(State state);
 
@@ -199,8 +199,6 @@ private:
   type_signal_line_scanned m_signal_line_scanned;
   type_signal_finished_parsing m_finished_parsing;
   type_signal_state_changed m_signal_state_changed;
-
-  Glib::RefPtr<Gio::File> m_file;
 
   struct Buffer
   {

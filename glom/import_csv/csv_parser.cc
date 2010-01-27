@@ -69,14 +69,15 @@ void CsvParser::set_file_and_start_parsing(const std::string& file_uri)
   // TODO: Check URI validity?
   g_return_if_fail(!file_uri.empty());
 
-  m_file = Gio::File::create_for_uri(file_uri);
-  g_return_if_fail(m_file->query_exists());
+  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(file_uri);
 
-  m_file->read_async(sigc::mem_fun(*this, &CsvParser::on_file_read));
   set_state(CsvParser::STATE_PARSING);
 
   // Query the display name of the file to set in the title:
-  m_file->query_info_async(sigc::mem_fun(*this, &CsvParser::on_file_query_info), G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME);
+  file->query_info_async(sigc::bind(sigc::mem_fun(*this, &CsvParser::on_file_query_info), file),
+                         G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME);
+
+  file->read_async(sigc::bind(sigc::mem_fun(*this, &CsvParser::on_file_read), file));
 }
 
 
@@ -259,7 +260,6 @@ Glib::ustring::const_iterator CsvParser::advance_field(const Glib::ustring::cons
 
 void CsvParser::clear()
 {
-  m_file.reset();
   m_buffer.reset(0);
 
   //m_stream.reset();
@@ -491,7 +491,7 @@ void CsvParser::do_line_scanned(const Glib::ustring& line, guint line_number)
   signal_line_scanned().emit(row, line_number);
 }
 
-void CsvParser::on_file_read(const Glib::RefPtr<Gio::AsyncResult>& result)
+void CsvParser::on_file_read(const Glib::RefPtr<Gio::AsyncResult>& result, const Glib::RefPtr<Gio::File>& source)
 {
   // TODO: Introduce CsvParser::is_idle_handler_connected() instead?
   if(!m_idle_connection.connected())
@@ -503,7 +503,7 @@ void CsvParser::on_file_read(const Glib::RefPtr<Gio::AsyncResult>& result)
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    m_stream = m_file->read_finish(result);
+    m_stream = source->read_finish(result);
 
     m_buffer.reset(new Buffer);
     m_stream->read_async(m_buffer->buf, sizeof(m_buffer->buf), sigc::mem_fun(*this, &CsvParser::on_buffer_read));
@@ -515,7 +515,7 @@ void CsvParser::on_file_read(const Glib::RefPtr<Gio::AsyncResult>& result)
   }
 #else
   std::auto_ptr<Glib::Error> error;
-  m_stream = m_file->read_finish(result, error);
+  m_stream = source->read_finish(result, error);
   if (!error.get())
   {
     m_buffer.reset(new Buffer);
@@ -543,7 +543,6 @@ void CsvParser::copy_buffer_and_continue_reading(gssize size)
     //TODO: put in proper data reset method?
     m_buffer.reset(0);
     m_stream.reset();
-    m_file.reset();
   }
 }
 
@@ -575,30 +574,29 @@ void CsvParser::on_buffer_read(const Glib::RefPtr<Gio::AsyncResult>& result)
 #endif
 }
 
-void CsvParser::on_file_query_info(const Glib::RefPtr<Gio::AsyncResult>& result)
+void CsvParser::on_file_query_info(const Glib::RefPtr<Gio::AsyncResult>& result, const Glib::RefPtr<Gio::File>& source)
 {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    // Why is m_file null? Did we clear the parser before reading the file info?
-    Glib::RefPtr<Gio::FileInfo> info = m_file->query_info_finish(result);
+    Glib::RefPtr<Gio::FileInfo> info = source->query_info_finish(result);
     if(info)
       signal_have_display_name().emit(info->get_display_name());
   }
   catch(const Glib::Exception& ex)
   {
-    std::cerr << "Failed to fetch display name of uri " << m_file->get_uri() << ": " << ex.what() << std::endl;
+    std::cerr << "Failed to fetch display name of uri " << source->get_uri() << ": " << ex.what() << std::endl;
   }
 #else
   std::auto_ptr<Glib::Error> error;
-  Glib::RefPtr<Gio::FileInfo> info = m_file->query_info_finish(result, error);
+  Glib::RefPtr<Gio::FileInfo> info = source->query_info_finish(result, error);
   if (!error.get())
   {
     if(info)
       signal_have_display_name().emit(info->get_display_name());
   }
   else
-    std::cerr << "Failed to fetch display name of uri " << m_file->get_uri() << ": " << error->what() << std::endl;
+    std::cerr << "Failed to fetch display name of uri " << source->get_uri() << ": " << error->what() << std::endl;
 #endif
 }
 
