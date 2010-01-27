@@ -94,6 +94,8 @@ bool run_parser_from_buffer(const FuncConnectParserSignals& connect_parser_signa
 
   const std::string file_uri = create_file_from_buffer(input, input_size);
   parser.set_file_and_start_parsing(file_uri);
+  if (Glom::CsvParser::STATE_PARSING != parser.get_state())
+    return false;
 
   mainloop->run();
 
@@ -111,6 +113,32 @@ bool run_parser_from_buffer(const FuncConnectParserSignals& connect_parser_signa
   return finished_parsing;
 }
 
+bool run_parser_on_file(const FuncConnectParserSignals& connect_parser_signals, const std::string &uri)
+{
+  finished_parsing = true;
+
+  //Start a mainloop because the parser uses an idle handler.
+  //TODO: Stop the parser from doing that.
+  MainLoopRp mainloop = Glib::MainLoop::create();
+  Glom::CsvParser parser("UTF-8");
+
+  parser.signal_encoding_error().connect(sigc::bind(&on_parser_encoding_error, mainloop));
+  parser.signal_finished_parsing().connect(sigc::bind(&on_parser_finished, mainloop));
+
+  // Install a watchdog for the mainloop. No test should need longer than 300
+  // seconds. Also, we need to avoid being stuck in the mainloop.
+  // Infinitely running tests are useless.
+  mainloop->get_context()->signal_timeout().connect_seconds_once(sigc::bind(&on_mainloop_killed_by_watchdog, mainloop), 300);
+
+  connect_parser_signals(parser);
+
+  parser.set_file_and_start_parsing(uri);
+  if (Glom::CsvParser::STATE_PARSING != parser.get_state())
+    return false;
+
+  mainloop->run();
+
+  return finished_parsing;
+}
+
 } //namespace ImportTests
-
-

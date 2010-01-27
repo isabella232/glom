@@ -22,7 +22,12 @@ bool run_parser_from_buffer(const FuncConnectParserSignals& connect_parser_signa
  */
 bool run_parser_from_buffer(const FuncConnectParserSignals& connect_parser_signals, const std::string& input);
 
-} //namespace ImportTests
+/**
+ * @result Whether the parser finished reading a CSV file correctly without being killed by a timeout.
+ */
+bool run_parser_on_file(const FuncConnectParserSignals& connect_parser_signals, const std::string &uri);
+
+} // namespace ImportTests
 
 #endif //TEST_IMPORT_UTILS_H
 
