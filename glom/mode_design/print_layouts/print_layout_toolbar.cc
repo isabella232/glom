@@ -24,7 +24,7 @@
 #include <libglom/libglom_config.h>
 
 //#include "layoutwidgetbase.h"
-#include <gtk/gtktoolitemgroup.h>
+//#include <gtk/gtktoolitemgroup.h>
 
 namespace Glom
 {

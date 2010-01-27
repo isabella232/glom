@@ -24,7 +24,7 @@
 #include <libglom/libglom_config.h>
 
 #include "layoutwidgetbase.h"
-#include <gtk/gtktoolitemgroup.h>
+//#include <gtk/gtktoolitemgroup.h>
 
 namespace
 {
@@ -67,10 +67,6 @@ LayoutToolbar::LayoutToolbar()
 {
   // Looks ugly otherwise:
   set_size_request(100, 200);
-
-  LayoutToolbarButton* drag_image = 
-    Gtk::manage(new LayoutToolbarButton("glom-image.png", LayoutWidgetBase::TYPE_IMAGE,
-                                        _("Image"), _("Drag this to the layout to add a new static image.")));
 
   //TODO: Add a drag item for the related records item.
   

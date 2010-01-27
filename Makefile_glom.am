@@ -350,8 +350,6 @@ glom_glom_SOURCES +=							\
 endif
 
 glom_glom_LDADD = $(win_resfile) \
-	glom/utility_widgets/egg/toolpalette/libeggtoolpalette.a \
-	glom/utility_widgets/egg/util/libeggutil.a \
 	glom/libglom/libglom-$(GLOM_ABI_VERSION).la \
 	$(GLOM_LIBS) $(PYTHON_LIBS) $(INTLLIBS)
 if !GLOM_ENABLE_MAEMO
