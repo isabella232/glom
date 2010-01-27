@@ -1,3 +1,10 @@
+2010-01-27  Michael Hasselmann  <michaelh@openismus.com>
+
+	Added a g_return_if_fail check for invalid URLs
+
+	* glom/import_csv/csv_parser.cc: Do not start the async reading if the file
+	object is invalid.
+
 2010-01-27  Murray Cumming  <murrayc@murrayc.com>
 
 	Use Gtk::ToolPalette from the latest gtkmm version, instead of 
