@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "fieldformatting.h"
+#include <libglom/data_structure/layout/fieldformatting.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

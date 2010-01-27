@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "calcinprogress.h"
+#include <libglom/calcinprogress.h>
 
 namespace Glom
 {

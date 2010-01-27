@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "translatable_item.h"
+#include <libglom/data_structure/translatable_item.h>
 #include <libglom/utils.h>
 #include <glibmm/i18n.h>
 #include <iostream>

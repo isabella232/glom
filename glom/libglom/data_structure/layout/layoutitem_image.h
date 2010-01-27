@@ -21,7 +21,7 @@
 #ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_IMAGE_H
 #define GLOM_DATASTRUCTURE_LAYOUTITEM_IMAGE_H
 
-#include "layoutitem.h"
+#include <libglom/data_structure/layout/layoutitem.h>
 #include <libgdamm/value.h>
 
 namespace Glom

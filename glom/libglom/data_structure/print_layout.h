@@ -21,8 +21,8 @@
 #ifndef GLOM_DATASTRUCTURE_PRINT_LAYOUT_H
 #define GLOM_DATASTRUCTURE_PRINT_LAYOUT_H
 
-#include "translatable_item.h"
-#include "layout/report_parts/layoutitem_groupby.h"
+#include <libglom/data_structure/translatable_item.h>
+#include <libglom/data_structure/layout/report_parts/layoutitem_groupby.h>
 #include <glibmm/ustring.h>
 
 namespace Glom

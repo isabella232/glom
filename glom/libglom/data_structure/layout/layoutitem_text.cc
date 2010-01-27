@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "layoutitem_text.h"
+#include <libglom/data_structure/layout/layoutitem_text.h>
 #include <glibmm/i18n.h>
 
 namespace Glom

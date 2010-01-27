@@ -22,8 +22,8 @@
 #define GLOM_DATASTRUCTURE_FIELD_H
 
 #include <libgdamm.h>
-#include "translatable_item.h"
-#include "layout/fieldformatting.h"
+#include <libglom/data_structure/translatable_item.h>
+#include <libglom/data_structure/layout/fieldformatting.h>
 #include <libglom/sharedptr.h>
 
 //Predicate, for use with std::find_if():

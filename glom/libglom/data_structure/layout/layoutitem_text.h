@@ -21,8 +21,8 @@
 #ifndef GLOM_DATASTRUCTURE_LAYOUTITEM_TEXT_H
 #define GLOM_DATASTRUCTURE_LAYOUTITEM_TEXT_H
 
-#include "layoutitem_withformatting.h"
-#include "fieldformatting.h"
+#include <libglom/data_structure/layout/layoutitem_withformatting.h.h>
+#include <libglom/data_structure/layout/fieldformatting.h>
 
 namespace Glom
 {

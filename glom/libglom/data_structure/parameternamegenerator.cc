@@ -16,7 +16,7 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "parameternamegenerator.h"
+#include <libglom/data_structure/parameternamegenerator.h>
 
 namespace Glom
 {

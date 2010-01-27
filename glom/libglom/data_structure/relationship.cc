@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "relationship.h"
+#include <libglom/data_structure/relationship.h>
 
 namespace Glom
 {

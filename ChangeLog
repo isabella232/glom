@@ -1,3 +1,10 @@
+2010-01-26  Murray Cumming  <murrayc@murrayc.com>
+
+	libglom: Correct includes.
+
+	* glom/libglom/*.h: Use the full include libglom/ path for headers, to 
+	avoid confusion and make life easier for other users of libglom.
+
 2010-01-25  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/libglom/data_structure/numeric_format.h: Remove unnecessary 
@@ -13,6 +20,13 @@
 	database name, to avoid errors from the database backend.
 	Bug #607957 (Michael Hasselmann) 
 
+2010-01-24  Michael Hasselmann  <michael@taschenorakel.de>
+
+	Fixed out-ouf-bounds access during CSV imports
+    
+	* glom/import_csv/dialog_import_csv.cc (get_field_for_column): Added boundary
+	check for direct field access. Fixes bug #607938.
+
 2010-01-24  Murray Cumming  <murrayc@murrayc.com>
 
 	* ldtp/central-info.xml.example: Added an example central-info.xml, as 
@@ -22,7 +36,7 @@
 
 2010-01-24  Murray Cumming  <murrayc@murrayc.com>
 
-  Details: Buttons: Use horizontal aligment from formatting.
+	Details: Buttons: Use horizontal aligment from formatting.
   
 	* glom/mode_data/flowtablewithfields.cc: add_button_at_position():
 	Use a Gtk::HBox with either pack_start() or pack_end(), putting it in the 
@@ -31,7 +45,7 @@
 
 2010-01-24  Murray Cumming  <murrayc@murrayc.com>
 
-  Details: Static Text items: Use horizontal alignment from formatting.
+	Details: Static Text items: Use horizontal alignment from formatting.
   
 	* glom/utility_widgets/labelglom.[h|cc]: Add a constructor that does not 
 	take alignment values, like the Gtk::Label base class, so we can easily 
@@ -45,7 +59,7 @@
 
 2010-01-23  Murray Cumming  <murrayc@murrayc.com>
 
-  Details: Buttons: Use background color from formatting.
+	Details: Buttons: Use background color from formatting.
   
 	* glom/mode_data/flowtablewithfields.cc: add_button_at_position(): Call 
 	apply_formatting on the button, not the label, so it has a chance to do the 
@@ -53,7 +67,7 @@
 
 2010-01-23  Murray Cumming  <murrayc@murrayc.com>
 
-  Details: Static Text items: Use background color from formatting.
+	Details: Static Text items: Use background color from formatting.
   
 	* glom/utility_widgets/labelglom.cc: Do not call set_visible_window(false)
 	because we really need a visible child X window to be able to change the 
@@ -61,14 +75,14 @@
 
 2010-01-23  Murray Cumming  <murrayc@murrayc.com>
 
-  Details: Static Text items and Buttons: Use foreground color from formatting.
+	Details: Static Text items and Buttons: Use foreground color from formatting.
    
 	* glom/utility_widgets/layoutwidgetbase.cc: apply_formatting(): Use the 
 	foreground color for labels (static text items and buttons).
 
 2010-01-22  Murray Cumming  <murrayc@murrayc.com>
 
-  Details: Static Text items: Use formatting.
+	Details: Static Text items: Use formatting.
   
 	* glom/utility_widgets/labelglom.[h|cc]: Added get_label(), because this 
 	really has a label as a child.
@@ -79,7 +93,7 @@
 
 2010-01-22  Murray Cumming  <murrayc@murrayc.com>
 
-  Fixed compiler warnings.
+	Fixed compiler warnings.
   
 	* glom/libglom/data_structure/layout/layoutitem_field.cc: 
 	get_formatting_used_horizontal_alignment():
@@ -111,7 +125,7 @@
 	for textviews (multi line fields), but it still does not work for 
 	labels (static text items) and buttons.
 
-2010-01-22  Murray Cumming  <murrayc@murrayc.com>>
+2010-01-22  Murray Cumming  <murrayc@murrayc.com>
 
 	Allow custom text formatting of Buttons as well as text items and fields.
 
@@ -124,7 +138,7 @@
 	on_dnd_add_layout_item_button(): Try to apply the formatting to 
 	the button's label, though it doesn't seem to work.
 
-2010-01-22  Murray Cumming  <murrayc@murrayc.com>>
+2010-01-22  Murray Cumming  <murrayc@murrayc.com>
 
 	Allow editing of formatting for static text items.
 

@@ -26,7 +26,7 @@
 
 #include <libglom/python_embed/py_glom_record.h>
 #include <libglom/python_embed/py_glom_related.h>
-#include "pygdavalue_conversions.h" //For pygda_value_as_pyobject().
+#include <libglom/python_embed/pygdavalue_conversions.h> //For pygda_value_as_pyobject().
 
 #include <libglom/data_structure/field.h>
 #include <glibmm/ustring.h>

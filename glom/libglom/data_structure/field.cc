@@ -18,9 +18,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "field.h"
+#include <libglom/data_structure/field.h>
 #include <libglom/connectionpool.h>
-#include "glomconversions.h"
+#include <libglom/data_structure/glomconversions.h>
 #include <libglom/utils.h>
 #include <glibmm/i18n.h>
 

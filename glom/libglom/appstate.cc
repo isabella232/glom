@@ -19,7 +19,7 @@
  */
 
 #include <libglom/libglom_config.h>
-#include "appstate.h"
+#include <libglom/appstate.h>
 
 
 namespace Glom

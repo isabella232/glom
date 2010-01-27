@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "fieldtypes.h"
+#include <libglom/data_structure/fieldtypes.h>
 #include <iostream> //For debug output
 #include <libgda/gda-util.h> // For gda_g_type_to_string
 #include <libglom/connectionpool.h>

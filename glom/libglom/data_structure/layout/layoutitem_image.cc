@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "layoutitem_image.h"
+#include <libglom/data_structure/layout/layoutitem_image.h>
 #include <libglom/utils.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <glibmm/i18n.h>
