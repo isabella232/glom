@@ -1,5 +1,18 @@
 2010-01-27  Michael Hasselmann  <michaelh@openismus.com>
 
+	Fixed the parser to perform stateless async file operations
+
+	* glom/import_csv/csv_parser.[h|cc]: The parser relied on a member variable for
+	its async giomm operations, which was able to cause interleaving state
+	changes to it, corrupting the object in the worst case. This commit uses the
+	source object as a slot parameter to avoid this state problem (working around
+	BGO bug #608269).
+
+	* tests/import/utils.[h|cc]: During import tests, break mainloop on file
+	read errors (e.g., no file at all).
+
+2010-01-27  Michael Hasselmann  <michaelh@openismus.com>
+
 	Added a test for BGO bug #607938
 
 * tests/import/data/albums.csv: Real-world example data used for the CSV
