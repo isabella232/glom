@@ -1,5 +1,13 @@
 2010-01-31  Murray Cumming  <murrayc@murrayc.com>
 
+  Relationships Overview: Avoid GTK+ warnings.
+  
+	* glom/mode_design/relationships_overview/dialog_relationships_overview.cc:
+	Constructor: Call add_accel_group(), which fixes the warnings during 
+	destruction mentioned in bug #607938.
+
+2010-01-31  Murray Cumming  <murrayc@murrayc.com>
+
   Relationships Overview: Maybe fix a hang/crash.
     
   * glom/mode_design/relationships_overview/dialog_relationships_overview.[h|cc]:

@@ -66,6 +66,7 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
   Glib::RefPtr<Gtk::UIManager> m_refUIManager = Gtk::UIManager::create();
 
   m_refUIManager->insert_action_group(m_refActionGroup);
+  add_accel_group(m_refUIManager->get_accel_group());
 
   #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
