@@ -539,8 +539,26 @@ main(int argc, char* argv[])
     {
       //Get a URI (file://something) from the filepath:
       Glib::RefPtr<Gio::File> file = Gio::File::create_for_commandline_arg(input_uri);
-      if(file)
-        input_uri = file->get_uri(); 
+      
+      if(!file->query_exists())
+      {
+        std::cerr << _("Glom: The file does not exist.") << std::endl;
+        
+        std::cerr << std::endl << context.get_help() << std::endl;
+        return -1;
+      }
+      
+      const Gio::FileType file_type = file->query_file_type();
+      if(file_type == Gio::FILE_TYPE_DIRECTORY)
+      {
+        std::cerr << _("Glom: The file path is a directory instead of a file.") << std::endl;
+        
+        std::cerr << std::endl << context.get_help() << std::endl;
+        return -1;
+      }
+      
+      input_uri = file->get_uri();
+
       //std::cout << "URI = " << input_uri << std::endl;
     }
 

@@ -1,5 +1,12 @@
 2010-01-31  Murray Cumming  <murrayc@murrayc.com>
 
+  Command-line parsing: Added some checks.
+  
+	* glom/main.cc: Test the command-line argument filepath for existence and 
+	check that it's not a directory, so it fails before even showing UI.
+
+2010-01-31  Murray Cumming  <murrayc@murrayc.com>
+
   Relationships Overview: Avoid GTK+ warnings.
   
 	* glom/mode_design/relationships_overview/dialog_relationships_overview.cc:
