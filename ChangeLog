@@ -1,3 +1,15 @@
+2010-01-31  Murray Cumming  <murrayc@murrayc.com>
+
+  Relationships Overview: Maybe fix a hang/crash.
+    
+  * glom/mode_design/relationships_overview/dialog_relationships_overview.[h|cc]:
+  Signal handlers: Take sigc::bind() RefPtr parameters by value instead of by
+  const &, to avoid having to use sigc::ref() or worry if it works.
+  Save sigc::connections in a list so we can disconnect signal handlers when
+  deleting items bound with sigc::bind(). Do this in the destructor too, which
+  seems to fix the valgrind errors in bug #594737, though not the
+  instance of invalid non-instantiatable type" warning.
+    	
 2010-01-27  Michael Hasselmann  <michaelh@openismus.com>
 
 	Fixed the parser to perform stateless async file operations

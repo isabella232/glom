@@ -149,11 +149,35 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
 Dialog_RelationshipsOverview::~Dialog_RelationshipsOverview()
 {
   get_size(m_last_size_x, m_last_size_y);
+  
+  //Disconnect signal handlers for all current items, 
+  //so sigc::bind()ed RefPtrs can be released.
+  while(m_list_table_connections.size())
+  {
+     type_list_connections::iterator iter = m_list_table_connections.begin();
+     sigc::connection the_connection = *iter;
+     the_connection.disconnect();
+     m_list_table_connections.erase(iter);
+  }
+  
+  //Remove all current items:
+  //while(m_group_tables->get_n_children() > 0)
+  //  m_group_tables->remove_child(0);
 }
 
 
 void Dialog_RelationshipsOverview::draw_tables()
 {
+  //Disconnect signal handlers for all current items, 
+  //so sigc::bind()ed RefPtrs can be released.
+  while(m_list_table_connections.size())
+  {
+     type_list_connections::iterator iter = m_list_table_connections.begin();
+     sigc::connection the_connection = *iter;
+     the_connection.disconnect();
+     m_list_table_connections.erase(iter);
+  }
+  
   //Remove all current items:
   while(m_group_tables->get_n_children() > 0)
     m_group_tables->remove_child(0);
@@ -189,12 +213,15 @@ void Dialog_RelationshipsOverview::draw_tables()
         CanvasGroupDbTable::create(info->get_name(), info->get_title_or_name(), fields, table_x, table_y);
       m_group_tables->add_child(table_group);
 
-      table_group->signal_moved().connect( sigc::bind(
-         sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_table_moved),
-         table_group) );
-      table_group->signal_show_context().connect( sigc::bind(
-         sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_table_show_context),
-         table_group) );
+      sigc::connection the_connection = table_group->signal_moved().connect( sigc::bind(
+        sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_table_moved),
+        table_group) );
+      m_list_table_connections.push_back(the_connection);
+     
+      the_connection = table_group->signal_show_context().connect( sigc::bind(
+        sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_table_show_context),
+        table_group) );
+      m_list_table_connections.push_back(the_connection);
     
       //tv->x2 = tv->x1 + table_width;
       //tv->y2 = tv->y1 + table_height;
@@ -414,7 +441,7 @@ Glib::RefPtr<CanvasGroupDbTable> Dialog_RelationshipsOverview::get_table_group(c
   return Glib::RefPtr<CanvasGroupDbTable>();
 }
 
-void Dialog_RelationshipsOverview::on_table_moved(const Glib::RefPtr<CanvasGroupDbTable>& table)
+void Dialog_RelationshipsOverview::on_table_moved(Glib::RefPtr<CanvasGroupDbTable> table)
 {
   Document* document = dynamic_cast<Document*>(get_document());
   if(document && table)
@@ -432,7 +459,7 @@ void Dialog_RelationshipsOverview::on_table_moved(const Glib::RefPtr<CanvasGroup
   draw_lines();
 }
 
-void Dialog_RelationshipsOverview::on_table_show_context(guint button, guint32 activate_time, const Glib::RefPtr<CanvasGroupDbTable>& table)
+void Dialog_RelationshipsOverview::on_table_show_context(guint button, guint32 activate_time, Glib::RefPtr<CanvasGroupDbTable> table)
 {
   if(m_action_edit_fields)
   {
@@ -499,7 +526,7 @@ void Dialog_RelationshipsOverview::setup_context_menu()
   m_context_menu = dynamic_cast<Gtk::Menu*>( m_context_menu_uimanager->get_widget("/ContextMenu") ); 
 }
 
-void Dialog_RelationshipsOverview::on_context_menu_edit_fields(const Glib::RefPtr<CanvasGroupDbTable>& table)
+void Dialog_RelationshipsOverview::on_context_menu_edit_fields(Glib::RefPtr<CanvasGroupDbTable> table)
 {
   App_Glom* pApp = App_Glom::get_application();
   if(pApp && table)
@@ -510,7 +537,7 @@ void Dialog_RelationshipsOverview::on_context_menu_edit_fields(const Glib::RefPt
   }
 }
 
-void Dialog_RelationshipsOverview::on_context_menu_edit_relationships(const Glib::RefPtr<CanvasGroupDbTable>& table)
+void Dialog_RelationshipsOverview::on_context_menu_edit_relationships(Glib::RefPtr<CanvasGroupDbTable> table)
 {
   App_Glom* pApp = App_Glom::get_application();
   if(pApp && table)

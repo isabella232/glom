@@ -66,11 +66,11 @@ private:
   void on_menu_file_save();
   void on_menu_view_showgrid();
 
-  void on_table_moved(const Glib::RefPtr<CanvasGroupDbTable>& table);
-  void on_table_show_context(guint button, guint32 activate_time, const Glib::RefPtr<CanvasGroupDbTable>& table);
+  void on_table_moved(Glib::RefPtr<CanvasGroupDbTable> table);
+  void on_table_show_context(guint button, guint32 activate_time, Glib::RefPtr<CanvasGroupDbTable> table);
 
-  void on_context_menu_edit_fields(const Glib::RefPtr<CanvasGroupDbTable>& table);
-  void on_context_menu_edit_relationships(const Glib::RefPtr<CanvasGroupDbTable>& table);
+  void on_context_menu_edit_fields(Glib::RefPtr<CanvasGroupDbTable> table);
+  void on_context_menu_edit_relationships(Glib::RefPtr<CanvasGroupDbTable> table);
 
   void on_scroll_value_changed();
 
@@ -93,6 +93,9 @@ private:
   Glib::RefPtr<Goocanvas::Group> m_group_tables;
   Glib::RefPtr<Goocanvas::Group> m_group_lines;
 
+  typedef std::list<sigc::connection> type_list_connections;
+  type_list_connections m_list_table_connections;
+  
   //Context menu:
   Gtk::Menu* m_context_menu;
   Glib::RefPtr<Gtk::ActionGroup> m_context_menu_action_group;
