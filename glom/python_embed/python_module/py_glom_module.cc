@@ -20,7 +20,7 @@
 
 #include <config.h>
 //We need to include this before anything else, to avoid redefinitions:
-#include <Python.h>
+#include <boost/python.hpp>
 #include <compile.h> /* for the PyCodeObject */
 #include <eval.h> /* for PyEval_EvalCode */
 #include <objimpl.h> /* for PyObject_New() */
@@ -29,45 +29,35 @@
 #include <libglom/python_embed/py_glom_related.h>
 #include <libglom/python_embed/py_glom_relatedrecord.h>
 
-static PyMethodDef pyglom_methods[] = {
-    {0, 0, 0, 0}  /* Sentinel */
-};
+using namespace Glom;
 
-PyMODINIT_FUNC
-initglom_1_14(void) 
+BOOST_PYTHON_MODULE(glom)
 {
-  PyObject* m;
+  boost::python::class_<PyGlomRecord>("Record")
+    .add_property("table_name", &PyGlomRecord::get_table_name)
+    .add_property("connection", &PyGlomRecord::get_connection)
+    .add_property("related", &PyGlomRecord::get_related)
 
-  //pyglom_RecordType.tp_new = PyType_GenericNew;
+        /* TODO: python still says "TypeError: 'Boost.Python.class' object is unsubscriptable" */
+	        /* This suggests that it should work: http://lists.boost.org/boost-users/2003/08/4750.php */
+    .def("__getitem__", &PyGlomRecord::getitem)
+    .def("__len__", &PyGlomRecord::len)
+  ;
 
-  if(PyType_Ready(Glom::PyGlomRecord_GetPyType()) < 0)
-    return;
+  boost::python::class_<PyGlomRelated>("Related")
+    .def("__getitem__", &PyGlomRelated::getitem)
+    .def("__len__", &PyGlomRelated::len)
+  ;
 
-  if(PyType_Ready(Glom::PyGlomRelated_GetPyType()) < 0)
-    return;
-
-  if(PyType_Ready(Glom::PyGlomRelatedRecord_GetPyType()) < 0)
-    return;
-
-
-  m = Py_InitModule3((char*)"glom_" GLOM_ABI_VERSION_UNDERLINED, pyglom_methods,
-                      (char*)"Python module for Glom caluclated fields.");
-
-
-  Py_INCREF(Glom::PyGlomRecord_GetPyType());
-  PyModule_AddObject(m, (char*)"Record", (PyObject *)Glom::PyGlomRecord_GetPyType());
-
-  Py_INCREF(Glom::PyGlomRelated_GetPyType());
-  PyModule_AddObject(m, (char*)"Related", (PyObject *)Glom::PyGlomRelated_GetPyType());
-
-  Py_INCREF(Glom::PyGlomRelated_GetPyType());
-  PyModule_AddObject(m, (char*)"RelatedRecord", (PyObject *)Glom::PyGlomRelated_GetPyType());
-
-
-  if(PyErr_Occurred())
-    Py_FatalError((char*)"Can't initialise glom module");
+  boost::python::class_<PyGlomRelatedRecord>("RelatedRecord")
+    .def("sum", &PyGlomRelatedRecord::sum, boost::python::args("field_name"), "Add all values of the field in the related records.")
+    .def("count", &PyGlomRelatedRecord::sum, boost::python::args("field_name"), "Count all values in the field in the related records.")
+    .def("min", &PyGlomRelatedRecord::sum, boost::python::args("field_name"), "Minimum of all values of the field in the related recordss.")
+    .def("max", &PyGlomRelatedRecord::sum, boost::python::args("field_name"), "Maximum of all values of the field in the related records.")
+    .def("__getitem__", &PyGlomRecord::getitem)
+    .def("__len__", &PyGlomRecord::len)
+  ;
 }
-
 
 
 

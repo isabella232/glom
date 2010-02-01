@@ -200,6 +200,16 @@ AC_CHECK_FUNCS([strptime])
 # For instance: PYTHON=python2.5
 MM_CHECK_MODULE_PYTHON
 
+BOOST_PYTHON_LIBS="-lboost_python-gcc43-mt-1_39.so.1.39."
+#BOOST_PYTHON_LIBS="-lboost_python-mt-py25.so.1.39"
+BOOST_PYTHON_CFLAGS="-I/opt/gnome228/include/boost-1_39"
+AC_SUBST([BOOST_PYTHON_LIBS])
+AC_SUBST([BOOST_PYTHON_CFLAGS])
+
+#These don't work. pyconfig.h can't be found when using python.hpp.
+#AX_PYTHON()
+#AX_BOOST_PYTHON()
+
 AC_ARG_ENABLE([update-mime-database],
               [AS_HELP_STRING([--disable-update-mime-database],
                               [do not run the update-mime-database utility

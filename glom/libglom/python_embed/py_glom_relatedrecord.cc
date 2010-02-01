@@ -37,125 +37,42 @@
 namespace Glom
 {
 
-//Allocate a new object:
-//TODO: Why not parse the args here as well as in RelatedRecord_init()?
-static PyObject *
-RelatedRecord_new(PyTypeObject *type, PyObject * /* args */, PyObject * /* kwds */)
+PyGlomRelatedRecord::PyGlomRelatedRecord()
+: m_py_gda_connection(0),
+  m_document(0),
+  m_relationship(0),
+  m_from_key_value_sqlized(0)
 {
-  PyGlomRelatedRecord *self  = (PyGlomRelatedRecord*)type->tp_alloc(type, 0);
-  if(self)
-  {
-    self->m_py_gda_connection = 0;
-    self->m_document = 0;
-    self->m_relationship = 0;
-    self->m_from_key_value_sqlized = 0;
-
-    //self->m_record_parent = 0;
-
-    self->m_pMap_field_values = new PyGlomRelatedRecord::type_map_field_values();
-  }
-
-  return (PyObject*)self;
+  m_pMap_field_values = new PyGlomRelatedRecord::type_map_field_values();
 }
 
-//Set the object's member data, from the parameters supplied when creating the object:
-static int
-RelatedRecord_init(PyGlomRelatedRecord *self, PyObject * /* args */, PyObject * /* kwds */)
+PyGlomRelatedRecord::~PyGlomRelatedRecord()
 {
-  //static char *kwlist[] = {"test", 0};
-
-  //if(!PyArg_ParseTupleAndKeywords(args, kwds, "|i", kwlist,
-   //                                 &self->m_test))
-   // return -1;
-
-  if(self)
+  if(m_pMap_field_values)
   {
-    self->m_py_gda_connection = 0;
-    self->m_document = 0;
-    self->m_relationship = 0;
-    self->m_from_key_value_sqlized = 0;
-
-    //self->m_record_parent = 0;
-
-    if(self->m_pMap_field_values == 0)
-      self->m_pMap_field_values = new PyGlomRelatedRecord::type_map_field_values();
+    delete m_pMap_field_values;
+    m_pMap_field_values = 0;
   }
 
-  return 0;
+  if(m_relationship)
+  {
+    delete m_relationship;
+    m_relationship = 0;
+  }
+
+  if(m_from_key_value_sqlized)
+  {
+    delete m_from_key_value_sqlized;
+    m_from_key_value_sqlized = 0;
+  }
+
+  if(m_py_gda_connection)
+  {
+    Py_XDECREF( (PyObject*)(m_py_gda_connection));
+    m_py_gda_connection = 0;
+  }
 }
 
-static void
-RelatedRecord_dealloc(PyGlomRelatedRecord* self)
-{
-  if(self->m_pMap_field_values)
-  {
-    delete self->m_pMap_field_values;
-    self->m_pMap_field_values = 0;
-  }
-
-  if(self->m_relationship)
-  {
-    delete self->m_relationship;
-    self->m_relationship = 0;
-  }
-
-  if(self->m_from_key_value_sqlized)
-  {
-    delete self->m_from_key_value_sqlized;
-    self->m_from_key_value_sqlized = 0;
-  }
-
-  if(self->m_py_gda_connection)
-  {
-    Py_XDECREF( (PyObject*)(self->m_py_gda_connection));
-    self->m_py_gda_connection = 0;
-  }
-
-  self->ob_type->tp_free((PyObject*)self);
-}
-
-/*
-static PyObject *
-RelatedRecord__get_fields(PyGlomRelatedRecord *self, void * closure )
-{
-  if(self->m_fields_dict)
-  {
-    Py_INCREF(self->m_fields_dict); //TODO: Should we do this?
-    return self->m_fields_dict;
-  }
-  else
-  {
-    Py_INCREF(Py_None);
-    return Py_None;
-  }
-}
-*/
-
-/*
-static PyGetSetDef RelatedRecord_getseters[] = {
-    {"fields",
-     (getter)RelatedRecord__get_fields, (setter)0, 0, 0
-    },
-    {0, 0, 0, 0, 0, }  // Sentinel
-};
-*/
-
-//Adapt to API changes in Python 2.5:
-#if defined(PY_VERSION_HEX) && (PY_VERSION_HEX >= 0x02050000) /* Python 2.5 */
-static Py_ssize_t
-RelatedRecord_tp_as_mapping_length(PyObject *self)
-{
-  PyGlomRelatedRecord* self_derived = (PyGlomRelatedRecord*)self;
-  return self_derived->m_pMap_field_values->size();
-}
-#else
-static int
-RelatedRecord_tp_as_mapping_length(PyObject *self)
-{
-  PyGlomRelatedRecord* self_derived = (PyGlomRelatedRecord*)self;
-  return (int)(self_derived->m_pMap_field_values->size());
-}
-#endif
 
 static void RelatedRecord_HandlePythonError()
 {
@@ -163,152 +80,36 @@ static void RelatedRecord_HandlePythonError()
     PyErr_Print();
 }
 
-static PyObject *
-RelatedRecord_tp_as_mapping_getitem(PyObject *self, PyObject *item)
+long PyGlomRelatedRecord::len() const
 {
-  PyGlomRelatedRecord* self_derived = (PyGlomRelatedRecord*)self;
+  if(!m_pMap_field_values)
+     return 0;
+     
+  return m_pMap_field_values->size();
+}
 
-  if(PyString_Check(item))
+boost::python::object PyGlomRelatedRecord::getitem(boost::python::object cppitem)
+{
+  const std::string field_name = boost::python::extract<std::string>(cppitem);
+  if(!m_pMap_field_values)
+    return boost::python::object();
+    
+  PyGlomRelatedRecord::type_map_field_values::const_iterator iterFind = m_pMap_field_values->find(field_name);
+  if(iterFind != m_pMap_field_values->end())
   {
-    const char* pchKey = PyString_AsString(item);
-    if(pchKey)
-    {
-      const Glib::ustring field_name(pchKey);
-      PyGlomRelatedRecord::type_map_field_values::const_iterator iterFind = self_derived->m_pMap_field_values->find(field_name);
-      if(iterFind != self_derived->m_pMap_field_values->end())
-      {
-        //If the value has already been stored, then just return it again:
-        return glom_pygda_value_as_pyobject(iterFind->second.gobj(), true /* copy */);
-      }
-      else
-      {
-         const Glib::ustring related_table = (*(self_derived->m_relationship))->get_to_table();
-
-        //Check whether the field exists in the table.
-        //TODO_Performance: Do this without the useless Field information?
-        sharedptr<Field> field = self_derived->m_document->get_field((*(self_derived->m_relationship))->get_to_table(), field_name);
-        if(!field)
-          g_warning("RelatedRecord_tp_as_mapping_getitem: field %s not found in table %s", field_name.c_str(), (*(self_derived->m_relationship))->get_to_table().c_str());
-        else
-        {
-          //Try to get the value from the database:
-          //const Glib::ustring parent_key_name;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-          sharedptr<SharedConnection> sharedconnection = ConnectionPool::get_instance()->connect();
-#else
-          std::auto_ptr<ExceptionConnection> conn_error;
-          sharedptr<SharedConnection> sharedconnection = ConnectionPool::get_instance()->connect(conn_error);
-          // Ignore error, sharedconnection presence is checked below
-#endif
-          if(sharedconnection)
-          {
-            Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
-
-            const Glib::ustring related_key_name = (*(self_derived->m_relationship))->get_to_field();
-
-            //Do not try to get a value based on a null key value:
-            if(!(self_derived->m_from_key_value_sqlized))
-              return Py_None;
-       
-            //Get the single value from the related records:
-            Glib::ustring sql_query = "SELECT \"" + related_table + "\".\"" + field_name + "\" FROM \"" + related_table + "\""
-              + " WHERE \"" + related_table + "\".\"" + related_key_name + "\" = " + *(self_derived->m_from_key_value_sqlized);
-
-            /* TODO: Fix linking problems
-            const App_Glom* app = App_Glom::get_application();
-            if(app && app->get_show_sql_debug())
-            {
-              try
-              {
-                std::cout << "Debug: RelatedRecord_tp_as_mapping_getitem():  " << sql_query << std::endl;
-              }
-              catch(const Glib::Exception& ex)
-              {
-                std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
-              }
-            }*/
-
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-            // TODO: Does this behave well if this throws an exception?
-            Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->statement_execute_select(sql_query);
-#else
-            std::auto_ptr<Glib::Error> error;
-            Glib::RefPtr<Gnome::Gda::DataModel> datamodel =  gda_connection->statement_execute_select(sql_query, Gnome::Gda::STATEMENT_MODEL_RANDOM_ACCESS, error);
-            // Ignore error, datamodel return value is checked below
-#endif
-            if(datamodel && datamodel->get_n_rows())
-            {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED            
-              Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
-#else
-              Gnome::Gda::Value value = datamodel->get_value_at(0, 0, error);
-#endif                            
-              //g_warning("RelatedRecord_tp_as_mapping_getitem(): value from datamodel = %s", value.to_string().c_str());
-
-              //Cache it, in case it's asked-for again.
-              (*(self_derived->m_pMap_field_values))[field_name] = value;
-              return glom_pygda_value_as_pyobject(value.gobj(), true /* copy */);
-            }
-            else if(!datamodel)
-            {
-              g_warning("RelatedRecord_tp_as_mapping_getitem(): The datamodel was null.");
-              ConnectionPool::handle_error_cerr_only();
-              RelatedRecord_HandlePythonError();
-            }
-            else
-            {
-              g_warning("RelatedRecord_tp_as_mapping_getitem(): No related records exist yet for relationship %s.",  (*(self_derived->m_relationship))->get_name().c_str());
-            }
-          }
-        }
-      }
-    }
+    //If the value has already been stored, then just return it again:
+    PyObject* cResult = glom_pygda_value_as_pyobject(iterFind->second.gobj(), true /* copy */);
+    return boost::python::object(); //TODO_Hack: boost::python::object(cResult);
   }
-
-  g_warning("RelatedRecord_tp_as_mapping_getitem(): return null.");
-  PyErr_SetString(PyExc_IndexError, "field not found");
-  return 0;
-}
-
-/*
-static int
-RelatedRecord_tp_as_mapping_setitem(PyGObject *self, PyObject *item, PyObject *value)
-{
-  Py_INCREF(Py_None);
-  return Py_None;
-}
-*/
-
-static PyMappingMethods RelatedRecord_tp_as_mapping = {
-    RelatedRecord_tp_as_mapping_length,
-    RelatedRecord_tp_as_mapping_getitem,
-    (objobjargproc)0 /* RelatedRecord_tp_as_mapping_setitem */
-};
-
-static PyObject *
-RelatedRecord_generic_aggregate(PyGlomRelatedRecord* self, PyObject *args, PyObject *kwargs, const Glib::ustring& aggregate)
-{
-  typedef const char* type_pch;
-  static type_pch kwlist[] = { "field_name", 0 };
-  PyObject* py_field_name = 0;
-
-  if(!PyArg_ParseTupleAndKeywords(args, kwargs, (char*)"O:RelatedRecord.sum", (char**)kwlist, &py_field_name))
-    return 0;
-
-  if(!(PyString_Check(py_field_name)))
-    return 0;
-
-  const char* pchKey = PyString_AsString(py_field_name);
-  if(pchKey)
+  else
   {
-    const Glib::ustring field_name(pchKey);
-    const Glib::ustring related_table = (*(self->m_relationship))->get_to_table();
+    const Glib::ustring related_table = (*m_relationship)->get_to_table();
 
     //Check whether the field exists in the table.
     //TODO_Performance: Do this without the useless Field information?
-    sharedptr<Field> field = self->m_document->get_field((*(self->m_relationship))->get_to_table(), field_name);
+    sharedptr<Field> field = m_document->get_field((*m_relationship)->get_to_table(), field_name);
     if(!field)
-      g_warning("RelatedRecord_sum: field %s not found in table %s", field_name.c_str(), (*(self->m_relationship))->get_to_table().c_str());
+      g_warning("RelatedRecord_tp_as_mapping_getitem: field %s not found in table %s", field_name.c_str(), (*m_relationship)->get_to_table().c_str());
     else
     {
       //Try to get the value from the database:
@@ -324,152 +125,170 @@ RelatedRecord_generic_aggregate(PyGlomRelatedRecord* self, PyObject *args, PyObj
       {
         Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
 
-        const Glib::ustring related_key_name = (*(self->m_relationship))->get_to_field();
+        const Glib::ustring related_key_name = (*m_relationship)->get_to_field();
 
         //Do not try to get a value based on a null key value:
-        if(!(self->m_from_key_value_sqlized))
-          return Py_None;
+        if(!(m_from_key_value_sqlized))
+          return boost::python::object();
        
-        //Get the aggregate value from the related records:
-        const Glib::ustring sql_query = "SELECT " + aggregate + "(\"" + related_table + "\".\"" + field_name + "\") FROM \"" + related_table + "\""
-          + " WHERE \"" + related_table + "\".\"" + related_key_name + "\" = " + *(self->m_from_key_value_sqlized);
-        
-        //std::cout << "PyGlomRelatedRecord: Executing:  " << sql_query << std::endl;
+        //Get the single value from the related records:
+        Glib::ustring sql_query = "SELECT \"" + related_table + "\".\"" + field_name + "\" FROM \"" + related_table + "\""
+          + " WHERE \"" + related_table + "\".\"" + related_key_name + "\" = " + *(m_from_key_value_sqlized);
+
+        /* TODO: Fix linking problems
+        const App_Glom* app = App_Glom::get_application();
+        if(app && app->get_show_sql_debug())
+        {
+          try
+          {
+            std::cout << "Debug: RelatedRecord_tp_as_mapping_getitem():  " << sql_query << std::endl;
+          }
+          catch(const Glib::Exception& ex)
+          {
+            std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
+          }
+        }*/
+
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
+        // TODO: Does this behave well if this throws an exception?
         Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->statement_execute_select(sql_query);
 #else
         std::auto_ptr<Glib::Error> error;
-        Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->statement_execute_select(sql_query, Gnome::Gda::STATEMENT_MODEL_RANDOM_ACCESS, error);
-
-        // Ignore the error: The case that the command execution didn't return
-        // a datamodel is handled below.
+        Glib::RefPtr<Gnome::Gda::DataModel> datamodel =  gda_connection->statement_execute_select(sql_query, Gnome::Gda::STATEMENT_MODEL_RANDOM_ACCESS, error);
+        // Ignore error, datamodel return value is checked below
 #endif
         if(datamodel && datamodel->get_n_rows())
         {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED        
+#ifdef GLIBMM_EXCEPTIONS_ENABLED            
           Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
 #else
           Gnome::Gda::Value value = datamodel->get_value_at(0, 0, error);
-#endif          
-          //g_warning("RelatedRecord_generic_aggregate(): value from datamodel = %s", value.to_string().c_str());
+#endif                            
+          //g_warning("RelatedRecord_tp_as_mapping_getitem(): value from datamodel = %s", value.to_string().c_str());
 
           //Cache it, in case it's asked-for again.
-          (*(self->m_pMap_field_values))[field_name] = value;
-          return glom_pygda_value_as_pyobject(value.gobj(), true /* copy */);
+          (*(m_pMap_field_values))[field_name] = value;
+          PyObject* cResult = glom_pygda_value_as_pyobject(value.gobj(), true /* copy */);
+          return boost::python::object(); //TODO_Hack: boost::python::object(cResult);
         }
         else if(!datamodel)
         {
-          g_warning("RelatedRecord_generic_aggregate(): The datamodel was null.");
+          g_warning("RelatedRecord_tp_as_mapping_getitem(): The datamodel was null.");
           ConnectionPool::handle_error_cerr_only();
           RelatedRecord_HandlePythonError();
         }
         else
         {
-          g_warning("RelatedRecord_generic_aggregate(): No related records exist yet for relationship %s.",  (*(self->m_relationship))->get_name().c_str());
+          g_warning("RelatedRecord_tp_as_mapping_getitem(): No related records exist yet for relationship %s.",  (*m_relationship)->get_name().c_str());
         }
       }
     }
   }
 
-  Py_INCREF(Py_None);
-  return Py_None;
+  g_warning("RelatedRecord_tp_as_mapping_getitem(): return null.");
+  PyErr_SetString(PyExc_IndexError, "field not found");
+  return boost::python::object();
 }
 
-static PyObject *
-RelatedRecord_sum(PyObject* self, PyObject *args, PyObject *kwargs)
+boost::python::object PyGlomRelatedRecord::generic_aggregate(const std::string& field_name, const std::string& aggregate) const
 {
-  PyGlomRelatedRecord* self_derived = (PyGlomRelatedRecord*)self;
-  return RelatedRecord_generic_aggregate(self_derived, args, kwargs, "sum");
+  const Glib::ustring related_table = (*m_relationship)->get_to_table();
+
+  //Check whether the field exists in the table.
+  //TODO_Performance: Do this without the useless Field information?
+  sharedptr<Field> field = m_document->get_field((*(m_relationship))->get_to_table(), field_name);
+  if(!field)
+  {
+    g_warning("RelatedRecord_sum: field %s not found in table %s", field_name.c_str(), (*(m_relationship))->get_to_table().c_str());
+    return boost::python::object();
+  }
+
+  //Try to get the value from the database:
+  //const Glib::ustring parent_key_name;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  sharedptr<SharedConnection> sharedconnection = ConnectionPool::get_instance()->connect();
+#else
+  std::auto_ptr<ExceptionConnection> conn_error;
+  sharedptr<SharedConnection> sharedconnection = ConnectionPool::get_instance()->connect(conn_error);
+  // Ignore error, sharedconnection presence is checked below
+#endif
+  if(!sharedconnection)
+  {
+    g_warning("RelatedRecord_sum: no connection.");
+    return boost::python::object();
+  }
+  
+  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
+
+  const Glib::ustring related_key_name = (*m_relationship)->get_to_field();
+
+  //Do not try to get a value based on a null key value:
+  if(!(m_from_key_value_sqlized))
+  {
+    return boost::python::object();
+  }
+       
+  //Get the aggregate value from the related records:
+  const Glib::ustring sql_query = "SELECT " + aggregate + "(\"" + related_table + "\".\"" + field_name + "\") FROM \"" + related_table + "\""
+    + " WHERE \"" + related_table + "\".\"" + related_key_name + "\" = " + *m_from_key_value_sqlized;
+        
+  //std::cout << "PyGlomRelatedRecord: Executing:  " << sql_query << std::endl;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->statement_execute_select(sql_query);
+#else
+  std::auto_ptr<Glib::Error> error;
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->statement_execute_select(sql_query, Gnome::Gda::STATEMENT_MODEL_RANDOM_ACCESS, error);
+
+  // Ignore the error: The case that the command execution didn't return
+  // a datamodel is handled below.
+#endif
+  if(datamodel && datamodel->get_n_rows())
+  {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED        
+    Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
+#else
+    Gnome::Gda::Value value = datamodel->get_value_at(0, 0, error);
+#endif          
+    //g_warning("RelatedRecord_generic_aggregate(): value from datamodel = %s", value.to_string().c_str());
+
+    //Cache it, in case it's asked-for again.
+    (*m_pMap_field_values)[field_name] = value;
+    PyObject* cResult = glom_pygda_value_as_pyobject(value.gobj(), true /* copy */);
+    return boost::python::object(); //TODO_Hack: boost::python::object(cResult);
+  }
+  else if(!datamodel)
+  {
+    g_warning("RelatedRecord_generic_aggregate(): The datamodel was null.");
+    ConnectionPool::handle_error_cerr_only();
+    RelatedRecord_HandlePythonError();
+  }
+  else
+  {
+    g_warning("RelatedRecord_generic_aggregate(): No related records exist yet for relationship %s.",  (*m_relationship)->get_name().c_str());
+  }
+
+  return boost::python::object();
 }
 
-static PyObject *
-RelatedRecord_count(PyObject* self, PyObject *args, PyObject *kwargs)
+boost::python::object PyGlomRelatedRecord::sum(const std::string& field_name) const
 {
-  PyGlomRelatedRecord* self_derived = (PyGlomRelatedRecord*)self;
-  return RelatedRecord_generic_aggregate(self_derived, args, kwargs, "count");
+  return generic_aggregate(field_name, "sum");
 }
 
-static PyObject *
-RelatedRecord_min(PyObject* self, PyObject *args, PyObject *kwargs)
+boost::python::object PyGlomRelatedRecord::count(const std::string& field_name) const
 {
-  PyGlomRelatedRecord* self_derived = (PyGlomRelatedRecord*)self;
-  return RelatedRecord_generic_aggregate(self_derived, args, kwargs, "min");
+  return generic_aggregate(field_name, "count");
 }
 
-static PyObject *
-RelatedRecord_max(PyObject* self, PyObject *args, PyObject *kwargs)
+boost::python::object PyGlomRelatedRecord::min(const std::string& field_name) const
 {
-  PyGlomRelatedRecord* self_derived = (PyGlomRelatedRecord*)self;
-  return RelatedRecord_generic_aggregate(self_derived, args, kwargs, "max");
+  return generic_aggregate(field_name, "min");
 }
 
-static PyMethodDef RelatedRecord_methods[] = {
-    {(char*)"sum", (PyCFunction)RelatedRecord_sum, METH_VARARGS | METH_KEYWORDS,
-     (char*)"Add all values of the field in the related records."
-    },
-    {(char*)"count", (PyCFunction)RelatedRecord_count, METH_VARARGS | METH_KEYWORDS,
-     (char*)"Count all values in the field in the related records."
-    },
-    {(char*)"min", (PyCFunction)RelatedRecord_min, METH_VARARGS | METH_KEYWORDS,
-     (char*)"Minimum of all values of the field in the related records."
-    },
-    {(char*)"max", (PyCFunction)RelatedRecord_max, METH_VARARGS | METH_KEYWORDS,
-     (char*)"Maximum of all values of the field in the related records."
-    },
-    {0, 0, 0, 0}  /* Sentinel */
-};
-
-
-
-
-static PyTypeObject pyglom_RelatedRecordType = {
-    PyObject_HEAD_INIT(0)
-    0,                         /*ob_size*/
-    (char*)"glom.RelatedRecord",             /*tp_name*/
-    sizeof(PyGlomRelatedRecord), /*tp_basicsize*/
-    0,                         /*tp_itemsize*/
-    (destructor)RelatedRecord_dealloc, /*tp_dealloc*/
-    0,                         /*tp_print*/
-    0,                         /*tp_getattr*/
-    0,                         /*tp_setattr*/
-    0,                         /*tp_compare*/
-    0,                         /*tp_repr*/
-    0,                         /*tp_as_number*/
-    0,                         /*tp_as_sequence*/
-    &RelatedRecord_tp_as_mapping,      /*tp_as_mapping*/
-    0,                         /*tp_hash */
-    0,                         /*tp_call*/
-    0,                         /*tp_str*/
-    0,                         /*tp_getattro*/
-    0,                         /*tp_setattro*/
-    0,                         /*tp_as_buffer*/
-    Py_TPFLAGS_DEFAULT,        /*tp_flags*/
-    (char*)"Glom objects",           /* tp_doc */
-    0,                  /* tp_traverse */
-    0,                   /* tp_clear */
-    0,                   /* tp_richcompare */
-    0,                   /* tp_weaklistoffset */
-    0,                   /* tp_iter */
-    0,                   /* tp_iternext */
-    RelatedRecord_methods,             /* tp_methods */
-    0 /* RelatedRecord_members */,             /* tp_members */
-    0, /* RelatedRecord_getseters, */                   /* tp_getset */
-    0,                         /* tp_base */
-    0,                         /* tp_dict */
-    0,                         /* tp_descr_get */
-    0,                         /* tp_descr_set */
-    0,                         /* tp_dictoffset */
-    (initproc)RelatedRecord_init,      /* tp_init */
-    0,                         /* tp_alloc */
-    RelatedRecord_new,                 /* tp_new */
-    0, 0, 0, 0, 0, 0, 0, 0, //TODO: or one more 0 if using a newer Python.
-};
-
-PyTypeObject* PyGlomRelatedRecord_GetPyType()
+boost::python::object PyGlomRelatedRecord::max(const std::string& field_name) const
 {
-  return &pyglom_RelatedRecordType;
+  return generic_aggregate(field_name, "max");
 }
-
 
 void PyGlomRelatedRecord_SetRelationship(PyGlomRelatedRecord* self, const sharedptr<const Relationship>& relationship, const Glib::ustring& from_key_value_sqlized,  Document* document)
 {

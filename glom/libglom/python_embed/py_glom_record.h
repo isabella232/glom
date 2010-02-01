@@ -24,7 +24,7 @@
 #define NO_IMPORT_PYGTK //To avoid a multiple definition in pygtk.
 #include <pygtk/pygtk.h> //For the PyGObject and PyGBoxed struct definitions.
 
-#include <Python.h>
+#include <boost/python.hpp>
 
 #include <libglom/document/document.h>
 #include <libglom/data_structure/field.h>
@@ -35,11 +35,25 @@ namespace Glom
 
 class PyGlomRelated;
 
-struct PyGlomRecord
+class PyGlomRecord
 {
 public:
-  PyObject_HEAD
+  PyGlomRecord();
+  ~PyGlomRecord();
 
+  std::string get_table_name() const;
+
+  //TODO: Use a more specific type somehow?
+  boost::python::object get_connection();
+
+  boost::python::object get_related();
+
+  //[] notation:
+
+  long len() const;
+  boost::python::object getitem(boost::python::object item);
+
+public:
   //PyObject* m_fields_dict; //Dictionary (map) of field names (string) to field values (Gnome::Gda::Value).
   //PyGObject* m_py_gda_connection; //"derived" from PyObject.
   Document* m_document;
@@ -54,8 +68,6 @@ public:
 
   Glib::RefPtr<Gnome::Gda::Connection>* m_connection;
 };
-
-PyTypeObject* PyGlomRecord_GetPyType();
 
 void PyGlomRecord_SetFields(PyGlomRecord* self, const PyGlomRecord::type_map_field_values& field_values, Document* document, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection);
 
