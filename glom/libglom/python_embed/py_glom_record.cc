@@ -142,8 +142,7 @@ boost::python::object PyGlomRecord::getitem(boost::python::object cppitem)
   PyGlomRecord::type_map_field_values::const_iterator iterFind = m_pMap_field_values->find(key);
   if(iterFind != m_pMap_field_values->end())
   {
-    PyObject* cResult = glom_pygda_value_as_pyobject(iterFind->second.gobj(), true /* copy */);
-    return boost::python::object(); //TODO_Hack: boost::python::object(cResult);
+    return glom_pygda_value_as_boost_pyobject(iterFind->second);
   }
 
   return boost::python::object();   

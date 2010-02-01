@@ -30,7 +30,7 @@ glom_pygda_value_from_pyobject(GValue *boxed, PyObject *input)
        we must still have the get_*() functions in the python API.
      */
 
-    if (G_IS_VALUE (boxed)) g_value_unset (boxed);
+    if (G_IS_VALUE (boxed)) g_value_unset(boxed);
     if (input == Py_None) {
       /* Leave value uninitialized to represent NULL value */
     } else if (PyString_Check (input)) {
@@ -63,7 +63,7 @@ glom_pygda_value_from_pyobject(GValue *boxed, PyObject *input)
      } else if (PyDate_Check (input)) {
          GDate *gda = g_date_new_dmy(
            PyDateTime_GET_DAY(input),
-           PyDateTime_GET_MONTH(input),
+           (GDateMonth)PyDateTime_GET_MONTH(input),
            PyDateTime_GET_YEAR(input) );
          g_value_init (boxed, G_TYPE_DATE);
          g_value_set_boxed(boxed, gda);
@@ -84,89 +84,73 @@ glom_pygda_value_from_pyobject(GValue *boxed, PyObject *input)
     return 0; /* success. */
 }
 
-/**
- * pygda_value_as_pyobject:
- * @value: the GValue object.
- * @copy_boxed: true if boxed values should be copied.
- *
- * This function creates/returns a Python wrapper object that
- * represents the GValue passed as an argument.
- *
- * Returns: a PyObject representing the value.
- */
-PyObject *
-glom_pygda_value_as_pyobject(const GValue *boxed, gboolean copy_boxed)
+boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& value)
 {
-    copy_boxed = FALSE; //Just to avoid the "unused paramter" and "parameter name omitted" warnings.
-
-    GType value_type = GDA_TYPE_NULL;
-    PyObject* ret = 0;
-
-    value_type = G_VALUE_TYPE ((GValue*)boxed);
+    GValue* boxed = const_cast<GValue*>(value.gobj());
+    const GType value_type = G_VALUE_TYPE(boxed);
+    boost::python::object ret;
 
 #if PY_VERSION_HEX >= 0x02040000
     PyDateTime_IMPORT; /* So we can use PyDate*() functions. */
 #endif
 
-    if (value_type == GDA_TYPE_NULL) {
-      Py_INCREF (Py_None);
-      ret = Py_None;
-    } else if (value_type == G_TYPE_INT64) {
-        ret = PyLong_FromLong (g_value_get_int64 ((GValue*)boxed));
+    if (value_type == G_TYPE_INT64) {
+        ret = boost::python::object(g_value_get_int64(boxed));
     } else if (value_type == G_TYPE_UINT64) {
-        ret = PyLong_FromLong (g_value_get_uint64 ((GValue*)boxed));
+        ret = boost::python::object(g_value_get_uint64(boxed));
     } else if (value_type == GDA_TYPE_BINARY) {
-        const GdaBinary* gdabinary = gda_value_get_binary((GValue*)boxed);
-        ret = PyString_FromString ((const char*)gdabinary->data); /* TODO: Use the size. TODO: Check for null GdaBinary. */
+        const GdaBinary* gdabinary = gda_value_get_binary(boxed);
+        ret = boost::python::object((const char*)gdabinary->data); /* TODO: Use the size. TODO: Check for null GdaBinary. */
     } else if (value_type == GDA_TYPE_BLOB) {
-        /* const GdaBlob* val = gda_value_get_blob ((GValue*)boxed); */
-        ret = 0; /* TODO: This thing has a whole read/write API. */
+        /* const GdaBlob* val = gda_value_get_blob (boxed; */
+        /* TODO: This thing has a whole read/write API. */
     } else if (value_type == G_TYPE_BOOLEAN) {
-        ret = PyBool_FromLong (g_value_get_boolean ((GValue*)boxed));
+        ret = boost::python::object((bool)g_value_get_boolean(boxed));
 #if PY_VERSION_HEX >= 0x02040000
     } else if (value_type == G_TYPE_DATE) {
-        const GDate* val = (const GDate*)g_value_get_boxed ((GValue*)boxed);
+        /* TODO: 
+        const GDate* val = (const GDate*)g_value_get_boxed(boxed);
         if(val)
           ret = PyDate_FromDate(val->year, val->month, val->day);
+        */
 #endif
     } else if (value_type == G_TYPE_DOUBLE) {
-        ret = PyFloat_FromDouble (g_value_get_double ((GValue*)boxed));
+        ret = boost::python::object(g_value_get_double(boxed));
     } else if (value_type == GDA_TYPE_GEOMETRIC_POINT) {
-        const GdaGeometricPoint* val = gda_value_get_geometric_point ((GValue*)boxed);
+    /*
+        const GdaGeometricPoint* val = gda_value_get_geometric_point(boxed;
         ret = Py_BuildValue ("(ii)", val->x, val->y);
+    */
     } else if (value_type == G_TYPE_INT) {
-        ret = PyInt_FromLong (g_value_get_int ((GValue*)boxed));
+        ret = boost::python::object(g_value_get_int(boxed));
     } else if (value_type == GDA_TYPE_NUMERIC) {
-        const GdaNumeric* val = gda_value_get_numeric ((GValue*)boxed);
+        const GdaNumeric* val = gda_value_get_numeric(boxed);
         const gchar* number_as_text = val->number; /* Formatted according to the C locale, probably. */
         /* This would need a string _object_: ret = PyFloat_FromString(number_as_text, 0); */
-        ret = PyFloat_FromDouble (g_ascii_strtod (number_as_text, NULL));
+        ret = boost::python::object(g_ascii_strtod(number_as_text, 0));
     } else if (value_type == G_TYPE_FLOAT) {
-        ret = PyFloat_FromDouble (g_value_get_float ((GValue*)boxed));
+        ret = boost::python::object(g_value_get_float(boxed));
     } else if (value_type == GDA_TYPE_SHORT) {
-        ret = PyInt_FromLong (gda_value_get_short ((GValue*)boxed));
+        ret = boost::python::object(gda_value_get_short(boxed));
     } else if (value_type == G_TYPE_STRING) {
-        const gchar* val = g_value_get_string ((GValue*)boxed);
-        ret = PyString_FromString (val);
+        const gchar* val = g_value_get_string(boxed);
+        ret = boost::python::object(val);
     } else if (value_type == GDA_TYPE_TIME) {
 #if PY_VERSION_HEX >= 0x02040000
-        const GdaTime* val = gda_value_get_time ((GValue*)boxed);
-        ret = PyTime_FromTime(val->hour, val->minute, val->second, 0); /* TODO: Should we ignore GDate::timezone ? */
+        //const GdaTime* val = gda_value_get_time(boxed)
+        //ret = PyTime_FromTime(val->hour, val->minute, val->second, 0); /* TODO: Should we ignore GDate::timezone ? */
     } else if (value_type == GDA_TYPE_TIMESTAMP) {
-        const GdaTimestamp* val = gda_value_get_timestamp ((GValue*)boxed);
-        ret = PyDateTime_FromDateAndTime(val->year, val->month, val->day, val->hour, val->minute, val->second, 0); /* TODO: Should we ignore GdaTimestamp::timezone ? */
+        //const GdaTimestamp* val = gda_value_get_timestamp (boxed;
+        //ret = PyDateTime_FromDateAndTime(val->year, val->month, val->day, val->hour, val->minute, val->second, 0); /* TODO: Should we ignore GdaTimestamp::timezone ? */
 #endif
     } else if (value_type == GDA_TYPE_SHORT) {
-        ret = PyInt_FromLong (gda_value_get_short ((GValue*)boxed));
+        ret = boost::python::object(gda_value_get_short(boxed));
     } else if (value_type == GDA_TYPE_USHORT) {
-        ret = PyInt_FromLong (gda_value_get_ushort ((GValue*)boxed));
+        ret = boost::python::object(gda_value_get_ushort(boxed));
     } else if (value_type == G_TYPE_UINT) {
-        ret = PyInt_FromLong (g_value_get_uint ((GValue*)boxed));
+        ret = boost::python::object(g_value_get_uint(boxed));
     } else {
       g_warning ("G_VALUE_TYPE() returned unknown type %" G_GSIZE_FORMAT, value_type);
-
-      Py_INCREF (Py_None);
-      ret = Py_None;
     }
 
     return ret;

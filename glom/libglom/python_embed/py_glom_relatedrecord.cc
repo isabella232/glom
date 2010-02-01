@@ -98,8 +98,7 @@ boost::python::object PyGlomRelatedRecord::getitem(boost::python::object cppitem
   if(iterFind != m_pMap_field_values->end())
   {
     //If the value has already been stored, then just return it again:
-    PyObject* cResult = glom_pygda_value_as_pyobject(iterFind->second.gobj(), true /* copy */);
-    return boost::python::object(); //TODO_Hack: boost::python::object(cResult);
+    return glom_pygda_value_as_boost_pyobject(iterFind->second);
   }
   else
   {
@@ -168,8 +167,7 @@ boost::python::object PyGlomRelatedRecord::getitem(boost::python::object cppitem
 
           //Cache it, in case it's asked-for again.
           (*(m_pMap_field_values))[field_name] = value;
-          PyObject* cResult = glom_pygda_value_as_pyobject(value.gobj(), true /* copy */);
-          return boost::python::object(); //TODO_Hack: boost::python::object(cResult);
+          return glom_pygda_value_as_boost_pyobject(value);
         }
         else if(!datamodel)
         {
@@ -253,8 +251,7 @@ boost::python::object PyGlomRelatedRecord::generic_aggregate(const std::string& 
 
     //Cache it, in case it's asked-for again.
     (*m_pMap_field_values)[field_name] = value;
-    PyObject* cResult = glom_pygda_value_as_pyobject(value.gobj(), true /* copy */);
-    return boost::python::object(); //TODO_Hack: boost::python::object(cResult);
+    return glom_pygda_value_as_boost_pyobject(value);
   }
   else if(!datamodel)
   {
