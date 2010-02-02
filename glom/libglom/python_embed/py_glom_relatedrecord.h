@@ -21,8 +21,9 @@
 #ifndef GLOM_PYTHON_GLOM_RELATEDRECORD_H
 #define GLOM_PYTHON_GLOM_RELATEDRECORD_H
 
-#define NO_IMPORT_PYGTK //To avoid a multiple definition in pygtk.
 #include <boost/python.hpp>
+#define NO_IMPORT_PYGOBJECT
+#define NO_IMPORT_PYGTK //To avoid a multiple definition in pygtk.
 #include <pygtk/pygtk.h> //For the PyGObject and PyGBoxed struct definitions.
 
 #include <libglom/document/document.h>
@@ -54,21 +55,16 @@ public:
   boost::python::object generic_aggregate(const std::string& field_name, const std::string& aggregate) const;
 
   //PyObject* m_fields_dict; //Dictionary (map) of field names (string) to field values (Gnome::Gda::Value).
-  PyGObject* m_py_gda_connection; //"derived" from PyObject.
   //PyGlomRecord* m_record_parent;
   Document* m_document;
 
-  sharedptr<const Relationship>* m_relationship;
-  Glib::ustring* m_from_key_value_sqlized;
+  sharedptr<const Relationship> m_relationship;
+  Glib::ustring m_from_key_value_sqlized;
 
   //Available, for instance, in python via record["name_first"]
   typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_field_values;
-  //We use a pointer because python will not run the class/struct's default constructor.
-  type_map_field_values* m_pMap_field_values; 
+  mutable type_map_field_values m_map_field_values; //A cache.
 };
-
-PyTypeObject* PyGlomRelatedRecord_GetPyType();
-
 
 void PyGlomRelatedRecord_SetRelationship(PyGlomRelatedRecord* self, const sharedptr<const Relationship>& relationship, const Glib::ustring& from_key_value_sqlized, Document* document);
 

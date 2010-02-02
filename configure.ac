@@ -200,9 +200,9 @@ AC_CHECK_FUNCS([strptime])
 # For instance: PYTHON=python2.5
 MM_CHECK_MODULE_PYTHON
 
-BOOST_PYTHON_LIBS="-lboost_python-gcc43-mt-1_39"
+BOOST_PYTHON_LIBS="-lboost_python"
 #BOOST_PYTHON_LIBS="-lboost_python-mt-py25.so.1.39"
-BOOST_PYTHON_CFLAGS="-I/opt/gnome228/include/boost-1_39"
+BOOST_PYTHON_CFLAGS="-I/opt/gnome228/include/boost"
 AC_SUBST([BOOST_PYTHON_LIBS])
 AC_SUBST([BOOST_PYTHON_CFLAGS])
 

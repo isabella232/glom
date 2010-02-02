@@ -167,7 +167,7 @@ glom_libglom_libglom_1_14_la_SOURCES +=				\
 	glom/libglom/connectionpool_backends/sqlite.cc		\
 	glom/libglom/connectionpool_backends/sqlite.h
 
-glom_libglom_libglom_1_14_la_LIBADD = $(LIBGLOM_LIBS) $(PYTHON_LIBS)
+glom_libglom_libglom_1_14_la_LIBADD = $(LIBGLOM_LIBS) $(PYTHON_LIBS) $(BOOST_PYTHON_LIBS)
 if HOST_WIN32
 glom_libglom_libglom_1_14_la_LIBADD += -lws2_32
 endif

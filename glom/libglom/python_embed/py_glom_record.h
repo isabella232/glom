@@ -21,6 +21,7 @@
 #ifndef GLOM_PYTHON_GLOM_RECORD_H
 #define GLOM_PYTHON_GLOM_RECORD_H
 
+#define NO_IMPORT_PYGOBJECT
 #define NO_IMPORT_PYGTK //To avoid a multiple definition in pygtk.
 #include <pygtk/pygtk.h> //For the PyGObject and PyGBoxed struct definitions.
 
@@ -49,7 +50,6 @@ public:
   boost::python::object get_related();
 
   //[] notation:
-
   long len() const;
   boost::python::object getitem(boost::python::object item);
 
@@ -57,16 +57,15 @@ public:
   //PyObject* m_fields_dict; //Dictionary (map) of field names (string) to field values (Gnome::Gda::Value).
   //PyGObject* m_py_gda_connection; //"derived" from PyObject.
   Document* m_document;
-  Glib::ustring* m_table_name;
+  Glib::ustring m_table_name;
 
-  PyGlomRelated* m_related;
+  boost::python::object m_related; //Actually a PyGlomRelated
 
   //Available, for instance, in python via record["name_first"]
   typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_field_values;
-  //We use a pointer because python will not run the class/struct's default constructor.
-  type_map_field_values* m_pMap_field_values;
+  type_map_field_values m_map_field_values;
 
-  Glib::RefPtr<Gnome::Gda::Connection>* m_connection;
+  Glib::RefPtr<Gnome::Gda::Connection> m_connection;
 };
 
 void PyGlomRecord_SetFields(PyGlomRecord* self, const PyGlomRecord::type_map_field_values& field_values, Document* document, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection);

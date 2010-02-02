@@ -38,81 +38,39 @@ namespace Glom
 
 PyGlomRelated::PyGlomRelated()
 {
-  PyGlomRelated *self  = this;
-  if(self)
-  {
-    self->m_record = 0;
-
-    self->m_pMap_relationships = new PyGlomRelated::type_map_relationships();
-    self->m_pMap_relatedrecords = new PyGlomRelated::type_map_relatedrecords();
-  }
 }
 
 PyGlomRelated::~PyGlomRelated()
 {
-  PyGlomRelated *self_related = this;
-
-  if(self_related->m_pMap_relationships)
-  {
-    delete self_related->m_pMap_relationships;
-    self_related->m_pMap_relationships = 0;
-  }
-
-  if(self_related->m_record)
-  {
-    Py_XDECREF( (PyObject*)self_related->m_record );
-    self_related->m_record = 0;
-  }
-
-  if(self_related->m_pMap_relatedrecords)
-  {
-    //Unref each item:
-    for(PyGlomRelated::type_map_relatedrecords::iterator iter = self_related->m_pMap_relatedrecords->begin(); iter != self_related->m_pMap_relatedrecords->end(); ++iter)
-    {
-      Py_XDECREF( (PyObject*)(iter->second) );
-    }
-
-    delete self_related->m_pMap_relatedrecords;
-    self_related->m_pMap_relatedrecords = 0;
-  }
 }
 
 
 long PyGlomRelated::len() const
 {
-  const PyGlomRelated *self_related = this;
-  return self_related->m_pMap_relationships->size();
+  return m_map_relationships.size();
 }
 
 boost::python::object PyGlomRelated::getitem(boost::python::object cppitem)
 {
-  PyGlomRelated *self_related = this;
-
-  PyObject* item = cppitem.ptr(); //TODO: Just use the C++ object.
-
-  if(PyString_Check(item))
+  boost::python::extract<std::string> extractor(cppitem);
+  if(extractor.check())
   {
-    const char* pchKey = PyString_AsString(item);
-    if(pchKey)
+    const std::string key = extractor;
+    if(!key.empty())
     {
-      const Glib::ustring key(pchKey);
-
       //Return a cached item if possible:
-      PyGlomRelated::type_map_relatedrecords::iterator iterCacheFind = self_related->m_pMap_relatedrecords->find(key);
-      if(iterCacheFind != self_related->m_pMap_relatedrecords->end())
+      PyGlomRelated::type_map_relatedrecords::iterator iterCacheFind = m_map_relatedrecords.find(key);
+      if(iterCacheFind != m_map_relatedrecords.end())
       {
         //Return a reference to the cached item:
-        PyGlomRelatedRecord* pyRelatedRecord = iterCacheFind->second;
-
-        PyObject* cobject = (PyObject*)pyRelatedRecord;
-        Py_INCREF((PyObject*)pyRelatedRecord);
-        return boost::python::object(boost::python::borrowed(cobject));
+        boost::python::object objectRelatedRecord = iterCacheFind->second;
+        return objectRelatedRecord;
       }
       else
       {
         //If the relationship exists:
-        PyGlomRelated::type_map_relationships::const_iterator iterFind = self_related->m_pMap_relationships->find(key);
-        if(iterFind != self_related->m_pMap_relationships->end())
+        PyGlomRelated::type_map_relationships::const_iterator iterFind = m_map_relationships.find(key);
+        if(iterFind != m_map_relationships.end())
         {
           //Return a new RelatedRecord:
           PyGlomRelatedRecord* pyRelatedRecord = new PyGlomRelatedRecord();
@@ -122,32 +80,36 @@ boost::python::object PyGlomRelated::getitem(boost::python::object cppitem)
           //Get the value of the from_key in the parent record.
           sharedptr<Relationship> relationship = iterFind->second;
           const Glib::ustring from_key = relationship->get_from_field();
-          PyGlomRecord::type_map_field_values::const_iterator iterFromKey = self_related->m_record->m_pMap_field_values->find(from_key);
-          if(iterFromKey != self_related->m_record->m_pMap_field_values->end())
+          
+          boost::python::extract<PyGlomRecord*> extractor(m_record);
+          if(extractor.check())
           {
-            const Gnome::Gda::Value from_key_value = iterFromKey->second;
-
-            //TODO_Performance:
-            //Get the full field details so we can sqlize its value:
-            sharedptr<Field> from_key_field;
-            from_key_field = self_related->m_record->m_document->get_field(*(self_related->m_record->m_table_name), from_key);
-            if(from_key_field)
+            PyGlomRecord* record = extractor;
+            PyGlomRecord::type_map_field_values::const_iterator iterFromKey = record->m_map_field_values.find(from_key);
+            if(iterFromKey != record->m_map_field_values.end())
             {
-              Glib::ustring key_value_sqlized;
-              //std::cout << "from_key_field=" << from_key_field->get_name() << ", from_key_value=" << from_key_value.to_string() << std::endl;
+              const Gnome::Gda::Value from_key_value = iterFromKey->second;
 
-              if(!Conversions::value_is_empty(from_key_value)) //Do not link on null-values. That would cause us to link on 0, or "0".
-                key_value_sqlized = from_key_field->sql(from_key_value);
+              //TODO_Performance:
+              //Get the full field details so we can sqlize its value:
+              sharedptr<Field> from_key_field;
+              from_key_field = record->m_document->get_field(record->m_table_name, from_key);
+              if(from_key_field)
+              {
+                Glib::ustring key_value_sqlized;
+                //std::cout << "from_key_field=" << from_key_field->get_name() << ", from_key_value=" << from_key_value.to_string() << std::endl;
 
-              PyGlomRelatedRecord_SetRelationship(pyRelatedRecord, iterFind->second, key_value_sqlized, self_related->m_record->m_document);
+                if(!Conversions::value_is_empty(from_key_value)) //Do not link on null-values. That would cause us to link on 0, or "0".
+                  key_value_sqlized = from_key_field->sql(from_key_value);
 
-              //Store it in the cache:
-              Py_INCREF((PyObject*)pyRelatedRecord); //Dereferenced in _dealloc().
-              (*(self_related->m_pMap_relatedrecords))[key] = pyRelatedRecord;
+                PyGlomRelatedRecord_SetRelationship(pyRelatedRecord, iterFind->second, key_value_sqlized, record->m_document);
 
-              PyObject* cobject = (PyObject*)pyRelatedRecord;
-              Py_INCREF((PyObject*)cobject);
-              return boost::python::object(boost::python::borrowed(cobject));
+                //Store it in the cache:
+                boost::python::object objectRelatedRecord(pyRelatedRecord);
+                m_map_relatedrecords[key] = objectRelatedRecord;
+
+                return objectRelatedRecord;
+              }
             }
           }
         }
@@ -156,7 +118,8 @@ boost::python::object PyGlomRelated::getitem(boost::python::object cppitem)
   }
 
   PyErr_SetString(PyExc_IndexError, "relationship not found");
-  return boost::python::object(); //TODO_Hack
+  boost::python::throw_error_already_set(); //TODO: Find a simpler way to throw a python exception/error.
+  return boost::python::object();
 }
 
 
@@ -171,7 +134,7 @@ static void Related_HandlePythonError()
 
 void PyGlomRelated_SetRelationships(PyGlomRelated* self, const PyGlomRelated::type_map_relationships& relationships)
 {
-  *(self->m_pMap_relationships) = relationships;
+  self->m_map_relationships = relationships;
 }
 
 } //namespace Glom

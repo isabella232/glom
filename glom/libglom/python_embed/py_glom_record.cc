@@ -36,77 +36,37 @@ namespace Glom
 
 //Set the object's member data, from the parameters supplied when creating the object:
 PyGlomRecord::PyGlomRecord()
+: m_document(0)
 {
-  PyGlomRecord *self_record = this;
-
-  //static char *kwlist[] = {"test", 0};
-
-  //if(!PyArg_ParseTupleAndKeywords(args, kwds, "|i", kwlist,
-   //                                 &self->m_test))
-   // return -1;
-
-  if(self_record)
-  {
-    self_record->m_related = 0;
-    self_record->m_pMap_field_values = new PyGlomRecord::type_map_field_values();
-  }
 }
 
 PyGlomRecord::~PyGlomRecord()
 {
-  PyGlomRecord *self_record = this;
-
-  if(self_record->m_pMap_field_values)
-  {
-    delete self_record->m_pMap_field_values;
-    self_record->m_pMap_field_values = 0;
-  }
-
-  if(self_record->m_table_name)
-  {
-    delete self_record->m_table_name;
-    self_record->m_table_name = 0;
-  }
-
-  if(self_record->m_connection)
-  {
-    delete self_record->m_connection;
-    self_record->m_connection = 0;
-  }
 }
 
 boost::python::object PyGlomRecord::get_connection()
 {
-  PyGlomRecord *self_record = this;
-
-  if( !self_record->m_connection || !(*(self_record->m_connection)) )
+  boost::python::object result;
+  
+  if(m_connection)
   {
-    PyObject* cobject = Py_None;
-
-    //TODO: Is there some way to take the extra reference with boost::python, withour using borrowed()?
-    Py_INCREF(cobject);
-    return boost::python::object( boost::python::borrowed(cobject) );
+    PyObject* cobject = pygobject_new( G_OBJECT(m_connection->gobj()) ); //Creates a pygda Connection object.
+    result = boost::python::object( boost::python::borrowed(cobject) );
   }
-  else
-  {
-    PyObject* cobject = pygobject_new( G_OBJECT( (*(self_record->m_connection))->gobj()) ); //Creates a pygda Connection object.
-    return boost::python::object( boost::python::borrowed(cobject) );
-  }
+  
+  return result;
 }
 
-/*
 boost::python::object PyGlomRecord::get_related()
 {
-  PyGlomRecord *self_record = this;
-
   //We initialize it here, so that this work never happens if it's not needed:
-  if(!(self_record->m_related))
+  if(!m_related)
   {
     //Return a new RelatedRecord:
-    self_record->m_related = new PyGlomRelated();
+    m_related =  boost::python::object(new PyGlomRelated()); //TODO_NotSure
 
     //Fill it:
-    Document::type_vec_relationships vecRelationships = self_record->m_document->get_relationships(*(self_record->m_table_name));
+    Document::type_vec_relationships vecRelationships = m_document->get_relationships(m_table_name);
     PyGlomRelated::type_map_relationships map_relationships;
     for(Document::type_vec_relationships::const_iterator iter = vecRelationships.begin(); iter != vecRelationships.end(); ++iter)
     {
@@ -114,33 +74,30 @@ boost::python::object PyGlomRecord::get_related()
         map_relationships[(*iter)->get_name()] = *iter;
     }
 
-    PyGlomRelated_SetRelationships(self_record->m_related, map_relationships);
+    boost::python::extract<PyGlomRelated*> extractor(m_related);
+    if(extractor.check())
+    {
+      PyGlomRelated* related_cpp = extractor;
+      PyGlomRelated_SetRelationships(related_cpp, map_relationships);
 
-    self_record->m_related->m_record = self_record;
-    Py_XINCREF(self_record); //unreffed in the self->m_related's _dealloc. //TODO: Is this a circular reference?
+      related_cpp->m_record = boost::python::object(this); //TODO_NotSure
+    }
   }
 
-  Py_INCREF(self_record->m_related); //Should we do this?
-  return self_record->m_related;
+  return m_related;
 }
-*/
 
 long PyGlomRecord::len() const
 {
-  if(!m_pMap_field_values)
-     return 0;
-     
-  return m_pMap_field_values->size();
+  return m_map_field_values.size();
 }
 
 boost::python::object PyGlomRecord::getitem(boost::python::object cppitem)
 {
   const std::string key = boost::python::extract<std::string>(cppitem);
-  if(!m_pMap_field_values)
-    return boost::python::object();
     
-  PyGlomRecord::type_map_field_values::const_iterator iterFind = m_pMap_field_values->find(key);
-  if(iterFind != m_pMap_field_values->end())
+  PyGlomRecord::type_map_field_values::const_iterator iterFind = m_map_field_values.find(key);
+  if(iterFind != m_map_field_values.end())
   {
     return glom_pygda_value_as_boost_pyobject(iterFind->second);
   }
@@ -150,16 +107,14 @@ boost::python::object PyGlomRecord::getitem(boost::python::object cppitem)
 
 void PyGlomRecord_SetFields(PyGlomRecord* self, const PyGlomRecord::type_map_field_values& field_values, Document* document, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
 {
-  *(self->m_pMap_field_values) = field_values; //This was allocated in Record_new().
+  self->m_map_field_values = field_values; //This was allocated in Record_new().
 
-  if(self->m_table_name == 0)
-    self->m_table_name = new Glib::ustring(table_name); //Deleted in Record_dealloc().
-
+  self->m_table_name = table_name;
+  
   if(self->m_document == 0)
     self->m_document = document;
 
-  if(self->m_connection == 0)
-    self->m_connection = new Glib::RefPtr<Gnome::Gda::Connection>(opened_connection);  //Deleted in Record_dealloc().
+  self->m_connection = opened_connection;
 
   /*
   if(self->m_fields_dict == 0)

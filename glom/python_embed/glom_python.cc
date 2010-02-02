@@ -137,7 +137,7 @@ void ShowTrace()
 bool glom_python_module_is_available()
 {
   const gchar* name = "glom_" GLOM_ABI_VERSION_UNDERLINED;
-  PyObject* module_glom = PyImport_ImportModule((char*)name); //TODO: unref this?
+  boost::python::object module_glom = boost::python::import(name);
 
   if(!module_glom)
   {
@@ -150,7 +150,7 @@ bool glom_python_module_is_available()
 bool gda_python_module_is_available()
 {
   const gchar* name = "gda";
-  PyObject* module_glom = PyImport_ImportModule((char*)name); //TODO: unref this?
+  boost::python::object module_glom = boost::python::import(name); //TODO: unref this?
 
   if(!module_glom)
   {
@@ -212,65 +212,58 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
       if(!name.empty() && !script.empty())
       {
         //TODO: Is there a boost::python equivalent for Py_CompileString()?
-        PyObject* objectCompiled = Py_CompileString(script.c_str(), name.c_str() /* "filename", for debugging info */,  Py_file_input /* "start token" for multiple lines of code. */); //Returns a reference.
-  
+        PyObject* cObject = Py_CompileString(script.c_str(), name.c_str() /* "filename", for debugging info */,  Py_file_input /* "start token" for multiple lines of code. */); //Returns a reference.
+        boost::python::handle<> objectCompiled(cObject);
+
         if(!objectCompiled)
           HandlePythonError();
+          
+      
+        cObject = PyImport_ExecCodeModule(const_cast<char*>(name.c_str()), cObject); //Returns a reference. //This should make it importable.
+        boost::python::handle<> object(cObject);
 
-        PyObject* pObject = PyImport_ExecCodeModule(const_cast<char*>(name.c_str()), objectCompiled); //Returns a reference. //This should make it importable.
+        if(!object)
+          HandlePythonError();
 
-        if(!pObject)
-         HandlePythonError();
-
-        Py_DECREF(pObject);
-        Py_DECREF(objectCompiled);
         //TODO: When do these stop being importable? Should we unload them somehow later?
       }
     }
   }
 
-
-  PyObject* module_glom = PyImport_ImportModule((char*)"glom_" GLOM_ABI_VERSION_UNDERLINED);
+  boost::python::object module_glom = boost::python::import("glom_" GLOM_ABI_VERSION_UNDERLINED);
   if(!module_glom)
   {
     g_warning("Could not import python glom module.");
     return valueResult; // don't crash
   }
 
-  PyObject* module_glom_dict = PyModule_GetDict(module_glom);
+  //TODO: Complain that boost::python has no PyModule_GetDict() equivalent.
+  boost::python::object module_glom_dict = module_glom.attr("__dict__");
+  //PyObject* module_glom_dict = PyModule_GetDict(module_glom);
+  
   //This seems to be different to PyGlomRecord_GetPyType() - we can PyObject_Call() this one to instantiate it.
-  PyObject* pyTypeGlomRecord = PyDict_GetItemString(module_glom_dict, (char*)"Record"); //TODO: Unref this?
-  if(!pyTypeGlomRecord || !PyType_Check(pyTypeGlomRecord))
+  PyObject* module_glom_dictC = boost::python::extract<PyObject*>(module_glom_dict);
+  PyObject* pyTypeGlomRecordC = PyDict_GetItemString(module_glom_dictC, (char*)"Record"); //TODO: Unref this?
+  if(!pyTypeGlomRecordC || !PyType_Check(pyTypeGlomRecordC))
   {
     g_warning("Could not get glom.Record from glom_module.");
     return valueResult; // don't crash
   }
+  
+  boost::python::handle<> ref(pyTypeGlomRecordC);
+  boost::python::object pyTypeGlomRecord(ref);
 
-
-  PyObject* module_gda = PyImport_ImportModule((char*)"gda");
+  boost::python::object module_gda = boost::python::import("gda");
   if(!module_gda)
   {
     g_warning("Could not import python gda module.");
     return valueResult;
   }
 
-  // Gda.Value does not exist anymore in pygda-3.0
-#if 0
-  PyObject* module_gda_dict = PyModule_GetDict(module_gda);
-  PyObject* pyTypeGdaValue = PyDict_GetItemString(module_gda_dict, "Value"); //TODO: Unref this?
-  if(!pyTypeGdaValue || !PyType_Check(pyTypeGdaValue))
-    g_warning("Could not get gda.Value from gda_module.");
-#endif
-
-
   //Create the function definition:
-  PyObject* pyValue = PyRun_String(func_def.c_str(), Py_file_input, pDict.ptr(), pDict.ptr());
-  if(pyValue)
-  {
-    Py_DECREF(pyValue);
-    pyValue = 0;
-  }
-  else
+  //PyObject* pyValue = PyRun_String(func_def.c_str(), Py_file_input, pDict.ptr(), pDict.ptr());
+  boost::python::object pyValue = boost::python::eval(func_def.c_str(), pDict, pDict);
+  if(!pyValue)
   {
     ShowTrace();
   }
@@ -295,7 +288,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
     //PyObject* pParam = PyString_FromString("test value"); //This test did not need the extra ref.
 
     PyObject* new_args = PyTuple_New(0);
-    PyGlomRecord* pParam = (PyGlomRecord*)PyObject_Call((PyObject*)pyTypeGlomRecord, new_args, 0);
+    PyGlomRecord* pParam = (PyGlomRecord*)PyObject_Call((PyObject*)pyTypeGlomRecordC, new_args, 0);
     //PyGlomRecord* pParam = (PyGlomRecord*)PyObject_Call((PyObject*)PyGlomRecord_GetPyType(), new_args, 0);
     Py_DECREF(new_args);
     new_args = 0;
