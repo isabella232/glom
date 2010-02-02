@@ -25,8 +25,8 @@
 
 #include <boost/python.hpp>
 
-#define NO_IMPORT_PYGOBJECT //To avoid a multiple definition in pygtk.
-#include <pygobject.h> //For the PyGObject and PyGBoxed struct definitions.
+//#define NO_IMPORT_PYGOBJECT //To avoid a multiple definition in pygtk.
+//#include <pygobject.h> //For the PyGObject and PyGBoxed struct definitions.
 
 #include "glom_python.h"
 #include <libglom/data_structure/glomconversions.h>
@@ -213,14 +213,14 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
       {
         //TODO: Is there a boost::python equivalent for Py_CompileString()?
         PyObject* cObject = Py_CompileString(script.c_str(), name.c_str() /* "filename", for debugging info */,  Py_file_input /* "start token" for multiple lines of code. */); //Returns a reference.
-        boost::python::handle<> objectCompiled(cObject);
+        boost::python::handle<> objectCompiled(cObject); //Takes the reference.
 
         if(!objectCompiled)
           HandlePythonError();
           
       
         cObject = PyImport_ExecCodeModule(const_cast<char*>(name.c_str()), cObject); //Returns a reference. //This should make it importable.
-        boost::python::handle<> object(cObject);
+        boost::python::handle<> object(cObject); //Takes the reference.
 
         if(!object)
           HandlePythonError();
@@ -242,7 +242,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   //PyObject* module_glom_dict = PyModule_GetDict(module_glom);
   
   //This seems to be different to PyGlomRecord_GetPyType() - we can PyObject_Call() this one to instantiate it.
-  PyObject* module_glom_dictC = boost::python::extract<PyObject*>(module_glom_dict);
+  PyObject* module_glom_dictC = boost::python::get_managed_object(module_glom_dict, boost::python::tag);
   PyObject* pyTypeGlomRecordC = PyDict_GetItemString(module_glom_dictC, (char*)"Record"); //TODO: Unref this?
   if(!pyTypeGlomRecordC || !PyType_Check(pyTypeGlomRecordC))
   {
@@ -250,7 +250,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
     return valueResult; // don't crash
   }
   
-  boost::python::handle<> ref(pyTypeGlomRecordC);
+  boost::python::handle<> ref(pyTypeGlomRecordC); //To unref it later.
   boost::python::object pyTypeGlomRecord(ref);
 
   boost::python::object module_gda = boost::python::import("gda");
@@ -262,7 +262,16 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
 
   //Create the function definition:
   //PyObject* pyValue = PyRun_String(func_def.c_str(), Py_file_input, pDict.ptr(), pDict.ptr());
-  boost::python::object pyValue = boost::python::eval(func_def.c_str(), pDict, pDict);
+  boost::python::object pyValue;
+  try
+  {
+    pyValue = boost::python::eval(func_def.c_str(), pDict, pDict); //TODO: This throws.
+  }
+  catch(const boost::python::error_already_set& ex)
+  {
+    ShowTrace();
+  }
+  
   if(!pyValue)
   {
     ShowTrace();
@@ -318,9 +327,11 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
         bool object_is_gda_value = false;
 
         GValue value = {0, {{0}}};
-        const int test = glom_pygda_value_from_pyobject(&value, pyResult);
+        boost::python::handle<> handle(boost::python::borrowed(pyResult));
+        boost::python::object pyResultCpp(handle);
+        const bool test = glom_pygda_value_from_pyobject(&value, pyResultCpp);
 
-        if(test == 0) //-1 means error.
+        if(test)
           object_is_gda_value = true;
 
         if(object_is_gda_value && G_IS_VALUE(&value))

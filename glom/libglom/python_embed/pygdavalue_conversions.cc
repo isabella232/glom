@@ -1,9 +1,6 @@
-#include <Python.h>
-#if PY_VERSION_HEX >= 0x02040000
-# include <datetime.h> /* From Python */
-#endif
-#include "pygdavalue_conversions.h"
+#include <boost/python.hpp>
 
+#include "pygdavalue_conversions.h"
 #include <iostream>
 
 
@@ -16,41 +13,63 @@
  * GValue. If the Python object can't be converted to the
  * type of the GValue, then an error is returned.
  *
- * Returns: 0 on success, -1 on error.
+ * Returns: true for success.
  */
-int
-glom_pygda_value_from_pyobject(GValue *boxed, PyObject *input)
+bool
+glom_pygda_value_from_pyobject(GValue *boxed, const boost::python::object& input)
 {
-    // We shouldn't need to call PyDateTime_IMPORT again, 
-    // after already doing it in libglom_init(),
-    // but PyDate_Check crashes (with valgrind warnings) if we don't.
-    //TODO: PyDateTime_IMPORT; //A macro, needed to use PyDate_Check(), PyDateTime_Check(), etc.
-    //g_assert(PyDateTimeAPI); //This should have been set by the PyDateTime_IMPORT macro.
-
     /* Use an appropriate gda_value_set_*() function.
        We can not know what GValue type is actually wanted, so
        we must still have the get_*() functions in the python API.
      */
 
-    if (G_IS_VALUE (boxed)) g_value_unset(boxed);
-    if (input == Py_None) {
-      /* Leave value uninitialized to represent NULL value */
-    } else if (PyString_Check (input)) {
-      const char* text = PyString_AsString (input);
-      g_value_init (boxed, G_TYPE_STRING);
-      g_value_set_string (boxed, text);
-    } else if (PyInt_Check (input)) {
+    if (G_IS_VALUE (boxed))
+      g_value_unset(boxed);
+    
+    boost::python::extract<std::string> extractor_string(input);
+    if(extractor_string.check())
+    {
+      const std::string str = extractor_string;
+      g_value_init(boxed, G_TYPE_STRING);
+      g_value_set_string(boxed, str.c_str());
+      return true;
+    }
+    
+    boost::python::extract<int> extractor_int(input);
+    if(extractor_int.check())
+    {
+      const int val = extractor_int;
       g_value_init (boxed, G_TYPE_INT);
-      g_value_set_int (boxed, PyInt_AsLong (input));
-    } else if (PyLong_Check (input)) {
+      g_value_set_int (boxed, val);
+      return true;
+    }
+    
+    boost::python::extract<long> extractor_long(input);
+    if(extractor_long.check())
+    {
+      const long val = extractor_long;
       g_value_init (boxed, G_TYPE_INT);
-      g_value_set_int (boxed, PyInt_AsLong (input));
-    } else if (PyFloat_Check (input)) {
+      g_value_set_int (boxed, val);
+      return true;
+    }
+    
+    boost::python::extract<double> extractor_double(input);
+    if(extractor_double.check())
+    {
+      const double val = extractor_double;
       g_value_init (boxed, G_TYPE_DOUBLE);
-      g_value_set_double (boxed, PyFloat_AsDouble (input));
-    } else if (PyBool_Check (input)) {
+      g_value_set_double (boxed, val);
+      return true;
+    }
+    
+    boost::python::extract<bool> extractor_bool(input);
+    if(extractor_bool.check())
+    {
+      const bool val = extractor_bool;
       g_value_init (boxed, G_TYPE_BOOLEAN);
-      g_value_set_boolean (boxed, (input == Py_True));
+      g_value_set_boolean (boxed, val);
+    }
+/*
 #if PY_VERSION_HEX >= 0x02040000
     } else if (PyDateTime_Check (input)) {
          GdaTimestamp gda;
@@ -78,12 +97,10 @@ glom_pygda_value_from_pyobject(GValue *boxed, PyObject *input)
          gda.timezone = 0;
          gda_value_set_time (boxed, &gda);
 #endif
-    } else {
-      g_warning("Unhandled python type.");
-      return -1; /* failed. */
-    }
+*/
 
-    return 0; /* success. */
+    g_warning("Unhandled python type.");
+    return false; /* failed. */
 }
 
 boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& value)

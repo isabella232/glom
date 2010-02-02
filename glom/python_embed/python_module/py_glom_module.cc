@@ -31,7 +31,7 @@
 
 using namespace Glom;
 
-BOOST_PYTHON_MODULE(glom)
+BOOST_PYTHON_MODULE(glom_1_14)
 {
   boost::python::class_<PyGlomRecord>("Record")
     .add_property("table_name", &PyGlomRecord::get_table_name)

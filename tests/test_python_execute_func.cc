@@ -2,6 +2,8 @@
 #include <glom/python_embed/glom_python.h>
 #include <libglom/data_structure/glomconversions.h>
 
+#include <boost/python.hpp>
+
 int main()
 {
   Glom::libglom_init(); //Also initializes python.
@@ -11,9 +13,24 @@ int main()
   Glib::RefPtr<Gnome::Gda::Connection> connection;
 
   //Execute a python function:
-  const Gnome::Gda::Value value = Glom::glom_evaluate_python_function_implementation(
-    Glom::Field::TYPE_TEXT, calculation, field_values, 
-    0 /* document */, "" /* table name */, connection);
+  Gnome::Gda::Value value;
+  try
+  {
+    value = Glom::glom_evaluate_python_function_implementation(
+      Glom::Field::TYPE_TEXT, calculation, field_values, 
+      0 /* document */, "" /* table name */, connection);
+  }
+  catch(const std::exception& ex)
+  {
+    std::cerr << "Exception: " << ex.what() << std::endl;
+    return EXIT_FAILURE;
+  }
+  catch(const boost::python::error_already_set& ex)
+  {
+    std::cerr << "Exception: boost::python::error_already_set" << std::endl;
+    return EXIT_FAILURE;
+  }
+
 
   //std::cout << "type=" << g_type_name(value.get_value_type()) << std::endl;
 

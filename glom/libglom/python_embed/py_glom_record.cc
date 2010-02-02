@@ -24,6 +24,9 @@
 #include <eval.h> /* for PyEval_EvalCode */
 #include <objimpl.h> /* for PyObject_New() */
 
+//#define NO_IMPORT_PYGOBJECT //To avoid a multiple definition in pygtk.
+//#include <pygobject.h> //For the PyGObject and PyGBoxed struct definitions.
+
 #include <libglom/python_embed/py_glom_record.h>
 #include <libglom/python_embed/py_glom_related.h>
 #include <libglom/python_embed/pygdavalue_conversions.h> //For pygda_value_as_pyobject().
@@ -44,13 +47,18 @@ PyGlomRecord::~PyGlomRecord()
 {
 }
 
+std::string PyGlomRecord::get_table_name() const
+{
+  return m_table_name;
+}
+
 boost::python::object PyGlomRecord::get_connection()
 {
   boost::python::object result;
   
   if(m_connection)
   {
-    PyObject* cobject = pygobject_new( G_OBJECT(m_connection->gobj()) ); //Creates a pygda Connection object.
+    PyObject* cobject = 0; //TODO: pygobject_new( G_OBJECT(m_connection->gobj()) ); //Creates a pygda Connection object.
     result = boost::python::object( boost::python::borrowed(cobject) );
   }
   
