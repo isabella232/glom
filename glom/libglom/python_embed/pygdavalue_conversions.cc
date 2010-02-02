@@ -4,6 +4,8 @@
 #endif
 #include "pygdavalue_conversions.h"
 
+#include <iostream>
+
 
 /**
  * pygda_value_from_pyobject:
@@ -22,8 +24,8 @@ glom_pygda_value_from_pyobject(GValue *boxed, PyObject *input)
     // We shouldn't need to call PyDateTime_IMPORT again, 
     // after already doing it in libglom_init(),
     // but PyDate_Check crashes (with valgrind warnings) if we don't.
-    PyDateTime_IMPORT; //A macro, needed to use PyDate_Check(), PyDateTime_Check(), etc.
-    g_assert(PyDateTimeAPI); //This should have been set by the PyDateTime_IMPORT macro.
+    //TODO: PyDateTime_IMPORT; //A macro, needed to use PyDate_Check(), PyDateTime_Check(), etc.
+    //g_assert(PyDateTimeAPI); //This should have been set by the PyDateTime_IMPORT macro.
 
     /* Use an appropriate gda_value_set_*() function.
        We can not know what GValue type is actually wanted, so
@@ -90,10 +92,6 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
     const GType value_type = G_VALUE_TYPE(boxed);
     boost::python::object ret;
 
-#if PY_VERSION_HEX >= 0x02040000
-    PyDateTime_IMPORT; /* So we can use PyDate*() functions. */
-#endif
-
     if (value_type == G_TYPE_INT64) {
         ret = boost::python::object(g_value_get_int64(boxed));
     } else if (value_type == G_TYPE_UINT64) {
@@ -150,7 +148,7 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
     } else if (value_type == G_TYPE_UINT) {
         ret = boost::python::object(g_value_get_uint(boxed));
     } else {
-      g_warning ("G_VALUE_TYPE() returned unknown type %" G_GSIZE_FORMAT, value_type);
+      std::cerr << "Glom: G_VALUE_TYPE() returned unknown type: " << value_type << std::endl;
     }
 
     return ret;
