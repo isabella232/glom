@@ -115,7 +115,9 @@ boost::python::object PyGlomRecord::getitem(boost::python::object cppitem)
 
 void PyGlomRecord_SetFields(PyGlomRecord* self, const PyGlomRecord::type_map_field_values& field_values, Document* document, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
 {
-  self->m_map_field_values = field_values; //This was allocated in Record_new().
+  g_assert(self);
+  
+  self->m_map_field_values = field_values;
 
   self->m_table_name = table_name;
   

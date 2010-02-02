@@ -261,7 +261,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   }
 
   //Create the function definition:
-  //PyObject* pyValue = PyRun_String(func_def.c_str(), Py_file_input, pDict.ptr(), pDict.ptr());
+  /*
   boost::python::object pyValue;
   try
   {
@@ -269,9 +269,15 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   }
   catch(const boost::python::error_already_set& ex)
   {
-    ShowTrace();
+    std::cerr << "Glom: boost::python::eval() threw boost::python_error_already_set." << std::endl;
+    HandlePythonError();
   }
-  
+  */
+  PyObject* pyValueC = PyRun_String(func_def.c_str(), Py_file_input, 
+    boost::python::get_managed_object(pDict, boost::python::tag),
+    boost::python::get_managed_object(pDict, boost::python::tag) );
+  boost::python::handle<> handle(pyValueC);
+  boost::python::object pyValue(handle);
   if(!pyValue)
   {
     ShowTrace();
