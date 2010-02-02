@@ -23,8 +23,8 @@
 #include <libglom/python_embed/py_glom_record.h>
 #include <libglom/python_embed/pygdavalue_conversions.h>
 
-#define NO_IMPORT_PYGTK //To avoid a multiple definition in pygtk.
-#include <pygtk/pygtk.h> //For the PyGObject and PyGBoxed struct definitions.
+#define NO_IMPORT_PYGOBJECT //To avoid a multiple definition in pygtk.
+#include <pygobject.h> //For the PyGObject and PyGBoxed struct definitions.
 
 #include <Python.h>
 #include <compile.h> /* for the PyCodeObject */
