@@ -21,10 +21,10 @@
 #ifndef GLOM_PYTHON_GLOM_RELATEDRECORD_H
 #define GLOM_PYTHON_GLOM_RELATEDRECORD_H
 
+#define NO_IMPORT_PYGOBJECT //To avoid a multiple definition in pygtk.
+#include <pygobject.h> //For the PyGObject and PyGBoxed struct definitions.
+
 #include <boost/python.hpp>
-#define NO_IMPORT_PYGOBJECT
-#define NO_IMPORT_PYGTK //To avoid a multiple definition in pygtk.
-#include <pygtk/pygtk.h> //For the PyGObject and PyGBoxed struct definitions.
 
 #include <libglom/document/document.h>
 #include <libglom/data_structure/field.h>

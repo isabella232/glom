@@ -23,10 +23,10 @@
 #include <libglom/python_embed/py_glom_record.h>
 #include <libglom/python_embed/pygdavalue_conversions.h>
 
-//#include <Python.h>
-//#include <compile.h> /* for the PyCodeObject */
-//#include <eval.h> /* for PyEval_EvalCode */
 #include <boost/python.hpp>
+
+#define NO_IMPORT_PYGOBJECT //To avoid a multiple definition in pygtk.
+#include <pygobject.h> //For the PyGObject and PyGBoxed struct definitions.
 
 #include "glom_python.h"
 #include <libglom/data_structure/glomconversions.h>

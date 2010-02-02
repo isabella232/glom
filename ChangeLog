@@ -1,3 +1,12 @@
+2010-02-02  Murray Cumming  <murrayc@murrayc.com>
+
+  Do not include pygtk.h
+  
+	* glom/libglom/python_embed/py_glom_record.h:
+	* glom/libglom/python_embed/py_glom_relatedrecord.h:
+	* glom/python_embed/glom_python.cc: Include pygobject.h instead of 
+	pygtk/pygtk.h, because we do not use anything from pygtk, or link to it.
+
 2010-01-31  Murray Cumming  <murrayc@murrayc.com>
 
   Command-line parsing: Added some checks.

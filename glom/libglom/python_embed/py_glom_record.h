@@ -21,9 +21,8 @@
 #ifndef GLOM_PYTHON_GLOM_RECORD_H
 #define GLOM_PYTHON_GLOM_RECORD_H
 
-#define NO_IMPORT_PYGOBJECT
-#define NO_IMPORT_PYGTK //To avoid a multiple definition in pygtk.
-#include <pygtk/pygtk.h> //For the PyGObject and PyGBoxed struct definitions.
+#define NO_IMPORT_PYGOBJECT //To avoid a multiple definition in pygtk.
+#include <pygobject.h> //For the PyGObject and PyGBoxed struct definitions.
 
 #include <boost/python.hpp>
 
