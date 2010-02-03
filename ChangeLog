@@ -1,5 +1,11 @@
 2010-02-03  Michael Hasselmann  <michaelh@openismus.com>
 
+	Fixed a crash that got uncovered by the previous commit
+
+	* glom/libglom/utils.cc (build_sql_select_fields_to_get): Warn about layout
+	items that are null and skip them.
+
+
 	Added a guard clause when adding relationships from fields
 
 	* glom/libglom/utils.cc (add_to_relationships_list): If an invalid layout item

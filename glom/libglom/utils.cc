@@ -270,6 +270,11 @@ Glib::ustring Utils::build_sql_select_fields_to_get(const Glib::ustring& table_n
     Glib::ustring one_sql_part;
 
     sharedptr<const LayoutItem_Field> layout_item = *iter;
+    if(!layout_item)
+    {
+      g_warn_if_reached();
+      continue;
+    }
 
     bool is_summary = false;
     const LayoutItem_FieldSummary* fieldsummary = dynamic_cast<const LayoutItem_FieldSummary*>(layout_item.obj());
