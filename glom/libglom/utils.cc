@@ -212,6 +212,8 @@ typedef std::list< sharedptr<const UsesRelationship> > type_list_relationships;
 
 static void add_to_relationships_list(type_list_relationships& list_relationships, const sharedptr<const LayoutItem_Field>& layout_item)
 {
+  g_return_if_fail(layout_item);
+
   if(!(layout_item->get_has_relationship_name()))
     return;
 

@@ -1,3 +1,12 @@
+2010-02-03  Michael Hasselmann  <michaelh@openismus.com>
+
+	Added a guard clause when adding relationships from fields
+
+	* glom/libglom/utils.cc (add_to_relationships_list): If an invalid layout item
+	is passed then its relationship cannot be queried. Libglom users can also force
+	layout item fields that are null into this function, hence an additional guard
+	clause was added.
+
 2010-02-02  Murray Cumming  <murrayc@murrayc.com>
 
   Do not include pygtk.h
