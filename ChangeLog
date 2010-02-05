@@ -1,3 +1,5 @@
+1.12.6 (stable):
+
 2010-01-26  Murray Cumming  <murrayc@murrayc.com>
 
 	libglom: Correct includes.
@@ -10,7 +12,7 @@
 	Fixed out-ouf-bounds access during CSV imports
 
 	* glom/import_csv/dialog_import_csv.cc (get_field_for_column): Added boundary
-	check for direct field access. Fixes bug #607938.
+	check for direct field access. Fixes bug #607938 (ialx).
 
 2010-01-25 Murray Cumming <murrayc@murrayc.com>
 

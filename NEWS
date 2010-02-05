@@ -1,3 +1,12 @@
+1.12.6 (stable):
+
+* Import: Fixed out-ouf-bounds crash.
+  (Michael Hasselmann)  Bug #607938 (ialx).
+* New file: Allow the title to contain quotes, avoiding weird errors.
+  (Murray Cumming) Bug #607957 (Michael Hasselmann)
+* libglom: Improved include paths used in headers.
+  (Murray Cumming)
+ 
 1.12.5 (stable):
 
 * List View: Don't chop off the bottom of text when using large fonts.
