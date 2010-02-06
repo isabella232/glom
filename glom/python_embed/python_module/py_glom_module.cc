@@ -21,9 +21,8 @@
 #include <config.h>
 //We need to include this before anything else, to avoid redefinitions:
 #include <boost/python.hpp>
-#include <compile.h> /* for the PyCodeObject */
-#include <eval.h> /* for PyEval_EvalCode */
-#include <objimpl.h> /* for PyObject_New() */
+//#include <compile.h> /* for the PyCodeObject */
+//#include <eval.h> /* for PyEval_EvalCode */
 
 #include <libglom/python_embed/py_glom_record.h>
 #include <libglom/python_embed/py_glom_related.h>

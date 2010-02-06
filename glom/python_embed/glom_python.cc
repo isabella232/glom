@@ -333,8 +333,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
         bool object_is_gda_value = false;
 
         GValue value = {0, {{0}}};
-        boost::python::handle<> handle(boost::python::borrowed(pyResult));
-        boost::python::object pyResultCpp(handle);
+        boost::python::object pyResultCpp(boost::python::borrowed(pyResult));
         const bool test = glom_pygda_value_from_pyobject(&value, pyResultCpp);
 
         if(test)

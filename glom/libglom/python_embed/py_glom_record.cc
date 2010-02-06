@@ -19,13 +19,10 @@
  */
 
 //We need to include this before anything else, to avoid redefinitions:
-#include <Python.h>
-#include <compile.h> /* for the PyCodeObject */
-#include <eval.h> /* for PyEval_EvalCode */
-#include <objimpl.h> /* for PyObject_New() */
+//#include <Python.h>
 
 //#define NO_IMPORT_PYGOBJECT //To avoid a multiple definition in pygtk.
-//#include <pygobject.h> //For the PyGObject and PyGBoxed struct definitions.
+#include <pygobject.h> //For the PyGObject and PyGBoxed struct definitions.
 
 #include <libglom/python_embed/py_glom_record.h>
 #include <libglom/python_embed/py_glom_related.h>
@@ -58,7 +55,9 @@ boost::python::object PyGlomRecord::get_connection()
   
   if(m_connection)
   {
-    PyObject* cobject = 0; //TODO: pygobject_new( G_OBJECT(m_connection->gobj()) ); //Creates a pygda Connection object.
+    //Ask pygobject to create a PyObject* that wraps our GObject, 
+    //presumably using something from pygda:
+    PyObject* cobject = pygobject_new( G_OBJECT(m_connection->gobj()) );
     result = boost::python::object( boost::python::borrowed(cobject) );
   }
   
@@ -71,7 +70,7 @@ boost::python::object PyGlomRecord::get_related()
   if(!m_related)
   {
     //Return a new RelatedRecord:
-    m_related =  boost::python::object(new PyGlomRelated()); //TODO_NotSure
+    m_related = boost::python::object(new PyGlomRelated()); //TODO_NotSure
 
     //Fill it:
     Document::type_vec_relationships vecRelationships = m_document->get_relationships(m_table_name);
@@ -82,14 +81,11 @@ boost::python::object PyGlomRecord::get_related()
         map_relationships[(*iter)->get_name()] = *iter;
     }
 
-    boost::python::extract<PyGlomRelated*> extractor(m_related);
-    if(extractor.check())
-    {
-      PyGlomRelated* related_cpp = extractor;
-      PyGlomRelated_SetRelationships(related_cpp, map_relationships);
+    PyObject* cobject = m_related.ptr();
+    PyGlomRelated* related_cpp = (PyGlomRelated*)(cobject); //TODO: Almost certainly wrong.
+    PyGlomRelated_SetRelationships(related_cpp, map_relationships);
 
-      related_cpp->m_record = boost::python::object(this); //TODO_NotSure
-    }
+    related_cpp->m_record = boost::python::object(this); //TODO_NotSure
   }
 
   return m_related;

@@ -19,10 +19,7 @@
  */
 
 //We need to include this before anything else, to avoid redefinitions:
-#include <Python.h>
-#include <compile.h> /* for the PyCodeObject */
-#include <eval.h> /* for PyEval_EvalCode */
-#include <objimpl.h> /* for PyObject_New() */
+//#include <Python.h>
 
 #include <libglom/python_embed/py_glom_related.h>
 //#include <libglom/python_embed/py_glom_record.h>
@@ -81,6 +78,7 @@ boost::python::object PyGlomRelated::getitem(boost::python::object cppitem)
           sharedptr<Relationship> relationship = iterFind->second;
           const Glib::ustring from_key = relationship->get_from_field();
           
+          //TODO: Wrong? Use ptr()?
           boost::python::extract<PyGlomRecord*> extractor(m_record);
           if(extractor.check())
           {
