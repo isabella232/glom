@@ -81,11 +81,13 @@ boost::python::object PyGlomRecord::get_related()
         map_relationships[(*iter)->get_name()] = *iter;
     }
 
-    PyObject* cobject = m_related.ptr();
-    PyGlomRelated* related_cpp = (PyGlomRelated*)(cobject); //TODO: Almost certainly wrong.
-    PyGlomRelated_SetRelationships(related_cpp, map_relationships);
-
-    related_cpp->m_record = boost::python::object(this); //TODO_NotSure
+    boost::python::extract<PyGlomRelated*> extractor(m_related);
+    if(extractor.check())
+    {
+      PyGlomRelated* related_cpp = extractor;
+      PyGlomRelated_SetRelationships(related_cpp, map_relationships);
+      related_cpp->m_record = boost::python::object(this); //TODO_NotSure
+    }
   }
 
   return m_related;
