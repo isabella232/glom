@@ -16,8 +16,8 @@ msgstr ""
 "Project-Id-Version: glom.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&component=general\n"
-"POT-Creation-Date: 2010-01-25 16:31+0000\n"
-"PO-Revision-Date: 2010-01-22 11:02+0100\n"
+"POT-Creation-Date: 2010-02-04 21:35+0000\n"
+"PO-Revision-Date: 2010-02-05 10:42+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: ES <gnome-es@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -44,9 +44,8 @@ msgid "A Database GUI"
 msgstr "Un IGU para bases de datos"
 
 #: ../glom/application.cc:261 ../glom/bakery/app_withdoc_gtk.cc:279
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:123
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:122
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:55
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:675
 msgid "_File"
 msgstr "_Archivo"
 
@@ -1390,7 +1389,7 @@ msgstr "Exportar formato"
 #: ../glom/libglom/data_structure/layout/layoutitem_field.cc:193
 #: ../glom/libglom/data_structure/translatable_item.cc:296
 #: ../glom/mode_design/dialog_database_preferences.cc:54
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:602
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:601
 msgid "Field"
 msgstr "Campo"
 
@@ -1446,8 +1445,8 @@ msgstr "Del campo:"
 #: ../glom/libglom/data_structure/layout/layoutgroup.cc:377
 #: ../glom/mode_data/flowtablewithfields.cc:1309
 #: ../glom/mode_data/flowtablewithfields.cc:1336
-#: ../glom/utility_widgets/layouttoolbar.cc:58
-#: ../glom/utility_widgets/layouttoolbar.cc:74
+#: ../glom/utility_widgets/layouttoolbar.cc:54
+#: ../glom/utility_widgets/layouttoolbar.cc:64
 #: ../glom/utility_widgets/notebooklabelglom.cc:74
 msgid "Group"
 msgstr "Agrupar"
@@ -1586,7 +1585,7 @@ msgstr "Ninguno"
 
 #: ../glom/glom_developer.glade.h:167 ../glom/glom.glade.h:32
 #: ../glom/mode_design/dialog_design.cc:54
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:493
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:492
 msgid "None selected"
 msgstr "Ninguno seleccionado"
 
@@ -2098,7 +2097,6 @@ msgid "_Edit"
 msgstr "_Editar"
 
 #: ../glom/bakery/app_withdoc_gtk.cc:386
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:683
 msgid "_Help"
 msgstr "Ay_uda"
 
@@ -2362,8 +2360,8 @@ msgstr "Número"
 #: ../glom/libglom/data_structure/layout/layoutitem_text.cc:72
 #: ../glom/libglom/data_structure/translatable_item.cc:316
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1206
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:43
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:606
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:39
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:605
 msgid "Text"
 msgstr "Texto"
 
@@ -2383,8 +2381,8 @@ msgstr "Booleano"
 #: ../glom/libglom/data_structure/layout/layoutitem_image.cc:69
 #: ../glom/libglom/data_structure/translatable_item.cc:318
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1213
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:46
-#: ../glom/utility_widgets/layouttoolbar.cc:77
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:41
+#: ../glom/utility_widgets/layouttoolbar.cc:66
 msgid "Image"
 msgstr "Imagen"
 
@@ -2429,7 +2427,7 @@ msgstr ""
 #: ../glom/libglom/data_structure/layout/layoutitem_button.cc:67
 #: ../glom/libglom/data_structure/translatable_item.cc:314
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1199
-#: ../glom/utility_widgets/layouttoolbar.cc:71
+#: ../glom/utility_widgets/layouttoolbar.cc:62
 msgid "Button"
 msgstr "Botón"
 
@@ -2440,7 +2438,7 @@ msgstr "Calendario del portal"
 #. Note to translators: "Notebook" means a GtkNotebook-type widget.
 #: ../glom/libglom/data_structure/layout/layoutitem_notebook.cc:56
 #: ../glom/mode_data/flowtablewithfields.cc:1305
-#: ../glom/utility_widgets/layouttoolbar.cc:61
+#: ../glom/utility_widgets/layouttoolbar.cc:56
 msgid "Notebook"
 msgstr "Cuaderno"
 
@@ -2616,7 +2614,7 @@ msgstr "Ejecutándose como superusuario"
 #. Show message to the user about the broken installation:
 #. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
 #. Show message to the user about the broken installation:
-#: ../glom/main.cc:298 ../glom/main.cc:311 ../glom/main.cc:560
+#: ../glom/main.cc:298 ../glom/main.cc:311 ../glom/main.cc:578
 msgid "Incomplete Glom Installation"
 msgstr "La instalación de Glom está incompleta"
 
@@ -2706,8 +2704,16 @@ msgstr ""
 "Use --help para ver una lista de las opciones disponibles para la línea de "
 "comandos."
 
+#: ../glom/main.cc:545
+msgid "Glom: The file does not exist."
+msgstr "Glom: El archivo no existe."
+
+#: ../glom/main.cc:554
+msgid "Glom: The file path is a directory instead of a file."
+msgstr "Glom: La ruta del archivo es un directorio en lugar de un archivo."
+
 #. The Postgres provider was not found, so warn the user:
-#: ../glom/main.cc:557
+#: ../glom/main.cc:575
 msgid ""
 "Your installation of Glom is not complete, because the PostgreSQL libgda "
 "provider is not available on your system. This provider is needed to access "
@@ -2887,7 +2893,7 @@ msgstr "Botón nuevo"
 #. Note to translators: This is the default contents of a text item on a print layout:
 #: ../glom/mode_data/flowtablewithfields.cc:1197
 #: ../glom/mode_data/flowtablewithfields.cc:1361
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:380
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:379
 msgid "text"
 msgstr "texto"
 
@@ -3271,136 +3277,132 @@ msgstr "<b>Renombrar la distribución de impresión</b>"
 msgid "Rename"
 msgstr "Renombrar"
 
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:40
-#: ../glom/utility_widgets/layouttoolbar.cc:65
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:33
+#: ../glom/utility_widgets/layouttoolbar.cc:51
+msgid "Items"
+msgstr "Elementos"
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:34
+msgid "Lines"
+msgstr "Líneas"
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:35
+msgid "Records"
+msgstr "Registros"
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:37
+#: ../glom/utility_widgets/layouttoolbar.cc:58
 msgid "Database Field"
 msgstr "Base de datos"
 
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:40
-#: ../glom/utility_widgets/layouttoolbar.cc:65
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:37
+#: ../glom/utility_widgets/layouttoolbar.cc:58
 msgid "Drag this to the layout to add a new database field."
 msgstr ""
 "Arrastre esto a la distribución para añadir un campo de base de datos nuevo."
 
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:43
-#: ../glom/utility_widgets/layouttoolbar.cc:74
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:39
+#: ../glom/utility_widgets/layouttoolbar.cc:64
 msgid "Drag this to the layout to add a new static text box."
 msgstr ""
 "Arrastre esto a la distribución para añadir una nueva caja de texto estática."
 
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:46
-#: ../glom/utility_widgets/layouttoolbar.cc:77
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:41
+#: ../glom/utility_widgets/layouttoolbar.cc:66
 msgid "Drag this to the layout to add a new static image."
 msgstr "Arrastre esto a la distribución para añadir una imagen estática nueva."
 
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:50
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:43
 msgid "Horizontal Line"
 msgstr "Línea horizontal"
 
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:50
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:43
 msgid "Drag this to the layout to add a new horizontal line."
 msgstr ""
 "Arrastre esto a la distribución para añadir una línea horizontal nueva."
 
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:53
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:45
 msgid "Vertical Line"
 msgstr "Línea vertical"
 
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:53
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:45
 msgid "Drag this to the layout to add a new vertical line."
 msgstr "Arrastre esto a la distribución para añadir una línea vertical nueva."
 
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:57
-#: ../glom/utility_widgets/layouttoolbar.cc:68
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:47
+#: ../glom/utility_widgets/layouttoolbar.cc:60
 msgid "Related Records"
 msgstr "Registros relacionados"
 
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:57
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:47
 msgid "Drag this to the layout to add a new related records portal."
 msgstr ""
 "Arrastre esto a la distribución para añadir un nuevo portal de registros "
 "relacionados."
 
-#. Note for translators: These are layout items, like widgets in GTK+.
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:60
-#: ../glom/utility_widgets/layouttoolbar.cc:87
-msgid "Items"
-msgstr "Elementos"
-
-#. Note for translators: These are layout items, like widgets in GTK+.
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:66
-msgid "Lines"
-msgstr "Líneas"
-
-#. Note for translators: These are layout items, like widgets in GTK+.
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:71
-msgid "Records"
-msgstr "Registros"
-
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:124
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:123
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:56
 msgid "Page _Setup"
 msgstr "_Configuración de la página"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:133
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:132
 msgid "_Insert"
 msgstr "_Insertar"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:134
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:133
 msgid "Insert _Field"
 msgstr "Insertar c_ampo"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:136
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:135
 msgid "Insert _Text"
 msgstr "Insertar _texto"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:138
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:137
 msgid "Insert _Image"
 msgstr "Insertar _imagen"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:140
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:139
 msgid "Insert _Related Records"
 msgstr "Buscar registros _relacionados"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:142
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:141
 msgid "Insert _Horizontal Line"
 msgstr "Insertar línea _horizontal"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:144
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:143
 msgid "Insert _Vertical Line"
 msgstr "Insertar línea _vertical"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:147
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:146
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:61
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:682
 msgid "_View"
 msgstr "_Ver"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:148
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:147
 msgid "Show Grid"
 msgstr "Mostrar rejilla"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:150
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:149
 msgid "Show Rules"
 msgstr "Mostrar reglas"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:154
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:153
 msgid "Fit Page _Width"
 msgstr "Ajustar al _ancho de página"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:157
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:156
 msgid "Zoom 200%"
 msgstr "Ampliación 200%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:162
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:161
 msgid "Zoom 50%"
 msgstr "Ampliación 50%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:167
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:166
 msgid "Zoom 25%"
 msgstr "Ampliación 25%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:600
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:599
 msgid "Insert"
 msgstr "Insertar"
 
@@ -3408,11 +3410,11 @@ msgstr "Insertar"
 msgid "Show _Grid"
 msgstr "Mostrar r_ejilla"
 
-#: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:461
+#: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:489
 msgid "Edit _Fields"
 msgstr "Editar los _campos"
 
-#: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:464
+#: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:492
 msgid "Edit _Relationships"
 msgstr "Editar las _relaciones"
 
@@ -3666,63 +3668,6 @@ msgstr "Error cargando %1"
 msgid "Error loading image"
 msgstr "Error al cargar la imagen"
 
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:367
-msgid "Not implemented yet."
-msgstr "Aún no implementado."
-
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:369
-#, c-format
-msgid "Sorry, the '%s' action is not implemented."
-msgstr "La acción «%s» no está implementada."
-
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:379
-msgid "Stock Icons (A-F)"
-msgstr "Iconos disponibles (A-F)"
-
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:380
-msgid "Stock Icons (G-N)"
-msgstr "Iconos disponibles (G-N)"
-
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:381
-msgid "Stock Icons (O-R)"
-msgstr "Iconos disponibles (O-R)"
-
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:382
-msgid "Stock Icons (S-Z)"
-msgstr "Iconos disponibles (S-Z)"
-
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:444
-msgid "Radio Item"
-msgstr "Elemento de radio"
-
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:465
-msgid "Advanced Features"
-msgstr "Características avanzadas"
-
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:706
-msgid "Icon Size"
-msgstr "Tamaño de icono"
-
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:711
-msgid "Orientation"
-msgstr "Orientación"
-
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:715
-msgid "Style"
-msgstr "Estilo"
-
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:719
-msgid "Ellipsize Headers"
-msgstr "Crear cabeceras elípticas"
-
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:723
-msgid "Exclusive Groups"
-msgstr "Grupos exclusivos"
-
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:727
-msgid "Expand Groups"
-msgstr "Expandir grupos"
-
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:73
 msgid "New Database"
 msgstr "Nueva base de datos"
@@ -3805,29 +3750,27 @@ msgstr "Imágenes"
 msgid "Choose File"
 msgstr "Elegir archivo"
 
-#: ../glom/utility_widgets/layouttoolbar.cc:58
+#: ../glom/utility_widgets/layouttoolbar.cc:52
+msgid "Containers"
+msgstr "Contenedores"
+
+#: ../glom/utility_widgets/layouttoolbar.cc:54
 msgid "Drag this to the layout to add a new group."
 msgstr "Arrastre esto a la distribución para añadir un grupo nuevo."
 
-#: ../glom/utility_widgets/layouttoolbar.cc:61
+#: ../glom/utility_widgets/layouttoolbar.cc:56
 msgid "Drag this to the layout to add a new notebook."
 msgstr ""
 "Arrastre esto a la distribución para añadir un cuaderno de notas nuevo."
 
-#: ../glom/utility_widgets/layouttoolbar.cc:68
+#: ../glom/utility_widgets/layouttoolbar.cc:60
 msgid "Drag this to the layout to add a new Related Record."
 msgstr ""
 "Arrastre esto a la distribución para añadir un nuevo registro relacionado."
 
-#: ../glom/utility_widgets/layouttoolbar.cc:71
+#: ../glom/utility_widgets/layouttoolbar.cc:62
 msgid "Drag this to the layout to add a new button."
 msgstr "Arrastre esto a la distribución para añadir un botón nuevo."
-
-#. TODO: Add a drag item for the related records item.
-#. Note for translators: These are container layout items, containing child layout items, like container widgets in GTK+.
-#: ../glom/utility_widgets/layouttoolbar.cc:82
-msgid "Containers"
-msgstr "Contenedores"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:39
 msgid "Field Layout Properties"
@@ -3856,6 +3799,48 @@ msgstr "Informe finalizado"
 #: ../glom/xsl_utils.cc:142
 msgid "The report will now be opened in your web browser."
 msgstr "El informe se abrirá ahora en su navegador web."
+
+#~ msgid "Not implemented yet."
+#~ msgstr "Aún no implementado."
+
+#~ msgid "Sorry, the '%s' action is not implemented."
+#~ msgstr "La acción «%s» no está implementada."
+
+#~ msgid "Stock Icons (A-F)"
+#~ msgstr "Iconos disponibles (A-F)"
+
+#~ msgid "Stock Icons (G-N)"
+#~ msgstr "Iconos disponibles (G-N)"
+
+#~ msgid "Stock Icons (O-R)"
+#~ msgstr "Iconos disponibles (O-R)"
+
+#~ msgid "Stock Icons (S-Z)"
+#~ msgstr "Iconos disponibles (S-Z)"
+
+#~ msgid "Radio Item"
+#~ msgstr "Elemento de radio"
+
+#~ msgid "Advanced Features"
+#~ msgstr "Características avanzadas"
+
+#~ msgid "Icon Size"
+#~ msgstr "Tamaño de icono"
+
+#~ msgid "Orientation"
+#~ msgstr "Orientación"
+
+#~ msgid "Style"
+#~ msgstr "Estilo"
+
+#~ msgid "Ellipsize Headers"
+#~ msgstr "Crear cabeceras elípticas"
+
+#~ msgid "Exclusive Groups"
+#~ msgstr "Grupos exclusivos"
+
+#~ msgid "Expand Groups"
+#~ msgstr "Expandir grupos"
 
 #~ msgid "%1 / %2"
 #~ msgstr "%1 / %2"
