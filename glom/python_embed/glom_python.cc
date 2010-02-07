@@ -126,10 +126,13 @@ void ShowTrace()
   
   if(chrRetval)
   {
-    Glib::ustring message = _("Python Error: \n");
-    message += chrRetval;
-    Gtk::MessageDialog dialog(message, false, Gtk::MESSAGE_ERROR);
-    dialog.run();
+    std::cerr << "Glom: Python Error:" << std::endl << chrRetval << std::endl;
+    
+    //TODO: Move this to the caller.
+    //Glib::ustring message = _("Python Error: \n");
+    //message += chrRetval;
+    //Gtk::MessageDialog dialog(message, false, Gtk::MESSAGE_ERROR);
+    //dialog.run();
   }
   g_free(chrRetval);
 }
@@ -199,7 +202,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   //We did this in main(): Py_Initialize();
 
   boost::python::object pMain = boost::python::import("__main__");
-   boost::python::object pDict(pMain.attr("__dict__")); //TODO: Does boost::python have an equivalent for PyModule_GetDict()?
+  boost::python::object pDict(pMain.attr("__dict__")); //TODO: Does boost::python have an equivalent for PyModule_GetDict()?
   //TODO: Complain that this doesn't work:
   //boost::python::dict pDict = pMain.attr("__dict__"); //TODO: Does boost::python have an equivalent for PyModule_GetDict()?
   if(!pDict)
@@ -267,35 +270,52 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
     HandlePythonError();
   }
   */
-  PyObject* pyValueC = PyRun_String(func_def.c_str(), Py_file_input, 
-    pDict.ptr(), pDict.ptr());
-  if(!pyValueC)
+  
+  //TODO: Complain that exec(std::string(something), pMain) doesn't work.
+  boost::python::object pyValue;
+  try
   {
-    std::cerr << "glom_evaluate_python_function_implementation(): PyRun_String returned null." << std::endl;
+    //TODO: The second dict is optional, and the documentation suggests using pMain as the first argument, but you'll get a 
+    //"TypeError: 'module' object does not support item assignment" error if you omit it.
+    //TODO: Make sure that's documented.
+    pyValue = boost::python::exec(func_def.c_str(), pDict, pDict);
+  }
+  catch(const boost::python::error_already_set& ex)
+  {
+    std::cerr << "glom_evaluate_python_function_implementation():  boost::python::exec() threw error_already_set when using text= " << std::endl << func_def << std::endl;
     ShowTrace();
     return valueResult;
   }
   
-  boost::python::handle<> handle(pyValueC);
-  boost::python::object pyValue(handle);
-  /*
-  if(!pyValue) //if(!pyValue.ptr()) is what we meant.
+  if(!pyValue.ptr())
   {
-    std::cerr << "glom_evaluate_python_function_implementation(): pyValue from PyRun_String() is null. ptr()=" << pyValue.ptr() << std::endl;
+    std::cerr << "glom_evaluate_python_function_implementation(): boost::python::exec failed." << std::endl;
     ShowTrace();
     return valueResult;
   }
-  */
 
   //Call the function:
   {
-    PyObject* pFunc = PyDict_GetItemString(pDict.ptr(), func_name.c_str()); //The result is borrowed, so should not be dereferenced.
-    if(!pFunc)
+    boost::python::object pFunc;
+    try
     {
+      pFunc = pDict[func_name.c_str()];
+    }
+    catch(const boost::python::error_already_set& ex)
+    {
+      std::cerr << "glom_evaluate_python_function_implementation():  pDict[func_name] threw error_already_set when func_name= " << std::endl << func_name << std::endl;
+      ShowTrace();
+      return valueResult;
+    }
+  
+    if(!pFunc.ptr())
+    {
+      std::cerr << "glom_evaluate_python_function_implementation(): pDict[func_name] failed." << std::endl;
       HandlePythonError();
+      return valueResult;
     }
 
-    if(!PyCallable_Check(pFunc))
+    if(!PyCallable_Check(pFunc.ptr()))
     {
       HandlePythonError();
       g_warning("pFunc is not callable.");
@@ -320,16 +340,12 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
       //Fill the record's details:
       PyGlomRecord_SetFields(pParam, field_values, pDocument, table_name, opened_connection);
 
-      PyObject* pArgs = PyTuple_New(1);
-      PyTuple_SetItem(pArgs, 0, (PyObject*)pParam); //The pParam reference is taken by PyTuple_SetItem().
-
       //Call the function with this parameter:
-      PyObject* pyResult = PyObject_CallObject(pFunc, pArgs);
-      Py_DECREF(pArgs);
+      boost::python::object pyResultCpp = pFunc(objRecord);
 
-      if(!pyResult)
+      if(!(pyResultCpp.ptr()))
       {
-        g_warning("pyResult was null");
+        g_warning("pyResult.ptr() was null");
         HandlePythonError();
       }
       else
@@ -338,7 +354,6 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
         bool object_is_gda_value = false;
 
         GValue value = {0, {{0}}};
-        boost::python::object pyResultCpp(boost::python::borrowed(pyResult));
         const bool test = glom_pygda_value_from_pyobject(&value, pyResultCpp);
 
         if(test)
@@ -359,7 +374,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
 
           //For instance, if one of the fields was empty, then the calculation might want to return an empty value,
           //instead of returning 0.
-          if(pyResult == Py_None) //Direct comparison is possible and recommended, because there is only one pyNone object.
+          if(pyResultCpp == boost::python::object()) //Check if it is PyNone
           {
             //The result should be an appropriate empty value for this field type:
             valueResult = Conversions::get_empty_value(result_type);
@@ -374,7 +389,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
             const char* pchResult = 0;
             try
             {
-              pchResult = boost::python::extract<const char*>(pyResult);
+              pchResult = boost::python::extract<const char*>(pyResultCpp);
             }
             catch(const boost::python::error_already_set& ex)
             {

@@ -1,3 +1,9 @@
+#include <Python.h>
+#if PY_VERSION_HEX >= 0x02040000
+# include <datetime.h> /* From Python */
+#endif
+#include "pygdavalue_conversions.h"
+
 #include <boost/python.hpp>
 
 #include "pygdavalue_conversions.h"
@@ -16,7 +22,7 @@
  * Returns: true for success.
  */
 bool
-glom_pygda_value_from_pyobject(GValue *boxed, const boost::python::object& input)
+glom_pygda_value_from_pyobject(GValue* boxed, const boost::python::object& input)
 {
     /* Use an appropriate gda_value_set_*() function.
        We can not know what GValue type is actually wanted, so
@@ -68,38 +74,54 @@ glom_pygda_value_from_pyobject(GValue *boxed, const boost::python::object& input
       const bool val = extractor_bool;
       g_value_init (boxed, G_TYPE_BOOLEAN);
       g_value_set_boolean (boxed, val);
+      return true;
     }
-/*
+    
 #if PY_VERSION_HEX >= 0x02040000
-    } else if (PyDateTime_Check (input)) {
+    // We shouldn't need to call PyDateTime_IMPORT again,
+    // after already doing it in libglom_init(),
+    // but PyDate_Check crashes (with valgrind warnings) if we don't.
+    //
+    // Causes a C++ compiler warning, so we use its definition directly.
+    // See http://bugs.python.org/issue7463.
+    // PyDateTime_IMPORT; //A macro, needed to use PyDate_Check(), PyDateTime_Check(), etc.
+    PyDateTimeAPI = (PyDateTime_CAPI*) PyCObject_Import((char*)"datetime", (char*)"datetime_CAPI");
+    g_assert(PyDateTimeAPI); //This should have been set by the PyDateTime_IMPORT macro
+    
+    //TODO: Find some way to do this with boost::python
+    PyObject* input_c = input.ptr();
+    if (PyDateTime_Check (input_c)) {
          GdaTimestamp gda;
-         gda.year = PyDateTime_GET_YEAR(input);
-         gda.month = PyDateTime_GET_MONTH(input);
-         gda.day = PyDateTime_GET_DAY(input);
-         gda.hour = PyDateTime_DATE_GET_HOUR(input);
-         gda.minute = PyDateTime_DATE_GET_MINUTE(input);
-         gda.second = PyDateTime_DATE_GET_SECOND(input);
+         gda.year = PyDateTime_GET_YEAR(input_c);
+         gda.month = PyDateTime_GET_MONTH(input_c);
+         gda.day = PyDateTime_GET_DAY(input_c);
+         gda.hour = PyDateTime_DATE_GET_HOUR(input_c);
+         gda.minute = PyDateTime_DATE_GET_MINUTE(input_c);
+         gda.second = PyDateTime_DATE_GET_SECOND(input_c);
          gda.timezone = 0;
          gda_value_set_timestamp (boxed, &gda);
-     } else if (PyDate_Check (input)) {
+         return true;
+     } else if (PyDate_Check (input_c)) {
          GDate *gda = g_date_new_dmy(
-           PyDateTime_GET_DAY(input),
-           (GDateMonth)PyDateTime_GET_MONTH(input),
-           PyDateTime_GET_YEAR(input) );
+           PyDateTime_GET_DAY(input_c),
+           (GDateMonth)PyDateTime_GET_MONTH(input_c),
+           PyDateTime_GET_YEAR(input_c) );
          g_value_init (boxed, G_TYPE_DATE);
          g_value_set_boxed(boxed, gda);
          g_date_free(gda);
-     } else if (PyTime_Check (input)) {
+         return true;
+     } else if (PyTime_Check (input_c)) {
          GdaTime gda;
-         gda.hour = PyDateTime_TIME_GET_HOUR(input);
-         gda.minute = PyDateTime_TIME_GET_MINUTE(input);
-         gda.second = PyDateTime_TIME_GET_SECOND(input);
+         gda.hour = PyDateTime_TIME_GET_HOUR(input_c);
+         gda.minute = PyDateTime_TIME_GET_MINUTE(input_c);
+         gda.second = PyDateTime_TIME_GET_SECOND(input_c);
          gda.timezone = 0;
          gda_value_set_time (boxed, &gda);
+         return true;
+     }
 #endif
-*/
 
-    g_warning("Unhandled python type.");
+    //g_warning("Unhandled python type.");
     return false; /* failed. */
 }
 
