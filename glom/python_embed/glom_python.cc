@@ -238,29 +238,15 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
     }
   }
 
+  //TODO: Is this necessary?
   boost::python::object module_glom = boost::python::import("glom_" GLOM_ABI_VERSION_UNDERLINED);
   if(!module_glom)
   {
     g_warning("Could not import python glom module.");
     return valueResult; // don't crash
   }
-
-  //TODO: Complain that boost::python has no PyModule_GetDict() equivalent.
-  boost::python::object module_glom_dict = module_glom.attr("__dict__");
-  //PyObject* module_glom_dict = PyModule_GetDict(module_glom);
   
-  //This seems to be different to PyGlomRecord_GetPyType() - we can PyObject_Call() this one to instantiate it.
-  PyObject* module_glom_dictC = module_glom_dict.ptr();
-  PyObject* pyTypeGlomRecordC = PyDict_GetItemString(module_glom_dictC, (char*)"Record"); //TODO: Unref this?
-  if(!pyTypeGlomRecordC || !PyType_Check(pyTypeGlomRecordC))
-  {
-    g_warning("Could not get glom.Record from glom_module.");
-    return valueResult; // don't crash
-  }
-  
-  boost::python::handle<> ref(pyTypeGlomRecordC); //To unref it later.
-  boost::python::object pyTypeGlomRecord(ref);
-
+  //TODO: Is this necessary?
   boost::python::object module_gda = boost::python::import("gda");
   if(!module_gda)
   {
@@ -320,16 +306,17 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   
     //PyObject* pParam = PyString_FromString("test value"); //This test did not need the extra ref.
 
-    PyObject* new_args = PyTuple_New(0);
-    PyGlomRecord* pParam = (PyGlomRecord*)PyObject_Call((PyObject*)pyTypeGlomRecordC, new_args, 0);
-    //PyGlomRecord* pParam = (PyGlomRecord*)PyObject_Call((PyObject*)PyGlomRecord_GetPyType(), new_args, 0);
-    Py_DECREF(new_args);
-    new_args = 0;
-
+    boost::python::object objRecord(new PyGlomRecord);
+    boost::python::extract<PyGlomRecord*> extractor(objRecord);
+    if(!extractor.check())
+    {
+      std::cerr << ("extract<PyGlomRecord*> failed.") << std::endl;
+      return valueResult;
+    }
+    
+    PyGlomRecord* pParam = extractor;
     if(pParam)
     {
-      Py_INCREF((PyObject*)pParam); //TODO: As I understand it, PyObject_New() should return a new reference, so this should not be necessary.
-
       //Fill the record's details:
       PyGlomRecord_SetFields(pParam, field_values, pDocument, table_name, opened_connection);
 
