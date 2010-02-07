@@ -199,7 +199,9 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   //We did this in main(): Py_Initialize();
 
   boost::python::object pMain = boost::python::import("__main__");
-  boost::python::dict pDict = boost::python::extract<boost::python::dict>( pMain.attr("__dict__") ); //TODO: Does boost::python have an equivalent for PyModule_GetDict()?
+   boost::python::dict pDict(pMain.attr("__dict__")); //TODO: Does boost::python have an equivalent for PyModule_GetDict()?
+  //TODO: Complain that this doesn't work:
+  //boost::python::dict pDict = pMain.attr("__dict__"); //TODO: Does boost::python have an equivalent for PyModule_GetDict()?
   if(!pDict)
   {
      std::cerr << "glom_evaluate_python_function_implementation(): pDict is null" << std::endl;
