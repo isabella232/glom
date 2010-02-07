@@ -199,7 +199,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   //We did this in main(): Py_Initialize();
 
   boost::python::object pMain = boost::python::import("__main__");
-   boost::python::dict pDict(pMain.attr("__dict__")); //TODO: Does boost::python have an equivalent for PyModule_GetDict()?
+   boost::python::object pDict(pMain.attr("__dict__")); //TODO: Does boost::python have an equivalent for PyModule_GetDict()?
   //TODO: Complain that this doesn't work:
   //boost::python::dict pDict = pMain.attr("__dict__"); //TODO: Does boost::python have an equivalent for PyModule_GetDict()?
   if(!pDict)
@@ -292,12 +292,14 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   
   boost::python::handle<> handle(pyValueC);
   boost::python::object pyValue(handle);
-  if(!pyValue)
+  /*
+  if(!pyValue) //if(!pyValue.ptr()) is what we meant.
   {
-    std::cerr << "glom_evaluate_python_function_implementation(): pyValue from PyRunt_String() is null." << std::endl;
+    std::cerr << "glom_evaluate_python_function_implementation(): pyValue from PyRun_String() is null. ptr()=" << pyValue.ptr() << std::endl;
     ShowTrace();
     return valueResult;
   }
+  */
 
   //Call the function:
   {
