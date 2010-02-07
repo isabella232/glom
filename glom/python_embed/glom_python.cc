@@ -100,7 +100,7 @@ void ShowTrace()
       
       if(!tbList)
       {
-        std::cerr << "Glom: format_exception failed" << std::endl;
+        std::cerr << "Glom: format_exception failed while trying to show Python TraceBack." << std::endl;
         return;
       }
 
@@ -200,6 +200,12 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
 
   boost::python::object pMain = boost::python::import("__main__");
   boost::python::dict pDict = boost::python::extract<boost::python::dict>( pMain.attr("__dict__") ); //TODO: Does boost::python have an equivalent for PyModule_GetDict()?
+  if(!pDict)
+  {
+     std::cerr << "glom_evaluate_python_function_implementation(): pDict is null" << std::endl;
+     ShowTrace();
+     return valueResult;
+  }
 
   //Allow the function to import from our script library:
   if(pDocument)
@@ -242,7 +248,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   //PyObject* module_glom_dict = PyModule_GetDict(module_glom);
   
   //This seems to be different to PyGlomRecord_GetPyType() - we can PyObject_Call() this one to instantiate it.
-  PyObject* module_glom_dictC = boost::python::get_managed_object(module_glom_dict, boost::python::tag);
+  PyObject* module_glom_dictC = module_glom_dict.ptr();
   PyObject* pyTypeGlomRecordC = PyDict_GetItemString(module_glom_dictC, (char*)"Record"); //TODO: Unref this?
   if(!pyTypeGlomRecordC || !PyType_Check(pyTypeGlomRecordC))
   {
@@ -274,13 +280,21 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   }
   */
   PyObject* pyValueC = PyRun_String(func_def.c_str(), Py_file_input, 
-    boost::python::get_managed_object(pDict, boost::python::tag),
-    boost::python::get_managed_object(pDict, boost::python::tag) );
+    pDict.ptr(), pDict.ptr());
+  if(!pyValueC)
+  {
+    std::cerr << "glom_evaluate_python_function_implementation(): PyRun_String returned null." << std::endl;
+    ShowTrace();
+    return valueResult;
+  }
+  
   boost::python::handle<> handle(pyValueC);
   boost::python::object pyValue(handle);
   if(!pyValue)
   {
+    std::cerr << "glom_evaluate_python_function_implementation(): pyValue from PyRunt_String() is null." << std::endl;
     ShowTrace();
+    return valueResult;
   }
 
   //Call the function:
