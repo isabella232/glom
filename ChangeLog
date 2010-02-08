@@ -1,3 +1,11 @@
+2010-02-08  Peter Penz <ppenz@openismus.com>
+
+	libglom: Fix build issue for Maemo.
+
+	* glom/libglom/data_structure/glomconversions.cc: get_text_for_gda_value():
+	Add an ifdef for the disabled-exceptions build.
+
+
 2010-02-22  Murray Cumming  <murrayc@murrayc.com>
 
 	Python functions: Fix regression since the switch to boost::python.
