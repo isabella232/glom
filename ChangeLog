@@ -1,3 +1,10 @@
+2010-02-08  Peter Penz <ppenz@openismus.com>
+
+  libglom: Fix build issue for Maemo.
+  
+	* glom/libglom/data_structure/glomconversions.cc: get_text_for_gda_value():
+	Add an ifdef for the disabled-exceptions build.
+
 1.13.3:
 
 2010-02-03  Michael Hasselmann  <michaelh@openismus.com>
