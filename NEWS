@@ -1,3 +1,22 @@
+1.13.3 (unstable):
+
+* Relationships Overview: Avoid a crash and a warning when closing.
+  (Murray Cumming) Bug #607938 (Michael Hasselmann)
+* Import: Avoid a hang, hopefully.
+  (Michael Hasselmann)
+* Import: Fixed out-ouf-bounds crash.
+  (Michael Hasselmann)  Bug #607938 (ialx).
+* New file: Allow the title to contain quotes, avoiding weird errors.
+  (Murray Cumming) Bug #607957 (Michael Hasselmann)
+* libglom:
+  - Improved include paths used in headers.
+  (Murray Cumming)
+  - Avoid crashes with invalid parameter values.
+  (Michael Hasselmann)
+* Use Gtk::ToolPalette, requiring gtkmm 2.19.4, instead of code copied from libegg.
+* Command-line arguments: Do some checks.
+  (Murray Cumming)
+
 1.13.2 (unstable):
 
 * Details layout: Really use the new formatting options (horizontal alignment, 

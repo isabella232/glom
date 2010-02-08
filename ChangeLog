@@ -1,3 +1,5 @@
+1.13.3:
+
 2010-02-03  Michael Hasselmann  <michaelh@openismus.com>
 
 	Fixed a crash that got uncovered by the previous commit
@@ -5,6 +7,7 @@
 	* glom/libglom/utils.cc (build_sql_select_fields_to_get): Warn about layout
 	items that are null and skip them.
 
+2010-02-03  Michael Hasselmann  <michaelh@openismus.com>
 
 	Added a guard clause when adding relationships from fields
 
@@ -15,7 +18,7 @@
 
 2010-02-02  Murray Cumming  <murrayc@murrayc.com>
 
-  Do not include pygtk.h
+	Do not include pygtk.h
   
 	* glom/libglom/python_embed/py_glom_record.h:
 	* glom/libglom/python_embed/py_glom_relatedrecord.h:
@@ -24,14 +27,14 @@
 
 2010-01-31  Murray Cumming  <murrayc@murrayc.com>
 
-  Command-line parsing: Added some checks.
+	Command-line parsing: Added some checks.
   
 	* glom/main.cc: Test the command-line argument filepath for existence and 
 	check that it's not a directory, so it fails before even showing UI.
 
 2010-01-31  Murray Cumming  <murrayc@murrayc.com>
 
-  Relationships Overview: Avoid GTK+ warnings.
+	Relationships Overview: Avoid GTK+ warnings.
   
 	* glom/mode_design/relationships_overview/dialog_relationships_overview.cc:
 	Constructor: Call add_accel_group(), which fixes the warnings during 
@@ -39,15 +42,15 @@
 
 2010-01-31  Murray Cumming  <murrayc@murrayc.com>
 
-  Relationships Overview: Maybe fix a hang/crash.
+	Relationships Overview: Maybe fix a hang/crash.
     
-  * glom/mode_design/relationships_overview/dialog_relationships_overview.[h|cc]:
-  Signal handlers: Take sigc::bind() RefPtr parameters by value instead of by
-  const &, to avoid having to use sigc::ref() or worry if it works.
-  Save sigc::connections in a list so we can disconnect signal handlers when
-  deleting items bound with sigc::bind(). Do this in the destructor too, which
-  seems to fix the valgrind errors in bug #594737, though not the
-  instance of invalid non-instantiatable type" warning.
+	* glom/mode_design/relationships_overview/dialog_relationships_overview.[h|cc]:
+	Signal handlers: Take sigc::bind() RefPtr parameters by value instead of by
+	const &, to avoid having to use sigc::ref() or worry if it works.
+	Save sigc::connections in a list so we can disconnect signal handlers when
+	deleting items bound with sigc::bind(). Do this in the destructor too, which
+	seems to fix the valgrind errors in bug #594737, though not the
+	instance of invalid non-instantiatable type" warning.
     	
 2010-01-27  Michael Hasselmann  <michaelh@openismus.com>
 
@@ -66,7 +69,7 @@
 
 	Added a test for BGO bug #607938
 
-* tests/import/data/albums.csv: Real-world example data used for the CSV
+	* tests/import/data/albums.csv: Real-world example data used for the CSV
 	import.
 
 	* tests/import/utils.[h|cc]: Add the possibility to feed a filename into the
