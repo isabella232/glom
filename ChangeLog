@@ -16,7 +16,6 @@
 	layout item fields that are null into this function, hence an additional guard
 	clause was added.
 
-
 2010-02-02  Murray Cumming  <murrayc@murrayc.com>
 
 	Do not include pygtk.h
