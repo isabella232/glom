@@ -441,7 +441,12 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
       {
         std::string charset;
         Glib::get_charset(charset);
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
         Glib::ustring currency_symbol = Glib::convert_with_fallback(numeric_format.m_currency_symbol, charset, "UTF-8");
+#else
+        std::auto_ptr<Glib::Error> error;
+        Glib::ustring currency_symbol = Glib::convert_with_fallback(numeric_format.m_currency_symbol, charset, "UTF-8", error);
+#endif
         // Uses convert_with_fallback(.) for the curreny symbol to avoid an
         // exception where the operator<<'s automatic conversion fails.
         // Incompatible encodings are possible since the currency symbol itself
