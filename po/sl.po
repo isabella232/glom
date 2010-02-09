@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glom&component=general\n"
-"POT-Creation-Date: 2010-01-22 22:52+0000\n"
-"PO-Revision-Date: 2010-01-23 11:39+0100\n"
+"POT-Creation-Date: 2010-02-03 13:12+0000\n"
+"PO-Revision-Date: 2010-02-04 10:16+0100\n"
 "Last-Translator: Andrej Žnidaršič <andrej.znidarsic@gmail.com>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -38,9 +38,8 @@ msgstr "Grafični uporabniški vmesnik podatkovnih zbirk"
 
 #: ../glom/application.cc:261
 #: ../glom/bakery/app_withdoc_gtk.cc:279
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:123
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:122
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:55
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:675
 msgid "_File"
 msgstr "_Datoteka"
 
@@ -227,14 +226,14 @@ msgstr "Dokumenta ni mogoče odpreti, ker je bil ustvarjen ali spremenjen z nove
 #. std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED" << std::endl;
 #. Warn the user, and let him try again:
 #: ../glom/application.cc:715
-#: ../glom/frame_glom.cc:2357
-#: ../glom/frame_glom.cc:2433
+#: ../glom/frame_glom.cc:2365
+#: ../glom/frame_glom.cc:2441
 msgid "Connection Failed"
 msgstr "Povezava je spodletela"
 
 #: ../glom/application.cc:715
-#: ../glom/frame_glom.cc:2357
-#: ../glom/frame_glom.cc:2433
+#: ../glom/frame_glom.cc:2365
+#: ../glom/frame_glom.cc:2441
 msgid "Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."
 msgstr "Ni se mogoče povezati s strežnikom podatkovnih zbirk. Morda ste vnesli napačno uporabniško ime ali geslo, ali pa strežnik podatkovne zbirke ni zagnan. "
 
@@ -757,7 +756,7 @@ msgid "There was an error when attempting to start the database server."
 msgstr "Med poskusom zaganjanja strežnika podatkovne zbirke je prišlo do napake."
 
 #. Show 0 instead of "all" when all of no records are found, to avoid confusion.
-#: ../glom/frame_glom.cc:2905
+#: ../glom/frame_glom.cc:2913
 msgid "All"
 msgstr "Vse"
 
@@ -1228,7 +1227,7 @@ msgstr "Oblika zapisa za izvoz"
 #: ../glom/libglom/data_structure/layout/layoutitem_field.cc:193
 #: ../glom/libglom/data_structure/translatable_item.cc:296
 #: ../glom/mode_design/dialog_database_preferences.cc:54
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:602
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:601
 msgid "Field"
 msgstr "Polje"
 
@@ -1283,10 +1282,10 @@ msgstr "Polje od:"
 
 #: ../glom/glom_developer.glade.h:135
 #: ../glom/libglom/data_structure/layout/layoutgroup.cc:377
-#: ../glom/mode_data/flowtablewithfields.cc:1290
-#: ../glom/mode_data/flowtablewithfields.cc:1317
-#: ../glom/utility_widgets/layouttoolbar.cc:58
-#: ../glom/utility_widgets/layouttoolbar.cc:74
+#: ../glom/mode_data/flowtablewithfields.cc:1309
+#: ../glom/mode_data/flowtablewithfields.cc:1336
+#: ../glom/utility_widgets/layouttoolbar.cc:54
+#: ../glom/utility_widgets/layouttoolbar.cc:64
 #: ../glom/utility_widgets/notebooklabelglom.cc:74
 msgid "Group"
 msgstr "Združi"
@@ -1413,7 +1412,7 @@ msgstr "Brez"
 #: ../glom/glom_developer.glade.h:167
 #: ../glom/glom.glade.h:32
 #: ../glom/mode_design/dialog_design.cc:54
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:493
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:492
 msgid "None selected"
 msgstr "Brez izbora"
 
@@ -1886,7 +1885,6 @@ msgid "_Edit"
 msgstr "_Uredi"
 
 #: ../glom/bakery/app_withdoc_gtk.cc:386
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:683
 msgid "_Help"
 msgstr "Pomo_č"
 
@@ -1956,57 +1954,57 @@ msgid "Import From CSV File"
 msgstr "Uvoz iz datoteke CSV"
 
 #: ../glom/import_csv/dialog_import_csv.cc:187
-#: ../glom/import_csv/dialog_import_csv.cc:576
+#: ../glom/import_csv/dialog_import_csv.cc:579
 msgid "<None>"
 msgstr "<Brez>"
 
-#: ../glom/import_csv/dialog_import_csv.cc:264
+#: ../glom/import_csv/dialog_import_csv.cc:267
 msgid "Error Importing CSV File"
 msgstr "Napaka med uvažanjem datoteke CSV"
 
-#: ../glom/import_csv/dialog_import_csv.cc:418
+#: ../glom/import_csv/dialog_import_csv.cc:421
 msgid "Encoding detected as: %1"
 msgstr "Kodiranje je zaznano kot: %1"
 
-#: ../glom/import_csv/dialog_import_csv.cc:457
+#: ../glom/import_csv/dialog_import_csv.cc:460
 msgid "Encoding detection failed. Please manually choose one from the box."
 msgstr "Zaznavanje kodiranja je spodletelo. Izberite enega iz okna."
 
-#: ../glom/import_csv/dialog_import_csv.cc:461
+#: ../glom/import_csv/dialog_import_csv.cc:464
 msgid "The file contains data not in the specified encoding. Please choose another one, or try \"Auto Detect\"."
 msgstr "Datoteka vsebuje podatke, ki niso v določenem kodiranju. Izberite drugega ali poskusite \"Samodejno zaznaj\"."
 
 #. Note to translators: This is a straight line, not a database row.
-#: ../glom/import_csv/dialog_import_csv.cc:503
+#: ../glom/import_csv/dialog_import_csv.cc:506
 #: ../glom/libglom/data_structure/layout/layoutitem_line.cc:82
 msgid "Line"
 msgstr "Vrstica"
 
-#: ../glom/import_csv/dialog_import_csv.cc:554
+#: ../glom/import_csv/dialog_import_csv.cc:557
 msgid "Target Field"
 msgstr "Ciljno polje"
 
-#: ../glom/import_csv/dialog_import_csv.cc:601
+#: ../glom/import_csv/dialog_import_csv.cc:604
 msgid "<Import Failure>"
 msgstr "<Uvoz je spodletel>"
 
-#: ../glom/import_csv/dialog_import_csv.cc:611
+#: ../glom/import_csv/dialog_import_csv.cc:614
 msgid "<Picture>"
 msgstr "<Slika>"
 
-#: ../glom/import_csv/dialog_import_csv.cc:710
+#: ../glom/import_csv/dialog_import_csv.cc:713
 msgid "One column needs to be assigned the table's primary key (<b>%1</b>) as target field before importing"
 msgstr "Pred uvozom je treba osnovnemu ključu preglednice (<b>%1</b>) dodeliti en stolpec kot ciljno polje"
 
-#: ../glom/import_csv/dialog_import_csv.cc:744
+#: ../glom/import_csv/dialog_import_csv.cc:747
 msgid "Could Not Open file"
 msgstr "Datoteke ni mogoče odpreti"
 
-#: ../glom/import_csv/dialog_import_csv.cc:745
+#: ../glom/import_csv/dialog_import_csv.cc:748
 msgid "The file at \"%1\" could not be opened: %2"
 msgstr "Datoteke na \"%1\" ni mogoče odpreti: %2"
 
-#: ../glom/import_csv/dialog_import_csv.cc:750
+#: ../glom/import_csv/dialog_import_csv.cc:753
 msgid " - Import From CSV File"
 msgstr " - Uvozi iz datoteke CSV"
 
@@ -2125,8 +2123,8 @@ msgstr "Številka"
 #: ../glom/libglom/data_structure/layout/layoutitem_text.cc:72
 #: ../glom/libglom/data_structure/translatable_item.cc:316
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1206
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:43
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:606
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:39
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:605
 msgid "Text"
 msgstr "Besedilo"
 
@@ -2146,8 +2144,8 @@ msgstr "Boolean"
 #: ../glom/libglom/data_structure/layout/layoutitem_image.cc:69
 #: ../glom/libglom/data_structure/translatable_item.cc:318
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1213
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:46
-#: ../glom/utility_widgets/layouttoolbar.cc:77
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:41
+#: ../glom/utility_widgets/layouttoolbar.cc:66
 msgid "Image"
 msgstr "Slika"
 
@@ -2176,7 +2174,7 @@ msgstr "NAPAKA: sanity_check_date_text_representation_uses_4_digit_year(): Pregl
 #: ../glom/libglom/data_structure/layout/layoutitem_button.cc:67
 #: ../glom/libglom/data_structure/translatable_item.cc:314
 #: ../glom/mode_design/layout/dialog_layout_details.cc:1199
-#: ../glom/utility_widgets/layouttoolbar.cc:71
+#: ../glom/utility_widgets/layouttoolbar.cc:62
 msgid "Button"
 msgstr "Gumb"
 
@@ -2186,8 +2184,8 @@ msgstr "Portal koledarja"
 
 #. Note to translators: "Notebook" means a GtkNotebook-type widget.
 #: ../glom/libglom/data_structure/layout/layoutitem_notebook.cc:56
-#: ../glom/mode_data/flowtablewithfields.cc:1286
-#: ../glom/utility_widgets/layouttoolbar.cc:61
+#: ../glom/mode_data/flowtablewithfields.cc:1305
+#: ../glom/utility_widgets/layouttoolbar.cc:56
 msgid "Notebook"
 msgstr "Beležnica"
 
@@ -2359,7 +2357,7 @@ msgstr "Zagnano s skrbniškim računom"
 #. Show message to the user about the broken installation:
 #: ../glom/main.cc:298
 #: ../glom/main.cc:311
-#: ../glom/main.cc:560
+#: ../glom/main.cc:578
 msgid "Incomplete Glom Installation"
 msgstr "Nepopolna namestitev Glom"
 
@@ -2429,8 +2427,16 @@ msgstr "Napaka med razčlenjevanem možnosti ukazne vrstice:"
 msgid "Use --help to see a list of available command-line options."
 msgstr "Uporabite --help za ogled seznama dostopnih možnosti ukazne vrstice."
 
+#: ../glom/main.cc:545
+msgid "Glom: The file does not exist."
+msgstr "Glom: Datoteka ne obstaja."
+
+#: ../glom/main.cc:554
+msgid "Glom: The file path is a directory instead of a file."
+msgstr "Glom: Pot datoteke je mapa namesto datoteke."
+
 #. The Postgres provider was not found, so warn the user:
-#: ../glom/main.cc:557
+#: ../glom/main.cc:575
 msgid ""
 "Your installation of Glom is not complete, because the PostgreSQL libgda provider is not available on your system. This provider is needed to access Postgres database servers.\n"
 "\n"
@@ -2556,64 +2562,64 @@ msgstr "Odgovarjajoči zapis ne obstaja"
 msgid "No record with this value exists. Therefore navigation to the related record is not possible."
 msgstr "Zapis s to vrednostjo ne obstaja. Zato krmarjenje na povezan zapis ni mogoče."
 
-#: ../glom/mode_data/flowtablewithfields.cc:1143
-#: ../glom/mode_data/flowtablewithfields.cc:1289
-#: ../glom/mode_data/flowtablewithfields.cc:1316
+#: ../glom/mode_data/flowtablewithfields.cc:1162
+#: ../glom/mode_data/flowtablewithfields.cc:1308
+#: ../glom/mode_data/flowtablewithfields.cc:1335
 #: ../glom/utility_widgets/notebooklabelglom.cc:73
 #: ../glom/utility_widgets/notebooklabelglom.cc:113
 msgid "New Group"
 msgstr "Nova skupina"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1149
+#: ../glom/mode_data/flowtablewithfields.cc:1168
 #: ../glom/mode_design/layout/dialog_layout_details.cc:779
 msgid "notebook"
 msgstr "beležnica"
 
 #. Note to translators: This is the default name (not seen by most users) for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1155
+#: ../glom/mode_data/flowtablewithfields.cc:1174
 msgid "tab1"
 msgstr "zavihek1"
 
 #. Note to translators: This is the default label text for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1158
+#: ../glom/mode_data/flowtablewithfields.cc:1177
 msgid "Tab One"
 msgstr "Zavihek ena"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1171
+#: ../glom/mode_data/flowtablewithfields.cc:1190
 msgid "button"
 msgstr "gumb"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1172
-#: ../glom/mode_data/flowtablewithfields.cc:1330
+#: ../glom/mode_data/flowtablewithfields.cc:1191
+#: ../glom/mode_data/flowtablewithfields.cc:1349
 #: ../glom/mode_design/layout/dialog_layout_details.cc:703
 msgid "New Button"
 msgstr "Nov gumb"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
-#: ../glom/mode_data/flowtablewithfields.cc:1178
-#: ../glom/mode_data/flowtablewithfields.cc:1342
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:380
+#: ../glom/mode_data/flowtablewithfields.cc:1197
+#: ../glom/mode_data/flowtablewithfields.cc:1361
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:379
 msgid "text"
 msgstr "besedilo"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1179
-#: ../glom/mode_data/flowtablewithfields.cc:1343
+#: ../glom/mode_data/flowtablewithfields.cc:1198
+#: ../glom/mode_data/flowtablewithfields.cc:1362
 msgid "New Text"
 msgstr "Novo besedilo"
 
 #. TODO: Avoid this error message, maybe by adding a group.
 #. TODO: At least avoid losing the dragged item.
-#: ../glom/mode_data/flowtablewithfields.cc:1427
+#: ../glom/mode_data/flowtablewithfields.cc:1446
 msgid "You cannot drop anything here. Try to add a group first"
 msgstr "Tu ni mogoče spustiti ničesar. Poskusite najprej dodati skupino"
 
 #. TODO: Use a real English sentence here?
-#: ../glom/mode_data/flowtablewithfields.cc:1488
+#: ../glom/mode_data/flowtablewithfields.cc:1507
 msgid "Delete whole group \"%1\"?"
 msgstr "Izbris celotne skupine \"%1\"?"
 
 #. TODO: Use a real English sentence here:
-#: ../glom/mode_data/flowtablewithfields.cc:1494
+#: ../glom/mode_data/flowtablewithfields.cc:1513
 msgid "Delete whole group?"
 msgstr "Izbris celotne skupine?"
 
@@ -2924,131 +2930,127 @@ msgstr "<b>Preimenuj postavitev strani</b>"
 msgid "Rename"
 msgstr "Preimenuj"
 
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:40
-#: ../glom/utility_widgets/layouttoolbar.cc:65
-msgid "Database Field"
-msgstr "Polje podatkovne zbirke"
-
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:40
-#: ../glom/utility_widgets/layouttoolbar.cc:65
-msgid "Drag this to the layout to add a new database field."
-msgstr "Vleka tega v razporeditev doda novo polje podatkovne zbirke."
-
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:43
-#: ../glom/utility_widgets/layouttoolbar.cc:74
-msgid "Drag this to the layout to add a new static text box."
-msgstr "Vleka tega v razporeditev doda novo statično okno z besedilom."
-
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:46
-#: ../glom/utility_widgets/layouttoolbar.cc:77
-msgid "Drag this to the layout to add a new static image."
-msgstr "Vleka tega v razporeditev doda novo statično sliko."
-
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:50
-msgid "Horizontal Line"
-msgstr "Vodoravna vrstica"
-
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:50
-msgid "Drag this to the layout to add a new horizontal line."
-msgstr "Vleka tega v razporeditev doda novo vodoravno vrstico."
-
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:53
-msgid "Vertical Line"
-msgstr "Navpična vrstica"
-
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:53
-msgid "Drag this to the layout to add a new vertical line."
-msgstr "Vleka tega v razporeditev doda novo navpično vrstico."
-
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:57
-#: ../glom/utility_widgets/layouttoolbar.cc:68
-msgid "Related Records"
-msgstr "Povezani zapisi"
-
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:57
-msgid "Drag this to the layout to add a new related records portal."
-msgstr "Vleka tega v razporeditev doda nov portal povezanih zapisov."
-
-#. Note for translators: These are layout items, like widgets in GTK+.
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:60
-#: ../glom/utility_widgets/layouttoolbar.cc:87
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:33
+#: ../glom/utility_widgets/layouttoolbar.cc:51
 msgid "Items"
 msgstr "Predmeti"
 
-#. Note for translators: These are layout items, like widgets in GTK+.
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:66
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:34
 msgid "Lines"
 msgstr "Vrstice"
 
-#. Note for translators: These are layout items, like widgets in GTK+.
-#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:71
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:35
 msgid "Records"
 msgstr "Zapisi"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:124
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:37
+#: ../glom/utility_widgets/layouttoolbar.cc:58
+msgid "Database Field"
+msgstr "Polje podatkovne zbirke"
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:37
+#: ../glom/utility_widgets/layouttoolbar.cc:58
+msgid "Drag this to the layout to add a new database field."
+msgstr "Vleka tega v razporeditev doda novo polje podatkovne zbirke."
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:39
+#: ../glom/utility_widgets/layouttoolbar.cc:64
+msgid "Drag this to the layout to add a new static text box."
+msgstr "Vleka tega v razporeditev doda novo statično okno z besedilom."
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:41
+#: ../glom/utility_widgets/layouttoolbar.cc:66
+msgid "Drag this to the layout to add a new static image."
+msgstr "Vleka tega v razporeditev doda novo statično sliko."
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:43
+msgid "Horizontal Line"
+msgstr "Vodoravna vrstica"
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:43
+msgid "Drag this to the layout to add a new horizontal line."
+msgstr "Vleka tega v razporeditev doda novo vodoravno vrstico."
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:45
+msgid "Vertical Line"
+msgstr "Navpična vrstica"
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:45
+msgid "Drag this to the layout to add a new vertical line."
+msgstr "Vleka tega v razporeditev doda novo navpično vrstico."
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:47
+#: ../glom/utility_widgets/layouttoolbar.cc:60
+msgid "Related Records"
+msgstr "Povezani zapisi"
+
+#: ../glom/mode_design/print_layouts/print_layout_toolbar.cc:47
+msgid "Drag this to the layout to add a new related records portal."
+msgstr "Vleka tega v razporeditev doda nov portal povezanih zapisov."
+
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:123
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:56
 msgid "Page _Setup"
 msgstr "Nastavitev _strani"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:133
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:132
 msgid "_Insert"
 msgstr "_Vstavi"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:134
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:133
 msgid "Insert _Field"
 msgstr "Vstavi _polje"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:136
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:135
 msgid "Insert _Text"
 msgstr "Vstavi _besedilo"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:138
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:137
 msgid "Insert _Image"
 msgstr "Vstavi _sliko"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:140
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:139
 msgid "Insert _Related Records"
 msgstr "Vstavi _povezane zapise"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:142
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:141
 msgid "Insert _Horizontal Line"
 msgstr "Vstavi _vodoravno črto"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:144
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:143
 msgid "Insert _Vertical Line"
 msgstr "Vstavi _navpično črto"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:147
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:146
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:61
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:682
 msgid "_View"
 msgstr "_Pogled"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:148
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:147
 msgid "Show Grid"
 msgstr "Pokaži mrežo"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:150
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:149
 msgid "Show Rules"
 msgstr "Pokaži pravila"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:154
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:153
 msgid "Fit Page _Width"
 msgstr "Prilagodit širino _strani"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:157
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:156
 msgid "Zoom 200%"
 msgstr "Približaj 200%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:162
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:161
 msgid "Zoom 50%"
 msgstr "Približaj 50%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:167
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:166
 msgid "Zoom 25%"
 msgstr "Približaj 25%"
 
-#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:600
+#: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:599
 msgid "Insert"
 msgstr "Vstavi"
 
@@ -3056,11 +3058,11 @@ msgstr "Vstavi"
 msgid "Show _Grid"
 msgstr "Pokaži _mrežo"
 
-#: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:461
+#: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:489
 msgid "Edit _Fields"
 msgstr "Uredi _polja"
 
-#: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:464
+#: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:492
 msgid "Edit _Relationships"
 msgstr "Uredi _razmerja"
 
@@ -3288,64 +3290,6 @@ msgstr "Napaka nalaganja %1"
 msgid "Error loading image"
 msgstr "Napaka nalaganja slike"
 
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:367
-msgid "Not implemented yet."
-msgstr "Še ni podprto."
-
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:369
-#, c-format
-msgid "Sorry, the '%s' action is not implemented."
-msgstr "Oprostite, dejanje '%s' ni podprto."
-
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:379
-msgid "Stock Icons (A-F)"
-msgstr "Naložene ikone (A-F)"
-
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:380
-msgid "Stock Icons (G-N)"
-msgstr "Naložene ikone (G-N)"
-
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:381
-msgid "Stock Icons (O-R)"
-msgstr "Naložene ikone (O-R)"
-
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:382
-msgid "Stock Icons (S-Z)"
-msgstr "Naložene ikone (S-Z)"
-
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:444
-msgid "Radio Item"
-msgstr "Radijski predmet"
-
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:465
-msgid "Advanced Features"
-msgstr "Napredne zmožnosti"
-
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:706
-msgid "Icon Size"
-msgstr "Velikost ikone"
-
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:711
-msgid "Orientation"
-msgstr "Usmerjenost"
-
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:715
-msgid "Style"
-msgstr "Slog"
-
-# Sledenje prevodu na open-tran v paketku glade3
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:719
-msgid "Ellipsize Headers"
-msgstr "Glave okrajševanja"
-
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:723
-msgid "Exclusive Groups"
-msgstr "Ekskluzivne skupine"
-
-#: ../glom/utility_widgets/egg/toolpalette/testtoolpalette.c:727
-msgid "Expand Groups"
-msgstr "Razširi skupine"
-
 #: ../glom/utility_widgets/filechooserdialog_saveextras.cc:73
 msgid "New Database"
 msgstr "Nova podatkovna zbirka"
@@ -3400,27 +3344,25 @@ msgstr "Slike"
 msgid "Choose File"
 msgstr "Izbor datoteke"
 
-#: ../glom/utility_widgets/layouttoolbar.cc:58
+#: ../glom/utility_widgets/layouttoolbar.cc:52
+msgid "Containers"
+msgstr "Zabojniki"
+
+#: ../glom/utility_widgets/layouttoolbar.cc:54
 msgid "Drag this to the layout to add a new group."
 msgstr "Vleka tega v razporeditev doda novo skupino."
 
-#: ../glom/utility_widgets/layouttoolbar.cc:61
+#: ../glom/utility_widgets/layouttoolbar.cc:56
 msgid "Drag this to the layout to add a new notebook."
 msgstr "Vleka tega v razporeditev doda novo beležnico."
 
-#: ../glom/utility_widgets/layouttoolbar.cc:68
+#: ../glom/utility_widgets/layouttoolbar.cc:60
 msgid "Drag this to the layout to add a new Related Record."
 msgstr "Vleka tega v razporeditev doda nov povezan zapis."
 
-#: ../glom/utility_widgets/layouttoolbar.cc:71
+#: ../glom/utility_widgets/layouttoolbar.cc:62
 msgid "Drag this to the layout to add a new button."
 msgstr "Vleka tega v razporeditev doda nov gumb."
-
-#. TODO: Add a drag item for the related records item.
-#. Note for translators: These are container layout items, containing child layout items, like container widgets in GTK+.
-#: ../glom/utility_widgets/layouttoolbar.cc:82
-msgid "Containers"
-msgstr "Zabojniki"
 
 #: ../glom/utility_widgets/layoutwidgetmenu.cc:39
 msgid "Field Layout Properties"
@@ -3449,4 +3391,27 @@ msgstr "Poročilo je končano"
 #: ../glom/xsl_utils.cc:142
 msgid "The report will now be opened in your web browser."
 msgstr "Poročilo bo sedaj odprto v vašem spletnem brskalniku."
+
+#~ msgid "Not implemented yet."
+#~ msgstr "Še ni podprto."
+#~ msgid "Sorry, the '%s' action is not implemented."
+#~ msgstr "Oprostite, dejanje '%s' ni podprto."
+#~ msgid "Stock Icons (A-F)"
+#~ msgstr "Naložene ikone (A-F)"
+#~ msgid "Stock Icons (G-N)"
+#~ msgstr "Naložene ikone (G-N)"
+#~ msgid "Stock Icons (O-R)"
+#~ msgstr "Naložene ikone (O-R)"
+#~ msgid "Stock Icons (S-Z)"
+#~ msgstr "Naložene ikone (S-Z)"
+#~ msgid "Radio Item"
+#~ msgstr "Radijski predmet"
+#~ msgid "Advanced Features"
+#~ msgstr "Napredne zmožnosti"
+#~ msgid "Icon Size"
+#~ msgstr "Velikost ikone"
+#~ msgid "Orientation"
+#~ msgstr "Usmerjenost"
+#~ msgid "Style"
+#~ msgstr "Slog"
 

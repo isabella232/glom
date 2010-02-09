@@ -212,6 +212,8 @@ typedef std::list< sharedptr<const UsesRelationship> > type_list_relationships;
 
 static void add_to_relationships_list(type_list_relationships& list_relationships, const sharedptr<const LayoutItem_Field>& layout_item)
 {
+  g_return_if_fail(layout_item);
+
   if(!(layout_item->get_has_relationship_name()))
     return;
 
@@ -268,6 +270,11 @@ Glib::ustring Utils::build_sql_select_fields_to_get(const Glib::ustring& table_n
     Glib::ustring one_sql_part;
 
     sharedptr<const LayoutItem_Field> layout_item = *iter;
+    if(!layout_item)
+    {
+      g_warn_if_reached();
+      continue;
+    }
 
     bool is_summary = false;
     const LayoutItem_FieldSummary* fieldsummary = dynamic_cast<const LayoutItem_FieldSummary*>(layout_item.obj());
