@@ -201,10 +201,26 @@ AC_CHECK_FUNCS([strptime])
 MM_CHECK_MODULE_PYTHON
 
 BOOST_PYTHON_LIBS="-lboost_python"
-#BOOST_PYTHON_LIBS="-lboost_python-mt-py25.so.1.39"
+#BOOST_PYTHON_LIBS="-lboost_python-py25.so.1.40.0"
 BOOST_PYTHON_CFLAGS="-I/opt/gnome228/include/boost"
+#BOOST_PYTHON_CFLAGS="-I/usr/include/include/boost"
 AC_SUBST([BOOST_PYTHON_LIBS])
 AC_SUBST([BOOST_PYTHON_CFLAGS])
+
+AC_ARG_WITH(boost-python,
+    [ --with-boost-python=<path> prefix of boost::python installation. e.g. /usr/local or /usr],
+    [BOOST_PYTHON_PREFIX=$with_boostpython],
+    AC_MSG_ERROR([You must call configure with the --with-boost-python option.
+    This tells configure where to find the boost::python C++ library and headers.
+    e.g. --with-boost-python=/usr/local or --with-boost-python=/usr])
+)
+BOOST_PYTHON_ACTUAL_LIB= "-lboost_python"
+#BOOST_PYTHON_ACTUAL_LIB= "-lboost_python-py25.so.1.40.0"
+BOOST_PYTHON_LIBS="-L${BOOST_PYTHON_PREFIX}/lib ${BOOST_PYTHON_ACTUAL_LIB}"
+BOOST_PYTHON_CFLAGS="-I{BOOST_PYTHON_PREFIX}/boost"
+AC_SUBST([BOOST_PYTHON_LIBS])
+AC_SUBST([BOOST_PYTHON_CFLAGS])
+
 
 #These don't work. pyconfig.h can't be found when using python.hpp.
 #AX_PYTHON()
