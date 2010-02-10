@@ -148,7 +148,7 @@ glom_libglom_libglom_1_14_la_SOURCES =					\
 	glom/libglom/python_embed/py_glom_related.h			\
 	glom/libglom/python_embed/py_glom_relatedrecord.cc		\
 	glom/libglom/python_embed/py_glom_relatedrecord.h		\
-	glom/libglom/python_embed/pygdavalue_conversions.c		\
+	glom/libglom/python_embed/pygdavalue_conversions.cc		\
 	glom/libglom/python_embed/pygdavalue_conversions.h
 
 glom_libglom_libglom_1_14_la_SOURCES +=				\
@@ -167,7 +167,7 @@ glom_libglom_libglom_1_14_la_SOURCES +=				\
 	glom/libglom/connectionpool_backends/sqlite.cc		\
 	glom/libglom/connectionpool_backends/sqlite.h
 
-glom_libglom_libglom_1_14_la_LIBADD = $(LIBGLOM_LIBS) $(PYTHON_LIBS)
+glom_libglom_libglom_1_14_la_LIBADD = $(LIBGLOM_LIBS) $(PYTHON_LIBS) $(BOOST_PYTHON_LIBS)
 if HOST_WIN32
 glom_libglom_libglom_1_14_la_LIBADD += -lws2_32
 endif

@@ -63,7 +63,7 @@ glom_python_embed_python_module_glom_1_14_la_SOURCES =		\
 
 glom_python_embed_python_module_glom_1_14_la_LIBADD = \
 	glom/libglom/libglom-$(GLOM_ABI_VERSION).la \
-	$(LIBGLOM_LIBS) $(PYTHON_LIBS)
+	$(LIBGLOM_LIBS) $(PYTHON_LIBS) $(BOOST_PYTHON_LIBS)
 
 if HOST_WIN32
 pymod_ldflags = -module -avoid-version -no-undefined -shrext .pyd
@@ -175,7 +175,7 @@ glom_defines = \
 -DGLOM_LOCALEDIR=\""$(glom_localedir)"\" \
 -DGLOM_PKGDATADIR=\""$(pkgdatadir)"\"
 
-AM_CPPFLAGS = $(glom_includes) $(GLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(glom_defines)
+AM_CPPFLAGS = $(glom_includes) $(GLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_PYTHON_CFLAGS) $(glom_defines)
 AM_CFLAGS   = $(GLOM_WFLAGS)
 AM_CXXFLAGS = $(GLOM_WXXFLAGS)
 

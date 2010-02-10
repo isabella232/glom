@@ -200,6 +200,12 @@ AC_CHECK_FUNCS([strptime])
 # For instance: PYTHON=python2.5
 MM_CHECK_MODULE_PYTHON
 
+# Get the CFLAGS and LIBS for boost::python.
+# Note that we have hacked this script to work with MM_CHECK_MODULE_PYTHON instead of AX_PYTHON
+# This does an AC_SUBST() of BOOST_PYTHON_LIBS
+# For the CFLAGS we must assume that boost is at the top-level, for instance in /usr/include/:
+AX_BOOST_PYTHON
+
 AC_ARG_ENABLE([update-mime-database],
               [AS_HELP_STRING([--disable-update-mime-database],
                               [do not run the update-mime-database utility

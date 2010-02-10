@@ -351,7 +351,7 @@ endif
 
 glom_glom_LDADD = $(win_resfile) \
 	glom/libglom/libglom-$(GLOM_ABI_VERSION).la \
-	$(GLOM_LIBS) $(PYTHON_LIBS) $(INTLLIBS)
+	$(GLOM_LIBS) $(PYTHON_LIBS) $(BOOST_PYTHON_LIBS) $(INTLLIBS)
 if !GLOM_ENABLE_MAEMO
 glom_glom_LDADD += -lgettextpo
 endif

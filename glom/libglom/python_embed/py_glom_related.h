@@ -28,23 +28,31 @@ namespace Glom
 {
 
 class PyGlomRelatedRecord;
+class PyGlomRecord;
 
 class PyGlomRelated
 {
 public:
-  PyObject_HEAD
+  PyGlomRelated();
+  ~PyGlomRelated();
 
-  PyGlomRecord* m_record; //A reference to the parent record.
+  //[] notation:
+  long len() const;
+  boost::python::object getitem(boost::python::object item);
+
+  friend class PyGlomRecord;
 
   typedef std::map<Glib::ustring, sharedptr<Relationship> > type_map_relationships;
-  type_map_relationships* m_pMap_relationships;
+  typedef std::map<Glib::ustring, boost::python::object /* Actually PyGlomRelatedRecord* */> type_map_relatedrecords;
 
-  typedef std::map<Glib::ustring, PyGlomRelatedRecord*> type_map_relatedrecords;
-  type_map_relatedrecords* m_pMap_relatedrecords;
+//TODO: protected:
+  boost::python::object m_record; //Actually PyGlomRecord. A reference to the parent record.
+
+ 
+  type_map_relationships m_map_relationships;
+
+  type_map_relatedrecords m_map_relatedrecords;
 };
-
-PyTypeObject* PyGlomRelated_GetPyType();
-
 
 void PyGlomRelated_SetRelationships(PyGlomRelated* self, const PyGlomRelated::type_map_relationships& relationships);
 

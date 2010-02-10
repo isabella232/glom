@@ -1,6 +1,33 @@
+2010-02-10  Murray Cumming  <murrayc@murrayc.com>
+
+	Use boost::python instead of the Python C API, simplifying the code.
+
+	* configure.ac: Check for boost::python.
+	* Makefile.am:
+	* Makefile_glom.am: Use boost::python CFLAGS and LIBS.
+	* macros/ax_boost_python.m4: Added this macro from 
+	http://www.nongnu.org/autoconf-archive/ax_boost_python.html
+	and hacked it to make it actually work.
+
+	* glom/python_embed/glom_python.cc: Use BOOST_PYTHON_MODULE() instead 
+	of the obscure Python C API structs and fields that were here and in 
+	the other .cc files.
+	* glom/main.cc:
+	* glom/libglom/python_embed/py_glom_record.[h|cc]
+	* glom/libglom/python_embed/py_glom_related.[h|cc]
+	* glom/libglom/python_embed/py_glom_relatedrecord.[h|cc]
+	* glom/python_embed/python_module/py_glom_module.[h|cc]:
+	* tests/test_python_execute_func.cc:
+	Use boost::python, for instance via boost::python::object, to 
+	simplify memory management.
+
+	* Makefile_libglom.am: 
+	* glom/libglom/python_embed/pygdavalue_conversions.[h|c]:
+	Change this to a .cc file, using C++, using boost::python.
+
 2010-02-08  Peter Penz <ppenz@openismus.com>
 
-  libglom: Fix build issue for Maemo.
+	libglom: Fix build issue for Maemo.
   
 	* glom/libglom/data_structure/glomconversions.cc: get_text_for_gda_value():
 	Add an ifdef for the disabled-exceptions build.

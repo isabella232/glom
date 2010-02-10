@@ -21,8 +21,7 @@
 #ifndef GLOM_PYTHON_GLOM_RELATEDRECORD_H
 #define GLOM_PYTHON_GLOM_RELATEDRECORD_H
 
-#define NO_IMPORT_PYGOBJECT //To avoid a multiple definition in pygtk.
-#include <pygobject.h> //For the PyGObject and PyGBoxed struct definitions.
+#include <boost/python.hpp>
 
 #include <libglom/document/document.h>
 #include <libglom/data_structure/field.h>
@@ -33,27 +32,36 @@ namespace Glom
 
 class PyGlomRecord;
 
-struct PyGlomRelatedRecord
+class PyGlomRelatedRecord
 {
 public:
-  PyObject_HEAD
+  PyGlomRelatedRecord();
+  ~PyGlomRelatedRecord();
+
+  boost::python::object sum(const std::string& field_name) const;
+  boost::python::object count(const std::string& field_name) const;
+  boost::python::object min(const std::string& field_name) const;
+  boost::python::object max(const std::string& field_name) const;
+
+  //[] notation:
+  long len() const;
+  boost::python::object getitem(boost::python::object item);
+
+//TODO: protected:
+
+  boost::python::object generic_aggregate(const std::string& field_name, const std::string& aggregate) const;
 
   //PyObject* m_fields_dict; //Dictionary (map) of field names (string) to field values (Gnome::Gda::Value).
-  PyGObject* m_py_gda_connection; //"derived" from PyObject.
   //PyGlomRecord* m_record_parent;
   Document* m_document;
 
-  sharedptr<const Relationship>* m_relationship;
-  Glib::ustring* m_from_key_value_sqlized;
+  sharedptr<const Relationship> m_relationship;
+  Glib::ustring m_from_key_value_sqlized;
 
   //Available, for instance, in python via record["name_first"]
   typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_field_values;
-  //We use a pointer because python will not run the class/struct's default constructor.
-  type_map_field_values* m_pMap_field_values; 
+  mutable type_map_field_values m_map_field_values; //A cache.
 };
-
-PyTypeObject* PyGlomRelatedRecord_GetPyType();
-
 
 void PyGlomRelatedRecord_SetRelationship(PyGlomRelatedRecord* self, const sharedptr<const Relationship>& relationship, const Glib::ustring& from_key_value_sqlized, Document* document);
 
