@@ -1,5 +1,12 @@
 2010-02-11  Murray Cumming  <murrayc@murrayc.com>
 
+	Fix the build, due to file not added to git.
+
+	* glom/libglom/python_embed/pygdavalue_conversions.cc: Added missing
+	file to git.
+
+2010-02-11  Murray Cumming  <murrayc@murrayc.com>
+
 	Fixes for the boost::python configure checks.
 
 	* configure.ac: AC_SUBST(PYTHON_CPPFLAGS) so our python checks can
