@@ -34,8 +34,7 @@ AS_IF([test "[$]?" -eq 0 && test "x$mm_val" != x], [$2], [$3])[]dnl
 ## The resulting configuration is stored in the PYTHON_CPPFLAGS and
 ## PYTHON_LIBS substitution variables.
 ##
-## Note: We use this in preference to AX_PYTHON() because it seems to behave better, preferring python and PYTHON.
-## For instance, it uses python2.5 if python is symlinked to python2.5, instead of preferring the newest one.
+## Note: We should document why we use this instead of AX_PYTHON().
 ##
 AC_DEFUN([MM_CHECK_MODULE_PYTHON],
 [dnl

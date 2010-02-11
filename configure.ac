@@ -199,12 +199,15 @@ AC_CHECK_FUNCS([strptime])
 # To specify a particular python version set an environment variable.
 # For instance: PYTHON=python2.5
 MM_CHECK_MODULE_PYTHON
+AC_SUBST(PYTHON_CPPFLAGS)
+#Not used, because boost::python has it as a dependency: AC_SUBST(PYTHON_LIBS)
 
 # Get the CFLAGS and LIBS for boost::python.
 # Note that we have hacked this script to work with MM_CHECK_MODULE_PYTHON instead of AX_PYTHON
 # This does an AC_SUBST() of BOOST_PYTHON_LIBS
 # For the CFLAGS we must assume that boost is at the top-level, for instance in /usr/include/:
 AX_BOOST_PYTHON
+
 
 AC_ARG_ENABLE([update-mime-database],
               [AS_HELP_STRING([--disable-update-mime-database],

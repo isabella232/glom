@@ -56,7 +56,7 @@
 
 #Note that this previously said it was checking for the library, but it's techically the both the headers and library that it looks for. murrayc
 AC_DEFUN([AX_BOOST_PYTHON],
-[AC_REQUIRE([AX_PYTHON])dnl
+[AC_REQUIRE([MM_CHECK_MODULE_PYTHON])dnl
 AC_CACHE_CHECK(whether the Boost::Python headers are available,
 ac_cv_boost_python,
 [AC_LANG_SAVE
@@ -94,9 +94,9 @@ if test "$ac_cv_boost_python" = "yes"; then
     #AC_CHECK_LIB($ax_lib, exit, [BOOST_PYTHON_LIB=$ax_lib break])
     AC_LANG_SAVE
     AC_LANG_CPLUSPLUS
-    #Note that this requires PYTHON_LIBS from MM_CHECK_MODULE_PYTHON()
+    #Note that this requires PYTHON_CPPFLAGS and PYTHON_LIBS from MM_CHECK_MODULE_PYTHON()
     SAVED_CPPFLAGS=$CPPFLAGS
-    CPPFLAGS="-I$PYTHON_INCLUDE_DIR"
+    CPPFLAGS=$PYTHON_CPPFLAGS $CPPFLAGS
     SAVED_LDFLAGS=$LDFLAGS
     LDFLAGS="$LDFLAGS $PYTHON_LIBS -l$ax_lib"
     AC_LINK_IFELSE(
