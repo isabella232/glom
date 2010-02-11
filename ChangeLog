@@ -1,3 +1,12 @@
+2010-02-11  Murray Cumming  <murrayc@murrayc.com>
+
+	libglom/python_embed/: get_item(): Pass object by const reference.
+
+	* glom/libglom/python_embed/py_glom_record.[h|cc]:
+	* glom/libglom/python_embed/py_glom_related.[h|cc]:
+	* glom/libglom/python_embed/py_glom_relatedrecord.[h|cc:
+	getitem(): Pass the object by const &.
+
 1.13.4:
 
 2010-02-11  Murray Cumming  <murrayc@murrayc.com>

@@ -47,7 +47,7 @@ public:
 
   //[] notation:
   long len() const;
-  boost::python::object getitem(boost::python::object item);
+  boost::python::object getitem(const boost::python::object& item);
 
 public:
   //PyObject* m_fields_dict; //Dictionary (map) of field names (string) to field values (Gnome::Gda::Value).

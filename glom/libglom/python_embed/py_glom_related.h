@@ -38,7 +38,7 @@ public:
 
   //[] notation:
   long len() const;
-  boost::python::object getitem(boost::python::object item);
+  boost::python::object getitem(const boost::python::object& item);
 
   friend class PyGlomRecord;
 
@@ -48,7 +48,7 @@ public:
 //TODO: protected:
   boost::python::object m_record; //Actually PyGlomRecord. A reference to the parent record.
 
- 
+
   type_map_relationships m_map_relationships;
 
   type_map_relatedrecords m_map_relatedrecords;

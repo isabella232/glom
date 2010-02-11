@@ -44,7 +44,7 @@ long PyGlomRelated::len() const
   return m_map_relationships.size();
 }
 
-boost::python::object PyGlomRelated::getitem(boost::python::object cppitem)
+boost::python::object PyGlomRelated::getitem(const boost::python::object& cppitem)
 {
   boost::python::extract<std::string> extractor(cppitem);
   if(extractor.check())
@@ -74,7 +74,7 @@ boost::python::object PyGlomRelated::getitem(boost::python::object cppitem)
           //Get the value of the from_key in the parent record.
           sharedptr<Relationship> relationship = iterFind->second;
           const Glib::ustring from_key = relationship->get_from_field();
-          
+
           boost::python::extract<PyGlomRecord*> extractor(m_record);
           if(extractor.check())
           {
@@ -132,4 +132,3 @@ void PyGlomRelated_SetRelationships(PyGlomRelated* self, const PyGlomRelated::ty
 }
 
 } //namespace Glom
-

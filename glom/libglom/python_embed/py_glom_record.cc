@@ -98,7 +98,7 @@ long PyGlomRecord::len() const
   return m_map_field_values.size();
 }
 
-boost::python::object PyGlomRecord::getitem(boost::python::object cppitem)
+boost::python::object PyGlomRecord::getitem(const boost::python::object& cppitem)
 {
   const std::string key = boost::python::extract<std::string>(cppitem);
     

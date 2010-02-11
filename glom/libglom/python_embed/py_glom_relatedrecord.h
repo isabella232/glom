@@ -45,7 +45,7 @@ public:
 
   //[] notation:
   long len() const;
-  boost::python::object getitem(boost::python::object item);
+  boost::python::object getitem(const boost::python::object& item);
 
 //TODO: protected:
 
