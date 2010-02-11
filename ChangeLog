@@ -1,3 +1,14 @@
+1.13.4:
+
+2010-02-11  Murray Cumming  <murrayc@murrayc.com>
+
+	Rename boost::python m4 macro.
+
+	* configure.ac:
+	* macros/ax_boost_python.m4: Rename to ax_boost_python_macro.m4 and
+	rename the defined m4 macro, to avoid confusion with the cleaner (but
+	not working) original.
+
 2010-02-11  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix the build, due to file not added to git.

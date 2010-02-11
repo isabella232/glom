@@ -4,7 +4,7 @@
 #
 # SYNOPSIS
 #
-#   AX_BOOST_PYTHON
+#   AX_BOOST_PYTHON_MURRAYC (based on AX_BOOST_PYTHON)
 #
 # DESCRIPTION
 #
@@ -55,7 +55,7 @@
 #With large changes by murrayc
 
 #Note that this previously said it was checking for the library, but it's techically the both the headers and library that it looks for. murrayc
-AC_DEFUN([AX_BOOST_PYTHON],
+AC_DEFUN([AX_BOOST_PYTHON_MURRAYC],
 [AC_REQUIRE([MM_CHECK_MODULE_PYTHON])dnl
 AC_CACHE_CHECK(whether the Boost::Python headers are available,
 ac_cv_boost_python,
@@ -68,7 +68,7 @@ ac_cv_boost_python,
  #fi
  if test x$PYTHON_CPPFLAGS != x; then
    #Note that this expects boost/ to be at some top-level such as /usr/include/
-   #We couldn't check for anything else anyway because there's no pkg-config file to tell us where it is 
+   #We couldn't check for anything else anyway because there's no pkg-config file to tell us where it is
    CPPFLAGS=$PYTHON_CPPFLAGS $CPPFLAGS
  fi
  AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[
@@ -118,4 +118,3 @@ if test "$ac_cv_boost_python" = "yes"; then
   AC_SUBST(BOOST_PYTHON_LIBS)
 fi
 ])dnl
-

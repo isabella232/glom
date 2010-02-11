@@ -15,7 +15,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([Glom], [1.13.3], [http://bugzilla.gnome.org/enter_bug.cgi?product=Glom], [glom])
+AC_INIT([Glom], [1.13.4], [http://bugzilla.gnome.org/enter_bug.cgi?product=Glom], [glom])
 AC_PREREQ([2.60])
 
 AC_CONFIG_SRCDIR([glom/main.cc])
@@ -206,7 +206,7 @@ AC_SUBST(PYTHON_CPPFLAGS)
 # Note that we have hacked this script to work with MM_CHECK_MODULE_PYTHON instead of AX_PYTHON
 # This does an AC_SUBST() of BOOST_PYTHON_LIBS
 # For the CFLAGS we must assume that boost is at the top-level, for instance in /usr/include/:
-AX_BOOST_PYTHON
+AX_BOOST_PYTHON_MURRAYC
 
 
 AC_ARG_ENABLE([update-mime-database],

@@ -1,3 +1,13 @@
+1.13.4 (unstable):
+
+* Glom now depends on boost::python.
+  This release is to give disto packagers a chance to cope with that.
+  (Murray Cumming)
+* Fix Maemo build errors
+  (Peter Penz)
+  (This fix is also in glom 1.2. The boost::python dependency will make 
+  building of 1.13/14 on Maemo almost impossible.
+
 1.13.3 (unstable):
 
 * Relationships Overview: Avoid a crash and a warning when closing.
