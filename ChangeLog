@@ -1,5 +1,13 @@
 2010-02-12  Murray Cumming  <murrayc@murrayc.com>
 
+	Glom Python: Minor code improvement.
+
+	* glom/python_embed/glom_python.cc: glom_evaluate_python_function_implemention():
+	Use the extra brackets trick to have boost::python::object and handle
+	on one line, so I have to care less about handle<>.
+
+2010-02-12  Murray Cumming  <murrayc@murrayc.com>
+
 	Disable broken import tests.
 
 	* Makefile_tests.am: Comment out the use of the import tests during

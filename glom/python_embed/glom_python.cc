@@ -80,7 +80,7 @@ void ShowTrace()
   PyObject *type, *value, *traceback;
 
   PyErr_Fetch(&type, &value, &traceback);
-  
+
   if(!traceback)
   {
     std::cerr << "traceback = 0" << std::endl;
@@ -97,7 +97,7 @@ void ShowTrace()
           type,
           value == 0 ? Py_None : value,
           traceback == 0 ? Py_None : traceback);
-      
+
       if(!tbList)
       {
         std::cerr << "Glom: format_exception failed while trying to show Python TraceBack." << std::endl;
@@ -109,7 +109,7 @@ void ShowTrace()
             (char*)"O", tbList);
       if(strRetval)
         chrRetval = g_strdup(PyString_AsString(strRetval));
-    
+
       Py_DECREF(tbList);
       Py_DECREF(strRetval);
       Py_DECREF(tracebackModule);
@@ -117,17 +117,17 @@ void ShowTrace()
     else
     {
         std::cerr << "Unable to import traceback module." << std::endl;
-        
+
     }
 
     Py_DECREF(type);
     Py_XDECREF(value);
     Py_XDECREF(traceback);
-  
+
   if(chrRetval)
   {
     std::cerr << "Glom: Python Error:" << std::endl << chrRetval << std::endl;
-    
+
     //TODO: Move this to the caller.
     //Glib::ustring message = _("Python Error: \n");
     //message += chrRetval;
@@ -176,7 +176,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   //std::cout << "glom_evaluate_python_function_implementation()" << std::endl;
   //for(type_map_fields::const_iterator iter = field_values.begin(); iter != field_values.end(); ++iter)
   //{
-  //  std::cout << "  field_value: name=" << iter->first << ", value=" << iter->second.to_string() << std::endl; 
+  //  std::cout << "  field_value: name=" << iter->first << ", value=" << iter->second.to_string() << std::endl;
   //}
 
   g_assert(result_type != Field::TYPE_INVALID);
@@ -224,16 +224,15 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
       {
         //TODO: Is there a boost::python equivalent for Py_CompileString()?
         PyObject* cObject = Py_CompileString(script.c_str(), name.c_str() /* "filename", for debugging info */,  Py_file_input /* "start token" for multiple lines of code. */); //Returns a reference.
-        boost::python::handle<> objectCompiled(cObject); //Takes the reference.
+        boost::python::object objectCompiled( (boost::python::handle<>(cObject)) ); //Takes the reference.
 
-        if(!objectCompiled)
+        if(!objectCompiled.ptr()) //TODO: We'd probably have an exception instead if we don't use boost's allow_null.
           HandlePythonError();
-          
-      
-        cObject = PyImport_ExecCodeModule(const_cast<char*>(name.c_str()), cObject); //Returns a reference. //This should make it importable.
-        boost::python::handle<> object(cObject); //Takes the reference.
 
-        if(!object)
+        PyObject* cObjectExeced = PyImport_ExecCodeModule(const_cast<char*>(name.c_str()), cObject); //Returns a reference. //This should make it importable.
+        boost::python::object objectExeced( (boost::python::handle<>(cObjectExeced)) ); //Takes the reference.
+
+        if(!objectExeced.ptr())
           HandlePythonError();
 
         //TODO: When do these stop being importable? Should we unload them somehow later?
@@ -248,7 +247,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
     g_warning("Could not import python glom module.");
     return valueResult; // don't crash
   }
-  
+
   //TODO: Is this necessary?
   boost::python::object module_gda = boost::python::import("gda");
   if(!module_gda)
@@ -270,12 +269,12 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
     HandlePythonError();
   }
   */
-  
+
   //TODO: Complain that exec(std::string(something), pMain) doesn't work.
   boost::python::object pyValue;
   try
   {
-    //TODO: The second dict is optional, and the documentation suggests using pMain as the first argument, but you'll get a 
+    //TODO: The second dict is optional, and the documentation suggests using pMain as the first argument, but you'll get a
     //"TypeError: 'module' object does not support item assignment" error if you omit it.
     //TODO: Make sure that's documented.
     pyValue = boost::python::exec(func_def.c_str(), pDict, pDict);
@@ -286,7 +285,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
     ShowTrace();
     return valueResult;
   }
-  
+
   if(!pyValue.ptr())
   {
     std::cerr << "glom_evaluate_python_function_implementation(): boost::python::exec failed." << std::endl;
@@ -307,7 +306,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
       ShowTrace();
       return valueResult;
     }
-  
+
     if(!pFunc.ptr())
     {
       std::cerr << "glom_evaluate_python_function_implementation(): pDict[func_name] failed." << std::endl;
@@ -323,7 +322,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
     }
 
     //The function's parameter:
-  
+
     //PyObject* pParam = PyString_FromString("test value"); //This test did not need the extra ref.
 
     boost::python::object objRecord(new PyGlomRecord);
@@ -333,7 +332,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
       std::cerr << ("extract<PyGlomRecord*> failed.") << std::endl;
       return valueResult;
     }
-    
+
     PyGlomRecord* pParam = extractor;
     if(pParam)
     {
