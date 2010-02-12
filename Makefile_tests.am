@@ -36,11 +36,12 @@ TESTS =	tests/test_parsing_time	\
 	tests/test_load_python_library \
 	tests/test_python_module \
 	tests/test_python_execute_func \
-	tests/test_python_execute_func_date \
-	tests/import/test_parsing \
-	tests/import/test_signals
+	tests/test_python_execute_func_date
+# These hang most of the time, but not always:
+#	tests/import/test_parsing \
+#	tests/import/test_signals
 
-# We also set this in Makefile.am, with +=, 
+# We also set this in Makefile.am, with +=,
 # but this is the first use, where we must use =
 dist_noinst_SCRIPTS = tests/dtd/test_file_validation.sh
 
@@ -85,7 +86,7 @@ glom_utility_widgets_test_flowtable_SOURCES =	\
 glom_utility_widgets_test_flowtable_LDADD = $(GLOM_LIBS)
 
 
-# You must remove PlaceholderGlom::get_application() to avoid having to specify 
+# You must remove PlaceholderGlom::get_application() to avoid having to specify
 # a huge set of .cc files when building this test:
 #glom_utility_widgets_test_flowtable_dnd_SOURCES =	\
 #	glom/utility_widgets/flowtable.cc	\
@@ -100,7 +101,7 @@ glom_utility_widgets_test_flowtable_LDADD = $(GLOM_LIBS)
 #	glom/utility_widgets/placeholder-glom.cc \
 #	glom/utility_widgets/test_flowtable_dnd.cc
 
-	
+
 
 glom_test_pyembed_LDADD = $(LIBGLOM_LIBS) $(PYTHON_LIBS)
 
