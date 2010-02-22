@@ -1,5 +1,13 @@
 2010-02-22  Murray Cumming  <murrayc@murrayc.com>
 
+	Python functions: Fix regression since the switch to boost::python.
+
+	* glom/python_embed/python_module/py_glom_module.cc: PyRelatedRecord:
+	Fix a typo on the getitem() and len() declarations so we can really
+	get a related record.
+
+2010-02-22  Murray Cumming  <murrayc@murrayc.com>
+
 	Python functions: Avoid a crash.
 
 	* glom/python_embed/glom_python.cc:

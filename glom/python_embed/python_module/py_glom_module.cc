@@ -37,8 +37,6 @@ BOOST_PYTHON_MODULE(glom_1_14)
     .add_property("connection", &PyGlomRecord::get_connection)
     .add_property("related", &PyGlomRecord::get_related)
 
-        /* TODO: python still says "TypeError: 'Boost.Python.class' object is unsubscriptable" */
-	        /* This suggests that it should work: http://lists.boost.org/boost-users/2003/08/4750.php */
     .def("__getitem__", &PyGlomRecord::getitem)
     .def("__len__", &PyGlomRecord::len)
   ;
@@ -53,11 +51,7 @@ BOOST_PYTHON_MODULE(glom_1_14)
     .def("count", &PyGlomRelatedRecord::sum, boost::python::args("field_name"), "Count all values in the field in the related records.")
     .def("min", &PyGlomRelatedRecord::sum, boost::python::args("field_name"), "Minimum of all values of the field in the related recordss.")
     .def("max", &PyGlomRelatedRecord::sum, boost::python::args("field_name"), "Maximum of all values of the field in the related records.")
-    .def("__getitem__", &PyGlomRecord::getitem)
-    .def("__len__", &PyGlomRecord::len)
+    .def("__getitem__", &PyGlomRelatedRecord::getitem)
+    .def("__len__", &PyGlomRelatedRecord::len)
   ;
 }
-
-
-
-
