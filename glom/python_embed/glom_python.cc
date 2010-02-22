@@ -340,7 +340,17 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
       PyGlomRecord_SetFields(pParam, field_values, pDocument, table_name, opened_connection);
 
       //Call the function with this parameter:
-      boost::python::object pyResultCpp = pFunc(objRecord);
+       boost::python::object pyResultCpp;
+
+      try
+      {
+        pyResultCpp = pFunc(objRecord);
+      }
+      catch(const boost::python::error_already_set& ex)
+      {
+        std::cerr << "Glom: Exception caught from pFunc(objRecord). func_name=" << std::endl << func_name << std::endl;
+        ShowTrace();
+      }
 
       if(!(pyResultCpp.ptr()))
       {

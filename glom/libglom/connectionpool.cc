@@ -19,7 +19,7 @@
  */
 
 #include <libglom/libglom_config.h>
- 
+
 #include <libglom/connectionpool.h>
 #include <libglom/document/document.h>
 #include <libglom/utils.h>
@@ -177,7 +177,7 @@ sharedptr<SharedConnection> ConnectionPool::get_and_connect(std::auto_ptr<Except
     std::cerr << "ConnectionPool::get_and_connect(): m_backend is null." << std::endl;
     return result; //TODO: Return a FAILURE_NO_BACKEND error?, though that would be tedious.
   }
-  
+
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   result = connection_pool->connect();
 #else
@@ -189,9 +189,9 @@ sharedptr<SharedConnection> ConnectionPool::get_and_connect(std::auto_ptr<Except
 
 
 
-// Store the connection for a few seconds in case it 
-// is immediately requested again, to avoid making a new connection 
-// and introspecting again, which is slow. 
+// Store the connection for a few seconds in case it
+// is immediately requested again, to avoid making a new connection
+// and introspecting again, which is slow.
 // TODO: Why aren't these member variables?
 static sharedptr<SharedConnection> connection_cached;
 static sigc::connection connection_cached_timeout_connection;
@@ -200,7 +200,7 @@ static sigc::connection connection_cached_finished_connection;
 static bool on_connection_pool_cache_timeout()
 {
   //std::cout << "DEBUG: Clearing connection cache." << std::endl;
-      
+
   //Forget the cached connection after a few seconds:
   connection_cached.clear();
 
@@ -307,7 +307,7 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
         // Create the fieldtypes member if it has not already been done:
         if(!m_pFieldTypes)
           m_pFieldTypes = new FieldTypes(m_refGdaConnection);
-          
+
 #ifndef G_OS_WIN32
         //Let other clients discover this server via avahi:
         //TODO: Only advertize if we are the first to open the document,
@@ -344,7 +344,7 @@ void ConnectionPool::create_database(const Glib::ustring& database_name, std::au
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   std::auto_ptr<Glib::Error> error;
 #endif
-  if(m_backend.get())  
+  if(m_backend.get())
     m_backend->create_database(database_name, get_user(), get_password(), error);
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -356,7 +356,7 @@ void ConnectionPool::set_user(const Glib::ustring& value)
 {
   if(value.empty())
   {
-#ifdef GLOM_CONNECTION_DEBUG    
+#ifdef GLOM_CONNECTION_DEBUG
     std::cout << "debug: ConnectionPool::set_user(): user is empty." << std::endl;
 #endif
   }
@@ -370,7 +370,7 @@ void ConnectionPool::set_user(const Glib::ustring& value)
 void ConnectionPool::set_password(const Glib::ustring& value)
 {
   m_password = value;
-  
+
   //Make sure that connect() makes a new connection:
   invalidate_connection();
 }
@@ -498,7 +498,7 @@ static __p_sig_fn_t previous_sig_handler = SIG_DFL;
 static sighandler_t previous_sig_handler = SIG_DFL; /* Arbitrary default */
 #endif
 
-/* This is a Linux/Unix signal handler, 
+/* This is a Linux/Unix signal handler,
 * so we can respond to a crash.
 */
 static void on_linux_signal(int signum)
@@ -607,10 +607,10 @@ bool ConnectionPool::add_column(const Glib::ustring& table_name, const sharedptr
   m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name());
 #else
   if(error.get())
-    std::cerr << "Error: " << error->what() << std::endl; 
+    std::cerr << "Error: " << error->what() << std::endl;
   m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name(), error);
   if(error.get())
-    std::cerr << "Error: " << error->what() << std::endl;   
+    std::cerr << "Error: " << error->what() << std::endl;
 #endif
   return result;
 }
@@ -646,10 +646,10 @@ bool ConnectionPool::drop_column(const Glib::ustring& table_name, const Glib::us
   m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name());
 #else
   if(error.get())
-    std::cerr << "Error: " << error->what() << std::endl; 
+    std::cerr << "Error: " << error->what() << std::endl;
   m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name(), error);
   if(error.get())
-    std::cerr << "Error: " << error->what() << std::endl; 
+    std::cerr << "Error: " << error->what() << std::endl;
 #endif
   return result;
 }
@@ -702,7 +702,7 @@ bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_
 
 #else
   if(error.get())
-    std::cerr << "Error: " << error->what() << std::endl; 
+    std::cerr << "Error: " << error->what() << std::endl;
   m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name(), error);
 #endif
   return result;
@@ -762,7 +762,7 @@ gboolean ConnectionPool::on_publisher_document_authentication(EpcAuthContext* co
   //std::cout << "ConnectionPool::on_publisher_document_authentication(): username=" << user_name << ", password=" << password << std::endl;
 
   g_return_val_if_fail(connection_pool->m_backend.get(), false);
- 
+
   //Attempt a connection with this username/password:
   std::auto_ptr<ExceptionConnection> error;
   Glib::RefPtr<Gnome::Gda::Connection> connection = connection_pool->m_backend->connect(connection_pool->get_database(), user_name, password, error);
@@ -783,7 +783,7 @@ gboolean ConnectionPool::on_publisher_document_authentication(EpcAuthContext* co
 void ConnectionPool::on_epc_progress_begin(const gchar* /* title */, gpointer user_data)
 {
   //We ignore the title parameter because there is no way that libepc could know what Glom wants to say.
-  
+
   ConnectionPool* connection_pool = (ConnectionPool*)user_data;
   if(connection_pool)
     connection_pool->m_epc_slot_begin();
@@ -810,7 +810,7 @@ void ConnectionPool::set_avahi_publish_callbacks(const type_void_slot& slot_begi
 {
   m_epc_slot_begin = slot_begin;
   m_epc_slot_progress = slot_progress;
-  m_epc_slot_done = slot_done; 
+  m_epc_slot_done = slot_done;
 }
 
 
@@ -827,7 +827,7 @@ void ConnectionPool::avahi_start_publishing()
 #ifdef GLOM_CONNECTION_DEBUG
   std::cout << "debug: ConnectionPool::avahi_start_publishing" << std::endl;
 #endif
-  
+
   //Publish the document contents over HTTPS (discoverable via avahi):
   const Document* document = get_document();
   if(!document)
@@ -835,7 +835,7 @@ void ConnectionPool::avahi_start_publishing()
 
   m_epc_publisher = epc_publisher_new(document->get_database_title().c_str(), "glom", 0);
   epc_publisher_set_protocol(m_epc_publisher, publish_protocol);
-  
+
   epc_publisher_add_handler(m_epc_publisher, "document", on_publisher_document_requested, this /* user_data */, 0);
 
   //Password-protect the document,
@@ -849,7 +849,7 @@ void ConnectionPool::avahi_start_publishing()
   callbacks.update = &ConnectionPool::on_epc_progress_update;
   callbacks.end = &ConnectionPool::on_epc_progress_end;
   epc_shell_set_progress_hooks(&callbacks, this, 0);
-      
+
   //Prevent the consumer from seeing duplicates,
   //if multiple client computers advertize the same document:
   //
@@ -865,7 +865,7 @@ void ConnectionPool::avahi_start_publishing()
   epc_publisher_run_async(m_epc_publisher, &error);
   if(error)
   {
-#ifdef GLOM_CONNECTION_DEBUG    
+#ifdef GLOM_CONNECTION_DEBUG
     std::cout << "Glom: ConnectionPool::avahi_start_publishing(): Error while running epc_publisher_run_async: " << error->message << std::endl;
 #endif
     g_clear_error(&error);

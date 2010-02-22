@@ -1,3 +1,11 @@
+2010-02-22  Murray Cumming  <murrayc@murrayc.com>
+
+	Python functions: Avoid a crash.
+
+	* glom/python_embed/glom_python.cc:
+	glom_evaluate_python_function_implementation(): When calling the
+	function object, catch exceptions instead of crashing.
+
 2010-02-12  Murray Cumming  <murrayc@murrayc.com>
 
 	Glom Python: Minor code improvement.
