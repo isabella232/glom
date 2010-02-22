@@ -1,3 +1,12 @@
+1.13.5 (unstable):
+
+* Python functions: Fix some regressions since the switch to boost::python.
+  (Murray Cumming)
+* Disable broken unit tests to fix make distcheck.
+  (Murray Cumming)
+* libglom: Fix build issue for Maemo.
+  (Peter Penz)
+
 1.13.4 (unstable):
 
 * Glom now depends on boost::python.
@@ -5,7 +14,7 @@
   (Murray Cumming)
 * Fix Maemo build errors
   (Peter Penz)
-  (This fix is also in glom 1.2. The boost::python dependency will make 
+  (This fix is also in glom 1.2. The boost::python dependency will make
   building of 1.13/14 on Maemo almost impossible.
 
 1.13.3 (unstable):
@@ -29,19 +38,19 @@
 
 1.13.2 (unstable):
 
-* Details layout: Really use the new formatting options (horizontal alignment, 
+* Details layout: Really use the new formatting options (horizontal alignment,
   foreground color and background color) for static text items and buttons.
   (Murray Cumming)
-  
+
 1.13.1 (unstable):
 
 * Details and List layouts:
   Allow custom formatting of static text and buttons instead of just fields.
-  (Murray Cumming) 
+  (Murray Cumming)
 * Field Formatting:
   - Add the option to use a different text color for negative values.
     (suggested by Mathias Hasselmann)
-  - Add a horizontal alignment option, though we still right-align numbers 
+  - Add a horizontal alignment option, though we still right-align numbers
     by default. #591125 (Patrick Chan)
   (Murray Cumming)
 
@@ -49,7 +58,7 @@
 
 * List View: Don't chop off the bottom of text when using large fonts.
   (Murray Cumming) Bug #607023 (Michael Hasselmann)
-* Avoid problems when entering numbers with currency suffixes when using the 
+* Avoid problems when entering numbers with currency suffixes when using the
   C locale.
   (Murray Cumming, Michael Hasselmann)
 * Windows: Install glom_1_12.pyd instead of glom.pyd.
@@ -61,18 +70,18 @@
 * Drag and drop layout: Fix some crashes. This feature still has some problems,
   so the layout dialog is still available.
    (Murray Cumming) Bug #599232
-* Field Definitions: Show the default value entry even for date fields. 
+* Field Definitions: Show the default value entry even for date fields.
 * Python calculations/scripts:
   Fix a crash when calling python functions that return dates.
   (Murray Cumming) Bug #603686. (Andrew Ruthven)
 * Details layout:
-  - Related records layout definition: 
-  When defining drop-down choices in the custom formatting, show the correct 
+  - Related records layout definition:
+  When defining drop-down choices in the custom formatting, show the correct
   relationships. Noticed by Michael Hasselmann and Andrew Ruthven.
   (Murray Cumming)
   - Fix a crash when specifying a static image on the layout.
   (Murray Cumming) Bug #600954 (Michael Hasselmann).
-* Saving: Always add the xmlns ID to the document, to make MIME-type detection 
+* Saving: Always add the xmlns ID to the document, to make MIME-type detection
   easier. (Murray Cumming)
 * Do not mark an empty string for translation.
   (Murray Cumming) Bug #599868 (André Klapper).
@@ -81,14 +90,14 @@
 * Examples: Film Manager: Add silly example data.
   (Murray Cumming) Bug #600859 (Michael Hasselmann)
 * Windows build: Add missing libpangoft2-1.0-0.dll to the installer.
-  (Armin Burgmeier) Bug #599966 (Akishi Soda, Cinna)  
+  (Armin Burgmeier) Bug #599966 (Akishi Soda, Cinna)
 * Maemo build: Don't depend on libgettextpo.
   (David King)
 * Developer documentation:
-  Correct the DTD and add a unit test to make sure it and the 
+  Correct the DTD and add a unit test to make sure it and the
   examples are correct.
   (Michael Hasselmann, Murray Cumming)
-  
+
 1.12.3 (stable):
 
 * List: Fix zero-width columns. That regression was introduced in 1.12.2.
@@ -101,7 +110,7 @@
 * Build: Support Automake silent rules. (Daniel Elstner)
 * Maemo Build:
   - Adapted for latest hildonmm API.
-  - AppMenu: Add "Add" and "Add Related" buttons, instead of having + 
+  - AppMenu: Add "Add" and "Add Related" buttons, instead of having +
     buttons in the window. This does not work perfectly and needs some work.
   - Make TextViews small initially.
   - Details:
@@ -109,14 +118,14 @@
     - Use PickerButtons instead of ComboBoxes.
   - Widget spacing improvements to match the Maemo UI spec.
    (Murray Cumming)
-  - Create a libosso D-Bus service and register it, so Glom can run in the 
+  - Create a libosso D-Bus service and register it, so Glom can run in the
   background like a normal Maemo application.
   - Show the application and its icon in the applications menu.
   (David King)
-  
+
 1.12.2 (stable):
 
-* Details: Choices: Actually show choices drop-down lists again, 
+* Details: Choices: Actually show choices drop-down lists again,
   fixing a regression in Glom 1.12.
 * Export, Import: Better handling of binary image data.
   (Murray Cumming)
@@ -124,7 +133,7 @@
 1.12.1 (stable):
 
 * Related Records:
-  - Fix doubly-related records portals, such as a list of 
+  - Fix doubly-related records portals, such as a list of
   an Artist's publishers (via their albums).
   - Portals: Prevent use of inappropriate relationships.
 * Maemo: More work on the port to the Maemo 5 UI, using simpel separate windows.
@@ -138,8 +147,8 @@
 
 What's new in Glom 1.12:
 
-* Network sharing of self-hosted databases is now off by default, and can be 
-  enabled by the new File/Share On Network menu item. So you will not be 
+* Network sharing of self-hosted databases is now off by default, and can be
+  enabled by the new File/Share On Network menu item. So you will not be
   asked for an initial password when creating a new file.
   (Murray Cumming)
 * Allow field table and field anmes to use uppercase characters.
@@ -163,12 +172,12 @@ What's new in Glom 1.12:
 1.11.1 (unstable):
 
 * Really save field definition changes again.
-  Ubuntu Launchpad bug 
+  Ubuntu Launchpad bug
   https://bugs.launchpad.net/ubuntu/+source/glom/+bug/394507 (elmergato)
 * Allow table and field names to use uppercase characters.
   (requires the latest libgda - either libgda 4.0.4 or libgda 4.1.2.)
   Bug #587051
-* Do not fail too soon when self-starting a PostgreSQL instance, though the 
+* Do not fail too soon when self-starting a PostgreSQL instance, though the
   time to wait until PostgreSQL should be ready is still a hard-coded number.
 * Export:
   - Correct the export to use the CSV specification
@@ -183,12 +192,12 @@ What's new in Glom 1.12:
     Ubuntu Launchpad bug
     https://bugs.launchpad.net/ubuntu/+source/glom/+bug/393231 (elmergato)
 * Import:
-  - Handle commas inside quotes, and escaped quotes, as per the CSV 
+  - Handle commas inside quotes, and escaped quotes, as per the CSV
     specification.
     https://bugs.launchpad.net/ubuntu/+source/glom/+bug/394894 (elmergato)
 * Complain about unknown command-line options instead of crashing.
 * Document's MIME-type registration: Us an xmlns ID.
-* Related Records: Navigation option: Hide the navigation button when the new 
+* Related Records: Navigation option: Hide the navigation button when the new
   "None" option is used. Bug #574360
   (Murray Cumming, Openismus)
 * Various corrections to the automatic use of ports when self-hosting.
@@ -198,12 +207,12 @@ What's new in Glom 1.12:
 * Initial ldtp test scripts, to test the UI.
   (Armin Burgmeier, Openismus)
 * libglom:
-  - Add an ABI version (1.2) to the shared library and the headers location, 
+  - Add an ABI version (1.2) to the shared library and the headers location,
     so we may break ABI painlessly when we need to.
-  - Remove any client-only or PostgreSQL/SQLite ifdefs, so that libglom always 
-    offers all functionality, to avoid the need to have multiple versions of 
-    libglom installed if you have multiple Glom builds installed. Only the 
-    no-exceptions build option remains, because they will never be on the same 
+  - Remove any client-only or PostgreSQL/SQLite ifdefs, so that libglom always
+    offers all functionality, to avoid the need to have multiple versions of
+    libglom installed if you have multiple Glom builds installed. Only the
+    no-exceptions build option remains, because they will never be on the same
     system.
   - Remove any Maemo-specific ifdefs because libglom is non-UI.
   - Fix the pkg-config .pc file.
@@ -220,12 +229,12 @@ What's new in Glom 1.12:
 
 1.11.0 (unstable):
 
-* Network sharing of self-hosted databases is now off by default, and can be 
+* Network sharing of self-hosted databases is now off by default, and can be
   enabled by the new File/Share On Network menu item.
   (Murray Cumming)
 * Performance improvement when first connecting to the database.
   (Armin Burgmeier)
-* Fix crash if the "Connect to Server" dialog is cancelled and then a document 
+* Fix crash if the "Connect to Server" dialog is cancelled and then a document
   is opened.
   (Michael Hasselmann)
 * Related Records:
@@ -237,34 +246,34 @@ What's new in Glom 1.12:
   - Image fields: Performance improvements and user feedback.
     (Armin Burgmeier)
   - Disable the Open button next to ID fields if the field is empty.
-    (Murray Cumming) Bug #565023.	
+    (Murray Cumming) Bug #565023.
 * Requires gtkmm 2.14 rather than gtkmm 2.10.
 * Removed Bakery dependency (by including a fork of that code).
 * Removed libglade dependency (using Gtk::Builder instead).
 * Require a newer goocanvasmm.
 * Add runtime checks for the Python module.
 * libglom: Removed dependencies on UI libraries such as GTK+.
-  (Murray Cumming) 
-  
+  (Murray Cumming)
+
 1.10.1 (stable):
 
-* Fix crash in initial dialog, experienced on some systems. 
+* Fix crash in initial dialog, experienced on some systems.
   (Armin Burgmeir) Bug #584022 (Keir Lawson)
-* Self-Hosting: Allow multiple glom instances to self-host on the same PC, 
+* Self-Hosting: Allow multiple glom instances to self-host on the same PC,
   by correcting the discovery of available network ports.
   (Armin Burgmeir)
-* Allow Glom to use existing database tables again (though there is still no 
+* Allow Glom to use existing database tables again (though there is still no
   UI for this).
 * Restore the check for the necessary libgda provider plugin.
   (Murray Cumming)
- 
+
 1.10.0 (stable):
 
 What's new in Glom 1.10:
 
 (Not much from the point of view of users.)
 * Performance improvements, avoiding excessive network queries.
-* Details: Show the Open button (but not Find) for related fields that are 
+* Details: Show the Open button (but not Find) for related fields that are
   primary keys, so we can navigate to that record.
 * Ported to libgda-4.0 (libgdamm-4.0)
 * Sqlite backend suitable for embedded use, configurable when building Glom.
@@ -272,7 +281,7 @@ What's new in Glom 1.10:
 
 1.9.4: (unstable):
 
-* Disable the sqlite backend by default. It is for embedded use with limited 
+* Disable the sqlite backend by default. It is for embedded use with limited
   functionality. (Armin Burgmeier, Murray Cumming)
 * Related records: Correct the navigation to doubly related records.
   (Murray Cumming)
@@ -282,11 +291,11 @@ What's new in Glom 1.10:
   (Armin Burgmeier)
 * Build fixes for the client-only build.
   (Murray Cumming, Armin Burgmeier)
-* Improve the installation of libglom, adding a pkg-config file and a small 
+* Improve the installation of libglom, adding a pkg-config file and a small
   test. This is still highly unstable.
 * String corrections for translators.
   (Claude Paroz, Stéphane Raimbault)
-   
+
 1.9.3: (unstable)
 
 * Fix network sharing with just-created documents.
@@ -304,21 +313,21 @@ What's new in Glom 1.10:
     because this is only intended for embedded use, with reduced functionality.
   - Fix Find mode. Bug #570401
   - Don't lose the non-NULL field constraint when changing fields.
-  - Release any existing DataModels when changing the table, to avoid sqlite 
+  - Release any existing DataModels when changing the table, to avoid sqlite
     errors. Bug #572847
   - Various fixes for field changes.
   (Armin Burgmeier)
 * Networked Glom: Correct use of wrong port.
   (Armin Burgmeier) Bug #572982
 * Details:
-  - Avoid vast extra space when using 3 or more columns. 
+  - Avoid vast extra space when using 3 or more columns.
     Bug #539369 (maximiliano)
-  - Show the Open button (but not Find) for related fields that are primary 
+  - Show the Open button (but not Find) for related fields that are primary
     keys, so we can navigate to that record. Bug #571975
   - Avoid showing scientific e notation for up to 15 digits, instead of 7.
    (Murray Cumming)
 * Cache the user privileges for a short time, to improve performance.
-  (Murray Cumming) Bug #567473 
+  (Murray Cumming) Bug #567473
 * Import: Add a .cvs filter to the file chooser dialog.
   (David King) Bug #572702
 * Avoid leaking a Gtk::EventBox.
@@ -334,16 +343,16 @@ What's new in Glom 1.10:
 
 1.9.1: (unstable)
 
-* Sqlite support: Improvements, including changing of fields types, and 
+* Sqlite support: Improvements, including changing of fields types, and
   adding/deleting fields.
   (We will later make this only a configure option.)
   (Armin Burgmeier)
-* Use SQL parameters where possible, making code safer and fixing problems 
+* Use SQL parameters where possible, making code safer and fixing problems
   with image data with libgda-4.0.
   (Johannes Schmid)
 * When cancelling the initial dialog, fix the strange behaviour.
-  (Johannes Schmid) Bug #569721. 
-* Main window: Correct the order of the widgets at the bottom-right that 
+  (Johannes Schmid) Bug #569721.
+* Main window: Correct the order of the widgets at the bottom-right that
   show the number of found records and the total number of records.
   (Murray Cumming)
 * List view, Related Records lists:
@@ -356,14 +365,14 @@ What's new in Glom 1.10:
 
 * Ported to libgdamm-4.0 (libgda-4.0) from libgda(mm)-3.0.
   (Johannes Schmid, Armin Burgmeier, Murray Cumming)
-* Initial sqlite support as an alternative to PostgreSQL, intended for 
-  embedded use. There are still some obvious problems with this, but we 
-  expect to solve them soon in the next release, when we will also make this 
+* Initial sqlite support as an alternative to PostgreSQL, intended for
+  embedded use. There are still some obvious problems with this, but we
+  expect to solve them soon in the next release, when we will also make this
   only a configure option.
   (Armin Burgmeier)
 * Find: Make find mode work again in the list view.
   (Murray Cumming) Bug #565579
-* Cache the connection for a few seconds to avoid unnecessary reconnects, 
+* Cache the connection for a few seconds to avoid unnecessary reconnects,
   making things faster. (Murray Cumming)
 * Fixes from recent 1.8 releases.
 
@@ -379,29 +388,29 @@ Glom 1.8
 Major changes since 1.6:
 
 New features:
-* Import: Comma-separated data may now be imported into the 
-  current table, with the help of an assistant to choose the 
+* Import: Comma-separated data may now be imported into the
+  current table, with the help of an assistant to choose the
   field mapping.
   (Armin Burgmeier)
-* Drag and Drop layout: Drag the layout items from the toolbar, 
+* Drag and Drop layout: Drag the layout items from the toolbar,
   or drag items to move them around the layout.
-  (This feature may still have some bugs. The old layout window 
+  (This feature may still have some bugs. The old layout window
    is still the default.)
   (Johannes Schmid)
 * Print Layouts: precise layout of print outs for record details.
-  (This feature is not really complete yet. The old HTML output 
+  (This feature is not really complete yet. The old HTML output
    is still available.)
   (Murray Cumming)
-* Calendar Portal: See related records via a calendar, choosing 
-  one field to use for the date, and other fields to show on that 
+* Calendar Portal: See related records via a calendar, choosing
+  one field to use for the date, and other fields to show on that
   day in the calendar.
   (Murray Cumming)
-* Network sharing: Open running Glom systems via the network, 
+* Network sharing: Open running Glom systems via the network,
   without opening the file from the file system.
   (Murray Cumming, Mathias Hasselmann)
 * New clearer initial dialog.
   (Armin Burgmeier)
-* Layout: You may now choose a custom font, foreground color 
+* Layout: You may now choose a custom font, foreground color
   and background color for fields.
   (Murray Cumming)
 * List Layout: Column widths may now be specified.
@@ -418,20 +427,20 @@ Build changes:
 
 1.7.3:
 
-* Print Layout: Fields can now be specified for related records 
-  portals, and their data appears in the printout, though the 
+* Print Layout: Fields can now be specified for related records
+  portals, and their data appears in the printout, though the
   whole Print Layout feature is still rather unfinished.
 * Print Layout list: Add a default title when adding a print layout.
-* Related Records layout: Fix a bug that was introduced some time 
+* Related Records layout: Fix a bug that was introduced some time
   during 1.7.x, preventing static text and images from being added.
   (Murray Cumming)
-* Drag and Drop layout: Add a related records toolbar item, to add 
+* Drag and Drop layout: Add a related records toolbar item, to add
   portals to the layout.
 
 1.7.2:
 
 * Drag-and-drop Layout:
-  - Hide the toolbar by default, because this feature is still 
+  - Hide the toolbar by default, because this feature is still
   not ready. Added a menu item to show it.
   - Added tooltips to the toolbar items.
   (Johannes Schmid)
@@ -444,15 +453,15 @@ Build changes:
   (Murray Cumming)
 * Build: Fixed a const problem with gtkmm 2.12.
 * Improvements for the Windows port:
-  - Check that the user is not admin (like root on Linux), 
-    because that would be a network security risk, and postgres 
+  - Check that the user is not admin (like root on Linux),
+    because that would be a network security risk, and postgres
     checks too.
-  - Hide the console windows when starting postgres, by using 
+  - Hide the console windows when starting postgres, by using
     CreateProcess() instead of Glib::spawn().
   - Deal with some IO strangeness.
   - Initialize WinSock at startup so we can find an unused port.
   - Added the installer source files to svn.
-  - Initial dialog: Hide the network item, because we do not have 
+  - Initial dialog: Hide the network item, because we do not have
     Avahi on Windows.
   (Armin Burgmeier)
 * Client-only (Maemo) build:
@@ -467,38 +476,38 @@ Changes in 1.7.1:
 New features since 1.6:
 * Redesigned initial dialog.
   (Armin Burgmeier)
-* Advertize running Glom systems on the network via Avahi and allow 
+* Advertize running Glom systems on the network via Avahi and allow
   other users to browse for them and open them. Uses libepc.
   (Murray Cumming, Mathias Hasselmann)
-* New Import feature, to import comma-separated rows of data into the 
+* New Import feature, to import comma-separated rows of data into the
   current table.
   (Armin Burgmeier)
-* (Unfinished) drag-and-drop of layout items from a toolbar, and 
+* (Unfinished) drag-and-drop of layout items from a toolbar, and
   right-clicking to edit item details.
   For now, you will still need the layout dialog too.
   (Johannes Schmid)
-* (Unfinished) exact-layout print layout feature, for instance for 
+* (Unfinished) exact-layout print layout feature, for instance for
   printing out invoices or for printing on pre-printed forms.
   (Murray Cumming)
-* New Calendar portal, to view related records on a calendar, using 
+* New Calendar portal, to view related records on a calendar, using
   one of the related records' fields as the date.
   (Murray Cumming)
 * Custom font, foreground color and background color for fields.
   (Murray Cumming)
 
 Other changes:
-* Field Definitions: Refuse to change a field name to one that 
+* Field Definitions: Refuse to change a field name to one that
   already exists.
   (Murray Cumming)
 * Initial Windows port.
   (Armin Burgmeier)
-* Some optimization for very large tables, and some memory leak fixes, 
-  though really fast-enough performance must wait until we port to 
+* Some optimization for very large tables, and some memory leak fixes,
+  though really fast-enough performance must wait until we port to
   libgda 4.0.
   (Murray Cumming)
 * Added : at the end of labels, as per the GNOME HIG.
   (Murray Cumming)
-* Remove sentences saying that names should not have spaces or 
+* Remove sentences saying that names should not have spaces or
   special characters, because they can.
   Bug #528209 (Jean-François Fortin Tam)
 * Hopefully allow bug-buddy and aport to work.
@@ -521,12 +530,12 @@ glom 1.6 has only minor user-visible changes compared to glom 1.4:
   (Rasmus Toftdahl Olesen)
 * Start dialog now shows recently-opened files.
   (Armin Burgmeier)
-* Button scripts and calculated fields now show python errors 
+* Button scripts and calculated fields now show python errors
   and tracebacks in a dialog box.
   (Johannes Schmid)
 * Ported to libgdamm 3.0.
   (Murray Cumming, Armin Burgmeier)
-* Now ignores previously-set multiline text formatting 
+* Now ignores previously-set multiline text formatting
   options for non-text fields.  Bug #443360 (Harry Mills)
   (Murray Cumming)
 
@@ -539,7 +548,7 @@ glom 1.6 has only minor user-visible changes compared to glom 1.4:
 
 * Avoid unnecessary unsaved-changes warning dialogs.
   (Murray Cumming)
-* Ignore previously-set multiline text formatting 
+* Ignore previously-set multiline text formatting
   options for non-text fields,
   Bug #443360 (Harry Mills)
   (Murray Cumming)
@@ -568,7 +577,7 @@ glom 1.6 has only minor user-visible changes compared to glom 1.4:
   (Andreas Nilsson)
 * File format: More robust example rows format.
 * Build: Removed unnecessary dependency on libgnomecanvasmm.
- 
+
 1.4.3:
 
 * en_GB (British English) locale: Correct the parsing of 4-digit years in dates again.
@@ -596,26 +605,26 @@ Minor build fix, needed by some compilers.
 
 What's new since Glom 1.2.0:
 
-* Self-hosting: Databases can now be created in a local directory, without using a 
-  central PostgreSQL server. PostreSQL is still used to host the database on your 
+* Self-hosting: Databases can now be created in a local directory, without using a
+  central PostgreSQL server. PostreSQL is still used to host the database on your
   local computer. You may, for instance, send an archive of this directory in an email.
   PostgreSQL is therefore now a non-optional dependency.
   In future, a client-only version of Glom might be available for embedded devices.
 * Details view:
   - Related Records: Allow viewing of doubly-related records.
-  - A vertical scrollbar now allows the window to be smaller when necessary 
+  - A vertical scrollbar now allows the window to be smaller when necessary
   on your screen.
-* List View: Now supports static text items, static pictures, and script buttons, as 
+* List View: Now supports static text items, static pictures, and script buttons, as
   the Details view already did.
 * Field Formatting: Allow the user to remove a previously-chosen Also Show field.
   Bug #365051 from L Davison.
-* Translations: Added Import and Export buttons, so you can use 
+* Translations: Added Import and Export buttons, so you can use
   the standard .po format. (Johannes Schmid)
 * Calculated Fields and Button Scripts: Now uses Python syntax highlighting, via GtkSourceView.
   (Johannes Schmid, Dodji Seketeli)
-* Added Script Library to the Developer menu, for Python code that should be reused 
+* Added Script Library to the Developer menu, for Python code that should be reused
   (via Import) in several scripts.
-* Added --debug_sql commmand-line option, which prints out the generated 
+* Added --debug_sql commmand-line option, which prints out the generated
   SQL commands. (Johannes Schmid)
 * Adapted for the latest Postgres version (and previous versions).
 * Adapted for the latest Python version (and previous versions).
@@ -633,27 +642,27 @@ What's new since Glom 1.2.0:
 
 * Self-Hosting: Fix a bug (in our hack) that prevented this from working on Ubuntu Feisty.
   (Murray Cumming)
-* Details view: Remove the unwanted shadow/frame that was introduced when we added the 
+* Details view: Remove the unwanted shadow/frame that was introduced when we added the
   vertical scrollbar.
   (Armin Burgmeier, bug 414260)
 * List view: Allow script buttons to actually respond to clicks.
   (Armin Burgmeier, bug 359284)
- 
+
 1.3.10 (unstable)
 
-* Connection: Try the additional 5434 network port used by Postgres 8.2 
+* Connection: Try the additional 5434 network port used by Postgres 8.2
   on (current) versions of Ubuntu Feisty.
   See Ubuntu bug https://launchpad.net/bugs/86582
-* Added code (currently disabled) to show a Relationships Overview diagram, 
+* Added code (currently disabled) to show a Relationships Overview diagram,
   using goocanvas. (Rasmus Toftdahl Olesen)
 
 1.3.9 (unstable)
 
-* At startup, double-check that PostgreSQL is really installed, 
+* At startup, double-check that PostgreSQL is really installed,
   and quit if it is not installed, or cannot be installed.
-  The source code contains example code for Ubuntu to allow the 
-  user to install PostgreSQL at this time, though I would prefer 
-  that the user did not need to do a two-stage install, 
+  The source code contains example code for Ubuntu to allow the
+  user to install PostgreSQL at this time, though I would prefer
+  that the user did not need to do a two-stage install,
   because self-hosting with PostgreSQL is not an optional feature.
   (That would be something for a cut-down client for embedded devices.)
   (Murray Cumming)
@@ -663,9 +672,9 @@ What's new since Glom 1.2.0:
 * Self-hosting:
   - Change the name of the sub-folder used to store self-hosted database data.
   - Discover an available network port number, instead of hard-coding the port number.
-  - Experimental use of avahi: The self-hosting postgres instance is advertised via avahi, 
+  - Experimental use of avahi: The self-hosting postgres instance is advertised via avahi,
     but you can't do anything useful with it.
-* Details view: Add a vertical scrollbar, so that the window's minimum height is never too big 
+* Details view: Add a vertical scrollbar, so that the window's minimum height is never too big
   for average screens.
 
 1.3.7 (unstable):
@@ -684,15 +693,15 @@ What's new since Glom 1.2.0:
 1.3.5 (unstable):
 
 * Self-hosting of databases is now possible:
-  - When you create a new database (from scratch, or by opening an example template), 
+  - When you create a new database (from scratch, or by opening an example template),
   you will be asked whether you want to create it locally or on an external database server.
-  If you create it locally then the database data will be contained in a local directory, 
+  If you create it locally then the database data will be contained in a local directory,
   and a separate postgres process will be started to host it.
-  - When you open an existing .glom file, if it was created as self-hosting, then the data 
+  - When you open an existing .glom file, if it was created as self-hosting, then the data
   will be found and hosted automatically.
-  - This is experimental, so please do report bugs. If you start from the terminal then you 
+  - This is experimental, so please do report bugs. If you start from the terminal then you
   should see interesting debug output.
-* Added help documentation for the connection error dialogs, with a link to the web page 
+* Added help documentation for the connection error dialogs, with a link to the web page
   about setting up PostgreSQL.
 
 1.3.4 (unstable):
@@ -706,7 +715,7 @@ What's new since Glom 1.2.0:
 1.3.2 (unstable):
 
 * Developer menu: Add a Script Library.
-  This allows you to add Python modules that can be imported by your buttons scripts 
+  This allows you to add Python modules that can be imported by your buttons scripts
   or field calculations.
 * Avoid relatively rare SQL errors about ambiguous fields and non-existant fields.
 * Start dialog: Attempt to avoid strange line endings.
@@ -715,21 +724,21 @@ What's new since Glom 1.2.0:
 
 1.3.1 (unstable):
 
-* Translations: Add Import and Export buttons, so you can use 
+* Translations: Add Import and Export buttons, so you can use
   the standard .po format. (Johannes Schmid)
-* Connections: Don't bother trying alternative network ports 
+* Connections: Don't bother trying alternative network ports
   after one port was successful. Bug #368787 from Craig Keogh.
 * Find: Prevent SQL Errors when using capital letters in table and field names.
   Bug #375605 from William Manley.
-* Button scripts and calculated fields: Code now uses Python syntax-highlighting 
+* Button scripts and calculated fields: Code now uses Python syntax-highlighting
   colors, using GtkSourceView. (Johannes Schmid, Dodji Seketeli, Murray Cumming)
 * Document:
-  - Store scripts and other multi-line text in XML text nodes, instead 
-  of attributes, to be more compatible with other (non-libxml) XML parsers, 
+  - Store scripts and other multi-line text in XML text nodes, instead
+  of attributes, to be more compatible with other (non-libxml) XML parsers,
   such as Python's minidom.
-  - Store the document format version in the document, warn when saving in 
+  - Store the document format version in the document, warn when saving in
   a new format, and fail to load when the format version is too new.
-* Added --debug-sql commmand-line option, which prints out the generated 
+* Added --debug-sql commmand-line option, which prints out the generated
   SQL commands. (Johannes Schmid, Murray Cumming)
 
 
@@ -737,87 +746,87 @@ What's new since Glom 1.2.0:
 
 New features in Glom 1.2:
 
-* Really remember the last-viewed record on the details view when navigating 
+* Really remember the last-viewed record on the details view when navigating
   between tables.
 * List view: Remember column widths when you resize them manually.
   Bug #358089 from Peter Williams.
 * Related records:
-  - When clicking the open button, show a warning dialog when the related 
-  record indicates a non-existant doubly-related record, making navigation 
+  - When clicking the open button, show a warning dialog when the related
+  record indicates a non-existant doubly-related record, making navigation
   impossible.
-  - Allow navigation to doubly-related records (such as products from 
+  - Allow navigation to doubly-related records (such as products from
   invoice lines on an invoice record), even when only the ID key is shown.
 * Help buttons now work, though more help text is needed.
   (Johannes Schmid and Don Scorgie)
 
 * Developer mode:
-  - Added Add Related Table item to the Tables menu. This is a time-saving 
+  - Added Add Related Table item to the Tables menu. This is a time-saving
     feature to quickly create a related table and a relationship to it,
     and is a first step to implementing further refactoring functionality.
     Bug #355975.
-  - Field definitions: Warn about null values and non-unique values 
+  - Field definitions: Warn about null values and non-unique values
     when setting a primary key.
-  - Related records: Allow the developer to specify to what table the user 
+  - Related records: Allow the developer to specify to what table the user
     will be taken, or use the automatic choice.
-  - List views and related records portals: 
+  - List views and related records portals:
     - Allow image fields in the lists.
     - When no fields are specified, show a hint about editing the layout.
     Bug #354073 from Peter Williams.
   - Python API (Calculated fields and button scripts):
-    Added record.connection and record.table_name attributes, so you can 
+    Added record.connection and record.table_name attributes, so you can
     go wild with SQL with the whole pygda API, if you must.
-    The connection is even open already, you lucky people. 
+    The connection is even open already, you lucky people.
     See http://www.glom.org/wiki/index.php?title=Calculated_Fields_API#Using_the_full_pygda_API
     (Murray Cumming)
-  - Button scripts: Update the view after the script has run, in case it 
+  - Button scripts: Update the view after the script has run, in case it
     changed any data.
-  - Field Formatting: You can now specify a number of text lines to show for 
+  - Field Formatting: You can now specify a number of text lines to show for
     multi-line text. Bug #355907 from Peter Williams.
   - Layout editor dialogs: Added explanatory tooltips to the Add buttons.
-  - Field calculation editor: Prevent translators from translating the 
+  - Field calculation editor: Prevent translators from translating the
     fragment of python code.
 
 Changes since 1.1.7:
 
 * List view: Can now show image fields.
-* Design: Fields: When marking a field as the primary key, avoid crashes 
+* Design: Fields: When marking a field as the primary key, avoid crashes
   and warn about null values and non-unique values in the field.
- 
+
 1.1.7:
 
-* Button scripts: After the script has run, check that the current record 
+* Button scripts: After the script has run, check that the current record
   still exists, and act appropriately.
-* Related records portal: Correct the loading of the specific navigation 
+* Related records portal: Correct the loading of the specific navigation
   details from the document, so it is not lost.
-* Field editing: Fix modality problem with the field details window that 
+* Field editing: Fix modality problem with the field details window that
   stopped it from being used.
 * Register Glom as capable of handling its own MIME type. (Denis Leroy)
 * Make the Help system work, though some more text is still needed.
   Bug #349357
-  (Johannes Schmid, Don Scorgie) 
+  (Johannes Schmid, Don Scorgie)
 
 1.1.6:
 
-* Really remember the last-viewed record on the details view when navigating 
+* Really remember the last-viewed record on the details view when navigating
   between tables.
 * Python API (Calculated fields and button scripts):
-  Added record.connection and record.table_name attributes, so you can 
+  Added record.connection and record.table_name attributes, so you can
   go wild with SQL with the whole pygda API, if you must.
-  The connection is even open already, you lucky people. 
+  The connection is even open already, you lucky people.
   See http://www.glom.org/wiki/index.php?title=Calculated_Fields_API#Using_the_full_pygda_API
   (Murray Cumming)
 * Build fix. (Daniel Holbach)
 
 1.1.5:
 
-* List view: When remembering column widths, allow the columns to be 
+* List view: When remembering column widths, allow the columns to be
   resized smaller again. Bug #358089 from Peter Williams.
 * Related Records:
-  - Avoid a SQL error when showing a doubly-related field without showing 
-  the key field that is used in the relationship. 
-  - Allow the developer to specify to what table the user will be taken 
+  - Avoid a SQL error when showing a doubly-related field without showing
+  the key field that is used in the relationship.
+  - Allow the developer to specify to what table the user will be taken
   when clicking on the row button, or just use the automatic choice.
-* Button scripts: Update the view after the script has run, in case it 
+* Button scripts: Update the view after the script has run, in case it
   changed any data.
 
 1.1.4:
@@ -830,51 +839,51 @@ Changes since 1.1.7:
 
 1.1.3:
 
-* Added Add Related Table item to the Tables menu. This is a time-saving 
+* Added Add Related Table item to the Tables menu. This is a time-saving
   feature to quickly create a related table and a relationship to it,
   and is a first step to implementing further refactoring functionality.
   Bug #355975.
-* Creating from examples: Correct a problem that could lead to Glom not 
+* Creating from examples: Correct a problem that could lead to Glom not
   using all the rows of example data.
 
 1.1.2:
 
 * Related records:
-  - When clicking the open button, show a warning dialog when the related 
-  record indicates a non-existant doubly-related record, making navigation 
+  - When clicking the open button, show a warning dialog when the related
+  record indicates a non-existant doubly-related record, making navigation
   impossible.
-  - Allow navigation to doubly-related records (such as products from 
+  - Allow navigation to doubly-related records (such as products from
   invoice lines on an invoice record), even when only the ID key is shown.
 
 1.1.1:
 
-* Field Formatting: You can now specify a number of text lines to show for 
+* Field Formatting: You can now specify a number of text lines to show for
   multi-line text.
   Bug #355907 from Peter Williams.
 * Layout editor dialogs: Added explanatory tooltips to the Add buttons.
-* List views and related records portals: 
+* List views and related records portals:
   When no fields are specified, show a hint about editing the layout.
   Bug #354073 from Peter Williams.
 * Avoid changing example files when using them to create new files.
-* Field calculation editor: Prevent translators from translating the 
+* Field calculation editor: Prevent translators from translating the
   fragment of python code.
 
 1.0.5:
 
 * Connection dialog: Use mnemonics for accessibility navigation.
   Bug #349357 from Ryan Paul.
-* Details view: Date fields: Really save the new value when selecting dates from 
+* Details view: Date fields: Really save the new value when selecting dates from
   the calendar. Bug #349359. (Johannes Schmid).
 * Design Tables: Allow table names to contain special characters such as -.
   (You will need a newer libgda to allow database names to contain these characters too.)
-* Loading from examples: Handle quoted commas in the example data and reject badly 
+* Loading from examples: Handle quoted commas in the example data and reject badly
   formatted example data.
 * Build:
-  - Added disable-update-mime-database configure option is apparently helpful 
+  - Added disable-update-mime-database configure option is apparently helpful
   for distro packagers. Bug #351989. (Fryderyk Dziarmagowski)
   - Fixed warnings with gcc 4. Bug #344815. (Elijah Newren)
 * Avoid some crashes when dealing with unusual situations. (Murray Cumming)
-* Examples: New examples added: 
+* Examples: New examples added:
   - Music Collection
   - Film Production Manager
   - Project Manager
@@ -886,47 +895,47 @@ Changes since 1.1.7:
 
 1.0.4:
 
-* Related Records: When clicking the details buttons, just show the details, instead 
+* Related Records: When clicking the details buttons, just show the details, instead
   of flicking between details, list, and then details. That was annoying.
 * List View:
-  - When clicking Add, put the cursor in the appropriate column. 
-* Check for uniqueness before setting a value for a unique or primary-key field in the 
+  - When clicking Add, put the cursor in the appropriate column.
+* Check for uniqueness before setting a value for a unique or primary-key field in the
   database.
 * Calculations:
   - Allow the calculations to detect empty non-text fields, via the None object.
-  - Recalculate calculations when a relationship's from key is changed, if that 
+  - Recalculate calculations when a relationship's from key is changed, if that
   relationship is used in the calculation.
-* In the Edit Tables dialog and Field Defintions dialog, do not double-click to open/edit, 
+* In the Edit Tables dialog and Field Defintions dialog, do not double-click to open/edit,
   because this leads to awkwardsness/surprise because single click edits the cells too.
 * Layout: Slight performance and positioning improvements.
   (Murray Cumming)
-* Some more Windows/Cygwin build fixes. (Yselkowitz)  
+* Some more Windows/Cygwin build fixes. (Yselkowitz)
 * Slightly (very slightly) more tango-like application icon. (Murray Cumming)
 
 1.0.3:
 
 * Fields: Prevent crash when adding field in non-English locale.
 * Find:
-  - Fix the [Find] button next to ID fields. It was wrongly saying that there 
+  - Fix the [Find] button next to ID fields. It was wrongly saying that there
   were no results.
   - Really offer a second find when no results are found.
   - Show the busy cursor while finding.
-* Layout: Really save changes of related records portal layouts and of custom 
-  field formatting. 
+* Layout: Really save changes of related records portal layouts and of custom
+  field formatting.
 * Some Windows/Cygwin build fixes.
 
 1.0.2:
 
-* Added a "..." (better suggestions welcome) next to date fields, to 
-  show a calendar dialog. New features like this should not be in the stable 
-  series, but this could help to solve a strange locale bug that someone is 
+* Added a "..." (better suggestions welcome) next to date fields, to
+  show a calendar dialog. New features like this should not be in the stable
+  series, but this could help to solve a strange locale bug that someone is
   experiencing.
 
 1.0.1:
 
 * Correct failure while creating an example for the first time.
   (though it worked when you tried again.)
-* Updated translations: 
+* Updated translations:
   - Finnish (Ilkka Tuohela)
   - Vietnamese (Clytie Siddall)
   - Spanish (Francisco Javier F. Serrador)
@@ -945,39 +954,39 @@ Changes since 1.1.7:
 * Reports:
   * Added Header and Footer parts.
   * Show images.
-  * Tell the user that the report will be opened in the browser, in case the 
+  * Tell the user that the report will be opened in the browser, in case the
     browser is not at the front.
 
 0.9.91
 
-* Creating databases: Make sure that the user is in the developer group, even if he has never 
+* Creating databases: Make sure that the user is in the developer group, even if he has never
   opened an example, allowing him to change his own database.
 * Date fields:
- - Show and parse 4 digits for the year, even if the locale (stftime) stupidly thinks otherwise, 
+ - Show and parse 4 digits for the year, even if the locale (stftime) stupidly thinks otherwise,
    though this need attention from translators in affected locales. Fixed for en_GB (Britain).
    Was not a problem for en_US or de_DE.
 * Details layouts:
- - Fields with choices are no longer insensitive when read-only, so you can now, 
+ - Fields with choices are no longer insensitive when read-only, so you can now,
    for instance, select and copy text out of them, or see what is in their menus.
 
 0.9.9:
 
 * Details layouts:
-  - Added a Notebook layout part, with tabs, so the details can show more information, 
+  - Added a Notebook layout part, with tabs, so the details can show more information,
     such as several related layouts portals.
   - Stop pictures and calculated values from existing records appearing on new empty records.
 * View Layouts and Reports:
-  - Allow doubly-related fields. For instance, Actor::Agent::name on the Details of a 
+  - Allow doubly-related fields. For instance, Actor::Agent::name on the Details of a
     a Character record.
   - Add a Text layout part, for arbitrary text on the Details view, or reports.
 * Reports:
   - Allow top-level fields in reports, for non-grouped-by reports.
-  - Allow use of Group By parts without specified group-by fields, so they 
+  - Allow use of Group By parts without specified group-by fields, so they
     can be (mis)used just to specify a sort field for non-grouped-by records.
-  - Allow Group By parts to be sorted by multiple fields, and allow the sort 
+  - Allow Group By parts to be sorted by multiple fields, and allow the sort
     order (ascending or descending) to be specified.
   - Added Vertical Group report part, for packing more information into a row.
-  - Allow adding of fields as siblings while selecting the field, instead of 
+  - Allow adding of fields as siblings while selecting the field, instead of
     requiring the user to select the parent group.
   - Allow custom formatting of fields.
   - Allow a border width to be specified for the records table cells.
@@ -985,36 +994,36 @@ Changes since 1.1.7:
 
 0.9.8:
 
-* Lookups: Fix intermittent problem that caused looked-up values to 
+* Lookups: Fix intermittent problem that caused looked-up values to
   not be stored in the database.
-* Related Records: Correctly reload portal layouts that use related 
+* Related Records: Correctly reload portal layouts that use related
   (from the related table) fields, rather than just fields in the related table.
 * Performance: Avoid querying for some unnecessary fields on Details view.
 
 0.9.7:
 
-* When creating from a read-only example, really do not mark the saved file 
-  as not an example, and save the new database name, so you can open it 
+* When creating from a read-only example, really do not mark the saved file
+  as not an example, and save the new database name, so you can open it
   again from the saved file.
-* Prevent duplicate table, field, relationship, and report names, 
+* Prevent duplicate table, field, relationship, and report names,
   to prevent crashes.
 * Field Definition:
   - Default Value tab renamed to Value.
-  - Default Values and lookups are now grouped as 
+  - Default Values and lookups are now grouped as
     User Entry and are mutually exclusive with Calculation.
-  - When changing a calculation, all values will be recalculated, 
+  - When changing a calculation, all values will be recalculated,
     with a warning and the chance to cancel.
-  - Fix crash when changing field type to number, when not all 
+  - Fix crash when changing field type to number, when not all
     existing values are valid numbers.
   - Fix crashes when converting from text to boolean.
   - Fix crashes when converting from boolean to number.
   - Preserve information when converting from anything to boolean.
 * Details and List Views: Do not allow editing of calculated fields.
-* Details View: Use the correct formatting for second columns in combo boxes for 
+* Details View: Use the correct formatting for second columns in combo boxes for
   related choices.
-* List View: Do not add a record when clicking on the Edit button on the last row 
+* List View: Do not add a record when clicking on the Edit button on the last row
   - just go to the Details view.
-* List layout: Warn that image fields are not supported on the 
+* List layout: Warn that image fields are not supported on the
   list view yet.
 * Date and Time Parsing improvements.
 * New Translations:
@@ -1026,11 +1035,11 @@ Changes since 1.1.7:
 0.9.6:
 
 * New built-in System Properties relationship:
-  allows you to show fields from the system properties, such as 
+  allows you to show fields from the system properties, such as
   the organisation's name and address, on a layout or report.
-* The Field Layout Properties dialog (right-click on a field in 
-  developer mode to see the menu) now allows you to choose a custom title 
-  for the field for this instance, in case the regular field title is not 
+* The Field Layout Properties dialog (right-click on a field in
+  developer mode to see the menu) now allows you to choose a custom title
+  for the field for this instance, in case the regular field title is not
   appropriate. This is often the case for related fields.
 * Save Field Layout Properties when the dialog closes. (Fixes a regression)
 * Find:
@@ -1044,18 +1053,18 @@ Changes since 1.1.7:
 0.9.5:
 
 * Details Layout:
-  - Add Button layout item, to run arbitrary Python code, with access to 
+  - Add Button layout item, to run arbitrary Python code, with access to
     the record data.
   - Fix bugs that caused the layout changes to be forgotten (regressions).
 * Opening Examples:
-  Do not open the Save As dialog box in the examples directory. 
+  Do not open the Save As dialog box in the examples directory.
   Also see the latest Bakery (2.3.17) for fixes to prevent Save As in read-only paths.
 * Build: Install the logo, for use by the Applications menu.
 
 0.9.4:
 
 * Relationships: Really save new relationships. (Fixes a regression.)
-* Prevent crash when doing a lookup from a field of a different type, or via 
+* Prevent crash when doing a lookup from a field of a different type, or via
   a relationship whose key fields are of different types.
 * Prevent crashes when deleting field or relationships that are used on a layout.
 
@@ -1063,10 +1072,10 @@ Changes since 1.1.7:
 
 * Prevent crashes when using Table or Field names with uppercase characters.
 * Translation:
-  Added Translations menu item to Developer menu. Use this to specify 
-  translated table titles, field titles, layout part titles, report titles, 
+  Added Translations menu item to Developer menu. Use this to specify
+  translated table titles, field titles, layout part titles, report titles,
   etc, to be used when your Glom system is used in that locale.
-* Prevent underscores from being interpreted as navigation markup in table 
+* Prevent underscores from being interpreted as navigation markup in table
   and report titles.
 * Performance improvements.
 * The .desktop file can now be translated.
@@ -1079,17 +1088,17 @@ Changes since 1.1.7:
 0.9.2:
 
 * Examples:
-  - When you open an example you must now always save an editable copy, 
+  - When you open an example you must now always save an editable copy,
   and a new database will always be created on the server.
   - Examples contain example data to fill the new database.
   - Added File / Save As Example feature in developer mode.
 * New files: Create the glom system tables, to avoid the error message.
 * Find:
   Quick Find: Type criteria in this entry to search all text fields.
-  Found Set: The number of found records and number of total records are now 
+  Found Set: The number of found records and number of total records are now
   shown at the bottom right of the window, along with a Find All button.
-* Added File / Export feature, for exporting comma-separated data. 
-* Image fields: Choosing clear from the context menu now really clears 
+* Added File / Export feature, for exporting comma-separated data.
+* Image fields: Choosing clear from the context menu now really clears
   the field in the database.
 * Updated Translations:
   - Canadian English (Adam Weinberger)
@@ -1113,16 +1122,16 @@ Changes since 1.1.7:
 
 0.9.0:
 
-* Remembers last-viewed record and layout: If you view a record, then go 
-  to another table, then come back, the same record will be shown, on the 
+* Remembers last-viewed record and layout: If you view a record, then go
+  to another table, then come back, the same record will be shown, on the
   same layout.
 * Table title is now big and bold.
 * Details view:
-  -  ID fields that identify a unique related record (e.g. a Company ID on 
-  a contacts record) now have a Find button, so you can search for the 
+  -  ID fields that identify a unique related record (e.g. a Company ID on
+  a contacts record) now have a Find button, so you can search for the
   related record, to get the ID.
-  - When deleting a record, you will be asked for confirmation, as the 
-  list view already does. And when deleting the only record, the record 
+  - When deleting a record, you will be asked for confirmation, as the
+  list view already does. And when deleting the only record, the record
   will be blanked instead of still showing the dead record.
 * Find:
   - Really searches for substrings.
@@ -1137,12 +1146,12 @@ Changes since 1.1.7:
 0.8.37:
 
 * List view (and related records lists)
-  - Instead of double-clicking to open record details, you can now click 
+  - Instead of double-clicking to open record details, you can now click
   on the small Open button on each row.
 * Details view:
-  - ID fields that identify a unique related record (e.g. a Company ID on 
-  a contacts record) now have an Open button, so you can go quickly to 
-  the related record. 
+  - ID fields that identify a unique related record (e.g. a Company ID on
+  a contacts record) now have an Open button, so you can go quickly to
+  the related record.
 
 0.8.36:
 
@@ -1153,22 +1162,22 @@ Changes since 1.1.7:
   - Change relationship names on layouts when renaming relationships.
   - Field selection dialog: Now sorted alphabetically.
 * Relationships:
-  - Relationships may now optionally not allow editing of 
+  - Relationships may now optionally not allow editing of
   related fields.
   - Allow more than one relationship to the same table.
 
 0.8.35:
 
-* Tables: New tables have a description and a comments field as 
+* Tables: New tables have a description and a comments field as
   well as the primary key.
 * Details:
   - Related fields, with automatic related-record creation:
-  Really write the new value into the related record, instead of 
+  Really write the new value into the related record, instead of
   just creating the related record.
   - The default layout is now more useful.
-  - Field titles are now visible again when there is only one 
+  - Field titles are now visible again when there is only one
   item in a multi-column group.
-* Relationships: Create a suitable title when adding a 
+* Relationships: Create a suitable title when adding a
   relationship name.
 
 0.8.34:
@@ -1187,44 +1196,44 @@ Changes since 1.1.7:
 
 0.8.32:
 
-* Dates: Allow parsing of, for instance, 11/5/1973 instead of 
+* Dates: Allow parsing of, for instance, 11/5/1973 instead of
   just 11/05/1973.
 * Tables:
   - Prevent crash when removing a table.
   - Update the Tables menu when adding tables.
 * Accept a filename on the command line.
 * Examples:
-  - Add Save As button to the warning about read-only 
+  - Add Save As button to the warning about read-only
   examples.
 
 0.8.31:
 
-* Initial Dialog: Added Open Examples button. The examples 
+* Initial Dialog: Added Open Examples button. The examples
   are now installed.
 * Build fix when using warnings as errors.
 
 0.8.30:
 
-* Field Formatting: Choices from related tables: This was 
+* Field Formatting: Choices from related tables: This was
   broken in 0.8.29.
 * Updated screenshots.
 
 0.8.29:
 
-* Field Definitions: Added default formatting, so you don't 
+* Field Definitions: Added default formatting, so you don't
   have to specify the same formatting repeatedly.
-* Make the .glom document more compact. 
- 
+* Make the .glom document more compact.
+
 0.8.28:
 
-* File/Print works for List view, printing a list of records 
+* File/Print works for List view, printing a list of records
   in the found set.
 * Reports:
-  - The Summary part is now implemented, allowing totals, 
+  - The Summary part is now implemented, allowing totals,
   averages, and counts.
-  - Group By parts may now show extra "secondary" 
-  fields, in addition to the field by which the records are 
-  grouped. 
+  - Group By parts may now show extra "secondary"
+  fields, in addition to the field by which the records are
+  grouped.
 * Translations updated:
   - Spanish (Francisco Javier F. Serrador)
   - Czech (Miloslav Trmac)
@@ -1233,19 +1242,19 @@ Changes since 1.1.7:
 
 0.8.27:
 
-* Simpler Tables menu replaces the Navigation/Tables 
+* Simpler Tables menu replaces the Navigation/Tables
   dialog window.
-* Added simple reports functionality, via the Reports 
+* Added simple reports functionality, via the Reports
   menu.
 
 0.8.26:
 
-* For new databases, really allow the developer to create 
-  and edit records. This has probably been broken since 
+* For new databases, really allow the developer to create
+  and edit records. This has probably been broken since
   the user administration was added.
-* Added Developer/Database Preferences menu item, where 
-  you can enter global values for the system name, 
-  organisation details, and specify next values for 
+* Added Developer/Database Preferences menu item, where
+  you can enter global values for the system name,
+  organisation details, and specify next values for
   auto-incremented fields.
 * Show the system name at the top of the window.
 * Find mode: Works again.
@@ -1253,49 +1262,49 @@ Changes since 1.1.7:
 
 0.8.25:
 
-* Details: Use a bigger widget (TextView) with scrollbars 
+* Details: Use a bigger widget (TextView) with scrollbars
   for multiline text fields.
 * Details and List: Right-align numbers.
-* Calculated fields: Do the calculations in the correct 
+* Calculated fields: Do the calculations in the correct
   order of their dependencies.
-  
+
 0.8.24:
 
-* Remove debug code that hardcoded one file path, 
+* Remove debug code that hardcoded one file path,
   so you can open any file.
 
 0.8.23:
 
 * Details and List:
   - Allow a drop-down list of choices for a field.
-    Either a custom list, such as Mr, Ms, Mrs, Miss, 
-    or a list of related records, such as a list of 
-    product codes. This is demonstrated in the 
+    Either a custom list, such as Mr, Ms, Mrs, Miss,
+    or a list of related records, such as a list of
+    product codes. This is demonstrated in the
     example, in the Invoices table.
 - Details layout: Fields are now editable by default.
-* Fixed various leaks and crashes, improved 
+* Fixed various leaks and crashes, improved
   performance, and simplified the code some more.
 
 0.8.22:
 
 * Field Definitions:
   - Do not save empty default values as "NULL" or 0.
-  - Prevent crash when opening Field details a second 
+  - Prevent crash when opening Field details a second
     time.
   - Allow saving when the default value changes.
   - Calculated fields:
     - Simplified python API.
-    - Aggregate calculations (sum, count, max, min) 
+    - Aggregate calculations (sum, count, max, min)
       on related records.
-    - Calculated fields may use the results of 
+    - Calculated fields may use the results of
       other calculated fields.
     - Do not lose digits after decimal points.
     (Demonstrated in the Invoice table in the example.)
 * List:
-  - Really do lookups and recalculations when 
+  - Really do lookups and recalculations when
   adding new records.
 * Details:
-  - Related records: Only show related records, not 
+  - Related records: Only show related records, not
     all records.
 * g++ 3.4 build fixes.
 * Translations:
@@ -1304,30 +1313,30 @@ Changes since 1.1.7:
 
 0.8.21:
 
-* Calculated Fields: Your python function can now use 
-  the record's other field values. This requires 
+* Calculated Fields: Your python function can now use
+  the record's other field values. This requires
   the python libgda bindings in gnome-python-extras 2.11.
-* List: Do lookups, and refresh related fields, when 
-  adding new records, not only when changing existing 
+* List: Do lookups, and refresh related fields, when
+  adding new records, not only when changing existing
   records.
-* Details and Lists Layout: Field formatting is now in a 
+* Details and Lists Layout: Field formatting is now in a
   separate dialog window.
 * Boring Internals:
-  - The List view's TreeModel now gets the data from the 
-  database dynamically on-demand, though it probably 
-  needs some more work to do that as efficiently as 
+  - The List view's TreeModel now gets the data from the
+  database dynamically on-demand, though it probably
+  needs some more work to do that as efficiently as
   possible.
   - Now depends on pygtk and gnome-python-extras/libgda.
 * Translations:
   Updated: Candadian English (Adam Weinberger),
-  German (Hendrik Brandt), Czech (Miloslav Trmac) 
+  German (Hendrik Brandt), Czech (Miloslav Trmac)
 
 0.8.20:
 
 * Fix the boost::python build problem.
-* Added highly experimental File/Print menu item. It 
-  does stuff in the Details view. It should open some 
-  HTML in your browser. glom installs an XSLT file 
+* Added highly experimental File/Print menu item. It
+  does stuff in the Details view. It should open some
+  HTML in your browser. glom installs an XSLT file
   used to create the HTML, so feel free to improve it.
 * Translations: Added Kinyarwanda translation. (Steve Murphy)
 
@@ -1336,7 +1345,7 @@ Changes since 1.1.7:
 * List and Details: When defining the layout, developers
   can specify numeric formatting, such as decimal places,
   and currency symbols.
-* Details: Related Records now use all available layout 
+* Details: Related Records now use all available layout
   width, instead of having a fixed width.
   (Murray Cumming)
 * Translations:
@@ -1349,32 +1358,32 @@ Changes since 1.1.7:
 
 0.8.18:
 
-* The binary will be installed, fixing the problem in 
+* The binary will be installed, fixing the problem in
   0.8.17. Sorry.
 
 0.8.17:
 
-* User/Groups Administration: 
-  Choosing the Developer/Users menu now allows you to 
-  create groups and specify view/edit/create/delete 
+* User/Groups Administration:
+  Choosing the Developer/Users menu now allows you to
+  create groups and specify view/edit/create/delete
   access rights for each table for each group.
-* Developer mode: Now only possible for users who are in 
+* Developer mode: Now only possible for users who are in
   the developer group.
 * Details view: You can now right-click on a field to add
   a field, group, or related records.
-* Ignore pga_* tables created by pgadmin. 
+* Ignore pga_* tables created by pgadmin.
 
 0.8.16:
 
 * Relationships:
-  -  Allow the developer to specify whether related records 
+  -  Allow the developer to specify whether related records
   should be created automatically.
   - Do not clear the To Field column when the user clicks on it.
 * Details/List views:
   - Automatic creation of related records:
-  When you enter a value in a related field, when their is 
-  not yet a key value to identify the related record, a 
-  record can be create automatically, and the key value 
+  When you enter a value in a related field, when their is
+  not yet a key value to identify the related record, a
+  record can be create automatically, and the key value
   will be filled in for you.
   - Developers may set fields on the layout as non-editable.
 
@@ -1383,10 +1392,10 @@ Changes since 1.1.7:
 
 * Related Fields:
   Details and List views can now show fields from related records.
-  Just choose the relationship when you choose the field on 
+  Just choose the relationship when you choose the field on
   the layout. This even works in Related Records portals.
 * Non-editable fields:
-  When choosing a field for a layout, you can specify whether 
+  When choosing a field for a layout, you can specify whether
   editing of the field should be allowed.
 * Dialogs are more HIG-compliant, using secondary text.
 * Now requires gtkmm 2.6 instead of 2.4.
@@ -1400,23 +1409,23 @@ Changes since 1.1.7:
 0.8.13:
 
 * Details:
-  - Related Records now work, including automatic addition of new 
+  - Related Records now work, including automatic addition of new
     related records.
-  - In developer mode, you can right-click on fields to choose a 
+  - In developer mode, you can right-click on fields to choose a
     different field.
-  - In developer mode, you can right-click on related records to 
+  - In developer mode, you can right-click on related records to
     choose a different relationship and choose the fields to show.
   - Groups may now contain the same field more than once.
-* Details and List: Automatically-generated primary keys do not 
+* Details and List: Automatically-generated primary keys do not
   need to be displayed.
-* List: Avoid GTK+ warning when clicking on empty space in the 
+* List: Avoid GTK+ warning when clicking on empty space in the
   TreeView.
 * Example:
   - Make some fields lookup their data from relationships:
     Invoice Lines gets product information from the products table,
     and Invoices looksup the customer name from the contacts table.
-  - Warn if people recreate a database on the server from a 
-    read-only example file, because they will probably want to 
+  - Warn if people recreate a database on the server from a
+    read-only example file, because they will probably want to
     change things.
 
 0.8.12:
@@ -1427,23 +1436,23 @@ Changes since 1.1.7:
 * Obscure internals:
   - Use a custom GdaValue-based treemodel for the List view,
     allowing us to get data on-demand in future.
- 
+
 0.8.11:
 
 * Postgres connection:
-  - Connect to the template1 database when creating new databases, 
+  - Connect to the template1 database when creating new databases,
     because recent (?) versions of postgres require this.
   - Don't ignore the host name.
-  - Added postgres_setup.txt and a non-libgda test to help 
+  - Added postgres_setup.txt and a non-libgda test to help
     investigate connection problems.
   - Share connections more, without re-connecting, to increase speed.
 * List Layout:
-  - Fix bug that prevented data entry of fields that have 
+  - Fix bug that prevented data entry of fields that have
     human-readable titles.
 * Layout Design:
   - Fix loss of layout groups when loading.
-  - Allow adding of related records (half-finished) in the 
-    middle of the layout, and no longer show them automatically 
+  - Allow adding of related records (half-finished) in the
+    middle of the layout, and no longer show them automatically
     in a notebook.
     (It's really time to make this feel like glade.)
 * Navigation:
@@ -1462,26 +1471,26 @@ Changes since 1.1.7:
 * Offer to create databases on the server based on documents,
   such as examples.
 * Don't display empty dates, times, and numbers as "NULL".
-* Specify empty dates and times to server in SQL as "NULL", not 
+* Specify empty dates and times to server in SQL as "NULL", not
   as empty strings.
-* Dialogs have default buttons. 
+* Dialogs have default buttons.
 * Avoided a few crashes.
 
 0.8.9:
 
 * Really save details of new tables in the document.
-* Create the tables inside the specified database, instead of 
+* Create the tables inside the specified database, instead of
   putting them all in the user's default postgress database.
-* Enforce one database per document - ask for a new database name 
-  when creating a new document instead of allowing the user 
+* Enforce one database per document - ask for a new database name
+  when creating a new document instead of allowing the user
   to choose an existing database.
-* When there is still only one table, open it without asking the 
+* When there is still only one table, open it without asking the
   user to choose a table, as if it is the default table.
-* Show the database title in the window title bar, instead of 
+* Show the database title in the window title bar, instead of
   the filename.
 (Murray Cumming)
 * Fix an internationalization build problem. (Mike Castle)
-* Added translations: 
+* Added translations:
   - Gujarati (Ankit Patel)
   - Punjabi (Amanpreet Singh Alam)
   - Spanish (Francisco Javier F. Serrador)
@@ -1489,10 +1498,10 @@ Changes since 1.1.7:
 
 0.8.8:
 
-* Details Layout: Simpler, hierarchical layout. This allows 
-  more complex layouts, and allows fields to appear more than 
+* Details Layout: Simpler, hierarchical layout. This allows
+  more complex layouts, and allows fields to appear more than
   once on the same layout.
-* Documentation: Added user manual, though it looks a 
+* Documentation: Added user manual, though it looks a
   bit strange in yelp at the moment.
 * Relationships:
   - Avoid crash when fields of differerent types are used in
@@ -1512,16 +1521,16 @@ Changes since 1.1.7:
   - Fix crash when changing user level, with related records.
 (Murray Cumming)
 * Added Albanian translation. (Laurent Dhima)
-  
+
 0.8.6:
 
 * Creating new documents works again.
-* Auto-save documents, when in developer mode, 
+* Auto-save documents, when in developer mode,
   instead of asking.
 * Navigation:
   - Database: Default to the linux user name.
   - Tables: Show the hidden status correctly.
-* MIME type registration: Use both old and new system, 
+* MIME type registration: Use both old and new system,
   as needed by GNOME 2.6.
 * Allow a file to be specified on the command line.
 * Removed useless toolbar.
@@ -1533,7 +1542,7 @@ Changes since 1.1.7:
 * Data Details: Editing works again.
 * Find mode now works, though it's simple.
 * Edit buttons are now stock Open buttons.
-* Renaming of tables: The new names are stored in the 
+* Renaming of tables: The new names are stored in the
   document so you can rename again, and use the renamed table.
   (Murray Cumming)
 
@@ -1541,7 +1550,7 @@ Changes since 1.1.7:
 
 * Connection dialog: The connect button is now activated when you press return in the password entry.
 * Data Details: Groups of fields are now shown together in a HIG-style frame.
-* Design: field, table, and layout group titles now have defaults, by replacing white space and 
+* Design: field, table, and layout group titles now have defaults, by replacing white space and
   capitalizing.
 * Some build improvements.
   (Murray Cumming)
@@ -1559,9 +1568,9 @@ Changes since 1.1.7:
 0.8.2:
 
 * Navigation / Tables : Fixed focus bug when adding tables.
-* Fields can lookup their values from a field in 
+* Fields can lookup their values from a field in
   another table via a relationship.
-* When a table is marked as the default then it will be 
+* When a table is marked as the default then it will be
   opened automatically when the database is opened.
 * Tables can now be renamed.
 * List and Data views: Auto-increment fields are non-editable.
@@ -1570,15 +1579,15 @@ Changes since 1.1.7:
 (Murray Cumming)
 * Czech translation. (Miloslav Trmac)
 * Dutch translation. (Tino Meinen)
-  
+
 
 0.8.1:
 
-* Details and List views: Dates, times, and numbers are now displayed 
+* Details and List views: Dates, times, and numbers are now displayed
   and parsed according to the current locale.
   (Murray Cumming, Daniel Elstner)
 * Removed Design Mode - Added items to the Developer menu instead.
-* Details view: The entry widgets for Date, time, and number fields now 
+* Details view: The entry widgets for Date, time, and number fields now
   have more suitable widths, so it looks nicer.
 * User Level is now per-document (or per-instance) instead of per-application.
 * The User Level is forced to Operator if the document is read-only.
@@ -1600,7 +1609,7 @@ Changes since 1.1.7:
 * Glom can no longer be used with database tables that it did not create.
 * Now uses only a small set of simple field types.
 * Added "User Level" - normal operators do not see design functionality.
-  User Levels are bad, but this seems to be the only way to present the 
+  User Levels are bad, but this seems to be the only way to present the
   design functionality next to the stuff being designed.
 * Allows simple layout of List and Details views. (grouping in the Details view is not yet fully implemented)
 * Saves all field information in the document.

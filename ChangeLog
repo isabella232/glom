@@ -1,3 +1,5 @@
+1.13.5:
+
 2010-02-08  Peter Penz <ppenz@openismus.com>
 
 	libglom: Fix build issue for Maemo.
