@@ -345,12 +345,43 @@ Glib::ustring Document::get_name() const
   return util_file_uri_get_name(m_file_uri, m_file_extension);
 }
 
+//Note that Glib::filename_display_basename() shows %20 for spaces so it isn't very useful.
+static Glib::ustring get_file_display_name(const Glib::ustring& uri)
+{
+  Glib::ustring result;
+  
+  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
+  Glib::RefPtr<const Gio::FileInfo> file_info;
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    file_info = file->query_info(G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << "App_Glom::get_file_display_name(): error: " << ex.what() << std::endl;
+    return result;
+  }
+#else
+  std::auto_ptr<Gio::Error> error;
+  file_info = uri->query_info(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE, Gio::FILE_QUERY_INFO_NONE, error);
+  if(error.get())
+    return result;
+#endif
+
+  if(!file_info)
+    return result;
+ 
+  return file_info->get_display_name();   
+}
+
 Glib::ustring Document::util_file_uri_get_name(const Glib::ustring& file_uri, const Glib::ustring& file_extension)
 {
-  Glib::ustring strResult = Glib::filename_display_basename(file_uri);
+  Glib::ustring strResult = get_file_display_name(file_uri);
 
   //Remove the file extension:
-  //TODO: Maybe filename_display_basename() should do this.
+  //TODO: Maybe g_filename_display_basename() and g_file_info_get_display_name() should do this.
   if(!strResult.empty() && !file_extension.empty())
   {
     const Glib::ustring strExt = '.' + file_extension;

@@ -1,3 +1,13 @@
+2010-02-22  Murray Cumming  <murrayc@murrayc.com>
+
+  Avoid showing %20 in the window title.
+  
+  * glom/libglom/document/bakery/document.cc: get_name():
+  Use Gio::FileInfo::get_display_name() instead of 
+	Glib::filename_display_basename() or Glib::filename_display_name(), to avoid 
+	showing %20 in the window title bar when there are spaces in the file name.
+	Noticed by Daniel Borgmann.
+
 1.13.5:
 
 2010-02-08  Peter Penz <ppenz@openismus.com>
