@@ -1,10 +1,31 @@
+2010-02-25  Murray Cumming  <murrayc@murrayc.com>
+
+	Python functions: Allow setting of values in the record via [].
+
+	* glom/python_embed/python_module/py_glom_module.cc: Specify a setitem(),
+	so python code can use [] syntax to set the record's field values as
+	well as getting them.
+	* glom/libglom/python_embed/py_glom_record.[h|cc]:
+	PyGlomRecord_SetFields(): Take and store the primary key details and value,
+	and use it in setitem() to UPDATE the value in the database.
+	* glom/python_embed/glom_python.[h|cc]:
+	glom_execute_python_function_implementation(),
+	glom_evaluate_python_function_implementation():
+	Take the primary key field and value.
+	* glom/base_db.cc:
+	* glom/base_db_table_data.cc:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_design/fields/dialog_fieldcalculation.cc:
+	* glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.cc:
+	Adapted.
+
 2010-02-22  Murray Cumming  <murrayc@murrayc.com>
 
-  Avoid showing %20 in the window title.
-  
-  * glom/libglom/document/bakery/document.cc: get_name():
-  Use Gio::FileInfo::get_display_name() instead of 
-	Glib::filename_display_basename() or Glib::filename_display_name(), to avoid 
+	Avoid showing %20 in the window title.
+
+	* glom/libglom/document/bakery/document.cc: get_name():
+	Use Gio::FileInfo::get_display_name() instead of
+	Glib::filename_display_basename() or Glib::filename_display_name(), to avoid
 	showing %20 in the window title bar when there are spaces in the file name.
 	Noticed by Daniel Borgmann.
 

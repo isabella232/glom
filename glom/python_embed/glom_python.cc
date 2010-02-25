@@ -165,13 +165,28 @@ bool gda_python_module_is_available()
 
 
 
-void glom_execute_python_function_implementation(const Glib::ustring& func_impl, const type_map_fields& field_values, Document* pDocument, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
+void glom_execute_python_function_implementation(const Glib::ustring& func_impl,
+  const type_map_fields& field_values,
+  Document* pDocument,
+  const Glib::ustring& table_name,
+  const sharedptr<const Field>& key_field,
+  const Gnome::Gda::Value& key_field_value,
+  const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
 {
-  glom_evaluate_python_function_implementation(Field::TYPE_TEXT, func_impl, field_values, pDocument, table_name, opened_connection);
+  glom_evaluate_python_function_implementation(Field::TYPE_TEXT, func_impl,
+     field_values, pDocument,
+     table_name, key_field, key_field_value,
+     opened_connection);
 }
 
-Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type, const Glib::ustring& func_impl,
-    const type_map_fields& field_values, Document* pDocument, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
+Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type,
+  const Glib::ustring& func_impl,
+  const type_map_fields& field_values,
+  Document* pDocument,
+  const Glib::ustring& table_name,
+  const sharedptr<const Field>& key_field,
+  const Gnome::Gda::Value& key_field_value,
+  const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
 {
   //std::cout << "glom_evaluate_python_function_implementation()" << std::endl;
   //for(type_map_fields::const_iterator iter = field_values.begin(); iter != field_values.end(); ++iter)
@@ -337,7 +352,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
     if(pParam)
     {
       //Fill the record's details:
-      PyGlomRecord_SetFields(pParam, field_values, pDocument, table_name, opened_connection);
+      PyGlomRecord_SetFields(pParam, field_values, pDocument, table_name, key_field, key_field_value, opened_connection);
 
       //Call the function with this parameter:
        boost::python::object pyResultCpp;

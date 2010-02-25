@@ -54,7 +54,7 @@ long PyGlomRelatedRecord::len() const
 boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& cppitem)
 {
   const std::string field_name = boost::python::extract<std::string>(cppitem);
- 
+
   PyGlomRelatedRecord::type_map_field_values::const_iterator iterFind = m_map_field_values.find(field_name);
   if(iterFind != m_map_field_values.end())
   {
@@ -67,7 +67,7 @@ boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& 
 
     //Check whether the field exists in the table.
     //TODO_Performance: Do this without the useless Field information?
-    sharedptr<Field> field = m_document->get_field(m_relationship->get_to_table(), field_name);
+    sharedptr<const Field> field = m_document->get_field(m_relationship->get_to_table(), field_name);
     if(!field)
       g_warning("RelatedRecord_tp_as_mapping_getitem: field %s not found in table %s", field_name.c_str(), m_relationship->get_to_table().c_str());
     else
@@ -90,7 +90,7 @@ boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& 
         //Do not try to get a value based on a null key value:
         if(m_from_key_value_sqlized.empty())
           return boost::python::object();
-       
+
         //Get the single value from the related records:
         const Glib::ustring sql_query = "SELECT \"" + related_table + "\".\"" + field_name + "\" FROM \"" + related_table + "\""
           + " WHERE \"" + related_table + "\".\"" + related_key_name + "\" = " + m_from_key_value_sqlized;
@@ -119,11 +119,11 @@ boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& 
 #endif
         if(datamodel && datamodel->get_n_rows())
         {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED            
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
           Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
 #else
           Gnome::Gda::Value value = datamodel->get_value_at(0, 0, error);
-#endif                            
+#endif
           //g_warning("RelatedRecord_tp_as_mapping_getitem(): value from datamodel = %s", value.to_string().c_str());
 
           //Cache it, in case it's asked-for again.
@@ -176,7 +176,7 @@ boost::python::object PyGlomRelatedRecord::generic_aggregate(const std::string& 
     g_warning("RelatedRecord_sum: no connection.");
     return boost::python::object();
   }
-  
+
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
 
   const Glib::ustring related_key_name = m_relationship->get_to_field();
@@ -186,11 +186,11 @@ boost::python::object PyGlomRelatedRecord::generic_aggregate(const std::string& 
   {
     return boost::python::object();
   }
-       
+
   //Get the aggregate value from the related records:
   const Glib::ustring sql_query = "SELECT " + aggregate + "(\"" + related_table + "\".\"" + field_name + "\") FROM \"" + related_table + "\""
     + " WHERE \"" + related_table + "\".\"" + related_key_name + "\" = " + m_from_key_value_sqlized;
-        
+
   //std::cout << "PyGlomRelatedRecord: Executing:  " << sql_query << std::endl;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->statement_execute_select(sql_query);
@@ -203,11 +203,11 @@ boost::python::object PyGlomRelatedRecord::generic_aggregate(const std::string& 
 #endif
   if(datamodel && datamodel->get_n_rows())
   {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED        
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
 #else
     Gnome::Gda::Value value = datamodel->get_value_at(0, 0, error);
-#endif          
+#endif
     //g_warning("RelatedRecord_generic_aggregate(): value from datamodel = %s", value.to_string().c_str());
 
     //Cache it, in case it's asked-for again.
@@ -258,5 +258,3 @@ void PyGlomRelatedRecord_SetRelationship(PyGlomRelatedRecord* self, const shared
 }
 
 } //namespace Glom
-
-

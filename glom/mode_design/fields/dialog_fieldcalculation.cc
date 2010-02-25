@@ -98,7 +98,7 @@ bool Dialog_FieldCalculation::check_for_return_statement(const Glib::ustring& ca
      Frame_Glom::show_ok_dialog(_("Calculation Error"), _("The calculation does not have a return statement."), *this);
      return false;
   }
-  
+
   return true;
 }
 
@@ -125,8 +125,14 @@ void Dialog_FieldCalculation::on_button_test()
   //We need the connection when we run the script, so that the script may use it.
   sharedptr<SharedConnection> sharedconnection = connect_to_server(this /* parent window */);
 
-  const Gnome::Gda::Value value = glom_evaluate_python_function_implementation(Field::TYPE_TEXT, calculation, field_values, //TODO: Maybe use the field's type here.
-    document, m_table_name, sharedconnection->get_gda_connection());
+  const Gnome::Gda::Value value = glom_evaluate_python_function_implementation(
+    Field::TYPE_TEXT,
+    calculation,
+    field_values, //TODO: Maybe use the field's type here.
+    document,
+    m_table_name,
+    sharedptr<Field>(), Gnome::Gda::Value(), // primary key - only used when setting values in the DB.
+    sharedconnection->get_gda_connection());
 
   Frame_Glom::show_ok_dialog(_("Calculation result"), _("The result of the calculation is:\n") + value.to_string(), *this);
 
@@ -155,6 +161,3 @@ void Dialog_FieldCalculation::on_button_test()
 }
 
 } //namespace Glom
-
-
-

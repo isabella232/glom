@@ -48,12 +48,13 @@ public:
   //[] notation:
   long len() const;
   boost::python::object getitem(const boost::python::object& item);
+  void setitem(const boost::python::object& /* key */, const boost::python::object& /* value */);
 
 public:
-  //PyObject* m_fields_dict; //Dictionary (map) of field names (string) to field values (Gnome::Gda::Value).
-  //PyGObject* m_py_gda_connection; //"derived" from PyObject.
   Document* m_document;
   Glib::ustring m_table_name;
+  sharedptr<const Field> m_key_field;
+  Gnome::Gda::Value m_key_field_value;
 
   boost::python::object m_related; //Actually a PyGlomRelated
 
@@ -64,7 +65,13 @@ public:
   Glib::RefPtr<Gnome::Gda::Connection> m_connection;
 };
 
-void PyGlomRecord_SetFields(PyGlomRecord* self, const PyGlomRecord::type_map_field_values& field_values, Document* document, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection);
+void PyGlomRecord_SetFields(PyGlomRecord* self,
+  const PyGlomRecord::type_map_field_values& field_values,
+  Document* document,
+  const Glib::ustring& table_name,
+  const sharedptr<const Field>& key_field,
+  const Gnome::Gda::Value& key_field_value,
+  const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection);
 
 } //namespace Glom
 

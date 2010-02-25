@@ -275,7 +275,7 @@ Document::type_list_layout_groups Box_Data::get_data_layout_groups(const Glib::u
 }
 
 void Box_Data::fill_layout_group_field_info(const sharedptr<LayoutGroup>& group, const Privileges& table_privs)
-{ 
+{
   if(!group)
    return;
 
@@ -352,7 +352,8 @@ Glib::ustring Box_Data::get_layout_name() const
 
 void Box_Data::execute_button_script(const sharedptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key_value)
 {
-  const type_map_fields field_values = get_record_field_values_for_calculation(m_table_name, get_field_primary_key(), primary_key_value);
+  const sharedptr<Field> field_primary_key = get_field_primary_key();
+  const type_map_fields field_values = get_record_field_values_for_calculation(m_table_name, field_primary_key, primary_key_value);
 
   //We need the connection when we run the script, so that the script may use it.
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -364,8 +365,11 @@ void Box_Data::execute_button_script(const sharedptr<const LayoutItem_Button>& l
   {
 #endif // GLIBMM_EXCEPTIONS_ENABLED
 
-    glom_execute_python_function_implementation(layout_item->get_script(), field_values, //TODO: Maybe use the field's type here.
-      get_document(), get_table_name(), sharedconnection->get_gda_connection());
+    glom_execute_python_function_implementation(layout_item->get_script(),
+      field_values, //TODO: Maybe use the field's type here.
+      get_document(),
+      get_table_name(), field_primary_key, primary_key_value,
+      sharedconnection->get_gda_connection());
 #ifndef GLIBMM_EXCEPTIONS_ENABLED
   }
 #endif // !GLIBMM_EXCEPTIONS_ENABLED

@@ -38,6 +38,7 @@ BOOST_PYTHON_MODULE(glom_1_14)
     .add_property("related", &PyGlomRecord::get_related)
 
     .def("__getitem__", &PyGlomRecord::getitem)
+    .def("__setitem__", &PyGlomRecord::setitem)
     .def("__len__", &PyGlomRecord::len)
   ;
 

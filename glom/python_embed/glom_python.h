@@ -28,22 +28,34 @@
 namespace Glom
 {
 
-/** Check that Python can really import the Glom module, 
+/** Check that Python can really import the Glom module,
  * as a runtime sanity check.
  */
 bool glom_python_module_is_available();
 
-/** Check that Python can really import the gda module, 
+/** Check that Python can really import the gda module,
  * as a runtime sanity check.
  */
 bool gda_python_module_is_available();
 
 typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_fields;
 
-void glom_execute_python_function_implementation(const Glib::ustring& func_impl, const type_map_fields& field_values, Document* pDocument, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection);
+void glom_execute_python_function_implementation(const Glib::ustring& func_impl,
+  const type_map_fields& field_values,
+  Document* pDocument,
+  const Glib::ustring& table_name,
+  const sharedptr<const Field>& key_field,
+  const Gnome::Gda::Value& key_field_value,
+  const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection);
 
-Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type, const Glib::ustring& func_impl,
-  const type_map_fields& field_values, Document* pDocument, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection);
+Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type,
+  const Glib::ustring& func_impl,
+  const type_map_fields& field_values,
+  Document* pDocument,
+  const Glib::ustring& table_name,
+  const sharedptr<const Field>& key_field,
+  const Gnome::Gda::Value& key_field_value,
+  const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection);
 
 } //namespace Glom
 

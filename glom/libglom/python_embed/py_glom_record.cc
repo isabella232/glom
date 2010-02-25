@@ -27,6 +27,7 @@
 #include <libglom/python_embed/py_glom_record.h>
 #include <libglom/python_embed/py_glom_related.h>
 #include <libglom/python_embed/pygdavalue_conversions.h> //For pygda_value_as_pyobject().
+#include <libglom/data_structure/glomconversions.h>
 
 #include <libglom/data_structure/field.h>
 #include <glibmm/ustring.h>
@@ -52,15 +53,15 @@ std::string PyGlomRecord::get_table_name() const
 boost::python::object PyGlomRecord::get_connection()
 {
   boost::python::object result;
-  
+
   if(m_connection)
   {
-    //Ask pygobject to create a PyObject* that wraps our GObject, 
+    //Ask pygobject to create a PyObject* that wraps our GObject,
     //presumably using something from pygda:
     PyObject* cobject = pygobject_new( G_OBJECT(m_connection->gobj()) );
     result = boost::python::object( boost::python::borrowed(cobject) );
   }
-  
+
   return result;
 }
 
@@ -101,24 +102,144 @@ long PyGlomRecord::len() const
 boost::python::object PyGlomRecord::getitem(const boost::python::object& cppitem)
 {
   const std::string key = boost::python::extract<std::string>(cppitem);
-    
+
   PyGlomRecord::type_map_field_values::const_iterator iterFind = m_map_field_values.find(key);
   if(iterFind != m_map_field_values.end())
   {
     return glom_pygda_value_as_boost_pyobject(iterFind->second);
   }
 
-  return boost::python::object();   
+  return boost::python::object();
 }
 
-void PyGlomRecord_SetFields(PyGlomRecord* self, const PyGlomRecord::type_map_field_values& field_values, Document* document, const Glib::ustring& table_name, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
+//TODO: Stop this from being used in field calculations, by making the record somehow read-only.
+void PyGlomRecord::setitem(const boost::python::object& key, const boost::python::object& value)
+{
+  //Get the specificd field name (and details) and value:
+
+  std::string field_name;
+  boost::python::extract<std::string> extractor(key);
+  if(extractor.check())
+    field_name = extractor;
+
+  sharedptr<const Field> field = m_document->get_field(m_table_name, field_name);
+  if(!field)
+  {
+     std::cerr << "PyGlomRecord::setitem(): field=" << field_name << " not found in table=" << m_table_name << std::endl;
+     //TODO: Throw python exception.
+     return;
+  }
+
+  const Field::glom_field_type field_type = field->get_glom_type(); //TODO
+
+  Gnome::Gda::Value field_value;
+  GValue value_c = {0, {{0}}};
+  bool test = glom_pygda_value_from_pyobject(&value_c, value);
+  if(test && G_IS_VALUE(&value))
+  {
+    field_value = Gnome::Gda::Value(&value_c);
+
+    //Make sure that the value is of the expected Gda type:
+    field_value = Conversions::convert_value(field_value, field_type);
+
+    g_value_unset(&value_c);
+  }
+  else
+    field_value = Conversions::get_empty_value(field_type);
+
+  //std::cout << "debug: PyGlomRecord::setitem(): field_name=" << field_name << ", field_type=" << field_type << ", field_value=" << field_value.to_string() << std::endl;
+
+
+  //Set the value in the database:
+  if(!m_key_field || Conversions::value_is_empty(m_key_field_value))
+  {
+    std::cerr << "PyGlomRecord::setitem(): The primary key name and value is not set. This would be a Glom bug." << std::endl;
+    return;
+  }
+
+  if(!m_connection)
+  {
+    std::cerr << "PyGlomRecord::setitem(): The connection is null. This would be a Glom bug." << std::endl;
+    return;
+  }
+
+  Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
+  params->add_holder(field->get_holder(field_value));
+  params->add_holder(m_key_field->get_holder(m_key_field_value));
+
+  Glib::ustring strQuery = "UPDATE \"" + m_table_name + "\"";
+  strQuery += " SET \"" + field->get_name() + "\" = " + field->get_gda_holder_string();
+  strQuery += " WHERE \"" + m_key_field->get_name() + "\" = " + m_key_field->get_gda_holder_string();
+
+  bool updated = false;
+  Glib::RefPtr<Gnome::Gda::Statement> stmt;
+  try
+  {
+    Glib::RefPtr<Gnome::Gda::SqlParser> parser = m_connection->create_parser();
+    stmt = parser->parse_string(strQuery);
+
+  }
+  catch(const Glib::Exception& ex)
+  {
+    std::cerr << "PyGlomRecord::setitem(): exception while parsing query: " << ex.what() << std::endl;
+  }
+  catch(const std::exception& ex)
+  {
+    std::cerr << "PyGlomRecord::setitem(): exception while parsing query: " << ex.what() << std::endl;
+  }
+
+  if(stmt)
+  {
+    try
+    {
+      updated = m_connection->statement_execute_non_select(stmt, params);
+    }
+    catch(const Glib::Exception& ex)
+    {
+      std::cerr << "PyGlomRecord::setitem(): exception while executing query: " << ex.what() << std::endl;
+    }
+    catch(const std::exception& ex)
+    {
+      std::cerr << "PyGlomRecord::setitem(): exception while executing query: " << ex.what() << std::endl;
+    }
+  }
+
+  if(!updated)
+  {
+    Glib::ustring failed_query;
+
+    std::cerr << "PyGlomRecord::setitem(): UPDATE failed." << std::endl;
+    /*
+    if(stmt)
+      failed_query = stmt->to_sql(params); //this throws too.
+    else
+      failed_query = strQuery;
+
+    try
+    {
+      std::cerr << "  with SQL query: " << failed_query << std::endl;
+    }
+    catch(const Glib::Exception& ex)
+    {
+      std::cerr << "  query string could not be converted to std::cerr" << std::endl;
+    }
+    */
+
+  }
+
+  //TODO: Do dependent calculations and lookups. Or just do them for all fields for this record when finishing the script?
+}
+
+void PyGlomRecord_SetFields(PyGlomRecord* self, const PyGlomRecord::type_map_field_values& field_values, Document* document, const Glib::ustring& table_name, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_field_value, const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
 {
   g_assert(self);
-  
+
   self->m_map_field_values = field_values;
 
   self->m_table_name = table_name;
-  
+  self->m_key_field = key_field;
+  self->m_key_field_value = key_field_value;
+
   if(self->m_document == 0)
     self->m_document = document;
 
@@ -180,5 +301,3 @@ void PyGlomRecord_SetFields(PyGlomRecord* self, const PyGlomRecord::type_map_fie
 }
 
 } //namespace Glom
-
-

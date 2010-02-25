@@ -45,13 +45,52 @@ typedef std::vector< sharedptr<LayoutItem_Field> > type_vecLayoutFields;
 typedef std::vector< sharedptr<const LayoutItem_Field> > type_vecConstLayoutFields;
 
 //TODO: Move these to their own file:
-Glib::ustring build_sql_select_fields_to_get(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const type_sort_clause& sort_clause, Glib::ustring& sql_part_from, Glib::ustring& sql_part_leftouterjoin);
 
-Glib::ustring build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause = Glib::ustring(), const Glib::ustring& extra_join = Glib::ustring(), const type_sort_clause& sort_clause = type_sort_clause(), const Glib::ustring& extra_group_by = Glib::ustring());
-Glib::ustring build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const Glib::ustring& where_clause = Glib::ustring(), const Glib::ustring& extra_join = Glib::ustring(), const type_sort_clause& sort_clause = type_sort_clause(), const Glib::ustring& extra_group_by = Glib::ustring());
+/** Generate a SQL statement to SELECT field values,
+ * even if the fields are in related (or doubly related) records.
+ */
+Glib::ustring build_sql_select_fields_to_get(
+  const Glib::ustring& table_name,
+  const type_vecConstLayoutFields& fieldsToGet,
+  const type_sort_clause& sort_clause,
+  Glib::ustring& sql_part_from,
+  Glib::ustring& sql_part_leftouterjoin);
 
-Glib::ustring build_sql_select_with_key(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value);
-Glib::ustring build_sql_select_with_key(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value);
+/** Generate a SQL statement to SELECT field values,
+ * even if the fields are in related (or doubly related) records,
+ * narrowing the records down with a WHERE clause.
+ */
+Glib::ustring build_sql_select_with_where_clause(
+  const Glib::ustring& table_name,
+  const type_vecLayoutFields& fieldsToGet,
+  const Glib::ustring& where_clause = Glib::ustring(),
+  const Glib::ustring& extra_join = Glib::ustring(),
+  const type_sort_clause& sort_clause = type_sort_clause(),
+  const Glib::ustring& extra_group_by = Glib::ustring());
+
+/** Just a version of build_sql_select_with_where_clause() that takes a list of const fields.
+ */
+Glib::ustring build_sql_select_with_where_clause(
+  const Glib::ustring& table_name,
+  const type_vecConstLayoutFields& fieldsToGet,
+  const Glib::ustring& where_clause = Glib::ustring(),
+  const Glib::ustring& extra_join = Glib::ustring(),
+  const type_sort_clause& sort_clause = type_sort_clause(),
+  const Glib::ustring& extra_group_by = Glib::ustring());
+
+Glib::ustring build_sql_select_with_key(
+  const Glib::ustring& table_name,
+  const type_vecLayoutFields& fieldsToGet,
+  const sharedptr<const Field>& key_field,
+  const Gnome::Gda::Value& key_value);
+
+/** Just a version of build_sql_select_with_key() that takes a list of const fields.
+ */
+Glib::ustring build_sql_select_with_key(
+  const Glib::ustring& table_name,
+  const type_vecConstLayoutFields& fieldsToGet,
+  const sharedptr<const Field>& key_field,
+  const Gnome::Gda::Value& key_value);
 
 typedef std::list< std::pair<Gnome::Gda::Value, Gnome::Gda::Value> > type_list_values_with_second;
 type_list_values_with_second get_choice_values(const sharedptr<const LayoutItem_Field>& field);
@@ -62,12 +101,12 @@ Glib::ustring create_name_from_title(const Glib::ustring& title);
 
 Glib::ustring string_escape_underscores(const Glib::ustring& text);
 
-/** Get just the first part of a locale, such as de_DE, 
+/** Get just the first part of a locale, such as de_DE,
  * ignoring, for instance, .UTF-8 or @euro at the end.
  */
 Glib::ustring locale_simplify(const Glib::ustring& locale_id);
 
-/** Get just the language ID part of a locale, such as de from "de_DE", 
+/** Get just the language ID part of a locale, such as de from "de_DE",
  */
 Glib::ustring locale_language_id(const Glib::ustring& locale_id);
 
@@ -97,4 +136,3 @@ bool file_exists(const Glib::ustring& uri);
 } //namespace Glom
 
 #endif //GLOM_UTILS_H
-

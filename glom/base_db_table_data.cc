@@ -49,7 +49,7 @@ bool Base_DB_Table_Data::refresh_data_from_database()
 Gnome::Gda::Value Base_DB_Table_Data::get_entered_field_data_field_only(const sharedptr<const Field>& field) const
 {
   sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
-  layout_item->set_full_field_details(field); 
+  layout_item->set_full_field_details(field);
 
   return get_entered_field_data(layout_item);
 }
@@ -63,7 +63,7 @@ Gnome::Gda::Value Base_DB_Table_Data::get_entered_field_data(const sharedptr<con
 
 Gtk::TreeModel::iterator Base_DB_Table_Data::get_row_selected()
 {
-  //This in meaningless for Details, 
+  //This in meaningless for Details,
   //but is overridden for list views.
   return Gtk::TreeModel::iterator();
 }
@@ -127,7 +127,15 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
             // Don't evaluate function on error
 #endif // GLIBMM_EXCEPTIONS_ENABLED
 
-            const Gnome::Gda::Value value = glom_evaluate_python_function_implementation(field->get_glom_type(), calculation, field_values, document, m_table_name, sharedconnection->get_gda_connection());
+            const Gnome::Gda::Value value =
+              glom_evaluate_python_function_implementation(
+                field->get_glom_type(),
+                calculation,
+                field_values,
+                document,
+                m_table_name,
+                fieldPrimaryKey, primary_key_value,
+                sharedconnection->get_gda_connection());
             set_entered_field_data(layout_item, value);
 #ifndef GLIBMM_EXCEPTIONS_ENABLED
           }
@@ -157,7 +165,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
   typedef std::map<Glib::ustring, bool> type_map_added;
   type_map_added map_added;
   Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
-  
+
   for(type_vecLayoutFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
   {
     sharedptr<LayoutItem_Field> layout_item = *iter;
@@ -169,7 +177,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
       {
         Gnome::Gda::Value value;
 
-        const sharedptr<const Field>& field = layout_item->get_full_field_details();        
+        const sharedptr<const Field>& field = layout_item->get_full_field_details();
         if(field)
         {
           //Use the specified (generated) primary key value, if there is one:
@@ -190,7 +198,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
             if(!get_field_value_is_unique(m_table_name, layout_item, value))
             {
               //Ignore this field value. TODO: Warn the user about it.
-            } 
+            }
           }
           */
           if(!value.is_null())
@@ -200,12 +208,12 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
               strNames += ", ";
               strValues += ", ";
             }
-  
+
             strNames += "\"" + field_name + "\"";
             strValues += field->get_gda_holder_string();
             Glib::RefPtr<Gnome::Gda::Holder> holder = field->get_holder(value);
             params->add_holder(holder);
-  
+
             map_added[field_name] = true;
           }
         }
@@ -229,7 +237,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
       for(type_vecLayoutFields::const_iterator iter = fieldsToAdd.begin(); iter != fieldsToAdd.end(); ++iter)
       {
         sharedptr<const LayoutItem_Field> layout_item = *iter;
-         
+
         //TODO_Performance: We just set this with set_entered_field_data() above. Maybe we could just remember it.
         const Gnome::Gda::Value field_value = get_entered_field_data(layout_item);
 
@@ -284,9 +292,9 @@ bool Base_DB_Table_Data::get_related_record_exists(const sharedptr<const Relatio
   return result;
 }
 
-bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Field>& layout_item_parent, 
-  const sharedptr<const Relationship>& relationship, 
-  const sharedptr<const Field>& primary_key_field, 
+bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const LayoutItem_Field>& layout_item_parent,
+  const sharedptr<const Relationship>& relationship,
+  const sharedptr<const Field>& primary_key_field,
   const Gnome::Gda::Value& primary_key_value_provided,
   Gnome::Gda::Value& primary_key_value_used)
 {
@@ -299,7 +307,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
     primary_key_value_used = primary_key_value; //Let the caller know what related record was created.
     return true;
   }
-    
+
 
   //To store the entered data in the related field, we would first have to create a related record.
   if(!relationship->get_auto_create())
@@ -414,7 +422,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
           }
         }
       }
-        
+
       primary_key_value_used = primary_key_value; //Let the caller know what related record was created.
       return true;
     }
@@ -424,14 +432,14 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
 void Base_DB_Table_Data::on_record_added(const Gnome::Gda::Value& /* primary_key_value */, const Gtk::TreeModel::iterator& /* row */)
 {
    //Overridden by some derived classes.
-  
+
    signal_record_changed().emit();
 }
 
 void Base_DB_Table_Data::on_record_deleted(const Gnome::Gda::Value& /* primary_key_value */)
 {
   //Overridden by some derived classes.
-  
+
   signal_record_changed().emit();
 }
 
@@ -512,12 +520,12 @@ void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field
 
         for(guint uiCol = 0; uiCol < cols_count; ++uiCol)
         {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED        
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
           const Gnome::Gda::Value value = result->get_value_at(uiCol, 0 /* row */);
-#else          
+#else
           std::auto_ptr<Glib::Error> value_error;
           const Gnome::Gda::Value value = result->get_value_at(uiCol, 0 /* row */, value_error);
-#endif          
+#endif
           sharedptr<LayoutItem_Field> layout_item = *iterFields;
           if(!layout_item)
             std::cerr << "Base_DB_Table_Data::refresh_related_fields(): The layout_item was null." << std::endl;
@@ -575,5 +583,3 @@ Base_DB_Table_Data::type_vecLayoutFields Base_DB_Table_Data::get_related_fields(
 }
 
 } //namespace Glom
-
-

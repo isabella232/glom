@@ -8,8 +8,8 @@
 #include <libgda/libgda.h>
 #include <boost/python.hpp>
 
-bool
-glom_pygda_value_from_pyobject(GValue *boxed, const boost::python::object& input);
+
+bool glom_pygda_value_from_pyobject(GValue *boxed, const boost::python::object& input);
 
 //PyObject *
 //glom_pygda_value_as_pyobject(const GValue *value, gboolean copy_boxed);
