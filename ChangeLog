@@ -1,3 +1,17 @@
+2010-02-26  Murray Cumming  <murrayc@murrayc-desktop>
+
+	Use Gnome::Gda::SqlBuilder
+
+	* glom/base_db.[h|cc]: query_execute_select(), query_execute(),
+	auto_increment_insert_first_if_necessary(),
+	recalculate_next_auto_increment_value(),
+	get_next_auto_increment_value(), get_database_preferences(),
+	add_standard_table(), set_database_preferences(), insert_example_data(),
+	set_field_value_in_database():
+	Use Gnome::Gda::SqlBuilder to simplify query building and to make it
+	safer.
+	Most of this work was actually by Johannes Schmid for Openismus.
+
 2010-02-26  Murray Cumming  <murrayc@murrayc.com>
 
 	Fixed the tests build.
@@ -939,6 +953,13 @@
 
 	* glom/utility_widgets/db_adddel/db_adddel.cc: treeview_append_column():
 	Don't try to put -1 in a guint for the column width.
+
+2009-10-25  Murray Cumming  <murrayc@murrayc.com>
+
+	BaseDb::query_execute*(): Const corrections.
+
+	* glom/base_db.[h|cc]: query_execute(), query_execute_select():
+	Const corrections and indentation corrections.
 
 2009-10-21  Armin Burgmeier  <armin@arbur.net>
 
