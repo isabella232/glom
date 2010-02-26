@@ -1,3 +1,11 @@
+2010-02-26  Murray Cumming  <murrayc@murrayc.com>
+
+	Fixed the tests build.
+
+	* tests/test_python_execute_func.cc:
+	* tests/test_python_execute_func_date.cc: Updated for the
+	extra parameters for glom_evaluate_python_function_implementation().
+
 2010-02-25  Murray Cumming  <murrayc@murrayc.com>
 
 	Python functions: Allow setting of values in the record via [].

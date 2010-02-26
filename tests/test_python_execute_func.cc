@@ -17,8 +17,10 @@ int main()
   try
   {
     value = Glom::glom_evaluate_python_function_implementation(
-      Glom::Field::TYPE_TEXT, calculation, field_values, 
-      0 /* document */, "" /* table name */, connection);
+      Glom::Field::TYPE_TEXT, calculation, field_values,
+      0 /* document */, "" /* table name */,
+      Glom::sharedptr<Glom::Field>(), Gnome::Gda::Value(), // primary key details. Not used in this test.
+      connection);
   }
   catch(const std::exception& ex)
   {

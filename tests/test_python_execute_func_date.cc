@@ -22,8 +22,10 @@ int main()
 
   //Execute a python function:
   const Gnome::Gda::Value value = Glom::glom_evaluate_python_function_implementation(
-    Glom::Field::TYPE_DATE, calculation, field_values, 
-    0 /* document */, "" /* table name */, connection);
+    Glom::Field::TYPE_DATE, calculation, field_values,
+    0 /* document */, "" /* table name */,
+    Glom::sharedptr<Glom::Field>(), Gnome::Gda::Value(), // primary key details. Not used in this test.
+    connection);
 
   //std::cout << "type=" << g_type_name(value.get_value_type()) << std::endl;
 
