@@ -1,3 +1,15 @@
+2010-02-27  Murray Cumming  <murrayc@murrayc.com>
+
+  Fix runtime problems with the use of SqlBuilder.
+  
+	* glom/base_db.[h|cc]: query_execute_select(), query_execute(): Catch more 
+  errors and output better debug and error text.
+	get_database_preferences(): Don't bother catching exceptions already caught 
+	by query_execute*().
+	add_standard_tables(): Fix a typo in the SQL query.
+	insert_example_data(): Work around an inability in GdaSqlBuilder to INSERT 
+	a NULL value. I have asked about it on the mailing list.
+
 2010-02-26  Murray Cumming  <murrayc@murrayc-desktop>
 
 	Use Gnome::Gda::SqlBuilder
