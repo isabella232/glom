@@ -623,14 +623,18 @@ void Box_DB_Table_Definition::fill_fields()
 
 bool Box_DB_Table_Definition::field_has_null_values(const sharedptr<const Field>& field)
 {
-  //TODO: Use SQL paramters?
   //Note that "= Null" doesn't work, though it doesn't error either.
   //Note also that SELECT COUNT always returns 0 if all the values are NULL, so we can't use that to be more efficient.
-  const Glib::ustring sql_query = "SELECT \"" + field->get_name() + "\" FROM \"" + m_table_name + "\" WHERE \"" + m_table_name + "\".\"" + field->get_name() + "\" IS NULL LIMIT 1";
-  //std::cout << "sql_query: " << sql_query << std::endl;
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+  builder->select_add_field(field->get_name(), m_table_name);
+  builder->select_add_target(m_table_name);
+  builder->set_where(
+    builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_ISNULL,
+      builder->add_id(field->get_name()))); //TODO: It would nice to specify the table name here too.
 
   long null_count = 0;
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query);
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(builder);
   if(datamodel)
   {
     if(datamodel->get_n_rows() && datamodel->get_n_columns())
@@ -641,7 +645,7 @@ bool Box_DB_Table_Definition::field_has_null_values(const sharedptr<const Field>
   }
   else
   {
-    std::cerr << "Box_DB_Table_Definition::field_has_null_values(): query failed: " << sql_query << std::endl;
+    std::cerr << "Box_DB_Table_Definition::field_has_null_values(): query failed." << std::endl;
   }
 
   return null_count > 0; 
@@ -652,7 +656,8 @@ bool Box_DB_Table_Definition::field_has_non_unique_values(const sharedptr<const 
   long count_distinct = 0;
   long count_all = 0;
 
-  //Count the distint rows:
+  //TODO: Use SqlBuilder. I asked on the mailing list about how to use DISTINCT with it. murrayc.
+  //Count the distinct rows:
   const Glib::ustring sql_query_distinct = "SELECT DISTINCT \"" + field->get_name() + "\" FROM \"" + m_table_name + "\"";
   
   Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query_distinct);
@@ -667,9 +672,12 @@ bool Box_DB_Table_Definition::field_has_non_unique_values(const sharedptr<const 
   }
 
   //Count all rows, to compare. TODO_performance: Is there a more efficient way to do this? Maybe count(*), which apparently doesn't ignore NULL rows like count(somefield) would.
-  const Glib::ustring sql_query_all = "SELECT \"" + field->get_name() + "\" FROM \"" + m_table_name + "\"";
-  
-  datamodel = query_execute_select(sql_query_all);
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder_query_all =
+    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+  builder_query_all->select_add_field(field->get_name(), m_table_name);
+  builder_query_all->select_add_target(m_table_name);
+      
+  datamodel = query_execute_select(builder_query_all);
   if(datamodel)
   {
     count_all = datamodel->get_n_rows();

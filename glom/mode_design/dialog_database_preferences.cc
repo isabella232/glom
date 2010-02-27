@@ -94,13 +94,20 @@ void Dialog_Database_Preferences::on_treeview_cell_edited_next_value(const Glib:
     const Glib::ustring field_name = row[m_columns.m_col_field];
 
     const Gnome::Gda::Value next_value = Conversions::parse_value(new_value);
+               
+    Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
+    builder->set_table(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
+    builder->add_field_value_as_value(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE, next_value);
+    builder->set_where(
+      builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_AND,
+        builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+          builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME),
+          builder->add_expr(table_name)),
+        builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+          builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME),
+          builder->add_expr(field_name))));
 
-    const Glib::ustring sql_query = "UPDATE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\" SET "
-        "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE "\" = " + next_value.to_string() +
-        " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = '" + table_name + "' AND "
-               "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\" = '" + field_name +"'";
-
-    const bool test = query_execute(sql_query);
+    const bool test = query_execute(builder);
     if(!test)
       std::cerr << "Dialog_Database_Preferences::on_treeview_cell_edited_next_value(): UPDATE failed." << std::endl;
   }
@@ -132,15 +139,19 @@ void Dialog_Database_Preferences::load_from_document()
   //Show the auto-increment values:
   m_model_autoincrements->clear();
 
-  const Glib::ustring sql_query = "SELECT "
-    "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\", "
-    "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\", "
-    "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE "\""
-    " FROM \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\"";
-
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+  builder->select_add_field(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME,
+    GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
+  builder->select_add_field(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME,
+    GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
+  builder->select_add_field(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE,
+    GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
+  builder->select_add_target(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
+  
   NumericFormat numeric_format; //ignored
 
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query);
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(builder);
   if(!datamodel)
   {
     std::cerr << "Dialog_Database_Preferences::load_from_document(): Gda::DataModel is NULL." << std::endl;

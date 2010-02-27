@@ -1,5 +1,13 @@
 2010-02-27  Murray Cumming  <murrayc@murrayc.com>
 
+	Use Gnome::Gda::SqlBuilder
+
+	* several files: Use Gnome::Gda::SqlBuilder to simplify query building and to 
+	make it safer.
+	Much of this work was actually by Johannes Schmid for Openismus.
+	
+2010-02-27  Murray Cumming  <murrayc@murrayc.com>
+
   Increase required version of libgdamm.
   
 	* configure.ac: Increase libgdamm dependency to the last one that doesn't 

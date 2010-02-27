@@ -2551,11 +2551,6 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
 
 
       const bool bTest = set_field_value_in_database(field_in_record, row, field_value, false /* don't use current calculations */, window);
-
-      //Glib::ustring strQuery = "UPDATE \"" + table_name + "\"";
-      //strQuery += " SET " +  /* table_name + "." + postgres does not seem to like the table name here */ strFieldName + " = " + field.sql(field_value, connection);
-      //strQuery += " WHERE " + table_name + "." + primary_key_field.get_name() + " = " + primary_key_field.sql(primary_key_value, connection);
-      //bool bTest = query_execute(strQuery);
       if(!bTest)
       {
         //Update failed.

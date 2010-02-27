@@ -36,6 +36,9 @@
 #include <libglom/document/bakery/view/view.h>
 #include <glom/bakery/busy_cursor.h>
 
+#include <libgdamm/set.h>
+#include <libgdamm/sqlbuilder.h>
+
 namespace Glom
 {
 
@@ -81,8 +84,12 @@ public:
   /** Execute a SQL Select command, returning the result.
    * This method handles any Gda exceptions caused by executing the command.
    */
-  static Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::ustring& strQuery, 
-                                                                  const Glib::RefPtr<Gnome::Gda::Set>& params = Glib::RefPtr<Gnome::Gda::Set>(0));
+  static Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(
+    const Glib::ustring& strQuery, 
+    const Glib::RefPtr<Gnome::Gda::Set>& params = Glib::RefPtr<Gnome::Gda::Set>(0));
+  static Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(
+     const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder, 
+     const Glib::RefPtr<const Gnome::Gda::Set>& params = Glib::RefPtr<const Gnome::Gda::Set>(0));
 
 
   /** Execute a SQL non-select command, returning true if it succeeded.
@@ -90,9 +97,11 @@ public:
    */
   static bool query_execute(const Glib::ustring& strQuery,
                             const Glib::RefPtr<Gnome::Gda::Set>& params = Glib::RefPtr<Gnome::Gda::Set>(0));
-
+  static bool query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder,
+                            const Glib::RefPtr<const Gnome::Gda::Set>& params = Glib::RefPtr<const Gnome::Gda::Set>(0));
+  
   static int count_rows_returned_by(const Glib::ustring& sql_query);
-
+  
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   bool add_standard_groups();
   bool add_standard_tables() const;
@@ -428,7 +437,24 @@ protected:
   static void handle_error(const Glib::Exception& ex);
   static void handle_error(const std::exception& ex); //TODO_port: This is probably useless now.
   static bool handle_error();
+  
+private:
+  /// Get the full query string suitable for use with std::cout.
+  static std::string sqlbuilder_get_full_query(
+    const Glib::RefPtr<Gnome::Gda::Connection>& connection, 
+    const Glib::ustring& query,
+    const Glib::RefPtr<const Gnome::Gda::Set>& params);
+    
+  /// Get the full query string suitable for use with std::cout.
+  static std::string sqlbuilder_get_full_query(
+    const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder,
+    const Glib::RefPtr<const Gnome::Gda::Set>& params);
+    
+  /// Get the full query string suitable for use with std::cout.
+  static std::string sqlbuilder_get_full_query(
+    const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder);
 
+protected:
   type_field_calcs m_FieldsCalculationInProgress; //Prevent circular calculations and recalculations.
 };
 

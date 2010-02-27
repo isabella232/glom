@@ -86,17 +86,10 @@ boost::python::object PyGlomRelated::getitem(const boost::python::object& cppite
 
               //TODO_Performance:
               //Get the full field details so we can sqlize its value:
-              sharedptr<Field> from_key_field;
-              from_key_field = record->m_document->get_field(record->m_table_name, from_key);
+              sharedptr<const Field> from_key_field = record->m_document->get_field(record->m_table_name, from_key);
               if(from_key_field)
-              {
-                Glib::ustring key_value_sqlized;
-                //std::cout << "from_key_field=" << from_key_field->get_name() << ", from_key_value=" << from_key_value.to_string() << std::endl;
-
-                if(!Conversions::value_is_empty(from_key_value)) //Do not link on null-values. That would cause us to link on 0, or "0".
-                  key_value_sqlized = from_key_field->sql(from_key_value);
-
-                PyGlomRelatedRecord_SetRelationship(pyRelatedRecord, iterFind->second, key_value_sqlized, record->m_document);
+              { 
+                PyGlomRelatedRecord_SetRelationship(pyRelatedRecord, iterFind->second, from_key_value, record->m_document);
 
                 //Store it in the cache:
                 boost::python::object objectRelatedRecord(pyRelatedRecord);
