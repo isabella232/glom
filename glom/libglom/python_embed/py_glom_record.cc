@@ -167,27 +167,41 @@ void PyGlomRecord::setitem(const boost::python::object& key, const boost::python
   params->add_holder(field->get_holder(field_value));
   params->add_holder(m_key_field->get_holder(m_key_field_value));
 
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = 
-    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
-  builder->set_table(m_table_name);
-  builder->add_field_value_as_value(field->get_name(), field_value);
-  builder->set_where(
-    builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-      builder->add_id(m_key_field->get_name()),
-      builder->add_expr(m_key_field_value)));
- 
+  Glib::ustring strQuery = "UPDATE \"" + m_table_name + "\"";
+  strQuery += " SET \"" + field->get_name() + "\" = " + field->get_gda_holder_string();
+  strQuery += " WHERE \"" + m_key_field->get_name() + "\" = " + m_key_field->get_gda_holder_string();
+
   bool updated = false;
+  Glib::RefPtr<Gnome::Gda::Statement> stmt;
   try
   {
-    updated = m_connection->statement_execute_non_select_builder(builder);
+    Glib::RefPtr<Gnome::Gda::SqlParser> parser = m_connection->create_parser();
+    stmt = parser->parse_string(strQuery);
+
   }
   catch(const Glib::Exception& ex)
   {
-    std::cerr << "PyGlomRecord::setitem(): exception while executing query: " << ex.what() << std::endl;
+    std::cerr << "PyGlomRecord::setitem(): exception while parsing query: " << ex.what() << std::endl;
   }
   catch(const std::exception& ex)
   {
-    std::cerr << "PyGlomRecord::setitem(): exception while executing query: " << ex.what() << std::endl;
+    std::cerr << "PyGlomRecord::setitem(): exception while parsing query: " << ex.what() << std::endl;
+  }
+
+  if(stmt)
+  {
+    try
+    {
+      updated = m_connection->statement_execute_non_select(stmt, params);
+    }
+    catch(const Glib::Exception& ex)
+    {
+      std::cerr << "PyGlomRecord::setitem(): exception while executing query: " << ex.what() << std::endl;
+    }
+    catch(const std::exception& ex)
+    {
+      std::cerr << "PyGlomRecord::setitem(): exception while executing query: " << ex.what() << std::endl;
+    }
   }
 
   if(!updated)

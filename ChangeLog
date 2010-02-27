@@ -1,5 +1,11 @@
 2010-02-27  Murray Cumming  <murrayc@murrayc.com>
 
+  Revert use of SqlBuilder because it requires libgda 4.1,
+  which will not be packaged by the upcoming Ubuntu Lucid, which is an 
+  important version of an important distro.
+   
+2010-02-27  Murray Cumming  <murrayc@murrayc.com>
+
 	More uses of SqlBuilder for SELECT statements.
 
 2010-02-27  Murray Cumming  <murrayc@murrayc.com>

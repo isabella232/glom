@@ -285,16 +285,14 @@ void Box_Data_Calendar_Related::on_record_added(const Gnome::Gda::Value& primary
 
     //Create the link by setting the foreign key
     if(m_key_field && m_portal)
-    {      
-      Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
-      builder->set_table(m_portal->get_table_used(Glib::ustring() /* not relevant */));
-      builder->add_field_value_as_value(m_key_field->get_name(), m_key_value);
-      builder->set_where(
-        builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-          builder->add_id(field_primary_key->get_name()),
-          builder->add_expr_as_value(primary_key_value)));
-      
-      const bool test = query_execute(builder);
+    {
+      Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
+      params->add_holder(m_key_field->get_holder(m_key_value));
+      params->add_holder(field_primary_key->get_holder(primary_key_value));
+      Glib::ustring strQuery = "UPDATE \"" + m_portal->get_table_used(Glib::ustring() /* not relevant */) + "\"";
+      strQuery += " SET \"" +  /* get_table_name() + "." +*/ m_key_field->get_name() + "\" = " + m_key_field->get_gda_holder_string();
+      strQuery += " WHERE \"" + get_table_name() + "\".\"" + field_primary_key->get_name() + "\" = " + field_primary_key->get_gda_holder_string();
+      const bool test = query_execute(strQuery, params);
       if(test)
       {
         //Show it on the view, if it's visible:

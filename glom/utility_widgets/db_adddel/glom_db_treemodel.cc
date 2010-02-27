@@ -958,17 +958,15 @@ void DbTreeModel::get_record_counts(gulong& total, gulong& found) const
     {
       //Ask the database how many records there are in the whole table:
       //TODO: Apparently, this is very slow:
-      
-      Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
-        Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
-      builder->add_function("count", builder->add_id("*")); //TODO: Is * allowed here?
-      builder->select_add_target(m_found_set.m_table_name);
-
+      const Glib::ustring sql_query = "SELECT count(*) FROM \"" + m_found_set.m_table_name + "\"";
+      Glib::RefPtr<Gnome::Gda::SqlParser> parser = m_connection->get_gda_connection()->create_parser();
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = m_connection->get_gda_connection()->statement_execute_select_builder(builder);
+      Glib::RefPtr<Gnome::Gda::Statement> stmt = parser->parse_string(sql_query);
+      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = m_connection->get_gda_connection()->statement_execute_select(stmt);
 #else
       std::auto_ptr<Glib::Error> error;
-      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = m_connection->get_gda_connection()->statement_execute_select_builder(builder, Gnome::Gda::STATEMENT_MODEL_RANDOM_ACCESS, error);
+      Glib::RefPtr<Gnome::Gda::Statement> stmt = parser->parse_string(sql_query, error);
+      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = m_connection->get_gda_connection()->statement_execute_select(stmt, Gnome::Gda::STATEMENT_MODEL_RANDOM_ACCESS, error);
       // Ignore error, datamodel presence is checked below
 #endif //GLIBMM_EXCEPTIONS_ENABLED
 

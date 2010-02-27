@@ -56,14 +56,14 @@ public:
   Document* m_document;
 
   sharedptr<const Relationship> m_relationship;
-  Gnome::Gda::Value m_from_key_value;
+  Glib::ustring m_from_key_value_sqlized;
 
   //Available, for instance, in python via record["name_first"]
   typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_field_values;
   mutable type_map_field_values m_map_field_values; //A cache.
 };
 
-void PyGlomRelatedRecord_SetRelationship(PyGlomRelatedRecord* self, const sharedptr<const Relationship>& relationship, const Gnome::Gda::Value& from_key_value, Document* document);
+void PyGlomRelatedRecord_SetRelationship(PyGlomRelatedRecord* self, const sharedptr<const Relationship>& relationship, const Glib::ustring& from_key_value_sqlized, Document* document);
 
 /*
 void PyGlomRelatedRecord_SetConnection(PyGlomRelatedRecord* self, const Glib::RefPtr<Gnome::Gda::Connection>& connection);

@@ -95,7 +95,7 @@ protected:
   type_signal_record_changed m_signal_record_changed;
     
 private:
-  bool get_related_record_exists(const sharedptr<const Relationship>& relationship, const Gnome::Gda::Value& key_value);
+  bool get_related_record_exists(const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value);
 };
 
 } //namespace Glom

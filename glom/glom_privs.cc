@@ -33,12 +33,8 @@ Privs::type_vec_strings Privs::get_database_groups()
 {
   type_vec_strings result;
 
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
-      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
-  builder->select_add_field("groname", "pg_group");
-  builder->select_add_target("pg_group");
-  
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(builder);
+  const Glib::ustring strQuery = "SELECT \"pg_group\".\"groname\" FROM \"pg_group\"";
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery);
   if(data_model)
   {
     const int rows_count = data_model->get_n_rows();
@@ -105,12 +101,8 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
   if(group_name.empty())
   {
     //pg_shadow contains the users. pg_users is a view of pg_shadow without the password.
-    Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
-      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
-    builder->select_add_field("usename", "pg_shadow");
-    builder->select_add_target("pg_shadow");
-  
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(builder);
+    const Glib::ustring strQuery = "SELECT \"pg_shadow\".\"usename\" FROM \"pg_shadow\"";
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery);
     if(data_model)
     {
       const int rows_count = data_model->get_n_rows();
@@ -129,16 +121,8 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
   }
   else
   {
-    Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
-      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
-    builder->select_add_field("groname", "pg_group");
-    builder->select_add_field("grolist", "pg_group");
-    builder->select_add_target("pg_group");
-    builder->set_where(
-      builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-        builder->add_id("groname"), //TODO: It would be nice to specify the table here too.
-        builder->add_expr(group_name)));
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(builder);
+    const Glib::ustring strQuery = "SELECT \"pg_group\".\"groname\", \"pg_group\".\"grolist\" FROM \"pg_group\" WHERE \"pg_group\".\"groname\" = '" + group_name + "'";
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery);
     if(data_model && data_model->get_n_rows())
     {
       const int rows_count = data_model->get_n_rows();
@@ -160,15 +144,8 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
         for(type_vec_strings::const_iterator iter = vecUserIds.begin(); iter != vecUserIds.end(); ++iter)
         {
           //TODO_Performance: Can we do this in one SQL SELECT?
-          Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
-            Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
-          builder->select_add_field("usename", "pg_user");
-          builder->select_add_target("pg_user");
-          builder->set_where(
-            builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-              builder->add_id("usesysid"), //TODO: It would be nice to specify the table here too.
-              builder->add_expr(*iter)));
-          Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(builder);
+          const Glib::ustring strQuery = "SELECT \"pg_user\".\"usename\" FROM \"pg_user\" WHERE \"pg_user\".\"usesysid\" = '" + *iter + "'";
+          Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery);
           if(data_model)
           {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED          
@@ -276,15 +253,8 @@ Privileges Privs::get_table_privileges(const Glib::ustring& group_name, const Gl
   }
 
   //Get the permissions:
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
-    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
-  builder->select_add_field("relacl", "pg_class");
-  builder->select_add_target("pg_class");
-  builder->set_where(
-    builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-      builder->add_id("relname"), //TODO: It would be nice to specify the table here too.
-      builder->add_expr(table_name)));
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(builder);
+  Glib::ustring strQuery = "SELECT \"pg_class\".\"relacl\" FROM \"pg_class\" WHERE \"pg_class\".\"relname\" = '" + table_name + "'";
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery);
   if(data_model && data_model->get_n_rows())
   {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
