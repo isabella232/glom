@@ -1,5 +1,12 @@
 2010-02-27  Murray Cumming  <murrayc@murrayc.com>
 
+  Increase required version of libgdamm.
+  
+	* configure.ac: Increase libgdamm dependency to the last one that doesn't 
+	need libgda 4.1/4.2. We actually need some API that was not in the older one.
+
+2010-02-27  Murray Cumming  <murrayc@murrayc.com>
+
   Revert use of SqlBuilder because it requires libgda 4.1,
   which will not be packaged by the upcoming Ubuntu Lucid, which is an 
   important version of an important distro.
