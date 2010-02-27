@@ -176,7 +176,7 @@ void glom_execute_python_function_implementation(const Glib::ustring& func_impl,
   glom_evaluate_python_function_implementation(Field::TYPE_TEXT, func_impl,
      field_values, pDocument,
      table_name, key_field, key_field_value,
-     opened_connection);
+     opened_connection, false /* not read-only */);
 }
 
 Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type,
@@ -186,7 +186,8 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   const Glib::ustring& table_name,
   const sharedptr<const Field>& key_field,
   const Gnome::Gda::Value& key_field_value,
-  const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
+  const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection,
+  bool read_only)
 {
   //std::cout << "glom_evaluate_python_function_implementation()" << std::endl;
   //for(type_map_fields::const_iterator iter = field_values.begin(); iter != field_values.end(); ++iter)
@@ -353,6 +354,8 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
     {
       //Fill the record's details:
       PyGlomRecord_SetFields(pParam, field_values, pDocument, table_name, key_field, key_field_value, opened_connection);
+      if(read_only)
+        pParam->set_read_only();
 
       //Call the function with this parameter:
        boost::python::object pyResultCpp;

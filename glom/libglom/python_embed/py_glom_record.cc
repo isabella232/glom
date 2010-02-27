@@ -37,12 +37,18 @@ namespace Glom
 
 //Set the object's member data, from the parameters supplied when creating the object:
 PyGlomRecord::PyGlomRecord()
-: m_document(0)
+: m_document(0),
+  m_read_only(false)
 {
 }
 
 PyGlomRecord::~PyGlomRecord()
 {
+}
+
+void PyGlomRecord::set_read_only()
+{
+  m_read_only = true;
 }
 
 std::string PyGlomRecord::get_table_name() const
@@ -115,7 +121,12 @@ boost::python::object PyGlomRecord::getitem(const boost::python::object& cppitem
 //TODO: Stop this from being used in field calculations, by making the record somehow read-only.
 void PyGlomRecord::setitem(const boost::python::object& key, const boost::python::object& value)
 {
-  //Get the specificd field name (and details) and value:
+  if(m_read_only)
+  {
+    std::cerr << "PyGlomRecord::setitem(): Failed to set a value because the record object is read-only."<< std::endl;
+    return;
+  }
+  //Get the specified field name (and details) and value:
 
   std::string field_name;
   boost::python::extract<std::string> extractor(key);

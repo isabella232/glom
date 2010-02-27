@@ -1,5 +1,16 @@
 2010-02-27  Murray Cumming  <murrayc@murrayc.com>
 
+  Python: Prevent field calculations from changing the data in other fields.
+  
+	* glom/libglom/python_embed/py_glom_record.[h|cc]: Added set_read_only().
+	* glom/python_embed/glom_python.[h|cc]: 
+	glom_evaluate_python_function_implementation(): Add a bool read_only 
+	parameter that defaults to true.
+	glom_execute_python_function_implementation(): Pass read_only=false so 
+	scripts can write data to the database via the record object.
+
+2010-02-27  Murray Cumming  <murrayc@murrayc.com>
+
   Increase required version of libgdamm.
   
 	* configure.ac: Increase libgdamm dependency to the last one that doesn't 
