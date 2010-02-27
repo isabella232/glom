@@ -276,55 +276,37 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute_select(const Glib::Re
   }
 
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
-  Glib::RefPtr<Gnome::Gda::Statement> stmt;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    stmt = builder->get_statement();
-  }
-  catch(const Gnome::Gda::SqlBuilderError& ex)
-  {
-    std::cout << "debug: Base_DB::query_execute_select(): SqlParserError: exception from parse_string(): " << ex.what() << std::endl;
-  }
-#else
-  std::auto_ptr<Glib::Error> ex;
-  stmt = builder->get_statement(ex);
-  if(error.get())
-     std::cout << "debug: Base_DB::query_execute_select(): SqlParserError: exception from parse_string(): " << error->what() << std::endl;
-#endif //GLIBMM_EXCEPTIONS_ENABLED
-
 
   //Debug output:
   const App_Glom* app = App_Glom::get_application();
-  if(stmt && app && app->get_show_sql_debug())
+  if(app && app->get_show_sql_debug())
   {
     const std::string full_query = sqlbuilder_get_full_query(builder, params);
     std::cout << "Debug: Base_DB::query_execute_select():  " << full_query << std::endl;
   }
-
-
+  
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    result = gda_connection->statement_execute_select(stmt, params);
+    result = gda_connection->statement_execute_select_builder(builder, params);
   }
   catch(const Gnome::Gda::ConnectionError& ex)
   {
-    std::cerr << "debug: Base_DB::query_execute_select(): ConnectionError: exception from statement_execute_select(): " << ex.what() << std::endl;
+    std::cerr << "debug: Base_DB::query_execute_select(): ConnectionError: exception from statement_execute_select_builder(): " << ex.what() << std::endl;
   }
   catch(const Gnome::Gda::ServerProviderError& ex)
   {
-    std::cerr << "debug: Base_DB::query_execute_select(): ServerProviderError: exception from statement_execute_select(): code=" << ex.code() << "message=" << ex.what() << std::endl;
+    std::cerr << "debug: Base_DB::query_execute_select(): ServerProviderError: exception from statement_execute_select_builder(): code=" << ex.code() << "message=" << ex.what() << std::endl;
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "debug: Base_DB::query_execute_select(): Error: exception from statement_execute_select(): " << ex.what() << std::endl;
+    std::cerr << "debug: Base_DB::query_execute_select(): Error: exception from statement_execute_select_builder(): " << ex.what() << std::endl;
   }
 
 #else
-  result = gda_connection->statement_execute_select(stmt, params, ex);
+  result = gda_connection->statement_execute_select_builder(builder, params, ex);
   if(ex.get())
-    std::cerr << "debug: Base_DB::query_execute_select(): Glib::Error from statement_execute_select(): " << ex->what() << std::endl;
+    std::cerr << "debug: Base_DB::query_execute_select(): Glib::Error from statement_execute_select_builder(): " << ex->what() << std::endl;
 #endif //GLIBMM_EXCEPTIONS_ENABLED
 
   if(!result)
@@ -441,43 +423,10 @@ bool Base_DB::query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& bu
   }
 
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
-  Glib::RefPtr<Gnome::Gda::Statement> stmt;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    stmt = builder->get_statement();
-  }
-  //Catch several exception types, though Glib::Error would catch all.
-  //The GdaSqlBuilder documentation doesn't properly document what errors can be expected.
-  catch(const Gnome::Gda::SqlBuilderError& ex)
-  {
-    std::cout << "debug: Base_DB::query_execute_select(): SqlBuilderError exception from parse_string(): " << ex.what() << std::endl;
-  }
-  catch(const Gnome::Gda::SqlParserError& ex)
-  {
-    std::cout << "debug: Base_DB::query_execute_select(): SqlParserError exception from parse_string(): " << ex.what() << std::endl;
-  }
-  catch(const Gnome::Gda::SqlError& ex)
-  {
-    std::cout << "debug: Base_DB::query_execute_select(): SqlError exception from parse_string(): " << ex.what() << std::endl;
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cout << "debug: Base_DB::query_execute_select(): Error exception from parse_string(): " << ex.what() << std::endl;
-  }
-#else
-  std::auto_ptr<Glib::Error> ex;
-  stmt = builder->get_statement(ex);
-  if(error.get())
-     std::cout << "debug: Base_DB::query_execute_select(): exception from parse_string(): " << error->what() << std::endl;
-#endif //GLIBMM_EXCEPTIONS_ENABLED
-
-  if(!stmt)
-    return false;
-
+  
   //Debug output:
   const App_Glom* app = App_Glom::get_application();
-  if(stmt && app && app->get_show_sql_debug())
+  if(app && app->get_show_sql_debug())
   {
     const std::string full_query = sqlbuilder_get_full_query(builder, params);
     std::cerr << "Debug: Base_DB::query_execute(): " << full_query << std::endl;
@@ -488,7 +437,7 @@ bool Base_DB::query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& bu
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    exec_retval = gda_connection->statement_execute_non_select(stmt, params);
+    exec_retval = gda_connection->statement_execute_non_select_builder(builder, params);
   }
   catch(const Glib::Error& error)
   {
@@ -499,7 +448,7 @@ bool Base_DB::query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& bu
   }
 #else
   std::auto_ptr<Glib::Error> exec_error;
-  exec_retval = gda_connection->statement_execute_non_select(stmt, params, exec_error);
+  exec_retval = gda_connection->statement_execute_non_select_builder(builder, params, exec_error);
   if(exec_error.get())
   {
     std::cerr << "BaseDB::query_execute: ConnectionError: " << exec_error->what() << std::endl;
@@ -2908,9 +2857,10 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
     Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
     builder->set_table(field_in_record.m_table_name);
     builder->add_field_value_as_value(field_in_record.m_field->get_name(), field_value);
-    builder->set_where(builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-                                         builder->add_id(field_in_record.m_key->get_name()),
-                                         builder->add_expr_as_value(field_in_record.m_key_value)));
+    builder->set_where(
+      builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+        builder->add_id(field_in_record.m_key->get_name()),
+        builder->add_expr_as_value(field_in_record.m_key_value)));
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try //TODO: The exceptions are probably already handled by query_execute(0.
@@ -3235,10 +3185,6 @@ void Base_DB::do_lookups(const LayoutFieldInRecord& field_in_record, const Gtk::
 
         //Add it to the database (even if it is not shown in the view)
         set_field_value_in_database(field_in_record_to_set, row, value_converted); //Also does dependent lookups/recalcs.
-        //Glib::ustring strQuery = "UPDATE \"" + m_table_name + "\"";
-        //strQuery += " SET " + field_lookup.get_name() + " = " + field_lookup.sql(value);
-        //strQuery += " WHERE " + primary_key.get_name() + " = " + primary_key.sql(primary_key_value);
-        //query_execute(strQuery);  //TODO: Handle errors
 
         //TODO: Handle lookups triggered by these fields (recursively)? TODO: Check for infinitely looping lookups.
       }
@@ -3301,13 +3247,17 @@ Gnome::Gda::Value Base_DB::get_lookup_value(const Glib::ustring& /* table_name *
   {
     //Convert the value, in case the from and to fields have different types:
     const Gnome::Gda::Value value_to_key_field = Conversions::convert_value(key_value, to_key_field->get_glom_type());
-    Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
-    params->add_holder("key", value_to_key_field);
 
-    Glib::ustring strQuery = "SELECT \"" + relationship->get_to_table() + "\".\"" + source_field->get_name() + "\" FROM \"" +  relationship->get_to_table() + "\"";
-    strQuery += " WHERE \"" + to_key_field->get_name() + "\" = ##key::" + to_key_field->get_gda_type_name();
-
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery, params);
+    Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+    builder->select_add_field(source_field->get_name(), relationship->get_to_table());
+    builder->select_add_target(relationship->get_to_table());
+    builder->set_where(
+      builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+        builder->add_id(to_key_field->get_name()), //TODO: It would be nice to specify the table here too.
+        builder->add_expr(value_to_key_field)));
+        
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(builder);
     if(data_model && data_model->get_n_rows())
     {
       //There should be only 1 row. Well, there could be more but we will ignore them.
@@ -3333,15 +3283,16 @@ bool Base_DB::get_field_value_is_unique(const Glib::ustring& table_name, const s
 
   const Glib::ustring table_name_used = field->get_table_used(table_name);
 
-  Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
-  sharedptr<const Field> glom_field = field->get_full_field_details();
-  if(glom_field)
-    params->add_holder(glom_field->get_holder(value));
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+  builder->select_add_field(field->get_name(), table_name_used);
+  builder->select_add_target(table_name_used);
+  builder->set_where(
+    builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+      builder->add_id(field->get_name()), //TODO: It would be nice to specify the table here too.
+      builder->add_expr(value)));
 
-  const Glib::ustring strQuery = "SELECT \"" + table_name_used + "\".\"" + field->get_name() + "\" FROM \"" + table_name_used + "\""
-    " WHERE \"" + field->get_name() + "\" = " + glom_field->get_gda_holder_string();
-
-  Glib::RefPtr<const Gnome::Gda::DataModel> data_model = query_execute_select(strQuery, params);
+  Glib::RefPtr<const Gnome::Gda::DataModel> data_model = query_execute_select(builder);
   if(data_model)
   {
     //std::cout << "debug: Base_DB::get_field_value_is_unique(): table_name=" << table_name << ", field name=" << field->get_name() << ", value=" << value.to_string() << ", rows count=" << data_model->get_n_rows() << std::endl;
@@ -3563,6 +3514,13 @@ int Base_DB::count_rows_returned_by(const Glib::ustring& sql_query)
   //Note that the alias is just because the SQL syntax requires it - we get an error if we don't use it.
   //Be careful not to include ORDER BY clauses in this, because that would make it unnecessarily slow:
   const Glib::ustring query_count = "SELECT COUNT (*) FROM (" + sql_query + ") AS glomarbitraryalias";
+  
+  /* TODO: Use SqlBuilder when we discover how to use a sub-query, or when this function can take a Sqlbuilder.
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+  builder->add_function("count", builder->add_id("*")); //TODO: Is * allowed here?
+  builder->select_add_target(m_found_set.m_table_name);
+  */
 
   const App_Glom* app = App_Glom::get_application();
   if(app && app->get_show_sql_debug())

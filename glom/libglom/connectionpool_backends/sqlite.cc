@@ -226,21 +226,21 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
       {
       case Field::TYPE_TEXT:
         if(column->gtype == G_TYPE_BOOLEAN)
-	  trans_fields += Glib::ustring("(CASE WHEN ") + column->column_name + " = 1 THEN 'true' "
-                                              "WHEN "  + column->column_name + " = 0 THEN 'false' "
-                                              "WHEN "  + column->column_name + " IS NULL THEN 'false' END)";
+	  trans_fields += Glib::ustring("(CASE WHEN \"") + column->column_name + "\" = 1 THEN 'true' "
+                                              "WHEN \""  + column->column_name + "\" = 0 THEN 'false' "
+                                              "WHEN \""  + column->column_name + "\" IS NULL THEN 'false' END)";
 	else if(column->gtype == GDA_TYPE_BLOB)
 	  trans_fields += "''";
 	else
           // Make sure we don't insert NULL strings, as we ignore that concept in Glom.
-          trans_fields += Glib::ustring("(CASE WHEN ") + column->column_name + " IS NULL THEN '' "
-                                              "WHEN "  + column->column_name + " IS NOT NULL THEN " + column->column_name + " END)";
+          trans_fields += Glib::ustring("(CASE WHEN \"") + column->column_name + "\" IS NULL THEN '' "
+                                              "WHEN \""  + column->column_name + "\" IS NOT NULL THEN \"" + column->column_name + "\" END)";
 	break;
       case Field::TYPE_NUMERIC:
         if(column->gtype == G_TYPE_BOOLEAN)
-          trans_fields += Glib::ustring("(CASE WHEN ") + column->column_name + " = 0 THEN 0 "
-                                              "WHEN "  + column->column_name + " != 0 THEN 1 "
-                                              "WHEN "  + column->column_name + " IS NULL THEN 0 END)";
+          trans_fields += Glib::ustring("(CASE WHEN \"") + column->column_name + "\" = 0 THEN 0 "
+                                              "WHEN \""  + column->column_name + "\" != 0 THEN 1 "
+                                              "WHEN \""  + column->column_name + "\" IS NULL THEN 0 END)";
         else if(column->gtype == GDA_TYPE_BLOB || column->gtype == G_TYPE_DATE || column->gtype == GDA_TYPE_TIME)
           trans_fields += '0';
         else
@@ -248,13 +248,13 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
         break;
       case Field::TYPE_BOOLEAN:
         if(column->gtype == G_TYPE_STRING)
-          trans_fields += Glib::ustring("(CASE WHEN ") + column->column_name + " = 'true' THEN 1 "
-                                              "WHEN "  + column->column_name + " = 'false' THEN 0 "
-                                              "WHEN "  + column->column_name + " IS NULL THEN 0 END)";
+          trans_fields += Glib::ustring("(CASE WHEN \"") + column->column_name + "\" = 'true' THEN 1 "
+                                              "WHEN \""  + column->column_name + "\" = 'false' THEN 0 "
+                                              "WHEN \""  + column->column_name + "\" IS NULL THEN 0 END)";
         else if(column->gtype == G_TYPE_DOUBLE)
-          trans_fields += Glib::ustring("(CASE WHEN ") + column->column_name + " = 0 THEN 0 "
-                                              "WHEN "  + column->column_name + " != 0 THEN 1 "
-                                              "WHEN "  + column->column_name + " IS NULL THEN 0 END)";
+          trans_fields += Glib::ustring("(CASE WHEN \"") + column->column_name + "\" = 0 THEN 0 "
+                                              "WHEN \""  + column->column_name + "\" != 0 THEN 1 "
+                                              "WHEN \""  + column->column_name + "\" IS NULL THEN 0 END)";
         else if(column->gtype == G_TYPE_BOOLEAN)
           trans_fields += column->column_name;
         else
@@ -334,11 +334,11 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
 
   if(perform_server_operation(connection->get_provider(), connection, operation, error))
   {
-    if(trans_fields.empty() || query_execute(connection, Glib::ustring("INSERT INTO ") + TEMPORARY_TABLE_NAME + " SELECT " + trans_fields + " FROM " + table_name, error))
+    if(trans_fields.empty() || query_execute(connection, Glib::ustring("INSERT INTO \"") + TEMPORARY_TABLE_NAME + "\" SELECT " + trans_fields + " FROM \"" + table_name + "\"", error))
     {
       if(query_execute(connection, "DROP TABLE " + table_name, error))
       {
-        if(query_execute(connection, Glib::ustring("ALTER TABLE ") + TEMPORARY_TABLE_NAME + " RENAME TO " + table_name, error))
+        if(query_execute(connection, Glib::ustring("ALTER TABLE \"") + TEMPORARY_TABLE_NAME + "\" RENAME TO \"" + table_name + "\"", error))
         {
           if(commit_transaction(connection, TRANSACTION_NAME, error))
           {

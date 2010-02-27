@@ -262,7 +262,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
 }
 
 
-bool Base_DB_Table_Data::get_related_record_exists(const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value)
+bool Base_DB_Table_Data::get_related_record_exists(const sharedptr<const Relationship>& relationship, const Gnome::Gda::Value& key_value)
 {
   BusyCursor cursor(App_Glom::get_application());
 
@@ -277,9 +277,17 @@ bool Base_DB_Table_Data::get_related_record_exists(const sharedptr<const Relatio
   const Glib::ustring to_field = relationship->get_to_field();
   const Glib::ustring related_table = relationship->get_to_table();
 
-  //TODO_Performance: Is this the best way to just find out whether there is one record that meets this criteria?
-  const Glib::ustring query = "SELECT \"" + to_field + "\" FROM \"" + relationship->get_to_table() + "\" WHERE \"" + related_table + "\".\"" + to_field + "\" = " + key_field->sql(key_value);
-  Glib::RefPtr<Gnome::Gda::DataModel> records = query_execute_select(query);
+  //TODO_Performance: Is this the best way to just find out whether there is one record that meets this criteria? 
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+  builder->select_add_field(to_field, related_table);
+  builder->select_add_target(related_table);
+  builder->set_where(
+    builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+      builder->add_id(to_field), //TODO: It would be nice to specify the table here too.
+      builder->add_expr(key_value)));
+                                               
+  Glib::RefPtr<Gnome::Gda::DataModel> records = query_execute_select(builder);
   if(!records)
     handle_error();
   else
@@ -300,7 +308,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
 {
   Gnome::Gda::Value primary_key_value = primary_key_value_provided;
 
-  const bool related_record_exists = get_related_record_exists(relationship, primary_key_field, primary_key_value);
+  const bool related_record_exists = get_related_record_exists(relationship, primary_key_value);
   if(related_record_exists)
   {
     //No problem, the SQL command below will update this value in the related table.
@@ -413,6 +421,18 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
             params->add_holder(parent_primary_key_field->get_holder(parent_primary_key_value));
             const Glib::ustring strQuery = "UPDATE \"" + relationship->get_from_table() + "\" SET \"" + relationship->get_from_field() + "\" = " + primary_key_field->get_gda_holder_string() +
               " WHERE \"" + relationship->get_from_table() + "\".\"" + parent_primary_key_field->get_name() + "\" = " +  parent_primary_key_field->get_gda_holder_string();
+              
+            /* TODO: Use SqlBuilder when can know how to specify the related field properly in the condition:
+            Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = 
+              Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
+            builder->set_table(relationship->get_from_table());
+            builder->add_field_value_as_value(relationship->get_from_field(), primary_key_value);
+            builder->set_where(
+              builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+                builder->add_id("\"" + relationship->get_from_table() + "\".\"" + parent_primary_key_field->get_name() + "\""),
+                builder->add_expr(parent_primary_key_value)),
+            */
+          
             const bool test = query_execute(strQuery, params);
             if(!test)
             {

@@ -175,6 +175,7 @@ void ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
     fill_full_field_details(found_set_parent.m_table_name, field_group_by);
 
     //Get the possible group values, ignoring repeats by using GROUP BY.
+    //TODO: Use SqlBuilder:
     const Glib::ustring group_field_table_name = field_group_by->get_table_used(found_set_parent.m_table_name);
     Glib::ustring sql_query = "SELECT \"" + group_field_table_name + "\".\"" + field_group_by->get_name() + "\""
       " FROM \"" + group_field_table_name + "\"";
@@ -182,7 +183,7 @@ void ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
     if(!found_set_parent.m_where_clause.empty())
       sql_query += " WHERE " + found_set_parent.m_where_clause;
 
-    sql_query += " GROUP BY " + field_group_by->get_name(); //rTODO: And restrict to the current found set.
+    sql_query += " GROUP BY " + field_group_by->get_name(); //TODO: And restrict to the current found set.
 
     Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query);
     if(datamodel)
@@ -384,6 +385,7 @@ void ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
   {
     //In this case it can only be a system preferences field.
     //So let's get that data here:
+    //TODO: Use SqlBuilder when we know how to use LIMIT with it. I asked on the libgda mailing list. murrayc.
     const Glib::ustring table_used = field->get_table_used(found_set.m_table_name);
     const Glib::ustring query = "SELECT \"" + table_used + "\".\"" + field->get_name() + "\" FROM \""+ table_used + "\" LIMIT 1";
     Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(query);

@@ -1,5 +1,9 @@
 2010-02-27  Murray Cumming  <murrayc@murrayc.com>
 
+	More uses of SqlBuilder for SELECT statements.
+
+2010-02-27  Murray Cumming  <murrayc@murrayc.com>
+
   Fix runtime problems with the use of SqlBuilder.
   
 	* glom/base_db.[h|cc]: query_execute_select(), query_execute(): Catch more 
