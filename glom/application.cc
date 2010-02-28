@@ -68,9 +68,9 @@ namespace Glom
 //static const int GLOM_RESPONSE_BROWSE_NETWORK = 1;
 
 // Global application variable
-App_Glom* global_application = 0;
+Application* global_application = 0;
 
-App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
+Application::Application(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : type_base(cobject, "Glom"),
   m_pBoxTop(0),
   m_pFrame(0),
@@ -103,16 +103,16 @@ App_Glom::App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& bu
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   if(!connection_pool)
     connection_pool->set_avahi_publish_callbacks(
-      sigc::mem_fun(*this, &App_Glom::on_connection_avahi_begin),
-      sigc::mem_fun(*this, &App_Glom::on_connection_avahi_progress),
-      sigc::mem_fun(*this, &App_Glom::on_connection_avahi_done) );     
+      sigc::mem_fun(*this, &Application::on_connection_avahi_begin),
+      sigc::mem_fun(*this, &Application::on_connection_avahi_progress),
+      sigc::mem_fun(*this, &Application::on_connection_avahi_done) );     
 #endif
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   global_application = this;
 }
 
-App_Glom::~App_Glom()
+Application::~Application()
 {
   #ifndef GLOM_ENABLE_CLIENT_ONLY
   if(m_window_translations)
@@ -134,7 +134,7 @@ App_Glom::~App_Glom()
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void App_Glom::on_connection_avahi_begin()
+void Application::on_connection_avahi_begin()
 {
   //Create the dialog:
   if(m_avahi_progress_dialog)
@@ -149,14 +149,14 @@ void App_Glom::on_connection_avahi_begin()
   m_avahi_progress_dialog->show();
 }
 
-void App_Glom::on_connection_avahi_progress()
+void Application::on_connection_avahi_progress()
 {
   //Allow GTK+ to process events, so that the UI is responsive:
   while(Gtk::Main::events_pending())
    Gtk::Main::iteration();
 }
 
-void App_Glom::on_connection_avahi_done()
+void Application::on_connection_avahi_done()
 {
   //Delete the dialog:
   if(m_avahi_progress_dialog)
@@ -167,7 +167,7 @@ void App_Glom::on_connection_avahi_done()
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-bool App_Glom::init(const Glib::ustring& document_uri)
+bool Application::init(const Glib::ustring& document_uri)
 {
   type_vec_strings vecAuthors;
   vecAuthors.push_back("Murray Cumming <murrayc@murrayc.com>");
@@ -196,17 +196,17 @@ bool App_Glom::init(const Glib::ustring& document_uri)
   //show_all();
 }
 
-bool App_Glom::get_show_sql_debug() const
+bool Application::get_show_sql_debug() const
 {
   return m_show_sql_debug;
 }
 
-void App_Glom::set_show_sql_debug(bool val)
+void Application::set_show_sql_debug(bool val)
 {
   m_show_sql_debug = val;
 }
 
-void App_Glom::init_layout()
+void Application::init_layout()
 {
   //We override this method so that we can put everything in the vbox from the glade file, instead of the vbox from App_Gtk.
 
@@ -224,7 +224,7 @@ void App_Glom::init_layout()
   //m_VBox_PlaceHolder.show();
 }
 
-void App_Glom::init_toolbars()
+void Application::init_toolbars()
 {
   //We override this because
   //a) We don't want a toolbar, and
@@ -248,7 +248,7 @@ void App_Glom::init_toolbars()
 }
 
 #ifndef GLOM_ENABLE_MAEMO
-void App_Glom::init_menus_file()
+void Application::init_menus_file()
 {
   //Overridden to remove the Save and Save-As menu items,
   //because all changes are saved immediately and automatically.
@@ -272,7 +272,7 @@ void App_Glom::init_menus_file()
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_refFileActionGroup->add(action,
-                        sigc::mem_fun((App_Glom&)*this, &App_Glom::on_menu_file_save_as_example));
+                        sigc::mem_fun((Application&)*this, &Application::on_menu_file_save_as_example));
 
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_Menu_File_Export", _("_Export")),
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_export));
@@ -287,7 +287,7 @@ void App_Glom::init_menus_file()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_connection_toggleaction_network_shared = 
     m_toggleaction_network_shared->signal_toggled().connect(
-      sigc::mem_fun(*this, &App_Glom::on_menu_file_toggle_share) );
+      sigc::mem_fun(*this, &Application::on_menu_file_toggle_share) );
   m_listDeveloperActions.push_back(m_toggleaction_network_shared);
 #endif //!GLOM_ENABLE_CLIENT_ONLY
 
@@ -347,7 +347,7 @@ void App_Glom::init_menus_file()
 #endif //GLOM_ENABLE_MAEMO
 
 #ifdef GLOM_ENABLE_MAEMO
-void App_Glom::on_appmenu_button_table_value_changed()
+void Application::on_appmenu_button_table_value_changed()
 {
   const Glib::ustring table_name = m_appmenu_button_table.get_table_name();
   if(m_pFrame)
@@ -369,14 +369,14 @@ static void add_button_to_appmenu(Hildon::AppMenu& appmenu, const Glib::ustring&
   appmenu.append(*button);
 }
 
-void App_Glom::init_menus()
+void Application::init_menus()
 {
   //There is no real menu on Maemo. We use HildonAppMenu instead.
 
   m_pFrame->add_view(&m_appmenu_button_table);
   m_appmenu_button_table.show();
   m_appmenu_button_table.signal_value_changed().connect(
-    sigc::mem_fun(*this, &App_Glom::on_appmenu_button_table_value_changed) );
+    sigc::mem_fun(*this, &Application::on_appmenu_button_table_value_changed) );
   m_maemo_appmenu.append(m_appmenu_button_table);
   
   add_button_to_appmenu(m_maemo_appmenu, 
@@ -391,7 +391,7 @@ void App_Glom::init_menus()
   Hildon::Program::get_instance()->set_common_app_menu(m_maemo_appmenu);
 }
 #else
-void App_Glom::init_menus()
+void Application::init_menus()
 {
   init_menus_file();
   init_menus_edit();
@@ -438,11 +438,11 @@ void App_Glom::init_menus()
 
   m_action_menu_userlevel_developer = Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_userlevel_Developer", _("_Developer"));
   m_refActionGroup_Others->add(m_action_menu_userlevel_developer,
-                        sigc::mem_fun(*this, &App_Glom::on_menu_userlevel_developer) );
+                        sigc::mem_fun(*this, &Application::on_menu_userlevel_developer) );
 
   m_action_menu_userlevel_operator =  Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_userlevel_Operator", _("_Operator"));
   m_refActionGroup_Others->add(m_action_menu_userlevel_operator,
-                          sigc::mem_fun(*this, &App_Glom::on_menu_userlevel_operator) );
+                          sigc::mem_fun(*this, &Application::on_menu_userlevel_operator) );
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   //"Mode" menu:
@@ -504,11 +504,11 @@ void App_Glom::init_menus()
 
   action = Gtk::Action::create("GlomAction_Menu_Developer_ChangeLanguage", _("_Test Translation"));
   m_listDeveloperActions.push_back(action);
-  m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &App_Glom::on_menu_developer_changelanguage));
+  m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &Application::on_menu_developer_changelanguage));
 
   action = Gtk::Action::create("GlomAction_Menu_Developer_Translations", _("_Translations"));
   m_listDeveloperActions.push_back(action);
-  m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &App_Glom::on_menu_developer_translations));
+  m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &Application::on_menu_developer_translations));
 
 
   //"Active Platform" menu:
@@ -519,17 +519,17 @@ void App_Glom::init_menus()
   action = Gtk::RadioAction::create(group_active_platform, "GlomAction_Menu_Developer_ActivePlatform_Normal", 
     _("_Normal"), _("The layout to use for normal desktop environments."));
   m_listDeveloperActions.push_back(action);
-  m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &App_Glom::on_menu_developer_active_platform_normal));
+  m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &Application::on_menu_developer_active_platform_normal));
 
   action = Gtk::RadioAction::create(group_active_platform, "GlomAction_Menu_Developer_ActivePlatform_Maemo",
     _("_Maemo"), _("The layout to use for Maemo devices."));
   m_listDeveloperActions.push_back(action);
-  m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &App_Glom::on_menu_developer_active_platform_maemo));
+  m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &Application::on_menu_developer_active_platform_maemo));
 
 
   m_action_show_layout_toolbar = Gtk::ToggleAction::create("GlomAction_Menu_Developer_ShowLayoutToolbar", _("_Show Layout Toolbar"));
   m_listDeveloperActions.push_back(m_action_show_layout_toolbar);
-  m_refActionGroup_Others->add(m_action_show_layout_toolbar, sigc::mem_fun(*this, &App_Glom::on_menu_developer_show_layout_toolbar));
+  m_refActionGroup_Others->add(m_action_show_layout_toolbar, sigc::mem_fun(*this, &Application::on_menu_developer_show_layout_toolbar));
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -602,7 +602,7 @@ void App_Glom::init_menus()
 #endif //GLOM_ENABLE_MAEMO
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void App_Glom::on_menu_file_toggle_share()
+void Application::on_menu_file_toggle_share()
 {
   if(!m_pFrame)
     return;
@@ -610,7 +610,7 @@ void App_Glom::on_menu_file_toggle_share()
   m_pFrame->on_menu_file_toggle_share(m_toggleaction_network_shared);
 }
 
-void App_Glom::on_menu_userlevel_developer()
+void Application::on_menu_userlevel_developer()
 {
   if(!m_pFrame)
     return;
@@ -619,7 +619,7 @@ void App_Glom::on_menu_userlevel_developer()
   m_pFrame->show_layout_toolbar(m_action_show_layout_toolbar->get_active());
 }
 
-void App_Glom::on_menu_userlevel_operator()
+void Application::on_menu_userlevel_operator()
 {
   if(m_pFrame)
   {
@@ -657,7 +657,7 @@ static bool hostname_is_localhost(const Glib::ustring& hostname)
   return true;
 }
 
-void App_Glom::ui_warning_load_failed(int failure_code)
+void Application::ui_warning_load_failed(int failure_code)
 {
   if(failure_code == Document::LOAD_FAILURE_CODE_FILE_VERSION_TOO_NEW)
   {
@@ -670,7 +670,7 @@ void App_Glom::ui_warning_load_failed(int failure_code)
 
 
 #ifndef G_OS_WIN32
-void App_Glom::open_browsed_document(const EpcServiceInfo* server, const Glib::ustring& service_name)
+void Application::open_browsed_document(const EpcServiceInfo* server, const Glib::ustring& service_name)
 {
   gsize length = 0;
   gchar *document_contents = 0;
@@ -832,7 +832,7 @@ static bool uri_is_writable(const Glib::RefPtr<const Gio::File>& uri)
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-Glib::ustring App_Glom::get_file_uri_without_extension(const Glib::ustring& uri)
+Glib::ustring Application::get_file_uri_without_extension(const Glib::ustring& uri)
 {
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
   if(!file)
@@ -855,7 +855,7 @@ Glib::ustring App_Glom::get_file_uri_without_extension(const Glib::ustring& uri)
   }
 }
 
-void App_Glom::new_instance(const Glib::ustring& uri) //Override
+void Application::new_instance(const Glib::ustring& uri) //Override
 {
   Glib::ustring command = "glom";
   if(!uri.empty())
@@ -867,11 +867,11 @@ void App_Glom::new_instance(const Glib::ustring& uri) //Override
     &gerror);
   if(gerror)
   {
-    std::cerr << "App_Glom::new_instance(): error calling gdk_spawn_command_line_on_screen(): " << gerror->message << std::endl;
+    std::cerr << "Application::new_instance(): error calling gdk_spawn_command_line_on_screen(): " << gerror->message << std::endl;
   }
 }
 
-void App_Glom::init_create_document()
+void Application::init_create_document()
 {
   if(!m_pDocument)
   {
@@ -890,7 +890,7 @@ void App_Glom::init_create_document()
   type_base::init_create_document(); //Sets window title. Doesn't recreate doc.
 }
 
-bool App_Glom::check_document_hosting_mode_is_supported(Document* document)
+bool Application::check_document_hosting_mode_is_supported(Document* document)
 {
   //If it's an example then the document's hosting mode doesn't matter, 
   //because the user will be asked to choose one when saving anyway.
@@ -948,7 +948,7 @@ bool App_Glom::check_document_hosting_mode_is_supported(Document* document)
   return false;
 }
 
-bool App_Glom::on_document_load()
+bool Application::on_document_load()
 {
   //Link to the database described in the document.
   //Need to ask user for user/password:
@@ -968,7 +968,7 @@ bool App_Glom::on_document_load()
   
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Connect signals:
-  pDocument->signal_userlevel_changed().connect( sigc::mem_fun(*this, &App_Glom::on_userlevel_changed) );
+  pDocument->signal_userlevel_changed().connect( sigc::mem_fun(*this, &Application::on_userlevel_changed) );
 
   //Disable/Enable actions, depending on userlevel:
   pDocument->emit_userlevel_changed();
@@ -1081,7 +1081,7 @@ bool App_Glom::on_document_load()
     else
     {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-      connection_pool->set_get_document_func( sigc::mem_fun(*this, &App_Glom::on_connection_pool_get_document) );
+      connection_pool->set_get_document_func( sigc::mem_fun(*this, &Application::on_connection_pool_get_document) );
 #endif
 
       connection_pool->set_ready_to_connect(true); //connect_to_server() will now attempt the connection-> Shared instances of m_Connection will also be usable.
@@ -1127,11 +1127,11 @@ bool App_Glom::on_document_load()
           }
           else
           #endif // !GLOM_ENABLE_CLIENT_ONLY
-            std::cerr << "App_Glom::on_document_load(): unexpected database_not_found error when opening example." << std::endl;
+            std::cerr << "Application::on_document_load(): unexpected database_not_found error when opening example." << std::endl;
         }
         else if(!test)
         {
-          std::cerr << "App_Glom::on_document_load(): unexpected error." << std::endl;
+          std::cerr << "Application::on_document_load(): unexpected error." << std::endl;
         }
       }
 
@@ -1149,14 +1149,14 @@ bool App_Glom::on_document_load()
         {
           // TODO: Do we need to call connection_pool->cleanup() here, for
           // stopping self-hosted databases? armin.
-          connection_pool->cleanup( sigc::mem_fun(*this, &App_Glom::on_connection_close_progress) );
+          connection_pool->cleanup( sigc::mem_fun(*this, &Application::on_connection_close_progress) );
           //If the database was not successfully recreated:
           if(!user_cancelled)
           {
             //Let the user try again.
             //A warning has already been shown.
             //TODO: No, I don't think there is a warning.
-            std::cerr << "App_Glom::on_document_load(): recreate_database() failed." << std::endl;
+            std::cerr << "Application::on_document_load(): recreate_database() failed." << std::endl;
             return offer_new_or_existing();
           }
           else
@@ -1196,12 +1196,12 @@ bool App_Glom::on_document_load()
   return true; //Loading of the document into the application succeeded.
 }
 
-void App_Glom::on_connection_close_progress()
+void Application::on_connection_close_progress()
 {
   //TODO_murrayc
 }
 
-void App_Glom::on_document_close()
+void Application::on_document_close()
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //TODO: It would be better to do this in a Application::on_document_closed() virtual method,
@@ -1210,24 +1210,24 @@ void App_Glom::on_document_close()
   if(!connection_pool)
     return;
 
-  connection_pool->cleanup( sigc::mem_fun(*this, &App_Glom::on_connection_close_progress) );
+  connection_pool->cleanup( sigc::mem_fun(*this, &Application::on_connection_close_progress) );
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
 /*
-void App_Glom::statusbar_set_text(const Glib::ustring& strText)
+void Application::statusbar_set_text(const Glib::ustring& strText)
 {
   m_pStatus->set_text(strText);
 }
 
-void App_Glom::statusbar_clear()
+void Application::statusbar_clear()
 {
   statusbar_set_text("");
 }
 */
 
 
-void App_Glom::update_network_shared_ui()
+void Application::update_network_shared_ui()
 {
   Document* document = dynamic_cast<Document*>(get_document());
   if(!document)
@@ -1256,12 +1256,12 @@ void App_Glom::update_network_shared_ui()
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void App_Glom::on_userlevel_changed(AppState::userlevels /* userlevel */)
+void Application::on_userlevel_changed(AppState::userlevels /* userlevel */)
 {
   update_userlevel_ui();
 }
 
-void App_Glom::update_userlevel_ui()
+void Application::update_userlevel_ui()
 {
   AppState::userlevels userlevel = get_userlevel();
 
@@ -1298,19 +1298,19 @@ void App_Glom::update_userlevel_ui()
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #ifndef GLOM_ENABLE_MAEMO
-Glib::RefPtr<Gtk::UIManager> App_Glom::get_ui_manager()
+Glib::RefPtr<Gtk::UIManager> Application::get_ui_manager()
 {
   return m_refUIManager;
 }
 #else
-Hildon::AppMenu* App_Glom::get_maemo_appmenu()
+Hildon::AppMenu* Application::get_maemo_appmenu()
 {
   return &m_maemo_appmenu;
 }
 #endif //GLOM_ENABLE_MAEMO
 
 
-bool App_Glom::offer_new_or_existing()
+bool Application::offer_new_or_existing()
 {
   //Offer to load an existing document, or start a new one.
   const Glib::ustring glade_path = Utils::get_glade_file_path("glom.glade");
@@ -1322,14 +1322,14 @@ bool App_Glom::offer_new_or_existing()
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "App_Glom::offer_new_or_existing(): Gtk::Builder::create_from_file() failed: " << ex.what() << std::endl;
+    std::cerr << "Application::offer_new_or_existing(): Gtk::Builder::create_from_file() failed: " << ex.what() << std::endl;
   }
 #else
   std::auto_ptr<Glib::Error> ex;
   refXml = Gtk::Builder::create_from_file(glade_path, "dialog_existing_or_new", ex);
   if(ex.get())
   {
-    std::cerr << "App_Glom::offer_new_or_existing(): Gtk::Builder::create_from_file() failed:" << ex->what() << std::endl;
+    std::cerr << "Application::offer_new_or_existing(): Gtk::Builder::create_from_file() failed:" << ex->what() << std::endl;
   }
 #endif
 
@@ -1340,9 +1340,9 @@ bool App_Glom::offer_new_or_existing()
   std::auto_ptr<Dialog_ExistingOrNew> dialog(dialog_raw);
   dialog->set_transient_for(*this);
 /*
-  dialog->signal_new().connect(sigc::mem_fun(*this, &App_Glom::on_existing_or_new_new));
-  dialog->signal_open_from_uri().connect(sigc::mem_fun(*this, &App_Glom::on_existing_or_new_open_from_uri));
-  dialog->signal_open_from_remote().connect(sigc::mem_fun(*this, &App_Glom::on_existing_or_new_open_from_remote));
+  dialog->signal_new().connect(sigc::mem_fun(*this, &Application::on_existing_or_new_new));
+  dialog->signal_open_from_uri().connect(sigc::mem_fun(*this, &Application::on_existing_or_new_open_from_uri));
+  dialog->signal_open_from_remote().connect(sigc::mem_fun(*this, &Application::on_existing_or_new_open_from_remote));
 */
   bool ask_again = true;
   while(ask_again)
@@ -1370,7 +1370,7 @@ bool App_Glom::offer_new_or_existing()
 #endif
       case Dialog_ExistingOrNew::NONE:
       default:
-	std::cerr << "App_Glom::offer_new_or_existing(): Unhandled action: " << dialog->get_action() << std::endl;
+	std::cerr << "Application::offer_new_or_existing(): Unhandled action: " << dialog->get_action() << std::endl;
         g_assert_not_reached();
         break;
       }
@@ -1379,7 +1379,7 @@ bool App_Glom::offer_new_or_existing()
       Document* document = dynamic_cast<Document*>(get_document());
       if(!document)
       {
-        std::cerr << "App_Glom::offer_new_or_existing(): document was NULL." << std::endl;
+        std::cerr << "Application::offer_new_or_existing(): document was NULL." << std::endl;
         return false;
       }
 
@@ -1401,7 +1401,7 @@ bool App_Glom::offer_new_or_existing()
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void App_Glom::existing_or_new_new()
+void Application::existing_or_new_new()
 {
   // New empty document
 
@@ -1449,7 +1449,7 @@ void App_Glom::existing_or_new_new()
    //Tell the connection pool about the document:
    ConnectionPool* connection_pool = ConnectionPool::get_instance();
    if(connection_pool)
-     connection_pool->set_get_document_func( sigc::mem_fun(*this, &App_Glom::on_connection_pool_get_document) );
+     connection_pool->set_get_document_func( sigc::mem_fun(*this, &Application::on_connection_pool_get_document) );
 
     const bool connected = m_pFrame->connection_request_password_and_choose_new_database_name();
     if(!connected)
@@ -1484,24 +1484,24 @@ void App_Glom::existing_or_new_new()
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-void App_Glom::set_mode_data()
+void Application::set_mode_data()
 {
   m_action_mode_data->activate();
 }
 
-void App_Glom::set_mode_find()
+void Application::set_mode_find()
 {
   m_action_mode_find->activate();
 }
 
 #ifndef GLOM_ENABLE_MAEMO
-void App_Glom::init_menus_help()
+void Application::init_menus_help()
 {
   //Call base class:
   App_WithDoc_Gtk::init_menus_help();
   m_refHelpActionGroup->add( Gtk::Action::create("BakeryAction_Help_Contents",
                         _("_Contents"), _("Help with the application")),
-                        sigc::mem_fun(*this, &App_Glom::on_menu_help_contents) );
+                        sigc::mem_fun(*this, &Application::on_menu_help_contents) );
 
   //Build part of the menu structure, to be merged in by using the "PH" plaeholders:
   static const Glib::ustring ui_description =
@@ -1519,14 +1519,14 @@ void App_Glom::init_menus_help()
   add_ui_from_string(ui_description);
 }
 
-void App_Glom::on_menu_help_contents()
+void Application::on_menu_help_contents()
 {
   Glom::Utils::show_help();
 }
 #endif //GLOM_ENABLE_MAEMO
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-bool App_Glom::recreate_database(bool& user_cancelled)
+bool Application::recreate_database(bool& user_cancelled)
 {
   //Create a database, based on the information in the current document:
   Document* pDocument = static_cast<Document*>(get_document());
@@ -1557,7 +1557,7 @@ bool App_Glom::recreate_database(bool& user_cancelled)
     if(!error.get())
     {
 #endif // GLIBMM_EXCEPTIONS_ENABLED
-      g_warning("App_Glom::recreate_database(): Failed because database exists already.");
+      g_warning("Application::recreate_database(): Failed because database exists already.");
 
       return false; //Connection to the database succeeded, because no exception was thrown. so the database exists already.
 #ifndef GLIBMM_EXCEPTIONS_ENABLED
@@ -1578,7 +1578,7 @@ bool App_Glom::recreate_database(bool& user_cancelled)
       if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
       {
         user_cancelled = true; //Eventually, the user will cancel after retrying.
-        g_warning("App_Glom::recreate_database(): Failed because connection to server failed, without specifying a database.");
+        g_warning("Application::recreate_database(): Failed because connection to server failed, without specifying a database.");
         return false;
       }
 #ifndef GLIBMM_EXCEPTIONS_ENABLED
@@ -1647,7 +1647,7 @@ bool App_Glom::recreate_database(bool& user_cancelled)
   {
     const std::exception& ex = *error.get();
 #endif // GLIBMM_EXCEPTIONS_ENABLED
-    g_warning("App_Glom::recreate_database(): Failed to connect to the newly-created database.");
+    g_warning("Application::recreate_database(): Failed to connect to the newly-created database.");
     return false;
   }
 
@@ -1668,7 +1668,7 @@ bool App_Glom::recreate_database(bool& user_cancelled)
     dialog_progress->pulse();
     if(!table_creation_succeeded)
     {
-      g_warning("App_Glom::recreate_database(): CREATE TABLE failed with the newly-created database.");
+      g_warning("Application::recreate_database(): CREATE TABLE failed with the newly-created database.");
       return false;
     }
   }
@@ -1696,13 +1696,13 @@ bool App_Glom::recreate_database(bool& user_cancelled)
       
       if(!table_insert_succeeded)
       {
-        g_warning("App_Glom::recreate_database(): INSERT of example data failed with the newly-created database.");
+        g_warning("Application::recreate_database(): INSERT of example data failed with the newly-created database.");
         return false;
       }
     //}
     //catch(const std::exception& ex)
     //{
-    //  std::cerr << "App_Glom::recreate_database(): exception: " << ex.what() << std::endl;
+    //  std::cerr << "Application::recreate_database(): exception: " << ex.what() << std::endl;
       //HandleError(ex);
     //}
 
@@ -1712,7 +1712,7 @@ bool App_Glom::recreate_database(bool& user_cancelled)
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-AppState::userlevels App_Glom::get_userlevel() const
+AppState::userlevels Application::get_userlevel() const
 {
   const Document* document = dynamic_cast<const Document*>(get_document());
   if(document)
@@ -1725,7 +1725,7 @@ AppState::userlevels App_Glom::get_userlevel() const
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void App_Glom::add_developer_action(const Glib::RefPtr<Gtk::Action>& refAction)
+void Application::add_developer_action(const Glib::RefPtr<Gtk::Action>& refAction)
 {
   //Prevent it from being added twice:
   remove_developer_action(refAction);
@@ -1733,7 +1733,7 @@ void App_Glom::add_developer_action(const Glib::RefPtr<Gtk::Action>& refAction)
   m_listDeveloperActions.push_back(refAction);
 }
 
-void App_Glom::remove_developer_action(const Glib::RefPtr<Gtk::Action>& refAction)
+void Application::remove_developer_action(const Glib::RefPtr<Gtk::Action>& refAction)
 {
   for(type_listActions::iterator iter = m_listDeveloperActions.begin(); iter != m_listDeveloperActions.end(); ++iter)
   {
@@ -1747,12 +1747,12 @@ void App_Glom::remove_developer_action(const Glib::RefPtr<Gtk::Action>& refActio
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #ifdef GLOM_ENABLE_MAEMO
-void App_Glom::fill_menu_tables()
+void Application::fill_menu_tables()
 {
   m_appmenu_button_table.fill_from_database();
 }
 #else
-void App_Glom::fill_menu_tables()
+void Application::fill_menu_tables()
 {
   //TODO: There must be a better way than building a ui_string like this:
 
@@ -1835,19 +1835,19 @@ void App_Glom::fill_menu_tables()
   {
     const Glib::Error& ex = *error.get();
 #endif // GLIBMM_EXCEPTIONS_ENABLED
-    std::cerr << " App_Glom::fill_menu_tables(): building menus failed: " <<  ex.what() << std::endl;
+    std::cerr << " Application::fill_menu_tables(): building menus failed: " <<  ex.what() << std::endl;
     std::cerr << "   The ui_description was: " <<  ui_description << std::endl;
   }
 }
 #endif //GLOM_ENABLE_MAEMO
 
 #ifdef GLOM_ENABLE_MAEMO
-void App_Glom::fill_menu_reports(const Glib::ustring& /* table_name */)
+void Application::fill_menu_reports(const Glib::ustring& /* table_name */)
 {
   //TODO: Change the Hildon::AppMenu.
 }
 #else
-void App_Glom::fill_menu_reports(const Glib::ustring& table_name)
+void Application::fill_menu_reports(const Glib::ustring& table_name)
 {
   //TODO: There must be a better way than building a ui_string like this:
 
@@ -1934,18 +1934,18 @@ void App_Glom::fill_menu_reports(const Glib::ustring& table_name)
   {
     const Glib::Error& ex = *error.get();
 #endif // GLIBMM_EXCEPTIONS_ENABLED
-    std::cerr << " App_Glom::fill_menu_reports(): building menus failed: " <<  ex.what();
+    std::cerr << " Application::fill_menu_reports(): building menus failed: " <<  ex.what();
   }
 }
 #endif //GLOM_ENABLE_MAEMO
 
 #ifdef GLOM_ENABLE_MAEMO
-void App_Glom::fill_menu_print_layouts(const Glib::ustring& /* table_name */)
+void Application::fill_menu_print_layouts(const Glib::ustring& /* table_name */)
 {
   //TODO: Change the Hildon::AppMenu.
 }
 #else
-void App_Glom::fill_menu_print_layouts(const Glib::ustring& table_name)
+void Application::fill_menu_print_layouts(const Glib::ustring& table_name)
 {
   //TODO: This is copy/pasted from fill_menu_print_reports. Can we generalize it?
 
@@ -2046,13 +2046,13 @@ void App_Glom::fill_menu_print_layouts(const Glib::ustring& table_name)
   {
     const Glib::Error& ex = *error.get();
 #endif // GLIBMM_EXCEPTIONS_ENABLED
-    std::cerr << " App_Glom::fill_menu_reports(): building menus failed: " <<  ex.what();
+    std::cerr << " Application::fill_menu_reports(): building menus failed: " <<  ex.what();
   }
 }
 #endif //GLOM_ENABLE_MAEMO
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void App_Glom::on_menu_file_save_as_example()
+void Application::on_menu_file_save_as_example()
 {
   //Based on the implementation of GlomBakery::App_WithDoc::on_menu_file_saveas()
 
@@ -2152,7 +2152,7 @@ void App_Glom::on_menu_file_save_as_example()
   }
 }
 
-Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) //override
+Glib::ustring Application::ui_file_select_save(const Glib::ustring& old_file_uri) //override
 {
   //Reimplement this whole function, just so we can use our custom FileChooserDialog class:
   App& app = *this;
@@ -2355,7 +2355,7 @@ Glib::ustring App_Glom::ui_file_select_save(const Glib::ustring& old_file_uri) /
   return Glib::ustring();
 }
 
-void App_Glom::stop_self_hosting_of_document_database()
+void Application::stop_self_hosting_of_document_database()
 {
   Document* pDocument = static_cast<Document*>(get_document());
   if(pDocument)
@@ -2364,11 +2364,11 @@ void App_Glom::stop_self_hosting_of_document_database()
     if(!connection_pool)
       return;
 
-    connection_pool->cleanup( sigc::mem_fun(*this, &App_Glom::on_connection_close_progress ));
+    connection_pool->cleanup( sigc::mem_fun(*this, &Application::on_connection_close_progress ));
   }
 }
 
-void App_Glom::on_menu_developer_changelanguage()
+void Application::on_menu_developer_changelanguage()
 {
   Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_change_language");
   if(refXml)
@@ -2398,7 +2398,7 @@ void App_Glom::on_menu_developer_changelanguage()
   }
 }
 
-void App_Glom::on_menu_developer_translations()
+void Application::on_menu_developer_translations()
 {
   if(!m_window_translations)
   {
@@ -2412,7 +2412,7 @@ void App_Glom::on_menu_developer_translations()
       m_window_translations->load_from_document();
       m_window_translations->show();
 
-      m_window_translations->signal_hide().connect(sigc::mem_fun(*this, &App_Glom::on_window_translations_hide));
+      m_window_translations->signal_hide().connect(sigc::mem_fun(*this, &Application::on_window_translations_hide));
     }
   }
   else
@@ -2422,7 +2422,7 @@ void App_Glom::on_menu_developer_translations()
   }
 }
 
-void App_Glom::on_menu_developer_active_platform_normal()
+void Application::on_menu_developer_active_platform_normal()
 {
   Document* document = dynamic_cast<Document*>(get_document());
   if(document)
@@ -2431,7 +2431,7 @@ void App_Glom::on_menu_developer_active_platform_normal()
   m_pFrame->show_table_refresh();
 }
 
-void App_Glom::on_menu_developer_active_platform_maemo()
+void Application::on_menu_developer_active_platform_maemo()
 {
   Document* document = dynamic_cast<Document*>(get_document());
   if(document)
@@ -2440,13 +2440,13 @@ void App_Glom::on_menu_developer_active_platform_maemo()
   m_pFrame->show_table_refresh();
 }
 
-void App_Glom::on_menu_developer_show_layout_toolbar()
+void Application::on_menu_developer_show_layout_toolbar()
 {
   m_pFrame->show_layout_toolbar(m_action_show_layout_toolbar->get_active());
 }
 
 
-void App_Glom::on_window_translations_hide()
+void Application::on_window_translations_hide()
 {
   if(m_window_translations)
   {
@@ -2455,12 +2455,12 @@ void App_Glom::on_window_translations_hide()
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-App_Glom* App_Glom::get_application()
+Application* Application::get_application()
 {
   return global_application;
 }
 
-void App_Glom::document_history_add(const Glib::ustring& file_uri)
+void Application::document_history_add(const Glib::ustring& file_uri)
 {
   // We override this so we can prevent example files from being saved in the recently-used list:
 
@@ -2476,24 +2476,24 @@ void App_Glom::document_history_add(const Glib::ustring& file_uri)
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void App_Glom::do_menu_developer_fields(Gtk::Window& parent, const Glib::ustring table_name)
+void Application::do_menu_developer_fields(Gtk::Window& parent, const Glib::ustring table_name)
 {
   m_pFrame->do_menu_developer_fields(parent, table_name);
 }
 
-void App_Glom::do_menu_developer_relationships(Gtk::Window& parent, const Glib::ustring table_name)
+void Application::do_menu_developer_relationships(Gtk::Window& parent, const Glib::ustring table_name)
 {
   m_pFrame->do_menu_developer_relationships(parent, table_name);
 }
 
-Document* App_Glom::on_connection_pool_get_document()
+Document* Application::on_connection_pool_get_document()
 {
   return dynamic_cast<Document*>(get_document());
 }
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
 //overridden to show the current table name in the window's title:
-void App_Glom::update_window_title()
+void Application::update_window_title()
 {
   //Set application's main window title:
 
@@ -2539,7 +2539,7 @@ void App_Glom::update_window_title()
   #endif //GLOM_ENABLE_MAEMO
 }
 
-void App_Glom::show_table_details(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value)
+void Application::show_table_details(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value)
 {
   if(!m_pFrame)
     return;
@@ -2547,7 +2547,7 @@ void App_Glom::show_table_details(const Glib::ustring& table_name, const Gnome::
   m_pFrame->show_table(table_name, primary_key_value);
 }
 
-void App_Glom::show_table_list(const Glib::ustring& table_name)
+void Application::show_table_list(const Glib::ustring& table_name)
 {
   if(!m_pFrame)
     return;

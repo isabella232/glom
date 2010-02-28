@@ -88,7 +88,7 @@ void Notebook_Glom::on_switch_page_handler(GtkNotebookPage* /* pPage */, guint u
       //pBox->load_from_document();
 
       //Set the default button, if there is one:
-      App_Glom* pAppGlom = dynamic_cast<App_Glom*>(pApp);
+      Application* pAppGlom = dynamic_cast<Application*>(pApp);
       if(pAppGlom)
       {
         Gtk::Widget* default_button = pBox->get_default_button();

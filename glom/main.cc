@@ -630,26 +630,26 @@ main(int argc, char* argv[])
 
 
 
-    Glom::App_Glom* pApp_Glom = 0;
-    refXml->get_widget_derived("window_main", pApp_Glom);
-    g_assert(pApp_Glom);
+    Glom::Application* pApplication = 0;
+    refXml->get_widget_derived("window_main", pApplication);
+    g_assert(pApplication);
 
-    pApp_Glom->set_command_line_args(argc, argv);
-    pApp_Glom->set_show_sql_debug(group.m_arg_debug_sql);
+    pApplication->set_command_line_args(argc, argv);
+    pApplication->set_show_sql_debug(group.m_arg_debug_sql);
 
-    const bool test = pApp_Glom->init(input_uri); //Sets it up and shows it.
+    const bool test = pApplication->init(input_uri); //Sets it up and shows it.
 
     #ifdef GLOM_ENABLE_MAEMO
     //TODO: What is this really for?
-    Hildon::Program::get_instance()->add_window(*pApp_Glom);
+    Hildon::Program::get_instance()->add_window(*pApplication);
     #endif
 
     if(test) //The user could cancel the offer of a new or existing database.
-      Gtk::Main::run(*pApp_Glom); //Quit when the window is closed.
+      Gtk::Main::run(*pApplication); //Quit when the window is closed.
 
     //Cleanup:
-    delete pApp_Glom;
-    pApp_Glom = 0;
+    delete pApplication;
+    pApplication = 0;
   }
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   catch(const Glib::Exception& ex)

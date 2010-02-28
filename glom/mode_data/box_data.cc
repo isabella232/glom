@@ -355,7 +355,7 @@ void Box_Data::on_python_requested_show_table_details(const Glib::ustring& table
 {
   std::cout << "debug: on_python_requested_show_table_details(): " << table_name << ", pk value: " << primary_key_value.to_string() << std::endl;
   
-  App_Glom* app = App_Glom::get_application();
+  Application* app = Application::get_application();
   if(app)
     app->show_table_details(table_name, primary_key_value);
 }
@@ -364,7 +364,7 @@ void Box_Data::on_python_requested_show_table_list(const Glib::ustring& table_na
 {
   //std::cout << "debug: on_python_requested_show_table_list(): " << table_name << std::endl;
   
-  App_Glom* app = App_Glom::get_application();
+  Application* app = Application::get_application();
   if(app)
     app->show_table_list(table_name);
 }

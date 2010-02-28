@@ -29,7 +29,7 @@
 namespace Glom
 {
 
-class App_Glom;
+class Application;
 
 class NotebookGlom
 : public Gtk::Notebook,
@@ -45,7 +45,7 @@ public:
 protected:
   void init();
 
-  virtual App_Glom* get_application();
+  virtual Application* get_application();
 };
 
 } //namespace Glom

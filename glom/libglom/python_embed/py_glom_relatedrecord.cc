@@ -96,7 +96,7 @@ boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& 
           + " WHERE \"" + related_table + "\".\"" + related_key_name + "\" = " + m_from_key_value_sqlized;
 
         /* TODO: Fix linking problems
-        const App_Glom* app = App_Glom::get_application();
+        const Application* app = Application::get_application();
         if(app && app->get_show_sql_debug())
         {
           try

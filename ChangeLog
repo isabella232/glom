@@ -1,3 +1,58 @@
+2010-02-28  Murray Cumming  <murrayc@murrayc-x61>
+
+	reviewed by: <delete if not using a buddy>
+
+	* glom/application.cc:
+	* glom/application.h:
+	* glom/base_db.cc:
+	* glom/base_db_table_data.cc:
+	* glom/box_withbuttons.cc:
+	* glom/frame_glom.cc:
+	* glom/glom_privs.cc:
+	* glom/libglom/connectionpool.h:
+	* glom/libglom/document/bakery/document.cc:
+	* glom/libglom/python_embed/py_glom_relatedrecord.cc:
+	* glom/main.cc:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data_calendar_related.cc:
+	* glom/mode_data/box_data_portal.cc:
+	* glom/mode_data/flowtablewithfields.cc:
+	* glom/mode_design/relationships_overview/dialog_relationships_over
+	view.cc:
+	* glom/navigation/box_tables.cc:
+	* glom/notebook_glom.cc:
+	* glom/utility_widgets/buttonglom.cc:
+	* glom/utility_widgets/buttonglom.h:
+	* glom/utility_widgets/canvas/canvas_image_movable.cc:
+	* glom/utility_widgets/checkglom.cc:
+	* glom/utility_widgets/checkglom.h:
+	* glom/utility_widgets/comboentryglom.cc:
+	* glom/utility_widgets/comboentryglom.h:
+	* glom/utility_widgets/comboglom.cc:
+	* glom/utility_widgets/comboglom.h:
+	* glom/utility_widgets/datawidget.cc:
+	* glom/utility_widgets/datawidget.h:
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.h:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
+	* glom/utility_widgets/entryglom.cc:
+	* glom/utility_widgets/entryglom.h:
+	* glom/utility_widgets/imageglom.cc:
+	* glom/utility_widgets/imageglom.h:
+	* glom/utility_widgets/labelglom.cc:
+	* glom/utility_widgets/labelglom.h:
+	* glom/utility_widgets/layoutwidgetbase.cc:
+	* glom/utility_widgets/layoutwidgetbase.h:
+	* glom/utility_widgets/layoutwidgetmenu.cc:
+	* glom/utility_widgets/notebookglom.cc:
+	* glom/utility_widgets/notebookglom.h:
+	* glom/utility_widgets/notebooklabelglom.cc:
+	* glom/utility_widgets/notebooklabelglom.h:
+	* glom/utility_widgets/placeholder-glom.cc:
+	* glom/utility_widgets/placeholder-glom.h:
+	* glom/utility_widgets/textviewglom.cc:
+	* glom/utility_widgets/textviewglom.h:
+
 2010-02-28  Murray Cumming  <murrayc@murrayc.com>
 
   Python button scripts: Add show_table_details() and show_table_list().

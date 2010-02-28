@@ -21,7 +21,7 @@
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 #include <glom/base_db.h>
-#include "application.h" //App_Glom.
+#include "application.h" //Application.
 #include <libglom/appstate.h>
 #include <libglom/standard_table_prefs_fields.h>
 #include <libglom/document/document.h>
@@ -209,7 +209,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute_select(const Glib::us
 
 
   //Debug output:
-  const App_Glom* app = App_Glom::get_application();
+  const Application* app = Application::get_application();
   if(stmt && app && app->get_show_sql_debug())
   {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -312,7 +312,7 @@ bool Base_DB::query_execute(const Glib::ustring& strQuery,
 
 
   //Debug output:
-  const App_Glom* app = App_Glom::get_application();
+  const Application* app = Application::get_application();
   if(stmt && app && app->get_show_sql_debug())
   {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -3410,7 +3410,7 @@ int Base_DB::count_rows_returned_by(const Glib::ustring& sql_query)
   //Be careful not to include ORDER BY clauses in this, because that would make it unnecessarily slow:
   const Glib::ustring query_count = "SELECT COUNT (*) FROM (" + sql_query + ") AS glomarbitraryalias";
 
-  const App_Glom* app = App_Glom::get_application();
+  const Application* app = Application::get_application();
   if(app && app->get_show_sql_debug())
   {
     try
@@ -3553,10 +3553,10 @@ void Base_DB::set_found_set_where_clause_for_portal(FoundSet& found_set, const s
 void Base_DB::update_gda_metastore_for_table(const Glib::ustring& table_name) const
 {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(App_Glom::get_application());
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(Application::get_application());
 #else
   std::auto_ptr<Glom::ExceptionConnection> ex;
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(App_Glom::get_application(), ex);
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(Application::get_application(), ex);
 #endif
   if(!sharedconnection)
   {

@@ -53,11 +53,11 @@ namespace Glom
 
 class Window_Translations;
 
-class App_Glom : public GlomBakery::App_WithDoc_Gtk
+class Application : public GlomBakery::App_WithDoc_Gtk
 {
 public:
-  App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~App_Glom();
+  Application(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
+  virtual ~Application();
 
   virtual bool init(const Glib::ustring& document_uri = Glib::ustring()); //override
 
@@ -109,7 +109,7 @@ public:
   void show_table_details(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value);
   void show_table_list(const Glib::ustring& table_name);
   
-  static App_Glom* get_application();
+  static Application* get_application();
 
 protected:
   virtual void ui_warning_load_failed(int failure_code = 0); //Override.

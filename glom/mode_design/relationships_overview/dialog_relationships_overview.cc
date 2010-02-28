@@ -529,7 +529,7 @@ void Dialog_RelationshipsOverview::setup_context_menu()
 
 void Dialog_RelationshipsOverview::on_context_menu_edit_fields(Glib::RefPtr<CanvasGroupDbTable> table)
 {
-  App_Glom* pApp = App_Glom::get_application();
+  Application* pApp = Application::get_application();
   if(pApp && table)
   {
     pApp->do_menu_developer_fields(*this, table->get_table_name());
@@ -540,7 +540,7 @@ void Dialog_RelationshipsOverview::on_context_menu_edit_fields(Glib::RefPtr<Canv
 
 void Dialog_RelationshipsOverview::on_context_menu_edit_relationships(Glib::RefPtr<CanvasGroupDbTable> table)
 {
-  App_Glom* pApp = App_Glom::get_application();
+  Application* pApp = Application::get_application();
   if(pApp && table)
   {
     pApp->do_menu_developer_relationships(*this, table->get_table_name());

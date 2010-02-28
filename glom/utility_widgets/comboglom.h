@@ -35,7 +35,7 @@
 namespace Glom
 {
 
-class App_Glom;
+class Application;
 
 /** A Gtk::ComboBox that can show choices of field values.
  * Use this when the user should only be allowed to enter values that are in the choices.
@@ -91,7 +91,7 @@ private:
   virtual bool on_button_press_event(GdkEventButton *event);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  virtual App_Glom* get_application();
+  virtual Application* get_application();
 
 
   Glib::ustring m_old_text;

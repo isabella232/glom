@@ -118,10 +118,10 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
           //We need the connection when we run the script, so that the script may use it.
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
           // TODO: Is this function supposed to throw an exception?
-          sharedptr<SharedConnection> sharedconnection = connect_to_server(App_Glom::get_application());
+          sharedptr<SharedConnection> sharedconnection = connect_to_server(Application::get_application());
 #else
           std::auto_ptr<ExceptionConnection> error;
-          sharedptr<SharedConnection> sharedconnection = connect_to_server(App_Glom::get_application(), error);
+          sharedptr<SharedConnection> sharedconnection = connect_to_server(Application::get_application(), error);
           if(!error.get())
           {
             // Don't evaluate function on error
@@ -264,7 +264,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
 
 bool Base_DB_Table_Data::get_related_record_exists(const sharedptr<const Relationship>& relationship, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value)
 {
-  BusyCursor cursor(App_Glom::get_application());
+  BusyCursor cursor(Application::get_application());
 
   bool result = false;
 
@@ -317,11 +317,11 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
     const Glib::ustring message = _("Data may not be entered into this related field, because the related record does not yet exist, and the relationship does not allow automatic creation of new related records.");
 #undef GLOM_ENABLE_MAEMO
 #ifdef GLOM_ENABLE_MAEMO
-    Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, *App_Glom::get_application(), message);
+    Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, *Application::get_application(), message);
 #else
     Gtk::MessageDialog dialog(Utils::bold_message(_("Related Record Does Not Exist")), true);
     dialog.set_secondary_text(message);
-    dialog.set_transient_for(*App_Glom::get_application());
+    dialog.set_transient_for(*Application::get_application());
 #endif
     dialog.run();
 
@@ -342,12 +342,12 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
       const Glib::ustring message = _("Data may not be entered into this related field, because the related record does not yet exist, and the key in the related record is auto-generated and therefore can not be created with the key value in this record.");
 
 #ifdef GLOM_ENABLE_MAEMO
-      Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, *App_Glom::get_application(), message);
+      Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, *Application::get_application(), message);
 #else
       Gtk::MessageDialog dialog(Utils::bold_message(_("Related Record Cannot Be Created")), true);
       //TODO: This is a very complex error message:
       dialog.set_secondary_text(message);
-      dialog.set_transient_for(*App_Glom::get_application());
+      dialog.set_transient_for(*Application::get_application());
 #endif
       dialog.run();
 
@@ -452,7 +452,7 @@ bool Base_DB_Table_Data::confirm_delete_record()
 #else
   Gtk::MessageDialog dialog(Utils::bold_message(_("Delete record")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
   dialog.set_secondary_text(message);
-  dialog.set_transient_for(*App_Glom::get_application());
+  dialog.set_transient_for(*Application::get_application());
 #endif
   dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   dialog.add_button(Gtk::Stock::DELETE, Gtk::RESPONSE_OK);

@@ -163,7 +163,7 @@ DbAddDel::DbAddDel()
 DbAddDel::~DbAddDel()
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  App_Glom* pApp = get_application();
+  Application* pApp = get_application();
   if(pApp)
   {
     pApp->remove_developer_action(m_refContextLayout);
@@ -278,7 +278,7 @@ void DbAddDel::setup_menu()
     sigc::mem_fun(*this, &DbAddDel::on_MenuPopup_activate_layout) );
 
   //TODO: This does not work until this widget is in a container in the window:
-  App_Glom* pApp = get_application();
+  Application* pApp = get_application();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
@@ -352,7 +352,7 @@ bool DbAddDel::on_button_press_event_Popup(GdkEventButton *event)
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Enable/Disable items.
   //We did this earlier, but get_application is more likely to work now:
-  App_Glom* pApp = get_application();
+  Application* pApp = get_application();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
@@ -2336,12 +2336,12 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
   }
 }
 
-App_Glom* DbAddDel::get_application()
+Application* DbAddDel::get_application()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
 
-  return dynamic_cast<App_Glom*>(pWindow);
+  return dynamic_cast<Application*>(pWindow);
 }
 
 void DbAddDel::set_allow_view(bool val)
@@ -2627,7 +2627,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
     //Tell user that they can't do that:
     Gtk::MessageDialog dialog(Utils::bold_message(_("Extra Related Records Not Possible")), true, Gtk::MESSAGE_WARNING);
     dialog.set_secondary_text(_("You attempted to add a new related record, but there can only be one related record, because the relationship uses a unique key.")),
-    dialog.set_transient_for(*App_Glom::get_application());
+    dialog.set_transient_for(*Application::get_application());
     dialog.run();
     
     return;

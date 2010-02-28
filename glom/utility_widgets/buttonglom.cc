@@ -52,12 +52,12 @@ void ButtonGlom::init()
 
 }
 
-App_Glom* ButtonGlom::get_application()
+Application* ButtonGlom::get_application()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
 
-  return dynamic_cast<App_Glom*>(pWindow);
+  return dynamic_cast<Application*>(pWindow);
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -94,7 +94,7 @@ void ButtonGlom::on_menu_properties_activate()
 
 bool ButtonGlom::on_button_press_event(GdkEventButton *event)
 {
-  App_Glom* pApp = get_application();
+  Application* pApp = get_application();
   if(pApp && pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
     GdkModifierType mods;

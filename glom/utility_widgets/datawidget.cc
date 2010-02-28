@@ -453,7 +453,7 @@ bool DataWidget::on_button_press_event(GdkEventButton *event)
 
   //Enable/Disable items.
   //We did this earlier, but get_application is more likely to work now:
-  App_Glom* pApp = get_application();
+  Application* pApp = get_application();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
@@ -491,7 +491,7 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& ta
   return offer_field_list(table_name, start_field, get_document(), get_application());
 }
 
-sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field, Document* document, App_Glom* app)
+sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field, Document* document, Application* app)
 {
   sharedptr<LayoutItem_Field> result;
 
@@ -625,12 +625,12 @@ void DataWidget::on_child_user_requested_layout()
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-App_Glom* DataWidget::get_application()
+Application* DataWidget::get_application()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
 
-  return dynamic_cast<App_Glom*>(pWindow);
+  return dynamic_cast<Application*>(pWindow);
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

@@ -1284,7 +1284,7 @@ void FlowTableWithFields::on_dnd_add_layout_item_field(LayoutWidgetBase* above)
   //Ask the user to choose the layout item
   sharedptr<LayoutItem_Field> layout_item_field = 
     DataWidget::offer_field_list(m_table_name, sharedptr<LayoutItem_Field>(), 
-      get_document(), App_Glom::get_application());
+      get_document(), Application::get_application());
   if(!layout_item_field)
   {
     realize();
@@ -1527,7 +1527,7 @@ void FlowTableWithFields::on_menu_delete_activate()
 
 bool FlowTableWithFields::on_button_press_event(GdkEventButton *event)
 {
-  App_Glom* pApp = App_Glom::get_application();
+  Application* pApp = Application::get_application();
   if(pApp && pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
     GdkModifierType mods;

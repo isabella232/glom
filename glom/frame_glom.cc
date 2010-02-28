@@ -335,7 +335,7 @@ void Frame_Glom::set_mode_widget(Gtk::Widget& widget)
   //Trying to remove all of them leads to warnings,
   //and I don't see a way to get a list of children.
 
-  App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+  Application* pApp = dynamic_cast<Application*>(get_app_window());
   if(pApp)
   {
     //Glib::RefPtr<Gtk::UIManager> ui_manager = pApp->get_ui_manager();
@@ -410,7 +410,7 @@ void Frame_Glom::show_table_refresh()
 
 void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value_for_details)
 {
-  App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+  Application* pApp = dynamic_cast<Application*>(get_app_window());
 
   //This can take quite a long time, so we show the busy cursor while it's working:
   BusyCursor busy_cursor(pApp);
@@ -1142,7 +1142,7 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
   }
 
   //Update the UI:
-  App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+  Application* pApp = dynamic_cast<Application*>(get_app_window());
   if(pApp)
   {
     pApp->update_network_shared_ui();
@@ -1499,7 +1499,7 @@ void Frame_Glom::on_notebook_find_criteria(const Glib::ustring& where_clause)
   //std::cout << "Frame_Glom::on_notebook_find_criteria(): " << where_clause << std::endl;
   //on_menu_Mode_Data();
 
-  App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+  Application* pApp = dynamic_cast<Application*>(get_app_window());
   if(pApp)
   {
     bool records_found = false;
@@ -2774,7 +2774,7 @@ void Frame_Glom::on_menu_print_layout_selected(const Glib::ustring& print_layout
 
   try
   {
-    App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+    Application* pApp = dynamic_cast<Application*>(get_app_window());
     if(pApp)
       print->run(Gtk::PRINT_OPERATION_ACTION_PRINT_DIALOG, *pApp);
   }
@@ -2805,7 +2805,7 @@ void Frame_Glom::on_dialog_layout_report_hide()
   }
 
   //Update the reports menu:
-  App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+  Application* pApp = dynamic_cast<Application*>(get_app_window());
   if(pApp)
     pApp->fill_menu_reports(m_table_name);
 }
@@ -2825,7 +2825,7 @@ void Frame_Glom::on_dialog_layout_print_hide()
   }
 
   //Update the reports menu:
-  App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+  Application* pApp = dynamic_cast<Application*>(get_app_window());
   if(pApp)
     pApp->fill_menu_print_layouts(m_table_name);
 }
@@ -2833,7 +2833,7 @@ void Frame_Glom::on_dialog_layout_print_hide()
 void Frame_Glom::on_dialog_reports_hide()
 {
   //Update the reports menu:
-  App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+  Application* pApp = dynamic_cast<Application*>(get_app_window());
   if(pApp)
     pApp->fill_menu_reports(m_table_name);
 }
@@ -2841,7 +2841,7 @@ void Frame_Glom::on_dialog_reports_hide()
 void Frame_Glom::on_dialog_print_layouts_hide()
 {
   //Update the reports menu:
-  App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+  Application* pApp = dynamic_cast<Application*>(get_app_window());
   if(pApp)
     pApp->fill_menu_print_layouts(m_table_name);
 }
@@ -2858,7 +2858,7 @@ void Frame_Glom::on_dialog_tables_hide()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     if(document->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
     {
-      App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+      Application* pApp = dynamic_cast<Application*>(get_app_window());
       if(pApp)
         pApp->fill_menu_tables();
 
@@ -2880,7 +2880,7 @@ void Frame_Glom::on_dialog_tables_hide()
 void Frame_Glom::on_notebook_data_switch_page(GtkNotebookPage* /* page */, guint /* page_num */)
 {
   //Refill this menu, because it depends on whether list or details are visible:
-  App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+  Application* pApp = dynamic_cast<Application*>(get_app_window());
   if(pApp)
     pApp->fill_menu_print_layouts(m_table_name);
 }

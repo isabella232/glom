@@ -92,7 +92,7 @@ bool ImageGlom::on_button_press_event(GdkEventButton *event)
 
   //Enable/Disable items.
   //We did this earlier, but get_application is more likely to work now:
-  App_Glom* pApp = get_application();
+  Application* pApp = get_application();
   if(pApp)
   {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -144,12 +144,12 @@ bool ImageGlom::on_button_press_event(GdkEventButton *event)
 #endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 }
 
-App_Glom* ImageGlom::get_application()
+Application* ImageGlom::get_application()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
 
-  return dynamic_cast<App_Glom*>(pWindow);
+  return dynamic_cast<Application*>(pWindow);
 }
 
 bool ImageGlom::get_has_original_data() const
@@ -434,7 +434,7 @@ void ImageGlom::on_menupopup_activate_select_file()
         // Automatically delete the dialog when we no longer need it:
         std::auto_ptr<Gtk::Dialog> dialog_keeper(dialog);
 
-        App_Glom* pApp = get_application();
+        Application* pApp = get_application();
         if(pApp)
           dialog->set_transient_for(*pApp);
 

@@ -360,7 +360,7 @@ static Glib::ustring get_file_display_name(const Glib::ustring& uri)
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "App_Glom::get_file_display_name(): error: " << ex.what() << std::endl;
+    std::cerr << "Application::get_file_display_name(): error: " << ex.what() << std::endl;
     return result;
   }
 #else

@@ -53,7 +53,7 @@ bool CheckGlom::on_button_press_event(GdkEventButton *event)
 {
   //Enable/Disable items.
   //We did this earlier, but get_application is more likely to work now:
-  App_Glom* pApp = get_application();
+  Application* pApp = get_application();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
@@ -81,12 +81,12 @@ bool CheckGlom::on_button_press_event(GdkEventButton *event)
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-App_Glom* CheckGlom::get_application()
+Application* CheckGlom::get_application()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
 
-  return dynamic_cast<App_Glom*>(pWindow);
+  return dynamic_cast<Application*>(pWindow);
 }
 
 void CheckGlom::set_value(const Gnome::Gda::Value& value)
