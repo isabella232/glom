@@ -1,3 +1,25 @@
+2010-02-28  Murray Cumming  <murrayc@murrayc.com>
+
+  Python button scripts: Add show_table_details() and show_table_list().
+  
+	* Makefile_libglom.am:
+	* glom/python_embed/python_module/py_glom_module.cc:
+	* glom/libglom/python_embed/py_glom_ui.[h|cc]: Added a PyGlomUI object 
+	that can be passed to python functions in addition to the record object, 
+	with methods to navigate in the UI. So far there is just 
+	show_table_details() and show_table_list().
+	* glom/glom_developer.glade: Script editor window: Mention the extra ui 
+	parameter.
+	* glom/python_embed/glom_python.[h|cc]: Add a callback object parameter so 
+	scripts can tell the caller to change things in the UI.
+  * glom/frame_glom.h: Made show_table() public so that the Application can 
+	call it.
+	* glom/application.[h|cc]: Add show_table_details() and add_show_list() 
+	methods for the callbacks to call.
+	* glom/mode_data/box_data.[h|cc]: Handle the callback signals, to actually do 
+	the navigation when a python script requests it.
+	* glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.cc: Adapted.
+	
 2010-02-27  Murray Cumming  <murrayc@murrayc.com>
 
   Python: Prevent field calculations from changing the data in other fields.

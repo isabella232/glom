@@ -2539,6 +2539,23 @@ void App_Glom::update_window_title()
   #endif //GLOM_ENABLE_MAEMO
 }
 
+void App_Glom::show_table_details(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value)
+{
+  if(!m_pFrame)
+    return;
+    
+  m_pFrame->show_table(table_name, primary_key_value);
+}
+
+void App_Glom::show_table_list(const Glib::ustring& table_name)
+{
+  if(!m_pFrame)
+    return;
+  
+  m_pFrame->show_table(table_name);
+}
+
+  
 
 
 } //namespace Glom

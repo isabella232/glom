@@ -70,6 +70,8 @@ public:
   type_map_field_values m_map_field_values;
 
   Glib::RefPtr<Gnome::Gda::Connection> m_connection;
+  
+private:
   bool m_read_only;
 };
 

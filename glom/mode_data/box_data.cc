@@ -26,6 +26,7 @@
 #include <libglom/data_structure/layout/layoutitem_field.h>
 #include <glom/glom_privs.h>
 #include <glom/python_embed/glom_python.h>
+#include <glom/application.h>
 #include <algorithm> //For std::find()
 #include <libglom/libglom_config.h>
 #include <glibmm/i18n.h>
@@ -350,6 +351,24 @@ Glib::ustring Box_Data::get_layout_name() const
   return m_layout_name;
 }
 
+void Box_Data::on_python_requested_show_table_details(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value)
+{
+  std::cout << "debug: on_python_requested_show_table_details(): " << table_name << ", pk value: " << primary_key_value.to_string() << std::endl;
+  
+  App_Glom* app = App_Glom::get_application();
+  if(app)
+    app->show_table_details(table_name, primary_key_value);
+}
+
+void Box_Data::on_python_requested_show_table_list(const Glib::ustring& table_name)
+{
+  //std::cout << "debug: on_python_requested_show_table_list(): " << table_name << std::endl;
+  
+  App_Glom* app = App_Glom::get_application();
+  if(app)
+    app->show_table_list(table_name);
+}
+  
 void Box_Data::execute_button_script(const sharedptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key_value)
 {
   const sharedptr<Field> field_primary_key = get_field_primary_key();
@@ -365,11 +384,19 @@ void Box_Data::execute_button_script(const sharedptr<const LayoutItem_Button>& l
   {
 #endif // GLIBMM_EXCEPTIONS_ENABLED
 
+    //Allow this UI to respond to UI change requests from the Python code:
+    PythonUICallbacks callbacks;
+    callbacks.signal_show_table_details().connect(
+      sigc::mem_fun(*this, &Box_Data::on_python_requested_show_table_details));
+    callbacks.signal_show_table_list().connect(
+      sigc::mem_fun(*this, &Box_Data::on_python_requested_show_table_list)); 
+          
     glom_execute_python_function_implementation(layout_item->get_script(),
       field_values, //TODO: Maybe use the field's type here.
       get_document(),
       get_table_name(), field_primary_key, primary_key_value,
-      sharedconnection->get_gda_connection());
+      sharedconnection->get_gda_connection(),
+      callbacks);
 #ifndef GLIBMM_EXCEPTIONS_ENABLED
   }
 #endif // !GLIBMM_EXCEPTIONS_ENABLED

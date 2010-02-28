@@ -1,0 +1,72 @@
+/* Glom
+ *
+ * Copyright (C) 2001-2005 Murray Cumming
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
+#ifndef GLOM_PYTHON_GLOM_UI_H
+#define GLOM_PYTHON_GLOM_UI_H
+
+#include <boost/python.hpp>
+
+#include <libglom/document/document.h>
+#include <libglom/data_structure/field.h>
+#include <glibmm/ustring.h>
+
+namespace Glom
+{
+
+/** UI code should connect to the signals to respond when Python code 
+ * request a change in the UI.
+ */
+class PythonUICallbacks : public sigc::trackable
+{
+public:
+  /** For example,
+   * void on_show_details(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value);
+   */
+  typedef sigc::signal<void, const Glib::ustring&, const Gnome::Gda::Value&> type_signal_show_table_details;
+  type_signal_show_table_details signal_show_table_details();
+  
+  typedef sigc::signal<void, const Glib::ustring&> type_signal_show_table_list;
+  type_signal_show_table_list signal_show_table_list();
+  
+  friend class PyGlomUI;
+  
+private:
+  type_signal_show_table_details m_signal_show_table_details;
+  type_signal_show_table_list m_signal_show_table_list;
+};
+
+class PyGlomUI
+{
+public:
+  //A default constructor seems to be necessary for boost::python
+  PyGlomUI();
+  explicit PyGlomUI(const PythonUICallbacks& callbacks);
+  ~PyGlomUI();
+  
+  void show_table_details(const std::string& table_name, const boost::python::object& primary_key_value);
+  void show_table_list(const std::string& table_name);  
+
+private:
+  const PythonUICallbacks* m_callbacks;
+};
+
+} //namespace Glom
+
+#endif //GLOM_PYTHON_GLOM_UI_H

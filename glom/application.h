@@ -105,7 +105,10 @@ public:
 
   ///Whether to show the generated SQL queries on stdout, for debugging.
   void set_show_sql_debug(bool val = true);
-
+  
+  void show_table_details(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value);
+  void show_table_list(const Glib::ustring& table_name);
+  
   static App_Glom* get_application();
 
 protected:

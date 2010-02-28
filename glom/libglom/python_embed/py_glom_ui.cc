@@ -1,0 +1,72 @@
+/* Glom
+ *
+ * Copyright (C) 2001-2005 Murray Cumming
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
+#include <libglom/python_embed/py_glom_ui.h>
+#include <libglom/python_embed/pygdavalue_conversions.h>
+
+
+namespace Glom
+{
+
+PythonUICallbacks::type_signal_show_table_details PythonUICallbacks::signal_show_table_details()
+{
+  return m_signal_show_table_details;
+}
+
+PythonUICallbacks::type_signal_show_table_list PythonUICallbacks::signal_show_table_list()
+{
+  return m_signal_show_table_list;
+}
+
+PyGlomUI::PyGlomUI()
+: m_callbacks(0)
+{
+}
+PyGlomUI::PyGlomUI(const PythonUICallbacks& callbacks)
+: m_callbacks(&callbacks)
+{
+}
+
+PyGlomUI::~PyGlomUI()
+{
+}
+
+void PyGlomUI::show_table_details(const std::string& table_name, const boost::python::object& primary_key_value)
+{
+  if(!m_callbacks)
+    return;
+    
+  Gnome::Gda::Value gda_primary_key_value;
+  
+  GValue value = {0, {{0}}};
+  const bool test = glom_pygda_value_from_pyobject(&value, primary_key_value);
+  if(test && G_IS_VALUE(&value))
+    gda_primary_key_value = Gnome::Gda::Value(&value);
+
+  m_callbacks->m_signal_show_table_details.emit(table_name, gda_primary_key_value);
+}
+
+void PyGlomUI::show_table_list(const std::string& table_name)
+{
+  if(m_callbacks)
+    m_callbacks->m_signal_show_table_list.emit(table_name);
+}
+
+} //namespace Glom
