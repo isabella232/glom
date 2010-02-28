@@ -27,7 +27,8 @@ check_PROGRAMS =						\
 	tests/test_python_module \
 	tests/test_python_execute_func \
 	tests/test_python_execute_func_date \
-	tests/import/test_parsing\
+	tests/test_python_execute_script \
+	tests/import/test_parsing \
 	tests/import/test_signals
 
 TESTS =	tests/test_parsing_time	\
@@ -36,7 +37,8 @@ TESTS =	tests/test_parsing_time	\
 	tests/test_load_python_library \
 	tests/test_python_module \
 	tests/test_python_execute_func \
-	tests/test_python_execute_func_date
+	tests/test_python_execute_func_date \
+	tests/test_python_execute_script
 # These hang most of the time, but not always:
 #	tests/import/test_parsing \
 #	tests/import/test_signals
@@ -61,6 +63,8 @@ tests_test_python_module_SOURCES = tests/test_python_module.cc
 tests_test_python_execute_func_SOURCES = tests/test_python_execute_func.cc \
 	glom/python_embed/glom_python.cc
 tests_test_python_execute_func_date_SOURCES = tests/test_python_execute_func_date.cc \
+	glom/python_embed/glom_python.cc
+tests_test_python_execute_script_SOURCES = tests/test_python_execute_script.cc \
 	glom/python_embed/glom_python.cc
 tests_import_test_parsing_SOURCES =	\
 	glom/import_csv/csv_parser.cc	\
@@ -111,5 +115,6 @@ tests_test_load_python_library_LDADD = $(LIBGLOM_LIBS)
 tests_test_python_module_LDADD = $(tests_ldadd) $(PYTHON_LIBS)
 tests_test_python_execute_func_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
 tests_test_python_execute_func_date_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
+tests_test_python_execute_script_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
 tests_import_test_parsing_LDADD = $(LIBGLOM_LIBS) $(GLOM_LIBS)
 tests_import_test_signals_LDADD = $(LIBGLOM_LIBS) $(GLOM_LIBS)
