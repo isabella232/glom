@@ -1,5 +1,17 @@
 2010-02-28  Murray Cumming  <murrayc@murrayc.com>
 
+  Python button scripts: Avoid a crash with buttons in lists.
+  
+	* glom/mode_data/box_data_list.[h|cc]: on_adddel_script_button_clicked():
+	Run the script in the (existing) on_script_button_idle() idle handler because 
+	the script can cause the cell (that is emitting the signal) to be destroyed, 
+	by navigating to a different table. This fixes that crash.
+	* glom/mode_data/box_data_list_related.cc: Do the same here.
+	* glom/mode_data/notebook_data.cc: on_list_user_requested_details(): Use 
+	the same idle handler trick here, just in case.
+
+2010-02-28  Murray Cumming  <murrayc@murrayc.com>
+
 	Added unit test for the new button script ui python API.
 	
 	* Makefile_tests.am:

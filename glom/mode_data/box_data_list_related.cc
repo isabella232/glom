@@ -208,7 +208,23 @@ void Box_Data_List_Related::on_adddel_script_button_clicked(const sharedptr<cons
     return;
   
   const Gnome::Gda::Value primary_key_value = get_primary_key_value(row);
-  execute_button_script(layout_item, primary_key_value);
+
+  // TODO: Calling refresh_data_from_database(), 
+  // or navigating to a different table from inside the Python script,
+  // causes a crash somewhere down in GTK+, so it is done in an idle handler here.
+  // We are currently in a callback from the CellRendererButton_Text cell
+  // renderer which is deleted by a call to refresh_data_from_database().
+  // Probably this causes issues somewhere.
+  Glib::signal_idle().connect(
+    sigc::bind(
+      sigc::mem_fun(*this, &Box_Data_List_Related::on_script_button_idle), 
+      layout_item,
+      primary_key_value));
+}
+
+bool Box_Data_List_Related::on_script_button_idle(const sharedptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key)
+{
+  execute_button_script(layout_item, primary_key);
 
   // Refill view from database as the script might have changed arbitrary records
 
@@ -221,19 +237,6 @@ void Box_Data_List_Related::on_adddel_script_button_clicked(const sharedptr<cons
     db_model->refresh_from_database(m_found_set);
 #endif
 
-  // TODO: Calling refresh_data_from_database() causes a crash somewhere
-  // down in GTK+, so it is done in a handler here.
-  // We are currently in a callback from the CellRendererButton_Text cell
-  // renderer which is deleted by a call to refresh_data_from_database().
-  // Probably this causes issues somewhere. 
-  Glib::signal_idle().connect(sigc::bind(sigc::mem_fun(*this, &Box_Data_List_Related::on_script_button_idle), primary_key_value));
-
-  //refresh_data_from_database();
-  //set_primary_key_value_selected(primary_key);
-}
-
-bool Box_Data_List_Related::on_script_button_idle(const Gnome::Gda::Value& primary_key)
-{
   refresh_data_from_database();
   set_primary_key_value_selected(primary_key);
   return false;

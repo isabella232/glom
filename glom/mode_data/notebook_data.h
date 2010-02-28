@@ -96,7 +96,9 @@ private:
   #ifdef GLOM_ENABLE_MAEMO
   void on_window_maemo_details_closed();
   #endif
-  
+
+  bool on_idle_show_details(const Gnome::Gda::Value& primary_key_value);
+
 protected:
   //Member widgets:
   Box_Data_List m_Box_List;

@@ -264,9 +264,21 @@ void Notebook_Data::show_details(const Gnome::Gda::Value& primary_key_value)
     m_connection_switch_page.unblock();  
 }
 
-void Notebook_Data::on_list_user_requested_details(const Gnome::Gda::Value& primary_key_value)
+bool Notebook_Data::on_idle_show_details(const Gnome::Gda::Value& primary_key_value)
 {
   show_details(primary_key_value);
+  return false; //Don't call this idle handler again.
+}
+
+void Notebook_Data::on_list_user_requested_details(const Gnome::Gda::Value& primary_key_value)
+{
+  //Show the details after a delay,
+  //to avoid problems with deleting the list GtkCellRenderer while 
+  //handling its signal.
+  Glib::signal_idle().connect(
+    sigc::bind(
+      sigc::mem_fun(*this, &Notebook_Data::on_idle_show_details),
+      primary_key_value));
 }
 
 void Notebook_Data::on_details_user_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value)

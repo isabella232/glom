@@ -54,7 +54,7 @@ protected:
   void on_adddel_user_reordered_columns();
 
   void on_adddel_script_button_clicked(const sharedptr<const LayoutItem_Button>& layout_item, const Gtk::TreeModel::iterator& row);
-  bool on_script_button_idle(const Gnome::Gda::Value& primary_key_value);
+  bool on_script_button_idle(const sharedptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key);
 
   void on_adddel_record_added(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& primary_key_value);
     
