@@ -1,3 +1,12 @@
+2010-02-28  Murray Cumming  <murrayc@murrayc.com>
+
+  PyGlomUI: Simplify the callbacks object.
+  
+	* glom/libglom/python_embed/py_glom_ui.[h|cc]: Use public sigc::slots instead 
+	  of signals, to simplify this. 
+	* glom/mode_data/box_data.cc
+	  Box_Data::execute_button_script(): Adapt.
+
 1.13.6:
 
 2010-02-28  Murray Cumming  <murrayc@murrayc.com>

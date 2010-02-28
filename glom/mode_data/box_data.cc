@@ -386,10 +386,10 @@ void Box_Data::execute_button_script(const sharedptr<const LayoutItem_Button>& l
 
     //Allow this UI to respond to UI change requests from the Python code:
     PythonUICallbacks callbacks;
-    callbacks.signal_show_table_details().connect(
-      sigc::mem_fun(*this, &Box_Data::on_python_requested_show_table_details));
-    callbacks.signal_show_table_list().connect(
-      sigc::mem_fun(*this, &Box_Data::on_python_requested_show_table_list)); 
+    callbacks.m_slot_show_table_details = 
+      sigc::mem_fun(*this, &Box_Data::on_python_requested_show_table_details);
+    callbacks.m_slot_show_table_list = 
+      sigc::mem_fun(*this, &Box_Data::on_python_requested_show_table_list);
           
     glom_execute_python_function_implementation(layout_item->get_script(),
       field_values, //TODO: Maybe use the field's type here.

@@ -25,20 +25,11 @@
 namespace Glom
 {
 
-PythonUICallbacks::type_signal_show_table_details PythonUICallbacks::signal_show_table_details()
-{
-  return m_signal_show_table_details;
-}
-
-PythonUICallbacks::type_signal_show_table_list PythonUICallbacks::signal_show_table_list()
-{
-  return m_signal_show_table_list;
-}
-
 PyGlomUI::PyGlomUI()
 : m_callbacks(0)
 {
 }
+
 PyGlomUI::PyGlomUI(const PythonUICallbacks& callbacks)
 : m_callbacks(&callbacks)
 {
@@ -50,7 +41,7 @@ PyGlomUI::~PyGlomUI()
 
 void PyGlomUI::show_table_details(const std::string& table_name, const boost::python::object& primary_key_value)
 {
-  if(!m_callbacks)
+  if(!m_callbacks && m_callbacks->m_slot_show_table_details)
     return;
     
   Gnome::Gda::Value gda_primary_key_value;
@@ -60,13 +51,13 @@ void PyGlomUI::show_table_details(const std::string& table_name, const boost::py
   if(test && G_IS_VALUE(&value))
     gda_primary_key_value = Gnome::Gda::Value(&value);
 
-  m_callbacks->m_signal_show_table_details.emit(table_name, gda_primary_key_value);
+  m_callbacks->m_slot_show_table_details(table_name, gda_primary_key_value);
 }
 
 void PyGlomUI::show_table_list(const std::string& table_name)
 {
-  if(m_callbacks)
-    m_callbacks->m_signal_show_table_list.emit(table_name);
+  if(m_callbacks && m_callbacks->m_slot_show_table_list)
+    m_callbacks->m_slot_show_table_list(table_name);
 }
 
 } //namespace Glom

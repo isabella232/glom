@@ -33,23 +33,18 @@ namespace Glom
 /** UI code should connect to the signals to respond when Python code 
  * request a change in the UI.
  */
-class PythonUICallbacks : public sigc::trackable
+class PythonUICallbacks
 {
 public:
   /** For example,
    * void on_show_details(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value);
    */
-  typedef sigc::signal<void, const Glib::ustring&, const Gnome::Gda::Value&> type_signal_show_table_details;
-  type_signal_show_table_details signal_show_table_details();
-  
-  typedef sigc::signal<void, const Glib::ustring&> type_signal_show_table_list;
-  type_signal_show_table_list signal_show_table_list();
-  
-  friend class PyGlomUI;
-  
-private:
-  type_signal_show_table_details m_signal_show_table_details;
-  type_signal_show_table_list m_signal_show_table_list;
+  sigc::slot<void, const Glib::ustring&, const Gnome::Gda::Value&> m_slot_show_table_details;
+
+   /** For example,
+   * void on_show_list(const Glib::ustring& table_name);
+   */ 
+  sigc::slot<void, const Glib::ustring&> m_slot_show_table_list;
 };
 
 class PyGlomUI
