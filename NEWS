@@ -1,3 +1,17 @@
+1.13.6 (unstable):
+
+* Python scripts:
+  - Fields value may now be changed like so:
+    record["fieldname"] = 123
+  - Simple navigation is posible via, for instance:
+    ui.show_table_list("artists")
+    ui.show_table_details("artists", 10)
+    where 10 is the value of the primary key in the table.
+	(Murray Cumming)
+* Avoid showing %20 in the window title.
+	Noticed by Daniel Borgmann.
+	(Murray Cumming)
+  
 1.13.5 (unstable):
 
 * Python functions: Fix some regressions since the switch to boost::python.

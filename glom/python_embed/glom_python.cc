@@ -368,6 +368,14 @@ void glom_execute_python_function_implementation(const Glib::ustring& func_impl,
   const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection,
   const PythonUICallbacks& callbacks)
 {
+  //Import the glom module so that boost::python::object(new PyGlomRecord) can work.
+  boost::python::object module_glom = boost::python::import("glom_" GLOM_ABI_VERSION_UNDERLINED);
+  if(!module_glom)
+  {
+    g_warning("Could not import python glom module.");
+    return; // don't crash
+  }
+  
   boost::python::object objRecord(new PyGlomRecord);
   boost::python::extract<PyGlomRecord*> extractor(objRecord);
   if(!extractor.check())
@@ -398,7 +406,16 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   const Gnome::Gda::Value& key_field_value,
   const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
 {
+  //Import the glom module so that boost::python::object(new PyGlomRecord) can work.
+  boost::python::object module_glom = boost::python::import("glom_" GLOM_ABI_VERSION_UNDERLINED);
+  if(!module_glom)
+  {
+    g_warning("Could not import python glom module.");
+    return Gnome::Gda::Value(); // don't crash
+  }
+  
   boost::python::object objRecord(new PyGlomRecord);
+  
   boost::python::extract<PyGlomRecord*> extractor(objRecord);
   if(!extractor.check())
   {

@@ -1,3 +1,15 @@
+1.13.6:
+
+2010-02-28  Murray Cumming  <murrayc@murrayc.com>
+
+  Fix the python function tests.
+  
+	* glom/python_embed/glom_python.cc
+	glom_execute_python_function_implementation,
+	glom_evaluate_python_function_implementation: Import the glom python module 
+	before trying to create a boost::python::object(new PyGlomRecord), to avoid 
+	an exception in the tests.
+
 2010-02-28  Murray Cumming  <murrayc@murrayc.com>
 
 	Many files: Rename App_Glom to Application (in namespace Glom).
