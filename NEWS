@@ -1,3 +1,8 @@
+1.13.7 (unstable):
+
+* Avoid a crash when a script navigates from a list view to another table.
+  Maybe avoid similar warnings/crashes when doing normal navigation.
+
 1.13.6 (unstable):
 
 * Python scripts:
@@ -11,7 +16,7 @@
 * Avoid showing %20 in the window title.
 	Noticed by Daniel Borgmann.
 	(Murray Cumming)
-  
+
 1.13.5 (unstable):
 
 * Python functions: Fix some regressions since the switch to boost::python.

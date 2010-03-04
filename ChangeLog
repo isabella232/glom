@@ -1,29 +1,31 @@
+1.13.7:
+
 2010-02-28  Murray Cumming  <murrayc@murrayc.com>
 
-  Python button scripts: Avoid a crash with buttons in lists.
-  
+    Python button scripts: Avoid a crash with buttons in lists.
+
 	* glom/mode_data/box_data_list.[h|cc]: on_adddel_script_button_clicked():
-	Run the script in the (existing) on_script_button_idle() idle handler because 
-	the script can cause the cell (that is emitting the signal) to be destroyed, 
+	Run the script in the (existing) on_script_button_idle() idle handler because
+	the script can cause the cell (that is emitting the signal) to be destroyed,
 	by navigating to a different table. This fixes that crash.
 	* glom/mode_data/box_data_list_related.cc: Do the same here.
-	* glom/mode_data/notebook_data.cc: on_list_user_requested_details(): Use 
+	* glom/mode_data/notebook_data.cc: on_list_user_requested_details(): Use
 	the same idle handler trick here, just in case.
 
 2010-02-28  Murray Cumming  <murrayc@murrayc.com>
 
 	Added unit test for the new button script ui python API.
-	
+
 	* Makefile_tests.am:
-	* tests/test_python_execute_script.cc: Added unit test for the new button 
+	* tests/test_python_execute_script.cc: Added unit test for the new button
 	script ui python API.
 
 2010-02-28  Murray Cumming  <murrayc@murrayc.com>
 
-  PyGlomUI: Simplify the callbacks object.
-  
-	* glom/libglom/python_embed/py_glom_ui.[h|cc]: Use public sigc::slots instead 
-	  of signals, to simplify this. 
+    PyGlomUI: Simplify the callbacks object.
+
+	* glom/libglom/python_embed/py_glom_ui.[h|cc]: Use public sigc::slots instead
+	  of signals, to simplify this.
 	* glom/mode_data/box_data.cc
 	  Box_Data::execute_button_script(): Adapt.
 
@@ -32,11 +34,11 @@
 2010-02-28  Murray Cumming  <murrayc@murrayc.com>
 
   Fix the python function tests.
-  
+
 	* glom/python_embed/glom_python.cc
 	glom_execute_python_function_implementation,
-	glom_evaluate_python_function_implementation: Import the glom python module 
-	before trying to create a boost::python::object(new PyGlomRecord), to avoid 
+	glom_evaluate_python_function_implementation: Import the glom python module
+	before trying to create a boost::python::object(new PyGlomRecord), to avoid
 	an exception in the tests.
 
 2010-02-28  Murray Cumming  <murrayc@murrayc.com>
@@ -46,49 +48,49 @@
 2010-02-28  Murray Cumming  <murrayc@murrayc.com>
 
   Python button scripts: Add show_table_details() and show_table_list().
-  
+
 	* Makefile_libglom.am:
 	* glom/python_embed/python_module/py_glom_module.cc:
-	* glom/libglom/python_embed/py_glom_ui.[h|cc]: Added a PyGlomUI object 
-	that can be passed to python functions in addition to the record object, 
-	with methods to navigate in the UI. So far there is just 
+	* glom/libglom/python_embed/py_glom_ui.[h|cc]: Added a PyGlomUI object
+	that can be passed to python functions in addition to the record object,
+	with methods to navigate in the UI. So far there is just
 	show_table_details() and show_table_list().
-	* glom/glom_developer.glade: Script editor window: Mention the extra ui 
+	* glom/glom_developer.glade: Script editor window: Mention the extra ui
 	parameter.
-	* glom/python_embed/glom_python.[h|cc]: Add a callback object parameter so 
+	* glom/python_embed/glom_python.[h|cc]: Add a callback object parameter so
 	scripts can tell the caller to change things in the UI.
-  * glom/frame_glom.h: Made show_table() public so that the Application can 
+  * glom/frame_glom.h: Made show_table() public so that the Application can
 	call it.
-	* glom/application.[h|cc]: Add show_table_details() and add_show_list() 
+	* glom/application.[h|cc]: Add show_table_details() and add_show_list()
 	methods for the callbacks to call.
-	* glom/mode_data/box_data.[h|cc]: Handle the callback signals, to actually do 
+	* glom/mode_data/box_data.[h|cc]: Handle the callback signals, to actually do
 	the navigation when a python script requests it.
 	* glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.cc: Adapted.
-	
+
 2010-02-27  Murray Cumming  <murrayc@murrayc.com>
 
   Python: Prevent field calculations from changing the data in other fields.
-  
+
 	* glom/libglom/python_embed/py_glom_record.[h|cc]: Added set_read_only().
-	* glom/python_embed/glom_python.[h|cc]: 
-	glom_evaluate_python_function_implementation(): Add a bool read_only 
+	* glom/python_embed/glom_python.[h|cc]:
+	glom_evaluate_python_function_implementation(): Add a bool read_only
 	parameter that defaults to true.
-	glom_execute_python_function_implementation(): Pass read_only=false so 
+	glom_execute_python_function_implementation(): Pass read_only=false so
 	scripts can write data to the database via the record object.
 
 2010-02-27  Murray Cumming  <murrayc@murrayc.com>
 
   Increase required version of libgdamm.
-  
-	* configure.ac: Increase libgdamm dependency to the last one that doesn't 
+
+	* configure.ac: Increase libgdamm dependency to the last one that doesn't
 	need libgda 4.1/4.2. We actually need some API that was not in the older one.
 
 2010-02-27  Murray Cumming  <murrayc@murrayc.com>
 
   Revert use of SqlBuilder because it requires libgda 4.1,
-  which will not be packaged by the upcoming Ubuntu Lucid, which is an 
+  which will not be packaged by the upcoming Ubuntu Lucid, which is an
   important version of an important distro.
-   
+
 2010-02-27  Murray Cumming  <murrayc@murrayc.com>
 
 	More uses of SqlBuilder for SELECT statements.
@@ -96,13 +98,13 @@
 2010-02-27  Murray Cumming  <murrayc@murrayc.com>
 
   Fix runtime problems with the use of SqlBuilder.
-  
-	* glom/base_db.[h|cc]: query_execute_select(), query_execute(): Catch more 
+
+	* glom/base_db.[h|cc]: query_execute_select(), query_execute(): Catch more
   errors and output better debug and error text.
-	get_database_preferences(): Don't bother catching exceptions already caught 
+	get_database_preferences(): Don't bother catching exceptions already caught
 	by query_execute*().
 	add_standard_tables(): Fix a typo in the SQL query.
-	insert_example_data(): Work around an inability in GdaSqlBuilder to INSERT 
+	insert_example_data(): Work around an inability in GdaSqlBuilder to INSERT
 	a NULL value. I have asked about it on the mailing list.
 
 2010-02-26  Murray Cumming  <murrayc@murrayc-desktop>
