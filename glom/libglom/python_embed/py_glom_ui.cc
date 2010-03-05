@@ -43,9 +43,9 @@ void PyGlomUI::show_table_details(const std::string& table_name, const boost::py
 {
   if(!m_callbacks && m_callbacks->m_slot_show_table_details)
     return;
-    
+
   Gnome::Gda::Value gda_primary_key_value;
-  
+
   GValue value = {0, {{0}}};
   const bool test = glom_pygda_value_from_pyobject(&value, primary_key_value);
   if(test && G_IS_VALUE(&value))
@@ -59,5 +59,19 @@ void PyGlomUI::show_table_list(const std::string& table_name)
   if(m_callbacks && m_callbacks->m_slot_show_table_list)
     m_callbacks->m_slot_show_table_list(table_name);
 }
+
+void PyGlomUI::print()
+{
+  if(m_callbacks && m_callbacks->m_slot_print)
+    m_callbacks->m_slot_print();
+}
+
+
+void PyGlomUI::print_report(const std::string& report_name)
+{
+  if(m_callbacks && m_callbacks->m_slot_print_report)
+    m_callbacks->m_slot_print_report(report_name);
+}
+
 
 } //namespace Glom

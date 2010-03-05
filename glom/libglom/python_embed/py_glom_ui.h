@@ -30,7 +30,7 @@
 namespace Glom
 {
 
-/** UI code should connect to the signals to respond when Python code 
+/** UI code should connect to the signals to respond when Python code
  * request a change in the UI.
  */
 class PythonUICallbacks
@@ -43,8 +43,18 @@ public:
 
    /** For example,
    * void on_show_list(const Glib::ustring& table_name);
-   */ 
+   */
   sigc::slot<void, const Glib::ustring&> m_slot_show_table_list;
+
+   /** For example,
+   * void on_print_report(const Glib::ustring& table_name);
+   */
+  sigc::slot<void, const Glib::ustring&> m_slot_print_report;
+
+   /** For example,
+   * void on_print();
+   */
+  sigc::slot<void> m_slot_print;
 };
 
 class PyGlomUI
@@ -54,9 +64,22 @@ public:
   PyGlomUI();
   explicit PyGlomUI(const PythonUICallbacks& callbacks);
   ~PyGlomUI();
-  
+
+  /** Navigate to the named table, showing the details view for the specified record.
+   */
   void show_table_details(const std::string& table_name, const boost::python::object& primary_key_value);
-  void show_table_list(const std::string& table_name);  
+
+  /** Navigate to the named table, showing its list view.
+   */
+  void show_table_list(const std::string& table_name);
+
+  /** Print the current view of the current table.
+   */
+  void print();
+
+  /** Print the named report from the current table.
+   */
+  void print_report(const std::string& report_name);
 
 private:
   const PythonUICallbacks* m_callbacks;

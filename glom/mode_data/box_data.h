@@ -42,7 +42,7 @@ class Box_Data
 : public Box_WithButtons,
   public Base_DB_Table_Data
 {
-public: 
+public:
   Box_Data();
   virtual ~Box_Data();
 
@@ -110,11 +110,14 @@ protected:
 
   //Signal handlers:
   virtual void on_Button_Find(); //only used by _Find sub-classes. Should be MI.
-  
+
   //Signal handlers for the PyGlomUI callbacks:
   void on_python_requested_show_table_details(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value);
   void on_python_requested_show_table_list(const Glib::ustring& table_name);
-  
+  void on_python_requested_print_report(const Glib::ustring& report_name);
+  void on_python_requested_print();
+
+
   static Glib::ustring xslt_process(const xmlpp::Document& xml_document, const std::string& filepath_xslt);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

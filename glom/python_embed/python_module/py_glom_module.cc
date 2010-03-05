@@ -56,9 +56,11 @@ BOOST_PYTHON_MODULE(glom_1_14)
     .def("__getitem__", &PyGlomRelatedRecord::getitem)
     .def("__len__", &PyGlomRelatedRecord::len)
   ;
-  
+
   boost::python::class_<PyGlomUI>("UI")
     .def("show_table_details", &PyGlomUI::show_table_details)
     .def("show_table_list", &PyGlomUI::show_table_list)
+    .def("print", &PyGlomUI::print)
+    .def("print_report", &PyGlomUI::print_report)
   ;
 }

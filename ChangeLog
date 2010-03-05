@@ -1,41 +1,54 @@
+2010-03-05  Murray Cumming  <murrayc@murrayc.com>
+
+    Python button scripts: Add ui.print() and ui.print_reports(report_name).
+
+	* glom/application.[h|cc]: Add print() and print_report(), calling
+    methods in the frame widget.
+	* glom/libglom/python_embed/py_glom_ui.[h|cc]: Add new print() and
+    print_report() methods, adding callback slots for use by Glom.
+	* glom/python_embed/python_module/py_glom_module.cc: Register the new
+    Python methods.
+	* glom/mode_data/box_data.[h|cc]: execute_button_script(): Handle the
+    new signals, calling the new methods in Application.
+
 2010-03-07  Murray Cumming  <murrayc@murrayc.com>
 
-  Details: Align widgets in other columns too.
-  
+    Details: Align widgets in other columns too.
+
 	* glom/utility_widgets/flowtable.[h|cc]: Added get_columns_count().
 	* glom/mode_data/flowtablewithfields.[h|cc]: apply_size_group_to_label():
 	Change this to apply_size_groups_to_label().
-	align_child_group_labels(): Create a size group for each possible column, 
+	align_child_group_labels(): Create a size group for each possible column,
 	and call apply_size_groups_to_label() with them.
 
 2010-03-06  Murray Cumming  <murrayc@murrayc.com>
 
 	Details: Align widgets in the first columns of neighbouring layout groups.
 
-	* glom/utility_widgets/flowtable.[h|cc]: Added get_column_for_first_widget(), 
-	to discover what column a widget is in, and whether it has even been assigned 
+	* glom/utility_widgets/flowtable.[h|cc]: Added get_column_for_first_widget(),
+	to discover what column a widget is in, and whether it has even been assigned
 	to a column yet (if the size has been allocated already.)
 	FlowTableItem: Remember whether the item has a column number and what it is.
 	on_size_allocate(): Remember the column numbers of items for later retrieval.
 	* glom/mode_data/flowtablewithfields.[h|cc]: Info, add_field_at_position():
-	Store the pointer to eventbox too, so we can later discover its column from 
+	Store the pointer to eventbox too, so we can later discover its column from
 	the base FlowTable.
-	Add align_child_group_labels(), to make all first-level labels in child 
+	Add align_child_group_labels(), to make all first-level labels in child
 	flowtables share a single Gtk::SizeGroup, making them align.
 	Add apply_size_group_to_labels() to actually add the labels to the size group.
-	add_layout_group_at_position(): Call align_child_group_labels() on new 
+	add_layout_group_at_position(): Call align_child_group_labels() on new
 	sub-flowtables.
-	on_size_allocate(): After the base class has allocated the spaces for the 
-	child widgets, after it therefore knows the column positions for the widgets, 
+	on_size_allocate(): After the base class has allocated the spaces for the
+	child widgets, after it therefore knows the column positions for the widgets,
 	call apply_size_group_to_labels() to make them align.
-	* glom/mode_data/box_data_details.cc: create_layout(): Call 
+	* glom/mode_data/box_data_details.cc: create_layout(): Call
 	align_child_group_labels() to align items in top-level groups.
 
 2010-03-06  Murray Cumming  <murrayc@murrayc.com>
 
   Details: Do not make field widgets too wide, so this fits on a laptop screen.
-  
-	* glom/utils_ui.cc: get_suitable_field_width_for_widget(): Do not add 150 
+
+	* glom/utils_ui.cc: get_suitable_field_width_for_widget(): Do not add 150
 	to all calculated widths. I don't know why this code ever did that.
 
 1.13.7:

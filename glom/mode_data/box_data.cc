@@ -353,8 +353,8 @@ Glib::ustring Box_Data::get_layout_name() const
 
 void Box_Data::on_python_requested_show_table_details(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value)
 {
-  std::cout << "debug: on_python_requested_show_table_details(): " << table_name << ", pk value: " << primary_key_value.to_string() << std::endl;
-  
+  //std::cout << "debug: on_python_requested_show_table_details(): " << table_name << ", pk value: " << primary_key_value.to_string() << std::endl;
+
   Application* app = Application::get_application();
   if(app)
     app->show_table_details(table_name, primary_key_value);
@@ -362,13 +362,26 @@ void Box_Data::on_python_requested_show_table_details(const Glib::ustring& table
 
 void Box_Data::on_python_requested_show_table_list(const Glib::ustring& table_name)
 {
-  //std::cout << "debug: on_python_requested_show_table_list(): " << table_name << std::endl;
-  
   Application* app = Application::get_application();
   if(app)
     app->show_table_list(table_name);
 }
-  
+
+void Box_Data::on_python_requested_print_report(const Glib::ustring& report_name)
+{
+  Application* app = Application::get_application();
+  if(app)
+    app->print_report(report_name);
+}
+
+void Box_Data::on_python_requested_print()
+{
+  Application* app = Application::get_application();
+  if(app)
+    app->print();
+}
+
+
 void Box_Data::execute_button_script(const sharedptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key_value)
 {
   const sharedptr<Field> field_primary_key = get_field_primary_key();
@@ -386,11 +399,15 @@ void Box_Data::execute_button_script(const sharedptr<const LayoutItem_Button>& l
 
     //Allow this UI to respond to UI change requests from the Python code:
     PythonUICallbacks callbacks;
-    callbacks.m_slot_show_table_details = 
+    callbacks.m_slot_show_table_details =
       sigc::mem_fun(*this, &Box_Data::on_python_requested_show_table_details);
-    callbacks.m_slot_show_table_list = 
+    callbacks.m_slot_show_table_list =
       sigc::mem_fun(*this, &Box_Data::on_python_requested_show_table_list);
-          
+    callbacks.m_slot_print =
+      sigc::mem_fun(*this, &Box_Data::on_python_requested_print);
+    callbacks.m_slot_print_report =
+      sigc::mem_fun(*this, &Box_Data::on_python_requested_print_report);
+
     glom_execute_python_function_implementation(layout_item->get_script(),
       field_values, //TODO: Maybe use the field's type here.
       get_document(),

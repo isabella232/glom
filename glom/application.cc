@@ -96,7 +96,7 @@ Application::Application(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builde
   builder->get_widget_derived("vbox_frame", m_pFrame); //This one is derived. There's a lot happening here.
 
   add_mime_type("application/x-glom"); //TODO: make this actually work - we need to register it properly.
-  
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #ifndef G_OS_WIN32
   //Install UI hooks for this:
@@ -105,7 +105,7 @@ Application::Application(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builde
     connection_pool->set_avahi_publish_callbacks(
       sigc::mem_fun(*this, &Application::on_connection_avahi_begin),
       sigc::mem_fun(*this, &Application::on_connection_avahi_progress),
-      sigc::mem_fun(*this, &Application::on_connection_avahi_done) );     
+      sigc::mem_fun(*this, &Application::on_connection_avahi_done) );
 #endif
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -229,7 +229,7 @@ void Application::init_toolbars()
   //We override this because
   //a) We don't want a toolbar, and
   //b) The default toolbar layout has actions that we don't have.
-  
+
 /*
   //Build part of the menu structure, to be merged in by using the "PH" placeholders:
   static const Glib::ustring ui_description =
@@ -285,7 +285,7 @@ void Application::init_menus_file()
   m_refFileActionGroup->add(m_toggleaction_network_shared);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_connection_toggleaction_network_shared = 
+  m_connection_toggleaction_network_shared =
     m_toggleaction_network_shared->signal_toggled().connect(
       sigc::mem_fun(*this, &Application::on_menu_file_toggle_share) );
   m_listDeveloperActions.push_back(m_toggleaction_network_shared);
@@ -359,9 +359,9 @@ void Application::on_appmenu_button_table_value_changed()
 #ifdef GLOM_ENABLE_MAEMO
 static void add_button_to_appmenu(Hildon::AppMenu& appmenu, const Glib::ustring& title, const Glib::ustring& secondary, const sigc::slot<void>& clicked_handler)
 {
-  Hildon::Button* button = 
+  Hildon::Button* button =
     Gtk::manage(new Hildon::Button(
-      Gtk::Hildon::SIZE_AUTO, 
+      Gtk::Hildon::SIZE_AUTO,
       Hildon::BUTTON_ARRANGEMENT_VERTICAL,
       title, secondary));
   button->show();
@@ -378,12 +378,12 @@ void Application::init_menus()
   m_appmenu_button_table.signal_value_changed().connect(
     sigc::mem_fun(*this, &Application::on_appmenu_button_table_value_changed) );
   m_maemo_appmenu.append(m_appmenu_button_table);
-  
-  add_button_to_appmenu(m_maemo_appmenu, 
+
+  add_button_to_appmenu(m_maemo_appmenu,
     _("Find"), _("Search for records in the table"),
     sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Mode_Find) );
-    
-  add_button_to_appmenu(m_maemo_appmenu, 
+
+  add_button_to_appmenu(m_maemo_appmenu,
     _("Add Record"), _("Create a new record in the table"),
     sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_add_record) );
 
@@ -465,12 +465,12 @@ void Application::init_menus()
   m_refActionGroup_Others->add(action);
 
   action = Gtk::Action::create("GlomAction_Menu_Developer_Database_Preferences", _("_Database Preferences"));
-  m_listDeveloperActions.push_back(action);  
+  m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_database_preferences) );
 
 
   action = Gtk::Action::create("GlomAction_Menu_Developer_Fields", _("_Fields"));
-  m_listDeveloperActions.push_back(action);  
+  m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_fields) );
 
   action = Gtk::Action::create("GlomAction_Menu_Developer_RelationshipsOverview", _("_Relationships Overview"));
@@ -516,7 +516,7 @@ void Application::init_menus()
   m_refActionGroup_Others->add(action);
   Gtk::RadioAction::Group group_active_platform;
 
-  action = Gtk::RadioAction::create(group_active_platform, "GlomAction_Menu_Developer_ActivePlatform_Normal", 
+  action = Gtk::RadioAction::create(group_active_platform, "GlomAction_Menu_Developer_ActivePlatform_Normal",
     _("_Normal"), _("The layout to use for normal desktop environments."));
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &Application::on_menu_developer_active_platform_normal));
@@ -661,7 +661,7 @@ void Application::ui_warning_load_failed(int failure_code)
 {
   if(failure_code == Document::LOAD_FAILURE_CODE_FILE_VERSION_TOO_NEW)
   {
-    ui_warning(_("Open Failed."), 
+    ui_warning(_("Open Failed."),
       _("The document could not be opened because it was created or modified by a newer version of Glom."));
   }
   else
@@ -711,7 +711,7 @@ void Application::open_browsed_document(const EpcServiceInfo* server, const Glib
            error_code == SOUP_STATUS_UNAUTHORIZED)
         {
           //std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED" << std::endl;
-        
+
           Utils::show_ok_dialog(_("Connection Failed"), _("Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."), *this, Gtk::MESSAGE_ERROR); //TODO: Add help button.
         }
       }
@@ -752,13 +752,13 @@ void Application::open_browsed_document(const EpcServiceInfo* server, const Glib
       // TODO: Error out in case this is a sqlite database, since we probably
       // can't access it from this host?
 
-      //If the publisher thinks that it's using a postgres database on localhost, 
+      //If the publisher thinks that it's using a postgres database on localhost,
       //then we need to use a host name that means the same thing from the client's PC:
       const Glib::ustring host = document_temp.get_connection_server();
       if(hostname_is_localhost(host))
         document_temp.set_connection_server( epc_service_info_get_host(server) );
 
-      //Make sure that we only use the specified port instead of connecting to some other postgres instance 
+      //Make sure that we only use the specified port instead of connecting to some other postgres instance
       //on the same server:
       document_temp.set_connection_try_other_ports(false);
     }
@@ -776,7 +776,7 @@ void Application::open_browsed_document(const EpcServiceInfo* server, const Glib
     //This loads the document and connects to the database (using m_temp_username and m_temp_password):
     open_document_from_data((const guchar*)temp_document_contents.c_str(), temp_document_contents.bytes());
 
-    //Mark the document as opened-from-browse 
+    //Mark the document as opened-from-browse
     //so we don't think that opening has failed because it has no URI,
     //and to stop us from allowing developer mode
     //(that would require changes to the original document).
@@ -839,7 +839,7 @@ Glib::ustring Application::get_file_uri_without_extension(const Glib::ustring& u
     return uri; //Actually an error.
 
   const Glib::ustring filename_part = file->get_basename();
-  
+
   const Glib::ustring::size_type pos_dot = filename_part.rfind(".");
   if(pos_dot == Glib::ustring::npos)
     return uri; //There was no extension, so just return the existing URI.
@@ -892,7 +892,7 @@ void Application::init_create_document()
 
 bool Application::check_document_hosting_mode_is_supported(Document* document)
 {
-  //If it's an example then the document's hosting mode doesn't matter, 
+  //If it's an example then the document's hosting mode doesn't matter,
   //because the user will be asked to choose one when saving anyway.
   if(document->get_is_example_file())
     return true;
@@ -959,13 +959,13 @@ bool Application::on_document_load()
 
   if(!pDocument->get_is_new() && !check_document_hosting_mode_is_supported(pDocument))
     return false;
-    
+
   #ifdef GLOM_ENABLE_MAEMO
   //On Maemo, make regular (not specifically maemo) layouts single-column,
   //so they are more appropriate by default:
   pDocument->maemo_restrict_layouts_to_single_column();
   #endif //GLOM_ENABLE_MAEMO
-  
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Connect signals:
   pDocument->signal_userlevel_changed().connect( sigc::mem_fun(*this, &Application::on_userlevel_changed) );
@@ -1009,10 +1009,10 @@ bool Application::on_document_load()
       m_ui_save_extra_newdb_title = "TODO";
       m_ui_save_extra_newdb_hosting_mode = Document::HOSTING_MODE_DEFAULT;
 
-        
+
       // Reinit cancelled state
       set_operation_cancelled(false);
-        
+
       offer_saveas();
       // Note that bakery will try to add the example file itself to the
       // recently used documents, which is not what we want.
@@ -1020,7 +1020,7 @@ bool Application::on_document_load()
       m_ui_save_extra_title.clear();
 
       if(!get_operation_cancelled())
-      {	
+      {
         //Get the results from the extended save dialog:
         pDocument->set_database_title(m_ui_save_extra_newdb_title);
         pDocument->set_hosting_mode(m_ui_save_extra_newdb_hosting_mode);
@@ -1034,8 +1034,8 @@ bool Application::on_document_load()
         pDocument->set_connection_try_other_ports(true);
 
         // We have a valid uri, so we can set it to !new and modified here
-      }        
-        
+      }
+
       m_ui_save_extra_newdb_title.clear();
       m_ui_save_extra_showextras = false;
 
@@ -1046,7 +1046,7 @@ bool Application::on_document_load()
         std::cout << "debug: user cancelled creating database" << std::endl;
         return false;
       }
-        
+
 #else // !GLOM_ENABLE_CLIENT_ONLY
       // TODO_clientonly: Tell the user that opening example files is
       // not supported. This could alternatively also be done in
@@ -1099,7 +1099,7 @@ bool Application::on_document_load()
 #endif // !GLOM_ENABLE_CLIENT_ONLY
       {
         //Ask for the username/password and connect:
-        //Note that m_temp_username and m_temp_password are set if 
+        //Note that m_temp_username and m_temp_password are set if
         //we already asked for them when getting the document over the network:
 
         //Use the default username/password if opening as non network-shared:
@@ -1243,7 +1243,7 @@ void Application::update_network_shared_ui()
   //TODO: Our use of block() does not seem to work. The signal actually seems to be emitted some time later instead.
   m_connection_toggleaction_network_shared.block(); //Prevent signal handling.
   m_toggleaction_network_shared->set_active(shared);
- 
+
   //Do not allow impossible changes:
   const Document::HostingMode hosting_mode = document->get_hosting_mode();
   if( (hosting_mode == Document::HOSTING_MODE_POSTGRES_CENTRAL) //Central hosting means that it must be shared on the network.
@@ -1279,7 +1279,7 @@ void Application::update_userlevel_ui()
     sharedptr<SharedConnection> connection = ConnectionPool::get_and_connect();
     if(connection && !connection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS))
       m_action_developer_users->set_sensitive(false);
-  } 
+  }
 
   //Make sure that the correct radio menu item is activated (the userlevel might have been set programmatically):
   //We only need to set/unset one, because the others are in the same radio group.
@@ -1445,7 +1445,7 @@ void Application::existing_or_new_new()
     //Connect to the server and choose a variation of this db_name that does not exist yet:
     document->set_connection_database(db_name);
     document->set_hosting_mode(hosting_mode);
-         
+
    //Tell the connection pool about the document:
    ConnectionPool* connection_pool = ConnectionPool::get_instance();
    if(connection_pool)
@@ -1693,7 +1693,7 @@ bool Application::recreate_database(bool& user_cancelled)
     //try
     //{
       const bool table_insert_succeeded = m_pFrame->insert_example_data(table_info->get_name());
-      
+
       if(!table_insert_succeeded)
       {
         g_warning("Application::recreate_database(): INSERT of example data failed with the newly-created database.");
@@ -2079,8 +2079,8 @@ void Application::on_menu_file_save_as_example()
     file_uri = document->get_file_uri_with_extension(file_uri);
 
     bool bUseThisFileUri = true;
-    //We previously checked whether the file existed, 
-    //but The FileChooser checks that already, 
+    //We previously checked whether the file existed,
+    //but The FileChooser checks that already,
     //so Bakery doesn't bother checking anymore,
     //and our old test always set bUseThisFileUri to true anyway. murryac.
     //TODO: So remove this bool. murrayc.
@@ -2190,7 +2190,7 @@ Glib::ustring Application::ui_file_select_save(const Glib::ustring& old_file_uri
   if(fileChooser_SaveExtras)
   {
     fileChooser_SaveExtras->set_extra_message(m_ui_save_extra_message);
-    
+
 
     //Start with something suitable:
     Document* document = dynamic_cast<Document*>(get_document());
@@ -2203,7 +2203,7 @@ Glib::ustring Application::ui_file_select_save(const Glib::ustring& old_file_uri
     else
       m_ui_save_extra_newdb_title = Utils::title_from_string( filename ); //Start with something suitable.
 
-    fileChooser_SaveExtras->set_extra_newdb_title(m_ui_save_extra_newdb_title); 
+    fileChooser_SaveExtras->set_extra_newdb_title(m_ui_save_extra_newdb_title);
     fileChooser_SaveExtras->set_extra_newdb_hosting_mode(m_ui_save_extra_newdb_hosting_mode);
   }
 
@@ -2320,7 +2320,7 @@ Glib::ustring Application::ui_file_select_save(const Glib::ustring& old_file_uri
           try_again = true; //Try again.
           continue;
         }
-        
+
         //Create the directory, so that file creation can succeed later:
         //0770 means "this user and his group can read and write this "executable" (can add child files) directory".
         //The 0 prefix means that this is octal.
@@ -2532,7 +2532,7 @@ void Application::update_window_title()
   strTitle +=  " - " + m_strAppName;
 
   set_title(strTitle);
-  
+
   #ifdef GLOM_ENABLE_MAEMO
   //Update the picker button too:
   m_appmenu_button_table.set_table_name(table_name);
@@ -2543,7 +2543,7 @@ void Application::show_table_details(const Glib::ustring& table_name, const Gnom
 {
   if(!m_pFrame)
     return;
-    
+
   m_pFrame->show_table(table_name, primary_key_value);
 }
 
@@ -2551,13 +2551,28 @@ void Application::show_table_list(const Glib::ustring& table_name)
 {
   if(!m_pFrame)
     return;
-  
+
   m_pFrame->show_table(table_name);
 }
 
-  
+
+void Application::print_report(const Glib::ustring& report_name)
+{
+  if(!m_pFrame)
+    return;
+
+  m_pFrame->on_menu_report_selected(report_name);
+}
+
+void Application::print()
+{
+  if(!m_pFrame)
+    return;
+
+  m_pFrame->on_menu_file_print();
+}
+
+
 
 
 } //namespace Glom
-
-
