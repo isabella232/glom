@@ -177,7 +177,9 @@ FlowTable::FlowTableItem::FlowTableItem(Gtk::Widget* first, FlowTable* /* flowta
 : m_first(first),
   m_second(0),
   m_expand_first_full(false),
-  m_expand_second(false)
+  m_expand_second(false),
+  m_has_allocated_column(false),
+  m_allocated_column(0)
 {
 
 }
@@ -186,7 +188,9 @@ FlowTable::FlowTableItem::FlowTableItem(Gtk::Widget* first, Gtk::Widget* second,
 : m_first(first),
   m_second(second),
   m_expand_first_full(false),
-  m_expand_second(false)
+  m_expand_second(false),
+  m_has_allocated_column(false),
+  m_allocated_column(0)
 {
 
 }
@@ -201,6 +205,7 @@ FlowTable::FlowTable()
   // rather annoying, though I don't see another possibility at the moment. armin.
   Glib::ObjectBase("Glom_FlowTable"),
 #endif // ! !defined(GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED)
+  m_columns_allocated_changed(false),
   m_columns_count(1),
   m_column_padding(Utils::DEFAULT_SPACING_SMALL), //A sane default.
   m_row_padding(Utils::DEFAULT_SPACING_SMALL), //A sane default.
@@ -722,6 +727,7 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
 
   int column_child_y_start = allocation.get_y();
 
+  guint column_number = 0; //Just for remembering it for later.
   guint count = m_children.size();
   for(guint i = 0; i < count; ++i)
   {
@@ -735,7 +741,8 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
     {
       //start a new column:
       column_child_y_start = allocation.get_y();
-      int column_x_start_plus_singles = column_x_start + singles_max_width;
+      ++column_number;
+      const int column_x_start_plus_singles = column_x_start + singles_max_width;
       column_x_start = column_x_start_second + second_max_width;
       column_x_start = MAX(column_x_start, column_x_start_plus_singles); //Maybe the single items take up even more width.
       column_x_start += m_column_padding;
@@ -786,7 +793,7 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
         something_added = true;
       }
 
-      if(child_is_visible(second))
+      if(true) //Unecessary check: child_is_visible(second))
       {
         //Assign space to the child:
 
@@ -820,6 +827,15 @@ void FlowTable::on_size_allocate(Gtk::Allocation& allocation)
 
     if(something_added)
     {
+      //Let later code know where the widgets are, and whether the layout has 
+      //changed since m_columns_allocated_changed was last set to false.
+      if(!item.m_has_allocated_column || (item.m_allocated_column != column_number))
+      {
+        item.m_allocated_column = column_number;
+        item.m_has_allocated_column = true;
+        m_columns_allocated_changed = true;
+      }
+      
       //Start the next child below this child, plus the padding
       column_child_y_start += item_height;
       column_child_y_start += m_row_padding; //Ignored if this is the last item - we will just start a new column when we find that column_child_y_start is too much.
@@ -896,7 +912,7 @@ void FlowTable::forall_vfunc(gboolean /* include_internals */, GtkCallback callb
 {
   for(type_vecChildren::const_iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
   {
-    FlowTableItem item = *iter;
+    const FlowTableItem& item = *iter;
 
     Gtk::Widget* first = item.m_first;
     if(first)
@@ -1052,6 +1068,27 @@ bool FlowTable::on_expose_event(GdkEventExpose* event)
   return true;
 #endif
 }
+
+bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& column)
+{
+  //Initialize output parameter:
+  column = 0;
+  
+  for(type_vecChildren::const_iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
+  {
+    const FlowTableItem& item = *iter;
+
+    if((&first == item.m_first) && item.m_has_allocated_column)
+    {
+       column = item.m_allocated_column;
+       return true;
+    }
+  }
+  
+  return false;
+}
+
+
 
 } //namespace Glom
 

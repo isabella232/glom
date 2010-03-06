@@ -69,6 +69,12 @@ public:
   // Implement forall which is not implemented in gtkmm:
   typedef sigc::slot<void, Widget&> ForallSlot;
   void forall(const ForallSlot& slot);
+  
+  /** Get the column in which the specified "first" widget is placed.
+   * result false if the widget is not one of the "first" widgets, or 
+   * if has not yet been placed in a column, because the size has not yet been requested.
+   */
+  bool get_column_for_first_widget(const Gtk::Widget& first, guint& column);
 
 private:
 
@@ -88,19 +94,22 @@ private:
 
   //Handle child widgets:
   virtual void on_size_request(Gtk::Requisition* requisition);
-  virtual void on_size_allocate(Gtk::Allocation& allocation);
   virtual GType child_type_vfunc() const;
   virtual void on_add(Gtk::Widget* child);
   virtual void forall_vfunc(gboolean include_internals, GtkCallback callback, gpointer callback_data);
   virtual void on_remove(Gtk::Widget* child);
 
+
+protected:
+
+  virtual void on_size_allocate(Gtk::Allocation& allocation);
+  
   //Do extra drawing:
   //Virtual method overrides:
   void on_realize();
   void on_unrealize();
   bool on_expose_event(GdkEventExpose* event);
-
-protected:
+  
   int get_column_height(guint start_widget, guint widget_count, int& total_width) const;
 
   /** 
@@ -118,6 +127,10 @@ protected:
     Gtk::Widget* m_second;
     bool m_expand_first_full;
     bool m_expand_second;
+    
+    //The column that the widgets are currently in, due to the size/allocation.
+    bool m_has_allocated_column;
+    guint m_allocated_column;
     
     bool operator==(Gtk::Widget* child) const
     {
@@ -144,6 +157,10 @@ private:
 protected:
   typedef std::vector<FlowTableItem> type_vecChildren;
   type_vecChildren m_children;
+  
+  //Reset this and check it later to see if the layout of items has changed.
+  bool m_columns_allocated_changed;
+  
 private:
   guint m_columns_count;
   guint m_column_padding, m_row_padding;

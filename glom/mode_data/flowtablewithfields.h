@@ -102,6 +102,17 @@ public:
   virtual void set_design_mode(bool value = true);
 
   virtual void remove_all();
+  
+  /** Apply the size group to all field labels.
+   * By calling this method on multiple FlowTables, the field widgets in 
+   * different groups can then align.
+   */
+  void apply_size_group_to_labels(const Glib::RefPtr<Gtk::SizeGroup>& size_group);
+  
+  /** Create a size group and make all the labels in child flowtables use it,
+   * making them align.
+   */
+  void align_child_group_labels();
 
   /** Get the layout structure, which might have changed in the child widgets since 
    * the whole widget structure was built.
@@ -180,9 +191,11 @@ private:
     Info();
 
     sharedptr<const LayoutItem_Field> m_field; //Store the field information so we know the title, ID, and type.
-    Glib::ustring m_group;
 
     Gtk::Label* m_first;
+    Gtk::EventBox* m_first_eventbox; //The label is often inside an eventbox.
+    Glib::RefPtr<Gtk::SizeGroup> m_first_in_sizegroup; //Just to avoid a warning when removing a widget not in a group.
+
     DataWidget* m_second;
     Gtk::CheckButton* m_checkbutton; //Used instead of first and second if it's a bool.
   };
@@ -212,6 +225,8 @@ private:
   void add_layout_group_at_position(const sharedptr<LayoutGroup>& group, const type_list_layoutwidgets::iterator& add_before);
   void add_layout_notebook_at_position(const sharedptr<LayoutItem_Notebook>& notebook, const type_list_layoutwidgets::iterator& add_before);
   void add_layout_portal_at_position(const sharedptr<LayoutItem_Portal>& portal, const type_list_layoutwidgets::iterator& add_before);
+  
+  virtual void on_size_allocate(Gtk::Allocation& allocation);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 
@@ -244,6 +259,9 @@ private:
   Gtk::Alignment* m_placeholder;
   
   Glib::ustring m_table_name;
+  
+  //Size group shared by this widget's sibling FlowTables.
+  Glib::RefPtr<Gtk::SizeGroup> m_size_group;
 
   type_signal_field_edited m_signal_field_edited;
   type_signal_field_open_details_requested m_signal_field_open_details_requested;

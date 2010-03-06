@@ -231,6 +231,8 @@ void Box_Data_Details::create_layout()
     {
       m_FlowTable.add_layout_group(*iter);
     }
+    
+    m_FlowTable.align_child_group_labels();
   }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
