@@ -1,3 +1,10 @@
+2010-03-06  Murray Cumming  <murrayc@murrayc.com>
+
+    Details: Do not make field widgets too wide, so this fits on a laptop screen.
+  
+	* glom/utils_ui.cc: get_suitable_field_width_for_widget(): Do not add 150 
+	to all calculated widths. I don't know why this code ever did that.
+
 2010-03-19  Daniel Borgmann <danielb@openismus.com>
 
 	* configure.ac: Make Glom build with autoconf 2.65.
@@ -21,7 +28,7 @@
 
 2010-02-08  Peter Penz <ppenz@openismus.com>
 
-  libglom: Fix build issue for Maemo.
+    libglom: Fix build issue for Maemo.
   
 	* glom/libglom/data_structure/glomconversions.cc: get_text_for_gda_value():
 	Add an ifdef for the disabled-exceptions build.
