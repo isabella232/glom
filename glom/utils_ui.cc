@@ -340,7 +340,7 @@ static int get_width_for_text(Gtk::Widget& widget, const Glib::ustring& text)
 
 int Utils::get_suitable_field_width_for_widget(Gtk::Widget& widget, const sharedptr<const LayoutItem_Field>& field_layout, bool or_title)
 {
-  int result = 150;
+  int result = 150; //Suitable default.
 
   const Field::glom_field_type field_type = field_layout->get_glom_type();
 
@@ -394,7 +394,7 @@ int Utils::get_suitable_field_width_for_widget(Gtk::Widget& widget, const shared
   if(!example_text.empty())
   {
     //Get the width required for this string in the current font:
-    result += get_width_for_text(widget, example_text);
+    result = get_width_for_text(widget, example_text);
   }
 
   if(or_title)
