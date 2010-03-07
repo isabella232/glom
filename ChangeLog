@@ -1,3 +1,13 @@
+2010-03-07  Murray Cumming  <murrayc@murrayc.com>
+
+  Details: Align widgets in other columns too.
+  
+	* glom/utility_widgets/flowtable.[h|cc]: Added get_columns_count().
+	* glom/mode_data/flowtablewithfields.[h|cc]: apply_size_group_to_label():
+	Change this to apply_size_groups_to_label().
+	align_child_group_labels(): Create a size group for each possible column, 
+	and call apply_size_groups_to_label() with them.
+
 2010-03-06  Murray Cumming  <murrayc@murrayc.com>
 
 	Details: Align widgets in the first columns of neighbouring layout groups.

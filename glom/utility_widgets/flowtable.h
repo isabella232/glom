@@ -43,6 +43,8 @@ public:
   virtual void remove(Gtk::Widget& first); //override
 
   void set_columns_count(guint value);
+  
+  guint get_columns_count() const;
 
   /** Sets the padding to put between the columns of widgets.
    */

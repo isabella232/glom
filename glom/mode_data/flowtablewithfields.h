@@ -103,11 +103,14 @@ public:
 
   virtual void remove_all();
   
-  /** Apply the size group to all field labels.
+  typedef std::vector< Glib::RefPtr<Gtk::SizeGroup> > type_vec_sizegroups;
+    
+  /** Apply the size groups to all field labels.
    * By calling this method on multiple FlowTables, the field widgets in 
    * different groups can then align.
+   * @param size_groups A vector containing a size group for each possible column.
    */
-  void apply_size_group_to_labels(const Glib::RefPtr<Gtk::SizeGroup>& size_group);
+  void apply_size_groups_to_labels(const type_vec_sizegroups& size_group);
   
   /** Create a size group and make all the labels in child flowtables use it,
    * making them align.
@@ -163,6 +166,11 @@ private:
     
   /// Get portals whose relationships have @a from_key as the from_key.
   type_portals get_portals(const sharedptr<const LayoutItem_Field>& from_key);
+  
+  /** Examine this flow table and all child flow tables, discovering which 
+   * has the most columns.
+   */
+  guint get_sub_flowtables_max_columns() const;
 
   //int get_suitable_width(Field::glom_field_type field_type);
 
@@ -260,8 +268,9 @@ private:
   
   Glib::ustring m_table_name;
   
-  //Size group shared by this widget's sibling FlowTables.
-  Glib::RefPtr<Gtk::SizeGroup> m_size_group;
+  //Size groups shared by this widget's sibling FlowTables,
+  //with one group for each column.
+  type_vec_sizegroups m_vec_size_groups;
 
   type_signal_field_edited m_signal_field_edited;
   type_signal_field_open_details_requested m_signal_field_open_details_requested;

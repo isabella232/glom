@@ -1246,7 +1246,7 @@ void FlowTableWithFields::on_flowtable_requested_related_details(const Glib::ust
   signal_requested_related_details().emit(table_name, primary_key_value);
 }
 
-void FlowTableWithFields::apply_size_group_to_labels(const Glib::RefPtr<Gtk::SizeGroup>& size_group)
+void FlowTableWithFields::apply_size_groups_to_labels(const type_vec_sizegroups& size_groups)
 {
   //Remove widgets from any existing size group:
   for(type_listFields::iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
@@ -1257,16 +1257,13 @@ void FlowTableWithFields::apply_size_group_to_labels(const Glib::RefPtr<Gtk::Siz
     if(!label || !previous_size_group)
       continue;
       
-    if(previous_size_group != size_group)
-    {
-      previous_size_group->remove_widget(*label);
-      info.m_first_in_sizegroup.clear();
-    }
+    previous_size_group->remove_widget(*label);
+    info.m_first_in_sizegroup.clear();
   }
   
-  m_size_group = size_group;
+  m_vec_size_groups = size_groups;
   
-  if(!size_group)
+  if(m_vec_size_groups.empty())
     return;
      
   for(type_listFields::iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
@@ -1285,10 +1282,13 @@ void FlowTableWithFields::apply_size_group_to_labels(const Glib::RefPtr<Gtk::Siz
     //TODO: Use a different SizeGroup for items in 2nd columns?
     guint column = 0;
     const bool column_allocated = get_column_for_first_widget(*label_parent, column);
-    if(!column_allocated || (column > 0))
+    if(!column_allocated)
+      
+    if(column >= m_vec_size_groups.size())
       continue;
-    
-    if(info.m_first_in_sizegroup != size_group)
+      
+    Glib::RefPtr<Gtk::SizeGroup> size_group = m_vec_size_groups[column];
+    if(size_group && (info.m_first_in_sizegroup != size_group))
     {
       size_group->add_widget(*label);
       info.m_first_in_sizegroup = size_group; //Remember it so we can remove it later.
@@ -1302,16 +1302,40 @@ void FlowTableWithFields::align_child_group_labels()
   if(m_sub_flow_tables.size() < 2)
     return;
     
-  //Create a size group and tell all groups to use is for their labels:
-  Glib::RefPtr<Gtk::SizeGroup> size_group = 
-    Gtk::SizeGroup::create(Gtk::SIZE_GROUP_HORIZONTAL);
+  //Create a size group for each column and tell all groups to use them for their labels:
+  const guint max_columns = get_sub_flowtables_max_columns();
+  type_vec_sizegroups vec_sizegroups(max_columns);
+  for(guint i = 0; i < max_columns; ++i)
+  {
+    vec_sizegroups[i] = Gtk::SizeGroup::create(Gtk::SIZE_GROUP_HORIZONTAL);
+  }
+   
   for(type_sub_flow_tables::iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
   {
     FlowTableWithFields* subtable = *iter;
     if(subtable)
-      subtable->apply_size_group_to_labels(size_group);
+      subtable->apply_size_groups_to_labels(vec_sizegroups);
   }
 }
+
+guint FlowTableWithFields::get_sub_flowtables_max_columns() const
+{
+  guint result = get_columns_count();
+  
+  for(type_sub_flow_tables::const_iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
+  {
+    const FlowTableWithFields* subtable = *iter;
+    if(subtable)
+    {
+      const guint count = subtable->get_columns_count();
+      if(count > result)
+          result = count;
+    }
+  }
+  
+  return result;
+}
+  
 
 void FlowTableWithFields::on_size_allocate(Gtk::Allocation& allocation)
 {
@@ -1326,7 +1350,7 @@ void FlowTableWithFields::on_size_allocate(Gtk::Allocation& allocation)
   //so this should be able to work:
   if(m_columns_allocated_changed)
   {
-    apply_size_group_to_labels(m_size_group);
+    apply_size_groups_to_labels(m_vec_size_groups);
     
     //Prevent unnecessary repeated (endless?) size allocation requested:
     m_columns_allocated_changed = false;

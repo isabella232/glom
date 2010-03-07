@@ -370,6 +370,11 @@ void FlowTable::set_columns_count(guint value)
   m_columns_count = value;
 }
 
+guint FlowTable::get_columns_count() const
+{
+  return m_columns_count;
+}
+
 void FlowTable::get_item_requested_width(const FlowTableItem& item, int& first, int& second) const
 {
   //Initialize output paramters:
