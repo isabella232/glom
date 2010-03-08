@@ -1,4 +1,13 @@
-2010-03-08  Murray Cumming  <murrayc@murrayc-desktop>
+2010-03-08  Murray Cumming  <murrayc@murrayc.com>
+
+    Slight update of Small Business example.
+
+	* examples/example_smallbusiness.glom: Resave, with a new record with 
+    a picture of a polar bear for use on the www.glom.org website. 
+    The picture is from http://www.flickr.com/photos/mape_s/350700095/
+    (Creative-Commons licensed, by Marieke IJsendoorn-Kuijpers)
+
+2010-03-08  Murray Cumming  <murrayc@murrayc.com>
 
     Python button scripts: Rename print() to print_layout() and add start_new_record().
 
