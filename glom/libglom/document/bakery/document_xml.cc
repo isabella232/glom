@@ -43,7 +43,7 @@ bool Document_XML::load_after(int& failure_code)
   if(!bTest)
     return false; //Failed.
 
-#ifdef LIBXMLPP_EXCEPTIONS_ENABLED
+#ifdef LIBXMLCPP_EXCEPTIONS_ENABLED
   try
 #endif
   {
@@ -59,7 +59,7 @@ bool Document_XML::load_after(int& failure_code)
 
     return true; //Success.
   }
-#ifdef LIBXMLPP_EXCEPTIONS_ENABLED
+#ifdef LIBXMLCPP_EXCEPTIONS_ENABLED
   catch(const std::exception& ex)
   {
     std::cerr << "XML Parser error: \n" << ex.what() << std::endl;
@@ -91,7 +91,7 @@ bool Document_XML::save_before()
 //TODO: Why is this parameter here if it is not used?
 bool Document_XML::set_xml(const Glib::ustring& /* strXML */)
 { 
-#ifdef LIBXMLPP_EXCEPTIONS_ENABLED
+#ifdef LIBXMLCPP_EXCEPTIONS_ENABLED
   try
 #endif
   {
@@ -105,7 +105,7 @@ bool Document_XML::set_xml(const Glib::ustring& /* strXML */)
 
     return true;	
   }
-#ifdef LIBXMLPP_EXCEPTIONS_ENABLED
+#ifdef LIBXMLCPP_EXCEPTIONS_ENABLED
   catch(const std::exception& ex)
   {
     std::cerr << "XML Parser error: \n" << ex.what() << std::endl;
@@ -125,7 +125,7 @@ Glib::ustring Document_XML::get_xml() const
 
 void Document_XML::Util_DOM_Write(Glib::ustring& refstrXML) const
 {
-#ifdef LIBXMLPP_EXCEPTIONS_ENABLED
+#ifdef LIBXMLCPP_EXCEPTIONS_ENABLED
   try
 #endif
   {
@@ -134,7 +134,7 @@ void Document_XML::Util_DOM_Write(Glib::ustring& refstrXML) const
     else
       refstrXML = m_pDOM_Document->write_to_string();
   }
-#ifdef LIBXMLPP_EXCEPTIONS_ENABLED
+#ifdef LIBXMLCPP_EXCEPTIONS_ENABLED
   catch(xmlpp::exception& ex)
   {
     std::cerr << "Document_XML::Util_DOM_Write(): exception caught: " << ex.what() << std::endl;
