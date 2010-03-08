@@ -1258,7 +1258,7 @@ void FlowTableWithFields::apply_size_groups_to_labels(const type_vec_sizegroups&
       continue;
       
     previous_size_group->remove_widget(*label);
-    info.m_first_in_sizegroup.clear();
+    info.m_first_in_sizegroup.reset();
   }
   
   m_vec_size_groups = size_groups;
