@@ -60,7 +60,8 @@ BOOST_PYTHON_MODULE(glom_1_14)
   boost::python::class_<PyGlomUI>("UI")
     .def("show_table_details", &PyGlomUI::show_table_details)
     .def("show_table_list", &PyGlomUI::show_table_list)
-    .def("print", &PyGlomUI::print)
+    .def("print_layout", &PyGlomUI::print_layout)
     .def("print_report", &PyGlomUI::print_report)
+    .def("start_new_record", &PyGlomUI::start_new_record)
   ;
 }

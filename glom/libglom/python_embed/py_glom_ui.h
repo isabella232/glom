@@ -52,9 +52,15 @@ public:
   sigc::slot<void, const Glib::ustring&> m_slot_print_report;
 
    /** For example,
-   * void on_print();
+   * void on_print_layout();
    */
-  sigc::slot<void> m_slot_print;
+  sigc::slot<void> m_slot_print_layout;
+
+  /** For example,
+   * void on_start_new_record(const Gnome::Gda::Value& new_primary_key_value);
+   * Use an empty Value for auto-created fields.
+   */
+  sigc::slot<void> m_slot_start_new_record;
 };
 
 class PyGlomUI
@@ -75,11 +81,15 @@ public:
 
   /** Print the current view of the current table.
    */
-  void print();
+  void print_layout();
 
   /** Print the named report from the current table.
    */
   void print_report(const std::string& report_name);
+
+  /** Offer the user the UI to add a new record.
+   */
+  void start_new_record();
 
 private:
   const PythonUICallbacks* m_callbacks;

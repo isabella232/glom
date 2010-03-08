@@ -30,7 +30,7 @@ namespace Glom
 {
 
 Notebook_Data::Notebook_Data()
-: 
+:
   #ifdef GLOM_ENABLE_MAEMO
   m_window_maemo_details(0),
   #endif
@@ -46,14 +46,14 @@ Notebook_Data::Notebook_Data()
   #else
   //On Maemo, we add the box to m_window_maemo_details instead:
   m_window_maemo_details = new Window_BoxHolder(&m_Box_Details, _("Details"));
-  
+
   //Let this window have the main AppMenu:
   Hildon::Program::get_instance()->add_window(*m_window_maemo_details);
-  
+
   Gtk::Window* pWindow = get_app_window();
   if(pWindow)
     m_window_maemo_details->set_transient_for(*pWindow);
-    
+
   //Refresh the list when the details window is closed:
   m_window_maemo_details->signal_hide().connect(
     sigc::mem_fun(*this, &Notebook_Data::on_window_maemo_details_closed));
@@ -64,7 +64,7 @@ Notebook_Data::Notebook_Data()
   // Set accessible name for the notebook, to be able to access it via LDTP
 #ifdef GTKMM_ATKMM_ENABLED
   get_accessible()->set_name(_("List Or Details View"));
-#endif  
+#endif
 
 
   //Connect signals:
@@ -82,7 +82,7 @@ Notebook_Data::Notebook_Data()
   //Allow Details to tell List about record deletion:
   m_Box_Details.signal_record_deleted().connect(sigc::mem_fun(m_Box_List, &Box_Data_List::on_details_record_deleted));
   #endif //GLOM_ENABLE_MAEMO
-  
+
   //Allow Details to ask to show a different record in a different table:
   m_Box_Details.signal_requested_related_details().connect(sigc::mem_fun(*this, &Notebook_Data::on_details_user_requested_related_details));
 
@@ -163,8 +163,8 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
       {
         primary_key_for_details = primary_key_value_for_details;
       }
-      
-      //If the specified (or remembered) primary key value is not in the found set, 
+
+      //If the specified (or remembered) primary key value is not in the found set,
       //then ignore it:
       if(!found_set.m_where_clause.empty() && !get_primary_key_is_in_foundset(found_set, primary_key_for_details))
       {
@@ -197,7 +197,7 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
 
   //Select the last-viewed layout, or the details layout, if a specific details record was specified:
   const dataview current_view = get_current_view();
-  
+
   if(details_record_specified)
   {
     if(current_view != DATA_VIEW_Details)
@@ -209,7 +209,7 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
     Glib::ustring current_layout;
     if(!details_record_specified)
     {
-      Document* document = get_document(); 
+      Document* document = get_document();
       if(document)
         current_layout = document->get_layout_current(m_table_name);
     }
@@ -238,30 +238,30 @@ void Notebook_Data::show_details(const Gnome::Gda::Value& primary_key_value)
   //Prevent n_switch_page_handler() from doing the same thing:
   if(m_connection_switch_page)
     m_connection_switch_page.block();
-  
+
   //std::cout << "DEBUG: Notebook_Data::show_details() primary_key_value=" << primary_key_value.to_string() << std::endl;
   m_Box_Details.refresh_data_from_database_with_primary_key(primary_key_value);
 
 #if GLOM_ENABLE_MAEMO
   //Details are shown in a separate window on Maemo,
-  //though that window contains the regular m_Box_Details. 
+  //though that window contains the regular m_Box_Details.
   //TODO: Use the singular form when it's available from the document.
   Document* document = get_document();
   g_assert(document);
-  const Glib::ustring title = 
-    Glib::ustring::compose(_("%1 Details"), 
+  const Glib::ustring title =
+    Glib::ustring::compose(_("%1 Details"),
       document->get_table_title_singular(m_table_name));
   m_window_maemo_details->set_title(title);
-  
+
   m_window_maemo_details->show();
-#else  
+#else
   if(get_current_view() != DATA_VIEW_Details)
     set_current_view(DATA_VIEW_Details);
 #endif
-  
+
   //Re-enable this handler, so we can respond to notebook page changes:
   if(m_connection_switch_page)
-    m_connection_switch_page.unblock();  
+    m_connection_switch_page.unblock();
 }
 
 bool Notebook_Data::on_idle_show_details(const Gnome::Gda::Value& primary_key_value)
@@ -273,7 +273,7 @@ bool Notebook_Data::on_idle_show_details(const Gnome::Gda::Value& primary_key_va
 void Notebook_Data::on_list_user_requested_details(const Gnome::Gda::Value& primary_key_value)
 {
   //Show the details after a delay,
-  //to avoid problems with deleting the list GtkCellRenderer while 
+  //to avoid problems with deleting the list GtkCellRenderer while
   //handling its signal.
   Glib::signal_idle().connect(
     sigc::bind(
@@ -331,7 +331,7 @@ void Notebook_Data::do_menu_developer_layout()
     Box_Data* pBox = dynamic_cast<Box_Data*>(pChild);
     if(pBox)
       pBox->show_layout_dialog();
-  } 
+  }
 }
 
 void Notebook_Data::show_layout_toolbar(bool show)
@@ -389,7 +389,7 @@ void Notebook_Data::on_switch_page_handler(GtkNotebookPage* pPage, guint uiPageN
     if(document)
       document->set_layout_current(m_table_name, box->get_layout_name());
 
-    //And refresh the list view whenever it is shown, to 
+    //And refresh the list view whenever it is shown, to
     //a) show any new records that were added via the details view, or via a related portal elsewhere.
     //b) show changed field contents, changed elsewhere.
     if(box == &m_Box_List)
@@ -414,12 +414,10 @@ void Notebook_Data::get_record_counts(gulong& total, gulong& found)
   m_Box_List.get_record_counts(total, found);
 }
 
-#ifdef GLOM_ENABLE_MAEMO
 void Notebook_Data::do_menu_file_add_record()
 {
   show_details(Gnome::Gda::Value());
   m_Box_Details.do_new_record();
 }
-#endif //GLOM_ENABLE_MAEMO
 
 } //namespace Glom

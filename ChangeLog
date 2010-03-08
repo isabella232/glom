@@ -1,3 +1,19 @@
+2010-03-08  Murray Cumming  <murrayc@murrayc-desktop>
+
+    Python button scripts: Rename print() to print_layout() and add start_new_record().
+
+	* glom/application.[h|cc]
+	* glom/frame_glom.[h|cc]
+	* glom/libglom/python_embed/py_glom_ui.[h|cc]
+	* glom/mode_data/box_data.[h|cc]
+	* glom/mode_data/box_data_details.[h|cc]
+	* glom/mode_data/notebook_data.[h|cc]
+	* glom/python_embed/python_module/py_glom_module.cc:
+	* tests/test_python_execute_script.cc:
+    Add a ui.start_new_record() python method, and rename ui.print() to
+    ui.print_layout() because print seems to be a python keyword that can't
+    be used as a method name, seen when trying to use it in the unit test.
+
 2010-03-08  Peter Penz  <ppenz@openismus.com>
 
 	Fix the build with exceptions disabled.

@@ -60,10 +60,10 @@ void PyGlomUI::show_table_list(const std::string& table_name)
     m_callbacks->m_slot_show_table_list(table_name);
 }
 
-void PyGlomUI::print()
+void PyGlomUI::print_layout()
 {
-  if(m_callbacks && m_callbacks->m_slot_print)
-    m_callbacks->m_slot_print();
+  if(m_callbacks && m_callbacks->m_slot_print_layout)
+    m_callbacks->m_slot_print_layout();
 }
 
 
@@ -71,6 +71,12 @@ void PyGlomUI::print_report(const std::string& report_name)
 {
   if(m_callbacks && m_callbacks->m_slot_print_report)
     m_callbacks->m_slot_print_report(report_name);
+}
+
+void PyGlomUI::start_new_record()
+{
+  if(m_callbacks && m_callbacks->m_slot_print_report)
+    m_callbacks->m_slot_start_new_record();
 }
 
 

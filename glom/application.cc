@@ -2564,7 +2564,7 @@ void Application::print_report(const Glib::ustring& report_name)
   m_pFrame->on_menu_report_selected(report_name);
 }
 
-void Application::print()
+void Application::print_layout()
 {
   if(!m_pFrame)
     return;
@@ -2572,7 +2572,11 @@ void Application::print()
   m_pFrame->on_menu_file_print();
 }
 
+void Application::start_new_record()
+{
+  m_pFrame->on_menu_add_record();
 
+}
 
 
 } //namespace Glom

@@ -66,7 +66,7 @@ class Frame_Glom :
   //public GlomBakery::View_Composite<Document>,
   public Base_DB //Inherits from View_Composite.
 {
-public: 
+public:
   Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Frame_Glom();
 
@@ -91,11 +91,11 @@ public:
 
   void on_menu_Mode_Data();
   void on_menu_Mode_Find();
-  
-  #ifdef GLOM_ENABLE_MAEMO
+
+  //TODO: Actually put this in the menu for non-maemo too? #ifdef GLOM_ENABLE_MAEMO
   void on_menu_add_record();
-  #endif
-  
+  //#endif
+
   void on_menu_report_selected(const Glib::ustring& report_name);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -192,10 +192,10 @@ public:
    * @param primary_key_value_for_details If specified, switch to the details view, and show this record.
    */
   void show_table(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value_for_details = Gnome::Gda::Value());
-  
+
 protected:
 
-  
+
 
   //virtual void set_document(Document* pDocument); //override
 
@@ -253,7 +253,7 @@ private:
    * @result Whether to try again.
    */
   bool handle_request_password_connection_error(bool asked_for_password, const ExceptionConnection& ex, bool& database_not_found);
-  
+
   //Member data:
   Glib::ustring m_table_name;
 
@@ -278,22 +278,22 @@ private:
 #endif //GLOM_ENABLE_MAEMO
 
   Notebook_Data m_Notebook_Data;
-  
+
   Gtk::HBox* m_pBox_QuickFind; //Only show this when in Find mode.
   Gtk::Entry* m_pEntry_QuickFind;
   Gtk::Button* m_pButton_QuickFind;
   Notebook_Find m_Notebook_Find;
-  
+
   #ifdef GLOM_ENABLE_MAEMO
   Hildon::StackableWindow m_maemo_window_find;
   #endif
-  
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Developer:
   Window_BoxHolder* m_pDialog_Reports;
   Dialog_Layout_Report* m_pDialogLayoutReport;
   Box_Reports* m_pBox_Reports;
-  
+
   Window_BoxHolder* m_pDialog_PrintLayouts;
   Window_PrintLayout_Edit* m_pDialogLayoutPrint;
   Box_Print_Layouts* m_pBox_PrintLayouts;
@@ -302,7 +302,7 @@ private:
   Dialog_Relationships* m_pDialog_Relationships;
   Dialog_AddRelatedTable* m_dialog_addrelatedtable;
   Dialog_RelationshipsOverview* m_dialog_relationships_overview;
-    
+
   Dialog_ProgressCreating* m_dialog_progess_connection_initialize;
 #endif //GLOM_ENABLE_CLIENT_ONLY
 

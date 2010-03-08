@@ -66,20 +66,20 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_FlowTable.set_row_padding(0); //The hildon buttons and entries have their own default padding.
   m_FlowTable.set_column_padding(HILDON_MARGIN_DOUBLE); //As per the UI specs.
   #endif
-  
+
   //m_strHint = _("When you change the data in a field the database is updated immediately.\n Click [New] to add a new record.\n Leave automatic ID fields empty - they will be filled for you.");
 
 
   //m_ScrolledWindow.set_border_width(Utils::DEFAULT_SPACING_SMALL);
 #ifdef GLOM_ENABLE_MAEMO
-  // Allow horizontal scrolling in maemo because the screen is rather small and 
-  // there might be some database UIs that don't fit horizontally. Such a UI may 
+  // Allow horizontal scrolling in maemo because the screen is rather small and
+  // there might be some database UIs that don't fit horizontally. Such a UI may
   // be considered non-maemo-friendly, but it can still be fully viewed this way.
   // TODO: Prevent the need for horizontal scrolling.
   m_ScrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 #else
   // Allow vertical scrolling, but never scroll horizontally:
-  m_ScrolledWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC); 
+  m_ScrolledWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC);
 #endif
   m_ScrolledWindow.set_shadow_type(Gtk::SHADOW_NONE); //SHADOW_IN is Recommended by the GNOME HIG, but looks odd.
 
@@ -176,7 +176,7 @@ void Box_Data_Details::set_found_set_from_primary_key_value()
   if(!m_primary_key_value.is_null())
   {
     //TODO: Use a SQL parameter instead of using sql().
-    m_found_set.m_where_clause = "\"" + m_table_name + "\".\"" + m_field_primary_key->get_name() + 
+    m_found_set.m_where_clause = "\"" + m_table_name + "\".\"" + m_field_primary_key->get_name() +
       "\" = " + m_field_primary_key->sql(m_primary_key_value);
     //std::cout << "  DEBUG: Box_Data_Details::set_primary_key_value(): m_found_set.m_where_clause = " << m_found_set.m_where_clause << std::endl;
   }
@@ -188,13 +188,13 @@ bool Box_Data_Details::init_db_details(const FoundSet& found_set, const Glib::us
 
   m_primary_key_value = primary_key_value;
   m_field_primary_key = get_field_primary_key_for_table(found_set.m_table_name);
-   
+
   const bool result = Box_Data::init_db_details(found_set, layout_platform); //Calls create_layout(), then fill_from_database()
 
   //This is not used much, but we create it anyway:
   m_found_set = found_set; //Not used much.
   set_found_set_from_primary_key_value();
- 
+
   return result;
 }
 
@@ -231,7 +231,7 @@ void Box_Data_Details::create_layout()
     {
       m_FlowTable.add_layout_group(*iter);
     }
-    
+
     m_FlowTable.align_child_group_labels();
   }
 
@@ -263,7 +263,7 @@ bool Box_Data_Details::fill_from_database()
     return false;
   }
 
-  //TODO: This should keep the connection open, so we don't need to 
+  //TODO: This should keep the connection open, so we don't need to
   //reconnect many times..
   sharedptr<SharedConnection> sharedconnection;
 
@@ -316,7 +316,7 @@ bool Box_Data_Details::fill_from_database()
         //Add extra possibly-non-visible columns that we need:
         sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
         layout_item->set_full_field_details(m_field_primary_key);
-        
+
         //Get the primary key index, adding the primary key if necessary:
         //TODO_Performance: Do this for create_layout() only, instead of repeating it for each refresh?:
         int index_primary_key = -1; //Arbitrary default.
@@ -337,10 +337,10 @@ bool Box_Data_Details::fill_from_database()
             sharedptr<const LayoutItem_Field> element = fieldsToGet[i];
             if(!element)
               continue;
-            
+
             if(element->get_name() != layout_item->get_name())
               continue;
-            
+
             //Compare the relationship and related relationship:
             sharedptr<const UsesRelationship> uses_a = layout_item;
             sharedptr<const UsesRelationship> uses_b = element;
@@ -378,14 +378,14 @@ bool Box_Data_Details::fill_from_database()
             {
               if(index_primary_key < cols_count)
               {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED              
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
                 m_primary_key_value = result->get_value_at(index_primary_key, row_number);
 #else
               {
                 std::auto_ptr<Glib::Error> value_error;
                 m_primary_key_value = result->get_value_at(index_primary_key, row_number, value_error);
               }
-#endif 
+#endif
                 set_found_set_from_primary_key_value();
               }
             }
@@ -399,14 +399,14 @@ bool Box_Data_Details::fill_from_database()
               Gnome::Gda::Value value;
 
               if(!primary_key_is_empty)
-#ifdef GLIBMM_EXCEPTIONS_ENABLED              
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
                 value = result->get_value_at(i, row_number);
 #else
               {
                 std::auto_ptr<Glib::Error> value_error;
                 value = result->get_value_at(i, row_number, value_error);
               }
-#endif               
+#endif
               else
               {
                 value = Conversions::get_empty_value(layout_item->get_glom_type());
@@ -484,7 +484,7 @@ void Box_Data_Details::on_button_del()
     if(confirm_delete_record())
     {
       const bool bTest = record_delete(m_primary_key_value);
-  
+
       if(bTest)
       {
         //Tell the list that it has been deleted:
@@ -599,7 +599,7 @@ void Box_Data_Details::on_related_record_added(Gnome::Gda::Value /* strKeyValue 
   }
   */
 
-  
+
 
   //Restore value:
   m_bDoNotRefreshRelated = bDoNotRefreshRelated;
@@ -628,7 +628,7 @@ Box_Data_Details::type_signal_void Box_Data_Details::signal_nav_last()
 
 Box_Data_Details::type_signal_record_deleted Box_Data_Details::signal_record_deleted()
 {
-  return m_signal_record_deleted; 
+  return m_signal_record_deleted;
 }
 #endif //GLOM_ENABLE_MAEMO
 
@@ -657,8 +657,8 @@ void Box_Data_Details::on_flowtable_layout_changed()
   Document* document = get_document();
   if(document)
     document->set_modified();
-    
-    
+
+
   //And fill it with data:
   fill_from_database();
 }
@@ -682,7 +682,7 @@ void Box_Data_Details::on_flowtable_field_open_details_requested(const sharedptr
   if(Conversions::value_is_empty(field_value))
     return; //Ignore empty ID fields.
 
-  //If it's a simple field that is part of a relationship, 
+  //If it's a simple field that is part of a relationship,
   //identifying a related record.
   sharedptr<const Relationship> relationship = get_document()->get_field_used_in_relationship_to_one(m_table_name, layout_field);
   if(relationship)
@@ -694,12 +694,12 @@ void Box_Data_Details::on_flowtable_field_open_details_requested(const sharedptr
   //If it is a related field that is a primary key,
   //meaning it identifies a record in another table:
   sharedptr<const Field> field_info = layout_field->get_full_field_details();
-  const bool field_is_related_primary_key = 
-    layout_field->get_has_relationship_name() && 
+  const bool field_is_related_primary_key =
+    layout_field->get_has_relationship_name() &&
     field_info && field_info->get_primary_key();
   if(field_is_related_primary_key)
   {
-    signal_requested_related_details().emit(layout_field->get_table_used(m_table_name), field_value);   
+    signal_requested_related_details().emit(layout_field->get_table_used(m_table_name), field_value);
   }
 }
 
@@ -730,7 +730,7 @@ void Box_Data_Details::on_flowtable_script_button_clicked(const sharedptr<const 
     }
   }
 }
-     
+
 void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutItem_Field>& layout_field, const Gnome::Gda::Value& field_value)
 {
   if(m_ignore_signals)
@@ -804,8 +804,8 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
       //Revert to the value in the database:
       const Gnome::Gda::Value value_old = get_field_value_in_database(field_in_record, window);
       set_entered_field_data(layout_field, value_old);
-   
-      return; 
+
+      return;
     }
 
     //Set the value in all instances of this field in the layout (The field might be on the layout more than once):
@@ -937,7 +937,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
 void Box_Data_Details::on_userlevel_changed(AppState::userlevels user_level)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  m_design_mode = ( user_level == AppState::USERLEVEL_DEVELOPER );    
+  m_design_mode = ( user_level == AppState::USERLEVEL_DEVELOPER );
   m_FlowTable.set_design_mode(m_design_mode);
   // Recreate the layout to correctly set the size of empty flowtables:
   create_layout();
@@ -1075,11 +1075,9 @@ void Box_Data_Details::show_layout_toolbar(bool show)
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-#ifdef GLOM_ENABLE_MAEMO
 void Box_Data_Details::do_new_record()
 {
   on_button_new();
 }
-#endif
 
 } //namespace Glom

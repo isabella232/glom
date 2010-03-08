@@ -115,7 +115,11 @@ public:
 
   /** Print the current layout for the current table.
    */
-  void print();
+  void print_layout();
+
+  /** Offer the user the UI to add a new record,
+   */
+  void start_new_record();
 
   static Application* get_application();
 

@@ -374,11 +374,18 @@ void Box_Data::on_python_requested_print_report(const Glib::ustring& report_name
     app->print_report(report_name);
 }
 
-void Box_Data::on_python_requested_print()
+void Box_Data::on_python_requested_print_layout()
 {
   Application* app = Application::get_application();
   if(app)
-    app->print();
+    app->print_layout();
+}
+
+void Box_Data::on_python_requested_start_new_record()
+{
+  Application* app = Application::get_application();
+  if(app)
+    app->start_new_record();
 }
 
 
@@ -403,10 +410,12 @@ void Box_Data::execute_button_script(const sharedptr<const LayoutItem_Button>& l
       sigc::mem_fun(*this, &Box_Data::on_python_requested_show_table_details);
     callbacks.m_slot_show_table_list =
       sigc::mem_fun(*this, &Box_Data::on_python_requested_show_table_list);
-    callbacks.m_slot_print =
-      sigc::mem_fun(*this, &Box_Data::on_python_requested_print);
+    callbacks.m_slot_print_layout =
+      sigc::mem_fun(*this, &Box_Data::on_python_requested_print_layout);
     callbacks.m_slot_print_report =
       sigc::mem_fun(*this, &Box_Data::on_python_requested_print_report);
+    callbacks.m_slot_start_new_record =
+      sigc::mem_fun(*this, &Box_Data::on_python_requested_start_new_record);
 
     glom_execute_python_function_implementation(layout_item->get_script(),
       field_values, //TODO: Maybe use the field's type here.
