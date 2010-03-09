@@ -1,3 +1,13 @@
+2010-03-09  Murray Cumming  <murrayc@murrayc.com>
+
+    Intial Dialog: Do not crash sometimes if cancelling the file chooser.
+
+	* glom/application.cc: offer_new_or_existing(): Show the dialog again if
+    we get a 0 response, because we cannot (yet) prevent the dialog from
+    doing this when the child file chooser dialog is cancelled. Fixes a crash
+    if pressing the Select button instead of double-clicking on an item.
+    Bug #612303 (David King)
+
 2010-03-06  Murray Cumming  <murrayc@murrayc.com>
 
     Details: Do not make field widgets too wide, so this fits on a laptop screen.
