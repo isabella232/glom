@@ -1390,6 +1390,13 @@ bool Application::offer_new_or_existing()
     {
       return false; //close the window to close the application, because they need to choose a new or existing document.
     }
+    else if((response_id == Gtk::RESPONSE_NONE)
+     || (response_id == 0))
+    {
+       //For instance, the file-open dialog was cancelled after Dialog_ExistingOrNew opened it,
+       //so just ask again.
+       //TODO: Stop Dialog_ExistingOrNew from emitting a response in this case.
+    }
     else
     {
       // This would mean that we got a unhandled response from the dialog

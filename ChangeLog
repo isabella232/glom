@@ -1,11 +1,21 @@
+2010-03-09  Murray Cumming  <murrayc@murrayc.com>
+
+    Intial Dialog: Do not crash sometimes if cancelling the file chooser.
+
+	* glom/application.cc: offer_new_or_existing(): Show the dialog again if
+    we get a 0 response, because we cannot (yet) prevent the dialog from
+    doing this when the child file chooser dialog is cancelled. Fixes a crash
+    if pressing the Select button instead of double-clicking on an item.
+    Bug #612303 (David King)
+
 1.13.8:
 
 2010-03-08  Murray Cumming  <murrayc@murrayc.com>
 
     Slight update of Small Business example.
 
-	* examples/example_smallbusiness.glom: Resave, with a new record with 
-    a picture of a polar bear for use on the www.glom.org website. 
+	* examples/example_smallbusiness.glom: Resave, with a new record with
+    a picture of a polar bear for use on the www.glom.org website.
     The picture is from http://www.flickr.com/photos/mape_s/350700095/
     (Creative-Commons licensed, by Marieke IJsendoorn-Kuijpers)
 
