@@ -1,3 +1,10 @@
+2010-03-13  David King  <davidk@openismus.com>
+
+	Depend on libxml++ >= 2.23.1, fixing GNOME bug #612794
+
+	* configure.ac: Bump libglom libxml++ version requirement to >= 2.23.1
+	for xmlpp::Element::add_child_text_before(). Fixes GNOME bug #612794.
+
 2010-03-08  Peter Penz  <ppenz@openismus.com>
 
 	Fix the build with exceptions disabled.
