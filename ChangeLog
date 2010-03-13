@@ -1,5 +1,12 @@
 2010-03-13  David King  <davidk@openismus.com>
 
+	Depend on gtkmm >= 2.19.2, fixing GNOME bug #612796
+
+	* configure.ac: Bump glom gtkmm version requirement to >= 2.19.2 for
+	Gtk::ToolPalette. Fixes GNOME bug #612796.
+
+2010-03-13  David King  <davidk@openismus.com>
+
 	Depend on libxml++ >= 2.23.1, fixing GNOME bug#612794
 
 	* configure.ac: Bump libglom libxml++ version requirement to >= 2.23.1
