@@ -1708,7 +1708,7 @@ void Frame_Glom::on_menu_developer_database_preferences()
       add_view(dialog);
       dialog->load_from_document();
 
-     Glom::Utils::dialog_run_with_help(dialog, "dialog_database_preferences");
+      Glom::Utils::dialog_run_with_help(dialog, "dialog_database_preferences");
 
       remove_view(dialog);
       delete dialog;

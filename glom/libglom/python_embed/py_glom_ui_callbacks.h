@@ -18,51 +18,51 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_PYTHON_GLOM_UI_H
-#define GLOM_PYTHON_GLOM_UI_H
+#ifndef GLOM_PYTHON_GLOM_UI_CALLBACKS_H
+#define GLOM_PYTHON_GLOM_UI_CALLBACKS_H
 
 #include <boost/python.hpp>
 
 #include <libglom/document/document.h>
 #include <libglom/data_structure/field.h>
-#include <libglom/python_embed/py_glom_ui_callbacks.h>
 #include <glibmm/ustring.h>
 
 namespace Glom
 {
 
-class PyGlomUI
+/** UI code should connect to the signals to respond when Python code
+ * request a change in the UI.
+ */
+class PythonUICallbacks
 {
 public:
-  //A default constructor seems to be necessary for boost::python
-  PyGlomUI();
-  explicit PyGlomUI(const PythonUICallbacks& callbacks);
-  ~PyGlomUI();
-
-  /** Navigate to the named table, showing the details view for the specified record.
+  /** For example,
+   * void on_show_table_details(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value);
    */
-  void show_table_details(const std::string& table_name, const boost::python::object& primary_key_value);
+  sigc::slot<void, const Glib::ustring&, const Gnome::Gda::Value&> m_slot_show_table_details;
 
-  /** Navigate to the named table, showing its list view.
+   /** For example,
+   * void on_show_table_list(const Glib::ustring& table_name);
    */
-  void show_table_list(const std::string& table_name);
+  sigc::slot<void, const Glib::ustring&> m_slot_show_table_list;
 
-  /** Print the current view of the current table.
+   /** For example,
+   * void on_print_report(const Glib::ustring& report_name);
    */
-  void print_layout();
+  sigc::slot<void, const Glib::ustring&> m_slot_print_report;
 
-  /** Print the named report from the current table.
+   /** For example,
+   * void on_print_layout();
    */
-  void print_report(const std::string& report_name);
+  sigc::slot<void> m_slot_print_layout;
 
-  /** Offer the user the UI to add a new record.
+  /** For example,
+   * void on_start_new_record();
+   * Use an empty Value for auto-created fields.
    */
-  void start_new_record();
-
-private:
-  const PythonUICallbacks* m_callbacks;
+  sigc::slot<void> m_slot_start_new_record;
 };
 
 } //namespace Glom
 
-#endif //GLOM_PYTHON_GLOM_UI_H
+#endif //GLOM_PYTHON_GLOM_CALLBACKS_UI_H

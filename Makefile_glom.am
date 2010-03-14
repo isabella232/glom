@@ -112,6 +112,8 @@ glom_glom_SOURCES =							\
 	glom/print_layout/canvas_print_layout.h				\
 	glom/python_embed/glom_python.cc				\
 	glom/python_embed/glom_python.h					\
+	glom/python_embed/python_ui_callbacks.cc				\
+	glom/python_embed/python_ui_callbacks.h					\
 	glom/utility_widgets/alignment_justified.cc			\
 	glom/utility_widgets/alignment_justified.h			\
 	glom/utility_widgets/buttonglom.cc				\

@@ -45,11 +45,11 @@ public:
   void get_script (const sharedptr<LayoutItem_Button>& script) const;
 
 private:
-  void on_button_test();
+  void on_button_test_script();
 
   Gtk::Entry* m_entry_title;
-  gtksourceview::SourceView* m_text_view;
-  Gtk::Button* m_button_test;
+  gtksourceview::SourceView* m_text_view_script;
+  Gtk::Button* m_button_test_script;
 
   sharedptr<LayoutItem_Button> m_script;
   Glib::ustring m_table_name;

@@ -1,6 +1,6 @@
 /* Glom
  *
- * Copyright (C) 2001-2004 Murray Cumming
+ * Copyright (C) 2001-2010 Murray Cumming
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -18,27 +18,30 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_DATASTRUCTURE_SYSTEMPREFS_H
-#define GLOM_DATASTRUCTURE_SYSTEMPREFS_H
+#ifndef GLOM_PYTHON_EMBED_UI_CALLBACKS_H
+#define GLOM_PYTHON_EMBED_UI_CALLBACKS_H
 
-#include <glibmm/ustring.h>
-#include <libgdamm/value.h>
+#include <libglom/python_embed/py_glom_ui_callbacks.h>
 
 namespace Glom
 {
 
-class SystemPrefs
+/** UI code should connect to the signals to respond when Python code
+ * request a change in the UI.
+ */
+class AppPythonUICallbacks : public PythonUICallbacks
 {
 public:
- Glib::ustring m_name, m_org_name,
-    m_org_address_street, m_org_address_street2, m_org_address_town, 
-    m_org_address_county, m_org_address_country, m_org_address_postcode;
- Gnome::Gda::Value m_org_logo; //TYPE_IMAGE.
+  AppPythonUICallbacks();
+
+private:
+  void on_show_table_details(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value);
+  void on_show_table_list(const Glib::ustring& table_name);
+  void on_print_report(const Glib::ustring& report_name);
+  void on_print_layout();
+  void on_start_new_record();
 };
 
 } //namespace Glom
 
-#endif //GLOM_DATASTRUCTURE_SYSTEMPREFS_H
-
-
-
+#endif //GLOM_PYTHON_GLOM_UI_H

@@ -296,6 +296,14 @@ public:
   void set_library_module(const Glib::ustring& name, const Glib::ustring& script);
   Glib::ustring get_library_module(const Glib::ustring& name) const;
   void remove_library_module(const Glib::ustring& name);
+  
+  /** Get a Python script that should be run when the document is opened.
+   */
+  Glib::ustring get_startup_script() const;
+  
+  /** See get_startup_script().
+   */
+  void set_startup_script(const Glib::ustring& script);
 
   /// These are only used when recreating a database from an example file. The actualy access-control is on the server, of course.
   typedef std::list<GroupInfo> type_list_groups;
@@ -604,6 +612,8 @@ private:
 
   typedef std::map<Glib::ustring, Glib::ustring> type_map_library_scripts;
   type_map_library_scripts m_map_library_scripts;
+  
+  Glib::ustring m_startup_script;
 
   bool m_block_cache_update; //For efficiency.
   bool m_block_modified_set;

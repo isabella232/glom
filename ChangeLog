@@ -1,3 +1,24 @@
+2010-03-16  Murray Cumming  <murrayc@murrayc.com>
+
+  Add a startup script feature.
+  
+  * libglom/document/document.cc: Added get/set_startup_script().
+  load_after(), save_before(): Load and save the startup script.
+  
+  * glom_developer.glade:
+  * glom/mode_design/dialog_database_preferences.[h|cc]: Add a startup script tab.
+  
+  * libglom/python_embed/py_glom_ui.h: Move PythonUICallbacks into its own 
+  py_glom_ui_callbacks.h header.
+  * glom/python_embed/python_ui_callbacks.[h|cc]: Add this derived callbacks 
+  class that has handlers that call methods in the application.
+  * glom/mode_data/box_data.cc: execute_button_script(): Use the new callbacks
+  class instead of using member methods here.
+  * glom/application.cc: on_document_load(): Run the startup script, if any, 
+  after loading the document, using the new derived callbacks class.
+  
+  * Makefile_glom.am, Makefile_libglom.am: Mention the new files.
+  
 2010-03-13  David King  <davidk@openismus.com>
 
 	Depend on gtkmm >= 2.19.2, fixing GNOME bug #612796

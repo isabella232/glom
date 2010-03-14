@@ -26,6 +26,7 @@
 #include <libglom/data_structure/layout/layoutitem_field.h>
 #include <glom/glom_privs.h>
 #include <glom/python_embed/glom_python.h>
+#include <glom/python_embed/python_ui_callbacks.h>
 #include <glom/application.h>
 #include <algorithm> //For std::find()
 #include <libglom/libglom_config.h>
@@ -351,44 +352,6 @@ Glib::ustring Box_Data::get_layout_name() const
   return m_layout_name;
 }
 
-void Box_Data::on_python_requested_show_table_details(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value)
-{
-  //std::cout << "debug: on_python_requested_show_table_details(): " << table_name << ", pk value: " << primary_key_value.to_string() << std::endl;
-
-  Application* app = Application::get_application();
-  if(app)
-    app->show_table_details(table_name, primary_key_value);
-}
-
-void Box_Data::on_python_requested_show_table_list(const Glib::ustring& table_name)
-{
-  Application* app = Application::get_application();
-  if(app)
-    app->show_table_list(table_name);
-}
-
-void Box_Data::on_python_requested_print_report(const Glib::ustring& report_name)
-{
-  Application* app = Application::get_application();
-  if(app)
-    app->print_report(report_name);
-}
-
-void Box_Data::on_python_requested_print_layout()
-{
-  Application* app = Application::get_application();
-  if(app)
-    app->print_layout();
-}
-
-void Box_Data::on_python_requested_start_new_record()
-{
-  Application* app = Application::get_application();
-  if(app)
-    app->start_new_record();
-}
-
-
 void Box_Data::execute_button_script(const sharedptr<const LayoutItem_Button>& layout_item, const Gnome::Gda::Value& primary_key_value)
 {
   const sharedptr<Field> field_primary_key = get_field_primary_key();
@@ -405,17 +368,7 @@ void Box_Data::execute_button_script(const sharedptr<const LayoutItem_Button>& l
 #endif // GLIBMM_EXCEPTIONS_ENABLED
 
     //Allow this UI to respond to UI change requests from the Python code:
-    PythonUICallbacks callbacks;
-    callbacks.m_slot_show_table_details =
-      sigc::mem_fun(*this, &Box_Data::on_python_requested_show_table_details);
-    callbacks.m_slot_show_table_list =
-      sigc::mem_fun(*this, &Box_Data::on_python_requested_show_table_list);
-    callbacks.m_slot_print_layout =
-      sigc::mem_fun(*this, &Box_Data::on_python_requested_print_layout);
-    callbacks.m_slot_print_report =
-      sigc::mem_fun(*this, &Box_Data::on_python_requested_print_report);
-    callbacks.m_slot_start_new_record =
-      sigc::mem_fun(*this, &Box_Data::on_python_requested_start_new_record);
+    AppPythonUICallbacks callbacks;
 
     glom_execute_python_function_implementation(layout_item->get_script(),
       field_values, //TODO: Maybe use the field's type here.

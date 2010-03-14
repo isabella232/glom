@@ -34,6 +34,8 @@
 #include <glom/utils_ui.h>
 #include <glom/glade_utils.h>
 #include <glom/glom_privs.h>
+#include <glom/python_embed/python_ui_callbacks.h>
+#include <glom/python_embed/glom_python.h>
 
 #include <cstdio>
 #include <memory> //For std::auto_ptr<>
@@ -1188,8 +1190,23 @@ bool Application::on_document_load()
 
   update_network_shared_ui();
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
+  //Run any startup script:
+  const Glib::ustring script = pDocument->get_startup_script();
+  if(!script.empty())
+  {
+    ConnectionPool* connection_pool = ConnectionPool::get_instance();
+    sharedptr<SharedConnection> sharedconnection = connection_pool->connect();
+    AppPythonUICallbacks callbacks;
+    glom_execute_python_function_implementation(script,
+      type_map_fields(), //only used when there is a current table and record.
+      pDocument,
+      Glib::ustring() /* table_name */,
+      sharedptr<Field>(), Gnome::Gda::Value(), // primary key - only used when there is a current table and record.
+      sharedconnection->get_gda_connection(),
+      callbacks);
+  }
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   pDocument->set_allow_autosave(true);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
