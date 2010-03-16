@@ -1,5 +1,16 @@
 2010-03-16  Murray Cumming  <murrayc@murrayc.com>
 
+  Tests: Check that the .glade files are valid XML.
+  
+  * Makefile_tests.am:
+	* tests/test_glade_file_validation.sh: Add this text that the .glade files 
+	are basically valid XML. It would be nice to have a Glade DTD to validate 
+	them against too.
+	We should also check that each top-level widget can be instantiated by 
+	GtkBuilder.
+
+2010-03-16  Murray Cumming  <murrayc@murrayc.com>
+
   Add a startup script feature.
   
   * libglom/document/document.cc: Added get/set_startup_script().

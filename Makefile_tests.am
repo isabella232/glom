@@ -33,7 +33,8 @@ check_PROGRAMS =						\
 
 TESTS =	tests/test_parsing_time	\
 	tests/test_signal_reemit \
-        tests/dtd/test_file_validation.sh \
+  tests/test_dtd_file_validation.sh \
+  tests/test_glade_file_validation.sh \
 	tests/test_load_python_library \
 	tests/test_python_module \
 	tests/test_python_execute_func \
@@ -45,7 +46,8 @@ TESTS =	tests/test_parsing_time	\
 
 # We also set this in Makefile.am, with +=,
 # but this is the first use, where we must use =
-dist_noinst_SCRIPTS = tests/dtd/test_file_validation.sh
+dist_noinst_SCRIPTS = tests/test_dtd_file_validation.sh \
+	tests/test_glade_file_validation.sh
 
 #TESTS_ENVIRONMENT=which valgrind && valgrind --tool=memcheck --leak-check=full --leak-resolution=high --trace-children=yes --num-callers=30
 
