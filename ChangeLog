@@ -1,3 +1,12 @@
+2010-03-16  David King  <davidk@openismus.com>
+
+	Fix GtkVBox orientation in GtkBuilder files
+
+	* glom/glom.glade:
+	* glom/glom_developer.glade: Manually set the orientation of GtkVBox
+	objects specified in the GtkBuilder files to ‘vertical’. See GNOME bug
+	#587256 for details of the issue with Glade.
+
 2010-03-16  Murray Cumming  <murrayc@murrayc.com>
 
   Tests: Check that the .glade files are valid XML.
