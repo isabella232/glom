@@ -1,3 +1,8 @@
+2010-03-19  Daniel Borgmann <danielb@openismus.com>
+
+	* configure.ac: Make Glom build with autoconf 2.65.
+	Patch from Fryderyk Dziarmagowski in GNOME bug #613179. 
+
 2010-03-13  David King  <davidk@openismus.com>
 
 	Depend on libxml++ >= 2.23.1, fixing GNOME bug #612794
