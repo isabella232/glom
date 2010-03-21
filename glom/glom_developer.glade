@@ -4122,6 +4122,7 @@ Which user should be added to this group?</property>
                         <child>
                           <object class="GtkVBox" id="box_formatting_placeholder">
                             <property name="visible">True</property>
+                            <property name="orientation">vertical</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -6490,6 +6491,7 @@ Which user should be added to this group?</property>
             <child>
               <object class="GtkVBox" id="vbox_numeric_format">
                 <property name="visible">True</property>
+                <property name="orientation">vertical</property>
                 <property name="border_width">6</property>
                 <property name="spacing">6</property>
                 <child>
@@ -7947,6 +7949,7 @@ The language of the original text is currently identified as:</property>
             <child>
               <object class="GtkVBox" id="vbox92">
                 <property name="visible">True</property>
+                <property name="orientation">vertical</property>
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkLabel" id="label222">
