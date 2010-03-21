@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glom&component=general\n"
-"POT-Creation-Date: 2010-02-03 13:12+0000\n"
-"PO-Revision-Date: 2010-02-04 10:16+0100\n"
+"POT-Creation-Date: 2010-03-20 11:10+0000\n"
+"PO-Revision-Date: 2010-03-20 17:04+0100\n"
 "Last-Translator: Andrej Žnidaršič <andrej.znidarsic@gmail.com>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -20,346 +20,346 @@ msgstr ""
 "X-Poedit-Language: Slovenian\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../glom/application.cc:146
+#: ../glom/application.cc:148
 msgid "Glom: Generating Encryption Certificates"
 msgstr "Glom: Ustvarjanje potrdil šifriranja"
 
-#: ../glom/application.cc:147
+#: ../glom/application.cc:149
 msgid "Please wait while Glom prepares your system for publishing over the network."
 msgstr "Počakajte, da program Glom pripravi vaš sistem na objavljanje preko omrežja."
 
-#: ../glom/application.cc:174
+#: ../glom/application.cc:176
 msgid "(C) 2000-2005 Murray Cumming"
 msgstr "(C) 2000-2005 Murray Cumming"
 
-#: ../glom/application.cc:174
+#: ../glom/application.cc:176
 msgid "A Database GUI"
 msgstr "Grafični uporabniški vmesnik podatkovnih zbirk"
 
-#: ../glom/application.cc:261
+#: ../glom/application.cc:263
 #: ../glom/bakery/app_withdoc_gtk.cc:279
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:122
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:55
 msgid "_File"
 msgstr "_Datoteka"
 
-#: ../glom/application.cc:262
+#: ../glom/application.cc:264
 #: ../glom/bakery/app_withdoc_gtk.cc:280
 msgid "_Recent Files"
 msgstr "N_edavne datoteke"
 
-#: ../glom/application.cc:270
+#: ../glom/application.cc:272
 msgid "Save As Example"
 msgstr "Shrani kot primer"
 
-#: ../glom/application.cc:277
+#: ../glom/application.cc:279
 msgid "_Export"
 msgstr "_Izvozi"
 
 #. Note to translators: "Import" here is an action verb - it's a button.
-#: ../glom/application.cc:280
+#: ../glom/application.cc:282
 #: ../glom/glom_developer.glade.h:151
 #: ../glom/mode_design/translation/window_translations.cc:597
 msgid "Import"
 msgstr "Uvoz"
 
-#: ../glom/application.cc:284
+#: ../glom/application.cc:286
 msgid "Shared On Network"
 msgstr "Souporaba na omrežju"
 
-#: ../glom/application.cc:295
+#: ../glom/application.cc:297
 msgid "_Standard"
 msgstr "O_bičajno"
 
-#: ../glom/application.cc:299
+#: ../glom/application.cc:301
 msgid "_Edit Print Layouts"
 msgstr "_Uredi razporeditve tiskanja"
 
-#: ../glom/application.cc:383
+#: ../glom/application.cc:385
 #: ../glom/frame_glom.cc:152
 #: ../glom/frame_glom.cc:489
 #: ../glom/utility_widgets/datawidget.cc:274
 msgid "Find"
 msgstr "Iskanje"
 
-#: ../glom/application.cc:383
+#: ../glom/application.cc:385
 msgid "Search for records in the table"
 msgstr "Iskanje zapisov v preglednici"
 
-#: ../glom/application.cc:387
+#: ../glom/application.cc:389
 msgid "Add Record"
 msgstr "Dodaj zapis"
 
-#: ../glom/application.cc:387
+#: ../glom/application.cc:389
 msgid "Create a new record in the table"
 msgstr "Ustvarjanje novega zapisa v preglednici"
 
 #. "Tables" menu:
-#: ../glom/application.cc:403
+#: ../glom/application.cc:405
 msgid "_Tables"
 msgstr "_Preglednice"
 
-#: ../glom/application.cc:413
+#: ../glom/application.cc:415
 msgid "_Edit Tables"
 msgstr "_Uredi preglednice"
 
-#: ../glom/application.cc:418
+#: ../glom/application.cc:420
 msgid "Add _Related Table"
 msgstr "Dodaj _povezano preglednico"
 
 #. "Reports" menu:
-#: ../glom/application.cc:425
+#: ../glom/application.cc:427
 msgid "_Reports"
 msgstr "_Poročila"
 
-#: ../glom/application.cc:428
+#: ../glom/application.cc:430
 msgid "_Edit Reports"
 msgstr "_Uredi poročila"
 
 #. "UserLevel" menu:
-#: ../glom/application.cc:436
+#: ../glom/application.cc:438
 msgid "_User Level"
 msgstr "Upora_bniška raven"
 
-#: ../glom/application.cc:439
-#: ../glom/application.cc:463
+#: ../glom/application.cc:441
+#: ../glom/application.cc:465
 msgid "_Developer"
 msgstr "Ra_zvijalec"
 
-#: ../glom/application.cc:443
+#: ../glom/application.cc:445
 msgid "_Operator"
 msgstr "_Operater"
 
 #. "Mode" menu:
-#: ../glom/application.cc:449
+#: ../glom/application.cc:451
 msgid "_Mode"
 msgstr "_Način"
 
 #. We remember this action, so that it can be explicitly activated later.
-#: ../glom/application.cc:454
+#: ../glom/application.cc:456
 msgid "D_ata"
 msgstr "Pod_atki"
 
-#: ../glom/application.cc:458
+#: ../glom/application.cc:460
 #: ../glom/frame_glom.cc:149
 msgid "_Find"
 msgstr "_Iskanje"
 
-#: ../glom/application.cc:467
+#: ../glom/application.cc:469
 msgid "_Database Preferences"
 msgstr "Možnosti podatkovne _zbirke"
 
-#: ../glom/application.cc:472
+#: ../glom/application.cc:474
 msgid "_Fields"
 msgstr "Po_lja"
 
-#: ../glom/application.cc:476
+#: ../glom/application.cc:478
 msgid "_Relationships Overview"
 msgstr "Pregled _razmerij"
 
-#: ../glom/application.cc:480
+#: ../glom/application.cc:482
 msgid "_Relationships for this Table"
 msgstr "_Razmerja za to preglednico"
 
-#: ../glom/application.cc:484
+#: ../glom/application.cc:486
 msgid "_Users"
 msgstr "_Uporabniki"
 
-#: ../glom/application.cc:488
+#: ../glom/application.cc:490
 msgid "_Print Layouts"
 msgstr "Razporeditve _tiskanja"
 
-#: ../glom/application.cc:492
+#: ../glom/application.cc:494
 msgid "R_eports"
 msgstr "P_oročila"
 
-#: ../glom/application.cc:496
+#: ../glom/application.cc:498
 msgid "Script _Library"
 msgstr "_Knjižnica skript"
 
-#: ../glom/application.cc:501
+#: ../glom/application.cc:503
 msgid "_Layout"
 msgstr "R_azporeditev"
 
-#: ../glom/application.cc:505
+#: ../glom/application.cc:507
 msgid "_Test Translation"
 msgstr "P_reskus prevoda"
 
-#: ../glom/application.cc:509
+#: ../glom/application.cc:511
 msgid "_Translations"
 msgstr "_Prevodi"
 
 #. "Active Platform" menu:
-#: ../glom/application.cc:515
+#: ../glom/application.cc:517
 msgid "_Active Platform"
 msgstr "_Dejaven sistem"
 
-#: ../glom/application.cc:520
+#: ../glom/application.cc:522
 msgid "_Normal"
 msgstr "_Običajno"
 
-#: ../glom/application.cc:520
+#: ../glom/application.cc:522
 msgid "The layout to use for normal desktop environments."
 msgstr "Razporeditev za običajna namizna okolja."
 
-#: ../glom/application.cc:525
+#: ../glom/application.cc:527
 msgid "_Maemo"
 msgstr "_Maemo"
 
-#: ../glom/application.cc:525
+#: ../glom/application.cc:527
 msgid "The layout to use for Maemo devices."
 msgstr "Razporeditev za naprave Maemo."
 
-#: ../glom/application.cc:530
+#: ../glom/application.cc:532
 msgid "_Show Layout Toolbar"
 msgstr "P_okaži orodno vrstico razporeditve"
 
-#: ../glom/application.cc:664
+#: ../glom/application.cc:666
 #: ../glom/bakery/app_withdoc.cc:494
 msgid "Open Failed."
 msgstr "Napaka med odpiranjem."
 
-#: ../glom/application.cc:665
+#: ../glom/application.cc:667
 msgid "The document could not be opened because it was created or modified by a newer version of Glom."
 msgstr "Dokumenta ni mogoče odpreti, ker je bil ustvarjen ali spremenjen z novejšo različico Glom."
 
 #. std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED" << std::endl;
 #. Warn the user, and let him try again:
-#: ../glom/application.cc:715
-#: ../glom/frame_glom.cc:2365
-#: ../glom/frame_glom.cc:2441
+#: ../glom/application.cc:717
+#: ../glom/frame_glom.cc:2363
+#: ../glom/frame_glom.cc:2439
 msgid "Connection Failed"
 msgstr "Povezava je spodletela"
 
-#: ../glom/application.cc:715
-#: ../glom/frame_glom.cc:2365
-#: ../glom/frame_glom.cc:2441
+#: ../glom/application.cc:717
+#: ../glom/frame_glom.cc:2363
+#: ../glom/frame_glom.cc:2439
 msgid "Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."
 msgstr "Ni se mogoče povezati s strežnikom podatkovnih zbirk. Morda ste vnesli napačno uporabniško ime ali geslo, ali pa strežnik podatkovne zbirke ni zagnan. "
 
-#: ../glom/application.cc:907
+#: ../glom/application.cc:909
 msgid "The file cannot be opened because this version of Glom does not support self-hosting of databases."
 msgstr "Datoteke ni mogoče odpreti, ker ta različica programa ne podpira samo-gostujočih podatkovnih zbirk."
 
-#: ../glom/application.cc:912
-#: ../glom/application.cc:921
+#: ../glom/application.cc:914
+#: ../glom/application.cc:923
 msgid "The file cannot be opened because this version of Glom does not support PostgreSQL databases."
 msgstr "Datoteke ni mogoče odpreti, ker ta različica programa ne podpira podatkovnih zbirk PostgreSQL."
 
-#: ../glom/application.cc:929
+#: ../glom/application.cc:931
 msgid "The file cannot be opened because this version of Glom does not support SQLite databases."
 msgstr "Datoteke ni mogoče odpreti, ker ta različica programa ne podpira podatkovnih zbirk SQLite."
 
 #. Warn the user.
-#: ../glom/application.cc:947
+#: ../glom/application.cc:949
 msgid "File Uses Unsupported Database Backend"
 msgstr "Datoteka uporablja nepodprto zaledje podatkovne zbirke"
 
-#: ../glom/application.cc:1007
+#: ../glom/application.cc:1009
 msgid "Creating From Example File"
 msgstr "Ustvarjanje iz datoteke primera"
 
-#: ../glom/application.cc:1008
+#: ../glom/application.cc:1010
 msgid "To use this example file you must save an editable copy of the file. A new database will also be created on the server."
 msgstr "Za uporabo te poskusne datoteke morate shraniti uredljivo kopijo datoteke. Nova podatkovna zbirka bo ustvarjena tudi na strežniku."
 
-#: ../glom/application.cc:1064
+#: ../glom/application.cc:1066
 msgid "Opening Read-Only File."
 msgstr "Odpiranje datoteke le za branje."
 
-#: ../glom/application.cc:1065
+#: ../glom/application.cc:1067
 msgid "This file is read only, so you will not be able to enter Developer mode to make design changes."
 msgstr "Ta datoteka je le za branje, zato ni mogoče vstopiti v razvijalski način za spremembe oblikovanja."
 
-#: ../glom/application.cc:1068
+#: ../glom/application.cc:1070
 msgid "Continue without Developer Mode"
 msgstr "Nadaljuj brez razvijalskega načina"
 
 #. The connection to the server is OK, but the database is not there yet.
-#: ../glom/application.cc:1126
+#: ../glom/application.cc:1128
 msgid "Database Not Found On Server"
 msgstr "Podatkovne zbirke ni mogoče najti na strežniku"
 
-#: ../glom/application.cc:1126
+#: ../glom/application.cc:1128
 msgid "The database could not be found on the server. Please consult your system administrator."
 msgstr "Podatkovne zbirke na strežniku ni mogoče najti. Posvetujte se s skrbnikom sistema."
 
-#: ../glom/application.cc:1503
+#: ../glom/application.cc:1527
 msgid "_Contents"
 msgstr "_Vsebina"
 
-#: ../glom/application.cc:1503
+#: ../glom/application.cc:1527
 msgid "Help with the application"
 msgstr "Pomoč za program"
 
-#: ../glom/application.cc:1601
+#: ../glom/application.cc:1625
 msgid "Creating Glom Database"
 msgstr "Ustvarjanje podatkovne zbirke Glom"
 
-#: ../glom/application.cc:1601
+#: ../glom/application.cc:1625
 msgid "Creating Glom database from example file."
 msgstr "Ustvarjanje podatkovne zbirke Glom iz poskusne datoteke."
 
 #. The save failed. Tell the user and don't do anything else:
-#: ../glom/application.cc:2125
+#: ../glom/application.cc:2149
 #: ../glom/bakery/app_withdoc.cc:233
 #: ../glom/bakery/app_withdoc.cc:284
 msgid "Save failed."
 msgstr "Napaka med shranjevanjem."
 
-#: ../glom/application.cc:2125
+#: ../glom/application.cc:2149
 #: ../glom/bakery/app_withdoc.cc:233
 #: ../glom/bakery/app_withdoc.cc:284
 msgid "There was an error while saving the file. Your changes have not been saved."
 msgstr "Prišlo je do napake med shranjevanjem datoteke. Spremembe ne bodo shranjene."
 
-#: ../glom/application.cc:2166
-#: ../glom/application.cc:2171
+#: ../glom/application.cc:2190
+#: ../glom/application.cc:2195
 #: ../glom/bakery/app_withdoc_gtk.cc:590
 msgid "Save Document"
 msgstr "Shrani dokument"
 
 #. Warn the user:
-#: ../glom/application.cc:2259
+#: ../glom/application.cc:2283
 #: ../glom/bakery/app_withdoc_gtk.cc:639
 msgid "Read-only File."
 msgstr "Datoteka le za branje."
 
-#: ../glom/application.cc:2259
+#: ../glom/application.cc:2283
 #: ../glom/bakery/app_withdoc_gtk.cc:639
 msgid "You may not overwrite the existing file, because you do not have sufficient access rights."
 msgstr "Obstoječe datoteke ni mogoče prepisati, saj ni ustreznih dovoljenj dostopa."
 
 #. Warn the user:
-#: ../glom/application.cc:2273
+#: ../glom/application.cc:2297
 #: ../glom/bakery/app_withdoc_gtk.cc:653
 msgid "Read-only Directory."
 msgstr "Mapa le za branje."
 
-#: ../glom/application.cc:2273
+#: ../glom/application.cc:2297
 #: ../glom/bakery/app_withdoc_gtk.cc:653
 msgid "You may not create a file in this directory, because you do not have sufficient access rights."
 msgstr "V tej mapi datoteke ni mogoče ustvariti, saj ni ustreznih dovoljenj dostopa."
 
-#: ../glom/application.cc:2290
+#: ../glom/application.cc:2314
 msgid "Database Title missing"
 msgstr "Naslov podatkovne zbirke manjka"
 
-#: ../glom/application.cc:2290
+#: ../glom/application.cc:2314
 msgid "You must specify a title for the new database."
 msgstr "Določiti morate naslov za drugo podatkovno zbirko."
 
-#: ../glom/application.cc:2319
-#: ../glom/frame_glom.cc:2090
+#: ../glom/application.cc:2343
+#: ../glom/frame_glom.cc:2088
 msgid "Directory Already Exists"
 msgstr "Mapa že obstaja"
 
-#: ../glom/application.cc:2319
-#: ../glom/frame_glom.cc:2091
+#: ../glom/application.cc:2343
+#: ../glom/frame_glom.cc:2089
 msgid "There is an existing directory with the same name as the directory that should be created for the new database files. You should specify a different filename to use a new directory instead."
 msgstr "Novo ustvarjena mapa za nove datoteke podatkovne zbirke ima enako ime kot obstoječa mapa. Določite drugo ime mape za nove datoteke podatkovne zbirke. "
 
-#: ../glom/application.cc:2529
+#: ../glom/application.cc:2553
 #: ../glom/bakery/app_withdoc_gtk.cc:493
 msgid " (read-only)"
 msgstr " (le za branje)"
@@ -390,40 +390,40 @@ msgstr "Zapisov ni mogoče najti"
 msgid "New Find"
 msgstr "Novo iskanje"
 
-#: ../glom/base_db.cc:3216
+#: ../glom/base_db.cc:3223
 msgid "Value Is Not Unique"
 msgstr "Vrednost ni edinstvena"
 
-#: ../glom/base_db.cc:3216
+#: ../glom/base_db.cc:3223
 msgid "The field's value must be unique, but a record with this value already exists."
 msgstr "Vrednost polja mora biti edinstvena, toda zapis s to vrednostjo že obstaja."
 
 #. Warn the user:
 #. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
-#: ../glom/base_db_table_data.cc:309
+#: ../glom/base_db_table_data.cc:317
 msgid "Data may not be entered into this related field, because the related record does not yet exist, and the relationship does not allow automatic creation of new related records."
 msgstr "Podatkov ni mogoče vnesti v to povezano polje, ker povezani zapis še ne obstaja, in razmerje ne dovoli samodejnega ustvarjanja novih povezanih zapisov."
 
-#: ../glom/base_db_table_data.cc:314
+#: ../glom/base_db_table_data.cc:322
 msgid "Related Record Does Not Exist"
 msgstr "Povezan zapis ne obstaja"
 
 #. Warn the user:
 #. TODO: Make the field insensitive until it can receive data, so people never see this dialog.
-#: ../glom/base_db_table_data.cc:334
+#: ../glom/base_db_table_data.cc:342
 msgid "Data may not be entered into this related field, because the related record does not yet exist, and the key in the related record is auto-generated and therefore can not be created with the key value in this record."
 msgstr "Podatkov ni mogoče vnesti v povezano polje, ker povezan zapis še ne obstaja. Ključ in povezan zapis sta ustvarjena samodejno in ju zato v tem zapisu ni mogoče ustvariti z vrednostjo ključa.  "
 
-#: ../glom/base_db_table_data.cc:339
+#: ../glom/base_db_table_data.cc:347
 msgid "Related Record Cannot Be Created"
 msgstr "Povezanega zapisa ni mogoče ustvariti"
 
 #. Ask the user for confirmation:
-#: ../glom/base_db_table_data.cc:441
+#: ../glom/base_db_table_data.cc:449
 msgid "Are you sure that you would like to delete this record? The data in this record will then be permanently lost."
 msgstr "Ali ste prepričani, da želite izbrisati ta zapis? Podatki v tem zapisu bodo po izbrisu trajno izgubljeni."
 
-#: ../glom/base_db_table_data.cc:445
+#: ../glom/base_db_table_data.cc:453
 msgid "Delete record"
 msgstr "Izbriši zapis"
 
@@ -669,94 +669,94 @@ msgstr "Ali ste prepričani, da želite drugim uporabnikom na omrežju prepreči
 msgid "_Stop Sharing"
 msgstr "_Zaustavi souporabo"
 
-#: ../glom/frame_glom.cc:1307
+#: ../glom/frame_glom.cc:1305
 msgid "Table Exists Already"
 msgstr "Preglednica že obstaja"
 
-#: ../glom/frame_glom.cc:1307
+#: ../glom/frame_glom.cc:1305
 msgid "A table with this name already exists in the database. Please choose a different table name."
 msgstr "Preglednica s tem imenom že obstaja v podatkovni zbirki. Izberite drugo ime preglednice."
 
-#: ../glom/frame_glom.cc:1311
+#: ../glom/frame_glom.cc:1309
 msgid "Relationship Exists Already"
 msgstr "Razmerje že obstaja"
 
-#: ../glom/frame_glom.cc:1311
+#: ../glom/frame_glom.cc:1309
 msgid "A relationship with this name already exists for this table. Please choose a different relationship name."
 msgstr "Razmerje s tem imenom že obstaja za to preglednico. Izberite drugo ime razmerja."
 
-#: ../glom/frame_glom.cc:1315
+#: ../glom/frame_glom.cc:1313
 msgid "More information needed"
 msgstr "Zahtevanih je več podrobnosti"
 
-#: ../glom/frame_glom.cc:1315
+#: ../glom/frame_glom.cc:1313
 msgid "You must specify a field, a table name, and a relationship name."
 msgstr "Določiti morate polje, ime preglednice in ime razmerja."
 
-#: ../glom/frame_glom.cc:1369
+#: ../glom/frame_glom.cc:1367
 msgid "Related Table Created"
 msgstr "Ustvarjena je bila povezana preglednica"
 
-#: ../glom/frame_glom.cc:1369
+#: ../glom/frame_glom.cc:1367
 msgid "The new related table has been created."
 msgstr "Ustvarjena je bila nova povezana preglednica."
 
-#: ../glom/frame_glom.cc:1399
+#: ../glom/frame_glom.cc:1397
 #: ../glom/glom.glade.h:45
 #: ../glom/navigation/box_tables.cc:128
 msgid "Tables"
 msgstr "Preglednice"
 
-#: ../glom/frame_glom.cc:1478
+#: ../glom/frame_glom.cc:1476
 #: ../glom/utility_widgets/dialog_choose_id.cc:105
 msgid "You have not entered any quick find criteria."
 msgstr "Niste vnesli kriterijev za hitro iskanje."
 
-#: ../glom/frame_glom.cc:1483
-#: ../glom/mode_data/box_data.cc:142
+#: ../glom/frame_glom.cc:1481
+#: ../glom/mode_data/box_data.cc:144
 #: ../glom/utility_widgets/dialog_choose_id.cc:109
 msgid "No Find Criteria"
 msgstr "Ni kriterijev iskanja"
 
 #. show user level:
-#: ../glom/frame_glom.cc:1543
+#: ../glom/frame_glom.cc:1541
 msgid "Operator"
 msgstr "Operater"
 
-#: ../glom/frame_glom.cc:1545
+#: ../glom/frame_glom.cc:1543
 msgid "Developer"
 msgstr "Razvijalec"
 
-#: ../glom/frame_glom.cc:2059
+#: ../glom/frame_glom.cc:2057
 msgid "Initializing Database Data"
 msgstr "Zaganjanje podatkov podatkovne zbirke"
 
-#: ../glom/frame_glom.cc:2068
+#: ../glom/frame_glom.cc:2066
 msgid "Starting Database Server"
 msgstr "Zaganjanje strežnika podatkovne zbirke"
 
-#: ../glom/frame_glom.cc:2076
+#: ../glom/frame_glom.cc:2074
 msgid "Stopping Database Server"
 msgstr "Zaustavljanje strežnika podatkovne zbirke"
 
-#: ../glom/frame_glom.cc:2095
+#: ../glom/frame_glom.cc:2093
 msgid "Could Not Create Directory"
 msgstr "Mape ni mogoče ustvariti"
 
-#: ../glom/frame_glom.cc:2096
+#: ../glom/frame_glom.cc:2094
 msgid "There was an error when attempting to create the directory for the new database files."
 msgstr "Med poskusom ustvarjanja mape za nove datoteke podatkovne zbirke je prišlo do napake."
 
-#: ../glom/frame_glom.cc:2100
+#: ../glom/frame_glom.cc:2098
 msgid "Could Not Start Database Server"
 msgstr "Strežnika podatkovne zbirke ni mogoče zagnati"
 
-#: ../glom/frame_glom.cc:2101
+#: ../glom/frame_glom.cc:2099
 msgid "There was an error when attempting to start the database server."
 msgstr "Med poskusom zaganjanja strežnika podatkovne zbirke je prišlo do napake."
 
 #. Show 0 instead of "all" when all of no records are found, to avoid confusion.
-#: ../glom/frame_glom.cc:2913
+#: ../glom/frame_glom.cc:2911
 msgid "All"
 msgstr "Vse"
 
@@ -1226,7 +1226,7 @@ msgstr "Oblika zapisa za izvoz"
 #: ../glom/glom_developer.glade.h:122
 #: ../glom/libglom/data_structure/layout/layoutitem_field.cc:193
 #: ../glom/libglom/data_structure/translatable_item.cc:296
-#: ../glom/mode_design/dialog_database_preferences.cc:54
+#: ../glom/mode_design/dialog_database_preferences.cc:56
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:601
 msgid "Field"
 msgstr "Polje"
@@ -1282,8 +1282,8 @@ msgstr "Polje od:"
 
 #: ../glom/glom_developer.glade.h:135
 #: ../glom/libglom/data_structure/layout/layoutgroup.cc:377
-#: ../glom/mode_data/flowtablewithfields.cc:1309
-#: ../glom/mode_data/flowtablewithfields.cc:1336
+#: ../glom/mode_data/flowtablewithfields.cc:1424
+#: ../glom/mode_data/flowtablewithfields.cc:1451
 #: ../glom/utility_widgets/layouttoolbar.cc:54
 #: ../glom/utility_widgets/layouttoolbar.cc:64
 #: ../glom/utility_widgets/notebooklabelglom.cc:74
@@ -1519,67 +1519,71 @@ msgid "Start a translation for this target locale by copying the strings from an
 msgstr "Začnite prevod za to ciljno jezikovno oznako s kopiranjem nizov iz druge ciljne jezikovne oznake."
 
 #: ../glom/glom_developer.glade.h:192
+msgid "Startup Script"
+msgstr "Začetna skripta"
+
+#: ../glom/glom_developer.glade.h:193
 msgid "State/County:"
 msgstr "Regija:"
 
-#: ../glom/glom_developer.glade.h:193
+#: ../glom/glom_developer.glade.h:194
 msgid "Street (Line 2):"
 msgstr "Ulica (druga vrstica):"
 
-#: ../glom/glom_developer.glade.h:194
+#: ../glom/glom_developer.glade.h:195
 msgid "Street:"
 msgstr "Ulica:"
 
-#: ../glom/glom_developer.glade.h:195
+#: ../glom/glom_developer.glade.h:196
 msgid "Summary Type:"
 msgstr "Vrsta povzetka:"
 
-#: ../glom/glom_developer.glade.h:196
+#: ../glom/glom_developer.glade.h:197
 msgid "System Name:"
 msgstr "Ime sistema:"
 
-#: ../glom/glom_developer.glade.h:197
+#: ../glom/glom_developer.glade.h:198
 msgid "Table Name"
 msgstr "Ime preglednice:"
 
-#: ../glom/glom_developer.glade.h:198
+#: ../glom/glom_developer.glade.h:199
 #: ../glom/glom.glade.h:44
 msgid "Table:"
 msgstr "Preglednica:"
 
-#: ../glom/glom_developer.glade.h:199
+#: ../glom/glom_developer.glade.h:200
 msgid "Table: "
 msgstr "Preglednica: "
 
-#: ../glom/glom_developer.glade.h:200
+#: ../glom/glom_developer.glade.h:201
 msgid "Test"
 msgstr "Preizkus"
 
-#: ../glom/glom_developer.glade.h:201
+#: ../glom/glom_developer.glade.h:202
 msgid "Test Translation"
 msgstr "Preizkus prevoda"
 
-#: ../glom/glom_developer.glade.h:202
+#: ../glom/glom_developer.glade.h:203
 msgid "Text Format"
 msgstr "Oblika besedila"
 
-#: ../glom/glom_developer.glade.h:203
+#: ../glom/glom_developer.glade.h:204
 msgid "Text Object"
 msgstr "Predmet besedila"
 
-#: ../glom/glom_developer.glade.h:204
+#: ../glom/glom_developer.glade.h:205
 msgid "The field value will be the return value of the python function, which you implement here."
 msgstr "Vrednost polja bo vrnjena vrednost tukaj podprte zmožnosti python."
 
-#: ../glom/glom_developer.glade.h:205
+#: ../glom/glom_developer.glade.h:206
 msgid "These modules will be available to your button scripts and field calculations via the python import keyword."
 msgstr "Ti moduli bodo razpoložljivi vašim gumbom skript in izračunom polja preko uvožene ključne besede pyhton."
 
-#: ../glom/glom_developer.glade.h:206
+#: ../glom/glom_developer.glade.h:207
 msgid "This field will be used to decide which records to show in the calendar."
 msgstr "To polje bo uporabljeno za odločitev kateri zapisi bodo prikazani v koledarju."
 
-#: ../glom/glom_developer.glade.h:207
+#: ../glom/glom_developer.glade.h:208
 msgid ""
 "This will add a new table and add a relationship that refers to the new  table, as a convenient alternative to doing this in separate steps.\n"
 "\n"
@@ -1589,108 +1593,112 @@ msgstr ""
 "\n"
 "V primeru da primerna povezana preglednica že obstaja, prekličite dejanje in dodajte samo razmerje.  "
 
-#: ../glom/glom_developer.glade.h:210
+#: ../glom/glom_developer.glade.h:211
 msgid "Title:"
 msgstr "Naslov:"
 
-#: ../glom/glom_developer.glade.h:211
+#: ../glom/glom_developer.glade.h:212
 msgid "Town:"
 msgstr "Mesto:"
 
-#: ../glom/glom_developer.glade.h:212
+#: ../glom/glom_developer.glade.h:213
 msgid "Translations"
 msgstr "Prevodi"
 
-#: ../glom/glom_developer.glade.h:213
+#: ../glom/glom_developer.glade.h:214
 msgid "Triggered by:"
 msgstr "Sprožil:"
 
-#: ../glom/glom_developer.glade.h:214
+#: ../glom/glom_developer.glade.h:215
 msgid "Type:"
 msgstr "Vrsta:"
 
-#: ../glom/glom_developer.glade.h:215
+#: ../glom/glom_developer.glade.h:216
 msgid "Unique"
 msgstr "Edinstveno"
 
-#: ../glom/glom_developer.glade.h:216
+#: ../glom/glom_developer.glade.h:217
 msgid "Use 1000s separator"
 msgstr "Ustvari ločnico tisočic"
 
-#: ../glom/glom_developer.glade.h:217
+#: ../glom/glom_developer.glade.h:218
 msgid "Use custom formatting"
 msgstr "Uporabi oblikovanje po meri"
 
-#: ../glom/glom_developer.glade.h:218
+#: ../glom/glom_developer.glade.h:219
 msgid "Use custom title:"
 msgstr "Uporabi privzet naslov:"
 
-#: ../glom/glom_developer.glade.h:219
+#: ../glom/glom_developer.glade.h:220
 msgid "Use default field title: "
 msgstr "Uporabi privzet naslov polja:"
 
-#: ../glom/glom_developer.glade.h:220
+#: ../glom/glom_developer.glade.h:221
 msgid "Use default formatting"
 msgstr "Uporabi privzeto oblikovanje"
 
 #. Append the View columns:
-#: ../glom/glom_developer.glade.h:221
+#: ../glom/glom_developer.glade.h:222
 #: ../glom/glom.glade.h:46
 #: ../glom/mode_design/users/dialog_users_list.cc:64
 msgid "User"
 msgstr "Uporabnik"
 
-#: ../glom/glom_developer.glade.h:222
+#: ../glom/glom_developer.glade.h:223
 msgid "User Entry"
 msgstr "Vnos uporabnika"
 
-#: ../glom/glom_developer.glade.h:223
+#: ../glom/glom_developer.glade.h:224
 msgid "Users"
 msgstr "Uporabniki"
 
-#: ../glom/glom_developer.glade.h:224
+#: ../glom/glom_developer.glade.h:225
 msgid "Value"
 msgstr "Vrednost"
 
-#: ../glom/glom_developer.glade.h:225
+#: ../glom/glom_developer.glade.h:226
 msgid "When the button is clicked it will run the python function which you implement here."
 msgstr "Ko je gumb kliknjen, zažene tukaj podprto zmožnost python."
 
-#: ../glom/glom_developer.glade.h:226
+#: ../glom/glom_developer.glade.h:227
+msgid "When the database is opened the python function implemented here will run."
+msgstr "Ko je zbirka podatkov odprta bo zagnana tukaj podprta zmožnost python."
+
+#: ../glom/glom_developer.glade.h:228
 msgid "When this is checked the table's title will be shown at the top of the report in addition to the report title."
 msgstr "Izbrana možnost omogoči prikaz naslova preglednice na vrhu poročila poleg naslova poročila."
 
-#: ../glom/glom_developer.glade.h:227
+#: ../glom/glom_developer.glade.h:229
 msgid "When this is selected you will see extra relationships in the Table list, allowing you to choose fields from relationships in related tables, instead of just regular fields from those related tables."
 msgstr "Izbrana možnost omogoči ogled dodatnih razmerij v seznamu preglednic. To dovoli izbor polj iz razmerij v povezanih tabelah, namesto iz navadnih polj v povezanih tabelah."
 
-#: ../glom/glom_developer.glade.h:228
+#: ../glom/glom_developer.glade.h:230
 msgid "Zip/Postal Code:"
 msgstr "Poštna številka: "
 
-#: ../glom/glom_developer.glade.h:229
+#: ../glom/glom_developer.glade.h:231
 msgid "_Confirm Password"
 msgstr "_Potrdi geslo"
 
-#: ../glom/glom_developer.glade.h:230
+#: ../glom/glom_developer.glade.h:232
 #: ../glom/glom.glade.h:52
 msgid "_Password"
 msgstr "_Geslo"
 
-#: ../glom/glom_developer.glade.h:231
+#: ../glom/glom_developer.glade.h:233
 #: ../glom/glom.glade.h:54
 msgid "_User"
 msgstr "_Uporabnik"
 
-#: ../glom/glom_developer.glade.h:232
+#: ../glom/glom_developer.glade.h:234
 msgid "field name"
 msgstr "ime polja"
 
-#: ../glom/glom_developer.glade.h:233
+#: ../glom/glom_developer.glade.h:235
 msgid "table name"
 msgstr "ime preglednice"
 
-#: ../glom/glom_developer.glade.h:234
+#: ../glom/glom_developer.glade.h:236
 msgid "the title"
 msgstr "naslov"
 
@@ -2184,7 +2192,7 @@ msgstr "Portal koledarja"
 
 #. Note to translators: "Notebook" means a GtkNotebook-type widget.
 #: ../glom/libglom/data_structure/layout/layoutitem_notebook.cc:56
-#: ../glom/mode_data/flowtablewithfields.cc:1305
+#: ../glom/mode_data/flowtablewithfields.cc:1420
 #: ../glom/utility_widgets/layouttoolbar.cc:56
 msgid "Notebook"
 msgstr "Beležnica"
@@ -2240,7 +2248,7 @@ msgstr "Poročilo"
 #. Tables:
 #: ../glom/libglom/data_structure/translatable_item.cc:308
 #: ../glom/mode_design/box_db_table_relationships.cc:51
-#: ../glom/mode_design/dialog_database_preferences.cc:53
+#: ../glom/mode_design/dialog_database_preferences.cc:55
 #: ../glom/mode_design/users/dialog_groups_list.cc:67
 #: ../glom/navigation/maemo/pickerbutton_table.cc:37
 msgid "Table"
@@ -2254,48 +2262,48 @@ msgstr "Razporeditev skupine"
 msgid "Field Title"
 msgstr "Naslov polja"
 
-#: ../glom/libglom/document/document.cc:475
-#: ../glom/libglom/document/document.cc:493
+#: ../glom/libglom/document/document.cc:476
+#: ../glom/libglom/document/document.cc:494
 msgid "System Preferences"
 msgstr "Možnosti sistema"
 
-#: ../glom/libglom/document/document.cc:506
+#: ../glom/libglom/document/document.cc:507
 msgid "System Name"
 msgstr "Ime sistema"
 
-#: ../glom/libglom/document/document.cc:512
+#: ../glom/libglom/document/document.cc:513
 msgid "Organisation Name"
 msgstr "Ime organizacije"
 
-#: ../glom/libglom/document/document.cc:518
+#: ../glom/libglom/document/document.cc:519
 msgid "Organisation Logo"
 msgstr "Logotip organizacije"
 
-#: ../glom/libglom/document/document.cc:524
+#: ../glom/libglom/document/document.cc:525
 msgid "Street"
 msgstr "Ulica"
 
-#: ../glom/libglom/document/document.cc:530
+#: ../glom/libglom/document/document.cc:531
 msgid "Street (line 2)"
 msgstr "Ulica (druga vrstica)"
 
-#: ../glom/libglom/document/document.cc:536
+#: ../glom/libglom/document/document.cc:537
 msgid "City"
 msgstr "Mesto"
 
-#: ../glom/libglom/document/document.cc:542
+#: ../glom/libglom/document/document.cc:543
 msgid "State"
 msgstr "Regija"
 
-#: ../glom/libglom/document/document.cc:548
+#: ../glom/libglom/document/document.cc:549
 msgid "Country"
 msgstr "Država"
 
-#: ../glom/libglom/document/document.cc:554
+#: ../glom/libglom/document/document.cc:555
 msgid "Zip Code"
 msgstr "Poštna številka"
 
-#: ../glom/libglom/document/bakery/document.cc:371
+#: ../glom/libglom/document/bakery/document.cc:402
 msgid "Untitled"
 msgstr "Neimenovano"
 
@@ -2307,31 +2315,31 @@ msgstr "Paketa ni mogoče namestiti"
 msgid "The necessary applications to install the package could not be found."
 msgstr "Zahtevanih programov za namestitev paketa ni mogoče najti."
 
-#: ../glom/main.cc:193
+#: ../glom/main.cc:194
 msgid "Glom options"
 msgstr "Možnosti glom"
 
-#: ../glom/main.cc:193
+#: ../glom/main.cc:194
 msgid "Command-line options for glom"
 msgstr "Možnosti ukazne vrstice za glom"
 
-#: ../glom/main.cc:201
+#: ../glom/main.cc:202
 msgid "The Filename"
 msgstr "Ime datoteke"
 
-#: ../glom/main.cc:207
+#: ../glom/main.cc:208
 msgid "The version of this application."
 msgstr "Različica tega programa."
 
-#: ../glom/main.cc:212
+#: ../glom/main.cc:213
 msgid "Show the generated SQL queries on stdout, for debugging."
 msgstr "Pokaži ustvarjene poizvedbe SQL na standardnem odvodu, za razhroščevanje."
 
-#: ../glom/main.cc:217
+#: ../glom/main.cc:218
 msgid "Show how Glom outputs a date in this locale, then stop."
 msgstr "Pokaži kako glom odvede datum v tej jezikovni oznaki, nato se zaustavi."
 
-#: ../glom/main.cc:230
+#: ../glom/main.cc:231
 msgid ""
 "You seem to be running Glom as a user with administrator privileges. Glom may not be run with such privileges for security reasons.\n"
 "Please login to your system as a normal user."
@@ -2340,7 +2348,7 @@ msgstr ""
 "Prijavite se v vaš sistem kot običajni uporabnik."
 
 #. Warn the user:
-#: ../glom/main.cc:244
+#: ../glom/main.cc:245
 msgid ""
 "You seem to be running Glom as root. Glom may not be run as root.\n"
 "Please login to your system as a normal user."
@@ -2348,22 +2356,22 @@ msgstr ""
 "Kaže, da zaganjate Glom kot skrbnik. Programa ni mogoče uporabljati kot tak uporabnik.\n"
 "Prijavite se v vaš sistem kot običajen uporabnik."
 
-#: ../glom/main.cc:251
+#: ../glom/main.cc:252
 msgid "Running As Root"
 msgstr "Zagnano s skrbniškim računom"
 
 #. Show message to the user about the broken installation:
 #. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
 #. Show message to the user about the broken installation:
-#: ../glom/main.cc:298
-#: ../glom/main.cc:311
-#: ../glom/main.cc:578
+#: ../glom/main.cc:299
+#: ../glom/main.cc:312
+#: ../glom/main.cc:579
 msgid "Incomplete Glom Installation"
 msgstr "Nepopolna namestitev Glom"
 
 #. use_markup
 #. modal
-#: ../glom/main.cc:299
+#: ../glom/main.cc:300
 msgid ""
 "Your installation of Glom is not complete, because PostgreSQL is not available on your system. PostgreSQL is needed for self-hosting of Glom databases.\n"
 "\n"
@@ -2373,13 +2381,13 @@ msgstr ""
 "\n"
 "Za končanje namestitve Glom namestite PostgreSQL."
 
-#: ../glom/main.cc:301
+#: ../glom/main.cc:302
 msgid "Install PostgreSQL"
 msgstr "Namesti PostgreSQL"
 
 #. use_markup
 #. modal
-#: ../glom/main.cc:312
+#: ../glom/main.cc:313
 msgid ""
 "Your installation of Glom is not complete, because PostgreSQL is not available on your system. PostgreSQL is needed for self-hosting of Glom databases.\n"
 "\n"
@@ -2390,7 +2398,7 @@ msgstr ""
 "Pošljite poročilo o tem hrošču vašemu izdajatelju ali skrbniku sistema, da bo lahko popravljen."
 
 #. The python module could not be imported by Glom, so warn the user:
-#: ../glom/main.cc:328
+#: ../glom/main.cc:329
 msgid ""
 "Your installation of Glom is not complete, because the Glom Python module is not available on your system.\n"
 "\n"
@@ -2400,12 +2408,12 @@ msgstr ""
 "\n"
 "Pošljite poročilo o tem hrošču vašemu izdajatelju ali skrbniku sistema, da bo lahko popravljen."
 
-#: ../glom/main.cc:331
+#: ../glom/main.cc:332
 msgid "Glom Python Module Not Installed"
 msgstr "Python module glom ni nameščen"
 
 #. The python module could not be imported by Glom, so warn the user:
-#: ../glom/main.cc:348
+#: ../glom/main.cc:349
 msgid ""
 "Your installation of Glom is not complete, because the gda Python module is not available on your system.\n"
 "\n"
@@ -2415,28 +2423,28 @@ msgstr ""
 "\n"
 "Pošljite poročilo o tem hrošču vašemu izdajatelju ali skrbniku sistema, da bo lahko popravljen."
 
-#: ../glom/main.cc:351
+#: ../glom/main.cc:352
 msgid "gda Python Module Not Installed"
 msgstr "Python modul gda ni nameščen"
 
-#: ../glom/main.cc:495
+#: ../glom/main.cc:496
 msgid "Error while parsing command-line options: "
 msgstr "Napaka med razčlenjevanem možnosti ukazne vrstice:"
 
-#: ../glom/main.cc:496
+#: ../glom/main.cc:497
 msgid "Use --help to see a list of available command-line options."
 msgstr "Uporabite --help za ogled seznama dostopnih možnosti ukazne vrstice."
 
-#: ../glom/main.cc:545
+#: ../glom/main.cc:546
 msgid "Glom: The file does not exist."
 msgstr "Glom: Datoteka ne obstaja."
 
-#: ../glom/main.cc:554
+#: ../glom/main.cc:555
 msgid "Glom: The file path is a directory instead of a file."
 msgstr "Glom: Pot datoteke je mapa namesto datoteke."
 
 #. The Postgres provider was not found, so warn the user:
-#: ../glom/main.cc:575
+#: ../glom/main.cc:576
 msgid ""
 "Your installation of Glom is not complete, because the PostgreSQL libgda provider is not available on your system. This provider is needed to access Postgres database servers.\n"
 "\n"
@@ -2454,11 +2462,11 @@ msgstr ""
 msgid "Undefined Table"
 msgstr "Nedoločena preglednica"
 
-#: ../glom/mode_data/box_data.cc:137
+#: ../glom/mode_data/box_data.cc:139
 msgid "You have not entered any find criteria. Try entering information in the fields."
 msgstr "Niste vnesli kriterijev iskanja. Poskusite vnesti podatke v poljih."
 
-#: ../glom/mode_data/box_data.cc:181
+#: ../glom/mode_data/box_data.cc:183
 msgid ""
 "This data cannot be stored in the database because you have not provided a primary key.\n"
 "Do you really want to discard this data?"
@@ -2466,7 +2474,7 @@ msgstr ""
 "Podatkov ni mogoče shraniti v podatkovni zbirki, ker niste zagotovili osnovnega ključa.\n"
 "Ali resnično želite zavreči te podatke?"
 
-#: ../glom/mode_data/box_data.cc:187
+#: ../glom/mode_data/box_data.cc:189
 msgid "No primary key value"
 msgstr "Ni vrednosti osnovnega ključa"
 
@@ -2494,29 +2502,29 @@ msgstr "Ogled naslednjega zapisa na seznamu."
 msgid "View the last record in the list."
 msgstr "Ogled zadnjega zapisa na seznamu."
 
-#: ../glom/mode_data/box_data_details.cc:447
+#: ../glom/mode_data/box_data_details.cc:449
 msgid "Layout Contains No Fields"
 msgstr "Razporeditev ne vsebuje polj"
 
-#: ../glom/mode_data/box_data_details.cc:447
+#: ../glom/mode_data/box_data_details.cc:449
 msgid "There are no fields on the layout, so there is no way to enter data in a new record."
 msgstr "Na razporeditvi ni polj, zato ni mogoče vnesti podatkov v nov zapis."
 
 #. Tell user that a primary key is needed to delete a record:
-#: ../glom/mode_data/box_data_details.cc:475
+#: ../glom/mode_data/box_data_details.cc:477
 msgid "No primary key value."
 msgstr "Ni osnovne vrednosti ključa."
 
-#: ../glom/mode_data/box_data_details.cc:476
+#: ../glom/mode_data/box_data_details.cc:478
 msgid "This record cannot be deleted because there is no primary key."
 msgstr "Zapisa ni mogoče izbrisati, ker ni osnovnega ključa."
 
 #. Warn user that they can't choose their own primary key:
-#: ../glom/mode_data/box_data_details.cc:884
+#: ../glom/mode_data/box_data_details.cc:891
 msgid "Primary key auto increments"
 msgstr "Samodejni prirastki osnovnega ključa."
 
-#: ../glom/mode_data/box_data_details.cc:885
+#: ../glom/mode_data/box_data_details.cc:892
 msgid ""
 "The primary key is auto-incremented.\n"
 " You may not enter your own primary key value."
@@ -2525,7 +2533,7 @@ msgstr ""
 " Svoje vrednosti osnovnega ključa ni mogoče vnesti."
 
 #. Add Pages:
-#: ../glom/mode_data/box_data_list.cc:532
+#: ../glom/mode_data/box_data_list.cc:536
 #: ../glom/mode_data/box_data_manyrecords.cc:83
 #: ../glom/mode_data/notebook_data.cc:40
 #: ../glom/mode_find/notebook_find.cc:32
@@ -2562,64 +2570,64 @@ msgstr "Odgovarjajoči zapis ne obstaja"
 msgid "No record with this value exists. Therefore navigation to the related record is not possible."
 msgstr "Zapis s to vrednostjo ne obstaja. Zato krmarjenje na povezan zapis ni mogoče."
 
-#: ../glom/mode_data/flowtablewithfields.cc:1162
-#: ../glom/mode_data/flowtablewithfields.cc:1308
-#: ../glom/mode_data/flowtablewithfields.cc:1335
+#: ../glom/mode_data/flowtablewithfields.cc:1166
+#: ../glom/mode_data/flowtablewithfields.cc:1423
+#: ../glom/mode_data/flowtablewithfields.cc:1450
 #: ../glom/utility_widgets/notebooklabelglom.cc:73
 #: ../glom/utility_widgets/notebooklabelglom.cc:113
 msgid "New Group"
 msgstr "Nova skupina"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1168
+#: ../glom/mode_data/flowtablewithfields.cc:1172
 #: ../glom/mode_design/layout/dialog_layout_details.cc:779
 msgid "notebook"
 msgstr "beležnica"
 
 #. Note to translators: This is the default name (not seen by most users) for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1174
+#: ../glom/mode_data/flowtablewithfields.cc:1178
 msgid "tab1"
 msgstr "zavihek1"
 
 #. Note to translators: This is the default label text for a notebook tab.
-#: ../glom/mode_data/flowtablewithfields.cc:1177
+#: ../glom/mode_data/flowtablewithfields.cc:1181
 msgid "Tab One"
 msgstr "Zavihek ena"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1190
+#: ../glom/mode_data/flowtablewithfields.cc:1194
 msgid "button"
 msgstr "gumb"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1191
-#: ../glom/mode_data/flowtablewithfields.cc:1349
+#: ../glom/mode_data/flowtablewithfields.cc:1195
+#: ../glom/mode_data/flowtablewithfields.cc:1464
 #: ../glom/mode_design/layout/dialog_layout_details.cc:703
 msgid "New Button"
 msgstr "Nov gumb"
 
 #. Note to translators: This is the default contents of a text item on a print layout:
-#: ../glom/mode_data/flowtablewithfields.cc:1197
-#: ../glom/mode_data/flowtablewithfields.cc:1361
+#: ../glom/mode_data/flowtablewithfields.cc:1201
+#: ../glom/mode_data/flowtablewithfields.cc:1476
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:379
 msgid "text"
 msgstr "besedilo"
 
-#: ../glom/mode_data/flowtablewithfields.cc:1198
-#: ../glom/mode_data/flowtablewithfields.cc:1362
+#: ../glom/mode_data/flowtablewithfields.cc:1202
+#: ../glom/mode_data/flowtablewithfields.cc:1477
 msgid "New Text"
 msgstr "Novo besedilo"
 
 #. TODO: Avoid this error message, maybe by adding a group.
 #. TODO: At least avoid losing the dragged item.
-#: ../glom/mode_data/flowtablewithfields.cc:1446
+#: ../glom/mode_data/flowtablewithfields.cc:1561
 msgid "You cannot drop anything here. Try to add a group first"
 msgstr "Tu ni mogoče spustiti ničesar. Poskusite najprej dodati skupino"
 
 #. TODO: Use a real English sentence here?
-#: ../glom/mode_data/flowtablewithfields.cc:1507
+#: ../glom/mode_data/flowtablewithfields.cc:1622
 msgid "Delete whole group \"%1\"?"
 msgstr "Izbris celotne skupine \"%1\"?"
 
 #. TODO: Use a real English sentence here:
-#: ../glom/mode_data/flowtablewithfields.cc:1513
+#: ../glom/mode_data/flowtablewithfields.cc:1628
 msgid "Delete whole group?"
 msgstr "Izbris celotne skupine?"
 
@@ -2654,7 +2662,7 @@ msgstr "Samodejno ustvarjanje"
 msgid "Title (Singular Form)"
 msgstr "Naslov (edninska oblika)"
 
-#: ../glom/mode_design/dialog_database_preferences.cc:55
+#: ../glom/mode_design/dialog_database_preferences.cc:57
 msgid "Next Value"
 msgstr "Naslednja vrednost"
 
@@ -2771,11 +2779,11 @@ msgstr "Napaka izračuna"
 msgid "The calculation does not have a return statement."
 msgstr "Izračun nima vrnjene izjave."
 
-#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:131
+#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:137
 msgid "Calculation result"
 msgstr "Rezultat izračuna"
 
-#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:131
+#: ../glom/mode_design/fields/dialog_fieldcalculation.cc:137
 msgid "The result of the calculation is:\n"
 msgstr "Rezultat izračuna je:\n"
 
@@ -3181,10 +3189,6 @@ msgstr "Izbor polja"
 msgid "_Formatting"
 msgstr "_Oblikovanje"
 
-#: ../glom/python_embed/glom_python.cc:132
-msgid "Python Error: \n"
-msgstr "Napaka Pythona: \n"
-
 #. Append the View columns:
 #: ../glom/mode_design/translation/window_translations.cc:66
 msgid "Original"
@@ -3392,6 +3396,8 @@ msgstr "Poročilo je končano"
 msgid "The report will now be opened in your web browser."
 msgstr "Poročilo bo sedaj odprto v vašem spletnem brskalniku."
 
+#~ msgid "Python Error: \n"
+#~ msgstr "Napaka Pythona: \n"
 #~ msgid "Not implemented yet."
 #~ msgstr "Še ni podprto."
 #~ msgid "Sorry, the '%s' action is not implemented."
