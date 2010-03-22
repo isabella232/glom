@@ -1,7 +1,17 @@
+2010-03-22  Murray Cumming  <murrayc@murrayc.com>
+
+    Fix the distcheck. Don't use deprecated gtkmm API.
+
+	* glom/utility_widgets/flowtable.cc:
+	* glom/utility_widgets/flowtable_dnd.cc:
+	* glom/utility_widgets/placeholder-glom.cc: Adapt to deprecated gtkmm API.
+    Use get_has_window() and set_has_window() instead of get_flags(),
+    unset_flags() and set_flags().
+
 2010-03-19  Daniel Borgmann <danielb@openismus.com>
 
 	* configure.ac: Make Glom build with autoconf 2.65.
-	Patch from Fryderyk Dziarmagowski in GNOME bug #613179. 
+	Patch from Fryderyk Dziarmagowski in GNOME bug #613179.
 
 2010-03-16  David King  <davidk@openismus.com>
 
@@ -15,35 +25,35 @@
 2010-03-16  Murray Cumming  <murrayc@murrayc.com>
 
   Tests: Check that the .glade files are valid XML.
-  
+
   * Makefile_tests.am:
-	* tests/test_glade_file_validation.sh: Add this text that the .glade files 
-	are basically valid XML. It would be nice to have a Glade DTD to validate 
+	* tests/test_glade_file_validation.sh: Add this text that the .glade files
+	are basically valid XML. It would be nice to have a Glade DTD to validate
 	them against too.
-	We should also check that each top-level widget can be instantiated by 
+	We should also check that each top-level widget can be instantiated by
 	GtkBuilder.
 
 2010-03-16  Murray Cumming  <murrayc@murrayc.com>
 
   Add a startup script feature.
-  
+
   * libglom/document/document.cc: Added get/set_startup_script().
   load_after(), save_before(): Load and save the startup script.
-  
+
   * glom_developer.glade:
   * glom/mode_design/dialog_database_preferences.[h|cc]: Add a startup script tab.
-  
-  * libglom/python_embed/py_glom_ui.h: Move PythonUICallbacks into its own 
+
+  * libglom/python_embed/py_glom_ui.h: Move PythonUICallbacks into its own
   py_glom_ui_callbacks.h header.
-  * glom/python_embed/python_ui_callbacks.[h|cc]: Add this derived callbacks 
+  * glom/python_embed/python_ui_callbacks.[h|cc]: Add this derived callbacks
   class that has handlers that call methods in the application.
   * glom/mode_data/box_data.cc: execute_button_script(): Use the new callbacks
   class instead of using member methods here.
-  * glom/application.cc: on_document_load(): Run the startup script, if any, 
+  * glom/application.cc: on_document_load(): Run the startup script, if any,
   after loading the document, using the new derived callbacks class.
-  
+
   * Makefile_glom.am, Makefile_libglom.am: Mention the new files.
-  
+
 2010-03-13  David King  <davidk@openismus.com>
 
 	Depend on gtkmm >= 2.19.2, fixing GNOME bug #612796

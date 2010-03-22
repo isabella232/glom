@@ -2,19 +2,19 @@
 /*
  * glom
  * Copyright (C) Johannes Schmid 2007 <jhs@gnome.org>
- * 
+ *
  * glom is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the
  * GNU General Public License, as published by the Free Software
  * Foundation; either version 2 of the License, or (at your option)
  * any later version.
- * 
+ *
  * glom is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with glom.  If not, write to:
  * 	The Free Software Foundation, Inc.,
@@ -36,14 +36,14 @@ PlaceholderGlom::PlaceholderGlom() :
   Glib::ObjectBase("glom_placeholder"),
   Gtk::Widget()
 {
-  set_flags(Gtk::NO_WINDOW);
+  set_has_window(false);
 #ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   signal_realize().connect(sigc::mem_fun(*this, &PlaceholderGlom::on_realize));
   signal_unrealize().connect(sigc::mem_fun(*this, &PlaceholderGlom::on_unrealize));
   signal_expose_event().connect(sigc::mem_fun(*this, &PlaceholderGlom::on_expose_event));
   signal_size_request().connect(sigc::mem_fun(*this, &PlaceholderGlom::on_size_request));
   signal_size_allocate().connect(sigc::mem_fun(*this, &PlaceholderGlom::on_size_allocate));
-#endif  
+#endif
 }
 
 PlaceholderGlom::~PlaceholderGlom()
@@ -83,9 +83,9 @@ void PlaceholderGlom::on_size_allocate(Gtk::Allocation& allocation)
 void PlaceholderGlom::on_realize()
 {
   //Call base class:
-#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED  
+#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   Gtk::Widget::on_realize();
-#endif  
+#endif
 
   ensure_style();
 
@@ -104,14 +104,14 @@ void PlaceholderGlom::on_realize()
     attributes.width = allocation.get_width();
     attributes.height = allocation.get_height();
 
-    attributes.event_mask = get_events () | Gdk::EXPOSURE_MASK; 
+    attributes.event_mask = get_events () | Gdk::EXPOSURE_MASK;
     attributes.window_type = GDK_WINDOW_CHILD;
     attributes.wclass = GDK_INPUT_OUTPUT;
 
 
     m_refGdkWindow = Gdk::Window::create(get_window() /* parent */, &attributes,
             GDK_WA_X | GDK_WA_Y);
-    unset_flags(Gtk::NO_WINDOW);
+    set_has_window();
     set_window(m_refGdkWindow);
 
     //set colors
@@ -125,9 +125,9 @@ void PlaceholderGlom::on_realize()
 void PlaceholderGlom::on_unrealize()
 {
   m_refGdkWindow.reset();
-#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED  
+#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   Gtk::Widget::on_unrealize();
-#endif  
+#endif
 }
 
 bool PlaceholderGlom::on_expose_event(GdkEventExpose* event)
