@@ -33,7 +33,7 @@ namespace Glom
 {
 
 ComboAsRadioButtons::ComboAsRadioButtons()
-: ComboGlomChoicesBase()
+: ComboChoices()
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
@@ -43,7 +43,7 @@ ComboAsRadioButtons::ComboAsRadioButtons()
 }
 
 ComboAsRadioButtons::ComboAsRadioButtons(const sharedptr<LayoutItem_Field>& field_second)
-: ComboGlomChoicesBase(field_second)
+: ComboChoices(field_second)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();

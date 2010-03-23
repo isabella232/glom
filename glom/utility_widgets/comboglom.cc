@@ -35,7 +35,7 @@ namespace Glom
 {
 
 ComboGlom::ComboGlom()
-: ComboGlomChoicesBase()
+: ComboChoicesWithTreeModel()
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
@@ -45,7 +45,7 @@ ComboGlom::ComboGlom()
 }
 
 ComboGlom::ComboGlom(const sharedptr<LayoutItem_Field>& field_second)
-: ComboGlomChoicesBase(field_second)
+: ComboChoicesWithTreeModel(field_second)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();

@@ -1,5 +1,13 @@
 2010-03-23  Murray Cumming  <murrayc@murrayc.com>
 
+    Refactored combo classes.
+
+	* glom/utility_widgets/comboglomchoicesbase.[h|cc]:
+    Split into combochoices.[h|cc] and combochoiceswithtreemodel.[h|cc] so 
+    that combo_as_radio_buttons.[h|cc] doesn't need to have an unused treemodel.
+
+2010-03-23  Murray Cumming  <murrayc@murrayc.com>
+
     Formatting: Choices: Add a Display as radio buttons option.
 
 	* glom/glom_developer.glade: formatting: choices: Add a Show As Radio 

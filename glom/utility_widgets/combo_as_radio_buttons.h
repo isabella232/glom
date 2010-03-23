@@ -23,14 +23,7 @@
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
-#include <gtkmm.h>
-#include <libglom/data_structure/field.h>
-#include "comboglomchoicesbase.h"
-
-#ifdef GLOM_ENABLE_MAEMO
-#include <hildonmm/picker-button.h>
-#include <hildonmm/touch-selector-entry.h>
-#endif //GLOM_ENABLE_MAEMO
+#include <glom/utility_widgets/combochoices.h>
 
 namespace Glom
 {
@@ -43,7 +36,7 @@ class Application;
 class ComboAsRadioButtons
 : 
   public Gtk::VBox,
-  public ComboGlomChoicesBase
+  public ComboChoices
 {
 public:
 

@@ -39,7 +39,7 @@ namespace Glom
 {
 
 ComboEntryGlom::ComboEntryGlom()
-: ComboGlomChoicesBase()
+: ComboChoicesWithTreeModel()
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
@@ -49,7 +49,7 @@ ComboEntryGlom::ComboEntryGlom()
 }
 
 ComboEntryGlom::ComboEntryGlom(const sharedptr<LayoutItem_Field>& field_second)
-: ComboGlomChoicesBase(field_second)
+: ComboChoicesWithTreeModel(field_second)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
@@ -154,7 +154,7 @@ ComboEntryGlom::~ComboEntryGlom()
 void ComboEntryGlom::set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name)
 {
   //Call base class:
-  ComboGlomChoicesBase::set_layout_item(layout_item, table_name);
+  ComboChoicesWithTreeModel::set_layout_item(layout_item, table_name);
 
   if(!layout_item)
     return;

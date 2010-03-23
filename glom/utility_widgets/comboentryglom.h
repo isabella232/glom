@@ -23,9 +23,7 @@
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
-#include <gtkmm.h>
-#include <libglom/data_structure/field.h>
-#include "comboglomchoicesbase.h"
+#include <glom/utility_widgets/combochoiceswithtreemodel.h>
 
 #ifdef GLOM_ENABLE_MAEMO
 #include <hildonmm/picker-button.h>
@@ -48,7 +46,7 @@ class ComboEntryGlom
 #else
   public Hildon::PickerButton,
 #endif
-  public ComboGlomChoicesBase
+  public ComboChoicesWithTreeModel
 {
 public:
   ///You must call set_layout_item() to specify the field type and formatting of the main column.

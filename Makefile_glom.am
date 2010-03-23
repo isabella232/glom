@@ -126,8 +126,10 @@ glom_glom_SOURCES =							\
 	glom/utility_widgets/comboentryglom.h				\
 	glom/utility_widgets/comboglom.cc				\
 	glom/utility_widgets/comboglom.h				\
-	glom/utility_widgets/comboglomchoicesbase.cc			\
-	glom/utility_widgets/comboglomchoicesbase.h			\
+	glom/utility_widgets/combochoices.cc			\
+	glom/utility_widgets/combochoices.h			\
+	glom/utility_widgets/combochoiceswithtreemodel.cc			\
+	glom/utility_widgets/combochoiceswithtreemodel.h			\
 	glom/utility_widgets/combo_as_radio_buttons.cc			\
 	glom/utility_widgets/combo_as_radio_buttons.h			\
 	glom/utility_widgets/datawidget.cc				\

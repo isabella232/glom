@@ -46,16 +46,13 @@
 namespace Glom
 {
 
-static ComboGlomChoicesBase* create_combo_widget_for_field(const sharedptr<LayoutItem_Field>& field, const sharedptr<LayoutItem_Field>& layout_item_second = sharedptr<LayoutItem_Field>())
+static ComboChoices* create_combo_widget_for_field(const sharedptr<LayoutItem_Field>& field, const sharedptr<LayoutItem_Field>& layout_item_second = sharedptr<LayoutItem_Field>())
 {
-  std::cout << "create_combo_widget_for_field(): field=" << field->get_name() << std::endl;
-  ComboGlomChoicesBase* result = 0;
+  ComboChoices* result = 0;
   bool as_radio_buttons = false; //TODO: Use this.
   const bool restricted = field->get_formatting_used().get_choices_restricted(as_radio_buttons);
   if(restricted)
   {
-    std::cout << "  restricted" << std::endl;
-  
     if(as_radio_buttons)
       result = Gtk::manage(new ComboAsRadioButtons(layout_item_second));
     else
@@ -119,8 +116,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     //Use a Combo if there is a drop-down of choices (A "value list"), else an Entry:
     if(field->get_formatting_used().get_has_choices())
     {
-      std::cout << "DEBUG: has choices" << std::endl;
-      ComboGlomChoicesBase* combo = create_combo_widget_for_field(field);
+      ComboChoices* combo = create_combo_widget_for_field(field);
 
       if(field->get_formatting_used().get_has_custom_choices())
       {
