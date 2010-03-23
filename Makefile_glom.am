@@ -128,6 +128,8 @@ glom_glom_SOURCES =							\
 	glom/utility_widgets/comboglom.h				\
 	glom/utility_widgets/comboglomchoicesbase.cc			\
 	glom/utility_widgets/comboglomchoicesbase.h			\
+	glom/utility_widgets/combo_as_radio_buttons.cc			\
+	glom/utility_widgets/combo_as_radio_buttons.h			\
 	glom/utility_widgets/datawidget.cc				\
 	glom/utility_widgets/datawidget.h				\
 	glom/utility_widgets/dialog_choose_date.cc			\

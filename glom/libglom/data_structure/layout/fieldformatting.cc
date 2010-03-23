@@ -30,6 +30,7 @@ namespace Glom
 
 FieldFormatting::FieldFormatting()
 : m_choices_restricted(false),
+  m_choices_restricted_as_radio_buttons(false),
   m_choices_custom(false),
   m_choices_related(false),
   m_text_format_multiline(false),
@@ -43,6 +44,7 @@ FieldFormatting::FieldFormatting(const FieldFormatting& src)
   m_numeric_format(src.m_numeric_format),
   m_choices_custom_list(src.m_choices_custom_list),
   m_choices_restricted(src.m_choices_restricted),
+  m_choices_restricted_as_radio_buttons(src.m_choices_restricted_as_radio_buttons),
   m_choices_custom(src.m_choices_custom),
   m_choices_related(src.m_choices_related),
   m_text_format_multiline(src.m_text_format_multiline),
@@ -66,6 +68,7 @@ bool FieldFormatting::operator==(const FieldFormatting& src) const
     (m_numeric_format == src.m_numeric_format) &&
     (m_choices_custom_list == src.m_choices_custom_list) &&
     (m_choices_restricted == src.m_choices_restricted) &&
+    (m_choices_restricted_as_radio_buttons == src.m_choices_restricted_as_radio_buttons) &&
     (m_choices_custom == src.m_choices_custom) &&
     (m_choices_related == src.m_choices_related) &&
     (m_choices_related_field == src.m_choices_related_field) &&
@@ -87,6 +90,7 @@ FieldFormatting& FieldFormatting::operator=(const FieldFormatting& src)
 
   m_choices_custom_list = src.m_choices_custom_list;
   m_choices_restricted = src.m_choices_restricted;
+  m_choices_restricted_as_radio_buttons = src.m_choices_restricted_as_radio_buttons;
   m_choices_custom = src.m_choices_custom;
   m_choices_related = src.m_choices_related;
   m_choices_related_field = src.m_choices_related_field;
@@ -195,14 +199,16 @@ void FieldFormatting::set_choices_custom(const type_list_values& choices)
   m_choices_custom_list = choices;
 }
 
-bool FieldFormatting::get_choices_restricted() const
+bool FieldFormatting::get_choices_restricted(bool& as_radio_buttons) const
 {
+  as_radio_buttons = m_choices_restricted_as_radio_buttons;
   return m_choices_restricted;
 }
 
-void FieldFormatting::set_choices_restricted(bool val)
+void FieldFormatting::set_choices_restricted(bool val, bool as_radio_buttons)
 {
   m_choices_restricted = val;
+  m_choices_restricted_as_radio_buttons = as_radio_buttons;
 }
 
 bool FieldFormatting::get_has_custom_choices() const

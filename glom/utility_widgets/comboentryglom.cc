@@ -91,7 +91,7 @@ void ComboEntryGlom::init()
   // Only in the latest hildonmm: Glib::RefPtr<Hildon::TouchSelectorColumn> column =
   //  m_maemo_selector.append_column(m_refModel);
   Glib::RefPtr<Hildon::TouchSelectorColumn> column = Glib::wrap(hildon_touch_selector_append_column(
-      HILDON_TOUCH_SELECTOR(m_maemo_selector.gobj()), GTK_TREE_MODEL(Glib::unwrap(m_refModel)), 0, static_cast<char*>(0)), true);
+    HILDON_TOUCH_SELECTOR(m_maemo_selector.gobj()), GTK_TREE_MODEL(Glib::unwrap(m_refModel)), 0, static_cast<char*>(0)), true);
       
   column->pack_start(m_Columns.m_col_first, false);
   //Only in the latest hildonmm: column->set_text_column(m_Columns.m_col_first);

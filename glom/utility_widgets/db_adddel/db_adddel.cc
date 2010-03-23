@@ -727,7 +727,9 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
         if(item_field->get_formatting_used().get_has_choices())
         {
           CellRendererList* rendererList = Gtk::manage( new CellRendererList() );
-          rendererList->set_restrict_values_to_list(item_field->get_formatting_used().get_choices_restricted());
+          bool as_radio_buttons = false; //Can't really be done in a list, so we ignore it.
+          rendererList->set_restrict_values_to_list(
+            item_field->get_formatting_used().get_choices_restricted(as_radio_buttons));
 
           pCellRenderer = rendererList;
         }

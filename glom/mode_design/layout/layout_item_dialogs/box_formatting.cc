@@ -51,6 +51,7 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
   m_radiobutton_choices_custom(0),
   m_radiobutton_choices_related(0),
   m_checkbutton_choices_restricted(0),
+  m_checkbutton_choices_restricted_as_radio_buttons(0),
   m_adddel_choices_custom(0),
   m_col_index_custom_choices(0),
   m_for_print_layout(false),
@@ -110,6 +111,7 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
   m_adddel_choices_custom->set_auto_add();
 
   builder->get_widget("checkbutton_choices_restrict", m_checkbutton_choices_restricted);
+  builder->get_widget("checkbutton_choices_restrict_as_radio_buttons", m_checkbutton_choices_restricted_as_radio_buttons); 
 
   builder->get_widget_derived("combobox_choices_related_relationship", m_combo_choices_relationship);
   builder->get_widget_derived("combobox_choices_related_field", m_combo_choices_field);
@@ -124,6 +126,7 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
   m_checkbox_format_text_color_foreground->signal_toggled().connect( sigc::mem_fun(*this, &Box_Formatting::on_checkbox) );
   m_checkbox_format_text_color_background->signal_toggled().connect( sigc::mem_fun(*this, &Box_Formatting::on_checkbox) );
   m_checkbox_format_color_negatives->signal_toggled().connect( sigc::mem_fun(*this, &Box_Formatting::on_checkbox) );
+  m_checkbutton_choices_restricted->signal_toggled().connect( sigc::mem_fun(*this, &Box_Formatting::on_checkbox) );
 
   show_all_children();
 }
@@ -214,7 +217,10 @@ void Box_Formatting::set_formatting(const FieldFormatting& format, bool show_num
   //Choices:
   if(m_field)
   {
-    m_checkbutton_choices_restricted->set_active(format.get_choices_restricted());
+    bool as_radio_buttons = false; //TODO
+    m_checkbutton_choices_restricted->set_active(
+      format.get_choices_restricted(as_radio_buttons));
+    m_checkbutton_choices_restricted_as_radio_buttons->set_active(as_radio_buttons);
 
     const Document* document = get_document();
 
@@ -292,7 +298,9 @@ bool Box_Formatting::get_formatting(FieldFormatting& format) const
   //Choices:
   if(m_field)
   {
-    m_format.set_choices_restricted(m_checkbutton_choices_restricted->get_active());
+    m_format.set_choices_restricted(
+      m_checkbutton_choices_restricted->get_active(), 
+      m_checkbutton_choices_restricted_as_radio_buttons->get_active());
 
     sharedptr<Relationship> choices_relationship = m_combo_choices_relationship->get_selected_relationship();
     m_format.set_choices(choices_relationship,
@@ -401,6 +409,11 @@ void Box_Formatting::enforce_constraints()
   m_colorbutton_foreground->set_sensitive( m_for_print_layout || m_checkbox_format_text_color_foreground->get_active() );
   m_colorbutton_background->set_sensitive( m_for_print_layout || m_checkbox_format_text_color_background->get_active() );
 
+  //Choices:
+  //Radio buttons only make sense when the items are restricted, instead of free-form:
+  m_checkbutton_choices_restricted_as_radio_buttons->set_sensitive(
+     m_checkbutton_choices_restricted->get_active());
+     
   if(m_show_numeric)
     m_vbox_numeric_format->show();
   else

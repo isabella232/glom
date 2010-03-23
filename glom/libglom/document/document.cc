@@ -190,6 +190,7 @@ namespace Glom
 #define GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_RIGHT "right"
 
 #define GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED "choices_restricted"
+#define GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED_AS_RADIO_BUTTONS "choices_restricted_radiobuttons"
 #define GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM "choices_custom"
 #define GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM_LIST "custom_choice_list"
 #define GLOM_NODE_FORMAT_CUSTOM_CHOICE "custom_choice"
@@ -1939,7 +1940,9 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
   //Choices:
   if(!field_name.empty())
   {
-    format.set_choices_restricted( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED) );
+    format.set_choices_restricted( 
+      get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED),
+      get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED_AS_RADIO_BUTTONS) );
     format.set_has_custom_choices( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM) );
 
     if(format.get_has_custom_choices())
@@ -2934,7 +2937,10 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
     set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_USE_ALT_NEGATIVE_COLOR,
       format.m_numeric_format.m_alt_foreground_color_for_negatives);
 
-    set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED, format.get_choices_restricted());
+    bool as_radio_buttons = false;
+    const bool choices_restricted = format.get_choices_restricted(as_radio_buttons);
+    set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED, choices_restricted);
+    set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED_AS_RADIO_BUTTONS, as_radio_buttons);
     set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM, format.get_has_custom_choices());
   }
 

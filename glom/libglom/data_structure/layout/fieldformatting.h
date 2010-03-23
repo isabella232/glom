@@ -54,8 +54,16 @@ public:
   virtual type_list_values get_choices_custom() const;
   virtual void set_choices_custom(const type_list_values& choices);
 
-  bool get_choices_restricted() const;
-  void set_choices_restricted(bool val = true);
+  /** Discover whether the entered data should only be one of the available 
+   * choices.
+   * @param [out] as_radio_buttons: Whether the choices should be displayed as 
+   * radio buttons instead of a combo box.
+   */
+  bool get_choices_restricted(bool& as_radio_buttons) const;
+
+  /** See get_choices_restricted().
+   */
+  void set_choices_restricted(bool val = true, bool as_radio_buttons = false);
 
   void get_choices(sharedptr<Relationship>& relationship_name, Glib::ustring& field, Glib::ustring& field_second) const;
   void set_choices(const sharedptr<Relationship>& relationship_name, const Glib::ustring& field, const Glib::ustring& field_second);
@@ -142,6 +150,7 @@ private:
 
   type_list_values m_choices_custom_list; //A drop-down list of possible values for the field.
   bool m_choices_restricted;
+  bool m_choices_restricted_as_radio_buttons;
   bool m_choices_custom, m_choices_related;
 
   bool m_text_format_multiline;

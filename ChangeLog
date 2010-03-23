@@ -1,3 +1,27 @@
+2010-03-23  Murray Cumming  <murrayc@murrayc.com>
+
+    Formatting: Choices: Add a Display as radio buttons option.
+
+	* glom/glom_developer.glade: formatting: choices: Add a Show As Radio 
+    Buttons checkbox. 
+	* glom/libglom/data_structure/layout/fieldformatting.[h|cc]:
+    set/get_choices_restricted(): Add a show_as_radio_buttons output parameter.
+	* glom/libglom/document/document.cc: 
+    load_after_layout_item_formatting(), save_after_layout_item_formatting():
+    load and save the new formatting detail.
+	* glom/mode_design/layout/layout_item_dialogs/box_formatting.[h|cc]:
+    Handle the new checkbox and make sure that it is only sensitive when 
+    the choices are restricted, because radio buttons provide no way to enter 
+    freeform data.
+	* glom/utility_widgets/comboglomchoicesbase.h: Make set_choices() and 
+    set_choices_with_second() virtual.
+    * glom/utility_widgets/combo_as_radio_buttons.[h|cc]: A new widget that is 
+    a vbbox of radio buttons, with a combo-like API.
+	* Makefile_glom.am: Mention the new files.
+	* glom/utility_widgets/datawidget.cc: Refactor some repeated code into 
+    create_combo_widget_for_field() and create the radiobuttons widget when 
+    necessary.
+
 2010-03-22  Murray Cumming  <murrayc@murrayc.com>
 
     Fix the distcheck. Don't use deprecated gtkmm API.

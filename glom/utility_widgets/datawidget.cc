@@ -25,6 +25,7 @@
 #include "labelglom.h"
 #include "comboentryglom.h"
 #include "comboglom.h"
+#include "combo_as_radio_buttons.h"
 #include "textviewglom.h"
 #include "imageglom.h"
 #include <libglom/data_structure/glomconversions.h>
@@ -45,11 +46,26 @@
 namespace Glom
 {
 
-/*
-DataWidget::DataWidget(Field::glom_field_type glom_type, const Glib::ustring& title)
-: m_glom_type(glom_type),
-  m_pMenuPopup(0)
-*/
+static ComboGlomChoicesBase* create_combo_widget_for_field(const sharedptr<LayoutItem_Field>& field, const sharedptr<LayoutItem_Field>& layout_item_second = sharedptr<LayoutItem_Field>())
+{
+  std::cout << "create_combo_widget_for_field(): field=" << field->get_name() << std::endl;
+  ComboGlomChoicesBase* result = 0;
+  bool as_radio_buttons = false; //TODO: Use this.
+  const bool restricted = field->get_formatting_used().get_choices_restricted(as_radio_buttons);
+  if(restricted)
+  {
+    std::cout << "  restricted" << std::endl;
+  
+    if(as_radio_buttons)
+      result = Gtk::manage(new ComboAsRadioButtons(layout_item_second));
+    else
+      result = Gtk::manage(new ComboGlom(layout_item_second));
+  }
+  else
+    result = Gtk::manage(new ComboEntryGlom(layout_item_second));
+
+  return result;
+}
 
 DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ustring& table_name, const Document* document)
 :  m_child(0),
@@ -103,15 +119,11 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     //Use a Combo if there is a drop-down of choices (A "value list"), else an Entry:
     if(field->get_formatting_used().get_has_choices())
     {
-      ComboGlomChoicesBase* combo = 0; //Gtk::manage(new ComboEntryGlom());
+      std::cout << "DEBUG: has choices" << std::endl;
+      ComboGlomChoicesBase* combo = create_combo_widget_for_field(field);
 
       if(field->get_formatting_used().get_has_custom_choices())
       {
-        if(field->get_formatting_used().get_choices_restricted())
-          combo = Gtk::manage(new ComboGlom());
-        else
-          combo = Gtk::manage(new ComboEntryGlom());
-
         //set_choices() needs this, for the numeric layout:
         combo->set_layout_item( get_layout_item(), table_name);
 
@@ -136,17 +148,11 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
             layout_field_second->set_full_field_details(field_second);
             //We use the default formatting for this field->
 
-            if(field->get_formatting_used().get_choices_restricted())
-              combo = Gtk::manage(new ComboGlom(layout_field_second));
-            else
-              combo = Gtk::manage(new ComboEntryGlom(layout_field_second));
+            combo = create_combo_widget_for_field(field, layout_field_second);
           }
           else
           {
-            if(field->get_formatting_used().get_choices_restricted())
-              combo = Gtk::manage(new ComboGlom());
-            else
-              combo = Gtk::manage(new ComboEntryGlom());
+            combo = create_combo_widget_for_field(field);
           }
 
           //set_choices() needs this, for the numeric layout:

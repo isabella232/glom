@@ -39,10 +39,10 @@ public:
 
   virtual ~ComboGlomChoicesBase();
 
-  void set_choices(const FieldFormatting::type_list_values& list_values);
+  virtual void set_choices(const FieldFormatting::type_list_values& list_values);
 
   typedef std::list< std::pair<Gnome::Gda::Value, Gnome::Gda::Value> > type_list_values_with_second;
-  void set_choices_with_second(const type_list_values_with_second& list_values);
+  virtual void set_choices_with_second(const type_list_values_with_second& list_values);
 
 protected:
   void init();

@@ -90,6 +90,7 @@ private:
   Gtk::RadioButton* m_radiobutton_choices_custom;
   Gtk::RadioButton* m_radiobutton_choices_related;
   Gtk::CheckButton* m_checkbutton_choices_restricted;
+  Gtk::CheckButton* m_checkbutton_choices_restricted_as_radio_buttons;
   AddDel_WithButtons* m_adddel_choices_custom;
   guint m_col_index_custom_choices;
   ComboBox_Relationship* m_combo_choices_relationship;
