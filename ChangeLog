@@ -8,6 +8,13 @@
     Use get_has_window() and set_has_window() instead of get_flags(),
     unset_flags() and set_flags().
 
+2010-03-21  Murray Cumming  <murrayc@murrayc.com>
+
+    Small fixes to glade file.
+  
+	* glom/glom_developer.glade: Add some still-missing vbox orientation=vertical 
+	lines.
+
 2010-03-19  Daniel Borgmann <danielb@openismus.com>
 
 	* configure.ac: Make Glom build with autoconf 2.65.
