@@ -1,3 +1,5 @@
+1.13.9:
+
 2010-03-23  Murray Cumming  <murrayc@murrayc.com>
 
     Refactored combo classes.
@@ -109,7 +111,7 @@
 
 2010-03-09  Murray Cumming  <murrayc@murrayc.com>
 
-    Intial Dialog: Do not crash sometimes if cancelling the file chooser.
+    Initial Dialog: Do not crash sometimes if cancelling the file chooser.
 
 	* glom/application.cc: offer_new_or_existing(): Show the dialog again if
     we get a 0 response, because we cannot (yet) prevent the dialog from

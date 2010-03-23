@@ -1,7 +1,24 @@
+1.13.9 (unstable):
+
+* Field Formatting: Allow choices to be shown as radio buttons instead of a 
+  drop-down combo box. Requested by Frederik Vande Rieviere.
+  (Murray Cumming)
+* Python scripts: Added a startup script feature, in Database Preferences.
+* Initial Dialog: Do not crash sometimes if cancelling the file chooser.
+  (Murray Cumming) Bug #612303 (David King)
+* Build:
+  - Don't use deprecated gtkmm API. This requires the latest gtkmm.
+  (Murray Cumming)
+  - Require the correct gtkmm and libsigc++ versions.
+  (David King)
+* Fix the Glade file so it can be opened with the latest glade-3 (when the 
+  gtksourceview glade catalog is installed).
+  (David King)
+
 1.13.8 (unstable):
 
 * Details:
-  - Align widgts in neighbouring groups, making things look generally neater.
+  - Align widgets in neighbouring groups, making things look generally neater.
   - Do not make field widgets too wide, so this fits on a laptop screen.
   (Murray Cumming)
 * Python scripts: Added ui.print_layout(), ui.print_report(report_name), 
