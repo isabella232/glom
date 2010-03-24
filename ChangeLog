@@ -1,3 +1,12 @@
+2010-03-24  Daniel Borgmann  <danielb@openismus.com>
+
+	Don't show error dialog when user cancels template creation.
+
+	* glom/application.cc: Display error message when trying to create
+	a document from template in client-only-mode.
+	* glom/bakery/app_withdoc.cc: Don't display error message if the
+	document is rejected, let the application decide about it.
+
 1.13.9:
 
 2010-03-23  Murray Cumming  <murrayc@murrayc.com>

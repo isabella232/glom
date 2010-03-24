@@ -122,8 +122,12 @@ bool App_WithDoc::open_document(const Glib::ustring& file_uri)
     const bool bTest = pApp->m_pDocument->load(failure_code);
 
     bool bOpenFailed = false;
+    bool bShowError = false;
     if(!bTest) //if open failed.
+    {
       bOpenFailed = true;
+      bShowError = true;
+    }
     else
     {
       //if open succeeded then let the App respond:
@@ -147,7 +151,8 @@ bool App_WithDoc::open_document(const Glib::ustring& file_uri)
 
     if(bOpenFailed)
     {
-      ui_warning_load_failed(failure_code);
+      if (bShowError)
+        ui_warning_load_failed(failure_code);
 
       //re-initialize document.
       delete pApp->m_pDocument;

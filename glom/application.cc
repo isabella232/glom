@@ -1053,6 +1053,7 @@ bool Application::on_document_load()
       // TODO_clientonly: Tell the user that opening example files is
       // not supported. This could alternatively also be done in
       // Document_after::load_after, I am not sure which is better.
+      ui_warning_load_failed(0);
       return false;
 #endif // GLOM_ENABLE_CLIENT_ONLY
     }
