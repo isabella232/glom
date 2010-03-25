@@ -1,3 +1,16 @@
+1.12.7 (stable):
+
+* Initial Dialog: Do not crash sometimes if cancelling the file chooser.
+  (Murray Cumming) Bug #612303 (David King)
+* Details: Do not make field widgets too wide, so this fits on a laptop screen.
+  (Murray Cumming)
+* Build:
+  - Fix the build with exceptions disabled. (Peter Penz)
+  - Fix the buidl with autoconf 2.65
+    (Fryderyk Dziarmagowski) Bug #613179
+  - Check for the correct libxml++ dependency (David King)
+
+
 1.12.6 (stable):
 
 * Import: Fixed out-ouf-bounds crash.
