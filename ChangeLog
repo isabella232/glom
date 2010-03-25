@@ -1,3 +1,21 @@
+2010-03-25  Murray Cumming  <murrayc@murrayc.com>
+
+    Glade files: Remove adjustment objects, simplifying window instantiation.
+
+	* glom/glom_developer.glade: Remove useless (default, empty) adjustment 
+    objects, so we can load the windows with GtkBuilder without specifying 
+    them. Recent versions of Glade no longer seem to create these when they 
+    would just have default values.
+	* glom/base_db.cc:
+	* glom/frame_glom.cc:
+	* glom/glom.glade:
+	* glom/mode_design/fields/dialog_fielddefinition.cc:
+	* glom/mode_design/layout/layout_item_dialogs/dialog_field_layout.c
+	c:
+	* glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:
+	* glom/mode_design/print_layouts/dialog_text_formatting.cc:
+    Don't provide the id of the adjustment, removing the silly workaround.
+
 2010-03-24  Daniel Borgmann  <danielb@openismus.com>
 
 	Don't show error dialog when user cancels template creation.

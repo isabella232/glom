@@ -2062,15 +2062,7 @@ sharedptr<LayoutItem_Notebook> Base_DB::offer_notebook(const sharedptr<LayoutIte
 
   try
   {
-    //GtkBuilder can't find top-level objects (GtkAdjustments in this case),
-    //that one top-level object references.
-    //See http://bugzilla.gnome.org/show_bug.cgi?id=575714
-    //so we need to this silliness. murrayc.
-    std::list<Glib::ustring> builder_ids;
-    builder_ids.push_back("dialog_notebook");
-    builder_ids.push_back("adjustment2");
-
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), builder_ids);
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "box_formatting");
 
     Dialog_Notebook* dialog = 0;
     refXml->get_widget_derived("dialog_notebook", dialog);

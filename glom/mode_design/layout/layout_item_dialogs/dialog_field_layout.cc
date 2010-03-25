@@ -50,18 +50,10 @@ Dialog_FieldLayout::Dialog_FieldLayout(BaseObjectType* cobject, const Glib::RefP
   builder->get_widget("radiobutton_use_custom", m_radiobutton_custom_formatting);
   builder->get_widget("box_formatting_placeholder", m_box_formatting_placeholder);
 
-  //GtkBuilder can't find top-level objects (GtkAdjustments in this case),
-  //that one top-level object references.
-  //See http://bugzilla.gnome.org/show_bug.cgi?id=575714
-  //so we need to this silliness. murrayc.
-  std::list<Glib::ustring> builder_ids;
-  builder_ids.push_back("box_formatting");
-  builder_ids.push_back("adjustment2");
-
   //Get the formatting stuff:
   try
   {
-    Glib::RefPtr<Gtk::Builder> refXmlFormatting = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), builder_ids);
+    Glib::RefPtr<Gtk::Builder> refXmlFormatting = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "box_formatting");
     refXmlFormatting->get_widget_derived("box_formatting", m_box_formatting);
   }
   catch(const Gtk::BuilderError& ex)

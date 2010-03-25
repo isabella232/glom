@@ -1285,7 +1285,6 @@
                                   <object class="GtkSpinButton" id="import_csv_sample_rows">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="adjustment">adjustment1</property>
                                     <property name="climb_rate">1</property>
                                   </object>
                                 </child>
@@ -1721,12 +1720,6 @@ The data in the field was not recognized. Please try to correct the data or reve
       <action-widget response="-6">import_csv_progress_cancel_button</action-widget>
       <action-widget response="-5">import_csv_progress_ok_button</action-widget>
     </action-widgets>
-  </object>
-  <object class="GtkAdjustment" id="adjustment1">
-    <property name="value">5</property>
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
   </object>
   <object class="GtkTextBuffer" id="textbuffer1"/>
   <object class="GtkDialog" id="dialog_image_progress">
