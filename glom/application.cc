@@ -660,9 +660,19 @@ static bool hostname_is_localhost(const Glib::ustring& hostname)
 
 void Application::ui_warning_load_failed(int failure_code)
 {
-  if(failure_code == Document::LOAD_FAILURE_CODE_FILE_VERSION_TOO_NEW)
+  if(failure_code == Document::LOAD_FAILURE_CODE_NOT_FOUND)
   {
-    ui_warning(_("Open Failed."),
+    //TODO: Put this in the generic bakery code.
+    ui_warning(_("Open Failed"),
+      _("The document could not be found."));
+
+    //TODO: Glom::Bakery::App_WithDoc removes the file from the recent history,
+    //but the initial/welcome dialog doesn't yet update its list when the
+    //recent history changes.
+  }
+  else if(failure_code == Document::LOAD_FAILURE_CODE_FILE_VERSION_TOO_NEW)
+  {
+    ui_warning(_("Open Failed"),
       _("The document could not be opened because it was created or modified by a newer version of Glom."));
   }
   else

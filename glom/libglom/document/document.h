@@ -448,8 +448,7 @@ public:
   /// Failure codes that could be returned by load_after()
   enum load_failure_codes
   {
-    // The error codes must start at 1, so do that here:
-    LOAD_FAILURE_CODE_FILE_VERSION_TOO_NEW = 1
+    LOAD_FAILURE_CODE_FILE_VERSION_TOO_NEW = LOAD_FAILURE_CODE_LAST + 1;
   };
 
 private:

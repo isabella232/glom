@@ -1,3 +1,20 @@
+2010-03-26  Murray Cumming  <murrayc@murraycs.com>
+
+	Say when a chosen file doen't exist, and remove it from the history.
+
+	* glom/libglom/document/bakery/document.[h|cc]: Add an enum for
+    standard failure_codes, including a last enum values that custom codes
+    should start after.
+    read_from_disk(): Set a failure_code output variable here too, so we
+    can detect non-existant files.
+	* glom/libglom/document/document.h: Start the custom code after the last
+    standard one.
+	* glom/bakery/app_withdoc.cc: open_document(): Remove non-existant
+    files from the recent files history.
+	* glom/application.cc: ui_warning_load_failed(): Say if the file could not
+    be found, instead of being mysterious. This happens for me often for
+    recent files that I have deleted.
+
 2010-03-26  Daniel Borgmann  <danielb@openismus.com>
 
 	Adjust file chooser dialogs.
@@ -58,9 +75,9 @@
 
     Glade files: Remove adjustment objects, simplifying window instantiation.
 
-	* glom/glom_developer.glade: Remove useless (default, empty) adjustment 
-    objects, so we can load the windows with GtkBuilder without specifying 
-    them. Recent versions of Glade no longer seem to create these when they 
+	* glom/glom_developer.glade: Remove useless (default, empty) adjustment
+    objects, so we can load the windows with GtkBuilder without specifying
+    them. Recent versions of Glade no longer seem to create these when they
     would just have default values.
 	* glom/base_db.cc:
 	* glom/frame_glom.cc:
@@ -88,31 +105,31 @@
     Refactored combo classes.
 
 	* glom/utility_widgets/comboglomchoicesbase.[h|cc]:
-    Split into combochoices.[h|cc] and combochoiceswithtreemodel.[h|cc] so 
+    Split into combochoices.[h|cc] and combochoiceswithtreemodel.[h|cc] so
     that combo_as_radio_buttons.[h|cc] doesn't need to have an unused treemodel.
 
 2010-03-23  Murray Cumming  <murrayc@murrayc.com>
 
     Formatting: Choices: Add a Display as radio buttons option.
 
-	* glom/glom_developer.glade: formatting: choices: Add a Show As Radio 
-    Buttons checkbox. 
+	* glom/glom_developer.glade: formatting: choices: Add a Show As Radio
+    Buttons checkbox.
 	* glom/libglom/data_structure/layout/fieldformatting.[h|cc]:
     set/get_choices_restricted(): Add a show_as_radio_buttons output parameter.
-	* glom/libglom/document/document.cc: 
+	* glom/libglom/document/document.cc:
     load_after_layout_item_formatting(), save_after_layout_item_formatting():
     load and save the new formatting detail.
 	* glom/mode_design/layout/layout_item_dialogs/box_formatting.[h|cc]:
-    Handle the new checkbox and make sure that it is only sensitive when 
-    the choices are restricted, because radio buttons provide no way to enter 
+    Handle the new checkbox and make sure that it is only sensitive when
+    the choices are restricted, because radio buttons provide no way to enter
     freeform data.
-	* glom/utility_widgets/comboglomchoicesbase.h: Make set_choices() and 
+	* glom/utility_widgets/comboglomchoicesbase.h: Make set_choices() and
     set_choices_with_second() virtual.
-    * glom/utility_widgets/combo_as_radio_buttons.[h|cc]: A new widget that is 
+    * glom/utility_widgets/combo_as_radio_buttons.[h|cc]: A new widget that is
     a vbbox of radio buttons, with a combo-like API.
 	* Makefile_glom.am: Mention the new files.
-	* glom/utility_widgets/datawidget.cc: Refactor some repeated code into 
-    create_combo_widget_for_field() and create the radiobuttons widget when 
+	* glom/utility_widgets/datawidget.cc: Refactor some repeated code into
+    create_combo_widget_for_field() and create the radiobuttons widget when
     necessary.
 
 2010-03-22  Murray Cumming  <murrayc@murrayc.com>
@@ -128,8 +145,8 @@
 2010-03-21  Murray Cumming  <murrayc@murrayc.com>
 
     Small fixes to glade file.
-  
-	* glom/glom_developer.glade: Add some still-missing vbox orientation=vertical 
+
+	* glom/glom_developer.glade: Add some still-missing vbox orientation=vertical
 	lines.
 
 2010-03-19  Daniel Borgmann <danielb@openismus.com>
