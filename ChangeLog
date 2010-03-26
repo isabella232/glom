@@ -1,5 +1,12 @@
 2010-03-26  Daniel Borgmann  <danielb@openismus.com>
 
+	Fix filechooser title label.
+
+	* glom/utility_widgets/filechooserdialog_saveextras.cc: Add colon and
+	mnemonic to "Title" label.
+
+2010-03-26  Daniel Borgmann  <danielb@openismus.com>
+
 	Fix column spacing in connection dialog.
 
 	* glom/glom.glade: Set column spacing in connection dialog to 12px.

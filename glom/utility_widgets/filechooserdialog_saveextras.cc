@@ -92,7 +92,7 @@ void FileChooserDialog_SaveExtras::create_child_widgets()
   label_newdb->show();
 
   Gtk::HBox* box_label = Gtk::manage(new Gtk::HBox(false, Utils::DEFAULT_SPACING_SMALL));
-  Gtk::Label* label_title = Gtk::manage(new Gtk::Label(_("Title")));
+  Gtk::Label* label_title = Gtk::manage(new Gtk::Label(_("_Title:"), true));
   box_label->pack_start(*label_title, Gtk::PACK_SHRINK);
   label_title->show();
   box_label->pack_start(m_entry_title);
