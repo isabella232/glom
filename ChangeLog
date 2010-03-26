@@ -1,5 +1,11 @@
 2010-03-26  Daniel Borgmann  <danielb@openismus.com>
 
+	Adjustments for Import dialog.
+
+	* glom/frame_glom.cc: Set window icon and update title text.
+
+2010-03-26  Daniel Borgmann  <danielb@openismus.com>
+
 	Adjustments for Tables dialog.
 
 	* glom/application.cc: Use gtkmm API to set document icon.

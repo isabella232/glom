@@ -872,7 +872,8 @@ void Frame_Glom::on_menu_file_import()
   }
   else
   {
-    Gtk::FileChooserDialog file_chooser(*get_app_window(), _("Choose a CSV file to open"), Gtk::FILE_CHOOSER_ACTION_OPEN);
+    Gtk::FileChooserDialog file_chooser(*get_app_window(), _("Open CSV Document"), Gtk::FILE_CHOOSER_ACTION_OPEN);
+    file_chooser.set_icon_name("glom");
     file_chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
     file_chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
     Gtk::FileFilter filter_csv;
