@@ -1465,7 +1465,7 @@ The data in the field was not recognized. Please try to correct the data or reve
                 <property name="visible">True</property>
                 <property name="n_rows">4</property>
                 <property name="n_columns">2</property>
-                <property name="column_spacing">6</property>
+                <property name="column_spacing">12</property>
                 <property name="row_spacing">6</property>
                 <child>
                   <object class="GtkEntry" id="entry_host">

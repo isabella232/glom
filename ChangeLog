@@ -1,5 +1,11 @@
 2010-03-26  Daniel Borgmann  <danielb@openismus.com>
 
+	Fix column spacing in connection dialog.
+
+	* glom/glom.glade: Set column spacing in connection dialog to 12px.
+
+2010-03-26  Daniel Borgmann  <danielb@openismus.com>
+
 	Connection dialog adjustments.
 
 	* glom/dialog_connection.cc: Add glom icon and remove maemo title hack
