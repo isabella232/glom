@@ -52,7 +52,7 @@ namespace Glom
 
 class Document : public GlomBakery::Document_XML
 {
-public: 
+public:
   Document();
   virtual ~Document();
 
@@ -65,9 +65,9 @@ public:
    * This is just here so the SWIG Java API generator does not need to wrap methods from the base classes.
    */
   bool load(int& failure_code);
-  
-  
-  /** Whether the document was opened from another networked glom instance, 
+
+
+  /** Whether the document was opened from another networked glom instance,
    * instead of via a URI.
    */
   void set_opened_from_browse(bool val = true);
@@ -86,9 +86,9 @@ public:
    *  This can increase when the file has been re-saved.
    *  See get_latest_known_document_format_version().
    *  Old versions of the application cannot open documents with a newer document format,
-   *  so saving with a version of the application that has a newer document format will 
+   *  so saving with a version of the application that has a newer document format will
    *  make it impossible to open the document in a version of the application with an older document format.
-   */  
+   */
   guint get_document_format_version();
 
   static guint get_latest_known_document_format_version();
@@ -102,7 +102,7 @@ public:
     HOSTING_MODE_DEFAULT = HOSTING_MODE_POSTGRES_SELF /*!- Arbitrary default. */
   };
 
-  /** Set the hosting mode of the database. 
+  /** Set the hosting mode of the database.
    */
   void set_hosting_mode(HostingMode mode);
 
@@ -111,7 +111,7 @@ public:
   HostingMode get_hosting_mode() const;
 
   /** Whether the database (and document) is shared over the network.
-   * This setting is saved in the file, allowing the database to be 
+   * This setting is saved in the file, allowing the database to be
    * shared immediately after opening the document.
    * @param shared true if the database should be shared.
    */
@@ -134,12 +134,12 @@ public:
    */
   void set_connection_user(const Glib::ustring& strVal);
 
-  /** If the database should be hosted, this provides the 
+  /** If the database should be hosted, this provides the
     * path to the directory that contains all the files needed to do that.
-    * This is usually a specifically-named directory at the same level as the .glom file. 
+    * This is usually a specifically-named directory at the same level as the .glom file.
     * If the database is a sqlite database, this specifies the directory in
     * which the database file is in.
-    */   
+    */
   std::string get_connection_self_hosted_directory_uri() const;
 
   Glib::ustring get_connection_server() const;
@@ -201,7 +201,7 @@ public:
   /** Get the layout groups for a layout.
    * @param layout_name The name of the layout, such as list or details.
    * @param parent_table_name The name of the table for which this layout should appear.
-   * @param layout_platform The platform for which this layout should be used. Possible values are an empty string (meaning normal platforms) or "maemo" meaning "normal". 
+   * @param layout_platform The platform for which this layout should be used. Possible values are an empty string (meaning normal platforms) or "maemo" meaning "normal".
    * @result A list of layout groups at the top-level of the requested layout.
    */
   type_list_layout_groups get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform = Glib::ustring()) const;
@@ -209,7 +209,7 @@ public:
   /** Discover whether there are any fields in the layout.
    * @param layout_name The name of the layout, such as list or details.
    * @param parent_table_name The name of the table for which this layout should appear.
-   * @param layout_platform The platform for which this layout should be used. Possible values are an empty string (meaning normal platforms) or "maemo" meaning "normal". 
+   * @param layout_platform The platform for which this layout should be used. Possible values are an empty string (meaning normal platforms) or "maemo" meaning "normal".
    * @result true if there is at least one field in the layout group or its sub groups.
    */
   bool get_data_layout_groups_have_any_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform = Glib::ustring()) const;
@@ -217,7 +217,7 @@ public:
   /** Set the layout groups for a layout.
    * @param layout_name The name of the layout, such as list or details.
    * @param parent_table_name The name of the table for which this layout should appear.
-   * @param layout_platform The platform for which this layout should be used. Possible values are an empty string (meaning normal platforms) or "maemo" meaning "normal". 
+   * @param layout_platform The platform for which this layout should be used. Possible values are an empty string (meaning normal platforms) or "maemo" meaning "normal".
    * @param groups A list of layout groups at the top-level of the requested layout.
    */
   void set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform, const type_list_layout_groups& groups);
@@ -225,7 +225,7 @@ public:
   /**
    * @para The layout_name, such as "details", "list".
    * @para parent_table_name The name of the table on whose layout the layout appears.
-   * @param layout_platform The platform for which this layout should be used. Possible values are an empty string (meaning normal platforms) or "maemo" meaning "normal". 
+   * @param layout_platform The platform for which this layout should be used. Possible values are an empty string (meaning normal platforms) or "maemo" meaning "normal".
    */
   type_list_layout_groups get_data_layout_groups_plus_new_fields(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform = Glib::ustring()) const;
 
@@ -271,7 +271,7 @@ public:
   void set_table_title(const Glib::ustring& table_name, const Glib::ustring& value);
 
   Glib::ustring get_table_title_singular(const Glib::ustring& table_name) const;
-  
+
   typedef std::vector< Gnome::Gda::Value > type_row_data;
   typedef std::vector< type_row_data > type_example_rows;
 
@@ -296,11 +296,11 @@ public:
   void set_library_module(const Glib::ustring& name, const Glib::ustring& script);
   Glib::ustring get_library_module(const Glib::ustring& name) const;
   void remove_library_module(const Glib::ustring& name);
-  
+
   /** Get a Python script that should be run when the document is opened.
    */
   Glib::ustring get_startup_script() const;
-  
+
   /** See get_startup_script().
    */
   void set_startup_script(const Glib::ustring& script);
@@ -339,7 +339,7 @@ public:
 
   /** Temporarily save (but not in the document) the last-viewed layout for the table,
    * so we can show the same layout when navigating back to this table later.
-   * 
+   *
    * @param table_name The table.
    * @param layout_name The layout name, such as "list" or "details".
    */
@@ -347,7 +347,7 @@ public:
 
   /** Temporarily save (but not in the document) the last-viewed criteria for the table,
    * so we can show the same criteria (sort order, where clause) when navigating back to this table later.
-   * 
+   *
    * @param table_name The table.
    * @param found_set Additional information about the last use of that layout, such as the sort order or where clause.
    */
@@ -359,24 +359,24 @@ public:
 
 #ifndef SWIG //Hide this API from swig.
   // Used by Relationship Overview dialog to preserve table locations accross instantiations:
-    
+
   /** Retrieve the x and y coordinates for the given table position in the relationship overview dialog.
-   * 
+   *
    * @param table_name The name of the table to query.
    * @param x The x coordinate of the table position.
    * @param y The y coordinate of the table position.
    * @return false if the table does not have any position for this table.
    */
   bool get_table_overview_position( const Glib::ustring& table_name, float &x, float &y ) const;
-    
+
   /** Set the position of a table in the relationship overview dialog.
-   * 
+   *
    * @param table_name The name of the table to modify.
    * @param x The x coordinate of the table position.
    * @param y The y coordinate of the table position.
    */
   void set_table_overview_position( const Glib::ustring& utable_name, float x, float y );
-    
+
   enum userLevelReason
   {
     USER_LEVEL_REASON_UNKNOWN,
@@ -412,9 +412,9 @@ public:
    */
   void set_active_layout_platform(const Glib::ustring& layout_platform = Glib::ustring());
 
-  /** Change any non-maemo layouts so their groups never have multiple columns, 
+  /** Change any non-maemo layouts so their groups never have multiple columns,
    * because this could never be displayed on the Maemo screen.
-   * This allows layouts to be shown fairly sanely on Maemo even if no custom 
+   * This allows layouts to be shown fairly sanely on Maemo even if no custom
    * maemo layout was defined.
    * This does not save the change to disk.
    */
@@ -431,7 +431,7 @@ protected:
 
   ///If value is equal to the default then no attribute will be set, to save text space in the XML file.
   static void set_node_attribute_value_as_decimal(xmlpp::Element* node, const Glib::ustring& strAttributeName, guint value, guint value_default = 0);
-  
+
   // This is required by the report builder, so it cannot be disabled
   // in client only mode
   static void set_node_attribute_value_as_decimal_double(xmlpp::Element* node, const Glib::ustring& strAttributeName, double value);
@@ -448,7 +448,7 @@ public:
   /// Failure codes that could be returned by load_after()
   enum load_failure_codes
   {
-    LOAD_FAILURE_CODE_FILE_VERSION_TOO_NEW = LOAD_FAILURE_CODE_LAST + 1;
+    LOAD_FAILURE_CODE_FILE_VERSION_TOO_NEW = LOAD_FAILURE_CODE_LAST + 1
   };
 
 private:
@@ -502,7 +502,7 @@ private:
 
   ///A recursive helper function.
   static void maemo_restrict_layouts_to_single_column_group(const sharedptr<LayoutGroup>& layout_group);
-  
+
   AppState m_app_state;
   type_signal_userlevel_changed m_signal_userlevel_changed;
 
@@ -592,7 +592,7 @@ private:
     type_map_layout_primarykeys m_map_current_record; //The record last viewed in each layout.
     Glib::ustring m_layout_current;
     FoundSet m_foundset_current;
-    
+
     float m_overviewx, m_overviewy;
   };
 
@@ -611,7 +611,7 @@ private:
 
   typedef std::map<Glib::ustring, Glib::ustring> type_map_library_scripts;
   type_map_library_scripts m_map_library_scripts;
-  
+
   Glib::ustring m_startup_script;
 
   bool m_block_cache_update; //For efficiency.
