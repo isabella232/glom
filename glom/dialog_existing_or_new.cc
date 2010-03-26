@@ -955,7 +955,8 @@ void Dialog_ExistingOrNew::on_select_clicked()
     #ifdef GLOM_ENABLE_MAEMO
     Hildon::FileChooserDialog dialog(Gtk::FILE_CHOOSER_ACTION_OPEN);
     #else
-    Gtk::FileChooserDialog dialog(*this, "Choose a glom file to open");
+    Gtk::FileChooserDialog dialog(*this, "Open Glom File");
+    dialog.set_icon_name("glom");
     dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
     dialog.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
     dialog.set_default_response(Gtk::RESPONSE_OK);

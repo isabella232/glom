@@ -1,5 +1,13 @@
 2010-03-26  Daniel Borgmann  <danielb@openismus.com>
 
+	Adjust file chooser dialogs.
+
+	* glom/dialog_existing_or_new.cc: Adjust title of file open dialog,
+	set glom icon.
+	* glom/utility_widgets/filechooserdialog_saveextras.cc: Set glom icon.
+
+2010-03-26  Daniel Borgmann  <danielb@openismus.com>
+
 	Fix filechooser title label.
 
 	* glom/utility_widgets/filechooserdialog_saveextras.cc: Add colon and
