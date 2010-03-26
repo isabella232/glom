@@ -31,6 +31,12 @@ Window_BoxHolder::Window_BoxHolder(Box_WithButtons* pBox, const Glib::ustring& t
   if(!title.empty())
     set_title(title);
 
+  //Use the glom icon by default:
+  set_icon_name("glom");
+
+  //Set default position:
+  set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
+
 #ifndef GLOM_ENABLE_MAEMO
 
 #else

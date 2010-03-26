@@ -28,7 +28,6 @@ namespace Glom
 
 Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Box_WithButtons(cobject, builder),
-  m_pLabelFrameTitle(0),
   m_pCheckButtonShowHidden(0),
   m_colTableName(0),
   m_colHidden(0),
@@ -47,8 +46,6 @@ Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   Gtk::Alignment* pAligmentPlaceholder = 0;
   builder->get_widget("alignment_placeholder_adddel", pAligmentPlaceholder);
   pAligmentPlaceholder->add(m_AddDel);
-
-  builder->get_widget("label_frame_title", m_pLabelFrameTitle);
 
   builder->get_widget("checkbutton_show_hidden", m_pCheckButtonShowHidden);
   m_pCheckButtonShowHidden->signal_toggled().connect(sigc::mem_fun(*this, &Box_Tables::on_show_hidden_toggled));
@@ -125,7 +122,7 @@ bool Box_Tables::fill_from_database()
 
   const bool editable = developer_mode;
   const bool visible_extras = developer_mode;
-  m_colTableName = m_AddDel.add_column(_("Tables"), AddDelColumnInfo::STYLE_Text, editable, visible_extras);
+  m_colTableName = m_AddDel.add_column(_("Table"), AddDelColumnInfo::STYLE_Text, editable, visible_extras);
   m_AddDel.prevent_duplicates(m_colTableName); //Prevent two tables with the same name from being added.
   m_AddDel.set_prevent_duplicates_warning(_("This table already exists. Please choose a different table name"));
 

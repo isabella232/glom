@@ -1386,7 +1386,7 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
   if(!m_pBox_Tables)
   {
     Utils::get_glade_widget_derived_with_warning("box_navigation_tables", m_pBox_Tables);
-    m_pDialog_Tables = new Window_BoxHolder(m_pBox_Tables, _("Tables"));
+    m_pDialog_Tables = new Window_BoxHolder(m_pBox_Tables, _("Edit Tables"));
     m_pDialog_Tables->signal_hide().connect(sigc::mem_fun(*this, &Frame_Glom::on_dialog_tables_hide));
 
     Gtk::Window* pWindow = get_app_window();

@@ -1,3 +1,16 @@
+2010-03-26  Daniel Borgmann  <danielb@openismus.com>
+
+	Adjustments for Tables dialog.
+
+	* glom/application.cc: Use gtkmm API to set document icon.
+	* glom/frame_glom.cc: Change Tables dialog title to "Edit Tables" to
+	match the command name.
+	* glom/glom.glade: Remove the frame.
+	* glom/navigation/box_tables.cc: Change column name from Tables to Table.
+	* glom/navigation/box_tables.h: Remove frame member.
+	* glom/window_boxholder.cc: Set icon and default position to center on
+	parent.
+
 2010-03-25  Murray Cumming  <murrayc@murrayc.com>
 
     Glade files: Remove adjustment objects, simplifying window instantiation.

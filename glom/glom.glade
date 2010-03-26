@@ -4,61 +4,47 @@
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkWindow" id="window_tables">
     <property name="border_width">12</property>
-    <property name="title" translatable="yes">Tables</property>
+    <property name="title" translatable="yes">Edit Tables</property>
     <child>
       <object class="GtkVBox" id="box_navigation_tables">
         <property name="visible">True</property>
         <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child>
-          <object class="GtkFrame" id="frame2">
+          <object class="GtkAlignment" id="alignment">
             <property name="visible">True</property>
-            <property name="label_xalign">0</property>
-            <property name="shadow_type">none</property>
             <child>
-              <object class="GtkAlignment" id="alignment">
+              <object class="GtkVBox" id="vbox5">
                 <property name="visible">True</property>
-                <property name="left_padding">12</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">6</property>
                 <child>
-                  <object class="GtkVBox" id="vbox5">
+                  <object class="GtkAlignment" id="alignment_placeholder_adddel">
                     <property name="visible">True</property>
-                    <property name="orientation">vertical</property>
-                    <property name="spacing">6</property>
                     <child>
-                      <object class="GtkAlignment" id="alignment_placeholder_adddel">
-                        <property name="visible">True</property>
-                        <child>
-                          <placeholder/>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkCheckButton" id="checkbutton_show_hidden">
-                        <property name="label" translatable="yes">Show hidden tables</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="draw_indicator">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">1</property>
-                      </packing>
+                      <placeholder/>
                     </child>
                   </object>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
                 </child>
-              </object>
-            </child>
-            <child type="label">
-              <object class="GtkLabel" id="label_frame_title">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">&lt;b&gt;Tables in database&lt;/b&gt;</property>
-                <property name="use_markup">True</property>
+                <child>
+                  <object class="GtkCheckButton" id="checkbutton_show_hidden">
+                    <property name="label" translatable="yes">_Show hidden tables</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="relief">none</property>
+                    <property name="use_underline">True</property>
+                    <property name="draw_indicator">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
               </object>
             </child>
           </object>
