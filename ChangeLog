@@ -1,5 +1,14 @@
 2010-03-26  Daniel Borgmann  <danielb@openismus.com>
 
+	Connection dialog adjustments.
+
+	* glom/dialog_connection.cc: Add glom icon and remove maemo title hack
+	as primary text does not exist anymore.
+	* glom/glom.glade: Remove double title from connection dialog
+	and make it HIG/GNOME conform.
+
+2010-03-26  Daniel Borgmann  <danielb@openismus.com>
+
 	Export dialog adjustments.
 
 	* glom/filechooser_export.cc: Add glom icon and set mnemonic for Export

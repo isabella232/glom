@@ -41,6 +41,8 @@ Dialog_Connection::Dialog_Connection(BaseObjectType* cobject, const Glib::RefPtr
   m_label_database(0),
   m_label_note(0)
 {
+  set_icon_name("glom");
+
   builder->get_widget("entry_host", m_entry_host);
   builder->get_widget("entry_user", m_entry_user);
   builder->get_widget("entry_password", m_entry_password);
@@ -48,16 +50,6 @@ Dialog_Connection::Dialog_Connection(BaseObjectType* cobject, const Glib::RefPtr
   builder->get_widget("connection_note", m_label_note);
 
 #ifdef GLOM_ENABLE_MAEMO
-  // Make the bold title the window title (which cannot be empty in maemo
-  // because it displays <Untitled window> instead). This also helps to
-  // make the dialog smaller in height, so we save a bit screen space required
-  // by the onscreen keyboard.
-  Gtk::Label* title = 0;
-  builder->get_widget("connection_title", title);
-
-  set_title(title->get_text());
-  title->hide();
-
   // Without size request, this label enlarges the dialog significantly,
   // and the text is still truncated.
   m_label_note->set_size_request(400, -1);
