@@ -1,5 +1,12 @@
 2010-03-26  Daniel Borgmann  <danielb@openismus.com>
 
+	Export dialog adjustments.
+
+	* glom/filechooser_export.cc: Add glom icon and set mnemonic for Export
+	button.
+
+2010-03-26  Daniel Borgmann  <danielb@openismus.com>
+
 	Adjustments for Import dialog.
 
 	* glom/frame_glom.cc: Set window icon and update title text.
