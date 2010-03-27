@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: glom gnome-master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&component=general\n"
-"POT-Creation-Date: 2010-03-25 09:20+0000\n"
-"PO-Revision-Date: 2010-03-20 08:38+0100\n"
+"POT-Creation-Date: 2010-03-26 16:16+0000\n"
+"PO-Revision-Date: 2010-03-25 17:43+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -24,199 +24,208 @@ msgstr ""
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../glom/application.cc:148
+#: ../glom/application.cc:147
 msgid "Glom: Generating Encryption Certificates"
 msgstr "Glom: Generování šifrovacích certifikátů"
 
-#: ../glom/application.cc:149
+#: ../glom/application.cc:148
 msgid ""
 "Please wait while Glom prepares your system for publishing over the network."
 msgstr "Prosím počkejte dokud Glom nepřipraví váš systém pro sdílení na síti."
 
-#: ../glom/application.cc:176
+#: ../glom/application.cc:175
 msgid "(C) 2000-2005 Murray Cumming"
 msgstr "© 2000-2005 Murray Cumming"
 
-#: ../glom/application.cc:176
+#: ../glom/application.cc:175
 msgid "A Database GUI"
 msgstr "GUI databáze"
 
-#: ../glom/application.cc:263 ../glom/bakery/app_withdoc_gtk.cc:279
+#: ../glom/application.cc:262 ../glom/bakery/app_withdoc_gtk.cc:279
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:122
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:55
 msgid "_File"
 msgstr "_Soubor"
 
-#: ../glom/application.cc:264 ../glom/bakery/app_withdoc_gtk.cc:280
+#: ../glom/application.cc:263 ../glom/bakery/app_withdoc_gtk.cc:280
 msgid "_Recent Files"
 msgstr "_Nedávné soubory"
 
-#: ../glom/application.cc:272
+#: ../glom/application.cc:271
 msgid "Save As Example"
 msgstr "Uložit jako příklad"
 
-#: ../glom/application.cc:279
+#: ../glom/application.cc:278 ../glom/filechooser_export.cc:43
 msgid "_Export"
 msgstr "_Export"
 
 #. Note to translators: "Import" here is an action verb - it's a button.
-#: ../glom/application.cc:282 ../glom/glom_developer.glade.h:152
+#: ../glom/application.cc:281 ../glom/glom_developer.glade.h:152
 #: ../glom/mode_design/translation/window_translations.cc:597
 msgid "Import"
 msgstr "Import"
 
-#: ../glom/application.cc:286
+#: ../glom/application.cc:285
 msgid "Shared On Network"
 msgstr "Sdíleno v síti"
 
-#: ../glom/application.cc:297
+#: ../glom/application.cc:296
 msgid "_Standard"
 msgstr "_Standardní"
 
-#: ../glom/application.cc:301
+#: ../glom/application.cc:300
 msgid "_Edit Print Layouts"
 msgstr "_Upravit rozvržení tisku"
 
-#: ../glom/application.cc:385 ../glom/frame_glom.cc:152
+#: ../glom/application.cc:384 ../glom/frame_glom.cc:152
 #: ../glom/frame_glom.cc:489 ../glom/utility_widgets/datawidget.cc:276
 msgid "Find"
 msgstr "Hledat"
 
-#: ../glom/application.cc:385
+#: ../glom/application.cc:384
 msgid "Search for records in the table"
 msgstr "Hledat záznamy v tabulce"
 
-#: ../glom/application.cc:389
+#: ../glom/application.cc:388
 msgid "Add Record"
 msgstr "Přidat záznam"
 
-#: ../glom/application.cc:389
+#: ../glom/application.cc:388
 msgid "Create a new record in the table"
 msgstr "Vytvořit v tabulce nový záznam"
 
 #. "Tables" menu:
-#: ../glom/application.cc:405
+#: ../glom/application.cc:404
 msgid "_Tables"
 msgstr "_Tabulky"
 
-#: ../glom/application.cc:415
+#: ../glom/application.cc:414
 msgid "_Edit Tables"
 msgstr "_Upravit tabulky"
 
-#: ../glom/application.cc:420
+#: ../glom/application.cc:419
 msgid "Add _Related Table"
 msgstr "_Přidat související tabulku"
 
 #. "Reports" menu:
-#: ../glom/application.cc:427
+#: ../glom/application.cc:426
 msgid "_Reports"
 msgstr "_Sestavy"
 
-#: ../glom/application.cc:430
+#: ../glom/application.cc:429
 msgid "_Edit Reports"
 msgstr "_Upravit sestavy"
 
 #. "UserLevel" menu:
-#: ../glom/application.cc:438
+#: ../glom/application.cc:437
 msgid "_User Level"
 msgstr "Úroveň _uživatele"
 
-#: ../glom/application.cc:441 ../glom/application.cc:465
+#: ../glom/application.cc:440 ../glom/application.cc:464
 msgid "_Developer"
 msgstr "_Vývojář"
 
-#: ../glom/application.cc:445
+#: ../glom/application.cc:444
 msgid "_Operator"
 msgstr "_Operátor"
 
 #. "Mode" menu:
-#: ../glom/application.cc:451
+#: ../glom/application.cc:450
 msgid "_Mode"
 msgstr "_Režim"
 
 #. We remember this action, so that it can be explicitly activated later.
-#: ../glom/application.cc:456
+#: ../glom/application.cc:455
 msgid "D_ata"
 msgstr "_Data"
 
-#: ../glom/application.cc:460 ../glom/frame_glom.cc:149
+#: ../glom/application.cc:459 ../glom/frame_glom.cc:149
 msgid "_Find"
 msgstr "_Hledat"
 
-#: ../glom/application.cc:469
+#: ../glom/application.cc:468
 msgid "_Database Preferences"
 msgstr "_Nastavení databáze"
 
-#: ../glom/application.cc:474
+#: ../glom/application.cc:473
 msgid "_Fields"
 msgstr "_Pole"
 
-#: ../glom/application.cc:478
+#: ../glom/application.cc:477
 msgid "_Relationships Overview"
 msgstr "_Přehled vztahů"
 
-#: ../glom/application.cc:482
+#: ../glom/application.cc:481
 msgid "_Relationships for this Table"
 msgstr "_Vztahy pro tuto tabulku"
 
-#: ../glom/application.cc:486
+#: ../glom/application.cc:485
 msgid "_Users"
 msgstr "_Uživatelé"
 
-#: ../glom/application.cc:490
+#: ../glom/application.cc:489
 msgid "_Print Layouts"
 msgstr "Rozvržení _tisku"
 
-#: ../glom/application.cc:494
+#: ../glom/application.cc:493
 msgid "R_eports"
 msgstr "_Sestavy"
 
-#: ../glom/application.cc:498
+#: ../glom/application.cc:497
 msgid "Script _Library"
 msgstr "K_nihovna skriptů"
 
-#: ../glom/application.cc:503
+#: ../glom/application.cc:502
 msgid "_Layout"
 msgstr "_Rozložení"
 
-#: ../glom/application.cc:507
+#: ../glom/application.cc:506
 msgid "_Test Translation"
 msgstr "Zkouška _překladu"
 
-#: ../glom/application.cc:511
+#: ../glom/application.cc:510
 msgid "_Translations"
 msgstr "_Překlady"
 
 #. "Active Platform" menu:
-#: ../glom/application.cc:517
+#: ../glom/application.cc:516
 msgid "_Active Platform"
 msgstr "_Aktivní platforma"
 
-#: ../glom/application.cc:522
+#: ../glom/application.cc:521
 msgid "_Normal"
 msgstr "_Normální"
 
-#: ../glom/application.cc:522
+#: ../glom/application.cc:521
 msgid "The layout to use for normal desktop environments."
 msgstr "Rozvržení, které používat pro běžné pracovní prostředí."
 
-#: ../glom/application.cc:527
+#: ../glom/application.cc:526
 msgid "_Maemo"
 msgstr "_Maemo"
 
-#: ../glom/application.cc:527
+#: ../glom/application.cc:526
 msgid "The layout to use for Maemo devices."
 msgstr "Rozvržení, které používat v zařízeních Maemo."
 
-#: ../glom/application.cc:532
+#: ../glom/application.cc:531
 msgid "_Show Layout Toolbar"
 msgstr "Zobrazit lištu s ná_stroji rozvržení"
 
-#: ../glom/application.cc:666 ../glom/bakery/app_withdoc.cc:499
-msgid "Open Failed."
+#. TODO: Put this in the generic bakery code.
+#: ../glom/application.cc:666 ../glom/application.cc:675
+#, fuzzy
+#| msgid "Open Failed."
+msgid "Open Failed"
 msgstr "Otevření se nezdařilo."
 
 #: ../glom/application.cc:667
+#, fuzzy
+#| msgid "The document could not be opened."
+msgid "The document could not be found."
+msgstr "Dokument nelze otevřít."
+
+#: ../glom/application.cc:676
 msgid ""
 "The document could not be opened because it was created or modified by a "
 "newer version of Glom."
@@ -226,13 +235,13 @@ msgstr ""
 
 #. std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED" << std::endl;
 #. Warn the user, and let him try again:
-#: ../glom/application.cc:717 ../glom/frame_glom.cc:2355
-#: ../glom/frame_glom.cc:2431
+#: ../glom/application.cc:726 ../glom/frame_glom.cc:2356
+#: ../glom/frame_glom.cc:2432
 msgid "Connection Failed"
 msgstr "Připojení selhalo"
 
-#: ../glom/application.cc:717 ../glom/frame_glom.cc:2355
-#: ../glom/frame_glom.cc:2431
+#: ../glom/application.cc:726 ../glom/frame_glom.cc:2356
+#: ../glom/frame_glom.cc:2432
 msgid ""
 "Glom could not connect to the database server. Maybe you entered an "
 "incorrect user name or password, or maybe the postgres database server is "
@@ -241,7 +250,7 @@ msgstr ""
 "Glom se nemohl připojit k databázovému serveru. Možná jste zadali nesprávné "
 "jméno uživatele nebo heslo, nebo možná neběží server databáze postgres."
 
-#: ../glom/application.cc:909
+#: ../glom/application.cc:918
 msgid ""
 "The file cannot be opened because this version of Glom does not support self-"
 "hosting of databases."
@@ -249,7 +258,7 @@ msgstr ""
 "Soubor nelze otevřít, protože tato verze aplikace Glom nepodporuje vlastní "
 "hostované databáze."
 
-#: ../glom/application.cc:914 ../glom/application.cc:923
+#: ../glom/application.cc:923 ../glom/application.cc:932
 msgid ""
 "The file cannot be opened because this version of Glom does not support "
 "PostgreSQL databases."
@@ -257,7 +266,7 @@ msgstr ""
 "Soubor nelze otevřít, protože tato verze aplikace Glom nepodporuje databáze "
 "PostgreSQL."
 
-#: ../glom/application.cc:931
+#: ../glom/application.cc:940
 msgid ""
 "The file cannot be opened because this version of Glom does not support "
 "SQLite databases."
@@ -266,15 +275,15 @@ msgstr ""
 "SQLite."
 
 #. Warn the user.
-#: ../glom/application.cc:949
+#: ../glom/application.cc:958
 msgid "File Uses Unsupported Database Backend"
 msgstr "Soubor používá nepodporovaný databázový server"
 
-#: ../glom/application.cc:1009
+#: ../glom/application.cc:1018
 msgid "Creating From Example File"
 msgstr "Vytvářím ze vzorového souboru"
 
-#: ../glom/application.cc:1010
+#: ../glom/application.cc:1019
 msgid ""
 "To use this example file you must save an editable copy of the file. A new "
 "database will also be created on the server."
@@ -282,11 +291,11 @@ msgstr ""
 "Pro použití tohoto vzorového souboru musíte uložit jeho zapisovatelnou "
 "kopii. Na serveru bude také vytvořena nová databáze."
 
-#: ../glom/application.cc:1067
+#: ../glom/application.cc:1076
 msgid "Opening Read-Only File."
 msgstr "Otevírá se soubor jen pro čtení."
 
-#: ../glom/application.cc:1068
+#: ../glom/application.cc:1077
 msgid ""
 "This file is read only, so you will not be able to enter Developer mode to "
 "make design changes."
@@ -294,16 +303,16 @@ msgstr ""
 "Tento soubor je jen pro čtení, takže nebudete moci přejít do režimu Vývojář "
 "a měnit návrh."
 
-#: ../glom/application.cc:1071
+#: ../glom/application.cc:1080
 msgid "Continue without Developer Mode"
 msgstr "Pokračovat bez režimu vývojáře"
 
 #. The connection to the server is OK, but the database is not there yet.
-#: ../glom/application.cc:1129
+#: ../glom/application.cc:1138
 msgid "Database Not Found On Server"
 msgstr "Na serveru nebyla databáze nalezena"
 
-#: ../glom/application.cc:1129
+#: ../glom/application.cc:1138
 msgid ""
 "The database could not be found on the server. Please consult your system "
 "administrator."
@@ -311,45 +320,45 @@ msgstr ""
 "Na serveru nebyla databáze nalezena. Prosím kontaktujte svého správce "
 "systému."
 
-#: ../glom/application.cc:1528
+#: ../glom/application.cc:1537
 msgid "_Contents"
 msgstr "_Obsah"
 
-#: ../glom/application.cc:1528
+#: ../glom/application.cc:1537
 msgid "Help with the application"
 msgstr "Pomoc s aplikací"
 
-#: ../glom/application.cc:1626
+#: ../glom/application.cc:1635
 msgid "Creating Glom Database"
 msgstr "Vytváří se databáze Glom"
 
-#: ../glom/application.cc:1626
+#: ../glom/application.cc:1635
 msgid "Creating Glom database from example file."
 msgstr "Ze vzorového souboru se vytváří databáze Glom"
 
 #. The save failed. Tell the user and don't do anything else:
-#: ../glom/application.cc:2150 ../glom/bakery/app_withdoc.cc:238
-#: ../glom/bakery/app_withdoc.cc:289
+#: ../glom/application.cc:2159 ../glom/bakery/app_withdoc.cc:242
+#: ../glom/bakery/app_withdoc.cc:293
 msgid "Save failed."
 msgstr "Ukládání selhalo."
 
-#: ../glom/application.cc:2150 ../glom/bakery/app_withdoc.cc:238
-#: ../glom/bakery/app_withdoc.cc:289
+#: ../glom/application.cc:2159 ../glom/bakery/app_withdoc.cc:242
+#: ../glom/bakery/app_withdoc.cc:293
 msgid ""
 "There was an error while saving the file. Your changes have not been saved."
 msgstr "Při ukládání se vyskytla chyba. Vaše změny nebyly uloženy."
 
-#: ../glom/application.cc:2191 ../glom/application.cc:2196
+#: ../glom/application.cc:2200 ../glom/application.cc:2205
 #: ../glom/bakery/app_withdoc_gtk.cc:590
 msgid "Save Document"
 msgstr "Uložit dokument"
 
 #. Warn the user:
-#: ../glom/application.cc:2284 ../glom/bakery/app_withdoc_gtk.cc:639
+#: ../glom/application.cc:2293 ../glom/bakery/app_withdoc_gtk.cc:639
 msgid "Read-only File."
 msgstr "Soubor pouze pro čtení."
 
-#: ../glom/application.cc:2284 ../glom/bakery/app_withdoc_gtk.cc:639
+#: ../glom/application.cc:2293 ../glom/bakery/app_withdoc_gtk.cc:639
 msgid ""
 "You may not overwrite the existing file, because you do not have sufficient "
 "access rights."
@@ -357,11 +366,11 @@ msgstr ""
 "Nemůžete přepsat existující soubor, protože nemáte potřebná přístupová práva."
 
 #. Warn the user:
-#: ../glom/application.cc:2298 ../glom/bakery/app_withdoc_gtk.cc:653
+#: ../glom/application.cc:2307 ../glom/bakery/app_withdoc_gtk.cc:653
 msgid "Read-only Directory."
 msgstr "Adresář pouze pro čtení."
 
-#: ../glom/application.cc:2298 ../glom/bakery/app_withdoc_gtk.cc:653
+#: ../glom/application.cc:2307 ../glom/bakery/app_withdoc_gtk.cc:653
 msgid ""
 "You may not create a file in this directory, because you do not have "
 "sufficient access rights."
@@ -369,19 +378,19 @@ msgstr ""
 "V tomto adresáři nemůžete soubor vytvořit, protože nemáte potřebná "
 "přístupová práva."
 
-#: ../glom/application.cc:2315
+#: ../glom/application.cc:2324
 msgid "Database Title missing"
 msgstr "Chybí nadpis databáze"
 
-#: ../glom/application.cc:2315
+#: ../glom/application.cc:2324
 msgid "You must specify a title for the new database."
 msgstr "Musíte zadat název pro novou databázi."
 
-#: ../glom/application.cc:2344 ../glom/frame_glom.cc:2080
+#: ../glom/application.cc:2353 ../glom/frame_glom.cc:2081
 msgid "Directory Already Exists"
 msgstr "Adresář již existuje"
 
-#: ../glom/application.cc:2344 ../glom/frame_glom.cc:2081
+#: ../glom/application.cc:2353 ../glom/frame_glom.cc:2082
 msgid ""
 "There is an existing directory with the same name as the directory that "
 "should be created for the new database files. You should specify a different "
@@ -391,7 +400,7 @@ msgstr ""
 "databáze. Měli byste místo vybrat jiný název, který bude použit pro "
 "vytvoření nového adresáře."
 
-#: ../glom/application.cc:2554 ../glom/bakery/app_withdoc_gtk.cc:493
+#: ../glom/application.cc:2563 ../glom/bakery/app_withdoc_gtk.cc:493
 msgid " (read-only)"
 msgstr " (pouze čtení)"
 
@@ -507,9 +516,8 @@ msgstr "Tato sestava již existuje. Prosím zvolte jiný název sestavy"
 #: ../glom/mode_design/layout/dialog_layout_details.cc:101
 #: ../glom/mode_design/layout/layout_item_dialogs/dialog_notebook.cc:46
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:94
-#: ../glom/navigation/box_tables.cc:133
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:95
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:99
+#: ../glom/navigation/box_tables.cc:130
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:101
 msgid "Title"
 msgstr "Nadpis"
 
@@ -527,11 +535,11 @@ msgstr "Změnit název sestavy"
 msgid "A user-friendly database environment."
 msgstr "Prostředí uživatelsky přívětivé databáze."
 
-#: ../glom.desktop.in.in.h:2 ../glom/glom.glade.h:25
+#: ../glom.desktop.in.in.h:2 ../glom/glom.glade.h:24
 msgid "Glom"
 msgstr "Glom"
 
-#: ../glom/dialog_connection.cc:224
+#: ../glom/dialog_connection.cc:216
 msgid "Not yet created."
 msgstr "Ještě nevytvořeno."
 
@@ -578,19 +586,16 @@ msgid "%s on %s (via %s)"
 msgstr "%s v %s (pomocí %s)"
 
 #: ../glom/filechooser_export.cc:32
-msgid "Export To File."
+#, fuzzy
+#| msgid "Export To File."
+msgid "Export to File"
 msgstr "Exportovat do souboru."
 
 #: ../glom/filechooser_export.cc:35
 msgid "Define Data _Format"
 msgstr "Definice _formátu dat"
 
-#: ../glom/filechooser_export.cc:41 ../glom/glom_developer.glade.h:121
-#: ../glom/mode_design/translation/window_translations.cc:518
-msgid "Export"
-msgstr "Export"
-
-#: ../glom/frame_glom.cc:136 ../glom/glom.glade.h:40
+#: ../glom/frame_glom.cc:136 ../glom/glom.glade.h:39
 msgid "Quick Find"
 msgstr "Rychlé hledání"
 
@@ -612,7 +617,7 @@ msgstr "Žádná tabulka"
 msgid "This database has no tables yet."
 msgstr "Tato databáze ještě nemá žádné tabulky."
 
-#: ../glom/frame_glom.cc:438 ../glom/glom.glade.h:19
+#: ../glom/frame_glom.cc:438 ../glom/glom.glade.h:16
 msgid "Data"
 msgstr "Data"
 
@@ -695,38 +700,40 @@ msgstr ""
 "Není k dispozici žádná tabulka, do které by mohla být data naimportována."
 
 #: ../glom/frame_glom.cc:875
-msgid "Choose a CSV file to open"
-msgstr "Vybrat soubor CSV, který otevřít"
+#, fuzzy
+#| msgid "Open a Document"
+msgid "Open CSV Document"
+msgstr "Otevřít dokument"
 
-#: ../glom/frame_glom.cc:879
+#: ../glom/frame_glom.cc:880
 msgid "CSV files"
 msgstr "Soubory CSV"
 
-#: ../glom/frame_glom.cc:883
+#: ../glom/frame_glom.cc:884
 msgid "All files"
 msgstr "Všechny soubory"
 
-#: ../glom/frame_glom.cc:966
+#: ../glom/frame_glom.cc:967
 msgid "Share On Network"
 msgstr "Sdílení v síti"
 
-#: ../glom/frame_glom.cc:967
+#: ../glom/frame_glom.cc:968
 msgid ""
 "Are you sure that you wish to allow other users on the network to use this "
 "database?"
 msgstr ""
 "Opravdu si přejete umožnit ostatním uživatelům v síti používat tuto databázi?"
 
-#: ../glom/frame_glom.cc:970
+#: ../glom/frame_glom.cc:971
 msgid "_Share"
 msgstr "_Sdílet"
 
 #. TODO: Warn about connected users if possible.
-#: ../glom/frame_glom.cc:1065
+#: ../glom/frame_glom.cc:1066
 msgid "Stop Sharing On Network"
 msgstr "Zastavit sdílení na síti"
 
-#: ../glom/frame_glom.cc:1066
+#: ../glom/frame_glom.cc:1067
 msgid ""
 "Are you sure that you wish to prevent other users on the network from using "
 "this database?"
@@ -734,15 +741,15 @@ msgstr ""
 "Opravdu si přejete zabránit v používání této databáze ostatním uživatelům na "
 "síti?"
 
-#: ../glom/frame_glom.cc:1069
+#: ../glom/frame_glom.cc:1070
 msgid "_Stop Sharing"
 msgstr "_Zastavit sdílení"
 
-#: ../glom/frame_glom.cc:1297
+#: ../glom/frame_glom.cc:1298
 msgid "Table Exists Already"
 msgstr "Tabulka již existuje"
 
-#: ../glom/frame_glom.cc:1297
+#: ../glom/frame_glom.cc:1298
 msgid ""
 "A table with this name already exists in the database. Please choose a "
 "different table name."
@@ -750,11 +757,11 @@ msgstr ""
 "Tabulka s tímto názvem již v databázi existuje. Prosím zvolte jiný název "
 "tabulky."
 
-#: ../glom/frame_glom.cc:1301
+#: ../glom/frame_glom.cc:1302
 msgid "Relationship Exists Already"
 msgstr "Vztah již existuje"
 
-#: ../glom/frame_glom.cc:1301
+#: ../glom/frame_glom.cc:1302
 msgid ""
 "A relationship with this name already exists for this table. Please choose a "
 "different relationship name."
@@ -762,78 +769,79 @@ msgstr ""
 "Relace s tímto názvem již pro tuto tabulku existuje. Prosím zvolte jiný "
 "název relace."
 
-#: ../glom/frame_glom.cc:1305
+#: ../glom/frame_glom.cc:1306
 msgid "More information needed"
 msgstr "Jsou vyžadovány další informace"
 
-#: ../glom/frame_glom.cc:1305
+#: ../glom/frame_glom.cc:1306
 msgid "You must specify a field, a table name, and a relationship name."
 msgstr "Musíte určit pole, název tabulky a název vztahu."
 
-#: ../glom/frame_glom.cc:1359
+#: ../glom/frame_glom.cc:1360
 msgid "Related Table Created"
 msgstr "Související záznam byl vytvořen"
 
-#: ../glom/frame_glom.cc:1359
+#: ../glom/frame_glom.cc:1360
 msgid "The new related table has been created."
 msgstr "Nová související tabulka byla vytvořena."
 
-#: ../glom/frame_glom.cc:1389 ../glom/glom.glade.h:45
-#: ../glom/navigation/box_tables.cc:128
-msgid "Tables"
-msgstr "Tabulky"
+#: ../glom/frame_glom.cc:1390 ../glom/glom.glade.h:19
+#, fuzzy
+#| msgid "_Edit Tables"
+msgid "Edit Tables"
+msgstr "_Upravit tabulky"
 
-#: ../glom/frame_glom.cc:1468 ../glom/utility_widgets/dialog_choose_id.cc:105
+#: ../glom/frame_glom.cc:1469 ../glom/utility_widgets/dialog_choose_id.cc:105
 msgid "You have not entered any quick find criteria."
 msgstr "Nezadali jste žádná kritéria rychlého hledání."
 
-#: ../glom/frame_glom.cc:1473 ../glom/mode_data/box_data.cc:144
+#: ../glom/frame_glom.cc:1474 ../glom/mode_data/box_data.cc:144
 #: ../glom/utility_widgets/dialog_choose_id.cc:109
 msgid "No Find Criteria"
 msgstr "Žádná kritéria hledání"
 
 #. show user level:
-#: ../glom/frame_glom.cc:1533
+#: ../glom/frame_glom.cc:1534
 msgid "Operator"
 msgstr "Operátor"
 
-#: ../glom/frame_glom.cc:1535
+#: ../glom/frame_glom.cc:1536
 msgid "Developer"
 msgstr "Vývojář"
 
-#: ../glom/frame_glom.cc:2049
+#: ../glom/frame_glom.cc:2050
 msgid "Initializing Database Data"
 msgstr "Inicializují se databázová data"
 
-#: ../glom/frame_glom.cc:2058
+#: ../glom/frame_glom.cc:2059
 msgid "Starting Database Server"
 msgstr "Startuje se databázový server"
 
-#: ../glom/frame_glom.cc:2066
+#: ../glom/frame_glom.cc:2067
 msgid "Stopping Database Server"
 msgstr "Zastavuje se databázový server"
 
-#: ../glom/frame_glom.cc:2085
+#: ../glom/frame_glom.cc:2086
 msgid "Could Not Create Directory"
 msgstr "Nelze vytvořit adresář"
 
-#: ../glom/frame_glom.cc:2086
+#: ../glom/frame_glom.cc:2087
 msgid ""
 "There was an error when attempting to create the directory for the new "
 "database files."
 msgstr ""
 "Vyskytla se chyba při pokusu o vytvoření adresáře pro soubory nové databáze."
 
-#: ../glom/frame_glom.cc:2090
+#: ../glom/frame_glom.cc:2091
 msgid "Could Not Start Database Server"
 msgstr "Nelze spustit databázový server"
 
-#: ../glom/frame_glom.cc:2091
+#: ../glom/frame_glom.cc:2092
 msgid "There was an error when attempting to start the database server."
 msgstr "Vyskytla se chyba při pokusu o spuštění databázového serveru."
 
 #. Show 0 instead of "all" when all of no records are found, to avoid confusion.
-#: ../glom/frame_glom.cc:2903
+#: ../glom/frame_glom.cc:2904
 msgid "All"
 msgstr "Vše"
 
@@ -1352,7 +1360,7 @@ msgstr "Výchozí formátování"
 
 #: ../glom/glom_developer.glade.h:118
 msgid "Display as radio buttons"
-msgstr ""
+msgstr "Zobrazit jako skupinové přepínače"
 
 #: ../glom/glom_developer.glade.h:119
 #: ../glom/mode_design/users/dialog_groups_list.cc:73
@@ -1362,6 +1370,11 @@ msgstr "Upravit"
 #: ../glom/glom_developer.glade.h:120
 msgid "English"
 msgstr "Anglicky"
+
+#: ../glom/glom_developer.glade.h:121
+#: ../glom/mode_design/translation/window_translations.cc:518
+msgid "Export"
+msgstr "Export"
 
 #: ../glom/glom_developer.glade.h:122
 msgid "Export Format"
@@ -1564,7 +1577,7 @@ msgstr "Žádné možnosti"
 msgid "None"
 msgstr "Nic"
 
-#: ../glom/glom_developer.glade.h:168 ../glom/glom.glade.h:32
+#: ../glom/glom_developer.glade.h:168 ../glom/glom.glade.h:31
 #: ../glom/mode_design/dialog_design.cc:54
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:492
 msgid "None selected"
@@ -1579,7 +1592,7 @@ msgstr "Záložky poznámkového bloku"
 msgid "Organisation"
 msgstr "Organizace"
 
-#: ../glom/glom_developer.glade.h:171 ../glom/glom.glade.h:36
+#: ../glom/glom_developer.glade.h:171 ../glom/glom.glade.h:35
 msgid "Password"
 msgstr "Heslo"
 
@@ -1708,7 +1721,7 @@ msgstr "Název systému:"
 msgid "Table Name"
 msgstr "Název tabulky"
 
-#: ../glom/glom_developer.glade.h:200 ../glom/glom.glade.h:44
+#: ../glom/glom_developer.glade.h:200 ../glom/glom.glade.h:42
 msgid "Table:"
 msgstr "Tabulka:"
 
@@ -1814,7 +1827,7 @@ msgid "Use default formatting"
 msgstr "Použít výchozí formátování"
 
 #. Append the View columns:
-#: ../glom/glom_developer.glade.h:223 ../glom/glom.glade.h:46
+#: ../glom/glom_developer.glade.h:223 ../glom/glom.glade.h:43
 #: ../glom/mode_design/users/dialog_users_list.cc:64
 msgid "User"
 msgstr "Uživatel"
@@ -1872,11 +1885,11 @@ msgstr "PSČ:"
 msgid "_Confirm Password"
 msgstr "_Potvrďte heslo"
 
-#: ../glom/glom_developer.glade.h:233 ../glom/glom.glade.h:52
+#: ../glom/glom_developer.glade.h:233
 msgid "_Password"
 msgstr "_Heslo"
 
-#: ../glom/glom_developer.glade.h:234 ../glom/glom.glade.h:54
+#: ../glom/glom_developer.glade.h:234
 msgid "_User"
 msgstr "_Uživatel"
 
@@ -1915,18 +1928,10 @@ msgid "<b>Import Options</b>"
 msgstr "<b>Volby importu</b>"
 
 #: ../glom/glom.glade.h:8
-msgid "<b>Tables in database</b>"
-msgstr "<b>Tabulky v databázi</b>"
-
-#: ../glom/glom.glade.h:9
 msgid "<b>User Level:</b>"
 msgstr "<b>Úroveň uživatele:</b>"
 
-#: ../glom/glom.glade.h:10
-msgid "<span weight=\"bold\" size=\"larger\">Connect to Server</span>"
-msgstr "<span weight=\"bold\" size=\"larger\">Připojení k serveru</span>"
-
-#: ../glom/glom.glade.h:11
+#: ../glom/glom.glade.h:9
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Invalid format</span>\n"
 "\n"
@@ -1939,137 +1944,155 @@ msgstr ""
 "Data v poli nebyla rozpoznána. Zkuste prosím opravit data nebo se vrátit k "
 "předchozí hodnotě. Zde je příklad správně formátovaných dat pro toto pole.\n"
 
-#: ../glom/glom.glade.h:15
+#: ../glom/glom.glade.h:13
 msgid "<span weight=\"bold\" size=\"larger\">Open or create a Document</span>"
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Otevře nebo vytvoří dokument</span>"
 
-#: ../glom/glom.glade.h:16
-msgid "C_onnect"
-msgstr "Přip_ojit"
+#: ../glom/glom.glade.h:14
+msgid "Connect to Server"
+msgstr ""
 
-#: ../glom/glom.glade.h:17
-msgid "Connection Details"
-msgstr "Podrobnosti připojení"
-
-#: ../glom/glom.glade.h:18
+#: ../glom/glom.glade.h:15
 msgid "Create New Document"
 msgstr "Vytvořit nový dokument"
 
-#: ../glom/glom.glade.h:20
+#: ../glom/glom.glade.h:17
 msgid "Database"
 msgstr "Databáze"
 
-#: ../glom/glom.glade.h:21
+#: ../glom/glom.glade.h:18
+#, fuzzy
+#| msgid "Database"
+msgid "Database:"
+msgstr "Databáze"
+
+#: ../glom/glom.glade.h:20
 msgid "Encoding detected as: UTF-8"
 msgstr "Kódování detekováno jako: UTF-8"
 
-#: ../glom/glom.glade.h:22
+#: ../glom/glom.glade.h:21
 msgid "Find All"
 msgstr "Hledat všude"
 
-#: ../glom/glom.glade.h:23
+#: ../glom/glom.glade.h:22
 msgid "Find Related Record"
 msgstr "Hledat související záznam"
 
-#: ../glom/glom.glade.h:24
+#: ../glom/glom.glade.h:23
 msgid "Found:"
 msgstr "Hledat:"
 
-#: ../glom/glom.glade.h:26
+#: ../glom/glom.glade.h:25
 msgid "Host"
 msgstr "Hostitel"
 
-#: ../glom/glom.glade.h:27
+#: ../glom/glom.glade.h:26
 msgid "Import Into _Table:"
 msgstr "Import do _tabulky:"
 
 #. This is a status message for a progress dialog. It says that importing is currently happenning.
-#: ../glom/glom.glade.h:29
+#: ../glom/glom.glade.h:28
 msgid "Importing Data"
 msgstr "Import dat"
 
-#: ../glom/glom.glade.h:30
+#: ../glom/glom.glade.h:29
 msgid "Loading image"
 msgstr "Načítá se obrázek"
 
-#: ../glom/glom.glade.h:31
+#: ../glom/glom.glade.h:30
 msgid "Mode:"
 msgstr "Režim:"
 
-#: ../glom/glom.glade.h:33
+#: ../glom/glom.glade.h:32
 msgid "Number of sample rows:"
 msgstr "Počet vzorových řádků:"
 
-#: ../glom/glom.glade.h:34
+#: ../glom/glom.glade.h:33
 msgid "Open Existing Document"
 msgstr "0tevřít existující dokument"
 
-#: ../glom/glom.glade.h:35
+#: ../glom/glom.glade.h:34
 msgid "Open or create Document"
 msgstr "Otevřít nebo vytvořit dokument"
 
-#: ../glom/glom.glade.h:37
+#: ../glom/glom.glade.h:36
 msgid "Please enter the connection details for your database server."
 msgstr "Zadejte prosím podrobnosti o připojení k vašemu databázovému serveru."
 
-#: ../glom/glom.glade.h:38
+#: ../glom/glom.glade.h:37
 msgid "Please wait, your data is being imported&#x2026;"
 msgstr "Čekejte prosím, vaše data se importují…"
 
-#: ../glom/glom.glade.h:39 ../glom/glade_utils.cc:49
+#: ../glom/glom.glade.h:38 ../glom/glade_utils.cc:49
 msgid "Processing"
 msgstr "Zpracování"
 
-#: ../glom/glom.glade.h:41
+#: ../glom/glom.glade.h:40
 msgid "Records: "
 msgstr "Záznamy: "
 
-#: ../glom/glom.glade.h:42
+#: ../glom/glom.glade.h:41
 msgid "Revert"
 msgstr "Vrátit"
 
-#: ../glom/glom.glade.h:43
-msgid "Show hidden tables"
-msgstr "Zobrazovat skryté tabulky"
-
-#: ../glom/glom.glade.h:47
+#: ../glom/glom.glade.h:44
 msgid "Welcome to Glom"
 msgstr "Vítejte v aplikaci Glom"
 
-#: ../glom/glom.glade.h:48
+#: ../glom/glom.glade.h:45
 msgid "_Encoding:"
 msgstr "_Kódování:"
 
-#: ../glom/glom.glade.h:49
+#: ../glom/glom.glade.h:46
 msgid "_First line as title"
 msgstr "_Použít první řádek jako nadpis"
 
-#: ../glom/glom.glade.h:50
-msgid "_Host"
+#: ../glom/glom.glade.h:47
+#, fuzzy
+#| msgid "_Host"
+msgid "_Host:"
 msgstr "P_očítač"
 
-#: ../glom/glom.glade.h:51
+#: ../glom/glom.glade.h:48
 msgid "_Import"
 msgstr "_Import"
 
-#: ../glom/glom.glade.h:53
+#: ../glom/glom.glade.h:49
+#, fuzzy
+#| msgid "_Password"
+msgid "_Password:"
+msgstr "_Heslo"
+
+#: ../glom/glom.glade.h:50
 msgid "_Select"
 msgstr "_Vybrat"
 
-#: ../glom/glom.glade.h:55
+#: ../glom/glom.glade.h:51
+#, fuzzy
+#| msgid "Show hidden tables"
+msgid "_Show hidden tables"
+msgstr "Zobrazovat skryté tabulky"
+
+#: ../glom/glom.glade.h:52
+#, fuzzy
+#| msgid "_User"
+msgid "_User:"
+msgstr "_Uživatel"
+
+#: ../glom/glom.glade.h:53
 msgid "bla.blub - Import from CSV"
 msgstr "bla.blub - Import z CSV"
 
-#: ../glom/glom.glade.h:56
+#: ../glom/glom.glade.h:54
 msgid "example data format"
 msgstr "ukázkový formát data"
 
-#: ../glom/glom.glade.h:57
+#: ../glom/glom.glade.h:55
 msgid "label"
 msgstr "nadpis"
 
-#: ../glom/glom.glade.h:58
+#: ../glom/glom.glade.h:56
 msgid "table_name"
 msgstr "název_tabulky"
 
@@ -2101,7 +2124,11 @@ msgstr "O aplikaci"
 msgid "Open Document"
 msgstr "Otevřít dokument"
 
-#: ../glom/bakery/app_withdoc.cc:499
+#: ../glom/bakery/app_withdoc.cc:503
+msgid "Open Failed."
+msgstr "Otevření se nezdařilo."
+
+#: ../glom/bakery/app_withdoc.cc:503
 msgid "The document could not be opened."
 msgstr "Dokument nelze otevřít."
 
@@ -2483,6 +2510,7 @@ msgstr "Sestava"
 #: ../glom/mode_design/box_db_table_relationships.cc:51
 #: ../glom/mode_design/dialog_database_preferences.cc:55
 #: ../glom/mode_design/users/dialog_groups_list.cc:67
+#: ../glom/navigation/box_tables.cc:125
 #: ../glom/navigation/maemo/pickerbutton_table.cc:37
 msgid "Table"
 msgstr "Tabulka"
@@ -2536,7 +2564,7 @@ msgstr "Země"
 msgid "Zip Code"
 msgstr "Směrovací číslo"
 
-#: ../glom/libglom/document/bakery/document.cc:402
+#: ../glom/libglom/document/bakery/document.cc:413
 msgid "Untitled"
 msgstr "Nepojmenovaný"
 
@@ -2923,7 +2951,7 @@ msgid "Automatic Creation"
 msgstr "Automatické vytváření"
 
 #: ../glom/mode_design/box_db_table_relationships.cc:56
-#: ../glom/navigation/box_tables.cc:139
+#: ../glom/navigation/box_tables.cc:136
 msgid "Title (Singular Form)"
 msgstr "Název (jednotné číslo)"
 
@@ -3246,7 +3274,7 @@ msgid "<b>Rename Print Layout</b>"
 msgstr "<b>Přejmenovat rozvržení tisku</b>"
 
 #: ../glom/mode_design/print_layouts/box_print_layouts.cc:227
-#: ../glom/navigation/box_tables.cc:385
+#: ../glom/navigation/box_tables.cc:382
 msgid "Rename"
 msgstr "Přejmenovat"
 
@@ -3436,25 +3464,25 @@ msgid "The developer group must contain at least one user."
 msgstr "Skupina vývojářů musí obsahovat alespoň jednoho uživatele."
 
 #. Prevent two tables with the same name from being added.
-#: ../glom/navigation/box_tables.cc:130
+#: ../glom/navigation/box_tables.cc:127
 msgid "This table already exists. Please choose a different table name"
 msgstr "Tato tabulka již existuje. Prosím zadejte jiný název tabulky"
 
-#: ../glom/navigation/box_tables.cc:132
+#: ../glom/navigation/box_tables.cc:129
 msgid "Hidden"
 msgstr "Skryté"
 
 #. TODO: This should really be a radio, but the use of AddDel makes it awkward to change that CellRenderer property.
-#: ../glom/navigation/box_tables.cc:136
+#: ../glom/navigation/box_tables.cc:133
 msgid "Default"
 msgstr "Výchozí"
 
 #. Ask the user if they want us to try to cope with this:
-#: ../glom/navigation/box_tables.cc:242
+#: ../glom/navigation/box_tables.cc:239
 msgid "Table Already Exists"
 msgstr "Tabulka již existuje"
 
-#: ../glom/navigation/box_tables.cc:243
+#: ../glom/navigation/box_tables.cc:240
 msgid ""
 "This table already exists on the database server, though it is not mentioned "
 "in the .glom file. This should not happen. Would you like Glom to attempt to "
@@ -3465,7 +3493,7 @@ msgstr ""
 "tabulku použít?"
 
 #. TODO: Do not show tables that are not in the document.
-#: ../glom/navigation/box_tables.cc:303
+#: ../glom/navigation/box_tables.cc:300
 msgid ""
 "You cannot delete this table, because there is no information about this "
 "table in the document."
@@ -3474,7 +3502,7 @@ msgstr ""
 "žádné informace."
 
 #. Ask the user to confirm:
-#: ../glom/navigation/box_tables.cc:310
+#: ../glom/navigation/box_tables.cc:307
 msgid ""
 "Are you sure that you want to delete this table?\n"
 "Table name: "
@@ -3482,24 +3510,24 @@ msgstr ""
 "Opravdu chcete odstranit tuto tabulku?\n"
 "Název tabulky: "
 
-#: ../glom/navigation/box_tables.cc:311
+#: ../glom/navigation/box_tables.cc:308
 msgid "Delete Table"
 msgstr "Odstranit tabulku"
 
-#: ../glom/navigation/box_tables.cc:382
+#: ../glom/navigation/box_tables.cc:379
 msgid "Are you sure that you want to rename this table?"
 msgstr "Opravdu chcete přejmenovat tuto tabulku?"
 
 #. TODO: Show old and new names?
-#: ../glom/navigation/box_tables.cc:383
+#: ../glom/navigation/box_tables.cc:380
 msgid "<b>Rename Table</b>"
 msgstr "<b>Přejmenovat tabulku</b>"
 
-#: ../glom/navigation/box_tables.cc:425
+#: ../glom/navigation/box_tables.cc:422
 msgid "Unknown Table"
 msgstr "Neznámá tabulka"
 
-#: ../glom/navigation/box_tables.cc:426
+#: ../glom/navigation/box_tables.cc:423
 msgid ""
 "You cannot open this table, because there is no information about this table "
 "in the document."
@@ -3630,12 +3658,12 @@ msgstr "Chyba při načítání %1"
 msgid "Error loading image"
 msgstr "Chyba při načítání obrázku"
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:73
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:75
 msgid "New Database"
 msgstr "Nová databáze"
 
 #. For instance, an extra hint when saving from an example, saying that a new file must be saved.
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:90
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:92
 msgid ""
 "Please choose a human-readable title for the new database. You can change "
 "this later in the database properties. It may contain any characters."
@@ -3643,14 +3671,20 @@ msgstr ""
 "Prosím zadejte uživateli srozumitelný název databáze. Ten můžete později "
 "změnit ve vlastnostech databáze. Nadpis může obsahovat libovolné znaky."
 
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:97
+#, fuzzy
+#| msgid "Title:"
+msgid "_Title:"
+msgstr "Nadpis:"
+
 #. Use titles that show the distinction between PostgreSQL and SQLite:
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:111
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:113
 msgid ""
 "Create PostgreSQL database in its own folder, to be hosted by this computer."
 msgstr ""
 "Vytvořit databázi PostgreSQL ve vlastní složce, pro provoz na tomto počítači."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:115
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:117
 msgid ""
 "Create database on an external PostgreSQL database server, to be specified "
 "in the next step."
@@ -3658,13 +3692,13 @@ msgstr ""
 "Vytvořit databázi na vzdáleném databázovém serveru PostgreSQL, který určíte "
 "v dalším kroku."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:121
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:123
 msgid ""
 "Create SQLite database in its own folder, to be hosted by this computer."
 msgstr ""
 "Vytvořit databázi SQLite ve vlastní složce, pro provoz na tomto počítači."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:122
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:124
 msgid ""
 "SQLite does not support authentication or remote access but is suitable for "
 "embedded devices."
@@ -3673,7 +3707,7 @@ msgstr ""
 "samostatná zařízení."
 
 #. TODO: Hide this because it's the only radio button, so it's not a choice:
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:132
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:134
 msgid ""
 "Create database in its own folder, to be hosted by this computer, using "
 "SQLite"
@@ -3683,11 +3717,11 @@ msgstr ""
 
 #. Only PostgreSQL:
 #. Use titles that don't mention the boring name of the backend:
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:141
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:143
 msgid "Create database in its own folder, to be hosted by this computer."
 msgstr "Vytvořit databázi ve vlastní složce, pro provoz na tomto počítači."
 
-#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:145
+#: ../glom/utility_widgets/filechooserdialog_saveextras.cc:147
 msgid ""
 "Create database on an external database server, to be specified in the next "
 "step."
