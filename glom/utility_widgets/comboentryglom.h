@@ -23,9 +23,7 @@
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
-#include <gtkmm.h>
-#include <libglom/data_structure/field.h>
-#include "comboglomchoicesbase.h"
+#include <glom/utility_widgets/combochoiceswithtreemodel.h>
 
 #ifdef GLOM_ENABLE_MAEMO
 #include <hildonmm/picker-button.h>
@@ -35,7 +33,7 @@
 namespace Glom
 {
 
-class App_Glom;
+class Application;
 
 /** A Gtk::ComboBoxEntry that can show choices of field values.
  * Use this when the user should be allowed to enter values directly too,
@@ -48,7 +46,7 @@ class ComboEntryGlom
 #else
   public Hildon::PickerButton,
 #endif
-  public ComboGlomChoicesBase
+  public ComboChoicesWithTreeModel
 {
 public:
   ///You must call set_layout_item() to specify the field type and formatting of the main column.
@@ -99,7 +97,7 @@ private:
   virtual bool on_entry_button_press_event(GdkEventButton *event);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  virtual App_Glom* get_application();
+  virtual Application* get_application();
   
   Gtk::Entry* get_entry();
   const Gtk::Entry* get_entry() const;

@@ -1,3 +1,491 @@
+<<<<<<<
+2010-02-27  Murray Cumming  <murrayc@murrayc.com>
+
+  Increase required version of libgdamm.
+  
+	* configure.ac: Increase libgdamm dependency to the last one that doesn't 
+	need libgda 4.1/4.2. We actually need some API that was not in the older one.
+
+2010-02-27  Murray Cumming  <murrayc@murrayc.com>
+
+  Revert use of SqlBuilder because it requires libgda 4.1,
+  which will not be packaged by the upcoming Ubuntu Lucid, which is an 
+  important version of an important distro.
+   
+2010-02-27  Murray Cumming  <murrayc@murrayc.com>
+
+	More uses of SqlBuilder for SELECT statements.
+
+2010-02-27  Murray Cumming  <murrayc@murrayc.com>
+
+  Fix runtime problems with the use of SqlBuilder.
+  
+	* glom/base_db.[h|cc]: query_execute_select(), query_execute(): Catch more 
+  errors and output better debug and error text.
+	get_database_preferences(): Don't bother catching exceptions already caught 
+	by query_execute*().
+	add_standard_tables(): Fix a typo in the SQL query.
+	insert_example_data(): Work around an inability in GdaSqlBuilder to INSERT 
+	a NULL value. I have asked about it on the mailing list.
+
+=======
+2010-03-29  Murray Cumming  <murrayc@murrayc.com>
+
+    Avoid Operation Not Supported warnings at startup.
+
+	* glom/application.cc:
+	* glom/bakery/app_withdoc.cc:
+	* glom/libglom/connectionpool_backends/postgres_self.cc:
+	* glom/libglom/connectionpool_backends/sqlite.cc:
+	* glom/libglom/document/bakery/document.cc:
+	* glom/libglom/utils.cc:
+	* glom/xsl_utils.cc: Avoid creating a Gio::File() from an empty URI,
+    avoiding useless stdout warnings at startup.
+
+2010-03-29  Daniel Borgmann  <danielb@openismus.com>
+
+	Edit Field Definition Dialog adjustments.
+
+	* glom/glom_developer.glade: Update alignment and spacings, add mnemonics.
+	* glom/mode_design/fields/box_db_table_definition.cc: Set window icon.
+
+2010-03-29  Daniel Borgmann  <danielb@openismus.com>
+
+	Export Format dialog adjustments.
+
+	* glom/filechooser_export.cc: Set icon name for export format dialog.
+	* glom/glom_developer.glade: (Export Format) Remove frame, move Add
+	button to the start.
+	* glom/mode_design/layout/dialog_layout_export.cc: Rename treeview
+	header to "Fields" to replace the label.
+
+2010-03-29  Daniel Borgmann  <danielb@openismus.com>
+
+	Print Layouts dialog adjustments.
+
+	* glom/frame_glom.cc: Set title and transient for Print Layouts dialog.
+	* glom/glom_developer.glade: Remove the frame from Print Layouts dialog.
+
+2010-03-26  Murray Cumming  <murrayc@murraycs.com>
+
+	Say when a chosen file doen't exist, and remove it from the history.
+
+	* glom/libglom/document/bakery/document.[h|cc]: Add an enum for
+    standard failure_codes, including a last enum values that custom codes
+    should start after.
+    read_from_disk(): Set a failure_code output variable here too, so we
+    can detect non-existant files.
+	* glom/libglom/document/document.h: Start the custom code after the last
+    standard one.
+	* glom/bakery/app_withdoc.cc: open_document(): Remove non-existant
+    files from the recent files history.
+	* glom/application.cc: ui_warning_load_failed(): Say if the file could not
+    be found, instead of being mysterious. This happens for me often for
+    recent files that I have deleted.
+
+2010-03-26  Daniel Borgmann  <danielb@openismus.com>
+
+	Adjust file chooser dialogs.
+
+	* glom/dialog_existing_or_new.cc: Adjust title of file open dialog,
+	set glom icon.
+	* glom/utility_widgets/filechooserdialog_saveextras.cc: Set glom icon.
+
+2010-03-26  Daniel Borgmann  <danielb@openismus.com>
+
+	Fix filechooser title label.
+
+	* glom/utility_widgets/filechooserdialog_saveextras.cc: Add colon and
+	mnemonic to "Title" label.
+
+2010-03-26  Daniel Borgmann  <danielb@openismus.com>
+
+	Fix column spacing in connection dialog.
+
+	* glom/glom.glade: Set column spacing in connection dialog to 12px.
+
+2010-03-26  Daniel Borgmann  <danielb@openismus.com>
+
+	Connection dialog adjustments.
+
+	* glom/dialog_connection.cc: Add glom icon and remove maemo title hack
+	as primary text does not exist anymore.
+	* glom/glom.glade: Remove double title from connection dialog
+	and make it HIG/GNOME conform.
+
+2010-03-26  Daniel Borgmann  <danielb@openismus.com>
+
+	Export dialog adjustments.
+
+	* glom/filechooser_export.cc: Add glom icon and set mnemonic for Export
+	button.
+
+2010-03-26  Daniel Borgmann  <danielb@openismus.com>
+
+	Adjustments for Import dialog.
+
+	* glom/frame_glom.cc: Set window icon and update title text.
+
+2010-03-26  Daniel Borgmann  <danielb@openismus.com>
+
+	Adjustments for Tables dialog.
+
+	* glom/application.cc: Use gtkmm API to set document icon.
+	* glom/frame_glom.cc: Change Tables dialog title to "Edit Tables" to
+	match the command name.
+	* glom/glom.glade: Remove the frame.
+	* glom/navigation/box_tables.cc: Change column name from Tables to Table.
+	* glom/navigation/box_tables.h: Remove frame member.
+	* glom/window_boxholder.cc: Set icon and default position to center on
+	parent.
+
+2010-03-25  Murray Cumming  <murrayc@murrayc.com>
+
+    Glade files: Remove adjustment objects, simplifying window instantiation.
+
+	* glom/glom_developer.glade: Remove useless (default, empty) adjustment
+    objects, so we can load the windows with GtkBuilder without specifying
+    them. Recent versions of Glade no longer seem to create these when they
+    would just have default values.
+	* glom/base_db.cc:
+	* glom/frame_glom.cc:
+	* glom/glom.glade:
+	* glom/mode_design/fields/dialog_fielddefinition.cc:
+	* glom/mode_design/layout/layout_item_dialogs/dialog_field_layout.c
+	c:
+	* glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc:
+	* glom/mode_design/print_layouts/dialog_text_formatting.cc:
+    Don't provide the id of the adjustment, removing the silly workaround.
+
+2010-03-24  Daniel Borgmann  <danielb@openismus.com>
+
+	Don't show error dialog when user cancels template creation.
+
+	* glom/application.cc: Display error message when trying to create
+	a document from template in client-only-mode.
+	* glom/bakery/app_withdoc.cc: Don't display error message if the
+	document is rejected, let the application decide about it.
+
+1.13.9:
+
+2010-03-23  Murray Cumming  <murrayc@murrayc.com>
+
+    Refactored combo classes.
+
+	* glom/utility_widgets/comboglomchoicesbase.[h|cc]:
+    Split into combochoices.[h|cc] and combochoiceswithtreemodel.[h|cc] so
+    that combo_as_radio_buttons.[h|cc] doesn't need to have an unused treemodel.
+
+2010-03-23  Murray Cumming  <murrayc@murrayc.com>
+
+    Formatting: Choices: Add a Display as radio buttons option.
+
+	* glom/glom_developer.glade: formatting: choices: Add a Show As Radio
+    Buttons checkbox.
+	* glom/libglom/data_structure/layout/fieldformatting.[h|cc]:
+    set/get_choices_restricted(): Add a show_as_radio_buttons output parameter.
+	* glom/libglom/document/document.cc:
+    load_after_layout_item_formatting(), save_after_layout_item_formatting():
+    load and save the new formatting detail.
+	* glom/mode_design/layout/layout_item_dialogs/box_formatting.[h|cc]:
+    Handle the new checkbox and make sure that it is only sensitive when
+    the choices are restricted, because radio buttons provide no way to enter
+    freeform data.
+	* glom/utility_widgets/comboglomchoicesbase.h: Make set_choices() and
+    set_choices_with_second() virtual.
+    * glom/utility_widgets/combo_as_radio_buttons.[h|cc]: A new widget that is
+    a vbbox of radio buttons, with a combo-like API.
+	* Makefile_glom.am: Mention the new files.
+	* glom/utility_widgets/datawidget.cc: Refactor some repeated code into
+    create_combo_widget_for_field() and create the radiobuttons widget when
+    necessary.
+
+2010-03-22  Murray Cumming  <murrayc@murrayc.com>
+
+    Fix the distcheck. Don't use deprecated gtkmm API.
+
+	* glom/utility_widgets/flowtable.cc:
+	* glom/utility_widgets/flowtable_dnd.cc:
+	* glom/utility_widgets/placeholder-glom.cc: Adapt to deprecated gtkmm API.
+    Use get_has_window() and set_has_window() instead of get_flags(),
+    unset_flags() and set_flags().
+
+2010-03-21  Murray Cumming  <murrayc@murrayc.com>
+
+    Small fixes to glade file.
+
+	* glom/glom_developer.glade: Add some still-missing vbox orientation=vertical
+	lines.
+
+2010-03-19  Daniel Borgmann <danielb@openismus.com>
+
+	* configure.ac: Make Glom build with autoconf 2.65.
+	Patch from Fryderyk Dziarmagowski in GNOME bug #613179.
+
+2010-03-16  David King  <davidk@openismus.com>
+
+	Fix GtkVBox orientation in GtkBuilder files
+
+	* glom/glom.glade:
+	* glom/glom_developer.glade: Manually set the orientation of GtkVBox
+	objects specified in the GtkBuilder files to ‘vertical’. See GNOME bug
+	#587256 for details of the issue with Glade.
+
+2010-03-16  Murray Cumming  <murrayc@murrayc.com>
+
+  Tests: Check that the .glade files are valid XML.
+
+  * Makefile_tests.am:
+	* tests/test_glade_file_validation.sh: Add this text that the .glade files
+	are basically valid XML. It would be nice to have a Glade DTD to validate
+	them against too.
+	We should also check that each top-level widget can be instantiated by
+	GtkBuilder.
+
+2010-03-16  Murray Cumming  <murrayc@murrayc.com>
+
+  Add a startup script feature.
+
+  * libglom/document/document.cc: Added get/set_startup_script().
+  load_after(), save_before(): Load and save the startup script.
+
+  * glom_developer.glade:
+  * glom/mode_design/dialog_database_preferences.[h|cc]: Add a startup script tab.
+
+  * libglom/python_embed/py_glom_ui.h: Move PythonUICallbacks into its own
+  py_glom_ui_callbacks.h header.
+  * glom/python_embed/python_ui_callbacks.[h|cc]: Add this derived callbacks
+  class that has handlers that call methods in the application.
+  * glom/mode_data/box_data.cc: execute_button_script(): Use the new callbacks
+  class instead of using member methods here.
+  * glom/application.cc: on_document_load(): Run the startup script, if any,
+  after loading the document, using the new derived callbacks class.
+
+  * Makefile_glom.am, Makefile_libglom.am: Mention the new files.
+
+2010-03-13  David King  <davidk@openismus.com>
+
+	Depend on gtkmm >= 2.19.2, fixing GNOME bug #612796
+
+	* configure.ac: Bump glom gtkmm version requirement to >= 2.19.2 for
+	Gtk::ToolPalette. Fixes GNOME bug #612796.
+
+2010-03-13  David King  <davidk@openismus.com>
+
+	Depend on libxml++ >= 2.23.1, fixing GNOME bug#612794
+
+	* configure.ac: Bump libglom libxml++ version requirement to >= 2.23.1
+	for xmlpp::Element::add_child_text_before(). Fixes GNOME bug #612794.
+
+2010-03-09  Murray Cumming  <murrayc@murrayc.com>
+
+    Initial Dialog: Do not crash sometimes if cancelling the file chooser.
+
+	* glom/application.cc: offer_new_or_existing(): Show the dialog again if
+    we get a 0 response, because we cannot (yet) prevent the dialog from
+    doing this when the child file chooser dialog is cancelled. Fixes a crash
+    if pressing the Select button instead of double-clicking on an item.
+    Bug #612303 (David King)
+
+1.13.8:
+
+2010-03-08  Murray Cumming  <murrayc@murrayc.com>
+
+    Slight update of Small Business example.
+
+	* examples/example_smallbusiness.glom: Resave, with a new record with
+    a picture of a polar bear for use on the www.glom.org website.
+    The picture is from http://www.flickr.com/photos/mape_s/350700095/
+    (Creative-Commons licensed, by Marieke IJsendoorn-Kuijpers)
+
+2010-03-08  Murray Cumming  <murrayc@murrayc.com>
+
+    Python button scripts: Rename print() to print_layout() and add start_new_record().
+
+	* glom/application.[h|cc]
+	* glom/frame_glom.[h|cc]
+	* glom/libglom/python_embed/py_glom_ui.[h|cc]
+	* glom/mode_data/box_data.[h|cc]
+	* glom/mode_data/box_data_details.[h|cc]
+	* glom/mode_data/notebook_data.[h|cc]
+	* glom/python_embed/python_module/py_glom_module.cc:
+	* tests/test_python_execute_script.cc:
+    Add a ui.start_new_record() python method, and rename ui.print() to
+    ui.print_layout() because print seems to be a python keyword that can't
+    be used as a method name, seen when trying to use it in the unit test.
+
+2010-03-08  Peter Penz  <ppenz@openismus.com>
+
+	Fix the build with exceptions disabled.
+
+	* glom/libglom/document/bakery/document_xml.cc:
+	* glom/mode_design/iso_codes.cc: The exception handling is enabled by the
+    define LIBXMLPP_EXCEPTIONS_ENABLED. But this is a typo, as libxml++ defines
+    LIBXMLCPP_EXCEPTIONS_ENABLED.
+
+2010-03-05  Murray Cumming  <murrayc@murrayc.com>
+
+    Python button scripts: Add ui.print() and ui.print_reports(report_name).
+
+	* glom/application.[h|cc]: Add print() and print_report(), calling
+    methods in the frame widget.
+	* glom/libglom/python_embed/py_glom_ui.[h|cc]: Add new print() and
+    print_report() methods, adding callback slots for use by Glom.
+	* glom/python_embed/python_module/py_glom_module.cc: Register the new
+    Python methods.
+	* glom/mode_data/box_data.[h|cc]: execute_button_script(): Handle the
+    new signals, calling the new methods in Application.
+
+2010-03-07  Murray Cumming  <murrayc@murrayc.com>
+
+    Details: Align widgets in other columns too.
+
+	* glom/utility_widgets/flowtable.[h|cc]: Added get_columns_count().
+	* glom/mode_data/flowtablewithfields.[h|cc]: apply_size_group_to_label():
+	Change this to apply_size_groups_to_label().
+	align_child_group_labels(): Create a size group for each possible column,
+	and call apply_size_groups_to_label() with them.
+
+2010-03-06  Murray Cumming  <murrayc@murrayc.com>
+
+	Details: Align widgets in the first columns of neighbouring layout groups.
+
+	* glom/utility_widgets/flowtable.[h|cc]: Added get_column_for_first_widget(),
+	to discover what column a widget is in, and whether it has even been assigned
+	to a column yet (if the size has been allocated already.)
+	FlowTableItem: Remember whether the item has a column number and what it is.
+	on_size_allocate(): Remember the column numbers of items for later retrieval.
+	* glom/mode_data/flowtablewithfields.[h|cc]: Info, add_field_at_position():
+	Store the pointer to eventbox too, so we can later discover its column from
+	the base FlowTable.
+	Add align_child_group_labels(), to make all first-level labels in child
+	flowtables share a single Gtk::SizeGroup, making them align.
+	Add apply_size_group_to_labels() to actually add the labels to the size group.
+	add_layout_group_at_position(): Call align_child_group_labels() on new
+	sub-flowtables.
+	on_size_allocate(): After the base class has allocated the spaces for the
+	child widgets, after it therefore knows the column positions for the widgets,
+	call apply_size_group_to_labels() to make them align.
+	* glom/mode_data/box_data_details.cc: create_layout(): Call
+	align_child_group_labels() to align items in top-level groups.
+
+2010-03-06  Murray Cumming  <murrayc@murrayc.com>
+
+  Details: Do not make field widgets too wide, so this fits on a laptop screen.
+
+	* glom/utils_ui.cc: get_suitable_field_width_for_widget(): Do not add 150
+	to all calculated widths. I don't know why this code ever did that.
+
+1.13.7:
+
+2010-02-28  Murray Cumming  <murrayc@murrayc.com>
+
+    Python button scripts: Avoid a crash with buttons in lists.
+
+	* glom/mode_data/box_data_list.[h|cc]: on_adddel_script_button_clicked():
+	Run the script in the (existing) on_script_button_idle() idle handler because
+	the script can cause the cell (that is emitting the signal) to be destroyed,
+	by navigating to a different table. This fixes that crash.
+	* glom/mode_data/box_data_list_related.cc: Do the same here.
+	* glom/mode_data/notebook_data.cc: on_list_user_requested_details(): Use
+	the same idle handler trick here, just in case.
+
+2010-02-28  Murray Cumming  <murrayc@murrayc.com>
+
+	Added unit test for the new button script ui python API.
+
+	* Makefile_tests.am:
+	* tests/test_python_execute_script.cc: Added unit test for the new button
+	script ui python API.
+
+2010-02-28  Murray Cumming  <murrayc@murrayc.com>
+
+    PyGlomUI: Simplify the callbacks object.
+
+	* glom/libglom/python_embed/py_glom_ui.[h|cc]: Use public sigc::slots instead
+	  of signals, to simplify this.
+	* glom/mode_data/box_data.cc
+	  Box_Data::execute_button_script(): Adapt.
+
+1.13.6:
+
+2010-02-28  Murray Cumming  <murrayc@murrayc.com>
+
+  Fix the python function tests.
+
+	* glom/python_embed/glom_python.cc
+	glom_execute_python_function_implementation,
+	glom_evaluate_python_function_implementation: Import the glom python module
+	before trying to create a boost::python::object(new PyGlomRecord), to avoid
+	an exception in the tests.
+
+2010-02-28  Murray Cumming  <murrayc@murrayc.com>
+
+	Many files: Rename App_Glom to Application (in namespace Glom).
+
+2010-02-28  Murray Cumming  <murrayc@murrayc.com>
+
+  Python button scripts: Add show_table_details() and show_table_list().
+
+	* Makefile_libglom.am:
+	* glom/python_embed/python_module/py_glom_module.cc:
+	* glom/libglom/python_embed/py_glom_ui.[h|cc]: Added a PyGlomUI object
+	that can be passed to python functions in addition to the record object,
+	with methods to navigate in the UI. So far there is just
+	show_table_details() and show_table_list().
+	* glom/glom_developer.glade: Script editor window: Mention the extra ui
+	parameter.
+	* glom/python_embed/glom_python.[h|cc]: Add a callback object parameter so
+	scripts can tell the caller to change things in the UI.
+  * glom/frame_glom.h: Made show_table() public so that the Application can
+	call it.
+	* glom/application.[h|cc]: Add show_table_details() and add_show_list()
+	methods for the callbacks to call.
+	* glom/mode_data/box_data.[h|cc]: Handle the callback signals, to actually do
+	the navigation when a python script requests it.
+	* glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.cc: Adapted.
+
+2010-02-27  Murray Cumming  <murrayc@murrayc.com>
+
+  Python: Prevent field calculations from changing the data in other fields.
+
+	* glom/libglom/python_embed/py_glom_record.[h|cc]: Added set_read_only().
+	* glom/python_embed/glom_python.[h|cc]:
+	glom_evaluate_python_function_implementation(): Add a bool read_only
+	parameter that defaults to true.
+	glom_execute_python_function_implementation(): Pass read_only=false so
+	scripts can write data to the database via the record object.
+
+2010-02-27  Murray Cumming  <murrayc@murrayc.com>
+
+  Increase required version of libgdamm.
+
+	* configure.ac: Increase libgdamm dependency to the last one that doesn't
+	need libgda 4.1/4.2. We actually need some API that was not in the older one.
+
+2010-02-27  Murray Cumming  <murrayc@murrayc.com>
+
+  Revert use of SqlBuilder because it requires libgda 4.1,
+  which will not be packaged by the upcoming Ubuntu Lucid, which is an
+  important version of an important distro.
+
+2010-02-27  Murray Cumming  <murrayc@murrayc.com>
+
+	More uses of SqlBuilder for SELECT statements.
+
+2010-02-27  Murray Cumming  <murrayc@murrayc.com>
+
+  Fix runtime problems with the use of SqlBuilder.
+
+	* glom/base_db.[h|cc]: query_execute_select(), query_execute(): Catch more
+  errors and output better debug and error text.
+	get_database_preferences(): Don't bother catching exceptions already caught
+	by query_execute*().
+	add_standard_tables(): Fix a typo in the SQL query.
+	insert_example_data(): Work around an inability in GdaSqlBuilder to INSERT
+	a NULL value. I have asked about it on the mailing list.
+
+>>>>>>>
 2010-02-27  Murray Cumming  <murrayc@murrayc.com>
 
 	Use Gnome::Gda::SqlBuilder

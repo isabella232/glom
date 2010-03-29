@@ -59,12 +59,12 @@ void NotebookLabelGlom::set_label (const Glib::ustring& title)
   m_label.set_label (title); 
 }
 
-App_Glom* NotebookLabelGlom::get_application()
+Application* NotebookLabelGlom::get_application()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
 
-  return dynamic_cast<App_Glom*>(pWindow);
+  return dynamic_cast<Application*>(pWindow);
 }
 
 void NotebookLabelGlom::on_menu_new_group_activate()
@@ -146,7 +146,7 @@ void NotebookLabelGlom::setup_menu()
 
 bool NotebookLabelGlom::on_button_press_event(GdkEventButton *event)
 {
-  App_Glom* pApp = get_application();
+  Application* pApp = get_application();
   if(pApp && pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
     GdkModifierType mods;

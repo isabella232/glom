@@ -43,7 +43,7 @@ public:
   virtual ~PlaceholderGlom();
 
 private:
-  virtual App_Glom* get_application();
+  virtual Application* get_application();
   
   virtual void on_size_request(Gtk::Requisition* requisition);
   virtual void on_size_allocate(Gtk::Allocation& allocation);

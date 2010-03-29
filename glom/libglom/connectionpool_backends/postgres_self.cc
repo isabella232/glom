@@ -747,6 +747,9 @@ int PostgresSelfHosted::discover_first_free_port(int start_port, int end_port)
 
 bool PostgresSelfHosted::create_text_file(const std::string& file_uri, const std::string& contents)
 {
+  if(file_uri.empty())
+    return false;
+
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(file_uri);
   Glib::RefPtr<Gio::FileOutputStream> stream;
 
@@ -821,7 +824,10 @@ bool PostgresSelfHosted::create_text_file(const std::string& file_uri, const std
 
 bool PostgresSelfHosted::directory_exists_uri(const std::string& uri)
 {
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
+  if(uri.empty())
+    return false;
+
+  const Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
   return file && file->query_exists();
 }
 

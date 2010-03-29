@@ -33,7 +33,7 @@ App_WithDoc::App_WithDoc(const Glib::ustring& appname)
 : App(appname),
   m_pDocument(0),
   m_bCloseAfterSave(false)
-{  
+{
 }
 
 App_WithDoc::~App_WithDoc()
@@ -64,7 +64,7 @@ void App_WithDoc::on_menu_file_close()
 
   if(!get_operation_cancelled())
     ui_hide();
-    
+
   on_document_close();
 }
 
@@ -105,7 +105,7 @@ bool App_WithDoc::open_document(const Glib::ustring& file_uri)
 {
   {
     //Open it:
-        
+
     //Load it into a new instance unless the current document is just a default new.
     if(!(get_document()->get_is_new())) //if it's not new.
     {
@@ -113,7 +113,7 @@ bool App_WithDoc::open_document(const Glib::ustring& file_uri)
       new_instance(file_uri);
       return true;
     }
-    
+
     App_WithDoc* pApp = this; //Replace the default new document in this instance.
 
     //Open it.
@@ -122,8 +122,12 @@ bool App_WithDoc::open_document(const Glib::ustring& file_uri)
     const bool bTest = pApp->m_pDocument->load(failure_code);
 
     bool bOpenFailed = false;
+    bool bShowError = false;
     if(!bTest) //if open failed.
+    {
       bOpenFailed = true;
+      bShowError = true;
+    }
     else
     {
       //if open succeeded then let the App respond:
@@ -136,10 +140,10 @@ bool App_WithDoc::open_document(const Glib::ustring& file_uri)
         set_document_modified(false); //disables menu and toolbar Save items.
 
         //Update document history list:
-        //(Getting the file URI again, in case it has changed while being opened, 
+        //(Getting the file URI again, in case it has changed while being opened,
         //for instance if it was a template file that was saved as a real file.)
         if(pApp->m_pDocument)
-          document_history_add(pApp->m_pDocument->get_file_uri());
+          document_history_add(file_uri);
 
         return true; //success.
       }
@@ -147,7 +151,12 @@ bool App_WithDoc::open_document(const Glib::ustring& file_uri)
 
     if(bOpenFailed)
     {
-      ui_warning_load_failed(failure_code);
+      if (bShowError)
+        ui_warning_load_failed(failure_code);
+
+      //Make sure that non-existant files are removed from the history list:
+      if(failure_code == Document::LOAD_FAILURE_CODE_NOT_FOUND)
+        document_history_remove(file_uri);
 
       //re-initialize document.
       delete pApp->m_pDocument;
@@ -156,7 +165,7 @@ bool App_WithDoc::open_document(const Glib::ustring& file_uri)
 
       return false; //failed.
     }
-      
+
   } //if already open.
 
   return false; //failed.
@@ -183,6 +192,9 @@ void App_WithDoc::offer_saveas()
 
 bool App_WithDoc::file_exists(const Glib::ustring& uri)
 {
+  if(uri.empty())
+    return false;
+
   //Check whether file exists already:
   {
     // Try to examine the input file.
@@ -211,7 +223,7 @@ void App_WithDoc::on_menu_file_saveas()
   //This doesn't work: TODO.
   ui_bring_to_front();
 
-  //Show the save dialog:  
+  //Show the save dialog:
   const Glib::ustring& file_uriOld = m_pDocument->get_file_uri();
 
   Glib::ustring file_uri = ui_file_select_save(file_uriOld); //Also asks for overwrite confirmation.
@@ -301,7 +313,7 @@ void App_WithDoc::on_menu_file_save()
 }
 
 void App_WithDoc::init()
-{  
+{
   init_create_document();
 
   //Call base method:
@@ -322,7 +334,7 @@ void App_WithDoc::init_create_document()
   }
 
   m_pDocument->set_is_new(true); //Can't be modified if it's just been created.
-  
+
   m_pDocument->signal_modified().connect(sigc::mem_fun(*this, &App_WithDoc::on_document_modified));
 
   update_window_title();
@@ -345,7 +357,7 @@ void App_WithDoc::offer_to_save_changes()
     if(m_pDocument->get_modified())
     {
       set_operation_cancelled(false); //Initialize it again. It might be set later in this method by cancel_close_or_exit().
-      
+
       //The document has unsaved changes,
       //so ask the user whether the document should be saved:
       enumSaveChanges buttonClicked = ui_offer_to_save_changes();
@@ -358,7 +370,7 @@ void App_WithDoc::offer_to_save_changes()
           on_menu_file_save(); //If File|Exit is in progress, this could cancel it.
           break;
         }
-        
+
         case(SAVECHANGES_Discard):
         {
           //Close if this save offer was a result of a FileClose (It probably always is):
@@ -366,18 +378,18 @@ void App_WithDoc::offer_to_save_changes()
           //Do nothing - the caller will probably hide() the window to have it deleted.
           break;
         }
-        
+
         case(SAVECHANGES_Cancel): //Cancel.
         {
           cancel_close_or_exit();
           break;
         }
-        
+
         default:
         {
           break;
         }
-      }   
+      }
     }
   }
 }
@@ -411,7 +423,7 @@ bool App_WithDoc::on_document_load()
   }
   else
     return false; //I can't think of any reason why this would happen.
-  
+
   //If you are not using Views, then override this to fill your various windows with stuff according to the contents of the document.
 }
 
@@ -468,9 +480,9 @@ void App_WithDoc::on_menu_edit_clear()
 void App_WithDoc::after_successful_save()
 {
   set_document_modified(false); //enables/disables menu and toolbar widgets.
-    
+
   //Update document history list:
-  document_history_add(m_pDocument->get_file_uri());     
+  document_history_add(m_pDocument->get_file_uri());
 }
 
 Glib::ustring App_WithDoc::get_conf_fullkey(const Glib::ustring& key)
@@ -495,4 +507,3 @@ void App_WithDoc::ui_warning_load_failed(int)
 }
 
 } //namespace
-

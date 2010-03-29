@@ -120,9 +120,9 @@ bool Document::get_modified() const
 bool Document::load(int& failure_code)
 {
   //Initialize the output parameter:
-  failure_code = 0;
+  failure_code = LOAD_FAILURE_CODE_NONE;
 
-  bool bTest = read_from_disk();
+  bool bTest = read_from_disk(failure_code);
   if(bTest)
   {
     bTest = load_after(failure_code); //may be overridden.
@@ -147,7 +147,7 @@ bool Document::load_from_data(const guchar* data, std::size_t length, int& failu
   failure_code = 0;
 
   m_strContents = Glib::ustring((char*)data, length);
- 
+
   const bool bTest = load_after(failure_code); //may be overridden.
   if(bTest)
   {
@@ -196,12 +196,18 @@ bool Document::save_before()
   return true;
 }
 
-bool Document::read_from_disk()
+bool Document::read_from_disk(int& failure_code)
 {
+  failure_code = LOAD_FAILURE_CODE_NONE;
+
   m_strContents.erase();
 
   // Open the input file for read access:
+  if(m_file_uri.empty())
+    return false;
+
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(m_file_uri);
+
   Glib::RefPtr<Gio::FileInputStream> stream;
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -211,6 +217,12 @@ bool Document::read_from_disk()
   }
   catch(const Gio::Error& ex)
   {
+    std::cout << "Debug: Document::read_from_disk(): Error: " << ex.what() << std::endl;
+
+    if(ex.code() == Gio::Error::NOT_FOUND)
+      failure_code = LOAD_FAILURE_CODE_NOT_FOUND;
+    //  std::cout << "  File not found: " << m_file_uri << std::endl;
+
     // If the operation was not successful, print the error and abort
     return false; //print_error(ex, input_uri_string);
   }
@@ -271,6 +283,9 @@ bool Document::read_from_disk()
 
 bool Document::write_to_disk()
 {
+  if(m_file_uri.empty())
+    return false;
+
   //Write the changed data to disk:
   if(get_modified())
   {
@@ -302,6 +317,8 @@ bool Document::write_to_disk()
       std::cout << "Error: " << error->what() << std::endl;
 #endif
      // If the operation was not successful, print the error and abort
+     std::cout << "Error: " << ex.what() << std::endl;
+
      return false; // print_error(ex, output_uri_string);
     }
 
@@ -316,7 +333,7 @@ bool Document::write_to_disk()
       //Write the data to the output uri
       stream->write(m_strContents.data(), m_strContents.bytes());
 
-      //Close the stream to make sure that the write really happens 
+      //Close the stream to make sure that the write really happens
       //even with glibmm 2.16.0 which had a refcount leak that stopped it.
       stream->close();
       stream.reset();
@@ -349,7 +366,10 @@ Glib::ustring Document::get_name() const
 static Glib::ustring get_file_display_name(const Glib::ustring& uri)
 {
   Glib::ustring result;
-  
+
+  if(uri.empty())
+    return result;
+
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
   Glib::RefPtr<const Gio::FileInfo> file_info;
 
@@ -360,7 +380,7 @@ static Glib::ustring get_file_display_name(const Glib::ustring& uri)
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "App_Glom::get_file_display_name(): error: " << ex.what() << std::endl;
+    std::cerr << "Application::get_file_display_name(uri=" << uri << "): error: " << ex.what() << std::endl;
     return result;
   }
 #else
@@ -372,8 +392,8 @@ static Glib::ustring get_file_display_name(const Glib::ustring& uri)
 
   if(!file_info)
     return result;
- 
-  return file_info->get_display_name();   
+
+  return file_info->get_display_name();
 }
 
 Glib::ustring Document::util_file_uri_get_name(const Glib::ustring& file_uri, const Glib::ustring& file_extension)

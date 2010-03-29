@@ -90,7 +90,7 @@ type_list_currencies get_list_of_currency_symbols()
     {
       std::cerr << "Exception while parsing iso codes (currencies): " << ex.what() << std::endl;
     }
-#endif // LIBXMLPP_EXCEPTIONS_ENABLED
+#endif // LIBXMLCPP_EXCEPTIONS_ENABLED
   }
 
   return list_currencies;

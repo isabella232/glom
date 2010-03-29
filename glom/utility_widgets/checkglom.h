@@ -31,7 +31,7 @@
 namespace Glom
 {
 
-class App_Glom;
+class Application;
 
 class CheckGlom
 : public Gtk::CheckButton,
@@ -51,7 +51,7 @@ private:
   virtual bool on_button_press_event(GdkEventButton *event); //override
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  virtual App_Glom* get_application();
+  virtual Application* get_application();
 };
 
 } //namespace Glom

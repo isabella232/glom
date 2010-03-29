@@ -26,6 +26,7 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/entry.h>
 #include <gtkmm/label.h>
+#include <gtksourceviewmm/sourceview.h>
 #include <glom/base_db.h>
 #include <libglom/data_structure/system_prefs.h>
 #include <libglom/connectionpool.h>
@@ -51,6 +52,7 @@ private:
   void on_response(int response_id);
 
   void on_button_choose_image();
+  void on_button_test_script();
   void on_treeview_cell_edited_next_value(const Glib::ustring& path_string, const Glib::ustring& new_text);
   int on_autoincrements_sort(const Gtk::TreeModel::iterator& a, const Gtk::TreeModel::iterator& b);
 
@@ -77,6 +79,9 @@ private:
 
   ImageGlom* m_image;
   Gtk::Button* m_button_choose_image;
+
+  gtksourceview::SourceView* m_text_view_script;
+  Gtk::Button* m_button_test_script;
 
   SystemPrefs m_system_prefs;
 };

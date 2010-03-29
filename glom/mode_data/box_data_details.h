@@ -36,7 +36,7 @@ namespace Glom
 
 class Box_Data_Details : public Box_Data
 {
-public: 
+public:
   Box_Data_Details(bool bWithNavButtons = true);
   virtual ~Box_Data_Details();
 
@@ -46,7 +46,7 @@ public:
 
   virtual void print_layout();
 
- 
+
   //Signals:
 #ifndef GLOM_ENABLE_MAEMO
   typedef sigc::signal<void> type_signal_void;
@@ -69,9 +69,7 @@ public:
   void show_layout_toolbar(bool show = true);
 #endif
 
-  #ifdef GLOM_ENABLE_MAEMO
   void do_new_record();
-  #endif
 
 protected:
 
@@ -79,11 +77,11 @@ protected:
   //Implementations of pure virtual methods from Base_DB_Table_Data:
 public:
   virtual Gnome::Gda::Value get_primary_key_value_selected() const; //Value in the primary key's cell.
-  
+
 protected:
   virtual void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value);
   virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const; //Actual primary key value of this record.
-    
+
   virtual Gnome::Gda::Value get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const;
   virtual void set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
   virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
@@ -97,11 +95,11 @@ protected:
   void set_found_set_from_primary_key_value();
 
   void print_layout_group(xmlpp::Element* node_parent, const sharedptr<const LayoutGroup>& group);
-  
+
 private:
   //Signal handlers:
   void on_button_new();
-    
+
 #ifndef GLOM_ENABLE_MAEMO
   void on_button_del();
 
@@ -174,7 +172,7 @@ protected:
 
 #endif //GLOM_ENABLE_MAEMO
   type_signal_requested_related_details m_signal_requested_related_details;
-  
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   bool m_design_mode; // Cache here because we need it when the layout is redrawn
 #endif

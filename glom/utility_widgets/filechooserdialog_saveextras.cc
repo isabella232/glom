@@ -64,6 +64,8 @@ void FileChooserDialog_SaveExtras::set_extra_message(const Glib::ustring& messag
 
 void FileChooserDialog_SaveExtras::create_child_widgets()
 {
+  set_icon_name("glom");
+
   //m_extra_widget.pack_start(m_label_extra_message);
   m_label_extra_message.set_alignment(0.0f, 0.5f);
   m_label_extra_message.show();
@@ -92,7 +94,7 @@ void FileChooserDialog_SaveExtras::create_child_widgets()
   label_newdb->show();
 
   Gtk::HBox* box_label = Gtk::manage(new Gtk::HBox(false, Utils::DEFAULT_SPACING_SMALL));
-  Gtk::Label* label_title = Gtk::manage(new Gtk::Label(_("Title")));
+  Gtk::Label* label_title = Gtk::manage(new Gtk::Label(_("_Title:"), true));
   box_label->pack_start(*label_title, Gtk::PACK_SHRINK);
   label_title->show();
   box_label->pack_start(m_entry_title);

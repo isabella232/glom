@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "comboglomchoicesbase.h"
+#include "combochoiceswithtreemodel.h"
 #include <libglom/data_structure/glomconversions.h>
 #include <glibmm/i18n.h>
 //#include <sstream> //For stringstream
@@ -31,29 +31,28 @@
 namespace Glom
 {
 
-ComboGlomChoicesBase::ComboGlomChoicesBase()
-: m_with_second(false)
+ComboChoicesWithTreeModel::ComboChoicesWithTreeModel()
 {
   init();
 }
 
-ComboGlomChoicesBase::ComboGlomChoicesBase(const sharedptr<LayoutItem_Field>& field_second)
-: m_with_second(true),
-  m_layoutitem_second(field_second)
+ComboChoicesWithTreeModel::ComboChoicesWithTreeModel(const sharedptr<LayoutItem_Field>& field_second)
+: ComboChoices(field_second)
 {
   init();
 }
 
-void ComboGlomChoicesBase::init()
+void ComboChoicesWithTreeModel::init()
 {
+  ComboChoices::init();
   m_refModel = Gtk::ListStore::create(m_Columns);
 }
 
-ComboGlomChoicesBase::~ComboGlomChoicesBase()
+ComboChoicesWithTreeModel::~ComboChoicesWithTreeModel()
 {
 }
 
-void ComboGlomChoicesBase::set_choices_with_second(const type_list_values_with_second& list_values)
+void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_with_second& list_values)
 {
   m_refModel->clear();
 
@@ -76,7 +75,7 @@ void ComboGlomChoicesBase::set_choices_with_second(const type_list_values_with_s
 }
 
 
-void ComboGlomChoicesBase::set_choices(const FieldFormatting::type_list_values& list_values)
+void ComboChoicesWithTreeModel::set_choices(const FieldFormatting::type_list_values& list_values)
 {
   m_refModel->clear();
 

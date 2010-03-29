@@ -35,7 +35,7 @@
 namespace Glom
 {
 
-class App_Glom;
+class Application;
 
 
 class EntryGlom
@@ -84,7 +84,7 @@ private:
   virtual bool on_button_press_event(GdkEventButton *event); //override
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  virtual App_Glom* get_application();
+  virtual Application* get_application();
 
   Glib::ustring m_old_text;
   Field::glom_field_type m_glom_type; //Store the type so we can validate the text accordingly.

@@ -21,7 +21,7 @@
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 #include <glom/base_db.h>
-#include "application.h" //App_Glom.
+#include "application.h" //Application.
 #include <libglom/appstate.h>
 #include <libglom/standard_table_prefs_fields.h>
 #include <libglom/document/document.h>
@@ -209,7 +209,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute_select(const Glib::us
 
 
   //Debug output:
-  const App_Glom* app = App_Glom::get_application();
+  const Application* app = Application::get_application();
   if(stmt && app && app->get_show_sql_debug())
   {
     const std::string full_query = sqlbuilder_get_full_query(gda_connection, strQuery, params);
@@ -278,7 +278,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute_select(const Glib::Re
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
 
   //Debug output:
-  const App_Glom* app = App_Glom::get_application();
+  const Application* app = Application::get_application();
   if(app && app->get_show_sql_debug())
   {
     const std::string full_query = sqlbuilder_get_full_query(builder, params);
@@ -366,7 +366,7 @@ bool Base_DB::query_execute(const Glib::ustring& strQuery,
 
 
   //Debug output:
-  const App_Glom* app = App_Glom::get_application();
+  const Application* app = Application::get_application();
   if(stmt && app && app->get_show_sql_debug())
   {
     const std::string full_query = sqlbuilder_get_full_query(gda_connection, strQuery, params);
@@ -425,7 +425,7 @@ bool Base_DB::query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& bu
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
   
   //Debug output:
-  const App_Glom* app = App_Glom::get_application();
+  const Application* app = Application::get_application();
   if(app && app->get_show_sql_debug())
   {
     const std::string full_query = sqlbuilder_get_full_query(builder, params);
@@ -2163,15 +2163,7 @@ sharedptr<LayoutItem_Notebook> Base_DB::offer_notebook(const sharedptr<LayoutIte
 
   try
   {
-    //GtkBuilder can't find top-level objects (GtkAdjustments in this case),
-    //that one top-level object references.
-    //See http://bugzilla.gnome.org/show_bug.cgi?id=575714
-    //so we need to this silliness. murrayc.
-    std::list<Glib::ustring> builder_ids;
-    builder_ids.push_back("dialog_notebook");
-    builder_ids.push_back("adjustment2");
-
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), builder_ids);
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "box_formatting");
 
     Dialog_Notebook* dialog = 0;
     refXml->get_widget_derived("dialog_notebook", dialog);
@@ -2927,10 +2919,7 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const LayoutFieldInRecord
   sharedptr<const LayoutItem_Field> layout_item = field_in_record.m_field;
   list_fields.push_back(layout_item);
   Glib::ustring sql_query = Utils::build_sql_select_with_key(field_in_record.m_table_name,
-      list_fields, field_in_record.m_key, field_in_record.m_key_value);
-
-  if(!sql_query.empty())
-    sql_query += " LIMIT 1";
+      list_fields, field_in_record.m_key, field_in_record.m_key_value, 1);
 
   Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(sql_query);
   if(data_model)
@@ -2974,12 +2963,11 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const sharedptr<Field>& f
   sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
   layout_item->set_full_field_details(field);
   list_fields.push_back(layout_item);
-  Glib::ustring sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
+  const Glib::ustring sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
     list_fields,
-    found_set.m_where_clause);
-
-  if(!sql_query.empty())
-    sql_query += " LIMIT 1";
+    found_set.m_where_clause,
+    Glib::ustring(), type_sort_clause(), Glib::ustring(),
+    1 /* limit */);
 
   Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(sql_query);
   if(data_model)
@@ -3522,7 +3510,7 @@ int Base_DB::count_rows_returned_by(const Glib::ustring& sql_query)
   builder->select_add_target(m_found_set.m_table_name);
   */
 
-  const App_Glom* app = App_Glom::get_application();
+  const Application* app = Application::get_application();
   if(app && app->get_show_sql_debug())
   {
     try
@@ -3665,10 +3653,10 @@ void Base_DB::set_found_set_where_clause_for_portal(FoundSet& found_set, const s
 void Base_DB::update_gda_metastore_for_table(const Glib::ustring& table_name) const
 {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(App_Glom::get_application());
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(Application::get_application());
 #else
   std::auto_ptr<Glom::ExceptionConnection> ex;
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(App_Glom::get_application(), ex);
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(Application::get_application(), ex);
 #endif
   if(!sharedconnection)
   {

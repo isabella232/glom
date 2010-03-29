@@ -98,7 +98,7 @@ Glib::ustring Privs::get_default_developer_user_name(Glib::ustring& password)
 
 Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_name)
 {
-  BusyCursor cursor(App_Glom::get_application());
+  BusyCursor cursor(Application::get_application());
 
   type_vec_strings result;
 
@@ -436,7 +436,7 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
   //TODO_Performance: There's lots of database access here.
   //We could maybe replace some with the postgres has_table_* function().
 
-  BusyCursor cursor(App_Glom::get_application());
+  BusyCursor cursor(Application::get_application());
 
   //Return a cached value if possible.
   //(If it is in the cache then it's fairly recent)

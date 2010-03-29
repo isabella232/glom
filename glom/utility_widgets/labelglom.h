@@ -30,7 +30,7 @@
 namespace Glom
 {
 
-class App_Glom;
+class Application;
 
 class LabelGlom
 : public Gtk::EventBox,
@@ -47,7 +47,7 @@ public:
 private:
   void init();
 
-  virtual App_Glom* get_application();
+  virtual Application* get_application();
     
   Gtk::Label m_label;
 #ifndef GLOM_ENABLE_CLIENT_ONLY    

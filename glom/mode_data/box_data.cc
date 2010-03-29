@@ -26,6 +26,8 @@
 #include <libglom/data_structure/layout/layoutitem_field.h>
 #include <glom/glom_privs.h>
 #include <glom/python_embed/glom_python.h>
+#include <glom/python_embed/python_ui_callbacks.h>
+#include <glom/application.h>
 #include <algorithm> //For std::find()
 #include <libglom/libglom_config.h>
 #include <glibmm/i18n.h>
@@ -365,11 +367,15 @@ void Box_Data::execute_button_script(const sharedptr<const LayoutItem_Button>& l
   {
 #endif // GLIBMM_EXCEPTIONS_ENABLED
 
+    //Allow this UI to respond to UI change requests from the Python code:
+    AppPythonUICallbacks callbacks;
+
     glom_execute_python_function_implementation(layout_item->get_script(),
       field_values, //TODO: Maybe use the field's type here.
       get_document(),
       get_table_name(), field_primary_key, primary_key_value,
-      sharedconnection->get_gda_connection());
+      sharedconnection->get_gda_connection(),
+      callbacks);
 #ifndef GLIBMM_EXCEPTIONS_ENABLED
   }
 #endif // !GLIBMM_EXCEPTIONS_ENABLED

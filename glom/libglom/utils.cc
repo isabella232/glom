@@ -195,7 +195,7 @@ Glib::ustring Utils::string_replace(const Glib::ustring& src, const Glib::ustrin
 }
 
 
-Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const Glib::ustring& extra_join, const type_sort_clause& sort_clause, const Glib::ustring& extra_group_by)
+Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const Glib::ustring& extra_join, const type_sort_clause& sort_clause, const Glib::ustring& extra_group_by, guint limit)
 {
   //TODO_Performance:
   type_vecConstLayoutFields constFieldsToGet;
@@ -204,7 +204,7 @@ Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& tab
     constFieldsToGet.push_back(*iter);
   }
 
-  return build_sql_select_with_where_clause(table_name, constFieldsToGet, where_clause, extra_join, sort_clause, extra_group_by);
+  return build_sql_select_with_where_clause(table_name, constFieldsToGet, where_clause, extra_join, sort_clause, extra_group_by, limit);
 }
 
 
@@ -331,7 +331,7 @@ Glib::ustring Utils::build_sql_select_fields_to_get(const Glib::ustring& table_n
 }
 
 
-Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const Glib::ustring& extra_join, const type_sort_clause& sort_clause, const Glib::ustring& extra_group_by)
+Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const Glib::ustring& extra_join, const type_sort_clause& sort_clause, const Glib::ustring& extra_group_by, guint limit)
 {
   //Get the list of fields to SELECT, plus the tables that they are selected FROM.
   Glib::ustring sql_part_from;
@@ -386,11 +386,19 @@ Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& tab
       result += " ORDER BY " + str_sort_clause;
   }
 
+  //LIMIT clause:
+  if(!result.empty() && limit > 0)
+  {
+    char pchLimit[10];
+    sprintf(pchLimit, "%d", limit);
+    result += " LIMIT " + Glib::ustring(pchLimit);
+  }
+
   return result;
 }
 
 
-Glib::ustring Utils::build_sql_select_with_key(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value)
+Glib::ustring Utils::build_sql_select_with_key(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value, guint limit)
 {
   //TODO_Performance:
   type_vecConstLayoutFields constFieldsToGet;
@@ -399,18 +407,17 @@ Glib::ustring Utils::build_sql_select_with_key(const Glib::ustring& table_name, 
     constFieldsToGet.push_back(*iter);
   }
 
-  return build_sql_select_with_key(table_name, constFieldsToGet, key_field, key_value);
-
-
+  return build_sql_select_with_key(table_name, constFieldsToGet, key_field, key_value, limit);
 }
 
-Glib::ustring Utils::build_sql_select_with_key(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value)
+Glib::ustring Utils::build_sql_select_with_key(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value, guint limit)
 {
   if(!Conversions::value_is_empty(key_value)) //If there is a record to show:
   {
     //TODO: Use a SQL parameter instead of using sql():
     const Glib::ustring where_clause = '\"' + table_name + "\".\"" + key_field->get_name() + "\" = " + key_field->sql(key_value);
-    return Utils::build_sql_select_with_where_clause(table_name, fieldsToGet, where_clause);
+    return Utils::build_sql_select_with_where_clause(table_name, fieldsToGet, where_clause,
+      Glib::ustring(), type_sort_clause(),  Glib::ustring(), limit);
   }
 
   return Glib::ustring();
@@ -818,6 +825,9 @@ Glib::ustring Utils::string_remove_suffix(const Glib::ustring& str, const Glib::
 
 bool Utils::file_exists(const Glib::ustring& uri)
 {
+  if(uri.empty())
+     return false;
+
   //Check whether file exists already:
   {
     // Try to examine the input file.

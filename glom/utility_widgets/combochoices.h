@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_UTILITY_WIDGETS_COMBO_GLOM_CHOICESBASE_H
-#define GLOM_UTILITY_WIDGETS_COMBO_GLOM_CHOICESBASE_H
+#ifndef GLOM_UTILITY_WIDGETS_COMBO_CHOICES_H
+#define GLOM_UTILITY_WIDGETS_COMBO_CHOICES_H
 
 #include <gtkmm.h>
 #include <libglom/data_structure/field.h>
@@ -28,40 +28,26 @@
 namespace Glom
 {
 
-class ComboGlomChoicesBase : public LayoutWidgetField
+/** A polymorphic base class for all the combo-like widgets.
+ */
+class ComboChoices : public LayoutWidgetField
 {
 public:
   ///You must call set_layout_item() to specify the field type and formatting of the main column.
-  explicit ComboGlomChoicesBase();
+  explicit ComboChoices();
 
   ///You must call set_layout_item() to specify the field type and formatting of the main column.
-  explicit ComboGlomChoicesBase(const sharedptr<LayoutItem_Field>& field_second);
+  explicit ComboChoices(const sharedptr<LayoutItem_Field>& field_second);
 
-  virtual ~ComboGlomChoicesBase();
+  virtual ~ComboChoices();
 
-  void set_choices(const FieldFormatting::type_list_values& list_values);
+  virtual void set_choices(const FieldFormatting::type_list_values& list_values) = 0;
 
   typedef std::list< std::pair<Gnome::Gda::Value, Gnome::Gda::Value> > type_list_values_with_second;
-  void set_choices_with_second(const type_list_values_with_second& list_values);
+  virtual void set_choices_with_second(const type_list_values_with_second& list_values) = 0;
 
 protected:
   void init();
-
-  //Tree model columns:
-  class ModelColumns : public Gtk::TreeModel::ColumnRecord
-  {
-  public:
-
-    ModelColumns()
-    { add(m_col_first); add(m_col_second); }
-
-    Gtk::TreeModelColumn<Glib::ustring> m_col_first; //The data to choose - this must be text.
-    Gtk::TreeModelColumn<Glib::ustring> m_col_second;
-  };
-
-  ModelColumns m_Columns;
-
-  Glib::RefPtr<Gtk::ListStore> m_refModel;
 
   bool m_with_second;
   sharedptr<const LayoutItem_Field> m_layoutitem_second;
@@ -70,5 +56,5 @@ protected:
 
 } //namespace Glom
 
-#endif //GLOM_UTILITY_WIDGETS_COMBO_GLOM_CHOICESBASE_H
+#endif //GLOM_UTILITY_WIDGETS_COMBO_CHOICES_H
 

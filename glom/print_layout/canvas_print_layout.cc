@@ -645,14 +645,11 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
   if(fieldsToGet.empty())
     return;
 
-  Glib::ustring sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
+  const Glib::ustring sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
     fieldsToGet,
-    found_set.m_where_clause, Glib::ustring() /* extra_join */, found_set.m_sort_clause);
-
-  if(!sql_query.empty())
-    sql_query += " LIMIT 1";
-  else
-    return;
+    found_set.m_where_clause, Glib::ustring() /* extra_join */, found_set.m_sort_clause, 
+    Glib::ustring(),
+    1);
   
   bool records_found = false;
   Glib::RefPtr<Gnome::Gda::DataModel> datamodel;

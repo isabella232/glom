@@ -15,7 +15,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([Glom], [1.13.5], [http://bugzilla.gnome.org/enter_bug.cgi?product=Glom], [glom])
+AC_INIT([Glom], [1.13.9], [http://bugzilla.gnome.org/enter_bug.cgi?product=Glom], [glom])
 AC_PREREQ([2.60])
 
 AC_CONFIG_SRCDIR([glom/main.cc])
@@ -44,7 +44,7 @@ AC_SUBST([GLOM_ABI_VERSION], [1.14])
 AC_DEFINE_UNQUOTED([GLOM_ABI_VERSION], ["$GLOM_ABI_VERSION"],
 		   [Define to the Glom ABI version string.])
 # Python modules can't be called glom-1.x, so we use underlines.
-AC_DEFINE_UNQUOTED([GLOM_ABI_VERSION_UNDERLINED], ["AS_TR_SH([$GLOM_ABI_VERSION])"],
+AC_DEFINE_UNQUOTED([GLOM_ABI_VERSION_UNDERLINED], "AS_TR_SH([$GLOM_ABI_VERSION])",
                    [Define to the Glom ABI version with '.' replaced by '_'.])
 
 # Only check for libgettextpo on non-Maemo platforms.
@@ -146,13 +146,13 @@ AC_ARG_ENABLE([maemo-launcher],
 # Libraries used by libglom:
 # We require libgda >= 4.0.4 because previous versions had case-sensitivity or fatal metastore problems.
 # libgda >= 4.1.2 is also OK, but not 4.1.<2.
-REQUIRED_LIBGLOM_LIBS='gthread-2.0 giomm-2.4 libxml++-2.6 pygda-4.0 >= 2.25.3 pygobject-2.0 >= 2.6.0 libgdamm-4.0 >= 3.99.18 libgda-4.0 >= 4.0.4 libgda-postgres-4.0'
+REQUIRED_LIBGLOM_LIBS='gthread-2.0 giomm-2.4 libxml++-2.6 >= 2.23.1 pygda-4.0 >= 2.25.3 pygobject-2.0 >= 2.6.0 libgdamm-4.0 >= 3.99.18 libgda-4.0 >= 4.0.4 libgda-postgres-4.0'
 
 AS_IF([test "x$glom_host_win32" != xyes],
       [REQUIRED_LIBGLOM_LIBS="$REQUIRED_LIBGLOM_LIBS libepc-1.0 >= 0.3.1 avahi-ui"])
 
 # Libraries used by Glom:
-REQUIRED_GLOM_LIBS="$REQUIRED_LIBGLOM_LIBS gtkmm-2.4 >= 2.14.9 gthread-2.0 gconfmm-2.6 libxml++-2.6 libxslt >= 1.1.10 goocanvasmm-1.0 >= 0.14.0"
+REQUIRED_GLOM_LIBS="$REQUIRED_LIBGLOM_LIBS gtkmm-2.4 >= 2.19.7 gthread-2.0 gconfmm-2.6 libxml++-2.6 libxslt >= 1.1.10 goocanvasmm-1.0 >= 0.14.0"
 
 # Do not require iso-codes in client-only mode, or on Windows:
 # TODO: Package iso-codes for Windows?

@@ -28,7 +28,6 @@ namespace Glom
 
 Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Box_WithButtons(cobject, builder),
-  m_pLabelFrameTitle(0),
   m_pCheckButtonShowHidden(0),
   m_colTableName(0),
   m_colHidden(0),
@@ -47,8 +46,6 @@ Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   Gtk::Alignment* pAligmentPlaceholder = 0;
   builder->get_widget("alignment_placeholder_adddel", pAligmentPlaceholder);
   pAligmentPlaceholder->add(m_AddDel);
-
-  builder->get_widget("label_frame_title", m_pLabelFrameTitle);
 
   builder->get_widget("checkbutton_show_hidden", m_pCheckButtonShowHidden);
   m_pCheckButtonShowHidden->signal_toggled().connect(sigc::mem_fun(*this, &Box_Tables::on_show_hidden_toggled));
@@ -101,7 +98,7 @@ void Box_Tables::fill_table_row(const Gtk::TreeModel::iterator& iter, const shar
 
 bool Box_Tables::fill_from_database()
 {
-  BusyCursor busy_cursor(App_Glom::get_application());
+  BusyCursor busy_cursor(Application::get_application());
 
   bool result = Base_DB::fill_from_database();
 
@@ -125,7 +122,7 @@ bool Box_Tables::fill_from_database()
 
   const bool editable = developer_mode;
   const bool visible_extras = developer_mode;
-  m_colTableName = m_AddDel.add_column(_("Tables"), AddDelColumnInfo::STYLE_Text, editable, visible_extras);
+  m_colTableName = m_AddDel.add_column(_("Table"), AddDelColumnInfo::STYLE_Text, editable, visible_extras);
   m_AddDel.prevent_duplicates(m_colTableName); //Prevent two tables with the same name from being added.
   m_AddDel.set_prevent_duplicates_warning(_("This table already exists. Please choose a different table name"));
 
@@ -155,10 +152,10 @@ bool Box_Tables::fill_from_database()
 
   //Get the list of tables in the database, from the server:
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(App_Glom::get_application());
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(Application::get_application());
 #else
   std::auto_ptr<ExceptionConnection> error;
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(App_Glom::get_application(), error);
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(Application::get_application(), error);
   // Ignore error because sharedconnection presence is checked below.
 #endif
 
@@ -241,7 +238,7 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
     //Ask the user if they want us to try to cope with this:
     Gtk::MessageDialog dialog(Utils::bold_message(_("Table Already Exists")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
     dialog.set_secondary_text(_("This table already exists on the database server, though it is not mentioned in the .glom file. This should not happen. Would you like Glom to attempt to use the existing table?"));
-    dialog.set_transient_for(*App_Glom::get_application());
+    dialog.set_transient_for(*Application::get_application());
 
     const int response = dialog.run();
     dialog.hide();
@@ -301,7 +298,7 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
         {
            //TODO: Do not show tables that are not in the document.
            Gtk::MessageDialog dialog(_("You cannot delete this table, because there is no information about this table in the document."));
-           dialog.set_transient_for(*App_Glom::get_application());
+           dialog.set_transient_for(*Application::get_application());
            dialog.run();
         }
         else
@@ -310,7 +307,7 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
           Glib::ustring strMsg = _("Are you sure that you want to delete this table?\nTable name: ") + table_name;
           Gtk::MessageDialog dialog(Utils::bold_message(_("Delete Table")), true);
           dialog.set_secondary_text(strMsg);
-          dialog.set_transient_for(*App_Glom::get_application());
+          dialog.set_transient_for(*Application::get_application());
           int iButtonClicked = dialog.run();
 
           //Delete the table:
@@ -424,7 +421,7 @@ void Box_Tables::on_adddel_Edit(const Gtk::TreeModel::iterator& row)
     {
        Gtk::MessageDialog dialog(Utils::bold_message(_("Unknown Table")), true);
        dialog.set_secondary_text(_("You cannot open this table, because there is no information about this table in the document."));
-       dialog.set_transient_for(*App_Glom::get_application());
+       dialog.set_transient_for(*Application::get_application());
        dialog.run();
     }
     else

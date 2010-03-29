@@ -235,7 +235,7 @@ public:
 #endif
 
   /** Specify a callback that the ConnectionPool can call to get a pointer to the document.
-   * This callback avoids Connection having to link to App_Glom,
+   * This callback avoids Connection having to link to Application,
    * and avoids us worrying about whether a previously-set document (via a set_document() method) is still valid.
    */ 
   typedef sigc::slot<Document*> SlotGetDocument; 

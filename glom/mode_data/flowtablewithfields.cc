@@ -44,6 +44,7 @@ namespace Glom
   
 FlowTableWithFields::Info::Info()
 : m_first(0),
+  m_first_eventbox(0),
   m_second(0),
   m_checkbutton(0)
 {
@@ -248,6 +249,8 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
     flow_table->signal_related_record_changed().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_related_record_changed) );
     flow_table->signal_requested_related_details().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_requested_related_details) );
     flow_table->signal_script_button_clicked().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_script_button_clicked) );
+    
+    flow_table->align_child_group_labels();
   }
 }
 
@@ -556,6 +559,7 @@ void FlowTableWithFields::add_field_at_position(const sharedptr<LayoutItem_Field
   
   Gtk::EventBox* eventbox = Gtk::manage(new Gtk::EventBox());
   eventbox->add(*info.m_first);
+  info.m_first_eventbox = eventbox; //Remember it so we can retrieve the column number later from FlowTable.
   eventbox->set_visible_window(false);
   eventbox->set_events(Gdk::ALL_EVENTS_MASK);
   eventbox->show_all();
@@ -1242,6 +1246,117 @@ void FlowTableWithFields::on_flowtable_requested_related_details(const Glib::ust
   signal_requested_related_details().emit(table_name, primary_key_value);
 }
 
+void FlowTableWithFields::apply_size_groups_to_labels(const type_vec_sizegroups& size_groups)
+{
+  //Remove widgets from any existing size group:
+  for(type_listFields::iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
+  {
+    Info info = *iter;
+    Gtk::Label* label = info.m_first;
+    Glib::RefPtr<Gtk::SizeGroup> previous_size_group = info.m_first_in_sizegroup;
+    if(!label || !previous_size_group)
+      continue;
+      
+    previous_size_group->remove_widget(*label);
+    info.m_first_in_sizegroup.reset();
+  }
+  
+  m_vec_size_groups = size_groups;
+  
+  if(m_vec_size_groups.empty())
+    return;
+     
+  for(type_listFields::iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
+  {
+    Info info = *iter;
+    Gtk::Label* label = info.m_first;
+    if(!label)
+      continue;
+      
+    Gtk::EventBox* label_parent = info.m_first_eventbox;
+    if(!label_parent)
+      continue;
+            
+    //Only align labels in the first column, because items in separate columns 
+    //couldn't be aligned vertically anyway, and this would cause extra space.
+    //TODO: Use a different SizeGroup for items in 2nd columns?
+    guint column = 0;
+    const bool column_allocated = get_column_for_first_widget(*label_parent, column);
+    if(!column_allocated)
+      
+    if(column >= m_vec_size_groups.size())
+      continue;
+      
+    Glib::RefPtr<Gtk::SizeGroup> size_group = m_vec_size_groups[column];
+    if(size_group && (info.m_first_in_sizegroup != size_group))
+    {
+      size_group->add_widget(*label);
+      info.m_first_in_sizegroup = size_group; //Remember it so we can remove it later.
+    }
+  } 
+}
+
+void FlowTableWithFields::align_child_group_labels()
+{
+  //Don't bother if there are not >1 groups to align:
+  if(m_sub_flow_tables.size() < 2)
+    return;
+    
+  //Create a size group for each column and tell all groups to use them for their labels:
+  const guint max_columns = get_sub_flowtables_max_columns();
+  type_vec_sizegroups vec_sizegroups(max_columns);
+  for(guint i = 0; i < max_columns; ++i)
+  {
+    vec_sizegroups[i] = Gtk::SizeGroup::create(Gtk::SIZE_GROUP_HORIZONTAL);
+  }
+   
+  for(type_sub_flow_tables::iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
+  {
+    FlowTableWithFields* subtable = *iter;
+    if(subtable)
+      subtable->apply_size_groups_to_labels(vec_sizegroups);
+  }
+}
+
+guint FlowTableWithFields::get_sub_flowtables_max_columns() const
+{
+  guint result = get_columns_count();
+  
+  for(type_sub_flow_tables::const_iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
+  {
+    const FlowTableWithFields* subtable = *iter;
+    if(subtable)
+    {
+      const guint count = subtable->get_columns_count();
+      if(count > result)
+          result = count;
+    }
+  }
+  
+  return result;
+}
+  
+
+void FlowTableWithFields::on_size_allocate(Gtk::Allocation& allocation)
+{
+  FlowTable::on_size_allocate(allocation);
+  
+  sharedptr<const LayoutGroup> group = get_layout_group();
+  Glib::ustring group_name;
+  if(group)
+     group_name = group->get_name();
+
+  //The widgets have now been allocated their sizes and columns, 
+  //so this should be able to work:
+  if(m_columns_allocated_changed)
+  {
+    apply_size_groups_to_labels(m_vec_size_groups);
+    
+    //Prevent unnecessary repeated (endless?) size allocation requested:
+    m_columns_allocated_changed = false;
+  }
+}
+  
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 
 void FlowTableWithFields::on_dnd_add_layout_item_by_type(int item_type_num, Gtk::Widget* above_widget)
@@ -1284,7 +1399,7 @@ void FlowTableWithFields::on_dnd_add_layout_item_field(LayoutWidgetBase* above)
   //Ask the user to choose the layout item
   sharedptr<LayoutItem_Field> layout_item_field = 
     DataWidget::offer_field_list(m_table_name, sharedptr<LayoutItem_Field>(), 
-      get_document(), App_Glom::get_application());
+      get_document(), Application::get_application());
   if(!layout_item_field)
   {
     realize();
@@ -1527,7 +1642,7 @@ void FlowTableWithFields::on_menu_delete_activate()
 
 bool FlowTableWithFields::on_button_press_event(GdkEventButton *event)
 {
-  App_Glom* pApp = App_Glom::get_application();
+  Application* pApp = Application::get_application();
   if(pApp && pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
     GdkModifierType mods;

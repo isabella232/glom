@@ -204,7 +204,7 @@ void Box_Data_Portal::on_realize()
     Glib::ustring::compose(_("Add Related %1"), get_title_singular());
   m_maemo_appmenubutton_add.set_title(title);
   m_maemo_appmenubutton_add.set_value(_("Add related record"));
-  App_Glom* app = App_Glom::get_application();
+  Application* app = Application::get_application();
   g_assert(app);
   if(app)
   {
@@ -223,7 +223,7 @@ void Box_Data_Portal::on_realize()
 void Box_Data_Portal::on_unrealize()
 {
   // Remove the AppMenu button when the portal is no longer shown: 
-  App_Glom* app = App_Glom::get_application();
+  Application* app = Application::get_application();
   g_assert(app);
   if(app)
   {

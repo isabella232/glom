@@ -25,6 +25,7 @@
 #include "labelglom.h"
 #include "comboentryglom.h"
 #include "comboglom.h"
+#include "combo_as_radio_buttons.h"
 #include "textviewglom.h"
 #include "imageglom.h"
 #include <libglom/data_structure/glomconversions.h>
@@ -45,11 +46,23 @@
 namespace Glom
 {
 
-/*
-DataWidget::DataWidget(Field::glom_field_type glom_type, const Glib::ustring& title)
-: m_glom_type(glom_type),
-  m_pMenuPopup(0)
-*/
+static ComboChoices* create_combo_widget_for_field(const sharedptr<LayoutItem_Field>& field, const sharedptr<LayoutItem_Field>& layout_item_second = sharedptr<LayoutItem_Field>())
+{
+  ComboChoices* result = 0;
+  bool as_radio_buttons = false; //TODO: Use this.
+  const bool restricted = field->get_formatting_used().get_choices_restricted(as_radio_buttons);
+  if(restricted)
+  {
+    if(as_radio_buttons)
+      result = Gtk::manage(new ComboAsRadioButtons(layout_item_second));
+    else
+      result = Gtk::manage(new ComboGlom(layout_item_second));
+  }
+  else
+    result = Gtk::manage(new ComboEntryGlom(layout_item_second));
+
+  return result;
+}
 
 DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ustring& table_name, const Document* document)
 :  m_child(0),
@@ -103,15 +116,10 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     //Use a Combo if there is a drop-down of choices (A "value list"), else an Entry:
     if(field->get_formatting_used().get_has_choices())
     {
-      ComboGlomChoicesBase* combo = 0; //Gtk::manage(new ComboEntryGlom());
+      ComboChoices* combo = create_combo_widget_for_field(field);
 
       if(field->get_formatting_used().get_has_custom_choices())
       {
-        if(field->get_formatting_used().get_choices_restricted())
-          combo = Gtk::manage(new ComboGlom());
-        else
-          combo = Gtk::manage(new ComboEntryGlom());
-
         //set_choices() needs this, for the numeric layout:
         combo->set_layout_item( get_layout_item(), table_name);
 
@@ -136,17 +144,11 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
             layout_field_second->set_full_field_details(field_second);
             //We use the default formatting for this field->
 
-            if(field->get_formatting_used().get_choices_restricted())
-              combo = Gtk::manage(new ComboGlom(layout_field_second));
-            else
-              combo = Gtk::manage(new ComboEntryGlom(layout_field_second));
+            combo = create_combo_widget_for_field(field, layout_field_second);
           }
           else
           {
-            if(field->get_formatting_used().get_choices_restricted())
-              combo = Gtk::manage(new ComboGlom());
-            else
-              combo = Gtk::manage(new ComboEntryGlom());
+            combo = create_combo_widget_for_field(field);
           }
 
           //set_choices() needs this, for the numeric layout:
@@ -453,7 +455,7 @@ bool DataWidget::on_button_press_event(GdkEventButton *event)
 
   //Enable/Disable items.
   //We did this earlier, but get_application is more likely to work now:
-  App_Glom* pApp = get_application();
+  Application* pApp = get_application();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
@@ -491,7 +493,7 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& ta
   return offer_field_list(table_name, start_field, get_document(), get_application());
 }
 
-sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field, Document* document, App_Glom* app)
+sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field, Document* document, Application* app)
 {
   sharedptr<LayoutItem_Field> result;
 
@@ -625,12 +627,12 @@ void DataWidget::on_child_user_requested_layout()
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-App_Glom* DataWidget::get_application()
+Application* DataWidget::get_application()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
 
-  return dynamic_cast<App_Glom*>(pWindow);
+  return dynamic_cast<Application*>(pWindow);
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

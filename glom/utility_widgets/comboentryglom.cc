@@ -39,7 +39,7 @@ namespace Glom
 {
 
 ComboEntryGlom::ComboEntryGlom()
-: ComboGlomChoicesBase()
+: ComboChoicesWithTreeModel()
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
@@ -49,7 +49,7 @@ ComboEntryGlom::ComboEntryGlom()
 }
 
 ComboEntryGlom::ComboEntryGlom(const sharedptr<LayoutItem_Field>& field_second)
-: ComboGlomChoicesBase(field_second)
+: ComboChoicesWithTreeModel(field_second)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
@@ -91,7 +91,7 @@ void ComboEntryGlom::init()
   // Only in the latest hildonmm: Glib::RefPtr<Hildon::TouchSelectorColumn> column =
   //  m_maemo_selector.append_column(m_refModel);
   Glib::RefPtr<Hildon::TouchSelectorColumn> column = Glib::wrap(hildon_touch_selector_append_column(
-      HILDON_TOUCH_SELECTOR(m_maemo_selector.gobj()), GTK_TREE_MODEL(Glib::unwrap(m_refModel)), 0, static_cast<char*>(0)), true);
+    HILDON_TOUCH_SELECTOR(m_maemo_selector.gobj()), GTK_TREE_MODEL(Glib::unwrap(m_refModel)), 0, static_cast<char*>(0)), true);
       
   column->pack_start(m_Columns.m_col_first, false);
   //Only in the latest hildonmm: column->set_text_column(m_Columns.m_col_first);
@@ -154,7 +154,7 @@ ComboEntryGlom::~ComboEntryGlom()
 void ComboEntryGlom::set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name)
 {
   //Call base class:
-  ComboGlomChoicesBase::set_layout_item(layout_item, table_name);
+  ComboChoicesWithTreeModel::set_layout_item(layout_item, table_name);
 
   if(!layout_item)
     return;
@@ -304,7 +304,7 @@ bool ComboEntryGlom::on_entry_button_press_event(GdkEventButton *event)
 {
   //Enable/Disable items.
   //We did this earlier, but get_application is more likely to work now:
-  App_Glom* pApp = get_application();
+  Application* pApp = get_application();
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
@@ -334,12 +334,12 @@ bool ComboEntryGlom::on_entry_button_press_event(GdkEventButton *event)
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-App_Glom* ComboEntryGlom::get_application()
+Application* ComboEntryGlom::get_application()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
 
-  return dynamic_cast<App_Glom*>(pWindow);
+  return dynamic_cast<Application*>(pWindow);
 }
 
 #ifndef GLOM_ENABLE_MAEMO

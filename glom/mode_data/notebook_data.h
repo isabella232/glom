@@ -25,7 +25,7 @@
 #include <glom/mode_data/box_data_list.h>
 #include <glom/mode_data/box_data_details.h>
 
-#ifdef GLOM_ENABLE_MAEMO 
+#ifdef GLOM_ENABLE_MAEMO
 #include <glom/window_boxholder.h>
 #endif
 
@@ -34,7 +34,7 @@ namespace Glom
 
 class Notebook_Data : public Notebook_Glom
 {
-public: 
+public:
   Notebook_Data();
   virtual ~Notebook_Data();
 
@@ -47,7 +47,7 @@ public:
 
   ///Get the existing where clause, previously supplied to init_db_details().
   FoundSet get_found_set() const;
-  
+
   ///Get the found set for the currently-visible record in the details tab:
   FoundSet get_found_set_details() const;
 
@@ -62,11 +62,9 @@ public:
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   virtual void do_menu_file_print(); //override
-  
-  #ifdef GLOM_ENABLE_MAEMO
+
   void do_menu_file_add_record();
-  #endif
-  
+
   void get_record_counts(gulong& total, gulong& found);
 
   enum dataview
@@ -80,7 +78,7 @@ public:
 
   typedef sigc::signal<void, const Glib::ustring&, Gnome::Gda::Value> type_signal_record_details_requested;
   type_signal_record_details_requested signal_record_details_requested();
-  
+
 protected:
 
   ///Show the counts of all records and found records.
@@ -96,19 +94,21 @@ private:
   #ifdef GLOM_ENABLE_MAEMO
   void on_window_maemo_details_closed();
   #endif
-  
+
+  bool on_idle_show_details(const Gnome::Gda::Value& primary_key_value);
+
 protected:
   //Member widgets:
   Box_Data_List m_Box_List;
   Box_Data_Details m_Box_Details;
-  
+
   #ifdef GLOM_ENABLE_MAEMO //Details are in a separate window on Maemo.
   Window_BoxHolder* m_window_maemo_details;
   #endif
-  
+
   guint m_iPage_Details, m_iPage_List;
   Glib::ustring m_table_name;
-  
+
   type_signal_record_details_requested m_signal_record_details_requested;
 };
 

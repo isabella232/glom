@@ -30,7 +30,7 @@
 namespace Glom
 {
 
-class App_Glom;
+class Application;
 
 class ImageGlom
 : public Gtk::EventBox,
@@ -76,7 +76,7 @@ private:
   void on_clipboard_clear();
   void on_clipboard_received_image(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf);
 
-  virtual App_Glom* get_application();
+  virtual Application* get_application();
 
   void setup_menu_usermode();
   void scale();

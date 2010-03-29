@@ -32,7 +32,7 @@ namespace GlomBakery
  */
 class Document
 {
-public: 
+public:
   Document();
   virtual ~Document();
 
@@ -45,9 +45,17 @@ public:
    */
   bool save();
 
+  enum LoadFailureCodes
+  {
+    LOAD_FAILURE_CODE_NONE = 0,
+    LOAD_FAILURE_CODE_NOT_FOUND = 1,
+    LOAD_FAILURE_CODE_LAST = 20 //arbitrary large number. Anything after this is for the application's custom codes.
+  };
+
   /* Loads data from disk, using the URI (set with set_file_uri()) then asks the View to update itself.
    * bool indicates success.
-   * @param failure_code Used to return a custom error code that is understood by your application. This must be greater than zero.
+   * @param failure_code Used to return an error code that is understood by your application.
+   * Custom error codes should be greater than LOAD_FAILURE_CODE_LAST.
    */
   bool load(int& failure_code);
 
@@ -120,7 +128,7 @@ protected:
    */
   virtual bool save_before();
 
-  bool read_from_disk();
+  bool read_from_disk(int& failure_code);
   bool write_to_disk();
 
   Glib::ustring m_strContents;
@@ -131,7 +139,7 @@ protected:
 
   type_signal_modified signal_modified_;
   type_signal_forget signal_forget_;
-  
+
   bool m_bModified;
   bool m_bIsNew; //see get_is_new().
   bool m_bReadOnly;

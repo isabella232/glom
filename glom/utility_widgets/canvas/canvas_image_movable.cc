@@ -225,7 +225,7 @@ void CanvasImageMovable::set_image_empty()
   Gtk::Widget *widget = get_canvas();
 
   if(!widget)
-    widget = App_Glom::get_application();
+    widget = Application::get_application();
 
   Glib::RefPtr<Gdk::Pixbuf> pixbuf;
   if(widget)

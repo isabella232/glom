@@ -29,7 +29,7 @@
 namespace Glom
 {
 
-class App_Glom;
+class Application;
 
 class ButtonGlom
 : public Gtk::Button,
@@ -43,7 +43,7 @@ public:
 private:
   void init();
 
-  virtual App_Glom* get_application();
+  virtual Application* get_application();
 #ifndef GLOM_ENABLE_CLIENT_ONLY    
   virtual void on_menu_properties_activate();
   virtual bool on_button_press_event(GdkEventButton *event);

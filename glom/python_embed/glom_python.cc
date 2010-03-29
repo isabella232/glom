@@ -21,6 +21,7 @@
 #include <config.h>
 //We need to include this before anything else, to avoid redefinitions:
 #include <libglom/python_embed/py_glom_record.h>
+#include <libglom/python_embed/py_glom_ui.h>
 #include <libglom/python_embed/pygdavalue_conversions.h>
 
 #include <boost/python.hpp>
@@ -163,30 +164,11 @@ bool gda_python_module_is_available()
   return module_glom != 0;
 }
 
-
-
-void glom_execute_python_function_implementation(const Glib::ustring& func_impl,
-  const type_map_fields& field_values,
+static boost::python::object glom_python_call(Field::glom_field_type result_type,
   Document* pDocument,
-  const Glib::ustring& table_name,
-  const sharedptr<const Field>& key_field,
-  const Gnome::Gda::Value& key_field_value,
-  const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
-{
-  glom_evaluate_python_function_implementation(Field::TYPE_TEXT, func_impl,
-     field_values, pDocument,
-     table_name, key_field, key_field_value,
-     opened_connection);
-}
-
-Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type,
-  const Glib::ustring& func_impl,
-  const type_map_fields& field_values,
-  Document* pDocument,
-  const Glib::ustring& table_name,
-  const sharedptr<const Field>& key_field,
-  const Gnome::Gda::Value& key_field_value,
-  const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
+  const Glib::ustring& func_impl, 
+  const boost::python::object& param1, 
+  const boost::python::object& param2 = boost::python::object())
 {
   //std::cout << "glom_evaluate_python_function_implementation()" << std::endl;
   //for(type_map_fields::const_iterator iter = field_values.begin(); iter != field_values.end(); ++iter)
@@ -213,7 +195,14 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
 
   //prefix the def line:
   const Glib::ustring func_name = "glom_calc_field_value";
-  func_def = "def " + func_name + "(record):\n  import glom_" GLOM_ABI_VERSION_UNDERLINED "\n  import gda\n" + func_def;
+  Glib::ustring func_signature;
+  if(!param2.ptr())
+    func_signature = func_name + "(record)";
+  else
+    func_signature = func_name + "(record, ui)";
+  
+  func_def = "def " + func_signature + ":\n  import glom_" GLOM_ABI_VERSION_UNDERLINED "\n  import gda\n" + func_def;
+  
   //We did this in main(): Py_Initialize();
 
   boost::python::object pMain = boost::python::import("__main__");
@@ -224,7 +213,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   {
      std::cerr << "glom_evaluate_python_function_implementation(): pDict is null" << std::endl;
      ShowTrace();
-     return valueResult;
+     return boost::python::object();
   }
 
   //Allow the function to import from our script library:
@@ -260,7 +249,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   if(!module_glom)
   {
     g_warning("Could not import python glom module.");
-    return valueResult; // don't crash
+    return boost::python::object(); // don't crash
   }
 
   //TODO: Is this necessary?
@@ -268,7 +257,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   if(!module_gda)
   {
     g_warning("Could not import python gda module.");
-    return valueResult;
+    return boost::python::object();
   }
 
   //Create the function definition:
@@ -298,162 +287,213 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   {
     std::cerr << "glom_evaluate_python_function_implementation():  boost::python::exec() threw error_already_set when using text= " << std::endl << func_def << std::endl;
     ShowTrace();
-    return valueResult;
+    return boost::python::object();
   }
 
   if(!pyValue.ptr())
   {
     std::cerr << "glom_evaluate_python_function_implementation(): boost::python::exec failed." << std::endl;
     ShowTrace();
-    return valueResult;
+    return boost::python::object();
   }
 
   //Call the function:
+  boost::python::object pFunc;
+  try
   {
-    boost::python::object pFunc;
-    try
+    pFunc = pDict[func_name.c_str()];
+  }
+  catch(const boost::python::error_already_set& ex)
+  {
+    std::cerr << "glom_evaluate_python_function_implementation():  pDict[func_name] threw error_already_set when func_name= " << std::endl << func_name << std::endl;
+    ShowTrace();
+    return boost::python::object();
+  }
+
+  if(!pFunc.ptr())
+  {
+    std::cerr << "glom_evaluate_python_function_implementation(): pDict[func_name] failed." << std::endl;
+    HandlePythonError();
+    return boost::python::object();
+  }
+
+  if(!PyCallable_Check(pFunc.ptr()))
+  {
+    HandlePythonError();
+    g_warning("pFunc is not callable.");
+    return boost::python::object();
+  }
+
+  //Call the function with the parameters:
+  boost::python::object pyResultCpp;
+
+  try
+  {
+    if(!param2.ptr())
     {
-      pFunc = pDict[func_name.c_str()];
+      pyResultCpp = pFunc(param1);
     }
-    catch(const boost::python::error_already_set& ex)
+    else
     {
-      std::cerr << "glom_evaluate_python_function_implementation():  pDict[func_name] threw error_already_set when func_name= " << std::endl << func_name << std::endl;
-      ShowTrace();
-      return valueResult;
+        pyResultCpp = pFunc(param1, param2);
     }
+  }
+  catch(const boost::python::error_already_set& ex)
+  {
+    std::cerr << "Glom: Exception caught from pFunc(objRecord). func_name=" << std::endl << func_name << std::endl;
+    ShowTrace();
+  }
 
-    if(!pFunc.ptr())
+  if(!(pyResultCpp.ptr()))
+  {
+    g_warning("pyResult.ptr() was null");
+    HandlePythonError();
+  }
+  
+  //TODO: Why do we do this?
+  Py_FlushLine();
+  PyErr_Clear();
+  
+  //We did this in main(): Py_Finalize();
+
+  return pyResultCpp;
+}
+
+void glom_execute_python_function_implementation(const Glib::ustring& func_impl,
+  const type_map_fields& field_values,
+  Document* pDocument,
+  const Glib::ustring& table_name,
+  const sharedptr<const Field>& key_field,
+  const Gnome::Gda::Value& key_field_value,
+  const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection,
+  const PythonUICallbacks& callbacks)
+{
+  //Import the glom module so that boost::python::object(new PyGlomRecord) can work.
+  boost::python::object module_glom = boost::python::import("glom_" GLOM_ABI_VERSION_UNDERLINED);
+  if(!module_glom)
+  {
+    g_warning("Could not import python glom module.");
+    return; // don't crash
+  }
+  
+  boost::python::object objRecord(new PyGlomRecord);
+  boost::python::extract<PyGlomRecord*> extractor(objRecord);
+  if(!extractor.check())
+  {
+    std::cerr << ("extract<PyGlomRecord*> failed.") << std::endl;
+  }
+  
+  PyGlomRecord* pParam = extractor;
+  if(pParam)
+  {
+    //Fill the record's details:
+    PyGlomRecord_SetFields(pParam, field_values, pDocument, table_name, key_field, key_field_value, opened_connection);
+    pParam->set_read_only();
+  }
+  
+  //Pass an additional ui parameter for use by scripts:
+  boost::python::object objUI(new PyGlomUI(callbacks));
+
+  glom_python_call(Field::TYPE_TEXT, pDocument, func_impl, objRecord, objUI);
+}
+
+Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type,
+  const Glib::ustring& func_impl,
+  const type_map_fields& field_values,
+  Document* pDocument,
+  const Glib::ustring& table_name,
+  const sharedptr<const Field>& key_field,
+  const Gnome::Gda::Value& key_field_value,
+  const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
+{
+  //Import the glom module so that boost::python::object(new PyGlomRecord) can work.
+  boost::python::object module_glom = boost::python::import("glom_" GLOM_ABI_VERSION_UNDERLINED);
+  if(!module_glom)
+  {
+    g_warning("Could not import python glom module.");
+    return Gnome::Gda::Value(); // don't crash
+  }
+  
+  boost::python::object objRecord(new PyGlomRecord);
+  
+  boost::python::extract<PyGlomRecord*> extractor(objRecord);
+  if(!extractor.check())
+  {
+    std::cerr << ("extract<PyGlomRecord*> failed.") << std::endl;
+    return Gnome::Gda::Value();
+  }
+  
+  PyGlomRecord* pParam = extractor;
+  if(pParam)
+  {
+    //Fill the record's details:
+    PyGlomRecord_SetFields(pParam, field_values, pDocument, table_name, key_field, key_field_value, opened_connection);
+  }
+  
+  const boost::python::object pyResultCpp = glom_python_call(result_type, pDocument, func_impl, objRecord);
+  
+  //Deal with the various possible return types:
+  Gnome::Gda::Value valueResult;
+  bool object_is_gda_value = false;
+
+  GValue value = {0, {{0}}};
+  const bool test = glom_pygda_value_from_pyobject(&value, pyResultCpp);
+
+  if(test)
+    object_is_gda_value = true;
+
+  if(object_is_gda_value && G_IS_VALUE(&value))
+  {
+    valueResult = Gnome::Gda::Value(&value);
+    //Make sure that the value is of the expected Gda type:
+    //TODO_Performance:
+    valueResult = Glom::Conversions::convert_value(valueResult, result_type);
+    //std::cout << "DEBUG: glom_evaluate_python_function_implementation(): valueResult Gda type=" << g_type_name(valueResult.get_value_type()) << std::endl;
+    g_value_unset(&value);
+  }
+  else
+  {
+    //g_warning("debug: pyResult is not a gda.value");
+
+    //For instance, if one of the fields was empty, then the calculation might want to return an empty value,
+    //instead of returning 0.
+    if(pyResultCpp == boost::python::object()) //Check if it is PyNone
     {
-      std::cerr << "glom_evaluate_python_function_implementation(): pDict[func_name] failed." << std::endl;
-      HandlePythonError();
-      return valueResult;
+      //The result should be an appropriate empty value for this field type:
+      valueResult = Conversions::get_empty_value(result_type);
+      //std::cout << "DEBUG: glom_evaluate_python_function_implementation(): empty value Gda type=" << g_type_name(valueResult.get_value_type()) << std::endl;
     }
-
-    if(!PyCallable_Check(pFunc.ptr()))
+    else
     {
-      HandlePythonError();
-      g_warning("pFunc is not callable.");
-      return valueResult;
-    }
+      //TODO: Handle numeric/date/time types:
+      //(though I don't think this code is ever reached. murrayc)
 
-    //The function's parameter:
-
-    //PyObject* pParam = PyString_FromString("test value"); //This test did not need the extra ref.
-
-    boost::python::object objRecord(new PyGlomRecord);
-    boost::python::extract<PyGlomRecord*> extractor(objRecord);
-    if(!extractor.check())
-    {
-      std::cerr << ("extract<PyGlomRecord*> failed.") << std::endl;
-      return valueResult;
-    }
-
-    PyGlomRecord* pParam = extractor;
-    if(pParam)
-    {
-      //Fill the record's details:
-      PyGlomRecord_SetFields(pParam, field_values, pDocument, table_name, key_field, key_field_value, opened_connection);
-
-      //Call the function with this parameter:
-       boost::python::object pyResultCpp;
-
+      //Treat this as a string or something that can be converted to a string:
+      const char* pchResult = 0;
       try
       {
-        pyResultCpp = pFunc(objRecord);
+        pchResult = boost::python::extract<const char*>(pyResultCpp);
       }
       catch(const boost::python::error_already_set& ex)
       {
-        std::cerr << "Glom: Exception caught from pFunc(objRecord). func_name=" << std::endl << func_name << std::endl;
+        std::cerr << "Glom: Exception caught from boost::python::extract() while converting result to a const char*." << std::endl;
         ShowTrace();
+        return valueResult;
       }
 
-      if(!(pyResultCpp.ptr()))
+      if(pchResult)
       {
-        g_warning("pyResult.ptr() was null");
-        HandlePythonError();
+        bool success = false;
+        valueResult = Conversions::parse_value(result_type, pchResult, success, true /* iso_format */);
+        std::cout << "DEBUG: glom_evaluate_python_function_implementation(): parsed value Gda type=" << g_type_name(valueResult.get_value_type()) << std::endl;
       }
       else
-      {
-        //Deal with the various possible return types:
-        bool object_is_gda_value = false;
-
-        GValue value = {0, {{0}}};
-        const bool test = glom_pygda_value_from_pyobject(&value, pyResultCpp);
-
-        if(test)
-          object_is_gda_value = true;
-
-        if(object_is_gda_value && G_IS_VALUE(&value))
-        {
-          valueResult = Gnome::Gda::Value(&value);
-          //Make sure that the value is of the expected Gda type:
-          //TODO_Performance:
-          valueResult = Glom::Conversions::convert_value(valueResult, result_type);
-          //std::cout << "DEBUG: glom_evaluate_python_function_implementation(): valueResult Gda type=" << g_type_name(valueResult.get_value_type()) << std::endl;
-          g_value_unset(&value);
-        }
-        else
-        {
-          //g_warning("debug: pyResult is not a gda.value");
-
-          //For instance, if one of the fields was empty, then the calculation might want to return an empty value,
-          //instead of returning 0.
-          if(pyResultCpp == boost::python::object()) //Check if it is PyNone
-          {
-            //The result should be an appropriate empty value for this field type:
-            valueResult = Conversions::get_empty_value(result_type);
-            //std::cout << "DEBUG: glom_evaluate_python_function_implementation(): empty value Gda type=" << g_type_name(valueResult.get_value_type()) << std::endl;
-          }
-          else
-          {
-            //TODO: Handle numeric/date/time types:
-            //(though I don't think this code is ever reached. murrayc)
-
-            //Treat this as a string or something that can be converted to a string:
-            const char* pchResult = 0;
-            try
-            {
-              pchResult = boost::python::extract<const char*>(pyResultCpp);
-            }
-            catch(const boost::python::error_already_set& ex)
-            {
-              std::cerr << "Glom: Exception caught from boost::python::extract() while converting result to a const char*." << std::endl << func_name << std::endl;
-              ShowTrace();
-              return valueResult;
-            }
-
-            if(pchResult)
-            {
-              bool success = false;
-              valueResult = Conversions::parse_value(result_type, pchResult, success, true /* iso_format */);
-              std::cout << "DEBUG: glom_evaluate_python_function_implementation(): parsed value Gda type=" << g_type_name(valueResult.get_value_type()) << std::endl;
-            }
-            else
-              HandlePythonError();
-          }
-        }
-      }
+        HandlePythonError();
     }
   }
-
-  Py_FlushLine();
-  PyErr_Clear();
-
-
-  //We did this in main(): Py_Finalize();
-
+  
   return valueResult;
 }
 
-/*
-
-examples:
-
-  return record.fields["name_first"] + " " + record.fields["name_last"]
-
-  return record.related_records["contacts"][0].fields["name_first"]
-
-  return record.related_records["invoice lines"].sum("cost") )
-*/
 
 } //namespace Glom

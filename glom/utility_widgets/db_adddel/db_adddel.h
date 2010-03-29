@@ -41,7 +41,7 @@
 namespace Glom
 {
 
-class App_Glom;
+class Application;
 
 class DbAddDelColumnInfo
 {
@@ -381,7 +381,7 @@ private:
   int get_fixed_cell_height();
 
   //TODO: Remove this and use AppGlom::get_application() instead?
-  App_Glom* get_application();
+  Application* get_application();
 
   static void apply_formatting(Gtk::CellRenderer* renderer, const sharedptr<const LayoutItem_WithFormatting>& layout_item);
 

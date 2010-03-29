@@ -59,12 +59,12 @@ void NotebookGlom::init()
 
 }
 
-App_Glom* NotebookGlom::get_application()
+Application* NotebookGlom::get_application()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
 
-  return dynamic_cast<App_Glom*>(pWindow);
+  return dynamic_cast<Application*>(pWindow);
 }
 
 void NotebookGlom::delete_from_layout()

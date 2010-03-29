@@ -19,9 +19,11 @@
  */
  
 #include "dialog_database_preferences.h"
+#include <glom/python_embed/glom_python.h>
 #include <libglom/standard_table_prefs_fields.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/bakery/busy_cursor.h>
+#include <gtksourceviewmm/sourcelanguagemanager.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -52,7 +54,7 @@ Dialog_Database_Preferences::Dialog_Database_Preferences(BaseObjectType* cobject
 
   m_treeview_autoincrements->append_column(_("Table"), m_columns.m_col_table);
   m_treeview_autoincrements->append_column(_("Field"), m_columns.m_col_field);
-  int view_cols_count = m_treeview_autoincrements->append_column(_("Next Value"), m_columns.m_col_next_value);
+  const int view_cols_count = m_treeview_autoincrements->append_column(_("Next Value"), m_columns.m_col_next_value);
 
   Gtk::CellRendererText* pCellRenderer = dynamic_cast<Gtk::CellRendererText*>(m_treeview_autoincrements->get_column_cell_renderer(view_cols_count-1));
   if(pCellRenderer)
@@ -64,6 +66,32 @@ Dialog_Database_Preferences::Dialog_Database_Preferences(BaseObjectType* cobject
     //Connect to its signal:
     pCellRenderer->signal_edited().connect(
       sigc::mem_fun(*this, &Dialog_Database_Preferences::on_treeview_cell_edited_next_value) );
+  }
+
+  //Startup script widgets:
+  builder->get_widget("textview_calculation",  m_text_view_script);
+  builder->get_widget("button_test",  m_button_test_script);
+
+  m_button_test_script->signal_clicked().connect( 
+    sigc::mem_fun(*this, &Dialog_Database_Preferences::on_button_test_script) );
+
+  // Set a monospace font
+  m_text_view_script->modify_font(Pango::FontDescription("Monospace"));
+
+  //Dialog_Properties::set_modified(false);
+
+  //Tell the SourceView to do syntax highlighting for Python:
+  Glib::RefPtr<gtksourceview::SourceLanguageManager> languages_manager = 
+    gtksourceview::SourceLanguageManager::get_default();
+
+  Glib::RefPtr<gtksourceview::SourceLanguage> language = 
+    languages_manager->get_language("python"); //This is the GtkSourceView language ID.
+  if(language)
+  {
+     //Create a new buffer and set it, instead of getting the default buffer, in case libglade has tried to set it, using the wrong buffer type:
+     Glib::RefPtr<gtksourceview::SourceBuffer> buffer = gtksourceview::SourceBuffer::create(language);
+     buffer->set_highlight_syntax();
+     m_text_view_script->set_buffer(buffer);
   }
 }
 
@@ -123,7 +151,7 @@ void Dialog_Database_Preferences::load_from_document()
 
 
   //Make sure that all auto-increment values are setup:
-  Document* document = get_document();
+  const Document* document = get_document();
   const Document::type_listTableInfo tables = document->get_tables();
   for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
@@ -158,7 +186,7 @@ void Dialog_Database_Preferences::load_from_document()
     return;
   }
 
-  guint count = datamodel->get_n_rows();
+  const guint count = datamodel->get_n_rows();
   for(guint i = 0; i < count; ++i)
   {
     Gtk::TreeModel::iterator iter = m_model_autoincrements->append();
@@ -171,6 +199,9 @@ void Dialog_Database_Preferences::load_from_document()
   }
 
   m_model_autoincrements->set_default_sort_func( sigc::mem_fun(*this, &Dialog_Database_Preferences::on_autoincrements_sort) );
+
+  const Glib::ustring script = document->get_startup_script();
+  m_text_view_script->get_buffer()->set_text(script);
 }
 
 int Dialog_Database_Preferences::on_autoincrements_sort(const Gtk::TreeModel::iterator& a, const Gtk::TreeModel::iterator& b)
@@ -194,6 +225,14 @@ void Dialog_Database_Preferences::save_to_document()
   m_system_prefs.m_org_logo = m_image->get_value();
 
   set_database_preferences(m_system_prefs);
+
+  //The script is not part of "database preferencs" in the database data,
+  //because it does not seem to be part of simple personalisation.
+  Document* document = get_document();
+  if(!document)
+     return;
+  const Glib::ustring script = m_text_view_script->get_buffer()->get_text();
+  document->set_startup_script(script);
 }
 
 void Dialog_Database_Preferences::on_response(int response_id)
@@ -206,5 +245,30 @@ void Dialog_Database_Preferences::on_button_choose_image()
 {
    m_image->do_choose_image();
 }
+
+
+void Dialog_Database_Preferences::on_button_test_script()
+{
+  const Glib::ustring calculation = m_text_view_script->get_buffer()->get_text();
+
+  type_map_fields field_values;
+
+  Document* document = get_document();
+  if(!document)
+    return;
+
+  //We need the connection when we run the script, so that the script may use it.
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(this /* parent window */);
+
+  PythonUICallbacks callbacks;
+  glom_execute_python_function_implementation(calculation,
+     type_map_fields(),
+    document,
+    Glib::ustring() /* table_name */,
+    sharedptr<Field>(), Gnome::Gda::Value(), // primary key - only used when setting values in the DB, which we would not encourage in a test.
+    sharedconnection->get_gda_connection(),
+    callbacks);
+}
+
 
 } //namespace Glom

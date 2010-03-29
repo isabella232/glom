@@ -138,6 +138,7 @@ namespace Glom
 #define GLOM_ATTRIBUTE_FORMAT_VERSION "format_version"
 #define GLOM_ATTRIBUTE_IS_EXAMPLE "is_example"
 #define GLOM_ATTRIBUTE_CONNECTION_DATABASE_TITLE "database_title"
+#define GLOM_NODE_STARTUP_SCRIPT "startup_script"
 #define GLOM_ATTRIBUTE_TRANSLATION_ORIGINAL_LOCALE "translation_original_locale"
 #define GLOM_ATTRIBUTE_NAME "name"
 #define GLOM_ATTRIBUTE_TITLE "title"
@@ -189,6 +190,7 @@ namespace Glom
 #define GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_RIGHT "right"
 
 #define GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED "choices_restricted"
+#define GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED_AS_RADIO_BUTTONS "choices_restricted_radiobuttons"
 #define GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM "choices_custom"
 #define GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM_LIST "custom_choice_list"
 #define GLOM_NODE_FORMAT_CUSTOM_CHOICE "custom_choice"
@@ -1938,7 +1940,9 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
   //Choices:
   if(!field_name.empty())
   {
-    format.set_choices_restricted( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED) );
+    format.set_choices_restricted( 
+      get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED),
+      get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED_AS_RADIO_BUTTONS) );
     format.set_has_custom_choices( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM) );
 
     if(format.get_has_custom_choices())
@@ -2422,6 +2426,8 @@ bool Document::load_after(int& failure_code)
       
       m_is_example = get_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_EXAMPLE);
       m_database_title = get_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_CONNECTION_DATABASE_TITLE);
+      
+      m_startup_script = get_child_text_node(nodeRoot, GLOM_NODE_STARTUP_SCRIPT);
 
       m_translation_original_locale = get_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_TRANSLATION_ORIGINAL_LOCALE);
       TranslatableItem::set_original_locale(m_translation_original_locale);
@@ -2931,7 +2937,10 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
     set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_USE_ALT_NEGATIVE_COLOR,
       format.m_numeric_format.m_alt_foreground_color_for_negatives);
 
-    set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED, format.get_choices_restricted());
+    bool as_radio_buttons = false;
+    const bool choices_restricted = format.get_choices_restricted(as_radio_buttons);
+    set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED, choices_restricted);
+    set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED_AS_RADIO_BUTTONS, as_radio_buttons);
     set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM, format.get_has_custom_choices());
   }
 
@@ -3361,6 +3370,8 @@ bool Document::save_before()
 
     set_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_EXAMPLE, m_is_example);
     set_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_CONNECTION_DATABASE_TITLE, m_database_title);
+    
+    set_child_text_node(nodeRoot, GLOM_NODE_STARTUP_SCRIPT, m_startup_script);
 
     //Assume that the first language used is the original locale.
     //It can be identified as a translation later.
@@ -4150,7 +4161,7 @@ guint Document::get_latest_known_document_format_version()
   // Version 2: hosting_mode="postgres-central|postgres-self|sqlite" instead of self_hosted="true|false". Can open Version 1 documents, by falling back to the self_hosted attribute if hosting_mode is not set.
   // Version 3: (Glom 1.10). Support for the old one-big-string example_rows format was removed, and we now use (unquoted) non-postgres libgda escaping. 
   // Version 4: (Glom 1.12). Portal navigation options were simplified, with a "none" option. network_sharing was added, defaulting to off.
-  // Version 5: (Glom 1.14). Extra layout item formatting options were added.
+  // Version 5: (Glom 1.14). Extra layout item formatting options were added, plus a startup script.
 
   return 5;
 }
@@ -4208,6 +4219,20 @@ void Document::remove_library_module(const Glib::ustring& name)
      m_map_library_scripts.erase(iter);
      set_modified();
   }
+}
+
+Glib::ustring Document::get_startup_script() const
+{
+  return m_startup_script;
+}
+
+void Document::set_startup_script(const Glib::ustring& script)
+{
+  if(m_startup_script == script)
+    return;
+    
+  m_startup_script = script;
+  set_modified();
 }
 
 Glib::ustring Document::build_and_get_contents() const

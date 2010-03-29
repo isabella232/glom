@@ -306,13 +306,16 @@ void ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
       }
     }
 
-   Glib::ustring sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
-      fieldsToGet,
-      found_set.m_where_clause, Glib::ustring() /* extra_join */, found_set.m_sort_clause);
-
     //For instance, when we just want to get a name corresponding to a contact ID, and want to ignore duplicates.
+    guint limit = 0; //no limit.
     if(one_record_only)
-      sql_query += " LIMIT 1";
+      limit = 1;
+
+    const Glib::ustring sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
+      fieldsToGet,
+      found_set.m_where_clause, Glib::ustring() /* extra_join */, found_set.m_sort_clause,
+      Glib::ustring(),
+      limit);
 
     bool records_found = false;
     Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query);
@@ -385,10 +388,11 @@ void ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
   {
     //In this case it can only be a system preferences field.
     //So let's get that data here:
-    //TODO: Use SqlBuilder when we know how to use LIMIT with it. I asked on the libgda mailing list. murrayc.
-    const Glib::ustring table_used = field->get_table_used(found_set.m_table_name);
-    const Glib::ustring query = "SELECT \"" + table_used + "\".\"" + field->get_name() + "\" FROM \""+ table_used + "\" LIMIT 1";
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(query);
+    Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
+    builder->set_table(field->get_table_used(found_set.m_table_name));
+    builder->select_add_field(field->get_name(), found_set.m_table_name);
+    builder->select_set_limit(1);
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(builder);
 
     if(!datamodel)
       return;

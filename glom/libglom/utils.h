@@ -66,7 +66,8 @@ Glib::ustring build_sql_select_with_where_clause(
   const Glib::ustring& where_clause = Glib::ustring(),
   const Glib::ustring& extra_join = Glib::ustring(),
   const type_sort_clause& sort_clause = type_sort_clause(),
-  const Glib::ustring& extra_group_by = Glib::ustring());
+  const Glib::ustring& extra_group_by = Glib::ustring(),
+  guint limit = 0);
 
 /** Just a version of build_sql_select_with_where_clause() that takes a list of const fields.
  */
@@ -76,13 +77,15 @@ Glib::ustring build_sql_select_with_where_clause(
   const Glib::ustring& where_clause = Glib::ustring(),
   const Glib::ustring& extra_join = Glib::ustring(),
   const type_sort_clause& sort_clause = type_sort_clause(),
-  const Glib::ustring& extra_group_by = Glib::ustring());
+  const Glib::ustring& extra_group_by = Glib::ustring(),
+  guint limit = 0);
 
 Glib::ustring build_sql_select_with_key(
   const Glib::ustring& table_name,
   const type_vecLayoutFields& fieldsToGet,
   const sharedptr<const Field>& key_field,
-  const Gnome::Gda::Value& key_value);
+  const Gnome::Gda::Value& key_value,
+  guint limit = 0);
 
 /** Just a version of build_sql_select_with_key() that takes a list of const fields.
  */
@@ -90,7 +93,8 @@ Glib::ustring build_sql_select_with_key(
   const Glib::ustring& table_name,
   const type_vecConstLayoutFields& fieldsToGet,
   const sharedptr<const Field>& key_field,
-  const Gnome::Gda::Value& key_value);
+  const Gnome::Gda::Value& key_value,
+  guint limit = 0);
 
 typedef std::list< std::pair<Gnome::Gda::Value, Gnome::Gda::Value> > type_list_values_with_second;
 type_list_values_with_second get_choice_values(const sharedptr<const LayoutItem_Field>& field);

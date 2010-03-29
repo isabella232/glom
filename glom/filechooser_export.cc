@@ -29,7 +29,7 @@ namespace Glom
 {
 
 FileChooser_Export::FileChooser_Export()
-: Gtk::FileChooserDialog(_("Export To File."), Gtk::FILE_CHOOSER_ACTION_SAVE),
+: Gtk::FileChooserDialog(_("Export to File"), Gtk::FILE_CHOOSER_ACTION_SAVE),
   m_extra_widget(false, Utils::DEFAULT_SPACING_SMALL),
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_button_format(_("Define Data _Format"), true /* use mnenomic */),
@@ -37,8 +37,10 @@ FileChooser_Export::FileChooser_Export()
 #endif //GLOM_ENABLE_CLIENT_ONLY
   m_document(0)
 {
+  set_icon_name("glom");
+
   add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  add_button(_("Export"), Gtk::RESPONSE_OK);
+  add_button(_("_Export"), Gtk::RESPONSE_OK);
 
   m_extra_widget.pack_start(m_button_format, Gtk::PACK_SHRINK);
 
@@ -67,6 +69,7 @@ FileChooser_Export::FileChooser_Export()
     if(dialog)
     {
       m_pDialogLayout = dialog;
+      m_pDialogLayout->set_icon_name("glom");
       //add_view(m_pDialogLayout); //Give it access to the document.
       m_pDialogLayout->signal_hide().connect( sigc::mem_fun(*this, &FileChooser_Export::on_dialog_layout_hide) );
     }

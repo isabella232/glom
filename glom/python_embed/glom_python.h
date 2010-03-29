@@ -23,6 +23,7 @@
 
 #include <libglom/data_structure/field.h>
 #include <libglom/document/document.h>
+#include <libglom/python_embed/py_glom_ui.h>
 #include <glibmm/ustring.h>
 
 namespace Glom
@@ -40,14 +41,23 @@ bool gda_python_module_is_available();
 
 typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_fields;
 
+/** Run a script, ignoring the python return value.
+ * The record object will be writable and the function will receive a ui 
+ * parameter so it can control navigation in the UI.
+ */
 void glom_execute_python_function_implementation(const Glib::ustring& func_impl,
   const type_map_fields& field_values,
   Document* pDocument,
   const Glib::ustring& table_name,
   const sharedptr<const Field>& key_field,
   const Gnome::Gda::Value& key_field_value,
-  const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection);
+  const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection,
+  const PythonUICallbacks& callbacks);
 
+/** Run a python calculation, returning the python return value.
+ * @param for_script: If this is true then the record object will be writable, 
+ * and the function will receive a ui parameter so it can control navigation in the UI.
+ */
 Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type,
   const Glib::ustring& func_impl,
   const type_map_fields& field_values,

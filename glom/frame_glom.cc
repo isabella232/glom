@@ -121,7 +121,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   builder->get_widget("hbox_footer", m_box_footer);
   builder->get_widget("label_mode", m_pLabel_Mode);
   builder->get_widget("label_user_level", m_pLabel_userlevel);
-  
+
   //Hide unnecessary widgets on maemo that take too much space,
   //and reduce the border width:
   #ifdef GLOM_ENABLE_MAEMO
@@ -135,7 +135,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   m_pBox_QuickFind = Gtk::manage(new Gtk::HBox(false, Utils::DEFAULT_SPACING_SMALL));
   Gtk::Label* label = Gtk::manage(new Gtk::Label(_("Quick Find")));
   m_pBox_QuickFind->pack_start(*label, Gtk::PACK_SHRINK);
-  
+
   #ifndef GLOM_ENABLE_MAEMO
   m_pEntry_QuickFind = Gtk::manage(new Gtk::Entry());
   #else
@@ -148,13 +148,13 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   #ifndef GLOM_ENABLE_MAEMO
   m_pButton_QuickFind = Gtk::manage(new Gtk::Button(_("_Find"), true));
   #else
-  m_pButton_QuickFind = Gtk::manage(new Hildon::Button(Gtk::Hildon::SIZE_AUTO, 
+  m_pButton_QuickFind = Gtk::manage(new Hildon::Button(Gtk::Hildon::SIZE_AUTO,
     Hildon::BUTTON_ARRANGEMENT_VERTICAL, _("Find"), _("Search for records")));
   #endif
   m_pButton_QuickFind->signal_clicked().connect(
     sigc::mem_fun(*this, &Frame_Glom::on_button_quickfind) );
   m_pBox_QuickFind->pack_start(*m_pButton_QuickFind, Gtk::PACK_SHRINK);
-  
+
   m_pBox_QuickFind->show_all_children();
   m_pBox_QuickFind->hide();
 
@@ -190,10 +190,10 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   add_view(&m_Notebook_Find); //Also a composite view.
 
   on_userlevel_changed(AppState::USERLEVEL_OPERATOR); //A default to show before a document is created or loaded.
-  
+
   #ifdef GLOM_ENABLE_MAEMO
   m_maemo_window_find.set_title(_("Glom: Find"));
-  
+
   Gtk::VBox* vbox = Gtk::manage(new Gtk::VBox(false, Utils::DEFAULT_SPACING_SMALL));
   vbox->pack_start(*m_pBox_QuickFind, Gtk::PACK_SHRINK);
   vbox->pack_start(m_Notebook_Find, Gtk::PACK_EXPAND_WIDGET);
@@ -225,14 +225,14 @@ Frame_Glom::~Frame_Glom()
     delete m_pDialogConnection;
     m_pDialogConnection = 0;
   }
-  
-  
+
+
   if(m_dialog_progess_connection_startup)
   {
     delete m_dialog_progess_connection_startup;
     m_dialog_progess_connection_startup = 0;
   }
-  
+
   if(m_dialog_progess_connection_cleanup)
   {
     delete m_dialog_progess_connection_cleanup;
@@ -335,7 +335,7 @@ void Frame_Glom::set_mode_widget(Gtk::Widget& widget)
   //Trying to remove all of them leads to warnings,
   //and I don't see a way to get a list of children.
 
-  App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+  Application* pApp = dynamic_cast<Application*>(get_app_window());
   if(pApp)
   {
     //Glib::RefPtr<Gtk::UIManager> ui_manager = pApp->get_ui_manager();
@@ -410,7 +410,7 @@ void Frame_Glom::show_table_refresh()
 
 void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value_for_details)
 {
-  App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+  Application* pApp = dynamic_cast<Application*>(get_app_window());
 
   //This can take quite a long time, so we show the busy cursor while it's working:
   BusyCursor busy_cursor(pApp);
@@ -441,14 +441,14 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
       //Start with the last-used found set (sort order and where clause)
       //for this layout:
       //(This would be ignored anyway if a details primary key is specified.)
-      Document* document = get_document(); 
+      Document* document = get_document();
       if(document)
         found_set = document->get_criteria_current(m_table_name);
 
       //Make sure that this is set:
       found_set.m_table_name = m_table_name;
 
-      //If there is no saved sort clause, 
+      //If there is no saved sort clause,
       //then sort by the ID, just so we sort by something, so that the order is predictable:
       if(found_set.m_sort_clause.empty())
       {
@@ -460,10 +460,10 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
 
           found_set.m_sort_clause.clear();
 
-          //Avoid the sort clause if the found set will include too many records, 
+          //Avoid the sort clause if the found set will include too many records,
           //because that would be too slow.
           //The user can explicitly request a sort later, by clicking on a column header.
-          //TODO_Performance: This causes an almost-duplicate COUNT query (we do it in the treemodel too), but it's not that slow. 
+          //TODO_Performance: This causes an almost-duplicate COUNT query (we do it in the treemodel too), but it's not that slow.
           sharedptr<LayoutItem_Field> layout_item_temp = sharedptr<LayoutItem_Field>::create();
           layout_item_temp->set_full_field_details(field_primary_key);
           type_vecLayoutFields layout_fields;
@@ -590,7 +590,7 @@ void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction
         const int response = dialog.run();
         test = (response == Gtk::RESPONSE_OK);
       }
-      
+
       if(!test)
       {
         //Abort the change of user level:
@@ -787,7 +787,7 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
   }
 
   const Glib::ustring query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause, found_set.m_extra_group_by);
- 
+
   //TODO: Lock the database (prevent changes) during export.
   Glib::RefPtr<Gnome::Gda::DataModel> result = query_execute_select(query);
 
@@ -825,7 +825,7 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
 
             if(layout_item->get_glom_type() == Field::TYPE_IMAGE) //This is too much data.
             {
-              // Some extra debug checks, 
+              // Some extra debug checks,
               // though we believe that all these problems are now fixed in File::to_file_format():
 
               const char* newline_to_find = "\r\n";
@@ -844,16 +844,16 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
                 continue;
               }
             }
-            
+
             if(layout_item->get_glom_type() == Field::TYPE_TEXT)
             {
               //The CSV RFC says text may be quoted and should be if it has newlines:
-              row_string += ("\"" + field_text + "\""); 
+              row_string += ("\"" + field_text + "\"");
             }
             else
               row_string += field_text;
 
-           
+
             //std::cout << "  field name=" << layout_item->get_name() << ", value=" << layout_item->m_field.sql(value) << std::endl;
           //}
         }
@@ -872,7 +872,8 @@ void Frame_Glom::on_menu_file_import()
   }
   else
   {
-    Gtk::FileChooserDialog file_chooser(*get_app_window(), _("Choose a CSV file to open"), Gtk::FILE_CHOOSER_ACTION_OPEN);
+    Gtk::FileChooserDialog file_chooser(*get_app_window(), _("Open CSV Document"), Gtk::FILE_CHOOSER_ACTION_OPEN);
+    file_chooser.set_icon_name("glom");
     file_chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
     file_chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
     Gtk::FileFilter filter_csv;
@@ -888,16 +889,8 @@ void Frame_Glom::on_menu_file_import()
     {
       file_chooser.hide();
 
-      //GtkBuilder can't find top-level objects (GtkAdjustments in this case),
-      //that one top-level object references.
-      //See http://bugzilla.gnome.org/show_bug.cgi?id=575714
-      //so we need to this silliness. murrayc.
-      std::list<Glib::ustring> builder_ids;
-      builder_ids.push_back("dialog_import_csv");
-      builder_ids.push_back("adjustment1");
-
       Dialog_Import_CSV* dialog = 0;
-      Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), builder_ids);
+      Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_import_csv");
       refXml->get_widget_derived("dialog_import_csv", dialog);
       add_view(dialog);
 
@@ -993,11 +986,11 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
         bool added = false;
         if(initial_password_provided)
           added = add_user(user, password, GLOM_STANDARD_GROUP_NAME_DEVELOPER);
-        
+
         if(initial_password_provided && added)
         {
           //Use the new user/password from now on:
-          ConnectionPool* connectionpool = ConnectionPool::get_instance();      
+          ConnectionPool* connectionpool = ConnectionPool::get_instance();
           connectionpool->set_user(user);
           connectionpool->set_password(password);
         }
@@ -1009,7 +1002,7 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
       }
       else
       {
-        //Ask for the password of a developer user, to 
+        //Ask for the password of a developer user, to
         //a) Check that the user knows it, so he won't lose access.
         //b) Reconnect as that user so we can remove the default user.
         //TODO: Check that this user is a developer.
@@ -1025,15 +1018,15 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
       if(change) //If nothing has gone wrong so far.
       {
         //Remove the default no-password user, because that would be a security hole:
-        //We do this after adding/using the non-default user, because we can't 
+        //We do this after adding/using the non-default user, because we can't
         //remove a currently-used user.
         const bool default_user_exists = Privs::get_default_developer_user_exists();
         if(default_user_exists)
         {
           //Force a reconnection with the new password:
-          //ConnectionPool* connectionpool = ConnectionPool::get_instance();      
+          //ConnectionPool* connectionpool = ConnectionPool::get_instance();
 
-          //Remove it, after stopping it from being the database owner: 
+          //Remove it, after stopping it from being the database owner:
           bool disabled = true;
           Glib::ustring default_password;
           const Glib::ustring default_user = Privs::get_default_developer_user_name(default_password);
@@ -1120,7 +1113,7 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
     {
       sharedconnection->close();
       sharedconnection.clear();
-    }	
+    }
 
     connectionpool->cleanup( sigc::mem_fun(*this, &Frame_Glom::on_connection_cleanup_progress) );
 
@@ -1142,7 +1135,7 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
   }
 
   //Update the UI:
-  App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+  Application* pApp = dynamic_cast<Application*>(get_app_window());
   if(pApp)
   {
     pApp->update_network_shared_ui();
@@ -1178,7 +1171,7 @@ void Frame_Glom::on_menu_Mode_Data()
 
 void Frame_Glom::on_menu_Mode_Find()
 {
-  //This can take quite a long time, flicking between 1 or 2 intermediate screens. 
+  //This can take quite a long time, flicking between 1 or 2 intermediate screens.
   //It shouldn't, but until we fix that, let's show the busy cursor while it's working:
   BusyCursor busy_cursor(get_app_window());
 
@@ -1194,7 +1187,7 @@ void Frame_Glom::on_menu_Mode_Find()
 
   if(!set_mode(MODE_Find))
     return;
-  
+
   show_table(m_table_name);
 
   if(previously_in_data_mode)
@@ -1202,26 +1195,24 @@ void Frame_Glom::on_menu_Mode_Find()
     //Show the same layout in Find mode as was just being viewed in Data mode:
     m_Notebook_Find.set_current_view(list_or_details);
   }
-  
+
   #ifdef GLOM_ENABLE_CLIENT_ONLY
   Gtk::Window* parent = get_app_window();
   g_assert(parent);
   if(parent)
     m_maemo_window_find.set_transient_for(*parent);
-    
+
   m_maemo_window_find.show(); //TODO: Switch back to data on hide?
   #endif
 }
 
-#ifdef GLOM_ENABLE_MAEMO
 void Frame_Glom::on_menu_add_record()
 {
   BusyCursor busy_cursor(get_app_window());
-  
+
   //Note: This should only be called in Data mode.
   m_Notebook_Data.do_menu_file_add_record();
 }
-#endif //GLOM_ENABLE_MAEMO
 
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -1237,7 +1228,7 @@ void Frame_Glom::on_menu_File_EditPrintLayouts()
 
 void Frame_Glom::on_menu_Tables_EditTables()
 {
-  do_menu_Navigate_Table(); 
+  do_menu_Navigate_Table();
 }
 
 void Frame_Glom::on_menu_Tables_AddRelatedTable()
@@ -1334,8 +1325,8 @@ void Frame_Glom::on_dialog_add_related_table_response(int response)
         std::cerr << "Frame_Glom::on_menu_Tables_AddRelatedTable(): create_table_with_default_fields() failed." << std::endl;
         return;
       }
-   
-      //Create the new relationship: 
+
+      //Create the new relationship:
       sharedptr<Relationship> relationship = sharedptr<Relationship>::create();
 
       relationship->set_name(relationship_name);
@@ -1380,7 +1371,7 @@ void Frame_Glom::on_dialog_add_related_table_request_edit_fields()
 
 void Frame_Glom::do_menu_Navigate_Table(bool open_default)
 {
-  
+
   if(get_document()->get_connection_database().empty())
   {
     alert_no_table();
@@ -1390,13 +1381,13 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
   Glib::ustring default_table_name;
   if(open_default)
     default_table_name = get_document()->get_default_table();
-  
+
 #ifndef GLOM_ENABLE_MAEMO
   //Create the dialog, if it has not already been created:
   if(!m_pBox_Tables)
   {
     Utils::get_glade_widget_derived_with_warning("box_navigation_tables", m_pBox_Tables);
-    m_pDialog_Tables = new Window_BoxHolder(m_pBox_Tables, _("Tables"));
+    m_pDialog_Tables = new Window_BoxHolder(m_pBox_Tables, _("Edit Tables"));
     m_pDialog_Tables->signal_hide().connect(sigc::mem_fun(*this, &Frame_Glom::on_dialog_tables_hide));
 
     Gtk::Window* pWindow = get_app_window();
@@ -1499,12 +1490,12 @@ void Frame_Glom::on_notebook_find_criteria(const Glib::ustring& where_clause)
   //std::cout << "Frame_Glom::on_notebook_find_criteria(): " << where_clause << std::endl;
   //on_menu_Mode_Data();
 
-  App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+  Application* pApp = dynamic_cast<Application*>(get_app_window());
   if(pApp)
   {
     bool records_found = false;
 
-    { //Extra scope, to control the lifetime of the busy cursor. 
+    { //Extra scope, to control the lifetime of the busy cursor.
       BusyCursor busy_cursor(pApp);
 
       pApp->set_mode_data();
@@ -1546,8 +1537,8 @@ void Frame_Glom::on_userlevel_changed(AppState::userlevels userlevel)
 
   if(m_pLabel_userlevel)
     m_pLabel_userlevel->set_text(user_level_name);
-  
-  show_table_title(); 
+
+  show_table_title();
 }
 
 void Frame_Glom::show_table_title()
@@ -1567,7 +1558,7 @@ void Frame_Glom::show_table_title()
     table_label = m_table_name;
 
 #ifdef GLOM_ENABLE_MAEMO
-  //Show the system's human-readable title and the table title in 
+  //Show the system's human-readable title and the table title in
   //the window's title bar:
   Gtk::Window* app = get_app_window();
   if(app)
@@ -1630,8 +1621,8 @@ void Frame_Glom::update_table_in_document_from_database()
               //Update the field information:
 
               // Ignore things that libgda does not report from the database properly:
-              // We do this also in Field::field_info_from_database_is_equal() and 
-              // Base_DB::get_fields_for_table(), 
+              // We do this also in Field::field_info_from_database_is_equal() and
+              // Base_DB::get_fields_for_table(),
               // so make sure that we ignore the same things everywhere always
               // TODO: Avoid that duplication?
               field_info_db->set_auto_increment( field_document->get_auto_increment() );
@@ -1710,7 +1701,7 @@ void Frame_Glom::on_menu_developer_database_preferences()
       add_view(dialog);
       dialog->load_from_document();
 
-     Glom::Utils::dialog_run_with_help(dialog, "dialog_database_preferences");
+      Glom::Utils::dialog_run_with_help(dialog, "dialog_database_preferences");
 
       remove_view(dialog);
       delete dialog;
@@ -1882,7 +1873,7 @@ void Frame_Glom::on_menu_developer_reports()
     alert_no_table(); //TODO: Disable the menu item instead.
     return;
   }
-  
+
   //Create the widget if necessary:
   if(!m_pBox_Reports)
   {
@@ -1921,13 +1912,15 @@ void Frame_Glom::on_menu_developer_print_layouts()
     Utils::get_glade_developer_widget_derived_with_warning("box_print_layouts", m_pBox_PrintLayouts);
     m_pDialog_PrintLayouts = new Window_BoxHolder(m_pBox_PrintLayouts);
 
+    m_pDialog_PrintLayouts->set_transient_for(*get_app_window());
+    m_pDialog_PrintLayouts->set_title(_("Print Layouts"));
     m_pDialog_PrintLayouts->set_default_size(300, 400);
     m_pBox_PrintLayouts->show_all();
     add_view(m_pBox_PrintLayouts);
 
     m_pBox_PrintLayouts->signal_selected.connect(sigc::mem_fun(*this, &Frame_Glom::on_box_print_layouts_selected));
   }
-  
+
   m_pBox_PrintLayouts->init_db_details(m_table_name);
   m_pDialog_PrintLayouts->show();
 }
@@ -1997,7 +1990,7 @@ void Frame_Glom::on_developer_dialog_hide()
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-namespace 
+namespace
 {
   void setup_connection_pool_from_document(Document* document)
   {
@@ -2057,7 +2050,7 @@ void Frame_Glom::on_connection_initialize_progress()
 {
   if(!m_dialog_progess_connection_initialize)
     m_dialog_progess_connection_initialize = Utils::get_and_show_pulse_dialog(_("Initializing Database Data"), get_app_window());
-        
+
   m_dialog_progess_connection_initialize->pulse();
 }
 #endif //GLOM_ENABLE_CLIENT_ONLY
@@ -2066,7 +2059,7 @@ void Frame_Glom::on_connection_startup_progress()
 {
   if(!m_dialog_progess_connection_startup)
     m_dialog_progess_connection_startup = Utils::get_and_show_pulse_dialog(_("Starting Database Server"), get_app_window());
-        
+
   m_dialog_progess_connection_startup->pulse();
 }
 
@@ -2074,7 +2067,7 @@ void Frame_Glom::on_connection_cleanup_progress()
 {
   if(!m_dialog_progess_connection_cleanup)
     m_dialog_progess_connection_cleanup = Utils::get_and_show_pulse_dialog(_("Stopping Database Server"), get_app_window());
-        
+
   m_dialog_progess_connection_cleanup->pulse();
 }
 
@@ -2082,7 +2075,7 @@ bool Frame_Glom::handle_connection_initialize_errors(ConnectionPool::InitErrors 
 {
   Glib::ustring title;
   Glib::ustring message;
-  
+
   if(error == ConnectionPool::Backend::INITERROR_NONE)
     return true;
   else if(error == ConnectionPool::Backend::INITERROR_DIRECTORY_ALREADY_EXISTS)
@@ -2100,9 +2093,9 @@ bool Frame_Glom::handle_connection_initialize_errors(ConnectionPool::InitErrors 
     title = _("Could Not Start Database Server");
     message = _("There was an error when attempting to start the database server.");
   }
-  
+
   Utils::show_ok_dialog(title, message, *get_app_window(), Gtk::MESSAGE_ERROR);
-  
+
   return false;
 }
 
@@ -2217,14 +2210,14 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
         //Use the default user because we are not network shared:
         user = Privs::get_default_developer_user_name(password);
       }
- 
+
       // Create the requested self-hosting database:
-      
+
       //Set the connection details in the ConnectionPool singleton.
       //The ConnectionPool will now use these every time it tries to connect.
       connection_pool->set_user(user);
       connection_pool->set_password(password);
-      
+
       const bool initialized = handle_connection_initialize_errors( connection_pool->initialize(
         sigc::mem_fun(*this, &Frame_Glom::on_connection_initialize_progress) ) );
 
@@ -2252,7 +2245,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
       //Ask for connection details:
       m_pDialogConnection->load_from_document(); //Get good defaults.
       m_pDialogConnection->set_transient_for(*get_app_window());
- 
+
       const int response = Glom::Utils::dialog_run_with_help(m_pDialogConnection, "dialog_connection");
       m_pDialogConnection->hide();
 
@@ -2301,7 +2294,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   // Do startup, such as starting the self-hosting database server
   if(!connection_pool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) ))
     return false;
-    
+
   if(m_dialog_progess_connection_startup)
   {
     delete m_dialog_progess_connection_startup;
@@ -2367,7 +2360,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
       }
       else
       {
-        std::cout << "Frame_Glom::connection_request_password_and_choose_new_database_name(): unused database name successfully found: " << database_name_possible << std::endl; 
+        std::cout << "Frame_Glom::connection_request_password_and_choose_new_database_name(): unused database name successfully found: " << database_name_possible << std::endl;
         //The connection to the server is OK, but the specified database does not exist.
         //That's good - we were looking for an unused database name.
 
@@ -2411,14 +2404,14 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   }
 
   cleanup_connection();
-  
+
   return false;
 }
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
 void Frame_Glom::cleanup_connection()
 {
-  ConnectionPool* connection_pool = ConnectionPool::get_instance(); 
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
   connection_pool->cleanup( sigc::mem_fun(*this, &Frame_Glom::on_connection_cleanup_progress) );
 
   if(m_dialog_progess_connection_cleanup)
@@ -2473,7 +2466,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
   setup_connection_pool_from_document(document);
   if(!connection_pool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) ))
     return false;
-    
+
   if(m_dialog_progess_connection_startup)
   {
     delete m_dialog_progess_connection_startup;
@@ -2494,7 +2487,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
 
     Utils::get_glade_widget_derived_with_warning("dialog_connection", m_pDialogConnection);
     add_view(m_pDialogConnection); //Also a composite view.
-  
+
     m_pDialogConnection->load_from_document(); //Get good defaults.
     m_pDialogConnection->set_transient_for(*get_app_window());
 
@@ -2516,7 +2509,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
   }
 
 
-  //Ask for connection details: 
+  //Ask for connection details:
   while(true) //Loop until a return
   {
     //Only show the dialog if we don't know the correct username/password yet:
@@ -2551,7 +2544,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
         }
         #else //GLIBMM_EXCEPTIONS_ENABLED
         std::auto_ptr<ExceptionConnection> local_error;
-        sharedconnection = 
+        sharedconnection =
           m_pDialogConnection->connect_to_server_with_connection_settings(local_error);
         if(!local_error.get())
           return true;
@@ -2565,7 +2558,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
         ConnectionPool* connectionpool = ConnectionPool::get_instance();
         connectionpool->set_user(known_username);
         connectionpool->set_password(known_password);
-    
+
         #ifdef GLIBMM_EXCEPTIONS_ENABLED
         try
         {
@@ -2761,20 +2754,20 @@ void Frame_Glom::on_menu_print_layout_selected(const Glib::ustring& print_layout
     //TODO: Use this when gtkmm and GTK+ have been fixed: page_setup = Gtk::PageSetup::create(key_file);
     page_setup = Glib::wrap(gtk_page_setup_new_from_key_file(key_file.gobj(), 0, 0));
   }
-  
+
   print->set_default_page_setup(page_setup);
-  
+
   //print->set_print_settings(m_refSettings);
 
   //print->signal_done().connect(sigc::bind(sigc::mem_fun(*this,
   //                &ExampleWindow::on_printoperation_done), print));
-  
+
   const FoundSet found_set = m_Notebook_Data.get_found_set_details();
   canvas.fill_with_data(found_set);
 
   try
   {
-    App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+    Application* pApp = dynamic_cast<Application*>(get_app_window());
     if(pApp)
       print->run(Gtk::PRINT_OPERATION_ACTION_PRINT_DIALOG, *pApp);
   }
@@ -2805,7 +2798,7 @@ void Frame_Glom::on_dialog_layout_report_hide()
   }
 
   //Update the reports menu:
-  App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+  Application* pApp = dynamic_cast<Application*>(get_app_window());
   if(pApp)
     pApp->fill_menu_reports(m_table_name);
 }
@@ -2825,7 +2818,7 @@ void Frame_Glom::on_dialog_layout_print_hide()
   }
 
   //Update the reports menu:
-  App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+  Application* pApp = dynamic_cast<Application*>(get_app_window());
   if(pApp)
     pApp->fill_menu_print_layouts(m_table_name);
 }
@@ -2833,7 +2826,7 @@ void Frame_Glom::on_dialog_layout_print_hide()
 void Frame_Glom::on_dialog_reports_hide()
 {
   //Update the reports menu:
-  App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+  Application* pApp = dynamic_cast<Application*>(get_app_window());
   if(pApp)
     pApp->fill_menu_reports(m_table_name);
 }
@@ -2841,7 +2834,7 @@ void Frame_Glom::on_dialog_reports_hide()
 void Frame_Glom::on_dialog_print_layouts_hide()
 {
   //Update the reports menu:
-  App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+  Application* pApp = dynamic_cast<Application*>(get_app_window());
   if(pApp)
     pApp->fill_menu_print_layouts(m_table_name);
 }
@@ -2858,14 +2851,14 @@ void Frame_Glom::on_dialog_tables_hide()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     if(document->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
     {
-      App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+      Application* pApp = dynamic_cast<Application*>(get_app_window());
       if(pApp)
         pApp->fill_menu_tables();
 
       //Select a different table if the current one no longer exists:
       if(!document->get_table_is_known(m_table_name))
       {
-        //Open the default table, or the first table if there is no default: 
+        //Open the default table, or the first table if there is no default:
         Glib::ustring table_name = document->get_default_table();
         if(table_name.empty())
           table_name = document->get_first_table();
@@ -2880,7 +2873,7 @@ void Frame_Glom::on_dialog_tables_hide()
 void Frame_Glom::on_notebook_data_switch_page(GtkNotebookPage* /* page */, guint /* page_num */)
 {
   //Refill this menu, because it depends on whether list or details are visible:
-  App_Glom* pApp = dynamic_cast<App_Glom*>(get_app_window());
+  Application* pApp = dynamic_cast<Application*>(get_app_window());
   if(pApp)
     pApp->fill_menu_print_layouts(m_table_name);
 }
@@ -2947,4 +2940,3 @@ Glib::ustring Frame_Glom::get_shown_table_name() const
 }
 
 } //namespace Glom
-

@@ -34,28 +34,30 @@ namespace Glom
 Dialog_ButtonScript::Dialog_ButtonScript(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject)
 {
-  builder->get_widget("textview_calculation",  m_text_view);
-  builder->get_widget("button_test",  m_button_test);
+  builder->get_widget("textview_calculation",  m_text_view_script);
+  builder->get_widget("button_test",  m_button_test_script);
   builder->get_widget("entry_title",  m_entry_title);
 
-  m_button_test->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_ButtonScript::on_button_test) );
+  m_button_test_script->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_ButtonScript::on_button_test_script) );
 
   // Set a monospace font
-  m_text_view->modify_font(Pango::FontDescription("Monospace"));
+  m_text_view_script->modify_font(Pango::FontDescription("Monospace"));
   //on_foreach_connect(*this);
 
   //Dialog_Properties::set_modified(false);
 
-  //Set the SourceView to do syntax highlighting for Python:
-  Glib::RefPtr<gtksourceview::SourceLanguageManager> languages_manager = gtksourceview::SourceLanguageManager::get_default();
+  //Tell the SourceView to do syntax highlighting for Python:
+  Glib::RefPtr<gtksourceview::SourceLanguageManager> languages_manager = 
+    gtksourceview::SourceLanguageManager::get_default();
 
-  Glib::RefPtr<gtksourceview::SourceLanguage> language = languages_manager->get_language("python"); //This is the GtkSourceView language ID.
+  Glib::RefPtr<gtksourceview::SourceLanguage> language = 
+    languages_manager->get_language("python"); //This is the GtkSourceView language ID.
   if(language)
   {
      //Create a new buffer and set it, instead of getting the default buffer, in case libglade has tried to set it, using the wrong buffer type:
      Glib::RefPtr<gtksourceview::SourceBuffer> buffer = gtksourceview::SourceBuffer::create(language);
      buffer->set_highlight_syntax();
-     m_text_view->set_buffer(buffer);
+     m_text_view_script->set_buffer(buffer);
   }
 
   show_all_children();
@@ -72,7 +74,7 @@ void Dialog_ButtonScript::set_script(const sharedptr<const LayoutItem_Button>& s
   m_script = glom_sharedptr_clone(script); //Remember it so we save any details that are not in our UI.
   m_table_name = table_name;  //Used for lookup combo boxes.
 
-  m_text_view->get_buffer()->set_text( script->get_script() );
+  m_text_view_script->get_buffer()->set_text( script->get_script() );
 
   m_entry_title->set_text(script->get_title());
   //set_blocked(false);
@@ -84,20 +86,20 @@ sharedptr<LayoutItem_Button> Dialog_ButtonScript::get_script() const
 {
   sharedptr<LayoutItem_Button> result = glom_sharedptr_clone(m_script); //Start with the old details, to preserve anything that is not in our UI.
 
-  get_script (result);
+  get_script(result);
 
   return result;
 }
 
 void Dialog_ButtonScript::get_script(const sharedptr<LayoutItem_Button>& script) const
 {
-  script->set_script(m_text_view->get_buffer()->get_text() );
+  script->set_script(m_text_view_script->get_buffer()->get_text() );
   script->set_title(m_entry_title->get_text());
 }
 
-void Dialog_ButtonScript::on_button_test()
+void Dialog_ButtonScript::on_button_test_script()
 {
-  const Glib::ustring calculation = m_text_view->get_buffer()->get_text();
+  const Glib::ustring calculation = m_text_view_script->get_buffer()->get_text();
 
   type_map_fields field_values;
 
@@ -116,12 +118,14 @@ void Dialog_ButtonScript::on_button_test()
   //We need the connection when we run the script, so that the script may use it.
   sharedptr<SharedConnection> sharedconnection = connect_to_server(this /* parent window */);
 
+  PythonUICallbacks callbacks;
   glom_execute_python_function_implementation(calculation,
     field_values, //TODO: Maybe use the field's type here.
     document,
     m_table_name,
     sharedptr<Field>(), Gnome::Gda::Value(), // primary key - only used when setting values in the DB, which we would not encourage in a test.
-    sharedconnection->get_gda_connection());
+    sharedconnection->get_gda_connection(),
+    callbacks);
 }
 
 } //namespace Glom

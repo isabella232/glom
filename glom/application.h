@@ -25,8 +25,8 @@
 
 //TODO: Remove this when maemomm's gtkmm has been updated. 7th September 2009.
 #ifdef GLOM_ENABLE_MAEMO
-//Because earlier versions of gtkmm/enums.h did not include this, so  
-//GTKMM_MAEMO_EXTENSIONS_ENABLED was not defined, 
+//Because earlier versions of gtkmm/enums.h did not include this, so
+//GTKMM_MAEMO_EXTENSIONS_ENABLED was not defined,
 //leading to a compiler error in hildonmm/button.h
 #include <gtkmmconfig.h>
 #include <gtkmm/enums.h>
@@ -53,11 +53,11 @@ namespace Glom
 
 class Window_Translations;
 
-class App_Glom : public GlomBakery::App_WithDoc_Gtk
+class Application : public GlomBakery::App_WithDoc_Gtk
 {
 public:
-  App_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~App_Glom();
+  Application(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
+  virtual ~Application();
 
   virtual bool init(const Glib::ustring& document_uri = Glib::ustring()); //override
 
@@ -106,7 +106,22 @@ public:
   ///Whether to show the generated SQL queries on stdout, for debugging.
   void set_show_sql_debug(bool val = true);
 
-  static App_Glom* get_application();
+  void show_table_details(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value);
+  void show_table_list(const Glib::ustring& table_name);
+
+  /** Print the named report for the current table.
+   */
+  void print_report(const Glib::ustring& report_name);
+
+  /** Print the current layout for the current table.
+   */
+  void print_layout();
+
+  /** Offer the user the UI to add a new record,
+   */
+  void start_new_record();
+
+  static Application* get_application();
 
 protected:
   virtual void ui_warning_load_failed(int failure_code = 0); //Override.
@@ -131,7 +146,7 @@ private:
   void on_menu_help_contents();
 #endif //GLOM_ENABLE_MAEMO
 
-  /** Check that the file's hosting mode is supported by this build and 
+  /** Check that the file's hosting mode is supported by this build and
    * tell the user if necessary.
    */
   bool check_document_hosting_mode_is_supported(Document* document);
@@ -158,7 +173,7 @@ private:
 
   bool recreate_database(bool& user_cancelled); //return indicates success.
   void stop_self_hosting_of_document_database();
-  
+
   void on_connection_avahi_begin();
   void on_connection_avahi_progress();
   void on_connection_avahi_done();
@@ -175,7 +190,7 @@ private:
   virtual void document_history_add(const Glib::ustring& file_uri); //overridden.
 
   virtual void new_instance(const Glib::ustring& uri = Glib::ustring()); //Override
-  
+
   void on_connection_close_progress();
 
 #ifndef G_OS_WIN32
@@ -190,7 +205,7 @@ private:
 
   Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup_Others;
 
-  typedef std::list< Glib::RefPtr<Gtk::Action> > type_listActions; 
+  typedef std::list< Glib::RefPtr<Gtk::Action> > type_listActions;
   type_listActions m_listDeveloperActions; //Only enabled when in developer mode.
   Glib::RefPtr<Gtk::Action> m_action_mode_data, m_action_mode_find;
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -240,7 +255,7 @@ private:
   // document_history_add().
   Glib::ustring m_example_uri;
 
-  //A temporary store for the username/password if 
+  //A temporary store for the username/password if
   //we already asked for them when getting the document over the network,
   //so we can use them again when connecting directly to the database:
   Glib::ustring m_temp_username, m_temp_password;

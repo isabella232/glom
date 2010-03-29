@@ -1,17 +1,20 @@
 <?xml version="1.0"?>
 <interface>
-  <requires lib="gtk+" version="2.14"/>
+  <requires lib="gtk+" version="2.16"/>
   <!-- interface-requires gtksourceview 0.0 -->
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkWindow" id="window_data_layout_export">
     <property name="border_width">12</property>
     <property name="title" translatable="yes">Export Format</property>
+    <property name="window_position">center-on-parent</property>
     <property name="default_width">600</property>
     <property name="default_height">500</property>
+    <property name="icon_name">glom</property>
     <child>
       <object class="GtkVBox" id="vbox7">
         <property name="visible">True</property>
-        <property name="spacing">6</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">18</property>
         <child>
           <object class="GtkHBox" id="hbox9">
             <property name="visible">True</property>
@@ -47,134 +50,59 @@
           </packing>
         </child>
         <child>
-          <object class="GtkFrame" id="frame3">
+          <object class="GtkVBox" id="vbox9">
             <property name="visible">True</property>
-            <property name="label_xalign">0</property>
-            <property name="shadow_type">none</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">6</property>
             <child>
-              <object class="GtkAlignment" id="alignment7">
+              <object class="GtkScrolledWindow" id="scrolledwindow3">
                 <property name="visible">True</property>
-                <property name="left_padding">12</property>
+                <property name="can_focus">True</property>
+                <property name="hscrollbar_policy">automatic</property>
+                <property name="vscrollbar_policy">automatic</property>
+                <property name="shadow_type">in</property>
                 <child>
-                  <object class="GtkVBox" id="vbox9">
+                  <object class="GtkTreeView" id="treeview_fields">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkHBox" id="hbox5">
+                <property name="visible">True</property>
+                <child>
+                  <object class="GtkHButtonBox" id="hbuttonbox9">
                     <property name="visible">True</property>
                     <property name="spacing">6</property>
+                    <property name="layout_style">start</property>
                     <child>
-                      <object class="GtkScrolledWindow" id="scrolledwindow3">
+                      <object class="GtkButton" id="button_field_up">
+                        <property name="label">gtk-go-up</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="hscrollbar_policy">automatic</property>
-                        <property name="vscrollbar_policy">automatic</property>
-                        <property name="shadow_type">in</property>
-                        <child>
-                          <object class="GtkTreeView" id="treeview_fields">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                          </object>
-                        </child>
+                        <property name="can_default">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="use_stock">True</property>
                       </object>
                       <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
                         <property name="position">0</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkHBox" id="hbox5">
+                      <object class="GtkButton" id="button_field_down">
+                        <property name="label">gtk-go-down</property>
                         <property name="visible">True</property>
-                        <child>
-                          <object class="GtkHButtonBox" id="hbuttonbox9">
-                            <property name="visible">True</property>
-                            <property name="spacing">6</property>
-                            <property name="layout_style">start</property>
-                            <child>
-                              <object class="GtkButton" id="button_field_up">
-                                <property name="label">gtk-go-up</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="can_default">True</property>
-                                <property name="receives_default">False</property>
-                                <property name="use_stock">True</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkButton" id="button_field_down">
-                                <property name="label">gtk-go-down</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="can_default">True</property>
-                                <property name="receives_default">False</property>
-                                <property name="use_stock">True</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkHButtonBox" id="hbuttonbox5">
-                            <property name="visible">True</property>
-                            <property name="spacing">6</property>
-                            <property name="layout_style">end</property>
-                            <child>
-                              <object class="GtkButton" id="button_field_delete">
-                                <property name="label">gtk-delete</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="can_default">True</property>
-                                <property name="receives_default">False</property>
-                                <property name="use_stock">True</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkButton" id="button_field_add">
-                                <property name="label">gtk-add</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="can_default">True</property>
-                                <property name="receives_default">False</property>
-                                <property name="use_stock">True</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkButton" id="button_field_edit">
-                                <property name="label">gtk-edit</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="can_default">True</property>
-                                <property name="receives_default">False</property>
-                                <property name="use_stock">True</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">2</property>
-                              </packing>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
+                        <property name="can_focus">True</property>
+                        <property name="can_default">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="use_stock">True</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -183,15 +111,71 @@
                       </packing>
                     </child>
                   </object>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHButtonBox" id="hbuttonbox5">
+                    <property name="visible">True</property>
+                    <property name="spacing">6</property>
+                    <property name="layout_style">end</property>
+                    <child>
+                      <object class="GtkButton" id="button_field_add">
+                        <property name="label">gtk-add</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="can_default">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="use_stock">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="button_field_delete">
+                        <property name="label">gtk-delete</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="can_default">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="use_stock">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="button_field_edit">
+                        <property name="label">gtk-edit</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="can_default">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="use_stock">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
                 </child>
               </object>
-            </child>
-            <child type="label">
-              <object class="GtkLabel" id="label28">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">&lt;b&gt;Fields&lt;/b&gt;</property>
-                <property name="use_markup">True</property>
-              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
             </child>
           </object>
           <packing>
@@ -230,10 +214,12 @@
   </object>
   <object class="GtkWindow" id="window_field_definition_edit">
     <property name="title" translatable="yes">Field Definition</property>
+    <property name="window_position">center-on-parent</property>
     <child>
       <object class="GtkVBox" id="vbox11">
         <property name="visible">True</property>
         <property name="border_width">12</property>
+        <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child>
           <object class="GtkNotebook" id="notebook1">
@@ -242,6 +228,8 @@
             <child>
               <object class="GtkVBox" id="vbox13">
                 <property name="visible">True</property>
+                <property name="border_width">6</property>
+                <property name="orientation">vertical</property>
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkTable" id="table4">
@@ -249,7 +237,7 @@
                     <property name="border_width">6</property>
                     <property name="n_rows">3</property>
                     <property name="n_columns">2</property>
-                    <property name="column_spacing">6</property>
+                    <property name="column_spacing">12</property>
                     <property name="row_spacing">6</property>
                     <child>
                       <object class="GtkEntry" id="entry_name">
@@ -265,8 +253,11 @@
                     <child>
                       <object class="GtkLabel" id="label34">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Name:</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes">_Name:</property>
+                        <property name="use_underline">True</property>
                         <property name="justify">right</property>
+                        <property name="mnemonic_widget">entry_name</property>
                       </object>
                       <packing>
                         <property name="x_options">GTK_FILL</property>
@@ -304,10 +295,12 @@
                         <property name="visible">True</property>
                         <property name="xalign">1</property>
                         <child>
-                          <object class="GtkLabel" id="label35">
+                          <object class="GtkLabel" id="label1">
                             <property name="visible">True</property>
-                            <property name="label" translatable="yes">Type:</property>
-                            <property name="justify">right</property>
+                            <property name="xalign">0</property>
+                            <property name="label" translatable="yes">Typ_e:</property>
+                            <property name="use_underline">True</property>
+                            <property name="mnemonic_widget">combobox_type</property>
                           </object>
                         </child>
                       </object>
@@ -325,8 +318,11 @@
                         <child>
                           <object class="GtkLabel" id="label37">
                             <property name="visible">True</property>
-                            <property name="label" translatable="yes">Title:</property>
+                            <property name="xalign">0</property>
+                            <property name="label" translatable="yes">_Title:</property>
+                            <property name="use_underline">True</property>
                             <property name="justify">right</property>
+                            <property name="mnemonic_widget">entry_title</property>
                           </object>
                         </child>
                       </object>
@@ -348,10 +344,11 @@
                   <object class="GtkVBox" id="vbox12">
                     <property name="visible">True</property>
                     <property name="border_width">6</property>
+                    <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkCheckButton" id="checkbutton_primarykey">
-                        <property name="label" translatable="yes">Primary Key</property>
+                        <property name="label" translatable="yes">_Primary Key</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -366,7 +363,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="checkbutton_unique">
-                        <property name="label" translatable="yes">Unique</property>
+                        <property name="label" translatable="yes">_Unique</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -381,7 +378,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="checkbutton_autoincrement">
-                        <property name="label" translatable="yes">Auto-increment</property>
+                        <property name="label" translatable="yes">_Auto-increment</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -405,6 +402,7 @@
               <object class="GtkLabel" id="label30">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">Field</property>
+                <property name="use_underline">True</property>
               </object>
               <packing>
                 <property name="tab_fill">False</property>
@@ -413,8 +411,9 @@
             <child>
               <object class="GtkVBox" id="box_default_value">
                 <property name="visible">True</property>
-                <property name="border_width">6</property>
-                <property name="spacing">6</property>
+                <property name="border_width">12</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">18</property>
                 <child>
                   <object class="GtkFrame" id="frame39">
                     <property name="visible">True</property>
@@ -423,15 +422,17 @@
                     <child>
                       <object class="GtkAlignment" id="alignment_userentry">
                         <property name="visible">True</property>
+                        <property name="top_padding">6</property>
                         <property name="left_padding">12</property>
                         <child>
                           <object class="GtkVBox" id="vbox96">
                             <property name="visible">True</property>
+                            <property name="orientation">vertical</property>
                             <property name="spacing">6</property>
                             <child>
                               <object class="GtkHBox" id="hbox_default_value_simple">
                                 <property name="visible">True</property>
-                                <property name="spacing">6</property>
+                                <property name="spacing">12</property>
                                 <child>
                                   <placeholder/>
                                 </child>
@@ -445,7 +446,7 @@
                             </child>
                             <child>
                               <object class="GtkCheckButton" id="checkbutton_lookup">
-                                <property name="label" translatable="yes">Lookup value when a field changes.</property>
+                                <property name="label" translatable="yes">_Lookup value when a field changes.</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -459,72 +460,69 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkAlignment" id="alignment14">
+                              <object class="GtkTable" id="table_lookup">
                                 <property name="visible">True</property>
-                                <property name="left_padding">12</property>
+                                <property name="n_rows">2</property>
+                                <property name="n_columns">2</property>
+                                <property name="column_spacing">12</property>
+                                <property name="row_spacing">6</property>
                                 <child>
-                                  <object class="GtkTable" id="table_lookup">
+                                  <object class="GtkComboBox" id="combobox_lookup_field">
                                     <property name="visible">True</property>
-                                    <property name="border_width">6</property>
-                                    <property name="n_rows">2</property>
-                                    <property name="n_columns">2</property>
-                                    <property name="column_spacing">6</property>
-                                    <property name="row_spacing">6</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="right_attach">2</property>
+                                    <property name="top_attach">1</property>
+                                    <property name="bottom_attach">2</property>
+                                    <property name="x_options">GTK_FILL</property>
+                                    <property name="y_options">GTK_FILL</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkComboBox" id="combobox_lookup_relationship">
+                                    <property name="visible">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="right_attach">2</property>
+                                    <property name="x_options">GTK_FILL</property>
+                                    <property name="y_options">GTK_FILL</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="label53">
+                                    <property name="visible">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="label" translatable="yes">_Relationship:</property>
+                                    <property name="use_underline">True</property>
+                                    <property name="justify">right</property>
+                                  </object>
+                                  <packing>
+                                    <property name="x_options">GTK_FILL</property>
+                                    <property name="y_options"></property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkAlignment" id="alignment15">
+                                    <property name="visible">True</property>
+                                    <property name="xalign">1</property>
                                     <child>
-                                      <object class="GtkComboBox" id="combobox_lookup_field">
+                                      <object class="GtkLabel" id="label51">
                                         <property name="visible">True</property>
-                                      </object>
-                                      <packing>
-                                        <property name="left_attach">1</property>
-                                        <property name="right_attach">2</property>
-                                        <property name="top_attach">1</property>
-                                        <property name="bottom_attach">2</property>
-                                        <property name="x_options">GTK_FILL</property>
-                                        <property name="y_options">GTK_FILL</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkComboBox" id="combobox_lookup_relationship">
-                                        <property name="visible">True</property>
-                                      </object>
-                                      <packing>
-                                        <property name="left_attach">1</property>
-                                        <property name="right_attach">2</property>
-                                        <property name="x_options">GTK_FILL</property>
-                                        <property name="y_options">GTK_FILL</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkLabel" id="label53">
-                                        <property name="visible">True</property>
-                                        <property name="label" translatable="yes">Relationship</property>
+                                        <property name="xalign">0</property>
+                                        <property name="label" translatable="yes">_Field:</property>
+                                        <property name="use_underline">True</property>
                                         <property name="justify">right</property>
                                       </object>
-                                      <packing>
-                                        <property name="x_options">GTK_FILL</property>
-                                        <property name="y_options"></property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkAlignment" id="alignment15">
-                                        <property name="visible">True</property>
-                                        <property name="xalign">1</property>
-                                        <child>
-                                          <object class="GtkLabel" id="label51">
-                                            <property name="visible">True</property>
-                                            <property name="label" translatable="yes">Field</property>
-                                            <property name="justify">right</property>
-                                          </object>
-                                        </child>
-                                      </object>
-                                      <packing>
-                                        <property name="top_attach">1</property>
-                                        <property name="bottom_attach">2</property>
-                                        <property name="x_options">GTK_FILL</property>
-                                        <property name="y_options">GTK_EXPAND</property>
-                                      </packing>
                                     </child>
                                   </object>
+                                  <packing>
+                                    <property name="top_attach">1</property>
+                                    <property name="bottom_attach">2</property>
+                                    <property name="x_options">GTK_FILL</property>
+                                    <property name="y_options">GTK_EXPAND</property>
+                                  </packing>
                                 </child>
                               </object>
                               <packing>
@@ -537,7 +535,7 @@
                     </child>
                     <child type="label">
                       <object class="GtkRadioButton" id="radiobutton_userentry">
-                        <property name="label" translatable="yes">User Entry</property>
+                        <property name="label" translatable="yes">_User Entry</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -560,6 +558,7 @@
                     <child>
                       <object class="GtkAlignment" id="alignment_calculate">
                         <property name="visible">True</property>
+                        <property name="top_padding">6</property>
                         <property name="left_padding">12</property>
                         <child>
                           <object class="GtkHBox" id="hbox16">
@@ -586,9 +585,10 @@
                             <child>
                               <object class="GtkVBox" id="vbox22">
                                 <property name="visible">True</property>
+                                <property name="orientation">vertical</property>
                                 <child>
                                   <object class="GtkButton" id="button_edit_calculation">
-                                    <property name="label" translatable="yes">Edit</property>
+                                    <property name="label" translatable="yes">_Edit</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
@@ -613,7 +613,7 @@
                     </child>
                     <child type="label">
                       <object class="GtkRadioButton" id="radiobutton_calculate">
-                        <property name="label" translatable="yes">Calculate Value</property>
+                        <property name="label" translatable="yes">_Calculate Value</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -636,6 +636,7 @@
               <object class="GtkLabel" id="label31">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">Value</property>
+                <property name="use_underline">True</property>
               </object>
               <packing>
                 <property name="position">1</property>
@@ -646,6 +647,7 @@
               <object class="GtkVBox" id="box_formatting_placeholder">
                 <property name="visible">True</property>
                 <property name="border_width">6</property>
+                <property name="orientation">vertical</property>
                 <child>
                   <placeholder/>
                 </child>
@@ -658,6 +660,7 @@
               <object class="GtkLabel" id="label188">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">Default Formatting</property>
+                <property name="use_underline">True</property>
               </object>
               <packing>
                 <property name="position">2</property>
@@ -723,6 +726,7 @@
       <object class="GtkVBox" id="vbox14">
         <property name="visible">True</property>
         <property name="border_width">12</property>
+        <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child>
           <object class="GtkFrame" id="frame4">
@@ -737,6 +741,7 @@
                 <child>
                   <object class="GtkVBox" id="vbox16">
                     <property name="visible">True</property>
+                    <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkHBox" id="hbox10">
@@ -772,6 +777,7 @@
                     <child>
                       <object class="GtkVBox" id="vbox_placeholder">
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
                         <child>
                           <placeholder/>
                         </child>
@@ -835,10 +841,12 @@
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox2">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkVBox" id="vbox21">
             <property name="visible">True</property>
             <property name="border_width">6</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkLabel" id="label54">
@@ -1033,10 +1041,12 @@
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox2">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkVBox" id="vbox21">
             <property name="visible">True</property>
             <property name="border_width">6</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkHBox" id="hbox3">
@@ -1089,7 +1099,7 @@
                 <property name="xalign">0</property>
                 <property name="label">import glom
 
-&lt;b&gt;def on_button_clicked(record):&lt;/b&gt;</property>
+&lt;b&gt;def on_button_clicked(record, ui):&lt;/b&gt;</property>
                 <property name="use_markup">True</property>
               </object>
               <packing>
@@ -1231,10 +1241,12 @@
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox2">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkVBox" id="vbox21">
             <property name="visible">True</property>
             <property name="border_width">6</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkHBox" id="hbox_title">
@@ -1388,10 +1400,12 @@
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox2">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkVBox" id="vbox21">
             <property name="visible">True</property>
             <property name="border_width">6</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkHBox" id="hbox_title">
@@ -1436,6 +1450,7 @@
                     <child>
                       <object class="GtkVBox" id="vbox97">
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
                         <property name="spacing">6</property>
                         <child>
                           <object class="GtkEventBox" id="imageglom">
@@ -1605,10 +1620,12 @@
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox3">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkVBox" id="vbox23">
             <property name="visible">True</property>
             <property name="border_width">6</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkFrame" id="frame5">
@@ -1623,6 +1640,7 @@
                     <child>
                       <object class="GtkVBox" id="vbox24">
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
                         <property name="spacing">6</property>
                         <child>
                           <object class="GtkCheckButton" id="checkbutton_show_related_relationships">
@@ -1800,41 +1818,23 @@
     <child>
       <object class="GtkVBox" id="box_print_layouts">
         <property name="visible">True</property>
-        <property name="spacing">6</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">18</property>
         <child>
-          <object class="GtkFrame" id="frame18">
+          <object class="GtkVBox" id="vbox71">
             <property name="visible">True</property>
-            <property name="label_xalign">0</property>
-            <property name="shadow_type">none</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">6</property>
             <child>
-              <object class="GtkAlignment" id="alignment50">
+              <object class="GtkAlignment" id="alignment_placeholder_adddel">
                 <property name="visible">True</property>
-                <property name="left_padding">12</property>
                 <child>
-                  <object class="GtkVBox" id="vbox71">
-                    <property name="visible">True</property>
-                    <property name="spacing">6</property>
-                    <child>
-                      <object class="GtkAlignment" id="alignment_placeholder_adddel">
-                        <property name="visible">True</property>
-                        <child>
-                          <placeholder/>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                  </object>
+                  <placeholder/>
                 </child>
               </object>
-            </child>
-            <child type="label">
-              <object class="GtkLabel" id="label170">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">&lt;b&gt;Print Layouts&lt;/b&gt;</property>
-                <property name="use_markup">True</property>
-              </object>
+              <packing>
+                <property name="position">0</property>
+              </packing>
             </child>
           </object>
           <packing>
@@ -1875,9 +1875,11 @@
     <child>
       <object class="GtkVBox" id="vbox2">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkVBox" id="vbox_menu">
             <property name="visible">True</property>
+            <property name="orientation">vertical</property>
             <child>
               <placeholder/>
             </child>
@@ -1897,6 +1899,7 @@
               <object class="GtkVBox" id="vbox_inner">
                 <property name="visible">True</property>
                 <property name="border_width">6</property>
+                <property name="orientation">vertical</property>
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkHBox" id="hbox20">
@@ -2043,6 +2046,7 @@
                     <child>
                       <object class="GtkVBox" id="vbox_canvas">
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
                         <child>
                           <placeholder/>
                         </child>
@@ -2120,6 +2124,7 @@
     <child internal-child="vbox">
       <object class="GtkVBox" id="vbox27">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkHBox" id="hbox22">
             <property name="visible">True</property>
@@ -2142,6 +2147,7 @@
             <child>
               <object class="GtkVBox" id="vbox28">
                 <property name="visible">True</property>
+                <property name="orientation">vertical</property>
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkLabel" id="label63">
@@ -2405,6 +2411,7 @@ Please enter the initial connection details for your database. You may add addit
     <child internal-child="vbox">
       <object class="GtkVBox" id="vbox31">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkHBox" id="hbox26">
             <property name="visible">True</property>
@@ -2427,6 +2434,7 @@ Please enter the initial connection details for your database. You may add addit
             <child>
               <object class="GtkVBox" id="vbox32">
                 <property name="visible">True</property>
+                <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkLabel" id="label71">
                     <property name="visible">True</property>
@@ -2517,9 +2525,11 @@ Glom could not create the new database. Maybe you do not have the necessary acce
     <child internal-child="vbox">
       <object class="GtkVBox" id="vbox35">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkVBox" id="vbox36">
             <property name="visible">True</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkFrame" id="frame6">
@@ -2534,6 +2544,7 @@ Glom could not create the new database. Maybe you do not have the necessary acce
                     <child>
                       <object class="GtkVBox" id="vbox37">
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
                         <property name="spacing">6</property>
                         <child>
                           <object class="GtkHBox" id="hbox31">
@@ -2699,9 +2710,11 @@ Glom could not create the new database. Maybe you do not have the necessary acce
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox4">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkVBox" id="vbox40">
             <property name="visible">True</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <placeholder/>
@@ -2722,6 +2735,7 @@ Glom could not create the new database. Maybe you do not have the necessary acce
                         <child>
                           <object class="GtkVBox" id="vbox44">
                             <property name="visible">True</property>
+                            <property name="orientation">vertical</property>
                             <property name="spacing">6</property>
                             <child>
                               <object class="GtkScrolledWindow" id="scrolledwindow12">
@@ -2879,6 +2893,7 @@ Glom could not create the new database. Maybe you do not have the necessary acce
                         <child>
                           <object class="GtkVBox" id="vbox41">
                             <property name="visible">True</property>
+                            <property name="orientation">vertical</property>
                             <property name="spacing">6</property>
                             <child>
                               <object class="GtkScrolledWindow" id="scrolledwindow11">
@@ -3014,9 +3029,11 @@ Glom could not create the new database. Maybe you do not have the necessary acce
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox4">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkVBox" id="vbox40">
             <property name="visible">True</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkHBox" id="hbox34">
@@ -3064,6 +3081,7 @@ Glom could not create the new database. Maybe you do not have the necessary acce
                     <child>
                       <object class="GtkVBox" id="vbox41">
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
                         <property name="spacing">6</property>
                         <child>
                           <object class="GtkScrolledWindow" id="scrolledwindow11">
@@ -3265,10 +3283,12 @@ Glom could not create the new database. Maybe you do not have the necessary acce
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox5">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkVBox" id="vbox42">
             <property name="visible">True</property>
             <property name="border_width">6</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkFrame" id="frame9">
@@ -3282,6 +3302,7 @@ Glom could not create the new database. Maybe you do not have the necessary acce
                     <child>
                       <object class="GtkVBox" id="vbox43">
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
                         <property name="spacing">6</property>
                         <child>
                           <object class="GtkTable" id="table7">
@@ -3498,9 +3519,11 @@ Glom could not create the new database. Maybe you do not have the necessary acce
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox6">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkVBox" id="vbox45">
             <property name="visible">True</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkHBox" id="hbox39">
@@ -3524,6 +3547,7 @@ Glom could not create the new database. Maybe you do not have the necessary acce
                 <child>
                   <object class="GtkVBox" id="vbox1">
                     <property name="visible">True</property>
+                    <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkLabel" id="label99">
                         <property name="visible">True</property>
@@ -3698,9 +3722,11 @@ What name should this group have?</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="vbox46">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkVBox" id="vbox47">
             <property name="visible">True</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkHBox" id="hbox42">
@@ -3724,6 +3750,7 @@ What name should this group have?</property>
                 <child>
                   <object class="GtkVBox" id="vbox48">
                     <property name="visible">True</property>
+                    <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkLabel" id="label101">
                         <property name="visible">True</property>
@@ -3862,10 +3889,12 @@ Which user should be added to this group?</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="vbox50">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkVBox" id="vbox54">
             <property name="visible">True</property>
             <property name="border_width">6</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkHBox" id="hbox53">
@@ -3927,6 +3956,7 @@ Which user should be added to this group?</property>
                       <object class="GtkVBox" id="vbox94">
                         <property name="visible">True</property>
                         <property name="border_width">6</property>
+                        <property name="orientation">vertical</property>
                         <property name="spacing">6</property>
                         <child>
                           <object class="GtkHBox" id="hbox102">
@@ -4030,6 +4060,7 @@ Which user should be added to this group?</property>
                       <object class="GtkVBox" id="vbox52">
                         <property name="visible">True</property>
                         <property name="border_width">6</property>
+                        <property name="orientation">vertical</property>
                         <property name="spacing">6</property>
                         <child>
                           <object class="GtkRadioButton" id="radiobutton_use_default">
@@ -4065,6 +4096,7 @@ Which user should be added to this group?</property>
                         <child>
                           <object class="GtkVBox" id="box_formatting_placeholder">
                             <property name="visible">True</property>
+                            <property name="orientation">vertical</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -4153,10 +4185,12 @@ Which user should be added to this group?</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox7">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkVBox" id="vbox61">
             <property name="visible">True</property>
             <property name="border_width">12</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkHBox" id="hbox58">
@@ -4196,6 +4230,7 @@ Which user should be added to this group?</property>
                   <object class="GtkVBox" id="vbox62">
                     <property name="visible">True</property>
                     <property name="border_width">6</property>
+                    <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkHBox" id="hbox59">
@@ -4427,6 +4462,7 @@ Which user should be added to this group?</property>
                   <object class="GtkVBox" id="vbox98">
                     <property name="visible">True</property>
                     <property name="border_width">6</property>
+                    <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkEventBox" id="imageglom">
@@ -4520,6 +4556,7 @@ Which user should be added to this group?</property>
                   <object class="GtkVBox" id="vbox63">
                     <property name="visible">True</property>
                     <property name="border_width">6</property>
+                    <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkScrolledWindow" id="scrolledwindow14">
@@ -4553,6 +4590,110 @@ Which user should be added to this group?</property>
                   </object>
                   <packing>
                     <property name="position">2</property>
+                    <property name="tab_fill">False</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkVBox" id="vbox21">
+                    <property name="visible">True</property>
+                    <property name="border_width">6</property>
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">6</property>
+                    <child>
+                      <object class="GtkLabel" id="label54">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes">When the database is opened the python function implemented here will run.</property>
+                        <property name="wrap">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label55">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label">import glom
+
+        &lt;b&gt;def on_startup(ui):&lt;/b&gt;</property>
+                        <property name="use_markup">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkAlignment" id="alignment16">
+                        <property name="visible">True</property>
+                        <property name="left_padding">20</property>
+                        <child>
+                          <object class="GtkScrolledWindow" id="scrolledwindow7">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="hscrollbar_policy">automatic</property>
+                            <property name="vscrollbar_policy">automatic</property>
+                            <property name="shadow_type">in</property>
+                            <child>
+                              <object class="GtkViewport" id="viewport1">
+                                <property name="visible">True</property>
+                                <child>
+                                  <object class="GtkSourceView" id="textview_calculation">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkHButtonBox" id="hbuttonbox43">
+                        <property name="visible">True</property>
+                        <property name="layout_style">end</property>
+                        <child>
+                          <object class="GtkButton" id="button_test">
+                            <property name="label" translatable="yes">Test</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="can_default">True</property>
+                            <property name="receives_default">False</property>
+                            <property name="use_underline">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">4</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child type="tab">
+                  <object class="GtkLabel" id="label_startupscript">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Startup Script</property>
+                  </object>
+                  <packing>
+                    <property name="position">3</property>
                     <property name="tab_fill">False</property>
                   </packing>
                 </child>
@@ -4638,6 +4779,7 @@ Which user should be added to this group?</property>
     <child>
       <object class="GtkVBox" id="vbox67">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child>
           <object class="GtkHBox" id="hbox66">
@@ -4815,6 +4957,7 @@ Which user should be added to this group?</property>
             <child>
               <object class="GtkVBox" id="vbox69">
                 <property name="visible">True</property>
+                <property name="orientation">vertical</property>
                 <property name="spacing">6</property>
                 <child>
                   <placeholder/>
@@ -4852,6 +4995,7 @@ Which user should be added to this group?</property>
                     <child>
                       <object class="GtkVBox" id="vbox68">
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
                         <property name="spacing">6</property>
                         <child>
                           <object class="GtkNotebook" id="notebook_parts">
@@ -5122,6 +5266,7 @@ Which user should be added to this group?</property>
     <child>
       <object class="GtkVBox" id="box_reports">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child>
           <object class="GtkFrame" id="frame18">
@@ -5135,6 +5280,7 @@ Which user should be added to this group?</property>
                 <child>
                   <object class="GtkVBox" id="vbox71">
                     <property name="visible">True</property>
+                    <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkAlignment" id="alignment_placeholder_adddel">
@@ -5199,10 +5345,12 @@ Which user should be added to this group?</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="vbox72">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkVBox" id="vbox73">
             <property name="visible">True</property>
             <property name="border_width">6</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkFrame" id="frame19">
@@ -5217,6 +5365,7 @@ Which user should be added to this group?</property>
                     <child>
                       <object class="GtkVBox" id="vbox74">
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
                         <property name="spacing">6</property>
                         <child>
                           <object class="GtkHBox" id="hbox70">
@@ -5548,10 +5697,12 @@ Which user should be added to this group?</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="vbox75">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkVBox" id="vbox76">
             <property name="visible">True</property>
             <property name="border_width">6</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkFrame" id="frame20">
@@ -5566,6 +5717,7 @@ Which user should be added to this group?</property>
                     <child>
                       <object class="GtkVBox" id="vbox77">
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
                         <property name="spacing">6</property>
                         <child>
                           <object class="GtkHBox" id="hbox72">
@@ -5722,10 +5874,12 @@ Which user should be added to this group?</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox8">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkVBox" id="vbox78">
             <property name="visible">True</property>
             <property name="border_width">6</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkHBox" id="hbox78">
@@ -5770,6 +5924,7 @@ Which user should be added to this group?</property>
                     <child>
                       <object class="GtkVBox" id="vbox1">
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
                         <property name="spacing">6</property>
                         <child>
                           <object class="GtkScrolledWindow" id="scrolledwindow17">
@@ -6035,10 +6190,12 @@ Which user should be added to this group?</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox8">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkVBox" id="vbox78">
             <property name="visible">True</property>
             <property name="border_width">6</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkHBox" id="hbox78">
@@ -6083,6 +6240,7 @@ Which user should be added to this group?</property>
                     <child>
                       <object class="GtkVBox" id="vbox1">
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
                         <property name="spacing">6</property>
                         <child>
                           <object class="GtkScrolledWindow" id="scrolledwindow17">
@@ -6298,6 +6456,7 @@ Which user should be added to this group?</property>
     <child>
       <object class="GtkVBox" id="box_formatting">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child>
           <object class="GtkNotebook" id="notebook_formatting">
@@ -6307,6 +6466,7 @@ Which user should be added to this group?</property>
               <object class="GtkVBox" id="vbox_numeric_format">
                 <property name="visible">True</property>
                 <property name="border_width">6</property>
+                <property name="orientation">vertical</property>
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkCheckButton" id="checkbutton_format_thousands">
@@ -6425,6 +6585,7 @@ Which user should be added to this group?</property>
               <object class="GtkVBox" id="vbox_text_format">
                 <property name="visible">True</property>
                 <property name="border_width">6</property>
+                <property name="orientation">vertical</property>
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkHBox" id="hbox_">
@@ -6491,7 +6652,6 @@ Which user should be added to this group?</property>
                       <object class="GtkSpinButton" id="spinbutton_format_text_multiline_height">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="adjustment">adjustment2</property>
                         <property name="climb_rate">1</property>
                         <property name="numeric">True</property>
                       </object>
@@ -6640,10 +6800,12 @@ Which user should be added to this group?</property>
               <object class="GtkVBox" id="vbox_choices">
                 <property name="visible">True</property>
                 <property name="border_width">6</property>
+                <property name="orientation">vertical</property>
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkVBox" id="vbox56">
                     <property name="visible">True</property>
+                    <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkFrame" id="frame13">
@@ -6802,6 +6964,7 @@ Which user should be added to this group?</property>
                             <child>
                               <object class="GtkVBox" id="adddel_choices">
                                 <property name="visible">True</property>
+                                <property name="orientation">vertical</property>
                                 <child>
                                   <placeholder/>
                                 </child>
@@ -6845,6 +7008,21 @@ Which user should be added to this group?</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
+                <child>
+                  <object class="GtkCheckButton" id="checkbutton_choices_restrict_as_radio_buttons">
+                    <property name="label" translatable="yes">Display as radio buttons</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="use_underline">True</property>
+                    <property name="draw_indicator">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="position">2</property>
@@ -6880,9 +7058,11 @@ Which user should be added to this group?</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="vbox_main">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkVBox" id="vbox_placeholder_menubar">
             <property name="visible">True</property>
+            <property name="orientation">vertical</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -6979,6 +7159,7 @@ Which user should be added to this group?</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="vbox86">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkHBox" id="hbox84">
             <property name="visible">True</property>
@@ -7001,6 +7182,7 @@ Which user should be added to this group?</property>
             <child>
               <object class="GtkVBox" id="vbox87">
                 <property name="visible">True</property>
+                <property name="orientation">vertical</property>
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkLabel" id="label220">
@@ -7169,6 +7351,7 @@ Note that the standard parts of the Glom user interface, such as menus and dialo
       <object class="GtkVBox" id="vbox89">
         <property name="visible">True</property>
         <property name="border_width">12</property>
+        <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child>
           <object class="GtkFrame" id="frame35">
@@ -7186,6 +7369,7 @@ Note that the standard parts of the Glom user interface, such as menus and dialo
                 <child>
                   <object class="GtkVBox" id="vbox90">
                     <property name="visible">True</property>
+                    <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkHBox" id="hbox89">
@@ -7517,6 +7701,7 @@ Note that the standard parts of the Glom user interface, such as menus and dialo
     <child internal-child="vbox">
       <object class="GtkVBox" id="vbox91">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkHBox" id="hbox93">
             <property name="visible">True</property>
@@ -7539,6 +7724,7 @@ Note that the standard parts of the Glom user interface, such as menus and dialo
             <child>
               <object class="GtkVBox" id="vbox92">
                 <property name="visible">True</property>
+                <property name="orientation">vertical</property>
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkLabel" id="label222">
@@ -7728,6 +7914,7 @@ The language of the original text is currently identified as:</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="vbox91">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkHBox" id="hbox93">
             <property name="visible">True</property>
@@ -7750,6 +7937,7 @@ The language of the original text is currently identified as:</property>
             <child>
               <object class="GtkVBox" id="vbox92">
                 <property name="visible">True</property>
+                <property name="orientation">vertical</property>
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkLabel" id="label222">
@@ -7915,10 +8103,12 @@ From what language would you like to copy the translations to use as the start o
     <child internal-child="vbox">
       <object class="GtkVBox" id="vbox99">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkVBox" id="vbox100">
             <property name="visible">True</property>
             <property name="border_width">6</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkHBox" id="hbox119">
@@ -7942,6 +8132,7 @@ From what language would you like to copy the translations to use as the start o
                 <child>
                   <object class="GtkVBox" id="vbox101">
                     <property name="visible">True</property>
+                    <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkLabel" id="label244">
                         <property name="visible">True</property>
@@ -8059,10 +8250,12 @@ Please select a date to enter in this field.</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="vbox102">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkVBox" id="vbox103">
             <property name="visible">True</property>
             <property name="border_width">6</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkFrame" id="frame41">
@@ -8077,6 +8270,7 @@ Please select a date to enter in this field.</property>
                     <child>
                       <object class="GtkVBox" id="vbox104">
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
                         <property name="spacing">6</property>
                         <child>
                           <object class="GtkLabel" id="label259">
@@ -8350,10 +8544,12 @@ If a suitable related table already exists then you should instead cancel and ju
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox32">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkVBox" id="vbox1">
             <property name="visible">True</property>
             <property name="border_width">6</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkLabel" id="label1">
@@ -8537,9 +8733,11 @@ If a suitable related table already exists then you should instead cancel and ju
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox33">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkVBox" id="vbox2">
             <property name="visible">True</property>
+            <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkHBox" id="hbox4">
@@ -8563,6 +8761,7 @@ If a suitable related table already exists then you should instead cancel and ju
                 <child>
                   <object class="GtkVBox" id="vbox3">
                     <property name="visible">True</property>
+                    <property name="orientation">vertical</property>
                     <child>
                       <object class="GtkLabel" id="label3">
                         <property name="visible">True</property>
@@ -8739,6 +8938,7 @@ What name should this module have?</property>
     <child>
       <object class="GtkVBox" id="vbox7">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child>
           <object class="GtkHBox" id="hbox9">
@@ -8895,6 +9095,7 @@ What name should this module have?</property>
                     <child>
                       <object class="GtkVBox" id="vbox93">
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
                         <property name="spacing">6</property>
                         <child>
                           <object class="GtkButton" id="button_add_image">
@@ -9050,57 +9251,6 @@ What name should this module have?</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkButton" id="button_add_related_calendar">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="can_default">True</property>
-                            <property name="receives_default">False</property>
-                            <property name="tooltip_text" translatable="yes">Add a related records calendar portal. This is a calendar showing records from a related table. Remember to edit this layout item to specify the relationship to use, and the fields to show from the related table.</property>
-                            <child>
-                              <object class="GtkAlignment" id="alignment1">
-                                <property name="visible">True</property>
-                                <property name="xscale">0</property>
-                                <property name="yscale">0</property>
-                                <child>
-                                  <object class="GtkHBox" id="hbox1">
-                                    <property name="visible">True</property>
-                                    <property name="spacing">2</property>
-                                    <child>
-                                      <object class="GtkImage" id="image1">
-                                        <property name="visible">True</property>
-                                        <property name="stock">gtk-add</property>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">False</property>
-                                        <property name="position">0</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkLabel" id="label1">
-                                        <property name="visible">True</property>
-                                        <property name="label" translatable="yes">Add Related Calendar</property>
-                                        <property name="use_underline">True</property>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">False</property>
-                                        <property name="position">1</property>
-                                      </packing>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="pack_type">end</property>
-                            <property name="position">4</property>
-                          </packing>
-                        </child>
-                        <child>
                           <object class="GtkButton" id="button_add_related">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
@@ -9131,6 +9281,57 @@ What name should this module have?</property>
                                       <object class="GtkLabel" id="label74">
                                         <property name="visible">True</property>
                                         <property name="label" translatable="yes">Add Related Records</property>
+                                        <property name="use_underline">True</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="pack_type">end</property>
+                            <property name="position">4</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="button_add_related_calendar">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="can_default">True</property>
+                            <property name="receives_default">False</property>
+                            <property name="tooltip_text" translatable="yes">Add a related records calendar portal. This is a calendar showing records from a related table. Remember to edit this layout item to specify the relationship to use, and the fields to show from the related table.</property>
+                            <child>
+                              <object class="GtkAlignment" id="alignment1">
+                                <property name="visible">True</property>
+                                <property name="xscale">0</property>
+                                <property name="yscale">0</property>
+                                <child>
+                                  <object class="GtkHBox" id="hbox1">
+                                    <property name="visible">True</property>
+                                    <property name="spacing">2</property>
+                                    <child>
+                                      <object class="GtkImage" id="image1">
+                                        <property name="visible">True</property>
+                                        <property name="stock">gtk-add</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="label1">
+                                        <property name="visible">True</property>
+                                        <property name="label" translatable="yes">Add Related Calendar</property>
                                         <property name="use_underline">True</property>
                                       </object>
                                       <packing>
@@ -9483,6 +9684,7 @@ What name should this module have?</property>
                 <child>
                   <object class="GtkVBox" id="vbox105">
                     <property name="visible">True</property>
+                    <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkLabel" id="label261">
@@ -9697,10 +9899,12 @@ What name should this module have?</property>
       <object class="GtkVBox" id="vbox6">
         <property name="visible">True</property>
         <property name="border_width">12</property>
+        <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child>
           <object class="GtkVBox" id="box_formatting_placeholder">
             <property name="visible">True</property>
+            <property name="orientation">vertical</property>
             <child>
               <placeholder/>
             </child>
@@ -9750,6 +9954,7 @@ What name should this module have?</property>
       <object class="GtkVBox" id="dialog-vbox29">
         <property name="visible">True</property>
         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+        <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child>
           <object class="GtkHBox" id="hbox2">
@@ -9839,6 +10044,7 @@ What name should this module have?</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox30">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child>
           <object class="GtkTable" id="table2">
@@ -9851,7 +10057,6 @@ What name should this module have?</property>
               <object class="GtkSpinButton" id="spin_columns">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="adjustment">adjustment1</property>
                 <property name="numeric">True</property>
               </object>
               <packing>
@@ -9953,6 +10158,7 @@ What name should this module have?</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox8">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkFrame" id="frame21">
             <property name="visible">True</property>
@@ -9966,6 +10172,7 @@ What name should this module have?</property>
                 <child>
                   <object class="GtkVBox" id="vbox78">
                     <property name="visible">True</property>
+                    <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkScrolledWindow" id="scrolledwindow17">
@@ -10155,18 +10362,4 @@ What name should this module have?</property>
       <action-widget response="-5">button_close</action-widget>
     </action-widgets>
   </object>
-  <object class="GtkAdjustment" id="adjustment1">
-    <property name="upper">10</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">2</property>
-    <property name="page_size">0</property>
-  </object>
-  <object class="GtkAdjustment" id="adjustment2">
-    <property name="value">3</property>
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
-    <property name="page_size">0</property>
-  </object>
-
 </interface>

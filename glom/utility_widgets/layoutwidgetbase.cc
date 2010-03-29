@@ -55,7 +55,7 @@ sharedptr<LayoutItem> LayoutWidgetBase::get_layout_item()
   return m_pLayoutItem;
 }
 
-App_Glom* LayoutWidgetBase::get_application() const
+Application* LayoutWidgetBase::get_application() const
 {
   return 0; //override to implement.
 }

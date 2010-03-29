@@ -27,6 +27,7 @@
 #include <libglom/python_embed/py_glom_record.h>
 #include <libglom/python_embed/py_glom_related.h>
 #include <libglom/python_embed/py_glom_relatedrecord.h>
+#include <libglom/python_embed/py_glom_ui.h>
 
 using namespace Glom;
 
@@ -54,5 +55,13 @@ BOOST_PYTHON_MODULE(glom_1_14)
     .def("max", &PyGlomRelatedRecord::sum, boost::python::args("field_name"), "Maximum of all values of the field in the related records.")
     .def("__getitem__", &PyGlomRelatedRecord::getitem)
     .def("__len__", &PyGlomRelatedRecord::len)
+  ;
+
+  boost::python::class_<PyGlomUI>("UI")
+    .def("show_table_details", &PyGlomUI::show_table_details)
+    .def("show_table_list", &PyGlomUI::show_table_list)
+    .def("print_layout", &PyGlomUI::print_layout)
+    .def("print_report", &PyGlomUI::print_report)
+    .def("start_new_record", &PyGlomUI::start_new_record)
   ;
 }

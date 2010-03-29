@@ -85,12 +85,13 @@ boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& 
     sharedptr<SharedConnection> sharedconnection = ConnectionPool::get_instance()->connect(conn_error);
     // Ignore error, sharedconnection presence is checked below
 #endif
+
     if(!sharedconnection)
     {
-      PyErr_SetString(PyExc_IndexError, "connection not found");
+      PyErr_SetString(PyExc_IndexError, "no database connection");
       return boost::python::object();
     }
-  
+
     Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
 
     const Glib::ustring related_key_name = m_relationship->get_to_field();

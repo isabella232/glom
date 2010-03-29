@@ -47,6 +47,8 @@ void Box_DB_Table_Definition::init()
   if(refXml)
     refXml->get_widget_derived("window_field_definition_edit", m_pDialog);
 
+  m_pDialog->set_icon_name("glom");
+
   add_view(m_pDialog); //Give it access to the document.
 
   pack_start(m_AddDel);
@@ -656,11 +658,13 @@ bool Box_DB_Table_Definition::field_has_non_unique_values(const sharedptr<const 
   long count_distinct = 0;
   long count_all = 0;
 
-  //TODO: Use SqlBuilder. I asked on the mailing list about how to use DISTINCT with it. murrayc.
-  //Count the distinct rows:
-  const Glib::ustring sql_query_distinct = "SELECT DISTINCT \"" + field->get_name() + "\" FROM \"" + m_table_name + "\"";
-  
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query_distinct);
+  //Count the distinct rows:  
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder_query_distinct = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
+  builder_query_distinct->select_set_distinct();
+  builder_query_distinct->set_table(m_table_name);
+  builder_query_distinct->select_add_field(field->get_name(), m_table_name);
+
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(builder_query_distinct);
   if(datamodel)
   {
     count_distinct = datamodel->get_n_rows();
