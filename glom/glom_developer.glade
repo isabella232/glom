@@ -4834,7 +4834,7 @@ Which user should be added to this group?</property>
                 <child>
                   <object class="GtkLabel" id="label169">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">&lt;b&gt;_Report name:&lt;/b&gt;</property>
+                    <property name="label" translatable="yes">_Report name:</property>
                     <property name="use_markup">True</property>
                     <property name="use_underline">True</property>
                   </object>
@@ -4865,7 +4865,7 @@ Which user should be added to this group?</property>
                 <child>
                   <object class="GtkLabel" id="label160">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">&lt;b&gt;_Title:&lt;/b&gt;</property>
+                    <property name="label" translatable="yes">_Title:</property>
                     <property name="use_markup">True</property>
                     <property name="use_underline">True</property>
                   </object>

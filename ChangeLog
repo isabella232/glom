@@ -1,5 +1,12 @@
 2010-03-29  Daniel Borgmann  <danielb@openismus.com>
 
+	Remove boldness from input labels.
+
+	* glom/glom_developer.glade: Remove bold markup for Report Layout
+	input labels.
+
+2010-03-29  Daniel Borgmann  <danielb@openismus.com>
+
 	Report Layout dialog adjustments.
 
 	* glom/frame_glom.cc: Set Report Layout dialog window icon.
