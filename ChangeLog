@@ -1,5 +1,12 @@
 2010-03-29  Daniel Borgmann  <danielb@openismus.com>
 
+	Relationships Overview dialog adjustments.
+
+	* glom/glom_developer.glade: Remove frame and adjust spacings for
+	Relationships Overview dialog.
+
+2010-03-29  Daniel Borgmann  <danielb@openismus.com>
+
 	Correct mnemonic widgets.
 
 	* glom/glom_developer.glade: Actually set the correct mnemonic
