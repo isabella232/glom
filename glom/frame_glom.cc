@@ -1887,6 +1887,7 @@ void Frame_Glom::on_menu_developer_reports()
 
     Utils::get_glade_developer_widget_derived_with_warning("window_report_layout", m_pDialogLayoutReport);
     add_view(m_pDialogLayoutReport);
+    m_pDialogLayoutReport->set_icon_name("glom");
     m_pDialogLayoutReport->set_transient_for(*(get_app_window()));
     m_pDialogLayoutReport->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_layout_report_hide) );
 

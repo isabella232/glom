@@ -1,5 +1,13 @@
 2010-03-29  Daniel Borgmann  <danielb@openismus.com>
 
+	Report Layout dialog adjustments.
+
+	* glom/frame_glom.cc: Set Report Layout dialog window icon.
+	* glom/glom_developer.glade: Report Layout dialog spacing
+	adjustments and mnemonics fix.
+
+2010-03-29  Daniel Borgmann  <danielb@openismus.com>
+
 	Reports dialog adjustments.
 
 	* glom/frame_glom.cc: Set Reports dialog window title.

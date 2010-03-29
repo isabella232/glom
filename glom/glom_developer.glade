@@ -4756,13 +4756,14 @@ Which user should be added to this group?</property>
   <object class="GtkWindow" id="window_report_layout">
     <property name="border_width">12</property>
     <property name="title" translatable="yes">Report Layout</property>
+    <property name="window_position">center-on-parent</property>
     <property name="default_width">600</property>
     <property name="default_height">500</property>
     <child>
       <object class="GtkVBox" id="vbox67">
         <property name="visible">True</property>
         <property name="orientation">vertical</property>
-        <property name="spacing">6</property>
+        <property name="spacing">12</property>
         <child>
           <object class="GtkHBox" id="hbox66">
             <property name="visible">True</property>
@@ -4801,7 +4802,7 @@ Which user should be added to this group?</property>
             </child>
             <child>
               <object class="GtkCheckButton" id="checkbutton_table_title">
-                <property name="label" translatable="yes">Show Table Title</property>
+                <property name="label" translatable="yes">_Show table title</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -4825,16 +4826,17 @@ Which user should be added to this group?</property>
         <child>
           <object class="GtkHBox" id="hbox118">
             <property name="visible">True</property>
-            <property name="spacing">12</property>
+            <property name="spacing">18</property>
             <child>
               <object class="GtkHBox" id="hbox67">
                 <property name="visible">True</property>
-                <property name="spacing">6</property>
+                <property name="spacing">12</property>
                 <child>
                   <object class="GtkLabel" id="label169">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">&lt;b&gt;Report name:&lt;/b&gt;</property>
+                    <property name="label" translatable="yes">&lt;b&gt;_Report name:&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
+                    <property name="use_underline">True</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -4859,12 +4861,13 @@ Which user should be added to this group?</property>
             <child>
               <object class="GtkHBox" id="hbox68">
                 <property name="visible">True</property>
-                <property name="spacing">6</property>
+                <property name="spacing">12</property>
                 <child>
                   <object class="GtkLabel" id="label160">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">&lt;b&gt;Title:&lt;/b&gt;</property>
+                    <property name="label" translatable="yes">&lt;b&gt;_Title:&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
+                    <property name="use_underline">True</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -5147,7 +5150,7 @@ Which user should be added to this group?</property>
                                         <child>
                                           <object class="GtkLabel" id="label234">
                                             <property name="visible">True</property>
-                                            <property name="label">Formatting</property>
+                                            <property name="label">_Formatting</property>
                                             <property name="use_underline">True</property>
                                           </object>
                                           <packing>
