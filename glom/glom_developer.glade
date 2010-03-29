@@ -4837,6 +4837,7 @@ Which user should be added to this group?</property>
                     <property name="label" translatable="yes">_Report name:</property>
                     <property name="use_markup">True</property>
                     <property name="use_underline">True</property>
+                    <property name="mnemonic_widget">entry_name</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -4868,6 +4869,7 @@ Which user should be added to this group?</property>
                     <property name="label" translatable="yes">_Title:</property>
                     <property name="use_markup">True</property>
                     <property name="use_underline">True</property>
+                    <property name="mnemonic_widget">entry_title</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
