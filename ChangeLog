@@ -1,3 +1,19 @@
+2010-03-30  Murray Cumming  <murrayc@murrayc.com>
+
+    Add a test to check instantiation of glade widgets.
+
+    * Makefile_tests.am
+	* tests/glade_toplevels_instantiation.cc: Added this code for an
+    executable that will try to instantiate all GtkWindow and GtkDialog
+    objects in a specified .glade file. It also checks that they are not
+    visible by default.
+	* tests/test_glade_toplevels_instantiation.sh: Added a tests script,
+    run during make check, to run this executable on all our .glade files.
+
+    * glom/glom.glade, glom_developer.glom: Fix small problems found by the
+    test, removing an empty textbuffer top-level object and making all
+    top-level objects non-visible by default.
+
 2010-03-29  Daniel Borgmann  <danielb@openismus.com>
 
 	Relationships Overview dialog adjustments.

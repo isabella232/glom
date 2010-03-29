@@ -2684,7 +2684,7 @@ Glom could not create the new database. Maybe you do not have the necessary acce
   </object>
   <object class="GtkDialog" id="window_groups">
     <property name="height_request">400</property>
-    <property name="visible">True</property>
+    <property name="visible">False</property>
     <property name="border_width">6</property>
     <property name="title" translatable="yes">Groups</property>
     <property name="type_hint">dialog</property>
@@ -3001,7 +3001,7 @@ Glom could not create the new database. Maybe you do not have the necessary acce
     </action-widgets>
   </object>
   <object class="GtkDialog" id="window_users">
-    <property name="visible">True</property>
+    <property name="visible">False</property>
     <property name="border_width">6</property>
     <property name="title" translatable="yes">Users</property>
     <property name="default_width">400</property>
@@ -3258,7 +3258,7 @@ Glom could not create the new database. Maybe you do not have the necessary acce
     </action-widgets>
   </object>
   <object class="GtkDialog" id="dialog_user">
-    <property name="visible">True</property>
+    <property name="visible">False</property>
     <property name="title" translatable="yes">User</property>
     <property name="type_hint">dialog</property>
     <property name="has_separator">False</property>
@@ -3495,7 +3495,7 @@ Glom could not create the new database. Maybe you do not have the necessary acce
     </action-widgets>
   </object>
   <object class="GtkDialog" id="dialog_new_group">
-    <property name="visible">True</property>
+    <property name="visible">False</property>
     <property name="title" translatable="yes">Create Group</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
@@ -3698,7 +3698,7 @@ What name should this group have?</property>
     </action-widgets>
   </object>
   <object class="GtkDialog" id="dialog_choose_user">
-    <property name="visible">True</property>
+    <property name="visible">False</property>
     <property name="title" translatable="yes">Choose User</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
@@ -4161,7 +4161,7 @@ Which user should be added to this group?</property>
     </action-widgets>
   </object>
   <object class="GtkDialog" id="dialog_database_preferences">
-    <property name="visible">True</property>
+    <property name="visible">False</property>
     <property name="title" translatable="yes">Database Preferences</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
@@ -5835,7 +5835,7 @@ Which user should be added to this group?</property>
     </action-widgets>
   </object>
   <object class="GtkDialog" id="dialog_groupby_secondary_fields">
-    <property name="visible">True</property>
+    <property name="visible">False</property>
     <property name="title" translatable="yes">Group By - Secondary Fields</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
@@ -6151,7 +6151,7 @@ Which user should be added to this group?</property>
     </action-widgets>
   </object>
   <object class="GtkDialog" id="dialog_groupby_sort_fields">
-    <property name="visible">True</property>
+    <property name="visible">False</property>
     <property name="title" translatable="yes">Group By - Sort Fields</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
@@ -6418,7 +6418,7 @@ Which user should be added to this group?</property>
     </action-widgets>
   </object>
   <object class="GtkWindow" id="window_formatting">
-    <property name="visible">True</property>
+    <property name="visible">False</property>
     <property name="title" translatable="yes">window1</property>
     <child>
       <object class="GtkVBox" id="box_formatting">
@@ -7015,7 +7015,12 @@ Which user should be added to this group?</property>
     </child>
   </object>
   <object class="GtkDialog" id="dialog_relationships_overview">
+<<<<<<< HEAD:glom/glom_developer.glade
     <property name="visible">True</property>
+=======
+    <property name="visible">False</property>
+    <property name="border_width">6</property>
+>>>>>>> Add a test to check instantiation of glade widgets.:glom/glom_developer.glade
     <property name="title" translatable="yes">Relationships Overview</property>
     <property name="default_width">400</property>
     <property name="default_height">400</property>
@@ -8044,7 +8049,7 @@ From what language would you like to copy the translations to use as the start o
     </action-widgets>
   </object>
   <object class="GtkDialog" id="dialog_choose_date">
-    <property name="visible">True</property>
+    <property name="visible">False</property>
     <property name="title" translatable="yes">Choose Date</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
@@ -8672,7 +8677,7 @@ If a suitable related table already exists then you should instead cancel and ju
     </action-widgets>
   </object>
   <object class="GtkDialog" id="dialog_new_library_script">
-    <property name="visible">True</property>
+    <property name="visible">False</property>
     <property name="title" translatable="yes">Create Group</property>
     <property name="default_width">311</property>
     <property name="default_height">179</property>
@@ -10099,7 +10104,7 @@ What name should this module have?</property>
     </action-widgets>
   </object>
   <object class="GtkDialog" id="dialog_notebook">
-    <property name="visible">True</property>
+    <property name="visible">False</property>
     <property name="title" translatable="yes">Notebook Tabs</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">

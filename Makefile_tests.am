@@ -29,12 +29,14 @@ check_PROGRAMS =						\
 	tests/test_python_execute_func_date \
 	tests/test_python_execute_script \
 	tests/import/test_parsing \
-	tests/import/test_signals
+	tests/import/test_signals \
+	tests/glade_toplevels_instantiation
 
 TESTS =	tests/test_parsing_time	\
 	tests/test_signal_reemit \
-  tests/test_dtd_file_validation.sh \
-  tests/test_glade_file_validation.sh \
+	tests/test_dtd_file_validation.sh \
+	tests/test_glade_file_validation.sh \
+	tests/test_glade_toplevels_instantiation.sh \
 	tests/test_load_python_library \
 	tests/test_python_module \
 	tests/test_python_execute_func \
@@ -47,7 +49,8 @@ TESTS =	tests/test_parsing_time	\
 # We also set this in Makefile.am, with +=,
 # but this is the first use, where we must use =
 dist_noinst_SCRIPTS = tests/test_dtd_file_validation.sh \
-	tests/test_glade_file_validation.sh
+	tests/test_glade_file_validation.sh \
+	tests/test_glade_toplevels_instantiation.sh
 
 #TESTS_ENVIRONMENT=which valgrind && valgrind --tool=memcheck --leak-check=full --leak-resolution=high --trace-children=yes --num-callers=30
 
@@ -107,6 +110,8 @@ glom_utility_widgets_test_flowtable_LDADD = $(GLOM_LIBS)
 #	glom/utility_widgets/placeholder-glom.cc \
 #	glom/utility_widgets/test_flowtable_dnd.cc
 
+tests_glade_toplevels_instantiation_SOURCES = tests/glade_toplevels_instantiation.cc
+tests_glade_toplevels_instantiation_LDADD = $(tests_ldadd) $(LIBGLOM_LIBS) $(GLOM_LIBS)
 
 
 glom_test_pyembed_LDADD = $(LIBGLOM_LIBS) $(PYTHON_LIBS)
