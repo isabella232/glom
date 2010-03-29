@@ -1,3 +1,16 @@
+2010-03-29  Murray Cumming  <murrayc@murrayc.com>
+
+    Avoid Operation Not Supported warnings at startup.
+
+	* glom/application.cc:
+	* glom/bakery/app_withdoc.cc:
+	* glom/libglom/connectionpool_backends/postgres_self.cc:
+	* glom/libglom/connectionpool_backends/sqlite.cc:
+	* glom/libglom/document/bakery/document.cc:
+	* glom/libglom/utils.cc:
+	* glom/xsl_utils.cc: Avoid creating a Gio::File() from an empty URI,
+    avoiding useless stdout warnings at startup.
+
 2010-03-29  Daniel Borgmann  <danielb@openismus.com>
 
 	Edit Field Definition Dialog adjustments.

@@ -845,6 +845,9 @@ static bool uri_is_writable(const Glib::RefPtr<const Gio::File>& uri)
 
 Glib::ustring Application::get_file_uri_without_extension(const Glib::ustring& uri)
 {
+  if(uri.empty())
+    return uri;
+
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
   if(!file)
     return uri; //Actually an error.

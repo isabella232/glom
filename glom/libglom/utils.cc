@@ -818,6 +818,9 @@ Glib::ustring Utils::string_remove_suffix(const Glib::ustring& str, const Glib::
 
 bool Utils::file_exists(const Glib::ustring& uri)
 {
+  if(uri.empty())
+     return false;
+
   //Check whether file exists already:
   {
     // Try to examine the input file.

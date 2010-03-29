@@ -192,6 +192,9 @@ void App_WithDoc::offer_saveas()
 
 bool App_WithDoc::file_exists(const Glib::ustring& uri)
 {
+  if(uri.empty())
+    return false;
+
   //Check whether file exists already:
   {
     // Try to examine the input file.

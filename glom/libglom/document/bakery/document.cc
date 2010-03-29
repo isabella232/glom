@@ -203,6 +203,9 @@ bool Document::read_from_disk(int& failure_code)
   m_strContents.erase();
 
   // Open the input file for read access:
+  if(m_file_uri.empty())
+    return false;
+
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(m_file_uri);
 
   Glib::RefPtr<Gio::FileInputStream> stream;
@@ -280,6 +283,9 @@ bool Document::read_from_disk(int& failure_code)
 
 bool Document::write_to_disk()
 {
+  if(m_file_uri.empty())
+    return false;
+
   //Write the changed data to disk:
   if(get_modified())
   {
@@ -361,6 +367,9 @@ static Glib::ustring get_file_display_name(const Glib::ustring& uri)
 {
   Glib::ustring result;
 
+  if(uri.empty())
+    return result;
+
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
   Glib::RefPtr<const Gio::FileInfo> file_info;
 
@@ -371,7 +380,7 @@ static Glib::ustring get_file_display_name(const Glib::ustring& uri)
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "Application::get_file_display_name(): error: " << ex.what() << std::endl;
+    std::cerr << "Application::get_file_display_name(uri=" << uri << "): error: " << ex.what() << std::endl;
     return result;
   }
 #else
