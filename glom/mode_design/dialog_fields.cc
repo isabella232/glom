@@ -33,9 +33,6 @@ Dialog_Fields::Dialog_Fields(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Bu
 {
   builder->get_widget_derived("vbox_placeholder", m_box);
 
-  m_label_frame->set_markup( Utils::bold_message(_("Field Definitions")) );
-
-
   //Fill composite view:
   add_view(m_box);
 

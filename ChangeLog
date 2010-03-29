@@ -1,3 +1,23 @@
+2010-03-29  Daniel Borgmann  <danielb@openismus.com>
+
+	Remove frame label on Fields dialog.
+
+	* glom/box_reports.cc: Remove references to frame label.
+	* glom/box_reports.h: Remove frame label member.
+	* glom/frame_glom.cc: Set window icon for Fields and Relationships
+	dialogs.
+	* glom/glom_developer.glade: Adjust Fields and Relationships dialogs.
+	* glom/mode_design/dialog_design.cc: Remove references to frame label.
+	* glom/mode_design/dialog_design.h: Remove frame label member.
+	* glom/mode_design/dialog_fields.cc: Remove references to frame label.
+	* glom/mode_design/dialog_relationships.cc: Remove references to frame
+	label.
+	* glom/mode_design/print_layouts/box_print_layouts.cc: Remove
+	references to frame label.
+	* glom/mode_design/print_layouts/box_print_layouts.h: Remove frame
+	label member.
+	* glom/navigation/box_tables.cc: Remove references to frame label.
+
 2010-03-29  Murray Cumming  <murrayc@murrayc.com>
 
     Avoid Operation Not Supported warnings at startup.

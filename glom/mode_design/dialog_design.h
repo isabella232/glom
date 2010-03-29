@@ -45,7 +45,6 @@ private:
 
 protected:
   Gtk::Label* m_label_table;
-  Gtk::Label* m_label_frame;
 };
 
 } //namespace Glom

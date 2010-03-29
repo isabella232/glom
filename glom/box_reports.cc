@@ -27,7 +27,6 @@ namespace Glom
 
 Box_Reports::Box_Reports(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Box_DB_Table(cobject, builder),
-  m_pLabelFrameTitle(0),
   m_colReportName(0),
   m_colTitle(0)
 {
@@ -39,8 +38,6 @@ Box_Reports::Box_Reports(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builde
   Gtk::Alignment* pAligmentPlaceholder = 0;
   builder->get_widget("alignment_placeholder_adddel", pAligmentPlaceholder);
   pAligmentPlaceholder->add(m_AddDel);
-
-  //builder->get_widget("label_frame_title", m_pLabelFrameTitle);
 
   m_AddDel.signal_user_added().connect(sigc::mem_fun(*this, &Box_Reports::on_adddel_Add));
   m_AddDel.signal_user_requested_delete().connect(sigc::mem_fun(*this, &Box_Reports::on_adddel_Delete));
@@ -92,10 +89,6 @@ bool Box_Reports::fill_from_database()
   m_AddDel.set_prevent_duplicates_warning(_("This report already exists. Please choose a different report name"));
 
   m_colTitle = m_AddDel.add_column(_("Title"), AddDelColumnInfo::STYLE_Text, editable, true);
-
-  //_("Server: ") +  m_strServerName + ", " + 
-  //Glib::ustring strTitle = Glib::ustring("<b>") + _("Tables from Database: ") + get_database_name() + "");
-  //m_pLabelFrameTitle->set_markup(strTitle);
 
   Document::type_listReports listTableReports;
   Document* document = get_document();

@@ -49,7 +49,6 @@ private:
 
   virtual void on_userlevel_changed(AppState::userlevels userlevel);
 
-  Gtk::Label* m_pLabelFrameTitle;
   guint m_colName;
   guint m_colTitle;
 

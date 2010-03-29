@@ -1733,6 +1733,7 @@ void Frame_Glom::do_menu_developer_fields(Gtk::Window& parent, const Glib::ustri
       Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_design");
 
       refXml->get_widget_derived("window_design", m_pDialog_Fields);
+      m_pDialog_Fields->set_icon_name("glom");
       m_pDialog_Fields->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
     }
     catch(const Gtk::BuilderError& ex)
@@ -1781,6 +1782,7 @@ void Frame_Glom::on_menu_developer_relationships_overview()
 
   if(m_dialog_relationships_overview)
   {
+    m_dialog_relationships_overview->set_icon_name("glom");
     m_dialog_relationships_overview->set_transient_for(*(get_app_window()));
     m_dialog_relationships_overview->load_from_document();
 
@@ -1798,6 +1800,7 @@ void Frame_Glom::do_menu_developer_relationships(Gtk::Window& parent, const Glib
   if(!m_pDialog_Relationships)
   {
     Utils::get_glade_developer_widget_derived_with_warning("window_design", m_pDialog_Relationships);
+    m_pDialog_Relationships->set_icon_name("glom");
     m_pDialog_Relationships->set_title("Relationships");
     m_pDialog_Relationships->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
     add_view(m_pDialog_Relationships); //Also a composite view.
