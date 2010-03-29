@@ -1912,6 +1912,8 @@ void Frame_Glom::on_menu_developer_print_layouts()
     Utils::get_glade_developer_widget_derived_with_warning("box_print_layouts", m_pBox_PrintLayouts);
     m_pDialog_PrintLayouts = new Window_BoxHolder(m_pBox_PrintLayouts);
 
+    m_pDialog_PrintLayouts->set_transient_for(*get_app_window());
+    m_pDialog_PrintLayouts->set_title(_("Print Layouts"));
     m_pDialog_PrintLayouts->set_default_size(300, 400);
     m_pBox_PrintLayouts->show_all();
     add_view(m_pBox_PrintLayouts);

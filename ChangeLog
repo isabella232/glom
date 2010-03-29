@@ -1,3 +1,10 @@
+2010-03-29  Daniel Borgmann  <danielb@openismus.com>
+
+	Print Layouts dialog adjustments.
+
+	* glom/frame_glom.cc: Set title and transient for Print Layouts dialog.
+	* glom/glom_developer.glade: Remove the frame from Print Layouts dialog.
+
 2010-03-26  Murray Cumming  <murrayc@murraycs.com>
 
 	Say when a chosen file doen't exist, and remove it from the history.
