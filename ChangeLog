@@ -1,5 +1,12 @@
 2010-03-29  Daniel Borgmann  <danielb@openismus.com>
 
+	Edit Field Definition Dialog adjustments.
+
+	* glom/glom_developer.glade: Update alignment and spacings, add mnemonics.
+	* glom/mode_design/fields/box_db_table_definition.cc: Set window icon.
+
+2010-03-29  Daniel Borgmann  <danielb@openismus.com>
+
 	Export Format dialog adjustments.
 
 	* glom/filechooser_export.cc: Set icon name for export format dialog.

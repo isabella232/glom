@@ -47,6 +47,8 @@ void Box_DB_Table_Definition::init()
   if(refXml)
     refXml->get_widget_derived("window_field_definition_edit", m_pDialog);
 
+  m_pDialog->set_icon_name("glom");
+
   add_view(m_pDialog); //Give it access to the document.
 
   pack_start(m_AddDel);
