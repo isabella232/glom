@@ -1,5 +1,15 @@
 2010-03-29  Daniel Borgmann  <danielb@openismus.com>
 
+	Export Format dialog adjustments.
+
+	* glom/filechooser_export.cc: Set icon name for export format dialog.
+	* glom/glom_developer.glade: (Export Format) Remove frame, move Add
+	button to the start.
+	* glom/mode_design/layout/dialog_layout_export.cc: Rename treeview
+	header to "Fields" to replace the label.
+
+2010-03-29  Daniel Borgmann  <danielb@openismus.com>
+
 	Print Layouts dialog adjustments.
 
 	* glom/frame_glom.cc: Set title and transient for Print Layouts dialog.

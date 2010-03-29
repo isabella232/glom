@@ -69,6 +69,7 @@ FileChooser_Export::FileChooser_Export()
     if(dialog)
     {
       m_pDialogLayout = dialog;
+      m_pDialogLayout->set_icon_name("glom");
       //add_view(m_pDialogLayout); //Give it access to the document.
       m_pDialogLayout->signal_hide().connect( sigc::mem_fun(*this, &FileChooser_Export::on_dialog_layout_hide) );
     }

@@ -49,7 +49,7 @@ Dialog_Layout_Export::Dialog_Layout_Export(BaseObjectType* cobject, const Glib::
     m_treeview_fields->set_model(m_model_fields);
 
     // Append the View columns:
-    Gtk::TreeView::Column* column_name = Gtk::manage( new Gtk::TreeView::Column(_("Name")) );
+    Gtk::TreeView::Column* column_name = Gtk::manage( new Gtk::TreeView::Column(_("Fields")) );
     m_treeview_fields->append_column(*column_name);
 
     Gtk::CellRendererText* renderer_name = Gtk::manage(new Gtk::CellRendererText);
