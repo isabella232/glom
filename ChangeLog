@@ -1,5 +1,12 @@
 2010-03-29  Daniel Borgmann  <danielb@openismus.com>
 
+	Reports dialog adjustments.
+
+	* glom/frame_glom.cc: Set Reports dialog window title.
+	* glom/glom_developer.glade: Remove frame from Reports dialog.
+
+2010-03-29  Daniel Borgmann  <danielb@openismus.com>
+
 	Remove frame label on Fields dialog.
 
 	* glom/box_reports.cc: Remove references to frame label.

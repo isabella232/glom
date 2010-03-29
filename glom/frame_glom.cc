@@ -1883,6 +1883,7 @@ void Frame_Glom::on_menu_developer_reports()
     Utils::get_glade_developer_widget_derived_with_warning("box_reports", m_pBox_Reports);
     m_pDialog_Reports = new Window_BoxHolder(m_pBox_Reports);
     m_pDialog_Reports->set_transient_for(*(get_app_window()));
+    m_pDialog_Reports->set_title(_("Reports"));
 
     Utils::get_glade_developer_widget_derived_with_warning("window_report_layout", m_pDialogLayoutReport);
     add_view(m_pDialogLayoutReport);
