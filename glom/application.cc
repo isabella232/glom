@@ -268,7 +268,7 @@ void Application::init_menus_file()
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Open", Gtk::Stock::OPEN),
                         sigc::mem_fun((App_WithDoc&)*this, &App_WithDoc::on_menu_file_open));
 
-  Glib::RefPtr<Gtk::Action> action = Gtk::Action::create("BakeryAction_File_SaveAsExample", _("Save As Example"));
+  Glib::RefPtr<Gtk::Action> action = Gtk::Action::create("BakeryAction_File_SaveAsExample", _("_Save As Example"));
   m_listDeveloperActions.push_back(action);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -278,11 +278,11 @@ void Application::init_menus_file()
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_Menu_File_Export", _("_Export")),
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_export));
 
-  action = Gtk::Action::create("BakeryAction_Menu_File_Import", _("Import"));
+  action = Gtk::Action::create("BakeryAction_Menu_File_Import", _("I_mport"));
   m_refFileActionGroup->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_import));
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  m_toggleaction_network_shared = Gtk::ToggleAction::create("BakeryAction_Menu_File_Share", _("Shared On Network"));
+  m_toggleaction_network_shared = Gtk::ToggleAction::create("BakeryAction_Menu_File_Share", _("S_hared On Network"));
   m_refFileActionGroup->add(m_toggleaction_network_shared);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -452,7 +452,7 @@ void Application::init_menus()
   Gtk::RadioAction::Group group_mode;
 
   //We remember this action, so that it can be explicitly activated later.
-  m_action_mode_data = Gtk::RadioAction::create(group_mode, "GlomAction_Menu_Mode_Data", _("D_ata"));
+  m_action_mode_data = Gtk::RadioAction::create(group_mode, "GlomAction_Menu_Mode_Data", _("_Data"));
   m_refActionGroup_Others->add(m_action_mode_data,
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Mode_Data) );
 
@@ -474,7 +474,7 @@ void Application::init_menus()
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_fields) );
 
-  action = Gtk::Action::create("GlomAction_Menu_Developer_RelationshipsOverview", _("_Relationships Overview"));
+  action = Gtk::Action::create("GlomAction_Menu_Developer_RelationshipsOverview", _("Relationships _Overview"));
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_relationships_overview) );
 
@@ -503,7 +503,7 @@ void Application::init_menus()
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_layout));
 
-  action = Gtk::Action::create("GlomAction_Menu_Developer_ChangeLanguage", _("_Test Translation"));
+  action = Gtk::Action::create("GlomAction_Menu_Developer_ChangeLanguage", _("Test Tra_nslation"));
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &Application::on_menu_developer_changelanguage));
 

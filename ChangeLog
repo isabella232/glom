@@ -1,3 +1,10 @@
+2010-03-30  Daniel Borgmann  <danielb@openismus.com>
+
+	Fix mnemonics.
+
+	* glom/application.cc: Add missing mnemonics and change double
+	mnemonics.
+
 2010-03-30  Murray Cumming  <murrayc@murrayc.com>
 
     Update the document DTD, to fix tests.
