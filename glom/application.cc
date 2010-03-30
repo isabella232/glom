@@ -268,7 +268,7 @@ void Application::init_menus_file()
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Open", Gtk::Stock::OPEN),
                         sigc::mem_fun((App_WithDoc&)*this, &App_WithDoc::on_menu_file_open));
 
-  Glib::RefPtr<Gtk::Action> action = Gtk::Action::create("BakeryAction_File_SaveAsExample", _("_Save As Example"));
+  Glib::RefPtr<Gtk::Action> action = Gtk::Action::create("BakeryAction_File_SaveAsExample", _("_Save as Example"));
   m_listDeveloperActions.push_back(action);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -282,7 +282,7 @@ void Application::init_menus_file()
   m_refFileActionGroup->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_import));
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  m_toggleaction_network_shared = Gtk::ToggleAction::create("BakeryAction_Menu_File_Share", _("S_hared On Network"));
+  m_toggleaction_network_shared = Gtk::ToggleAction::create("BakeryAction_Menu_File_Share", _("S_hared on Network"));
   m_refFileActionGroup->add(m_toggleaction_network_shared);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

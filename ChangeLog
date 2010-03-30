@@ -1,5 +1,11 @@
 2010-03-30  Daniel Borgmann  <danielb@openismus.com>
 
+	Capitalisation fixes.
+
+	* glom/application.cc: Use lower case for short prepositions.
+
+2010-03-30  Daniel Borgmann  <danielb@openismus.com>
+
 	Fix mnemonics.
 
 	* glom/application.cc: Add missing mnemonics and change double
