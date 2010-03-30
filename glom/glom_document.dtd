@@ -9,7 +9,7 @@ TODO: Add 'title_singular' element.
 
 <!-- This is the main node of the glom document. It describes the format of the
   databases (tables) and permissions (groups), as well as connections and any
-  libraries. 
+  libraries.
   database_title: The human-readable title of the database.
   translation_original_locale: What locale is considered to have been used for the human-readable titles in this document.
   format_version: The version of this document's format. Older versions of Glom cannot open documents saved in newer versions of the document format.
@@ -30,7 +30,7 @@ TODO: Add 'title_singular' element.
      port: The port to connect to on the PostgreSQL server.
      try_other_ports: ?
      self_hosted: Whether a local instance of PostgreSQL should be started, to serve the data that is in a glom_postgres_data directory. Deprecated in favor of hosting_mode.
-     hosting_mode: Can be "postgres_central" (self hosted via a local instance of PostgreSQL), "postgres_self" (a central PostgreSQL instance is used) or "sqlite" (self-hosted via a SQLite file).   
+     hosting_mode: Can be "postgres_central" (self hosted via a local instance of PostgreSQL), "postgres_self" (a central PostgreSQL instance is used) or "sqlite" (self-hosted via a SQLite file).
      network_shared: true if the database (and document) should be shared over the network for use by other users.
 -->
     <!ELEMENT connection EMPTY >
@@ -40,19 +40,19 @@ TODO: Add 'title_singular' element.
         database CDATA #REQUIRED
 	port CDATA #REQUIRED
 	try_other_ports (true|false) "true"
-        self_hosted (true|false) "false" 
+        self_hosted (true|false) "false"
         hosting_mode CDATA #IMPLIED
         network_shared (true|false) "false">
 
 <!-- group(s) and table_privs are the permissions for each table.
-      However, these are just initial permissions for examples. The real permissions are 
+      However, these are just initial permissions for examples. The real permissions are
       always in the database.
 -->
     <!ELEMENT groups (group*)>
     <!ATTLIST groups>
 
 <!-- The group node specifies a group of users and lists the permissions for that group for each table.
-      However, these are just initial permissions for examples. The real permissions are 
+      However, these are just initial permissions for examples. The real permissions are
       always in the database.
      name: The name of this group of users.
      developer: Whether users in this group may use the developer features in Glom to change the database.
@@ -63,7 +63,7 @@ TODO: Add 'title_singular' element.
         developer (true|false) "false">
 
 <!-- table_privs are the permissions for each table for a group.
-     However, these are just initial permissions for examples. The real permissions are 
+     However, these are just initial permissions for examples. The real permissions are
      always in the database.
      priv_view: Whether users in the group may view records in this table.
      priv_edit: Whether users in the group may edit records in this table.
@@ -98,7 +98,7 @@ TODO: Add 'title_singular' element.
         overview_y CDATA #IMPLIED
         default (true|false) "false">
 
-<!-- example_rows are comma separated lists of data (in the child text node) to load into the table 
+<!-- example_rows are comma separated lists of data (in the child text node) to load into the table
      when it is first created. -->
     <!ELEMENT example_rows (example_row*)>
 
@@ -111,7 +111,7 @@ TODO: Add 'title_singular' element.
 <!-- relationships describe connections between databases. -->
 
     <!ELEMENT relationships (relationship*)>
-    
+
     <!ELEMENT relationship (trans_set?)>
     <!ATTLIST relationship
         name CDATA #REQUIRED
@@ -128,7 +128,7 @@ TODO: Add 'title_singular' element.
   name: The internal name of the table. Not to be seen by normal operators.
   title: The  human-visble title. This may be translated in the trans_set child node.
   primary_key: Whether this field is the primary key for its table.
-  unique: Whether the values in this field should be unique in this table, meaning that it should not appear in this field in any other record in this table. 
+  unique: Whether the values in this field should be unique in this table, meaning that it should not appear in this field in any other record in this table.
   auto_increment: Whether the value in this field should be automatically filled in when creating a new record, by incrementing a number.
   allow_edit: Whether users should be allowed to edit the value in this field.
   default_value: New records will have this value in this field when they are first created.
@@ -185,7 +185,7 @@ TODO: Add 'title_singular' element.
     <!ATTLIST custom_choice
         value CDATA #REQUIRED>
 
-<!-- The calculation node specifies python code that should be used to 
+<!-- The calculation node specifies python code that should be used to
      calculate a value for this field. They python code is in a child text node. -->
     <!ELEMENT calculation (#PCDATA)>
     <!ATTLIST calculation>
@@ -193,7 +193,7 @@ TODO: Add 'title_singular' element.
 <!-- data layouts determine the order of items and sorting of the fields. There are many
   different ways that they are grouped with the various data_layout* possibilities, but the idea is
   the same. They all have a sequence, which tells when they are displayed. In addition, there is a column_count
-  on the grouping subnodes, which is the number of columns wide the element should be. 
+  on the grouping subnodes, which is the number of columns wide the element should be.
   The name of the data_layout will be either "list" or "details".-->
 
     <!ELEMENT data_layouts (data_layout*) >
@@ -244,12 +244,12 @@ TODO: Add 'title_singular' element.
     <!ELEMENT text EMPTY>
     <!ATTLIST text
         title CDATA #REQUIRED>
-        
+
 <!-- sortby describes what a data_layout_item_groupby sorts by. -->
 
     <!ELEMENT sortby (data_layout_item*)>
     <!ATTLIST sortby>
-    
+
 <!-- data_layout_item_verticalgroup is used to display a vertical group of fields. -->
 
     <!ELEMENT data_layout_item_verticalgroup (data_layout_item*)>
@@ -257,7 +257,7 @@ TODO: Add 'title_singular' element.
         name CDATA #IMPLIED
         columns_count CDATA #IMPLIED
         sequence CDATA #IMPLIED>
-        
+
 <!-- data_layout_item_summary and data_layout_item_fieldsummary summarize other
   fields. A good example of this is the total price in example_smallbusiness.glom. -->
 
@@ -270,7 +270,7 @@ TODO: Add 'title_singular' element.
         use_default_formatting (true|false) "true"
         sequence CDATA #IMPLIED
         summarytype CDATA #REQUIRED>
-        
+
 <!-- groupby is used to determine how data_layout_item_groupby items group. -->
 
     <!ELEMENT groupby (formatting?, title_custom?)>
@@ -296,7 +296,7 @@ TODO: Add 'title_singular' element.
     <!ATTLIST trans
         loc CDATA #REQUIRED
         val CDATA #REQUIRED>
-        
+
 <!-- A data_layout_item is a single entry in the display formatting, which tells how a single
   field is displayed. -->
 
@@ -311,7 +311,7 @@ TODO: Add 'title_singular' element.
 	column_width CDATA #IMPLIED
         related_relationship CDATA #IMPLIED
         sort_ascending (true|false) "false">
-        
+
 <!-- A data_layout_item_header is the items that go at the very top of the database (e.g. the
   organization name and logo in example_film_manager.glom). -->
 
@@ -324,7 +324,7 @@ TODO: Add 'title_singular' element.
 <!-- data_layout_button is a way to have a custom script (python) control the
   display and effect of a button in the database. -->
 
-    <!ELEMENT data_layout_button (script?)>
+    <!ELEMENT data_layout_button (script?, formatting?)>
     <!ATTLIST data_layout_button
         title CDATA #REQUIRED
         sequence CDATA #IMPLIED
@@ -334,14 +334,14 @@ TODO: Add 'title_singular' element.
 
     <!ELEMENT script (#PCDATA)>
     <!ATTLIST script>
-    
+
 <!-- A title_custom is used to give a different name next to a field than normal. -->
 
     <!ELEMENT title_custom (trans_set?)>
     <!ATTLIST title_custom
         title CDATA #IMPLIED
         use_custom (true|false) "true">
-        
+
 <!-- A data_layout_portal is the essential information, a short and quick list of values
   that are probably of interest to others (e.g. contact information, name, etc). -->
 
@@ -362,12 +362,12 @@ TODO: Add 'title_singular' element.
         hide CDATA #IMPLIED
         columns_count CDATA #IMPLIED>
 
-<!-- portal_navigation_relationship determines what happens when the user 
+<!-- portal_navigation_relationship determines what happens when the user
      activates a row in a related records portal.
      portal_navigation_relationship: "automatic", "specific" or "none".
-     relationship: If portal_navigation_relationship is "specific" then this is 
+     relationship: If portal_navigation_relationship is "specific" then this is
      the relationship to which to navigate.
-     related_relationship: If portal_navigation_relationship is "specific" then 
+     related_relationship: If portal_navigation_relationship is "specific" then
      this may be a related (to relationship) relationship to which to navigate. -->
 
     <!ELEMENT portal_navigation_relationship EMPTY>
@@ -407,18 +407,17 @@ TODO: Add 'title_singular' element.
     <!ATTLIST print_layout_groups>
 
 
-<!-- The library_modules node contains python code that may be used in scripts and 
+<!-- The library_modules node contains python code that may be used in scripts and
      calculations via the python import keyword. -->
 
     <!ELEMENT library_modules (module*)>
     <!ATTLIST library_modules>
 
-<!-- library_module nodes contain python code that may be used in scripts and 
-     calculations via the python import keyword. The source code is in the 
+<!-- library_module nodes contain python code that may be used in scripts and
+     calculations via the python import keyword. The source code is in the
      child text node.
      name: The name of the module, to be used with the python import command.
      script: Deprecated in Glom 1.12. The code of the python module. -->
     <!ELEMENT module (#PCDATA)>
     <!ATTLIST module
         name CDATA #REQUIRED>
-

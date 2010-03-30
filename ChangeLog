@@ -1,5 +1,12 @@
 2010-03-30  Murray Cumming  <murrayc@murrayc.com>
 
+    Update the document DTD, to fix tests.
+
+	* glom/glom_document.dtd: data_layout_button: Allow this to have a
+    formatting child node, because we now allow this in the UI and save this.
+
+2010-03-30  Murray Cumming  <murrayc@murrayc.com>
+
     Add a test to check instantiation of glade widgets.
 
     * Makefile_tests.am
