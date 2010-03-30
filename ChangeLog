@@ -1,3 +1,13 @@
+2010-03-30  Daniel Borgmann  <danielb@openismus.com>
+
+	Disable some menu items when no table is loaded.
+
+	* glom/application.cc: update_table_sensitive_ui: Function to set
+	sensitivity of menu items depending on whether a table is loaded.
+	init_menus: Add table sensitive menu items to a list.
+	* glom/application.h: Add list to hold table sensitive menu items.
+	* glom/frame_glom.cc: Call update_table_sensitive_ui when needed.
+
 2010-03-30  Murray Cumming  <murrayc@murrayc.com>
 
 	Glade instantation test: Make it exit on failure.

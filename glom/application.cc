@@ -275,15 +275,18 @@ void Application::init_menus_file()
   m_refFileActionGroup->add(action,
                         sigc::mem_fun((Application&)*this, &Application::on_menu_file_save_as_example));
 
-  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_Menu_File_Export", _("_Export")),
-                        sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_export));
+  action = Gtk::Action::create("BakeryAction_Menu_File_Export", _("_Export"));
+  m_refFileActionGroup->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_export));
+  m_listTableSensitiveActions.push_back(action);
 
   action = Gtk::Action::create("BakeryAction_Menu_File_Import", _("I_mport"));
   m_refFileActionGroup->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_import));
+  m_listTableSensitiveActions.push_back(action);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   m_toggleaction_network_shared = Gtk::ToggleAction::create("BakeryAction_Menu_File_Share", _("S_hared on Network"));
   m_refFileActionGroup->add(m_toggleaction_network_shared);
+  m_listTableSensitiveActions.push_back(m_toggleaction_network_shared);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_connection_toggleaction_network_shared =
@@ -292,7 +295,9 @@ void Application::init_menus_file()
   m_listDeveloperActions.push_back(m_toggleaction_network_shared);
 #endif //!GLOM_ENABLE_CLIENT_ONLY
 
-  m_refFileActionGroup->add(Gtk::Action::create("GlomAction_Menu_File_Print", Gtk::Stock::PRINT));
+  action = Gtk::Action::create("GlomAction_Menu_File_Print", Gtk::Stock::PRINT);
+  m_refFileActionGroup->add(action);
+  m_listTableSensitiveActions.push_back(action);
   m_refFileActionGroup->add(Gtk::Action::create("GlomAction_File_Print", _("_Standard")),
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_print) );
 
@@ -430,6 +435,7 @@ void Application::init_menus()
   m_refActionGroup_Others->add(action,
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Reports_EditReports) );
   m_listDeveloperActions.push_back(action);
+  m_listTableSensitiveActions.push_back(action);
 #endif
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -459,6 +465,7 @@ void Application::init_menus()
   m_action_mode_find = Gtk::RadioAction::create(group_mode, "GlomAction_Menu_Mode_Find", _("_Find"));
   m_refActionGroup_Others->add(m_action_mode_find,  Gtk::AccelKey("<control>F"),
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Mode_Find) );
+  m_listTableSensitiveActions.push_back(action);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   action = Gtk::Action::create("Glom_Menu_Developer", _("_Developer"));
@@ -472,14 +479,17 @@ void Application::init_menus()
 
   action = Gtk::Action::create("GlomAction_Menu_Developer_Fields", _("_Fields"));
   m_listDeveloperActions.push_back(action);
+  m_listTableSensitiveActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_fields) );
 
   action = Gtk::Action::create("GlomAction_Menu_Developer_RelationshipsOverview", _("Relationships _Overview"));
   m_listDeveloperActions.push_back(action);
+  m_listTableSensitiveActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_relationships_overview) );
 
   action = Gtk::Action::create("GlomAction_Menu_Developer_Relationships", _("_Relationships for this Table"));
   m_listDeveloperActions.push_back(action);
+  m_listTableSensitiveActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_relationships) );
 
   m_action_developer_users = Gtk::Action::create("GlomAction_Menu_Developer_Users", _("_Users"));
@@ -488,10 +498,12 @@ void Application::init_menus()
 
   action = Gtk::Action::create("GlomAction_Menu_Developer_PrintLayouts", _("_Print Layouts")); //TODO: Rename? This looks like an action rather than a noun. It won't actually start printing.
   m_listDeveloperActions.push_back(action);
+  m_listTableSensitiveActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_print_layouts));
 
   action = Gtk::Action::create("GlomAction_Menu_Developer_Reports", _("R_eports"));
   m_listDeveloperActions.push_back(action);
+  m_listTableSensitiveActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_reports));
 
   action = Gtk::Action::create("GlomAction_Menu_Developer_Script_Library", _("Script _Library"));
@@ -501,6 +513,7 @@ void Application::init_menus()
 
   action = Gtk::Action::create("GlomAction_Menu_Developer_Layout", _("_Layout"));
   m_listDeveloperActions.push_back(action);
+  m_listTableSensitiveActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_layout));
 
   action = Gtk::Action::create("GlomAction_Menu_Developer_ChangeLanguage", _("Test Tra_nslation"));
@@ -597,6 +610,8 @@ void Application::init_menus()
   add_ui_from_string(ui_description);
 
   init_menus_help();
+
+  update_table_sensitive_ui();
 
   fill_menu_tables();
 }
@@ -1291,6 +1306,20 @@ void Application::on_userlevel_changed(AppState::userlevels /* userlevel */)
   update_userlevel_ui();
 }
 
+void Application::update_table_sensitive_ui()
+{
+  bool has_table = false;
+
+  if(m_pFrame)
+    has_table = !m_pFrame->get_shown_table_name().empty();
+
+  for(type_listActions::iterator iter = m_listTableSensitiveActions.begin(); iter != m_listTableSensitiveActions.end(); ++iter)
+  {
+    Glib::RefPtr<Gtk::Action> action = *iter;
+    action->set_sensitive(has_table);
+  }
+}
+
 void Application::update_userlevel_ui()
 {
   AppState::userlevels userlevel = get_userlevel();
@@ -1301,6 +1330,9 @@ void Application::update_userlevel_ui()
     Glib::RefPtr<Gtk::Action> action = *iter;
      action->set_sensitive( userlevel == AppState::USERLEVEL_DEVELOPER );
   }
+
+  //Ensure table sensitive menus stay disabled if necessary.
+  update_table_sensitive_ui();
 
   // Hide users entry from developer menu for connections that don't
   // support users

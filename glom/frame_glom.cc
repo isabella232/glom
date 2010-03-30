@@ -429,7 +429,10 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
 
   //Update user-level dependent UI:
   if(pApp)
+  {
     on_userlevel_changed(pApp->get_userlevel());
+    pApp->update_table_sensitive_ui();
+  }
 
   switch(m_Mode)
   {
