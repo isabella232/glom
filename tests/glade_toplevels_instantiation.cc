@@ -58,7 +58,7 @@ static bool attempt_instantiation(const std::string& filepath, const xmlpp::Elem
   else
   {
     //We try to avoid using non-window top-level widgets in Glom.
-    std::cerr << "Non-window top-level object in Glade file (unexpected by Glom): id=" << id << " from file " << filepath << std::endl; 
+    std::cerr << "Non-window top-level object in Glade file (unexpected by Glom): id=" << id << " from file " << filepath << std::endl;
 
     //But let's try this anyway:
     Glib::RefPtr<Glib::Object> object = builder->get_object(id);
@@ -72,7 +72,7 @@ static bool attempt_instantiation(const std::string& filepath, const xmlpp::Elem
     return false;
   }
 
-  //Check that it is not visible by default, 
+  //Check that it is not visible by default,
   //because applications generally want to separate instantiation from showing.
   if(widget->get_visible())
   {
@@ -99,18 +99,18 @@ int main(int argc, char* argv[])
     std::cerr << "Usage: glade_toplevels_instantiation filepath" << std::endl;
     return -1;
   }
-  
+
   #ifdef LIBXMLCPP_EXCEPTIONS_ENABLED
   try
   {
-  #endif //LIBXMLCPP_EXCEPTIONS_ENABLED 
+  #endif //LIBXMLCPP_EXCEPTIONS_ENABLED
     xmlpp::DomParser parser;
     //parser.set_validate();
     parser.set_substitute_entities(); //We just want the text to be resolved/unescaped automatically.
     parser.parse_file(filepath);
     if(!parser)
       return -1;
-    
+
     const xmlpp::Node* root = parser.get_document()->get_root_node(); //deleted by DomParser.
     if(!root)
       return -1;
@@ -124,15 +124,14 @@ int main(int argc, char* argv[])
        if(child && !attempt_instantiation(filepath, child))
          return -1;
     }
-    
+
   #ifdef LIBXMLCPP_EXCEPTIONS_ENABLED
   }
   catch(const std::exception& ex)
   {
     std::cout << "Exception caught: " << ex.what() << std::endl;
   }
-  #endif //LIBXMLCPP_EXCEPTIONS_ENABLED 
+  #endif //LIBXMLCPP_EXCEPTIONS_ENABLED
 
   return 0;
 }
-

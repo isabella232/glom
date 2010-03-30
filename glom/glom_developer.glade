@@ -7015,12 +7015,8 @@ Which user should be added to this group?</property>
     </child>
   </object>
   <object class="GtkDialog" id="dialog_relationships_overview">
-<<<<<<< HEAD:glom/glom_developer.glade
-    <property name="visible">True</property>
-=======
     <property name="visible">False</property>
     <property name="border_width">6</property>
->>>>>>> Add a test to check instantiation of glade widgets.:glom/glom_developer.glade
     <property name="title" translatable="yes">Relationships Overview</property>
     <property name="default_width">400</property>
     <property name="default_height">400</property>
