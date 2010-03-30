@@ -1,5 +1,11 @@
 2010-03-30  Daniel Borgmann  <danielb@openismus.com>
 
+	Set window icon for welcome screen.
+
+	* glom/dialog_existing_or_new.cc: Set window icon.
+
+2010-03-30  Daniel Borgmann  <danielb@openismus.com>
+
 	Disable some menu items when no table is loaded.
 
 	* glom/application.cc: update_table_sensitive_ui: Function to set
