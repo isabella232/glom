@@ -1,3 +1,12 @@
+2010-03-30  David King  <davidk@openismus.com>
+
+	Make DTD validation tests exit on failure
+
+	* tests/test_dtd_file_validation.sh:
+	* tests/test_glade_file_validation.sh: Append ‘ || exit 1’ to the
+	xmllint call, to ensure that a validation failure leads to a failing
+	test.
+
 2010-03-30  Daniel Borgmann  <danielb@openismus.com>
 
 	Capitalisation fixes.
