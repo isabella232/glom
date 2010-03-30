@@ -1,3 +1,10 @@
+2010-03-30  Murray Cumming  <murrayc@murrayc.com>
+
+	Glade instantation test: Make it exit on failure.
+
+	* tests/test_glade_toplevels_instantiation.sh: Use || exit 1, as in 
+    David's commit to the other files.
+
 2010-03-30  David King  <davidk@openismus.com>
 
 	Make DTD validation tests exit on failure
