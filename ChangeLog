@@ -1,5 +1,13 @@
 2010-03-31  Daniel Borgmann  <danielb@openismus.com>
 
+	Welcome Screen adjustments.
+
+	* glom/dialog_existing_or_new.cc: Fix typo and use of properties, don't
+	show error icon when no network sessions are available.
+	* glom/glom.glade: Hide label and icon, spacing adjustments.
+
+2010-03-31  Daniel Borgmann  <danielb@openismus.com>
+
 	Improve application title.
 
 	* glom/application.cc: Don't show colon in application title when

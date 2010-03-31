@@ -466,24 +466,24 @@ void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, 
   return;
 #endif
 
-#ifdef GLIBMM_PROPERTIES_ENABKED
+#ifdef GLIBMM_PROPERTIES_ENABLED
   pixbuf_renderer->property_stock_size() = Gtk::ICON_SIZE_BUTTON;
   pixbuf_renderer->property_stock_id() = "";
   pixbuf_renderer->property_pixbuf() = Glib::RefPtr<Gdk::Pixbuf>();
 
   if(iter == m_iter_existing_recent)
-    pixbuf_renderer->property_stock_id() = Gtk::StockID(Gtk::Stock::INDEX); // TODO: More meaningful icon?
+    pixbuf_renderer->property_stock_id() = Gtk::Stock::INDEX.id; // TODO: More meaningful icon?
 #ifndef G_OS_WIN32
   else if(iter == m_iter_existing_network)
-    pixbuf_renderer->property_stock_id() = Gtk::StockID(Gtk::Stock::NETWORK);
+    pixbuf_renderer->property_stock_id() = Gtk::Stock::NETWORK.id;
 #endif
   else if(iter == m_iter_existing_other)
-    pixbuf_renderer->property_stock_id() = Gtk::StockID(Gtk::Stock::OPEN);
+    pixbuf_renderer->property_stock_id() = Gtk::Stock::OPEN.id;
   else if(m_iter_existing_recent_dummy.get() && iter == *m_iter_existing_recent_dummy)
-    pixbuf_renderer->property_stock_id() = Gtk::StockID(Gtk::Stock::DIALOG_ERROR); // TODO: Use Stock::STOP instead?
+    pixbuf_renderer->property_stock_id() = Gtk::Stock::DIALOG_ERROR.id; // TODO: Use Stock::STOP instead?
 #ifndef G_OS_WIN32
   else if(m_iter_existing_network_dummy.get() && iter == *m_iter_existing_network_dummy)
-    pixbuf_renderer->property_stock_id() = Gtk::StockID(Gtk::Stock::DIALOG_ERROR); // TODO: Use Stock::STOP instead?
+    pixbuf_renderer->property_stock_id() = ""; // TODO: Use Stock::STOP instead?
 #endif
 
 #else // Properties enabled
@@ -504,7 +504,7 @@ void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, 
     pixbuf_renderer->set_property("stock-id", Gtk::StockID(Gtk::Stock::DIALOG_ERROR)); // TODO: Use Stock::STOP instead?
 #ifndef G_OS_WIN32
   else if(m_iter_existing_network_dummy.get() && iter == *m_iter_existing_network_dummy)
-    pixbuf_renderer->set_property("stock-id", Gtk::StockID(Gtk::Stock::DIALOG_ERROR)); // TODO: Use Stock::STOP instead?
+    pixbuf_renderer->set_property("stock-id", std::string()); // TODO: Use Stock::STOP instead?
 #endif
 
 #endif // Properties enabled
