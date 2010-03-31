@@ -1,5 +1,12 @@
 2010-03-31  Daniel Borgmann  <danielb@openismus.com>
 
+	Improve application title.
+
+	* glom/application.cc: Don't show colon in application title when
+	table name is empty.
+
+2010-03-31  Daniel Borgmann  <danielb@openismus.com>
+
 	Remove unneded alert dialogs / TODO items.
 
 	* glom/frame_glom.cc: No table warnings are not needed anymore

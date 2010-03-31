@@ -2586,7 +2586,9 @@ void Application::update_window_title()
   else //Use the table name if there is no table title.
     table_label = table_name;
 
-  Glib::ustring strTitle = document->get_name() + ": " + table_label;
+  Glib::ustring strTitle = document->get_name();
+  if(!table_label.empty())
+    strTitle += ": " + table_label;
 
   #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Indicate unsaved changes:
