@@ -1,5 +1,12 @@
 2010-03-31  Daniel Borgmann  <danielb@openismus.com>
 
+	Don't show error icon for empty recent documents.
+
+	* glom/dialog_existing_or_new.cc: Also don't show error icon for
+	empty recent documents.
+
+2010-03-31  Daniel Borgmann  <danielb@openismus.com>
+
 	Welcome Screen adjustments.
 
 	* glom/dialog_existing_or_new.cc: Fix typo and use of properties, don't

@@ -480,7 +480,7 @@ void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, 
   else if(iter == m_iter_existing_other)
     pixbuf_renderer->property_stock_id() = Gtk::Stock::OPEN.id;
   else if(m_iter_existing_recent_dummy.get() && iter == *m_iter_existing_recent_dummy)
-    pixbuf_renderer->property_stock_id() = Gtk::Stock::DIALOG_ERROR.id; // TODO: Use Stock::STOP instead?
+    pixbuf_renderer->property_stock_id() = ""; // TODO: Use Stock::STOP instead?
 #ifndef G_OS_WIN32
   else if(m_iter_existing_network_dummy.get() && iter == *m_iter_existing_network_dummy)
     pixbuf_renderer->property_stock_id() = ""; // TODO: Use Stock::STOP instead?
@@ -501,7 +501,7 @@ void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, 
   else if(iter == m_iter_existing_other)
     pixbuf_renderer->set_property("stock-id", Gtk::StockID(Gtk::Stock::OPEN));
   else if(m_iter_existing_recent_dummy.get() && iter == *m_iter_existing_recent_dummy)
-    pixbuf_renderer->set_property("stock-id", Gtk::StockID(Gtk::Stock::DIALOG_ERROR)); // TODO: Use Stock::STOP instead?
+    pixbuf_renderer->set_property("stock-id", std::string()); // TODO: Use Stock::STOP instead?
 #ifndef G_OS_WIN32
   else if(m_iter_existing_network_dummy.get() && iter == *m_iter_existing_network_dummy)
     pixbuf_renderer->set_property("stock-id", std::string()); // TODO: Use Stock::STOP instead?
