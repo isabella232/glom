@@ -1,5 +1,12 @@
 2010-03-31  Daniel Borgmann  <danielb@openismus.com>
 
+	Remove unneded alert dialogs / TODO items.
+
+	* glom/frame_glom.cc: No table warnings are not needed anymore
+	for menu items, so remove them.
+
+2010-03-31  Daniel Borgmann  <danielb@openismus.com>
+
 	Set window icon for OK dialogs.
 
 	* glom/utils_ui.cc: show_ok_dialog: Set window icon.

@@ -1765,13 +1765,9 @@ void Frame_Glom::do_menu_developer_fields(Gtk::Window& parent)
 {
   //Check that there is a table to show:
   if(m_table_name.empty())
-  {
-    alert_no_table(); //TODO: Disable the menu item instead.
-  }
-  else
-  {
-    do_menu_developer_fields(parent, m_table_name);
-  }
+    return;
+
+  do_menu_developer_fields(parent, m_table_name);
 }
 
 
@@ -1818,13 +1814,9 @@ void Frame_Glom::on_menu_developer_relationships()
 {
   //Check that there is a table to show:
   if(m_table_name.empty())
-  {
-    alert_no_table(); //TODO: Disable the menu item instead.
-  }
-  else
-  {
-    do_menu_developer_relationships(*get_app_window(), m_table_name);
-  }
+    return;
+
+  do_menu_developer_relationships(*get_app_window(), m_table_name);
 }
 
 void Frame_Glom::on_menu_developer_users()
@@ -1860,25 +1852,18 @@ void Frame_Glom::on_menu_developer_layout()
 {
   //Check that there is a table to show:
   if(m_table_name.empty())
-  {
-    alert_no_table(); //TODO: Disable the menu item instead.
-  }
-  else
-  {
-    Notebook_Glom* notebook_current = dynamic_cast<Notebook_Glom*>(m_pBox_Mode->get_child());
-    if(notebook_current)
-      notebook_current->do_menu_developer_layout();
-  }
+    return;
+
+  Notebook_Glom* notebook_current = dynamic_cast<Notebook_Glom*>(m_pBox_Mode->get_child());
+  if(notebook_current)
+    notebook_current->do_menu_developer_layout();
 }
 
 void Frame_Glom::on_menu_developer_reports()
 {
   //Check that there is a table to show:
   if(m_table_name.empty())
-  {
-    alert_no_table(); //TODO: Disable the menu item instead.
     return;
-  }
 
   //Create the widget if necessary:
   if(!m_pBox_Reports)
@@ -1909,10 +1894,7 @@ void Frame_Glom::on_menu_developer_print_layouts()
 {
   //Check that there is a table to show:
   if(m_table_name.empty())
-  {
-    alert_no_table(); //TODO: Disable the menu item instead.
     return;
-  }
 
   //Create the widget if necessary:
   if(!m_pBox_PrintLayouts)
