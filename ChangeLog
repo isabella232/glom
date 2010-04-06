@@ -1,5 +1,12 @@
 2010-04-06  Daniel Borgmann  <danielb@openismus.com>
 
+	Set Progress Dialog default size.
+
+	* glom/glom.glade: Set a reasonable default size for the progress
+	dialog, that allows to read the title at least.
+
+2010-04-06  Daniel Borgmann  <danielb@openismus.com>
+
 	Select Field Dialog adjustments.
 
 	* glom/glom_developer.glade: Spacing and mnemonic adjustments/fixes,
