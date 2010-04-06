@@ -570,23 +570,26 @@ void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction
         if(document->get_opened_from_browse())
         {
           //TODO: Obviously this could be possible but it would require a network protocol and some work:
-          Gtk::MessageDialog dialog(Utils::bold_message(_("Developer Mode Not Available.")), true, Gtk::MESSAGE_WARNING);
+          Gtk::MessageDialog dialog(Utils::bold_message(_("Developer mode not available.")), true, Gtk::MESSAGE_WARNING);
           dialog.set_secondary_text(_("Developer mode is not available because the file was opened over the network from a running Glom. Only the original file may be edited."));
+          dialog.set_icon_name("glom");
           dialog.set_transient_for(*get_app_window());
           dialog.run();
         }
         else
         {
-          Gtk::MessageDialog dialog(Utils::bold_message(_("Developer Mode Not Available")), true, Gtk::MESSAGE_WARNING);
+          Gtk::MessageDialog dialog(Utils::bold_message(_("Developer mode not available")), true, Gtk::MESSAGE_WARNING);
           dialog.set_secondary_text(_("Developer mode is not available. Check that you have sufficient database access rights and that the glom file is not read-only."));
+          dialog.set_icon_name("glom");
           dialog.set_transient_for(*get_app_window());
           dialog.run();
         }
       }
       else if(document->get_document_format_version() < Document::get_latest_known_document_format_version())
       {
-        Gtk::MessageDialog dialog(Utils::bold_message(_("Saving in New Document Format")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+        Gtk::MessageDialog dialog(Utils::bold_message(_("Saving in new document format")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
         dialog.set_secondary_text(_("The document was created by an earlier version of the application. Making changes to the document will mean that the document cannot be opened by some earlier versions of the application."));
+        dialog.set_icon_name("glom");
         dialog.set_transient_for(*get_app_window());
         dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
         dialog.add_button(_("Continue"), Gtk::RESPONSE_OK);
@@ -967,8 +970,9 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
   //TODO: Warn that this will be saved as the default if doing this in developer mode?
   if(shared)
   {
-    Gtk::MessageDialog dialog(Utils::bold_message(_("Share On Network")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
-    dialog.set_secondary_text(_("Are you sure that you wish to allow other users on the network to use this database?"));
+    Gtk::MessageDialog dialog(Utils::bold_message(_("Share on the network")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+    dialog.set_icon_name("glom");
+    dialog.set_secondary_text(_("This will allow other users on the network to use this database."));
     dialog.set_transient_for(*get_app_window());
     dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
     dialog.add_button(_("_Share"), Gtk::RESPONSE_OK);
@@ -1066,8 +1070,9 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
   else //not shared:
   {
     //TODO: Warn about connected users if possible.
-    Gtk::MessageDialog dialog(Utils::bold_message(_("Stop Sharing On Network")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
-    dialog.set_secondary_text(_("Are you sure that you wish to prevent other users on the network from using this database?"));
+    Gtk::MessageDialog dialog(Utils::bold_message(_("Stop sharing on the network")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+    dialog.set_secondary_text(_("This will prevent other users on the network from using this database."));
+    dialog.set_icon_name("glom");
     dialog.set_transient_for(*get_app_window());
     dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
     dialog.add_button(_("_Stop Sharing"), Gtk::RESPONSE_OK);
@@ -1474,7 +1479,8 @@ void Frame_Glom::on_button_quickfind()
     Hildon::Note note(Hildon::NOTE_TYPE_INFORMATION, *get_app_window(), message);
     note.run();
 #else
-    Gtk::MessageDialog dialog(Utils::bold_message(_("No Find Criteria")), true, Gtk::MESSAGE_WARNING );
+    Gtk::MessageDialog dialog(Utils::bold_message(_("No find criteria")), true, Gtk::MESSAGE_WARNING );
+    dialog.set_icon_name("glom");
     dialog.set_secondary_text(message);
     dialog.set_transient_for(*get_app_window());
     dialog.run();
