@@ -461,6 +461,7 @@
   </object>
   <object class="GtkWindow" id="window_progress">
     <property name="title" translatable="yes">Processing</property>
+    <property name="window_position">center-on-parent</property>
     <child>
       <object class="GtkVBox" id="vbox84">
         <property name="visible">True</property>

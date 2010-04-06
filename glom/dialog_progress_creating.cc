@@ -36,6 +36,7 @@ Dialog_ProgressCreating::Dialog_ProgressCreating(BaseObjectType* cobject, const 
   //set_modal();
   builder->get_widget("progressbar", m_progress);
   builder->get_widget("label_message", m_label_message);
+  set_icon_name("glom");
   //m_progress->show();
 }
 

@@ -1,3 +1,10 @@
+2010-04-06  Daniel Borgmann  <danielb@openismus.com>
+
+	Progress dialog adjustments.
+
+	* glom/dialog_progress_creating.cc: Add window icon.
+	* glom/glom.glade: Center dialog on parent window.
+
 2010-03-31  Daniel Borgmann  <danielb@openismus.com>
 
 	Don't show error icon for empty recent documents.
