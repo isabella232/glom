@@ -747,7 +747,7 @@
     </child>
   </object>
   <object class="GtkDialog" id="dialog_import_csv">
-    <property name="border_width">5</property>
+    <property name="border_width">6</property>
     <property name="title" translatable="yes">bla.blub - Import from CSV</property>
     <property name="window_position">center-on-parent</property>
     <property name="default_width">550</property>
@@ -762,6 +762,7 @@
         <child>
           <object class="GtkVBox" id="vbox1">
             <property name="visible">True</property>
+            <property name="border_width">6</property>
             <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
@@ -782,7 +783,7 @@
                             <property name="visible">True</property>
                             <property name="n_rows">3</property>
                             <property name="n_columns">2</property>
-                            <property name="column_spacing">6</property>
+                            <property name="column_spacing">12</property>
                             <property name="row_spacing">6</property>
                             <child>
                               <object class="GtkLabel" id="import_csv_target_table">
@@ -816,14 +817,14 @@
                             <child>
                               <object class="GtkLabel" id="label4">
                                 <property name="visible">True</property>
-                                <property name="xalign">1</property>
+                                <property name="xalign">0</property>
                                 <property name="label" translatable="yes">_Encoding:</property>
                                 <property name="use_underline">True</property>
                               </object>
                               <packing>
                                 <property name="top_attach">1</property>
                                 <property name="bottom_attach">2</property>
-                                <property name="x_options"></property>
+                                <property name="x_options">GTK_FILL</property>
                                 <property name="y_options"></property>
                               </packing>
                             </child>
@@ -925,7 +926,8 @@
                             <child>
                               <object class="GtkLabel" id="label6">
                                 <property name="visible">True</property>
-                                <property name="label" translatable="yes">Number of sample rows:</property>
+                                <property name="label" translatable="yes">_Number of sample rows:</property>
+                                <property name="use_underline">True</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -1052,7 +1054,7 @@
                     <child>
                       <object class="GtkLabel" id="label7">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Import</property>
+                        <property name="label" translatable="yes">I_mport</property>
                         <property name="use_underline">True</property>
                       </object>
                       <packing>
