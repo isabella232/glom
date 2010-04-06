@@ -1,5 +1,12 @@
 2010-04-06  Daniel Borgmann  <danielb@openismus.com>
 
+	Initial Password Dialog adjustments.
+
+	* glom/glom_developer.glade: Initial Password Dialog tweaks.
+	* glom/mode_design/dialog_initial_password.cc: Set window icon.
+
+2010-04-06  Daniel Borgmann  <danielb@openismus.com>
+
 	CSV Import Dialog adjustments.
 
 	* glom/glom.glade: Import dialog tweaks.
