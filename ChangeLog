@@ -1,5 +1,13 @@
 2010-04-06  Daniel Borgmann  <danielb@openismus.com>
 
+	Select Field Dialog adjustments.
+
+	* glom/glom_developer.glade: Spacing and mnemonic adjustments/fixes,
+	remove frame label.
+	* glom/mode_design/layout/dialog_choose_field.cc: Add window icon.
+
+2010-04-06  Daniel Borgmann  <danielb@openismus.com>
+
 	Progress dialog adjustments.
 
 	* glom/dialog_progress_creating.cc: Add window icon.
