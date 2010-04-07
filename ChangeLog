@@ -1,3 +1,10 @@
+2010-04-07  Murray Cumming  <murrayc@murrayc.com>
+
+    Recent Files: Make sure that we remember these for saved-from-example files.
+
+	* glom/application.cc: on_document_load(): Add an extra call to 
+    document_history_add() after successfully saving from an example.
+
 2010-04-07  Daniel Borgmann  <danielb@openismus.com>
 
 	Find bar adjustments.

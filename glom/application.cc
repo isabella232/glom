@@ -1207,9 +1207,11 @@ bool Application::on_document_load()
       //Switch to operator mode when opening new documents:
       pDocument->set_userlevel(AppState::USERLEVEL_OPERATOR);
 
+      //Make sure that it's saved in history, even if it was saved from an example file:
+      document_history_add(pDocument->get_file_uri());
+
       //Open default table, or show list of tables instead:
       m_pFrame->do_menu_Navigate_Table(true /* open the default if there is one */);
-
     }
   }
 
@@ -1539,7 +1541,7 @@ void Application::existing_or_new_new()
         m_pFrame->set_databases_selected(database_name_used);
 
         // Add the document to recent files
-	document_history_add(document->get_file_uri());
+	    document_history_add(document->get_file_uri());
       }
       else
       {
