@@ -97,14 +97,14 @@ if test "$ac_cv_boost_python" = "yes"; then
     #Note that this requires PYTHON_CPPFLAGS and PYTHON_LIBS from MM_CHECK_MODULE_PYTHON()
     SAVED_CPPFLAGS=$CPPFLAGS
     CPPFLAGS=$PYTHON_CPPFLAGS $CPPFLAGS
-    SAVED_LDFLAGS=$LDFLAGS
-    LDFLAGS="$LDFLAGS $PYTHON_LIBS -l$ax_lib"
+    SAVED_LIBS=$LIBS
+    LIBS="$LIBS $PYTHON_LIBS -l$ax_lib"
     AC_LINK_IFELSE(
       [AC_LANG_PROGRAM([#include <boost/python.hpp>],
         [boost::python::object test_object])],
       #Note that this was previously BOOST_PYTHON_LIB, but I renamed it because people expect *LIBS. murrayc.
       [BOOST_PYTHON_LIBS="-l$ax_lib"])
-    LDFLAGS=$SAVED_LDFLAGS
+    LIBS=$SAVED_LIBS
     CPPFLAGS=$SAVED_CPPFLAGS
     AC_LANG_RESTORE
   done

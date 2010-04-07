@@ -1,3 +1,10 @@
+2010-04-07  David King  <davidk@openismus.com>
+
+	Fix boost:python m4 macro with -Wl,--as-needed
+
+	* macros/ax_boost_python_murrayc.m4: Specify libraries in LIBS, not
+	LDFLAGS. See http://www.gentoo.org/proj/en/qa/asneeded.xml
+
 2010-04-06  Daniel Borgmann  <danielb@openismus.com>
 
 	Dialog adjustments.
