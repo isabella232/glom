@@ -133,7 +133,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   //QuickFind widgets:
   //We don't use Glade for these, so it easier to modify them for the Maemo port.
   m_pBox_QuickFind = Gtk::manage(new Gtk::HBox(false, Utils::DEFAULT_SPACING_SMALL));
-  Gtk::Label* label = Gtk::manage(new Gtk::Label(_("Quick Find")));
+  Gtk::Label* label = Gtk::manage(new Gtk::Label(_("Quick _search:"), true));
   m_pBox_QuickFind->pack_start(*label, Gtk::PACK_SHRINK);
 
   #ifndef GLOM_ENABLE_MAEMO
@@ -143,6 +143,8 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   #endif
   m_pEntry_QuickFind->signal_activate().connect(
    sigc::mem_fun(*this, &Frame_Glom::on_button_quickfind) ); //Pressing Enter here is like pressing Find.
+
+  label->set_mnemonic_widget(*m_pEntry_QuickFind);
 
   m_pBox_QuickFind->pack_start(*m_pEntry_QuickFind, Gtk::PACK_EXPAND_WIDGET);
   #ifndef GLOM_ENABLE_MAEMO

@@ -1,3 +1,13 @@
+2010-04-07  Daniel Borgmann  <danielb@openismus.com>
+
+	Find bar adjustments.
+
+	* glom/frame_glom.cc: Rename Quick Find to Quick Search and add
+	mneomnic.
+	* glom/glom.glade: Update find id dialog and remove frame.
+	* glom/utility_widgets/datawidget.cc: Add window icon to find id
+	dialog.
+
 2010-04-07  David King  <davidk@openismus.com>
 
 	Fix boost:python m4 macro with -Wl,--as-needed

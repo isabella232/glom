@@ -761,6 +761,7 @@ bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)
 
   if(dialog)
   {
+    dialog->set_icon_name("glom");
     //dialog->set_document(get_document(), table_name, field);
     Gtk::Window* parent = get_application();
     if(parent)
