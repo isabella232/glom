@@ -172,7 +172,7 @@ bool Application::init(const Glib::ustring& document_uri)
 {
   type_vec_strings vecAuthors;
   vecAuthors.push_back("Murray Cumming <murrayc@murrayc.com>");
-  set_about_information(PACKAGE_VERSION, vecAuthors, _("(C) 2000-2005 Murray Cumming"), _("A Database GUI"));
+  set_about_information(PACKAGE_VERSION, vecAuthors, _("© 2000-2010 Murray Cumming"), _("A Database GUI"));
 
   type_base::init(); //calls init_menus() and init_toolbars()
 

@@ -1,3 +1,9 @@
+2010-04-08  David King  <davidk@openismus.com>
+
+	Update copyright information in about dialog
+
+	* glom/application.cc: Update copyright year in about dialog.
+
 2010-04-07  Murray Cumming  <murrayc@murrayc.com>
 
     Recent Files: Make sure that we remember these for saved-from-example files.
