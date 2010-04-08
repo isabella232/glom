@@ -25,7 +25,7 @@ namespace Glom
 {
 
 DbAddDel_WithButtons::DbAddDel_WithButtons()
-: m_HBox(false, Utils::DEFAULT_SPACING_SMALL),
+: m_HBox(Gtk::BUTTONBOX_END),
 #ifndef GLOM_ENABLE_MAEMO
   m_Button_Del(Gtk::Stock::DELETE),
   m_Button_Edit(Gtk::Stock::OPEN),
@@ -48,8 +48,8 @@ DbAddDel_WithButtons::DbAddDel_WithButtons()
   m_Button_Del.signal_clicked().connect(sigc::mem_fun(*this, &DbAddDel_WithButtons::on_button_del));
   m_Button_Edit.signal_clicked().connect(sigc::mem_fun(*this, &DbAddDel_WithButtons::on_button_edit));
 
-  m_HBox.pack_end(m_Button_Edit, Gtk::PACK_SHRINK);
   m_HBox.pack_end(m_Button_Del, Gtk::PACK_SHRINK);
+  m_HBox.pack_end(m_Button_Edit, Gtk::PACK_SHRINK);
   #else
   m_HBox.hide();
   #endif //GLOM_ENABLE_MAEMO

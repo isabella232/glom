@@ -42,6 +42,15 @@
 
 2010-04-08  Daniel Borgmann  <danielb@openismus.com>
 
+	Use button box for listview buttons.
+
+	* glom/utility_widgets/db_adddel/db_adddel_withbuttons.cc:
+	* glom/utility_widgets/db_adddel/db_adddel_withbuttons.h:
+	Use ButtonBox instead of HBox to make buttons homogenous. Also change
+	button order to match order used everywhere else (Add/Delete/Open).
+
+2010-04-08  Daniel Borgmann  <danielb@openismus.com>
+
 	Text and Image object Dialog adjustments.
 
 	* glom/glom_developer.glade: Various dialog layout fixes.
