@@ -1,3 +1,11 @@
+2010-04-08  Daniel Borgmann  <danielb@openismus.com>
+
+	Use buttonbox for details view.
+
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_details.h:
+	Use HButtonBox instead of HBox.
+
 2010-04-08  Murray Cumming  <murrayc@murrayc.com>
 
   ImageGlom: Move scale_keeping_ratio() somewhere more sensible.
