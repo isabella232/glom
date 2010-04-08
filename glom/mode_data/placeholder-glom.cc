@@ -23,7 +23,6 @@
  */
 
 #include "placeholder-glom.h"
-//#include "labelglom.h"
 #include <gtkmm/messagedialog.h>
 #include <glom/application.h>
 #include <glibmm/i18n.h>

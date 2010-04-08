@@ -106,22 +106,22 @@ glom_glom_SOURCES =							\
 	glom/mode_data/placeholder-glom.h				\
 	glom/mode_data/datawidget/datawidget.cc				\
 	glom/mode_data/datawidget/datawidget.h				\
-	glom/mode_data/datawidget/checkglom.cc				\
-	glom/mode_data/datawidget/checkglom.h				\
-	glom/mode_data/datawidget/entryglom.cc				\
-	glom/mode_data/datawidget/entryglom.h				\
-	glom/mode_data/datawidget/labelglom.cc				\
-	glom/mode_data/datawidget/labelglom.h				\
-	glom/mode_data/datawidget/textviewglom.cc				\
-	glom/mode_data/datawidget/textviewglom.h				\
+	glom/mode_data/datawidget/checkbutton.cc				\
+	glom/mode_data/datawidget/checkbutton.h				\
+	glom/mode_data/datawidget/entry.cc				\
+	glom/mode_data/datawidget/entry.h				\
+	glom/mode_data/datawidget/label.cc				\
+	glom/mode_data/datawidget/label.h				\
+	glom/mode_data/datawidget/textview.cc				\
+	glom/mode_data/datawidget/textview.h				\
 	glom/mode_data/datawidget/dialog_choose_date.cc			\
 	glom/mode_data/datawidget/dialog_choose_date.h			\
 	glom/mode_data/datawidget/dialog_choose_id.cc			\
 	glom/mode_data/datawidget/dialog_choose_id.h				\
-	glom/mode_data/datawidget/comboentryglom.cc				\
-	glom/mode_data/datawidget/comboentryglom.h				\
-	glom/mode_data/datawidget/comboglom.cc				\
-	glom/mode_data/datawidget/comboglom.h				\
+	glom/mode_data/datawidget/comboentry.cc				\
+	glom/mode_data/datawidget/comboentry.h				\
+	glom/mode_data/datawidget/combo.cc				\
+	glom/mode_data/datawidget/combo.h				\
 	glom/mode_data/datawidget/combochoices.cc			\
 	glom/mode_data/datawidget/combochoices.h			\
 	glom/mode_data/datawidget/combochoiceswithtreemodel.cc			\

@@ -30,13 +30,13 @@ namespace Glom
 
 class Application;
 
-class NotebookLabelGlom
+class NotebookLabel
 : public Gtk::EventBox
 {
 public:
-  explicit NotebookLabelGlom(NotebookGlom* notebook);
-  explicit NotebookLabelGlom(const Glib::ustring& label, NotebookGlom* notebook);
-  virtual ~NotebookLabelGlom();
+  explicit NotebookLabel(NotebookGlom* notebook);
+  explicit NotebookLabel(const Glib::ustring& label, NotebookGlom* notebook);
+  virtual ~NotebookLabel();
 
   void set_label (const Glib::ustring& title);  
     

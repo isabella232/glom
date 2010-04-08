@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "comboentryglom.h"
+#include "comboentry.h"
 #include <libglom/data_structure/glomconversions.h>
 #include <gtkmm/messagedialog.h>
 #include <glom/dialog_invalid_data.h>
@@ -38,7 +38,10 @@
 namespace Glom
 {
 
-ComboEntryGlom::ComboEntryGlom()
+namespace DataWidgetChildren
+{
+
+ComboEntry::ComboEntry()
 : ComboChoicesWithTreeModel()
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -48,7 +51,7 @@ ComboEntryGlom::ComboEntryGlom()
   init();
 }
 
-ComboEntryGlom::ComboEntryGlom(const sharedptr<LayoutItem_Field>& field_second)
+ComboEntry::ComboEntry(const sharedptr<LayoutItem_Field>& field_second)
 : ComboChoicesWithTreeModel(field_second)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -58,7 +61,7 @@ ComboEntryGlom::ComboEntryGlom(const sharedptr<LayoutItem_Field>& field_second)
   init();
 }
 
-Gtk::Entry* ComboEntryGlom::get_entry()
+Gtk::Entry* ComboEntry::get_entry()
 {
   #ifndef GLOM_ENABLE_MAEMO
   return Gtk::ComboBoxEntry::get_entry();
@@ -67,7 +70,7 @@ Gtk::Entry* ComboEntryGlom::get_entry()
   #endif
 }
 
-const Gtk::Entry* ComboEntryGlom::get_entry() const
+const Gtk::Entry* ComboEntry::get_entry() const
 {
   #ifndef GLOM_ENABLE_MAEMO
   return Gtk::ComboBoxEntry::get_entry();
@@ -76,7 +79,7 @@ const Gtk::Entry* ComboEntryGlom::get_entry() const
   #endif
 }
 
-void ComboEntryGlom::init()
+void ComboEntry::init()
 {
 #ifndef GLOM_ENABLE_MAEMO
   set_model(m_refModel);
@@ -107,17 +110,17 @@ void ComboEntryGlom::init()
 
   //We use connect(slot, false) to connect before the default signal handler, because the default signal handler prevents _further_ handling.
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  get_entry()->signal_button_press_event().connect(sigc::mem_fun(*this, &ComboEntryGlom::on_entry_button_press_event), false);
+  get_entry()->signal_button_press_event().connect(sigc::mem_fun(*this, &ComboEntry::on_entry_button_press_event), false);
 #endif // GLOM_ENABLE_CLIENT_ONLY
 
-  get_entry()->signal_focus_out_event().connect(sigc::mem_fun(*this, &ComboEntryGlom::on_entry_focus_out_event), false);
-  get_entry()->signal_activate().connect(sigc::mem_fun(*this, &ComboEntryGlom::on_entry_activate));
+  get_entry()->signal_focus_out_event().connect(sigc::mem_fun(*this, &ComboEntry::on_entry_focus_out_event), false);
+  get_entry()->signal_activate().connect(sigc::mem_fun(*this, &ComboEntry::on_entry_activate));
 
 #ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   #ifndef GLOM_ENABLE_MAEMO
-  signal_changed().connect(sigc::mem_fun(*this, &ComboEntryGlom::on_changed));
+  signal_changed().connect(sigc::mem_fun(*this, &ComboEntry::on_changed));
   #else
-  m_maemo_selector.signal_changed().connect(sigc::mem_fun(*this, &ComboEntryGlom::on_changed));
+  m_maemo_selector.signal_changed().connect(sigc::mem_fun(*this, &ComboEntry::on_changed));
   #endif
 #endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 
@@ -147,11 +150,11 @@ void ComboEntryGlom::init()
   }
 }
 
-ComboEntryGlom::~ComboEntryGlom()
+ComboEntry::~ComboEntry()
 {
 }
 
-void ComboEntryGlom::set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name)
+void ComboEntry::set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name)
 {
   //Call base class:
   ComboChoicesWithTreeModel::set_layout_item(layout_item, table_name);
@@ -171,7 +174,7 @@ void ComboEntryGlom::set_layout_item(const sharedptr<LayoutItem>& layout_item, c
   get_entry()->set_alignment(x_align); 
 }
 
-void ComboEntryGlom::check_for_change()
+void ComboEntry::check_for_change()
 {
   if(!(get_entry()->get_editable()))
   {
@@ -218,7 +221,7 @@ void ComboEntryGlom::check_for_change()
   }
 }
 
-bool ComboEntryGlom::on_entry_focus_out_event(GdkEventFocus* /* event */)
+bool ComboEntry::on_entry_focus_out_event(GdkEventFocus* /* event */)
 {
   //bool result = Gtk::ComboBoxEntry::on_focus_out_event(event);
 
@@ -229,7 +232,7 @@ bool ComboEntryGlom::on_entry_focus_out_event(GdkEventFocus* /* event */)
   return false;
 }
 
-void ComboEntryGlom::on_entry_activate()
+void ComboEntry::on_entry_activate()
 { 
   //Call base class:
   //get_entry()->on_activate();
@@ -238,7 +241,7 @@ void ComboEntryGlom::on_entry_activate()
   check_for_change();
 }
 
-void ComboEntryGlom::on_entry_changed()
+void ComboEntry::on_entry_changed()
 {
   //The text is being edited, but the user has not finished yet.
 
@@ -247,7 +250,7 @@ void ComboEntryGlom::on_entry_changed()
 }
 
 
-void ComboEntryGlom::set_value(const Gnome::Gda::Value& value)
+void ComboEntry::set_value(const Gnome::Gda::Value& value)
 {
   sharedptr<const LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
   if(!layout_item)
@@ -271,7 +274,7 @@ void ComboEntryGlom::set_value(const Gnome::Gda::Value& value)
   }
 }
 
-void ComboEntryGlom::set_text(const Glib::ustring& text)
+void ComboEntry::set_text(const Glib::ustring& text)
 {
   m_old_text = text;
   
@@ -291,7 +294,7 @@ void ComboEntryGlom::set_text(const Glib::ustring& text)
   get_entry()->set_text(text);
 }
 
-Gnome::Gda::Value ComboEntryGlom::get_value() const
+Gnome::Gda::Value ComboEntry::get_value() const
 {
   bool success = false;
 
@@ -300,7 +303,7 @@ Gnome::Gda::Value ComboEntryGlom::get_value() const
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-bool ComboEntryGlom::on_entry_button_press_event(GdkEventButton *event)
+bool ComboEntry::on_entry_button_press_event(GdkEventButton *event)
 {
   //Enable/Disable items.
   //We did this earlier, but get_application is more likely to work now:
@@ -334,7 +337,7 @@ bool ComboEntryGlom::on_entry_button_press_event(GdkEventButton *event)
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-Application* ComboEntryGlom::get_application()
+Application* ComboEntry::get_application()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
@@ -343,9 +346,9 @@ Application* ComboEntryGlom::get_application()
 }
 
 #ifndef GLOM_ENABLE_MAEMO
-void ComboEntryGlom::on_changed()
+void ComboEntry::on_changed()
 #else
-void ComboEntryGlom::on_changed(int /* column */)
+void ComboEntry::on_changed(int /* column */)
 #endif 
 {
 #ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
@@ -370,12 +373,12 @@ void ComboEntryGlom::on_changed(int /* column */)
   //Entry of text that is not in the menu will be handled by the ->get_entry() signal handlers._
 }
 
-void ComboEntryGlom::set_read_only(bool read_only)
+void ComboEntry::set_read_only(bool read_only)
 {
   Gtk::Entry* entry = get_entry();
   if(entry)
     entry->set_editable(!read_only);
 }
 
-
+} //namespace DataWidetChildren
 } //namespace Glom

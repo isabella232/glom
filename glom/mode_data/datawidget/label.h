@@ -1,6 +1,6 @@
 /* Glom
  *
- * Copyright (C) 2008 Johannes Schmid
+ * Copyright (C) 2001-2004 Murray Cumming
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -18,14 +18,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_UTILITY_WIDGETS_CHECK_GLOM_H
-#define GLOM_UTILITY_WIDGETS_CHECK_GLOM_H
-
-#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
+#ifndef GLOM_UTILITY_WIDGETS_LABEL_GLOM_H
+#define GLOM_UTILITY_WIDGETS_LABEL_GLOM_H
 
 #include <gtkmm.h>
-#include <libglom/data_structure/field.h>
-#include <glom/utility_widgets/layoutwidgetfield.h>
+#include <glom/utility_widgets/layoutwidgetbase.h>
+#include <glom/utility_widgets/layoutwidgetutils.h>
+#include <libglom/data_structure/layout/layoutitem_button.h>
 #include <gtkmm/builder.h>
 
 namespace Glom
@@ -33,28 +32,36 @@ namespace Glom
 
 class Application;
 
-class CheckGlom
-: public Gtk::CheckButton,
-  public LayoutWidgetField
+namespace DataWidgetChildren
+{
+
+class Label
+: public Gtk::EventBox,
+  public LayoutWidgetUtils
 {
 public:
-  explicit CheckGlom(const Glib::ustring& title);
-  virtual ~CheckGlom();
-
-  virtual void set_value(const Gnome::Gda::Value& value);
-  virtual Gnome::Gda::Value get_value() const;    
+  Label();
+  explicit Label(const Glib::ustring& label, bool mnemonic = false);
+  explicit Label(const Glib::ustring& label, float xalign, float yalign, bool mnemonic = false);
+  virtual ~Label();
+  
+  Gtk::Label* get_label();
 
 private:
   void init();
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual bool on_button_press_event(GdkEventButton *event); //override
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
   virtual Application* get_application();
+    
+  Gtk::Label m_label;
+#ifndef GLOM_ENABLE_CLIENT_ONLY    
+  virtual bool on_button_press_event(GdkEventButton *event);
+  virtual void on_menu_properties_activate();
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+    
 };
 
+} //namespace DataWidetChildren
 } //namespace Glom
 
-#endif //GLOM_UTILITY_WIDGETS_CHECK_GLOM_H
+#endif //GLOM_UTILITY_WIDGETS_LABEL_GLOM_H
 

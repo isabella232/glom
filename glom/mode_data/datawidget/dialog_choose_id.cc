@@ -33,6 +33,9 @@
 namespace Glom
 {
 
+namespace DataWidgetChildren
+{
+
 Dialog_ChooseID::Dialog_ChooseID()
 : m_label_table_name(0),
   m_pBox_QuickFind(0),
@@ -188,5 +191,5 @@ bool Dialog_ChooseID::init_db_details(const Glib::ustring& table_name, const Gli
   return result;
 }
 
-
+} //namespace DataWidetChildren
 } //namespace Glom

@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "entryglom.h"
+#include "entry.h"
 #include <libglom/data_structure/glomconversions.h>
 #include <gtkmm/messagedialog.h>
 #include <glom/dialog_invalid_data.h>
@@ -34,7 +34,10 @@
 namespace Glom
 {
 
-EntryGlom::EntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
+namespace DataWidgetChildren
+{
+
+Entry::Entry(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
 :
 #ifdef GLOM_ENABLE_MAEMO
   Hildon::Entry(cobject),
@@ -49,7 +52,7 @@ EntryGlom::EntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& 
   init();
 }
 
-EntryGlom::EntryGlom(Field::glom_field_type glom_type)
+Entry::Entry(Field::glom_field_type glom_type)
 :
 #ifdef GLOM_ENABLE_MAEMO
   Hildon::Entry(Gtk::Hildon::SIZE_AUTO),
@@ -63,20 +66,20 @@ EntryGlom::EntryGlom(Field::glom_field_type glom_type)
   init();
 }
 
-EntryGlom::~EntryGlom()
+Entry::~Entry()
 {
 }
 
-void EntryGlom::init()
+void Entry::init()
 {
 #ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
-  signal_focus_out_event().connect(sigc::mem_fun(*this, &EntryGlom::on_focus_out_event));
-  signal_activate().connect(sigc::mem_fun(*this, &EntryGlom::on_activate));
-  signal_changed().connect(sigc::mem_fun(*this, &EntryGlom::on_changed));
+  signal_focus_out_event().connect(sigc::mem_fun(*this, &Entry::on_focus_out_event));
+  signal_activate().connect(sigc::mem_fun(*this, &Entry::on_activate));
+  signal_changed().connect(sigc::mem_fun(*this, &Entry::on_changed));
 #endif // !GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 }
 
-void EntryGlom::set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name)
+void Entry::set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name)
 {
   LayoutWidgetField::set_layout_item(layout_item, table_name);
 #ifdef GTKMM_ATKMM_ENABLED
@@ -95,12 +98,12 @@ void EntryGlom::set_layout_item(const sharedptr<LayoutItem>& layout_item, const 
   set_alignment(x_align);
 }
 
-void EntryGlom::set_glom_type(Field::glom_field_type glom_type)
+void Entry::set_glom_type(Field::glom_field_type glom_type)
 {
   m_glom_type = glom_type;
 }
 
-void EntryGlom::check_for_change()
+void Entry::check_for_change()
 {
   Glib::ustring new_text = get_text();
   if(new_text != m_old_text)
@@ -132,11 +135,11 @@ void EntryGlom::check_for_change()
 }
 
 #ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
-bool EntryGlom::on_focus_out_event(GdkEventFocus* event)
+bool Entry::on_focus_out_event(GdkEventFocus* event)
 {
   const bool result = Gtk::Entry::on_focus_out_event(event);
 #else
-bool EntryGlom::on_focus_out_event(GdkEventFocus* /* event */)
+bool Entry::on_focus_out_event(GdkEventFocus* /* event */)
 {
   const bool result = false;
 #endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
@@ -148,7 +151,7 @@ bool EntryGlom::on_focus_out_event(GdkEventFocus* /* event */)
   return result;
 }
 
-void EntryGlom::on_activate()
+void Entry::on_activate()
 {
 #ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   //Call base class:
@@ -159,7 +162,7 @@ void EntryGlom::on_activate()
   check_for_change();
 }
 
-void EntryGlom::on_changed()
+void Entry::on_changed()
 {
   //The text is being edited, but the user has not finished yet.
 
@@ -169,7 +172,7 @@ void EntryGlom::on_changed()
 #endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 }
 
-void EntryGlom::set_value(const Gnome::Gda::Value& value)
+void Entry::set_value(const Gnome::Gda::Value& value)
 {
   sharedptr<const LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
   if(!layout_item)
@@ -190,7 +193,7 @@ void EntryGlom::set_value(const Gnome::Gda::Value& value)
   }
 }
 
-void EntryGlom::set_text(const Glib::ustring& text)
+void Entry::set_text(const Glib::ustring& text)
 {
   m_old_text = text;
 
@@ -198,7 +201,7 @@ void EntryGlom::set_text(const Glib::ustring& text)
   Gtk::Entry::set_text(text);
 }
 
-Gnome::Gda::Value EntryGlom::get_value() const
+Gnome::Gda::Value Entry::get_value() const
 {
   bool success = false;
 
@@ -207,7 +210,7 @@ Gnome::Gda::Value EntryGlom::get_value() const
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-bool EntryGlom::on_button_press_event(GdkEventButton *event)
+bool Entry::on_button_press_event(GdkEventButton *event)
 {
   //Enable/Disable items.
   //We did this earlier, but get_application is more likely to work now:
@@ -241,7 +244,7 @@ bool EntryGlom::on_button_press_event(GdkEventButton *event)
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-Application* EntryGlom::get_application()
+Application* Entry::get_application()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
@@ -249,9 +252,10 @@ Application* EntryGlom::get_application()
   return dynamic_cast<Application*>(pWindow);
 }
 
-void EntryGlom::set_read_only(bool read_only)
+void Entry::set_read_only(bool read_only)
 {
   set_editable(!read_only);
 }
 
+} //namespace DataWidetChildren
 } //namespace Glom

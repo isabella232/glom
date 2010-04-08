@@ -24,7 +24,7 @@
 #include <glom/utility_widgets/notebookglom.h>
 #include <glom/utility_widgets/notebooklabelglom.h>
 #include <glom/utility_widgets/imageglom.h>
-#include <glom/mode_data/datawidget/labelglom.h>
+#include <glom/mode_data/datawidget/label.h>
 #include <glom/utility_widgets/dialog_flowtable.h>
 #include <glom/mode_data/placeholder-glom.h>
 #include <glom/application.h>
@@ -367,7 +367,7 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
     if(group)
     {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-      NotebookLabelGlom* tab_label = Gtk::manage(new NotebookLabelGlom(notebook_widget));
+      NotebookLabel* tab_label = Gtk::manage(new NotebookLabel(notebook_widget));
       tab_label->show();
 #else
       Gtk::Label* tab_label = Gtk::manage(new Gtk::Label());
@@ -640,7 +640,7 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
   alignment_label->show();
   
   const Glib::ustring text = layoutitem_text->get_text();
-  LabelGlom* label = Gtk::manage(new LabelGlom(text));
+  DataWidgetChildren::Label* label = Gtk::manage(new DataWidgetChildren::Label(text));
   label->set_layout_item(layoutitem_text, table_name);
   label->show();
   alignment_label->add(*label);
@@ -664,7 +664,7 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
     alignment_title->set(Gtk::ALIGN_RIGHT, Gtk::ALIGN_CENTER);
     alignment_title->show();
 
-    LabelGlom* title_label = Gtk::manage(new LabelGlom(title, 0, 0, false));
+    DataWidgetChildren::Label* title_label = Gtk::manage(new DataWidgetChildren::Label(title, 0, 0, false));
     title_label->set_layout_item(layoutitem_text, table_name);
     title_label->show();
     alignment_title->add(*title_label);

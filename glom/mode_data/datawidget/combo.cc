@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "comboglom.h"
+#include "combo.h"
 #include <libglom/data_structure/glomconversions.h>
 #include <gtkmm/messagedialog.h>
 #include <glom/dialog_invalid_data.h>
@@ -32,6 +32,9 @@
 #include <iostream>   // for cout, endl
 
 namespace Glom
+{
+
+namespace DataWidgetChildren
 {
 
 ComboGlom::ComboGlom()
@@ -313,4 +316,5 @@ void ComboGlom::set_read_only(bool /* read_only */)
   //TODO
 }
 
+} //namespace DataWidetChildren
 } //namespace Glom

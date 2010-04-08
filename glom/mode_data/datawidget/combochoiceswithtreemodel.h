@@ -26,6 +26,9 @@
 namespace Glom
 {
 
+namespace DataWidgetChildren
+{
+
 class ComboChoicesWithTreeModel : public ComboChoices
 {
 public:
@@ -60,6 +63,7 @@ protected:
   Glib::RefPtr<Gtk::ListStore> m_refModel;
 };
 
+} //namespace DataWidetChildren
 } //namespace Glom
 
 #endif //GLOM_UTILITY_WIDGETS_COMBO_CHOICES_WITH_TREE_MODEL_H

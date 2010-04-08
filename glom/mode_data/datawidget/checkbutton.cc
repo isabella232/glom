@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "checkglom.h"
+#include "checkbutton.h"
 #include <gtkmm/messagedialog.h>
 #include <glom/dialog_invalid_data.h>
 #include <glom/application.h>
@@ -29,7 +29,10 @@
 namespace Glom
 {
 
-CheckGlom::CheckGlom(const Glib::ustring& title)
+namespace DataWidgetChildren
+{
+
+CheckButton::CheckButton(const Glib::ustring& title)
   : Gtk::CheckButton(title)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -39,17 +42,17 @@ CheckGlom::CheckGlom(const Glib::ustring& title)
   init();
 }
 
-CheckGlom::~CheckGlom()
+CheckButton::~CheckButton()
 {
 }
 
-void CheckGlom::init()
+void CheckButton::init()
 {
 
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-bool CheckGlom::on_button_press_event(GdkEventButton *event)
+bool CheckButton::on_button_press_event(GdkEventButton *event)
 {
   //Enable/Disable items.
   //We did this earlier, but get_application is more likely to work now:
@@ -81,7 +84,7 @@ bool CheckGlom::on_button_press_event(GdkEventButton *event)
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-Application* CheckGlom::get_application()
+Application* CheckButton::get_application()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
@@ -89,14 +92,15 @@ Application* CheckGlom::get_application()
   return dynamic_cast<Application*>(pWindow);
 }
 
-void CheckGlom::set_value(const Gnome::Gda::Value& value)
+void CheckButton::set_value(const Gnome::Gda::Value& value)
 {
   set_active (value.get_boolean());
 }
 
-Gnome::Gda::Value CheckGlom::get_value() const
+Gnome::Gda::Value CheckButton::get_value() const
 {
   return Gnome::Gda::Value(get_active());
 }
 
+} //namespace DataWidetChildren
 } //namespace Glom

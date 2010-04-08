@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_UTILITY_WIDGETS_COMBOENTRY_GLOM_H
-#define GLOM_UTILITY_WIDGETS_COMBOENTRY_GLOM_H
+#ifndef GLOM_UTILITY_WIDGETS_COMBO_GLOM_H
+#define GLOM_UTILITY_WIDGETS_COMBO_GLOM_H
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
@@ -35,31 +35,39 @@ namespace Glom
 
 class Application;
 
-/** A Gtk::ComboBoxEntry that can show choices of field values.
- * Use this when the user should be allowed to enter values directly too,
- * including values that are not in the choices.
+namespace DataWidgetChildren
+{
+
+/** A Gtk::ComboBox that can show choices of field values.
+ * Use this when the user should only be allowed to enter values that are in the choices.
  */
-class ComboEntryGlom
+class ComboGlom
 : 
 #ifndef GLOM_ENABLE_MAEMO
-  public Gtk::ComboBoxEntry,
+  public Gtk::ComboBox,
 #else
   public Hildon::PickerButton,
 #endif
   public ComboChoicesWithTreeModel
 {
 public:
-  ///You must call set_layout_item() to specify the field type and formatting of the main column.
-  ComboEntryGlom();
 
   ///You must call set_layout_item() to specify the field type and formatting of the main column.
-  explicit ComboEntryGlom(const sharedptr<LayoutItem_Field>& field_second);
+  ComboGlom();
 
-  virtual ~ComboEntryGlom();
+  ///You must call set_layout_item() to specify the field type and formatting of the main column.
+  explicit ComboGlom(const sharedptr<LayoutItem_Field>& field_second);
+
+  virtual ~ComboGlom();
+
+  virtual void set_read_only(bool read_only = true);
+
 
   //Override this so we can store the text to compare later.
   //This is not virtual, so you must not use it via Gtk::Entry.
   void set_text(const Glib::ustring& text); //override
+
+  Glib::ustring get_text() const;
 
   /** Set the text from a Gnome::Gda::Value.
    */
@@ -67,21 +75,9 @@ public:
 
   virtual Gnome::Gda::Value get_value() const;
 
-  virtual void set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name);
-
-  virtual void set_read_only(bool read_only = true);
-
 private:
   void init();
 
-
-  //Overrides of default signal handlers:
-  //TODO: Are these really default signal handlers?
-  virtual void on_entry_changed(); //From Gtk::Entry.
-  virtual void on_entry_activate(); //From Gtk::Entry.
-  virtual bool on_entry_focus_out_event(GdkEventFocus* event); //From Gtk::Widget
-
-  
   #ifndef GLOM_ENABLE_MAEMO
   // Note that this is a normal signal handler when glibmm was complied
   // without default signal handlers
@@ -89,27 +85,25 @@ private:
   #else
   void on_changed(int column);
   #endif //GLOM_ENABLE_MAEMO
-  
 
   virtual void check_for_change();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  virtual bool on_entry_button_press_event(GdkEventButton *event);
+  virtual bool on_button_press_event(GdkEventButton *event);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   virtual Application* get_application();
-  
-  Gtk::Entry* get_entry();
-  const Gtk::Entry* get_entry() const;
+
 
   Glib::ustring m_old_text;
   //Gnome::Gda::Value m_value; //The last-stored value. We have this because the displayed value might be unparseable.
-   
+  
   #ifdef GLOM_ENABLE_MAEMO
-  Hildon::TouchSelectorEntry m_maemo_selector;
+  Hildon::TouchSelector m_maemo_selector;
   #endif
 };
 
+} //namespace DataWidetChildren
 } //namespace Glom
 
 #endif //GLOM_UTILITY_WIDGETS_COMBOENTRY_GLOM_H

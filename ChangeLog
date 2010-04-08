@@ -1,5 +1,13 @@
 2010-04-08  Murray Cumming  <murrayc@murrayc.com>
 
+  glom/mode_data/datawidget/: Clean up classes, putting them in a namespace.
+  
+  * glom/mode_data/datawidget/: Removed Glom suffixes from class names 
+  and filenames, and put classes in a DataWidgetChildren sub-namespace,
+  to make it clearer where we occasionally use these outside of DataWidget.
+
+2010-04-08  Murray Cumming  <murrayc@murrayc.com>
+
   Cleaned glom/utility_widgets/ a little.
   
   * glom/utility_widgets/datawidget.[h|cc]: Moved to glom/mode_data/datawidget/

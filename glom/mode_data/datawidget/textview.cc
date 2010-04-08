@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "textviewglom.h"
+#include "textview.h"
 #include <libglom/data_structure/glomconversions.h>
 #include <gtkmm/messagedialog.h>
 #include <glom/dialog_invalid_data.h>
@@ -34,20 +34,23 @@
 namespace Glom
 {
 
-TextViewGlom::TextViewGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
+namespace DataWidgetChildren
+{
+
+TextView::TextView(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
 : Gtk::ScrolledWindow(cobject),
   m_glom_type(Field::TYPE_TEXT)
 {
   init();
 }
 
-TextViewGlom::TextViewGlom(Field::glom_field_type glom_type)
+TextView::TextView(Field::glom_field_type glom_type)
 : m_glom_type(glom_type)
 {
   init();
 }
 
-void TextViewGlom::init()
+void TextView::init()
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
@@ -64,20 +67,20 @@ void TextViewGlom::init()
   m_TextView.set_wrap_mode(Gtk::WRAP_WORD);
 
   //We use connect(slot, false) to connect before the default signal handler, because the default signal handler prevents _further_ handling.
-  m_TextView.signal_focus_out_event().connect(sigc::mem_fun(*this, &TextViewGlom::on_textview_focus_out_event), false);
-  // m_TextView.get_buffer()->signal_end_user_action().connect(sigc::mem_fun(*this, &TextViewGlom::on_buffer_changed));
+  m_TextView.signal_focus_out_event().connect(sigc::mem_fun(*this, &TextView::on_textview_focus_out_event), false);
+  // m_TextView.get_buffer()->signal_end_user_action().connect(sigc::mem_fun(*this, &TextView::on_buffer_changed));
 }
 
-TextViewGlom::~TextViewGlom()
+TextView::~TextView()
 {
 }
 
-void TextViewGlom::set_glom_type(Field::glom_field_type glom_type)
+void TextView::set_glom_type(Field::glom_field_type glom_type)
 {
   m_glom_type = glom_type;
 }
 
-void TextViewGlom::check_for_change()
+void TextView::check_for_change()
 {
   const Glib::ustring new_text = m_TextView.get_buffer()->get_text();
   if(new_text != m_old_text)
@@ -109,12 +112,12 @@ void TextViewGlom::check_for_change()
 }
 
 #ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
-bool TextViewGlom::on_textview_focus_out_event(GdkEventFocus* event)
+bool TextView::on_textview_focus_out_event(GdkEventFocus* event)
 {
   //Call base class:
   bool result = Gtk::ScrolledWindow::on_focus_out_event(event);
 #else
-bool TextViewGlom::on_textview_focus_out_event(GdkEventFocus* /* event */)
+bool TextView::on_textview_focus_out_event(GdkEventFocus* /* event */)
 {
   bool result = false;
 #endif
@@ -128,7 +131,7 @@ bool TextViewGlom::on_textview_focus_out_event(GdkEventFocus* /* event */)
 
 /*
 
-void TextViewGlom::on_activate()
+void TextView::on_activate()
 { 
   //Call base class:
   Gtk::TextView::on_activate();
@@ -138,27 +141,27 @@ void TextViewGlom::on_activate()
 }
 */
 
-void TextViewGlom::on_buffer_changed()
+void TextView::on_buffer_changed()
 {
   check_for_change();
 }
 
 /*
-void TextViewGlom::on_insert_text(const Glib::ustring& text, int* position)
+void TextView::on_insert_text(const Glib::ustring& text, int* position)
 {
   Gtk::TextView::on_insert_text(text, position);
 }
 
 */
 
-void TextViewGlom::set_value(const Gnome::Gda::Value& value)
+void TextView::set_value(const Gnome::Gda::Value& value)
 {
   sharedptr<const LayoutItem_Field>layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
   if(layout_item)
     set_text(Conversions::get_text_for_gda_value(m_glom_type, value, layout_item->get_formatting_used().m_numeric_format));
 }
 
-void TextViewGlom::set_text(const Glib::ustring& text)
+void TextView::set_text(const Glib::ustring& text)
 {
   m_old_text = text;
 
@@ -166,18 +169,18 @@ void TextViewGlom::set_text(const Glib::ustring& text)
   m_TextView.get_buffer()->set_text(text);
 }
 
-Gnome::Gda::Value TextViewGlom::get_value() const
+Gnome::Gda::Value TextView::get_value() const
 {
   bool success = false;
 
   sharedptr<const LayoutItem_Field>layout_item = sharedptr<const LayoutItem_Field>::cast_dynamic(get_layout_item());
 
-  TextViewGlom* pNonConstThis = const_cast<TextViewGlom*>(this); //Gtk::TextBuffer::get_text() is non-const in gtkmm <=2.6.
+  TextView* pNonConstThis = const_cast<TextView*>(this); //Gtk::TextBuffer::get_text() is non-const in gtkmm <=2.6.
   return Conversions::parse_value(m_glom_type, pNonConstThis->m_TextView.get_buffer()->get_text(true), layout_item->get_formatting_used().m_numeric_format, success);
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-bool TextViewGlom::on_button_press_event(GdkEventButton *event)
+bool TextView::on_button_press_event(GdkEventButton *event)
 {
   //Enable/Disable items.
   //We did this earlier, but get_application is more likely to work now:
@@ -211,7 +214,7 @@ bool TextViewGlom::on_button_press_event(GdkEventButton *event)
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-Application* TextViewGlom::get_application()
+Application* TextView::get_application()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
@@ -219,9 +222,10 @@ Application* TextViewGlom::get_application()
   return dynamic_cast<Application*>(pWindow);
 }
 
-TextViewGlom::type_text_view* TextViewGlom::get_textview()
+TextView::type_text_view* TextView::get_textview()
 {
   return &m_TextView;
 }
 
+} //namespace DataWidetChildren
 } //namespace Glom

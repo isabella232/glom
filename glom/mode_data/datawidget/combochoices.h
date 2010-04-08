@@ -28,6 +28,9 @@
 namespace Glom
 {
 
+namespace DataWidgetChildren
+{
+
 /** A polymorphic base class for all the combo-like widgets.
  */
 class ComboChoices : public LayoutWidgetField
@@ -54,6 +57,7 @@ protected:
   //Gnome::Gda::Value m_value; //The last-stored value. We have this because the displayed value might be unparseable.
 };
 
+} //namespace DataWidetChildren
 } //namespace Glom
 
 #endif //GLOM_UTILITY_WIDGETS_COMBO_CHOICES_H

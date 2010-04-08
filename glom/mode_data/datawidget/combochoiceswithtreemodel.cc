@@ -31,6 +31,9 @@
 namespace Glom
 {
 
+namespace DataWidgetChildren
+{
+
 ComboChoicesWithTreeModel::ComboChoicesWithTreeModel()
 {
   init();
@@ -95,5 +98,5 @@ void ComboChoicesWithTreeModel::set_choices(const FieldFormatting::type_list_val
   }
 }
 
-
+} //namespace DataWidetChildren
 } //namespace Glom

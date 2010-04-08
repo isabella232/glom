@@ -26,6 +26,9 @@
 namespace Glom
 {
 
+namespace DataWidgetChildren
+{
+
 Dialog_ChooseDate::Dialog_ChooseDate()
 : m_calendar(0)
 {
@@ -80,6 +83,7 @@ void Dialog_ChooseDate::on_day_selected_double_click()
   response(Gtk::RESPONSE_OK);
 }
 
+} //namespace DataWidetChildren
 } //namespace Glom
 
 

@@ -30,6 +30,9 @@
 namespace Glom
 {
 
+namespace DataWidgetChildren
+{
+
 class Dialog_ChooseID
   : public Gtk::Dialog,
     public Base_DB
@@ -77,6 +80,7 @@ private:
   enumStage m_stage;
 };
 
+} //namespace DataWidetChildren
 } //namespace Glom
 
 #endif //GLOM_MODE_DATA_DIALOG_CHOOSE_ID_H

@@ -20,13 +20,13 @@
 
 #include "config.h"
 #include "datawidget.h"
-#include "entryglom.h"
-#include "checkglom.h"
-#include "labelglom.h"
-#include <glom/mode_data/datawidget/comboentryglom.h>
-#include <glom/mode_data/datawidget/comboglom.h>
+#include "entry.h"
+#include "checkbutton.h"
+#include "label.h"
+#include <glom/mode_data/datawidget/comboentry.h>
+#include <glom/mode_data/datawidget/combo.h>
 #include <glom/mode_data/datawidget/combo_as_radio_buttons.h>
-#include <glom/mode_data/datawidget/textviewglom.h>
+#include <glom/mode_data/datawidget/textview.h>
 #include <glom/utility_widgets/imageglom.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/application.h>
@@ -46,20 +46,20 @@
 namespace Glom
 {
 
-static ComboChoices* create_combo_widget_for_field(const sharedptr<LayoutItem_Field>& field, const sharedptr<LayoutItem_Field>& layout_item_second = sharedptr<LayoutItem_Field>())
+static DataWidgetChildren::ComboChoices* create_combo_widget_for_field(const sharedptr<LayoutItem_Field>& field, const sharedptr<LayoutItem_Field>& layout_item_second = sharedptr<LayoutItem_Field>())
 {
-  ComboChoices* result = 0;
+  DataWidgetChildren::ComboChoices* result = 0;
   bool as_radio_buttons = false; //TODO: Use this.
   const bool restricted = field->get_formatting_used().get_choices_restricted(as_radio_buttons);
   if(restricted)
   {
     if(as_radio_buttons)
-      result = Gtk::manage(new ComboAsRadioButtons(layout_item_second));
+      result = Gtk::manage(new DataWidgetChildren::ComboAsRadioButtons(layout_item_second));
     else
-      result = Gtk::manage(new ComboGlom(layout_item_second));
+      result = Gtk::manage(new DataWidgetChildren::ComboGlom(layout_item_second));
   }
   else
-    result = Gtk::manage(new ComboEntryGlom(layout_item_second));
+    result = Gtk::manage(new DataWidgetChildren::ComboEntry(layout_item_second));
 
   return result;
 }
@@ -76,7 +76,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
   const Glib::ustring title = field->get_title_or_name();
   if(glom_type == Field::TYPE_BOOLEAN)
   {
-    CheckGlom* checkbutton = Gtk::manage( new CheckGlom( title ) );
+    DataWidgetChildren::CheckButton* checkbutton = Gtk::manage( new DataWidgetChildren::CheckButton( title ) );
     checkbutton->show();
     checkbutton->signal_toggled().connect( sigc::mem_fun(*this, &DataWidget::on_widget_edited)  );
 
@@ -116,7 +116,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     //Use a Combo if there is a drop-down of choices (A "value list"), else an Entry:
     if(field->get_formatting_used().get_has_choices())
     {
-      ComboChoices* combo = create_combo_widget_for_field(field);
+      DataWidgetChildren::ComboChoices* combo = create_combo_widget_for_field(field);
 
       if(field->get_formatting_used().get_has_custom_choices())
       {
@@ -168,12 +168,12 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     {
       if((glom_type == Field::TYPE_TEXT) && (field->get_formatting_used().get_text_format_multiline()))
       {
-        TextViewGlom* textview = Gtk::manage(new TextViewGlom(glom_type));
+        DataWidgetChildren::TextView* textview = Gtk::manage(new DataWidgetChildren::TextView(glom_type));
         pFieldWidget = textview;
       }
       else  //TYPE_DATE, TYPE_NUMBER, etc.
       {
-        EntryGlom* entry = Gtk::manage(new EntryGlom(glom_type));
+        DataWidgetChildren::Entry* entry = Gtk::manage(new DataWidgetChildren::Entry(glom_type));
         pFieldWidget = entry;
       }
 
@@ -697,7 +697,7 @@ void DataWidget::on_button_choose_date()
   } 
 #endif
 
-  Dialog_ChooseDate* dialog = 0;
+  DataWidgetChildren::Dialog_ChooseDate* dialog = 0;
   refXml->get_widget_derived("dialog_choose_date", dialog);
 
   if(dialog)
@@ -756,7 +756,7 @@ bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)
   }
 #endif
 
-  Dialog_ChooseID* dialog = 0;
+  DataWidgetChildren::Dialog_ChooseID* dialog = 0;
   refXml->get_widget_derived("dialog_find_id", dialog);
 
   if(dialog)
@@ -797,6 +797,5 @@ bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)
 
   return result;
 }
-
 
 } //namespace Glom

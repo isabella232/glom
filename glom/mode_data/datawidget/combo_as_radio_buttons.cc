@@ -32,6 +32,9 @@
 namespace Glom
 {
 
+namespace DataWidgetChildren
+{
+
 ComboAsRadioButtons::ComboAsRadioButtons()
 : ComboChoices()
 {
@@ -299,4 +302,5 @@ void ComboAsRadioButtons::set_read_only(bool /* read_only */)
   //TODO
 }
 
+} //namespace DataWidetChildren
 } //namespace Glom

@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "labelglom.h"
+#include "label.h"
 #include <gtkmm/messagedialog.h>
 #include <glom/application.h>
 #include <glibmm/i18n.h>
@@ -30,28 +30,31 @@
 namespace Glom
 {
 
-LabelGlom::LabelGlom()
+namespace DataWidgetChildren
+{
+
+Label::Label()
 {
   init();
 }
 
-LabelGlom::LabelGlom(const Glib::ustring& label, bool mnemonic)
+Label::Label(const Glib::ustring& label, bool mnemonic)
 : m_label(label, mnemonic)
 {
   init();
 }
 
-LabelGlom::LabelGlom(const Glib::ustring& label, float xalign, float yalign, bool mnemonic)
+Label::Label(const Glib::ustring& label, float xalign, float yalign, bool mnemonic)
 : m_label(label, xalign, yalign, mnemonic)
 {
   init();
 }
 
-LabelGlom::~LabelGlom()
+Label::~Label()
 {
 }
 
-void LabelGlom::init()
+void Label::init()
 {
   add(m_label);
   m_label.show();
@@ -60,7 +63,7 @@ void LabelGlom::init()
   //but we also want to allow changing of the background color, so we don't use it: set_visible_window(false);
 }
 
-Application* LabelGlom::get_application()
+Application* Label::get_application()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
@@ -69,7 +72,7 @@ Application* LabelGlom::get_application()
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void LabelGlom::on_menu_properties_activate()
+void Label::on_menu_properties_activate()
 {
   sharedptr<LayoutItem_Text> textobject = sharedptr<LayoutItem_Text>::cast_dynamic(m_pLayoutItem);
   if(!textobject)
@@ -103,7 +106,7 @@ void LabelGlom::on_menu_properties_activate()
   }
 }
 
-bool LabelGlom::on_button_press_event(GdkEventButton *event)
+bool Label::on_button_press_event(GdkEventButton *event)
 {
   Application* pApp = get_application();
   if(pApp && pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
@@ -122,9 +125,10 @@ bool LabelGlom::on_button_press_event(GdkEventButton *event)
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-Gtk::Label* LabelGlom::get_label()
+Gtk::Label* Label::get_label()
 {
   return &m_label;
 }
 
+} //namespace DataWidetChildren
 } //namespace Glom

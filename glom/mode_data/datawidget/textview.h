@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_UTILITY_WIDGETS_ENTRY_GLOM_H
-#define GLOM_UTILITY_WIDGETS_ENTRY_GLOM_H
+#ifndef GLOM_UTILITY_WIDGETS_TEXTVIEW_GLOM_H
+#define GLOM_UTILITY_WIDGETS_TEXTVIEW_GLOM_H
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
@@ -29,7 +29,7 @@
 #include <gtkmm/builder.h>
 
 #ifdef GLOM_ENABLE_MAEMO
-#include <hildonmm/entry.h>
+#include <hildonmm/text-view.h>
 #endif
 
 namespace Glom
@@ -37,22 +37,17 @@ namespace Glom
 
 class Application;
 
+namespace DataWidgetChildren
+{
 
-class EntryGlom
-:
-#ifdef GLOM_ENABLE_MAEMO
-  public Hildon::Entry,
-#else
-  public Gtk::Entry,
-#endif
+class TextView
+: public Gtk::ScrolledWindow,
   public LayoutWidgetField
 {
 public:
-  explicit EntryGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  explicit EntryGlom(Field::glom_field_type glom_type = Field::TYPE_TEXT);
-  virtual ~EntryGlom();
-
-  virtual void set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name);
+  explicit TextView(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
+  explicit TextView(Field::glom_field_type glom_type = Field::TYPE_TEXT);
+  virtual ~TextView();
 
   void set_glom_type(Field::glom_field_type glom_type);
 
@@ -66,23 +61,28 @@ public:
 
   virtual Gnome::Gda::Value get_value() const;
 
-  virtual void set_read_only(bool read_only = true);
+#ifdef GLOM_ENABLE_MAEMO
+  typedef Hildon::TextView type_text_view;
+#else
+  typedef Gtk::TextView type_text_view;
+#endif
+  
+  type_text_view* get_textview();
 
 private:
   void init();
 
   //Overrides of default signal handlers:
-  //Note that these don't override anything when GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
-  //is not defined. These are normal signal handlers then.
-  virtual void on_changed(); //From Gtk::Entry.
-  virtual void on_activate(); //From Gtk::Entry.
-  virtual bool on_focus_out_event(GdkEventFocus* event); //From Gtk::Widget
+  virtual void on_buffer_changed();
+  //virtual void on_activate(); //From Gtk::Entry.
+  virtual bool on_textview_focus_out_event(GdkEventFocus* event); //From Gtk::Widget
+  //virtual void on_insert_text(const Glib::ustring& text, int* position); //From Gtk::Editable
 
   virtual void check_for_change();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual bool on_button_press_event(GdkEventButton *event); //override
-#endif // !GLOM_ENABLE_CLIENT_ONLY
+#endif
 
   virtual Application* get_application();
 
@@ -90,9 +90,12 @@ private:
   Field::glom_field_type m_glom_type; //Store the type so we can validate the text accordingly.
 
   //Gnome::Gda::Value m_value; //The last-stored value. We have this because the displayed value might be unparseable.
+
+  type_text_view m_TextView;
 };
 
+} //namespace DataWidetChildren
 } //namespace Glom
 
-#endif //GLOM_UTILITY_WIDGETS_ENTRY_GLOM_H
+#endif //GLOM_UTILITY_WIDGETS_TEXTVIEW_GLOM_H
 

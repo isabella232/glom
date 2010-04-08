@@ -31,6 +31,9 @@
 namespace Glom
 {
 
+namespace DataWidgetChildren
+{
+
 ComboChoices::ComboChoices()
 : m_with_second(false)
 {
@@ -52,5 +55,5 @@ ComboChoices::~ComboChoices()
 {
 }
 
-
+} //namespace DataWidetChildren
 } //namespace Glom

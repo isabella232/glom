@@ -30,6 +30,9 @@ namespace Glom
 
 class Application;
 
+namespace DataWidgetChildren
+{
+
 /** A set of radio buttons, with an API similar to a ComboBox with restricted values.
  * Use this only when the user should only be allowed to enter values that are in the choices.
  */
@@ -89,6 +92,7 @@ private:
   type_map_buttons m_map_buttons;
 };
 
+} //namespace DataWidetChildren
 } //namespace Glom
 
 #endif //GLOM_UTILITY_WIDGETS_COMBOENTRY_GLOM_H

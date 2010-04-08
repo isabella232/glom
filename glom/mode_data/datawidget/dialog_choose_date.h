@@ -30,6 +30,9 @@
 namespace Glom
 {
 
+namespace DataWidgetChildren
+{
+
 class Dialog_ChooseDate
   : public Gtk::Dialog
 {
@@ -47,6 +50,7 @@ private:
   Gtk::Calendar* m_calendar;
 };
 
+} //namespace DataWidetChildren
 } //namespace Glom
 
 #endif //GLOM_MODE_DATA_DIALOG_CHOOSE_DATE_H
