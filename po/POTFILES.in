@@ -115,12 +115,12 @@ glom/mode_design/translation/combobox_locale.cc
 glom/mode_design/translation/dialog_change_language.cc
 glom/mode_design/translation/window_translations.cc
 glom/utility_widgets/adddel/adddel.cc
-glom/utility_widgets/comboentryglom.cc
-glom/utility_widgets/datawidget.cc
+glom/mode_data/datawidget/comboentry.cc
+glom/mode_data/datawidget/datawidget.cc
 glom/utility_widgets/db_adddel/db_adddel.cc
-glom/utility_widgets/dialog_choose_id.cc
+glom/mode_data/datawidget/dialog_choose_id.cc
 glom/utility_widgets/dialog_image_progress.cc
-glom/utility_widgets/entryglom.cc
+glom/mode_data/datawidget/entry.cc
 glom/utility_widgets/filechooserdialog_saveextras.cc
 glom/utility_widgets/imageglom.cc
 glom/utility_widgets/layouttoolbar.cc
