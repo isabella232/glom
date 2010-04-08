@@ -25,7 +25,7 @@ namespace Glom
 {
 
 DbAddDel_WithButtons::DbAddDel_WithButtons()
-: m_HBox(Gtk::BUTTONBOX_END),
+: m_ButtonBox(Gtk::BUTTONBOX_END),
 #ifndef GLOM_ENABLE_MAEMO
   m_Button_Del(Gtk::Stock::DELETE),
   m_Button_Edit(Gtk::Stock::OPEN),
@@ -34,24 +34,24 @@ DbAddDel_WithButtons::DbAddDel_WithButtons()
   m_Button_Add(Gtk::Hildon::SIZE_FINGER_HEIGHT, Hildon::BUTTON_ARRANGEMENT_HORIZONTAL)
 #endif
 {
-  m_HBox.set_spacing(Utils::DEFAULT_SPACING_SMALL);
+  m_ButtonBox.set_spacing(Utils::DEFAULT_SPACING_SMALL);
 
   setup_buttons();
-  pack_start(m_HBox, Gtk::PACK_SHRINK);
+  pack_start(m_ButtonBox, Gtk::PACK_SHRINK);
 
   //Link buttons to handlers:
     
   #ifndef GLOM_ENABLE_MAEMO
   m_Button_Add.signal_clicked().connect(sigc::mem_fun(*this, &DbAddDel_WithButtons::on_button_add));
-  m_HBox.pack_end(m_Button_Add, Gtk::PACK_SHRINK);
+  m_ButtonBox.pack_end(m_Button_Add, Gtk::PACK_SHRINK);
  
   m_Button_Del.signal_clicked().connect(sigc::mem_fun(*this, &DbAddDel_WithButtons::on_button_del));
   m_Button_Edit.signal_clicked().connect(sigc::mem_fun(*this, &DbAddDel_WithButtons::on_button_edit));
 
-  m_HBox.pack_end(m_Button_Del, Gtk::PACK_SHRINK);
-  m_HBox.pack_end(m_Button_Edit, Gtk::PACK_SHRINK);
+  m_ButtonBox.pack_end(m_Button_Del, Gtk::PACK_SHRINK);
+  m_ButtonBox.pack_end(m_Button_Edit, Gtk::PACK_SHRINK);
   #else
-  m_HBox.hide();
+  m_ButtonBox.hide();
   #endif //GLOM_ENABLE_MAEMO
 
   #ifdef GLOM_ENABLE_MAEMO
@@ -133,7 +133,7 @@ void DbAddDel_WithButtons::setup_buttons()
   m_Button_Del.set_property("visible", allow_del);
   #endif //GLOM_ENABLE_MAEMO
   
-  m_HBox.show();
+  m_ButtonBox.show();
 }
 
 // TODO_maemo: Why is this show_all_vfunc, and not on_show()? Where is the

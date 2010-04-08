@@ -42,6 +42,16 @@
 
 2010-04-08  Daniel Borgmann  <danielb@openismus.com>
 
+	Use button box for adddel widgets.
+
+	* glom/utility_widgets/adddel/adddel_withbuttons.cc:
+	* glom/utility_widgets/adddel/adddel_withbuttons.h:
+	* glom/utility_widgets/db_adddel/db_adddel_withbuttons.cc:
+	* glom/utility_widgets/db_adddel/db_adddel_withbuttons.h:
+	Use ButtonBox instead of HBox.
+
+2010-04-08  Daniel Borgmann  <danielb@openismus.com>
+
 	Use button box for listview buttons.
 
 	* glom/utility_widgets/db_adddel/db_adddel_withbuttons.cc:

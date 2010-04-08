@@ -27,7 +27,7 @@ namespace Glom
 {
 
 AddDel_WithButtons::AddDel_WithButtons()
-: m_HBox(false, Utils::DEFAULT_SPACING_SMALL),
+: m_ButtonBox(Gtk::BUTTONBOX_END),
   m_Button_Add(Gtk::Stock::ADD),
   m_Button_Del(Gtk::Stock::DELETE),
   m_Button_Edit(Gtk::Stock::OPEN)
@@ -37,7 +37,7 @@ AddDel_WithButtons::AddDel_WithButtons()
 
 AddDel_WithButtons::AddDel_WithButtons(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : AddDel(cobject, builder),
-  m_HBox(false, Utils::DEFAULT_SPACING_SMALL),
+  m_ButtonBox(Gtk::BUTTONBOX_END),
   m_Button_Add(Gtk::Stock::ADD),
   m_Button_Del(Gtk::Stock::DELETE),
   m_Button_Edit(Gtk::Stock::OPEN)
@@ -47,13 +47,13 @@ AddDel_WithButtons::AddDel_WithButtons(BaseObjectType* cobject, const Glib::RefP
 
 void AddDel_WithButtons::init()
 {
-  m_HBox.set_spacing(Utils::DEFAULT_SPACING_SMALL);
+  m_ButtonBox.set_spacing(Utils::DEFAULT_SPACING_SMALL);
   //m_Button_Add.set_border_width(Utils::DEFAULT_SPACING_SMALL);
   //m_Button_Del.set_border_width(Utils::DEFAULT_SPACING_SMALL);
   //m_Button_Edit.set_border_width(Utils::DEFAULT_SPACING_SMALL);
 
   setup_buttons();
-  pack_start(m_HBox, Gtk::PACK_SHRINK);
+  pack_start(m_ButtonBox, Gtk::PACK_SHRINK);
 
   //Link buttons to handlers:
   m_Button_Add.signal_clicked().connect(sigc::mem_fun(*this, &AddDel_WithButtons::on_button_add));
@@ -116,15 +116,15 @@ void AddDel_WithButtons::set_allow_user_actions(bool bVal)
   {
     set_allow_user_actions(false); //Remove them first (Don't want to add them twice).
 
-    //Ensure that the buttons are in the HBox.
+    //Ensure that the buttons are in the ButtonBox.
     setup_buttons();
   }
   else
   {
-    //We don't just remove m_HBox, because we want it to remain as a placeholder.
-    m_HBox.remove(m_Button_Add);
-    m_HBox.remove(m_Button_Del);
-    m_HBox.remove(m_Button_Edit);
+    //We don't just remove m_ButtonBox, because we want it to remain as a placeholder.
+    m_ButtonBox.remove(m_Button_Add);
+    m_ButtonBox.remove(m_Button_Del);
+    m_ButtonBox.remove(m_Button_Edit);
   }
 
   //Recreate popup menu with correct items:
@@ -134,15 +134,15 @@ void AddDel_WithButtons::set_allow_user_actions(bool bVal)
 void AddDel_WithButtons::setup_buttons()
 {
   //Put buttons below sheet:
-  //m_HBox.remove(m_Button_Add);
-  //m_HBox.remove(m_Button_Del);
-  //m_HBox.remove(m_Button_Edit);
+  //m_ButtonBox.remove(m_Button_Add);
+  //m_ButtonBox.remove(m_Button_Del);
+  //m_ButtonBox.remove(m_Button_Edit);
 
   if(get_allow_user_actions())
   {
-    m_HBox.pack_end(m_Button_Edit, Gtk::PACK_SHRINK);
-    m_HBox.pack_end(m_Button_Del, Gtk::PACK_SHRINK);
-    m_HBox.pack_end(m_Button_Add, Gtk::PACK_SHRINK);
+    m_ButtonBox.pack_end(m_Button_Add, Gtk::PACK_SHRINK);
+    m_ButtonBox.pack_end(m_Button_Del, Gtk::PACK_SHRINK);
+    m_ButtonBox.pack_end(m_Button_Edit, Gtk::PACK_SHRINK);
   }
 }
 
