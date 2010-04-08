@@ -85,6 +85,8 @@ int get_suitable_field_width_for_widget(Gtk::Widget& widget, const sharedptr<con
 /// Add the @a extension if no extension is there already:
 std::string get_filepath_with_extension(const std::string& filepath, const std::string& extension);
 
+Glib::RefPtr<Gdk::Pixbuf> image_scale_keeping_ratio(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf, int target_height, int target_width);
+  
 } //namespace Utils
 
 } //namespace Glom

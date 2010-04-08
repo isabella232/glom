@@ -1,5 +1,15 @@
 2010-04-08  Murray Cumming  <murrayc@murrayc.com>
 
+  ImageGlom: Move scale_keeping_ratio() somewhere more sensible.
+  
+	* glom/utility_widgets/imageglom.[h|cc]: Move scale_keeping_ratio() to 
+	glom/utils_ui.[h]cc] as Utils::image_scale_keeping_ratio().
+	* glom/utility_widgets/canvas/canvas_image_movable.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/flowtable_dnd.cc: Adapted.
+	
+2010-04-08  Murray Cumming  <murrayc@murrayc.com>
+
   glom/mode_data/datawidget/: Clean up classes, putting them in a namespace.
   
   * glom/mode_data/datawidget/: Removed Glom suffixes from class names 

@@ -24,7 +24,6 @@
 #include <glom/mode_data/placeholder-glom.h>
 #include "layouttoolbarbutton.h"
 #include <glom/mode_data/buttonglom.h>
-#include "imageglom.h"
 
 namespace Glom
 {

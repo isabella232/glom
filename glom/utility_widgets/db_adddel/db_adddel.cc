@@ -29,7 +29,7 @@
 #include <glom/utils_ui.h>
 #include "cellrenderer_buttonimage.h"
 #include "cellrenderer_buttontext.h"
-#include <glom/utility_widgets/imageglom.h> //For ImageGlom::scale_keeping_ratio().
+#include <glom/utils_ui.h> //For Utils::image_scale_keeping_ratio().
 
 #include <iostream> //For debug output.
 #include <gtk/gtktreeview.h>
@@ -2299,7 +2299,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
          
             //Scale it down to a sensible size.
             if(pixbuf)
-              pixbuf = ImageGlom::scale_keeping_ratio(pixbuf,  get_fixed_cell_height(), pixbuf->get_width());
+              pixbuf = Utils::image_scale_keeping_ratio(pixbuf,  get_fixed_cell_height(), pixbuf->get_width());
 
             g_object_set(pDerived->gobj(), "pixbuf", pixbuf ? pixbuf->gobj() : 0, (gpointer)0);
           }

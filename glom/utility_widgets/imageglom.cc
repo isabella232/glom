@@ -310,10 +310,10 @@ void ImageGlom::scale()
     {
       if(allocation.get_height() > 10 || allocation.get_width() > 10)
       {
-        Glib::RefPtr<Gdk::Pixbuf> pixbuf_scaled = scale_keeping_ratio(pixbuf, allocation.get_height(), allocation.get_width());
+        Glib::RefPtr<Gdk::Pixbuf> pixbuf_scaled = Utils::image_scale_keeping_ratio(pixbuf, allocation.get_height(), allocation.get_width());
         if(!pixbuf_scaled)
         {
-          std::cerr << "ImageGlom::scale(): scale_keeping_ratio() returned NULL pixbuf." << std::endl;
+          std::cerr << "Utils::image_scale_keeping_ratio() returned NULL pixbuf." << std::endl;
         }
         else 
         {
@@ -331,70 +331,6 @@ void ImageGlom::scale()
   }
   //else
   //  g_warning("ImageGlom::scale(): attempt to scale a null pixbuf.");
-}
-
-//static:
-Glib::RefPtr<Gdk::Pixbuf> ImageGlom::scale_keeping_ratio(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf, int target_height, int target_width)
-{
-  if( (target_height == 0) || (target_width == 0) )
-    return Glib::RefPtr<Gdk::Pixbuf>(); //This shouldn't happen anyway.
-
-  if(!pixbuf)
-    return pixbuf;
-
-  enum enum_scale_mode
-  {
-    SCALE_WIDTH,
-    SCALE_HEIGHT,
-    SCALE_NONE
-  };
-
-  enum_scale_mode scale_mode = SCALE_NONE; //Start with either the width or height, and scale the other according to the ratio.
-
-  const int pixbuf_height = pixbuf->get_height();
-  const int pixbuf_width = pixbuf->get_width();
-
-  if(pixbuf_height > target_height)
-  {
-    if(pixbuf_width > target_width)
-    {
-      //Both are bigger than the target, so find the biggest one:
-      if(pixbuf_width > pixbuf_height)
-        scale_mode = SCALE_WIDTH;
-      else
-        scale_mode = SCALE_HEIGHT;
-    }
-    else
-    {
-      //Only the height is bigger:
-      scale_mode = SCALE_HEIGHT;
-    }
-  }
-  else if(pixbuf_width > target_width)
-  {
-    //Only the height is bigger:
-    scale_mode = SCALE_WIDTH;
-  }
-
-  if(scale_mode == SCALE_NONE)
-    return pixbuf;
-  else if(scale_mode == SCALE_HEIGHT)
-  {
-    const float ratio = (float)target_height / (float)pixbuf_height; 
-    target_width = (int)((float)pixbuf_width * ratio);
-  }
-  else if(scale_mode == SCALE_WIDTH)
-  {
-    const float ratio = (float)target_width / (float) pixbuf_width;
-    target_height = (int)((float)pixbuf_height * ratio);
-  }
-
- if( (target_height == 0) || (target_width == 0) )
- {
-   return Glib::RefPtr<Gdk::Pixbuf>(); //This shouldn't happen anyway. It seems to happen sometimes though, when ratio is very small.
- }
-
-  return pixbuf->scale_simple(target_width, target_height, Gdk::INTERP_NEAREST);
 }
 
 void ImageGlom::on_menupopup_activate_select_file()

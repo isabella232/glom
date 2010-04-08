@@ -24,7 +24,7 @@
 #include "canvas_image_movable.h"
 #include <goocanvasmm/canvas.h>
 #include <gtkmm/stock.h>
-#include <glom/utility_widgets/imageglom.h> //For ImageGlom::scale_keeping_ratio().
+#include <glom/utils_ui.h> //For Utils::image_scale_keeping_ratio().
 #include <iostream>
 
 namespace Glom
@@ -205,7 +205,7 @@ void CanvasImageMovable::scale_to_size()
   
   if(width && height)
   {
-    Glib::RefPtr<Gdk::Pixbuf> pixbuf = ImageGlom::scale_keeping_ratio(m_pixbuf, (int)height, (int)width);
+    Glib::RefPtr<Gdk::Pixbuf> pixbuf = Utils::image_scale_keeping_ratio(m_pixbuf, (int)height, (int)width);
 #ifdef GLIBMM_PROPERTIES_ENABLED
     property_pixbuf() = pixbuf;
 #else
