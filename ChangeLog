@@ -1,3 +1,14 @@
+2010-04-08  Daniel Borgmann  <danielb@openismus.com>
+
+	Text and Image object Dialog adjustments.
+
+	* glom/glom_developer.glade: Various dialog layout fixes.
+	* glom/mode_design/layout/layout_item_dialogs/dialog_imageobject.cc:
+	* glom/mode_design/layout/layout_item_dialogs/dialog_imageobject.h:
+	* glom/mode_design/layout/layout_item_dialogs/dialog_textobject.cc:
+	* glom/mode_design/layout/layout_item_dialogs/dialog_textobject.h:
+	Update box variable name and add window icons.
+
 2010-04-08  David King  <davidk@openismus.com>
 
 	Update copyright information in about dialog

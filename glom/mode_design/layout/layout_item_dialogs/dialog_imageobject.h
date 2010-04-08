@@ -45,7 +45,7 @@ public:
 private:
   void on_button_choose();
 
-  Gtk::HBox* m_box_title;
+  Gtk::VBox* m_box_title;
   Gtk::Entry* m_entry_title;
   ImageGlom* m_image;
   Gtk::Button* m_button_choose_image;

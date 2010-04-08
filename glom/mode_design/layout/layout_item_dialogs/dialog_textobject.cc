@@ -35,9 +35,11 @@ Dialog_TextObject::Dialog_TextObject(BaseObjectType* cobject, const Glib::RefPtr
   m_entry_title(0),
   m_text_view(0)
 {
-  builder->get_widget("hbox_title",  m_box_title);
+  builder->get_widget("vbox_title",  m_box_title);
   builder->get_widget("entry_title",  m_entry_title);
   builder->get_widget("textview_text",  m_text_view);
+
+  set_icon_name("glom");
 
   //on_foreach_connect(*this);
 
