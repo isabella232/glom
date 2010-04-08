@@ -21,11 +21,11 @@
 #include "flowtable_dnd.h"
 #include "../mode_data/flowtablewithfields.h"
 #include <gtkmm/toolpalette.h>
-#include "placeholder-glom.h"
+#include <glom/mode_data/placeholder-glom.h>
 #include "layouttoolbarbutton.h"
-#include "entryglom.h"
-#include "labelglom.h"
-#include "buttonglom.h"
+//#include <glom/mode_data/data_widget/entryglom.h>
+//#include "labelglom.h"
+#include <glom/mode_data/buttonglom.h>
 #include "imageglom.h"
 
 namespace Glom

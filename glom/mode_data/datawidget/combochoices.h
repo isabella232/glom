@@ -23,7 +23,7 @@
 
 #include <gtkmm.h>
 #include <libglom/data_structure/field.h>
-#include "layoutwidgetfield.h"
+#include <glom/utility_widgets/layoutwidgetfield.h>
 
 namespace Glom
 {

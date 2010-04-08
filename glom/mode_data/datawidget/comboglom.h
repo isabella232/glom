@@ -1,6 +1,6 @@
 /* Glom
  *
- * Copyright (C) 2010 Murray Cumming
+ * Copyright (C) 2001-2004 Murray Cumming
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -18,38 +18,44 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_UTILITY_WIDGETS_COMBO_AS_RADIO_BUTTONS_H
-#define GLOM_UTILITY_WIDGETS_COMBO_AS_RADIO_BUTTONS_H
+#ifndef GLOM_UTILITY_WIDGETS_COMBO_GLOM_H
+#define GLOM_UTILITY_WIDGETS_COMBO_GLOM_H
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
-#include <glom/utility_widgets/combochoices.h>
+#include <glom/mode_data/datawidget/combochoiceswithtreemodel.h>
+
+#ifdef GLOM_ENABLE_MAEMO
+#include <hildonmm/picker-button.h>
+#include <hildonmm/touch-selector-entry.h>
+#endif //GLOM_ENABLE_MAEMO
 
 namespace Glom
 {
 
 class Application;
 
-/** A set of radio buttons, with an API similar to a ComboBox with restricted values.
- * Use this only when the user should only be allowed to enter values that are in the choices.
+/** A Gtk::ComboBox that can show choices of field values.
+ * Use this when the user should only be allowed to enter values that are in the choices.
  */
-class ComboAsRadioButtons
+class ComboGlom
 : 
-  public Gtk::VBox,
-  public ComboChoices
+#ifndef GLOM_ENABLE_MAEMO
+  public Gtk::ComboBox,
+#else
+  public Hildon::PickerButton,
+#endif
+  public ComboChoicesWithTreeModel
 {
 public:
 
   ///You must call set_layout_item() to specify the field type and formatting of the main column.
-  ComboAsRadioButtons();
+  ComboGlom();
 
   ///You must call set_layout_item() to specify the field type and formatting of the main column.
-  explicit ComboAsRadioButtons(const sharedptr<LayoutItem_Field>& field_second);
+  explicit ComboGlom(const sharedptr<LayoutItem_Field>& field_second);
 
-  virtual ~ComboAsRadioButtons();
-  
-  virtual void set_choices(const FieldFormatting::type_list_values& list_values);
-  virtual void set_choices_with_second(const type_list_values_with_second& list_values);
+  virtual ~ComboGlom();
 
   virtual void set_read_only(bool read_only = true);
 
@@ -69,24 +75,29 @@ public:
 private:
   void init();
 
-  void on_radiobutton_toggled();
+  #ifndef GLOM_ENABLE_MAEMO
+  // Note that this is a normal signal handler when glibmm was complied
+  // without default signal handlers
+  virtual void on_changed(); //From Gtk::ComboBox
+  #else
+  void on_changed(int column);
+  #endif //GLOM_ENABLE_MAEMO
 
-  void check_for_change();
-
+  virtual void check_for_change();
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual bool on_button_press_event(GdkEventButton *event);
-  virtual bool on_radiobutton_button_press_event(GdkEventButton *event);
-  void show_context_menu(GdkEventButton *event);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   virtual Application* get_application();
 
 
   Glib::ustring m_old_text;
-
-  typedef std::map<Glib::ustring, Gtk::RadioButton*> type_map_buttons;
-  type_map_buttons m_map_buttons;
+  //Gnome::Gda::Value m_value; //The last-stored value. We have this because the displayed value might be unparseable.
+  
+  #ifdef GLOM_ENABLE_MAEMO
+  Hildon::TouchSelector m_maemo_selector;
+  #endif
 };
 
 } //namespace Glom

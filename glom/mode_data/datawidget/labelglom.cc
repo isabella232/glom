@@ -18,41 +18,49 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <glom/utility_widgets/buttonglom.h>
+#include "labelglom.h"
 #include <gtkmm/messagedialog.h>
 #include <glom/application.h>
-#include <glom/glade_utils.h>
-#include <glom/utils_ui.h>
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-#include <glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.h>
-#endif
 #include <glibmm/i18n.h>
+#include <glom/mode_design/layout/layout_item_dialogs/dialog_textobject.h>
+#include <glom/glade_utils.h>
+#include <glom/mode_data/flowtablewithfields.h>
 //#include <sstream> //For stringstream
 
 namespace Glom
 {
 
-ButtonGlom::ButtonGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& /* builder */)
-: Gtk::Button(cobject)
+LabelGlom::LabelGlom()
 {
   init();
 }
 
-ButtonGlom::ButtonGlom()
+LabelGlom::LabelGlom(const Glib::ustring& label, bool mnemonic)
+: m_label(label, mnemonic)
 {
   init();
 }
 
-ButtonGlom::~ButtonGlom()
+LabelGlom::LabelGlom(const Glib::ustring& label, float xalign, float yalign, bool mnemonic)
+: m_label(label, xalign, yalign, mnemonic)
+{
+  init();
+}
+
+LabelGlom::~LabelGlom()
 {
 }
 
-void ButtonGlom::init()
+void LabelGlom::init()
 {
-
+  add(m_label);
+  m_label.show();
+  set_events(Gdk::ALL_EVENTS_MASK);
+  //This would be more efficient if we were only using the (base) EventBox to get events, 
+  //but we also want to allow changing of the background color, so we don't use it: set_visible_window(false);
 }
 
-Application* ButtonGlom::get_application()
+Application* LabelGlom::get_application()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
@@ -61,27 +69,30 @@ Application* ButtonGlom::get_application()
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-void ButtonGlom::on_menu_properties_activate()
+void LabelGlom::on_menu_properties_activate()
 {
+  sharedptr<LayoutItem_Text> textobject = sharedptr<LayoutItem_Text>::cast_dynamic(m_pLayoutItem);
+  if(!textobject)
+    return;
+
   try
   {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_button_script");
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_textobject");
 
-    Dialog_ButtonScript* dialog = 0;
-    refXml->get_widget_derived("window_button_script", dialog);
+    Dialog_TextObject* dialog = 0;
+    refXml->get_widget_derived("window_textobject", dialog);
 
     if(dialog)
     {
-      sharedptr<LayoutItem_Button> layout_item = 
-        sharedptr<LayoutItem_Button>::cast_dynamic(get_layout_item());
-      dialog->set_script(layout_item, m_table_name);
-      int response = Glom::Utils::dialog_run_with_help(dialog, "window_button_script");
+      dialog->set_textobject(textobject, m_table_name);
+      const int response = dialog->run();
       dialog->hide();
       if(response == Gtk::RESPONSE_OK)
       {
-        dialog->get_script(layout_item);
-        signal_layout_changed().emit();
+        //Get the chosen relationship:
+        dialog->get_textobject(textobject);
       }
+      signal_layout_changed().emit();
 
       delete dialog;
     }
@@ -92,7 +103,7 @@ void ButtonGlom::on_menu_properties_activate()
   }
 }
 
-bool ButtonGlom::on_button_press_event(GdkEventButton *event)
+bool LabelGlom::on_button_press_event(GdkEventButton *event)
 {
   Application* pApp = get_application();
   if(pApp && pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
@@ -106,8 +117,14 @@ bool ButtonGlom::on_button_press_event(GdkEventButton *event)
       return true; //We handled this event.
     }
   }
-  return Gtk::Button::on_button_press_event(event);
+
+  return Gtk::EventBox::on_button_press_event(event);
 }
-#endif
+#endif // !GLOM_ENABLE_CLIENT_ONLY
+
+Gtk::Label* LabelGlom::get_label()
+{
+  return &m_label;
+}
 
 } //namespace Glom

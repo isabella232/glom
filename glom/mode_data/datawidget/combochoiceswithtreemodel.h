@@ -21,7 +21,7 @@
 #ifndef GLOM_UTILITY_WIDGETS_COMBO_CHOICES_WITH_TREE_MODEL_H
 #define GLOM_UTILITY_WIDGETS_COMBO_CHOICES_WITH_TREE_MODEL_H
 
-#include <glom/utility_widgets/combochoices.h>
+#include <glom/mode_data/datawidget/combochoices.h>
 
 namespace Glom
 {

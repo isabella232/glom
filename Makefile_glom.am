@@ -96,10 +96,38 @@ glom_glom_SOURCES =							\
 	glom/mode_data/box_data_manyrecords.h				\
 	glom/mode_data/box_data_portal.cc				\
 	glom/mode_data/box_data_portal.h				\
+	glom/mode_data/buttonglom.cc				\
+	glom/mode_data/buttonglom.h				\
 	glom/mode_data/flowtablewithfields.cc				\
 	glom/mode_data/flowtablewithfields.h				\
 	glom/mode_data/notebook_data.cc					\
 	glom/mode_data/notebook_data.h					\
+	glom/mode_data/placeholder-glom.cc			\
+	glom/mode_data/placeholder-glom.h				\
+	glom/mode_data/datawidget/datawidget.cc				\
+	glom/mode_data/datawidget/datawidget.h				\
+	glom/mode_data/datawidget/checkglom.cc				\
+	glom/mode_data/datawidget/checkglom.h				\
+	glom/mode_data/datawidget/entryglom.cc				\
+	glom/mode_data/datawidget/entryglom.h				\
+	glom/mode_data/datawidget/labelglom.cc				\
+	glom/mode_data/datawidget/labelglom.h				\
+	glom/mode_data/datawidget/textviewglom.cc				\
+	glom/mode_data/datawidget/textviewglom.h				\
+	glom/mode_data/datawidget/dialog_choose_date.cc			\
+	glom/mode_data/datawidget/dialog_choose_date.h			\
+	glom/mode_data/datawidget/dialog_choose_id.cc			\
+	glom/mode_data/datawidget/dialog_choose_id.h				\
+	glom/mode_data/datawidget/comboentryglom.cc				\
+	glom/mode_data/datawidget/comboentryglom.h				\
+	glom/mode_data/datawidget/comboglom.cc				\
+	glom/mode_data/datawidget/comboglom.h				\
+	glom/mode_data/datawidget/combochoices.cc			\
+	glom/mode_data/datawidget/combochoices.h			\
+	glom/mode_data/datawidget/combochoiceswithtreemodel.cc			\
+	glom/mode_data/datawidget/combochoiceswithtreemodel.h			\
+	glom/mode_data/datawidget/combo_as_radio_buttons.cc			\
+	glom/mode_data/datawidget/combo_as_radio_buttons.h			\
 	glom/mode_find/box_data_details_find.cc				\
 	glom/mode_find/box_data_details_find.h				\
 	glom/mode_find/box_data_list_find.cc				\
@@ -114,44 +142,18 @@ glom_glom_SOURCES =							\
 	glom/python_embed/glom_python.h					\
 	glom/python_embed/python_ui_callbacks.cc				\
 	glom/python_embed/python_ui_callbacks.h					\
-	glom/utility_widgets/alignment_justified.cc			\
-	glom/utility_widgets/alignment_justified.h			\
-	glom/utility_widgets/buttonglom.cc				\
-	glom/utility_widgets/buttonglom.h				\
-	glom/utility_widgets/checkglom.cc				\
-	glom/utility_widgets/checkglom.h				\
 	glom/utility_widgets/combo_textglade.cc				\
 	glom/utility_widgets/combo_textglade.h				\
-	glom/utility_widgets/comboentryglom.cc				\
-	glom/utility_widgets/comboentryglom.h				\
-	glom/utility_widgets/comboglom.cc				\
-	glom/utility_widgets/comboglom.h				\
-	glom/utility_widgets/combochoices.cc			\
-	glom/utility_widgets/combochoices.h			\
-	glom/utility_widgets/combochoiceswithtreemodel.cc			\
-	glom/utility_widgets/combochoiceswithtreemodel.h			\
-	glom/utility_widgets/combo_as_radio_buttons.cc			\
-	glom/utility_widgets/combo_as_radio_buttons.h			\
-	glom/utility_widgets/datawidget.cc				\
-	glom/utility_widgets/datawidget.h				\
-	glom/utility_widgets/dialog_choose_date.cc			\
-	glom/utility_widgets/dialog_choose_date.h			\
-	glom/utility_widgets/dialog_choose_id.cc			\
-	glom/utility_widgets/dialog_choose_id.h				\
 	glom/utility_widgets/dialog_flowtable.cc			\
 	glom/utility_widgets/dialog_flowtable.h				\
 	glom/utility_widgets/dialog_image_progress.cc			\
 	glom/utility_widgets/dialog_image_progress.h			\
 	glom/utility_widgets/dialog_properties.cc			\
 	glom/utility_widgets/dialog_properties.h			\
-	glom/utility_widgets/entryglom.cc				\
-	glom/utility_widgets/entryglom.h				\
 	glom/utility_widgets/flowtable.cc				\
 	glom/utility_widgets/flowtable.h				\
 	glom/utility_widgets/imageglom.cc				\
 	glom/utility_widgets/imageglom.h				\
-	glom/utility_widgets/labelglom.cc				\
-	glom/utility_widgets/labelglom.h				\
 	glom/utility_widgets/layoutwidgetbase.cc			\
 	glom/utility_widgets/layoutwidgetbase.h				\
 	glom/utility_widgets/layoutwidgetfield.cc			\
@@ -162,14 +164,8 @@ glom_glom_SOURCES =							\
 	glom/utility_widgets/layoutwidgetutils.h			\
 	glom/utility_widgets/notebookglom.cc				\
 	glom/utility_widgets/notebookglom.h				\
-	glom/utility_widgets/placeholder-glom.cc			\
-	glom/utility_widgets/placeholder-glom.h				\
 	glom/utility_widgets/placeholder.cc				\
 	glom/utility_widgets/placeholder.h				\
-	glom/utility_widgets/table_columns.cc				\
-	glom/utility_widgets/table_columns.h				\
-	glom/utility_widgets/textviewglom.cc				\
-	glom/utility_widgets/textviewglom.h				\
 	glom/utility_widgets/adddel/adddel.cc				\
 	glom/utility_widgets/adddel/adddel.h				\
 	glom/utility_widgets/adddel/adddel_withbuttons.cc		\

@@ -19,14 +19,14 @@
  */
 
 #include "flowtablewithfields.h"
-#include <glom/utility_widgets/datawidget.h>
-#include <glom/utility_widgets/buttonglom.h>
+#include <glom/mode_data/datawidget/datawidget.h>
+#include <glom/mode_data/buttonglom.h>
 #include <glom/utility_widgets/notebookglom.h>
 #include <glom/utility_widgets/notebooklabelglom.h>
 #include <glom/utility_widgets/imageglom.h>
-#include <glom/utility_widgets/labelglom.h>
+#include <glom/mode_data/datawidget/labelglom.h>
 #include <glom/utility_widgets/dialog_flowtable.h>
-#include <glom/utility_widgets/placeholder-glom.h>
+#include <glom/mode_data/placeholder-glom.h>
 #include <glom/application.h>
 #include <gtkmm/checkbutton.h>
 #include <libglom/data_structure/glomconversions.h>

@@ -21,7 +21,7 @@
 #include "comboentryglom.h"
 #include <libglom/data_structure/glomconversions.h>
 #include <gtkmm/messagedialog.h>
-#include "../dialog_invalid_data.h"
+#include <glom/dialog_invalid_data.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/application.h>
 #include <glibmm/i18n.h>

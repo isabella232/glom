@@ -1,3 +1,27 @@
+2010-04-08  Murray Cumming  <murrayc@murrayc.com>
+
+  Cleaned glom/utility_widgets/ a little.
+  
+  * glom/utility_widgets/datawidget.[h|cc]: Moved to glom/mode_data/datawidget/
+  because it is only used by the data-mode flowtable.
+	* glom/utility_widgets/buttonglom.[h|cc]
+	* glom/utility_widgets/checkglom.[h|cc] 
+	* glom/utility_widgets/combo_as_radio_buttons.[h|cc] 
+	* glom/utility_widgets/combochoices.[h|cc] 
+	* glom/utility_widgets/combochoiceswithtreemodel.[h|cc] 
+	* glom/utility_widgets/comboentryglom.c[h|cc] 
+	* glom/utility_widgets/comboglom.[h|cc] 
+	* glom/utility_widgets/dialog_choose_date.[h|cc] 
+	* glom/utility_widgets/dialog_choose_id.[h|cc] 
+	* glom/utility_widgets/entryglom.[h|cc] 
+	* glom/utility_widgets/labelglom.[h|cc] 
+	* glom/utility_widgets/textviewglom.[h|cc] 
+	* glom/utility_widgets/placeholder-glom.[h|cc]: Also move these to 
+  glom/mode_data/datawidget because they are only used by DataWidget. 
+	* glom/utility_widgets/alignment_justified.[h|cc]:
+	* glom/utility_widgets/table_columns.[h|cc]: Deleted these unused classes.
+  * Makefile_glom.am: Adapted.
+
 2010-04-08  Daniel Borgmann  <danielb@openismus.com>
 
 	Text and Image object Dialog adjustments.

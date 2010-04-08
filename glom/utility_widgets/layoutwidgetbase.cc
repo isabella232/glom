@@ -21,8 +21,8 @@
 #include "layoutwidgetbase.h"
 #include <glibmm/i18n.h>
 #include <glom/application.h>
-#include <glom/utility_widgets/textviewglom.h>
-#include <glom/utility_widgets/labelglom.h>
+#include <glom/mode_data/datawidget/textviewglom.h>
+#include <glom/mode_data/datawidget/labelglom.h>
 
 namespace Glom
 {

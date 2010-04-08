@@ -24,8 +24,8 @@
 #include <gtkmm/dialog.h>
 #include <libglom/document/document.h>
 #include <glom/base_db.h>
-#include "../mode_find/box_data_details_find.h"
-#include "../mode_data/box_data_list.h"
+#include <glom/mode_find/box_data_details_find.h>
+#include <glom/mode_data/box_data_list.h>
 
 namespace Glom
 {

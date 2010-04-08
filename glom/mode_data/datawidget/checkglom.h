@@ -1,6 +1,6 @@
 /* Glom
  *
- * Copyright (C) 2001-2004 Murray Cumming
+ * Copyright (C) 2008 Johannes Schmid
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -18,12 +18,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_UTILITY_WIDGETS_BUTTON_GLOM_H
-#define GLOM_UTILITY_WIDGETS_BUTTON_GLOM_H
+#ifndef GLOM_UTILITY_WIDGETS_CHECK_GLOM_H
+#define GLOM_UTILITY_WIDGETS_CHECK_GLOM_H
+
+#include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
 #include <gtkmm.h>
-#include "layoutwidgetutils.h"
-#include <libglom/data_structure/layout/layoutitem_button.h>
+#include <libglom/data_structure/field.h>
+#include <glom/utility_widgets/layoutwidgetfield.h>
 #include <gtkmm/builder.h>
 
 namespace Glom
@@ -31,26 +33,28 @@ namespace Glom
 
 class Application;
 
-class ButtonGlom
-: public Gtk::Button,
-  public LayoutWidgetUtils
+class CheckGlom
+: public Gtk::CheckButton,
+  public LayoutWidgetField
 {
 public:
-  explicit ButtonGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  ButtonGlom();
-  virtual ~ButtonGlom();
+  explicit CheckGlom(const Glib::ustring& title);
+  virtual ~CheckGlom();
+
+  virtual void set_value(const Gnome::Gda::Value& value);
+  virtual Gnome::Gda::Value get_value() const;    
 
 private:
   void init();
 
-  virtual Application* get_application();
-#ifndef GLOM_ENABLE_CLIENT_ONLY    
-  virtual void on_menu_properties_activate();
-  virtual bool on_button_press_event(GdkEventButton *event);
+#ifndef GLOM_ENABLE_CLIENT_ONLY
+  virtual bool on_button_press_event(GdkEventButton *event); //override
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+
+  virtual Application* get_application();
 };
 
 } //namespace Glom
 
-#endif //GLOM_UTILITY_WIDGETS_BUTTON_GLOM_H
+#endif //GLOM_UTILITY_WIDGETS_CHECK_GLOM_H
 

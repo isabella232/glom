@@ -18,44 +18,35 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "alignment_justified.h"
+#ifndef GLOM_MODE_DATA_DIALOG_CHOOSE_DATE_H
+#define GLOM_MODE_DATA_DIALOG_CHOOSE_DATE_H
+
+#include <gtkmm/dialog.h>
+#include <libglom/document/document.h>
+#include <glom/base_db.h>
+//#include <glom/mode_find/box_data_details_find.h>
+#include <glom/mode_data/box_data_list.h>
 
 namespace Glom
 {
 
-Alignment_Justified::Alignment_Justified()
+class Dialog_ChooseDate
+  : public Gtk::Dialog
 {
-  set_border_width(2); //Useful default.
-}
+public:
+  Dialog_ChooseDate();
+  Dialog_ChooseDate(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
+  virtual ~Dialog_ChooseDate();
 
-Alignment_Justified::~Alignment_Justified()
-{
-}
+  void set_date_chosen(const Gnome::Gda::Value& value);
+  Gnome::Gda::Value get_date_chosen() const;
 
-void Alignment_Justified::set_justification(Gtk::Justification justification)
-{
-  switch(justification)
-  {
-    case(Gtk::JUSTIFY_LEFT):
-    {
-      set(Gtk::JUSTIFY_LEFT, Gtk::JUSTIFY_CENTER, 0.0);
-      break;
-    }
-    case(Gtk::JUSTIFY_RIGHT):
-    {
-      set(Gtk::JUSTIFY_RIGHT, Gtk::JUSTIFY_CENTER, 0.0);
-      break;
-    }
-    case(Gtk::JUSTIFY_CENTER):
-    {
-      set();
-      break;
-    }
-    default:
-    {
-      break;
-    }
-  }
-}
+private:
+  void on_day_selected_double_click();
+
+  Gtk::Calendar* m_calendar;
+};
 
 } //namespace Glom
+
+#endif //GLOM_MODE_DATA_DIALOG_CHOOSE_DATE_H

@@ -18,25 +18,39 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef ALIGNMENT_JUSTIFIED_H
-#define ALIGNMENT_JUSTIFIED_H
+#ifndef GLOM_UTILITY_WIDGETS_BUTTON_GLOM_H
+#define GLOM_UTILITY_WIDGETS_BUTTON_GLOM_H
 
-#include <gtkmm/alignment.h>
+#include <gtkmm.h>
+#include <glom/utility_widgets/layoutwidgetutils.h>
+#include <libglom/data_structure/layout/layoutitem_button.h>
+#include <gtkmm/builder.h>
 
 namespace Glom
 {
 
-//A Gtk::Alignment with a simpler interface.
-class Alignment_Justified : public Gtk::Alignment
+class Application;
+
+class ButtonGlom
+: public Gtk::Button,
+  public LayoutWidgetUtils
 {
-public: 
-  Alignment_Justified();
-  virtual ~Alignment_Justified();
-  
-  void set_justification(Gtk::Justification justification);
-  
+public:
+  explicit ButtonGlom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
+  ButtonGlom();
+  virtual ~ButtonGlom();
+
+private:
+  void init();
+
+  virtual Application* get_application();
+#ifndef GLOM_ENABLE_CLIENT_ONLY    
+  virtual void on_menu_properties_activate();
+  virtual bool on_button_press_event(GdkEventButton *event);
+#endif // !GLOM_ENABLE_CLIENT_ONLY
 };
 
 } //namespace Glom
 
-#endif
+#endif //GLOM_UTILITY_WIDGETS_BUTTON_GLOM_H
+

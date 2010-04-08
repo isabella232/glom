@@ -23,8 +23,8 @@
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
-#include "placeholder.h"
-#include "layoutwidgetmenu.h"
+#include <glom/utility_widgets/placeholder.h>
+#include <glom/utility_widgets/layoutwidgetmenu.h>
 #include <gtkmm/label.h>
 #include <libglom/data_structure/field.h>
 #include <libglom/document/view.h>
