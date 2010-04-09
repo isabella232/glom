@@ -2653,6 +2653,7 @@ Glom could not create the new database. Maybe you do not have the necessary acce
         <child>
           <object class="GtkVBox" id="vbox40">
             <property name="visible">True</property>
+            <property name="border_width">6</property>
             <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
@@ -2661,6 +2662,7 @@ Glom could not create the new database. Maybe you do not have the necessary acce
             <child>
               <object class="GtkHBox" id="hbox35">
                 <property name="visible">True</property>
+                <property name="spacing">6</property>
                 <child>
                   <object class="GtkFrame" id="frame10">
                     <property name="visible">True</property>
@@ -2670,7 +2672,6 @@ Glom could not create the new database. Maybe you do not have the necessary acce
                       <object class="GtkAlignment" id="alignment29">
                         <property name="visible">True</property>
                         <property name="top_padding">6</property>
-                        <property name="left_padding">12</property>
                         <child>
                           <object class="GtkVBox" id="vbox44">
                             <property name="visible">True</property>
@@ -2828,7 +2829,6 @@ Glom could not create the new database. Maybe you do not have the necessary acce
                       <object class="GtkAlignment" id="alignment26">
                         <property name="visible">True</property>
                         <property name="top_padding">6</property>
-                        <property name="left_padding">12</property>
                         <child>
                           <object class="GtkVBox" id="vbox41">
                             <property name="visible">True</property>
@@ -2851,36 +2851,6 @@ Glom could not create the new database. Maybe you do not have the necessary acce
                               </object>
                               <packing>
                                 <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkHBox" id="hbox1">
-                                <property name="visible">True</property>
-                                <child>
-                                  <object class="GtkHButtonBox" id="hbuttonbox24">
-                                    <property name="visible">True</property>
-                                    <property name="spacing">6</property>
-                                    <property name="layout_style">start</property>
-                                  </object>
-                                  <packing>
-                                    <property name="position">0</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkHButtonBox" id="hbuttonbox25">
-                                    <property name="visible">True</property>
-                                    <property name="spacing">6</property>
-                                    <property name="layout_style">end</property>
-                                  </object>
-                                  <packing>
-                                    <property name="position">1</property>
-                                  </packing>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">1</property>
                               </packing>
                             </child>
                           </object>
@@ -3452,6 +3422,7 @@ Glom could not create the new database. Maybe you do not have the necessary acce
   <object class="GtkDialog" id="dialog_new_group">
     <property name="title" translatable="yes">Create Group</property>
     <property name="type_hint">dialog</property>
+    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox6">
         <property name="visible">True</property>
@@ -3464,8 +3435,8 @@ Glom could not create the new database. Maybe you do not have the necessary acce
             <child>
               <object class="GtkHBox" id="hbox39">
                 <property name="visible">True</property>
-                <property name="border_width">12</property>
-                <property name="spacing">6</property>
+                <property name="border_width">6</property>
+                <property name="spacing">12</property>
                 <child>
                   <object class="GtkImage" id="image23">
                     <property name="visible">True</property>
@@ -3518,12 +3489,12 @@ What name should this group have?</property>
             <child>
               <object class="GtkHBox" id="hbox40">
                 <property name="visible">True</property>
-                <property name="border_width">12</property>
-                <property name="spacing">6</property>
+                <property name="border_width">6</property>
+                <property name="spacing">12</property>
                 <child>
                   <object class="GtkLabel" id="Group Name">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">Group Name</property>
+                    <property name="label" translatable="yes">Group name:</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -3616,7 +3587,7 @@ What name should this group have?</property>
                         <child>
                           <object class="GtkLabel" id="label98">
                             <property name="visible">True</property>
-                            <property name="label" translatable="yes">Create</property>
+                            <property name="label" translatable="yes">C_reate</property>
                             <property name="use_underline">True</property>
                           </object>
                           <packing>
@@ -4116,6 +4087,7 @@ Which user should be added to this group?</property>
   <object class="GtkDialog" id="dialog_database_preferences">
     <property name="title" translatable="yes">Database Preferences</property>
     <property name="type_hint">dialog</property>
+    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox7">
         <property name="visible">True</property>
@@ -4129,7 +4101,7 @@ Which user should be added to this group?</property>
             <child>
               <object class="GtkHBox" id="hbox58">
                 <property name="visible">True</property>
-                <property name="spacing">6</property>
+                <property name="spacing">12</property>
                 <child>
                   <object class="GtkLabel" id="label137">
                     <property name="visible">True</property>
@@ -4165,16 +4137,16 @@ Which user should be added to this group?</property>
                     <property name="visible">True</property>
                     <property name="border_width">6</property>
                     <property name="orientation">vertical</property>
-                    <property name="spacing">6</property>
+                    <property name="spacing">18</property>
                     <child>
                       <object class="GtkHBox" id="hbox59">
                         <property name="visible">True</property>
-                        <property name="spacing">6</property>
+                        <property name="spacing">12</property>
                         <child>
                           <object class="GtkLabel" id="label138">
                             <property name="visible">True</property>
                             <property name="xalign">0</property>
-                            <property name="label" translatable="yes">Name</property>
+                            <property name="label" translatable="yes">Name:</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -4205,13 +4177,14 @@ Which user should be added to this group?</property>
                         <child>
                           <object class="GtkAlignment" id="alignment44">
                             <property name="visible">True</property>
+                            <property name="top_padding">6</property>
                             <property name="left_padding">12</property>
                             <child>
                               <object class="GtkTable" id="table10">
                                 <property name="visible">True</property>
                                 <property name="n_rows">6</property>
                                 <property name="n_columns">2</property>
-                                <property name="column_spacing">6</property>
+                                <property name="column_spacing">12</property>
                                 <property name="row_spacing">6</property>
                                 <child>
                                   <object class="GtkEntry" id="entry_org_address_country">
@@ -4552,7 +4525,7 @@ Which user should be added to this group?</property>
                         <property name="xalign">0</property>
                         <property name="label">import glom
 
-        &lt;b&gt;def on_startup(ui):&lt;/b&gt;</property>
+&lt;b&gt;def on_startup(ui):&lt;/b&gt;</property>
                         <property name="use_markup">True</property>
                       </object>
                       <packing>
@@ -4562,32 +4535,30 @@ Which user should be added to this group?</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkAlignment" id="alignment16">
+                      <object class="GtkScrolledWindow" id="scrolledwindow7">
                         <property name="visible">True</property>
-                        <property name="left_padding">20</property>
+                        <property name="can_focus">True</property>
+                        <property name="hscrollbar_policy">automatic</property>
+                        <property name="vscrollbar_policy">automatic</property>
+                        <property name="shadow_type">in</property>
                         <child>
-                          <object class="GtkScrolledWindow" id="scrolledwindow7">
+                          <object class="GtkViewport" id="viewport1">
                             <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="hscrollbar_policy">automatic</property>
-                            <property name="vscrollbar_policy">automatic</property>
-                            <property name="shadow_type">in</property>
+                            <property name="resize_mode">queue</property>
+                            <property name="shadow_type">none</property>
                             <child>
-                              <object class="GtkViewport" id="viewport1">
+                              <object class="GtkSourceView" id="textview_calculation">
                                 <property name="visible">True</property>
-                                <child>
-                                  <object class="GtkSourceView" id="textview_calculation">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                  </object>
-                                </child>
+                                <property name="can_focus">True</property>
+                                <property name="left_margin">2</property>
+                                <property name="right_margin">2</property>
                               </object>
                             </child>
                           </object>
                         </child>
                       </object>
                       <packing>
-                        <property name="position">3</property>
+                        <property name="position">2</property>
                       </packing>
                     </child>
                     <child>

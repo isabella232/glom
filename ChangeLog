@@ -7,6 +7,15 @@
 
 	* Makefile.am: Do not install .desktop file on Windows.
 
+2010-04-09  Daniel Borgmann  <danielb@openismus.com>
+
+	Update dialogs.
+
+	* glom/frame_glom.cc: Set window icons.
+	* glom/glom_developer.glade: Update user dialogs.
+	* glom/mode_design/layout/dialog_layout.cc: Set window icons.
+	* glom/mode_design/users/dialog_groups_list.cc: Set window icons.
+
 2010-04-08  Daniel Borgmann  <danielb@openismus.com>
 
 	Use buttonbox for details view.

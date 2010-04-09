@@ -246,6 +246,7 @@ void Dialog_GroupsList::on_button_group_new()
     std::cerr << ex.what() << std::endl;
   }
 
+  dialog->set_icon_name("glom");
   dialog->set_transient_for(*this);
   int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_new_group");
 
@@ -307,6 +308,7 @@ void Dialog_GroupsList::on_button_group_users()
         std::cerr << ex.what() << std::endl;
       }
 
+      dialog->set_icon_name("glom");
       dialog->set_transient_for(*this);
       add_view(dialog); //Give it access to the document.
 

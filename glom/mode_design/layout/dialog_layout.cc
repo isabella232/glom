@@ -31,6 +31,8 @@ Dialog_Layout::Dialog_Layout(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Bu
   m_label_table_title(0),
   m_modified(false)
 {
+  set_icon_name("glom");
+
   Gtk::Button* button = 0;
   builder->get_widget("button_close", button);
   button->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Layout::on_button_close) );

@@ -1708,6 +1708,7 @@ void Frame_Glom::on_menu_developer_database_preferences()
     refXml->get_widget_derived("dialog_database_preferences", dialog);
     if(dialog)
     {
+      dialog->set_icon_name("glom");
       dialog->set_transient_for(*(get_app_window()));
       add_view(dialog);
       dialog->load_from_document();
@@ -1841,6 +1842,7 @@ void Frame_Glom::on_menu_developer_users()
     std::cerr << ex.what() << std::endl;
   }
 
+  dialog->set_icon_name("glom");
   dialog->set_transient_for(*get_app_window());
 
   add_view(dialog); //Give it access to the document.
