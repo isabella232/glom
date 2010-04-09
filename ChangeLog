@@ -23,6 +23,13 @@
 	* glom/mode_design/users/dialog_groups_list.cc:
 	Translation dialog updates, set missing window icons.
 
+2010-04-09  Murray Cumming  <murrayc@murrayc.com>
+
+  Reports: Fix a crash when opening the secondary fields dialog.
+  
+  * glom/glom_developer.glade: dialog_groupby_secondary_fields: Rename a 
+  button to match what the class's constructor expects.
+
 2010-04-09  Armin Burgmeier  <armin@arbur.net>
 
 	* win32/build-installer:

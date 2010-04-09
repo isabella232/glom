@@ -5857,7 +5857,7 @@ Which user should be added to this group?</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkButton" id="button_down">
+                                  <object class="GtkButton" id="button_field_down">
                                     <property name="label">gtk-go-down</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
