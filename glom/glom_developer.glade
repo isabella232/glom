@@ -7023,6 +7023,7 @@ Which user should be added to this group?</property>
   <object class="GtkDialog" id="dialog_change_language">
     <property name="title" translatable="yes">Test Translation</property>
     <property name="type_hint">dialog</property>
+    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="vbox86">
         <property name="visible">True</property>
@@ -7212,6 +7213,7 @@ Note that the standard parts of the Glom user interface, such as menus and dialo
   </object>
   <object class="GtkWindow" id="window_translations">
     <property name="title" translatable="yes">Translations</property>
+    <property name="window_position">center-on-parent</property>
     <property name="default_width">500</property>
     <property name="default_height">500</property>
     <child>
@@ -7565,6 +7567,7 @@ Note that the standard parts of the Glom user interface, such as menus and dialo
   <object class="GtkDialog" id="dialog_translation_identify_original">
     <property name="title" translatable="yes">Identify Original</property>
     <property name="type_hint">dialog</property>
+    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="vbox91">
         <property name="visible">True</property>
@@ -7778,6 +7781,7 @@ The language of the original text is currently identified as:</property>
   <object class="GtkDialog" id="dialog_translation_copy">
     <property name="title" translatable="yes">Identify Original</property>
     <property name="type_hint">dialog</property>
+    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="vbox91">
         <property name="visible">True</property>
@@ -8402,7 +8406,7 @@ If a suitable related table already exists then you should instead cancel and ju
     </action-widgets>
   </object>
   <object class="GtkDialog" id="dialog_script_library">
-    <property name="title" translatable="yes">Button Script</property>
+    <property name="title" translatable="yes">Script Library</property>
     <property name="default_width">500</property>
     <property name="default_height">600</property>
     <property name="type_hint">dialog</property>
@@ -8488,22 +8492,18 @@ If a suitable related table already exists then you should instead cancel and ju
               </packing>
             </child>
             <child>
-              <object class="GtkAlignment" id="alignment1">
+              <object class="GtkScrolledWindow" id="scrolledwindow2">
                 <property name="visible">True</property>
-                <property name="left_padding">20</property>
+                <property name="can_focus">True</property>
+                <property name="hscrollbar_policy">automatic</property>
+                <property name="vscrollbar_policy">automatic</property>
+                <property name="shadow_type">in</property>
                 <child>
-                  <object class="GtkScrolledWindow" id="scrolledwindow2">
+                  <object class="GtkSourceView" id="textview_script">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="hscrollbar_policy">automatic</property>
-                    <property name="vscrollbar_policy">automatic</property>
-                    <property name="shadow_type">in</property>
-                    <child>
-                      <object class="GtkSourceView" id="textview_script">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                      </object>
-                    </child>
+                    <property name="left_margin">2</property>
+                    <property name="right_margin">2</property>
                   </object>
                 </child>
               </object>
@@ -8517,7 +8517,7 @@ If a suitable related table already exists then you should instead cancel and ju
                 <property name="layout_style">end</property>
                 <child>
                   <object class="GtkButton" id="button_check">
-                    <property name="label" translatable="yes" comments="Translators: This is the verb">Check</property>
+                    <property name="label" translatable="yes" comments="Translators: This is the verb">_Check</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="can_default">True</property>
@@ -8595,6 +8595,7 @@ If a suitable related table already exists then you should instead cancel and ju
     <property name="default_width">311</property>
     <property name="default_height">179</property>
     <property name="type_hint">dialog</property>
+    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox33">
         <property name="visible">True</property>
@@ -8607,8 +8608,8 @@ If a suitable related table already exists then you should instead cancel and ju
             <child>
               <object class="GtkHBox" id="hbox4">
                 <property name="visible">True</property>
-                <property name="border_width">12</property>
-                <property name="spacing">6</property>
+                <property name="border_width">6</property>
+                <property name="spacing">12</property>
                 <child>
                   <object class="GtkImage" id="image1">
                     <property name="visible">True</property>
@@ -8661,8 +8662,8 @@ What name should this module have?</property>
             <child>
               <object class="GtkHBox" id="hbox6">
                 <property name="visible">True</property>
-                <property name="border_width">12</property>
-                <property name="spacing">6</property>
+                <property name="border_width">6</property>
+                <property name="spacing">12</property>
                 <child>
                   <object class="GtkLabel" id="Group Name1">
                     <property name="visible">True</property>
@@ -8760,7 +8761,7 @@ What name should this module have?</property>
                         <child>
                           <object class="GtkLabel" id="label4">
                             <property name="visible">True</property>
-                            <property name="label" translatable="yes">Create</property>
+                            <property name="label" translatable="yes">C_reate</property>
                             <property name="use_underline">True</property>
                           </object>
                           <packing>

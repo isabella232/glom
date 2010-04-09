@@ -54,6 +54,8 @@ Window_Translations::Window_Translations(BaseObjectType* cobject, const Glib::Re
   m_button_export(0),
   m_treeview_modified(false)
 {
+  set_icon_name("glom");
+
   builder->get_widget("label_source_locale", m_label_source_locale);
 
   builder->get_widget("treeview", m_treeview);
@@ -138,6 +140,7 @@ void Window_Translations::on_button_identify()
     {
       add_view(dialog);
       dialog->load_from_document(); //Doesn't seem to happen otherwise.
+      dialog->set_icon_name("glom");
       dialog->set_transient_for(*this);
       const int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_translation_identify_original");
       dialog->hide();
@@ -366,6 +369,7 @@ void Window_Translations::on_button_copy_translation()
     refXml->get_widget_derived("dialog_translation_copy", dialog);
     if(dialog)
     {
+      dialog->set_icon_name("glom");
       dialog->set_transient_for(*this);
       const int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_translation_copy");
       dialog->hide();
@@ -506,6 +510,7 @@ void Window_Translations::on_button_export()
   
   //Show the file-chooser dialog, to select an output .po file:
   Gtk::FileChooserDialog file_dlg(_("Choose .po File Name"), Gtk::FILE_CHOOSER_ACTION_SAVE);
+  file_dlg.set_icon_name("glom");
   file_dlg.set_do_overwrite_confirmation();
   
   // Only po files
@@ -584,7 +589,8 @@ void Window_Translations::on_button_import()
     return;
 
   Gtk::FileChooserDialog file_dlg(_("Choose .po File Name"), Gtk::FILE_CHOOSER_ACTION_OPEN);
-  
+  file_dlg.set_icon_name("glom");
+
   // Only po files
   Gtk::FileFilter filter;
   filter.set_name(_("Po files"));

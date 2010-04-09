@@ -2448,6 +2448,7 @@ void Application::on_menu_developer_changelanguage()
     refXml->get_widget_derived("dialog_change_language", dialog);
     if(dialog)
     {
+      dialog->set_icon_name("glom");
       dialog->set_transient_for(*this);
       const int response =       Glom::Utils::dialog_run_with_help(dialog, "dialog_change_language");
       dialog->hide();
