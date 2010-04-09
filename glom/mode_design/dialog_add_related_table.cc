@@ -34,6 +34,8 @@ Dialog_AddRelatedTable::Dialog_AddRelatedTable(BaseObjectType* cobject, const Gl
   m_button_edit_fields(0),
   m_button_ok(0)
 {
+  set_icon_name("glom");
+
   builder->get_widget("entry_related_table_name", m_entry_table_name);
   builder->get_widget("entry_relationship_name", m_entry_relationship_name);
   builder->get_widget_derived("combobox_from_key", m_combo_from_field);
