@@ -48,9 +48,9 @@ cp /bundle/bin/libfontconfig-1.dll installer/bin || exit
 cp /bundle/bin/libexpat-1.dll installer/bin || exit
 cp /bundle/bin/freetype6.dll installer/bin || exit
 cp /bundle/bin/libcairo-2.dll installer/bin || exit
-cp /bundle/bin/libpng12-0.dll installer/bin || exit
-cp /bundle/bin/libjpeg-7.dll installer/bin || exit
-cp /bundle/bin/libtiff-3.dll installer/bin || exit
+cp /bundle/bin/libpng14-14.dll installer/bin || exit
+#cp /bundle/bin/libjpeg-7.dll installer/bin || exit
+#cp /bundle/bin/libtiff-3.dll installer/bin || exit
 
 cp /bundle/bin/libpango-1.0-0.dll installer/bin || exit
 cp /bundle/bin/libpangoft2-1.0-0.dll installer/bin || exit
@@ -91,7 +91,10 @@ cp /local/bin/libgdamm-4.0-12.dll installer/bin || exit
 #cp /gtkmm_release/bin/libglademm-2.4-1.dll installer/bin || exit
 
 # cp /local/bin/libbakery-2.6--6-1.dll installer/bin || exit
-cp /local/bin/libglom-1.12-0.dll installer/bin || exit
+# TODO: Can we build boost so that mingwm10.dll is not required? Maybe try static C runtime linkage
+cp /mingw/bin/mingwm10.dll installer/bin || exit
+cp /boost/lib/boost_python-mgw34-mt-1_42.dll installer/bin || exit
+cp /local/bin/libglom-1.14-0.dll installer/bin || exit
 
 echo "Stripping DLL files..."
 strip installer/bin/*.dll || exit
@@ -101,7 +104,8 @@ strip installer/bin/*.exe || exit
 # We therefore copy them after having stripped the rest. Same with the other
 # Perhaps those were built with MSVC.
 cp /bundle/bin/intl.dll installer/bin || exit
-cp /bundle/bin/iconv.dll installer/bin || exit
+# TODO: iconv no longer required with new libxml2-2.dll
+cp iconv.dll installer/bin || exit
 cp /bundle/bin/zlib1.dll installer/bin || exit
 
 echo "Copying Python..."
@@ -119,8 +123,8 @@ cp $PYTHONDIR/Lib/*.py installer/python || exit
 mkdir -p installer/python/encodings || exit
 cp $PYTHONDIR/Lib/encodings/*.py installer/python/encodings || exit
 
-cp $PYTHONDIR/Lib/site-packages/glom_1_12.pyd installer/python || exit
-strip installer/python/glom_1_12.pyd || exit
+cp $PYTHONDIR/Lib/site-packages/glom_1_14.pyd installer/python || exit
+strip installer/python/glom_1_14.pyd || exit
 cp $PYTHONDIR/Lib/site-packages/gtk-2.0/gda.pyd installer/python || exit
 strip installer/python/gda.pyd || exit
 
@@ -153,9 +157,9 @@ mkdir -p installer/lib/gtk-2.0/2.10.0/engines || exit
 cp /bundle/lib/gtk-2.0/2.10.0/engines/libwimp.dll installer/lib/gtk-2.0/2.10.0/engines || exit
 strip installer/lib/gtk-2.0/2.10.0/engines/libwimp.dll || exit
 
-mkdir -p installer/lib/gtk-2.0/2.10.0/loaders || exit
-cp /bundle/lib/gtk-2.0/2.10.0/loaders/*.dll installer/lib/gtk-2.0/2.10.0/loaders || exit
-strip installer/lib/gtk-2.0/2.10.0/loaders/*.dll || exit
+#mkdir -p installer/lib/gtk-2.0/2.10.0/loaders || exit
+#cp /bundle/lib/gtk-2.0/2.10.0/loaders/*.dll installer/lib/gtk-2.0/2.10.0/loaders || exit
+#strip installer/lib/gtk-2.0/2.10.0/loaders/*.dll || exit
 
 mkdir -p installer/etc/gtk-2.0
 cp /bundle/etc/gtk-2.0/gtk.immodules installer/etc/gtk-2.0 || exit -1

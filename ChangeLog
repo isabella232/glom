@@ -1,5 +1,10 @@
 2010-04-09  Armin Burgmeier  <armin@arbur.net>
 
+	* win32/build-installer:
+	* win32/glom.iss.in: Update for Glom 1.14.
+
+2010-04-09  Armin Burgmeier  <armin@arbur.net>
+
 	* Makefile.am: Do not install .desktop file on Windows.
 
 2010-04-08  Daniel Borgmann  <danielb@openismus.com>
