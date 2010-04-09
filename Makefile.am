@@ -139,7 +139,12 @@ dbusservice_DATA = glom.service
 else
 desktopdir = $(datadir)/applications
 endif
+
+if HOST_WIN32
+desktop_DATA =
+else
 desktop_DATA = glom.desktop
+endif
 
 mimedir = $(datadir)/mime
 mimepackagesdir = $(mimedir)/packages
