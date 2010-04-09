@@ -1,3 +1,9 @@
+unreleased:
+
+* User Interface: General cleanup, more HIG compliant dialogs, many minor
+  fixes to the interface.
+  (Daniel Borgmann)
+
 1.13.9 (unstable):
 
 * Field Formatting: Allow choices to be shown as radio buttons instead of a 

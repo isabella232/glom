@@ -1,5 +1,11 @@
 2010-04-09  Daniel Borgmann  <danielb@openismus.com>
 
+	Update NEWS file.
+
+	* NEWS: Add entry.
+
+2010-04-09  Daniel Borgmann  <danielb@openismus.com>
+
 	Clean up Add Related Table dialog.
 
 	* glom/glom_developer.glade: (dialog_add_related_table) Remove frame,
