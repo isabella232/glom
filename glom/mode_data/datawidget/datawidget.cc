@@ -680,7 +680,7 @@ void DataWidget::on_button_choose_date()
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_date");
+    refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_choose_date");
   }
   catch(const Gtk::BuilderError& ex)
   {
@@ -689,7 +689,7 @@ void DataWidget::on_button_choose_date()
   }
 #else
   std::auto_ptr<Glib::Error> error;
-  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_date", error);
+  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_choose_date", error);
   if (error.get())
   {
     std::cerr << error->what() << std::endl;

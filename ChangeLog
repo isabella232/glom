@@ -2,6 +2,15 @@
 
 2010-04-10  Murray Cumming  <murrayc@murrayc.com>
 
+  Glade files: Move a client-only dialog to the correct file.
+   
+	* glom/glom_developer.glade:
+	* glom/glom.glade: Move dialog_choose_date to glom.glade.
+	* glom/mode_data/datawidget/datawidget.cc: on_button_choose_date():
+	Adapted.
+
+2010-04-10  Murray Cumming  <murrayc@murrayc.com>
+
   Application: Forget the global instance when it has been deleted.
   
   * glom/application.cc: Destructor: reset the static instance to 0, 
