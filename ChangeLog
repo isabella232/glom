@@ -1,5 +1,12 @@
 2010-04-10  Murray Cumming  <murrayc@murrayc.com>
 
+  Remove some unused code.
+  
+	* glom/base_db.cc: offer_item_formatting(): Remove a useless use of 
+	Gtk::Builder.
+
+2010-04-10  Murray Cumming  <murrayc@murrayc.com>
+
   Notebook properties dialog: Fix a probable crash.
   
 	* glom/base_db.cc: :offer_notebook(): Fix a typo in the glade ID.

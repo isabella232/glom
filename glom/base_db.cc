@@ -1915,8 +1915,6 @@ bool Base_DB::offer_item_formatting(const sharedptr<LayoutItem_WithFormatting>& 
 
   try
   {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_layout_field_properties");
-
     Dialog_Formatting dialog;
     if(transient_for)
       dialog.set_transient_for(*transient_for);
