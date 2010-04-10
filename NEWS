@@ -1,8 +1,26 @@
-unreleased:
+1.14.0: (stable)
 
-* User Interface: General cleanup, more HIG compliant dialogs, many minor
-  fixes to the interface.
-  (Daniel Borgmann)
+* Design Mode:
+  - Notebook properties: Fix crash.
+  - Reports: Secondary Fields: Fix crash.
+* Creating from example:
+  - Really save the new filename in the recent files list.
+  (Murray Cumming, Openismus)
+  - Don't show error dialog when user cancels creation from an example.
+  (Daniel Borgmann, Openismus)
+* Opening recent files: Warn when a file doesn't exist, and forget it, 
+  instead of just showing a generic error dialog.
+  (Murray Cumming, Openismus)
+* User Interface: General cleanup. The dialogs are more compliant with the 
+  GNOME HIG and there are many minor ixes to the user interface.
+  (Daniel Borgmann, Openismus)
+* Build:
+  - Fix the build with --as-needed.
+  (David King, Openismus)
+  - Add tests for the Glade XML files.
+  (Murray Cumming, David King, Openismus)
+* Windows Installer: Update for Glom 1.14
+  (Armin Burgmeier)
 
 1.13.9 (unstable):
 

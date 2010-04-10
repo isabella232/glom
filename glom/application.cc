@@ -132,6 +132,9 @@ Application::~Application()
   #ifdef GLOM_ENABLE_MAEMO
   m_pFrame->remove_view(&m_appmenu_button_table);
   #endif
+
+  //This was set in the constructor:
+  global_application = 0;
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

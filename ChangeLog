@@ -1,3 +1,12 @@
+1.14.0:
+
+2010-04-10  Murray Cumming  <murrayc@murrayc.com>
+
+  Application: Forget the global instance when it has been deleted.
+  
+  * glom/application.cc: Destructor: reset the static instance to 0, 
+  to avoid anything from retrieving the pointer to the deleted object.
+  
 2010-04-10  Murray Cumming  <murrayc@murrayc.com>
 
   Remove some unused code.
