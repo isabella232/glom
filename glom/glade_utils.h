@@ -31,9 +31,6 @@ namespace Glom
 namespace Utils
 {
 
-const char* const FILENAME_GLADE("glom.glade");
-const char* const FILENAME_GLADE_DEVELOPER("glom_developer.glade");
-
 inline std::string get_glade_file_path(const std::string& filename)
 {
 #ifdef G_OS_WIN32
@@ -89,9 +86,9 @@ void get_glade_widget_derived_with_warning(T_Widget*& widget)
   widget = 0;
   
   if(T_Widget::glade_developer)
-    helper_get_glade_widget_derived_with_warning(FILENAME_GLADE_DEVELOPER, T_Widget::glade_id, widget);
+    helper_get_glade_widget_derived_with_warning("glom.glade", T_Widget::glade_id, widget);
   else
-    helper_get_glade_widget_derived_with_warning(FILENAME_GLADE, T_Widget::glade_id, widget);
+    helper_get_glade_widget_derived_with_warning("glom_developer.glade", T_Widget::glade_id, widget);
 }
 
 
@@ -122,12 +119,13 @@ void get_glade_widget_with_warning(const std::string& filename, const Glib::ustr
   {
     refXml->get_widget(id, widget);
   }
-}
 
-template<class T_Widget>
-void get_glade_widget_with_warning(const Glib::ustring& id, T_Widget*& widget)
-{
-  get_glade_widget_with_warning(FILENAME_GLADE, id, widget);
+  // Make sure that all windows have the Glom icon.
+  // TODO: Though shouldn't all transient windows have this by default,
+  // or should they even be visible in the task list? murrayc
+  Gtk::Window* window = dynamic_cast<Gtk::Window*>(widget);
+  if(window)
+    window->set_icon_name("glom");
 }
 
 Dialog_ProgressCreating* get_and_show_pulse_dialog(const Glib::ustring& message, Gtk::Window* parent_window);

@@ -41,8 +41,6 @@ const bool Dialog_ScriptLibrary::glade_developer(true);
 Dialog_ScriptLibrary::Dialog_ScriptLibrary(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject)
 {
-  set_icon_name("glom");
-
   //Get child widgets:
   builder->get_widget_derived("combobox_name", m_combobox_name);
   builder->get_widget("textview_script",  m_text_view);
@@ -96,7 +94,6 @@ void Dialog_ScriptLibrary::on_button_add()
 
   Dialog_NewScript* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
-  dialog->set_icon_name("glom");
   dialog->set_transient_for(*this);
   const int response = Glom::Utils::dialog_run_with_help(dialog);
   dialog->hide();

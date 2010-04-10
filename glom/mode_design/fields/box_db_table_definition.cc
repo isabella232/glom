@@ -44,7 +44,6 @@ void Box_DB_Table_Definition::init()
   //m_strHint = _("Click [Edit] to edit the field definition in more detail.\nUse the Mode menu to see Data or perform a Find.");
 
   Utils::get_glade_widget_derived_with_warning(m_pDialog);
-  m_pDialog->set_icon_name("glom");
 
   add_view(m_pDialog); //Give it access to the document.
 

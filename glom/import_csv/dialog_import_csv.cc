@@ -81,8 +81,6 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
     throw std::runtime_error("Missing widgets from glade file for Dialog_Import_CSV");
 #endif
 
-  set_icon_name("glom");
-
   //Fill the list of encodings:
   m_encoding_model = Gtk::ListStore::create(m_encoding_columns);
 

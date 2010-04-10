@@ -1683,7 +1683,6 @@ void Frame_Glom::on_menu_developer_database_preferences()
 {
   Dialog_Database_Preferences* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
-  dialog->set_icon_name("glom");
   dialog->set_transient_for(*(get_app_window()));
   add_view(dialog);
   dialog->load_from_document();
@@ -1709,7 +1708,6 @@ void Frame_Glom::do_menu_developer_fields(Gtk::Window& parent, const Glib::ustri
   if(!m_pDialog_Fields)
   {
     Utils::get_glade_widget_derived_with_warning(m_pDialog_Fields);
-    m_pDialog_Fields->set_icon_name("glom");
     m_pDialog_Fields->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
     add_view(m_pDialog_Fields);
   }
@@ -1766,7 +1764,6 @@ void Frame_Glom::do_menu_developer_relationships(Gtk::Window& parent, const Glib
   if(!m_pDialog_Relationships)
   {
     Utils::get_glade_widget_derived_with_warning(m_pDialog_Relationships);
-    m_pDialog_Relationships->set_icon_name("glom");
     m_pDialog_Relationships->set_title("Relationships");
     m_pDialog_Relationships->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
     add_view(m_pDialog_Relationships); //Also a composite view.
@@ -1790,7 +1787,6 @@ void Frame_Glom::on_menu_developer_users()
 {
   Dialog_GroupsList* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
-  dialog->set_icon_name("glom");
   dialog->set_transient_for(*get_app_window());
 
   add_view(dialog); //Give it access to the document.
@@ -1833,7 +1829,6 @@ void Frame_Glom::on_menu_developer_reports()
 
     Utils::get_glade_widget_derived_with_warning(m_pDialogLayoutReport);
     add_view(m_pDialogLayoutReport);
-    m_pDialogLayoutReport->set_icon_name("glom");
     m_pDialogLayoutReport->set_transient_for(*(get_app_window()));
     m_pDialogLayoutReport->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_layout_report_hide) );
 

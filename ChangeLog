@@ -19,6 +19,15 @@
     differently, as may be required by some languages.
     Fixes bug #606931 (Urmas, André Klapper)
 
+2010-04-11  Murray Cumming  <murrayc@murrayc.com>
+
+  Simplify setting of the icon for windows.
+  
+	* glom/glade_utils.h: get_glade_widget_derived_with_warning():
+	Call set_icon_name() on windows.
+	* Several *.cc files: Don't bother calling set_icon_name() after calling 
+	get_glade_widget_derived_with_warning().
+
 2010-04-10  Murray Cumming  <murrayc@murrayc-x61>
 
   dialog_run_with_help(): Get the help ID from the class.

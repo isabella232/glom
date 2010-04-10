@@ -40,13 +40,13 @@ FileChooserDialog_SaveExtras::FileChooserDialog_SaveExtras(Gtk::Window& parent, 
   create_child_widgets();
 }
 
-FileChooserDialog_SaveExtras::FileChooserDialog_SaveExtras (const Glib::ustring& title, Gtk::FileChooserAction action)
+FileChooserDialog_SaveExtras::FileChooserDialog_SaveExtras(const Glib::ustring& title, Gtk::FileChooserAction action)
 : Gtk::FileChooserDialog(title, action)
 {
   create_child_widgets();
 }
 
-FileChooserDialog_SaveExtras::FileChooserDialog_SaveExtras (Gtk::Window& parent, const Glib::ustring& title, Gtk::FileChooserAction action)
+FileChooserDialog_SaveExtras::FileChooserDialog_SaveExtras(Gtk::Window& parent, const Glib::ustring& title, Gtk::FileChooserAction action)
 : Gtk::FileChooserDialog(parent, title, action)
 {
   create_child_widgets();

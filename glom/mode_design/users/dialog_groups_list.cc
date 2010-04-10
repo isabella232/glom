@@ -240,8 +240,6 @@ void Dialog_GroupsList::on_button_group_new()
 {
   Dialog_NewGroup* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
-
-  dialog->set_icon_name("glom");
   dialog->set_transient_for(*this);
   const int response = Glom::Utils::dialog_run_with_help(dialog);
 
@@ -293,8 +291,6 @@ void Dialog_GroupsList::on_button_group_users()
 
       Dialog_UsersList* dialog = 0;
       Utils::get_glade_widget_derived_with_warning(dialog);
-
-      dialog->set_icon_name("glom");
       dialog->set_transient_for(*this);
       add_view(dialog); //Give it access to the document.
 

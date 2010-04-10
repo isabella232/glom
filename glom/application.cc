@@ -2421,8 +2421,6 @@ void Application::on_menu_developer_changelanguage()
 {
   Dialog_ChangeLanguage* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
-  
-  dialog->set_icon_name("glom");
   dialog->set_transient_for(*this);
   const int response = Glom::Utils::dialog_run_with_help(dialog);
   dialog->hide();

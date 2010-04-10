@@ -42,8 +42,6 @@ Dialog_ImageObject::Dialog_ImageObject(BaseObjectType* cobject, const Glib::RefP
   builder->get_widget("entry_title", m_entry_title);
   builder->get_widget_derived("imageglom", m_image);
 
-  set_icon_name("glom");
-
   builder->get_widget("button_choose_image", m_button_choose_image);
   m_button_choose_image->signal_clicked().connect(sigc::mem_fun(*this, &Dialog_ImageObject::on_button_choose));
 

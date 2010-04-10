@@ -38,8 +38,6 @@ Dialog_InitialPassword::Dialog_InitialPassword(BaseObjectType* cobject, const Gl
   builder->get_widget("entry_user", m_entry_user);
   builder->get_widget("entry_password", m_entry_password);
   builder->get_widget("entry_password_confirm", m_entry_password_confirm);
-
-  set_icon_name("glom");
 }
 
 Dialog_InitialPassword::~Dialog_InitialPassword()

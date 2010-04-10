@@ -36,8 +36,6 @@ Dialog_ChooseField::Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefP
   m_treeview(0),
   m_document(0)
 {
-  set_icon_name("glom");
-
   builder->get_widget("checkbutton_show_related_relationships", m_checkbutton_show_related_relationships);
   m_checkbutton_show_related_relationships->set_active(false); //Start with the simpler list, to avoid confusing people.
   m_checkbutton_show_related_relationships->signal_toggled().connect(sigc::mem_fun(*this, &Dialog_ChooseField::on_checkbutton_related_relationships_toggled));

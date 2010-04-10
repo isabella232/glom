@@ -107,8 +107,6 @@ const bool Dialog_ExistingOrNew::glade_developer(false);
 Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject)
 {
-  set_icon_name("glom");
-
 #ifdef GLOM_ENABLE_CLIENT_ONLY
   //Don't mention creation of new documents in client-only mode:
   Gtk::Label* label = 0;

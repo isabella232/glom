@@ -57,8 +57,6 @@ Window_Translations::Window_Translations(BaseObjectType* cobject, const Glib::Re
   m_button_export(0),
   m_treeview_modified(false)
 {
-  set_icon_name("glom");
-
   builder->get_widget("label_source_locale", m_label_source_locale);
 
   builder->get_widget("treeview", m_treeview);
@@ -138,7 +136,6 @@ void Window_Translations::on_button_identify()
   Utils::get_glade_widget_derived_with_warning(dialog);
   add_view(dialog);
   dialog->load_from_document(); //Doesn't seem to happen otherwise.
-  dialog->set_icon_name("glom");
   dialog->set_transient_for(*this);
   const int response = Glom::Utils::dialog_run_with_help(dialog);
   dialog->hide();
@@ -360,7 +357,6 @@ void Window_Translations::on_button_copy_translation()
 {
   Dialog_CopyTranslation* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
-  dialog->set_icon_name("glom");
   dialog->set_transient_for(*this);
   const int response = Glom::Utils::dialog_run_with_help(dialog);
   dialog->hide();
