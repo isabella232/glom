@@ -2062,7 +2062,7 @@ sharedptr<LayoutItem_Notebook> Base_DB::offer_notebook(const sharedptr<LayoutIte
 
   try
   {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "box_formatting");
+    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_notebook");
 
     Dialog_Notebook* dialog = 0;
     refXml->get_widget_derived("dialog_notebook", dialog);

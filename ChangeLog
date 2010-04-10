@@ -1,3 +1,10 @@
+2010-04-10  Murray Cumming  <murrayc@murrayc.com>
+
+  Notebook properties dialog: Fix a probable crash.
+  
+	* glom/base_db.cc: :offer_notebook(): Fix a typo in the glade ID.
+	I'm working on code to prevent these kinds of errors, to apply when we branch.
+
 2010-04-09  Daniel Borgmann  <danielb@openismus.com>
 
 	Update NEWS file.
