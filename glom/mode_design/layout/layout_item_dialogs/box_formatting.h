@@ -37,6 +37,9 @@ class Box_Formatting
    public Base_DB
 {
 public:
+  static const char* glade_id;
+  static const bool glade_developer;
+
   Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Box_Formatting();
 

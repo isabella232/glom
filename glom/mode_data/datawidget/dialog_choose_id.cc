@@ -36,6 +36,9 @@ namespace Glom
 namespace DataWidgetChildren
 {
 
+const char* Dialog_ChooseID::glade_id("dialog_find_id");
+const bool Dialog_ChooseID::glade_developer(false);
+
 Dialog_ChooseID::Dialog_ChooseID()
 : m_label_table_name(0),
   m_pBox_QuickFind(0),

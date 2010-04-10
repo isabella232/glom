@@ -33,15 +33,7 @@ Dialog_Formatting::Dialog_Formatting()
   set_border_width(6);
 
   //Get the formatting stuff:
-  try
-  {
-    Glib::RefPtr<Gtk::Builder> refXmlFormatting = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "box_formatting");
-    refXmlFormatting->get_widget_derived("box_formatting", m_box_formatting);
-  }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
+  Utils::get_glade_widget_derived_with_warning(m_box_formatting);
 
   get_vbox()->pack_start(*m_box_formatting, Gtk::PACK_EXPAND_WIDGET);
   add_view(m_box_formatting);

@@ -358,13 +358,7 @@ void ImageGlom::on_menupopup_activate_select_file()
     if(!uri.empty())
     {
       Dialog_Image_Progress* dialog;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED      
-      Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_image_progress");
-#else
-      std::auto_ptr<Glib::Error> error;      
-      Glib::RefPtr<Gtk::Builder> builder = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_image_progress", error);
-#endif
-      builder->get_widget_derived("dialog_image_progress", dialog);
+      Utils::get_glade_widget_derived_with_warning(dialog);
       if(dialog)
       {
         // Automatically delete the dialog when we no longer need it:

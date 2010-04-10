@@ -26,6 +26,9 @@
 namespace Glom
 {
 
+const char* Dialog_IdentifyOriginal::glade_id("dialog_translation_identify_original");
+const bool Dialog_IdentifyOriginal::glade_developer(true);
+
 Dialog_IdentifyOriginal::Dialog_IdentifyOriginal(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_label_original(0),

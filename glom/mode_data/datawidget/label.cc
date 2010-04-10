@@ -78,32 +78,21 @@ void Label::on_menu_properties_activate()
   if(!textobject)
     return;
 
-  try
+  Dialog_TextObject* dialog = 0;
+  Glom::Utils::get_glade_widget_derived_with_warning(dialog);
+
+  dialog->set_textobject(textobject, m_table_name);
+  const int response = dialog->run();
+  dialog->hide();
+  if(response == Gtk::RESPONSE_OK)
   {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_textobject");
-
-    Dialog_TextObject* dialog = 0;
-    refXml->get_widget_derived("window_textobject", dialog);
-
-    if(dialog)
-    {
-      dialog->set_textobject(textobject, m_table_name);
-      const int response = dialog->run();
-      dialog->hide();
-      if(response == Gtk::RESPONSE_OK)
-      {
-        //Get the chosen relationship:
-        dialog->get_textobject(textobject);
-      }
-      signal_layout_changed().emit();
-
-      delete dialog;
-    }
+    //Get the chosen relationship:
+    dialog->get_textobject(textobject);
   }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
+
+  signal_layout_changed().emit();
+
+  delete dialog;
 }
 
 bool Label::on_button_press_event(GdkEventButton *event)

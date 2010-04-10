@@ -72,6 +72,9 @@ namespace Glom
 // Global application variable
 Application* global_application = 0;
 
+const char* Application::glade_id("window_main");
+const bool Application::glade_developer(false);
+
 Application::Application(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : type_base(cobject, "Glom"),
   m_pBoxTop(0),
@@ -710,7 +713,7 @@ void Application::open_browsed_document(const EpcServiceInfo* server, const Glib
     //Request a password to attempt retrieval of the document over the network:
     Dialog_Connection* dialog_connection = 0;
     //Load the Glade file and instantiate its widgets to get the dialog stuff:
-    Utils::get_glade_widget_derived_with_warning("dialog_connection", dialog_connection);
+    Utils::get_glade_widget_derived_with_warning(dialog_connection);
     dialog_connection->set_transient_for(*this);
     dialog_connection->set_connect_to_browsed();
     dialog_connection->set_database_name(service_name);
@@ -1381,29 +1384,9 @@ bool Application::offer_new_or_existing()
 {
   //Offer to load an existing document, or start a new one.
   const Glib::ustring glade_path = Utils::get_glade_file_path("glom.glade");
-  Glib::RefPtr<Gtk::Builder> refXml;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    refXml = Gtk::Builder::create_from_file(glade_path, "dialog_existing_or_new");
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << "Application::offer_new_or_existing(): Gtk::Builder::create_from_file() failed: " << ex.what() << std::endl;
-  }
-#else
-  std::auto_ptr<Glib::Error> ex;
-  refXml = Gtk::Builder::create_from_file(glade_path, "dialog_existing_or_new", ex);
-  if(ex.get())
-  {
-    std::cerr << "Application::offer_new_or_existing(): Gtk::Builder::create_from_file() failed:" << ex->what() << std::endl;
-  }
-#endif
-
-  g_assert(refXml);
 
   Dialog_ExistingOrNew* dialog_raw = 0;
-  refXml->get_widget_derived("dialog_existing_or_new", dialog_raw);
+  Utils::get_glade_widget_derived_with_warning(dialog_raw);
   std::auto_ptr<Dialog_ExistingOrNew> dialog(dialog_raw);
   dialog->set_transient_for(*this);
 /*
@@ -1664,25 +1647,17 @@ bool Application::recreate_database(bool& user_cancelled)
 
   //Show the user that something is happening, because the INSERTS might take time.
   //TOOD: This doesn't actually show up until near the end, even with Gtk::Main::instance()->iteration().
-  std::auto_ptr<Dialog_ProgressCreating> dialog_progress;
-  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "window_progress");
-  if(refXml)
-  {
-    Dialog_ProgressCreating* dialog_progress_temp = 0;
-    refXml->get_widget_derived("window_progress", dialog_progress_temp);
-    if(dialog_progress_temp)
-    {
-      dialog_progress_temp->set_message(_("Creating Glom Database"), _("Creating Glom database from example file."));
-      dialog_progress.reset(dialog_progress_temp); //Put the dialog in an auto_ptr so that it will be deleted (and hidden) when the current function returns.
+  Dialog_ProgressCreating* dialog_progress_temp = 0;
+  Utils::get_glade_widget_derived_with_warning(dialog_progress_temp);
+  dialog_progress_temp->set_message(_("Creating Glom Database"), _("Creating Glom database from example file."));
+  std::auto_ptr<Dialog_ProgressCreating> dialog_progress(dialog_progress_temp); //Put the dialog in an auto_ptr so that it will be deleted (and hidden) when the current function returns.
 
-      dialog_progress->set_transient_for(*this);
-      dialog_progress->show();
+  dialog_progress->set_transient_for(*this);
+  dialog_progress->show();
 
-      //Ensure that the dialog is shown, instead of waiting for the application to be idle:
-      while(Gtk::Main::instance()->events_pending())
-        Gtk::Main::instance()->iteration();
-    }
-  }
+  //Ensure that the dialog is shown, instead of waiting for the application to be idle:
+  while(Gtk::Main::instance()->events_pending())
+    Gtk::Main::instance()->iteration();
 
   dialog_progress->pulse();
 
@@ -2444,41 +2419,34 @@ void Application::stop_self_hosting_of_document_database()
 
 void Application::on_menu_developer_changelanguage()
 {
-  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_change_language");
-  if(refXml)
+  Dialog_ChangeLanguage* dialog = 0;
+  Utils::get_glade_widget_derived_with_warning(dialog);
+  
+  dialog->set_icon_name("glom");
+  dialog->set_transient_for(*this);
+  const int response =       Glom::Utils::dialog_run_with_help(dialog, "dialog_change_language");
+  dialog->hide();
+
+  if(response == Gtk::RESPONSE_OK)
   {
-    Dialog_ChangeLanguage* dialog = 0;
-    refXml->get_widget_derived("dialog_change_language", dialog);
-    if(dialog)
-    {
-      dialog->set_icon_name("glom");
-      dialog->set_transient_for(*this);
-      const int response =       Glom::Utils::dialog_run_with_help(dialog, "dialog_change_language");
-      dialog->hide();
+    TranslatableItem::set_current_locale(dialog->get_locale());
 
-      if(response == Gtk::RESPONSE_OK)
-      {
-        TranslatableItem::set_current_locale(dialog->get_locale());
+    //Get the translations from the document (in Operator mode, we only load the necessary translations.)
+    //This also updates the UI, so we show all the translated titles:
+    int failure_code = 0;
+    get_document()->load(failure_code);
 
-       //Get the translations from the document (in Operator mode, we only load the necessary translations.)
-       //This also updates the UI, so we show all the translated titles:
-       int failure_code = 0;
-       get_document()->load(failure_code);
-
-       m_pFrame->show_table_refresh(); //load() doesn't seem to refresh the view.
-      }
-
-      delete dialog;
-    }
+    m_pFrame->show_table_refresh(); //load() doesn't seem to refresh the view.
   }
+
+  delete dialog;
 }
 
 void Application::on_menu_developer_translations()
 {
   if(!m_window_translations)
   {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_translations");
-    refXml->get_widget_derived("window_translations", m_window_translations);
+    Utils::get_glade_widget_derived_with_warning(m_window_translations);
     if(m_window_translations)
     {
       m_pFrame->add_view(m_window_translations);

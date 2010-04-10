@@ -25,6 +25,9 @@
 namespace Glom
 {
 
+const char* Box_Print_Layouts::glade_id("box_print_layouts");
+const bool Box_Print_Layouts::glade_developer(true);
+
 Box_Print_Layouts::Box_Print_Layouts(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Box_DB_Table(cobject, builder),
   m_colName(0),

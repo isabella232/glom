@@ -36,6 +36,8 @@ namespace Glom
 int Dialog_RelationshipsOverview::m_last_size_x = 0;
 int Dialog_RelationshipsOverview::m_last_size_y = 0;
 
+const char* Dialog_RelationshipsOverview::glade_id("dialog_relationships_overview");
+const bool Dialog_RelationshipsOverview::glade_developer(true);
 
 Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
   : Gtk::Dialog(cobject),

@@ -32,6 +32,9 @@
 namespace Glom
 {
 
+const char* Window_PrintLayout_Edit::glade_id("window_print_layout_edit");
+const bool Window_PrintLayout_Edit::glade_developer(true);
+
 Window_PrintLayout_Edit::Window_PrintLayout_Edit(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Window(cobject),
   m_entry_name(0),

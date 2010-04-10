@@ -31,6 +31,9 @@ namespace Glom
 class Dialog_User : public Gtk::Dialog
 {
 public:
+  static const char* glade_id;
+  static const bool glade_developer;
+
   Dialog_User(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_User();
 

@@ -37,6 +37,9 @@ class Dialog_ChooseDate
   : public Gtk::Dialog
 {
 public:
+  static const char* glade_id;
+  static const bool glade_developer;
+
   Dialog_ChooseDate();
   Dialog_ChooseDate(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_ChooseDate();

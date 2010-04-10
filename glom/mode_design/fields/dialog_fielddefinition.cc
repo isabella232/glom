@@ -29,6 +29,9 @@
 namespace Glom
 {
 
+const char* Dialog_FieldDefinition::glade_id("window_field_definition_edit");
+const bool Dialog_FieldDefinition::glade_developer(true);
+
 Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Dialog_Properties(cobject, builder),
   m_pDataWidget_DefaultValueSimple(0),
@@ -84,16 +87,7 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
   builder->get_widget("box_formatting_placeholder", m_box_formatting_placeholder);
 
   //Get the formatting stuff:
-  try
-  {
-    Glib::RefPtr<Gtk::Builder> refXmlFormatting = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "box_formatting");
-    refXmlFormatting->get_widget_derived("box_formatting", m_box_formatting);
-  }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
-
+  Utils::get_glade_widget_derived_with_warning(m_box_formatting);
   m_box_formatting_placeholder->pack_start(*m_box_formatting);
   add_view(m_box_formatting);
 
@@ -376,29 +370,22 @@ void Dialog_FieldDefinition::on_combo_lookup_relationship_changed()
 void Dialog_FieldDefinition::on_button_edit_calculation()
 {
   //TODO: Share a global instance, to make this quicker?
-  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(
-      Utils::get_glade_file_path("glom_developer.glade"), "window_field_calculation");
-  if(refXml)
+  Dialog_FieldCalculation* dialog = 0;
+  Utils::get_glade_widget_derived_with_warning(dialog);
+  
+  add_view(dialog); //Give it access to the document.
+
+  m_Field->set_calculation( m_pTextView_Calculation->get_buffer()->get_text() );
+  dialog->set_field(m_Field, m_table_name);
+  //TODO: dialog.set_transient_for(*get_app_window());
+  const int response = Glom::Utils::dialog_run_with_help(dialog, "window_field_calculation");
+  if(response == Gtk::RESPONSE_OK)
   {
-    Dialog_FieldCalculation* dialog = 0;
-    refXml->get_widget_derived("window_field_calculation", dialog);
-    if(dialog)
-    {
-      add_view(dialog); //Give it access to the document.
-
-      m_Field->set_calculation( m_pTextView_Calculation->get_buffer()->get_text() );
-      dialog->set_field(m_Field, m_table_name);
-      //TODO: dialog.set_transient_for(*get_app_window());
-      const int response = Glom::Utils::dialog_run_with_help(dialog, "window_field_calculation");
-      if(response == Gtk::RESPONSE_OK)
-      {
-        m_pTextView_Calculation->get_buffer()->set_text( dialog->get_field()->get_calculation() );
-      }
-
-      remove_view(dialog);
-      delete dialog;
-    }
+    m_pTextView_Calculation->get_buffer()->set_text( dialog->get_field()->get_calculation() );
   }
+
+  remove_view(dialog);
+  delete dialog;
 }
 
 } //namespace Glom

@@ -32,6 +32,9 @@
 namespace Glom
 {
 
+const char* Dialog_GroupsList::glade_id("window_groups");
+const bool Dialog_GroupsList::glade_developer(true);
+
 Dialog_GroupsList::Dialog_GroupsList(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_treeview_groups(0),
@@ -236,20 +239,11 @@ void Dialog_GroupsList::on_button_group_delete()
 void Dialog_GroupsList::on_button_group_new()
 {
   Dialog_NewGroup* dialog = 0;
-  try
-  {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_new_group");
-
-    refXml->get_widget_derived("dialog_new_group", dialog);
-  }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
+  Utils::get_glade_widget_derived_with_warning(dialog);
 
   dialog->set_icon_name("glom");
   dialog->set_transient_for(*this);
-  int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_new_group");
+  const int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_new_group");
 
   const Glib::ustring group_name = dialog->m_entry_name->get_text();
 
@@ -298,16 +292,7 @@ void Dialog_GroupsList::on_button_group_users()
       const Glib::ustring group_name = row[m_model_columns_groups.m_col_name];
 
       Dialog_UsersList* dialog = 0;
-      try
-      {
-        Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_users");
-
-        refXml->get_widget_derived("window_users", dialog);
-      }
-      catch(const Gtk::BuilderError& ex)
-      {
-        std::cerr << ex.what() << std::endl;
-      }
+      Utils::get_glade_widget_derived_with_warning(dialog);
 
       dialog->set_icon_name("glom");
       dialog->set_transient_for(*this);

@@ -32,6 +32,9 @@ class Dialog_GroupBy_SortFields
  : public Dialog_Layout //It has some useful stuff
 {
 public:
+  static const char* glade_id;
+  static const bool glade_developer;
+
   Dialog_GroupBy_SortFields(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_GroupBy_SortFields();
 

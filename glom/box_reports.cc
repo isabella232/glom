@@ -25,6 +25,9 @@
 namespace Glom
 {
 
+const char* Box_Reports::glade_id("box_reports");
+const bool Box_Reports::glade_developer(true);
+
 Box_Reports::Box_Reports(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Box_DB_Table(cobject, builder),
   m_colReportName(0),

@@ -26,6 +26,9 @@
 namespace Glom
 {
 
+const char* Box_Tables::glade_id("box_navigation_tables");
+const bool Box_Tables::glade_developer(false);
+
 Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Box_WithButtons(cobject, builder),
   m_pCheckButtonShowHidden(0),

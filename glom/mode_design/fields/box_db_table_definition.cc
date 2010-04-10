@@ -43,10 +43,7 @@ void Box_DB_Table_Definition::init()
 {
   //m_strHint = _("Click [Edit] to edit the field definition in more detail.\nUse the Mode menu to see Data or perform a Find.");
 
-  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_field_definition_edit");
-  if(refXml)
-    refXml->get_widget_derived("window_field_definition_edit", m_pDialog);
-
+  Utils::get_glade_widget_derived_with_warning(m_pDialog);
   m_pDialog->set_icon_name("glom");
 
   add_view(m_pDialog); //Give it access to the document.

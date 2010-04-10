@@ -40,7 +40,7 @@
 #include <glibmm/i18n.h>
 
 namespace Glom
-{
+{	
   
 FlowTableWithFields::Info::Info()
 : m_first(0),
@@ -1585,32 +1585,21 @@ bool FlowTableWithFields::dnd_add_to_layout_group(const sharedptr<LayoutItem>& i
 
 void FlowTableWithFields::on_menu_properties_activate()
 {
-  try
+  Dialog_FlowTable* dialog = 0;
+  Utils::get_glade_widget_derived_with_warning(dialog);
+  
+  dialog->set_flowtable(this);
+  const int response = dialog->run();
+  if(response == Gtk::RESPONSE_OK)
   {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_flowtable");
-
-    Dialog_FlowTable* dialog = 0;
-    refXml->get_widget_derived("dialog_flowtable", dialog);
-
-    if(dialog)
-    {
-      dialog->set_flowtable(this);
-      const int response = dialog->run();
-      if(response == Gtk::RESPONSE_OK)
-      {
-        sharedptr<LayoutGroup> group = get_layout_group();
-        group->set_columns_count( dialog->get_columns_count() );
-        group->set_title(dialog->get_title());
-        signal_layout_changed().emit();
-      }
-
-      delete dialog;
-    }
+    sharedptr<LayoutGroup> group = get_layout_group();
+    group->set_columns_count( dialog->get_columns_count() );
+    group->set_title(dialog->get_title());
+    signal_layout_changed().emit();
   }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
+
+  delete dialog;
+ 
 }
 
 void FlowTableWithFields::on_menu_delete_activate()
@@ -1659,39 +1648,28 @@ bool FlowTableWithFields::on_button_press_event(GdkEventButton *event)
 
 sharedptr<LayoutItem_Portal> FlowTableWithFields::get_portal_relationship()
 {
-  try
+  Dialog_ChooseRelationship* dialog = 0;
+  Utils::get_glade_widget_derived_with_warning(dialog);
+    
+  Document* pDocument = static_cast<Document*>(get_document());
+  dialog->set_document(pDocument, m_table_name);
+  //TODO: dialog->set_transient_for(*get_app_window());
+  const int response = dialog->run();
+  dialog->hide();
+  if(response == Gtk::RESPONSE_OK)
   {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_relationship");
-    
-    Dialog_ChooseRelationship* dialog = 0;
-    refXml->get_widget_derived("dialog_choose_relationship", dialog);
-    
-    if(dialog)
+    //Get the chosen relationship:
+    sharedptr<Relationship> relationship  = dialog->get_relationship_chosen();
+    if(relationship)
     {
-      Document* pDocument = static_cast<Document*>(get_document());
-      dialog->set_document(pDocument, m_table_name);
-      //TODO: dialog->set_transient_for(*get_app_window());
-      const int response = dialog->run();
-      dialog->hide();
-      if(response == Gtk::RESPONSE_OK)
-      {
-        //Get the chosen relationship:
-        sharedptr<Relationship> relationship  = dialog->get_relationship_chosen();
-        if(relationship)
-        {
-          sharedptr<LayoutItem_Portal> layout_item = sharedptr<LayoutItem_Portal>::create();
-          layout_item->set_relationship(relationship);
-          return layout_item;
-        }
-      }
-      
+      sharedptr<LayoutItem_Portal> layout_item = sharedptr<LayoutItem_Portal>::create();
+      layout_item->set_relationship(relationship);
       delete dialog;
+      return layout_item;
     }
   }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
+      
+  delete dialog;
   return sharedptr<LayoutItem_Portal>();
 }
 

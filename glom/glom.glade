@@ -1659,7 +1659,8 @@ The data in the field was not recognized. Please try to correct the data or reve
       <action-widget response="-11">button11</action-widget>
     </action-widgets>
   </object>
-    <object class="GtkDialog" id="dialog_choose_date">
+
+  <object class="GtkDialog" id="dialog_choose_date">
     <property name="title" translatable="yes">Choose Date</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">

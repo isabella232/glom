@@ -15,7 +15,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-glom_glom_SOURCES =							\
+glom_source_files = \
 	glom/application.cc						\
 	glom/application.h						\
 	glom/base_db.cc							\
@@ -48,7 +48,6 @@ glom_glom_SOURCES =							\
 	glom/glom_postgres.h						\
 	glom/glom_privs.cc						\
 	glom/glom_privs.h						\
-	glom/main.cc							\
 	glom/notebook_glom.cc						\
 	glom/notebook_glom.h						\
 	glom/signal_reemitter.h						\
@@ -208,7 +207,7 @@ glom_glom_SOURCES =							\
 	glom/utility_widgets/db_adddel/glom_db_treemodel.h
 
 if !GLOM_ENABLE_CLIENT_ONLY
-glom_glom_SOURCES +=							\
+glom_source_files +=							\
 	glom/mode_design/dialog_database_preferences.cc				\
 	glom/mode_design/dialog_database_preferences.h				\
 	glom/mode_design/dialog_initial_password.cc					\
@@ -342,21 +341,27 @@ glom_glom_SOURCES +=							\
 endif
 
 if !GLOM_ENABLE_MAEMO
-glom_glom_SOURCES +=							\
+glom_source_files +=							\
 	glom/navigation/box_tables.cc					\
 	glom/navigation/box_tables.h
 else
-glom_glom_SOURCES +=							\
+glom_source_files +=							\
 	glom/navigation/maemo/pickerbutton_table.cc			\
 	glom/navigation/maemo/pickerbutton_table.h
 endif
 
-glom_glom_LDADD = $(win_resfile) \
+glom_glom_SOURCES =							\
+	glom/main.cc							\
+	$(glom_source_files)
+
+glom_all_libs = $(win_resfile) \
 	glom/libglom/libglom-$(GLOM_ABI_VERSION).la \
 	$(GLOM_LIBS) $(PYTHON_LIBS) $(BOOST_PYTHON_LIBS) $(INTLLIBS)
 if !GLOM_ENABLE_MAEMO
-glom_glom_LDADD += -lgettextpo
+glom_all_libs += -lgettextpo
 endif
+
+glom_glom_LDADD = $(glom_all_libs)
 
 if HOST_WIN32
 # Suppress console window

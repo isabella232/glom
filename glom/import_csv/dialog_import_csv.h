@@ -44,6 +44,9 @@ class Dialog_Import_CSV
     public Base_DB
 {
 public:
+  static const char* glade_id;
+  static const bool glade_developer;
+
   Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 
   void import(const Glib::ustring& uri, const Glib::ustring& into_table);

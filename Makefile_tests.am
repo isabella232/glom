@@ -30,6 +30,7 @@ check_PROGRAMS =						\
 	tests/test_python_execute_script \
 	tests/import/test_parsing \
 	tests/import/test_signals \
+	tests/test_glade_derived_instantiation \
 	tests/glade_toplevels_instantiation
 
 TESTS =	tests/test_parsing_time	\
@@ -37,11 +38,13 @@ TESTS =	tests/test_parsing_time	\
 	tests/test_dtd_file_validation.sh \
 	tests/test_glade_file_validation.sh \
 	tests/test_glade_toplevels_instantiation.sh \
+	tests/test_glade_derived_instantiation \
 	tests/test_load_python_library \
 	tests/test_python_module \
 	tests/test_python_execute_func \
 	tests/test_python_execute_func_date \
 	tests/test_python_execute_script
+	
 # These hang most of the time, but not always:
 #	tests/import/test_parsing \
 #	tests/import/test_signals
@@ -83,6 +86,7 @@ tests_import_test_signals_SOURCES =	\
 	tests/import/utils.cc\
 	tests/import/utils.h\
 	tests/import/test_signals.cc
+tests_test_glade_derived_instantiation_SOURCES = tests/test_glade_derived_instantiation.cc $(glom_source_files)
 
 glom_libglom_test_connectionpool_LDADD = $(tests_ldadd)
 glom_libglom_test_document_LDADD = $(tests_ldadd)
@@ -125,3 +129,4 @@ tests_test_python_execute_func_date_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON
 tests_test_python_execute_script_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
 tests_import_test_parsing_LDADD = $(LIBGLOM_LIBS) $(GLOM_LIBS)
 tests_import_test_signals_LDADD = $(LIBGLOM_LIBS) $(GLOM_LIBS)
+tests_test_glade_derived_instantiation_LDADD = $(glom_all_libs)

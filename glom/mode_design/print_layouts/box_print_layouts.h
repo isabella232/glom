@@ -31,6 +31,9 @@ namespace Glom
 class Box_Print_Layouts : public Box_DB_Table
 {
 public:
+  static const char* glade_id;
+  static const bool glade_developer;
+
   Box_Print_Layouts(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Box_Print_Layouts();
 

@@ -27,6 +27,9 @@
 namespace Glom
 {
 
+const char* Dialog_Fields::glade_id("window_design");
+const bool Dialog_Fields::glade_developer(true);
+
 Dialog_Fields::Dialog_Fields(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Dialog_Design(cobject, builder),
   m_box(0)

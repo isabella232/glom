@@ -35,6 +35,9 @@
 namespace Glom
 {
 
+const char* Dialog_ScriptLibrary::glade_id("dialog_script_library");
+const bool Dialog_ScriptLibrary::glade_developer(true);
+
 Dialog_ScriptLibrary::Dialog_ScriptLibrary(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject)
 {
@@ -92,17 +95,7 @@ void Dialog_ScriptLibrary::on_button_add()
     return;
 
   Dialog_NewScript* dialog = 0;
-  try
-  {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_new_library_script");
-
-    refXml->get_widget_derived("dialog_new_library_script", dialog);
-  }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
-
+  Utils::get_glade_widget_derived_with_warning(dialog);
   dialog->set_icon_name("glom");
   dialog->set_transient_for(*this);
   const int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_new_script");

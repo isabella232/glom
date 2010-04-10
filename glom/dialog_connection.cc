@@ -32,6 +32,9 @@
 namespace Glom
 {
 
+const char* Dialog_Connection::glade_id("dialog_connection");
+const bool Dialog_Connection::glade_developer(false);
+
 Dialog_Connection::Dialog_Connection(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   Base_DB(),

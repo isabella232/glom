@@ -496,31 +496,9 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& ta
 sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field, Document* document, Application* app)
 {
   sharedptr<LayoutItem_Field> result;
-
-  Glib::RefPtr<Gtk::Builder> refXml;
-
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_field");
-  }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-    return result;
-  }
-#else
-  std::auto_ptr<Glib::Error> error;
-  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_field", error);
-  if (error.get())
-  {
-    std::cerr << error->what() << std::endl;
-    return result;
-  }  
-#endif
   
   Dialog_ChooseField* dialog = 0;
-  refXml->get_widget_derived("dialog_choose_field", dialog);
+  Utils::get_glade_widget_derived_with_warning(dialog);
 
   if(dialog)
   {
@@ -546,38 +524,26 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_layout(const sharedptr<const
 {
   sharedptr<LayoutItem_Field> result;
 
-  try
+  Dialog_FieldLayout* dialog = 0;
+  Utils::get_glade_widget_derived_with_warning(dialog);
+
+  add_view(dialog); //Give it access to the document.
+  dialog->set_field(start_field, m_table_name);
+
+  Gtk::Window* parent = get_application();
+  if(parent)
+    dialog->set_transient_for(*parent);
+
+  const int response = dialog->run();
+  dialog->hide();
+  if(response == Gtk::RESPONSE_OK)
   {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_layout_field_properties");
-
-    Dialog_FieldLayout* dialog = 0;
-    refXml->get_widget_derived("dialog_layout_field_properties", dialog);
-
-    if(dialog)
-    {
-      add_view(dialog); //Give it access to the document.
-      dialog->set_field(start_field, m_table_name);
-
-      Gtk::Window* parent = get_application();
-      if(parent)
-        dialog->set_transient_for(*parent);
-
-      const int response = dialog->run();
-      dialog->hide();
-      if(response == Gtk::RESPONSE_OK)
-      {
-        //Get the chosen field:
-        result = dialog->get_field_chosen();
-      }
-
-      remove_view(dialog);
-      delete dialog;
-    }
+    //Get the chosen field:
+    result = dialog->get_field_chosen();
   }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
+
+  remove_view(dialog);
+  delete dialog;
 
   return result;
 }
@@ -676,29 +642,8 @@ const Gtk::Widget* DataWidget::get_data_child_widget() const
 
 void DataWidget::on_button_choose_date()
 {
-  Glib::RefPtr<Gtk::Builder> refXml;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_choose_date");
-  }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-    return;
-  }
-#else
-  std::auto_ptr<Glib::Error> error;
-  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_choose_date", error);
-  if (error.get())
-  {
-    std::cerr << error->what() << std::endl;
-    return;
-  } 
-#endif
-
   DataWidgetChildren::Dialog_ChooseDate* dialog = 0;
-  refXml->get_widget_derived("dialog_choose_date", dialog);
+  Utils::get_glade_widget_derived_with_warning(dialog);
 
   if(dialog)
   {
@@ -735,29 +680,8 @@ bool DataWidget::offer_related_record_id_find(Gnome::Gda::Value& chosen_id)
   //Initialize output variable:
   chosen_id = Gnome::Gda::Value();
 
-  Glib::RefPtr<Gtk::Builder> refXml;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_find_id");
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-    return result;
-  }
-#else
-  std::auto_ptr<Glib::Error> error;
-  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_find_id", error);
-  if (error.get())
-  {
-    std::cerr << error->what() << std::endl;
-    return result;
-  }
-#endif
-
   DataWidgetChildren::Dialog_ChooseID* dialog = 0;
-  refXml->get_widget_derived("dialog_find_id", dialog);
+  Glom::Utils::get_glade_widget_derived_with_warning(dialog);
 
   if(dialog)
   {

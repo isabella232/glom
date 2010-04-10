@@ -25,6 +25,9 @@
 namespace Glom
 {
 
+const char* Dialog_CopyTranslation::glade_id("dialog_translation_copy");
+const bool Dialog_CopyTranslation::glade_developer(true);
+
 Dialog_CopyTranslation::Dialog_CopyTranslation(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_combo_locale(0)

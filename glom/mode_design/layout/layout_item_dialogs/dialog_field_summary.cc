@@ -25,6 +25,9 @@
 namespace Glom
 {
 
+const char* Dialog_FieldSummary::glade_id("dialog_field_summary");
+const bool Dialog_FieldSummary::glade_developer(true);
+
 Dialog_FieldSummary::Dialog_FieldSummary(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_label_field(0),

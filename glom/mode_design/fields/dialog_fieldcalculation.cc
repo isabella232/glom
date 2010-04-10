@@ -32,6 +32,9 @@
 namespace Glom
 {
 
+const char* Dialog_FieldCalculation::glade_id("window_field_calculation");
+const bool Dialog_FieldCalculation::glade_developer(true);
+
 Dialog_FieldCalculation::Dialog_FieldCalculation(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject)
 {

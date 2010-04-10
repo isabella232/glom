@@ -101,6 +101,9 @@ private:
 namespace Glom
 {
 
+const char* Dialog_ExistingOrNew::glade_id("dialog_existing_or_new");
+const bool Dialog_ExistingOrNew::glade_developer(false);
+
 Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject)
 {

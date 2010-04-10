@@ -56,6 +56,9 @@ class Window_Translations;
 class Application : public GlomBakery::App_WithDoc_Gtk
 {
 public:
+  static const char* glade_id;
+  static const bool glade_developer;
+
   Application(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Application();
 

@@ -38,6 +38,9 @@ class Box_Tables
   public Base_DB
 {
 public:
+  static const char* glade_id;
+  static const bool glade_developer;
+
   Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Box_Tables();
 

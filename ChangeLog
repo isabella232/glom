@@ -25,6 +25,19 @@
 
 2010-04-10  Murray Cumming  <murrayc@murrayc.com>
 
+  Glade instantiation: Simplify, make more robust, and test.
+  
+  * glom/glade_utils.h: get_glade_widget_derived_with_warning(), 
+  get_glade_developer_widget_derived_with_warning(): Add method overloads that 
+  don't take an ID. These require the class to have a static glade_id member.
+  This associates the IDs with the class, instead of being in other files, 
+  to avoid duplication and to avoid using the wrong ones.
+  * Many files: Use these new methods, to avoid mentioning glade IDs.
+  * tests/test_glade_derived_instantiation.cc: Try to instantiate all the known 
+  derived glade dialogs.
+  
+2010-04-10  Murray Cumming  <murrayc@murrayc.com>
+
   Notebook properties dialog: Fix a probable crash.
   
 	* glom/base_db.cc: :offer_notebook(): Fix a typo in the glade ID.

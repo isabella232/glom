@@ -42,7 +42,6 @@ class DataWidget
    public View_Composite_Glom
 {
 public:
-  //explicit DataWidget(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   explicit DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ustring& table_name, const Document* document);
   virtual ~DataWidget();
 

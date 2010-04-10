@@ -29,6 +29,9 @@
 namespace Glom
 {
 
+const char* Dialog_ImageObject::glade_id("window_imageobject");
+const bool Dialog_ImageObject::glade_developer(true);
+
 Dialog_ImageObject::Dialog_ImageObject(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_box_title(0),

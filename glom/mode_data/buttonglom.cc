@@ -63,33 +63,21 @@ Application* ButtonGlom::get_application()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void ButtonGlom::on_menu_properties_activate()
 {
-  try
+  Dialog_ButtonScript* dialog = 0;
+  Utils::get_glade_widget_derived_with_warning(dialog);
+
+  sharedptr<LayoutItem_Button> layout_item = 
+    sharedptr<LayoutItem_Button>::cast_dynamic(get_layout_item());
+  dialog->set_script(layout_item, m_table_name);
+  const int response = Glom::Utils::dialog_run_with_help(dialog, "window_button_script");
+  dialog->hide();
+  if(response == Gtk::RESPONSE_OK)
   {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_button_script");
-
-    Dialog_ButtonScript* dialog = 0;
-    refXml->get_widget_derived("window_button_script", dialog);
-
-    if(dialog)
-    {
-      sharedptr<LayoutItem_Button> layout_item = 
-        sharedptr<LayoutItem_Button>::cast_dynamic(get_layout_item());
-      dialog->set_script(layout_item, m_table_name);
-      int response = Glom::Utils::dialog_run_with_help(dialog, "window_button_script");
-      dialog->hide();
-      if(response == Gtk::RESPONSE_OK)
-      {
-        dialog->get_script(layout_item);
-        signal_layout_changed().emit();
-      }
-
-      delete dialog;
-    }
+    dialog->get_script(layout_item);
+    signal_layout_changed().emit();
   }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
+
+  delete dialog;
 }
 
 bool ButtonGlom::on_button_press_event(GdkEventButton *event)

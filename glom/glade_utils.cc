@@ -33,32 +33,17 @@ Dialog_ProgressCreating* get_and_show_pulse_dialog(const Glib::ustring& message,
   if(!parent_window)
     std::cerr << "debug: Glom: get_and_show_pulse_dialog(): parent_window is NULL" << std::endl;
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "window_progress");
-#else  
-  std::auto_ptr<Glib::Error> error;
-  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "window_progress", error);
-#endif
+  Dialog_ProgressCreating* dialog_progress = 0;
+  Utils::get_glade_widget_derived_with_warning(dialog_progress);
+  dialog_progress->set_message(_("Processing"), message);
+  dialog_progress->set_modal();
 
-  if(refXml)
-  {
-    Dialog_ProgressCreating* dialog_progress = 0;
-    refXml->get_widget_derived("window_progress", dialog_progress);
-    if(dialog_progress)
-    {
-      dialog_progress->set_message(_("Processing"), message);
-      dialog_progress->set_modal();
+  if(parent_window)
+    dialog_progress->set_transient_for(*parent_window);
 
-      if(parent_window)
-        dialog_progress->set_transient_for(*parent_window);
+  dialog_progress->show();
 
-      dialog_progress->show();
-
-      return dialog_progress;
-    }
-  }
-
-  return 0;
+  return dialog_progress;
 }
 
 } //namespace Utils

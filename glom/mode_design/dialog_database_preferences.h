@@ -40,6 +40,9 @@ class Dialog_Database_Preferences
     public Base_DB
 {
 public:
+  static const char* glade_id;
+  static const bool glade_developer;
+
   Dialog_Database_Preferences(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_Database_Preferences();
 

@@ -34,6 +34,9 @@ const unsigned int CHUNK_SIZE = 2048;
 namespace Glom
 {
 
+const char* Dialog_Image_Progress::glade_id("dialog_image_progress");
+const bool Dialog_Image_Progress::glade_developer(false);
+
 Dialog_Image_Progress::Dialog_Image_Progress(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject)
 {

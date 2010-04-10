@@ -27,6 +27,9 @@
 namespace Glom
 {
 
+const char* Dialog_Relationships::glade_id("window_design");
+const bool Dialog_Relationships::glade_developer(true);
+
 Dialog_Relationships::Dialog_Relationships(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Dialog_Design(cobject, builder),
   m_box(0)

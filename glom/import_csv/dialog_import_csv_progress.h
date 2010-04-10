@@ -33,6 +33,9 @@ class Dialog_Import_CSV_Progress
     public Base_DB_Table_Data
 {
 public:
+  static const char* glade_id;
+  static const bool glade_developer;
+  
   Dialog_Import_CSV_Progress(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
 
   virtual bool init_db_details(const Glib::ustring& table_name);

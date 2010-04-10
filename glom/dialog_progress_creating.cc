@@ -26,6 +26,9 @@
 namespace Glom
 {
 
+const char* Dialog_ProgressCreating::glade_id("window_progress");
+const bool Dialog_ProgressCreating::glade_developer(false);
+
 Dialog_ProgressCreating::Dialog_ProgressCreating(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Window(cobject),
   m_progress(0),

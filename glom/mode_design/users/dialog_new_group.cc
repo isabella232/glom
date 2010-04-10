@@ -23,6 +23,9 @@
 namespace Glom
 {
 
+const char* Dialog_NewGroup::glade_id("dialog_new_group");
+const bool Dialog_NewGroup::glade_developer(true);
+
 Dialog_NewGroup::Dialog_NewGroup(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_entry_name(0)

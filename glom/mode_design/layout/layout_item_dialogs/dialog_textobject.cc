@@ -29,6 +29,9 @@
 namespace Glom
 {
 
+const char* Dialog_TextObject::glade_id("window_textobject");
+const bool Dialog_TextObject::glade_developer(true);
+
 Dialog_TextObject::Dialog_TextObject(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_box_title(0),

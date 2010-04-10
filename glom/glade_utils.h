@@ -31,6 +31,9 @@ namespace Glom
 namespace Utils
 {
 
+const char* const FILENAME_GLADE("glom.glade");
+const char* const FILENAME_GLADE_DEVELOPER("glom_developer.glade");
+
 inline std::string get_glade_file_path(const std::string& filename)
 {
 #ifdef G_OS_WIN32
@@ -44,43 +47,14 @@ inline std::string get_glade_file_path(const std::string& filename)
 }
 
 template<class T_Widget>
-void get_glade_widget_derived_with_warning(const Glib::ustring& id, T_Widget*& widget)
-{
-  Glib::RefPtr<Gtk::Builder> refXml;
-
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), id);
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
-#else
-  std::auto_ptr<Glib::Error> error;
-  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), id, error);
-  if (error.get())
-  {
-    std::cerr << error->what() << std::endl;
-  }
-#endif
-
-  if(refXml)
-  {
-    refXml->get_widget_derived(id, widget);
-  }
-}
-
-template<class T_Widget>
-void get_glade_developer_widget_derived_with_warning(const Glib::ustring& id, T_Widget*& widget)
+void helper_get_glade_widget_derived_with_warning(const std::string& filename, const Glib::ustring& id, T_Widget*& widget)
 {
   Glib::RefPtr<Gtk::Builder> refXml;
 
   #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), id);
+    refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path(filename), id);
   }
   catch(const Gtk::BuilderError& ex)
   {
@@ -88,7 +62,7 @@ void get_glade_developer_widget_derived_with_warning(const Glib::ustring& id, T_
   }
 #else
   std::auto_ptr<Glib::Error> error;
-  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), id, error);
+  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path(filename), id, error);
   if (error.get())
   {
     std::cerr << error->what() << std::endl;
@@ -102,14 +76,34 @@ void get_glade_developer_widget_derived_with_warning(const Glib::ustring& id, T_
 }
 
 template<class T_Widget>
-void get_glade_widget_with_warning(const Glib::ustring& id, T_Widget*& widget)
+void helper_get_glade_widget_derived_with_warning(const Glib::ustring& id, T_Widget*& widget)
+{
+  helper_get_glade_widget_derived_with_warning("glom.glade", id, widget);
+}
+
+/** This should be used with classes that have a static glade_id member.
+ */
+template<class T_Widget>
+void get_glade_widget_derived_with_warning(T_Widget*& widget)
+{
+  widget = 0;
+  
+  if(T_Widget::glade_developer)
+    helper_get_glade_widget_derived_with_warning(FILENAME_GLADE_DEVELOPER, T_Widget::glade_id, widget);
+  else
+    helper_get_glade_widget_derived_with_warning(FILENAME_GLADE, T_Widget::glade_id, widget);
+}
+
+
+template<class T_Widget>
+void get_glade_widget_with_warning(const std::string& filename, const Glib::ustring& id, T_Widget*& widget)
 {
   Glib::RefPtr<Gtk::Builder> refXml;
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), id);
+    refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path(filename), id);
   }
   catch(const Glib::Error& ex)
   {
@@ -117,7 +111,7 @@ void get_glade_widget_with_warning(const Glib::ustring& id, T_Widget*& widget)
   }
 #else
   std::auto_ptr<Glib::Error> error;
-  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), id, error);
+  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path(filename), id, error);
   if (error.get())
   {
     std::cerr << error->what() << std::endl;
@@ -128,6 +122,12 @@ void get_glade_widget_with_warning(const Glib::ustring& id, T_Widget*& widget)
   {
     refXml->get_widget(id, widget);
   }
+}
+
+template<class T_Widget>
+void get_glade_widget_with_warning(const Glib::ustring& id, T_Widget*& widget)
+{
+  get_glade_widget_with_warning(FILENAME_GLADE, id, widget);
 }
 
 Dialog_ProgressCreating* get_and_show_pulse_dialog(const Glib::ustring& message, Gtk::Window* parent_window);

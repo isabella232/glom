@@ -36,6 +36,9 @@ class Dialog_IdentifyOriginal
     public View_Glom
 {
 public:
+  static const char* glade_id;
+  static const bool glade_developer;
+
   Dialog_IdentifyOriginal(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_IdentifyOriginal();
 

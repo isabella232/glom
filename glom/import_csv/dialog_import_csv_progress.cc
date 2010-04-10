@@ -27,6 +27,9 @@
 namespace Glom
 {
 
+const char* Dialog_Import_CSV_Progress::glade_id("dialog_import_csv_progress");
+const bool Dialog_Import_CSV_Progress::glade_developer(false);
+
 Dialog_Import_CSV_Progress::Dialog_Import_CSV_Progress(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject), 
   m_data_source(0), 

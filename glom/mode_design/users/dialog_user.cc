@@ -26,6 +26,9 @@
 namespace Glom
 {
 
+const char* Dialog_User::glade_id("dialog_user");
+const bool Dialog_User::glade_developer(true);
+
 Dialog_User::Dialog_User(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject)
 {

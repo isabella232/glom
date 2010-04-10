@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_MODE_DESIGN_USERS_DIALOG_NEWGROUP_H
-#define GLOM_MODE_DESIGN_USERS_DIALOG_NEWGROUP_H
+#ifndef GLOM_MODE_DESIGN_USERS_DIALOG_CHOOSE_USER_H
+#define GLOM_MODE_DESIGN_USERS_DIALOG_CHOOSE_USER_H
 
 #include <gtkmm/builder.h>
 #include <gtkmm/dialog.h>
@@ -32,6 +32,9 @@ namespace Glom
 class Dialog_ChooseUser : public Gtk::Dialog
 {
 public:
+  static const char* glade_id;
+  static const bool glade_developer;
+
   Dialog_ChooseUser(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_ChooseUser();
 
@@ -46,5 +49,5 @@ private:
 
 } //namespace Glom
 
-#endif //GLOM_MODE_DESIGN_USERS_DIALOG_NEWGROUP_H
+#endif //GLOM_MODE_DESIGN_USERS_DIALOG_CHOOSER_USER_H
 

@@ -613,15 +613,9 @@ void Box_Data_List::on_dialog_layout_hide()
 
 Dialog_Layout* Box_Data_List::create_layout_dialog() const
 {
-  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_data_layout"); //TODO: Use a generic layout dialog?
-  if(refXml)
-  {
-    Dialog_Layout_List* dialog = 0;
-    refXml->get_widget_derived("window_data_layout", dialog);
-    return dialog;
-  }
-
-  return 0;
+  Dialog_Layout_List* dialog = 0;
+  Glom::Utils::get_glade_widget_derived_with_warning(dialog);
+  return dialog;
 }
 
 void Box_Data_List::prepare_layout_dialog(Dialog_Layout* dialog)

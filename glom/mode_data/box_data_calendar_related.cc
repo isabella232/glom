@@ -24,6 +24,7 @@
 #include <glom/application.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/frame_glom.h> //For show_ok_dialog()
+#include <glom/glade_utils.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -356,17 +357,9 @@ void Box_Data_Calendar_Related::on_dialog_layout_hide()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 Dialog_Layout* Box_Data_Calendar_Related::create_layout_dialog() const
 {
-  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(
-      GLOM_PKGDATADIR G_DIR_SEPARATOR_S "glade" G_DIR_SEPARATOR_S "glom_developer.glade",
-      "window_data_layout");
-  if(refXml)
-  {
-    Dialog_Layout_Calendar_Related* dialog = 0;
-    refXml->get_widget_derived("window_data_layout", dialog);
-    return dialog;
-  }
-
-  return 0;
+  Dialog_Layout_Calendar_Related* dialog = 0;
+  Glom::Utils::get_glade_widget_derived_with_warning(dialog);
+  return dialog;
 }
 
 void Box_Data_Calendar_Related::prepare_layout_dialog(Dialog_Layout* dialog)

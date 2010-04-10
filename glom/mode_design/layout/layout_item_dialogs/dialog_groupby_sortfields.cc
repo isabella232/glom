@@ -27,6 +27,9 @@
 namespace Glom
 {
 
+const char* Dialog_GroupBy_SortFields::glade_id("dialog_groupby_sort_fields");
+const bool Dialog_GroupBy_SortFields::glade_developer(true);
+
 Dialog_GroupBy_SortFields::Dialog_GroupBy_SortFields(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Dialog_Layout(cobject, builder, false /* means no table title */),
   m_treeview_fields(0),

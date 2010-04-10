@@ -29,6 +29,9 @@ namespace Glom
 namespace DataWidgetChildren
 {
 
+const char* Dialog_ChooseDate::glade_id("dialog_choose_date");
+const bool Dialog_ChooseDate::glade_developer(false);
+
 Dialog_ChooseDate::Dialog_ChooseDate()
 : m_calendar(0)
 {
