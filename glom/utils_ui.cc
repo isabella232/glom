@@ -94,7 +94,7 @@ namespace Glom
 // Run dialog and response on Help if appropriate.
 int Utils::dialog_run_with_help(Gtk::Dialog* dialog, const Glib::ustring& id)
 {
-  const int result = dialog->run();
+  int result = dialog->run();
   
   //Maemo has no help system since Maemo 5, 
   //so we hide the buttons in anyway.
