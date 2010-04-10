@@ -52,7 +52,23 @@ enum DefaultSpacings
   #endif //GLOM_ENABLE_MAEMO
 };
 
+/**
+ * Show the dialog, blocking until there is a non-help response,
+ * showing the appropriate help page if the help button is clicked.
+ */ 
 int dialog_run_with_help(Gtk::Dialog* dialog, const Glib::ustring& id = Glib::ustring());
+
+/**
+ * Show the dialog, blocking until there is a non-help response,
+ * showing the appropriate help page if the help button is clicked.
+ *  This requires the dialog class to have a static 
+ * glade_id member variable, which we reuse as the help ID.
+ */ 
+template<class T_Dialog>
+int dialog_run_with_help(T_Dialog* dialog)
+{
+  return dialog_run_with_help(dialog, T_Dialog::glade_id);
+}
 
 // Maemo has no help system since Maemo 5 (Fremantle).
 #ifndef GLOM_ENABLE_MAEMO

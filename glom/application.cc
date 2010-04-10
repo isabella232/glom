@@ -717,7 +717,7 @@ void Application::open_browsed_document(const EpcServiceInfo* server, const Glib
     dialog_connection->set_transient_for(*this);
     dialog_connection->set_connect_to_browsed();
     dialog_connection->set_database_name(service_name);
-    const int response = Glom::Utils::dialog_run_with_help(dialog_connection, "dialog_connection");
+    const int response = Glom::Utils::dialog_run_with_help(dialog_connection);
     dialog_connection->hide();
     if(response != Gtk::RESPONSE_OK)
       keep_trying = false;
@@ -1397,7 +1397,7 @@ bool Application::offer_new_or_existing()
   bool ask_again = true;
   while(ask_again)
   {
-    const int response_id = Utils::dialog_run_with_help(dialog.get(), "dialog_existing_or_new");
+    const int response_id = Utils::dialog_run_with_help(dialog_raw);
     dialog->hide();
 
     if(response_id == Gtk::RESPONSE_ACCEPT)
@@ -2424,7 +2424,7 @@ void Application::on_menu_developer_changelanguage()
   
   dialog->set_icon_name("glom");
   dialog->set_transient_for(*this);
-  const int response =       Glom::Utils::dialog_run_with_help(dialog, "dialog_change_language");
+  const int response = Glom::Utils::dialog_run_with_help(dialog);
   dialog->hide();
 
   if(response == Gtk::RESPONSE_OK)

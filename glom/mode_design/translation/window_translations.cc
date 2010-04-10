@@ -140,7 +140,7 @@ void Window_Translations::on_button_identify()
   dialog->load_from_document(); //Doesn't seem to happen otherwise.
   dialog->set_icon_name("glom");
   dialog->set_transient_for(*this);
-  const int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_translation_identify_original");
+  const int response = Glom::Utils::dialog_run_with_help(dialog);
   dialog->hide();
 
   if(response == Gtk::RESPONSE_OK)
@@ -362,7 +362,7 @@ void Window_Translations::on_button_copy_translation()
   Utils::get_glade_widget_derived_with_warning(dialog);
   dialog->set_icon_name("glom");
   dialog->set_transient_for(*this);
-  const int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_translation_copy");
+  const int response = Glom::Utils::dialog_run_with_help(dialog);
   dialog->hide();
 
   if(response == Gtk::RESPONSE_OK)

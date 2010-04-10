@@ -98,7 +98,7 @@ void Dialog_ScriptLibrary::on_button_add()
   Utils::get_glade_widget_derived_with_warning(dialog);
   dialog->set_icon_name("glom");
   dialog->set_transient_for(*this);
-  const int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_new_script");
+  const int response = Glom::Utils::dialog_run_with_help(dialog);
   dialog->hide();
   if(response != Gtk::RESPONSE_OK)
     return;

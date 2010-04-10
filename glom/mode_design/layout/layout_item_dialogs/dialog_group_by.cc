@@ -141,7 +141,7 @@ void Dialog_GroupBy::on_button_field_sort_by()
   {
     m_dialog_choose_sort_fields->set_fields(m_table_name, m_layout_item->get_fields_sort_by());
 
-    const int response = Glom::Utils::dialog_run_with_help(m_dialog_choose_sort_fields, "dialog_groupby_sort_fields");
+    const int response = Glom::Utils::dialog_run_with_help(m_dialog_choose_sort_fields);
     m_dialog_choose_sort_fields->hide();
     if(response == Gtk::RESPONSE_OK && m_dialog_choose_sort_fields->get_modified())
     {
@@ -164,7 +164,7 @@ void Dialog_GroupBy::on_button_secondary_fields()
   {
     m_dialog_choose_secondary_fields->set_fields(m_table_name, m_layout_item->m_group_secondary_fields->m_list_items);
 
-    const int response = Glom::Utils::dialog_run_with_help(m_dialog_choose_secondary_fields, "dialog_groupby_secondary_fields");
+    const int response = Glom::Utils::dialog_run_with_help(m_dialog_choose_secondary_fields);
     m_dialog_choose_secondary_fields->hide();
     if(response == Gtk::RESPONSE_OK && m_dialog_choose_secondary_fields->get_modified())
     {

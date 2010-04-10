@@ -902,7 +902,7 @@ void Frame_Glom::on_menu_file_import()
       add_view(dialog);
 
       dialog->import(file_chooser.get_uri(), m_table_name);
-      while(Glom::Utils::dialog_run_with_help(dialog, "dialog_import_csv") == Gtk::RESPONSE_ACCEPT)
+      while(Glom::Utils::dialog_run_with_help(dialog) == Gtk::RESPONSE_ACCEPT)
       {
         dialog->hide();
 
@@ -1687,7 +1687,7 @@ void Frame_Glom::on_menu_developer_database_preferences()
   add_view(dialog);
   dialog->load_from_document();
 
-  Glom::Utils::dialog_run_with_help(dialog, "dialog_database_preferences");
+  Glom::Utils::dialog_run_with_help(dialog);
 
   remove_view(dialog);
   delete dialog;
@@ -1751,7 +1751,7 @@ void Frame_Glom::on_menu_developer_relationships_overview()
     m_dialog_relationships_overview->set_transient_for(*(get_app_window()));
     m_dialog_relationships_overview->load_from_document();
 
-    Glom::Utils::dialog_run_with_help(m_dialog_relationships_overview, "dialog_relationships_overview");
+    Glom::Utils::dialog_run_with_help(m_dialog_relationships_overview);
 
     remove_view(m_dialog_relationships_overview);
     delete m_dialog_relationships_overview;
@@ -1795,7 +1795,7 @@ void Frame_Glom::on_menu_developer_users()
   add_view(dialog); //Give it access to the document.
   dialog->load_from_document(); //Update the UI now that it has the document.
 
-  Glom::Utils::dialog_run_with_help(dialog, "window_groups");
+  Glom::Utils::dialog_run_with_help(dialog);
   remove_view(dialog);
   delete dialog;
 
@@ -1879,7 +1879,7 @@ void Frame_Glom::on_menu_developer_script_library()
   dialog->set_transient_for(*(get_app_window()));
   add_view(dialog); //Give it access to the document.
   dialog->load_from_document();
-  Glom::Utils::dialog_run_with_help(dialog, "dialog_script_library"); //TODO: Create the help section.
+  Glom::Utils::dialog_run_with_help(dialog); //TODO: Create the help section.
   dialog->save_to_document();
   remove_view(dialog);
   delete dialog;
@@ -2073,7 +2073,7 @@ bool Frame_Glom::connection_request_initial_password(Glib::ustring& user, Glib::
   bool keep_trying = true;
   while(keep_trying)
   {
-    response = Utils::dialog_run_with_help(dialog, "dialog_new_self_hosted_connection");
+    response = Utils::dialog_run_with_help(dialog);
 
     //Check the password is acceptable:
     if(response == Gtk::RESPONSE_OK)
@@ -2170,7 +2170,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
       m_pDialogConnection->load_from_document(); //Get good defaults.
       m_pDialogConnection->set_transient_for(*get_app_window());
 
-      const int response = Glom::Utils::dialog_run_with_help(m_pDialogConnection, "dialog_connection");
+      const int response = Glom::Utils::dialog_run_with_help(m_pDialogConnection);
       m_pDialogConnection->hide();
 
       if(response == Gtk::RESPONSE_OK)
@@ -2441,7 +2441,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
 
     if(m_pDialogConnection)
     {
-      response = Glom::Utils::dialog_run_with_help(m_pDialogConnection, "dialog_connection");
+      response = Glom::Utils::dialog_run_with_help(m_pDialogConnection);
       m_pDialogConnection->hide();
     }
 

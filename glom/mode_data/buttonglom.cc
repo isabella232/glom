@@ -69,7 +69,7 @@ void ButtonGlom::on_menu_properties_activate()
   sharedptr<LayoutItem_Button> layout_item = 
     sharedptr<LayoutItem_Button>::cast_dynamic(get_layout_item());
   dialog->set_script(layout_item, m_table_name);
-  const int response = Glom::Utils::dialog_run_with_help(dialog, "window_button_script");
+  const int response = Glom::Utils::dialog_run_with_help(dialog);
   dialog->hide();
   if(response == Gtk::RESPONSE_OK)
   {

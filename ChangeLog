@@ -1,5 +1,27 @@
 1.14.0:
 
+2010-04-10  Murray Cumming  <murrayc@murrayc-x61>
+
+  dialog_run_with_help(): Get the help ID from the class.
+  
+  * glom/utils_ui.h: dialog_run_with_help(): Add a templated version that uses 
+  the static glade_id member, to avoid repeating this in the source code. 
+	* Several .cc files: Remove the ID parameter from most uses of 
+	dialog_run_with_help().
+	
+2010-04-10  Murray Cumming  <murrayc@murrayc.com>
+
+  Glade instantiation: Simplify, make more robust, and test.
+  
+  * glom/glade_utils.h: get_glade_widget_derived_with_warning(), 
+  get_glade_developer_widget_derived_with_warning(): Add method overloads that 
+  don't take an ID. These require the class to have a static glade_id member.
+  This associates the IDs with the class, instead of being in other files, 
+  to avoid duplication and to avoid using the wrong ones.
+  * Many files: Use these new methods, to avoid mentioning glade IDs.
+  * tests/test_glade_derived_instantiation.cc: Try to instantiate all the known 
+  derived glade dialogs.
+  
 2010-04-10  Murray Cumming  <murrayc@murrayc.com>
 
   Glade files: Move a client-only dialog to the correct file.
@@ -22,19 +44,6 @@
   
 	* glom/base_db.cc: offer_item_formatting(): Remove a useless use of 
 	Gtk::Builder.
-
-2010-04-10  Murray Cumming  <murrayc@murrayc.com>
-
-  Glade instantiation: Simplify, make more robust, and test.
-  
-  * glom/glade_utils.h: get_glade_widget_derived_with_warning(), 
-  get_glade_developer_widget_derived_with_warning(): Add method overloads that 
-  don't take an ID. These require the class to have a static glade_id member.
-  This associates the IDs with the class, instead of being in other files, 
-  to avoid duplication and to avoid using the wrong ones.
-  * Many files: Use these new methods, to avoid mentioning glade IDs.
-  * tests/test_glade_derived_instantiation.cc: Try to instantiate all the known 
-  derived glade dialogs.
   
 2010-04-10  Murray Cumming  <murrayc@murrayc.com>
 

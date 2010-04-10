@@ -243,7 +243,7 @@ void Dialog_GroupsList::on_button_group_new()
 
   dialog->set_icon_name("glom");
   dialog->set_transient_for(*this);
-  const int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_new_group");
+  const int response = Glom::Utils::dialog_run_with_help(dialog);
 
   const Glib::ustring group_name = dialog->m_entry_name->get_text();
 
@@ -300,7 +300,7 @@ void Dialog_GroupsList::on_button_group_users()
 
       dialog->set_group(group_name);
 
-      Glom::Utils::dialog_run_with_help(dialog, "window_groups");
+      Glom::Utils::dialog_run_with_help(dialog);
 
       remove_view(dialog);
       delete dialog;

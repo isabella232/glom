@@ -189,7 +189,7 @@ void Dialog_UsersList::on_button_user_add()
   //Fill it with the list of users:
   dialog->set_user_list( Privs::get_database_users() );
 
-  const int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_choose_user");
+  const int response = Glom::Utils::dialog_run_with_help(dialog);
 
   const Glib::ustring user = dialog->get_user();
 
@@ -233,7 +233,7 @@ void Dialog_UsersList::on_button_user_new()
   bool keep_trying = true;
   while(keep_trying)
   {
-    response = Glom::Utils::dialog_run_with_help(dialog, "dialog_user");
+    response = Glom::Utils::dialog_run_with_help(dialog);
 
     //Check the password is acceptable:
     if(response == Gtk::RESPONSE_OK)
@@ -295,7 +295,7 @@ void Dialog_UsersList::on_button_user_edit()
       bool keep_trying = true;
       while(keep_trying)
       {
-        response = Glom::Utils::dialog_run_with_help(dialog, "dialog_user");
+        response = Glom::Utils::dialog_run_with_help(dialog);
 
         //Check the password is acceptable:
         if(response == Gtk::RESPONSE_OK)
