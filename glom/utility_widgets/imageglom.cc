@@ -88,7 +88,7 @@ void ImageGlom::set_layout_item(const sharedptr<LayoutItem>& layout_item, const 
 bool ImageGlom::on_button_press_event(GdkEventButton *event)
 {
   GdkModifierType mods;
-  gdk_window_get_pointer( Gtk::Widget::gobj()->window, 0, 0, &mods );
+  gdk_window_get_pointer( gtk_widget_get_window (Gtk::Widget::gobj()), 0, 0, &mods );
 
   //Enable/Disable items.
   //We did this earlier, but get_application is more likely to work now:
