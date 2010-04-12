@@ -69,7 +69,7 @@ ac_cv_boost_python,
  if test x$PYTHON_CPPFLAGS != x; then
    #Note that this expects boost/ to be at some top-level such as /usr/include/
    #We couldn't check for anything else anyway because there's no pkg-config file to tell us where it is
-   CPPFLAGS=$PYTHON_CPPFLAGS $CPPFLAGS
+   CPPFLAGS="$PYTHON_CPPFLAGS $CPPFLAGS"
  fi
  AC_COMPILE_IFELSE(AC_LANG_PROGRAM([[
  #include <boost/python/module.hpp>
@@ -92,11 +92,10 @@ if test "$ac_cv_boost_python" = "yes"; then
     #This previously checked for an exit() function in the boost::python library.
     #That was strange and apparently no longer works. murrayc.
     #AC_CHECK_LIB($ax_lib, exit, [BOOST_PYTHON_LIB=$ax_lib break])
-    AC_LANG_SAVE
-    AC_LANG_CPLUSPLUS
+    AC_LANG_PUSH([C++])
     #Note that this requires PYTHON_CPPFLAGS and PYTHON_LIBS from MM_CHECK_MODULE_PYTHON()
     SAVED_CPPFLAGS=$CPPFLAGS
-    CPPFLAGS=$PYTHON_CPPFLAGS $CPPFLAGS
+    CPPFLAGS="$PYTHON_CPPFLAGS $CPPFLAGS"
     SAVED_LIBS=$LIBS
     LIBS="$LIBS $PYTHON_LIBS -l$ax_lib"
     AC_LINK_IFELSE(
@@ -106,13 +105,13 @@ if test "$ac_cv_boost_python" = "yes"; then
       [BOOST_PYTHON_LIBS="-l$ax_lib"])
     LIBS=$SAVED_LIBS
     CPPFLAGS=$SAVED_CPPFLAGS
-    AC_LANG_RESTORE
+    AC_LANG_POP([C++])
   done
   if test x$BOOST_PYTHON_LIBS != x; then
     AC_MSG_RESULT([boost::python shared library found: $BOOST_PYTHON_LIBS])
   fi
   #TODO: Figure out how to do a simple if else:
-  if test x$BOOST_PYTHON_LIBS == x; then
+  if test "x$BOOST_PYTHON_LIBS" = x; then
     AC_MSG_ERROR([boost::python shared library not found])
   fi
   AC_SUBST(BOOST_PYTHON_LIBS)

@@ -1,4 +1,11 @@
-1.14.0:
+2010-04-12  Murray Cumming  <murrayc@murrayc.com>
+
+    Slight AX_BOOST_PYTHON_MURRAYC() cleanup.
+
+	* macros/ax_boost_python_murrayc.m4: Add necessary quotes, avoid ==,
+    and use AC_LANG_PUSH/AC_LANG_POP instead of deprecated
+    AC_LANG_SAVE/AC_LANG_CPLUSPLUS/AC_LANG_RESTORE. Noticed by Daniel Elstner,
+    though we don't know if this solves any known problems yet.
 
 2010-04-12  Murray Cumming  <murrayc@murrayc.com>
 
@@ -6,38 +13,38 @@
 
 	* glom/application.cc:
 	* glom/frame_glom.cc:
-	* glom/mode_design/users/dialog_users_list.cc: Use the new (in glib 2.16) 
-    C_() macro to provide context for bare uses of "User" and "Developer", 
-    providing some explanation and allowing translators to use translate them 
+	* glom/mode_design/users/dialog_users_list.cc: Use the new (in glib 2.16)
+    C_() macro to provide context for bare uses of "User" and "Developer",
+    providing some explanation and allowing translators to use translate them
     differently, as may be required by some languages.
     Fixes bug #606931 (Urmas, André Klapper)
 
 2010-04-10  Murray Cumming  <murrayc@murrayc-x61>
 
   dialog_run_with_help(): Get the help ID from the class.
-  
-  * glom/utils_ui.h: dialog_run_with_help(): Add a templated version that uses 
-  the static glade_id member, to avoid repeating this in the source code. 
-	* Several .cc files: Remove the ID parameter from most uses of 
+
+  * glom/utils_ui.h: dialog_run_with_help(): Add a templated version that uses
+  the static glade_id member, to avoid repeating this in the source code.
+	* Several .cc files: Remove the ID parameter from most uses of
 	dialog_run_with_help().
-	
+
 2010-04-10  Murray Cumming  <murrayc@murrayc.com>
 
   Glade instantiation: Simplify, make more robust, and test.
-  
-  * glom/glade_utils.h: get_glade_widget_derived_with_warning(), 
-  get_glade_developer_widget_derived_with_warning(): Add method overloads that 
+
+  * glom/glade_utils.h: get_glade_widget_derived_with_warning(),
+  get_glade_developer_widget_derived_with_warning(): Add method overloads that
   don't take an ID. These require the class to have a static glade_id member.
-  This associates the IDs with the class, instead of being in other files, 
+  This associates the IDs with the class, instead of being in other files,
   to avoid duplication and to avoid using the wrong ones.
   * Many files: Use these new methods, to avoid mentioning glade IDs.
-  * tests/test_glade_derived_instantiation.cc: Try to instantiate all the known 
+  * tests/test_glade_derived_instantiation.cc: Try to instantiate all the known
   derived glade dialogs.
-  
+
 2010-04-10  Murray Cumming  <murrayc@murrayc.com>
 
   Glade files: Move a client-only dialog to the correct file.
-   
+
 	* glom/glom_developer.glade:
 	* glom/glom.glade: Move dialog_choose_date to glom.glade.
 	* glom/mode_data/datawidget/datawidget.cc: on_button_choose_date():
@@ -46,21 +53,21 @@
 2010-04-10  Murray Cumming  <murrayc@murrayc.com>
 
   Application: Forget the global instance when it has been deleted.
-  
-  * glom/application.cc: Destructor: reset the static instance to 0, 
+
+  * glom/application.cc: Destructor: reset the static instance to 0,
   to avoid anything from retrieving the pointer to the deleted object.
-  
+
 2010-04-10  Murray Cumming  <murrayc@murrayc.com>
 
   Remove some unused code.
-  
-	* glom/base_db.cc: offer_item_formatting(): Remove a useless use of 
+
+	* glom/base_db.cc: offer_item_formatting(): Remove a useless use of
 	Gtk::Builder.
-  
+
 2010-04-10  Murray Cumming  <murrayc@murrayc.com>
 
   Notebook properties dialog: Fix a probable crash.
-  
+
 	* glom/base_db.cc: :offer_notebook(): Fix a typo in the glade ID.
 	I'm working on code to prevent these kinds of errors, to apply when we branch.
 
@@ -92,8 +99,8 @@
 2010-04-09  Murray Cumming  <murrayc@murrayc.com>
 
   Reports: Fix a crash when opening the secondary fields dialog.
-  
-  * glom/glom_developer.glade: dialog_groupby_secondary_fields: Rename a 
+
+  * glom/glom_developer.glade: dialog_groupby_secondary_fields: Rename a
   button to match what the class's constructor expects.
 
 2010-04-09  Armin Burgmeier  <armin@arbur.net>
@@ -125,41 +132,41 @@
 2010-04-08  Murray Cumming  <murrayc@murrayc.com>
 
   ImageGlom: Move scale_keeping_ratio() somewhere more sensible.
-  
-	* glom/utility_widgets/imageglom.[h|cc]: Move scale_keeping_ratio() to 
+
+	* glom/utility_widgets/imageglom.[h|cc]: Move scale_keeping_ratio() to
 	glom/utils_ui.[h]cc] as Utils::image_scale_keeping_ratio().
 	* glom/utility_widgets/canvas/canvas_image_movable.cc:
 	* glom/utility_widgets/db_adddel/db_adddel.cc:
 	* glom/utility_widgets/flowtable_dnd.cc: Adapted.
-	
+
 2010-04-08  Murray Cumming  <murrayc@murrayc.com>
 
   glom/mode_data/datawidget/: Clean up classes, putting them in a namespace.
-  
-  * glom/mode_data/datawidget/: Removed Glom suffixes from class names 
+
+  * glom/mode_data/datawidget/: Removed Glom suffixes from class names
   and filenames, and put classes in a DataWidgetChildren sub-namespace,
   to make it clearer where we occasionally use these outside of DataWidget.
 
 2010-04-08  Murray Cumming  <murrayc@murrayc.com>
 
   Cleaned glom/utility_widgets/ a little.
-  
+
   * glom/utility_widgets/datawidget.[h|cc]: Moved to glom/mode_data/datawidget/
   because it is only used by the data-mode flowtable.
 	* glom/utility_widgets/buttonglom.[h|cc]
-	* glom/utility_widgets/checkglom.[h|cc] 
-	* glom/utility_widgets/combo_as_radio_buttons.[h|cc] 
-	* glom/utility_widgets/combochoices.[h|cc] 
-	* glom/utility_widgets/combochoiceswithtreemodel.[h|cc] 
-	* glom/utility_widgets/comboentryglom.c[h|cc] 
-	* glom/utility_widgets/comboglom.[h|cc] 
-	* glom/utility_widgets/dialog_choose_date.[h|cc] 
-	* glom/utility_widgets/dialog_choose_id.[h|cc] 
-	* glom/utility_widgets/entryglom.[h|cc] 
-	* glom/utility_widgets/labelglom.[h|cc] 
-	* glom/utility_widgets/textviewglom.[h|cc] 
-	* glom/utility_widgets/placeholder-glom.[h|cc]: Also move these to 
-  glom/mode_data/datawidget because they are only used by DataWidget. 
+	* glom/utility_widgets/checkglom.[h|cc]
+	* glom/utility_widgets/combo_as_radio_buttons.[h|cc]
+	* glom/utility_widgets/combochoices.[h|cc]
+	* glom/utility_widgets/combochoiceswithtreemodel.[h|cc]
+	* glom/utility_widgets/comboentryglom.c[h|cc]
+	* glom/utility_widgets/comboglom.[h|cc]
+	* glom/utility_widgets/dialog_choose_date.[h|cc]
+	* glom/utility_widgets/dialog_choose_id.[h|cc]
+	* glom/utility_widgets/entryglom.[h|cc]
+	* glom/utility_widgets/labelglom.[h|cc]
+	* glom/utility_widgets/textviewglom.[h|cc]
+	* glom/utility_widgets/placeholder-glom.[h|cc]: Also move these to
+  glom/mode_data/datawidget because they are only used by DataWidget.
 	* glom/utility_widgets/alignment_justified.[h|cc]:
 	* glom/utility_widgets/table_columns.[h|cc]: Deleted these unused classes.
   * Makefile_glom.am: Adapted.
@@ -204,7 +211,7 @@
 
     Recent Files: Make sure that we remember these for saved-from-example files.
 
-	* glom/application.cc: on_document_load(): Add an extra call to 
+	* glom/application.cc: on_document_load(): Add an extra call to
     document_history_add() after successfully saving from an example.
 
 2010-04-07  Daniel Borgmann  <danielb@openismus.com>
@@ -330,7 +337,7 @@
 
 	Glade instantation test: Make it exit on failure.
 
-	* tests/test_glade_toplevels_instantiation.sh: Use || exit 1, as in 
+	* tests/test_glade_toplevels_instantiation.sh: Use || exit 1, as in
     David's commit to the other files.
 
 2010-03-30  David King  <davidk@openismus.com>
