@@ -86,9 +86,9 @@ void get_glade_widget_derived_with_warning(T_Widget*& widget)
   widget = 0;
   
   if(T_Widget::glade_developer)
-    helper_get_glade_widget_derived_with_warning("glom.glade", T_Widget::glade_id, widget);
-  else
     helper_get_glade_widget_derived_with_warning("glom_developer.glade", T_Widget::glade_id, widget);
+  else
+    helper_get_glade_widget_derived_with_warning("glom.glade", T_Widget::glade_id, widget);
 }
 
 
