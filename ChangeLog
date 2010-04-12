@@ -1,3 +1,11 @@
+2010-04-12  Daniel Elstner  <danielk@openismus.com>
+
+	Further clean up AX_BOOST_PYTHON_MURRAYC
+
+	* macros/ax_boost_python_murrayc.m4: Simplify the logic of the checks
+	and clean up the Bourne shell code.  Also, abort with a fatal error
+	if the boost::python headers or library could not be found.
+
 2010-04-12  Murray Cumming  <murrayc@murrayc.com>
 
     Slight AX_BOOST_PYTHON_MURRAYC() cleanup.
