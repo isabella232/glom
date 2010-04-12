@@ -1,5 +1,24 @@
 2010-04-12  Murray Cumming  <murrayc@murrayc.com>
 
+  Python calculations and scripts: Fix regression in use of date and time fields.
+  
+	* glom/libglom/python_embed/py_glom_record.[h|cc]:
+	Change PyGlomRecord_SetFields() to a member set_fields() method, and making 
+	more of the class private, finishing our conversion to boost::python.
+	* glom/libglom/python_embed/py_glom_related.[h|cc]: 
+	Change PyGlomRelated_SetRelationships() to a set_relationships methods.
+	* glom/libglom/python_embed/py_glom_relatedrecord.[h|cc]:
+	Changed PyGlomRelatedRecord_SetRelationship() to a set_relationship() method.
+	
+	* glom/python_embed/glom_python.cc: glom_pygda_value_from_pyobject():
+  Handle date, time, timestamp, geometric point values, whose code had been 
+  commented out since the port to boost::python.
+	This fixes the test added in the previous commit, so glom calculations and 
+	scripts can again (it broke in unstable Glom 1.13) use date and time field 
+	values from the record.
+
+2010-04-12  Murray Cumming  <murrayc@murrayc.com>
+
   Added test showing problem with date fields in python calculations.
   
 	* tests/test_python_execute_func_date.cc: Added a test of dates as input 

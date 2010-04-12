@@ -387,7 +387,7 @@ void glom_execute_python_function_implementation(const Glib::ustring& func_impl,
   if(pParam)
   {
     //Fill the record's details:
-    PyGlomRecord_SetFields(pParam, field_values, pDocument, table_name, key_field, key_field_value, opened_connection);
+    pParam->set_fields(field_values, pDocument, table_name, key_field, key_field_value, opened_connection);
     pParam->set_read_only();
   }
   
@@ -427,7 +427,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   if(pParam)
   {
     //Fill the record's details:
-    PyGlomRecord_SetFields(pParam, field_values, pDocument, table_name, key_field, key_field_value, opened_connection);
+    pParam->set_fields(field_values, pDocument, table_name, key_field, key_field_value, opened_connection);
   }
   
   const boost::python::object pyResultCpp = glom_python_call(result_type, pDocument, func_impl, objRecord);

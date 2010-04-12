@@ -96,7 +96,7 @@ boost::python::object PyGlomRelated::getitem(const boost::python::object& cppite
                 if(!Conversions::value_is_empty(from_key_value)) //Do not link on null-values. That would cause us to link on 0, or "0".
                   key_value_sqlized = from_key_field->sql(from_key_value);
 
-                PyGlomRelatedRecord_SetRelationship(pyRelatedRecord, iterFind->second, key_value_sqlized, record->m_document);
+                pyRelatedRecord->set_relationship(iterFind->second, key_value_sqlized, record->m_document);
 
                 //Store it in the cache:
                 boost::python::object objectRelatedRecord(pyRelatedRecord);
@@ -126,9 +126,9 @@ static void Related_HandlePythonError()
 */
 
 
-void PyGlomRelated_SetRelationships(PyGlomRelated* self, const PyGlomRelated::type_map_relationships& relationships)
+void PyGlomRelated::set_relationships(const PyGlomRelated::type_map_relationships& relationships)
 {
-  self->m_map_relationships = relationships;
+  m_map_relationships = relationships;
 }
 
 } //namespace Glom

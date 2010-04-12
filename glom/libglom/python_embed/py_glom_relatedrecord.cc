@@ -248,13 +248,11 @@ boost::python::object PyGlomRelatedRecord::max(const std::string& field_name) co
   return generic_aggregate(field_name, "max");
 }
 
-void PyGlomRelatedRecord_SetRelationship(PyGlomRelatedRecord* self, const sharedptr<const Relationship>& relationship, const Glib::ustring& from_key_value_sqlized,  Document* document)
+void PyGlomRelatedRecord::set_relationship(const sharedptr<const Relationship>& relationship, const Glib::ustring& from_key_value_sqlized,  Document* document)
 {
-  self->m_relationship = relationship;
-
-  self->m_from_key_value_sqlized = from_key_value_sqlized;
-
-  self->m_document = document;
+  m_relationship = relationship;
+  m_from_key_value_sqlized = from_key_value_sqlized;
+  m_document = document;
 }
 
 } //namespace Glom

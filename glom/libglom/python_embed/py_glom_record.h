@@ -57,17 +57,25 @@ public:
   boost::python::object getitem(const boost::python::object& item);
   void setitem(const boost::python::object& /* key */, const boost::python::object& /* value */);
 
+  //Available, for instance, in python via record["name_first"]
+  typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_field_values;
+
+  void set_fields(const PyGlomRecord::type_map_field_values& field_values,
+    Document* document,
+    const Glib::ustring& table_name,
+    const sharedptr<const Field>& key_field,
+    const Gnome::Gda::Value& key_field_value,
+    const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection);
+
 public:
   Document* m_document;
   Glib::ustring m_table_name;
+  type_map_field_values m_map_field_values;
+private:
   sharedptr<const Field> m_key_field;
   Gnome::Gda::Value m_key_field_value;
 
   boost::python::object m_related; //Actually a PyGlomRelated
-
-  //Available, for instance, in python via record["name_first"]
-  typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_field_values;
-  type_map_field_values m_map_field_values;
 
   Glib::RefPtr<Gnome::Gda::Connection> m_connection;
   
@@ -75,13 +83,7 @@ private:
   bool m_read_only;
 };
 
-void PyGlomRecord_SetFields(PyGlomRecord* self,
-  const PyGlomRecord::type_map_field_values& field_values,
-  Document* document,
-  const Glib::ustring& table_name,
-  const sharedptr<const Field>& key_field,
-  const Gnome::Gda::Value& key_field_value,
-  const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection);
+
 
 } //namespace Glom
 

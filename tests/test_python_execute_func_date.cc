@@ -34,15 +34,6 @@ void execute_func_with_date_return_value()
 
   //std::cout << "value=" << value.to_string() << std::endl;
 }
-
-/*
-TODO: Test this too:
-"from dateutil.relativedelta import relativedelta\n"
-                            "import datetime\n"
-                            "today = datetime.date.today()\n"
-                            "date_of_birth = record[\"test_field\"]
-                            "rd = relativedelta(today, date_of_birth)
-*/
                             
 void execute_func_with_date_input_value()
 {
@@ -74,12 +65,49 @@ void execute_func_with_date_input_value()
   //std::cout << "value=" << value.to_string() << std::endl;
 }
 
+/* This would require the extra dateutil python module.
+void execute_func_with_date_input_value_relativedelta()
+{
+  const char* calculation = "from dateutil.relativedelta import relativedelta\n"
+                            "import datetime\n"
+                            "today = datetime.date.today()\n"
+                            "date_of_birth = record[\"test_field\"]\n"
+                            "rd = relativedelta(today, date_of_birth)\n"
+                            "return rd.year";
+  Glom::type_map_fields field_values;
+  const Glib::Date input_date = Glib::Date(11, Glib::Date::MAY, 1973);
+  field_values["test_field"] = Gnome::Gda::Value(input_date);
+  Glib::RefPtr<Gnome::Gda::Connection> connection;
+
+  //Execute a python function:
+  const Gnome::Gda::Value value = Glom::glom_evaluate_python_function_implementation(
+    Glom::Field::TYPE_NUMERIC, calculation, field_values,
+    0, "",
+    Glom::sharedptr<Glom::Field>(), Gnome::Gda::Value(), // primary key details. Not used in this test.
+    connection);
+
+  //std::cout << "type=" << g_type_name(value.get_value_type()) << std::endl;
+
+  //Check that the return value is of the expected type:
+  g_assert(value.get_value_type() == GDA_TYPE_NUMERIC);
+
+  //Check that the return value is of the expected value:
+  g_assert(value.get_numeric());
+  g_assert(value.get_numeric()->number);
+  //std::cout << "GdaNumeric number=" << value.get_numeric()->number << std::endl;
+  //g_assert(value.get_numeric()->number == std::string("1973"));
+
+  std::cout << "value=" << value.to_string() << std::endl;
+}
+*/
+
 int main()
 {
   Glom::libglom_init(); //Also initializes python.
 
   execute_func_with_date_return_value();
   execute_func_with_date_input_value();
+  //execute_func_with_date_input_value_relativedelta();
 
   return EXIT_SUCCESS;
 }
