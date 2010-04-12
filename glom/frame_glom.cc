@@ -1521,9 +1521,10 @@ void Frame_Glom::on_notebook_find_criteria(const Glib::ustring& where_clause)
 void Frame_Glom::on_userlevel_changed(AppState::userlevels userlevel)
 {
   //show user level:
-  Glib::ustring user_level_name = _("Operator");
+  //The _C macro provides translator context.
+  Glib::ustring user_level_name = C_("Mode", "Operator");
   if(userlevel == AppState::USERLEVEL_DEVELOPER)
-    user_level_name = _("Developer");
+    user_level_name = C_("Mode", "Developer");
 
   if(m_pLabel_userlevel)
     m_pLabel_userlevel->set_text(user_level_name);

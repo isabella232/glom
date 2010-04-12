@@ -41,7 +41,6 @@
 #include <memory> //For std::auto_ptr<>
 #include <giomm.h>
 #include <sstream> //For stringstream.
-#include <glibmm/i18n.h>
 
 #ifdef GLOM_ENABLE_MAEMO
 #include <hildon/hildon.h>
@@ -63,6 +62,7 @@
 
 #include <gtk/gtkuimanager.h>
 
+#include <glibmm/i18n.h>
 
 namespace Glom
 {
@@ -449,11 +449,11 @@ void Application::init_menus()
   m_refActionGroup_Others->add(Gtk::Action::create("Glom_Menu_userlevel", _("_User Level")));
   Gtk::RadioAction::Group group_userlevel;
 
-  m_action_menu_userlevel_developer = Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_userlevel_Developer", _("_Developer"));
+  m_action_menu_userlevel_developer = Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_userlevel_Developer", C_("User-level menu item", "_Developer"));
   m_refActionGroup_Others->add(m_action_menu_userlevel_developer,
                         sigc::mem_fun(*this, &Application::on_menu_userlevel_developer) );
 
-  m_action_menu_userlevel_operator =  Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_userlevel_Operator", _("_Operator"));
+  m_action_menu_userlevel_operator =  Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_userlevel_Operator", C_("User-level menu item", "_Operator"));
   m_refActionGroup_Others->add(m_action_menu_userlevel_operator,
                           sigc::mem_fun(*this, &Application::on_menu_userlevel_operator) );
 #endif // !GLOM_ENABLE_CLIENT_ONLY
@@ -474,7 +474,7 @@ void Application::init_menus()
   m_listTableSensitiveActions.push_back(action);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  action = Gtk::Action::create("Glom_Menu_Developer", _("_Developer"));
+  action = Gtk::Action::create("Glom_Menu_Developer", C_("Developer menu title", "_Developer"));
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action);
 

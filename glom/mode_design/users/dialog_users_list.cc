@@ -64,7 +64,7 @@ Dialog_UsersList::Dialog_UsersList(BaseObjectType* cobject, const Glib::RefPtr<G
 
 
     // Append the View columns:
-    m_treeview_users->append_column(_("User"), m_model_columns_users.m_col_name);
+    m_treeview_users->append_column(C_("Users List", "User"), m_model_columns_users.m_col_name);
   }
 
 

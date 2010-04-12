@@ -1,5 +1,17 @@
 1.14.0:
 
+2010-04-12  Murray Cumming  <murrayc@murrayc.com>
+
+	Provide context for translations.
+
+	* glom/application.cc:
+	* glom/frame_glom.cc:
+	* glom/mode_design/users/dialog_users_list.cc: Use the new (in glib 2.16) 
+    C_() macro to provide context for bare uses of "User" and "Developer", 
+    providing some explanation and allowing translators to use translate them 
+    differently, as may be required by some languages.
+    Fixes bug #606931 (Urmas, André Klapper)
+
 2010-04-10  Murray Cumming  <murrayc@murrayc-x61>
 
   dialog_run_with_help(): Get the help ID from the class.
