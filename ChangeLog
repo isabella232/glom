@@ -1,3 +1,12 @@
+2010-04-12  Murray Cumming  <murrayc@murrayc.com>
+
+  Added test showing problem with date fields in python calculations.
+  
+	* tests/test_python_execute_func_date.cc: Added a test of dates as input 
+	values for record fields. This currently fails with this error from python, 
+	so I need to fix it in Glom:
+	AttributeError: 'NoneType' object has no attribute 'year'
+
 2010-04-12  Daniel Elstner  <danielk@openismus.com>
 
 	Further clean up AX_BOOST_PYTHON_MURRAYC
