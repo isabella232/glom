@@ -34,7 +34,7 @@
             <child>
               <object class="GtkLabel" id="label_table_name">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">table name</property>
+                <property name="label" translatable="no"></property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -3821,7 +3821,7 @@ Which user should be added to this group?</property>
                 <child>
                   <object class="GtkLabel" id="label_field_name">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">field name</property>
+                    <property name="label" translatable="no"></property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -3886,7 +3886,7 @@ Which user should be added to this group?</property>
                             <child>
                               <object class="GtkLabel" id="label_title_default">
                                 <property name="visible">True</property>
-                                <property name="label" translatable="yes">the title</property>
+                                <property name="label" translatable="no"></property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>

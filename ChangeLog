@@ -1,3 +1,12 @@
+2010-04-13  Murray Cumming  <murrayc@murrayc.com>
+
+  Remove useless translatable strings.
+  
+	* glom/glom_developer.glade: Remove placeholder text from labels that will 
+	actually have their text set at runtime, so there's need actual need to have 
+	it in the glade file. They were even marked as translatable.
+	Bug #615656 (Gianluca Ferri)
+
 2010-04-12  Murray Cumming  <murrayc@murrayc.com>
 
   Python calculations and scripts: Fix regression in use of date and time fields.
