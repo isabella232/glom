@@ -24,6 +24,7 @@
 #include <iostream> // For std::cerr
 #include <gtkmm/builder.h>
 #include <glom/dialog_progress_creating.h>
+#include <giomm/file.h>
 
 namespace Glom
 {
@@ -33,14 +34,27 @@ namespace Utils
 
 inline std::string get_glade_file_path(const std::string& filename)
 {
+  // Check the path to the installed .glade file:
 #ifdef G_OS_WIN32
   gchar* directory = g_win32_get_package_installation_directory_of_module(0);
   const std::string result = Glib::build_filename(directory, Glib::build_filename("share/glom/glade", filename));
   g_free(directory);
-  return result;
+  directory = 0;
 #else
-  return Glib::build_filename(GLOM_PKGDATADIR G_DIR_SEPARATOR_S "glade", filename);
+  const std::string result = Glib::build_filename(GLOM_PKGDATADIR, Glib::build_filename("glade", filename));
 #endif
+
+  // Check that it exists:
+  const Glib::RefPtr<Gio::File> file = Gio::File::create_for_path(result);
+  if(file && file->query_exists())
+    return result;
+
+  // Try to fall back to the uninstalled file in the source tree,
+  // for instance when running "make distcheck", which doesn't install to _inst/
+  // before running check.
+  std::cout << "Glade file not found: " << result << std::endl;
+  std::cout << "Falling back to the local file." << std::endl;
+  return Glib::build_filename(GLOM_PKGDATADIR_NOTINSTALLED, filename);
 }
 
 template<class T_Widget>

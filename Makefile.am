@@ -178,7 +178,9 @@ glom_defines = \
 -DGLOM_DATADIR=\""$(datadir)"\" \
 -DGLOM_DOCDIR=\""$(docdir)"\" \
 -DGLOM_LOCALEDIR=\""$(glom_localedir)"\" \
--DGLOM_PKGDATADIR=\""$(pkgdatadir)"\"
+-DGLOM_PKGDATADIR=\""$(pkgdatadir)"\" \
+-DGLOM_PKGDATADIR_NOTINSTALLED=\""$(top_srcdir)/glom"\"
+
 
 AM_CPPFLAGS = $(glom_includes) $(GLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_PYTHON_CFLAGS) $(glom_defines)
 AM_CFLAGS   = $(GLOM_WFLAGS)

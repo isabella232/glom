@@ -1,5 +1,14 @@
 2010-04-14  Murray Cumming  <murrayc@murrayc.com>
 
+	Fall back to the uninstalled .glade file to fix make distcheck.
+
+	* Makefile.am: Define GLOM_PKGDATADIR_NOTINSTALLED as well as the existing
+    GLOM_PKGDATADIR.
+	* glom/glade_utils.h: get_glade_file_path(): Fall back to the uninstalled
+    glade file if the installed one can't be found. This fixes make distcheck.
+
+2010-04-14  Murray Cumming  <murrayc@murrayc.com>
+
     Glade utils: More error-checking.
 
 	* glom/glade_utils.h:  helper_get_glade_widget_derived_with_warning():
