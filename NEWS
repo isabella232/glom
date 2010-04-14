@@ -1,3 +1,31 @@
+1.14.0:
+
+New features in Glom 1.14, compared to Glom 1.12:
+* Details:
+  - Align widgets in neighbouring groups, making things look generally neater.
+    (and fix a bug that made the widgets far too wide.)
+* Details and List:
+  Allow custom formatting of static text and buttons instead of just fields.
+* Field Formatting:
+  - Add the option to use a different text color for negative values.
+    Suggested by Mathias Hasselmann.
+  - Add a horizontal alignment option, though we still right-align numbers
+    by default. Bug #591125 (Patrick Chan)
+  - Allow choices to be shown as radio buttons instead of a drop-down combo box.
+    Requested by Frederik Vande Rieviere.
+* Many small UI improvements.
+* Field calculations and button scripts:
+  - Fields values may now be changed like so:
+    record["fieldname"] = 123
+  - Simple navigation is posible via, for instance:
+    ui.show_table_list("artists")
+    ui.show_table_details("artists", 10)
+    where 10 is the value of the primary key in the table.
+  - Added ui.print_layout(), ui.print_report(report_name), 
+  and ui.start_new_record() methods.
+  - Added a startup script feature, in Database Preferences.
+* Plus several important bug fixes.
+
 1.14.0: (stable)
 
 * Design Mode:
@@ -11,6 +39,8 @@
 * Opening recent files: Warn when a file doesn't exist, and forget it, 
   instead of just showing a generic error dialog.
   (Murray Cumming, Openismus)
+* Python scripts and field calculations: Fix a Glom 1.13 bug with use of 
+  date fields.
 * User Interface: General cleanup. The dialogs are more compliant with the 
   GNOME HIG and there are many minor ixes to the user interface.
   (Daniel Borgmann, Openismus)
