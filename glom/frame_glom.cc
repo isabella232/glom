@@ -2539,21 +2539,12 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
 
     //Tell the user:
     Gtk::Dialog* dialog = 0;
-    try
-    {
-       // TODO: Tell the user what has gone wrong (ex.what())
-      Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_error_create_database");
-      refXml->get_widget("dialog_error_create_database", dialog);
-      dialog->set_transient_for(*pWindowApp);
-      Glom::Utils::dialog_run_with_help(dialog, "dialog_error_create_database");
-      delete dialog;
-    }
-    catch(const Gtk::BuilderError& ex)
-    {
-      std::cerr << ex.what() << std::endl;
-    }
+    Utils::get_glade_widget_with_warning("glom_developer.glade", "dialog_error_create_database", dialog);
+    dialog->set_transient_for(*pWindowApp);
+    Glom::Utils::dialog_run_with_help(dialog, "dialog_error_create_database");
+    delete dialog;
 
-     return false;
+    return false;
   }
 
   //Connect to the actual database:

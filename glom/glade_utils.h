@@ -57,6 +57,14 @@ void helper_get_glade_widget_derived_with_warning(const std::string& filename, c
   {
     std::cerr << ex.what() << std::endl;
   }
+  catch(const Glib::MarkupError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+  catch(const Glib::FileError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
 #else
   std::auto_ptr<Glib::Error> error;
   refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path(filename), id, error);
@@ -84,7 +92,7 @@ template<class T_Widget>
 void get_glade_widget_derived_with_warning(T_Widget*& widget)
 {
   widget = 0;
-  
+
   if(T_Widget::glade_developer)
     helper_get_glade_widget_derived_with_warning("glom_developer.glade", T_Widget::glade_id, widget);
   else
@@ -102,7 +110,15 @@ void get_glade_widget_with_warning(const std::string& filename, const Glib::ustr
   {
     refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path(filename), id);
   }
-  catch(const Glib::Error& ex)
+  catch(const Gtk::BuilderError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+  catch(const Glib::MarkupError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+  catch(const Glib::FileError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }
@@ -135,4 +151,3 @@ Dialog_ProgressCreating* get_and_show_pulse_dialog(const Glib::ustring& message,
 } //namespace Glom
 
 #endif //GLOM_GLADE_UTILS_H
-
