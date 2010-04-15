@@ -133,6 +133,23 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
     const GType value_type = G_VALUE_TYPE(boxed);
     boost::python::object ret;
 
+#if PY_VERSION_HEX >= 0x02040000
+    if((value_type == G_TYPE_DATE) || 
+       (value_type == GDA_TYPE_TIME) ||
+       (value_type == GDA_TYPE_TIMESTAMP))
+    {
+      // We shouldn't need to call PyDateTime_IMPORT again,
+      // after already doing it in libglom_init(),
+      // but PyDate_FromDate() crashes (with valgrind warnings) if we don't.
+      //
+      // Causes a C++ compiler warning, so we use its definition directly.
+      // See http://bugs.python.org/issue7463.
+      // PyDateTime_IMPORT; //A macro, needed to use PyDate_Check(), PyDateTime_Check(), etc.
+      PyDateTimeAPI = (PyDateTime_CAPI*) PyCObject_Import((char*)"datetime", (char*)"datetime_CAPI");
+      g_assert(PyDateTimeAPI); //This should have been set by the PyDateTime_IMPORT macro
+    }
+#endif
+
     if (value_type == G_TYPE_INT64) {
         ret = boost::python::object(g_value_get_int64(boxed));
     } else if (value_type == G_TYPE_UINT64) {

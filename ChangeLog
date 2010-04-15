@@ -1,5 +1,17 @@
 2010-04-15  Murray Cumming  <murrayc@murrayc.com>
 
+  Python field calculation: Fix a crash.
+  
+	* glom/libglom/python_embed/pygdavalue_conversions.cc: 
+	glom_pygda_value_as_boost_pyobject(): Add a PyDateTimeAPI call, as already 
+	done in glom_pygda_value_from_pyobject(), to prevent a crash (and valgrind 
+	warning about 0 dereference) when using this (silly, wrong) field calculation, 
+	though I can't reproduce it in a unit test:
+	import datetime
+  return (datetime.date.today() - record["date_of_birth"]).days / 365
+
+2010-04-15  Murray Cumming  <murrayc@murrayc.com>
+
   Python module: Improve API documentation.
   
 	* glom/python_embed/python_module/py_glom_module.cc: Added some options and 
