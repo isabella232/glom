@@ -1,3 +1,10 @@
+2010-04-15  Murray Cumming  <murrayc@murrayc.com>
+
+  Python module: Improve API documentation.
+  
+	* glom/python_embed/python_module/py_glom_module.cc: Added some options and 
+	text for docstrings, to improve the pydoc -w output.
+
 1.14.0:
 
 2010-04-14  Murray Cumming  <murrayc@murrayc.com>
