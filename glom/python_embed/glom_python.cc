@@ -138,30 +138,42 @@ void ShowTrace()
   g_free(chrRetval);
 }
 
-bool glom_python_module_is_available()
+/** Import a python module, warning about exceptions.
+ * Compare with boost::python::object() to detect failure.
+ */
+static boost::python::object import_module(const char* name)
 {
-  const gchar* name = "glom_" GLOM_ABI_VERSION_UNDERLINED;
-  boost::python::object module_glom = boost::python::import(name);
-
-  if(!module_glom)
+  boost::python::object module_glom; //Defaults to PyNone. 
+  try
   {
-    g_warning("Glom: A python import of %s failed.\n", name);
+    module_glom = boost::python::import(name);
+  }
+  catch(const boost::python::error_already_set& ex)
+  {
+    std::cerr << "boost::python::import() failed while importing module: "<< name << std::endl;
+    ShowTrace();
   }
 
-  return module_glom != 0;
+  if(module_glom == boost::python::object())
+  {
+    std::cerr << "Glom: A python import of a module failed: " << name << std::endl;
+  }
+
+  return module_glom;
+}
+
+bool glom_python_module_is_available()
+{
+  const char* name = "glom_" GLOM_ABI_VERSION_UNDERLINED;
+  const boost::python::object module_glom = import_module(name);
+  return module_glom != boost::python::object();
 }
 
 bool gda_python_module_is_available()
 {
-  const gchar* name = "gda";
-  boost::python::object module_glom = boost::python::import(name); //TODO: unref this?
-
-  if(!module_glom)
-  {
-    g_warning("Glom: A python import of %s failed.\n", name);
-  }
-
-  return module_glom != 0;
+  const char* name = "gda";
+  const boost::python::object module_glom = import_module(name);
+  return module_glom != boost::python::object();
 }
 
 static boost::python::object glom_python_call(Field::glom_field_type result_type,
@@ -205,7 +217,7 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   
   //We did this in main(): Py_Initialize();
 
-  boost::python::object pMain = boost::python::import("__main__");
+  boost::python::object pMain = import_module("__main__");
   boost::python::object pDict(pMain.attr("__dict__")); //TODO: Does boost::python have an equivalent for PyModule_GetDict()?
   //TODO: Complain that this doesn't work:
   //boost::python::dict pDict = pMain.attr("__dict__"); //TODO: Does boost::python have an equivalent for PyModule_GetDict()?
@@ -245,16 +257,16 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   }
 
   //TODO: Is this necessary?
-  boost::python::object module_glom = boost::python::import("glom_" GLOM_ABI_VERSION_UNDERLINED);
-  if(!module_glom)
+  boost::python::object module_glom = import_module("glom_" GLOM_ABI_VERSION_UNDERLINED);
+  if(module_glom == boost::python::object())
   {
     g_warning("Could not import python glom module.");
     return boost::python::object(); // don't crash
   }
 
   //TODO: Is this necessary?
-  boost::python::object module_gda = boost::python::import("gda");
-  if(!module_gda)
+  boost::python::object module_gda = import_module("gda");
+  if(module_gda == boost::python::object())
   {
     g_warning("Could not import python gda module.");
     return boost::python::object();
@@ -369,8 +381,8 @@ void glom_execute_python_function_implementation(const Glib::ustring& func_impl,
   const PythonUICallbacks& callbacks)
 {
   //Import the glom module so that boost::python::object(new PyGlomRecord) can work.
-  boost::python::object module_glom = boost::python::import("glom_" GLOM_ABI_VERSION_UNDERLINED);
-  if(!module_glom)
+  boost::python::object module_glom = import_module("glom_" GLOM_ABI_VERSION_UNDERLINED);
+  if(module_glom == boost::python::object())
   {
     g_warning("Could not import python glom module.");
     return; // don't crash
@@ -407,8 +419,8 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
 {
   //Import the glom module so that boost::python::object(new PyGlomRecord) can work.
-  boost::python::object module_glom = boost::python::import("glom_" GLOM_ABI_VERSION_UNDERLINED);
-  if(!module_glom)
+  boost::python::object module_glom = import_module("glom_" GLOM_ABI_VERSION_UNDERLINED);
+  if(module_glom == boost::python::object())
   {
     g_warning("Could not import python glom module.");
     return Gnome::Gda::Value(); // don't crash

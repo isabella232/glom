@@ -1,5 +1,15 @@
 2010-04-16  Murray Cumming  <murrayc@murrayc.com>
 
+	Python: Really show warnings when modules can't be imported.
+	
+	* glom/python_embed/glom_python.cc: Add and use import_module() to make sure 
+	that we catch exceptions from boost::python::import(), so show the intended 
+	warnings instead of just crashing with an uncaught exception.
+	Also correct the checks for empty/none boost::python::objects for imported 
+	modules. A simple ! is not what it seems.
+
+2010-04-16  Murray Cumming  <murrayc@murrayc.com>
+
     Use mm-common for optional compiler warnings and to build libglom docs.
 
     * configure.ac: Use mm-common, removing macros/dk-warn.m4.
