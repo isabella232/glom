@@ -1,5 +1,15 @@
 2010-04-16  Murray Cumming  <murrayc@murrayc.com>
 
+    Try to use sphinx for pyglom API documentation.
+
+    * docs/pyglom_reference/Makefile.an:
+	* docs/pyglom_reference/sphinx_sources/:
+    An attempt to use sphinx instead of pydoc. sphinx is used by Python itself.
+    I need to change my Python setup (not have Python in jhbuild) to test 
+    this properly, because I can't easily build pydoctor in my separate prefix. 
+
+2010-04-16  Murray Cumming  <murrayc@murrayc.com>
+
 	Python: Really show warnings when modules can't be imported.
 	
 	* glom/python_embed/glom_python.cc: Add and use import_module() to make sure 
