@@ -40,7 +40,7 @@ doc_subdirs = docs/user-guide
 else
 doc_subdirs =
 endif
-SUBDIRS = po $(doc_subdirs)
+SUBDIRS = po $(doc_subdirs) docs/libglom_reference docs/pyglom_reference
 
 if HOST_WIN32
 win_resfile = glom/glom.res

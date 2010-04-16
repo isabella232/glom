@@ -1,3 +1,15 @@
+2010-04-16  Murray Cumming  <murrayc@murrayc.com>
+
+    Use mm-common for optional compiler warnings and to build libglom docs.
+
+    * configure.ac: Use mm-common, removing macros/dk-warn.m4.
+	* docs/libglom_reference/Doxyfile.in:
+	* docs/libglom_reference/doxygen_to_devhelp.xsl:
+	* docs/libglom_reference/Makefile.am: Generate libglom documentation 
+    properly usign build stuff copied from gtkmm.
+	* docs/pyglom_reference/Makefile.am: A silly little initial attempt to 
+    have generated html for the glom python module, using pydoc.
+
 2010-04-15  Murray Cumming  <murrayc@murrayc.com>
 
   Python field calculation: Fix a crash.

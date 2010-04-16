@@ -24,6 +24,7 @@ AC_CONFIG_HEADERS([config.h glom/libglom/libglom_config.h])
 
 AM_INIT_AUTOMAKE([1.10 check-news no-define nostdinc])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
+AM_MAINTAINER_MODE
 AC_ARG_VAR([ACLOCAL_FLAGS], [aclocal flags, e.g. -I <macro dir>])
 
 AC_PROG_CC
@@ -185,14 +186,18 @@ MM_PKG_CONFIG_SUBST([ISO_CODES_PREFIX], [--variable=prefix iso-codes])
 AC_DEFINE_UNQUOTED([ISO_CODES_PREFIX], ["$ISO_CODES_PREFIX"],
                    [Define to the installation prefix of the iso-codes module.])
 
-AC_LANG_ASSERT([C])
-DK_ARG_ENABLE_WARNINGS([GLOM_WFLAGS],
-                       [-Wall], [-Wall -Wextra],
+
+# Evaluate the --enable-warnings=level option.
+MM_PREREQ([0.8])
+MM_ARG_ENABLE_WARNINGS([GLOM_WFLAGS],
+                       [-Wall],
+                       [-Wall -Wextra -Wno-missing-field-initializers -DGSEAL_ENABLE],
                        [G GDK GDK_PIXBUF GTK])
-AC_LANG([C++])
-DK_ARG_ENABLE_WARNINGS([GLOM_WXXFLAGS],
-		       [-Wall], [-Wall -Wextra -Wno-missing-field-initializers],
+MM_ARG_ENABLE_WARNINGS([GLOM_WXXFLAGS],
+                       [-Wall],
+                       [-Wall -Wextra -Wno-missing-field-initializers -DGSEAL_ENABLE],
                        [G GDK GDK_PIXBUF GTK GLIBMM GTKMM])
+
 AC_CHECK_FUNCS([strptime])
 
 # Get the compiler and linker flags for embedding Python.
@@ -245,10 +250,20 @@ AC_DEFINE_UNQUOTED([EXEEXT], ["$EXEEXT"],
 GNOME_DOC_INIT([0.9.0],,
   [AC_MSG_WARN([[gnome-doc-utils not found: documentation will not be built.]])])
 
+MM_ARG_ENABLE_DOCUMENTATION
+MM_ARG_WITH_TAGFILE_DOC([libstdc++.tag], [mm-common-libstdc++])
+MM_ARG_WITH_TAGFILE_DOC([libsigc++-2.0.tag], [sigc++-2.0])
+MM_ARG_WITH_TAGFILE_DOC([glibmm-2.4.tag], [glibmm-2.4])
+MM_ARG_WITH_TAGFILE_DOC([cairomm-1.0.tag], [cairomm-1.0])
+MM_ARG_WITH_TAGFILE_DOC([pangomm-1.4.tag], [pangomm-1.4])
+
 AC_CONFIG_FILES([Makefile
                  docs/user-guide/Makefile
                  po/Makefile.in
                  glom.desktop.in
                  glom/libglom/glom-1.14.pc
+                 docs/libglom_reference/Makefile
+                 docs/libglom_reference/Doxyfile
+                 docs/pyglom_reference/Makefile
                  win32/glom.iss])
 AC_OUTPUT

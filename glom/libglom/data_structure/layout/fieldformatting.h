@@ -136,7 +136,7 @@ public:
   {
     HORIZONTAL_ALIGNMENT_AUTO, //For instance, RIGHT for numeric fields.
     HORIZONTAL_ALIGNMENT_LEFT,
-    HORIZONTAL_ALIGNMENT_RIGHT,
+    HORIZONTAL_ALIGNMENT_RIGHT
   };
 
   void set_horizontal_alignment(HorizontalAlignment alignment);
