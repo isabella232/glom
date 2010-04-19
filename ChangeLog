@@ -1,5 +1,9 @@
 2010-04-19  Murray Cumming  <murrayc@murrayc.com>
 
+	* configure.ac: Ran autoupdate to remove use of deprecated macros.
+
+2010-04-19  Murray Cumming  <murrayc@murrayc.com>
+
     Avoid the requierment for sphinx-build if documentation is disabled.
 
 	* configure.ac: Use AC_PATH_PROG() instead of AC_CHECK_PROG() so we get the

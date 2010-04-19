@@ -15,8 +15,8 @@
 ## You should have received a copy of the GNU General Public License
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([Glom], [1.14.0], [http://bugzilla.gnome.org/enter_bug.cgi?product=Glom], [glom])
-AC_PREREQ([2.60])
+AC_INIT([Glom],[1.14.0],[http://bugzilla.gnome.org/enter_bug.cgi?product=Glom],[glom])
+AC_PREREQ(2.65)
 
 AC_CONFIG_SRCDIR([glom/main.cc])
 AC_CONFIG_MACRO_DIR([macros])
@@ -31,12 +31,9 @@ AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_CXX
 
-dnl Maemo still ships with the ancient libtool 1.4
-dnl LT_PREREQ([2.2.0])
-dnl LT_INIT([disable-static win32-dll])
+LT_PREREQ([2.2.0])
+LT_INIT([disable-static win32-dll])
 AC_DISABLE_STATIC
-AC_LIBTOOL_WIN32_DLL
-AC_PROG_LIBTOOL
 
 # Used for the install directories for headers.  The same number is used in
 # the library name, which must be kept in sync, but variables can't be used
