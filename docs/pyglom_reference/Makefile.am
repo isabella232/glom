@@ -8,8 +8,10 @@
 #	mkdir html
 #	mv glom_1_14.html html/index.html
 
+if ENABLE_DOCUMENTATION
 html:
 	rm -rf html
-	sphinx-build -b html ./ html/
+	$(SPHINX_BUILD) -b html ./ html/
+endif
 
 MAINTAINERCLEANFILES = html/* outdir

@@ -1,5 +1,14 @@
 2010-04-19  Murray Cumming  <murrayc@murrayc.com>
 
+    Avoid the requierment for sphinx-build if documentation is disabled.
+
+	* configure.ac: Use AC_PATH_PROG() instead of AC_CHECK_PROG() so we get the
+    path to use. Only check if --enable-documentation was used.
+	* docs/pyglom_reference/Makefile.am: Only build the html if
+    --enable-documentation was used (not yet built by default anyway).
+
+2010-04-19  Murray Cumming  <murrayc@murrayc.com>
+
     Improved use of sphinx.
 
 	* configure.ac: AC_SUBST() GLOM_ABI_VERSION_UNDERLINED so we can use it
