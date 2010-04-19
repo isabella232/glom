@@ -1,4 +1,4 @@
-# pydoc can write docs for all modules in a directory (or a module name), 
+# pydoc can write docs for all modules in a directory (or a module name),
 # but doesn't like being given a path to any actual file.
 
 
@@ -8,9 +8,8 @@
 #	mkdir html
 #	mv glom_1_14.html html/index.html
 
-ALLSPHINXOPTS   = -d _build/doctrees sphinx_sources
-
 html:
-	sphinx-build -b html $(ALLSPHINXOPTS) html
+	rm -rf html
+	sphinx-build -b html ./ html/
 
-MAINTAINERCLEANFILES = html/*
+MAINTAINERCLEANFILES = html/* outdir

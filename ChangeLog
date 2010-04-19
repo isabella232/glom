@@ -1,3 +1,15 @@
+2010-04-19  Murray Cumming  <murrayc@murrayc.com>
+
+    Improved use of sphinx.
+
+	* configure.ac: AC_SUBST() GLOM_ABI_VERSION_UNDERLINED so we can use it
+    in docs/pyglom_reference/Makefile.am. Mention these files that will be
+    genereated form .in files with the ABI and version numbers substituted.
+    Check for sphinx-build, though this should only matter when building docs.
+	* docs/pyglom_reference/conf.py.in:
+	* docs/pyglom_reference/index.rst.in: Use ABI and version variables instead
+    of hard-coding. Add short introductory text with links.
+
 2010-04-16  Murray Cumming  <murrayc@murrayc.com>
 
     Try to use sphinx for pyglom API documentation.
@@ -5,17 +17,17 @@
     * docs/pyglom_reference/Makefile.an:
 	* docs/pyglom_reference/sphinx_sources/:
     An attempt to use sphinx instead of pydoc. sphinx is used by Python itself.
-    I need to change my Python setup (not have Python in jhbuild) to test 
-    this properly, because I can't easily build pydoctor in my separate prefix. 
+    I need to change my Python setup (not have Python in jhbuild) to test
+    this properly, because I can't easily build pydoctor in my separate prefix.
 
 2010-04-16  Murray Cumming  <murrayc@murrayc.com>
 
 	Python: Really show warnings when modules can't be imported.
-	
-	* glom/python_embed/glom_python.cc: Add and use import_module() to make sure 
-	that we catch exceptions from boost::python::import(), so show the intended 
+
+	* glom/python_embed/glom_python.cc: Add and use import_module() to make sure
+	that we catch exceptions from boost::python::import(), so show the intended
 	warnings instead of just crashing with an uncaught exception.
-	Also correct the checks for empty/none boost::python::objects for imported 
+	Also correct the checks for empty/none boost::python::objects for imported
 	modules. A simple ! is not what it seems.
 
 2010-04-16  Murray Cumming  <murrayc@murrayc.com>
@@ -25,19 +37,19 @@
     * configure.ac: Use mm-common, removing macros/dk-warn.m4.
 	* docs/libglom_reference/Doxyfile.in:
 	* docs/libglom_reference/doxygen_to_devhelp.xsl:
-	* docs/libglom_reference/Makefile.am: Generate libglom documentation 
+	* docs/libglom_reference/Makefile.am: Generate libglom documentation
     properly usign build stuff copied from gtkmm.
-	* docs/pyglom_reference/Makefile.am: A silly little initial attempt to 
+	* docs/pyglom_reference/Makefile.am: A silly little initial attempt to
     have generated html for the glom python module, using pydoc.
 
 2010-04-15  Murray Cumming  <murrayc@murrayc.com>
 
   Python field calculation: Fix a crash.
-  
-	* glom/libglom/python_embed/pygdavalue_conversions.cc: 
-	glom_pygda_value_as_boost_pyobject(): Add a PyDateTimeAPI call, as already 
-	done in glom_pygda_value_from_pyobject(), to prevent a crash (and valgrind 
-	warning about 0 dereference) when using this (silly, wrong) field calculation, 
+
+	* glom/libglom/python_embed/pygdavalue_conversions.cc:
+	glom_pygda_value_as_boost_pyobject(): Add a PyDateTimeAPI call, as already
+	done in glom_pygda_value_from_pyobject(), to prevent a crash (and valgrind
+	warning about 0 dereference) when using this (silly, wrong) field calculation,
 	though I can't reproduce it in a unit test:
 	import datetime
   return (datetime.date.today() - record["date_of_birth"]).days / 365
@@ -45,8 +57,8 @@
 2010-04-15  Murray Cumming  <murrayc@murrayc.com>
 
   Python module: Improve API documentation.
-  
-	* glom/python_embed/python_module/py_glom_module.cc: Added some options and 
+
+	* glom/python_embed/python_module/py_glom_module.cc: Added some options and
 	text for docstrings, to improve the pydoc -w output.
 
 1.14.0:

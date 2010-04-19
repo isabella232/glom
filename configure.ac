@@ -44,8 +44,10 @@ AC_PROG_LIBTOOL
 AC_SUBST([GLOM_ABI_VERSION], [1.14])
 AC_DEFINE_UNQUOTED([GLOM_ABI_VERSION], ["$GLOM_ABI_VERSION"],
 		   [Define to the Glom ABI version string.])
+
 # Python modules can't be called glom-1.x, so we use underlines.
-AC_DEFINE_UNQUOTED([GLOM_ABI_VERSION_UNDERLINED], "AS_TR_SH([$GLOM_ABI_VERSION])",
+AC_SUBST([GLOM_ABI_VERSION_UNDERLINED], ["AS_TR_SH([$GLOM_ABI_VERSION])"])
+AC_DEFINE_UNQUOTED([GLOM_ABI_VERSION_UNDERLINED], ["$GLOM_ABI_VERSION"],
                    [Define to the Glom ABI version with '.' replaced by '_'.])
 
 # Only check for libgettextpo on non-Maemo platforms.
@@ -257,6 +259,9 @@ MM_ARG_WITH_TAGFILE_DOC([glibmm-2.4.tag], [glibmm-2.4])
 MM_ARG_WITH_TAGFILE_DOC([cairomm-1.0.tag], [cairomm-1.0])
 MM_ARG_WITH_TAGFILE_DOC([pangomm-1.4.tag], [pangomm-1.4])
 
+AC_CHECK_PROG([SPHINX_BUILD], [sphinx-build])
+AC_SUBST([SPHINX_BUILD])
+
 AC_CONFIG_FILES([Makefile
                  docs/user-guide/Makefile
                  po/Makefile.in
@@ -265,5 +270,7 @@ AC_CONFIG_FILES([Makefile
                  docs/libglom_reference/Makefile
                  docs/libglom_reference/Doxyfile
                  docs/pyglom_reference/Makefile
+                 docs/pyglom_reference/conf.py
+                 docs/pyglom_reference/index.rst
                  win32/glom.iss])
 AC_OUTPUT
