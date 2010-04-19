@@ -1,5 +1,14 @@
 2010-04-19  Murray Cumming  <murrayc@murrayc.com>
 
+	More improved use of sphinx.
+	
+	* docs/pyglom_reference/conf.py.in: Do not generate the module index page 
+	because we have only one module.
+	* docs/pyglom_reference/index.rst.in: Add back the link to the general index, 
+	which seems to actually be generated.
+
+2010-04-19  Murray Cumming  <murrayc@murrayc.com>
+
 	* configure.ac: Ran autoupdate to remove use of deprecated macros.
 
 2010-04-19  Murray Cumming  <murrayc@murrayc.com>
