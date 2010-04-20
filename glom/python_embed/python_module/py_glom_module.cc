@@ -22,9 +22,6 @@
 //We need to include this before anything else, to avoid redefinitions:
 #include <boost/python.hpp>
 
-//#include <compile.h> /* for the PyCodeObject */
-//#include <eval.h> /* for PyEval_EvalCode */
-
 #include <libglom/python_embed/py_glom_record.h>
 #include <libglom/python_embed/py_glom_related.h>
 #include <libglom/python_embed/py_glom_relatedrecord.h>
@@ -38,11 +35,67 @@ BOOST_PYTHON_MODULE(glom_1_14)
     true, // show the docstrings from here
     true, // show Python signatures.
     false); // Don't mention the C++ method signatures in the generated docstrings.
+
+  // Note: Our python docstring documentation is in ReStructuredText format, 
+  // because we use sphinx to generate the API reference documentation.
+  // However, sphinx does not seem to allow us to use regular reStructuredText 
+  // - section headings 
+  // - :: at the end of a paragraph, instead of on a separate line.
+  // TODO: Add # targets so we can link directly to parts such as Testing for Empty Values
+   
   boost::python::class_<PyGlomRecord>("Record", 
-    "The current record of the current table.\n"
-    "Use record['field_name'] to get the value of a specified field in the current record.\n"
-    "Use record.related['relationship_name']['field_name'] to get the value of a specified field in a related record.\n"
-    "Use record.related['relationship_name'].sum('field_name') to get a sum of all the values of a specified field in multiple related records. See the RelatedRecord object for more aggregate functions."
+    "This is the  current record of the current table.\n"
+    "\n"
+    "Field values\n"
+    "  Use record['field_name'] to get the value of a specified field in the current record. For instance, this concatenates the values of the name_first and name_last field in the current record.\n"
+    "  ::\n"
+    "\n"
+    "    record['name_first'] + ' ' + record['name_last']\n"
+    "\n"
+    "  You may also use this syntax to  set the value of a field in the current record. This is possible in a button script, but not in a field calculation. For instance, this sets the value of the name_first field in the current record.\n"
+    "  ::\n"
+    "\n"
+    "    record['name_first'] = 'Bob'\n"
+    "\n"
+    "Related Records\n"
+    "  Use record.related['relationship_name'] to get the related records. For instance, this provides the related records for the current record.\n"
+    "  ::\n"
+    "\n"
+    "    record.related['location']\n"
+    "\n"
+    "Single Related Records\n"
+    "  For relationships that specify a single record, you can get the value of a field in that record. For instance, this is the value of the name field in the table indicated by the location relationship (often called location::name).\n"
+    "  ::\n"
+    "\n"
+    "    record.related['location']['name']\n"
+    "\n"
+    "Multiple Related Records\n"
+    "  For relationships that specify multiple records, you can use the aggregate functions to get overall values. For instance, this provides the sum of all total_price values from all of the lines of the current invoice record. See the :class:`RelatedRecord` class for more aggregate functions.\n"
+    "  ::\n"
+    "\n"
+    "    record.related['invoice_lines'].sum('total_price')\n"
+    "\n"
+     "Testing for Empty Values\n"
+    "  How you test for empty values depends on the type of field.\n"
+    "\n"
+    "  Non-Text Fields\n"
+    "    Non-text fields may be empty, indicating that the user has not entered any value in the field. For instance, Glom does not assume that an empty value in a numeric field should mean 0. You can test whether a field is empty by using Python's None. For instance.\n"
+    "    ::\n"
+    "\n"
+    "      if(record['contact_id'] == None):\n"
+    "          return 'No Contact'\n"
+    "      else:\n"
+    "          return record.related['contacts']['name_full']\n"
+    "\n"
+    "  Text Fields\n"
+    "    For text fields, you should check for zero-length strings. It is not possible in Glom to distinguish between zero-length strings and the absence of any string, because there is no advantage to doing so. For instance:\n"
+    "    ::\n"
+    "\n"
+    "      if(record['name_full'] == ''):\n"
+    "          return 'No Name'\n"
+    "      else:\n"
+    "          return record['name_full']\n"
+    "\n"
     )
     .add_property("table_name", &PyGlomRecord::get_table_name,
        "The name of the current table.")

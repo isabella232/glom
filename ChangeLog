@@ -1,5 +1,15 @@
 2010-04-20  Murray Cumming  <murrayc@murrayc.com>
 
+	Python Glom module: Improve sphinx-generated documentation.
+	
+	* glom/python_embed/python_module/py_glom_module.cc: Added class docstring 
+	documentation, based on 
+	http://library.gnome.org/users/glom/unstable/sec-calculated-fields.html
+	Use reStructuredText format as expected by sphinx and as apparently now 
+	use by Python for docstring text.
+
+2010-04-20  Murray Cumming  <murrayc@murrayc.com>
+
     Fix the python Glom module name.
 
 	* configure.ac: Fix a recent typo to again use the correct underlined
