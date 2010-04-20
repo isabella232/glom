@@ -256,10 +256,12 @@ MM_ARG_WITH_TAGFILE_DOC([glibmm-2.4.tag], [glibmm-2.4])
 MM_ARG_WITH_TAGFILE_DOC([cairomm-1.0.tag], [cairomm-1.0])
 MM_ARG_WITH_TAGFILE_DOC([pangomm-1.4.tag], [pangomm-1.4])
 
+AC_ARG_VAR([SPHINX_BUILD], [path to sphinx-build utility])
 AS_IF([test "x$ENABLE_DOCUMENTATION" != xno],
-  [AC_PATH_PROG([SPHINX_BUILD], [sphinx-build], [sphinx-build])],
-  [AC_MSG_ERROR([[The documentation build is enabled, but the sphinx-build tool could not be found.]])]
-)
+  [AC_PATH_PROG([SPHINX_BUILD], [sphinx-build], [sphinx-build])
+   AS_IF([test "x$SPHINX_BUILD" != xsphinx-build],
+     [],
+     [AC_MSG_ERROR([The documentation build is enabled, but the sphinx-build tool could not be found.])])])
 
 AC_CONFIG_FILES([Makefile
                  docs/user-guide/Makefile

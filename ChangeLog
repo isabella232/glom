@@ -1,3 +1,10 @@
+2010-04-20  David King  <davidk@openismus.com>
+
+	Fix the sphinx-build configure check
+
+	* configure.ac: Abort configure with an error if sphinx-build could
+	not be found and --enable-documentation was passed to configure.
+
 2010-04-20  Murray Cumming  <murrayc@murrayc-desktop>
 
 	Glom Python API reference: Failed attempt to dist the html files.
