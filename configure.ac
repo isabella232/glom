@@ -44,7 +44,7 @@ AC_DEFINE_UNQUOTED([GLOM_ABI_VERSION], ["$GLOM_ABI_VERSION"],
 
 # Python modules can't be called glom-1.x, so we use underlines.
 AC_SUBST([GLOM_ABI_VERSION_UNDERLINED], ["AS_TR_SH([$GLOM_ABI_VERSION])"])
-AC_DEFINE_UNQUOTED([GLOM_ABI_VERSION_UNDERLINED], ["$GLOM_ABI_VERSION"],
+AC_DEFINE_UNQUOTED([GLOM_ABI_VERSION_UNDERLINED], ["$GLOM_ABI_VERSION_UNDERLINED"],
                    [Define to the Glom ABI version with '.' replaced by '_'.])
 
 # Only check for libgettextpo on non-Maemo platforms.

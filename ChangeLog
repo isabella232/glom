@@ -1,3 +1,10 @@
+2010-04-20  Murray Cumming  <murrayc@murrayc.com>
+
+    Fix the python Glom module name.
+
+	* configure.ac: Fix a recent typo to again use the correct underlined
+    name for the Python Glom module. This was fatal, in tests too.
+
 2010-04-20  David King  <davidk@openismus.com>
 
 	Relax the autoconf requirement
@@ -13,7 +20,7 @@
 	* configure.ac: Abort configure with an error if sphinx-build could
 	not be found and --enable-documentation was passed to configure.
 
-2010-04-20  Murray Cumming  <murrayc@murrayc-desktop>
+2010-04-20  Murray Cumming  <murrayc@murrayc.com>
 
 	Glom Python API reference: Failed attempt to dist the html files.
 
