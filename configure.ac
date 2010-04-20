@@ -16,7 +16,7 @@
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 AC_INIT([Glom],[1.14.0],[http://bugzilla.gnome.org/enter_bug.cgi?product=Glom],[glom])
-AC_PREREQ(2.65)
+AC_PREREQ(2.63)
 
 AC_CONFIG_SRCDIR([glom/main.cc])
 AC_CONFIG_MACRO_DIR([macros])

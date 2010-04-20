@@ -1,5 +1,13 @@
 2010-04-20  David King  <davidk@openismus.com>
 
+	Relax the autoconf requirement
+
+	* configure.ac: Relax the autoconf requirement to 2.63, as 2.65 is not
+	required. Something older than 2.63 may even be acceptable, but I do
+	not have an older version to test.
+
+2010-04-20  David King  <davidk@openismus.com>
+
 	Fix the sphinx-build configure check
 
 	* configure.ac: Abort configure with an error if sphinx-build could
