@@ -33,13 +33,14 @@ dist_reference_DATA = $(strip $(doc_inst_files))
 dist_noinst_DATA    = $(strip $(doc_dist_files))
 
 #DISTCLEANFILES       = $(doc_outdir)/doxygen.log
-MAINTAINERCLEANFILES = $(doc_outdir)/html/*
+MAINTAINERCLEANFILES = $(doc_outdir)/html/* outdir
 
 html/index.html:
 	rm -rf html
 	$(SPHINX_BUILD) -b html ./ $(doc_outdir)/html/
 
-MAINTAINERCLEANFILES = html/* outdir
+# Explicitly depend on the files to be distributed or installed.
+all-local: $(doc_inst_files) $(doc_dist_files)
 
 # Hook up custom rules for translating references to external documentation
 # to the actual location at install time.
@@ -89,3 +90,10 @@ uninstall-htmlref:
 	@$(NORMAL_UNINSTALL)
 	(cd '$(DESTDIR)$(htmlrefdir)' 2>/dev/null || exit 0; \
 	 find . -type f '(' $(htmlref_find_patterns) ')' -exec rm -f '{}' '+')
+
+# Define phony (non-file) targets so things don't break if anyone creates files with these names.
+.PHONY: install-htmlref uninstall-htmlref
+
+# Instruct GNU make to delete the targets of a rule after it failed, in
+# order to avoid the complication of handling that situation manually.
+.DELETE_ON_ERROR:
