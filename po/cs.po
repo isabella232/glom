@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom gnome-master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-17 21:05+0200\n"
-"PO-Revision-Date: 2010-04-07 15:31+0200\n"
+"POT-Creation-Date: 2010-04-22 23:53+0200\n"
+"PO-Revision-Date: 2010-04-17 23:42+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -33,9 +33,8 @@ msgid ""
 msgstr "Prosím počkejte dokud Glom nepřipraví váš systém pro sdílení na síti."
 
 #: ../glom/application.cc:181
-#, fuzzy
 msgid "© 2000-2010 Murray Cumming"
-msgstr "© 2000-2005 Murray Cumming"
+msgstr "© 2000-2010 Murray Cumming"
 
 #: ../glom/application.cc:181
 msgid "A Database GUI"
@@ -120,13 +119,11 @@ msgid "_User Level"
 msgstr "Úroveň _uživatele"
 
 #: ../glom/application.cc:452
-#, fuzzy
 msgctxt "User-level menu item"
 msgid "_Developer"
 msgstr "_Vývojář"
 
 #: ../glom/application.cc:456
-#, fuzzy
 msgctxt "User-level menu item"
 msgid "_Operator"
 msgstr "_Operátor"
@@ -146,7 +143,6 @@ msgid "_Find"
 msgstr "_Hledat"
 
 #: ../glom/application.cc:477
-#, fuzzy
 msgctxt "Developer menu title"
 msgid "_Developer"
 msgstr "_Vývojář"
@@ -793,13 +789,11 @@ msgstr "Žádná kritéria hledání"
 #. show user level:
 #. The _C macro provides translator context.
 #: ../glom/frame_glom.cc:1525
-#, fuzzy
 msgctxt "Mode"
 msgid "Operator"
 msgstr "Operátor"
 
 #: ../glom/frame_glom.cc:1527
-#, fuzzy
 msgctxt "Mode"
 msgid "Developer"
 msgstr "Vývojář"
@@ -894,9 +888,8 @@ msgid "<b>Groups</b>"
 msgstr "<b>Skupiny</b>"
 
 #: ../glom/glom_developer.glade.h:12
-#, fuzzy
 msgid "<b>Image:</b>"
-msgstr "<b>Obrázek</b>"
+msgstr "<b>Obrázek:</b>"
 
 #: ../glom/glom_developer.glade.h:13
 msgid "<b>Label:</b>"
@@ -959,9 +952,8 @@ msgid "<b>Text Formatting</b>"
 msgstr "<b>Formátování textu</b>"
 
 #: ../glom/glom_developer.glade.h:28
-#, fuzzy
 msgid "<b>Text:</b>"
-msgstr "<b>Text</b>"
+msgstr "<b>Text:</b>"
 
 #: ../glom/glom_developer.glade.h:29
 msgid "<b>Title:</b>"
@@ -1363,7 +1355,6 @@ msgstr "Formátování"
 
 #. Translators: FROM as in SQL's FROM
 #: ../glom/glom_developer.glade.h:116
-#, fuzzy
 msgid "From field:"
 msgstr "Od pole:"
 
@@ -1395,9 +1386,8 @@ msgid "Group Properties"
 msgstr "Vlastnosti skupiny"
 
 #: ../glom/glom_developer.glade.h:122
-#, fuzzy
 msgid "Group name:"
-msgstr "Název skupiny"
+msgstr "Název skupiny:"
 
 #: ../glom/glom_developer.glade.h:123
 msgid "Groups"
@@ -1500,9 +1490,8 @@ msgid "Name of new relationship:"
 msgstr "Název nového vztahu:"
 
 #: ../glom/glom_developer.glade.h:144
-#, fuzzy
 msgid "Name:"
-msgstr "_Název:"
+msgstr "Název:"
 
 #: ../glom/glom_developer.glade.h:145
 msgid "No Choices"
@@ -1576,9 +1565,8 @@ msgid "Restrict data to these choices"
 msgstr "Omezit data na tyto možnosti"
 
 #: ../glom/glom_developer.glade.h:161
-#, fuzzy
 msgid "Script Library"
-msgstr "K_nihovna skriptů"
+msgstr "Knihovna skriptů"
 
 #: ../glom/glom_developer.glade.h:162
 msgid "Script name:"
@@ -1800,9 +1788,8 @@ msgstr "Vy_počítat hodnotu"
 
 #. Translators: This is the verb
 #: ../glom/glom_developer.glade.h:210
-#, fuzzy
 msgid "_Check"
-msgstr "Zvolte"
+msgstr "Z_kontrolovat"
 
 #: ../glom/glom_developer.glade.h:211
 msgid "_Confirm Password:"
@@ -3411,7 +3398,6 @@ msgstr "Plný přístup."
 
 #. Append the View columns:
 #: ../glom/mode_design/users/dialog_users_list.cc:67
-#, fuzzy
 msgctxt "Users List"
 msgid "User"
 msgstr "Uživatel"
