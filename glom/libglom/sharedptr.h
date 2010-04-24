@@ -28,9 +28,9 @@
 namespace Glom
 {
 
-/**A ref-counting smart-pointer for the underlying C object.
- * You can copy these smarpointers-of-C-resources, and therefore the C++ classes can
- * have simple copy constructors which just share the underlying C resources.
+/**A ref-counting smart-pointer for the underlying C++ object.
+ * You can copy these smarpointers-of-C++-resources, and therefore the C++ classes can
+ * have simple copy constructors which just share the underlying resources.
  *
  */
 template< typename T_obj >
@@ -38,6 +38,7 @@ class sharedptr
 {
 public:
   typedef size_t size_type;
+  typedef T_obj object_type;
 
   sharedptr();
 

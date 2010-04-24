@@ -164,12 +164,15 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
   g_free(dir);
 
   if(!Glib::file_test(path, Glib::FILE_TEST_EXISTS))
-    path = GLOM_DOCDIR G_DIR_SEPARATOR_S "examples";
+    path = GLOM_DOCDIR_EXAMPLES;
 #else
-  const char *const path = GLOM_DOCDIR G_DIR_SEPARATOR_S "examples";
+  const char *const path = GLOM_DOCDIR_EXAMPLES;
 #endif //G_OS_WIN32
 
-  list_examples_at_path(path);
+  //Show the installed example files,
+  //falling back to the ones from the local source tree if none are installed:
+  if(!list_examples_at_path(path))
+    list_examples_at_path(GLOM_DOCDIR_EXAMPLES_NOTINSTALLED);
 
 #endif //!GLOM_ENABLE_CLIENT_ONLY
 

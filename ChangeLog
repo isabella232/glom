@@ -1,3 +1,18 @@
+2010-04-23  Murray Cumming  <murrayc@murrayc.com>
+
+	Add a document-loading test and self-hosting test
+
+	* glom/Makefile_tests.am: Added the tests.
+	* glom/libglom/test_document.cc: Renamed to example_document_load.cc.
+	* tests/test_document_load/test_document_load.cc: Added this new test to 
+	load a document, checking some known parts of its structure.
+
+	* glom/libglom/document/bakery/document.cc: write_to_disk(): Create the 
+ 	parent directory if necessary, instead of failing with a Gio exception.
+ 	* test/test_selfhosting_newempty/test_selfhosting_newempty.cc: Saves a new 
+ 	file from an example, starts self-hosting of it, and stops self-hosting.
+ 	This needs work and expansion.
+
 2010-04-20  Murray Cumming  <murrayc@murrayc.com>
 
 	Python Glom module: Improve sphinx-generated documentation.

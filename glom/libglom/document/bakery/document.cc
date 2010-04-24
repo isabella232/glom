@@ -268,7 +268,7 @@ bool Document::read_from_disk(int& failure_code)
 #else
   if(error.get())
   {
-    std::cerr << "Error: " << error->what() << std::endl;
+    std::cerr << "Bakery::Document::read_from_disk(): Error: " << error->what() << std::endl;
 #endif
     // If the operation was not successful, print the error and abort
     return false; //print_error(ex, input_uri_string);
@@ -293,35 +293,46 @@ bool Document::write_to_disk()
     Glib::RefPtr<Gio::FileOutputStream> stream;
 
     //Create the file if it does not already exist:
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-    try
+    if(file->query_exists())
     {
-      if(file->query_exists())
+      try
       {
         stream = file->replace(); //Instead of append_to().
       }
-      else
+      catch(const Gio::Error& ex)
       {
-        //By default files created are generally readable by everyone, but if we pass FILE_CREATE_PRIVATE in flags the file will be made readable only to the current user, to the level that is supported on the target filesystem.
-        //TODO: Do we want to specify 0660 exactly? (means "this user and his group can read and write this non-executable file".)
-        stream = file->create_file();
+        std::cerr << "Bakery::Document::write_to_disk(): Error from Gio::File::replace(): " << ex.what() << std::endl;
+        return false;
       }
     }
-    catch(const Gio::Error& ex)
+    else
     {
-#else
-    std::auto_ptr<Glib::Error> error;
-    stream = file->replace(std::string(), false, Gio::FILE_CREATE_NONE, error);
-    if(error.get())
-    {
-      std::cout << "Error: " << error->what() << std::endl;
-#endif
-     // If the operation was not successful, print the error and abort
-     std::cout << "Error: " << ex.what() << std::endl;
+      //Make sure that all the parent directories exist, creating them if necessary:
+      Glib::RefPtr<Gio::File> parent = file->get_parent();
+      try
+      {
+        parent->make_directory_with_parents();
+      }
+      catch(const Gio::Error& ex)
+      {
+        std::cerr << "Bakery::Document::write_to_disk(): Error from Gio::File::make_directory_with_parents(): uri=" << m_file_uri << "error=" << ex.what() << std::endl;
+        return false;
+      }
 
-     return false; // print_error(ex, output_uri_string);
+
+      //Create the file:
+      //By default files created are generally readable by everyone, but if we pass FILE_CREATE_PRIVATE in flags the file will be made readable only to the current user, to the level that is supported on the target filesystem.
+      //TODO: Do we want to specify 0660 exactly? (means "this user and his group can read and write this non-executable file".)
+      try
+      {
+        stream = file->create_file();
+      }
+      catch(const Gio::Error& ex)
+      {
+        std::cerr << "Bakery::Document::write_to_disk(): Error from Gio::File::create_file():" << m_file_uri << "error=" << ex.what() << std::endl;
+        return false;
+      }
     }
-
 
     if(!stream)
       return false;
@@ -345,9 +356,10 @@ bool Document::write_to_disk()
     stream->write(m_strContents.data(), m_strContents.bytes(), gerror);
     if(gerror.get())
     {
-      std::cerr << "Error: "<< gerror.get() << std::endl;
+      std::cerr << "akery::Document::write_to_disk(): Error from Gio stream.write(): "<< gerror.get() << std::endl;
 #endif
       // If the operation was not successful, print the error and abort
+      std::cerr << "Bakery::Document::write_to_disk(): Error from Gio stream.write(): " << ex.what() << std::endl;
       return false; //print_error(ex, output_uri_string);
     }
 

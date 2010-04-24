@@ -17,10 +17,11 @@
 
 check_PROGRAMS =						\
 	glom/libglom/test_connectionpool			\
-	glom/libglom/test_document				\
+	glom/libglom/example_document_load \
 	glom/libglom/test_sharedptr_layoutitem			\
 	glom/utility_widgets/test_flowtable			\
 	glom/test_pyembed					\
+	tests/test_document_load/test_document_load			\
 	tests/test_parsing_time			\
 	tests/test_signal_reemit			\
 	tests/test_load_python_library\
@@ -31,9 +32,11 @@ check_PROGRAMS =						\
 	tests/import/test_parsing \
 	tests/import/test_signals \
 	tests/test_glade_derived_instantiation \
-	tests/glade_toplevels_instantiation
+	tests/glade_toplevels_instantiation \
+	tests/test_selfhosting_new_empty/test_selfhosting_new_empty
 
-TESTS =	tests/test_parsing_time	\
+TESTS =	tests/test_document_load/test_document_load	\
+	tests/test_parsing_time	\
 	tests/test_signal_reemit \
 	tests/test_dtd_file_validation.sh \
 	tests/test_glade_file_validation.sh \
@@ -43,7 +46,8 @@ TESTS =	tests/test_parsing_time	\
 	tests/test_python_module \
 	tests/test_python_execute_func \
 	tests/test_python_execute_func_date \
-	tests/test_python_execute_script
+	tests/test_python_execute_script \
+	tests/test_selfhosting_new_empty/test_selfhosting_new_empty
 	
 # These hang most of the time, but not always:
 #	tests/import/test_parsing \
@@ -61,9 +65,11 @@ LIBGLOM_LA = glom/libglom/libglom-$(GLOM_ABI_VERSION).la $(LIBGLOM_LIBS)
 tests_ldadd = $(LIBGLOM_LA)
 
 glom_libglom_test_connectionpool_SOURCES = glom/libglom/test_connectionpool.cc
-glom_libglom_test_document_SOURCES = glom/libglom/test_document.cc
+glom_libglom_example_document_load_SOURCES = glom/libglom/example_document_load.cc
 glom_libglom_test_sharedptr_layoutitem_SOURCES = glom/libglom/test_sharedptr_layoutitem.cc
 glom_test_pyembed_SOURCES = glom/test_pyembed.cc
+
+tests_test_document_load_test_document_load_SOURCES = tests/test_document_load/test_document_load.cc
 tests_test_parsing_time_SOURCES = tests/test_parsing_time.cc
 tests_test_signal_reemit_SOURCES = tests/test_signal_reemit.cc
 tests_test_load_python_library_SOURCES = tests/test_load_python_library.cc
@@ -87,9 +93,10 @@ tests_import_test_signals_SOURCES =	\
 	tests/import/utils.h\
 	tests/import/test_signals.cc
 tests_test_glade_derived_instantiation_SOURCES = tests/test_glade_derived_instantiation.cc $(glom_source_files)
+tests_test_selfhosting_new_empty_test_selfhosting_new_empty_SOURCES = tests/test_selfhosting_new_empty/test_selfhosting_new_empty.cc
 
 glom_libglom_test_connectionpool_LDADD = $(tests_ldadd)
-glom_libglom_test_document_LDADD = $(tests_ldadd)
+glom_libglom_example_document_load_LDADD = $(tests_ldadd)
 glom_libglom_test_sharedptr_layoutitem_LDADD = $(tests_ldadd)
 
 glom_utility_widgets_test_flowtable_SOURCES =	\
@@ -121,6 +128,7 @@ tests_glade_toplevels_instantiation_LDADD = $(tests_ldadd) $(LIBGLOM_LIBS) $(GLO
 glom_test_pyembed_LDADD = $(LIBGLOM_LIBS) $(PYTHON_LIBS)
 
 tests_test_parsing_time_LDADD = $(tests_ldadd)
+tests_test_document_load_test_document_load_LDADD = $(tests_ldadd) $(LIBGLOM_LIBS)
 tests_test_signal_reemit_LDADD = $(LIBGLOM_LIBS)
 tests_test_load_python_library_LDADD = $(LIBGLOM_LIBS)
 tests_test_python_module_LDADD = $(tests_ldadd) $(PYTHON_LIBS)
@@ -130,3 +138,4 @@ tests_test_python_execute_script_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LI
 tests_import_test_parsing_LDADD = $(LIBGLOM_LIBS) $(GLOM_LIBS)
 tests_import_test_signals_LDADD = $(LIBGLOM_LIBS) $(GLOM_LIBS)
 tests_test_glade_derived_instantiation_LDADD = $(glom_all_libs)
+tests_test_selfhosting_new_empty_test_selfhosting_new_empty_LDADD = $(tests_ldadd) $(LIBGLOM_LIBS)
