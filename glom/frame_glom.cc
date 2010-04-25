@@ -34,10 +34,6 @@
 #include <libglom/connectionpool_backends/postgres_self.h>
 #endif
 
-#ifdef GLOM_ENABLE_SQLITE
-# include <libglom/connectionpool_backends/sqlite.h>
-#endif
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #include <glom/mode_design/users/dialog_groups_list.h>
 #include <glom/mode_design/dialog_database_preferences.h>
@@ -1712,9 +1708,9 @@ void Frame_Glom::do_menu_developer_fields(Gtk::Window& parent, const Glib::ustri
     add_view(m_pDialog_Fields);
   }
 
-  // Some database backends (SQLite) require the table to change no longer
-  // being in use when changing the records, so clear the database usage
-  // here. We reshow everything in on_developer_dialog_hide anyway.
+  // Some database backends (SQLite) require the table to change to no longer
+  // be in use when changing the records, so we stop the database usage
+  // here. We reshow everything in on_developer_dialog_hide() anyway.
   show_no_table();
 
   // Remember the old table name so that we re-show the previous table as
@@ -1932,61 +1928,6 @@ void Frame_Glom::on_developer_dialog_hide()
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-namespace
-{
-  void setup_connection_pool_from_document(Document* document)
-  {
-    ConnectionPool* connection_pool = ConnectionPool::get_instance();
-    switch(document->get_hosting_mode())
-    {
-#ifdef GLOM_ENABLE_POSTGRESQL
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-    case Document::HOSTING_MODE_POSTGRES_SELF:
-      {
-        ConnectionPoolBackends::PostgresSelfHosted* backend = new ConnectionPoolBackends::PostgresSelfHosted;
-        backend->set_self_hosting_data_uri(document->get_connection_self_hosted_directory_uri());
-        connection_pool->set_backend(std::auto_ptr<ConnectionPool::Backend>(backend));
-      }
-      break;
-#endif //GLOM_ENABLE_CLIENT_ONLY
-
-    case Document::HOSTING_MODE_POSTGRES_CENTRAL:
-      {
-        ConnectionPoolBackends::PostgresCentralHosted* backend = new ConnectionPoolBackends::PostgresCentralHosted;
-        backend->set_host(document->get_connection_server());
-        backend->set_port(document->get_connection_port());
-        backend->set_try_other_ports(document->get_connection_try_other_ports());
-        connection_pool->set_backend(std::auto_ptr<ConnectionPool::Backend>(backend));
-      }
-      break;
-#endif //GLOM_ENABLE_POSTGRESQL
-
-#ifdef GLOM_ENABLE_SQLITE
-    case Document::HOSTING_MODE_SQLITE:
-      {
-        ConnectionPoolBackends::Sqlite* backend = new ConnectionPoolBackends::Sqlite;
-        backend->set_database_directory_uri(document->get_connection_self_hosted_directory_uri());
-        connection_pool->set_backend(std::auto_ptr<ConnectionPool::Backend>(backend));
-      }
-      break;
-#endif // GLOM_ENABLE_SQLITE
-
-    default:
-      //on_document_load() should have checked for this already, informing the user.
-      std::cerr << "Glom: setup_connection_pool_from_document(): Unhandled hosting mode: " << document->get_hosting_mode() << std::endl;
-      g_assert_not_reached();
-      break;
-    }
-
-    // Might be overwritten later when actually attempting a connection:
-    connection_pool->set_user(document->get_connection_user());
-    connection_pool->set_database(document->get_connection_database());
-
-    connection_pool->set_ready_to_connect();
-  }
-}
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void Frame_Glom::on_connection_initialize_progress()
 {
@@ -2105,7 +2046,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     return false;
 
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
-  setup_connection_pool_from_document(document);
+  connection_pool->setup_from_document(document);
 
   if(!m_pDialogConnection)
   {
@@ -2383,7 +2324,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
 
   //Start a self-hosted server if necessary:
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
-  setup_connection_pool_from_document(document);
+  connection_pool->setup_from_document(document);
   if(!connection_pool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) ))
     return false;
 

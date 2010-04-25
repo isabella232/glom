@@ -1,3 +1,12 @@
+2010-04-25  Murray Cumming  <murrayc@murrayc.com>
+
+	Simplify test_selfhosting_new_empty.
+	
+	* glom/frame_glom.cc: Move setup_connection_pool_from_document() to:
+	* glom/libglom/connectionpool.[h|cc]: Added setup_from_document().
+	* tests/test_selfhosting_new_empty/test_selfhosting_new_empty.cc: Use the 
+	new function here, removing code to explicitly set the backend.
+
 2010-04-23  Murray Cumming  <murrayc@murrayc.com>
 
 	Add a document-loading test and self-hosting test

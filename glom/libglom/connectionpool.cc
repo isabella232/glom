@@ -24,7 +24,10 @@
 #include <libglom/document/document.h>
 #include <libglom/utils.h>
 //#include <libgdamm/connectionevent.h>
-#include <glibmm/i18n.h>
+
+#include <libglom/connectionpool_backends/postgres_central.h>
+#include <libglom/connectionpool_backends/postgres_self.h>
+# include <libglom/connectionpool_backends/sqlite.h>
 
 #ifdef G_OS_WIN32
 # include <windows.h>
@@ -34,6 +37,9 @@
 #endif
 
 #include <signal.h> //To catch segfaults
+
+#include <glibmm/i18n.h>
+
 
 #ifndef G_OS_WIN32
 static EpcProtocol publish_protocol = EPC_PROTOCOL_HTTPS;
@@ -123,6 +129,48 @@ ConnectionPool* ConnectionPool::get_instance()
   }
 }
 
+void ConnectionPool::setup_from_document(const Document* document)
+{
+  switch(document->get_hosting_mode())
+  {
+  case Document::HOSTING_MODE_POSTGRES_SELF:
+    {
+      ConnectionPoolBackends::PostgresSelfHosted* backend = new ConnectionPoolBackends::PostgresSelfHosted;
+      backend->set_self_hosting_data_uri(document->get_connection_self_hosted_directory_uri());
+      set_backend(std::auto_ptr<ConnectionPool::Backend>(backend));
+    }
+    break;
+  case Document::HOSTING_MODE_POSTGRES_CENTRAL:
+    {
+      ConnectionPoolBackends::PostgresCentralHosted* backend = new ConnectionPoolBackends::PostgresCentralHosted;
+      backend->set_host(document->get_connection_server());
+      backend->set_port(document->get_connection_port());
+      backend->set_try_other_ports(document->get_connection_try_other_ports());
+      set_backend(std::auto_ptr<ConnectionPool::Backend>(backend));
+    }
+    break;
+  case Document::HOSTING_MODE_SQLITE:
+    {
+      ConnectionPoolBackends::Sqlite* backend = new ConnectionPoolBackends::Sqlite;
+      backend->set_database_directory_uri(document->get_connection_self_hosted_directory_uri());
+      set_backend(std::auto_ptr<ConnectionPool::Backend>(backend));
+    }
+    break;
+
+  default:
+    //on_document_load() should have checked for this already, informing the user.
+    std::cerr << "Glom: setup_connection_pool_from_document(): Unhandled hosting mode: " << document->get_hosting_mode() << std::endl;
+    g_assert_not_reached();
+    break;
+  }
+
+  // Might be overwritten later when actually attempting a connection:
+  set_user(document->get_connection_user());
+  set_database(document->get_connection_database());
+
+  set_ready_to_connect();
+}
+  
 void ConnectionPool::delete_instance()
 {
   if(m_instance)

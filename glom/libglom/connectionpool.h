@@ -99,6 +99,11 @@ public:
    */
   static ConnectionPool* get_instance();
 
+  /** Make the ConnectionPool use the correct backend, with the necessary details,
+   * as required by the document.
+   */
+  void setup_from_document(const Document* document);
+
   /// Delete the singleton so it doesn't show up as leaked memory in, for instance, valgrind.
   static void delete_instance();
   
