@@ -65,7 +65,7 @@ private:
   virtual InitErrors initialize(const SlotProgress& slot_progress, const Glib::ustring& initial_username, const Glib::ustring& password, bool network_shared = false);
 
   virtual bool startup(const SlotProgress& slot_progress, bool network_shared = false);
-  virtual void cleanup(const SlotProgress& slot_progress);
+  virtual bool cleanup(const SlotProgress& slot_progress);
   virtual bool set_network_shared(const SlotProgress& slot_progress, bool network_shared = true);
 
   virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error);

@@ -1,3 +1,15 @@
+2010-04-26  Murray Cumming  <murrayc@murrayc.com>
+
+	Self-Hosting test: Check that cleanup works.
+	
+	* Makefile_tests.am:
+	* glom/libglom/connectionpool.[h|cc]:
+	* glom/libglom/connectionpool_backends/backend.[h|cc]:
+	* glom/libglom/connectionpool_backends/postgres_self.[h|cc]:
+	* tests/test_selfhosting_new_empty/test_selfhosting_new_empty.cc:
+	Make cleanup() return a bool, so we can check it, because this fails sometimes.
+	Use the standard username and password.
+
 2010-04-26  Daniel Elstner  <danielk@openismus.com>
 
 	Heavily cut the pyglom_reference build magic

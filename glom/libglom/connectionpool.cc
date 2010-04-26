@@ -588,7 +588,7 @@ bool ConnectionPool::startup(const SlotProgress& slot_progress, bool network_sha
   return true;
 }
 
-void ConnectionPool::cleanup(const SlotProgress& slot_progress)
+bool ConnectionPool::cleanup(const SlotProgress& slot_progress)
 {
   // Without a valid backend instance we should not state that we are ready to
   // connect. Fixes crash described in #577821.
@@ -599,8 +599,10 @@ void ConnectionPool::cleanup(const SlotProgress& slot_progress)
   // set_not_ready_to_connect()?
   set_ready_to_connect(false);
 
+  bool result = false;
+  
   if(m_backend.get())
-    m_backend->cleanup(slot_progress);
+    result = m_backend->cleanup(slot_progress);
 
   //Make sure that connect() tries to make a new connection:
   invalidate_connection();
@@ -614,6 +616,8 @@ void ConnectionPool::cleanup(const SlotProgress& slot_progress)
   //We don't need the segfault handler anymore:
   signal(SIGSEGV, previous_sig_handler);
   previous_sig_handler = SIG_DFL; /* Arbitrary default */
+  
+  return result;
 }
 
 

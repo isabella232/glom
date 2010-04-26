@@ -21,8 +21,9 @@
 #include <libglom/document/document.h>
 #include <libglom/connectionpool.h>
 #include <libglom/connectionpool_backends/postgres_self.h>
-#include <giomm/file.h>
 #include <libglom/init.h>
+#include <glom/glom_privs.h>
+#include <giomm/file.h>
 
 static void on_initialize_progress()
 {
@@ -147,19 +148,22 @@ int main()
   
   document.set_hosting_mode(Glom::Document::HOSTING_MODE_POSTGRES_SELF);
   document.set_is_example_file(false);
+  document.set_network_shared(false);
   const bool saved = document.save();
   g_assert(saved);
 
   //Specify the backend and backend-specific details to be used by the connectionpool.
   connection_pool->setup_from_document(&document);
 
-  const Glib::ustring password = "testpassword";
-  const Glib::ustring user = "testuser";
+  //We must specify a default username and password:
+  Glib::ustring password;
+  const Glib::ustring user = Glom::Privs::get_default_developer_user_name(password);
   connection_pool->set_user(user);
   connection_pool->set_password(password);
 
   //Create the self-hosting files:
-  const Glom::ConnectionPool::InitErrors initialized_errors = connection_pool->initialize( sigc::ptr_fun(&on_initialize_progress) );
+  const Glom::ConnectionPool::InitErrors initialized_errors = 
+    connection_pool->initialize( sigc::ptr_fun(&on_initialize_progress) );
   g_assert(initialized_errors == Glom::ConnectionPool::Backend::INITERROR_NONE);
 
   //Start self-hosting:
@@ -167,9 +171,10 @@ int main()
   const bool started = connection_pool->startup( sigc::ptr_fun(&on_startup_progress) );
   g_assert(started);
   
-  connection_pool->cleanup( sigc::ptr_fun(&on_cleanup_progress) );  
+  const bool stopped = connection_pool->cleanup( sigc::ptr_fun(&on_cleanup_progress) );  
+  g_assert(stopped);
 
-  //Make sure the directory is removed at the end:
+  //Make sure the directory is removed at the end,
   {
     const Glib::ustring uri = Glib::filename_to_uri(temp_filepath_dir);
     delete_directory(uri);

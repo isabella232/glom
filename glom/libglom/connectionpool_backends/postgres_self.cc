@@ -519,14 +519,14 @@ bool PostgresSelfHosted::startup(const SlotProgress& slot_progress, bool network
   return true;
 }
 
-void PostgresSelfHosted::cleanup(const SlotProgress& slot_progress)
+bool PostgresSelfHosted::cleanup(const SlotProgress& slot_progress)
 {
   // This seems to be called twice sometimes, so we don't assert here until
   // this is fixed.
   //g_assert(get_self_hosting_active());
 
   if(!get_self_hosting_active())
-    return; //Don't try to stop it if we have not started it.
+    return true; //Don't try to stop it if we have not started it.
 
   const std::string dbdir_uri = m_self_hosting_data_uri;
   const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
@@ -558,10 +558,13 @@ void PostgresSelfHosted::cleanup(const SlotProgress& slot_progress)
     if(!result)
     {
       std::cerr << "Error while attempting (for a second time) to stop self-hosting of the database."  << std::endl;
+      return false;
     }
   }
 
   m_port = 0;
+
+  return true;
 }
 
 
