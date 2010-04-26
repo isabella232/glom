@@ -11,6 +11,14 @@
 
 2010-04-26  Murray Cumming  <murrayc@murrayc.com>
 
+	Reenable test_load_document.
+	
+	* Makefile_tests.am: Reenable test_load_document.cc
+	* tests/test_load_document/test_load_document.cc: Restore (rewrite) this 
+	missing file.
+
+2010-04-26  Murray Cumming  <murrayc@murrayc.com>
+
 	* configure.ac: Remove the dist-bzip2 option that was added by mistake.
 
 2010-04-26  Murray Cumming  <murrayc@murrayc.com>
