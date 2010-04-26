@@ -93,7 +93,7 @@ tests_import_test_signals_SOURCES =	\
 	tests/import/utils.h\
 	tests/import/test_signals.cc
 tests_test_glade_derived_instantiation_SOURCES = tests/test_glade_derived_instantiation.cc $(glom_source_files)
-tests_test_selfhosting_new_empty_test_selfhosting_new_empty_SOURCES = tests/test_selfhosting_new_empty/test_selfhosting_new_empty.cc
+tests_test_selfhosting_new_empty_test_selfhosting_new_empty_SOURCES = tests/test_selfhosting_new_empty/test_selfhosting_new_empty.cc $(glom_source_files)
 
 glom_libglom_test_connectionpool_LDADD = $(tests_ldadd)
 glom_libglom_example_document_load_LDADD = $(tests_ldadd)

@@ -1,3 +1,11 @@
+2010-04-26  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix the build.
+
+	* Makefile_tests.am: test_selfhosting_new_empty: Link to the Glom sources 
+	to fix the unresolved link to Glom::Priv's method. We will use more from 
+	the rest of Glom here too.
+
 2010-04-26  Daniel Elstner  <danielk@openismus.com>
 
 	Use installed mm-common instead of copying it
