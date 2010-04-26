@@ -32,6 +32,10 @@ Makefile.in
 /intltool-extract.in
 /intltool-merge.in
 /intltool-update.in
+/compile-binding.am
+/dist-changelog.am
+/doc-reference.am
+/generate-binding.am
 /gnome-doc-utils.make
 /omf.make
 /xmldocs.make

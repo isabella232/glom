@@ -1,3 +1,14 @@
+2010-04-26  Daniel Elstner  <danielk@openismus.com>
+
+	Use installed mm-common instead of copying it
+
+	* autogen.sh: Run mm-common-prepare to pull in the mm-common include
+	files for Automake.
+	* docs/libglom_reference/Makefile.am: Set up configuration variables
+	and include doc-reference.am instead of copy'n'pasting its content.
+	* docs/libglom-reference/doxygen_to_devhelp.xsl: Delete file.  It is
+	shipped with mm-common and also part of the glibmm installation.
+
 2010-04-26  Murray Cumming  <murrayc@murrayc.com>
 
 	Self-Hosting test: Check that cleanup works.
