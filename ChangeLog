@@ -1,5 +1,16 @@
 2010-04-26  Daniel Elstner  <danielk@openismus.com>
 
+	Heavily cut the pyglom_reference build magic
+
+	* docs/pyglom_reference/Makefile.am: Drop the custom installation
+	rules and use the GNU make $(wildcard) function for both distribution
+	and installation of the generated documentation files.  Since the
+	files do not undergo translation at install time, it is not necessary
+	to integrate the custom installation tool from mm-common.  Pull in a
+	missing GNU make function definition for computing the list of files.
+
+2010-04-26  Daniel Elstner  <danielk@openismus.com>
+
 	Temporarily disable test_document_load
 
 	* Makefile_tests.am (check_PROGRAMS), (TESTS): Temporarily remove
