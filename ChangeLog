@@ -1,3 +1,10 @@
+2010-04-26  Daniel Elstner  <danielk@openismus.com>
+
+	Enable maintainer-mode build in autogen.sh
+
+	* autogen.sh: Run configure with --enable-maintainer-mode since the
+	AM_MAINTAINER_MODE macro is now used in configure.ac.
+
 2010-04-26  Murray Cumming  <murrayc@murrayc.com>
 
 	Python Glom module: Improved the docstrings, using reStructuredText
