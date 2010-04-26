@@ -22,7 +22,7 @@ AC_CONFIG_SRCDIR([glom/main.cc])
 AC_CONFIG_MACRO_DIR([macros])
 AC_CONFIG_HEADERS([config.h glom/libglom/libglom_config.h])
 
-AM_INIT_AUTOMAKE([1.10 -Wno-portability check-news dist-bzip2 no-define nostdinc tar-pax])
+AM_INIT_AUTOMAKE([1.10 -Wno-portability check-news no-define nostdinc tar-pax])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
 AM_MAINTAINER_MODE
 AC_ARG_VAR([ACLOCAL_FLAGS], [aclocal flags, e.g. -I <macro dir>])

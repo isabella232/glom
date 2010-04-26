@@ -11,6 +11,10 @@
 
 2010-04-26  Murray Cumming  <murrayc@murrayc.com>
 
+	* configure.ac: Remove the dist-bzip2 option that was added by mistake.
+
+2010-04-26  Murray Cumming  <murrayc@murrayc.com>
+
 	Self-Hosting test: Check that cleanup works.
 	
 	* Makefile_tests.am:
