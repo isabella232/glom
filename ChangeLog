@@ -1,5 +1,13 @@
 2010-04-26  Daniel Elstner  <danielk@openismus.com>
 
+	Temporarily disable test_document_load
+
+	* Makefile_tests.am (check_PROGRAMS), (TESTS): Temporarily remove
+	test_document_load, because the corresponding source file is currently
+	missing from the repository.
+
+2010-04-26  Daniel Elstner  <danielk@openismus.com>
+
 	Enable maintainer-mode build in autogen.sh
 
 	* autogen.sh: Run configure with --enable-maintainer-mode since the

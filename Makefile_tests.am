@@ -21,7 +21,6 @@ check_PROGRAMS =						\
 	glom/libglom/test_sharedptr_layoutitem			\
 	glom/utility_widgets/test_flowtable			\
 	glom/test_pyembed					\
-	tests/test_document_load/test_document_load			\
 	tests/test_parsing_time			\
 	tests/test_signal_reemit			\
 	tests/test_load_python_library\
@@ -35,8 +34,10 @@ check_PROGRAMS =						\
 	tests/glade_toplevels_instantiation \
 	tests/test_selfhosting_new_empty/test_selfhosting_new_empty
 
-TESTS =	tests/test_document_load/test_document_load	\
-	tests/test_parsing_time	\
+# Source file missing:
+#	tests/test_document_load/test_document_load
+
+TESTS =	tests/test_parsing_time	\
 	tests/test_signal_reemit \
 	tests/test_dtd_file_validation.sh \
 	tests/test_glade_file_validation.sh \
@@ -69,7 +70,7 @@ glom_libglom_example_document_load_SOURCES = glom/libglom/example_document_load.
 glom_libglom_test_sharedptr_layoutitem_SOURCES = glom/libglom/test_sharedptr_layoutitem.cc
 glom_test_pyembed_SOURCES = glom/test_pyembed.cc
 
-tests_test_document_load_test_document_load_SOURCES = tests/test_document_load/test_document_load.cc
+#tests_test_document_load_test_document_load_SOURCES = tests/test_document_load/test_document_load.cc
 tests_test_parsing_time_SOURCES = tests/test_parsing_time.cc
 tests_test_signal_reemit_SOURCES = tests/test_signal_reemit.cc
 tests_test_load_python_library_SOURCES = tests/test_load_python_library.cc
