@@ -40,7 +40,7 @@ doc_subdirs = docs/user-guide
 else
 doc_subdirs =
 endif
-SUBDIRS = po $(doc_subdirs)
+SUBDIRS = po $(doc_subdirs) docs/libglom_reference docs/pyglom_reference
 
 if HOST_WIN32
 win_resfile = glom/glom.res
@@ -139,7 +139,12 @@ dbusservice_DATA = glom.service
 else
 desktopdir = $(datadir)/applications
 endif
+
+if HOST_WIN32
+desktop_DATA =
+else
 desktop_DATA = glom.desktop
+endif
 
 mimedir = $(datadir)/mime
 mimepackagesdir = $(mimedir)/packages
@@ -171,9 +176,12 @@ glom_localedir = $(prefix)/$(DATADIRNAME)/locale
 glom_includes = -I$(top_builddir)/glom -I$(top_srcdir)/glom -I$(top_builddir) -I$(top_srcdir)
 glom_defines = \
 -DGLOM_DATADIR=\""$(datadir)"\" \
--DGLOM_DOCDIR=\""$(docdir)"\" \
+-DGLOM_DOCDIR_EXAMPLES=\""$(docdir)/examples"\" \
+-DGLOM_DOCDIR_EXAMPLES_NOTINSTALLED=\""$(abs_top_srcdir)/examples"\" \
 -DGLOM_LOCALEDIR=\""$(glom_localedir)"\" \
--DGLOM_PKGDATADIR=\""$(pkgdatadir)"\"
+-DGLOM_PKGDATADIR=\""$(pkgdatadir)"\" \
+-DGLOM_PKGDATADIR_NOTINSTALLED=\""$(top_srcdir)/glom"\"
+
 
 AM_CPPFLAGS = $(glom_includes) $(GLOM_CFLAGS) $(PYTHON_CPPFLAGS) $(BOOST_PYTHON_CFLAGS) $(glom_defines)
 AM_CFLAGS   = $(GLOM_WFLAGS)

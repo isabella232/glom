@@ -42,6 +42,9 @@
 namespace Glom
 {
 
+const char* Dialog_Layout_Report::glade_id("window_report_layout");
+const bool Dialog_Layout_Report::glade_developer(true);
+
 Dialog_Layout_Report::Dialog_Layout_Report(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Dialog_Layout(cobject, builder, false /* No table title */),
   m_notebook_parts(0),
@@ -689,32 +692,20 @@ sharedptr<Relationship> Dialog_Layout_Report::offer_relationship_list()
 {
   sharedptr<Relationship> result;
 
-  try
+  Dialog_ChooseRelationship* dialog = 0;
+  Utils::get_glade_widget_derived_with_warning(dialog);
+
+  dialog->set_document(get_document(), m_table_name);
+  dialog->set_transient_for(*this);
+  const int response = dialog->run();
+  dialog->hide();
+  if(response == Gtk::RESPONSE_OK)
   {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_relationship");
-
-    Dialog_ChooseRelationship* dialog = 0;
-    refXml->get_widget_derived("dialog_choose_relationship", dialog);
-
-    if(dialog)
-    {
-      dialog->set_document(get_document(), m_table_name);
-      dialog->set_transient_for(*this);
-      int response = dialog->run();
-      dialog->hide();
-      if(response == Gtk::RESPONSE_OK)
-      {
-        //Get the chosen relationship:
-        result = dialog->get_relationship_chosen();
-      }
-
-      delete dialog;
-    }
+    //Get the chosen relationship:
+    result = dialog->get_relationship_chosen();
   }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
+
+  delete dialog;
 
   return result;
 }
@@ -826,43 +817,30 @@ void Dialog_Layout_Report::on_button_edit()
       sharedptr<LayoutItem_FieldSummary> fieldsummary = sharedptr<LayoutItem_FieldSummary>::cast_dynamic(item);
       if(fieldsummary)
       {
-        try
+        Dialog_FieldSummary* dialog = 0;
+        Utils::get_glade_widget_derived_with_warning(dialog);
+        add_view(dialog);
+        dialog->set_item(fieldsummary, m_table_name);
+        dialog->set_transient_for(*this);
+
+        const int response = dialog->run();
+        dialog->hide();
+
+        if(response == Gtk::RESPONSE_OK)
         {
-          Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_field_summary");
-
-          Dialog_FieldSummary* dialog = 0;
-          refXml->get_widget_derived("dialog_field_summary", dialog);
-
-          if(dialog)
+          //Get the chosen relationship:
+          sharedptr<LayoutItem_FieldSummary> chosenitem = dialog->get_item();
+          if(chosenitem)
           {
-            add_view(dialog);
-            dialog->set_item(fieldsummary, m_table_name);
-            dialog->set_transient_for(*this);
+            *fieldsummary = *chosenitem; //TODO_Performance.
 
-            const int response = dialog->run();
-            dialog->hide();
-
-            if(response == Gtk::RESPONSE_OK)
-            {
-              //Get the chosen relationship:
-              sharedptr<LayoutItem_FieldSummary> chosenitem = dialog->get_item();
-              if(chosenitem)
-              {
-                *fieldsummary = *chosenitem; //TODO_Performance.
-
-                model->row_changed(Gtk::TreeModel::Path(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
-                m_modified = true;
-              }
-            }
-
-            remove_view(dialog);
-            delete dialog;
+            model->row_changed(Gtk::TreeModel::Path(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
+            m_modified = true;
           }
         }
-        catch(const Gtk::BuilderError& ex)
-        {
-          std::cerr << ex.what() << std::endl;
-        }
+
+        remove_view(dialog);
+        delete dialog;
       }
       else
       {
@@ -908,42 +886,29 @@ void Dialog_Layout_Report::on_button_edit()
               sharedptr<LayoutItem_GroupBy> group_by = sharedptr<LayoutItem_GroupBy>::cast_dynamic(item);
               if(group_by)
               {
-                try
+                Dialog_GroupBy* dialog = 0;
+                Utils::get_glade_widget_derived_with_warning(dialog);
+                add_view(dialog);
+                dialog->set_item(group_by, m_table_name);
+                dialog->set_transient_for(*this);
+  
+                const int response = dialog->run();
+                dialog->hide();
+  
+                if(response == Gtk::RESPONSE_OK)
                 {
-                  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_group_by");
-  
-                  Dialog_GroupBy* dialog = 0;
-                  refXml->get_widget_derived("dialog_group_by", dialog);
-  
-                  if(dialog)
+                  //Get the chosen relationship:
+                  sharedptr<LayoutItem_GroupBy> chosenitem = dialog->get_item();
+                  if(chosenitem)
                   {
-                    add_view(dialog);
-                    dialog->set_item(group_by, m_table_name);
-                    dialog->set_transient_for(*this);
-  
-                    const int response = dialog->run();
-                    dialog->hide();
-  
-                    if(response == Gtk::RESPONSE_OK)
-                    {
-                      //Get the chosen relationship:
-                      sharedptr<LayoutItem_GroupBy> chosenitem = dialog->get_item();
-                      if(chosenitem)
-                      {
-                        *group_by = *chosenitem;
-                        model->row_changed(Gtk::TreeModel::Path(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
-                        m_modified = true;
-                      }
-                    }
-  
-                    remove_view(dialog);
-                    delete dialog;
+                    *group_by = *chosenitem;
+                    model->row_changed(Gtk::TreeModel::Path(iter), iter); //TODO: Add row_changed(iter) to gtkmm?
+                    m_modified = true;
                   }
                 }
-                catch(const Gtk::BuilderError& ex)
-                {
-                  std::cerr << ex.what() << std::endl;
-                }
+  
+                remove_view(dialog);
+                delete dialog;
               }
             }
           }

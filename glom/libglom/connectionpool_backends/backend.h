@@ -147,7 +147,7 @@ protected:
    *
    * @param slot_progress A callback to call while the work is still happening.
    */
-  virtual void cleanup(const SlotProgress& slot_progress);
+  virtual bool cleanup(const SlotProgress& slot_progress);
 
   /** Change the database server's configration to allow or prevent access from 
    * other users on the network.

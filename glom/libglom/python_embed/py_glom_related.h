@@ -36,16 +36,19 @@ public:
   PyGlomRelated();
   ~PyGlomRelated();
 
+  typedef std::map<Glib::ustring, sharedptr<Relationship> > type_map_relationships;
+  void set_relationships(const PyGlomRelated::type_map_relationships& relationships);
+
+
   //[] notation:
   long len() const;
   boost::python::object getitem(const boost::python::object& item);
 
   friend class PyGlomRecord;
 
-  typedef std::map<Glib::ustring, sharedptr<Relationship> > type_map_relationships;
+private:
   typedef std::map<Glib::ustring, boost::python::object /* Actually PyGlomRelatedRecord* */> type_map_relatedrecords;
 
-//TODO: protected:
   boost::python::object m_record; //Actually PyGlomRecord. A reference to the parent record.
 
 
@@ -54,7 +57,6 @@ public:
   type_map_relatedrecords m_map_relatedrecords;
 };
 
-void PyGlomRelated_SetRelationships(PyGlomRelated* self, const PyGlomRelated::type_map_relationships& relationships);
 
 
 } //namespace Glom

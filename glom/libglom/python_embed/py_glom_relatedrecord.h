@@ -38,6 +38,8 @@ public:
   PyGlomRelatedRecord();
   ~PyGlomRelatedRecord();
 
+  void set_relationship(const sharedptr<const Relationship>& relationship, const Gnome::Gda::Value& from_key_value, Document* document);
+
   boost::python::object sum(const std::string& field_name) const;
   boost::python::object count(const std::string& field_name) const;
   boost::python::object min(const std::string& field_name) const;
@@ -47,7 +49,7 @@ public:
   long len() const;
   boost::python::object getitem(const boost::python::object& item);
 
-//TODO: protected:
+private:
 
   boost::python::object generic_aggregate(const std::string& field_name, const std::string& aggregate) const;
 
@@ -62,12 +64,6 @@ public:
   typedef std::map<Glib::ustring, Gnome::Gda::Value> type_map_field_values;
   mutable type_map_field_values m_map_field_values; //A cache.
 };
-
-void PyGlomRelatedRecord_SetRelationship(PyGlomRelatedRecord* self, const sharedptr<const Relationship>& relationship, const Gnome::Gda::Value& from_key_value, Document* document);
-
-/*
-void PyGlomRelatedRecord_SetConnection(PyGlomRelatedRecord* self, const Glib::RefPtr<Gnome::Gda::Connection>& connection);
-*/
 
 } //namespace Glom
 

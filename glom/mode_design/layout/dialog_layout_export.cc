@@ -29,6 +29,9 @@
 namespace Glom
 {
 
+const char* Dialog_Layout_Export::glade_id("window_data_layout_export");
+const bool Dialog_Layout_Export::glade_developer(true);
+
 Dialog_Layout_Export::Dialog_Layout_Export(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Dialog_Layout(cobject, builder, false /* no table title */),
   m_treeview_fields(0),

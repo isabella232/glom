@@ -29,7 +29,7 @@
 #include <glom/utils_ui.h>
 #include "cellrenderer_buttonimage.h"
 #include "cellrenderer_buttontext.h"
-#include <glom/utility_widgets/imageglom.h> //For ImageGlom::scale_keeping_ratio().
+#include <glom/utils_ui.h> //For Utils::image_scale_keeping_ratio().
 
 #include <iostream> //For debug output.
 #include <gtk/gtktreeview.h>
@@ -361,7 +361,7 @@ bool DbAddDel::on_button_press_event_Popup(GdkEventButton *event)
 #endif
 
   GdkModifierType mods;
-  gdk_window_get_pointer( Gtk::Widget::gobj()->window, 0, 0, &mods );
+  gdk_window_get_pointer( gtk_widget_get_window (Gtk::Widget::gobj()), 0, 0, &mods );
   if(mods & GDK_BUTTON3_MASK)
   {
     //Give user choices of actions on this item:
@@ -2299,7 +2299,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
          
             //Scale it down to a sensible size.
             if(pixbuf)
-              pixbuf = ImageGlom::scale_keeping_ratio(pixbuf,  get_fixed_cell_height(), pixbuf->get_width());
+              pixbuf = Utils::image_scale_keeping_ratio(pixbuf,  get_fixed_cell_height(), pixbuf->get_width());
 
             g_object_set(pDerived->gobj(), "pixbuf", pixbuf ? pixbuf->gobj() : 0, (gpointer)0);
           }

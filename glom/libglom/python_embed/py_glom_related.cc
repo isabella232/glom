@@ -82,14 +82,14 @@ boost::python::object PyGlomRelated::getitem(const boost::python::object& cppite
             PyGlomRecord::type_map_field_values::const_iterator iterFromKey = record->m_map_field_values.find(from_key);
             if(iterFromKey != record->m_map_field_values.end())
             {
-              const Gnome::Gda::Value from_key_value = iterFromKey->second;
+              const Gnome::Gda::Value& from_key_value = iterFromKey->second;
 
               //TODO_Performance:
               //Get the full field details so we can sqlize its value:
               sharedptr<const Field> from_key_field = record->m_document->get_field(record->m_table_name, from_key);
               if(from_key_field)
-              { 
-                PyGlomRelatedRecord_SetRelationship(pyRelatedRecord, iterFind->second, from_key_value, record->m_document);
+              {
+                pyRelatedRecord->set_relationship(iterFind->second, from_key_value, record->m_document);
 
                 //Store it in the cache:
                 boost::python::object objectRelatedRecord(pyRelatedRecord);
@@ -119,9 +119,9 @@ static void Related_HandlePythonError()
 */
 
 
-void PyGlomRelated_SetRelationships(PyGlomRelated* self, const PyGlomRelated::type_map_relationships& relationships)
+void PyGlomRelated::set_relationships(const PyGlomRelated::type_map_relationships& relationships)
 {
-  self->m_map_relationships = relationships;
+  m_map_relationships = relationships;
 }
 
 } //namespace Glom

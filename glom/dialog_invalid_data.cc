@@ -26,24 +26,19 @@
 namespace Glom
 {
 
+const char* Dialog_InvalidData::glade_id("dialog_data_invalid_format");
+const bool Dialog_InvalidData::glade_developer(false);
+
 /** Show the dialog.
  * @result true if the data in the field should be reverted.
  */
 bool glom_show_dialog_invalid_data(Field::glom_field_type glom_type)
 {
-  //TODO: Share a global instance, to make this quicker?
-#ifdef GLIBMM_EXCEPTIONS_ENABLED  
-  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_data_invalid_format");
-#else
-  std::auto_ptr<Glib::Error> error;  
-  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_data_invalid_format", error);
-#endif
-
   Dialog_InvalidData* dialog = 0;
-  refXml->get_widget_derived("dialog_data_invalid_format", dialog);
+  Utils::get_glade_widget_derived_with_warning(dialog);
   dialog->set_example_data(glom_type);
   //dialog->set_transient_for(*this);
-  const int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_data_invalid_format");
+  const int response = Glom::Utils::dialog_run_with_help(dialog);
   
   delete dialog;
   return (response == 2); //The glade file has a response of 2 for the Revert button.

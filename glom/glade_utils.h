@@ -24,6 +24,7 @@
 #include <iostream> // For std::cerr
 #include <gtkmm/builder.h>
 #include <glom/dialog_progress_creating.h>
+#include <giomm/file.h>
 
 namespace Glom
 {
@@ -33,62 +34,54 @@ namespace Utils
 
 inline std::string get_glade_file_path(const std::string& filename)
 {
+  // Check the path to the installed .glade file:
 #ifdef G_OS_WIN32
   gchar* directory = g_win32_get_package_installation_directory_of_module(0);
   const std::string result = Glib::build_filename(directory, Glib::build_filename("share/glom/glade", filename));
   g_free(directory);
-  return result;
+  directory = 0;
 #else
-  return Glib::build_filename(GLOM_PKGDATADIR G_DIR_SEPARATOR_S "glade", filename);
+  const std::string result = Glib::build_filename(GLOM_PKGDATADIR, Glib::build_filename("glade", filename));
 #endif
+
+  // Check that it exists:
+  const Glib::RefPtr<Gio::File> file = Gio::File::create_for_path(result);
+  if(file && file->query_exists())
+    return result;
+
+  // Try to fall back to the uninstalled file in the source tree,
+  // for instance when running "make distcheck", which doesn't install to _inst/
+  // before running check.
+  std::cout << "Glade file not found: " << result << std::endl;
+  std::cout << "Falling back to the local file." << std::endl;
+  return Glib::build_filename(GLOM_PKGDATADIR_NOTINSTALLED, filename);
 }
 
 template<class T_Widget>
-void get_glade_widget_derived_with_warning(const Glib::ustring& id, T_Widget*& widget)
-{
-  Glib::RefPtr<Gtk::Builder> refXml;
-
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), id);
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
-#else
-  std::auto_ptr<Glib::Error> error;
-  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), id, error);
-  if (error.get())
-  {
-    std::cerr << error->what() << std::endl;
-  }
-#endif
-
-  if(refXml)
-  {
-    refXml->get_widget_derived(id, widget);
-  }
-}
-
-template<class T_Widget>
-void get_glade_developer_widget_derived_with_warning(const Glib::ustring& id, T_Widget*& widget)
+void helper_get_glade_widget_derived_with_warning(const std::string& filename, const Glib::ustring& id, T_Widget*& widget)
 {
   Glib::RefPtr<Gtk::Builder> refXml;
 
   #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), id);
+    refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path(filename), id);
   }
   catch(const Gtk::BuilderError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }
+  catch(const Glib::MarkupError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+  catch(const Glib::FileError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
 #else
   std::auto_ptr<Glib::Error> error;
-  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), id, error);
+  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path(filename), id, error);
   if (error.get())
   {
     std::cerr << error->what() << std::endl;
@@ -99,25 +92,60 @@ void get_glade_developer_widget_derived_with_warning(const Glib::ustring& id, T_
   {
     refXml->get_widget_derived(id, widget);
   }
+
+  // Make sure that all windows have the Glom icon.
+  // TODO: Though shouldn't all transient windows have this by default,
+  // or should they even be visible in the task list? murrayc
+  Gtk::Window* window = dynamic_cast<Gtk::Window*>(widget);
+  if(window)
+    window->set_icon_name("glom");
 }
 
 template<class T_Widget>
-void get_glade_widget_with_warning(const Glib::ustring& id, T_Widget*& widget)
+void helper_get_glade_widget_derived_with_warning(const Glib::ustring& id, T_Widget*& widget)
+{
+  helper_get_glade_widget_derived_with_warning("glom.glade", id, widget);
+}
+
+/** This should be used with classes that have a static glade_id member.
+ */
+template<class T_Widget>
+void get_glade_widget_derived_with_warning(T_Widget*& widget)
+{
+  widget = 0;
+
+  if(T_Widget::glade_developer)
+    helper_get_glade_widget_derived_with_warning("glom_developer.glade", T_Widget::glade_id, widget);
+  else
+    helper_get_glade_widget_derived_with_warning("glom.glade", T_Widget::glade_id, widget);
+}
+
+
+template<class T_Widget>
+void get_glade_widget_with_warning(const std::string& filename, const Glib::ustring& id, T_Widget*& widget)
 {
   Glib::RefPtr<Gtk::Builder> refXml;
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), id);
+    refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path(filename), id);
   }
-  catch(const Glib::Error& ex)
+  catch(const Gtk::BuilderError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+  catch(const Glib::MarkupError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+  }
+  catch(const Glib::FileError& ex)
   {
     std::cerr << ex.what() << std::endl;
   }
 #else
   std::auto_ptr<Glib::Error> error;
-  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), id, error);
+  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path(filename), id, error);
   if (error.get())
   {
     std::cerr << error->what() << std::endl;
@@ -128,6 +156,13 @@ void get_glade_widget_with_warning(const Glib::ustring& id, T_Widget*& widget)
   {
     refXml->get_widget(id, widget);
   }
+
+  // Make sure that all windows have the Glom icon.
+  // TODO: Though shouldn't all transient windows have this by default,
+  // or should they even be visible in the task list? murrayc
+  Gtk::Window* window = dynamic_cast<Gtk::Window*>(widget);
+  if(window)
+    window->set_icon_name("glom");
 }
 
 Dialog_ProgressCreating* get_and_show_pulse_dialog(const Glib::ustring& message, Gtk::Window* parent_window);
@@ -137,4 +172,3 @@ Dialog_ProgressCreating* get_and_show_pulse_dialog(const Glib::ustring& message,
 } //namespace Glom
 
 #endif //GLOM_GLADE_UTILS_H
-

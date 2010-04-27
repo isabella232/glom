@@ -34,10 +34,6 @@
 #include <libglom/connectionpool_backends/postgres_self.h>
 #endif
 
-#ifdef GLOM_ENABLE_SQLITE
-# include <libglom/connectionpool_backends/sqlite.h>
-#endif
-
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 #include <glom/mode_design/users/dialog_groups_list.h>
 #include <glom/mode_design/dialog_database_preferences.h>
@@ -133,7 +129,7 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   //QuickFind widgets:
   //We don't use Glade for these, so it easier to modify them for the Maemo port.
   m_pBox_QuickFind = Gtk::manage(new Gtk::HBox(false, Utils::DEFAULT_SPACING_SMALL));
-  Gtk::Label* label = Gtk::manage(new Gtk::Label(_("Quick Find")));
+  Gtk::Label* label = Gtk::manage(new Gtk::Label(_("Quick _search:"), true));
   m_pBox_QuickFind->pack_start(*label, Gtk::PACK_SHRINK);
 
   #ifndef GLOM_ENABLE_MAEMO
@@ -143,6 +139,8 @@ Frame_Glom::Frame_Glom(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>
   #endif
   m_pEntry_QuickFind->signal_activate().connect(
    sigc::mem_fun(*this, &Frame_Glom::on_button_quickfind) ); //Pressing Enter here is like pressing Find.
+
+  label->set_mnemonic_widget(*m_pEntry_QuickFind);
 
   m_pBox_QuickFind->pack_start(*m_pEntry_QuickFind, Gtk::PACK_EXPAND_WIDGET);
   #ifndef GLOM_ENABLE_MAEMO
@@ -429,7 +427,10 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
 
   //Update user-level dependent UI:
   if(pApp)
+  {
     on_userlevel_changed(pApp->get_userlevel());
+    pApp->update_table_sensitive_ui();
+  }
 
   switch(m_Mode)
   {
@@ -567,23 +568,26 @@ void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction
         if(document->get_opened_from_browse())
         {
           //TODO: Obviously this could be possible but it would require a network protocol and some work:
-          Gtk::MessageDialog dialog(Utils::bold_message(_("Developer Mode Not Available.")), true, Gtk::MESSAGE_WARNING);
+          Gtk::MessageDialog dialog(Utils::bold_message(_("Developer mode not available.")), true, Gtk::MESSAGE_WARNING);
           dialog.set_secondary_text(_("Developer mode is not available because the file was opened over the network from a running Glom. Only the original file may be edited."));
+          dialog.set_icon_name("glom");
           dialog.set_transient_for(*get_app_window());
           dialog.run();
         }
         else
         {
-          Gtk::MessageDialog dialog(Utils::bold_message(_("Developer Mode Not Available")), true, Gtk::MESSAGE_WARNING);
+          Gtk::MessageDialog dialog(Utils::bold_message(_("Developer mode not available")), true, Gtk::MESSAGE_WARNING);
           dialog.set_secondary_text(_("Developer mode is not available. Check that you have sufficient database access rights and that the glom file is not read-only."));
+          dialog.set_icon_name("glom");
           dialog.set_transient_for(*get_app_window());
           dialog.run();
         }
       }
       else if(document->get_document_format_version() < Document::get_latest_known_document_format_version())
       {
-        Gtk::MessageDialog dialog(Utils::bold_message(_("Saving in New Document Format")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+        Gtk::MessageDialog dialog(Utils::bold_message(_("Saving in new document format")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
         dialog.set_secondary_text(_("The document was created by an earlier version of the application. Making changes to the document will mean that the document cannot be opened by some earlier versions of the application."));
+        dialog.set_icon_name("glom");
         dialog.set_transient_for(*get_app_window());
         dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
         dialog.add_button(_("Continue"), Gtk::RESPONSE_OK);
@@ -890,27 +894,16 @@ void Frame_Glom::on_menu_file_import()
       file_chooser.hide();
 
       Dialog_Import_CSV* dialog = 0;
-      Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "dialog_import_csv");
-      refXml->get_widget_derived("dialog_import_csv", dialog);
+      Glom::Utils::get_glade_widget_derived_with_warning(dialog);
       add_view(dialog);
 
       dialog->import(file_chooser.get_uri(), m_table_name);
-      while(Glom::Utils::dialog_run_with_help(dialog, "dialog_import_csv") == Gtk::RESPONSE_ACCEPT)
+      while(Glom::Utils::dialog_run_with_help(dialog) == Gtk::RESPONSE_ACCEPT)
       {
         dialog->hide();
 
         Dialog_Import_CSV_Progress* progress_dialog = 0;
-
-        //GtkBuilder can't find top-level objects (GtkTextBuffer in this case),
-        //that one top-level object references.
-        //See http://bugzilla.gnome.org/show_bug.cgi?id=575714
-        //so we need to this silliness. murrayc.
-        std::list<Glib::ustring> builder_ids;
-        builder_ids.push_back("dialog_import_csv_progress");
-        builder_ids.push_back("textbuffer1");
-
-        Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), builder_ids);
-        refXml->get_widget_derived("dialog_import_csv_progress", progress_dialog);
+        Glom::Utils::get_glade_widget_derived_with_warning(progress_dialog);
         add_view(progress_dialog);
 
         progress_dialog->init_db_details(dialog->get_target_table_name());
@@ -964,8 +957,9 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
   //TODO: Warn that this will be saved as the default if doing this in developer mode?
   if(shared)
   {
-    Gtk::MessageDialog dialog(Utils::bold_message(_("Share On Network")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
-    dialog.set_secondary_text(_("Are you sure that you wish to allow other users on the network to use this database?"));
+    Gtk::MessageDialog dialog(Utils::bold_message(_("Share on the network")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+    dialog.set_icon_name("glom");
+    dialog.set_secondary_text(_("This will allow other users on the network to use this database."));
     dialog.set_transient_for(*get_app_window());
     dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
     dialog.add_button(_("_Share"), Gtk::RESPONSE_OK);
@@ -1063,8 +1057,9 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
   else //not shared:
   {
     //TODO: Warn about connected users if possible.
-    Gtk::MessageDialog dialog(Utils::bold_message(_("Stop Sharing On Network")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
-    dialog.set_secondary_text(_("Are you sure that you wish to prevent other users on the network from using this database?"));
+    Gtk::MessageDialog dialog(Utils::bold_message(_("Stop sharing on the network")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
+    dialog.set_secondary_text(_("This will prevent other users on the network from using this database."));
+    dialog.set_icon_name("glom");
     dialog.set_transient_for(*get_app_window());
     dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
     dialog.add_button(_("_Stop Sharing"), Gtk::RESPONSE_OK);
@@ -1242,17 +1237,7 @@ void Frame_Glom::on_menu_Tables_AddRelatedTable()
     m_dialog_addrelatedtable = 0;
   }
 
-  try
-  {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_add_related_table");
-
-    refXml->get_widget_derived("dialog_add_related_table", m_dialog_addrelatedtable);
-  }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
-
+  Utils::get_glade_widget_derived_with_warning(m_dialog_addrelatedtable);
   if(!m_dialog_addrelatedtable)
     return;
 
@@ -1386,7 +1371,7 @@ void Frame_Glom::do_menu_Navigate_Table(bool open_default)
   //Create the dialog, if it has not already been created:
   if(!m_pBox_Tables)
   {
-    Utils::get_glade_widget_derived_with_warning("box_navigation_tables", m_pBox_Tables);
+    Utils::get_glade_widget_derived_with_warning(m_pBox_Tables);
     m_pDialog_Tables = new Window_BoxHolder(m_pBox_Tables, _("Edit Tables"));
     m_pDialog_Tables->signal_hide().connect(sigc::mem_fun(*this, &Frame_Glom::on_dialog_tables_hide));
 
@@ -1471,7 +1456,8 @@ void Frame_Glom::on_button_quickfind()
     Hildon::Note note(Hildon::NOTE_TYPE_INFORMATION, *get_app_window(), message);
     note.run();
 #else
-    Gtk::MessageDialog dialog(Utils::bold_message(_("No Find Criteria")), true, Gtk::MESSAGE_WARNING );
+    Gtk::MessageDialog dialog(Utils::bold_message(_("No find criteria")), true, Gtk::MESSAGE_WARNING );
+    dialog.set_icon_name("glom");
     dialog.set_secondary_text(message);
     dialog.set_transient_for(*get_app_window());
     dialog.run();
@@ -1531,9 +1517,10 @@ void Frame_Glom::on_notebook_find_criteria(const Glib::ustring& where_clause)
 void Frame_Glom::on_userlevel_changed(AppState::userlevels userlevel)
 {
   //show user level:
-  Glib::ustring user_level_name = _("Operator");
+  //The _C macro provides translator context.
+  Glib::ustring user_level_name = C_("Mode", "Operator");
   if(userlevel == AppState::USERLEVEL_DEVELOPER)
-    user_level_name = _("Developer");
+    user_level_name = C_("Mode", "Developer");
 
   if(m_pLabel_userlevel)
     m_pLabel_userlevel->set_text(user_level_name);
@@ -1691,29 +1678,17 @@ void Frame_Glom::load_from_document()
 void Frame_Glom::on_menu_developer_database_preferences()
 {
   Dialog_Database_Preferences* dialog = 0;
-  try
-  {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_database_preferences");
-    refXml->get_widget_derived("dialog_database_preferences", dialog);
-    if(dialog)
-    {
-      dialog->set_transient_for(*(get_app_window()));
-      add_view(dialog);
-      dialog->load_from_document();
+  Utils::get_glade_widget_derived_with_warning(dialog);
+  dialog->set_transient_for(*(get_app_window()));
+  add_view(dialog);
+  dialog->load_from_document();
 
-      Glom::Utils::dialog_run_with_help(dialog, "dialog_database_preferences");
+  Glom::Utils::dialog_run_with_help(dialog);
 
-      remove_view(dialog);
-      delete dialog;
+  remove_view(dialog);
+  delete dialog;
 
-      //show_system_name(); //In case it has changed.
-    }
-  }
-
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
+  //show_system_name(); //In case it has changed.
 }
 
 void Frame_Glom::on_menu_developer_fields()
@@ -1728,24 +1703,14 @@ void Frame_Glom::do_menu_developer_fields(Gtk::Window& parent, const Glib::ustri
 {
   if(!m_pDialog_Fields)
   {
-    try
-    {
-      Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_design");
-
-      refXml->get_widget_derived("window_design", m_pDialog_Fields);
-      m_pDialog_Fields->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
-    }
-    catch(const Gtk::BuilderError& ex)
-    {
-      std::cerr << ex.what() << std::endl;
-    }
-
+    Utils::get_glade_widget_derived_with_warning(m_pDialog_Fields);
+    m_pDialog_Fields->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
     add_view(m_pDialog_Fields);
   }
 
-  // Some database backends (SQLite) require the table to change no longer
-  // being in use when changing the records, so clear the database usage
-  // here. We reshow everything in on_developer_dialog_hide anyway.
+  // Some database backends (SQLite) require the table to change to no longer
+  // be in use when changing the records, so we stop the database usage
+  // here. We reshow everything in on_developer_dialog_hide() anyway.
   show_no_table();
 
   // Remember the old table name so that we re-show the previous table as
@@ -1761,13 +1726,9 @@ void Frame_Glom::do_menu_developer_fields(Gtk::Window& parent)
 {
   //Check that there is a table to show:
   if(m_table_name.empty())
-  {
-    alert_no_table(); //TODO: Disable the menu item instead.
-  }
-  else
-  {
-    do_menu_developer_fields(parent, m_table_name);
-  }
+    return;
+
+  do_menu_developer_fields(parent, m_table_name);
 }
 
 
@@ -1775,16 +1736,17 @@ void Frame_Glom::on_menu_developer_relationships_overview()
 {
   if(!m_dialog_relationships_overview)
   {
-    Utils::get_glade_developer_widget_derived_with_warning("dialog_relationships_overview", m_dialog_relationships_overview);
+    Utils::get_glade_widget_derived_with_warning(m_dialog_relationships_overview);
     add_view(m_dialog_relationships_overview);
   }
 
   if(m_dialog_relationships_overview)
   {
+    m_dialog_relationships_overview->set_icon_name("glom");
     m_dialog_relationships_overview->set_transient_for(*(get_app_window()));
     m_dialog_relationships_overview->load_from_document();
 
-    Glom::Utils::dialog_run_with_help(m_dialog_relationships_overview, "dialog_relationships_overview");
+    Glom::Utils::dialog_run_with_help(m_dialog_relationships_overview);
 
     remove_view(m_dialog_relationships_overview);
     delete m_dialog_relationships_overview;
@@ -1797,7 +1759,7 @@ void Frame_Glom::do_menu_developer_relationships(Gtk::Window& parent, const Glib
   //Create the widget if necessary:
   if(!m_pDialog_Relationships)
   {
-    Utils::get_glade_developer_widget_derived_with_warning("window_design", m_pDialog_Relationships);
+    Utils::get_glade_widget_derived_with_warning(m_pDialog_Relationships);
     m_pDialog_Relationships->set_title("Relationships");
     m_pDialog_Relationships->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_developer_dialog_hide));
     add_view(m_pDialog_Relationships); //Also a composite view.
@@ -1812,35 +1774,21 @@ void Frame_Glom::on_menu_developer_relationships()
 {
   //Check that there is a table to show:
   if(m_table_name.empty())
-  {
-    alert_no_table(); //TODO: Disable the menu item instead.
-  }
-  else
-  {
-    do_menu_developer_relationships(*get_app_window(), m_table_name);
-  }
+    return;
+
+  do_menu_developer_relationships(*get_app_window(), m_table_name);
 }
 
 void Frame_Glom::on_menu_developer_users()
 {
   Dialog_GroupsList* dialog = 0;
-  try
-  {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_groups");
-
-    refXml->get_widget_derived("window_groups", dialog);
-  }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
-
+  Utils::get_glade_widget_derived_with_warning(dialog);
   dialog->set_transient_for(*get_app_window());
 
   add_view(dialog); //Give it access to the document.
   dialog->load_from_document(); //Update the UI now that it has the document.
 
-  Glom::Utils::dialog_run_with_help(dialog, "window_groups");
+  Glom::Utils::dialog_run_with_help(dialog);
   remove_view(dialog);
   delete dialog;
 
@@ -1854,34 +1802,28 @@ void Frame_Glom::on_menu_developer_layout()
 {
   //Check that there is a table to show:
   if(m_table_name.empty())
-  {
-    alert_no_table(); //TODO: Disable the menu item instead.
-  }
-  else
-  {
-    Notebook_Glom* notebook_current = dynamic_cast<Notebook_Glom*>(m_pBox_Mode->get_child());
-    if(notebook_current)
-      notebook_current->do_menu_developer_layout();
-  }
+    return;
+
+  Notebook_Glom* notebook_current = dynamic_cast<Notebook_Glom*>(m_pBox_Mode->get_child());
+  if(notebook_current)
+    notebook_current->do_menu_developer_layout();
 }
 
 void Frame_Glom::on_menu_developer_reports()
 {
   //Check that there is a table to show:
   if(m_table_name.empty())
-  {
-    alert_no_table(); //TODO: Disable the menu item instead.
     return;
-  }
 
   //Create the widget if necessary:
   if(!m_pBox_Reports)
   {
-    Utils::get_glade_developer_widget_derived_with_warning("box_reports", m_pBox_Reports);
+    Utils::get_glade_widget_derived_with_warning(m_pBox_Reports);
     m_pDialog_Reports = new Window_BoxHolder(m_pBox_Reports);
     m_pDialog_Reports->set_transient_for(*(get_app_window()));
+    m_pDialog_Reports->set_title(_("Reports"));
 
-    Utils::get_glade_developer_widget_derived_with_warning("window_report_layout", m_pDialogLayoutReport);
+    Utils::get_glade_widget_derived_with_warning(m_pDialogLayoutReport);
     add_view(m_pDialogLayoutReport);
     m_pDialogLayoutReport->set_transient_for(*(get_app_window()));
     m_pDialogLayoutReport->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_layout_report_hide) );
@@ -1901,15 +1843,12 @@ void Frame_Glom::on_menu_developer_print_layouts()
 {
   //Check that there is a table to show:
   if(m_table_name.empty())
-  {
-    alert_no_table(); //TODO: Disable the menu item instead.
     return;
-  }
 
   //Create the widget if necessary:
   if(!m_pBox_PrintLayouts)
   {
-    Utils::get_glade_developer_widget_derived_with_warning("box_print_layouts", m_pBox_PrintLayouts);
+    Utils::get_glade_widget_derived_with_warning(m_pBox_PrintLayouts);
     m_pDialog_PrintLayouts = new Window_BoxHolder(m_pBox_PrintLayouts);
 
     m_pDialog_PrintLayouts->set_transient_for(*get_app_window());
@@ -1928,12 +1867,11 @@ void Frame_Glom::on_menu_developer_print_layouts()
 void Frame_Glom::on_menu_developer_script_library()
 {
   Dialog_ScriptLibrary* dialog = 0;
-  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_script_library");
-  refXml->get_widget_derived("dialog_script_library", dialog);
+  Utils::get_glade_widget_derived_with_warning(dialog);
   dialog->set_transient_for(*(get_app_window()));
   add_view(dialog); //Give it access to the document.
   dialog->load_from_document();
-  Glom::Utils::dialog_run_with_help(dialog, "dialog_script_library"); //TODO: Create the help section.
+  Glom::Utils::dialog_run_with_help(dialog); //TODO: Create the help section.
   dialog->save_to_document();
   remove_view(dialog);
   delete dialog;
@@ -1959,7 +1897,7 @@ void Frame_Glom::on_box_print_layouts_selected(const Glib::ustring& print_layout
   //Create the dialog if necessary:
   if(!m_pDialogLayoutPrint)
   {
-    Utils::get_glade_developer_widget_derived_with_warning("window_print_layout_edit", m_pDialogLayoutPrint);
+    Utils::get_glade_widget_derived_with_warning(m_pDialogLayoutPrint);
     add_view(m_pDialogLayoutPrint);
     m_pDialogLayoutPrint->signal_hide().connect( sigc::mem_fun(*this, &Frame_Glom::on_dialog_layout_print_hide) );
   }
@@ -1989,61 +1927,6 @@ void Frame_Glom::on_developer_dialog_hide()
     m_dialog_relationships_overview->load_from_document();
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-
-namespace
-{
-  void setup_connection_pool_from_document(Document* document)
-  {
-    ConnectionPool* connection_pool = ConnectionPool::get_instance();
-    switch(document->get_hosting_mode())
-    {
-#ifdef GLOM_ENABLE_POSTGRESQL
-
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-    case Document::HOSTING_MODE_POSTGRES_SELF:
-      {
-        ConnectionPoolBackends::PostgresSelfHosted* backend = new ConnectionPoolBackends::PostgresSelfHosted;
-        backend->set_self_hosting_data_uri(document->get_connection_self_hosted_directory_uri());
-        connection_pool->set_backend(std::auto_ptr<ConnectionPool::Backend>(backend));
-      }
-      break;
-#endif //GLOM_ENABLE_CLIENT_ONLY
-
-    case Document::HOSTING_MODE_POSTGRES_CENTRAL:
-      {
-        ConnectionPoolBackends::PostgresCentralHosted* backend = new ConnectionPoolBackends::PostgresCentralHosted;
-        backend->set_host(document->get_connection_server());
-        backend->set_port(document->get_connection_port());
-        backend->set_try_other_ports(document->get_connection_try_other_ports());
-        connection_pool->set_backend(std::auto_ptr<ConnectionPool::Backend>(backend));
-      }
-      break;
-#endif //GLOM_ENABLE_POSTGRESQL
-
-#ifdef GLOM_ENABLE_SQLITE
-    case Document::HOSTING_MODE_SQLITE:
-      {
-        ConnectionPoolBackends::Sqlite* backend = new ConnectionPoolBackends::Sqlite;
-        backend->set_database_directory_uri(document->get_connection_self_hosted_directory_uri());
-        connection_pool->set_backend(std::auto_ptr<ConnectionPool::Backend>(backend));
-      }
-      break;
-#endif // GLOM_ENABLE_SQLITE
-
-    default:
-      //on_document_load() should have checked for this already, informing the user.
-      std::cerr << "Glom: setup_connection_pool_from_document(): Unhandled hosting mode: " << document->get_hosting_mode() << std::endl;
-      g_assert_not_reached();
-      break;
-    }
-
-    // Might be overwritten later when actually attempting a connection:
-    connection_pool->set_user(document->get_connection_user());
-    connection_pool->set_database(document->get_connection_database());
-
-    connection_pool->set_ready_to_connect();
-  }
-}
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void Frame_Glom::on_connection_initialize_progress()
@@ -2116,29 +1999,7 @@ bool Frame_Glom::connection_request_initial_password(Glib::ustring& user, Glib::
 
   //Ask for a new username and password to specify when creating a new self-hosted database.
   Dialog_InitialPassword* dialog = 0;
-  Glib::RefPtr<Gtk::Builder> refXml;
-
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_initial_password");
-  }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-    return false;
-  }
-#else
-  std::auto_ptr<Gtk::BuilderError> error;
-  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_initial_password", error);
-  if(error.get())
-  {
-    std::cerr << error->what() << std::endl;
-    return false;
-  }
-#endif //GLIBMM_EXCEPTIONS_ENABLED
-
-  refXml->get_widget_derived("dialog_initial_password", dialog);
+  Utils::get_glade_widget_derived_with_warning(dialog);
   if(!dialog)
     return false;
 
@@ -2149,7 +2010,7 @@ bool Frame_Glom::connection_request_initial_password(Glib::ustring& user, Glib::
   bool keep_trying = true;
   while(keep_trying)
   {
-    response = Utils::dialog_run_with_help(dialog, "dialog_new_self_hosted_connection");
+    response = Utils::dialog_run_with_help(dialog);
 
     //Check the password is acceptable:
     if(response == Gtk::RESPONSE_OK)
@@ -2185,11 +2046,11 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     return false;
 
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
-  setup_connection_pool_from_document(document);
+  connection_pool->setup_from_document(document);
 
   if(!m_pDialogConnection)
   {
-    Utils::get_glade_widget_derived_with_warning("dialog_connection", m_pDialogConnection);
+    Utils::get_glade_widget_derived_with_warning(m_pDialogConnection);
     add_view(m_pDialogConnection); //Also a composite view.
   }
 
@@ -2246,7 +2107,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
       m_pDialogConnection->load_from_document(); //Get good defaults.
       m_pDialogConnection->set_transient_for(*get_app_window());
 
-      const int response = Glom::Utils::dialog_run_with_help(m_pDialogConnection, "dialog_connection");
+      const int response = Glom::Utils::dialog_run_with_help(m_pDialogConnection);
       m_pDialogConnection->hide();
 
       if(response == Gtk::RESPONSE_OK)
@@ -2463,7 +2324,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
 
   //Start a self-hosted server if necessary:
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
-  setup_connection_pool_from_document(document);
+  connection_pool->setup_from_document(document);
   if(!connection_pool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) ))
     return false;
 
@@ -2485,7 +2346,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
       m_pDialogConnection = 0;
     }
 
-    Utils::get_glade_widget_derived_with_warning("dialog_connection", m_pDialogConnection);
+    Utils::get_glade_widget_derived_with_warning(m_pDialogConnection);
     add_view(m_pDialogConnection); //Also a composite view.
 
     m_pDialogConnection->load_from_document(); //Get good defaults.
@@ -2517,7 +2378,7 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
 
     if(m_pDialogConnection)
     {
-      response = Glom::Utils::dialog_run_with_help(m_pDialogConnection, "dialog_connection");
+      response = Glom::Utils::dialog_run_with_help(m_pDialogConnection);
       m_pDialogConnection->hide();
     }
 
@@ -2619,21 +2480,12 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
 
     //Tell the user:
     Gtk::Dialog* dialog = 0;
-    try
-    {
-       // TODO: Tell the user what has gone wrong (ex.what())
-      Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_error_create_database");
-      refXml->get_widget("dialog_error_create_database", dialog);
-      dialog->set_transient_for(*pWindowApp);
-      Glom::Utils::dialog_run_with_help(dialog, "dialog_error_create_database");
-      delete dialog;
-    }
-    catch(const Gtk::BuilderError& ex)
-    {
-      std::cerr << ex.what() << std::endl;
-    }
+    Utils::get_glade_widget_with_warning("glom_developer.glade", "dialog_error_create_database", dialog);
+    dialog->set_transient_for(*pWindowApp);
+    Glom::Utils::dialog_run_with_help(dialog, "dialog_error_create_database");
+    delete dialog;
 
-     return false;
+    return false;
   }
 
   //Connect to the actual database:

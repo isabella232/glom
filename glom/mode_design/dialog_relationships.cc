@@ -27,13 +27,14 @@
 namespace Glom
 {
 
+const char* Dialog_Relationships::glade_id("window_design");
+const bool Dialog_Relationships::glade_developer(true);
+
 Dialog_Relationships::Dialog_Relationships(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Dialog_Design(cobject, builder),
   m_box(0)
 {
   builder->get_widget_derived("vbox_placeholder", m_box);
-
-  m_label_frame->set_markup( Utils::bold_message(_("Relationships")) );
 
   //Fill composite view:
   add_view(m_box);

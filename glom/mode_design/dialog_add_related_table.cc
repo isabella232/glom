@@ -25,6 +25,9 @@
 namespace Glom
 {
 
+const char* Dialog_AddRelatedTable::glade_id("dialog_add_related_table");
+const bool Dialog_AddRelatedTable::glade_developer(true);
+
 Dialog_AddRelatedTable::Dialog_AddRelatedTable(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   Base_DB(),

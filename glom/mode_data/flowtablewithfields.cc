@@ -19,14 +19,14 @@
  */
 
 #include "flowtablewithfields.h"
-#include <glom/utility_widgets/datawidget.h>
-#include <glom/utility_widgets/buttonglom.h>
+#include <glom/mode_data/datawidget/datawidget.h>
+#include <glom/mode_data/buttonglom.h>
 #include <glom/utility_widgets/notebookglom.h>
 #include <glom/utility_widgets/notebooklabelglom.h>
 #include <glom/utility_widgets/imageglom.h>
-#include <glom/utility_widgets/labelglom.h>
+#include <glom/mode_data/datawidget/label.h>
 #include <glom/utility_widgets/dialog_flowtable.h>
-#include <glom/utility_widgets/placeholder-glom.h>
+#include <glom/mode_data/placeholder-glom.h>
 #include <glom/application.h>
 #include <gtkmm/checkbutton.h>
 #include <libglom/data_structure/glomconversions.h>
@@ -40,7 +40,7 @@
 #include <glibmm/i18n.h>
 
 namespace Glom
-{
+{	
   
 FlowTableWithFields::Info::Info()
 : m_first(0),
@@ -367,7 +367,7 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
     if(group)
     {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-      NotebookLabelGlom* tab_label = Gtk::manage(new NotebookLabelGlom(notebook_widget));
+      NotebookLabel* tab_label = Gtk::manage(new NotebookLabel(notebook_widget));
       tab_label->show();
 #else
       Gtk::Label* tab_label = Gtk::manage(new Gtk::Label());
@@ -640,7 +640,7 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
   alignment_label->show();
   
   const Glib::ustring text = layoutitem_text->get_text();
-  LabelGlom* label = Gtk::manage(new LabelGlom(text));
+  DataWidgetChildren::Label* label = Gtk::manage(new DataWidgetChildren::Label(text));
   label->set_layout_item(layoutitem_text, table_name);
   label->show();
   alignment_label->add(*label);
@@ -664,7 +664,7 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
     alignment_title->set(Gtk::ALIGN_RIGHT, Gtk::ALIGN_CENTER);
     alignment_title->show();
 
-    LabelGlom* title_label = Gtk::manage(new LabelGlom(title, 0, 0, false));
+    DataWidgetChildren::Label* title_label = Gtk::manage(new DataWidgetChildren::Label(title, 0, 0, false));
     title_label->set_layout_item(layoutitem_text, table_name);
     title_label->show();
     alignment_title->add(*title_label);
@@ -1585,32 +1585,21 @@ bool FlowTableWithFields::dnd_add_to_layout_group(const sharedptr<LayoutItem>& i
 
 void FlowTableWithFields::on_menu_properties_activate()
 {
-  try
+  Dialog_FlowTable* dialog = 0;
+  Utils::get_glade_widget_derived_with_warning(dialog);
+  
+  dialog->set_flowtable(this);
+  const int response = dialog->run();
+  if(response == Gtk::RESPONSE_OK)
   {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_flowtable");
-
-    Dialog_FlowTable* dialog = 0;
-    refXml->get_widget_derived("dialog_flowtable", dialog);
-
-    if(dialog)
-    {
-      dialog->set_flowtable(this);
-      const int response = dialog->run();
-      if(response == Gtk::RESPONSE_OK)
-      {
-        sharedptr<LayoutGroup> group = get_layout_group();
-        group->set_columns_count( dialog->get_columns_count() );
-        group->set_title(dialog->get_title());
-        signal_layout_changed().emit();
-      }
-
-      delete dialog;
-    }
+    sharedptr<LayoutGroup> group = get_layout_group();
+    group->set_columns_count( dialog->get_columns_count() );
+    group->set_title(dialog->get_title());
+    signal_layout_changed().emit();
   }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
+
+  delete dialog;
+ 
 }
 
 void FlowTableWithFields::on_menu_delete_activate()
@@ -1646,7 +1635,7 @@ bool FlowTableWithFields::on_button_press_event(GdkEventButton *event)
   if(pApp && pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
     GdkModifierType mods;
-    gdk_window_get_pointer( Gtk::Widget::gobj()->window, 0, 0, &mods );
+    gdk_window_get_pointer( gtk_widget_get_window (Gtk::Widget::gobj()), 0, 0, &mods );
     if(mods & GDK_BUTTON3_MASK)
     {
       //Give user choices of actions on this item:
@@ -1659,39 +1648,28 @@ bool FlowTableWithFields::on_button_press_event(GdkEventButton *event)
 
 sharedptr<LayoutItem_Portal> FlowTableWithFields::get_portal_relationship()
 {
-  try
+  Dialog_ChooseRelationship* dialog = 0;
+  Utils::get_glade_widget_derived_with_warning(dialog);
+    
+  Document* pDocument = static_cast<Document*>(get_document());
+  dialog->set_document(pDocument, m_table_name);
+  //TODO: dialog->set_transient_for(*get_app_window());
+  const int response = dialog->run();
+  dialog->hide();
+  if(response == Gtk::RESPONSE_OK)
   {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_relationship");
-    
-    Dialog_ChooseRelationship* dialog = 0;
-    refXml->get_widget_derived("dialog_choose_relationship", dialog);
-    
-    if(dialog)
+    //Get the chosen relationship:
+    sharedptr<Relationship> relationship  = dialog->get_relationship_chosen();
+    if(relationship)
     {
-      Document* pDocument = static_cast<Document*>(get_document());
-      dialog->set_document(pDocument, m_table_name);
-      //TODO: dialog->set_transient_for(*get_app_window());
-      const int response = dialog->run();
-      dialog->hide();
-      if(response == Gtk::RESPONSE_OK)
-      {
-        //Get the chosen relationship:
-        sharedptr<Relationship> relationship  = dialog->get_relationship_chosen();
-        if(relationship)
-        {
-          sharedptr<LayoutItem_Portal> layout_item = sharedptr<LayoutItem_Portal>::create();
-          layout_item->set_relationship(relationship);
-          return layout_item;
-        }
-      }
-      
+      sharedptr<LayoutItem_Portal> layout_item = sharedptr<LayoutItem_Portal>::create();
+      layout_item->set_relationship(relationship);
       delete dialog;
+      return layout_item;
     }
   }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
+      
+  delete dialog;
   return sharedptr<LayoutItem_Portal>();
 }
 

@@ -35,6 +35,9 @@ class Dialog_TextObject
 
 {
 public:
+  static const char* glade_id;
+  static const bool glade_developer;
+  
   Dialog_TextObject(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_TextObject();
 
@@ -43,7 +46,7 @@ public:
   void get_textobject(sharedptr<LayoutItem_Text>& textobject) const;
 
 private:
-  Gtk::HBox* m_box_title;
+  Gtk::VBox* m_box_title;
   Gtk::Entry* m_entry_title;
   Gtk::TextView* m_text_view;
 

@@ -35,6 +35,9 @@ class Dialog_FlowTable
 
 {
 public:
+  static const char* glade_id;
+  static const bool glade_developer;
+	
   Dialog_FlowTable(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_FlowTable();
 

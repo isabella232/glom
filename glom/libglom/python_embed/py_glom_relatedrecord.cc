@@ -62,7 +62,7 @@ boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& 
     //If the value has already been stored, then just return it again:
     return glom_pygda_value_as_boost_pyobject(iterFind->second);
   }
-  
+
   const Glib::ustring related_table = m_relationship->get_to_table();
 
   //Check whether the field exists in the table.
@@ -112,7 +112,7 @@ boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& 
       builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
         builder->add_id(related_key_name), //TODO: It would nice to specify the table name here too.
         builder->add_expr(m_from_key_value)));
-        
+
     /* TODO: Fix linking problems
     const App_Glom* app = App_Glom::get_application();
     if(app && app->get_show_sql_debug())
@@ -126,7 +126,7 @@ boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& 
         std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
       }
     }*/
-    
+
     // TODO: Does this behave well if this throws an exception?
     Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->statement_execute_select_builder(builder);
     if(datamodel && datamodel->get_n_rows())
@@ -202,7 +202,7 @@ boost::python::object PyGlomRelatedRecord::generic_aggregate(const std::string& 
       builder->add_id(related_key_name), //TODO: It would nice to specify the table name here too.
       builder->add_expr(m_from_key_value)));
 
- 
+
   //std::cout << "PyGlomRelatedRecord: Executing:  " << sql_query << std::endl;
   Glib::RefPtr<Gnome::Gda::DataModel> datamodel = gda_connection->statement_execute_select_builder(builder);
 
@@ -251,13 +251,11 @@ boost::python::object PyGlomRelatedRecord::max(const std::string& field_name) co
   return generic_aggregate(field_name, "max");
 }
 
-void PyGlomRelatedRecord_SetRelationship(PyGlomRelatedRecord* self, const sharedptr<const Relationship>& relationship, const Gnome::Gda::Value& from_key_value,  Document* document)
+void PyGlomRelatedRecord::set_relationship(const sharedptr<const Relationship>& relationship, const Gnome::Gda::Value& from_key_value,  Document* document)
 {
-  self->m_relationship = relationship;
-
-  self->m_from_key_value = from_key_value;
-
-  self->m_document = document;
+  m_relationship = relationship;
+  m_from_key_value = from_key_value;
+  m_document = document;
 }
 
 } //namespace Glom

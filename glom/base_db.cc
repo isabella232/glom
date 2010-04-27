@@ -1916,30 +1916,8 @@ sharedptr<LayoutItem_Field> Base_DB::offer_field_list_select_one_field(const sha
 {
   sharedptr<LayoutItem_Field> result;
 
-  Glib::RefPtr<Gtk::Builder> refXml;
-
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_field");
-  }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-    return result;
-  }
-#else
-  std::auto_ptr<Glib::Error> error;
-  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_field", error);
-  if (error.get())
-  {
-    std::cerr << error->what() << std::endl;
-    return result;
-  }
-#endif
-
   Dialog_ChooseField* dialog = 0;
-  refXml->get_widget_derived("dialog_choose_field", dialog);
+  Utils::get_glade_widget_derived_with_warning(dialog);
 
   if(dialog)
   {
@@ -1966,30 +1944,8 @@ Base_DB::type_list_field_items Base_DB::offer_field_list(const Glib::ustring& ta
 {
   type_list_field_items result;
 
-  Glib::RefPtr<Gtk::Builder> refXml;
-
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_field");
-  }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-    return result;
-  }
-#else
-  std::auto_ptr<Glib::Error> error;
-  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_field", error);
-  if (error.get())
-  {
-    std::cerr << error->what() << std::endl;
-    return result;
-  }
-#endif
-
   Dialog_ChooseField* dialog = 0;
-  refXml->get_widget_derived("dialog_choose_field", dialog);
+  Utils::get_glade_widget_derived_with_warning(dialog);
 
   if(dialog)
   {
@@ -2014,33 +1970,24 @@ bool Base_DB::offer_item_formatting(const sharedptr<LayoutItem_WithFormatting>& 
 {
   bool result = false;
 
-  try
+  Dialog_Formatting dialog;
+  if(transient_for)
+    dialog.set_transient_for(*transient_for);
+
+  add_view(&dialog);
+
+  dialog.set_item(layout_item);
+
+  const int response = dialog.run();
+  if(response == Gtk::RESPONSE_OK)
   {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_layout_field_properties");
-
-    Dialog_Formatting dialog;
-    if(transient_for)
-      dialog.set_transient_for(*transient_for);
-
-    add_view(&dialog);
-
-    dialog.set_item(layout_item);
-
-    const int response = dialog.run();
-    if(response == Gtk::RESPONSE_OK)
-    {
-      //Get the chosen formatting:
-       dialog.use_item_chosen(layout_item);
-       result = true;
-    }
-    //Cancel means use the old one:
-
-    remove_view(&dialog);
+    //Get the chosen formatting:
+     dialog.use_item_chosen(layout_item);
+     result = true;
   }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
+  //Cancel means use the old one:
+
+  remove_view(&dialog);
 
   return result;
 }
@@ -2049,40 +1996,28 @@ sharedptr<LayoutItem_Field> Base_DB::offer_field_formatting(const sharedptr<cons
 {
   sharedptr<LayoutItem_Field> result;
 
-  try
+  Dialog_FieldLayout* dialog = 0;
+  Utils::get_glade_widget_derived_with_warning(dialog);
+
+  if(transient_for)
+    dialog->set_transient_for(*transient_for);
+
+  add_view(dialog);
+
+  dialog->set_field(start_field, table_name);
+
+
+  const int response = dialog->run();
+  if(response == Gtk::RESPONSE_OK)
   {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_layout_field_properties");
-
-    Dialog_FieldLayout* dialog = 0;
-    refXml->get_widget_derived("dialog_layout_field_properties", dialog);
-
-    if(dialog)
-    {
-      if(transient_for)
-        dialog->set_transient_for(*transient_for);
-
-      add_view(dialog);
-
-      dialog->set_field(start_field, table_name);
-
-
-      const int response = dialog->run();
-      if(response == Gtk::RESPONSE_OK)
-      {
-        //Get the chosen field:
-        result = dialog->get_field_chosen();
-      }
-      else if(start_field) //Cancel means use the old one:
-        result = glom_sharedptr_clone(start_field);
-
-      remove_view(dialog);
-      delete dialog;
-    }
+    //Get the chosen field:
+    result = dialog->get_field_chosen();
   }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
+  else if(start_field) //Cancel means use the old one:
+    result = glom_sharedptr_clone(start_field);
+
+  remove_view(dialog);
+  delete dialog;
 
   return result;
 }
@@ -2091,33 +2026,22 @@ sharedptr<LayoutItem_Text> Base_DB::offer_textobject(const sharedptr<LayoutItem_
 {
   sharedptr<LayoutItem_Text> result = start_textobject;
 
-  try
+  Dialog_TextObject* dialog = 0;
+  Utils::get_glade_widget_derived_with_warning(dialog);
+  
+  if(transient_for)
+    dialog->set_transient_for(*transient_for);
+
+  dialog->set_textobject(start_textobject, Glib::ustring(), show_title);
+  const int response = Glom::Utils::dialog_run_with_help(dialog);
+  dialog->hide();
+  if(response == Gtk::RESPONSE_OK)
   {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_textobject");
-
-    Dialog_TextObject* dialog = 0;
-    refXml->get_widget_derived("window_textobject", dialog);
-    if(dialog)
-    {
-      if(transient_for)
-        dialog->set_transient_for(*transient_for);
-
-      dialog->set_textobject(start_textobject, Glib::ustring(), show_title);
-      int response = Glom::Utils::dialog_run_with_help(dialog, "window_textobject");
-      dialog->hide();
-      if(response == Gtk::RESPONSE_OK)
-      {
-        //Get the chosen relationship:
-        result = dialog->get_textobject();
-      }
-
-      delete dialog;
-    }
+    //Get the chosen relationship:
+    result = dialog->get_textobject();
   }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
+
+  delete dialog;
 
   return result;
 }
@@ -2126,33 +2050,22 @@ sharedptr<LayoutItem_Image> Base_DB::offer_imageobject(const sharedptr<LayoutIte
 {
   sharedptr<LayoutItem_Image> result = start_imageobject;
 
-  try
+  Dialog_ImageObject* dialog = 0;
+  Utils::get_glade_widget_derived_with_warning(dialog);
+ 
+  if(transient_for)
+    dialog->set_transient_for(*transient_for);
+
+  dialog->set_imageobject(start_imageobject, Glib::ustring(), show_title);
+  const int response = Glom::Utils::dialog_run_with_help(dialog);
+  dialog->hide();
+  if(response == Gtk::RESPONSE_OK)
   {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_imageobject");
-
-    Dialog_ImageObject* dialog = 0;
-    refXml->get_widget_derived("window_imageobject", dialog);
-    if(dialog)
-    {
-      if(transient_for)
-        dialog->set_transient_for(*transient_for);
-
-      dialog->set_imageobject(start_imageobject, Glib::ustring(), show_title);
-      const int response = Glom::Utils::dialog_run_with_help(dialog, "window_imageobject");
-      dialog->hide();
-      if(response == Gtk::RESPONSE_OK)
-      {
-        //Get the chosen relationship:
-        result = dialog->get_imageobject();
-      }
-
-      delete dialog;
-    }
+    //Get the chosen relationship:
+    result = dialog->get_imageobject();
   }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
+
+  delete dialog;
 
   return result;
 }
@@ -2161,34 +2074,23 @@ sharedptr<LayoutItem_Notebook> Base_DB::offer_notebook(const sharedptr<LayoutIte
 {
   sharedptr<LayoutItem_Notebook> result = start_notebook;
 
-  try
+  Dialog_Notebook* dialog = 0;
+  Utils::get_glade_widget_derived_with_warning(dialog);
+  
+  if(transient_for)
+    dialog->set_transient_for(*transient_for);
+
+  dialog->set_notebook(start_notebook);
+  //dialog->set_transient_for(*this);
+  const int response = Glom::Utils::dialog_run_with_help(dialog);
+  dialog->hide();
+  if(response == Gtk::RESPONSE_OK)
   {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "box_formatting");
-
-    Dialog_Notebook* dialog = 0;
-    refXml->get_widget_derived("dialog_notebook", dialog);
-    if(dialog)
-    {
-      if(transient_for)
-        dialog->set_transient_for(*transient_for);
-
-      dialog->set_notebook(start_notebook);
-      //dialog->set_transient_for(*this);
-      const int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_notebook");
-      dialog->hide();
-      if(response == Gtk::RESPONSE_OK)
-      {
-        //Get the chosen relationship:
-        result = dialog->get_notebook();
-      }
-
-      delete dialog;
-    }
+    //Get the chosen relationship:
+    result = dialog->get_notebook();
   }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
+
+  delete dialog;
 
   return result;
 }

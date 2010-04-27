@@ -316,16 +316,7 @@ sharedptr<LayoutItem_Portal> Canvas_PrintLayout::offer_related_records(const sha
   sharedptr<LayoutItem_Portal> result = portal;
 
   Dialog_Layout_List_Related* dialog = 0;
-
-  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_data_layout");
-  if(refXml)
-    refXml->get_widget_derived("window_data_layout", dialog);
-  
-  if(!dialog)
-  {
-    std::cerr << "Canvas_PrintLayout::offer_related_records(): dialog was NULL." << std::endl;
-    return result;
-  }
+  Utils::get_glade_widget_derived_with_warning(dialog);
 
   add_view(dialog); //Give it access to the document.
 
@@ -411,22 +402,10 @@ void Canvas_PrintLayout::on_context_menu_formatting()
      m_dialog_format = 0;
   }
 
-  try
-  {
-    Glib::RefPtr<Gtk::Builder> refXmlFormatting = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_text_format");
-    refXmlFormatting->get_widget_derived("window_text_format", m_dialog_format);
-    add_view(m_dialog_format);
+  Utils::get_glade_widget_derived_with_warning(m_dialog_format);
+  add_view(m_dialog_format);
 
-    m_dialog_format->signal_hide().connect( sigc::mem_fun(*this, &Canvas_PrintLayout::on_dialog_format_hide) );
-  }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
-
-
-  if(!m_dialog_format)
-    return;
+  m_dialog_format->signal_hide().connect( sigc::mem_fun(*this, &Canvas_PrintLayout::on_dialog_format_hide) );
 
   //We need an if here, because they have no common base class.
   //TODO: Maybe they should.

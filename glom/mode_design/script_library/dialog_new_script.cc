@@ -23,6 +23,9 @@
 namespace Glom
 {
 
+const char* Dialog_NewScript::glade_id("dialog_new_library_script");
+const bool Dialog_NewScript::glade_developer(true);
+
 Dialog_NewScript::Dialog_NewScript(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_entry_name(0)

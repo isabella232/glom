@@ -26,6 +26,9 @@
 namespace Glom
 {
 
+const char* Dialog_TextFormatting::glade_id("window_text_format");
+const bool Dialog_TextFormatting::glade_developer(true);
+
 Dialog_TextFormatting::Dialog_TextFormatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Window(cobject),
   m_box_formatting_placeholder(0),
@@ -39,17 +42,7 @@ Dialog_TextFormatting::Dialog_TextFormatting(BaseObjectType* cobject, const Glib
   //Get the place to put the Formatting stuff:
   builder->get_widget("box_formatting_placeholder", m_box_formatting_placeholder);
  
-  //Get the formatting stuff:
-  try
-  {
-    Glib::RefPtr<Gtk::Builder> refXmlFormatting = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "box_formatting");
-    refXmlFormatting->get_widget_derived("box_formatting", m_box_formatting);
-  }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
-
+  Utils::get_glade_widget_derived_with_warning(m_box_formatting);
   m_box_formatting_placeholder->pack_start(*m_box_formatting);
   add_view(m_box_formatting);
   m_box_formatting->set_is_for_print_layout();

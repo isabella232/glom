@@ -41,7 +41,6 @@
 #include <memory> //For std::auto_ptr<>
 #include <giomm.h>
 #include <sstream> //For stringstream.
-#include <glibmm/i18n.h>
 
 #ifdef GLOM_ENABLE_MAEMO
 #include <hildon/hildon.h>
@@ -63,6 +62,7 @@
 
 #include <gtk/gtkuimanager.h>
 
+#include <glibmm/i18n.h>
 
 namespace Glom
 {
@@ -71,6 +71,9 @@ namespace Glom
 
 // Global application variable
 Application* global_application = 0;
+
+const char* Application::glade_id("window_main");
+const bool Application::glade_developer(false);
 
 Application::Application(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : type_base(cobject, "Glom"),
@@ -132,6 +135,9 @@ Application::~Application()
   #ifdef GLOM_ENABLE_MAEMO
   m_pFrame->remove_view(&m_appmenu_button_table);
   #endif
+
+  //This was set in the constructor:
+  global_application = 0;
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -172,7 +178,7 @@ bool Application::init(const Glib::ustring& document_uri)
 {
   type_vec_strings vecAuthors;
   vecAuthors.push_back("Murray Cumming <murrayc@murrayc.com>");
-  set_about_information(PACKAGE_VERSION, vecAuthors, _("(C) 2000-2005 Murray Cumming"), _("A Database GUI"));
+  set_about_information(PACKAGE_VERSION, vecAuthors, _("© 2000-2010 Murray Cumming"), _("A Database GUI"));
 
   type_base::init(); //calls init_menus() and init_toolbars()
 
@@ -268,22 +274,25 @@ void Application::init_menus_file()
   m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_File_Open", Gtk::Stock::OPEN),
                         sigc::mem_fun((App_WithDoc&)*this, &App_WithDoc::on_menu_file_open));
 
-  Glib::RefPtr<Gtk::Action> action = Gtk::Action::create("BakeryAction_File_SaveAsExample", _("Save As Example"));
+  Glib::RefPtr<Gtk::Action> action = Gtk::Action::create("BakeryAction_File_SaveAsExample", _("_Save as Example"));
   m_listDeveloperActions.push_back(action);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_refFileActionGroup->add(action,
                         sigc::mem_fun((Application&)*this, &Application::on_menu_file_save_as_example));
 
-  m_refFileActionGroup->add(Gtk::Action::create("BakeryAction_Menu_File_Export", _("_Export")),
-                        sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_export));
+  action = Gtk::Action::create("BakeryAction_Menu_File_Export", _("_Export"));
+  m_refFileActionGroup->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_export));
+  m_listTableSensitiveActions.push_back(action);
 
-  action = Gtk::Action::create("BakeryAction_Menu_File_Import", _("Import"));
+  action = Gtk::Action::create("BakeryAction_Menu_File_Import", _("I_mport"));
   m_refFileActionGroup->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_import));
+  m_listTableSensitiveActions.push_back(action);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  m_toggleaction_network_shared = Gtk::ToggleAction::create("BakeryAction_Menu_File_Share", _("Shared On Network"));
+  m_toggleaction_network_shared = Gtk::ToggleAction::create("BakeryAction_Menu_File_Share", _("S_hared on Network"));
   m_refFileActionGroup->add(m_toggleaction_network_shared);
+  m_listTableSensitiveActions.push_back(m_toggleaction_network_shared);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   m_connection_toggleaction_network_shared =
@@ -292,7 +301,9 @@ void Application::init_menus_file()
   m_listDeveloperActions.push_back(m_toggleaction_network_shared);
 #endif //!GLOM_ENABLE_CLIENT_ONLY
 
-  m_refFileActionGroup->add(Gtk::Action::create("GlomAction_Menu_File_Print", Gtk::Stock::PRINT));
+  action = Gtk::Action::create("GlomAction_Menu_File_Print", Gtk::Stock::PRINT);
+  m_refFileActionGroup->add(action);
+  m_listTableSensitiveActions.push_back(action);
   m_refFileActionGroup->add(Gtk::Action::create("GlomAction_File_Print", _("_Standard")),
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_file_print) );
 
@@ -430,6 +441,7 @@ void Application::init_menus()
   m_refActionGroup_Others->add(action,
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Reports_EditReports) );
   m_listDeveloperActions.push_back(action);
+  m_listTableSensitiveActions.push_back(action);
 #endif
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -437,11 +449,11 @@ void Application::init_menus()
   m_refActionGroup_Others->add(Gtk::Action::create("Glom_Menu_userlevel", _("_User Level")));
   Gtk::RadioAction::Group group_userlevel;
 
-  m_action_menu_userlevel_developer = Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_userlevel_Developer", _("_Developer"));
+  m_action_menu_userlevel_developer = Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_userlevel_Developer", C_("User-level menu item", "_Developer"));
   m_refActionGroup_Others->add(m_action_menu_userlevel_developer,
                         sigc::mem_fun(*this, &Application::on_menu_userlevel_developer) );
 
-  m_action_menu_userlevel_operator =  Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_userlevel_Operator", _("_Operator"));
+  m_action_menu_userlevel_operator =  Gtk::RadioAction::create(group_userlevel, "GlomAction_Menu_userlevel_Operator", C_("User-level menu item", "_Operator"));
   m_refActionGroup_Others->add(m_action_menu_userlevel_operator,
                           sigc::mem_fun(*this, &Application::on_menu_userlevel_operator) );
 #endif // !GLOM_ENABLE_CLIENT_ONLY
@@ -452,16 +464,17 @@ void Application::init_menus()
   Gtk::RadioAction::Group group_mode;
 
   //We remember this action, so that it can be explicitly activated later.
-  m_action_mode_data = Gtk::RadioAction::create(group_mode, "GlomAction_Menu_Mode_Data", _("D_ata"));
+  m_action_mode_data = Gtk::RadioAction::create(group_mode, "GlomAction_Menu_Mode_Data", _("_Data"));
   m_refActionGroup_Others->add(m_action_mode_data,
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Mode_Data) );
 
   m_action_mode_find = Gtk::RadioAction::create(group_mode, "GlomAction_Menu_Mode_Find", _("_Find"));
   m_refActionGroup_Others->add(m_action_mode_find,  Gtk::AccelKey("<control>F"),
                         sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Mode_Find) );
+  m_listTableSensitiveActions.push_back(action);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  action = Gtk::Action::create("Glom_Menu_Developer", _("_Developer"));
+  action = Gtk::Action::create("Glom_Menu_Developer", C_("Developer menu title", "_Developer"));
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action);
 
@@ -472,14 +485,17 @@ void Application::init_menus()
 
   action = Gtk::Action::create("GlomAction_Menu_Developer_Fields", _("_Fields"));
   m_listDeveloperActions.push_back(action);
+  m_listTableSensitiveActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_fields) );
 
-  action = Gtk::Action::create("GlomAction_Menu_Developer_RelationshipsOverview", _("_Relationships Overview"));
+  action = Gtk::Action::create("GlomAction_Menu_Developer_RelationshipsOverview", _("Relationships _Overview"));
   m_listDeveloperActions.push_back(action);
+  m_listTableSensitiveActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_relationships_overview) );
 
   action = Gtk::Action::create("GlomAction_Menu_Developer_Relationships", _("_Relationships for this Table"));
   m_listDeveloperActions.push_back(action);
+  m_listTableSensitiveActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_relationships) );
 
   m_action_developer_users = Gtk::Action::create("GlomAction_Menu_Developer_Users", _("_Users"));
@@ -488,10 +504,12 @@ void Application::init_menus()
 
   action = Gtk::Action::create("GlomAction_Menu_Developer_PrintLayouts", _("_Print Layouts")); //TODO: Rename? This looks like an action rather than a noun. It won't actually start printing.
   m_listDeveloperActions.push_back(action);
+  m_listTableSensitiveActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_print_layouts));
 
   action = Gtk::Action::create("GlomAction_Menu_Developer_Reports", _("R_eports"));
   m_listDeveloperActions.push_back(action);
+  m_listTableSensitiveActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_reports));
 
   action = Gtk::Action::create("GlomAction_Menu_Developer_Script_Library", _("Script _Library"));
@@ -501,9 +519,10 @@ void Application::init_menus()
 
   action = Gtk::Action::create("GlomAction_Menu_Developer_Layout", _("_Layout"));
   m_listDeveloperActions.push_back(action);
+  m_listTableSensitiveActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_developer_layout));
 
-  action = Gtk::Action::create("GlomAction_Menu_Developer_ChangeLanguage", _("_Test Translation"));
+  action = Gtk::Action::create("GlomAction_Menu_Developer_ChangeLanguage", _("Test Tra_nslation"));
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &Application::on_menu_developer_changelanguage));
 
@@ -597,6 +616,8 @@ void Application::init_menus()
   add_ui_from_string(ui_description);
 
   init_menus_help();
+
+  update_table_sensitive_ui();
 
   fill_menu_tables();
 }
@@ -692,11 +713,11 @@ void Application::open_browsed_document(const EpcServiceInfo* server, const Glib
     //Request a password to attempt retrieval of the document over the network:
     Dialog_Connection* dialog_connection = 0;
     //Load the Glade file and instantiate its widgets to get the dialog stuff:
-    Utils::get_glade_widget_derived_with_warning("dialog_connection", dialog_connection);
+    Utils::get_glade_widget_derived_with_warning(dialog_connection);
     dialog_connection->set_transient_for(*this);
     dialog_connection->set_connect_to_browsed();
     dialog_connection->set_database_name(service_name);
-    const int response = Glom::Utils::dialog_run_with_help(dialog_connection, "dialog_connection");
+    const int response = Glom::Utils::dialog_run_with_help(dialog_connection);
     dialog_connection->hide();
     if(response != Gtk::RESPONSE_OK)
       keep_trying = false;
@@ -1192,9 +1213,11 @@ bool Application::on_document_load()
       //Switch to operator mode when opening new documents:
       pDocument->set_userlevel(AppState::USERLEVEL_OPERATOR);
 
+      //Make sure that it's saved in history, even if it was saved from an example file:
+      document_history_add(pDocument->get_file_uri());
+
       //Open default table, or show list of tables instead:
       m_pFrame->do_menu_Navigate_Table(true /* open the default if there is one */);
-
     }
   }
 
@@ -1291,6 +1314,20 @@ void Application::on_userlevel_changed(AppState::userlevels /* userlevel */)
   update_userlevel_ui();
 }
 
+void Application::update_table_sensitive_ui()
+{
+  bool has_table = false;
+
+  if(m_pFrame)
+    has_table = !m_pFrame->get_shown_table_name().empty();
+
+  for(type_listActions::iterator iter = m_listTableSensitiveActions.begin(); iter != m_listTableSensitiveActions.end(); ++iter)
+  {
+    Glib::RefPtr<Gtk::Action> action = *iter;
+    action->set_sensitive(has_table);
+  }
+}
+
 void Application::update_userlevel_ui()
 {
   AppState::userlevels userlevel = get_userlevel();
@@ -1301,6 +1338,9 @@ void Application::update_userlevel_ui()
     Glib::RefPtr<Gtk::Action> action = *iter;
      action->set_sensitive( userlevel == AppState::USERLEVEL_DEVELOPER );
   }
+
+  //Ensure table sensitive menus stay disabled if necessary.
+  update_table_sensitive_ui();
 
   // Hide users entry from developer menu for connections that don't
   // support users
@@ -1344,29 +1384,9 @@ bool Application::offer_new_or_existing()
 {
   //Offer to load an existing document, or start a new one.
   const Glib::ustring glade_path = Utils::get_glade_file_path("glom.glade");
-  Glib::RefPtr<Gtk::Builder> refXml;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    refXml = Gtk::Builder::create_from_file(glade_path, "dialog_existing_or_new");
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << "Application::offer_new_or_existing(): Gtk::Builder::create_from_file() failed: " << ex.what() << std::endl;
-  }
-#else
-  std::auto_ptr<Glib::Error> ex;
-  refXml = Gtk::Builder::create_from_file(glade_path, "dialog_existing_or_new", ex);
-  if(ex.get())
-  {
-    std::cerr << "Application::offer_new_or_existing(): Gtk::Builder::create_from_file() failed:" << ex->what() << std::endl;
-  }
-#endif
-
-  g_assert(refXml);
 
   Dialog_ExistingOrNew* dialog_raw = 0;
-  refXml->get_widget_derived("dialog_existing_or_new", dialog_raw);
+  Utils::get_glade_widget_derived_with_warning(dialog_raw);
   std::auto_ptr<Dialog_ExistingOrNew> dialog(dialog_raw);
   dialog->set_transient_for(*this);
 /*
@@ -1377,7 +1397,7 @@ bool Application::offer_new_or_existing()
   bool ask_again = true;
   while(ask_again)
   {
-    const int response_id = Utils::dialog_run_with_help(dialog.get(), "dialog_existing_or_new");
+    const int response_id = Utils::dialog_run_with_help(dialog_raw);
     dialog->hide();
 
     if(response_id == Gtk::RESPONSE_ACCEPT)
@@ -1507,7 +1527,7 @@ void Application::existing_or_new_new()
         m_pFrame->set_databases_selected(database_name_used);
 
         // Add the document to recent files
-	document_history_add(document->get_file_uri());
+	    document_history_add(document->get_file_uri());
       }
       else
       {
@@ -1627,25 +1647,17 @@ bool Application::recreate_database(bool& user_cancelled)
 
   //Show the user that something is happening, because the INSERTS might take time.
   //TOOD: This doesn't actually show up until near the end, even with Gtk::Main::instance()->iteration().
-  std::auto_ptr<Dialog_ProgressCreating> dialog_progress;
-  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom.glade"), "window_progress");
-  if(refXml)
-  {
-    Dialog_ProgressCreating* dialog_progress_temp = 0;
-    refXml->get_widget_derived("window_progress", dialog_progress_temp);
-    if(dialog_progress_temp)
-    {
-      dialog_progress_temp->set_message(_("Creating Glom Database"), _("Creating Glom database from example file."));
-      dialog_progress.reset(dialog_progress_temp); //Put the dialog in an auto_ptr so that it will be deleted (and hidden) when the current function returns.
+  Dialog_ProgressCreating* dialog_progress_temp = 0;
+  Utils::get_glade_widget_derived_with_warning(dialog_progress_temp);
+  dialog_progress_temp->set_message(_("Creating Glom Database"), _("Creating Glom database from example file."));
+  std::auto_ptr<Dialog_ProgressCreating> dialog_progress(dialog_progress_temp); //Put the dialog in an auto_ptr so that it will be deleted (and hidden) when the current function returns.
 
-      dialog_progress->set_transient_for(*this);
-      dialog_progress->show();
+  dialog_progress->set_transient_for(*this);
+  dialog_progress->show();
 
-      //Ensure that the dialog is shown, instead of waiting for the application to be idle:
-      while(Gtk::Main::instance()->events_pending())
-        Gtk::Main::instance()->iteration();
-    }
-  }
+  //Ensure that the dialog is shown, instead of waiting for the application to be idle:
+  while(Gtk::Main::instance()->events_pending())
+    Gtk::Main::instance()->iteration();
 
   dialog_progress->pulse();
 
@@ -2407,40 +2419,32 @@ void Application::stop_self_hosting_of_document_database()
 
 void Application::on_menu_developer_changelanguage()
 {
-  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_change_language");
-  if(refXml)
+  Dialog_ChangeLanguage* dialog = 0;
+  Utils::get_glade_widget_derived_with_warning(dialog);
+  dialog->set_transient_for(*this);
+  const int response = Glom::Utils::dialog_run_with_help(dialog);
+  dialog->hide();
+
+  if(response == Gtk::RESPONSE_OK)
   {
-    Dialog_ChangeLanguage* dialog = 0;
-    refXml->get_widget_derived("dialog_change_language", dialog);
-    if(dialog)
-    {
-      dialog->set_transient_for(*this);
-      const int response =       Glom::Utils::dialog_run_with_help(dialog, "dialog_change_language");
-      dialog->hide();
+    TranslatableItem::set_current_locale(dialog->get_locale());
 
-      if(response == Gtk::RESPONSE_OK)
-      {
-        TranslatableItem::set_current_locale(dialog->get_locale());
+    //Get the translations from the document (in Operator mode, we only load the necessary translations.)
+    //This also updates the UI, so we show all the translated titles:
+    int failure_code = 0;
+    get_document()->load(failure_code);
 
-       //Get the translations from the document (in Operator mode, we only load the necessary translations.)
-       //This also updates the UI, so we show all the translated titles:
-       int failure_code = 0;
-       get_document()->load(failure_code);
-
-       m_pFrame->show_table_refresh(); //load() doesn't seem to refresh the view.
-      }
-
-      delete dialog;
-    }
+    m_pFrame->show_table_refresh(); //load() doesn't seem to refresh the view.
   }
+
+  delete dialog;
 }
 
 void Application::on_menu_developer_translations()
 {
   if(!m_window_translations)
   {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_translations");
-    refXml->get_widget_derived("window_translations", m_window_translations);
+    Utils::get_glade_widget_derived_with_warning(m_window_translations);
     if(m_window_translations)
     {
       m_pFrame->add_view(m_window_translations);
@@ -2554,7 +2558,9 @@ void Application::update_window_title()
   else //Use the table name if there is no table title.
     table_label = table_name;
 
-  Glib::ustring strTitle = document->get_name() + ": " + table_label;
+  Glib::ustring strTitle = document->get_name();
+  if(!table_label.empty())
+    strTitle += ": " + table_label;
 
   #ifndef GLOM_ENABLE_CLIENT_ONLY
   //Indicate unsaved changes:

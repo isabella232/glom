@@ -19,7 +19,7 @@
  */
 
 #ifndef GLOM_DIALOG_UTILITY_WIDGETSIMPORT_CSV_PROGRESS_H
-#define GLOM_DIALOG_IMPORT_CSV_PROGRESS_H
+#define GLOM_DIALOG_UTILITY_WIDGETSIMPORT_CSV_PROGRESS_H
 
 #include <gtkmm/dialog.h>
 #include <gtkmm/builder.h>
@@ -36,6 +36,9 @@ namespace Glom
 class Dialog_Image_Progress : public Gtk::Dialog
 {
 public:
+  static const char* glade_id;
+  static const bool glade_developer;
+
   Dialog_Image_Progress(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_Image_Progress();
 
@@ -63,5 +66,5 @@ private:
 
 } //namespace Glom
 
-#endif //GLOM_DIALOG_IMPORT_CSV_PROGRESS_H
+#endif //GLOM_DIALOG_UTILITY_WIDGETSIMPORT_CSV_PROGRESS_H
 

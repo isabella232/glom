@@ -99,6 +99,11 @@ public:
    */
   static ConnectionPool* get_instance();
 
+  /** Make the ConnectionPool use the correct backend, with the necessary details,
+   * as required by the document.
+   */
+  void setup_from_document(const Document* document);
+
   /// Delete the singleton so it doesn't show up as leaked memory in, for instance, valgrind.
   static void delete_instance();
   
@@ -196,7 +201,7 @@ public:
    * @param slot_progress A callback to call while the work is still happening.
    * @param parent_window The parent window (transient for) of any dialogs shown during this operation.
    */
-  void cleanup(const SlotProgress& slot_progress);
+  bool cleanup(const SlotProgress& slot_progress);
 
   /** Change the database server's configration to allow or prevent access from 
    * other users on the network.

@@ -25,10 +25,9 @@
 #include "../../utility_widgets/combo_textglade.h"
 #include <glom/mode_design/layout/combobox_relationship.h>
 #include "combo_fieldtype.h"
-#include "../../utility_widgets/table_columns.h"
 //#include "../../utility_widgets/entry_numerical.h"
 #include "../../utility_widgets/dialog_properties.h"
-#include "../../utility_widgets/datawidget.h"
+#include <glom/mode_data/datawidget/datawidget.h>
 #include <libglom/data_structure/field.h>
 #include <glom/mode_design/layout/layout_item_dialogs/box_formatting.h>
 #include <glom/base_db.h>
@@ -41,7 +40,10 @@ class Dialog_FieldDefinition
  : public Dialog_Properties,
    public Base_DB //Give this class access to the current document, and to some utility methods.
 {
-public: 
+public:
+  static const char* glade_id;
+  static const bool glade_developer;
+
   Dialog_FieldDefinition(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_FieldDefinition();
 

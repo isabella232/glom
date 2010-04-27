@@ -43,6 +43,9 @@ class Window_PrintLayout_Edit
   public View_Composite_Glom
 {
 public:
+  static const char* glade_id;
+  static const bool glade_developer;
+
   Window_PrintLayout_Edit(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Window_PrintLayout_Edit();
 

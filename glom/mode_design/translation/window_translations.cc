@@ -42,6 +42,9 @@
 namespace Glom
 {
 
+const char* Window_Translations::glade_id("window_translations");
+const bool Window_Translations::glade_developer(true);
+
 Window_Translations::Window_Translations(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Window(cobject),
   m_treeview(0),
@@ -129,31 +132,24 @@ void Window_Translations::enable_buttons()
 
 void Window_Translations::on_button_identify()
 {
-  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_translation_identify_original");
-  if(refXml)
+  Dialog_IdentifyOriginal* dialog = 0;
+  Utils::get_glade_widget_derived_with_warning(dialog);
+  add_view(dialog);
+  dialog->load_from_document(); //Doesn't seem to happen otherwise.
+  dialog->set_transient_for(*this);
+  const int response = Glom::Utils::dialog_run_with_help(dialog);
+  dialog->hide();
+
+  if(response == Gtk::RESPONSE_OK)
   {
-    Dialog_IdentifyOriginal* dialog = 0;
-    refXml->get_widget_derived("dialog_translation_identify_original", dialog);
-    if(dialog)
-    {
-      add_view(dialog);
-      dialog->load_from_document(); //Doesn't seem to happen otherwise.
-      dialog->set_transient_for(*this);
-      const int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_translation_identify_original");
-      dialog->hide();
+    get_document()->set_translation_original_locale(dialog->get_locale());
 
-      if(response == Gtk::RESPONSE_OK)
-      {
-        get_document()->set_translation_original_locale(dialog->get_locale());
-
-        //Save and update:
-        on_combo_target_locale_changed();
-      }
-
-      remove_view(dialog);
-      delete dialog;
-    }
+    //Save and update:
+    on_combo_target_locale_changed();
   }
+
+  remove_view(dialog);
+  delete dialog;
 }
 
 
@@ -359,47 +355,40 @@ void Window_Translations::on_button_ok()
 
 void Window_Translations::on_button_copy_translation()
 {
-   Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_translation_copy");
-  if(refXml)
+  Dialog_CopyTranslation* dialog = 0;
+  Utils::get_glade_widget_derived_with_warning(dialog);
+  dialog->set_transient_for(*this);
+  const int response = Glom::Utils::dialog_run_with_help(dialog);
+  dialog->hide();
+
+  if(response == Gtk::RESPONSE_OK)
   {
-    Dialog_CopyTranslation* dialog = 0;
-    refXml->get_widget_derived("dialog_translation_copy", dialog);
-    if(dialog)
+    const Glib::ustring copy_source_locale = dialog->get_locale();
+    if(!copy_source_locale.empty())
     {
-      dialog->set_transient_for(*this);
-      const int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_translation_copy");
-      dialog->hide();
+      //Save and update:
+      on_combo_target_locale_changed();
 
-      if(response == Gtk::RESPONSE_OK)
+      for(Gtk::TreeModel::iterator iter = m_model->children().begin(); iter != m_model->children().end(); ++iter)
       {
-        const Glib::ustring copy_source_locale = dialog->get_locale();
-        if(!copy_source_locale.empty())
+        Gtk::TreeModel::Row row = *iter;
+
+        sharedptr<TranslatableItem> item = row[m_columns.m_col_item];
+        if(item)
         {
-          //Save and update:
-          on_combo_target_locale_changed();
-
-          for(Gtk::TreeModel::iterator iter = m_model->children().begin(); iter != m_model->children().end(); ++iter)
-          {
-            Gtk::TreeModel::Row row = *iter;
-
-            sharedptr<TranslatableItem> item = row[m_columns.m_col_item];
-            if(item)
-            {
-              //Copy the translation from the chosen locale to the current locale:
-              const Glib::ustring translation = item->get_title(copy_source_locale);
-              row[m_columns.m_col_translation] = translation;
-            }
-          }
-
-          //Save and update:
-          m_treeview_modified = true;
-          save_to_document();
+          //Copy the translation from the chosen locale to the current locale:
+          const Glib::ustring translation = item->get_title(copy_source_locale);
+          row[m_columns.m_col_translation] = translation;
         }
       }
 
-      delete dialog;
+      //Save and update:
+      m_treeview_modified = true;
+      save_to_document();
     }
   }
+
+  delete dialog;
 }
 
 void Window_Translations::on_combo_target_locale_changed()
@@ -506,6 +495,7 @@ void Window_Translations::on_button_export()
   
   //Show the file-chooser dialog, to select an output .po file:
   Gtk::FileChooserDialog file_dlg(_("Choose .po File Name"), Gtk::FILE_CHOOSER_ACTION_SAVE);
+  file_dlg.set_icon_name("glom");
   file_dlg.set_do_overwrite_confirmation();
   
   // Only po files
@@ -584,7 +574,8 @@ void Window_Translations::on_button_import()
     return;
 
   Gtk::FileChooserDialog file_dlg(_("Choose .po File Name"), Gtk::FILE_CHOOSER_ACTION_OPEN);
-  
+  file_dlg.set_icon_name("glom");
+
   // Only po files
   Gtk::FileFilter filter;
   filter.set_name(_("Po files"));

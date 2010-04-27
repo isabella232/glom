@@ -1,3 +1,784 @@
+1.14.1:
+
+2010-04-27  Murray Cumming  <murrayc@murrayc.com>
+
+	Make sure all glade-instantiated windows have the Glom icon.
+
+	* glom/glade_utils.h: helper_get_glade_widget_derived_with_warning():
+    Call set_icon_name() on windows, fixing my regression.
+
+2010-04-27  Murray Cumming  <murrayc@murrayc-desktop>
+
+    Documentation: Added libglom main page. Installed _sources for pyglom.
+
+	* docs/pyglom_reference/Makefile.am: Also install html/_sources, used by search.
+	* glom/libglom/init.h: Add a doxygen main page.
+
+2010-04-26  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix the build.
+
+	* Makefile_tests.am: test_selfhosting_new_empty: Link to the Glom sources
+	to fix the unresolved link to Glom::Priv's method. We will use more from
+	the rest of Glom here too.
+
+2010-04-26  Daniel Elstner  <danielk@openismus.com>
+
+	Use installed mm-common instead of copying it
+
+	* autogen.sh: Run mm-common-prepare to pull in the mm-common include
+	files for Automake.
+	* docs/libglom_reference/Makefile.am: Set up configuration variables
+	and include doc-reference.am instead of copy'n'pasting its content.
+	* docs/libglom-reference/doxygen_to_devhelp.xsl: Delete file.  It is
+	shipped with mm-common and also part of the glibmm installation.
+
+2010-04-26  Murray Cumming  <murrayc@murrayc.com>
+
+	Reenable test_load_document.
+
+	* Makefile_tests.am: Reenable test_load_document.cc
+	* tests/test_load_document/test_load_document.cc: Restore (rewrite) this
+	missing file.
+
+2010-04-26  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.ac: Remove the dist-bzip2 option that was added by mistake.
+
+2010-04-26  Murray Cumming  <murrayc@murrayc.com>
+
+	Self-Hosting test: Check that cleanup works.
+
+	* Makefile_tests.am:
+	* glom/libglom/connectionpool.[h|cc]:
+	* glom/libglom/connectionpool_backends/backend.[h|cc]:
+	* glom/libglom/connectionpool_backends/postgres_self.[h|cc]:
+	* tests/test_selfhosting_new_empty/test_selfhosting_new_empty.cc:
+	Make cleanup() return a bool, so we can check it, because this fails sometimes.
+	Use the standard username and password.
+
+2010-04-26  Daniel Elstner  <danielk@openismus.com>
+
+	Heavily cut the pyglom_reference build magic
+
+	* docs/pyglom_reference/Makefile.am: Drop the custom installation
+	rules and use the GNU make $(wildcard) function for both distribution
+	and installation of the generated documentation files.  Since the
+	files do not undergo translation at install time, it is not necessary
+	to integrate the custom installation tool from mm-common.  Pull in a
+	missing GNU make function definition for computing the list of files.
+
+2010-04-26  Daniel Elstner  <danielk@openismus.com>
+
+	Temporarily disable test_document_load
+
+	* Makefile_tests.am (check_PROGRAMS), (TESTS): Temporarily remove
+	test_document_load, because the corresponding source file is currently
+	missing from the repository.
+
+2010-04-26  Daniel Elstner  <danielk@openismus.com>
+
+	Enable maintainer-mode build in autogen.sh
+
+	* autogen.sh: Run configure with --enable-maintainer-mode since the
+	AM_MAINTAINER_MODE macro is now used in configure.ac.
+
+2010-04-26  Murray Cumming  <murrayc@murrayc.com>
+
+	Python Glom module: Improved the docstrings, using reStructuredText
+
+	* glom/python_embed/python_module/py_glom_module.cc: Use more
+    reStructureText (or as much as sphinx allows us to use in a docstring).
+    It's looking quite good.
+
+2010-04-25  Murray Cumming  <murrayc@murrayc.com>
+
+	Simplify test_selfhosting_new_empty.
+
+	* glom/frame_glom.cc: Move setup_connection_pool_from_document() to:
+	* glom/libglom/connectionpool.[h|cc]: Added setup_from_document().
+	* tests/test_selfhosting_new_empty/test_selfhosting_new_empty.cc: Use the
+	new function here, removing code to explicitly set the backend.
+
+2010-04-23  Murray Cumming  <murrayc@murrayc.com>
+
+	Add a document-loading test and self-hosting test
+
+	* glom/Makefile_tests.am: Added the tests.
+	* glom/libglom/test_document.cc: Renamed to example_document_load.cc.
+	* tests/test_document_load/test_document_load.cc: Added this new test to
+	load a document, checking some known parts of its structure.
+
+	* glom/libglom/document/bakery/document.cc: write_to_disk(): Create the
+ 	parent directory if necessary, instead of failing with a Gio exception.
+ 	* test/test_selfhosting_newempty/test_selfhosting_newempty.cc: Saves a new
+ 	file from an example, starts self-hosting of it, and stops self-hosting.
+ 	This needs work and expansion.
+
+2010-04-20  Murray Cumming  <murrayc@murrayc.com>
+
+	Python Glom module: Improve sphinx-generated documentation.
+
+	* glom/python_embed/python_module/py_glom_module.cc: Added class docstring
+	documentation, based on
+	http://library.gnome.org/users/glom/unstable/sec-calculated-fields.html
+	Use reStructuredText format as expected by sphinx and as apparently now
+	use by Python for docstring text.
+
+2010-04-20  Murray Cumming  <murrayc@murrayc.com>
+
+    Fix the python Glom module name.
+
+	* configure.ac: Fix a recent typo to again use the correct underlined
+    name for the Python Glom module. This was fatal, in tests too.
+
+2010-04-20  David King  <davidk@openismus.com>
+
+	Relax the autoconf requirement
+
+	* configure.ac: Relax the autoconf requirement to 2.63, as 2.65 is not
+	required. Something older than 2.63 may even be acceptable, but I do
+	not have an older version to test.
+
+2010-04-20  David King  <davidk@openismus.com>
+
+	Fix the sphinx-build configure check
+
+	* configure.ac: Abort configure with an error if sphinx-build could
+	not be found and --enable-documentation was passed to configure.
+
+2010-04-20  Murray Cumming  <murrayc@murrayc.com>
+
+	Glom Python API reference: Failed attempt to dist the html files.
+
+	* docs/pyglom_reference/Makefile.am: Copied some stuff from the mm-common
+    files, but it doesn't work yet.
+
+2010-04-20  Murray Cumming  <murrayc@murrayc.com>
+
+	Glom Python API reference: Install the html generated by sphinx.
+
+	* docs/pyglom_reference/Makefile.am: Add install rules based on awful hacked
+    copies of the mm-common stuff. I believe this could be far simpler.
+
+2010-04-20  Murray Cumming  <murrayc@murrayc.com>
+
+	Solve the long-paths problem with the doxygen-generated html files.
+
+	* configure.ac: Change the AM_INIT_AUTOMAKE() call to be like gtkmm,
+	allowing the tarball to contain long paths - needed for the libglom html
+	documentation.
+
+2010-04-19  Murray Cumming  <murrayc@murrayc.com>
+
+	More improved use of sphinx.
+
+	* docs/pyglom_reference/conf.py.in: Do not generate the module index page
+	because we have only one module.
+	* docs/pyglom_reference/index.rst.in: Add back the link to the general index,
+	which seems to actually be generated.
+
+2010-04-19  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.ac: Ran autoupdate to remove use of deprecated macros.
+
+2010-04-19  Murray Cumming  <murrayc@murrayc.com>
+
+    Avoid the requirement for sphinx-build if documentation is disabled.
+
+	* configure.ac: Use AC_PATH_PROG() instead of AC_CHECK_PROG() so we get the
+    path to use. Only check if --enable-documentation was used.
+	* docs/pyglom_reference/Makefile.am: Only build the html if
+    --enable-documentation was used (not yet built by default anyway).
+
+2010-04-19  Murray Cumming  <murrayc@murrayc.com>
+
+    Improved use of sphinx.
+
+	* configure.ac: AC_SUBST() GLOM_ABI_VERSION_UNDERLINED so we can use it
+    in docs/pyglom_reference/Makefile.am. Mention these files that will be
+    genereated form .in files with the ABI and version numbers substituted.
+    Check for sphinx-build, though this should only matter when building docs.
+	* docs/pyglom_reference/conf.py.in:
+	* docs/pyglom_reference/index.rst.in: Use ABI and version variables instead
+    of hard-coding. Add short introductory text with links.
+
+2010-04-16  Murray Cumming  <murrayc@murrayc.com>
+
+    Try to use sphinx for pyglom API documentation.
+
+    * docs/pyglom_reference/Makefile.an:
+	* docs/pyglom_reference/sphinx_sources/:
+    An attempt to use sphinx instead of pydoc. sphinx is used by Python itself.
+    I need to change my Python setup (not have Python in jhbuild) to test
+    this properly, because I can't easily build pydoctor in my separate prefix.
+
+2010-04-16  Murray Cumming  <murrayc@murrayc.com>
+
+	Python: Really show warnings when modules can't be imported.
+
+	* glom/python_embed/glom_python.cc: Add and use import_module() to make sure
+	that we catch exceptions from boost::python::import(), so show the intended
+	warnings instead of just crashing with an uncaught exception.
+	Also correct the checks for empty/none boost::python::objects for imported
+	modules. A simple ! is not what it seems.
+
+2010-04-16  Murray Cumming  <murrayc@murrayc.com>
+
+    Use mm-common for optional compiler warnings and to build libglom docs.
+
+    * configure.ac: Use mm-common, removing macros/dk-warn.m4.
+	* docs/libglom_reference/Doxyfile.in:
+	* docs/libglom_reference/doxygen_to_devhelp.xsl:
+	* docs/libglom_reference/Makefile.am: Generate libglom documentation
+    properly usign build stuff copied from gtkmm.
+	* docs/pyglom_reference/Makefile.am: A silly little initial attempt to
+    have generated html for the glom python module, using pydoc.
+
+2010-04-15  Murray Cumming  <murrayc@murrayc.com>
+
+  Python field calculation: Fix a crash.
+
+	* glom/libglom/python_embed/pygdavalue_conversions.cc:
+	glom_pygda_value_as_boost_pyobject(): Add a PyDateTimeAPI call, as already
+	done in glom_pygda_value_from_pyobject(), to prevent a crash (and valgrind
+	warning about 0 dereference) when using this (silly, wrong) field calculation,
+	though I can't reproduce it in a unit test:
+	import datetime
+  return (datetime.date.today() - record["date_of_birth"]).days / 365
+
+2010-04-15  Murray Cumming  <murrayc@murrayc.com>
+
+  Python module: Improve API documentation.
+
+	* glom/python_embed/python_module/py_glom_module.cc: Added some options and
+	text for docstrings, to improve the pydoc -w output.
+
+1.14.0:
+
+2010-04-14  Murray Cumming  <murrayc@murrayc.com>
+
+	Fall back to the uninstalled .glade file to fix make distcheck.
+
+	* Makefile.am: Define GLOM_PKGDATADIR_NOTINSTALLED as well as the existing
+    GLOM_PKGDATADIR.
+	* glom/glade_utils.h: get_glade_file_path(): Fall back to the uninstalled
+    glade file if the installed one can't be found. This fixes make distcheck.
+
+2010-04-14  Murray Cumming  <murrayc@murrayc.com>
+
+    Glade utils: More error-checking.
+
+	* glom/glade_utils.h:  helper_get_glade_widget_derived_with_warning():
+    Catch the other 2 exception types that we now know that
+    Gtk::Builder::create*() can throw.
+	* glom/frame_glom.cc: create_database(): Use get_glade_widget_with_warning()
+    to simplify the code. Our utility functions are now used everywhere.
+
+2010-04-13  Murray Cumming  <murrayc@murrayc.com>
+
+  Remove useless translatable strings.
+
+	* glom/glom_developer.glade: Remove placeholder text from labels that will
+	actually have their text set at runtime, so there's need actual need to have
+	it in the glade file. They were even marked as translatable.
+	Bug #615656 (Gianluca Ferri)
+
+2010-04-12  Murray Cumming  <murrayc@murrayc.com>
+
+  Python calculations and scripts: Fix regression in use of date and time fields.
+
+	* glom/libglom/python_embed/py_glom_record.[h|cc]:
+	Change PyGlomRecord_SetFields() to a member set_fields() method, and making
+	more of the class private, finishing our conversion to boost::python.
+	* glom/libglom/python_embed/py_glom_related.[h|cc]:
+	Change PyGlomRelated_SetRelationships() to a set_relationships methods.
+	* glom/libglom/python_embed/py_glom_relatedrecord.[h|cc]:
+	Changed PyGlomRelatedRecord_SetRelationship() to a set_relationship() method.
+
+	* glom/python_embed/glom_python.cc: glom_pygda_value_from_pyobject():
+  Handle date, time, timestamp, geometric point values, whose code had been
+  commented out since the port to boost::python.
+	This fixes the test added in the previous commit, so glom calculations and
+	scripts can again (it broke in unstable Glom 1.13) use date and time field
+	values from the record.
+
+2010-04-12  Murray Cumming  <murrayc@murrayc.com>
+
+  Added test showing problem with date fields in python calculations.
+
+	* tests/test_python_execute_func_date.cc: Added a test of dates as input
+	values for record fields. This currently fails with this error from python,
+	so I need to fix it in Glom:
+	AttributeError: 'NoneType' object has no attribute 'year'
+
+2010-04-12  Daniel Elstner  <danielk@openismus.com>
+
+	Further clean up AX_BOOST_PYTHON_MURRAYC
+
+	* macros/ax_boost_python_murrayc.m4: Simplify the logic of the checks
+	and clean up the Bourne shell code.  Also, abort with a fatal error
+	if the boost::python headers or library could not be found.
+
+2010-04-12  Murray Cumming  <murrayc@murrayc.com>
+
+    Slight AX_BOOST_PYTHON_MURRAYC() cleanup.
+
+	* macros/ax_boost_python_murrayc.m4: Add necessary quotes, avoid ==,
+    and use AC_LANG_PUSH/AC_LANG_POP instead of deprecated
+    AC_LANG_SAVE/AC_LANG_CPLUSPLUS/AC_LANG_RESTORE. Noticed by Daniel Elstner,
+    though we don't know if this solves any known problems yet.
+
+2010-04-12  Murray Cumming  <murrayc@murrayc.com>
+
+	Provide context for translations.
+
+	* glom/application.cc:
+	* glom/frame_glom.cc:
+	* glom/mode_design/users/dialog_users_list.cc: Use the new (in glib 2.16)
+    C_() macro to provide context for bare uses of "User" and "Developer",
+    providing some explanation and allowing translators to use translate them
+    differently, as may be required by some languages.
+    Fixes bug #606931 (Urmas, André Klapper)
+
+2010-04-12  Murray Cumming  <murrayc@murrayc.com>
+
+  Fix glade loading.
+
+	* glom/glade_utils.h: get_glade_widget_derived_with_warning(): Fix silly
+	but fatal typo.
+
+2010-04-11  Murray Cumming  <murrayc@murrayc.com>
+
+  Simplify setting of the icon for windows.
+
+	* glom/glade_utils.h: get_glade_widget_derived_with_warning():
+	Call set_icon_name() on windows.
+	* Several *.cc files: Don't bother calling set_icon_name() after calling
+	get_glade_widget_derived_with_warning().
+
+2010-04-10  Murray Cumming  <murrayc@murrayc-x61>
+
+  dialog_run_with_help(): Get the help ID from the class.
+
+  * glom/utils_ui.h: dialog_run_with_help(): Add a templated version that uses
+  the static glade_id member, to avoid repeating this in the source code.
+	* Several .cc files: Remove the ID parameter from most uses of
+	dialog_run_with_help().
+
+2010-04-10  Murray Cumming  <murrayc@murrayc.com>
+
+  Glade instantiation: Simplify, make more robust, and test.
+
+  * glom/glade_utils.h: get_glade_widget_derived_with_warning(),
+  get_glade_developer_widget_derived_with_warning(): Add method overloads that
+  don't take an ID. These require the class to have a static glade_id member.
+  This associates the IDs with the class, instead of being in other files,
+  to avoid duplication and to avoid using the wrong ones.
+  * Many files: Use these new methods, to avoid mentioning glade IDs.
+  * tests/test_glade_derived_instantiation.cc: Try to instantiate all the known
+  derived glade dialogs.
+
+2010-04-10  Murray Cumming  <murrayc@murrayc.com>
+
+  Glade files: Move a client-only dialog to the correct file.
+
+	* glom/glom_developer.glade:
+	* glom/glom.glade: Move dialog_choose_date to glom.glade.
+	* glom/mode_data/datawidget/datawidget.cc: on_button_choose_date():
+	Adapted.
+
+2010-04-10  Murray Cumming  <murrayc@murrayc.com>
+
+  Application: Forget the global instance when it has been deleted.
+
+  * glom/application.cc: Destructor: reset the static instance to 0,
+  to avoid anything from retrieving the pointer to the deleted object.
+
+2010-04-10  Murray Cumming  <murrayc@murrayc.com>
+
+  Remove some unused code.
+
+	* glom/base_db.cc: offer_item_formatting(): Remove a useless use of
+	Gtk::Builder.
+
+2010-04-10  Murray Cumming  <murrayc@murrayc.com>
+
+  Notebook properties dialog: Fix a probable crash.
+
+	* glom/base_db.cc: :offer_notebook(): Fix a typo in the glade ID.
+	I'm working on code to prevent these kinds of errors, to apply when we branch.
+
+2010-04-09  Daniel Borgmann  <danielb@openismus.com>
+
+	Update NEWS file.
+
+	* NEWS: Add entry.
+
+2010-04-09  Daniel Borgmann  <danielb@openismus.com>
+
+	Clean up Add Related Table dialog.
+
+	* glom/glom_developer.glade: (dialog_add_related_table) Remove frame,
+	fix spacings, align form elements in table.
+	* glom/mode_design/dialog_add_related_table.cc: Add window icon.
+
+2010-04-09  Daniel Borgmann  <danielb@openismus.com>
+
+	Update translation dialogs.
+
+	* glom/application.cc:
+	* glom/glom_developer.glade:
+	* glom/mode_design/script_library/dialog_script_library.cc:
+	* glom/mode_design/translation/window_translations.cc:
+	* glom/mode_design/users/dialog_groups_list.cc:
+	Translation dialog updates, set missing window icons.
+
+2010-04-09  Murray Cumming  <murrayc@murrayc.com>
+
+  Reports: Fix a crash when opening the secondary fields dialog.
+
+  * glom/glom_developer.glade: dialog_groupby_secondary_fields: Rename a
+  button to match what the class's constructor expects.
+
+2010-04-09  Armin Burgmeier  <armin@arbur.net>
+
+	* win32/build-installer:
+	* win32/glom.iss.in: Update for Glom 1.14.
+
+2010-04-09  Armin Burgmeier  <armin@arbur.net>
+
+	* Makefile.am: Do not install .desktop file on Windows.
+
+2010-04-09  Daniel Borgmann  <danielb@openismus.com>
+
+	Update dialogs.
+
+	* glom/frame_glom.cc: Set window icons.
+	* glom/glom_developer.glade: Update user dialogs.
+	* glom/mode_design/layout/dialog_layout.cc: Set window icons.
+	* glom/mode_design/users/dialog_groups_list.cc: Set window icons.
+
+2010-04-08  Daniel Borgmann  <danielb@openismus.com>
+
+	Use buttonbox for details view.
+
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_details.h:
+	Use HButtonBox instead of HBox.
+
+2010-04-08  Murray Cumming  <murrayc@murrayc.com>
+
+  ImageGlom: Move scale_keeping_ratio() somewhere more sensible.
+
+	* glom/utility_widgets/imageglom.[h|cc]: Move scale_keeping_ratio() to
+	glom/utils_ui.[h]cc] as Utils::image_scale_keeping_ratio().
+	* glom/utility_widgets/canvas/canvas_image_movable.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/flowtable_dnd.cc: Adapted.
+
+2010-04-08  Murray Cumming  <murrayc@murrayc.com>
+
+  glom/mode_data/datawidget/: Clean up classes, putting them in a namespace.
+
+  * glom/mode_data/datawidget/: Removed Glom suffixes from class names
+  and filenames, and put classes in a DataWidgetChildren sub-namespace,
+  to make it clearer where we occasionally use these outside of DataWidget.
+
+2010-04-08  Murray Cumming  <murrayc@murrayc.com>
+
+  Cleaned glom/utility_widgets/ a little.
+
+  * glom/utility_widgets/datawidget.[h|cc]: Moved to glom/mode_data/datawidget/
+  because it is only used by the data-mode flowtable.
+	* glom/utility_widgets/buttonglom.[h|cc]
+	* glom/utility_widgets/checkglom.[h|cc]
+	* glom/utility_widgets/combo_as_radio_buttons.[h|cc]
+	* glom/utility_widgets/combochoices.[h|cc]
+	* glom/utility_widgets/combochoiceswithtreemodel.[h|cc]
+	* glom/utility_widgets/comboentryglom.c[h|cc]
+	* glom/utility_widgets/comboglom.[h|cc]
+	* glom/utility_widgets/dialog_choose_date.[h|cc]
+	* glom/utility_widgets/dialog_choose_id.[h|cc]
+	* glom/utility_widgets/entryglom.[h|cc]
+	* glom/utility_widgets/labelglom.[h|cc]
+	* glom/utility_widgets/textviewglom.[h|cc]
+	* glom/utility_widgets/placeholder-glom.[h|cc]: Also move these to
+  glom/mode_data/datawidget because they are only used by DataWidget.
+	* glom/utility_widgets/alignment_justified.[h|cc]:
+	* glom/utility_widgets/table_columns.[h|cc]: Deleted these unused classes.
+  * Makefile_glom.am: Adapted.
+
+2010-04-08  Daniel Borgmann  <danielb@openismus.com>
+
+	Use button box for adddel widgets.
+
+	* glom/utility_widgets/adddel/adddel_withbuttons.cc:
+	* glom/utility_widgets/adddel/adddel_withbuttons.h:
+	* glom/utility_widgets/db_adddel/db_adddel_withbuttons.cc:
+	* glom/utility_widgets/db_adddel/db_adddel_withbuttons.h:
+	Use ButtonBox instead of HBox.
+
+2010-04-08  Daniel Borgmann  <danielb@openismus.com>
+
+	Use button box for listview buttons.
+
+	* glom/utility_widgets/db_adddel/db_adddel_withbuttons.cc:
+	* glom/utility_widgets/db_adddel/db_adddel_withbuttons.h:
+	Use ButtonBox instead of HBox to make buttons homogenous. Also change
+	button order to match order used everywhere else (Add/Delete/Open).
+
+2010-04-08  Daniel Borgmann  <danielb@openismus.com>
+
+	Text and Image object Dialog adjustments.
+
+	* glom/glom_developer.glade: Various dialog layout fixes.
+	* glom/mode_design/layout/layout_item_dialogs/dialog_imageobject.cc:
+	* glom/mode_design/layout/layout_item_dialogs/dialog_imageobject.h:
+	* glom/mode_design/layout/layout_item_dialogs/dialog_textobject.cc:
+	* glom/mode_design/layout/layout_item_dialogs/dialog_textobject.h:
+	Update box variable name and add window icons.
+
+2010-04-08  David King  <davidk@openismus.com>
+
+	Update copyright information in about dialog
+
+	* glom/application.cc: Update copyright year in about dialog.
+
+2010-04-07  Murray Cumming  <murrayc@murrayc.com>
+
+    Recent Files: Make sure that we remember these for saved-from-example files.
+
+	* glom/application.cc: on_document_load(): Add an extra call to
+    document_history_add() after successfully saving from an example.
+
+2010-04-07  Daniel Borgmann  <danielb@openismus.com>
+
+	Find bar adjustments.
+
+	* glom/frame_glom.cc: Rename Quick Find to Quick Search and add
+	mneomnic.
+	* glom/glom.glade: Update find id dialog and remove frame.
+	* glom/utility_widgets/datawidget.cc: Add window icon to find id
+	dialog.
+
+2010-04-07  David King  <davidk@openismus.com>
+
+	Fix boost:python m4 macro with -Wl,--as-needed
+
+	* macros/ax_boost_python_murrayc.m4: Specify libraries in LIBS, not
+	LDFLAGS. See http://www.gentoo.org/proj/en/qa/asneeded.xml
+
+2010-04-06  Daniel Borgmann  <danielb@openismus.com>
+
+	Dialog adjustments.
+
+	* glom/glom.glade: Spacing adjustments to make dialogs more HIG
+	compliant.
+
+2010-04-06  Daniel Borgmann  <danielb@openismus.com>
+
+	Initial Password Dialog adjustments.
+
+	* glom/glom_developer.glade: Initial Password Dialog tweaks.
+	* glom/mode_design/dialog_initial_password.cc: Set window icon.
+
+2010-04-06  Daniel Borgmann  <danielb@openismus.com>
+
+	CSV Import Dialog adjustments.
+
+	* glom/glom.glade: Import dialog tweaks.
+	* glom/import_csv/dialog_import_csv.cc: Add window icon, change title
+	order.
+
+2010-04-06  Daniel Borgmann  <danielb@openismus.com>
+
+	Dialog fixes.
+
+	* glom/frame_glom.cc: Add window icons and fix capitalisation of
+	primary texts (dialog text uses sentence capitalisation).
+
+2010-04-06  Daniel Borgmann  <danielb@openismus.com>
+
+	Set Progress Dialog default size.
+
+	* glom/glom.glade: Set a reasonable default size for the progress
+	dialog, that allows to read the title at least.
+
+2010-04-06  Daniel Borgmann  <danielb@openismus.com>
+
+	Select Field Dialog adjustments.
+
+	* glom/glom_developer.glade: Spacing and mnemonic adjustments/fixes,
+	remove frame label.
+	* glom/mode_design/layout/dialog_choose_field.cc: Add window icon.
+
+2010-04-06  Daniel Borgmann  <danielb@openismus.com>
+
+	Progress dialog adjustments.
+
+	* glom/dialog_progress_creating.cc: Add window icon.
+	* glom/glom.glade: Center dialog on parent window.
+
+2010-03-31  Daniel Borgmann  <danielb@openismus.com>
+
+	Don't show error icon for empty recent documents.
+
+	* glom/dialog_existing_or_new.cc: Also don't show error icon for
+	empty recent documents.
+
+2010-03-31  Daniel Borgmann  <danielb@openismus.com>
+
+	Welcome Screen adjustments.
+
+	* glom/dialog_existing_or_new.cc: Fix typo and use of properties, don't
+	show error icon when no network sessions are available.
+	* glom/glom.glade: Hide label and icon, spacing adjustments.
+
+2010-03-31  Daniel Borgmann  <danielb@openismus.com>
+
+	Improve application title.
+
+	* glom/application.cc: Don't show colon in application title when
+	table name is empty.
+
+2010-03-31  Daniel Borgmann  <danielb@openismus.com>
+
+	Remove unneded alert dialogs / TODO items.
+
+	* glom/frame_glom.cc: No table warnings are not needed anymore
+	for menu items, so remove them.
+
+2010-03-31  Daniel Borgmann  <danielb@openismus.com>
+
+	Set window icon for OK dialogs.
+
+	* glom/utils_ui.cc: show_ok_dialog: Set window icon.
+
+2010-03-30  Daniel Borgmann  <danielb@openismus.com>
+
+	Set window icon for welcome screen.
+
+	* glom/dialog_existing_or_new.cc: Set window icon.
+
+2010-03-30  Daniel Borgmann  <danielb@openismus.com>
+
+	Disable some menu items when no table is loaded.
+
+	* glom/application.cc: update_table_sensitive_ui: Function to set
+	sensitivity of menu items depending on whether a table is loaded.
+	init_menus: Add table sensitive menu items to a list.
+	* glom/application.h: Add list to hold table sensitive menu items.
+	* glom/frame_glom.cc: Call update_table_sensitive_ui when needed.
+
+2010-03-30  Murray Cumming  <murrayc@murrayc.com>
+
+	Glade instantation test: Make it exit on failure.
+
+	* tests/test_glade_toplevels_instantiation.sh: Use || exit 1, as in
+    David's commit to the other files.
+
+2010-03-30  David King  <davidk@openismus.com>
+
+	Make DTD validation tests exit on failure
+
+	* tests/test_dtd_file_validation.sh:
+	* tests/test_glade_file_validation.sh: Append ‘ || exit 1’ to the
+	xmllint call, to ensure that a validation failure leads to a failing
+	test.
+
+2010-03-30  Daniel Borgmann  <danielb@openismus.com>
+
+	Capitalisation fixes.
+
+	* glom/application.cc: Use lower case for short prepositions.
+
+2010-03-30  Daniel Borgmann  <danielb@openismus.com>
+
+	Fix mnemonics.
+
+	* glom/application.cc: Add missing mnemonics and change double
+	mnemonics.
+
+2010-03-30  Murray Cumming  <murrayc@murrayc.com>
+
+    Update the document DTD, to fix tests.
+
+	* glom/glom_document.dtd: data_layout_button: Allow this to have a
+    formatting child node, because we now allow this in the UI and save this.
+
+2010-03-30  Murray Cumming  <murrayc@murrayc.com>
+
+    Add a test to check instantiation of glade widgets.
+
+    * Makefile_tests.am
+	* tests/glade_toplevels_instantiation.cc: Added this code for an
+    executable that will try to instantiate all GtkWindow and GtkDialog
+    objects in a specified .glade file. It also checks that they are not
+    visible by default.
+	* tests/test_glade_toplevels_instantiation.sh: Added a tests script,
+    run during make check, to run this executable on all our .glade files.
+
+    * glom/glom.glade, glom_developer.glom: Fix small problems found by the
+    test, removing an empty textbuffer top-level object and making all
+    top-level objects non-visible by default.
+
+2010-03-29  Daniel Borgmann  <danielb@openismus.com>
+
+	Relationships Overview dialog adjustments.
+
+	* glom/glom_developer.glade: Remove frame and adjust spacings for
+	Relationships Overview dialog.
+
+2010-03-29  Daniel Borgmann  <danielb@openismus.com>
+
+	Correct mnemonic widgets.
+
+	* glom/glom_developer.glade: Actually set the correct mnemonic
+	widgets for Report Layout input labels.
+
+2010-03-29  Daniel Borgmann  <danielb@openismus.com>
+
+	Remove boldness from input labels.
+
+	* glom/glom_developer.glade: Remove bold markup for Report Layout
+	input labels.
+
+2010-03-29  Daniel Borgmann  <danielb@openismus.com>
+
+	Report Layout dialog adjustments.
+
+	* glom/frame_glom.cc: Set Report Layout dialog window icon.
+	* glom/glom_developer.glade: Report Layout dialog spacing
+	adjustments and mnemonics fix.
+
+2010-03-29  Daniel Borgmann  <danielb@openismus.com>
+
+	Reports dialog adjustments.
+
+	* glom/frame_glom.cc: Set Reports dialog window title.
+	* glom/glom_developer.glade: Remove frame from Reports dialog.
+
+2010-03-29  Daniel Borgmann  <danielb@openismus.com>
+
+	Remove frame label on Fields dialog.
+
+	* glom/box_reports.cc: Remove references to frame label.
+	* glom/box_reports.h: Remove frame label member.
+	* glom/frame_glom.cc: Set window icon for Fields and Relationships
+	dialogs.
+	* glom/glom_developer.glade: Adjust Fields and Relationships dialogs.
+	* glom/mode_design/dialog_design.cc: Remove references to frame label.
+	* glom/mode_design/dialog_design.h: Remove frame label member.
+	* glom/mode_design/dialog_fields.cc: Remove references to frame label.
+	* glom/mode_design/dialog_relationships.cc: Remove references to frame
+	label.
+	* glom/mode_design/print_layouts/box_print_layouts.cc: Remove
+	references to frame label.
+	* glom/mode_design/print_layouts/box_print_layouts.h: Remove frame
+	label member.
+	* glom/navigation/box_tables.cc: Remove references to frame label.
+
 2010-03-29  Murray Cumming  <murrayc@murrayc.com>
 
     Avoid Operation Not Supported warnings at startup.

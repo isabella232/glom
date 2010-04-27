@@ -24,6 +24,9 @@
 namespace Glom
 {
 
+const char* Dialog_ChangeLanguage::glade_id("dialog_change_language");
+const bool Dialog_ChangeLanguage::glade_developer(true);
+
 Dialog_ChangeLanguage::Dialog_ChangeLanguage(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_combo_locale(0)

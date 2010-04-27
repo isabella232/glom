@@ -27,6 +27,9 @@
 namespace Glom
 {
 
+const char* Dialog_Notebook::glade_id("dialog_notebook");
+const bool Dialog_Notebook::glade_developer(true);
+
 Dialog_Notebook::Dialog_Notebook(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Dialog_Layout(cobject, builder, false /* means no table title */),
   m_treeview(0),

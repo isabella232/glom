@@ -36,6 +36,9 @@ class Dialog_InitialPassword
     public Base_DB
 {
 public:
+  static const char* glade_id;
+  static const bool glade_developer;
+
   Dialog_InitialPassword(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_InitialPassword();
 

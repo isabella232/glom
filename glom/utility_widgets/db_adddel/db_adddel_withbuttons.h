@@ -55,7 +55,7 @@ private:
   virtual void show_all_vfunc();
 
   //member widgets:
-  Gtk::HBox m_HBox;
+  Gtk::HButtonBox m_ButtonBox;
   
 #ifndef GLOM_ENABLE_MAEMO
   typedef Gtk::Button type_button;

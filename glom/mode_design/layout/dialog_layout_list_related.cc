@@ -31,6 +31,9 @@
 namespace Glom
 {
 
+const char* Dialog_Layout_List_Related::glade_id("window_data_layout");
+const bool Dialog_Layout_List_Related::glade_developer(true);
+
 Dialog_Layout_List_Related::Dialog_Layout_List_Related(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Dialog_Layout_List(cobject, builder),
   m_combo_relationship(0),

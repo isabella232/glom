@@ -30,6 +30,9 @@
 namespace Glom
 {
 
+const char* Dialog_UsersList::glade_id("window_users");
+const bool Dialog_UsersList::glade_developer(true);
+
 Dialog_UsersList::Dialog_UsersList(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_treeview_users(0),
@@ -61,7 +64,7 @@ Dialog_UsersList::Dialog_UsersList(BaseObjectType* cobject, const Glib::RefPtr<G
 
 
     // Append the View columns:
-    m_treeview_users->append_column(_("User"), m_model_columns_users.m_col_name);
+    m_treeview_users->append_column(C_("Users List", "User"), m_model_columns_users.m_col_name);
   }
 
 
@@ -179,23 +182,14 @@ void Dialog_UsersList::on_button_user_delete()
 void Dialog_UsersList::on_button_user_add()
 {
   Dialog_ChooseUser* dialog = 0;
-  try
-  {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_user");
-
-    refXml->get_widget_derived("dialog_choose_user", dialog);
-  }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
+  Utils::get_glade_widget_derived_with_warning(dialog);
 
   dialog->set_transient_for(*this);
 
   //Fill it with the list of users:
   dialog->set_user_list( Privs::get_database_users() );
 
-  int response = Glom::Utils::dialog_run_with_help(dialog, "dialog_choose_user");
+  const int response = Glom::Utils::dialog_run_with_help(dialog);
 
   const Glib::ustring user = dialog->get_user();
 
@@ -230,16 +224,7 @@ void Dialog_UsersList::on_button_user_add()
 void Dialog_UsersList::on_button_user_new()
 {
   Dialog_User* dialog = 0;
-  try
-  {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_user");
-
-    refXml->get_widget_derived("dialog_user", dialog);
-  }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
+  Utils::get_glade_widget_derived_with_warning(dialog);
 
   dialog->set_transient_for(*this);
   dialog->m_combo_group->set_sensitive(false); //It is being added to the current group, so don't offer a different group.
@@ -248,7 +233,7 @@ void Dialog_UsersList::on_button_user_new()
   bool keep_trying = true;
   while(keep_trying)
   {
-    response = Glom::Utils::dialog_run_with_help(dialog, "dialog_user");
+    response = Glom::Utils::dialog_run_with_help(dialog);
 
     //Check the password is acceptable:
     if(response == Gtk::RESPONSE_OK)
@@ -285,16 +270,7 @@ void Dialog_UsersList::on_button_user_edit()
       Gtk::TreeModel::Row row = *iter;
 
       Dialog_User* dialog = 0;
-      try
-      {
-        Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_user");
-
-        refXml->get_widget_derived("dialog_user", dialog);
-      }
-      catch(const Gtk::BuilderError& ex)
-      {
-        std::cerr << ex.what() << std::endl;
-      }
+      Utils::get_glade_widget_derived_with_warning(dialog);
 
       dialog->set_transient_for(*this);
 
@@ -319,7 +295,7 @@ void Dialog_UsersList::on_button_user_edit()
       bool keep_trying = true;
       while(keep_trying)
       {
-        response = Glom::Utils::dialog_run_with_help(dialog, "dialog_user");
+        response = Glom::Utils::dialog_run_with_help(dialog);
 
         //Check the password is acceptable:
         if(response == Gtk::RESPONSE_OK)

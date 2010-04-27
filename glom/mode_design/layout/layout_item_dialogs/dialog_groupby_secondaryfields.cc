@@ -27,6 +27,9 @@
 namespace Glom
 {
 
+const char* Dialog_GroupBy_SecondaryFields::glade_id("dialog_groupby_secondary_fields");
+const bool Dialog_GroupBy_SecondaryFields::glade_developer(true);
+
 Dialog_GroupBy_SecondaryFields::Dialog_GroupBy_SecondaryFields(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Dialog_Layout(cobject, builder, false /* means no table title */),
   m_treeview_fields(0),

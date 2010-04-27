@@ -5,6 +5,7 @@ test -n "$srcdir" || srcdir=.
   cd "$srcdir" &&
   gnome-doc-common --copy &&
   gnome-doc-prepare --automake --copy --force &&
+  mm-common-prepare --copy --force &&
   AUTOPOINT='intltoolize --automake --copy' autoreconf --force --install
 ) || exit
-test -n "$NOCONFIGURE" || "$srcdir/configure" "$@"
+test -n "$NOCONFIGURE" || "$srcdir/configure" --enable-maintainer-mode "$@"

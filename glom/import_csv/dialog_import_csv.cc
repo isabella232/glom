@@ -60,6 +60,9 @@ Glib::ustring encoding_display(const Glib::ustring& name, const Glib::ustring& c
 namespace Glom
 {
 
+const char* Dialog_Import_CSV::glade_id("dialog_import_csv");
+const bool Dialog_Import_CSV::glade_developer(false);
+
 Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_auto_detect_encoding(),
@@ -141,7 +144,7 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
   const Glib::ustring date_text = Glom::Conversions::format_date(the_c_time, std::locale::classic() /* ignored */, true /* iso_format */);
   const Glib::ustring advice = Glib::ustring::compose(_("Note that the source file should contain numbers and dates in international ISO format. For instance, 22nd November 2008 should be %1."), date_text);
   m_advice_label->set_text(advice);
-  std::cout << "DEBUG: advice=" << advice << std::endl;
+  //std::cout << "DEBUG: advice=" << advice << std::endl;
 
   clear();
 }
@@ -750,7 +753,7 @@ void Dialog_Import_CSV::on_parser_file_read_error(const Glib::ustring& error_mes
 
 void Dialog_Import_CSV::on_parser_have_display_name(const Glib::ustring& display_name)
 {
-  set_title(display_name + _(" - Import From CSV File"));
+  set_title(_("Import From CSV File: ") + display_name);
 }
 
 void Dialog_Import_CSV::on_parser_state_changed()

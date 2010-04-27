@@ -29,6 +29,9 @@
 namespace Glom
 {
 
+const char* Dialog_Database_Preferences::glade_id("dialog_database_preferences");
+const bool Dialog_Database_Preferences::glade_developer(true);
+
 Dialog_Database_Preferences::Dialog_Database_Preferences(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   Base_DB(),

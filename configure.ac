@@ -15,27 +15,25 @@
 ## You should have received a copy of the GNU General Public License
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([Glom], [1.13.9], [http://bugzilla.gnome.org/enter_bug.cgi?product=Glom], [glom])
-AC_PREREQ([2.60])
+AC_INIT([Glom],[1.14.1],[http://bugzilla.gnome.org/enter_bug.cgi?product=Glom],[glom])
+AC_PREREQ(2.63)
 
 AC_CONFIG_SRCDIR([glom/main.cc])
 AC_CONFIG_MACRO_DIR([macros])
 AC_CONFIG_HEADERS([config.h glom/libglom/libglom_config.h])
 
-AM_INIT_AUTOMAKE([1.10 check-news no-define nostdinc])
+AM_INIT_AUTOMAKE([1.10 -Wno-portability check-news no-define nostdinc tar-pax])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
+AM_MAINTAINER_MODE
 AC_ARG_VAR([ACLOCAL_FLAGS], [aclocal flags, e.g. -I <macro dir>])
 
 AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_CXX
 
-dnl Maemo still ships with the ancient libtool 1.4
-dnl LT_PREREQ([2.2.0])
-dnl LT_INIT([disable-static win32-dll])
+LT_PREREQ([2.2.0])
+LT_INIT([disable-static win32-dll])
 AC_DISABLE_STATIC
-AC_LIBTOOL_WIN32_DLL
-AC_PROG_LIBTOOL
 
 # Used for the install directories for headers.  The same number is used in
 # the library name, which must be kept in sync, but variables can't be used
@@ -43,8 +41,10 @@ AC_PROG_LIBTOOL
 AC_SUBST([GLOM_ABI_VERSION], [1.14])
 AC_DEFINE_UNQUOTED([GLOM_ABI_VERSION], ["$GLOM_ABI_VERSION"],
 		   [Define to the Glom ABI version string.])
+
 # Python modules can't be called glom-1.x, so we use underlines.
-AC_DEFINE_UNQUOTED([GLOM_ABI_VERSION_UNDERLINED], "AS_TR_SH([$GLOM_ABI_VERSION])",
+AC_SUBST([GLOM_ABI_VERSION_UNDERLINED], ["AS_TR_SH([$GLOM_ABI_VERSION])"])
+AC_DEFINE_UNQUOTED([GLOM_ABI_VERSION_UNDERLINED], ["$GLOM_ABI_VERSION_UNDERLINED"],
                    [Define to the Glom ABI version with '.' replaced by '_'.])
 
 # Only check for libgettextpo on non-Maemo platforms.
@@ -185,14 +185,18 @@ MM_PKG_CONFIG_SUBST([ISO_CODES_PREFIX], [--variable=prefix iso-codes])
 AC_DEFINE_UNQUOTED([ISO_CODES_PREFIX], ["$ISO_CODES_PREFIX"],
                    [Define to the installation prefix of the iso-codes module.])
 
-AC_LANG_ASSERT([C])
-DK_ARG_ENABLE_WARNINGS([GLOM_WFLAGS],
-                       [-Wall], [-Wall -Wextra],
+
+# Evaluate the --enable-warnings=level option.
+MM_PREREQ([0.8])
+MM_ARG_ENABLE_WARNINGS([GLOM_WFLAGS],
+                       [-Wall],
+                       [-Wall -Wextra -Wno-missing-field-initializers -DGSEAL_ENABLE],
                        [G GDK GDK_PIXBUF GTK])
-AC_LANG([C++])
-DK_ARG_ENABLE_WARNINGS([GLOM_WXXFLAGS],
-		       [-Wall], [-Wall -Wextra -Wno-missing-field-initializers],
+MM_ARG_ENABLE_WARNINGS([GLOM_WXXFLAGS],
+                       [-Wall],
+                       [-Wall -Wextra -Wno-missing-field-initializers -DGSEAL_ENABLE],
                        [G GDK GDK_PIXBUF GTK GLIBMM GTKMM])
+
 AC_CHECK_FUNCS([strptime])
 
 # Get the compiler and linker flags for embedding Python.
@@ -245,10 +249,29 @@ AC_DEFINE_UNQUOTED([EXEEXT], ["$EXEEXT"],
 GNOME_DOC_INIT([0.9.0],,
   [AC_MSG_WARN([[gnome-doc-utils not found: documentation will not be built.]])])
 
+MM_ARG_ENABLE_DOCUMENTATION
+MM_ARG_WITH_TAGFILE_DOC([libstdc++.tag], [mm-common-libstdc++])
+MM_ARG_WITH_TAGFILE_DOC([libsigc++-2.0.tag], [sigc++-2.0])
+MM_ARG_WITH_TAGFILE_DOC([glibmm-2.4.tag], [glibmm-2.4])
+MM_ARG_WITH_TAGFILE_DOC([cairomm-1.0.tag], [cairomm-1.0])
+MM_ARG_WITH_TAGFILE_DOC([pangomm-1.4.tag], [pangomm-1.4])
+
+AC_ARG_VAR([SPHINX_BUILD], [path to sphinx-build utility])
+AS_IF([test "x$ENABLE_DOCUMENTATION" != xno],
+  [AC_PATH_PROG([SPHINX_BUILD], [sphinx-build], [sphinx-build])
+   AS_IF([test "x$SPHINX_BUILD" != xsphinx-build],
+     [],
+     [AC_MSG_ERROR([The documentation build is enabled, but the sphinx-build tool could not be found.])])])
+
 AC_CONFIG_FILES([Makefile
                  docs/user-guide/Makefile
                  po/Makefile.in
                  glom.desktop.in
                  glom/libglom/glom-1.14.pc
+                 docs/libglom_reference/Makefile
+                 docs/libglom_reference/Doxyfile
+                 docs/pyglom_reference/Makefile
+                 docs/pyglom_reference/conf.py
+                 docs/pyglom_reference/index.rst
                  win32/glom.iss])
 AC_OUTPUT

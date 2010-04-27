@@ -15,7 +15,7 @@
 ## You should have received a copy of the GNU General Public License
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-glom_glom_SOURCES =							\
+glom_source_files = \
 	glom/application.cc						\
 	glom/application.h						\
 	glom/base_db.cc							\
@@ -48,7 +48,6 @@ glom_glom_SOURCES =							\
 	glom/glom_postgres.h						\
 	glom/glom_privs.cc						\
 	glom/glom_privs.h						\
-	glom/main.cc							\
 	glom/notebook_glom.cc						\
 	glom/notebook_glom.h						\
 	glom/signal_reemitter.h						\
@@ -96,10 +95,38 @@ glom_glom_SOURCES =							\
 	glom/mode_data/box_data_manyrecords.h				\
 	glom/mode_data/box_data_portal.cc				\
 	glom/mode_data/box_data_portal.h				\
+	glom/mode_data/buttonglom.cc				\
+	glom/mode_data/buttonglom.h				\
 	glom/mode_data/flowtablewithfields.cc				\
 	glom/mode_data/flowtablewithfields.h				\
 	glom/mode_data/notebook_data.cc					\
 	glom/mode_data/notebook_data.h					\
+	glom/mode_data/placeholder-glom.cc			\
+	glom/mode_data/placeholder-glom.h				\
+	glom/mode_data/datawidget/datawidget.cc				\
+	glom/mode_data/datawidget/datawidget.h				\
+	glom/mode_data/datawidget/checkbutton.cc				\
+	glom/mode_data/datawidget/checkbutton.h				\
+	glom/mode_data/datawidget/entry.cc				\
+	glom/mode_data/datawidget/entry.h				\
+	glom/mode_data/datawidget/label.cc				\
+	glom/mode_data/datawidget/label.h				\
+	glom/mode_data/datawidget/textview.cc				\
+	glom/mode_data/datawidget/textview.h				\
+	glom/mode_data/datawidget/dialog_choose_date.cc			\
+	glom/mode_data/datawidget/dialog_choose_date.h			\
+	glom/mode_data/datawidget/dialog_choose_id.cc			\
+	glom/mode_data/datawidget/dialog_choose_id.h				\
+	glom/mode_data/datawidget/comboentry.cc				\
+	glom/mode_data/datawidget/comboentry.h				\
+	glom/mode_data/datawidget/combo.cc				\
+	glom/mode_data/datawidget/combo.h				\
+	glom/mode_data/datawidget/combochoices.cc			\
+	glom/mode_data/datawidget/combochoices.h			\
+	glom/mode_data/datawidget/combochoiceswithtreemodel.cc			\
+	glom/mode_data/datawidget/combochoiceswithtreemodel.h			\
+	glom/mode_data/datawidget/combo_as_radio_buttons.cc			\
+	glom/mode_data/datawidget/combo_as_radio_buttons.h			\
 	glom/mode_find/box_data_details_find.cc				\
 	glom/mode_find/box_data_details_find.h				\
 	glom/mode_find/box_data_list_find.cc				\
@@ -114,44 +141,18 @@ glom_glom_SOURCES =							\
 	glom/python_embed/glom_python.h					\
 	glom/python_embed/python_ui_callbacks.cc				\
 	glom/python_embed/python_ui_callbacks.h					\
-	glom/utility_widgets/alignment_justified.cc			\
-	glom/utility_widgets/alignment_justified.h			\
-	glom/utility_widgets/buttonglom.cc				\
-	glom/utility_widgets/buttonglom.h				\
-	glom/utility_widgets/checkglom.cc				\
-	glom/utility_widgets/checkglom.h				\
 	glom/utility_widgets/combo_textglade.cc				\
 	glom/utility_widgets/combo_textglade.h				\
-	glom/utility_widgets/comboentryglom.cc				\
-	glom/utility_widgets/comboentryglom.h				\
-	glom/utility_widgets/comboglom.cc				\
-	glom/utility_widgets/comboglom.h				\
-	glom/utility_widgets/combochoices.cc			\
-	glom/utility_widgets/combochoices.h			\
-	glom/utility_widgets/combochoiceswithtreemodel.cc			\
-	glom/utility_widgets/combochoiceswithtreemodel.h			\
-	glom/utility_widgets/combo_as_radio_buttons.cc			\
-	glom/utility_widgets/combo_as_radio_buttons.h			\
-	glom/utility_widgets/datawidget.cc				\
-	glom/utility_widgets/datawidget.h				\
-	glom/utility_widgets/dialog_choose_date.cc			\
-	glom/utility_widgets/dialog_choose_date.h			\
-	glom/utility_widgets/dialog_choose_id.cc			\
-	glom/utility_widgets/dialog_choose_id.h				\
 	glom/utility_widgets/dialog_flowtable.cc			\
 	glom/utility_widgets/dialog_flowtable.h				\
 	glom/utility_widgets/dialog_image_progress.cc			\
 	glom/utility_widgets/dialog_image_progress.h			\
 	glom/utility_widgets/dialog_properties.cc			\
 	glom/utility_widgets/dialog_properties.h			\
-	glom/utility_widgets/entryglom.cc				\
-	glom/utility_widgets/entryglom.h				\
 	glom/utility_widgets/flowtable.cc				\
 	glom/utility_widgets/flowtable.h				\
 	glom/utility_widgets/imageglom.cc				\
 	glom/utility_widgets/imageglom.h				\
-	glom/utility_widgets/labelglom.cc				\
-	glom/utility_widgets/labelglom.h				\
 	glom/utility_widgets/layoutwidgetbase.cc			\
 	glom/utility_widgets/layoutwidgetbase.h				\
 	glom/utility_widgets/layoutwidgetfield.cc			\
@@ -162,14 +163,8 @@ glom_glom_SOURCES =							\
 	glom/utility_widgets/layoutwidgetutils.h			\
 	glom/utility_widgets/notebookglom.cc				\
 	glom/utility_widgets/notebookglom.h				\
-	glom/utility_widgets/placeholder-glom.cc			\
-	glom/utility_widgets/placeholder-glom.h				\
 	glom/utility_widgets/placeholder.cc				\
 	glom/utility_widgets/placeholder.h				\
-	glom/utility_widgets/table_columns.cc				\
-	glom/utility_widgets/table_columns.h				\
-	glom/utility_widgets/textviewglom.cc				\
-	glom/utility_widgets/textviewglom.h				\
 	glom/utility_widgets/adddel/adddel.cc				\
 	glom/utility_widgets/adddel/adddel.h				\
 	glom/utility_widgets/adddel/adddel_withbuttons.cc		\
@@ -212,7 +207,7 @@ glom_glom_SOURCES =							\
 	glom/utility_widgets/db_adddel/glom_db_treemodel.h
 
 if !GLOM_ENABLE_CLIENT_ONLY
-glom_glom_SOURCES +=							\
+glom_source_files +=							\
 	glom/mode_design/dialog_database_preferences.cc				\
 	glom/mode_design/dialog_database_preferences.h				\
 	glom/mode_design/dialog_initial_password.cc					\
@@ -346,21 +341,27 @@ glom_glom_SOURCES +=							\
 endif
 
 if !GLOM_ENABLE_MAEMO
-glom_glom_SOURCES +=							\
+glom_source_files +=							\
 	glom/navigation/box_tables.cc					\
 	glom/navigation/box_tables.h
 else
-glom_glom_SOURCES +=							\
+glom_source_files +=							\
 	glom/navigation/maemo/pickerbutton_table.cc			\
 	glom/navigation/maemo/pickerbutton_table.h
 endif
 
-glom_glom_LDADD = $(win_resfile) \
+glom_glom_SOURCES =							\
+	glom/main.cc							\
+	$(glom_source_files)
+
+glom_all_libs = $(win_resfile) \
 	glom/libglom/libglom-$(GLOM_ABI_VERSION).la \
 	$(GLOM_LIBS) $(PYTHON_LIBS) $(BOOST_PYTHON_LIBS) $(INTLLIBS)
 if !GLOM_ENABLE_MAEMO
-glom_glom_LDADD += -lgettextpo
+glom_all_libs += -lgettextpo
 endif
+
+glom_glom_LDADD = $(glom_all_libs)
 
 if HOST_WIN32
 # Suppress console window

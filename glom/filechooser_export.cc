@@ -55,25 +55,13 @@ FileChooser_Export::FileChooser_Export()
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //TODO: Use a generic layout dialog?
-#ifdef GLIBMM_EXCEPTIONS_ENABLED  
-  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_data_layout_export");
-#else
-  std::auto_ptr<Glib::Error> error;  
-  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_data_layout_export", error);
-#endif
-
-  if(refXml)
-  {
-    Dialog_Layout_Export* dialog = 0;
-    refXml->get_widget_derived("window_data_layout_export", dialog);
-    if(dialog)
-    {
-      m_pDialogLayout = dialog;
-      m_pDialogLayout->set_icon_name("glom");
-      //add_view(m_pDialogLayout); //Give it access to the document.
-      m_pDialogLayout->signal_hide().connect( sigc::mem_fun(*this, &FileChooser_Export::on_dialog_layout_hide) );
-    }
-  }
+  Dialog_Layout_Export* dialog = 0;
+  Utils::get_glade_widget_derived_with_warning(dialog);
+  
+  m_pDialogLayout = dialog;
+  m_pDialogLayout->set_icon_name("glom");
+  //add_view(m_pDialogLayout); //Give it access to the document.
+  m_pDialogLayout->signal_hide().connect( sigc::mem_fun(*this, &FileChooser_Export::on_dialog_layout_hide) );
 #endif //GLOM_ENABLE_CLIENT_ONLY
 }
 

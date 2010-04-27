@@ -26,6 +26,7 @@
 
 //#include <gnome.h>
 #include <glom/libglom/init.h>
+#include <glom/glade_utils.h>
 #include <gtkmm/main.h>
 #include <gtkmm/messagedialog.h>
 #include <giomm.h>
@@ -620,18 +621,8 @@ main(int argc, char* argv[])
     if(group.m_arg_debug_date_check)
       return 0; //This command-line option is documented as stopping afterwards.
 
-    // Main app
-#ifdef GLIBMM_EXCEPTIONS_ENABLED    
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Glom::Utils::get_glade_file_path("glom.glade"), "window_main");
-#else
-    std::auto_ptr<Glib::Error> error;
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Glom::Utils::get_glade_file_path("glom.glade"), "window_main", error);
-#endif     
-
-
-
     Glom::Application* pApplication = 0;
-    refXml->get_widget_derived("window_main", pApplication);
+    Glom::Utils::get_glade_widget_derived_with_warning(pApplication);
     g_assert(pApplication);
 
     pApplication->set_command_line_args(argc, argv);

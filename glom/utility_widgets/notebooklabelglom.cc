@@ -25,14 +25,14 @@
 namespace Glom
 {
 
-NotebookLabelGlom::NotebookLabelGlom(NotebookGlom* notebook) 
+NotebookLabel::NotebookLabel(NotebookGlom* notebook) 
 : m_notebook(notebook),
   m_pPopupMenu(0)
 {
   init();
 }
 
-NotebookLabelGlom::NotebookLabelGlom(const Glib::ustring& label, NotebookGlom* notebook)
+NotebookLabel::NotebookLabel(const Glib::ustring& label, NotebookGlom* notebook)
 : m_label(label),
   m_notebook (notebook),
   m_pPopupMenu(0)
@@ -40,12 +40,12 @@ NotebookLabelGlom::NotebookLabelGlom(const Glib::ustring& label, NotebookGlom* n
   init();
 }
 
-NotebookLabelGlom::~NotebookLabelGlom()
+NotebookLabel::~NotebookLabel()
 {
 
 }
 
-void NotebookLabelGlom::init()
+void NotebookLabel::init()
 {
   add(m_label);
   m_label.show();
@@ -54,12 +54,12 @@ void NotebookLabelGlom::init()
   setup_menu();
 }
 
-void NotebookLabelGlom::set_label (const Glib::ustring& title)
+void NotebookLabel::set_label (const Glib::ustring& title)
 {
   m_label.set_label (title); 
 }
 
-Application* NotebookLabelGlom::get_application()
+Application* NotebookLabel::get_application()
 {
   Gtk::Container* pWindow = get_toplevel();
   //TODO: This only works when the child widget is already in its parent.
@@ -67,7 +67,7 @@ Application* NotebookLabelGlom::get_application()
   return dynamic_cast<Application*>(pWindow);
 }
 
-void NotebookLabelGlom::on_menu_new_group_activate()
+void NotebookLabel::on_menu_new_group_activate()
 {
   sharedptr<LayoutGroup> group(new LayoutGroup());
   group->set_title(_("New Group"));
@@ -79,7 +79,7 @@ void NotebookLabelGlom::on_menu_new_group_activate()
   m_notebook->signal_layout_changed().emit();
 }
 
-void NotebookLabelGlom::on_menu_delete_activate()
+void NotebookLabel::on_menu_delete_activate()
 {
   Glib::ustring message;
   if(!m_notebook->get_layout_item()->get_title().empty())
@@ -104,7 +104,7 @@ void NotebookLabelGlom::on_menu_delete_activate()
   }
 }
 
-void NotebookLabelGlom::setup_menu()
+void NotebookLabel::setup_menu()
 {
   m_refUIManager = Gtk::UIManager::create();
   m_refActionGroup = Gtk::ActionGroup::create();
@@ -114,9 +114,9 @@ void NotebookLabelGlom::setup_menu()
   m_refDelete = Gtk::Action::create("Delete", _("Delete"));
   
   m_refActionGroup->add(m_refNewGroup,
-    sigc::mem_fun(*this, &NotebookLabelGlom::on_menu_new_group_activate) );
+    sigc::mem_fun(*this, &NotebookLabel::on_menu_new_group_activate) );
   m_refActionGroup->add(m_refDelete,
-    sigc::mem_fun(*this, &NotebookLabelGlom::on_menu_delete_activate) );
+    sigc::mem_fun(*this, &NotebookLabel::on_menu_delete_activate) );
     
   m_refUIManager->insert_action_group(m_refActionGroup);
 
@@ -144,13 +144,13 @@ void NotebookLabelGlom::setup_menu()
     g_warning("menu not found");
 }
 
-bool NotebookLabelGlom::on_button_press_event(GdkEventButton *event)
+bool NotebookLabel::on_button_press_event(GdkEventButton *event)
 {
   Application* pApp = get_application();
   if(pApp && pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER)
   {
     GdkModifierType mods;
-    gdk_window_get_pointer( Gtk::Widget::gobj()->window, 0, 0, &mods );
+    gdk_window_get_pointer( gtk_widget_get_window (Gtk::Widget::gobj()), 0, 0, &mods );
     if(mods & GDK_BUTTON3_MASK)
     {
       //Give user choices of actions on this item:

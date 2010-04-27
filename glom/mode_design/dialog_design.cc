@@ -28,15 +28,13 @@ namespace Glom
 
 Dialog_Design::Dialog_Design(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Window(cobject),
-  m_label_table(0),
-  m_label_frame(0)
+  m_label_table(0)
 {
   Gtk::Button* button_close = 0;
   builder->get_widget("button_close",  button_close);
   button_close->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Design::on_button_close) );
 
   builder->get_widget("label_table_name", m_label_table);
-  builder->get_widget("label_frame_title", m_label_frame);
 
   set_modal(); //We don't want people to edit the main window while we are changing structure.
 

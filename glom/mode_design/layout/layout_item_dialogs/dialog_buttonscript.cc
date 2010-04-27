@@ -31,6 +31,9 @@
 namespace Glom
 {
 
+const char* Dialog_ButtonScript::glade_id("window_button_script");
+const bool Dialog_ButtonScript::glade_developer(true);
+
 Dialog_ButtonScript::Dialog_ButtonScript(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject)
 {

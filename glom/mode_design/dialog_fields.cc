@@ -27,14 +27,14 @@
 namespace Glom
 {
 
+const char* Dialog_Fields::glade_id("window_design");
+const bool Dialog_Fields::glade_developer(true);
+
 Dialog_Fields::Dialog_Fields(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Dialog_Design(cobject, builder),
   m_box(0)
 {
   builder->get_widget_derived("vbox_placeholder", m_box);
-
-  m_label_frame->set_markup( Utils::bold_message(_("Field Definitions")) );
-
 
   //Fill composite view:
   add_view(m_box);

@@ -25,6 +25,9 @@
 namespace Glom
 {
 
+const char* Dialog_FlowTable::glade_id("dialog_flowtable");
+const bool Dialog_FlowTable::glade_developer(true);
+		
 Dialog_FlowTable::Dialog_FlowTable(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_entry_title(0),

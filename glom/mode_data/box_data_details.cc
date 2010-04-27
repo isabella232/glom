@@ -39,7 +39,7 @@ namespace Glom
 Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
 : m_hbox_content(false, Utils::DEFAULT_SPACING_SMALL),
 #ifndef GLOM_ENABLE_MAEMO
-  m_hbox_buttons(false, Utils::DEFAULT_SPACING_SMALL),
+  m_hbox_buttons(Gtk::BUTTONBOX_END, Utils::DEFAULT_SPACING_SMALL),
   m_Button_New(Gtk::Stock::ADD),
   m_Button_Del(Gtk::Stock::DELETE),
   m_Button_Nav_First(Gtk::Stock::GOTO_FIRST),
@@ -127,6 +127,9 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   m_hbox_buttons.pack_start(m_Button_New, Gtk::PACK_SHRINK);
   m_hbox_buttons.pack_start(m_Button_Del,  Gtk::PACK_SHRINK);
 
+  m_hbox_buttons.set_child_secondary(m_Button_New, true);
+  m_hbox_buttons.set_child_secondary(m_Button_Del, true);
+
   //Link buttons to handlers:
   m_Button_New.signal_clicked().connect(sigc::mem_fun(*this, &Box_Data_Details::on_button_new));
   m_Button_Del.signal_clicked().connect(sigc::mem_fun(*this, &Box_Data_Details::on_button_del));
@@ -134,10 +137,10 @@ Box_Data_Details::Box_Data_Details(bool bWithNavButtons /* = true */)
   //Navigation:
   if(bWithNavButtons)
   {
-    m_hbox_buttons.pack_end(m_Button_Nav_Last, Gtk::PACK_SHRINK);
-    m_hbox_buttons.pack_end(m_Button_Nav_Next, Gtk::PACK_SHRINK);
-    m_hbox_buttons.pack_end(m_Button_Nav_Prev, Gtk::PACK_SHRINK);
-    m_hbox_buttons.pack_end(m_Button_Nav_First, Gtk::PACK_SHRINK);
+    m_hbox_buttons.pack_start(m_Button_Nav_First, Gtk::PACK_SHRINK);
+    m_hbox_buttons.pack_start(m_Button_Nav_Prev, Gtk::PACK_SHRINK);
+    m_hbox_buttons.pack_start(m_Button_Nav_Next, Gtk::PACK_SHRINK);
+    m_hbox_buttons.pack_start(m_Button_Nav_Last, Gtk::PACK_SHRINK);
   }
 
   //Link buttons to handlers:
@@ -1048,15 +1051,9 @@ void Box_Data_Details::print_layout()
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 Dialog_Layout* Box_Data_Details::create_layout_dialog() const
 {
-  Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_data_layout"); //TODO: Use a generic layout dialog?
-  if(refXml)
-  {
-    Dialog_Layout_Details* dialog = 0;
-    refXml->get_widget_derived("window_data_layout", dialog);
-    return dialog;
-  }
-
-  return 0;
+  Dialog_Layout_Details* dialog = 0;
+  Glom::Utils::get_glade_widget_derived_with_warning(dialog);
+  return dialog;
 }
 
 void Box_Data_Details::prepare_layout_dialog(Dialog_Layout* dialog)

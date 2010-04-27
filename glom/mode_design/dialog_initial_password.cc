@@ -26,6 +26,9 @@
 namespace Glom
 {
 
+const char* Dialog_InitialPassword::glade_id("dialog_initial_password");
+const bool Dialog_InitialPassword::glade_developer(true);
+
 Dialog_InitialPassword::Dialog_InitialPassword(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   Base_DB(),

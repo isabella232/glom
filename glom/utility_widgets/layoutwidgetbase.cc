@@ -21,8 +21,8 @@
 #include "layoutwidgetbase.h"
 #include <glibmm/i18n.h>
 #include <glom/application.h>
-#include <glom/utility_widgets/textviewglom.h>
-#include <glom/utility_widgets/labelglom.h>
+#include <glom/mode_data/datawidget/textview.h>
+#include <glom/mode_data/datawidget/label.h>
 
 namespace Glom
 {
@@ -91,12 +91,12 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<con
   Gtk::Widget* widget_to_change = &widget;
 
   Gtk::Button* button = dynamic_cast<Gtk::Button*>(&widget);
-  LabelGlom* labelglom = dynamic_cast<LabelGlom*>(&widget);
+  DataWidgetChildren::Label* labelglom = dynamic_cast<DataWidgetChildren::Label*>(&widget);
   if(button)
     widget_to_change = button->get_child();
   else
   {
-    TextViewGlom* textview = dynamic_cast<TextViewGlom*>(&widget);
+    DataWidgetChildren::TextView* textview = dynamic_cast<DataWidgetChildren::TextView*>(&widget);
     if(textview)
       widget_to_change = textview->get_textview();
     else if(labelglom)
@@ -158,7 +158,7 @@ void LayoutWidgetBase::apply_formatting(Gtk::Widget& widget, const sharedptr<con
     }
     //According to the gtk_widget_modify_base() documentation, 
     //a GtkLabel can only have a background color by, for instance, placing it 
-    //in a GtkEventBox. Luckily LabelGlom is actually derived from EventBox.
+    //in a GtkEventBox. Luckily Label is actually derived from EventBox.
     else if(labelglom)
     {
       //label->modify_base(Gtk::STATE_NORMAL, Gdk::Color("bg"));

@@ -23,6 +23,9 @@
 namespace Glom
 {
 
+const char* Dialog_ChooseUser::glade_id("dialog_choose_user");
+const bool Dialog_ChooseUser::glade_developer(true);
+
 Dialog_ChooseUser::Dialog_ChooseUser(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_combo_name(0)

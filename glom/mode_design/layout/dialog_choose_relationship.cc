@@ -25,6 +25,9 @@
 namespace Glom
 {
 
+const char* Dialog_ChooseRelationship::glade_id("dialog_choose_relationship");
+const bool Dialog_ChooseRelationship::glade_developer(true);
+
 Dialog_ChooseRelationship::Dialog_ChooseRelationship()
 : m_label_table_name(0),
   m_button_select(0),

@@ -56,6 +56,9 @@ class Window_Translations;
 class Application : public GlomBakery::App_WithDoc_Gtk
 {
 public:
+  static const char* glade_id;
+  static const bool glade_developer;
+
   Application(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Application();
 
@@ -88,6 +91,10 @@ public:
    */
   void update_userlevel_ui();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
+
+  /** Enable/disable UI elements depending on whether a table is loaded.
+   */
+  void update_table_sensitive_ui();
 
   AppState::userlevels get_userlevel() const;
 
@@ -207,6 +214,7 @@ private:
 
   typedef std::list< Glib::RefPtr<Gtk::Action> > type_listActions;
   type_listActions m_listDeveloperActions; //Only enabled when in developer mode.
+  type_listActions m_listTableSensitiveActions; // Only enabled when a table is loaded.
   Glib::RefPtr<Gtk::Action> m_action_mode_data, m_action_mode_find;
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   Glib::RefPtr<Gtk::Action> m_action_developer_users;

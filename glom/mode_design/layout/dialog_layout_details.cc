@@ -32,6 +32,9 @@
 namespace Glom
 {
 
+const char* Dialog_Layout_Details::glade_id("window_data_layout");
+const bool Dialog_Layout_Details::glade_developer(true);
+
 Dialog_Layout_Details::Dialog_Layout_Details(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Dialog_Layout(cobject, builder),
   m_treeview_fields(0),
@@ -548,71 +551,22 @@ sharedptr<LayoutItem_Button> Dialog_Layout_Details::offer_button_script_edit(con
 {
   sharedptr<LayoutItem_Button> result;
 
-  try
+  Dialog_ButtonScript* dialog = 0;
+  Glom::Utils::get_glade_widget_derived_with_warning(dialog);
+  dialog->set_script(button, m_table_name);
+  dialog->set_transient_for(*this);
+  const int response = Glom::Utils::dialog_run_with_help(dialog);
+  dialog->hide();
+  if(response == Gtk::RESPONSE_OK)
   {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_button_script");
-
-    Dialog_ButtonScript* dialog = 0;
-    refXml->get_widget_derived("window_button_script", dialog);
-
-    if(dialog)
-    {
-      dialog->set_script(button, m_table_name);
-      dialog->set_transient_for(*this);
-      const int response = Glom::Utils::dialog_run_with_help(dialog, "window_button_script");
-      dialog->hide();
-      if(response == Gtk::RESPONSE_OK)
-      {
-        //Get the chosen relationship:
-        result = dialog->get_script();
-      }
-
-      delete dialog;
-    }
+    //Get the chosen relationship:
+     result = dialog->get_script();
   }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
+
+  delete dialog;
 
   return result;
 }
-
-/*
-sharedptr<LayoutItem_Text> Dialog_Layout_Details::offer_textobject_edit(const sharedptr<const LayoutItem_Text>& textobject)
-{
-  sharedptr<LayoutItem_Text> result;
-
-  try
-  {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "window_textobject");
-
-    Dialog_TextObject* dialog = 0;
-    refXml->get_widget_derived("window_textobject", dialog);
-
-    if(dialog)
-    {
-      dialog->set_textobject(textobject, m_table_name);
-      dialog->set_transient_for(*this);
-      const int response = dialog->run();
-      dialog->hide();
-      if(response == Gtk::RESPONSE_OK)
-      {
-        //Get the chosen relationship:
-        result = dialog->get_textobject();
-      }
-
-      delete dialog;
-    }
-  }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
-
-  return result;
-}
-*/
 
 sharedptr<Relationship> Dialog_Layout_Details::offer_relationship_list()
 {
@@ -623,33 +577,21 @@ sharedptr<Relationship> Dialog_Layout_Details::offer_relationship_list(const sha
 {
   sharedptr<Relationship> result = glom_sharedptr_clone(item);
 
-  try
+  Dialog_ChooseRelationship* dialog = 0;
+  Utils::get_glade_widget_derived_with_warning(dialog);
+
+  dialog->set_document(get_document(), m_table_name);
+  dialog->select_item(item);
+  dialog->set_transient_for(*this);
+  const int response = dialog->run();
+  dialog->hide();
+  if(response == Gtk::RESPONSE_OK)
   {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_choose_relationship");
-
-    Dialog_ChooseRelationship* dialog = 0;
-    refXml->get_widget_derived("dialog_choose_relationship", dialog);
-
-    if(dialog)
-    {
-      dialog->set_document(get_document(), m_table_name);
-      dialog->select_item(item);
-      dialog->set_transient_for(*this);
-      const int response = dialog->run();
-      dialog->hide();
-      if(response == Gtk::RESPONSE_OK)
-      {
-        //Get the chosen relationship:
-        result = dialog->get_relationship_chosen();
-      }
-
-      delete dialog;
-    }
+    //Get the chosen relationship:
+    result = dialog->get_relationship_chosen();
   }
-  catch(const Gtk::BuilderError& ex)
-  {
-    std::cerr << ex.what() << std::endl;
-  }
+
+  delete dialog;
 
   return result;
 }

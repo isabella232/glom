@@ -37,6 +37,9 @@ class Dialog_FieldLayout
    public View_Composite_Glom //Give it access to the document.
 {
 public:
+  static const char* glade_id;
+  static const bool glade_developer;
+  
   Dialog_FieldLayout(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_FieldLayout();
 

@@ -26,6 +26,9 @@
 namespace Glom
 {
 
+const char* Box_Tables::glade_id("box_navigation_tables");
+const bool Box_Tables::glade_developer(false);
+
 Box_Tables::Box_Tables(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Box_WithButtons(cobject, builder),
   m_pCheckButtonShowHidden(0),
@@ -134,10 +137,6 @@ bool Box_Tables::fill_from_database()
 
   if(developer_mode)
     m_colTitleSingular = m_AddDel.add_column(_("Title (Singular Form)"), AddDelColumnInfo::STYLE_Text, editable, true);
-
-  //_("Server: ") +  m_strServerName + ", " + 
-  //Glib::ustring strTitle = Glib::ustring("<b>") + _("Tables from Database: ") + get_database_name() + "");
-  //m_pLabelFrameTitle->set_markup(strTitle);
 
   //Get the list of hidden tables:
 

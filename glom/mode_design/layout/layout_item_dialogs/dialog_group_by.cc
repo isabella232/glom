@@ -28,6 +28,9 @@
 namespace Glom
 {
 
+const char* Dialog_GroupBy::glade_id("dialog_group_by");
+const bool Dialog_GroupBy::glade_developer(true);
+
 Dialog_GroupBy::Dialog_GroupBy(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_label_group_by(0),
@@ -130,22 +133,15 @@ void Dialog_GroupBy::on_button_field_sort_by()
 {
   if(!m_dialog_choose_sort_fields)
   {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_groupby_sort_fields");
-    if(refXml)
-    {
-      refXml->get_widget_derived("dialog_groupby_sort_fields", m_dialog_choose_sort_fields);
-      if(m_dialog_choose_sort_fields)
-      {
-        add_view(m_dialog_choose_sort_fields); //Give it access to the document.
-      }
-    }
+    Utils::get_glade_widget_derived_with_warning(m_dialog_choose_sort_fields);
+    add_view(m_dialog_choose_sort_fields); //Give it access to the document.
   }
 
   if(m_dialog_choose_sort_fields)
   {
     m_dialog_choose_sort_fields->set_fields(m_table_name, m_layout_item->get_fields_sort_by());
 
-    const int response = Glom::Utils::dialog_run_with_help(m_dialog_choose_sort_fields, "dialog_groupby_sort_fields");
+    const int response = Glom::Utils::dialog_run_with_help(m_dialog_choose_sort_fields);
     m_dialog_choose_sort_fields->hide();
     if(response == Gtk::RESPONSE_OK && m_dialog_choose_sort_fields->get_modified())
     {
@@ -160,22 +156,15 @@ void Dialog_GroupBy::on_button_secondary_fields()
 {
   if(!m_dialog_choose_secondary_fields)
   {
-    Glib::RefPtr<Gtk::Builder> refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path("glom_developer.glade"), "dialog_groupby_secondary_fields");
-    if(refXml)
-    {
-      refXml->get_widget_derived("dialog_groupby_secondary_fields", m_dialog_choose_secondary_fields);
-      if(m_dialog_choose_secondary_fields)
-      {
-        add_view(m_dialog_choose_secondary_fields); //Give it access to the document.
-      }
-    }
+    Utils::get_glade_widget_derived_with_warning(m_dialog_choose_secondary_fields);
+    add_view(m_dialog_choose_secondary_fields); //Give it access to the document.
   }
 
   if(m_dialog_choose_secondary_fields)
   {
     m_dialog_choose_secondary_fields->set_fields(m_table_name, m_layout_item->m_group_secondary_fields->m_list_items);
 
-    const int response = Glom::Utils::dialog_run_with_help(m_dialog_choose_secondary_fields, "dialog_groupby_secondary_fields");
+    const int response = Glom::Utils::dialog_run_with_help(m_dialog_choose_secondary_fields);
     m_dialog_choose_secondary_fields->hide();
     if(response == Gtk::RESPONSE_OK && m_dialog_choose_secondary_fields->get_modified())
     {

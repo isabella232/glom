@@ -25,6 +25,9 @@
 namespace Glom
 {
 
+const char* Dialog_ChooseField::glade_id("dialog_choose_field");
+const bool Dialog_ChooseField::glade_developer(true);
+
 Dialog_ChooseField::Dialog_ChooseField(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Gtk::Dialog(cobject),
   m_combo_relationship(0),

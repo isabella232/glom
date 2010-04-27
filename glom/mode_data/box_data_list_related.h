@@ -28,8 +28,6 @@
 namespace Glom
 {
 
-class Dialog_Layout_List_Related;
-
 class Box_Data_List_Related : public Box_Data_Portal
 {
 public: 
