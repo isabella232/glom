@@ -1,3 +1,10 @@
+2010-04-27  Murray Cumming  <murrayc@murrayc-x61>
+
+	PyGlom: Don't use deprecated boost::python::args.
+	
+	* glom/python_embed/python_module/py_glom_module.cc: Use boost::python::arg() 
+	instead of boost::python::args(), because I noticed that args is deprecated.
+
 1.14.1:
 
 2010-04-27  Murray Cumming  <murrayc@murrayc.com>

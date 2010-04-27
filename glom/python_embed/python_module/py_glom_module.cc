@@ -124,13 +124,13 @@ BOOST_PYTHON_MODULE(glom_1_14)
     "\n"
     "    record.related['invoice_lines'].sum('total_price')\n")
 
-    .def("sum", &PyGlomRelatedRecord::sum, boost::python::args("field_name"),
+    .def("sum", &PyGlomRelatedRecord::sum, boost::python::arg("field_name"),
       "Add all values of the field in the related records.")
-    .def("count", &PyGlomRelatedRecord::sum, boost::python::args("field_name"),
+    .def("count", &PyGlomRelatedRecord::sum, boost::python::arg("field_name"),
       "Count all values in the field in the related records.")
-    .def("min", &PyGlomRelatedRecord::sum, boost::python::args("field_name"),
+    .def("min", &PyGlomRelatedRecord::sum, boost::python::arg("field_name"),
       "Minimum of all values of the field in the related recordss.")
-    .def("max", &PyGlomRelatedRecord::sum, boost::python::args("field_name"),
+    .def("max", &PyGlomRelatedRecord::sum, boost::python::arg("field_name"),
       "Maximum of all values of the field in the related records.")
     .def("__getitem__", &PyGlomRelatedRecord::getitem)
     .def("__len__", &PyGlomRelatedRecord::len)
@@ -140,15 +140,15 @@ BOOST_PYTHON_MODULE(glom_1_14)
     "A collection of methods to programatically change the Glom UI, performing some tasks that might otherwise be done by the user via the mouse and keyboard.  A :class:`UI` object is passed to button scripts, allowing them to control the user interface.")
 
     .def("show_table_details", &PyGlomUI::show_table_details,
-      boost::python::args("table_name", "primary_key_value"),
+      boost::python::arg("table_name"), boost::python::arg("primary_key_value"),
       "Navigate to the specified table, showing its details view for the specified record.")
     .def("show_table_list", &PyGlomUI::show_table_list,
-       boost::python::args("table_name"),
+       boost::python::arg("table_name"),
       "Navigate to the specified table, showing its list view.")
     .def("print_layout", &PyGlomUI::print_layout,
       "Print the current layout for the current table.")
     .def("print_report", &PyGlomUI::print_report,
-      boost::python::args("report_name"),
+      boost::python::arg("report_name"),
       "Print the specified report for the current table.")
     .def("start_new_record", &PyGlomUI::start_new_record,
       "Start a new empty record for the current table, offering the empty record in the UI.")
