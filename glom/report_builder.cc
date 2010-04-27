@@ -175,29 +175,33 @@ void ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
     fill_full_field_details(found_set_parent.m_table_name, field_group_by);
 
     //Get the possible group values, ignoring repeats by using GROUP BY.
-    //TODO: Use SqlBuilder:
     const Glib::ustring group_field_table_name = field_group_by->get_table_used(found_set_parent.m_table_name);
-    Glib::ustring sql_query = "SELECT \"" + group_field_table_name + "\".\"" + field_group_by->get_name() + "\""
-      " FROM \"" + group_field_table_name + "\"";
+
+    Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+    builder->select_add_field(field_group_by->get_name(), group_field_table_name);
+    builder->select_add_target(group_field_table_name);
 
     if(!found_set_parent.m_where_clause.empty())
-      sql_query += " WHERE " + found_set_parent.m_where_clause;
+    {
+      builder->set_where( builder->add_id(found_set_parent.m_where_clause) ); //Is this allowed?
+    }
 
-    sql_query += " GROUP BY " + field_group_by->get_name(); //TODO: And restrict to the current found set.
+    builder->select_group_by( builder->add_id(field_group_by->get_name()) ); //TODO: And restrict to the current found set.
 
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query);
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(builder);
     if(datamodel)
     {
       guint rows_count = datamodel->get_n_rows();
       for(guint row = 0; row < rows_count; ++row)
       {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED      
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
         const Gnome::Gda::Value group_value = datamodel->get_value_at(0 /* col*/, row);
 #else
         std::auto_ptr<Glib::Error> error;
         const Gnome::Gda::Value group_value = datamodel->get_value_at(0 /* col*/, row, error);
-#endif        
-        
+#endif
+
 
         //Add XML node:
         xmlpp::Element* nodeGroupBy = parent_node.add_child(group_by->get_report_part_id());
@@ -278,7 +282,7 @@ void ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
       sharedptr<LayoutItem> layout_item = *iter;
       sharedptr<LayoutItem_Field> layoutitem_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
 
-      //This adds a field heading (and therefore, column) for fields, or for a vertical group. 
+      //This adds a field heading (and therefore, column) for fields, or for a vertical group.
       xmlpp::Element* nodeFieldHeading = parent_node.add_child("field_heading");
       if(layoutitem_field && layoutitem_field->get_glom_type() == Field::TYPE_NUMERIC)
         nodeFieldHeading->set_attribute("field_type", "numeric"); //TODO: More sophisticated formatting.
@@ -397,23 +401,23 @@ void ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
     if(!datamodel)
       return;
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED      
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     value = datamodel->get_value_at(colField, row);
 #else
     std::auto_ptr<Glib::Error> error;
     value = datamodel->get_value_at(colField, row, error);
-#endif 
+#endif
     colField = 0;
     row = 0;
   }
   else
   {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED      
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     value = datamodel->get_value_at(colField, row);
 #else
     std::auto_ptr<Glib::Error> error;
     value = datamodel->get_value_at(colField, row, error);
-#endif 
+#endif
   }
 
   nodeField->set_attribute("title", field->get_title_or_name()); //Not always used, but useful.
