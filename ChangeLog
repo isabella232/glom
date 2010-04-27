@@ -1,3 +1,10 @@
+2010-04-27  Murray Cumming  <murrayc@murrayc.com>
+
+	Make sure all glade-instantiated windows have the Glom icon.
+
+	* glom/glade_utils.h: helper_get_glade_widget_derived_with_warning():
+    Call set_icon_name() on windows, fixing my regression.
+
 2010-04-27  Murray Cumming  <murrayc@murrayc-desktop>
 
     Documentation: Added libglom main page. Installed _sources for pyglom.
