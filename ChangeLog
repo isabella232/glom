@@ -1,9 +1,16 @@
+2010-04-27  Murray Cumming  <murrayc@murrayc-desktop>
+
+    Documentation: Added libglom main page. Installed _sources for pyglom.
+
+	* docs/pyglom_reference/Makefile.am: Also install html/_sources, used by search.
+	* glom/libglom/init.h: Add a doxygen main page.
+
 2010-04-26  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix the build.
 
-	* Makefile_tests.am: test_selfhosting_new_empty: Link to the Glom sources 
-	to fix the unresolved link to Glom::Priv's method. We will use more from 
+	* Makefile_tests.am: test_selfhosting_new_empty: Link to the Glom sources
+	to fix the unresolved link to Glom::Priv's method. We will use more from
 	the rest of Glom here too.
 
 2010-04-26  Daniel Elstner  <danielk@openismus.com>
@@ -20,9 +27,9 @@
 2010-04-26  Murray Cumming  <murrayc@murrayc.com>
 
 	Reenable test_load_document.
-	
+
 	* Makefile_tests.am: Reenable test_load_document.cc
-	* tests/test_load_document/test_load_document.cc: Restore (rewrite) this 
+	* tests/test_load_document/test_load_document.cc: Restore (rewrite) this
 	missing file.
 
 2010-04-26  Murray Cumming  <murrayc@murrayc.com>
@@ -32,7 +39,7 @@
 2010-04-26  Murray Cumming  <murrayc@murrayc.com>
 
 	Self-Hosting test: Check that cleanup works.
-	
+
 	* Makefile_tests.am:
 	* glom/libglom/connectionpool.[h|cc]:
 	* glom/libglom/connectionpool_backends/backend.[h|cc]:

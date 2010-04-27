@@ -22,6 +22,7 @@ libdocdir    = $(datarootdir)/doc/$(book_name)
 referencedir = $(libdocdir)/reference
 htmlrefdir   = $(referencedir)/html
 htmlref_staticdir = $(htmlrefdir)/_static
+htmlref_sourcesdir = $(htmlrefdir)/_sources
 
 # Function: $(call vpath_listall,PATTERN ...)
 # Get all filenames which match a PATTERN from the list.  Look for files
@@ -32,6 +33,7 @@ vpath_listall = $(sort $(wildcard $(1)) $(if $(srcdir:.=),$(vpath_srclist)))
 
 dist_htmlref_DATA = $(call vpath_listall,$(addprefix $(html_outdir)/,$(htmlref_patterns)))
 dist_htmlref_static_DATA = $(call vpath_listall,$(addprefix $(html_outdir)/_static/,$(htmlref_patterns)))
+dist_htmlref_sources_DATA = $(call vpath_listall,$(addprefix $(html_outdir)/_sources/,$(htmlref_patterns)))
 
 MAINTAINERCLEANFILES = $(html_outdir)/_sources/* $(html_outdir)/_static/* $(html_outdir)/*
 
