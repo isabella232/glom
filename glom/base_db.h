@@ -438,17 +438,6 @@ protected:
   static void handle_error(const std::exception& ex); //TODO_port: This is probably useless now.
   static bool handle_error();
 
-private:
-
-  /// Get the full query string suitable for use with std::cout.
-  static std::string sqlbuilder_get_full_query(
-    const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder,
-    const Glib::RefPtr<const Gnome::Gda::Set>& params);
-
-  /// Get the full query string suitable for use with std::cout.
-  static std::string sqlbuilder_get_full_query(
-    const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder);
-
 protected:
   type_field_calcs m_FieldsCalculationInProgress; //Prevent circular calculations and recalculations.
 };
