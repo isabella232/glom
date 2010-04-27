@@ -1,3 +1,5 @@
+1.14.1:
+
 2010-04-27  Murray Cumming  <murrayc@murrayc.com>
 
 	Make sure all glade-instantiated windows have the Glom icon.

@@ -1,3 +1,13 @@
+1.14.1:
+
+* Python field calculation: Fix a crash when using some date types.
+* Documentation:
+  Build and install libglom (C++) API reference documentation (for use by applications)
+  and pyglom (Python) API reference documentation (for use by Glom calculated
+  fields and button scripts).
+  (Murray Cumming, Daniel Elstner, David King)
+* Added unit tests. (Murray Cumming)
+
 1.14.0:
 
 New features in Glom 1.14, compared to Glom 1.12:
@@ -21,7 +31,7 @@ New features in Glom 1.14, compared to Glom 1.12:
     ui.show_table_list("artists")
     ui.show_table_details("artists", 10)
     where 10 is the value of the primary key in the table.
-  - Added ui.print_layout(), ui.print_report(report_name), 
+  - Added ui.print_layout(), ui.print_report(report_name),
   and ui.start_new_record() methods.
   - Added a startup script feature, in Database Preferences.
 * Plus several important bug fixes.
@@ -36,12 +46,12 @@ New features in Glom 1.14, compared to Glom 1.12:
   (Murray Cumming, Openismus)
   - Don't show error dialog when user cancels creation from an example.
   (Daniel Borgmann, Openismus)
-* Opening recent files: Warn when a file doesn't exist, and forget it, 
+* Opening recent files: Warn when a file doesn't exist, and forget it,
   instead of just showing a generic error dialog.
   (Murray Cumming, Openismus)
-* Python scripts and field calculations: Fix a Glom 1.13 bug with use of 
+* Python scripts and field calculations: Fix a Glom 1.13 bug with use of
   date fields.
-* User Interface: General cleanup. The dialogs are more compliant with the 
+* User Interface: General cleanup. The dialogs are more compliant with the
   GNOME HIG and there are many minor ixes to the user interface.
   (Daniel Borgmann, Openismus)
 * Build:
@@ -54,7 +64,7 @@ New features in Glom 1.14, compared to Glom 1.12:
 
 1.13.9 (unstable):
 
-* Field Formatting: Allow choices to be shown as radio buttons instead of a 
+* Field Formatting: Allow choices to be shown as radio buttons instead of a
   drop-down combo box. Requested by Frederik Vande Rieviere.
   (Murray Cumming)
 * Python scripts: Added a startup script feature, in Database Preferences.
@@ -65,7 +75,7 @@ New features in Glom 1.14, compared to Glom 1.12:
   (Murray Cumming)
   - Require the correct gtkmm and libsigc++ versions.
   (David King)
-* Fix the Glade file so it can be opened with the latest glade-3 (when the 
+* Fix the Glade file so it can be opened with the latest glade-3 (when the
   gtksourceview glade catalog is installed).
   (David King)
 
@@ -75,7 +85,7 @@ New features in Glom 1.14, compared to Glom 1.12:
   - Align widgets in neighbouring groups, making things look generally neater.
   - Do not make field widgets too wide, so this fits on a laptop screen.
   (Murray Cumming)
-* Python scripts: Added ui.print_layout(), ui.print_report(report_name), 
+* Python scripts: Added ui.print_layout(), ui.print_report(report_name),
   and ui.start_new_record() methods.
   (Murray Cumming)
 * Fix the build with exceptions disabled.
