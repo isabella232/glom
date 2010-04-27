@@ -99,6 +99,21 @@ Glib::ustring build_sql_select_with_key(
 typedef std::list< std::pair<Gnome::Gda::Value, Gnome::Gda::Value> > type_list_values_with_second;
 type_list_values_with_second get_choice_values(const sharedptr<const LayoutItem_Field>& field);
 
+/// Get the full query string suitable for use with std::cout.
+std::string sqlbuilder_get_full_query(
+  const Glib::RefPtr<Gnome::Gda::Connection>& connection,
+  const Glib::ustring& query,
+  const Glib::RefPtr<const Gnome::Gda::Set>& params);
+
+/// Get the full query string suitable for use with std::cout.
+std::string sqlbuilder_get_full_query(
+  const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder,
+  const Glib::RefPtr<const Gnome::Gda::Set>& params);
+
+/// Get the full query string suitable for use with std::cout.
+std::string sqlbuilder_get_full_query(
+  const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder);
+
 /** Guess an appropriate identifier name based on a human-readable title
  */
 Glib::ustring create_name_from_title(const Glib::ustring& title);

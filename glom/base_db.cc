@@ -212,7 +212,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute_select(const Glib::us
   const Application* app = Application::get_application();
   if(stmt && app && app->get_show_sql_debug())
   {
-    const std::string full_query = sqlbuilder_get_full_query(gda_connection, strQuery, params);
+    const std::string full_query = Utils::sqlbuilder_get_full_query(gda_connection, strQuery, params);
     std::cout << "Debug: Base_DB::query_execute_select():  " << full_query << std::endl;
   }
 
@@ -241,7 +241,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute_select(const Glib::us
 
   if(!result)
   {
-    const std::string full_query = sqlbuilder_get_full_query(gda_connection, strQuery, params);
+    const std::string full_query = Utils::sqlbuilder_get_full_query(gda_connection, strQuery, params);
     std::cerr << "Glom  Base_DB::query_execute_select(): Error while executing SQL" << std::endl <<
       "  " <<  full_query << std::endl;
     handle_error();
@@ -281,10 +281,10 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute_select(const Glib::Re
   const Application* app = Application::get_application();
   if(app && app->get_show_sql_debug())
   {
-    const std::string full_query = sqlbuilder_get_full_query(builder, params);
+    const std::string full_query = Utils::sqlbuilder_get_full_query(builder, params);
     std::cout << "Debug: Base_DB::query_execute_select():  " << full_query << std::endl;
   }
-  
+
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
@@ -311,8 +311,8 @@ Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute_select(const Glib::Re
 
   if(!result)
   {
-    const std::string full_query = sqlbuilder_get_full_query(builder, params);
-    std::cerr << "Glom  Base_DB::query_execute_select(): Error while executing SQL: " 
+    const std::string full_query = Utils::sqlbuilder_get_full_query(builder, params);
+    std::cerr << "Glom  Base_DB::query_execute_select(): Error while executing SQL: "
       << std::endl << "  " << full_query << std::endl << std::endl;
     handle_error();
   }
@@ -369,7 +369,7 @@ bool Base_DB::query_execute(const Glib::ustring& strQuery,
   const Application* app = Application::get_application();
   if(stmt && app && app->get_show_sql_debug())
   {
-    const std::string full_query = sqlbuilder_get_full_query(gda_connection, strQuery, params);
+    const std::string full_query = Utils::sqlbuilder_get_full_query(gda_connection, strQuery, params);
     std::cerr << "Debug: Base_DB::query_execute(): " << full_query << std::endl;
   }
 
@@ -383,7 +383,7 @@ bool Base_DB::query_execute(const Glib::ustring& strQuery,
   catch(const Glib::Error& error)
   {
     std::cerr << "BaseDB::query_execute: ConnectionError: " << error.what() << std::endl;
-    const std::string full_query = sqlbuilder_get_full_query(gda_connection, strQuery, params);
+    const std::string full_query = Utils::sqlbuilder_get_full_query(gda_connection, strQuery, params);
     std::cerr << "  full_query: " << full_query << std::endl;
     return false;
   }
@@ -393,7 +393,7 @@ bool Base_DB::query_execute(const Glib::ustring& strQuery,
   if(exec_error.get())
   {
     std::cerr << "BaseDB::query_execute: ConnectionError: " << exec_error->what() << std::endl;
-    const std::string full_query = sqlbuilder_get_full_query(gda_connection, stmt, params);
+    const std::string full_query = Utils::sqlbuilder_get_full_query(gda_connection, stmt, params);
     std::cerr << "  full_query: " << full_query << std::endl;
     return false;
   }
@@ -423,12 +423,12 @@ bool Base_DB::query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& bu
   }
 
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
-  
+
   //Debug output:
   const Application* app = Application::get_application();
   if(app && app->get_show_sql_debug())
   {
-    const std::string full_query = sqlbuilder_get_full_query(builder, params);
+    const std::string full_query = Utils::sqlbuilder_get_full_query(builder, params);
     std::cerr << "Debug: Base_DB::query_execute(): " << full_query << std::endl;
   }
 
@@ -442,7 +442,7 @@ bool Base_DB::query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& bu
   catch(const Glib::Error& error)
   {
     std::cerr << "BaseDB::query_execute: ConnectionError: " << error.what() << std::endl;
-    const std::string full_query = sqlbuilder_get_full_query(builder, params);
+    const std::string full_query = Utils::sqlbuilder_get_full_query(builder, params);
     std::cerr << "  full_query: " << full_query << std::endl;
     return false;
   }
@@ -452,7 +452,7 @@ bool Base_DB::query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& bu
   if(exec_error.get())
   {
     std::cerr << "BaseDB::query_execute: ConnectionError: " << exec_error->what() << std::endl;
-    const std::string full_query = sqlbuilder_get_full_query(builder, params);
+    const std::string full_query = Utils::sqlbuilder_get_full_query(builder, params);
     std::cerr << "  full_query: " << full_query << std::endl;
     return false;
   }
@@ -1155,7 +1155,7 @@ SystemPrefs Base_DB::get_database_preferences() const
   while(attempts < 2)
   {
     bool succeeded = true;
-    std::string full_query = sqlbuilder_get_full_query(builder);
+    std::string full_query = Utils::sqlbuilder_get_full_query(builder);
     Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(builder);
     if(datamodel && (datamodel->get_n_rows() != 0))
     {
@@ -1440,7 +1440,7 @@ void Base_DB::set_database_preferences(const SystemPrefs& prefs)
   }
   builder->set_where(builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
                                        builder->add_id(GLOM_STANDARD_TABLE_PREFS_FIELD_ID),
-                                       builder->add_expr(1)));                                 
+                                       builder->add_expr(1)));
   const bool test = query_execute(builder);
   if(!test)
     std::cerr << "Base_DB::set_database_preferences(): UPDATE failed." << std::endl;
@@ -1893,7 +1893,7 @@ bool Base_DB::insert_example_data(const Glib::ustring& table_name) const
         builder->add_field_value_as_value(field->get_name(), value);
       }
     }
-    
+
     insert_succeeded = query_execute(builder);
     if(!insert_succeeded)
       break;
@@ -2028,7 +2028,7 @@ sharedptr<LayoutItem_Text> Base_DB::offer_textobject(const sharedptr<LayoutItem_
 
   Dialog_TextObject* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
-  
+
   if(transient_for)
     dialog->set_transient_for(*transient_for);
 
@@ -2052,7 +2052,7 @@ sharedptr<LayoutItem_Image> Base_DB::offer_imageobject(const sharedptr<LayoutIte
 
   Dialog_ImageObject* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
- 
+
   if(transient_for)
     dialog->set_transient_for(*transient_for);
 
@@ -2076,7 +2076,7 @@ sharedptr<LayoutItem_Notebook> Base_DB::offer_notebook(const sharedptr<LayoutIte
 
   Dialog_Notebook* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
-  
+
   if(transient_for)
     dialog->set_transient_for(*transient_for);
 
@@ -3146,7 +3146,7 @@ Gnome::Gda::Value Base_DB::get_lookup_value(const Glib::ustring& /* table_name *
       builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
         builder->add_id(to_key_field->get_name()), //TODO: It would be nice to specify the table here too.
         builder->add_expr(value_to_key_field)));
-        
+
     Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(builder);
     if(data_model && data_model->get_n_rows())
     {
@@ -3400,11 +3400,12 @@ int Base_DB::count_rows_returned_by(const Glib::ustring& sql_query)
 {
   int result = 0;
 
+  //TODO: Use SqlBuilder for this?
   //TODO: Is this inefficient?
   //Note that the alias is just because the SQL syntax requires it - we get an error if we don't use it.
   //Be careful not to include ORDER BY clauses in this, because that would make it unnecessarily slow:
   const Glib::ustring query_count = "SELECT COUNT (*) FROM (" + sql_query + ") AS glomarbitraryalias";
-  
+
   /* TODO: Use SqlBuilder when we discover how to use a sub-query, or when this function can take a Sqlbuilder.
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
@@ -3739,102 +3740,6 @@ Glib::ustring Base_DB::get_active_layout_platform(Document* document)
   return result;
 }
 
-
-std::string Base_DB::sqlbuilder_get_full_query(
-    const Glib::RefPtr<Gnome::Gda::Connection>& connection, 
-    const Glib::ustring& query,
-    const Glib::RefPtr<const Gnome::Gda::Set>& params)
-{
-  Glib::ustring result = "glom_query_not_parsed";
-  
-  try
-  {
-    Glib::RefPtr<Gnome::Gda::SqlParser> parser = connection->create_parser();
-    if(parser)
-    {
-      Glib::RefPtr<Gnome::Gda::Statement> stmt = parser->parse_string(query);
-      if(stmt)
-        result = stmt->to_sql(params);
-    }
-  }
-  catch(const Glib::Exception& ex)
-  {
-    std::cerr << "sqlbuilder_get_full_query(): exception while parsing query: " << ex.what() << std::endl;
-  }
-  catch(const std::exception& ex)
-  {
-    std::cerr << "sqlbuilder_get_full_query(): exception while parsing query: " << ex.what() << std::endl;
-  }
-  
-  //Convert to something that std::cout should be able to handle.
-  const Glib::ScopedPtr<char> buf(g_convert_with_fallback(
-    result.raw().data(), result.raw().size(), 
-    "ISO-8859-1", "UTF-8", 
-    (char*)"?", 
-    0, 0, 0));
-  return std::string(buf.get());
-}
-
-std::string Base_DB::sqlbuilder_get_full_query(
-  const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder,
-  const Glib::RefPtr<const Gnome::Gda::Set>& params)
-{
-  Glib::ustring result = "glom_query_not_parsed";
-  
-  try
-  {
-    Glib::RefPtr<Gnome::Gda::Statement> stmt = builder->get_statement();
-    if(stmt)
-      result = stmt->to_sql(params);
-  }
-  catch(const Glib::Exception& ex)
-  {
-    std::cerr << "sqlbuilder_get_full_query(): exception while getting query: " << ex.what() << std::endl;
-  }
-  catch(const std::exception& ex)
-  {
-    std::cerr << "sqlbuilder_get_full_query(): exception while getting query: " << ex.what() << std::endl;
-  }
-  
-  //Convert to something that std::cout should be able to handle.
-  const Glib::ScopedPtr<char> buf(g_convert_with_fallback(
-    result.raw().data(), result.raw().size(), 
-    "ISO-8859-1", "UTF-8", 
-    (char*)"?", 
-    0, 0, 0));
-  return std::string(buf.get());
-}
-
-std::string Base_DB::sqlbuilder_get_full_query(
-  const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder)
-{
-  Glib::ustring result = "glom_query_not_parsed";
-  
-  try
-  {
-    Glib::RefPtr<Gnome::Gda::Statement> stmt = builder->get_statement();
-    if(stmt)
-      result = stmt->to_sql();
-  }
-  catch(const Glib::Exception& ex)
-  {
-    std::cerr << "sqlbuilder_get_full_query(): exception while getting query: " << ex.what() << std::endl;
-  }
-  catch(const std::exception& ex)
-  {
-    std::cerr << "sqlbuilder_get_full_query(): exception while getting query: " << ex.what() << std::endl;
-  }
-  
-  //Convert to something that std::cout should be able to handle.
-  const Glib::ScopedPtr<char> buf(g_convert_with_fallback(
-    result.raw().data(), result.raw().size(), 
-    "ISO-8859-1", "UTF-8", 
-    (char*)"?", 
-    0, 0, 0));
-  return std::string(buf.get());
-}
-  
-  
 
 
 } //namespace Glom

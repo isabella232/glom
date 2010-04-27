@@ -236,7 +236,7 @@ static void add_to_relationships_list(type_list_relationships& list_relationship
     list_relationships.push_back(uses_rel);
   }
 
- 
+
 }
 
 
@@ -307,7 +307,7 @@ Glib::ustring Utils::build_sql_select_fields_to_get(const Glib::ustring& table_n
     return sql_part_fields;
   }
 
-  //LEFT OUTER JOIN will get the field values from the other tables, 
+  //LEFT OUTER JOIN will get the field values from the other tables,
   //and give us our fields for this table even if there is no corresponding value in the other table.
   for(type_list_relationships::const_iterator iter = list_relationships.begin(); iter != list_relationships.end(); ++iter)
   {
@@ -340,7 +340,7 @@ Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& tab
     table_name, fieldsToGet, sort_clause, sql_part_from, sql_part_leftouterjoin);
 
   //Build the whole SQL statement:
-  Glib::ustring result = 
+  Glib::ustring result =
     "SELECT " + sql_part_fields +
     " FROM \"" + table_name + '\"';
 
@@ -444,14 +444,17 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
   }
 
   const bool with_second = !choice_second.empty();
-  const Glib::ustring sql_second = "\"" + to_table + "\".\"" + choice_second + '\"';
 
   //Get possible values from database, sorted by the first column.
-  Glib::ustring sql_query = "SELECT \"" + to_table + "\".\"" + choice_field + '\"';
-  if(with_second)
-    sql_query += ", " + sql_second;
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+  builder->select_add_field(choice_field, to_table);
+  builder->select_add_target(to_table);
 
-  sql_query += " FROM \"" + choice_relationship->get_to_table() + "\" ORDER BY \"" + to_table + "\".\"" + choice_field + '\"';
+  if(with_second)
+    builder->select_add_field(choice_second, to_table);
+
+  builder->select_order_by( builder->add_id(choice_field) );
 
   //std::cout << "debug: get_choice_values(): query: " << sql_query << std::endl;
   //Connect to database:
@@ -467,6 +470,8 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
   if(!connection)
     return list_values;
 
+  const std::string sql_query =
+    sqlbuilder_get_full_query(builder);
   //std::cout << "get_choice_values: Executing SQL: " << sql_query << std::endl;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   Glib::RefPtr<Gnome::Gda::DataModel> datamodel = connection->get_gda_connection()->statement_execute_select(sql_query);
@@ -495,7 +500,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
         itempair.second = datamodel->get_value_at(1, row, error);
 #endif
 
-      list_values.push_back(itempair);      
+      list_values.push_back(itempair);
     }
   }
   else
@@ -528,7 +533,7 @@ Glib::ustring Utils::string_escape_underscores(const Glib::ustring& text)
   return result;
 }
 
-/** Get just the first part of a locale, such as de_DE, 
+/** Get just the first part of a locale, such as de_DE,
  * ignoring, for instance, .UTF-8 or @euro at the end.
  */
 Glib::ustring Utils::locale_simplify(const Glib::ustring& locale_id)
@@ -654,13 +659,13 @@ Utils::type_vec_strings Utils::string_separate(const Glib::ustring& str, const G
   const Glib::ustring::size_type size_separator = separator.size();
 
   //A stack of quotes, so that we can handle nested quotes, whether they are " or ':
-  typedef std::stack<Glib::ustring> type_queue_quotes; 
+  typedef std::stack<Glib::ustring> type_queue_quotes;
   type_queue_quotes m_current_quotes;
 
   Glib::ustring::size_type unprocessed_start = 0;
   Glib::ustring::size_type item_start = 0;
   while(unprocessed_start < size)
-  { 
+  {
     //std::cout << "while unprocessed: un_processed_start=" << unprocessed_start << std::endl;
     Glib::ustring::size_type posComma = str.find(separator, unprocessed_start);
 
@@ -673,18 +678,18 @@ Utils::type_vec_strings Utils::string_separate(const Glib::ustring& str, const G
       if(ignore_quoted_separator)
       {
         //std::cout << "  debug: attempting to ignore quoted separators: " << separator << std::endl;
-       
+
         Glib::ustring::size_type posLastQuote = unprocessed_start;
 
         //std::cout << "    debug: posLastQuote=" << posLastQuote << std::endl;
         //std::cout << "    debug: posComma=" << posComma << std::endl;
- 
-  
+
+
         bool bContinue = true;
         while(bContinue && (posLastQuote < posComma))
         {
           //std::cout << "  continue" << std::endl;
-          Glib::ustring closing_quote; 
+          Glib::ustring closing_quote;
           if(!m_current_quotes.empty())
             closing_quote = m_current_quotes.top();
 
@@ -759,7 +764,7 @@ Utils::type_vec_strings Utils::string_separate(const Glib::ustring& str, const G
         // Do not add this item to the result, because it was quoted.
         continue;
       }
-     
+
       unprocessed_start = posComma + size_separator; //The while loops stops when this is empty.
     }
     else //if no separator found:
@@ -848,5 +853,100 @@ bool Utils::file_exists(const Glib::ustring& uri)
   }
 }
 
+
+std::string Utils::sqlbuilder_get_full_query(
+    const Glib::RefPtr<Gnome::Gda::Connection>& connection,
+    const Glib::ustring& query,
+    const Glib::RefPtr<const Gnome::Gda::Set>& params)
+{
+  Glib::ustring result = "glom_query_not_parsed";
+
+  try
+  {
+    Glib::RefPtr<Gnome::Gda::SqlParser> parser = connection->create_parser();
+    if(parser)
+    {
+      Glib::RefPtr<Gnome::Gda::Statement> stmt = parser->parse_string(query);
+      if(stmt)
+        result = stmt->to_sql(params);
+    }
+  }
+  catch(const Glib::Exception& ex)
+  {
+    std::cerr << "sqlbuilder_get_full_query(): exception while parsing query: " << ex.what() << std::endl;
+  }
+  catch(const std::exception& ex)
+  {
+    std::cerr << "sqlbuilder_get_full_query(): exception while parsing query: " << ex.what() << std::endl;
+  }
+
+  //Convert to something that std::cout should be able to handle.
+  const Glib::ScopedPtr<char> buf(g_convert_with_fallback(
+    result.raw().data(), result.raw().size(),
+    "ISO-8859-1", "UTF-8",
+    (char*)"?",
+    0, 0, 0));
+  return std::string(buf.get());
+}
+
+
+std::string Utils::sqlbuilder_get_full_query(
+  const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder,
+  const Glib::RefPtr<const Gnome::Gda::Set>& params)
+{
+  Glib::ustring result = "glom_query_not_parsed";
+
+  try
+  {
+    Glib::RefPtr<Gnome::Gda::Statement> stmt = builder->get_statement();
+    if(stmt)
+      result = stmt->to_sql(params);
+  }
+  catch(const Glib::Exception& ex)
+  {
+    std::cerr << "sqlbuilder_get_full_query(): exception while getting query: " << ex.what() << std::endl;
+  }
+  catch(const std::exception& ex)
+  {
+    std::cerr << "sqlbuilder_get_full_query(): exception while getting query: " << ex.what() << std::endl;
+  }
+
+  //Convert to something that std::cout should be able to handle.
+  const Glib::ScopedPtr<char> buf(g_convert_with_fallback(
+    result.raw().data(), result.raw().size(),
+    "ISO-8859-1", "UTF-8",
+    (char*)"?",
+    0, 0, 0));
+  return std::string(buf.get());
+}
+
+std::string Utils::sqlbuilder_get_full_query(
+  const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder)
+{
+  Glib::ustring result = "glom_query_not_parsed";
+
+  try
+  {
+    Glib::RefPtr<Gnome::Gda::Statement> stmt = builder->get_statement();
+    if(stmt)
+      result = stmt->to_sql();
+  }
+  catch(const Glib::Exception& ex)
+  {
+    std::cerr << "sqlbuilder_get_full_query(): exception while getting query: " << ex.what() << std::endl;
+  }
+  catch(const std::exception& ex)
+  {
+    std::cerr << "sqlbuilder_get_full_query(): exception while getting query: " << ex.what() << std::endl;
+  }
+
+  //Convert to something that std::cout should be able to handle.
+  const Glib::ScopedPtr<char> buf(g_convert_with_fallback(
+    result.raw().data(), result.raw().size(),
+    "ISO-8859-1", "UTF-8",
+    (char*)"?",
+    0, 0, 0));
+  return std::string(buf.get());
+}
 
 } //namespace Glom

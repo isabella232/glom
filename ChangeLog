@@ -2,6 +2,14 @@
 
     More use of SqlBuilder.
 
+	* glom/base_db.[h|cc]: Move sqlbuilder_get_full_query() to Utils so that
+    other code can use it.
+	* glom/libglom/utils.[h|cc]: get_choice_values(): Use SqlBuilder.
+
+2010-04-27  Murray Cumming  <murrayc@murrayc.com>
+
+    More use of SqlBuilder.
+
 	* glom/report_builder.cc: report_build_groupby(): Use the new
     SqlBuilder::select_group_by() method to replace another SQL string.
 
