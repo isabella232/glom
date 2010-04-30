@@ -24,6 +24,7 @@
 #include <glom/application.h>
 #include <glom/python_embed/glom_python.h>
 #include <glom/utils_ui.h>
+#include <libglom/db_utils.h>
 #include <sstream>
 #include <glibmm/i18n.h>
 
@@ -363,7 +364,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
       //Create the related record:
       if(key_is_auto_increment)
       {
-        primary_key_value = get_next_auto_increment_value(relationship->get_to_table(), primary_key_field->get_name());
+        primary_key_value = DbUtils::get_next_auto_increment_value(relationship->get_to_table(), primary_key_field->get_name());
 
         //Generate the new key value;
       }

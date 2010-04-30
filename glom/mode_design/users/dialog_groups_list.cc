@@ -24,9 +24,10 @@
 #include "dialog_new_group.h"
 #include <libglom/standard_table_prefs_fields.h>
 #include <glom/glade_utils.h>
-#include <glom/glom_privs.h>
+#include <libglom/privs.h>
 //#include <libgnome/gnome-i18n.h>
 #include <glom/utils_ui.h> //For bold_message()).
+#include <libglom/db_utils.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -419,7 +420,7 @@ void Dialog_GroupsList::fill_table_list(const Glib::ustring& group_name)
 void Dialog_GroupsList::load_from_document()
 {
   //Ensure that the glom_developer group exists.
-  add_standard_groups();
+  DbUtils::add_standard_groups(get_document());
 
   fill_group_list();
   //fill_table_list();

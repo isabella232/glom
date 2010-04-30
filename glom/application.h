@@ -178,7 +178,8 @@ private:
 
   Document* on_connection_pool_get_document();
 
-  bool recreate_database(bool& user_cancelled); //return indicates success.
+  bool recreate_database(); //return indicates success.
+  void on_recreate_database_progress();
   void stop_self_hosting_of_document_database();
 
   void on_connection_avahi_begin();
@@ -256,6 +257,8 @@ private:
   Document::HostingMode m_ui_save_extra_newdb_hosting_mode;
 
   Gtk::MessageDialog* m_avahi_progress_dialog;
+
+  Dialog_ProgressCreating* m_dialog_progress_creating;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   // This is set to the URI of an example file that is loaded to be able to

@@ -44,10 +44,6 @@ glom_source_files = \
 	glom/frame_glom.h						\
 	glom/glade_utils.cc						\
 	glom/glade_utils.h						\
-	glom/glom_postgres.cc						\
-	glom/glom_postgres.h						\
-	glom/glom_privs.cc						\
-	glom/glom_privs.h						\
 	glom/notebook_glom.cc						\
 	glom/notebook_glom.h						\
 	glom/signal_reemitter.h						\

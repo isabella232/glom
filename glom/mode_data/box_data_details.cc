@@ -24,10 +24,11 @@
 #include <libglom/data_structure/field.h>
 #include <libglom/data_structure/relationship.h>
 #include <libglom/data_structure/glomconversions.h>
+#include <libglom/db_utils.h>
 #include <glom/mode_design/layout/dialog_layout_details.h>
 #include <glom/glade_utils.h>
 #include <glom/utils_ui.h>
-#include <glom/glom_privs.h>
+#include <libglom/privs.h>
 #include <glom/xsl_utils.h>
 #include <glom/python_embed/glom_python.h>
 #include <sstream> //For stringstream
@@ -458,7 +459,7 @@ void Box_Data_Details::on_button_new()
   if(m_field_primary_key && m_field_primary_key->get_auto_increment()) //If the primary key is an auto-increment:
   {
     //Just make a new record, and show it:
-    Gnome::Gda::Value primary_key_value = get_next_auto_increment_value(m_table_name, m_field_primary_key->get_name()); //TODO: This should return a Gda::Value
+    const Gnome::Gda::Value primary_key_value = DbUtils::get_next_auto_increment_value(m_table_name, m_field_primary_key->get_name()); //TODO: This should return a Gda::Value
 
     record_new(false /* use entered field data */, primary_key_value);
     refresh_data_from_database_with_primary_key(primary_key_value);
@@ -899,7 +900,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
       else
       {
         //Make a new record, and show it:
-        Gnome::Gda::Value primary_key_value = get_next_auto_increment_value(m_table_name, m_field_primary_key->get_name());
+        const Gnome::Gda::Value primary_key_value = DbUtils::get_next_auto_increment_value(m_table_name, m_field_primary_key->get_name());
 
         record_new(true /* use entered field data */, primary_key_value);
         refresh_data_from_database_with_primary_key(primary_key_value);

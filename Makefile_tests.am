@@ -33,7 +33,8 @@ check_PROGRAMS =						\
 	tests/import/test_signals \
 	tests/test_glade_derived_instantiation \
 	tests/glade_toplevels_instantiation \
-	tests/test_selfhosting_new_empty/test_selfhosting_new_empty
+	tests/test_selfhosting_new_empty/test_selfhosting_new_empty \
+	tests/test_selfhosting_new_from_example/test_selfhosting_new_from_example
 
 TESTS =	tests/test_document_load/test_document_load	\
 	tests/test_parsing_time	\
@@ -47,7 +48,8 @@ TESTS =	tests/test_document_load/test_document_load	\
 	tests/test_python_execute_func \
 	tests/test_python_execute_func_date \
 	tests/test_python_execute_script \
-	tests/test_selfhosting_new_empty/test_selfhosting_new_empty
+	tests/test_selfhosting_new_empty/test_selfhosting_new_empty \
+	tests/test_selfhosting_new_from_example/test_selfhosting_new_from_example
 	
 # These hang most of the time, but not always:
 #	tests/import/test_parsing \
@@ -94,6 +96,7 @@ tests_import_test_signals_SOURCES =	\
 	tests/import/test_signals.cc
 tests_test_glade_derived_instantiation_SOURCES = tests/test_glade_derived_instantiation.cc $(glom_source_files)
 tests_test_selfhosting_new_empty_test_selfhosting_new_empty_SOURCES = tests/test_selfhosting_new_empty/test_selfhosting_new_empty.cc $(glom_source_files)
+tests_test_selfhosting_new_from_example_test_selfhosting_new_from_example_SOURCES = tests/test_selfhosting_new_from_example/test_selfhosting_new_from_example.cc $(glom_source_files)
 
 glom_libglom_test_connectionpool_LDADD = $(tests_ldadd)
 glom_libglom_example_document_load_LDADD = $(tests_ldadd)
@@ -139,3 +142,4 @@ tests_import_test_parsing_LDADD = $(LIBGLOM_LIBS) $(GLOM_LIBS)
 tests_import_test_signals_LDADD = $(LIBGLOM_LIBS) $(GLOM_LIBS)
 tests_test_glade_derived_instantiation_LDADD = $(glom_all_libs)
 tests_test_selfhosting_new_empty_test_selfhosting_new_empty_LDADD = $(glom_all_libs)
+tests_test_selfhosting_new_from_example_test_selfhosting_new_from_example_LDADD = $(glom_all_libs)

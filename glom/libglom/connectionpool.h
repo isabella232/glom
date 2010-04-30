@@ -255,6 +255,10 @@ public:
   static void on_epc_progress_end(gpointer user_data);
 #endif // !G_OS_WIN32
 
+  //TODO: Document
+  void set_show_debug_output(bool val);
+  bool get_show_debug_output() const;
+
   //Show the gda error in a dialog.
   static bool handle_error_cerr_only();
 
@@ -292,6 +296,7 @@ private:
   Glib::ustring m_host, m_user, m_password, m_database;
 
   FieldTypes* m_pFieldTypes;
+  bool m_show_debug_output;
 
 private:
 

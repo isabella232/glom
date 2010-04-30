@@ -71,13 +71,6 @@ public:
   virtual void set_document(Document* pDocument); //View override
   virtual void load_from_document(); //View override
 
-  typedef std::vector< sharedptr<Field> > type_vec_fields;
-  typedef std::vector< sharedptr<const Field> > type_vec_const_fields;
-
-  static type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_name, bool including_system_fields = false);
-  static bool get_field_exists_in_database(const Glib::ustring& table_name, const Glib::ustring& field_name);
-
-
   /** Execute a SQL Select command, returning the result.
    * This method handles any Gda exceptions caused by executing the command.
    */
@@ -94,26 +87,12 @@ public:
   static int count_rows_returned_by(const Glib::ustring& sql_query);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-  bool add_standard_groups();
-  bool add_standard_tables() const;
-
-  bool create_table(const sharedptr<const TableInfo>& table_info, const Document::type_vec_fields& fields) const;
-  bool create_table_add_missing_fields(const sharedptr<const TableInfo>& table_info, const Document::type_vec_fields& fields) const;
-
-  /// Also saves the table information in the document:
-  bool create_table_with_default_fields(const Glib::ustring& table_name);
-
-  // TODO: Should these functions update the document, so callers don't need
-  // to do it?
-  bool add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field, Gtk::Window* parent_window) const;
-
-  bool drop_column(const Glib::ustring& table_name, const Glib::ustring& field_name, Gtk::Window* parent_window) const;
-
   sharedptr<Field> change_column(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, Gtk::Window* parent_window) const;
 
+  typedef std::vector< sharedptr<Field> > type_vec_fields;
+  typedef std::vector< sharedptr<const Field> > type_vec_const_fields;
+  
   bool change_columns(const Glib::ustring& table_name, const type_vec_const_fields& old_fields, type_vec_fields& fields, Gtk::Window* parent_window) const;
-
-  bool insert_example_data(const Glib::ustring& table_name) const;
 
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
@@ -162,10 +141,6 @@ protected:
 
   void fill_full_field_details(const Glib::ustring& parent_table_name, sharedptr<LayoutItem_Field>& layout_item);
 
-  typedef std::vector<Glib::ustring> type_vec_strings;
-  type_vec_strings get_table_names_from_database(bool ignore_system_tables = false) const;
-
-  bool get_table_exists_in_database(const Glib::ustring& table_name) const;
   bool get_relationship_exists(const Glib::ustring& table_name, const Glib::ustring& relationship_name);
 
   /** Get all the fields for a table, including any from the datasbase that are not yet known in the document.
@@ -336,24 +311,6 @@ protected:
   ///Get a single field value from the database.
   Gnome::Gda::Value get_field_value_in_database(const sharedptr<Field>& field, const FoundSet& found_set, Gtk::Window* parent_window);
 
-
-
-  SystemPrefs get_database_preferences() const;
-  void set_database_preferences(const SystemPrefs& prefs);
-
-  Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& table_name, const Glib::ustring& field_name) const;
-
-  /** Get the next auto-increment value for this primary key, from the glom system table.
-   * Add a row for this field in the system table if it does not exist already.
-   */
-  Gnome::Gda::Value get_next_auto_increment_value(const Glib::ustring& table_name, const Glib::ustring& field_name) const;
-
-  /** Set the next auto-increment value in the glom system table, by examining all current values.
-   * Use this, for instance, after importing rows.
-   * Add a row for this field in the system table if it does not exist already.
-   */
-  void recalculate_next_auto_increment_value(const Glib::ustring& table_name, const Glib::ustring& field_name) const;
-
   bool get_field_value_is_unique(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
 
   bool check_entered_value_for_uniqueness(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value, Gtk::Window* parent_window);
@@ -388,18 +345,13 @@ protected:
    */
   void set_found_set_where_clause_for_portal(FoundSet& found_set, const sharedptr<LayoutItem_Portal>& portal, const Gnome::Gda::Value& foreign_key_value);
 
-  /** Update GDA's information about the table structure, such as the 
-   * field list and their types.
-   * Call this whenever changing the table structure, for instance with an ALTER query.
-   * This may take a few seconds to return.
-   */
-  void update_gda_metastore_for_table(const Glib::ustring& table_name) const;
-  
+  //TODO: Not implemented. Is this used?
   static Glib::RefPtr<Gnome::Gda::Connection> get_connection();
 
   static bool get_field_primary_key_index_for_fields(const type_vec_fields& fields, guint& field_column);
   static bool get_field_primary_key_index_for_fields(const type_vecLayoutFields& fields, guint& field_column);
 
+  typedef std::vector<Glib::ustring> type_vec_strings;
   static type_vec_strings util_vecStrings_from_Fields(const type_vec_fields& fields);
 
   /** Add a @a user to the database, with the specified @a password, in the specified @a group.

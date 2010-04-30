@@ -23,6 +23,7 @@
 #include <libglom/connectionpool_backends/postgres_self.h>
 #include <libglom/init.h>
 #include <libglom/privs.h>
+#include <libglom/db_utils.h>
 #include <giomm/file.h>
 
 static void on_initialize_progress()
@@ -33,6 +34,11 @@ static void on_initialize_progress()
 static void on_startup_progress()
 {
   std::cout << "Database startup progress" << std::endl;
+}
+
+static void on_recreate_progress()
+{
+  std::cout << "Database re-creation progress" << std::endl;
 }
 
 static void on_cleanup_progress()
@@ -84,19 +90,71 @@ static bool delete_directory(const std::string& uri)
   return delete_directory(file);
 }
 
+std::string temp_filepath_dir;
+
+void cleanup()
+{
+  Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
+ 
+  const bool stopped = connection_pool->cleanup( sigc::ptr_fun(&on_cleanup_progress) );  
+  g_assert(stopped);
+
+  //Make sure the directory is removed at the end,
+  {
+    const Glib::ustring uri = Glib::filename_to_uri(temp_filepath_dir);
+    delete_directory(uri);
+  }
+}
+
 int main()
 {
   Glom::libglom_init();
 
-  // Create the document:
+  // Get a URI for a test file:
+  Glib::ustring uri;
+
+  #ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    const std::string path = 
+       Glib::build_filename(GLOM_DOCDIR_EXAMPLES_NOTINSTALLED, 
+         "example_music_collection.glom");
+    uri = Glib::filename_to_uri(path);
+  }
+  catch(const Glib::ConvertError& ex)
+  {
+    std::cerr << "Exception from Glib::filename_to_uri(): " << ex.what();
+    return EXIT_FAILURE;
+  }
+  #else
+  std::auto_ptr<Glib::Error> ex;
+  uri = Glib::filename_to_uri("/usr/share/glom/doc/examples/example_music_collection.glom", ex);
+  #endif
+
+  //std::cout << "URI=" << uri << std::endl;
+
+
+  // Load the document:
   Glom::Document document;
+  document.set_file_uri(uri);
+  int failure_code = 0;
+  const bool test = document.load(failure_code);
+  //std::cout << "Document load result=" << test << std::endl;
 
+  if(!test)
+  {
+    std::cerr << "Document::load() failed with failure_code=" << failure_code << std::endl;
+    return EXIT_FAILURE;
+  }
+  
+  g_assert(document.get_is_example_file());;
 
-
+  Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
+  
   //Save a copy, specifying the path to file in a directory:
   //For instance, /tmp/testfileglom/testfile.glom");
   const std::string temp_filename = "testglom";
-  const std::string temp_filepath_dir = Glib::build_filename(Glib::get_tmp_dir(), 
+  temp_filepath_dir = Glib::build_filename(Glib::get_tmp_dir(), 
     temp_filename);
   const std::string temp_filepath = Glib::build_filename(temp_filepath_dir, temp_filename);
   
@@ -106,7 +164,7 @@ int main()
     delete_directory(uri);
   }
 
-  //Save the file. TODO: Do we need to do this for the test?
+  //Save the example as a real file:
   const Glib::ustring file_uri = Glib::filename_to_uri(temp_filepath);
   document.set_file_uri(file_uri);
   
@@ -117,7 +175,6 @@ int main()
   g_assert(saved);
 
   //Specify the backend and backend-specific details to be used by the connectionpool.
-  Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
   connection_pool->setup_from_document(&document);
 
   //We must specify a default username and password:
@@ -134,16 +191,16 @@ int main()
   //Start self-hosting:
   //TODO: Let this happen automatically on first connection?
   const bool started = connection_pool->startup( sigc::ptr_fun(&on_startup_progress) );
+  if(!started)
+    cleanup();
   g_assert(started);
-  
-  const bool stopped = connection_pool->cleanup( sigc::ptr_fun(&on_cleanup_progress) );  
-  g_assert(stopped);
 
-  //Make sure the directory is removed at the end,
-  {
-    const Glib::ustring uri = Glib::filename_to_uri(temp_filepath_dir);
-    delete_directory(uri);
-  }
+  const bool recreated = Glom::DbUtils::recreate_database_from_document(&document, sigc::ptr_fun(&on_recreate_progress) );
+  if(!recreated)
+    cleanup();
+  g_assert(recreated);
+
+  cleanup();
   
   Glom::libglom_deinit();
 

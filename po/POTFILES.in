@@ -53,6 +53,7 @@ glom/libglom/document/bakery/view/view_composite.cc
 glom/libglom/gst-package.c
 glom/libglom/spawn_with_feedback.cc
 glom/libglom/utils.cc
+glom/libglom/db_utils.cc
 glom/main.cc
 glom/mode_data/box_data_calendar_related.cc
 glom/mode_data/box_data.cc

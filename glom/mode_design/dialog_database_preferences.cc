@@ -22,6 +22,7 @@
 #include <glom/python_embed/glom_python.h>
 #include <libglom/standard_table_prefs_fields.h>
 #include <libglom/data_structure/glomconversions.h>
+#include <libglom/db_utils.h>
 #include <glom/bakery/busy_cursor.h>
 #include <gtksourceviewmm/sourcelanguagemanager.h>
 #include <glibmm/i18n.h>
@@ -139,7 +140,8 @@ void Dialog_Database_Preferences::on_treeview_cell_edited_next_value(const Glib:
 
 void Dialog_Database_Preferences::load_from_document()
 {
-  m_system_prefs = get_database_preferences();
+  Document* document = get_document();
+  m_system_prefs = DbUtils::get_database_preferences(document);
 
   //Show the data in the UI:
   m_glade_variables_map.transfer_variables_to_widgets();
@@ -147,7 +149,7 @@ void Dialog_Database_Preferences::load_from_document()
 
 
   //Make sure that all auto-increment values are setup:
-  const Document* document = get_document();
+
   const Document::type_listTableInfo tables = document->get_tables();
   for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
@@ -156,7 +158,7 @@ void Dialog_Database_Preferences::load_from_document()
     {
       sharedptr<Field> field = *iterFields;
       if(field->get_primary_key())
-        auto_increment_insert_first_if_necessary((*iter)->get_name(), field->get_name());
+        DbUtils::auto_increment_insert_first_if_necessary((*iter)->get_name(), field->get_name());
     }
   }
 
@@ -216,11 +218,16 @@ void Dialog_Database_Preferences::save_to_document()
   m_glade_variables_map.transfer_widgets_to_variables();
   m_system_prefs.m_org_logo = m_image->get_value();
 
-  set_database_preferences(m_system_prefs);
-
-  //The script is not part of "database preferencs" in the database data,
-  //because it does not seem to be part of simple personalisation.
   Document* document = get_document();
+
+  //Make sure that set_database_preferences() can work.
+  if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+    DbUtils::add_standard_tables(document);
+
+  DbUtils::set_database_preferences(document, m_system_prefs);
+
+  //The script is not part of "database preferences" in the database data,
+  //because it does not seem to be part of simple personalisation.
   if(!document)
      return;
   const Glib::ustring script = m_text_view_script->get_buffer()->get_text();

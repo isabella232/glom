@@ -20,6 +20,7 @@
 
 #include "dialog_import_csv_progress.h"
 #include <libglom/libglom_config.h>
+#include <libglom/db_utils.h>
 
 #include <libglom/data_structure/glomconversions.h>
 #include <glibmm/i18n.h>
@@ -210,7 +211,7 @@ bool Dialog_Import_CSV_Progress::on_idle_import()
   Gnome::Gda::Value primary_key_value;
   if(m_field_primary_key->get_auto_increment())
   {
-    primary_key_value = get_next_auto_increment_value(m_table_name, m_field_primary_key->get_name());
+    primary_key_value = DbUtils::get_next_auto_increment_value(m_table_name, m_field_primary_key->get_name());
   }
   else
   {

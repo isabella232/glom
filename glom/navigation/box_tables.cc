@@ -20,6 +20,7 @@
 
 #include <glom/navigation/box_tables.h>
 #include <glom/utils_ui.h> //For bold_message()).
+#include <libglom/db_utils.h>
 #include <glom/application.h>
 #include <glibmm/i18n.h>
 
@@ -163,7 +164,7 @@ bool Box_Tables::fill_from_database()
     m_AddDel.remove_all();
     Glib::RefPtr<Gnome::Gda::Connection> connection = sharedconnection->get_gda_connection();
 
-    const type_vec_strings vecTables = get_table_names_from_database();
+    const type_vec_strings vecTables = DbUtils::get_table_names_from_database();
 
     for(type_vec_strings::const_iterator iter = vecTables.begin(); iter != vecTables.end(); ++iter)
     {
@@ -231,7 +232,7 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
   bool created = false; 
 
   //Check whether it exists already. (Maybe it is somehow in the database but not in the document. That shouldn't happen.)
-  const bool exists_in_db = get_table_exists_in_database(table_name);
+  const bool exists_in_db = DbUtils::get_table_exists_in_database(table_name);
   if(exists_in_db)
   {
     //Ask the user if they want us to try to cope with this:
@@ -250,7 +251,7 @@ void Box_Tables::on_adddel_Add(const Gtk::TreeModel::iterator& row)
   }
   else
   {
-    created = create_table_with_default_fields(table_name);
+    created = DbUtils::create_table_with_default_fields(get_document(), table_name);
   }
   
   if(created)

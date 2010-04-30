@@ -18,9 +18,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "glom_privs.h"
+#include "privs.h"
 #include <libglom/standard_table_prefs_fields.h>
-#include <glom/application.h>
+#include <libglom/db_utils.h>
+#include <libglom/utils.h>
+//#include <glom/application.h>
 
 namespace Glom
 {
@@ -34,7 +36,7 @@ Privs::type_vec_strings Privs::get_database_groups()
   type_vec_strings result;
 
   const Glib::ustring strQuery = "SELECT \"pg_group\".\"groname\" FROM \"pg_group\"";
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery);
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(strQuery);
   if(data_model)
   {
     const int rows_count = data_model->get_n_rows();
@@ -94,7 +96,7 @@ Glib::ustring Privs::get_default_developer_user_name(Glib::ustring& password)
 
 Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_name)
 {
-  BusyCursor cursor(Application::get_application());
+  //TODO_Moved: BusyCursor cursor(Application::get_application());
 
   type_vec_strings result;
 
@@ -102,7 +104,7 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
   {
     //pg_shadow contains the users. pg_users is a view of pg_shadow without the password.
     const Glib::ustring strQuery = "SELECT \"pg_shadow\".\"usename\" FROM \"pg_shadow\"";
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery);
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(strQuery);
     if(data_model)
     {
       const int rows_count = data_model->get_n_rows();
@@ -122,7 +124,7 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
   else
   {
     const Glib::ustring strQuery = "SELECT \"pg_group\".\"groname\", \"pg_group\".\"grolist\" FROM \"pg_group\" WHERE \"pg_group\".\"groname\" = '" + group_name + "'";
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery);
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(strQuery);
     if(data_model && data_model->get_n_rows())
     {
       const int rows_count = data_model->get_n_rows();
@@ -145,7 +147,7 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
         {
           //TODO_Performance: Can we do this in one SQL SELECT?
           const Glib::ustring strQuery = "SELECT \"pg_user\".\"usename\" FROM \"pg_user\" WHERE \"pg_user\".\"usesysid\" = '" + *iter + "'";
-          Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery);
+          Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(strQuery);
           if(data_model)
           {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED          
@@ -221,7 +223,7 @@ void Privs::set_table_privileges(const Glib::ustring& group_name, const Glib::us
 
   strQuery += " GROUP \"" + group_name + "\"";
 
-  const bool test = query_execute(strQuery);
+  const bool test = DbUtils::query_execute(strQuery);
   if(!test)
     std::cerr << "Privs::set_table_privileges(): GRANT failed." << std::endl;
   else
@@ -254,7 +256,7 @@ Privileges Privs::get_table_privileges(const Glib::ustring& group_name, const Gl
 
   //Get the permissions:
   Glib::ustring strQuery = "SELECT \"pg_class\".\"relacl\" FROM \"pg_class\" WHERE \"pg_class\".\"relname\" = '" + table_name + "'";
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(strQuery);
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(strQuery);
   if(data_model && data_model->get_n_rows())
   {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -358,7 +360,7 @@ Glib::ustring Privs::get_user_visible_group_name(const Glib::ustring& group_name
   return result;
 }
 
-Base_DB::type_vec_strings Privs::get_groups_of_user(const Glib::ustring& user)
+Privs::type_vec_strings Privs::get_groups_of_user(const Glib::ustring& user)
 {
   //TODO_Performance
 
@@ -406,7 +408,7 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
   //TODO_Performance: There's lots of database access here.
   //We could maybe replace some with the postgres has_table_* function().
 
-  BusyCursor cursor(Application::get_application());
+  //TODO_Moved: BusyCursor cursor(Application::get_application());
 
   //Return a cached value if possible.
   //(If it is in the cache then it's fairly recent)

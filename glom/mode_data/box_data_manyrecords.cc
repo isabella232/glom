@@ -23,7 +23,7 @@
 #include <glom/glade_utils.h>
 #include <glom/report_builder.h>
 #include <glom/mode_design/layout/dialog_layout_list.h>
-#include <glom/glom_privs.h>
+#include <libglom/privs.h>
 #include <libglom/utils.h> //For bold_message()).
 #include <sstream> //For stringstream
 #include <glibmm/i18n.h>

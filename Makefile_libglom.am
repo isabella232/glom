@@ -21,8 +21,9 @@ libglom_include_HEADERS =			\
 	glom/libglom/init.h			\
 	glom/libglom/libglom_config.h		\
 	glom/libglom/sharedptr.h		\
-	glom/libglom/standard_table_prefs_fields.h\
-	glom/libglom/utils.h
+	glom/libglom/standard_table_prefs_fields.h \
+	glom/libglom/utils.h \
+	glom/libglom/db_utils.h
 
 libglom_data_structure_includedir = $(libglom_includedir)/data_structure
 libglom_data_structure_include_HEADERS =			\
@@ -91,9 +92,15 @@ glom_libglom_libglom_1_14_la_SOURCES =					\
 	glom/libglom/calcinprogress.h					\
 	glom/libglom/connectionpool.cc					\
 	glom/libglom/connectionpool.h					\
+	glom/libglom/db_utils.cc						\
+	glom/libglom/db_utils.h					\
+	glom/libglom/glom_postgres.cc						\
+	glom/libglom/glom_postgres.h						\
 	glom/libglom/gst-package.c					\
 	glom/libglom/gst-package.h					\
 	glom/libglom/init.cc						\
+	glom/libglom/privs.cc						\
+	glom/libglom/privs.h						\
 	glom/libglom/spawn_with_feedback.cc				\
 	glom/libglom/spawn_with_feedback.h				\
 	glom/libglom/utils.cc						\

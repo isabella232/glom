@@ -24,7 +24,7 @@
 #include <libglom/data_structure/glomconversions.h>
 #include <glom/utils_ui.h>
 #include <libglom/data_structure/layout/layoutitem_field.h>
-#include <glom/glom_privs.h>
+#include <libglom/privs.h>
 #include <glom/python_embed/glom_python.h>
 #include <glom/python_embed/python_ui_callbacks.h>
 #include <glom/application.h>

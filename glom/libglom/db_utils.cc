@@ -1,0 +1,1666 @@
+/* Glom
+ *
+ * Copyright (C) 2001-2010 Murray Cumming
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public
+ * License along with this program; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
+#include <libglom/db_utils.h>
+#include <libglom/connectionpool.h>
+#include <libglom/data_structure/glomconversions.h>
+#include <libglom/standard_table_prefs_fields.h>
+#include <libglom/privs.h>
+#include <libglom/data_structure/parameternamegenerator.h>
+#include <libglom/utils.h>
+#include <libgda/libgda.h> // For gda_g_type_from_string
+#include <glibmm/i18n.h>
+
+namespace Glom
+{
+
+namespace DbUtils
+{
+
+static Glib::RefPtr<Gnome::Gda::Connection> get_connection()
+{
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  sharedptr<SharedConnection> sharedconnection;
+  try
+  {
+     sharedconnection = ConnectionPool::get_and_connect();
+  }
+  catch (const Glib::Error& error)
+  {
+    std::cerr << "get_connection(): " << error.what() << std::endl;
+  }
+#else
+  std::auto_ptr<ExceptionConnection> error;
+  sharedptr<SharedConnection> sharedconnection = ConnectionPool::get_and_connect(error);
+  if(error.get())
+  {
+    std::cerr << "get_connection(): " << error->what() << std::endl;
+    // TODO: Rethrow?
+  }
+#endif
+
+  if(!sharedconnection)
+  {
+    std::cerr << "get_connection(): No connection yet." << std::endl;
+    return Glib::RefPtr<Gnome::Gda::Connection>(0);
+  }
+
+  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
+
+  return gda_connection;
+}
+
+/** Update GDA's information about the table structure, such as the 
+  * field list and their types.
+  * Call this whenever changing the table structure, for instance with an ALTER query.
+  * This may take a few seconds to return.
+  */
+static void update_gda_metastore_for_table(const Glib::ustring& table_name)
+{
+  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
+  if(!gda_connection)
+  {
+    std::cerr << "update_gda_metastore_for_table(): No gda_connection." << std::endl;
+    return;
+  }
+
+  if(table_name.empty())
+  {
+    std::cerr << "update_gda_metastore_for_table(): table_name is empty." << std::endl;
+    return;
+  }
+
+  //std::cout << "DEBUG: update_gda_metastore_for_table(): Calling Gda::Connection::update_meta_store_table(" << table_name << ") ..." << std::endl;
+  //TODO: This doesn't seem to quite work yet:
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  gda_connection->update_meta_store_table(table_name);
+#else
+  std::auto_ptr<Glib::Error> update_error;
+  gda_connection->update_meta_store_table(table_name, Glib::ustring(), update_error);
+#endif
+
+  //This does work, though it takes ages: gda_connection->update_meta_store();
+  //std::cout << "DEBUG: update_gda_metastore_for_table(): ... Finished calling Gda::Connection::update_meta_store_table()" << std::endl;
+}
+
+bool create_database(Document* document, const Glib::ustring& database_name, const Glib::ustring& title, const sigc::slot<void>& progress)
+{
+#if 1
+  // This seems to increase the chance that the database creation does not
+  // fail due to the "source database is still in use" error. armin.
+  //std::cout << "Going to sleep" << std::endl;
+  Glib::usleep(500 * 1000);
+  //std::cout << "Awake" << std::endl;
+#endif
+
+  try
+  {
+    ConnectionPool::get_instance()->create_database(database_name);
+  }
+  catch(const Glib::Exception& ex) // libgda does not set error domain
+  {
+    std::cerr << "create_database():  Gnome::Gda::Connection::create_database(" << database_name << ") failed: " << ex.what() << std::endl;
+
+    return false;
+  }
+
+  //Connect to the actual database:
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  connection_pool->set_database(database_name);
+
+  sharedptr<SharedConnection> sharedconnection;
+  try
+  {
+    sharedconnection = connection_pool->connect();
+  }
+  catch(const Glib::Exception& ex)
+  {
+    std::cerr << "create_database(): Could not connect to just-created database. exception caught:" << ex.what() << std::endl;
+    return false;
+  }
+  catch(const std::exception& ex)
+  {
+    std::cerr << "create_database(): Could not connect to just-created database. exception caught:" << ex.what() << std::endl;
+    return false;
+  }
+
+  if(sharedconnection)
+  {
+    bool test = add_standard_tables(document); //Add internal, hidden, tables.
+    if(!test)
+      return false;
+
+    //Create the developer group, and make this user a member of it:
+    //If we got this far then the user must really have developer privileges already:
+    test = add_standard_groups(document);
+    if(!test)
+      return false;
+
+    //std::cout << "create_database(): Creation of standard tables and groups finished." << std::endl;
+
+    //Set the title based on the title in the example document, or the user-supplied title when creating new documents:
+    SystemPrefs prefs = get_database_preferences(document);
+    if(prefs.m_name.empty())
+    {
+      //std::cout << "create_database(): Setting title in the database." << std::endl;
+      prefs.m_name = title;
+      set_database_preferences(document, prefs);
+    }
+    else
+    {
+      //std::cout << "create_database(): database has title: " << prefs.m_name << std::endl;
+    }
+
+    return true;
+  }
+  else
+  {
+    std::cerr << "create_database(): Could not connect to just-created database." << std::endl;
+    return false;
+  }
+}
+
+bool recreate_database_from_document(Document* document, const sigc::slot<void>& progress)
+{
+ ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  if(!connection_pool)
+    return false; //Impossible anyway.
+
+  //Check whether the database exists already.
+  const Glib::ustring db_name = document->get_connection_database();
+  if(db_name.empty())
+    return false;
+
+  connection_pool->set_database(db_name);
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+#else
+  std::auto_ptr<std::exception> error;
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+  {
+    connection_pool->set_ready_to_connect(); //This has succeeded already.
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    sharedptr<SharedConnection> sharedconnection = connection_pool->connect();
+#else
+    sharedptr<SharedConnection> sharedconnection = connection_pool->connect(error);
+    if(!error.get())
+    {
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+      g_warning("Application::recreate_database(): Failed because database exists already.");
+
+      return false; //Connection to the database succeeded, because no exception was thrown. so the database exists already.
+#ifndef GLIBMM_EXCEPTIONS_ENABLED
+    }
+#endif // !GLIBMM_EXCEPTIONS_ENABLED
+  }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  catch(const ExceptionConnection& ex)
+  {
+#else
+  if(error.get())
+  {
+    const ExceptionConnection* exptr = dynamic_cast<ExceptionConnection*>(error.get());
+    if(exptr)
+    {
+      const ExceptionConnection& ex = *exptr;
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+      if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
+      {
+        g_warning("Application::recreate_database(): Failed because connection to server failed even without specifying a database.");
+        return false;
+      }
+#ifndef GLIBMM_EXCEPTIONS_ENABLED
+    }
+#endif // !GLIBMM_EXCEPTIONS_ENABLED
+
+    //Otherwise continue, because we _expected_ connect() to fail if the db does not exist yet.
+  }
+
+
+  //Create the database: (This will show a connection dialog)
+  progress();
+  connection_pool->set_database( Glib::ustring() );
+  const bool db_created = create_database(document, db_name, document->get_database_title(), progress);
+
+  if(!db_created)
+  {
+    return false;
+  }
+  else
+    connection_pool->set_database(db_name); //Specify the new database when connecting from now on.
+
+  progress();
+
+  sharedptr<SharedConnection> sharedconnection;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+  {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    sharedconnection = connection_pool->connect();
+#else
+    sharedconnection = connection_pool->connect(error);
+    if(!error.get())
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+      connection_pool->set_database(db_name); //The database was successfully created, so specify it when connecting from now on.
+  }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  catch(const ExceptionConnection& ex)
+  {
+#else
+  if(error.get())
+  {
+    const std::exception& ex = *error.get();
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+    g_warning("Application::recreate_database(): Failed to connect to the newly-created database.");
+    return false;
+  }
+
+  progress();
+
+  //Create each table:
+  Document::type_listTableInfo tables = document->get_tables();
+  for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
+  {
+    sharedptr<const TableInfo> table_info = *iter;
+
+    //Create SQL to describe all fields in this table:
+    Glib::ustring sql_fields;
+    Document::type_vec_fields fields = document->get_table_fields(table_info->get_name());
+
+    progress();
+    const bool table_creation_succeeded = create_table(table_info, fields);
+    progress();
+    if(!table_creation_succeeded)
+    {
+      g_warning("Application::recreate_database(): CREATE TABLE failed with the newly-created database.");
+      return false;
+    }
+  }
+
+  progress();
+  add_standard_tables(document); //Add internal, hidden, tables.
+
+  //Create the developer group, and make this user a member of it:
+  //If we got this far then the user must really have developer privileges already:
+  progress();
+  const bool test = add_standard_groups(document);
+  if(!test)
+    return false;
+
+  for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
+  {
+    sharedptr<const TableInfo> table_info = *iter;
+
+    //Add any example data to the table:
+    progress();
+
+    //try
+    //{
+      const bool table_insert_succeeded = insert_example_data(document, table_info->get_name());
+
+      if(!table_insert_succeeded)
+      {
+        g_warning("Application::recreate_database(): INSERT of example data failed with the newly-created database.");
+        return false;
+      }
+    //}
+    //catch(const std::exception& ex)
+    //{
+    //  std::cerr << "Application::recreate_database(): exception: " << ex.what() << std::endl;
+      //HandleError(ex);
+    //}
+
+  } //for(tables)
+
+  return true; //All tables created successfully.
+}
+
+
+SystemPrefs get_database_preferences(Document* document)
+{
+  //if(get_userlevel() == AppState::USERLEVEL_DEVELOPER)
+  //  add_standard_tables(document);
+
+  SystemPrefs result;
+
+  //Check that the user is allowed to even view this table:
+  //TODO_moved:
+  //Privileges table_privs = Glom::Privs::get_current_privs(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
+  //if(!table_privs.m_view)
+  //  return result;
+
+  const bool optional_org_logo = get_field_exists_in_database(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME, GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO);
+
+  const Glib::ustring sql_query = "SELECT "
+      "\"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_PREFS_FIELD_NAME "\", "
+      "\"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_NAME "\", "
+      "\"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET "\", "
+      "\"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2 "\", "
+      "\"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN "\", "
+      "\"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY "\", "
+      "\"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY "\", "
+      "\"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE "\""
+      + Glib::ustring(optional_org_logo ? ", \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\".\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO "\"" : "") +
+      " FROM \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\"";
+
+  int attempts = 0;
+  while(attempts < 2)
+  {
+    bool succeeded = true;
+    #ifdef GLIBMM_EXCEPTIONS_ENABLED
+    try
+    {
+      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query);
+      if(datamodel && (datamodel->get_n_rows() != 0))
+      {
+        result.m_name = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(0, 0));
+        result.m_org_name = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(1, 0));
+        result.m_org_address_street = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(2, 0));
+        result.m_org_address_street2 = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(3, 0));
+        result.m_org_address_town = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(4, 0));
+        result.m_org_address_county = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(5, 0));
+        result.m_org_address_country = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(6, 0));
+        result.m_org_address_postcode = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(7, 0));
+
+        //We need to be more clever about these column indexes if we add more new fields:
+        if(optional_org_logo)
+          result.m_org_logo = datamodel->get_value_at(8, 0);
+      }
+      else
+        succeeded = false;
+    }
+    catch(const Glib::Exception& ex)
+    {
+      std::cerr << "get_database_preferences(): exception: " << ex.what() << std::endl;
+      succeeded = false;
+    }
+    catch(const std::exception& ex)
+    {
+      std::cerr << "get_database_preferences(): exception: " << ex.what() << std::endl;
+      succeeded = false;
+    }
+    #else // GLIBMM_EXCEPTIONS_ENABLED
+    std::auto_ptr<Glib::Error> error;
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query);
+    if(datamodel && (datamodel->get_n_rows() != 0))
+    {
+      result.m_name = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(0, 0, error));
+      result.m_org_name = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(1, 0, error));
+      result.m_org_address_street = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(2, 0, error));
+      result.m_org_address_street2 = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(3, 0, error));
+      result.m_org_address_town = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(4, 0, error));
+      result.m_org_address_county = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(5, 0, error));
+      result.m_org_address_country = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(6, 0, error));
+      result.m_org_address_postcode = Conversions::get_text_for_gda_value(Field::TYPE_TEXT, datamodel->get_value_at(7, 0, error));
+
+      //We need to be more clever about these column indexes if we add more new fields:
+      if(optional_org_logo)
+        result.m_org_logo = datamodel->get_value_at(8, 0, error);
+    }
+    else
+      succeeded = false;
+
+    if (error.get())
+    {
+      std::cerr << "Error: " << error->what() << std::endl;
+      succeeded = false;
+    }
+    #endif
+    //Return the result, or try again:
+    if(succeeded)
+      return result;
+    else
+    {
+      add_standard_tables(document);
+      ++attempts; //Try again now that we have tried to create the table.
+    }
+  }
+
+  return result;
+}
+
+
+void set_database_preferences(Document* document, const SystemPrefs& prefs)
+{
+  Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
+  params->add_holder("name", prefs.m_name);
+  params->add_holder("street", prefs.m_org_address_street);
+  params->add_holder("street2", prefs.m_org_address_street2);
+  params->add_holder("town", prefs.m_org_address_town);
+  params->add_holder("county", prefs.m_org_address_county);
+  params->add_holder("country", prefs.m_org_address_country);
+  params->add_holder("postcode", prefs.m_org_address_postcode);
+
+  //The logo field was introduced in a later version of Glom.
+  //If the user is not in developer mode then the new field has not yet been added:
+  Glib::ustring optional_part_logo;
+  if(get_field_exists_in_database(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME, GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO))
+  {
+    params->add_holder("org_logo", prefs.m_org_logo);
+    optional_part_logo =  "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_LOGO "\" = ##org_logo::GDA_TYPE_BINARY, ";
+  }
+  const Glib::ustring sql_query = "UPDATE \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\" SET "
+      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_NAME "\" = ##name::gchararray, "
+      + optional_part_logo +
+      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET "\" = ##street::gchararray, "
+      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET2 "\" = ##street2::gchararray, "
+      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_TOWN "\" = ##town::gchararray, "
+      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTY "\" = ##county::gchararray, "
+      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_COUNTRY "\" = ##country::gchararray, "
+      "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_POSTCODE "\" = ##postcode::gchararray"
+      " WHERE \"" GLOM_STANDARD_TABLE_PREFS_FIELD_ID "\" = 1";
+
+  bool test = false;
+  test = query_execute(sql_query, params);
+
+  if(!test)
+    std::cerr << "set_database_preferences(): UPDATE failed." << std::endl;
+
+  //Set some information in the document too, so we can use it to recreate the database:
+  document->set_database_title(prefs.m_name);
+}
+
+
+bool add_standard_tables(Document* document)
+{
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+  {
+    Document::type_vec_fields pref_fields;
+    sharedptr<TableInfo> prefs_table_info = Document::create_table_system_preferences(pref_fields);
+
+    //Name, address, etc:
+    if(!get_table_exists_in_database(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME))
+    {
+      const bool test = create_table(prefs_table_info, pref_fields);
+
+      if(test)
+      {
+        //Add the single record:
+        const bool test = query_execute("INSERT INTO \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\" (\"" GLOM_STANDARD_TABLE_PREFS_FIELD_ID "\") VALUES (1)");
+        if(!test)
+          std::cerr << "add_standard_tables(): INSERT failed." << std::endl;
+
+        //Use the database title from the document, if there is one:
+        const Glib::ustring system_name = document->get_database_title();
+        if(!system_name.empty())
+        {
+          const bool test = query_execute("UPDATE \"" GLOM_STANDARD_TABLE_PREFS_TABLE_NAME "\" SET  " "\"" GLOM_STANDARD_TABLE_PREFS_FIELD_NAME "\" = '" + system_name + "' WHERE \"" GLOM_STANDARD_TABLE_PREFS_FIELD_ID "\" = 1");
+          if(!test)
+            std::cerr << "add_standard_tables(): UPDATE failed." << std::endl;
+        }
+      }
+      else
+      {
+        g_warning("add_standard_tables(): create_table(prefs) failed.");
+        return false;
+      }
+    }
+    else
+    {
+      //Make sure that it has all the fields it should have,
+      //because we sometimes add some in new Glom versions:
+      create_table_add_missing_fields(prefs_table_info, pref_fields);
+    }
+
+    //Auto-increment next values:
+    if(!get_table_exists_in_database(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME))
+    {
+      sharedptr<TableInfo> table_info(new TableInfo());
+      table_info->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
+      table_info->set_title("System: Auto Increments"); //TODO: Provide standard translations.
+      table_info->m_hidden = true;
+
+      Document::type_vec_fields fields;
+
+      sharedptr<Field> primary_key(new Field()); //It's not used, because there's only one record, but we must have one.
+      primary_key->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_ID);
+      primary_key->set_glom_type(Field::TYPE_NUMERIC);
+      fields.push_back(primary_key);
+
+      sharedptr<Field> field_table_name(new Field());
+      field_table_name->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME);
+      field_table_name->set_glom_type(Field::TYPE_TEXT);
+      fields.push_back(field_table_name);
+
+      sharedptr<Field> field_field_name(new Field());
+      field_field_name->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME);
+      field_field_name->set_glom_type(Field::TYPE_TEXT);
+      fields.push_back(field_field_name);
+
+      sharedptr<Field> field_next_value(new Field());
+      field_next_value->set_name(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE);
+      field_next_value->set_glom_type(Field::TYPE_TEXT);
+      fields.push_back(field_next_value);
+
+      const bool test = create_table(table_info, fields);
+      if(!test)
+      {
+        g_warning("add_standard_tables(): create_table(autoincrements) failed.");
+        return false;
+      }
+
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  catch(const Glib::Exception& ex)
+  {
+    std::cerr << "add_standard_tables(): caught exception: " << ex.what() << std::endl;
+    return false;
+  }
+  catch(const std::exception& ex)
+  {
+    std::cerr << "add_standard_tables(): caught exception: " << ex.what() << std::endl;
+    return false;
+  }
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+}
+
+bool add_standard_groups(Document* document)
+{
+  //Add the glom_developer group if it does not exist:
+  const Glib::ustring devgroup = GLOM_STANDARD_GROUP_NAME_DEVELOPER;
+
+  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
+  if(!gda_connection)
+  {
+    std::cerr << "add_standard_groups(): No connection yet." << std::endl;
+  }
+
+  // If the connection doesn't support users we can skip this step
+  if(gda_connection->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS))
+  {
+    const type_vec_strings vecGroups = Glom::Privs::get_database_groups();
+    type_vec_strings::const_iterator iterFind = std::find(vecGroups.begin(), vecGroups.end(), devgroup);
+    if(iterFind == vecGroups.end())
+    {
+      //The "SUPERUSER" here has no effect because SUPERUSER is not "inherited" to member users.
+      //But let's keep it to make the purpose of this group obvious.
+      bool test = query_execute("CREATE GROUP \"" GLOM_STANDARD_GROUP_NAME_DEVELOPER "\" WITH SUPERUSER");
+      if(!test)
+      {
+        std::cerr << "Glom add_standard_groups(): CREATE GROUP failed when adding the developer group." << std::endl;
+        return false;
+      }
+
+      //Make sure the current user is in the developer group.
+      //(If he is capable of creating these groups then he is obviously a developer, and has developer rights on the postgres server.)
+      const Glib::ustring current_user = ConnectionPool::get_instance()->get_user();
+      Glib::ustring strQuery = "ALTER GROUP \"" GLOM_STANDARD_GROUP_NAME_DEVELOPER "\" ADD USER \"" + current_user + "\"";
+      test = query_execute(strQuery);
+      if(!test)
+      {
+        std::cerr << "Glom add_standard_groups(): ALTER GROUP failed when adding the user to the developer group." << std::endl;
+        return false;
+      }
+
+      std::cout << "DEBUG: Added user " << current_user << " to glom developer group on postgres server." << std::endl;
+
+      Privileges priv_devs;
+      priv_devs.m_view = true;
+      priv_devs.m_edit = true;
+      priv_devs.m_create = true;
+      priv_devs.m_delete = true;
+
+      Document::type_listTableInfo table_list = document->get_tables(true /* including system prefs */);
+
+      for(Document::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
+      {
+        sharedptr<const TableInfo> table_info = *iter;
+        if(table_info)
+        {
+          const Glib::ustring table_name = table_info->get_name();
+          if(get_table_exists_in_database(table_name)) //Maybe the table has not been created yet.
+            Glom::Privs::set_table_privileges(devgroup, table_name, priv_devs, true /* developer privileges */);
+        }
+      }
+
+      //Make sure that it is in the database too:
+      GroupInfo group_info;
+      group_info.set_name(GLOM_STANDARD_GROUP_NAME_DEVELOPER);
+      group_info.m_developer = true;
+      document->set_group(group_info);
+    }
+  }
+  else
+  {
+    std::cout << "DEBUG: Connection does not support users" << std::endl;
+  }
+
+  return true;
+}
+
+
+namespace { //anonymous
+
+//If the string has quotes around it, remove them
+static Glib::ustring remove_quotes(const Glib::ustring& str)
+{
+  const gchar* quote = "\"";
+  const Glib::ustring::size_type posQuoteStart = str.find(quote);
+  if(posQuoteStart != 0)
+    return str;
+
+  const Glib::ustring::size_type size = str.size();
+  const Glib::ustring::size_type posQuoteEnd = str.find(quote, 1);
+  if(posQuoteEnd != (size - 1))
+    return str;
+
+  return str.substr(1, size - 2);
+}
+
+} //anonymous namespace
+
+static bool meta_table_column_is_primary_key(GdaMetaTable* meta_table, const Glib::ustring column_name)
+{
+  if(!meta_table)
+    return false;
+
+  for(GSList* item = meta_table->columns; item != 0; item = item->next)
+  {
+    GdaMetaTableColumn* column = GDA_META_TABLE_COLUMN(item->data);
+    if(!column)
+      continue;
+
+    if(column->column_name && (column_name == remove_quotes(column->column_name)))
+      return column->pkey;
+  }
+
+  return false;
+}
+
+bool handle_error()
+{
+  return ConnectionPool::handle_error_cerr_only();
+}
+
+void handle_error(const Glib::Exception& ex)
+{
+  std::cerr << "Internal Error (handle_error()): exception type=" << typeid(ex).name() << ", ex.what()=" << ex.what() << std::endl;
+
+  //TODO_Moved:
+  //Gtk::MessageDialog dialog(Utils::bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
+  //dialog.set_secondary_text(ex.what());
+  //TODO: dialog.set_transient_for(*get_application());
+  //dialog.run();
+}
+
+void handle_error(const std::exception& ex)
+{
+  std::cerr << "Internal Error (handle_error()): exception type=" << typeid(ex).name() << ", ex.what()=" << ex.what() << std::endl;
+
+ //TODO_Moved:
+#ifdef GLOM_ENABLE_MAEMO
+  //Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, ex.what());
+#else
+  //Gtk::MessageDialog dialog(Utils::bold_message(_("Internal error")), true, Gtk::MESSAGE_WARNING );
+  //dialog.set_secondary_text(ex.what());
+  //TODO: dialog.set_transient_for(*get_application());
+#endif
+  //dialog.run();
+}
+
+
+bool get_field_exists_in_database(const Glib::ustring& table_name, const Glib::ustring& field_name)
+{
+  type_vec_fields vecFields = get_fields_for_table_from_database(table_name);
+  type_vec_fields::const_iterator iterFind = std::find_if(vecFields.begin(), vecFields.end(), predicate_FieldHasName<Field>(field_name));
+  return iterFind != vecFields.end();
+}
+
+type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_name, bool /* including_system_fields */)
+{
+  type_vec_fields result;
+
+  if(table_name.empty())
+    return result;
+
+  // These are documented here:
+  // http://library.gnome.org/devel/libgda-4.0/3.99/connection.html#GdaConnectionMetaTypeHead
+  enum GlomGdaDataModelFieldColumns
+  {
+    DATAMODEL_FIELDS_COL_NAME = 0,
+    DATAMODEL_FIELDS_COL_TYPE = 1,
+    DATAMODEL_FIELDS_COL_GTYPE = 2,
+    DATAMODEL_FIELDS_COL_SIZE = 3,
+    DATAMODEL_FIELDS_COL_SCALE = 4,
+    DATAMODEL_FIELDS_COL_NOTNULL = 5,
+    DATAMODEL_FIELDS_COL_DEFAULTVALUE = 6,
+    DATAMODEL_FIELDS_COL_EXTRA = 6 // Could be auto-increment
+  };
+
+  //TODO: BusyCursor busy_cursor(get_application());
+
+  {
+    Glib::RefPtr<Gnome::Gda::Connection> connection = get_connection();
+    if(!connection)
+    {
+      std::cerr << "get_fields_for_table_from_database(): connection is null" << std::endl;
+      return result;
+    }
+    
+    Glib::RefPtr<Gnome::Gda::Holder> holder_table_name = Gnome::Gda::Holder::create(G_TYPE_STRING, "name");
+    gchar* quoted_table_name_c = gda_meta_store_sql_identifier_quote(table_name.c_str(), connection->gobj());
+    g_assert(quoted_table_name_c);
+    Glib::ustring quoted_table_name(quoted_table_name_c);
+    g_free (quoted_table_name_c);
+    quoted_table_name_c = 0;
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    holder_table_name->set_value(quoted_table_name);
+#else
+    std::auto_ptr<Glib::Error> error;
+    holder_table_name->set_value(quoted_table_name, error);
+#endif
+
+    std::list< Glib::RefPtr<Gnome::Gda::Holder> > holder_list;
+    holder_list.push_back(holder_table_name);
+
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model_fields;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    try
+    {
+      data_model_fields = connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_FIELDS, holder_list);
+    }
+    catch(const Gnome::Gda::MetaStoreError& ex)
+    {
+      std::cerr << "get_fields_for_table_from_database(): MetaStoreError: " << ex.what() << std::endl;
+    }
+    catch(const Glib::Error& ex)
+    {
+      std::cerr << "get_fields_for_table_from_database(): Error: " << ex.what() << std::endl;
+    }
+#else
+    data_model_fields = connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_FIELDS, holder_list, error);
+
+    // Ignore error, data_model_fields presence is checked below
+#endif
+
+
+    if(!data_model_fields)
+    {
+      std::cerr << "get_fields_for_table_from_database(): libgda reported empty fields schema data_model for the table." << std::endl;
+    }
+    else if(data_model_fields->get_n_columns() == 0)
+    {
+      std::cerr << "get_fields_for_table_from_database(): libgda reported 0 fields for the table." << std::endl;
+    }
+    else if(data_model_fields->get_n_rows() == 0)
+    {
+      g_warning("get_fields_for_table_from_database(): table_name=%s, data_model_fields->get_n_rows() == 0: The table probably does not exist in the specified database.", table_name.c_str());
+    }
+    else
+    {
+      //We also use the GdaMetaTable to discover primary keys.
+      //Both these libgda APIs are awful, and it's awful that we must use two APIs. murrayc.
+      Glib::RefPtr<Gnome::Gda::MetaStore> store = connection->get_meta_store();
+      Glib::RefPtr<Gnome::Gda::MetaStruct> metastruct =
+        Gnome::Gda::MetaStruct::create(store, Gnome::Gda::META_STRUCT_FEATURE_NONE);
+      GdaMetaDbObject* meta_dbobject = 0;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+      try
+      {
+        meta_dbobject = metastruct->complement(Gnome::Gda::META_DB_TABLE,
+          Gnome::Gda::Value(), /* catalog */
+          Gnome::Gda::Value(), /* schema */
+          Gnome::Gda::Value(quoted_table_name)); //It's a static instance inside the MetaStore.
+      }
+      catch(const Glib::Error& ex)
+      {
+        handle_error(ex);
+        //TODO: Really fail.
+      }
+#else
+      std::auto_ptr<Glib::Error> ex;
+      meta_dbobject = metastruct->complement(Gnome::Gda::META_DB_TABLE,
+        Gnome::Gda::Value(), /* catalog */
+        Gnome::Gda::Value(), /* schema */
+        Gnome::Gda::Value(quoted_table_name), ex); //It's a static instance inside the MetaStore.
+       if(error.get())
+       {
+         handle_error(*ex);
+       }
+#endif //GLIBMM_EXCEPTIONS_ENABLED
+      GdaMetaTable* meta_table = GDA_META_TABLE(meta_dbobject);
+
+      //Examine each field:
+      guint row = 0;
+      const guint rows_count = data_model_fields->get_n_rows();
+      while(row < rows_count)
+      {
+        Glib::RefPtr<Gnome::Gda::Column> field_info = Gnome::Gda::Column::create();
+
+        //Get the field name:
+#ifdef GLIBMM_EXCEPTIONS_ENABLED //TODO: Actually catch exceptions.
+        Gnome::Gda::Value value_name = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_NAME, row);
+#else
+        std::auto_ptr<Glib::Error> value_error;
+        Gnome::Gda::Value value_name = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_NAME, row, value_error);
+#endif
+        if(value_name.get_value_type() ==  G_TYPE_STRING)
+        {
+          if(value_name.get_string().empty())
+            g_warning("get_fields_for_table_from_database(): value_name is empty.");
+
+          Glib::ustring field_name = value_name.get_string(); //TODO: get_string() is a dodgy choice. murrayc.
+          field_name = remove_quotes(field_name);
+          field_info->set_name(field_name);
+          //std::cout << "  debug: field_name=" << field_name << std::endl;
+        }
+
+        //Get the field type:
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+        Gnome::Gda::Value value_fieldtype = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_GTYPE, row);
+#else
+        Gnome::Gda::Value value_fieldtype = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_GTYPE, row, value_error);
+#endif
+        if(value_fieldtype.get_value_type() ==  G_TYPE_STRING)
+        {
+          const Glib::ustring type_string = value_fieldtype.get_string();
+          const GType gdatype = gda_g_type_from_string(type_string.c_str());
+          field_info->set_g_type(gdatype);
+        }
+
+
+        //Get the default value:
+        /* libgda does not return this correctly yet. TODO: check bug http://bugzilla.gnome.org/show_bug.cgi?id=143576
+        Gnome::Gda::Value value_defaultvalue = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_DEFAULTVALUE, row);
+        if(value_defaultG_VALUE_TYPE(value.gobj()) ==  G_TYPE_STRING)
+          field_info->set_default_value(value_defaultvalue);
+        */
+
+        //Get whether it can be null:
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+        Gnome::Gda::Value value_notnull = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_NOTNULL, row);
+#else
+        Gnome::Gda::Value value_notnull = data_model_fields->get_value_at(DATAMODEL_FIELDS_COL_NOTNULL, row, value_error);
+#endif
+        if(value_notnull.get_value_type() ==  G_TYPE_BOOLEAN)
+          field_info->set_allow_null(value_notnull.get_boolean());
+
+
+        sharedptr<Field> field = sharedptr<Field>::create(); //TODO: Get glom-specific information from the document?
+        field->set_field_info(field_info);
+
+
+        //Get whether it is a primary key:
+        field->set_primary_key(
+          meta_table_column_is_primary_key(meta_table, field_info->get_name()) );
+
+        result.push_back(field);
+
+        ++row;
+      }
+    }
+  }
+
+  if(result.empty())
+  {
+    //g_warning("get_fields_for_table_from_database(): returning empty result.");
+  }
+
+  //Hide system fields.
+  type_vec_fields::iterator iterFind = std::find_if(result.begin(), result.end(), predicate_FieldHasName<Field>(GLOM_STANDARD_FIELD_LOCK));
+  if(iterFind != result.end())
+    result.erase(iterFind);
+
+  return result;
+}
+
+//TODO_Performance: Avoid calling this so often.
+//TODO: Put this in libgdamm.
+type_vec_strings get_table_names_from_database(bool ignore_system_tables)
+{
+  type_vec_strings result;
+
+  {
+    Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
+
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model_tables;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    try
+    {
+      data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_TABLES);
+    }
+    catch(const Gnome::Gda::MetaStoreError& ex)
+    {
+      std::cerr << "get_table_names_from_database(): MetaStoreError: " << ex.what() << std::endl;
+    }
+    catch(const Glib::Error& ex)
+    {
+      std::cerr << "get_table_names_from_database(): Error: " << ex.what() << std::endl;
+    }
+#else
+    std::auto_ptr<Glib::Error> error;
+    data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_TABLES, error);
+    // Ignore error, data_model_tables presence is checked below
+#endif
+
+    if(data_model_tables && (data_model_tables->get_n_columns() == 0))
+    {
+      std::cerr << "get_table_names_from_database(): libgda reported 0 tables for the database." << std::endl;
+    }
+    else if(data_model_tables)
+    {
+      //std::cout << "debug: data_model_tables refcount=" << G_OBJECT(data_model_tables->gobj())->ref_count << std::endl;
+      const int rows = data_model_tables->get_n_rows();
+      for(int i = 0; i < rows; ++i)
+      {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+        const Gnome::Gda::Value value = data_model_tables->get_value_at(0, i);
+#else
+        const Gnome::Gda::Value value = data_model_tables->get_value_at(0, i, error);
+#endif
+        //Get the table name:
+        Glib::ustring table_name;
+        if(G_VALUE_TYPE(value.gobj()) ==  G_TYPE_STRING)
+        {
+          table_name = value.get_string();
+
+          //The table names have quotes sometimes. See http://bugzilla.gnome.org/show_bug.cgi?id=593154
+          table_name = remove_quotes(table_name);
+
+          //TODO: Unescape the string with gda_server_provider_unescape_string()?
+
+          //std::cout << "DEBUG: Found table: " << table_name << std::endl;
+
+          if(ignore_system_tables)
+          {
+            //Check whether it's a system table:
+            const Glib::ustring prefix = "glom_system_";
+            const Glib::ustring table_prefix = table_name.substr(0, prefix.size());
+            if(table_prefix == prefix)
+              continue;
+          }
+
+          //Ignore the pga_* tables that pgadmin adds when you use it:
+          if(table_name.substr(0, 4) == "pga_")
+            continue;
+
+          //Ignore the pg_* tables that something (Postgres? libgda?) adds:
+          //Not needed now that this was fixed again in libgda-4.0.
+          //if(table_name.substr(0, 14) == "pg_catalog.pg_")
+          //  continue;
+
+          //Ignore the information_schema tables that something (libgda?) adds:
+          //Not needed now that this was fixed again in libgda-4.0.
+          //if(table_name.substr(0, 23) == "information_schema.sql_")
+          //  continue;
+
+          result.push_back(table_name);
+        }
+      }
+    }
+  }
+
+  return result;
+}
+
+bool get_table_exists_in_database(const Glib::ustring& table_name)
+{
+  //TODO_Performance
+
+  type_vec_strings tables = get_table_names_from_database();
+  type_vec_strings::const_iterator iterFind = std::find(tables.begin(), tables.end(), table_name);
+  return (iterFind != tables.end());
+}
+
+
+bool create_table_with_default_fields(Document* document, const Glib::ustring& table_name)
+{
+  if(table_name.empty())
+    return false;
+
+  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
+  if(!gda_connection)
+  {
+    std::cerr << "create_table_with_default_fields(): No connection yet." << std::endl;
+    return false;
+  }
+
+  bool created = false;
+
+  //Primary key:
+  sharedptr<Field> field_primary_key(new Field());
+  field_primary_key->set_name(table_name + "_id");
+  field_primary_key->set_title(table_name + " ID");
+  field_primary_key->set_primary_key();
+  field_primary_key->set_auto_increment();
+
+  Glib::RefPtr<Gnome::Gda::Column> field_info = field_primary_key->get_field_info();
+  field_info->set_allow_null(false);
+  field_primary_key->set_field_info(field_info);
+
+  field_primary_key->set_glom_type(Field::TYPE_NUMERIC);
+  //std::cout << "field_primary_key->get_auto_increment():" << field_primary_key->get_auto_increment() << std::endl;
+
+  type_vec_fields fields;
+  fields.push_back(field_primary_key);
+
+  //Description:
+  sharedptr<Field> field_description(new Field());
+  field_description->set_name("description");
+  field_description->set_title(_("Description")); //Use a translation, because the original locale will be marked as non-English if the current locale is non-English.
+  field_description->set_glom_type(Field::TYPE_TEXT);
+  fields.push_back(field_description);
+
+  //Comments:
+  sharedptr<Field> field_comments(new Field());
+  field_comments->set_name("comments");
+  field_comments->set_title(_("Comments"));
+  field_comments->set_glom_type(Field::TYPE_TEXT);
+  field_comments->m_default_formatting.set_text_format_multiline();
+  fields.push_back(field_comments);
+
+  sharedptr<TableInfo> table_info(new TableInfo());
+  table_info->set_name(table_name);
+  table_info->set_title( Utils::title_from_string( table_name ) ); //Start with a title that might be appropriate.
+
+  created = create_table(table_info, fields);
+
+    //Create a table with 1 "ID" field:
+   //MSYQL:
+    //query_execute( "CREATE TABLE \"" + table_name + "\" (" + primary_key_name + " INT NOT NULL AUTO_INCREMENT PRIMARY KEY)" );
+    //query_execute( "INSERT INTO \"" + table_name + "\" VALUES (0)" );
+
+    //PostgresSQL:
+    //query_execute( "CREATE TABLE \"" + table_name + "\" (\"" + primary_key_name + "\" serial NOT NULL  PRIMARY KEY)" );
+
+    //query_execute( "CREATE TABLE \"" + table_name + "\" (" +
+    //  field_primary_key->get_name() + " numeric NOT NULL  PRIMARY KEY," +
+    //  extra_field_description + "varchar, " +
+    //  extra_field_comments + "varchar" +
+    //  ")" );
+
+  if(created)
+  {
+    //Save the changes in the document:
+    if(document)
+    {
+      document->add_table(table_info);
+      document->set_table_fields(table_info->get_name(), fields);
+    }
+  }
+
+  return created;
+}
+bool create_table(const sharedptr<const TableInfo>& table_info, const Document::type_vec_fields& fields_in)
+{
+  //std::cout << "create_table(): " << table_info->get_name() << ", title=" << table_info->get_title() << std::endl;
+
+  bool table_creation_succeeded = false;
+
+
+  Document::type_vec_fields fields = fields_in;
+
+  //Create the standard field too:
+  //(We don't actually use this yet)
+  if(std::find_if(fields.begin(), fields.end(), predicate_FieldHasName<Field>(GLOM_STANDARD_FIELD_LOCK)) == fields.end())
+  {
+    sharedptr<Field> field = sharedptr<Field>::create();
+    field->set_name(GLOM_STANDARD_FIELD_LOCK);
+    field->set_glom_type(Field::TYPE_TEXT);
+    fields.push_back(field);
+  }
+
+  //Create SQL to describe all fields in this table:
+  Glib::ustring sql_fields;
+  for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+  {
+    //Create SQL to describe this field:
+    sharedptr<Field> field = *iter;
+
+    //The field has no gda type, so we set that:
+    //This usually comes from the database, but that's a bit strange.
+    Glib::RefPtr<Gnome::Gda::Column> info = field->get_field_info();
+    info->set_g_type( Field::get_gda_type_for_glom_type(field->get_glom_type()) );
+    field->set_field_info(info); //TODO_Performance
+
+    Glib::ustring sql_field_description = "\"" + field->get_name() + "\" " + field->get_sql_type();
+
+    if(field->get_primary_key())
+      sql_field_description += " NOT NULL  PRIMARY KEY";
+
+    //Append it:
+    if(!sql_fields.empty())
+      sql_fields += ", ";
+
+    sql_fields += sql_field_description;
+  }
+
+  if(sql_fields.empty())
+  {
+    g_warning("Base_Db::create_table::create_table(): sql_fields is empty.");
+  }
+
+  //Actually create the table
+  try
+  {
+    //TODO: Escape the table name?
+    //TODO: Use GDA_SERVER_OPERATION_CREATE_TABLE instead?
+    table_creation_succeeded = query_execute( "CREATE TABLE \"" + table_info->get_name() + "\" (" + sql_fields + ");" );
+    if(!table_creation_succeeded)
+      std::cerr << "create_table(): CREATE TABLE failed." << std::endl;
+  }
+  catch(const ExceptionConnection& ex)
+  {
+    table_creation_succeeded = false;
+  }
+
+  if(table_creation_succeeded)
+  {
+    // Update the libgda meta store, so that get_fields_for_table_from_database()
+    // returns the fields correctly for the new table.
+    update_gda_metastore_for_table(table_info->get_name());
+
+    // TODO: Maybe we should create the table directly via libgda instead of
+    // executing an SQL query ourselves, so that libgda has the chance to
+    // do this meta store update automatically.
+    // (Yes, generally it would be nice to use libgda API instead of generating SQL. murrayc)
+  }
+
+  return table_creation_succeeded;
+}
+
+bool create_table_add_missing_fields(const sharedptr<const TableInfo>& table_info, const Document::type_vec_fields& fields)
+{
+  const Glib::ustring table_name = table_info->get_name();
+
+  for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+  {
+    sharedptr<const Field> field = *iter;
+    if(!get_field_exists_in_database(table_name, field->get_name()))
+    {
+      const bool test = add_column(table_name, field, 0); /* TODO: parent_window */
+      if(!test)
+       return test;
+    }
+  }
+
+  return true;
+}
+
+
+bool add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field, Gtk::Window* /* parent_window */)
+{
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    connection_pool->add_column(table_name, field);
+  }
+  catch(const Glib::Error& ex)
+  {
+#else
+  std::auto_ptr<Glib::Error> error;
+  connection_pool->add_column(table_name, field, error);
+  if(error.get())
+  {
+    const Glib::Error& ex = *error;
+#endif
+    handle_error(ex);
+//    Gtk::MessageDialog window(*parent_window, Utils::bold_message(ex.what()), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
+//    window.run();
+    return false;
+  }
+
+  return true;
+}
+
+bool drop_column(const Glib::ustring& table_name, const Glib::ustring& field_name)
+{
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    return connection_pool->drop_column(table_name, field_name);
+  }
+  catch(const Glib::Error& ex)
+  {
+#else
+  std::auto_ptr<Glib::Error> error;
+  connection_pool->add_column(table_name, field_name, error);
+  if(error.get())
+  {
+    const Glib::Error& ex = *error;
+#endif
+    handle_error(ex);
+//    Gtk::MessageDialog window(*parent_window, Utils::bold_message(ex.what()), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
+//    window.run();
+    return false;
+  }
+
+  return true;
+}
+
+Gnome::Gda::Value get_next_auto_increment_value(const Glib::ustring& table_name, const Glib::ustring& field_name)
+{
+  const Gnome::Gda::Value result = DbUtils::auto_increment_insert_first_if_necessary(table_name, field_name);
+  double num_result = Conversions::get_double_for_gda_value_numeric(result);
+
+
+  //Increment the next_value:
+  ++num_result;
+  const Gnome::Gda::Value next_value = Conversions::parse_value(num_result);
+  Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
+  params->add_holder("table_name", table_name);
+  params->add_holder("field_name", field_name);
+  params->add_holder("next_value", next_value);
+  const Glib::ustring sql_query = "UPDATE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\" SET "
+      "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE "\" = ##next_value::gchararray"
+      " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = ##table_name::gchararray AND "
+            "\""  GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\" = ##field_name::gchararray";
+
+  const bool test = query_execute(sql_query, params);
+  if(!test)
+    std::cerr << "get_next_auto_increment_value(): Increment failed." << std::endl;
+
+  return result;
+}
+
+Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& table_name, const Glib::ustring& field_name)
+{
+  Gnome::Gda::Value value;
+
+  //Check that the user is allowd to view and edit this table:
+  Privileges table_privs = Privs::get_current_privs(GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME);
+  if(!table_privs.m_view || !table_privs.m_edit)
+  {
+    //This should not happen:
+    std::cerr << "Glom: auto_increment_insert_first_if_necessary(): The current user may not edit the autoincrements table. Any user who has create rights for a table should have edit rights to the autoincrements table." << std::endl;
+  }
+  Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
+  params->add_holder("table_name", table_name);
+  params->add_holder("field_name", field_name);
+
+  const Glib::ustring sql_query = "SELECT \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\".\"next_value\" FROM \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\""
+   " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = ##table_name::gchararray AND "
+          "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\" = ##field_name::gchararray";
+
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query, params);
+  if(!datamodel || (datamodel->get_n_rows() == 0))
+  {
+    //Start with zero:
+
+    //Insert the row if it's not there.
+    const Glib::ustring sql_query = "INSERT INTO \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\" ("
+      GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME ", " GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME ", " GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE
+      ") VALUES (##table_name::gchararray, ##field_name::gchararray, 0)";
+
+    const bool test = query_execute(sql_query, params);
+    if(!test)
+      std::cerr << "auto_increment_insert_first_if_necessary(): INSERT of new row failed." << std::endl;
+
+    //GdaNumeric is a pain, so we take a short-cut:
+    bool success = false;
+    value = Conversions::parse_value(Field::TYPE_NUMERIC, "0", success, true /* iso_format */);
+  }
+  else
+  {
+    //Return the value so that a calling function does not need to do a second SELECT.
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    const Gnome::Gda::Value actual_value = datamodel->get_value_at(0, 0);
+#else
+    std::auto_ptr<Glib::Error> value_error;
+    const Gnome::Gda::Value actual_value = datamodel->get_value_at(0, 0, value_error);
+#endif
+    //But the caller wants a numeric value not a text value
+    //(our system_autoincrements table has it as text, for future flexibility):
+    const std::string actual_value_text = actual_value.get_string();
+    bool success = false;
+    value = Conversions::parse_value(Field::TYPE_NUMERIC, actual_value_text, success, true /* iso_format */);
+  }
+
+  //std::cout << "auto_increment_insert_first_if_necessary: returning value of type=" << value.get_value_type() << std::endl;
+  return value;
+}
+
+/** Set the next auto-increment value in the glom system table, by examining all current values.
+ * Use this, for instance, after importing rows.
+ * Add a row for this field in the system table if it does not exist already.
+ */
+static void recalculate_next_auto_increment_value(const Glib::ustring& table_name, const Glib::ustring& field_name)
+{
+  //Make sure that the row exists in the glom system table:
+  auto_increment_insert_first_if_necessary(table_name, field_name);
+
+  //Get the max key value in the database:
+  const Glib::ustring sql_query = "SELECT MAX(\"" + table_name + "\".\"" + field_name + "\") FROM \"" + table_name + "\"";
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query);
+  if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
+  {
+    //Increment it:
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    const Gnome::Gda::Value value_max = datamodel->get_value_at(0, 0); // A GdaNumeric.
+#else
+    std::auto_ptr<Glib::Error> error;
+    const Gnome::Gda::Value value_max = datamodel->get_value_at(0, 0, error); // A GdaNumeric.
+#endif
+    double num_max = Conversions::get_double_for_gda_value_numeric(value_max);
+    ++num_max;
+
+    //Set it in the glom system table:
+    const Gnome::Gda::Value next_value = Conversions::parse_value(num_max);
+    const Glib::ustring sql_query = "UPDATE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME "\" SET "
+      "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_NEXT_VALUE "\" = " + next_value.to_string() + //TODO: Don't use to_string().
+      " WHERE \"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME "\" = '" + table_name + "' AND "
+      "\"" GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME "\" = '" + field_name + "'";
+
+    const bool test = query_execute(sql_query);
+    if(!test)
+      std::cerr << "recalculate_next_auto_increment_value(): UPDATE failed." << std::endl;
+  }
+  else
+    std::cerr << "recalculate_next_auto_increment_value(): SELECT MAX() failed." << std::endl;
+}
+
+bool insert_example_data(Document* document, const Glib::ustring& table_name)
+{
+  //TODO_Performance: Avoid copying:
+  const Document::type_example_rows example_rows = document->get_table_example_data(table_name);
+  if(example_rows.empty())
+  {
+    //std::cout << "debug: insert_example_data(): No example data available." << std::endl;
+    return true;
+  }
+
+  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
+  if(!gda_connection)
+  {
+    std::cerr << "insert_example_data(): connection is null" << std::endl;
+    return false;
+  }
+
+  //std::cout << "debug: inserting example_rows for table: " << table_name << std::endl;
+
+  bool insert_succeeded = true;
+
+
+  //Get field names:
+  Document::type_vec_fields vec_fields = document->get_table_fields(table_name);
+
+  //Actually insert the data:
+  //std::cout << "  debug: insert_example_data(): number of rows of data: " << vec_rows.size() << std::endl;
+
+  //std::cout << "DEBUG: example_row size = " << example_rows.size() << std::endl;
+
+  for(Document::type_example_rows::const_iterator iter = example_rows.begin(); iter != example_rows.end(); ++iter)
+  {
+    //Check that the row contains the correct number of columns.
+    //This check will slow this down, but it seems useful:
+    //TODO: This can only work if we can distinguish , inside "" and , outside "":
+    const Document::type_row_data& row_data = *iter;
+    Glib::ustring strNames;
+    Glib::ustring strVals;
+    if(row_data.empty())
+      break;
+
+    //std::cout << "DEBUG: row_data size = " << row_data.size() << ", (fields size= " << vec_fields.size() << " )" << std::endl;
+
+    Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
+    Glom::ParameterNameGenerator generator;
+    for(unsigned int i = 0; i < row_data.size(); ++i) //TODO_Performance: Avoid calling size() so much.
+    {
+      //std::cout << "  DEBUG: i=" << i << ", row_data.size()=" << row_data.size() << std::endl;
+
+      if(i > 0)
+      {
+        strVals += ", ";
+        strNames += ", ";
+      }
+
+      sharedptr<Field> field = vec_fields[i];
+      if(!field)
+      {
+        std::cerr << "insert_example_data(): field was null for field num=" << i << std::endl;
+        break;
+      }
+
+      strNames += field->get_name();
+
+      Gnome::Gda::Value value = row_data[i];
+      //std::cout << "  DEBUG: example: field=" << field->get_name() << ", value=" << value.to_string() << std::endl;
+
+      //Add a SQL parameter for the value:
+      guint id = 0;
+      const Field::glom_field_type glom_type = field->get_glom_type();
+      Glib::RefPtr<Gnome::Gda::Holder> holder =
+        Gnome::Gda::Holder::create( Field::get_gda_type_for_glom_type(glom_type),
+          generator.get_next_name(id));
+
+      holder->set_not_null(false);
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+      holder->set_value_as_value(value);
+#else
+      std::auto_ptr<Glib::Error> holder_error;
+      holder->set_value_as_value(value, holder_error);
+#endif
+      params->add_holder(holder);
+
+      strVals += "##" + generator.get_name_from_id(id) + "::" + vec_fields[i]->get_gda_type_name();
+    }
+
+    //Create and parse the SQL query:
+    //After this, the Parser will know how many SQL parameters there are in
+    //the query, and allow us to set their values.
+    const Glib::ustring strQuery = "INSERT INTO \"" + table_name + "\" (" + strNames + ") VALUES (" + strVals + ")";
+    insert_succeeded = query_execute(strQuery, params);
+    if(!insert_succeeded)
+      break;
+  }
+
+  for(Document::type_vec_fields::const_iterator iter = vec_fields.begin(); iter != vec_fields.end(); ++iter)
+  {
+    if((*iter)->get_auto_increment())
+      recalculate_next_auto_increment_value(table_name, (*iter)->get_name());
+  }
+  return insert_succeeded;
+}
+
+//static:
+Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::ustring& strQuery,
+                                                                  const Glib::RefPtr<Gnome::Gda::Set>& params)
+{
+  Glib::RefPtr<Gnome::Gda::DataModel> result;
+
+  //TODO: BusyCursor busy_cursor(get_app_window());
+
+  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
+  if(!gda_connection)
+  {
+    std::cerr << "query_execute_select(): No connection yet." << std::endl;
+    return result;
+  }
+
+  Glib::RefPtr<Gnome::Gda::SqlParser> parser = gda_connection->create_parser();
+
+  Glib::RefPtr<Gnome::Gda::Statement> stmt;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    stmt = parser->parse_string(strQuery);
+  }
+  catch(const Gnome::Gda::SqlParserError& ex)
+  {
+    std::cout << "debug: query_execute_select(): SqlParserError: exception from parse_string(): " << ex.what() << std::endl;
+  }
+#else
+  std::auto_ptr<Glib::Error> ex;
+  stmt = parser->parse_string(strQuery, ex);
+  if(error.get())
+     std::cout << "debug: query_execute_select(): SqlParserError: exception from parse_string(): " << error->what() << std::endl;
+#endif //GLIBMM_EXCEPTIONS_ENABLED
+
+
+  //Debug output:
+  if(stmt && ConnectionPool::get_instance()->get_show_debug_output())
+  {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    try
+    {
+      const Glib::ustring full_query = stmt->to_sql(params);
+      std::cout << "Debug: query_execute_select():  " << full_query << std::endl;
+    }
+    catch(const Glib::Exception& ex)
+    {
+      std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
+    }
+#else
+      const Glib::ustring full_query = stmt->to_sql(params, ex);
+      std::cout << "Debug: query_execute_select():  " << full_query << std::endl;
+      if (ex.get())
+        std::cout << "Debug: query string could not be converted to std::cout: " << ex->what() << std::endl;
+
+#endif
+  }
+
+
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    result = gda_connection->statement_execute_select(stmt, params);
+  }
+  catch(const Gnome::Gda::ConnectionError& ex)
+  {
+    std::cout << "debug: query_execute_select(): ConnectionError: exception from statement_execute_select(): " << ex.what() << std::endl;
+  }
+  catch(const Gnome::Gda::ServerProviderError& ex)
+  {
+    std::cout << "debug: query_execute_select(): ServerProviderError: exception from statement_execute_select(): code=" << ex.code() << "message=" << ex.what() << std::endl;
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cout << "debug: query_execute_select(): Error: exception from statement_execute_select(): " << ex.what() << std::endl;
+  }
+
+#else
+  result = gda_connection->statement_execute_select(stmt, params, ex);
+  if(ex.get())
+    std::cout << "debug: query_execute_select(): Glib::Error from statement_execute_select(): " << ex->what() << std::endl;
+#endif //GLIBMM_EXCEPTIONS_ENABLED
+
+  if(!result)
+  {
+    std::cerr << "Glom  query_execute_select(): Error while executing SQL" << std::endl <<
+      "  " <<  strQuery << std::endl;
+    handle_error();
+  }
+
+  return result;
+}
+
+//static:
+bool query_execute(const Glib::ustring& strQuery, const Glib::RefPtr<Gnome::Gda::Set>& params)
+{
+  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
+  if(!gda_connection)
+  {
+    std::cerr << "query_execute(): No connection yet." << std::endl;
+    return false;
+  }
+
+  Glib::RefPtr<Gnome::Gda::SqlParser> parser = gda_connection->create_parser();
+  Glib::RefPtr<Gnome::Gda::Statement> stmt;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    stmt = parser->parse_string(strQuery);
+  }
+  catch(const Gnome::Gda::SqlParserError& error)
+  {
+    std::cerr << "DEBUG: BaseDB::query_execute: SqlParserError: " << error.what() << std::endl;
+    return false;
+  }
+#else
+  std::auto_ptr<Glib::Error> sql_error;
+  stmt = parser->parse_string(strQuery, sql_error);
+  if(sql_error.get())
+  {
+    std::cerr << "DEBUG: BaseDB::query_execute: SqlParserError:" << sql_error->what() << std::endl;
+    return false;
+  }
+#endif
+
+
+  //Debug output:
+  if(stmt && ConnectionPool::get_instance()->get_show_debug_output())
+  {
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    try
+    {
+      //TODO: full_query still seems to contain ## parameter names,
+      //though it works for our SELECT queries in query_execute_select():
+      const Glib::ustring full_query = stmt->to_sql(params);
+      std::cerr << "Debug: query_execute(): " << full_query << std::endl;
+    }
+    catch(const Glib::Exception& ex)
+    {
+      std::cerr << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
+    }
+#else
+    const Glib::ustring full_query = stmt->to_sql(params, sql_error);
+    std::cerr << "Debug: query_execute(): " << full_query << std::endl;
+    if (sql_error.get())
+      std::cerr << "Debug: query string could not be converted to std::cout: " << sql_error->what() << std::endl;
+#endif
+  }
+
+
+  int exec_retval = -1;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    exec_retval = gda_connection->statement_execute_non_select(stmt, params);
+  }
+  catch(const Glib::Error& error)
+  {
+    std::cerr << "BaseDB::query_execute: ConnectionError: " << error.what() << std::endl;
+    const Glib::ustring full_query = stmt->to_sql(params);
+    std::cerr << "  full_query: " << full_query << std::endl;
+    return false;
+  }
+#else
+  std::auto_ptr<Glib::Error> exec_error;
+  exec_retval = gda_connection->statement_execute_non_select (stmt, params, exec_error);
+  if(exec_error.get())
+  {
+    std::cerr << "BaseDB::query_execute: ConnectionError: " << exec_error->what() << std::endl;
+    const Glib::ustring full_query = stmt->to_sql(params, exec_error);
+    std::cerr << "  full_query: " << full_query << std::endl;
+    return false;
+  }
+#endif
+  return (exec_retval >= 0);
+}
+
+} //namespace DbUtils
+
+} //namespace Glom
+

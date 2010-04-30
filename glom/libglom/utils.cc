@@ -841,5 +841,4 @@ bool Utils::file_exists(const Glib::ustring& uri)
   }
 }
 
-
 } //namespace Glom

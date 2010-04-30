@@ -43,6 +43,7 @@
 #include <glom/mode_design/script_library/dialog_script_library.h>
 #include <glom/mode_design/dialog_initial_password.h>
 #include <glom/mode_design/relationships_overview/dialog_relationships_overview.h>
+#include <glom/glade_utils.h>
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #include <glom/utils_ui.h>
@@ -66,7 +67,8 @@
 #endif
 
 #include <glom/filechooser_export.h>
-#include <glom/glom_privs.h>
+#include <libglom/privs.h>
+#include <libglom/db_utils.h>
 #include <sstream> //For stringstream.
 #include <fstream>
 #include <glibmm/i18n.h>
@@ -1278,7 +1280,7 @@ void Frame_Glom::on_dialog_add_related_table_response(int response)
 
     //It would be nice to put this in the dialog's on_response() instead,
     //but I don't think we can stop the response from being returned. murrayc
-    if(get_table_exists_in_database(table_name))
+    if(DbUtils::get_table_exists_in_database(table_name))
     {
       Frame_Glom::show_ok_dialog(_("Table Exists Already"), _("A table with this name already exists in the database. Please choose a different table name."), *parent, Gtk::MESSAGE_ERROR);
     }
@@ -1304,7 +1306,7 @@ void Frame_Glom::on_dialog_add_related_table_response(int response)
     else
     {
       //Create the new table:
-      const bool result = create_table_with_default_fields(table_name);
+      const bool result = DbUtils::create_table_with_default_fields(get_document(), table_name);
       if(!result)
       {
         std::cerr << "Frame_Glom::on_menu_Tables_AddRelatedTable(): create_table_with_default_fields() failed." << std::endl;
@@ -1570,7 +1572,7 @@ void Frame_Glom::update_table_in_document_from_database()
   typedef Box_DB_Table::type_vec_fields type_vec_fields;
 
   //Get the fields information from the database:
-  Base_DB::type_vec_fields fieldsDatabase = Base_DB::get_fields_for_table_from_database(m_table_name);
+  DbUtils::type_vec_fields fieldsDatabase = DbUtils::get_fields_for_table_from_database(m_table_name);
 
   Document* pDoc = dynamic_cast<const Document*>(get_document());
   if(pDoc)
@@ -2457,27 +2459,20 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib::ustring& title)
 {
-#if 1
-  // This seems to increase the chance that the database creation does not
-  // fail due to the "source database is still in use" error. armin.
-  //std::cout << "Going to sleep" << std::endl;
-  Glib::usleep(500 * 1000);
-  //std::cout << "Awake" << std::endl;
-#endif
+  bool result = false;
 
   Gtk::Window* pWindowApp = get_app_window();
   g_assert(pWindowApp);
-
-  BusyCursor busycursor(*pWindowApp);
-
-  try
+      
   {
-    ConnectionPool::get_instance()->create_database(database_name);
+    BusyCursor busycursor(*pWindowApp);
+
+    sigc::slot<void> onProgress; //TODO: Show visual feedback.
+    result = DbUtils::create_database(get_document(), database_name, title, onProgress);
   }
-  catch(const Glib::Exception& ex) // libgda does not set error domain
+  
+  if(!result)
   {
-    std::cerr << "Frame_Glom::create_database():  Gnome::Gda::Connection::create_database(" << database_name << ") failed: " << ex.what() << std::endl;
-
     //Tell the user:
     Gtk::Dialog* dialog = 0;
     Utils::get_glade_widget_with_warning("glom_developer.glade", "dialog_error_create_database", dialog);
@@ -2488,60 +2483,7 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
     return false;
   }
 
-  //Connect to the actual database:
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
-  connection_pool->set_database(database_name);
-
-  sharedptr<SharedConnection> sharedconnection;
-  try
-  {
-    sharedconnection = connection_pool->connect();
-  }
-  catch(const Glib::Exception& ex)
-  {
-    std::cerr << "Frame_Glom::create_database(): Could not connect to just-created database. exception caught:" << ex.what() << std::endl;
-    return false;
-  }
-  catch(const std::exception& ex)
-  {
-    std::cerr << "Frame_Glom::create_database(): Could not connect to just-created database. exception caught:" << ex.what() << std::endl;
-    return false;
-  }
-
-  if(sharedconnection)
-  {
-    bool test = add_standard_tables(); //Add internal, hidden, tables.
-    if(!test)
-      return false;
-
-    //Create the developer group, and make this user a member of it:
-    //If we got this far then the user must really have developer privileges already:
-    test = add_standard_groups();
-    if(!test)
-      return false;
-
-    //std::cout << "Frame_Glom::create_database(): Creation of standard tables and groups finished." << std::endl;
-
-    //Set the title based on the title in the example document, or the user-supplied title when creating new documents:
-    SystemPrefs prefs = get_database_preferences();
-    if(prefs.m_name.empty())
-    {
-      //std::cout << "Frame_Glom::create_database(): Setting title in the database." << std::endl;
-      prefs.m_name = title;
-      set_database_preferences(prefs);
-    }
-    else
-    {
-      //std::cout << "Frame_Glom::create_database(): database has title: " << prefs.m_name << std::endl;
-    }
-
-    return true;
-  }
-  else
-  {
-    std::cerr << "Frame_Glom::create_database(): Could not connect to just-created database." << std::endl;
-    return false;
-  }
+  return result;
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
