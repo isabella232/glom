@@ -69,7 +69,7 @@ void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_w
     {
       row[m_Columns.m_col_first] = Conversions::get_text_for_gda_value(layout_item->get_glom_type(), iter->first, layout_item->get_formatting_used().m_numeric_format);
 
-      if(m_with_second)
+      if(m_with_second && m_layoutitem_second)
       {
         row[m_Columns.m_col_second] = Conversions::get_text_for_gda_value(m_layoutitem_second->get_glom_type(), iter->second, m_layoutitem_second->get_formatting_used().m_numeric_format);
       }

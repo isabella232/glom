@@ -1,5 +1,15 @@
 2010-05-01  Murray Cumming  <murrayc@murrayc.com>
 
+	Fix a possible crash when showing choices.
+
+	* glom/mode_data/datawidget/combo.cc: set_text(): Don't show a warning if 
+	"" is not found because it's OK to use that to clear the combo.
+	* glom/mode_data/datawidget/combochoiceswithtreemodel.cc: 
+	set_choices_with_second(): Don't dereference a null smartpointer, avoiding 
+	a crash with one .glom file that I tried.
+
+2010-05-01  Murray Cumming  <murrayc@murrayc.com>
+
 	Python Glom API documentation improvement.
 	
 	* glom/python_embed/python_module/py_glom_module.cc: Turn off auto-writing 
