@@ -370,12 +370,14 @@ void Box_Data::execute_button_script(const sharedptr<const LayoutItem_Button>& l
     //Allow this UI to respond to UI change requests from the Python code:
     AppPythonUICallbacks callbacks;
 
+    Glib::ustring error_message; //TODO: Check this.
     glom_execute_python_function_implementation(layout_item->get_script(),
       field_values, //TODO: Maybe use the field's type here.
       get_document(),
       get_table_name(), field_primary_key, primary_key_value,
       sharedconnection->get_gda_connection(),
-      callbacks);
+      callbacks,
+      error_message);
 #ifndef GLIBMM_EXCEPTIONS_ENABLED
   }
 #endif // !GLIBMM_EXCEPTIONS_ENABLED

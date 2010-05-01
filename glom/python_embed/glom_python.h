@@ -52,7 +52,8 @@ void glom_execute_python_function_implementation(const Glib::ustring& func_impl,
   const sharedptr<const Field>& key_field,
   const Gnome::Gda::Value& key_field_value,
   const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection,
-  const PythonUICallbacks& callbacks);
+  const PythonUICallbacks& callbacks,
+  Glib::ustring& error_message);
 
 /** Run a python calculation, returning the python return value.
  * @param for_script: If this is true then the record object will be writable, 
@@ -65,7 +66,8 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   const Glib::ustring& table_name,
   const sharedptr<const Field>& key_field,
   const Gnome::Gda::Value& key_field_value,
-  const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection);
+  const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection,
+  Glib::ustring& error_message);
 
 } //namespace Glom
 

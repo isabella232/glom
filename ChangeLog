@@ -1,5 +1,21 @@
 2010-05-01  Murray Cumming  <murrayc@murrayc.com>
 
+	Python scripts and calcuations: Test buttons now show python errors.
+	
+	* glom/python_embed/glom_python.[h|cc]: 
+	glom_execute_python_function_implementation(), 
+	glom_evaluate_python_function_implementation(): Add an error_message output 
+	parameter, to report syntax errors, for instance.
+	* glom/mode_design/fields/dialog_fieldcalculation.cc:
+  * glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.cc:
+  Show the python error, if any, when pressing the Test button.
+  * Other files: Adapt, ignoring the error message for now.
+  * Makefile_tests.am:
+	* tests/test_python_execute_func_bad_syntax.cc: Added a test of the new 
+	error_message parameter. 
+
+2010-05-01  Murray Cumming  <murrayc@murrayc.com>
+
 	Fix a possible crash when showing choices.
 
 	* glom/mode_data/datawidget/combo.cc: set_text(): Don't show a warning if 

@@ -252,14 +252,16 @@ void Dialog_Database_Preferences::on_button_test_script()
   //We need the connection when we run the script, so that the script may use it.
   sharedptr<SharedConnection> sharedconnection = connect_to_server(this /* parent window */);
 
+  Glib::ustring error_message; //TODO: Check this and tell the user.
   PythonUICallbacks callbacks;
   glom_execute_python_function_implementation(calculation,
-     type_map_fields(),
+    type_map_fields(),
     document,
     Glib::ustring() /* table_name */,
     sharedptr<Field>(), Gnome::Gda::Value(), // primary key - only used when setting values in the DB, which we would not encourage in a test.
     sharedconnection->get_gda_connection(),
-    callbacks);
+    callbacks,
+    error_message);
 }
 
 

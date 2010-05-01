@@ -1230,6 +1230,7 @@ bool Application::on_document_load()
   const Glib::ustring script = pDocument->get_startup_script();
   if(!script.empty())
   {
+    Glib::ustring error_message; //TODO: Check this and tell the user.
     ConnectionPool* connection_pool = ConnectionPool::get_instance();
     sharedptr<SharedConnection> sharedconnection = connection_pool->connect();
     AppPythonUICallbacks callbacks;
@@ -1239,7 +1240,8 @@ bool Application::on_document_load()
       Glib::ustring() /* table_name */,
       sharedptr<Field>(), Gnome::Gda::Value(), // primary key - only used when there is a current table and record.
       sharedconnection->get_gda_connection(),
-      callbacks);
+      callbacks,
+      error_message);
   }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

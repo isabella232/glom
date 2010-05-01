@@ -64,14 +64,14 @@ static std::list<Glib::ustring> ustring_tokenize(const Glib::ustring& msg, const
 }
 
 // Use this for errors not (directly) caused by the user
-void HandlePythonError()
+static void HandlePythonError()
 {
   if(PyErr_Occurred())
     PyErr_Print();
 }
 
 // Show python coding errors of the user
-void ShowTrace()
+static Glib::ustring get_traceback()
 {
   // Python equivilant:
   // import traceback, sys
@@ -102,7 +102,7 @@ void ShowTrace()
       if(!tbList)
       {
         std::cerr << "Glom: format_exception failed while trying to show Python TraceBack." << std::endl;
-        return;
+        return "<traceback failed>";
       }
 
       boost::python::str emptyString("");
@@ -125,17 +125,20 @@ void ShowTrace()
     Py_XDECREF(value);
     Py_XDECREF(traceback);
 
+  Glib::ustring result;
   if(chrRetval)
   {
-    std::cerr << "Glom: Python Error:" << std::endl << chrRetval << std::endl;
-
-    //TODO: Move this to the caller.
-    //Glib::ustring message = _("Python Error: \n");
-    //message += chrRetval;
-    //Gtk::MessageDialog dialog(message, false, Gtk::MESSAGE_ERROR);
-    //dialog.run();
+    result = chrRetval;
+    g_free(chrRetval);
   }
-  g_free(chrRetval);
+  
+  return result;
+}
+
+static void ShowTrace()
+{
+    std::cerr << "Glom: Python Error:" << std::endl << get_traceback() << std::endl;
+
 }
 
 /** Import a python module, warning about exceptions.
@@ -179,6 +182,7 @@ bool gda_python_module_is_available()
 static boost::python::object glom_python_call(Field::glom_field_type result_type,
   Document* pDocument,
   const Glib::ustring& func_impl, 
+  Glib::ustring& error_message,
   const boost::python::object& param1, 
   const boost::python::object& param2 = boost::python::object())
 {
@@ -224,7 +228,7 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   if(!pDict)
   {
      std::cerr << "glom_evaluate_python_function_implementation(): pDict is null" << std::endl;
-     ShowTrace();
+     error_message = get_traceback();
      return boost::python::object();
   }
 
@@ -298,14 +302,14 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   catch(const boost::python::error_already_set& ex)
   {
     std::cerr << "glom_evaluate_python_function_implementation():  boost::python::exec() threw error_already_set when using text= " << std::endl << func_def << std::endl;
-    ShowTrace();
+    error_message = get_traceback();
     return boost::python::object();
   }
 
   if(!pyValue.ptr())
   {
     std::cerr << "glom_evaluate_python_function_implementation(): boost::python::exec failed." << std::endl;
-    ShowTrace();
+    error_message = get_traceback();
     return boost::python::object();
   }
 
@@ -318,7 +322,7 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   catch(const boost::python::error_already_set& ex)
   {
     std::cerr << "glom_evaluate_python_function_implementation():  pDict[func_name] threw error_already_set when func_name= " << std::endl << func_name << std::endl;
-    ShowTrace();
+    error_message = get_traceback();
     return boost::python::object();
   }
 
@@ -353,7 +357,7 @@ static boost::python::object glom_python_call(Field::glom_field_type result_type
   catch(const boost::python::error_already_set& ex)
   {
     std::cerr << "Glom: Exception caught from pFunc(objRecord). func_name=" << std::endl << func_name << std::endl;
-    ShowTrace();
+    error_message = get_traceback();
   }
 
   if(!(pyResultCpp.ptr()))
@@ -378,7 +382,8 @@ void glom_execute_python_function_implementation(const Glib::ustring& func_impl,
   const sharedptr<const Field>& key_field,
   const Gnome::Gda::Value& key_field_value,
   const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection,
-  const PythonUICallbacks& callbacks)
+  const PythonUICallbacks& callbacks,
+  Glib::ustring& error_message)
 {
   //Import the glom module so that boost::python::object(new PyGlomRecord) can work.
   boost::python::object module_glom = import_module("glom_" GLOM_ABI_VERSION_UNDERLINED);
@@ -406,7 +411,7 @@ void glom_execute_python_function_implementation(const Glib::ustring& func_impl,
   //Pass an additional ui parameter for use by scripts:
   boost::python::object objUI(new PyGlomUI(callbacks));
 
-  glom_python_call(Field::TYPE_TEXT, pDocument, func_impl, objRecord, objUI);
+  glom_python_call(Field::TYPE_TEXT, pDocument, func_impl, error_message, objRecord, objUI);
 }
 
 Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field_type result_type,
@@ -416,7 +421,8 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
   const Glib::ustring& table_name,
   const sharedptr<const Field>& key_field,
   const Gnome::Gda::Value& key_field_value,
-  const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection)
+  const Glib::RefPtr<Gnome::Gda::Connection>& opened_connection,
+  Glib::ustring& error_message)
 {
   //Import the glom module so that boost::python::object(new PyGlomRecord) can work.
   boost::python::object module_glom = import_module("glom_" GLOM_ABI_VERSION_UNDERLINED);
@@ -442,7 +448,7 @@ Gnome::Gda::Value glom_evaluate_python_function_implementation(Field::glom_field
     pParam->set_fields(field_values, pDocument, table_name, key_field, key_field_value, opened_connection);
   }
   
-  const boost::python::object pyResultCpp = glom_python_call(result_type, pDocument, func_impl, objRecord);
+  const boost::python::object pyResultCpp = glom_python_call(result_type, pDocument, func_impl, error_message, objRecord);
   
   //Deal with the various possible return types:
   Gnome::Gda::Value valueResult;

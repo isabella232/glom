@@ -28,6 +28,7 @@ check_PROGRAMS =						\
 	tests/test_load_python_library\
 	tests/test_python_module \
 	tests/test_python_execute_func \
+	tests/test_python_execute_func_bad_syntax \
 	tests/test_python_execute_func_date \
 	tests/test_python_execute_script \
 	tests/import/test_parsing \
@@ -47,6 +48,7 @@ TESTS =	tests/test_document_load	\
 	tests/test_load_python_library \
 	tests/test_python_module \
 	tests/test_python_execute_func \
+	tests/test_python_execute_func_bad_syntax \
 	tests/test_python_execute_func_date \
 	tests/test_python_execute_script \
 	tests/test_selfhosting_new_empty
@@ -78,6 +80,8 @@ tests_test_signal_reemit_SOURCES = tests/test_signal_reemit.cc
 tests_test_load_python_library_SOURCES = tests/test_load_python_library.cc
 tests_test_python_module_SOURCES = tests/test_python_module.cc
 tests_test_python_execute_func_SOURCES = tests/test_python_execute_func.cc \
+	glom/python_embed/glom_python.cc
+tests_test_python_execute_func_bad_syntax_SOURCES = tests/test_python_execute_func_bad_syntax.cc \
 	glom/python_embed/glom_python.cc
 tests_test_python_execute_func_date_SOURCES = tests/test_python_execute_func_date.cc \
 	glom/python_embed/glom_python.cc
@@ -137,6 +141,7 @@ tests_test_signal_reemit_LDADD = $(LIBGLOM_LIBS)
 tests_test_load_python_library_LDADD = $(LIBGLOM_LIBS)
 tests_test_python_module_LDADD = $(tests_ldadd) $(PYTHON_LIBS)
 tests_test_python_execute_func_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
+tests_test_python_execute_func_bad_syntax_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
 tests_test_python_execute_func_date_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
 tests_test_python_execute_script_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
 tests_import_test_parsing_LDADD = $(LIBGLOM_LIBS) $(GLOM_LIBS)

@@ -2479,6 +2479,7 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
 
           g_assert(sharedconnection);
 
+          Glib::ustring error_message; //TODO: Check this.
           refCalcProgress.m_value =
             glom_evaluate_python_function_implementation(field->get_glom_type(),
               field->get_calculation(),
@@ -2486,7 +2487,8 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
               get_document(),
               field_in_record.m_table_name,
               field_in_record.m_key, field_in_record.m_key_value,
-              sharedconnection->get_gda_connection());
+              sharedconnection->get_gda_connection(),
+              error_message);
 
           refCalcProgress.m_calc_finished = true;
           refCalcProgress.m_calc_in_progress = false;
