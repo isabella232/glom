@@ -315,8 +315,13 @@ bool Document::write_to_disk()
       }
       catch(const Gio::Error& ex)
       {
-        std::cerr << "Bakery::Document::write_to_disk(): Error from Gio::File::make_directory_with_parents(): uri=" << m_file_uri << "error=" << ex.what() << std::endl;
-        return false;
+        //If it exists already then that's good.
+        //Otherwise something unexpected happened.
+        if(ex.code() != Gio::Error::EXISTS)
+        {
+          std::cerr << "Bakery::Document::write_to_disk(): Error from Gio::File::make_directory_with_parents(): parent of uri=" << m_file_uri << "error=" << ex.what() << std::endl;
+          return false;
+        }
       }
 
 

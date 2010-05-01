@@ -22,6 +22,7 @@ check_PROGRAMS =						\
 	glom/utility_widgets/test_flowtable			\
 	glom/test_pyembed					\
 	tests/test_document_load			\
+	tests/test_document_autosave			\
 	tests/test_parsing_time			\
 	tests/test_signal_reemit			\
 	tests/test_load_python_library\
@@ -36,6 +37,7 @@ check_PROGRAMS =						\
 	tests/test_selfhosting_new_empty
 
 TESTS =	tests/test_document_load	\
+  tests/test_document_autosave	\
 	tests/test_parsing_time	\
 	tests/test_signal_reemit \
 	tests/test_dtd_file_validation.sh \
@@ -70,6 +72,7 @@ glom_libglom_test_sharedptr_layoutitem_SOURCES = glom/libglom/test_sharedptr_lay
 glom_test_pyembed_SOURCES = glom/test_pyembed.cc
 
 tests_test_document_load_SOURCES = tests/test_document_load.cc
+tests_test_document_autosave_SOURCES = tests/test_document_autosave.cc
 tests_test_parsing_time_SOURCES = tests/test_parsing_time.cc
 tests_test_signal_reemit_SOURCES = tests/test_signal_reemit.cc
 tests_test_load_python_library_SOURCES = tests/test_load_python_library.cc
@@ -129,6 +132,7 @@ glom_test_pyembed_LDADD = $(LIBGLOM_LIBS) $(PYTHON_LIBS)
 
 tests_test_parsing_time_LDADD = $(tests_ldadd)
 tests_test_document_load_LDADD = $(tests_ldadd) $(LIBGLOM_LIBS)
+tests_test_document_autosave_LDADD = $(tests_ldadd) $(LIBGLOM_LIBS)
 tests_test_signal_reemit_LDADD = $(LIBGLOM_LIBS)
 tests_test_load_python_library_LDADD = $(LIBGLOM_LIBS)
 tests_test_python_module_LDADD = $(tests_ldadd) $(PYTHON_LIBS)

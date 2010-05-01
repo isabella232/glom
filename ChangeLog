@@ -1,5 +1,15 @@
 2010-05-01  Murray Cumming  <murrayc@murrayc.com>
 
+	Fix document saving (recently broken by me) and add a test for it.
+
+	* glom/libglom/document/bakery/document.cc: write_to_disk():
+	Do not fail if the parent directory already exists.
+	* Makefile_tests.am:
+	* tests/test_document_autosave.cc: Added a test of document saving and 
+	autosaving.
+
+2010-05-01  Murray Cumming  <murrayc@murrayc.com>
+
 	Move tests out of sub-directories, simplifying the build file.
 
 	* tests/Makefile_test.am:
