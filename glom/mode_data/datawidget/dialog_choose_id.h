@@ -35,7 +35,7 @@ namespace DataWidgetChildren
 
 class Dialog_ChooseID
   : public Gtk::Dialog,
-    public Base_DB
+    public View_Composite_Glom
 {
 public:
   static const char* glade_id;

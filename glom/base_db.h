@@ -136,9 +136,6 @@ protected:
   sharedptr<LayoutItem_Notebook> offer_notebook(const sharedptr<LayoutItem_Notebook>& start_notebook, Gtk::Window* transient_for = 0);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-  ///@result Whether the user would like to find again.
-  static bool show_warning_no_records_found(Gtk::Window& transient_for);
-
   void fill_full_field_details(const Glib::ustring& parent_table_name, sharedptr<LayoutItem_Field>& layout_item);
 
   bool get_relationship_exists(const Glib::ustring& table_name, const Glib::ustring& relationship_name);
@@ -160,9 +157,6 @@ protected:
   sharedptr<Field> get_fields_for_table_one_field(const Glib::ustring& table_name, const Glib::ustring& field_name) const;
 
   sharedptr<Field> get_field_primary_key_for_table(const Glib::ustring& table_name) const;
-
-  Glib::ustring get_find_where_clause_quick(const Glib::ustring& table_name, const Gnome::Gda::Value& quick_search) const;
-
 
   //Methods to be overridden by derived classes:
   virtual void set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value&  value);

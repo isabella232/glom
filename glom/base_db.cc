@@ -817,69 +817,6 @@ void Base_DB::fill_full_field_details(const Glib::ustring& parent_table_name, sh
   layout_item->set_full_field_details( get_document()->get_field(table_name, layout_item->get_name()) );
 }
 
-
-//static
-bool Base_DB::show_warning_no_records_found(Gtk::Window& transient_for)
-{
-  Glib::ustring message = _("Your find criteria did not match any records in the table.");
-
-#ifdef GLOM_ENABLE_MAEMO
-  Hildon::Note dialog(Hildon::NOTE_TYPE_CONFIRMATION_BUTTON, transient_for, message);
-#else
-  Gtk::MessageDialog dialog(Utils::bold_message(_("No Records Found")), true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_NONE);
-  dialog.set_secondary_text(message);
-  dialog.set_transient_for(transient_for);
-#endif
-
-  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  dialog.add_button(_("New Find"), Gtk::RESPONSE_OK);
-
-  const bool find_again = (dialog.run() == Gtk::RESPONSE_OK);
-  return find_again;
-}
-
-Glib::ustring Base_DB::get_find_where_clause_quick(const Glib::ustring& table_name, const Gnome::Gda::Value& quick_search) const
-{
-  Glib::ustring strClause;
-
-  const Document* document = get_document();
-  if(document)
-  {
-    //TODO: Cache the list of all fields, as well as caching (m_Fields) the list of all visible fields:
-    const Document::type_vec_fields fields = document->get_table_fields(table_name);
-
-    type_vecLayoutFields fieldsToGet;
-    for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
-    {
-      Glib::ustring strClausePart;
-
-      sharedptr<const Field> field = *iter;
-
-      bool use_this_field = true;
-      if(field->get_glom_type() != Field::TYPE_TEXT)
-      {
-          use_this_field = false;
-      }
-
-      if(use_this_field)
-      {
-        //TODO: Use a SQL parameter instead of using sql().
-        strClausePart = "\"" + table_name + "\".\"" + field->get_name() + "\" " + field->sql_find_operator() + " " +  field->sql_find(quick_search);
-      }
-
-      if(!strClausePart.empty())
-      {
-        if(!strClause.empty())
-          strClause += " OR ";
-
-        strClause += strClausePart;
-      }
-    }
-  }
-
-  return strClause;
-}
-
 sharedptr<Field> Base_DB::get_fields_for_table_one_field(const Glib::ustring& table_name, const Glib::ustring& field_name) const
 {
   //Initialize output parameter:

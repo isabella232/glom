@@ -841,4 +841,48 @@ bool Utils::file_exists(const Glib::ustring& uri)
   }
 }
 
+
+Glib::ustring Utils::get_find_where_clause_quick(Document* document, const Glib::ustring& table_name, const Gnome::Gda::Value& quick_search) 
+{
+  Glib::ustring strClause;
+
+  if(document)
+  {
+    //TODO: Cache the list of all fields, as well as caching (m_Fields) the list of all visible fields:
+    const Document::type_vec_fields fields = document->get_table_fields(table_name);
+
+    typedef std::vector< sharedptr<LayoutItem_Field> > type_vecLayoutFields;
+    type_vecLayoutFields fieldsToGet;
+    for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+    {
+      Glib::ustring strClausePart;
+
+      sharedptr<const Field> field = *iter;
+
+      bool use_this_field = true;
+      if(field->get_glom_type() != Field::TYPE_TEXT)
+      {
+          use_this_field = false;
+      }
+
+      if(use_this_field)
+      {
+        //TODO: Use a SQL parameter instead of using sql().
+        strClausePart = "\"" + table_name + "\".\"" + field->get_name() + "\" " + field->sql_find_operator() + " " +  field->sql_find(quick_search);
+      }
+
+      if(!strClausePart.empty())
+      {
+        if(!strClause.empty())
+          strClause += " OR ";
+
+        strClause += strClausePart;
+      }
+    }
+  }
+
+  return strClause;
+}
+
+
 } //namespace Glom

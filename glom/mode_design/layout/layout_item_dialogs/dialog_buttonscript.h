@@ -33,7 +33,7 @@ namespace Glom
 
 class Dialog_ButtonScript
  : public Gtk::Dialog,
-   public Base_DB //Give this class access to the current document, and to some utility methods.
+   public View_Composite_Glom //Give this class access to the current document, and to some utility methods.
 
 {
 public:

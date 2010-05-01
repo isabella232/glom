@@ -37,6 +37,7 @@
 namespace Glom
 {
 
+//TODO: Rename this to UiUtils
 namespace Utils
 {
 
@@ -102,6 +103,10 @@ int get_suitable_field_width_for_widget(Gtk::Widget& widget, const sharedptr<con
 std::string get_filepath_with_extension(const std::string& filepath, const std::string& extension);
 
 Glib::RefPtr<Gdk::Pixbuf> image_scale_keeping_ratio(const Glib::RefPtr<Gdk::Pixbuf>& pixbuf, int target_height, int target_width);
+
+///@result Whether the user would like to find again.
+bool show_warning_no_records_found(Gtk::Window& transient_for);
+
   
 } //namespace Utils
 

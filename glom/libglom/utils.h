@@ -23,6 +23,7 @@
 
 #include <libglom/data_structure/field.h>
 #include <libglom/data_structure/numeric_format.h>
+#include <libglom/document/document.h>
 
 #include <libglom/data_structure/layout/layoutitem_field.h>
 
@@ -91,6 +92,9 @@ Glib::ustring build_sql_select_with_key(
   const type_vecConstLayoutFields& fieldsToGet,
   const sharedptr<const Field>& key_field,
   const Gnome::Gda::Value& key_value);
+
+Glib::ustring get_find_where_clause_quick(Document* document, const Glib::ustring& table_name, const Gnome::Gda::Value& quick_search);
+
 
 typedef std::list< std::pair<Gnome::Gda::Value, Gnome::Gda::Value> > type_list_values_with_second;
 type_list_values_with_second get_choice_values(const sharedptr<const LayoutItem_Field>& field);

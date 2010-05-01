@@ -1467,7 +1467,7 @@ void Frame_Glom::on_button_quickfind()
   }
   else
   {
-    const Glib::ustring where_clause = get_find_where_clause_quick(m_table_name, Gnome::Gda::Value(criteria));
+    const Glib::ustring where_clause = Utils::get_find_where_clause_quick(get_document(), m_table_name, Gnome::Gda::Value(criteria));
     //std::cout << "Frame_Glom::on_button_quickfind(): where_clause=" << where_clause << std::endl;
     on_notebook_find_criteria(where_clause);
   }
@@ -1501,7 +1501,7 @@ void Frame_Glom::on_notebook_find_criteria(const Glib::ustring& where_clause)
 
     if(!records_found)
     {
-      const bool find_again = show_warning_no_records_found(*get_app_window());
+      const bool find_again = Utils::show_warning_no_records_found(*get_app_window());
 
       if(find_again)
         pApp->set_mode_find();

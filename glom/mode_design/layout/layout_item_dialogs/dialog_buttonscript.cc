@@ -119,7 +119,7 @@ void Dialog_ButtonScript::on_button_test_script()
   }
 
   //We need the connection when we run the script, so that the script may use it.
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(this /* parent window */);
+  sharedptr<SharedConnection> sharedconnection = ConnectionPool::get_and_connect();
 
   PythonUICallbacks callbacks;
   glom_execute_python_function_implementation(calculation,

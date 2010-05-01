@@ -1,5 +1,17 @@
 2010-05-01  Murray Cumming  <murrayc@murrayc.com>
 
+	Move some more methods from Base_DB.
+	
+	* glom/base_db.[h|cc]: Move show_warning_no_records_found() to utils_ui.[h|cc].
+	get_find_where_clause_quick(): Move to utils.[h|cc].
+	* glom/frame_glom.cc: Adapted.
+	* glom/mode_design/layout/layout_item_dialogs/box_formatting.h:
+	* glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.[h|cc]:
+		* glom/mode_data/datawidget/dialog_choose_id.[h|cc]: Don't derive from Base_DB 
+	because that is no longer necessary after adapting.
+
+2010-05-01  Murray Cumming  <murrayc@murrayc.com>
+
 	* glom/libglom/db_utils.cc: create_database(): Actually use the progress slot.
 
 2010-05-01  Murray Cumming  <murrayc@murrayc.com>

@@ -34,7 +34,7 @@ namespace Glom
 
 class Box_Formatting
  : public Gtk::VBox,
-   public Base_DB
+   public View_Composite_Glom
 {
 public:
   static const char* glade_id;
