@@ -102,7 +102,7 @@ Glib::ustring create_name_from_title(const Glib::ustring& title);
 Glib::ustring string_escape_underscores(const Glib::ustring& text);
 
 /** Get just the first part of a locale, such as de_DE,
- * ignoring, for instance, .UTF-8 or @euro at the end.
+ * ignoring, for instance, .UTF-8 or \@euro at the end.
  */
 Glib::ustring locale_simplify(const Glib::ustring& locale_id);
 
