@@ -1,3 +1,22 @@
+2010-05-01  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix document saving (recently broken by me) and add a test for it.
+
+	* glom/libglom/document/bakery/document.cc: write_to_disk():
+	Do not fail if the parent directory already exists.
+	* Makefile_tests.am:
+	* tests/test_document_autosave.cc: Added a test of document saving and 
+	autosaving.
+
+2010-05-01  Murray Cumming  <murrayc@murrayc.com>
+
+	Move tests out of sub-directories, simplifying the build file.
+
+	* tests/Makefile_test.am:
+	* tests/test_document_load.cc:
+	* tests/test_selfhosting_new_empty.cc: Move out of the sub-directories,
+	because they do not need extra files.
+
 2010-04-27  Murray Cumming  <murrayc@murrayc-x61>
 
 	PyGlom: Don't use deprecated boost::python::args.
