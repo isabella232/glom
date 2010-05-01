@@ -33,7 +33,7 @@ BOOST_PYTHON_MODULE(glom_1_14)
 {
   boost::python::docstring_options doc_options(
     true, // show the docstrings from here
-    true, // show Python signatures.
+    false, // don't show Python signatures.
     false); // Don't mention the C++ method signatures in the generated docstrings.
 
   // Note: Our python docstring documentation is in ReStructuredText format,
@@ -125,13 +125,29 @@ BOOST_PYTHON_MODULE(glom_1_14)
     "    record.related['invoice_lines'].sum('total_price')\n")
 
     .def("sum", &PyGlomRelatedRecord::sum, boost::python::arg("field_name"),
-      "Add all values of the field in the related records.")
+      "  Add all values of the field in the related records.\n"
+      "\n"
+      "  :param field_name: The name of the field.\n"
+      "  :type field_name: string\n"
+      "  :returns: The summarized value.")
     .def("count", &PyGlomRelatedRecord::sum, boost::python::arg("field_name"),
-      "Count all values in the field in the related records.")
+      "  Count all values in the field in the related records.\n"
+      "\n"
+      "  :param field_name: The name of the field.\n"
+      "  :type field_name: string\n"
+      "  :returns: The summarized value.")
     .def("min", &PyGlomRelatedRecord::sum, boost::python::arg("field_name"),
-      "Minimum of all values of the field in the related recordss.")
+      "  Minimum of all values of the field in the related records.\n"
+      "\n"
+      "  :param field_name: The name of the field.\n"
+      "  :type field_name: string\n"
+      "  :returns: The summarized value.")
     .def("max", &PyGlomRelatedRecord::sum, boost::python::arg("field_name"),
-      "Maximum of all values of the field in the related records.")
+      "  Maximum of all values of the field in the related records.\n"
+      "\n"
+      "  :param field_name: The name of the field.\n"
+      "  :type field_name: string\n"
+      "  :returns: The summarized value.")
     .def("__getitem__", &PyGlomRelatedRecord::getitem)
     .def("__len__", &PyGlomRelatedRecord::len)
   ;
@@ -141,15 +157,25 @@ BOOST_PYTHON_MODULE(glom_1_14)
 
     .def("show_table_details", &PyGlomUI::show_table_details,
       boost::python::arg("table_name"), boost::python::arg("primary_key_value"),
-      "Navigate to the specified table, showing its details view for the specified record.")
+      "  Navigate to the specified table, showing its details view for the specified record.\n"
+      "\n"
+      "  :param table_name: The name of the table to navigate to.\n"
+      "  :type table_name: string\n"
+      "  :param primary_key_value: The value of the primary key field in the record to navigate to.")
     .def("show_table_list", &PyGlomUI::show_table_list,
        boost::python::arg("table_name"),
-      "Navigate to the specified table, showing its list view.")
+       "  Navigate to the specified table, showing its list view.\n"
+      "\n"
+       "  :param table_name: The name of the table to navigate to."
+       "  :type table_name: string")
     .def("print_layout", &PyGlomUI::print_layout,
       "Print the current layout for the current table.")
     .def("print_report", &PyGlomUI::print_report,
       boost::python::arg("report_name"),
-      "Print the specified report for the current table.")
+      "  Print the specified report for the current table.\n"
+      "\n"
+      "  :param report_name: The name of the report to print.\n"
+      "  :type report_name: string")
     .def("start_new_record", &PyGlomUI::start_new_record,
       "Start a new empty record for the current table, offering the empty record in the UI.")
   ;

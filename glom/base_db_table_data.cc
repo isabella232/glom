@@ -128,6 +128,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
             // Don't evaluate function on error
 #endif // GLIBMM_EXCEPTIONS_ENABLED
 
+            Glib::ustring error_message; //TODO: Check this.
             const Gnome::Gda::Value value =
               glom_evaluate_python_function_implementation(
                 field->get_glom_type(),
@@ -136,7 +137,8 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
                 document,
                 m_table_name,
                 fieldPrimaryKey, primary_key_value,
-                sharedconnection->get_gda_connection());
+                sharedconnection->get_gda_connection(),
+                error_message);
             set_entered_field_data(layout_item, value);
 #ifndef GLIBMM_EXCEPTIONS_ENABLED
           }

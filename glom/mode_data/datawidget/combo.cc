@@ -199,8 +199,12 @@ void ComboGlom::set_text(const Glib::ustring& text)
     }
   }
 
-  g_warning("ComboGlom::set_text(): no item found for: %s", text.c_str());
-
+  //It's OK to pass "" to this method to unset any items:
+  if(!text.empty())
+  {
+    g_warning("ComboGlom::set_text(): no item found for: %s", text.c_str());
+  }
+  
   //Not found, so mark it as blank:
   #ifndef GLOM_ENABLE_MAEMO
   unset_active();

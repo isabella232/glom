@@ -1,5 +1,42 @@
 2010-05-01  Murray Cumming  <murrayc@murrayc.com>
 
+	Python scripts and calcuations: Test buttons now show python errors.
+	
+	* glom/python_embed/glom_python.[h|cc]: 
+	glom_execute_python_function_implementation(), 
+	glom_evaluate_python_function_implementation(): Add an error_message output 
+	parameter, to report syntax errors, for instance.
+	* glom/mode_design/fields/dialog_fieldcalculation.cc:
+  * glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.cc:
+  Show the python error, if any, when pressing the Test button.
+  * Other files: Adapt, ignoring the error message for now.
+  * Makefile_tests.am:
+	* tests/test_python_execute_func_bad_syntax.cc: Added a test of the new 
+	error_message parameter. 
+
+2010-05-01  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix a possible crash when showing choices.
+
+	* glom/mode_data/datawidget/combo.cc: set_text(): Don't show a warning if 
+	"" is not found because it's OK to use that to clear the combo.
+	* glom/mode_data/datawidget/combochoiceswithtreemodel.cc: 
+	set_choices_with_second(): Don't dereference a null smartpointer, avoiding 
+	a crash with one .glom file that I tried.
+
+2010-05-01  Murray Cumming  <murrayc@murrayc.com>
+
+	Python Glom API documentation improvement.
+	
+	* glom/python_embed/python_module/py_glom_module.cc: Turn off auto-writing 
+	of the Python signatures in the docstrings, because that is a) crappy and 
+	b) confuses the sphinx autodoc module, which adds an invisible ..function 
+	reStrucuredText line.
+	Add :param:, :type, and :returns: lines with the necessary indenting and 
+	empty lines needed by that invisible ..function line. 
+	
+2010-05-01  Murray Cumming  <murrayc@murrayc.com>
+
 	Move some more methods from Base_DB.
 	
 	* glom/base_db.[h|cc]: Move show_warning_no_records_found() to utils_ui.[h|cc].

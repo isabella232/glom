@@ -23,6 +23,7 @@
 #include "../../box_db_table.h"
 #include <glom/frame_glom.h>
 #include <glom/python_embed/glom_python.h>
+#include <glom/utils_ui.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <gtksourceviewmm/sourcelanguagemanager.h>
 
@@ -128,6 +129,7 @@ void Dialog_FieldCalculation::on_button_test()
   //We need the connection when we run the script, so that the script may use it.
   sharedptr<SharedConnection> sharedconnection = connect_to_server(this /* parent window */);
 
+  Glib::ustring error_message;
   const Gnome::Gda::Value value = glom_evaluate_python_function_implementation(
     Field::TYPE_TEXT,
     calculation,
@@ -135,10 +137,13 @@ void Dialog_FieldCalculation::on_button_test()
     document,
     m_table_name,
     sharedptr<Field>(), Gnome::Gda::Value(), // primary key - only used when setting values in the DB.
-    sharedconnection->get_gda_connection());
+    sharedconnection->get_gda_connection(),
+    error_message);
 
-  Frame_Glom::show_ok_dialog(_("Calculation result"), _("The result of the calculation is:\n") + value.to_string(), *this);
-
+  if(error_message.empty())
+    Utils::show_ok_dialog(_("Calculation result"), _("The result of the calculation is:\n") + value.to_string(), *this, Gtk::MESSAGE_INFO);
+  else
+    Utils::show_ok_dialog(_("Calculation failed"), _("The calculation failed with this error:\n") + error_message, *this, Gtk::MESSAGE_ERROR);
 
   //Show what fields would trigger the recalculation:
   sharedptr<Field> temp = sharedptr<Field>::create();

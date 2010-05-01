@@ -15,14 +15,19 @@ void execute_func_with_date_return_value()
   Glib::RefPtr<Gnome::Gda::Connection> connection;
 
   //Execute a python function:
+  Glib::ustring error_message;
   const Gnome::Gda::Value value = Glom::glom_evaluate_python_function_implementation(
     Glom::Field::TYPE_DATE, calculation, field_values,
     0 /* document */, "" /* table name */,
     Glom::sharedptr<Glom::Field>(), Gnome::Gda::Value(), // primary key details. Not used in this test.
-    connection);
+    connection,
+    error_message);
 
   //std::cout << "type=" << g_type_name(value.get_value_type()) << std::endl;
 
+  //Check that there was no python error:
+  g_assert(error_message.empty());
+  
   //Check that the return value is of the expected type:
   g_assert(value.get_value_type() == G_TYPE_DATE);
 
@@ -45,14 +50,19 @@ void execute_func_with_date_input_value()
   Glib::RefPtr<Gnome::Gda::Connection> connection;
 
   //Execute a python function:
+  Glib::ustring error_message;
   const Gnome::Gda::Value value = Glom::glom_evaluate_python_function_implementation(
     Glom::Field::TYPE_NUMERIC, calculation, field_values,
     0 /* document */, "" /* table name */,
     Glom::sharedptr<Glom::Field>(), Gnome::Gda::Value(), // primary key details. Not used in this test.
-    connection);
+    connection,
+    error_message);
 
   //std::cout << "type=" << g_type_name(value.get_value_type()) << std::endl;
 
+  //Check that there was no python error:
+  g_assert(error_message.empty());
+  
   //Check that the return value is of the expected type:
   g_assert(value.get_value_type() == GDA_TYPE_NUMERIC);
 
