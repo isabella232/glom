@@ -5,13 +5,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-17 09:27+0000\n"
-"PO-Revision-Date: 2010-03-01 22:13+0100\n"
+"POT-Creation-Date: 2010-04-22 21:53+0000\n"
+"PO-Revision-Date: 2010-04-20 21:08+0100\n"
 "Last-Translator: Mario Blättermann <mariobl@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
 
 #: C/legal.xml:2(para) C/glom.xml:2(para)
 msgid ""
@@ -19,8 +21,8 @@ msgid ""
 "the terms of the GNU Free Documentation License (GFDL), Version 1.1 or any "
 "later version published by the Free Software Foundation with no Invariant "
 "Sections, no Front-Cover Texts, and no Back-Cover Texts. You can find a copy "
-"of the GFDL at this <ulink type=\"help\" url=\"ghelp:fdl\">link</ulink> or in "
-"the file COPYING-DOCS distributed with this manual."
+"of the GFDL at this <ulink type=\"help\" url=\"ghelp:fdl\">link</ulink> or "
+"in the file COPYING-DOCS distributed with this manual."
 msgstr ""
 "Das vorliegende Dokument kann gemäß den Bedingungen der GNU Free "
 "Documentation License (GFDL), Version 1.1 oder jeder späteren, von der Free "
@@ -63,14 +65,14 @@ msgid ""
 "DOCUMENT IS PROVIDED ON AN \"AS IS\" BASIS, WITHOUT WARRANTY OF ANY KIND, "
 "EITHER EXPRESSED OR IMPLIED, INCLUDING, WITHOUT LIMITATION, WARRANTIES THAT "
 "THE DOCUMENT OR MODIFIED VERSION OF THE DOCUMENT IS FREE OF DEFECTS "
-"MERCHANTABLE, FIT FOR A PARTICULAR PURPOSE OR NON-INFRINGING. THE ENTIRE RISK "
-"AS TO THE QUALITY, ACCURACY, AND PERFORMANCE OF THE DOCUMENT OR MODIFIED "
-"VERSION OF THE DOCUMENT IS WITH YOU. SHOULD ANY DOCUMENT OR MODIFIED VERSION "
-"PROVE DEFECTIVE IN ANY RESPECT, YOU (NOT THE INITIAL WRITER, AUTHOR OR ANY "
-"CONTRIBUTOR) ASSUME THE COST OF ANY NECESSARY SERVICING, REPAIR OR "
-"CORRECTION. THIS DISCLAIMER OF WARRANTY CONSTITUTES AN ESSENTIAL PART OF THIS "
-"LICENSE. NO USE OF ANY DOCUMENT OR MODIFIED VERSION OF THE DOCUMENT IS "
-"AUTHORIZED HEREUNDER EXCEPT UNDER THIS DISCLAIMER; AND"
+"MERCHANTABLE, FIT FOR A PARTICULAR PURPOSE OR NON-INFRINGING. THE ENTIRE "
+"RISK AS TO THE QUALITY, ACCURACY, AND PERFORMANCE OF THE DOCUMENT OR "
+"MODIFIED VERSION OF THE DOCUMENT IS WITH YOU. SHOULD ANY DOCUMENT OR "
+"MODIFIED VERSION PROVE DEFECTIVE IN ANY RESPECT, YOU (NOT THE INITIAL "
+"WRITER, AUTHOR OR ANY CONTRIBUTOR) ASSUME THE COST OF ANY NECESSARY "
+"SERVICING, REPAIR OR CORRECTION. THIS DISCLAIMER OF WARRANTY CONSTITUTES AN "
+"ESSENTIAL PART OF THIS LICENSE. NO USE OF ANY DOCUMENT OR MODIFIED VERSION "
+"OF THE DOCUMENT IS AUTHORIZED HEREUNDER EXCEPT UNDER THIS DISCLAIMER; AND"
 msgstr ""
 "DIESES DOKUMENT WIRD »WIE VORLIEGEND« GELIEFERT, OHNE GARANTIEN IRGENDEINER "
 "ART, SOWOHL AUSDRÜCKLICH GENANNTE ALS AUCH ANGEDEUTETE. DIES BEZIEHT SICH "
@@ -79,8 +81,8 @@ msgstr ""
 "ZWECK GEEIGNET IST ODER DASS ES KEINE RECHTE DRITTER VERLETZT. DAS VOLLE "
 "RISIKO WAS QUALITÄT, GENAUIGKEIT UND LEISTUNG DES DOKUMENTS ODER VERÄNDERTE "
 "FASSUNGEN DES DOKUMENTS LIEGT BEI IHNEN. SOLLTE EIN DOKUMENT ODER EINE "
-"VERÄNDERTE FASSUNG DAVON FEHLER IRGENDEINER ART BEINHALTEN, TRAGEN SIE (NICHT "
-"DER URSPRUNGSAUTOR, DER AUTOR ODER EIN MITWIRKENDER) DIE KOSTEN FÜR "
+"VERÄNDERTE FASSUNG DAVON FEHLER IRGENDEINER ART BEINHALTEN, TRAGEN SIE "
+"(NICHT DER URSPRUNGSAUTOR, DER AUTOR ODER EIN MITWIRKENDER) DIE KOSTEN FÜR "
 "NOTWENDIGE DIENSTLEISTUNGEN, REPARATUREN ODER FEHLERKORREKTUREN. DIESER "
 "HAFTUNGSAUSSCHLUSS IST EIN ESSENZIELLER TEIL DIESER LIZENZ. DIE VERWENDUNG "
 "EINES DOKUMENTS ODER EINER VERÄNDERTEN VERSION DES DOKUMENTS IST NICHT "
@@ -91,11 +93,11 @@ msgid ""
 "UNDER NO CIRCUMSTANCES AND UNDER NO LEGAL THEORY, WHETHER IN TORT (INCLUDING "
 "NEGLIGENCE), CONTRACT, OR OTHERWISE, SHALL THE AUTHOR, INITIAL WRITER, ANY "
 "CONTRIBUTOR, OR ANY DISTRIBUTOR OF THE DOCUMENT OR MODIFIED VERSION OF THE "
-"DOCUMENT, OR ANY SUPPLIER OF ANY OF SUCH PARTIES, BE LIABLE TO ANY PERSON FOR "
-"ANY DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES OF ANY "
-"CHARACTER INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF GOODWILL, WORK "
-"STOPPAGE, COMPUTER FAILURE OR MALFUNCTION, OR ANY AND ALL OTHER DAMAGES OR "
-"LOSSES ARISING OUT OF OR RELATING TO USE OF THE DOCUMENT AND MODIFIED "
+"DOCUMENT, OR ANY SUPPLIER OF ANY OF SUCH PARTIES, BE LIABLE TO ANY PERSON "
+"FOR ANY DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES OF "
+"ANY CHARACTER INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF GOODWILL, "
+"WORK STOPPAGE, COMPUTER FAILURE OR MALFUNCTION, OR ANY AND ALL OTHER DAMAGES "
+"OR LOSSES ARISING OUT OF OR RELATING TO USE OF THE DOCUMENT AND MODIFIED "
 "VERSIONS OF THE DOCUMENT, EVEN IF SUCH PARTY SHALL HAVE BEEN INFORMED OF THE "
 "POSSIBILITY OF SUCH DAMAGES."
 msgstr ""
@@ -104,13 +106,13 @@ msgstr ""
 "ANDERWEITIG KANN DER AUTOR, URSPRUNGSAUTOR, EIN MITWIRKENDER ODER EIN "
 "VERTRIEBSPARTNER DIESES DOKUMENTS ODER EINER VERÄNDERTEN FASSUNG DES "
 "DOKUMENTS ODER EIN ZULIEFERER EINER DIESER PARTEIEN, HAFTBAR GEMACHT WERDEN "
-"FÜR DIREKTE, INDIREKTE, SPEZIELLE, VERSEHENTLICHE ODER FOLGESCHÄDEN JEGLICHER "
-"ART, EINSCHLIEßLICH UND OHNE EINSCHRÄNKUNGEN SCHÄDEN DURCH VERLUST VON "
-"KULANZ, ARBEITSAUSFALL, COMPUTERVERSAGEN ODER COMPUTERFEHLFUNKTIONEN ODER "
-"ALLE ANDEREN SCHÄDEN ODER VERLUSTE, DIE SICH AUS ODER IN VERBINDUNG MIT DER "
-"VERWENDUNG DES DOKUMENTS UND VERÄNDERTER FASSUNGEN DES DOKUMENTS ERGEBEN, "
-"AUCH WENN DIE OBEN GENANNTEN PARTEIEN ÜBER DIE MÖGLICHKEIT SOLCHER SCHÄDEN "
-"INFORMIERT WAREN."
+"FÜR DIREKTE, INDIREKTE, SPEZIELLE, VERSEHENTLICHE ODER FOLGESCHÄDEN "
+"JEGLICHER ART, EINSCHLIEßLICH UND OHNE EINSCHRÄNKUNGEN SCHÄDEN DURCH VERLUST "
+"VON KULANZ, ARBEITSAUSFALL, COMPUTERVERSAGEN ODER COMPUTERFEHLFUNKTIONEN "
+"ODER ALLE ANDEREN SCHÄDEN ODER VERLUSTE, DIE SICH AUS ODER IN VERBINDUNG MIT "
+"DER VERWENDUNG DES DOKUMENTS UND VERÄNDERTER FASSUNGEN DES DOKUMENTS "
+"ERGEBEN, AUCH WENN DIE OBEN GENANNTEN PARTEIEN ÜBER DIE MÖGLICHKEIT SOLCHER "
+"SCHÄDEN INFORMIERT WAREN."
 
 #: C/legal.xml:28(para) C/glom.xml:28(para)
 msgid ""
@@ -119,8 +121,8 @@ msgid ""
 "<placeholder-1/>"
 msgstr ""
 "DAS DOKUMENT UND VERÄNDERTE FASSUNGEN DES DOKUMENTS WERDEN UNTER DEN "
-"BEDINGUNGEN DER GNU FREE DOCUMENTATION LICENSE ZUR VERFÜGUNG GESTELLT MIT DEM "
-"WEITERGEHENDEN VERSTÄNDNIS, DASS: <placeholder-1/>"
+"BEDINGUNGEN DER GNU FREE DOCUMENTATION LICENSE ZUR VERFÜGUNG GESTELLT MIT "
+"DEM WEITERGEHENDEN VERSTÄNDNIS, DASS: <placeholder-1/>"
 
 #. When image changes, this message will be marked fuzzy or untranslated for you.
 #. It doesn't matter what you translate it to: it's not used at all.
@@ -131,7 +133,8 @@ msgstr ""
 #. When image changes, this message will be marked fuzzy or untranslated for you.
 #. It doesn't matter what you translate it to: it's not used at all.
 #: C/glom.xml:212(None)
-msgid "@@image: 'figures/glom_tables.png'; md5=e725285aae974272ca99dc991c7ae9ed"
+msgid ""
+"@@image: 'figures/glom_tables.png'; md5=e725285aae974272ca99dc991c7ae9ed"
 msgstr ""
 
 #. When image changes, this message will be marked fuzzy or untranslated for you.
@@ -145,7 +148,8 @@ msgstr ""
 #. It doesn't matter what you translate it to: it's not used at all.
 #: C/glom.xml:261(None)
 msgid ""
-"@@image: 'figures/glom_data_details.png'; md5=5444ab817d4e4e4da6899abbc5cbfd2f"
+"@@image: 'figures/glom_data_details.png'; "
+"md5=5444ab817d4e4e4da6899abbc5cbfd2f"
 msgstr ""
 
 #. When image changes, this message will be marked fuzzy or untranslated for you.
@@ -261,7 +265,6 @@ msgid "murrayc@murrayc.com"
 msgstr "murrayc@murrayc.com"
 
 #: C/glom.xml:96(revnumber)
-#| msgid "for Glom v1.6"
 msgid "Glom 1.6"
 msgstr "Glom 1.6"
 
@@ -279,17 +282,17 @@ msgstr "Rückmeldungen"
 
 #: C/glom.xml:109(para)
 msgid ""
-"To report a bug or make a suggestion regarding the Glom or this manual can be "
-"submitted to the <ulink url=\"http://bugzilla.gnome.org\" type=\"http\">GNOME "
-"Bugzilla </ulink>, under the Glom product. Please search bugzilla before "
-"submitting your bug to ensure that yours hasn't already been reported."
+"To report a bug or make a suggestion regarding the Glom or this manual can "
+"be submitted to the <ulink url=\"http://bugzilla.gnome.org\" type=\"http"
+"\">GNOME Bugzilla </ulink>, under the Glom product. Please search bugzilla "
+"before submitting your bug to ensure that yours hasn't already been reported."
 msgstr ""
 "Um einen Fehler zu melden oder einen Vorschlag zu <application>Glom</"
 "application> oder zu diesem Handbuch zu machen, können Sie das <ulink url="
-"\"http://bugzilla.gnome.org\" type=\"http\">Fehlererfassungssystem von GNOME</"
-"ulink> verwenden, in welchem Sie als Produkt <application>Glom</application> "
-"auswählen. Bitte durchsuchen Sie zunächst die Fehlerdatenbank, um sicher zu "
-"gehen, dass über Ihr Anliegen nicht bereits berichtet wurde."
+"\"http://bugzilla.gnome.org\" type=\"http\">Fehlererfassungssystem von "
+"GNOME</ulink> verwenden, in welchem Sie als Produkt <application>Glom</"
+"application> auswählen. Bitte durchsuchen Sie zunächst die Fehlerdatenbank, "
+"um sicher zu gehen, dass über Ihr Anliegen nicht bereits berichtet wurde."
 
 #: C/glom.xml:119(para)
 msgid "User manual for Glom."
@@ -357,23 +360,34 @@ msgstr "Zeigt das Hauptfenster von Glom."
 
 #: C/glom.xml:198(title)
 msgid "Using Glom as an Operator"
-msgstr ""
+msgstr "Glom als Operator verwenden"
 
 #: C/glom.xml:199(para)
 msgid ""
 "To open an existing Glom document, either open that document from the File "
 "Manager, or choose Glom from the Applications menu, and then choose the "
-"document when asked. Glom will ask you for a user name and password to access "
-"the database. Your administrator will provide your user name and password."
+"document when asked. Glom will ask you for a user name and password to "
+"access the database. Your administrator will provide your user name and "
+"password."
 msgstr ""
+"Um ein vorhandenes Glom-Dokument zu öffnen, können Sie es entweder im "
+"Dateimanager öffnen oder Sie wählen <guilabel>Glom</guilabel> im Menü "
+"<guimenu>Anwendungen</guimenu> und öffnen dann das gewünschte Dokument. Glom "
+"fragt Sie nach dem Benutzernamen und dem Passwort zum Zugriff auf die "
+"Datenbank. Ihren Benutzernamen und Ihr Passwort stellt Ihnen Ihr "
+"Systemverwalter zur Verfügung."
 
 #: C/glom.xml:201(para)
 msgid ""
 "When you open an existing document, Glom will be in <literal>Operator</"
-"literal><literal>user level</literal>. This user level allows you to find and "
-"edit records, but does not allow you to change the fundamental structure of "
-"the database."
+"literal><literal>user level</literal>. This user level allows you to find "
+"and edit records, but does not allow you to change the fundamental structure "
+"of the database."
 msgstr ""
+"Wenn Sie ein vorhandenes Dokument öffnen, befindet sich Glom in der "
+"<literal>Operator</literal><literal>-Ebene</literal>. Diese Ebene ermöglicht "
+"Ihnen die Suche und Bearbeitung von Datensätzen, verbietet aber Änderungen "
+"an der grundlegenden Struktur der Datenbank."
 
 #: C/glom.xml:204(title)
 msgid "Navigation"
@@ -383,17 +397,22 @@ msgstr "Navigation"
 msgid ""
 "Each database has several tables. To look at a different table, choose "
 "<literal>Tables</literal> from the <literal>Navigate</literal> menu. Then "
-"double-click on the table, or select it and click the <literal>Open</literal> "
-"button."
+"double-click on the table, or select it and click the <literal>Open</"
+"literal> button."
 msgstr ""
+"Jede Datenbank besteht aus einer Reihe von Tabellen. Um eine andere Tabelle "
+"zu betrachten, wählen Sie <guilabel>Tabellen</guilabel> aus dem Menü "
+"<guimenu>Navigation</guimenu>. Dann führen Sie einen Doppelklick auf die "
+"Tabelle aus oder wählen Sie diese aus und klicken auf den Knopf "
+"<guibutton>Öffnen</guibutton>."
 
 #: C/glom.xml:208(title)
 msgid "Navigating to a Table"
-msgstr ""
+msgstr "Navigieren zu einer Tabelle"
 
 #: C/glom.xml:215(phrase)
 msgid "Navigating to a Table."
-msgstr ""
+msgstr "Navigieren zu einer Tabelle."
 
 #: C/glom.xml:224(title)
 msgid "Viewing and Entering Data"
@@ -404,6 +423,9 @@ msgid ""
 "When in <literal>Data Mode</literal>, you can view or enter information in "
 "either the <literal>List</literal> or <literal>Details</literal> view."
 msgstr ""
+"Im <literal>Datenmodus</literal> können Sie Informationen entweder in der "
+"<literal>Listenansicht</literal> oder <literal>Detailansicht</literal> "
+"eingeben."
 
 #: C/glom.xml:228(title) C/glom.xml:234(title)
 msgid "The List View"
@@ -420,8 +442,8 @@ msgstr ""
 #: C/glom.xml:230(para) C/glom.xml:253(para)
 msgid ""
 "When you enter data into a field it will be saved into the database "
-"immediately after you finish editing the field. If it is a date or time field "
-"then the data format will be checked for you."
+"immediately after you finish editing the field. If it is a date or time "
+"field then the data format will be checked for you."
 msgstr ""
 "Wenn Sie in ein Feld Daten eingeben, werden diese unmittelbar in der "
 "Datenbank gespeichert, sobald Sie die Eingabe in diesem Feld beendet haben. "
@@ -430,9 +452,9 @@ msgstr ""
 
 #: C/glom.xml:231(para)
 msgid ""
-"To create a new record just click the <literal>New</literal> button, or start "
-"typing into a field in the last empty row. A new record row will be created "
-"with blank fields for you to fill in."
+"To create a new record just click the <literal>New</literal> button, or "
+"start typing into a field in the last empty row. A new record row will be "
+"created with blank fields for you to fill in."
 msgstr ""
 "Um einen neuen Datensatz zu erstellen, klicken Sie auf den Knopf "
 "<guilabel>Neu</guilabel>, oder beginnen Sie mit der Eingabe in einem Feld in "
@@ -471,6 +493,9 @@ msgid ""
 "To create a new record just click the <literal>New</literal> button. A new "
 "record will be created with blank fields for you to fill in."
 msgstr ""
+"Um einen neuen Datensatz zu erstellen, klicken Sie auf den Knopf "
+"<guibutton>Neu</guibutton>. Ein neuer Datensatz mit leeren Feldern wird "
+"angelegt, welche Sie ausfüllen können."
 
 #: C/glom.xml:264(phrase)
 msgid "The Details View."
@@ -486,6 +511,10 @@ msgid ""
 "List and Details views will now be empty, and a Find button will appear at "
 "the bottom of the window."
 msgstr ""
+"Wählen Sie den <guilabel>Suchmodus</guilabel> aus dem Menü <guimenu>Modus</"
+"guimenu>. Die Felder in der Listen- und Detailansicht werden nun leer sein. "
+"Außerdem erscheint ein <guibutton>Suchen</guibutton>-Knopf am unteren Rand "
+"des Fensters."
 
 #: C/glom.xml:277(para)
 msgid ""
@@ -493,6 +522,10 @@ msgid ""
 "with that information in that field. For instance, enter Jim into a name "
 "field to find records with \"Jim\" or \"Jimmy\" in the name."
 msgstr ""
+"Geben Sie Informationen oder Teile von Informationen in ein Feld ein, um "
+"Datensätze zu finden, welche die angegebene Information in diesem Feld "
+"enthalten. Geben Sie beispielsweise »Jim« in einem Namensfeld ein, um "
+"Datensätze zu finden, die in diesem Feld »Jim« oder »Jimmy« im Namen enthalten."
 
 #: C/glom.xml:278(para)
 msgid ""
@@ -501,6 +534,10 @@ msgid ""
 "you that record in the Details view. If several records are found then it "
 "will show you those records in the List view."
 msgstr ""
+"Wenn Sie auf den Knopf <guibutton>Suchen</guibutton> klicken, sucht Glom "
+"nach Datensätzen und zeigt diese an. Wenn nur ein Datensatz gefunden wurde, "
+"wird dieser in der Detailansicht angezeigt. Falls mehrere Datensätze "
+"gefunden wurden, werden diese in der Listenansicht angezeigt."
 
 #: C/glom.xml:283(title)
 msgid "Printing Reports"
@@ -508,14 +545,22 @@ msgstr "Drucken von Berichten"
 
 #: C/glom.xml:284(para)
 msgid ""
-"If your database developer has defined some reports for a table then you will "
-"seem them listed in the <literal>Reports</literal> menu. Just choose the "
-"report from the menu to create the report. If you have previously performed a "
-"search then the report will contain only the currently-found data. Otherwise "
-"it will contain all data in the current report. Remember that each table has "
-"its own reports so you may need to switch to the relevant table to use a "
-"particular report."
+"If your database developer has defined some reports for a table then you "
+"will seem them listed in the <literal>Reports</literal> menu. Just choose "
+"the report from the menu to create the report. If you have previously "
+"performed a search then the report will contain only the currently-found "
+"data. Otherwise it will contain all data in the current report. Remember "
+"that each table has its own reports so you may need to switch to the "
+"relevant table to use a particular report."
 msgstr ""
+"Falls der Entwickler Ihrer Datenbank Berichte für eine Tabelle festgelegt "
+"hat, dann erscheinen diese möglicherweise im Menü <guimenu>Berichte</"
+"guimenu>. Wählen Sie zur Erstellung eines Berichts den gewünschten Eintrag "
+"im Menü aus. Falls Sie vorher bereits eine Suche ausgeführt haben, dann wird "
+"der Bericht nur die aktuell gefundenen Daten anzeigen. Anderenfalls werden "
+"alle Daten im aktuellen Bericht erscheinen. Beachten Sie, dass es für jede "
+"Tabelle eigene Berichte gibt. Sie werden daher zu der entsprechenden Tabelle "
+"wechseln müssen, um einen bestimmten Bericht erstellen zu können."
 
 #: C/glom.xml:287(title)
 msgid "A report"
@@ -536,6 +581,11 @@ msgid ""
 "user level after opening an existing document, with the <literal>User Level</"
 "literal> menu. Glom will only allow this if the administrator has allowed it."
 msgstr ""
+"Wenn Sie ein neues Dokument anlegen, befindet sich Glom in der "
+"<literal>Entwickler</literal><literal>-Ebene</literal>. Sie können nach dem "
+"Öffnen eines vorhandenen Dokuments mit Hilfe des Menüs "
+"<guimenu>Benutzerebene</guimenu> in die Entwicklerebene wechseln. Das ist "
+"Ihnen nur dann gestattet, wenn Ihr Systemverwalter dies erlaubt hat."
 
 #: C/glom.xml:310(title)
 msgid "Adding Tables"
@@ -543,17 +593,30 @@ msgstr "Tabellen hinzufügen"
 
 #: C/glom.xml:311(para)
 msgid ""
-"You can see the list of existing tables by choosing <literal>Tables</literal> "
-"from the <literal>Navigate</literal> menu. You will also see this window "
-"after connecting to a database server, after creating a new document. To "
-"create a new table, click the <literal>Add</literal> button and enter the "
+"You can see the list of existing tables by choosing <literal>Tables</"
+"literal> from the <literal>Navigate</literal> menu. You will also see this "
+"window after connecting to a database server, after creating a new document. "
+"To create a new table, click the <literal>Add</literal> button and enter the "
 "name for the new table. Glom will suggest a human-readable title for this "
-"table. <literal>Operators</literal> will see this title instead of the actual "
-"table name. You can also mark a tables as <literal>hidden</literal> from "
-"Operators. For instance, Operators should see \"Invoice Lines\" as related "
-"records from the \"Invoices\" table, but they should never be able to "
-"navigate directly to the \"Invoice Lines\" table."
+"table. <literal>Operators</literal> will see this title instead of the "
+"actual table name. You can also mark a tables as <literal>hidden</literal> "
+"from Operators. For instance, Operators should see \"Invoice Lines\" as "
+"related records from the \"Invoices\" table, but they should never be able "
+"to navigate directly to the \"Invoice Lines\" table."
 msgstr ""
+"Wenn Sie <guilabel>Tabellen</guilabel> im Menü <guimenu>Navigation</guimenu> "
+"wählen, wird eine Liste der vorhandenen Tabellen angezeigt. Dieses Fenster "
+"erscheint auch dann, wenn nach dem Anlegen eines neuen Dokuments eine "
+"Verbindung zu einem Datenbankserver hergestellt wurde. Um eine neue Tabelle "
+"anzulegen, klicken Sie auf den Knopf <guibutton>Hinzufügen</guibutton> und "
+"geben Sie den Namen der neuen Tabelle ein. Glom wird Ihnen einen "
+"menschenlesbaren Namen für diese Tabelle vorschlagen. Als <literal>Operator</"
+"literal> sehen Sie diesen Namen anstelle des Namens der aktuellen Tabelle. "
+"Sie können auch Tabellen als <literal>verborgen</literal> für Operatoren "
+"markieren. Beispielsweise sollen Operatoren zwar die »Rechnungszeilen« als "
+"Bezugsdatensätze aus der Tabelle »Rechnungen« sehen können, allerdings "
+"niemals die Möglichkeit erhalten, direkt zur Tabelle »Rechnungszeilen« zu "
+"navigieren."
 
 #. TODO: screenshot
 #: C/glom.xml:313(para)
@@ -562,14 +625,22 @@ msgid ""
 "table will be shown whenever an operator opens an existing document, without "
 "asking him to select a table from the list."
 msgstr ""
+"Sie können auch eine Tabelle als <literal>Vorgabetabelle</literal> "
+"markieren. Diese Tabelle wird immer dann angezeigt, wenn ein Operator ein "
+"vorhandenes Dokument öffnet, ohne dass er darum gebeten wird, eine Tabelle "
+"aus einer Liste zu wählen."
 
 #: C/glom.xml:314(para)
 msgid "You can also use this window to rename an existing table."
 msgstr ""
+"Sie können dieses Fenster auch dazu verwenden, eine vorhandene Tabelle "
+"umzubenennen."
 
 #: C/glom.xml:315(para)
 msgid "Click the <literal>Open</literal> button to look at the selected table."
 msgstr ""
+"Klicken Sie auf den Knopf <guibutton>Öffnen</guibutton>, um die ausgewählte "
+"Tabelle zu betrachten."
 
 #: C/glom.xml:319(title) C/glom.xml:325(title)
 msgid "Editing Fields"
@@ -581,6 +652,10 @@ msgid ""
 "This shows the list of fields in the table. New tables automatically have a "
 "primary key field, but you can change this field if necessary."
 msgstr ""
+"Wählen Sie <guilabel>Felder</guilabel> im Menü <guimenu>Entwickler</"
+"guimenu>. Daraufhin wird Ihnen eine Liste der Felder in dieser Tabelle "
+"angezeigt. Neue Tabellen erhalten automatisch ein Feld für den "
+"Primärschlüssel. Bei Bedarf können Sie dieses Feld ändern."
 
 #: C/glom.xml:321(para)
 msgid ""
@@ -589,16 +664,23 @@ msgid ""
 "for this field, but you can edit this. <literal>Operators</literal> will see "
 "this title instead of the actual field name."
 msgstr ""
+"Klicken Sie auf den Knopf <guibutton>Hinzufügen</guibutton>, um ein neues "
+"Feld hinzuzufügen. Glom wird Ihnen einen menschenlesbaren Namen für dieses "
+"Feld vorschlagen, aber Sie können diesen Namen auch ändern. Als "
+"<literal>Operator</literal> sehen Sie diesen Namen anstelle des Namens des "
+"aktuellen Feldes."
 
 #: C/glom.xml:322(para)
 msgid ""
 "To specify more field details, select the field and click the "
 "<literal>Details</literal> button."
 msgstr ""
+"Um für ein Feld weitere Details festzulegen, wählen Sie das Feld aus und "
+"klicken Sie auf den Knopf <guibutton>Details</guibutton>."
 
 #: C/glom.xml:332(phrase)
 msgid "Editing the table's fields."
-msgstr ""
+msgstr "Bearbeiten der Tabellenfelder."
 
 #: C/glom.xml:340(title)
 msgid "Primary Keys"
@@ -614,6 +696,15 @@ msgid ""
 "\" records. See the <link linkend=\"sec-developer-relationships\">Creating "
 "Relationships</link> section to see how you can relate tables together."
 msgstr ""
+"Jede Tabelle muss genau einen <literal>Primärschlüssel</literal> haben. Der "
+"Wert in diesem Feld ist eindeutig, was bedeutet, dass der Wert dieses Feldes "
+"nur in einem Datensatz in der Tabelle erscheinen darf. Beispielsweise hat "
+"jeder Datensatz in einer »Kunden«-Tabelle eine »Kundennummer«. Dieser Wert "
+"wird dazu verwendet, um einen Bezug dieses Kunden zu anderen Tabellen "
+"herzustellen, zum Beispiel zu den Datensätzen »Aufträge« und »Rechnungen«. Im "
+"Abschnitt <link linkend=\"sec-developer-relationships\">Erstellen von "
+"Beziehungen</link> finden Sie weitere Informationen darüber, wie Sie Bezüge "
+"von Tabellen zueinander erstellen können."
 
 #: C/glom.xml:345(title)
 msgid "Field Types"
@@ -621,7 +712,7 @@ msgstr "Feldtypen"
 
 #: C/glom.xml:348(simpara)
 msgid "Number"
-msgstr "Nummer"
+msgstr "Zahl"
 
 #: C/glom.xml:349(simpara)
 msgid "Text"
@@ -637,7 +728,7 @@ msgstr "Zeit"
 
 #: C/glom.xml:352(simpara)
 msgid "Boolean - either true or false"
-msgstr ""
+msgstr "Boolesche Werte - entweder wahr oder falsch"
 
 #: C/glom.xml:353(simpara)
 msgid "Image"
@@ -645,11 +736,11 @@ msgstr "Bild"
 
 #: C/glom.xml:346(para)
 msgid "Glom offers a few simple field types: <placeholder-1/>"
-msgstr ""
+msgstr "Glom bietet einige einfache Feldtypen: <placeholder-1/>"
 
 #: C/glom.xml:359(title)
 msgid "Calculated Fields"
-msgstr ""
+msgstr "Berechnete Felder"
 
 #: C/glom.xml:360(para)
 msgid ""
@@ -660,6 +751,13 @@ msgid ""
 "the source fields changes. TODO: This only works for default values at the "
 "moment, and you can not use field values in the calculation yet."
 msgstr ""
+"Die Werte von Feldern können mit Hilfe der Programmiersprache Python durch "
+"Ausdrücke in anderen Feldern definiert werden. Die Berechnung sollte die "
+"Implementation einer Python-Funktion sein, die einen Wert zurückgibt. Der "
+"Rückgabewert wird dann als Wert für dieses Feld verwendet. Der Wert wird neu "
+"berechnet, sobald sich eines der Quellfelder ändert. Achtung: Derzeit "
+"funktioniert dies nur für Vorgabewerte. Sie können in der Berechnung noch "
+"keine Feldwerte verwenden."
 
 #: C/glom.xml:361(para)
 msgid ""
@@ -669,6 +767,12 @@ msgid ""
 "check box, and then entering a Python calculation. You can test this "
 "calculation in the <literal>Edit</literal> window."
 msgstr ""
+"Sie können auch Berechnungen verwenden, um einen Vorgabewert für ein Feld "
+"anzugeben. Wählen Sie hierzu den Reiter <guilabel>Vorgabewert</guilabel> im "
+"Fenster <guilabel>Felddetails</guilabel>. Aktivieren Sie das Ankreuzfeld "
+"<guilabel>Wert berechnen</guilabel> und geben Sie anschließend eine Python-"
+"Berechnung ein. Sie können diese Berechnung im Fenster <guilabel>Bearbeiten</"
+"guilabel> überprüfen."
 
 #: C/glom.xml:367(title)
 msgid "Arranging Layouts"
@@ -713,8 +817,8 @@ msgstr "Festlegen der Anordnung der Detailansicht"
 
 #: C/glom.xml:391(para)
 msgid ""
-"For the <literal>Details</literal> view, you can create groups of fields, and "
-"give these groups titles. You can then place fields in these groups and "
+"For the <literal>Details</literal> view, you can create groups of fields, "
+"and give these groups titles. You can then place fields in these groups and "
 "specify the sequence fo fields in these groups. You can also specify the "
 "sequence of these groups. For instance, in a \"Contacts\" table, you might "
 "create a \"Name\" group, and place the \"title\", \"first_name\" and "
@@ -743,14 +847,21 @@ msgstr "Erstellen von Beziehungen"
 
 #: C/glom.xml:412(para)
 msgid ""
-"Tables in the Database are often related together. For instance, an \"Invoices"
-"\" table might have a \"Customer ID\" field. A value in this field would "
-"specify a record in the \"Customers\" table with the same value. Glom can "
-"show extra information, such as the customer name, from that related record. "
-"Or it can show a list of several related records - for instance, several "
-"related \"Invoice Lines\" that are related to a record in the \"Invoice\" "
-"record."
+"Tables in the Database are often related together. For instance, an "
+"\"Invoices\" table might have a \"Customer ID\" field. A value in this field "
+"would specify a record in the \"Customers\" table with the same value. Glom "
+"can show extra information, such as the customer name, from that related "
+"record. Or it can show a list of several related records - for instance, "
+"several related \"Invoice Lines\" that are related to a record in the "
+"\"Invoice\" record."
 msgstr ""
+"Zwischen den Tabellen in einer Datenbank bestehen oft Beziehungen. "
+"Beispielsweise gibt es in einer »Rechnungen«-Tabelle ein Feld namens "
+"»Kundennummer«. Der Wert in einem solchen Feld gibt einen Datensatz in der "
+"Tabelle »Kunden« mit dem gleichen Wert an. Glom kann aus dem Bezugsdatensatz "
+"weitere Informationen anzeigen, wie den Namen des Kunden. Anzeigbar ist auch "
+"eine Liste verschiedener Bezugsdatensätze, zum Beispiel »Rechnungszeilen«, "
+"die einen Bezug zum Datensatz in der Tabelle »Rechnungen« haben."
 
 #: C/glom.xml:413(para)
 msgid ""
@@ -762,30 +873,43 @@ msgid ""
 "This relationship will find any records in the other table for which the "
 "values in both fields are equal."
 msgstr ""
+"Um Beziehungen zu erstellen, wählen Sie <guilabel>Beziehungen</guilabel> im "
+"Menü <guimenu>Entwickler</guimenu>. Daraufhin wird eine Liste der "
+"vorhandenen Beziehungen angezeigt. Klicken Sie auf den Knopf "
+"<guibutton>Hinzufügen</guibutton>, um eine neue Beziehung zu erstellen und "
+"geben Sie einen Namen für die Beziehung ein. Sie sollten dann ein Feld in "
+"der aktuellen Tabelle wählen und ein Feld in einer weiteren Tabelle, für "
+"welches die Beziehung erstellt werden soll. Diese Beziehung findet beliebige "
+"Datensätze in der anderen Tabelle, für die die Werte in beiden Feldern "
+"gleich sind."
 
 #: C/glom.xml:418(simpara)
 msgid "To show a related field on the List or Details view."
-msgstr ""
+msgstr "Anzeige eines Bezugsfeldes in der Listen- oder Detailansicht."
 
 #: C/glom.xml:419(simpara)
 msgid "To show a list of related records on the Details view."
-msgstr ""
+msgstr "Anzeige einer Liste von Bezugsdatensätzen in der Detailsansicht."
 
 #: C/glom.xml:420(simpara)
 msgid ""
-"To lookup a value from a field in a related record. For instance, to copy the "
-"current price of a \"Product\" into the \"Price\" field of an \"Invoice Line"
-"\" record."
+"To lookup a value from a field in a related record. For instance, to copy "
+"the current price of a \"Product\" into the \"Price\" field of an \"Invoice "
+"Line\" record."
 msgstr ""
+"Nachschlagen eines Wertes für ein Feld in einem Bezugsdatensatz. "
+"Beispielsweise um den aktuellen Preis eines »Produkts« in einem »Preis«-Feld "
+"eines »Rechnungszeilen«-Datensatzes zu kopieren."
 
 #: C/glom.xml:421(simpara)
 msgid "To calculate a field value."
-msgstr ""
+msgstr "Berechnung eines Feldwertes."
 
 #. TODO: screenshot
 #: C/glom.xml:415(para)
 msgid "You can use the relationship in the following places. <placeholder-1/>"
 msgstr ""
+"Sie können die Beziehung an den folgenden Stellen verwenden. <placeholder-1/>"
 
 #: C/glom.xml:427(title)
 msgid "Users Administration"
@@ -797,6 +921,10 @@ msgid ""
 "specify what access they have to the various tables, choose <literal>Users</"
 "literal> from the <literal>Developer</literal> menu."
 msgstr ""
+"Um die <literal>Operatoren</literal> festzulegen, welche die Datenbank "
+"nutzen dürfen, und um anzugeben, welche Zugriffsrechte sie zu den "
+"verschiedenen Tabellen erhalten sollen, wählen Sie <guilabel>Benutzer</"
+"guilabel> im Menü <guimenu>Entwickler</guimenu>."
 
 #: C/glom.xml:433(title) C/glom.xml:440(title)
 msgid "Translations"
@@ -812,6 +940,14 @@ msgid ""
 "a date as 1/13/2008, but a German user of the same database will later see "
 "that as 1,99 and 13.1.2008."
 msgstr ""
+"Die Benutzeroberfläche von Glom (wie auch dieses Dokument) wurde in "
+"verschiedene Sprachen übersetzt, wie Sie möglicherweise sehen können, wenn "
+"Sie Ihren Rechner mit einer nicht-englischen Benutzeroberfläche verwenden. "
+"Zusätzlich zeigt Glom Daten und Zahlen entsprechend den lokalen Konventionen "
+"des Benutzers an. Ein Benutzer in den USA würde beispielsweise einen Preis "
+"als 1.99 und ein Datum als 1/13/2008 angezeigt bekommen, während ein "
+"deutscher Benutzer der gleichen Datenbank den Preis als 1,99 und das Datum "
+"als 13.1.2008 sehen würde."
 
 #: C/glom.xml:435(para)
 msgid ""
@@ -825,6 +961,17 @@ msgid ""
 "languages. When the Glom system is opened by a user of that language then "
 "these text items will be shown in the user interface."
 msgstr ""
+"Das von Ihnen erstellte Glom-System wird sicherlich Text enthalten, der "
+"übersetzt werden muss, sofern es von Benutzern verwendet werden soll, die "
+"nicht die gleiche Sprache sprechen. Beispielsweise werden Sie übersetzte "
+"Versionen für die Namen Ihrer Tabellen, die Felder und die Berichte "
+"benötigen. Alle diese Textobjekte sehen Sie zusammengefasst in einer Liste, "
+"wenn Sie <guilabel>Übersetzungen</guilabel> im Menü <guimenu>Entwickler</"
+"guimenu> wählen. In diesem Fenster können Sie angeben, in welcher Sprache "
+"der Originaltext verfasst wurde. Außerdem können Sie hier Übersetzungen für "
+"jedes Textobjekt in weiteren Sprachen einfügen. Wenn das Glom-System von "
+"einem Benutzer der jeweiligen Sprache geöffnet wird, dann werden diese "
+"Textobjekte in der Benutzeroberfläche angezeigt."
 
 #: C/glom.xml:447(phrase)
 msgid "Translations."
@@ -832,12 +979,19 @@ msgstr "Übersetzungen."
 
 #: C/glom.xml:453(para)
 msgid ""
-"Experienced translators may be more familiar with the .po file format, or you "
-"might wish to use the many tools that work with the .po file format. By using "
-"the <literal>Export</literal> button you can create a .po file to use in a "
-"separate tool or to send to a translator. You can then import the resulting "
-"translation by using the <literal>Import</literal> button."
+"Experienced translators may be more familiar with the .po file format, or "
+"you might wish to use the many tools that work with the .po file format. By "
+"using the <literal>Export</literal> button you can create a .po file to use "
+"in a separate tool or to send to a translator. You can then import the "
+"resulting translation by using the <literal>Import</literal> button."
 msgstr ""
+"Erfahrene Übersetzer dürften mit dem .po-Dateiformat keine Schwierigkeiten "
+"haben. Es gibt verschiedene Werkzeuge, die mit diesem Dateiformat umgehen "
+"können. Durch Anklicken des Knopfes <guibutton>Exportieren</guibutton> "
+"erstellen Sie eine .po-Datei, die Sie einem separaten Werkzeug "
+"weiterbearbeiten oder an einen Übersetzer schicken können. Die resultierende "
+"Übersetzung können Sie dann mit dem Knopf <guibutton>Importieren</guibutton> "
+"wieder in das System einfügen."
 
 #: C/glom.xml:458(title)
 msgid "Defining Reports"
@@ -855,12 +1009,21 @@ msgid ""
 "group. Each table has its own reports, which are available to the operator "
 "from the <literal>Reports</literal> menu."
 msgstr ""
+"Glom kann Berichte erstellen, um spezifische Felder aus einer Reihe von "
+"Datensätzen sortiert und gruppiert anzuzeigen. Beispielsweise möchte ein "
+"Händler einen Bericht über alle innerhalb eines Monats verkauften Produkte "
+"anzeigen, gruppiert nach Produktart und innerhalb jeder Gruppe nach Preisen "
+"sortiert. Jede Tabelle verfügt über ihre eigenen Berichte, die für den "
+"Operator im Menü <guilabel>Berichte</guilabel> einsehbar sind."
 
 #: C/glom.xml:465(para)
 msgid ""
-"To define a report, or to change the definition of an existing report, choose "
-"<literal>Reports</literal> from the <literal>Developer</literal> menu."
+"To define a report, or to change the definition of an existing report, "
+"choose <literal>Reports</literal> from the <literal>Developer</literal> menu."
 msgstr ""
+"Um einen Bericht anzulegen oder die Eigenschaften eines vorhandenen Berichts "
+"zu ändern, wählen Sie <guilabel>Berichte</guilabel> im Menü "
+"<guimenu>Entwickler</guimenu>."
 
 #: C/glom.xml:467(title)
 msgid "Creating or Editing Reports"
@@ -876,6 +1039,10 @@ msgid ""
 "allows your report to have a translated title when used on a computer that "
 "uses a different language."
 msgstr ""
+"Beachten Sie, dass jeder Bericht sowohl eine Kennung als auch einen "
+"menschenlesbaren Namen hat. Dies ermöglicht die Anzeige eines übersetzten "
+"Namens, falls der Bericht auf einem Rechner in einer anderen Sprache genutzt "
+"wird."
 
 #: C/glom.xml:485(title) C/glom.xml:499(title)
 msgid "Editing a Report"
@@ -883,17 +1050,19 @@ msgstr "Bearbeiten eines Berichts"
 
 #: C/glom.xml:489(simpara)
 msgid "The Header, which appears at the start of the report"
-msgstr ""
+msgstr "Die Kopfzeile, welche am Beginn des Berichts erscheint."
 
 #: C/glom.xml:490(simpara)
 msgid ""
 "The Main area, in which the records and summary lines are shown, with the "
 "actual data from the database."
 msgstr ""
+"Der Hauptteil, in welchem die Datensätze und die Zeilen der Zusammenfassung "
+"erscheinen, mit den aktuellen Daten aus der Datenbank."
 
 #: C/glom.xml:491(simpara)
 msgid "The Footer, which appears at the end of the report."
-msgstr ""
+msgstr "Die Fußzeile, welche am Ende des Berichts erscheint."
 
 #: C/glom.xml:487(para)
 msgid "A Glom report has three areas: <placeholder-1/>"
@@ -902,22 +1071,36 @@ msgstr "Ein Glom-Bericht gliedert sich in drei Bereiche: <placeholder-1/>"
 #: C/glom.xml:495(para)
 msgid ""
 "Inside an area, such as the Main part, you may add report <literal>Parts</"
-"literal>, such as fields, text, or images. These will usually appear in a row "
-"on the printed report, with one row for each record. In the simple case, this "
-"will look much like Glom's list view. You can add parts to your report by "
-"selecting them from the <literal>Available Parts</literal> list and then "
+"literal>, such as fields, text, or images. These will usually appear in a "
+"row on the printed report, with one row for each record. In the simple case, "
+"this will look much like Glom's list view. You can add parts to your report "
+"by selecting them from the <literal>Available Parts</literal> list and then "
 "clicking the <literal>Add</literal> button. The part will then be added to "
 "the <literal>Parts</literal> list, in the selected area."
 msgstr ""
+"Innerhalb eines Bereiches, wie dem Hauptteil, können Sie <literal>Teile</"
+"literal> einfügen, wie Felder, Text, oder Bilder. Diese erscheinen "
+"üblicherweise in einer Zeile in dem ausgedruckten Bericht, mit einer Zeile "
+"für jeden Datensatz. Im einfachsten Fall wird dies der Listenansicht von "
+"Glom stark ähneln. Sie können Teile zu Ihrem Bericht hinzufügen, indem Sie "
+"sie aus der Liste <guilabel>Verfügbare Teile</guilabel> auswählen und dann "
+"auf den Knopf <guibutton>Hinzufügen</guibutton> klicken. Der Teil wird dann "
+"zur <literal>Teileliste</literal> im ausgewählten Bereich hinzugefügt."
 
 #: C/glom.xml:496(para)
 msgid ""
-"To specify details for the parts, such as the text or image to display, or to "
-"choose the field to display, select the part in the <literal>Parts</literal> "
-"list and click the <literal>Edit</literal> button. You may also specify field "
-"formatting by clicking the <literal>Formatting</literal> button, just as you "
-"would when defining a details or list layout."
+"To specify details for the parts, such as the text or image to display, or "
+"to choose the field to display, select the part in the <literal>Parts</"
+"literal> list and click the <literal>Edit</literal> button. You may also "
+"specify field formatting by clicking the <literal>Formatting</literal> "
+"button, just as you would when defining a details or list layout."
 msgstr ""
+"Um Details zu den Teilen anzugeben, wie den Text oder das anzuzeigende Bild, "
+"oder umdas anzuzeigende Feld auszuwählen, wählen Sie den Teil in der "
+"<literal>Teileliste</literal> aus und klicken Sie auf den Knopf "
+"<guibutton>Hinzufügen</guibutton>. Sie können auch mit dem Knopf "
+"<guibutton>Formatierung</guibutton> die Feldformatierung anpassen, wenn Sie "
+"ein Detail- oder Listenlayout angeben wollen."
 
 #: C/glom.xml:506(phrase) C/glom.xml:523(phrase)
 msgid "Editing a report."
@@ -926,15 +1109,26 @@ msgstr "Bearbeiten eines Berichts."
 #: C/glom.xml:512(para)
 msgid ""
 "Some parts may contain other parts and have extra properties to control how "
-"they present their child parts. For instance, the <literal>Group By</literal> "
-"part groups records together by a field. For instance, a products report "
-"might group a list of products by product type. You can even add a second sub-"
-"grouping inside the main <literal>Group By</literal> part, by selecting your "
-"top-level <literal>Group By</literal> part in the <literal>Parts</literal> "
-"list while adding a new <literal>Group By</literal> part from the "
-"<literal>Available Parts</literal> list. For instance, you might group your "
-"products by manufacturer, inside each product type group."
+"they present their child parts. For instance, the <literal>Group By</"
+"literal> part groups records together by a field. For instance, a products "
+"report might group a list of products by product type. You can even add a "
+"second sub-grouping inside the main <literal>Group By</literal> part, by "
+"selecting your top-level <literal>Group By</literal> part in the "
+"<literal>Parts</literal> list while adding a new <literal>Group By</literal> "
+"part from the <literal>Available Parts</literal> list. For instance, you "
+"might group your products by manufacturer, inside each product type group."
 msgstr ""
+"Einige Teile können weitere Teile enthalten sowie Eigenschaften zur "
+"Steuerung, wie diese Unterteile angezeigt werden. Beispielsweise gruppiert "
+"der Teil <guilabel>Gruppieren nach</guilabel> die Datensätze anhand der "
+"Felder. Oder ein Produktbericht gruppiert eine Produktliste nach Produkttyp. "
+"Sie können sogar eine zweite Untergruppierung innerhalb des Hauptteils "
+"<guilabel>Gruppieren nach</guilabel> einfügen. Wählen Sie hierzu den "
+"<guilabel>Gruppieren nach</guilabel>-Hauptteil der obersten Ebene in der "
+"<guilabel>Teileliste</guilabel> aus und fügen Sie einen neuen "
+"<guilabel>Gruppieren nach</guilabel>-Teil aus der Liste <guilabel>Verfügbare "
+"Teil</guilabel> hinzu. Sie könnten so beispielsweise Ihre Produkte innerhalb "
+"jeder Produkttypgruppe nach Hersteller gruppieren."
 
 #: C/glom.xml:513(para)
 msgid ""
@@ -943,14 +1137,24 @@ msgid ""
 "click the <literal>Edit</literal> button. You can then choose the field by "
 "which the records should be grouped, and select the fields by which these "
 "records should be sorted within the group. You may also specify some "
-"additional fields to be displayed in the group's title row. For instance, you "
-"might want to group products by a manufacturer ID, but also show the "
+"additional fields to be displayed in the group's title row. For instance, "
+"you might want to group products by a manufacturer ID, but also show the "
 "manufacturer name."
 msgstr ""
+"Um das Feld festzulegen, nach dem die Datensätze gruppiert werden sollen, "
+"wählen Sie Ihren <guilabel>Gruppieren nach</guilabel>-Teil aus der "
+"<guilabel>Teileliste</guilabel> aus und klicken Sie auf den Knopf "
+"<guibutton>Bearbeiten</guibutton>. Anschließend können Sie dann das Feld "
+"auswählen, nach dem die Datensätze gruppiert werden sollen, sowie die "
+"Felder, nach denen diese Datensätze innerhalb der Gruppe sortiert werden "
+"sollen. Außerdem können Sie zusätzliche Felder angeben, die in der "
+"Titelzeile der Gruppe angezeigt werden sollen. Auf diese Weise könnten Sie "
+"zum Beispiel Produkte anhand der Herstellerkennung gruppieren, aber trotzdem "
+"den Herstellernamen anzeigen."
 
 #: C/glom.xml:516(title)
 msgid "Editing a Group By Part"
-msgstr ""
+msgstr "Bearbeiten eines <guilabel>Gruppieren nach</guilabel>-Teils"
 
 #: C/glom.xml:529(para)
 msgid ""
@@ -960,6 +1164,12 @@ msgid ""
 "related fields such as address lines, or just to squeeze more information "
 "into the records's row on the report."
 msgstr ""
+"Der Teil <guilabel>Vertikale Gruppe</guilabel> kann weitere Objekte "
+"enthalten. Er erlaubt Ihnen beispielsweise die Anordnung von Feldern "
+"untereinander anstelle von waagerecht hintereinander in einer Zeile. Dies "
+"könnte zur Gruppierung von aufeinander bezogenen Feldern nützlich sein, oder "
+"einfach nur, um mehr Informationen in der Zeile des Datensatzes im Bericht "
+"anzuzeigen."
 
 #: C/glom.xml:532(title)
 msgid "A Report with Vertical Groups"
@@ -971,11 +1181,16 @@ msgstr "Ein Bericht mit vertikalen Gruppen."
 
 #: C/glom.xml:545(para)
 msgid ""
-"When you have finished, click the <literal>Close</literal> button to save the "
-"report's definition. Your report can then be chosen from the "
+"When you have finished, click the <literal>Close</literal> button to save "
+"the report's definition. Your report can then be chosen from the "
 "<literal>Reports</literal> menu. See the <link linkend=\"glom-operator-"
 "printing-reports\">Printing Reports</link> section for more details."
 msgstr ""
+"Wenn Sie dies beendet haben, klicken Sie auf den <guibutton>Gruppieren nach</"
+"guibutton>-Knopf, um die Berichtsdefinition zu speichern. Ihr Bericht steht "
+"dann im Menü <guimenu>Berichte</guimenu> zur Verfügung. Weitere "
+"Informationen hierzu finden Sie im Abschnitt <link linkend=\"glom-operator-"
+"printing-reports\">Drucken von Berichten</link>."
 
 #: C/glom.xml:559(title)
 msgid "Dialogs"
@@ -995,6 +1210,14 @@ msgid ""
 "template file which already contains some initial tables and records, or by "
 "creating an empty document."
 msgstr ""
+"Dieser Dialog ermöglicht dem Benutzer die Auswahl eines vorhandenen oder das "
+"Anlegen eines neuen Dokuments. Vorhandene Dokumente können Sie aus der Liste "
+"der kürzlich geöffneten Dokumente auswählen. Alternativ können Sie eine "
+"Datei im Dateiauswahldialog auswählen. Dokumente können auch über das "
+"Netzwerk geöffnet werden, falls andere Benutzer Glom im lokalen Netzwerk "
+"ausführen. Letztendlich kann ein neues Dokument auch entweder durch Öffnen "
+"einer vorhandenen Vorlagendatei erstellt werden, die bereits einige Tabellen "
+"und Datensätze enthält, oder durch Erstellen eines leeren Dokuments."
 
 #: C/glom.xml:567(title)
 msgid "Dialog: New database"
@@ -1018,10 +1241,17 @@ msgid ""
 "its network hostname, such as \"glomserver.openismus.com\", though your "
 "hostname will be different."
 msgstr ""
+"Dieser Dialog erfragt den Benutzernamen und das Passwort für eine Verbindung "
+"zu einem Datenbankserver. Dies sind üblicherweise nicht der Benutzername und "
+"das Passwort, mit dem Sie sich am System anmelden. Alle Glom-Systeme "
+"benötigen einen Datenbankserver, auf dem die aktuellen Daten gespeichert "
+"werden. Falls dieser Datenbankserver nicht auf Ihrem lokalen Rechner läuft "
+"(»localhost«), dann müssen Sie außerdem den Namen des entsprechenden Rechners "
+"im Netzwerk angeben, wie »glomserver.openismus.com«, als Beispiel."
 
 #: C/glom.xml:579(para)
 msgid "Your system administrator can provide these database login details."
-msgstr ""
+msgstr "Ihr Systemverwalter kann die folgenden Anmeldedetails bereitstellen."
 
 #: C/glom.xml:580(para)
 msgid ""
@@ -1030,6 +1260,10 @@ msgid ""
 "\">Postgres Configuration</ulink> web page for help with installing and "
 "configuring a database server."
 msgstr ""
+"Falls Sie selbst der Systemverwalter sind, finden Sie auf der <ulink url="
+"\"http://www.glom.org/wiki/index.php?title=Initial_Postgres_Configuration\" "
+"type=\"http\">Glom-Webseite zur PostgreSQL-Konfiguration</ulink> Hilfe zur "
+"Installation und Konfiguration eines Datenbankservers."
 
 #: C/glom.xml:584(title)
 msgid "Dialog: Connection Error"
@@ -1043,6 +1277,11 @@ msgid ""
 "the <link linkend=\"dialog_connection\">Connection Dialog</link> section for "
 "more details."
 msgstr ""
+"Dieser Dialog wird angezeigt, wenn Glom keine Verbindung zu dem angegebenen "
+"Datenbankserver aufbauen konnte. Entweder läuft der Datenbankserver auf dem "
+"Rechner dieses Namens nicht oder der Benutzername und das Passwort wurden "
+"vom Datenbankserver nicht anerkannt. Weitere Informationen hierzu finden Sie "
+"im Abschnitt <link linkend=\"dialog_connection\">Verbindungsdialog</link>"
 
 #: C/glom.xml:591(title)
 msgid "Dialog: Database preferences"
@@ -1066,11 +1305,11 @@ msgstr "Dialog: Reitermappen"
 
 #: C/glom.xml:616(title)
 msgid "Dialog: Data invalid format"
-msgstr ""
+msgstr "Dialog: Ungültige Formatierung"
 
 #: C/glom.xml:621(title)
 msgid "Dialog: Relationship overview"
-msgstr ""
+msgstr "Dialog: Überblick über Beziehungen"
 
 #: C/glom.xml:626(title)
 msgid "Window: Groups"
@@ -1078,19 +1317,19 @@ msgstr "Fenster: Gruppen"
 
 #: C/glom.xml:631(title)
 msgid "Dialog: Group by sort fields"
-msgstr ""
+msgstr "Dialog: Gruppieren nach sortierten Feldern"
 
 #: C/glom.xml:636(title)
 msgid "Dialog: Group by secondary fields"
-msgstr ""
+msgstr "Dialog: Gruppieren nach sekundären Feldern"
 
 #: C/glom.xml:641(title)
 msgid "Window: Button script"
-msgstr ""
+msgstr "Fenster: Knopfskript"
 
 #: C/glom.xml:646(title)
 msgid "Window: Field calculation"
-msgstr ""
+msgstr "Fenster: Feldberechnung"
 
 #: C/glom.xml:651(title)
 msgid "Dialog: New group"
@@ -1106,11 +1345,11 @@ msgstr "Dialog: Benutzer"
 
 #: C/glom.xml:666(title)
 msgid "Dialog: Translation identify original"
-msgstr ""
+msgstr "Dialog: Identifizierung der Übersetzung am Original"
 
 #: C/glom.xml:671(title)
 msgid "Dialog: Translation copy"
-msgstr ""
+msgstr "Dialog: Übersetzungskopie"
 
 #: C/glom.xml:676(title)
 msgid "Dialog: Choose Date"
@@ -1122,13 +1361,20 @@ msgstr "Dialog: In Tabelle importieren"
 
 #: C/glom.xml:682(para)
 msgid ""
-"This dialog allows the user to import a CSV (comma separated value) file into "
-"the current database table. It shows the first few rows of the file to import "
-"and allows the user to select the target field in the database for each "
-"column in the CSV file. For auto-incremented primary keys, the primary key "
-"field cannot be used as a target field, but otherwise one column must be "
+"This dialog allows the user to import a CSV (comma separated value) file "
+"into the current database table. It shows the first few rows of the file to "
+"import and allows the user to select the target field in the database for "
+"each column in the CSV file. For auto-incremented primary keys, the primary "
+"key field cannot be used as a target field, but otherwise one column must be "
 "imported into the primary key field."
 msgstr ""
+"Dieser Dialog ermöglicht dem Benutzer das Importieren einer CSV-Datei (durch "
+"Kommata getrennte Werte) in eine Tabelle der aktuellen Datenbank. Es werden "
+"die ersten fünf Zeilen der zu importierenden Datei angezeigt, woraufhin der "
+"Benutzer das Zielfeld in der Datenbank für jede Spalte der CSV-Datei angeben "
+"kann. Für automatisch hochzählende Primärschlüssel kann das "
+"Primärschlüsselfeld nicht als Zielfeld verwendet werden, aber anderenfalls "
+"muss eine Spalte in das Primärschlüsselfeld importiert werden."
 
 #: C/glom.xml:705(title)
 msgid "About Glom"
@@ -1160,22 +1406,24 @@ msgid ""
 "Another excellent source of information are the Glom <ulink url=\"http://www."
 "glom.org\" type=\"http\">mailing lists</ulink>."
 msgstr ""
+"Eine weitere exzellente Informationsquelle sind die <ulink url=\"http://www."
+"glom.org\" type=\"http\">Mailinglisten</ulink> von Glom."
 
 #: C/glom.xml:722(para)
 msgid ""
-"This program is distributed under the terms of the GNU General Public license "
-"as published by the Free Software Foundation; either version 2 of the "
-"License, or (at your option) any later version. A copy of this license can be "
-"found at this <ulink url=\"ghelp:gpl\" type=\"help\">link</ulink>, or in the "
-"file COPYING included with the source code of this program."
+"This program is distributed under the terms of the GNU General Public "
+"license as published by the Free Software Foundation; either version 2 of "
+"the License, or (at your option) any later version. A copy of this license "
+"can be found at this <ulink url=\"ghelp:gpl\" type=\"help\">link</ulink>, or "
+"in the file COPYING included with the source code of this program."
 msgstr ""
 "Dieses Programm ist freie Software. Sie können es unter den Bedingungen der "
 "<citetitle>GNU General Public License</citetitle>, wie von der Free Software "
 "Foundation veröffentlicht, weitergeben und/oder modifizieren, entweder gemäß "
 "Version 2 der Lizenz oder (nach Ihrer Option) jeder späteren Version. Eine "
 "Kopie der <citetitle>GNU General Public License</citetitle> finden Sie unter "
-"diesem <ulink url=\"ghelp:gpl\" type=\"help\">Link</ulink>, oder in der Datei "
-"COPYING, die im Quellcode dieses Programms enthalten ist."
+"diesem <ulink url=\"ghelp:gpl\" type=\"help\">Link</ulink>, oder in der "
+"Datei COPYING, die im Quellcode dieses Programms enthalten ist."
 
 #: C/glom.xml:731(title)
 msgid "Concepts"
@@ -1183,21 +1431,29 @@ msgstr "Konzepte"
 
 #: C/glom.xml:734(simpara)
 msgid ""
-"<literal>Database</literal>: Each Glom document allows access to one database."
+"<literal>Database</literal>: Each Glom document allows access to one "
+"database."
 msgstr ""
+"<literal>Datenbank</literal>: Jedes Glom-Dokument ermöglicht den Zugriff auf "
+"eine Datenbank."
 
 #: C/glom.xml:735(simpara)
 msgid ""
 "<literal>Table</literal>: Each database contains several tables, such as "
 "\"Customers\" and \"Invoices\" tables."
 msgstr ""
+"<literal>Tabelle</literal>: Jede Datenbank enthält verschiedene Tabellen, "
+"wie z.B. »Kunden« oder »Rechnungen«."
 
 #: C/glom.xml:736(simpara)
 msgid ""
-"<literal>Field</literal>: Each table has several fields, such as \"Customer ID"
-"\", \"First Name\", and \"Date of Birth\" fields. In other documents and "
+"<literal>Field</literal>: Each table has several fields, such as \"Customer "
+"ID\", \"First Name\", and \"Date of Birth\" fields. In other documents and "
 "applications, fields are sometimes called \"Columns\""
 msgstr ""
+"<literal>Feld</literal>: Jede Tabelle besteht aus verschiedenen Feldern, wie "
+"z.B. »Kundennummer«, »Vorname« oder »Geburtsdatum«. In anderen Dokumenten oder "
+"Anwendungen werden diese Felder manchmal »Spalten« genannt."
 
 #: C/glom.xml:737(simpara)
 msgid ""
@@ -1206,6 +1462,10 @@ msgid ""
 "table will have a record for each customer. In other documents and "
 "applications, records are sometimes called <literal>Rows</literal>."
 msgstr ""
+"<literal>Datensätze</literal>: Jede Tabelle enthält verschiedene Datensätze, "
+"wovon jeder wiederum Werte für jedes der Felder enthält. Beispielsweise "
+"enthält die »Kunden«-Tabelle einen Datensatz für jeden Kunden. In anderen "
+"Dokumenten oder Anwendungen werden diese Datensätze manchmal »Zeilen« genannt."
 
 #: C/glom.xml:738(simpara)
 msgid ""
@@ -1216,31 +1476,42 @@ msgid ""
 "concept. In other documents and applications, relationships are sometimes "
 "called \"Joins\"."
 msgstr ""
+"<literal>Beziehungen</literal>: Jede Tabelle kann über in beiden Tabellen "
+"gleiche Felder Beziehungen zu anderen Tabellen haben. Beispielsweise kann "
+"eine »Kunden«-Tabelle einen Bezug zu einer »Rechnungen«-Tabelle haben, so dass "
+"alle Rechnungen an diesen Kunden angezeigt werden können. Allerdings "
+"brauchen nur Entwickler dieses Konzept zu verstehen. In anderen Dokumenten "
+"und Anwendungen werden solche Beziehungen auch »Verknüpfungen« genannt."
 
 #: C/glom.xml:732(para)
 msgid ""
 "Glom is easy to use, but you must understand the following basic concepts. "
 "<placeholder-1/>"
 msgstr ""
+"Glom ist recht einfach benutzbar, aber Sie sollten zunächst die folgenden "
+"grundlegenden Konzepte verinnerlichen. <placeholder-1/>"
 
 #: C/glom.xml:744(title)
 msgid "Calculated fields and button scripts"
-msgstr ""
+msgstr "Berechnete Felder und Knopfskripte"
 
 #: C/glom.xml:745(para)
 msgid ""
-"Calculated fields and button scripts use the Python programming language. The "
-"calculation or script is the implementation of a function whose signature is "
-"provided for you."
+"Calculated fields and button scripts use the Python programming language. "
+"The calculation or script is the implementation of a function whose "
+"signature is provided for you."
 msgstr ""
+"Berechnete Felder und Knopfskripte verwenden die Programmiersprache Python. "
+"Die Berechnung oder das Skript ist die Implementierung einer Funktion, deren "
+"Signatur Ihnen zur Verfügung gestellt wird."
 
 #: C/glom.xml:748(title)
 msgid "Editing the definition of a calculated field"
-msgstr ""
+msgstr "Bearbeiten der Definition eines berechneten Feldes"
 
 #: C/glom.xml:755(phrase)
 msgid "Editing the definition of a calculated field."
-msgstr ""
+msgstr "Bearbeiten der Definition eines berechneten Feldes."
 
 #: C/glom.xml:762(title)
 msgid "Field values"
@@ -1249,13 +1520,15 @@ msgstr "Feldwerte"
 #: C/glom.xml:763(programlisting)
 #, no-wrap
 msgid "record[\"name_first\"]"
-msgstr ""
+msgstr "record[\"name_first\"]"
 
 #: C/glom.xml:763(para)
 msgid ""
 "For instance, <placeholder-1/> is the value of the name_first field in the "
 "current record."
 msgstr ""
+"Beispielsweise ist <placeholder-1/> der Wert des Feldes name_first im "
+"aktuellen Datensatz."
 
 #: C/glom.xml:767(title)
 msgid "Related Records"
@@ -1264,17 +1537,19 @@ msgstr "Bezugsdatensätze"
 #: C/glom.xml:768(programlisting)
 #, no-wrap
 msgid "record.related[\"location\"]"
-msgstr ""
+msgstr "record.related[\"location\"]"
 
 #: C/glom.xml:768(para)
 msgid ""
 "For instance, <placeholder-1/> provides the related records for the current "
 "record."
 msgstr ""
+"Beispielsweise stellt <placeholder-1/> die Bezugsdatensätze für den "
+"aktuellen Datensatz bereit."
 
 #: C/glom.xml:771(title)
 msgid "Single related records"
-msgstr ""
+msgstr "Einzelbeziehungen"
 
 #: C/glom.xml:772(programlisting)
 #, no-wrap
@@ -1284,10 +1559,14 @@ msgstr "record.related[»Ort«][»Name«]"
 #: C/glom.xml:772(para)
 msgid ""
 "For relationships that specify a single record, you can get the value of a "
-"field in that record. For instance, <placeholder-1/> is the value of the name "
-"field in the table indicated by the location relationship (often called "
+"field in that record. For instance, <placeholder-1/> is the value of the "
+"name field in the table indicated by the location relationship (often called "
 "location::name)."
 msgstr ""
+"Für Beziehungen, die einen einzelnen Datensatz angeben, können Sie den Wert "
+"des Feldes in diesem Datensatz erhalten. Beispielsweise ist <placeholder-1/> "
+"der Wert des »name«-Feldes in der Tabelle, die durch die Beziehung angegeben "
+"wird (oft als location::name bezeichnet)."
 
 #: C/glom.xml:776(title)
 msgid "Multiple related records"
@@ -1296,7 +1575,7 @@ msgstr "Datensätze mit mehrfachen Bezügen"
 #: C/glom.xml:777(programlisting)
 #, no-wrap
 msgid "record.related[\"invoice_lines\"].sum(\"total_price\")"
-msgstr ""
+msgstr "record.related[\"invoice_lines\"].sum(\"total_price\")"
 
 #: C/glom.xml:777(para)
 msgid ""
@@ -1304,6 +1583,9 @@ msgid ""
 "functions (sum, count, average) to get overall values. For instance, "
 "<placeholder-1/>."
 msgstr ""
+"Für Beziehungen, die mehrere Datensätze umfassen, können Sie die "
+"Aggregatfunktionen (sum, count, average) benutzen, um allgemeine Werte zu "
+"erhalten. Beispielsweise <placeholder-1/>."
 
 #: C/glom.xml:783(title)
 msgid "Testing for empty values"
@@ -1311,7 +1593,7 @@ msgstr "Prüfen auf leere Werte"
 
 #: C/glom.xml:784(para)
 msgid "How you test for empty values depends on the type of field:"
-msgstr ""
+msgstr "So überprüfen Sie auf leere Werte, abhängig vom Feldtyp:"
 
 #: C/glom.xml:789(title)
 msgid "Non-text fields"
@@ -1320,9 +1602,12 @@ msgstr "Nicht-Text-Felder"
 #: C/glom.xml:790(para)
 msgid ""
 "Non-text fields may be empty, indicating that the user has not entered any "
-"value in the field. For instance, Glom does not assume that an empty value in "
-"a numeric field should mean 0."
+"value in the field. For instance, Glom does not assume that an empty value "
+"in a numeric field should mean 0."
 msgstr ""
+"Nicht-Textfelder dürfen leer sein, was anzeigt, dass der Benutzer noch "
+"keinerlei Wert in dieses Feld eingegeben hat. Beispielsweise nimmt Glom "
+"nicht an, dass ein leerer Wert in einem numerischen Feld den Wert 0 hat."
 
 #: C/glom.xml:791(para)
 msgid ""
@@ -1349,8 +1634,10 @@ msgstr ""
 "  "
 
 #: C/glom.xml:800(para)
-msgid "You might also test whether there are any related records. For instance:"
+msgid ""
+"You might also test whether there are any related records. For instance:"
 msgstr ""
+"Sie können auch überprüfen, ob Bezugsdatensätze vorhanden sind. Zum Beispiel:"
 
 #: C/glom.xml:802(programlisting)
 #, no-wrap
@@ -1375,9 +1662,9 @@ msgstr "Textfelder"
 
 #: C/glom.xml:813(para)
 msgid ""
-"For text fields, you should check for zero-length strings. It is not possible "
-"in Glom to distinguish between zero-length strings and the absence of any "
-"string, because there is no advantage to doing so. For instance:"
+"For text fields, you should check for zero-length strings. It is not "
+"possible in Glom to distinguish between zero-length strings and the absence "
+"of any string, because there is no advantage to doing so. For instance:"
 msgstr ""
 "In Textfeldern sollten Sie prüfen, ob Zeichenketten der Länge Null vorhanden "
 "sind. <application>Glom</application> kann nicht zwischen Zeichenketten der "
@@ -1409,11 +1696,18 @@ msgstr "Benutzung der vollen Pygda-API"
 msgid ""
 "pygda is a python API for the libgda API. The record's <literal>connection</"
 "literal> attribute provides a gda.connection that can be used to access the "
-"current database directly. This allows you to run any SQL query, for instance "
-"to read data from the database with a SELECT, or to change values in the "
-"database with an UPDATE. Note that the connection is already open so you can "
-"avoid the difficult work of specifying the connection details."
+"current database directly. This allows you to run any SQL query, for "
+"instance to read data from the database with a SELECT, or to change values "
+"in the database with an UPDATE. Note that the connection is already open so "
+"you can avoid the difficult work of specifying the connection details."
 msgstr ""
+"pygda ist eine Python-API zur libgda-API. Das <literal>connection</literal>-"
+"Attribut stellt eine gda.connection bereit, die zum direkten Zugriff auf die "
+"aktuelle Datenbank genutzt werden kann. Dies ermöglicht Ihnen die Ausführung "
+"einer SQL-Abfrage, beispielsweise zum Lesen von Daten aus der Datenbank mit "
+"einer SELECT-Anweisung, oder zum Ändern von Werten in der Datenbank mit "
+"einer UPDATE-Anweisung. Bedenken Sie, dass die Verbindung bereits offen ist, "
+"so dass die Eingabe der Verbindungsdetails nicht mehr erforderlich ist."
 
 #: C/glom.xml:829(para)
 msgid ""
@@ -1518,7 +1812,7 @@ msgstr ""
 "    print \"\\n\";\n"
 "  "
 
-#. Put one translator per line, in the form of NAME <EMAIL>, YEAR1, YEAR2.
+#. Put one translator per line, in the form of NAME <EMAIL>, YEAR1, YEAR2
 #: C/glom.xml:0(None)
 msgid "translator-credits"
 msgstr "Mario Blättermann <mariobl@gnome.org>, 2008, 2010"
