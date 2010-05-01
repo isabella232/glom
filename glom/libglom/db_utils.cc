@@ -111,6 +111,8 @@ bool create_database(Document* document, const Glib::ustring& database_name, con
   //std::cout << "Awake" << std::endl;
 #endif
 
+  progress();
+  
   try
   {
     ConnectionPool::get_instance()->create_database(database_name);
@@ -122,10 +124,14 @@ bool create_database(Document* document, const Glib::ustring& database_name, con
     return false;
   }
 
+  progress();
+  
   //Connect to the actual database:
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   connection_pool->set_database(database_name);
 
+  progress();
+  
   sharedptr<SharedConnection> sharedconnection;
   try
   {
@@ -144,15 +150,21 @@ bool create_database(Document* document, const Glib::ustring& database_name, con
 
   if(sharedconnection)
   {
+    progress();
+    
     bool test = add_standard_tables(document); //Add internal, hidden, tables.
     if(!test)
       return false;
 
+    progress();
+    
     //Create the developer group, and make this user a member of it:
     //If we got this far then the user must really have developer privileges already:
     test = add_standard_groups(document);
     if(!test)
       return false;
+
+    progress();
 
     //std::cout << "create_database(): Creation of standard tables and groups finished." << std::endl;
 
@@ -168,6 +180,8 @@ bool create_database(Document* document, const Glib::ustring& database_name, con
     {
       //std::cout << "create_database(): database has title: " << prefs.m_name << std::endl;
     }
+
+    progress();
 
     return true;
   }

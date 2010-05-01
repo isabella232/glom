@@ -1,5 +1,9 @@
 2010-05-01  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/libglom/db_utils.cc: create_database(): Actually use the progress slot.
+
+2010-05-01  Murray Cumming  <murrayc@murrayc.com>
+
 	Move some Base_DB methods to DbUtils and test database recreation.
 	
 	* glom/base_db.[h|cc]: Move many db-related methods to 
