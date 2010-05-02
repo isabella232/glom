@@ -37,7 +37,7 @@ int main()
     return EXIT_FAILURE;
   }
 
-  std::cout << "type=" << g_type_name(value.get_value_type()) << std::endl;
+  //std::cout << "type=" << g_type_name(value.get_value_type()) << std::endl;
 
   //Check that there was no python error:
   g_assert(error_message.empty());
@@ -47,7 +47,7 @@ int main()
 
   //Check that the return value is of the expected value:
   const Glib::ustring text = value.get_string();
-  std::cout << "text=" << text << std::endl;
+  //std::cout << "text=" << text << std::endl;
   g_assert(text == "4950"); //This should always be as per ISO, not according to the user's locale, because it's generally passed to the database. Presentation is separate to calculation or storage.
 
   //std::cout << "value=" << value.to_string() << std::endl;
