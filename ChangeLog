@@ -1,5 +1,14 @@
 2010-05-01  Murray Cumming  <murrayc@murrayc.com>
 
+	Add test of type conversion after python calculations.
+	
+	* Makefile_tests.am:
+	* tests/test_python_execute_func_change_result_type.cc: Add a test that 
+	calls a python function that returns a number, for a text field, to 
+	check that the conversion is done.
+
+2010-05-01  Murray Cumming  <murrayc@murrayc.com>
+
 	Python scripts and calcuations: Test buttons now show python errors.
 	
 	* glom/python_embed/glom_python.[h|cc]: 
