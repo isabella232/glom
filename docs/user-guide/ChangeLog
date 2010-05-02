@@ -1,3 +1,10 @@
+2010-05-02  Murray Cumming  <murrayc@murrayc.com>
+
+	User Guide: Update the pygda example for pygda 4.
+	
+	* C/glom.xml: using-the-full-pygda-api: Update the example for pygda 4 and 
+	its (currently ugly, until I fix it) API.
+
 2009-01-01  Mario Blättermann  <mariobl@svn.gnome.org>
 
 	* de/de.po: Updated German translation
