@@ -1,3 +1,14 @@
+2010-05-02  Murray Cumming  <murrayc@murrayc-x61>
+
+	Python calculations: Really convert to expected types.
+	
+	* glom/libglom/data_structure/glomconversions.cc: 
+	get_double_for_gda_value_numeric(): Handle all numeric GTypes - not just 
+	G_TYPE_INT..
+	convert_value(): Remove the special case for G_TYPE_INT (now handled in 
+	get_double_for_gda_value_numeric instead). Make sure that all numeric GTypes 
+	are converted to GDA_TYPE_NUMERIC, making it easier for callers to check.
+
 2010-05-01  Murray Cumming  <murrayc@murrayc.com>
 
 	Add test of type conversion after python calculations.
@@ -9,7 +20,7 @@
 
 2010-05-01  Murray Cumming  <murrayc@murrayc.com>
 
-	Python scripts and calcuations: Test buttons now show python errors.
+	Python scripts and calculations: Test buttons now show python errors.
 	
 	* glom/python_embed/glom_python.[h|cc]: 
 	glom_execute_python_function_implementation(), 
