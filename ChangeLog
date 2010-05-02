@@ -86,6 +86,8 @@
 	database structure and data from the example file.
 	* Many files: Adapted.
 
+This is the master branch. See also the glom-1-14 branch.
+
 2010-05-01  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix document saving (recently broken by me) and add a test for it.
