@@ -1,3 +1,22 @@
+2010-05-03  Daniel Borgmann  <danielb@openismus.com>
+
+	Set default icon instead of individual window icons.
+
+	* glom/application.cc: Set default window icon.
+
+	* glom/dialog_existing_or_new.cc:
+	* glom/filechooser_export.cc:
+	* glom/frame_glom.cc:
+	* glom/glade_utils.h:
+	* glom/mode_design/script_library/dialog_script_library.cc:
+	* glom/mode_design/translation/window_translations.cc:
+	* glom/mode_design/users/dialog_groups_list.cc:
+	* glom/utility_widgets/filechooserdialog_saveextras.cc:
+	* glom/utils_ui.cc:
+	* glom/window_boxholder.cc:
+
+	Don't call set_icon_name() on individual windows.
+
 2010-05-12 Daniel Borgmann <danielb@openismus.com>
 
 	Don't allow deleting placeholder rows.
@@ -60,8 +79,6 @@
 
 	* configure.ac: Don't check for avahi-ui.
 	* glom/application.cc: Don't include avahi-ui.h
-	
-	This is lucky, because avahi-ui still has no support for GTK+ 3.
 
 1.14.2:
 

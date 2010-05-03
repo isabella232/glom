@@ -89,7 +89,7 @@ Application::Application(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builde
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_show_sql_debug(false)
 {
-  set_icon_name("glom");
+  Gtk::Window::set_default_icon_name("glom");
 
   //Load widgets from glade file:
   builder->get_widget("bakery_vbox", m_pBoxTop);

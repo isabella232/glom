@@ -214,7 +214,6 @@ void Dialog_GroupsList::on_button_group_delete()
         //TODO: Prevent deletion of standard groups
         Gtk::MessageDialog dialog(Utils::bold_message(_("Delete Group")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
         dialog.set_secondary_text(_("Are your sure that you wish to delete this group?"));
-        dialog.set_icon_name("glom");
         dialog.set_transient_for(*this);
 
         int response = dialog.run();

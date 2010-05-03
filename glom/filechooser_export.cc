@@ -37,8 +37,6 @@ FileChooser_Export::FileChooser_Export()
 #endif //GLOM_ENABLE_CLIENT_ONLY
   m_document(0)
 {
-  set_icon_name("glom");
-
   add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   add_button(_("_Export"), Gtk::RESPONSE_OK);
 
@@ -59,7 +57,6 @@ FileChooser_Export::FileChooser_Export()
   Utils::get_glade_widget_derived_with_warning(dialog);
   
   m_pDialogLayout = dialog;
-  m_pDialogLayout->set_icon_name("glom");
   //add_view(m_pDialogLayout); //Give it access to the document.
   m_pDialogLayout->signal_hide().connect( sigc::mem_fun(*this, &FileChooser_Export::on_dialog_layout_hide) );
 #endif //GLOM_ENABLE_CLIENT_ONLY
