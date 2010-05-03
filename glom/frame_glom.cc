@@ -572,7 +572,6 @@ void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction
           //TODO: Obviously this could be possible but it would require a network protocol and some work:
           Gtk::MessageDialog dialog(Utils::bold_message(_("Developer mode not available.")), true, Gtk::MESSAGE_WARNING);
           dialog.set_secondary_text(_("Developer mode is not available because the file was opened over the network from a running Glom. Only the original file may be edited."));
-          dialog.set_icon_name("glom");
           dialog.set_transient_for(*get_app_window());
           dialog.run();
         }
@@ -580,7 +579,6 @@ void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction
         {
           Gtk::MessageDialog dialog(Utils::bold_message(_("Developer mode not available")), true, Gtk::MESSAGE_WARNING);
           dialog.set_secondary_text(_("Developer mode is not available. Check that you have sufficient database access rights and that the glom file is not read-only."));
-          dialog.set_icon_name("glom");
           dialog.set_transient_for(*get_app_window());
           dialog.run();
         }
@@ -589,7 +587,6 @@ void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction
       {
         Gtk::MessageDialog dialog(Utils::bold_message(_("Saving in new document format")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
         dialog.set_secondary_text(_("The document was created by an earlier version of the application. Making changes to the document will mean that the document cannot be opened by some earlier versions of the application."));
-        dialog.set_icon_name("glom");
         dialog.set_transient_for(*get_app_window());
         dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
         dialog.add_button(_("Continue"), Gtk::RESPONSE_OK);
@@ -879,7 +876,6 @@ void Frame_Glom::on_menu_file_import()
   else
   {
     Gtk::FileChooserDialog file_chooser(*get_app_window(), _("Open CSV Document"), Gtk::FILE_CHOOSER_ACTION_OPEN);
-    file_chooser.set_icon_name("glom");
     file_chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
     file_chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
     Gtk::FileFilter filter_csv;
@@ -960,7 +956,6 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
   if(shared)
   {
     Gtk::MessageDialog dialog(Utils::bold_message(_("Share on the network")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
-    dialog.set_icon_name("glom");
     dialog.set_secondary_text(_("This will allow other users on the network to use this database."));
     dialog.set_transient_for(*get_app_window());
     dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
@@ -1061,7 +1056,6 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
     //TODO: Warn about connected users if possible.
     Gtk::MessageDialog dialog(Utils::bold_message(_("Stop sharing on the network")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
     dialog.set_secondary_text(_("This will prevent other users on the network from using this database."));
-    dialog.set_icon_name("glom");
     dialog.set_transient_for(*get_app_window());
     dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
     dialog.add_button(_("_Stop Sharing"), Gtk::RESPONSE_OK);
@@ -1459,7 +1453,6 @@ void Frame_Glom::on_button_quickfind()
     note.run();
 #else
     Gtk::MessageDialog dialog(Utils::bold_message(_("No find criteria")), true, Gtk::MESSAGE_WARNING );
-    dialog.set_icon_name("glom");
     dialog.set_secondary_text(message);
     dialog.set_transient_for(*get_app_window());
     dialog.run();
@@ -1744,7 +1737,6 @@ void Frame_Glom::on_menu_developer_relationships_overview()
 
   if(m_dialog_relationships_overview)
   {
-    m_dialog_relationships_overview->set_icon_name("glom");
     m_dialog_relationships_overview->set_transient_for(*(get_app_window()));
     m_dialog_relationships_overview->load_from_document();
 

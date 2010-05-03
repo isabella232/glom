@@ -175,7 +175,6 @@ void Utils::show_ok_dialog(const Glib::ustring& title, const Glib::ustring& mess
 #else
   Gtk::MessageDialog dialog("<b>" + title + "</b>", true /* markup */, message_type, Gtk::BUTTONS_OK);
   dialog.set_secondary_text(message);
-  dialog.set_icon_name("glom");
   if(parent)
     dialog.set_transient_for(*parent);
 #endif
