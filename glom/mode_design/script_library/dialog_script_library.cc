@@ -127,7 +127,6 @@ void Dialog_ScriptLibrary::on_button_remove()
   dialog.set_secondary_text(_("Do you really want to delete this script? This data can not be recovered"));
   dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   dialog.add_button(Gtk::Stock::REMOVE, Gtk::RESPONSE_OK);
-  dialog.set_icon_name("glom");
   dialog.set_transient_for(*this);
   const int response = dialog.run();
   dialog.hide();

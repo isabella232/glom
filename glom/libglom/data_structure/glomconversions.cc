@@ -292,16 +292,32 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
 
 double Conversions::get_double_for_gda_value_numeric(const Gnome::Gda::Value& value)
 {
-  if(value.get_value_type() != GDA_TYPE_NUMERIC)
+  const GType vtype = value.get_value_type();
+  if(vtype != GDA_TYPE_NUMERIC)
   {
     // Note that in case the database system does not support GdaNumeric
     // (such as sqlite) we fall back to double (see
     // FieldTypes::get_string_name_for_gdavaluetype), so try this as well.
-    if(value.get_value_type() == G_TYPE_DOUBLE)
-      return value.get_double();
-
-    std::cerr << "Conversions::get_double_for_gda_value_numeric(): expected NUMERIC but GdaValue type is: " << g_type_name(value.get_value_type()) << std::endl;
-    return 0;
+    switch(vtype)
+    {
+      case G_TYPE_DOUBLE:
+        return value.get_double();
+      case G_TYPE_INT:
+        return value.get_int();
+      case G_TYPE_UINT:
+        return value.get_uint();
+      //case G_TYPE_LONG:
+      //TODO: Add this to libgdamm:  return value.get_long();
+      case G_TYPE_ULONG:
+        return value.get_ulong();
+      case G_TYPE_INT64:
+        return value.get_int64();
+      case G_TYPE_UINT64:
+        return value.get_uint64();
+      default:
+        std::cerr << "Conversions::get_double_for_gda_value_numeric(): expected NUMERIC but GdaValue type is: " << g_type_name(value.get_value_type()) << std::endl;
+        return 0;
+    }
   }
 
   const GdaNumeric* gda_numeric = value.get_numeric();
@@ -972,29 +988,47 @@ Gnome::Gda::Value Conversions::get_example_value(Field::glom_field_type field_ty
   }
 }
 
+static bool vtype_is_numeric(GType vtype)
+{
+  switch(vtype)
+  {
+    case G_TYPE_DOUBLE:
+    case G_TYPE_INT:
+    case G_TYPE_UINT:
+    case G_TYPE_LONG:
+    case G_TYPE_ULONG:
+    case G_TYPE_INT64:
+    case G_TYPE_UINT64:
+      return true;
+    default:
+      return false;
+  }
+}
+
 Gnome::Gda::Value Conversions::convert_value(const Gnome::Gda::Value& value, Field::glom_field_type target_glom_type)
 {
-  const GType gvalue_type = value.get_value_type();
-
-  //A special case (only used for serial keys)
-  //Always convert these.
-  if(gvalue_type == G_TYPE_INT)
-  {
-    const gint num = value.get_int();
-    return parse_value(num);
-  }
-
-  const Field::glom_field_type source_glom_type = Field::get_glom_type_for_gda_type(gvalue_type);
+  const GType gvalue_type_target = Field::get_gda_type_for_glom_type(target_glom_type);
+  const GType gvalue_type_source = value.get_value_type();
+  if(gvalue_type_source == gvalue_type_target)
+    return value; //No conversion necessary, and no loss of precision.
+  
+  const Field::glom_field_type source_glom_type = Field::get_glom_type_for_gda_type(gvalue_type_source);
   if(source_glom_type == target_glom_type)
-    return value; //No conversion necessary.
-  else
   {
-    const Glib::ustring text = get_text_for_gda_value(source_glom_type, value);
-    bool test = false;
-    return parse_value(target_glom_type, text, test, true /* iso_format */);
+    //Try to return the canonical type, 
+    //instead of just something of a similar GType:
+    if((target_glom_type == Field::TYPE_NUMERIC) && 
+      (vtype_is_numeric(gvalue_type_source)))
+    {
+      const double number = get_double_for_gda_value_numeric(value);
+      return parse_value(number);
+    }
   }
 
-  return value;
+  //Fallback for other conversions:
+  const Glib::ustring text = get_text_for_gda_value(source_glom_type, value);
+  bool test = false;
+  return parse_value(target_glom_type, text, test, true /* iso_format */);
 }
 
 } //namespace Glom

@@ -20,6 +20,7 @@
  
 #include "dialog_add_related_table.h"
 #include <glom/frame_glom.h> //For show_ok_dialog.h
+#include <libglom/db_utils.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -68,7 +69,7 @@ void Dialog_AddRelatedTable::set_fields(const Glib::ustring& table_name)
 {
   m_table_name = table_name;
 
-  type_vec_fields fields = get_fields_for_table_from_database(table_name);
+  const type_vec_fields fields = DbUtils::get_fields_for_table_from_database(table_name);
 
   //Show the fields:
   m_combo_from_field->clear_items();
@@ -135,7 +136,7 @@ void Dialog_AddRelatedTable::on_combo_field_name()
   int suffix_number = 1;
   while(exists_already)
   {
-    if(!get_table_exists_in_database(name_to_try))
+    if(!DbUtils::get_table_exists_in_database(name_to_try))
        exists_already = false; //Stop the while loop.
     else
     {

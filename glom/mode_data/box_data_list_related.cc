@@ -21,6 +21,7 @@
 #include <glom/mode_data/box_data_list_related.h>
 #include <glom/mode_design/layout/dialog_layout_list_related.h>
 #include <libglom/data_structure/glomconversions.h>
+#include <libglom/db_utils.h>
 #include <glom/glade_utils.h>
 #include <glom/frame_glom.h> //For show_ok_dialog()
 #include <glom/utils_ui.h> //For bold_message()).
@@ -465,7 +466,7 @@ void Box_Data_List_Related::create_layout_add_group(const sharedptr<LayoutGroup>
       {
         //Check that the field really exists, to avoid SQL errors.
         //This could probably only happen if we have failed to rename something everywhere, when the user has renamed something.
-        if(!get_field_exists_in_database(child_field->get_table_used(Base_DB_Table::m_table_name), child_field->get_name()))
+        if(!DbUtils::get_field_exists_in_database(child_field->get_table_used(Base_DB_Table::m_table_name), child_field->get_name()))
         {
           std::cerr << "debug: Box_Data_List_Related::create_layout_add_group(): Field does not exist in database: table_name=" << child_field->get_table_used(Base_DB_Table::m_table_name) << ", field_name=" << child_field->get_name() << std::endl;
           continue;

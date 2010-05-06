@@ -30,6 +30,7 @@
 #include "cellrenderer_buttonimage.h"
 #include "cellrenderer_buttontext.h"
 #include <glom/utils_ui.h> //For Utils::image_scale_keeping_ratio().
+#include <libglom/db_utils.h>
 
 #include <iostream> //For debug output.
 #include <gtk/gtktreeview.h>
@@ -2641,7 +2642,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
   {
     //Auto-increment is awkward (we can't get the last-generated ID) with postgres, so we auto-generate it ourselves;
     const Glib::ustring strPrimaryKeyName = primary_key_field->get_name();
-    primary_key_value = get_next_auto_increment_value(m_found_set.m_table_name, strPrimaryKeyName);  //TODO: return a Gnome::Gda::Value of an appropriate type.
+    primary_key_value = DbUtils::get_next_auto_increment_value(m_found_set.m_table_name, strPrimaryKeyName);  //TODO: return a Gnome::Gda::Value of an appropriate type.
   }
   else
   {

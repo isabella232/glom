@@ -71,6 +71,7 @@ int main()
     sigc::ptr_fun(&on_script_ui_start_new_record);
 
   //Execute a python script:
+  Glib::ustring error_message;
   try
   {
     Glom::glom_execute_python_function_implementation(
@@ -78,7 +79,8 @@ int main()
       0 /* document */, table_name_input,
       Glom::sharedptr<Glom::Field>(), Gnome::Gda::Value(), // primary key details. Not used in this test.
       connection,
-      callbacks);
+      callbacks,
+      error_message);
   }
   catch(const std::exception& ex)
   {
@@ -91,6 +93,8 @@ int main()
     return EXIT_FAILURE;
   }
 
+  g_assert(error_message.empty());
+  
   //Check that the callbacks received the expected values:
   g_assert(result_table_name_list == table_name_input);
   g_assert(result_table_name_details == table_name_details_input);

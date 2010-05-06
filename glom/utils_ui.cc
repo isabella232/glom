@@ -30,6 +30,7 @@
 #include <libgda/gda-blob-op.h> // For gda_blob_op_read_all()
 
 #include <gtkmm/messagedialog.h>
+#include <gtkmm/stock.h>
 
 #include <giomm.h>
 
@@ -174,7 +175,6 @@ void Utils::show_ok_dialog(const Glib::ustring& title, const Glib::ustring& mess
 #else
   Gtk::MessageDialog dialog("<b>" + title + "</b>", true /* markup */, message_type, Gtk::BUTTONS_OK);
   dialog.set_secondary_text(message);
-  dialog.set_icon_name("glom");
   if(parent)
     dialog.set_transient_for(*parent);
 #endif
@@ -495,6 +495,25 @@ Glib::RefPtr<Gdk::Pixbuf> Utils::image_scale_keeping_ratio(const Glib::RefPtr<Gd
  }
 
   return pixbuf->scale_simple(target_width, target_height, Gdk::INTERP_NEAREST);
+}
+
+bool Utils::show_warning_no_records_found(Gtk::Window& transient_for)
+{
+  const Glib::ustring message = _("Your find criteria did not match any records in the table.");
+
+#ifdef GLOM_ENABLE_MAEMO
+  Hildon::Note dialog(Hildon::NOTE_TYPE_CONFIRMATION_BUTTON, transient_for, message);
+#else
+  Gtk::MessageDialog dialog(Utils::bold_message(_("No Records Found")), true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_NONE);
+  dialog.set_secondary_text(message);
+  dialog.set_transient_for(transient_for);
+#endif
+
+  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dialog.add_button(_("New Find"), Gtk::RESPONSE_OK);
+
+  const bool find_again = (dialog.run() == Gtk::RESPONSE_OK);
+  return find_again;
 }
 
 

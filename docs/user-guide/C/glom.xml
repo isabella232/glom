@@ -827,7 +827,6 @@ For instance, a shop might need a report listing all products sold in one month,
   <title>Using the full pygda API</title>
   <para>pygda is a python API for the libgda API. The record's <literal>connection</literal> attribute provides a gda.connection that can be used to access the current database directly. This allows you to run any SQL query, for instance to read data from the database with a SELECT, or to change values in the database with an UPDATE. Note that the connection is already open so you can avoid the difficult work of specifying the connection details.</para>
   <para>The record's <literal>table_name</literal> attribute also provides the name of the current table.</para>
-  <para>(Note that the <literal>record.connection</literal> and <literal>record.table_name</literal> attributes are only available since &app; 1.1.6.)</para>
   <para>This example reads all data from the current table and prints the values to the terminal: </para>
   <para>
   <programlisting>
@@ -839,8 +838,7 @@ For instance, a shop might need a report listing all products sold in one month,
 # or even knowing the name of the database.
 
 query = "SELECT * FROM %s" % record.table_name
-command = gda.Command(query)
-data_model = record.connection.execute_single_command(command)
+data_model = gda.gda_execute_select_command(record.connection, query)
 
 rows = data_model.get_n_rows()
 columns = data_model.get_n_columns()

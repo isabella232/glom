@@ -24,9 +24,10 @@
 #include "dialog_new_group.h"
 #include <libglom/standard_table_prefs_fields.h>
 #include <glom/glade_utils.h>
-#include <glom/glom_privs.h>
+#include <libglom/privs.h>
 //#include <libgnome/gnome-i18n.h>
 #include <glom/utils_ui.h> //For bold_message()).
+#include <libglom/db_utils.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -214,7 +215,6 @@ void Dialog_GroupsList::on_button_group_delete()
         //TODO: Prevent deletion of standard groups
         Gtk::MessageDialog dialog(Utils::bold_message(_("Delete Group")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
         dialog.set_secondary_text(_("Are your sure that you wish to delete this group?"));
-        dialog.set_icon_name("glom");
         dialog.set_transient_for(*this);
 
         int response = dialog.run();
@@ -419,7 +419,7 @@ void Dialog_GroupsList::fill_table_list(const Glib::ustring& group_name)
 void Dialog_GroupsList::load_from_document()
 {
   //Ensure that the glom_developer group exists.
-  add_standard_groups();
+  DbUtils::add_standard_groups(get_document());
 
   fill_group_list();
   //fill_table_list();

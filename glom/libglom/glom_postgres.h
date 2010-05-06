@@ -18,19 +18,30 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "glom_postgres.h"
+#ifndef DB_POSTGRES_H
+#define DB_POSTGRES_H
+
+//#include <gtkmm.h>
+
+//#include <glom/base_db.h>
+#include <libglom/document/document.h>
+#include <libglom/connectionpool.h>
 
 namespace Glom
 {
 
-GlomPostgres::type_vec_strings GlomPostgres::pg_list_separate(const Glib::ustring& str)
+class GlomPostgres
 {
-  //Remove the first { and the last }:
-  Glib::ustring without_brackets = Utils::string_trim(str, "{");
-  without_brackets = Utils::string_trim(without_brackets, "}");
+public:
 
-  //Get the comma-separated items:
-  return Utils::string_separate(without_brackets, ",");
-}
+protected:
+  //Utility functions to help with the odd formats of postgres internal catalog fields:
+  typedef std::vector<Glib::ustring> type_vec_strings;
+  static type_vec_strings pg_list_separate(const Glib::ustring& str);
+
+};
 
 } //namespace Glom
+
+#endif //DB_POSTGRES_H
+

@@ -21,6 +21,7 @@
 
 #include "dialog_buttonscript.h"
 #include <glom/python_embed/glom_python.h>
+#include <glom/utils_ui.h>
 #include <libglom/data_structure/glomconversions.h>
 #include <gtksourceviewmm/sourcelanguagemanager.h>
 
@@ -119,8 +120,9 @@ void Dialog_ButtonScript::on_button_test_script()
   }
 
   //We need the connection when we run the script, so that the script may use it.
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(this /* parent window */);
+  sharedptr<SharedConnection> sharedconnection = ConnectionPool::get_and_connect();
 
+  Glib::ustring error_message;
   PythonUICallbacks callbacks;
   glom_execute_python_function_implementation(calculation,
     field_values, //TODO: Maybe use the field's type here.
@@ -128,7 +130,11 @@ void Dialog_ButtonScript::on_button_test_script()
     m_table_name,
     sharedptr<Field>(), Gnome::Gda::Value(), // primary key - only used when setting values in the DB, which we would not encourage in a test.
     sharedconnection->get_gda_connection(),
-    callbacks);
+    callbacks,
+    error_message);
+    
+  if(!error_message.empty())
+    Utils::show_ok_dialog(_("Calculation failed"), _("The calculation failed with this error:\n") + error_message, *this, Gtk::MESSAGE_ERROR);
 }
 
 } //namespace Glom

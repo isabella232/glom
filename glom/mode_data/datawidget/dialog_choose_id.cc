@@ -121,7 +121,9 @@ void Dialog_ChooseID::on_button_quickfind()
   }
   else
   {
-    const Glib::ustring where_clause = get_find_where_clause_quick(m_table_name, Gnome::Gda::Value(criteria));
+    const Glib::ustring where_clause = 
+      Utils::get_find_where_clause_quick(get_document(), m_table_name, 
+        Gnome::Gda::Value(criteria));
     on_box_find_criteria(where_clause);
   }
 }
@@ -137,7 +139,7 @@ void Dialog_ChooseID::on_box_find_criteria(const Glib::ustring& where_clause)
     const bool records_found = m_box_select.init_db_details(found_set, m_layout_platform);
     if(!records_found)
     {
-      const bool find_again = show_warning_no_records_found(*this);
+      const bool find_again = Utils::show_warning_no_records_found(*this);
 
       if(!find_again)
         response(Gtk::RESPONSE_CANCEL);

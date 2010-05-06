@@ -627,6 +627,7 @@ main(int argc, char* argv[])
 
     pApplication->set_command_line_args(argc, argv);
     pApplication->set_show_sql_debug(group.m_arg_debug_sql);
+    Glom::ConnectionPool::get_instance()->set_show_debug_output(group.m_arg_debug_sql);
 
     const bool test = pApplication->init(input_uri); //Sets it up and shows it.
 

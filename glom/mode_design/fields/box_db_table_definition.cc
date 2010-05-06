@@ -23,6 +23,7 @@
 #include <glom/glade_utils.h>
 #include <glom/utils_ui.h> //For bold_message()).
 #include <libglom/libglom_config.h>
+#include <libglom/db_utils.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -177,7 +178,7 @@ void Box_DB_Table_Definition::on_adddel_add(const Gtk::TreeModel::iterator& row)
 
     //TODO: Warn about a delay before actually doing this when the backend
     //needs to recreate the whole table.
-    const bool bTest = add_column(m_table_name, field, get_app_window()); //TODO: Get schema type for Field::TYPE_NUMERIC
+    const bool bTest = DbUtils::add_column(m_table_name, field, get_app_window()); //TODO: Get schema type for Field::TYPE_NUMERIC
     if(bTest)
     {
       //Store the generated title in the document:
@@ -229,7 +230,7 @@ void Box_DB_Table_Definition::on_adddel_delete(const Gtk::TreeModel::iterator& r
     {
       //TODO: Warn about a delay before actually doing this when the backend
       //needs to recreate the whole table.
-      const bool test = drop_column(m_table_name, name, get_app_window());
+      const bool test = DbUtils::drop_column(m_table_name, name);
       if(test)
       {
         //update_gda_metastore_for_table(m_table_name); // already done in drop_column().
@@ -322,7 +323,7 @@ bool Box_DB_Table_Definition::check_field_change(const sharedptr<const Field>& f
 
   //Refuse to change a field name to the same as an existing one:
   if( (field_new->get_name() != field_old->get_name()) &&
-      (get_field_exists_in_database(m_table_name, field_new->get_name())) )
+      (DbUtils::get_field_exists_in_database(m_table_name, field_new->get_name())) )
   {
     std::cout << "get_field_exists_in_database(" << m_table_name << ", " << field_new->get_name() << ") returned true" << std::endl;
 

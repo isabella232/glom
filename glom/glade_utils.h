@@ -92,13 +92,6 @@ void helper_get_glade_widget_derived_with_warning(const std::string& filename, c
   {
     refXml->get_widget_derived(id, widget);
   }
-
-  // Make sure that all windows have the Glom icon.
-  // TODO: Though shouldn't all transient windows have this by default,
-  // or should they even be visible in the task list? murrayc
-  Gtk::Window* window = dynamic_cast<Gtk::Window*>(widget);
-  if(window)
-    window->set_icon_name("glom");
 }
 
 template<class T_Widget>

@@ -18,9 +18,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "glom_privs.h"
+#include "privs.h"
 #include <libglom/standard_table_prefs_fields.h>
-#include <glom/application.h>
+#include <libglom/db_utils.h>
+#include <libglom/utils.h>
+//#include <glom/application.h>
 
 namespace Glom
 {
@@ -37,19 +39,19 @@ Privs::type_vec_strings Privs::get_database_groups()
       Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder->select_add_field("groname", "pg_group");
   builder->select_add_target("pg_group");
-  
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(builder);
+
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
   if(data_model)
   {
     const int rows_count = data_model->get_n_rows();
     for(int row = 0; row < rows_count; ++row)
     {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED    
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
       const Gnome::Gda::Value value = data_model->get_value_at(0, row);
 #else
       std::auto_ptr<Glib::Error> value_error;
-      const Gnome::Gda::Value value = data_model->get_value_at(0, row, value_error); 
-#endif           
+      const Gnome::Gda::Value value = data_model->get_value_at(0, row, value_error);
+#endif
       const Glib::ustring name = value.get_string();
       result.push_back(name);
     }
@@ -98,7 +100,7 @@ Glib::ustring Privs::get_default_developer_user_name(Glib::ustring& password)
 
 Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_name)
 {
-  BusyCursor cursor(Application::get_application());
+  //TODO_Moved: BusyCursor cursor(Application::get_application());
 
   type_vec_strings result;
 
@@ -109,20 +111,20 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
       Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
     builder->select_add_field("usename", "pg_shadow");
     builder->select_add_target("pg_shadow");
-  
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(builder);
+
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
     if(data_model)
     {
       const int rows_count = data_model->get_n_rows();
       for(int row = 0; row < rows_count; ++row)
       {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED      
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
         const Gnome::Gda::Value value = data_model->get_value_at(0, row);
 #else
-        std::auto_ptr<Glib::Error> value_error;       
+        std::auto_ptr<Glib::Error> value_error;
         const Gnome::Gda::Value value = data_model->get_value_at(0, row, value_error);
-#endif         
-        const Glib::ustring name = value.get_string();        
+#endif
+        const Glib::ustring name = value.get_string();
         result.push_back(name);
       }
     }
@@ -138,18 +140,18 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
       builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
         builder->add_id("groname"), //TODO: It would be nice to specify the table here too.
         builder->add_expr(group_name)));
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(builder);
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
     if(data_model && data_model->get_n_rows())
     {
       const int rows_count = data_model->get_n_rows();
       for(int row = 0; row < rows_count; ++row)
       {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED      
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
         const Gnome::Gda::Value value = data_model->get_value_at(1, row); //Column 1 is the /* the user list.
 #else
         std::auto_ptr<Glib::Error> value_error;
         const Gnome::Gda::Value value = data_model->get_value_at(1, row, value_error); //Column 1 is the /* the user list.
-#endif        
+#endif
         //pg_group is a string, formatted, bizarrely, like so: "{100, 101}".
 
         Glib::ustring group_list;
@@ -168,15 +170,15 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
             builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
               builder->add_id("usesysid"), //TODO: It would be nice to specify the table here too.
               builder->add_expr(*iter)));
-          Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(builder);
+          Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
           if(data_model)
           {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED          
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
             const Gnome::Gda::Value value = data_model->get_value_at(0, 0);
 #else
             std::auto_ptr<Glib::Error> value_error;
-            const Gnome::Gda::Value value = data_model->get_value_at(0, 0, value_error);            
-#endif            
+            const Gnome::Gda::Value value = data_model->get_value_at(0, 0, value_error);
+#endif
             result.push_back(value.get_string());
           }
         }
@@ -222,7 +224,7 @@ void Privs::set_table_privileges(const Glib::ustring& group_name, const Glib::us
     if(privs.m_create)
     {
       if(!strPrivilege.empty())
-      
+
         strPrivilege += ", ";
 
       strPrivilege += "INSERT";
@@ -244,7 +246,7 @@ void Privs::set_table_privileges(const Glib::ustring& group_name, const Glib::us
 
   strQuery += " GROUP \"" + group_name + "\"";
 
-  const bool test = query_execute(strQuery);
+  const bool test = DbUtils::query_execute(strQuery);
   if(!test)
     std::cerr << "Privs::set_table_privileges(): GRANT failed." << std::endl;
   else
@@ -284,7 +286,7 @@ Privileges Privs::get_table_privileges(const Glib::ustring& group_name, const Gl
     builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
       builder->add_id("relname"), //TODO: It would be nice to specify the table here too.
       builder->add_expr(table_name)));
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(builder);
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
   if(data_model && data_model->get_n_rows())
   {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -293,7 +295,7 @@ Privileges Privs::get_table_privileges(const Glib::ustring& group_name, const Gl
     std::auto_ptr<Glib::Error> value_error;
     const Gnome::Gda::Value value = data_model->get_value_at(0, 0, value_error);
 #endif
-    
+
     Glib::ustring access_details;
     if(!value.is_null())
       access_details = value.get_string();
@@ -315,7 +317,7 @@ Privileges Privs::get_table_privileges(const Glib::ustring& group_name, const Gl
 
       //Find group permissions, ignoring user permissions:
       //We need to find the role by name.
-      // Previous versions of Postgres (8.1, or maybe 7.4) prefixed group names by "group ", 
+      // Previous versions of Postgres (8.1, or maybe 7.4) prefixed group names by "group ",
       // but that doesn't work for recent versions of Postgres,
       // probably because the user and group concepts have been combined into "roles".
       //
@@ -388,7 +390,7 @@ Glib::ustring Privs::get_user_visible_group_name(const Glib::ustring& group_name
   return result;
 }
 
-Base_DB::type_vec_strings Privs::get_groups_of_user(const Glib::ustring& user)
+Privs::type_vec_strings Privs::get_groups_of_user(const Glib::ustring& user)
 {
   //TODO_Performance
 
@@ -418,8 +420,8 @@ bool Privs::get_user_is_in_group(const Glib::ustring& user, const Glib::ustring&
 
 bool Privs::on_privs_privileges_cache_timeout(const Glib::ustring& table_name)
 {
-  //std::cout << "DEBUG: Privs::on_privs_privileges_cache_timeou(): table=" << table_name << std::endl;  
-      
+  //std::cout << "DEBUG: Privs::on_privs_privileges_cache_timeou(): table=" << table_name << std::endl;
+
   //Forget the cached privileges after a few seconds:
   type_map_privileges::iterator iter = m_privileges_cache.find(table_name);
   if(iter != m_privileges_cache.end())
@@ -436,7 +438,7 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
   //TODO_Performance: There's lots of database access here.
   //We could maybe replace some with the postgres has_table_* function().
 
-  BusyCursor cursor(Application::get_application());
+  //TODO_Moved: BusyCursor cursor(Application::get_application());
 
   //Return a cached value if possible.
   //(If it is in the cache then it's fairly recent)
@@ -447,11 +449,11 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
     return iter->second;
   }
 
-   
+
   //Get the up-to-date privileges from the database:
   Privileges result;
 
-  //std::cout << "DEBUG: Privs::get_current_privs(): Getting non-cached." << std::endl;  
+  //std::cout << "DEBUG: Privs::get_current_privs(): Getting non-cached." << std::endl;
 
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   const Glib::ustring current_user = connection_pool->get_user();
@@ -468,9 +470,9 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   sharedptr<SharedConnection> sharedconnection = connection_pool->connect();
 #else
-  std::auto_ptr<ExceptionConnection> ex;  
+  std::auto_ptr<ExceptionConnection> ex;
   sharedptr<SharedConnection> sharedconnection = connection_pool->connect(ex);
-#endif  
+#endif
   if(sharedconnection && sharedconnection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS))
   {
     //Get the "true" rights for any groups that the user is in:
@@ -514,9 +516,9 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
   if(iter_connection != m_map_cache_timeouts.end())
     iter_connection->second.disconnect();
 
-  m_map_cache_timeouts[table_name] = 
+  m_map_cache_timeouts[table_name] =
     Glib::signal_timeout().connect_seconds(
-      sigc::bind( sigc::ptr_fun(&Privs::on_privs_privileges_cache_timeout), table_name ), 
+      sigc::bind( sigc::ptr_fun(&Privs::on_privs_privileges_cache_timeout), table_name ),
       30 /* seconds */);
 
   return result;

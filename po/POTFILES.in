@@ -53,6 +53,7 @@ glom/libglom/document/bakery/view/view_composite.cc
 glom/libglom/gst-package.c
 glom/libglom/spawn_with_feedback.cc
 glom/libglom/utils.cc
+glom/libglom/db_utils.cc
 glom/main.cc
 glom/mode_data/box_data_calendar_related.cc
 glom/mode_data/box_data.cc
@@ -84,6 +85,7 @@ glom/mode_design/layout/dialog_layout_list.cc
 glom/mode_design/layout/dialog_layout_list_related.cc
 glom/mode_design/layout/layout_item_dialogs/box_formatting.cc
 glom/mode_design/layout/layout_item_dialogs/combo_summarytype.cc
+glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.cc
 glom/mode_design/layout/layout_item_dialogs/dialog_field_layout.cc
 glom/mode_design/layout/layout_item_dialogs/dialog_field_summary.cc
 glom/mode_design/layout/layout_item_dialogs/dialog_formatting.cc

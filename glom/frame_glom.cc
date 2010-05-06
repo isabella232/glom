@@ -43,6 +43,7 @@
 #include <glom/mode_design/script_library/dialog_script_library.h>
 #include <glom/mode_design/dialog_initial_password.h>
 #include <glom/mode_design/relationships_overview/dialog_relationships_overview.h>
+#include <glom/glade_utils.h>
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #include <glom/utils_ui.h>
@@ -66,7 +67,8 @@
 #endif
 
 #include <glom/filechooser_export.h>
-#include <glom/glom_privs.h>
+#include <libglom/privs.h>
+#include <libglom/db_utils.h>
 #include <sstream> //For stringstream.
 #include <fstream>
 #include <glibmm/i18n.h>
@@ -570,7 +572,6 @@ void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction
           //TODO: Obviously this could be possible but it would require a network protocol and some work:
           Gtk::MessageDialog dialog(Utils::bold_message(_("Developer mode not available.")), true, Gtk::MESSAGE_WARNING);
           dialog.set_secondary_text(_("Developer mode is not available because the file was opened over the network from a running Glom. Only the original file may be edited."));
-          dialog.set_icon_name("glom");
           dialog.set_transient_for(*get_app_window());
           dialog.run();
         }
@@ -578,7 +579,6 @@ void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction
         {
           Gtk::MessageDialog dialog(Utils::bold_message(_("Developer mode not available")), true, Gtk::MESSAGE_WARNING);
           dialog.set_secondary_text(_("Developer mode is not available. Check that you have sufficient database access rights and that the glom file is not read-only."));
-          dialog.set_icon_name("glom");
           dialog.set_transient_for(*get_app_window());
           dialog.run();
         }
@@ -587,7 +587,6 @@ void Frame_Glom::on_menu_userlevel_Developer(const Glib::RefPtr<Gtk::RadioAction
       {
         Gtk::MessageDialog dialog(Utils::bold_message(_("Saving in new document format")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
         dialog.set_secondary_text(_("The document was created by an earlier version of the application. Making changes to the document will mean that the document cannot be opened by some earlier versions of the application."));
-        dialog.set_icon_name("glom");
         dialog.set_transient_for(*get_app_window());
         dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
         dialog.add_button(_("Continue"), Gtk::RESPONSE_OK);
@@ -877,7 +876,6 @@ void Frame_Glom::on_menu_file_import()
   else
   {
     Gtk::FileChooserDialog file_chooser(*get_app_window(), _("Open CSV Document"), Gtk::FILE_CHOOSER_ACTION_OPEN);
-    file_chooser.set_icon_name("glom");
     file_chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
     file_chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
     Gtk::FileFilter filter_csv;
@@ -958,7 +956,6 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
   if(shared)
   {
     Gtk::MessageDialog dialog(Utils::bold_message(_("Share on the network")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
-    dialog.set_icon_name("glom");
     dialog.set_secondary_text(_("This will allow other users on the network to use this database."));
     dialog.set_transient_for(*get_app_window());
     dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
@@ -1059,7 +1056,6 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
     //TODO: Warn about connected users if possible.
     Gtk::MessageDialog dialog(Utils::bold_message(_("Stop sharing on the network")), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE);
     dialog.set_secondary_text(_("This will prevent other users on the network from using this database."));
-    dialog.set_icon_name("glom");
     dialog.set_transient_for(*get_app_window());
     dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
     dialog.add_button(_("_Stop Sharing"), Gtk::RESPONSE_OK);
@@ -1278,7 +1274,7 @@ void Frame_Glom::on_dialog_add_related_table_response(int response)
 
     //It would be nice to put this in the dialog's on_response() instead,
     //but I don't think we can stop the response from being returned. murrayc
-    if(get_table_exists_in_database(table_name))
+    if(DbUtils::get_table_exists_in_database(table_name))
     {
       Frame_Glom::show_ok_dialog(_("Table Exists Already"), _("A table with this name already exists in the database. Please choose a different table name."), *parent, Gtk::MESSAGE_ERROR);
     }
@@ -1304,7 +1300,7 @@ void Frame_Glom::on_dialog_add_related_table_response(int response)
     else
     {
       //Create the new table:
-      const bool result = create_table_with_default_fields(table_name);
+      const bool result = DbUtils::create_table_with_default_fields(get_document(), table_name);
       if(!result)
       {
         std::cerr << "Frame_Glom::on_menu_Tables_AddRelatedTable(): create_table_with_default_fields() failed." << std::endl;
@@ -1457,7 +1453,6 @@ void Frame_Glom::on_button_quickfind()
     note.run();
 #else
     Gtk::MessageDialog dialog(Utils::bold_message(_("No find criteria")), true, Gtk::MESSAGE_WARNING );
-    dialog.set_icon_name("glom");
     dialog.set_secondary_text(message);
     dialog.set_transient_for(*get_app_window());
     dialog.run();
@@ -1465,7 +1460,7 @@ void Frame_Glom::on_button_quickfind()
   }
   else
   {
-    const Glib::ustring where_clause = get_find_where_clause_quick(m_table_name, Gnome::Gda::Value(criteria));
+    const Glib::ustring where_clause = Utils::get_find_where_clause_quick(get_document(), m_table_name, Gnome::Gda::Value(criteria));
     //std::cout << "Frame_Glom::on_button_quickfind(): where_clause=" << where_clause << std::endl;
     on_notebook_find_criteria(where_clause);
   }
@@ -1499,7 +1494,7 @@ void Frame_Glom::on_notebook_find_criteria(const Glib::ustring& where_clause)
 
     if(!records_found)
     {
-      const bool find_again = show_warning_no_records_found(*get_app_window());
+      const bool find_again = Utils::show_warning_no_records_found(*get_app_window());
 
       if(find_again)
         pApp->set_mode_find();
@@ -1570,7 +1565,7 @@ void Frame_Glom::update_table_in_document_from_database()
   typedef Box_DB_Table::type_vec_fields type_vec_fields;
 
   //Get the fields information from the database:
-  Base_DB::type_vec_fields fieldsDatabase = Base_DB::get_fields_for_table_from_database(m_table_name);
+  DbUtils::type_vec_fields fieldsDatabase = DbUtils::get_fields_for_table_from_database(m_table_name);
 
   Document* pDoc = dynamic_cast<const Document*>(get_document());
   if(pDoc)
@@ -1742,7 +1737,6 @@ void Frame_Glom::on_menu_developer_relationships_overview()
 
   if(m_dialog_relationships_overview)
   {
-    m_dialog_relationships_overview->set_icon_name("glom");
     m_dialog_relationships_overview->set_transient_for(*(get_app_window()));
     m_dialog_relationships_overview->load_from_document();
 
@@ -2457,27 +2451,20 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib::ustring& title)
 {
-#if 1
-  // This seems to increase the chance that the database creation does not
-  // fail due to the "source database is still in use" error. armin.
-  //std::cout << "Going to sleep" << std::endl;
-  Glib::usleep(500 * 1000);
-  //std::cout << "Awake" << std::endl;
-#endif
+  bool result = false;
 
   Gtk::Window* pWindowApp = get_app_window();
   g_assert(pWindowApp);
-
-  BusyCursor busycursor(*pWindowApp);
-
-  try
+      
   {
-    ConnectionPool::get_instance()->create_database(database_name);
+    BusyCursor busycursor(*pWindowApp);
+
+    sigc::slot<void> onProgress; //TODO: Show visual feedback.
+    result = DbUtils::create_database(get_document(), database_name, title, onProgress);
   }
-  catch(const Glib::Exception& ex) // libgda does not set error domain
+  
+  if(!result)
   {
-    std::cerr << "Frame_Glom::create_database():  Gnome::Gda::Connection::create_database(" << database_name << ") failed: " << ex.what() << std::endl;
-
     //Tell the user:
     Gtk::Dialog* dialog = 0;
     Utils::get_glade_widget_with_warning("glom_developer.glade", "dialog_error_create_database", dialog);
@@ -2488,60 +2475,7 @@ bool Frame_Glom::create_database(const Glib::ustring& database_name, const Glib:
     return false;
   }
 
-  //Connect to the actual database:
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
-  connection_pool->set_database(database_name);
-
-  sharedptr<SharedConnection> sharedconnection;
-  try
-  {
-    sharedconnection = connection_pool->connect();
-  }
-  catch(const Glib::Exception& ex)
-  {
-    std::cerr << "Frame_Glom::create_database(): Could not connect to just-created database. exception caught:" << ex.what() << std::endl;
-    return false;
-  }
-  catch(const std::exception& ex)
-  {
-    std::cerr << "Frame_Glom::create_database(): Could not connect to just-created database. exception caught:" << ex.what() << std::endl;
-    return false;
-  }
-
-  if(sharedconnection)
-  {
-    bool test = add_standard_tables(); //Add internal, hidden, tables.
-    if(!test)
-      return false;
-
-    //Create the developer group, and make this user a member of it:
-    //If we got this far then the user must really have developer privileges already:
-    test = add_standard_groups();
-    if(!test)
-      return false;
-
-    //std::cout << "Frame_Glom::create_database(): Creation of standard tables and groups finished." << std::endl;
-
-    //Set the title based on the title in the example document, or the user-supplied title when creating new documents:
-    SystemPrefs prefs = get_database_preferences();
-    if(prefs.m_name.empty())
-    {
-      //std::cout << "Frame_Glom::create_database(): Setting title in the database." << std::endl;
-      prefs.m_name = title;
-      set_database_preferences(prefs);
-    }
-    else
-    {
-      //std::cout << "Frame_Glom::create_database(): database has title: " << prefs.m_name << std::endl;
-    }
-
-    return true;
-  }
-  else
-  {
-    std::cerr << "Frame_Glom::create_database(): Could not connect to just-created database." << std::endl;
-    return false;
-  }
+  return result;
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

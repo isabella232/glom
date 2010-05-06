@@ -103,7 +103,8 @@ ConnectionPool::ConnectionPool()
   m_backend(0),
   m_sharedconnection_refcount(0),
   m_ready_to_connect(false),
-  m_pFieldTypes(0)
+  m_pFieldTypes(0),
+  m_show_debug_output(false)
 {
 }
 
@@ -948,5 +949,14 @@ void ConnectionPool::set_get_document_func(const SlotGetDocument& slot)
   m_slot_get_document = slot;
 }
 
+void ConnectionPool::set_show_debug_output(bool val)
+{
+  m_show_debug_output = val;
+}
+ 
+bool ConnectionPool::get_show_debug_output() const
+{
+  return m_show_debug_output;
+}
 
 } //namespace Glom

@@ -22,7 +22,8 @@
 #include <libglom/connectionpool.h>
 #include <libglom/connectionpool_backends/postgres_self.h>
 #include <libglom/init.h>
-#include <glom/glom_privs.h>
+#include <libglom/privs.h>
+#include <libglom/db_utils.h>
 #include <giomm/file.h>
 
 static void on_initialize_progress()
@@ -33,6 +34,11 @@ static void on_initialize_progress()
 static void on_startup_progress()
 {
   std::cout << "Database startup progress" << std::endl;
+}
+
+static void on_recreate_progress()
+{
+  std::cout << "Database re-creation progress" << std::endl;
 }
 
 static void on_cleanup_progress()
@@ -84,6 +90,22 @@ static bool delete_directory(const std::string& uri)
   return delete_directory(file);
 }
 
+std::string temp_filepath_dir;
+
+void cleanup()
+{
+  Glom::ConnectionPool* connection_pool = Glom::ConnectionPool::get_instance();
+ 
+  const bool stopped = connection_pool->cleanup( sigc::ptr_fun(&on_cleanup_progress) );  
+  g_assert(stopped);
+
+  //Make sure the directory is removed at the end,
+  {
+    const Glib::ustring uri = Glib::filename_to_uri(temp_filepath_dir);
+    delete_directory(uri);
+  }
+}
+
 int main()
 {
   Glom::libglom_init();
@@ -132,7 +154,7 @@ int main()
   //Save a copy, specifying the path to file in a directory:
   //For instance, /tmp/testfileglom/testfile.glom");
   const std::string temp_filename = "testglom";
-  const std::string temp_filepath_dir = Glib::build_filename(Glib::get_tmp_dir(), 
+  temp_filepath_dir = Glib::build_filename(Glib::get_tmp_dir(), 
     temp_filename);
   const std::string temp_filepath = Glib::build_filename(temp_filepath_dir, temp_filename);
   
@@ -169,16 +191,16 @@ int main()
   //Start self-hosting:
   //TODO: Let this happen automatically on first connection?
   const bool started = connection_pool->startup( sigc::ptr_fun(&on_startup_progress) );
+  if(!started)
+    cleanup();
   g_assert(started);
-  
-  const bool stopped = connection_pool->cleanup( sigc::ptr_fun(&on_cleanup_progress) );  
-  g_assert(stopped);
 
-  //Make sure the directory is removed at the end,
-  {
-    const Glib::ustring uri = Glib::filename_to_uri(temp_filepath_dir);
-    delete_directory(uri);
-  }
+  const bool recreated = Glom::DbUtils::recreate_database_from_document(&document, sigc::ptr_fun(&on_recreate_progress) );
+  if(!recreated)
+    cleanup();
+  g_assert(recreated);
+
+  cleanup();
   
   Glom::libglom_deinit();
 

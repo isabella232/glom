@@ -23,6 +23,7 @@
 
 #include <libglom/data_structure/field.h>
 #include <libglom/data_structure/numeric_format.h>
+#include <libglom/document/document.h>
 
 #include <libglom/data_structure/layout/layoutitem_field.h>
 
@@ -96,6 +97,9 @@ Glib::ustring build_sql_select_with_key(
   const Gnome::Gda::Value& key_value,
   guint limit = 0);
 
+Glib::ustring get_find_where_clause_quick(Document* document, const Glib::ustring& table_name, const Gnome::Gda::Value& quick_search);
+
+
 typedef std::list< std::pair<Gnome::Gda::Value, Gnome::Gda::Value> > type_list_values_with_second;
 type_list_values_with_second get_choice_values(const sharedptr<const LayoutItem_Field>& field);
 
@@ -121,7 +125,7 @@ Glib::ustring create_name_from_title(const Glib::ustring& title);
 Glib::ustring string_escape_underscores(const Glib::ustring& text);
 
 /** Get just the first part of a locale, such as de_DE,
- * ignoring, for instance, .UTF-8 or @euro at the end.
+ * ignoring, for instance, .UTF-8 or \@euro at the end.
  */
 Glib::ustring locale_simplify(const Glib::ustring& locale_id);
 

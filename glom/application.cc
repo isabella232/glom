@@ -29,11 +29,13 @@
 #include <glom/mode_design/translation/dialog_change_language.h>
 #include <glom/mode_design/translation/window_translations.h>
 #include <glom/utility_widgets/filechooserdialog_saveextras.h>
+#include <glom/glade_utils.h>
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 #include <glom/utils_ui.h>
 #include <glom/glade_utils.h>
-#include <glom/glom_privs.h>
+#include <libglom/db_utils.h>
+#include <libglom/privs.h>
 #include <glom/python_embed/python_ui_callbacks.h>
 #include <glom/python_embed/glom_python.h>
 
@@ -89,10 +91,11 @@ Application::Application(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builde
   m_ui_save_extra_showextras(false),
   m_ui_save_extra_newdb_hosting_mode(Document::HOSTING_MODE_DEFAULT),
   m_avahi_progress_dialog(0),
+  m_dialog_progress_creating(0),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_show_sql_debug(false)
 {
-  set_icon_name("glom");
+  Gtk::Window::set_default_icon_name("glom");
 
   //Load widgets from glade file:
   builder->get_widget("bakery_vbox", m_pBoxTop);
@@ -129,6 +132,12 @@ Application::~Application()
   {
     delete m_avahi_progress_dialog;
     m_avahi_progress_dialog = 0;
+  }
+
+  if(m_dialog_progress_creating)
+  {
+    delete m_dialog_progress_creating;
+    m_dialog_progress_creating = 0;
   }
   #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -1179,24 +1188,14 @@ bool Application::on_document_load()
       {
         //Create the example database:
         //connection_request_password_and_choose_new_database_name() has already change the database name to a new unused one:
-        bool user_cancelled = false;
-        const bool test = recreate_database(user_cancelled);
+        const bool test = recreate_database();
         if(!test)
         {
           // TODO: Do we need to call connection_pool->cleanup() here, for
           // stopping self-hosted databases? armin.
           connection_pool->cleanup( sigc::mem_fun(*this, &Application::on_connection_close_progress) );
           //If the database was not successfully recreated:
-          if(!user_cancelled)
-          {
-            //Let the user try again.
-            //A warning has already been shown.
-            //TODO: No, I don't think there is a warning.
-            std::cerr << "Application::on_document_load(): recreate_database() failed." << std::endl;
-            return offer_new_or_existing();
-          }
-          else
-            return false;
+          return false;
         }
         else
         {
@@ -1230,6 +1229,7 @@ bool Application::on_document_load()
   const Glib::ustring script = pDocument->get_startup_script();
   if(!script.empty())
   {
+    Glib::ustring error_message; //TODO: Check this and tell the user.
     ConnectionPool* connection_pool = ConnectionPool::get_instance();
     sharedptr<SharedConnection> sharedconnection = connection_pool->connect();
     AppPythonUICallbacks callbacks;
@@ -1239,7 +1239,8 @@ bool Application::on_document_load()
       Glib::ustring() /* table_name */,
       sharedptr<Field>(), Gnome::Gda::Value(), // primary key - only used when there is a current table and record.
       sharedconnection->get_gda_connection(),
-      callbacks);
+      callbacks,
+      error_message);
   }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -1583,181 +1584,49 @@ void Application::on_menu_help_contents()
 #endif //GLOM_ENABLE_MAEMO
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-bool Application::recreate_database(bool& user_cancelled)
+void Application::on_recreate_database_progress()
+{
+  //Show the user that something is happening, because the INSERTS might take time.
+  //TOOD: This doesn't actually show up until near the end, even with Gtk::Main::instance()->iteration().
+  if(!m_dialog_progress_creating)
+  {
+    Utils::get_glade_widget_derived_with_warning(m_dialog_progress_creating);
+
+    m_dialog_progress_creating->set_message(_("Creating Glom Database"), _("Creating Glom database from example file."));
+  
+    m_dialog_progress_creating->set_transient_for(*this);
+    m_dialog_progress_creating->show();
+  
+  }
+
+  //Ensure that the dialog is shown, instead of waiting for the application to be idle:
+  while(Gtk::Main::instance()->events_pending())
+    Gtk::Main::instance()->iteration();
+
+  m_dialog_progress_creating->pulse();
+}
+
+bool Application::recreate_database()
 {
   //Create a database, based on the information in the current document:
   Document* pDocument = static_cast<Document*>(get_document());
   if(!pDocument)
     return false;
 
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
-  if(!connection_pool)
-    return false; //Impossible anyway.
+  Gtk::Window* pWindowApp = get_application();
+  g_assert(pWindowApp);
+  BusyCursor busycursor(*pWindowApp);
 
-  //Check whether the database exists already.
-  const Glib::ustring db_name = pDocument->get_connection_database();
-  if(db_name.empty())
-    return false;
-
-  connection_pool->set_database(db_name);
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-#else
-  std::auto_ptr<std::exception> error;
-#endif // GLIBMM_EXCEPTIONS_ENABLED
+  const bool result = DbUtils::recreate_database_from_document(pDocument, 
+    sigc::mem_fun(*this, &Application::on_recreate_database_progress));
+  
+  if(m_dialog_progress_creating)
   {
-    connection_pool->set_ready_to_connect(); //This has succeeded already.
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-    sharedptr<SharedConnection> sharedconnection = connection_pool->connect();
-#else
-    sharedptr<SharedConnection> sharedconnection = connection_pool->connect(error);
-    if(!error.get())
-    {
-#endif // GLIBMM_EXCEPTIONS_ENABLED
-      g_warning("Application::recreate_database(): Failed because database exists already.");
-
-      return false; //Connection to the database succeeded, because no exception was thrown. so the database exists already.
-#ifndef GLIBMM_EXCEPTIONS_ENABLED
-    }
-#endif // !GLIBMM_EXCEPTIONS_ENABLED
+    delete m_dialog_progress_creating;
+    m_dialog_progress_creating = 0;
   }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  catch(const ExceptionConnection& ex)
-  {
-#else
-  if(error.get())
-  {
-    const ExceptionConnection* exptr = dynamic_cast<ExceptionConnection*>(error.get());
-    if(exptr)
-    {
-      const ExceptionConnection& ex = *exptr;
-#endif // GLIBMM_EXCEPTIONS_ENABLED
-      if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
-      {
-        user_cancelled = true; //Eventually, the user will cancel after retrying.
-        g_warning("Application::recreate_database(): Failed because connection to server failed, without specifying a database.");
-        return false;
-      }
-#ifndef GLIBMM_EXCEPTIONS_ENABLED
-    }
-#endif // !GLIBMM_EXCEPTIONS_ENABLED
-
-    //Otherwise continue, because we _expected_ connect() to fail if the db does not exist yet.
-  }
-
-  //Show the user that something is happening, because the INSERTS might take time.
-  //TOOD: This doesn't actually show up until near the end, even with Gtk::Main::instance()->iteration().
-  Dialog_ProgressCreating* dialog_progress_temp = 0;
-  Utils::get_glade_widget_derived_with_warning(dialog_progress_temp);
-  dialog_progress_temp->set_message(_("Creating Glom Database"), _("Creating Glom database from example file."));
-  std::auto_ptr<Dialog_ProgressCreating> dialog_progress(dialog_progress_temp); //Put the dialog in an auto_ptr so that it will be deleted (and hidden) when the current function returns.
-
-  dialog_progress->set_transient_for(*this);
-  dialog_progress->show();
-
-  //Ensure that the dialog is shown, instead of waiting for the application to be idle:
-  while(Gtk::Main::instance()->events_pending())
-    Gtk::Main::instance()->iteration();
-
-  dialog_progress->pulse();
-
-  //Create the database: (This will show a connection dialog)
-  connection_pool->set_database( Glib::ustring() );
-  const bool db_created = m_pFrame->create_database(db_name, pDocument->get_database_title());
-
-  if(!db_created)
-  {
-    return false;
-  }
-  else
-    connection_pool->set_database(db_name); //Specify the new database when connecting from now on.
-
-  dialog_progress->pulse();
-  BusyCursor busy_cursor(this);
-
-  sharedptr<SharedConnection> sharedconnection;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-#endif // GLIBMM_EXCEPTIONS_ENABLED
-  {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-    sharedconnection = connection_pool->connect();
-#else
-    sharedconnection = connection_pool->connect(error);
-    if(!error.get())
-#endif // GLIBMM_EXCEPTIONS_ENABLED
-      connection_pool->set_database(db_name); //The database was successfully created, so specify it when connecting from now on.
-  }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  catch(const ExceptionConnection& ex)
-  {
-#else
-  if(error.get())
-  {
-    const std::exception& ex = *error.get();
-#endif // GLIBMM_EXCEPTIONS_ENABLED
-    g_warning("Application::recreate_database(): Failed to connect to the newly-created database.");
-    return false;
-  }
-
-  dialog_progress->pulse();
-
-  //Create each table:
-  Document::type_listTableInfo tables = pDocument->get_tables();
-  for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
-  {
-    sharedptr<const TableInfo> table_info = *iter;
-
-    //Create SQL to describe all fields in this table:
-    Glib::ustring sql_fields;
-    Document::type_vec_fields fields = pDocument->get_table_fields(table_info->get_name());
-
-    dialog_progress->pulse();
-    const bool table_creation_succeeded = m_pFrame->create_table(table_info, fields);
-    dialog_progress->pulse();
-    if(!table_creation_succeeded)
-    {
-      g_warning("Application::recreate_database(): CREATE TABLE failed with the newly-created database.");
-      return false;
-    }
-  }
-
-  dialog_progress->pulse();
-  m_pFrame->add_standard_tables(); //Add internal, hidden, tables.
-
-  //Create the developer group, and make this user a member of it:
-  //If we got this far then the user must really have developer privileges already:
-  dialog_progress->pulse();
-  const bool test = m_pFrame->add_standard_groups();
-  if(!test)
-    return false;
-
-  for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
-  {
-    sharedptr<const TableInfo> table_info = *iter;
-
-    //Add any example data to the table:
-    dialog_progress->pulse();
-
-    //try
-    //{
-      const bool table_insert_succeeded = m_pFrame->insert_example_data(table_info->get_name());
-
-      if(!table_insert_succeeded)
-      {
-        g_warning("Application::recreate_database(): INSERT of example data failed with the newly-created database.");
-        return false;
-      }
-    //}
-    //catch(const std::exception& ex)
-    //{
-    //  std::cerr << "Application::recreate_database(): exception: " << ex.what() << std::endl;
-      //HandleError(ex);
-    //}
-
-  } //for(tables)
-
-  return true; //All tables created successfully.
+ 
+  return result; //All tables created successfully.
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 

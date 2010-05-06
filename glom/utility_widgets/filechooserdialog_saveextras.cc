@@ -64,8 +64,6 @@ void FileChooserDialog_SaveExtras::set_extra_message(const Glib::ustring& messag
 
 void FileChooserDialog_SaveExtras::create_child_widgets()
 {
-  set_icon_name("glom");
-
   //m_extra_widget.pack_start(m_label_extra_message);
   m_label_extra_message.set_alignment(0.0f, 0.5f);
   m_label_extra_message.show();

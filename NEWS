@@ -1,4 +1,14 @@
-1.14.1:
+1.14.2 (stable):
+
+* Fix document saving (horribly broken in 1.14.1).
+* Python field calculations and button scripts:
+  - Test buttons now show python errors.
+  - Really convert the value to the field's type.
+* Fix a crash when showing choices in some situations.
+* Added several "make check" tests.
+  (Murray Cumming)
+
+1.14.1 (stable):
 
 * Python field calculation: Fix a crash when using some date types.
 * Documentation:
@@ -8,7 +18,7 @@
   (Murray Cumming, Daniel Elstner, David King)
 * Added unit tests. (Murray Cumming)
 
-1.14.0:
+1.14.0 (stable):
 
 New features in Glom 1.14, compared to Glom 1.12:
 * Details:
