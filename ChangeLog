@@ -1,3 +1,11 @@
+2010-05-06  Murray Cumming  <murrayc@murrayc-desktop>
+
+    Utils::get_choice_values(): Complete the use of SqlBuilder.
+
+	* glom/libglom/utils.cc: get_choice_values(): Use the new return value from
+    Builder::select_add_field() for the ORDER BY, so we specify the field table
+    too.
+
 2010-05-03  Daniel Borgmann  <danielb@openismus.com>
 
 	Set default icon instead of individual window icons.
@@ -22,70 +30,70 @@
 2010-05-02  Murray Cumming  <murrayc@murrayc-x61>
 
 	Python calculations: Really convert to expected types.
-	
-	* glom/libglom/data_structure/glomconversions.cc: 
-	get_double_for_gda_value_numeric(): Handle all numeric GTypes - not just 
+
+	* glom/libglom/data_structure/glomconversions.cc:
+	get_double_for_gda_value_numeric(): Handle all numeric GTypes - not just
 	G_TYPE_INT..
-	convert_value(): Remove the special case for G_TYPE_INT (now handled in 
-	get_double_for_gda_value_numeric instead). Make sure that all numeric GTypes 
+	convert_value(): Remove the special case for G_TYPE_INT (now handled in
+	get_double_for_gda_value_numeric instead). Make sure that all numeric GTypes
 	are converted to GDA_TYPE_NUMERIC, making it easier for callers to check.
 
 2010-05-01  Murray Cumming  <murrayc@murrayc.com>
 
 	Add test of type conversion after python calculations.
-	
+
 	* Makefile_tests.am:
-	* tests/test_python_execute_func_change_result_type.cc: Add a test that 
-	calls a python function that returns a number, for a text field, to 
+	* tests/test_python_execute_func_change_result_type.cc: Add a test that
+	calls a python function that returns a number, for a text field, to
 	check that the conversion is done.
 
 2010-05-01  Murray Cumming  <murrayc@murrayc.com>
 
 	Python scripts and calculations: Test buttons now show python errors.
-	
-	* glom/python_embed/glom_python.[h|cc]: 
-	glom_execute_python_function_implementation(), 
-	glom_evaluate_python_function_implementation(): Add an error_message output 
+
+	* glom/python_embed/glom_python.[h|cc]:
+	glom_execute_python_function_implementation(),
+	glom_evaluate_python_function_implementation(): Add an error_message output
 	parameter, to report syntax errors, for instance.
 	* glom/mode_design/fields/dialog_fieldcalculation.cc:
   * glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.cc:
   Show the python error, if any, when pressing the Test button.
   * Other files: Adapt, ignoring the error message for now.
   * Makefile_tests.am:
-	* tests/test_python_execute_func_bad_syntax.cc: Added a test of the new 
-	error_message parameter. 
+	* tests/test_python_execute_func_bad_syntax.cc: Added a test of the new
+	error_message parameter.
 
 2010-05-01  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix a possible crash when showing choices.
 
-	* glom/mode_data/datawidget/combo.cc: set_text(): Don't show a warning if 
+	* glom/mode_data/datawidget/combo.cc: set_text(): Don't show a warning if
 	"" is not found because it's OK to use that to clear the combo.
-	* glom/mode_data/datawidget/combochoiceswithtreemodel.cc: 
-	set_choices_with_second(): Don't dereference a null smartpointer, avoiding 
+	* glom/mode_data/datawidget/combochoiceswithtreemodel.cc:
+	set_choices_with_second(): Don't dereference a null smartpointer, avoiding
 	a crash with one .glom file that I tried.
 
 2010-05-01  Murray Cumming  <murrayc@murrayc.com>
 
 	Python Glom API documentation improvement.
-	
-	* glom/python_embed/python_module/py_glom_module.cc: Turn off auto-writing 
-	of the Python signatures in the docstrings, because that is a) crappy and 
-	b) confuses the sphinx autodoc module, which adds an invisible ..function 
+
+	* glom/python_embed/python_module/py_glom_module.cc: Turn off auto-writing
+	of the Python signatures in the docstrings, because that is a) crappy and
+	b) confuses the sphinx autodoc module, which adds an invisible ..function
 	reStrucuredText line.
-	Add :param:, :type, and :returns: lines with the necessary indenting and 
-	empty lines needed by that invisible ..function line. 
-	
+	Add :param:, :type, and :returns: lines with the necessary indenting and
+	empty lines needed by that invisible ..function line.
+
 2010-05-01  Murray Cumming  <murrayc@murrayc.com>
 
 	Move some more methods from Base_DB.
-	
+
 	* glom/base_db.[h|cc]: Move show_warning_no_records_found() to utils_ui.[h|cc].
 	get_find_where_clause_quick(): Move to utils.[h|cc].
 	* glom/frame_glom.cc: Adapted.
 	* glom/mode_design/layout/layout_item_dialogs/box_formatting.h:
 	* glom/mode_design/layout/layout_item_dialogs/dialog_buttonscript.[h|cc]:
-		* glom/mode_data/datawidget/dialog_choose_id.[h|cc]: Don't derive from Base_DB 
+		* glom/mode_data/datawidget/dialog_choose_id.[h|cc]: Don't derive from Base_DB
 	because that is no longer necessary after adapting.
 
 2010-05-01  Murray Cumming  <murrayc@murrayc.com>
@@ -95,13 +103,13 @@
 2010-05-01  Murray Cumming  <murrayc@murrayc.com>
 
 	Move some Base_DB methods to DbUtils and test database recreation.
-	
-	* glom/base_db.[h|cc]: Move many db-related methods to 
+
+	* glom/base_db.[h|cc]: Move many db-related methods to
 	glom/libglom/db_utils.[h|cpp], taking a Document* paramater where necessary.
-	This makes Base_DB slightly less of a mess, makes it clearer when we are 
+	This makes Base_DB slightly less of a mess, makes it clearer when we are
 	doing Database IO, and makes it possible to do more testing of non-UI code.
 	* Makefile_tests.am:
-	* tests/test_selfhost_new_from_example.cc: Use DbUtils to recreate the 
+	* tests/test_selfhost_new_from_example.cc: Use DbUtils to recreate the
 	database structure and data from the example file.
 	* Many files: Adapted.
 
@@ -114,7 +122,7 @@ This is the master branch. See also the glom-1-14 branch.
 	* glom/libglom/document/bakery/document.cc: write_to_disk():
 	Do not fail if the parent directory already exists.
 	* Makefile_tests.am:
-	* tests/test_document_autosave.cc: Added a test of document saving and 
+	* tests/test_document_autosave.cc: Added a test of document saving and
 	autosaving.
 
 2010-05-01  Murray Cumming  <murrayc@murrayc.com>
@@ -129,8 +137,8 @@ This is the master branch. See also the glom-1-14 branch.
 2010-04-27  Murray Cumming  <murrayc@murrayc-x61>
 
 	PyGlom: Don't use deprecated boost::python::args.
-	
-	* glom/python_embed/python_module/py_glom_module.cc: Use boost::python::arg() 
+
+	* glom/python_embed/python_module/py_glom_module.cc: Use boost::python::arg()
 	instead of boost::python::args(), because I noticed that args is deprecated.
 
 2010-04-27  Murray Cumming  <murrayc@murrayc.com>

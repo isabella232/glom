@@ -448,13 +448,13 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
   //Get possible values from database, sorted by the first column.
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
       Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
-  builder->select_add_field(choice_field, to_table);
+  const guint choice_field_id = builder->select_add_field(choice_field, to_table);
   builder->select_add_target(to_table);
 
   if(with_second)
     builder->select_add_field(choice_second, to_table);
 
-  builder->select_order_by( builder->add_id(choice_field) );
+  builder->select_order_by(choice_field_id);
 
   //std::cout << "debug: get_choice_values(): query: " << sql_query << std::endl;
   //Connect to database:
