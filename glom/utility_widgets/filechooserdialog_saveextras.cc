@@ -60,13 +60,18 @@ FileChooserDialog_SaveExtras::~FileChooserDialog_SaveExtras()
 void FileChooserDialog_SaveExtras::set_extra_message(const Glib::ustring& message)
 {
   m_label_extra_message.set_text(message);
+
+  if (!message.empty()) {
+    m_label_extra_message.show();
+  } else {
+    m_label_extra_message.hide();
+  }
 }
 
 void FileChooserDialog_SaveExtras::create_child_widgets()
 {
   //m_extra_widget.pack_start(m_label_extra_message);
   m_label_extra_message.set_alignment(0.0f, 0.5f);
-  m_label_extra_message.show();
 
   Gtk::Frame* frame = Gtk::manage(new Gtk::Frame());
   Gtk::Label* frame_label = Gtk::manage(new Gtk::Label());
@@ -76,7 +81,7 @@ void FileChooserDialog_SaveExtras::create_child_widgets()
   frame->set_shadow_type(Gtk::SHADOW_NONE);
 
   Gtk::Alignment* alignment = Gtk::manage(new Gtk::Alignment());
-  alignment->set_padding(0, 0, Utils::DEFAULT_SPACING_LARGE, 0); //Add padding at the left.
+  alignment->set_padding(Utils::DEFAULT_SPACING_SMALL, 0, Utils::DEFAULT_SPACING_LARGE, 0); //Add padding at the top and left.
   alignment->show();
   frame->add(*alignment);
   frame->show();
@@ -89,9 +94,10 @@ void FileChooserDialog_SaveExtras::create_child_widgets()
 
   Gtk::Label* label_newdb = Gtk::manage(new Gtk::Label(_("Please choose a human-readable title for the new database. You can change this later in the database properties. It may contain any characters.")));
   vbox->pack_start(*label_newdb);
+  label_newdb->set_alignment(0.0f, 0.5f);
   label_newdb->show();
 
-  Gtk::HBox* box_label = Gtk::manage(new Gtk::HBox(false, Utils::DEFAULT_SPACING_SMALL));
+  Gtk::HBox* box_label = Gtk::manage(new Gtk::HBox(false, Utils::DEFAULT_SPACING_LARGE));
   Gtk::Label* label_title = Gtk::manage(new Gtk::Label(_("_Title:"), true));
   box_label->pack_start(*label_title, Gtk::PACK_SHRINK);
   label_title->show();

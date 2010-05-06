@@ -1,3 +1,10 @@
+2010-05-06  Daniel Borgmann  <danielb@openismus.com>
+
+	Save extras alignment improvements.
+
+	* glom/utility_widgets/filechooserdialog_saveextras.cc: Adjust
+	alignments and hide extra label if empty (thus not taking up space).
+
 2010-05-03  Daniel Borgmann  <danielb@openismus.com>
 
 	Set default icon instead of individual window icons.
