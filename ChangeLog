@@ -1,5 +1,13 @@
 2010-05-10  Daniel Elstner  <danielk@openismus.com>
 
+	Update Doxygen configuration for libglom reference
+
+	* docs/libglom_reference/Doxyfile.in: Correct strip prefixes and
+	include paths.  Do include the mm-common stylesheet and reference
+	the external tag files.  Also clean some cruft.
+
+2010-05-10  Daniel Elstner  <danielk@openismus.com>
+
 	Honor --disable-documentation configure option
 
 	* Makefile.am (gnome_doc_subdirs): Rename from $(doc_subdirs).
