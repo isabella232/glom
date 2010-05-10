@@ -1,4 +1,4 @@
-## Copyright (c) 2009  Openismus GmbH  <http://www.openismus.com/>
+## Copyright (c) 2009-2010  Openismus GmbH  <http://www.openismus.com/>
 ##
 ## This file is part of Glom.
 ##
@@ -35,12 +35,17 @@ ACLOCAL_AMFLAGS  = -I macros ${ACLOCAL_FLAGS}
 DISTCHECK_CONFIGURE_FLAGS = --enable-warnings=fatal \
 --disable-scrollkeeper --disable-update-mime-database
 
-if HAVE_GNOME_DOC_UTILS
-doc_subdirs = docs/user-guide
+if ENABLE_DOCUMENTATION
+doc_subdirs = docs/libglom_reference docs/pyglom_reference
 else
 doc_subdirs =
 endif
-SUBDIRS = po $(doc_subdirs) docs/libglom_reference docs/pyglom_reference
+if HAVE_GNOME_DOC_UTILS
+gnome_doc_subdirs = docs/user-guide
+else
+gnome_doc_subdirs =
+endif
+SUBDIRS = po $(doc_subdirs) $(gnome_doc_subdirs)
 
 if HOST_WIN32
 win_resfile = glom/glom.res

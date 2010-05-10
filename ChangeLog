@@ -1,3 +1,13 @@
+2010-05-10  Daniel Elstner  <danielk@openismus.com>
+
+	Honor --disable-documentation configure option
+
+	* Makefile.am (gnome_doc_subdirs): Rename from $(doc_subdirs).
+	(doc_subdirs): Conditionally define to the subdirectories of the
+	reference documentation, depending on whether ENABLE_DOCUMENTATION
+	is true.
+	(SUBDIRS): Expand $(doc_subdirs) and $(gnome_doc_subdirs).
+
 2010-05-10  Daniel Borgmann  <danielb@openismus.com>
 
 	Make Find mode a toggle and move it to the Edit menu.
