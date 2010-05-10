@@ -1,5 +1,19 @@
 2010-05-10  Daniel Elstner  <danielk@openismus.com>
 
+	Move list of libglom sources to separate file
+
+	* glom/libglom/filelist.am: New Automake include file, defining the
+	lists of source and header files for building libglom.
+	* Makefile_libglom.am: Include glom/libglom/filelist.am for the lists
+	of header and source files, instead of listing them directly.
+	* docs/libglom_reference/Makefile.am: Include the list of libglom
+	source files from glom/libglom/filelist.am.
+	(doc_input): Instead of naming a directory for Doxygen to search,
+	explicitly define the Doxygen input to the list of all public libglom
+	header files.
+
+2010-05-10  Daniel Elstner  <danielk@openismus.com>
+
 	Update Doxygen configuration for libglom reference
 
 	* docs/libglom_reference/Doxyfile.in: Correct strip prefixes and

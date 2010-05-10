@@ -15,8 +15,10 @@
 ## You should have received a copy of the GNU General Public License
 ## along with Glom.  If not, see <http://www.gnu.org/licenses/>.
 
-book_name = libglom-$(GLOM_ABI_VERSION)
-doc_input = $(top_srcdir)/glom/libglom
+include $(top_srcdir)/glom/libglom/filelist.am
+
+book_name  = libglom-$(GLOM_ABI_VERSION)
+doc_input  = $(addprefix $(top_srcdir)/,$(libglom_headers))
 doc_outdir = .
 
 include $(top_srcdir)/doc-reference.am
