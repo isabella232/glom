@@ -1,3 +1,11 @@
+2010-05-10  Daniel Borgmann  <danielb@openismus.com>
+
+	Make Find mode a toggle and move it to the Edit menu.
+
+	* glom/application.cc: Move Find menu item, remove Mode menu.
+	* glom/frame_glom.cc/h: Replace on_menu_Mode_Find()/Data() with
+	on_menu_Mode_Toggle().
+
 2010-05-06  Daniel Borgmann  <danielb@openismus.com>
 
 	Save extras alignment improvements.

@@ -1154,14 +1154,18 @@ void Frame_Glom::show_layout_toolbar (bool show)
 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-void Frame_Glom::on_menu_Mode_Data()
+void Frame_Glom::on_menu_Mode_Toggle()
 {
-  if(set_mode(MODE_Data))
-    show_table(m_table_name);
-}
+  //Switch back to data mode if we are in find mode.
+  if(m_Mode == MODE_Find)
+  {
+    //Switch to data mode
+    if(set_mode(MODE_Data))
+      show_table(m_table_name);
+    return;
+  }
 
-void Frame_Glom::on_menu_Mode_Find()
-{
+  //Otherwise switch to find mode.
   //This can take quite a long time, flicking between 1 or 2 intermediate screens.
   //It shouldn't, but until we fix that, let's show the busy cursor while it's working:
   BusyCursor busy_cursor(get_app_window());
@@ -1469,7 +1473,6 @@ void Frame_Glom::on_button_quickfind()
 void Frame_Glom::on_notebook_find_criteria(const Glib::ustring& where_clause)
 {
   //std::cout << "Frame_Glom::on_notebook_find_criteria(): " << where_clause << std::endl;
-  //on_menu_Mode_Data();
 
   Application* pApp = dynamic_cast<Application*>(get_app_window());
   if(pApp)

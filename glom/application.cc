@@ -402,7 +402,7 @@ void Application::init_menus()
 
   add_button_to_appmenu(m_maemo_appmenu,
     _("Find"), _("Search for records in the table"),
-    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Mode_Find) );
+    sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Mode_Toggle) );
 
   add_button_to_appmenu(m_maemo_appmenu,
     _("Add Record"), _("Create a new record in the table"),
@@ -470,17 +470,12 @@ void Application::init_menus()
   //"Mode" menu:
   action =  Gtk::Action::create("Glom_Menu_Mode", _("_Mode"));
   m_refActionGroup_Others->add(action);
-  Gtk::RadioAction::Group group_mode;
 
   //We remember this action, so that it can be explicitly activated later.
-  m_action_mode_data = Gtk::RadioAction::create(group_mode, "GlomAction_Menu_Mode_Data", _("_Data"));
-  m_refActionGroup_Others->add(m_action_mode_data,
-                        sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Mode_Data) );
-
-  m_action_mode_find = Gtk::RadioAction::create(group_mode, "GlomAction_Menu_Mode_Find", _("_Find"));
+  m_action_mode_find = Gtk::ToggleAction::create("GlomAction_Menu_Mode_Toggle", _("_Find"), "", false);
   m_refActionGroup_Others->add(m_action_mode_find,  Gtk::AccelKey("<control>F"),
-                        sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Mode_Find) );
-  m_listTableSensitiveActions.push_back(action);
+                        sigc::mem_fun(*m_pFrame, &Frame_Glom::on_menu_Mode_Toggle) );
+  m_listTableSensitiveActions.push_back(m_action_mode_find);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   action = Gtk::Action::create("Glom_Menu_Developer", C_("Developer menu title", "_Developer"));
@@ -568,6 +563,16 @@ void Application::init_menus()
   static const Glib::ustring ui_description =
     "<ui>"
     "  <menubar name='Bakery_MainMenu'>"
+    "    <placeholder name='Bakery_MenuPH_Edit'>"
+    "      <menu action='BakeryAction_Menu_Edit'>"
+    "        <menuitem action='BakeryAction_Edit_Cut' />"
+    "        <menuitem action='BakeryAction_Edit_Copy' />"
+    "        <menuitem action='BakeryAction_Edit_Paste' />"
+    "        <menuitem action='BakeryAction_Edit_Clear' />"
+    "        <separator />"
+    "        <menuitem action='GlomAction_Menu_Mode_Toggle' />"
+    "      </menu>"
+    "    </placeholder>"
     "    <placeholder name='Bakery_MenuPH_Others'>"
     "      <menu action='Glom_Menu_Tables'>"
     "        <placeholder name='Menu_Tables_Dynamic' />"
@@ -584,10 +589,6 @@ void Application::init_menus()
     "        <menuitem action='GlomAction_Menu_EditReports' />"
 #endif // !GLOM_ENABLE_CLIENT_ONLY
     "     </menu>"
-    "      <menu action='Glom_Menu_Mode'>"
-    "        <menuitem action='GlomAction_Menu_Mode_Data' />"
-    "        <menuitem action='GlomAction_Menu_Mode_Find' />"
-    "      </menu>"
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     "      <menu action='Glom_Menu_userlevel'>"
     "        <menuitem action='GlomAction_Menu_userlevel_Developer' />"
