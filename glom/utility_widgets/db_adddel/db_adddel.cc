@@ -1750,6 +1750,10 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
         const bool bPreventUserSignals = get_prevent_user_signals();
         set_prevent_user_signals(true); //Stops extra signal_user_changed.
 
+        //Don't add a new row if nothing was entered into the placeholder.
+        if (new_text.empty())
+          return;
+
         //Mark this row as no longer a placeholder, because it has data now. The client code must set an actual key for this in the signal_user_added() or m_signal_user_changed signal handlers.
         m_refListStore->set_is_not_placeholder(iter);
         //Don't mark this as not a placeholder, because it's still a placeholder until it has a key value.
