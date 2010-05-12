@@ -88,8 +88,7 @@ bool query_execute_string(const Glib::ustring& strQuery,
 
 /** Execute a SQL non-select command, returning true if it succeeded.
   */
-bool query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder,
-  const Glib::RefPtr<const Gnome::Gda::Set>& params = Glib::RefPtr<const Gnome::Gda::Set>(0));
+bool query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder);
 
 //TODO: Is this used directly?
 Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& table_name, const Glib::ustring& field_name);

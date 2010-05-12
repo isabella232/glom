@@ -1,5 +1,12 @@
 2010-05-13  Murray Cumming  <murrayc@murrayc.com>
 
+	DbUtils::query_execute(): Remove params parameter.
+
+	* glom/libglom/db_utils.[h|cc]: query_execute(): Remove the unused params 
+	parameter.
+
+2010-05-13  Murray Cumming  <murrayc@murrayc.com>
+
 	Use SqlBuilder in all possible remaining places.
 	
 	* glom/libglom/db_utils.[h|cc]: Renamed query_execute(string) to 

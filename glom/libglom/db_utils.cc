@@ -1600,7 +1600,7 @@ bool query_execute_string(const Glib::ustring& strQuery, const Glib::RefPtr<Gnom
   }
   catch(const Gnome::Gda::SqlParserError& error)
   {
-    std::cerr << "DEBUG: BaseDB::query_execute: SqlParserError: " << error.what() << std::endl;
+    std::cerr << "DEBUG: DbUtils::query_execute: SqlParserError: " << error.what() << std::endl;
     return false;
   }
 #else
@@ -1608,7 +1608,7 @@ bool query_execute_string(const Glib::ustring& strQuery, const Glib::RefPtr<Gnom
   stmt = parser->parse_string(strQuery, sql_error);
   if(sql_error.get())
   {
-    std::cerr << "DEBUG: BaseDB::query_execute: SqlParserError:" << sql_error->what() << std::endl;
+    std::cerr << "DEBUG: DbUtils::query_execute: SqlParserError:" << sql_error->what() << std::endl;
     return false;
   }
 #endif
@@ -1646,7 +1646,7 @@ bool query_execute_string(const Glib::ustring& strQuery, const Glib::RefPtr<Gnom
   }
   catch(const Glib::Error& error)
   {
-    std::cerr << "BaseDB::query_execute: ConnectionError: " << error.what() << std::endl;
+    std::cerr << "DbUtils::query_execute: ConnectionError: " << error.what() << std::endl;
     const Glib::ustring full_query = stmt->to_sql(params);
     std::cerr << "  full_query: " << full_query << std::endl;
     return false;
@@ -1656,7 +1656,7 @@ bool query_execute_string(const Glib::ustring& strQuery, const Glib::RefPtr<Gnom
   exec_retval = gda_connection->statement_execute_non_select (stmt, params, exec_error);
   if(exec_error.get())
   {
-    std::cerr << "BaseDB::query_execute: ConnectionError: " << exec_error->what() << std::endl;
+    std::cerr << "DbUtils::query_execute: ConnectionError: " << exec_error->what() << std::endl;
     const Glib::ustring full_query = stmt->to_sql(params, exec_error);
     std::cerr << "  full_query: " << full_query << std::endl;
     return false;
@@ -1665,8 +1665,7 @@ bool query_execute_string(const Glib::ustring& strQuery, const Glib::RefPtr<Gnom
   return (exec_retval >= 0);
 }
 
-bool query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder,
-                            const Glib::RefPtr<const Gnome::Gda::Set>& params)
+bool query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder)
 {
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
   if(!gda_connection)
@@ -1678,7 +1677,7 @@ bool query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder,
   //Debug output:
   if(builder && ConnectionPool::get_instance()->get_show_debug_output())
   {
-    const std::string full_query = Utils::sqlbuilder_get_full_query(builder, params);
+    const std::string full_query = Utils::sqlbuilder_get_full_query(builder);
     std::cerr << "Debug: query_execute(): " << full_query << std::endl;
   }
 
@@ -1687,22 +1686,22 @@ bool query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder,
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    exec_retval = gda_connection->statement_execute_non_select_builder(builder, params);
+    exec_retval = gda_connection->statement_execute_non_select_builder(builder);
   }
   catch(const Glib::Error& error)
   {
-    std::cerr << "BaseDB::query_execute: ConnectionError: " << error.what() << std::endl;
-    const std::string full_query = Utils::sqlbuilder_get_full_query(builder, params);
+    std::cerr << "DbUtils::query_execute: ConnectionError: " << error.what() << std::endl;
+    const std::string full_query = Utils::sqlbuilder_get_full_query(builder);
     std::cerr << "  full_query: " << full_query << std::endl;
     return false;
   }
 #else
   std::auto_ptr<Glib::Error> exec_error;
-  exec_retval = gda_connection->statement_execute_non_select_builder(builder, params, exec_error);
+  exec_retval = gda_connection->statement_execute_non_select_builder(builder, exec_error);
   if(exec_error.get())
   {
-    std::cerr << "BaseDB::query_execute: ConnectionError: " << exec_error->what() << std::endl;
-    const std::string full_query = Utils::sqlbuilder_get_full_query(builder, params);
+    std::cerr << "DbUtils::query_execute: ConnectionError: " << exec_error->what() << std::endl;
+    const std::string full_query = Utils::sqlbuilder_get_full_query(builder);
     std::cerr << "  full_query: " << full_query << std::endl;
     return false;
   }
