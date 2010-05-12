@@ -179,9 +179,8 @@ void Box_Data_Details::set_found_set_from_primary_key_value()
 
   if(!m_primary_key_value.is_null())
   {
-    //TODO: Use a SQL parameter instead of using sql().
-    m_found_set.m_where_clause = "\"" + m_table_name + "\".\"" + m_field_primary_key->get_name() +
-      "\" = " + m_field_primary_key->sql(m_primary_key_value);
+    m_found_set.m_where_clause = Utils::build_simple_where_expression(
+       m_table_name, m_field_primary_key, m_primary_key_value);
     //std::cout << "  DEBUG: Box_Data_Details::set_primary_key_value(): m_found_set.m_where_clause = " << m_found_set.m_where_clause << std::endl;
   }
 }
@@ -356,7 +355,7 @@ bool Box_Data_Details::fill_from_database()
           }
         }
 
-        const Glib::ustring query = Utils::build_sql_select_with_key(m_table_name, fieldsToGet, m_field_primary_key, m_primary_key_value);
+        Glib::RefPtr<Gnome::Gda::SqlBuilder> query = Utils::build_sql_select_with_key(m_table_name, fieldsToGet, m_field_primary_key, m_primary_key_value);
         Glib::RefPtr<Gnome::Gda::DataModel> result;
 
         if(!primary_key_is_empty)

@@ -230,7 +230,7 @@ protected:
   void alert_no_table();
 
   //Signal handlers:
-  void on_notebook_find_criteria(const Glib::ustring& where_clause);
+  void on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clause);
   void on_button_quickfind();
   void on_button_find_all();
   void on_notebook_data_switch_page(GtkNotebookPage* page, guint page_num);

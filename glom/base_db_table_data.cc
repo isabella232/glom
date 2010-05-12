@@ -519,10 +519,10 @@ void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field
 
   if(!fieldsToGet.empty())
   {
-    const Glib::ustring query = Utils::build_sql_select_with_key(field_in_record_changed.m_table_name, fieldsToGet, field_in_record_changed.m_key, field_in_record_changed.m_key_value);
+    Glib::RefPtr<Gnome::Gda::SqlBuilder> query = Utils::build_sql_select_with_key(field_in_record_changed.m_table_name, fieldsToGet, field_in_record_changed.m_key, field_in_record_changed.m_key_value);
     //std::cout << "DEBUG: Base_DB_Table_Data::refresh_related_fields(): query=" << query << std::endl;
 
-    Glib::RefPtr<Gnome::Gda::DataModel> result = query_execute_select(query);
+    Glib::RefPtr<const Gnome::Gda::DataModel> result = query_execute_select(query);
     if(!result)
     {
       std::cerr << "Base_DB_Table_Data::refresh_related_fields(): no result." << std::endl;

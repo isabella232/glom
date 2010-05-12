@@ -195,7 +195,7 @@ Glib::ustring Utils::string_replace(const Glib::ustring& src, const Glib::ustrin
 }
 
 
-Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const Glib::ustring& extra_join, const type_sort_clause& sort_clause, const Glib::ustring& extra_group_by, guint limit)
+Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Gnome::Gda::SqlExpr& where_clause, const Glib::ustring& extra_join, const type_sort_clause& sort_clause, const Glib::ustring& extra_group_by, guint limit)
 {
   //TODO_Performance:
   type_vecConstLayoutFields constFieldsToGet;
@@ -331,18 +331,21 @@ Glib::ustring Utils::build_sql_select_fields_to_get(const Glib::ustring& table_n
 }
 
 
-Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const Glib::ustring& where_clause, const Glib::ustring& extra_join, const type_sort_clause& sort_clause, const Glib::ustring& extra_group_by, guint limit)
+Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const Gnome::Gda::SqlExpr& where_clause, const Glib::ustring& extra_join, const type_sort_clause& sort_clause, const Glib::ustring& extra_group_by, guint limit)
 {
-  //Get the list of fields to SELECT, plus the tables that they are selected FROM.
-  Glib::ustring sql_part_from;
-  Glib::ustring sql_part_leftouterjoin;
-  const Glib::ustring sql_part_fields = Utils::build_sql_select_fields_to_get(
-    table_name, fieldsToGet, sort_clause, sql_part_from, sql_part_leftouterjoin);
 
   //Build the whole SQL statement:
-  Glib::ustring result =
-    "SELECT " + sql_part_fields +
-    " FROM \"" + table_name + '\"';
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+  builder->select_add_target(table_name);
+
+  //Get the fields to SELECT, plus the tables that they are selected FROM.
+  Glib::ustring sql_part_from;
+  Glib::ustring sql_part_leftouterjoin;
+  //TODO: sql_sort_clause_ids;
+
+/* TODO:
+  Utils::build_sql_select_add_fields_to_get(builder, table_name, fieldsToGet, sort_clause, sql_part_from, sql_part_leftouterjoin);
+  //builder->select_add_field(primary_key->get_name(), table_name);
 
   if(!sql_part_from.empty())
     result += (',' + sql_part_from);
@@ -356,7 +359,10 @@ Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& tab
 
   //Add the WHERE clause:
   if(!where_clause.empty())
-    result += " WHERE " + where_clause;
+  {
+    const int id = builder->import_expression(where_clause);
+    builder->set_where(id);
+  }
 
   //Extra GROUP_BY clause for doubly-related records. This must be before the ORDER BY sort clause:
   if(!extra_group_by.empty())
@@ -393,12 +399,12 @@ Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& tab
     sprintf(pchLimit, "%d", limit);
     result += " LIMIT " + Glib::ustring(pchLimit);
   }
-
-  return result;
+*/
+  return builder;
 }
 
 
-Glib::ustring Utils::build_sql_select_with_key(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value, guint limit)
+Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_key(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value, guint limit)
 {
   //TODO_Performance:
   type_vecConstLayoutFields constFieldsToGet;
@@ -410,17 +416,40 @@ Glib::ustring Utils::build_sql_select_with_key(const Glib::ustring& table_name, 
   return build_sql_select_with_key(table_name, constFieldsToGet, key_field, key_value, limit);
 }
 
-Glib::ustring Utils::build_sql_select_with_key(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value, guint limit)
+Gnome::Gda::SqlExpr Utils::build_simple_where_expression(const Glib::ustring& table_name, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value)
+{
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+  builder->select_add_target(table_name);  //This might not be necessary.
+  const guint id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+    builder->add_id(key_field->get_name()),
+    builder->add_expr(key_value));
+  builder->set_where(id); //This might not be necessary.
+
+  return builder->export_expression(id);
+}
+
+Gnome::Gda::SqlExpr Utils::build_combined_where_expression(const Gnome::Gda::SqlExpr& a, const Gnome::Gda::SqlExpr& b, Gnome::Gda::SqlOperatorType op)
+{
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+
+  const guint id = builder->add_cond(op,
+    builder->import_expression(a),
+    builder->import_expression(b));
+   builder->set_where(id);
+  return builder->export_expression(id);
+}
+
+Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_key(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value, guint limit)
 {
   if(!Conversions::value_is_empty(key_value)) //If there is a record to show:
   {
-    //TODO: Use a SQL parameter instead of using sql():
-    const Glib::ustring where_clause = '\"' + table_name + "\".\"" + key_field->get_name() + "\" = " + key_field->sql(key_value);
+    const Gnome::Gda::SqlExpr where_clause = build_simple_where_expression(table_name, key_field, key_value);
     return Utils::build_sql_select_with_where_clause(table_name, fieldsToGet, where_clause,
       Glib::ustring(), type_sort_clause(),  Glib::ustring(), limit);
   }
 
-  return Glib::ustring();
+  return Glib::RefPtr<Gnome::Gda::SqlBuilder>();
 }
 
 Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<const LayoutItem_Field>& field)
@@ -948,46 +977,62 @@ std::string Utils::sqlbuilder_get_full_query(
   return std::string(buf.get());
 }
 
-Glib::ustring Utils::get_find_where_clause_quick(Document* document, const Glib::ustring& table_name, const Gnome::Gda::Value& quick_search)
+Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(Document* document, const Glib::ustring& table_name, const Gnome::Gda::Value& quick_search)
 {
-  Glib::ustring strClause;
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+  builder->select_add_target(table_name);
 
-  if(document)
+  if(!document)
   {
-    //TODO: Cache the list of all fields, as well as caching (m_Fields) the list of all visible fields:
-    const Document::type_vec_fields fields = document->get_table_fields(table_name);
+    std::cerr << "Utils::get_find_where_clause_quick(): document was null." << std::endl;
+    return Gnome::Gda::SqlExpr();
+  }
 
-    typedef std::vector< sharedptr<LayoutItem_Field> > type_vecLayoutFields;
-    type_vecLayoutFields fieldsToGet;
-    for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+  //TODO: Cache the list of all fields, as well as caching (m_Fields) the list of all visible fields:
+  const Document::type_vec_fields fields = document->get_table_fields(table_name);
+
+  guint previous_and_id = 0;
+  typedef std::vector< sharedptr<LayoutItem_Field> > type_vecLayoutFields;
+  type_vecLayoutFields fieldsToGet;
+  for(Document::type_vec_fields::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
+  {
+    Glib::ustring strClausePart;
+
+    sharedptr<const Field> field = *iter;
+
+    bool use_this_field = true;
+    if(field->get_glom_type() != Field::TYPE_TEXT)
     {
-      Glib::ustring strClausePart;
+      use_this_field = false;
+    }
 
-      sharedptr<const Field> field = *iter;
+    if(use_this_field)
+    {
+      const guint eq_id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ, //TODO: Ue field->sql_find_operator().
+        builder->add_id(field->get_name()),
+        builder->add_expr(quick_search)); //Use  field->sql_find(quick_search);
 
-      bool use_this_field = true;
-      if(field->get_glom_type() != Field::TYPE_TEXT)
+      guint and_id = 0;
+      if(previous_and_id)
       {
-          use_this_field = false;
+        and_id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_AND,
+        previous_and_id, eq_id);
       }
 
-      if(use_this_field)
-      {
-        //TODO: Use a SQL parameter instead of using sql().
-        strClausePart = "\"" + table_name + "\".\"" + field->get_name() + "\" " + field->sql_find_operator() + " " +  field->sql_find(quick_search);
-      }
-
-      if(!strClausePart.empty())
-      {
-        if(!strClause.empty())
-          strClause += " OR ";
-
-        strClause += strClausePart;
-      }
+      previous_and_id = and_id;
     }
   }
 
-  return strClause;
+  if(previous_and_id)
+  {
+    builder->set_where(previous_and_id); //This might be unnecessary.
+    return builder->export_expression(previous_and_id);
+  }
+  else
+  {
+    return Gnome::Gda::SqlExpr();
+  }
 }
 
 } //namespace Glom

@@ -61,11 +61,11 @@ Box_Data_Portal::Box_Data_Portal()
   add(m_Frame);
 
   m_layout_name = "list_portal"; //Replaced by derived classes.
-  
+
   #ifdef GLOM_ENABLE_MAEMO
   #ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   signal_realize().connect(sigc::mem_fun(*this, &Box_Data_Portal::on_realize));
-  signal_unrealize().connect(sigc::mem_fun(*this, &Box_Data_Portal::on_unrealize));  
+  signal_unrealize().connect(sigc::mem_fun(*this, &Box_Data_Portal::on_unrealize));
   #endif //GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 
   m_maemo_appmenubutton_add.signal_clicked().connect(
@@ -78,7 +78,7 @@ Box_Data_Portal::~Box_Data_Portal()
   #ifdef GLOM_ENABLE_MAEMO
   if(m_window_maemo_details)
     delete m_window_maemo_details;
-    
+
   if(m_box_maemo_details)
   {
     remove_view(m_box_maemo_details);
@@ -96,17 +96,17 @@ void Box_Data_Portal::make_record_related(const Gnome::Gda::Value& related_recor
   {
     std::cerr << "Box_Data_Portal::make_record_related(): m_key_field was null." << std::endl;
   }
-  
+
   if(Conversions::value_is_empty(m_key_value))
   {
     std::cerr << "Box_Data_Portal::make_record_related(): m_key_value was empty." << std::endl;
   }
-  
-  
+
+
   if(!m_portal)
   {
     std::cerr << "Box_Data_Portal::make_record_related(): m_portal was null." << std::endl;
-  } 
+  }
 
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
     builder->set_table(m_portal->get_table_used(Glib::ustring() /* not relevant */));
@@ -115,7 +115,7 @@ void Box_Data_Portal::make_record_related(const Gnome::Gda::Value& related_recor
       builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
         builder->add_id(field_primary_key->get_name()),
         builder->add_expr_as_value(related_record_primary_key_value)));
-          
+
   //std::cout << "Box_Data_Portal::make_record_related(): setting value in db=" << primary_key_value.to_string() << std::endl;
   const bool test = query_execute(builder);
   if(!test)
@@ -130,57 +130,57 @@ void Box_Data_Portal::on_maemo_appmenubutton_add()
 {
   if(!m_portal)
     return;
-    
+
   if(m_window_maemo_details)
     delete m_window_maemo_details;
-    
+
   if(m_box_maemo_details)
   {
     remove_view(m_box_maemo_details);
     delete m_box_maemo_details;
   }
-  
+
   m_box_maemo_details = new Box_Data_Details();
   add_view(m_box_maemo_details);
   m_box_maemo_details->show_all();
-  
+
   m_window_maemo_details = new Window_BoxHolder(m_box_maemo_details, _("Details"));
-  
+
   //Let this window have the main AppMenu:
   Hildon::Program::get_instance()->add_window(*m_window_maemo_details);
-  
+
   Gtk::Window* pWindow = get_app_window();
   if(pWindow)
     m_window_maemo_details->set_transient_for(*pWindow);
-    
+
   //Refresh the portal when the window is closed:
   //TODO: Refresh the parent Details too.
   m_window_maemo_details->signal_hide().connect(
     sigc::mem_fun(*this, &Box_Data_Portal::on_window_maemo_details_closed));
 
-  const Glib::ustring title = 
-    Glib::ustring::compose(_("New Related %1"), 
+  const Glib::ustring title =
+    Glib::ustring::compose(_("New Related %1"),
       get_title_singular());
   m_window_maemo_details->set_title(title);
-  
+
   FoundSet found_set;
   found_set.m_table_name = m_portal->get_table_used(Glib::ustring());
   Gnome::Gda::Value related_record_primary_key_value; //null for a new record.
-  m_box_maemo_details->init_db_details(found_set, 
-    get_active_layout_platform(get_document()), 
+  m_box_maemo_details->init_db_details(found_set,
+    get_active_layout_platform(get_document()),
     related_record_primary_key_value);
-    
+
   m_box_maemo_details->do_new_record(); //Doesn't block.
-  
+
   //Make the new record related:
   //TODO: This only makes sense if the primary key is not auto-generated.
-  related_record_primary_key_value = 
+  related_record_primary_key_value =
     m_box_maemo_details->get_primary_key_value_selected();
   make_record_related(related_record_primary_key_value);
-  
+
   //Show the data in the UI:
   m_box_maemo_details->refresh_data_from_database_with_primary_key(related_record_primary_key_value);
-  
+
   m_window_maemo_details->show();
 }
 
@@ -194,13 +194,13 @@ void Box_Data_Portal::on_realize()
 {
   if(!m_portal)
     return;
-    
+
   // Add an Add Related Something button to the application's AppMenu.
   // This will be removed when the portal is hidden.
   //TODO: Use the ustring compose thingy. murrayc.
-  //TODO: Allow the designer to specify a singluar form for tables (and portals), 
+  //TODO: Allow the designer to specify a singluar form for tables (and portals),
   //so we can say Add Related Something instead of Somethings: Add Related.
-  const Glib::ustring title = 
+  const Glib::ustring title =
     Glib::ustring::compose(_("Add Related %1"), get_title_singular());
   m_maemo_appmenubutton_add.set_title(title);
   m_maemo_appmenubutton_add.set_value(_("Add related record"));
@@ -222,7 +222,7 @@ void Box_Data_Portal::on_realize()
 
 void Box_Data_Portal::on_unrealize()
 {
-  // Remove the AppMenu button when the portal is no longer shown: 
+  // Remove the AppMenu button when the portal is no longer shown:
   Application* app = Application::get_application();
   g_assert(app);
   if(app)
@@ -246,7 +246,7 @@ bool Box_Data_Portal::init_db_details(const sharedptr<const LayoutItem_Portal>& 
   Glib::ustring parent_table;
   if(m_portal)
     parent_table = m_portal->get_from_table();
-      
+
   return init_db_details(parent_table, show_title);
 }
 
@@ -261,7 +261,7 @@ Glib::ustring Box_Data_Portal::get_title() const
     //Note to translators: This text is shown instead of a table title, when the table has not yet been chosen.
     relationship_title = _("Undefined Table");
   }
-  
+
   return relationship_title;
 }
 
@@ -275,7 +275,7 @@ Glib::ustring Box_Data_Portal::get_title_singular() const
     //Note to translators: This text is shown instead of a table title, when the table has not yet been chosen.
     relationship_title = _("Undefined Table");
   }
-  
+
   return relationship_title;
 }
 
@@ -285,7 +285,7 @@ bool Box_Data_Portal::init_db_details(const Glib::ustring& parent_table, bool sh
   m_parent_table = parent_table;
 
   if(m_portal)
-    LayoutWidgetBase::m_table_name = m_portal->get_table_used(Glib::ustring() /* parent table_name, not used. */); 
+    LayoutWidgetBase::m_table_name = m_portal->get_table_used(Glib::ustring() /* parent table_name, not used. */);
   else
     LayoutWidgetBase::m_table_name = Glib::ustring();
 
@@ -317,7 +317,7 @@ bool Box_Data_Portal::refresh_data_from_database_with_foreign_key(const Gnome::G
 {
   m_key_value = foreign_key_value;
   //std::cout << "DEBUG: Box_Data_Portal::refresh_data_from_database_with_foreign_key(): m_key_value=" << m_key_value.to_string() << std::endl;
-  
+
 
   if(m_key_field && m_portal)
   {
@@ -325,7 +325,7 @@ bool Box_Data_Portal::refresh_data_from_database_with_foreign_key(const Gnome::G
     {
       FoundSet found_set;
       set_found_set_where_clause_for_portal(found_set, m_portal, m_key_value);
-   
+
       //std::cout << "DEBUG: refresh_data_from_database_with_foreign_key(): where_clause=" << found_set.m_where_clause << std::endl;
       return Box_Data::refresh_data_from_database_with_where_clause(found_set);
     }
@@ -340,7 +340,7 @@ bool Box_Data_Portal::refresh_data_from_database_with_foreign_key(const Gnome::G
   {
     //If there is no to field then this relationship specifies all records in the table.
     FoundSet found_set = m_found_set;
-    found_set.m_where_clause = Glib::ustring();
+    found_set.m_where_clause = Gnome::Gda::SqlExpr();
     return Box_Data::refresh_data_from_database_with_where_clause(found_set);
   }
 }
@@ -485,7 +485,7 @@ void Box_Data_Portal::get_suitable_record_to_view_details(const Gnome::Gda::Valu
   Glib::ustring navigation_table_name;
   sharedptr<const UsesRelationship> navigation_relationship;
   get_suitable_table_to_view_details(navigation_table_name, navigation_relationship);
- 
+
   if(navigation_table_name.empty())
     return;
 
@@ -512,8 +512,8 @@ void Box_Data_Portal::get_suitable_record_to_view_details(const Gnome::Gda::Valu
   sharedptr<const Field> key_field = get_field_primary_key_for_table(related_table);
   //std::cout << "DEBUG: related table=" << related_table << ", whose primary_key=" << key_field->get_name() << std::endl;
 
-  const Glib::ustring query = Utils::build_sql_select_with_key(related_table, fieldsToGet, key_field, primary_key_value);
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(query);
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> query = Utils::build_sql_select_with_key(related_table, fieldsToGet, key_field, primary_key_value);
+  Glib::RefPtr<const Gnome::Gda::DataModel> data_model = query_execute_select(query);
 
 
   bool value_found = true;
@@ -521,12 +521,12 @@ void Box_Data_Portal::get_suitable_record_to_view_details(const Gnome::Gda::Valu
   {
     //Set the output parameters:
     table_name = navigation_table_name;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED    
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
     table_primary_key_value = data_model->get_value_at(0, 0);
 #else
-    std::auto_ptr<Glib::Error> error;    
+    std::auto_ptr<Glib::Error> error;
     table_primary_key_value = data_model->get_value_at(0, 0, error);
-#endif    
+#endif
     //std::cout << "Box_Data_Portal::get_suitable_record_to_view_details(): table_primary_key_value=" << table_primary_key_value.to_string() << std::endl;
 
     //The value is empty when there there is no record to match the key in the related table:
@@ -541,9 +541,9 @@ void Box_Data_Portal::get_suitable_record_to_view_details(const Gnome::Gda::Valu
   {
     value_found = false;
 
-    std::cout << "DEBUG: Box_Data_Portal::get_suitable_record_to_view_details(): SQL query returned no suitable primary key. table=" 
-      << related_table  
-      << ", field=" << layout_item->get_layout_display_name() 
+    std::cout << "DEBUG: Box_Data_Portal::get_suitable_record_to_view_details(): SQL query returned no suitable primary key. table="
+      << related_table
+      << ", field=" << layout_item->get_layout_display_name()
       << ", key_field=" << key_field->get_name()
       << ", primary_key_value=" << primary_key_value.to_string() << std::endl;
 
@@ -568,7 +568,7 @@ Document::type_list_layout_groups Box_Data_Portal::create_layout_get_layout()
 
   if(m_portal)
     result.push_back(m_portal);
-  
+
   return result;
 }
 

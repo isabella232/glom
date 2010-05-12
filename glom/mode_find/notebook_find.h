@@ -42,13 +42,13 @@ public:
    * should be used to find and display records.
    * @param find_criteria The SQL where clause.
    */
-  sigc::signal<void, Glib::ustring> signal_find_criteria;
+  sigc::signal<void, Gnome::Gda::SqlExpr> signal_find_criteria;
 
 private:
 
 
   //Signal handlers:
-  void on_page_find_criteria(const Glib::ustring& where_clause);
+  void on_page_find_criteria(const Gnome::Gda::SqlExpr& where_clause);
 
   //Member widgets:
   #ifndef GLOM_ENABLE_MAEMO

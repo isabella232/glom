@@ -58,7 +58,7 @@ public:
   ///Get the existing where clause, previously supplied to init_db_details().
   FoundSet get_found_set() const;
 
-  virtual Glib::ustring get_find_where_clause() const;
+  virtual Gnome::Gda::SqlExpr get_find_where_clause() const;
 
   virtual void set_unstored_data(bool bVal);
   virtual bool get_unstored_data() const;
@@ -80,7 +80,7 @@ public:
    */
   //Should be a MI class, derived by those sub-classes. TODO.
   //where_clause.
-  sigc::signal<void, Glib::ustring> signal_find_criteria;
+  sigc::signal<void, Gnome::Gda::SqlExpr> signal_find_criteria;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   //g++ 3.4 needs this to be public when used from Box_Data_Details. I'm not sure why. murrayc.

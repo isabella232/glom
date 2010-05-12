@@ -1,4 +1,28 @@
-2010-05-06  Murray Cumming  <murrayc@murrayc-desktop>
+2010-05-12  Murray Cumming  <murrayc@murrayc.com>
+
+    Use Gnome::Gda::SqlExpr for where clauses.
+
+	* glom/libglom/utils.[h|cc]: Added build_simple_where_expression()
+    and build_combined_where_expression() to make it easier to work with
+    Gnome::Gda::SqlExpr.
+    build_sql_select_with_key(): Return a SqlExpr instead of a string.
+	* glom/base_db.[h|cc]:
+	* glom/base_db_table_data.cc:
+	* glom/frame_glom.[h|cc]:
+	* glom/libglom/data_structure/foundset.[h|cc]:
+	* glom/mode_data/box_data.[h|cc]:
+	* glom/mode_data/box_data_calendar_related.cc:
+	* glom/mode_data/box_data_details.cc:
+	* glom/mode_data/box_data_list.cc:
+	* glom/mode_data/box_data_portal.cc:
+	* glom/mode_data/datawidget/dialog_choose_id..[h|cc]:
+	* glom/mode_find/notebook_find.[h|cc]:
+	* glom/print_layout/canvas_print_layout.cc:
+	* glom/report_builder.cc:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
+    Adapt, using SqlExpr instead of a string for where clauses.
+
+2010-05-06  Murray Cumming  <murrayc@murrayc.com>
 
     Utils::get_choice_values(): Complete the use of SqlBuilder.
 

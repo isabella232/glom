@@ -62,7 +62,7 @@ private:
   void update_ui_for_stage();
 
   void on_button_quickfind();
-  void on_box_find_criteria(const Glib::ustring& where_clause);
+  void on_box_find_criteria(const Gnome::Gda::SqlExpr& where_clause);
   void on_box_select_selected(const Gnome::Gda::Value& primary_key);
 
   Gtk::Label* m_label_table_name;

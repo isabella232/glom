@@ -77,7 +77,7 @@ bool Notebook_Find::init_db_details(const Glib::ustring& table_name, const Glib:
   return result;
 }
 
-void Notebook_Find::on_page_find_criteria(const Glib::ustring& where_clause)
+void Notebook_Find::on_page_find_criteria(const Gnome::Gda::SqlExpr& where_clause)
 {
   //Pass it up to the application.
   signal_find_criteria.emit(where_clause);

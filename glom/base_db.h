@@ -93,7 +93,7 @@ public:
   static bool query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder,
                             const Glib::RefPtr<const Gnome::Gda::Set>& params = Glib::RefPtr<const Gnome::Gda::Set>(0));
 
-  static int count_rows_returned_by(const Glib::ustring& sql_query);
+  static int count_rows_returned_by(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& sql_query);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   sharedptr<Field> change_column(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, Gtk::Window* parent_window) const;

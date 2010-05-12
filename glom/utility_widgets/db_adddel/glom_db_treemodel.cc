@@ -44,7 +44,7 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
   //std::cout << "DbTreeModelRow::fill_values_if_necessary(): row=" << row << std::endl;
   //if(row == 1000)
   //{
-  //  std::cout << "1000" << std::endl;  
+  //  std::cout << "1000" << std::endl;
   //}
 
   if(m_values_retrieved)
@@ -54,7 +54,7 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
   else
   {
     //std::cout << "debug: DbTreeModelRow::fill_values_if_necessary(): retrieving for row=" << row << std::endl;
-  
+
     if((row < (int)model.m_data_model_rows_count) && model.m_gda_datamodel)
     {
       Glib::RefPtr<Gnome::Gda::DataModelIter> iter = model.m_gda_datamodel->create_iter();
@@ -71,7 +71,7 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
             m_db_values[i] = holder->get_value(); //TODO_gda: Why not just use get_value_at()?
           else
           {
-            // This is quite possible, for example for unset dates. jhs 
+            // This is quite possible, for example for unset dates. jhs
             //std::cerr << "DbTreeModelRow::fill_values_if_necessary(): NULL Gnome::Gda::Holder for field=" << i << std::endl;
           }
 
@@ -94,7 +94,7 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
       if(m_extra)
       {
         //std::cout << "  debug: DbTreeModelRow::fill_values_if_necessary(): using default value" << std::endl;
-  
+
         //It is an extra row, added with append().
       }
       else if(!m_removed)
@@ -111,7 +111,7 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
         {
           Glib::RefPtr<Gnome::Gda::Column> column = model.m_gda_datamodel->describe_column(col);
 
-          //We don't just create a Gda::Value of the column's gda type, 
+          //We don't just create a Gda::Value of the column's gda type,
           //because we should use a NULL-type Gda::Value as the initial value for some fields:
           const Field::glom_field_type glom_type = Field::get_glom_type_for_gda_type(column->get_g_type());
           m_db_values[col] = Glom::Conversions::get_empty_value(glom_type);
@@ -222,7 +222,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
   {
     m_get_records = false; //Otherwise it would not make sense.
 
-    //Use a dummy DataModel that has the same columns and types, 
+    //Use a dummy DataModel that has the same columns and types,
     //but which does not use a real database table,
     //so we can use it to add find criteria.
     Glib::RefPtr<Gnome::Gda::DataModelArray> model_array = Gnome::Gda::DataModelArray::create(m_column_fields.size());
@@ -246,8 +246,8 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
   m_gda_datamodel->append_row(); //TODO: Handle adding.
 #else
   std::auto_ptr<Glib::Error> error;
-  m_gda_datamodel->append_row(error); //TODO: Handle adding. 
-#endif  
+  m_gda_datamodel->append_row(error); //TODO: Handle adding.
+#endif
     return true;
   }
 
@@ -267,10 +267,10 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
 
   if(m_found_set.m_table_name.empty())
     std::cerr << "DEBUG: refresh_from_database(): found_set.m_table_name is empty." << std::endl;
-    
+
   if(m_connection && !m_found_set.m_table_name.empty() && m_get_records)
   {
-    const Glib::ustring sql_query = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_column_fields, m_found_set.m_where_clause, m_found_set.m_extra_join, m_found_set.m_sort_clause, m_found_set.m_extra_group_by);
+    Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_column_fields, m_found_set.m_where_clause, m_found_set.m_extra_join, m_found_set.m_sort_clause, m_found_set.m_extra_group_by);
     //std::cout << "  Debug: DbTreeModel::refresh_from_database():  " << sql_query << std::endl;
 
     const Application* app = Application::get_application();
@@ -294,7 +294,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
-      Glib::RefPtr<Gnome::Gda::Statement> stmt = parser->parse_string(sql_query);
+      Glib::RefPtr<Gnome::Gda::Statement> stmt = sql_query->get_statement();
       //Specify the STATEMENT_MODEL_CURSOR, so that libgda only gets the rows that we actually use.
       m_gda_datamodel = m_connection->get_gda_connection()->statement_execute_select(stmt, Gnome::Gda::STATEMENT_MODEL_CURSOR_FORWARD);
       //Examine the columns in the returned DataModel:
@@ -354,7 +354,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
 
       //This doesn't work with cursor-based models: const int count = m_gda_datamodel->get_n_rows();
       //because rows count is -1 until we have iterated to the last row.
-      const Glib::ustring sql_query_without_sort = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_column_fields, m_found_set.m_where_clause, m_found_set.m_extra_join, type_sort_clause(), m_found_set.m_extra_group_by);
+      Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query_without_sort = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_column_fields, m_found_set.m_where_clause, m_found_set.m_extra_join, type_sort_clause(), m_found_set.m_extra_group_by);
       const int count = Base_DB::count_rows_returned_by(sql_query_without_sort);
       if(count < 0)
       {
@@ -467,7 +467,7 @@ void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, G
             //const GType gtype_expected = column->get_g_type();
 
             result = row_details.get_value(const_cast<DbTreeModel&>(*this), column_sql, datamodel_row); //m_gda_datamodel->get_value_at(column_sql, datamodel_row); //dataRow.m_db_values[column];
-  
+
             /*
             if((result.get_value_type() != 0) && (result.get_value_type() != gtype_expected))
             {
@@ -484,7 +484,7 @@ void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, G
         GType debug_type = result.get_value_type();
         std::cout << "  debug: DbTreeModel::get_value_vfunc(): result value type: GType=" << debug_type << std::endl;
         if(debug_type)
-          std::cout << "    GType name=\"" << g_type_name(debug_type) << "\"" << std::endl; 
+          std::cout << "    GType name=\"" << g_type_name(debug_type) << "\"" << std::endl;
         */
 
         value_specific.set(result); //The compiler would complain if the type was wrong.
@@ -556,7 +556,7 @@ bool DbTreeModel::iter_nth_child_vfunc(const iterator& parent, int /* n */, iter
     return false;
   }
 
-  iter = iterator(); //Set is as invalid, as the TreeModel documentation says that it should be.  
+  iter = iterator(); //Set is as invalid, as the TreeModel documentation says that it should be.
   return false; //There are no children.
 }
 
@@ -650,7 +650,7 @@ bool DbTreeModel::create_iterator(const type_datamodel_row_index& datamodel_row,
   }
   else
   {
-    iter.set_stamp(m_stamp); 
+    iter.set_stamp(m_stamp);
     //Store the std::list iterator in the GtkTreeIter:
     //See also iter_next_vfunc()
 
@@ -675,7 +675,7 @@ bool DbTreeModel::get_iter_vfunc(const Path& path, iterator& iter) const
    if(sz > 1) //There are no children.
    {
      invalidate_iter(iter); //Set is as invalid, as the TreeModel documentation says that it should be.
-     return false; 
+     return false;
    }
 
    return iter_nth_root_child_vfunc(path[0], iter);
@@ -691,7 +691,7 @@ bool DbTreeModel::check_treeiter_validity(const iterator& iter) const
 {
   if(!(iter->get_model_gobject()))
     return false;
-    
+
   // Anything that modifies the model's structure should change the model's stamp,
   // so that old iters are ignored.
   return m_stamp == iter.get_stamp();
@@ -723,7 +723,7 @@ DbTreeModel::iterator DbTreeModel::append()
   ++m_count_extra_rows; //So that create_iterator() can succeed.
 
   //Create the row:
-  //datamodel_row->m_db_values.resize(m_columns_count); 
+  //datamodel_row->m_db_values.resize(m_columns_count);
 
   for(unsigned int column_number = 0; column_number < m_columns_count; ++column_number)
   {
@@ -830,7 +830,7 @@ void DbTreeModel::set_key_value(const TreeModel::iterator& iter, const DbValue& 
 }
 
 DbTreeModel::DbValue DbTreeModel::get_key_value(const TreeModel::iterator& iter) const
-{   
+{
   if(check_treeiter_validity(iter))
   {
     type_datamodel_row_index datamodel_row = get_datamodel_row_index_from_tree_row_iter(iter);
@@ -958,7 +958,7 @@ void DbTreeModel::get_record_counts(gulong& total, gulong& found) const
     {
       //Ask the database how many records there are in the whole table:
       //TODO: Apparently, this is very slow:
-      
+
       Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
         Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
       builder->add_function("count", builder->add_id("*")); //TODO: Is * allowed here?
@@ -976,7 +976,7 @@ void DbTreeModel::get_record_counts(gulong& total, gulong& found) const
       {
         if(datamodel->get_n_rows())
         {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED        
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
           Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
 #else
           std::auto_ptr<Glib::Error> value_error;

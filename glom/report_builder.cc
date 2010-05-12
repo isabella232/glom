@@ -184,7 +184,7 @@ void ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
 
     if(!found_set_parent.m_where_clause.empty())
     {
-      builder->set_where( builder->add_id(found_set_parent.m_where_clause) ); //Is this allowed?
+      builder->set_where( builder->import_expression(found_set_parent.m_where_clause) );
     }
 
     builder->select_group_by( builder->add_id(field_group_by->get_name()) ); //TODO: And restrict to the current found set.
@@ -212,9 +212,14 @@ void ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
           Conversions::get_text_for_gda_value(field_group_by->get_glom_type(), group_value, field_group_by->get_formatting_used().m_numeric_format) );
 
         //TODO: Use a SQL parameter instead of using sql().
-        Glib::ustring where_clause = "(\"" + group_field_table_name + "\".\"" + field_group_by->get_name() + "\" = " + field_group_by->get_full_field_details()->sql(group_value) + ")";
+        Gnome::Gda::SqlExpr where_clause =
+          Utils::build_simple_where_expression(group_field_table_name, field_group_by->get_full_field_details(), group_value);
+
         if(!found_set_parent.m_where_clause.empty())
-          where_clause += " AND (" + found_set_parent.m_where_clause + ')';
+        {
+          where_clause = Utils::build_combined_where_expression(where_clause, found_set_parent.m_where_clause,
+            Gnome::Gda::SQL_OPERATOR_TYPE_AND);
+        }
 
         FoundSet found_set_records = found_set_parent;
         found_set_records.m_where_clause = where_clause;
@@ -315,7 +320,7 @@ void ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
     if(one_record_only)
       limit = 1;
 
-    const Glib::ustring sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
+    Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
       fieldsToGet,
       found_set.m_where_clause, Glib::ustring() /* extra_join */, found_set.m_sort_clause,
       Glib::ustring(),

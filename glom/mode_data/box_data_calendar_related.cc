@@ -38,16 +38,16 @@ Box_Data_Calendar_Related::Box_Data_Calendar_Related()
 
   m_Alignment.add(m_calendar);
   m_calendar.show();
-  
+
   //m_calendar.set_show_details();
   m_calendar.set_detail_width_chars(7);
-  m_calendar.set_detail_height_rows(2); 
-  
+  m_calendar.set_detail_height_rows(2);
+
   //Tell the calendar how to get the record details to show:
   m_calendar.set_detail_func( sigc::mem_fun(*this, &Box_Data_Calendar_Related::on_calendar_details) );
-  
+
   m_calendar.signal_month_changed().connect( sigc::mem_fun(*this, &Box_Data_Calendar_Related::on_calendar_month_changed) );
-  
+
   setup_menu();
   //m_calendar.add_events(Gdk::BUTTON_PRESS_MASK); //Allow us to catch button_press_event and button_release_event
   m_calendar.signal_button_press_event().connect_notify( sigc::mem_fun(*this, &Box_Data_Calendar_Related::on_calendar_button_press_event) );
@@ -79,7 +79,7 @@ bool Box_Data_Calendar_Related::init_db_details(const Glib::ustring& parent_tabl
   m_parent_table = parent_table;
 
   if(m_portal)
-    LayoutWidgetBase::m_table_name = m_portal->get_table_used(Glib::ustring() /* parent table_name, not used. */); 
+    LayoutWidgetBase::m_table_name = m_portal->get_table_used(Glib::ustring() /* parent table_name, not used. */);
   else
     LayoutWidgetBase::m_table_name = Glib::ustring();
 
@@ -126,7 +126,7 @@ bool Box_Data_Calendar_Related::fill_from_database()
 {
   if(!m_portal)
     return false;
-  
+
   bool result = false;
 
   if(m_key_field && m_found_set.m_where_clause.empty()) //There's a key field, but no value.
@@ -141,24 +141,24 @@ bool Box_Data_Calendar_Related::fill_from_database()
   {
     if(m_query_column_date_field == -1)
       return false; //This is useless without the date in the result.
-       
+
     //Create a date range from the beginning to end of the selected month:
     Glib::Date calendar_date;
     m_calendar.get_date(calendar_date);
     const Glib::Date date_start(1, calendar_date.get_month(), calendar_date.get_year());
     Glib::Date date_end = date_start;
     date_end.add_months(1);
-    
+
     Gnome::Gda::Value date_start_value(date_start);
     Gnome::Gda::Value date_end_value(date_end);
 
     //Add a WHERE clause for this date range:
     sharedptr<Relationship> relationship = m_portal->get_relationship();
     Glib::ustring where_clause_to_table_name = relationship->get_to_table();
-  
+
     sharedptr<LayoutItem_CalendarPortal> derived_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(m_portal);
     const Glib::ustring date_field_name = derived_portal->get_date_field()->get_name();
-    
+
     sharedptr<const Relationship> relationship_related = m_portal->get_related_relationship();
     if(relationship_related)
     {
@@ -171,65 +171,76 @@ bool Box_Data_Calendar_Related::fill_from_database()
     //Add an AND to the existing where clause, to get only records within these dates, if any:
     sharedptr<const Field> date_field = derived_portal->get_date_field();
     //TODO: Use a SQL parameter instead of using sql().
-    const Glib::ustring extra_where_clause = "\"" + where_clause_to_table_name + "\".\"" + date_field->get_name() + "\""
-      " BETWEEN DATE " + date_field->sql(date_start_value) + 
-      " AND DATE " + date_field->sql(date_end_value);
-    
-    Glib::ustring where_clause;
+
+    Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+    const guint cond = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_BETWEEN,
+       builder->add_id(date_field->get_name()),
+       builder->add_expr_as_value(date_start_value),
+       builder->add_expr_as_value(date_end_value));
+    builder->set_where(cond); //Might be unnecessary.
+    const Gnome::Gda::SqlExpr extra_where_clause = builder->export_expression(cond);
+
+    Gnome::Gda::SqlExpr where_clause;
     if(m_found_set.m_where_clause.empty())
+    {
       where_clause = extra_where_clause;
+    }
     else
-      where_clause = "( " + m_found_set.m_where_clause + " ) AND ( " + extra_where_clause + " )";
-    
-    
+    {
+      where_clause = Utils::build_combined_where_expression(
+        m_found_set.m_where_clause, extra_where_clause,
+        Gnome::Gda::SQL_OPERATOR_TYPE_AND);
+    }
+
     //Do one SQL query for the whole month and store the cached values here:
     clear_cached_database_values();
-    
-    const Glib::ustring sql_query = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_FieldsShown, where_clause, m_found_set.m_extra_join, m_found_set.m_sort_clause, m_found_set.m_extra_group_by);
+
+    Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_FieldsShown, where_clause, m_found_set.m_extra_join, m_found_set.m_sort_clause, m_found_set.m_extra_group_by);
     //std::cout << "DEBUG: sql_query=" << sql_query << std::endl;
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query);
+    Glib::RefPtr<const Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query);
     if(!(datamodel))
       return true;
-    
+
     const int rows_count = datamodel->get_n_rows();
     if(!(rows_count > 0))
       return true;
-    
+
     //Get the data:
     for(int row_index = 0; row_index < rows_count; ++row_index)
     {
       const int columns_count = datamodel->get_n_columns();
       if(m_query_column_date_field > columns_count)
        continue;
-       
+
       //Get the date value for this row:
-#ifdef GLIBMM_EXCEPTIONS_ENABLED      
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
       Gnome::Gda::Value value_date = datamodel->get_value_at(m_query_column_date_field, row_index);
 #else
-      std::auto_ptr<Glib::Error> error;      
+      std::auto_ptr<Glib::Error> error;
       Gnome::Gda::Value value_date = datamodel->get_value_at(m_query_column_date_field, row_index, error);
-#endif      
+#endif
       const Glib::Date date = value_date.get_date();
-      
+
       //Get all the values for this row:
       type_vector_values* pVector = new type_vector_values(m_FieldsShown.size());
       for(int column_index = 0; column_index < columns_count; ++column_index)
       {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED 
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
         (*pVector)[column_index] = datamodel->get_value_at(column_index, row_index);
 #else
-        std::auto_ptr<Glib::Error> error;      
+        std::auto_ptr<Glib::Error> error;
           (*pVector)[column_index] = datamodel->get_value_at(column_index, row_index, error);
         if (error.get())
           break;
-#endif 
+#endif
       }
-      
+
       m_map_values[date].push_back(pVector);
     }
   }
 
- 
+
   return result;
 }
 
@@ -245,8 +256,8 @@ void Box_Data_Calendar_Related::clear_cached_database_values()
         delete pValues;
     }
   }
-  
-  m_map_values.clear(); 
+
+  m_map_values.clear();
 }
 
 //TODO: Make this generic in Box_Data_Portal:
@@ -286,7 +297,7 @@ void Box_Data_Calendar_Related::on_record_added(const Gnome::Gda::Value& primary
 
     //Create the link by setting the foreign key
     if(m_key_field && m_portal)
-    {      
+    {
       Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
       builder->set_table(m_portal->get_table_used(Glib::ustring() /* not relevant */));
       builder->add_field_value_as_value(m_key_field->get_name(), m_key_value);
@@ -294,7 +305,7 @@ void Box_Data_Calendar_Related::on_record_added(const Gnome::Gda::Value& primary
         builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
           builder->add_id(field_primary_key->get_name()),
           builder->add_expr_as_value(primary_key_value)));
-      
+
       const bool test = query_execute(builder);
       if(test)
       {
@@ -313,15 +324,15 @@ void Box_Data_Calendar_Related::on_record_added(const Gnome::Gda::Value& primary
 Box_Data_Calendar_Related::type_vecLayoutFields Box_Data_Calendar_Related::get_fields_to_show() const
 {
   type_vecLayoutFields layout_fields = Box_Data_Portal::get_fields_to_show();
-  
+
   sharedptr<LayoutItem_CalendarPortal> derived_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(m_portal);
   if(!derived_portal)
     return layout_fields;
-  
+
   sharedptr<const Field> date_field = derived_portal->get_date_field();
   if(!date_field)
     return layout_fields;
-  
+
   //Add it to the list to ensure that we request the date (though it will not really be shown in the calendar):
   sharedptr<LayoutItem_Field> layout_item_date_field = sharedptr<LayoutItem_Field>::create();
   layout_item_date_field->set_full_field_details(date_field);
@@ -340,7 +351,7 @@ void Box_Data_Calendar_Related::on_dialog_layout_hide()
 
   //Update the UI:
   sharedptr<LayoutItem_CalendarPortal> derived_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(m_portal);
-  init_db_details(derived_portal); 
+  init_db_details(derived_portal);
 
   Box_Data::on_dialog_layout_hide();
 
@@ -350,7 +361,7 @@ void Box_Data_Calendar_Related::on_dialog_layout_hide()
     sharedptr<LayoutItem_CalendarPortal> derived_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(m_portal);
     if(derived_portal)
       *pLayoutItem = *derived_portal;
-    
+
     signal_layout_changed().emit(); //TODO: Check whether it has really changed.
   }
 }
@@ -368,7 +379,7 @@ void Box_Data_Calendar_Related::prepare_layout_dialog(Dialog_Layout* dialog)
 {
   Dialog_Layout_Calendar_Related* related_dialog = dynamic_cast<Dialog_Layout_Calendar_Related*>(dialog);
   g_assert(related_dialog);
-  
+
   sharedptr<LayoutItem_CalendarPortal> derived_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(m_portal);
   if(derived_portal && derived_portal->get_has_relationship_name())
   {
@@ -395,11 +406,11 @@ Glib::ustring Box_Data_Calendar_Related::on_calendar_details(guint year, guint m
     //std::cout << "DEBUG: Box_Data_Calendar_Related::on_calendar_details(): date_field is NULL" << std::endl;
     return Glib::ustring();
   }
-  
+
   sharedptr<const Field> date_field = derived_portal->get_date_field();
   if(!date_field)
     return Glib::ustring();
-  
+
   //TODO: month seems to be 143710360 sometimes, which seems to be a GtkCalendar bug:
   //std::cout << "Box_Data_Calendar_Related::on_calendar_details(): year=" << year << ", month=" << month << " day=" << day << std::endl;
 
@@ -408,15 +419,15 @@ Glib::ustring Box_Data_Calendar_Related::on_calendar_details(guint year, guint m
   if(datemonth > Glib::Date::DECEMBER)
     datemonth = Glib::Date::JANUARY;
   Glib::Date date(day, datemonth, year);
-  
+
   //Examine the cached data:
   type_map_values::const_iterator iter_find = m_map_values.find(date);
   if(iter_find == m_map_values.end())
     return Glib::ustring(); //No data was found for this date.
-  
-  
+
+
   Glib::ustring result;
-  
+
   //Look at each row for this date:
   const type_list_vectors& rows = iter_find->second;
   for(type_list_vectors::const_iterator iter = rows.begin(); iter != rows.end(); ++iter)
@@ -424,23 +435,23 @@ Glib::ustring Box_Data_Calendar_Related::on_calendar_details(guint year, guint m
     type_vector_values* pRow = *iter;
     if(!pRow)
       continue;
-    
+
     //Get the data for each column in the row:
     Glib::ustring row_text;
     int column_index = 0;
-    
+
     //We iterate over the original list of items from the portal,
     //instead of the ones used by the query (m_FieldsShown),
     //because we really don't want to show the extra fields (at the end) to the user:
     LayoutGroup::type_list_items items = m_portal->get_items();
     for(LayoutGroup::type_list_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
-    {   
+    {
       sharedptr<const LayoutItem> layout_item = *iter;
       if(!layout_item)
         continue;
-            
+
       Glib::ustring text;
-      
+
       //Text for a text item:
       sharedptr<const LayoutItem_Text> layout_item_text = sharedptr<const LayoutItem_Text>::cast_dynamic(layout_item);
       if(layout_item_text)
@@ -449,33 +460,33 @@ Glib::ustring Box_Data_Calendar_Related::on_calendar_details(guint year, guint m
       {
         //Text for a field:
         sharedptr<const LayoutItem_Field> layout_item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
-        
+
         const Gnome::Gda::Value value = (*pRow)[column_index];
         text = Conversions::get_text_for_gda_value(layout_item_field->get_glom_type(), value, layout_item_field->get_formatting_used().m_numeric_format);
-        
+
         ++column_index;
       }
-      
+
       //Add the field text to the row:
       if(!text.empty())
       {
         if(!row_text.empty())
           row_text += ", "; //TODO: Internationalization?
-      
+
         row_text += text;
       }
     }
-    
+
     //Add the row text to the result:
     if(!row_text.empty())
     {
       if(!result.empty())
         result += '\n';
-      
+
       result += row_text;
     }
   }
-  
+
   return result;
 }
 
@@ -502,7 +513,7 @@ void Box_Data_Calendar_Related::setup_menu()
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
-    pApp->update_userlevel_ui(); //Update our action's sensitivity. 
+    pApp->update_userlevel_ui(); //Update our action's sensitivity.
   }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -516,7 +527,7 @@ void Box_Data_Calendar_Related::setup_menu()
   try
   {
 #endif
-    Glib::ustring ui_info = 
+    Glib::ustring ui_info =
         "<ui>"
         "  <popup name='ContextMenu'>"
         "    <menuitem action='ContextEdit'/>"
@@ -543,11 +554,11 @@ void Box_Data_Calendar_Related::setup_menu()
 #endif //GLIBMM_EXCEPTIONS_ENABLED
 
   //Get the menu:
-  m_pMenuPopup = dynamic_cast<Gtk::Menu*>( m_refUIManager->get_widget("/ContextMenu") ); 
+  m_pMenuPopup = dynamic_cast<Gtk::Menu*>( m_refUIManager->get_widget("/ContextMenu") );
   if(!m_pMenuPopup)
     g_warning("menu not found");
 
- 
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   if(pApp)
     m_refContextLayout->set_sensitive(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER);
@@ -563,7 +574,7 @@ void Box_Data_Calendar_Related::on_calendar_button_press_event(GdkEventButton *e
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
-    pApp->update_userlevel_ui(); //Update our action's sensitivity. 
+    pApp->update_userlevel_ui(); //Update our action's sensitivity.
   }
 #endif
 

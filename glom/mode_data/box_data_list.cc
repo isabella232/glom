@@ -49,7 +49,7 @@ Box_Data_List::Box_Data_List()
   m_AddDel.signal_user_requested_edit().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_requested_edit));
   m_AddDel.signal_script_button_clicked().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_script_button_clicked));
   m_AddDel.signal_sort_clause_changed().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_sort_clause_changed));
-  
+
   //TODO: Re-add this signal if this is really wanted, but make it part of a complete drag-and-drop feature for list views:
   //m_AddDel.signal_user_reordered_columns().connect(sigc::mem_fun(*this, &Box_Data_List::on_adddel_user_reordered_columns));
 
@@ -91,7 +91,7 @@ void Box_Data_List::enable_buttons()
 void Box_Data_List::refresh_data_from_database_blank()
 {
   FoundSet found_set = m_found_set;
-  found_set.m_where_clause = Glib::ustring();
+  found_set.m_where_clause = Gnome::Gda::SqlExpr();
   m_AddDel.set_found_set(found_set);
 
   std::cout << "debug: Box_Data_List::refresh_data_from_database_blank(): before refresh_from_database_blank()." << std::endl;
@@ -206,13 +206,13 @@ void Box_Data_List::on_adddel_user_reordered_columns()
     {
       sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
       layout_item->set_name(*iter);
-      group->add_item(layout_item); 
+      group->add_item(layout_item);
     }
 
     Document::type_list_layout_groups mapGroups;
     mapGroups[1] = group;
 
-    pDoc->set_data_layout_groups("list", m_table_name, m_layout_platform, mapGroups);  
+    pDoc->set_data_layout_groups("list", m_table_name, m_layout_platform, mapGroups);
   }
 }
 
@@ -220,10 +220,10 @@ void Box_Data_List::on_adddel_script_button_clicked(const sharedptr<const Layout
 {
   if(!layout_item)
     return;
-  
+
   const Gnome::Gda::Value primary_key_value = get_primary_key_value(row);
 
-  // TODO: Calling refresh_data_from_database(), 
+  // TODO: Calling refresh_data_from_database(),
   // or navigating to a different table from inside the Python script,
   // causes a crash somewhere down in GTK+, so it is done in an idle handler here.
   // We are currently in a callback from the CellRendererButton_Text cell
@@ -231,7 +231,7 @@ void Box_Data_List::on_adddel_script_button_clicked(const sharedptr<const Layout
   // Probably this causes issues somewhere.
   Glib::signal_idle().connect(
     sigc::bind(
-      sigc::mem_fun(*this, &Box_Data_List::on_script_button_idle), 
+      sigc::mem_fun(*this, &Box_Data_List::on_script_button_idle),
       layout_item,
       primary_key_value));
 }
@@ -253,7 +253,7 @@ bool Box_Data_List::on_script_button_idle(const sharedptr<const LayoutItem_Butto
 
   refresh_data_from_database();
   set_primary_key_value_selected(primary_key);
-  
+
   return false;
 }
 
@@ -308,7 +308,7 @@ void Box_Data_List::on_details_nav_last()
     m_AddDel.select_item(iter);
     signal_user_requested_details().emit(m_AddDel.get_value_key_selected());
   }
-  
+
   //No, don't do this. When would that ever be a good idea? murrayc:
   //signal_user_requested_details().emit(Gnome::Gda::Value()); //Show a blank record if there are no records.
 }
@@ -449,7 +449,7 @@ Document::type_list_layout_groups Box_Data_List::create_layout_get_layout()
 {
   //This method is overriden in Box_Data_List_Related.
 
-  return get_data_layout_groups(m_layout_name, m_layout_platform); 
+  return get_data_layout_groups(m_layout_name, m_layout_platform);
 }
 
 void Box_Data_List::create_layout()
@@ -476,7 +476,7 @@ void Box_Data_List::create_layout()
       //std::cout << "DEBUG: Box_Data_List::create_layout(): primary_key=" << field_primary_key->get_name() << std::endl;
 
       m_AddDel.set_key_field(field_primary_key);
- 
+
       //This map of layout groups will also contain the field information from the database:
       Document::type_list_layout_groups layout_groups = create_layout_get_layout();
 
@@ -582,20 +582,20 @@ void Box_Data_List::get_record_counts(gulong& total, gulong& found) const
 
   Glib::RefPtr<Gtk::TreeModel> refModel = m_AddDel.get_model();
   Glib::RefPtr<DbTreeModel> refModelDerived = Glib::RefPtr<DbTreeModel>::cast_dynamic(refModel);
-  
+
   if(refModelDerived)
     refModelDerived->get_record_counts(total, found);
 }
 
 void Box_Data_List::on_adddel_user_sort_clause_changed()
 {
-  //Remember details about the previously viewed table, 
-  //so we don't forget the sort order and where clause when 
+  //Remember details about the previously viewed table,
+  //so we don't forget the sort order and where clause when
   //navigating back, which would annoy the user:
 
   m_found_set = m_AddDel.get_found_set();
 
-  Document* document = get_document(); 
+  Document* document = get_document();
   if(document)
     document->set_criteria_current(m_table_name, m_found_set);
 }
@@ -626,4 +626,3 @@ void Box_Data_List::prepare_layout_dialog(Dialog_Layout* dialog)
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
 } //namespace Glom
-

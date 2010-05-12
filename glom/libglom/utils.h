@@ -26,6 +26,7 @@
 #include <libglom/document/document.h>
 
 #include <libglom/data_structure/layout/layoutitem_field.h>
+#include <libgdamm/sqlexpr.h>
 
 namespace Glom
 {
@@ -47,6 +48,12 @@ typedef std::vector< sharedptr<const LayoutItem_Field> > type_vecConstLayoutFiel
 
 //TODO: Move these to their own file:
 
+// Create a Gnome::Gda::SqlExpr.
+Gnome::Gda::SqlExpr build_simple_where_expression(const Glib::ustring& table_name, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value);
+
+// Create a where clause that is two other conditions combined together.
+Gnome::Gda::SqlExpr build_combined_where_expression(const Gnome::Gda::SqlExpr& a, const Gnome::Gda::SqlExpr& b, Gnome::Gda::SqlOperatorType op);
+
 /** Generate a SQL statement to SELECT field values,
  * even if the fields are in related (or doubly related) records.
  */
@@ -61,10 +68,10 @@ Glib::ustring build_sql_select_fields_to_get(
  * even if the fields are in related (or doubly related) records,
  * narrowing the records down with a WHERE clause.
  */
-Glib::ustring build_sql_select_with_where_clause(
+Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_with_where_clause(
   const Glib::ustring& table_name,
   const type_vecLayoutFields& fieldsToGet,
-  const Glib::ustring& where_clause = Glib::ustring(),
+  const Gnome::Gda::SqlExpr& where_clause = Gnome::Gda::SqlExpr(),
   const Glib::ustring& extra_join = Glib::ustring(),
   const type_sort_clause& sort_clause = type_sort_clause(),
   const Glib::ustring& extra_group_by = Glib::ustring(),
@@ -72,16 +79,16 @@ Glib::ustring build_sql_select_with_where_clause(
 
 /** Just a version of build_sql_select_with_where_clause() that takes a list of const fields.
  */
-Glib::ustring build_sql_select_with_where_clause(
+Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_with_where_clause(
   const Glib::ustring& table_name,
   const type_vecConstLayoutFields& fieldsToGet,
-  const Glib::ustring& where_clause = Glib::ustring(),
+  const Gnome::Gda::SqlExpr& where_clause = Gnome::Gda::SqlExpr(),
   const Glib::ustring& extra_join = Glib::ustring(),
   const type_sort_clause& sort_clause = type_sort_clause(),
   const Glib::ustring& extra_group_by = Glib::ustring(),
   guint limit = 0);
 
-Glib::ustring build_sql_select_with_key(
+Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_with_key(
   const Glib::ustring& table_name,
   const type_vecLayoutFields& fieldsToGet,
   const sharedptr<const Field>& key_field,
@@ -90,14 +97,14 @@ Glib::ustring build_sql_select_with_key(
 
 /** Just a version of build_sql_select_with_key() that takes a list of const fields.
  */
-Glib::ustring build_sql_select_with_key(
+Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_with_key(
   const Glib::ustring& table_name,
   const type_vecConstLayoutFields& fieldsToGet,
   const sharedptr<const Field>& key_field,
   const Gnome::Gda::Value& key_value,
   guint limit = 0);
 
-Glib::ustring get_find_where_clause_quick(Document* document, const Glib::ustring& table_name, const Gnome::Gda::Value& quick_search);
+Gnome::Gda::SqlExpr get_find_where_clause_quick(Document* document, const Glib::ustring& table_name, const Gnome::Gda::Value& quick_search);
 
 
 typedef std::list< std::pair<Gnome::Gda::Value, Gnome::Gda::Value> > type_list_values_with_second;

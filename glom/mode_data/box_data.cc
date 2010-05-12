@@ -85,15 +85,16 @@ FoundSet Box_Data::get_found_set() const
   return m_found_set;
 }
 
-Glib::ustring Box_Data::get_find_where_clause() const
+Gnome::Gda::SqlExpr Box_Data::get_find_where_clause() const
 {
-  Glib::ustring strClause;
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+  builder->select_add_target(m_table_name);  //This might not be necessary.
+  guint where_cond_id = 0;
 
   //Look at each field entry and build e.g. 'Name = "Bob"'
   for(type_vecLayoutFields::const_iterator iter = m_FieldsShown.begin(); iter != m_FieldsShown.end(); ++iter)
   {
-    Glib::ustring strClausePart;
-
     const Gnome::Gda::Value data = get_entered_field_data(*iter);
 
     if(!Conversions::value_is_empty(data))
@@ -110,22 +111,31 @@ Glib::ustring Box_Data::get_find_where_clause() const
 
         if(use_this_field)
         {
-          //TODO: Use a SQL parameter instead of using sql_find().
-          strClausePart = "\"" + m_table_name + "\".\"" + field->get_name() + "\" " + field->sql_find_operator() + " " +  field->sql_find(data); //% is mysql wildcard for 0 or more characters.
+          const guint cond_id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ, //TODO: Use field->sql_find_operator()
+            builder->add_id(field->get_name()), //TODO: Specify m_table_name too?
+            builder->add_expr(data));
+
+          //And with previous condition, if any:
+          if(where_cond_id)
+          {
+            where_cond_id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_AND, //TODO: Use field->sql_find_operator()
+              where_cond_id,
+              cond_id);
+          }
+          else
+            where_cond_id = cond_id;
         }
       }
     }
-
-    if(!strClausePart.empty())
-    {
-      if(!strClause.empty())
-        strClause += "AND ";
-
-      strClause += '(' + strClausePart + ") ";
-    }
   }
 
-  return strClause;
+  if(where_cond_id)
+  {
+    builder->set_where(where_cond_id); //This might not be necessary.
+    return builder->export_expression(where_cond_id);
+  }
+  else
+    return Gnome::Gda::SqlExpr();
 }
 
 void Box_Data::on_Button_Find()
@@ -133,10 +143,10 @@ void Box_Data::on_Button_Find()
   //Make sure that the cell is updated:
   //m_AddDel.finish_editing();
 
-  const Glib::ustring where_clause = get_find_where_clause();
+  const Gnome::Gda::SqlExpr where_clause = get_find_where_clause();
   if(where_clause.empty())
   {
-    Glib::ustring message = _("You have not entered any find criteria. Try entering information in the fields.");
+    const Glib::ustring message = _("You have not entered any find criteria. Try entering information in the fields.");
 
 #ifdef GLOM_ENABLE_MAEMO
     Hildon::Note dialog(Hildon::NOTE_TYPE_INFORMATION, *get_app_window(), message);

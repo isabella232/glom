@@ -1417,9 +1417,9 @@ Base_DB::type_map_fields Base_DB::get_record_field_values_for_calculation(const 
     {
       //sharedptr<const Field> fieldPrimaryKey = get_field_primary_key();
 
-      const Glib::ustring query = Utils::build_sql_select_with_key(table_name, fieldsToGet, primary_key, primary_key_value);
+      Glib::RefPtr<Gnome::Gda::SqlBuilder> query = Utils::build_sql_select_with_key(table_name, fieldsToGet, primary_key, primary_key_value);
 
-      Glib::RefPtr<Gnome::Gda::DataModel> data_model;
+      Glib::RefPtr<const Gnome::Gda::DataModel> data_model;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
       try
       {
@@ -1595,10 +1595,10 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const LayoutFieldInRecord
   type_vecConstLayoutFields list_fields;
   sharedptr<const LayoutItem_Field> layout_item = field_in_record.m_field;
   list_fields.push_back(layout_item);
-  Glib::ustring sql_query = Utils::build_sql_select_with_key(field_in_record.m_table_name,
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_key(field_in_record.m_table_name,
       list_fields, field_in_record.m_key, field_in_record.m_key_value, 1);
 
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(sql_query);
+  Glib::RefPtr<const Gnome::Gda::DataModel> data_model = query_execute_select(sql_query);
   if(data_model)
   {
     if(data_model->get_n_rows())
@@ -1640,13 +1640,13 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const sharedptr<Field>& f
   sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::create();
   layout_item->set_full_field_details(field);
   list_fields.push_back(layout_item);
-  const Glib::ustring sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
     list_fields,
     found_set.m_where_clause,
     Glib::ustring(), type_sort_clause(), Glib::ustring(),
     1 /* limit */);
 
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(sql_query);
+  Glib::RefPtr<const Gnome::Gda::DataModel> data_model = query_execute_select(sql_query);
   if(data_model)
   {
     if(data_model->get_n_rows())
@@ -2150,17 +2150,31 @@ bool Base_DB::get_primary_key_is_in_foundset(const FoundSet& found_set, const Gn
   layout_item->set_full_field_details(primary_key);
   fieldsToGet.push_back(layout_item);
 
-  Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
-  params->add_holder("primary_key", primary_key_value);
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+  builder->select_add_target(found_set.m_table_name);
 
-  Glib::ustring where_clause;
-  if(!found_set.m_where_clause.empty())
-    where_clause = "(" + found_set.m_where_clause + ") AND ";
+  const guint eq_id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+        builder->add_id(primary_key->get_name()),
+        builder->add_expr_as_value(primary_key_value));
+  guint cond_id = 0;
+  if(found_set.m_where_clause.empty())
+  {
+    cond_id = eq_id;
+  }
+  else
+  {
+    cond_id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_AND,
+      builder->import_expression(found_set.m_where_clause),
+      eq_id);
+  }
 
-  where_clause += "(\"" + primary_key->get_name() + "\" = ##primary_key::" + primary_key->get_gda_type_name() + ")";
+  builder->set_where(cond_id); //This might be unnecessary.
+    cond_id = eq_id;
 
-  const Glib::ustring query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsToGet, where_clause);
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(query, params);
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> query =
+    Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsToGet,
+      builder->export_expression(cond_id));
+  Glib::RefPtr<const Gnome::Gda::DataModel> data_model = query_execute_select(query);
 
   if(data_model && data_model->get_n_rows())
   {
@@ -2171,64 +2185,31 @@ bool Base_DB::get_primary_key_is_in_foundset(const FoundSet& found_set, const Gn
     return false;
 }
 
-int Base_DB::count_rows_returned_by(const Glib::ustring& sql_query)
+int Base_DB::count_rows_returned_by(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& sql_query)
 {
+  if(!sql_query)
+  {
+    std::cerr << "Base_DB::count_rows_returned_by(): sql_query was null." << std::endl;
+    return 0;
+  }
+
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
+    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+  const guint target_id = builder->add_sub_select( sql_query->get_sql_statement() );
+  builder->select_add_target_id(target_id);
+
+  builder->add_function("COUNT", builder->add_id("*"));
+
+
   int result = 0;
 
   //TODO: Use SqlBuilder for this?
   //TODO: Is this inefficient?
   //Note that the alias is just because the SQL syntax requires it - we get an error if we don't use it.
   //Be careful not to include ORDER BY clauses in this, because that would make it unnecessarily slow:
-  const Glib::ustring query_count = "SELECT COUNT (*) FROM (" + sql_query + ") AS glomarbitraryalias";
+  //TODO: Add alias too? const Glib::ustring query_count = "SELECT COUNT (*) FROM (" + sql_query + ") AS glomarbitraryalias";
 
-  /* TODO: Use SqlBuilder when we discover how to use a sub-query, or when this function can take a Sqlbuilder.
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
-    Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
-  builder->add_function("count", builder->add_id("*")); //TODO: Is * allowed here?
-  builder->select_add_target(m_found_set.m_table_name);
-  */
-
-  const Application* app = Application::get_application();
-  if(app && app->get_show_sql_debug())
-  {
-    try
-    {
-      std::cout << "Debug: count_rows_returned_by():  " << query_count << std::endl;
-    }
-    catch(const Glib::Exception& ex)
-    {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-      std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
-#endif
-    }
-  }
-
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  sharedptr<SharedConnection> sharedconnection = connect_to_server();
-#else
-  std::auto_ptr<ExceptionConnection> error;
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(0, error);
-  // TODO: Rethrow?
-#endif
-
-  if(!sharedconnection)
-  {
-    g_warning("Base_DB::count_rows_returned_by(): connection failed.");
-    return 0;
-  }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = sharedconnection->get_gda_connection()->statement_execute_select(query_count);
-#else
-    std::auto_ptr<Glib::Error> model_error;
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = sharedconnection->get_gda_connection()->statement_execute_select(query_count, Gnome::Gda::STATEMENT_MODEL_RANDOM_ACCESS, model_error);
-    if(model_error.get())
-    {
-      std::cerr << "count_rows_returned_by(): exception caught: " << model_error->what() << std::endl;
-      return result;
-    }
-#endif
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(builder);
     if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
     {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -2244,17 +2225,7 @@ int Base_DB::count_rows_returned_by(const Glib::ustring& sql_query)
       else
         result = value.get_int();
     }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  }
-  catch(const Glib::Exception& ex)
-  {
-    std::cerr << "count_rows_returned_by(): exception caught: " << ex.what() << std::endl;
-  }
-  catch(const std::exception& ex)
-  {
-    std::cerr << "count_rows_returned_by(): exception caught: " << ex.what() << std::endl;
-  }
-#endif
+
   //std::cout << "DEBUG: count_rows_returned_by(): Returning " << result << std::endl;
   return result;
 }
@@ -2263,7 +2234,7 @@ int Base_DB::count_rows_returned_by(const Glib::ustring& sql_query)
 void Base_DB::set_found_set_where_clause_for_portal(FoundSet& found_set, const sharedptr<LayoutItem_Portal>& portal, const Gnome::Gda::Value& foreign_key_value)
 {
   found_set.m_table_name = Glib::ustring();
-  found_set.m_where_clause = Glib::ustring();
+  found_set.m_where_clause = Gnome::Gda::SqlExpr();
   found_set.m_extra_join = Glib::ustring();
   found_set.m_extra_group_by = Glib::ustring();
 
@@ -2325,7 +2296,10 @@ void Base_DB::set_found_set_where_clause_for_portal(FoundSet& found_set, const s
 
   // TODO: Where is this used? Should we use parameters for this query instead of sql()?
   if(where_clause_to_key_field)
-    found_set.m_where_clause = "\"" + where_clause_to_table_name + "\".\"" + relationship->get_to_field() + "\" = " + where_clause_to_key_field->sql(foreign_key_value);
+  {
+    found_set.m_where_clause =
+      Utils::build_simple_where_expression(where_clause_to_table_name, where_clause_to_key_field, foreign_key_value);
+  }
 }
 
 bool Base_DB::add_user(const Glib::ustring& user, const Glib::ustring& password, const Glib::ustring& group)
