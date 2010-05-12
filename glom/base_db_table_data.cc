@@ -161,8 +161,8 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
   }
 
   //Get all entered field name/value pairs:
-  Glib::ustring strNames;
-  Glib::ustring strValues;
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_INSERT);
+  builder->set_table(m_table_name);
 
   //Avoid specifying the same field twice:
   typedef std::map<Glib::ustring, bool> type_map_added;
@@ -206,17 +206,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
           */
           if(!value.is_null())
           {
-            if(!strNames.empty())
-            {
-              strNames += ", ";
-              strValues += ", ";
-            }
-
-            strNames += "\"" + field_name + "\"";
-            strValues += field->get_gda_holder_string();
-            Glib::RefPtr<Gnome::Gda::Holder> holder = field->get_holder(value);
-            params->add_holder(holder);
-
+            builder->add_field_value(field_name, value);
             map_added[field_name] = true;
           }
         }
@@ -225,10 +215,9 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
   }
 
   //Put it all together to create the record with these field values:
-  if(!strNames.empty() && !strValues.empty())
+  if(!map_added.empty())
   {
-    const Glib::ustring strQuery = "INSERT INTO \"" + m_table_name + "\" (" + strNames + ") VALUES (" + strValues + ")";
-    const bool test = DbUtils::query_execute(strQuery, params);
+    const bool test = DbUtils::query_execute(builder);
     if(!test)
       std::cerr << "Box_Data::record_new(): INSERT failed." << std::endl;
     else
@@ -244,7 +233,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
         //TODO_Performance: We just set this with set_entered_field_data() above. Maybe we could just remember it.
         const Gnome::Gda::Value field_value = get_entered_field_data(layout_item);
 
-        LayoutFieldInRecord field_in_record(layout_item, m_table_name, fieldPrimaryKey, primary_key_value);
+        const LayoutFieldInRecord field_in_record(layout_item, m_table_name, fieldPrimaryKey, primary_key_value);
 
         //Get-and-set values for lookup fields, if this field triggers those relationships:
         do_lookups(field_in_record, row, field_value);
@@ -378,10 +367,11 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
 
         //Generate the new key value;
       }
-      Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
-      params->add_holder(primary_key_field->get_holder(primary_key_value));
-      const Glib::ustring strQuery = "INSERT INTO \"" + relationship->get_to_table() + "\" (\"" + primary_key_field->get_name() + "\") VALUES (" + primary_key_field->get_gda_holder_string() + ")";
-      const bool test = DbUtils::query_execute(strQuery, params);
+
+      Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_INSERT);
+      builder->set_table(relationship->get_to_table());
+      builder->add_field_value(primary_key_field->get_name(), primary_key_value);
+      const bool test = DbUtils::query_execute(builder);
       if(!test)
       {
         std::cerr << "Base_DB_Table_Data::add_related_record_for_field(): INSERT failed." << std::endl;
@@ -420,23 +410,17 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
             return false;
           }
           else
-          {
-            params->add_holder(parent_primary_key_field->get_holder(parent_primary_key_value));
-            const Glib::ustring strQuery = "UPDATE \"" + relationship->get_from_table() + "\" SET \"" + relationship->get_from_field() + "\" = " + primary_key_field->get_gda_holder_string() +
-              " WHERE \"" + relationship->get_from_table() + "\".\"" + parent_primary_key_field->get_name() + "\" = " +  parent_primary_key_field->get_gda_holder_string();
-              
-            /* TODO: Use SqlBuilder when can know how to specify the related field properly in the condition:
+          {              
             Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = 
               Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
             builder->set_table(relationship->get_from_table());
             builder->add_field_value_as_value(relationship->get_from_field(), primary_key_value);
             builder->set_where(
               builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-                builder->add_id("\"" + relationship->get_from_table() + "\".\"" + parent_primary_key_field->get_name() + "\""),
-                builder->add_expr(parent_primary_key_value)),
-            */
+                builder->add_id(parent_primary_key_field->get_name()),
+                builder->add_expr(parent_primary_key_value)) );
           
-            const bool test = DbUtils::query_execute(strQuery, params);
+            const bool test = DbUtils::query_execute(builder);
             if(!test)
             {
               std::cerr << "Base_DB_Table_Data::add_related_record_for_field(): UPDATE failed." << std::endl;
@@ -489,9 +473,14 @@ bool Base_DB_Table_Data::record_delete(const Gnome::Gda::Value& primary_key_valu
   sharedptr<Field> field_primary_key = get_field_primary_key();
   if(field_primary_key && !Conversions::value_is_empty(primary_key_value))
   {
-    Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
-    params->add_holder(field_primary_key->get_holder(primary_key_value));
-    return DbUtils::query_execute( "DELETE FROM \"" + m_table_name + "\" WHERE \"" + m_table_name + "\".\"" + field_primary_key->get_name() + "\" = " + field_primary_key->get_gda_holder_string(), params);
+    Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = 
+      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_DELETE);
+    builder->set_table(m_table_name);
+    builder->set_where(
+      builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+        builder->add_id(field_primary_key->get_name()),
+        builder->add_expr(primary_key_value)) );
+    return DbUtils::query_execute(builder);
   }
   else
   {

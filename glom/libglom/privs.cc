@@ -246,7 +246,7 @@ void Privs::set_table_privileges(const Glib::ustring& group_name, const Glib::us
 
   strQuery += " GROUP \"" + group_name + "\"";
 
-  const bool test = DbUtils::query_execute(strQuery);
+  const bool test = DbUtils::query_execute_string(strQuery);
   if(!test)
     std::cerr << "Privs::set_table_privileges(): GRANT failed." << std::endl;
   else

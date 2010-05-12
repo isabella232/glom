@@ -619,7 +619,7 @@ bool add_standard_groups(Document* document)
     {
       //The "SUPERUSER" here has no effect because SUPERUSER is not "inherited" to member users.
       //But let's keep it to make the purpose of this group obvious.
-      bool test = query_execute("CREATE GROUP \"" GLOM_STANDARD_GROUP_NAME_DEVELOPER "\" WITH SUPERUSER");
+      bool test = query_execute_string("CREATE GROUP \"" GLOM_STANDARD_GROUP_NAME_DEVELOPER "\" WITH SUPERUSER");
       if(!test)
       {
         std::cerr << "Glom add_standard_groups(): CREATE GROUP failed when adding the developer group." << std::endl;
@@ -629,8 +629,8 @@ bool add_standard_groups(Document* document)
       //Make sure the current user is in the developer group.
       //(If he is capable of creating these groups then he is obviously a developer, and has developer rights on the postgres server.)
       const Glib::ustring current_user = ConnectionPool::get_instance()->get_user();
-      Glib::ustring strQuery = "ALTER GROUP \"" GLOM_STANDARD_GROUP_NAME_DEVELOPER "\" ADD USER \"" + current_user + "\"";
-      test = query_execute(strQuery);
+      const Glib::ustring strQuery = "ALTER GROUP \"" GLOM_STANDARD_GROUP_NAME_DEVELOPER "\" ADD USER \"" + current_user + "\"";
+      test = query_execute_string(strQuery);
       if(!test)
       {
         std::cerr << "Glom add_standard_groups(): ALTER GROUP failed when adding the user to the developer group." << std::endl;
@@ -1181,7 +1181,7 @@ bool create_table(const sharedptr<const TableInfo>& table_info, const Document::
   {
     //TODO: Escape the table name?
     //TODO: Use GDA_SERVER_OPERATION_CREATE_TABLE instead?
-    table_creation_succeeded = query_execute( "CREATE TABLE \"" + table_info->get_name() + "\" (" + sql_fields + ");" );
+    table_creation_succeeded = query_execute_string( "CREATE TABLE \"" + table_info->get_name() + "\" (" + sql_fields + ");" );
     if(!table_creation_succeeded)
       std::cerr << "create_table(): CREATE TABLE failed." << std::endl;
   }
@@ -1512,7 +1512,7 @@ bool insert_example_data(Document* document, const Glib::ustring& table_name)
     //After this, the Parser will know how many SQL parameters there are in
     //the query, and allow us to set their values.
     const Glib::ustring strQuery = "INSERT INTO \"" + table_name + "\" (" + strNames + ") VALUES (" + strVals + ")";
-    insert_succeeded = query_execute(strQuery, params);
+    insert_succeeded = query_execute_string(strQuery, params);
     if(!insert_succeeded)
       break;
   }
@@ -1526,8 +1526,7 @@ bool insert_example_data(Document* document, const Glib::ustring& table_name)
 }
 
 //static:
-Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder,
-  const Glib::RefPtr<const Gnome::Gda::Set>& params)
+Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder)
 {
   Glib::RefPtr<Gnome::Gda::DataModel> result;
 
@@ -1543,7 +1542,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::RefPtr<cons
   //Debug output:
   if(builder && ConnectionPool::get_instance()->get_show_debug_output())
   {
-    const std::string full_query = Utils::sqlbuilder_get_full_query(builder, params);
+    const std::string full_query = Utils::sqlbuilder_get_full_query(builder);
     std::cout << "Debug: query_execute_select():  " << full_query << std::endl;
   }
 
@@ -1551,7 +1550,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::RefPtr<cons
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    result = gda_connection->statement_execute_select_builder(builder, params);
+    result = gda_connection->statement_execute_select_builder(builder);
   }
   catch(const Gnome::Gda::ConnectionError& ex)
   {
@@ -1567,14 +1566,14 @@ Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::RefPtr<cons
   }
 
 #else
-  result = gda_connection->statement_execute_select_builder(builder, params, ex);
+  result = gda_connection->statement_execute_select_builder(builder, ex);
   if(ex.get())
     std::cerr << "debug: query_execute_select(): Glib::Error from statement_execute_select_builder(): " << ex->what() << std::endl;
 #endif //GLIBMM_EXCEPTIONS_ENABLED
 
   if(!result)
   {
-    const std::string full_query = Utils::sqlbuilder_get_full_query(builder, params);
+    const std::string full_query = Utils::sqlbuilder_get_full_query(builder);
     std::cerr << "Glom  query_execute_select(): Error while executing SQL: "
       << std::endl << "  " << full_query << std::endl << std::endl;
     handle_error();
@@ -1583,7 +1582,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::RefPtr<cons
   return result;
 }
 
-bool query_execute(const Glib::ustring& strQuery, const Glib::RefPtr<Gnome::Gda::Set>& params)
+bool query_execute_string(const Glib::ustring& strQuery, const Glib::RefPtr<Gnome::Gda::Set>& params)
 {
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
   if(!gda_connection)

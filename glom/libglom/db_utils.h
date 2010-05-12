@@ -75,13 +75,15 @@ bool insert_example_data(Document* document, const Glib::ustring& table_name);
 /** Execute a SQL Select command, returning the result.
   */
 Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(
-  const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder,
-  const Glib::RefPtr<const Gnome::Gda::Set>& params = Glib::RefPtr<const Gnome::Gda::Set>(0));
+  const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder);
 
 
 /** Execute a SQL non-select command, returning true if it succeeded.
+  * See also query_execute(), which takes a SqlBuilder.
+  * This should only be used for SQL commands that are not supported by SqlBuilder,
+  * such as ADD GROUP.
   */
-bool query_execute(const Glib::ustring& strQuery,
+bool query_execute_string(const Glib::ustring& strQuery,
   const Glib::RefPtr<Gnome::Gda::Set>& params = Glib::RefPtr<Gnome::Gda::Set>(0));
 
 /** Execute a SQL non-select command, returning true if it succeeded.

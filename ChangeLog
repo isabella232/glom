@@ -1,10 +1,27 @@
+2010-05-13  Murray Cumming  <murrayc@murrayc.com>
+
+	Use SqlBuilder in all possible remaining places.
+	
+	* glom/libglom/db_utils.[h|cc]: Renamed query_execute(string) to 
+	query_execute_string() so we catch uses of it that could use SqlBuilder.
+
+	* glom/base_db.cc: Replaced some INSERT and DELETE string sql queries 
+	with SqlBuilder.
+	* glom/base_db_table_data.cc:
+	* glom/libglom/db_utils.cc:
+	* glom/libglom/db_utils.h:
+	* glom/libglom/privs.cc:
+	* glom/mode_design/users/dialog_groups_list.cc:
+	* glom/mode_design/users/dialog_users_list.cc:
+	* glom/navigation/box_tables.cc: Adapt.
+
 2010-05-12  Murray Cumming  <murrayc@murrayc.com>
 
 	Remove redundant BaseDb::query_execute*() methods.
 
 	* glom/base_db.[h|cc]: Removed query_execute_select() and query_execute(). 
 	The same methods in DbUtils replace them.
-	* glom/libglom/db_utils.h: Removed the query_execute_select(string) override.
+	* glom/libglom/db_utils.[h|cc]: Removed the query_execute_select(string) override.
 	* glom/mode_data/box_data_calendar_related.cc:
 	* glom/mode_data/box_data_details.cc:
 	* glom/mode_data/box_data_portal.cc:

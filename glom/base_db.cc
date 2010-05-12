@@ -2020,7 +2020,7 @@ bool Base_DB::add_user(const Glib::ustring& user, const Glib::ustring& password,
   //strQuery +=  " PASSWORD '" + password + "'" ; //TODO: Escape the password.
 
 
-  bool test = DbUtils::query_execute(strQuery);
+  bool test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
     std::cerr << "Base_DB::add_user(): CREATE USER failed." << std::endl;
@@ -2029,7 +2029,7 @@ bool Base_DB::add_user(const Glib::ustring& user, const Glib::ustring& password,
 
   //Add it to the group:
   strQuery = "ALTER GROUP \"" + group + "\" ADD USER \"" + user + "\"";
-  test = DbUtils::query_execute(strQuery);
+  test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
     std::cerr << "Base_DB::add_user(): ALTER GROUP failed." << std::endl;
@@ -2046,7 +2046,7 @@ bool Base_DB::add_user(const Glib::ustring& user, const Glib::ustring& password,
   for(Document::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
   {
     const Glib::ustring strQuery = "REVOKE ALL PRIVILEGES ON \"" + (*iter)->get_name() + "\" FROM \"" + user + "\"";
-    const bool test = DbUtils::query_execute(strQuery);
+    const bool test = DbUtils::query_execute_string(strQuery);
     if(!test)
       std::cerr << "Base_DB::add_user(): REVOKE failed." << std::endl;
   }
@@ -2061,7 +2061,7 @@ bool Base_DB::remove_user(const Glib::ustring& user)
     return false;
 
   const Glib::ustring strQuery = "DROP USER \"" + user + "\"";
-  const bool test = DbUtils::query_execute(strQuery);
+  const bool test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
     std::cerr << "Base_DB::remove_user(): DROP USER failed" << std::endl;
@@ -2077,7 +2077,7 @@ bool Base_DB::remove_user_from_group(const Glib::ustring& user, const Glib::ustr
     return false;
 
   const Glib::ustring strQuery = "ALTER GROUP \"" + group + "\" DROP USER \"" + user + "\"";
-  const bool test = DbUtils::query_execute(strQuery);
+  const bool test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
     std::cerr << "Base_DB::remove_user_from_group(): ALTER GROUP failed." << std::endl;
@@ -2098,10 +2098,10 @@ bool Base_DB::set_database_owner_user(const Glib::ustring& user)
     return false;
 
   const Glib::ustring strQuery = "ALTER DATABASE \"" + database_name + "\" OWNER TO \"" + user + "\"";
-  const bool test = DbUtils::query_execute(strQuery);
+  const bool test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
-    std::cerr << "Base_DB::set_database_owner_user(): ALTER DATABSE failed." << std::endl;
+    std::cerr << "Base_DB::set_database_owner_user(): ALTER DATABASE failed." << std::endl;
     return false;
   }
 
@@ -2122,7 +2122,7 @@ bool Base_DB::disable_user(const Glib::ustring& user)
   }
 
   const Glib::ustring strQuery = "ALTER ROLE \"" + user + "\" NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE";
-  const bool test = DbUtils::query_execute(strQuery);
+  const bool test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
     std::cerr << "Base_DB::remove_user(): DROP USER failed" << std::endl;
