@@ -30,6 +30,7 @@
 #include <glom/utility_widgets/canvas/canvas_image_movable.h>
 #include <glom/utility_widgets/canvas/canvas_text_movable.h>
 #include <libglom/data_structure/glomconversions.h>
+#include <libglom/db_utils.h>
 
 #include <glom/glade_utils.h>
 #include <glibmm/i18n.h>
@@ -636,7 +637,7 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
   try
   {
   #endif
-    datamodel = query_execute_select(sql_query);
+    datamodel = DbUtils::query_execute_select(sql_query);
   #ifdef GLIBMM_EXCEPTIONS_ENABLED
   }
   catch(const Glib::Exception& ex)
@@ -733,7 +734,7 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
 
   Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fields_shown, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause, found_set.m_extra_group_by);
   //std::cout << "DEBUG: sql_query=" << sql_query << std::endl;
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query);
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(sql_query);
   if(!(datamodel))
     return;
     

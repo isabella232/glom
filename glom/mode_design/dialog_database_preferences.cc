@@ -139,7 +139,7 @@ void Dialog_Database_Preferences::on_treeview_cell_edited_next_value(const Glib:
           builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME),
           builder->add_expr(field_name))));
 
-    const bool test = query_execute(builder);
+    const bool test = DbUtils::query_execute(builder);
     if(!test)
       std::cerr << "Dialog_Database_Preferences::on_treeview_cell_edited_next_value(): UPDATE failed." << std::endl;
   }
@@ -184,7 +184,7 @@ void Dialog_Database_Preferences::load_from_document()
   
   NumericFormat numeric_format; //ignored
 
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(builder);
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(builder);
   if(!datamodel)
   {
     std::cerr << "Dialog_Database_Preferences::load_from_document(): Gda::DataModel is NULL." << std::endl;

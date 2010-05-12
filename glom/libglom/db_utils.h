@@ -74,11 +74,6 @@ bool insert_example_data(Document* document, const Glib::ustring& table_name);
 
 /** Execute a SQL Select command, returning the result.
   */
-Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::ustring& strQuery,
-  const Glib::RefPtr<Gnome::Gda::Set>& params = Glib::RefPtr<Gnome::Gda::Set>(0));
-
-/** Execute a SQL Select command, returning the result.
-  */
 Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder,
   const Glib::RefPtr<const Gnome::Gda::Set>& params = Glib::RefPtr<const Gnome::Gda::Set>(0));

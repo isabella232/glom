@@ -633,7 +633,7 @@ bool Box_DB_Table_Definition::field_has_null_values(const sharedptr<const Field>
       builder->add_id(field->get_name()))); //TODO: It would nice to specify the table name here too.
 
   long null_count = 0;
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(builder);
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(builder);
   if(datamodel)
   {
     if(datamodel->get_n_rows() && datamodel->get_n_columns())
@@ -661,7 +661,7 @@ bool Box_DB_Table_Definition::field_has_non_unique_values(const sharedptr<const 
   builder_query_distinct->set_table(m_table_name);
   builder_query_distinct->select_add_field(field->get_name(), m_table_name);
 
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(builder_query_distinct);
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(builder_query_distinct);
   if(datamodel)
   {
     count_distinct = datamodel->get_n_rows();
@@ -678,7 +678,7 @@ bool Box_DB_Table_Definition::field_has_non_unique_values(const sharedptr<const 
   builder_query_all->select_add_field(field->get_name(), m_table_name);
   builder_query_all->select_add_target(m_table_name);
       
-  datamodel = query_execute_select(builder_query_all);
+  datamodel = DbUtils::query_execute_select(builder_query_all);
   if(datamodel)
   {
     count_all = datamodel->get_n_rows();

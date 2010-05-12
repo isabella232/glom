@@ -228,7 +228,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
   if(!strNames.empty() && !strValues.empty())
   {
     const Glib::ustring strQuery = "INSERT INTO \"" + m_table_name + "\" (" + strNames + ") VALUES (" + strValues + ")";
-    const bool test = query_execute(strQuery, params);
+    const bool test = DbUtils::query_execute(strQuery, params);
     if(!test)
       std::cerr << "Box_Data::record_new(): INSERT failed." << std::endl;
     else
@@ -290,7 +290,7 @@ bool Base_DB_Table_Data::get_related_record_exists(const sharedptr<const Relatio
       builder->add_id(to_field), //TODO: It would be nice to specify the table here too.
       builder->add_expr(key_value)));
                                                
-  Glib::RefPtr<Gnome::Gda::DataModel> records = query_execute_select(builder);
+  Glib::RefPtr<Gnome::Gda::DataModel> records = DbUtils::query_execute_select(builder);
   if(!records)
     handle_error();
   else
@@ -381,7 +381,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
       Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
       params->add_holder(primary_key_field->get_holder(primary_key_value));
       const Glib::ustring strQuery = "INSERT INTO \"" + relationship->get_to_table() + "\" (\"" + primary_key_field->get_name() + "\") VALUES (" + primary_key_field->get_gda_holder_string() + ")";
-      const bool test = query_execute(strQuery, params);
+      const bool test = DbUtils::query_execute(strQuery, params);
       if(!test)
       {
         std::cerr << "Base_DB_Table_Data::add_related_record_for_field(): INSERT failed." << std::endl;
@@ -436,7 +436,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
                 builder->add_expr(parent_primary_key_value)),
             */
           
-            const bool test = query_execute(strQuery, params);
+            const bool test = DbUtils::query_execute(strQuery, params);
             if(!test)
             {
               std::cerr << "Base_DB_Table_Data::add_related_record_for_field(): UPDATE failed." << std::endl;
@@ -491,7 +491,7 @@ bool Base_DB_Table_Data::record_delete(const Gnome::Gda::Value& primary_key_valu
   {
     Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
     params->add_holder(field_primary_key->get_holder(primary_key_value));
-    return query_execute( "DELETE FROM \"" + m_table_name + "\" WHERE \"" + m_table_name + "\".\"" + field_primary_key->get_name() + "\" = " + field_primary_key->get_gda_holder_string(), params);
+    return DbUtils::query_execute( "DELETE FROM \"" + m_table_name + "\" WHERE \"" + m_table_name + "\".\"" + field_primary_key->get_name() + "\" = " + field_primary_key->get_gda_holder_string(), params);
   }
   else
   {
@@ -522,7 +522,7 @@ void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field
     Glib::RefPtr<Gnome::Gda::SqlBuilder> query = Utils::build_sql_select_with_key(field_in_record_changed.m_table_name, fieldsToGet, field_in_record_changed.m_key, field_in_record_changed.m_key_value);
     //std::cout << "DEBUG: Base_DB_Table_Data::refresh_related_fields(): query=" << query << std::endl;
 
-    Glib::RefPtr<const Gnome::Gda::DataModel> result = query_execute_select(query);
+    Glib::RefPtr<const Gnome::Gda::DataModel> result = DbUtils::query_execute_select(query);
     if(!result)
     {
       std::cerr << "Base_DB_Table_Data::refresh_related_fields(): no result." << std::endl;

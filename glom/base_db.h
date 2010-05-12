@@ -74,25 +74,6 @@ public:
   virtual void set_document(Document* pDocument); //View override
   virtual void load_from_document(); //View override
 
-  /** Execute a SQL Select command, returning the result.
-   * This method handles any Gda exceptions caused by executing the command.
-   */
-  static Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(
-    const Glib::ustring& strQuery,
-    const Glib::RefPtr<Gnome::Gda::Set>& params = Glib::RefPtr<Gnome::Gda::Set>(0));
-  static Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(
-     const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder,
-     const Glib::RefPtr<const Gnome::Gda::Set>& params = Glib::RefPtr<const Gnome::Gda::Set>(0));
-
-
-  /** Execute a SQL non-select command, returning true if it succeeded.
-   * This method handles any Gda exceptions caused by executing the command.
-   */
-  static bool query_execute(const Glib::ustring& strQuery,
-                            const Glib::RefPtr<Gnome::Gda::Set>& params = Glib::RefPtr<Gnome::Gda::Set>(0));
-  static bool query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder,
-                            const Glib::RefPtr<const Gnome::Gda::Set>& params = Glib::RefPtr<const Gnome::Gda::Set>(0));
-
   static int count_rows_returned_by(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& sql_query);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY

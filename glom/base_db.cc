@@ -162,306 +162,6 @@ bool Base_DB::handle_error()
   return ConnectionPool::handle_error_cerr_only();
 }
 
-//static:
-Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute_select(const Glib::ustring& strQuery,
-                                                                  const Glib::RefPtr<Gnome::Gda::Set>& params)
-{
-  Glib::RefPtr<Gnome::Gda::DataModel> result;
-
-  //TODO: BusyCursor busy_cursor(get_app_window());
-
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  sharedptr<SharedConnection> sharedconnection = connect_to_server();
-#else
-  std::auto_ptr<ExceptionConnection> error;
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(0, error);
-  if(error.get())
-  {
-    g_warning("Base_DB::query_execute_select() failed (query was: %s): %s", strQuery.c_str(), error->what());
-    // TODO: Rethrow?
-  }
-#endif
-  if(!sharedconnection)
-  {
-    std::cerr << "Base_DB::query_execute_select(): No connection yet." << std::endl;
-    return result;
-  }
-
-  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
-  Glib::RefPtr<Gnome::Gda::SqlParser> parser = gda_connection->create_parser();
-
-  Glib::RefPtr<Gnome::Gda::Statement> stmt;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    stmt = parser->parse_string(strQuery);
-  }
-  catch(const Gnome::Gda::SqlParserError& ex)
-  {
-    std::cout << "debug: Base_DB::query_execute_select(): SqlParserError: exception from parse_string(): " << ex.what() << std::endl;
-  }
-#else
-  std::auto_ptr<Glib::Error> ex;
-  stmt = parser->parse_string(strQuery, ex);
-  if(error.get())
-     std::cout << "debug: Base_DB::query_execute_select(): SqlParserError: exception from parse_string(): " << error->what() << std::endl;
-#endif //GLIBMM_EXCEPTIONS_ENABLED
-
-
-  //Debug output:
-  const Application* app = Application::get_application();
-  if(stmt && app && app->get_show_sql_debug())
-  {
-    const std::string full_query = Utils::sqlbuilder_get_full_query(gda_connection, strQuery, params);
-    std::cout << "Debug: Base_DB::query_execute_select():  " << full_query << std::endl;
-  }
-
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    result = gda_connection->statement_execute_select(stmt, params);
-  }
-  catch(const Gnome::Gda::ConnectionError& ex)
-  {
-    std::cout << "debug: Base_DB::query_execute_select(): ConnectionError: exception from statement_execute_select(): " << ex.what() << std::endl;
-  }
-  catch(const Gnome::Gda::ServerProviderError& ex)
-  {
-    std::cout << "debug: Base_DB::query_execute_select(): ServerProviderError exception from statement_execute_select(): code=" << ex.code() << ", message=" << ex.what() << std::endl;
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cout << "debug: Base_DB::query_execute_select(): Error exception from statement_execute_select(): " << ex.what() << std::endl;
-  }
-#else
-  result = gda_connection->statement_execute_select(stmt, params, ex);
-  if(ex.get())
-    std::cout << "debug: Base_DB::query_execute_select(): Glib::Error from statement_execute_select(): " << ex->what() << std::endl;
-#endif //GLIBMM_EXCEPTIONS_ENABLED
-
-  if(!result)
-  {
-    const std::string full_query = Utils::sqlbuilder_get_full_query(gda_connection, strQuery, params);
-    std::cerr << "Glom  Base_DB::query_execute_select(): Error while executing SQL" << std::endl <<
-      "  " <<  full_query << std::endl;
-    handle_error();
-  }
-
-  return result;
-}
-
-//static:
-Glib::RefPtr<Gnome::Gda::DataModel> Base_DB::query_execute_select(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder,
-                                                                  const Glib::RefPtr<const Gnome::Gda::Set>& params)
-{
-  Glib::RefPtr<Gnome::Gda::DataModel> result;
-
-  //TODO: BusyCursor busy_cursor(get_app_window());
-
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  sharedptr<SharedConnection> sharedconnection = connect_to_server();
-#else
-  std::auto_ptr<ExceptionConnection> error;
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(0, error);
-  if(error.get())
-  {
-    g_warning("Base_DB::query_execute_select() failed (query was: %s): %s", strQuery.c_str(), error->what());
-    // TODO: Rethrow?
-  }
-#endif
-  if(!sharedconnection)
-  {
-    std::cerr << "Base_DB::query_execute_select(): No connection yet." << std::endl;
-    return result;
-  }
-
-  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
-
-  //Debug output:
-  const Application* app = Application::get_application();
-  if(app && app->get_show_sql_debug())
-  {
-    const std::string full_query = Utils::sqlbuilder_get_full_query(builder, params);
-    std::cout << "Debug: Base_DB::query_execute_select():  " << full_query << std::endl;
-  }
-
-  //TODO: Use DbUtils::query_execute().
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    result = gda_connection->statement_execute_select_builder(builder, params);
-  }
-  catch(const Gnome::Gda::ConnectionError& ex)
-  {
-    std::cerr << "debug: Base_DB::query_execute_select(): ConnectionError: exception from statement_execute_select_builder(): " << ex.what() << std::endl;
-  }
-  catch(const Gnome::Gda::ServerProviderError& ex)
-  {
-    std::cerr << "debug: Base_DB::query_execute_select(): ServerProviderError: exception from statement_execute_select_builder(): code=" << ex.code() << "message=" << ex.what() << std::endl;
-  }
-  catch(const Glib::Error& ex)
-  {
-    std::cerr << "debug: Base_DB::query_execute_select(): Error: exception from statement_execute_select_builder(): " << ex.what() << std::endl;
-  }
-
-#else
-  result = gda_connection->statement_execute_select_builder(builder, params, ex);
-  if(ex.get())
-    std::cerr << "debug: Base_DB::query_execute_select(): Glib::Error from statement_execute_select_builder(): " << ex->what() << std::endl;
-#endif //GLIBMM_EXCEPTIONS_ENABLED
-
-  if(!result)
-  {
-    const std::string full_query = Utils::sqlbuilder_get_full_query(builder, params);
-    std::cerr << "Glom  Base_DB::query_execute_select(): Error while executing SQL: "
-      << std::endl << "  " << full_query << std::endl << std::endl;
-    handle_error();
-  }
-
-  return result;
-}
-
-//static:
-bool Base_DB::query_execute(const Glib::ustring& strQuery,
-                            const Glib::RefPtr<Gnome::Gda::Set>& params)
-{
-  #ifdef GLIBMM_EXCEPTIONS_ENABLED
-  sharedptr<SharedConnection> sharedconnection = connect_to_server();
-#else
-  std::auto_ptr<ExceptionConnection> error;
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(0, error);
-  if(error.get())
-  {
-    g_warning("Base_DB::query_execute() failed (query was: %s): %s", strQuery.c_str(), error->what());
-    // TODO: Rethrow?
-  }
-#endif
-  if(!sharedconnection)
-  {
-    std::cerr << "Base_DB::query_execute(): No connection yet." << std::endl;
-    return false;
-  }
-
-  //TODO: Use DbUtils::query_execute().
-  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
-  Glib::RefPtr<Gnome::Gda::SqlParser> parser = gda_connection->create_parser();
-  Glib::RefPtr<Gnome::Gda::Statement> stmt;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    stmt = parser->parse_string(strQuery);
-  }
-  catch(const Gnome::Gda::SqlParserError& error)
-  {
-    std::cerr << "DEBUG: BaseDB::query_execute: SqlParserError: " << error.what() << std::endl;
-    return false;
-  }
-#else
-  std::auto_ptr<Glib::Error> sql_error;
-  stmt = parser->parse_string(strQuery, sql_error);
-  if(sql_error.get())
-  {
-    std::cerr << "DEBUG: BaseDB::query_execute: SqlParserError:" << sql_error->what() << std::endl;
-    return false;
-  }
-#endif
-
-
-  //Debug output:
-  const Application* app = Application::get_application();
-  if(stmt && app && app->get_show_sql_debug())
-  {
-    const std::string full_query = Utils::sqlbuilder_get_full_query(gda_connection, strQuery, params);
-    std::cerr << "Debug: Base_DB::query_execute(): " << full_query << std::endl;
-  }
-
-
-  int exec_retval = -1;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    exec_retval = gda_connection->statement_execute_non_select(stmt, params);
-  }
-  catch(const Glib::Error& error)
-  {
-    std::cerr << "BaseDB::query_execute: ConnectionError: " << error.what() << std::endl;
-    const std::string full_query = Utils::sqlbuilder_get_full_query(gda_connection, strQuery, params);
-    std::cerr << "  full_query: " << full_query << std::endl;
-    return false;
-  }
-#else
-  std::auto_ptr<Glib::Error> exec_error;
-  exec_retval = gda_connection->statement_execute_non_select (stmt, params, exec_error);
-  if(exec_error.get())
-  {
-    std::cerr << "BaseDB::query_execute: ConnectionError: " << exec_error->what() << std::endl;
-    const std::string full_query = Utils::sqlbuilder_get_full_query(gda_connection, stmt, params);
-    std::cerr << "  full_query: " << full_query << std::endl;
-    return false;
-  }
-#endif
-  return (exec_retval >= 0);
-}
-
-//static:
-bool Base_DB::query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder,
-                            const Glib::RefPtr<const Gnome::Gda::Set>& params)
-{
-  #ifdef GLIBMM_EXCEPTIONS_ENABLED
-  sharedptr<SharedConnection> sharedconnection = connect_to_server();
-#else
-  std::auto_ptr<ExceptionConnection> error;
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(0, error);
-  if(error.get())
-  {
-    g_warning("Base_DB::query_execute() failed (query was: %s): %s", strQuery.c_str(), error->what());
-    // TODO: Rethrow?
-  }
-#endif
-  if(!sharedconnection)
-  {
-    std::cerr << "Base_DB::query_execute(): No connection yet." << std::endl;
-    return false;
-  }
-
-  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
-
-  //Debug output:
-  const Application* app = Application::get_application();
-  if(app && app->get_show_sql_debug())
-  {
-    const std::string full_query = Utils::sqlbuilder_get_full_query(builder, params);
-    std::cerr << "Debug: Base_DB::query_execute(): " << full_query << std::endl;
-  }
-
-
-  int exec_retval = -1;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    exec_retval = gda_connection->statement_execute_non_select_builder(builder, params);
-  }
-  catch(const Glib::Error& error)
-  {
-    std::cerr << "BaseDB::query_execute: ConnectionError: " << error.what() << std::endl;
-    const std::string full_query = Utils::sqlbuilder_get_full_query(builder, params);
-    std::cerr << "  full_query: " << full_query << std::endl;
-    return false;
-  }
-#else
-  std::auto_ptr<Glib::Error> exec_error;
-  exec_retval = gda_connection->statement_execute_non_select_builder(builder, params, exec_error);
-  if(exec_error.get())
-  {
-    std::cerr << "BaseDB::query_execute: ConnectionError: " << exec_error->what() << std::endl;
-    const std::string full_query = Utils::sqlbuilder_get_full_query(builder, params);
-    std::cerr << "  full_query: " << full_query << std::endl;
-    return false;
-  }
-#endif
-  return (exec_retval >= 0);
-}
-
 void Base_DB::load_from_document()
 {
   if(get_document())
@@ -1217,7 +917,7 @@ void Base_DB::calculate_field_in_all_records(const Glib::ustring& table_name, co
   builder->select_add_field(primary_key->get_name(), table_name);
   builder->select_add_target(table_name);
 
-  Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(builder);
+  Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
   if(!data_model || !data_model->get_n_rows() || !data_model->get_n_columns())
   {
     //HandleError();
@@ -1423,7 +1123,7 @@ Base_DB::type_map_fields Base_DB::get_record_field_values_for_calculation(const 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
       try
       {
-        data_model = query_execute_select(query);
+        data_model = DbUtils::query_execute_select(query);
       }
       catch(const Glib::Exception& ex)
       {
@@ -1432,9 +1132,9 @@ Base_DB::type_map_fields Base_DB::get_record_field_values_for_calculation(const 
         return field_values;
       }
 #else
-      //TODO: Seems there is no error handling in query_execute_select() without exceptions
+      //TODO: Seems there is no error handling in DbUtils::query_execute_select() without exceptions
       std::auto_ptr<Glib::Error> error;
-      data_model = query_execute_select(query);
+      data_model = DbUtils::query_execute_select(query);
       if (error.get())
       {
         std::cerr << "Base_DB::get_record_field_values_for_calculation(): Exception while executing SQL: " << query << std::endl;
@@ -1532,10 +1232,10 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
         builder->add_expr_as_value(field_in_record.m_key_value)));
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
-    try //TODO: The exceptions are probably already handled by query_execute(0.
+    try //TODO: The exceptions are probably already handled by query_execute(
 #endif
     {
-      const bool test = query_execute(builder); //TODO: Respond to failure.
+      const bool test = DbUtils::query_execute(builder); //TODO: Respond to failure.
       if(!test)
       {
         std::cerr << "Box_Data::set_field_value_in_database(): UPDATE failed." << std::endl;
@@ -1598,7 +1298,7 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const LayoutFieldInRecord
   Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_key(field_in_record.m_table_name,
       list_fields, field_in_record.m_key, field_in_record.m_key_value, 1);
 
-  Glib::RefPtr<const Gnome::Gda::DataModel> data_model = query_execute_select(sql_query);
+  Glib::RefPtr<const Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(sql_query);
   if(data_model)
   {
     if(data_model->get_n_rows())
@@ -1646,7 +1346,7 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const sharedptr<Field>& f
     Glib::ustring(), type_sort_clause(), Glib::ustring(),
     1 /* limit */);
 
-  Glib::RefPtr<const Gnome::Gda::DataModel> data_model = query_execute_select(sql_query);
+  Glib::RefPtr<const Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(sql_query);
   if(data_model)
   {
     if(data_model->get_n_rows())
@@ -1922,7 +1622,7 @@ Gnome::Gda::Value Base_DB::get_lookup_value(const Glib::ustring& /* table_name *
         builder->add_id(to_key_field->get_name()), //TODO: It would be nice to specify the table here too.
         builder->add_expr(value_to_key_field)));
 
-    Glib::RefPtr<Gnome::Gda::DataModel> data_model = query_execute_select(builder);
+    Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
     if(data_model && data_model->get_n_rows())
     {
       //There should be only 1 row. Well, there could be more but we will ignore them.
@@ -1957,7 +1657,7 @@ bool Base_DB::get_field_value_is_unique(const Glib::ustring& table_name, const s
       builder->add_id(field->get_name()), //TODO: It would be nice to specify the table here too.
       builder->add_expr(value)));
 
-  Glib::RefPtr<const Gnome::Gda::DataModel> data_model = query_execute_select(builder);
+  Glib::RefPtr<const Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
   if(data_model)
   {
     //std::cout << "debug: Base_DB::get_field_value_is_unique(): table_name=" << table_name << ", field name=" << field->get_name() << ", value=" << value.to_string() << ", rows count=" << data_model->get_n_rows() << std::endl;
@@ -2174,7 +1874,7 @@ bool Base_DB::get_primary_key_is_in_foundset(const FoundSet& found_set, const Gn
   Glib::RefPtr<Gnome::Gda::SqlBuilder> query =
     Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsToGet,
       builder->export_expression(cond_id));
-  Glib::RefPtr<const Gnome::Gda::DataModel> data_model = query_execute_select(query);
+  Glib::RefPtr<const Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(query);
 
   if(data_model && data_model->get_n_rows())
   {
@@ -2209,7 +1909,7 @@ int Base_DB::count_rows_returned_by(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& 
   //Be careful not to include ORDER BY clauses in this, because that would make it unnecessarily slow:
   //TODO: Add alias too? const Glib::ustring query_count = "SELECT COUNT (*) FROM (" + sql_query + ") AS glomarbitraryalias";
 
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(builder);
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(builder);
     if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
     {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -2320,7 +2020,7 @@ bool Base_DB::add_user(const Glib::ustring& user, const Glib::ustring& password,
   //strQuery +=  " PASSWORD '" + password + "'" ; //TODO: Escape the password.
 
 
-  bool test = query_execute(strQuery);
+  bool test = DbUtils::query_execute(strQuery);
   if(!test)
   {
     std::cerr << "Base_DB::add_user(): CREATE USER failed." << std::endl;
@@ -2329,7 +2029,7 @@ bool Base_DB::add_user(const Glib::ustring& user, const Glib::ustring& password,
 
   //Add it to the group:
   strQuery = "ALTER GROUP \"" + group + "\" ADD USER \"" + user + "\"";
-  test = query_execute(strQuery);
+  test = DbUtils::query_execute(strQuery);
   if(!test)
   {
     std::cerr << "Base_DB::add_user(): ALTER GROUP failed." << std::endl;
@@ -2346,7 +2046,7 @@ bool Base_DB::add_user(const Glib::ustring& user, const Glib::ustring& password,
   for(Document::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
   {
     const Glib::ustring strQuery = "REVOKE ALL PRIVILEGES ON \"" + (*iter)->get_name() + "\" FROM \"" + user + "\"";
-    const bool test = query_execute(strQuery);
+    const bool test = DbUtils::query_execute(strQuery);
     if(!test)
       std::cerr << "Base_DB::add_user(): REVOKE failed." << std::endl;
   }
@@ -2361,7 +2061,7 @@ bool Base_DB::remove_user(const Glib::ustring& user)
     return false;
 
   const Glib::ustring strQuery = "DROP USER \"" + user + "\"";
-  const bool test = query_execute(strQuery);
+  const bool test = DbUtils::query_execute(strQuery);
   if(!test)
   {
     std::cerr << "Base_DB::remove_user(): DROP USER failed" << std::endl;
@@ -2377,7 +2077,7 @@ bool Base_DB::remove_user_from_group(const Glib::ustring& user, const Glib::ustr
     return false;
 
   const Glib::ustring strQuery = "ALTER GROUP \"" + group + "\" DROP USER \"" + user + "\"";
-  const bool test = query_execute(strQuery);
+  const bool test = DbUtils::query_execute(strQuery);
   if(!test)
   {
     std::cerr << "Base_DB::remove_user_from_group(): ALTER GROUP failed." << std::endl;
@@ -2398,7 +2098,7 @@ bool Base_DB::set_database_owner_user(const Glib::ustring& user)
     return false;
 
   const Glib::ustring strQuery = "ALTER DATABASE \"" + database_name + "\" OWNER TO \"" + user + "\"";
-  const bool test = query_execute(strQuery);
+  const bool test = DbUtils::query_execute(strQuery);
   if(!test)
   {
     std::cerr << "Base_DB::set_database_owner_user(): ALTER DATABSE failed." << std::endl;
@@ -2422,7 +2122,7 @@ bool Base_DB::disable_user(const Glib::ustring& user)
   }
 
   const Glib::ustring strQuery = "ALTER ROLE \"" + user + "\" NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE";
-  const bool test = query_execute(strQuery);
+  const bool test = DbUtils::query_execute(strQuery);
   if(!test)
   {
     std::cerr << "Base_DB::remove_user(): DROP USER failed" << std::endl;

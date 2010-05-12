@@ -690,7 +690,7 @@ void Frame_Glom::export_data_to_vector(Document::type_example_rows& the_vector, 
   Glib::RefPtr<Gnome::Gda::SqlBuilder> query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause, found_set.m_extra_group_by);
 
   //TODO: Lock the database (prevent changes) during export.
-  Glib::RefPtr<Gnome::Gda::DataModel> result = query_execute_select(query);
+  Glib::RefPtr<Gnome::Gda::DataModel> result = DbUtils::query_execute_select(query);
 
   guint rows_count = 0;
   if(result)
@@ -740,7 +740,7 @@ void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const FoundSet
   Glib::RefPtr<Gnome::Gda::SqlBuilder> query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause, found_set.m_extra_group_by);
 
   //TODO: Lock the database (prevent changes) during export.
-  Glib::RefPtr<const Gnome::Gda::DataModel> result = query_execute_select(query);
+  Glib::RefPtr<const Gnome::Gda::DataModel> result = DbUtils::query_execute_select(query);
 
   guint rows_count = 0;
   if(result)
@@ -792,7 +792,7 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
   Glib::RefPtr<Gnome::Gda::SqlBuilder> query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause, found_set.m_extra_group_by);
 
   //TODO: Lock the database (prevent changes) during export.
-  Glib::RefPtr<const Gnome::Gda::DataModel> result = query_execute_select(query);
+  Glib::RefPtr<const Gnome::Gda::DataModel> result = DbUtils::query_execute_select(query);
 
   guint rows_count = 0;
   if(result)

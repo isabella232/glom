@@ -23,6 +23,7 @@
 #include <glom/utils_ui.h>
 #include <glom/application.h>
 #include <libglom/data_structure/glomconversions.h>
+#include <libglom/db_utils.h>
 #include <glom/frame_glom.h> //For show_ok_dialog()
 #include <glom/glade_utils.h>
 #include <glibmm/i18n.h>
@@ -198,7 +199,7 @@ bool Box_Data_Calendar_Related::fill_from_database()
 
     Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_FieldsShown, where_clause, m_found_set.m_extra_join, m_found_set.m_sort_clause, m_found_set.m_extra_group_by);
     //std::cout << "DEBUG: sql_query=" << sql_query << std::endl;
-    Glib::RefPtr<const Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query);
+    Glib::RefPtr<const Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(sql_query);
     if(!(datamodel))
       return true;
 
@@ -306,7 +307,7 @@ void Box_Data_Calendar_Related::on_record_added(const Gnome::Gda::Value& primary
           builder->add_id(field_primary_key->get_name()),
           builder->add_expr_as_value(primary_key_value)));
 
-      const bool test = query_execute(builder);
+      const bool test = DbUtils::query_execute(builder);
       if(test)
       {
         //Show it on the view, if it's visible:

@@ -26,6 +26,7 @@
 #include <libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_header.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_footer.h>
+#include <libglom/db_utils.h>
 #include <glom/xsl_utils.h>
 
 namespace Glom
@@ -189,7 +190,7 @@ void ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
 
     builder->select_group_by( builder->add_id(field_group_by->get_name()) ); //TODO: And restrict to the current found set.
 
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(builder);
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(builder);
     if(datamodel)
     {
       guint rows_count = datamodel->get_n_rows();
@@ -327,7 +328,7 @@ void ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
       limit);
 
     bool records_found = false;
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(sql_query);
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(sql_query);
     if(datamodel)
     {
       const guint rows_count = datamodel->get_n_rows();
@@ -401,7 +402,7 @@ void ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
     builder->set_table(field->get_table_used(found_set.m_table_name));
     builder->select_add_field(field->get_name(), found_set.m_table_name);
     builder->select_set_limit(1);
-    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(builder);
+    Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(builder);
 
     if(!datamodel)
       return;

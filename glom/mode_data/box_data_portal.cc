@@ -20,6 +20,7 @@
 
 #include <glom/mode_data/box_data_portal.h>
 #include <libglom/data_structure/glomconversions.h>
+#include <libglom/db_utils.h>
 #include <glom/glade_utils.h>
 #include <glom/frame_glom.h> //For show_ok_dialog()
 #include <glom/utils_ui.h> //For bold_message()).
@@ -117,7 +118,7 @@ void Box_Data_Portal::make_record_related(const Gnome::Gda::Value& related_recor
         builder->add_expr_as_value(related_record_primary_key_value)));
 
   //std::cout << "Box_Data_Portal::make_record_related(): setting value in db=" << primary_key_value.to_string() << std::endl;
-  const bool test = query_execute(builder);
+  const bool test = DbUtils::query_execute(builder);
   if(!test)
   {
     std::cerr << "Box_Data_Portal::make_record_related(): SQL query failed." << std::endl;
@@ -513,7 +514,7 @@ void Box_Data_Portal::get_suitable_record_to_view_details(const Gnome::Gda::Valu
   //std::cout << "DEBUG: related table=" << related_table << ", whose primary_key=" << key_field->get_name() << std::endl;
 
   Glib::RefPtr<Gnome::Gda::SqlBuilder> query = Utils::build_sql_select_with_key(related_table, fieldsToGet, key_field, primary_key_value);
-  Glib::RefPtr<const Gnome::Gda::DataModel> data_model = query_execute_select(query);
+  Glib::RefPtr<const Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(query);
 
 
   bool value_found = true;
