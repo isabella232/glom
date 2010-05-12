@@ -1,0 +1,180 @@
+## Copyright (c) 2010  Openismus GmbH  <http://www.openismus.com/>
+##
+## This file is part of Glom.
+##
+## Glom is free software: you can redistribute it and/or modify it
+## under the terms of the GNU General Public License as published
+## by the Free Software Foundation, either version 2 of the License,
+## or (at your option) any later version.
+##
+## Glom is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+## See the GNU General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# Public header files by installation directory:
+
+libglom_toplevel_headers =				\
+	glom/libglom/appstate.h				\
+	glom/libglom/init.h				\
+	glom/libglom/libglom_config.h			\
+	glom/libglom/sharedptr.h			\
+	glom/libglom/standard_table_prefs_fields.h	\
+	glom/libglom/utils.h				\
+	glom/libglom/db_utils.h
+
+libglom_data_structure_headers =				\
+	glom/libglom/data_structure/field.h			\
+	glom/libglom/data_structure/fieldtypes.h		\
+	glom/libglom/data_structure/foundset.h			\
+	glom/libglom/data_structure/has_title_singular.h        \
+	glom/libglom/data_structure/glomconversions.h		\
+	glom/libglom/data_structure/groupinfo.h			\
+	glom/libglom/data_structure/numeric_format.h		\
+	glom/libglom/data_structure/parameternamegenerator.h	\
+	glom/libglom/data_structure/print_layout.h		\
+	glom/libglom/data_structure/privileges.h		\
+	glom/libglom/data_structure/relationship.h		\
+	glom/libglom/data_structure/report.h			\
+	glom/libglom/data_structure/system_prefs.h		\
+	glom/libglom/data_structure/tableinfo.h			\
+	glom/libglom/data_structure/translatable_item.h
+
+libglom_ds_layout_headers =						\
+	glom/libglom/data_structure/layout/custom_title.h		\
+	glom/libglom/data_structure/layout/fieldformatting.h		\
+	glom/libglom/data_structure/layout/layoutgroup.h		\
+	glom/libglom/data_structure/layout/layoutitem.h			\
+	glom/libglom/data_structure/layout/layoutitem_button.h		\
+	glom/libglom/data_structure/layout/layoutitem_calendarportal.h	\
+	glom/libglom/data_structure/layout/layoutitem_field.h		\
+	glom/libglom/data_structure/layout/layoutitem_image.h		\
+	glom/libglom/data_structure/layout/layoutitem_line.h		\
+	glom/libglom/data_structure/layout/layoutitem_notebook.h	\
+	glom/libglom/data_structure/layout/layoutitem_placeholder.h	\
+	glom/libglom/data_structure/layout/layoutitem_portal.h		\
+	glom/libglom/data_structure/layout/layoutitem_text.h		\
+	glom/libglom/data_structure/layout/layoutitem_withformatting.h	\
+	glom/libglom/data_structure/layout/usesrelationship.h
+
+libglom_ds_l_report_parts_headers =							\
+	glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h	\
+	glom/libglom/data_structure/layout/report_parts/layoutitem_footer.h		\
+	glom/libglom/data_structure/layout/report_parts/layoutitem_groupby.h		\
+	glom/libglom/data_structure/layout/report_parts/layoutitem_header.h		\
+	glom/libglom/data_structure/layout/report_parts/layoutitem_summary.h		\
+	glom/libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.h
+
+libglom_document_headers =			\
+	glom/libglom/document/document.h	\
+	glom/libglom/document/view.h
+
+libglom_d_bakery_headers =				\
+	glom/libglom/document/bakery/document.h		\
+	glom/libglom/document/bakery/document_xml.h
+
+libglom_d_b_view_headers =					\
+	glom/libglom/document/bakery/view/view.h		\
+	glom/libglom/document/bakery/view/view_composite.h	\
+	glom/libglom/document/bakery/view/viewbase.h
+
+libglom_headers =				\
+	$(libglom_toplevel_headers)		\
+	$(libglom_data_structure_headers)	\
+	$(libglom_ds_layout_headers)		\
+	$(libglom_ds_l_report_parts_headers)	\
+	$(libglom_document_headers)		\
+	$(libglom_d_bakery_headers)		\
+	$(libglom_d_b_view_headers)
+
+# Private source and header files:
+
+libglom_sources =							\
+	glom/libglom/appstate.cc					\
+	glom/libglom/calcinprogress.cc					\
+	glom/libglom/calcinprogress.h					\
+	glom/libglom/connectionpool.cc					\
+	glom/libglom/connectionpool.h					\
+	glom/libglom/db_utils.cc					\
+	glom/libglom/db_utils.h						\
+	glom/libglom/glom_postgres.cc					\
+	glom/libglom/glom_postgres.h					\
+	glom/libglom/gst-package.c					\
+	glom/libglom/gst-package.h					\
+	glom/libglom/init.cc						\
+	glom/libglom/privs.cc						\
+	glom/libglom/privs.h						\
+	glom/libglom/spawn_with_feedback.cc				\
+	glom/libglom/spawn_with_feedback.h				\
+	glom/libglom/utils.cc						\
+	glom/libglom/utils.h						\
+	glom/libglom/connectionpool_backends/backend.cc			\
+	glom/libglom/connectionpool_backends/backend.h			\
+	glom/libglom/data_structure/field.cc				\
+	glom/libglom/data_structure/fieldtypes.cc			\
+	glom/libglom/data_structure/foundset.cc				\
+	glom/libglom/data_structure/glomconversions.cc			\
+	glom/libglom/data_structure/groupinfo.cc			\
+	glom/libglom/data_structure/has_title_singular.cc		\
+	glom/libglom/data_structure/numeric_format.cc			\
+	glom/libglom/data_structure/parameternamegenerator.cc		\
+	glom/libglom/data_structure/print_layout.cc			\
+	glom/libglom/data_structure/privileges.cc			\
+	glom/libglom/data_structure/relationship.cc			\
+	glom/libglom/data_structure/report.cc				\
+	glom/libglom/data_structure/system_prefs.cc			\
+	glom/libglom/data_structure/tableinfo.cc			\
+	glom/libglom/data_structure/translatable_item.cc		\
+	glom/libglom/data_structure/layout/custom_title.cc		\
+	glom/libglom/data_structure/layout/fieldformatting.cc		\
+	glom/libglom/data_structure/layout/layoutgroup.cc		\
+	glom/libglom/data_structure/layout/layoutitem.cc		\
+	glom/libglom/data_structure/layout/layoutitem_button.cc		\
+	glom/libglom/data_structure/layout/layoutitem_calendarportal.cc	\
+	glom/libglom/data_structure/layout/layoutitem_field.cc		\
+	glom/libglom/data_structure/layout/layoutitem_image.cc		\
+	glom/libglom/data_structure/layout/layoutitem_line.cc		\
+	glom/libglom/data_structure/layout/layoutitem_notebook.cc	\
+	glom/libglom/data_structure/layout/layoutitem_placeholder.cc	\
+	glom/libglom/data_structure/layout/layoutitem_portal.cc		\
+	glom/libglom/data_structure/layout/layoutitem_text.cc		\
+	glom/libglom/data_structure/layout/layoutitem_withformatting.cc	\
+	glom/libglom/data_structure/layout/usesrelationship.cc		\
+	glom/libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.cc	\
+	glom/libglom/data_structure/layout/report_parts/layoutitem_footer.cc		\
+	glom/libglom/data_structure/layout/report_parts/layoutitem_groupby.cc		\
+	glom/libglom/data_structure/layout/report_parts/layoutitem_header.cc		\
+	glom/libglom/data_structure/layout/report_parts/layoutitem_summary.cc		\
+	glom/libglom/data_structure/layout/report_parts/layoutitem_verticalgroup.cc	\
+	glom/libglom/document/document.cc				\
+	glom/libglom/document/bakery/document.cc			\
+	glom/libglom/document/bakery/document_xml.cc			\
+	glom/libglom/document/bakery/view/view.cc			\
+	glom/libglom/document/bakery/view/view_composite.cc		\
+	glom/libglom/document/bakery/view/viewbase.cc			\
+	glom/libglom/python_embed/py_glom_record.cc			\
+	glom/libglom/python_embed/py_glom_record.h			\
+	glom/libglom/python_embed/py_glom_related.cc			\
+	glom/libglom/python_embed/py_glom_related.h			\
+	glom/libglom/python_embed/py_glom_relatedrecord.cc		\
+	glom/libglom/python_embed/py_glom_relatedrecord.h		\
+	glom/libglom/python_embed/py_glom_ui.cc				\
+	glom/libglom/python_embed/py_glom_ui.h				\
+	glom/libglom/python_embed/py_glom_ui_callbacks.h		\
+	glom/libglom/python_embed/pygdavalue_conversions.cc		\
+	glom/libglom/python_embed/pygdavalue_conversions.h		\
+	glom/libglom/connectionpool_backends/sqlite.cc			\
+	glom/libglom/connectionpool_backends/sqlite.h			\
+	glom/libglom/connectionpool_backends/postgres.cc		\
+	glom/libglom/connectionpool_backends/postgres.h			\
+	glom/libglom/connectionpool_backends/postgres_central.cc	\
+	glom/libglom/connectionpool_backends/postgres_central.h
+
+if !GLOM_ENABLE_CLIENT_ONLY
+libglom_sources +=						\
+	glom/libglom/connectionpool_backends/postgres_self.cc	\
+	glom/libglom/connectionpool_backends/postgres_self.h
+endif

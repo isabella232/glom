@@ -16,10 +16,12 @@ ABBREVIATE_BRIEF       =
 ALWAYS_DETAILED_SEC    = NO
 INLINE_INHERITED_MEMB  = NO
 FULL_PATH_NAMES        = YES
-STRIP_FROM_PATH        = "@abs_top_builddir@/glom/libglom/" \
+STRIP_FROM_PATH        = "@abs_top_builddir@/glom/" \
+                         "@abs_top_srcdir@/glom/" \
                          "@abs_top_builddir@/" \
                          "@abs_top_srcdir@/"
-STRIP_FROM_INC_PATH    = "@abs_top_builddir@/glom/libglom/" \
+STRIP_FROM_INC_PATH    = "@abs_top_builddir@/glom/" \
+                         "@abs_top_srcdir@/glom/" \
                          "@abs_top_builddir@/" \
                          "@abs_top_srcdir@/"
 SHORT_NAMES            = NO
@@ -91,11 +93,11 @@ WARN_LOGFILE           = reference/doxygen.log
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-# We provide the input patch when calling doxygen instead.
+# We provide the input path when calling doxygen instead.
 INPUT                  =
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          =
-RECURSIVE              = YES
+RECURSIVE              = NO
 EXCLUDE                =
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       =
@@ -112,12 +114,7 @@ EXAMPLE_PATH           =
 EXAMPLE_PATTERNS       = *.cc \
                          *.h
 EXAMPLE_RECURSIVE      = YES
-IMAGE_PATH             = "@abs_top_srcdir@/docs/reference/images/stock/16" \
-                         "@abs_top_srcdir@/docs/reference/images/stock/20" \
-                         "@abs_top_srcdir@/docs/reference/images/stock/24" \
-                         "@abs_top_srcdir@/docs/reference/images/stock/32" \
-                         "@abs_top_srcdir@/docs/reference/images/stock/48" \
-                         "@abs_top_srcdir@/docs/reference/images/widgets"
+IMAGE_PATH             =
 INPUT_FILTER           =
 FILTER_PATTERNS        =
 FILTER_SOURCE_FILES    = NO
@@ -146,7 +143,7 @@ HTML_OUTPUT            = html
 HTML_FILE_EXTENSION    = .html
 HTML_HEADER            =
 HTML_FOOTER            =
-#HTML_STYLESHEET        = "@MMDOCTOOLDIR@/doxygen.css"
+HTML_STYLESHEET        = "@MMDOCTOOLDIR@/doxygen.css"
 HTML_ALIGN_MEMBERS     = YES
 HTML_DYNAMIC_SECTIONS  = NO
 GENERATE_DOCSET        = NO
@@ -232,7 +229,8 @@ ENABLE_PREPROCESSING   = YES
 MACRO_EXPANSION        = YES
 EXPAND_ONLY_PREDEF     = YES
 SEARCH_INCLUDES        = YES
-INCLUDE_PATH           = "@abs_top_builddir@/glom/libglom"
+INCLUDE_PATH           = "@abs_top_builddir@/glom" \
+                         "@abs_top_srcdir@/glom"
 INCLUDE_FILE_PATTERNS  = *.h
 PREDEFINED             = __cplusplus \
                          DOXYGEN_SHOULD_SKIP_THIS \
@@ -255,7 +253,7 @@ SKIP_FUNCTION_MACROS   = YES
 #---------------------------------------------------------------------------
 # Configuration::additions related to external references
 #---------------------------------------------------------------------------
-TAGFILES               =
+TAGFILES               = @DOXYGEN_TAGFILES@
 GENERATE_TAGFILE       = "libglom-@GLOM_ABI_VERSION@.tag"
 ALLEXTERNALS           = NO
 EXTERNAL_GROUPS        = NO

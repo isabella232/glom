@@ -1,3 +1,57 @@
+2010-05-11  Daniel Borgmann  <danielb@openismus.com>
+
+	Don't add a new row when cancelling a placeholder edit.
+
+	* glom/utility_widgets/db_adddel/db_adddel.cc: Don't add a new row
+	if the edited row was a placeholder and no text was entered.
+
+2010-05-10  Daniel Elstner  <danielk@openismus.com>
+
+	Move list of libglom sources to separate file
+
+	* glom/libglom/filelist.am: New Automake include file, defining the
+	lists of source and header files for building libglom.
+	* Makefile_libglom.am: Include glom/libglom/filelist.am for the lists
+	of header and source files, instead of listing them directly.
+	* docs/libglom_reference/Makefile.am: Include the list of libglom
+	source files from glom/libglom/filelist.am.
+	(doc_input): Instead of naming a directory for Doxygen to search,
+	explicitly define the Doxygen input to the list of all public libglom
+	header files.
+
+2010-05-10  Daniel Elstner  <danielk@openismus.com>
+
+	Update Doxygen configuration for libglom reference
+
+	* docs/libglom_reference/Doxyfile.in: Correct strip prefixes and
+	include paths.  Do include the mm-common stylesheet and reference
+	the external tag files.  Also clean some cruft.
+
+2010-05-10  Daniel Elstner  <danielk@openismus.com>
+
+	Honor --disable-documentation configure option
+
+	* Makefile.am (gnome_doc_subdirs): Rename from $(doc_subdirs).
+	(doc_subdirs): Conditionally define to the subdirectories of the
+	reference documentation, depending on whether ENABLE_DOCUMENTATION
+	is true.
+	(SUBDIRS): Expand $(doc_subdirs) and $(gnome_doc_subdirs).
+
+2010-05-10  Daniel Borgmann  <danielb@openismus.com>
+
+	Make Find mode a toggle and move it to the Edit menu.
+
+	* glom/application.cc: Move Find menu item, remove Mode menu.
+	* glom/frame_glom.cc/h: Replace on_menu_Mode_Find()/Data() with
+	on_menu_Mode_Toggle().
+
+2010-05-06  Daniel Borgmann  <danielb@openismus.com>
+
+	Save extras alignment improvements.
+
+	* glom/utility_widgets/filechooserdialog_saveextras.cc: Adjust
+	alignments and hide extra label if empty (thus not taking up space).
+
 2010-05-12  Murray Cumming  <murrayc@murrayc.com>
 
     Use Gnome::Gda::SqlExpr for where clauses.
