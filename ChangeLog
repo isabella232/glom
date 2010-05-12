@@ -1,3 +1,10 @@
+2010-05-12 Daniel Borgmann <danielb@openismus.com>
+
+	Don't allow deleting placeholder rows.
+
+	* glom/utility_widgets/db_adddel/db_adddel.cc: Don't allow deleting a
+	placeholder row (which leads to broken behaviour).
+
 2010-05-14  Daniel Borgmann  <danielb@openismus.com>
 
 	Fix position of "Records / Found" labels.
