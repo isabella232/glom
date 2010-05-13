@@ -1560,9 +1560,13 @@ Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::RefPtr<cons
   {
     std::cerr << "debug: query_execute_select(): ServerProviderError: exception from statement_execute_select_builder(): code=" << ex.code() << "message=" << ex.what() << std::endl;
   }
+  catch(const Gnome::Gda::SqlError& ex) //TODO: Make sure that statement_execute_select_builder() is documented as throwing this.
+  {
+    std::cerr << "debug: query_execute_select(): SqlError: exception from statement_execute_select_builder(): " << ex.what() << std::endl;
+  }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "debug: query_execute_select(): Error: exception from statement_execute_select_builder(): " << ex.what() << std::endl;
+    std::cerr << "debug: query_execute_select(): Error (" << typeid(ex).name() << "): exception from statement_execute_select_builder(): " << ex.what() << std::endl;
   }
 
 #else
@@ -1651,16 +1655,6 @@ bool query_execute_string(const Glib::ustring& strQuery, const Glib::RefPtr<Gnom
     std::cerr << "  full_query: " << full_query << std::endl;
     return false;
   }
-#else
-  std::auto_ptr<Glib::Error> exec_error;
-  exec_retval = gda_connection->statement_execute_non_select (stmt, params, exec_error);
-  if(exec_error.get())
-  {
-    std::cerr << "DbUtils::query_execute: ConnectionError: " << exec_error->what() << std::endl;
-    const Glib::ustring full_query = stmt->to_sql(params, exec_error);
-    std::cerr << "  full_query: " << full_query << std::endl;
-    return false;
-  }
 #endif
   return (exec_retval >= 0);
 }
@@ -1688,11 +1682,30 @@ bool query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder)
   {
     exec_retval = gda_connection->statement_execute_non_select_builder(builder);
   }
-  catch(const Glib::Error& error)
+  catch(const Gnome::Gda::ConnectionError& ex)
   {
-    std::cerr << "DbUtils::query_execute: ConnectionError: " << error.what() << std::endl;
+    std::cerr << "debug: query_execute_select(): ConnectionError: exception from statement_execute_non_select_builder(): " << ex.what() << std::endl;
     const std::string full_query = Utils::sqlbuilder_get_full_query(builder);
     std::cerr << "  full_query: " << full_query << std::endl;
+    return false;
+  }
+  catch(const Gnome::Gda::ServerProviderError& ex)
+  {
+    std::cerr << "debug: query_execute_select(): ServerProviderError: exception from statement_execute_non_select_builder(): code=" << ex.code() << "message=" << ex.what() << std::endl;
+    const std::string full_query = Utils::sqlbuilder_get_full_query(builder);
+    std::cerr << "  full_query: " << full_query << std::endl;
+    return false;
+  }
+  catch(const Gnome::Gda::SqlError& ex) //TODO: Make sure that statement_execute_select_builder() is documented as throwing this.
+  {
+    std::cerr << "debug: query_execute_select(): SqlError: exception from statement_execute_non_select_builder(): " << ex.what() << std::endl;
+    const std::string full_query = Utils::sqlbuilder_get_full_query(builder);
+    std::cerr << "  full_query: " << full_query << std::endl;
+    return false;
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << "debug: query_execute_select(): Error (" << typeid(ex).name() << "): exception from statement_execute_non_select_builder(): " << ex.what() << std::endl;
     return false;
   }
 #else

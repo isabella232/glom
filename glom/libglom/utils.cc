@@ -930,13 +930,17 @@ std::string Utils::sqlbuilder_get_full_query(
     if(stmt)
       result = stmt->to_sql(params);
   }
+  catch(const Gnome::Gda::SqlError& ex)
+  {
+    std::cerr << "sqlbuilder_get_full_query(): SqlError exception while getting query: " << ex.what() << std::endl;
+  }
   catch(const Glib::Exception& ex)
   {
-    std::cerr << "sqlbuilder_get_full_query(): exception while getting query: " << ex.what() << std::endl;
+    std::cerr << "sqlbuilder_get_full_query(): exception (" << typeid(ex).name() << ") while getting query: " << ex.what() << std::endl;
   }
   catch(const std::exception& ex)
   {
-    std::cerr << "sqlbuilder_get_full_query(): exception while getting query: " << ex.what() << std::endl;
+    std::cerr << "sqlbuilder_get_full_query(): exception (" << typeid(ex).name() << ") while getting query: " << ex.what() << std::endl;
   }
 
   //Convert to something that std::cout should be able to handle.
@@ -959,13 +963,17 @@ std::string Utils::sqlbuilder_get_full_query(
     if(stmt)
       result = stmt->to_sql();
   }
+  catch(const Gnome::Gda::SqlError& ex)
+  {
+    std::cerr << "sqlbuilder_get_full_query(): SqlError exception while getting query: " << ex.what() << std::endl;
+  }
   catch(const Glib::Exception& ex)
   {
-    std::cerr << "sqlbuilder_get_full_query(): exception while getting query: " << ex.what() << std::endl;
+    std::cerr << "sqlbuilder_get_full_query(): exception (" << typeid(ex).name() << ") while getting query: " << ex.what() << std::endl;
   }
   catch(const std::exception& ex)
   {
-    std::cerr << "sqlbuilder_get_full_query(): exception while getting query: " << ex.what() << std::endl;
+    std::cerr << "sqlbuilder_get_full_query(): exception (" << typeid(ex).name() << ") while getting query: " << ex.what() << std::endl;
   }
 
   //Convert to something that std::cout should be able to handle.
