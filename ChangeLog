@@ -1,4 +1,11 @@
-2010-06-19 Daniel Borgmann <danielb@openismus.com>
+2010-05-14  Daniel Borgmann  <danielb@openismus.com>
+
+	Fix position of "Records / Found" labels.
+
+	* glom/glom.glade: Make sure "Records: X Found: X" appears in the right
+	order.
+
+2010-05-14  Daniel Borgmann  <danielb@openismus.com>
 
 	Fix a crash when using find mode.
 
