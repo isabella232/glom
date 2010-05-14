@@ -1,3 +1,10 @@
+2010-06-19 Daniel Borgmann <danielb@openismus.com>
+
+	Fix a crash when using find mode.
+
+	* glom/application.cc: Don't access m_action_mode_data.
+	* glom/application.h: Remove m_action_mode_data.
+
 2010-06-19  Murray Cumming  <murrayc@murrayc.com>
 
 	Remove unnecessary gtk C includes.
