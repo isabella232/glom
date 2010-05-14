@@ -118,11 +118,6 @@ std::string sqlbuilder_get_full_query(
 
 /// Get the full query string suitable for use with std::cout.
 std::string sqlbuilder_get_full_query(
-  const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder,
-  const Glib::RefPtr<const Gnome::Gda::Set>& params);
-
-/// Get the full query string suitable for use with std::cout.
-std::string sqlbuilder_get_full_query(
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder);
 
 /** Guess an appropriate identifier name based on a human-readable title

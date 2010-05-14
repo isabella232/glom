@@ -917,41 +917,6 @@ std::string Utils::sqlbuilder_get_full_query(
   return std::string(buf.get());
 }
 
-
-std::string Utils::sqlbuilder_get_full_query(
-  const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder,
-  const Glib::RefPtr<const Gnome::Gda::Set>& params)
-{
-  Glib::ustring result = "glom_query_not_parsed";
-
-  try
-  {
-    Glib::RefPtr<Gnome::Gda::Statement> stmt = builder->get_statement();
-    if(stmt)
-      result = stmt->to_sql(params);
-  }
-  catch(const Gnome::Gda::SqlError& ex)
-  {
-    std::cerr << "sqlbuilder_get_full_query(): SqlError exception while getting query: " << ex.what() << std::endl;
-  }
-  catch(const Glib::Exception& ex)
-  {
-    std::cerr << "sqlbuilder_get_full_query(): exception (" << typeid(ex).name() << ") while getting query: " << ex.what() << std::endl;
-  }
-  catch(const std::exception& ex)
-  {
-    std::cerr << "sqlbuilder_get_full_query(): exception (" << typeid(ex).name() << ") while getting query: " << ex.what() << std::endl;
-  }
-
-  //Convert to something that std::cout should be able to handle.
-  const Glib::ScopedPtr<char> buf(g_convert_with_fallback(
-    result.raw().data(), result.raw().size(),
-    "ISO-8859-1", "UTF-8",
-    (char*)"?",
-    0, 0, 0));
-  return std::string(buf.get());
-}
-
 std::string Utils::sqlbuilder_get_full_query(
   const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder)
 {
