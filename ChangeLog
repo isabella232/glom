@@ -1,5 +1,19 @@
 2010-05-14  Daniel Borgmann  <danielb@openismus.com>
 
+	reviewed by: <delete if not using a buddy>
+	patch by: <delete if not someone else's patch>
+
+	* glom/glom.glade:
+
+2010-05-14  Daniel Borgmann  <danielb@openismus.com>
+
+	Fix position of "Records / Found" labels.
+
+	* glom/glom.glade: Make sure "Records: X Found: X" appears in the right
+	order.
+
+2010-05-14  Daniel Borgmann  <danielb@openismus.com>
+
 	Fix a crash when using find mode.
 
 	* glom/application.cc: Don't access m_action_mode_data.
