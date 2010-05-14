@@ -216,7 +216,7 @@ private:
   typedef std::list< Glib::RefPtr<Gtk::Action> > type_listActions;
   type_listActions m_listDeveloperActions; //Only enabled when in developer mode.
   type_listActions m_listTableSensitiveActions; // Only enabled when a table is loaded.
-  Glib::RefPtr<Gtk::Action> m_action_mode_data, m_action_mode_find;
+  Glib::RefPtr<Gtk::Action> m_action_mode_find;
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   Glib::RefPtr<Gtk::Action> m_action_developer_users;
   Glib::RefPtr<Gtk::RadioAction> m_action_menu_userlevel_developer, m_action_menu_userlevel_operator;
