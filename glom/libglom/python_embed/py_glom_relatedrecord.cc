@@ -195,7 +195,10 @@ boost::python::object PyGlomRelatedRecord::generic_aggregate(const std::string& 
   //Get the aggregate value from the related records:
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
-  builder->add_function(aggregate, builder->add_id(field_name)); //TODO: It would be nice to specify the table here too.
+
+  const guint id_function = builder->add_function(aggregate, builder->add_id(field_name)); //TODO: It would be nice to specify the table here too.
+  builder->add_field_id(id_function);
+
   builder->select_add_target(related_table);
   builder->set_where(
     builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,

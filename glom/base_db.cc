@@ -1887,7 +1887,6 @@ bool Base_DB::get_primary_key_is_in_foundset(const FoundSet& found_set, const Gn
 
 int Base_DB::count_rows_returned_by(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& sql_query)
 {
-  std::cout << "Base_DB::count_rows_returned_by(): debug: input sql_query=" << Utils::sqlbuilder_get_full_query(sql_query) << std::endl;
   if(!sql_query)
   {
     std::cerr << "Base_DB::count_rows_returned_by(): sql_query was null." << std::endl;
@@ -1896,20 +1895,19 @@ int Base_DB::count_rows_returned_by(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& 
 
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
-  const guint target_id = builder->add_sub_select( sql_query->get_sql_statement() );
-  builder->select_add_target_id(target_id);
 
-  builder->add_function("COUNT", builder->add_id("*"));
+  //Note that the alias is just because the SQL syntax requires it - we get an error if we don't use it.
+  //Be careful not to include ORDER BY clauses in this, because that would make it unnecessarily slow:
+  const guint target_id = builder->add_sub_select( sql_query->get_sql_statement() );
+  builder->select_add_target_id(target_id, "glomarbitraryalias");
+
+  const guint id_function = builder->add_function("COUNT", builder->add_id("*"));
+  builder->add_field_id(id_function);
 
 
   int result = 0;
 
-  //TODO: Use SqlBuilder for this?
   //TODO: Is this inefficient?
-  //Note that the alias is just because the SQL syntax requires it - we get an error if we don't use it.
-  //Be careful not to include ORDER BY clauses in this, because that would make it unnecessarily slow:
-  //TODO: Add alias too? const Glib::ustring query_count = "SELECT COUNT (*) FROM (" + sql_query + ") AS glomarbitraryalias";
-
     Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(builder);
     if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
     {

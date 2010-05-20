@@ -1,3 +1,15 @@
+2010-05-20  Murray Cumming  <murrayc@murrayc.com>
+
+    Correct use of SQL functions with SqlBuilder.
+
+	* glom/base_db.cc: count_rows_returned_by(): Use SqlBuilder::add_field_id()
+    so the function is really used. And add a target alias. This now works.
+	* glom/libglom/python_embed/py_glom_relatedrecord.cc: generic_aggregate()
+	* glom/libglom/utils.cc: build_sql_select_add_fields_to_get():
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc: get_record_counts():
+    Use add_field_id() when adding a function to SqlBuilder, so it is
+    really used.
+
 2010-05-19  Murray Cumming  <murrayc@murrayc.com>
 
 	More use of SqlBuilder. Almost finished.

@@ -294,9 +294,10 @@ void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::Sq
     const LayoutItem_FieldSummary* fieldsummary = dynamic_cast<const LayoutItem_FieldSummary*>(layout_item.obj());
     if(fieldsummary)
     {
-      builder->add_function(
+      const guint id_function = builder->add_function(
         fieldsummary->get_summary_type_sql(),
         builder->add_id(layout_item->get_sql_name(table_name)) ); //TODO: It would be nice to specify the table here too.
+      builder->add_field_id(id_function);
     }
     else
       builder->select_add_field(layout_item->get_name(), parent);
