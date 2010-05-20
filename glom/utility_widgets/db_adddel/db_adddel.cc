@@ -218,7 +218,7 @@ void DbAddDel::on_MenuPopup_activate_Delete()
   if(refSelection)
   {
     Gtk::TreeModel::iterator iter = refSelection->get_selected();
-    if(iter)
+    if(iter && !get_is_placeholder_row(iter))
     {
       //TODO: We can't handle multiple-selections yet.
       user_requested_delete(iter, iter);

@@ -1,21 +1,22 @@
 # translation of glom.userguide.HEAD.po to Español
 # Spanish translation for glom manual
 #
-# Jorge González <jorgegonz@svn.gnome.org>, 2007, 2008.
 # Daniel Mustieles <daniel.mustieles@gmail.com, 2008.
+# Jorge González <jorgegonz@svn.gnome.org>, 2007, 2010.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: glom.userguide.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-16 06:45+0000\n"
-"PO-Revision-Date: 2008-06-22 19:34+0200\n"
+"POT-Creation-Date: 2010-05-12 10:05+0000\n"
+"PO-Revision-Date: 2010-05-13 21:56+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
-"Language-Team: Spanish <gnome-es-list@gnome.org>\n"
+"Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: C/legal.xml:2(para) C/glom.xml:2(para)
 msgid ""
@@ -1715,22 +1716,13 @@ msgstr ""
 
 #: C/glom.xml:830(para)
 msgid ""
-"(Note that the <literal>record.connection</literal> and <literal>record."
-"table_name</literal> attributes are only available since Glom 1.1.6.)"
-msgstr ""
-"(Nótese que los atributos <literal>record.connection</literal> y "
-"<literal>record.table_name</literal> sólo están disponibles desde la versión "
-"1.1.6 de Glom.)"
-
-#: C/glom.xml:831(para)
-msgid ""
 "This example reads all data from the current table and prints the values to "
 "the terminal:"
 msgstr ""
 "Este ejemplo lee todos los datos de la tabla actual e imprime los valores en "
 "la terminal:"
 
-#: C/glom.xml:833(programlisting)
+#: C/glom.xml:832(programlisting)
 #, no-wrap
 msgid ""
 "\n"
@@ -1742,8 +1734,7 @@ msgid ""
 "# or even knowing the name of the database.\n"
 "\n"
 "query = \"SELECT * FROM %s\" % record.table_name\n"
-"command = gda.Command(query)\n"
-"data_model = record.connection.execute_single_command(command)\n"
+"data_model = gda.gda_execute_select_command(record.connection, query)\n"
 "\n"
 "rows = data_model.get_n_rows()\n"
 "columns = data_model.get_n_columns()\n"
@@ -1772,7 +1763,7 @@ msgid ""
 "  "
 msgstr ""
 "\n"
-"# Usa la conexión actual a la base de datos \n"
+"# Usar la conexión actual a la base de datos \n"
 "# para obtener todos los datos de la tabla actual.\n"
 "#\n"
 "# la conexión de registros es un objeto gda.connection ya abierto,\n"
@@ -1780,8 +1771,7 @@ msgstr ""
 "# o incluso conociendo el nombre de la base de datos.\n"
 "\n"
 "query = \"SELECT * FROM %s\" % record.table_name\n"
-"command = gda.Command(query)\n"
-"data_model = record.connection.execute_single_command(command)\n"
+"data_model = gda.gda_execute_select_command(record.connection, query)\n"
 "\n"
 "rows = data_model.get_n_rows()\n"
 "columns = data_model.get_n_columns()\n"
@@ -1791,14 +1781,14 @@ msgstr ""
 "    print \"      columna \", i;\n"
 "    print \"        nombre=\", data_model.get_column_title(i)\n"
 "\n"
-"    # Comprueba si es la clave primaria:\n"
+"    # Comprueba si es la clave primaria:\\n\"\n"
 "    field = data_model.describe_column(i)\n"
 "    if field.get_primary_key():\n"
 "        print \"        (clave primaria)\"\n"
 "\n"
 "    print \"\\n\";\n"
 "     \n"
-"print \"    Número de filas: \", rows\n"
+"print \"    Número de columnas: \", rows\n"
 "\n"
 "for row_index in range(rows):\n"
 "    print \"      fila \", row_index;\n"
@@ -1809,11 +1799,18 @@ msgstr ""
 "    print \"\\n\";\n"
 "  "
 
-#. Put one translator per line, in the form of NAME <EMAIL>, YEAR1, YEAR2.
+#. Put one translator per line, in the form of NAME <EMAIL>, YEAR1, YEAR2
 #: C/glom.xml:0(None)
 msgid "translator-credits"
 msgstr ""
-"Daniel Mustieles <daniel.mustieles@ie.edu>, 2008\n"
+"Daniel Mustieles <daniel.mustieles@gmail.com>, 2008-2010\n"
 "Jorge González <jorgegonz@svn.gnome.org>, 2007\n"
 "QA: Jorge González <jorgegonz@svn.gnome.org>, 2008"
 
+#~ msgid ""
+#~ "(Note that the <literal>record.connection</literal> and <literal>record."
+#~ "table_name</literal> attributes are only available since Glom 1.1.6.)"
+#~ msgstr ""
+#~ "(Nótese que los atributos <literal>record.connection</literal> y "
+#~ "<literal>record.table_name</literal> sólo están disponibles desde la "
+#~ "versión 1.1.6 de Glom.)"
