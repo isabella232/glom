@@ -73,9 +73,12 @@ bool drop_column(const Glib::ustring& table_name, const Glib::ustring& field_nam
 bool insert_example_data(Document* document, const Glib::ustring& table_name);
 
 /** Execute a SQL Select command, returning the result.
-  */
+ * @param builder The finished SqlBuilder object.
+ * @use_cursor Whether the data model should be cursor-based (not allowing random access).
+ */
 Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(
-  const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder);
+  const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder,
+  bool use_cursor = false);
 
 
 /** Execute a SQL non-select command, returning true if it succeeded.

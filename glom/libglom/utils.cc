@@ -239,13 +239,8 @@ static void add_to_relationships_list(type_list_relationships& list_relationship
 
 }
 
-
-Glib::ustring Utils::build_sql_select_fields_to_get(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const type_sort_clause& sort_clause, Glib::ustring& sql_part_from, Glib::ustring& sql_part_leftouterjoin)
+void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder, const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const type_sort_clause& sort_clause)
 {
-  //Initialize output parameters:
-  sql_part_from = Glib::ustring();
-  sql_part_leftouterjoin = Glib::ustring();
-
   //Get all relationships used in the query:
   typedef std::list< sharedptr<const UsesRelationship> > type_list_relationships;
   type_list_relationships list_relationships;
@@ -261,10 +256,27 @@ Glib::ustring Utils::build_sql_select_fields_to_get(const Glib::ustring& table_n
     sharedptr<const LayoutItem_Field> layout_item = iter->first;
     add_to_relationships_list(list_relationships, layout_item);
   }
-
-
-  Glib::ustring sql_part_fields;
-
+  
+  
+  
+  //LEFT OUTER JOIN will get the field values from the other tables,
+  //and give us our fields for this table even if there is no corresponding value in the other table.
+  for(type_list_relationships::const_iterator iter = list_relationships.begin(); iter != list_relationships.end(); ++iter)
+  {
+    sharedptr<const UsesRelationship> uses_relationship = *iter;
+    sharedptr<const Relationship> relationship = uses_relationship->get_relationship();
+    if(relationship->get_has_fields()) //TODO: Handle related_record has_fields.
+    {
+      uses_relationship->add_sql_join_alias_definition(builder);
+    }
+    else if(relationship->get_has_to_table())
+    {
+      //It is a relationship that only specifies the table, without specifying linking fields:
+      builder->select_add_target(relationship->get_to_table());
+    }
+  }
+  
+  bool one_added = false;
   for(type_vecConstLayoutFields::const_iterator iter = fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
   {
     Glib::ustring one_sql_part;
@@ -276,86 +288,44 @@ Glib::ustring Utils::build_sql_select_fields_to_get(const Glib::ustring& table_n
       continue;
     }
 
-    bool is_summary = false;
+    //Get the parent, such as the table name, or the alias name for the join:
+    const Glib::ustring parent = layout_item->get_sql_table_or_join_alias_name(table_name);
+      
     const LayoutItem_FieldSummary* fieldsummary = dynamic_cast<const LayoutItem_FieldSummary*>(layout_item.obj());
     if(fieldsummary)
-      is_summary = true;
-
-    //Add, for instance, "SUM(":
-    if(is_summary)
-      one_sql_part += fieldsummary->get_summary_type_sql() + '(';
-
-    one_sql_part += layout_item->get_sql_name(table_name);
-
-    //Close the summary bracket if necessary.
-    if(is_summary)
-      one_sql_part +=  ')';
-
-    //Append it to the big string of fields:
-    if(!one_sql_part.empty())
     {
-      if(!sql_part_fields.empty())
-        sql_part_fields += ", ";
-
-      sql_part_fields += one_sql_part;
+      builder->add_function(
+        fieldsummary->get_summary_type_sql(),
+        builder->add_id(layout_item->get_sql_name(table_name)) ); //TODO: It would be nice to specify the table here too.
     }
+    else
+      builder->select_add_field(layout_item->get_name(), parent);
+  
+    
+    one_added = true;
   }
 
-  if(sql_part_fields.empty())
+  if(!one_added)
   {
-    std::cerr << "Utils::build_sql_select_fields_to_get(): sql_part_fields.empty(): fieldsToGet.size()=" << fieldsToGet.size() << std::endl;
-    return sql_part_fields;
+    std::cerr << "Utils::build_sql_select_fields_to_get(): No fields added: fieldsToGet.size()=" << fieldsToGet.size() << std::endl;
+    return;
   }
-
-  //LEFT OUTER JOIN will get the field values from the other tables,
-  //and give us our fields for this table even if there is no corresponding value in the other table.
-  for(type_list_relationships::const_iterator iter = list_relationships.begin(); iter != list_relationships.end(); ++iter)
-  {
-    sharedptr<const UsesRelationship> uses_relationship = *iter;
-    sharedptr<const Relationship> relationship = uses_relationship->get_relationship();
-    if(relationship->get_has_fields()) //TODO: Handle related_record has_fields.
-    {
-      sql_part_leftouterjoin += uses_relationship->get_sql_join_alias_definition();
-    }
-    else if(relationship->get_has_to_table())
-    {
-      //It is a relationship that only specifies the table, without specifying linking fields:
-      if(!(sql_part_from.empty()))
-        sql_part_from += ", ";
-
-      sql_part_from += relationship->get_to_table();
-    }
-  }
-
-  return sql_part_fields;
 }
 
 
 Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const Gnome::Gda::SqlExpr& where_clause, const Glib::ustring& extra_join, const type_sort_clause& sort_clause, const Glib::ustring& extra_group_by, guint limit)
 {
-
   //Build the whole SQL statement:
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder->select_add_target(table_name);
 
-  //Get the fields to SELECT, plus the tables that they are selected FROM.
-  Glib::ustring sql_part_from;
-  Glib::ustring sql_part_leftouterjoin;
-  //TODO: sql_sort_clause_ids;
-
-/* TODO:
-  Utils::build_sql_select_add_fields_to_get(builder, table_name, fieldsToGet, sort_clause, sql_part_from, sql_part_leftouterjoin);
+  //Add the fields to SELECT, plus the tables that they are selected FROM.
+  Utils::build_sql_select_add_fields_to_get(builder, table_name, fieldsToGet, sort_clause);
   //builder->select_add_field(primary_key->get_name(), table_name);
-
-  if(!sql_part_from.empty())
-    result += (',' + sql_part_from);
-
-  if(!extra_join.empty())
-    sql_part_leftouterjoin += (' ' + extra_join + ' ');
-
-  if(!sql_part_leftouterjoin.empty())
-    result += (' ' + sql_part_leftouterjoin);
-
+  
+  //TODO:
+  //if(!extra_join.empty())
+ //   sql_part_leftouterjoin += (' ' + extra_join + ' ');
 
   //Add the WHERE clause:
   if(!where_clause.empty())
@@ -365,41 +335,36 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_where_clause(c
   }
 
   //Extra GROUP_BY clause for doubly-related records. This must be before the ORDER BY sort clause:
-  if(!extra_group_by.empty())
-  {
-    result += (' ' + extra_group_by + ' ');
-  }
+  //TODO:
+  //if(!extra_group_by.empty())
+  //{
+  //  result += (' ' + extra_group_by + ' ');
+  //}
 
   //Sort clause:
   if(!sort_clause.empty())
   {
-    Glib::ustring str_sort_clause;
-    for(type_sort_clause::const_iterator iter = sort_clause.begin(); iter != sort_clause.end(); ++iter)
+   for(type_sort_clause::const_iterator iter = sort_clause.begin(); iter != sort_clause.end(); ++iter)
     {
       sharedptr<const LayoutItem_Field> layout_item = iter->first;
       if(layout_item)
       {
         const bool ascending = iter->second;
 
-        if(!str_sort_clause.empty())
-          str_sort_clause += ", ";
-
-        str_sort_clause += "\"" + layout_item->get_sql_table_or_join_alias_name(table_name) + "\".\"" + layout_item->get_name() + "\" " + (ascending ? "ASC" : "DESC");
+        //TODO: Avoid the need for the "."
+        builder->select_order_by(
+          builder->add_id(layout_item->get_sql_table_or_join_alias_name("\"" + table_name) + "\".\"" + layout_item->get_name() + "\""),
+          ascending);
       }
     }
-
-    if(!str_sort_clause.empty())
-      result += " ORDER BY " + str_sort_clause;
   }
 
   //LIMIT clause:
-  if(!result.empty() && limit > 0)
+  if(limit > 0)
   {
-    char pchLimit[10];
-    sprintf(pchLimit, "%d", limit);
-    result += " LIMIT " + Glib::ustring(pchLimit);
+    builder->select_set_limit(limit);
   }
-*/
+
   return builder;
 }
 

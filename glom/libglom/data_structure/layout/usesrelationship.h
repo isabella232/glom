@@ -106,10 +106,10 @@ public:
    */ 
   Glib::ustring get_sql_join_alias_name() const;
 
-  /** Get a SQL fragment that defines the alias name as returned by 
+  /** Define the alias name as returned by 
    * get_sql_join_alias_name().
    */ 
-  Glib::ustring get_sql_join_alias_definition() const;
+  void add_sql_join_alias_definition(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder) const;
 
   /** Get the item's alias name, if it uses a relationship, or just get its table name.
    * @param parent_table The table to which the item (or its relatinoships) belong.

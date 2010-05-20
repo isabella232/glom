@@ -1526,7 +1526,7 @@ bool insert_example_data(Document* document, const Glib::ustring& table_name)
 }
 
 //static:
-Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder)
+Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder, bool use_cursor)
 {
   Glib::RefPtr<Gnome::Gda::DataModel> result;
 
@@ -1550,7 +1550,13 @@ Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::RefPtr<cons
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    result = gda_connection->statement_execute_select_builder(builder);
+    if(use_cursor)
+    {
+      //Specify the STATEMENT_MODEL_CURSOR, so that libgda only gets the rows that we actually use.
+      result = gda_connection->statement_execute_select_builder(builder, Gnome::Gda::STATEMENT_MODEL_CURSOR_FORWARD);
+    }
+    else
+      result = gda_connection->statement_execute_select_builder(builder);
   }
   catch(const Gnome::Gda::ConnectionError& ex)
   {
@@ -1570,7 +1576,14 @@ Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::RefPtr<cons
   }
 
 #else
-  result = gda_connection->statement_execute_select_builder(builder, ex);
+  if(use_cursor)
+  {
+    //Specify the STATEMENT_MODEL_CURSOR, so that libgda only gets the rows that we actually use.
+    result = gda_connection->statement_execute_select_builder(builder, Gnome::Gda::STATEMENT_MODEL_CURSOR_FORWARD, ex);
+  }
+  else
+    result = gda_connection->statement_execute_select_builder(builder, ex);
+
   if(ex.get())
     std::cerr << "debug: query_execute_select(): Glib::Error from statement_execute_select_builder(): " << ex->what() << std::endl;
 #endif //GLIBMM_EXCEPTIONS_ENABLED
@@ -1696,7 +1709,7 @@ bool query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder)
     std::cerr << "  full_query: " << full_query << std::endl;
     return false;
   }
-  catch(const Gnome::Gda::SqlError& ex) //TODO: Make sure that statement_execute_select_builder() is documented as throwing this.
+  catch(const Gnome::Gda::SqlError& ex) //TODO: Make sure that statement_execute_non_select_builder() is documented as throwing this.
   {
     std::cerr << "debug: query_execute_select(): SqlError: exception from statement_execute_non_select_builder(): " << ex.what() << std::endl;
     const std::string full_query = Utils::sqlbuilder_get_full_query(builder);

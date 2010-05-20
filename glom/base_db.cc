@@ -1887,6 +1887,7 @@ bool Base_DB::get_primary_key_is_in_foundset(const FoundSet& found_set, const Gn
 
 int Base_DB::count_rows_returned_by(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& sql_query)
 {
+  std::cout << "Base_DB::count_rows_returned_by(): debug: input sql_query=" << Utils::sqlbuilder_get_full_query(sql_query) << std::endl;
   if(!sql_query)
   {
     std::cerr << "Base_DB::count_rows_returned_by(): sql_query was null." << std::endl;
@@ -1976,12 +1977,10 @@ void Base_DB::set_found_set_where_clause_for_portal(FoundSet& found_set, const s
         fields.push_back(item_field);
     }
 
-    Glib::ustring sql_part_from;
-    Glib::ustring sql_part_leftouterjoin;
-    const Glib::ustring sql_part_fields = Utils::build_sql_select_fields_to_get(
-      found_set.m_table_name, fields, found_set.m_sort_clause,
-      sql_part_from, sql_part_leftouterjoin);
-    found_set.m_extra_group_by = "GROUP BY " + sql_part_fields;
+    //TODO:?
+    //const Glib::ustring sql_part_fields = Utils::build_sql_select_fields_to_get(
+    //  found_set.m_table_name, fields, found_set.m_sort_clause);
+    //found_set.m_extra_group_by = "GROUP BY " + sql_part_fields;
 
 
     //Adjust the WHERE clause appropriately for the extra JOIN:

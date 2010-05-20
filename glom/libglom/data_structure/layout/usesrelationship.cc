@@ -40,7 +40,7 @@ UsesRelationship::~UsesRelationship()
 
 bool UsesRelationship::operator==(const UsesRelationship& src) const
 {
-  return (m_relationship == src.m_relationship) 
+  return (m_relationship == src.m_relationship)
          && (m_related_relationship == src.m_related_relationship);
 }
 
@@ -150,10 +150,10 @@ Glib::ustring UsesRelationship::get_title_singular_used(const Glib::ustring& par
   sharedptr<Relationship> used = m_related_relationship;
   if(!used)
     used = m_relationship;
-    
+
   if(!used)
     return Glib::ustring();
-    
+
   const Glib::ustring result = used->get_title_singular();
   if(!result.empty())
     return result;
@@ -218,29 +218,38 @@ Glib::ustring UsesRelationship::get_sql_join_alias_name() const
   return result;
 }
 
-Glib::ustring UsesRelationship::get_sql_join_alias_definition() const
+void UsesRelationship::add_sql_join_alias_definition(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder) const
 {
-  Glib::ustring result;
+  // Specify an alias, to avoid ambiguity when using 2 relationships to the same table.
+  const Glib::ustring alias_name = get_sql_join_alias_name();
+  const guint to_target_id = builder->select_add_target(m_relationship->get_to_table(), alias_name);
 
+  // Add the JOIN:
   if(!get_has_related_relationship_name())
   {
-    result = " LEFT OUTER JOIN \"" + m_relationship->get_to_table() + "\""
-             + " AS \"" + get_sql_join_alias_name() + "\"" //Specify an alias, to avoid ambiguity when using 2 relationships to the same table.
-             + " ON (\"" + m_relationship->get_from_table() + "\".\"" + m_relationship->get_from_field() + "\" = \""
-             + get_sql_join_alias_name() + "\".\"" + m_relationship->get_to_field() + "\")";
+    builder->select_join_targets(
+      builder->add_id(m_relationship->get_from_table()), //TODO: Must we use the ID from select_add_target_id()?
+      to_target_id,
+      Gnome::Gda::SQL_SELECT_JOIN_LEFT,
+      builder->add_cond(
+        Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+        builder->add_id("\"" + m_relationship->get_from_table() + "\".\"" + m_relationship->get_from_field() + "\""),
+        builder->add_id("\"" + alias_name + "\".\"" + m_relationship->get_to_field() + "\"") ) );
   }
   else
   {
      UsesRelationship parent_relationship;
      parent_relationship.set_relationship(m_relationship);
-     result = " LEFT OUTER JOIN \"" + m_related_relationship->get_to_table() + "\""
-             + " AS \"" + get_sql_join_alias_name() + "\"" //Specify an alias, to avoid ambiguity when using 2 relationships to the same table.
-             + " ON (\"" + parent_relationship.get_sql_join_alias_name() + "\".\"" + m_related_relationship->get_from_field() + "\" = \""
-             + get_sql_join_alias_name() + "\".\"" + m_related_relationship->get_to_field() + "\")";
+
+     builder->select_join_targets(
+      builder->add_id(m_relationship->get_from_table()), //TODO: Must we use the ID from select_add_target_id()?
+      to_target_id,
+      Gnome::Gda::SQL_SELECT_JOIN_LEFT,
+      builder->add_cond(
+        Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+        builder->add_id("\"" + parent_relationship.get_sql_join_alias_name() + "\".\"" + m_related_relationship->get_from_field() + "\""),
+        builder->add_id("\"" + alias_name + "\".\"" + m_relationship->get_to_field() + "\"") ) );
   }
-  return result;
 }
 
 } //namespace Glom
-
-

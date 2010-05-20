@@ -24,6 +24,7 @@
 #include <libglom/connectionpool.h>
 #include <libglom/data_structure/glomconversions.h> //For util_build_sql
 #include <libglom/utils.h>
+#include <libglom/db_utils.h>
 
 #include "glom/application.h"
 
@@ -273,68 +274,14 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
     Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_column_fields, m_found_set.m_where_clause, m_found_set.m_extra_join, m_found_set.m_sort_clause, m_found_set.m_extra_group_by);
     //std::cout << "  Debug: DbTreeModel::refresh_from_database():  " << sql_query << std::endl;
 
-    const Application* app = Application::get_application();
-    if(app && app->get_show_sql_debug())
-    {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-      try
-      {
-#endif //GLIBMM_EXCEPTIONS_ENABLED
-        std::cout << "Debug: DbTreeModel::refresh_from_database():  " << sql_query << std::endl;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-      }
-      catch(const Glib::Exception& ex)
-      {
-        std::cout << "Debug: query string could not be converted to std::cout: " << ex.what() << std::endl;
-      }
-#endif //GLIBMM_EXCEPTIONS_ENABLED
-    }
-
-    Glib::RefPtr<Gnome::Gda::SqlParser> parser = m_connection->get_gda_connection()->create_parser();
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-    try
-    {
-      Glib::RefPtr<Gnome::Gda::Statement> stmt = sql_query->get_statement();
-      //Specify the STATEMENT_MODEL_CURSOR, so that libgda only gets the rows that we actually use.
-      m_gda_datamodel = m_connection->get_gda_connection()->statement_execute_select(stmt, Gnome::Gda::STATEMENT_MODEL_CURSOR_FORWARD);
-      //Examine the columns in the returned DataModel:
-      /*
-      for(int col = 0; col < m_gda_datamodel->get_n_columns(); ++col)
-      {
-        Glib::RefPtr<Gnome::Gda::Column> column = m_gda_datamodel->describe_column(col);
-        std::cout << "  debug: column index=" << col << ", name=" << column->get_name() << ", type=" << g_type_name(column->get_g_type()) << std::endl;
-      }
-      */
-    }
-    catch(const Glib::Exception& ex)
-    {
-      std::cerr << "DbTreeModel::refresh_from_database(): Glib::Exception caught." << std::endl;
-      m_gda_datamodel.reset(); //So that it is 0, so we can handle it below.
-    }
-    catch(const std::exception& ex)
-    {
-      std::cerr << "DbTreeModel::refresh_from_database(): std::exception caught." << std::endl;
-      m_gda_datamodel.reset(); //So that it is 0, so we can handle it below.
-    }
-#else
-    std::auto_ptr<Glib::Error> error;
-    Glib::RefPtr<Gnome::Gda::Statement> stmt = parser->parse_string(sql_query, error);
-    m_gda_datamodel = m_connection->get_gda_connection()->statement_execute_select(stmt, Gnome::Gda::STATEMENT_MODEL_CURSOR_FORWARD, error);
-    if(error.get())
-    {
-      m_gda_datamodel.reset(); //So that it is 0, so we can handle it below.
-    }
-#endif //GLIBMM_EXCEPTIONS_ENABLED
-
-    if(app && app->get_show_sql_debug())
-      std::cout << "  Debug: DbTreeModel::refresh_from_database(): The query execution has finished." << std::endl;
+    m_gda_datamodel = DbUtils::query_execute_select(sql_query, true /* use_cursor */);
 
     if(!m_gda_datamodel)
     {
       m_data_model_rows_count = 0;
       m_data_model_columns_count = m_columns_count;
 
-      std::cerr << "DbTreeModel::refresh_from_database(): error executing SQL: " << sql_query << std::endl;
+      std::cerr << "DbTreeModel::refresh_from_database(): error executing SQL." << std::endl;
       ConnectionPool::handle_error_cerr_only();
       return false; //No records were found.
     }
@@ -964,13 +911,7 @@ void DbTreeModel::get_record_counts(gulong& total, gulong& found) const
       builder->add_function("count", builder->add_id("*")); //TODO: Is * allowed here?
       builder->select_add_target(m_found_set.m_table_name);
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = m_connection->get_gda_connection()->statement_execute_select_builder(builder);
-#else
-      std::auto_ptr<Glib::Error> error;
-      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = m_connection->get_gda_connection()->statement_execute_select_builder(builder, Gnome::Gda::STATEMENT_MODEL_RANDOM_ACCESS, error);
-      // Ignore error, datamodel presence is checked below
-#endif //GLIBMM_EXCEPTIONS_ENABLED
+      Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(builder);
 
       if(datamodel)
       {

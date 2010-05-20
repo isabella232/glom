@@ -1,7 +1,23 @@
+2010-05-19  Murray Cumming  <murrayc@murrayc.com>
+
+	More use of SqlBuilder. Almost finished.
+
+	* glom/base_db.cc:
+	* glom/libglom/data_structure/layout/usesrelationship.[h|cc]:
+    Change get_sql_join_alias_definition() to get_sql_join_alias_definition().
+	* glom/libglom/db_utils.[h|cc]: query_execute_select(): Add an optional
+    use_cursor bool to use the non-random database access.
+	* glom/libglom/utils.[h|cc]: Change build_sql_select_fields_to_get() to
+    build_sql_select_add_fields_to_get().
+    build_sql_select_with_where_clause(): Use SqlBuilder.
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
+    refresh_from_database(): Use DbUtils::query_execute_select(), to simplify
+    the code. This is possible now that the function is not in BaseDB.
+
 2010-05-13  Murray Cumming  <murrayc@murrayc.com>
 
 	DbUtils: Catch SqlError exception.
-	
+
 	* glom/libglom/db_utils.cc: query_execute_select(), query_execute_select():
 	Catch SqlError too, as this seems to be thrown too.
 
@@ -9,17 +25,17 @@
 
 	DbUtils::query_execute(): Remove params parameter.
 
-	* glom/libglom/db_utils.[h|cc]: query_execute(): Remove the unused params 
+	* glom/libglom/db_utils.[h|cc]: query_execute(): Remove the unused params
 	parameter.
 
 2010-05-13  Murray Cumming  <murrayc@murrayc.com>
 
 	Use SqlBuilder in all possible remaining places.
-	
-	* glom/libglom/db_utils.[h|cc]: Renamed query_execute(string) to 
+
+	* glom/libglom/db_utils.[h|cc]: Renamed query_execute(string) to
 	query_execute_string() so we catch uses of it that could use SqlBuilder.
 
-	* glom/base_db.cc: Replaced some INSERT and DELETE string sql queries 
+	* glom/base_db.cc: Replaced some INSERT and DELETE string sql queries
 	with SqlBuilder.
 	* glom/base_db_table_data.cc:
 	* glom/libglom/db_utils.cc:
@@ -33,7 +49,7 @@
 
 	Remove redundant BaseDb::query_execute*() methods.
 
-	* glom/base_db.[h|cc]: Removed query_execute_select() and query_execute(). 
+	* glom/base_db.[h|cc]: Removed query_execute_select() and query_execute().
 	The same methods in DbUtils replace them.
 	* glom/libglom/db_utils.[h|cc]: Removed the query_execute_select(string) override.
 	* glom/mode_data/box_data_calendar_related.cc:

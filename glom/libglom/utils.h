@@ -57,12 +57,11 @@ Gnome::Gda::SqlExpr build_combined_where_expression(const Gnome::Gda::SqlExpr& a
 /** Generate a SQL statement to SELECT field values,
  * even if the fields are in related (or doubly related) records.
  */
-Glib::ustring build_sql_select_fields_to_get(
+void build_sql_select_add_fields_to_get(
+  const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder,
   const Glib::ustring& table_name,
   const type_vecConstLayoutFields& fieldsToGet,
-  const type_sort_clause& sort_clause,
-  Glib::ustring& sql_part_from,
-  Glib::ustring& sql_part_leftouterjoin);
+  const type_sort_clause& sort_clause);
 
 /** Generate a SQL statement to SELECT field values,
  * even if the fields are in related (or doubly related) records,
