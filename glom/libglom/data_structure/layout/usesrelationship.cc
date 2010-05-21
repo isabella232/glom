@@ -228,7 +228,7 @@ void UsesRelationship::add_sql_join_alias_definition(const Glib::RefPtr<Gnome::G
   if(!get_has_related_relationship_name())
   {
     builder->select_join_targets(
-      builder->add_id(m_relationship->get_from_table()), //TODO: Must we use the ID from select_add_target_id()?
+      builder->select_add_target(m_relationship->get_from_table()),
       to_target_id,
       Gnome::Gda::SQL_SELECT_JOIN_LEFT,
       builder->add_cond(
@@ -242,7 +242,7 @@ void UsesRelationship::add_sql_join_alias_definition(const Glib::RefPtr<Gnome::G
      parent_relationship.set_relationship(m_relationship);
 
      builder->select_join_targets(
-      builder->add_id(m_relationship->get_from_table()), //TODO: Must we use the ID from select_add_target_id()?
+      builder->select_add_target(m_relationship->get_from_table()), //TODO: Must we use the ID from select_add_target_id()?
       to_target_id,
       Gnome::Gda::SQL_SELECT_JOIN_LEFT,
       builder->add_cond(

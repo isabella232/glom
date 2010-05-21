@@ -1,5 +1,15 @@
 2010-05-21  Murray Cumming  <murrayc@murrayc.com>
 
+	UsesRelationship: Use SqlBuilder::select_add_target() with the join.
+
+	* glom/libglom/data_structure/layout/usesrelationship.cc:
+    add_sql_join_alias_definition(): Use select_add_target() instead of
+    add_id() with the join's first target, to avoid the warning about an
+    unknown ID, though we now get a warning about unimplmented code in libgda,
+    which I emailed the gnome-db mailing list about.
+
+2010-05-21  Murray Cumming  <murrayc@murrayc.com>
+
 	Really replace the last non-users string-based SQL query.
 
 	* glom/libglom/db_utils.cc:
