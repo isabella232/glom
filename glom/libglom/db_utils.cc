@@ -366,6 +366,8 @@ SystemPrefs get_database_preferences(Document* document)
 
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+  builder->select_add_target(GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
+
   builder->select_add_field(GLOM_STANDARD_TABLE_PREFS_FIELD_NAME, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
   builder->select_add_field(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_NAME, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
   builder->select_add_field(GLOM_STANDARD_TABLE_PREFS_FIELD_ORG_ADDRESS_STREET, GLOM_STANDARD_TABLE_PREFS_TABLE_NAME);
@@ -1458,24 +1460,16 @@ bool insert_example_data(Document* document, const Glib::ustring& table_name)
     //This check will slow this down, but it seems useful:
     //TODO: This can only work if we can distinguish , inside "" and , outside "":
     const Document::type_row_data& row_data = *iter;
-    Glib::ustring strNames;
-    Glib::ustring strVals;
     if(row_data.empty())
       break;
 
     //std::cout << "DEBUG: row_data size = " << row_data.size() << ", (fields size= " << vec_fields.size() << " )" << std::endl;
 
-    Glib::RefPtr<Gnome::Gda::Set> params = Gnome::Gda::Set::create();
-    Glom::ParameterNameGenerator generator;
+    Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_INSERT);
+    builder->set_table(table_name);
     for(unsigned int i = 0; i < row_data.size(); ++i) //TODO_Performance: Avoid calling size() so much.
     {
       //std::cout << "  DEBUG: i=" << i << ", row_data.size()=" << row_data.size() << std::endl;
-
-      if(i > 0)
-      {
-        strVals += ", ";
-        strNames += ", ";
-      }
 
       sharedptr<Field> field = vec_fields[i];
       if(!field)
@@ -1484,35 +1478,14 @@ bool insert_example_data(Document* document, const Glib::ustring& table_name)
         break;
       }
 
-      strNames += field->get_name();
-
-      Gnome::Gda::Value value = row_data[i];
-      //std::cout << "  DEBUG: example: field=" << field->get_name() << ", value=" << value.to_string() << std::endl;
-
-      //Add a SQL parameter for the value:
-      guint id = 0;
-      const Field::glom_field_type glom_type = field->get_glom_type();
-      Glib::RefPtr<Gnome::Gda::Holder> holder =
-        Gnome::Gda::Holder::create( Field::get_gda_type_for_glom_type(glom_type),
-          generator.get_next_name(id));
-
-      holder->set_not_null(false);
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-      holder->set_value_as_value(value);
-#else
-      std::auto_ptr<Glib::Error> holder_error;
-      holder->set_value_as_value(value, holder_error);
-#endif
-      params->add_holder(holder);
-
-      strVals += "##" + generator.get_name_from_id(id) + "::" + vec_fields[i]->get_gda_type_name();
+      builder->add_field_value(field->get_name(), row_data[i]);
     }
 
     //Create and parse the SQL query:
     //After this, the Parser will know how many SQL parameters there are in
     //the query, and allow us to set their values.
-    const Glib::ustring strQuery = "INSERT INTO \"" + table_name + "\" (" + strNames + ") VALUES (" + strVals + ")";
-    insert_succeeded = query_execute_string(strQuery, params);
+
+    insert_succeeded = query_execute(builder);
     if(!insert_succeeded)
       break;
   }
@@ -1522,6 +1495,7 @@ bool insert_example_data(Document* document, const Glib::ustring& table_name)
     if((*iter)->get_auto_increment())
       recalculate_next_auto_increment_value(table_name, (*iter)->get_name());
   }
+
   return insert_succeeded;
 }
 

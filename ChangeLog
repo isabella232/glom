@@ -1,9 +1,10 @@
-2010-05-14  Daniel Borgmann  <danielb@openismus.com>
+2010-05-21  Murray Cumming  <murrayc@murrayc.com>
 
-	reviewed by: <delete if not using a buddy>
-	patch by: <delete if not someone else's patch>
+	Really replace the last non-users string-based SQL query.
 
-	* glom/glom.glade:
+	* glom/libglom/db_utils.cc:
+    get_database_preferences(): Add a missing call to select_add_target().
+    insert_example_data(): Use SqlBuilder.
 
 2010-05-14  Daniel Borgmann  <danielb@openismus.com>
 
