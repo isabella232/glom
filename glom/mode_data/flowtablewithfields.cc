@@ -884,7 +884,7 @@ FlowTableWithFields::type_portals FlowTableWithFields::get_portals(const sharedp
       sharedptr<LayoutItem_Portal> portal = pPortalUI->get_portal();
       if(portal)
       {
-        sharedptr<Relationship> relationship = portal->get_relationship(); //In this case, we only care about the first relationship (not any child relationships), because that's what would trigger a change.
+        sharedptr<const Relationship> relationship = portal->get_relationship(); //In this case, we only care about the first relationship (not any child relationships), because that's what would trigger a change.
         if(relationship && (relationship->get_from_field() == from_key_name))
           result.push_back(pPortalUI);
       }

@@ -1944,7 +1944,7 @@ void Base_DB::set_found_set_where_clause_for_portal(FoundSet& found_set, const s
   }
 
 
-  sharedptr<Relationship> relationship = portal->get_relationship();
+  sharedptr<const Relationship> relationship = portal->get_relationship();
 
   // Notice that, in the case that this is a portal to doubly-related records,
   // The WHERE clause mentions the first-related table (though by the alias defined in extra_join)

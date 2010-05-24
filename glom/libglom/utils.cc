@@ -258,7 +258,6 @@ void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::Sq
   }
   
   
-  
   //LEFT OUTER JOIN will get the field values from the other tables,
   //and give us our fields for this table even if there is no corresponding value in the other table.
   for(type_list_relationships::const_iterator iter = list_relationships.begin(); iter != list_relationships.end(); ++iter)
@@ -267,7 +266,42 @@ void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::Sq
     sharedptr<const Relationship> relationship = uses_relationship->get_relationship();
     if(relationship->get_has_fields()) //TODO: Handle related_record has_fields.
     {
-      uses_relationship->add_sql_join_alias_definition(builder);
+      // Define the alias name as returned by get_sql_join_alias_name():
+
+      // Specify an alias, to avoid ambiguity when using 2 relationships to the same table.
+		  const Glib::ustring alias_name = uses_relationship->get_sql_join_alias_name();
+
+		  // Add the JOIN:
+		  if(!uses_relationship->get_has_related_relationship_name())
+		  {
+		    const guint to_target_id = builder->select_add_target(relationship->get_to_table(), alias_name);
+
+		    builder->select_join_targets(
+		      builder->select_add_target(relationship->get_from_table()),
+		      to_target_id,
+		      Gnome::Gda::SQL_SELECT_JOIN_LEFT,
+		      builder->add_cond(
+		        Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+		        builder->add_id("\"" + relationship->get_from_table() + "\".\"" + relationship->get_from_field() + "\""),
+		        builder->add_id("\"" + alias_name + "\".\"" + relationship->get_to_field() + "\"") ) );
+		  }
+		  else
+		  {
+		     UsesRelationship parent_relationship;
+		     parent_relationship.set_relationship(relationship);
+		     sharedptr<const Relationship> related_relationship = uses_relationship->get_related_relationship();
+
+		     const guint to_target_id = builder->select_add_target(related_relationship->get_to_table(), alias_name);
+
+		     builder->select_join_targets(
+		       builder->select_add_target(relationship->get_from_table()), //TODO: Must we use the ID from select_add_target_id()?
+		       to_target_id,
+		       Gnome::Gda::SQL_SELECT_JOIN_LEFT,
+		       builder->add_cond(
+		         Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+		         builder->add_id("\"" + parent_relationship.get_sql_join_alias_name() + "\".\"" + related_relationship->get_from_field() + "\""),
+		         builder->add_id("\"" + alias_name + "\".\"" + related_relationship->get_to_field() + "\"") ) );
+		  }
     }
     else if(relationship->get_has_to_table())
     {
@@ -422,7 +456,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
 {
   type_list_values_with_second list_values;
 
-  sharedptr<Relationship> choice_relationship;
+  sharedptr<const Relationship> choice_relationship;
   Glib::ustring choice_field, choice_second;
   field->get_formatting_used().get_choices(choice_relationship, choice_field, choice_second);
   if(!choice_relationship)

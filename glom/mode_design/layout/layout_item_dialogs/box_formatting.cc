@@ -231,7 +231,7 @@ void Box_Formatting::set_formatting(const FieldFormatting& format, bool show_num
     const Document::type_vec_relationships vecRelationships = document->get_relationships(m_table_name);
     m_combo_choices_relationship->set_relationships(vecRelationships);
 
-    sharedptr<Relationship> choices_relationship;
+    sharedptr<const Relationship> choices_relationship;
     Glib::ustring choices_field, choices_field_second;
     format.get_choices(choices_relationship, choices_field, choices_field_second);
 

@@ -1,3 +1,14 @@
+2010-05-25  Murray Cumming  <murrayc@murrayc-x61>
+
+	libglom: build_sql_select_add_fields_to_get(): Define joins here.
+
+	* glom/libglom/data_structure/layout/usesrelationship.[h|cc]:
+	Remove add_sql_join_alias_definition(), moving its code into 
+	Utils::build_sql_select_add_fields_to_get() because that was the only code 
+	that called it.
+	get/set_relationship(), get/set_related_relationship(): const corrections.
+	* several files: Adapt to const corrections.
+
 2010-05-24  Murray Cumming  <murrayc@murrayc.com>
 
 	UsesRelationship: Correct use of SqlBuilder for related relationships.

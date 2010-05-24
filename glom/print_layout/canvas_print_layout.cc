@@ -611,7 +611,7 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
       if(layoutitem_portal)
       {
         //Fill the related records table:
-        sharedptr<Relationship> relationship = layoutitem_portal->get_relationship();
+        sharedptr<const Relationship> relationship = layoutitem_portal->get_relationship();
         if(relationship)
         {
           sharedptr<Field> from_field = get_fields_for_table_one_field(relationship->get_from_table(), relationship->get_from_field());

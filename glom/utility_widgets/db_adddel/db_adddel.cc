@@ -844,7 +844,7 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
       }
       else if(item_field && item_field->get_formatting_used().get_has_related_choices())
       {
-        sharedptr<Relationship> choice_relationship;
+        sharedptr<const Relationship> choice_relationship;
         Glib::ustring choice_field, choice_second;
         item_field->get_formatting_used().get_choices(choice_relationship, choice_field, choice_second);
 

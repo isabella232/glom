@@ -154,7 +154,7 @@ bool Box_Data_Calendar_Related::fill_from_database()
     Gnome::Gda::Value date_end_value(date_end);
 
     //Add a WHERE clause for this date range:
-    sharedptr<Relationship> relationship = m_portal->get_relationship();
+    sharedptr<const Relationship> relationship = m_portal->get_relationship();
     Glib::ustring where_clause_to_table_name = relationship->get_to_table();
 
     sharedptr<LayoutItem_CalendarPortal> derived_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(m_portal);

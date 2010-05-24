@@ -2981,7 +2981,7 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
 
     set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED, format.get_has_related_choices() );
 
-    sharedptr<Relationship> choice_relationship;
+    sharedptr<const Relationship> choice_relationship;
     Glib::ustring choice_field, choice_second;
     format.get_choices(choice_relationship, choice_field, choice_second);
 

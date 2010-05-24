@@ -24,7 +24,6 @@
 #include <libglom/data_structure/numeric_format.h>
 #include <libglom/data_structure/relationship.h>
 #include <libglom/sharedptr.h>
-#include <libgdamm.h>
 
 namespace Glom
 {
@@ -60,17 +59,17 @@ public:
    * See also get_has_relationship_name() which can prevent the need for your  
    * own null sharedptr check.
    */ 
-  sharedptr<Relationship> get_relationship() const;
+  sharedptr<const Relationship> get_relationship() const;
 
-  void set_relationship(const sharedptr<Relationship>& relationship);
+  void set_relationship(const sharedptr<const Relationship>& relationship);
 
   /** Return the related relationship used by this item, if any, or a null sharedptr.
    * See also get_has_related_relationship_name() which can prevent the need for your  
    * own null sharedptr check.
    */ 
-  sharedptr<Relationship> get_related_relationship() const;
+  sharedptr<const Relationship> get_related_relationship() const;
 
-  void set_related_relationship(const sharedptr<Relationship>& relationship);
+  void set_related_relationship(const sharedptr<const Relationship>& relationship);
 
   /** Returns either the @a parent_table, related to table, or doubly-related to-table.
    */
@@ -105,12 +104,7 @@ public:
    * This will always be the same string for items that have the same definition.
    */ 
   Glib::ustring get_sql_join_alias_name() const;
-
-  /** Define the alias name as returned by 
-   * get_sql_join_alias_name().
-   */ 
-  void add_sql_join_alias_definition(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder) const;
-
+  
   /** Get the item's alias name, if it uses a relationship, or just get its table name.
    * @param parent_table The table to which the item (or its relatinoships) belong.
    */ 
@@ -119,8 +113,8 @@ public:
 private:
 
   //This is just cached data, so we don't need to always lookup the relationship details from the document, from the name.
-  sharedptr<Relationship> m_relationship;
-  sharedptr<Relationship> m_related_relationship; //Rarely used. It is for showing fields from the (related) relationships of related tables.
+  sharedptr<const Relationship> m_relationship;
+  sharedptr<const Relationship> m_related_relationship; //Rarely used. It is for showing fields from the (related) relationships of related tables.
 };
 
 } //namespace Glom

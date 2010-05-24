@@ -127,7 +127,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
       }
       else if(field->get_formatting_used().get_has_related_choices())
       {
-        sharedptr<Relationship> choice_relationship;
+        sharedptr<const Relationship> choice_relationship;
         Glib::ustring choice_field, choice_second;
         field->get_formatting_used().get_choices(choice_relationship, choice_field, choice_second);
         if(choice_relationship && !choice_field.empty())

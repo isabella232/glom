@@ -231,7 +231,7 @@ void FieldFormatting::set_has_related_choices(bool val)
   m_choices_related = val;
 }
 
-void FieldFormatting::get_choices(sharedptr<Relationship>& relationship, Glib::ustring& field, Glib::ustring& field_second) const
+void FieldFormatting::get_choices(sharedptr<const Relationship>& relationship, Glib::ustring& field, Glib::ustring& field_second) const
 {
   relationship = get_relationship();
 
@@ -241,7 +241,7 @@ void FieldFormatting::get_choices(sharedptr<Relationship>& relationship, Glib::u
   //g_warning("FieldFormatting::get_choices, %s, %s, %s", m_choices_related_relationship->c_str(), m_choices_related_field.c_str(), m_choices_related_field_second.c_str());
 }
 
-void FieldFormatting::set_choices(const sharedptr<Relationship>& relationship, const Glib::ustring& field, const Glib::ustring& field_second)
+void FieldFormatting::set_choices(const sharedptr<const Relationship>& relationship, const Glib::ustring& field, const Glib::ustring& field_second)
 {
   set_relationship(relationship);
 
