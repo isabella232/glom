@@ -1,3 +1,11 @@
+2010-05-24  Murray Cumming  <murrayc@murrayc.com>
+
+	UsesRelationship: Correct use of SqlBuilder for related relationships.
+	
+	* glom/libglom/data_structure/layout/usesrelationship.cc:
+	add_sql_join_alias_definition(): Correct the join definition for 
+	related relationships.
+
 2010-05-21  Murray Cumming  <murrayc@murrayc.com>
 
 	UsesRelationship: Use SqlBuilder::select_add_target() with the join.
