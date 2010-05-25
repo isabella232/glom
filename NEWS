@@ -1,3 +1,22 @@
+1.15.1 (unstable):
+
+* Uses Gnome::Gda::SqlBuilder in most places to avoid manually building SQL 
+  query strings. This should be more robust and safer.
+  (Murray Cumming)
+* Correct the position of "Records / Found" labels.
+  (Daniel Borgmann)
+* Find:
+  - Make Find mode a toggle and move it to the Edit menu.
+  - Fix a crash when using find mode.
+  (Daniel Borgmann)
+* List view:
+  - Don't add a new row when cancelling editing of a placeholder row.
+  - Don't allow placeholder rows to be delteted.
+  (Daniel Borgmann)
+* Build libglom and pyglom API documentation.
+  (Murray Cumming, Daniel Elstner)
+
+  
 1.14.2 (stable):
 
 * Fix document saving (horribly broken in 1.14.1).
