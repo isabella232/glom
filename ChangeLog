@@ -1,5 +1,13 @@
 2010-05-25  Murray Cumming  <murrayc@murrayc-x61>
 
+	Document: get_field_used_in_relationship_to_one(): const correction.
+
+	* glom/libglom/document/document.[h|cc]: 
+	get_field_used_in_relationship_to_one(): Make the relationship parameter 
+	const and adapt other code.
+
+2010-05-25  Murray Cumming  <murrayc@murrayc-x61>
+
 	libglom: build_sql_select_add_fields_to_get(): Define joins here.
 
 	* glom/libglom/data_structure/layout/usesrelationship.[h|cc]:

@@ -3892,9 +3892,9 @@ bool Document::get_relationship_is_to_one(const Glib::ustring& table_name, const
   return false;
 }
 
-sharedptr<Relationship> Document::get_field_used_in_relationship_to_one(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& layout_field) const
+sharedptr<const Relationship> Document::get_field_used_in_relationship_to_one(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& layout_field) const
 {
-  sharedptr<Relationship> result;
+  sharedptr<const Relationship> result;
 
   if(!layout_field)
   {
@@ -3914,7 +3914,7 @@ sharedptr<Relationship> Document::get_field_used_in_relationship_to_one(const Gl
   const Glib::ustring field_name = layout_field->get_name();
   for(type_vec_relationships::const_iterator iterRel = iterFind->second.m_relationships.begin(); iterRel != iterFind->second.m_relationships.end(); ++iterRel)
   {
-    sharedptr<Relationship> relationship = *iterRel;
+    sharedptr<const Relationship> relationship = *iterRel;
     if(relationship)
     {
       //If the relationship uses the field
