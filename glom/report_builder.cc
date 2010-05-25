@@ -323,8 +323,7 @@ void ReportBuilder::report_build_records(const FoundSet& found_set, xmlpp::Eleme
 
     Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
       fieldsToGet,
-      found_set.m_where_clause, Glib::ustring() /* extra_join */, found_set.m_sort_clause,
-      Glib::ustring(),
+      found_set.m_where_clause, sharedptr<const Relationship>() /* extra_join */, found_set.m_sort_clause,
       limit);
 
     bool records_found = false;

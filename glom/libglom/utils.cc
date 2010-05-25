@@ -195,7 +195,7 @@ Glib::ustring Utils::string_replace(const Glib::ustring& src, const Glib::ustrin
 }
 
 
-Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Gnome::Gda::SqlExpr& where_clause, const Glib::ustring& extra_join, const type_sort_clause& sort_clause, const Glib::ustring& extra_group_by, guint limit)
+Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const Gnome::Gda::SqlExpr& where_clause, const sharedptr<const Relationship>& extra_join, const type_sort_clause& sort_clause, guint limit)
 {
   //TODO_Performance:
   type_vecConstLayoutFields constFieldsToGet;
@@ -204,7 +204,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_where_clause(c
     constFieldsToGet.push_back(*iter);
   }
 
-  return build_sql_select_with_where_clause(table_name, constFieldsToGet, where_clause, extra_join, sort_clause, extra_group_by, limit);
+  return build_sql_select_with_where_clause(table_name, constFieldsToGet, where_clause, extra_join, sort_clause, limit);
 }
 
 
@@ -239,7 +239,59 @@ static void add_to_relationships_list(type_list_relationships& list_relationship
 
 }
 
-void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder, const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const type_sort_clause& sort_clause)
+static void builder_add_join(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder, const sharedptr<const UsesRelationship>& uses_relationship)
+{
+  sharedptr<const Relationship> relationship = uses_relationship->get_relationship();
+  if(!relationship->get_has_fields()) //TODO: Handle related_record has_fields.
+  {
+    if(relationship->get_has_to_table())
+    {
+      //It is a relationship that only specifies the table, without specifying linking fields:
+      builder->select_add_target(relationship->get_to_table());
+    }
+
+    return;
+  }
+    
+  // Define the alias name as returned by get_sql_join_alias_name():
+
+  // Specify an alias, to avoid ambiguity when using 2 relationships to the same table.
+  const Glib::ustring alias_name = uses_relationship->get_sql_join_alias_name();
+
+  // Add the JOIN:
+  if(!uses_relationship->get_has_related_relationship_name())
+  {
+    const guint to_target_id = builder->select_add_target(relationship->get_to_table(), alias_name);
+
+    builder->select_join_targets(
+      builder->select_add_target(relationship->get_from_table()),
+      to_target_id,
+      Gnome::Gda::SQL_SELECT_JOIN_LEFT,
+      builder->add_cond(
+        Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+        builder->add_id("\"" + relationship->get_from_table() + "\".\"" + relationship->get_from_field() + "\""),
+        builder->add_id("\"" + alias_name + "\".\"" + relationship->get_to_field() + "\"") ) );
+  }
+  else
+  {
+     UsesRelationship parent_relationship;
+     parent_relationship.set_relationship(relationship);
+     sharedptr<const Relationship> related_relationship = uses_relationship->get_related_relationship();
+
+     const guint to_target_id = builder->select_add_target(related_relationship->get_to_table(), alias_name);
+
+     builder->select_join_targets(
+       builder->select_add_target(relationship->get_from_table()), //TODO: Must we use the ID from select_add_target_id()?
+       to_target_id,
+       Gnome::Gda::SQL_SELECT_JOIN_LEFT,
+       builder->add_cond(
+         Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+         builder->add_id("\"" + parent_relationship.get_sql_join_alias_name() + "\".\"" + related_relationship->get_from_field() + "\""),
+         builder->add_id("\"" + alias_name + "\".\"" + related_relationship->get_to_field() + "\"") ) );
+  }
+}
+
+void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder, const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const type_sort_clause& sort_clause, bool extra_join)
 {
   //Get all relationships used in the query:
   typedef std::list< sharedptr<const UsesRelationship> > type_list_relationships;
@@ -263,51 +315,7 @@ void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::Sq
   for(type_list_relationships::const_iterator iter = list_relationships.begin(); iter != list_relationships.end(); ++iter)
   {
     sharedptr<const UsesRelationship> uses_relationship = *iter;
-    sharedptr<const Relationship> relationship = uses_relationship->get_relationship();
-    if(relationship->get_has_fields()) //TODO: Handle related_record has_fields.
-    {
-      // Define the alias name as returned by get_sql_join_alias_name():
-
-      // Specify an alias, to avoid ambiguity when using 2 relationships to the same table.
-		  const Glib::ustring alias_name = uses_relationship->get_sql_join_alias_name();
-
-		  // Add the JOIN:
-		  if(!uses_relationship->get_has_related_relationship_name())
-		  {
-		    const guint to_target_id = builder->select_add_target(relationship->get_to_table(), alias_name);
-
-		    builder->select_join_targets(
-		      builder->select_add_target(relationship->get_from_table()),
-		      to_target_id,
-		      Gnome::Gda::SQL_SELECT_JOIN_LEFT,
-		      builder->add_cond(
-		        Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-		        builder->add_id("\"" + relationship->get_from_table() + "\".\"" + relationship->get_from_field() + "\""),
-		        builder->add_id("\"" + alias_name + "\".\"" + relationship->get_to_field() + "\"") ) );
-		  }
-		  else
-		  {
-		     UsesRelationship parent_relationship;
-		     parent_relationship.set_relationship(relationship);
-		     sharedptr<const Relationship> related_relationship = uses_relationship->get_related_relationship();
-
-		     const guint to_target_id = builder->select_add_target(related_relationship->get_to_table(), alias_name);
-
-		     builder->select_join_targets(
-		       builder->select_add_target(relationship->get_from_table()), //TODO: Must we use the ID from select_add_target_id()?
-		       to_target_id,
-		       Gnome::Gda::SQL_SELECT_JOIN_LEFT,
-		       builder->add_cond(
-		         Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-		         builder->add_id("\"" + parent_relationship.get_sql_join_alias_name() + "\".\"" + related_relationship->get_from_field() + "\""),
-		         builder->add_id("\"" + alias_name + "\".\"" + related_relationship->get_to_field() + "\"") ) );
-		  }
-    }
-    else if(relationship->get_has_to_table())
-    {
-      //It is a relationship that only specifies the table, without specifying linking fields:
-      builder->select_add_target(relationship->get_to_table());
-    }
+    builder_add_join(builder, uses_relationship);
   }
   
   bool one_added = false;
@@ -334,7 +342,13 @@ void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::Sq
       builder->add_field_id(id_function);
     }
     else
-      builder->select_add_field(layout_item->get_name(), parent);
+    {
+      const guint id = builder->select_add_field(layout_item->get_name(), parent);
+
+      //Avoid duplicate records with doubly-related fields:
+      if(extra_join)
+        builder->select_group_by(id);
+    }
   
     
     one_added = true;
@@ -348,19 +362,23 @@ void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::Sq
 }
 
 
-Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const Gnome::Gda::SqlExpr& where_clause, const Glib::ustring& extra_join, const type_sort_clause& sort_clause, const Glib::ustring& extra_group_by, guint limit)
+Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const Gnome::Gda::SqlExpr& where_clause, const sharedptr<const Relationship>& extra_join, const type_sort_clause& sort_clause, guint limit)
 {
   //Build the whole SQL statement:
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder->select_add_target(table_name);
 
   //Add the fields to SELECT, plus the tables that they are selected FROM.
-  Utils::build_sql_select_add_fields_to_get(builder, table_name, fieldsToGet, sort_clause);
-  //builder->select_add_field(primary_key->get_name(), table_name);
+  //We tell it whether extra_join is empty, so it can do an extra GROUP BY if necessary.
+  //TODO: Try to use DISTINCT instead, with a proper test case.
+  Utils::build_sql_select_add_fields_to_get(builder, table_name, fieldsToGet, sort_clause, extra_join /* bool */);
   
-  //TODO:
-  //if(!extra_join.empty())
- //   sql_part_leftouterjoin += (' ' + extra_join + ' ');
+  if(extra_join)
+  {
+    sharedptr<UsesRelationship> uses_relationship;
+    uses_relationship->set_relationship(extra_join);
+    builder_add_join(builder, uses_relationship);
+  }
 
   //Add the WHERE clause:
   if(!where_clause.empty())
@@ -368,13 +386,6 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_where_clause(c
     const int id = builder->import_expression(where_clause);
     builder->set_where(id);
   }
-
-  //Extra GROUP_BY clause for doubly-related records. This must be before the ORDER BY sort clause:
-  //TODO:
-  //if(!extra_group_by.empty())
-  //{
-  //  result += (' ' + extra_group_by + ' ');
-  //}
 
   //Sort clause:
   if(!sort_clause.empty())
@@ -446,7 +457,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_key(const Glib
   {
     const Gnome::Gda::SqlExpr where_clause = build_simple_where_expression(table_name, key_field, key_value);
     return Utils::build_sql_select_with_where_clause(table_name, fieldsToGet, where_clause,
-      Glib::ustring(), type_sort_clause(),  Glib::ustring(), limit);
+      sharedptr<const Relationship>(), type_sort_clause(), limit);
   }
 
   return Glib::RefPtr<Gnome::Gda::SqlBuilder>();

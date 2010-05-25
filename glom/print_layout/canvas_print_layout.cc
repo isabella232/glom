@@ -627,8 +627,7 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
 
   Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
     fieldsToGet,
-    found_set.m_where_clause, Glib::ustring() /* extra_join */, found_set.m_sort_clause, 
-    Glib::ustring(),
+    found_set.m_where_clause, sharedptr<const Relationship>() /* extra_join */, found_set.m_sort_clause,
     1);
   
   bool records_found = false;
@@ -732,7 +731,7 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
   found_set.m_table_name = portal->get_table_used(Glib::ustring() /* parent table_name, not used. */);
   set_found_set_where_clause_for_portal(found_set, portal, foreign_key_value);
 
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fields_shown, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause, found_set.m_extra_group_by);
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fields_shown, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause);
   //std::cout << "DEBUG: sql_query=" << sql_query << std::endl;
   Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(sql_query);
   if(!(datamodel))

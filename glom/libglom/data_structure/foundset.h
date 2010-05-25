@@ -48,9 +48,8 @@ public:
   bool has_no_criteria() const;
 
   Glib::ustring m_table_name;
-  Glib::ustring m_extra_join; // Only used for doubly-related related records (portals), in which case the WHERE clause is also slightly different.
+  sharedptr<const Relationship> m_extra_join; // Only used for doubly-related related records (portals), in which case the WHERE clause is also slightly different.
   Gnome::Gda::SqlExpr m_where_clause;
-  Glib::ustring m_extra_group_by;  // Only used for doubly-related related records (portals), in which case the WHERE clause is also slightly different.
 
   ///field, ascending
   typedef std::pair< sharedptr<const LayoutItem_Field>, bool> type_pair_sort_field;

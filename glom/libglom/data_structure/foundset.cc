@@ -31,7 +31,6 @@ FoundSet::FoundSet(const FoundSet& src)
 :  m_table_name(src.m_table_name),
    m_extra_join(src.m_extra_join),
    m_where_clause(src.m_where_clause),
-   m_extra_group_by(src.m_extra_group_by),
    m_sort_clause(src.m_sort_clause)
 {
 }
@@ -41,7 +40,6 @@ FoundSet& FoundSet::operator=(const FoundSet& src)
   m_table_name = src.m_table_name;
   m_extra_join = src.m_extra_join;
   m_where_clause = src.m_where_clause;
-  m_extra_group_by = src.m_extra_group_by;
   m_sort_clause = src.m_sort_clause;
 
   return *this;
@@ -52,7 +50,6 @@ bool FoundSet::operator==(const FoundSet& src) const
   return (m_table_name == src.m_table_name)
       && (m_extra_join == src.m_extra_join)
       /* TODO: && (m_where_clause == src.m_where_clause) */
-      && (m_extra_group_by == src.m_extra_group_by)
       && (m_sort_clause == src.m_sort_clause);
 }
 

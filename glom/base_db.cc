@@ -1343,7 +1343,7 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const sharedptr<Field>& f
   Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_where_clause(found_set.m_table_name,
     list_fields,
     found_set.m_where_clause,
-    Glib::ustring(), type_sort_clause(), Glib::ustring(),
+    sharedptr<const Relationship>() /* extra_join */, type_sort_clause(),
     1 /* limit */);
 
   Glib::RefPtr<const Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(sql_query);
@@ -1934,8 +1934,7 @@ void Base_DB::set_found_set_where_clause_for_portal(FoundSet& found_set, const s
 {
   found_set.m_table_name = Glib::ustring();
   found_set.m_where_clause = Gnome::Gda::SqlExpr();
-  found_set.m_extra_join = Glib::ustring();
-  found_set.m_extra_group_by = Glib::ustring();
+  found_set.m_extra_join = sharedptr<const Relationship>();
 
   if( !portal
       || Conversions::value_is_empty(foreign_key_value) )
@@ -1961,25 +1960,7 @@ void Base_DB::set_found_set_where_clause_for_portal(FoundSet& found_set, const s
     //Add the extra JOIN:
     sharedptr<UsesRelationship> uses_rel_temp = sharedptr<UsesRelationship>::create();
     uses_rel_temp->set_relationship(relationship);
-    //found_set.m_extra_join = uses_rel_temp->get_sql_join_alias_definition();
-    found_set.m_extra_join = "LEFT OUTER JOIN \"" + relationship->get_to_table() + "\" AS \"" + uses_rel_temp->get_sql_join_alias_name() + "\" ON (\"" + uses_rel_temp->get_sql_join_alias_name() + "\".\"" + relationship_related->get_from_field() + "\" = \"" + relationship_related->get_to_table() + "\".\"" + relationship_related->get_to_field() + "\")";
-
-
-    //Add an extra GROUP BY to ensure that we get no repeated records from the doubly-related table:
-    LayoutGroup::type_list_items portal_items = portal->get_items();
-    Utils::type_vecConstLayoutFields fields;
-    for(LayoutGroup::type_list_items::iterator iter = portal_items.begin(); iter != portal_items.end(); ++iter)
-    {
-      sharedptr<LayoutItem_Field> item_field = sharedptr<LayoutItem_Field>::cast_dynamic(*iter);
-      if(item_field)
-        fields.push_back(item_field);
-    }
-
-    //TODO:?
-    //const Glib::ustring sql_part_fields = Utils::build_sql_select_fields_to_get(
-    //  found_set.m_table_name, fields, found_set.m_sort_clause);
-    //found_set.m_extra_group_by = "GROUP BY " + sql_part_fields;
-
+    found_set.m_extra_join = relationship;
 
     //Adjust the WHERE clause appropriately for the extra JOIN:
     where_clause_to_table_name = uses_rel_temp->get_sql_join_alias_name();
@@ -1991,7 +1972,6 @@ void Base_DB::set_found_set_where_clause_for_portal(FoundSet& found_set, const s
     //std::cout << "extra_join where_clause_to_key_field=" << where_clause_to_key_field->get_name() << std::endl;
   }
 
-  // TODO: Where is this used? Should we use parameters for this query instead of sql()?
   if(where_clause_to_key_field)
   {
     found_set.m_where_clause =

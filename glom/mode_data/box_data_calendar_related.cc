@@ -197,7 +197,7 @@ bool Box_Data_Calendar_Related::fill_from_database()
     //Do one SQL query for the whole month and store the cached values here:
     clear_cached_database_values();
 
-    Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_FieldsShown, where_clause, m_found_set.m_extra_join, m_found_set.m_sort_clause, m_found_set.m_extra_group_by);
+    Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_FieldsShown, where_clause, m_found_set.m_extra_join, m_found_set.m_sort_clause);
     //std::cout << "DEBUG: sql_query=" << sql_query << std::endl;
     Glib::RefPtr<const Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(sql_query);
     if(!(datamodel))

@@ -471,7 +471,7 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
           layout_item_temp->set_full_field_details(field_primary_key);
           type_vecLayoutFields layout_fields;
           layout_fields.push_back(layout_item_temp);
-          Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query_without_sort = Utils::build_sql_select_with_where_clause(found_set.m_table_name, layout_fields, found_set.m_where_clause, found_set.m_extra_join, type_sort_clause(), found_set.m_extra_group_by);
+          Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query_without_sort = Utils::build_sql_select_with_where_clause(found_set.m_table_name, layout_fields, found_set.m_where_clause, found_set.m_extra_join, type_sort_clause());
           const int count = Base_DB::count_rows_returned_by(sql_query_without_sort);
           if(count < 10000) //Arbitrary large number.
             found_set.m_sort_clause.push_back( type_pair_sort_field(layout_item_sort, true /* ascending */) );
@@ -687,7 +687,7 @@ void Frame_Glom::export_data_to_vector(Document::type_example_rows& the_vector, 
     return;
   }
 
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause, found_set.m_extra_group_by);
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause);
 
   //TODO: Lock the database (prevent changes) during export.
   Glib::RefPtr<Gnome::Gda::DataModel> result = DbUtils::query_execute_select(query);
@@ -737,7 +737,7 @@ void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const FoundSet
     return;
   }
 
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause, found_set.m_extra_group_by);
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause);
 
   //TODO: Lock the database (prevent changes) during export.
   Glib::RefPtr<const Gnome::Gda::DataModel> result = DbUtils::query_execute_select(query);
@@ -789,7 +789,7 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
     return;
   }
 
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause, found_set.m_extra_group_by);
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> query = Utils::build_sql_select_with_where_clause(found_set.m_table_name, fieldsSequence, found_set.m_where_clause, found_set.m_extra_join, found_set.m_sort_clause);
 
   //TODO: Lock the database (prevent changes) during export.
   Glib::RefPtr<const Gnome::Gda::DataModel> result = DbUtils::query_execute_select(query);

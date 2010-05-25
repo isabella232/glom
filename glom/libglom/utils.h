@@ -61,7 +61,8 @@ void build_sql_select_add_fields_to_get(
   const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder,
   const Glib::ustring& table_name,
   const type_vecConstLayoutFields& fieldsToGet,
-  const type_sort_clause& sort_clause);
+  const type_sort_clause& sort_clause,
+  bool extra_join);
 
 /** Generate a SQL statement to SELECT field values,
  * even if the fields are in related (or doubly related) records,
@@ -71,9 +72,8 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_with_where_clause(
   const Glib::ustring& table_name,
   const type_vecLayoutFields& fieldsToGet,
   const Gnome::Gda::SqlExpr& where_clause = Gnome::Gda::SqlExpr(),
-  const Glib::ustring& extra_join = Glib::ustring(),
+  const sharedptr<const Relationship>& extra_join = sharedptr<const Relationship>(),
   const type_sort_clause& sort_clause = type_sort_clause(),
-  const Glib::ustring& extra_group_by = Glib::ustring(),
   guint limit = 0);
 
 /** Just a version of build_sql_select_with_where_clause() that takes a list of const fields.
@@ -82,9 +82,8 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_with_where_clause(
   const Glib::ustring& table_name,
   const type_vecConstLayoutFields& fieldsToGet,
   const Gnome::Gda::SqlExpr& where_clause = Gnome::Gda::SqlExpr(),
-  const Glib::ustring& extra_join = Glib::ustring(),
+  const sharedptr<const Relationship>& extra_join = sharedptr<const Relationship>(),
   const type_sort_clause& sort_clause = type_sort_clause(),
-  const Glib::ustring& extra_group_by = Glib::ustring(),
   guint limit = 0);
 
 Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_with_key(
