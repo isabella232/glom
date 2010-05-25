@@ -375,7 +375,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_where_clause(c
   
   if(extra_join)
   {
-    sharedptr<UsesRelationship> uses_relationship;
+    sharedptr<UsesRelationship> uses_relationship = sharedptr<UsesRelationship>::create();
     uses_relationship->set_relationship(extra_join);
     builder_add_join(builder, uses_relationship);
   }

@@ -1,4 +1,8 @@
-2010-05-25  Murray Cumming  <murrayc@murrayc-x61>
+2010-05-25  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/libglom/utils.cc: build_sql_select_with_where_clause(): Fix a crash.
+
+2010-05-25  Murray Cumming  <murrayc@murrayc.com>
 
 	libglom: Utils: Avoid SQL strings for extra_join for doubly-related records.
 
@@ -21,7 +25,7 @@
 	* glom/report_builder.cc:
 	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc: Adapt.
 
-2010-05-25  Murray Cumming  <murrayc@murrayc-x61>
+2010-05-25  Murray Cumming  <murrayc@murrayc.com>
 
 	Document: get_field_used_in_relationship_to_one(): const correction.
 
@@ -29,7 +33,7 @@
 	get_field_used_in_relationship_to_one(): Make the relationship parameter 
 	const and adapt other code.
 
-2010-05-25  Murray Cumming  <murrayc@murrayc-x61>
+2010-05-25  Murray Cumming  <murrayc@murrayc.com>
 
 	libglom: build_sql_select_add_fields_to_get(): Define joins here.
 
@@ -274,7 +278,7 @@
 
 1.14.2:
 
-2010-05-02  Murray Cumming  <murrayc@murrayc-x61>
+2010-05-02  Murray Cumming  <murrayc@murrayc.com>
 
 	Python calculations: Really convert to expected types.
 
@@ -381,7 +385,7 @@ This is the master branch. See also the glom-1-14 branch.
 	* tests/test_selfhosting_new_empty.cc: Move out of the sub-directories,
 	because they do not need extra files.
 
-2010-04-27  Murray Cumming  <murrayc@murrayc-x61>
+2010-04-27  Murray Cumming  <murrayc@murrayc.com>
 
 	PyGlom: Don't use deprecated boost::python::args.
 
@@ -762,7 +766,7 @@ This is the master branch. See also the glom-1-14 branch.
 	* Several *.cc files: Don't bother calling set_icon_name() after calling
 	get_glade_widget_derived_with_warning().
 
-2010-04-10  Murray Cumming  <murrayc@murrayc-x61>
+2010-04-10  Murray Cumming  <murrayc@murrayc.com>
 
   dialog_run_with_help(): Get the help ID from the class.
 
@@ -2862,7 +2866,7 @@ This is the master branch. See also the glom-1-14 branch.
 	* glom/utility_widgets/comboentryglom.cc: init(): On Maemo, remove the
 	duplicate first column and do not expand the first column.
 
-2009-10-08  Murray Cumming  <murrayc@murrayc-x61>
+2009-10-08  Murray Cumming  <murrayc@murrayc.com>
 
 	Maemo 5: List view: Subtly improve the separating lines.
 
@@ -4473,7 +4477,7 @@ Refactoring Dialog_Import_CSV: created testcase for the CsvParser's signal emiss
 	* glom/bakery/app_withdoc_gtk.[h|cc]: Remove the toolbar widget because
 	we hide it anyway.
 
-2009-07-05  Murray Cumming  <murrayc@murrayc-x61>
+2009-07-05  Murray Cumming  <murrayc@murrayc.com>
 
 	* glom/application.cc: update_network_shared_ui(): Un-ifndef this for
 	client-only.
@@ -4528,7 +4532,7 @@ Refactoring Dialog_Import_CSV: created testcase for the CsvParser's signal emiss
 	* glom/utils_ui.h:
 	* glom/xsl_utils.cc: Adapted, using config.h instead of libglom_config.h
 
-2009-07-04  Murray Cumming  <murrayc@murrayc-x61>
+2009-07-04  Murray Cumming  <murrayc@murrayc.com>
 
 	libglom: Always enable developer-mode (!client-only) API.
 
