@@ -175,9 +175,6 @@ AS_IF([test "x$glom_maemo_launcher" = xyes],
 PKG_CHECK_MODULES([LIBGLOM], [$REQUIRED_LIBGLOM_LIBS])
 PKG_CHECK_MODULES([GLOM], [$REQUIRED_GLOM_LIBS])
 
-# Flags for building the included libegg
-PKG_CHECK_MODULES([EGG], [gthread-2.0 gtk+-2.0])
-
 MM_PKG_CONFIG_SUBST([GLIB_GENMARSHAL], [--variable=glib_genmarshal glib-2.0])
 
 # Get the location of the ISO-Codes (currencies, languages) files:
