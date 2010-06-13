@@ -1,5 +1,11 @@
 2010-06-13  Murray Cumming  <murrayc@murrayc.com>
 
+	Configure: Remove checks for libegg dependencies, because we don't use it.
+
+	* configure.ac: We don't build libegg code here any more.
+
+2010-06-13  Murray Cumming  <murrayc@murrayc.com>
+
 	Port to gtkmm-3.0
 
 	* configure.ac: Use gtkmm-3.0 instead of gtkmm-2.4
