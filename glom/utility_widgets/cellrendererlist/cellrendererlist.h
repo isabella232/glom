@@ -28,8 +28,6 @@
 namespace Glom
 {
 
-void c_callback_CellRendererList_on_editing_started(GtkCellRenderer* /* self */, GtkCellEditable* cell_editable, const gchar* /* path */, void* data);
-
 class CellRendererList : public Gtk::CellRendererCombo
 {
 public:
@@ -44,11 +42,8 @@ public:
 
   void set_restrict_values_to_list(bool val = true);
 
-  void on_editing_started(Gtk::CellEditable* cell_editable, const Glib::ustring& path);
-
-  friend void c_callback_CellRendererList_on_editing_started(GtkCellRenderer* /* self */, GtkCellEditable* cell_editable, const gchar* /* path */, void* data);
-
 private:
+  void on_editing_started(Gtk::CellEditable* cell_editable, const Glib::ustring& path);
 
   //Tree model columns for the Combo CellRenderer in the TreeView column:
   class ModelColumns : public Gtk::TreeModel::ColumnRecord

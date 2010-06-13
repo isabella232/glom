@@ -152,7 +152,7 @@ AS_IF([test "x$glom_host_win32" != xyes],
       [REQUIRED_LIBGLOM_LIBS="$REQUIRED_LIBGLOM_LIBS libepc-1.0 >= 0.3.1 avahi-ui"])
 
 # Libraries used by Glom:
-REQUIRED_GLOM_LIBS="$REQUIRED_LIBGLOM_LIBS gtkmm-2.4 >= 2.19.7 gthread-2.0 gconfmm-2.6 libxml++-2.6 libxslt >= 1.1.10 goocanvasmm-1.0 >= 0.14.0"
+REQUIRED_GLOM_LIBS="$REQUIRED_LIBGLOM_LIBS gtkmm-3.0 >= 2.19.7 gthread-2.0 gconfmm-2.6 libxml++-2.6 libxslt >= 1.1.10 goocanvasmm-2.0 >= 0.14.0"
 
 # Do not require iso-codes in client-only mode, or on Windows:
 # TODO: Package iso-codes for Windows?
@@ -161,7 +161,7 @@ AS_IF([test "x$glom_enable_client_only" != xyes && test "x$glom_host_win32" != x
 
 # Do not require gtksourceviewmm in client only mode
 AS_IF([test "x$glom_enable_client_only" != xyes],
-      [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS gtksourceviewmm-2.0"])
+      [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS gtksourceviewmm-3.0"])
 
 AS_IF([test "x$glom_enable_sqlite" = xyes],
       [REQUIRED_GLOM_LIBS="$REQUIRED_GLOM_LIBS libgda-sqlite-4.0"])

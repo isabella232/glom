@@ -646,10 +646,7 @@ bool DbTreeModel::check_treeiter_validity(const iterator& iter) const
 
 bool DbTreeModel::iter_is_valid(const iterator& iter) const
 {
-  if(!check_treeiter_validity(iter))
-    return false;
-
-  return Gtk::TreeModel::iter_is_valid(iter);
+  return check_treeiter_validity(iter);
 }
 
 

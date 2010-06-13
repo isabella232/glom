@@ -136,7 +136,7 @@ private:
    virtual Path get_path_vfunc(const iterator& iter) const;
    virtual bool get_iter_vfunc(const Path& path, iterator& iter) const;
 
-   virtual bool iter_is_valid(const iterator& iter) const;
+   bool iter_is_valid(const iterator& iter) const;
 
    virtual void set_value_impl(const iterator& row, int column, const Glib::ValueBase& value);
 

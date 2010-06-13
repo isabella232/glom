@@ -1799,7 +1799,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
                 Gtk::TreeView::Column* pColumn = m_TreeView.get_column(model_column_index);
                 if(pColumn)
                 {
-                  Gtk::CellRendererText* pCell = dynamic_cast<Gtk::CellRendererText*>(pColumn->get_first_cell_renderer());
+                  Gtk::CellRendererText* pCell = dynamic_cast<Gtk::CellRendererText*>(pColumn->get_first_cell());
                   if(pCell)
                   {
                     //TreeView::set_cursor(), or start_editing() would get the old value back from the model again

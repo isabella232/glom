@@ -1,3 +1,22 @@
+2010-06-13  Murray Cumming  <murrayc@murrayc.com>
+
+	Port to gtkmm-3.0
+
+	* configure.ac: Use gtkmm-3.0 instead of gtkmm-2.4
+	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
+	Use get_related_action() instead of get_action().
+	* glom/utility_widgets/cellrendererlist/cellrendererlist.[h|cc]: 
+	Simplify the use of the editing_started signal now that the inheritance is 
+	fixed in gtkmm-3.0.
+	* glom/utility_widgets/db_adddel/db_adddel.cc: Use get_first_cell() instead of 
+	get_first_cell_renderer().
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.[h|cc]: iter_is_valid():
+	This is no longer virtual, and no longer exists in the base class, so don't 
+	call the base class implementation.
+	
+This is the master branch, for glom 2.0, using gtkmm-3.0.
+See also the glom-1-16 branch, which uses gtkmm-2.4.
+
 1.15.1:
 
 2010-05-25  Murray Cumming  <murrayc@murrayc.com>

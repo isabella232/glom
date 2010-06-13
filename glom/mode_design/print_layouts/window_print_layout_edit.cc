@@ -226,7 +226,7 @@ Glib::RefPtr<Gdk::Pixbuf> Window_PrintLayout_Edit::get_icon_for_toolbar_item(Gtk
   Glib::RefPtr<Gdk::Pixbuf> result;
 
   //Set the icon to show when dragging:
-  Glib::RefPtr<Gtk::Action> action = item.get_action();
+  Glib::RefPtr<Gtk::Action> action = item.get_related_action();
   if(!action)
     return result;
 
