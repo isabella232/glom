@@ -1,5 +1,13 @@
 2010-06-13  Murray Cumming  <murrayc@murrayc.com>
 
+	Depend on avahi-ui-3.0 instead of avahi-ui, though it does not officially exist.
+    
+	* configure.ac: avahi-ui links to gtk-2.0, so depending on avahi-ui-3.0 is
+	better even if it currently only exists via my patch (emailed to d-d-l and
+	Lennart because I can't login to avahi.org's trac).
+
+2010-06-13  Murray Cumming  <murrayc@murrayc.com>
+
 	Configure: Remove checks for libegg dependencies, because we don't use it.
 
 	* configure.ac: We don't build libegg code here any more.
