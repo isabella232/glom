@@ -19,7 +19,6 @@
  */
 
 #include "combo_textglade.h"
-#include <gtk/gtkcombobox.h>
 
 namespace Glom
 {

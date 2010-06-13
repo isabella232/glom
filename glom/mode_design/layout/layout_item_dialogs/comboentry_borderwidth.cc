@@ -19,7 +19,6 @@
  */
 
 #include "comboentry_borderwidth.h"
-#include <gtk/gtkcomboboxentry.h>
 #include <sstream> //For stringstream.
 
 namespace Glom

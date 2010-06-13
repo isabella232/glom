@@ -24,7 +24,6 @@
 #include <gtkmm/cellrenderertext.h>
 #include <gtkmm/treepath.h>
 #include <gtkmm/treemodel.h>
-#include <gtk/gtkcellrenderer.h>
 
 namespace Glom
 {

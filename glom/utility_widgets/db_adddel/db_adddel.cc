@@ -33,8 +33,6 @@
 #include <libglom/db_utils.h>
 
 #include <iostream> //For debug output.
-#include <gtk/gtktreeview.h>
-#include <gtk/gtkstock.h>
 
 #ifdef GLOM_ENABLE_MAEMO
 //TODO: Remove this when we don't need to call C hildon functions:

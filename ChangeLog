@@ -1,5 +1,34 @@
 2010-06-13  Murray Cumming  <murrayc@murrayc.com>
 
+	Remove unnecessary gtk C includes.
+
+	* glom/application.cc:
+	* glom/bakery/app_withdoc_gtk.cc:
+	* glom/libglom/data_structure/print_layout.cc:
+	* glom/libglom/document/document.cc:
+	* glom/libglom/gst-package.c:
+	* glom/mode_design/comboentry_currency.cc:
+	* glom/mode_design/fields/combo_fieldtype.cc:
+	* glom/mode_design/layout/combobox_fields.cc:
+	* glom/mode_design/layout/combobox_relationship.cc:
+	* glom/mode_design/layout/layout_item_dialogs/combo_summarytype.cc:
+	* glom/mode_design/layout/layout_item_dialogs/comboentry_borderwidth.cc:
+	* glom/mode_design/print_layouts/print_layout_toolbar.cc:
+	* glom/mode_design/translation/combobox_locale.cc:
+	* glom/utility_widgets/cellrendererlist/cellrendererlist.cc:
+	* glom/utility_widgets/combo_textglade.cc:
+	* glom/utility_widgets/db_adddel/cellrenderer_buttonimage.cc:
+	* glom/utility_widgets/db_adddel/cellrenderer_buttonimage.h:
+	* glom/utility_widgets/db_adddel/cellrenderer_buttontext.cc:
+	* glom/utility_widgets/db_adddel/cellrenderer_buttontext.h:
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+	* glom/utility_widgets/flowtable.cc:
+	* glom/utility_widgets/layouttoolbar.cc:
+	* glom/xsl_utils.cc: Remove now-unnecessary gtk+/gtk* includes, 
+	replacing some with use of C++ API. These caused warnings due to GSEAL.
+
+2010-06-13  Murray Cumming  <murrayc@murrayc.com>
+
 	Depend on avahi-ui-3.0 instead of avahi-ui, though it does not officially exist.
     
 	* configure.ac: avahi-ui links to gtk-2.0, so depending on avahi-ui-3.0 is

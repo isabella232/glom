@@ -23,9 +23,6 @@
 #include <glibmm/i18n.h>
 #include <libglom/libglom_config.h>
 
-//#include "layoutwidgetbase.h"
-//#include <gtk/gtktoolitemgroup.h>
-
 namespace Glom
 {
 
