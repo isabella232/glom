@@ -20,8 +20,6 @@
 
 #include "cellrenderer_buttonimage.h"
 #include <gtkmm/stock.h>
-#include <gtk/gtkcellrenderer.h>
-#include <gtk/gtkcellrendererpixbuf.h>
 
 
 namespace Glom

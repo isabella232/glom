@@ -38,8 +38,6 @@
 
 #include <glibmm/i18n-lib.h>
 
-//#include <gtk/gtkfilesel.h>
-
 namespace GlomBakery
 {
 

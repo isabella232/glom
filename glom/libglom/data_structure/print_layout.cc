@@ -19,7 +19,6 @@
  */
 
 #include <libglom/data_structure/print_layout.h>
-#include <gtk/gtkpagesetup.h> //For gtk_page_setup_copy().
 
 namespace Glom
 {

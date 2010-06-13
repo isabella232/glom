@@ -30,7 +30,6 @@
 //#include <libexslt/exslt.h> //For exsltRegisterAll().
 #include <giomm.h>
 #include <glibmm/i18n.h>
-#include <gtk/gtk.h>
 
 #include <sstream> //For stringstream
 

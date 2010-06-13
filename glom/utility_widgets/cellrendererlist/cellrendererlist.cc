@@ -20,7 +20,6 @@
  
 #include "cellrendererlist.h"
 #include <gtkmm.h>
-#include <gtk/gtkcombobox.h>
 
 
 namespace Glom

@@ -20,7 +20,6 @@
 
 #include "combo_fieldtype.h"
 #include "../../box_db_table.h"
-#include <gtk/gtkliststore.h> //For debugging.
 #include <glibmm/i18n.h>
 
 namespace Glom

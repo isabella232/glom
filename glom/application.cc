@@ -53,13 +53,11 @@
 #include <libsoup/soup-status.h>
 #endif // !G_OS_WIN32
 
-#include <gtk/gtkstock.h> /* For use with the avahi-ui dialog. */
+#include <gtk/gtk.h>
 
 #ifndef G_OS_WIN32
 # include <netdb.h> //For gethostbyname().
 #endif
-
-#include <gtk/gtkuimanager.h>
 
 #include <glibmm/i18n.h>
 
