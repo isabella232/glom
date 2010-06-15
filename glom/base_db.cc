@@ -1902,7 +1902,7 @@ int Base_DB::count_rows_returned_by(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& 
   builder->select_add_target_id(target_id, "glomarbitraryalias");
 
   const guint id_function = builder->add_function("COUNT", builder->add_id("*"));
-  builder->add_field_id(id_function);
+  builder->add_field_value_id(id_function);
 
 
   int result = 0;

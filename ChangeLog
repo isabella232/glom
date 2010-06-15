@@ -1,3 +1,15 @@
+2010-06-15  Murray Cumming  <murrayc@murrayc.com>
+
+	Adapt to latest libgdamm API.
+
+	* glom/base_db.cc:
+	* glom/libglom/db_utils.cc:
+	* glom/libglom/python_embed/py_glom_relatedrecord.cc:
+	* glom/libglom/utils.cc:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc: 
+	SqlBuilder::add_field_id() was renamed to add_field_value_id(), though I now 
+	notice that no value is involved when it is used for SELECT queries.
+
 2010-06-13  Murray Cumming  <murrayc@murrayc.com>
 
 	Remove unnecessary gtk C includes.

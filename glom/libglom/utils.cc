@@ -339,7 +339,7 @@ void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::Sq
       const guint id_function = builder->add_function(
         fieldsummary->get_summary_type_sql(),
         builder->add_id(layout_item->get_sql_name(table_name)) ); //TODO: It would be nice to specify the table here too.
-      builder->add_field_id(id_function);
+      builder->add_field_value_id(id_function);
     }
     else
     {
