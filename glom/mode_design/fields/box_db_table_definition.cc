@@ -630,7 +630,7 @@ bool Box_DB_Table_Definition::field_has_null_values(const sharedptr<const Field>
   builder->select_add_target(m_table_name);
   builder->set_where(
     builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_ISNULL,
-      builder->add_id(field->get_name()))); //TODO: It would nice to specify the table name here too.
+      builder->add_field_id(field->get_name(), m_table_name)));
 
   long null_count = 0;
   Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(builder);

@@ -188,7 +188,7 @@ void ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
       builder->set_where( builder->import_expression(found_set_parent.m_where_clause) );
     }
 
-    builder->select_group_by( builder->add_id(field_group_by->get_name()) ); //TODO: And restrict to the current found set.
+    builder->select_group_by( builder->add_field_id(field_group_by->get_name(), group_field_table_name) ); //TODO: And restrict to the current found set.
 
     Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(builder);
     if(datamodel)

@@ -269,8 +269,8 @@ static void builder_add_join(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder
       Gnome::Gda::SQL_SELECT_JOIN_LEFT,
       builder->add_cond(
         Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-        builder->add_id("\"" + relationship->get_from_table() + "\".\"" + relationship->get_from_field() + "\""),
-        builder->add_id("\"" + alias_name + "\".\"" + relationship->get_to_field() + "\"") ) );
+        builder->add_field_id(relationship->get_from_field(), relationship->get_from_table()),
+        builder->add_field_id(relationship->get_to_field(), alias_name)));
   }
   else
   {
@@ -286,8 +286,8 @@ static void builder_add_join(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder
        Gnome::Gda::SQL_SELECT_JOIN_LEFT,
        builder->add_cond(
          Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-         builder->add_id("\"" + parent_relationship.get_sql_join_alias_name() + "\".\"" + related_relationship->get_from_field() + "\""),
-         builder->add_id("\"" + alias_name + "\".\"" + related_relationship->get_to_field() + "\"") ) );
+         builder->add_field_id(related_relationship->get_from_field(), parent_relationship.get_sql_join_alias_name()),
+         builder->add_field_id(related_relationship->get_to_field(), alias_name) ) );
   }
 }
 
@@ -338,7 +338,7 @@ void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::Sq
     {
       const guint id_function = builder->add_function(
         fieldsummary->get_summary_type_sql(),
-        builder->add_id(layout_item->get_sql_name(table_name)) ); //TODO: It would be nice to specify the table here too.
+        builder->add_id(layout_item->get_sql_name(table_name)) ); //TODO: Just use add_field_id()?
       builder->add_field_value_id(id_function);
     }
     else
@@ -399,7 +399,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_where_clause(c
 
         //TODO: Avoid the need for the "."
         builder->select_order_by(
-          builder->add_id(layout_item->get_sql_table_or_join_alias_name("\"" + table_name) + "\".\"" + layout_item->get_name() + "\""),
+          builder->add_field_id(layout_item->get_name(), layout_item->get_sql_table_or_join_alias_name(table_name)),
           ascending);
       }
     }
@@ -432,7 +432,7 @@ Gnome::Gda::SqlExpr Utils::build_simple_where_expression(const Glib::ustring& ta
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder->select_add_target(table_name);  //This might not be necessary.
   const guint id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-    builder->add_id(key_field->get_name()),
+    builder->add_field_id(key_field->get_name(), table_name),
     builder->add_expr(key_value));
   builder->set_where(id); //This might not be necessary.
 
@@ -994,7 +994,7 @@ Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(Document* document, const
     if(use_this_field)
     {
       const guint eq_id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ, //TODO: Ue field->sql_find_operator().
-        builder->add_id(field->get_name()),
+        builder->add_field_id(field->get_name(), table_name),
         builder->add_expr(quick_search)); //Use  field->sql_find(quick_search);
 
       guint and_id = 0;

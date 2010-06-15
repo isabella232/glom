@@ -1228,7 +1228,7 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
     builder->add_field_value_as_value(field_in_record.m_field->get_name(), field_value);
     builder->set_where(
       builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-        builder->add_id(field_in_record.m_key->get_name()),
+        builder->add_field_id(field_in_record.m_key->get_name(), field_in_record.m_table_name),
         builder->add_expr_as_value(field_in_record.m_key_value)));
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -1613,13 +1613,14 @@ Gnome::Gda::Value Base_DB::get_lookup_value(const Glib::ustring& /* table_name *
     //Convert the value, in case the from and to fields have different types:
     const Gnome::Gda::Value value_to_key_field = Conversions::convert_value(key_value, to_key_field->get_glom_type());
 
+    const Glib::ustring target_table = relationship->get_to_table();
     Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
       Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
-    builder->select_add_field(source_field->get_name(), relationship->get_to_table());
-    builder->select_add_target(relationship->get_to_table());
+    builder->select_add_field(source_field->get_name(), target_table );
+    builder->select_add_target(target_table );
     builder->set_where(
       builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-        builder->add_id(to_key_field->get_name()), //TODO: It would be nice to specify the table here too.
+        builder->add_field_id(to_key_field->get_name(), target_table),
         builder->add_expr(value_to_key_field)));
 
     Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
@@ -1654,7 +1655,7 @@ bool Base_DB::get_field_value_is_unique(const Glib::ustring& table_name, const s
   builder->select_add_target(table_name_used);
   builder->set_where(
     builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-      builder->add_id(field->get_name()), //TODO: It would be nice to specify the table here too.
+      builder->add_field_id(field->get_name(), table_name_used),
       builder->add_expr(value)));
 
   Glib::RefPtr<const Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
@@ -1854,7 +1855,7 @@ bool Base_DB::get_primary_key_is_in_foundset(const FoundSet& found_set, const Gn
   builder->select_add_target(found_set.m_table_name);
 
   const guint eq_id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-        builder->add_id(primary_key->get_name()),
+        builder->add_field_id(primary_key->get_name(), found_set.m_table_name),
         builder->add_expr_as_value(primary_key_value));
   guint cond_id = 0;
   if(found_set.m_where_clause.empty())

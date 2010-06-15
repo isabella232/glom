@@ -110,7 +110,7 @@ boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& 
     builder->select_add_target(related_table);
     builder->set_where(
       builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-        builder->add_id(related_key_name), //TODO: It would nice to specify the table name here too.
+        builder->add_field_id(related_key_name, related_table),
         builder->add_expr(m_from_key_value)));
 
     /* TODO: Fix linking problems
@@ -202,7 +202,7 @@ boost::python::object PyGlomRelatedRecord::generic_aggregate(const std::string& 
   builder->select_add_target(related_table);
   builder->set_where(
     builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-      builder->add_id(related_key_name), //TODO: It would nice to specify the table name here too.
+      builder->add_field_id(related_key_name, related_table),
       builder->add_expr(m_from_key_value)));
 
 

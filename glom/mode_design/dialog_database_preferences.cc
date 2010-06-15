@@ -133,10 +133,10 @@ void Dialog_Database_Preferences::on_treeview_cell_edited_next_value(const Glib:
     builder->set_where(
       builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_AND,
         builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-          builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME),
+          builder->add_field_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_TABLE_NAME, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME),
           builder->add_expr(table_name)),
         builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-          builder->add_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME),
+          builder->add_field_id(GLOM_STANDARD_TABLE_AUTOINCREMENTS_FIELD_FIELD_NAME, GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME),
           builder->add_expr(field_name))));
 
     const bool test = DbUtils::query_execute(builder);

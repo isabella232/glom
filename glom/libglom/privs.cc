@@ -138,7 +138,7 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
     builder->select_add_target("pg_group");
     builder->set_where(
       builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-        builder->add_id("groname"), //TODO: It would be nice to specify the table here too.
+        builder->add_field_id("groname", "pg_group"),
         builder->add_expr(group_name)));
     Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
     if(data_model && data_model->get_n_rows())
@@ -168,7 +168,7 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
           builder->select_add_target("pg_user");
           builder->set_where(
             builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-              builder->add_id("usesysid"), //TODO: It would be nice to specify the table here too.
+              builder->add_field_id("usesysid", "pg_user"),
               builder->add_expr(*iter)));
           Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
           if(data_model)
@@ -284,7 +284,7 @@ Privileges Privs::get_table_privileges(const Glib::ustring& group_name, const Gl
   builder->select_add_target("pg_class");
   builder->set_where(
     builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-      builder->add_id("relname"), //TODO: It would be nice to specify the table here too.
+      builder->add_field_id("relname", "pg_class"),
       builder->add_expr(table_name)));
   Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
   if(data_model && data_model->get_n_rows())
