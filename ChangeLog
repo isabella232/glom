@@ -1,5 +1,24 @@
 2010-06-15  Murray Cumming  <murrayc@murrayc.com>
 
+	Use SqlBuilder::add_field_id() to avoid ambiguity.
+
+	* glom/base_db.cc:
+	* glom/base_db_table_data.cc:
+	* glom/libglom/db_utils.cc:
+	* glom/libglom/privs.cc:
+	* glom/libglom/python_embed/py_glom_record.cc:
+	* glom/libglom/python_embed/py_glom_relatedrecord.cc:
+	* glom/libglom/utils.cc:
+	* glom/mode_data/box_data.cc:
+	* glom/mode_data/box_data_calendar_related.cc:
+	* glom/mode_data/box_data_portal.cc:
+	* glom/mode_design/dialog_database_preferences.cc:
+	* glom/mode_design/fields/box_db_table_definition.cc:
+	* glom/report_builder.cc: Replace use of add_id() with the new add_field_id(), 
+	which lets us specify the table too.
+
+2010-06-15  Murray Cumming  <murrayc@murrayc.com>
+
 	Adapt to latest libgdamm API.
 
 	* glom/base_db.cc:

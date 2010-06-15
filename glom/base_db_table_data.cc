@@ -276,7 +276,7 @@ bool Base_DB_Table_Data::get_related_record_exists(const sharedptr<const Relatio
   builder->select_add_target(related_table);
   builder->set_where(
     builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-      builder->add_id(to_field), //TODO: It would be nice to specify the table here too.
+      builder->add_field_id(to_field, related_table),
       builder->add_expr(key_value)));
                                                
   Glib::RefPtr<Gnome::Gda::DataModel> records = DbUtils::query_execute_select(builder);
@@ -410,14 +410,15 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
             return false;
           }
           else
-          {              
+          {
+            const Glib::ustring target_table = relationship->get_from_table();             
             Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = 
               Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
-            builder->set_table(relationship->get_from_table());
+            builder->set_table(target_table);
             builder->add_field_value_as_value(relationship->get_from_field(), primary_key_value);
             builder->set_where(
               builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-                builder->add_id(parent_primary_key_field->get_name()),
+                builder->add_field_id(parent_primary_key_field->get_name(), target_table),
                 builder->add_expr(parent_primary_key_value)) );
           
             const bool test = DbUtils::query_execute(builder);
@@ -478,7 +479,7 @@ bool Base_DB_Table_Data::record_delete(const Gnome::Gda::Value& primary_key_valu
     builder->set_table(m_table_name);
     builder->set_where(
       builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-        builder->add_id(field_primary_key->get_name()),
+        builder->add_field_id(field_primary_key->get_name(), m_table_name),
         builder->add_expr(primary_key_value)) );
     return DbUtils::query_execute(builder);
   }

@@ -109,12 +109,13 @@ void Box_Data_Portal::make_record_related(const Gnome::Gda::Value& related_recor
     std::cerr << "Box_Data_Portal::make_record_related(): m_portal was null." << std::endl;
   }
 
+  const Glib::ustring target_table = m_portal->get_table_used(Glib::ustring() /* not relevant */);
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
-    builder->set_table(m_portal->get_table_used(Glib::ustring() /* not relevant */));
+    builder->set_table(target_table);
     builder->add_field_value_as_value(m_key_field->get_name(), m_key_value);
     builder->set_where(
       builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-        builder->add_id(field_primary_key->get_name()),
+        builder->add_field_id(field_primary_key->get_name(), target_table),
         builder->add_expr_as_value(related_record_primary_key_value)));
 
   //std::cout << "Box_Data_Portal::make_record_related(): setting value in db=" << primary_key_value.to_string() << std::endl;

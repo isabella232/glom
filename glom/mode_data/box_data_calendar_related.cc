@@ -171,12 +171,11 @@ bool Box_Data_Calendar_Related::fill_from_database()
 
     //Add an AND to the existing where clause, to get only records within these dates, if any:
     sharedptr<const Field> date_field = derived_portal->get_date_field();
-    //TODO: Use a SQL parameter instead of using sql().
 
     Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
       Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
     const guint cond = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_BETWEEN,
-       builder->add_id(date_field->get_name()),
+       builder->add_field_id(date_field->get_name(), m_found_set.m_table_name),
        builder->add_expr_as_value(date_start_value),
        builder->add_expr_as_value(date_end_value));
     builder->set_where(cond); //Might be unnecessary.
@@ -300,11 +299,12 @@ void Box_Data_Calendar_Related::on_record_added(const Gnome::Gda::Value& primary
     if(m_key_field && m_portal)
     {
       Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_UPDATE);
-      builder->set_table(m_portal->get_table_used(Glib::ustring() /* not relevant */));
+      const Glib::ustring target_table = m_portal->get_table_used(Glib::ustring() /* not relevant */);
+      builder->set_table(target_table);
       builder->add_field_value_as_value(m_key_field->get_name(), m_key_value);
       builder->set_where(
         builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
-          builder->add_id(field_primary_key->get_name()),
+          builder->add_field_id(field_primary_key->get_name(), target_table),
           builder->add_expr_as_value(primary_key_value)));
 
       const bool test = DbUtils::query_execute(builder);
