@@ -1385,7 +1385,7 @@ static void recalculate_next_auto_increment_value(const Glib::ustring& table_nam
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   std::list<guint> args;
   args.push_back(builder->add_id(table_name + "." + field_name));
-  builder->add_field_id(builder->add_function("MAX", args));
+  builder->add_field_value_id(builder->add_function("MAX", args));
   builder->select_add_target(table_name);
 
   Glib::RefPtr<Gnome::Gda::DataModel> datamodel = query_execute_select(builder);
