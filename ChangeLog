@@ -1,3 +1,11 @@
+2010-06-19  Murray Cumming  <murrayc@murrayc.com>
+
+	Revert previous "Fix a crash when using find mode" commit.
+
+	* glom/application.cc: 
+	* glom/application.h: This was apparently only a problem due to a previous 
+	UI-changing commit in the glom-1-16 branch.
+	
 2010-05-03  Daniel Borgmann  <danielb@openismus.com>
 
 	Set default icon instead of individual window icons.

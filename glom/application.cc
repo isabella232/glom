@@ -1542,20 +1542,12 @@ void Application::existing_or_new_new()
 
 void Application::set_mode_data()
 {
-  if (!m_pFrame)
-    return;
-
-  if (m_pFrame->m_Mode == Frame_Glom::MODE_Find)
-    m_action_mode_find->activate();
+  m_action_mode_data->activate();
 }
 
 void Application::set_mode_find()
 {
-  if (!m_pFrame)
-    return;
-
-  if (m_pFrame->m_Mode == Frame_Glom::MODE_Data)
-    m_action_mode_find->activate();
+  m_action_mode_find->activate();
 }
 
 #ifndef GLOM_ENABLE_MAEMO
