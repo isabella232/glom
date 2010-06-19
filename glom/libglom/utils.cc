@@ -336,14 +336,14 @@ void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::Sq
     const LayoutItem_FieldSummary* fieldsummary = dynamic_cast<const LayoutItem_FieldSummary*>(layout_item.obj());
     if(fieldsummary)
     {
-      const guint id_function = builder->add_function(
+      const Gnome::Gda::SqlBuilder::Id id_function = builder->add_function(
         fieldsummary->get_summary_type_sql(),
         builder->add_id(layout_item->get_sql_name(table_name)) ); //TODO: Just use add_field_id()?
       builder->add_field_value_id(id_function);
     }
     else
     {
-      const guint id = builder->select_add_field(layout_item->get_name(), parent);
+      const Gnome::Gda::SqlBuilder::Id id = builder->select_add_field(layout_item->get_name(), parent);
 
       //Avoid duplicate records with doubly-related fields:
       if(extra_join)
@@ -431,7 +431,7 @@ Gnome::Gda::SqlExpr Utils::build_simple_where_expression(const Glib::ustring& ta
 {
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
   builder->select_add_target(table_name);  //This might not be necessary.
-  const guint id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
+  const Gnome::Gda::SqlBuilder::Id id = builder->add_cond(Gnome::Gda::SQL_OPERATOR_TYPE_EQ,
     builder->add_field_id(key_field->get_name(), table_name),
     builder->add_expr(key_value));
   builder->set_where(id); //This might not be necessary.
@@ -444,7 +444,7 @@ Gnome::Gda::SqlExpr Utils::build_combined_where_expression(const Gnome::Gda::Sql
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
 
-  const guint id = builder->add_cond(op,
+  const Gnome::Gda::SqlBuilder::Id id = builder->add_cond(op,
     builder->import_expression(a),
     builder->import_expression(b));
    builder->set_where(id);

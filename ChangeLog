@@ -1,5 +1,15 @@
 2010-06-19  Murray Cumming  <murrayc@murrayc.com>
 
+	Use Gnome::Gda::SqlBuilder::Id
+
+	* glom/base_db.cc:
+	* glom/libglom/python_embed/py_glom_relatedrecord.cc:
+	* glom/libglom/utils.cc:
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc: Use the typedef 
+	instead of guint. It is very lengthy, but it is correct.
+
+2010-06-19  Murray Cumming  <murrayc@murrayc.com>
+
 	Remove the avahi-ui dependency because we don't use it any more.
 
 	* configure.ac: Don't check for avahi-ui.

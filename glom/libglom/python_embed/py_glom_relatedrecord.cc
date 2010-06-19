@@ -196,7 +196,7 @@ boost::python::object PyGlomRelatedRecord::generic_aggregate(const std::string& 
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
 
-  const guint id_function = builder->add_function(aggregate, builder->add_id(field_name)); //TODO: It would be nice to specify the table here too.
+  const Gnome::Gda::SqlBuilder::Id id_function = builder->add_function(aggregate, builder->add_id(field_name)); //TODO: It would be nice to specify the table here too.
   builder->add_field_value_id(id_function);
 
   builder->select_add_target(related_table);
