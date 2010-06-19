@@ -19,7 +19,6 @@
  */
 
 #include "comboentry_currency.h"
-#include <gtk/gtkcomboboxentry.h>
 #include <glom/mode_design/iso_codes.h>
 
 namespace Glom

@@ -19,8 +19,6 @@
  */
 
 #include "cellrenderer_buttontext.h"
-#include <gtk/gtkcellrenderertext.h>
-
 
 namespace Glom
 {

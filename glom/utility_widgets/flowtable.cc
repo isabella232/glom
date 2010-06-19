@@ -20,12 +20,9 @@
 
 #include "flowtable.h"
 #include "layoutwidgetbase.h"
-#include <gtk/gtkwidget.h>
-#include <gdk/gdktypes.h>
 #include <iostream>
 #include <gdkmm/window.h>
 #include <glom/utils_ui.h>
-#include <gtk/gtk.h>
 
 
 namespace Glom
@@ -284,8 +281,8 @@ void FlowTable::add(Gtk::Widget& first, Gtk::Widget& second, bool expand_second)
 
   item.m_expand_second = expand_second; //Expand to fill the width for all of the second item.
   m_children.push_back(item);
-  gtk_widget_set_parent(GTK_WIDGET(item.m_first->gobj()), GTK_WIDGET(gobj()));
-  gtk_widget_set_parent(GTK_WIDGET(item.m_second->gobj()), GTK_WIDGET(gobj()));
+  item.m_first->set_parent(*this);
+  item.m_second->set_parent(*this);
 }
 
 void FlowTable::add(Gtk::Widget& first, bool expand)
@@ -293,7 +290,7 @@ void FlowTable::add(Gtk::Widget& first, bool expand)
   FlowTableItem item(&first, this);
   item.m_expand_first_full = expand; //Expand to fill the width for first and second.
   m_children.push_back(item);
-  gtk_widget_set_parent(GTK_WIDGET(item.m_first->gobj()), GTK_WIDGET(gobj()));
+  item.m_first->set_parent(*this);
 }
 
 void FlowTable::insert_before(Gtk::Widget& first, Gtk::Widget& before, bool expand)

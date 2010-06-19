@@ -16,6 +16,13 @@
 * Build libglom and pyglom API documentation.
   (Murray Cumming, Daniel Elstner)
 
+1.14.3 (stable):
+
+* Fix position of "Records / Found" labels.
+  (Daniel Borgmann)
+* List: Don't allow deleting placeholder rows.
+  (Daniel Borgmann)
+* Build: Don't require avahi-ui.
   
 1.14.2 (stable):
 

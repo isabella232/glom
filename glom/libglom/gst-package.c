@@ -34,8 +34,7 @@
 
 #include <gdk/gdkspawn.h>
 #include <gdk/gdkx.h>
-#include <gtk/gtkstock.h>
-#include <gtk/gtkwindow.h>
+#include <gtk/gtk.h>
 #include <glib/gi18n.h>
 #include <string.h>
 #include <stdlib.h>

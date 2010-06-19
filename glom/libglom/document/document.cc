@@ -37,8 +37,6 @@
 
 #include <libglom/connectionpool.h>
 
-#include <gtk/gtkpagesetup.h> //TODO: Remove this when we can use the C++ constructor.
-
 #include <glibmm/i18n.h>
 //#include <libglom/libglom_config.h> //To get GLOM_DTD_INSTALL_DIR - dependent on configure prefix.
 #include <algorithm> //For std::find_if().

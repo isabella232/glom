@@ -19,7 +19,6 @@
  */
 
 #include <glom/mode_design/layout/combobox_fields.h>
-#include <gtk/gtkcomboboxentry.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
