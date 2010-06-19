@@ -53,7 +53,6 @@
 #ifndef G_OS_WIN32
 #include <libepc/consumer.h>
 #include <libsoup/soup-status.h>
-#include <avahi-ui/avahi-ui.h>
 #endif // !G_OS_WIN32
 
 #include <gtk/gtk.h>
