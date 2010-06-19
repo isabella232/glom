@@ -1,3 +1,5 @@
+1.14.3:
+
 2010-06-19  Murray Cumming  <murrayc@murrayc.com>
 
 	Revert previous "Fix a crash when using find mode" commit.
