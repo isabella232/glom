@@ -909,7 +909,7 @@ void DbTreeModel::get_record_counts(gulong& total, gulong& found) const
       Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
         Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
 
-      const guint id_function = builder->add_function("count", builder->add_id("*")); //TODO: Is * allowed here?
+      const Gnome::Gda::SqlBuilder::Id id_function = builder->add_function("count", builder->add_id("*")); //TODO: Is * allowed here?
       builder->add_field_value_id(id_function);
 
       builder->select_add_target(m_found_set.m_table_name);
