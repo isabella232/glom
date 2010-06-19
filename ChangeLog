@@ -1,3 +1,12 @@
+2010-06-19  Murray Cumming  <murrayc@murrayc.com>
+
+	Remove the avahi-ui dependency because we don't use it any more.
+
+	* configure.ac: Don't check for avahi-ui.
+	* glom/application.cc: Don't include avahi-ui.h
+	
+	This is lucky, because avahi-ui still has no support for GTK+ 3.
+
 1.14.2:
 
 2010-05-02  Murray Cumming  <murrayc@murrayc-x61>
