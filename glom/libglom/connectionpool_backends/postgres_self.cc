@@ -614,11 +614,11 @@ static bool on_timeout_delay(const Glib::RefPtr<Glib::MainLoop>& mainloop)
 }
 
 
-Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error)
+Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password)
 {
   if(!get_self_hosting_active())
   {
-    error.reset(new ExceptionConnection(ExceptionConnection::FAILURE_NO_BACKEND)); //TODO: But there is a backend. It's just not ready.
+    throw ExceptionConnection(ExceptionConnection::FAILURE_NO_BACKEND); //TODO: But there is a backend. It's just not ready.
     return Glib::RefPtr<Gnome::Gda::Connection>();
   }
 
@@ -631,19 +631,24 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ust
   const guint MAX_RETRIES_EVER = 60; /* seconds */
   while(keep_trying)
   { 
-    result = attempt_connect("localhost", port_as_string(m_port), database, username, password, ex);
-    if(!result && 
-      ex.get() && (ex->get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER))
+    try
     {
-      //It must be using a default password, so any failure would not be due to a wrong password.
-      //However, pg_ctl sometimes reports success before it is really ready to let us connect, 
-      //so in this case we can just keep trying until it works, with a very long timeout.
-      count_retries++;
-      const guint max_retries = m_network_shared ? MAX_RETRIES_EVER : MAX_RETRIES_KNOWN_PASSWORD;
-      if(count_retries > max_retries)
+      result = attempt_connect("localhost", port_as_string(m_port), database, username, password);
+    }
+    catch(const ExceptionConnection& ex)
+    {
+      if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
       {
-        keep_trying = false;
-        continue;
+        //It must be using a default password, so any failure would not be due to a wrong password.
+        //However, pg_ctl sometimes reports success before it is really ready to let us connect, 
+        //so in this case we can just keep trying until it works, with a very long timeout.
+        count_retries++;
+        const guint max_retries = m_network_shared ? MAX_RETRIES_EVER : MAX_RETRIES_KNOWN_PASSWORD;
+        if(count_retries > max_retries)
+        {
+          keep_trying = false;
+          continue;
+        }
       }
 
       std::cout << "DEBUG: Glom::PostgresSelfHosted::connect(): Waiting and retrying the connection due to suspected too-early success of pg_ctl." << std::endl; 
@@ -663,13 +668,12 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ust
     keep_trying = false;
   }
 
-  error = ex;
   return result;
 }
 
-bool PostgresSelfHosted::create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error)
+bool PostgresSelfHosted::create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password)
 {
-  return attempt_create_database(database_name, "localhost", port_as_string(m_port), username, password, error);
+  return attempt_create_database(database_name, "localhost", port_as_string(m_port), username, password);
 }
 
 int PostgresSelfHosted::discover_first_free_port(int start_port, int end_port)

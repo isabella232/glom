@@ -68,9 +68,9 @@ private:
   virtual bool cleanup(const SlotProgress& slot_progress);
   virtual bool set_network_shared(const SlotProgress& slot_progress, bool network_shared = true);
 
-  virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error);
+  virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password);
 
-  virtual bool create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error);
+  virtual bool create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password);
 
 private:
   /** Examine ports one by one, starting at @a starting_port, in increasing

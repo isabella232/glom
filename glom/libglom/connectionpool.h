@@ -137,25 +137,13 @@ public:
    *
    * @throws an ExceptionConnection when the connection fails.
    */
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   sharedptr<SharedConnection> connect();
-#else
-  sharedptr<SharedConnection> connect(std::auto_ptr<ExceptionConnection>& error);
-#endif
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   static sharedptr<SharedConnection> get_and_connect();
-#else
-  static sharedptr<SharedConnection> get_and_connect(std::auto_ptr<ExceptionConnection>& error);
-#endif
 
   /** Creates a new database.
    */
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   void create_database(const Glib::ustring& database_name);
-#else
-  void create_database(const Glib::ustring& database_name, std::auto_ptr<Glib::Error>& error);
-#endif
 
   void set_user(const Glib::ustring& value);
   void set_password(const Glib::ustring& value);
@@ -215,29 +203,13 @@ public:
    */
   virtual bool set_network_shared(const SlotProgress& slot_progress, bool network_shared = true);
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  bool add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field);
-#else
-  bool add_column(const Glib::ustring& field_name, const sharedptr<const Field>& field, std::auto_ptr<Glib::Error>& error);
-#endif
+  bool add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field) throw();
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  bool drop_column(const Glib::ustring& table_name, const Glib::ustring& field_name);
-#else
-  bool drop_column(const Glib::ustring& table_name, const Glib::ustring& field_name, std::auto_ptr<Glib::Error>& error);
-#endif
+  bool drop_column(const Glib::ustring& table_name, const Glib::ustring& field_name) throw();
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  bool change_column(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field);
-#else
-  bool change_column(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, std::auto_ptr<Glib::Error>& error);
-#endif
+  bool change_column(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field) throw();
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  bool change_columns(const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& fields);
-#else
-  bool change_columns(const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& fields, std::auto_ptr<Glib::Error>& error);
-#endif
+  bool change_columns(const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& fields) throw();
 
   /** Specify a callback that the ConnectionPool can call to get a pointer to the document.
    * This callback avoids Connection having to link to Application,

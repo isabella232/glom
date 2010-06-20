@@ -48,9 +48,9 @@ public:
   bool get_try_other_ports() const;
 
 private:
-  virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error);
+  virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password);
 
-  virtual bool create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error);
+  virtual bool create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password);
 
 private:
   typedef std::list<Glib::ustring> type_list_ports;

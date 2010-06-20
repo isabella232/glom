@@ -1,3 +1,23 @@
+2010-06-20  Murray Cumming  <murrayc@murrayc.com>
+
+	libglom: ConnectionPool: Simplify code.
+	
+	* glom/libglom/connectionpool_backends/backend.[h|cc]:
+	* glom/libglom/connectionpool_backends/postgres.[h|cc]:
+	* glom/libglom/connectionpool_backends/postgres_central.[h|cc]:
+	* glom/libglom/connectionpool_backends/postgres_self.[h|cc]:
+	* glom/libglom/connectionpool_backends/sqlite.[h|cc]: Remove the 
+	query_execute(), create_server_operation(), perform_server_operation(), 
+	begin_transaction(), commit_transaction() and rollback_transaction() 
+	convenience methods, which just hide the no-exceptions ifdefs.
+	But gtkmm-3.0 does not support that anyway, so we don't need it.
+	Just call the libgdamm methods directly.
+	add_column(), drop_column(), change_columns(), connect():
+	Remove the error output parameters which were there for the same reason.
+	Now they just throw.
+	* glom/libglom/connectionpool.[h|cc]: Adapted code, hopefully making it 
+	simpler.
+
 2010-06-19  Murray Cumming  <murrayc@murrayc.com>
 
 	Use Gnome::Gda::SqlBuilder::Id

@@ -44,7 +44,7 @@ const std::string& Sqlite::get_database_directory_uri() const
   return m_database_directory_uri;
 }
 
-Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error)
+Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password)
 {
   Glib::RefPtr<Gnome::Gda::Connection> connection;
   if(m_database_directory_uri.empty())
@@ -65,25 +65,9 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
     const Glib::ustring cnc_string = "DB_DIR=" + database_directory + ";DB_NAME=" + database;
     const Glib::ustring auth_string = Glib::ustring::compose("USERNAME=%1;PASSWORD=%2", username, password);
     
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-    try
-    {
-      connection = Gnome::Gda::Connection::open_from_string("SQLite", 
-        cnc_string, auth_string,
-        Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
-    }
-    catch(const Glib::Error& ex)
-    {
-#else
-    std::auto_ptr<Glib::Error> error;
     connection = Gnome::Gda::Connection::open_from_string("SQLite", 
-      cnc_string, auth_string, 
-      Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE, error);
-    if(error.get())
-    {
-      const Glib::Error& ex = *error.get();
-#endif
-    }
+      cnc_string, auth_string,
+      Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
   }
 
   if(!connection)
@@ -91,15 +75,15 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
     // If the database directory is valid, then only the database (file) is
     // missing, otherwise we pretend the "server" is not running.
     if(db_dir->query_file_type() == Gio::FILE_TYPE_DIRECTORY)
-      error.reset(new ExceptionConnection(ExceptionConnection::FAILURE_NO_DATABASE));
+      throw ExceptionConnection(ExceptionConnection::FAILURE_NO_DATABASE);
     else
-      error.reset(new ExceptionConnection(ExceptionConnection::FAILURE_NO_SERVER));
+      throw ExceptionConnection(ExceptionConnection::FAILURE_NO_SERVER);
   }
 
   return connection;
 }
 
-bool Sqlite::create_database(const Glib::ustring& database_name, const Glib::ustring& /* username */, const Glib::ustring& /* password */, std::auto_ptr<Glib::Error>& error)
+bool Sqlite::create_database(const Glib::ustring& database_name, const Glib::ustring& /* username */, const Glib::ustring& /* password */)
 {
   if(m_database_directory_uri.empty())
     return false;
@@ -108,33 +92,16 @@ bool Sqlite::create_database(const Glib::ustring& database_name, const Glib::ust
   const std::string database_directory = file->get_path(); 
   const Glib::ustring cnc_string = Glib::ustring::compose("DB_DIR=%1;DB_NAME=%2", database_directory, database_name);
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    Glib::RefPtr<Gnome::Gda::Connection> cnc = 
-      Gnome::Gda::Connection::open_from_string("SQLite", 
-        cnc_string, "",
-        Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
-  }
-  catch(const Glib::Error& ex)
-  {
-    error.reset(new Glib::Error(ex));
-    return false;
-  }
-#else
   Glib::RefPtr<Gnome::Gda::Connection> cnc = 
     Gnome::Gda::Connection::open_from_string("SQLite", 
-      cnc_string, "", 
-      Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE, error);
-  if(error.get() != 0)
-    return false;
-#endif
+      cnc_string, "",
+      Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
 
   return true;
 }
 
 
-bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, GdaMetaTableColumn* column, unsigned int i, std::auto_ptr<Glib::Error>& error)
+bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, GdaMetaTableColumn* column, unsigned int i)
 {
   //TODO: Quote column name?
   const Glib::ustring name_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_NAME/%1", i);
@@ -144,21 +111,20 @@ bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::Serve
   // TODO: Find out whether the column is unique.
   const Glib::ustring default_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_DEFAULT/%1", i);
 
-  if(!set_server_operation_value(operation, name_path, column->column_name, error)) return false;
-  if(!set_server_operation_value(operation, type_path, column->column_type, error)) return false;
-  if(!set_server_operation_value(operation, pkey_path, column->pkey ? "TRUE" : "FALSE", error)) return false;
-  if(!set_server_operation_value(operation, nnul_path, !column->nullok ? "TRUE" : "FALSE", error)) return false;
+  operation->set_value_at(name_path, column->column_name);
+  operation->set_value_at(type_path, column->column_type);
+  operation->set_value_at(pkey_path, column->pkey ? "TRUE" : "FALSE");
+  operation->set_value_at(nnul_path, !column->nullok ? "TRUE" : "FALSE");
 
   if(column->default_value)
   {
-    if(!set_server_operation_value(operation, default_path, column->default_value, error))
-      return false;
+    operation->set_value_at(default_path, column->default_value);
   }
   
   return true;
 }
 
-bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, const sharedptr<const Field>& column, unsigned int i, std::auto_ptr<Glib::Error>& error)
+bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, const sharedptr<const Field>& column, unsigned int i)
 {
   //TODO: Quote column name?
   const Glib::ustring name_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_NAME/%1", i);
@@ -167,36 +133,33 @@ bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::Serve
   const Glib::ustring unique_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_UNIQUE/%1", i);
   const Glib::ustring default_path = Glib::ustring::compose("/FIELDS_A/@COLUMN_DEFAULT/%1", i);
 
-  if(!set_server_operation_value(operation, name_path, column->get_name(), error)) return false;
-  if(!set_server_operation_value(operation, type_path, column->get_sql_type(), error)) return false;
-  if(!set_server_operation_value(operation, pkey_path, column->get_primary_key() ? "TRUE" : "FALSE", error)) return false;
-  if(!set_server_operation_value(operation, unique_path, column->get_unique_key() ? "TRUE" : "FALSE", error)) return false;
+  operation->set_value_at(name_path, column->get_name());
+  operation->set_value_at(type_path, column->get_sql_type());
+  operation->set_value_at(pkey_path, column->get_primary_key() ? "TRUE" : "FALSE");
+  operation->set_value_at(unique_path, column->get_unique_key() ? "TRUE" : "FALSE");
 
   return true;
 }
 
-bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_strings& fields_removed, const type_vec_const_fields& fields_added, const type_mapFieldChanges& fields_changed, std::auto_ptr<Glib::Error>& error)
+bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_strings& fields_removed, const type_vec_const_fields& fields_added, const type_mapFieldChanges& fields_changed) throw()
 {
   static const gchar* TEMPORARY_TABLE_NAME = "GLOM_TEMP_TABLE"; // TODO: Make sure this is unique.
   static const gchar* TRANSACTION_NAME = "GLOM_RECREATE_TABLE_TRANSACTION";
 
   Glib::RefPtr<Gnome::Gda::MetaStore> store = connection->get_meta_store();
   Glib::RefPtr<Gnome::Gda::MetaStruct> metastruct = Gnome::Gda::MetaStruct::create(store, Gnome::Gda::META_STRUCT_FEATURE_NONE);
-#ifdef GLIBMM_EXCEPTIONS_ENABLED  
+
   GdaMetaDbObject* object = metastruct->complement(Gnome::Gda::META_DB_TABLE, Gnome::Gda::Value(), Gnome::Gda::Value(), Gnome::Gda::Value(table_name));
-#else
-  GdaMetaDbObject* object = metastruct->complement(Gnome::Gda::META_DB_TABLE, Gnome::Gda::Value(), Gnome::Gda::Value(), Gnome::Gda::Value(table_name), error);
-#endif
   
   if(!object)
     return false;
 
-  Glib::RefPtr<Gnome::Gda::ServerOperation> operation = create_server_operation(connection->get_provider(), connection, Gnome::Gda::SERVER_OPERATION_CREATE_TABLE, error);
+  Glib::RefPtr<Gnome::Gda::ServerOperation> operation = connection->get_provider()->create_operation(connection, Gnome::Gda::SERVER_OPERATION_CREATE_TABLE);
   if(!operation)
     return false;
 
   //TODO: Quote table name?
-  if(!set_server_operation_value(operation, "/TABLE_DEF_P/TABLE_NAME", TEMPORARY_TABLE_NAME, error)) return false;
+  operation->set_value_at("/TABLE_DEF_P/TABLE_NAME", TEMPORARY_TABLE_NAME);
 
   GdaMetaTable* table = GDA_META_TABLE(object);
   unsigned int i = 0;
@@ -290,14 +253,12 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
         break;
       };
 
-      if(!add_column_to_server_operation(operation, changed_iter->second, i++, error))
-        return false;
+      add_column_to_server_operation(operation, changed_iter->second, i++);
     }
     else
     {
       trans_fields += column->column_name;
-      if(!add_column_to_server_operation(operation, column, i++, error))
-        return false;
+      add_column_to_server_operation(operation, column, i++);
     }
   }
 
@@ -309,8 +270,8 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
     type_vec_strings::const_iterator removed_iter = std::find(fields_removed.begin(), fields_removed.end(), field->get_name());
     if(removed_iter == fields_removed.end())
     {
-      if(!add_column_to_server_operation(operation, field, i++, error))
-        return false;
+      add_column_to_server_operation(operation, field, i++);
+      
       if(!trans_fields.empty())
         trans_fields += ',';
       Gnome::Gda::Value default_value = field->get_default_value();
@@ -337,64 +298,78 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
     }
   }
 
-  if(!begin_transaction(connection, TRANSACTION_NAME, Gnome::Gda::TRANSACTION_ISOLATION_UNKNOWN, error)) return false;
-
-  if(perform_server_operation(connection->get_provider(), connection, operation, error))
+  try
   {
-    if(trans_fields.empty() || query_execute(connection, Glib::ustring("INSERT INTO \"") + TEMPORARY_TABLE_NAME + "\" SELECT " + trans_fields + " FROM \"" + table_name + "\"", error))
+    connection->begin_transaction(TRANSACTION_NAME, Gnome::Gda::TRANSACTION_ISOLATION_UNKNOWN);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << "Sqlite::recreate_table(): Could not begin transaction: exception=" << ex.what() << std::endl;
+    return false;
+  }
+  
+  //Do everything in one big try/catch block,
+  //reverting the transaction if anything fail:
+  try
+  {
+    connection->get_provider()->perform_operation(connection, operation);
+  
+    if(!trans_fields.empty())
     {
-      if(query_execute(connection, "DROP TABLE " + table_name, error))
-      {
-        if(query_execute(connection, Glib::ustring("ALTER TABLE \"") + TEMPORARY_TABLE_NAME + "\" RENAME TO \"" + table_name + "\"", error))
-        {
-          if(commit_transaction(connection, TRANSACTION_NAME, error))
-          {
-            return true;
-          }
-        }
-      }
+      connection->statement_execute_non_select(Glib::ustring("INSERT INTO \"") + TEMPORARY_TABLE_NAME + "\" SELECT " + trans_fields + " FROM \"" + table_name + "\"");
+      connection->statement_execute_non_select("DROP TABLE " + table_name);
+      connection->statement_execute_non_select(Glib::ustring("ALTER TABLE \"") + TEMPORARY_TABLE_NAME + "\" RENAME TO \"" + table_name + "\"");
+    
+      connection->commit_transaction(TRANSACTION_NAME);
+    
+      return true;
     }
   }
-
-  std::auto_ptr<Glib::Error> rollback_error;
-  if(!rollback_transaction(connection, TRANSACTION_NAME, rollback_error))
+  catch(const Glib::Error& ex)
   {
-    std::cerr << "Sqlite::recreate_table: Failed to rollback failed transaction";
-    if(rollback_error.get())
-      std::cerr << ": " << rollback_error->what();
-    std::cerr << std::endl;
+    std::cerr << "Sqlite::recreate_table(): exception=" << ex.what() << std::endl;
+    std::cerr << "Sqlite::recreate_table(): Reverting the transaction." << std::endl;
+    
+    try
+    {
+      connection->rollback_transaction(TRANSACTION_NAME);
+    }
+    catch(const Glib::Error& ex)
+    {
+       std::cerr << "Sqlite::recreate_table(): Could not revert the transaction. exception=" << ex.what() << std::endl;
+    }
   }
 
   return false;
 }
 
-bool Sqlite::add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const sharedptr<const Field>& field, std::auto_ptr<Glib::Error>& error)
+void Sqlite::add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const sharedptr<const Field>& field)
 {
   // Sqlite does not support adding primary key columns. So recreate the table
   // in that case.
   if(!field->get_primary_key())
   {
-    return Backend::add_column(connection, table_name, field, error);
+    Backend::add_column(connection, table_name, field);
   }
   else
   {
-    return recreate_table(connection, table_name, type_vec_strings(), type_vec_const_fields(1, field), type_mapFieldChanges(), error);
+    recreate_table(connection, table_name, type_vec_strings(), type_vec_const_fields(1, field), type_mapFieldChanges());
   }
 }
 
-bool Sqlite::drop_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const Glib::ustring& field_name, std::auto_ptr<Glib::Error>& error)
+void Sqlite::drop_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const Glib::ustring& field_name)
 {
-  return recreate_table(connection, table_name, type_vec_strings(1, field_name), type_vec_const_fields(), type_mapFieldChanges(), error);
+  recreate_table(connection, table_name, type_vec_strings(1, field_name), type_vec_const_fields(), type_mapFieldChanges());
 }
 
-bool Sqlite::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields, std::auto_ptr<Glib::Error>& error)
+bool Sqlite::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields) throw()
 {
   type_mapFieldChanges fields_changed;
 
   for(type_vec_const_fields::size_type i = 0; i < old_fields.size(); ++ i)
     fields_changed[old_fields[i]->get_name()] = new_fields[i];
 
-  return recreate_table(connection, table_name, type_vec_strings(), type_vec_const_fields(), fields_changed, error);
+  return recreate_table(connection, table_name, type_vec_strings(), type_vec_const_fields(), fields_changed);
 }
 
 

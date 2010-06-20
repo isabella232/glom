@@ -78,16 +78,6 @@ public:
   };
   
 protected:
-  /** Helper functions for backend implementations to use, so that these don't
-   * need to worry whether glibmm was compiled with exceptions or not.
-   */
-  bool query_execute(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& sql_query, std::auto_ptr<Glib::Error>& error);
-  bool set_server_operation_value(const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, const Glib::ustring& path, const Glib::ustring& value, std::auto_ptr<Glib::Error>& error);
-  Glib::RefPtr<Gnome::Gda::ServerOperation> create_server_operation(const Glib::RefPtr<Gnome::Gda::ServerProvider>& provider, const Glib::RefPtr<Gnome::Gda::Connection>& connection, Gnome::Gda::ServerOperationType type, std::auto_ptr<Glib::Error>& error);
-  bool perform_server_operation(const Glib::RefPtr<Gnome::Gda::ServerProvider>& provider, const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::RefPtr<Gnome::Gda::ServerOperation>& operation, std::auto_ptr<Glib::Error>& error);
-  bool begin_transaction(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& name, Gnome::Gda::TransactionIsolation level, std::auto_ptr<Glib::Error>& error);
-  bool commit_transaction(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& name, std::auto_ptr<Glib::Error>& error);
-  bool rollback_transaction(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& name, std::auto_ptr<Glib::Error>& error);
 
   /* TODO: Merge create_database() and initialize() into a single function?
    */
@@ -169,17 +159,21 @@ protected:
    * If this method doesn't return a connection handle then error will be
    * non-zero (and vice versa).
    */
-  virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error) = 0;
+  virtual Glib::RefPtr<Gnome::Gda::Connection> connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password) = 0;
 
-  virtual bool add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const sharedptr<const Field>& field, std::auto_ptr<Glib::Error>& error);
+  /** @throws Glib::Error (from libgdamm)
+   */
+  virtual void add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const sharedptr<const Field>& field);
 
-  virtual bool drop_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const Glib::ustring& field_name, std::auto_ptr<Glib::Error>& error);
+  /** @throws Glib::Error (from libgdamm)
+   */
+  virtual void drop_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const Glib::ustring& field_name);
 
-  virtual bool change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields, std::auto_ptr<Glib::Error>& error);
+  virtual bool change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields) throw() = 0;
 
   /** This method is called to create a new database on the
    * database server. */
-  virtual bool create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error) = 0;
+  virtual bool create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password) = 0;
 };
 
 } // namespace ConnectionPoolBackends

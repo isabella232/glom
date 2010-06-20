@@ -58,15 +58,15 @@ private:
   virtual Glib::ustring get_string_find_operator() const { return "ILIKE"; } // ILIKE is a postgres extension for locale-dependent case-insensitive matches.
   virtual const char* get_public_schema_name() const { return "public"; }
 
-  virtual bool change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields, std::auto_ptr<Glib::Error>& error);
+  virtual bool change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields) throw();
 
 protected:
-  bool attempt_create_database(const Glib::ustring& database_name, const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error);
+  bool attempt_create_database(const Glib::ustring& database_name, const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& username, const Glib::ustring& password);
 
   /** Attempt to connect to the database with the specified criteria.
-   * @param error An error if the correction failed.
+   * @throws An ExceptionConnection if the correction failed.
    */ 
-  Glib::RefPtr<Gnome::Gda::Connection> attempt_connect(const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error) throw();
+  Glib::RefPtr<Gnome::Gda::Connection> attempt_connect(const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password);
 
 private:
   float m_postgres_server_version;

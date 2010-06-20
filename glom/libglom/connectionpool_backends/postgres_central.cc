@@ -99,7 +99,7 @@ bool PostgresCentralHosted::get_try_other_ports() const
   return m_try_other_ports;
 }
 
-Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error)
+Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password)
 {
   Glib::RefPtr<Gnome::Gda::Connection> connection;
 
@@ -111,14 +111,22 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::connect(const Glib::
   if(m_port == 0)
     port = *iter_port ++;
 
-  connection = attempt_connect(m_host, port, database, username, password, error);
-
-  // Remember port if only the database was missing
   bool connection_possible = false;
-  if(error.get() && error->get_failure_type() == ExceptionConnection::FAILURE_NO_DATABASE)
+  try
   {
+    connection = attempt_connect(m_host, port, database, username, password);
     connection_possible = true;
     m_port = atoi(port.c_str());
+  }
+  catch(const ExceptionConnection& ex)
+  {
+    // Remember port if only the database was missing
+    bool connection_possible = false;
+    if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_DATABASE)
+    {
+      connection_possible = true;
+      m_port = atoi(port.c_str());
+    }
   }
 
   // Try more ports if so desired, and we don't have a connection yet
@@ -127,13 +135,22 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::connect(const Glib::
     while(!connection && iter_port != m_list_ports.end())
     {
       port = *iter_port;
-      connection = attempt_connect(m_host, port, database, username, password, error);
-
-      // Remember port if only the database was missing
-      if(error.get() && error->get_failure_type() == ExceptionConnection::FAILURE_NO_DATABASE)
+      
+      try
       {
+        connection = attempt_connect(m_host, port, database, username, password);
         connection_possible = true;
         m_port = atoi(port.c_str());
+      }
+      catch(const ExceptionConnection& ex)
+      {
+        connection_possible = false;
+        // Remember port if only the database was missing
+        if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_DATABASE)
+        {
+          connection_possible = true;
+          m_port = atoi(port.c_str());
+        }
       }
 
       // Skip if we already tried this port
@@ -150,17 +167,17 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::connect(const Glib::
   else
   {
     if(connection_possible)
-      error.reset(new ExceptionConnection(ExceptionConnection::FAILURE_NO_DATABASE));
+      throw ExceptionConnection(ExceptionConnection::FAILURE_NO_DATABASE);
     else
-      error.reset(new ExceptionConnection(ExceptionConnection::FAILURE_NO_SERVER));
+      throw ExceptionConnection(ExceptionConnection::FAILURE_NO_SERVER);
   }
 
   return connection;
 }
 
-bool PostgresCentralHosted::create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error)
+bool PostgresCentralHosted::create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password)
 {
-  return attempt_create_database(database_name, get_host(), port_as_string(m_port), username, password, error);
+  return attempt_create_database(database_name, get_host(), port_as_string(m_port), username, password);
 }
 
 }

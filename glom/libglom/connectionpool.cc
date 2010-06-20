@@ -27,7 +27,7 @@
 
 #include <libglom/connectionpool_backends/postgres_central.h>
 #include <libglom/connectionpool_backends/postgres_self.h>
-# include <libglom/connectionpool_backends/sqlite.h>
+#include <libglom/connectionpool_backends/sqlite.h>
 
 #ifdef G_OS_WIN32
 # include <windows.h>
@@ -209,11 +209,7 @@ const ConnectionPool::Backend* ConnectionPool::get_backend() const
 
 
 //static:
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
 sharedptr<SharedConnection> ConnectionPool::get_and_connect()
-#else
-sharedptr<SharedConnection> ConnectionPool::get_and_connect(std::auto_ptr<ExceptionConnection>& error)
-#endif // GLIBMM_EXCEPTIONS_ENABLED
 {
   sharedptr<SharedConnection> result(0);
 
@@ -227,11 +223,7 @@ sharedptr<SharedConnection> ConnectionPool::get_and_connect(std::auto_ptr<Except
     return result; //TODO: Return a FAILURE_NO_BACKEND error?, though that would be tedious.
   }
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   result = connection_pool->connect();
-#else
-  result = connection_pool->connect(error);
-#endif // GLIBMM_EXCEPTIONS_ENABLED
 
   return result;
 }
@@ -257,11 +249,7 @@ static bool on_connection_pool_cache_timeout()
 }
 
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
 sharedptr<SharedConnection> ConnectionPool::connect()
-#else
-sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConnection>& error)
-#endif
 {
   //Don't try to connect if we don't have a backend to connect to.
   g_return_val_if_fail(m_backend.get(), sharedptr<SharedConnection>(0));
@@ -300,24 +288,19 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
     }
     else
     {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-      std::auto_ptr<ExceptionConnection> error;
-#endif
-      m_refGdaConnection = m_backend->connect(m_database, get_user(), get_password(), error);
-
-      if(!m_refGdaConnection)
+      try
       {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-        throw *error;
-#endif
-        return sharedptr<SharedConnection>(0);
+        m_refGdaConnection = m_backend->connect(m_database, get_user(), get_password());
       }
-      else
+      catch(const Glib::Error& ex)
+      {
+        throw ex;
+      }
+
       {
         //Allow get_meta_store_data() to succeed:
         //Hopefully this (and the update_meta_store_for_table() calls) is all we need.
         //std::cout << "DEBUG: Calling update_meta_store_data_types() ..." << std::endl;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
         try
         {
           m_refGdaConnection->update_meta_store_data_types();
@@ -327,14 +310,9 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
           std::cerr << "ConnectionPool::connect(): update_meta_store_data_types() failed: " << ex.what() << std::endl;
         }
         //std::cout << "DEBUG: ... update_meta_store_data_types() has finished." << std::endl;
-#else
-        std::auto_ptr<Glib::Error> ex;
-        m_refGdaConnection->update_meta_store_data_types(ex);
-        if (ex.get())
-          std::cerr << "ConnectionPool::connect(): update_meta_store_data_types() failed: " << ex->what() << std::endl;
-#endif
+
         //std::cout << "DEBUG: Calling update_meta_store_table_names() ..." << std::endl;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
+
         try
         {
           //update_meta_store_table_names() has been known to throw an exception.
@@ -346,11 +324,6 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
           std::cerr << "ConnectionPool::connect(): update_meta_store_table_names() failed: " << ex.what() << std::endl;
         }
         //std::cout << "DEBUG: ... update_meta_store_table_names() has finished." << std::endl;
-#else
-        m_refGdaConnection->update_meta_store_table_names(m_backend->get_public_schema_name(), ex);
-        if (ex.get())
-          std::cerr << "ConnectionPool::connect(): update_meta_store_data_types() failed: " << ex->what() << std::endl;
-#endif
 
         // Connection succeeded
         // Create the fieldtypes member if it has not already been done:
@@ -368,11 +341,7 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
           avahi_start_publishing(); //Stopped in the signal_finished handler.
 #endif // !G_OS_WIN32
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
         return connect(); //Call this method recursively. This time m_refGdaConnection exists.
-#else
-        return connect(error); //Call this method recursively. This time m_refGdaConnection exists.
-#endif // GLIBMM_EXCEPTIONS_ENABLED
       }
     }
   }
@@ -384,21 +353,10 @@ sharedptr<SharedConnection> ConnectionPool::connect(std::auto_ptr<ExceptionConne
   return sharedptr<SharedConnection>(0);
 }
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
 void ConnectionPool::create_database(const Glib::ustring& database_name)
-#else
-void ConnectionPool::create_database(const Glib::ustring& database_name, std::auto_ptr<Glib::Error>& error)
-#endif
 {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  std::auto_ptr<Glib::Error> error;
-#endif
   if(m_backend.get())
-    m_backend->create_database(database_name, get_user(), get_password(), error);
-
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  if(error.get()) throw *error;
-#endif
+    m_backend->create_database(database_name, get_user(), get_password());
 }
 
 void ConnectionPool::set_user(const Glib::ustring& value)
@@ -502,13 +460,8 @@ void ConnectionPool::on_sharedconnection_finished()
 //static
 bool ConnectionPool::handle_error_cerr_only()
 {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   sharedptr<SharedConnection> sharedconnection = get_and_connect();
-#else
-  std::auto_ptr<ExceptionConnection> conn_error;
-  sharedptr<SharedConnection> sharedconnection = get_and_connect(conn_error);
-  // Ignore error, sharedconnection presence is checked below
-#endif
+
   if(sharedconnection)
   {
     Glib::RefPtr<Gnome::Gda::Connection> gda_connection = sharedconnection->get_gda_connection();
@@ -630,134 +583,78 @@ bool ConnectionPool::set_network_shared(const SlotProgress& slot_progress, bool 
     return false;
 }
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-bool ConnectionPool::add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field)
-#else
-bool ConnectionPool::add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field, std::auto_ptr<Glib::Error>& error)
-#endif
+bool ConnectionPool::add_column(const Glib::ustring& table_name, const sharedptr<const Field>& field) throw()
 {
   sharedptr<SharedConnection> conn;
   if(!m_refGdaConnection)
   {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     conn = connect();
-#else
-    std::auto_ptr<ExceptionConnection> local_error;
-    // TODO: We can't rethrow local_error here since ExceptionConnection does
-    // not derive from Glib::Error
-    conn = connect(local_error);
-#endif
   }
 
   if(!m_refGdaConnection)
     return false;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  std::auto_ptr<Glib::Error> error;
-#endif
-  const bool result = m_backend->add_column(m_refGdaConnection, table_name, field, error);
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  if(error.get()) throw *error;
-  m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name());
-#else
-  if(error.get())
-    std::cerr << "Error: " << error->what() << std::endl;
-  m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name(), error);
-  if(error.get())
-    std::cerr << "Error: " << error->what() << std::endl;
-#endif
-  return result;
+  
+  try
+  {
+    m_backend->add_column(m_refGdaConnection, table_name, field);
+    m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name());
+    return true;
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << "ConnectionPool::add_column(): exception:" << ex.what() << std::endl;
+  }
+  
+  return false;
 }
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-bool ConnectionPool::drop_column(const Glib::ustring& table_name, const Glib::ustring& field_name)
-#else
-bool ConnectionPool::drop_column(const Glib::ustring& table_name, const Glib::ustring& field_name, std::auto_ptr<Glib::Error>& error)
-#endif
+bool ConnectionPool::drop_column(const Glib::ustring& table_name, const Glib::ustring& field_name) throw()
 {
   sharedptr<SharedConnection> conn;
   if(!m_refGdaConnection)
   {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     conn = connect();
-#else
-    std::auto_ptr<ExceptionConnection> local_error;
-    // TODO: We can't rethrow local_error here since ExceptionConnection does
-    // not derive from Glib::Error
-    conn = connect(local_error);
-#endif
   }
 
   if(!m_refGdaConnection)
     return false;
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  std::auto_ptr<Glib::Error> error;
-#endif
-  const bool result = m_backend->drop_column(m_refGdaConnection, table_name, field_name, error);
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  if(error.get()) throw *error;
-  m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name());
-#else
-  if(error.get())
-    std::cerr << "Error: " << error->what() << std::endl;
-  m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name(), error);
-  if(error.get())
-    std::cerr << "Error: " << error->what() << std::endl;
-#endif
-  return result;
+  try
+  {
+    m_backend->drop_column(m_refGdaConnection, table_name, field_name);
+    m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name());
+    return true;
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << "ConnectionPool::drop_column(): exception:" << ex.what() << std::endl;
+  }
+  
+  return false;
 }
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-bool ConnectionPool::change_column(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field)
-#else
-bool ConnectionPool::change_column(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, std::auto_ptr<Glib::Error>& error)
-#endif
+bool ConnectionPool::change_column(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field) throw()
 {
   type_vec_const_fields old_fields(1, field_old);
   type_vec_const_fields new_fields(1, field);
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   return change_columns(table_name, old_fields, new_fields);
-#else
-  return change_columns(table_name, old_fields, new_fields, error);
-#endif
 }
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields)
-#else
-bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields, std::auto_ptr<Glib::Error>& error)
-#endif
+bool ConnectionPool::change_columns(const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields) throw()
 {
   sharedptr<SharedConnection> conn;
   if(!m_refGdaConnection)
   {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     conn = connect();
-#else
-    std::auto_ptr<ExceptionConnection> local_error;
-    // TODO: We can't rethrow local_error here since ExceptionConnection does
-    // not derive from Glib::Error
-    conn = connect(local_error);
-#endif
   }
 
   if(!m_refGdaConnection)
     return false;
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  std::auto_ptr<Glib::Error> error;
-#endif
-  const bool result = m_backend->change_columns(m_refGdaConnection, table_name, old_fields, new_fields, error);
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  if(error.get()) throw *error;
+  const bool result = m_backend->change_columns(m_refGdaConnection, table_name, old_fields, new_fields);
   m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name());
 
-#else
-  if(error.get())
-    std::cerr << "Error: " << error->what() << std::endl;
-  m_refGdaConnection->update_meta_store_table(table_name, m_backend->get_public_schema_name(), error);
-#endif
   return result;
 }
 
@@ -818,7 +715,7 @@ gboolean ConnectionPool::on_publisher_document_authentication(EpcAuthContext* co
 
   //Attempt a connection with this username/password:
   std::auto_ptr<ExceptionConnection> error;
-  Glib::RefPtr<Gnome::Gda::Connection> connection = connection_pool->m_backend->connect(connection_pool->get_database(), user_name, password, error);
+  Glib::RefPtr<Gnome::Gda::Connection> connection = connection_pool->m_backend->connect(connection_pool->get_database(), user_name, password);
 
   if(connection)
   {
