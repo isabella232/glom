@@ -164,10 +164,8 @@ private:
     m_context_menu_uimanager = Gtk::UIManager::create();
     m_context_menu_uimanager->insert_action_group(m_context_menu_action_group);
 
-    #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
-    #endif
       Glib::ustring ui_info = 
         "<ui>"
         "  <popup name='ContextMenu'>"
@@ -176,21 +174,12 @@ private:
         "  </popup>"
         "</ui>";
 
-    #ifdef GLIBMM_EXCEPTIONS_ENABLED
       m_context_menu_uimanager->add_ui_from_string(ui_info);
     }
     catch(const Glib::Error& ex)
     {
       std::cerr << "building menus failed: " <<  ex.what();
     }
-    #else
-    std::auto_ptr<Glib::Error> error;
-    m_context_menu_uimanager->add_ui_from_string(ui_info, error);
-    if(error.get())
-    {
-      std::cerr << "building menus failed: " << error->what();
-    }
-    #endif
 
     //Get the menu:
     m_context_menu = dynamic_cast<Gtk::Menu*>( m_context_menu_uimanager->get_widget("/ContextMenu") ); 

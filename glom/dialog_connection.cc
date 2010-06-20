@@ -61,11 +61,7 @@ Dialog_Connection::~Dialog_Connection()
 {
 }
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
 sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection_settings() const
-#else
-sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection_settings(std::auto_ptr<ExceptionConnection>& error) const
-#endif
 {
   //std::cout << "debug: Dialog_Connection::connect_to_server_with_connection_settings()" << std::endl;
 
@@ -101,11 +97,7 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
   connection_pool->set_password(m_entry_password->get_text());
 
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   result = Base_DB::connect_to_server(const_cast<Dialog_Connection*>(this));
-#else
-  result = Base_DB::connect_to_server(const_cast<Dialog_Connection*>(this), error);
-#endif
 
 #ifdef GLOM_ENABLE_POSTGRESQL
   //Remember the port, 

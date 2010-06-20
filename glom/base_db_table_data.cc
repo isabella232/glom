@@ -117,16 +117,8 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
           const type_map_fields field_values = get_record_field_values_for_calculation(m_table_name, fieldPrimaryKey, primary_key_value);
 
           //We need the connection when we run the script, so that the script may use it.
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
           // TODO: Is this function supposed to throw an exception?
           sharedptr<SharedConnection> sharedconnection = connect_to_server(Application::get_application());
-#else
-          std::auto_ptr<ExceptionConnection> error;
-          sharedptr<SharedConnection> sharedconnection = connect_to_server(Application::get_application(), error);
-          if(!error.get())
-          {
-            // Don't evaluate function on error
-#endif // GLIBMM_EXCEPTIONS_ENABLED
 
             Glib::ustring error_message; //TODO: Check this.
             const Gnome::Gda::Value value =
@@ -140,9 +132,6 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
                 sharedconnection->get_gda_connection(),
                 error_message);
             set_entered_field_data(layout_item, value);
-#ifndef GLIBMM_EXCEPTIONS_ENABLED
-          }
-#endif // !GLIBMM_EXCEPTIONS_ENABLED
         }
 
         //Use default values (These are also specified in postgres as part of the field definition,
@@ -533,12 +522,7 @@ void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field
 
         for(guint uiCol = 0; uiCol < cols_count; ++uiCol)
         {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
           const Gnome::Gda::Value value = result->get_value_at(uiCol, 0 /* row */);
-#else
-          std::auto_ptr<Glib::Error> value_error;
-          const Gnome::Gda::Value value = result->get_value_at(uiCol, 0 /* row */, value_error);
-#endif
           sharedptr<LayoutItem_Field> layout_item = *iterFields;
           if(!layout_item)
             std::cerr << "Base_DB_Table_Data::refresh_related_fields(): The layout_item was null." << std::endl;

@@ -39,10 +39,8 @@ Dialog_Import_CSV_Progress::Dialog_Import_CSV_Progress(BaseObjectType* cobject, 
   builder->get_widget("import_csv_progress_progress_bar", m_progress_bar);
   builder->get_widget("import_csv_progress_textview", m_text_view);
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   if(!m_progress_bar || !m_text_view)
     throw std::runtime_error("Missing widgets from glade file for Dialog_Import_CSV_Progress");
-#endif    
 }
 
 bool Dialog_Import_CSV_Progress::init_db_details(const Glib::ustring& table_name)
@@ -70,7 +68,6 @@ void Dialog_Import_CSV_Progress::import(Dialog_Import_CSV& data_source)
     // parsing error.
     
     std::string filename;
-    #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
       filename = Glib::filename_from_uri(data_source.get_file_uri());
@@ -79,10 +76,6 @@ void Dialog_Import_CSV_Progress::import(Dialog_Import_CSV& data_source)
     {
       std::cerr << "Glib::filename_from_uri() failed: " << ex.what() << std::endl;
     }
-    #else
-    std::auto_ptr<Glib::Error> error;
-    filename = Glib::filename_from_uri(data_source.get_file_uri(), error);
-    #endif
 
     m_progress_bar->set_text(Glib::ustring::compose(_("Parsing CSV file %1"), filename));
     m_ready_connection = data_source.signal_state_changed().connect(sigc::mem_fun(*this, &Dialog_Import_CSV_Progress::on_state_changed));
@@ -288,9 +281,7 @@ void Dialog_Import_CSV_Progress::set_primary_key_value(const Gtk::TreeModel::ite
 
 Gnome::Gda::Value Dialog_Import_CSV_Progress::get_primary_key_value(const Gtk::TreeModel::iterator& /* row */) const
 {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   throw std::logic_error("Dialog_Import_CSV_Progress::get_primary_key_value() called");
-#endif
 
   return Gnome::Gda::Value();
 }

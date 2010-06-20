@@ -76,10 +76,8 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
   builder->get_widget("import_csv_sample_rows", m_sample_rows);
   builder->get_widget("import_csv_advice_label", m_advice_label);
   builder->get_widget("import_csv_error_label", m_error_label);
-#ifdef GLIBMM_EXCEPTIONS_ENABLED  
   if(!m_sample_view || !m_encoding_combo || !m_target_table || !m_encoding_info || !m_first_line_as_title || !m_sample_rows || !m_error_label)
     throw std::runtime_error("Missing widgets from glade file for Dialog_Import_CSV");
-#endif
 
   //Fill the list of encodings:
   m_encoding_model = Gtk::ListStore::create(m_encoding_columns);
@@ -533,15 +531,9 @@ Gtk::TreeViewColumn* Dialog_Import_CSV::create_sample_column(const Glib::ustring
 Gtk::CellRendererCombo* Dialog_Import_CSV::create_sample_cell(guint index)
 {
   Gtk::CellRendererCombo* cell = new Gtk::CellRendererCombo;
-#ifdef GLIBMM_PROPERTIES_ENABLED
   cell->property_model() = m_field_model_sorted;
   cell->property_text_column() = 0;
   cell->property_has_entry() = false;
-#else
-  cell->set_property("model", m_field_model_sorted);
-  cell->set_property("text-column", 0);
-  cell->set_property("has_entry", false);
-#endif
   cell->signal_edited().connect(sigc::bind(sigc::mem_fun(*this, &Dialog_Import_CSV::on_field_edited), index));
 
   return cell;
@@ -551,10 +543,8 @@ void Dialog_Import_CSV::line_data_func(Gtk::CellRenderer* renderer, const Gtk::T
 {
   const int row = (*iter)[m_sample_columns.m_col_row];
   Gtk::CellRendererText* renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   if(!renderer_text)
     throw std::logic_error("CellRenderer is not a CellRendererText in line_data_func");
-#endif
 
   if(row == -1)
     renderer_text->set_property("text", Glib::ustring(_("Target Field")));
@@ -566,9 +556,7 @@ void Dialog_Import_CSV::field_data_func(Gtk::CellRenderer* renderer, const Gtk::
 {
   const int row = (*iter)[m_sample_columns.m_col_row];
   Gtk::CellRendererCombo* renderer_combo = dynamic_cast<Gtk::CellRendererCombo*>(renderer);
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   if(!renderer_combo) throw std::logic_error("CellRenderer is not a CellRendererCombo in field_data_func");
-#endif
 
   Glib::ustring text;
   bool editable = false;
@@ -733,7 +721,6 @@ void Dialog_Import_CSV::validate_primary_key()
 void Dialog_Import_CSV::on_parser_file_read_error(const Glib::ustring& error_message)
 {
   std::string filename;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     filename = Glib::filename_from_uri(m_file_uri);
@@ -742,10 +729,6 @@ void Dialog_Import_CSV::on_parser_file_read_error(const Glib::ustring& error_mes
   {
     std::cerr << "Glib::filename_from_uri() failed: " << ex.what() << std::endl;
   }
-#else
-  std::auto_ptr<Glib::Error> error;
-  filename = Glib::filename_from_uri(m_file_uri, error);
-#endif
   
   show_error_dialog(_("Could Not Open file"),
     Glib::ustring::compose(_("The file at \"%1\" could not be opened: %2"), filename, error_message) );

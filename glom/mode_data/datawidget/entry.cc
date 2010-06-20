@@ -72,11 +72,6 @@ Entry::~Entry()
 
 void Entry::init()
 {
-#ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
-  signal_focus_out_event().connect(sigc::mem_fun(*this, &Entry::on_focus_out_event));
-  signal_activate().connect(sigc::mem_fun(*this, &Entry::on_activate));
-  signal_changed().connect(sigc::mem_fun(*this, &Entry::on_changed));
-#endif // !GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 }
 
 void Entry::set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name)
@@ -134,15 +129,9 @@ void Entry::check_for_change()
   }
 }
 
-#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 bool Entry::on_focus_out_event(GdkEventFocus* event)
 {
   const bool result = Gtk::Entry::on_focus_out_event(event);
-#else
-bool Entry::on_focus_out_event(GdkEventFocus* /* event */)
-{
-  const bool result = false;
-#endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 
   //The user has finished editing.
   check_for_change();
@@ -153,10 +142,8 @@ bool Entry::on_focus_out_event(GdkEventFocus* /* event */)
 
 void Entry::on_activate()
 {
-#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   //Call base class:
   Gtk::Entry::on_activate();
-#endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 
   //The user has finished editing.
   check_for_change();
@@ -166,10 +153,8 @@ void Entry::on_changed()
 {
   //The text is being edited, but the user has not finished yet.
 
-#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   //Call base class:
   Gtk::Entry::on_changed();
-#endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 }
 
 void Entry::set_value(const Gnome::Gda::Value& value)

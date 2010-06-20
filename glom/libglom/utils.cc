@@ -498,14 +498,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
 
   //std::cout << "debug: get_choice_values(): query: " << sql_query << std::endl;
   //Connect to database:
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   sharedptr<SharedConnection> connection = ConnectionPool::get_instance()->connect();
-#else
-  std::auto_ptr<ExceptionConnection> conn_error;
-  sharedptr<SharedConnection> connection = ConnectionPool::get_instance()->connect(conn_error);
-  if(conn_error.get())
-    return list_values;
-#endif
 
   if(!connection)
     return list_values;
@@ -513,12 +506,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
   const std::string sql_query =
     sqlbuilder_get_full_query(builder);
   //std::cout << "get_choice_values: Executing SQL: " << sql_query << std::endl;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   Glib::RefPtr<Gnome::Gda::DataModel> datamodel = connection->get_gda_connection()->statement_execute_select(sql_query);
-#else
-  std::auto_ptr<Glib::Error> error;
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = connection->get_gda_connection()->statement_execute_select(sql_query, Gnome::Gda::STATEMENT_MODEL_RANDOM_ACCESS, error);
-#endif
 
   if(datamodel)
   {
@@ -528,17 +516,10 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
     {
 
       std::pair<Gnome::Gda::Value, Gnome::Gda::Value> itempair;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
       itempair.first = datamodel->get_value_at(0, row);
 
       if(with_second)
         itempair.second = datamodel->get_value_at(1, row);
-#else
-      itempair.first = datamodel->get_value_at(0, row, error);
-
-      if(with_second)
-        itempair.second = datamodel->get_value_at(1, row, error);
-#endif
 
       list_values.push_back(itempair);
     }
@@ -878,7 +859,6 @@ bool Utils::file_exists(const Glib::ustring& uri)
     // Try to examine the input file.
     Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
       return file->query_exists();
@@ -887,9 +867,6 @@ bool Utils::file_exists(const Glib::ustring& uri)
     {
       return false; //Something went wrong. It does not exist.
     }
-#else
-      return file->query_exists();
-#endif
   }
 }
 

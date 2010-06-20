@@ -62,7 +62,6 @@ void helper_get_glade_widget_derived_with_warning(const std::string& filename, c
 {
   Glib::RefPtr<Gtk::Builder> refXml;
 
-  #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path(filename), id);
@@ -79,14 +78,6 @@ void helper_get_glade_widget_derived_with_warning(const std::string& filename, c
   {
     std::cerr << ex.what() << std::endl;
   }
-#else
-  std::auto_ptr<Glib::Error> error;
-  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path(filename), id, error);
-  if (error.get())
-  {
-    std::cerr << error->what() << std::endl;
-  }
-#endif
 
   if(refXml)
   {
@@ -119,7 +110,6 @@ void get_glade_widget_with_warning(const std::string& filename, const Glib::ustr
 {
   Glib::RefPtr<Gtk::Builder> refXml;
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path(filename), id);
@@ -136,14 +126,6 @@ void get_glade_widget_with_warning(const std::string& filename, const Glib::ustr
   {
     std::cerr << ex.what() << std::endl;
   }
-#else
-  std::auto_ptr<Glib::Error> error;
-  refXml = Gtk::Builder::create_from_file(Utils::get_glade_file_path(filename), id, error);
-  if (error.get())
-  {
-    std::cerr << error->what() << std::endl;
-  }
-#endif
 
   if(refXml)
   {

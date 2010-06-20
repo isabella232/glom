@@ -48,35 +48,20 @@ Glib::RefPtr<CanvasTableMovable> CanvasTableMovable::create()
 
 void CanvasTableMovable::get_xy(double& x, double& y) const
 {
-#ifdef GLIBMM_PROPERTIES_ENABLED
   x = property_x();
   y = property_y();
-#else
-  get_property("x", x);
-  get_property("y", y);
-#endif  
 }
 
 void CanvasTableMovable::set_xy(double x, double y)
 {
-#ifdef GLIBMM_PROPERTIES_ENABLED
   property_x() = x;
   property_y() = y;
-#else
-  set_property("x", x);
-  set_property("y", y);
-#endif  
 }
 
 void CanvasTableMovable::get_width_height(double& width, double& height) const
 {
-#ifdef GLIBMM_PROPERTIES_ENABLED
   width = property_width();
   height = property_height();
-#else
-  get_property("width", width);
-  get_property("height", height);
-#endif    
 
   if(width == -1) //Means "default width" - presumably the width demanded by the children. But we don't use that.
     width = 0;
@@ -91,13 +76,8 @@ void CanvasTableMovable::set_width_height(double width, double height)
   {
     std::cout << "CanvasTableMovable::set_width_height(): width is -1" << std::endl;
   }
-#ifdef GLIBMM_PROPERTIES_ENABLED
   property_width() = width;
   property_height() = height;
-#else
-  set_property("width", width);
-  set_property("height", height);
-#endif    
 }
 
 void CanvasTableMovable::set_grid(const Glib::RefPtr<const CanvasGroupGrid>& grid)

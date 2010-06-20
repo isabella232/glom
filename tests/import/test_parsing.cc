@@ -46,7 +46,6 @@ bool check_tokens(const std::string& regex)
 {
   Glib::RefPtr<Glib::Regex> check;
 
-  #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     check = Glib::Regex::create(regex);
@@ -56,15 +55,6 @@ bool check_tokens(const std::string& regex)
     std::cerr << "Glib::Regex::create() failed: " << ex.what() << std::endl;
     return false;
   }
-  #else
-  std::auto_ptr<Glib::Error> ex;
-  check = Glib::Regex::create(regex, static_cast<Glib::RegexCompileFlags>(0), static_cast<Glib::RegexMatchFlags>(0), ex);
-  if(ex.get())
-  {
-    std::cerr << "Glib::Regex::create() failed: " << ex->what() << std::endl;
-    return false;
-  }
-  #endif
 
   if(!check && 0 == get_tokens_instance().size())
     return false;

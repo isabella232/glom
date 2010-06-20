@@ -70,7 +70,6 @@ namespace Impl
 static const unsigned int REDIRECT_STDOUT = 1;
 static const unsigned int REDIRECT_STDERR = 2;
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
 class SpawnError: public std::runtime_error
 {
 public:
@@ -78,7 +77,6 @@ public:
   : std::runtime_error(error_message)
   {}
 };
-#endif
 
 class SpawnInfo: public sigc::trackable
 {
@@ -111,9 +109,7 @@ private:
     security_attr.bInheritHandle = true;
 
     HANDLE result = CreateFile(filename.c_str(), GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_DELETE, &security_attr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     if(!result) throw SpawnError(win32_error_message());
-#endif // GLIBMM_EXCEPTIONS_ENABLED
     return result;
   }
 #else // G_OS_WIN32
@@ -132,7 +128,6 @@ private:
       gsize bytes_read;
 
       Glib::IOStatus status = Glib::IO_STATUS_NORMAL;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
       try
       {
         status = channel->read(buffer, 1024, bytes_read);
@@ -142,15 +137,6 @@ private:
         std::cerr << "Glom::Spawn::Impl::SpawnInfo::on_io: Error while reading from pipe: " << ex.what() << std::endl;
         return false;
       }
-#else
-      std::auto_ptr<Glib::Error> error;
-      status = channel->read(buffer, 1024, bytes_read, error);
-      if(error.get())
-      {
-        std::cerr << "Glom::Spawn::Impl::SpawnInfo::on_io: Error while reading from pipe: " << error->what() << std::endl;
-        return false;
-      }
-#endif
 
       buffer[bytes_read] = '\0';
       result += buffer;
@@ -162,20 +148,9 @@ private:
   void redirect_to_string(int fd, std::string& string)
   {
     Glib::RefPtr<Glib::IOChannel> channel = Glib::IOChannel::create_from_fd(fd);
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     channel->set_flags(Glib::IO_FLAG_NONBLOCK);
-#else
-    std::auto_ptr<Glib::Error> error;
-    channel->set_flags(Glib::IO_FLAG_NONBLOCK, error);
-#endif // !GLIBMM_EXCEPTIONS_ENABLED
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     channel->set_encoding("");
-#else
-    channel->set_encoding("", error);
-    if (error.get())
-      std::cerr << "Error: " << error->what() << std::endl;
-#endif
     channel->set_buffered(false);
 
     Glib::signal_io().connect(sigc::bind(sigc::mem_fun(*this, &SpawnInfo::on_io), channel, sigc::ref(string)), channel, Glib::IO_IN);
@@ -217,37 +192,24 @@ public:
 
     if(!CreateProcess(0, &command[0], 0, 0, true, CREATE_NO_WINDOW, 0, 0, &startup_info, &process_info))
     {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
       throw SpawnError(win32_error_message());
-#endif // GLIBMM_EXCEPTIONS_ENABLED
     }
 #else // G_OS_WIN32
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
-#endif // GLIBMM_EXCEPTIONS_ENABLED
     {
       std::vector<std::string> arguments = Glib::shell_parse_argv(command_line);
       int child_stdout;
       int child_stderr;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
       Glib::spawn_async_with_pipes(Glib::get_current_dir(), arguments, Glib::SPAWN_DO_NOT_REAP_CHILD, sigc::slot<void>(), &pid, 0, redirect & REDIRECT_STDOUT ? &child_stdout : 0, redirect & REDIRECT_STDERR ? &child_stderr : 0);
-#else
-      std::auto_ptr<Glib::Error> error;
-      Glib::spawn_async_with_pipes(Glib::get_current_dir(), arguments, Glib::SPAWN_DO_NOT_REAP_CHILD, sigc::slot<void>(), &pid, 0, redirect & REDIRECT_STDOUT ? &child_stdout : 0, redirect & REDIRECT_STDERR ? &child_stderr : 0, error);
-      if (error.get())
-        std::cerr << "Spawn Error: " << error->what() << std::endl;
-#endif
       if(redirect & REDIRECT_STDOUT)
         redirect_to_string(child_stdout, stdout_text);
       if(redirect & REDIRECT_STDERR)
         redirect_to_string(child_stderr, stderr_text);
     }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     catch(Glib::Exception& ex)
     {
       throw SpawnError(ex.what());
     }
-#endif // GLIBMM_EXCEPTIONS_ENABLED
 #endif // !G_OS_WIN32
 
     Glib::signal_child_watch().connect(sigc::mem_fun(*this, &SpawnInfo::on_child_watch), get_pid());
@@ -497,7 +459,6 @@ namespace
 
     int return_status = 0;
     std::string stdout_output;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
       return_status = Impl::spawn_sync(second_command, &stdout_output, 0);
@@ -508,9 +469,6 @@ namespace
       // TODO: We should cancel the whole call if this fails three times in 
       // a row or so.
     }
-#else
-    return_status = Impl::spawn_sync(second_command, &stdout_output, 0);
-#endif
 
     if(!success_text.empty())
     {

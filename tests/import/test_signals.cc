@@ -106,7 +106,6 @@ int main(int argc, char* argv[])
          iter != encodings.end();
          ++iter)
     {
-      #ifdef GLIBMM_EXCEPTIONS_ENABLED
       try
       {
         while(parser.on_idle_parse())
@@ -118,12 +117,6 @@ int main(int argc, char* argv[])
       {
         std::cout << exception.what() << std::endl;
       }
-      #else
-      while(parser.on_idle_parse())
-      {}
-
-      parser.clear();
-      #endif
 
       parser.set_encoding((*iter).c_str());
     }

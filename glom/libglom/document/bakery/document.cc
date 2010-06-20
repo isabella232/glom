@@ -210,7 +210,6 @@ bool Document::read_from_disk(int& failure_code)
 
   Glib::RefPtr<Gio::FileInputStream> stream;
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     stream = file->read();
@@ -226,32 +225,18 @@ bool Document::read_from_disk(int& failure_code)
     // If the operation was not successful, print the error and abort
     return false; //print_error(ex, input_uri_string);
   }
-#else
-  std::auto_ptr<Glib::Error> error;
-  stream = file->read(error);
-  if(error.get())
-    return false; //print_error(ex, input_uri_string);
-#endif
 
   // Read data from the input uri:
   guint buffer[BYTES_TO_PROCESS] = {0, }; // For each chunk.
   gsize bytes_read = 0;
   std::string data; //We use a std::string because we might not get whole UTF8 characters at a time. This might not be necessary.
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
-#endif
   {
     bool bContinue = true;
     while(bContinue)
     {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
       bytes_read = stream->read(buffer, BYTES_TO_PROCESS);
-#else
-      std::auto_ptr<Glib::Error> gerror;
-      bytes_read = stream->read(buffer, BYTES_TO_PROCESS, gerror);
-      if(gerror.get()) break;
-#endif
 
       if(bytes_read == 0)
         bContinue = false; //stop because we reached the end.
@@ -262,14 +247,8 @@ bool Document::read_from_disk(int& failure_code)
       }
     }
   }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   catch(const Gio::Error& ex)
   {
-#else
-  if(error.get())
-  {
-    std::cerr << "Bakery::Document::read_from_disk(): Error: " << error->what() << std::endl;
-#endif
     // If the operation was not successful, print the error and abort
     return false; //print_error(ex, input_uri_string);
   }
@@ -343,7 +322,6 @@ bool Document::write_to_disk()
       return false;
 
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
       //Write the data to the output uri
@@ -356,13 +334,6 @@ bool Document::write_to_disk()
     }
     catch(const Gio::Error& ex)
     {
-#else
-    std::auto_ptr<Glib::Error> gerror;
-    stream->write(m_strContents.data(), m_strContents.bytes(), gerror);
-    if(gerror.get())
-    {
-      std::cerr << "akery::Document::write_to_disk(): Error from Gio stream.write(): "<< gerror.get() << std::endl;
-#endif
       // If the operation was not successful, print the error and abort
       std::cerr << "Bakery::Document::write_to_disk(): Error from Gio stream.write(): " << ex.what() << std::endl;
       return false; //print_error(ex, output_uri_string);
@@ -390,7 +361,6 @@ static Glib::ustring get_file_display_name(const Glib::ustring& uri)
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
   Glib::RefPtr<const Gio::FileInfo> file_info;
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     file_info = file->query_info(G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME);
@@ -400,12 +370,6 @@ static Glib::ustring get_file_display_name(const Glib::ustring& uri)
     std::cerr << "Application::get_file_display_name(uri=" << uri << "): error: " << ex.what() << std::endl;
     return result;
   }
-#else
-  std::auto_ptr<Gio::Error> error;
-  file_info = uri->query_info(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE, Gio::FILE_QUERY_INFO_NONE, error);
-  if(error.get())
-    return result;
-#endif
 
   if(!file_info)
     return result;
@@ -466,7 +430,6 @@ bool Document::get_read_only() const
     {
       Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(m_file_uri);
       Glib::RefPtr<Gio::FileInfo> info;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
       try
       {
         Glib::RefPtr<Gio::FileInfo> info = file->query_info(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE);
@@ -475,12 +438,6 @@ bool Document::get_read_only() const
       {
         return false; //We should at least be able to read the permissions, so maybe the location is invalid. I'm not sure what the best return result here is.
       }
-#else
-      std::auto_ptr<Glib::Error> error;
-      info = file->query_info(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE, Gio::FILE_QUERY_INFO_NONE, error);
-      if(error.get())
-        return false;
-#endif
 
       if(!info)
         return false;

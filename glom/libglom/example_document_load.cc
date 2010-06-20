@@ -76,7 +76,6 @@ int main()
   // Get a URI for a test file:
   Glib::ustring uri;
 
-  #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     uri = Glib::filename_to_uri("/usr/share/glom/doc/examples/example_music_collection.glom");
@@ -86,10 +85,6 @@ int main()
     std::cerr << "Exception from Glib::filename_to_uri(): " << ex.what();
     return 1;
   }
-  #else
-  std::auto_ptr<Glib::Error> ex;
-  uri = Glib::filename_to_uri("/usr/share/glom/doc/examples/example_music_collection.glom", ex);
-  #endif
 
   std::cout << "URI=" << uri << std::endl;
 

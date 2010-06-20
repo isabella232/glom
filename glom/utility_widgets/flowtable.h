@@ -80,18 +80,6 @@ public:
 
 private:
 
-  #ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
-  // These are the hand-coded C default signal handlers in case the
-  // corresponding glibmm API has been disabled
-  static void glom_size_request_impl(GtkWidget* widget, GtkRequisition* requisition);
-  static void glom_size_allocate_impl(GtkWidget* widget, GtkAllocation* allocation);
-  static void glom_add_impl(GtkContainer* container, GtkWidget* widget);
-  static void glom_remove_impl(GtkContainer* container, GtkWidget* widget);
-
-  static void glom_realize_impl(GtkWidget* widget);
-  static void glom_unrealize_impl(GtkWidget* widget);
-  static gboolean glom_expose_event_impl(GtkWidget* widget, GdkEventExpose* event);
-  #endif
   //Overrides:
 
   //Handle child widgets:

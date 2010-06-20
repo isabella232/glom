@@ -74,8 +74,6 @@ private:
   void init();
 
   //Overrides of default signal handlers:
-  //Note that these don't override anything when GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
-  //is not defined. These are normal signal handlers then.
   virtual void on_changed(); //From Gtk::Entry.
   virtual void on_activate(); //From Gtk::Entry.
   virtual bool on_focus_out_event(GdkEventFocus* event); //From Gtk::Widget

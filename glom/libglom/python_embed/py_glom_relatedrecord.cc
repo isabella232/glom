@@ -78,13 +78,7 @@ boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& 
   {
     //Try to get the value from the database:
     //const Glib::ustring parent_key_name;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     sharedptr<SharedConnection> sharedconnection = ConnectionPool::get_instance()->connect();
-#else
-    std::auto_ptr<ExceptionConnection> conn_error;
-    sharedptr<SharedConnection> sharedconnection = ConnectionPool::get_instance()->connect(conn_error);
-    // Ignore error, sharedconnection presence is checked below
-#endif
 
     if(!sharedconnection)
     {
@@ -169,13 +163,7 @@ boost::python::object PyGlomRelatedRecord::generic_aggregate(const std::string& 
 
   //Try to get the value from the database:
   //const Glib::ustring parent_key_name;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   sharedptr<SharedConnection> sharedconnection = ConnectionPool::get_instance()->connect();
-#else
-  std::auto_ptr<ExceptionConnection> conn_error;
-  sharedptr<SharedConnection> sharedconnection = ConnectionPool::get_instance()->connect(conn_error);
-  // Ignore error, sharedconnection presence is checked below
-#endif
   if(!sharedconnection)
   {
     g_warning("RelatedRecord_sum: no connection.");

@@ -24,23 +24,14 @@ static std::string create_file_from_buffer(const char* input, guint input_size)
     close(tmp_file_handle);
 
   std::string file_uri;
-  #ifdef GLIBMM_EXCEPTIONS_ENABLED
   //TODO: Catch exception.
   file_uri = Glib::filename_to_uri(tmp_filename);
-  #else
-  std::auto_ptr<Glib::Error> ex;
-  file_uri = Glib::filename_to_uri(tmp_filename, ex);
-  #endif //GLIBMM_EXCEPTIONS_ENABLED
   
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(file_uri);
   
   gssize result = 0;
-  #ifdef GLIBMM_EXCEPTIONS_ENABLED
   //TODO: Catch exception.
   result = file->append_to()->write(input, input_size);
-  #else
-  result = file->append_to(Gio::FILE_CREATE_NONE, ex)->write(input, input_size, ex);
-  #endif
   g_return_val_if_fail(-1 < result, "");
 
   return file_uri;
@@ -107,13 +98,8 @@ bool run_parser_from_buffer(const FuncConnectParserSignals& connect_parser_signa
 
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(file_uri);
 
-  #ifdef GLIBMM_EXCEPTIONS_ENABLED
   //TODO: Catch exception.
   const bool removed = file->remove();
-  #else
-  std::auto_ptr<Glib::Error> ex;
-  const bool removed = file->remove(ex);
-  #endif 
   g_assert(removed);
 
   return finished_parsing;

@@ -846,7 +846,6 @@ static bool uri_is_writable(const Glib::RefPtr<const Gio::File>& uri)
 
   Glib::RefPtr<const Gio::FileInfo> file_info;
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     file_info = uri->query_info(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE);
@@ -855,12 +854,6 @@ static bool uri_is_writable(const Glib::RefPtr<const Gio::File>& uri)
   {
     return false;
   }
-#else
-  std::auto_ptr<Gio::Error> error;
-  file_info = uri->query_info(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE, Gio::FILE_QUERY_INFO_NONE, error);
-  if(error.get())
-    return false;
-#endif
 
   if(file_info)
   {
@@ -1739,26 +1732,12 @@ void Application::fill_menu_tables()
     "</ui>";
 
   //Add menus:
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
-#else
-  std::auto_ptr<Glib::Error> error;
-#endif // GLIBMM_EXCEPTIONS_ENABLED
   {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     m_menu_tables_ui_merge_id = m_refUIManager->add_ui_from_string(ui_description);
-#else
-    m_menu_tables_ui_merge_id = m_refUIManager->add_ui_from_string(ui_description, error);
-#endif // GLIBMM_EXCEPTIONS_ENABLED
   }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   catch(const Glib::Error& ex)
   {
-#else
-  if(error.get())
-  {
-    const Glib::Error& ex = *error.get();
-#endif // GLIBMM_EXCEPTIONS_ENABLED
     std::cerr << " Application::fill_menu_tables(): building menus failed: " <<  ex.what() << std::endl;
     std::cerr << "   The ui_description was: " <<  ui_description << std::endl;
   }
@@ -1838,26 +1817,12 @@ void Application::fill_menu_reports(const Glib::ustring& table_name)
     "</ui>";
 
   //Add menus:
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
-#else
-  std::auto_ptr<Glib::Error> error;
-#endif // GLIBMM_EXCEPTIONS_ENABLED
   {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     m_menu_reports_ui_merge_id = m_refUIManager->add_ui_from_string(ui_description);
-#else
-    m_menu_reports_ui_merge_id = m_refUIManager->add_ui_from_string(ui_description, error);
-#endif // GLIBMM_EXCEPTIONS_ENABLED
   }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   catch(const Glib::Error& ex)
   {
-#else
-  if(error.get())
-  {
-    const Glib::Error& ex = *error.get();
-#endif // GLIBMM_EXCEPTIONS_ENABLED
     std::cerr << " Application::fill_menu_reports(): building menus failed: " <<  ex.what();
   }
 }
@@ -1950,26 +1915,12 @@ void Application::fill_menu_print_layouts(const Glib::ustring& table_name)
     "</ui>";
 
   //Add menus:
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
-#else
-  std::auto_ptr<Glib::Error> error;
-#endif // GLIBMM_EXCEPTIONS_ENABLED
   {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     m_menu_print_layouts_ui_merge_id = m_refUIManager->add_ui_from_string(ui_description);
-#else
-    m_menu_print_layouts_ui_merge_id = m_refUIManager->add_ui_from_string(ui_description, error);
-#endif // GLIBMM_EXCEPTIONS_ENABLED
   }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   catch(const Glib::Error& ex)
   {
-#else
-  if(error.get())
-  {
-    const Glib::Error& ex = *error.get();
-#endif // GLIBMM_EXCEPTIONS_ENABLED
     std::cerr << " Application::fill_menu_reports(): building menus failed: " <<  ex.what();
   }
 }

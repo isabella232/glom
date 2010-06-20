@@ -291,10 +291,8 @@ void DbAddDel::setup_menu()
 
   //TODO: add_accel_group(m_refUIManager->get_accel_group());
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-#endif
     Glib::ustring ui_info = 
         "<ui>"
         "  <popup name='ContextMenu'>"
@@ -307,21 +305,12 @@ void DbAddDel::setup_menu()
         "  </popup>"
         "</ui>";
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     m_refUIManager->add_ui_from_string(ui_info);
   }
   catch(const Glib::Error& ex)
   {
     std::cerr << "building menus failed: " <<  ex.what();
   }
-#else
-  std::auto_ptr<Glib::Error> error;
-  m_refUIManager->add_ui_from_string(ui_info, error);
-  if(error.get())
-  {
-    std::cerr << "building menus failed: " << error->what();
-  }
-#endif //GLIBMM_EXCEPTIONS_ENABLED
 
   //Get the menu:
   m_pMenuPopup = dynamic_cast<Gtk::Menu*>( m_refUIManager->get_widget("/ContextMenu") ); 
@@ -922,37 +911,21 @@ void DbAddDel::apply_formatting(Gtk::CellRenderer* renderer, const sharedptr<con
   const FieldFormatting::HorizontalAlignment alignment =
     layout_item->get_formatting_used_horizontal_alignment();
   const float x_align = (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT ? 0.0 : 1.0);
-#ifdef GLIBMM_PROPERTIES_ENABLED  
-      text_renderer->property_xalign() = x_align;
-#else    
-      text_renderer->set_property("xalign", alignment);
-#endif
+  text_renderer->property_xalign() = x_align;
 
   const FieldFormatting& formatting = layout_item->get_formatting_used();
 
   const Glib::ustring font_desc = formatting.get_text_format_font();
   if(!font_desc.empty())
-#ifdef GLIBMM_PROPERTIES_ENABLED  
-    text_renderer->property_font() = font_desc;
-#else
-    text_renderer->set_property("font", font_desc);
-#endif        
+  text_renderer->property_font() = font_desc;       
 
   const Glib::ustring fg = formatting.get_text_format_color_foreground();
   if(!fg.empty())
-#ifdef GLIBMM_PROPERTIES_ENABLED  
     text_renderer->property_foreground() = fg;
-#else    
-    text_renderer->set_property("foreground", fg);
-#endif
     
   const Glib::ustring bg = formatting.get_text_format_color_background();
   if(!bg.empty())
-#ifdef GLIBMM_PROPERTIES_ENABLED
     text_renderer->property_background() = bg;
-#else    
-    text_renderer->set_property("background", bg);
-#endif
 }
 
 void DbAddDel::construct_specified_columns()
@@ -2482,9 +2455,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
     Gtk::Window* window = get_application();
 
     //Just update the record:
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
-#endif // GLIBMM_EXCEPTIONS_ENABLED
     {
       if(!layout_field->get_has_relationship_name())
       {
@@ -2566,7 +2537,6 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
       else
         signal_record_changed().emit();
     }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     catch(const Glib::Exception& ex)
     {
       handle_error(ex);
@@ -2591,7 +2561,6 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
         set_entered_field_data(row, layout_field, value_old);
       }
     }
-#endif // GLIBMM_EXCEPTIONS_ENABLED
   }
   else
   {
@@ -2661,13 +2630,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
   if(Conversions::value_is_empty(primary_key_value))
     return;
     
-  #ifdef GLIBMM_EXCEPTIONS_ENABLED
   sharedptr<SharedConnection> sharedconnection = connect_to_server(get_application()); //Keep it alive while we need the data_model.
-  #else
-  std::auto_ptr<ExceptionConnection> error;
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(get_application(), error); //Keep it alive while we need the data_model.
-  // Ignore error - sharedconnection is checked for NULL instead:
-  #endif
   if(!sharedconnection)
   {
     //Add Record failed.

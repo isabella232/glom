@@ -44,17 +44,8 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
     //the Gda::ValueType used by Glib::RefPtr<Gnome::Gda::Column>.
     //This first call to update_meta_store() is also necessary for other calls to get_meta_store_data() elsewhere to succeed.
     Glib::RefPtr<Gnome::Gda::DataModel> data_model_tables;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     if(true) //Already done in ConnectionPool::connect(): gda_connection->update_meta_store())
       data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_TYPES);
-#else
-    std::auto_ptr<Glib::Error> error;
-    if(true) //Already done in ConnectionPool::connect(): gda_connection->update_meta_store(error))
-      data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_TYPES, error);
-
-    // Ignore error here, we do not process data_model_tables if it is NULL
-    // anyway
-#endif // GLIBMM_EXCEPTIONS_ENABLED
 
     if(!data_model_tables)
       std::cerr << "FieldTypes::FieldTypes(): Couldn't get datamodel" << std::endl;
@@ -71,11 +62,7 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
 
       for(int i = 0; i < rows; ++i)
       {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
         const Gnome::Gda::Value value_name = data_model_tables->get_value_at(DATAMODEL_FIELDS_COL_NAME, i);
-#else
-        const Gnome::Gda::Value value_name = data_model_tables->get_value_at(DATAMODEL_FIELDS_COL_NAME, i, error);
-#endif
 
         //Get the types's string representation:
         Glib::ustring schema_type_string;
@@ -84,11 +71,7 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
         
         if(!schema_type_string.empty())
         {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
           Gnome::Gda::Value value_gdatype = data_model_tables->get_value_at(DATAMODEL_FIELDS_COL_GTYPE, i);
-#else
-          Gnome::Gda::Value value_gdatype = data_model_tables->get_value_at(DATAMODEL_FIELDS_COL_GTYPE, i, error);
-#endif
           if(value_gdatype.get_value_type() == G_TYPE_STRING)
           {
             Glib::ustring type_string = value_gdatype.get_string();

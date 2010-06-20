@@ -254,10 +254,8 @@ void AddDel::setup_menu()
 
   //TODO: add_accel_group(m_refUIManager->get_accel_group());
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-#endif
     Glib::ustring ui_info = 
         "<ui>"
         "  <popup name='ContextMenu'>"
@@ -266,21 +264,12 @@ void AddDel::setup_menu()
         "  </popup>"
         "</ui>";
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     m_refUIManager->add_ui_from_string(ui_info);
   }
   catch(const Glib::Error& ex)
   {
     std::cerr << "building menus failed: " <<  ex.what();
   }
-#else
-  std::auto_ptr<Glib::Error> error;
-  m_refUIManager->add_ui_from_string(ui_info, error);
-  if(error.get())
-  {
-    std::cerr << "building menus failed: " << error->what();
-  }
-#endif //GLIBMM_EXCEPTIONS_ENABLED
 
   //Get the menu:
   m_pMenuPopup = dynamic_cast<Gtk::Menu*>( m_refUIManager->get_widget("/ContextMenu") ); 

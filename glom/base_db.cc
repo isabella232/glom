@@ -118,19 +118,11 @@ bool Base_DB::fill_from_database()
 }
 
 //static:
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
 sharedptr<SharedConnection> Base_DB::connect_to_server(Gtk::Window* parent_window)
-#else
-sharedptr<SharedConnection> Base_DB::connect_to_server(Gtk::Window* parent_window, std::auto_ptr<ExceptionConnection>& error)
-#endif
 {
   BusyCursor busy_cursor(parent_window);
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   return ConnectionPool::get_and_connect();
-#else
-  return ConnectionPool::get_and_connect(error);
-#endif
 }
 
 void Base_DB::handle_error(const Glib::Exception& ex)
@@ -154,6 +146,7 @@ void Base_DB::handle_error(const std::exception& ex)
   dialog.set_secondary_text(ex.what());
   //TODO: dialog.set_transient_for(*get_application());
 #endif
+
   dialog.run();
 }
 
@@ -347,20 +340,12 @@ sharedptr<Field> Base_DB::change_column(const Glib::ustring& table_name, const s
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   sharedptr<Field> result = check_field_change_constraints(field_old, field);
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     connection_pool->change_column(table_name, field_old, result);
   }
   catch(const Glib::Error& ex)
   {
-#else
-  std::auto_ptr<Glib::Error> error;
-  connection_pool->change_column(table_name, field_old, result, error);
-  if(error.get())
-  {
-    const Glib::Error& ex = *error;
-#endif
     handle_error(ex);
 //    Gtk::MessageDialog window(*parent_window, Utils::bold_message(ex.what()), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
 //    window.run();
@@ -383,20 +368,12 @@ bool Base_DB::change_columns(const Glib::ustring& table_name, const type_vec_con
 
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     connection_pool->change_columns(table_name, old_fields, pass_fields);
   }
   catch(const Glib::Error& ex)
   {
-#else
-  std::auto_ptr<Glib::Error> error;
-  connection_pool->change_columns(table_name, old_fields, pass_fields, error);
-  if(error.get())
-  {
-    const Glib::Error& ex = *error;
-#endif
     handle_error(ex);
 //    Gtk::MessageDialog window(*parent_window, Utils::bold_message(ex.what()), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
 //    window.run();
@@ -410,7 +387,6 @@ bool Base_DB::change_columns(const Glib::ustring& table_name, const type_vec_con
 
 Glib::RefPtr<Gnome::Gda::Connection> Base_DB::get_connection()
 {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   sharedptr<SharedConnection> sharedconnection;
   try
   {
@@ -420,15 +396,6 @@ Glib::RefPtr<Gnome::Gda::Connection> Base_DB::get_connection()
   {
     std::cerr << "Base_DB::get_connection(): " << error.what() << std::endl;
   }
-#else
-  std::auto_ptr<ExceptionConnection> error;
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(0, error);
-  if(error.get())
-  {
-    std::cerr << "Base_DB::get_connection(): " << error->what() << std::endl;
-    // TODO: Rethrow?
-  }
-#endif
 
   if(!sharedconnection)
   {
@@ -936,12 +903,7 @@ void Base_DB::calculate_field_in_all_records(const Glib::ustring& table_name, co
   const int rows_count = data_model->get_n_rows();
   for(int row = 0; row < rows_count; ++row)
   {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     const Gnome::Gda::Value primary_key_value = data_model->get_value_at(0, row);
-#else
-    std::auto_ptr<Glib::Error> error;
-    const Gnome::Gda::Value primary_key_value = data_model->get_value_at(0, row, error);
-#endif
 
     if(!Conversions::value_is_empty(primary_key_value))
     {
@@ -1046,13 +1008,7 @@ void Base_DB::calculate_field(const LayoutFieldInRecord& field_in_record)
         if(field)
         {
           //We need the connection when we run the script, so that the script may use it.
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
           sharedptr<SharedConnection> sharedconnection = connect_to_server(0 /* parent window */);
-#else
-          std::auto_ptr<ExceptionConnection> error;
-          sharedptr<SharedConnection> sharedconnection = connect_to_server(0 /* parent window */, error);
-          // TODO: Rethrow?
-#endif
 
           g_assert(sharedconnection);
 
@@ -1120,7 +1076,6 @@ Base_DB::type_map_fields Base_DB::get_record_field_values_for_calculation(const 
       Glib::RefPtr<Gnome::Gda::SqlBuilder> query = Utils::build_sql_select_with_key(table_name, fieldsToGet, primary_key, primary_key_value);
 
       Glib::RefPtr<const Gnome::Gda::DataModel> data_model;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
       try
       {
         data_model = DbUtils::query_execute_select(query);
@@ -1131,16 +1086,6 @@ Base_DB::type_map_fields Base_DB::get_record_field_values_for_calculation(const 
         handle_error(ex);
         return field_values;
       }
-#else
-      //TODO: Seems there is no error handling in DbUtils::query_execute_select() without exceptions
-      std::auto_ptr<Glib::Error> error;
-      data_model = DbUtils::query_execute_select(query);
-      if (error.get())
-      {
-        std::cerr << "Base_DB::get_record_field_values_for_calculation(): Exception while executing SQL: " << query << std::endl;
-        return field_values;
-      }
-#endif
       if(data_model && data_model->get_n_rows())
       {
         int col_index = 0;
@@ -1148,11 +1093,7 @@ Base_DB::type_map_fields Base_DB::get_record_field_values_for_calculation(const 
         {
           //There should be only 1 row. Well, there could be more but we will ignore them.
           sharedptr<const Field> field = *iter;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
           Gnome::Gda::Value value = data_model->get_value_at(col_index, 0);
-#else
-          Gnome::Gda::Value value = data_model->get_value_at(col_index, 0, error);
-#endif
           //Never give a NULL-type value to the python calculation for types that don't use them:
           //to prevent errors:
           if(value.is_null())
@@ -1231,9 +1172,7 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
         builder->add_field_id(field_in_record.m_key->get_name(), field_in_record.m_table_name),
         builder->add_expr_as_value(field_in_record.m_key_value)));
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     try //TODO: The exceptions are probably already handled by query_execute(
-#endif
     {
       const bool test = DbUtils::query_execute(builder); //TODO: Respond to failure.
       if(!test)
@@ -1242,7 +1181,6 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
         return false; //failed.
       }
     }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     catch(const Glib::Exception& ex)
     {
       handle_error(ex);
@@ -1253,7 +1191,6 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
       handle_error(ex);
       return false;
     }
-#endif
 
     //Get-and-set values for lookup fields, if this field triggers those relationships:
     do_lookups(layoutfield_in_record, row, field_value);
@@ -1303,12 +1240,7 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const LayoutFieldInRecord
   {
     if(data_model->get_n_rows())
     {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
       result = data_model->get_value_at(0, 0);
-#else
-      std::auto_ptr<Glib::Error> value_error;
-      result = data_model->get_value_at(0, 0, value_error);
-#endif
     }
   }
   else
@@ -1351,12 +1283,7 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const sharedptr<Field>& f
   {
     if(data_model->get_n_rows())
     {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
       result = data_model->get_value_at(0, 0);
-#else
-      std::auto_ptr<Glib::Error> value_error;
-      result = data_model->get_value_at(0, 0, value_error);
-#endif
     }
   }
   else
@@ -1627,12 +1554,7 @@ Gnome::Gda::Value Base_DB::get_lookup_value(const Glib::ustring& /* table_name *
     if(data_model && data_model->get_n_rows())
     {
       //There should be only 1 row. Well, there could be more but we will ignore them.
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
       result = data_model->get_value_at(0, 0);
-#else
-      std::auto_ptr<Glib::Error> error;
-      result = data_model->get_value_at(0, 0, error);
-#endif
     }
     else
     {
@@ -1912,12 +1834,7 @@ int Base_DB::count_rows_returned_by(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& 
     Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(builder);
     if(datamodel && datamodel->get_n_rows() && datamodel->get_n_columns())
     {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
       Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
-#else
-      std::auto_ptr<Glib::Error> value_error;
-      Gnome::Gda::Value value = datamodel->get_value_at(0, 0, value_error);
-#endif
       //This showed me that this contains a gint64: std::cerr << "DEBUG: value type=" << G_VALUE_TYPE_NAME(value.gobj()) << std::endl;
       //For sqlite, this is an integer
       if(value.get_value_type() == G_TYPE_INT64)

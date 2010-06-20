@@ -196,12 +196,7 @@ void ReportBuilder::report_build_groupby(const FoundSet& found_set_parent, xmlpp
       guint rows_count = datamodel->get_n_rows();
       for(guint row = 0; row < rows_count; ++row)
       {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
         const Gnome::Gda::Value group_value = datamodel->get_value_at(0 /* col*/, row);
-#else
-        std::auto_ptr<Glib::Error> error;
-        const Gnome::Gda::Value group_value = datamodel->get_value_at(0 /* col*/, row, error);
-#endif
 
 
         //Add XML node:
@@ -406,23 +401,13 @@ void ReportBuilder::report_build_records_field(const FoundSet& found_set, xmlpp:
     if(!datamodel)
       return;
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     value = datamodel->get_value_at(colField, row);
-#else
-    std::auto_ptr<Glib::Error> error;
-    value = datamodel->get_value_at(colField, row, error);
-#endif
     colField = 0;
     row = 0;
   }
   else
   {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     value = datamodel->get_value_at(colField, row);
-#else
-    std::auto_ptr<Glib::Error> error;
-    value = datamodel->get_value_at(colField, row, error);
-#endif
   }
 
   nodeField->set_attribute("title", field->get_title_or_name()); //Not always used, but useful.
@@ -575,7 +560,6 @@ void ReportBuilder::report_build(const FoundSet& found_set, const sharedptr<cons
     // not to be in glom, otherwise the code wouldn't compile with
     // -fno-exceptions. If it's in a library, it does not seem to take an
     // additional error paramater for that. armin.
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
       report_build_records(found_set, *nodeGroupBy, itemsToGet_TopLevel);
@@ -592,9 +576,6 @@ void ReportBuilder::report_build(const FoundSet& found_set, const sharedptr<cons
       handle_error(ex);
       return;
     }
-#else
-    report_build_records(found_set, *nodeGroupBy, itemsToGet_TopLevel);
-#endif
   }
 
   GlomXslUtils::transform_and_open(*pDocument, "print_report_to_html.xsl", parent_window);

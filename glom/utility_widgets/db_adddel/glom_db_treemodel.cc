@@ -243,12 +243,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
     }
 
     //Add at least an initial row:
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   m_gda_datamodel->append_row(); //TODO: Handle adding.
-#else
-  std::auto_ptr<Glib::Error> error;
-  m_gda_datamodel->append_row(error); //TODO: Handle adding.
-#endif
     return true;
   }
 
@@ -257,13 +252,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   if(connection_pool)
   {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
      m_connection = connection_pool->connect();
-#else
-     std::auto_ptr<ExceptionConnection> error;
-     m_connection = connection_pool->connect(error);
-     // Ignore error. The connection presence is checked below
-#endif // GLIBMM_EXCEPTIONS_ENABLED
   }
 
   if(m_found_set.m_table_name.empty())
@@ -917,12 +906,7 @@ void DbTreeModel::get_record_counts(gulong& total, gulong& found) const
       {
         if(datamodel->get_n_rows())
         {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
           Gnome::Gda::Value value = datamodel->get_value_at(0, 0);
-#else
-          std::auto_ptr<Glib::Error> value_error;
-          Gnome::Gda::Value value = datamodel->get_value_at(0, 0, value_error);
-#endif
           total = (gulong)value.get_int64(); //I discovered that it's a int64 by trying it.
         }
       }

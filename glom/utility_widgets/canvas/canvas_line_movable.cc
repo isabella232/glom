@@ -50,48 +50,28 @@ Glib::RefPtr<CanvasLineMovable> CanvasLineMovable::create()
 
 void CanvasLineMovable::get_xy(double& x, double& y) const
 {
-#ifdef GLIBMM_PROPERTIES_ENABLED
   x = property_x();
   y = property_y();
-#else
-  get_property("x", x);
-  get_property("y", y);
-#endif
 }
 
 void CanvasLineMovable::set_xy(double x, double y)
 {
-#ifdef GLIBMM_PROPERTIES_ENABLED
   property_x() = x;
   property_y() = y;
-#else
-  set_property("x", x);
-  set_property("y", y);
-#endif
 }
 
 void CanvasLineMovable::get_width_height(double& width, double& height) const
 {
-#ifdef GLIBMM_PROPERTIES_ENABLED
   width = property_width();
   height = property_height();
-#else
-  get_property("width", width);
-  get_property("height", height);
-#endif
 
   //std::cout << "CanvasLineMovable::get_width_height(): width=" << width << std::endl;
 }
 
 void CanvasLineMovable::set_width_height(double width, double height)
 {
-#ifdef GLIBMM_PROPERTIES_ENABLED
   property_width() = width;
   property_height() = height;
-#else
-  set_property("width", width);
-  set_property("height", height);
-#endif
 
   //std::cout << "CanvasLineMovable::set_width_height(): end x=" << x1+width << std::endl;
 }

@@ -79,7 +79,6 @@ void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const
   Glib::RefPtr<Gio::FileOutputStream> stream;
 
   //Create the file if it does not already exist:
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     if(file->query_exists())
@@ -95,19 +94,6 @@ void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const
   }
   catch(const Gio::Error& ex)
   {
-#else
-  std::auto_ptr<Glib::Error> error;
-  if (file->query_exists())
-  {
-    stream = file->replace("" /* etag */, false /*make_backup*/, Gio::FILE_CREATE_NONE, error);
-  }
-  else
-  {
-    stream = file->create_file(Gio::FILE_CREATE_NONE, error);
-  }
-  if(error.get())
-  {
-#endif
     // If the operation was not successful, print the error and abort
     return; // false; // print_error(ex, output_uri_string);
   }
@@ -115,18 +101,12 @@ void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const
   //Write the data to the output uri
   gsize bytes_written = 0;
   const Glib::ustring::size_type result_bytes = result.bytes();
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     bytes_written = stream->write(result.data(), result_bytes);
   }
   catch(const Gio::Error& ex)
   {
-#else
-  bytes_written = stream->write(result.data(), result_bytes, error);
-  if(error.get())
-  {
-#endif
     // If the operation was not successful, print the error and abort
     return; // false; //print_error(ex, output_uri_string);
   }
@@ -152,7 +132,7 @@ void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const
     std::cerr << "Error while calling gtk_show_uri(): " << gerror->message << std::endl;
     g_error_free(gerror);
   }
-#endif
+#endif //G_OS_WIN32
 }
 
 Glib::ustring GlomXslUtils::xslt_process(const xmlpp::Document& xml_document, const std::string& filepath_xslt)

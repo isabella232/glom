@@ -270,7 +270,6 @@ bool Box_Data_Details::fill_from_database()
   //reconnect many times..
   sharedptr<SharedConnection> sharedconnection;
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     sharedconnection = connect_to_server(get_app_window());
@@ -285,15 +284,6 @@ bool Box_Data_Details::fill_from_database()
     handle_error(ex);
     bResult = false;
   }
-#else
-  std::auto_ptr<ExceptionConnection> error;
-  sharedconnection = connect_to_server(get_app_window(), error);
-  if(error.get())
-  {
-    handle_error(*error);
-    bResult = false;
-  }
-#endif
 
   if(sharedconnection)
   {
@@ -381,14 +371,7 @@ bool Box_Data_Details::fill_from_database()
             {
               if(index_primary_key < cols_count)
               {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
                 m_primary_key_value = result->get_value_at(index_primary_key, row_number);
-#else
-              {
-                std::auto_ptr<Glib::Error> value_error;
-                m_primary_key_value = result->get_value_at(index_primary_key, row_number, value_error);
-              }
-#endif
                 set_found_set_from_primary_key_value();
               }
             }
@@ -402,14 +385,7 @@ bool Box_Data_Details::fill_from_database()
               Gnome::Gda::Value value;
 
               if(!primary_key_is_empty)
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
                 value = result->get_value_at(i, row_number);
-#else
-              {
-                std::auto_ptr<Glib::Error> value_error;
-                value = result->get_value_at(i, row_number, value_error);
-              }
-#endif
               else
               {
                 value = Conversions::get_empty_value(layout_item->get_glom_type());
@@ -818,13 +794,10 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
     //Update the field in the record (the record with this primary key):
 
     bool bTest = false;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
-#endif // GLIBMM_EXCEPTIONS_ENABLED
     {
       bTest = set_field_value_in_database(field_in_record, field_value, false /* don't use current calculations */, get_app_window());
     }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     catch(const Glib::Exception& ex)
     {
       handle_error(ex);
@@ -833,11 +806,8 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
     {
       handle_error(ex);
     }
-#endif // GLIBMM_EXCEPTIONS_ENABLED
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
-#endif // GLIBMM_EXCEPTIONS_ENABLED
     {
       if(!bTest)
       {
@@ -871,7 +841,6 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
       }
 
     }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     catch(const Glib::Exception& ex)
     {
       handle_error(ex);
@@ -880,7 +849,6 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
     {
       handle_error(ex);
     }
-#endif // GLIBMM_EXCEPTIONS_ENABLED
   }
   else
   {

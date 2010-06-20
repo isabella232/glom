@@ -112,7 +112,6 @@ bool Box_Data_List::fill_from_database()
 
   sharedptr<SharedConnection> sharedconnection;
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     sharedconnection = connect_to_server(get_app_window());
@@ -127,15 +126,6 @@ bool Box_Data_List::fill_from_database()
     handle_error(ex);
     result = false;
   }
-#else
-  std::auto_ptr<ExceptionConnection> error;
-  sharedconnection = connect_to_server(get_app_window(), error);
-  if(error.get())
-  {
-    handle_error(*error);
-    result = false;
-  }
-#endif
 
   if(sharedconnection)
   {

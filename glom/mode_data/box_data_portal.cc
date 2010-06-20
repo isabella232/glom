@@ -64,11 +64,6 @@ Box_Data_Portal::Box_Data_Portal()
   m_layout_name = "list_portal"; //Replaced by derived classes.
 
   #ifdef GLOM_ENABLE_MAEMO
-  #ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
-  signal_realize().connect(sigc::mem_fun(*this, &Box_Data_Portal::on_realize));
-  signal_unrealize().connect(sigc::mem_fun(*this, &Box_Data_Portal::on_unrealize));
-  #endif //GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
-
   m_maemo_appmenubutton_add.signal_clicked().connect(
     sigc::mem_fun(*this, &Box_Data_Portal::on_maemo_appmenubutton_add));
   #endif //GLOM_ENABLE_MAEMO
@@ -523,12 +518,7 @@ void Box_Data_Portal::get_suitable_record_to_view_details(const Gnome::Gda::Valu
   {
     //Set the output parameters:
     table_name = navigation_table_name;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     table_primary_key_value = data_model->get_value_at(0, 0);
-#else
-    std::auto_ptr<Glib::Error> error;
-    table_primary_key_value = data_model->get_value_at(0, 0, error);
-#endif
     //std::cout << "Box_Data_Portal::get_suitable_record_to_view_details(): table_primary_key_value=" << table_primary_key_value.to_string() << std::endl;
 
     //The value is empty when there there is no record to match the key in the related table:

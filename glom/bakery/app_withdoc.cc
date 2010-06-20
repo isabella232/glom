@@ -200,7 +200,6 @@ bool App_WithDoc::file_exists(const Glib::ustring& uri)
     // Try to examine the input file.
     Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
       return file->query_exists();
@@ -209,9 +208,6 @@ bool App_WithDoc::file_exists(const Glib::ustring& uri)
     {
       return false; //Something went wrong. It does not exist.
     }
-#else
-      return file->query_exists();
-#endif
   }
 }
 

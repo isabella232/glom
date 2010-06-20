@@ -55,11 +55,7 @@ Canvas_PrintLayout::Canvas_PrintLayout()
 
   //Use millimeters, because that's something that is meaningful to the user,
   //and we can use it with Gtk::PageSetup too:
-  #ifdef GLIBMM_PROPERTIES_ENABLED
   property_units() = Gtk::UNIT_MM;
-  #else
-  set_property("units", Gtk::UNIT_MM);
-  #endif
 
   m_items_group = Goocanvas::Group::create();
   //m_items_group->signal_button_press_event().connect( sigc::ptr_fun(&on_group_button_press_event), false );
@@ -91,13 +87,8 @@ void Canvas_PrintLayout::set_print_layout(const Glib::ustring& table_name, const
   {
     Glib::KeyFile key_file;
     
-    #ifdef GLIBMM_EXCEPTIONS_ENABLED
     //TODO: Catch an exception
     key_file.load_from_data(key_file_text);
-    #else
-    std::auto_ptr<Glib::Error> ex;
-    key_file.load_from_data(key_file_text, Glib::KEY_FILE_NONE, ex);
-    #endif
     
     //TODO: Use this when gtkmm and GTK+ have been fixed: page_setup = Gtk::PageSetup::create(key_file);
     page_setup = Glib::wrap(gtk_page_setup_new_from_key_file(key_file.gobj(), 0, 0));
@@ -118,13 +109,8 @@ sharedptr<PrintLayout> Canvas_PrintLayout::get_print_layout()
   m_page_setup->save_to_key_file(key_file);
  
   Glib::ustring data;
-  #ifdef GLIBMM_EXCEPTIONS_ENABLED
   //TODO: Catch an exception
   data = key_file.to_data();
-  #else
-  std::auto_ptr<Glib::Error> ex;
-  data = key_file.to_data(ex);
-  #endif
   
   result->set_page_setup(data);
 
@@ -268,10 +254,8 @@ void Canvas_PrintLayout::setup_context_menu()
   m_context_menu_uimanager = Gtk::UIManager::create();
   m_context_menu_uimanager->insert_action_group(m_context_menu_action_group);
 
-  #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-  #endif
     Glib::ustring ui_info = 
       "<ui>"
       "  <popup name='ContextMenu'>"
@@ -281,21 +265,12 @@ void Canvas_PrintLayout::setup_context_menu()
       "  </popup>"
       "</ui>";
 
-  #ifdef GLIBMM_EXCEPTIONS_ENABLED
     m_context_menu_uimanager->add_ui_from_string(ui_info);
   }
   catch(const Glib::Error& ex)
   {
     std::cerr << "building menus failed: " <<  ex.what();
   }
-  #else
-  std::auto_ptr<Glib::Error> error;
-  m_context_menu_uimanager->add_ui_from_string(ui_info, error);
-  if(error.get())
-  {
-    std::cerr << "building menus failed: " << error->what();
-  }
-  #endif
 
   //Get the menu:
   m_context_menu = dynamic_cast<Gtk::Menu*>( m_context_menu_uimanager->get_widget("/ContextMenu") ); 
@@ -473,13 +448,8 @@ Glib::RefPtr<Goocanvas::Polyline> Canvas_PrintLayout::create_margin_line(double 
 {
   Glib::RefPtr<Goocanvas::Polyline> line = 
     Goocanvas::Polyline::create(x1, y1, x2, y2);
-  #ifdef GLIBMM_PROPERTIES_ENABLED
   line->property_line_width() = 0.5;
   line->property_stroke_color() = "light gray";
-  #else
-  line->set_property("line-width", 0.5);
-  line->set_property("stroke-color", Glib::ustring("light gray"));
-  #endif
 
   m_bounds_group->add_child(line);
   return line;
@@ -497,12 +467,7 @@ void Canvas_PrintLayout::set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page
   bounds.set_x1(0);
   bounds.set_y1(0);
 
-  #ifdef GLIBMM_PROPERTIES_ENABLED
   const Gtk::Unit units = property_units();
-  #else
-  Gtk::Unit units = Gtk::UNIT_MM;
-  get_property("units", units);
-  #endif
 
   //std::cout << "Canvas_PrintLayout::set_page_setup(): width=" << paper_size.get_width(units) << ", height=" paper_size.get_height(units) << std::endl;
 
@@ -522,11 +487,7 @@ void Canvas_PrintLayout::set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page
   set_bounds(bounds);
 
   //Show the bounds with a rectangle, because the scrolled window might contain extra empty space.
-  #ifdef GLIBMM_PROPERTIES_ENABLED
   property_background_color() = "light gray";
-  #else
-  set_property("background-color", Glib::ustring("light gray"));
-  #endif
   if(m_bounds_group)
   {
     m_bounds_group->remove();
@@ -539,13 +500,8 @@ void Canvas_PrintLayout::set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page
   
  
   m_bounds_rect = Goocanvas::Rect::create(bounds.get_x1(), bounds.get_y1(), bounds.get_x2(), bounds.get_y2());
-  #ifdef GLIBMM_PROPERTIES_ENABLED
   m_bounds_rect->property_fill_color() = "white";
   m_bounds_rect->property_line_width() = 0;
-  #else
-  m_bounds_rect->set_property("fill-color", Glib::ustring("white"));
-  m_bounds_rect->set_property("line-width", 0);
-  #endif
   m_bounds_group->add_child(m_bounds_rect);
 
   //Make sure that the bounds rect is at the bottom, 
@@ -632,12 +588,9 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
   
   bool records_found = false;
   Glib::RefPtr<Gnome::Gda::DataModel> datamodel;
-  #ifdef GLIBMM_EXCEPTIONS_ENABLED //TODO: Catch the error somehow?
   try
   {
-  #endif
     datamodel = DbUtils::query_execute_select(sql_query);
-  #ifdef GLIBMM_EXCEPTIONS_ENABLED
   }
   catch(const Glib::Exception& ex)
   {
@@ -647,7 +600,6 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
   {
     std::cout << "Canvas_PrintLayout::fill_with_data: exception: " << ex.what() << std::endl;
   }
-  #endif
 
   if(datamodel)
   {
@@ -681,13 +633,8 @@ void Canvas_PrintLayout::fill_with_data(const Glib::RefPtr<Goocanvas::Group>& ca
         //Set the data from the database:
         const guint col_index = iterFind->second;
 
-        #ifdef GLIBMM_EXCEPTIONS_ENABLED
         //TODO: Actually catch exception:
         const Gnome::Gda::Value value = datamodel->get_value_at(col_index, 0);
-        #else
-        std::auto_ptr<Glib::Error> ex;
-        const Gnome::Gda::Value value = datamodel->get_value_at(col_index, 0, ex);
-        #endif
         canvas_item->set_db_data(value);
       }
     }
@@ -771,13 +718,8 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
         Gnome::Gda::Value db_value;
         if( row < datamodel->get_n_rows() )
         {
-          #ifdef GLIBMM_EXCEPTIONS_ENABLED
           //TODO: Actually catch exception.
           db_value = datamodel->get_value_at(db_col, row);
-          #else
-          std::auto_ptr<Glib::Error> ex;
-          db_value = datamodel->get_value_at(db_col, row, ex);
-          #endif
         }
           
         set_canvas_item_field_value(canvas_child, field, db_value);
@@ -802,11 +744,7 @@ void Canvas_PrintLayout::set_canvas_item_field_value(const Glib::RefPtr<Goocanva
       return;
 
     Glib::RefPtr<Gdk::Pixbuf> pixbuf = Utils::get_pixbuf_for_gda_value(value);
-    #ifdef GLIBMM_PROPERTIES_ENABLED
     canvas_image->property_pixbuf() = pixbuf;
-    #else
-    canvas_image->set_property("pixbuf", pixbuf);
-    #endif
   }
   else //text, numbers, date, time, boolean:
   {
@@ -844,11 +782,7 @@ guint Canvas_PrintLayout::get_zoom_percent() const
 
 void Canvas_PrintLayout::hide_page_bounds()
 {
-  #ifdef GLIBMM_PROPERTIES_ENABLED
   m_bounds_group->property_visibility() = Goocanvas::ITEM_HIDDEN;
-  #else
-  m_bounds_group->set_property("visibility", Goocanvas::ITEM_HIDDEN);
-  #endif
 }
 
 void Canvas_PrintLayout::set_grid_gap(double gap)

@@ -323,7 +323,6 @@ Glib::ustring PostgresSelfHosted::get_postgresql_utils_version(const SlotProgres
   //We want the characters at the end:  
   const gchar* VERSION_REGEX = "pg_ctl \\(PostgreSQL\\) (.*)";
 
-  #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     regex = Glib::Regex::create(VERSION_REGEX);
@@ -333,15 +332,6 @@ Glib::ustring PostgresSelfHosted::get_postgresql_utils_version(const SlotProgres
     std::cerr << "Glom: Glib::Regex::create() failed: " << ex.what() << std::endl;
     return result;
   } 
-  #else
-  std::auto_ptr<Glib::Error> ex;
-  regex = Glib::Regex::create(VERSION_REGEX, static_cast<Glib::RegexCompileFlags>(0), static_cast<Glib::RegexMatchFlags>(0), ex);
-  if(ex.get())
-  {
-    std::cerr << "Glom: Glib::Regex::create() failed: " << ex->what() << std::endl;
-    return result;
-  }
-  #endif
  
   if(!regex)
     return result;
@@ -375,7 +365,6 @@ float PostgresSelfHosted::get_postgresql_utils_version_as_number(const SlotProgr
   //We want the characters at the end:  
   const gchar* VERSION_REGEX = "^(\\d*)\\.(\\d*)";
 
-  #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     regex = Glib::Regex::create(VERSION_REGEX);
@@ -385,15 +374,6 @@ float PostgresSelfHosted::get_postgresql_utils_version_as_number(const SlotProgr
     std::cerr << "Glom: Glib::Regex::create() failed: " << ex.what() << std::endl;
     return result;
   } 
-  #else
-  std::auto_ptr<Glib::Error> ex;
-  regex = Glib::Regex::create(VERSION_REGEX, static_cast<Glib::RegexCompileFlags>(0), static_cast<Glib::RegexMatchFlags>(0), ex);
-  if(ex.get())
-  {
-    std::cerr << "Glom: Glib::Regex::create() failed: " << ex->what() << std::endl;
-    return result;
-  }
-  #endif
  
   if(!regex)
     return result;
@@ -686,7 +666,7 @@ int PostgresSelfHosted::discover_first_free_port(int start_port, int end_port)
     std::cerr << "Create socket: " << WSAGetLastError() << std::endl;
 #else
     perror("Create socket");
-#endif
+#endif //G_OS_WIN32
     return 0;
   }
 
@@ -746,7 +726,7 @@ int PostgresSelfHosted::discover_first_free_port(int start_port, int end_port)
   closesocket(fd);
 #else
   close(fd);
-#endif
+#endif //G_OS_WIN32
 
   std::cerr << "debug: ConnectionPool::discover_first_free_port(): No port was available." << std::endl;
   return 0;
@@ -761,7 +741,6 @@ bool PostgresSelfHosted::create_text_file(const std::string& file_uri, const std
   Glib::RefPtr<Gio::FileOutputStream> stream;
 
   //Create the file if it does not already exist:
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     if(file->query_exists())
@@ -777,13 +756,6 @@ bool PostgresSelfHosted::create_text_file(const std::string& file_uri, const std
   }
   catch(const Gio::Error& ex)
   {
-#else
-  std::auto_ptr<Gio::Error> error;
-  stream.create(error);
-  if(error.get())
-  {
-    const Gio::Error& ex = *error.get();
-#endif
     // If the operation was not successful, print the error and abort
     std::cerr << "ConnectionPool::create_text_file(): exception while creating file." << std::endl
       << "  file uri:" << file_uri << std::endl
@@ -798,7 +770,6 @@ bool PostgresSelfHosted::create_text_file(const std::string& file_uri, const std
 
   gsize bytes_written = 0;
   const std::string::size_type contents_size = contents.size();
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     //Write the data to the output uri
@@ -806,12 +777,6 @@ bool PostgresSelfHosted::create_text_file(const std::string& file_uri, const std
   }
   catch(const Gio::Error& ex)
   {
-#else
-  bytes_written = stream->write(contents.data(), contents_size, error);
-  if(error.get())
-  {
-    Gio::Error& ex = *error.get();
-#endif
     // If the operation was not successful, print the error and abort
     std::cerr << "ConnectionPool::create_text_file(): exception while writing to file." << std::endl
       << "  file uri:" << file_uri << std::endl

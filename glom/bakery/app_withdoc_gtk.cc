@@ -50,11 +50,6 @@ App_WithDoc_Gtk::App_WithDoc_Gtk(const Glib::ustring& appname)
   m_pAbout(0)
 {
   init_app_name(appname);
-
-#ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
-  signal_hide().connect(sigc::mem_fun(*this, &App_WithDoc_Gtk::on_hide));
-  signal_delete_event().connect(sigc::mem_fun(*this, &App_WithDoc_Gtk::on_delete_event));
-#endif
 }
 
 /// This constructor can be used with Gtk::Builder::get_derived_widget().
@@ -70,11 +65,6 @@ App_WithDoc_Gtk::App_WithDoc_Gtk(BaseObjectType* cobject, const Glib::ustring& a
   //The .glade file needs to specify HildonWindow or features such as HildonAppMenu won't work.
   g_assert(HILDON_IS_WINDOW(gobj()));
   #endif //GLOM_ENABLE_MAEMO
-
-#ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
-  signal_hide().connect(sigc::mem_fun(*this, &App_WithDoc_Gtk::on_hide));
-  signal_delete_event().connect(sigc::mem_fun(*this, &App_WithDoc_Gtk::on_delete_event));
-#endif
 }
 
   
@@ -146,7 +136,6 @@ void App_WithDoc_Gtk::init_layout()
 
 void App_WithDoc_Gtk::add_ui_from_string(const Glib::ustring& ui_description)
 {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     m_refUIManager->add_ui_from_string(ui_description);
@@ -155,11 +144,6 @@ void App_WithDoc_Gtk::add_ui_from_string(const Glib::ustring& ui_description)
   {
     std::cerr << "building menus failed: " <<  ex.what();
   }
-#else
-  std::auto_ptr<Glib::Error> error;
-  m_refUIManager->add_ui_from_string(ui_description, error);
-  if(error.get()) std::cerr << "building menus failed: " << error->what();
-#endif
 }
 
 void App_WithDoc_Gtk::init()
@@ -554,7 +538,6 @@ static bool uri_is_writable(const Glib::RefPtr<const Gio::File>& uri)
 
   Glib::RefPtr<const Gio::FileInfo> file_info;
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     file_info = uri->query_info(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE);
@@ -563,12 +546,6 @@ static bool uri_is_writable(const Glib::RefPtr<const Gio::File>& uri)
   {
     return false;
   }
-#else
-  std::auto_ptr<Glib::Error> error;
-  file_info = uri->query_info(G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE, Gio::FILE_QUERY_INFO_NONE, error);
-  if(error.get())
-    return false;
-#endif
 
   if(file_info)
   {
@@ -721,13 +698,7 @@ void App_WithDoc_Gtk::document_history_add(const Glib::ustring& file_uri)
     //Glib::ustring filename_e = Gnome::Vfs::escape_path_string(file_uri);
     const Glib::ustring uri = file_uri; // "file://" + filename_e;
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     Gtk::RecentManager::get_default()->add_item(uri);
-#else
-    std::auto_ptr<Glib::Error> error;
-    Gtk::RecentManager::get_default()->add_item(uri, error);
-    // Ignore error
-#endif
   }
 }
 
@@ -738,13 +709,7 @@ void App_WithDoc_Gtk::document_history_remove(const Glib::ustring& file_uri)
     //Glib::ustring filename_e = Gnome::Vfs::escape_path_string(file_uri.c_str());
     const Glib::ustring uri = file_uri; //"file://" + filename_e;
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     Gtk::RecentManager::get_default()->remove_item(uri);
-#else
-    std::auto_ptr<Glib::Error> error;
-    Gtk::RecentManager::get_default()->remove_item(uri, error);
-    // Ignore error
-#endif
   }
 }
 

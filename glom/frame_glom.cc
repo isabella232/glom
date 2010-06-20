@@ -2190,7 +2190,6 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     m_pDialogConnection->set_database_name(database_name_possible);
     //std::cout << "debug: possible name=" << database_name_possible << std::endl;
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
       g_assert(m_pDialogConnection);
@@ -2200,14 +2199,6 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
     }
     catch(const ExceptionConnection& ex)
     {
-#else //GLIBMM_EXCEPTIONS_ENABLED
-    std::auto_ptr<ExceptionConnection> error;
-    g_assert(m_pDialogConnection);
-    sharedptr<SharedConnection> sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings(error);
-    if(error.get())
-    {
-      const ExceptionConnection& ex = *error;
-#endif //GLIBMM_EXCEPTIONS_ENABLED
       //g_warning("Frame_Glom::connection_request_password_and_choose_new_database_name(): caught exception.");
 
       if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
@@ -2388,7 +2379,6 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
       //TODO: Remove any previous database setting?
       if(m_pDialogConnection)
       {
-        #ifdef GLIBMM_EXCEPTIONS_ENABLED
         try
         {
           sharedconnection = m_pDialogConnection->connect_to_server_with_connection_settings();
@@ -2400,15 +2390,6 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
           if(!handle_request_password_connection_error(true, ex, database_not_found))
             return false;
         }
-        #else //GLIBMM_EXCEPTIONS_ENABLED
-        std::auto_ptr<ExceptionConnection> local_error;
-        sharedconnection =
-          m_pDialogConnection->connect_to_server_with_connection_settings(local_error);
-        if(!local_error.get())
-          return true;
-        else if(!handle_request_password_connection_error(true, *local_error, database_not_found))
-          return false;
-        #endif //GLIBMM_EXCEPTIONS_ENABLED
       }
       else
       {
@@ -2417,7 +2398,6 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
         connectionpool->set_user(known_username);
         connectionpool->set_password(known_password);
 
-        #ifdef GLIBMM_EXCEPTIONS_ENABLED
         try
         {
           Base_DB::connect_to_server(get_app_window());
@@ -2428,17 +2408,6 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
           if(!handle_request_password_connection_error(false, ex, database_not_found))
             return false;
         }
-        #else
-        std::auto_ptr<ExceptionConnection> error;
-        const bool connected = Base_DB::connect_to_server(get_app_window(), error);
-        if(!connected || error.get())
-        {
-          if(!handle_request_password_connection_error(false, *error, database_not_found))
-            return false;
-        }
-        else
-          return true;
-        #endif
       }
 
       //Try again.

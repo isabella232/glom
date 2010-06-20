@@ -272,15 +272,12 @@ Glib::RefPtr<Gdk::Pixbuf> Utils::get_pixbuf_for_gda_value(const Gnome::Gda::Valu
       catch(const Gdk::PixbufError& ex)
       {
         refPixbufLoader.reset();
-#ifdef GLIBMM_EXCEPTIONS_ENABLED        
         std::cerr << "PixbufLoader::create failed: " << ex.what() << std::endl;
-#endif        
       }
 
       if(refPixbufLoader)
       {
         guint8* puiData = (guint8*)buffer_binary;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
         try
         {
           refPixbufLoader->write(puiData, (glong)buffer_binary_length);
@@ -288,24 +285,9 @@ Glib::RefPtr<Gdk::Pixbuf> Utils::get_pixbuf_for_gda_value(const Gnome::Gda::Valu
 
           refPixbufLoader->close(); //This throws if write() threw, so it must be inside the try block.
         }
-#else
-        std::auto_ptr<Glib::Error> error;
-        refPixbufLoader->write(puiData, (glong)buffer_binary_length, error);
-        if(!error.get())
-        {
-          result = refPixbufLoader->get_pixbuf();
-          refPixbufLoader->close(error);
-        }
-#endif
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
         catch(const Glib::Exception& ex)
         {
-#else
-        if(error.get())
-        {
-          const Glib::Exception& ex = *error.get();        
-#endif
           g_warning("Conversions::get_pixbuf_for_gda_value(): PixbufLoader::write() failed: %s", ex.what().c_str());
         }
       }
@@ -365,7 +347,7 @@ int Utils::get_suitable_field_width_for_widget(Gtk::Widget& widget, const shared
       example_text = "EUR 9999999";
 #else
       example_text = "EUR 9999999999";
-#endif
+#endif //GLOM_ENABLE_MAEMO
       break;
     }
     case(Field::TYPE_TEXT):
@@ -377,7 +359,8 @@ int Utils::get_suitable_field_width_for_widget(Gtk::Widget& widget, const shared
         example_text = "AAAAAAAAAAAAAAAA";
 #else
         example_text = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-#endif
+#endif //GLOM_ENABLE_MAEMO
+
       break;
     }
     default:
@@ -508,6 +491,7 @@ bool Utils::show_warning_no_records_found(Gtk::Window& transient_for)
   dialog.set_secondary_text(message);
   dialog.set_transient_for(transient_for);
 #endif
+
 
   dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   dialog.add_button(_("New Find"), Gtk::RESPONSE_OK);

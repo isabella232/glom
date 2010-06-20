@@ -500,7 +500,6 @@ void CsvParser::on_file_read(const Glib::RefPtr<Gio::AsyncResult>& result, const
       sigc::mem_fun(*this, &CsvParser::on_idle_parse));
   }
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     m_stream = source->read_finish(result);
@@ -513,20 +512,6 @@ void CsvParser::on_file_read(const Glib::RefPtr<Gio::AsyncResult>& result, const
     signal_file_read_error().emit(ex.what());
     clear();
   }
-#else
-  std::auto_ptr<Glib::Error> error;
-  m_stream = source->read_finish(result, error);
-  if (!error.get())
-  {
-    m_buffer.reset(new Buffer);
-    m_stream->read_async(m_buffer->buf, sizeof(m_buffer->buf), sigc::mem_fun(*this, &CsvParser::on_buffer_read));
-  }
-  else
-  {
-    signal_file_read_error().emit(error->what());
-    clear();
-  }
-#endif
 }
 
 void CsvParser::copy_buffer_and_continue_reading(gssize size)
@@ -548,7 +533,6 @@ void CsvParser::copy_buffer_and_continue_reading(gssize size)
 
 void CsvParser::on_buffer_read(const Glib::RefPtr<Gio::AsyncResult>& result)
 {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     const gssize size = m_stream->read_finish(result);
@@ -559,24 +543,10 @@ void CsvParser::on_buffer_read(const Glib::RefPtr<Gio::AsyncResult>& result)
     signal_file_read_error().emit(ex.what());
     clear();
   }
-#else
-  std::auto_ptr<Glib::Error> error;
-  const gssize size = m_stream->read_finish(result, error);
-  if (!error.get())
-  {
-    copy_buffer_and_continue_reading(size);
-  }
-  else
-  {
-    signal_file_read_error().emit(error->what());
-    clear();
-  }
-#endif
 }
 
 void CsvParser::on_file_query_info(const Glib::RefPtr<Gio::AsyncResult>& result, const Glib::RefPtr<Gio::File>& source)
 {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
     Glib::RefPtr<Gio::FileInfo> info = source->query_info_finish(result);
@@ -587,17 +557,6 @@ void CsvParser::on_file_query_info(const Glib::RefPtr<Gio::AsyncResult>& result,
   {
     std::cerr << "Failed to fetch display name of uri " << source->get_uri() << ": " << ex.what() << std::endl;
   }
-#else
-  std::auto_ptr<Glib::Error> error;
-  Glib::RefPtr<Gio::FileInfo> info = source->query_info_finish(result, error);
-  if (!error.get())
-  {
-    if(info)
-      signal_have_display_name().emit(info->get_display_name());
-  }
-  else
-    std::cerr << "Failed to fetch display name of uri " << source->get_uri() << ": " << error->what() << std::endl;
-#endif
 }
 
 void CsvParser::set_state(State state)

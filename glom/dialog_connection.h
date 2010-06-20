@@ -42,11 +42,7 @@ public:
   Dialog_Connection(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Dialog_Connection();
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   sharedptr<SharedConnection> connect_to_server_with_connection_settings() const;
-#else
-  sharedptr<SharedConnection> connect_to_server_with_connection_settings(std::auto_ptr<ExceptionConnection>& error) const;
-#endif
 
   ///Disable irrelevant fields:
   void set_connect_to_browsed();

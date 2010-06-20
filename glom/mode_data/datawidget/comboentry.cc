@@ -116,14 +116,6 @@ void ComboEntry::init()
   get_entry()->signal_focus_out_event().connect(sigc::mem_fun(*this, &ComboEntry::on_entry_focus_out_event), false);
   get_entry()->signal_activate().connect(sigc::mem_fun(*this, &ComboEntry::on_entry_activate));
 
-#ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
-  #ifndef GLOM_ENABLE_MAEMO
-  signal_changed().connect(sigc::mem_fun(*this, &ComboEntry::on_changed));
-  #else
-  m_maemo_selector.signal_changed().connect(sigc::mem_fun(*this, &ComboEntry::on_changed));
-  #endif
-#endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
-
   if(m_with_second)
   {
     #ifndef GLOM_ENABLE_MAEMO
@@ -139,11 +131,7 @@ void ComboEntry::init()
     pack_start(*cell_second);
 
     //Make the renderer render the column:
-    #ifdef GLIBMM_PROPERTIES_ENABLED
     add_attribute(cell_second->_property_renderable(), m_Columns.m_col_second);
-    #else
-    add_attribute(*cell_second, cell_second->_property_renderable(), m_Columns.m_col_second);
-    #endif
     #else //GLOM_ENABLE_MAEMO
     column->pack_start(m_Columns.m_col_second, false);
     #endif //GLOM_ENABLE_MAEMO
@@ -351,10 +339,8 @@ void ComboEntry::on_changed()
 void ComboEntry::on_changed(int /* column */)
 #endif 
 {
-#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   //Call base class:
   Gtk::ComboBoxEntry::on_changed();
-#endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 
   //This signal is emitted for every key press, but sometimes it's just to say that the active item has changed to "no active item",
   //if the text is not in the dropdown list:

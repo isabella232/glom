@@ -368,14 +368,7 @@ void Box_Data::execute_button_script(const sharedptr<const LayoutItem_Button>& l
   const type_map_fields field_values = get_record_field_values_for_calculation(m_table_name, field_primary_key, primary_key_value);
 
   //We need the connection when we run the script, so that the script may use it.
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   sharedptr<SharedConnection> sharedconnection = connect_to_server(0 /* parent window */);
-#else
-  std::auto_ptr<ExceptionConnection> error;
-  sharedptr<SharedConnection> sharedconnection = connect_to_server(0 /* parent window */, error);
-  if(!error.get())
-  {
-#endif // GLIBMM_EXCEPTIONS_ENABLED
 
     //Allow this UI to respond to UI change requests from the Python code:
     AppPythonUICallbacks callbacks;
@@ -388,9 +381,6 @@ void Box_Data::execute_button_script(const sharedptr<const LayoutItem_Button>& l
       sharedconnection->get_gda_connection(),
       callbacks,
       error_message);
-#ifndef GLIBMM_EXCEPTIONS_ENABLED
-  }
-#endif // !GLIBMM_EXCEPTIONS_ENABLED
 }
 
 } //namespace Glom

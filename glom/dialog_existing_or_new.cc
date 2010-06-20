@@ -119,10 +119,9 @@ Dialog_ExistingOrNew::Dialog_ExistingOrNew(BaseObjectType* cobject, const Glib::
 
   builder->get_widget("existing_or_new_notebook", m_notebook);
   builder->get_widget("existing_or_new_button_select", m_select_button);
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
+
   if(!m_notebook || !m_select_button)
     throw std::runtime_error("Glade file does not contain the notebook or the select button for ExistingOrNew dialog.");
-#endif
 
   m_existing_model = Gtk::TreeStore::create(m_existing_columns);
   m_existing_model->set_sort_column(m_existing_columns.m_col_time, Gtk::SORT_DESCENDING);
@@ -404,9 +403,7 @@ Glib::ustring Dialog_ExistingOrNew::get_uri() const
   }
   else
   {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-    throw std::logic_error("Dialog_ExistingOrNew::get_uri: action is neither NEW_FROM_TEMPLATE nor OPEN_URI");
-#endif    
+    throw std::logic_error("Dialog_ExistingOrNew::get_uri: action is neither NEW_FROM_TEMPLATE nor OPEN_URI"); 
   }
 
   return Glib::ustring();
@@ -419,11 +416,9 @@ EpcServiceInfo* Dialog_ExistingOrNew::get_service_info() const
   Action action = get_action_impl(iter);
 
   if(action == OPEN_REMOTE)
-    return (*iter)[m_existing_columns.m_col_service_info];
-#ifdef GLIBMM_EXCEPTIONS_ENABLED    
+    return (*iter)[m_existing_columns.m_col_service_info];  
   else
     throw std::logic_error("Dialog_ExistingOrNew::get_service_info: action is not OPEN_REMOTE");
-#endif
 
   return 0;
 }
@@ -434,11 +429,9 @@ Glib::ustring Dialog_ExistingOrNew::get_service_name() const
   Action action = get_action_impl(iter);
 
   if(action == OPEN_REMOTE)
-    return (*iter)[m_existing_columns.m_col_service_name];
-#ifdef GLIBMM_EXCEPTIONS_ENABLED    
+    return (*iter)[m_existing_columns.m_col_service_name];  
   else
     throw std::logic_error("Dialog_ExistingOrNew::get_service_name: action is not OPEN_REMOTE");
-#endif
 
   return Glib::ustring();
 }
@@ -464,33 +457,14 @@ void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, 
 {
   Gtk::CellRendererPixbuf* pixbuf_renderer = dynamic_cast<Gtk::CellRendererPixbuf*>(renderer);  
   if(!pixbuf_renderer) 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   throw std::logic_error("Renderer not a pixbuf renderer in existing_icon_data_func");
-#else
-  return;
-#endif
 
-#ifdef GLIBMM_PROPERTIES_ENABLED
   pixbuf_renderer->property_stock_size() = Gtk::ICON_SIZE_BUTTON;
   pixbuf_renderer->property_stock_id() = "";
   pixbuf_renderer->property_pixbuf() = Glib::RefPtr<Gdk::Pixbuf>();
 
   if(iter == m_iter_existing_recent)
     pixbuf_renderer->property_stock_id() = Gtk::Stock::INDEX.id; // TODO: More meaningful icon?
-#ifndef G_OS_WIN32
-  else if(iter == m_iter_existing_network)
-    pixbuf_renderer->property_stock_id() = Gtk::Stock::NETWORK.id;
-#endif
-  else if(iter == m_iter_existing_other)
-    pixbuf_renderer->property_stock_id() = Gtk::Stock::OPEN.id;
-  else if(m_iter_existing_recent_dummy.get() && iter == *m_iter_existing_recent_dummy)
-    pixbuf_renderer->property_stock_id() = ""; // TODO: Use Stock::STOP instead?
-#ifndef G_OS_WIN32
-  else if(m_iter_existing_network_dummy.get() && iter == *m_iter_existing_network_dummy)
-    pixbuf_renderer->property_stock_id() = ""; // TODO: Use Stock::STOP instead?
-#endif
-
-#else // Properties enabled
 
   pixbuf_renderer->set_property("stock-size", Gtk::ICON_SIZE_BUTTON);
   pixbuf_renderer->set_property("stock-id", std::string());
@@ -510,8 +484,6 @@ void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, 
   else if(m_iter_existing_network_dummy.get() && iter == *m_iter_existing_network_dummy)
     pixbuf_renderer->set_property("stock-id", std::string()); // TODO: Use Stock::STOP instead?
 #endif
-
-#endif // Properties enabled
   else
   {
     if(m_existing_model->is_ancestor(m_iter_existing_recent, iter))
@@ -529,9 +501,7 @@ void Dialog_ExistingOrNew::existing_icon_data_func(Gtk::CellRenderer* renderer, 
 #endif
     else
     {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-      throw std::logic_error("Unexpected iterator in existing_icon_data_func");
-#endif      
+      throw std::logic_error("Unexpected iterator in existing_icon_data_func");   
     }
   }
 }
@@ -540,13 +510,8 @@ void Dialog_ExistingOrNew::existing_title_data_func(Gtk::CellRenderer* renderer,
 {
   Gtk::CellRendererText* text_renderer = dynamic_cast<Gtk::CellRendererText*>(renderer);
   if(!text_renderer)
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
- throw std::logic_error("Renderer not a text renderer in existing_title_data_func");
-#else
-  return;
-#endif    
+    throw std::logic_error("Renderer not a text renderer in existing_title_data_func");
 
-#ifdef GLIBMM_PROPERTIES_ENABLED
   text_renderer->property_text() = (*iter)[m_existing_columns.m_col_title];
 
   // Default: Use default color:
@@ -562,22 +527,6 @@ void Dialog_ExistingOrNew::existing_title_data_func(Gtk::CellRenderer* renderer,
   {
     text_renderer->property_foreground() = "grey";
   }
-#else // PROPERTIES_ENABLED
-  Glib::ustring text = (*iter)[m_existing_columns.m_col_title];
-  text_renderer->set_property("text", text);
-  // Default: Use default color
-  text_renderer->set_property("foreground-set", false);
-  // Use grey if parent item has no children
-#ifndef G_OS_WIN32
-  if( (iter == m_iter_existing_network && m_iter_existing_network_dummy.get()) ||
-      (iter == m_iter_existing_recent && m_iter_existing_recent_dummy.get()))
-#else
-  if(iter == m_iter_existing_recent && m_iter_existing_recent_dummy.get())
-#endif
-  {
-    text_renderer->set_property("foreground", std::string("grey"));
-  } 
-#endif // PROPERTIES_ENABLED
 }
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -585,13 +534,8 @@ void Dialog_ExistingOrNew::new_icon_data_func(Gtk::CellRenderer* renderer, const
 {
   Gtk::CellRendererPixbuf* pixbuf_renderer = dynamic_cast<Gtk::CellRendererPixbuf*>(renderer);
   if(!pixbuf_renderer)
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  throw std::logic_error("Renderer not a pixbuf renderer in new_icon_data_func");
-#else
-  return;
-#endif
+    throw std::logic_error("Renderer not a pixbuf renderer in new_icon_data_func");
 
-#ifdef GLIBMM_PROPERTIES_ENABLED
   pixbuf_renderer->property_stock_size() = Gtk::ICON_SIZE_BUTTON;
   pixbuf_renderer->property_stock_id() = "";
   pixbuf_renderer->property_pixbuf() = Glib::RefPtr<Gdk::Pixbuf>();
@@ -610,49 +554,17 @@ void Dialog_ExistingOrNew::new_icon_data_func(Gtk::CellRenderer* renderer, const
     }
     else
     {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED    
-      throw std::logic_error("Unexpected iterator in new_icon_data_func");
-#endif      
+      throw std::logic_error("Unexpected iterator in new_icon_data_func");   
     }
   }
-#else
-  pixbuf_renderer->set_property("stock-size", Gtk::ICON_SIZE_BUTTON);
-  pixbuf_renderer->set_property("stock-id", Glib::ustring());
-  pixbuf_renderer->set_property("pixbuf", Glib::RefPtr<Gdk::Pixbuf>());
-      
-  if(iter == m_iter_new_empty)
-    pixbuf_renderer->set_property("stock-id", Gtk::StockID(Gtk::Stock::NEW));
-  else if(iter == m_iter_new_template)
-    pixbuf_renderer->set_property("stock-id", Gtk::StockID(Gtk::Stock::EDIT)); // TODO: More meaningful icon?
-  else if(m_iter_new_template_dummy.get() && iter == *m_iter_new_template_dummy)
-    pixbuf_renderer->set_property("stock-id", Gtk::StockID(Gtk::Stock::DIALOG_ERROR)); // TODO: Use Stock::STOP instead?
-  else
-  {
-    if(m_new_model->is_ancestor(m_iter_new_template, iter))
-    {
-      pixbuf_renderer->set_property("icon-name", Glib::ustring("glom"));
-    }
-    else
-    {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED    
-      throw std::logic_error("Unexpected iterator in new_icon_data_func");
-#endif      
-    }
-  }
-#endif 
 }
 
 void Dialog_ExistingOrNew::new_title_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
 {
   Gtk::CellRendererText* text_renderer = dynamic_cast<Gtk::CellRendererText*>(renderer);
   if(!text_renderer) 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-    throw std::logic_error("Renderer not a text renderer in new_title_data_func");
-#else
-    return;
-#endif    
+    throw std::logic_error("Renderer not a text renderer in new_title_data_func");  
 
-#ifdef GLIBMM_PROPERTIES_ENABLED
   text_renderer->property_text() = (*iter)[m_new_columns.m_col_title];
 
   // Default: Use default color
@@ -662,18 +574,6 @@ void Dialog_ExistingOrNew::new_title_data_func(Gtk::CellRenderer* renderer, cons
   {
     text_renderer->property_foreground() = "grey";
   }
-#else
-  Glib::ustring text = (*iter)[m_new_columns.m_col_title];
-  text_renderer->set_property("text", text);
-
-  // Default: Use default color
-  text_renderer->set_property("foreground-set", false);
-  // Use grey if parent item has no children
-  if( (iter == m_iter_new_template && m_iter_new_template_dummy.get()))
-  {
-    text_renderer->set_property("foreground", Glib::ustring("grey"));
-  }
-#endif    
 }
 #endif //GLOM_ENABLE_CLIENT_ONLY
 

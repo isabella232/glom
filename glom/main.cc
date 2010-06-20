@@ -450,61 +450,28 @@ main(int argc, char* argv[])
   PySys_SetArgv(argc, argv);
 
   std::auto_ptr<Gtk::Main> mainInstance;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED  
-  try
-#endif  
+  try 
   {
     mainInstance = std::auto_ptr<Gtk::Main>( new Gtk::Main(argc, argv, context) );
   }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED  
   catch(const Glib::Error& ex)
   {
     std::cerr << "Glom: Error while initializing gtkmm: " << ex.what() << std::endl;
     return 0;
-  }
-#else
-  if (!mainInstance.get())
-  {
-    std::cerr << "Glom: Error while initializing gtkmm" << std::endl;
-    return 0;
-  }
-#endif      
+  }    
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
-#else
-  std::auto_ptr<Glib::Error> error;
-#endif // GLIBMM_EXCEPTIONS_ENABLED
   {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     context.parse(argc, argv);
-#else
-    context.parse(argc, argv, error);
-#endif // GLIBMM_EXCEPTIONS_ENABLED
   }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   catch(const Glib::OptionError& ex)
-#else
-  if(error.get())
-#endif
   {
-#ifndef GLIBMM_EXCEPTIONS_ENABLED
-    const Glib::OptionError* exptr = dynamic_cast<Glib::OptionError*>(error.get());
-    if(exptr)
-    {
-      const Glib::OptionError& ex = *exptr;
-#endif // !GLIBMM_EXCEPTIONS_ENABLED
       std::cout << _("Error while parsing command-line options: ") << std::endl << ex.what() << std::endl;
       std::cout << _("Use --help to see a list of available command-line options.") << std::endl;
       return 0;
-#ifndef GLIBMM_EXCEPTIONS_ENABLED
-    }
-    const Glib::Error& ex = *error.get();
-#else
   }
   catch(const Glib::Error& ex)
   {
-#endif
     std::cout << "Error: " << ex.what() << std::endl;
     return 0;
   }
@@ -516,9 +483,7 @@ main(int argc, char* argv[])
     return 0;
   }
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
-#endif
   {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     gtksourceview::init();
@@ -643,7 +608,6 @@ main(int argc, char* argv[])
     delete pApplication;
     pApplication = 0;
   }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   catch(const Glib::Exception& ex)
   {
     //If this happens then comment out the try/catch, and let the debugger show the call stack.
@@ -654,7 +618,6 @@ main(int argc, char* argv[])
     //If this happens then comment out the try/catch, and let the debugger show the call stack.
     std::cerr << "Glom: exception: \n  " << ex.what() << std::endl;
   }
-#endif // GLIBMM_EXCEPTIONS_ENABLED
 
   Glom::libglom_deinit();
 

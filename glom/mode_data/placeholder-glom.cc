@@ -36,13 +36,6 @@ PlaceholderGlom::PlaceholderGlom() :
   Gtk::Widget()
 {
   set_has_window(false);
-#ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
-  signal_realize().connect(sigc::mem_fun(*this, &PlaceholderGlom::on_realize));
-  signal_unrealize().connect(sigc::mem_fun(*this, &PlaceholderGlom::on_unrealize));
-  signal_expose_event().connect(sigc::mem_fun(*this, &PlaceholderGlom::on_expose_event));
-  signal_size_request().connect(sigc::mem_fun(*this, &PlaceholderGlom::on_size_request));
-  signal_size_allocate().connect(sigc::mem_fun(*this, &PlaceholderGlom::on_size_allocate));
-#endif
 }
 
 PlaceholderGlom::~PlaceholderGlom()
@@ -82,9 +75,7 @@ void PlaceholderGlom::on_size_allocate(Gtk::Allocation& allocation)
 void PlaceholderGlom::on_realize()
 {
   //Call base class:
-#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   Gtk::Widget::on_realize();
-#endif
 
   ensure_style();
 
@@ -124,9 +115,7 @@ void PlaceholderGlom::on_realize()
 void PlaceholderGlom::on_unrealize()
 {
   m_refGdkWindow.reset();
-#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   Gtk::Widget::on_unrealize();
-#endif
 }
 
 bool PlaceholderGlom::on_expose_event(GdkEventExpose* event)

@@ -65,11 +65,7 @@ public:
   virtual AppState::userlevels get_userlevel() const;
   virtual void set_userlevel(AppState::userlevels value);
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   static sharedptr<SharedConnection> connect_to_server(Gtk::Window* parent_window = 0);
-#else
-  static sharedptr<SharedConnection> connect_to_server(Gtk::Window* parent_window, std::auto_ptr<ExceptionConnection>& error);
-#endif // GLIBMM_EXCEPTIONS_ENABLED
 
   virtual void set_document(Document* pDocument); //View override
   virtual void load_from_document(); //View override

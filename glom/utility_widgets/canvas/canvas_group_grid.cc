@@ -169,23 +169,12 @@ void CanvasGroupGrid::snap_position(double& x, double& y) const
 Glib::RefPtr<Goocanvas::Polyline> CanvasGroupGrid::create_grid_or_rule_line(double x1, double y1, double x2, double y2, bool is_rule)
 {
   Glib::RefPtr<Goocanvas::Polyline> line = Goocanvas::Polyline::create(x1, y1, x2, y2);
-#ifdef GLIBMM_PROPERTIES_ENABLED  
   line->property_line_width() = 1.0f;
-#else
-  line->set_property("line-width", 1.0f);
-#endif  
 
-#ifdef GLIBMM_PROPERTIES_ENABLED  
   if(is_rule)
     line->property_stroke_color() = "green";
   else
     line->property_stroke_color() = "gray";
-#else
-  if(is_rule)
-    line->set_property("stroke-color", Glib::ustring("green"));
-  else
-    line->set_property("stroke-color", Glib::ustring("gray"));
-#endif
   return line;
 }
 
@@ -238,17 +227,10 @@ void CanvasGroupGrid::create_lines()
   if(m_grid_gap > 0) //0 steps cause a crash in older versions of goocanvas.
   {
     m_grid_lines = Goocanvas::Grid::create(0, 0, width, height, m_grid_gap, m_grid_gap);
-#ifdef GLIBMM_PROPERTIES_ENABLED    
     m_grid_lines->property_horz_grid_line_width() = 1.0f;
     m_grid_lines->property_vert_grid_line_width() = 1.0f;
     m_grid_lines->property_horz_grid_line_color() = "gray";
     m_grid_lines->property_vert_grid_line_color() = "gray";
-#else    
-    m_grid_lines->set_property("horz-grid-line-width", 1.0f);
-    m_grid_lines->set_property("vert-grid-line-width", 1.0f);
-    m_grid_lines->set_property("horz-grid-line-color", Glib::ustring("gray"));
-    m_grid_lines->set_property("vert-grid-line-color", Glib::ustring("gray"));
-#endif
     add_child(m_grid_lines);
   }
 

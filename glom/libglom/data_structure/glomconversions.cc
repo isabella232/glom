@@ -220,13 +220,7 @@ Glib::ustring Conversions::format_tm(const tm& tm_data, const std::locale& local
   {
     //Converts from the user's current locale to utf8. I would prefer a generic conversion from any locale,
     // but there is no such function, and it's hard to do because I don't know how to get the encoding name from the std::locale()
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     text = Glib::locale_to_utf8(text);
-#else
-    std::auto_ptr<Glib::Error> error;
-    text = Glib::locale_to_utf8(text, error);
-    // Ignore error for now
-#endif
   }
 
   //std::cout << "DEBUG: format_tm(): returning: " << text << std::endl;
@@ -457,12 +451,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
       {
         std::string charset;
         Glib::get_charset(charset);
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
         Glib::ustring currency_symbol = Glib::convert_with_fallback(numeric_format.m_currency_symbol, charset, "UTF-8");
-#else
-        std::auto_ptr<Glib::Error> error;
-        Glib::ustring currency_symbol = Glib::convert_with_fallback(numeric_format.m_currency_symbol, charset, "UTF-8", error);
-#endif
         // Uses convert_with_fallback(.) for the curreny symbol to avoid an
         // exception where the operator<<'s automatic conversion fails.
         // Incompatible encodings are possible since the currency symbol itself
@@ -480,12 +469,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
     {
       // Converts from the user's current locale to utf8. I would prefer a generic conversion from any locale,
       // but there is no such function, and it's hard to do because I don't know how to get the encoding name from the std::locale()
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
       text = Glib::locale_to_utf8(text);
-#else
-      std::auto_ptr<Glib::Error> error;
-      text = Glib::locale_to_utf8(text, error);
-#endif
     }
 
     //std::cout << "DEBUG: Conversions::get_text_for_gda_value(): number=" << number << ", text=" << text << std::endl;

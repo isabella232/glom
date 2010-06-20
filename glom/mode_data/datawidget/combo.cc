@@ -74,16 +74,6 @@ void ComboGlom::init()
   column->pack_start(m_Columns.m_col_first, false);
   #endif //GLOM_ENABLE_MAEMO
 
-
-
-  #ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
-  #ifndef GLOM_ENABLE_MAEMO
-  signal_changed().connect(sigc::mem_fun(*this, &ComboGlom::on_changed));
-  #else
-  m_maemo_selector.signal_changed().connect(sigc::mem_fun(*this, &ComboGlom::on_changed));
-  #endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
-  #endif //GLOM_ENABLE_MAEMO
-
   if(m_with_second)
   {
     #ifndef GLOM_ENABLE_MAEMO
@@ -99,11 +89,7 @@ void ComboGlom::init()
     pack_start(*cell_second);
 
     //Make the renderer render the column:
-    #ifdef GLIBMM_PROPERTIES_ENABLED
     add_attribute(cell_second->_property_renderable(), m_Columns.m_col_second);
-    #else
-    add_attribute(*cell_second, cell_second->_property_renderable(), m_Columns.m_col_second);
-    #endif
     #else
     //Maemo:
     column->pack_start(m_Columns.m_col_second);
@@ -293,10 +279,8 @@ void ComboGlom::on_changed()
 void ComboGlom::on_changed(int /* column */)
 #endif 
 {
-#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   //Call base class:
   Gtk::ComboBox::on_changed();
-#endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 
   //This signal is emitted for every key press, but sometimes it's just to say that the active item has changed to "no active item",
   //if the text is not in the dropdown list:

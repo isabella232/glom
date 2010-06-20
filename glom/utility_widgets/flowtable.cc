@@ -24,149 +24,24 @@
 #include <gdkmm/window.h>
 #include <glom/utils_ui.h>
 
-
-namespace Glom
-{
-
-#ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
-
-GtkContainerClass* parent_class = 0;
-
-// TODO: It is probably OK doing static_cast here.
-void FlowTable::glom_size_request_impl(GtkWidget* widget, GtkRequisition* requisition)
-{
-  Glib::ObjectBase *const obj_base = static_cast<Glib::ObjectBase*>(
-    Glib::ObjectBase::_get_current_wrapper((GObject*)widget));
-
-  if(obj_base)
-  {
-    Glom::FlowTable* table = dynamic_cast<Glom::FlowTable*>(obj_base);
-    g_assert(table);
-    table->on_size_request(requisition);
-  }
-  else if(GTK_WIDGET_CLASS(parent_class)->size_request)
-    GTK_WIDGET_CLASS(parent_class)->size_request(widget, requisition);
-}
-
-void FlowTable::glom_size_allocate_impl(GtkWidget* widget, GtkAllocation* allocation)
-{
-  Glib::ObjectBase *const obj_base = static_cast<Glib::ObjectBase*>(
-    Glib::ObjectBase::_get_current_wrapper((GObject*)widget));
-
-  if(obj_base)
-  {
-    Glom::FlowTable* table = dynamic_cast<Glom::FlowTable*>(obj_base);
-    g_assert(table);
-
-    Gtk::Allocation cpp_allocation = Glib::wrap(allocation);
-    table->on_size_allocate(cpp_allocation);
-    *allocation = *cpp_allocation.gobj();
-  }
-  else if(GTK_WIDGET_CLASS(parent_class)->size_allocate)
-    GTK_WIDGET_CLASS(parent_class)->size_allocate(widget, allocation);
-}
-
-void FlowTable::glom_add_impl(GtkContainer* container, GtkWidget* widget)
-{
-  Glib::ObjectBase *const obj_base = static_cast<Glib::ObjectBase*>(
-    Glib::ObjectBase::_get_current_wrapper((GObject*)container));
-
-  if(obj_base)
-  {
-    Glom::FlowTable* table = dynamic_cast<Glom::FlowTable*>(obj_base);
-    g_assert(table);
-    table->on_add(Glib::wrap(widget));
-  }
-  else if(parent_class->add)
-    parent_class->add(container, widget);
-}
-
-void FlowTable::glom_remove_impl(GtkContainer* container, GtkWidget* widget)
-{
-  Glib::ObjectBase *const obj_base = static_cast<Glib::ObjectBase*>(
-    Glib::ObjectBase::_get_current_wrapper((GObject*)container));
-
-  if(obj_base)
-  {
-    Glom::FlowTable* table = dynamic_cast<Glom::FlowTable*>(obj_base);
-    g_assert(table);
-    table->on_remove(Glib::wrap(widget));
-  }
-  else if(parent_class->remove)
-    parent_class->remove(container, widget);
-}
-
-void FlowTable::glom_realize_impl(GtkWidget* widget)
-{
-  Glib::ObjectBase *const obj_base = static_cast<Glib::ObjectBase*>(
-    Glib::ObjectBase::_get_current_wrapper((GObject*)widget));
-
-  if(obj_base)
-  {
-    Glom::FlowTable* table = dynamic_cast<Glom::FlowTable*>(obj_base);
-    g_assert(table);
-    table->on_realize();
-  }
-  else if(GTK_WIDGET_CLASS(parent_class)->realize)
-    GTK_WIDGET_CLASS(parent_class)->realize(widget);
-}
-
-void FlowTable::glom_unrealize_impl(GtkWidget* widget)
-{
-  Glib::ObjectBase *const obj_base = static_cast<Glib::ObjectBase*>(
-    Glib::ObjectBase::_get_current_wrapper((GObject*)widget));
-
-  if(obj_base)
-  {
-    Glom::FlowTable* table = dynamic_cast<Glom::FlowTable*>(obj_base);
-    g_assert(table);
-    table->on_unrealize();
-  }
-  else if(GTK_WIDGET_CLASS(parent_class)->unrealize)
-    GTK_WIDGET_CLASS(parent_class)->unrealize(widget);
-}
-
-gboolean FlowTable::glom_expose_event_impl(GtkWidget* widget, GdkEventExpose* event)
-{
-  Glib::ObjectBase *const obj_base = static_cast<Glib::ObjectBase*>(
-    Glib::ObjectBase::_get_current_wrapper((GObject*)widget));
-
-  if(obj_base)
-  {
-    Glom::FlowTable* table = dynamic_cast<Glom::FlowTable*>(obj_base);
-    g_assert(table);
-    return table->on_expose_event(event);
-  }
-  else if(GTK_WIDGET_CLASS(parent_class)->expose_event)
-    return GTK_WIDGET_CLASS(parent_class)->expose_event(widget, event);
-  else
-    return false;
-}
-#endif // !GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
-} //namespace Glom
-
 namespace Glom
 {
 
 static void container_forall_callback(GtkWidget* widget_gobj, void* data)
 {
-  #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-  #endif //GLIBMM_EXCEPTIONS_ENABLED
     FlowTable::ForallSlot& slot = *static_cast<FlowTable::ForallSlot*>(data);
     Gtk::Widget *const widget = Glib::wrap(widget_gobj);
 
     g_return_if_fail(widget != 0);
 
     slot(*widget);
-  #ifdef GLIBMM_EXCEPTIONS_ENABLED
   }
   catch(...)
   {
     Glib::exception_handlers_invoke();
   }
-  #endif //GLIBMM_EXCEPTIONS_ENABLED
 }
 
 
@@ -195,44 +70,12 @@ FlowTable::FlowTableItem::FlowTableItem(Gtk::Widget* first, Gtk::Widget* second,
 
 FlowTable::FlowTable()
 :
-#if !defined(GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED)
-  // This creates a custom GType for us, to override vfuncs and default
-  // signal handlers even with the reduced API.
-  // TODO: It is necessary to do this in all derived classes which is
-  // rather annoying, though I don't see another possibility at the moment. armin.
-  Glib::ObjectBase("Glom_FlowTable"),
-#endif // ! !defined(GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED)
   m_columns_allocated_changed(false),
   m_columns_count(1),
   m_column_padding(Utils::DEFAULT_SPACING_SMALL), //A sane default.
   m_row_padding(Utils::DEFAULT_SPACING_SMALL), //A sane default.
   m_design_mode(false)
 {
-#if !defined(GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED)
-  // TODO: Thread safety?
-  // TODO: We could also set up a Glib::Class derived object with a custom
-  // class init function so we do not need to lookup the class object by
-  // the underlaying gobj() as we do currently.
-  if(!parent_class)
-  {
-    GtkContainerClass* container_class = G_TYPE_INSTANCE_GET_CLASS(gobj(), G_TYPE_FROM_INSTANCE(gobj()), GtkContainerClass);
-    GtkWidgetClass* widget_class = GTK_WIDGET_CLASS(container_class);
-
-#ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
-    container_class->add = &Glom::FlowTable::glom_add_impl;
-    container_class->remove = &Glom::FlowTable::glom_remove_impl;
-
-    widget_class->size_request = &Glom::FlowTable::glom_size_request_impl;
-    widget_class->size_allocate = &Glom::FlowTable::glom_size_allocate_impl;
-    widget_class->realize = &Glom::FlowTable::glom_realize_impl;
-    widget_class->unrealize = &Glom::FlowTable::glom_unrealize_impl;
-    widget_class->expose_event = &Glom::FlowTable::glom_expose_event_impl;
-#endif // !GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
-
-    parent_class = GTK_CONTAINER_CLASS(g_type_class_peek_parent(container_class));
-  }
-#endif // !defined(GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED)
-
   set_has_window(false);
   set_redraw_on_allocate(false);
 }
@@ -1013,12 +856,7 @@ void FlowTable::remove_all()
 
 void FlowTable::on_realize()
 {
-#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   Gtk::Container::on_realize();
-#else
-  if(GTK_WIDGET_CLASS(parent_class)->realize)
-    GTK_WIDGET_CLASS(parent_class)->realize(GTK_WIDGET(gobj()));
-#endif
 
   if(!m_refGdkWindow)
   {
@@ -1032,12 +870,7 @@ void FlowTable::on_unrealize()
   m_refGdkWindow.reset();
   m_refGC.reset();
 
-#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   Gtk::Container::on_unrealize();
-#else
-  if(GTK_WIDGET_CLASS(parent_class)->unrealize)
-    GTK_WIDGET_CLASS(parent_class)->unrealize(GTK_WIDGET(gobj()));
-#endif
 }
 
 bool FlowTable::on_expose_event(GdkEventExpose* event)
@@ -1062,13 +895,7 @@ bool FlowTable::on_expose_event(GdkEventExpose* event)
       }
     }
   }
-#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   return Gtk::Container::on_expose_event(event);
-#else
-  if(GTK_WIDGET_CLASS(parent_class)->expose_event)
-    return GTK_WIDGET_CLASS(parent_class)->expose_event(GTK_WIDGET(gobj()), event);
-  return true;
-#endif
 }
 
 bool FlowTable::get_column_for_first_widget(const Gtk::Widget& first, guint& column)

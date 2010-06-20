@@ -106,7 +106,6 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
     type_list_ids list_ids;
 
     Glib::ustring locales_path = "/usr/share/i18n/locales/";
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
       Glib::Dir dir(locales_path);
@@ -116,20 +115,6 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
     {
       std::cerr << "Glom: get_locale_name(): Could not open (or read) glibc locales directory: " << locales_path << "Error: " << ex.what() << std::endl;
     }
-#else
-    GError* error;
-    GDir* dir = g_dir_open(locales_path.c_str(), 0, &error);
-    if(!error)
-    {
-      Glib::Dir dir_cpp(dir);
-      list_ids = type_list_ids(dir_cpp.begin(), dir_cpp.end());
-    }
-    else
-    {
-      std::cerr << "Glom: get_locale_name(): Could not open (or read) glibc locales directory: " << locales_path << "Error: " << error->message << std::endl;
-      g_error_free(error);
-    }
-#endif
 
     //Get the (translated) language names:
     typedef std::map<Glib::ustring, Glib::ustring> type_map_language; //ID to language name.

@@ -54,11 +54,6 @@ void ImageGlom::init()
   setup_menu();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-#ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
-  signal_button_press_event().connect(sigc::mem_fun(*this, &ImageGlom::on_button_press_event), false);
-  signal_expose_event().connect(sigc::mem_fun(*this, &ImageGlom::on_expose_event));
-#endif
-
   setup_menu_usermode();
 
   m_image.set_size_request(150, 150);
@@ -137,11 +132,7 @@ bool ImageGlom::on_button_press_event(GdkEventButton *event)
     }
   }
 
-#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   return Gtk::EventBox::on_button_press_event(event);
-#else
-  return false;
-#endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 }
 
 Application* ImageGlom::get_application()
@@ -238,9 +229,7 @@ Gnome::Gda::Value ImageGlom::get_value() const
   
   if(m_pixbuf_original)
   {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
-#endif
     {
       gchar* buffer = 0;
       gsize buffer_size = 0;
@@ -249,12 +238,7 @@ Gnome::Gda::Value ImageGlom::get_value() const
       //list_keys.push_back("quality"); //For jpeg only.
       //list_values.push_back("95");
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
       m_pixbuf_original->save_to_buffer(buffer, buffer_size, GLOM_IMAGE_FORMAT, list_keys, list_values); //Always store images as the standard format in the database.
-#else
-      std::auto_ptr<Glib::Error> error;
-      m_pixbuf_original->save_to_buffer(buffer, buffer_size, GLOM_IMAGE_FORMAT, list_keys, list_values, error); //Always store images as the standard format in the database.
-#endif
 
       //g_warning("ImageGlom::get_value(): debug: to db: ");
       //for(int i = 0; i < 10; ++i)
@@ -271,26 +255,19 @@ Gnome::Gda::Value ImageGlom::get_value() const
       buffer = 0;
       return m_original_data;
     }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     catch(const Glib::Exception& ex)
     {
       std::cerr << "ImageGlom::get_value(): " << ex.what() << std::endl;
     }
-#endif // GLIBMM_EXCEPTIONS_ENABLED
   }
 
   return Gnome::Gda::Value();
 }
 
-#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 bool ImageGlom::on_expose_event(GdkEventExpose* event)
 {
   const bool result = Gtk::EventBox::on_expose_event(event);
-#else
-bool ImageGlom::on_expose_event(GdkEventExpose* /* event */)
-{
-  const bool result = false;
-#endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
+
   scale();
   return result;
 }
@@ -506,11 +483,7 @@ void ImageGlom::setup_menu_usermode()
 
   //TODO: add_accel_group(m_refUIManager_UserModePopup->get_accel_group());
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
-#else
-  std::auto_ptr<Glib::Error> error;
-#endif // GLIBMM_EXCEPTIONS_ENABLED
   {
     Glib::ustring ui_info = 
         "<ui>"
@@ -522,20 +495,10 @@ void ImageGlom::setup_menu_usermode()
         "  </popup>"
         "</ui>";
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     m_refUIManager_UserModePopup->add_ui_from_string(ui_info);
-#else
-    m_refUIManager_UserModePopup->add_ui_from_string(ui_info, error);
-#endif // GLIBMM_EXCEPTIONS_ENABLED
   }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
   catch(const Glib::Error& ex)
   {
-#else
-  if(error.get())
-  {
-    const Glib::Error& ex = *error.get();
-#endif
     std::cerr << "building menus failed: " <<  ex.what();
   }
 

@@ -55,24 +55,14 @@ Glib::RefPtr<CanvasTextMovable> CanvasTextMovable::create(const Glib::ustring& s
 
 void CanvasTextMovable::get_xy(double& x, double& y) const
 {
-#ifdef GLIBMM_PROPERTIES_ENABLED
   x = property_x();
   y = property_y();
-#else
-  get_property("x", x);
-  get_property("y", y);
-#endif
 }
 
 void CanvasTextMovable::set_xy(double x, double y)
 {
-#ifdef GLIBMM_PROPERTIES_ENABLED
   property_x() = x;
   property_y() = y;
-#else
-  set_property("x", x);
-  set_property("y", y);
-#endif
 }
 
 void CanvasTextMovable::get_width_height(double& width, double& height) const
@@ -80,24 +70,14 @@ void CanvasTextMovable::get_width_height(double& width, double& height) const
   //TODO: This only works when it is on a canvas already,
   //and this is apparently incorrect when the "coordinate space" of the item changes, whatever that means. murrayc.
   
-#ifdef GLIBMM_PROPERTIES_ENABLED
   width = property_width();
   height = property_height();
-#else
-  get_property("width", width);
-  get_property("height", height);
-#endif
 }
 
 void CanvasTextMovable::set_width_height(double width, double height)
 {
-#ifdef GLIBMM_PROPERTIES_ENABLED
   property_width() = width;
   property_height() = height;
-#else
-  set_property("width", width);
-  set_property("height", height);
-#endif
 }
 
 void CanvasTextMovable::snap_position(double& x, double& y) const
@@ -116,11 +96,7 @@ void CanvasTextMovable::snap_position(double& x, double& y) const
       corner_y_offset = 0;
       break;
     case CORNER_TOP_RIGHT:
-#ifdef GLIBMM_PROPERTIES_ENABLED    
       corner_x_offset = property_width();
-#else
-      get_property("width", corner_x_offset);
-#endif
       corner_y_offset = 0;
       break;
     case CORNER_BOTTOM_LEFT:
@@ -193,11 +169,7 @@ void CanvasTextMovable::reconstruct_markup()
 {
   if(m_font.empty())
   {
-#ifdef GLIBMM_PROPERTIES_ENABLED
     property_text() = m_text;
-#else
-    set_property("text", m_text);
-#endif    
     return;
   }
 
@@ -212,29 +184,17 @@ void CanvasTextMovable::reconstruct_markup()
     markup = g_strdup_printf("<span font_desc=\"%s\">%s</span>", m_font.c_str(), m_text.c_str());
     //std::cout << "DEBUG: markup=" << markup << std::endl;
   }
-#ifdef GLIBMM_PROPERTIES_ENABLED  
   property_use_markup() = true;
-#else
-  set_property("markup", true);
-#endif    
 
 
   if(markup)
   {
-#ifdef GLIBMM_PROPERTIES_ENABLED
     property_text() = Glib::ustring(markup); //TODO: Inefficient.
-#else
-    set_property("text", Glib::ustring(markup));
-#endif        
     g_free(markup);
   }
   else
   {
-#ifdef GLIBMM_PROPERTIES_ENABLED  
     property_text() = Glib::ustring();
-#else
-    set_property("text", Glib::ustring());
-#endif        
   }
 }
 

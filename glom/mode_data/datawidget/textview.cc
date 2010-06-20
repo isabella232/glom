@@ -111,16 +111,10 @@ void TextView::check_for_change()
   }
 }
 
-#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 bool TextView::on_textview_focus_out_event(GdkEventFocus* event)
 {
   //Call base class:
   bool result = Gtk::ScrolledWindow::on_focus_out_event(event);
-#else
-bool TextView::on_textview_focus_out_event(GdkEventFocus* /* event */)
-{
-  bool result = false;
-#endif
 
   //The user has finished editing.
   check_for_change();

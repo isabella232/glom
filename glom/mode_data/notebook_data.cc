@@ -137,13 +137,7 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
   //Performance optimisation:
   //Keep the connection open during all these operations:
   {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window());
-#else
-    std::auto_ptr<ExceptionConnection> error;
-    sharedptr<SharedConnection> sharedconnection = connect_to_server(get_app_window(), error);
-    // Ignore error, sharedconnection is not used directly within this function
-#endif
 
     result = m_Box_List.init_db_details(found_set, get_active_layout_platform(get_document())); //TODO: Select the last selected record.
 
