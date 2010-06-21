@@ -113,8 +113,8 @@ bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::Serve
 
   operation->set_value_at(name_path, column->column_name);
   operation->set_value_at(type_path, column->column_type);
-  operation->set_value_at(pkey_path, column->pkey ? "TRUE" : "FALSE");
-  operation->set_value_at(nnul_path, !column->nullok ? "TRUE" : "FALSE");
+  operation->set_value_at(pkey_path, column->pkey);
+  operation->set_value_at(nnul_path, !column->nullok);
 
   if(column->default_value)
   {
@@ -135,8 +135,8 @@ bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::Serve
 
   operation->set_value_at(name_path, column->get_name());
   operation->set_value_at(type_path, column->get_sql_type());
-  operation->set_value_at(pkey_path, column->get_primary_key() ? "TRUE" : "FALSE");
-  operation->set_value_at(unique_path, column->get_unique_key() ? "TRUE" : "FALSE");
+  operation->set_value_at(pkey_path, column->get_primary_key());
+  operation->set_value_at(unique_path, column->get_unique_key());
 
   return true;
 }

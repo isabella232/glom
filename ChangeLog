@@ -1,3 +1,12 @@
+2010-06-21  Murray Cumming  <murrayc@murrayc.com>
+
+	Adapt use of Gda::ServerOperation.
+
+	* glom/libglom/connectionpool_backends/backend.cc: add_column(), 
+	* glom/libglom/connectionpool_backends/sqlite.cc:
+	add_column_to_server_operation(): set_value_at() is now templated in libgdamm, 
+	so there is no need for the ugly (somebool ? "TRUE" : "FALSE") code.
+	
 2010-06-21  David King  <amigadave@amigadave.com>
 
 	Explicitly link with libdl for Python module loading test

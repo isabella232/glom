@@ -74,8 +74,8 @@ void Backend::add_column(const Glib::RefPtr<Gnome::Gda::Connection>& connection,
   operation->set_value_at("/COLUMN_DEF_P/TABLE_NAME", table_name);
   operation->set_value_at("/COLUMN_DEF_P/COLUMN_NAME", field->get_name());
   operation->set_value_at("/COLUMN_DEF_P/COLUMN_TYPE", field->get_sql_type());
-  operation->set_value_at("/COLUMN_DEF_P/COLUMN_PKEY", field->get_primary_key() ? "TRUE" : "FALSE"); //TODO: Just use bool?
-  operation->set_value_at("/COLUMN_DEF_P/COLUMN_UNIQUE", field->get_unique_key() ? "TRUE" : "FALSE");
+  operation->set_value_at("/COLUMN_DEF_P/COLUMN_PKEY", field->get_primary_key());
+  operation->set_value_at("/COLUMN_DEF_P/COLUMN_UNIQUE", field->get_unique_key());
 
   provider->perform_operation(connection, operation);
 }
