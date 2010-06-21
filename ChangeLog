@@ -1,3 +1,10 @@
+2010-06-21  David King  <amigadave@amigadave.com>
+
+	Explicitly link with libdl for Python module loading test
+
+	* Makefile_tests.am: Do not rely on libdl being a dependency of a
+	library in LIBGLOM_LIBS, by linking with it explicitly.
+
 1.14.3:
 
 2010-06-19  Murray Cumming  <murrayc@murrayc.com>
