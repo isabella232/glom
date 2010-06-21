@@ -31,7 +31,7 @@ namespace Utils
 Dialog_ProgressCreating* get_and_show_pulse_dialog(const Glib::ustring& message, Gtk::Window* parent_window)
 {
   if(!parent_window)
-    std::cerr << "debug: Glom: get_and_show_pulse_dialog(): parent_window is NULL" << std::endl;
+    std::cerr << G_STRFUNC << ": parent_window is NULL" << std::endl;
 
   Dialog_ProgressCreating* dialog_progress = 0;
   Utils::get_glade_widget_derived_with_warning(dialog_progress);

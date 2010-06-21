@@ -243,8 +243,8 @@ void LayoutItem_Field::set_full_field_details(const sharedptr<const Field>& fiel
 
   if(field)
   {
-    //std::cout << "LayoutItem_Field::set_full_field_details(): name=" << field->get_name() << std::endl;
-    //std::cout << "LayoutItem_Field::set_full_field_details(): field->get_title_or_name()=" << field->get_title_or_name() << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": name=" << field->get_name() << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": field->get_title_or_name()=" << field->get_title_or_name() << std::endl;
     m_field = field;
     m_field_cache_valid = true;
 

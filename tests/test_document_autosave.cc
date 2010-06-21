@@ -38,12 +38,12 @@ void cleanup()
     if(ex.code() == Gio::Error::NOT_FOUND)
       return;
 
-    std::cerr << "Exception from Gio::File::remove(): " << ex.what();
+    std::cerr << G_STRFUNC << ": " << ex.what();
     exit(EXIT_FAILURE);
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "Exception from Gio::File::remove(): " << ex.what();
+    std::cerr << G_STRFUNC << ": " << ex.what();
     exit(EXIT_FAILURE);
   }
 }

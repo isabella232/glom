@@ -94,7 +94,7 @@ void Box_Data_List::refresh_data_from_database_blank()
   found_set.m_where_clause = Gnome::Gda::SqlExpr();
   m_AddDel.set_found_set(found_set);
 
-  std::cout << "debug: Box_Data_List::refresh_data_from_database_blank(): before refresh_from_database_blank()." << std::endl;
+  std::cout << "debug: " << G_STRFUNC << ": before refresh_from_database_blank()." << std::endl;
   m_AddDel.refresh_from_database_blank();
   m_found_set = found_set;
 }
@@ -278,7 +278,7 @@ void Box_Data_List::on_details_nav_next()
     //Don't go past the last record:
     if( !m_AddDel.get_is_last_row(iter) )
     {
-      std::cout << "DEBUG: Box_Data_List::on_details_nav_next(): The current row was not the last row." << std::endl;
+      std::cout << "debug: " << G_STRFUNC << ": The current row was not the last row." << std::endl;
 
       iter++;
       m_AddDel.select_item(iter);
@@ -286,7 +286,7 @@ void Box_Data_List::on_details_nav_next()
       signal_user_requested_details().emit(m_AddDel.get_value_key_selected());
     }
     else
-      std::cout << "DEBUG: Box_Data_List::on_details_nav_next(): Not going past the last row." << std::endl;
+      std::cout << "debug: " << G_STRFUNC << ": Not going past the last row." << std::endl;
   }
 }
 
@@ -348,7 +348,7 @@ Gnome::Gda::Value Box_Data_List::get_primary_key_value_selected() const
 
 Gnome::Gda::Value Box_Data_List::get_primary_key_value_first() const
 {
-  //std::cout << "Box_Data_List(): get_primary_key_value_first() records_count = " << m_AddDel.get_count() << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": get_primary_key_value_first() records_count = " << m_AddDel.get_count() << std::endl;
 
   Glib::RefPtr<Gtk::TreeModel> model = m_AddDel.get_model();
   if(model)
@@ -359,18 +359,18 @@ Gnome::Gda::Value Box_Data_List::get_primary_key_value_first() const
       Gnome::Gda::Value value = get_primary_key_value(iter);
       if(Conversions::value_is_empty(value))
       {
-       //std::cout << "Box_Data_List(): get_primary_key_value_first() iter val is NULL" << std::endl;
+       //std::cout << "debug: " << G_STRFUNC << ": get_primary_key_value_first() iter val is NULL" << std::endl;
         ++iter;
       }
       else
       {
-         //std::cout << "Box_Data_List(): get_primary_key_value_first() returning: " << value.to_string() << std::endl;
+         //std::cout << "debug: " << G_STRFUNC << ": get_primary_key_value_first() returning: " << value.to_string() << std::endl;
         return value;
       }
     }
   }
 
- // std::cout << "Box_Data_List(): get_primary_key_value_first() return NULL" << std::endl;
+ // std::cout << "debug: " << G_STRFUNC << ": get_primary_key_value_first() return NULL" << std::endl;
   return Gnome::Gda::Value();
 }
 
@@ -425,7 +425,7 @@ void Box_Data_List::create_layout_add_group(const sharedptr<LayoutGroup>& layout
         //This could probably only happen if we have failed to rename something everywhere, when the user has renamed something.
         if(!DbUtils::get_field_exists_in_database(child_field->get_table_used(m_table_name), child_field->get_name()))
         {
-          std::cerr << "debug: Box_Data_List::create_layout_add_group(): Field does not exist in database: table_name=" << child_field->get_table_used(m_table_name) << ", field_name=" << child_field->get_name() << std::endl;
+          std::cerr << G_STRFUNC << ": Field does not exist in database: table_name=" << child_field->get_table_used(m_table_name) << ", field_name=" << child_field->get_name() << std::endl;
           continue;
         }
       }
@@ -459,11 +459,11 @@ void Box_Data_List::create_layout()
     sharedptr<Field> field_primary_key = get_field_primary_key_for_table(m_table_name);
     if(!field_primary_key)
     {
-      std::cerr << "Box_Data_List::create_layout(): primary key not found." << std::endl;
+      std::cerr << G_STRFUNC << ": primary key not found." << std::endl;
     }
     else
     {
-      //std::cout << "DEBUG: Box_Data_List::create_layout(): primary_key=" << field_primary_key->get_name() << std::endl;
+      //std::cout << "debug: " << G_STRFUNC << ": primary_key=" << field_primary_key->get_name() << std::endl;
 
       m_AddDel.set_key_field(field_primary_key);
 

@@ -113,7 +113,7 @@ Glib::ustring get_locale_name(const Glib::ustring& locale_id)
     }
     catch(const Glib::FileError& ex)
     {
-      std::cerr << "Glom: get_locale_name(): Could not open (or read) glibc locales directory: " << locales_path << "Error: " << ex.what() << std::endl;
+      std::cerr << G_STRFUNC << ": Could not open (or read) glibc locales directory: " << locales_path << "Error: " << ex.what() << std::endl;
     }
 
     //Get the (translated) language names:

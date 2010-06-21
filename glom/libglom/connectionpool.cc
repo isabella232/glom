@@ -160,7 +160,7 @@ void ConnectionPool::setup_from_document(const Document* document)
 
   default:
     //on_document_load() should have checked for this already, informing the user.
-    std::cerr << "Glom: setup_connection_pool_from_document(): Unhandled hosting mode: " << document->get_hosting_mode() << std::endl;
+    std::cerr << G_STRFUNC << ": Unhandled hosting mode: " << document->get_hosting_mode() << std::endl;
     g_assert_not_reached();
     break;
   }
@@ -219,7 +219,7 @@ sharedptr<SharedConnection> ConnectionPool::get_and_connect()
 
   if(!(connection_pool->m_backend.get()))
   {
-    std::cerr << "ConnectionPool::get_and_connect(): m_backend is null." << std::endl;
+    std::cerr << G_STRFUNC << ": m_backend is null." << std::endl;
     return result; //TODO: Return a FAILURE_NO_BACKEND error?, though that would be tedious.
   }
 
@@ -307,7 +307,7 @@ sharedptr<SharedConnection> ConnectionPool::connect()
         }
         catch(const Glib::Error& ex)
         {
-          std::cerr << "ConnectionPool::connect(): update_meta_store_data_types() failed: " << ex.what() << std::endl;
+          std::cerr << G_STRFUNC << ": update_meta_store_data_types() failed: " << ex.what() << std::endl;
         }
         //std::cout << "DEBUG: ... update_meta_store_data_types() has finished." << std::endl;
 
@@ -321,7 +321,7 @@ sharedptr<SharedConnection> ConnectionPool::connect()
         }
         catch(const Glib::Error& ex)
         {
-          std::cerr << "ConnectionPool::connect(): update_meta_store_table_names() failed: " << ex.what() << std::endl;
+          std::cerr << G_STRFUNC << ": update_meta_store_table_names() failed: " << ex.what() << std::endl;
         }
         //std::cout << "DEBUG: ... update_meta_store_table_names() has finished." << std::endl;
 
@@ -364,7 +364,7 @@ void ConnectionPool::set_user(const Glib::ustring& value)
   if(value.empty())
   {
 #ifdef GLOM_CONNECTION_DEBUG
-    std::cout << "debug: ConnectionPool::set_user(): user is empty." << std::endl;
+    std::cout << "debug: " << G_STRFUNC << ": user is empty." << std::endl;
 #endif
   }
 
@@ -602,7 +602,7 @@ bool ConnectionPool::add_column(const Glib::ustring& table_name, const sharedptr
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "ConnectionPool::add_column(): exception:" << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": exception:" << ex.what() << std::endl;
   }
   
   return false;
@@ -627,7 +627,7 @@ bool ConnectionPool::drop_column(const Glib::ustring& table_name, const Glib::us
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "ConnectionPool::drop_column(): exception:" << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": exception:" << ex.what() << std::endl;
   }
   
   return false;
@@ -670,7 +670,7 @@ Document* ConnectionPool::get_document()
 {
   if(!m_slot_get_document)
   {
-    std::cerr << "Glom ConnectionPool::get_document(): m_slot_get_document is null." << std::endl;
+    std::cerr << G_STRFUNC << ": m_slot_get_document is null." << std::endl;
     return 0;
   }
 
@@ -690,7 +690,7 @@ EpcContents* ConnectionPool::on_publisher_document_requested(EpcPublisher* /* pu
     return 0;
 
   const Glib::ustring contents = document->get_contents();
-  //std::cout << "DEBUG: ConnectionPool::on_publisher_document_requested(): returning: " << std::endl << "  " << contents << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": returning: " << std::endl << "  " << contents << std::endl;
   return epc_contents_new_dup ("text/plain", (void*)contents.c_str(), -1);
 }
 
@@ -709,7 +709,7 @@ gboolean ConnectionPool::on_publisher_document_authentication(EpcAuthContext* co
   const gchar* password = epc_auth_context_get_password(context);
   g_return_val_if_fail(password, false); //TODO: This seems to happen once before this callback is called again properly.
 
-  //std::cout << "ConnectionPool::on_publisher_document_authentication(): username=" << user_name << ", password=" << password << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": username=" << user_name << ", password=" << password << std::endl;
 
   g_return_val_if_fail(connection_pool->m_backend.get(), false);
 
@@ -719,12 +719,12 @@ gboolean ConnectionPool::on_publisher_document_authentication(EpcAuthContext* co
 
   if(connection)
   {
-    //std::cout << "ConnectionPool::on_publisher_document_authentication(): succeeded." << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": succeeded." << std::endl;
     return true; //Succeeded.
   }
   else
   {
-    //std::cout << "ConnectionPool::on_publisher_document_authentication(): failed." << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": failed." << std::endl;
     return false; //Failed.
   }
 }
@@ -816,7 +816,7 @@ void ConnectionPool::avahi_start_publishing()
   if(error)
   {
 #ifdef GLOM_CONNECTION_DEBUG
-    std::cout << "Glom: ConnectionPool::avahi_start_publishing(): Error while running epc_publisher_run_async: " << error->message << std::endl;
+    std::cout << "debug: " << G_STRFUNC << ": Error while running epc_publisher_run_async: " << error->message << std::endl;
 #endif
     g_clear_error(&error);
   }

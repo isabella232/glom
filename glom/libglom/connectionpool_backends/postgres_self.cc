@@ -223,7 +223,7 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
 
   if(m_self_hosting_data_uri.empty())
   {
-    std::cerr << "PostgresSelfHosted::initialize: m_self_hosting_data_uri is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": initialize: m_self_hosting_data_uri is empty." << std::endl;
     return INITERROR_OTHER;
   }
   
@@ -427,7 +427,7 @@ bool PostgresSelfHosted::startup(const SlotProgress& slot_progress, bool network
   if(!(directory_exists_uri(dbdir_uri)))
   {
     //TODO: Use a return enum or exception so we can tell the user about this:
-    std::cerr << "ConnectionPool::create_self_hosting(): The data directory could not be found: " << dbdir_uri << std::endl;
+    std::cerr << G_STRFUNC << ": The data directory could not be found: " << dbdir_uri << std::endl;
     return false;
   }
 
@@ -442,17 +442,17 @@ bool PostgresSelfHosted::startup(const SlotProgress& slot_progress, bool network
   if(!(directory_exists_uri(dbdir_data_uri)))
   {
     //TODO: Use a return enum or exception so we can tell the user about this:
-    std::cerr << "ConnectionPool::create_self_hosting(): The data sub-directory could not be found." << dbdir_data_uri << std::endl;
+    std::cerr << G_STRFUNC << ": The data sub-directory could not be found." << dbdir_data_uri << std::endl;
     return false;
   }
 
 
   const int available_port = discover_first_free_port(PORT_POSTGRESQL_SELF_HOSTED_START, PORT_POSTGRESQL_SELF_HOSTED_END);
-  //std::cout << "ConnectionPool::create_self_hosting():() : debug: Available port for self-hosting: " << available_port << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ":() : debug: Available port for self-hosting: " << available_port << std::endl;
   if(available_port == 0)
   {
     //TODO: Use a return enum or exception so we can tell the user about this:
-    std::cerr << "ConnectionPool::create_self_hosting(): No port was available between " << PORT_POSTGRESQL_SELF_HOSTED_START << " and " << PORT_POSTGRESQL_SELF_HOSTED_END << std::endl;
+    std::cerr << G_STRFUNC << ": No port was available between " << PORT_POSTGRESQL_SELF_HOSTED_START << " and " << PORT_POSTGRESQL_SELF_HOSTED_END << std::endl;
     return false;
   }
 
@@ -631,7 +631,7 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ust
         }
       }
 
-      std::cout << "DEBUG: Glom::PostgresSelfHosted::connect(): Waiting and retrying the connection due to suspected too-early success of pg_ctl." << std::endl; 
+      std::cout << "debug: " << G_STRFUNC << ": Waiting and retrying the connection due to suspected too-early success of pg_ctl." << std::endl; 
 
       //Wait:
       Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
@@ -704,7 +704,7 @@ int PostgresSelfHosted::discover_first_free_port(int start_port, int end_port)
     }
     else
     {
-      //std::cout << "debug: ConnectionPool::discover_first_free_port(): port in use: " << port_to_try << std::endl;
+      //std::cout << "debug: " << G_STRFUNC << ": port in use: " << port_to_try << std::endl;
     }
 
     if(available)
@@ -715,7 +715,7 @@ int PostgresSelfHosted::discover_first_free_port(int start_port, int end_port)
       close(fd);
       #endif //G_OS_WIN32
 
-      //std::cout << "debug: ConnectionPool::discover_first_free_port(): Found: returning " << port_to_try << std::endl;
+      //std::cout << "debug: " << G_STRFUNC << ": Found: returning " << port_to_try << std::endl;
       return port_to_try;
     }
 
@@ -728,7 +728,7 @@ int PostgresSelfHosted::discover_first_free_port(int start_port, int end_port)
   close(fd);
 #endif //G_OS_WIN32
 
-  std::cerr << "debug: ConnectionPool::discover_first_free_port(): No port was available." << std::endl;
+  std::cerr << G_STRFUNC << ": No port was available." << std::endl;
   return 0;
 }
 
@@ -757,7 +757,7 @@ bool PostgresSelfHosted::create_text_file(const std::string& file_uri, const std
   catch(const Gio::Error& ex)
   {
     // If the operation was not successful, print the error and abort
-    std::cerr << "ConnectionPool::create_text_file(): exception while creating file." << std::endl
+    std::cerr << G_STRFUNC << ": exception while creating file." << std::endl
       << "  file uri:" << file_uri << std::endl
       << "  error:" << ex.what() << std::endl;
     return false; // print_error(ex, output_uri_string);
@@ -778,7 +778,7 @@ bool PostgresSelfHosted::create_text_file(const std::string& file_uri, const std
   catch(const Gio::Error& ex)
   {
     // If the operation was not successful, print the error and abort
-    std::cerr << "ConnectionPool::create_text_file(): exception while writing to file." << std::endl
+    std::cerr << G_STRFUNC << ": exception while writing to file." << std::endl
       << "  file uri:" << file_uri << std::endl
       << "  error:" << ex.what() << std::endl;
     return false; //print_error(ex, output_uri_string);
@@ -786,7 +786,7 @@ bool PostgresSelfHosted::create_text_file(const std::string& file_uri, const std
 
   if(bytes_written != contents_size)
   {
-    std::cerr << "ConnectionPool::create_text_file(): not all bytes written when writing to file." << std::endl
+    std::cerr << G_STRFUNC << ": not all bytes written when writing to file." << std::endl
       << "  file uri:" << file_uri << std::endl;
     return false;
   }

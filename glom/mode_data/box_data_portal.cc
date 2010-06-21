@@ -90,18 +90,18 @@ void Box_Data_Portal::make_record_related(const Gnome::Gda::Value& related_recor
   //Create the link by setting the foreign key
   if(!m_key_field)
   {
-    std::cerr << "Box_Data_Portal::make_record_related(): m_key_field was null." << std::endl;
+    std::cerr << G_STRFUNC << ": m_key_field was null." << std::endl;
   }
 
   if(Conversions::value_is_empty(m_key_value))
   {
-    std::cerr << "Box_Data_Portal::make_record_related(): m_key_value was empty." << std::endl;
+    std::cerr << G_STRFUNC << ": m_key_value was empty." << std::endl;
   }
 
 
   if(!m_portal)
   {
-    std::cerr << "Box_Data_Portal::make_record_related(): m_portal was null." << std::endl;
+    std::cerr << G_STRFUNC << ": m_portal was null." << std::endl;
   }
 
   const Glib::ustring target_table = m_portal->get_table_used(Glib::ustring() /* not relevant */);
@@ -113,11 +113,11 @@ void Box_Data_Portal::make_record_related(const Gnome::Gda::Value& related_recor
         builder->add_field_id(field_primary_key->get_name(), target_table),
         builder->add_expr_as_value(related_record_primary_key_value)));
 
-  //std::cout << "Box_Data_Portal::make_record_related(): setting value in db=" << primary_key_value.to_string() << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": setting value in db=" << primary_key_value.to_string() << std::endl;
   const bool test = DbUtils::query_execute(builder);
   if(!test)
   {
-    std::cerr << "Box_Data_Portal::make_record_related(): SQL query failed." << std::endl;
+    std::cerr << G_STRFUNC << ": SQL query failed." << std::endl;
   }
 }
 
@@ -313,7 +313,7 @@ bool Box_Data_Portal::init_db_details(const Glib::ustring& parent_table, bool sh
 bool Box_Data_Portal::refresh_data_from_database_with_foreign_key(const Gnome::Gda::Value& foreign_key_value)
 {
   m_key_value = foreign_key_value;
-  //std::cout << "DEBUG: Box_Data_Portal::refresh_data_from_database_with_foreign_key(): m_key_value=" << m_key_value.to_string() << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": m_key_value=" << m_key_value.to_string() << std::endl;
 
 
   if(m_key_field && m_portal)
@@ -323,7 +323,7 @@ bool Box_Data_Portal::refresh_data_from_database_with_foreign_key(const Gnome::G
       FoundSet found_set;
       set_found_set_where_clause_for_portal(found_set, m_portal, m_key_value);
 
-      //std::cout << "DEBUG: refresh_data_from_database_with_foreign_key(): where_clause=" << found_set.m_where_clause << std::endl;
+      //std::cout << "debug: " << G_STRFUNC << ": where_clause=" << found_set.m_where_clause << std::endl;
       return Box_Data::refresh_data_from_database_with_where_clause(found_set);
     }
     else
@@ -435,7 +435,7 @@ void Box_Data_Portal::get_suitable_table_to_view_details(Glib::ustring& table_na
     //std::cout << "debug: auto main=" << navigation_relationship_main << ", navigation_relationship=" << (navigation_relationship ? navigation_relationship->get_name() : navigation_relationship->get_relationship()->get_name()) << std::endl;
   }
   //else
-  //  std::cout << "debug: get_suitable_table_to_view_details(): Using specific nav." << std::endl;
+  //  std::cout << "debug: " << G_STRFUNC << ": Using specific nav." << std::endl;
 
   const Document* document = get_document();
   if(!document)
@@ -459,13 +459,13 @@ void Box_Data_Portal::get_suitable_table_to_view_details(Glib::ustring& table_na
 
   if(navigation_table_name.empty())
   {
-    //std::cerr << "Box_Data_Portal::get_suitable_table_to_view_details(): navigation_table_name is empty." << std::endl;
+    //std::cerr << G_STRFUNC << ": navigation_table_name is empty." << std::endl;
     return;
   }
 
   if(document->get_table_is_hidden(navigation_table_name))
   {
-    std::cerr << "Box_Data_Portal::get_suitable_table_to_view_details(): navigation_table_name indicates a hidden table: " << navigation_table_name << std::endl;
+    std::cerr << G_STRFUNC << ": navigation_table_name indicates a hidden table: " << navigation_table_name << std::endl;
     return;
   }
 
@@ -519,14 +519,14 @@ void Box_Data_Portal::get_suitable_record_to_view_details(const Gnome::Gda::Valu
     //Set the output parameters:
     table_name = navigation_table_name;
     table_primary_key_value = data_model->get_value_at(0, 0);
-    //std::cout << "Box_Data_Portal::get_suitable_record_to_view_details(): table_primary_key_value=" << table_primary_key_value.to_string() << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": table_primary_key_value=" << table_primary_key_value.to_string() << std::endl;
 
     //The value is empty when there there is no record to match the key in the related table:
     //For instance, if an invoice lines record mentions a product id, but the product does not exist in the products table.
     if(Conversions::value_is_empty(table_primary_key_value))
     {
       value_found = false;
-      std::cout << "debug: Box_Data_Portal::get_suitable_record_to_view_details(): SQL query returned empty primary key." << std::endl;
+      std::cout << "debug: " << G_STRFUNC << ": SQL query returned empty primary key." << std::endl;
     }
   }
   else

@@ -44,12 +44,12 @@ static Glib::RefPtr<Gnome::Gda::Connection> get_connection()
   }
   catch (const Glib::Error& error)
   {
-    std::cerr << "get_connection(): " << error.what() << std::endl;
+    std::cerr << G_STRFUNC << ": " << error.what() << std::endl;
   }
 
   if(!sharedconnection)
   {
-    std::cerr << "get_connection(): No connection yet." << std::endl;
+    std::cerr << G_STRFUNC << ": No connection yet." << std::endl;
     return Glib::RefPtr<Gnome::Gda::Connection>(0);
   }
 
@@ -68,22 +68,22 @@ static void update_gda_metastore_for_table(const Glib::ustring& table_name)
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
   if(!gda_connection)
   {
-    std::cerr << "update_gda_metastore_for_table(): No gda_connection." << std::endl;
+    std::cerr << G_STRFUNC << ": No gda_connection." << std::endl;
     return;
   }
 
   if(table_name.empty())
   {
-    std::cerr << "update_gda_metastore_for_table(): table_name is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": table_name is empty." << std::endl;
     return;
   }
 
-  //std::cout << "DEBUG: update_gda_metastore_for_table(): Calling Gda::Connection::update_meta_store_table(" << table_name << ") ..." << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": Calling Gda::Connection::update_meta_store_table(" << table_name << ") ..." << std::endl;
   //TODO: This doesn't seem to quite work yet:
   gda_connection->update_meta_store_table(table_name);
 
   //This does work, though it takes ages: gda_connection->update_meta_store();
-  //std::cout << "DEBUG: update_gda_metastore_for_table(): ... Finished calling Gda::Connection::update_meta_store_table()" << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": ... Finished calling Gda::Connection::update_meta_store_table()" << std::endl;
 }
 
 bool create_database(Document* document, const Glib::ustring& database_name, const Glib::ustring& title, const sigc::slot<void>& progress)
@@ -104,7 +104,7 @@ bool create_database(Document* document, const Glib::ustring& database_name, con
   }
   catch(const Glib::Exception& ex) // libgda does not set error domain
   {
-    std::cerr << "create_database():  Gnome::Gda::Connection::create_database(" << database_name << ") failed: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ":  Gnome::Gda::Connection::create_database(" << database_name << ") failed: " << ex.what() << std::endl;
 
     return false;
   }
@@ -124,12 +124,12 @@ bool create_database(Document* document, const Glib::ustring& database_name, con
   }
   catch(const Glib::Exception& ex)
   {
-    std::cerr << "create_database(): Could not connect to just-created database. exception caught:" << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": Could not connect to just-created database. exception caught:" << ex.what() << std::endl;
     return false;
   }
   catch(const std::exception& ex)
   {
-    std::cerr << "create_database(): Could not connect to just-created database. exception caught:" << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": Could not connect to just-created database. exception caught:" << ex.what() << std::endl;
     return false;
   }
 
@@ -151,19 +151,19 @@ bool create_database(Document* document, const Glib::ustring& database_name, con
 
     progress();
 
-    //std::cout << "create_database(): Creation of standard tables and groups finished." << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": Creation of standard tables and groups finished." << std::endl;
 
     //Set the title based on the title in the example document, or the user-supplied title when creating new documents:
     SystemPrefs prefs = get_database_preferences(document);
     if(prefs.m_name.empty())
     {
-      //std::cout << "create_database(): Setting title in the database." << std::endl;
+      //std::cout << "debug: " << G_STRFUNC << ": Setting title in the database." << std::endl;
       prefs.m_name = title;
       set_database_preferences(document, prefs);
     }
     else
     {
-      //std::cout << "create_database(): database has title: " << prefs.m_name << std::endl;
+      //std::cout << "debug: " << G_STRFUNC << ": database has title: " << prefs.m_name << std::endl;
     }
 
     progress();
@@ -172,7 +172,7 @@ bool create_database(Document* document, const Glib::ustring& database_name, con
   }
   else
   {
-    std::cerr << "create_database(): Could not connect to just-created database." << std::endl;
+    std::cerr << G_STRFUNC << ": Could not connect to just-created database." << std::endl;
     return false;
   }
 }
@@ -286,7 +286,7 @@ bool recreate_database_from_document(Document* document, const sigc::slot<void>&
     //}
     //catch(const std::exception& ex)
     //{
-    //  std::cerr << "Application::recreate_database(): exception: " << ex.what() << std::endl;
+    //  std::cerr << G_STRFUNC << ": exception: " << ex.what() << std::endl;
       //HandleError(ex);
     //}
 
@@ -357,12 +357,12 @@ SystemPrefs get_database_preferences(Document* document)
     }
     catch(const Glib::Exception& ex)
     {
-      std::cerr << "get_database_preferences(): exception: " << ex.what() << std::endl;
+      std::cerr << G_STRFUNC << ": exception: " << ex.what() << std::endl;
       succeeded = false;
     }
     catch(const std::exception& ex)
     {
-      std::cerr << "get_database_preferences(): exception: " << ex.what() << std::endl;
+      std::cerr << G_STRFUNC << ": exception: " << ex.what() << std::endl;
       succeeded = false;
     }
     //Return the result, or try again:
@@ -403,7 +403,7 @@ void set_database_preferences(Document* document, const SystemPrefs& prefs)
   const bool test = query_execute(builder);
 
   if(!test)
-    std::cerr << "set_database_preferences(): UPDATE failed." << std::endl;
+    std::cerr << G_STRFUNC << ": UPDATE failed." << std::endl;
 
   //Set some information in the document too, so we can use it to recreate the database:
   document->set_database_title(prefs.m_name);
@@ -430,7 +430,7 @@ bool add_standard_tables(Document* document)
         builder->add_field_value(GLOM_STANDARD_TABLE_PREFS_FIELD_ID, 1);
         const bool test = query_execute(builder);
         if(!test)
-          std::cerr << "add_standard_tables(): INSERT failed." << std::endl;
+          std::cerr << G_STRFUNC << ": INSERT failed." << std::endl;
 
         //Use the database title from the document, if there is one:
         const Glib::ustring system_name = document->get_database_title();
@@ -444,7 +444,7 @@ bool add_standard_tables(Document* document)
                                                builder->add_expr(1)));
           const bool test = query_execute(builder);
           if(!test)
-            std::cerr << "add_standard_tables(): UPDATE failed." << std::endl;
+            std::cerr << G_STRFUNC << ": UPDATE failed." << std::endl;
         }
       }
       else
@@ -506,12 +506,12 @@ bool add_standard_tables(Document* document)
   }
   catch(const Glib::Exception& ex)
   {
-    std::cerr << "add_standard_tables(): caught exception: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": caught exception: " << ex.what() << std::endl;
     return false;
   }
   catch(const std::exception& ex)
   {
-    std::cerr << "add_standard_tables(): caught exception: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": caught exception: " << ex.what() << std::endl;
     return false;
   }
 }
@@ -524,7 +524,7 @@ bool add_standard_groups(Document* document)
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
   if(!gda_connection)
   {
-    std::cerr << "add_standard_groups(): No connection yet." << std::endl;
+    std::cerr << G_STRFUNC << ": No connection yet." << std::endl;
   }
 
   // If the connection doesn't support users we can skip this step
@@ -539,7 +539,7 @@ bool add_standard_groups(Document* document)
       bool test = query_execute_string("CREATE GROUP \"" GLOM_STANDARD_GROUP_NAME_DEVELOPER "\" WITH SUPERUSER");
       if(!test)
       {
-        std::cerr << "Glom add_standard_groups(): CREATE GROUP failed when adding the developer group." << std::endl;
+        std::cerr << G_STRFUNC << ": CREATE GROUP failed when adding the developer group." << std::endl;
         return false;
       }
 
@@ -550,7 +550,7 @@ bool add_standard_groups(Document* document)
       test = query_execute_string(strQuery);
       if(!test)
       {
-        std::cerr << "Glom add_standard_groups(): ALTER GROUP failed when adding the user to the developer group." << std::endl;
+        std::cerr << G_STRFUNC << ": ALTER GROUP failed when adding the user to the developer group." << std::endl;
         return false;
       }
 
@@ -695,7 +695,7 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
     Glib::RefPtr<Gnome::Gda::Connection> connection = get_connection();
     if(!connection)
     {
-      std::cerr << "get_fields_for_table_from_database(): connection is null" << std::endl;
+      std::cerr << G_STRFUNC << ": connection is null" << std::endl;
       return result;
     }
 
@@ -718,21 +718,21 @@ type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_na
     }
     catch(const Gnome::Gda::MetaStoreError& ex)
     {
-      std::cerr << "get_fields_for_table_from_database(): MetaStoreError: " << ex.what() << std::endl;
+      std::cerr << G_STRFUNC << ": MetaStoreError: " << ex.what() << std::endl;
     }
     catch(const Glib::Error& ex)
     {
-      std::cerr << "get_fields_for_table_from_database(): Error: " << ex.what() << std::endl;
+      std::cerr << G_STRFUNC << ": Error: " << ex.what() << std::endl;
     }
 
 
     if(!data_model_fields)
     {
-      std::cerr << "get_fields_for_table_from_database(): libgda reported empty fields schema data_model for the table." << std::endl;
+      std::cerr << G_STRFUNC << ": libgda reported empty fields schema data_model for the table." << std::endl;
     }
     else if(data_model_fields->get_n_columns() == 0)
     {
-      std::cerr << "get_fields_for_table_from_database(): libgda reported 0 fields for the table." << std::endl;
+      std::cerr << G_STRFUNC << ": libgda reported 0 fields for the table." << std::endl;
     }
     else if(data_model_fields->get_n_rows() == 0)
     {
@@ -847,16 +847,16 @@ type_vec_strings get_table_names_from_database(bool ignore_system_tables)
     }
     catch(const Gnome::Gda::MetaStoreError& ex)
     {
-      std::cerr << "get_table_names_from_database(): MetaStoreError: " << ex.what() << std::endl;
+      std::cerr << G_STRFUNC << ": MetaStoreError: " << ex.what() << std::endl;
     }
     catch(const Glib::Error& ex)
     {
-      std::cerr << "get_table_names_from_database(): Error: " << ex.what() << std::endl;
+      std::cerr << G_STRFUNC << ": Error: " << ex.what() << std::endl;
     }
 
     if(data_model_tables && (data_model_tables->get_n_columns() == 0))
     {
-      std::cerr << "get_table_names_from_database(): libgda reported 0 tables for the database." << std::endl;
+      std::cerr << G_STRFUNC << ": libgda reported 0 tables for the database." << std::endl;
     }
     else if(data_model_tables)
     {
@@ -928,7 +928,7 @@ bool create_table_with_default_fields(Document* document, const Glib::ustring& t
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
   if(!gda_connection)
   {
-    std::cerr << "create_table_with_default_fields(): No connection yet." << std::endl;
+    std::cerr << G_STRFUNC << ": No connection yet." << std::endl;
     return false;
   }
 
@@ -946,7 +946,7 @@ bool create_table_with_default_fields(Document* document, const Glib::ustring& t
   field_primary_key->set_field_info(field_info);
 
   field_primary_key->set_glom_type(Field::TYPE_NUMERIC);
-  //std::cout << "field_primary_key->get_auto_increment():" << field_primary_key->get_auto_increment() << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ":" << field_primary_key->get_auto_increment() << std::endl;
 
   type_vec_fields fields;
   fields.push_back(field_primary_key);
@@ -1000,7 +1000,7 @@ bool create_table_with_default_fields(Document* document, const Glib::ustring& t
 }
 bool create_table(const sharedptr<const TableInfo>& table_info, const Document::type_vec_fields& fields_in)
 {
-  //std::cout << "create_table(): " << table_info->get_name() << ", title=" << table_info->get_title() << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": " << table_info->get_name() << ", title=" << table_info->get_title() << std::endl;
 
   bool table_creation_succeeded = false;
 
@@ -1054,7 +1054,7 @@ bool create_table(const sharedptr<const TableInfo>& table_info, const Document::
     //TODO: Use GDA_SERVER_OPERATION_CREATE_TABLE instead?
     table_creation_succeeded = query_execute_string( "CREATE TABLE \"" + table_info->get_name() + "\" (" + sql_fields + ");" );
     if(!table_creation_succeeded)
-      std::cerr << "create_table(): CREATE TABLE failed." << std::endl;
+      std::cerr << G_STRFUNC << ": CREATE TABLE failed." << std::endl;
   }
   catch(const ExceptionConnection& ex)
   {
@@ -1155,7 +1155,7 @@ Gnome::Gda::Value get_next_auto_increment_value(const Glib::ustring& table_name,
                                                          builder->add_expr(field_name))));
   const bool test = query_execute(builder);
   if(!test)
-    std::cerr << "get_next_auto_increment_value(): Increment failed." << std::endl;
+    std::cerr << G_STRFUNC << ": Increment failed." << std::endl;
 
   return result;
 }
@@ -1169,7 +1169,7 @@ Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& 
   if(!table_privs.m_view || !table_privs.m_edit)
   {
     //This should not happen:
-    std::cerr << "Glom: auto_increment_insert_first_if_necessary(): The current user may not edit the autoincrements table. Any user who has create rights for a table should have edit rights to the autoincrements table." << std::endl;
+    std::cerr << G_STRFUNC << ": The current user may not edit the autoincrements table. Any user who has create rights for a table should have edit rights to the autoincrements table." << std::endl;
   }
 
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
@@ -1199,7 +1199,7 @@ Gnome::Gda::Value auto_increment_insert_first_if_necessary(const Glib::ustring& 
 
     const bool test = query_execute(builder);
     if(!test)
-      std::cerr << "auto_increment_insert_first_if_necessary(): INSERT of new row failed." << std::endl;
+      std::cerr << G_STRFUNC << ": INSERT of new row failed." << std::endl;
 
     //GdaNumeric is a pain, so we take a short-cut:
     bool success = false;
@@ -1261,10 +1261,10 @@ static void recalculate_next_auto_increment_value(const Glib::ustring& table_nam
 
     const bool test = query_execute(builder);
     if(!test)
-      std::cerr << "recalculate_next_auto_increment_value(): UPDATE failed." << std::endl;
+      std::cerr << G_STRFUNC << ": UPDATE failed." << std::endl;
   }
   else
-    std::cerr << "recalculate_next_auto_increment_value(): SELECT MAX() failed." << std::endl;
+    std::cerr << G_STRFUNC << ": SELECT MAX() failed." << std::endl;
 }
 
 bool insert_example_data(Document* document, const Glib::ustring& table_name)
@@ -1273,14 +1273,14 @@ bool insert_example_data(Document* document, const Glib::ustring& table_name)
   const Document::type_example_rows example_rows = document->get_table_example_data(table_name);
   if(example_rows.empty())
   {
-    //std::cout << "debug: insert_example_data(): No example data available." << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": No example data available." << std::endl;
     return true;
   }
 
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
   if(!gda_connection)
   {
-    std::cerr << "insert_example_data(): connection is null" << std::endl;
+    std::cerr << G_STRFUNC << ": connection is null" << std::endl;
     return false;
   }
 
@@ -1293,7 +1293,7 @@ bool insert_example_data(Document* document, const Glib::ustring& table_name)
   Document::type_vec_fields vec_fields = document->get_table_fields(table_name);
 
   //Actually insert the data:
-  //std::cout << "  debug: insert_example_data(): number of rows of data: " << vec_rows.size() << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": number of rows of data: " << vec_rows.size() << std::endl;
 
   //std::cout << "DEBUG: example_row size = " << example_rows.size() << std::endl;
 
@@ -1317,7 +1317,7 @@ bool insert_example_data(Document* document, const Glib::ustring& table_name)
       sharedptr<Field> field = vec_fields[i];
       if(!field)
       {
-        std::cerr << "insert_example_data(): field was null for field num=" << i << std::endl;
+        std::cerr << G_STRFUNC << ": field was null for field num=" << i << std::endl;
         break;
       }
 
@@ -1352,7 +1352,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::RefPtr<cons
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
   if(!gda_connection)
   {
-    std::cerr << "query_execute_select(): No connection yet." << std::endl;
+    std::cerr << G_STRFUNC << ": No connection yet." << std::endl;
     return result;
   }
 
@@ -1360,7 +1360,7 @@ Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::RefPtr<cons
   if(builder && ConnectionPool::get_instance()->get_show_debug_output())
   {
     const std::string full_query = Utils::sqlbuilder_get_full_query(builder);
-    std::cout << "Debug: query_execute_select():  " << full_query << std::endl;
+    std::cout << "debug: " << G_STRFUNC << ":  " << full_query << std::endl;
   }
 
   //TODO: Use DbUtils::query_execute().
@@ -1376,19 +1376,19 @@ Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::RefPtr<cons
   }
   catch(const Gnome::Gda::ConnectionError& ex)
   {
-    std::cerr << "debug: query_execute_select(): ConnectionError: exception from statement_execute_select_builder(): " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": " << ex.what() << std::endl;
   }
   catch(const Gnome::Gda::ServerProviderError& ex)
   {
-    std::cerr << "debug: query_execute_select(): ServerProviderError: exception from statement_execute_select_builder(): code=" << ex.code() << "message=" << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": code=" << ex.code() << "message=" << ex.what() << std::endl;
   }
   catch(const Gnome::Gda::SqlError& ex) //TODO: Make sure that statement_execute_select_builder() is documented as throwing this.
   {
-    std::cerr << "debug: query_execute_select(): SqlError: exception from statement_execute_select_builder(): " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": " << ex.what() << std::endl;
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "debug: query_execute_select(): Error (" << typeid(ex).name() << "): exception from statement_execute_select_builder(): " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": " << ex.what() << std::endl;
   }
 
 
@@ -1408,7 +1408,7 @@ bool query_execute_string(const Glib::ustring& strQuery, const Glib::RefPtr<Gnom
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
   if(!gda_connection)
   {
-    std::cerr << "query_execute(): No connection yet." << std::endl;
+    std::cerr << G_STRFUNC << ": No connection yet." << std::endl;
     return false;
   }
 
@@ -1433,7 +1433,7 @@ bool query_execute_string(const Glib::ustring& strQuery, const Glib::RefPtr<Gnom
       //TODO: full_query still seems to contain ## parameter names,
       //though it works for our SELECT queries in query_execute_select():
       const Glib::ustring full_query = stmt->to_sql(params);
-      std::cerr << "Debug: query_execute(): " << full_query << std::endl;
+      std::cerr << G_STRFUNC << ": " << full_query << std::endl;
     }
     catch(const Glib::Exception& ex)
     {
@@ -1462,7 +1462,7 @@ bool query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder)
   Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
   if(!gda_connection)
   {
-    std::cerr << "query_execute(): No connection yet." << std::endl;
+    std::cerr << G_STRFUNC << ": No connection yet." << std::endl;
     return false;
   }
 
@@ -1470,7 +1470,7 @@ bool query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder)
   if(builder && ConnectionPool::get_instance()->get_show_debug_output())
   {
     const std::string full_query = Utils::sqlbuilder_get_full_query(builder);
-    std::cerr << "Debug: query_execute(): " << full_query << std::endl;
+    std::cerr << G_STRFUNC << ": " << full_query << std::endl;
   }
 
 
@@ -1481,28 +1481,28 @@ bool query_execute(const Glib::RefPtr<const Gnome::Gda::SqlBuilder>& builder)
   }
   catch(const Gnome::Gda::ConnectionError& ex)
   {
-    std::cerr << "debug: query_execute_select(): ConnectionError: exception from statement_execute_non_select_builder(): " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": " << ex.what() << std::endl;
     const std::string full_query = Utils::sqlbuilder_get_full_query(builder);
     std::cerr << "  full_query: " << full_query << std::endl;
     return false;
   }
   catch(const Gnome::Gda::ServerProviderError& ex)
   {
-    std::cerr << "debug: query_execute_select(): ServerProviderError: exception from statement_execute_non_select_builder(): code=" << ex.code() << "message=" << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": code=" << ex.code() << "message=" << ex.what() << std::endl;
     const std::string full_query = Utils::sqlbuilder_get_full_query(builder);
     std::cerr << "  full_query: " << full_query << std::endl;
     return false;
   }
   catch(const Gnome::Gda::SqlError& ex) //TODO: Make sure that statement_execute_non_select_builder() is documented as throwing this.
   {
-    std::cerr << "debug: query_execute_select(): SqlError: exception from statement_execute_non_select_builder(): " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": " << ex.what() << std::endl;
     const std::string full_query = Utils::sqlbuilder_get_full_query(builder);
     std::cerr << "  full_query: " << full_query << std::endl;
     return false;
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "debug: query_execute_select(): Error (" << typeid(ex).name() << "): exception from statement_execute_non_select_builder(): " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": " << ex.what() << std::endl;
     return false;
   }
   return (exec_retval >= 0);

@@ -107,14 +107,14 @@ const Glib::ustring& CsvParser::get_data(guint row, guint col)
 
   if(row >= m_rows.size())
   {
-    //std::cerr << "CsvParser::get_data(): row out of range." << std::endl;
+    //std::cerr << G_STRFUNC << ": get_data(): row out of range." << std::endl;
     return empty_result;
   }
 
   const type_row_strings& row_data = m_rows[row];
   if(col >= row_data.size())
   {
-    //std::cerr << "CsvParser::get_data(): col out of range." << std::endl;
+    //std::cerr << G_STRFUNC << ": get_data(): col out of range." << std::endl;
     return empty_result;
   }
 
@@ -366,7 +366,7 @@ bool CsvParser::on_idle_parse()
       // contain null bytes this only occurs when converting, for example, a UTF-16
       // file from ISO-8859-1 to UTF-8 (note that the UTF-16 file is valid ISO-8859-1 - 
       // it just contains lots of nullbytes). We therefore produce an error here.
-      //std::cerr << "CsvParser::on_idle_parse(): Encoding error" << std::endl;
+      //std::cerr << G_STRFUNC << ": on_idle_parse(): Encoding error" << std::endl;
       set_state(STATE_ENCODING_ERROR);
       signal_encoding_error().emit();
       return false;  //Stop calling the idle handler.

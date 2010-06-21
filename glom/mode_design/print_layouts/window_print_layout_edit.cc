@@ -409,7 +409,7 @@ sharedptr<LayoutItem> Window_PrintLayout_Edit::create_empty_item(PrintLayoutTool
   }
   else
   {
-    std::cerr << "Window_PrintLayout_Edit::create_empty_item(): Unhandled item type: " << item_type << std::endl;
+    std::cerr << G_STRFUNC << ": Unhandled item type: " << item_type << std::endl;
   }
 
   return layout_item;

@@ -79,7 +79,7 @@ sharedptr<SharedConnection> Dialog_Connection::connect_to_server_with_connection
   if(!document)
     return result;
 
-  //std::cout << "debug: Dialog_Connection::connect_to_server_with_connection_settings(): m_database_name=" << m_database_name << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": m_database_name=" << m_database_name << std::endl;
   connection_pool->set_database(m_database_name);
 
 #ifdef GLOM_ENABLE_POSTGRESQL

@@ -11,13 +11,13 @@ bool result_started_new_record = false;
 
 static void on_script_ui_show_table_list(const Glib::ustring& table_name)
 {
-  //std::cout << "debug: on_script_ui_show_table_list(): table_name=" << table_name << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": table_name=" << table_name << std::endl;
   result_table_name_list = table_name;
 }
 
 static void on_script_ui_show_table_details(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value)
 {
-  //std::cout << "debug: on_script_ui_show_table_details(): table_name=" << table_name
+  //std::cout << "debug: " << G_STRFUNC << ": table_name=" << table_name
   //  << ", primary_key_value=" << primary_key_value.to_string() << std::endl;
   result_table_name_details = table_name;
   result_primary_key_value_details = primary_key_value;

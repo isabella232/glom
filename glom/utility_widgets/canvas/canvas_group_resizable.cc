@@ -182,12 +182,12 @@ void CanvasGroupResizable::position_rect_manipulators()
   double child_x = 0;
   double child_y = 0;
   get_xy(child_x, child_y);
-  //std::cout << "  CanvasGroupResizable::position_manipulators(): child x=" << child_x << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": child x=" << child_x << std::endl;
 
   double child_width = 0;
   double child_height = 0;
   get_width_height(child_width, child_height);
-  //std::cout << "  CanvasGroupResizable::position_manipulators(): child width=" << child_width << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": child width=" << child_width << std::endl;
 
 
   //Show the size of this item (not always the same as the child size):
@@ -530,7 +530,7 @@ void CanvasGroupResizable::on_manipulator_edge_moved(Manipulators manipulator_id
   Glib::RefPtr<CanvasItemMovable> manipulator_base = get_manipulator(manipulator_id);
   Glib::RefPtr<CanvasLineMovable> manipulator = Glib::RefPtr<CanvasLineMovable>::cast_dynamic(manipulator_base);
   
-  //std::cout << "CanvasGroupResizable::on_manipulator_edge_moved(): manipulator=" << manipulator_id << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": manipulator=" << manipulator_id << std::endl;
 
   Goocanvas::Points points = manipulator->property_points();
   double x1 = 0;
@@ -729,7 +729,7 @@ void CanvasGroupResizable::get_xy(double& x, double& y) const
 
 void CanvasGroupResizable::set_xy(double x, double y)
 {
-  //std::cout << "CanvasGroupResizable::set_xy(): " << x << ", " << y << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": " << x << ", " << y << std::endl;
   if(m_child)
     m_child->set_xy(x, y);
   

@@ -65,7 +65,7 @@ void CanvasLineMovable::get_width_height(double& width, double& height) const
   width = property_width();
   height = property_height();
 
-  //std::cout << "CanvasLineMovable::get_width_height(): width=" << width << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": width=" << width << std::endl;
 }
 
 void CanvasLineMovable::set_width_height(double width, double height)
@@ -73,7 +73,7 @@ void CanvasLineMovable::set_width_height(double width, double height)
   property_width() = width;
   property_height() = height;
 
-  //std::cout << "CanvasLineMovable::set_width_height(): end x=" << x1+width << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": end x=" << x1+width << std::endl;
 }
 
 Goocanvas::Canvas* CanvasLineMovable::get_parent_canvas_widget()

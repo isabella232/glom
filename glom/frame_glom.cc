@@ -496,7 +496,7 @@ void Frame_Glom::show_table_allow_empty(const Glib::ustring& table_name, const G
     }
     default:
     {
-      std::cout << "Frame_Glom::on_box_tables_selected(): Unexpected mode" << std::endl;
+      std::cout << "debug: " << G_STRFUNC << ": Unexpected mode" << std::endl;
       strMode = _("Unknown");
       break;
     }
@@ -683,7 +683,7 @@ void Frame_Glom::export_data_to_vector(Document::type_example_rows& the_vector, 
 
   if(fieldsSequence.empty())
   {
-    std::cerr << "Glom: Frame_Glom::export_data_to_string(): No fields in sequence." << std::endl;
+    std::cerr << G_STRFUNC << ": No fields in sequence." << std::endl;
     return;
   }
 
@@ -733,7 +733,7 @@ void Frame_Glom::export_data_to_string(Glib::ustring& the_string, const FoundSet
 
   if(fieldsSequence.empty())
   {
-    std::cerr << "Glom: Frame_Glom::export_data_to_string(): No fields in sequence." << std::endl;
+    std::cerr << G_STRFUNC << ": No fields in sequence." << std::endl;
     return;
   }
 
@@ -785,7 +785,7 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
 
   if(fieldsSequence.empty())
   {
-    std::cerr << "Glom: Frame_Glom::export_data_to_stream(): No fields in sequence." << std::endl;
+    std::cerr << G_STRFUNC << ": No fields in sequence." << std::endl;
     return;
   }
 
@@ -820,7 +820,7 @@ void Frame_Glom::export_data_to_stream(std::ostream& the_stream, const FoundSet&
             sharedptr<const Field> field = layout_item->get_full_field_details();
             if(!field)
             {
-              std::cerr << "Glom: Frame_Glom::export_data_to_stream(): A field was null." << std::endl;
+              std::cerr << G_STRFUNC << ": A field was null." << std::endl;
               return;
             }
 
@@ -931,7 +931,7 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
 {
   if(!action)
   {
-    std::cerr << "Frame_Glom::on_menu_file_toggle_share(): action was null." << std::endl;
+    std::cerr << G_STRFUNC << ": action was null." << std::endl;
   }
 
   //Prevent this change if not in developer mode,
@@ -1038,7 +1038,7 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
 
           if(!reowned || !(removed || disabled))
           {
-            std::cerr << "Frame_Glom::on_menu_file_toggle_share(): Failed to reown and remove/revoke default user." << std::endl;
+            std::cerr << G_STRFUNC << ": Failed to reown and remove/revoke default user." << std::endl;
             shared = false;
             change = false;
           }
@@ -1307,7 +1307,7 @@ void Frame_Glom::on_dialog_add_related_table_response(int response)
       const bool result = DbUtils::create_table_with_default_fields(get_document(), table_name);
       if(!result)
       {
-        std::cerr << "Frame_Glom::on_menu_Tables_AddRelatedTable(): create_table_with_default_fields() failed." << std::endl;
+        std::cerr << G_STRFUNC << ": create_table_with_default_fields() failed." << std::endl;
         return;
       }
 
@@ -1323,7 +1323,7 @@ void Frame_Glom::on_dialog_add_related_table_response(int response)
       sharedptr<Field> related_primary_key = get_field_primary_key_for_table(table_name); //This field was created by create_table_with_default_fields().
       if(!related_primary_key)
       {
-        std::cerr << "Frame_Glom::on_menu_Tables_AddRelatedTable(): get_field_primary_key_for_table() failed." << std::endl;
+        std::cerr << G_STRFUNC << ": get_field_primary_key_for_table() failed." << std::endl;
         return;
       }
 
@@ -1465,14 +1465,14 @@ void Frame_Glom::on_button_quickfind()
   else
   {
     const Gnome::Gda::SqlExpr where_clause = Utils::get_find_where_clause_quick(get_document(), m_table_name, Gnome::Gda::Value(criteria));
-    //std::cout << "Frame_Glom::on_button_quickfind(): where_clause=" << where_clause << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": where_clause=" << where_clause << std::endl;
     on_notebook_find_criteria(where_clause);
   }
 }
 
 void Frame_Glom::on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clause)
 {
-  //std::cout << "Frame_Glom::on_notebook_find_criteria(): " << where_clause << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": " << where_clause << std::endl;
 
   Application* pApp = dynamic_cast<Application*>(get_app_window());
   if(pApp)
@@ -1490,9 +1490,9 @@ void Frame_Glom::on_notebook_find_criteria(const Gnome::Gda::SqlExpr& where_clau
       found_set.m_where_clause = where_clause;
       records_found = m_Notebook_Data.init_db_details(found_set);
 
-      //std::cout << "Frame_Glom::on_notebook_find_criteria(): BEFORE  m_Notebook_Data.select_page_for_find_results()" << std::endl;
+      //std::cout << "debug: " << G_STRFUNC << ": BEFORE  m_Notebook_Data.select_page_for_find_results()" << std::endl;
       m_Notebook_Data.select_page_for_find_results();
-      //std::cout << "Frame_Glom::on_notebook_find_criteria(): AFTER  m_Notebook_Data.select_page_for_find_results()" << std::endl;
+      //std::cout << "debug: " << G_STRFUNC << ": AFTER  m_Notebook_Data.select_page_for_find_results()" << std::endl;
     }
 
     if(!records_found)
@@ -2209,7 +2209,7 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
       }
       else
       {
-        std::cout << "Frame_Glom::connection_request_password_and_choose_new_database_name(): unused database name successfully found: " << database_name_possible << std::endl;
+        std::cout << "debug: " << G_STRFUNC << ": unused database name successfully found: " << database_name_possible << std::endl;
         //The connection to the server is OK, but the specified database does not exist.
         //That's good - we were looking for an unused database name.
 
@@ -2294,7 +2294,7 @@ bool Frame_Glom::handle_request_password_connection_error(bool asked_for_passwor
   }
   else
   {
-    std::cerr << "Frame_Glom::connection_request_password_and_attempt(): Unexpected exception: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": Unexpected exception: " << ex.what() << std::endl;
     cleanup_connection();
     return false;
   }

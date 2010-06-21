@@ -48,17 +48,17 @@ FieldTypes::FieldTypes(const Glib::RefPtr<Gnome::Gda::Connection>& gda_connectio
       data_model_tables = gda_connection->get_meta_store_data(Gnome::Gda::CONNECTION_META_TYPES);
 
     if(!data_model_tables)
-      std::cerr << "FieldTypes::FieldTypes(): Couldn't get datamodel" << std::endl;
+      std::cerr << G_STRFUNC << ": Couldn't get datamodel" << std::endl;
 
     if(data_model_tables && (data_model_tables->get_n_columns() == 0))
     {
-      std::cerr << "FieldTypes::FieldTypes(): get_meta_store_data(Gnome::Gda::CONNECTION_META_TYPES) failed." << std::endl;
+      std::cerr << G_STRFUNC << ": get_meta_store_data(Gnome::Gda::CONNECTION_META_TYPES) failed." << std::endl;
     }
     else if(data_model_tables)
     {
       int rows = data_model_tables->get_n_rows();
       if(!rows)
-        std::cerr << "FieldTypes::FieldTypes(): no rows from CONNECTION_META_TYPES" << std::endl;
+        std::cerr << G_STRFUNC << ": no rows from CONNECTION_META_TYPES" << std::endl;
 
       for(int i = 0; i < rows; ++i)
       {

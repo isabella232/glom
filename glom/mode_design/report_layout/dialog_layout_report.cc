@@ -267,7 +267,7 @@ void Dialog_Layout_Report::fill_group_children(const sharedptr<LayoutGroup>& gro
       if(child_group)
         fill_group_children(child_group, iterChild, model);
 
-      //std::cout << "fill_report_parts(): Adding group child: parent part type=" << group->get_part_type_name() << ", child part type=" << item->get_part_type_name() << std::endl;
+      //std::cout << "debug: " << G_STRFUNC << ": Adding group child: parent part type=" << group->get_part_type_name() << ", child part type=" << item->get_part_type_name() << std::endl;
       group->add_item(item);
     }
 

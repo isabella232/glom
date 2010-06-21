@@ -82,7 +82,7 @@ int main()
   }
   catch(const Glib::ConvertError& ex)
   {
-    std::cerr << "Exception from Glib::filename_to_uri(): " << ex.what();
+    std::cerr << G_STRFUNC << ": " << ex.what();
     return 1;
   }
 

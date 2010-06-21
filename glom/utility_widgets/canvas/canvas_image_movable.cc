@@ -173,7 +173,7 @@ void CanvasImageMovable::scale_to_size()
   double width = 0;
   double height = 0;
   get_width_height(width, height);
-  //std::cout << "CanvasImageMovable::set_image(): width=" << width << ", height=" << height << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": width=" << width << ", height=" << height << std::endl;
   
   if(width && height)
   {

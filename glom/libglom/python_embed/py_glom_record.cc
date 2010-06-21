@@ -136,7 +136,7 @@ void PyGlomRecord::setitem(const boost::python::object& key, const boost::python
   sharedptr<const Field> field = m_document->get_field(m_table_name, field_name);
   if(!field)
   {
-     std::cerr << "PyGlomRecord::setitem(): field=" << field_name << " not found in table=" << m_table_name << std::endl;
+     std::cerr << G_STRFUNC << ": field=" << field_name << " not found in table=" << m_table_name << std::endl;
      //TODO: Throw python exception.
      return;
   }
@@ -158,19 +158,19 @@ void PyGlomRecord::setitem(const boost::python::object& key, const boost::python
   else
     field_value = Conversions::get_empty_value(field_type);
 
-  //std::cout << "debug: PyGlomRecord::setitem(): field_name=" << field_name << ", field_type=" << field_type << ", field_value=" << field_value.to_string() << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": field_name=" << field_name << ", field_type=" << field_type << ", field_value=" << field_value.to_string() << std::endl;
 
 
   //Set the value in the database:
   if(!m_key_field || Conversions::value_is_empty(m_key_field_value))
   {
-    std::cerr << "PyGlomRecord::setitem(): The primary key name and value is not set. This would be a Glom bug." << std::endl;
+    std::cerr << G_STRFUNC << ": The primary key name and value is not set. This would be a Glom bug." << std::endl;
     return;
   }
 
   if(!m_connection)
   {
-    std::cerr << "PyGlomRecord::setitem(): The connection is null. This would be a Glom bug." << std::endl;
+    std::cerr << G_STRFUNC << ": The connection is null. This would be a Glom bug." << std::endl;
     return;
   }
 
@@ -194,18 +194,18 @@ void PyGlomRecord::setitem(const boost::python::object& key, const boost::python
   }
   catch(const Glib::Exception& ex)
   {
-    std::cerr << "PyGlomRecord::setitem(): exception while executing query: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": exception while executing query: " << ex.what() << std::endl;
   }
   catch(const std::exception& ex)
   {
-    std::cerr << "PyGlomRecord::setitem(): exception while executing query: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": exception while executing query: " << ex.what() << std::endl;
   }
 
   if(!updated)
   {
     Glib::ustring failed_query;
 
-    std::cerr << "PyGlomRecord::setitem(): UPDATE failed." << std::endl;
+    std::cerr << G_STRFUNC << ": UPDATE failed." << std::endl;
     /*
     if(stmt)
       failed_query = stmt->to_sql(params); //this throws too.
@@ -234,7 +234,7 @@ void PyGlomRecord::set_fields(const PyGlomRecord::type_map_field_values& field_v
   for(type_map_field_values::const_iterator iter = field_values.begin(); iter != field_values.end(); ++iter)
   {
     const Gnome::Gda::Value value = iter->second;
-    std::cout << "DEBUG: PyGlomRecord::set_fields(): field name=" << iter->first << ", type=" << g_type_name(value.get_value_type()) << std::endl;
+    std::cout << "debug: " << G_STRFUNC << ": field name=" << iter->first << ", type=" << g_type_name(value.get_value_type()) << std::endl;
   }
   */
 

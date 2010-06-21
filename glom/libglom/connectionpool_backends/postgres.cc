@@ -73,7 +73,7 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
  
 #ifdef GLOM_CONNECTION_DEBUG          
   std::cout << std::endl << "DEBUG: Glom: trying to connect on port=" << port << std::endl;
-  std::cout << "DEBUG: ConnectionPoolBackends::Postgres::attempt_connect(): cnc_string=" << cnc_string << std::endl;
+  std::cout << "debug: " << G_STRFUNC << ": cnc_string=" << cnc_string << std::endl;
   std::cout << "  DEBUG: auth_string=" << auth_string << std::endl;
 #endif
 
@@ -90,8 +90,8 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
   {
 
 #ifdef GLOM_CONNECTION_DEBUG
-    std::cout << "ConnectionPoolBackends::Postgres::attempt_connect(): Attempt to connect to database failed on port=" << port << ", database=" << database << ": " << ex.what() << std::endl;
-    std::cout << "ConnectionPoolBackends::Postgres::attempt_connect(): Attempting to connect without specifying the database." << std::endl;
+    std::cout << "debug: " << G_STRFUNC << ": Attempt to connect to database failed on port=" << port << ", database=" << database << ": " << ex.what() << std::endl;
+    std::cout << "debug: " << G_STRFUNC << ": Attempting to connect without specifying the database." << std::endl;
 #endif
 
     const Glib::ustring cnc_string = cnc_string_main + ";DB_NAME=" + default_database;
@@ -152,7 +152,7 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "Postgres::change_columns(): begin_transaction failed: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": begin_transaction failed: " << ex.what() << std::endl;
   }
 
   //Do this all in one big try/catch, block, 
@@ -377,7 +377,7 @@ bool Postgres::attempt_create_database(const Glib::ustring& database_name, const
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "Postgres::attempt_create_database(): exception: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": exception: " << ex.what() << std::endl;
     return false;
   }
 

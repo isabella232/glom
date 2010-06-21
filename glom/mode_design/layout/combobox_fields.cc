@@ -98,7 +98,7 @@ void ComboBox_Fields::set_selected_field(const Glib::ustring& field_name)
   }
 
   //Not found, so mark it as blank:
-  //std::cerr << "ComboBox_Fields::set_selected_field(): field not found in list: " << field_name << std::endl;
+  //std::cerr << G_STRFUNC << ": field not found in list: " << field_name << std::endl;
 
   //Avoid calling unset_active() if nothing is selected, because it triggers the changed signal unnecessarily.
   if(get_active()) //If something is active (selected).

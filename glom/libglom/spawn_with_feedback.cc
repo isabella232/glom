@@ -418,7 +418,7 @@ bool execute_command_line_and_wait(const std::string& command, const SlotProgres
 
   if(!stderr_text.empty())
   {
-    std::cerr << "Glom: execute_command_line_and_wait(): command produced stderr text: " << std::endl <<
+    std::cerr << G_STRFUNC << ": command produced stderr text: " << std::endl <<
       "  command: " << command << std::endl << 
       "  error text: " << stderr_text << std::endl;
   }
@@ -465,7 +465,7 @@ namespace
     }
     catch(const Impl::SpawnError& ex)
     {
-      std::cerr << "Glom::execute_command_line_and_wait_until_second_command_returns_success(): Exception while calling Glib::spawn_command_line_sync(): " << ex.what() << std::endl;
+      std::cerr << G_STRFUNC << ": " << ex.what() << std::endl;
       // TODO: We should cancel the whole call if this fails three times in 
       // a row or so.
     }
@@ -599,7 +599,7 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
       error_dialog->run();
       */
       
-      std::cerr << "Glom:  execute_command_line_and_wait_until_second_command_returns_success(): Child command failed. The command was: " << std::endl << stderr_text << std::endl;
+      std::cerr << G_STRFUNC << ": Child command failed. The command was: " << std::endl << stderr_text << std::endl;
     }
     else
     {

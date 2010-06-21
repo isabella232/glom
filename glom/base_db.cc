@@ -394,12 +394,12 @@ Glib::RefPtr<Gnome::Gda::Connection> Base_DB::get_connection()
   }
   catch (const Glib::Error& error)
   {
-    std::cerr << "Base_DB::get_connection(): " << error.what() << std::endl;
+    std::cerr << G_STRFUNC << ": " << error.what() << std::endl;
   }
 
   if(!sharedconnection)
   {
-    std::cerr << "Base_DB::get_connection(): No connection yet." << std::endl;
+    std::cerr << G_STRFUNC << ": No connection yet." << std::endl;
     return Glib::RefPtr<Gnome::Gda::Connection>(0);
   }
 
@@ -603,7 +603,7 @@ void Base_DB::fill_full_field_details(const Glib::ustring& parent_table_name, sh
 {
   if(!layout_item)
   {
-    std::cerr << "Base_DB::fill_full_field_details(): layout_item was null." << std::endl;
+    std::cerr << G_STRFUNC << ": layout_item was null." << std::endl;
   }
 
   const Glib::ustring table_name = layout_item->get_table_used(parent_table_name);
@@ -611,7 +611,7 @@ void Base_DB::fill_full_field_details(const Glib::ustring& parent_table_name, sh
   Document* document = get_document();
   if(!document)
   {
-    std::cerr << "Base_DB::fill_full_field_details(): document was null." << std::endl;
+    std::cerr << G_STRFUNC << ": document was null." << std::endl;
   }
 
   layout_item->set_full_field_details( get_document()->get_field(table_name, layout_item->get_name()) );
@@ -692,7 +692,7 @@ sharedptr<Field> Base_DB::get_field_primary_key_for_table(const Glib::ustring& t
   {
     //TODO_Performance: Cache this result?
     Document::type_vec_fields fields = document->get_table_fields(table_name);
-    //std::cout << "Base_DB::get_field_primary_key_for_table(): table=" << table_name << ", fields count=" << fields.size() << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": table=" << table_name << ", fields count=" << fields.size() << std::endl;
     for(Document::type_vec_fields::iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
       sharedptr<Field> field = *iter;
@@ -743,7 +743,7 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
         }
         else
         {
-          std::cerr << "Base_DB::get_table_fields_to_show_for_sequence_add_group(): related field not found: field=" << item->get_layout_display_name() << std::endl;
+          std::cerr << G_STRFUNC << ": related field not found: field=" << item->get_layout_display_name() << std::endl;
         }
       }
       else //It's a regular field in the table:
@@ -756,7 +756,7 @@ void Base_DB::get_table_fields_to_show_for_sequence_add_group(const Glib::ustrin
           sharedptr<LayoutItem_Field> layout_item = item_field;
           layout_item->set_full_field_details(*iterFind); //Fill the LayoutItem with the full field information.
 
-          //std::cout << "get_table_fields_to_show_for_sequence_add_group(): name=" << layout_item->get_name() << std::endl;
+          //std::cout << "debug: " << G_STRFUNC << ": name=" << layout_item->get_name() << std::endl;
 
           //Prevent editing of the field if the user may not edit this table:
           layout_item->m_priv_view = table_privs.m_view;
@@ -1082,7 +1082,7 @@ Base_DB::type_map_fields Base_DB::get_record_field_values_for_calculation(const 
       }
       catch(const Glib::Exception& ex)
       {
-        std::cerr << "Base_DB::get_record_field_values_for_calculation(): Exception while executing SQL: " << query << std::endl;
+        std::cerr << G_STRFUNC << ": Exception while executing SQL: " << query << std::endl;
         handle_error(ex);
         return field_values;
       }
@@ -1151,13 +1151,13 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
   //row is invalid, and ignored, for Box_Data_Details.
   if(!(field_in_record.m_field))
   {
-    std::cerr << "Base_DB::set_field_value_in_database(): field_in_record.m_field is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": field_in_record.m_field is empty." << std::endl;
     return false;
   }
 
   if(!(field_in_record.m_key))
   {
-    std::cerr << "Base_DB::set_field_value_in_database(): field_in_record.m_key is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": field_in_record.m_key is empty." << std::endl;
     return false;
   }
 
@@ -1177,7 +1177,7 @@ bool Base_DB::set_field_value_in_database(const LayoutFieldInRecord& layoutfield
       const bool test = DbUtils::query_execute(builder); //TODO: Respond to failure.
       if(!test)
       {
-        std::cerr << "Box_Data::set_field_value_in_database(): UPDATE failed." << std::endl;
+        std::cerr << G_STRFUNC << ": UPDATE failed." << std::endl;
         return false; //failed.
       }
     }
@@ -1219,13 +1219,13 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const LayoutFieldInRecord
   //row is invalid, and ignored, for Box_Data_Details.
   if(!(field_in_record.m_field))
   {
-    std::cerr << "Base_DB:gset_field_value_in_database(): field_in_record.m_field is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": field_in_record.m_field is empty." << std::endl;
     return result;
   }
 
   if(!(field_in_record.m_key))
   {
-    std::cerr << "Base_DB::get_field_value_in_database(): field_in_record.m_key is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": field_in_record.m_key is empty." << std::endl;
     return result;
   }
 
@@ -1258,13 +1258,13 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const sharedptr<Field>& f
   //row is invalid, and ignored, for Box_Data_Details.
   if(!field)
   {
-    std::cerr << "Base_DB:gset_field_value_in_database(): field is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": field is empty." << std::endl;
     return result;
   }
 
   if(found_set.m_where_clause.empty())
   {
-    std::cerr << "Base_DB::get_field_value_in_database(): where_clause is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": where_clause is empty." << std::endl;
     return result;
   }
 
@@ -1297,7 +1297,7 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const sharedptr<Field>& f
 
 void Base_DB::do_calculations(const LayoutFieldInRecord& field_changed, bool first_calc_field)
 {
-  //std::cout << "debug: Base_DB::do_calcualtions(): field_changed=" << field_changed.m_field->get_name() << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": field_changed=" << field_changed.m_field->get_name() << std::endl;
 
   if(first_calc_field)
   {
@@ -1451,12 +1451,12 @@ void Base_DB::do_lookups(const LayoutFieldInRecord& field_in_record, const Gtk::
    //TODO_performance: There is a LOT of iterating and copying here.
    const Glib::ustring strFieldName = field_in_record.m_field->get_name();
    const type_list_lookups lookups = get_lookup_fields(field_in_record.m_table_name, strFieldName);
-   //std::cout << "Base_DB::do_lookups(): lookups size=" << lookups.size() << std::endl;
+   //std::cout << "debug: " << G_STRFUNC << ": lookups size=" << lookups.size() << std::endl;
    for(type_list_lookups::const_iterator iter = lookups.begin(); iter != lookups.end(); ++iter)
    {
      sharedptr<const LayoutItem_Field> layout_item = iter->first;
 
-     //std::cout << "Base_DB::do_lookups(): item=" << layout_item->get_name() << std::endl;
+     //std::cout << "debug: " << G_STRFUNC << ": item=" << layout_item->get_name() << std::endl;
 
      sharedptr<const Relationship> relationship = iter->second;
      const sharedptr<const Field> field_lookup = layout_item->get_full_field_details();
@@ -1583,7 +1583,7 @@ bool Base_DB::get_field_value_is_unique(const Glib::ustring& table_name, const s
   Glib::RefPtr<const Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
   if(data_model)
   {
-    //std::cout << "debug: Base_DB::get_field_value_is_unique(): table_name=" << table_name << ", field name=" << field->get_name() << ", value=" << value.to_string() << ", rows count=" << data_model->get_n_rows() << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": table_name=" << table_name << ", field name=" << field->get_name() << ", value=" << value.to_string() << ", rows count=" << data_model->get_n_rows() << std::endl;
     //The value is unique for this field, if the query returned no existing rows:
 
     result = (data_model->get_n_rows() == 0);
@@ -1609,7 +1609,7 @@ bool Base_DB::check_entered_value_for_uniqueness(const Glib::ustring& table_name
   {
     if(!get_field_value_is_unique(table_name, layout_field, field_value))
     {
-      //std::cout << "debug Base_DB::check_entered_value_for_uniqueness(): field=" << layout_field->get_name() << ", value is not unique: " << field_value.to_string() << std::endl;
+      //std::cout << "debug: " << G_STRFUNC << ": field=" << layout_field->get_name() << ", value is not unique: " << field_value.to_string() << std::endl;
 
       //Warn the user and revert the value:
       if(parent_window)
@@ -1763,7 +1763,7 @@ bool Base_DB::get_primary_key_is_in_foundset(const FoundSet& found_set, const Gn
   sharedptr<const Field> primary_key = get_field_primary_key_for_table(found_set.m_table_name);
   if(!primary_key)
   {
-    std::cerr << "Base_DB::get_primary_key_is_in_foundset(): No primary key found for table: " << found_set.m_table_name << std::endl;
+    std::cerr << G_STRFUNC << ": No primary key found for table: " << found_set.m_table_name << std::endl;
     return false;
   }
 
@@ -1812,7 +1812,7 @@ int Base_DB::count_rows_returned_by(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& 
 {
   if(!sql_query)
   {
-    std::cerr << "Base_DB::count_rows_returned_by(): sql_query was null." << std::endl;
+    std::cerr << G_STRFUNC << ": sql_query was null." << std::endl;
     return 0;
   }
 
@@ -1843,7 +1843,7 @@ int Base_DB::count_rows_returned_by(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& 
         result = value.get_int();
     }
 
-  //std::cout << "DEBUG: count_rows_returned_by(): Returning " << result << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": Returning " << result << std::endl;
   return result;
 }
 
@@ -1918,7 +1918,7 @@ bool Base_DB::add_user(const Glib::ustring& user, const Glib::ustring& password,
   bool test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
-    std::cerr << "Base_DB::add_user(): CREATE USER failed." << std::endl;
+    std::cerr << G_STRFUNC << ": CREATE USER failed." << std::endl;
     return false;
   }
 
@@ -1927,7 +1927,7 @@ bool Base_DB::add_user(const Glib::ustring& user, const Glib::ustring& password,
   test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
-    std::cerr << "Base_DB::add_user(): ALTER GROUP failed." << std::endl;
+    std::cerr << G_STRFUNC << ": ALTER GROUP failed." << std::endl;
     return false;
   }
 
@@ -1943,7 +1943,7 @@ bool Base_DB::add_user(const Glib::ustring& user, const Glib::ustring& password,
     const Glib::ustring strQuery = "REVOKE ALL PRIVILEGES ON \"" + (*iter)->get_name() + "\" FROM \"" + user + "\"";
     const bool test = DbUtils::query_execute_string(strQuery);
     if(!test)
-      std::cerr << "Base_DB::add_user(): REVOKE failed." << std::endl;
+      std::cerr << G_STRFUNC << ": REVOKE failed." << std::endl;
   }
 
   return true;
@@ -1959,7 +1959,7 @@ bool Base_DB::remove_user(const Glib::ustring& user)
   const bool test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
-    std::cerr << "Base_DB::remove_user(): DROP USER failed" << std::endl;
+    std::cerr << G_STRFUNC << ": DROP USER failed" << std::endl;
     return false;
   }
 
@@ -1975,7 +1975,7 @@ bool Base_DB::remove_user_from_group(const Glib::ustring& user, const Glib::ustr
   const bool test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
-    std::cerr << "Base_DB::remove_user_from_group(): ALTER GROUP failed." << std::endl;
+    std::cerr << G_STRFUNC << ": ALTER GROUP failed." << std::endl;
     return false;
   }
 
@@ -1996,7 +1996,7 @@ bool Base_DB::set_database_owner_user(const Glib::ustring& user)
   const bool test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
-    std::cerr << "Base_DB::set_database_owner_user(): ALTER DATABASE failed." << std::endl;
+    std::cerr << G_STRFUNC << ": ALTER DATABASE failed." << std::endl;
     return false;
   }
 
@@ -2020,7 +2020,7 @@ bool Base_DB::disable_user(const Glib::ustring& user)
   const bool test = DbUtils::query_execute_string(strQuery);
   if(!test)
   {
-    std::cerr << "Base_DB::remove_user(): DROP USER failed" << std::endl;
+    std::cerr << G_STRFUNC << ": DROP USER failed" << std::endl;
     return false;
   }
 

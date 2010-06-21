@@ -125,7 +125,7 @@ Glib::ustring UsesRelationship::get_sql_table_or_join_alias_name(const Glib::ust
 
 Glib::ustring UsesRelationship::get_table_used(const Glib::ustring& parent_table) const
 {
-  //std::cout << "UsesRelationship::get_table_used(): relationship=" << glom_get_sharedptr_name(m_relationship) << "related_relationship=" << glom_get_sharedptr_name(m_related_relationship) << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": relationship=" << glom_get_sharedptr_name(m_relationship) << "related_relationship=" << glom_get_sharedptr_name(m_related_relationship) << std::endl;
 
   if(m_related_relationship)
     return m_related_relationship->get_to_table();

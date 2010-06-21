@@ -98,7 +98,7 @@ void PickerButton_Table::set_table_name(const Glib::ustring& table_name)
   }
 
   //Not found, so mark it as blank:
-  //std::cerr << "PickerButton_Table::set_table_name(): table_name not found in list: " << table_name << std::endl;
+  //std::cerr << G_STRFUNC << ": table_name not found in list: " << table_name << std::endl;
   //TODO: unset_active();
 }
 

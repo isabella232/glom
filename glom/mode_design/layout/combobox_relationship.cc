@@ -144,7 +144,7 @@ void ComboBox_Relationship::set_selected_relationship(const Glib::ustring& relat
   }
 
   //Not found, so mark it as blank:
-  //std::cerr << "ComboBox_Relationship::set_selected_relationship(): relationship not found in list: " << relationship_name << std::endl;
+  //std::cerr << G_STRFUNC << ": relationship not found in list: " << relationship_name << std::endl;
 
   //Avoid calling unset_active() if nothing is selected, because it triggers the changed signal unnecessarily.
   if(get_active()) //If something is active (selected).
@@ -242,7 +242,7 @@ void ComboBox_Relationship::on_cell_data_title(const Gtk::TreeModel::const_itera
   }
   else
   {
-    //std::cerr << "ComboBox_Relationship::on_cell_data_title(): empty relationship and no m_extra_table_name. m_extra_table_name=" << m_extra_table_name << std::endl;
+    //std::cerr << G_STRFUNC << ": empty relationship and no m_extra_table_name. m_extra_table_name=" << m_extra_table_name << std::endl;
   }
 }
 

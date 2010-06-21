@@ -152,7 +152,7 @@ void Dialog_FieldDefinition::set_field(const sharedptr<const Field>& field, cons
   layout_item->set_full_field_details(field_default_value);
   m_pDataWidget_DefaultValueSimple = Gtk::manage( new DataWidget(layout_item, "", get_document()) );
   if(!m_pDataWidget_DefaultValueSimple->get_data_child_widget())
-    std::cerr << "Dialog_FieldDefinition::set_field(): The DataWidget did not create a child widget." << std::endl;
+    std::cerr << G_STRFUNC << ": The DataWidget did not create a child widget." << std::endl;
 
   on_foreach_connect(*m_pDataWidget_DefaultValueSimple);
 

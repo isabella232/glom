@@ -136,11 +136,11 @@ Glib::ustring Utils::string_replace(const Glib::ustring& src, const Glib::ustrin
 {
   if(search_for.empty())
   {
-    std::cerr << "Utils::string_replace(): search_for was empty." << std::endl;
+    std::cerr << G_STRFUNC << ": search_for was empty." << std::endl;
     return src;
   }
 
-  //std::cout << "debug: Utils::string_replace(): src=" << src << ", search_for=" << search_for << ", replace_with=" << replace_with << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": src=" << src << ", search_for=" << search_for << ", replace_with=" << replace_with << std::endl;
 
   std::string result = src;
 
@@ -356,7 +356,7 @@ void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::Sq
 
   if(!one_added)
   {
-    std::cerr << "Utils::build_sql_select_fields_to_get(): No fields added: fieldsToGet.size()=" << fieldsToGet.size() << std::endl;
+    std::cerr << G_STRFUNC << ": No fields added: fieldsToGet.size()=" << fieldsToGet.size() << std::endl;
     return;
   }
 }
@@ -496,7 +496,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
 
   builder->select_order_by(choice_field_id);
 
-  //std::cout << "debug: get_choice_values(): query: " << sql_query << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": query: " << sql_query << std::endl;
   //Connect to database:
   sharedptr<SharedConnection> connection = ConnectionPool::get_instance()->connect();
 
@@ -526,7 +526,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
   }
   else
   {
-      std::cerr << "Glom  get_choice_values(): Error while executing SQL" << std::endl <<
+      std::cerr << G_STRFUNC << ": Error while executing SQL" << std::endl <<
                    "  " <<  sql_query << std::endl;
   }
 
@@ -618,10 +618,10 @@ Glib::ustring Utils::create_local_image_uri(const Gnome::Gda::Value& value)
       }
     }
     else
-       std::cerr << "Utils::create_local_image_uri(): binary GdaValue contains no data." << std::endl;
+       std::cerr << G_STRFUNC << ": binary GdaValue contains no data." << std::endl;
   }
   //else
-  //  std::cerr << "Utils::create_local_image_uri(): type != BINARY" << std::endl;
+  //  std::cerr << G_STRFUNC << ": type != BINARY" << std::endl;
 
   if(result.empty())
     result = "/tmp/glom_report_image_invalid.png";
@@ -672,7 +672,7 @@ Glib::ustring Utils::title_from_string(const Glib::ustring& text)
 
 Utils::type_vec_strings Utils::string_separate(const Glib::ustring& str, const Glib::ustring& separator, bool ignore_quoted_separator)
 {
-  //std::cout << "Utils::string_separate(): separator=" << separator << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": separator=" << separator << std::endl;
 
   type_vec_strings result;
 
@@ -889,11 +889,11 @@ std::string Utils::sqlbuilder_get_full_query(
   }
   catch(const Glib::Exception& ex)
   {
-    std::cerr << "sqlbuilder_get_full_query(): exception while parsing query: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": exception while parsing query: " << ex.what() << std::endl;
   }
   catch(const std::exception& ex)
   {
-    std::cerr << "sqlbuilder_get_full_query(): exception while parsing query: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": exception while parsing query: " << ex.what() << std::endl;
   }
 
   //Convert to something that std::cout should be able to handle.
@@ -918,15 +918,15 @@ std::string Utils::sqlbuilder_get_full_query(
   }
   catch(const Gnome::Gda::SqlError& ex)
   {
-    std::cerr << "sqlbuilder_get_full_query(): SqlError exception while getting query: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": SqlError exception while getting query: " << ex.what() << std::endl;
   }
   catch(const Glib::Exception& ex)
   {
-    std::cerr << "sqlbuilder_get_full_query(): exception (" << typeid(ex).name() << ") while getting query: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": exception (" << typeid(ex).name() << ") while getting query: " << ex.what() << std::endl;
   }
   catch(const std::exception& ex)
   {
-    std::cerr << "sqlbuilder_get_full_query(): exception (" << typeid(ex).name() << ") while getting query: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": exception (" << typeid(ex).name() << ") while getting query: " << ex.what() << std::endl;
   }
 
   //Convert to something that std::cout should be able to handle.
@@ -946,7 +946,7 @@ Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(Document* document, const
 
   if(!document)
   {
-    std::cerr << "Utils::get_find_where_clause_quick(): document was null." << std::endl;
+    std::cerr << G_STRFUNC << ": document was null." << std::endl;
     return Gnome::Gda::SqlExpr();
   }
 

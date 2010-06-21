@@ -340,7 +340,7 @@ void FlowTableWithFields::add_layout_portal_at_position(const sharedptr<LayoutIt
     add_layoutwidgetbase(portal_box, add_before);
   }
   else
-    std::cerr << "FlowTableWithFields::add_layout_portal_at_position(): No portal was created." << std::endl;
+    std::cerr << G_STRFUNC << ": No portal was created." << std::endl;
 }
 
 void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<LayoutItem_Notebook>& notebook, const type_list_layoutwidgets::iterator& add_before)
@@ -883,7 +883,7 @@ FlowTableWithFields::type_portals FlowTableWithFields::get_portals(const sharedp
       }
       else
       {
-        std::cerr << "FlowTableWithFields::get_portals(): get_portal() returned NULL." << std::endl;
+        std::cerr << G_STRFUNC << ": get_portal() returned NULL." << std::endl;
       }
     }
   }
@@ -1127,7 +1127,7 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
   sharedptr<const LayoutItem> layout_item = pDataWidget->get_layout_item();
   if(!layout_item)
   {
-    std::cerr << "FlowTableWithFields::on_datawidget_layout_item_added(): layout_item is null." << std::endl;
+    std::cerr << G_STRFUNC << ": layout_item is null." << std::endl;
     return;
   }
 
@@ -1137,7 +1137,7 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
   sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(get_layout_item());
   if(!layout_group)
   {
-    std::cerr << "FlowTableWithFields::on_datawidget_layout_item_added(): layout_group is null." << std::endl;
+    std::cerr << G_STRFUNC << ": layout_group is null." << std::endl;
     return;
   }
 
@@ -1383,7 +1383,7 @@ void FlowTableWithFields::on_dnd_add_layout_item_by_type(int item_type_num, Gtk:
       on_dnd_add_layout_portal(above);
       break;
     default:
-      std::cerr << "FlowTableWithFields::on_dnd_add_layout_item(): Unknown drop type: " << item_type << std::endl;
+      std::cerr << G_STRFUNC << ": Unknown drop type: " << item_type << std::endl;
    }
 }
 

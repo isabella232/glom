@@ -758,7 +758,7 @@ void AddDel::construct_specified_columns()
     }
     else
     {
-      std::cerr << "debug: AddDel::construct_specified_columns(): Leaking a Gtk::TreeModelColumn<>." << std::endl;
+      std::cerr << G_STRFUNC << ": Leaking a Gtk::TreeModelColumn<>." << std::endl;
     }
     
     ++model_column_index;

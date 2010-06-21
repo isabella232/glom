@@ -742,7 +742,7 @@ void Application::open_browsed_document(const EpcServiceInfo* server, const Glib
       document_contents = (gchar*)epc_consumer_lookup(consumer, "document", &length, &error);
       if(error)
       {
-        std::cout << "Error when calling epc_consumer_lookup(): " << std::endl << "  " << error->message << std::endl;
+        std::cout << "debug: " << G_STRFUNC << ": " << std::endl << "  " << error->message << std::endl;
         const int error_code = error->code;
         g_clear_error(&error);
 
@@ -902,7 +902,7 @@ void Application::new_instance(const Glib::ustring& uri) //Override
     &gerror);
   if(gerror)
   {
-    std::cerr << "Application::new_instance(): error calling gdk_spawn_command_line_on_screen(): " << gerror->message << std::endl;
+    std::cerr << G_STRFUNC << ": " << gerror->message << std::endl;
   }
 }
 
@@ -969,7 +969,7 @@ bool Application::check_document_hosting_mode_is_supported(Document* document)
     default:
     {
       //on_document_load() should have checked for this already, informing the user.
-      std::cerr << "Glom: setup_connection_pool_from_document(): Unhandled hosting mode: " << document->get_hosting_mode() << std::endl;
+      std::cerr << G_STRFUNC << ": Unhandled hosting mode: " << document->get_hosting_mode() << std::endl;
      g_assert_not_reached();
      break;
     }
@@ -1163,11 +1163,11 @@ bool Application::on_document_load()
           }
           else
           #endif // !GLOM_ENABLE_CLIENT_ONLY
-            std::cerr << "Application::on_document_load(): unexpected database_not_found error when opening example." << std::endl;
+            std::cerr << G_STRFUNC << ": unexpected database_not_found error when opening example." << std::endl;
         }
         else if(!test)
         {
-          std::cerr << "Application::on_document_load(): unexpected error." << std::endl;
+          std::cerr << G_STRFUNC << ": unexpected error." << std::endl;
         }
       }
 
@@ -1412,7 +1412,7 @@ bool Application::offer_new_or_existing()
 #endif
       case Dialog_ExistingOrNew::NONE:
       default:
-	std::cerr << "Application::offer_new_or_existing(): Unhandled action: " << dialog->get_action() << std::endl;
+	std::cerr << G_STRFUNC << ": Unhandled action: " << dialog->get_action() << std::endl;
         g_assert_not_reached();
         break;
       }
@@ -1421,7 +1421,7 @@ bool Application::offer_new_or_existing()
       Document* document = dynamic_cast<Document*>(get_document());
       if(!document)
       {
-        std::cerr << "Application::offer_new_or_existing(): document was NULL." << std::endl;
+        std::cerr << G_STRFUNC << ": document was NULL." << std::endl;
         return false;
       }
 
@@ -1738,7 +1738,7 @@ void Application::fill_menu_tables()
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << " Application::fill_menu_tables(): building menus failed: " <<  ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": building menus failed: " <<  ex.what() << std::endl;
     std::cerr << "   The ui_description was: " <<  ui_description << std::endl;
   }
 }
@@ -1823,7 +1823,7 @@ void Application::fill_menu_reports(const Glib::ustring& table_name)
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << " Application::fill_menu_reports(): building menus failed: " <<  ex.what();
+    std::cerr << G_STRFUNC << ": building menus failed: " <<  ex.what();
   }
 }
 #endif //GLOM_ENABLE_MAEMO
@@ -1921,7 +1921,7 @@ void Application::fill_menu_print_layouts(const Glib::ustring& table_name)
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << " Application::fill_menu_reports(): building menus failed: " <<  ex.what();
+    std::cerr << G_STRFUNC << ": building menus failed: " <<  ex.what();
   }
 }
 #endif //GLOM_ENABLE_MAEMO
@@ -2206,7 +2206,7 @@ Glib::ustring Application::ui_file_select_save(const Glib::ustring& old_file_uri
         }
         catch(const Gio::Error& ex)
         {
-          std::cerr << "Error during Gio::File::make_directory(): " << ex.what() << std::endl;
+          std::cerr << G_STRFUNC << ": " << ex.what() << std::endl;
         }
 
         //Add the filename (Note that the caller will add the extension if necessary, so we don't do it here.)

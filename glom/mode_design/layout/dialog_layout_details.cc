@@ -229,12 +229,12 @@ void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, sha
       sharedptr<LayoutItem_Portal> layout_portal = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_item);
       if(layout_portal)
       {
-        //std::cout << "fill_group(): adding portal." << std::endl;
+        //std::cout << "debug: " << G_STRFUNC << ": adding portal." << std::endl;
         group->add_item(glom_sharedptr_clone(layout_portal));
       }
       else
       {
-        //std::cout << "fill_group(): adding group." << std::endl;
+        //std::cout << "debug: " << G_STRFUNC << ": adding group." << std::endl;
         sharedptr<LayoutGroup> layout_group = sharedptr<LayoutGroup>::cast_dynamic(layout_item);
         sharedptr<LayoutItem_Portal> layout_portal = sharedptr<LayoutItem_Portal>::cast_dynamic(layout_group);
         if(layout_group && !layout_portal)
@@ -246,7 +246,7 @@ void Dialog_Layout_Details::fill_group(const Gtk::TreeModel::iterator& iter, sha
         }
         else if(layout_item)
         {
-          //std::cout << "fill_group(): adding item." << std::endl;
+          //std::cout << "debug: " << G_STRFUNC << ": adding item." << std::endl;
 
           //Add field or button:
           sharedptr<LayoutItem> item = glom_sharedptr_clone(layout_item);

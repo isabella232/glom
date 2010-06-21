@@ -92,7 +92,7 @@ void ComboBox_Locale::set_selected_locale(const Glib::ustring& locale)
   }
 
   //Not found, so mark it as blank:
-  std::cerr << "ComboBox_Locale::set_selected_locale(): locale not found in list: " << locale << std::endl;
+  std::cerr << G_STRFUNC << ": locale not found in list: " << locale << std::endl;
   unset_active();
 }
 

@@ -137,7 +137,7 @@ void Document_XML::Util_DOM_Write(Glib::ustring& refstrXML) const
 #ifdef LIBXMLCPP_EXCEPTIONS_ENABLED
   catch(xmlpp::exception& ex)
   {
-    std::cerr << "Document_XML::Util_DOM_Write(): exception caught: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": exception caught: " << ex.what() << std::endl;
   }
 #endif
 }

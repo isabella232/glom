@@ -341,14 +341,14 @@ void sharedptr<T_obj>::ref()
   {
     if(m_pRefCount == 0)
     {
-      //std::cout << "sharedptr::ref(): first ref" << std::endl;
+      //std::cout << "debug: " << G_STRFUNC << ": first ref" << std::endl;
       //First ref, so allocate the shared count:
       m_pRefCount = new size_type();
       *m_pRefCount = 1;
     }
     else
     {
-      //std::cout << "sharedptr::ref(): starting at" << *m_pRefCount << std::endl;
+      //std::cout << "debug: " << G_STRFUNC << ": starting at" << *m_pRefCount << std::endl;
       (*m_pRefCount)++;
     }
   }
@@ -360,7 +360,7 @@ void sharedptr<T_obj>::unref()
 {
   if(m_pRefCount)
   {
-    //std::cout << "sharedptr::unref(): starting at " << *m_pRefCount << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": starting at " << *m_pRefCount << std::endl;
 
     if( (*m_pRefCount) > 0 )
        (*m_pRefCount)--;
@@ -381,7 +381,7 @@ void sharedptr<T_obj>::unref()
   }
   else
   {
-    //std::cout << "sharedptr::unref(): ref not setup." << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": ref not setup." << std::endl;
   }
 
 }

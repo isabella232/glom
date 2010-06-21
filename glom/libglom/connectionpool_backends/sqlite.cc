@@ -304,7 +304,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "Sqlite::recreate_table(): Could not begin transaction: exception=" << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": Could not begin transaction: exception=" << ex.what() << std::endl;
     return false;
   }
   
@@ -327,8 +327,8 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "Sqlite::recreate_table(): exception=" << ex.what() << std::endl;
-    std::cerr << "Sqlite::recreate_table(): Reverting the transaction." << std::endl;
+    std::cerr << G_STRFUNC << ": exception=" << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": Reverting the transaction." << std::endl;
     
     try
     {
@@ -336,7 +336,7 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
     }
     catch(const Glib::Error& ex)
     {
-       std::cerr << "Sqlite::recreate_table(): Could not revert the transaction. exception=" << ex.what() << std::endl;
+       std::cerr << G_STRFUNC << ": Could not revert the transaction. exception=" << ex.what() << std::endl;
     }
   }
 

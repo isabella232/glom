@@ -210,7 +210,7 @@ void ComboAsRadioButtons::set_text(const Glib::ustring& text)
     }
   }
 
-  //std::cerr << "ComboAsRadioButtons::set_text(): no item found for: " << text << std::endl;
+  //std::cerr << G_STRFUNC << ": no item found for: " << text << std::endl;
 }
 
 Gnome::Gda::Value ComboAsRadioButtons::get_value() const

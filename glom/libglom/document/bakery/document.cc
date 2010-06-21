@@ -216,7 +216,7 @@ bool Document::read_from_disk(int& failure_code)
   }
   catch(const Gio::Error& ex)
   {
-    std::cout << "Debug: Document::read_from_disk(): Error: " << ex.what() << std::endl;
+    std::cout << "debug: " << G_STRFUNC << ": Error: " << ex.what() << std::endl;
 
     if(ex.code() == Gio::Error::NOT_FOUND)
       failure_code = LOAD_FAILURE_CODE_NOT_FOUND;
@@ -280,7 +280,7 @@ bool Document::write_to_disk()
       }
       catch(const Gio::Error& ex)
       {
-        std::cerr << "Bakery::Document::write_to_disk(): Error from Gio::File::replace(): " << ex.what() << std::endl;
+        std::cerr << G_STRFUNC << ": " << ex.what() << std::endl;
         return false;
       }
     }
@@ -298,7 +298,7 @@ bool Document::write_to_disk()
         //Otherwise something unexpected happened.
         if(ex.code() != Gio::Error::EXISTS)
         {
-          std::cerr << "Bakery::Document::write_to_disk(): Error from Gio::File::make_directory_with_parents(): parent of uri=" << m_file_uri << "error=" << ex.what() << std::endl;
+          std::cerr << G_STRFUNC << ": parent of uri=" << m_file_uri << "error=" << ex.what() << std::endl;
           return false;
         }
       }
@@ -313,7 +313,7 @@ bool Document::write_to_disk()
       }
       catch(const Gio::Error& ex)
       {
-        std::cerr << "Bakery::Document::write_to_disk(): Error from Gio::File::create_file():" << m_file_uri << "error=" << ex.what() << std::endl;
+        std::cerr << G_STRFUNC << ":" << m_file_uri << "error=" << ex.what() << std::endl;
         return false;
       }
     }
@@ -335,7 +335,7 @@ bool Document::write_to_disk()
     catch(const Gio::Error& ex)
     {
       // If the operation was not successful, print the error and abort
-      std::cerr << "Bakery::Document::write_to_disk(): Error from Gio stream.write(): " << ex.what() << std::endl;
+      std::cerr << G_STRFUNC << ": " << ex.what() << std::endl;
       return false; //print_error(ex, output_uri_string);
     }
 

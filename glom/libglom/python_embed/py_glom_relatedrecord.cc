@@ -113,7 +113,7 @@ boost::python::object PyGlomRelatedRecord::getitem(const boost::python::object& 
     {
       try
       {
-        std::cout << "Debug: PyGlomRelatedRecord::setitem()():  " << sql_query << std::endl;
+        std::cout << "debug: " << G_STRFUNC << ":  " << sql_query << std::endl;
       }
       catch(const Glib::Exception& ex)
       {

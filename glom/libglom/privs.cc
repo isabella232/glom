@@ -228,7 +228,7 @@ void Privs::set_table_privileges(const Glib::ustring& group_name, const Glib::us
 
   const bool test = DbUtils::query_execute_string(strQuery);
   if(!test)
-    std::cerr << "Privs::set_table_privileges(): GRANT failed." << std::endl;
+    std::cerr << G_STRFUNC << ": GRANT failed." << std::endl;
   else
   {
     if( (table_name != GLOM_STANDARD_TABLE_AUTOINCREMENTS_TABLE_NAME) && privs.m_create )
@@ -395,13 +395,13 @@ bool Privs::get_user_is_in_group(const Glib::ustring& user, const Glib::ustring&
 
 bool Privs::on_privs_privileges_cache_timeout(const Glib::ustring& table_name)
 {
-  //std::cout << "DEBUG: Privs::on_privs_privileges_cache_timeou(): table=" << table_name << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": table=" << table_name << std::endl;
 
   //Forget the cached privileges after a few seconds:
   type_map_privileges::iterator iter = m_privileges_cache.find(table_name);
   if(iter != m_privileges_cache.end())
   {
-    //std::cout << "  DEBUG: Privs::on_privs_privileges_cache_timeou(): Cleared cache for table=" << table_name << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": Cleared cache for table=" << table_name << std::endl;
     m_privileges_cache.erase(iter);
   }
 
@@ -420,7 +420,7 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
   type_map_privileges::const_iterator iter = m_privileges_cache.find(table_name);
   if(iter != m_privileges_cache.end())
   {
-    //std::cout << "DEBUG: Privs::get_current_privs(): Returning cache." << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": Returning cache." << std::endl;
     return iter->second;
   }
 
@@ -428,7 +428,7 @@ Privileges Privs::get_current_privs(const Glib::ustring& table_name)
   //Get the up-to-date privileges from the database:
   Privileges result;
 
-  //std::cout << "DEBUG: Privs::get_current_privs(): Getting non-cached." << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": Getting non-cached." << std::endl;
 
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   const Glib::ustring current_user = connection_pool->get_user();

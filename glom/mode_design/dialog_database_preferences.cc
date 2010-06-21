@@ -141,7 +141,7 @@ void Dialog_Database_Preferences::on_treeview_cell_edited_next_value(const Glib:
 
     const bool test = DbUtils::query_execute(builder);
     if(!test)
-      std::cerr << "Dialog_Database_Preferences::on_treeview_cell_edited_next_value(): UPDATE failed." << std::endl;
+      std::cerr << G_STRFUNC << ": UPDATE failed." << std::endl;
   }
 }
 
@@ -187,7 +187,7 @@ void Dialog_Database_Preferences::load_from_document()
   Glib::RefPtr<Gnome::Gda::DataModel> datamodel = DbUtils::query_execute_select(builder);
   if(!datamodel)
   {
-    std::cerr << "Dialog_Database_Preferences::load_from_document(): Gda::DataModel is NULL." << std::endl;
+    std::cerr << G_STRFUNC << ": Gda::DataModel is NULL." << std::endl;
     return;
   }
 

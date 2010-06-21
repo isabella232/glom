@@ -214,7 +214,7 @@ Glib::ustring Conversions::format_tm(const tm& tm_data, const std::locale& local
   tp.put(the_stream /* iter to beginning of stream */, the_stream, ' ' /* fill */, &tm_data, format, format + strlen(format) /* 'E' */ /* use locale's alternative format */);
 
   Glib::ustring text = the_stream.str();
-  //std::cout << "DEBUG: format_tm(): result from tp.put: " << text << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": result from tp.put: " << text << std::endl;
 
   if(locale == std::locale("") /* The user's current locale */)
   {
@@ -223,7 +223,7 @@ Glib::ustring Conversions::format_tm(const tm& tm_data, const std::locale& local
     text = Glib::locale_to_utf8(text);
   }
 
-  //std::cout << "DEBUG: format_tm(): returning: " << text << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": returning: " << text << std::endl;
   return text; //TODO: Use something like Glib::locale_to_utf8()?
 
   /*
@@ -309,7 +309,7 @@ double Conversions::get_double_for_gda_value_numeric(const Gnome::Gda::Value& va
       case G_TYPE_UINT64:
         return value.get_uint64();
       default:
-        std::cerr << "Conversions::get_double_for_gda_value_numeric(): expected NUMERIC but GdaValue type is: " << g_type_name(value.get_value_type()) << std::endl;
+        std::cerr << G_STRFUNC << ": expected NUMERIC but GdaValue type is: " << g_type_name(value.get_value_type()) << std::endl;
         return 0;
     }
   }
@@ -349,7 +349,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
       bool success;
       the_c_time = parse_date(value.get_string(), std::locale::classic(), success);
       if(!success)
-        std::cerr << "Conversions::get_text_for_gda_value(): Failed to convert string-represented date value" << std::endl;
+        std::cerr << G_STRFUNC << ": Failed to convert string-represented date value" << std::endl;
     }
     else if(value.get_value_type() == G_TYPE_DATE)
     {
@@ -364,7 +364,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
     }
     else
     {
-      std::cerr << "Conversions::get_text_for_gda_value(): glom field type is DATE but GdaValue type is: " << g_type_name(value.get_value_type()) << std::endl;
+      std::cerr << G_STRFUNC << ": glom field type is DATE but GdaValue type is: " << g_type_name(value.get_value_type()) << std::endl;
 
       // Default
       the_c_time.tm_mday = 1;
@@ -390,7 +390,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
       bool success;
       the_c_time = parse_time(value.get_string(), std::locale::classic(), success);
       if(!success)
-        std::cerr << "Conversions::get_text_for_gda_value(): Failed to convert string-represented time value" << std::endl;
+        std::cerr << G_STRFUNC << ": Failed to convert string-represented time value" << std::endl;
     }
     else if(value.get_value_type() == GDA_TYPE_TIME)
     {
@@ -404,7 +404,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
     }
     else
     {
-      std::cerr << "Conversions::get_text_for_gda_value(): glom field type is TIME but GdaValue type is: " << g_type_name(value.get_value_type()) << std::endl;
+      std::cerr << G_STRFUNC << ": glom field type is TIME but GdaValue type is: " << g_type_name(value.get_value_type()) << std::endl;
     }
 
     return format_time(the_c_time, locale, iso_format);
@@ -413,7 +413,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
   {
     if(value.get_value_type() != GDA_TYPE_NUMERIC && value.get_value_type() != G_TYPE_DOUBLE)
     {
-      std::cerr << "Conversions::get_text_for_gda_value(): glom field type is NUMERIC but GdaValue type is: " << g_type_name(value.get_value_type()) << std::endl;
+      std::cerr << G_STRFUNC << ": glom field type is NUMERIC but GdaValue type is: " << g_type_name(value.get_value_type()) << std::endl;
       return value.to_string();
     }
 
@@ -472,7 +472,7 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
       text = Glib::locale_to_utf8(text);
     }
 
-    //std::cout << "DEBUG: Conversions::get_text_for_gda_value(): number=" << number << ", text=" << text << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": number=" << number << ", text=" << text << std::endl;
     return text; //Do something like Glib::locale_to_utf(), but with the specified locale instead of the current locale.
   }
   else if(glom_type == Field::TYPE_TEXT)
@@ -494,12 +494,12 @@ Glib::ustring Conversions::get_text_for_gda_value(Field::glom_field_type glom_ty
     //- UI-visible strings, but images should never be shown as text in the UI. 
     //- Values in SQL queries, but we only do that for clauses (where/sort/order) 
     //  which should never use image values.
-    std::cerr << "Conversions::get_text_for_gda_value(): Unexpected TYPE_IMAGE field type: " << glom_type << std::endl;
+    std::cerr << G_STRFUNC << ": Unexpected TYPE_IMAGE field type: " << glom_type << std::endl;
     return Glib::ustring();
   }
   else
   {
-    std::cerr << "Conversions::get_text_for_gda_value(): Unexpected glom field type: " << glom_type << std::endl;
+    std::cerr << G_STRFUNC << ": Unexpected glom field type: " << glom_type << std::endl;
     return value.to_string();
   }
 }
@@ -601,7 +601,7 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
     double the_number = 0;
     the_stream >> the_number;  //TODO: Does this throw any exception if the text is an invalid number?
 
-    //std::cout << "DEBUG: Conversions::parse_value(): text=" << text_to_parse << ", number=" << the_number << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": text=" << text_to_parse << ", number=" << the_number << std::endl;
     
 
     GdaNumeric gda_numeric = {0, 0, 0, 0};
@@ -637,7 +637,7 @@ Gnome::Gda::Value Conversions::parse_value(Field::glom_field_type glom_type, con
   {
     //This function is only used for :
     //- UI-visible strings, but images should never be entered as text in the UI. 
-    std::cerr << "Conversions::parse_value(): Unexpected TYPE_IMAGE field type: " << glom_type << std::endl;
+    std::cerr << G_STRFUNC << ": Unexpected TYPE_IMAGE field type: " << glom_type << std::endl;
     return Gnome::Gda::Value();
   }
 
@@ -783,7 +783,7 @@ tm Conversions::parse_time(const Glib::ustring& text, bool& success)
 
 tm Conversions::parse_time(const Glib::ustring& text, const std::locale& locale, bool& success)
 {
-  //std::cout << "parse_time(): text=" << text << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": text=" << text << std::endl;
   //The sequence of statements here seems to be very fragile. If you move things then it stops working.
 
   //return parse_tm(text, locale, 'X' /* time */);
@@ -846,7 +846,7 @@ tm Conversions::parse_time(const Glib::ustring& text, const std::locale& locale,
   lastchar = strptime(text.c_str(), "%X" /* The time, using the locale's time format. */, &the_c_time);
   if(lastchar)
   {
-    //std::cout << "DEBUG: parse_time(): %X: text=" << text << " was parsed as: hour=" << the_c_time.tm_hour << ", min=" << the_c_time.tm_min  << ", sec=" << the_c_time.tm_sec << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": %X: text=" << text << " was parsed as: hour=" << the_c_time.tm_hour << ", min=" << the_c_time.tm_min  << ", sec=" << the_c_time.tm_sec << std::endl;
     success = true;
     return the_c_time;
   }
@@ -857,7 +857,7 @@ tm Conversions::parse_time(const Glib::ustring& text, const std::locale& locale,
   lastchar = strptime(text.c_str(), "%c" /* alternative 12-hour clock */, &the_c_time);
   if(lastchar)
   {
-    //std::cout << "DEBUG: parse_time(): %c: text=" << text << " was parsed as: hour=" << the_c_time.tm_hour << ", min=" << the_c_time.tm_min  << ", sec=" << the_c_time.tm_sec << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": %c: text=" << text << " was parsed as: hour=" << the_c_time.tm_hour << ", min=" << the_c_time.tm_min  << ", sec=" << the_c_time.tm_sec << std::endl;
     success = true;
     return the_c_time;
   }
@@ -867,7 +867,7 @@ tm Conversions::parse_time(const Glib::ustring& text, const std::locale& locale,
   lastchar = strptime(text.c_str(), "%I : %M %p" /* 12 hours clock with AM/PM, without seconds. */, &the_c_time);
   if(lastchar)
   {
-    //std::cout << "DEBUG: parse_time(): %I : %M %p: text=" << text << " was parsed as: hour=" << the_c_time.tm_hour << ", min=" << the_c_time.tm_min  << ", sec=" << the_c_time.tm_sec << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": %I : %M %p: text=" << text << " was parsed as: hour=" << the_c_time.tm_hour << ", min=" << the_c_time.tm_min  << ", sec=" << the_c_time.tm_sec << std::endl;
     success = true;
     return the_c_time;
   }

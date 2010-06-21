@@ -247,7 +247,7 @@ void App_WithDoc_Gtk::init_menus_file_recentfiles(const Glib::ustring& path)
   }
   else
   {
-    //std::cout << "debug: GlomBakery::App_WithDoc_Gtk::init_menus_file_recentfiles(): No recent files sub-menu added, because no MIME types are specified." << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": No recent files sub-menu added, because no MIME types are specified." << std::endl;
   }
 }
 

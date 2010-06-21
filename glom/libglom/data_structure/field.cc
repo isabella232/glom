@@ -229,7 +229,7 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value, const Glib::RefPtr<Gnom
   Glib::RefPtr<const Gnome::Gda::ServerProvider> provider = connection->get_provider();
   if(!provider)
   {
-    std::cerr << "Field::sql(): The ServerProvider was null." << std::endl;
+    std::cerr << G_STRFUNC << ": The ServerProvider was null." << std::endl;
     return Glib::ustring();
   } 
 
@@ -244,7 +244,7 @@ Glib::ustring Field::sql(const Gnome::Gda::Value& value, const Glib::RefPtr<Gnom
   }
   else
   {
-    std::cerr << "Field::sql(): The DataHandler was null." << std::endl;
+    std::cerr << G_STRFUNC << ": The DataHandler was null." << std::endl;
     return Glib::ustring();
   }
 
@@ -542,7 +542,7 @@ Glib::RefPtr<Gnome::Gda::Holder> Field::get_holder(const Gnome::Gda::Value& valu
     // investigate why the field type is not GdaBinary as well.
     // Maybe get_gda_type_for_glom_type() should already return fallback
     // types if necessary.
-    std::cout << "DEBUG: Field::get_holder(): Field type " << g_type_name(field_type) << " and value type " << g_type_name(gtype) << " don't match." << std::endl;
+    std::cout << "debug: " << G_STRFUNC << ": Field type " << g_type_name(field_type) << " and value type " << g_type_name(gtype) << " don't match." << std::endl;
   }
   */
 
@@ -607,7 +607,7 @@ GType Field::get_gda_type_for_glom_type(Field::glom_field_type glom_type)
     g_warning("Field::get_gda_type_for_glom_type(): Returning G_TYPE_NONE for glom_type=%d", glom_type);
   }
 
-  //std::cout << "Field::get_gda_type_for_glom_type(): returning: " << g_type_name(ideal_gda_type) << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": returning: " << g_type_name(ideal_gda_type) << std::endl;
   
   return ideal_gda_type;
 }

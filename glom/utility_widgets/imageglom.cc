@@ -257,7 +257,7 @@ Gnome::Gda::Value ImageGlom::get_value() const
     }
     catch(const Glib::Exception& ex)
     {
-      std::cerr << "ImageGlom::get_value(): " << ex.what() << std::endl;
+      std::cerr << G_STRFUNC << ": " << ex.what() << std::endl;
     }
   }
 

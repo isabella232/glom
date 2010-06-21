@@ -129,7 +129,7 @@ void GlomXslUtils::transform_and_open(const xmlpp::Document& xml_document, const
   GError* gerror = 0;
   if(!gtk_show_uri(0 /* screen */, file->get_uri().c_str(), GDK_CURRENT_TIME, &gerror))
   {
-    std::cerr << "Error while calling gtk_show_uri(): " << gerror->message << std::endl;
+    std::cerr << G_STRFUNC << ": " << gerror->message << std::endl;
     g_error_free(gerror);
   }
 #endif //G_OS_WIN32

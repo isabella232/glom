@@ -250,9 +250,9 @@ void Dialog_Layout_Calendar_Related::update_ui(bool including_relationship_list)
 
   sharedptr<Field> debugfield = m_portal->get_date_field();
   if(!debugfield)
-    std::cout << "DEBUG: set_document(): date field is NULL" << std::endl;
+    std::cout << "debug: " << G_STRFUNC << ": date field is NULL" << std::endl;
   else
-    std::cout << "DEBUG: set_document(): date field:" << debugfield->get_name() << std::endl;
+    std::cout << "debug: " << G_STRFUNC << ": date field:" << debugfield->get_name() << std::endl;
   
   m_combobox_date_field->set_fields(document, related_table_name, Field::TYPE_DATE);
   m_combobox_date_field->set_selected_field(m_portal->get_date_field());
@@ -314,9 +314,9 @@ void Dialog_Layout_Calendar_Related::save_to_document()
     
     sharedptr<Field> debugfield = m_portal->get_date_field();
     if(!debugfield)
-      std::cout << "DEBUG: save_to_document(): date field is NULL" << std::endl;
+      std::cout << "debug: " << G_STRFUNC << ": date field is NULL" << std::endl;
     else
-      std::cout << "DEBUG: save_to_document(): date field:" << debugfield->get_name() << std::endl;
+      std::cout << "debug: " << G_STRFUNC << ": date field:" << debugfield->get_name() << std::endl;
   }
 }
 

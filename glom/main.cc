@@ -237,7 +237,7 @@ bool check_user_is_not_root_with_warning()
     message = ex.what();
   }
 #else
-  //std::cout << "ConnectionPool::check_user_is_not_root_with_warning(): geteuid()=" << geteuid() << ", getgid()=" << getgid() << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": geteuid()=" << geteuid() << ", getgid()=" << getgid() << std::endl;
 
   //This is very linux-specific. We should ifdef this out for other platforms.
   if(geteuid() == 0)

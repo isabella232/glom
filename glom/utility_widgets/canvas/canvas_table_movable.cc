@@ -74,7 +74,7 @@ void CanvasTableMovable::set_width_height(double width, double height)
 {
   if(width == -1)
   {
-    std::cout << "CanvasTableMovable::set_width_height(): width is -1" << std::endl;
+    std::cout << "debug: " << G_STRFUNC << ": width is -1" << std::endl;
   }
   property_width() = width;
   property_height() = height;

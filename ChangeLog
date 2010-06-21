@@ -1,5 +1,12 @@
 2010-06-21  Murray Cumming  <murrayc@murrayc.com>
 
+	Use G_STRFUNC with std::cerr and std::cout.
+
+	* *.h/cc: Replace hard-coded copy/pastes of method names with 
+	G_STRFUNC, with the help of regexxer.
+
+2010-06-21  Murray Cumming  <murrayc@murrayc.com>
+
 	Adapt use of Gda::ServerOperation.
 
 	* glom/libglom/connectionpool_backends/backend.cc: add_column(), 

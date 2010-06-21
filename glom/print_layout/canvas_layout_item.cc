@@ -132,7 +132,7 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& layout_item)
   m_layout_item = layout_item;
 
   if(!m_layout_item)
-    std::cerr << "CanvasLayoutItem::set_layout_item(): item was NULL." << std::endl;
+    std::cerr << G_STRFUNC << ": item was NULL." << std::endl;
 
   Glib::RefPtr<CanvasItemMovable> child_item = create_canvas_item_for_layout_item(m_layout_item);
 
@@ -150,7 +150,7 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& layout_item)
 
     set_xy(x, y);
     set_width_height(width, height);
-    //std::cout << "CanvasLayoutItem::set_layout_item(): item x=" << x << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": item x=" << x << std::endl;
 
     set_child(child_item);
   }
@@ -331,11 +331,11 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
           }
           else if(layout_item)
           {
-            std::cerr << "CanvasLayoutItem::set_layout_item(): Unhandled LayoutItem type. part type=" << layout_item->get_part_type_name() << std::endl;
+            std::cerr << G_STRFUNC << ": Unhandled LayoutItem type. part type=" << layout_item->get_part_type_name() << std::endl;
           }
           else
           {
-            std::cerr << "CanvasLayoutItem::set_layout_item(): NULL LayoutItem type." << std::endl;
+            std::cerr << G_STRFUNC << ": NULL LayoutItem type." << std::endl;
           }
         }
       }
@@ -356,7 +356,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
     double height = 0;
     layout_item->get_print_layout_position(x, y, width, height);
     child->set_width_height(width, height);
-    //std::cout << "CanvasLayoutItem::set_layout_item(): item x=" << x << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": item x=" << x << std::endl;
   }
 
   //Scale images.
@@ -427,7 +427,7 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
       break;
     }
     default:
-      std::cerr << "CanvasLayoutItem::set_db_data(): unhandled field type." << std::endl;
+      std::cerr << G_STRFUNC << ": unhandled field type." << std::endl;
   }
         
 }

@@ -181,7 +181,7 @@ bool Notebook_Data::init_db_details(const FoundSet& found_set, const Gnome::Gda:
       m_Box_Details.init_db_details(found_set, get_active_layout_platform(get_document()), primary_key_for_details);
     }
     else
-      std::cerr << "Notebook_Data::init_db_details(): document is NULL" << std::endl;
+      std::cerr << G_STRFUNC << ": document is NULL" << std::endl;
   }
 
 

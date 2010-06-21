@@ -242,7 +242,7 @@ void CanvasItemMovable::snap_position(double& x, double& y) const
     m_grid->snap_position(x, y);
   //else
   //{
-  //  std::cout << "CanvasItemMovable::snap_position(): m_grid is NULL" << std::endl;
+  //  std::cout << "debug: " << G_STRFUNC << ": m_grid is NULL" << std::endl;
   //}
 }
 

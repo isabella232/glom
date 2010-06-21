@@ -72,7 +72,7 @@ void Box_Tables::fill_table_row(const Gtk::TreeModel::iterator& iter, const shar
 {
   if(!table_info)
   {
-    std::cerr << "Box_Tables::fill_table_row(): table_info was null." << std::endl;
+    std::cerr << G_STRFUNC << ": table_info was null." << std::endl;
     return;
   }
   
@@ -86,13 +86,13 @@ void Box_Tables::fill_table_row(const Gtk::TreeModel::iterator& iter, const shar
 
     if(developer_mode)
     {
-      //std::cout << "Box_Tables::fill_table_row(): dev title=" << table_info->get_title() << std::endl;
+      //std::cout << "debug: " << G_STRFUNC << ": dev title=" << table_info->get_title() << std::endl;
       m_AddDel.set_value(iter, m_colTitle, table_info->get_title());
       m_AddDel.set_value(iter, m_colTitleSingular, table_info->get_title_singular());
     }
     else
     {
-      //std::cout << "Box_Tables::fill_table_row(): op get_title_or_name=" << table_info->get_title_or_name() << std::endl;
+      //std::cout << "debug: " << G_STRFUNC << ": op get_title_or_name=" << table_info->get_title_or_name() << std::endl;
       m_AddDel.set_value(iter, m_colTitle, table_info->get_title_or_name());
     }
 
@@ -172,7 +172,7 @@ bool Box_Tables::fill_from_database()
       {
         table_info = *iterFind;
 
-        //std::cout << "fill_from_database(): name=" << (*iterFind)->get_name() << ", table_info->get_title()=" << (*iterFind)->get_title() << std::endl;
+        //std::cout << "debug: " << G_STRFUNC << ": name=" << (*iterFind)->get_name() << ", table_info->get_title()=" << (*iterFind)->get_title() << std::endl;
       }
       else
       {
@@ -309,7 +309,7 @@ void Box_Tables::on_adddel_Delete(const Gtk::TreeModel::iterator& rowStart, cons
           {
             const bool test = DbUtils::query_execute_string( "DROP TABLE \"" + table_name + "\"");
             if(!test)
-              std::cerr << "Box_Tables::on_adddel_Delete(): DROP TABLE failed." << std::endl;
+              std::cerr << G_STRFUNC << ": DROP TABLE failed." << std::endl;
             else
             {
               get_document()->remove_table(table_name); //Forget about it in the document too.
@@ -453,7 +453,7 @@ void Box_Tables::save_to_document()
           table_info->m_hidden = m_AddDel.get_value_as_bool(iter, m_colHidden);
           table_info->set_title( m_AddDel.get_value(iter, m_colTitle) ); //TODO_Translations: Store the TableInfo in the TreeView.
           table_info->set_title_singular( m_AddDel.get_value(iter, m_colTitleSingular) ); //TODO_Translations: Store the TableInfo in the TreeView.
-          //std::cout << "save_to_document(): title=" << table_info->get_title() << std::endl;
+          //std::cout << "debug: " << G_STRFUNC << ": title=" << table_info->get_title() << std::endl;
           table_info->m_default = m_AddDel.get_value_as_bool(iter, m_colDefault);
 
           listTables.push_back(table_info);

@@ -1273,7 +1273,7 @@ Document::type_listTableInfo Document::get_tables(bool plus_system_prefs) const
   for(type_tables::const_iterator iter = m_tables.begin(); iter != m_tables.end(); ++iter)
   {
     result.push_back(iter->second.m_info);
-    //std::cout << "Document::get_tables(): title=" << iter->second.m_info->get_title() << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": title=" << iter->second.m_info->get_title() << std::endl;
   }
 
   //Add the system properties if necessary:
@@ -1491,7 +1491,7 @@ Document::type_list_layout_groups Document::get_data_layout_groups_default(const
         //layout_item.set_table_name(child_table_name); //TODO: Allow viewing of fields through relationships.
         //layout_item.m_sequence = sequence;  add_item() will fill this.
 
-        //std::cout << "  debug: add_item(): " << layout_item.get_name() << std::endl;
+        //std::cout << "debug: " << G_STRFUNC << ": " << layout_item.get_name() << std::endl;
         if(pOverview && layout_item->get_full_field_details()->get_primary_key())
           pOverview->add_item(layout_item);
         else if(pDetails)
@@ -1523,7 +1523,7 @@ Document::type_list_layout_groups Document::get_data_layout_groups_plus_new_fiel
 
   if(create_default)
   {
-    std::cout << "DEBUG: Document::get_data_layout_groups_plus_new_fields(): Creating a default layout." << std::endl;
+    std::cout << "debug: " << G_STRFUNC << ": Creating a default layout." << std::endl;
     result = get_data_layout_groups_default(layout_name, parent_table_name, layout_platform);
     
     //Make the default layout suitable for the special platform:
@@ -1558,7 +1558,7 @@ Document::type_list_layout_groups Document::get_data_layout_groups_plus_new_fiel
 
 Document::type_list_layout_groups Document::get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform) const
 {
-  //std::cout << "DEBUG: Document::get_data_layout_groups(): layout_name=" << layout_name << ", parent_table_name=" << parent_table_name << ", layout_platform=" << layout_platform << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": layout_name=" << layout_name << ", parent_table_name=" << parent_table_name << ", layout_platform=" << layout_platform << std::endl;
 
   type_tables::const_iterator iterFind = m_tables.find(parent_table_name);
   if(iterFind != m_tables.end())
@@ -1592,7 +1592,7 @@ bool Document::get_data_layout_groups_have_any_fields(const Glib::ustring& layou
 
 void Document::set_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform, const type_list_layout_groups& groups)
 {
-  //std::cout << "DEBUG: Document::set_data_layout_groups(): layout_name=" << layout_name << ", parent_table_name=" << parent_table_name << ", layout_platform=" << layout_platform << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": layout_name=" << layout_name << ", parent_table_name=" << parent_table_name << ", layout_platform=" << layout_platform << std::endl;
   const Glib::ustring child_table_name = parent_table_name; //TODO: Remove this cruft.
 
   //g_warning("Document::set_data_layout_groups(): ADDING layout for table %s (child_table=%s), for layout %s", parent_table_name.c_str(), child_table_name.c_str(), layout_name.c_str());
@@ -1652,7 +1652,7 @@ Glib::ustring Document::get_table_title_singular(const Glib::ustring& table_name
 
 void Document::set_table_title(const Glib::ustring& table_name, const Glib::ustring& value)
 {
-  //std::cout << "debug: Document::set_table_title(): table_name=" << table_name << ", value=" << value << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": table_name=" << table_name << ", value=" << value << std::endl;
   if(!table_name.empty())
   {
     DocumentTableInfo& info = get_table_info_with_add(table_name);
@@ -1747,7 +1747,7 @@ bool Document::set_userlevel(AppState::userlevels userlevel)
   //Prevent incorrect user level:
   if((userlevel == AppState::USERLEVEL_DEVELOPER) && get_read_only())
   {
-    std::cout << "DEBUG: Document::set_userlevel(): Developer mode denied because get_read_only() returned true." << std::endl;
+    std::cout << "debug: " << G_STRFUNC << ": Developer mode denied because get_read_only() returned true." << std::endl;
     std::cout << "  DEBUG: get_read_only()=" << get_read_only() << std::endl;
     std::cout << "  DEBUG: get_file_uri()=" << get_file_uri() << std::endl;
 
@@ -1834,7 +1834,7 @@ void Document::save_changes()
     bool test = save_before();
     if(test)
     {
-      //std::cout << "Document::save_changes(): calling write_to_disk()." << std::endl;
+      //std::cout << "debug: " << G_STRFUNC << ": calling write_to_disk()." << std::endl;
       test = write_to_disk();
       if(test)
       {
@@ -1844,7 +1844,7 @@ void Document::save_changes()
   }
   else
   {
-    //std::cout << "Document::save_changes(): Not saving, because not AppState::USERLEVEL_DEVELOPER" << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": Not saving, because not AppState::USERLEVEL_DEVELOPER" << std::endl;
   }
 }
 
@@ -2004,7 +2004,7 @@ void Document::load_after_layout_item_usesrelationship(const xmlpp::Element* ele
 
     if(!relationship)
     {
-      std::cerr << "Document::load_after_layout_item_usesrelationship(): relationship not found: " << relationship_name << ", in table:" << table_name << std::endl;
+      std::cerr << G_STRFUNC << ": relationship not found: " << relationship_name << ", in table:" << table_name << std::endl;
     }
   }
 
@@ -2013,7 +2013,7 @@ void Document::load_after_layout_item_usesrelationship(const xmlpp::Element* ele
   {
     sharedptr<Relationship> related_relationship = get_relationship(relationship->get_to_table(), related_relationship_name);
     if(!related_relationship)
-      std::cerr << "Document::load_after_layout_item_field(): related relationship not found in table=" << relationship->get_to_table() << ",  name=" << related_relationship_name << std::endl;
+      std::cerr << G_STRFUNC << ": related relationship not found in table=" << relationship->get_to_table() << ",  name=" << related_relationship_name << std::endl;
 
     item->set_related_relationship(related_relationship); 
   }
@@ -2417,7 +2417,7 @@ bool Document::load_after(int& failure_code)
 
       if(m_document_format_version > get_latest_known_document_format_version())
       {
-        std::cerr << "Document::load_after(): Loading failed because format_version=" << m_document_format_version << ", but latest known format version is " << get_latest_known_document_format_version() << std::endl;
+        std::cerr << G_STRFUNC << ": Loading failed because format_version=" << m_document_format_version << ", but latest known format version is " << get_latest_known_document_format_version() << std::endl;
         failure_code = LOAD_FAILURE_CODE_FILE_VERSION_TOO_NEW;
         return false;
       }
@@ -2470,7 +2470,7 @@ bool Document::load_after(int& failure_code)
             mode = HOSTING_MODE_SQLITE;
           else
 	  {
-            std::cerr << "Document::load_after(): Hosting mode " << attr_mode << " is not supported" << std::endl;
+            std::cerr << G_STRFUNC << ": Hosting mode " << attr_mode << " is not supported" << std::endl;
             return false; //TODO: Provide more information so the application (or Bakery) can say exactly why loading failed.
 	  }
         }
@@ -3618,7 +3618,7 @@ bool Document::save_before()
       if(group_name.empty())
       {
         //I saw this in at least one .glom file. murrayc.
-        std::cerr << "Document::save_before(): The group name is empty." << std::endl;
+        std::cerr << G_STRFUNC << ": The group name is empty." << std::endl;
         continue;
       }
 
@@ -3896,7 +3896,7 @@ sharedptr<const Relationship> Document::get_field_used_in_relationship_to_one(co
 
   if(!layout_field)
   {
-    std::cerr << "Document::get_field_used_in_relationship_to_one(): layout_field was null" << std::endl;
+    std::cerr << G_STRFUNC << ": layout_field was null" << std::endl;
     return result; 
   }
 
@@ -3904,7 +3904,7 @@ sharedptr<const Relationship> Document::get_field_used_in_relationship_to_one(co
   type_tables::const_iterator iterFind = m_tables.find(table_used);
   if(iterFind == m_tables.end())
   {
-    std::cerr << "Document::get_field_used_in_relationship_to_one(): table not found:" << table_used << std::endl;
+    std::cerr << G_STRFUNC << ": table not found:" << table_used << std::endl;
     return result; 
   }
 

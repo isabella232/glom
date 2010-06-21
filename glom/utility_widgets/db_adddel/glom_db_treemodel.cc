@@ -42,7 +42,7 @@ DbTreeModelRow::DbTreeModelRow()
 
 void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
 {
-  //std::cout << "DbTreeModelRow::fill_values_if_necessary(): row=" << row << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": row=" << row << std::endl;
   //if(row == 1000)
   //{
   //  std::cout << "1000" << std::endl;
@@ -50,11 +50,11 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
 
   if(m_values_retrieved)
   {
-     //std::cout << "debug: DbTreeModelRow::fill_values_if_necessary(): already retrieved" << std::endl;
+     //std::cout << "debug: " << G_STRFUNC << ": already retrieved" << std::endl;
   }
   else
   {
-    //std::cout << "debug: DbTreeModelRow::fill_values_if_necessary(): retrieving for row=" << row << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": retrieving for row=" << row << std::endl;
 
     if((row < (int)model.m_data_model_rows_count) && model.m_gda_datamodel)
     {
@@ -73,7 +73,7 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
           else
           {
             // This is quite possible, for example for unset dates. jhs
-            //std::cerr << "DbTreeModelRow::fill_values_if_necessary(): NULL Gnome::Gda::Holder for field=" << i << std::endl;
+            //std::cerr << G_STRFUNC << ": NULL Gnome::Gda::Holder for field=" << i << std::endl;
           }
 
           //std::cout << "  debug: col=" << i << ", GType=" << m_db_values[i].get_value_type() << ", string=" << m_db_values[i].to_string() << std::endl;
@@ -83,7 +83,7 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
         if(holder)
           m_key = holder->get_value();  //TODO_gda: Why not just use get_value_at()?
         else
-          std::cerr << "DbTreeModelRow::fill_values_if_necessary(): NULL Gnome::Gda::Holder for key field" << std::endl;
+          std::cerr << G_STRFUNC << ": NULL Gnome::Gda::Holder for key field" << std::endl;
 
         m_extra = false;
         m_removed = false;
@@ -94,7 +94,7 @@ void DbTreeModelRow::fill_values_if_necessary(DbTreeModel& model, int row)
       //g_warning("DbTreeModelRow::fill_values_if_necessary(): Non-db row.");
       if(m_extra)
       {
-        //std::cout << "  debug: DbTreeModelRow::fill_values_if_necessary(): using default value" << std::endl;
+        //std::cout << "debug: " << G_STRFUNC << ": using default value" << std::endl;
 
         //It is an extra row, added with append().
       }
@@ -136,7 +136,7 @@ void DbTreeModelRow::set_value(DbTreeModel& model, int column, int row, const Db
   const GType debug_type_expected = gdacolumn->get_g_type();
   if(debug_type_in != debug_type_expected)
   {
-    std::cout << "debug: DbTreeModelRow::set_value(): expected GType=" << debug_type_expected << ", but received GType=" << debug_type_in << std::endl;
+    std::cout << "debug: " << G_STRFUNC << ": expected GType=" << debug_type_expected << ", but received GType=" << debug_type_in << std::endl;
     if(debug_type_expected)
       std::cout << "  expected GType name=\"" << g_type_name(debug_type_expected) << "\"" << std::endl;
 
@@ -158,7 +158,7 @@ DbTreeModelRow::DbValue DbTreeModelRow::get_value(DbTreeModel& model, int column
     return iterFind->second;
   else
   {
-    std::cout << "debug: DbTreeModelRow::get_value(): column not found." << std::endl;
+    std::cout << "debug: " << G_STRFUNC << ": column not found." << std::endl;
     return DbValue();
   }
 }
@@ -256,12 +256,12 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
   }
 
   if(m_found_set.m_table_name.empty())
-    std::cerr << "DEBUG: refresh_from_database(): found_set.m_table_name is empty." << std::endl;
+    std::cerr << G_STRFUNC << ": found_set.m_table_name is empty." << std::endl;
 
   if(m_connection && !m_found_set.m_table_name.empty() && m_get_records)
   {
     Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_where_clause(m_found_set.m_table_name, m_column_fields, m_found_set.m_where_clause, m_found_set.m_extra_join, m_found_set.m_sort_clause);
-    //std::cout << "  Debug: DbTreeModel::refresh_from_database():  " << sql_query << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ":  " << sql_query << std::endl;
 
     m_gda_datamodel = DbUtils::query_execute_select(sql_query, true /* use_cursor */);
 
@@ -270,7 +270,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
       m_data_model_rows_count = 0;
       m_data_model_columns_count = m_columns_count;
 
-      std::cerr << "DbTreeModel::refresh_from_database(): error executing SQL." << std::endl;
+      std::cerr << G_STRFUNC << ": error executing SQL." << std::endl;
       ConnectionPool::handle_error_cerr_only();
       return false; //No records were found.
     }
@@ -294,7 +294,7 @@ bool DbTreeModel::refresh_from_database(const FoundSet& found_set)
       const int count = Base_DB::count_rows_returned_by(sql_query_without_sort);
       if(count < 0)
       {
-        std::cerr << "DbTreeModel::refresh_from_database(): count is < 0" << std::endl;
+        std::cerr << G_STRFUNC << ": count is < 0" << std::endl;
         m_data_model_rows_count = 0;
       }
       else
@@ -336,7 +336,7 @@ GType DbTreeModel::get_column_type_vfunc(int index) const
 
 void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, Glib::ValueBase& value) const
 {
-  //std::cout << "debug: DbTreeModel::get_value_vfunc(): column=" << column << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": column=" << column << std::endl;
 
   if(check_treeiter_validity(iter))
   {
@@ -348,7 +348,7 @@ void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, G
 
       //Get the correct ValueType from the Gtk::TreeModel::Column's type, so we don't have to repeat it here:
       //(This would be a custom boxed type for our Gda::Value (stored inside the TreeModel's Glib::Value just as an int or char* would be stored in it.)
-      //std::cout << "  debug: DbTreeModel::get_value_vfunc(): column=" << column << ", value type=" << g_type_name(typeModelColumn::ValueType::value_type()) << std::endl;
+      //std::cout << "debug: " << G_STRFUNC << ": column=" << column << ", value type=" << g_type_name(typeModelColumn::ValueType::value_type()) << std::endl;
 
       typeModelColumn::ValueType value_specific;
       value_specific.init( typeModelColumn::ValueType::value_type() );  //TODO: Is there any way to avoid this step?
@@ -407,7 +407,7 @@ void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, G
             /*
             if((result.get_value_type() != 0) && (result.get_value_type() != gtype_expected))
             {
-              std::cout << "  debug: DbTreeModel::get_value_vfunc(): column_sql=" << column_sql << ", describe_column() returned GType: " << gtype_expected << " but get_value() returned GType: " << result.get_value_type() << std::endl;
+              std::cout << "debug: " << G_STRFUNC << ": column_sql=" << column_sql << ", describe_column() returned GType: " << gtype_expected << " but get_value() returned GType: " << result.get_value_type() << std::endl;
             }
             */
           }
@@ -418,7 +418,7 @@ void DbTreeModel::get_value_vfunc(const TreeModel::iterator& iter, int column, G
 
         /*
         GType debug_type = result.get_value_type();
-        std::cout << "  debug: DbTreeModel::get_value_vfunc(): result value type: GType=" << debug_type << std::endl;
+        std::cout << "debug: " << G_STRFUNC << ": result value type: GType=" << debug_type << std::endl;
         if(debug_type)
           std::cout << "    GType name=\"" << g_type_name(debug_type) << "\"" << std::endl;
         */
@@ -437,7 +437,7 @@ bool DbTreeModel::iter_next_vfunc(const iterator& iter, iterator& iter_next) con
   {
     //Get the current row:
     type_datamodel_row_index datamodel_row = get_datamodel_row_index_from_tree_row_iter(iter);
-    //std::cout << "DbTreeModel::iter_next_vfunc():" << datamodel_row << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ":" << datamodel_row << std::endl;
 
     //Make the iter_next GtkTreeIter represent the next row:
     ++datamodel_row;
@@ -475,7 +475,7 @@ int DbTreeModel::iter_n_children_vfunc(const iterator& iter) const
 
 int DbTreeModel::iter_n_root_children_vfunc() const
 {
-  //std::cout << "iter_n_root_children_vfunc(): returning: " << get_internal_rows_count() - m_count_removed_rows + 1 << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": returning: " << get_internal_rows_count() - m_count_removed_rows + 1 << std::endl;
   return get_internal_rows_count() - m_count_removed_rows;
 }
 

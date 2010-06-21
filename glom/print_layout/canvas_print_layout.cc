@@ -436,7 +436,7 @@ void Canvas_PrintLayout::update_layout_position_from_canvas(const sharedptr<Layo
   double x = 0;
   double y = 0;
   canvas_item->get_xy(x, y);
-  //std::cout << "Canvas_PrintLayout::update_layout_position_from_canvas(): x=" << x << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": x=" << x << std::endl;
 
   double width = 0;
   double height = 0;
@@ -469,7 +469,7 @@ void Canvas_PrintLayout::set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page
 
   const Gtk::Unit units = property_units();
 
-  //std::cout << "Canvas_PrintLayout::set_page_setup(): width=" << paper_size.get_width(units) << ", height=" paper_size.get_height(units) << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": width=" << paper_size.get_width(units) << ", height=" paper_size.get_height(units) << std::endl;
 
   if(m_page_setup->get_orientation() == Gtk::PAGE_ORIENTATION_PORTRAIT) //TODO: Handle the reverse orientations too?
   {
@@ -482,7 +482,7 @@ void Canvas_PrintLayout::set_page_setup(const Glib::RefPtr<Gtk::PageSetup>& page
     bounds.set_x2( paper_size.get_height(units) );
   }
 
-  //std::cout << "Canvas_PrintLayout::set_page_setup(): portrait page width=" << paper_size.get_width(units) << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": portrait page width=" << paper_size.get_width(units) << std::endl;
 
   set_bounds(bounds);
 
@@ -706,7 +706,7 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
       //Glib::RefPtr<Goocanvas::Item> canvas_child = base_item->get_cell_child(row, col); //TODO: Add this to GooCanvas::Table.
       Glib::RefPtr<Goocanvas::Item> canvas_child = get_canvas_table_cell_child(canvas_table, row, col); //TODO: Add this to GooCanvas::Table.
       if(!canvas_child)
-        std::cerr << "Canvas_PrintLayout::fill_with_data_portal(): canvas_child is NULL." << std::endl;
+        std::cerr << G_STRFUNC << ": canvas_child is NULL." << std::endl;
 
       if(iter_child_layout_items == child_layout_items.end())
         continue;
@@ -751,7 +751,7 @@ void Canvas_PrintLayout::set_canvas_item_field_value(const Glib::RefPtr<Goocanva
     Glib::RefPtr<CanvasTextMovable> canvas_text = Glib::RefPtr<CanvasTextMovable>::cast_dynamic(canvas_item);
     if(!canvas_text)
     {
-      std::cerr << "Canvas_PrintLayout::set_canvas_item_field_value(): The canvas item is not of the expected type. Instead it is of type." << std::endl;
+      std::cerr << G_STRFUNC << ": The canvas item is not of the expected type. Instead it is of type." << std::endl;
       return;
     }
 
@@ -834,7 +834,7 @@ Base_DB::type_vecLayoutFields Canvas_PrintLayout::get_portal_fields_to_show(cons
 {
   const Document* document = get_document();
   if(!document)
-    std::cerr << "Canvas_PrintLayout::get_portal_fields_to_show(): document is NULL." << std::endl;
+    std::cerr << G_STRFUNC << ": document is NULL." << std::endl;
 
   if(document && portal)
   {

@@ -181,13 +181,13 @@ void Box_Data_Details::set_found_set_from_primary_key_value()
   {
     m_found_set.m_where_clause = Utils::build_simple_where_expression(
        m_table_name, m_field_primary_key, m_primary_key_value);
-    //std::cout << "  DEBUG: Box_Data_Details::set_primary_key_value(): m_found_set.m_where_clause = " << m_found_set.m_where_clause << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": m_found_set.m_where_clause = " << m_found_set.m_where_clause << std::endl;
   }
 }
 
 bool Box_Data_Details::init_db_details(const FoundSet& found_set, const Glib::ustring& layout_platform, const Gnome::Gda::Value& primary_key_value)
 {
-  //std::cout << "Box_Data_Details::init_db_details(): primary_key_value=" << primary_key_value.to_string() << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": primary_key_value=" << primary_key_value.to_string() << std::endl;
 
   m_primary_key_value = primary_key_value;
   m_field_primary_key = get_field_primary_key_for_table(found_set.m_table_name);
@@ -245,7 +245,7 @@ void Box_Data_Details::create_layout()
 
 bool Box_Data_Details::fill_from_database()
 {
-  //std::cout << "Box_Data_Details::fill_from_database(): m_primary_key_value=" << m_primary_key_value.to_string() << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": m_primary_key_value=" << m_primary_key_value.to_string() << std::endl;
 
   //Don't try to open a connection if there is no document,
   //for instance, during application destruction.
@@ -562,7 +562,7 @@ void Box_Data_Details::on_related_record_added(Gnome::Gda::Value /* strKeyValue 
   bool bDoNotRefreshRelated = m_bDoNotRefreshRelated;
   m_bDoNotRefreshRelated = true;
 
-  //std::cout << "Box_Data_Details::on_related_record_added(): " << strKeyValue << ", " << strFromKeyName << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": " << strKeyValue << ", " << strFromKeyName << std::endl;
   //Get current FromKey value:
 
  /* TODO_port
@@ -722,7 +722,7 @@ void Box_Data_Details::on_flowtable_field_edited(const sharedptr<const LayoutIte
   Document* document = dynamic_cast<Document*>(get_document());
 
   Gnome::Gda::Value primary_key_value = get_primary_key_value_selected();
-  //std::cout << "Box_Data_Details::on_flowtable_field_edited(): primary_key_value=" << primary_key_value.to_string() << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": primary_key_value=" << primary_key_value.to_string() << std::endl;
   if(!Conversions::value_is_empty(primary_key_value)) //If there is not a primary key value:
   {
     Glib::ustring table_name;

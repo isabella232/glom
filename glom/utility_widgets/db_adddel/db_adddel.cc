@@ -178,7 +178,7 @@ void DbAddDel::do_user_requested_edit()
     signal_user_requested_edit()(iter);
   }
   else
-    std::cerr << "DbAddDel::do_user_requested_edit(): No item was selected." << std::endl;
+    std::cerr << G_STRFUNC << ": No item was selected." << std::endl;
 }
 
 #ifndef GLOM_ENABLE_MAEMO
@@ -938,7 +938,7 @@ void DbAddDel::construct_specified_columns()
 
   if(m_ColumnTypes.empty())
   {
-    //std::cout << "debug: DbAddDel::construct_specified_columns(): showing hint model: m_find_mode=" << m_find_mode << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": showing hint model: m_find_mode=" << m_find_mode << std::endl;
 
     m_refListStore.reset();
     if(m_table_name.empty())
@@ -1875,7 +1875,7 @@ void DbAddDel::on_treeview_column_resized(int model_column_index, DbTreeViewColu
   DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
 
   const int width = view_column->get_width();
-  //std::cout << "  DbAddDel::on_treeview_column_resized(): width=" << width << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": width=" << width << std::endl;
 
   if(width == -1) //Means automatic.
     return;
@@ -2250,7 +2250,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
 
       /*
       GType debug_type = value.get_value_type();
-      std::cout << "  debug: DbAddDel::treeviewcolumn_on_cell_data(): GdaValue from TreeModel::get_value(): GType=" << debug_type << std::endl;
+      std::cout << "debug: " << G_STRFUNC << ": GType=" << debug_type << std::endl;
       if(debug_type)
          std::cout << "    GType name=\"" << g_type_name(debug_type) << "\"" << std::endl; 
       */
@@ -2290,7 +2290,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
           Gtk::CellRendererText* pDerived = dynamic_cast<Gtk::CellRendererText*>(renderer);
           if(pDerived)
           {
-            //std::cout << "  debug: DbAddDel::treeviewcolumn_on_cell_data(): field name=" << field->get_name() << ", glom type=" << field->get_glom_type() << std::endl;
+            //std::cout << "debug: " << G_STRFUNC << ": field name=" << field->get_name() << ", glom type=" << field->get_glom_type() << std::endl;
             const Glib::ustring text = Conversions::get_text_for_gda_value(field->get_glom_type(), value, field->get_formatting_used().m_numeric_format);
             //g_assert(text != "NULL");
             g_object_set(pDerived->gobj(), "text", text.c_str(), (gpointer)0);
@@ -2431,7 +2431,7 @@ bool DbAddDel::start_new_record()
   }
   else
   {
-    std::cout << "start_new_record(): no editable rows." << std::endl;
+    std::cout << "debug: " << G_STRFUNC << ": no editable rows." << std::endl;
     //The only keys are non-editable, so just add a row:
     select_item(iter); //without start_editing.
     //g_warning("start_new_record(): index_field_to_edit does not exist: %d", index_field_to_edit);
@@ -2443,7 +2443,7 @@ bool DbAddDel::start_new_record()
 void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
 {
   const Gnome::Gda::Value parent_primary_key_value = get_value_key(row);
-  //std::cout << "DbAddDel::user_changed(): parent_primary_key_value=" << parent_primary_key_value.to_string() << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": parent_primary_key_value=" << parent_primary_key_value.to_string() << std::endl;
  
   sharedptr<const LayoutItem_Field> layout_field = get_column_field(col);
 
@@ -2509,7 +2509,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
 
       //Update the field in the record (the record with this primary key):
       const Gnome::Gda::Value field_value = get_value(row, layout_field);
-      //std::cout << "Box_Data_List::on_adddel_user_changed(): field_value = " << field_value.to_string() << std::endl;
+      //std::cout << "debug: " << G_STRFUNC << ": field_value = " << field_value.to_string() << std::endl;
       //const sharedptr<const Field>& field = layout_field->m_field;
       //const Glib::ustring strFieldName = layout_field->get_name();
 

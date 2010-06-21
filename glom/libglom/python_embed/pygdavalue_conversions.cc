@@ -174,7 +174,7 @@ boost::python::object glom_pygda_value_as_boost_pyobject(const Glib::ValueBase& 
           const int day = g_date_get_day(val);
 
           if(!g_date_valid(val))
-            std::cerr << "glom_pygda_value_as_boost_pyobject(): The GDate is not valid." << std::endl;
+            std::cerr << G_STRFUNC << ": The GDate is not valid." << std::endl;
             
           //std::cout << "DEBUG G_TYPE_DATE: year=" << year << ", month=" << month << ", day=" << day << std::endl;
           PyObject* cobject = PyDate_FromDate(year, month, day);

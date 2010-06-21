@@ -75,7 +75,7 @@ bool Box_Data_Calendar_Related::init_db_details(const sharedptr<const LayoutItem
 
 bool Box_Data_Calendar_Related::init_db_details(const Glib::ustring& parent_table, bool show_title)
 {
-  //std::cout << "DEBUG: Box_Data_Calendar_Related::init_db_details(): " << parent_table << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": " << parent_table << std::endl;
 
   m_parent_table = parent_table;
 
@@ -392,7 +392,7 @@ Glib::ustring Box_Data_Calendar_Related::on_calendar_details(guint year, guint m
   sharedptr<LayoutItem_CalendarPortal> derived_portal = sharedptr<LayoutItem_CalendarPortal>::cast_dynamic(m_portal);
   if(!derived_portal)
   {
-    //std::cout << "DEBUG: Box_Data_Calendar_Related::on_calendar_details(): date_field is NULL" << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": date_field is NULL" << std::endl;
     return Glib::ustring();
   }
 
@@ -401,7 +401,7 @@ Glib::ustring Box_Data_Calendar_Related::on_calendar_details(guint year, guint m
     return Glib::ustring();
 
   //TODO: month seems to be 143710360 sometimes, which seems to be a GtkCalendar bug:
-  //std::cout << "Box_Data_Calendar_Related::on_calendar_details(): year=" << year << ", month=" << month << " day=" << day << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": year=" << year << ", month=" << month << " day=" << day << std::endl;
 
   //Glib::Date is 1-indexed:
   Glib::Date::Month datemonth = (Glib::Date::Month)(month +1);

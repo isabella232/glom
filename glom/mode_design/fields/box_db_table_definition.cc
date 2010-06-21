@@ -239,7 +239,7 @@ void Box_DB_Table_Definition::on_adddel_delete(const Gtk::TreeModel::iterator& r
         get_document()->remove_field(m_table_name, name);
       }
       else
-        std::cerr << "Box_DB_Table_Definition::on_adddel_delete(): field deletion failed." << std::endl;
+        std::cerr << G_STRFUNC << ": field deletion failed." << std::endl;
     }
   }
 
@@ -351,7 +351,7 @@ void Box_DB_Table_Definition::on_adddel_changed(const Gtk::TreeModel::iterator& 
     //Get DB field info: (TODO: This might be unnecessary).
     type_vec_fields::const_iterator iterFind = std::find_if( m_vecFields.begin(), m_vecFields.end(), predicate_FieldHasName<Field>(strFieldNameBeingEdited) );
     if(iterFind == m_vecFields.end()) //If it was not found:
-      std::cerr << "Box_DB_Table_Definition::on_adddel_changed(): field not found: " << strFieldNameBeingEdited << std::endl;
+      std::cerr << G_STRFUNC << ": field not found: " << strFieldNameBeingEdited << std::endl;
     else
     {
       sharedptr<const Field> constfield = *iterFind;
@@ -644,7 +644,7 @@ bool Box_DB_Table_Definition::field_has_null_values(const sharedptr<const Field>
   }
   else
   {
-    std::cerr << "Box_DB_Table_Definition::field_has_null_values(): query failed." << std::endl;
+    std::cerr << G_STRFUNC << ": query failed." << std::endl;
   }
 
   return null_count > 0; 

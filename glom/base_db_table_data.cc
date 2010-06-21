@@ -208,7 +208,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
   {
     const bool test = DbUtils::query_execute(builder);
     if(!test)
-      std::cerr << "Box_Data::record_new(): INSERT failed." << std::endl;
+      std::cerr << G_STRFUNC << ": INSERT failed." << std::endl;
     else
     {
       Gtk::TreeModel::iterator row = get_row_selected(); //Null and ignored for details views.
@@ -237,7 +237,7 @@ bool Base_DB_Table_Data::record_new(bool use_entered_data, const Gnome::Gda::Val
     }
   }
   else
-    std::cerr << "Base_DB_Table_Data::record_new(): Empty field names or values." << std::endl;
+    std::cerr << G_STRFUNC << ": Empty field names or values." << std::endl;
 
   return false; //Failed.
 }
@@ -363,7 +363,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
       const bool test = DbUtils::query_execute(builder);
       if(!test)
       {
-        std::cerr << "Base_DB_Table_Data::add_related_record_for_field(): INSERT failed." << std::endl;
+        std::cerr << G_STRFUNC << ": INSERT failed." << std::endl;
         return false;
       }
 
@@ -380,7 +380,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
         sharedptr<Field> field_from_key = get_fields_for_table_one_field(relationship->get_from_table(), relationship->get_from_field()); //TODO_Performance.
         if(!field_from_key)
         {
-          std::cerr << "Base_DB_Table_Data::add_related_record_for_field(): get_fields_for_table_one_field() failed." << std::endl;
+          std::cerr << G_STRFUNC << ": get_fields_for_table_one_field() failed." << std::endl;
           return false;
         }
 
@@ -413,7 +413,7 @@ bool Base_DB_Table_Data::add_related_record_for_field(const sharedptr<const Layo
             const bool test = DbUtils::query_execute(builder);
             if(!test)
             {
-              std::cerr << "Base_DB_Table_Data::add_related_record_for_field(): UPDATE failed." << std::endl;
+              std::cerr << G_STRFUNC << ": UPDATE failed." << std::endl;
               return false;
             }
           }
@@ -499,12 +499,12 @@ void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field
   if(!fieldsToGet.empty())
   {
     Glib::RefPtr<Gnome::Gda::SqlBuilder> query = Utils::build_sql_select_with_key(field_in_record_changed.m_table_name, fieldsToGet, field_in_record_changed.m_key, field_in_record_changed.m_key_value);
-    //std::cout << "DEBUG: Base_DB_Table_Data::refresh_related_fields(): query=" << query << std::endl;
+    //std::cout << "debug: " << G_STRFUNC << ": query=" << query << std::endl;
 
     Glib::RefPtr<const Gnome::Gda::DataModel> result = DbUtils::query_execute_select(query);
     if(!result)
     {
-      std::cerr << "Base_DB_Table_Data::refresh_related_fields(): no result." << std::endl;
+      std::cerr << G_STRFUNC << ": no result." << std::endl;
       handle_error();
     }
     else
@@ -517,7 +517,7 @@ void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field
         const guint cols_count = result->get_n_columns();
         if(cols_count <= 0)
         {
-          std::cerr << "Base_DB_Table_Data::refresh_related_fields(): The result had 0 columns" << std::endl;
+          std::cerr << G_STRFUNC << ": The result had 0 columns" << std::endl;
         }
 
         for(guint uiCol = 0; uiCol < cols_count; ++uiCol)
@@ -525,11 +525,11 @@ void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field
           const Gnome::Gda::Value value = result->get_value_at(uiCol, 0 /* row */);
           sharedptr<LayoutItem_Field> layout_item = *iterFields;
           if(!layout_item)
-            std::cerr << "Base_DB_Table_Data::refresh_related_fields(): The layout_item was null." << std::endl;
+            std::cerr << G_STRFUNC << ": The layout_item was null." << std::endl;
           else
           {
-            //std::cout << "DEBUG: Box_Data_List::refresh_related_fields(): field_name=" << layout_item->get_name() << std::endl;
-            //std::cout << "  DEBUG: Box_Data_List::refresh_related_fields(): value_as_string=" << value.to_string()  << std::endl;
+            //std::cout << "debug: " << G_STRFUNC << ": field_name=" << layout_item->get_name() << std::endl;
+            //std::cout << "debug: " << G_STRFUNC << ": value_as_string=" << value.to_string()  << std::endl;
 
             //m_AddDel.set_value(row, layout_item, value);
             set_entered_field_data(row, layout_item, value);
@@ -540,7 +540,7 @@ void Base_DB_Table_Data::refresh_related_fields(const LayoutFieldInRecord& field
         }
       }
       else
-        std::cerr << "Base_DB_Table_Data::refresh_related_fields(): no records found." << std::endl;
+        std::cerr << G_STRFUNC << ": no records found." << std::endl;
     }
   }
 }
