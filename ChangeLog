@@ -1,5 +1,12 @@
 2010-06-21  Murray Cumming  <murrayc@murrayc.com>
 
+	Privs::get_database_users(): Check for an empty DataModel.
+
+	* glom/libglom/privs.cc: Check that the user (listed in the group) could 
+	really be found. 
+
+2010-06-21  Murray Cumming  <murrayc@murrayc.com>
+
 	Use G_STRFUNC with std::cerr and std::cout.
 
 	* *.h/cc: Replace hard-coded copy/pastes of method names with 

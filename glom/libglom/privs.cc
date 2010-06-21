@@ -156,10 +156,14 @@ Privs::type_vec_strings Privs::get_database_users(const Glib::ustring& group_nam
               builder->add_field_id("usesysid", "pg_user"),
               builder->add_expr(*iter)));
           Glib::RefPtr<Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(builder);
-          if(data_model)
+          if(data_model && data_model->get_n_rows() && data_model->get_n_columns())
           {
             const Gnome::Gda::Value value = data_model->get_value_at(0, 0);
             result.push_back(value.get_string());
+          }
+          else
+          {
+            std::cerr << G_STRFUNC << ": user not found in pg_user table: " << *iter << std::endl;
           }
         }
 
