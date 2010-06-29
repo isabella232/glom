@@ -397,6 +397,11 @@ bool Sqlite::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
   return recreate_table(connection, table_name, type_vec_strings(), type_vec_const_fields(), fields_changed, error);
 }
 
+bool Sqlite::save_backup(const SlotProgress& slot_progress, const std::string& filepath_output, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name)
+{
+  //TODO:
+  std::cerr << G_STRFUNC << ": Not implemented.";
+}
 
 } // namespace ConnectionPoolBackends
 

@@ -56,8 +56,6 @@ private:
   typedef std::list<Glib::ustring> type_list_ports;
   type_list_ports m_list_ports;
 
-  Glib::ustring m_host;
-  int m_port;
   bool m_try_other_ports;
 };
 
@@ -66,4 +64,3 @@ private:
 } //namespace Glom
 
 #endif //GLOM_BACKEND_POSTGRES_CENTRAL_H
-

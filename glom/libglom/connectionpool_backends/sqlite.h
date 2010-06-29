@@ -64,6 +64,8 @@ private:
   /** Creates a new database.
    */
   virtual bool create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error);
+  
+  virtual bool save_backup(const SlotProgress& slot_progress, const std::string& filepath_output, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name);
 
 private:
   std::string m_database_directory_uri;

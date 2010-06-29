@@ -149,6 +149,12 @@ public:
   static sharedptr<SharedConnection> get_and_connect(std::auto_ptr<ExceptionConnection>& error);
 #endif
 
+  /** This callback should show UI to indicate that work is still happening.
+   * For instance, a pulsing ProgressBar.
+   */
+  typedef Backend::SlotProgress SlotProgress;
+
+ //TODO: Add SlotProgress?
   /** Creates a new database.
    */
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -156,6 +162,8 @@ public:
 #else
   void create_database(const Glib::ustring& database_name, std::auto_ptr<Glib::Error>& error);
 #endif
+
+  bool save_backup(const SlotProgress& slot_progress, const std::string& filepath_output);
 
   void set_user(const Glib::ustring& value);
   void set_password(const Glib::ustring& value);
@@ -168,11 +176,6 @@ public:
   Field::sql_format get_sql_format() const;
   const FieldTypes* get_field_types() const;
   Glib::ustring get_string_find_operator() const;
-
-  /** This callback should show UI to indicate that work is still happening.
-   * For instance, a pulsing ProgressBar.
-   */
-  typedef Backend::SlotProgress SlotProgress;
  
   typedef Backend::InitErrors InitErrors;
   

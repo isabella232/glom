@@ -18,9 +18,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <config.h> // For POSTGRES_UTILS_PATH
 #include <libglom/libglom_config.h>
 
 #include <libglom/connectionpool_backends/postgres.h>
+#include <libglom/spawn_with_feedback.h>
 #include <libglom/utils.h>
 #include <glibmm/i18n.h>
 
@@ -47,7 +49,7 @@ namespace ConnectionPoolBackends
 {
 
 Postgres::Postgres()
-:
+: m_port(0),
   m_postgres_server_version(0.0f)
 {
 }
@@ -57,21 +59,21 @@ float Postgres::get_postgres_server_version() const
   return m_postgres_server_version;
 }
 
-Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error) throw()
+Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustring& port, const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error) throw()
 {
   //We must specify _some_ database even when we just want to create a database.
   //This _might_ be different on some systems. I hope not. murrayc
   const Glib::ustring default_database = "template1";
   //const Glib::ustring& actual_database = (!database.empty()) ? database : default_database;;
-  const Glib::ustring cnc_string_main = "HOST=" + host + ";PORT=" + port;
+  const Glib::ustring cnc_string_main = "HOST=" + m_host + ";PORT=" + port;
   Glib::ustring cnc_string = cnc_string_main + ";DB_NAME=" + database;
 
   Glib::RefPtr<Gnome::Gda::Connection> connection;
   Glib::RefPtr<Gnome::Gda::DataModel> data_model;
 
-  const Glib::ustring auth_string = create_auth_string(username, password);   
- 
-#ifdef GLOM_CONNECTION_DEBUG          
+  const Glib::ustring auth_string = create_auth_string(username, password);
+
+#ifdef GLOM_CONNECTION_DEBUG
   std::cout << std::endl << "DEBUG: Glom: trying to connect on port=" << port << std::endl;
   std::cout << "DEBUG: ConnectionPoolBackends::Postgres::attempt_connect(): cnc_string=" << cnc_string << std::endl;
   std::cout << "  DEBUG: auth_string=" << auth_string << std::endl;
@@ -80,8 +82,8 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    connection = Gnome::Gda::Connection::open_from_string("PostgreSQL", 
-      cnc_string, auth_string, 
+    connection = Gnome::Gda::Connection::open_from_string("PostgreSQL",
+      cnc_string, auth_string,
       Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE
       );
     connection->statement_execute_non_select("SET DATESTYLE = 'ISO'");
@@ -91,11 +93,11 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
   {
 #else
   std::auto_ptr<Glib::Error> ex;
-  connection = Gnome::Gda::Connection::open_from_string("PostgreSQL", 
+  connection = Gnome::Gda::Connection::open_from_string("PostgreSQL",
     cnc_string, auth_string,
     Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE,
     ex);
-  
+
   if(!ex.get())
     connection->statement_execute_non_select("SET DATESTYLE = 'ISO'", ex);
 
@@ -117,15 +119,15 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
-      temp_conn = Gnome::Gda::Connection::open_from_string("PostgreSQL", 
-        cnc_string, auth_string, 
+      temp_conn = Gnome::Gda::Connection::open_from_string("PostgreSQL",
+        cnc_string, auth_string,
         Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
     }
     catch(const Glib::Error& ex)
     {}
 #else
-    temp_conn = Gnome::Gda::Connection::open_from_string("PostgreSQL", 
-      cnc_string, auth_string, 
+    temp_conn = Gnome::Gda::Connection::open_from_string("PostgreSQL",
+      cnc_string, auth_string,
       Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE, ex);
 #endif
 
@@ -203,7 +205,7 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
         http://groups.google.de/groups?hl=en&lr=&ie=UTF-8&frame=right&th=a7a62337ad5a8f13&seekm=23739.1073660245%40sss.pgh.pa.us#link5
         UPDATE _table
         SET _bbb = to_number(substring(_aaa from 1 for 5), '99999')
-        WHERE _aaa <> '     ';  
+        WHERE _aaa <> '     ';
         */
 
         switch(new_fields[i]->get_glom_type())
@@ -234,7 +236,7 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
             else
             {
               //We use to_number, with textcat() so that to_number always has usable data.
-              //Otherwise, it says 
+              //Otherwise, it says
               //invalid input syntax for type numeric: " "
               //
               //We must use single quotes with the 0, otherwise it says "column 0 does not exist.".
@@ -460,6 +462,106 @@ bool Postgres::check_postgres_gda_client_is_available()
   return false;
 }
 
+std::string Postgres::get_path_to_postgres_executable(const std::string& program)
+{
+#ifdef G_OS_WIN32
+  // Add the .exe extension on Windows:
+  std::string real_program = program + EXEEXT;
+
+  // Have a look at the bin directory of the application executable first.
+  // The installer installs postgres there. postgres needs to be installed
+  // in a directory called bin for its relocation stuff to work, so that
+  // it finds the share data in share. Unfortunately it does not look into
+  // share/postgresql which would be nice to separate the postgres stuff
+  // from the other shared data. We can perhaps still change this later by
+  // building postgres with another prefix than /local/pgsql.
+  gchar* installation_directory = g_win32_get_package_installation_directory_of_module(0);
+  std::string test = Glib::build_filename(installation_directory, Glib::build_filename("bin", real_program));
+  g_free(installation_directory);
+
+  if(Glib::file_test(test, Glib::FILE_TEST_IS_EXECUTABLE))
+    return test;
+
+  // Look in PATH otherwise
+  return Glib::find_program_in_path(real_program);
+#else // G_OS_WIN32
+  // POSTGRES_UTILS_PATH is defined in config.h, based on the configure.
+  return Glib::build_filename(POSTGRES_UTILS_PATH, program + EXEEXT);
+#endif // !G_OS_WIN32
 }
 
+
+Glib::ustring Postgres::port_as_string(int port_num)
+{
+  Glib::ustring result;
+  char* cresult = g_strdup_printf("%d", port_num);
+  if(cresult)
+    result = cresult;
+  g_free(cresult);
+
+  return result;
 }
+
+bool Postgres::save_backup(const SlotProgress& slot_progress, const std::string& filepath_output, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name)
+{
+/* TODO:
+  if(m_network_shared && !running)
+  {
+    std::cerr << G_STRFUNC << ": The self-hosted database is not running." << std::endl;
+    return;
+  }
+*/
+
+  if(m_host.empty())
+  {
+    std::cerr << G_STRFUNC << ": m_host is empty." << std::endl;
+    return false;
+  }
+
+  if(m_port == 0)
+  {
+    std::cerr << G_STRFUNC << ": m_port is empty." << std::endl;
+    return false;
+  }
+
+  //TODO: Remember the existing username and password?
+  if(username.empty())
+  {
+    std::cerr << G_STRFUNC << ": username is empty." << std::endl;
+    return false;
+  }
+
+  if(password.empty())
+  {
+    std::cerr << G_STRFUNC << ": password is empty." << std::endl;
+    return false;
+  }
+
+  //TODO: Save the password to .pgpass
+
+  // Make sure to use double quotes for the executable path, because the
+  // CreateProcess() API used on Windows does not support single quotes.
+  const std::string command_dump = "\"" + get_path_to_postgres_executable("pg_dump") + "\"" +
+    " --create --file=\"" + filepath_output + "\"" +
+    " --host=\"" + m_host + "\"" +
+    " --port=" + port_as_string(m_port) +
+    " --username=\"" + username + "\"" +
+    " " + database_name;
+
+
+  //std::cout << "DEBUG: command_dump=" << command_dump << std::endl;
+  
+  //TODO: Put the password in .pgpass
+
+  const bool result = Glom::Spawn::execute_command_line_and_wait(command_dump, slot_progress);
+  if(!result)
+  {
+    std::cerr << "Error while attempting to call pg_dump." << std::endl;
+  }
+
+  return result;
+}
+
+} //namespace ConnectionPoolBackends
+
+} //namespace Glom

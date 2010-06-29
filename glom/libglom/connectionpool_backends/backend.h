@@ -180,6 +180,12 @@ protected:
   /** This method is called to create a new database on the
    * database server. */
   virtual bool create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error) = 0;
+  
+  /** Save a backup of the database in a tarball.
+   * This backup can later be used to recreate the database,
+   * for instance with a later version of PostgreSQL.
+   */
+  virtual bool save_backup(const SlotProgress& slot_progress, const std::string& filepath_output, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name) = 0;
 };
 
 } // namespace ConnectionPoolBackends

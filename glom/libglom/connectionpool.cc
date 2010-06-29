@@ -415,6 +415,12 @@ void ConnectionPool::set_user(const Glib::ustring& value)
   invalidate_connection();
 }
 
+bool ConnectionPool::save_backup(const SlotProgress& slot_progress, const std::string& filepath_output)
+{
+  g_assert(m_backend.get());
+  return m_backend->save_backup(slot_progress, filepath_output, m_user, m_password, m_database);
+}
+  
 void ConnectionPool::set_password(const Glib::ustring& value)
 {
   m_password = value;

@@ -169,6 +169,7 @@ private:
   void on_menu_developer_translations();
   void on_menu_developer_active_platform_normal();
   void on_menu_developer_active_platform_maemo();
+  void on_menu_developer_export_backup();
   void on_menu_developer_show_layout_toolbar();
 
   void on_window_translations_hide();

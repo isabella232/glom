@@ -39,18 +39,22 @@ public:
 
   /** Return the version number of the connected postgres server.
    * This can be used to adapt to different server features.
-   * 
+   *
    * @result The version, or 0 if no connection has been made.
    */
   float get_postgres_server_version() const;
 
-  /** Check whether the libgda postgres provider is really available, 
+  /** Check whether the libgda postgres provider is really available,
    * so we can connect to postgres servers,
    * in case the distro package has incorrect dependencies.
    *
    * @results True if everything is OK.
    */
   static bool check_postgres_gda_client_is_available();
+
+  virtual bool save_backup(const SlotProgress& slot_progress, const std::string& filepath_output, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name);
+
+  static std::string get_path_to_postgres_executable(const std::string& program);
 
 private:
   virtual Field::sql_format get_sql_format() const { return Field::SQL_FORMAT_POSTGRES; }
@@ -65,8 +69,15 @@ protected:
 
   /** Attempt to connect to the database with the specified criteria.
    * @param error An error if the correction failed.
-   */ 
-  Glib::RefPtr<Gnome::Gda::Connection> attempt_connect(const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error) throw();
+   */
+  Glib::RefPtr<Gnome::Gda::Connection> attempt_connect(const Glib::ustring& port, const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error) throw();
+
+
+protected:
+  static Glib::ustring port_as_string(int port_num);
+
+  Glib::ustring m_host;
+  int m_port;
 
 private:
   float m_postgres_server_version;
@@ -77,4 +88,3 @@ private:
 } //namespace Glom
 
 #endif //GLOM_BACKEND_POSTGRES_H
-

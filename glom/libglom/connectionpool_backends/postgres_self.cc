@@ -18,8 +18,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <config.h> // For POSTGRES_UTILS_PATH
-
 #include <libglom/connectionpool_backends/postgres_self.h>
 #include <libglom/utils.h>
 #include <libglom/spawn_with_feedback.h>
@@ -36,7 +34,7 @@
 # include <winsock2.h>
 #else
 # include <sys/types.h>
-# include <sys/socket.h> 
+# include <sys/socket.h>
 # include <errno.h>
 # include <netinet/in.h> //For sockaddr_in
 #endif
@@ -46,22 +44,6 @@
 // Uncomment to see debug messages
 //#define GLOM_CONNECTION_DEBUG
 
-namespace
-{
-
-static Glib::ustring port_as_string(int port_num)
-{
-  Glib::ustring result;
-  char* cresult = g_strdup_printf("%d", port_num);
-  if(cresult)
-    result = cresult;
-  g_free(cresult);
-
-  return result;
-}
-
-} // anonymous namespace
-
 namespace Glom
 {
 
@@ -70,9 +52,9 @@ namespace ConnectionPoolBackends
 
 //TODO: Do we need these sameuser lines?
 
-// We need both <=8.3 and >=8.4 versions, because the ident line changed syntax 
+// We need both <=8.3 and >=8.4 versions, because the ident line changed syntax
 // incompatibly: http://www.postgresql.org/about/press/features84#security
- 
+
 #define DEFAULT_CONFIG_PG_HBA_LOCAL_8p3 \
 "# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD\n" \
 "\n" \
@@ -126,37 +108,9 @@ DEFAULT_CONFIG_PG_HBA_REMOTE_EXTRA
 #define DEFAULT_CONFIG_PG_IDENT ""
 
 PostgresSelfHosted::PostgresSelfHosted()
-: m_port(0),
-   m_network_shared(false)
+: m_network_shared(false)
 {
-}
-
-
-std::string PostgresSelfHosted::get_path_to_postgres_executable(const std::string& program)
-{
-#ifdef G_OS_WIN32
-  // Add the .exe extension on Windows:
-  std::string real_program = program + EXEEXT;
-    
-  // Have a look at the bin directory of the application executable first.
-  // The installer installs postgres there. postgres needs to be installed
-  // in a directory called bin for its relocation stuff to work, so that
-  // it finds the share data in share. Unfortunately it does not look into
-  // share/postgresql which would be nice to separate the postgres stuff
-  // from the other shared data. We can perhaps still change this later by
-  // building postgres with another prefix than /local/pgsql.
-  gchar* installation_directory = g_win32_get_package_installation_directory_of_module(0);
-  std::string test = Glib::build_filename(installation_directory, Glib::build_filename("bin", real_program));
-  g_free(installation_directory);
-
-  if(Glib::file_test(test, Glib::FILE_TEST_IS_EXECUTABLE))
-    return test;
-
-  // Look in PATH otherwise
-  return Glib::find_program_in_path(real_program);
-#else // G_OS_WIN32
-  return Glib::build_filename(POSTGRES_UTILS_PATH, program + EXEEXT);
-#endif // !G_OS_WIN32
+  m_host = "localhost";
 }
 
 void PostgresSelfHosted::set_self_hosting_data_uri(const std::string& data_uri)
@@ -194,14 +148,14 @@ bool PostgresSelfHosted::install_postgres(const SlotProgress& /* slot_progress *
 
   //Careful. Maybe you want a different version.
   //Also, Glom will start its own instance of PostgreSQL, on its own port, when it needs to,
-  //so there is no need to start a Glom service after installation at system startup, 
+  //so there is no need to start a Glom service after installation at system startup,
   //though it will not hurt Glom if you do that.
   const gchar *packages[] = { "postgresql-8.1", 0 };
   const bool result = gst_packages_install(parent_window->gobj() /* parent window */, packages);
   if(result)
   {
     std::cout << "Glom: gst_packages_install() reports success." << std::endl;
-    //Double-check, because gst_packages_install() incorrectly returns TRUE if it fails because 
+    //Double-check, because gst_packages_install() incorrectly returns TRUE if it fails because
     //a) synaptic is already running, or
     //b) synaptic did not know about the package (no warning is shown in this case.)
     //Maybe gst_packages_install() never returns FALSE.
@@ -226,7 +180,7 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
     std::cerr << "PostgresSelfHosted::initialize: m_self_hosting_data_uri is empty." << std::endl;
     return INITERROR_OTHER;
   }
-  
+
   if(initial_username.empty())
   {
     std::cerr << "PostgresSelfHosted::initialize(). Username was empty while attempting to create self-hosting database" << std::endl;
@@ -251,7 +205,7 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
   {
     std::cerr << "Error from g_mkdir_with_parents() while trying to create directory: " << dbdir << std::endl;
     perror("Error from g_mkdir_with_parents");
-    
+
     return INITERROR_COULD_NOT_CREATE_DIRECTORY;
   }
 
@@ -274,7 +228,7 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
   mkdir_succeeded = g_mkdir_with_parents(dbdir_data.c_str(), 0770);
   g_assert(mkdir_succeeded != -1);
 
-  
+
   // initdb creates a new postgres database cluster:
 
   //Get file:// URI for the tmp/ directory:
@@ -298,7 +252,7 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
 
   const int temp_pwfile_removed = g_remove(temp_pwfile.c_str()); //Of course, we don't want this to stay around. It would be a security risk.
   g_assert(temp_pwfile_removed == 0);
- 
+
   return result ? INITERROR_NONE : INITERROR_COULD_NOT_START_SERVER;
 }
 
@@ -320,7 +274,7 @@ Glib::ustring PostgresSelfHosted::get_postgresql_utils_version(const SlotProgres
   //Use a regex to get the version number:
   Glib::RefPtr<Glib::Regex> regex;
 
-  //We want the characters at the end:  
+  //We want the characters at the end:
   const gchar* VERSION_REGEX = "pg_ctl \\(PostgreSQL\\) (.*)";
 
   #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -332,7 +286,7 @@ Glib::ustring PostgresSelfHosted::get_postgresql_utils_version(const SlotProgres
   {
     std::cerr << "Glom: Glib::Regex::create() failed: " << ex.what() << std::endl;
     return result;
-  } 
+  }
   #else
   std::auto_ptr<Glib::Error> ex;
   regex = Glib::Regex::create(VERSION_REGEX, static_cast<Glib::RegexCompileFlags>(0), static_cast<Glib::RegexMatchFlags>(0), ex);
@@ -342,7 +296,7 @@ Glib::ustring PostgresSelfHosted::get_postgresql_utils_version(const SlotProgres
     return result;
   }
   #endif
- 
+
   if(!regex)
     return result;
 
@@ -360,7 +314,7 @@ Glib::ustring PostgresSelfHosted::get_postgresql_utils_version(const SlotProgres
     if(!str.empty())
       return str; //Found.
   }
- 
+
   return result;
 }
 
@@ -372,7 +326,7 @@ float PostgresSelfHosted::get_postgresql_utils_version_as_number(const SlotProgr
 
   Glib::RefPtr<Glib::Regex> regex;
 
-  //We want the characters at the end:  
+  //We want the characters at the end:
   const gchar* VERSION_REGEX = "^(\\d*)\\.(\\d*)";
 
   #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -384,7 +338,7 @@ float PostgresSelfHosted::get_postgresql_utils_version_as_number(const SlotProgr
   {
     std::cerr << "Glom: Glib::Regex::create() failed: " << ex.what() << std::endl;
     return result;
-  } 
+  }
   #else
   std::auto_ptr<Glib::Error> ex;
   regex = Glib::Regex::create(VERSION_REGEX, static_cast<Glib::RegexCompileFlags>(0), static_cast<Glib::RegexMatchFlags>(0), ex);
@@ -394,7 +348,7 @@ float PostgresSelfHosted::get_postgresql_utils_version_as_number(const SlotProgr
     return result;
   }
   #endif
- 
+
   if(!regex)
     return result;
 
@@ -482,7 +436,6 @@ bool PostgresSelfHosted::startup(const SlotProgress& slot_progress, bool network
   // -D specifies the data directory.
   // -c config_file= specifies the configuration file
   // -k specifies a directory to use for the socket. This must be writable by us.
-  // POSTGRES_UTILS_PATH is defined in config.h, based on the configure.
   // Make sure to use double quotes for the executable path, because the
   // CreateProcess() API used on Windows does not support single quotes.
   const std::string command_postgres_start = "\"" + get_path_to_postgres_executable("postgres") + "\" -D \"" + dbdir_data + "\" "
@@ -502,7 +455,7 @@ bool PostgresSelfHosted::startup(const SlotProgress& slot_progress, bool network
   //This is a big hack that we should avoid. murrayc.
   //
   //pg_ctl actually seems to return a 0 result code for "is running" and a 1 for not running, at least with Postgres 8.2,
-  //so maybe we can avoid this in future.  
+  //so maybe we can avoid this in future.
   //Please do test it with your postgres version, using "echo $?" to see the result code of the last command.
   const std::string second_command_success_text = "is running"; //TODO: This is not a stable API. Also, watch out for localisation.
 
@@ -515,7 +468,7 @@ bool PostgresSelfHosted::startup(const SlotProgress& slot_progress, bool network
   }
 
   m_port = available_port; //Remember it for later.
-  
+
   return true;
 }
 
@@ -535,13 +488,12 @@ bool PostgresSelfHosted::cleanup(const SlotProgress& slot_progress)
   const std::string dbdir_data = Glib::build_filename(dbdir, "data");
 
 
-  // TODO: Detect other instances on the same computer, and use a different port number, 
+  // TODO: Detect other instances on the same computer, and use a different port number,
   // or refuse to continue, showing an error dialog.
 
   // -D specifies the data directory.
   // -c config_file= specifies the configuration file
   // -k specifies a directory to use for the socket. This must be writable by us.
-  // POSTGRES_UTILS_PATH is defined in config.h, based on the configure.
   // We use "-m fast" instead of the default "-m smart" because that waits for clients to disconnect (and sometimes never succeeds).
   // TODO: Warn about connected clients on other computers? Warn those other users?
   // Make sure to use double quotes for the executable path, because the
@@ -581,7 +533,7 @@ bool PostgresSelfHosted::set_network_shared(const SlotProgress& slot_progress, b
   const std::string dbdir_uri_config = dbdir_uri + "/config";
   const char* default_conf_contents = 0;
 
-  // Choose the configuration contents based on the postgresql version 
+  // Choose the configuration contents based on the postgresql version
   // and whether we want to be network-shared:
   const float postgresql_version = get_postgresql_utils_version_as_number(slot_progress);
   //std::cout << "DEBUG: postgresql_version=" << postgresql_version << std::endl;
@@ -609,7 +561,7 @@ static bool on_timeout_delay(const Glib::RefPtr<Glib::MainLoop>& mainloop)
   //Allow our mainloop.run() to return:
   if(mainloop)
     mainloop->quit();
-    
+
   return false;
 }
 
@@ -630,13 +582,13 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ust
   const guint MAX_RETRIES_KNOWN_PASSWORD = 30; /* seconds */
   const guint MAX_RETRIES_EVER = 60; /* seconds */
   while(keep_trying)
-  { 
-    result = attempt_connect("localhost", port_as_string(m_port), database, username, password, ex);
-    if(!result && 
+  {
+    result = attempt_connect(port_as_string(m_port), database, username, password, ex);
+    if(!result &&
       ex.get() && (ex->get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER))
     {
       //It must be using a default password, so any failure would not be due to a wrong password.
-      //However, pg_ctl sometimes reports success before it is really ready to let us connect, 
+      //However, pg_ctl sometimes reports success before it is really ready to let us connect,
       //so in this case we can just keep trying until it works, with a very long timeout.
       count_retries++;
       const guint max_retries = m_network_shared ? MAX_RETRIES_EVER : MAX_RETRIES_KNOWN_PASSWORD;
@@ -646,20 +598,20 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ust
         continue;
       }
 
-      std::cout << "DEBUG: Glom::PostgresSelfHosted::connect(): Waiting and retrying the connection due to suspected too-early success of pg_ctl." << std::endl; 
+      std::cout << "DEBUG: Glom::PostgresSelfHosted::connect(): Waiting and retrying the connection due to suspected too-early success of pg_ctl." << std::endl;
 
       //Wait:
       Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
         sigc::connection connection_timeout = Glib::signal_timeout().connect(
-        sigc::bind(sigc::ptr_fun(&on_timeout_delay), sigc::ref(mainloop)), 
+        sigc::bind(sigc::ptr_fun(&on_timeout_delay), sigc::ref(mainloop)),
         1000 /* 1 second */);
       mainloop->run();
       connection_timeout.disconnect();
-      
+
       keep_trying = true;
       continue;
     }
-    
+
     keep_trying = false;
   }
 
@@ -669,7 +621,7 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ust
 
 bool PostgresSelfHosted::create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error)
 {
-  return attempt_create_database(database_name, "localhost", port_as_string(m_port), username, password, error);
+  return attempt_create_database(database_name, m_host, port_as_string(m_port), username, password, error);
 }
 
 int PostgresSelfHosted::discover_first_free_port(int start_port, int end_port)
@@ -708,7 +660,7 @@ int PostgresSelfHosted::discover_first_free_port(int start_port, int end_port)
       #endif // G_OS_WIN32
 
       //Some BSDs don't have this.
-      //But watch out - if you don't include errno.h then this won't be 
+      //But watch out - if you don't include errno.h then this won't be
       //defined on Linux either, but you really do need to check for it.
       #ifdef EADDRINUSE
       available = (errno != EADDRINUSE);

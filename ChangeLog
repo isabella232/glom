@@ -9,6 +9,19 @@
 	
 2010-06-29  Murray Cumming  <murrayc@murrayc.com>
 
+	* glom/application.[h|cc]: Developer menu: Added an Export Backup menu item.
+
+	* glom/libglom/connectionpool_backends/postgres_central.[h|cc]:
+	* glom/libglom/connectionpool_backends/postgres_self.[h|cc]: Moved
+    m_host and m_port into the base class:
+	* glom/libglom/connectionpool_backends/postgres.[h|cc]:
+    because they are used in both derived classes. Therefore remove port
+    parameter from attempt_connect().
+    Also move get_path_to_postgres_executable() and port_as_string() there
+    so they can be used in the base class.
+
+2010-06-29  Murray Cumming  <murrayc@murrayc.com>
+
 	Improve stderr message.
 
 	* glom/libglom/spawn_with_feedback.cc:

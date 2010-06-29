@@ -49,9 +49,7 @@ namespace ConnectionPoolBackends
 {
 
 PostgresCentralHosted::PostgresCentralHosted()
-:
-  m_port(0),
-  m_try_other_ports(true)
+: m_try_other_ports(true)
 {
   m_list_ports.push_back("5432"); //Ubuntu Breezy seems to default to this for Postgres 7.4, and this is probably the default for most postgres installations, including Fedora.
 
@@ -111,7 +109,7 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::connect(const Glib::
   if(m_port == 0)
     port = *iter_port ++;
 
-  connection = attempt_connect(m_host, port, database, username, password, error);
+  connection = attempt_connect(port, database, username, password, error);
 
   // Remember port if only the database was missing
   bool connection_possible = false;
@@ -127,7 +125,7 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::connect(const Glib::
     while(!connection && iter_port != m_list_ports.end())
     {
       port = *iter_port;
-      connection = attempt_connect(m_host, port, database, username, password, error);
+      connection = attempt_connect(port, database, username, password, error);
 
       // Remember port if only the database was missing
       if(error.get() && error->get_failure_type() == ExceptionConnection::FAILURE_NO_DATABASE)

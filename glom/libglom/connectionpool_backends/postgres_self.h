@@ -59,8 +59,6 @@ public:
    */
   static bool install_postgres(const SlotProgress& slot_progress);
 
-  static std::string get_path_to_postgres_executable(const std::string& program);
-
 private:
   virtual InitErrors initialize(const SlotProgress& slot_progress, const Glib::ustring& initial_username, const Glib::ustring& password, bool network_shared = false);
 
@@ -83,8 +81,8 @@ private:
   //bool directory_exists_filepath(const std::string& filepath);
   bool directory_exists_uri(const std::string& uri);
 
-  /** Run the command-line with the --version option to discover what version 
-   * of PostgreSQL is installed, so we can use the appropriate configuration 
+  /** Run the command-line with the --version option to discover what version
+   * of PostgreSQL is installed, so we can use the appropriate configuration
    * options when self-hosting.
    */
   Glib::ustring get_postgresql_utils_version(const SlotProgress& slot_progress);
@@ -92,7 +90,7 @@ private:
   float get_postgresql_utils_version_as_number(const SlotProgress& slot_progress);
 
   std::string m_self_hosting_data_uri;
-  int m_port;
+
   bool m_network_shared;
 };
 
@@ -101,4 +99,3 @@ private:
 } //namespace Glom
 
 #endif //GLOM_BACKEND_POSTGRES_SELF_H
-

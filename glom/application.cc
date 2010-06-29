@@ -1,6 +1,6 @@
 /* Glom
  *
- * Copyright (C) 2001-2004 Murray Cumming
+ * Copyright (C) 2001-2010 Murray Cumming
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -544,6 +544,10 @@ void Application::init_menus()
   m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &Application::on_menu_developer_active_platform_maemo));
 
 
+  action = Gtk::Action::create("GlomAction_Menu_Developer_ExportBackup", _("_Export Backup"));
+  m_listDeveloperActions.push_back(action);
+  m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &Application::on_menu_developer_export_backup));
+
   m_action_show_layout_toolbar = Gtk::ToggleAction::create("GlomAction_Menu_Developer_ShowLayoutToolbar", _("_Show Layout Toolbar"));
   m_listDeveloperActions.push_back(m_action_show_layout_toolbar);
   m_refActionGroup_Others->add(m_action_show_layout_toolbar, sigc::mem_fun(*this, &Application::on_menu_developer_show_layout_toolbar));
@@ -600,6 +604,7 @@ void Application::init_menus()
     "          <menuitem action='GlomAction_Menu_Developer_ActivePlatform_Normal' />"
     "          <menuitem action='GlomAction_Menu_Developer_ActivePlatform_Maemo' />"
     "        </menu>"
+    "        <menuitem action='GlomAction_Menu_Developer_ExportBackup' />"
     "        <menuitem action='GlomAction_Menu_Developer_ShowLayoutToolbar' />"
     "      </menu>"
 #endif // !GLOM_ENABLE_CLIENT_ONLY
@@ -2478,6 +2483,24 @@ void Application::on_menu_developer_active_platform_maemo()
    document->set_active_layout_platform("maemo");
 
   m_pFrame->show_table_refresh();
+}
+
+void Application::on_menu_developer_export_backup()
+{
+  Gtk::FileChooserDialog dialog(*this, _("Save Backup"), Gtk::FILE_CHOOSER_ACTION_CREATE_FOLDER);
+  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dialog.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_ACCEPT); 
+  const int result = dialog.run();
+  if(result != Gtk::RESPONSE_ACCEPT)
+    return;
+    
+  const std::string& filepath_output = dialog.get_filename() + G_DIR_SEPARATOR + "backup";
+  if(filepath_output.empty())
+    return; 
+    
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  const bool saved = connection_pool->save_backup(ConnectionPool::SlotProgress() /* TODO */, filepath_output);
+  std::cout << "debug: saved=" << saved << std::endl;
 }
 
 void Application::on_menu_developer_show_layout_toolbar()
