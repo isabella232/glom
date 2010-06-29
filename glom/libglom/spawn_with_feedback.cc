@@ -345,7 +345,7 @@ static std::auto_ptr<const SpawnInfo> spawn_async(const Glib::ustring& command_l
 
 /**
  * @param return_status: The return value of the command.
- * @result Whether we successfully ended the async spawn. 
+ * @result Whether we successfully ended the async spawn.
  */
 static bool spawn_async_end(std::auto_ptr<const SpawnInfo> info, std::string* stdout_text = 0, std::string* stderr_text = 0, int* return_status = 0)
 {
@@ -371,11 +371,11 @@ static int spawn_sync(const Glib::ustring& command_line, std::string* stdout_tex
     redirect_flags |= REDIRECT_STDERR;
 
   Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
-     
+
   std::auto_ptr<const SpawnInfo> info = spawn_async(command_line, redirect_flags);
   info->signal_finished().connect(
     sigc::bind(sigc::ptr_fun(&on_spawn_info_finished), sigc::ref(mainloop) ) );
- 
+
   // Block until signal_finished is emitted:
   mainloop->run();
 
@@ -390,9 +390,9 @@ static int spawn_sync(const Glib::ustring& command_line, std::string* stdout_tex
 bool execute_command_line_and_wait(const std::string& command, const SlotProgress& slot_progress)
 {
   //Show UI progress feedback while we wait for the command to finish:
-  
+
   std::auto_ptr<const Impl::SpawnInfo> info = Impl::spawn_async(command, 0);
-  
+
   Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
   info->signal_finished().connect(
     sigc::bind(sigc::ptr_fun(&on_spawn_info_finished), sigc::ref(mainloop) ) );
@@ -408,7 +408,7 @@ bool execute_command_line_and_wait(const std::string& command, const SlotProgres
 
   //Stop the timeout callback:
   timeout_connection.disconnect();
-  
+
   int return_status = false;
   const bool returned = Impl::spawn_async_end(info, 0, 0, &return_status);
   if(!returned)
@@ -423,9 +423,9 @@ bool execute_command_line_and_wait(const std::string& command, const SlotProgres
   output = std::string();
 
   //Show UI progress feedback while we wait for the command to finish:
-  
+
   std::auto_ptr<const Impl::SpawnInfo> info = Impl::spawn_async(command, Impl::REDIRECT_STDOUT | Impl::REDIRECT_STDERR);
-  
+
   Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
   info->signal_finished().connect(
     sigc::bind(sigc::ptr_fun(&on_spawn_info_finished), sigc::ref(mainloop) ) );
@@ -441,7 +441,7 @@ bool execute_command_line_and_wait(const std::string& command, const SlotProgres
 
   //Stop the timeout callback:
   timeout_connection.disconnect();
-  
+
   int return_status = false;
   std::string stdout_text, stderr_text;
   const bool returned = Impl::spawn_async_end(info, &stdout_text, &stderr_text, &return_status);
@@ -457,7 +457,7 @@ bool execute_command_line_and_wait(const std::string& command, const SlotProgres
   if(!stderr_text.empty())
   {
     std::cerr << "Glom: execute_command_line_and_wait(): command produced stderr text: " << std::endl <<
-      "  command: " << command << std::endl << 
+      "  command: " << command << std::endl <<
       "  error text: " << stderr_text << std::endl;
   }
 
@@ -474,17 +474,17 @@ namespace
     Glib::ustring stored_env_language;
     if(!success_text.empty())
     {
-      // If we are going to check the text output of the second command, 
+      // If we are going to check the text output of the second command,
       // then we should make sure that we get a fairly canonical version of that text,
       // so we set the LANG for this command.
-      // We have to set LANGUAGE (a GNU extension) as well as LANG, because it 
-      // is probably defined on the system already and that definition would override our LANG:  
+      // We have to set LANGUAGE (a GNU extension) as well as LANG, because it
+      // is probably defined on the system already and that definition would override our LANG:
       // (Note that we can not just do "LANG=C;the_command", as on the command line, because g_spawn() does not support that.)
 
       #ifdef GLOM_SPAWN_DEBUG
       std::cout << std::endl << "debug: temporarily setting LANG and LANGUAGE environment variables to \"C\"" << std::endl;
       #endif //GLOM_SPAWN_DEBUG
-      
+
       stored_env_lang = Glib::getenv("LANG");
       stored_env_language = Glib::getenv("LANGUAGE");
       Glib::setenv("LANG", "C", true /* overwrite */);
@@ -505,7 +505,7 @@ namespace
     catch(const Impl::SpawnError& ex)
     {
       std::cerr << "Glom::execute_command_line_and_wait_until_second_command_returns_success(): Exception while calling Glib::spawn_command_line_sync(): " << ex.what() << std::endl;
-      // TODO: We should cancel the whole call if this fails three times in 
+      // TODO: We should cancel the whole call if this fails three times in
       // a row or so.
     }
 #else
@@ -518,7 +518,7 @@ namespace
       #ifdef GLOM_SPAWN_DEBUG
       std::cout << std::endl << "debug: restoring the LANG and LANGUAGE environment variables." << std::endl;
       #endif //GLOM_SPAWN_DEBUG
-      
+
       Glib::setenv("LANG", stored_env_lang, true /* overwrite */);
       Glib::setenv("LANGUAGE", stored_env_language, true /* overwrite */);
     }
@@ -531,7 +531,7 @@ namespace
         #ifdef GLOM_SPAWN_DEBUG
         std::cout << " debug: output=" << stdout_output << ", waiting for=" << success_text << std::endl;
         #endif //GLOM_SPAWN_DEBUG
-        
+
         if(stdout_output.find(success_text) == std::string::npos)
           success = false;
       }
@@ -541,7 +541,7 @@ namespace
         #ifdef GLOM_SPAWN_DEBUG
         std::cout << "debug: Success, do response" << std::endl;
         #endif //GLOM_SPAWN_DEBUG
-        
+
         // Exit from run() in execute_command_line_and_wait_until_second_command_returns_success().
         mainloop->quit();
         // Cancel timeout. Actually, we also could return true here since
@@ -568,7 +568,7 @@ static bool on_timeout_delay(const Glib::RefPtr<Glib::MainLoop>& mainloop)
   //Allow our mainloop.run() to return:
   if(mainloop)
     mainloop->quit();
-    
+
   return false;
 }
 */
@@ -578,7 +578,7 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
   #ifdef GLOM_SPAWN_DEBUG
   std::cout << "debug: Command: " << command << std::endl;
   #endif //GLOM_SPAWN_DEBUG
-  
+
   std::auto_ptr<const Impl::SpawnInfo> info = Impl::spawn_async(command, Impl::REDIRECT_STDERR);
 
   // While we wait for the second command to finish we
@@ -604,17 +604,17 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
   std::string stderr_text;
   int return_status = 0;
   const bool success = Impl::spawn_async_end(info, 0, &stderr_text, &return_status);
-  
+
   if(success && (return_status == EXIT_SUCCESS))
   {
-    /* Don't sleep here. Instead we just keep trying to connect until it succeeds, 
+    /* Don't sleep here. Instead we just keep trying to connect until it succeeds,
      * timing out during that if necessary.
      *
      *
     //Sleep for a bit more, because I think that pg_ctl sometimes reports success too early.
     Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
     sigc::connection connection_timeout = Glib::signal_timeout().connect(
-     sigc::bind(sigc::ptr_fun(&on_timeout_delay), sigc::ref(mainloop)), 
+     sigc::bind(sigc::ptr_fun(&on_timeout_delay), sigc::ref(mainloop)),
      8000);
     mainloop->run();
 
@@ -640,8 +640,9 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
       error_dialog->set_secondary_text("The command was:\n\n" + Glib::Markup::escape_text(command) + (stderr_text.empty() ? Glib::ustring("") : ("\n\n<small>" + Glib::Markup::escape_text(stderr_text) + "</small>")), true);
       error_dialog->run();
       */
-      
-      std::cerr << "Glom:  execute_command_line_and_wait_until_second_command_returns_success(): Child command failed. The command was: " << std::endl << stderr_text << std::endl;
+
+      std::cerr << "Glom:  execute_command_line_and_wait_until_second_command_returns_success(): Command failed. The command was: " << command << std::endl <<
+        "and the error was: " << stderr_text << std::endl;
     }
     else
     {
@@ -657,4 +658,3 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
 } //Spawn
 
 } //Glom
-
