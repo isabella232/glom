@@ -1,26 +1,35 @@
+2010-06-29  Murray Cumming  <murrayc@murrayc.com>
+
+	Improve stderr message.
+
+	* glom/libglom/spawn_with_feedback.cc:
+    execute_command_line_and_wait_until_second_command_returns_success():
+    Correct the error message when a command (such as postgres) fails. As
+    noticed in bug #617504.
+
 2010-06-21  Murray Cumming  <murrayc@murrayc.com>
 
 	Privs::get_database_users(): Check for an empty DataModel.
 
-	* glom/libglom/privs.cc: Check that the user (listed in the group) could 
-	really be found. 
+	* glom/libglom/privs.cc: Check that the user (listed in the group) could
+	really be found.
 
 2010-06-21  Murray Cumming  <murrayc@murrayc.com>
 
 	Use G_STRFUNC with std::cerr and std::cout.
 
-	* *.h/cc: Replace hard-coded copy/pastes of method names with 
+	* *.h/cc: Replace hard-coded copy/pastes of method names with
 	G_STRFUNC, with the help of regexxer.
 
 2010-06-21  Murray Cumming  <murrayc@murrayc.com>
 
 	Adapt use of Gda::ServerOperation.
 
-	* glom/libglom/connectionpool_backends/backend.cc: add_column(), 
+	* glom/libglom/connectionpool_backends/backend.cc: add_column(),
 	* glom/libglom/connectionpool_backends/sqlite.cc:
-	add_column_to_server_operation(): set_value_at() is now templated in libgdamm, 
+	add_column_to_server_operation(): set_value_at() is now templated in libgdamm,
 	so there is no need for the ugly (somebool ? "TRUE" : "FALSE") code.
-	
+
 2010-06-21  David King  <amigadave@amigadave.com>
 
 	Explicitly link with libdl for Python module loading test
@@ -31,21 +40,21 @@
 2010-06-20  Murray Cumming  <murrayc@murrayc.com>
 
 	libglom: ConnectionPool: Simplify code.
-	
+
 	* glom/libglom/connectionpool_backends/backend.[h|cc]:
 	* glom/libglom/connectionpool_backends/postgres.[h|cc]:
 	* glom/libglom/connectionpool_backends/postgres_central.[h|cc]:
 	* glom/libglom/connectionpool_backends/postgres_self.[h|cc]:
-	* glom/libglom/connectionpool_backends/sqlite.[h|cc]: Remove the 
-	query_execute(), create_server_operation(), perform_server_operation(), 
-	begin_transaction(), commit_transaction() and rollback_transaction() 
+	* glom/libglom/connectionpool_backends/sqlite.[h|cc]: Remove the
+	query_execute(), create_server_operation(), perform_server_operation(),
+	begin_transaction(), commit_transaction() and rollback_transaction()
 	convenience methods, which just hide the no-exceptions ifdefs.
 	But gtkmm-3.0 does not support that anyway, so we don't need it.
 	Just call the libgdamm methods directly.
 	add_column(), drop_column(), change_columns(), connect():
 	Remove the error output parameters which were there for the same reason.
 	Now they just throw.
-	* glom/libglom/connectionpool.[h|cc]: Adapted code, hopefully making it 
+	* glom/libglom/connectionpool.[h|cc]: Adapted code, hopefully making it
 	simpler.
 
 2010-06-19  Murray Cumming  <murrayc@murrayc.com>
@@ -55,7 +64,7 @@
 	* glom/base_db.cc:
 	* glom/libglom/python_embed/py_glom_relatedrecord.cc:
 	* glom/libglom/utils.cc:
-	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc: Use the typedef 
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc: Use the typedef
 	instead of guint. It is very lengthy, but it is correct.
 
 2010-06-19  Murray Cumming  <murrayc@murrayc.com>
@@ -64,7 +73,7 @@
 
 	* configure.ac: Don't check for avahi-ui.
 	* glom/application.cc: Don't include avahi-ui.h
-	
+
 	This is lucky, because avahi-ui still has no support for GTK+ 3.
 
 2010-06-15  Murray Cumming  <murrayc@murrayc.com>
@@ -83,7 +92,7 @@
 	* glom/mode_data/box_data_portal.cc:
 	* glom/mode_design/dialog_database_preferences.cc:
 	* glom/mode_design/fields/box_db_table_definition.cc:
-	* glom/report_builder.cc: Replace use of add_id() with the new add_field_id(), 
+	* glom/report_builder.cc: Replace use of add_id() with the new add_field_id(),
 	which lets us specify the table too.
 
 2010-06-15  Murray Cumming  <murrayc@murrayc.com>
@@ -94,8 +103,8 @@
 	* glom/libglom/db_utils.cc:
 	* glom/libglom/python_embed/py_glom_relatedrecord.cc:
 	* glom/libglom/utils.cc:
-	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc: 
-	SqlBuilder::add_field_id() was renamed to add_field_value_id(), though I now 
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
+	SqlBuilder::add_field_id() was renamed to add_field_value_id(), though I now
 	notice that no value is involved when it is used for SELECT queries.
 
 2010-06-13  Murray Cumming  <murrayc@murrayc.com>
@@ -124,13 +133,13 @@
 	* glom/utility_widgets/db_adddel/db_adddel.cc:
 	* glom/utility_widgets/flowtable.cc:
 	* glom/utility_widgets/layouttoolbar.cc:
-	* glom/xsl_utils.cc: Remove now-unnecessary gtk+/gtk* includes, 
+	* glom/xsl_utils.cc: Remove now-unnecessary gtk+/gtk* includes,
 	replacing some with use of C++ API. These caused warnings due to GSEAL.
 
 2010-06-13  Murray Cumming  <murrayc@murrayc.com>
 
 	Depend on avahi-ui-3.0 instead of avahi-ui, though it does not officially exist.
-    
+
 	* configure.ac: avahi-ui links to gtk-2.0, so depending on avahi-ui-3.0 is
 	better even if it currently only exists via my patch (emailed to d-d-l and
 	Lennart because I can't login to avahi.org's trac).
@@ -148,15 +157,15 @@
 	* configure.ac: Use gtkmm-3.0 instead of gtkmm-2.4
 	* glom/mode_design/print_layouts/window_print_layout_edit.cc:
 	Use get_related_action() instead of get_action().
-	* glom/utility_widgets/cellrendererlist/cellrendererlist.[h|cc]: 
-	Simplify the use of the editing_started signal now that the inheritance is 
+	* glom/utility_widgets/cellrendererlist/cellrendererlist.[h|cc]:
+	Simplify the use of the editing_started signal now that the inheritance is
 	fixed in gtkmm-3.0.
-	* glom/utility_widgets/db_adddel/db_adddel.cc: Use get_first_cell() instead of 
+	* glom/utility_widgets/db_adddel/db_adddel.cc: Use get_first_cell() instead of
 	get_first_cell_renderer().
 	* glom/utility_widgets/db_adddel/glom_db_treemodel.[h|cc]: iter_is_valid():
-	This is no longer virtual, and no longer exists in the base class, so don't 
+	This is no longer virtual, and no longer exists in the base class, so don't
 	call the base class implementation.
-	
+
 This is the master branch, for glom 2.0, using gtkmm-3.0.
 See also the glom-1-16 branch, which uses gtkmm-2.4.
 
@@ -170,14 +179,14 @@ See also the glom-1-16 branch, which uses gtkmm-2.4.
 
 	libglom: Utils: Avoid SQL strings for extra_join for doubly-related records.
 
-	* glom/libglom/data_structure/foundset.[h|cc]: Remove the extra_group_by 
+	* glom/libglom/data_structure/foundset.[h|cc]: Remove the extra_group_by
 	member variable.
-	* glom/base_db.cc: set_found_set_where_clause_for_portal(): Do not create 
+	* glom/base_db.cc: set_found_set_where_clause_for_portal(): Do not create
 	the SQL GROUP BY string here.
-	* glom/libglom/utils.[h|cc]: build_sql_select_with_where_clause(): Remove 
-	the extra_group_by parameter, instead grouping by all fields if there is 
+	* glom/libglom/utils.[h|cc]: build_sql_select_with_where_clause(): Remove
+	the extra_group_by parameter, instead grouping by all fields if there is
 	an extra_join_by, because there is a 1-to-1 correlation.
-	Also take extra_join as a Relationship instead of a SQL JOIN string, and 
+	Also take extra_join as a Relationship instead of a SQL JOIN string, and
 	reuse the existing code to define a join from a relationship.
 	* glom/frame_glom.cc:
 	* glom/libglom/data_structure/foundset.cc:
@@ -193,8 +202,8 @@ See also the glom-1-16 branch, which uses gtkmm-2.4.
 
 	Document: get_field_used_in_relationship_to_one(): const correction.
 
-	* glom/libglom/document/document.[h|cc]: 
-	get_field_used_in_relationship_to_one(): Make the relationship parameter 
+	* glom/libglom/document/document.[h|cc]:
+	get_field_used_in_relationship_to_one(): Make the relationship parameter
 	const and adapt other code.
 
 2010-05-25  Murray Cumming  <murrayc@murrayc.com>
@@ -202,8 +211,8 @@ See also the glom-1-16 branch, which uses gtkmm-2.4.
 	libglom: build_sql_select_add_fields_to_get(): Define joins here.
 
 	* glom/libglom/data_structure/layout/usesrelationship.[h|cc]:
-	Remove add_sql_join_alias_definition(), moving its code into 
-	Utils::build_sql_select_add_fields_to_get() because that was the only code 
+	Remove add_sql_join_alias_definition(), moving its code into
+	Utils::build_sql_select_add_fields_to_get() because that was the only code
 	that called it.
 	get/set_relationship(), get/set_related_relationship(): const corrections.
 	* several files: Adapt to const corrections.
@@ -211,9 +220,9 @@ See also the glom-1-16 branch, which uses gtkmm-2.4.
 2010-05-24  Murray Cumming  <murrayc@murrayc.com>
 
 	UsesRelationship: Correct use of SqlBuilder for related relationships.
-	
+
 	* glom/libglom/data_structure/layout/usesrelationship.cc:
-	add_sql_join_alias_definition(): Correct the join definition for 
+	add_sql_join_alias_definition(): Correct the join definition for
 	related relationships.
 
 2010-05-21  Murray Cumming  <murrayc@murrayc.com>
