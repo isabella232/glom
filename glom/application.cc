@@ -2487,6 +2487,7 @@ void Application::on_menu_developer_active_platform_maemo()
 
 void Application::on_menu_developer_export_backup()
 {
+  // Ask the user to choose a new directory name. This actually creates the directory:
   Gtk::FileChooserDialog dialog(*this, _("Save Backup"), Gtk::FILE_CHOOSER_ACTION_CREATE_FOLDER);
   dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   dialog.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_ACCEPT); 
@@ -2494,13 +2495,34 @@ void Application::on_menu_developer_export_backup()
   if(result != Gtk::RESPONSE_ACCEPT)
     return;
     
-  const std::string& filepath_output = dialog.get_filename() + G_DIR_SEPARATOR + "backup";
-  if(filepath_output.empty())
+  const std::string& path_dir = dialog.get_filename();
+  if(path_dir.empty())
     return; 
-    
-  ConnectionPool* connection_pool = ConnectionPool::get_instance();
-  const bool saved = connection_pool->save_backup(ConnectionPool::SlotProgress() /* TODO */, filepath_output);
-  std::cout << "debug: saved=" << saved << std::endl;
+        
+  //Save a copy of the document there:
+  Document* document = dynamic_cast<Document*>(get_document());
+  if(!document)
+    return;
+  
+  const std::string& filepath_document = Glib::build_filename(path_dir, "backup.glom");
+  document->set_allow_autosave(false); //Prevent saving while we modify the document:
+  const Glib::ustring fileuri_old = document->get_file_uri();
+  document->set_file_uri(Glib::filename_to_uri(filepath_document), true); //true = enforce file extension;
+  bool saved = document->save();
+  document->set_file_uri(fileuri_old);
+  document->set_allow_autosave(true);
+
+  if(saved)
+  {
+    //Save a backup of the data there:
+    const std::string& filepath_output = Glib::build_filename(path_dir, "backup");
+
+    ConnectionPool* connection_pool = ConnectionPool::get_instance();
+    saved = connection_pool->save_backup(ConnectionPool::SlotProgress() /* TODO */, filepath_output);
+  }
+
+  if(!saved)
+    ui_warning(_("Export Backup failed."), _("There was an error while exporting the backup."));
 }
 
 void Application::on_menu_developer_show_layout_toolbar()

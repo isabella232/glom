@@ -1,5 +1,18 @@
 2010-07-01  Murray Cumming  <murrayc@murrayc.com>
 
+	Add Save Backup menu item.
+	
+	* glom/libglom/connectionpool_backends/backend.[h|cc]:
+	* glom/libglom/connectionpool_backends/posgres.[h|cc]:
+	* glom/libglom/connectionpool_backends/sqlite.[h|cc]: Added save_backup() 
+	virtual method, using pg_dump for PostgreSQL.
+	* glom/libglom/connectionpool.[h|cc]: Add save_backup() here, calling the 
+	backend.
+	* glom/application.cc: Add a Developer/Export Backup menu item, to use 
+	this feature. This also saves the .glom file.
+		
+2010-07-01  Murray Cumming  <murrayc@murrayc.com>
+
 	Spawn functions: Catch some exceptions.
 	
 	* glom/libglom/spawn_with_feedback.cc(): 
