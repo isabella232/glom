@@ -1,3 +1,12 @@
+2010-07-01  Murray Cumming  <murrayc@murrayc.com>
+
+	Spawn functions: Catch some exceptions.
+	
+	* glom/libglom/spawn_with_feedback.cc(): 
+	execute_command_line(), execute_command_line_and_wait(): Catch exceptions 
+	so that these functions don't throw, simplifying caller code. For instance, 
+	a command may be malformed and rejected by the shell.
+	
 2010-06-29  Murray Cumming  <murrayc@murrayc.com>
 
 	Improve stderr message.
