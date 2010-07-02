@@ -1023,26 +1023,39 @@ bool Application::on_document_load()
     pDocument->set_allow_autosave(false);
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
-    // Example files are not supported in client only mode because they
+    // Example files and backup files are not supported in client only mode because they
     // would need to be saved, but saving support is disabled.
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     const bool is_example = pDocument->get_is_example_file();
+    const bool is_backup = pDocument->get_is_backup_file(); 
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-    if(pDocument->get_is_example_file())
+    const std::string original_uri = pDocument->get_file_uri();
+
+    if(is_example || is_backup)
     {
-#ifndef GLOM_ENABLE_CLIENT_ONLY
+#ifndef GLOM_ENABLE_CLIENT_ONLY  
       // Remember the URI to the example file to be able to prevent
       // adding the URI to the recently used files in document_history_add.
       // We want to add the document that is created from the example
       // instead of the example itself.
       // TODO: This is a weird hack. Find a nicer way. murrayc.
-      m_example_uri = pDocument->get_file_uri();
+      m_example_uri = original_uri;  
 
       pDocument->set_file_uri(Glib::ustring()); //Prevent it from defaulting to the read-only examples directory when offering saveas.
       //m_ui_save_extra_* are used by offer_saveas() if it's not empty:
       m_ui_save_extra_showextras = true;
-      m_ui_save_extra_title = _("Creating From Example File");
-      m_ui_save_extra_message = _("To use this example file you must save an editable copy of the file. A new database will also be created on the server.");
+      
+      if(is_example)
+      {
+        m_ui_save_extra_title = _("Creating From Example File");
+        m_ui_save_extra_message = _("To use this example file you must save an editable copy of the file. A new database will also be created on the server.");
+      }
+      else if(is_backup)
+      {
+        m_ui_save_extra_title = _("Creating From Backup File");
+        m_ui_save_extra_message = _("To use this backup file you must save an editable copy of the file. A new database will also be created on the server.");
+      }
+    
       m_ui_save_extra_newdb_title = "TODO";
       m_ui_save_extra_newdb_hosting_mode = Document::HOSTING_MODE_DEFAULT;
 
@@ -1063,6 +1076,7 @@ bool Application::on_document_load()
         pDocument->set_hosting_mode(m_ui_save_extra_newdb_hosting_mode);
         m_ui_save_extra_newdb_hosting_mode = Document::HOSTING_MODE_DEFAULT;
         pDocument->set_is_example_file(false);
+        pDocument->set_is_backup_file(false);
 
         // For self-hosting, we will choose a port later. For central
         // hosting, try several default ports. Don't use the values that
@@ -1128,7 +1142,7 @@ bool Application::on_document_load()
       bool test = false;
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-      if(is_example)
+      if(is_example || is_backup)
       {
         //The user has already had the chance to specify a new filename and database name.
         test = m_pFrame->connection_request_password_and_choose_new_database_name();
@@ -1182,7 +1196,7 @@ bool Application::on_document_load()
         //Create the example database:
         //connection_request_password_and_choose_new_database_name() has already change the database name to a new unused one:
         bool user_cancelled = false;
-        const bool test = recreate_database(user_cancelled);
+        const bool test = recreate_database_from_example(user_cancelled);
         if(!test)
         {
           // TODO: Do we need to call connection_pool->cleanup() here, for
@@ -1194,7 +1208,7 @@ bool Application::on_document_load()
             //Let the user try again.
             //A warning has already been shown.
             //TODO: No, I don't think there is a warning.
-            std::cerr << "Application::on_document_load(): recreate_database() failed." << std::endl;
+            std::cerr << "Application::on_document_load(): recreate_database_from_example() failed." << std::endl;
             return offer_new_or_existing();
           }
           else
@@ -1209,6 +1223,37 @@ bool Application::on_document_load()
           pDocument->set_modified(true);
           pDocument->set_userlevel(user_level); //Change it back.
         }
+      }
+      else if(is_backup)
+      {
+        std::string original_dir_path;
+         
+        Glib::RefPtr<Gio::File> gio_file = Gio::File::create_for_uri(original_uri);
+        if(gio_file)
+        {
+          Glib::RefPtr<Gio::File> parent = gio_file->get_parent();
+          if(parent)
+          {
+            try
+            {
+              original_dir_path = Glib::filename_from_uri(parent->get_uri());
+            }
+            catch(const Glib::Error& ex)
+            {
+              std::cerr << G_STRFUNC << ": Glib::filename_from_uri() failed: " << ex.what() << std::endl;
+            }
+          }
+        }
+        
+        if(original_dir_path.empty())
+        {
+          std::cerr << G_STRFUNC << ": original_dir_path is empty." << std::endl;
+          return false;
+        }
+      
+        //Restore the database from the backup:
+        std::cout << "DEBUG: original_dir_path=" << original_dir_path << std::endl;
+        const bool restored = connection_pool->convert_backup(ConnectionPool::SlotProgress() /* TODO */, original_dir_path);
       }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -1587,7 +1632,7 @@ void Application::on_menu_help_contents()
 #endif //GLOM_ENABLE_MAEMO
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-bool Application::recreate_database(bool& user_cancelled)
+bool Application::recreate_database_from_example(bool& user_cancelled)
 {
   //Create a database, based on the information in the current document:
   Document* pDocument = static_cast<Document*>(get_document());
@@ -1618,7 +1663,7 @@ bool Application::recreate_database(bool& user_cancelled)
     if(!error.get())
     {
 #endif // GLIBMM_EXCEPTIONS_ENABLED
-      g_warning("Application::recreate_database(): Failed because database exists already.");
+      g_warning("Application::recreate_database_from_example(): Failed because database exists already.");
 
       return false; //Connection to the database succeeded, because no exception was thrown. so the database exists already.
 #ifndef GLIBMM_EXCEPTIONS_ENABLED
@@ -1639,7 +1684,7 @@ bool Application::recreate_database(bool& user_cancelled)
       if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
       {
         user_cancelled = true; //Eventually, the user will cancel after retrying.
-        g_warning("Application::recreate_database(): Failed because connection to server failed, without specifying a database.");
+        g_warning("Application::recreate_database_from_example(): Failed because connection to server failed, without specifying a database.");
         return false;
       }
 #ifndef GLIBMM_EXCEPTIONS_ENABLED
@@ -1700,7 +1745,7 @@ bool Application::recreate_database(bool& user_cancelled)
   {
     const std::exception& ex = *error.get();
 #endif // GLIBMM_EXCEPTIONS_ENABLED
-    g_warning("Application::recreate_database(): Failed to connect to the newly-created database.");
+    g_warning("Application::recreate_database_from_example(): Failed to connect to the newly-created database.");
     return false;
   }
 
@@ -1721,7 +1766,7 @@ bool Application::recreate_database(bool& user_cancelled)
     dialog_progress->pulse();
     if(!table_creation_succeeded)
     {
-      g_warning("Application::recreate_database(): CREATE TABLE failed with the newly-created database.");
+      g_warning("Application::recreate_database_from_example(): CREATE TABLE failed with the newly-created database.");
       return false;
     }
   }
@@ -1749,13 +1794,13 @@ bool Application::recreate_database(bool& user_cancelled)
 
       if(!table_insert_succeeded)
       {
-        g_warning("Application::recreate_database(): INSERT of example data failed with the newly-created database.");
+        g_warning("Application::recreate_database_from_example(): INSERT of example data failed with the newly-created database.");
         return false;
       }
     //}
     //catch(const std::exception& ex)
     //{
-    //  std::cerr << "Application::recreate_database(): exception: " << ex.what() << std::endl;
+    //  std::cerr << "Application::recreate_database_from_example(): exception: " << ex.what() << std::endl;
       //HandleError(ex);
     //}
 
@@ -2171,6 +2216,7 @@ void Application::on_menu_file_save_as_example()
 
       const bool bTest = document->save();
       document->set_is_example_file(false);
+      document->set_is_backup_file(false);
       document->set_file_uri(file_uriOld);
       document->set_allow_autosave(true);
 
@@ -2509,17 +2555,17 @@ void Application::on_menu_developer_export_backup()
   document->set_allow_autosave(false); //Prevent saving while we modify the document:
   const Glib::ustring fileuri_old = document->get_file_uri();
   document->set_file_uri(Glib::filename_to_uri(filepath_document), true); //true = enforce file extension;
+  document->set_is_backup_file(true);
   bool saved = document->save();
+  
   document->set_file_uri(fileuri_old);
+  document->set_is_backup_file(false);
   document->set_allow_autosave(true);
 
   if(saved)
   {
-    //Save a backup of the data there:
-    const std::string& filepath_output = Glib::build_filename(path_dir, "backup");
-
     ConnectionPool* connection_pool = ConnectionPool::get_instance();
-    saved = connection_pool->save_backup(ConnectionPool::SlotProgress() /* TODO */, filepath_output);
+    saved = connection_pool->save_backup(ConnectionPool::SlotProgress() /* TODO */, path_dir);
   }
 
   if(!saved)

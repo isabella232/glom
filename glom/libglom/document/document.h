@@ -81,6 +81,9 @@ public:
 
   bool get_is_example_file() const;
   void set_is_example_file(bool value = true);
+  
+  bool get_is_backup_file() const;
+  void set_is_backup_file(bool value = true);
 
   /* Get version of the document format used for this document.
    *  This can increase when the file has been re-saved.
@@ -618,6 +621,7 @@ private:
   bool m_block_modified_set;
   bool m_allow_auto_save;
   bool m_is_example;
+  bool m_is_backup;
   guint m_document_format_version;
 
   bool m_opened_from_browse;

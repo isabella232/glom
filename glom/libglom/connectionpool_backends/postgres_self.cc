@@ -105,22 +105,14 @@ DEFAULT_CONFIG_PG_HBA_REMOTE_EXTRA
 #define PORT_POSTGRESQL_SELF_HOSTED_START 5433
 #define PORT_POSTGRESQL_SELF_HOSTED_END 5500
 
-#define DEFAULT_CONFIG_PG_IDENT ""
+static const char* DEFAULT_CONFIG_PG_IDENT = "";
+static const char* FILENAME_DATA = "data";
+static const char* FILENAME_BACKUP = "backup";
 
 PostgresSelfHosted::PostgresSelfHosted()
 : m_network_shared(false)
 {
   m_host = "localhost";
-}
-
-void PostgresSelfHosted::set_self_hosting_data_uri(const std::string& data_uri)
-{
-  if(m_self_hosting_data_uri != data_uri)
-  {
-    // Can't change data uri if we are running the server on another data uri
-    g_assert(!get_self_hosting_active());
-    m_self_hosting_data_uri = data_uri;
-  }
 }
 
 bool PostgresSelfHosted::get_self_hosting_active() const
@@ -175,9 +167,9 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
 {
   m_network_shared = network_shared;
 
-  if(m_self_hosting_data_uri.empty())
+  if(m_database_directory_uri.empty())
   {
-    std::cerr << "PostgresSelfHosted::initialize: m_self_hosting_data_uri is empty." << std::endl;
+    std::cerr << "PostgresSelfHosted::initialize: m_database_directory_uri is empty." << std::endl;
     return INITERROR_OTHER;
   }
 
@@ -188,34 +180,29 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
   }
 
   //Get the filepath of the directory that we should create:
-  const std::string dbdir_uri = m_self_hosting_data_uri;
+  const std::string dbdir_uri = m_database_directory_uri;
   //std::cout << "debug: dbdir_uri=" << dbdir_uri << std::endl;
 
-  if(directory_exists_uri(dbdir_uri))
+  if(file_exists_uri(dbdir_uri))
     return INITERROR_DIRECTORY_ALREADY_EXISTS;
 
   const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
   //std::cout << "debug: dbdir=" << dbdir << std::endl;
   g_assert(!dbdir.empty());
 
-  //0770 means "this user and his group can read and write and "execute" (meaning add sub-files) this non-executable file".
-  //The 0 prefix means that this is octal.
-  int mkdir_succeeded = g_mkdir_with_parents(dbdir.c_str(), 0770);
-  if(mkdir_succeeded == -1)
+  const bool dbdir_created = create_directory_filepath(dbdir);
+  if(!dbdir_created)
   {
-    std::cerr << "Error from g_mkdir_with_parents() while trying to create directory: " << dbdir << std::endl;
-    perror("Error from g_mkdir_with_parents");
+    std::cerr << "Couldn't create directory: " << dbdir << std::endl;
 
     return INITERROR_COULD_NOT_CREATE_DIRECTORY;
   }
 
   //Create the config directory:
-  const std::string dbdir_config = dbdir + "/config";
-  mkdir_succeeded = g_mkdir_with_parents(dbdir_config.c_str(), 0770);
-  if(mkdir_succeeded == -1)
+  const std::string dbdir_config = get_self_hosting_config_path(true /* create */);
+  if(dbdir_config.empty())
   {
-    std::cerr << "Error from g_mkdir_with_parents() while trying to create directory: " << dbdir_config << std::endl;
-    perror("Error from g_mkdir_with_parents");
+    std::cerr << "Couldn't create the config directory: " << dbdir << std::endl;
 
     return INITERROR_COULD_NOT_CREATE_DIRECTORY;
   }
@@ -224,10 +211,13 @@ Backend::InitErrors PostgresSelfHosted::initialize(const SlotProgress& slot_prog
   set_network_shared(slot_progress, m_network_shared); //Creates pg_hba.conf and pg_ident.conf
 
   //Check that there is not an existing data directory:
-  const std::string dbdir_data = dbdir + "/data";
-  mkdir_succeeded = g_mkdir_with_parents(dbdir_data.c_str(), 0770);
-  g_assert(mkdir_succeeded != -1);
+  const std::string dbdir_data = get_self_hosting_data_path(true /* create */);
+  if(dbdir_data.empty())
+  {
+    std::cerr << "Couldn't create the data directory: " << dbdir << std::endl;
 
+    return INITERROR_COULD_NOT_CREATE_DIRECTORY;
+  }
 
   // initdb creates a new postgres database cluster:
 
@@ -385,7 +375,7 @@ float PostgresSelfHosted::get_postgresql_utils_version_as_number(const SlotProgr
 }
 
 
-bool PostgresSelfHosted::startup(const SlotProgress& slot_progress, bool network_shared)
+Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_progress, bool network_shared)
 {
   m_network_shared = network_shared;
 
@@ -394,40 +384,51 @@ bool PostgresSelfHosted::startup(const SlotProgress& slot_progress, bool network
   //g_assert(!get_self_hosting_active());
 
   if(get_self_hosting_active())
-    return true; //Just do it once.
-
-  const std::string dbdir_uri = m_self_hosting_data_uri;
-
-  if(!(directory_exists_uri(dbdir_uri)))
   {
-    //TODO: Use a return enum or exception so we can tell the user about this:
-    std::cerr << "ConnectionPool::create_self_hosting(): The data directory could not be found: " << dbdir_uri << std::endl;
-    return false;
+    std::cerr << G_STRFUNC << ": Already started." << std::endl;
+    return STARTUPERROR_NONE; //Just do it once.
   }
+  
+  const std::string dbdir_uri = m_database_directory_uri;
 
-  //Attempt to ensure that the config files are correct:
-  set_network_shared(slot_progress, m_network_shared); //Creates pg_hba.conf and pg_ident.conf
+  if(!(file_exists_uri(dbdir_uri)))
+  {
+    std::cerr << "ConnectionPool::create_self_hosting(): The directory could not be found: " << dbdir_uri << std::endl;
+    return STARTUPERROR_FAILED_UNKNOWN_REASON;
+  }
 
   const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
   g_assert(!dbdir.empty());
 
-  const std::string dbdir_data = Glib::build_filename(dbdir, "data");
-  const std::string dbdir_data_uri = Glib::filename_to_uri(dbdir_data);
-  if(!(directory_exists_uri(dbdir_data_uri)))
+  const std::string dbdir_data = Glib::build_filename(dbdir, FILENAME_DATA);
+  const Glib::ustring dbdir_data_uri = Glib::filename_to_uri(dbdir_data);
+  if(!(file_exists_uri(dbdir_data_uri)))
   {
-    //TODO: Use a return enum or exception so we can tell the user about this:
-    std::cerr << "ConnectionPool::create_self_hosting(): The data sub-directory could not be found." << dbdir_data_uri << std::endl;
-    return false;
+    const std::string dbdir_backup = Glib::build_filename(dbdir, FILENAME_BACKUP);
+    const Glib::ustring dbdir_backup_uri = Glib::filename_to_uri(dbdir_backup);
+    if(file_exists_uri(dbdir_backup_uri))
+    {
+      std::cerr << G_STRFUNC << ": There is no data, but there is backup data." << std::endl;
+      //Let the caller convert the backup to real data and then try again:
+      return STARTUPERROR_FAILED_NO_DATA_HAS_BACKUP_DATA;
+    }
+    else
+    {
+      std::cerr << "ConnectionPool::create_self_hosting(): The data sub-directory could not be found." << dbdir_data_uri << std::endl;
+      return STARTUPERROR_FAILED_NO_DATA;
+    }
   }
+  
+  //Attempt to ensure that the config files are correct:
+  set_network_shared(slot_progress, m_network_shared); //Creates pg_hba.conf and pg_ident.conf
 
 
   const int available_port = discover_first_free_port(PORT_POSTGRESQL_SELF_HOSTED_START, PORT_POSTGRESQL_SELF_HOSTED_END);
   //std::cout << "ConnectionPool::create_self_hosting():() : debug: Available port for self-hosting: " << available_port << std::endl;
   if(available_port == 0)
   {
-    //TODO: Use a return enum or exception so we can tell the user about this:
     std::cerr << "ConnectionPool::create_self_hosting(): No port was available between " << PORT_POSTGRESQL_SELF_HOSTED_START << " and " << PORT_POSTGRESQL_SELF_HOSTED_END << std::endl;
-    return false;
+    return STARTUPERROR_FAILED_UNKNOWN_REASON;
   }
 
   //TODO: Performance:
@@ -464,12 +465,12 @@ bool PostgresSelfHosted::startup(const SlotProgress& slot_progress, bool network
   if(!result)
   {
     std::cerr << "Error while attempting to self-host a database." << std::endl;
-    return false;
+    return STARTUPERROR_FAILED_UNKNOWN_REASON;
   }
 
   m_port = available_port; //Remember it for later.
 
-  return true;
+  return STARTUPERROR_NONE;
 }
 
 bool PostgresSelfHosted::cleanup(const SlotProgress& slot_progress)
@@ -481,11 +482,11 @@ bool PostgresSelfHosted::cleanup(const SlotProgress& slot_progress)
   if(!get_self_hosting_active())
     return true; //Don't try to stop it if we have not started it.
 
-  const std::string dbdir_uri = m_self_hosting_data_uri;
+  const std::string dbdir_uri = m_database_directory_uri;
   const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
   g_assert(!dbdir.empty());
 
-  const std::string dbdir_data = Glib::build_filename(dbdir, "data");
+  const std::string dbdir_data = Glib::build_filename(dbdir, FILENAME_DATA);
 
 
   // TODO: Detect other instances on the same computer, and use a different port number,
@@ -527,7 +528,7 @@ bool PostgresSelfHosted::set_network_shared(const SlotProgress& slot_progress, b
 
   m_network_shared = network_shared;
 
-  const std::string dbdir_uri = m_self_hosting_data_uri;
+  const std::string dbdir_uri = m_database_directory_uri;
   const std::string dbdir = Glib::filename_from_uri(dbdir_uri);
 
   const std::string dbdir_uri_config = dbdir_uri + "/config";
@@ -775,15 +776,6 @@ bool PostgresSelfHosted::create_text_file(const std::string& file_uri, const std
   }
 
   return true; //Success.
-}
-
-bool PostgresSelfHosted::directory_exists_uri(const std::string& uri)
-{
-  if(uri.empty())
-    return false;
-
-  const Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
-  return file && file->query_exists();
 }
 
 } // namespace ConnectionPoolBackends

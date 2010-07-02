@@ -169,7 +169,7 @@ int main()
   //Start self-hosting:
   //TODO: Let this happen automatically on first connection?
   const bool started = connection_pool->startup( sigc::ptr_fun(&on_startup_progress) );
-  g_assert(started);
+  g_assert(started == ConnectionPool::Backend::STARTUPERROR_NONE);
   
   const bool stopped = connection_pool->cleanup( sigc::ptr_fun(&on_cleanup_progress) );  
   g_assert(stopped);

@@ -52,9 +52,15 @@ public:
    */
   static bool check_postgres_gda_client_is_available();
 
-  virtual bool save_backup(const SlotProgress& slot_progress, const std::string& filepath_output, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name);
+  /** Save a backup file, using the same directory layout as used by self-hosting.
+   */
+  virtual bool save_backup(const SlotProgress& slot_progress, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name);
+  
+  virtual bool convert_backup(const SlotProgress& slot_progress, const std::string& base_directory, const Glib::ustring& username, const Glib::ustring& password);
 
   static std::string get_path_to_postgres_executable(const std::string& program);
+  
+  
 
 private:
   virtual Field::sql_format get_sql_format() const { return Field::SQL_FORMAT_POSTGRES; }
@@ -63,7 +69,7 @@ private:
   virtual const char* get_public_schema_name() const { return "public"; }
 
   virtual bool change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connection, const Glib::ustring& table_name, const type_vec_const_fields& old_fields, const type_vec_const_fields& new_fields, std::auto_ptr<Glib::Error>& error);
-
+    
 protected:
   bool attempt_create_database(const Glib::ustring& database_name, const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error);
 
@@ -72,7 +78,26 @@ protected:
    */
   Glib::RefPtr<Gnome::Gda::Connection> attempt_connect(const Glib::ustring& port, const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error) throw();
 
+ std::string get_self_hosting_path(bool create = false, const std::string& child_directory = std::string());
+  
+  /** Get the path to the config sub-directory, optionally creating it.
+   */
+  std::string get_self_hosting_config_path(bool create = false);
+  
+  /** Get the path to the data sub-directory, optionally creating it.
+   */
+  std::string get_self_hosting_data_path(bool create = false);
+  
+  /** Get the path to the backup file, regardless of whether it exists.
+   * @param base_directory Where to find the backup file, under a normal Glom directory structure.
+   * If @a base_directory is empty then it uses get_database_directory_uri().
+   */
+  std::string get_self_hosting_backup_path(const std::string& base_directory = std::string(), bool create_parent_dir = false);
 
+  bool create_directory_filepath(const std::string& filepath);
+  bool file_exists_filepath(const std::string& filepath);
+  bool file_exists_uri(const std::string& uri) const;
+  
 protected:
   static Glib::ustring port_as_string(int port_num);
 

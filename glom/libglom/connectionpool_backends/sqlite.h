@@ -37,9 +37,6 @@ class Sqlite : public Backend
 public:
   Sqlite();
 
-  void set_database_directory_uri(const std::string& directory_uri);
-  const std::string& get_database_directory_uri() const;
-
 private:
   virtual Field::sql_format get_sql_format() const { return Field::SQL_FORMAT_SQLITE; }
   virtual bool supports_remote_access() const { return false; }
@@ -65,10 +62,8 @@ private:
    */
   virtual bool create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error);
   
-  virtual bool save_backup(const SlotProgress& slot_progress, const std::string& filepath_output, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name);
-
-private:
-  std::string m_database_directory_uri;
+  virtual bool save_backup(const SlotProgress& slot_progress, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name);
+  virtual bool convert_backup(const SlotProgress& slot_progress, const std::string& base_directory, const Glib::ustring& username, const Glib::ustring& password);
 };
 
 } //namespace ConnectionPoolBackends

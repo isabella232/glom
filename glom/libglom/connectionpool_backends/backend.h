@@ -77,6 +77,14 @@ public:
      INITERROR_OTHER
   };
   
+  enum StartupErrors
+  {
+    STARTUPERROR_NONE, /*< The database is ready for use. */
+    STARTUPERROR_FAILED_NO_DATA, /*< There is no data for the database. */
+    STARTUPERROR_FAILED_NO_DATA_HAS_BACKUP_DATA, /*< There is no data for the database, but there is a backup file instead. */
+    STARTUPERROR_FAILED_UNKNOWN_REASON /*< Something else failed. */
+  };
+  
 protected:
   /** Helper functions for backend implementations to use, so that these don't
    * need to worry whether glibmm was compiled with exceptions or not.
@@ -116,6 +124,14 @@ protected:
    */
   virtual const char* get_public_schema_name() const = 0;
 
+  /** This specifies that Glom should start its own database server instance (if it's PostgreSQL)
+   * for this database, using the database files stored at the specified uri,
+   * or just use that file (if it's sqlite).
+   * Or it can be used temporarily when calling save_backup() to provide the top-level directory path.
+   */
+  void set_database_directory_uri(const std::string& directory_uri);
+  std::string get_database_directory_uri() const;
+  
   /** This callback should show UI to indicate that work is still happening.
    * For instance, a pulsing ProgressBar.
    */
@@ -130,7 +146,7 @@ protected:
    * if possible. 
    */
   virtual InitErrors initialize(const SlotProgress& slot_progress, const Glib::ustring& initial_username, const Glib::ustring& password, bool network_shared = false);
-
+  
   /** This method is called before the backend is used otherwise. This can
    * be used to start a self-hosted database server. There is no need to implement
    * this function if there is no need for extra startup code.
@@ -139,7 +155,7 @@ protected:
    * @param network_shared Whether the database (and document) should be available to other users over the network, 
    * if possible. 
    */
-  virtual bool startup(const SlotProgress& slot_progress, bool network_shared = false);
+  virtual StartupErrors startup(const SlotProgress& slot_progress, bool network_shared = false);
 
   /** This method is called when the backend is no longer used. This can be
    * used to shut down a self-hosted database server. There is no need to
@@ -185,7 +201,15 @@ protected:
    * This backup can later be used to recreate the database,
    * for instance with a later version of PostgreSQL.
    */
-  virtual bool save_backup(const SlotProgress& slot_progress, const std::string& filepath_output, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name) = 0;
+  virtual bool save_backup(const SlotProgress& slot_progress, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name) = 0;
+  
+  /** Use a backup of the database in a tarball to create a new database.
+   * See save_backup().
+   */
+  virtual bool convert_backup(const SlotProgress& slot_progress, const std::string& base_directory_uri, const Glib::ustring& username, const Glib::ustring& password) = 0;
+  
+protected:
+  std::string m_database_directory_uri;
 };
 
 } // namespace ConnectionPoolBackends

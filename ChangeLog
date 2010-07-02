@@ -1,3 +1,37 @@
+2010-07-03  Murray Cumming  <murrayc@murrayc.com>
+
+	Improve backup saving and add backup restoring.
+	
+	* glom/libglom/document/document.[h|cc]: Added get/set_is_backup_file(), 
+	saved in the XML document..
+  on_menu_developer_export_backup(): Mark the .glom file as a backup file.
+	Rename recreate_database() to recreate_database_from_example().
+	on_document_load(): Handle backup .glom files similarly to examples files, 
+	but using the backup file instead of example data.
+	* glom/frame_glom.cc:
+	* glom/libglom/connection_pool.[h|cc]:
+	* glom/libglom/connectionpool_backends/backend.[h|cc]: startup(): Return a 
+	StartupErrors enum, to provide more clues, for instance to say that backup 
+	data was found.
+	Add get/set_database_directory_uri(), replacing the one in sqlite.[h|cc] and 
+	replacing set_self_hosting_data_uri() in postgres_self.[hc|cc].
+	save_backup(): Don't take a filepath - use get_database_directory_uri() 
+	instead.
+	Added convert_backup() to restore from a backup.
+	* glom/libglom/connectionpool_backends/sqlite.[h|cc]:
+	* glom/libglom/connectionpool_backends/postgres.[h|cc]:
+	get_path_to_postgres_executable(): Catch exceptions from Glib::build_filename().
+	save_backup(): Use --format=c with pg_dump, because the default one can't be 
+	used with pg_restore.
+	Implement convert_backup(), using pg_restore.
+	Added get_self_hosting_config_path(), get_self_hosting_data_path() and 
+	get_self_hosting_backup_path() to avoid copy/pasting magic paths.
+	* glom/libglom/connectionpool_backends/postgres_self.[h|cc]:
+	Adapted.
+	* glom/application.[h|cc]:
+	* tests/test_selfhosting_new_empty.cc: Adapted to check the enum result from 
+	startup().
+	
 2010-07-02  Murray Cumming  <murrayc@murrayc.com>
 
 	Document: Avoid a crash when creating the parent directory.

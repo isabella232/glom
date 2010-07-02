@@ -50,9 +50,9 @@ Backend::InitErrors Backend::initialize(const SlotProgress& /* slot_progress */,
   return INITERROR_NONE;
 }
 
-bool Backend::startup(const SlotProgress& /* slot_progress */, bool /* network_shared */)
+Backend::StartupErrors Backend::startup(const SlotProgress& /* slot_progress */, bool /* network_shared */)
 {
-  return true;
+  return STARTUPERROR_NONE;
 }
 
 bool Backend::cleanup(const SlotProgress& /* slot_progress */)
@@ -295,6 +295,17 @@ bool Backend::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connect
 
   return true;
 }
+
+void Backend::set_database_directory_uri(const std::string& directory_uri)
+{
+  m_database_directory_uri = directory_uri;
+}
+
+std::string Backend::get_database_directory_uri() const
+{
+  return m_database_directory_uri;
+}
+
 
 } // namespace ConnectionPoolBackends
 

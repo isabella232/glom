@@ -135,6 +135,7 @@ namespace Glom
 
 #define GLOM_ATTRIBUTE_FORMAT_VERSION "format_version"
 #define GLOM_ATTRIBUTE_IS_EXAMPLE "is_example"
+#define GLOM_ATTRIBUTE_IS_BACKUP "is_backup"
 #define GLOM_ATTRIBUTE_CONNECTION_DATABASE_TITLE "database_title"
 #define GLOM_NODE_STARTUP_SCRIPT "startup_script"
 #define GLOM_ATTRIBUTE_TRANSLATION_ORIGINAL_LOCALE "translation_original_locale"
@@ -253,6 +254,7 @@ Document::Document()
   m_block_modified_set(false),
   m_allow_auto_save(true), //Save all changes immediately, by default.
   m_is_example(false),
+  m_is_backup(false),
   m_opened_from_browse(false)
 {
   m_document_format_version = get_latest_known_document_format_version(); //Default to this for new documents.
@@ -2421,8 +2423,9 @@ bool Document::load_after(int& failure_code)
         failure_code = LOAD_FAILURE_CODE_FILE_VERSION_TOO_NEW;
         return false;
       }
-      
+
       m_is_example = get_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_EXAMPLE);
+      m_is_backup = get_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_BACKUP);
       m_database_title = get_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_CONNECTION_DATABASE_TITLE);
       
       m_startup_script = get_child_text_node(nodeRoot, GLOM_NODE_STARTUP_SCRIPT);
@@ -3367,6 +3370,7 @@ bool Document::save_before()
     set_node_attribute_value_as_decimal(nodeRoot, GLOM_ATTRIBUTE_FORMAT_VERSION, m_document_format_version);
 
     set_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_EXAMPLE, m_is_example);
+    set_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_BACKUP, m_is_backup);
     set_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_CONNECTION_DATABASE_TITLE, m_database_title);
     
     set_child_text_node(nodeRoot, GLOM_NODE_STARTUP_SCRIPT, m_startup_script);
@@ -4021,6 +4025,21 @@ void Document::set_is_example_file(bool value)
   if(m_is_example != value)
   {
     m_is_example = value;
+    set_modified();
+  }
+}
+
+
+bool Document::get_is_backup_file() const
+{
+  return m_is_backup;
+}
+
+void Document::set_is_backup_file(bool value)
+{
+  if(m_is_backup != value)
+  {
+    m_is_backup = value;
     set_modified();
   }
 }

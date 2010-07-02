@@ -179,7 +179,7 @@ private:
 
   Document* on_connection_pool_get_document();
 
-  bool recreate_database(bool& user_cancelled); //return indicates success.
+  bool recreate_database_from_example(bool& user_cancelled); //return indicates success.
   void stop_self_hosting_of_document_database();
 
   void on_connection_avahi_begin();

@@ -34,16 +34,6 @@ Sqlite::Sqlite()
 {
 }
 
-void Sqlite::set_database_directory_uri(const std::string& directory_uri)
-{
-  m_database_directory_uri = directory_uri;
-}
-
-const std::string& Sqlite::get_database_directory_uri() const
-{
-  return m_database_directory_uri;
-}
-
 Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error)
 {
   Glib::RefPtr<Gnome::Gda::Connection> connection;
@@ -397,11 +387,18 @@ bool Sqlite::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
   return recreate_table(connection, table_name, type_vec_strings(), type_vec_const_fields(), fields_changed, error);
 }
 
-bool Sqlite::save_backup(const SlotProgress& slot_progress, const std::string& filepath_output, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name)
+bool Sqlite::save_backup(const SlotProgress& slot_progress, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name)
 {
   //TODO:
   std::cerr << G_STRFUNC << ": Not implemented.";
 }
+
+bool Sqlite::convert_backup(const SlotProgress& slot_progress, const std::string& base_directory, const Glib::ustring& username, const Glib::ustring& password)
+{
+  //TODO:
+  std::cerr << G_STRFUNC << ": Not implemented.";
+}
+
 
 } // namespace ConnectionPoolBackends
 

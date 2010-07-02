@@ -163,7 +163,20 @@ public:
   void create_database(const Glib::ustring& database_name, std::auto_ptr<Glib::Error>& error);
 #endif
 
-  bool save_backup(const SlotProgress& slot_progress, const std::string& filepath_output);
+  /** Save a backup of the database in a tarball.
+   * This backup can later be used to recreate the database,
+   * for instance with a later version of PostgreSQL.
+   * See @convert_backup().
+   * @param path_dir The top-level directory for the backup file, using the normal directory structure.
+   * 
+   */
+  bool save_backup(const SlotProgress& slot_progress, const std::string& path_dir);
+  
+  /** Use a backup of the database in a tarball to create a new database.
+   * @param path_dir The top-level directory for the backup file, using the normal directory structure.
+   * See save_backup().
+   */
+  bool convert_backup(const SlotProgress& slot_progress, const std::string& path_dir);
 
   void set_user(const Glib::ustring& value);
   void set_password(const Glib::ustring& value);
@@ -189,7 +202,9 @@ public:
    */
   InitErrors initialize(const SlotProgress& slot_progress, bool network_shared = false);
 
-  /** Start a database server instance for the exisiting database files.
+  typedef Backend::StartupErrors StartupErrors;
+
+  /** Start a database server instance for the existing database files.
    *
    * @param slot_progress A callback to call while the work is still happening.
    * @param network_shared Whether the database (and document) should be available to other users over the network, 
@@ -197,7 +212,7 @@ public:
    * @param parent_window The parent window (transient for) of any dialogs shown during this operation.
    * @result Whether the operation was successful.
    */
-  bool startup(const SlotProgress& slot_progress, bool network_shared = false);
+  StartupErrors startup(const SlotProgress& slot_progress, bool network_shared = false);
 
   /** Stop the database server instance for the database files.
    *
