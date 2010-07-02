@@ -2169,13 +2169,14 @@ void Application::on_menu_file_save_as_example()
         document->set_table_example_data(table_name, example_rows);
       }
 
+      const bool bTest = document->save();
+      document->set_is_example_file(false);
+      document->set_file_uri(file_uriOld);
       document->set_allow_autosave(true);
-
-      bool bTest = document->save();
 
       if(!bTest)
       {
-        ui_warning(_("Save failed."), _("There was an error while saving the file. Your changes have not been saved."));
+        ui_warning(_("Save failed."), _("There was an error while saving the example file."));
       }
       else
       {
