@@ -1,20 +1,20 @@
 2010-07-02  Murray Cumming  <murrayc@murrayc.com>
 
+	Document: Avoid a crash when creating the parent directory.
+	
+	* glom/libglom/docment/bakery/document.cc: write_to_disk(): Check the 
+	result of Gio::File::get_parent() for null, because that happens if we 
+	provide a path instead of a URI.
+	
+2010-07-02  Murray Cumming  <murrayc@murrayc.com>
+
 	Save as Example: Reset the old file URI and allow auto-saving again.
 
 	* glom/application.cc: on_menu_file_save_as_example(): reset the old file 
 	URI and turn auto-saving back on again, because it makes no sense to leave 
 	the user editing an example document. This is really an export anyway.
 	This allows the user to close the window again after saving as an example.
-
-2010-07-02  Murray Cumming  <murrayc@murrayc.com>
-
-	Document: Avoid a crash when creating the parent directory.
 	
-	* glom/libglom/docment/bakery/document.cc: write_to_disk(): Check the 
-	result of Gio::File::get_parent() for null, because that happens if we 
-	provide a path instead of a URI.
-
 2010-07-01  Murray Cumming  <murrayc@murrayc.com>
 
 	Add Save Backup menu item.
