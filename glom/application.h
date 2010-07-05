@@ -52,6 +52,7 @@ namespace Glom
 {
 
 class Window_Translations;
+class Dialog_ProgressCreating; //TODO: Rename this because it's not just about creating databases.
 
 class Application : public GlomBakery::App_WithDoc_Gtk
 {
@@ -200,6 +201,8 @@ private:
   virtual void new_instance(const Glib::ustring& uri = Glib::ustring()); //Override
 
   void on_connection_close_progress();
+  void on_connection_save_backup_progress();
+  void on_connection_convert_backup_progress();
 
 #ifndef G_OS_WIN32
   void open_browsed_document(const EpcServiceInfo* server, const Glib::ustring& service_name);
@@ -257,6 +260,8 @@ private:
   Document::HostingMode m_ui_save_extra_newdb_hosting_mode;
 
   Gtk::MessageDialog* m_avahi_progress_dialog;
+  Dialog_ProgressCreating* m_dialog_progess_save_backup;
+  Dialog_ProgressCreating* m_dialog_progess_convert_backup;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   // This is set to the URI of an example file that is loaded to be able to

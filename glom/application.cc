@@ -86,6 +86,8 @@ Application::Application(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builde
   m_ui_save_extra_showextras(false),
   m_ui_save_extra_newdb_hosting_mode(Document::HOSTING_MODE_DEFAULT),
   m_avahi_progress_dialog(0),
+  m_dialog_progess_save_backup(0),
+  m_dialog_progess_convert_backup(0),
 #endif // !GLOM_ENABLE_CLIENT_ONLY
   m_show_sql_debug(false)
 {
@@ -126,6 +128,18 @@ Application::~Application()
   {
     delete m_avahi_progress_dialog;
     m_avahi_progress_dialog = 0;
+  }
+
+  if(m_dialog_progess_save_backup)
+  {
+    delete m_dialog_progess_save_backup;
+    m_dialog_progess_save_backup = 0;
+  }
+
+  if(m_dialog_progess_convert_backup)
+  {
+    delete m_dialog_progess_convert_backup;
+    m_dialog_progess_convert_backup = 0;
   }
   #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -1027,24 +1041,24 @@ bool Application::on_document_load()
     // would need to be saved, but saving support is disabled.
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     const bool is_example = pDocument->get_is_example_file();
-    const bool is_backup = pDocument->get_is_backup_file(); 
+    const bool is_backup = pDocument->get_is_backup_file();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
     const std::string original_uri = pDocument->get_file_uri();
 
     if(is_example || is_backup)
     {
-#ifndef GLOM_ENABLE_CLIENT_ONLY  
+#ifndef GLOM_ENABLE_CLIENT_ONLY
       // Remember the URI to the example file to be able to prevent
       // adding the URI to the recently used files in document_history_add.
       // We want to add the document that is created from the example
       // instead of the example itself.
       // TODO: This is a weird hack. Find a nicer way. murrayc.
-      m_example_uri = original_uri;  
+      m_example_uri = original_uri;
 
       pDocument->set_file_uri(Glib::ustring()); //Prevent it from defaulting to the read-only examples directory when offering saveas.
       //m_ui_save_extra_* are used by offer_saveas() if it's not empty:
       m_ui_save_extra_showextras = true;
-      
+
       if(is_example)
       {
         m_ui_save_extra_title = _("Creating From Example File");
@@ -1055,7 +1069,7 @@ bool Application::on_document_load()
         m_ui_save_extra_title = _("Creating From Backup File");
         m_ui_save_extra_message = _("To use this backup file you must save an editable copy of the file. A new database will also be created on the server.");
       }
-    
+
       m_ui_save_extra_newdb_title = "TODO";
       m_ui_save_extra_newdb_hosting_mode = Document::HOSTING_MODE_DEFAULT;
 
@@ -1227,7 +1241,7 @@ bool Application::on_document_load()
       else if(is_backup)
       {
         std::string original_dir_path;
-         
+
         Glib::RefPtr<Gio::File> gio_file = Gio::File::create_for_uri(original_uri);
         if(gio_file)
         {
@@ -1244,16 +1258,23 @@ bool Application::on_document_load()
             }
           }
         }
-        
+
         if(original_dir_path.empty())
         {
           std::cerr << G_STRFUNC << ": original_dir_path is empty." << std::endl;
           return false;
         }
-      
+
         //Restore the database from the backup:
         std::cout << "DEBUG: original_dir_path=" << original_dir_path << std::endl;
-        const bool restored = connection_pool->convert_backup(ConnectionPool::SlotProgress() /* TODO */, original_dir_path);
+        const bool restored = connection_pool->convert_backup(
+          sigc::mem_fun(*this, &Application::on_connection_convert_backup_progress), original_dir_path);
+
+        if(m_dialog_progess_convert_backup)
+        {
+          delete m_dialog_progess_convert_backup;
+          m_dialog_progess_convert_backup = 0;
+        }
       }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -1301,6 +1322,22 @@ bool Application::on_document_load()
 void Application::on_connection_close_progress()
 {
   //TODO_murrayc
+}
+
+void Application::on_connection_save_backup_progress()
+{
+  if(!m_dialog_progess_save_backup)
+    m_dialog_progess_save_backup = Utils::get_and_show_pulse_dialog(_("Exporting Backup"), this);
+
+  m_dialog_progess_save_backup->pulse();
+}
+
+void Application::on_connection_convert_backup_progress()
+{
+  if(!m_dialog_progess_convert_backup)
+    m_dialog_progess_convert_backup = Utils::get_and_show_pulse_dialog(_("Restoring Backup"), this);
+
+  m_dialog_progess_convert_backup->pulse();
 }
 
 void Application::on_document_close()
@@ -2537,27 +2574,28 @@ void Application::on_menu_developer_export_backup()
   // Ask the user to choose a new directory name. This actually creates the directory:
   Gtk::FileChooserDialog dialog(*this, _("Save Backup"), Gtk::FILE_CHOOSER_ACTION_CREATE_FOLDER);
   dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  dialog.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_ACCEPT); 
+  dialog.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_ACCEPT);
   const int result = dialog.run();
+  dialog.hide();
   if(result != Gtk::RESPONSE_ACCEPT)
     return;
-    
+
   const std::string& path_dir = dialog.get_filename();
   if(path_dir.empty())
-    return; 
-        
+    return;
+
   //Save a copy of the document there:
   Document* document = dynamic_cast<Document*>(get_document());
   if(!document)
     return;
-  
+
   const std::string& filepath_document = Glib::build_filename(path_dir, "backup.glom");
   document->set_allow_autosave(false); //Prevent saving while we modify the document:
   const Glib::ustring fileuri_old = document->get_file_uri();
   document->set_file_uri(Glib::filename_to_uri(filepath_document), true); //true = enforce file extension;
   document->set_is_backup_file(true);
   bool saved = document->save();
-  
+
   document->set_file_uri(fileuri_old);
   document->set_is_backup_file(false);
   document->set_allow_autosave(true);
@@ -2565,7 +2603,13 @@ void Application::on_menu_developer_export_backup()
   if(saved)
   {
     ConnectionPool* connection_pool = ConnectionPool::get_instance();
-    saved = connection_pool->save_backup(ConnectionPool::SlotProgress() /* TODO */, path_dir);
+    saved = connection_pool->save_backup(sigc::mem_fun(*this, &Application::on_connection_save_backup_progress), path_dir);
+
+    if(m_dialog_progess_save_backup)
+    {
+      delete m_dialog_progess_save_backup;
+      m_dialog_progess_save_backup = 0;
+    }
   }
 
   if(!saved)
