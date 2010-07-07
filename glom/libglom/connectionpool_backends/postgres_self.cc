@@ -388,7 +388,7 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
     std::cerr << G_STRFUNC << ": Already started." << std::endl;
     return STARTUPERROR_NONE; //Just do it once.
   }
-  
+
   const std::string dbdir_uri = m_database_directory_uri;
 
   if(!(file_exists_uri(dbdir_uri)))
@@ -418,7 +418,7 @@ Backend::StartupErrors PostgresSelfHosted::startup(const SlotProgress& slot_prog
       return STARTUPERROR_FAILED_NO_DATA;
     }
   }
-  
+
   //Attempt to ensure that the config files are correct:
   set_network_shared(slot_progress, m_network_shared); //Creates pg_hba.conf and pg_ident.conf
 
@@ -699,83 +699,6 @@ int PostgresSelfHosted::discover_first_free_port(int start_port, int end_port)
 
   std::cerr << "debug: ConnectionPool::discover_first_free_port(): No port was available." << std::endl;
   return 0;
-}
-
-bool PostgresSelfHosted::create_text_file(const std::string& file_uri, const std::string& contents)
-{
-  if(file_uri.empty())
-    return false;
-
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(file_uri);
-  Glib::RefPtr<Gio::FileOutputStream> stream;
-
-  //Create the file if it does not already exist:
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    if(file->query_exists())
-    {
-      stream = file->replace(); //Instead of append_to().
-    }
-    else
-    {
-      //By default files created are generally readable by everyone, but if we pass FILE_CREATE_PRIVATE in flags the file will be made readable only to the current user, to the level that is supported on the target filesystem.
-      //TODO: Do we want to specify 0660 exactly? (means "this user and his group can read and write this non-executable file".)
-      stream = file->create_file();
-    }
-  }
-  catch(const Gio::Error& ex)
-  {
-#else
-  std::auto_ptr<Gio::Error> error;
-  stream.create(error);
-  if(error.get())
-  {
-    const Gio::Error& ex = *error.get();
-#endif
-    // If the operation was not successful, print the error and abort
-    std::cerr << "ConnectionPool::create_text_file(): exception while creating file." << std::endl
-      << "  file uri:" << file_uri << std::endl
-      << "  error:" << ex.what() << std::endl;
-    return false; // print_error(ex, output_uri_string);
-  }
-
-
-  if(!stream)
-    return false;
-
-
-  gsize bytes_written = 0;
-  const std::string::size_type contents_size = contents.size();
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try
-  {
-    //Write the data to the output uri
-    bytes_written = stream->write(contents.data(), contents_size);
-  }
-  catch(const Gio::Error& ex)
-  {
-#else
-  bytes_written = stream->write(contents.data(), contents_size, error);
-  if(error.get())
-  {
-    Gio::Error& ex = *error.get();
-#endif
-    // If the operation was not successful, print the error and abort
-    std::cerr << "ConnectionPool::create_text_file(): exception while writing to file." << std::endl
-      << "  file uri:" << file_uri << std::endl
-      << "  error:" << ex.what() << std::endl;
-    return false; //print_error(ex, output_uri_string);
-  }
-
-  if(bytes_written != contents_size)
-  {
-    std::cerr << "ConnectionPool::create_text_file(): not all bytes written when writing to file." << std::endl
-      << "  file uri:" << file_uri << std::endl;
-    return false;
-  }
-
-  return true; //Success.
 }
 
 } // namespace ConnectionPoolBackends

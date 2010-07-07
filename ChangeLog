@@ -1,3 +1,15 @@
+2010-07-07  Murray Cumming  <murrayc@murrayc.com>
+
+	PostgreSQL backups: Use .pgpass.
+
+	* glom/libglom/connectionpool_backends/postgres.[h|cc]:
+	* glom/libglom/connectionpool_backends/postgres_self.[h|cc]:
+    Move create_text_file() from PostgresSelf to Postgres and add an
+    only_for_current_user bool parameter, so we can use it in a
+    new save_password_to_pgpass() method.
+    save_backup(), convert_backup(): Temporarily store the password in
+    ~/.pgpass, so pg_dump and pg_restore actually work.
+
 2010-07-05  Murray Cumming  <murrayc@murrayc.com>
 
 	Show progress in the UI during backup saving and restoring.

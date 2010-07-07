@@ -25,6 +25,7 @@
 #include <libglom/spawn_with_feedback.h>
 #include <libglom/utils.h>
 #include <giomm.h>
+#include <glib/gstdio.h> /* For g_rename(). TODO: Wrap this in glibmm? */
 #include <glibmm/i18n.h>
 
 // Uncomment to see debug messages
@@ -478,7 +479,7 @@ std::string Postgres::get_path_to_postgres_executable(const std::string& program
   // building postgres with another prefix than /local/pgsql.
   gchar* installation_directory = g_win32_get_package_installation_directory_of_module(0);
   std::string test;
-  
+
   try
   {
     test = Glib::build_filename(installation_directory, Glib::build_filename("bin", real_program));
@@ -522,6 +523,62 @@ Glib::ustring Postgres::port_as_string(int port_num)
   return result;
 }
 
+//Because ~/.pgpass is not an absolute path.
+static std::string get_absolute_pgpass_filepath()
+{
+  return Glib::build_filename(
+    Glib::get_home_dir(), ".pgpass");
+}
+
+bool Postgres::save_password_to_pgpass(const Glib::ustring username, const Glib::ustring& password, std::string& filepath_previous, std::string& filepath_original)
+{
+  //Initialize output variables:
+  filepath_previous.clear();
+  filepath_original.clear();
+
+  const std::string filepath_pgpass = get_absolute_pgpass_filepath();
+  filepath_original = filepath_pgpass;
+
+  //Move any existing file out of the way:
+  if(file_exists_filepath(filepath_pgpass))
+  {
+    std::cout << "DEBUG: File exists: " << filepath_pgpass << std::endl;
+    filepath_previous = filepath_pgpass + ".glombackup";
+    if(g_rename(filepath_pgpass.c_str(), filepath_previous.c_str()) != 0)
+    {
+      std::cerr << G_STRFUNC << "Could not rename file: from=" << filepath_pgpass << ", to=" << filepath_previous << std::endl;
+      return false;
+    }
+  }
+
+  //See http://www.postgresql.org/docs/8.4/static/libpq-pgpass.html
+  //TODO: Escape \ and : characters.
+  const Glib::ustring contents =
+    m_host + ":" + port_as_string(m_port) + ":*:" + username + ":" + password;
+
+  std::string uri;
+  try
+  {
+    uri = Glib::filename_to_uri(filepath_pgpass);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": exception from Glib::filename_from_uri(): " << ex.what() << std::endl;
+    g_rename(filepath_previous.c_str(), filepath_pgpass.c_str());
+    return false;
+  }
+
+  const bool result = create_text_file(uri, contents, true /* current user only */);
+  if(!result)
+  {
+    std::cerr << G_STRFUNC << ": create_text_file() failed." << std::endl;
+    g_rename(filepath_previous.c_str(), filepath_pgpass.c_str());
+    return false;
+  }
+
+  return result;
+}
+
 bool Postgres::save_backup(const SlotProgress& slot_progress, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name)
 {
 /* TODO:
@@ -557,12 +614,20 @@ bool Postgres::save_backup(const SlotProgress& slot_progress, const Glib::ustrin
     return false;
   }
 
-  //TODO: Save the password to .pgpass
+  // Save the password to ~/.pgpass, because this is the only way to use
+  // pg_dump without it asking for the password:
+  std::string pgpass_backup, pgpass_original;
+  const bool pgpass_created = save_password_to_pgpass(username, password, pgpass_backup, pgpass_original);
+  if(!pgpass_created)
+  {
+    std::cerr << G_STRFUNC << ": save_password_to_pgpass() failed." << std::endl;
+    return false;
+  }
 
   const std::string path_backup = get_self_hosting_backup_path(std::string(), true /* create parent directory if necessary */);
   if(path_backup.empty())
     return false;
-  
+
   // Make sure to use double quotes for the executable path, because the
   // CreateProcess() API used on Windows does not support single quotes.
   const std::string command_dump = "\"" + get_path_to_postgres_executable("pg_dump") + "\"" +
@@ -575,10 +640,17 @@ bool Postgres::save_backup(const SlotProgress& slot_progress, const Glib::ustrin
 
 
   //std::cout << "DEBUG: command_dump=" << command_dump << std::endl;
-  
-  //TODO: Put the password in .pgpass
 
   const bool result = Glom::Spawn::execute_command_line_and_wait(command_dump, slot_progress);
+
+  //Move the previously-existing .pgpass file back:
+  //TODO: Really, we should just edit the file instead of completely replacing it,
+  //      because another application might try to edit it in the meantime.
+  if(!pgpass_backup.empty())
+  {
+    g_rename(pgpass_backup.c_str(), pgpass_original.c_str());
+  }
+
   if(!result)
   {
     std::cerr << "Error while attempting to call pg_dump." << std::endl;
@@ -631,7 +703,17 @@ bool Postgres::convert_backup(const SlotProgress& slot_progress, const std::stri
     std::cerr << G_STRFUNC << ": Backup file not found: " << path_backup << std::endl;
     return false;
   }
-  
+
+  // Save the password to ~/.pgpass, because this is the only wayt to use
+  // pg_dump without it asking for the password:
+  std::string pgpass_backup, pgpass_original;
+  const bool pgpass_created = save_password_to_pgpass(username, password, pgpass_backup, pgpass_original);
+  if(!pgpass_created)
+  {
+    std::cerr << G_STRFUNC << ": save_password_to_pgpass() failed." << std::endl;
+    return false;
+  }
+
   // Make sure to use double quotes for the executable path, because the
   // CreateProcess() API used on Windows does not support single quotes.
   const std::string command_restore = "\"" + get_path_to_postgres_executable("pg_restore") + "\"" +
@@ -642,10 +724,19 @@ bool Postgres::convert_backup(const SlotProgress& slot_progress, const std::stri
     " " + path_backup;
 
   std::cout << "DEBUG: command_restore=" << command_restore << std::endl;
-  
+
   //TODO: Put the password in .pgpass
 
   const bool result = Glom::Spawn::execute_command_line_and_wait(command_restore, slot_progress);
+
+  //Move the previously-existing .pgpass file back:
+  //TODO: Really, we should just edit the file instead of completely replacing it,
+  //      because another application might try to edit it in the meantime.
+  if(!pgpass_backup.empty())
+  {
+    g_rename(pgpass_backup.c_str(), pgpass_original.c_str());
+  }
+
   if(!result)
   {
     std::cerr << "Error while attempting to call pg_restore." << std::endl;
@@ -668,7 +759,7 @@ std::string Postgres::get_self_hosting_path(bool create, const std::string& chil
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << G_STRFUNC << ": exception from Glib::build_filename(): " << ex.what() << std::endl; 
+    std::cerr << G_STRFUNC << ": exception from Glib::build_filename(): " << ex.what() << std::endl;
   }
 
   if(file_exists_filepath(dbdir))
@@ -677,7 +768,7 @@ std::string Postgres::get_self_hosting_path(bool create, const std::string& chil
     return std::string();
 
   //Create the directory:
-  
+
   //std::cout << "debug: dbdir=" << dbdir << std::endl;
   g_assert(!dbdir.empty());
 
@@ -698,7 +789,7 @@ std::string Postgres::get_self_hosting_data_path(bool create)
 }
 
 std::string Postgres::get_self_hosting_backup_path(const std::string& base_directory, bool create_parent_dir)
-{ 
+{
   //This is a file, not a directory, so we don't use get_self_hosting_path("backup");
   std::string dbdir;
   if(base_directory.empty())
@@ -707,7 +798,7 @@ std::string Postgres::get_self_hosting_backup_path(const std::string& base_direc
   {
     dbdir = base_directory;
   }
-  
+
   if(dbdir.empty())
     return std::string();
 
@@ -717,7 +808,7 @@ std::string Postgres::get_self_hosting_backup_path(const std::string& base_direc
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << G_STRFUNC << ": exception from Glib::build_filename(): " << ex.what() << std::endl; 
+    std::cerr << G_STRFUNC << ": exception from Glib::build_filename(): " << ex.what() << std::endl;
     return std::string();
   }
 }
@@ -735,7 +826,7 @@ bool Postgres::create_directory_filepath(const std::string& filepath)
 
     return false;
   }
-  
+
   return true;
 }
 
@@ -755,6 +846,99 @@ bool Postgres::file_exists_uri(const std::string& uri) const
 
   const Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
   return file && file->query_exists();
+}
+
+
+
+bool Postgres::create_text_file(const std::string& file_uri, const std::string& contents, bool current_user_only)
+{
+  if(file_uri.empty())
+    return false;
+
+  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(file_uri);
+  Glib::RefPtr<Gio::FileOutputStream> stream;
+
+  //Create the file if it does not already exist:
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    if(file->query_exists())
+    {
+      if(current_user_only)
+      {
+        stream = file->replace(std::string() /* etag */, false /* make_backup */, Gio::FILE_CREATE_PRIVATE); //Instead of append_to().
+      }
+      else
+      {
+         stream = file->replace(); //Instead of append_to().
+      }
+    }
+    else
+    {
+      //By default files created are generally readable by everyone, but if we pass FILE_CREATE_PRIVATE in flags the file will be made readable only to the current user, to the level that is supported on the target filesystem.
+      if(current_user_only)
+      {
+      //TODO: Do we want to specify 0660 exactly? (means "this user and his group can read and write this non-executable file".)
+        stream = file->create_file(Gio::FILE_CREATE_PRIVATE);
+      }
+      else
+      {
+        stream = file->create_file();
+      }
+    }
+  }
+  catch(const Gio::Error& ex)
+  {
+#else
+  std::auto_ptr<Gio::Error> error;
+  stream.create(error);
+  if(error.get())
+  {
+    const Gio::Error& ex = *error.get();
+#endif
+    // If the operation was not successful, print the error and abort
+    std::cerr << "ConnectionPool::create_text_file(): exception while creating file." << std::endl
+      << "  file uri:" << file_uri << std::endl
+      << "  error:" << ex.what() << std::endl;
+    return false; // print_error(ex, output_uri_string);
+  }
+
+
+  if(!stream)
+    return false;
+
+
+  gsize bytes_written = 0;
+  const std::string::size_type contents_size = contents.size();
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    //Write the data to the output uri
+    bytes_written = stream->write(contents.data(), contents_size);
+  }
+  catch(const Gio::Error& ex)
+  {
+#else
+  bytes_written = stream->write(contents.data(), contents_size, error);
+  if(error.get())
+  {
+    Gio::Error& ex = *error.get();
+#endif
+    // If the operation was not successful, print the error and abort
+    std::cerr << "ConnectionPool::create_text_file(): exception while writing to file." << std::endl
+      << "  file uri:" << file_uri << std::endl
+      << "  error:" << ex.what() << std::endl;
+    return false; //print_error(ex, output_uri_string);
+  }
+
+  if(bytes_written != contents_size)
+  {
+    std::cerr << "ConnectionPool::create_text_file(): not all bytes written when writing to file." << std::endl
+      << "  file uri:" << file_uri << std::endl;
+    return false;
+  }
+
+  return true; //Success.
 }
 
 } //namespace ConnectionPoolBackends

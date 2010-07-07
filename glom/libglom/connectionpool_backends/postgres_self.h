@@ -71,8 +71,6 @@ private:
    */
   static int discover_first_free_port(int start_port, int end_port);
 
-  static bool create_text_file(const std::string& file_uri, const std::string& contents);
-
   /** Run the command-line with the --version option to discover what version
    * of PostgreSQL is installed, so we can use the appropriate configuration
    * options when self-hosting.
