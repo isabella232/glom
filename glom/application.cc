@@ -2572,10 +2572,29 @@ void Application::on_menu_developer_active_platform_maemo()
 
 void Application::on_menu_developer_export_backup()
 {
-  // Ask the user to choose a new directory name. This actually creates the directory:
+  Document* document = dynamic_cast<Document*>(get_document());
+  if(!document)
+    return;
+
+  // Ask the user to choose a new directory name.
+  // Start with a name based on the existing name.
+  const Glib::ustring fileuri_old = document->get_file_uri();
+  const Glib::RefPtr<const Gio::File> file_old =
+    Gio::File::create_for_uri( get_file_uri_without_extension(fileuri_old) );
+  const std::string old_basename = file_old->get_basename();
+  Glib::TimeVal timeval;
+  timeval.assign_current_time();
+  std::string starting_name = old_basename + "-backup-" + timeval.as_iso8601();
+  //Replace : because that confuses (makes it fail) tar (and file-roller) when opening the file,
+  //and --force-local is not relevant to opening files.
+  starting_name = Utils::string_replace(starting_name, ":", "-");
+
+  // This actually creates the directory:
   Gtk::FileChooserDialog dialog(*this, _("Save Backup"), Gtk::FILE_CHOOSER_ACTION_CREATE_FOLDER);
   dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   dialog.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_ACCEPT);
+  dialog.set_local_only(); //Because pg_dump, pg_restore and tar can't use URIs.
+  dialog.set_current_name(starting_name);
   const int result = dialog.run();
   dialog.hide();
   if(result != Gtk::RESPONSE_ACCEPT)
@@ -2586,13 +2605,10 @@ void Application::on_menu_developer_export_backup()
     return;
 
   //Save a copy of the document there:
-  Document* document = dynamic_cast<Document*>(get_document());
-  if(!document)
-    return;
-
-  const std::string& filepath_document = Glib::build_filename(path_dir, "backup.glom");
+  //Save the .glom document with the same name as the directory:
+  const std::string basename = Glib::path_get_basename(path_dir);
+  const std::string& filepath_document = Glib::build_filename(path_dir, basename + ".glom");
   document->set_allow_autosave(false); //Prevent saving while we modify the document:
-  const Glib::ustring fileuri_old = document->get_file_uri();
   document->set_file_uri(Glib::filename_to_uri(filepath_document), true); //true = enforce file extension;
   document->set_is_backup_file(true);
   bool saved = document->save();

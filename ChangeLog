@@ -1,3 +1,12 @@
+2010-07-07  Murray Cumming  <murrayc@murrayc-desktop>
+
+	PostgresQL backups: Suggest a dated name.
+
+	* glom/application.cc: on_menu_developer_export_backup(): Suggest
+    a directory name based on the current name and the date/time.
+    Also use the directory name for the .glom filename, as we usually would do,
+    instead of calling it just backup.glom.
+
 2010-07-07  Murray Cumming  <murrayc@murrayc.com>
 
 	PostgreSQL backups: Archive the directory in a .tar.gz..
