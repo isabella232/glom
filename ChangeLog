@@ -1,5 +1,13 @@
 2010-07-07  Murray Cumming  <murrayc@murrayc.com>
 
+	PostgreSQL backups: Archive the directory in a .tar.gz..
+
+	* configure.ac: Check for the tar and gzip executables.
+	* glom/application.cc: on_menu_developer_export_backup(): Use tar
+    via the command line, to put it all in a .tar.gz, so it is self-contained.
+
+2010-07-07  Murray Cumming  <murrayc@murrayc.com>
+
 	PostgreSQL backups: Use .pgpass.
 
 	* glom/libglom/connectionpool_backends/postgres.[h|cc]:

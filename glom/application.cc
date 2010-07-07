@@ -36,6 +36,7 @@
 #include <glom/glom_privs.h>
 #include <glom/python_embed/python_ui_callbacks.h>
 #include <glom/python_embed/glom_python.h>
+#include <libglom/spawn_with_feedback.h>
 
 #include <cstdio>
 #include <memory> //For std::auto_ptr<>
@@ -2609,6 +2610,54 @@ void Application::on_menu_developer_export_backup()
     {
       delete m_dialog_progess_save_backup;
       m_dialog_progess_save_backup = 0;
+    }
+  }
+
+  //Compress the backup in a .tar.gz, so it is slightly more safe from changes:
+  const std::string path_tar = Glib::find_program_in_path("tar");
+  if(path_tar.empty())
+  {
+    std::cerr << G_STRFUNC << ": The tar executable could not be found." << std::endl;
+    saved = false;
+  }
+  else
+  {
+    Glib::RefPtr<const Gio::File> gio_file = Gio::File::create_for_path(path_dir);
+    const std::string basename = gio_file->get_basename();
+    Glib::RefPtr<const Gio::File> gio_file_parent = gio_file->get_parent();
+    const std::string parent_dir = gio_file_parent->get_path();
+    if(parent_dir.empty() || basename.empty())
+    {
+      std::cerr << G_STRFUNC << "parent_dir or basename are empty." << std::endl;
+      saved = false;
+    }
+    else
+    {
+      //TODO: Find some way to do this without using the command-line,
+      //which feels fragile:
+      const std::string command_tar = "\"" + path_tar + "\"" +
+        " --force-local --no-wildcards" + //Avoid side-effects of special characters.
+        " --remove-files" +
+        " -czf"
+        " \"" + path_dir + ".tar.gz\"" +
+        " --directory \"" + parent_dir + "\"" + //This must be right before the mention of the file name:
+        " \"" + basename + "\"";
+
+      std::cout << "DEBUG: command_tar=" << command_tar << std::endl;
+
+      saved = Glom::Spawn::execute_command_line_and_wait(command_tar,
+        sigc::mem_fun(*this, &Application::on_connection_save_backup_progress));
+
+      if(saved)
+      {
+
+      }
+
+      if(m_dialog_progess_save_backup)
+      {
+        delete m_dialog_progess_save_backup;
+        m_dialog_progess_save_backup = 0;
+      }
     }
   }
 
