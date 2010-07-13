@@ -18,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <glom/utils_ui.h>
 #include "canvas_layout_item.h"
 #include <glom/utility_widgets/canvas/canvas_rect_movable.h>
 #include <glom/utility_widgets/canvas/canvas_text_movable.h>
@@ -33,7 +34,6 @@
 #include <libglom/data_structure/layout/layoutitem_portal.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_fieldsummary.h>
 #include <libglom/data_structure/glomconversions.h>
-#include <glom/utils_ui.h>
 #include <glibmm/i18n.h>
 #include <math.h>
 #include <algorithm> //For std::max().
@@ -82,13 +82,13 @@ void CanvasLayoutItem::apply_formatting(const Glib::RefPtr<CanvasTextMovable>& c
   if(!layout_item)
     return;
 
-  //Horizontal alignment:   
+  //Horizontal alignment:
   const FieldFormatting::HorizontalAlignment alignment =
     layout_item->get_formatting_used_horizontal_alignment();
   const Pango::Alignment x_align = (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT ? Pango::ALIGN_LEFT : Pango::ALIGN_RIGHT);
-#ifdef GLIBMM_PROPERTIES_ENABLED  
+#ifdef GLIBMM_PROPERTIES_ENABLED
   canvas_item->property_alignment() = x_align;
-#else    
+#else
   canvas_item->set_property("alignment", alignment);
 #endif
 
@@ -101,7 +101,7 @@ void CanvasLayoutItem::apply_formatting(const Glib::RefPtr<CanvasTextMovable>& c
 
     //Set it in the input parameter,
     //so that this is the default:
-    //TODO? formatting.set_text_format_font(font);    
+    //TODO? formatting.set_text_format_font(font);
   }
 
   canvas_item->set_font_points(font);
@@ -150,9 +150,9 @@ void CanvasLayoutItem::set_layout_item(const sharedptr<LayoutItem>& layout_item)
 
   if(child_item)
   {
-    //child_item->property_pointer_events() = 
+    //child_item->property_pointer_events() =
     //  (Goocanvas::PointerEvents)(Goocanvas::EVENTS_VISIBLE_FILL & GOO_CANVAS_EVENTS_VISIBLE_STROKE);
-      
+
     //Set the position and dimensions of this group to match the child:
     double x = 0;
     double y = 0;
@@ -252,7 +252,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
         double end_x  = 0;
         double end_y = 0;
         line->get_coordinates(start_x, start_y, end_x, end_y);
-        
+
         Glib::RefPtr<CanvasLineMovable> canvas_item = CanvasLineMovable::create();
         #ifdef GLIBMM_PROPERTIES_ENABLED
         canvas_item->property_line_width() = 1;
@@ -295,13 +295,13 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
             #else
             canvas_item->set_property("line-width", 0);
             #endif
-         
+
             apply_formatting(canvas_item, field);
 
             Glib::ustring name = field->get_name();
             if(name.empty())
               name = _("Choose Field");
-          
+
             canvas_item->set_text(name);
 
             child = canvas_item;
@@ -337,7 +337,7 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
               {
                 sharedptr<LayoutItem> layout_item = *iter;
 
-                //We use create_canvas_item_for_layout_item() instead of just 
+                //We use create_canvas_item_for_layout_item() instead of just
                 //creating another CanvasLayoutItem, because that would be a group,
                 //but goocanvas cannot yet support Groups inside Tables. murrayc.
                 //TODO: Bug number.
@@ -354,9 +354,9 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
                   Glib::RefPtr<Goocanvas::Item> cell_as_item = CanvasItemMovable::cast_to_item(cell);
                   if(cell_as_item)
                   {
-                    canvas_item->attach(cell_as_item, 
-                      col /* left_attach */, col+1 /* right_attach */, 
-                      row /* top_attach */, row + 1 /* right_attach */, 
+                    canvas_item->attach(cell_as_item,
+                      col /* left_attach */, col+1 /* right_attach */,
+                      row /* top_attach */, row + 1 /* right_attach */,
                       Gtk::FILL, (Gtk::AttachOptions)Gtk::FILL | Gtk::EXPAND);
                   }
                 }
@@ -385,9 +385,9 @@ Glib::RefPtr<CanvasItemMovable> CanvasLayoutItem::create_canvas_item_for_layout_
 
   if(child && child_item)
   {
-    //child_item->property_pointer_events() = 
+    //child_item->property_pointer_events() =
     //  (Goocanvas::PointerEvents)(Goocanvas::EVENTS_VISIBLE_FILL & GOO_CANVAS_EVENTS_VISIBLE_STROKE);
-      
+
     //Set the position and dimensions of this group to match the child:
     double x = 0;
     double y = 0;
@@ -416,11 +416,11 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
   sharedptr<LayoutItem_Field> field = sharedptr<LayoutItem_Field>::cast_dynamic(m_layout_item);
   if(!field)
     return;
-    
+
   Glib::RefPtr<CanvasItemMovable> child = get_child();
   if(!child)
     return;
-  
+
   const Field::glom_field_type field_type = field->get_glom_type();
   switch(field->get_glom_type())
   {
@@ -433,7 +433,7 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
       Glib::RefPtr<CanvasTextMovable> canvas_item = Glib::RefPtr<CanvasTextMovable>::cast_dynamic(child);
       if(!canvas_item)
         return;
-        
+
       Glib::ustring text_value = Conversions::get_text_for_gda_value(field_type, value, field->get_formatting_used().m_numeric_format);
 
       //The Postgres summary functions return NULL when summarising NULL records, but 0 is more sensible:
@@ -443,7 +443,7 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
         Gnome::Gda::Value value = Conversions::parse_value(0);
         text_value = Conversions::get_text_for_gda_value(field_type, value, field->get_formatting_used().m_numeric_format);
       }
-    
+
       canvas_item->set_text(text_value);
       break;
     }
@@ -452,23 +452,23 @@ void CanvasLayoutItem::set_db_data(const Gnome::Gda::Value& value)
       Glib::RefPtr<CanvasImageMovable> canvas_item = Glib::RefPtr<CanvasImageMovable>::cast_dynamic(child);
       if(!canvas_item)
         return;
-        
+
       //Get the height of the item (not of the pixbuf),
       //so we can scale the pixbuf:
       double width = 0;
       double height = 0;
       canvas_item->get_width_height(width, height);
-      
+
       Glib::RefPtr<Gdk::Pixbuf> pixbuf = Utils::get_pixbuf_for_gda_value(value);
       if(pixbuf) //TODO: Remove this if() check when goocanvas has my patch to avoid crashes when this is NULL.
         canvas_item->set_image(pixbuf);
-     
+
       break;
     }
     default:
       std::cerr << "CanvasLayoutItem::set_db_data(): unhandled field type." << std::endl;
   }
-        
+
 }
 
 void CanvasLayoutItem::remove_empty_indicators()
@@ -491,4 +491,3 @@ void CanvasLayoutItem::remove_empty_indicators()
 }
 
 } //namespace Glom
-

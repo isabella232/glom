@@ -21,7 +21,7 @@
 #ifndef BOX_DB_TABLE_RELATIONSHIPS_H
 #define BOX_DB_TABLE_RELATIONSHIPS_H
 
-#include "../box_db_table.h"
+#include <glom/box_db_table.h>
 #include <glom/utility_widgets/adddel/adddel_withbuttons.h>
 
 namespace Glom
@@ -29,7 +29,7 @@ namespace Glom
 
 class Box_DB_Table_Relationships : public Box_DB_Table
 {
-public: 
+public:
   Box_DB_Table_Relationships();
   Box_DB_Table_Relationships(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
   virtual ~Box_DB_Table_Relationships();
@@ -56,4 +56,3 @@ private:
 } //namespace Glom
 
 #endif //BOX_DB_TABLE_RELATIONSHIPS_H
-

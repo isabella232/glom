@@ -23,6 +23,8 @@
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
+#include <glom/bakery/app_withdoc_gtk.h>
+
 //TODO: Remove this when maemomm's gtkmm has been updated. 7th September 2009.
 #ifdef GLOM_ENABLE_MAEMO
 //Because earlier versions of gtkmm/enums.h did not include this, so
@@ -35,7 +37,6 @@
 #include <glom/navigation/maemo/pickerbutton_table.h>
 #endif //GLOM_ENABLE_MAEMO
 
-#include <glom/bakery/app_withdoc_gtk.h>
 #include <glom/frame_glom.h>
 
 

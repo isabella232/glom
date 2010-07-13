@@ -27,11 +27,11 @@
 #include <hildonmm/stackable-window.h>
 #endif
 
+#include <gtkmm/dialog.h>
 #include <gtkmm/menubar.h>
 #include <gtkmm/menu.h>
 #include <gtkmm/toolbar.h>
 #include <gtkmm/handlebox.h>
-#include <gtkmm/dialog.h>
 #include <gtkmm/uimanager.h>
 #include <gtkmm/builder.h>
 
@@ -48,7 +48,7 @@ namespace GlomBakery
  *
  * Your application's installation should register your document's MIME-type in GNOME's (freedesktop's) MIME-type system,
  * and register your application as capable of opening documents of that MIME-type.
- * 
+ *
  *
  */
 class App_WithDoc_Gtk
@@ -89,7 +89,7 @@ protected:
   virtual void init_menus(); //Override this to add more or different menus.
   virtual void init_menus_file(); //Call this from init_menus() to add the standard file menu.
   virtual void init_menus_edit(); //Call this from init_menus() to add the standard edit menu
-  virtual void init_menus_help(); //Call this from init_menus() to add the standard help menu.	
+  virtual void init_menus_help(); //Call this from init_menus() to add the standard help menu.
   virtual void init_toolbars();
 
   void add_ui_from_string(const Glib::ustring& ui_description); //Convenience function

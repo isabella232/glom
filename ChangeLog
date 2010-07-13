@@ -1,3 +1,11 @@
+2010-07-13  Murray Cumming  <murrayc@murrayc-desktop>
+
+	Fixed warnings, even with the latest gtkmm-2.24.
+
+	Many files: Try to include box.h or dialog.h before other treemodel.h.
+    Sometimes just add a gtkmm.h to simplify things. This will not be necessary
+    with gtkmm-3.0 (in glom's master branch).
+
 2010-07-07  Murray Cumming  <murrayc@murrayc-desktop>
 
 	PostgresQL backups: Suggest a dated name.

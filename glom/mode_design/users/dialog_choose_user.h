@@ -21,8 +21,8 @@
 #ifndef GLOM_MODE_DESIGN_USERS_DIALOG_CHOOSE_USER_H
 #define GLOM_MODE_DESIGN_USERS_DIALOG_CHOOSE_USER_H
 
-#include <gtkmm/builder.h>
 #include <gtkmm/dialog.h>
+#include <gtkmm/builder.h>
 #include <gtkmm/entry.h>
 #include "../../utility_widgets/combo_textglade.h"
 
@@ -50,4 +50,3 @@ private:
 } //namespace Glom
 
 #endif //GLOM_MODE_DESIGN_USERS_DIALOG_CHOOSER_USER_H
-

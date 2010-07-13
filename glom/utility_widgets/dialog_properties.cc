@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "dialog_properties.h"
 #include "glom/utility_widgets/adddel/adddel.h"
+#include "dialog_properties.h"
 
 namespace Glom
 {
@@ -34,7 +34,7 @@ Dialog_Properties::Dialog_Properties(BaseObjectType* cobject, const Glib::RefPtr
 
   //In general, we don't want to allow changes to windows underneath while editing properties.
   //Also, if we don't set this then seconday windows (from a modal dialog) will be on top but unusable.
-  set_modal(); 
+  set_modal();
 
   //Connect signal handlers:
   m_pButton_Cancel->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_Properties::on_button_cancel) );
@@ -158,5 +158,3 @@ void Dialog_Properties::enforce_constraints()
 }
 
 } //namespace Glom
-
-

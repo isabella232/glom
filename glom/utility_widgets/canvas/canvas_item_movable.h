@@ -21,7 +21,6 @@
 #ifndef GLOM_UTILITY_WIDGETS_CANVAS_ITEM_MOVABLE_H
 #define GLOM_UTILITY_WIDGETS_CANVAS_ITEM_MOVABLE_H
 
-#include "canvas_item_movable.h"
 #include "canvas_group_grid.h"
 #include <goocanvasmm/item.h>
 #include <gdkmm/cursor.h>
@@ -38,7 +37,7 @@ protected:
 public:
 
   /* Get the position of the item.
-   * For some items, this is an arbitrary part of the item, 
+   * For some items, this is an arbitrary part of the item,
    * such as the top-left of a rectangle,
    * or the first point in a line.
    */
@@ -50,11 +49,11 @@ public:
    */
   virtual void set_xy(double x, double y) = 0;
 
-  /* 
+  /*
    */
   virtual void get_width_height(double& width, double& height) const = 0;
 
-  /** 
+  /**
    */
   virtual void set_width_height(double width, double height) = 0;
 
@@ -71,7 +70,7 @@ public:
   typedef sigc::signal<void, guint, guint32> type_signal_show_context;
   type_signal_show_context signal_show_context();
 
-  /** Provide information about a grid or rules, 
+  /** Provide information about a grid or rules,
    * to which the item should snap when moving:
    *
    * @param grid: This must exist for as long as the canvas item.
@@ -98,7 +97,7 @@ private:
 
   void set_cursor(const Gdk::Cursor& cursor);
   void unset_cursor();
-  
+
 public:
   //These should really be protected, but the compiler doesn't allow it:
   bool on_button_press_event(const Glib::RefPtr<Goocanvas::Item>& target, GdkEventButton* event);
@@ -127,4 +126,3 @@ private:
 } //namespace Glom
 
 #endif //GLOM_UTILITY_WIDGETS_CANVAS_ITEM_MOVABLE_H
-

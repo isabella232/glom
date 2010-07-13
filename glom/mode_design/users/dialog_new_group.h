@@ -21,8 +21,8 @@
 #ifndef GLOM_MODE_DESIGN_USERS_DIALOG_NEWGROUP_H
 #define GLOM_MODE_DESIGN_USERS_DIALOG_NEWGROUP_H
 
-#include <gtkmm/builder.h>
 #include <gtkmm/dialog.h>
+#include <gtkmm/builder.h>
 #include <gtkmm/entry.h>
 
 namespace Glom

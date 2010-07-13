@@ -18,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <gtkmm.h>
 #include "treestore_report_layout.h"
 #include <libglom/data_structure/layout/report_parts/layoutitem_groupby.h>
 #include <libglom/data_structure/layout/report_parts/layoutitem_summary.h>

@@ -26,22 +26,6 @@
 // Uncomment to see debug messages
 //#define GLOM_CONNECTION_DEBUG
 
-namespace
-{
-
-static Glib::ustring port_as_string(int port_num)
-{
-  Glib::ustring result;
-  char* cresult = g_strdup_printf("%d", port_num);
-  if(cresult)
-    result = cresult;
-  g_free(cresult);
-
-  return result;
-}
-
-}
-
 namespace Glom
 {
 

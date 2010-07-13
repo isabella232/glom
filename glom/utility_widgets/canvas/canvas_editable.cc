@@ -18,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <gtkmm.h>
 #include "canvas_editable.h"
 #include "canvas_group_resizable.h"
 #include "canvas_rect_movable.h"
@@ -111,7 +112,7 @@ Glib::RefPtr<Goocanvas::Item> CanvasEditable::get_parent_container_or_self(const
 {
   return item;
 
-  Glib::RefPtr<Goocanvas::Item> result = item; 
+  Glib::RefPtr<Goocanvas::Item> result = item;
   while(result && !result->is_container())
     result = result->get_parent();
 
@@ -144,4 +145,3 @@ CanvasEditable::type_signal_show_context CanvasEditable::signal_show_context()
 }
 
 } //namespace Glom
-

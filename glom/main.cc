@@ -25,10 +25,11 @@
 #include <boost/python.hpp>
 
 //#include <gnome.h>
+#include <gtkmm/messagedialog.h>
 #include <glom/libglom/init.h>
 #include <glom/glade_utils.h>
 #include <gtkmm/main.h>
-#include <gtkmm/messagedialog.h>
+
 #include <giomm.h>
 
 // For postgres availability checks:
@@ -179,11 +180,11 @@ namespace Glom
 {
 
 class OptionGroup : public Glib::OptionGroup
-{ 
+{
 public:
   OptionGroup();
 
-  //These int instances should live as long as the OptionGroup to which they are added, 
+  //These int instances should live as long as the OptionGroup to which they are added,
   //and as long as the OptionContext to which those OptionGroups are added.
   std::string m_arg_filename;
   bool m_arg_version;
@@ -213,7 +214,7 @@ OptionGroup::OptionGroup()
   entry_debug_sql.set_long_name("debug_sql");
   entry_debug_sql.set_description(_("Show the generated SQL queries on stdout, for debugging."));
   add_entry(entry_debug_sql, m_arg_debug_sql);
-  
+
   Glib::OptionEntry entry_debug_date_check;
   entry_debug_date_check.set_long_name("debug-date-check");
   entry_debug_date_check.set_description(_("Show how Glom outputs a date in this locale, then stop."));
@@ -266,10 +267,10 @@ bool check_user_is_not_root_with_warning()
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 // Message to packagers:
-// If your Glom package does not depend on PostgreSQL, for some reason, 
+// If your Glom package does not depend on PostgreSQL, for some reason,
 // then your distro-specific patch should uncomment this #define.
 // and implement ConnectionPool::install_posgres().
-// But please, just make your Glom package depend on PostgreSQL instead, 
+// But please, just make your Glom package depend on PostgreSQL instead,
 // because this is silly.
 //
 //#define DISTRO_SPECIFIC_POSTGRES_INSTALL_IMPLEMENTED 1
@@ -328,7 +329,7 @@ bool check_pyglom_is_available_with_warning()
 
    /* The python module could not be imported by Glom, so warn the user: */
    const Glib::ustring message = _("Your installation of Glom is not complete, because the Glom Python module is not available on your system.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
-      
+
 #ifndef GLOM_ENABLE_MAEMO
   Gtk::MessageDialog dialog(Utils::bold_message(_("Glom Python Module Not Installed")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
   dialog.set_secondary_text(message);
@@ -348,7 +349,7 @@ bool check_pygda_is_available_with_warning()
 
    /* The python module could not be imported by Glom, so warn the user: */
    const Glib::ustring message = _("Your installation of Glom is not complete, because the gda Python module is not available on your system.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
-      
+
 #ifndef GLOM_ENABLE_MAEMO
   Gtk::MessageDialog dialog(Utils::bold_message(_("gda Python Module Not Installed")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
   dialog.set_secondary_text(message);
@@ -367,7 +368,7 @@ bool check_pygda_is_available_with_warning()
 extern "C" void __libc_freeres(void);
 #endif
 
-int 
+int
 main(int argc, char* argv[])
 {
 #ifndef G_OS_WIN32
@@ -390,7 +391,7 @@ main(int argc, char* argv[])
 
   // TODO: I am not sure why, but this does not work. PYTHONPATH is set
   // correctly according to getenv(), but python still does not look in it.
-  // For now, the installer installs all the python stuff directly into the 
+  // For now, the installer installs all the python stuff directly into the
   // application directory, although I would like to move this to a python/
   // subdirectory.
 #if 0
@@ -425,13 +426,13 @@ main(int argc, char* argv[])
   textdomain(GETTEXT_PACKAGE);
 
   // Set the locale for any streams to the user's current locale,
-  // We should not rely on the default locale of 
-  // any streams (we should always do an explicit imbue()), 
+  // We should not rely on the default locale of
+  // any streams (we should always do an explicit imbue()),
   // but this is maybe a good default in case we forget.
   std::locale::global(std::locale(""));
 
   Glom::libglom_init(); //Also initializes python.
-   
+
 #ifdef GLOM_ENABLE_MAEMO
   if(!(Osso::initialize("org.maemo.glom", PACKAGE_NAME)))
   {
@@ -450,13 +451,13 @@ main(int argc, char* argv[])
   PySys_SetArgv(argc, argv);
 
   std::auto_ptr<Gtk::Main> mainInstance;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED  
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
-#endif  
+#endif
   {
     mainInstance = std::auto_ptr<Gtk::Main>( new Gtk::Main(argc, argv, context) );
   }
-#ifdef GLIBMM_EXCEPTIONS_ENABLED  
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   catch(const Glib::Error& ex)
   {
     std::cerr << "Glom: Error while initializing gtkmm: " << ex.what() << std::endl;
@@ -468,7 +469,7 @@ main(int argc, char* argv[])
     std::cerr << "Glom: Error while initializing gtkmm" << std::endl;
     return 0;
   }
-#endif      
+#endif
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
@@ -541,24 +542,24 @@ main(int argc, char* argv[])
     {
       //Get a URI (file://something) from the filepath:
       Glib::RefPtr<Gio::File> file = Gio::File::create_for_commandline_arg(input_uri);
-      
+
       if(!file->query_exists())
       {
         std::cerr << _("Glom: The file does not exist.") << std::endl;
-        
+
         std::cerr << std::endl << context.get_help() << std::endl;
         return -1;
       }
-      
+
       const Gio::FileType file_type = file->query_file_type();
       if(file_type == Gio::FILE_TYPE_DIRECTORY)
       {
         std::cerr << _("Glom: The file path is a directory instead of a file.") << std::endl;
-        
+
         std::cerr << std::endl << context.get_help() << std::endl;
         return -1;
       }
-      
+
       input_uri = file->get_uri();
 
       //std::cout << "URI = " << input_uri << std::endl;
@@ -575,7 +576,7 @@ main(int argc, char* argv[])
     {
       /* The Postgres provider was not found, so warn the user: */
       const Glib::ustring message = _("Your installation of Glom is not complete, because the PostgreSQL libgda provider is not available on your system. This provider is needed to access Postgres database servers.\n\nPlease report this bug to your vendor, or your system administrator so it can be corrected.");
-      
+
       #ifndef GLOM_ENABLE_MAEMO
       Gtk::MessageDialog dialog(Glom::Utils::bold_message(_("Incomplete Glom Installation")), true /* use_markup */, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true /* modal */);
       dialog.set_secondary_text(message);
@@ -584,7 +585,7 @@ main(int argc, char* argv[])
       Hildon::Note note(Hildon::NOTE_TYPE_INFORMATION, message);
       note.run();
       #endif
-      
+
       return -1; //There is no point in going further because Glom would not be able to connect to any Postgres servers.
     }
 
@@ -593,7 +594,7 @@ main(int argc, char* argv[])
     if(!Glom::check_postgres_is_available_with_warning())
       return -1; //There is no point in going further because the most useful Glom functionality will not work without Postgres. Only a very cut-down Glom client would be useful without self-hosting.
     #endif // !GLOM_ENABLE_CLIENT_ONLY
-      
+
     // Postgres can't be started as root. initdb complains.
     // So just prevent this in general. It is safer anyway.
     if(!Glom::check_user_is_not_root_with_warning())
@@ -610,14 +611,14 @@ main(int argc, char* argv[])
     // Some more sanity checking:
     // These print errors to the stdout if they fail.
     // In future we might refuse to start if they fail.
-    const bool test1 = 
+    const bool test1 =
       Glom::Conversions::sanity_check_date_text_representation_uses_4_digit_years(group.m_arg_debug_date_check);
     const bool test2 = Glom::Conversions::sanity_check_date_parsing();
     if(!test1 || !test2)
     {
       std::cerr << "Glom: ERROR: Date parsing sanity checks failed. Glom will not display dates correctly or interperet entered dates correctly. This needs attention from a translator. Please file a bug. See http://www.glom.org." << std::endl;
     }
-    
+
     if(group.m_arg_debug_date_check)
       return 0; //This command-line option is documented as stopping afterwards.
 
@@ -666,5 +667,3 @@ main(int argc, char* argv[])
 
   return 0;
 }
-
-

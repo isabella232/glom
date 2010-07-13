@@ -21,8 +21,9 @@
 #ifndef GLOM_MODE_DATA_DB_TREEMODEL_H
 #define GLOM_MODE_DATA_DB_TREEMODEL_H
 
-#include <gtkmm/treemodel.h>
-#include <gtkmm/treepath.h>
+#include <gtkmm.h>
+//#include <gtkmm/treemodel.h>
+//#include <gtkmm/treepath.h>
 #include <libglom/data_structure/layout/layoutitem_field.h>
 #include <libglom/connectionpool.h>
 #include <glom/base_db.h>
@@ -58,7 +59,7 @@ public:
 
   bool m_removed; //If it should not be shown anymore.
   bool m_extra; //A temporary new row.
-};  
+};
 
 class DbTreeModel
   : public Glib::Object,
@@ -195,4 +196,3 @@ private:
 } //namespace Glom
 
 #endif //GLOM_MODE_DATA_DB_TREEMODEL_H
-

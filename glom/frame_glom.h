@@ -23,12 +23,12 @@
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
+#include "window_boxholder.h"
+
 #include <gtkmm/frame.h>
 #include <gtkmm/toggleaction.h>
 #include <libglom/document/bakery/view/view_composite.h>
 #include <libglom/document/document.h>
-
-#include "window_boxholder.h"
 
 #ifndef GLOM_ENABLE_MAEMO
 #include "navigation/box_tables.h"

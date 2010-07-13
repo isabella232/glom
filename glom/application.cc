@@ -54,7 +54,7 @@
 #include <libsoup/soup-status.h>
 #endif // !G_OS_WIN32
 
-#include <gtk/gtk.h>
+//#include <gtk/gtk.h>
 
 #ifndef G_OS_WIN32
 # include <netdb.h> //For gethostbyname().
@@ -1275,6 +1275,12 @@ bool Application::on_document_load()
         {
           delete m_dialog_progess_convert_backup;
           m_dialog_progess_convert_backup = 0;
+        }
+
+        if(!restored)
+        {
+          std::cerr << G_STRFUNC << ": Restore failed." << std::endl;
+          return false;
         }
       }
 #endif // !GLOM_ENABLE_CLIENT_ONLY

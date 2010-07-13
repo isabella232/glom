@@ -170,7 +170,7 @@ void ConnectionPool::setup_from_document(const Document* document)
 
   set_ready_to_connect();
 }
-  
+
 void ConnectionPool::delete_instance()
 {
   if(m_instance)
@@ -420,12 +420,12 @@ bool ConnectionPool::save_backup(const SlotProgress& slot_progress, const std::s
   g_assert(m_backend.get());
 
   const std::string old_uri = m_backend->get_database_directory_uri();
-  
+
   std::string uri;
   try
   {
     //TODO: Avoid the copy/paste of glom_postgres_data and make it work for sqlite too.
-    const std::string subdir = Glib::build_filename(path_dir, "glom_postgres_data"); 
+    const std::string subdir = Glib::build_filename(path_dir, "glom_postgres_data");
     uri = Glib::filename_to_uri(subdir);
   }
   catch(const Glib::Error& ex)
@@ -433,7 +433,7 @@ bool ConnectionPool::save_backup(const SlotProgress& slot_progress, const std::s
     std::cerr << G_STRFUNC << ": exception from Glib::build_filename(): " << ex.what() << std::endl;
     return false;
   }
-  
+
   m_backend->set_database_directory_uri(uri);
   const bool result = m_backend->save_backup(slot_progress, m_user, m_password, m_database);
   m_backend->set_database_directory_uri(old_uri);
@@ -443,17 +443,17 @@ bool ConnectionPool::save_backup(const SlotProgress& slot_progress, const std::s
 bool ConnectionPool::convert_backup(const SlotProgress& slot_progress, const std::string& path_dir)
 {
   g_assert(m_backend.get());
-  
+
   //TODO: Avoid this copy/paste of the directory name:
   std::string path_dir_to_use = path_dir;
   if(!path_dir_to_use.empty())
   {
-    path_dir_to_use = Glib::build_filename(path_dir, "glom_postgres_data"); 
+    path_dir_to_use = Glib::build_filename(path_dir, "glom_postgres_data");
   }
 
   return m_backend->convert_backup(slot_progress, path_dir_to_use, m_user, m_password);
 }
-  
+
 void ConnectionPool::set_password(const Glib::ustring& value)
 {
   m_password = value;
@@ -623,7 +623,7 @@ ConnectionPool::StartupErrors ConnectionPool::startup(const SlotProgress& slot_p
 
   //If we crash while running (unlikely, hopefully), then try to cleanup.
   //Comment this out if you want to see the backtrace in a debugger.
-  //previous_sig_handler = signal(SIGSEGV, &on_linux_signal);
+  previous_sig_handler = signal(SIGSEGV, &on_linux_signal);
 
   return started;
 }
@@ -640,7 +640,7 @@ bool ConnectionPool::cleanup(const SlotProgress& slot_progress)
   set_ready_to_connect(false);
 
   bool result = false;
-  
+
   if(m_backend.get())
     result = m_backend->cleanup(slot_progress);
 
@@ -656,7 +656,7 @@ bool ConnectionPool::cleanup(const SlotProgress& slot_progress)
   //We don't need the segfault handler anymore:
   signal(SIGSEGV, previous_sig_handler);
   previous_sig_handler = SIG_DFL; /* Arbitrary default */
-  
+
   return result;
 }
 

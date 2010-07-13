@@ -21,9 +21,9 @@
 #ifndef GLOM_DIALOG_DATABASE_PREFERENCES_H
 #define GLOM_DIALOG_DATABASE_PREFERENCES_H
 
+#include <gtkmm/dialog.h>
 #include <gtkmm/builder.h>
 #include <glom/variablesmap.h>
-#include <gtkmm/dialog.h>
 #include <gtkmm/entry.h>
 #include <gtkmm/label.h>
 #include <gtksourceviewmm/sourceview.h>
@@ -92,4 +92,3 @@ private:
 } //namespace Glom
 
 #endif //GLOM_DIALOG_DATABASE_PREFERENCES_H
-

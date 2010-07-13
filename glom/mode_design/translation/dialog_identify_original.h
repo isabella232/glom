@@ -21,10 +21,10 @@
 #ifndef GLOM_TRANSLATIONS_DIALOG_IDENTIFY_ORIGINAL_H
 #define GLOM_TRANSLATIONS_DIALOG_IDENTIFY_ORIGINAL_H
 
+#include <gtkmm/dialog.h>
 #include "combobox_locale.h"
 #include <libglom/document/view.h> // For View_Glom
 #include <gtkmm/builder.h>
-#include <gtkmm/dialog.h>
 
 namespace Glom
 {
@@ -54,4 +54,3 @@ private:
 } //namespace Glom
 
 #endif //GLOM_TRANSLATIONS_DIALOG_IDENTIFY_ORIGINAL_H
-
