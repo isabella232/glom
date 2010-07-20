@@ -29,16 +29,16 @@ Notebook_Find::Notebook_Find()
   m_iPage_List(0)
 {
   #ifndef GLOM_ENABLE_MAEMO
-  pages().push_back(Gtk::Notebook_Helpers::TabElem(m_Box_List, _("List")));
+  append_page(m_Box_List, _("List"));
   m_Box_List.signal_find_criteria.connect(sigc::mem_fun(*this, &Notebook_Find::on_page_find_criteria));
   m_iPage_List = 0;
   m_iPage_Details = 1;
-  
+
   //Fill composite view:
   add_view(&m_Box_List);
   #endif //GLOM_ENABLE_MAEMO
 
-  pages().push_back(Gtk::Notebook_Helpers::TabElem(m_Box_Details, _("Details")));
+  append_page(m_Box_Details, _("Details"));
 
   set_current_page(m_iPage_Details); //Show the details page by default. It's more obvious for a Find.
   //TODO: Show the same layout that is being edited at the time that the mode was changed.
@@ -49,7 +49,7 @@ Notebook_Find::Notebook_Find()
   add_view(&m_Box_Details);
 
   show_all_children();
-  
+
   #ifdef GLOM_ENABLE_MAEMO
   set_show_tabs(false);
   #endif //GLOM_ENABLE_MAEMO
@@ -60,18 +60,18 @@ Notebook_Find::~Notebook_Find()
   #ifndef GLOM_ENABLE_MAEMO
   remove_view(&m_Box_List);
   #endif
-  
+
   remove_view(&m_Box_Details);
 }
 
 bool Notebook_Find::init_db_details(const Glib::ustring& table_name, const Glib::ustring& layout_platform)
 {
   bool result = true;
-   
+
   #ifndef GLOM_ENABLE_MAEMO
   result = m_Box_List.init_db_details(table_name, layout_platform);
   #endif
-  
+
   m_Box_Details.init_db_details(table_name, layout_platform);
 
   return result;

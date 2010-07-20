@@ -1,4 +1,12 @@
-2010-07-13  Murray Cumming  <murrayc@murrayc-desktop>
+2010-07-20  Murray Cumming  <murrayc@murrayc.com>>
+
+	Fixed warnings with latest gtkmm-2.24
+
+	* glom/mode_data/notebook_data.cc:
+	* glom/mode_find/notebook_find.cc: Use Gtk::Notebook::append_page()
+    instead of Gtk::Notebook::pages().push_back().
+
+2010-07-13  Murray Cumming  <murrayc@murrayc.com>
 
 	Fixed warnings, even with the latest gtkmm-2.24.
 
