@@ -47,7 +47,7 @@ namespace Glom
 
 #define GLOM_NODE_CONNECTION "connection"
 #define GLOM_ATTRIBUTE_CONNECTION_SELF_HOSTED "self_hosted" //deprecated.
-#define GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE "hosting_mode" 
+#define GLOM_ATTRIBUTE_CONNECTION_HOSTING_MODE "hosting_mode"
 #define GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_CENTRAL "postgres_central"
 #define GLOM_ATTRIBUTE_CONNECTION_HOSTING_POSTGRES_SELF "postgres_self"
 #define GLOM_ATTRIBUTE_CONNECTION_HOSTING_SQLITE "sqlite"
@@ -268,7 +268,7 @@ Document::Document()
   //The xmlns URI does not need to be something that actually exists.
   //I think it is just a unique ID. murrayc.
   //It helps the MIME-type system to recognize the file type.
-  set_dtd_root_node_name("glom_document", 
+  set_dtd_root_node_name("glom_document",
     "http://glom.org/glom_document" /* xmlns ID */);
 
   //We don't use set_write_formatted() because it doesn't handle text nodes well.
@@ -390,7 +390,7 @@ void Document::set_connection_user(const Glib::ustring& strVal)
   if(strVal != m_connection_user)
   {
     m_connection_user = strVal;
-    
+
     //We don't call set_modified(), because this is not saved in the document: set_modified();
   }
 }
@@ -459,7 +459,7 @@ void Document::set_relationship(const Glib::ustring& table_name, const sharedptr
       {
         *iter = relationship; //Changes the relationship. All references (sharedptrs) to the relationship will get the informatin too, because it is shared.
         existing = true;
-      } 
+      }
     }
 
     if(!existing)
@@ -609,7 +609,7 @@ Document::type_vec_relationships Document::get_relationships(const Glib::ustring
     return result;
   }
   else
-    return type_vec_relationships(); 
+    return type_vec_relationships();
 }
 
 void Document::set_relationships(const Glib::ustring& table_name, const type_vec_relationships& vecRelationships) //TODO_shared_relationships
@@ -648,7 +648,7 @@ void Document::remove_relationship(const sharedptr<const Relationship>& relation
     {
       LayoutInfo& layout_info = *iterLayouts;
 
-      type_list_layout_groups::iterator iterGroups = layout_info.m_layout_groups.begin(); 
+      type_list_layout_groups::iterator iterGroups = layout_info.m_layout_groups.begin();
       while(iterGroups != layout_info.m_layout_groups.end())
       {
         //Remove any layout parts that use this relationship:
@@ -991,8 +991,8 @@ void Document::change_table_name(const Glib::ustring& table_name_old, const Glib
     DocumentTableInfo doctableinfo = iterFindTable->second;
     m_tables.erase(iterFindTable);
 
-    doctableinfo.m_info->set_name(table_name_new); 
-    m_tables[table_name_new] = doctableinfo; 
+    doctableinfo.m_info->set_name(table_name_new);
+    m_tables[table_name_new] = doctableinfo;
 
     //Find any relationships or layouts that use this table
     //Look at each table:
@@ -1199,7 +1199,7 @@ void Document::set_node_attribute_value_as_float(xmlpp::Element* node, const Gli
 {
     if(value == std::numeric_limits<float>::infinity() && !node->get_attribute(strAttributeName))
     return; //Use the non-existance of an attribute to mean "invalid"/infinity, to save space.
-  
+
   //Get text representation of float:
   std::stringstream thestream;
   thestream.imbue( std::locale::classic() ); //The C locale.
@@ -1248,7 +1248,7 @@ Gnome::Gda::Value Document::get_node_attribute_value_as_value(const xmlpp::Eleme
   const Gnome::Gda::Value result = Field::from_file_format(value_string, field_type, success);
   if(success)
     return result;
-  else 
+  else
     return Gnome::Gda::Value();
 }
 
@@ -1264,7 +1264,7 @@ Gnome::Gda::Value Document::get_node_text_child_as_value(const xmlpp::Element* n
   const Gnome::Gda::Value result = Field::from_file_format(value_string, field_type, success);
   if(success)
     return result;
-  else 
+  else
     return Gnome::Gda::Value();
 }
 
@@ -1346,7 +1346,7 @@ bool Document::get_table_overview_position(const Glib::ustring& table_name, floa
     return false;
   }
 }
-    
+
 void Document::set_table_overview_position(const Glib::ustring &table_name, float x, float y)
 {
   type_tables::iterator it = m_tables.find(table_name);
@@ -1356,7 +1356,7 @@ void Document::set_table_overview_position(const Glib::ustring &table_name, floa
     it->second.m_overviewy = y;
   }
 }
-    
+
 void Document::set_tables(const type_listTableInfo& tables)
 {
   //We avoid adding information about tables that we don't know about - that should be done explicitly.
@@ -1453,7 +1453,7 @@ Document::type_list_layout_groups Document::get_data_layout_groups_default(const
     details->set_name("details");
     details->set_title_original("Details"); //Don't translate this, but TODO: add standard translations.
     details->set_columns_count(2);
-    
+
     pTopLevel->add_item(details);
     pDetails = sharedptr<LayoutGroup>::cast_dynamic(details);
   }
@@ -1516,7 +1516,7 @@ Document::type_list_layout_groups Document::get_data_layout_groups_plus_new_fiel
     //Fall back to a general layout instead of one for a specific platform:
     result = get_data_layout_groups(layout_name, parent_table_name, Glib::ustring());
   }
-  
+
   if(result.empty())
   {
     create_default = true;
@@ -1527,7 +1527,7 @@ Document::type_list_layout_groups Document::get_data_layout_groups_plus_new_fiel
   {
     std::cout << "DEBUG: Document::get_data_layout_groups_plus_new_fields(): Creating a default layout." << std::endl;
     result = get_data_layout_groups_default(layout_name, parent_table_name, layout_platform);
-    
+
     //Make the default layout suitable for the special platform:
     if(layout_platform == "maemo")
     {
@@ -1536,26 +1536,26 @@ Document::type_list_layout_groups Document::get_data_layout_groups_plus_new_fiel
         sharedptr<LayoutGroup> layout_group = *iter;
         if(!layout_group)
           continue;
-        
+
         if(layout_name == "list")
         {
           //Don't try to show more than 3 items on the list view:
           if(layout_group->get_items_count() >= 2)
             layout_group->m_list_items.resize(2);
         }
-        
+
         maemo_restrict_layouts_to_single_column_group(layout_group);
-        
+
       }
     }
-    
+
     //Store this so we don't have to recreate it next time:
     Document* nonconst_this = const_cast<Document*>(this); //TODO: This is not ideal.
     nonconst_this->set_data_layout_groups(layout_name, parent_table_name, layout_platform, result);
     nonconst_this->set_modified(false); //This might have happened in operator mode, but in that case we don't really need to save it, or mark the document as unsaved.
   }
 
-  return result;  
+  return result;
 }
 
 Document::type_list_layout_groups Document::get_data_layout_groups(const Glib::ustring& layout_name, const Glib::ustring& parent_table_name, const Glib::ustring& layout_platform) const
@@ -1862,7 +1862,7 @@ void Document::set_modified(bool value)
 
   if(get_userlevel() != AppState::USERLEVEL_DEVELOPER)
   {
-    //Some things can be legitimately changed by the user, 
+    //Some things can be legitimately changed by the user,
     //such as field information from the server,
     //but only for the duration of the session.
     //There's no way that save_changes() can work for the user,
@@ -1878,6 +1878,11 @@ void Document::set_modified(bool value)
     if(value)
     {
       //std::cout << "  Document::set_modified() save_changes" << std::endl;
+
+      //TODO: Combine m_allow_auto_save and m_block_modified_set?
+      if(!m_allow_auto_save) //For instance, don't save changes while making many changes.
+        return;
+
       save_changes();
     }
   //}
@@ -1912,7 +1917,7 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
     format.m_numeric_format.m_decimal_places_restricted = get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES_RESTRICTED);
     format.m_numeric_format.m_decimal_places = get_node_attribute_value_as_decimal(element, GLOM_ATTRIBUTE_FORMAT_DECIMAL_PLACES);
     format.m_numeric_format.m_currency_symbol = get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CURRENCY_SYMBOL);
-    format.m_numeric_format.m_alt_foreground_color_for_negatives = 
+    format.m_numeric_format.m_alt_foreground_color_for_negatives =
       get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_USE_ALT_NEGATIVE_COLOR);
   }
 
@@ -1940,7 +1945,7 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
   //Choices:
   if(!field_name.empty())
   {
-    format.set_choices_restricted( 
+    format.set_choices_restricted(
       get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED),
       get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RESTRICTED_AS_RADIO_BUTTONS) );
     format.set_has_custom_choices( get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_CUSTOM) );
@@ -2000,9 +2005,9 @@ void Document::load_after_layout_item_usesrelationship(const xmlpp::Element* ele
   sharedptr<Relationship> relationship;
   if(!relationship_name.empty())
   {
-    //std::cout << "  debug in : table_name=" << table_name << ", relationship_name=" << relationship_name << std::endl; 
+    //std::cout << "  debug in : table_name=" << table_name << ", relationship_name=" << relationship_name << std::endl;
     relationship = get_relationship(table_name, relationship_name);
-    item->set_relationship(relationship); 
+    item->set_relationship(relationship);
 
     if(!relationship)
     {
@@ -2017,7 +2022,7 @@ void Document::load_after_layout_item_usesrelationship(const xmlpp::Element* ele
     if(!related_relationship)
       std::cerr << "Document::load_after_layout_item_field(): related relationship not found in table=" << relationship->get_to_table() << ",  name=" << related_relationship_name << std::endl;
 
-    item->set_related_relationship(related_relationship); 
+    item->set_related_relationship(related_relationship);
   }
 }
 
@@ -2107,7 +2112,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
         //item.set_full_field_details_empty();
         load_after_layout_item_field(element, table_name, item);
 
-        item_added = item; 
+        item_added = item;
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_BUTTON)
       {
@@ -2119,7 +2124,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
 
         load_after_translations(element, *item);
 
-        item_added = item; 
+        item_added = item;
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_TEXTOBJECT)
       {
@@ -2136,7 +2141,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
           //std::cout << "  DEBUG: text: " << item->m_text->get_title_or_name() << std::endl;
         }
 
-        item_added = item; 
+        item_added = item;
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_IMAGEOBJECT)
       {
@@ -2145,7 +2150,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
 
         item->set_image(get_node_attribute_value_as_value(element, GLOM_ATTRIBUTE_DATA_LAYOUT_IMAGEOBJECT_IMAGE, Field::TYPE_IMAGE));
 
-        item_added = item; 
+        item_added = item;
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_LINE)
       {
@@ -2158,7 +2163,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
           get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_X),
           get_node_attribute_value_as_decimal_double(element, GLOM_ATTRIBUTE_DATA_LAYOUT_LINE_END_Y) );
 
-        item_added = item; 
+        item_added = item;
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_FIELDSUMMARY)
       {
@@ -2168,34 +2173,34 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
         item->set_full_field_details( get_field(item->get_table_used(table_name), item->get_name()) );
         item->set_summary_type_from_sql( get_node_attribute_value(element, GLOM_ATTRIBUTE_LAYOUT_ITEM_FIELDSUMMARY_SUMMARYTYPE) );
 
-        item_added = item; 
+        item_added = item;
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_HEADER)
       {
         sharedptr<LayoutItem_Header> child_group = sharedptr<LayoutItem_Header>::create();
         //Recurse:
         load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
-        item_added = child_group; 
+        item_added = child_group;
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_FOOTER)
       {
         sharedptr<LayoutItem_Footer> child_group = sharedptr<LayoutItem_Footer>::create();
         //Recurse:
         load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
-        item_added = child_group; 
+        item_added = child_group;
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_GROUP)
       {
         sharedptr<LayoutGroup> child_group = sharedptr<LayoutGroup>::create();
         //Recurse:
         load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
-        item_added = child_group; 
+        item_added = child_group;
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_NOTEBOOK)
       {
         sharedptr<LayoutItem_Notebook> notebook = sharedptr<LayoutItem_Notebook>::create();
         load_after_layout_group(element, table_name, notebook, with_print_layout_positions);
-        item_added = notebook; 
+        item_added = notebook;
       }
       else if( (element->get_name() == GLOM_NODE_DATA_LAYOUT_PORTAL) || (element->get_name() == GLOM_NODE_DATA_LAYOUT_CALENDAR_PORTAL) )
       {
@@ -2215,10 +2220,10 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
         xmlpp::Element* elementNavigationRelationshipSpecific = get_node_child_named(element, GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP);
         if(elementNavigationRelationshipSpecific)
         {
-          const Glib::ustring navigation_type_as_string = 
-            get_node_attribute_value(elementNavigationRelationshipSpecific, 
+          const Glib::ustring navigation_type_as_string =
+            get_node_attribute_value(elementNavigationRelationshipSpecific,
             GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE);
-          if(navigation_type_as_string.empty() || 
+          if(navigation_type_as_string.empty() ||
              navigation_type_as_string == GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE_AUTOMATIC)
           {
             portal->set_navigation_type(LayoutItem_Portal::NAVIGATION_AUTOMATIC);
@@ -2248,8 +2253,8 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
 
         //Print Layout specific stuff:
         portal->set_print_layout_row_height( get_node_attribute_value_as_decimal(element, GLOM_ATTRIBUTE_PORTAL_PRINT_LAYOUT_ROW_HEIGHT) );
-        
-        item_added = portal; 
+
+        item_added = portal;
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_GROUPBY)
       {
@@ -2291,7 +2296,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
           }
         }
 
-        item_added = child_group; 
+        item_added = child_group;
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_VERTICALGROUP)
       {
@@ -2299,7 +2304,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
         //Recurse:
         load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
 
-        item_added = child_group; 
+        item_added = child_group;
       }
       else if(element->get_name() == GLOM_NODE_DATA_LAYOUT_ITEM_SUMMARY)
       {
@@ -2307,7 +2312,7 @@ void Document::load_after_layout_group(const xmlpp::Element* node, const Glib::u
         //Recurse:
         load_after_layout_group(element, table_name, child_group, with_print_layout_positions);
 
-        item_added = child_group; 
+        item_added = child_group;
       }
     }
 
@@ -2359,9 +2364,9 @@ void Document::load_after_translations(const xmlpp::Element* element, Translatab
       }
     }
   }
-  
+
   //If it has a singular title, then load that too:
-  HasTitleSingular* has_title_singular = 
+  HasTitleSingular* has_title_singular =
     dynamic_cast<HasTitleSingular*>(&item);
   if(has_title_singular)
   {
@@ -2403,10 +2408,10 @@ bool Document::load_after(int& failure_code)
   if(m_parent_window)
     auto_cursor = std::auto_ptr<BusyCursor>( new BusyCursor(m_parent_window) );
   */
-  
-  m_block_modified_set = true; //Prevent the set_ functions from trigerring a save.
 
-  bool result = GlomBakery::Document_XML::load_after(failure_code);  
+  m_block_modified_set = true; //Prevent the set_ functions from triggering a save.
+
+  bool result = GlomBakery::Document_XML::load_after(failure_code);
 
   m_block_cache_update = true; //Don't waste time repeatedly updating this until we have finished.
 
@@ -2427,7 +2432,7 @@ bool Document::load_after(int& failure_code)
       m_is_example = get_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_EXAMPLE);
       m_is_backup = get_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_BACKUP);
       m_database_title = get_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_CONNECTION_DATABASE_TITLE);
-      
+
       m_startup_script = get_child_text_node(nodeRoot, GLOM_NODE_STARTUP_SCRIPT);
 
       m_translation_original_locale = get_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_TRANSLATION_ORIGINAL_LOCALE);
@@ -2438,7 +2443,7 @@ bool Document::load_after(int& failure_code)
       {
         //Connection information:
         m_network_shared = get_node_attribute_value_as_bool(nodeConnection, GLOM_ATTRIBUTE_CONNECTION_NETWORK_SHARED, false /* default */);
-        
+
         //Older documents always defaulted to network-sharing with self-hosting.
         if(!m_network_shared && !m_is_example && (get_document_format_version() < 4))
         {
@@ -2640,11 +2645,11 @@ bool Document::load_after(int& failure_code)
                       for(unsigned int i = 0; i < doctableinfo.m_fields.size(); ++i)
                       {
                         sharedptr<const Field> field = doctableinfo.m_fields[i];
-                        //std::cout << "  DEBUG: searching: field i=" << i << " =" << field->get_name() << std::endl; 
+                        //std::cout << "  DEBUG: searching: field i=" << i << " =" << field->get_name() << std::endl;
                         if(field && (field->get_name() == column_name->get_value()))
                         {
                           field_values[i] = get_node_text_child_as_value(nodeChild, field->get_glom_type());
-                          //std::cout << "    DEBUG: document example value: field=" << field->get_name() << ", value=" << field_values[i].to_string() << std::endl; 
+                          //std::cout << "    DEBUG: document example value: field=" << field->get_name() << ", value=" << field_values[i].to_string() << std::endl;
                           break;
                         }
                       }
@@ -2664,7 +2669,7 @@ bool Document::load_after(int& failure_code)
       } //Tables.
 
       //Look at each "table" node.
-      //We do load the layouts separately, because we needed to load all the tables' relationships and tables 
+      //We do load the layouts separately, because we needed to load all the tables' relationships and tables
       //before we can load layouts that can use them.
       for(xmlpp::Node::NodeList::const_iterator iter = listNodes.begin(); iter != listNodes.end(); ++iter)
       {
@@ -2960,7 +2965,7 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
   const FieldFormatting::HorizontalAlignment alignment = format.get_horizontal_alignment();
   if(alignment != FieldFormatting::HORIZONTAL_ALIGNMENT_AUTO) //Save file-size by not even writing this.
   {
-    const Glib::ustring alignment_str = 
+    const Glib::ustring alignment_str =
       (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT  ? GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_LEFT : GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT_RIGHT);
     set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_HORIZONTAL_ALIGNMENT, alignment_str);
   }
@@ -3137,17 +3142,17 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
                 default:
                   break;
               }
-   
+
               //Empty means the default ("automatic")
-              //In that case we don't even write the node, to keep the XML small:   
+              //In that case we don't even write the node, to keep the XML small:
               if(!navigation_type_string.empty())
               {
                 xmlpp::Element* child_navigation_relationship = child->add_child(GLOM_NODE_DATA_LAYOUT_PORTAL_NAVIGATIONRELATIONSHIP);
 
                 save_before_layout_item_usesrelationship(child_navigation_relationship, relationship_navigation_specific);
-                set_node_attribute_value(child_navigation_relationship, 
+                set_node_attribute_value(child_navigation_relationship,
                   GLOM_ATTRIBUTE_PORTAL_NAVIGATION_TYPE, navigation_type_string);
-              }              
+              }
 
 
               //Print Layout specific stuff:
@@ -3294,7 +3299,7 @@ void Document::save_before_layout_group(xmlpp::Element* node, const sharedptr<co
     }
 
     //g_warning("save_before_layout_group: after child part type=%s", item->get_part_type_name().c_str());
-  } 
+  }
 }
 
 void Document::save_before_translations(xmlpp::Element* element, const TranslatableItem& item)
@@ -3317,9 +3322,9 @@ void Document::save_before_translations(xmlpp::Element* element, const Translata
     set_node_attribute_value(childItem, GLOM_ATTRIBUTE_TRANSLATION_LOCALE, iter->first);
     set_node_attribute_value(childItem, GLOM_ATTRIBUTE_TRANSLATION_VALUE, iter->second);
   }
-  
+
   //If it has a singular title, then save that too:
-  const HasTitleSingular* has_title_singular = 
+  const HasTitleSingular* has_title_singular =
     dynamic_cast<const HasTitleSingular*>(&item);
   if(has_title_singular && has_title_singular->m_title_singular
     && !(has_title_singular->m_title_singular->get_title_original().empty()))
@@ -3332,7 +3337,7 @@ void Document::save_before_translations(xmlpp::Element* element, const Translata
 void Document::save_before_print_layout_position(xmlpp::Element* nodeItem, const sharedptr<const LayoutItem>& item)
 {
   xmlpp::Element* child = nodeItem->add_child(GLOM_NODE_POSITION);
- 
+
   double x = 0;
   double y = 0;
   double width = 0;
@@ -3359,7 +3364,7 @@ bool Document::save_before()
   if(m_parent_window)
     auto_cursor = std::auto_ptr<BusyCursor>( new BusyCursor(m_parent_window) );
   */
-  
+
   xmlpp::Element* nodeRoot = get_node_document();
 
   if(nodeRoot)
@@ -3372,7 +3377,7 @@ bool Document::save_before()
     set_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_EXAMPLE, m_is_example);
     set_node_attribute_value_as_bool(nodeRoot, GLOM_ATTRIBUTE_IS_BACKUP, m_is_backup);
     set_node_attribute_value(nodeRoot, GLOM_ATTRIBUTE_CONNECTION_DATABASE_TITLE, m_database_title);
-    
+
     set_child_text_node(nodeRoot, GLOM_NODE_STARTUP_SCRIPT, m_startup_script);
 
     //Assume that the first language used is the original locale.
@@ -3430,11 +3435,11 @@ bool Document::save_before()
 
         set_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_X, doctableinfo.m_overviewx);
         set_node_attribute_value_as_float(nodeTable, GLOM_ATTRIBUTE_OVERVIEW_Y, doctableinfo.m_overviewy);
-        
+
         if(m_is_example) //The example data is useless to non-example files (and is big):
         {
           xmlpp::Element* nodeExampleRows = nodeTable->add_child(GLOM_NODE_EXAMPLE_ROWS);
- 
+
           for(type_example_rows::const_iterator iter = doctableinfo.m_example_rows.begin(); iter != doctableinfo.m_example_rows.end(); ++iter)
           {
             xmlpp::Element* nodeExampleRow = nodeExampleRows->add_child(GLOM_NODE_EXAMPLE_ROW);
@@ -3449,12 +3454,12 @@ bool Document::save_before()
 
                 xmlpp::Element* nodeField = nodeExampleRow->add_child(GLOM_NODE_VALUE);
                 set_node_attribute_value(nodeField, GLOM_ATTRIBUTE_COLUMN, field->get_name());
-                set_node_text_child_as_value(nodeField, row_data[i], field->get_glom_type()); 
+                set_node_text_child_as_value(nodeField, row_data[i], field->get_glom_type());
               } // for each value
             } // !row_data.empty
           } // for each row
         } // m_is_example
-        
+
 
         //Translations:
         save_before_translations(nodeTable, *(doctableinfo.m_info));
@@ -3477,7 +3482,7 @@ bool Document::save_before()
           set_node_attribute_value_as_value(elemField, GLOM_ATTRIBUTE_DEFAULT_VALUE, field->get_default_value(), field->get_glom_type());
 
           set_child_text_node(elemField, GLOM_NODE_CALCULATION, field->get_calculation());
-         
+
           Glib::ustring field_type;
           Field::type_map_type_names::const_iterator iterTypes = type_names.find( field->get_glom_type() );
           if(iterTypes != type_names.end())
@@ -3613,7 +3618,7 @@ bool Document::save_before()
     xmlpp::Element* nodeGroups = nodeRoot->add_child(GLOM_NODE_GROUPS);
 
     nodeGroups->add_child_comment("These are only used when recreating a database from an example file. The actual access-control is on the server, of course.");
-    
+
     for(type_map_groups::const_iterator iter = m_groups.begin(); iter != m_groups.end(); ++iter)
     {
       const GroupInfo& group_info = iter->second;
@@ -3675,7 +3680,7 @@ bool Document::save_before()
   //We don't use set_write_formatted() because it doesn't handle text nodes well.
   add_indenting_white_space_to_node();
 
-  return GlomBakery::Document_XML::save_before();  
+  return GlomBakery::Document_XML::save_before();
 }
 
 Glib::ustring Document::get_database_title() const
@@ -3758,7 +3763,7 @@ Document::type_listReports Document::get_report_names(const Glib::ustring& table
     return result;
   }
   else
-    return type_listReports(); 
+    return type_listReports();
 }
 
 void Document::remove_all_reports(const Glib::ustring& table_name)
@@ -3826,7 +3831,7 @@ Document::type_listPrintLayouts Document::get_print_layout_names(const Glib::ust
     return result;
   }
   else
-    return type_listReports(); 
+    return type_listReports();
 }
 
 void Document::remove_all_print_layouts(const Glib::ustring& table_name)
@@ -3901,7 +3906,7 @@ sharedptr<Relationship> Document::get_field_used_in_relationship_to_one(const Gl
   if(!layout_field)
   {
     std::cerr << "Document::get_field_used_in_relationship_to_one(): layout_field was null" << std::endl;
-    return result; 
+    return result;
   }
 
   const Glib::ustring table_used = layout_field->get_table_used(table_name);
@@ -3909,7 +3914,7 @@ sharedptr<Relationship> Document::get_field_used_in_relationship_to_one(const Gl
   if(iterFind == m_tables.end())
   {
     std::cerr << "Document::get_field_used_in_relationship_to_one(): table not found:" << table_used << std::endl;
-    return result; 
+    return result;
   }
 
   //Look at each relationship:
@@ -3975,7 +3980,7 @@ void Document::set_layout_current(const Glib::ustring& table_name, const Glib::u
   type_tables::iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
   {
-    DocumentTableInfo& table_info = iterFind->second; 
+    DocumentTableInfo& table_info = iterFind->second;
     table_info.m_layout_current = layout_name;
   }
 }
@@ -3985,8 +3990,8 @@ void Document::set_criteria_current(const Glib::ustring& table_name, const Found
   type_tables::iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
   {
-    DocumentTableInfo& table_info = iterFind->second; 
-    table_info.m_foundset_current = found_set; 
+    DocumentTableInfo& table_info = iterFind->second;
+    table_info.m_foundset_current = found_set;
   }
 }
 
@@ -3995,7 +4000,7 @@ Glib::ustring Document::get_layout_current(const Glib::ustring& table_name) cons
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
   {
-    const DocumentTableInfo& table_info = iterFind->second; 
+    const DocumentTableInfo& table_info = iterFind->second;
     return table_info.m_layout_current;
   }
 
@@ -4007,7 +4012,7 @@ FoundSet Document::get_criteria_current(const Glib::ustring& table_name) const
   type_tables::const_iterator iterFind = m_tables.find(table_name);
   if(iterFind != m_tables.end())
   {
-    const DocumentTableInfo& table_info = iterFind->second; 
+    const DocumentTableInfo& table_info = iterFind->second;
     return table_info.m_foundset_current;
   }
 
@@ -4176,7 +4181,7 @@ guint Document::get_latest_known_document_format_version()
   // Version 0: The first document format. (And the default version number when no version number was saved in the .XML)
   // Version 1: Saved scripts and other multiline text in text nodes instead of attributes. Can open Version 1 documents.
   // Version 2: hosting_mode="postgres-central|postgres-self|sqlite" instead of self_hosted="true|false". Can open Version 1 documents, by falling back to the self_hosted attribute if hosting_mode is not set.
-  // Version 3: (Glom 1.10). Support for the old one-big-string example_rows format was removed, and we now use (unquoted) non-postgres libgda escaping. 
+  // Version 3: (Glom 1.10). Support for the old one-big-string example_rows format was removed, and we now use (unquoted) non-postgres libgda escaping.
   // Version 4: (Glom 1.12). Portal navigation options were simplified, with a "none" option. network_sharing was added, defaulting to off.
   // Version 5: (Glom 1.14). Extra layout item formatting options were added, plus a startup script.
 
@@ -4247,7 +4252,7 @@ void Document::set_startup_script(const Glib::ustring& script)
 {
   if(m_startup_script == script)
     return;
-    
+
   m_startup_script = script;
   set_modified();
 }
@@ -4287,12 +4292,12 @@ void Document::maemo_restrict_layouts_to_single_column_group(const sharedptr<Lay
     return;
 
   //Change it to a single column group:
-  if(layout_group->get_columns_count() > 1)  
+  if(layout_group->get_columns_count() > 1)
     layout_group->set_columns_count(1);
-   
+
   //Remove the title, as it uses too much space on a Maemo screen:
   layout_group->clear_title_in_all_locales();
- 
+
   //Do the same with any child groups:
   for(LayoutGroup::type_list_items::iterator iter = layout_group->m_list_items.begin(); iter != layout_group->m_list_items.end(); ++iter)
   {
@@ -4311,7 +4316,7 @@ void Document::maemo_restrict_layouts_to_single_column()
   {
     DocumentTableInfo& info = iter->second;
     //std::cout << "debug: table: " << info.m_info->m_name << std::endl;
-      
+
     //Look at every layout:
     for(DocumentTableInfo::type_layouts::iterator iterLayouts = info.m_layouts.begin();
       iterLayouts != info.m_layouts.end(); ++iterLayouts)
@@ -4322,13 +4327,13 @@ void Document::maemo_restrict_layouts_to_single_column()
       //but resize the others.
       if(layout_info.m_layout_platform == "maemo")
         continue;
-      
+
       //Look at every group, recursively:
-      for(type_list_layout_groups::iterator iterGroups = layout_info.m_layout_groups.begin(); 
+      for(type_list_layout_groups::iterator iterGroups = layout_info.m_layout_groups.begin();
         iterGroups != layout_info.m_layout_groups.end(); ++iterGroups)
       {
         sharedptr<LayoutGroup> group = *iterGroups;
-        
+
         if(layout_info.m_layout_name == "list")
         {
           //Don't try to show more than 2 items on the list view:
@@ -4336,13 +4341,12 @@ void Document::maemo_restrict_layouts_to_single_column()
           if(group->get_items_count() >= 2)
             group->m_list_items.resize(2);
         }
-        
+
         maemo_restrict_layouts_to_single_column_group(group);
       }
     }
-  }      
+  }
 }
 
 
 } //namespace Glom
-

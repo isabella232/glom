@@ -1,5 +1,14 @@
 2010-07-21  Murray Cumming  <murrayc@murrayc.com>>
 
+	Saving as example: Fix this.
+
+	* glom/libglom/document/document.cc: set_modified(): Actually use
+    m_allow_auto_save so we don't just save every time, overwriting
+    previous saves. For instance, the examples were saved with is_example=false
+    after the document was changed back.
+
+2010-07-21  Murray Cumming  <murrayc@murrayc.com>>
+
 	Saving from examples: Set the table privileges mentioned in the document.
 
 	* glom/base_db.[h|cc]: Added set_table_privileges_groups_from_document().
