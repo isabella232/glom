@@ -1,3 +1,11 @@
+2010-07-21  Murray Cumming  <murrayc@murrayc.com>
+
+	Small Business example: Add table privileges.
+
+	* examples/example_smallbusiness.glom: Give some privileges to the
+    accounts and personnel groups and resave-as-an-example. These were
+    probably lost some time.
+
 2010-07-21  Murray Cumming  <murrayc@murrayc.com>>
 
 	Saving as example: Fix this.
