@@ -1223,63 +1223,119 @@ bool Base_DB::add_standard_groups()
 #endif
 
   // If the connection doesn't support users we can skip this step
-  if(sharedconnection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS))
-  {
-    const type_vec_strings vecGroups = Privs::get_database_groups();
-    type_vec_strings::const_iterator iterFind = std::find(vecGroups.begin(), vecGroups.end(), devgroup);
-    if(iterFind == vecGroups.end())
-    {
-      //The "SUPERUSER" here has no effect because SUPERUSER is not "inherited" to member users.
-      //But let's keep it to make the purpose of this group obvious.
-      bool test = query_execute("CREATE GROUP \"" GLOM_STANDARD_GROUP_NAME_DEVELOPER "\" WITH SUPERUSER");
-      if(!test)
-      {
-        std::cerr << "Glom Base_DB::add_standard_groups(): CREATE GROUP failed when adding the developer group." << std::endl;
-        return false;
-      }
-
-      //Make sure the current user is in the developer group.
-      //(If he is capable of creating these groups then he is obviously a developer, and has developer rights on the postgres server.)
-      const Glib::ustring current_user = ConnectionPool::get_instance()->get_user();
-      Glib::ustring strQuery = "ALTER GROUP \"" GLOM_STANDARD_GROUP_NAME_DEVELOPER "\" ADD USER \"" + current_user + "\"";
-      test = query_execute(strQuery);
-      if(!test)
-      {
-        std::cerr << "Glom Base_DB::add_standard_groups(): ALTER GROUP failed when adding the user to the developer group." << std::endl;
-        return false;
-      }
-
-      std::cout << "DEBUG: Added user " << current_user << " to glom developer group on postgres server." << std::endl;
-
-      Privileges priv_devs;
-      priv_devs.m_view = true;
-      priv_devs.m_edit = true;
-      priv_devs.m_create = true;
-      priv_devs.m_delete = true;
-
-      Document::type_listTableInfo table_list = get_document()->get_tables(true /* including system prefs */);
-
-      for(Document::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
-      {
-        sharedptr<const TableInfo> table_info = *iter;
-        if(table_info)
-        {
-          const Glib::ustring table_name = table_info->get_name();
-          if(get_table_exists_in_database(table_name)) //Maybe the table has not been created yet.
-            Privs::set_table_privileges(devgroup, table_name, priv_devs, true /* developer privileges */);
-        }
-      }
-
-      //Make sure that it is in the database too:
-      GroupInfo group_info;
-      group_info.set_name(GLOM_STANDARD_GROUP_NAME_DEVELOPER);
-      group_info.m_developer = true;
-      get_document()->set_group(group_info);
-    }
-  }
-  else
+  if(!(sharedconnection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS)))
   {
     std::cout << "DEBUG: Connection does not support users" << std::endl;
+  }
+
+  const type_vec_strings vecGroups = Privs::get_database_groups();
+  type_vec_strings::const_iterator iterFind = std::find(vecGroups.begin(), vecGroups.end(), devgroup);
+  if(iterFind == vecGroups.end())
+  {
+    //The "SUPERUSER" here has no effect because SUPERUSER is not "inherited" to member users.
+    //But let's keep it to make the purpose of this group obvious.
+    bool test = query_execute("CREATE GROUP \"" GLOM_STANDARD_GROUP_NAME_DEVELOPER "\" WITH SUPERUSER");
+    if(!test)
+    {
+      std::cerr << "Glom Base_DB::add_standard_groups(): CREATE GROUP failed when adding the developer group." << std::endl;
+      return false;
+    }
+
+    //Make sure the current user is in the developer group.
+    //(If he is capable of creating these groups then he is obviously a developer, and has developer rights on the postgres server.)
+    const Glib::ustring current_user = ConnectionPool::get_instance()->get_user();
+    Glib::ustring strQuery = "ALTER GROUP \"" GLOM_STANDARD_GROUP_NAME_DEVELOPER "\" ADD USER \"" + current_user + "\"";
+    test = query_execute(strQuery);
+    if(!test)
+    {
+      std::cerr << "Glom Base_DB::add_standard_groups(): ALTER GROUP failed when adding the user to the developer group." << std::endl;
+      return false;
+    }
+
+    std::cout << "DEBUG: Added user " << current_user << " to glom developer group on postgres server." << std::endl;
+
+    Privileges priv_devs;
+    priv_devs.m_view = true;
+    priv_devs.m_edit = true;
+    priv_devs.m_create = true;
+    priv_devs.m_delete = true;
+
+    Document::type_listTableInfo table_list = get_document()->get_tables(true /* including system prefs */);
+
+    for(Document::type_listTableInfo::const_iterator iter = table_list.begin(); iter != table_list.end(); ++iter)
+    {
+      sharedptr<const TableInfo> table_info = *iter;
+      if(!table_info)
+        continue;
+
+      const Glib::ustring table_name = table_info->get_name();
+      if(get_table_exists_in_database(table_name)) //Maybe the table has not been created yet.
+        Privs::set_table_privileges(devgroup, table_name, priv_devs, true /* developer privileges */);
+    }
+
+    //Make sure that it is in the database too:
+    GroupInfo group_info;
+    group_info.set_name(GLOM_STANDARD_GROUP_NAME_DEVELOPER);
+    group_info.m_developer = true;
+    get_document()->set_group(group_info);
+  }
+
+  return true;
+}
+
+bool Base_DB::add_groups_from_document()
+{
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  sharedptr<SharedConnection> sharedconnection = connect_to_server();
+#else
+  std::auto_ptr<ExceptionConnection> error;
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(0, error);
+  if(error.get())
+  {
+    g_warning("Base_DB::add_standard_groups: Failed to connect: %s", error->what());
+    // TODO: Rethrow?
+  }
+#endif
+
+  // If the connection doesn't support users we can skip this step
+  if(!(sharedconnection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS)))
+  {
+    std::cout << "DEBUG: Connection does not support users" << std::endl;
+  }
+
+
+  //Get the list of groups from the database server:
+  const type_vec_strings database_groups = Privs::get_database_groups();
+
+  //Get the list of groups from the document:
+  Document* document = get_document();
+  const Document::type_list_groups document_groups = document->get_groups();
+
+  //Add each group if it doesn't exist yet:
+  for(Document::type_list_groups::const_iterator iter = document_groups.begin();
+    iter != document_groups.end(); ++iter)
+  {
+    const GroupInfo& group = *iter;
+    const Glib::ustring name = group.get_name();
+
+    //See if the group exists in the document:
+    type_vec_strings::const_iterator iterFind = std::find(database_groups.begin(), database_groups.end(), name);
+    if(!name.empty() && iterFind == database_groups.end())
+    {
+      Glib::ustring query = "CREATE GROUP \"" + name  + "\"";
+
+      //The "SUPERUSER" here has no effect because SUPERUSER is not "inherited" to member users.
+      //But let's keep it to make the purpose of this group obvious.
+      if(group.m_developer)
+        query += " WITH SUPERUSER";
+
+      const bool test = query_execute(query);
+      if(!test)
+      {
+        std::cerr << G_STRFUNC << ": CREATE GROUP failed when adding the group with name=" << name << std::endl;
+        return false;
+      }
+    }
   }
 
   return true;
@@ -1927,7 +1983,7 @@ sharedptr<LayoutItem_Text> Base_DB::offer_textobject(const sharedptr<LayoutItem_
 
   Dialog_TextObject* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
-  
+
   if(transient_for)
     dialog->set_transient_for(*transient_for);
 
@@ -1951,7 +2007,7 @@ sharedptr<LayoutItem_Image> Base_DB::offer_imageobject(const sharedptr<LayoutIte
 
   Dialog_ImageObject* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
- 
+
   if(transient_for)
     dialog->set_transient_for(*transient_for);
 
@@ -1975,7 +2031,7 @@ sharedptr<LayoutItem_Notebook> Base_DB::offer_notebook(const sharedptr<LayoutIte
 
   Dialog_Notebook* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
-  
+
   if(transient_for)
     dialog->set_transient_for(*transient_for);
 

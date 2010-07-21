@@ -1795,6 +1795,18 @@ bool Application::recreate_database_from_example(bool& user_cancelled)
 
   dialog_progress->pulse();
 
+  //Create the developer group, and make this user a member of it:
+  dialog_progress->pulse();
+  bool test = m_pFrame->add_standard_groups();
+  if(!test)
+    return false;
+
+  //Add any extra groups from the example file:
+  dialog_progress->pulse();
+  test = m_pFrame->add_groups_from_document();
+  if(!test)
+    return false;
+
   //Create each table:
   Document::type_listTableInfo tables = pDocument->get_tables();
   for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
@@ -1817,13 +1829,6 @@ bool Application::recreate_database_from_example(bool& user_cancelled)
 
   dialog_progress->pulse();
   m_pFrame->add_standard_tables(); //Add internal, hidden, tables.
-
-  //Create the developer group, and make this user a member of it:
-  //If we got this far then the user must really have developer privileges already:
-  dialog_progress->pulse();
-  const bool test = m_pFrame->add_standard_groups();
-  if(!test)
-    return false;
 
   for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {

@@ -81,7 +81,7 @@ public:
   /** Execute a SQL Select command, returning the result.
    * This method handles any Gda exceptions caused by executing the command.
    */
-  static Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::ustring& strQuery, 
+  static Glib::RefPtr<Gnome::Gda::DataModel> query_execute_select(const Glib::ustring& strQuery,
                                                                   const Glib::RefPtr<Gnome::Gda::Set>& params = Glib::RefPtr<Gnome::Gda::Set>(0));
 
 
@@ -95,6 +95,7 @@ public:
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   bool add_standard_groups();
+  bool add_groups_from_document();
   bool add_standard_tables() const;
 
   bool create_table(const sharedptr<const TableInfo>& table_info, const Document::type_vec_fields& fields) const;
@@ -133,17 +134,17 @@ protected:
   /** Allow the user to select a field from the list of fields for the table.
    */
   sharedptr<LayoutItem_Field> offer_field_list_select_one_field(const Glib::ustring& table_name, Gtk::Window* transient_for = 0);
-  
-  /** Allow the user to select a field from the list of fields for the table, 
+
+  /** Allow the user to select a field from the list of fields for the table,
    * with @a start_field selected by default.
    */
   sharedptr<LayoutItem_Field> offer_field_list_select_one_field(const sharedptr<const LayoutItem_Field>& start_field, const Glib::ustring& table_name, Gtk::Window* transient_for = 0);
-  
-  
+
+
   /** Allow the user to select fields from the list of fields for the table.
    */
   type_list_field_items offer_field_list(const Glib::ustring& table_name, Gtk::Window* transient_for = 0);
-  
+
 
   sharedptr<LayoutItem_Field> offer_field_formatting(const sharedptr<const LayoutItem_Field>& start_field, const Glib::ustring& table_name, Gtk::Window* transient_for = 0);
 
@@ -388,13 +389,13 @@ protected:
    */
   void set_found_set_where_clause_for_portal(FoundSet& found_set, const sharedptr<LayoutItem_Portal>& portal, const Gnome::Gda::Value& foreign_key_value);
 
-  /** Update GDA's information about the table structure, such as the 
+  /** Update GDA's information about the table structure, such as the
    * field list and their types.
    * Call this whenever changing the table structure, for instance with an ALTER query.
    * This may take a few seconds to return.
    */
   void update_gda_metastore_for_table(const Glib::ustring& table_name) const;
-  
+
   static Glib::RefPtr<Gnome::Gda::Connection> get_connection();
 
   static bool get_field_primary_key_index_for_fields(const type_vec_fields& fields, guint& field_column);
