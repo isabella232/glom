@@ -439,6 +439,7 @@ void Dialog_GroupsList::treeview_append_bool_column(Gtk::TreeView& treeview, con
   pCellRenderer->signal_toggled().connect( slot_toggled );
 }
 
+//TODO: Use Privs::set_table_privileges() instead?
 bool Dialog_GroupsList::set_table_privilege(const Glib::ustring& table_name, const Glib::ustring& group_name, bool grant, enumPriv priv)
 {
   if(group_name.empty() || table_name.empty())
@@ -615,5 +616,3 @@ void Dialog_GroupsList::on_cell_data_group_name(Gtk::CellRenderer* renderer, con
 }
 
 } //namespace Glom
-
-

@@ -100,6 +100,7 @@ public:
 
   bool create_table(const sharedptr<const TableInfo>& table_info, const Document::type_vec_fields& fields) const;
   bool create_table_add_missing_fields(const sharedptr<const TableInfo>& table_info, const Document::type_vec_fields& fields) const;
+  bool set_table_privileges_groups_from_document();
 
   /// Also saves the table information in the document:
   bool create_table_with_default_fields(const Glib::ustring& table_name);

@@ -1,9 +1,16 @@
+2010-07-21  Murray Cumming  <murrayc@murrayc.com>>
+
+	Saving from examples: Set the table privileges mentioned in the document.
+
+	* glom/base_db.[h|cc]: Added set_table_privileges_groups_from_document().
+	* glom/application.cc: recreate_database_from_example(): call it.
+
 2010-07-21  Murray Cumming  <murrayc@murrayc.com>
 
 	Saving from examples: Create the groups mentioned in the document.
 
 	* glom/base_db.[h|cc]: Added add_groups_from_document().
-	* glom/application.cc: recreate_database_from_example() call it.
+	* glom/application.cc: recreate_database_from_example(): call it.
 
 2010-07-20  Murray Cumming  <murrayc@murrayc.com>>
 

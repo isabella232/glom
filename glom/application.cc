@@ -1830,6 +1830,12 @@ bool Application::recreate_database_from_example(bool& user_cancelled)
   dialog_progress->pulse();
   m_pFrame->add_standard_tables(); //Add internal, hidden, tables.
 
+  //Set table priviliges, using the groups we just added:
+  dialog_progress->pulse();
+  test = m_pFrame->set_table_privileges_groups_from_document();
+  if(!test)
+    return false;
+
   for(Document::type_listTableInfo::const_iterator iter = tables.begin(); iter != tables.end(); ++iter)
   {
     sharedptr<const TableInfo> table_info = *iter;

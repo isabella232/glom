@@ -1226,6 +1226,7 @@ bool Base_DB::add_standard_groups()
   if(!(sharedconnection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS)))
   {
     std::cout << "DEBUG: Connection does not support users" << std::endl;
+    return true;
   }
 
   const type_vec_strings vecGroups = Privs::get_database_groups();
@@ -1301,6 +1302,7 @@ bool Base_DB::add_groups_from_document()
   if(!(sharedconnection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS)))
   {
     std::cout << "DEBUG: Connection does not support users" << std::endl;
+    return true;
   }
 
 
@@ -1318,7 +1320,7 @@ bool Base_DB::add_groups_from_document()
     const GroupInfo& group = *iter;
     const Glib::ustring name = group.get_name();
 
-    //See if the group exists in the document:
+    //See if the group exists in the database:
     type_vec_strings::const_iterator iterFind = std::find(database_groups.begin(), database_groups.end(), name);
     if(!name.empty() && iterFind == database_groups.end())
     {
@@ -1339,6 +1341,70 @@ bool Base_DB::add_groups_from_document()
   }
 
   return true;
+}
+
+bool Base_DB::set_table_privileges_groups_from_document()
+{
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  sharedptr<SharedConnection> sharedconnection = connect_to_server();
+#else
+  std::auto_ptr<ExceptionConnection> error;
+  sharedptr<SharedConnection> sharedconnection = connect_to_server(0, error);
+  if(error.get())
+  {
+    g_warning("Base_DB::add_standard_groups: Failed to connect: %s", error->what());
+    // TODO: Rethrow?
+  }
+#endif
+
+  // If the connection doesn't support users we can skip this step
+  if(!(sharedconnection->get_gda_connection()->supports_feature(Gnome::Gda::CONNECTION_FEATURE_USERS)))
+  {
+    std::cout << "DEBUG: Connection does not support users" << std::endl;
+    return true;
+  }
+
+
+  //Get the list of groups from the database server:
+  const type_vec_strings database_groups = Privs::get_database_groups();
+
+  //Get the list of groups from the document:
+  Document* document = get_document();
+  const Document::type_list_groups document_groups = document->get_groups();
+
+  //Get the list of tables:
+  const Document::type_listTableInfo table_list = document->get_tables();
+
+  bool result = true;
+
+  for(Document::type_list_groups::const_iterator iter = document_groups.begin();
+    iter != document_groups.end(); ++iter)
+  {
+    const GroupInfo& group_info = *iter;
+    const Glib::ustring group_name = group_info.get_name();
+
+    //See if the group exists in the database:
+    type_vec_strings::const_iterator iterFind = std::find(database_groups.begin(), database_groups.end(), group_name);
+    if(!group_name.empty() && iterFind == database_groups.end())
+    {
+      std::cerr << G_STRFUNC << ": group does not exist in the database. group name=" << group_name << std::endl;
+      result = false;
+      continue;
+    }
+
+    //Look at each table privilege for this group:
+    for(GroupInfo::type_map_table_privileges::const_iterator iter = group_info.m_map_privileges.begin();
+      iter != group_info.m_map_privileges.end(); ++iter)
+    {
+      const Glib::ustring table_name = iter->first;
+      const Privileges& privs = iter->second;
+
+      //Set the table privilege for the group:
+      Privs::set_table_privileges(group_name, table_name, privs, group_info.m_developer);
+    }
+  }
+
+  return result;
 }
 
 void Base_DB::set_database_preferences(const SystemPrefs& prefs)
