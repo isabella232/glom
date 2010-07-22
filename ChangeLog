@@ -1,5 +1,17 @@
 2010-07-22  Murray Cumming  <murrayc@murrayc.com>
 
+	Added --restore command-line option.
+
+	* glom/application.[h|cc]: Added init() with a bool restore option,
+  calling do_backup_restore() if appropriate.
+	* glom/main.cc: Added a --restore command and pass the bool result to
+  Application::init().
+
+  This allows the user to restore from a backup without first loading an
+  existing file, though this is so far only possible via the terminal.
+
+2010-07-22  Murray Cumming  <murrayc@murrayc.com>
+
   Added Developer/Restore Backup menu item.
 
 	* glom/application.[h.cc]: Added a Developer/Restore Backup menu item,

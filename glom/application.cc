@@ -188,6 +188,11 @@ void Application::on_connection_avahi_done()
 
 bool Application::init(const Glib::ustring& document_uri)
 {
+  return init(document_uri, false);
+}
+
+bool Application::init(const Glib::ustring& document_uri, bool restore)
+{
   type_vec_strings vecAuthors;
   vecAuthors.push_back("Murray Cumming <murrayc@murrayc.com>");
   set_about_information(PACKAGE_VERSION, vecAuthors, _("© 2000-2010 Murray Cumming"), _("A Database GUI"));
@@ -201,14 +206,19 @@ bool Application::init(const Glib::ustring& document_uri)
     Document* pDocument = static_cast<Document*>(get_document());
     if(pDocument && pDocument->get_connection_database().empty()) //If it is a new (default) document.
     {
-      return offer_new_or_existing();
+        return offer_new_or_existing();
     }
   }
   else
   {
-    const bool test = open_document(document_uri);
-    if(!test)
-      return offer_new_or_existing();
+    if(restore)
+      return do_restore_backup(document_uri);
+    else
+    {
+      const bool test = open_document(document_uri);
+      if(!test)
+        return offer_new_or_existing();
+    }
   }
 
   return true;
@@ -2806,7 +2816,7 @@ void Application::on_menu_developer_export_backup()
         " --directory \"" + parent_dir + "\"" + //This must be right before the mention of the file name:
         " \"" + basename + "\"";
 
-      std::cout << "DEBUG: command_tar=" << command_tar << std::endl;
+      //std::cout << "DEBUG: command_tar=" << command_tar << std::endl;
 
       saved = Glom::Spawn::execute_command_line_and_wait(command_tar,
         sigc::mem_fun(*this, &Application::on_connection_save_backup_progress));
@@ -2848,16 +2858,23 @@ void Application::on_menu_developer_restore_backup()
   if(result != Gtk::RESPONSE_OK)
     return;
 
-  // We cannot use an uri here, because we cannot untar remote files.
-  const std::string filename_tarball = file_dlg.get_filename();
-  if(filename_tarball.empty())
+  const std::string uri_tarball = file_dlg.get_uri();
+  if(uri_tarball.empty())
     return;
+
+  do_restore_backup(uri_tarball);
+}
+
+bool Application::do_restore_backup(const Glib::ustring& backup_uri)
+{
+  // We cannot use an uri here, because we cannot untar remote files.
+  const std::string filename_tarball = Glib::filename_from_uri(backup_uri);
 
   const std::string path_tar = Glib::find_program_in_path("tar");
   if(path_tar.empty())
   {
     std::cerr << G_STRFUNC << ": The tar executable could not be found." << std::endl;
-    return;
+    return false;
   }
 
   //Create a temporary directory into which we will untar the tarball:
@@ -2870,7 +2887,7 @@ void Application::on_menu_developer_restore_backup()
   if(!Utils::delete_directory(uri_tmp))
   {
     std::cerr << G_STRFUNC << "Error from Utils::delete_directory() while trying to remove directory: " << uri_tmp << std::endl;
-    return;
+    return false;
   }
 
   //Create the tmp directory:
@@ -2880,7 +2897,7 @@ void Application::on_menu_developer_restore_backup()
     std::cerr << G_STRFUNC << "Error from g_mkdir_with_parents() while trying to create directory: " << path_tmp << std::endl;
     perror("Error from g_mkdir_with_parents");
 
-    return;
+    return false;
   }
 
   //Untar into the tmp directory:
@@ -2915,7 +2932,7 @@ void Application::on_menu_developer_restore_backup()
   if(untarred_uri.empty())
   {
     ui_warning(_("Restore Backup failed."), _("There was an error while restoring the backup. The .glom file could not be found."));
-    return;
+    return false;
   }
 
   //std::cout << "DEBUG: untarred_uri=" << untarred_uri << std::endl;
@@ -2926,6 +2943,8 @@ void Application::on_menu_developer_restore_backup()
   //because open_document() starts a new process,
   //so we don't know when we can safely delete the files.
   //Utils::delete_directory(uri_tmp);
+
+  return true;
 }
 
 void Application::on_menu_developer_show_layout_toolbar()

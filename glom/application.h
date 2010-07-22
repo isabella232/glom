@@ -66,6 +66,11 @@ public:
 
   virtual bool init(const Glib::ustring& document_uri = Glib::ustring()); //override
 
+  /**
+   * @param restore Whether @a document_uri is a .tar.gz backup file to restore.
+   */
+  bool init(const Glib::ustring& document_uri, bool restore);
+
   //virtual void statusbar_set_text(const Glib::ustring& strText);
   //virtual void statusbar_clear();
 
@@ -107,6 +112,7 @@ public:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void do_menu_developer_fields(Gtk::Window& parent, const Glib::ustring table_name);
   void do_menu_developer_relationships(Gtk::Window& parent, const Glib::ustring table_name);
+  bool do_restore_backup(const Glib::ustring& backup_uri);
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
   ///Whether to show the generated SQL queries on stdout, for debugging.
