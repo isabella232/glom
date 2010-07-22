@@ -1115,7 +1115,12 @@ void Document::set_child_text_node(xmlpp::Element* node, const Glib::ustring& ch
 {
   xmlpp::Element* child = get_node_child_named(node, child_node_name);
   if(!child)
+  {
+    if(text.empty())
+      return; //Keep the document smaller by avoiding empty nodes.
+
     child = node->add_child(child_node_name);
+  }
 
   xmlpp::TextNode* text_child = child->get_child_text();
   if(!text_child)
