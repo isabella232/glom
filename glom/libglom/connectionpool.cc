@@ -451,7 +451,22 @@ bool ConnectionPool::convert_backup(const SlotProgress& slot_progress, const std
     path_dir_to_use = Glib::build_filename(path_dir, "glom_postgres_data");
   }
 
-  return m_backend->convert_backup(slot_progress, path_dir_to_use, m_user, m_password);
+  const bool result = m_backend->convert_backup(slot_progress, path_dir_to_use, m_user, m_password, m_database);
+  if(!result)
+    return false;
+
+  try
+  {
+    //update_meta_store_table_names() has been known to throw an exception.
+    //Glom is mostly unusable when it fails, but that's still better than a crash.
+    m_refGdaConnection->update_meta_store_table_names(m_backend->get_public_schema_name());
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << "ConnectionPool::connect(): update_meta_store_table_names() failed: " << ex.what() << std::endl;
+  }
+
+  return result;
 }
 
 void ConnectionPool::set_password(const Glib::ustring& value)

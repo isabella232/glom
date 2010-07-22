@@ -56,7 +56,7 @@ public:
    */
   virtual bool save_backup(const SlotProgress& slot_progress, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name);
 
-  virtual bool convert_backup(const SlotProgress& slot_progress, const std::string& base_directory, const Glib::ustring& username, const Glib::ustring& password);
+  virtual bool convert_backup(const SlotProgress& slot_progress, const std::string& base_directory, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name);
 
   static std::string get_path_to_postgres_executable(const std::string& program);
 

@@ -1,3 +1,21 @@
+2010-07-22  Murray Cumming  <murrayc@murrayc.com>
+
+	Saving from a backup: Now works.
+
+	* glom/application.[h|cc]: on_document_load(): Simplify the code to
+  create from a backup, modifying the from-example code to handle it too,
+  calling a new recreate_database_from_backup() method.
+  That now creates the database and then adds the groups before trying
+  to restore from the backup file.
+	* glom/libglom/connectionpool_backends/backend.h: convert_backup():
+	* glom/libglom/connectionpool_backends/postgres.[h|cc]: convert_backup():
+	* glom/libglom/connectionpool_backends/sqlite.[h|cc]: convert_backup():
+  Add a database_name_parameter. This now expects the database to exist
+  already, though it should be empty. It should also already have the
+  expected groups.
+	* glom/libglom/connectionpool.[h|cc]: convert_backup(): Supply the
+  database name. Also update the meta data so we know about the new tables.
+
 2010-07-21  Murray Cumming  <murrayc@murrayc.com>
 
 	Small Business example: Add table privileges.

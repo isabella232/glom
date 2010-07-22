@@ -659,7 +659,7 @@ bool Postgres::save_backup(const SlotProgress& slot_progress, const Glib::ustrin
   return result;
 }
 
-bool Postgres::convert_backup(const SlotProgress& slot_progress, const std::string& base_directory, const Glib::ustring& username, const Glib::ustring& password)
+bool Postgres::convert_backup(const SlotProgress& slot_progress, const std::string& base_directory, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name)
 {
 /* TODO:
   if(m_network_shared && !running)
@@ -694,8 +694,6 @@ bool Postgres::convert_backup(const SlotProgress& slot_progress, const std::stri
     return false;
   }
 
-  //TODO: Save the password to .pgpass
-
   //Make sure the path exists:
   const std::string path_backup = get_self_hosting_backup_path(base_directory);
   if(path_backup.empty() || !file_exists_filepath(path_backup))
@@ -704,7 +702,7 @@ bool Postgres::convert_backup(const SlotProgress& slot_progress, const std::stri
     return false;
   }
 
-  // Save the password to ~/.pgpass, because this is the only wayt to use
+  // Save the password to ~/.pgpass, because this is the only way to use
   // pg_dump without it asking for the password:
   std::string pgpass_backup, pgpass_original;
   const bool pgpass_created = save_password_to_pgpass(username, password, pgpass_backup, pgpass_original);
@@ -717,7 +715,7 @@ bool Postgres::convert_backup(const SlotProgress& slot_progress, const std::stri
   // Make sure to use double quotes for the executable path, because the
   // CreateProcess() API used on Windows does not support single quotes.
   const std::string command_restore = "\"" + get_path_to_postgres_executable("pg_restore") + "\"" +
-    " --create -d template1 " +
+    " -d " + database_name +
     " --host=\"" + m_host + "\"" +
     " --port=" + port_as_string(m_port) +
     " --username=\"" + username + "\"" +

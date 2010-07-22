@@ -823,7 +823,7 @@ Document::type_vec_fields Document::get_table_fields(const Glib::ustring& table_
     {
       if(iterFind->second.m_fields.empty())
       {
-         g_warning("Document::get_table_fields: table found, but m_fields is empty");
+         std::cerr << G_STRFUNC << ": table found, but m_fields is empty. table_name=" << table_name << std::endl;
       }
 
       return iterFind->second.m_fields;

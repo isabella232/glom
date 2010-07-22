@@ -61,9 +61,9 @@ private:
   /** Creates a new database.
    */
   virtual bool create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<Glib::Error>& error);
-  
+
   virtual bool save_backup(const SlotProgress& slot_progress, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name);
-  virtual bool convert_backup(const SlotProgress& slot_progress, const std::string& base_directory, const Glib::ustring& username, const Glib::ustring& password);
+  virtual bool convert_backup(const SlotProgress& slot_progress, const std::string& base_directory, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name);
 };
 
 } //namespace ConnectionPoolBackends
@@ -71,4 +71,3 @@ private:
 } //namespace Glom
 
 #endif //GLOM_BACKEND_SQLITE_H
-

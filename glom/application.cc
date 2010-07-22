@@ -1109,6 +1109,7 @@ bool Application::on_document_load()
       {
         pDocument->set_modified(false);
         pDocument->set_is_new(true);
+        pDocument->set_allow_autosave(true); //Turn this back on.
         std::cout << "debug: user cancelled creating database" << std::endl;
         return false;
       }
@@ -1206,12 +1207,17 @@ bool Application::on_document_load()
         return false; //Failed. Close the document.
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
-      if(is_example)
+      if(is_example || is_backup)
       {
         //Create the example database:
         //connection_request_password_and_choose_new_database_name() has already change the database name to a new unused one:
         bool user_cancelled = false;
-        const bool test = recreate_database_from_example(user_cancelled);
+        bool test = false;
+        if(is_example)
+          test = recreate_database_from_example(user_cancelled);
+        else
+          test = recreate_database_from_backup(original_uri, user_cancelled);
+
         if(!test)
         {
           // TODO: Do we need to call connection_pool->cleanup() here, for
@@ -1236,51 +1242,8 @@ bool Application::on_document_load()
           const AppState::userlevels user_level = pDocument->get_userlevel();
           pDocument->set_userlevel(AppState::USERLEVEL_DEVELOPER);
           pDocument->set_modified(true);
+          pDocument->set_allow_autosave(true); //Turn this back on.
           pDocument->set_userlevel(user_level); //Change it back.
-        }
-      }
-      else if(is_backup)
-      {
-        std::string original_dir_path;
-
-        Glib::RefPtr<Gio::File> gio_file = Gio::File::create_for_uri(original_uri);
-        if(gio_file)
-        {
-          Glib::RefPtr<Gio::File> parent = gio_file->get_parent();
-          if(parent)
-          {
-            try
-            {
-              original_dir_path = Glib::filename_from_uri(parent->get_uri());
-            }
-            catch(const Glib::Error& ex)
-            {
-              std::cerr << G_STRFUNC << ": Glib::filename_from_uri() failed: " << ex.what() << std::endl;
-            }
-          }
-        }
-
-        if(original_dir_path.empty())
-        {
-          std::cerr << G_STRFUNC << ": original_dir_path is empty." << std::endl;
-          return false;
-        }
-
-        //Restore the database from the backup:
-        std::cout << "DEBUG: original_dir_path=" << original_dir_path << std::endl;
-        const bool restored = connection_pool->convert_backup(
-          sigc::mem_fun(*this, &Application::on_connection_convert_backup_progress), original_dir_path);
-
-        if(m_dialog_progess_convert_backup)
-        {
-          delete m_dialog_progess_convert_backup;
-          m_dialog_progess_convert_backup = 0;
-        }
-
-        if(!restored)
-        {
-          std::cerr << G_STRFUNC << ": Restore failed." << std::endl;
-          return false;
         }
       }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
@@ -1862,6 +1825,167 @@ bool Application::recreate_database_from_example(bool& user_cancelled)
   } //for(tables)
 
   return true; //All tables created successfully.
+}
+
+bool Application::recreate_database_from_backup(const Glib::ustring& backup_uri, bool& user_cancelled)
+{
+  //Create a database, based on the information in the current document:
+  Document* pDocument = static_cast<Document*>(get_document());
+  if(!pDocument)
+    return false;
+
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  if(!connection_pool)
+    return false; //Impossible anyway.
+
+  //Check whether the database exists already.
+  const Glib::ustring db_name = pDocument->get_connection_database();
+  if(db_name.empty())
+    return false;
+
+  connection_pool->set_database(db_name);
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+#else
+  std::auto_ptr<std::exception> error;
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+  {
+    connection_pool->set_ready_to_connect(); //This has succeeded already.
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    sharedptr<SharedConnection> sharedconnection = connection_pool->connect();
+#else
+    sharedptr<SharedConnection> sharedconnection = connection_pool->connect(error);
+    if(!error.get())
+    {
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+      g_warning("Application::recreate_database_from_example(): Failed because database exists already.");
+
+      return false; //Connection to the database succeeded, because no exception was thrown. so the database exists already.
+#ifndef GLIBMM_EXCEPTIONS_ENABLED
+    }
+#endif // !GLIBMM_EXCEPTIONS_ENABLED
+  }
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  catch(const ExceptionConnection& ex)
+  {
+#else
+  if(error.get())
+  {
+    const ExceptionConnection* exptr = dynamic_cast<ExceptionConnection*>(error.get());
+    if(exptr)
+    {
+      const ExceptionConnection& ex = *exptr;
+#endif // GLIBMM_EXCEPTIONS_ENABLED
+      if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
+      {
+        user_cancelled = true; //Eventually, the user will cancel after retrying.
+        g_warning("Application::recreate_database_from_example(): Failed because connection to server failed, without specifying a database.");
+        return false;
+      }
+#ifndef GLIBMM_EXCEPTIONS_ENABLED
+    }
+#endif // !GLIBMM_EXCEPTIONS_ENABLED
+
+    //Otherwise continue, because we _expected_ connect() to fail if the db does not exist yet.
+  }
+
+  //Show the user that something is happening, because the INSERTS might take time.
+  //TOOD: This doesn't actually show up until near the end, even with Gtk::Main::instance()->iteration().
+  Dialog_ProgressCreating* dialog_progress_temp = 0;
+  Utils::get_glade_widget_derived_with_warning(dialog_progress_temp);
+  dialog_progress_temp->set_message(_("Creating Glom Database"), _("Creating Glom database from backup file."));
+  std::auto_ptr<Dialog_ProgressCreating> dialog_progress(dialog_progress_temp); //Put the dialog in an auto_ptr so that it will be deleted (and hidden) when the current function returns.
+
+  dialog_progress->set_transient_for(*this);
+  dialog_progress->show();
+
+  //Ensure that the dialog is shown, instead of waiting for the application to be idle:
+  while(Gtk::Main::instance()->events_pending())
+    Gtk::Main::instance()->iteration();
+
+  dialog_progress->pulse();
+
+  //Create the database: (This will show a connection dialog)
+  connection_pool->set_database( Glib::ustring() );
+  try
+  {
+    ConnectionPool::get_instance()->create_database(db_name);
+  }
+  catch(const Glib::Exception& ex) // libgda does not set error domain
+  {
+    std::cerr << G_STRFUNC << ": Gnome::Gda::Connection::create_database(" << db_name << ") failed: " << ex.what() << std::endl;
+
+    //Tell the user:
+    Gtk::Dialog* dialog = 0;
+    Utils::get_glade_widget_with_warning("glom_developer.glade", "dialog_error_create_database", dialog);
+    dialog->set_transient_for(*this);
+    Glom::Utils::dialog_run_with_help(dialog, "dialog_error_create_database");
+    delete dialog;
+
+    return false;
+  }
+
+  connection_pool->set_database(db_name); //Specify the new database when connecting from now on.
+
+  //Create the developer group, and make this user a member of it:
+  dialog_progress->pulse();
+  bool test = m_pFrame->add_standard_groups();
+  if(!test)
+    return false;
+
+  //Add any extra groups from the example file:
+  dialog_progress->pulse();
+  test = m_pFrame->add_groups_from_document();
+  if(!test)
+    return false;
+
+  //dialog_progress->pulse();
+  //m_pFrame->add_standard_tables(); //Add internal, hidden, tables.
+
+  //Restore the backup into the database:
+  std::string original_dir_path;
+
+  Glib::RefPtr<Gio::File> gio_file = Gio::File::create_for_uri(backup_uri);
+  if(gio_file)
+  {
+    Glib::RefPtr<Gio::File> parent = gio_file->get_parent();
+    if(parent)
+    {
+      try
+      {
+        original_dir_path = Glib::filename_from_uri(parent->get_uri());
+      }
+      catch(const Glib::Error& ex)
+      {
+        std::cerr << G_STRFUNC << ": Glib::filename_from_uri() failed: " << ex.what() << std::endl;
+      }
+    }
+  }
+
+  if(original_dir_path.empty())
+  {
+    std::cerr << G_STRFUNC << ": original_dir_path is empty." << std::endl;
+    return false;
+  }
+
+  //Restore the database from the backup:
+  std::cout << "DEBUG: original_dir_path=" << original_dir_path << std::endl;
+  const bool restored = connection_pool->convert_backup(
+    sigc::mem_fun(*this, &Application::on_connection_convert_backup_progress), original_dir_path);
+
+  if(m_dialog_progess_convert_backup)
+  {
+    delete m_dialog_progess_convert_backup;
+    m_dialog_progess_convert_backup = 0;
+  }
+
+  if(!restored)
+  {
+    std::cerr << G_STRFUNC << ": Restore failed." << std::endl;
+    return false;
+  }
+
+  return true; //Restore successfully.
 }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
