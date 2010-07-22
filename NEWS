@@ -1,3 +1,18 @@
+1.14.4 (stable):
+
+* Developer menu: Added Export Backup and Restore Backup menu items.
+  These use PostgreSQL's pg_dump and pg_restore utilities, wrapping the
+  dump and .glom file up in a .tar.gz.
+  As well as allowing backups of data, this should make it easier to upgrade
+  the PostgreSQL version, which some distros do automatically when upgrading
+  to new major versions of Glom. This is possible because pg_restore can
+  work with the pg_dump output of an older PostgreSQL version.
+  See also:
+  http://www.glom.org/wiki/index.php?title=Pg_dump_when_upgrading_PostgreSQL
+  (Murray Cumming)
+* Build: Explicitly link with libdl for Python module loading test.
+  (David King)
+
 1.14.3 (stable):
 
 * Fix position of "Records / Found" labels.
@@ -5,7 +20,7 @@
 * List: Don't allow deleting placeholder rows.
   (Daniel Borgmann)
 * Build: Don't require avahi-ui.
-  
+
 1.14.2 (stable):
 
 * Fix document saving (horribly broken in 1.14.1).
