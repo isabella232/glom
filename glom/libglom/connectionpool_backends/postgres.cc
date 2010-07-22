@@ -542,7 +542,7 @@ bool Postgres::save_password_to_pgpass(const Glib::ustring username, const Glib:
   //Move any existing file out of the way:
   if(file_exists_filepath(filepath_pgpass))
   {
-    std::cout << "DEBUG: File exists: " << filepath_pgpass << std::endl;
+    //std::cout << "DEBUG: File exists: " << filepath_pgpass << std::endl;
     filepath_previous = filepath_pgpass + ".glombackup";
     if(g_rename(filepath_pgpass.c_str(), filepath_previous.c_str()) != 0)
     {

@@ -546,6 +546,7 @@ main(int argc, char* argv[])
       if(!file->query_exists())
       {
         std::cerr << _("Glom: The file does not exist.") << std::endl;
+        std::cerr << "uri: " << input_uri << std::endl;
 
         std::cerr << std::endl << context.get_help() << std::endl;
         return -1;

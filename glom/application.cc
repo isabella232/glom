@@ -563,6 +563,10 @@ void Application::init_menus()
   m_listDeveloperActions.push_back(action);
   m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &Application::on_menu_developer_export_backup));
 
+  action = Gtk::Action::create("GlomAction_Menu_Developer_RestoreBackup", _("_Restore Backup"));
+  m_listDeveloperActions.push_back(action);
+  m_refActionGroup_Others->add(action, sigc::mem_fun(*this, &Application::on_menu_developer_restore_backup));
+
   m_action_show_layout_toolbar = Gtk::ToggleAction::create("GlomAction_Menu_Developer_ShowLayoutToolbar", _("_Show Layout Toolbar"));
   m_listDeveloperActions.push_back(m_action_show_layout_toolbar);
   m_refActionGroup_Others->add(m_action_show_layout_toolbar, sigc::mem_fun(*this, &Application::on_menu_developer_show_layout_toolbar));
@@ -619,8 +623,10 @@ void Application::init_menus()
     "          <menuitem action='GlomAction_Menu_Developer_ActivePlatform_Normal' />"
     "          <menuitem action='GlomAction_Menu_Developer_ActivePlatform_Maemo' />"
     "        </menu>"
-    "        <menuitem action='GlomAction_Menu_Developer_ExportBackup' />"
     "        <menuitem action='GlomAction_Menu_Developer_ShowLayoutToolbar' />"
+    "        <separator />"
+    "        <menuitem action='GlomAction_Menu_Developer_ExportBackup' />"
+    "        <menuitem action='GlomAction_Menu_Developer_RestoreBackup' />"
     "      </menu>"
 #endif // !GLOM_ENABLE_CLIENT_ONLY
     "    </placeholder>"
@@ -1969,7 +1975,7 @@ bool Application::recreate_database_from_backup(const Glib::ustring& backup_uri,
   }
 
   //Restore the database from the backup:
-  std::cout << "DEBUG: original_dir_path=" << original_dir_path << std::endl;
+  //std::cout << "DEBUG: original_dir_path=" << original_dir_path << std::endl;
   const bool restored = connection_pool->convert_backup(
     sigc::mem_fun(*this, &Application::on_connection_convert_backup_progress), original_dir_path);
 
@@ -2807,7 +2813,7 @@ void Application::on_menu_developer_export_backup()
 
       if(saved)
       {
-
+        std::cerr << G_STRFUNC << "tar failed with command:" << command_tar << std::endl;
       }
 
       if(m_dialog_progess_save_backup)
@@ -2820,6 +2826,106 @@ void Application::on_menu_developer_export_backup()
 
   if(!saved)
     ui_warning(_("Export Backup failed."), _("There was an error while exporting the backup."));
+}
+
+void Application::on_menu_developer_restore_backup()
+{
+  Gtk::FileChooserDialog file_dlg(_("Choose a backup file"), Gtk::FILE_CHOOSER_ACTION_OPEN);
+  file_dlg.set_transient_for(*this);
+  file_dlg.set_local_only(); //Because we can't untar remote files.
+
+  Gtk::FileFilter filter;
+  filter.set_name(_(".tar.gz Backup files"));
+  filter.add_pattern("*.tar.gz");
+  filter.add_pattern("*.tgz");
+  file_dlg.add_filter(filter);
+
+  file_dlg.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  file_dlg.add_button(_("Restore"), Gtk::RESPONSE_OK);
+
+  const int result = file_dlg.run();
+  file_dlg.hide();
+  if(result != Gtk::RESPONSE_OK)
+    return;
+
+  // We cannot use an uri here, because we cannot untar remote files.
+  const std::string filename_tarball = file_dlg.get_filename();
+  if(filename_tarball.empty())
+    return;
+
+  const std::string path_tar = Glib::find_program_in_path("tar");
+  if(path_tar.empty())
+  {
+    std::cerr << G_STRFUNC << ": The tar executable could not be found." << std::endl;
+    return;
+  }
+
+  //Create a temporary directory into which we will untar the tarball:
+  std::string path_tmp = Glib::build_filename(
+    Glib::get_tmp_dir(), Glib::path_get_basename(filename_tarball));
+  path_tmp += "_extracted";
+
+  //Make sure that the directory does not exist already:
+  const Glib::ustring uri_tmp = Glib::filename_to_uri(path_tmp);
+  if(!Utils::delete_directory(uri_tmp))
+  {
+    std::cerr << G_STRFUNC << "Error from Utils::delete_directory() while trying to remove directory: " << uri_tmp << std::endl;
+    return;
+  }
+
+  //Create the tmp directory:
+  const int mkdir_succeeded = g_mkdir_with_parents(path_tmp.c_str(), 0770);
+  if(mkdir_succeeded == -1)
+  {
+    std::cerr << G_STRFUNC << "Error from g_mkdir_with_parents() while trying to create directory: " << path_tmp << std::endl;
+    perror("Error from g_mkdir_with_parents");
+
+    return;
+  }
+
+  //Untar into the tmp directory:
+  //TODO: Find some way to do this without using the command-line,
+  //which feels fragile:
+  const std::string command_tar = "\"" + path_tar + "\"" +
+    " --force-local --no-wildcards" + //Avoid side-effects of special characters.
+    " -xzf"
+    " \"" + filename_tarball + "\"" +
+    " --directory \"" + path_tmp + "\"";
+
+  //std::cout << "DEBUG: command_tar=" << command_tar << std::endl;
+
+  const bool untarred = Glom::Spawn::execute_command_line_and_wait(command_tar,
+    sigc::mem_fun(*this, &Application::on_connection_convert_backup_progress));
+  if(!untarred)
+  {
+    std::cerr << G_STRFUNC << ": tar failed with command:" << command_tar << std::endl;
+  }
+
+  if(m_dialog_progess_convert_backup)
+  {
+    delete m_dialog_progess_convert_backup;
+    m_dialog_progess_convert_backup = 0;
+  }
+
+  if(!untarred)
+    ui_warning(_("Restore Backup failed."), _("There was an error while restoring the backup. The tar utility failed to extract the archive."));
+
+  //Open the .glom file that is in the tmp directory:
+  const Glib::ustring untarred_uri = Utils::get_directory_child_with_suffix(uri_tmp, ".glom", true /* recurse */);
+  if(untarred_uri.empty())
+  {
+    ui_warning(_("Restore Backup failed."), _("There was an error while restoring the backup. The .glom file could not be found."));
+    return;
+  }
+
+  //std::cout << "DEBUG: untarred_uri=" << untarred_uri << std::endl;
+  open_document(untarred_uri);
+
+  //Delete the temporary untarred directory:
+  //Actually, we just leave this here, where the system will clean it up anyway,
+  //because open_document() starts a new process,
+  //so we don't know when we can safely delete the files.
+  //Utils::delete_directory(uri_tmp);
 }
 
 void Application::on_menu_developer_show_layout_toolbar()

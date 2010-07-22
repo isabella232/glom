@@ -1,5 +1,17 @@
 2010-07-22  Murray Cumming  <murrayc@murrayc.com>
 
+  Added Developer/Restore Backup menu item.
+
+	* glom/application.[h.cc]: Added a Developer/Restore Backup menu item,
+  which lets the user choose a .tar.gz, untars it in /tmp/ and opens it.
+
+	* tests/test_selfhosting_new_empty.cc:
+	* glom/libglom/utils.[h|cc]: Move delete_directory() to Utils.
+  Added get_directory_child_with_suffix(), used to find the .glom file inside
+  an untarred directory.
+
+2010-07-22  Murray Cumming  <murrayc@murrayc.com>
+
 	Saving from a backup: Now works.
 
 	* glom/application.[h|cc]: on_document_load(): Simplify the code to

@@ -236,7 +236,7 @@ static void add_to_relationships_list(type_list_relationships& list_relationship
     list_relationships.push_back(uses_rel);
   }
 
- 
+
 }
 
 
@@ -307,7 +307,7 @@ Glib::ustring Utils::build_sql_select_fields_to_get(const Glib::ustring& table_n
     return sql_part_fields;
   }
 
-  //LEFT OUTER JOIN will get the field values from the other tables, 
+  //LEFT OUTER JOIN will get the field values from the other tables,
   //and give us our fields for this table even if there is no corresponding value in the other table.
   for(type_list_relationships::const_iterator iter = list_relationships.begin(); iter != list_relationships.end(); ++iter)
   {
@@ -340,7 +340,7 @@ Glib::ustring Utils::build_sql_select_with_where_clause(const Glib::ustring& tab
     table_name, fieldsToGet, sort_clause, sql_part_from, sql_part_leftouterjoin);
 
   //Build the whole SQL statement:
-  Glib::ustring result = 
+  Glib::ustring result =
     "SELECT " + sql_part_fields +
     " FROM \"" + table_name + '\"';
 
@@ -488,7 +488,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
         itempair.second = datamodel->get_value_at(1, row, error);
 #endif
 
-      list_values.push_back(itempair);      
+      list_values.push_back(itempair);
     }
   }
   else
@@ -521,7 +521,7 @@ Glib::ustring Utils::string_escape_underscores(const Glib::ustring& text)
   return result;
 }
 
-/** Get just the first part of a locale, such as de_DE, 
+/** Get just the first part of a locale, such as de_DE,
  * ignoring, for instance, .UTF-8 or \@euro at the end.
  */
 Glib::ustring Utils::locale_simplify(const Glib::ustring& locale_id)
@@ -647,13 +647,13 @@ Utils::type_vec_strings Utils::string_separate(const Glib::ustring& str, const G
   const Glib::ustring::size_type size_separator = separator.size();
 
   //A stack of quotes, so that we can handle nested quotes, whether they are " or ':
-  typedef std::stack<Glib::ustring> type_queue_quotes; 
+  typedef std::stack<Glib::ustring> type_queue_quotes;
   type_queue_quotes m_current_quotes;
 
   Glib::ustring::size_type unprocessed_start = 0;
   Glib::ustring::size_type item_start = 0;
   while(unprocessed_start < size)
-  { 
+  {
     //std::cout << "while unprocessed: un_processed_start=" << unprocessed_start << std::endl;
     Glib::ustring::size_type posComma = str.find(separator, unprocessed_start);
 
@@ -666,18 +666,18 @@ Utils::type_vec_strings Utils::string_separate(const Glib::ustring& str, const G
       if(ignore_quoted_separator)
       {
         //std::cout << "  debug: attempting to ignore quoted separators: " << separator << std::endl;
-       
+
         Glib::ustring::size_type posLastQuote = unprocessed_start;
 
         //std::cout << "    debug: posLastQuote=" << posLastQuote << std::endl;
         //std::cout << "    debug: posComma=" << posComma << std::endl;
- 
-  
+
+
         bool bContinue = true;
         while(bContinue && (posLastQuote < posComma))
         {
           //std::cout << "  continue" << std::endl;
-          Glib::ustring closing_quote; 
+          Glib::ustring closing_quote;
           if(!m_current_quotes.empty())
             closing_quote = m_current_quotes.top();
 
@@ -752,7 +752,7 @@ Utils::type_vec_strings Utils::string_separate(const Glib::ustring& str, const G
         // Do not add this item to the result, because it was quoted.
         continue;
       }
-     
+
       unprocessed_start = posComma + size_separator; //The while loops stops when this is empty.
     }
     else //if no separator found:
@@ -840,6 +840,79 @@ bool Utils::file_exists(const Glib::ustring& uri)
 #endif
   }
 }
+
+bool Utils::delete_directory(const Glib::RefPtr<Gio::File>& directory)
+{
+  if(!(directory->query_exists()))
+    return true;
+
+  //(Recursively) Delete any child files and directories,
+  //so we can delete this directory.
+  Glib::RefPtr<Gio::FileEnumerator> enumerator = directory->enumerate_children();
+
+  Glib::RefPtr<Gio::FileInfo> info = enumerator->next_file();
+  while(info)
+  {
+    Glib::RefPtr<Gio::File> child = directory->get_child(info->get_name());
+    bool removed_child = false;
+    if(child->query_file_type() == Gio::FILE_TYPE_DIRECTORY)
+      removed_child = delete_directory(child);
+    else
+      removed_child = child->remove();
+
+    if(!removed_child)
+       return false;
+
+    info = enumerator->next_file();
+  }
+
+  //Delete the actual directory:
+  if(!directory->remove())
+    return false;
+
+  return true;
+}
+
+bool Utils::delete_directory(const std::string& uri)
+{
+  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
+  return delete_directory(file);
+}
+
+/** For instance, to find the first file in the directory with a .glom extension.
+ */
+Glib::ustring Utils::get_directory_child_with_suffix(const Glib::ustring& uri_directory, const std::string& suffix, bool recursive)
+{
+  Glib::RefPtr<Gio::File> directory = Gio::File::create_for_uri(uri_directory);
+  Glib::RefPtr<Gio::FileEnumerator> enumerator = directory->enumerate_children();
+
+  Glib::RefPtr<Gio::FileInfo> info = enumerator->next_file();
+  while(info)
+  {
+    Glib::RefPtr<const Gio::File> child = directory->get_child(info->get_name());
+
+    const Gio::FileType file_type = child->query_file_type();
+    if(file_type == Gio::FILE_TYPE_REGULAR)
+    {
+      //Check the filename:
+      const std::string basename = child->get_basename();
+      if(string_remove_suffix(basename, suffix) != basename)
+        return child->get_uri();
+    }
+    else if(recursive && file_type == Gio::FILE_TYPE_DIRECTORY)
+    {
+      //Look in sub-directories too:
+      const Glib::ustring result = get_directory_child_with_suffix(child->get_uri(), suffix, recursive);
+      if(!result.empty())
+        return result;
+    }
+
+    info = enumerator->next_file();
+  }
+
+  return Glib::ustring();
+}
+
 
 
 } //namespace Glom

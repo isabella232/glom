@@ -40,50 +40,6 @@ static void on_cleanup_progress()
   std::cout << "Database cleanup progress" << std::endl;
 }
 
-/** Delete a directory, if it exists, and its contents.
- * Unlike g_file_delete(), this does not fail if the directory is not empty.
- */
-static bool delete_directory(const Glib::RefPtr<Gio::File>& directory)
-{
-  if(!(directory->query_exists()))
-    return true;
-
-  //(Recursively) Delete any child files and directories,
-  //so we can delete this directory.
-  Glib::RefPtr<Gio::FileEnumerator> enumerator = directory->enumerate_children();
-
-  Glib::RefPtr<Gio::FileInfo> info = enumerator->next_file();
-  while(info)
-  {
-    Glib::RefPtr<Gio::File> child = directory->get_child(info->get_name());
-    bool removed_child = false;
-    if(child->query_file_type() == Gio::FILE_TYPE_DIRECTORY)
-      removed_child = delete_directory(child);
-    else
-      removed_child = child->remove();
-
-    if(!removed_child)
-       return false;
-
-    info = enumerator->next_file();
-  }
-
-  //Delete the actual directory:
-  if(!directory->remove())
-    return false;
-
-  return true;
-}
-
-/** Delete a directory, if it exists, and its contents.
- * Unlike g_file_delete(), this does not fail if the directory is not empty.
- */
-static bool delete_directory(const std::string& uri)
-{
-  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
-  return delete_directory(file);
-}
-
 int main()
 {
   Glom::libglom_init();
@@ -139,7 +95,7 @@ int main()
   //Make sure that the file does not exist yet:
   {
     const Glib::ustring uri = Glib::filename_to_uri(temp_filepath_dir);
-    delete_directory(uri);
+    Glom::Utils::delete_directory(uri);
   }
 
   //Save the example as a real file:
@@ -177,7 +133,7 @@ int main()
   //Make sure the directory is removed at the end,
   {
     const Glib::ustring uri = Glib::filename_to_uri(temp_filepath_dir);
-    delete_directory(uri);
+    Glom::Utils::delete_directory(uri);
   }
 
   Glom::libglom_deinit();
