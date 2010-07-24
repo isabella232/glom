@@ -324,8 +324,11 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
 
           // Remove unique key constraint, because this is already implied in
           // the field being primary key.
+          //TODO: This depends on knowledge of the automatically-created 
+          //(during SERVER_OPERATION_CREATE_TABLE) constraint name.
+          //TODO: Find out how the table name and field name are escaped/quoted.
           if(old_fields[i]->get_unique_key())
-            if(!query_execute(connection, "ALTER TABLE \"" + table_name + "\" DROP CONSTRAINT \"" + old_fields[i]->get_name() + "_key", error))
+            if(!query_execute(connection, "ALTER TABLE \"" + table_name + "\" DROP CONSTRAINT \"" + table_name + "_" + old_fields[i]->get_name() + "_key", error))
               break;
         }
         else
@@ -345,12 +348,18 @@ bool Postgres::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connec
         // to do that separately if we already made it a primary key
         if(!primary_key_was_set && new_fields[i]->get_unique_key())
         {
-          if(!query_execute(connection, "ALTER TABLE \"" + table_name + "\" ADD CONSTRAINT \"" + old_fields[i]->get_name() + "_key\" UNIQUE (\"" + old_fields[i]->get_name() + "\")", error))
+          //TODO: This depends on knowledge of the automatically-created 
+          //(during SERVER_OPERATION_CREATE_TABLE) constraint name.
+          //TODO: Find out how the table name and field name are escaped/quoted.
+          if(!query_execute(connection, "ALTER TABLE \"" + table_name + "\" ADD CONSTRAINT \"" + table_name  + "_" + old_fields[i]->get_name() + "_key\" UNIQUE (\"" + old_fields[i]->get_name() + "\")", error))
             break;
         }
         else if(!primary_key_was_unset && !new_fields[i]->get_unique_key() && !new_fields[i]->get_primary_key())
         {
-          if(!query_execute(connection, "ALTER TABLE \"" + table_name + "\" DROP CONSTRAINT \"" + old_fields[i]->get_name() + "_key\"", error))
+          //TODO: This depends on knowledge of the automatically-created 
+          //(during SERVER_OPERATION_CREATE_TABLE) constraint name.
+          //TODO: Find out how the table name and field name are escaped/quoted.
+          if(!query_execute(connection, "ALTER TABLE \"" + table_name + "\" DROP CONSTRAINT \"" + table_name + "_" +old_fields[i]->get_name() + "_key\"", error))
             break;
         }
       }
