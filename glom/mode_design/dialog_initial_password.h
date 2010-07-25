@@ -21,8 +21,8 @@
 #ifndef GLOM_DIALOG_NEWSELFHOSTEDCONNECTION_H
 #define GLOM_DIALOG_NEWSELFHOSTEDCONNECTION_H
 
-#include <gtkmm/builder.h>
 #include <gtkmm/dialog.h>
+#include <gtkmm/builder.h>
 #include <gtkmm/entry.h>
 #include <gtkmm/label.h>
 #include <glom/base_db.h>
@@ -60,4 +60,3 @@ private:
 } //namespace Glom
 
 #endif //GLOM_DIALOG_NEWSELFHOSTEDCONNECTION_H
-

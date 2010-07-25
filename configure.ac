@@ -260,6 +260,18 @@ AS_IF([test "x$ENABLE_DOCUMENTATION" != xno],
      [],
      [AC_MSG_ERROR([The documentation build is enabled, but the sphinx-build tool could not be found.])])])
 
+# Check for tar and gzip (used by tar via -z) because we use these when creating backups.
+# TODO: This lets us provide a path via a configure option, but we just use Glib::find_program_in_path(), ignoring that.
+AC_CHECK_PROG([GLOM_TAR], [tar], [yes], [no])
+if test "$GLOM_TAR" = no ; then
+	AC_MSG_ERROR([tar not found. Glom needs this to create backup files.])
+fi
+
+AC_CHECK_PROG([GLOM_GZIP], [gzip], [yes], [no])
+if test "$GLOM_GZIP" = no ; then
+	AC_MSG_ERROR([gzip not found. Glom needs this to create backup files.])
+fi
+
 AC_CONFIG_FILES([Makefile
                  docs/user-guide/Makefile
                  po/Makefile.in

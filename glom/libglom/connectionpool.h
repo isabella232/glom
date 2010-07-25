@@ -89,7 +89,7 @@ private:
   //ConnectionPool(const ConnectionPool& src);
   virtual ~ConnectionPool();
   //ConnectionPool& operator=(const ConnectionPool& src);
-  
+
 public:
   typedef ConnectionPoolBackends::Backend Backend;
   typedef Backend::type_vec_const_fields type_vec_const_fields;
@@ -106,17 +106,17 @@ public:
 
   /// Delete the singleton so it doesn't show up as leaked memory in, for instance, valgrind.
   static void delete_instance();
-  
+
   typedef sigc::slot<void> type_void_slot;
-  
+
 #ifndef G_OS_WIN32
-  /** Set callbacks that will be called to show UI while starting to advertise 
+  /** Set callbacks that will be called to show UI while starting to advertise
    * on the network via Avahi.
    *
    * @param slot_begin Show an explanatory message.
    * @param slot_progress Show a pulse progress and/or keep the UI updating.
    * @param slot_done Stop showing the message.
-   */ 
+   */
   void set_avahi_publish_callbacks(const type_void_slot& slot_begin, const type_void_slot& slot_progress, const type_void_slot& slot_done);
 #endif
 
@@ -149,6 +149,12 @@ public:
   static sharedptr<SharedConnection> get_and_connect(std::auto_ptr<ExceptionConnection>& error);
 #endif
 
+  /** This callback should show UI to indicate that work is still happening.
+   * For instance, a pulsing ProgressBar.
+   */
+  typedef Backend::SlotProgress SlotProgress;
+
+ //TODO: Add SlotProgress?
   /** Creates a new database.
    */
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -156,6 +162,24 @@ public:
 #else
   void create_database(const Glib::ustring& database_name, std::auto_ptr<Glib::Error>& error);
 #endif
+
+  /** Save a backup of the database in a tarball.
+   * This backup can later be used to recreate the database,
+   * for instance with a later version of PostgreSQL.
+   * See @convert_backup().
+   *
+   * @param path_dir The top-level directory for the backup file, using the normal directory structure.
+   *
+   */
+  bool save_backup(const SlotProgress& slot_progress, const std::string& path_dir);
+
+  /** Use a backup of the database in a tarball to create tables and data in an existing empty database.
+   * The database (server) should already have the necessary groups and users.
+   *
+   * @param path_dir The top-level directory for the backup file, using the normal directory structure.
+   * See save_backup().
+   */
+  bool convert_backup(const SlotProgress& slot_progress, const std::string& path_dir);
 
   void set_user(const Glib::ustring& value);
   void set_password(const Glib::ustring& value);
@@ -169,32 +193,29 @@ public:
   const FieldTypes* get_field_types() const;
   Glib::ustring get_string_find_operator() const;
 
-  /** This callback should show UI to indicate that work is still happening.
-   * For instance, a pulsing ProgressBar.
-   */
-  typedef Backend::SlotProgress SlotProgress;
- 
   typedef Backend::InitErrors InitErrors;
-  
+
   /** Do one-time initialization, such as  creating required database
    * files on disk for later use by their own  database server instance.
    *
    * @param slot_progress A callback to call while the work is still happening.
-   * @param network_shared Whether the database (and document) should be available to other users over the network, 
-   * if possible. 
+   * @param network_shared Whether the database (and document) should be available to other users over the network,
+   * if possible.
    * @param parent_window A parent window to use as the transient window when displaying errors.
    */
   InitErrors initialize(const SlotProgress& slot_progress, bool network_shared = false);
 
-  /** Start a database server instance for the exisiting database files.
+  typedef Backend::StartupErrors StartupErrors;
+
+  /** Start a database server instance for the existing database files.
    *
    * @param slot_progress A callback to call while the work is still happening.
-   * @param network_shared Whether the database (and document) should be available to other users over the network, 
-   * if possible. 
+   * @param network_shared Whether the database (and document) should be available to other users over the network,
+   * if possible.
    * @param parent_window The parent window (transient for) of any dialogs shown during this operation.
    * @result Whether the operation was successful.
    */
-  bool startup(const SlotProgress& slot_progress, bool network_shared = false);
+  StartupErrors startup(const SlotProgress& slot_progress, bool network_shared = false);
 
   /** Stop the database server instance for the database files.
    *
@@ -203,15 +224,15 @@ public:
    */
   bool cleanup(const SlotProgress& slot_progress);
 
-  /** Change the database server's configration to allow or prevent access from 
+  /** Change the database server's configration to allow or prevent access from
    * other users on the network.
    *
-   * For current backends, you may use this only before startup(), 
+   * For current backends, you may use this only before startup(),
    * or after cleanup().
    *
    * @param slot_progress A callback to call while the work is still happening.
-   * @param network_shared Whether the database (and document) should be available to other users over the network, 
-   * if possible. 
+   * @param network_shared Whether the database (and document) should be available to other users over the network,
+   * if possible.
    */
   virtual bool set_network_shared(const SlotProgress& slot_progress, bool network_shared = true);
 
@@ -242,8 +263,8 @@ public:
   /** Specify a callback that the ConnectionPool can call to get a pointer to the document.
    * This callback avoids Connection having to link to Application,
    * and avoids us worrying about whether a previously-set document (via a set_document() method) is still valid.
-   */ 
-  typedef sigc::slot<Document*> SlotGetDocument; 
+   */
+  typedef sigc::slot<Document*> SlotGetDocument;
   void set_get_document_func(const SlotGetDocument& slot);
 
 #ifndef G_OS_WIN32
@@ -265,7 +286,7 @@ public:
 private:
   void on_sharedconnection_finished();
 
-  /** We call this when we know that the current connection will no longer work, 
+  /** We call this when we know that the current connection will no longer work,
    * for instance after we have stopped the server.
    */
   void invalidate_connection();
@@ -309,4 +330,3 @@ private:
 } //namespace Glom
 
 #endif //GLOM_CONNECTIONPOOL_H
-

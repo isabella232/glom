@@ -34,16 +34,6 @@ Sqlite::Sqlite()
 {
 }
 
-void Sqlite::set_database_directory_uri(const std::string& directory_uri)
-{
-  m_database_directory_uri = directory_uri;
-}
-
-const std::string& Sqlite::get_database_directory_uri() const
-{
-  return m_database_directory_uri;
-}
-
 Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password, std::auto_ptr<ExceptionConnection>& error)
 {
   Glib::RefPtr<Gnome::Gda::Connection> connection;
@@ -64,11 +54,11 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
 
     const Glib::ustring cnc_string = "DB_DIR=" + database_directory + ";DB_NAME=" + database;
     const Glib::ustring auth_string = Glib::ustring::compose("USERNAME=%1;PASSWORD=%2", username, password);
-    
+
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
-      connection = Gnome::Gda::Connection::open_from_string("SQLite", 
+      connection = Gnome::Gda::Connection::open_from_string("SQLite",
         cnc_string, auth_string,
         Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
     }
@@ -76,8 +66,8 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
     {
 #else
     std::auto_ptr<Glib::Error> error;
-    connection = Gnome::Gda::Connection::open_from_string("SQLite", 
-      cnc_string, auth_string, 
+    connection = Gnome::Gda::Connection::open_from_string("SQLite",
+      cnc_string, auth_string,
       Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE, error);
     if(error.get())
     {
@@ -105,14 +95,14 @@ bool Sqlite::create_database(const Glib::ustring& database_name, const Glib::ust
     return false;
 
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(m_database_directory_uri);
-  const std::string database_directory = file->get_path(); 
+  const std::string database_directory = file->get_path();
   const Glib::ustring cnc_string = Glib::ustring::compose("DB_DIR=%1;DB_NAME=%2", database_directory, database_name);
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try
   {
-    Glib::RefPtr<Gnome::Gda::Connection> cnc = 
-      Gnome::Gda::Connection::open_from_string("SQLite", 
+    Glib::RefPtr<Gnome::Gda::Connection> cnc =
+      Gnome::Gda::Connection::open_from_string("SQLite",
         cnc_string, "",
         Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
   }
@@ -122,9 +112,9 @@ bool Sqlite::create_database(const Glib::ustring& database_name, const Glib::ust
     return false;
   }
 #else
-  Glib::RefPtr<Gnome::Gda::Connection> cnc = 
-    Gnome::Gda::Connection::open_from_string("SQLite", 
-      cnc_string, "", 
+  Glib::RefPtr<Gnome::Gda::Connection> cnc =
+    Gnome::Gda::Connection::open_from_string("SQLite",
+      cnc_string, "",
       Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE, error);
   if(error.get() != 0)
     return false;
@@ -154,7 +144,7 @@ bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::Serve
     if(!set_server_operation_value(operation, default_path, column->default_value, error))
       return false;
   }
-  
+
   return true;
 }
 
@@ -182,12 +172,12 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
 
   Glib::RefPtr<Gnome::Gda::MetaStore> store = connection->get_meta_store();
   Glib::RefPtr<Gnome::Gda::MetaStruct> metastruct = Gnome::Gda::MetaStruct::create(store, Gnome::Gda::META_STRUCT_FEATURE_NONE);
-#ifdef GLIBMM_EXCEPTIONS_ENABLED  
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   GdaMetaDbObject* object = metastruct->complement(Gnome::Gda::META_DB_TABLE, Gnome::Gda::Value(), Gnome::Gda::Value(), Gnome::Gda::Value(table_name));
 #else
   GdaMetaDbObject* object = metastruct->complement(Gnome::Gda::META_DB_TABLE, Gnome::Gda::Value(), Gnome::Gda::Value(), Gnome::Gda::Value(table_name), error);
 #endif
-  
+
   if(!object)
     return false;
 
@@ -395,6 +385,20 @@ bool Sqlite::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
     fields_changed[old_fields[i]->get_name()] = new_fields[i];
 
   return recreate_table(connection, table_name, type_vec_strings(), type_vec_const_fields(), fields_changed, error);
+}
+
+bool Sqlite::save_backup(const SlotProgress& /* slot_progress */, const Glib::ustring& /* username */, const Glib::ustring& /* password */, const Glib::ustring& /* database_name */)
+{
+  //TODO:
+  std::cerr << G_STRFUNC << ": Not implemented.";
+  return false;
+}
+
+bool Sqlite::convert_backup(const SlotProgress& /* slot_progress */, const std::string& /* base_directory */, const Glib::ustring& /* username */, const Glib::ustring& /* password */, const Glib::ustring& /* database_name */)
+{
+  //TODO:
+  std::cerr << G_STRFUNC << ": Not implemented.";
+  return false;
 }
 
 

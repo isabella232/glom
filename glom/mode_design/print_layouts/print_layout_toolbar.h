@@ -21,10 +21,10 @@
 #ifndef GLOM_UTILITY_WIDGETS_DRAGBAR_H
 #define GLOM_UTILITY_WIDGETS_DRAGBAR_H
 
+#include <gtkmm/box.h>
 #include <glom/mode_design/print_layouts/print_layout_toolbar_button.h>
 #include <gtkmm/window.h>
 #include <gtkmm/handlebox.h>
-#include <gtkmm/box.h>
 #include <gtkmm/toolitemgroup.h>
 
 #include <glom/utility_widgets/sidebar.h>

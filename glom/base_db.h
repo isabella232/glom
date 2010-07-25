@@ -76,14 +76,13 @@ public:
 
   static int count_rows_returned_by(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& sql_query);
 
-#ifndef GLOM_ENABLE_CLIENT_ONLY
   sharedptr<Field> change_column(const Glib::ustring& table_name, const sharedptr<const Field>& field_old, const sharedptr<const Field>& field, Gtk::Window* parent_window) const;
 
   typedef std::vector< sharedptr<Field> > type_vec_fields;
   typedef std::vector< sharedptr<const Field> > type_vec_const_fields;
 
+#ifndef GLOM_ENABLE_CLIENT_ONLY
   bool change_columns(const Glib::ustring& table_name, const type_vec_const_fields& old_fields, type_vec_fields& fields, Gtk::Window* parent_window) const;
-
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
   //TODO: This is not a very good place for this function.

@@ -23,6 +23,8 @@
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
 
+#include <glom/bakery/app_withdoc_gtk.h>
+
 //TODO: Remove this when maemomm's gtkmm has been updated. 7th September 2009.
 #ifdef GLOM_ENABLE_MAEMO
 //Because earlier versions of gtkmm/enums.h did not include this, so
@@ -35,7 +37,6 @@
 #include <glom/navigation/maemo/pickerbutton_table.h>
 #endif //GLOM_ENABLE_MAEMO
 
-#include <glom/bakery/app_withdoc_gtk.h>
 #include <glom/frame_glom.h>
 
 
@@ -52,6 +53,7 @@ namespace Glom
 {
 
 class Window_Translations;
+class Dialog_ProgressCreating; //TODO: Rename this because it's not just about creating databases.
 
 class Application : public GlomBakery::App_WithDoc_Gtk
 {
@@ -63,6 +65,11 @@ public:
   virtual ~Application();
 
   virtual bool init(const Glib::ustring& document_uri = Glib::ustring()); //override
+
+  /**
+   * @param restore Whether @a document_uri is a .tar.gz backup file to restore.
+   */
+  bool init(const Glib::ustring& document_uri, bool restore);
 
   //virtual void statusbar_set_text(const Glib::ustring& strText);
   //virtual void statusbar_clear();
@@ -105,6 +112,7 @@ public:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   void do_menu_developer_fields(Gtk::Window& parent, const Glib::ustring table_name);
   void do_menu_developer_relationships(Gtk::Window& parent, const Glib::ustring table_name);
+  bool do_restore_backup(const Glib::ustring& backup_uri);
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
   ///Whether to show the generated SQL queries on stdout, for debugging.
@@ -169,6 +177,8 @@ private:
   void on_menu_developer_translations();
   void on_menu_developer_active_platform_normal();
   void on_menu_developer_active_platform_maemo();
+  void on_menu_developer_export_backup();
+  void on_menu_developer_restore_backup();
   void on_menu_developer_show_layout_toolbar();
 
   void on_window_translations_hide();
@@ -178,8 +188,10 @@ private:
 
   Document* on_connection_pool_get_document();
 
-  bool recreate_database(); //return indicates success.
+  bool recreate_database_from_example(bool& user_cancelled); //return indicates success.
+  bool recreate_database_from_backup(const Glib::ustring& backup_uri, bool& user_cancelled); //return indicates success.
   void on_recreate_database_progress();
+
   void stop_self_hosting_of_document_database();
 
   void on_connection_avahi_begin();
@@ -200,6 +212,8 @@ private:
   virtual void new_instance(const Glib::ustring& uri = Glib::ustring()); //Override
 
   void on_connection_close_progress();
+  void on_connection_save_backup_progress();
+  void on_connection_convert_backup_progress();
 
 #ifndef G_OS_WIN32
   void open_browsed_document(const EpcServiceInfo* server, const Glib::ustring& service_name);
@@ -259,6 +273,9 @@ private:
   Gtk::MessageDialog* m_avahi_progress_dialog;
 
   Dialog_ProgressCreating* m_dialog_progress_creating;
+  Dialog_ProgressCreating* m_dialog_progess_save_backup;
+  Dialog_ProgressCreating* m_dialog_progess_convert_backup;
+
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   // This is set to the URI of an example file that is loaded to be able to

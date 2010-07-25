@@ -675,6 +675,98 @@ bool add_standard_groups(Document* document)
   return true;
 }
 
+bool add_groups_from_document(Document* document)
+{
+  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
+  if(!gda_connection)
+  {
+    std::cerr << "add_standard_groups(): No connection yet." << std::endl;
+  }
+
+  //Get the list of groups from the database server:
+  const type_vec_strings database_groups = Privs::get_database_groups();
+
+  //Get the list of groups from the document:
+  const Document::type_list_groups document_groups = document->get_groups();
+
+  //Add each group if it doesn't exist yet:
+  for(Document::type_list_groups::const_iterator iter = document_groups.begin();
+    iter != document_groups.end(); ++iter)
+  {
+    const GroupInfo& group = *iter;
+    const Glib::ustring name = group.get_name();
+
+    //See if the group exists in the database:
+    type_vec_strings::const_iterator iterFind = std::find(database_groups.begin(), database_groups.end(), name);
+    if(!name.empty() && iterFind == database_groups.end())
+    {
+      Glib::ustring query = "CREATE GROUP \"" + name  + "\"";
+
+      //The "SUPERUSER" here has no effect because SUPERUSER is not "inherited" to member users.
+      //But let's keep it to make the purpose of this group obvious.
+      if(group.m_developer)
+        query += " WITH SUPERUSER";
+
+      const bool test = query_execute_string(query);
+      if(!test)
+      {
+        std::cerr << G_STRFUNC << ": CREATE GROUP failed when adding the group with name=" << name << std::endl;
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+bool set_table_privileges_groups_from_document(Document* document)
+{
+  Glib::RefPtr<Gnome::Gda::Connection> gda_connection = get_connection();
+  if(!gda_connection)
+  {
+    std::cerr << "add_standard_groups(): No connection yet." << std::endl;
+  }
+
+  //Get the list of groups from the database server:
+  const type_vec_strings database_groups = Privs::get_database_groups();
+
+  //Get the list of groups from the document:
+  const Document::type_list_groups document_groups = document->get_groups();
+
+  //Get the list of tables:
+  const Document::type_listTableInfo table_list = document->get_tables();
+
+  bool result = true;
+
+  for(Document::type_list_groups::const_iterator iter = document_groups.begin();
+    iter != document_groups.end(); ++iter)
+  {
+    const GroupInfo& group_info = *iter;
+    const Glib::ustring group_name = group_info.get_name();
+
+    //See if the group exists in the database:
+    type_vec_strings::const_iterator iterFind = std::find(database_groups.begin(), database_groups.end(), group_name);
+    if(!group_name.empty() && iterFind == database_groups.end())
+    {
+      std::cerr << G_STRFUNC << ": group does not exist in the database. group name=" << group_name << std::endl;
+      result = false;
+      continue;
+    }
+
+    //Look at each table privilege for this group:
+    for(GroupInfo::type_map_table_privileges::const_iterator iter = group_info.m_map_privileges.begin();
+      iter != group_info.m_map_privileges.end(); ++iter)
+    {
+      const Glib::ustring table_name = iter->first;
+      const Privileges& privs = iter->second;
+
+      //Set the table privilege for the group:
+      Privs::set_table_privileges(group_name, table_name, privs, group_info.m_developer);
+    }
+  }
+
+  return result;
+}
 
 namespace { //anonymous
 

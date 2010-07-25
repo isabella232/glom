@@ -1,3 +1,246 @@
+2010-07-25  Murray Cumming  <murrayc@murrayc.com>
+
+	Allow unique fields with same name in multiple tables.
+
+	* glom/libglom/connectionpool_backends/postgres.cc:
+	change_column(): Prefix the table name to the constraint name when
+	setting/removing the unique-key constraint, as libgda (or PostgreSQL)
+	seems to do when creating a field. This prevents a clash when two tables
+	have the same field name, and both should be unique.
+	This is nasty code anyway that I would rather have in libgda.
+	This fixes bug #625192 (fmyhr).
+
+
+2010-07-22  Murray Cumming  <murrayc@murrayc.com>
+
+	Added --restore command-line option.
+
+	* glom/application.[h|cc]: Added init() with a bool restore option,
+  calling do_backup_restore() if appropriate.
+	* glom/main.cc: Added a --restore command and pass the bool result to
+  Application::init().
+
+  This allows the user to restore from a backup without first loading an
+  existing file, though this is so far only possible via the terminal.
+
+2010-07-22  Murray Cumming  <murrayc@murrayc.com>
+
+  Added Developer/Restore Backup menu item.
+
+	* glom/application.[h.cc]: Added a Developer/Restore Backup menu item,
+  which lets the user choose a .tar.gz, untars it in /tmp/ and opens it.
+
+	* tests/test_selfhosting_new_empty.cc:
+	* glom/libglom/utils.[h|cc]: Move delete_directory() to Utils.
+  Added get_directory_child_with_suffix(), used to find the .glom file inside
+  an untarred directory.
+
+2010-07-22  Murray Cumming  <murrayc@murrayc.com>
+
+	Saving from a backup: Now works.
+
+	* glom/application.[h|cc]: on_document_load(): Simplify the code to
+  create from a backup, modifying the from-example code to handle it too,
+  calling a new recreate_database_from_backup() method.
+  That now creates the database and then adds the groups before trying
+  to restore from the backup file.
+	* glom/libglom/connectionpool_backends/backend.h: convert_backup():
+	* glom/libglom/connectionpool_backends/postgres.[h|cc]: convert_backup():
+	* glom/libglom/connectionpool_backends/sqlite.[h|cc]: convert_backup():
+  Add a database_name_parameter. This now expects the database to exist
+  already, though it should be empty. It should also already have the
+  expected groups.
+	* glom/libglom/connectionpool.[h|cc]: convert_backup(): Supply the
+  database name. Also update the meta data so we know about the new tables.
+
+2010-07-21  Murray Cumming  <murrayc@murrayc.com>
+
+	Small Business example: Add table privileges.
+
+	* examples/example_smallbusiness.glom: Give some privileges to the
+    accounts and personnel groups and resave-as-an-example. These were
+    probably lost some time.
+
+2010-07-21  Murray Cumming  <murrayc@murrayc.com>>
+
+	Saving as example: Fix this.
+
+	* glom/libglom/document/document.cc: set_modified(): Actually use
+    m_allow_auto_save so we don't just save every time, overwriting
+    previous saves. For instance, the examples were saved with is_example=false
+    after the document was changed back.
+
+2010-07-21  Murray Cumming  <murrayc@murrayc.com>>
+
+	Saving from examples: Set the table privileges mentioned in the document.
+
+	* glom/base_db.[h|cc]: Added set_table_privileges_groups_from_document().
+	* glom/application.cc: recreate_database_from_example(): call it.
+
+2010-07-21  Murray Cumming  <murrayc@murrayc.com>
+
+	Saving from examples: Create the groups mentioned in the document.
+
+	* glom/base_db.[h|cc]: Added add_groups_from_document().
+	* glom/application.cc: recreate_database_from_example(): call it.
+
+2010-07-20  Murray Cumming  <murrayc@murrayc.com>>
+
+	Fixed warnings with latest gtkmm-2.24
+
+	* glom/mode_data/notebook_data.cc:
+	* glom/mode_find/notebook_find.cc: Use Gtk::Notebook::append_page()
+    instead of Gtk::Notebook::pages().push_back().
+
+2010-07-13  Murray Cumming  <murrayc@murrayc.com>
+
+	Fixed warnings, even with the latest gtkmm-2.24.
+
+	Many files: Try to include box.h or dialog.h before other treemodel.h.
+    Sometimes just add a gtkmm.h to simplify things. This will not be necessary
+    with gtkmm-3.0 (in glom's master branch).
+
+2010-07-07  Murray Cumming  <murrayc@murrayc-desktop>
+
+	PostgresQL backups: Suggest a dated name.
+
+	* glom/application.cc: on_menu_developer_export_backup(): Suggest
+    a directory name based on the current name and the date/time.
+    Also use the directory name for the .glom filename, as we usually would do,
+    instead of calling it just backup.glom.
+
+2010-07-07  Murray Cumming  <murrayc@murrayc.com>
+
+	PostgreSQL backups: Archive the directory in a .tar.gz..
+
+	* configure.ac: Check for the tar and gzip executables.
+	* glom/application.cc: on_menu_developer_export_backup(): Use tar
+    via the command line, to put it all in a .tar.gz, so it is self-contained.
+
+2010-07-07  Murray Cumming  <murrayc@murrayc.com>
+
+	PostgreSQL backups: Use .pgpass.
+
+	* glom/libglom/connectionpool_backends/postgres.[h|cc]:
+	* glom/libglom/connectionpool_backends/postgres_self.[h|cc]:
+    Move create_text_file() from PostgresSelf to Postgres and add an
+    only_for_current_user bool parameter, so we can use it in a
+    new save_password_to_pgpass() method.
+    save_backup(), convert_backup(): Temporarily store the password in
+    ~/.pgpass, so pg_dump and pg_restore actually work.
+
+2010-07-05  Murray Cumming  <murrayc@murrayc.com>
+
+	Show progress in the UI during backup saving and restoring.
+
+	* glom/application.[h|cc]: on_document_load(),
+    on_menu_developer_export_backup(): Show a pulsing progress dialog while
+    waiting for backup exporting and restoring.
+    on_menu_developer_export_backup(): Close the file chooser dialog as soon
+    as we stop using it.
+
+2010-07-03  Murray Cumming  <murrayc@murrayc.com>
+
+	Improve backup saving and add backup restoring.
+
+	* glom/libglom/document/document.[h|cc]: Added get/set_is_backup_file(),
+	saved in the XML document..
+  on_menu_developer_export_backup(): Mark the .glom file as a backup file.
+	Rename recreate_database() to recreate_database_from_example().
+	on_document_load(): Handle backup .glom files similarly to examples files,
+	but using the backup file instead of example data.
+	* glom/frame_glom.cc:
+	* glom/libglom/connection_pool.[h|cc]:
+	* glom/libglom/connectionpool_backends/backend.[h|cc]: startup(): Return a
+	StartupErrors enum, to provide more clues, for instance to say that backup
+	data was found.
+	Add get/set_database_directory_uri(), replacing the one in sqlite.[h|cc] and
+	replacing set_self_hosting_data_uri() in postgres_self.[hc|cc].
+	save_backup(): Don't take a filepath - use get_database_directory_uri()
+	instead.
+	Added convert_backup() to restore from a backup.
+	* glom/libglom/connectionpool_backends/sqlite.[h|cc]:
+	* glom/libglom/connectionpool_backends/postgres.[h|cc]:
+	get_path_to_postgres_executable(): Catch exceptions from Glib::build_filename().
+	save_backup(): Use --format=c with pg_dump, because the default one can't be
+	used with pg_restore.
+	Implement convert_backup(), using pg_restore.
+	Added get_self_hosting_config_path(), get_self_hosting_data_path() and
+	get_self_hosting_backup_path() to avoid copy/pasting magic paths.
+	* glom/libglom/connectionpool_backends/postgres_self.[h|cc]:
+	Adapted.
+	* glom/application.[h|cc]:
+	* tests/test_selfhosting_new_empty.cc: Adapted to check the enum result from
+	startup().
+
+2010-07-02  Murray Cumming  <murrayc@murrayc.com>
+
+	Document: Avoid a crash when creating the parent directory.
+
+	* glom/libglom/docment/bakery/document.cc: write_to_disk(): Check the
+	result of Gio::File::get_parent() for null, because that happens if we
+	provide a path instead of a URI.
+
+2010-07-02  Murray Cumming  <murrayc@murrayc.com>
+
+	Save as Example: Reset the old file URI and allow auto-saving again.
+
+	* glom/application.cc: on_menu_file_save_as_example(): reset the old file
+	URI and turn auto-saving back on again, because it makes no sense to leave
+	the user editing an example document. This is really an export anyway.
+	This allows the user to close the window again after saving as an example.
+
+2010-07-01  Murray Cumming  <murrayc@murrayc.com>
+
+	Add Save Backup menu item.
+
+	* glom/libglom/connectionpool_backends/backend.[h|cc]:
+	* glom/libglom/connectionpool_backends/posgres.[h|cc]:
+	* glom/libglom/connectionpool_backends/sqlite.[h|cc]: Added save_backup()
+	virtual method, using pg_dump for PostgreSQL.
+	* glom/libglom/connectionpool.[h|cc]: Add save_backup() here, calling the
+	backend.
+	* glom/application.cc: Add a Developer/Export Backup menu item, to use
+	this feature. This also saves the .glom file.
+
+2010-07-01  Murray Cumming  <murrayc@murrayc.com>
+
+	Spawn functions: Catch some exceptions.
+
+	* glom/libglom/spawn_with_feedback.cc():
+	execute_command_line(), execute_command_line_and_wait(): Catch exceptions
+	so that these functions don't throw, simplifying caller code. For instance,
+	a command may be malformed and rejected by the shell.
+
+2010-06-29  Murray Cumming  <murrayc@murrayc.com>
+
+	* glom/application.[h|cc]: Developer menu: Added an Export Backup menu item.
+
+	* glom/libglom/connectionpool_backends/postgres_central.[h|cc]:
+	* glom/libglom/connectionpool_backends/postgres_self.[h|cc]: Moved
+    m_host and m_port into the base class:
+	* glom/libglom/connectionpool_backends/postgres.[h|cc]:
+    because they are used in both derived classes. Therefore remove port
+    parameter from attempt_connect().
+    Also move get_path_to_postgres_executable() and port_as_string() there
+    so they can be used in the base class.
+
+2010-06-29  Murray Cumming  <murrayc@murrayc.com>
+
+	Improve stderr message.
+
+	* glom/libglom/spawn_with_feedback.cc:
+    execute_command_line_and_wait_until_second_command_returns_success():
+    Correct the error message when a command (such as postgres) fails. As
+    noticed in bug #617504.
+
+2010-06-21  David King  <amigadave@amigadave.com>
+
+	Explicitly link with libdl for Python module loading test
+
+	* Makefile_tests.am: Do not rely on libdl being a dependency of a
+	library in LIBGLOM_LIBS, by linking with it explicitly.
+
 2010-06-19  Murray Cumming  <murrayc@murrayc.com>
 
 	Use Gnome::Gda::SqlBuilder::Id
@@ -5,7 +248,7 @@
 	* glom/base_db.cc:
 	* glom/libglom/python_embed/py_glom_relatedrecord.cc:
 	* glom/libglom/utils.cc:
-	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc: Use the typedef 
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc: Use the typedef
 	instead of guint. It is very lengthy, but it is correct.
 
 2010-06-15  Murray Cumming  <murrayc@murrayc.com>
@@ -24,7 +267,7 @@
 	* glom/mode_data/box_data_portal.cc:
 	* glom/mode_design/dialog_database_preferences.cc:
 	* glom/mode_design/fields/box_db_table_definition.cc:
-	* glom/report_builder.cc: Replace use of add_id() with the new add_field_id(), 
+	* glom/report_builder.cc: Replace use of add_id() with the new add_field_id(),
 	which lets us specify the table too.
 
 2010-06-15  Murray Cumming  <murrayc@murrayc.com>
@@ -35,8 +278,8 @@
 	* glom/libglom/db_utils.cc:
 	* glom/libglom/python_embed/py_glom_relatedrecord.cc:
 	* glom/libglom/utils.cc:
-	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc: 
-	SqlBuilder::add_field_id() was renamed to add_field_value_id(), though I now 
+	* glom/utility_widgets/db_adddel/glom_db_treemodel.cc:
+	SqlBuilder::add_field_id() was renamed to add_field_value_id(), though I now
 	notice that no value is involved when it is used for SELECT queries.
 
 1.15.1:
@@ -49,14 +292,14 @@
 
 	libglom: Utils: Avoid SQL strings for extra_join for doubly-related records.
 
-	* glom/libglom/data_structure/foundset.[h|cc]: Remove the extra_group_by 
+	* glom/libglom/data_structure/foundset.[h|cc]: Remove the extra_group_by
 	member variable.
-	* glom/base_db.cc: set_found_set_where_clause_for_portal(): Do not create 
+	* glom/base_db.cc: set_found_set_where_clause_for_portal(): Do not create
 	the SQL GROUP BY string here.
-	* glom/libglom/utils.[h|cc]: build_sql_select_with_where_clause(): Remove 
-	the extra_group_by parameter, instead grouping by all fields if there is 
+	* glom/libglom/utils.[h|cc]: build_sql_select_with_where_clause(): Remove
+	the extra_group_by parameter, instead grouping by all fields if there is
 	an extra_join_by, because there is a 1-to-1 correlation.
-	Also take extra_join as a Relationship instead of a SQL JOIN string, and 
+	Also take extra_join as a Relationship instead of a SQL JOIN string, and
 	reuse the existing code to define a join from a relationship.
 	* glom/frame_glom.cc:
 	* glom/libglom/data_structure/foundset.cc:
@@ -72,8 +315,8 @@
 
 	Document: get_field_used_in_relationship_to_one(): const correction.
 
-	* glom/libglom/document/document.[h|cc]: 
-	get_field_used_in_relationship_to_one(): Make the relationship parameter 
+	* glom/libglom/document/document.[h|cc]:
+	get_field_used_in_relationship_to_one(): Make the relationship parameter
 	const and adapt other code.
 
 2010-05-25  Murray Cumming  <murrayc@murrayc.com>
@@ -81,8 +324,8 @@
 	libglom: build_sql_select_add_fields_to_get(): Define joins here.
 
 	* glom/libglom/data_structure/layout/usesrelationship.[h|cc]:
-	Remove add_sql_join_alias_definition(), moving its code into 
-	Utils::build_sql_select_add_fields_to_get() because that was the only code 
+	Remove add_sql_join_alias_definition(), moving its code into
+	Utils::build_sql_select_add_fields_to_get() because that was the only code
 	that called it.
 	get/set_relationship(), get/set_related_relationship(): const corrections.
 	* several files: Adapt to const corrections.
@@ -117,7 +360,7 @@
 	* glom/utility_widgets/db_adddel/db_adddel.cc:
 	* glom/utility_widgets/flowtable.cc:
 	* glom/utility_widgets/layouttoolbar.cc:
-	* glom/xsl_utils.cc: Remove now-unnecessary gtk+/gtk* includes, 
+	* glom/xsl_utils.cc: Remove now-unnecessary gtk+/gtk* includes,
 	replacing some with use of C++ API. These caused warnings due to GSEAL.
 
 2010-06-19  Murray Cumming  <murrayc@murrayc.com>
@@ -138,29 +381,29 @@
 2010-05-02  Murray Cumming  <murrayc@murrayc-x61>
 
 	Python calculations: Really convert to expected types.
-	
-	* glom/libglom/data_structure/glomconversions.cc: 
-	get_double_for_gda_value_numeric(): Handle all numeric GTypes - not just 
+
+	* glom/libglom/data_structure/glomconversions.cc:
+	get_double_for_gda_value_numeric(): Handle all numeric GTypes - not just
 	G_TYPE_INT..
-	convert_value(): Remove the special case for G_TYPE_INT (now handled in 
-	get_double_for_gda_value_numeric instead). Make sure that all numeric GTypes 
+	convert_value(): Remove the special case for G_TYPE_INT (now handled in
+	get_double_for_gda_value_numeric instead). Make sure that all numeric GTypes
 	are converted to GDA_TYPE_NUMERIC, making it easier for callers to check.
 
 2010-05-01  Murray Cumming  <murrayc@murrayc.com>
 
 	Add test of type conversion after python calculations.
-	
+
 	* Makefile_tests.am:
-	* tests/test_python_execute_func_change_result_type.cc: Add a test that 
-	calls a python function that returns a number, for a text field, to 
+	* tests/test_python_execute_func_change_result_type.cc: Add a test that
+	calls a python function that returns a number, for a text field, to
 	check that the conversion is done.
 
 2010-05-01  Murray Cumming  <murrayc@murrayc.com>
 
 	Python scripts and calculations: Test buttons now show python errors.
-	
+
 	* glom/libglom/data_structure/layout/usesrelationship.cc:
-	add_sql_join_alias_definition(): Correct the join definition for 
+	add_sql_join_alias_definition(): Correct the join definition for
 	related relationships.
 
 2010-05-21  Murray Cumming  <murrayc@murrayc.com>
@@ -2365,4 +2608,3 @@ This is the master branch. See also the glom-1-14 branch.
 
 	* glom/libglom/data_structure/glomconversions.cc:
 	get_stringstream_precision_default(): Simplify this fu
-	

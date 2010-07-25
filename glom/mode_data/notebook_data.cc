@@ -37,11 +37,11 @@ Notebook_Data::Notebook_Data()
   m_iPage_Details(0), m_iPage_List(0)
 {
   //Add Pages:
-  pages().push_back(Gtk::Notebook_Helpers::TabElem(m_Box_List, _("List")));
+  append_page(m_Box_List, _("List"));
   m_iPage_List = 0;
 
   #ifndef GLOM_ENABLE_MAEMO
-  pages().push_back(Gtk::Notebook_Helpers::TabElem(m_Box_Details, _("Details")));
+  append_page(m_Box_Details, _("Details"));
   m_iPage_Details = 1;
   #else
   //On Maemo, we add the box to m_window_maemo_details instead:

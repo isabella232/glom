@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <glom_document xmlns="http://glom.org/glom_document" database_title="Small Business Example" is_example="true" translation_original_locale="en_US" format_version="5">
   <connection server="localhost" user="" database="glom_example_smallbusiness_v2" self_hosted="true" port="5434" try_other_ports="false" hosting_mode="postgres_self"/>
+  <startup_script/>
   <table name="contacts" default="true" title="Contacts">
     <example_rows>
       <example_row>
@@ -1487,8 +1488,29 @@ if __name__ == "__main__":
     <print_layouts/>
   </table>
   <groups><!--These are only used when recreating a database from an example file. The actual access-control is on the server, of course.-->
-    <group name="accounts"/>
-    <group name="glom_developer" developer="true"/>
-    <group name="personnel_department"/>
+    <group name="accounts">
+      <table_privs table_name="contacts" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="glom_system_preferences"/>
+      <table_privs table_name="invoice_lines" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="invoices" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="products" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="staff" priv_view="true"/>
+    </group>
+    <group name="glom_developer">
+      <table_privs table_name="contacts" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="glom_system_preferences" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="invoice_lines" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="invoices" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="products" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+      <table_privs table_name="staff" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+    </group>
+    <group name="personnel_department">
+      <table_privs table_name="contacts" priv_view="true"/>
+      <table_privs table_name="glom_system_preferences"/>
+      <table_privs table_name="invoice_lines" priv_view="true"/>
+      <table_privs table_name="invoices" priv_view="true"/>
+      <table_privs table_name="products" priv_view="true"/>
+      <table_privs table_name="staff" priv_view="true" priv_edit="true" priv_create="true" priv_delete="true"/>
+    </group>
   </groups>
   <library_modules/></glom_document>

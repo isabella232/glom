@@ -17,7 +17,8 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- 
+
+#include <gtkmm.h>
 #include "layouttoolbarbutton.h"
 
 namespace
@@ -52,7 +53,7 @@ LayoutToolbarButton::LayoutToolbarButton(const std::string& icon_name, LayoutWid
   std::list<Gtk::TargetEntry> targetentries;
   targetentries.push_back(Gtk::TargetEntry(get_target()));
 
-  drag_source_set(targetentries, Gdk::MODIFIER_MASK, 
+  drag_source_set(targetentries, Gdk::MODIFIER_MASK,
                   Gdk::ACTION_COPY | Gdk::ACTION_MOVE);
   set_tooltip_text(tooltip);
   set_label(title);
@@ -63,7 +64,7 @@ LayoutToolbarButton::~LayoutToolbarButton()
 
 }
 
-void LayoutToolbarButton::on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>&, 
+void LayoutToolbarButton::on_drag_data_get(const Glib::RefPtr<Gdk::DragContext>&,
                                   Gtk::SelectionData& selection_data, guint, guint)
 {
   selection_data.set(8, (guint8*)(&m_type), 4);

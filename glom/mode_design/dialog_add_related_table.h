@@ -21,8 +21,8 @@
 #ifndef GLOM_DIALOG_ADDRELATEDTABLE_H
 #define GLOM_DIALOG_ADDRELATEDTABLE_H
 
-#include <gtkmm/builder.h>
 #include <gtkmm/dialog.h>
+#include <gtkmm/builder.h>
 #include <gtkmm/entry.h>
 #include <glom/utility_widgets/combo_textglade.h>
 #include <glom/base_db.h>
@@ -69,4 +69,3 @@ private:
 } //namespace Glom
 
 #endif //GLOM_DIALOG_ADDRELATEDTABLE_H
-

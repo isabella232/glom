@@ -18,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <gtkmm.h>
 #include "combo_fieldtype.h"
 #include "../../box_db_table.h"
 #include <glibmm/i18n.h>
@@ -40,10 +41,10 @@ void Combo_FieldType::init()
 {
   m_refTreeModel = Gtk::ListStore::create(m_Columns);
   set_model(m_refTreeModel);
-    
+
   //Set Type choices:
   Field::type_map_type_names map_names = Field::get_usable_type_names();
-    
+
   for(Field::type_map_type_names::iterator iter = map_names.begin(); iter != map_names.end(); ++iter)
   {
     Gtk::TreeModel::iterator iterModel = m_refTreeModel->append();
@@ -59,14 +60,14 @@ void Combo_FieldType::init()
 
   pack_start(m_Columns.m_col_name);  //Show the name, but hide the ID.
 
-  
+
   //The value must be from the list, and it can't be empty:
   //set_value_in_list(true, false);
 }
 
 Combo_FieldType::~Combo_FieldType()
 {
-  
+
 }
 
 void Combo_FieldType::set_field_type(Field::glom_field_type fieldType)
@@ -92,7 +93,7 @@ Field::glom_field_type Combo_FieldType::get_field_type() const
   //Get the active row:
   Gtk::TreeModel::iterator active_row  = get_active();
   if(active_row)
-  {    
+  {
     Gtk::TreeModel::Row row = *active_row;
     result = row[m_Columns.m_col_type];
 

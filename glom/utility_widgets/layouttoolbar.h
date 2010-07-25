@@ -21,10 +21,11 @@
 #ifndef GLOM_UTILITY_WIDGETS_LAYOUTTOOLBAR_H
 #define GLOM_UTILITY_WIDGETS_LAYOUTTOOLBAR_H
 
+#include <gtkmm/box.h>
 #include <glom/utility_widgets/layouttoolbarbutton.h>
 #include <gtkmm/window.h>
 #include <gtkmm/handlebox.h>
-#include <gtkmm/box.h>
+
 
 #include "sidebar.h"
 

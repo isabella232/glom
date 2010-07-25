@@ -22,8 +22,8 @@
 #define GLOM_TRANSLATIONS_DIALOG_CHANGE_LANGUAGE_H
 
 #include "combobox_locale.h"
-#include <gtkmm/builder.h>
 #include <gtkmm/dialog.h>
+#include <gtkmm/builder.h>
 
 namespace Glom
 {

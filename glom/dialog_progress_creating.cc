@@ -18,9 +18,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <gtkmm/dialog.h>
 #include <glom/dialog_progress_creating.h>
 #include <gtkmm/main.h>
-#include <gtkmm/dialog.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
