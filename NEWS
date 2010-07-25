@@ -1,3 +1,8 @@
+1.14.5 (stable):
+
+* Allow unique fields with same name in multiple tables.
+  (Murray Cumming) Bug #625192 (fmyhr).
+
 1.14.4 (stable):
 
 * Developer menu: Added Export Backup and Restore Backup menu items.

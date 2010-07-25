@@ -1,11 +1,13 @@
+1.14.5:
+
 2010-07-25  Murray Cumming  <murrayc@murrayc.com>
 
 	Allow unique fields with same name in multiple tables.
 
 	* glom/libglom/connectionpool_backends/postgres.cc:
-	change_column(): Prefix the table name to the constraint name when 
-	setting/removing the unique-key constraint, as libgda (or PostgreSQL) 
-	seems to do when creating a field. This prevents a clash when two tables 
+	change_column(): Prefix the table name to the constraint name when
+	setting/removing the unique-key constraint, as libgda (or PostgreSQL)
+	seems to do when creating a field. This prevents a clash when two tables
 	have the same field name, and both should be unique.
 	This is nasty code anyway that I would rather have in libgda.
 	This fixes bug #625192 (fmyhr).
