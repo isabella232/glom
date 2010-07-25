@@ -36,11 +36,6 @@ class PostgresSelfHosted : public Postgres
 public:
   PostgresSelfHosted();
 
-  /** This specifies that Glom should start its own database server instance
-   * for this database, using the database files stored at the specified uri.
-   */
-  void set_self_hosting_data_uri(const std::string& data_uri);
-
   /** Return whether the self-hosted server is currently running.
    *
    * @result True if it is running, and false otherwise.
@@ -59,12 +54,10 @@ public:
    */
   static bool install_postgres(const SlotProgress& slot_progress);
 
-  static std::string get_path_to_postgres_executable(const std::string& program);
-
 private:
   virtual InitErrors initialize(const SlotProgress& slot_progress, const Glib::ustring& initial_username, const Glib::ustring& password, bool network_shared = false);
 
-  virtual bool startup(const SlotProgress& slot_progress, bool network_shared = false);
+  virtual StartupErrors startup(const SlotProgress& slot_progress, bool network_shared = false);
   virtual bool cleanup(const SlotProgress& slot_progress);
   virtual bool set_network_shared(const SlotProgress& slot_progress, bool network_shared = true);
 
@@ -78,21 +71,14 @@ private:
    */
   static int discover_first_free_port(int start_port, int end_port);
 
-  static bool create_text_file(const std::string& file_uri, const std::string& contents);
-
-  //bool directory_exists_filepath(const std::string& filepath);
-  bool directory_exists_uri(const std::string& uri);
-
-  /** Run the command-line with the --version option to discover what version 
-   * of PostgreSQL is installed, so we can use the appropriate configuration 
+  /** Run the command-line with the --version option to discover what version
+   * of PostgreSQL is installed, so we can use the appropriate configuration
    * options when self-hosting.
    */
   Glib::ustring get_postgresql_utils_version(const SlotProgress& slot_progress);
 
   float get_postgresql_utils_version_as_number(const SlotProgress& slot_progress);
 
-  std::string m_self_hosting_data_uri;
-  int m_port;
   bool m_network_shared;
 };
 
@@ -101,4 +87,3 @@ private:
 } //namespace Glom
 
 #endif //GLOM_BACKEND_POSTGRES_SELF_H
-

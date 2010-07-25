@@ -1115,7 +1115,13 @@ void Frame_Glom::on_menu_file_toggle_share(const Glib::RefPtr<Gtk::ToggleAction>
     }
 
     connectionpool->set_network_shared(sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress), shared);
-    connectionpool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) );
+    ConnectionPool::StartupErrors started = connectionpool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) );
+    if(started != ConnectionPool::Backend::STARTUPERROR_NONE)
+    {
+      std::cerr << G_STRFUNC << ": startup() failed." << std::endl;
+      //TODO: Tell the user.
+    }
+
     connectionpool->set_ready_to_connect();
 
     if(m_dialog_progess_connection_startup)
@@ -2150,8 +2156,13 @@ bool Frame_Glom::connection_request_password_and_choose_new_database_name()
   }
 
   // Do startup, such as starting the self-hosting database server
-  if(!connection_pool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) ))
+  const ConnectionPool::StartupErrors started = 
+    connection_pool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) );
+  if(started != ConnectionPool::Backend::STARTUPERROR_NONE)
+  {
+    std::cerr << G_STRFUNC << ": startup() failed." << std::endl;
     return false;
+  }  
 
   if(m_dialog_progess_connection_startup)
   {
@@ -2313,8 +2324,13 @@ bool Frame_Glom::connection_request_password_and_attempt(bool& database_not_foun
   //Start a self-hosted server if necessary:
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   connection_pool->setup_from_document(document);
-  if(!connection_pool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) ))
+  const ConnectionPool::StartupErrors started = 
+    connection_pool->startup( sigc::mem_fun(*this, &Frame_Glom::on_connection_startup_progress) );
+  if(started != ConnectionPool::Backend::STARTUPERROR_NONE)
+  {
+    std::cerr << G_STRFUNC << ": startup() failed." << std::endl;
     return false;
+  }
 
   if(m_dialog_progess_connection_startup)
   {

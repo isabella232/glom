@@ -18,10 +18,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <config.h> // For POSTGRES_UTILS_PATH
 #include <libglom/libglom_config.h>
 
 #include <libglom/connectionpool_backends/postgres.h>
+#include <libglom/spawn_with_feedback.h>
 #include <libglom/utils.h>
+#include <giomm.h>
+#include <glib/gstdio.h> /* For g_rename(). TODO: Wrap this in glibmm? */
 #include <glibmm/i18n.h>
 
 // Uncomment to see debug messages
@@ -47,7 +51,7 @@ namespace ConnectionPoolBackends
 {
 
 Postgres::Postgres()
-:
+: m_port(0),
   m_postgres_server_version(0.0f)
 {
 }
@@ -63,15 +67,15 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
   //This _might_ be different on some systems. I hope not. murrayc
   const Glib::ustring default_database = "template1";
   //const Glib::ustring& actual_database = (!database.empty()) ? database : default_database;;
-  const Glib::ustring cnc_string_main = "HOST=" + host + ";PORT=" + port;
+  const Glib::ustring cnc_string_main = "HOST=" + m_host + ";PORT=" + port;
   Glib::ustring cnc_string = cnc_string_main + ";DB_NAME=" + database;
 
   Glib::RefPtr<Gnome::Gda::Connection> connection;
   Glib::RefPtr<Gnome::Gda::DataModel> data_model;
 
-  const Glib::ustring auth_string = create_auth_string(username, password);   
- 
-#ifdef GLOM_CONNECTION_DEBUG          
+  const Glib::ustring auth_string = create_auth_string(username, password);
+
+#ifdef GLOM_CONNECTION_DEBUG
   std::cout << std::endl << "DEBUG: Glom: trying to connect on port=" << port << std::endl;
   std::cout << "debug: " << G_STRFUNC << ": cnc_string=" << cnc_string << std::endl;
   std::cout << "  DEBUG: auth_string=" << auth_string << std::endl;
@@ -79,8 +83,8 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
 
   try
   {
-    connection = Gnome::Gda::Connection::open_from_string("PostgreSQL", 
-      cnc_string, auth_string, 
+    connection = Gnome::Gda::Connection::open_from_string("PostgreSQL",
+      cnc_string, auth_string,
       Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE
       );
     connection->statement_execute_non_select("SET DATESTYLE = 'ISO'");
@@ -88,7 +92,6 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
   }
   catch(const Glib::Error& ex)
   {
-
 #ifdef GLOM_CONNECTION_DEBUG
     std::cout << "debug: " << G_STRFUNC << ": Attempt to connect to database failed on port=" << port << ", database=" << database << ": " << ex.what() << std::endl;
     std::cout << "debug: " << G_STRFUNC << ": Attempting to connect without specifying the database." << std::endl;
@@ -99,8 +102,8 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
     Glib::ustring auth_string = create_auth_string(username, password);
     try
     {
-      temp_conn = Gnome::Gda::Connection::open_from_string("PostgreSQL", 
-        cnc_string, auth_string, 
+      temp_conn = Gnome::Gda::Connection::open_from_string("PostgreSQL",
+        cnc_string, auth_string,
         Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
     }
     catch(const Glib::Error& ex)
@@ -412,6 +415,481 @@ bool Postgres::check_postgres_gda_client_is_available()
   return false;
 }
 
+std::string Postgres::get_path_to_postgres_executable(const std::string& program)
+{
+#ifdef G_OS_WIN32
+  // Add the .exe extension on Windows:
+  std::string real_program = program + EXEEXT;
+
+  // Have a look at the bin directory of the application executable first.
+  // The installer installs postgres there. postgres needs to be installed
+  // in a directory called bin for its relocation stuff to work, so that
+  // it finds the share data in share. Unfortunately it does not look into
+  // share/postgresql which would be nice to separate the postgres stuff
+  // from the other shared data. We can perhaps still change this later by
+  // building postgres with another prefix than /local/pgsql.
+  gchar* installation_directory = g_win32_get_package_installation_directory_of_module(0);
+  std::string test;
+
+  try
+  {
+    test = Glib::build_filename(installation_directory, Glib::build_filename("bin", real_program));
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": exception from Glib::build_filename(): " << ex.what() << std::endl;
+    return std::string();
+  }
+
+  g_free(installation_directory);
+
+  if(Glib::file_test(test, Glib::FILE_TEST_IS_EXECUTABLE))
+    return test;
+
+  // Look in PATH otherwise
+  return Glib::find_program_in_path(real_program);
+#else // G_OS_WIN32
+  // POSTGRES_UTILS_PATH is defined in config.h, based on the configure.
+  try
+  {
+    return Glib::build_filename(POSTGRES_UTILS_PATH, program + EXEEXT);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": exception from Glib::build_filename(): " << ex.what() << std::endl;
+    return std::string();
+  }
+#endif // !G_OS_WIN32
 }
 
+
+Glib::ustring Postgres::port_as_string(int port_num)
+{
+  Glib::ustring result;
+  char* cresult = g_strdup_printf("%d", port_num);
+  if(cresult)
+    result = cresult;
+  g_free(cresult);
+
+  return result;
 }
+
+//Because ~/.pgpass is not an absolute path.
+static std::string get_absolute_pgpass_filepath()
+{
+  return Glib::build_filename(
+    Glib::get_home_dir(), ".pgpass");
+}
+
+bool Postgres::save_password_to_pgpass(const Glib::ustring username, const Glib::ustring& password, std::string& filepath_previous, std::string& filepath_original)
+{
+  //Initialize output variables:
+  filepath_previous.clear();
+  filepath_original.clear();
+
+  const std::string filepath_pgpass = get_absolute_pgpass_filepath();
+  filepath_original = filepath_pgpass;
+
+  //Move any existing file out of the way:
+  if(file_exists_filepath(filepath_pgpass))
+  {
+    //std::cout << "DEBUG: File exists: " << filepath_pgpass << std::endl;
+    filepath_previous = filepath_pgpass + ".glombackup";
+    if(g_rename(filepath_pgpass.c_str(), filepath_previous.c_str()) != 0)
+    {
+      std::cerr << G_STRFUNC << "Could not rename file: from=" << filepath_pgpass << ", to=" << filepath_previous << std::endl;
+      return false;
+    }
+  }
+
+  //See http://www.postgresql.org/docs/8.4/static/libpq-pgpass.html
+  //TODO: Escape \ and : characters.
+  const Glib::ustring contents =
+    m_host + ":" + port_as_string(m_port) + ":*:" + username + ":" + password;
+
+  std::string uri;
+  try
+  {
+    uri = Glib::filename_to_uri(filepath_pgpass);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": exception from Glib::filename_from_uri(): " << ex.what() << std::endl;
+    g_rename(filepath_previous.c_str(), filepath_pgpass.c_str());
+    return false;
+  }
+
+  const bool result = create_text_file(uri, contents, true /* current user only */);
+  if(!result)
+  {
+    std::cerr << G_STRFUNC << ": create_text_file() failed." << std::endl;
+    g_rename(filepath_previous.c_str(), filepath_pgpass.c_str());
+    return false;
+  }
+
+  return result;
+}
+
+bool Postgres::save_backup(const SlotProgress& slot_progress, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name)
+{
+/* TODO:
+  if(m_network_shared && !running)
+  {
+    std::cerr << G_STRFUNC << ": The self-hosted database is not running." << std::endl;
+    return;
+  }
+*/
+
+  if(m_host.empty())
+  {
+    std::cerr << G_STRFUNC << ": m_host is empty." << std::endl;
+    return false;
+  }
+
+  if(m_port == 0)
+  {
+    std::cerr << G_STRFUNC << ": m_port is empty." << std::endl;
+    return false;
+  }
+
+  //TODO: Remember the existing username and password?
+  if(username.empty())
+  {
+    std::cerr << G_STRFUNC << ": username is empty." << std::endl;
+    return false;
+  }
+
+  if(password.empty())
+  {
+    std::cerr << G_STRFUNC << ": password is empty." << std::endl;
+    return false;
+  }
+
+  // Save the password to ~/.pgpass, because this is the only way to use
+  // pg_dump without it asking for the password:
+  std::string pgpass_backup, pgpass_original;
+  const bool pgpass_created = save_password_to_pgpass(username, password, pgpass_backup, pgpass_original);
+  if(!pgpass_created)
+  {
+    std::cerr << G_STRFUNC << ": save_password_to_pgpass() failed." << std::endl;
+    return false;
+  }
+
+  const std::string path_backup = get_self_hosting_backup_path(std::string(), true /* create parent directory if necessary */);
+  if(path_backup.empty())
+    return false;
+
+  // Make sure to use double quotes for the executable path, because the
+  // CreateProcess() API used on Windows does not support single quotes.
+  const std::string command_dump = "\"" + get_path_to_postgres_executable("pg_dump") + "\"" +
+    " --format=c " + // The default (plain) format cannot be used with pg_restore.
+    " --create --file=\"" + path_backup + "\"" +
+    " --host=\"" + m_host + "\"" +
+    " --port=" + port_as_string(m_port) +
+    " --username=\"" + username + "\"" +
+    " " + database_name;
+
+
+  //std::cout << "DEBUG: command_dump=" << command_dump << std::endl;
+
+  const bool result = Glom::Spawn::execute_command_line_and_wait(command_dump, slot_progress);
+
+  //Move the previously-existing .pgpass file back:
+  //TODO: Really, we should just edit the file instead of completely replacing it,
+  //      because another application might try to edit it in the meantime.
+  if(!pgpass_backup.empty())
+  {
+    g_rename(pgpass_backup.c_str(), pgpass_original.c_str());
+  }
+
+  if(!result)
+  {
+    std::cerr << "Error while attempting to call pg_dump." << std::endl;
+  }
+
+  return result;
+}
+
+bool Postgres::convert_backup(const SlotProgress& slot_progress, const std::string& base_directory, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name)
+{
+/* TODO:
+  if(m_network_shared && !running)
+  {
+    std::cerr << G_STRFUNC << ": The self-hosted database is not running." << std::endl;
+    return;
+  }
+*/
+
+  if(m_host.empty())
+  {
+    std::cerr << G_STRFUNC << ": m_host is empty." << std::endl;
+    return false;
+  }
+
+  if(m_port == 0)
+  {
+    std::cerr << G_STRFUNC << ": m_port is empty." << std::endl;
+    return false;
+  }
+
+  //TODO: Remember the existing username and password?
+  if(username.empty())
+  {
+    std::cerr << G_STRFUNC << ": username is empty." << std::endl;
+    return false;
+  }
+
+  if(password.empty())
+  {
+    std::cerr << G_STRFUNC << ": password is empty." << std::endl;
+    return false;
+  }
+
+  //Make sure the path exists:
+  const std::string path_backup = get_self_hosting_backup_path(base_directory);
+  if(path_backup.empty() || !file_exists_filepath(path_backup))
+  {
+    std::cerr << G_STRFUNC << ": Backup file not found: " << path_backup << std::endl;
+    return false;
+  }
+
+  // Save the password to ~/.pgpass, because this is the only way to use
+  // pg_dump without it asking for the password:
+  std::string pgpass_backup, pgpass_original;
+  const bool pgpass_created = save_password_to_pgpass(username, password, pgpass_backup, pgpass_original);
+  if(!pgpass_created)
+  {
+    std::cerr << G_STRFUNC << ": save_password_to_pgpass() failed." << std::endl;
+    return false;
+  }
+
+  // Make sure to use double quotes for the executable path, because the
+  // CreateProcess() API used on Windows does not support single quotes.
+  const std::string command_restore = "\"" + get_path_to_postgres_executable("pg_restore") + "\"" +
+    " -d " + database_name +
+    " --host=\"" + m_host + "\"" +
+    " --port=" + port_as_string(m_port) +
+    " --username=\"" + username + "\"" +
+    " " + path_backup;
+
+  std::cout << "DEBUG: command_restore=" << command_restore << std::endl;
+
+  //TODO: Put the password in .pgpass
+
+  const bool result = Glom::Spawn::execute_command_line_and_wait(command_restore, slot_progress);
+
+  //Move the previously-existing .pgpass file back:
+  //TODO: Really, we should just edit the file instead of completely replacing it,
+  //      because another application might try to edit it in the meantime.
+  if(!pgpass_backup.empty())
+  {
+    g_rename(pgpass_backup.c_str(), pgpass_original.c_str());
+  }
+
+  if(!result)
+  {
+    std::cerr << "Error while attempting to call pg_restore." << std::endl;
+  }
+
+  return result;
+}
+
+std::string Postgres::get_self_hosting_path(bool create, const std::string& child_directory)
+{
+  //Get the filepath of the directory that we should create:
+  const std::string dbdir_uri = m_database_directory_uri;
+  //std::cout << "debug: dbdir_uri=" << dbdir_uri << std::endl;
+
+  std::string dbdir;
+  try
+  {
+    dbdir = Glib::build_filename(
+      Glib::filename_from_uri(dbdir_uri), child_directory);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": exception from Glib::build_filename(): " << ex.what() << std::endl;
+  }
+
+  if(file_exists_filepath(dbdir))
+    return dbdir;
+  else if(!create)
+    return std::string();
+
+  //Create the directory:
+
+  //std::cout << "debug: dbdir=" << dbdir << std::endl;
+  g_assert(!dbdir.empty());
+
+  if(create_directory_filepath(dbdir))
+    return dbdir;
+  else
+    return std::string();
+}
+
+std::string Postgres::get_self_hosting_config_path(bool create)
+{
+  return get_self_hosting_path(create, "config");
+}
+
+std::string Postgres::get_self_hosting_data_path(bool create)
+{
+  return get_self_hosting_path(create, "data");
+}
+
+std::string Postgres::get_self_hosting_backup_path(const std::string& base_directory, bool create_parent_dir)
+{
+  //This is a file, not a directory, so we don't use get_self_hosting_path("backup");
+  std::string dbdir;
+  if(base_directory.empty())
+    dbdir = get_self_hosting_path(create_parent_dir);
+  else
+  {
+    dbdir = base_directory;
+  }
+
+  if(dbdir.empty())
+    return std::string();
+
+  try
+  {
+    return Glib::build_filename(dbdir, "backup");
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": exception from Glib::build_filename(): " << ex.what() << std::endl;
+    return std::string();
+  }
+}
+
+bool Postgres::create_directory_filepath(const std::string& filepath)
+{
+  if(filepath.empty())
+    return false;
+
+  const int mkdir_succeeded = g_mkdir_with_parents(filepath.c_str(), 0770);
+  if(mkdir_succeeded == -1)
+  {
+    std::cerr << G_STRFUNC << "Error from g_mkdir_with_parents() while trying to create directory: " << filepath << std::endl;
+    perror("Error from g_mkdir_with_parents");
+
+    return false;
+  }
+
+  return true;
+}
+
+bool Postgres::file_exists_filepath(const std::string& filepath)
+{
+  if(filepath.empty())
+    return false;
+
+  const Glib::RefPtr<Gio::File> file = Gio::File::create_for_path(filepath);
+  return file && file->query_exists();
+}
+
+bool Postgres::file_exists_uri(const std::string& uri) const
+{
+  if(uri.empty())
+    return false;
+
+  const Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
+  return file && file->query_exists();
+}
+
+
+
+bool Postgres::create_text_file(const std::string& file_uri, const std::string& contents, bool current_user_only)
+{
+  if(file_uri.empty())
+    return false;
+
+  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(file_uri);
+  Glib::RefPtr<Gio::FileOutputStream> stream;
+
+  //Create the file if it does not already exist:
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    if(file->query_exists())
+    {
+      if(current_user_only)
+      {
+        stream = file->replace(std::string() /* etag */, false /* make_backup */, Gio::FILE_CREATE_PRIVATE); //Instead of append_to().
+      }
+      else
+      {
+         stream = file->replace(); //Instead of append_to().
+      }
+    }
+    else
+    {
+      //By default files created are generally readable by everyone, but if we pass FILE_CREATE_PRIVATE in flags the file will be made readable only to the current user, to the level that is supported on the target filesystem.
+      if(current_user_only)
+      {
+      //TODO: Do we want to specify 0660 exactly? (means "this user and his group can read and write this non-executable file".)
+        stream = file->create_file(Gio::FILE_CREATE_PRIVATE);
+      }
+      else
+      {
+        stream = file->create_file();
+      }
+    }
+  }
+  catch(const Gio::Error& ex)
+  {
+#else
+  std::auto_ptr<Gio::Error> error;
+  stream.create(error);
+  if(error.get())
+  {
+    const Gio::Error& ex = *error.get();
+#endif
+    // If the operation was not successful, print the error and abort
+    std::cerr << "ConnectionPool::create_text_file(): exception while creating file." << std::endl
+      << "  file uri:" << file_uri << std::endl
+      << "  error:" << ex.what() << std::endl;
+    return false; // print_error(ex, output_uri_string);
+  }
+
+
+  if(!stream)
+    return false;
+
+
+  gsize bytes_written = 0;
+  const std::string::size_type contents_size = contents.size();
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    //Write the data to the output uri
+    bytes_written = stream->write(contents.data(), contents_size);
+  }
+  catch(const Gio::Error& ex)
+  {
+#else
+  bytes_written = stream->write(contents.data(), contents_size, error);
+  if(error.get())
+  {
+    Gio::Error& ex = *error.get();
+#endif
+    // If the operation was not successful, print the error and abort
+    std::cerr << "ConnectionPool::create_text_file(): exception while writing to file." << std::endl
+      << "  file uri:" << file_uri << std::endl
+      << "  error:" << ex.what() << std::endl;
+    return false; //print_error(ex, output_uri_string);
+  }
+
+  if(bytes_written != contents_size)
+  {
+    std::cerr << "ConnectionPool::create_text_file(): not all bytes written when writing to file." << std::endl
+      << "  file uri:" << file_uri << std::endl;
+    return false;
+  }
+
+  return true; //Success.
+}
+
+} //namespace ConnectionPoolBackends
+
+} //namespace Glom

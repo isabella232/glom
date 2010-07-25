@@ -21,8 +21,9 @@
 #ifndef ADDDEL_CELLRENDERERLIST_H
 #define ADDDEL_CELLRENDERERLIST_H
 
-#include <gtkmm/cellrenderercombo.h>
-#include <gtkmm/liststore.h>
+#include <gtkmm.h>
+//#include <gtkmm/cellrenderercombo.h>
+//#include <gtkmm/liststore.h>
 
 
 namespace Glom
@@ -66,5 +67,3 @@ private:
 } //namespace Glom
 
 #endif //ADDDEL_CELLRENDERERLIST_H
-
-

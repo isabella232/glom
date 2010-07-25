@@ -18,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <gtkmm.h>
 #include "print_layout_toolbar.h"
 #include <gtkmm/stock.h>
 #include <glibmm/i18n.h>
@@ -27,8 +28,8 @@ namespace Glom
 {
 
 PrintLayoutToolbar::PrintLayoutToolbar()
-:  m_group_items(_("Items")), 
-   m_group_lines(_("Lines")), 
+:  m_group_items(_("Items")),
+   m_group_lines(_("Lines")),
    m_group_records(_("Records")),
    m_drag_field("glom-field.png", PrintLayoutToolbarButton::ITEM_FIELD,
      _("Database Field"), _("Drag this to the layout to add a new database field.")),
@@ -45,7 +46,7 @@ PrintLayoutToolbar::PrintLayoutToolbar()
 {
   // Looks ugly otherwise:
   set_size_request(100, 200);
-  
+
   //Note for translators: These are layout items, like widgets in GTK+.
   m_group_items.add(m_drag_field);
   m_group_items.add(m_drag_text);
@@ -54,7 +55,7 @@ PrintLayoutToolbar::PrintLayoutToolbar()
   //Note for translators: These are layout items, like widgets in GTK+.
   m_group_lines.add(m_drag_line_horizontal);
   m_group_lines.add(m_drag_line_vertical);
-  
+
   //Note for translators: These are layout items, like widgets in GTK+.
   m_group_records.add(m_drag_related_records);
 
@@ -63,14 +64,13 @@ PrintLayoutToolbar::PrintLayoutToolbar()
   add_group(m_group_records);
 
   set_drag_source();
-  
+
   show_all_children();
 }
 
 PrintLayoutToolbar::~PrintLayoutToolbar()
 {
-  
+
 }
 
 } // namespace Glom
-

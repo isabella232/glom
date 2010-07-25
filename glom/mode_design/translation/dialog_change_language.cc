@@ -18,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <gtkmm.h>
 #include "dialog_change_language.h"
 #include <glibmm/i18n.h>
 

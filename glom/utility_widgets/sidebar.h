@@ -21,9 +21,9 @@
 #ifndef GLOM_UTILITY_WIDGETS_SIDEBAR_H
 #define GLOM_UTILITY_WIDGETS_SIDEBAR_H
 
+#include <gtkmm/box.h>
 #include <gtkmm/window.h>
 #include <gtkmm/handlebox.h>
-#include <gtkmm/box.h>
 #include <gtkmm/button.h>
 #include "gtkmm/toolpalette.h"
 
@@ -35,19 +35,19 @@ class SideBar : public Gtk::HandleBox
 public:
   SideBar();
   virtual ~SideBar();
-    
+
   void add_group(Gtk::ToolItemGroup& group);
   void remove_group(Gtk::ToolItemGroup& group);
-  
+
   void set_drag_source();
 
 private:
   virtual void on_child_detached(Gtk::Widget* child);
   virtual void on_child_attached(Gtk::Widget* child);
-    
+
 private:
   Gtk::ToolPalette m_palette;
-    
+
   int m_width;
   int m_height;
 };

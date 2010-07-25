@@ -290,7 +290,8 @@ bool Document::write_to_disk()
       Glib::RefPtr<Gio::File> parent = file->get_parent();
       try
       {
-        parent->make_directory_with_parents();
+        if(parent) //It will be empty if file was the root node of the filesystem.
+          parent->make_directory_with_parents();
       }
       catch(const Gio::Error& ex)
       {

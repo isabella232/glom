@@ -17,9 +17,9 @@
  */
 
 #include <config.h>
+#include <gtkmm/box.h>
 #include <glom/bakery/dialog_offersave.h>
 #include <glom/bakery/app_withdoc_gtk.h>
-#include <gtkmm/box.h>
 #include <gtkmm/stock.h>
 #include <glibmm/i18n-lib.h>
 

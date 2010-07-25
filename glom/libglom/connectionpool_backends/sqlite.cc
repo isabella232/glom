@@ -34,16 +34,6 @@ Sqlite::Sqlite()
 {
 }
 
-void Sqlite::set_database_directory_uri(const std::string& directory_uri)
-{
-  m_database_directory_uri = directory_uri;
-}
-
-const std::string& Sqlite::get_database_directory_uri() const
-{
-  return m_database_directory_uri;
-}
-
 Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password)
 {
   Glib::RefPtr<Gnome::Gda::Connection> connection;
@@ -89,7 +79,7 @@ bool Sqlite::create_database(const Glib::ustring& database_name, const Glib::ust
     return false;
 
   Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(m_database_directory_uri);
-  const std::string database_directory = file->get_path(); 
+  const std::string database_directory = file->get_path();
   const Glib::ustring cnc_string = Glib::ustring::compose("DB_DIR=%1;DB_NAME=%2", database_directory, database_name);
 
   Glib::RefPtr<Gnome::Gda::Connection> cnc = 
@@ -120,7 +110,7 @@ bool Sqlite::add_column_to_server_operation(const Glib::RefPtr<Gnome::Gda::Serve
   {
     operation->set_value_at(default_path, column->default_value);
   }
-  
+
   return true;
 }
 
@@ -150,7 +140,6 @@ bool Sqlite::recreate_table(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
   Glib::RefPtr<Gnome::Gda::MetaStruct> metastruct = Gnome::Gda::MetaStruct::create(store, Gnome::Gda::META_STRUCT_FEATURE_NONE);
 
   GdaMetaDbObject* object = metastruct->complement(Gnome::Gda::META_DB_TABLE, Gnome::Gda::Value(), Gnome::Gda::Value(), Gnome::Gda::Value(table_name));
-  
   if(!object)
     return false;
 
@@ -370,6 +359,20 @@ bool Sqlite::change_columns(const Glib::RefPtr<Gnome::Gda::Connection>& connecti
     fields_changed[old_fields[i]->get_name()] = new_fields[i];
 
   return recreate_table(connection, table_name, type_vec_strings(), type_vec_const_fields(), fields_changed);
+}
+
+bool Sqlite::save_backup(const SlotProgress& /* slot_progress */, const Glib::ustring& /* username */, const Glib::ustring& /* password */, const Glib::ustring& /* database_name */)
+{
+  //TODO:
+  std::cerr << G_STRFUNC << ": Not implemented.";
+  return false;
+}
+
+bool Sqlite::convert_backup(const SlotProgress& /* slot_progress */, const std::string& /* base_directory */, const Glib::ustring& /* username */, const Glib::ustring& /* password */, const Glib::ustring& /* database_name */)
+{
+  //TODO:
+  std::cerr << G_STRFUNC << ": Not implemented.";
+  return false;
 }
 
 

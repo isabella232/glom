@@ -21,8 +21,8 @@
 #ifndef GLOM_MODE_DATA_LAYOUT_WIDGET_BASE_H
 #define GLOM_MODE_DATA_LAYOUT_WIDGET_BASE_H
 
-#include <libglom/data_structure/layout/layoutitem.h>
 #include <gtkmm.h>
+#include <libglom/data_structure/layout/layoutitem.h>
 #include <glom/mode_design/layout/treestore_layout.h> //Forthe enum.
 
 #include "config.h" // For GLOM_ENABLE_CLIENT_ONLY
@@ -34,7 +34,7 @@ class Application;
 
 class LayoutWidgetBase : virtual public sigc::trackable
 {
-public: 
+public:
   LayoutWidgetBase();
   virtual ~LayoutWidgetBase();
 
@@ -69,7 +69,7 @@ public:
 
   //Allow a child widget to delegate to a parent widget:
   typedef sigc::signal<void> type_signal_user_requested_layout;
-  type_signal_user_requested_layout signal_user_requested_layout(); 
+  type_signal_user_requested_layout signal_user_requested_layout();
 
   //Allow a child widget to delegate to a parent widget:
   typedef sigc::signal<void> type_signal_user_requested_layout_properties;
@@ -82,7 +82,7 @@ public:
   void set_dnd_in_progress(bool drag = true);
   bool get_dnd_in_progress();
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-    
+
 protected:
   virtual Application* get_application() const; // = 0;
 

@@ -26,22 +26,6 @@
 // Uncomment to see debug messages
 //#define GLOM_CONNECTION_DEBUG
 
-namespace
-{
-
-static Glib::ustring port_as_string(int port_num)
-{
-  Glib::ustring result;
-  char* cresult = g_strdup_printf("%d", port_num);
-  if(cresult)
-    result = cresult;
-  g_free(cresult);
-
-  return result;
-}
-
-}
-
 namespace Glom
 {
 
@@ -49,9 +33,7 @@ namespace ConnectionPoolBackends
 {
 
 PostgresCentralHosted::PostgresCentralHosted()
-:
-  m_port(0),
-  m_try_other_ports(true)
+: m_try_other_ports(true)
 {
   m_list_ports.push_back("5432"); //Ubuntu Breezy seems to default to this for Postgres 7.4, and this is probably the default for most postgres installations, including Fedora.
 
@@ -135,7 +117,7 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::connect(const Glib::
     while(!connection && iter_port != m_list_ports.end())
     {
       port = *iter_port;
-      
+
       try
       {
         connection = attempt_connect(m_host, port, database, username, password);

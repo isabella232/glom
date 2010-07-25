@@ -15,7 +15,7 @@ TODO: Add 'title_singular' element.
   format_version: The version of this document's format. Older versions of Glom cannot open documents saved in newer versions of the document format.
   is_example: Whether this is an example document. Opening an example document causes a new database (and document) to be created.
 -->
-    <!ELEMENT glom_document (connection?, table*, groups?, library_modules?) >
+    <!ELEMENT glom_document (connection?, startup_script?, table*, groups?, library_modules?) >
     <!ATTLIST glom_document
         xmlns CDATA #IMPLIED
         database_title CDATA #IMPLIED
@@ -43,6 +43,9 @@ TODO: Add 'title_singular' element.
         self_hosted (true|false) "false"
         hosting_mode CDATA #IMPLIED
         network_shared (true|false) "false">
+
+    <!ELEMENT startup_script (#PCDATA)>
+    <!ATTLIST startup_script>
 
 <!-- group(s) and table_privs are the permissions for each table.
       However, these are just initial permissions for examples. The real permissions are

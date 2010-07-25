@@ -21,8 +21,8 @@
 #ifndef GLOM_MODE_DESIGN_USERS_DIALOG_NEWSCRIPT_H
 #define GLOM_MODE_DESIGN_USERS_DIALOG_NEWSCRIPT_H
 
-#include <gtkmm/builder.h>
 #include <gtkmm/dialog.h>
+#include <gtkmm/builder.h>
 #include <gtkmm/entry.h>
 
 namespace Glom
@@ -43,4 +43,3 @@ public:
 } //namespace Glom
 
 #endif //GLOM_MODE_DESIGN_USERS_DIALOG_NEWSCRIPT_H
-

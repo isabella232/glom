@@ -26,9 +26,9 @@
 
 #include <libglom/document/document.h>
 
+#include <gtkmm/box.h>
 #include <gtkmm/filechooserdialog.h>
 #include <gtkmm/label.h>
-#include <gtkmm/box.h>
 #include <gtkmm/frame.h>
 #include <gtkmm/entry.h>
 #include <gtkmm/radiobutton.h>

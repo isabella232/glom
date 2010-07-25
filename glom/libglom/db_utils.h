@@ -44,6 +44,8 @@ void set_database_preferences(Document* document, const SystemPrefs& prefs);
 bool add_standard_tables(Document* document);
 
 bool add_standard_groups(Document* document);
+bool add_groups_from_document(Document* document);
+bool set_table_privileges_groups_from_document(Document* document);
 
 typedef std::vector< sharedptr<Field> > type_vec_fields;
 type_vec_fields get_fields_for_table_from_database(const Glib::ustring& table_name, bool including_system_fields = false);

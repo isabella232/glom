@@ -26,7 +26,9 @@
 #include <libglom/document/document.h>
 
 #include <libglom/data_structure/layout/layoutitem_field.h>
+
 #include <libgdamm/sqlexpr.h>
+#include <giomm/file.h>
 
 namespace Glom
 {
@@ -153,6 +155,20 @@ Glib::ustring string_trim(const Glib::ustring& str, const Glib::ustring& to_remo
 Glib::ustring string_remove_suffix(const Glib::ustring& str, const Glib::ustring& suffix, bool case_sensitive = true);
 
 bool file_exists(const Glib::ustring& uri);
+
+/** Delete a directory, if it exists, and its contents.
+ * Unlike g_file_delete(), this does not fail if the directory is not empty.
+ */
+bool delete_directory(const Glib::RefPtr<Gio::File>& directory);
+
+/** Delete a directory, if it exists, and its contents.
+ * Unlike g_file_delete(), this does not fail if the directory is not empty.
+ */
+bool delete_directory(const std::string& uri);
+
+/** For instance, to find the first file in the directory with a .glom extension.
+ */
+Glib::ustring get_directory_child_with_suffix(const Glib::ustring& uri_directory, const std::string& suffix, bool recursive);
 
 } //namespace Utils
 

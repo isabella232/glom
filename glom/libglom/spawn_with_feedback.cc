@@ -73,7 +73,7 @@ static const unsigned int REDIRECT_STDERR = 2;
 class SpawnError: public std::runtime_error
 {
 public:
-  SpawnError(const std::string& error_message)
+  explicit SpawnError(const std::string& error_message)
   : std::runtime_error(error_message)
   {}
 };
@@ -206,7 +206,7 @@ public:
       if(redirect & REDIRECT_STDERR)
         redirect_to_string(child_stderr, stderr_text);
     }
-    catch(Glib::Exception& ex)
+    catch(const Glib::Exception& ex)
     {
       throw SpawnError(ex.what());
     }
@@ -334,7 +334,7 @@ static int spawn_sync(const Glib::ustring& command_line, std::string* stdout_tex
 
   Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
 
-  std::auto_ptr<const SpawnInfo> info = spawn_async(command_line, redirect_flags);
+  std::auto_ptr<const SpawnInfo> info = spawn_async(command_line, redirect_flags); //This could throw
   info->signal_finished().connect(
     sigc::bind(sigc::ptr_fun(&on_spawn_info_finished), sigc::ref(mainloop) ) );
 
@@ -353,7 +353,17 @@ bool execute_command_line_and_wait(const std::string& command, const SlotProgres
 {
   //Show UI progress feedback while we wait for the command to finish:
 
-  std::auto_ptr<const Impl::SpawnInfo> info = Impl::spawn_async(command, 0);
+  std::auto_ptr<const Impl::SpawnInfo> info;
+  
+  try
+  {
+    info = Impl::spawn_async(command, 0);
+  }
+  catch(const Impl::SpawnError& ex)
+  {
+    std::cerr << G_STRFUNC << ": exception: " << ex.what() << std::endl;
+    return false;
+  }
 
   Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
   info->signal_finished().connect(
@@ -386,7 +396,18 @@ bool execute_command_line_and_wait(const std::string& command, const SlotProgres
 
   //Show UI progress feedback while we wait for the command to finish:
 
-  std::auto_ptr<const Impl::SpawnInfo> info = Impl::spawn_async(command, Impl::REDIRECT_STDOUT | Impl::REDIRECT_STDERR);
+  std::auto_ptr<const Impl::SpawnInfo> info;
+  
+  try
+  {
+    info = Impl::spawn_async(command, Impl::REDIRECT_STDOUT | Impl::REDIRECT_STDERR);
+  }
+  catch(const Impl::SpawnError& ex)
+  {
+    std::cerr << G_STRFUNC << ": exception: " << ex.what() << std::endl;
+    return false;
+  }
+  
 
   Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
   info->signal_finished().connect(
@@ -537,8 +558,18 @@ bool execute_command_line_and_wait_until_second_command_returns_success(const st
   std::cout << "debug: Command: " << command << std::endl;
   #endif //GLOM_SPAWN_DEBUG
 
-  std::auto_ptr<const Impl::SpawnInfo> info = Impl::spawn_async(command, Impl::REDIRECT_STDERR);
+  std::auto_ptr<const Impl::SpawnInfo> info;
 
+  try
+  {
+    info = Impl::spawn_async(command, Impl::REDIRECT_STDERR);
+  }
+  catch(const Impl::SpawnError& ex)
+  {
+    std::cerr << G_STRFUNC << ": exception: " << ex.what() << std::endl;
+    return false;
+  }
+  
   // While we wait for the second command to finish we
   // a) check whether the first command finished. If it did, and has a
   // negative error code, we assume it failed and return directly.

@@ -18,7 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtkmm/builder.h>
+#include <gtkmm.h>
+//#include <gtkmm/builder.h>
 #include "box_db_table_relationships.h"
 #include <algorithm>
 #include <glibmm/i18n.h>
@@ -52,9 +53,9 @@ void Box_DB_Table_Relationships::init()
   m_colToField = m_AddDel.add_column(_("To Field"), AddDelColumnInfo::STYLE_Choices);
   m_colAllowEdit = m_AddDel.add_column(_("Allow Editing"),  AddDelColumnInfo::STYLE_Boolean);
   m_colAutoCreate = m_AddDel.add_column(_("Automatic Creation"),  AddDelColumnInfo::STYLE_Boolean);
-  
+
   m_colTitleSingular = m_AddDel.add_column(_("Title (Singular Form)"));
-  
+
 
   //Connect signals:
   m_AddDel.signal_user_activated().connect(sigc::mem_fun(*this, &Box_DB_Table_Relationships::on_adddel_user_activated));
@@ -132,7 +133,7 @@ bool Box_DB_Table_Relationships::fill_from_database()
 }
 
 void Box_DB_Table_Relationships::save_to_document()
-{ 
+{
   //Build relationships from AddDel:
   Document::type_vec_relationships vecRelationships;
 

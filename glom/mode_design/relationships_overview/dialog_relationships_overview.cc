@@ -1,5 +1,5 @@
 /* Glom
- * 
+ *
  * Copyright (C) 2001-2004 Murray Cumming
  *
  * This program is free software; you can redistribute it and/or
@@ -19,6 +19,7 @@
  */
 
 #include "config.h"
+#include <gtkmm.h>
 #include "dialog_relationships_overview.h"
 #include "glom/utility_widgets/canvas/canvas_line_movable.h"
 #include "glom/utility_widgets/canvas/canvas_text_movable.h"
@@ -101,7 +102,7 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
   }
 
   //Get the menu:
-  m_menu = dynamic_cast<Gtk::MenuBar*>( m_refUIManager->get_widget("/Overview_MainMenu") ); 
+  m_menu = dynamic_cast<Gtk::MenuBar*>( m_refUIManager->get_widget("/Overview_MainMenu") );
   if(!m_menu)
     g_warning("menu not found");
 
@@ -112,10 +113,10 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
   //Get the scolled window and add the canvas to it:
   m_scrolledwindow_canvas = 0;
   builder->get_widget("scrolledwindow_canvas", m_scrolledwindow_canvas);
-  
+
   m_scrolledwindow_canvas->add(m_canvas);
   m_canvas.show();
-  
+
   //Restore the previous window size, to avoid annoying the user:
   if(m_last_size_x != 0 && m_last_size_y != 0 )
   {
@@ -128,8 +129,8 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
   m_canvas.add_item(m_group_lines);
   m_group_lines->lower(); //Make sure that the lines are below the tables.
 
-  //Respond to changes of window size, 
-  //so we always make the canvas bounds big enough: 
+  //Respond to changes of window size,
+  //so we always make the canvas bounds big enough:
   m_scrolledwindow_canvas->get_hadjustment()->signal_changed().connect(
     sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_scroll_value_changed) );
   m_scrolledwindow_canvas->get_vadjustment()->signal_changed().connect(
@@ -141,8 +142,8 @@ Dialog_RelationshipsOverview::Dialog_RelationshipsOverview(BaseObjectType* cobje
 Dialog_RelationshipsOverview::~Dialog_RelationshipsOverview()
 {
   get_size(m_last_size_x, m_last_size_y);
-  
-  //Disconnect signal handlers for all current items, 
+
+  //Disconnect signal handlers for all current items,
   //so sigc::bind()ed RefPtrs can be released.
   while(m_list_table_connections.size())
   {
@@ -151,7 +152,7 @@ Dialog_RelationshipsOverview::~Dialog_RelationshipsOverview()
      the_connection.disconnect();
      m_list_table_connections.erase(iter);
   }
-  
+
   //Remove all current items:
   //while(m_group_tables->get_n_children() > 0)
   //  m_group_tables->remove_child(0);
@@ -160,7 +161,7 @@ Dialog_RelationshipsOverview::~Dialog_RelationshipsOverview()
 
 void Dialog_RelationshipsOverview::draw_tables()
 {
-  //Disconnect signal handlers for all current items, 
+  //Disconnect signal handlers for all current items,
   //so sigc::bind()ed RefPtrs can be released.
   while(m_list_table_connections.size())
   {
@@ -169,11 +170,11 @@ void Dialog_RelationshipsOverview::draw_tables()
      the_connection.disconnect();
      m_list_table_connections.erase(iter);
   }
-  
+
   //Remove all current items:
   while(m_group_tables->get_n_children() > 0)
     m_group_tables->remove_child(0);
-  
+
   Document* document = dynamic_cast<Document*>(get_document());
   if(document)
   {
@@ -187,7 +188,7 @@ void Dialog_RelationshipsOverview::draw_tables()
     {
       sharedptr<TableInfo> info = *iter;
       const Glib::ustring table_name = info->get_name();
-     
+
       float table_x = 0;
       float table_y = 0;
       //Get the x and y position from the document:
@@ -198,10 +199,10 @@ void Dialog_RelationshipsOverview::draw_tables()
         document->set_table_overview_position(table_name, table_x, table_y);
         m_modified = true;
       }
- 
+
       Document::type_vec_fields fields = document->get_table_fields(table_name);
 
-      Glib::RefPtr<CanvasGroupDbTable> table_group = 
+      Glib::RefPtr<CanvasGroupDbTable> table_group =
         CanvasGroupDbTable::create(info->get_name(), info->get_title_or_name(), fields, table_x, table_y);
       m_group_tables->add_child(table_group);
 
@@ -209,15 +210,15 @@ void Dialog_RelationshipsOverview::draw_tables()
         sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_table_moved),
         table_group) );
       m_list_table_connections.push_back(the_connection);
-     
+
       the_connection = table_group->signal_show_context().connect( sigc::bind(
         sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_table_show_context),
         table_group) );
       m_list_table_connections.push_back(the_connection);
-    
+
       //tv->x2 = tv->x1 + table_width;
       //tv->y2 = tv->y1 + table_height;
-      
+
       sizex += table_group->get_table_width() + 10;
 
       max_table_height = std::max(max_table_height, table_group->get_table_height());
@@ -226,16 +227,16 @@ void Dialog_RelationshipsOverview::draw_tables()
     m_canvas.set_bounds(0, 0, sizex, max_table_height * tables.size());
   }
 }
-   
+
 void Dialog_RelationshipsOverview::draw_lines()
 {
   //Remove all current items:
   while(m_group_lines->get_n_children() > 0)
     m_group_lines->remove_child(0);
-   
+
   Document* document = dynamic_cast<Document*>(get_document());
   if(document)
-  { 
+  {
     //Create the lines linking tables to show relationships:
     Document::type_listTableInfo tables = document->get_tables();
     for(Document::type_listTableInfo::iterator iter = tables.begin(); iter != tables.end(); ++iter)
@@ -245,7 +246,7 @@ void Dialog_RelationshipsOverview::draw_lines()
 
       Document::type_vec_relationships m_relationships = document->get_relationships(table_name);
       Document::type_vec_fields fields = document->get_table_fields(table_name);
-      
+
       for(Document::type_vec_relationships::const_iterator rit = m_relationships.begin(); rit != m_relationships.end(); ++rit)
       {
         sharedptr<const Relationship> relationship = *rit;
@@ -262,7 +263,7 @@ void Dialog_RelationshipsOverview::draw_lines()
           double temp_x = 0.0;
           double temp_y = 0.0;
           group_from->get_xy(temp_x, temp_y);
-        
+
           from_field_x = temp_x;
           from_field_y = temp_y + group_from->get_field_y(relationship->get_from_field());
         }
@@ -285,7 +286,7 @@ void Dialog_RelationshipsOverview::draw_lines()
           }
 
           //Start the line from the right of the from table instead of the left, if the to table is to the right:
-          double extra_line = 0; //An extra horizontal line before the real diagonal line starts. 
+          double extra_line = 0; //An extra horizontal line before the real diagonal line starts.
           if(to_field_x > from_field_x)
           {
             from_field_x += group_from->get_table_width();
@@ -296,7 +297,7 @@ void Dialog_RelationshipsOverview::draw_lines()
             to_field_x += group_to->get_table_width();
             extra_line = -20;
           }
- 
+
           //Create the line:
           Glib::RefPtr<CanvasLineMovable> line = CanvasLineMovable::create();
           double points_coordinates[] = {from_field_x, from_field_y,
@@ -316,12 +317,12 @@ void Dialog_RelationshipsOverview::draw_lines()
 
           //Create a text item, showing the name of the relationship on the line:
           //
-          //Raise or lower the text slightly to make it show above the line when horizontal, 
+          //Raise or lower the text slightly to make it show above the line when horizontal,
           //and to avoid overwriting a relationship in the other direction:
           //TODO: This is not very clear. Investigate how other systems show this.
-          double y_offset = (from_field_x < to_field_x) ? -10 : +10; 
+          double y_offset = (from_field_x < to_field_x) ? -10 : +10;
           if(from_field_x == to_field_x)
-            y_offset = (from_field_y < to_field_y) ? -10 : +10; 
+            y_offset = (from_field_y < to_field_y) ? -10 : +10;
 
           const double text_x = (from_field_x + to_field_x) / 2;
           const double text_y = ((from_field_y + to_field_y) / 2) + y_offset;
@@ -352,7 +353,7 @@ void Dialog_RelationshipsOverview::on_response(int /* id */)
 {
   if(m_modified && get_document())
     get_document()->set_modified();
-    
+
   hide();
 }
 
@@ -445,7 +446,7 @@ void Dialog_RelationshipsOverview::on_table_moved(Glib::RefPtr<CanvasGroupDbTabl
     document->set_table_overview_position(table->get_table_name(), x, y);
   }
 
-  //It is probably incredibly inefficient to recreate the lines repeatedly while dragging a table, 
+  //It is probably incredibly inefficient to recreate the lines repeatedly while dragging a table,
   //but it seems to work OK, and it makes the code much simpler.
   //If this is a problem, we should just change the start/end coordinates of any lines connected to the moved table.
   draw_lines();
@@ -455,14 +456,14 @@ void Dialog_RelationshipsOverview::on_table_show_context(guint button, guint32 a
 {
   if(m_action_edit_fields)
   {
-    // Disconnect the previous handler, 
+    // Disconnect the previous handler,
     // and connect a new one, with the correct table as a bound parameter:
     m_connection_edit_fields.disconnect();
-    m_connection_edit_fields = m_action_edit_fields->signal_activate().connect( 
+    m_connection_edit_fields = m_action_edit_fields->signal_activate().connect(
       sigc::bind( sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_context_menu_edit_fields), table ));
 
     m_connection_edit_relationships.disconnect();
-    m_connection_edit_relationships = m_action_edit_relationships->signal_activate().connect( 
+    m_connection_edit_relationships = m_action_edit_relationships->signal_activate().connect(
       sigc::bind( sigc::mem_fun(*this, &Dialog_RelationshipsOverview::on_context_menu_edit_relationships), table ));
   }
 
@@ -488,7 +489,7 @@ void Dialog_RelationshipsOverview::setup_context_menu()
 
   try
   {
-    Glib::ustring ui_info = 
+    Glib::ustring ui_info =
     "<ui>"
     "  <popup name='ContextMenu'>"
     "  <menuitem action='ContextEditFields'/>"
@@ -504,7 +505,7 @@ void Dialog_RelationshipsOverview::setup_context_menu()
   }
 
   //Get the menu:
-  m_context_menu = dynamic_cast<Gtk::Menu*>( m_context_menu_uimanager->get_widget("/ContextMenu") ); 
+  m_context_menu = dynamic_cast<Gtk::Menu*>( m_context_menu_uimanager->get_widget("/ContextMenu") );
 }
 
 void Dialog_RelationshipsOverview::on_context_menu_edit_fields(Glib::RefPtr<CanvasGroupDbTable> table)
@@ -539,14 +540,14 @@ void Dialog_RelationshipsOverview::on_scroll_value_changed()
   double height = m_scrolledwindow_canvas->get_vadjustment()->get_page_size();
   //double x = m_scrolledwindow_canvas->get_hadjustment()->get_value();
   //double y = m_scrolledwindow_canvas->get_vadjustment()->get_value();
-  
+
   //Make sure that the canvas bounds are as big as the scrollable area:
   double old_left = 0;
   double old_top = 0;
   double old_right = 0;
   double old_bottom = 0;
   m_canvas.get_bounds(old_left, old_top, old_right, old_bottom);
-  
+
   const double old_height = old_bottom - old_top;
   const double old_width = old_right - old_left;
 
@@ -558,4 +559,3 @@ void Dialog_RelationshipsOverview::on_scroll_value_changed()
 }
 
 } //namespace Glom
-

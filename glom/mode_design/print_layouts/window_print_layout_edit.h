@@ -21,6 +21,7 @@
 #ifndef WINDOW_PRINT_LAYOUT_EDIT_H
 #define WINDOW_PRINT_LAYOUT_EDIT_H
 
+#include <gtkmm/box.h>
 #include <libglom/data_structure/print_layout.h>
 #include <glom/print_layout/canvas_print_layout.h>
 #include <glom/mode_design/print_layouts/print_layout_toolbar.h>
@@ -29,7 +30,6 @@
 #include <gtkmm/window.h>
 #include <gtkmm/entry.h>
 #include <gtkmm/label.h>
-#include <gtkmm/box.h>
 #include <gtkmm/uimanager.h>
 //#include <gtkmm/toggleaction.h>
 #include <gtkmm/ruler.h>

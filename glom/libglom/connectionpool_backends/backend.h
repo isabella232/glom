@@ -76,7 +76,15 @@ public:
      INITERROR_COULD_NOT_START_SERVER,
      INITERROR_OTHER
   };
-  
+
+  enum StartupErrors
+  {
+    STARTUPERROR_NONE, /*< The database is ready for use. */
+    STARTUPERROR_FAILED_NO_DATA, /*< There is no data for the database. */
+    STARTUPERROR_FAILED_NO_DATA_HAS_BACKUP_DATA, /*< There is no data for the database, but there is a backup file instead. */
+    STARTUPERROR_FAILED_UNKNOWN_REASON /*< Something else failed. */
+  };
+
 protected:
 
   /* TODO: Merge create_database() and initialize() into a single function?
@@ -106,18 +114,26 @@ protected:
    */
   virtual const char* get_public_schema_name() const = 0;
 
+  /** This specifies that Glom should start its own database server instance (if it's PostgreSQL)
+   * for this database, using the database files stored at the specified uri,
+   * or just use that file (if it's sqlite).
+   * Or it can be used temporarily when calling save_backup() to provide the top-level directory path.
+   */
+  void set_database_directory_uri(const std::string& directory_uri);
+  std::string get_database_directory_uri() const;
+
   /** This callback should show UI to indicate that work is still happening.
    * For instance, a pulsing ProgressBar.
    */
   typedef sigc::slot<void> SlotProgress;
-  
+
   /** This method is called for one-time initialization of the database
    * storage. There is no need to implement this function if the data is centrally
    * hosted rather than hosted by Glom.
    *
    * @param slot_progress A callback to call while the work is still happening.
-   * @param network_shared Whether the database (and document) should be available to other users over the network, 
-   * if possible. 
+   * @param network_shared Whether the database (and document) should be available to other users over the network,
+   * if possible.
    */
   virtual InitErrors initialize(const SlotProgress& slot_progress, const Glib::ustring& initial_username, const Glib::ustring& password, bool network_shared = false);
 
@@ -126,10 +142,10 @@ protected:
    * this function if there is no need for extra startup code.
    *
    * @param slot_progress A callback to call while the work is still happening.
-   * @param network_shared Whether the database (and document) should be available to other users over the network, 
-   * if possible. 
+   * @param network_shared Whether the database (and document) should be available to other users over the network,
+   * if possible.
    */
-  virtual bool startup(const SlotProgress& slot_progress, bool network_shared = false);
+  virtual StartupErrors startup(const SlotProgress& slot_progress, bool network_shared = false);
 
   /** This method is called when the backend is no longer used. This can be
    * used to shut down a self-hosted database server. There is no need to
@@ -139,15 +155,15 @@ protected:
    */
   virtual bool cleanup(const SlotProgress& slot_progress);
 
-  /** Change the database server's configration to allow or prevent access from 
+  /** Change the database server's configration to allow or prevent access from
    * other users on the network.
    *
-   * For current backends, you may use this only before startup(), 
+   * For current backends, you may use this only before startup(),
    * or after cleanup().
    *
    * @param slot_progress A callback to call while the work is still happening.
-   * @param network_shared Whether the database (and document) should be available to other users over the network, 
-   * if possible. 
+   * @param network_shared Whether the database (and document) should be available to other users over the network,
+   * if possible.
    */
   virtual bool set_network_shared(const SlotProgress& slot_progress, bool network_shared = true);
 
@@ -174,6 +190,21 @@ protected:
   /** This method is called to create a new database on the
    * database server. */
   virtual bool create_database(const Glib::ustring& database_name, const Glib::ustring& username, const Glib::ustring& password) = 0;
+
+  /** Save a backup of the database in a tarball.
+   * This backup can later be used to recreate the database,
+   * for instance with a later version of PostgreSQL.
+   */
+  virtual bool save_backup(const SlotProgress& slot_progress, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name) = 0;
+
+  /** Use a backup of the database in a tarball to create the tables and data in an existing empty database.
+   * The database (server) should already have the necessary groups and users.
+   * See save_backup().
+   */
+  virtual bool convert_backup(const SlotProgress& slot_progress, const std::string& base_directory_uri, const Glib::ustring& username, const Glib::ustring& password, const Glib::ustring& database_name) = 0;
+
+protected:
+  std::string m_database_directory_uri;
 };
 
 } // namespace ConnectionPoolBackends
@@ -181,4 +212,3 @@ protected:
 } //namespace Glom
 
 #endif // GLOM_BACKEND_BACKEND_H
-

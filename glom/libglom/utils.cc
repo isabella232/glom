@@ -236,7 +236,6 @@ static void add_to_relationships_list(type_list_relationships& list_relationship
     list_relationships.push_back(uses_rel);
   }
 
-
 }
 
 static void builder_add_join(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder, const sharedptr<const UsesRelationship>& uses_relationship)
@@ -252,7 +251,7 @@ static void builder_add_join(const Glib::RefPtr<Gnome::Gda::SqlBuilder>& builder
 
     return;
   }
-    
+
   // Define the alias name as returned by get_sql_join_alias_name():
 
   // Specify an alias, to avoid ambiguity when using 2 relationships to the same table.
@@ -308,8 +307,8 @@ void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::Sq
     sharedptr<const LayoutItem_Field> layout_item = iter->first;
     add_to_relationships_list(list_relationships, layout_item);
   }
-  
-  
+
+
   //LEFT OUTER JOIN will get the field values from the other tables,
   //and give us our fields for this table even if there is no corresponding value in the other table.
   for(type_list_relationships::const_iterator iter = list_relationships.begin(); iter != list_relationships.end(); ++iter)
@@ -317,7 +316,7 @@ void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::Sq
     sharedptr<const UsesRelationship> uses_relationship = *iter;
     builder_add_join(builder, uses_relationship);
   }
-  
+
   bool one_added = false;
   for(type_vecConstLayoutFields::const_iterator iter = fieldsToGet.begin(); iter != fieldsToGet.end(); ++iter)
   {
@@ -332,7 +331,7 @@ void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::Sq
 
     //Get the parent, such as the table name, or the alias name for the join:
     const Glib::ustring parent = layout_item->get_sql_table_or_join_alias_name(table_name);
-      
+
     const LayoutItem_FieldSummary* fieldsummary = dynamic_cast<const LayoutItem_FieldSummary*>(layout_item.obj());
     if(fieldsummary)
     {
@@ -349,8 +348,8 @@ void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::Sq
       if(extra_join)
         builder->select_group_by(id);
     }
-  
-    
+
+
     one_added = true;
   }
 
@@ -372,7 +371,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_where_clause(c
   //We tell it whether extra_join is empty, so it can do an extra GROUP BY if necessary.
   //TODO: Try to use DISTINCT instead, with a proper test case.
   Utils::build_sql_select_add_fields_to_get(builder, table_name, fieldsToGet, sort_clause, extra_join /* bool */);
-  
+
   if(extra_join)
   {
     sharedptr<UsesRelationship> uses_relationship = sharedptr<UsesRelationship>::create();
@@ -555,7 +554,7 @@ Glib::ustring Utils::string_escape_underscores(const Glib::ustring& text)
 }
 
 /** Get just the first part of a locale, such as de_DE,
- * ignoring, for instance, .UTF-8 or @euro at the end.
+ * ignoring, for instance, .UTF-8 or \@euro at the end.
  */
 Glib::ustring Utils::locale_simplify(const Glib::ustring& locale_id)
 {
@@ -995,5 +994,78 @@ Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(Document* document, const
     return Gnome::Gda::SqlExpr();
   }
 }
+
+bool Utils::delete_directory(const Glib::RefPtr<Gio::File>& directory)
+{
+  if(!(directory->query_exists()))
+    return true;
+
+  //(Recursively) Delete any child files and directories,
+  //so we can delete this directory.
+  Glib::RefPtr<Gio::FileEnumerator> enumerator = directory->enumerate_children();
+
+  Glib::RefPtr<Gio::FileInfo> info = enumerator->next_file();
+  while(info)
+  {
+    Glib::RefPtr<Gio::File> child = directory->get_child(info->get_name());
+    bool removed_child = false;
+    if(child->query_file_type() == Gio::FILE_TYPE_DIRECTORY)
+      removed_child = delete_directory(child);
+    else
+      removed_child = child->remove();
+
+    if(!removed_child)
+       return false;
+
+    info = enumerator->next_file();
+  }
+
+  //Delete the actual directory:
+  if(!directory->remove())
+    return false;
+
+  return true;
+}
+
+bool Utils::delete_directory(const std::string& uri)
+{
+  Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
+  return delete_directory(file);
+}
+
+/** For instance, to find the first file in the directory with a .glom extension.
+ */
+Glib::ustring Utils::get_directory_child_with_suffix(const Glib::ustring& uri_directory, const std::string& suffix, bool recursive)
+{
+  Glib::RefPtr<Gio::File> directory = Gio::File::create_for_uri(uri_directory);
+  Glib::RefPtr<Gio::FileEnumerator> enumerator = directory->enumerate_children();
+
+  Glib::RefPtr<Gio::FileInfo> info = enumerator->next_file();
+  while(info)
+  {
+    Glib::RefPtr<const Gio::File> child = directory->get_child(info->get_name());
+
+    const Gio::FileType file_type = child->query_file_type();
+    if(file_type == Gio::FILE_TYPE_REGULAR)
+    {
+      //Check the filename:
+      const std::string basename = child->get_basename();
+      if(string_remove_suffix(basename, suffix) != basename)
+        return child->get_uri();
+    }
+    else if(recursive && file_type == Gio::FILE_TYPE_DIRECTORY)
+    {
+      //Look in sub-directories too:
+      const Glib::ustring result = get_directory_child_with_suffix(child->get_uri(), suffix, recursive);
+      if(!result.empty())
+        return result;
+    }
+
+    info = enumerator->next_file();
+  }
+
+  return Glib::ustring();
+}
+
 
 } //namespace Glom

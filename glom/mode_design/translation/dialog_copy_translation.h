@@ -21,10 +21,10 @@
 #ifndef GLOM_TRANSLATIONS_DIALOG_COPY_TRANSLATION_H
 #define GLOM_TRANSLATIONS_DIALOG_COPY_TRANSLATION_H
 
+#include <gtkmm/dialog.h>
 #include "combobox_locale.h"
 #include <libglom/document/document.h> // For View_Composite_Glom
 #include <gtkmm/builder.h>
-#include <gtkmm/dialog.h>
 
 namespace Glom
 {
@@ -50,4 +50,3 @@ private:
 } //namespace Glom
 
 #endif //GLOM_TRANSLATIONS_DIALOG_COPY_TRANSLATION_H
-

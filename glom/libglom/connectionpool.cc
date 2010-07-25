@@ -137,7 +137,7 @@ void ConnectionPool::setup_from_document(const Document* document)
   case Document::HOSTING_MODE_POSTGRES_SELF:
     {
       ConnectionPoolBackends::PostgresSelfHosted* backend = new ConnectionPoolBackends::PostgresSelfHosted;
-      backend->set_self_hosting_data_uri(document->get_connection_self_hosted_directory_uri());
+      backend->set_database_directory_uri(document->get_connection_self_hosted_directory_uri());
       set_backend(std::auto_ptr<ConnectionPool::Backend>(backend));
     }
     break;
@@ -171,7 +171,7 @@ void ConnectionPool::setup_from_document(const Document* document)
 
   set_ready_to_connect();
 }
-  
+
 void ConnectionPool::delete_instance()
 {
   if(m_instance)
@@ -374,6 +374,60 @@ void ConnectionPool::set_user(const Glib::ustring& value)
   invalidate_connection();
 }
 
+bool ConnectionPool::save_backup(const SlotProgress& slot_progress, const std::string& path_dir)
+{
+  g_assert(m_backend.get());
+
+  const std::string old_uri = m_backend->get_database_directory_uri();
+
+  std::string uri;
+  try
+  {
+    //TODO: Avoid the copy/paste of glom_postgres_data and make it work for sqlite too.
+    const std::string subdir = Glib::build_filename(path_dir, "glom_postgres_data");
+    uri = Glib::filename_to_uri(subdir);
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << G_STRFUNC << ": exception from Glib::build_filename(): " << ex.what() << std::endl;
+    return false;
+  }
+
+  m_backend->set_database_directory_uri(uri);
+  const bool result = m_backend->save_backup(slot_progress, m_user, m_password, m_database);
+  m_backend->set_database_directory_uri(old_uri);
+  return result;
+}
+
+bool ConnectionPool::convert_backup(const SlotProgress& slot_progress, const std::string& path_dir)
+{
+  g_assert(m_backend.get());
+
+  //TODO: Avoid this copy/paste of the directory name:
+  std::string path_dir_to_use = path_dir;
+  if(!path_dir_to_use.empty())
+  {
+    path_dir_to_use = Glib::build_filename(path_dir, "glom_postgres_data");
+  }
+
+  const bool result = m_backend->convert_backup(slot_progress, path_dir_to_use, m_user, m_password, m_database);
+  if(!result)
+    return false;
+
+  try
+  {
+    //update_meta_store_table_names() has been known to throw an exception.
+    //Glom is mostly unusable when it fails, but that's still better than a crash.
+    m_refGdaConnection->update_meta_store_table_names(m_backend->get_public_schema_name());
+  }
+  catch(const Glib::Error& ex)
+  {
+    std::cerr << "ConnectionPool::connect(): update_meta_store_table_names() failed: " << ex.what() << std::endl;
+  }
+
+  return result;
+}
+
 void ConnectionPool::set_password(const Glib::ustring& value)
 {
   m_password = value;
@@ -522,13 +576,14 @@ static void on_linux_signal(int signum)
   }
 }
 
-bool ConnectionPool::startup(const SlotProgress& slot_progress, bool network_shared)
+ConnectionPool::StartupErrors ConnectionPool::startup(const SlotProgress& slot_progress, bool network_shared)
 {
   if(!m_backend.get())
-    return false;
+    return Backend::STARTUPERROR_FAILED_UNKNOWN_REASON;
 
-  if(!m_backend->startup(slot_progress, network_shared))
-    return false;
+  const Backend::StartupErrors started = m_backend->startup(slot_progress, network_shared);
+  if(started != Backend::STARTUPERROR_NONE)
+    return started;
 
 #ifndef G_OS_WIN32
   //Let clients discover this server via avahi:
@@ -539,7 +594,7 @@ bool ConnectionPool::startup(const SlotProgress& slot_progress, bool network_sha
   //Comment this out if you want to see the backtrace in a debugger.
   previous_sig_handler = signal(SIGSEGV, &on_linux_signal);
 
-  return true;
+  return started;
 }
 
 bool ConnectionPool::cleanup(const SlotProgress& slot_progress)
@@ -554,7 +609,7 @@ bool ConnectionPool::cleanup(const SlotProgress& slot_progress)
   set_ready_to_connect(false);
 
   bool result = false;
-  
+
   if(m_backend.get())
     result = m_backend->cleanup(slot_progress);
 
@@ -570,7 +625,7 @@ bool ConnectionPool::cleanup(const SlotProgress& slot_progress)
   //We don't need the segfault handler anymore:
   signal(SIGSEGV, previous_sig_handler);
   previous_sig_handler = SIG_DFL; /* Arbitrary default */
-  
+
   return result;
 }
 
