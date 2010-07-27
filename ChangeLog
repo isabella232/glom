@@ -168,6 +168,12 @@
 
 2010-07-27  Murray Cumming  <murrayc@murrayc.com>
 
+	Fix the tests build after the merge.
+	
+	* tests/test_selfhosting_new_empty.cc: Fix the use of Utils::.
+
+2010-07-27  Murray Cumming  <murrayc@murrayc.com>
+
 	Rename libglom-1.14 to libglom-1.16 (parallel-installable)
 
 	* configure.ac: Change the GLOM_ABI_VERSION number.
