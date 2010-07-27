@@ -1,3 +1,15 @@
+2010-07-27  Murray Cumming  <murrayc@murrayc.com>
+
+	Adapt to recent gtkmm-3.0 API changes.
+
+	* glom/bakery/app_withdoc_gtk.cc: Remove use of Gtk::RecentManager::set_limit().
+	* glom/dialog_existing_or_new.[h|cc]:
+	* glom/frame_glom.[h|cc]:
+	* glom/mode_data/notebook_data..[h|cc]:
+	* glom/mode_design/report_layout/dialog_layout_report.[h|cc]:
+	* glom/notebook_glom.[h|cc]: Replace use of GtkNotebookPage with Gtk::Widget* 
+	in switch_page signal handlers.
+
 2010-07-25  Murray Cumming  <murrayc@murrayc.com>
 
 	Allow unique fields with same name in multiple tables.

@@ -92,7 +92,7 @@ private:
 
   void on_cell_data_available_part(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
 
-  void on_notebook_switch_page(GtkNotebookPage*, guint);
+  void on_notebook_switch_page(Gtk::Widget*, guint);
 
   void fill_report_parts(sharedptr<LayoutGroup>& group, const Glib::RefPtr<const type_model> parts_model);
 

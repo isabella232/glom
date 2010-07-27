@@ -370,7 +370,7 @@ Notebook_Data::type_signal_record_details_requested Notebook_Data::signal_record
   return m_signal_record_details_requested;
 }
 
-void Notebook_Data::on_switch_page_handler(GtkNotebookPage* pPage, guint uiPageNumber)
+void Notebook_Data::on_switch_page_handler(Gtk::Widget* pPage, guint uiPageNumber)
 {
   //Call base class:
   Notebook_Glom::on_switch_page_handler(pPage, uiPageNumber);

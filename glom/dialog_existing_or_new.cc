@@ -577,7 +577,7 @@ void Dialog_ExistingOrNew::new_title_data_func(Gtk::CellRenderer* renderer, cons
 }
 #endif //GLOM_ENABLE_CLIENT_ONLY
 
-void Dialog_ExistingOrNew::on_switch_page(GtkNotebookPage* /* page */, guint /* page_num */)
+void Dialog_ExistingOrNew::on_switch_page(Gtk::Widget* /* page */, guint /* page_num */)
 {
   update_ui_sensitivity();
 }

@@ -1049,7 +1049,7 @@ void Dialog_Layout_Report::fill_report_parts(sharedptr<LayoutGroup>& group, cons
   }
 }
 
-void Dialog_Layout_Report::on_notebook_switch_page(GtkNotebookPage*, guint page_number)
+void Dialog_Layout_Report::on_notebook_switch_page(Gtk::Widget*, guint page_number)
 {
   //Change the list of available parts, depending on the destination treeview:
   Glib::RefPtr<type_model> model_available_parts;

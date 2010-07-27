@@ -233,7 +233,6 @@ void App_WithDoc_Gtk::init_menus_file_recentfiles(const Glib::ustring& path)
 
       Gtk::RecentChooserMenu* menu = Gtk::manage(new Gtk::RecentChooserMenu);
       menu->set_filter(filter);
-      menu->set_limit(10 /* this should be a global GNOME preference, I think. */);
       menu->set_show_numbers(false);
       menu->set_sort_type(Gtk::RECENT_SORT_MRU);
       menu->signal_item_activated().connect(sigc::bind(sigc::mem_fun(*this, static_cast<void(App_WithDoc_Gtk::*)(Gtk::RecentChooser&)>(&App_WithDoc_Gtk::on_recent_files_activate)), sigc::ref(*menu)));

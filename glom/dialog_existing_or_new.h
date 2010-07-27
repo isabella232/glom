@@ -76,7 +76,7 @@ private:
   void existing_icon_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
   void existing_title_data_func(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter);
 
-  void on_switch_page(GtkNotebookPage* page, guint page_num);
+  void on_switch_page(Gtk::Widget* page, guint page_num);
   void on_existing_selection_changed();
 
 
