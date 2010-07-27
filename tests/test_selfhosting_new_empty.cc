@@ -23,6 +23,7 @@
 #include <libglom/connectionpool_backends/postgres_self.h>
 #include <libglom/init.h>
 #include <libglom/privs.h>
+#include <libglom/utils.h>
 #include <giomm/file.h>
 
 static void on_initialize_progress()
@@ -59,7 +60,7 @@ int main()
   //Make sure that the file does not exist yet:
   {
     const Glib::ustring uri = Glib::filename_to_uri(temp_filepath_dir);
-    Utils::delete_directory(uri);
+    Glom::Utils::delete_directory(uri);
   }
 
   //Save the file. TODO: Do we need to do this for the test?
@@ -98,7 +99,7 @@ int main()
   //Make sure the directory is removed at the end,
   {
     const Glib::ustring uri = Glib::filename_to_uri(temp_filepath_dir);
-    Utils::delete_directory(uri);
+    Glom::Utils::delete_directory(uri);
   }
 
   Glom::libglom_deinit();
