@@ -59,12 +59,12 @@
  *
  * If your source file is @c program.cc, you can compile it with:
  * @code
- * g++ program.cc -o program  `pkg-config --cflags --libs glom-1.14`
+ * g++ program.cc -o program  `pkg-config --cflags --libs glom-1.16`
  * @endcode
  *
  * Alternatively, if using autoconf, use the following in @c configure.ac:
  * @code
- * PKG_CHECK_MODULES([DEPS], [glom-1.14])
+ * PKG_CHECK_MODULES([DEPS], [glom-1.16])
  * @endcode
  * Then use the generated @c DEPS_CFLAGS and @c DEPS_LIBS variables in the
  * project @c Makefile.am files. For example:

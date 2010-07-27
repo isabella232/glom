@@ -94,7 +94,7 @@ cp /local/bin/libgdamm-4.0-12.dll installer/bin || exit
 # TODO: Can we build boost so that mingwm10.dll is not required? Maybe try static C runtime linkage
 cp /mingw/bin/mingwm10.dll installer/bin || exit
 cp /boost/lib/boost_python-mgw34-mt-1_42.dll installer/bin || exit
-cp /local/bin/libglom-1.14-0.dll installer/bin || exit
+cp /local/bin/libglom-1.16-0.dll installer/bin || exit
 
 echo "Stripping DLL files..."
 strip installer/bin/*.dll || exit

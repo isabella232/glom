@@ -38,9 +38,9 @@ libglom_d_bakery_include_HEADERS = $(libglom_d_bakery_headers)
 libglom_d_b_view_includedir = $(libglom_d_bakery_includedir)/view
 libglom_d_b_view_include_HEADERS = $(libglom_d_b_view_headers)
 
-glom_libglom_libglom_1_14_la_SOURCES = $(libglom_sources)
-glom_libglom_libglom_1_14_la_LIBADD  = $(LIBGLOM_LIBS) $(PYTHON_LIBS) $(BOOST_PYTHON_LIBS)
+glom_libglom_libglom_1_16_la_SOURCES = $(libglom_sources)
+glom_libglom_libglom_1_16_la_LIBADD  = $(LIBGLOM_LIBS) $(PYTHON_LIBS) $(BOOST_PYTHON_LIBS)
 if HOST_WIN32
-glom_libglom_libglom_1_14_la_LIBADD += -lws2_32
+glom_libglom_libglom_1_16_la_LIBADD += -lws2_32
 endif
-glom_libglom_libglom_1_14_la_LDFLAGS = -no-undefined
+glom_libglom_libglom_1_16_la_LDFLAGS = -no-undefined
