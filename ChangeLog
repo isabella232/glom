@@ -1,3 +1,9 @@
+2010-07-27  Murray Cumming  <murrayc@murrayc.com>
+
+	Rename libglom-1.14 to libglom-1.16 (parallel-installable)
+
+	* configure.ac: Change the GLOM_ABI_VERSION number.
+
 2010-07-25  Murray Cumming  <murrayc@murrayc.com>
 
 	Allow unique fields with same name in multiple tables.
