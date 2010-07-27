@@ -96,7 +96,7 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::connect(const Glib::
   bool connection_possible = false;
   try
   {
-    connection = attempt_connect(m_host, port, database, username, password);
+    connection = attempt_connect(port, database, username, password);
     connection_possible = true;
     m_port = atoi(port.c_str());
   }
@@ -120,7 +120,7 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresCentralHosted::connect(const Glib::
 
       try
       {
-        connection = attempt_connect(m_host, port, database, username, password);
+        connection = attempt_connect(port, database, username, password);
         connection_possible = true;
         m_port = atoi(port.c_str());
       }

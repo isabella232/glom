@@ -128,7 +128,7 @@ Source: "python/*.py"; DestDir: "{app}\bin"; Components: python; Flags: recurses
 Source: "python/*.pyd"; DestDir: "{app}\bin"; Components: python; Flags: recursesubdirs
 
 ; Glom executables
-Source: "bin\libglom-1.14-0.dll"; DestDir: "{app}\bin"; Components: main
+Source: "bin\libglom-1.16-0.dll"; DestDir: "{app}\bin"; Components: main
 Source: "bin\Glom.exe"; DestDir: "{app}\bin"; Components: main
 
 ; Modules

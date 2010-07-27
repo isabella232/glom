@@ -566,7 +566,7 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ust
   {
     try
     {
-      result = attempt_connect(m_host, port_as_string(m_port), database, username, password);
+      result = attempt_connect(port_as_string(m_port), database, username, password);
     }
     catch(const ExceptionConnection ex)
     {

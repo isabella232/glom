@@ -1,5 +1,20 @@
 2010-07-27  Murray Cumming  <murrayc@murrayc.com>
 
+	Rename libglom-1.14 to libglom-1.16 (parallel-installable)
+
+	* configure.ac: Change the GLOM_ABI_VERSION number.
+	* Makefile.am:
+	* Makefile_libglom.am:
+	* docs/pyglom_reference/Makefile.am:
+	* docs/pyglom_reference/index.rst.in:
+	* glom/libglom/init.h:
+	* glom/python_embed/python_module/py_glom_module.cc:
+	* tests/test_load_python_library.cc:
+	* win32/build-installer:
+	* win32/glom.iss.in: Change mentions of 1.14 to 1.16.
+
+2010-07-27  Murray Cumming  <murrayc@murrayc.com>
+
 	Adapt to recent gtkmm-3.0 API changes.
 
 	* glom/bakery/app_withdoc_gtk.cc: Remove use of Gtk::RecentManager::set_limit().

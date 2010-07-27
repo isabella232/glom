@@ -76,7 +76,7 @@ protected:
   /** Attempt to connect to the database with the specified criteria.
    * @throws An ExceptionConnection if the correction failed.
    */ 
-  Glib::RefPtr<Gnome::Gda::Connection> attempt_connect(const Glib::ustring& host, const Glib::ustring& port, const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password);
+  Glib::RefPtr<Gnome::Gda::Connection> attempt_connect(const Glib::ustring& port, const Glib::ustring& database, const Glib::ustring& username, const Glib::ustring& password);
 
  std::string get_self_hosting_path(bool create = false, const std::string& child_directory = std::string());
 
