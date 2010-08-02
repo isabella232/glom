@@ -21,6 +21,7 @@
 #include "flowtablewithfields.h"
 #include <glom/mode_data/datawidget/datawidget.h>
 #include <glom/mode_data/buttonglom.h>
+#include <glom/mode_data/datawidget/combochoices.h>
 #include <glom/utility_widgets/notebookglom.h>
 #include <glom/utility_widgets/notebooklabelglom.h>
 #include <glom/utility_widgets/imageglom.h>
@@ -906,12 +907,66 @@ FlowTableWithFields::type_portals FlowTableWithFields::get_portals(const sharedp
   return result;
 }
 
+FlowTableWithFields::type_choice_widgets FlowTableWithFields::get_choice_widgets(const sharedptr<const LayoutItem_Field>& from_key)
+{
+  type_choice_widgets result;
+  if(!from_key)
+    return result;
+
+  const Glib::ustring from_key_name = from_key->get_name();
+
+  //Check the single-item widgets:
+  for(type_listFields::iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
+  {
+    DataWidget* widget = iter->m_second;
+    DataWidgetChildren::ComboChoices* combochoices = dynamic_cast<DataWidgetChildren::ComboChoices*>(widget);
+    if(!combochoices)
+      continue;
+      
+    const sharedptr<const LayoutItem> layout_item = 
+      combochoices->get_layout_item();
+    const sharedptr<const LayoutItem_Field> field = 
+       sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
+    if(!field)
+      continue;
+      
+    const FieldFormatting& format = field->get_formatting_used();
+      
+    sharedptr<const Relationship> choice_relationship;
+    Glib::ustring choice_field, choice_second;
+    bool choice_show_all = false;
+    format.get_choices(choice_relationship, choice_field, choice_second, choice_show_all);
+    if(choice_show_all)
+      continue; //"Show All" choices don't use the ID field values.
+        
+    if(choice_relationship->get_from_field() == from_key_name)
+      result.push_back(combochoices);
+  }
+
+  //Check the sub-flowtables:
+  for(type_sub_flow_tables::const_iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
+  {
+    FlowTableWithFields* subtable = *iter;
+    if(subtable)
+    {
+      type_choice_widgets sub_list = subtable->get_choice_widgets(from_key);
+      if(!sub_list.empty())
+      {
+        //Add to the main result:
+        result.insert(result.end(), sub_list.begin(), sub_list.end());
+      }
+    }
+  }
+
+  return result;
+}
+  
 namespace
 {
   // Get the direct widgets represesenting a given layout item
   // from a flowtable, without considering subflowtables:
   template<typename InputIterator, typename OutputIterator>
-  void get_direct_fields(InputIterator begin, InputIterator end, OutputIterator out, const sharedptr<const LayoutItem_Field>& layout_item, bool include_item)
+  static void get_direct_fields(InputIterator begin, InputIterator end, OutputIterator out, const sharedptr<const LayoutItem_Field>& layout_item, bool include_item)
   {
     for(InputIterator iter = begin; iter != end; ++iter)
     {

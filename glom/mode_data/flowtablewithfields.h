@@ -41,6 +41,7 @@
 #include <glom/utility_widgets/layoutwidgetbase.h>
 #include <glom/utility_widgets/layoutwidgetutils.h>
 #include <glom/mode_data/box_data_list_related.h>
+#include <glom/mode_data/datawidget/combochoices.h>
 #include "box_data_calendar_related.h"
 #include <glom/mode_design/layout/treestore_layout.h> //Forthe enum.
 #include <map>
@@ -162,10 +163,16 @@ private:
   type_list_widgets get_field(const sharedptr<const LayoutItem_Field>& field, bool include_item);
   type_list_const_widgets get_field(const sharedptr<const LayoutItem_Field>& field, bool include_item) const;
 
-  typedef std::list< Box_Data_Portal* > type_portals;
+  typedef std::list<Box_Data_Portal*> type_portals;
     
   /// Get portals whose relationships have @a from_key as the from_key.
   type_portals get_portals(const sharedptr<const LayoutItem_Field>& from_key);
+  
+  
+  typedef std::list<DataWidgetChildren::ComboChoices*> type_choice_widgets;
+    
+  /// Get choice widgets with !show_all relationships that have @a from_key as the from_key.
+  type_choice_widgets get_choice_widgets(const sharedptr<const LayoutItem_Field>& from_key);
   
   /** Examine this flow table and all child flow tables, discovering which 
    * has the most columns.

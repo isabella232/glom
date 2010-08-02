@@ -1,5 +1,14 @@
 2010-08-02  Murray Cumming  <murrayc@murrayc.com>
 
+	FlowTableWithFields: Added get_choices_widgets(from_field).
+
+	* glom/mode_data/datawidget/datawidget.cc: Constructor: Only fill the 
+	choices list at this point if show_all is set.
+	* glom/mode_data/flowtablewithfields.[h|cc]: Addef get_choices_widgets(), 
+	like the existing get_portals() methods.
+
+2010-08-02  Murray Cumming  <murrayc@murrayc.com>
+
 	Field Formatting: Related Choices: Add a Show All checkbox.
 
 	* glom/glom_developer.glade:

@@ -154,7 +154,10 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
           //set_choices() needs this, for the numeric layout:
           combo->set_layout_item( get_layout_item(), table_name);
 
-          combo->set_choices_with_second( Utils::get_choice_values(field) );
+          //If !show_all then the list must be set every time we show the data,
+          //because it depends on another ID value:
+          if(show_all)
+            combo->set_choices_with_second( Utils::get_choice_values(field) );
         }
       }
       else
