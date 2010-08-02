@@ -136,12 +136,11 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
           const Glib::ustring to_table = choice_relationship->get_to_table();
 
           const bool with_second = !choice_second.empty();
-
           if(with_second && document)
           {
-            sharedptr<Field> field_second = document->get_field(to_table, choice_second);
+            const sharedptr<const Field> field_second = document->get_field(to_table, choice_second);
 
-            sharedptr<LayoutItem_Field> layout_field_second = sharedptr<LayoutItem_Field>::create();
+            const sharedptr<LayoutItem_Field> layout_field_second = sharedptr<LayoutItem_Field>::create();
             layout_field_second->set_full_field_details(field_second);
             //We use the default formatting for this field->
 
