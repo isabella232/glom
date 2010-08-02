@@ -198,6 +198,7 @@ namespace Glom
 #define GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_RELATIONSHIP "choices_related_relationship"
 #define GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD "choices_related_field"
 #define GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND "choices_related_second"
+#define GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SHOW_ALL "choices_related_show_all"
 
 #define GLOM_NODE_TRANSLATIONS_SET "trans_set"
 #define GLOM_NODE_TRANSLATION "trans"
@@ -1992,10 +1993,17 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
     const Glib::ustring relationship_name = get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_RELATIONSHIP);
     if(!relationship_name.empty())
     {
+      bool show_all = get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SHOW_ALL);
+      if(get_document_format_version() < 6)
+      {
+        show_all = true; //This was the behaviour before this checkbox existed.
+      }
+      
       sharedptr<Relationship> relationship = get_relationship(table_name, relationship_name);
       format.set_choices(relationship,
         get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD),
-        get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND) );
+        get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND),
+        show_all);
       //Full details are updated in filled-in ().
     }
   }
@@ -2994,11 +3002,13 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
 
     sharedptr<const Relationship> choice_relationship;
     Glib::ustring choice_field, choice_second;
-    format.get_choices(choice_relationship, choice_field, choice_second);
+    bool choice_show_all = false;
+    format.get_choices(choice_relationship, choice_field, choice_second, choice_show_all);
 
     set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_RELATIONSHIP, glom_get_sharedptr_name(choice_relationship));
     set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD, choice_field);
     set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND, choice_second);
+    set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SHOW_ALL, choice_show_all);
   }
 }
 
@@ -4189,8 +4199,9 @@ guint Document::get_latest_known_document_format_version()
   // Version 3: (Glom 1.10). Support for the old one-big-string example_rows format was removed, and we now use (unquoted) non-postgres libgda escaping.
   // Version 4: (Glom 1.12). Portal navigation options were simplified, with a "none" option. network_sharing was added, defaulting to off.
   // Version 5: (Glom 1.14). Extra layout item formatting options were added, plus a startup script.
+  // Version 6: (Glom 1.16). Extra show_all option for choices that show related records.
 
-  return 5;
+  return 6;
 }
 
 std::vector<Glib::ustring> Document::get_library_module_names() const

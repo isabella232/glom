@@ -99,6 +99,7 @@ private:
   ComboBox_Relationship* m_combo_choices_relationship;
   ComboBox_Fields* m_combo_choices_field;
   ComboBox_Fields* m_combo_choices_field_second;
+  Gtk::CheckButton* m_checkbutton_choices_related_show_all;
 
   mutable FieldFormatting m_format;
 

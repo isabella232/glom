@@ -468,7 +468,13 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
 
   sharedptr<const Relationship> choice_relationship;
   Glib::ustring choice_field, choice_second;
-  field->get_formatting_used().get_choices(choice_relationship, choice_field, choice_second);
+  bool choice_show_all = false; //TODO: Use this.
+  if(!choice_show_all)
+  {
+    std::cerr << G_STRFUNC << ": Not fully implemented. TODO: Restrict values to related records." << std::endl;
+  }
+  
+  field->get_formatting_used().get_choices(choice_relationship, choice_field, choice_second, choice_show_all);
   if(!choice_relationship)
   {
     //std::cout <<" debug: field has no choices: " << field->get_name() << std::endl;

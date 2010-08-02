@@ -1,3 +1,20 @@
+2010-08-02  Murray Cumming  <murrayc@murrayc.com>
+
+	Field Formatting: Related Choices: Add a Show All checkbox.
+
+	* glom/glom_developer.glade:
+	* glom/libglom/data_structure/layout/fieldformatting.[h|cc]:
+	* glom/mode_design/layout/layout_item_dialogs/box_formatting.[h|cc]:
+	Add a Show All checkbox to the Related Choices section, so the developer 
+	may choose to restrict the choices depending on the relationship. The default 
+	(the previous behaviour) is to show all records from the related table.
+	* glom/libglom/document/document.cc: save_before_layout_item_formatting(), 
+	save_after_layout_item_formatting(): Store the new bool in the document.
+	* glom/libglom/utils.cc:
+	* glom/mode_data/datawidget/datawidget.cc: 
+	* glom/utility_widgets/db_adddel/db_adddel.cc: Adapt the code to build, though 
+	the behaviour has not changed yet.
+
 2010-07-27  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix the tests build after the merge.

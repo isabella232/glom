@@ -833,7 +833,8 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
       {
         sharedptr<const Relationship> choice_relationship;
         Glib::ustring choice_field, choice_second;
-        item_field->get_formatting_used().get_choices(choice_relationship, choice_field, choice_second);
+        bool choice_show_all; //TODO: Use this.
+        item_field->get_formatting_used().get_choices(choice_relationship, choice_field, choice_second, choice_show_all);
 
         if(choice_relationship && !choice_field.empty())
         {

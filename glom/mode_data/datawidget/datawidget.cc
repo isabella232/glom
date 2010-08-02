@@ -129,7 +129,8 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
       {
         sharedptr<const Relationship> choice_relationship;
         Glib::ustring choice_field, choice_second;
-        field->get_formatting_used().get_choices(choice_relationship, choice_field, choice_second);
+        bool show_all = false; //TODO: Use this.
+        field->get_formatting_used().get_choices(choice_relationship, choice_field, choice_second, show_all);
         if(choice_relationship && !choice_field.empty())
         {
           const Glib::ustring to_table = choice_relationship->get_to_table();

@@ -65,8 +65,8 @@ public:
    */
   void set_choices_restricted(bool val = true, bool as_radio_buttons = false);
 
-  void get_choices(sharedptr<const Relationship>& relationship_name, Glib::ustring& field, Glib::ustring& field_second) const;
-  void set_choices(const sharedptr<const Relationship>& relationship_name, const Glib::ustring& field, const Glib::ustring& field_second);
+  void get_choices(sharedptr<const Relationship>& relationship_name, Glib::ustring& field, Glib::ustring& field_second, bool& show_all) const;
+  void set_choices(const sharedptr<const Relationship>& relationship_name, const Glib::ustring& field, const Glib::ustring& field_second, bool show_all);
 
   /** Get whether the text should be displayed with multiple lines in the
    * details view. Text is displayed with a single line in the list view.
@@ -161,6 +161,7 @@ private:
   HorizontalAlignment m_horizontal_alignment;
 
   Glib::ustring m_choices_related_field, m_choices_related_field_second;
+  bool m_choices_related_show_all;
 };
 
 } //namespace Glom
