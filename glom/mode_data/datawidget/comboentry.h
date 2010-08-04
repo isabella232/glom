@@ -55,9 +55,6 @@ public:
   ///You must call set_layout_item() to specify the field type and formatting of the main column.
   ComboEntry();
 
-  ///You must call set_layout_item() to specify the field type and formatting of the main column.
-  explicit ComboEntry(const sharedptr<LayoutItem_Field>& field_second);
-
   virtual ~ComboEntry();
 
   //Override this so we can store the text to compare later.
@@ -73,6 +70,8 @@ public:
   virtual void set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name);
 
   virtual void set_read_only(bool read_only = true);
+  
+  virtual void set_choices_related(const Document* document, const sharedptr<const Relationship>& relationship, const Glib::ustring& field, const Glib::ustring& field_second, bool show_all);
 
 private:
   void init();
@@ -111,6 +110,8 @@ private:
   #ifdef GLOM_ENABLE_MAEMO
   Hildon::TouchSelectorEntry m_maemo_selector;
   #endif
+  
+  Gtk::CellRenderer* m_cell_second;
 };
 
 } //namespace DataWidetChildren

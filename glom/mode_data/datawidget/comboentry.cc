@@ -42,17 +42,8 @@ namespace DataWidgetChildren
 {
 
 ComboEntry::ComboEntry()
-: ComboChoicesWithTreeModel()
-{
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  setup_menu();
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-  init();
-}
-
-ComboEntry::ComboEntry(const sharedptr<LayoutItem_Field>& field_second)
-: ComboChoicesWithTreeModel(field_second)
+: ComboChoicesWithTreeModel(),
+  m_cell_second(0)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
@@ -115,8 +106,15 @@ void ComboEntry::init()
 
   get_entry()->signal_focus_out_event().connect(sigc::mem_fun(*this, &ComboEntry::on_entry_focus_out_event), false);
   get_entry()->signal_activate().connect(sigc::mem_fun(*this, &ComboEntry::on_entry_activate));
+}
 
-  if(m_with_second)
+ComboEntry::~ComboEntry()
+{
+}
+
+void ComboEntry::set_choices_related(const Document* document, const sharedptr<const Relationship>& relationship, const Glib::ustring& field, const Glib::ustring& field_second, bool show_all)
+{
+  if(!m_cell_second && !field_second.empty())
   {
     #ifndef GLOM_ENABLE_MAEMO
     //We don't use this convenience method, because we want more control over the renderer.
@@ -124,22 +122,20 @@ void ComboEntry::init()
     //(well, maybe set_cell_data_func(), but that's a bit awkward.)
     //pack_start(m_Columns.m_col_second);
 
-    Gtk::CellRenderer* cell_second = Gtk::manage(new Gtk::CellRendererText);
-    cell_second->set_property("xalign", 0.0);
+    m_cell_second = Gtk::manage(new Gtk::CellRendererText);
+    m_cell_second->set_property("xalign", 0.0);
 
     //Use the renderer:
-    pack_start(*cell_second);
+    pack_start(*m_cell_second);
 
     //Make the renderer render the column:
-    add_attribute(cell_second->_property_renderable(), m_Columns.m_col_second);
+    add_attribute(m_cell_second->_property_renderable(), m_Columns.m_col_second);
     #else //GLOM_ENABLE_MAEMO
     column->pack_start(m_Columns.m_col_second, false);
     #endif //GLOM_ENABLE_MAEMO
   }
-}
 
-ComboEntry::~ComboEntry()
-{
+  ComboChoicesWithTreeModel::set_choices_related(document, relationship, field, field_second, show_all);
 }
 
 void ComboEntry::set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name)

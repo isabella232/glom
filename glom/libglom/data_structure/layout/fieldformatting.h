@@ -65,8 +65,8 @@ public:
    */
   void set_choices_restricted(bool val = true, bool as_radio_buttons = false);
 
-  void get_choices(sharedptr<const Relationship>& relationship_name, Glib::ustring& field, Glib::ustring& field_second, bool& show_all) const;
-  void set_choices(const sharedptr<const Relationship>& relationship_name, const Glib::ustring& field, const Glib::ustring& field_second, bool show_all);
+  void get_choices_related(sharedptr<const Relationship>& relationship_name, Glib::ustring& field, Glib::ustring& field_second, bool& show_all) const;
+  void set_choices_related(const sharedptr<const Relationship>& relationship_name, const Glib::ustring& field, const Glib::ustring& field_second, bool show_all);
 
   /** Get whether the text should be displayed with multiple lines in the
    * details view. Text is displayed with a single line in the list view.

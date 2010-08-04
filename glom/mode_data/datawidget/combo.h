@@ -55,9 +55,6 @@ public:
   ///You must call set_layout_item() to specify the field type and formatting of the main column.
   ComboGlom();
 
-  ///You must call set_layout_item() to specify the field type and formatting of the main column.
-  explicit ComboGlom(const sharedptr<LayoutItem_Field>& field_second);
-
   virtual ~ComboGlom();
 
   virtual void set_read_only(bool read_only = true);
@@ -74,6 +71,8 @@ public:
   virtual void set_value(const Gnome::Gda::Value& value);
 
   virtual Gnome::Gda::Value get_value() const;
+  
+  virtual void set_choices_related(const Document* document, const sharedptr<const Relationship>& relationship, const Glib::ustring& field, const Glib::ustring& field_second, bool show_all);
 
 private:
   void init();
@@ -101,6 +100,8 @@ private:
   #ifdef GLOM_ENABLE_MAEMO
   Hildon::TouchSelector m_maemo_selector;
   #endif
+  
+  Gtk::CellRenderer* m_cell_second;
 };
 
 } //namespace DataWidetChildren

@@ -45,19 +45,9 @@ ComboAsRadioButtons::ComboAsRadioButtons()
   init();
 }
 
-ComboAsRadioButtons::ComboAsRadioButtons(const sharedptr<LayoutItem_Field>& field_second)
-: ComboChoices(field_second)
-{
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  setup_menu();
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-  init();
-}
-
 void ComboAsRadioButtons::init()
 {
-  if(m_with_second)
+  if(m_related_field_second)
   {
     //TODO
   }
@@ -86,9 +76,9 @@ void ComboAsRadioButtons::set_choices_with_second(const type_list_values_with_se
     {
       const Glib::ustring value_first = Conversions::get_text_for_gda_value(layout_item->get_glom_type(), iter->first, layout_item->get_formatting_used().m_numeric_format);
       Glib::ustring title = value_first;
-      if(m_with_second)
+      if(m_related_field_second)
       {
-        const Glib::ustring value_second = Conversions::get_text_for_gda_value(m_layoutitem_second->get_glom_type(), iter->second, m_layoutitem_second->get_formatting_used().m_numeric_format);
+        const Glib::ustring value_second = Conversions::get_text_for_gda_value(m_related_field_second->get_glom_type(), iter->second, m_related_field_second->get_formatting_used().m_numeric_format);
         title += " - " + value_second; //TODO: Find a better way to join them?
       }
       

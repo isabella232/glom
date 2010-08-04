@@ -38,17 +38,8 @@ namespace DataWidgetChildren
 {
 
 ComboGlom::ComboGlom()
-: ComboChoicesWithTreeModel()
-{
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  setup_menu();
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-  init();
-}
-
-ComboGlom::ComboGlom(const sharedptr<LayoutItem_Field>& field_second)
-: ComboChoicesWithTreeModel(field_second)
+: ComboChoicesWithTreeModel(),
+  m_cell_second(0)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
@@ -74,7 +65,18 @@ void ComboGlom::init()
   column->pack_start(m_Columns.m_col_first, false);
   #endif //GLOM_ENABLE_MAEMO
 
-  if(m_with_second)
+  //if(m_glom_type == Field::TYPE_NUMERIC)
+   // get_entry()->set_alignment(1.0); //Align numbers to the right.
+}
+
+ComboGlom::~ComboGlom()
+{
+}
+
+void ComboGlom::set_choices_related(const Document* document, const sharedptr<const Relationship>& relationship, const Glib::ustring& field, const Glib::ustring& field_second, bool show_all)
+{
+  //Add the extra cell if necessary:
+  if(!m_cell_second && !field_second.empty())
   {
     #ifndef GLOM_ENABLE_MAEMO
     //We don't use this convenience method, because we want more control over the renderer.
@@ -82,26 +84,22 @@ void ComboGlom::init()
     //(well, maybe set_cell_data_func(), but that's a bit awkward.)
     //pack_start(m_Columns.m_col_second);
 
-    Gtk::CellRenderer* cell_second = Gtk::manage(new Gtk::CellRendererText);
-    cell_second->set_property("xalign", 0.0);
+    m_cell_second = Gtk::manage(new Gtk::CellRendererText);
+    m_cell_second->set_property("xalign", 0.0);
 
     //Use the renderer:
-    pack_start(*cell_second);
+    pack_start(*m_cell_second);
 
     //Make the renderer render the column:
-    add_attribute(cell_second->_property_renderable(), m_Columns.m_col_second);
+    add_attribute(m_cell_second->_property_renderable(), m_Columns.m_col_second);
+    std::cout << "debug: Added second column." << std::endl;
     #else
     //Maemo:
     column->pack_start(m_Columns.m_col_second);
     #endif //GLOM_ENABLE_MAEMO
   }
-
-  //if(m_glom_type == Field::TYPE_NUMERIC)
-   // get_entry()->set_alignment(1.0); //Align numbers to the right.
-}
-
-ComboGlom::~ComboGlom()
-{
+  
+  ComboChoicesWithTreeModel::set_choices_related(document, relationship, field, field_second, show_all);
 }
 
 void ComboGlom::check_for_change()

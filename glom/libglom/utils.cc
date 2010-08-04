@@ -342,11 +342,15 @@ void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::Sq
     }
     else
     {
-      const Gnome::Gda::SqlBuilder::Id id = builder->select_add_field(layout_item->get_name(), parent);
+      const Glib::ustring field_name = layout_item->get_name();
+      if(!field_name.empty())
+      {
+        const Gnome::Gda::SqlBuilder::Id id = builder->select_add_field(field_name, parent);
 
-      //Avoid duplicate records with doubly-related fields:
-      if(extra_join)
-        builder->select_group_by(id);
+        //Avoid duplicate records with doubly-related fields:
+        if(extra_join)
+          builder->select_group_by(id);
+      }
     }
 
 
@@ -363,51 +367,60 @@ void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::Sq
 
 Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const Gnome::Gda::SqlExpr& where_clause, const sharedptr<const Relationship>& extra_join, const type_sort_clause& sort_clause, guint limit)
 {
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder;
+
   //Build the whole SQL statement:
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
-  builder->select_add_target(table_name);
-
-  //Add the fields to SELECT, plus the tables that they are selected FROM.
-  //We tell it whether extra_join is empty, so it can do an extra GROUP BY if necessary.
-  //TODO: Try to use DISTINCT instead, with a proper test case.
-  Utils::build_sql_select_add_fields_to_get(builder, table_name, fieldsToGet, sort_clause, extra_join /* bool */);
-
-  if(extra_join)
+  try
   {
-    sharedptr<UsesRelationship> uses_relationship = sharedptr<UsesRelationship>::create();
-    uses_relationship->set_relationship(extra_join);
-    builder_add_join(builder, uses_relationship);
-  }
+    builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+    builder->select_add_target(table_name);
 
-  //Add the WHERE clause:
-  if(!where_clause.empty())
-  {
-    const int id = builder->import_expression(where_clause);
-    builder->set_where(id);
-  }
+    //Add the fields to SELECT, plus the tables that they are selected FROM.
+    //We tell it whether extra_join is empty, so it can do an extra GROUP BY if necessary.
+    //TODO: Try to use DISTINCT instead, with a proper test case.
+    Utils::build_sql_select_add_fields_to_get(builder, table_name, fieldsToGet, sort_clause, extra_join /* bool */);
 
-  //Sort clause:
-  if(!sort_clause.empty())
-  {
-   for(type_sort_clause::const_iterator iter = sort_clause.begin(); iter != sort_clause.end(); ++iter)
+    if(extra_join)
     {
-      sharedptr<const LayoutItem_Field> layout_item = iter->first;
-      if(layout_item)
-      {
-        const bool ascending = iter->second;
+      sharedptr<UsesRelationship> uses_relationship = sharedptr<UsesRelationship>::create();
+      uses_relationship->set_relationship(extra_join);
+      builder_add_join(builder, uses_relationship);
+    }
 
-        //TODO: Avoid the need for the "."
-        builder->select_order_by(
-          builder->add_field_id(layout_item->get_name(), layout_item->get_sql_table_or_join_alias_name(table_name)),
-          ascending);
+    //Add the WHERE clause:
+    if(!where_clause.empty())
+    {
+      const int id = builder->import_expression(where_clause);
+      builder->set_where(id);
+    }
+
+    //Sort clause:
+    if(!sort_clause.empty())
+    {
+      for(type_sort_clause::const_iterator iter = sort_clause.begin(); iter != sort_clause.end(); ++iter)
+      {
+        sharedptr<const LayoutItem_Field> layout_item = iter->first;
+        if(layout_item)
+        {
+          const bool ascending = iter->second;
+
+          //TODO: Avoid the need for the "."
+          builder->select_order_by(
+            builder->add_field_id(layout_item->get_name(), layout_item->get_sql_table_or_join_alias_name(table_name)),
+            ascending);
+        }
       }
     }
-  }
 
-  //LIMIT clause:
-  if(limit > 0)
+    //LIMIT clause:
+    if(limit > 0)
+    {
+      builder->select_set_limit(limit);
+    }
+  }
+  catch(const Glib::Error& ex)
   {
-    builder->select_set_limit(limit);
+    std::cerr << G_STRFUNC << ": Exception: " << ex.what() << std::endl;
   }
 
   return builder;
@@ -468,16 +481,17 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
 
   sharedptr<const Relationship> choice_relationship;
   Glib::ustring choice_field, choice_second;
-  bool choice_show_all = false; //TODO: Use this.
-  if(!choice_show_all)
-  {
-    std::cerr << G_STRFUNC << ": Not fully implemented. TODO: Restrict values to related records." << std::endl;
-  }
-  
-  field->get_formatting_used().get_choices(choice_relationship, choice_field, choice_second, choice_show_all);
-  if(!choice_relationship)
+  bool choice_show_all = false;
+  field->get_formatting_used().get_choices_related(choice_relationship, choice_field, choice_second, choice_show_all);
+  if(!choice_relationship || choice_field.empty())
   {
     //std::cout <<" debug: field has no choices: " << field->get_name() << std::endl;
+    return list_values;
+  }
+  
+  if(!choice_show_all)
+  {
+    std::cerr << G_STRFUNC << ": This should not be called for !show_all choices." << std::endl;
     return list_values;
   }
 

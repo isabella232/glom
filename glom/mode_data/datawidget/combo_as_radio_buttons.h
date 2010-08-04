@@ -46,13 +46,9 @@ public:
   ///You must call set_layout_item() to specify the field type and formatting of the main column.
   ComboAsRadioButtons();
 
-  ///You must call set_layout_item() to specify the field type and formatting of the main column.
-  explicit ComboAsRadioButtons(const sharedptr<LayoutItem_Field>& field_second);
-
   virtual ~ComboAsRadioButtons();
   
   virtual void set_choices(const FieldFormatting::type_list_values& list_values);
-  virtual void set_choices_with_second(const type_list_values_with_second& list_values);
 
   virtual void set_read_only(bool read_only = true);
 
@@ -71,6 +67,8 @@ public:
 
 private:
   void init();
+
+  virtual void set_choices_with_second(const type_list_values_with_second& list_values);
 
   void on_radiobutton_toggled();
 

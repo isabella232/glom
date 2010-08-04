@@ -794,7 +794,7 @@ void FlowTableWithFields::set_field_value(const sharedptr<const LayoutItem_Field
     }
   }
 
-  //Refresh widgets which should show the related records for relationships that use this field:
+  //Refresh portal widgets which should show the related records for relationships that use this field:
   type_portals list_portals = get_portals(field /* from_key field name */);
   for(type_portals::iterator iter = list_portals.begin(); iter != list_portals.end(); ++iter)
   {
@@ -803,6 +803,18 @@ void FlowTableWithFields::set_field_value(const sharedptr<const LayoutItem_Field
     {
       //g_warning("FlowTableWithFields::set_field_value: foreign_key_value=%s", value.to_string().c_str());
       portal->refresh_data_from_database_with_foreign_key(value /* foreign key value */);
+    }
+  }
+  
+  //Refresh choices widgets which should show the related records for relationships that use this field:
+  type_choice_widgets list_choice_widgets = get_choice_widgets(field /* from_key field name */);
+  for(type_choice_widgets::iterator iter = list_choice_widgets.begin(); iter != list_choice_widgets.end(); ++iter)
+  {
+    DataWidgetChildren::ComboChoices* widget = *iter;
+    if(widget)
+    {
+      //g_warning("FlowTableWithFields::set_field_value: foreign_key_value=%s", value.to_string().c_str());
+      widget->refresh_data_from_database_with_foreign_key(value /* foreign key value */);
     }
   }
 }
@@ -829,6 +841,18 @@ void FlowTableWithFields::set_other_field_value(const sharedptr<const LayoutItem
     {
       //g_warning("FlowTableWithFields::set_field_value: foreign_key_value=%s", value.to_string().c_str());
       portal->refresh_data_from_database_with_foreign_key(value /* foreign key value */);
+    }
+  }
+  
+  //Refresh choices widgets which should show the related records for relationships that use this field:
+  type_choice_widgets list_choice_widgets = get_choice_widgets(field /* from_key field name */);
+  for(type_choice_widgets::iterator iter = list_choice_widgets.begin(); iter != list_choice_widgets.end(); ++iter)
+  {
+    DataWidgetChildren::ComboChoices* widget = *iter;
+    if(widget)
+    {
+      //g_warning("FlowTableWithFields::set_field_value: foreign_key_value=%s", value.to_string().c_str());
+      widget->refresh_data_from_database_with_foreign_key(value /* foreign key value */);
     }
   }
 }
@@ -908,7 +932,7 @@ FlowTableWithFields::type_portals FlowTableWithFields::get_portals(const sharedp
 }
 
 FlowTableWithFields::type_choice_widgets FlowTableWithFields::get_choice_widgets(const sharedptr<const LayoutItem_Field>& from_key)
-{
+{ 
   type_choice_widgets result;
   if(!from_key)
     return result;
@@ -919,10 +943,14 @@ FlowTableWithFields::type_choice_widgets FlowTableWithFields::get_choice_widgets
   for(type_listFields::iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
   {
     DataWidget* widget = iter->m_second;
-    DataWidgetChildren::ComboChoices* combochoices = dynamic_cast<DataWidgetChildren::ComboChoices*>(widget);
-    if(!combochoices)
+    if(!widget)
       continue;
       
+    Gtk::Widget* child_widget = widget->get_data_child_widget();
+    DataWidgetChildren::ComboChoices* combochoices = dynamic_cast<DataWidgetChildren::ComboChoices*>(child_widget);
+    if(!combochoices)
+      continue;
+         
     const sharedptr<const LayoutItem> layout_item = 
       combochoices->get_layout_item();
     const sharedptr<const LayoutItem_Field> field = 
@@ -935,10 +963,10 @@ FlowTableWithFields::type_choice_widgets FlowTableWithFields::get_choice_widgets
     sharedptr<const Relationship> choice_relationship;
     Glib::ustring choice_field, choice_second;
     bool choice_show_all = false;
-    format.get_choices(choice_relationship, choice_field, choice_second, choice_show_all);
+    format.get_choices_related(choice_relationship, choice_field, choice_second, choice_show_all);
     if(choice_show_all)
       continue; //"Show All" choices don't use the ID field values.
-        
+
     if(choice_relationship->get_from_field() == from_key_name)
       result.push_back(combochoices);
   }

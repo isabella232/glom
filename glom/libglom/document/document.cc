@@ -2000,7 +2000,7 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
       }
       
       sharedptr<Relationship> relationship = get_relationship(table_name, relationship_name);
-      format.set_choices(relationship,
+      format.set_choices_related(relationship,
         get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD),
         get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND),
         show_all);
@@ -3003,7 +3003,7 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
     sharedptr<const Relationship> choice_relationship;
     Glib::ustring choice_field, choice_second;
     bool choice_show_all = false;
-    format.get_choices(choice_relationship, choice_field, choice_second, choice_show_all);
+    format.get_choices_related(choice_relationship, choice_field, choice_second, choice_show_all);
 
     set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_RELATIONSHIP, glom_get_sharedptr_name(choice_relationship));
     set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD, choice_field);

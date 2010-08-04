@@ -39,12 +39,6 @@ ComboChoicesWithTreeModel::ComboChoicesWithTreeModel()
   init();
 }
 
-ComboChoicesWithTreeModel::ComboChoicesWithTreeModel(const sharedptr<LayoutItem_Field>& field_second)
-: ComboChoices(field_second)
-{
-  init();
-}
-
 void ComboChoicesWithTreeModel::init()
 {
   ComboChoices::init();
@@ -69,9 +63,9 @@ void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_w
     {
       row[m_Columns.m_col_first] = Conversions::get_text_for_gda_value(layout_item->get_glom_type(), iter->first, layout_item->get_formatting_used().m_numeric_format);
 
-      if(m_with_second && m_layoutitem_second)
+      if(m_related_field_second)
       {
-        row[m_Columns.m_col_second] = Conversions::get_text_for_gda_value(m_layoutitem_second->get_glom_type(), iter->second, m_layoutitem_second->get_formatting_used().m_numeric_format);
+        row[m_Columns.m_col_second] = Conversions::get_text_for_gda_value(m_related_field_second->get_glom_type(), iter->second, m_related_field_second->get_formatting_used().m_numeric_format);
       }
     }
   }

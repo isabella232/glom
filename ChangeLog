@@ -1,3 +1,35 @@
+2010-08-04  Murray Cumming  <murrayc@murrayc.com>
+
+	Choices with !show_all: Update the list when the from_field changes.
+
+	* glom/libglom/data_structure/layout/fieldformatting.[h|cc]: Renamed 
+	set/get_choices() to set/get_choices_related().
+	* glom/libglom/utils.cc:
+	* glom/libglom/document/document.cc:
+	* glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.cc: Adapted.
+	
+	* glom/mode_data/datawidget/combochoices.[h|cc]: Remove the non-default 
+	constructor that took a second field.
+	Move set_choices_with_second() to private.
+	Add set_choices_related() and matching member variables.
+	Add refresh_data_from_database_with_foreign_key(), like the one in 
+	Box_Data_RelatedRecords, which gets the related values and calls 
+	set_choices_with_second().
+	* glom/mode_data/datawidget/combo.[h|cc]:
+	* glom/mode_data/datawidget/combo_as_radio_buttons.[h|cc]:
+	* glom/mode_data/datawidget/combochoiceswithtreemodel.[h|cc]:
+	* glom/mode_data/datawidget/comboentry.[h|cc]: Adapt to the changed 
+	ComboChoices base API.
+	* glom/mode_data/datawidget/datawidget.cc:
+	create_combo_widget_for_field(): Do not take the second field as a parameter, 
+	because that is now specified later.
+	Constructor: Simplify the code now that ComboChoices does more of the work.
+	* glom/mode_data/flowtablewithfields.cc: set_field_value(), 
+	set_other_field_value(): Call refresh_data_from_database_with_foreign_key() on 
+	the choice widgets as they already does on the portals, to refresh the list of 
+	possible values.
+
 2010-08-02  Murray Cumming  <murrayc@murrayc.com>
 
 	FlowTableWithFields: Added get_choices_widgets(from_field).

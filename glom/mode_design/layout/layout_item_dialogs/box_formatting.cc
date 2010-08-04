@@ -239,7 +239,7 @@ void Box_Formatting::set_formatting(const FieldFormatting& format, bool show_num
     sharedptr<const Relationship> choices_relationship;
     Glib::ustring choices_field, choices_field_second;
     bool choices_show_all = false;
-    format.get_choices(choices_relationship, choices_field, choices_field_second, choices_show_all);
+    format.get_choices_related(choices_relationship, choices_field, choices_field_second, choices_show_all);
 
     m_combo_choices_relationship->set_selected_relationship(choices_relationship);
     on_combo_choices_relationship_changed(); //Fill the combos so we can set their active items.
@@ -313,7 +313,7 @@ bool Box_Formatting::get_formatting(FieldFormatting& format) const
       m_checkbutton_choices_restricted_as_radio_buttons->get_active());
 
     sharedptr<Relationship> choices_relationship = m_combo_choices_relationship->get_selected_relationship();
-    m_format.set_choices(choices_relationship,
+    m_format.set_choices_related(choices_relationship,
       m_combo_choices_field->get_selected_field_name(),
       m_combo_choices_field_second->get_selected_field_name(),
       m_checkbutton_choices_related_show_all->get_active());

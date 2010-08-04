@@ -46,7 +46,7 @@
 namespace Glom
 {
 
-static DataWidgetChildren::ComboChoices* create_combo_widget_for_field(const sharedptr<LayoutItem_Field>& field, const sharedptr<LayoutItem_Field>& layout_item_second = sharedptr<LayoutItem_Field>())
+static DataWidgetChildren::ComboChoices* create_combo_widget_for_field(const sharedptr<LayoutItem_Field>& field)
 {
   DataWidgetChildren::ComboChoices* result = 0;
   bool as_radio_buttons = false; //TODO: Use this.
@@ -54,12 +54,12 @@ static DataWidgetChildren::ComboChoices* create_combo_widget_for_field(const sha
   if(restricted)
   {
     if(as_radio_buttons)
-      result = Gtk::manage(new DataWidgetChildren::ComboAsRadioButtons(layout_item_second));
+      result = Gtk::manage(new DataWidgetChildren::ComboAsRadioButtons());
     else
-      result = Gtk::manage(new DataWidgetChildren::ComboGlom(layout_item_second));
+      result = Gtk::manage(new DataWidgetChildren::ComboGlom());
   }
   else
-    result = Gtk::manage(new DataWidgetChildren::ComboEntry(layout_item_second));
+    result = Gtk::manage(new DataWidgetChildren::ComboEntry());
 
   return result;
 }
@@ -127,38 +127,15 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
       }
       else if(field->get_formatting_used().get_has_related_choices())
       {
+        combo = create_combo_widget_for_field(field);
+        combo->set_layout_item( get_layout_item(), table_name);
+        
         sharedptr<const Relationship> choice_relationship;
         Glib::ustring choice_field, choice_second;
-        bool show_all = false; //TODO: Use this.
-        field->get_formatting_used().get_choices(choice_relationship, choice_field, choice_second, show_all);
-        if(choice_relationship && !choice_field.empty())
-        {
-          const Glib::ustring to_table = choice_relationship->get_to_table();
+        bool choice_show_all = false;
+        field->get_formatting_used().get_choices_related(choice_relationship, choice_field, choice_second, choice_show_all);
 
-          const bool with_second = !choice_second.empty();
-          if(with_second && document)
-          {
-            const sharedptr<const Field> field_second = document->get_field(to_table, choice_second);
-
-            const sharedptr<LayoutItem_Field> layout_field_second = sharedptr<LayoutItem_Field>::create();
-            layout_field_second->set_full_field_details(field_second);
-            //We use the default formatting for this field->
-
-            combo = create_combo_widget_for_field(field, layout_field_second);
-          }
-          else
-          {
-            combo = create_combo_widget_for_field(field);
-          }
-
-          //set_choices() needs this, for the numeric layout:
-          combo->set_layout_item( get_layout_item(), table_name);
-
-          //If !show_all then the list must be set every time we show the data,
-          //because it depends on another ID value:
-          if(show_all)
-            combo->set_choices_with_second( Utils::get_choice_values(field) );
-        }
+        combo->set_choices_related(document, choice_relationship, choice_field, choice_second, choice_show_all);
       }
       else
       {
