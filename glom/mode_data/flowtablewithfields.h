@@ -53,7 +53,7 @@ namespace Glom
 class DataWidget;
 
 class FlowTableWithFields
-  : 
+  :
 #ifdef GLOM_ENABLE_CLIENT_ONLY
     public FlowTable,
     public LayoutWidgetUtils,
@@ -62,7 +62,7 @@ class FlowTableWithFields
 #endif
     public View_Composite_Glom
 {
-public: 
+public:
   FlowTableWithFields(const Glib::ustring& table_name = Glib::ustring());
   virtual ~FlowTableWithFields();
 
@@ -103,24 +103,24 @@ public:
   virtual void set_design_mode(bool value = true);
 
   virtual void remove_all();
-  
+
   typedef std::vector< Glib::RefPtr<Gtk::SizeGroup> > type_vec_sizegroups;
-    
+
   /** Apply the size groups to all field labels.
-   * By calling this method on multiple FlowTables, the field widgets in 
+   * By calling this method on multiple FlowTables, the field widgets in
    * different groups can then align.
    * @param size_groups A vector containing a size group for each possible column.
    */
   void apply_size_groups_to_labels(const type_vec_sizegroups& size_group);
-  
+
   /** Create a size group and make all the labels in child flowtables use it,
    * making them align.
    */
   void align_child_group_labels();
 
-  /** Get the layout structure, which might have changed in the child widgets since 
+  /** Get the layout structure, which might have changed in the child widgets since
    * the whole widget structure was built.
-   * for instance, if the user chose a new field for a DataWidget, 
+   * for instance, if the user chose a new field for a DataWidget,
    * or a new relationship for a portal.
    */
   void get_layout_groups(Document::type_list_layout_groups& groups);
@@ -131,7 +131,7 @@ public:
    */
   typedef sigc::signal<void, const sharedptr<const LayoutItem_Field>&, const Gnome::Gda::Value&> type_signal_field_edited;
   type_signal_field_edited signal_field_edited();
-  
+
   /** For instance,
    * void on_flowtable_field_open_details_requested(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
    */
@@ -155,8 +155,10 @@ public:
    */
   typedef sigc::signal<void, const sharedptr<LayoutItem_Button>&> type_signal_script_button_clicked;
   type_signal_script_button_clicked signal_script_button_clicked();
-  
+
 private:
+
+  void set_field_value(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value, bool set_specified_field_layout);
 
   // If include_item is set, then the output list will contain field's widget,
   // otherwise not.
@@ -164,17 +166,17 @@ private:
   type_list_const_widgets get_field(const sharedptr<const LayoutItem_Field>& field, bool include_item) const;
 
   typedef std::list<Box_Data_Portal*> type_portals;
-    
+
   /// Get portals whose relationships have @a from_key as the from_key.
   type_portals get_portals(const sharedptr<const LayoutItem_Field>& from_key);
-  
-  
+
+
   typedef std::list<DataWidgetChildren::ComboChoices*> type_choice_widgets;
-    
+
   /// Get choice widgets with !show_all relationships that have @a from_key as the from_key.
   type_choice_widgets get_choice_widgets(const sharedptr<const LayoutItem_Field>& from_key);
-  
-  /** Examine this flow table and all child flow tables, discovering which 
+
+  /** Examine this flow table and all child flow tables, discovering which
    * has the most columns.
    */
   guint get_sub_flowtables_max_columns() const;
@@ -184,7 +186,7 @@ private:
   void on_entry_edited(const Gnome::Gda::Value& value, const sharedptr<const LayoutItem_Field> field);
   void on_entry_open_details_requested(const Gnome::Gda::Value& value, const sharedptr<const LayoutItem_Field> field);
   void on_flowtable_entry_edited(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
-  void on_flowtable_entry_open_details_requested(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value); 
+  void on_flowtable_entry_open_details_requested(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
   void on_flowtable_related_record_changed(const Glib::ustring& relationship_name);
   void on_flowtable_requested_related_details(const Glib::ustring& table_name, Gnome::Gda::Value primary_key_value);
 
@@ -240,7 +242,7 @@ private:
   void add_layout_group_at_position(const sharedptr<LayoutGroup>& group, const type_list_layoutwidgets::iterator& add_before);
   void add_layout_notebook_at_position(const sharedptr<LayoutItem_Notebook>& notebook, const type_list_layoutwidgets::iterator& add_before);
   void add_layout_portal_at_position(const sharedptr<LayoutItem_Portal>& portal, const type_list_layoutwidgets::iterator& add_before);
-  
+
   virtual void on_size_allocate(Gtk::Allocation& allocation);
 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
@@ -250,8 +252,8 @@ private:
   virtual void on_dnd_remove_placeholder();
   virtual void set_child_widget_dnd_in_progress(Gtk::Widget* child, bool in_progress);
   virtual bool get_child_widget_dnd_in_progress(Gtk::Widget* child) const;
-    
-  
+
+
   void on_dnd_add_layout_item_field(LayoutWidgetBase* above);
   void on_dnd_add_layout_group(LayoutWidgetBase* above);
   void on_dnd_add_layout_item_button(LayoutWidgetBase* above);
@@ -260,21 +262,21 @@ private:
   void on_dnd_add_layout_notebook(LayoutWidgetBase* above);
   void on_dnd_add_layout_portal(LayoutWidgetBase* above);
   void on_dnd_add_layout_item(LayoutWidgetBase* above, const sharedptr<LayoutItem>& item);
-  
+
   sharedptr<LayoutItem_Portal> get_portal_relationship();
 
   void dnd_notify_failed_drop();
   bool dnd_add_to_layout_group(const sharedptr<LayoutItem>& item, LayoutWidgetBase* layoutwidget, bool ignore_error = false);
-  
+
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-  
+
   Box_Data_List_Related* create_related(const sharedptr<LayoutItem_Portal>& portal, bool show_title = true);
   Box_Data_Calendar_Related* create_related_calendar(const sharedptr<LayoutItem_CalendarPortal>& portal, bool show_title = true);
 
   Gtk::Alignment* m_placeholder;
-  
+
   Glib::ustring m_table_name;
-  
+
   //Size groups shared by this widget's sibling FlowTables,
   //with one group for each column.
   type_vec_sizegroups m_vec_size_groups;
@@ -286,7 +288,7 @@ private:
   type_signal_related_record_changed m_signal_related_record_changed;
   type_signal_requested_related_details m_signal_requested_related_details;
   type_signal_script_button_clicked m_signal_script_button_clicked;
-    
+
   //menu
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   virtual void on_menu_properties_activate();
