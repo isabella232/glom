@@ -61,8 +61,10 @@ bool ComboChoices::refresh_data_from_database_with_foreign_key(const Gnome::Gda:
 
   if(Conversions::value_is_empty(foreign_key_value))
   {
-    std::cerr << G_STRFUNC << ": foreign_key_value is empty." << std::endl;
-    return false;
+    //Clear the choices list:
+    type_list_values_with_second list_values;
+    set_choices_with_second(list_values);
+    return true;
   }
    
   if(m_related_show_all)

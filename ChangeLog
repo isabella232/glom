@@ -1,3 +1,16 @@
+2010-08-06  Murray Cumming  <murrayc@murrayc.com>
+
+	List: Choices with !show_all: Update the list when the from_field changes.
+
+	* glom/libglom/utils.[h|cc]: Added a get_choice_values() overload that 
+	takes the foreign_key.
+	* glom/utility_widgets/db_adddel/db_adddel.[h|cc]: Added get_choice_index() 
+	to get the affected choice lists when a field value changes.
+	Added refresh_cell_choices_data_from_database_with_foreign_key() to update 
+	these lists.
+	set_value(): Use these methods to update choice lists when appropriate, 
+	as already happens in the Details view.
+
 2010-08-05  Murray Cumming  <murrayc@murrayc.com>
 
 	List view: When a value is edited, update other instances of the same field.
@@ -19,7 +32,7 @@
 
 2010-08-04  Murray Cumming  <murrayc@murrayc.com>
 
-	Choices with !show_all: Update the list when the from_field changes.
+	Details: Choices with !show_all: Update the list when the from_field changes.
 
 	* glom/libglom/data_structure/layout/fieldformatting.[h|cc]: Renamed
 	set/get_choices() to set/get_choices_related().

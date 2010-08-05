@@ -110,6 +110,8 @@ Gnome::Gda::SqlExpr get_find_where_clause_quick(Document* document, const Glib::
 typedef std::list< std::pair<Gnome::Gda::Value, Gnome::Gda::Value> > type_list_values_with_second;
 type_list_values_with_second get_choice_values(const sharedptr<const LayoutItem_Field>& field);
 
+type_list_values_with_second get_choice_values(Document* document, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& foreign_key_value, sharedptr<LayoutItem_Field>& layout_choice_first, sharedptr<LayoutItem_Field>& layout_choice_second);
+
 /// Get the full query string suitable for use with std::cout.
 std::string sqlbuilder_get_full_query(
   const Glib::RefPtr<Gnome::Gda::Connection>& connection,

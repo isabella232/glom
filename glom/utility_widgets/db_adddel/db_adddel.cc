@@ -833,7 +833,7 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
       {
         sharedptr<const Relationship> choice_relationship;
         Glib::ustring choice_field, choice_second;
-        bool choice_show_all; //TODO: Use this.
+        bool choice_show_all;
         item_field->get_formatting_used().get_choices_related(choice_relationship, choice_field, choice_second, choice_show_all);
 
         if(choice_relationship && !choice_field.empty())
@@ -857,16 +857,19 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
           }
 
           //TODO: Update this when the relationship's field value changes:
-          Utils::type_list_values_with_second list_values = Utils::get_choice_values(item_field);
-          for(Utils::type_list_values_with_second::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
+          if(choice_show_all) //Otherwise it must change whenever the relationships's ID value changes.
           {
-            const Glib::ustring first = Conversions::get_text_for_gda_value(item_field->get_glom_type(), iter->first, item_field->get_formatting_used().m_numeric_format);
+            Utils::type_list_values_with_second list_values = Utils::get_choice_values(item_field);
+            for(Utils::type_list_values_with_second::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
+            {
+              const Glib::ustring first = Conversions::get_text_for_gda_value(item_field->get_glom_type(), iter->first, item_field->get_formatting_used().m_numeric_format);
 
-            Glib::ustring second;
-            if(use_second)
-              second = Conversions::get_text_for_gda_value(layout_field_second->get_glom_type(), iter->second, layout_field_second->get_formatting_used().m_numeric_format);
+              Glib::ustring second;
+              if(use_second)
+                second = Conversions::get_text_for_gda_value(layout_field_second->get_glom_type(), iter->second, layout_field_second->get_formatting_used().m_numeric_format);
 
-              pCellRendererCombo->append_list_item(first, second);
+                pCellRendererCombo->append_list_item(first, second);
+            }
           }
         }
       }
@@ -1216,37 +1219,99 @@ void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const sharedptr<c
   InnerIgnore innerIgnore(this);
 
   if(!m_refListStore)
-    g_warning("DbAddDel::set_value: No model.");
-  else
   {
-    Gtk::TreeModel::Row treerow = *iter;
-    if(treerow)
-    {
-      const type_list_indexes list_indexes = get_data_model_column_index(layout_item, set_specified_field_layout);
-      for(type_list_indexes::const_iterator iter = list_indexes.begin(); iter != list_indexes.end(); ++iter)
-      {
-        const guint treemodel_col = *iter + get_count_hidden_system_columns();
-        treerow.set_value(treemodel_col, value);
-
-        //Mark this row as not a placeholder because it has real data now.
-        if(!(Conversions::value_is_empty(value)))
-        {
-          //treerow.set_value(m_col_key, Glib::ustring("placeholder debug value setted"));
-          //treerow.set_value(m_col_placeholder, false);
-        }
-      }
-    }
-
-    //Add extra blank if necessary:
-    //add_blank();
+    std::cerr << G_STRFUNC << ": No model." << std::endl;
+    return;
   }
 
+  //Show the value in any columns:
+  Gtk::TreeModel::Row treerow = *iter;
+  if(treerow)
+  {
+    const type_list_indexes list_indexes = get_data_model_column_index(layout_item, set_specified_field_layout);
+    for(type_list_indexes::const_iterator iter = list_indexes.begin(); iter != list_indexes.end(); ++iter)
+    {
+      const guint treemodel_col = *iter + get_count_hidden_system_columns();
+      treerow.set_value(treemodel_col, value);
+    }
+  }
+    
+  /// Get indexes of any columns with choices with !show_all relationships that have @a from_key as the from_key.
+  type_list_indexes list_choice_cells = get_choice_index(layout_item /* from_key field name */);
+  std::cout << "debug: list_choice_cells.size() == " << list_choice_cells.size() << std::endl;
+  for(type_list_indexes::iterator iter = list_choice_cells.begin(); iter != list_choice_cells.end(); ++iter)
+  {
+    const guint model_index = *iter;
+    refresh_cell_choices_data_from_database_with_foreign_key(model_index, value /* foreign key value */);
+  }
+ 
+  //Add extra blank if necessary:
+  //add_blank();
+ 
   //g_warning("DbAddDel::set_value end");
 }
 
 void DbAddDel::set_value_selected(const sharedptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value)
 {
   set_value(get_item_selected(), layout_item, value);
+}
+
+void DbAddDel::refresh_cell_choices_data_from_database_with_foreign_key(guint model_index, const Gnome::Gda::Value& foreign_key_value)
+{
+  if(m_ColumnTypes.size() <= model_index)
+  {
+    std::cerr << G_STRFUNC << ": model_index is out of range: model_index=" << model_index << ", size=" << m_ColumnTypes.size() << std::endl;
+    return;
+  }
+      
+  sharedptr<const LayoutItem> item = m_ColumnTypes[model_index].m_item;
+  sharedptr<const LayoutItem_Field> layout_field = sharedptr<const LayoutItem_Field>::cast_dynamic(item);
+  if(!layout_field)
+  {
+    std::cerr << G_STRFUNC << ": The layout item was not a LayoutItem_Field." << std::endl;
+    return;
+  }
+  
+  guint view_column_index = 0;
+  const bool test = get_view_column_index(model_index, view_column_index);
+  if(!test)
+  {
+    std::cerr << G_STRFUNC << ": view column not found for model_column=" << model_index << std::endl;
+    return;
+  }
+  
+  CellRendererList* cell = 
+    dynamic_cast<CellRendererList*>( m_TreeView.get_column_cell_renderer(view_column_index) );
+  if(!cell)
+  {
+    std::cerr << G_STRFUNC << ": cell renderer not found for model_column=" << model_index << std::endl;
+    return;
+  }
+ 
+  //Set the choices:
+  cell->remove_all_list_items();
+  
+  sharedptr<LayoutItem_Field> layout_choice_first;
+  sharedptr<LayoutItem_Field> layout_choice_second; 
+  Utils::type_list_values_with_second list_values = 
+    Utils::get_choice_values(get_document(), layout_field, foreign_key_value,
+      layout_choice_first, layout_choice_second);
+
+  for(Utils::type_list_values_with_second::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
+  {
+    const Glib::ustring first = 
+      Conversions::get_text_for_gda_value(
+        layout_choice_first->get_glom_type(), iter->first, layout_choice_first->get_formatting_used().m_numeric_format);
+
+    Glib::ustring second;
+    if(layout_choice_second)
+    {
+      second = Conversions::get_text_for_gda_value(
+        layout_choice_second->get_glom_type(), iter->second, layout_choice_second->get_formatting_used().m_numeric_format);
+    }
+
+    cell->append_list_item(first, second);
+  }
 }
 
 void DbAddDel::remove_all_columns()
@@ -1369,6 +1434,41 @@ DbAddDel::type_list_indexes DbAddDel::get_column_index(const sharedptr<const Lay
 
   return list_indexes;
 }
+
+DbAddDel::type_list_indexes DbAddDel::get_choice_index(const sharedptr<const LayoutItem_Field>& from_key)
+{
+  type_list_indexes result;
+  
+  if(!from_key)
+    return result;
+    
+  const Glib::ustring from_key_name = from_key->get_name();
+
+  guint index = 0;
+  for(type_ColumnTypes::const_iterator iter = m_ColumnTypes.begin(); iter != m_ColumnTypes.end(); ++iter)
+  {
+    sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(iter->m_item);
+    if(!field)
+       continue;
+
+    const FieldFormatting& format = field->get_formatting_used();
+
+    sharedptr<const Relationship> choice_relationship;
+    Glib::ustring choice_field, choice_second;
+    bool choice_show_all = false;
+    format.get_choices_related(choice_relationship, choice_field, choice_second, choice_show_all);
+    if(choice_relationship && !choice_show_all) //"Show All" choices don't use the ID field values.
+    {
+      if(choice_relationship->get_from_field() == from_key_name)
+        result.push_back(index);
+    }
+    
+    index++;
+  }
+
+  return result;
+}
+
 
 sharedptr<const LayoutItem_Field> DbAddDel::get_column_field(guint column_index) const
 {

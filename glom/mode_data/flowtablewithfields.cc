@@ -947,7 +947,7 @@ FlowTableWithFields::type_choice_widgets FlowTableWithFields::get_choice_widgets
     FlowTableWithFields* subtable = *iter;
     if(subtable)
     {
-      type_choice_widgets sub_list = subtable->get_choice_widgets(from_key);
+      const type_choice_widgets sub_list = subtable->get_choice_widgets(from_key);
       if(!sub_list.empty())
       {
         //Add to the main result:
