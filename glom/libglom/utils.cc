@@ -485,7 +485,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
   field->get_formatting_used().get_choices_related(choice_relationship, choice_field, choice_second, choice_show_all);
   if(!choice_relationship || choice_field.empty())
   {
-    //std::cout <<" debug: field has no choices: " << field->get_name() << std::endl;
+    std::cout <<" debug: field has no choices: " << field->get_name() << std::endl;
     return list_values;
   }
   
@@ -520,8 +520,11 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
   sharedptr<SharedConnection> connection = ConnectionPool::get_instance()->connect();
 
   if(!connection)
+  {
+    std::cerr << G_STRFUNC << ": No connection." << std::endl;
     return list_values;
-
+  }
+  
   const std::string sql_query =
     sqlbuilder_get_full_query(builder);
   //std::cout << "get_choice_values: Executing SQL: " << sql_query << std::endl;
@@ -552,6 +555,126 @@ Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<con
   return list_values;
 }
 
+Utils::type_list_values_with_second Utils::get_choice_values(Document* document, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& foreign_key_value, sharedptr<LayoutItem_Field>& layout_choice_first, sharedptr<LayoutItem_Field>& layout_choice_second)
+{
+  //Initialize output parameters:
+  layout_choice_first = sharedptr<LayoutItem_Field>();
+  layout_choice_second = sharedptr<LayoutItem_Field>();
+    
+  //TODO: Reduce duplication between this and get_choice_values(field).
+  
+  type_list_values_with_second result;
+  
+  if(Conversions::value_is_empty(foreign_key_value))
+  {
+    std::cout << G_STRFUNC << "debug: foreign_key_value is empty." << std::endl;
+    return result;
+  }
+  
+  const FieldFormatting& format = field->get_formatting_used();
+  sharedptr<const Relationship> choice_relationship;
+  Glib::ustring choice_field, choice_second;
+  bool choice_show_all = false;
+  format.get_choices_related(choice_relationship, choice_field, choice_second, choice_show_all);
+  
+  if(!choice_relationship)
+  {
+    std::cerr << G_STRFUNC << ": !choice_relationship." << std::endl;
+    return result;
+  }
+
+  const Glib::ustring to_table = choice_relationship->get_to_table();
+  sharedptr<const Field> field_details = document->get_field(to_table, choice_field);
+  if(!field_details)
+  {
+    std::cerr << G_STRFUNC << ": !field_details." << std::endl;
+    return result;
+  }
+  
+  layout_choice_first = sharedptr<LayoutItem_Field>::create();
+  layout_choice_first->set_full_field_details(field_details);
+  
+  
+  if(!choice_second.empty())
+  {
+    sharedptr<const Field> field_details = document->get_field(to_table, choice_second);
+    if(!field_details)
+    {
+      std::cerr << G_STRFUNC << ": !field_details (second)." << std::endl;
+      return result;
+    }
+    
+    layout_choice_second->set_full_field_details(field_details);
+  }
+ 
+  
+  
+  Utils::type_vecLayoutFields fields;
+  fields.push_back(layout_choice_first);
+  if(layout_choice_second)
+    fields.push_back(layout_choice_second);
+    
+  sharedptr<Field> to_field = document->get_field(to_table, choice_relationship->get_to_field());
+    
+  if(!to_field)
+  {
+    std::cerr << G_STRFUNC << ": to_field is null." << std::endl;
+  }
+    
+  //TODO: Support related relationships (in the UI too):
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Utils::build_sql_select_with_key(
+    to_table,
+    fields,
+    to_field,
+    foreign_key_value);
+    
+  if(!builder)
+  {
+    std::cerr << G_STRFUNC << ": builder is null." << std::endl;
+    return result;
+  }
+
+  //TODO: builder->select_order_by(choice_field_id);
+
+  //Connect to database and get the related values:
+  sharedptr<SharedConnection> connection = ConnectionPool::get_instance()->connect();
+
+  if(!connection)
+  {
+    std::cerr << G_STRFUNC << ": connection is null." << std::endl;
+    return result;
+  }
+
+  const std::string sql_query =
+    Utils::sqlbuilder_get_full_query(builder);
+  //std::cout << "debug: sql_query=" << sql_query << std::endl;
+  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = connection->get_gda_connection()->statement_execute_select(sql_query);
+
+  if(datamodel)
+  {
+    const guint count = datamodel->get_n_rows();
+    const guint cols_count = datamodel->get_n_columns();
+    for(guint row = 0; row < count; ++row)
+    {
+
+      std::pair<Gnome::Gda::Value, Gnome::Gda::Value> itempair;
+      itempair.first = datamodel->get_value_at(0, row);
+
+      if(layout_choice_second && (cols_count > 1))
+        itempair.second = datamodel->get_value_at(1, row);
+
+      result.push_back(itempair);
+    }
+  }
+  else
+  {
+      std::cerr << G_STRFUNC << ": Error while executing SQL" << std::endl <<
+                   "  " <<  sql_query << std::endl;
+      return result;
+  }
+
+  return result;
+}
 
 Glib::ustring Utils::create_name_from_title(const Glib::ustring& title)
 {

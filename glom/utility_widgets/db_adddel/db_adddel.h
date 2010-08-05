@@ -61,6 +61,7 @@ public:
 };
 
 class DbTreeViewColumnGlom;
+class CellRendererList;
 
 /** For adding/deleting/selecting record rows.
  */
@@ -265,6 +266,7 @@ public:
 
 private:
   
+  void set_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value, bool set_specified_field_layout);
   
   //Overrides of Base_DB/Base_DB_Table methods:
   virtual void set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
@@ -285,10 +287,15 @@ private:
 
   typedef std::list<guint> type_list_indexes;
   ///Return the column indexes of any columns that display this field.
-  virtual type_list_indexes get_column_index(const sharedptr<const LayoutItem>& layout_item) const;
+  type_list_indexes get_column_index(const sharedptr<const LayoutItem>& layout_item) const;
+  
+  /// Get indexes of any columns with choices with !show_all relationships that have @a from_key as the from_key.
+  type_list_indexes get_choice_index(const sharedptr<const LayoutItem_Field>& from_key);
 
-  ///Return the query column index of any columns that display this field:
-  type_list_indexes get_data_model_column_index(const sharedptr<const LayoutItem_Field>& layout_item_field) const;
+  /** Return the query column index of any columns that display this field:
+   * @param including_specified_field_layout If false, then don't return the actual layout item itself.
+   */
+  type_list_indexes get_data_model_column_index(const sharedptr<const LayoutItem_Field>& layout_item_field, bool including_specified_field_layout = true) const;
 
 protected:
   virtual void setup_menu();
@@ -382,6 +389,8 @@ private:
 
   //TODO: Remove this and use AppGlom::get_application() instead?
   Application* get_application();
+  
+  void refresh_cell_choices_data_from_database_with_foreign_key(guint model_index, const Gnome::Gda::Value& foreign_key_value);
 
   static void apply_formatting(Gtk::CellRenderer* renderer, const sharedptr<const LayoutItem_WithFormatting>& layout_item);
 

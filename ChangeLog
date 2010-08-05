@@ -1,42 +1,74 @@
+2010-08-06  Murray Cumming  <murrayc@murrayc.com>
+
+	List: Choices with !show_all: Update the list when the from_field changes.
+
+	* glom/libglom/utils.[h|cc]: Added a get_choice_values() overload that 
+	takes the foreign_key.
+	* glom/utility_widgets/db_adddel/db_adddel.[h|cc]: Added get_choice_index() 
+	to get the affected choice lists when a field value changes.
+	Added refresh_cell_choices_data_from_database_with_foreign_key() to update 
+	these lists.
+	set_value(): Use these methods to update choice lists when appropriate, 
+	as already happens in the Details view.
+
+2010-08-05  Murray Cumming  <murrayc@murrayc.com>
+
+	List view: When a value is edited, update other instances of the same field.
+
+	* glom/utility_widgets/db_adddel/db_adddel.[h|cc]:
+	get_data_model_column_index(): Add a including_specified_field_layout bool 
+	parameter, used in a new set_value() method overload that has a 
+	set_specified_field_layout bool parameter.
+	user_changed(): Call set_value() to show the new value in any other 
+	instances of the same field.
+	The details view already does this.
+
+2010-08-04  Murray Cumming  <murrayc@murrayc.com>>
+
+	Simplified some code.
+
+	* glom/mode_data/flowtablewithfields.[h|cc]: set_value(), set_other_value():
+  Avoid copy/pasting of the code.
+
 2010-08-04  Murray Cumming  <murrayc@murrayc.com>
 
-	Choices with !show_all: Update the list when the from_field changes.
+	Details: Choices with !show_all: Update the list when the from_field changes.
 
-	* glom/libglom/data_structure/layout/fieldformatting.[h|cc]: Renamed 
+	* glom/libglom/data_structure/layout/fieldformatting.[h|cc]: Renamed
 	set/get_choices() to set/get_choices_related().
 	* glom/libglom/utils.cc:
 	* glom/libglom/document/document.cc:
 	* glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:
 	* glom/utility_widgets/db_adddel/db_adddel.cc: Adapted.
-	
-	* glom/mode_data/datawidget/combochoices.[h|cc]: Remove the non-default 
+
+	* glom/mode_data/datawidget/combochoices.[h|cc]: Remove the non-default
 	constructor that took a second field.
 	Move set_choices_with_second() to private.
 	Add set_choices_related() and matching member variables.
-	Add refresh_data_from_database_with_foreign_key(), like the one in 
-	Box_Data_RelatedRecords, which gets the related values and calls 
+	Add refresh_data_from_database_with_foreign_key(), like the one in
+	Box_Data_RelatedRecords, which gets the related values and calls
 	set_choices_with_second().
 	* glom/mode_data/datawidget/combo.[h|cc]:
 	* glom/mode_data/datawidget/combo_as_radio_buttons.[h|cc]:
 	* glom/mode_data/datawidget/combochoiceswithtreemodel.[h|cc]:
-	* glom/mode_data/datawidget/comboentry.[h|cc]: Adapt to the changed 
+	* glom/mode_data/datawidget/comboentry.[h|cc]: Adapt to the changed
 	ComboChoices base API.
 	* glom/mode_data/datawidget/datawidget.cc:
-	create_combo_widget_for_field(): Do not take the second field as a parameter, 
+	create_combo_widget_for_field(): Do not take the second field as a parameter,
 	because that is now specified later.
 	Constructor: Simplify the code now that ComboChoices does more of the work.
-	* glom/mode_data/flowtablewithfields.cc: set_field_value(), 
-	set_other_field_value(): Call refresh_data_from_database_with_foreign_key() on 
-	the choice widgets as they already does on the portals, to refresh the list of 
+	* glom/mode_data/flowtablewithfields.cc: set_field_value(),
+	set_other_field_value(): Call refresh_data_from_database_with_foreign_key() on
+	the choice widgets as they already does on the portals, to refresh the list of
 	possible values.
 
 2010-08-02  Murray Cumming  <murrayc@murrayc.com>
 
 	FlowTableWithFields: Added get_choices_widgets(from_field).
 
-	* glom/mode_data/datawidget/datawidget.cc: Constructor: Only fill the 
+	* glom/mode_data/datawidget/datawidget.cc: Constructor: Only fill the
 	choices list at this point if show_all is set.
-	* glom/mode_data/flowtablewithfields.[h|cc]: Addef get_choices_widgets(), 
+	* glom/mode_data/flowtablewithfields.[h|cc]: Addef get_choices_widgets(),
 	like the existing get_portals() methods.
 
 2010-08-02  Murray Cumming  <murrayc@murrayc.com>
@@ -46,20 +78,20 @@
 	* glom/glom_developer.glade:
 	* glom/libglom/data_structure/layout/fieldformatting.[h|cc]:
 	* glom/mode_design/layout/layout_item_dialogs/box_formatting.[h|cc]:
-	Add a Show All checkbox to the Related Choices section, so the developer 
-	may choose to restrict the choices depending on the relationship. The default 
+	Add a Show All checkbox to the Related Choices section, so the developer
+	may choose to restrict the choices depending on the relationship. The default
 	(the previous behaviour) is to show all records from the related table.
-	* glom/libglom/document/document.cc: save_before_layout_item_formatting(), 
+	* glom/libglom/document/document.cc: save_before_layout_item_formatting(),
 	save_after_layout_item_formatting(): Store the new bool in the document.
 	* glom/libglom/utils.cc:
-	* glom/mode_data/datawidget/datawidget.cc: 
-	* glom/utility_widgets/db_adddel/db_adddel.cc: Adapt the code to build, though 
+	* glom/mode_data/datawidget/datawidget.cc:
+	* glom/utility_widgets/db_adddel/db_adddel.cc: Adapt the code to build, though
 	the behaviour has not changed yet.
 
 2010-07-27  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix the tests build after the merge.
-	
+
 	* tests/test_selfhosting_new_empty.cc: Fix the use of Utils::.
 
 2010-07-27  Murray Cumming  <murrayc@murrayc.com>
@@ -86,7 +118,7 @@
 	* glom/frame_glom.[h|cc]:
 	* glom/mode_data/notebook_data..[h|cc]:
 	* glom/mode_design/report_layout/dialog_layout_report.[h|cc]:
-	* glom/notebook_glom.[h|cc]: Replace use of GtkNotebookPage with Gtk::Widget* 
+	* glom/notebook_glom.[h|cc]: Replace use of GtkNotebookPage with Gtk::Widget*
 	in switch_page signal handlers.
 
 2010-07-25  Murray Cumming  <murrayc@murrayc.com>
