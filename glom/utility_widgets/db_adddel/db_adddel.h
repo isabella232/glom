@@ -265,6 +265,7 @@ public:
 
 private:
   
+  void set_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value, bool set_specified_field_layout);
   
   //Overrides of Base_DB/Base_DB_Table methods:
   virtual void set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
@@ -287,8 +288,10 @@ private:
   ///Return the column indexes of any columns that display this field.
   virtual type_list_indexes get_column_index(const sharedptr<const LayoutItem>& layout_item) const;
 
-  ///Return the query column index of any columns that display this field:
-  type_list_indexes get_data_model_column_index(const sharedptr<const LayoutItem_Field>& layout_item_field) const;
+  /** Return the query column index of any columns that display this field:
+   * @param including_specified_field_layout If false, then don't return the actual layout item itself.
+   */
+  type_list_indexes get_data_model_column_index(const sharedptr<const LayoutItem_Field>& layout_item_field, bool including_specified_field_layout = true) const;
 
 protected:
   virtual void setup_menu();

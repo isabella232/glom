@@ -1,3 +1,15 @@
+2010-08-05  Murray Cumming  <murrayc@murrayc.com>
+
+	List view: When a value is edited, update other instances of the same field.
+
+	* glom/utility_widgets/db_adddel/db_adddel.[h|cc]:
+	get_data_model_column_index(): Add a including_specified_field_layout bool 
+	parameter, used in a new set_value() method overload that has a 
+	set_specified_field_layout bool parameter.
+	user_changed(): Call set_value() to show the new value in any other 
+	instances of the same field.
+	The details view already does this.
+
 2010-08-04  Murray Cumming  <murrayc@murrayc.com>>
 
 	Simplified some code.

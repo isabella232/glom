@@ -1206,6 +1206,11 @@ bool DbAddDel::refresh_from_database_blank()
 
 void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value)
 {
+  set_value(iter, layout_item, value, true /* including the specified field */);
+}
+
+void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value, bool set_specified_field_layout)
+{
   //g_warning("DbAddDel::set_value begin");
 
   InnerIgnore innerIgnore(this);
@@ -1217,7 +1222,7 @@ void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const sharedptr<c
     Gtk::TreeModel::Row treerow = *iter;
     if(treerow)
     {
-      type_list_indexes list_indexes = get_data_model_column_index(layout_item);
+      const type_list_indexes list_indexes = get_data_model_column_index(layout_item, set_specified_field_layout);
       for(type_list_indexes::const_iterator iter = list_indexes.begin(); iter != list_indexes.end(); ++iter)
       {
         const guint treemodel_col = *iter + get_count_hidden_system_columns();
@@ -1310,7 +1315,7 @@ void DbAddDel::set_columns_ready()
   construct_specified_columns();
 }
 
-DbAddDel::type_list_indexes DbAddDel::get_data_model_column_index(const sharedptr<const LayoutItem_Field>& layout_item_field) const
+DbAddDel::type_list_indexes DbAddDel::get_data_model_column_index(const sharedptr<const LayoutItem_Field>& layout_item_field, bool including_specified_field_layout) const
 {
   //TODO_Performance: Replace all this looping by a cache/map:
 
@@ -1325,7 +1330,8 @@ DbAddDel::type_list_indexes DbAddDel::get_data_model_column_index(const sharedpt
     sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(iter->m_item); //TODO_Performance: This would be unnecessary if !layout_item_field
     if(field)
     {
-      if(field && field->is_same_field(layout_item_field))
+      if(field->is_same_field(layout_item_field) 
+        && (including_specified_field_layout || field != layout_item_field))
       {
         list_indexes.push_back(data_model_column_index);
       }
@@ -2537,7 +2543,12 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
         set_entered_field_data(row, layout_field, value_old);
       }
       else
+      {
+        //Display the same value in other instances of the same field:
+        set_value(row, layout_field, field_value, false /* don't set the actually-edited cell */);
+        
         signal_record_changed().emit();
+      }
     }
     catch(const Glib::Exception& ex)
     {
