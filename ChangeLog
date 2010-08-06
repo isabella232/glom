@@ -1,3 +1,5 @@
+1.15.2:
+
 2010-08-06  Murray Cumming  <murrayc@murrayc.com>>
 
 	FieldFormatting: Default to show-all for related choices.
@@ -192,7 +194,6 @@
 	have the same field name, and both should be unique.
 	This is nasty code anyway that I would rather have in libgda.
 	This fixes bug #625192 (fmyhr).
-
 
 2010-07-22  Murray Cumming  <murrayc@murrayc.com>
 
