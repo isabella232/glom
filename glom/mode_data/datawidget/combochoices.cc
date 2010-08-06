@@ -51,11 +51,31 @@ ComboChoices::~ComboChoices()
 {
 }
 
-bool ComboChoices::refresh_data_from_database_with_foreign_key(const Gnome::Gda::Value& foreign_key_value)
+bool ComboChoices::refresh_data_from_database_with_foreign_key(const Document* document, const Gnome::Gda::Value& foreign_key_value)
 {
+  //Get the choice information, then cache it:
   if(!m_related_relationship || !m_related_field)
   {
-    std::cerr << G_STRFUNC << ": !m_related_relationship or !m_related_field." << std::endl;
+    sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
+    if(!layout_item)
+    {
+      return false;
+    }
+
+    //TODO: Avoid repeating this tedious code in so many places:
+    const FieldFormatting& format = layout_item->get_formatting_used();
+    format.get_choices_related(document, m_related_relationship, m_related_field, m_related_field_second, m_related_show_all);
+
+    if(!m_related_relationship)
+    {
+      std::cerr << G_STRFUNC << ": !m_related_relationship." << std::endl;
+      return false;
+    }
+  }
+
+  if(!m_related_field)
+  {
+    std::cerr << G_STRFUNC << ": !m_related_field." << std::endl;
     return false;
   }
 
@@ -66,33 +86,33 @@ bool ComboChoices::refresh_data_from_database_with_foreign_key(const Gnome::Gda:
     set_choices_with_second(list_values);
     return true;
   }
-   
+
   if(m_related_show_all)
   {
     //The list should be set in set_choices_related() instead.
     std::cerr << G_STRFUNC << ": Called with m_related_show_all=true." << std::endl;
     return false;
   }
-  
-  Utils::type_vecLayoutFields fields;
+
+  Utils::type_vecConstLayoutFields fields;
   fields.push_back(m_related_field);
   if(m_related_field_second)
     fields.push_back(m_related_field_second);
 
   //std::cout << G_STRFUNC << "debug: m_related_field=" << m_related_field->get_name() << ", m_related_field_second" << m_related_field_second->get_name() << std::endl;
-    
+
   if(!m_related_to_field)
   {
     std::cerr << G_STRFUNC << ": m_related_to_field is null." << std::endl;
   }
-    
+
   //TODO: Support related relationships (in the UI too):
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Utils::build_sql_select_with_key(
     m_related_relationship->get_to_table(),
     fields,
     m_related_to_field,
     foreign_key_value);
-    
+
   if(!builder)
   {
     std::cerr << G_STRFUNC << ": builder is null." << std::endl;
@@ -118,7 +138,7 @@ bool ComboChoices::refresh_data_from_database_with_foreign_key(const Gnome::Gda:
   if(datamodel)
   {
     type_list_values_with_second list_values;
-    
+
     const guint count = datamodel->get_n_rows();
     const guint cols_count = datamodel->get_n_columns();
     //std::cout << "  result: count=" << count << std::endl;
@@ -133,10 +153,10 @@ bool ComboChoices::refresh_data_from_database_with_foreign_key(const Gnome::Gda:
 
       list_values.push_back(itempair);
     }
-    
+
     const Gnome::Gda::Value old_value = get_value();
     set_choices_with_second(list_values);
-    set_value(old_value); //Try to preserve the value, even in iter-based ComboBoxes. 
+    set_value(old_value); //Try to preserve the value, even in iter-based ComboBoxes.
   }
   else
   {
@@ -148,49 +168,34 @@ bool ComboChoices::refresh_data_from_database_with_foreign_key(const Gnome::Gda:
   return true;
 }
 
-void ComboChoices::set_choices_related(const Document* document, const sharedptr<const Relationship>& relationship, const Glib::ustring& field, const Glib::ustring& field_second, bool show_all)
+void ComboChoices::set_choices_related(const Document* document, const sharedptr<const Relationship>& relationship, const Glib::ustring& /* field */, const Glib::ustring& /* field_second */, bool show_all)
 {
+  //Note that field_second is used in derived classes.
+
   m_related_relationship = relationship;
   m_related_show_all = show_all;
-  
+
+  m_related_field.clear();
   m_related_field_second.clear();
-  if(m_related_relationship && !field.empty())
+  if(m_related_relationship)
   {
     const Glib::ustring to_table = m_related_relationship->get_to_table();
     m_related_to_field = document->get_field(to_table, m_related_relationship->get_to_field());
-    
-    if(!document)
-    {
-      std::cerr << G_STRFUNC << ": document is null." << std::endl;
-      return;
-    }
-    
-    //TODO: Avoid this lookup every time a value changes:
-    sharedptr<const Field> field_details = document->get_field(to_table, field);
-    m_related_field = sharedptr<LayoutItem_Field>::create();
-    m_related_field->set_full_field_details(field_details);
-    
-    if(!field_second.empty())
-    {
-      field_details = document->get_field(to_table, field_second);
-      m_related_field_second = sharedptr<LayoutItem_Field>::create();
-      m_related_field_second->set_full_field_details(field_details);
-    }
   }
-  
+
   type_list_values_with_second list_values;
-  
+
   //Set the values now because if it will be the same regardless of the foreign key value.
   //Otherwise show them when refresh_data_from_database_with_foreign_key() is called.
   if(relationship && show_all)
   {
     sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
-    list_values = Utils::get_choice_values(layout_item);
+    list_values = Utils::get_choice_values_all(document, layout_item, m_related_field, m_related_field_second);
   }
-  
+
   const Gnome::Gda::Value old_value = get_value();
   set_choices_with_second(list_values);
-  set_value(old_value); //Try to preserve the value, even in iter-based ComboBoxes. 
+  set_value(old_value); //Try to preserve the value, even in iter-based ComboBoxes.
 }
 
 } //namespace DataWidgetChildren

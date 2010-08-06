@@ -88,11 +88,15 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_with_where_clause(
   const type_sort_clause& sort_clause = type_sort_clause(),
   guint limit = 0);
 
+/**
+ * @param key_value If this is empty then all records in the tables will be retrieved.
+ */
 Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_with_key(
   const Glib::ustring& table_name,
   const type_vecLayoutFields& fieldsToGet,
   const sharedptr<const Field>& key_field,
   const Gnome::Gda::Value& key_value,
+  const type_sort_clause& sort_clause = type_sort_clause(),
   guint limit = 0);
 
 /** Just a version of build_sql_select_with_key() that takes a list of const fields.
@@ -102,15 +106,16 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_with_key(
   const type_vecConstLayoutFields& fieldsToGet,
   const sharedptr<const Field>& key_field,
   const Gnome::Gda::Value& key_value,
+  const type_sort_clause& sort_clause = type_sort_clause(),
   guint limit = 0);
 
-Gnome::Gda::SqlExpr get_find_where_clause_quick(Document* document, const Glib::ustring& table_name, const Gnome::Gda::Value& quick_search);
+Gnome::Gda::SqlExpr get_find_where_clause_quick(const Document* document, const Glib::ustring& table_name, const Gnome::Gda::Value& quick_search);
 
 
 typedef std::list< std::pair<Gnome::Gda::Value, Gnome::Gda::Value> > type_list_values_with_second;
-type_list_values_with_second get_choice_values(const sharedptr<const LayoutItem_Field>& field);
+type_list_values_with_second get_choice_values_all(const Document* document, const sharedptr<const LayoutItem_Field>& field, sharedptr<const LayoutItem_Field>& layout_choice_first, sharedptr<const LayoutItem_Field>& layout_choice_second);
 
-type_list_values_with_second get_choice_values(Document* document, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& foreign_key_value, sharedptr<LayoutItem_Field>& layout_choice_first, sharedptr<LayoutItem_Field>& layout_choice_second);
+type_list_values_with_second get_choice_values(const Document* document, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& foreign_key_value, sharedptr<const LayoutItem_Field>& layout_choice_first, sharedptr<const LayoutItem_Field>& layout_choice_second);
 
 /// Get the full query string suitable for use with std::cout.
 std::string sqlbuilder_get_full_query(

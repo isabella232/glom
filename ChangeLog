@@ -1,3 +1,59 @@
+2010-08-06  Murray Cumming  <murrayc@murrayc-desktop>
+
+	Formatting: Add get_choices_related() overload to reduce copy/pasted code.
+
+	* glom/libglom/data_structure/layout/fieldformatting.[h|cc]:
+  Added a get_choices_related() overload that returns the LayoutItem_Fields
+  instead of just the field names. This reduces the copy/pasted code in the
+  callers, and makes it easier to support related fields in future.
+	* glom/libglom/utils.[h|cc]:
+	* glom/mode_data/datawidget/combochoices.[h|cc]:
+	* glom/utility_widgets/db_adddel/db_adddel.cc: Adapted and made necessary
+  const corrections.
+
+2010-08-06  Murray Cumming  <murrayc@murrayc.com>
+
+	Choices: Fix !show-all lists.
+
+	* glom/mode_data/datawidget/combochoices.[h|cc]:
+  refresh_data_from_database_with_foreign_key(): Add a document parameter,
+  used to update the cached choices information if necessary.
+	* glom/mode_data/flowtablewithfields.cc: set_field_value(): Adapted.
+
+2010-08-06  Murray Cumming  <murrayc@murrayc.com>
+
+	Document loading: Show an error dialog even for unexpected errors.
+
+	* glom/application.cc: on_document_load(): Don't just fail silently when
+  there is an unexpected error, for instance if the postgres data directory
+  is missing.
+
+2010-08-06  Murray Cumming  <murrayc@murrayc.com>
+
+	Utils::get_choice_values(): Reduce copy/pasted code.
+
+	* glom/libglom/utils.[h|cc]: build_sql_select_with_key(): Add a sort_clause
+  parameter.
+  get_choice_values(field): Rename this to get_choice_values_all() and change
+  the implementation to just call the other get_choice_values(). Add
+  a Document* parameter so we can do that.
+  get_choice_values(document, field, ...): Sort the list by the first field.
+  This should probably be an option in the developer-mode UI.
+	* glom/mode_data/datawidget/combo.h:
+	* glom/mode_data/datawidget/combochoices.[h|cc]:
+	* glom/mode_data/datawidget/comboentry.h:
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+  get_choice_values(): Adapt to the change, by adding a Document* parameter.
+	* glom/base_db.cc: Adapt.
+
+2010-08-06  Murray Cumming  <murrayc@murrayc.com>
+
+	DbAddDel: Avoid some copy/pasting of code to append items to choices cells.
+
+	* glom/utility_widgets/db_adddel/db_adddel.[h|cc]: Added set_cell_choices(),
+  using it in refresh_cell_choices_data_from_database_with_foreign_key() and
+  construct_specified_columns_cellrenderer().
+
 2010-08-06  David King  <davidk@openismus.com>
 
 	Minor build system cleanup
@@ -12,13 +68,13 @@
 
 	List: Choices with !show_all: Update the list when the from_field changes.
 
-	* glom/libglom/utils.[h|cc]: Added a get_choice_values() overload that 
+	* glom/libglom/utils.[h|cc]: Added a get_choice_values() overload that
 	takes the foreign_key.
-	* glom/utility_widgets/db_adddel/db_adddel.[h|cc]: Added get_choice_index() 
+	* glom/utility_widgets/db_adddel/db_adddel.[h|cc]: Added get_choice_index()
 	to get the affected choice lists when a field value changes.
-	Added refresh_cell_choices_data_from_database_with_foreign_key() to update 
+	Added refresh_cell_choices_data_from_database_with_foreign_key() to update
 	these lists.
-	set_value(): Use these methods to update choice lists when appropriate, 
+	set_value(): Use these methods to update choice lists when appropriate,
 	as already happens in the Details view.
 
 2010-08-05  Murray Cumming  <murrayc@murrayc.com>
@@ -26,10 +82,10 @@
 	List view: When a value is edited, update other instances of the same field.
 
 	* glom/utility_widgets/db_adddel/db_adddel.[h|cc]:
-	get_data_model_column_index(): Add a including_specified_field_layout bool 
-	parameter, used in a new set_value() method overload that has a 
+	get_data_model_column_index(): Add a including_specified_field_layout bool
+	parameter, used in a new set_value() method overload that has a
 	set_specified_field_layout bool parameter.
-	user_changed(): Call set_value() to show the new value in any other 
+	user_changed(): Call set_value() to show the new value in any other
 	instances of the same field.
 	The details view already does this.
 

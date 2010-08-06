@@ -42,7 +42,7 @@ namespace DataWidgetChildren
  * Use this when the user should only be allowed to enter values that are in the choices.
  */
 class ComboGlom
-: 
+:
 #ifndef GLOM_ENABLE_MAEMO
   public Gtk::ComboBox,
 #else
@@ -71,7 +71,7 @@ public:
   virtual void set_value(const Gnome::Gda::Value& value);
 
   virtual Gnome::Gda::Value get_value() const;
-  
+
   virtual void set_choices_related(const Document* document, const sharedptr<const Relationship>& relationship, const Glib::ustring& field, const Glib::ustring& field_second, bool show_all);
 
 private:
@@ -96,11 +96,11 @@ private:
 
   Glib::ustring m_old_text;
   //Gnome::Gda::Value m_value; //The last-stored value. We have this because the displayed value might be unparseable.
-  
+
   #ifdef GLOM_ENABLE_MAEMO
   Hildon::TouchSelector m_maemo_selector;
   #endif
-  
+
   Gtk::CellRenderer* m_cell_second;
 };
 
@@ -108,4 +108,3 @@ private:
 } //namespace Glom
 
 #endif //GLOM_UTILITY_WIDGETS_COMBOENTRY_GLOM_H
-

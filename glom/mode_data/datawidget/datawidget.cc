@@ -129,7 +129,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
       {
         combo = create_combo_widget_for_field(field);
         combo->set_layout_item( get_layout_item(), table_name);
-        
+
         sharedptr<const Relationship> choice_relationship;
         Glib::ustring choice_field, choice_second;
         bool choice_show_all = false;
@@ -183,7 +183,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
   {
     //Use the text formatting:
     apply_formatting(*m_child, field);
-    
+
     bool child_added = false; //Don't use an extra container unless necessary.
 
     //Check whether the field controls a relationship,
@@ -191,14 +191,14 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
     const bool field_used_in_relationship_to_one = document->get_field_used_in_relationship_to_one(table_name, field);
     //std::cout << "DEBUG: table_name=" << table_name << ", table_used=" << field->get_table_used(table_name) << ", field=" << field->get_name() << ", field_used_in_relationship_to_one=" << field_used_in_relationship_to_one << std::endl;
 
-    //Check whether the field identifies a record in another table 
+    //Check whether the field identifies a record in another table
     //just because it is a primary key in that table:
     bool field_is_related_primary_key = false;
     if(document)
       field->set_full_field_details( document->get_field(field->get_table_used(table_name), field->get_name()) ); //Otherwise get_primary_key() returns false always.
     sharedptr<const Field> field_info = field->get_full_field_details();
-    field_is_related_primary_key = 
-      field->get_has_relationship_name() && 
+    field_is_related_primary_key =
+      field->get_has_relationship_name() &&
       field_info && field_info->get_primary_key();
     //std::cout <<   "DEBUG: field->get_has_relationship_name()=" << field->get_has_relationship_name() << ", field_info->get_primary_key()=" <<  field_info->get_primary_key() << ", field_is_related_primary_key=" << field_is_related_primary_key << std::endl;
 
@@ -226,7 +226,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
       #else
       Gtk::Button* button_date = Gtk::manage(new Hildon::Button(Gtk::Hildon::SIZE_FINGER_HEIGHT, Hildon::BUTTON_ARRANGEMENT_HORIZONTAL, _("..."), ""));
       #endif
-      button_date->set_tooltip_text(_("Choose a date from an on-screen calendar.")); 
+      button_date->set_tooltip_text(_("Choose a date from an on-screen calendar."));
       button_date->show();
       hbox_parent->pack_start(*button_date);
       button_date->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_choose_date));
@@ -245,14 +245,14 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
       m_button_go_to_details->signal_clicked().connect(sigc::mem_fun(*this, &DataWidget::on_button_open_details));
 
       //Add a button to make it easier to choose an ID for this field.
-      //Don't add this for simple related primary key fields, because they 
+      //Don't add this for simple related primary key fields, because they
       //can generally not be edited via another table's layout.
       if(field_used_in_relationship_to_one)
       {
         #ifndef GLOM_ENABLE_MAEMO
         Gtk::Button* button_select = Gtk::manage(new Gtk::Button(Gtk::Stock::FIND));
         #else
-        Gtk::Button* button_select = Gtk::manage(new Hildon::Button(Gtk::Hildon::SIZE_FINGER_HEIGHT, 
+        Gtk::Button* button_select = Gtk::manage(new Hildon::Button(Gtk::Hildon::SIZE_FINGER_HEIGHT,
            Hildon::BUTTON_ARRANGEMENT_HORIZONTAL, _("Find"), ""));
         #endif
         button_select->set_tooltip_text(_("Enter search criteria to identify records in the other table, to choose an ID for this field."));
@@ -318,7 +318,7 @@ void DataWidget::set_value(const Gnome::Gda::Value& value)
 
 void DataWidget::update_go_to_details_button_sensitivity()
 {
-  //If there is a Go-To-Details "Open" button, only enable it if there is 
+  //If there is a Go-To-Details "Open" button, only enable it if there is
   //an ID:
   if(m_button_go_to_details)
   {
@@ -368,12 +368,12 @@ void DataWidget::set_child_size_by_field(const sharedptr<const LayoutItem_Field>
     int height = -1; //auto.
     if((glom_type == Field::TYPE_TEXT) && (field->get_formatting_used().get_text_format_multiline()))
     {
-      #ifndef GLOM_ENABLE_MAEMO 
+      #ifndef GLOM_ENABLE_MAEMO
       int example_width = 0;
       int example_height = 0;
       Glib::RefPtr<Pango::Layout> refLayout = create_pango_layout("example"); //TODO: Use different text, according to the current locale, or allow the user to choose an example?
       refLayout->get_pixel_size(example_width, example_height);
-      
+
       if(example_height > 0)
         height = example_height * field->get_formatting_used().get_text_format_multiline_height_lines();
       #else
@@ -381,7 +381,7 @@ void DataWidget::set_child_size_by_field(const sharedptr<const LayoutItem_Field>
       //TODO: Expansion only happens if both are -1, and vertical expansion never happens.
       //See bug https://bugs.maemo.org/show_bug.cgi?id=5515
       width = -1;
-      height = -1; 
+      height = -1;
       #endif //GLOM_ENABLE_MAEMO
     }
 
@@ -443,7 +443,7 @@ bool DataWidget::on_button_press_event(GdkEventButton *event)
     pApp->add_developer_action(m_refContextAddRelatedRecords);
     pApp->add_developer_action(m_refContextAddGroup);
 
-    pApp->update_userlevel_ui(); //Update our action's sensitivity. 
+    pApp->update_userlevel_ui(); //Update our action's sensitivity.
 
     //Only show this popup in developer mode, so operators still see the default GtkEntry context menu.
     //TODO: It would be better to add it somehow to the standard context menu.
@@ -476,7 +476,7 @@ sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& ta
 sharedptr<LayoutItem_Field> DataWidget::offer_field_list(const Glib::ustring& table_name, const sharedptr<const LayoutItem_Field>& start_field, Document* document, Application* app)
 {
   sharedptr<LayoutItem_Field> result;
-  
+
   Dialog_ChooseField* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
 
@@ -598,7 +598,7 @@ const Gtk::Widget* DataWidget::get_data_child_widget() const
 {
   return m_child;
 }
- 
+
  DataWidget::type_signal_open_details_requested DataWidget::signal_open_details_requested()
  {
    return m_signal_open_details_requested;

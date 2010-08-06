@@ -78,7 +78,7 @@ void ComboEntry::init()
 #else
   //Maemo:
   set_selector(m_maemo_selector);
- 
+
   //We don't use append_text_column(), because we want to specify no expand.
   //Glib::RefPtr<Hildon::TouchSelectorColumn> column =
   //  m_maemo_selector.append_text_column(m_refModel);
@@ -86,15 +86,15 @@ void ComboEntry::init()
   //  m_maemo_selector.append_column(m_refModel);
   Glib::RefPtr<Hildon::TouchSelectorColumn> column = Glib::wrap(hildon_touch_selector_append_column(
     HILDON_TOUCH_SELECTOR(m_maemo_selector.gobj()), GTK_TREE_MODEL(Glib::unwrap(m_refModel)), 0, static_cast<char*>(0)), true);
-      
+
   column->pack_start(m_Columns.m_col_first, false);
   //Only in the latest hildonmm: column->set_text_column(m_Columns.m_col_first);
   column->set_property("text_column", 0);
-  
+
   //Only in the latest hildonmm: m_maemo_selector->set_text_column(m_Columns.m_col_first);
   m_maemo_selector.set_text_column(0);
 
-  
+
   //m_maemo_selector.set_model(0, m_refModel);
   //m_maemo_selector.set_text_column(0);
 #endif
@@ -147,7 +147,7 @@ void ComboEntry::set_layout_item(const sharedptr<LayoutItem>& layout_item, const
     return;
 
   //Horizontal Alignment:
-  FieldFormatting::HorizontalAlignment alignment = 
+  FieldFormatting::HorizontalAlignment alignment =
     FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT;
   sharedptr<LayoutItem_Field> layout_field =
     sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
@@ -155,7 +155,7 @@ void ComboEntry::set_layout_item(const sharedptr<LayoutItem>& layout_item, const
     alignment = layout_field->get_formatting_used_horizontal_alignment();
 
   const float x_align = (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT ? 0.0 : 1.0);
-  get_entry()->set_alignment(x_align); 
+  get_entry()->set_alignment(x_align);
 }
 
 void ComboEntry::check_for_change()
@@ -165,7 +165,7 @@ void ComboEntry::check_for_change()
     //Don't allow editing via the menu either, if the Entry is non-editable.
 
     //Give the user some kind of warning.
-    //We could just remove the menu (by using a normal Entry for read-only fields with choices), 
+    //We could just remove the menu (by using a normal Entry for read-only fields with choices),
     //but I think that the choice is a useful recognisable visual hint about the field,
     //which shouldn't change sometimes just because the field is read-only.
     Gtk::Window* top_level_window = get_application();
@@ -217,7 +217,7 @@ bool ComboEntry::on_entry_focus_out_event(GdkEventFocus* /* event */)
 }
 
 void ComboEntry::on_entry_activate()
-{ 
+{
   //Call base class:
   //get_entry()->on_activate();
 
@@ -249,7 +249,7 @@ void ComboEntry::set_value(const Gnome::Gda::Value& value)
     if(!entry)
       return;
 
-    const Glib::ustring fg_color = 
+    const Glib::ustring fg_color =
     layout_item->get_formatting_used().get_text_format_color_foreground_to_use(value);
     if(!fg_color.empty())
       entry->modify_text(Gtk::STATE_NORMAL, Gdk::Color(fg_color));
@@ -261,7 +261,7 @@ void ComboEntry::set_value(const Gnome::Gda::Value& value)
 void ComboEntry::set_text(const Glib::ustring& text)
 {
   m_old_text = text;
-  
+
   #if GLOM_ENABLE_MAEMO
   for(Gtk::TreeModel::iterator iter = m_refModel->children().begin(); iter != m_refModel->children().end(); ++iter)
   {
@@ -333,7 +333,7 @@ Application* ComboEntry::get_application()
 void ComboEntry::on_changed()
 #else
 void ComboEntry::on_changed(int /* column */)
-#endif 
+#endif
 {
   //Call base class:
   Gtk::ComboBoxEntry::on_changed();
@@ -345,7 +345,7 @@ void ComboEntry::on_changed(int /* column */)
   #else
   Gtk::TreeModel::iterator iter = get_selected();
   #endif //GLOM_ENABLE_MAEMO
-  
+
   if(iter)
   {
     //This is either a choice from the dropdown menu, or someone has typed in something that is in the drop-down menu.

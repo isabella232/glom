@@ -57,7 +57,7 @@ void ComboGlom::init()
   //Maemo:
   set_selector(m_maemo_selector);
   m_maemo_selector.set_model(0, m_refModel);
-  
+
   Glib::RefPtr<Hildon::TouchSelectorColumn> column =
     m_maemo_selector.append_text_column(m_refModel);
   column->set_property("text-column", 0); // TODO: Add a TextSelectorColumn::set_text_column() method?
@@ -98,7 +98,7 @@ void ComboGlom::set_choices_related(const Document* document, const sharedptr<co
     column->pack_start(m_Columns.m_col_second);
     #endif //GLOM_ENABLE_MAEMO
   }
-  
+
   ComboChoicesWithTreeModel::set_choices_related(document, relationship, field, field_second, show_all);
 }
 
@@ -152,7 +152,7 @@ void ComboGlom::set_value(const Gnome::Gda::Value& value)
     if(!cell)
       return;
 
-    const Glib::ustring fg_color = 
+    const Glib::ustring fg_color =
     layout_item->get_formatting_used().get_text_format_color_foreground_to_use(value);
     if(fg_color.empty())
     {
@@ -188,7 +188,7 @@ void ComboGlom::set_text(const Glib::ustring& text)
   {
     g_warning("ComboGlom::set_text(): no item found for: %s", text.c_str());
   }
-  
+
   //Not found, so mark it as blank:
   #ifndef GLOM_ENABLE_MAEMO
   unset_active();
@@ -215,7 +215,7 @@ Glib::ustring ComboGlom::get_text() const
   ComboGlom* unconst = const_cast<ComboGlom*>(this);
   Gtk::TreeModel::iterator iter = unconst->get_selected();
   #endif //GLOM_ENABLE_MAEMO
-  
+
   if(iter)
   {
     Gtk::TreeModel::Row row = *iter;
@@ -275,7 +275,7 @@ Application* ComboGlom::get_application()
 void ComboGlom::on_changed()
 #else
 void ComboGlom::on_changed(int /* column */)
-#endif 
+#endif
 {
   //Call base class:
   Gtk::ComboBox::on_changed();
@@ -287,7 +287,7 @@ void ComboGlom::on_changed(int /* column */)
   #else
   Gtk::TreeModel::iterator iter = get_selected();
   #endif //GLOM_ENABLE_MAEMO
-  
+
   if(iter)
   {
     //This is either a choice from the dropdown menu, or someone has typed in something that is in the drop-down menu.
