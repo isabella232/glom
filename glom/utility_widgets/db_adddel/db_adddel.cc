@@ -847,8 +847,8 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
           if(choice_show_all) //Otherwise it must change whenever the relationships's ID value changes.
           {
             Document* document = get_document();
-            sharedptr<LayoutItem_Field> layout_field_first;
-            sharedptr<LayoutItem_Field> layout_field_second;
+            sharedptr<const LayoutItem_Field> layout_field_first;
+            sharedptr<const LayoutItem_Field> layout_field_second;
             Utils::type_list_values_with_second list_values = Utils::get_choice_values_all(document, item_field, layout_field_first, layout_field_second);
             set_cell_choices(pCellRendererCombo,  layout_field_first, layout_field_second, list_values);
           }
@@ -1295,8 +1295,8 @@ void DbAddDel::refresh_cell_choices_data_from_database_with_foreign_key(guint mo
   }
 
 
-  sharedptr<LayoutItem_Field> layout_choice_first;
-  sharedptr<LayoutItem_Field> layout_choice_second;
+  sharedptr<const LayoutItem_Field> layout_choice_first;
+  sharedptr<const LayoutItem_Field> layout_choice_second;
   Utils::type_list_values_with_second list_values =
     Utils::get_choice_values(get_document(), layout_field, foreign_key_value,
       layout_choice_first, layout_choice_second);

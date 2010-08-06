@@ -1,3 +1,16 @@
+2010-08-06  Murray Cumming  <murrayc@murrayc-desktop>
+
+	Formatting: Add get_choices_related() overload to reduce copy/pasted code.
+
+	* glom/libglom/data_structure/layout/fieldformatting.[h|cc]:
+  Added a get_choices_related() overload that returns the LayoutItem_Fields
+  instead of just the field names. This reduces the copy/pasted code in the
+  callers, and makes it easier to support related fields in future.
+	* glom/libglom/utils.[h|cc]:
+	* glom/mode_data/datawidget/combochoices.[h|cc]:
+	* glom/utility_widgets/db_adddel/db_adddel.cc: Adapted and made necessary
+  const corrections.
+
 2010-08-06  Murray Cumming  <murrayc@murrayc.com>
 
 	Choices: Fix !show-all lists.

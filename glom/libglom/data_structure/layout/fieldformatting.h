@@ -30,6 +30,9 @@
 namespace Glom
 {
 
+class Document;
+class LayoutItem_Field;
+
 //TODO: This should probably be renamed to Formatting, because it is used for static text items too.
 class FieldFormatting : public UsesRelationship //The UsesRelationship base has the relationship for the choices.
 {
@@ -54,9 +57,9 @@ public:
   virtual type_list_values get_choices_custom() const;
   virtual void set_choices_custom(const type_list_values& choices);
 
-  /** Discover whether the entered data should only be one of the available 
+  /** Discover whether the entered data should only be one of the available
    * choices.
-   * @param [out] as_radio_buttons: Whether the choices should be displayed as 
+   * @param [out] as_radio_buttons: Whether the choices should be displayed as
    * radio buttons instead of a combo box.
    */
   bool get_choices_restricted(bool& as_radio_buttons) const;
@@ -67,6 +70,9 @@ public:
 
   void get_choices_related(sharedptr<const Relationship>& relationship_name, Glib::ustring& field, Glib::ustring& field_second, bool& show_all) const;
   void set_choices_related(const sharedptr<const Relationship>& relationship_name, const Glib::ustring& field, const Glib::ustring& field_second, bool show_all);
+
+
+  void get_choices_related(const Document* document, sharedptr<const Relationship>& relationship_name, sharedptr<const LayoutItem_Field>& field, sharedptr<const LayoutItem_Field>& field_second, bool& show_all) const;
 
   /** Get whether the text should be displayed with multiple lines in the
    * details view. Text is displayed with a single line in the list view.
@@ -167,6 +173,3 @@ private:
 } //namespace Glom
 
 #endif //GLOM_DATASTRUCTURE_FIELDFORMATTING_H
-
-
-

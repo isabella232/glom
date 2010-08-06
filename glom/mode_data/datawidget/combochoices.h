@@ -73,8 +73,8 @@ protected:
   //These are used if it is related choices:
   sharedptr<const Relationship> m_related_relationship;
   sharedptr<const Field> m_related_to_field; //To avoid retrieving it each time.
-  sharedptr<LayoutItem_Field> m_related_field;
-  sharedptr<LayoutItem_Field> m_related_field_second;
+  sharedptr<const LayoutItem_Field> m_related_field;
+  sharedptr<const LayoutItem_Field> m_related_field_second;
   bool m_related_show_all;
 };
 

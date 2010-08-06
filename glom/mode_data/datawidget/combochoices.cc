@@ -64,27 +64,12 @@ bool ComboChoices::refresh_data_from_database_with_foreign_key(const Document* d
 
     //TODO: Avoid repeating this tedious code in so many places:
     const FieldFormatting& format = layout_item->get_formatting_used();
-    Glib::ustring choice_field, choice_second;
-    format.get_choices_related(m_related_relationship, choice_field, choice_second, m_related_show_all);
+    format.get_choices_related(document, m_related_relationship, m_related_field, m_related_field_second, m_related_show_all);
 
     if(!m_related_relationship)
     {
       std::cerr << G_STRFUNC << ": !m_related_relationship." << std::endl;
       return false;
-    }
-
-    const Glib::ustring to_table = m_related_relationship->get_to_table();
-
-    m_related_field = sharedptr<LayoutItem_Field>::create();
-    sharedptr<const Field> field_details = document->get_field(to_table, choice_field);
-    m_related_field->set_full_field_details(field_details);
-
-    m_related_field_second.clear();
-    if(!choice_second.empty())
-    {
-      m_related_field_second = sharedptr<LayoutItem_Field>::create();
-      field_details = document->get_field(to_table, choice_second);
-      m_related_field_second->set_full_field_details(field_details);
     }
   }
 
@@ -109,7 +94,7 @@ bool ComboChoices::refresh_data_from_database_with_foreign_key(const Document* d
     return false;
   }
 
-  Utils::type_vecLayoutFields fields;
+  Utils::type_vecConstLayoutFields fields;
   fields.push_back(m_related_field);
   if(m_related_field_second)
     fields.push_back(m_related_field_second);
