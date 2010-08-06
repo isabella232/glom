@@ -97,13 +97,13 @@ DbAddDel::DbAddDel()
   //Start with a useful default TreeModel:
   //set_columns_count(1);
   //construct_specified_columns();
-  
+
   // Give the TreeView an accessible name, to access it in LDTP
   // TODO: Maybe this should be a constructor parameter, so that multiple
   // DbAddDels in a single Window can be addressed separately.
 #ifdef GTKMM_ATKMM_ENABLED
   m_TreeView.get_accessible()->set_name(_("Table Content"));
-#endif  
+#endif
 
   #ifndef GLOM_ENABLE_MAEMO
   m_ScrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
@@ -116,11 +116,11 @@ DbAddDel::DbAddDel()
   //Do not let the treeview emit activated as soon as a row is pressed.
   //TODO: Allow this default maemo behaviour?
   g_object_set(m_TreeView.gobj(), "hildon-ui-mode", HILDON_UI_MODE_NORMAL, (void*)0);
-  
+
   //Allow get_selected() and get_active() to work:
   m_TreeView.set_column_selection_mode(Hildon::TOUCH_SELECTOR_SELECTION_MODE_SINGLE);
   pack_start(m_TreeView);
-  
+
   m_TreeView.signal_changed().connect(sigc::mem_fun(*this, &DbAddDel::on_maemo_touchselector_changed));
   #endif //GLOM_ENABLE_MAEMO
 
@@ -154,7 +154,7 @@ DbAddDel::DbAddDel()
   // Adjust sizing when style changed
   // TODO_Maemo: This calls construct_specified_columns(), which runs the SQL query again.
   //       Try to change the row and column sizes without doing that.
-  
+
   signal_style_changed().connect(sigc::mem_fun(*this, &DbAddDel::on_self_style_changed));
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }
@@ -166,7 +166,7 @@ DbAddDel::~DbAddDel()
   if(pApp)
   {
     pApp->remove_developer_action(m_refContextLayout);
-  } 
+  }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 }
 
@@ -281,7 +281,7 @@ void DbAddDel::setup_menu()
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
-    pApp->update_userlevel_ui(); //Update our action's sensitivity. 
+    pApp->update_userlevel_ui(); //Update our action's sensitivity.
   }
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
@@ -324,7 +324,7 @@ void DbAddDel::setup_menu()
 #endif //GLIBMM_EXCEPTIONS_ENABLED
 
   //Get the menu:
-  m_pMenuPopup = dynamic_cast<Gtk::Menu*>( m_refUIManager->get_widget("/ContextMenu") ); 
+  m_pMenuPopup = dynamic_cast<Gtk::Menu*>( m_refUIManager->get_widget("/ContextMenu") );
   if(!m_pMenuPopup)
     g_warning("menu not found");
 
@@ -339,7 +339,7 @@ void DbAddDel::setup_menu()
     m_refContextEdit->set_sensitive(false);
     m_refContextDelete->set_sensitive(false);
   }
- 
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   if(pApp)
     m_refContextLayout->set_sensitive(pApp->get_userlevel() == AppState::USERLEVEL_DEVELOPER);
@@ -355,7 +355,7 @@ bool DbAddDel::on_button_press_event_Popup(GdkEventButton *event)
   if(pApp)
   {
     pApp->add_developer_action(m_refContextLayout); //So that it can be disabled when not in developer mode.
-    pApp->update_userlevel_ui(); //Update our action's sensitivity. 
+    pApp->update_userlevel_ui(); //Update our action's sensitivity.
   }
 #endif
 
@@ -459,7 +459,7 @@ Gtk::TreeModel::iterator DbAddDel::get_item_selected() const
   #ifdef GLOM_ENABLE_MAEMO
   Hildon::TouchSelector& unconst = const_cast<Hildon::TouchSelector&>(m_TreeView);
   return unconst.get_selected(0);
-  
+
   //TODO: What would this mean?
   //See https://bugs.maemo.org/show_bug.cgi?id=4641
   // return m_TreeView.get_active();
@@ -541,7 +541,7 @@ bool DbAddDel::select_item(const Gtk::TreeModel::iterator& iter, const sharedptr
     Glib::RefPtr<Gtk::TreeSelection> refTreeSelection = m_TreeView.get_selection();
     g_assert(refTreeSelection);
     refTreeSelection->select(iter);
-    
+
     Gtk::TreeModel::Path path = m_refListStore->get_path(iter);
 
     guint view_column_index = 0;
@@ -653,9 +653,9 @@ int DbAddDel::get_fixed_cell_height()
   {
     // Discover a suitable height, and cache it,
     // by looking at the heights of all columns:
-    // Note that this is usually calculated during construct_specified_columns(), 
+    // Note that this is usually calculated during construct_specified_columns(),
     // when all columns are known.
-    
+
     //Get a default:
     Glib::RefPtr<Pango::Layout> refLayout = create_pango_layout("example");
     int width = 0;
@@ -792,13 +792,13 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
   {
     apply_formatting(pCellRenderer, item_withformatting);
   }
-  
+
   //Set extra cellrenderer attributes, depending on the type used:
   Gtk::CellRendererText* pCellRendererText = dynamic_cast<Gtk::CellRendererText*>(pCellRenderer);
   if(pCellRendererText)
   {
-    //Use an ellipze to indicate excessive text, 
-    //so that similar values do not look equal, 
+    //Use an ellipze to indicate excessive text,
+    //so that similar values do not look equal,
     //and to avoid multi-line comments. TODO: Is there a better way to restrict the height? This doesn't actually truncate multilines anyway.
     g_object_set(pCellRendererText->gobj(), "ellipsize", PANGO_ELLIPSIZE_END, (gpointer)0);
 
@@ -844,7 +844,8 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
       {
         sharedptr<const Relationship> choice_relationship;
         Glib::ustring choice_field, choice_second;
-        item_field->get_formatting_used().get_choices(choice_relationship, choice_field, choice_second);
+        bool choice_show_all;
+        item_field->get_formatting_used().get_choices_related(choice_relationship, choice_field, choice_second, choice_show_all);
 
         if(choice_relationship && !choice_field.empty())
         {
@@ -853,29 +854,14 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
           const bool use_second = !choice_second.empty();
           pCellRendererCombo->set_use_second(use_second);
 
-          const sharedptr<LayoutItem_Field> layout_field_second = sharedptr<LayoutItem_Field>::create();
-          if(use_second)
+          //TODO: Update this when the relationship's field value changes:
+          if(choice_show_all) //Otherwise it must change whenever the relationships's ID value changes.
           {
             Document* document = get_document();
-            if(document)
-            {
-              sharedptr<Field> field_second = document->get_field(to_table, choice_second); //TODO: Actually show this in the combo:
-              layout_field_second->set_full_field_details(field_second);
-
-              //We use the default formatting for this field->
-            }
-          }
-
-          Utils::type_list_values_with_second list_values = Utils::get_choice_values(item_field);
-          for(Utils::type_list_values_with_second::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
-          {
-            const Glib::ustring first = Conversions::get_text_for_gda_value(item_field->get_glom_type(), iter->first, item_field->get_formatting_used().m_numeric_format);
-
-            Glib::ustring second;
-            if(use_second)
-              second = Conversions::get_text_for_gda_value(layout_field_second->get_glom_type(), iter->second, layout_field_second->get_formatting_used().m_numeric_format);
-
-              pCellRendererCombo->append_list_item(first, second);
+            sharedptr<const LayoutItem_Field> layout_field_first;
+            sharedptr<const LayoutItem_Field> layout_field_second;
+            Utils::type_list_values_with_second list_values = Utils::get_choice_values_all(document, item_field, layout_field_first, layout_field_second);
+            set_cell_choices(pCellRendererCombo,  layout_field_first, layout_field_second, list_values);
           }
         }
       }
@@ -990,7 +976,7 @@ void DbAddDel::construct_specified_columns()
   //Create the Gtk ColumnRecord:
 
   Gtk::TreeModel::ColumnRecord record;
-    
+
   //Database columns:
   type_model_store::type_vec_fields fields;
   {
@@ -1016,7 +1002,7 @@ void DbAddDel::construct_specified_columns()
       }
     }
   }
-  
+
   m_FieldsShown = fields; //Needed by Base_DB_Table_Data::record_new().
 
   {
@@ -1057,7 +1043,7 @@ void DbAddDel::construct_specified_columns()
       m_refListStore = Glib::RefPtr<type_model_store>();
     }
   }
- 
+
   #ifdef GLOM_ENABLE_MAEMO
   //Remove all View columns:
   while(m_TreeView.get_num_columns())
@@ -1112,11 +1098,11 @@ void DbAddDel::construct_specified_columns()
 
   bool no_columns_used = true;
   int data_model_column_index = 0; //-1 means undefined index.
-  
+
   guint column_to_expand = 0;
   const bool has_expandable_column = get_column_to_expand(column_to_expand);
   //std::cout << "DEBUG: column_to_expand=" << column_to_expand  << ", has=" << has_expandable_column << std::endl;
-  
+
   for(type_vecModelColumns::iterator iter = vecModelColumns.begin(); iter != vecModelColumns.end(); ++iter)
   {
     const DbAddDelColumnInfo& column_info = m_ColumnTypes[model_column_index];
@@ -1127,7 +1113,7 @@ void DbAddDel::construct_specified_columns()
       const Glib::ustring column_name = column_info.m_item->get_title_or_name();
       const Glib::ustring column_id = column_info.m_item->get_name();
 
-      // Whenever we are dealing with real database fields, 
+      // Whenever we are dealing with real database fields,
       // we need to know the index of the field in the query:
       int item_data_model_column_index = -1;
       sharedptr<const LayoutItem> layout_item = m_ColumnTypes[model_column_index].m_item;
@@ -1145,14 +1131,14 @@ void DbAddDel::construct_specified_columns()
         //Get the index of the field in the query, if it is a field:
         //std::cout << "debug: model_column_index=" << model_column_index << ", item_data_model_column_index=" << item_data_model_column_index << std::endl;
         const bool expand = has_expandable_column && ((int)column_to_expand == model_column_index);
-        treeview_append_column(column_name, 
-          *pCellRenderer, 
-          model_column_index, item_data_model_column_index, 
+        treeview_append_column(column_name,
+          *pCellRenderer,
+          model_column_index, item_data_model_column_index,
           expand);
 
         if(column_info.m_editable)
         {
-       
+
         }
 
         ++view_column_index;
@@ -1171,7 +1157,7 @@ void DbAddDel::construct_specified_columns()
        delete pModelColumn;
   }
 
-  
+
   if(no_columns_used)
   {
     show_hint_model();
@@ -1184,7 +1170,7 @@ void DbAddDel::construct_specified_columns()
     #endif //GLOM_ENABLE_MAEMO
   }
 
-  
+
 
   #ifndef GLOM_ENABLE_MAEMO
   m_TreeView.columns_autosize();
@@ -1231,35 +1217,44 @@ bool DbAddDel::refresh_from_database_blank()
 
 void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value)
 {
+  set_value(iter, layout_item, value, true /* including the specified field */);
+}
+
+void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value, bool set_specified_field_layout)
+{
   //g_warning("DbAddDel::set_value begin");
 
   InnerIgnore innerIgnore(this);
 
   if(!m_refListStore)
-    g_warning("DbAddDel::set_value: No model.");
-  else
   {
-    Gtk::TreeModel::Row treerow = *iter;
-    if(treerow)
-    {
-      type_list_indexes list_indexes = get_data_model_column_index(layout_item);
-      for(type_list_indexes::const_iterator iter = list_indexes.begin(); iter != list_indexes.end(); ++iter)
-      {
-        const guint treemodel_col = *iter + get_count_hidden_system_columns();
-        treerow.set_value(treemodel_col, value);
-
-        //Mark this row as not a placeholder because it has real data now.
-        if(!(Conversions::value_is_empty(value)))
-        {
-          //treerow.set_value(m_col_key, Glib::ustring("placeholder debug value setted"));
-          //treerow.set_value(m_col_placeholder, false);
-        }
-      }
-    }
-
-    //Add extra blank if necessary:
-    //add_blank();
+    std::cerr << G_STRFUNC << ": No model." << std::endl;
+    return;
   }
+
+  //Show the value in any columns:
+  Gtk::TreeModel::Row treerow = *iter;
+  if(treerow)
+  {
+    const type_list_indexes list_indexes = get_data_model_column_index(layout_item, set_specified_field_layout);
+    for(type_list_indexes::const_iterator iter = list_indexes.begin(); iter != list_indexes.end(); ++iter)
+    {
+      const guint treemodel_col = *iter + get_count_hidden_system_columns();
+      treerow.set_value(treemodel_col, value);
+    }
+  }
+
+  /// Get indexes of any columns with choices with !show_all relationships that have @a from_key as the from_key.
+  type_list_indexes list_choice_cells = get_choice_index(layout_item /* from_key field name */);
+  std::cout << "debug: list_choice_cells.size() == " << list_choice_cells.size() << std::endl;
+  for(type_list_indexes::iterator iter = list_choice_cells.begin(); iter != list_choice_cells.end(); ++iter)
+  {
+    const guint model_index = *iter;
+    refresh_cell_choices_data_from_database_with_foreign_key(model_index, value /* foreign key value */);
+  }
+
+  //Add extra blank if necessary:
+  //add_blank();
 
   //g_warning("DbAddDel::set_value end");
 }
@@ -1267,6 +1262,73 @@ void DbAddDel::set_value(const Gtk::TreeModel::iterator& iter, const sharedptr<c
 void DbAddDel::set_value_selected(const sharedptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value)
 {
   set_value(get_item_selected(), layout_item, value);
+}
+
+void DbAddDel::set_cell_choices(CellRendererList* cell, const sharedptr<const LayoutItem_Field>& layout_choice_first,  const sharedptr<const LayoutItem_Field>& layout_choice_second, const Utils::type_list_values_with_second& list_values)
+{
+  if(!cell)
+    return;
+
+  //Set the choices:
+  cell->remove_all_list_items();
+
+  for(Utils::type_list_values_with_second::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
+  {
+    const Glib::ustring first =
+      Conversions::get_text_for_gda_value(
+        layout_choice_first->get_glom_type(), iter->first, layout_choice_first->get_formatting_used().m_numeric_format);
+
+    Glib::ustring second;
+    if(layout_choice_second)
+    {
+      second = Conversions::get_text_for_gda_value(
+        layout_choice_second->get_glom_type(), iter->second, layout_choice_second->get_formatting_used().m_numeric_format);
+    }
+
+    cell->append_list_item(first, second);
+  }
+}
+
+void DbAddDel::refresh_cell_choices_data_from_database_with_foreign_key(guint model_index, const Gnome::Gda::Value& foreign_key_value)
+{
+  if(m_ColumnTypes.size() <= model_index)
+  {
+    std::cerr << G_STRFUNC << ": model_index is out of range: model_index=" << model_index << ", size=" << m_ColumnTypes.size() << std::endl;
+    return;
+  }
+
+  sharedptr<const LayoutItem> item = m_ColumnTypes[model_index].m_item;
+  sharedptr<const LayoutItem_Field> layout_field = sharedptr<const LayoutItem_Field>::cast_dynamic(item);
+  if(!layout_field)
+  {
+    std::cerr << G_STRFUNC << ": The layout item was not a LayoutItem_Field." << std::endl;
+    return;
+  }
+
+  guint view_column_index = 0;
+  const bool test = get_view_column_index(model_index, view_column_index);
+  if(!test)
+  {
+    std::cerr << G_STRFUNC << ": view column not found for model_column=" << model_index << std::endl;
+    return;
+  }
+
+  CellRendererList* cell =
+    dynamic_cast<CellRendererList*>( m_TreeView.get_column_cell_renderer(view_column_index) );
+  if(!cell)
+  {
+    std::cerr << G_STRFUNC << ": cell renderer not found for model_column=" << model_index << std::endl;
+    return;
+  }
+
+
+  sharedptr<const LayoutItem_Field> layout_choice_first;
+  sharedptr<const LayoutItem_Field> layout_choice_second;
+  Utils::type_list_values_with_second list_values =
+    Utils::get_choice_values(get_document(), layout_field, foreign_key_value,
+      layout_choice_first, layout_choice_second);
+
+  set_cell_choices(cell, layout_choice_first, layout_choice_second, list_values);
 }
 
 void DbAddDel::remove_all_columns()
@@ -1289,7 +1351,7 @@ guint DbAddDel::add_column(const sharedptr<LayoutItem>& layout_item)
     return 0; //TODO: Do something more sensible.
 
   InnerIgnore innerIgnore(this); //Stop on_treeview_columns_changed() from doing anything when it is called just because we add a new column.
-  
+
   DbAddDelColumnInfo column_info;
   column_info.m_item = layout_item;
   //column_info.m_editable = editable;
@@ -1335,7 +1397,7 @@ void DbAddDel::set_columns_ready()
   construct_specified_columns();
 }
 
-DbAddDel::type_list_indexes DbAddDel::get_data_model_column_index(const sharedptr<const LayoutItem_Field>& layout_item_field) const
+DbAddDel::type_list_indexes DbAddDel::get_data_model_column_index(const sharedptr<const LayoutItem_Field>& layout_item_field, bool including_specified_field_layout) const
 {
   //TODO_Performance: Replace all this looping by a cache/map:
 
@@ -1350,7 +1412,8 @@ DbAddDel::type_list_indexes DbAddDel::get_data_model_column_index(const sharedpt
     sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(iter->m_item); //TODO_Performance: This would be unnecessary if !layout_item_field
     if(field)
     {
-      if(field && field->is_same_field(layout_item_field))
+      if(field->is_same_field(layout_item_field)
+        && (including_specified_field_layout || field != layout_item_field))
       {
         list_indexes.push_back(data_model_column_index);
       }
@@ -1389,6 +1452,41 @@ DbAddDel::type_list_indexes DbAddDel::get_column_index(const sharedptr<const Lay
   return list_indexes;
 }
 
+DbAddDel::type_list_indexes DbAddDel::get_choice_index(const sharedptr<const LayoutItem_Field>& from_key)
+{
+  type_list_indexes result;
+
+  if(!from_key)
+    return result;
+
+  const Glib::ustring from_key_name = from_key->get_name();
+
+  guint index = 0;
+  for(type_ColumnTypes::const_iterator iter = m_ColumnTypes.begin(); iter != m_ColumnTypes.end(); ++iter)
+  {
+    sharedptr<const LayoutItem_Field> field = sharedptr<const LayoutItem_Field>::cast_dynamic(iter->m_item);
+    if(!field)
+       continue;
+
+    const FieldFormatting& format = field->get_formatting_used();
+
+    sharedptr<const Relationship> choice_relationship;
+    Glib::ustring choice_field, choice_second;
+    bool choice_show_all = false;
+    format.get_choices_related(choice_relationship, choice_field, choice_second, choice_show_all);
+    if(choice_relationship && !choice_show_all) //"Show All" choices don't use the ID field values.
+    {
+      if(choice_relationship->get_from_field() == from_key_name)
+        result.push_back(index);
+    }
+
+    index++;
+  }
+
+  return result;
+}
+
+
 sharedptr<const LayoutItem_Field> DbAddDel::get_column_field(guint column_index) const
 {
   if(column_index < m_ColumnTypes.size())
@@ -1411,6 +1509,7 @@ void DbAddDel::set_prevent_user_signals(bool bVal)
   m_bPreventUserSignals = bVal;
 }
 
+//This is generally used for non-database-data lists.
 void DbAddDel::set_column_choices(guint col, const type_vec_strings& vecStrings)
 {
   InnerIgnore innerIgnore(this); //Stop on_treeview_columns_changed() from doing anything when it is called just because we add new columns.
@@ -1420,7 +1519,7 @@ void DbAddDel::set_column_choices(guint col, const type_vec_strings& vecStrings)
   guint view_column_index = 0;
   const bool test = get_view_column_index(col, view_column_index);
   if(test)
-  { 
+  {
     #ifdef GLOM_ENABLE_MAEMO
     Glib::RefPtr<Hildon::TouchSelectorColumn> column = touch_selector_get_column();
     g_assert(column);
@@ -1428,7 +1527,7 @@ void DbAddDel::set_column_choices(guint col, const type_vec_strings& vecStrings)
     g_assert(!list_renderers.empty());
     CellRendererList* pCellRenderer = dynamic_cast<CellRendererList*>(list_renderers[0]);
     #else
-    CellRendererList* pCellRenderer = 
+    CellRendererList* pCellRenderer =
       dynamic_cast<CellRendererList*>( m_TreeView.get_column_cell_renderer(view_column_index) );
     #endif //GLOM_ENABLE_MAEMO
     if(pCellRenderer)
@@ -1485,7 +1584,7 @@ void DbAddDel::set_find_mode(bool val)
     construct_specified_columns();
   }
 }
-  
+
 void DbAddDel::set_allow_only_one_related_record(bool val)
 {
   m_allow_only_one_related_record = val;
@@ -1696,7 +1795,7 @@ void DbAddDel::on_treeview_cell_edited_bool(const Glib::ustring& path_string, in
     {
       //Change it back, so that we ignore it:
       row.set_value(tree_model_column_index, value_old);
-         
+
       //Signal that a new key was added:
       //We will ignore editing of bool values in the blank row. It seems like a bad way to start a new record.
       //user_added(row);
@@ -1814,7 +1913,7 @@ void DbAddDel::on_treeview_cell_edited(const Glib::ustring& path_string, const G
                     m_TreeView.get_background_area(path, *pColumn, background_area);
 
                     Gdk::Rectangle cell_area;
-                    m_TreeView.get_cell_area(path, *pColumn, background_area); 
+                    m_TreeView.get_cell_area(path, *pColumn, background_area);
                     */
                   }
                 }
@@ -1870,8 +1969,8 @@ bool DbAddDel::on_treeview_columnheader_button_press_event(GdkEventButton* event
   //If this is a right-click with the mouse:
   if( (event->type == GDK_BUTTON_PRESS) && (event->button == 3) )
   {
-    
-    
+
+
   }
 
   return false;
@@ -1886,13 +1985,13 @@ void DbAddDel::on_treeview_column_resized(int model_column_index, DbTreeViewColu
 {
   if(!view_column)
     return;
-  
+
   //Ignore this property change signal handler if we are setting the size in code:
   if(m_bIgnoreTreeViewSignals)
     return;
 
-  //We do not save the column width if this is the last column, 
-  //because that must always be automatic, 
+  //We do not save the column width if this is the last column,
+  //because that must always be automatic,
   //because it must resize when the whole column resizes.
   std::list<const Gtk::TreeView::Column*> columns = m_TreeView.get_columns();
   const int n_view_columns = columns.size();
@@ -1906,7 +2005,7 @@ void DbAddDel::on_treeview_column_resized(int model_column_index, DbTreeViewColu
 
   if(width == -1) //Means automatic.
     return;
-    
+
   if(column_info.m_item)
       column_info.m_item->set_display_width(width);
 }
@@ -1975,16 +2074,16 @@ bool DbAddDel::get_column_to_expand(guint& column_to_expand) const
   //Initialize output parameter:
   column_to_expand = 0;
   bool result = false;
-  
-  //Discover the right-most text column: 
+
+  //Discover the right-most text column:
   guint i = 0;
   for(type_ColumnTypes::const_iterator iter = m_ColumnTypes.begin(); iter != m_ColumnTypes.end(); ++iter)
   {
     sharedptr<LayoutItem> layout_item = iter->m_item;
-           
+
     sharedptr<LayoutItem_Field> layout_item_field = sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
     if(layout_item_field)
-    {  
+    {
       //Only text columns should expand.
       //Number fields are right-aligned, so expansion is annoying.
       //Time and date fields don't vary their width much.
@@ -1997,13 +2096,13 @@ bool DbAddDel::get_column_to_expand(guint& column_to_expand) const
           column_to_expand = i;
           result = true;
         }
-        
+
       }
     }
-    
+
     ++i;
   }
-  
+
   return result;
 }
 
@@ -2011,7 +2110,7 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
 {
   InnerIgnore innerIgnore(this); //see comments for InnerIgnore class
 
-  #ifndef GLOM_ENABLE_MAEMO 
+  #ifndef GLOM_ENABLE_MAEMO
   DbTreeViewColumnGlom* pViewColumn = Gtk::manage( new DbTreeViewColumnGlom(Utils::string_escape_underscores(title), cellrenderer) );
 
   //This is needed by fixed-height mode. We get critical warnings otherwise.
@@ -2020,7 +2119,7 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
 
   guint cols_count = m_TreeView.append_column(*pViewColumn);
   #else
-  //Mathias Hasselmann says that this is required for the Maemo 5 style, 
+  //Mathias Hasselmann says that this is required for the Maemo 5 style,
   //though we don't know yet where that is documented. murrayc.
   cellrenderer.set_property("xpad", HILDON_MARGIN_DEFAULT);
 
@@ -2036,7 +2135,7 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   //Tell the Treeview.how to render the Gnome::Gda::Values:
   if(layout_item_field)
   {
-    pViewColumn->set_cell_data_func(cellrenderer, 
+    pViewColumn->set_cell_data_func(cellrenderer,
       sigc::bind( sigc::mem_fun(*this, &DbAddDel::treeviewcolumn_on_cell_data), model_column_index, data_model_column_index) );
   }
 
@@ -2047,9 +2146,9 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   //Allow the column to be resized:
   pViewColumn->set_resizable();
   #endif //GLOM_ENABLE_MAEMO
-  
+
   #ifndef GLOM_ENABLE_MAEMO
-  //GtkTreeView's fixed-height-mode does not allow us to have anything but 
+  //GtkTreeView's fixed-height-mode does not allow us to have anything but
   //the last column as expandable.
   //TODO: Can we get the total size and calculate a starting size instead?
   expand = false;
@@ -2078,7 +2177,7 @@ guint DbAddDel::treeview_append_column(const Glib::ustring& title, Gtk::CellRend
   #else
   if(column_width > 0) //Otherwise there's an assertion fails.
     pViewColumn->set_fixed_width(column_width); //This is the only way to set the width, so we need to set it as resizable again immediately afterwards.
-    
+
   pViewColumn->set_resizable();
   //This property is read only: pViewColumn->property_width() = column_width;
 
@@ -2260,8 +2359,8 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
   std::vector<Gtk::CellRenderer*> cells = column->get_cells();
   Gtk::CellRenderer* renderer = cells[model_column_index];
 #endif
-  
-  //std::cout << "debug: DbAddDel::treeviewcolumn_on_cell_data()" << std::endl; 
+
+  //std::cout << "debug: DbAddDel::treeviewcolumn_on_cell_data()" << std::endl;
 
   if(iter)
   {
@@ -2279,7 +2378,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
       GType debug_type = value.get_value_type();
       std::cout << "  debug: DbAddDel::treeviewcolumn_on_cell_data(): GdaValue from TreeModel::get_value(): GType=" << debug_type << std::endl;
       if(debug_type)
-         std::cout << "    GType name=\"" << g_type_name(debug_type) << "\"" << std::endl; 
+         std::cout << "    GType name=\"" << g_type_name(debug_type) << "\"" << std::endl;
       */
 
       const Field::glom_field_type type = field->get_glom_type();
@@ -2289,7 +2388,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
         {
           Gtk::CellRendererToggle* pDerived = dynamic_cast<Gtk::CellRendererToggle*>(renderer);
           if(pDerived)
-            pDerived->set_active( (value.get_value_type() == G_TYPE_BOOLEAN) && value.get_boolean() ); 
+            pDerived->set_active( (value.get_value_type() == G_TYPE_BOOLEAN) && value.get_boolean() );
 
           break;
         }
@@ -2299,7 +2398,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
           if(pDerived)
           {
             Glib::RefPtr<Gdk::Pixbuf> pixbuf = Utils::get_pixbuf_for_gda_value(value);
-         
+
             //Scale it down to a sensible size.
             if(pixbuf)
               pixbuf = Utils::image_scale_keeping_ratio(pixbuf,  get_fixed_cell_height(), pixbuf->get_width());
@@ -2326,7 +2425,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
           //Show a different color if the value is numeric, if that's specified:
           if(type == Field::TYPE_NUMERIC)
           {
-             const Glib::ustring fg_color = 
+             const Glib::ustring fg_color =
                field->get_formatting_used().get_text_format_color_foreground_to_use(value);
              if(!fg_color.empty())
                  g_object_set(pDerived->gobj(), "foreground", fg_color.c_str(), (gpointer)0);
@@ -2335,7 +2434,7 @@ void DbAddDel::treeviewcolumn_on_cell_data(Gtk::CellRenderer* renderer, const Gt
           }
 
           break;
-        } 
+        }
       }
     }
   }
@@ -2371,7 +2470,7 @@ bool DbAddDel::get_allow_view_details() const
   return m_allow_view_details;
 }
 
-#ifdef GLOM_ENABLE_CLIENT_ONLY 
+#ifdef GLOM_ENABLE_CLIENT_ONLY
 void DbAddDel::on_self_style_changed(const Glib::RefPtr<Gtk::Style>& /* style */)
 {
   // Reset fixed cell height because the font might have changed due to the new style:
@@ -2419,7 +2518,7 @@ bool DbAddDel::start_new_record()
   Gtk::TreeModel::iterator iter = get_item_placeholder();
   if(!iter)
     return false;
-  
+
   sharedptr<LayoutItem_Field> fieldToEdit;
 
   //Start editing in the primary key or the first cell if the primary key is auto-incremented (because there is no point in editing an auto-generated value)
@@ -2427,7 +2526,7 @@ bool DbAddDel::start_new_record()
   const bool bPresent = true; //get_field_primary_key_index(index_primary_key); //If there is no primary key then the default of 0 is OK.
   if(!bPresent)
     return false;
-   
+
   sharedptr<Field> fieldPrimaryKey = get_key_field();
   if(fieldPrimaryKey && fieldPrimaryKey->get_auto_increment())
   {
@@ -2463,7 +2562,7 @@ bool DbAddDel::start_new_record()
     select_item(iter); //without start_editing.
     //g_warning("start_new_record(): index_field_to_edit does not exist: %d", index_field_to_edit);
   }
-  
+
   return true;
 }
 
@@ -2564,7 +2663,12 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
         set_entered_field_data(row, layout_field, value_old);
       }
       else
+      {
+        //Display the same value in other instances of the same field:
+        set_value(row, layout_field, field_value, false /* don't set the actually-edited cell */);
+
         signal_record_changed().emit();
+      }
     }
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     catch(const Glib::Exception& ex)
@@ -2598,7 +2702,7 @@ void DbAddDel::user_changed(const Gtk::TreeModel::iterator& row, guint col)
     //This record probably doesn't exist yet.
     //Add new record, which will generate the primary key:
     user_added(row);
-    
+
     const Gnome::Gda::Value primaryKeyValue = get_value_key(row); //TODO_Value
     if(!(Conversions::value_is_empty(primaryKeyValue))) //If the Add succeeeded:
     {
@@ -2629,10 +2733,10 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
     dialog.set_secondary_text(_("You attempted to add a new related record, but there can only be one related record, because the relationship uses a unique key.")),
     dialog.set_transient_for(*Application::get_application());
     dialog.run();
-    
+
     return;
   }
-  
+
   //std::cout << "DbAddDel::on_adddel_user_added" << std::endl;
 
   Gnome::Gda::Value primary_key_value;
@@ -2675,7 +2779,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
     fill_from_database();
     return;
   }
-  
+
 
   sharedptr<LayoutItem_Field> layout_field = sharedptr<LayoutItem_Field>::create();
   layout_field->set_full_field_details(primary_key_field);
@@ -2696,7 +2800,7 @@ void DbAddDel::user_added(const Gtk::TreeModel::iterator& row)
     handle_error();
     return;
   }
-  
+
   //Save the primary key value for later use:
   set_value_key(row, primary_key_value);
 
@@ -2776,5 +2880,3 @@ Gtk::TreeModel::iterator DbAddDel::get_row_selected()
 }
 
 } //namespace Glom
-
-

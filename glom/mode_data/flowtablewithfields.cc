@@ -21,6 +21,7 @@
 #include "flowtablewithfields.h"
 #include <glom/mode_data/datawidget/datawidget.h>
 #include <glom/mode_data/buttonglom.h>
+#include <glom/mode_data/datawidget/combochoices.h>
 #include <glom/utility_widgets/notebookglom.h>
 #include <glom/utility_widgets/notebooklabelglom.h>
 #include <glom/utility_widgets/imageglom.h>
@@ -40,8 +41,8 @@
 #include <glibmm/i18n.h>
 
 namespace Glom
-{	
-  
+{
+
 FlowTableWithFields::Info::Info()
 : m_first(0),
   m_first_eventbox(0),
@@ -97,7 +98,7 @@ void FlowTableWithFields::set_table(const Glib::ustring& table_name)
 
 void FlowTableWithFields::add_layout_item(const sharedptr<LayoutItem>& item)
 {
-  add_layout_item_at_position(item, m_list_layoutwidgets.end()); 
+  add_layout_item_at_position(item, m_list_layoutwidgets.end());
 }
 
 void FlowTableWithFields::add_layout_item_at_position(const sharedptr<LayoutItem>& item, const type_list_layoutwidgets::iterator& add_before)
@@ -123,7 +124,7 @@ void FlowTableWithFields::add_layout_item_at_position(const sharedptr<LayoutItem
     sharedptr<LayoutItem_Portal> portal = sharedptr<LayoutItem_Portal>::cast_dynamic(item);
     if(portal)
     {
-      add_layout_portal_at_position(portal, add_before);     
+      add_layout_portal_at_position(portal, add_before);
     }
     else
     {
@@ -154,7 +155,7 @@ void FlowTableWithFields::add_layout_item_at_position(const sharedptr<LayoutItem
                 add_imageobject_at_position(layout_imageobject, m_table_name, add_before);
               else
               {
-                sharedptr<LayoutItem_Placeholder> layout_placeholder = 
+                sharedptr<LayoutItem_Placeholder> layout_placeholder =
                   sharedptr<LayoutItem_Placeholder>::cast_dynamic(item);
                 if(layout_placeholder)
                   add_placeholder_at_position(layout_placeholder, m_table_name, add_before);
@@ -179,7 +180,7 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
 
   if(true)//!fields.empty() && !group_name.empty())
   {
-    Gtk::Frame* frame = Gtk::manage( new Gtk::Frame ); //TODO_leak: This is possibly leaked, according to valgrind. 
+    Gtk::Frame* frame = Gtk::manage( new Gtk::Frame ); //TODO_leak: This is possibly leaked, according to valgrind.
 
     if(!group->get_title().empty())
     {
@@ -210,24 +211,24 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
     flow_table->set_table(m_table_name);
 
     flow_table->set_columns_count(group->get_columns_count());
-    
+
     //Use the parent table's padding:
     flow_table->set_column_padding(get_column_padding());
     flow_table->set_row_padding(get_row_padding());
     flow_table->show();
-    
+
     Gtk::EventBox* event_box = Gtk::manage( new Gtk::EventBox() ); //TODO_Leak: Valgrind says this is possibly leaked.
     event_box->add(*flow_table);
     event_box->set_visible_window(false);
 #ifndef GLOM_ENABLE_CLIENT_ONLY
     event_box->signal_button_press_event().connect (sigc::mem_fun (*flow_table,
       &FlowTableWithFields::on_button_press_event));
-#endif      
+#endif
     event_box->show();
-    
+
     alignment->add(*event_box);
 
-    LayoutGroup::type_list_items items = group->get_items(); 
+    LayoutGroup::type_list_items items = group->get_items();
     for(LayoutGroup::type_list_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
     {
       sharedptr<LayoutItem> item = *iter;
@@ -236,7 +237,7 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
         flow_table->add_layout_item(item);
       }
     }
-    
+
     add(*frame, true /* expand */);
 
     m_sub_flow_tables.push_back(flow_table);
@@ -249,7 +250,7 @@ void FlowTableWithFields::add_layout_group_at_position(const sharedptr<LayoutGro
     flow_table->signal_related_record_changed().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_related_record_changed) );
     flow_table->signal_requested_related_details().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_flowtable_requested_related_details) );
     flow_table->signal_script_button_clicked().connect( sigc::mem_fun(*this, &FlowTableWithFields::on_script_button_clicked) );
-    
+
     flow_table->align_child_group_labels();
   }
 }
@@ -322,7 +323,7 @@ Box_Data_Calendar_Related* FlowTableWithFields::create_related_calendar(const sh
 
     //Connect signals:
     //Just reemit this object's signal when receiving the same signal from the portal:
-    signal_connect_for_reemit_1arg(portal_box->signal_portal_record_changed(), signal_related_record_changed());    
+    signal_connect_for_reemit_1arg(portal_box->signal_portal_record_changed(), signal_related_record_changed());
 
     portal_box->signal_user_requested_details().connect( sigc::bind( sigc::mem_fun(*this, &FlowTableWithFields::on_portal_user_requested_details), portal_box));
 
@@ -340,7 +341,7 @@ void FlowTableWithFields::add_layout_portal_at_position(const sharedptr<LayoutIt
     portal_box = create_related_calendar(calendar_portal);
   else
     portal_box = create_related(portal);
-  
+
   if(portal_box)
   {
     add(*portal_box, true /* expand */);
@@ -403,15 +404,15 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
         flow_table->set_column_padding(get_column_padding());
         flow_table->set_row_padding(get_row_padding());
         flow_table->show();
-        
+
         // Put the new flowtable in an event box to catch events
         Gtk::EventBox* event_box = Gtk::manage( new Gtk::EventBox() ); //TODO_Leak: Valgrind says this is possibly leaked.
         event_box->add(*flow_table);
         event_box->set_visible_window(false);
-#ifndef GLOM_ENABLE_CLIENT_ONLY        
+#ifndef GLOM_ENABLE_CLIENT_ONLY
         event_box->signal_button_press_event().connect (sigc::mem_fun (*flow_table,
                                                                        &FlowTableWithFields::on_button_press_event));
-#endif                                                                       
+#endif
         event_box->show();
         //This doesn't work (probably because we haven't implmented it in our custom container),
         //so we put the flowtable in an alignment and give that a border instead.
@@ -424,7 +425,7 @@ void FlowTableWithFields::add_layout_notebook_at_position(const sharedptr<Layout
         notebook_widget->append_page(*alignment, *tab_label);
 
         //Add child items:
-        LayoutGroup::type_list_items items = group->get_items(); 
+        LayoutGroup::type_list_items items = group->get_items();
         for(LayoutGroup::type_list_items::const_iterator iter = items.begin(); iter != items.end(); ++iter)
         {
           sharedptr<LayoutItem> item = *iter;
@@ -527,7 +528,7 @@ void FlowTableWithFields::add_field_at_position(const sharedptr<LayoutItem_Field
   add_layoutwidgetbase(pDataWidget, add_before);
   add_view(pDataWidget); //So it can get the document.
 
-  info.m_second = pDataWidget; 
+  info.m_second = pDataWidget;
   info.m_second->show_all();
 
   //Add a label, if one is necessary:
@@ -536,7 +537,7 @@ void FlowTableWithFields::add_field_at_position(const sharedptr<LayoutItem_Field
   if(label && !label->get_text().empty())
   {
     label->set_property("xalign", 0.0); //Equivalent to Gtk::ALIGN_LEFT, but we can't use that here.
-    label->set_property("yalign", 0.5); //Equivalent ot Gtk::ALIGN_CENTER, but we can't use that here.; 
+    label->set_property("yalign", 0.5); //Equivalent ot Gtk::ALIGN_CENTER, but we can't use that here.;
 
     label->show();
   }
@@ -556,14 +557,14 @@ void FlowTableWithFields::add_field_at_position(const sharedptr<LayoutItem_Field
     if(label)
       label->set_property("yalign", 0.0); //Equivalent to Gtk::ALIGN_TOP. Center is neater next to entries, but center is silly next to large images.
   }
-  
+
   Gtk::EventBox* eventbox = Gtk::manage(new Gtk::EventBox());
   eventbox->add(*info.m_first);
   info.m_first_eventbox = eventbox; //Remember it so we can retrieve the column number later from FlowTable.
   eventbox->set_visible_window(false);
   eventbox->set_events(Gdk::ALL_EVENTS_MASK);
   eventbox->show_all();
-  
+
   Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
   if(widget)
     insert_before(*eventbox, *(info.m_second), *widget, expand_second);
@@ -595,18 +596,18 @@ void FlowTableWithFields::add_button_at_position(const sharedptr<LayoutItem_Butt
       layoutitem_button) );
 
   button->show();
-    
+
   add_layoutwidgetbase(button, add_before);
   //add_view(button); //So it can get the document.
-  
+
   const FieldFormatting::HorizontalAlignment alignment =
     layoutitem_button->get_formatting_used_horizontal_alignment();
   Gtk::Widget* widget_to_add = button;
   bool expand = false;
   if(alignment != FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT)
   {
-    //Put the button in a Gtk::HBox so we can have non-default alignment in 
-    //its space. Note that we will need a different technique if we ever 
+    //Put the button in a Gtk::HBox so we can have non-default alignment in
+    //its space. Note that we will need a different technique if we ever
     //support center alignment.
     Gtk::HBox* box_button = Gtk::manage(new Gtk::HBox());
     box_button->show();
@@ -614,7 +615,7 @@ void FlowTableWithFields::add_button_at_position(const sharedptr<LayoutItem_Butt
       box_button->pack_end(*button, Gtk::PACK_SHRINK);
     else
       box_button->pack_start(*button, Gtk::PACK_SHRINK);
-      
+
     widget_to_add = box_button;
     expand = true;
   }
@@ -631,20 +632,20 @@ void FlowTableWithFields::add_button_at_position(const sharedptr<LayoutItem_Butt
 void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_Text>& layoutitem_text, const Glib::ustring& table_name , const type_list_layoutwidgets::iterator& add_before)
 {
   //Add the widget:
-  
+
   const FieldFormatting::HorizontalAlignment alignment =
     layoutitem_text->get_formatting_used_horizontal_alignment();
   const Gtk::AlignmentEnum x_align = (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT ? Gtk::ALIGN_LEFT : Gtk::ALIGN_RIGHT);
   Gtk::Alignment* alignment_label = Gtk::manage(new Gtk::Alignment());
   alignment_label->set(x_align, Gtk::ALIGN_CENTER);
   alignment_label->show();
-  
+
   const Glib::ustring text = layoutitem_text->get_text();
   DataWidgetChildren::Label* label = Gtk::manage(new DataWidgetChildren::Label(text));
   label->set_layout_item(layoutitem_text, table_name);
   label->show();
   alignment_label->add(*label);
-  
+
   apply_formatting(*label, layoutitem_text);
 
   add_layoutwidgetbase(label, add_before);
@@ -669,7 +670,7 @@ void FlowTableWithFields::add_textobject_at_position(const sharedptr<LayoutItem_
     title_label->show();
     alignment_title->add(*title_label);
     add_layoutwidgetbase(title_label, add_before);
-    
+
     Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(*add_before);
     if(widget)
       insert_before (*alignment_title, *alignment_label, *widget, true /* expand */);
@@ -686,7 +687,7 @@ void FlowTableWithFields::add_placeholder_at_position(const sharedptr<LayoutItem
     delete m_placeholder;
     m_placeholder = 0;
   }
-  
+
   //Add the widget:
   m_placeholder = Gtk::manage(new Gtk::Alignment());
   m_placeholder->set(Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER);
@@ -782,15 +783,18 @@ void FlowTableWithFields::remove_field(const Glib::ustring& id)
 
       iter = m_listFields.erase(iter);
     }
-  } 
+  }
 }
 
 void FlowTableWithFields::set_field_value(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
 {
-  // TODO: Avoid duplication. Maybe we can call set_other_field_value plus
-  // set the value for field's widget directly.
+  set_field_value(field, value, true);
+}
+
+void FlowTableWithFields::set_field_value(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value, bool set_specified_field_layout)
+{
   //Set widgets which should show the value of this field:
-  type_list_widgets list_widgets = get_field(field, true);
+  type_list_widgets list_widgets = get_field(field, set_specified_field_layout);
   for(type_list_widgets::iterator iter = list_widgets.begin(); iter != list_widgets.end(); ++iter)
   {
     DataWidget* datawidget = dynamic_cast<DataWidget*>(*iter);
@@ -800,7 +804,7 @@ void FlowTableWithFields::set_field_value(const sharedptr<const LayoutItem_Field
     }
   }
 
-  //Refresh widgets which should show the related records for relationships that use this field:
+  //Refresh portal widgets which should show the related records for relationships that use this field:
   type_portals list_portals = get_portals(field /* from_key field name */);
   for(type_portals::iterator iter = list_portals.begin(); iter != list_portals.end(); ++iter)
   {
@@ -809,34 +813,25 @@ void FlowTableWithFields::set_field_value(const sharedptr<const LayoutItem_Field
     {
       //g_warning("FlowTableWithFields::set_field_value: foreign_key_value=%s", value.to_string().c_str());
       portal->refresh_data_from_database_with_foreign_key(value /* foreign key value */);
+    }
+  }
+
+  //Refresh choices widgets which should show the related records for relationships that use this field:
+  type_choice_widgets list_choice_widgets = get_choice_widgets(field /* from_key field name */);
+  for(type_choice_widgets::iterator iter = list_choice_widgets.begin(); iter != list_choice_widgets.end(); ++iter)
+  {
+    DataWidgetChildren::ComboChoices* widget = *iter;
+    if(widget)
+    {
+      //g_warning("FlowTableWithFields::set_field_value: foreign_key_value=%s", value.to_string().c_str());
+      widget->refresh_data_from_database_with_foreign_key(get_document(), value /* foreign key value */);
     }
   }
 }
 
 void FlowTableWithFields::set_other_field_value(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value)
 {
-  //Set widgets which should show the value of this field:
-  type_list_widgets list_widgets = get_field(field, false);
-  for(type_list_widgets::iterator iter = list_widgets.begin(); iter != list_widgets.end(); ++iter)
-  {
-    DataWidget* datawidget = dynamic_cast<DataWidget*>(*iter);
-    if(datawidget)
-    {
-      datawidget->set_value(value);
-    }
-  }
-
-  //Refresh widgets which should show the related records for relationships that use this field:
-  type_portals list_portals = get_portals(field /* from_key field name */);
-  for(type_portals::iterator iter = list_portals.begin(); iter != list_portals.end(); ++iter)
-  {
-    Box_Data_Portal* portal = *iter;
-    if(portal)
-    {
-      //g_warning("FlowTableWithFields::set_field_value: foreign_key_value=%s", value.to_string().c_str());
-      portal->refresh_data_from_database_with_foreign_key(value /* foreign key value */);
-    }
-  }
+  set_field_value(field, value, false);
 }
 
 Gnome::Gda::Value FlowTableWithFields::get_field_value(const sharedptr<const LayoutItem_Field>& field) const
@@ -913,12 +908,70 @@ FlowTableWithFields::type_portals FlowTableWithFields::get_portals(const sharedp
   return result;
 }
 
+FlowTableWithFields::type_choice_widgets FlowTableWithFields::get_choice_widgets(const sharedptr<const LayoutItem_Field>& from_key)
+{
+  type_choice_widgets result;
+  if(!from_key)
+    return result;
+
+  const Glib::ustring from_key_name = from_key->get_name();
+
+  //Check the single-item widgets:
+  for(type_listFields::iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
+  {
+    DataWidget* widget = iter->m_second;
+    if(!widget)
+      continue;
+
+    Gtk::Widget* child_widget = widget->get_data_child_widget();
+    DataWidgetChildren::ComboChoices* combochoices = dynamic_cast<DataWidgetChildren::ComboChoices*>(child_widget);
+    if(!combochoices)
+      continue;
+
+    const sharedptr<const LayoutItem> layout_item =
+      combochoices->get_layout_item();
+    const sharedptr<const LayoutItem_Field> field =
+       sharedptr<const LayoutItem_Field>::cast_dynamic(layout_item);
+    if(!field)
+      continue;
+
+    const FieldFormatting& format = field->get_formatting_used();
+
+    sharedptr<const Relationship> choice_relationship;
+    Glib::ustring choice_field, choice_second;
+    bool choice_show_all = false;
+    format.get_choices_related(choice_relationship, choice_field, choice_second, choice_show_all);
+    if(choice_show_all)
+      continue; //"Show All" choices don't use the ID field values.
+
+    if(choice_relationship->get_from_field() == from_key_name)
+      result.push_back(combochoices);
+  }
+
+  //Check the sub-flowtables:
+  for(type_sub_flow_tables::const_iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
+  {
+    FlowTableWithFields* subtable = *iter;
+    if(subtable)
+    {
+      const type_choice_widgets sub_list = subtable->get_choice_widgets(from_key);
+      if(!sub_list.empty())
+      {
+        //Add to the main result:
+        result.insert(result.end(), sub_list.begin(), sub_list.end());
+      }
+    }
+  }
+
+  return result;
+}
+
 namespace
 {
   // Get the direct widgets represesenting a given layout item
   // from a flowtable, without considering subflowtables:
   template<typename InputIterator, typename OutputIterator>
-  void get_direct_fields(InputIterator begin, InputIterator end, OutputIterator out, const sharedptr<const LayoutItem_Field>& layout_item, bool include_item)
+  static void get_direct_fields(InputIterator begin, InputIterator end, OutputIterator out, const sharedptr<const LayoutItem_Field>& layout_item, bool include_item)
   {
     for(InputIterator iter = begin; iter != end; ++iter)
     {
@@ -1003,7 +1056,7 @@ void FlowTableWithFields::remove_all()
       delete pSub;
     }
   }
- 
+
   m_sub_flow_tables.clear();
 
 
@@ -1118,7 +1171,7 @@ void FlowTableWithFields::add_layoutwidgetbase(LayoutWidgetBase* layout_widget, 
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 void FlowTableWithFields::on_layoutwidget_changed()
 {
-  //Forward the signal to the container, 
+  //Forward the signal to the container,
   //so it can make sure that the change is saved in the document.
   signal_layout_changed().emit();
 }
@@ -1148,7 +1201,7 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
     return;
   }
 
-  
+
   //Create/Choose the new layout item:
   sharedptr<LayoutItem> layout_item_new;
   if(item_type == LayoutWidgetBase::TYPE_FIELD)
@@ -1157,7 +1210,7 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
     if(layout_item_field)
     {
       //TODO: privileges.
-      layout_item_new = layout_item_field; 
+      layout_item_new = layout_item_field;
     }
   }
   else if(item_type == LayoutWidgetBase::TYPE_GROUP)
@@ -1207,7 +1260,7 @@ void FlowTableWithFields::on_datawidget_layout_item_added(LayoutWidgetBase::enum
   if(layout_item_new)
   {
     layout_group->add_item(layout_item_new, layout_item);
-  
+
     //We have changed the structure itself in the document, because we are using the same structure via sharedptr.
     //So we just tell the parent widgets to rebuild the layout from the document:
     signal_layout_changed().emit(); //This should result in a complete re-layout.
@@ -1256,44 +1309,44 @@ void FlowTableWithFields::apply_size_groups_to_labels(const type_vec_sizegroups&
     Glib::RefPtr<Gtk::SizeGroup> previous_size_group = info.m_first_in_sizegroup;
     if(!label || !previous_size_group)
       continue;
-      
+
     previous_size_group->remove_widget(*label);
     info.m_first_in_sizegroup.reset();
   }
-  
+
   m_vec_size_groups = size_groups;
-  
+
   if(m_vec_size_groups.empty())
     return;
-     
+
   for(type_listFields::iterator iter = m_listFields.begin(); iter != m_listFields.end(); ++iter)
   {
     Info info = *iter;
     Gtk::Label* label = info.m_first;
     if(!label)
       continue;
-      
+
     Gtk::EventBox* label_parent = info.m_first_eventbox;
     if(!label_parent)
       continue;
-            
-    //Only align labels in the first column, because items in separate columns 
+
+    //Only align labels in the first column, because items in separate columns
     //couldn't be aligned vertically anyway, and this would cause extra space.
     //TODO: Use a different SizeGroup for items in 2nd columns?
     guint column = 0;
     const bool column_allocated = get_column_for_first_widget(*label_parent, column);
     if(!column_allocated)
-      
+
     if(column >= m_vec_size_groups.size())
       continue;
-      
+
     Glib::RefPtr<Gtk::SizeGroup> size_group = m_vec_size_groups[column];
     if(size_group && (info.m_first_in_sizegroup != size_group))
     {
       size_group->add_widget(*label);
       info.m_first_in_sizegroup = size_group; //Remember it so we can remove it later.
     }
-  } 
+  }
 }
 
 void FlowTableWithFields::align_child_group_labels()
@@ -1301,7 +1354,7 @@ void FlowTableWithFields::align_child_group_labels()
   //Don't bother if there are not >1 groups to align:
   if(m_sub_flow_tables.size() < 2)
     return;
-    
+
   //Create a size group for each column and tell all groups to use them for their labels:
   const guint max_columns = get_sub_flowtables_max_columns();
   type_vec_sizegroups vec_sizegroups(max_columns);
@@ -1309,7 +1362,7 @@ void FlowTableWithFields::align_child_group_labels()
   {
     vec_sizegroups[i] = Gtk::SizeGroup::create(Gtk::SIZE_GROUP_HORIZONTAL);
   }
-   
+
   for(type_sub_flow_tables::iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
   {
     FlowTableWithFields* subtable = *iter;
@@ -1321,7 +1374,7 @@ void FlowTableWithFields::align_child_group_labels()
 guint FlowTableWithFields::get_sub_flowtables_max_columns() const
 {
   guint result = get_columns_count();
-  
+
   for(type_sub_flow_tables::const_iterator iter = m_sub_flow_tables.begin(); iter != m_sub_flow_tables.end(); ++iter)
   {
     const FlowTableWithFields* subtable = *iter;
@@ -1332,31 +1385,31 @@ guint FlowTableWithFields::get_sub_flowtables_max_columns() const
           result = count;
     }
   }
-  
+
   return result;
 }
-  
+
 
 void FlowTableWithFields::on_size_allocate(Gtk::Allocation& allocation)
 {
   FlowTable::on_size_allocate(allocation);
-  
+
   sharedptr<const LayoutGroup> group = get_layout_group();
   Glib::ustring group_name;
   if(group)
      group_name = group->get_name();
 
-  //The widgets have now been allocated their sizes and columns, 
+  //The widgets have now been allocated their sizes and columns,
   //so this should be able to work:
   if(m_columns_allocated_changed)
   {
     apply_size_groups_to_labels(m_vec_size_groups);
-    
+
     //Prevent unnecessary repeated (endless?) size allocation requested:
     m_columns_allocated_changed = false;
   }
 }
-  
+
 #ifndef GLOM_ENABLE_CLIENT_ONLY
 
 void FlowTableWithFields::on_dnd_add_layout_item_by_type(int item_type_num, Gtk::Widget* above_widget)
@@ -1397,8 +1450,8 @@ void FlowTableWithFields::on_dnd_add_layout_item_by_type(int item_type_num, Gtk:
 void FlowTableWithFields::on_dnd_add_layout_item_field(LayoutWidgetBase* above)
 {
   //Ask the user to choose the layout item
-  sharedptr<LayoutItem_Field> layout_item_field = 
-    DataWidget::offer_field_list(m_table_name, sharedptr<LayoutItem_Field>(), 
+  sharedptr<LayoutItem_Field> layout_item_field =
+    DataWidget::offer_field_list(m_table_name, sharedptr<LayoutItem_Field>(),
       get_document(), Application::get_application());
   if(!layout_item_field)
   {
@@ -1408,7 +1461,7 @@ void FlowTableWithFields::on_dnd_add_layout_item_field(LayoutWidgetBase* above)
 
   sharedptr<LayoutItem> item = sharedptr<LayoutItem>::cast_dynamic(layout_item_field);
   dnd_add_to_layout_group(item, above);
-  
+
   //Tell the parent to tell the document to save the layout
   signal_layout_changed().emit();
 }
@@ -1423,9 +1476,9 @@ void FlowTableWithFields::on_dnd_add_layout_notebook (LayoutWidgetBase* above)
   group->set_title(_("New Group"));
   group->set_name(_("Group"));
   notebook->m_list_items.push_back(group);
-  
+
   dnd_add_to_layout_group(item, above);
-  
+
   //Tell the parent to tell the document to save the layout
   signal_layout_changed().emit();
 }
@@ -1433,26 +1486,26 @@ void FlowTableWithFields::on_dnd_add_layout_notebook (LayoutWidgetBase* above)
 void FlowTableWithFields::on_dnd_add_layout_portal (LayoutWidgetBase* above)
 {
   sharedptr<LayoutItem_Portal> portal = get_portal_relationship();
-  
+
   if(portal)
   {
     sharedptr<LayoutItem> item = sharedptr<LayoutItem>::cast_dynamic(portal);
     dnd_add_to_layout_group(item, above);
-    
+
     //Tell the parent to tell the document to save the layout
     signal_layout_changed().emit();
   }
 }
 
 void FlowTableWithFields::on_dnd_add_layout_group(LayoutWidgetBase* above)
-{  
+{
   sharedptr<LayoutGroup> group(new LayoutGroup());
   group->set_title(_("New Group"));
   group->set_name(_("Group"));
-  
+
   sharedptr<LayoutItem> item = sharedptr<LayoutItem>::cast_dynamic(group);
   dnd_add_to_layout_group (item, above);
-  
+
   //Tell the parent to tell the document to save the layout
   signal_layout_changed().emit();
 }
@@ -1498,7 +1551,7 @@ void FlowTableWithFields::on_dnd_add_layout_item_image(LayoutWidgetBase* above)
 void FlowTableWithFields::on_dnd_add_layout_item(LayoutWidgetBase* above, const sharedptr<LayoutItem>& item)
 {
   dnd_add_to_layout_group(item, above);
-  
+
   // Don't do this here - it's done in the drag_end handler
   // signal_layout_changed().emit();
 }
@@ -1520,37 +1573,37 @@ void FlowTableWithFields::on_dnd_add_placeholder(Gtk::Widget* above_widget)
                                                             m_list_layoutwidgets.end(),
                                                             above);
   sharedptr<LayoutItem_Placeholder> placeholder_field(new LayoutItem_Placeholder);
-  sharedptr<LayoutItem> item = sharedptr<LayoutItem>::cast_dynamic(placeholder_field);  
+  sharedptr<LayoutItem> item = sharedptr<LayoutItem>::cast_dynamic(placeholder_field);
   add_layout_item_at_position(placeholder_field, cur_widget);
 
   dnd_add_to_layout_group(item, above, true /* ignore error*/);
 }
 
 void FlowTableWithFields::on_dnd_remove_placeholder()
-{ 
+{
   if(m_placeholder)
   {
     //Get the layout group that the "above" widget's layout item is in
     sharedptr<LayoutGroup> layout_group = get_layout_group();
     if(layout_group)
-    { 
+    {
       LayoutGroup::type_list_items items = layout_group->get_items();
       for (LayoutGroup::type_list_items::iterator item = items.begin();
            item != items.end(); ++item)
       {
-        sharedptr<LayoutItem_Placeholder> placeholder = 
+        sharedptr<LayoutItem_Placeholder> placeholder =
           sharedptr<LayoutItem_Placeholder>::cast_dynamic(*item);
 
         if(placeholder)
         {
           layout_group->remove_item(*item);
         }
-      }   
+      }
     }
 
     remove(*m_placeholder);
   }
-  
+
   m_placeholder = 0;
 }
 
@@ -1574,7 +1627,7 @@ bool FlowTableWithFields::dnd_add_to_layout_group(const sharedptr<LayoutItem>& i
 
     return false;
   }
-      
+
   if(layoutwidget && layoutwidget->get_layout_item())
     layout_group->add_item(item, layoutwidget->get_layout_item());
   else
@@ -1587,7 +1640,7 @@ void FlowTableWithFields::on_menu_properties_activate()
 {
   Dialog_FlowTable* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
-  
+
   dialog->set_flowtable(this);
   const int response = dialog->run();
   if(response == Gtk::RESPONSE_OK)
@@ -1599,7 +1652,7 @@ void FlowTableWithFields::on_menu_properties_activate()
   }
 
   delete dialog;
- 
+
 }
 
 void FlowTableWithFields::on_menu_delete_activate()
@@ -1650,7 +1703,7 @@ sharedptr<LayoutItem_Portal> FlowTableWithFields::get_portal_relationship()
 {
   Dialog_ChooseRelationship* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
-    
+
   Document* pDocument = static_cast<Document*>(get_document());
   dialog->set_document(pDocument, m_table_name);
   //TODO: dialog->set_transient_for(*get_app_window());
@@ -1668,7 +1721,7 @@ sharedptr<LayoutItem_Portal> FlowTableWithFields::get_portal_relationship()
       return layout_item;
     }
   }
-      
+
   delete dialog;
   return sharedptr<LayoutItem_Portal>();
 }
@@ -1680,7 +1733,7 @@ void FlowTableWithFields::set_child_widget_dnd_in_progress(Gtk::Widget* child, b
   if(!child)
     return;
 
-  base->set_dnd_in_progress(in_progress); 
+  base->set_dnd_in_progress(in_progress);
 }
 
 bool FlowTableWithFields::get_child_widget_dnd_in_progress(Gtk::Widget* child) const

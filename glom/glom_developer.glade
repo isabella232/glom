@@ -6818,6 +6818,25 @@ Which user should be added to this group?</property>
                                     <property name="y_options"></property>
                                   </packing>
                                 </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                                <child>
+                                  <object class="GtkCheckButton" id="checkbutton_choices_related_show_all">
+                                    <property name="label" translatable="yes">Show all records</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">False</property>
+                                    <property name="tooltip_text" translatable="yes">If this option is selected then the choices will list values from all records in the related table. If this option is not selected then the choices will list values only from related records.</property>
+                                    <property name="draw_indicator">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="right_attach">2</property>
+                                    <property name="top_attach">3</property>
+                                    <property name="bottom_attach">4</property>
+                                  </packing>
+                                </child>
                               </object>
                             </child>
                           </object>

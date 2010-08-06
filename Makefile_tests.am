@@ -1,4 +1,4 @@
-## Copyright (c) 2009  Openismus GmbH  <http://www.openismus.com/>
+## Copyright (c) 2009, 2010  Openismus GmbH  <http://www.openismus.com/>
 ##
 ## This file is part of Glom.
 ##
@@ -69,8 +69,8 @@ dist_noinst_SCRIPTS = tests/test_dtd_file_validation.sh \
 
 #TESTS_ENVIRONMENT=which valgrind && valgrind --tool=memcheck --leak-check=full --leak-resolution=high --trace-children=yes --num-callers=30
 
-LIBGLOM_LA = glom/libglom/libglom-$(GLOM_ABI_VERSION).la $(LIBGLOM_LIBS)
-tests_ldadd = $(LIBGLOM_LA)
+# This also links to the libraries in LIBGLOM_LIBS
+tests_ldadd = glom/libglom/libglom-$(GLOM_ABI_VERSION).la
 
 glom_libglom_test_connectionpool_SOURCES = glom/libglom/test_connectionpool.cc
 glom_libglom_example_document_load_SOURCES = glom/libglom/example_document_load.cc
@@ -136,14 +136,14 @@ glom_utility_widgets_test_flowtable_LDADD = $(GLOM_LIBS)
 #	glom/utility_widgets/test_flowtable_dnd.cc
 
 tests_glade_toplevels_instantiation_SOURCES = tests/glade_toplevels_instantiation.cc
-tests_glade_toplevels_instantiation_LDADD = $(tests_ldadd) $(LIBGLOM_LIBS) $(GLOM_LIBS)
+tests_glade_toplevels_instantiation_LDADD = $(tests_ldadd) $(GLOM_LIBS)
 
 
 glom_test_pyembed_LDADD = $(LIBGLOM_LIBS) $(PYTHON_LIBS)
 
 tests_test_parsing_time_LDADD = $(tests_ldadd)
-tests_test_document_load_LDADD = $(tests_ldadd) $(LIBGLOM_LIBS)
-tests_test_document_autosave_LDADD = $(tests_ldadd) $(LIBGLOM_LIBS)
+tests_test_document_load_LDADD = $(tests_ldadd)
+tests_test_document_autosave_LDADD = $(tests_ldadd)
 tests_test_signal_reemit_LDADD = $(LIBGLOM_LIBS)
 tests_test_load_python_library_LDADD = $(LIBGLOM_LIBS) -ldl
 tests_test_python_module_LDADD = $(tests_ldadd) $(PYTHON_LIBS)
@@ -152,8 +152,8 @@ tests_test_python_execute_func_bad_syntax_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(
 tests_test_python_execute_func_date_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
 tests_test_python_execute_func_change_result_type_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
 tests_test_python_execute_script_LDADD = $(tests_ldadd) $(GLOM_LIBS) $(PYTHON_LIBS)
-tests_import_test_parsing_LDADD = $(LIBGLOM_LIBS) $(GLOM_LIBS)
-tests_import_test_signals_LDADD = $(LIBGLOM_LIBS) $(GLOM_LIBS)
+tests_import_test_parsing_LDADD = $(GLOM_LIBS)
+tests_import_test_signals_LDADD = $(GLOM_LIBS)
 tests_test_glade_derived_instantiation_LDADD = $(glom_all_libs)
 tests_test_selfhosting_new_empty_LDADD = $(glom_all_libs)
 tests_test_selfhosting_new_from_example_LDADD = $(glom_all_libs)

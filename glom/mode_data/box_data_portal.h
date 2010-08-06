@@ -60,7 +60,6 @@ public:
   /** Update a portal if a relevant value in its parent table has changed.
    *
    * @param foreign_key_value: The value that should be found in this table.
-   * @param from_table_primary_key_value The primary key of the parent record's table, used to associate new related records.
    */
   bool refresh_data_from_database_with_foreign_key(const Gnome::Gda::Value& foreign_key_value);
 

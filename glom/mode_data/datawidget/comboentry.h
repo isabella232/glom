@@ -43,7 +43,7 @@ namespace DataWidgetChildren
  * including values that are not in the choices.
  */
 class ComboEntry
-: 
+:
 #ifndef GLOM_ENABLE_MAEMO
   public Gtk::ComboBoxEntry,
 #else
@@ -54,9 +54,6 @@ class ComboEntry
 public:
   ///You must call set_layout_item() to specify the field type and formatting of the main column.
   ComboEntry();
-
-  ///You must call set_layout_item() to specify the field type and formatting of the main column.
-  explicit ComboEntry(const sharedptr<LayoutItem_Field>& field_second);
 
   virtual ~ComboEntry();
 
@@ -74,6 +71,8 @@ public:
 
   virtual void set_read_only(bool read_only = true);
 
+  virtual void set_choices_related(const Document* document, const sharedptr<const Relationship>& relationship, const Glib::ustring& field, const Glib::ustring& field_second, bool show_all);
+
 private:
   void init();
 
@@ -84,7 +83,7 @@ private:
   virtual void on_entry_activate(); //From Gtk::Entry.
   virtual bool on_entry_focus_out_event(GdkEventFocus* event); //From Gtk::Widget
 
-  
+
   #ifndef GLOM_ENABLE_MAEMO
   // Note that this is a normal signal handler when glibmm was complied
   // without default signal handlers
@@ -92,7 +91,7 @@ private:
   #else
   void on_changed(int column);
   #endif //GLOM_ENABLE_MAEMO
-  
+
 
   virtual void check_for_change();
 
@@ -101,20 +100,21 @@ private:
 #endif // !GLOM_ENABLE_CLIENT_ONLY
 
   virtual Application* get_application();
-  
+
   Gtk::Entry* get_entry();
   const Gtk::Entry* get_entry() const;
 
   Glib::ustring m_old_text;
   //Gnome::Gda::Value m_value; //The last-stored value. We have this because the displayed value might be unparseable.
-   
+
   #ifdef GLOM_ENABLE_MAEMO
   Hildon::TouchSelectorEntry m_maemo_selector;
   #endif
+
+  Gtk::CellRenderer* m_cell_second;
 };
 
 } //namespace DataWidetChildren
 } //namespace Glom
 
 #endif //GLOM_UTILITY_WIDGETS_COMBOENTRY_GLOM_H
-

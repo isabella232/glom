@@ -61,6 +61,7 @@ public:
 };
 
 class DbTreeViewColumnGlom;
+class CellRendererList;
 
 /** For adding/deleting/selecting record rows.
  */
@@ -79,26 +80,26 @@ public:
 
   virtual void set_allow_add(bool val = true);
   virtual void set_allow_delete(bool val = true);
-    
+
   /** Prevent any attempts by this class to change actual records,
    * if the widget is just being used to enter find critera.
-   * 
+   *
    * @param val True if find mode should be used.
    */
   void set_find_mode(bool val = true);
-    
+
   /** Prevent more than one record from being added,
-   * Use this if the portal is showing related records, 
+   * Use this if the portal is showing related records,
    * and if the relationship's to-field is unique or a primary key.
-   * In this case, adding a new record would require a duplicate value in that 
+   * In this case, adding a new record would require a duplicate value in that
    * unique field.
-   * When the user tries to do this, he will see an explanatory dialog from this 
+   * When the user tries to do this, he will see an explanatory dialog from this
    * widget.
-   * 
+   *
    * @param val True if multiple records  should be presented.
    */
   void set_allow_only_one_related_record(bool val = true);
-    
+
 
   //Gtk::TreeModel::iterator add_item(const Gnome::Gda::Value& valKey); //Return index of new row.
 
@@ -123,8 +124,8 @@ public:
   Gtk::TreeModel::iterator get_item_selected();
   Gtk::TreeModel::iterator get_item_selected() const; //There is no TreeModel::const_iterator
 
-  /** 
-   * @param iter The row to be selected. 
+  /**
+   * @param iter The row to be selected.
    * @param column A value returned from add_column().
    * @param start_editing Whether editing should start in the cell.
    * @result Whether the row was successfully selected.
@@ -134,14 +135,14 @@ public:
 
   guint get_count() const;
 
-  /** 
-   * @param iter The row to be changed. 
+  /**
+   * @param iter The row to be changed.
    * @param layout_item Describes the column(s) whose values should be changed.
    * @param value The new value.
    */
   virtual void set_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value);
 
-  /** 
+  /**
    * @param col A value returned from add_column().
    * @param value The new value.
    */
@@ -205,7 +206,7 @@ public:
   void finish_editing(); //Closes active edit controls and commits the data to the cell.
   //virtual void reactivate(); //Sheet doesn't seem to update unless a cell is active.
   void set_prevent_user_signals(bool bVal = true);
-    
+
   //TODO_refactor: make private.
 
   void user_added(const Gtk::TreeModel::iterator& row);
@@ -243,41 +244,42 @@ public:
    */
   typedef sigc::signal<void, const Gtk::TreeModel::iterator&, const Gnome::Gda::Value&> type_signal_record_added;
   type_signal_record_added signal_record_added();
-    
 
-  /** Emitted when the user changed the sort order, 
+
+  /** Emitted when the user changed the sort order,
    * for instance by clicking on a column header.
    */
   typedef sigc::signal<void> type_signal_sort_clause_changed;
   type_signal_sort_clause_changed signal_sort_clause_changed();
 
- 
+
   virtual Gtk::TreeModel::iterator get_last_row();
   virtual Gtk::TreeModel::iterator get_last_row() const;
 
   virtual void set_open_button_title(const Glib::ustring& title);
-  
-  
+
+
   /** Add a new row to the list, for the user to enter record details,
    * adding the generated primary key if necessary.
    */
   bool start_new_record();
 
 private:
-  
-  
+
+  void set_value(const Gtk::TreeModel::iterator& iter, const sharedptr<const LayoutItem_Field>& layout_item, const Gnome::Gda::Value& value, bool set_specified_field_layout);
+
   //Overrides of Base_DB/Base_DB_Table methods:
   virtual void set_entered_field_data(const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
   virtual void set_entered_field_data(const Gtk::TreeModel::iterator& row, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& value);
   virtual Gnome::Gda::Value get_entered_field_data(const sharedptr<const LayoutItem_Field>& field) const;
   virtual Gtk::TreeModel::iterator get_row_selected();
- 
+
   //Implementations of pure virtual methods from Base_DB_Table_Data:
   virtual sharedptr<Field> get_field_primary_key() const;
   virtual Gnome::Gda::Value get_primary_key_value_selected() const;
   virtual void set_primary_key_value(const Gtk::TreeModel::iterator& row, const Gnome::Gda::Value& value);
   virtual Gnome::Gda::Value get_primary_key_value(const Gtk::TreeModel::iterator& row) const;
-      
+
   Gtk::CellRenderer* construct_specified_columns_cellrenderer(const sharedptr<LayoutItem>& layout_item, int model_column_index, int data_model_column_index);
 
   bool get_model_column_index(guint view_column_index, guint& model_column_index);
@@ -285,10 +287,15 @@ private:
 
   typedef std::list<guint> type_list_indexes;
   ///Return the column indexes of any columns that display this field.
-  virtual type_list_indexes get_column_index(const sharedptr<const LayoutItem>& layout_item) const;
+  type_list_indexes get_column_index(const sharedptr<const LayoutItem>& layout_item) const;
 
-  ///Return the query column index of any columns that display this field:
-  type_list_indexes get_data_model_column_index(const sharedptr<const LayoutItem_Field>& layout_item_field) const;
+  /// Get indexes of any columns with choices with !show_all relationships that have @a from_key as the from_key.
+  type_list_indexes get_choice_index(const sharedptr<const LayoutItem_Field>& from_key);
+
+  /** Return the query column index of any columns that display this field:
+   * @param including_specified_field_layout If false, then don't return the actual layout item itself.
+   */
+  type_list_indexes get_data_model_column_index(const sharedptr<const LayoutItem_Field>& layout_item_field, bool including_specified_field_layout = true) const;
 
 protected:
   virtual void setup_menu();
@@ -352,13 +359,13 @@ private:
   Glib::RefPtr<const Hildon::TouchSelectorColumn> touch_selector_get_column() const;
   #endif
 
-#ifdef GLOM_ENABLE_CLIENT_ONLY 
+#ifdef GLOM_ENABLE_CLIENT_ONLY
   // Don't name it on_style_changed, otherwise we would override a virtual
   // function from Gtk::Widget. We could indeed do that, but we do it with
   // a normal signal handler, because we have to do it this way anyway in
   // case default signal handlers have been disabled in glibmm.
   void on_self_style_changed(const Glib::RefPtr<Gtk::Style>& style);
-#endif //GLOM_ENABLE_CLIENT_ONLY 
+#endif //GLOM_ENABLE_CLIENT_ONLY
 
   bool get_prevent_user_signals() const;
 
@@ -382,6 +389,9 @@ private:
 
   //TODO: Remove this and use AppGlom::get_application() instead?
   Application* get_application();
+
+  void set_cell_choices(CellRendererList* cell, const sharedptr<const LayoutItem_Field>& layout_choice_first,  const sharedptr<const LayoutItem_Field>& layout_choice_second, const Utils::type_list_values_with_second& list_values);
+  void refresh_cell_choices_data_from_database_with_foreign_key(guint model_index, const Gnome::Gda::Value& foreign_key_value);
 
   static void apply_formatting(Gtk::CellRenderer* renderer, const sharedptr<const LayoutItem_WithFormatting>& layout_item);
 
@@ -408,7 +418,7 @@ private:
   FoundSet m_found_set; //table, where_clause, sort_clause.
 
   bool m_column_is_sorted; //If empty, then m_column_sorted and m_column_sorted_direction should not be used.
-  bool m_column_sorted_direction; //true means ascending. 
+  bool m_column_sorted_direction; //true means ascending.
   guint m_column_sorted; //Previously-clicked (on the treeview header) column. Remember it so we can reverse the sort order on a second click.
 
 protected:
@@ -433,13 +443,13 @@ private:
   bool m_bIgnoreTreeViewSignals;
 
   type_vec_strings m_vecColumnIDs; //We give each ViewColumn a special ID, so we know where they are after a reorder.
-  
+
 protected:
   bool m_allow_add;
   bool m_allow_delete;
 
 private:
-    
+
   bool m_find_mode;
   bool m_allow_only_one_related_record;
 
@@ -463,7 +473,7 @@ private:
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   type_signal_user_requested_layout m_signal_user_requested_layout;
 #endif // !GLOM_ENABLE_CLIENT_ONLY
-    
+
   //TODO: Do this properly:
   //type_signal_user_added m_signal_record_count_changed;
 
@@ -502,17 +512,17 @@ private:
 
     Gtk::TreeModelColumn<Glib::ustring> m_col_hint;
   };
- 
+
   ModelColumnsEmptyHint m_columns_hint;
   Glib::RefPtr<Gtk::ListStore> m_model_hint;
 
   int m_fixed_cell_height;
-  
+
 private:
-  
+
   /// Discover the right-most text column, so we can make it expand.
   bool get_column_to_expand(guint& column_to_expand) const;
-  
+
   //TODO_refactor: Give these better names, and document them:
   void user_changed(const Gtk::TreeModel::iterator& row, guint col);
   void user_requested_delete(const Gtk::TreeModel::iterator& rowStart, const Gtk::TreeModel::iterator&  /* rowEnd TODO */);

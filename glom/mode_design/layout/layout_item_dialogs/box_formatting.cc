@@ -57,6 +57,10 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
   m_checkbutton_choices_restricted_as_radio_buttons(0),
   m_adddel_choices_custom(0),
   m_col_index_custom_choices(0),
+  m_combo_choices_relationship(0),
+  m_combo_choices_field(0),
+  m_combo_choices_field_second(0),
+  m_checkbutton_choices_related_show_all(0),
   m_for_print_layout(false),
   m_show_numeric(true),
   m_show_choices(true)
@@ -119,6 +123,7 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
   builder->get_widget_derived("combobox_choices_related_relationship", m_combo_choices_relationship);
   builder->get_widget_derived("combobox_choices_related_field", m_combo_choices_field);
   builder->get_widget_derived("combobox_choices_related_field_second", m_combo_choices_field_second);
+  builder->get_widget("checkbutton_choices_related_show_all", m_checkbutton_choices_related_show_all);
   builder->get_widget("radiobutton_choices_custom", m_radiobutton_choices_custom);
   builder->get_widget("radiobutton_choices_related", m_radiobutton_choices_related);
 
@@ -233,12 +238,14 @@ void Box_Formatting::set_formatting(const FieldFormatting& format, bool show_num
 
     sharedptr<const Relationship> choices_relationship;
     Glib::ustring choices_field, choices_field_second;
-    format.get_choices(choices_relationship, choices_field, choices_field_second);
+    bool choices_show_all = false;
+    format.get_choices_related(choices_relationship, choices_field, choices_field_second, choices_show_all);
 
     m_combo_choices_relationship->set_selected_relationship(choices_relationship);
     on_combo_choices_relationship_changed(); //Fill the combos so we can set their active items.
     m_combo_choices_field->set_selected_field(choices_field);
     m_combo_choices_field_second->set_selected_field(choices_field_second);
+    m_checkbutton_choices_related_show_all->set_active(choices_show_all);
 
     //Custom choices:
     m_adddel_choices_custom->remove_all();
@@ -306,9 +313,10 @@ bool Box_Formatting::get_formatting(FieldFormatting& format) const
       m_checkbutton_choices_restricted_as_radio_buttons->get_active());
 
     sharedptr<Relationship> choices_relationship = m_combo_choices_relationship->get_selected_relationship();
-    m_format.set_choices(choices_relationship,
+    m_format.set_choices_related(choices_relationship,
       m_combo_choices_field->get_selected_field_name(),
-      m_combo_choices_field_second->get_selected_field_name() );
+      m_combo_choices_field_second->get_selected_field_name(),
+      m_checkbutton_choices_related_show_all->get_active());
 
     //Custom choices:
     FieldFormatting::type_list_values list_choice_values;

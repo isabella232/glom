@@ -21,6 +21,7 @@
 #include "fieldformatting.h"
 #include <libglom/data_structure/layout/fieldformatting.h>
 #include <libglom/data_structure/glomconversions.h>
+#include <libglom/document/document.h>
 #include <glibmm/i18n.h>
 
 const guint MULTILINE_TEXT_DEFAULT_HEIGHT_LINES = 6;
@@ -35,7 +36,8 @@ FieldFormatting::FieldFormatting()
   m_choices_related(false),
   m_text_format_multiline(false),
   m_text_multiline_height_lines(MULTILINE_TEXT_DEFAULT_HEIGHT_LINES),
-  m_horizontal_alignment(HORIZONTAL_ALIGNMENT_AUTO)
+  m_horizontal_alignment(HORIZONTAL_ALIGNMENT_AUTO),
+  m_choices_related_show_all(false)
 {
 }
 
@@ -54,7 +56,8 @@ FieldFormatting::FieldFormatting(const FieldFormatting& src)
   m_text_color_background(src.m_text_color_background),
   m_horizontal_alignment(src.m_horizontal_alignment),
   m_choices_related_field(src.m_choices_related_field),
-  m_choices_related_field_second(src.m_choices_related_field_second)
+  m_choices_related_field_second(src.m_choices_related_field_second),
+  m_choices_related_show_all(src.m_choices_related_show_all)
 {
 }
 
@@ -77,8 +80,9 @@ bool FieldFormatting::operator==(const FieldFormatting& src) const
     (m_text_multiline_height_lines == src.m_text_multiline_height_lines) &&
     (m_text_font == src.m_text_font) &&
     (m_text_color_foreground == src.m_text_color_foreground) &&
-    (m_text_color_background == src.m_text_color_background) && 
-    (m_horizontal_alignment == src.m_horizontal_alignment);
+    (m_text_color_background == src.m_text_color_background) &&
+    (m_horizontal_alignment == src.m_horizontal_alignment) &&
+    (m_choices_related_show_all == src.m_choices_related_show_all);
 }
 
 
@@ -95,6 +99,7 @@ FieldFormatting& FieldFormatting::operator=(const FieldFormatting& src)
   m_choices_related = src.m_choices_related;
   m_choices_related_field = src.m_choices_related_field;
   m_choices_related_field_second = src.m_choices_related_field_second;
+  m_choices_related_show_all = src.m_choices_related_show_all;
 
   m_text_format_multiline = src.m_text_format_multiline;
   m_text_multiline_height_lines = src.m_text_multiline_height_lines;
@@ -231,22 +236,55 @@ void FieldFormatting::set_has_related_choices(bool val)
   m_choices_related = val;
 }
 
-void FieldFormatting::get_choices(sharedptr<const Relationship>& relationship, Glib::ustring& field, Glib::ustring& field_second) const
+void FieldFormatting::get_choices_related(sharedptr<const Relationship>& relationship, Glib::ustring& field, Glib::ustring& field_second, bool& show_all) const
 {
   relationship = get_relationship();
 
   field = m_choices_related_field;
   field_second = m_choices_related_field_second;
+  show_all = m_choices_related_show_all;
 
   //g_warning("FieldFormatting::get_choices, %s, %s, %s", m_choices_related_relationship->c_str(), m_choices_related_field.c_str(), m_choices_related_field_second.c_str());
 }
 
-void FieldFormatting::set_choices(const sharedptr<const Relationship>& relationship, const Glib::ustring& field, const Glib::ustring& field_second)
+void FieldFormatting::set_choices_related(const sharedptr<const Relationship>& relationship, const Glib::ustring& field, const Glib::ustring& field_second, bool show_all)
 {
   set_relationship(relationship);
 
   m_choices_related_field = field;
   m_choices_related_field_second = field_second;
+  m_choices_related_show_all = show_all;
+}
+
+void FieldFormatting::get_choices_related(const Document* document, sharedptr<const Relationship>& relationship, sharedptr<const LayoutItem_Field>& field, sharedptr<const LayoutItem_Field>& field_second, bool& show_all) const
+{
+  //Initialize output parameters:
+  field.clear();
+  field_second.clear();
+
+  Glib::ustring choice_field, choice_second;
+  get_choices_related(relationship, choice_field, choice_second, show_all);
+
+  if(!relationship)
+    return;
+
+  if(choice_field.empty())
+    return;
+
+  const Glib::ustring to_table = relationship->get_to_table();
+
+  sharedptr<LayoutItem_Field> temp = sharedptr<LayoutItem_Field>::create();
+  sharedptr<const Field> field_details = document->get_field(to_table, choice_field);
+  temp->set_full_field_details(field_details);
+  field = temp;
+
+  if(!choice_second.empty())
+  {
+    sharedptr<LayoutItem_Field> temp = sharedptr<LayoutItem_Field>::create();
+    sharedptr<const Field> field_details = document->get_field(to_table, choice_second);
+    temp->set_full_field_details(field_details);
+    field_second = temp;
+  }
 }
 
 void FieldFormatting::change_field_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new)
@@ -258,7 +296,7 @@ void FieldFormatting::change_field_name(const Glib::ustring& table_name, const G
        m_choices_related_field = field_name_new;
 
     if(m_choices_related_field_second == field_name)
-       m_choices_related_field_second = field_name_new; 
+       m_choices_related_field_second = field_name_new;
   }
 }
 

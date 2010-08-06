@@ -42,17 +42,8 @@ namespace DataWidgetChildren
 {
 
 ComboEntry::ComboEntry()
-: ComboChoicesWithTreeModel()
-{
-#ifndef GLOM_ENABLE_CLIENT_ONLY
-  setup_menu();
-#endif // !GLOM_ENABLE_CLIENT_ONLY
-
-  init();
-}
-
-ComboEntry::ComboEntry(const sharedptr<LayoutItem_Field>& field_second)
-: ComboChoicesWithTreeModel(field_second)
+: ComboChoicesWithTreeModel(),
+  m_cell_second(0)
 {
 #ifndef GLOM_ENABLE_CLIENT_ONLY
   setup_menu();
@@ -87,7 +78,7 @@ void ComboEntry::init()
 #else
   //Maemo:
   set_selector(m_maemo_selector);
- 
+
   //We don't use append_text_column(), because we want to specify no expand.
   //Glib::RefPtr<Hildon::TouchSelectorColumn> column =
   //  m_maemo_selector.append_text_column(m_refModel);
@@ -95,15 +86,15 @@ void ComboEntry::init()
   //  m_maemo_selector.append_column(m_refModel);
   Glib::RefPtr<Hildon::TouchSelectorColumn> column = Glib::wrap(hildon_touch_selector_append_column(
     HILDON_TOUCH_SELECTOR(m_maemo_selector.gobj()), GTK_TREE_MODEL(Glib::unwrap(m_refModel)), 0, static_cast<char*>(0)), true);
-      
+
   column->pack_start(m_Columns.m_col_first, false);
   //Only in the latest hildonmm: column->set_text_column(m_Columns.m_col_first);
   column->set_property("text_column", 0);
-  
+
   //Only in the latest hildonmm: m_maemo_selector->set_text_column(m_Columns.m_col_first);
   m_maemo_selector.set_text_column(0);
 
-  
+
   //m_maemo_selector.set_model(0, m_refModel);
   //m_maemo_selector.set_text_column(0);
 #endif
@@ -115,16 +106,15 @@ void ComboEntry::init()
 
   get_entry()->signal_focus_out_event().connect(sigc::mem_fun(*this, &ComboEntry::on_entry_focus_out_event), false);
   get_entry()->signal_activate().connect(sigc::mem_fun(*this, &ComboEntry::on_entry_activate));
+}
 
-#ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
-  #ifndef GLOM_ENABLE_MAEMO
-  signal_changed().connect(sigc::mem_fun(*this, &ComboEntry::on_changed));
-  #else
-  m_maemo_selector.signal_changed().connect(sigc::mem_fun(*this, &ComboEntry::on_changed));
-  #endif
-#endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
+ComboEntry::~ComboEntry()
+{
+}
 
-  if(m_with_second)
+void ComboEntry::set_choices_related(const Document* document, const sharedptr<const Relationship>& relationship, const Glib::ustring& field, const Glib::ustring& field_second, bool show_all)
+{
+  if(!m_cell_second && !field_second.empty())
   {
     #ifndef GLOM_ENABLE_MAEMO
     //We don't use this convenience method, because we want more control over the renderer.
@@ -132,26 +122,20 @@ void ComboEntry::init()
     //(well, maybe set_cell_data_func(), but that's a bit awkward.)
     //pack_start(m_Columns.m_col_second);
 
-    Gtk::CellRenderer* cell_second = Gtk::manage(new Gtk::CellRendererText);
-    cell_second->set_property("xalign", 0.0);
+    m_cell_second = Gtk::manage(new Gtk::CellRendererText);
+    m_cell_second->set_property("xalign", 0.0);
 
     //Use the renderer:
-    pack_start(*cell_second);
+    pack_start(*m_cell_second);
 
     //Make the renderer render the column:
-    #ifdef GLIBMM_PROPERTIES_ENABLED
-    add_attribute(cell_second->_property_renderable(), m_Columns.m_col_second);
-    #else
-    add_attribute(*cell_second, cell_second->_property_renderable(), m_Columns.m_col_second);
-    #endif
+    add_attribute(m_cell_second->_property_renderable(), m_Columns.m_col_second);
     #else //GLOM_ENABLE_MAEMO
     column->pack_start(m_Columns.m_col_second, false);
     #endif //GLOM_ENABLE_MAEMO
   }
-}
 
-ComboEntry::~ComboEntry()
-{
+  ComboChoicesWithTreeModel::set_choices_related(document, relationship, field, field_second, show_all);
 }
 
 void ComboEntry::set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name)
@@ -163,7 +147,7 @@ void ComboEntry::set_layout_item(const sharedptr<LayoutItem>& layout_item, const
     return;
 
   //Horizontal Alignment:
-  FieldFormatting::HorizontalAlignment alignment = 
+  FieldFormatting::HorizontalAlignment alignment =
     FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT;
   sharedptr<LayoutItem_Field> layout_field =
     sharedptr<LayoutItem_Field>::cast_dynamic(layout_item);
@@ -171,7 +155,7 @@ void ComboEntry::set_layout_item(const sharedptr<LayoutItem>& layout_item, const
     alignment = layout_field->get_formatting_used_horizontal_alignment();
 
   const float x_align = (alignment == FieldFormatting::HORIZONTAL_ALIGNMENT_LEFT ? 0.0 : 1.0);
-  get_entry()->set_alignment(x_align); 
+  get_entry()->set_alignment(x_align);
 }
 
 void ComboEntry::check_for_change()
@@ -181,7 +165,7 @@ void ComboEntry::check_for_change()
     //Don't allow editing via the menu either, if the Entry is non-editable.
 
     //Give the user some kind of warning.
-    //We could just remove the menu (by using a normal Entry for read-only fields with choices), 
+    //We could just remove the menu (by using a normal Entry for read-only fields with choices),
     //but I think that the choice is a useful recognisable visual hint about the field,
     //which shouldn't change sometimes just because the field is read-only.
     Gtk::Window* top_level_window = get_application();
@@ -233,7 +217,7 @@ bool ComboEntry::on_entry_focus_out_event(GdkEventFocus* /* event */)
 }
 
 void ComboEntry::on_entry_activate()
-{ 
+{
   //Call base class:
   //get_entry()->on_activate();
 
@@ -265,7 +249,7 @@ void ComboEntry::set_value(const Gnome::Gda::Value& value)
     if(!entry)
       return;
 
-    const Glib::ustring fg_color = 
+    const Glib::ustring fg_color =
     layout_item->get_formatting_used().get_text_format_color_foreground_to_use(value);
     if(!fg_color.empty())
       entry->modify_text(Gtk::STATE_NORMAL, Gdk::Color(fg_color));
@@ -277,7 +261,7 @@ void ComboEntry::set_value(const Gnome::Gda::Value& value)
 void ComboEntry::set_text(const Glib::ustring& text)
 {
   m_old_text = text;
-  
+
   #if GLOM_ENABLE_MAEMO
   for(Gtk::TreeModel::iterator iter = m_refModel->children().begin(); iter != m_refModel->children().end(); ++iter)
   {
@@ -349,12 +333,10 @@ Application* ComboEntry::get_application()
 void ComboEntry::on_changed()
 #else
 void ComboEntry::on_changed(int /* column */)
-#endif 
+#endif
 {
-#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   //Call base class:
   Gtk::ComboBoxEntry::on_changed();
-#endif // GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
 
   //This signal is emitted for every key press, but sometimes it's just to say that the active item has changed to "no active item",
   //if the text is not in the dropdown list:
@@ -363,7 +345,7 @@ void ComboEntry::on_changed(int /* column */)
   #else
   Gtk::TreeModel::iterator iter = get_selected();
   #endif //GLOM_ENABLE_MAEMO
-  
+
   if(iter)
   {
     //This is either a choice from the dropdown menu, or someone has typed in something that is in the drop-down menu.

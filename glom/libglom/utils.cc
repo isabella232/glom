@@ -136,11 +136,11 @@ Glib::ustring Utils::string_replace(const Glib::ustring& src, const Glib::ustrin
 {
   if(search_for.empty())
   {
-    std::cerr << "Utils::string_replace(): search_for was empty." << std::endl;
+    std::cerr << G_STRFUNC << ": search_for was empty." << std::endl;
     return src;
   }
 
-  //std::cout << "debug: Utils::string_replace(): src=" << src << ", search_for=" << search_for << ", replace_with=" << replace_with << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": src=" << src << ", search_for=" << search_for << ", replace_with=" << replace_with << std::endl;
 
   std::string result = src;
 
@@ -342,11 +342,15 @@ void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::Sq
     }
     else
     {
-      const Gnome::Gda::SqlBuilder::Id id = builder->select_add_field(layout_item->get_name(), parent);
+      const Glib::ustring field_name = layout_item->get_name();
+      if(!field_name.empty())
+      {
+        const Gnome::Gda::SqlBuilder::Id id = builder->select_add_field(field_name, parent);
 
-      //Avoid duplicate records with doubly-related fields:
-      if(extra_join)
-        builder->select_group_by(id);
+        //Avoid duplicate records with doubly-related fields:
+        if(extra_join)
+          builder->select_group_by(id);
+      }
     }
 
 
@@ -355,7 +359,7 @@ void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::Sq
 
   if(!one_added)
   {
-    std::cerr << "Utils::build_sql_select_fields_to_get(): No fields added: fieldsToGet.size()=" << fieldsToGet.size() << std::endl;
+    std::cerr << G_STRFUNC << ": No fields added: fieldsToGet.size()=" << fieldsToGet.size() << std::endl;
     return;
   }
 }
@@ -363,58 +367,67 @@ void Utils::build_sql_select_add_fields_to_get(const Glib::RefPtr<Gnome::Gda::Sq
 
 Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_where_clause(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const Gnome::Gda::SqlExpr& where_clause, const sharedptr<const Relationship>& extra_join, const type_sort_clause& sort_clause, guint limit)
 {
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder;
+
   //Build the whole SQL statement:
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
-  builder->select_add_target(table_name);
-
-  //Add the fields to SELECT, plus the tables that they are selected FROM.
-  //We tell it whether extra_join is empty, so it can do an extra GROUP BY if necessary.
-  //TODO: Try to use DISTINCT instead, with a proper test case.
-  Utils::build_sql_select_add_fields_to_get(builder, table_name, fieldsToGet, sort_clause, extra_join /* bool */);
-
-  if(extra_join)
+  try
   {
-    sharedptr<UsesRelationship> uses_relationship = sharedptr<UsesRelationship>::create();
-    uses_relationship->set_relationship(extra_join);
-    builder_add_join(builder, uses_relationship);
-  }
+    builder = Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
+    builder->select_add_target(table_name);
 
-  //Add the WHERE clause:
-  if(!where_clause.empty())
-  {
-    const int id = builder->import_expression(where_clause);
-    builder->set_where(id);
-  }
+    //Add the fields to SELECT, plus the tables that they are selected FROM.
+    //We tell it whether extra_join is empty, so it can do an extra GROUP BY if necessary.
+    //TODO: Try to use DISTINCT instead, with a proper test case.
+    Utils::build_sql_select_add_fields_to_get(builder, table_name, fieldsToGet, sort_clause, extra_join /* bool */);
 
-  //Sort clause:
-  if(!sort_clause.empty())
-  {
-   for(type_sort_clause::const_iterator iter = sort_clause.begin(); iter != sort_clause.end(); ++iter)
+    if(extra_join)
     {
-      sharedptr<const LayoutItem_Field> layout_item = iter->first;
-      if(layout_item)
-      {
-        const bool ascending = iter->second;
+      sharedptr<UsesRelationship> uses_relationship = sharedptr<UsesRelationship>::create();
+      uses_relationship->set_relationship(extra_join);
+      builder_add_join(builder, uses_relationship);
+    }
 
-        //TODO: Avoid the need for the "."
-        builder->select_order_by(
-          builder->add_field_id(layout_item->get_name(), layout_item->get_sql_table_or_join_alias_name(table_name)),
-          ascending);
+    //Add the WHERE clause:
+    if(!where_clause.empty())
+    {
+      const int id = builder->import_expression(where_clause);
+      builder->set_where(id);
+    }
+
+    //Sort clause:
+    if(!sort_clause.empty())
+    {
+      for(type_sort_clause::const_iterator iter = sort_clause.begin(); iter != sort_clause.end(); ++iter)
+      {
+        sharedptr<const LayoutItem_Field> layout_item = iter->first;
+        if(layout_item)
+        {
+          const bool ascending = iter->second;
+
+          //TODO: Avoid the need for the "."
+          builder->select_order_by(
+            builder->add_field_id(layout_item->get_name(), layout_item->get_sql_table_or_join_alias_name(table_name)),
+            ascending);
+        }
       }
     }
-  }
 
-  //LIMIT clause:
-  if(limit > 0)
+    //LIMIT clause:
+    if(limit > 0)
+    {
+      builder->select_set_limit(limit);
+    }
+  }
+  catch(const Glib::Error& ex)
   {
-    builder->select_set_limit(limit);
+    std::cerr << G_STRFUNC << ": Exception: " << ex.what() << std::endl;
   }
 
   return builder;
 }
 
 
-Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_key(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value, guint limit)
+Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_key(const Glib::ustring& table_name, const type_vecLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value, const type_sort_clause& sort_clause, guint limit)
 {
   //TODO_Performance:
   type_vecConstLayoutFields constFieldsToGet;
@@ -423,7 +436,7 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_key(const Glib
     constFieldsToGet.push_back(*iter);
   }
 
-  return build_sql_select_with_key(table_name, constFieldsToGet, key_field, key_value, limit);
+  return build_sql_select_with_key(table_name, constFieldsToGet, key_field, key_value, sort_clause, limit);
 }
 
 Gnome::Gda::SqlExpr Utils::build_simple_where_expression(const Glib::ustring& table_name, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value)
@@ -450,107 +463,132 @@ Gnome::Gda::SqlExpr Utils::build_combined_where_expression(const Gnome::Gda::Sql
   return builder->export_expression(id);
 }
 
-Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_key(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value, guint limit)
+Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_key(const Glib::ustring& table_name, const type_vecConstLayoutFields& fieldsToGet, const sharedptr<const Field>& key_field, const Gnome::Gda::Value& key_value, const type_sort_clause& sort_clause, guint limit)
 {
-  if(!Conversions::value_is_empty(key_value)) //If there is a record to show:
+  //We choose instead to have no where clause in this case,
+  //because that is useful to some callers:
+  //if(Conversions::value_is_empty(key_value)) //If there is a record to show:
+  //  return Glib::RefPtr<Gnome::Gda::SqlBuilder>();
+
+  Gnome::Gda::SqlExpr where_clause;
+  if(!Conversions::value_is_empty(key_value) && key_field)
   {
-    const Gnome::Gda::SqlExpr where_clause = build_simple_where_expression(table_name, key_field, key_value);
-    return Utils::build_sql_select_with_where_clause(table_name, fieldsToGet, where_clause,
-      sharedptr<const Relationship>(), type_sort_clause(), limit);
+    where_clause = build_simple_where_expression(table_name, key_field, key_value);
   }
 
-  return Glib::RefPtr<Gnome::Gda::SqlBuilder>();
+  return Utils::build_sql_select_with_where_clause(table_name, fieldsToGet, where_clause,
+    sharedptr<const Relationship>(), sort_clause, limit);
 }
 
-Utils::type_list_values_with_second Utils::get_choice_values(const sharedptr<const LayoutItem_Field>& field)
+Utils::type_list_values_with_second Utils::get_choice_values_all(const Document* document, const sharedptr<const LayoutItem_Field>& field, sharedptr<const LayoutItem_Field>& layout_choice_first, sharedptr<const LayoutItem_Field>& layout_choice_second)
 {
-  type_list_values_with_second list_values;
+  return get_choice_values(document, field,
+    Gnome::Gda::Value() /* means get all with no WHERE clause */,
+    layout_choice_first, layout_choice_second);
+}
 
+Utils::type_list_values_with_second Utils::get_choice_values(const Document* document, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& foreign_key_value, sharedptr<const LayoutItem_Field>& layout_choice_first, sharedptr<const LayoutItem_Field>& layout_choice_second)
+{
+  //Initialize output parameters:
+  layout_choice_first = sharedptr<LayoutItem_Field>();
+  layout_choice_second = sharedptr<LayoutItem_Field>();
+
+  //TODO: Reduce duplication between this and get_choice_values(field).
+
+  type_list_values_with_second result;
+
+  //We allows this, so this method can be used to get all records in a related table:
+  /*
+  if(Conversions::value_is_empty(foreign_key_value))
+  {
+    std::cout << G_STRFUNC << "debug: foreign_key_value is empty." << std::endl;
+    return result;
+  }
+  */
+
+  const FieldFormatting& format = field->get_formatting_used();
   sharedptr<const Relationship> choice_relationship;
   Glib::ustring choice_field, choice_second;
-  field->get_formatting_used().get_choices(choice_relationship, choice_field, choice_second);
+  bool choice_show_all = false;
+  format.get_choices_related(document, choice_relationship, layout_choice_first, layout_choice_second, choice_show_all);
+
   if(!choice_relationship)
   {
-    //std::cout <<" debug: field has no choices: " << field->get_name() << std::endl;
-    return list_values;
+    std::cerr << G_STRFUNC << ": !choice_relationship." << std::endl;
+    return result;
   }
+
+  Utils::type_vecConstLayoutFields fields;
+  fields.push_back(layout_choice_first);
+  if(layout_choice_second)
+    fields.push_back(layout_choice_second);
 
   const Glib::ustring to_table = choice_relationship->get_to_table();
-  if(to_table.empty())
+  sharedptr<Field> to_field = document->get_field(to_table, choice_relationship->get_to_field());
+
+  if(!to_field)
   {
-    g_warning("get_choice_values(): table_name is null. relationship name = %s", glom_get_sharedptr_name(choice_relationship).c_str());
-    return list_values;
+    std::cerr << G_STRFUNC << ": to_field is null." << std::endl;
   }
 
-  const bool with_second = !choice_second.empty();
+  type_sort_clause sort_clause;
+  sort_clause.push_back( type_pair_sort_field(layout_choice_first, true /* ascending */));
 
-  //Get possible values from database, sorted by the first column.
-  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
-      Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
-  const guint choice_field_id = builder->select_add_field(choice_field, to_table);
-  builder->select_add_target(to_table);
+  //TODO: Support related relationships (in the UI too):
+  Glib::RefPtr<Gnome::Gda::SqlBuilder> builder = Utils::build_sql_select_with_key(
+    to_table,
+    fields,
+    to_field,
+    foreign_key_value,
+    sort_clause);
 
-  if(with_second)
-    builder->select_add_field(choice_second, to_table);
+  if(!builder)
+  {
+    std::cerr << G_STRFUNC << ": builder is null." << std::endl;
+    return result;
+  }
 
-  builder->select_order_by(choice_field_id);
+  //TODO: builder->select_order_by(choice_field_id);
 
-  //std::cout << "debug: get_choice_values(): query: " << sql_query << std::endl;
-  //Connect to database:
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  //Connect to database and get the related values:
   sharedptr<SharedConnection> connection = ConnectionPool::get_instance()->connect();
-#else
-  std::auto_ptr<ExceptionConnection> conn_error;
-  sharedptr<SharedConnection> connection = ConnectionPool::get_instance()->connect(conn_error);
-  if(conn_error.get())
-    return list_values;
-#endif
 
   if(!connection)
-    return list_values;
+  {
+    std::cerr << G_STRFUNC << ": connection is null." << std::endl;
+    return result;
+  }
 
   const std::string sql_query =
-    sqlbuilder_get_full_query(builder);
-  //std::cout << "get_choice_values: Executing SQL: " << sql_query << std::endl;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
+    Utils::sqlbuilder_get_full_query(builder);
+  //std::cout << "debug: sql_query=" << sql_query << std::endl;
   Glib::RefPtr<Gnome::Gda::DataModel> datamodel = connection->get_gda_connection()->statement_execute_select(sql_query);
-#else
-  std::auto_ptr<Glib::Error> error;
-  Glib::RefPtr<Gnome::Gda::DataModel> datamodel = connection->get_gda_connection()->statement_execute_select(sql_query, Gnome::Gda::STATEMENT_MODEL_RANDOM_ACCESS, error);
-#endif
 
   if(datamodel)
   {
     const guint count = datamodel->get_n_rows();
-    //std::cout << "  result: count=" << count << std::endl;
+    const guint cols_count = datamodel->get_n_columns();
     for(guint row = 0; row < count; ++row)
     {
 
       std::pair<Gnome::Gda::Value, Gnome::Gda::Value> itempair;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
       itempair.first = datamodel->get_value_at(0, row);
 
-      if(with_second)
+      if(layout_choice_second && (cols_count > 1))
         itempair.second = datamodel->get_value_at(1, row);
-#else
-      itempair.first = datamodel->get_value_at(0, row, error);
 
-      if(with_second)
-        itempair.second = datamodel->get_value_at(1, row, error);
-#endif
-
-      list_values.push_back(itempair);
+      result.push_back(itempair);
     }
   }
   else
   {
-      std::cerr << "Glom  get_choice_values(): Error while executing SQL" << std::endl <<
+      std::cerr << G_STRFUNC << ": Error while executing SQL" << std::endl <<
                    "  " <<  sql_query << std::endl;
+      return result;
   }
 
-  return list_values;
+  return result;
 }
-
 
 Glib::ustring Utils::create_name_from_title(const Glib::ustring& title)
 {
@@ -636,10 +674,10 @@ Glib::ustring Utils::create_local_image_uri(const Gnome::Gda::Value& value)
       }
     }
     else
-       std::cerr << "Utils::create_local_image_uri(): binary GdaValue contains no data." << std::endl;
+       std::cerr << G_STRFUNC << ": binary GdaValue contains no data." << std::endl;
   }
   //else
-  //  std::cerr << "Utils::create_local_image_uri(): type != BINARY" << std::endl;
+  //  std::cerr << G_STRFUNC << ": type != BINARY" << std::endl;
 
   if(result.empty())
     result = "/tmp/glom_report_image_invalid.png";
@@ -690,7 +728,7 @@ Glib::ustring Utils::title_from_string(const Glib::ustring& text)
 
 Utils::type_vec_strings Utils::string_separate(const Glib::ustring& str, const Glib::ustring& separator, bool ignore_quoted_separator)
 {
-  //std::cout << "Utils::string_separate(): separator=" << separator << std::endl;
+  //std::cout << "debug: " << G_STRFUNC << ": separator=" << separator << std::endl;
 
   type_vec_strings result;
 
@@ -877,7 +915,6 @@ bool Utils::file_exists(const Glib::ustring& uri)
     // Try to examine the input file.
     Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(uri);
 
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
     try
     {
       return file->query_exists();
@@ -886,9 +923,6 @@ bool Utils::file_exists(const Glib::ustring& uri)
     {
       return false; //Something went wrong. It does not exist.
     }
-#else
-      return file->query_exists();
-#endif
   }
 }
 
@@ -911,11 +945,11 @@ std::string Utils::sqlbuilder_get_full_query(
   }
   catch(const Glib::Exception& ex)
   {
-    std::cerr << "sqlbuilder_get_full_query(): exception while parsing query: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": exception while parsing query: " << ex.what() << std::endl;
   }
   catch(const std::exception& ex)
   {
-    std::cerr << "sqlbuilder_get_full_query(): exception while parsing query: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": exception while parsing query: " << ex.what() << std::endl;
   }
 
   //Convert to something that std::cout should be able to handle.
@@ -940,15 +974,15 @@ std::string Utils::sqlbuilder_get_full_query(
   }
   catch(const Gnome::Gda::SqlError& ex)
   {
-    std::cerr << "sqlbuilder_get_full_query(): SqlError exception while getting query: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": SqlError exception while getting query: " << ex.what() << std::endl;
   }
   catch(const Glib::Exception& ex)
   {
-    std::cerr << "sqlbuilder_get_full_query(): exception (" << typeid(ex).name() << ") while getting query: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": exception (" << typeid(ex).name() << ") while getting query: " << ex.what() << std::endl;
   }
   catch(const std::exception& ex)
   {
-    std::cerr << "sqlbuilder_get_full_query(): exception (" << typeid(ex).name() << ") while getting query: " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": exception (" << typeid(ex).name() << ") while getting query: " << ex.what() << std::endl;
   }
 
   //Convert to something that std::cout should be able to handle.
@@ -960,7 +994,7 @@ std::string Utils::sqlbuilder_get_full_query(
   return std::string(buf.get());
 }
 
-Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(Document* document, const Glib::ustring& table_name, const Gnome::Gda::Value& quick_search)
+Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(const Document* document, const Glib::ustring& table_name, const Gnome::Gda::Value& quick_search)
 {
   Glib::RefPtr<Gnome::Gda::SqlBuilder> builder =
     Gnome::Gda::SqlBuilder::create(Gnome::Gda::SQL_STATEMENT_SELECT);
@@ -968,7 +1002,7 @@ Gnome::Gda::SqlExpr Utils::get_find_where_clause_quick(Document* document, const
 
   if(!document)
   {
-    std::cerr << "Utils::get_find_where_clause_quick(): document was null." << std::endl;
+    std::cerr << G_STRFUNC << ": document was null." << std::endl;
     return Gnome::Gda::SqlExpr();
   }
 

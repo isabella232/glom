@@ -1,4 +1,4 @@
-## Copyright (c) 2009  Openismus GmbH  <http://www.openismus.com/>
+## Copyright (c) 2009, 2010  Openismus GmbH  <http://www.openismus.com/>
 ##
 ## This file is part of Glom.
 ##
@@ -33,7 +33,6 @@ AC_PROG_CXX
 
 LT_PREREQ([2.2.0])
 LT_INIT([disable-static win32-dll])
-AC_DISABLE_STATIC
 
 # Used for the install directories for headers.  The same number is used in
 # the library name, which must be kept in sync, but variables can't be used
@@ -260,17 +259,19 @@ AS_IF([test "x$ENABLE_DOCUMENTATION" != xno],
      [],
      [AC_MSG_ERROR([The documentation build is enabled, but the sphinx-build tool could not be found.])])])
 
-# Check for tar and gzip (used by tar via -z) because we use these when creating backups.
-# TODO: This lets us provide a path via a configure option, but we just use Glib::find_program_in_path(), ignoring that.
+# Check for tar and gzip (used by tar via -z) because we use these when
+# creating backups.
+# TODO: This lets us provide a path via a configure option, but we just use
+# Glib::find_program_in_path(), ignoring that.
+# TODO: This should check for GNU tar, as GNU tar features are used during the
+# backup process.
 AC_CHECK_PROG([GLOM_TAR], [tar], [yes], [no])
-if test "$GLOM_TAR" = no ; then
-	AC_MSG_ERROR([tar not found. Glom needs this to create backup files.])
-fi
+AS_IF([test "$GLOM_TAR" = no],
+  [AC_MSG_ERROR([tar not found. Glom needs this to create backup files.])])
 
 AC_CHECK_PROG([GLOM_GZIP], [gzip], [yes], [no])
-if test "$GLOM_GZIP" = no ; then
-	AC_MSG_ERROR([gzip not found. Glom needs this to create backup files.])
-fi
+AS_IF([test "$GLOM_GZIP" = no],
+  [AC_MSG_ERROR([gzip not found. Glom needs this to create backup files.])])
 
 AC_CONFIG_FILES([Makefile
                  docs/user-guide/Makefile

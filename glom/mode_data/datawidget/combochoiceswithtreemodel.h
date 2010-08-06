@@ -35,16 +35,14 @@ public:
   ///You must call set_layout_item() to specify the field type and formatting of the main column.
   explicit ComboChoicesWithTreeModel();
 
-  ///You must call set_layout_item() to specify the field type and formatting of the main column.
-  explicit ComboChoicesWithTreeModel(const sharedptr<LayoutItem_Field>& field_second);
-
   virtual ~ComboChoicesWithTreeModel();
 
   virtual void set_choices(const FieldFormatting::type_list_values& list_values);
-  virtual void set_choices_with_second(const type_list_values_with_second& list_values);
 
 protected:
   void init();
+
+  virtual void set_choices_with_second(const type_list_values_with_second& list_values);
 
   //Tree model columns:
   class ModelColumns : public Gtk::TreeModel::ColumnRecord
