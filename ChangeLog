@@ -1,5 +1,13 @@
 2010-08-06  Murray Cumming  <murrayc@murrayc.com>
 
+	Document loading: Show an error dialog even for unexpected errors.
+
+	* glom/application.cc: on_document_load(): Don't just fail silently when
+  there is an unexpected error, for instance if the postgres data directory
+  is missing.
+
+2010-08-06  Murray Cumming  <murrayc@murrayc.com>
+
 	Utils::get_choice_values(): Reduce copy/pasted code.
 
 	* glom/libglom/utils.[h|cc]: build_sql_select_with_key(): Add a sort_clause
