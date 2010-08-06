@@ -30,7 +30,6 @@
 namespace Glom
 {
 
-class Document;
 class LayoutItem_Field;
 
 //TODO: This should probably be renamed to Formatting, because it is used for static text items too.
@@ -48,6 +47,7 @@ public:
   bool get_has_choices() const;
 
   bool get_has_related_choices() const;
+  bool get_has_related_choices(bool& show_all, bool& with_second) const;
   void set_has_related_choices(bool val = true);
 
   bool get_has_custom_choices() const;
@@ -68,12 +68,15 @@ public:
    */
   void set_choices_restricted(bool val = true, bool as_radio_buttons = false);
 
-  void get_choices_related(sharedptr<const Relationship>& relationship_name, Glib::ustring& field, Glib::ustring& field_second, bool& show_all) const;
-  void set_choices_related(const sharedptr<const Relationship>& relationship_name, const Glib::ustring& field, const Glib::ustring& field_second, bool show_all);
+  void get_choices_related(sharedptr<const Relationship>& relationship_name, sharedptr<const LayoutItem_Field>& field, sharedptr<const LayoutItem_Field>& field_second, bool& show_all) const;
+  void set_choices_related(const sharedptr<const Relationship>& relationship_name, const sharedptr<const LayoutItem_Field>& field, const sharedptr<const LayoutItem_Field>& field_second, bool show_all);
+  
+  //Just for convenience:
+  sharedptr<const Relationship> get_choices_related_relationship(bool& show_all) const;
+  
 
 
-  void get_choices_related(const Document* document, sharedptr<const Relationship>& relationship_name, sharedptr<const LayoutItem_Field>& field, sharedptr<const LayoutItem_Field>& field_second, bool& show_all) const;
-
+ 
   /** Get whether the text should be displayed with multiple lines in the
    * details view. Text is displayed with a single line in the list view.
    * @returns whether the text should be displayed with multiple lines
@@ -148,8 +151,6 @@ public:
   void set_horizontal_alignment(HorizontalAlignment alignment);
   HorizontalAlignment get_horizontal_alignment() const;
 
-  void change_field_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new);
-
   NumericFormat m_numeric_format; //Only used for numeric fields.
 
 private:
@@ -166,7 +167,8 @@ private:
   Glib::ustring m_text_color_foreground, m_text_color_background;
   HorizontalAlignment m_horizontal_alignment;
 
-  Glib::ustring m_choices_related_field, m_choices_related_field_second;
+  sharedptr<const LayoutItem_Field> m_choices_related_field;
+  sharedptr<const LayoutItem_Field> m_choices_related_field_second;
   bool m_choices_related_show_all;
 };
 

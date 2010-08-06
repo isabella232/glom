@@ -47,11 +47,6 @@ ComboAsRadioButtons::ComboAsRadioButtons()
 
 void ComboAsRadioButtons::init()
 {
-  if(m_related_field_second)
-  {
-    //TODO
-  }
-
   //if(m_glom_type == Field::TYPE_NUMERIC)
    // get_entry()->set_alignment(1.0); //Align numbers to the right.
 }
@@ -67,18 +62,25 @@ void ComboAsRadioButtons::set_choices_with_second(const type_list_values_with_se
   }
   m_map_buttons.clear();
 
+  sharedptr<LayoutItem_Field> layout_item = 
+    sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
+  const FieldFormatting& format = layout_item->get_formatting_used();
+  sharedptr<const Relationship> choice_relationship;
+  sharedptr<const LayoutItem_Field> layout_choice_first, layout_choice_second;
+  bool choice_show_all = false;
+  format.get_choices_related(choice_relationship, layout_choice_first, layout_choice_second, choice_show_all);
+  
   //Add new buttons:
   Gtk::RadioButton::Group group;
   for(type_list_values_with_second::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
   {
-    sharedptr<const LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
-    if(layout_item)
+    if(layout_choice_first)
     {
-      const Glib::ustring value_first = Conversions::get_text_for_gda_value(layout_item->get_glom_type(), iter->first, layout_item->get_formatting_used().m_numeric_format);
+      const Glib::ustring value_first = Conversions::get_text_for_gda_value(layout_choice_first->get_glom_type(), iter->first, layout_choice_first->get_formatting_used().m_numeric_format);
       Glib::ustring title = value_first;
-      if(m_related_field_second)
+      if(layout_choice_second)
       {
-        const Glib::ustring value_second = Conversions::get_text_for_gda_value(m_related_field_second->get_glom_type(), iter->second, m_related_field_second->get_formatting_used().m_numeric_format);
+        const Glib::ustring value_second = Conversions::get_text_for_gda_value(layout_choice_second->get_glom_type(), iter->second, layout_choice_second->get_formatting_used().m_numeric_format);
         title += " - " + value_second; //TODO: Find a better way to join them?
       }
       

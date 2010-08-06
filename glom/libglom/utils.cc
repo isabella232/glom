@@ -480,19 +480,14 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_key(const Glib
     sharedptr<const Relationship>(), sort_clause, limit);
 }
 
-Utils::type_list_values_with_second Utils::get_choice_values_all(const Document* document, const sharedptr<const LayoutItem_Field>& field, sharedptr<const LayoutItem_Field>& layout_choice_first, sharedptr<const LayoutItem_Field>& layout_choice_second)
+Utils::type_list_values_with_second Utils::get_choice_values_all(const Document* document, const sharedptr<const LayoutItem_Field>& field)
 {
   return get_choice_values(document, field,
-    Gnome::Gda::Value() /* means get all with no WHERE clause */,
-    layout_choice_first, layout_choice_second);
+    Gnome::Gda::Value() /* means get all with no WHERE clause */);
 }
 
-Utils::type_list_values_with_second Utils::get_choice_values(const Document* document, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& foreign_key_value, sharedptr<const LayoutItem_Field>& layout_choice_first, sharedptr<const LayoutItem_Field>& layout_choice_second)
+Utils::type_list_values_with_second Utils::get_choice_values(const Document* document, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& foreign_key_value)
 {
-  //Initialize output parameters:
-  layout_choice_first = sharedptr<LayoutItem_Field>();
-  layout_choice_second = sharedptr<LayoutItem_Field>();
-
   //TODO: Reduce duplication between this and get_choice_values(field).
 
   type_list_values_with_second result;
@@ -508,9 +503,9 @@ Utils::type_list_values_with_second Utils::get_choice_values(const Document* doc
 
   const FieldFormatting& format = field->get_formatting_used();
   sharedptr<const Relationship> choice_relationship;
-  Glib::ustring choice_field, choice_second;
+  sharedptr<const LayoutItem_Field> layout_choice_first, layout_choice_second;
   bool choice_show_all = false;
-  format.get_choices_related(document, choice_relationship, layout_choice_first, layout_choice_second, choice_show_all);
+  format.get_choices_related(choice_relationship, layout_choice_first, layout_choice_second, choice_show_all);
 
   if(!choice_relationship)
   {
@@ -524,7 +519,7 @@ Utils::type_list_values_with_second Utils::get_choice_values(const Document* doc
     fields.push_back(layout_choice_second);
 
   const Glib::ustring to_table = choice_relationship->get_to_table();
-  sharedptr<Field> to_field = document->get_field(to_table, choice_relationship->get_to_field());
+  const sharedptr<const Field> to_field = document->get_field(to_table, choice_relationship->get_to_field());
 
   if(!to_field)
   {

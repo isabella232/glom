@@ -72,7 +72,7 @@ public:
 
   virtual Gnome::Gda::Value get_value() const;
 
-  virtual void set_choices_related(const Document* document, const sharedptr<const Relationship>& relationship, const Glib::ustring& field, const Glib::ustring& field_second, bool show_all);
+  virtual void set_choices_related(const Document* document);
 
 private:
   void init();

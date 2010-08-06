@@ -930,13 +930,6 @@ void Document::change_field_name(const Glib::ustring& table_name, const Glib::us
         }
       }
 
-      //Look at all field formatting:
-      for(type_vec_fields::iterator iterFields = iter->second.m_fields.begin(); iterFields != iter->second.m_fields.end(); ++iterFields)
-      {
-        (*iterFields)->m_default_formatting.change_field_name(table_name, strFieldNameOld, strFieldNameNew);
-      }
-
-
       const bool is_parent_table = (iter->second.m_info->get_name() == table_name);
 
       //Look at each layout:
@@ -1999,11 +1992,14 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
         show_all = true; //This was the behaviour before this checkbox existed.
       }
       
+      const Glib::ustring field_first = get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD);
+      const Glib::ustring field_second = get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND);
+      /* TODO:
       sharedptr<Relationship> relationship = get_relationship(table_name, relationship_name);
       format.set_choices_related(relationship,
-        get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD),
-        get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND),
+        field_first, field_second,
         show_all);
+      */
       //Full details are updated in filled-in ().
     }
   }
@@ -3001,10 +2997,16 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
     set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED, format.get_has_related_choices() );
 
     sharedptr<const Relationship> choice_relationship;
-    Glib::ustring choice_field, choice_second;
+    sharedptr<const LayoutItem_Field> choice_layout_first, choice_layout_second;
     bool choice_show_all = false;
-    format.get_choices_related(choice_relationship, choice_field, choice_second, choice_show_all);
+    format.get_choices_related(choice_relationship, choice_layout_first, choice_layout_second, choice_show_all);
 
+    Glib::ustring choice_field, choice_second;
+    if(choice_layout_first)
+      choice_field = choice_layout_first->get_name();
+    if(choice_layout_second)
+      choice_second = choice_layout_first->get_name();
+    
     set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_RELATIONSHIP, glom_get_sharedptr_name(choice_relationship));
     set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD, choice_field);
     set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND, choice_second);

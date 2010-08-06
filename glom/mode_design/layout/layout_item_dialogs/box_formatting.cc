@@ -237,14 +237,14 @@ void Box_Formatting::set_formatting(const FieldFormatting& format, bool show_num
     m_combo_choices_relationship->set_relationships(vecRelationships);
 
     sharedptr<const Relationship> choices_relationship;
-    Glib::ustring choices_field, choices_field_second;
+    sharedptr<const LayoutItem_Field> choices_field, choices_field_second;
     bool choices_show_all = false;
     format.get_choices_related(choices_relationship, choices_field, choices_field_second, choices_show_all);
 
     m_combo_choices_relationship->set_selected_relationship(choices_relationship);
     on_combo_choices_relationship_changed(); //Fill the combos so we can set their active items.
-    m_combo_choices_field->set_selected_field(choices_field);
-    m_combo_choices_field_second->set_selected_field(choices_field_second);
+    m_combo_choices_field->set_selected_field(choices_field ? choices_field->get_name() : Glib::ustring());
+    m_combo_choices_field_second->set_selected_field(choices_field_second ? choices_field_second->get_name() : Glib::ustring());
     m_checkbutton_choices_related_show_all->set_active(choices_show_all);
 
     //Custom choices:
@@ -312,10 +312,13 @@ bool Box_Formatting::get_formatting(FieldFormatting& format) const
       m_checkbutton_choices_restricted->get_active(), 
       m_checkbutton_choices_restricted_as_radio_buttons->get_active());
 
-    sharedptr<Relationship> choices_relationship = m_combo_choices_relationship->get_selected_relationship();
+   const sharedptr<const Relationship> choices_relationship = m_combo_choices_relationship->get_selected_relationship();
+   sharedptr<LayoutItem_Field> layout_choice_first = sharedptr<LayoutItem_Field>::create();
+   layout_choice_first->set_name(m_combo_choices_field->get_selected_field_name());
+   sharedptr<LayoutItem_Field> layout_choice_second = sharedptr<LayoutItem_Field>::create();
+   layout_choice_second->set_name(m_combo_choices_field_second->get_selected_field_name());
     m_format.set_choices_related(choices_relationship,
-      m_combo_choices_field->get_selected_field_name(),
-      m_combo_choices_field_second->get_selected_field_name(),
+      layout_choice_first, layout_choice_second,
       m_checkbutton_choices_related_show_all->get_active());
 
     //Custom choices:

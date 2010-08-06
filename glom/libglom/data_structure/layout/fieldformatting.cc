@@ -190,7 +190,7 @@ FieldFormatting::HorizontalAlignment FieldFormatting::get_horizontal_alignment()
 
 bool FieldFormatting::get_has_choices() const
 {
-  return ( m_choices_related && get_has_relationship_name() && !m_choices_related_field.empty() ) ||
+  return ( m_choices_related && get_has_relationship_name() && m_choices_related_field ) ||
          ( m_choices_custom && !m_choices_custom_list.empty() );
 }
 
@@ -231,23 +231,19 @@ bool FieldFormatting::get_has_related_choices() const
   return m_choices_related;
 }
 
+bool FieldFormatting::get_has_related_choices(bool& show_all, bool& with_second) const
+{
+  show_all = m_choices_related_show_all;
+  with_second = m_choices_related_field_second;
+  return m_choices_related;
+}
+
 void FieldFormatting::set_has_related_choices(bool val)
 {
   m_choices_related = val;
 }
 
-void FieldFormatting::get_choices_related(sharedptr<const Relationship>& relationship, Glib::ustring& field, Glib::ustring& field_second, bool& show_all) const
-{
-  relationship = get_relationship();
-
-  field = m_choices_related_field;
-  field_second = m_choices_related_field_second;
-  show_all = m_choices_related_show_all;
-
-  //g_warning("FieldFormatting::get_choices, %s, %s, %s", m_choices_related_relationship->c_str(), m_choices_related_field.c_str(), m_choices_related_field_second.c_str());
-}
-
-void FieldFormatting::set_choices_related(const sharedptr<const Relationship>& relationship, const Glib::ustring& field, const Glib::ustring& field_second, bool show_all)
+void FieldFormatting::set_choices_related(const sharedptr<const Relationship>& relationship, const sharedptr<const LayoutItem_Field>& field, const sharedptr<const LayoutItem_Field>& field_second, bool show_all)
 {
   set_relationship(relationship);
 
@@ -256,48 +252,19 @@ void FieldFormatting::set_choices_related(const sharedptr<const Relationship>& r
   m_choices_related_show_all = show_all;
 }
 
-void FieldFormatting::get_choices_related(const Document* document, sharedptr<const Relationship>& relationship, sharedptr<const LayoutItem_Field>& field, sharedptr<const LayoutItem_Field>& field_second, bool& show_all) const
+void FieldFormatting::get_choices_related(sharedptr<const Relationship>& relationship, sharedptr<const LayoutItem_Field>& field, sharedptr<const LayoutItem_Field>& field_second, bool& show_all) const
 {
-  //Initialize output parameters:
-  field.clear();
-  field_second.clear();
+  relationship = get_relationship();
 
-  Glib::ustring choice_field, choice_second;
-  get_choices_related(relationship, choice_field, choice_second, show_all);
-
-  if(!relationship)
-    return;
-
-  if(choice_field.empty())
-    return;
-
-  const Glib::ustring to_table = relationship->get_to_table();
-
-  sharedptr<LayoutItem_Field> temp = sharedptr<LayoutItem_Field>::create();
-  sharedptr<const Field> field_details = document->get_field(to_table, choice_field);
-  temp->set_full_field_details(field_details);
-  field = temp;
-
-  if(!choice_second.empty())
-  {
-    sharedptr<LayoutItem_Field> temp = sharedptr<LayoutItem_Field>::create();
-    sharedptr<const Field> field_details = document->get_field(to_table, choice_second);
-    temp->set_full_field_details(field_details);
-    field_second = temp;
-  }
+  field = m_choices_related_field;
+  field_second = m_choices_related_field_second;
+  show_all = m_choices_related_show_all;
 }
 
-void FieldFormatting::change_field_name(const Glib::ustring& table_name, const Glib::ustring& field_name, const Glib::ustring& field_name_new)
+sharedptr<const Relationship> FieldFormatting::get_choices_related_relationship(bool& show_all) const
 {
-  //Update choices:
-  if(get_has_relationship_name() && get_table_used(Glib::ustring()) == table_name)
-  {
-    if(m_choices_related_field == field_name)
-       m_choices_related_field = field_name_new;
-
-    if(m_choices_related_field_second == field_name)
-       m_choices_related_field_second = field_name_new;
-  }
+  show_all = m_choices_related_show_all;
+  return get_relationship();
 }
 
 } //namespace Glom

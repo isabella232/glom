@@ -112,9 +112,15 @@ ComboEntry::~ComboEntry()
 {
 }
 
-void ComboEntry::set_choices_related(const Document* document, const sharedptr<const Relationship>& relationship, const Glib::ustring& field, const Glib::ustring& field_second, bool show_all)
+void ComboEntry::set_choices_related(const Document* document)
 {
-  if(!m_cell_second && !field_second.empty())
+  sharedptr<LayoutItem_Field> layout_item = 
+    sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
+  bool choice_show_all = false;
+  bool choice_has_second = false;
+  layout_item->get_formatting_used().get_has_related_choices(choice_show_all, choice_has_second);
+  
+  if(!m_cell_second && choice_has_second) //Use a more efficient way of discovering if there is a second column.
   {
     #ifndef GLOM_ENABLE_MAEMO
     //We don't use this convenience method, because we want more control over the renderer.
@@ -135,7 +141,7 @@ void ComboEntry::set_choices_related(const Document* document, const sharedptr<c
     #endif //GLOM_ENABLE_MAEMO
   }
 
-  ComboChoicesWithTreeModel::set_choices_related(document, relationship, field, field_second, show_all);
+  ComboChoicesWithTreeModel::set_choices_related(document);
 }
 
 void ComboEntry::set_layout_item(const sharedptr<LayoutItem>& layout_item, const Glib::ustring& table_name)

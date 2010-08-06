@@ -330,8 +330,6 @@ void LayoutGroup::change_field_item_name(const Glib::ustring& table_name, const 
         if(field_item->get_name() == field_name)
           field_item->set_name(field_name_new); //Change it.
       }
-
-      field_item->m_formatting.change_field_name(table_name, field_name, field_name_new);
     }
     else
     {

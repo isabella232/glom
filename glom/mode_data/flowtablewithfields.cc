@@ -930,10 +930,9 @@ FlowTableWithFields::type_choice_widgets FlowTableWithFields::get_choice_widgets
 
     const FieldFormatting& format = field->get_formatting_used();
 
-    sharedptr<const Relationship> choice_relationship;
-    Glib::ustring choice_field, choice_second;
     bool choice_show_all = false;
-    format.get_choices_related(choice_relationship, choice_field, choice_second, choice_show_all);
+    const sharedptr<const Relationship> choice_relationship =
+      format.get_choices_related_relationship(choice_show_all);
     if(choice_show_all)
       continue; //"Show All" choices don't use the ID field values.
 

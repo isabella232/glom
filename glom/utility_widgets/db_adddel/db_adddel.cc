@@ -832,25 +832,23 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
       else if(item_field && item_field->get_formatting_used().get_has_related_choices())
       {
         sharedptr<const Relationship> choice_relationship;
-        Glib::ustring choice_field, choice_second;
+        sharedptr<const LayoutItem_Field> choice_field, choice_second;
         bool choice_show_all;
         item_field->get_formatting_used().get_choices_related(choice_relationship, choice_field, choice_second, choice_show_all);
 
-        if(choice_relationship && !choice_field.empty())
+        if(choice_relationship && choice_field)
         {
           const Glib::ustring to_table = choice_relationship->get_to_table();
 
-          const bool use_second = !choice_second.empty();
+          const bool use_second = choice_second;
           pCellRendererCombo->set_use_second(use_second);
 
           //TODO: Update this when the relationship's field value changes:
           if(choice_show_all) //Otherwise it must change whenever the relationships's ID value changes.
           {
-            Document* document = get_document();
-            sharedptr<const LayoutItem_Field> layout_field_first;
-            sharedptr<const LayoutItem_Field> layout_field_second;
-            Utils::type_list_values_with_second list_values = Utils::get_choice_values_all(document, item_field, layout_field_first, layout_field_second);
-            set_cell_choices(pCellRendererCombo,  layout_field_first, layout_field_second, list_values);
+            const Utils::type_list_values_with_second list_values = 
+              Utils::get_choice_values_all(get_document(), item_field);
+            set_cell_choices(pCellRendererCombo, choice_field, choice_second, list_values);
           }
         }
       }
@@ -1294,13 +1292,14 @@ void DbAddDel::refresh_cell_choices_data_from_database_with_foreign_key(guint mo
     return;
   }
 
+  const Utils::type_list_values_with_second list_values =
+    Utils::get_choice_values(get_document(), layout_field, foreign_key_value);
 
-  sharedptr<const LayoutItem_Field> layout_choice_first;
-  sharedptr<const LayoutItem_Field> layout_choice_second;
-  Utils::type_list_values_with_second list_values =
-    Utils::get_choice_values(get_document(), layout_field, foreign_key_value,
-      layout_choice_first, layout_choice_second);
-
+  sharedptr<const Relationship> choice_relationship;
+  sharedptr<const LayoutItem_Field> layout_choice_first, layout_choice_second;
+  bool choice_show_all = false;
+  layout_field->get_formatting_used().get_choices_related(choice_relationship, layout_choice_first, layout_choice_second, choice_show_all); 
+    
   set_cell_choices(cell, layout_choice_first, layout_choice_second, list_values);
 }
 
@@ -1443,10 +1442,9 @@ DbAddDel::type_list_indexes DbAddDel::get_choice_index(const sharedptr<const Lay
 
     const FieldFormatting& format = field->get_formatting_used();
 
-    sharedptr<const Relationship> choice_relationship;
-    Glib::ustring choice_field, choice_second;
     bool choice_show_all = false;
-    format.get_choices_related(choice_relationship, choice_field, choice_second, choice_show_all);
+    const sharedptr<const Relationship> choice_relationship =
+      format.get_choices_related_relationship(choice_show_all);
     if(choice_relationship && !choice_show_all) //"Show All" choices don't use the ID field values.
     {
       if(choice_relationship->get_from_field() == from_key_name)
