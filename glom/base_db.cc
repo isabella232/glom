@@ -1233,7 +1233,7 @@ Gnome::Gda::Value Base_DB::get_field_value_in_database(const LayoutFieldInRecord
   sharedptr<const LayoutItem_Field> layout_item = field_in_record.m_field;
   list_fields.push_back(layout_item);
   Glib::RefPtr<Gnome::Gda::SqlBuilder> sql_query = Utils::build_sql_select_with_key(field_in_record.m_table_name,
-      list_fields, field_in_record.m_key, field_in_record.m_key_value, 1);
+    list_fields, field_in_record.m_key, field_in_record.m_key_value, type_sort_clause(), 1);
 
   Glib::RefPtr<const Gnome::Gda::DataModel> data_model = DbUtils::query_execute_select(sql_query);
   if(data_model)

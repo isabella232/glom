@@ -843,24 +843,14 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
           const bool use_second = !choice_second.empty();
           pCellRendererCombo->set_use_second(use_second);
 
-          const sharedptr<LayoutItem_Field> layout_field_second = sharedptr<LayoutItem_Field>::create();
-          if(use_second)
-          {
-            Document* document = get_document();
-            if(document)
-            {
-              sharedptr<Field> field_second = document->get_field(to_table, choice_second); //TODO: Actually show this in the combo:
-              layout_field_second->set_full_field_details(field_second);
-
-              //We use the default formatting for this field->
-            }
-          }
-
           //TODO: Update this when the relationship's field value changes:
           if(choice_show_all) //Otherwise it must change whenever the relationships's ID value changes.
           {
-            Utils::type_list_values_with_second list_values = Utils::get_choice_values(item_field);
-            set_cell_choices(pCellRendererCombo, item_field /* TODO: We shoulds really use a layout_field_first instead */, layout_field_second, list_values);
+            Document* document = get_document();
+            sharedptr<LayoutItem_Field> layout_field_first;
+            sharedptr<LayoutItem_Field> layout_field_second;
+            Utils::type_list_values_with_second list_values = Utils::get_choice_values_all(document, item_field, layout_field_first, layout_field_second);
+            set_cell_choices(pCellRendererCombo,  layout_field_first, layout_field_second, list_values);
           }
         }
       }

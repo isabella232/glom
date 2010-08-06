@@ -1,5 +1,23 @@
 2010-08-06  Murray Cumming  <murrayc@murrayc.com>
 
+	Utils::get_choice_values(): Reduce copy/pasted code.
+
+	* glom/libglom/utils.[h|cc]: build_sql_select_with_key(): Add a sort_clause
+  parameter.
+  get_choice_values(field): Rename this to get_choice_values_all() and change
+  the implementation to just call the other get_choice_values(). Add
+  a Document* parameter so we can do that.
+  get_choice_values(document, field, ...): Sort the list by the first field.
+  This should probably be an option in the developer-mode UI.
+	* glom/mode_data/datawidget/combo.h:
+	* glom/mode_data/datawidget/combochoices.[h|cc]:
+	* glom/mode_data/datawidget/comboentry.h:
+	* glom/utility_widgets/db_adddel/db_adddel.cc:
+  get_choice_values(): Adapt to the change, by adding a Document* parameter.
+	* glom/base_db.cc: Adapt.
+
+2010-08-06  Murray Cumming  <murrayc@murrayc.com>
+
 	DbAddDel: Avoid some copy/pasting of code to append items to choices cells.
 
 	* glom/utility_widgets/db_adddel/db_adddel.[h|cc]: Added set_cell_choices(),
