@@ -1,3 +1,11 @@
+2010-08-06  Murray Cumming  <murrayc@murrayc.com>
+
+	Document loading: Show an error dialog even for unexpected errors.
+
+	* glom/application.cc: on_document_load(): Don't just fail silently when
+  there is an unexpected error, for instance if the postgres data directory
+  is missing.
+
 2010-08-09  Murray Cumming  <murrayc@murrayc.com>
 
 	test_document_autosave: Change the temp filename to avoid a clash.

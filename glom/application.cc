@@ -1215,7 +1215,10 @@ bool Application::on_document_load()
         }
         else if(!test)
         {
-          std::cerr << "Application::on_document_load(): unexpected error." << std::endl;
+          //std::cerr might show some hints, but we don't want to confront the user with them:
+          //TODO: Actually complain about specific stuff such as missing data, because the user might really play with the file system.
+          Frame_Glom::show_ok_dialog(_("Problem Loading Document"), _("Glom could not load the document."), *this, Gtk::MESSAGE_ERROR);
+          std::cerr << G_STRFUNC << ": unexpected error." << std::endl;
         }
       }
 
