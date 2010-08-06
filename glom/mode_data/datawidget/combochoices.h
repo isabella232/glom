@@ -60,7 +60,7 @@ public:
    *
    * @param foreign_key_value: The value that should be found in this table.
    */
-  bool refresh_data_from_database_with_foreign_key(const Gnome::Gda::Value& foreign_key_value);
+  bool refresh_data_from_database_with_foreign_key(const Document* document, const Gnome::Gda::Value& foreign_key_value);
 
 protected:
   void init();

@@ -1,5 +1,14 @@
 2010-08-06  Murray Cumming  <murrayc@murrayc.com>
 
+	Choices: Fix !show-all lists.
+
+	* glom/mode_data/datawidget/combochoices.[h|cc]:
+  refresh_data_from_database_with_foreign_key(): Add a document parameter,
+  used to update the cached choices information if necessary.
+	* glom/mode_data/flowtablewithfields.cc: set_field_value(): Adapted.
+
+2010-08-06  Murray Cumming  <murrayc@murrayc.com>
+
 	Document loading: Show an error dialog even for unexpected errors.
 
 	* glom/application.cc: on_document_load(): Don't just fail silently when

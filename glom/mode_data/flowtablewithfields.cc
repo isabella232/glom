@@ -817,7 +817,7 @@ void FlowTableWithFields::set_field_value(const sharedptr<const LayoutItem_Field
     if(widget)
     {
       //g_warning("FlowTableWithFields::set_field_value: foreign_key_value=%s", value.to_string().c_str());
-      widget->refresh_data_from_database_with_foreign_key(value /* foreign key value */);
+      widget->refresh_data_from_database_with_foreign_key(get_document(), value /* foreign key value */);
     }
   }
 }

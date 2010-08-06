@@ -51,11 +51,46 @@ ComboChoices::~ComboChoices()
 {
 }
 
-bool ComboChoices::refresh_data_from_database_with_foreign_key(const Gnome::Gda::Value& foreign_key_value)
+bool ComboChoices::refresh_data_from_database_with_foreign_key(const Document* document, const Gnome::Gda::Value& foreign_key_value)
 {
+  //Get the choice information, then cache it:
   if(!m_related_relationship || !m_related_field)
   {
-    std::cerr << G_STRFUNC << ": !m_related_relationship or !m_related_field." << std::endl;
+    sharedptr<LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
+    if(!layout_item)
+    {
+      return false;
+    }
+
+    //TODO: Avoid repeating this tedious code in so many places:
+    const FieldFormatting& format = layout_item->get_formatting_used();
+    Glib::ustring choice_field, choice_second;
+    format.get_choices_related(m_related_relationship, choice_field, choice_second, m_related_show_all);
+
+    if(!m_related_relationship)
+    {
+      std::cerr << G_STRFUNC << ": !m_related_relationship." << std::endl;
+      return false;
+    }
+
+    const Glib::ustring to_table = m_related_relationship->get_to_table();
+
+    m_related_field = sharedptr<LayoutItem_Field>::create();
+    sharedptr<const Field> field_details = document->get_field(to_table, choice_field);
+    m_related_field->set_full_field_details(field_details);
+
+    m_related_field_second.clear();
+    if(!choice_second.empty())
+    {
+      m_related_field_second = sharedptr<LayoutItem_Field>::create();
+      field_details = document->get_field(to_table, choice_second);
+      m_related_field_second->set_full_field_details(field_details);
+    }
+  }
+
+  if(!m_related_field)
+  {
+    std::cerr << G_STRFUNC << ": !m_related_field." << std::endl;
     return false;
   }
 
