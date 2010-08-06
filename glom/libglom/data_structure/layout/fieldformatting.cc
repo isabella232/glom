@@ -37,7 +37,7 @@ FieldFormatting::FieldFormatting()
   m_text_format_multiline(false),
   m_text_multiline_height_lines(MULTILINE_TEXT_DEFAULT_HEIGHT_LINES),
   m_horizontal_alignment(HORIZONTAL_ALIGNMENT_AUTO),
-  m_choices_related_show_all(false)
+  m_choices_related_show_all(true) //Because this a the simpler, more often useful, default.
 {
 }
 
