@@ -1,3 +1,12 @@
+2010-08-09  Murray Cumming  <murrayc@murrayc.com>
+
+	Self-Hosting: Don't keep trying indefinitely when trying various ports.
+
+	* glom/libglom/connectionpool_backends/postgres_self.cc: connect():
+  Fix a logic error introcuced when removing the no-exceptions ifdefs.
+  Now it only retries when a particular type of error happens, and otherwise
+  fails.
+
 2010-08-07  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix the tests.
@@ -177,7 +186,7 @@
 2010-07-27  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix the tests build after the merge.
-	
+
 	* tests/test_selfhosting_new_empty.cc: Fix the use of Utils::.
 
 2010-07-27  Murray Cumming  <murrayc@murrayc.com>
