@@ -275,7 +275,7 @@ Glib::ustring PostgresSelfHosted::get_postgresql_utils_version(const SlotProgres
   {
     std::cerr << "Glom: Glib::Regex::create() failed: " << ex.what() << std::endl;
     return result;
-  } 
+  }
 
   if(!regex)
     return result;
@@ -317,7 +317,7 @@ float PostgresSelfHosted::get_postgresql_utils_version_as_number(const SlotProgr
   {
     std::cerr << "Glom: Glib::Regex::create() failed: " << ex.what() << std::endl;
     return result;
-  } 
+  }
 
   if(!regex)
     return result;
@@ -568,12 +568,12 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ust
     {
       result = attempt_connect(port_as_string(m_port), database, username, password);
     }
-    catch(const ExceptionConnection ex)
+    catch(const ExceptionConnection& ex)
     {
       if(ex.get_failure_type() == ExceptionConnection::FAILURE_NO_SERVER)
       {
         //It must be using a default password, so any failure would not be due to a wrong password.
-        //However, pg_ctl sometimes reports success before it is really ready to let us connect, 
+        //However, pg_ctl sometimes reports success before it is really ready to let us connect,
         //so in this case we can just keep trying until it works, with a very long timeout.
         count_retries++;
         const guint max_retries = m_network_shared ? MAX_RETRIES_EVER : MAX_RETRIES_KNOWN_PASSWORD;
@@ -582,20 +582,24 @@ Glib::RefPtr<Gnome::Gda::Connection> PostgresSelfHosted::connect(const Glib::ust
           keep_trying = false;
           continue;
         }
+
+        std::cout << "debug: " << G_STRFUNC << ": Waiting and retrying the connection due to suspected too-early success of pg_ctl. retries=" << count_retries << ", max_retries=" << m_network_shared << std::endl;
+
+        //Wait:
+        Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
+          sigc::connection connection_timeout = Glib::signal_timeout().connect(
+          sigc::bind(sigc::ptr_fun(&on_timeout_delay), sigc::ref(mainloop)),
+          1000 /* 1 second */);
+        mainloop->run();
+        connection_timeout.disconnect();
+
+        keep_trying = true;
+        continue;
       }
-
-      std::cout << "debug: " << G_STRFUNC << ": Waiting and retrying the connection due to suspected too-early success of pg_ctl." << std::endl; 
-
-      //Wait:
-      Glib::RefPtr<Glib::MainLoop> mainloop = Glib::MainLoop::create(false);
-        sigc::connection connection_timeout = Glib::signal_timeout().connect(
-        sigc::bind(sigc::ptr_fun(&on_timeout_delay), sigc::ref(mainloop)),
-        1000 /* 1 second */);
-      mainloop->run();
-      connection_timeout.disconnect();
-
-      keep_trying = true;
-      continue;
+      else
+      {
+        throw ex;
+      }
     }
 
     keep_trying = false;
