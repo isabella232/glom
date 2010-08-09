@@ -1,5 +1,12 @@
 2010-08-09  Murray Cumming  <murrayc@murrayc.com>
 
+	test_document_autosave: Change the temp filename to avoid a clash.
+
+	* tests/test_document_autosave.cc: Rename the file because we sometimes
+  seem to clash with a directory of the same name.
+
+2010-08-09  Murray Cumming  <murrayc@murrayc.com>
+
 	Self-Hosting: Don't keep trying indefinitely when trying various ports.
 
 	* glom/libglom/connectionpool_backends/postgres_self.cc: connect():
