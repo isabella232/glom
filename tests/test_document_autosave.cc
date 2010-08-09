@@ -30,7 +30,7 @@ void cleanup()
   {
     //TODO: Catch exceptions:
     Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(file_uri);
-    file->remove();
+    file->remove(); //This should be OK because it is a file, not a directory.
   }
   catch(const Gio::Error& ex)
   {
@@ -38,12 +38,14 @@ void cleanup()
     if(ex.code() == Gio::Error::NOT_FOUND)
       return;
 
-    std::cerr << "Exception from Gio::File::remove(): " << ex.what();
+    std::cerr << G_STRFUNC << ": Exception from Gio::File::remove(): " << ex.what() << std::endl
+      << "  file_uri= " << file_uri << std::endl;
     exit(EXIT_FAILURE);
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << "Exception from Gio::File::remove(): " << ex.what();
+    std::cerr << G_STRFUNC << ":Exception from Gio::File::remove(): " << ex.what() << std::endl
+      << "  file_uri= " << file_uri << std::endl;
     exit(EXIT_FAILURE);
   }
 }
@@ -53,16 +55,16 @@ int main()
   Glom::libglom_init();
 
   //For instance, /tmp/testfile.glom");
-  const std::string temp_filename = "testglom";
-  const std::string temp_filepath = Glib::build_filename(Glib::get_tmp_dir(), 
+  const std::string temp_filename = "testglom_document_autosave";
+  const std::string temp_filepath = Glib::build_filename(Glib::get_tmp_dir(),
     temp_filename);
   file_uri = Glib::filename_to_uri(temp_filepath);
-  
+
   //Make sure that the file does not exist yet:
   cleanup();
 
   const Glib::ustring test_title = "test_title";
-  
+
   //Test manual saving:
   {
     Glom::Document document;
@@ -78,7 +80,7 @@ int main()
     int failure_code = 0;
     const bool test = document.load(failure_code);
     g_assert(test);
-    
+
     g_assert( document.get_database_title() == test_title );
   }
 
@@ -99,12 +101,12 @@ int main()
     int failure_code = 0;
     const bool test = document.load(failure_code);
     g_assert(test);
-    
+
     g_assert( document.get_database_title() == test_title );
   }
-  
+
   cleanup();
-  
+
   Glom::libglom_deinit();
 
   return EXIT_SUCCESS;
