@@ -30,7 +30,7 @@ void cleanup()
   {
     //TODO: Catch exceptions:
     Glib::RefPtr<Gio::File> file = Gio::File::create_for_uri(file_uri);
-    file->remove();
+    file->remove(); //This should be OK because it is a file, not a directory.
   }
   catch(const Gio::Error& ex)
   {
@@ -38,12 +38,14 @@ void cleanup()
     if(ex.code() == Gio::Error::NOT_FOUND)
       return;
 
-    std::cerr << G_STRFUNC << ": Exception from Gio::File::remove(): " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ": Exception from Gio::File::remove(): " << ex.what() << std::endl
+      << "  file_uri= " << file_uri << std::endl;
     exit(EXIT_FAILURE);
   }
   catch(const Glib::Error& ex)
   {
-    std::cerr << G_STRFUNC << ":Exception from Gio::File::remove(): " << ex.what() << std::endl;
+    std::cerr << G_STRFUNC << ":Exception from Gio::File::remove(): " << ex.what() << std::endl
+      << "  file_uri= " << file_uri << std::endl;
     exit(EXIT_FAILURE);
   }
 }
@@ -53,7 +55,7 @@ int main()
   Glom::libglom_init();
 
   //For instance, /tmp/testfile.glom");
-  const std::string temp_filename = "testglom";
+  const std::string temp_filename = "testglom_document_autosave";
   const std::string temp_filepath = Glib::build_filename(Glib::get_tmp_dir(),
     temp_filename);
   file_uri = Glib::filename_to_uri(temp_filepath);
