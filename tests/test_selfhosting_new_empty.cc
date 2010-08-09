@@ -90,8 +90,12 @@ int main()
 
   //Start self-hosting:
   //TODO: Let this happen automatically on first connection?
-  const bool started = connection_pool->startup( sigc::ptr_fun(&on_startup_progress) );
-  g_assert(started);
+  const Glom::ConnectionPool::StartupErrors started = connection_pool->startup( sigc::ptr_fun(&on_startup_progress) );
+  if(started != Glom::ConnectionPool::Backend::STARTUPERROR_NONE)
+  {
+    std::cerr << "connection_pool->startup(): result=" << started << std::endl;
+  }
+  g_assert(started == Glom::ConnectionPool::Backend::STARTUPERROR_NONE);
 
   const bool stopped = connection_pool->cleanup( sigc::ptr_fun(&on_cleanup_progress) );
   g_assert(stopped);
