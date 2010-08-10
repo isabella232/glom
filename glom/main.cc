@@ -436,7 +436,17 @@ main(int argc, char* argv[])
   // We should not rely on the default locale of
   // any streams (we should always do an explicit imbue()),
   // but this is maybe a good default in case we forget.
-  std::locale::global(std::locale(""));
+  try
+  {
+    std::locale::global(std::locale(""));
+  }
+  catch(const std::runtime_error& ex)
+  {
+    //This has been known to throw an exception at least once:
+    //https://bugzilla.gnome.org/show_bug.cgi?id=619445
+    //This should tell us what the problem is:
+    std::cerr << G_STRFUNC << ": exception from std::locale::global(std::locale(\"\")): " << ex.what() << std::endl;
+  }
 
   Glom::libglom_init(); //Also initializes python.
 
