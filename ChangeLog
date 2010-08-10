@@ -1,3 +1,12 @@
+2010-08-10  Murray Cumming  <murrayc@murrayc.com>
+
+	Catch exceptions from std::locale::global().
+
+	* glom/main.cc: Put a try/catch around the call to std::locale::global(),
+  because it is throwing on at least one system under apparently normal
+  circumstances.
+  This should fix bug #619445 (teidooricaerak) or at least give us another clue.
+
 2010-08-09  Murray Cumming  <murrayc@murrayc.com>
 
 	test_document_autosave: Change the temp filename to avoid a clash.
