@@ -1,5 +1,21 @@
 2010-08-10  Murray Cumming  <murrayc@murrayc.com>
 
+	SpinButtons: Don't have 0 to 0 ranges with only 0 increments possible.
+
+	* glom/import_csv/dialog_import_csv.cc: (Import dialog)
+	* glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:
+  (Multiline text field height)
+	* glom/utility_widgets/dialog_flowtable.cc: (number of columns in a group):
+  Constructors: Set the range and increment manually, because Glade defaults
+  to useless 0 values for these.
+  This problem was introduced when we remove the extra adjustment objects
+  from the .glade files, so we could simplify our use of Glade.
+  It is a side-effect of GtkBuilder bug
+  http://bugzilla.gnome.org/show_bug.cgi?id=575714
+  This partially fixes bug #625693 (.cvs file import not working).
+
+2010-08-10  Murray Cumming  <murrayc@murrayc.com>
+
 	Catch exceptions from std::locale::global().
 
 	* glom/main.cc: Put a try/catch around the call to std::locale::global(),

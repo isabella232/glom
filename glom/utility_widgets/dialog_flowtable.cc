@@ -37,6 +37,14 @@ Dialog_FlowTable::Dialog_FlowTable(BaseObjectType* cobject, const Glib::RefPtr<G
   builder->get_widget("entry_title",  m_entry_title);
   builder->get_widget("spin_columns",  m_spin_columns);
   
+  //Set the adjustment details, to avoid a useless 0-to-0 range and a 0 incremenet.
+  //We don't do this the Glade file because GtkBuilder wouldn't find the
+  //associated adjustment object unless we specified it explictly:
+  //See http://bugzilla.gnome.org/show_bug.cgi?id=575714
+  m_spin_columns->set_range(0, 10);
+  m_spin_columns->set_increments(1, 2);
+  m_spin_columns->set_value(3); //A sensible default.
+
   show_all_children();
 }
 
