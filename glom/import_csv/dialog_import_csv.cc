@@ -76,10 +76,18 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
   builder->get_widget("import_csv_sample_rows", m_sample_rows);
   builder->get_widget("import_csv_advice_label", m_advice_label);
   builder->get_widget("import_csv_error_label", m_error_label);
-#ifdef GLIBMM_EXCEPTIONS_ENABLED  
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
   if(!m_sample_view || !m_encoding_combo || !m_target_table || !m_encoding_info || !m_first_line_as_title || !m_sample_rows || !m_error_label)
     throw std::runtime_error("Missing widgets from glade file for Dialog_Import_CSV");
 #endif
+
+  //Set the adjustment details, to avoid a useless 0-to-0 range and a 0 incremenet.
+  //We don't do this the Glade file because GtkBuilder wouldn't find the
+  //associated adjustment object unless we specified it explictly:
+  //See http://bugzilla.gnome.org/show_bug.cgi?id=575714
+  m_sample_rows->set_range(0, 100);
+  m_sample_rows->set_increments(1, 10);
+  m_sample_rows->set_value(2); //A sensible default.
 
   //Fill the list of encodings:
   m_encoding_model = Gtk::ListStore::create(m_encoding_columns);
@@ -102,8 +110,6 @@ Dialog_Import_CSV::Dialog_Import_CSV(BaseObjectType* cobject, const Glib::RefPtr
     row[m_encoding_columns.m_col_name] = encoding.get_name();
     row[m_encoding_columns.m_col_charset] = encoding.get_charset();
   }
-
-  m_sample_rows->set_value(2); //A sensible default.
 
   Gtk::CellRendererText* renderer = Gtk::manage(new Gtk::CellRendererText);
   m_encoding_combo->set_model(m_encoding_model);
@@ -207,7 +213,7 @@ void Dialog_Import_CSV::import(const Glib::ustring& uri, const Glib::ustring& in
       }
     }
 
-    // Create the sorted version of this model, 
+    // Create the sorted version of this model,
     // so the user sees the fields in alphabetical order:
     m_field_model_sorted = Gtk::TreeModelSort::create(m_field_model);
     m_field_model_sorted->set_sort_column(m_field_columns.m_col_field_name, Gtk::SORT_ASCENDING);
@@ -633,13 +639,13 @@ void Dialog_Import_CSV::field_data_func(Gtk::CellRenderer* renderer, const Gtk::
       }
     }
   }
-  
+
   renderer_combo->set_property("text", text);
   renderer_combo->set_property("editable", editable);
 }
 
 
-/**  Parse a row from a .cvs file. Note that this "line" might have newline 
+/**  Parse a row from a .cvs file. Note that this "line" might have newline
   *  characters inside one field value, inside quotes.
   **/
 void Dialog_Import_CSV::on_field_edited(const Glib::ustring& path, const Glib::ustring& new_text, guint column_number)
@@ -746,7 +752,7 @@ void Dialog_Import_CSV::on_parser_file_read_error(const Glib::ustring& error_mes
   std::auto_ptr<Glib::Error> error;
   filename = Glib::filename_from_uri(m_file_uri, error);
 #endif
-  
+
   show_error_dialog(_("Could Not Open file"),
     Glib::ustring::compose(_("The file at \"%1\" could not be opened: %2"), filename, error_message) );
 }
@@ -768,4 +774,3 @@ Dialog_Import_CSV::type_signal_state_changed Dialog_Import_CSV::signal_state_cha
 }
 
 } //namespace Glom
-
