@@ -1,3 +1,14 @@
+1.14.6 (stable):
+
+* Import dialog, Text formatting:
+  SpinButtons: Don't have 0 to 0 ranges with only 0 increments possible.
+* Document loading: Show an error dialog even for unexpected errors.
+* Startup: Catch exceptions from std::locale::global() because it is throwing
+  in at least one system under apparently normal circumstances.
+  This should fix bug #619445 (teidooricaerak) or at least give us another clue.
+  (Murray Cumming)
+* Build: Linker flags improvements (David King)
+
 1.14.5 (stable):
 
 * Allow unique fields with same name in multiple tables.
