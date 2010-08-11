@@ -237,9 +237,29 @@ void Box_Formatting::set_formatting(const FieldFormatting& format, bool show_num
     m_combo_choices_relationship->set_relationships(vecRelationships);
 
     sharedptr<const Relationship> choices_relationship;
-    sharedptr<const LayoutItem_Field> choices_field, choices_field_second;
+    sharedptr<const LayoutItem_Field> choices_field;
+    sharedptr<const LayoutGroup> choices_field_extras;
     bool choices_show_all = false;
-    format.get_choices_related(choices_relationship, choices_field, choices_field_second, choices_show_all);
+    format.get_choices_related(choices_relationship, choices_field, choices_field_extras, choices_show_all);
+    
+    sharedptr<const LayoutItem_Field> choices_field_second;
+    if(choices_field_extras)
+    {
+      const LayoutGroup::type_list_const_items extra_fields
+        = choices_field_extras->get_items_recursive();
+
+      for(LayoutGroup::type_list_const_items::const_iterator iterExtra = extra_fields.begin();
+          iterExtra != extra_fields.end(); ++iterExtra)
+      {
+        const sharedptr<const LayoutItem> item = *iterExtra;
+        const sharedptr<const LayoutItem_Field> item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(item);
+        if(item_field)
+        {
+          choices_field_second = item_field;
+          break;
+        }
+      }
+    }
 
     m_combo_choices_relationship->set_selected_relationship(choices_relationship);
     on_combo_choices_relationship_changed(); //Fill the combos so we can set their active items.
@@ -312,13 +332,15 @@ bool Box_Formatting::get_formatting(FieldFormatting& format) const
       m_checkbutton_choices_restricted->get_active(), 
       m_checkbutton_choices_restricted_as_radio_buttons->get_active());
 
-   const sharedptr<const Relationship> choices_relationship = m_combo_choices_relationship->get_selected_relationship();
-   sharedptr<LayoutItem_Field> layout_choice_first = sharedptr<LayoutItem_Field>::create();
-   layout_choice_first->set_name(m_combo_choices_field->get_selected_field_name());
-   sharedptr<LayoutItem_Field> layout_choice_second = sharedptr<LayoutItem_Field>::create();
-   layout_choice_second->set_name(m_combo_choices_field_second->get_selected_field_name());
+    const sharedptr<const Relationship> choices_relationship = m_combo_choices_relationship->get_selected_relationship();
+    sharedptr<LayoutItem_Field> layout_choice_first = sharedptr<LayoutItem_Field>::create();
+    layout_choice_first->set_name(m_combo_choices_field->get_selected_field_name());
+    sharedptr<LayoutItem_Field> layout_choice_second = sharedptr<LayoutItem_Field>::create();
+    layout_choice_second->set_name(m_combo_choices_field_second->get_selected_field_name());
+    sharedptr<LayoutGroup> layout_choice_extras = sharedptr<LayoutGroup>::create();
+    layout_choice_extras->add_item(layout_choice_second);
     m_format.set_choices_related(choices_relationship,
-      layout_choice_first, layout_choice_second,
+      layout_choice_first, layout_choice_extras,
       m_checkbutton_choices_related_show_all->get_active());
 
     //Custom choices:
