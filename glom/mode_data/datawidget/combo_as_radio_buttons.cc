@@ -84,24 +84,24 @@ void ComboAsRadioButtons::set_choices_with_second(const type_list_values_with_se
       const Glib::ustring value_first = Conversions::get_text_for_gda_value(layout_choice_first->get_glom_type(), iter->first, layout_choice_first->get_formatting_used().m_numeric_format);
       Glib::ustring title = value_first;
 
-      //TODO: Support multiple extra fields:
-      //For now, use only the first extra field:
       const type_list_values extra_values = iter->second;
       if(layout_choice_extra && !extra_values.empty())
       {
+        type_list_values::const_iterator iterValues = extra_values.begin();
         for(LayoutGroup::type_list_const_items::const_iterator iterExtra = extra_fields.begin();
           iterExtra != extra_fields.end(); ++iterExtra)
         {
           const sharedptr<const LayoutItem> item = *iterExtra;
           const sharedptr<const LayoutItem_Field> item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(item);
-          if(item_field)
+          if(item_field && (iterValues != extra_values.end()))
           {
-            const Gnome::Gda::Value value = *(extra_values.begin()); //TODO: Use a vector instead?
+            const Gnome::Gda::Value value = *iterValues; //TODO: Use a vector instead?
             const Glib::ustring value_second = Conversions::get_text_for_gda_value(item_field->get_glom_type(), value, item_field->get_formatting_used().m_numeric_format);
 
             title += " - " + value_second; //TODO: Find a better way to join them?
-            break;
           }
+          
+          ++iterValues;
         }
       }
 
