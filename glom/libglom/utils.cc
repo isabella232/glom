@@ -503,9 +503,10 @@ Utils::type_list_values_with_second Utils::get_choice_values(const Document* doc
 
   const FieldFormatting& format = field->get_formatting_used();
   sharedptr<const Relationship> choice_relationship;
-  sharedptr<const LayoutItem_Field> layout_choice_first, layout_choice_second;
+  sharedptr<const LayoutItem_Field> layout_choice_first;
+  sharedptr<const LayoutGroup> layout_choice_extra;
   bool choice_show_all = false;
-  format.get_choices_related(choice_relationship, layout_choice_first, layout_choice_second, choice_show_all);
+  format.get_choices_related(choice_relationship, layout_choice_first, layout_choice_extra, choice_show_all);
 
   if(!choice_relationship)
   {
@@ -515,8 +516,19 @@ Utils::type_list_values_with_second Utils::get_choice_values(const Document* doc
 
   Utils::type_vecConstLayoutFields fields;
   fields.push_back(layout_choice_first);
-  if(layout_choice_second)
-    fields.push_back(layout_choice_second);
+
+  if(layout_choice_extra)
+  {
+    const LayoutGroup::type_list_const_items extra_fields = layout_choice_extra->get_items_recursive();
+    for(LayoutGroup::type_list_const_items::const_iterator iter = extra_fields.begin();
+      iter != extra_fields.end(); ++iter)
+    {
+      const sharedptr<const LayoutItem> item = *iter;
+      const sharedptr<const LayoutItem_Field> item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(item);
+      if(item_field)
+         fields.push_back(item_field); //TODO: Don't ignore other usable items such as static text.
+    }
+  }
 
   const Glib::ustring to_table = choice_relationship->get_to_table();
   const sharedptr<const Field> to_field = document->get_field(to_table, choice_relationship->get_to_field());
@@ -566,11 +578,19 @@ Utils::type_list_values_with_second Utils::get_choice_values(const Document* doc
     for(guint row = 0; row < count; ++row)
     {
 
-      std::pair<Gnome::Gda::Value, Gnome::Gda::Value> itempair;
+      std::pair<Gnome::Gda::Value, type_list_values> itempair;
       itempair.first = datamodel->get_value_at(0, row);
 
-      if(layout_choice_second && (cols_count > 1))
-        itempair.second = datamodel->get_value_at(1, row);
+      if(layout_choice_extra && (cols_count > 1))
+      {
+        type_list_values list_values;
+        for(guint i = 1; i < cols_count; ++i)
+        {
+          list_values.push_back(datamodel->get_value_at(1, row));
+        }
+
+        itempair.second = list_values;
+      }
 
       result.push_back(itempair);
     }

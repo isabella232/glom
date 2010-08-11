@@ -149,7 +149,7 @@ void LayoutGroup::add_item(const sharedptr<LayoutItem>& item, const sharedptr<co
   //std::vector::insert() adds before rather than after:
   // jhs: We want to add after rather than before - at least for dnd
   //++iter;
- 
+
   m_list_items.insert(iter, item);
 }
 
@@ -157,7 +157,7 @@ void LayoutGroup::remove_item (const sharedptr<LayoutItem>& item)
 {
   sharedptr<LayoutItem> unconst = sharedptr<LayoutItem>::cast_const(item);
   type_list_items::iterator iter = std::find(m_list_items.begin(), m_list_items.end(), unconst);
-  m_list_items.erase(iter);  
+  m_list_items.erase(iter);
 }
 
 LayoutGroup::type_list_items LayoutGroup::get_items()
@@ -179,6 +179,26 @@ LayoutGroup::type_list_const_items LayoutGroup::get_items() const
   return result;
 }
 
+LayoutGroup::type_list_const_items LayoutGroup::get_items_recursive() const
+{
+  type_list_const_items result;
+
+  for(type_list_items::const_iterator iter = m_list_items.begin(); iter != m_list_items.end(); ++iter)
+  {
+    const sharedptr<const LayoutItem> item = *iter;
+    sharedptr<const LayoutGroup> group = sharedptr<const LayoutGroup>::cast_dynamic(item);
+    if(group)
+    {
+      const type_list_const_items sub_result = group->get_items_recursive();
+      result.insert(result.end(), sub_result.begin(), sub_result.end());
+    }
+    else
+      result.push_back(item);
+  }
+
+  return result;
+}
+
 void LayoutGroup::remove_relationship(const sharedptr<const Relationship>& relationship)
 {
   LayoutGroup::type_list_items::iterator iterItem = m_list_items.begin();
@@ -193,7 +213,7 @@ void LayoutGroup::remove_relationship(const sharedptr<const Relationship>& relat
         if(*(uses_rel->get_relationship()) == *relationship) //TODO_Performance: Slow if there are lots of translations.
         {
           m_list_items.erase(iterItem);
-          iterItem = m_list_items.begin(); //Start again, because we changed the container.AddDel 
+          iterItem = m_list_items.begin(); //Start again, because we changed the container.AddDel
           continue;
         }
       }
@@ -222,7 +242,7 @@ void LayoutGroup::remove_field(const Glib::ustring& field_name)
         if(field_item->get_name() == field_name)
         {
           m_list_items.erase(iterItem);
-          iterItem = m_list_items.begin(); //Start again, because we changed the container.AddDel 
+          iterItem = m_list_items.begin(); //Start again, because we changed the container.AddDel
           continue;
         }
       }
@@ -257,7 +277,7 @@ void LayoutGroup::remove_field(const Glib::ustring& table_name, const Glib::ustr
         if(field_item->get_name() == field_name)
         {
           m_list_items.erase(iterItem);
-          iterItem = m_list_items.begin(); //Start again, because we changed the container.AddDel 
+          iterItem = m_list_items.begin(); //Start again, because we changed the container.AddDel
           continue;
         }
       }
@@ -422,7 +442,7 @@ void LayoutGroup::set_columns_count(guint columns_count)
 {
   m_columns_count = columns_count;
 }
-  
+
 double LayoutGroup::get_border_width() const
 {
   return m_border_width;

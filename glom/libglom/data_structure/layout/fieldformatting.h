@@ -31,6 +31,7 @@ namespace Glom
 {
 
 class LayoutItem_Field;
+class LayoutGroup;
 
 //TODO: This should probably be renamed to Formatting, because it is used for static text items too.
 class FieldFormatting : public UsesRelationship //The UsesRelationship base has the relationship for the choices.
@@ -68,15 +69,15 @@ public:
    */
   void set_choices_restricted(bool val = true, bool as_radio_buttons = false);
 
-  void get_choices_related(sharedptr<const Relationship>& relationship_name, sharedptr<const LayoutItem_Field>& field, sharedptr<const LayoutItem_Field>& field_second, bool& show_all) const;
-  void set_choices_related(const sharedptr<const Relationship>& relationship_name, const sharedptr<const LayoutItem_Field>& field, const sharedptr<const LayoutItem_Field>& field_second, bool show_all);
-  
+  void get_choices_related(sharedptr<const Relationship>& relationship_name, sharedptr<const LayoutItem_Field>& field, sharedptr<const LayoutGroup>& extra_layout, bool& show_all) const;
+  void set_choices_related(const sharedptr<const Relationship>& relationship_name, const sharedptr<const LayoutItem_Field>& field, const sharedptr<LayoutGroup>& extra_layout, bool show_all);
+
   //Just for convenience:
   sharedptr<const Relationship> get_choices_related_relationship(bool& show_all) const;
-  
 
 
- 
+
+
   /** Get whether the text should be displayed with multiple lines in the
    * details view. Text is displayed with a single line in the list view.
    * @returns whether the text should be displayed with multiple lines
@@ -168,7 +169,7 @@ private:
   HorizontalAlignment m_horizontal_alignment;
 
   sharedptr<const LayoutItem_Field> m_choices_related_field;
-  sharedptr<const LayoutItem_Field> m_choices_related_field_second;
+  sharedptr<LayoutGroup> m_choices_extra_layout_group;
   bool m_choices_related_show_all;
 };
 

@@ -197,7 +197,8 @@ namespace Glom
 #define GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED "choices_related"
 #define GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_RELATIONSHIP "choices_related_relationship"
 #define GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD "choices_related_field"
-#define GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND "choices_related_second"
+#define GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_EXTRA_LAYOUT "choices_related_extra_layout"
+#define GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND "choices_related_second" //deprecated
 #define GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SHOW_ALL "choices_related_show_all"
 
 #define GLOM_NODE_TRANSLATIONS_SET "trans_set"
@@ -1986,20 +1987,49 @@ void Document::load_after_layout_item_formatting(const xmlpp::Element* element, 
     const Glib::ustring relationship_name = get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_RELATIONSHIP);
     if(!relationship_name.empty())
     {
+      sharedptr<const Relationship> relationship = get_relationship(table_name, relationship_name);
+
       bool show_all = get_node_attribute_value_as_bool(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SHOW_ALL);
       if(get_document_format_version() < 6)
       {
         show_all = true; //This was the behaviour before this checkbox existed.
       }
-      
+
       const Glib::ustring field_first = get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD);
-      const Glib::ustring field_second = get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND);
-      /* TODO:
-      sharedptr<Relationship> relationship = get_relationship(table_name, relationship_name);
+      sharedptr<LayoutItem_Field> layout_field_first = sharedptr<LayoutItem_Field>::create();
+      layout_field_first->set_name(field_first);
+
+      sharedptr<LayoutGroup> extra_layouts;
+
+      //Previous versions just saved a single extra field name, instead of a whole set of layoutgroups:
+      if(m_document_format_version < 6)
+      {
+        //The deprecated way:
+        const Glib::ustring field_second = get_node_attribute_value(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND);
+        if(!field_second.empty())
+        {
+          extra_layouts = sharedptr<LayoutGroup>::create();
+          sharedptr<LayoutItem_Field> item = sharedptr<LayoutItem_Field>::create();
+          item->set_name(field_second);
+          extra_layouts->add_item(item);
+        }
+      }
+      else
+      {
+        //Get the extra layout for related choices:
+        xmlpp::Element* nodeExtraLayout = get_node_child_named(element, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_EXTRA_LAYOUT);
+        if(nodeExtraLayout)
+        {
+          xmlpp::Element* nodeGroups = get_node_child_named(nodeExtraLayout, GLOM_NODE_DATA_LAYOUT_GROUPS);
+          if(nodeGroups)
+            load_after_layout_group(nodeGroups, relationship->get_to_table(), extra_layouts);
+        }
+      }
+
       format.set_choices_related(relationship,
-        field_first, field_second,
+        layout_field_first, extra_layouts,
         show_all);
-      */
+
       //Full details are updated in filled-in ().
     }
   }
@@ -2997,20 +3027,26 @@ void Document::save_before_layout_item_formatting(xmlpp::Element* nodeItem, cons
     set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED, format.get_has_related_choices() );
 
     sharedptr<const Relationship> choice_relationship;
-    sharedptr<const LayoutItem_Field> choice_layout_first, choice_layout_second;
+    sharedptr<const LayoutItem_Field> choice_layout_first;
+    sharedptr<const LayoutGroup> choice_extra_layouts;
     bool choice_show_all = false;
-    format.get_choices_related(choice_relationship, choice_layout_first, choice_layout_second, choice_show_all);
+    format.get_choices_related(choice_relationship, choice_layout_first, choice_extra_layouts, choice_show_all);
 
-    Glib::ustring choice_field, choice_second;
+    Glib::ustring choice_field;
     if(choice_layout_first)
       choice_field = choice_layout_first->get_name();
-    if(choice_layout_second)
-      choice_second = choice_layout_first->get_name();
-    
+
     set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_RELATIONSHIP, glom_get_sharedptr_name(choice_relationship));
     set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_FIELD, choice_field);
-    set_node_attribute_value(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SECOND, choice_second);
     set_node_attribute_value_as_bool(nodeItem, GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_SHOW_ALL, choice_show_all);
+
+    //Save the extra fields to show for related choices:
+    if(choice_extra_layouts)
+    {
+      xmlpp::Element* nodeExtraLayout = nodeItem->add_child(GLOM_ATTRIBUTE_FORMAT_CHOICES_RELATED_EXTRA_LAYOUT);
+      xmlpp::Element* nodeGroups = nodeExtraLayout->add_child(GLOM_NODE_DATA_LAYOUT_GROUPS);
+      save_before_layout_group(nodeGroups, choice_extra_layouts);
+    }
   }
 }
 
@@ -3923,7 +3959,7 @@ sharedptr<const Relationship> Document::get_field_used_in_relationship_to_one(co
   if(!layout_field)
   {
     std::cerr << G_STRFUNC << ": layout_field was null" << std::endl;
-    return result; 
+    return result;
   }
 
   const Glib::ustring table_used = layout_field->get_table_used(table_name);
@@ -3931,7 +3967,7 @@ sharedptr<const Relationship> Document::get_field_used_in_relationship_to_one(co
   if(iterFind == m_tables.end())
   {
     std::cerr << G_STRFUNC << ": table not found:" << table_used << std::endl;
-    return result; 
+    return result;
   }
 
   //Look at each relationship:
@@ -4201,7 +4237,7 @@ guint Document::get_latest_known_document_format_version()
   // Version 3: (Glom 1.10). Support for the old one-big-string example_rows format was removed, and we now use (unquoted) non-postgres libgda escaping.
   // Version 4: (Glom 1.12). Portal navigation options were simplified, with a "none" option. network_sharing was added, defaulting to off.
   // Version 5: (Glom 1.14). Extra layout item formatting options were added, plus a startup script.
-  // Version 6: (Glom 1.16). Extra show_all option for choices that show related records.
+  // Version 6: (Glom 1.16). Extra show_all option for choices that show related records. Extra related choice fields are now a layout group instead of just a second field name.
 
   return 6;
 }

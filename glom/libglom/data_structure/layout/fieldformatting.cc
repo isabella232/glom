@@ -56,7 +56,7 @@ FieldFormatting::FieldFormatting(const FieldFormatting& src)
   m_text_color_background(src.m_text_color_background),
   m_horizontal_alignment(src.m_horizontal_alignment),
   m_choices_related_field(src.m_choices_related_field),
-  m_choices_related_field_second(src.m_choices_related_field_second),
+  m_choices_extra_layout_group(src.m_choices_extra_layout_group),
   m_choices_related_show_all(src.m_choices_related_show_all)
 {
 }
@@ -75,7 +75,7 @@ bool FieldFormatting::operator==(const FieldFormatting& src) const
     (m_choices_custom == src.m_choices_custom) &&
     (m_choices_related == src.m_choices_related) &&
     (m_choices_related_field == src.m_choices_related_field) &&
-    (m_choices_related_field_second == src.m_choices_related_field_second) &&
+    (m_choices_extra_layout_group == src.m_choices_extra_layout_group) &&
     (m_text_format_multiline == src.m_text_format_multiline) &&
     (m_text_multiline_height_lines == src.m_text_multiline_height_lines) &&
     (m_text_font == src.m_text_font) &&
@@ -98,7 +98,7 @@ FieldFormatting& FieldFormatting::operator=(const FieldFormatting& src)
   m_choices_custom = src.m_choices_custom;
   m_choices_related = src.m_choices_related;
   m_choices_related_field = src.m_choices_related_field;
-  m_choices_related_field_second = src.m_choices_related_field_second;
+  m_choices_extra_layout_group = src.m_choices_extra_layout_group;
   m_choices_related_show_all = src.m_choices_related_show_all;
 
   m_text_format_multiline = src.m_text_format_multiline;
@@ -234,7 +234,7 @@ bool FieldFormatting::get_has_related_choices() const
 bool FieldFormatting::get_has_related_choices(bool& show_all, bool& with_second) const
 {
   show_all = m_choices_related_show_all;
-  with_second = m_choices_related_field_second;
+  with_second = m_choices_extra_layout_group;
   return m_choices_related;
 }
 
@@ -243,21 +243,21 @@ void FieldFormatting::set_has_related_choices(bool val)
   m_choices_related = val;
 }
 
-void FieldFormatting::set_choices_related(const sharedptr<const Relationship>& relationship, const sharedptr<const LayoutItem_Field>& field, const sharedptr<const LayoutItem_Field>& field_second, bool show_all)
+void FieldFormatting::set_choices_related(const sharedptr<const Relationship>& relationship, const sharedptr<const LayoutItem_Field>& field, const sharedptr<LayoutGroup>& extra_layout, bool show_all)
 {
   set_relationship(relationship);
 
   m_choices_related_field = field;
-  m_choices_related_field_second = field_second;
+  m_choices_extra_layout_group = extra_layout;
   m_choices_related_show_all = show_all;
 }
 
-void FieldFormatting::get_choices_related(sharedptr<const Relationship>& relationship, sharedptr<const LayoutItem_Field>& field, sharedptr<const LayoutItem_Field>& field_second, bool& show_all) const
+void FieldFormatting::get_choices_related(sharedptr<const Relationship>& relationship, sharedptr<const LayoutItem_Field>& field, sharedptr<const LayoutGroup>& extra_layout, bool& show_all) const
 {
   relationship = get_relationship();
 
   field = m_choices_related_field;
-  field_second = m_choices_related_field_second;
+  extra_layout = m_choices_extra_layout_group;
   show_all = m_choices_related_show_all;
 }
 

@@ -62,7 +62,8 @@ public:
 protected:
   void init();
 
-  typedef std::list< std::pair<Gnome::Gda::Value, Gnome::Gda::Value> > type_list_values_with_second;
+  typedef std::list<Gnome::Gda::Value> type_list_values;
+  typedef std::list< std::pair<Gnome::Gda::Value, type_list_values> > type_list_values_with_second;
   virtual void set_choices_with_second(const type_list_values_with_second& list_values) = 0;
 
   //Gnome::Gda::Value m_value; //The last-stored value. We have this because the displayed value might be unparseable.

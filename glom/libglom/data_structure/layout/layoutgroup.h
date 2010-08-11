@@ -58,14 +58,14 @@ public:
 
   /** Add the item after the specified existing item.
    * @param item The item to add.
-   * @param position The item after which the item should be added. 
+   * @param position The item after which the item should be added.
    */
   void add_item(const sharedptr<LayoutItem>& item, const sharedptr<const LayoutItem>& position);
-  
+
   /** Remove a layout item from the group
    * @param item The item to remove.
    */
-  void remove_item (const sharedptr<LayoutItem>& item);  
+  void remove_item (const sharedptr<LayoutItem>& item);
 
   /** Remove any instance of the field (from the current table) from the layout.
    */
@@ -94,12 +94,16 @@ public:
 
   guint get_columns_count() const;
   void set_columns_count(guint columns_count);
-  
+
   typedef std::vector< sharedptr<LayoutItem> > type_list_items;
   type_list_items get_items();
 
   typedef std::vector< sharedptr<const LayoutItem> > type_list_const_items;
   type_list_const_items get_items() const;
+
+  /** Get the items recursively, depth-first, not returning any groups.
+   */
+  type_list_const_items get_items_recursive() const;
 
   virtual Glib::ustring get_part_type_name() const;
   virtual Glib::ustring get_report_part_id() const;
@@ -118,6 +122,3 @@ private:
 } //namespace Glom
 
 #endif //GLOM_DATASTRUCTURE_LAYOUTGROUP_H
-
-
-

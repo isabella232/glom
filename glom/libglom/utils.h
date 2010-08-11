@@ -111,8 +111,8 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_with_key(
 
 Gnome::Gda::SqlExpr get_find_where_clause_quick(const Document* document, const Glib::ustring& table_name, const Gnome::Gda::Value& quick_search);
 
-
-typedef std::list< std::pair<Gnome::Gda::Value, Gnome::Gda::Value> > type_list_values_with_second;
+typedef std::list<Gnome::Gda::Value> type_list_values;
+typedef std::list< std::pair<Gnome::Gda::Value, type_list_values> > type_list_values_with_second; //TODO: Rename this now that we have more than just 1 extra field.
 type_list_values_with_second get_choice_values_all(const Document* document, const sharedptr<const LayoutItem_Field>& field);
 
 type_list_values_with_second get_choice_values(const Document* document, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& foreign_key_value);

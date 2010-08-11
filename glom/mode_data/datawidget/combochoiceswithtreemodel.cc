@@ -54,14 +54,19 @@ void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_w
   m_refModel->clear();
 
   //TODO: Remove duplication with ComboEntry:
-  sharedptr<LayoutItem_Field> layout_item = 
+  sharedptr<LayoutItem_Field> layout_item =
     sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
   const FieldFormatting& format = layout_item->get_formatting_used();
   sharedptr<const Relationship> choice_relationship;
-  sharedptr<const LayoutItem_Field> layout_choice_first, layout_choice_second;
+  sharedptr<const LayoutItem_Field> layout_choice_first;
+  sharedptr<const LayoutGroup> layout_choice_extra;
   bool choice_show_all = false;
-  format.get_choices_related(choice_relationship, layout_choice_first, layout_choice_second, choice_show_all);
-  
+  format.get_choices_related(choice_relationship, layout_choice_first, layout_choice_extra, choice_show_all);
+
+  LayoutGroup::type_list_const_items extra_fields;
+  if(layout_choice_extra)
+    extra_fields = layout_choice_extra->get_items_recursive();
+
   for(type_list_values_with_second::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
   {
     Gtk::TreeModel::iterator iterTree = m_refModel->append();
@@ -71,9 +76,23 @@ void ComboChoicesWithTreeModel::set_choices_with_second(const type_list_values_w
     {
       row[m_Columns.m_col_first] = Conversions::get_text_for_gda_value(layout_choice_first->get_glom_type(), iter->first, layout_choice_first->get_formatting_used().m_numeric_format);
 
-      if(layout_choice_second)
+      //TODO: Support multiple extra fields:
+      //For now, use only the first extra field:
+      const type_list_values extra_values = iter->second;
+      if(layout_choice_extra && !extra_values.empty())
       {
-        row[m_Columns.m_col_second] = Conversions::get_text_for_gda_value(layout_choice_second->get_glom_type(), iter->second, layout_choice_second->get_formatting_used().m_numeric_format);
+        for(LayoutGroup::type_list_const_items::const_iterator iterExtra = extra_fields.begin();
+          iterExtra != extra_fields.end(); ++iterExtra)
+        {
+          const sharedptr<const LayoutItem> item = *iterExtra;
+          const sharedptr<const LayoutItem_Field> item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(item);
+          if(item_field)
+          {
+            const Gnome::Gda::Value value = *(extra_values.begin()); //TODO: Use a vector instead?
+            row[m_Columns.m_col_second] = Conversions::get_text_for_gda_value(item_field->get_glom_type(), value, item_field->get_formatting_used().m_numeric_format);
+            break;
+          }
+        }
       }
     }
   }
