@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <config.h>
+#include "config.h"
 
 //We use Python for calculated fields.
 //#include <Python.h> //Include it before anything else to avoid "_POSIX_C_SOURCE redefined".

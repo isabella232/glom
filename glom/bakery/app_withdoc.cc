@@ -16,7 +16,7 @@
  * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#include <config.h>
+#include "config.h"
 #include <glom/bakery/app_withdoc.h>
 #include <glom/bakery/dialog_offersave.h>
 #include <gconfmm.h>

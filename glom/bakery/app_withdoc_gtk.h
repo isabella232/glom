@@ -20,7 +20,7 @@
 #define GLOM_BAKERY_APP_WITHDOC_GTK_H
 
 #include <glom/bakery/app_withdoc.h>
-#include <config.h> // For GLOM_ENABLE_MAEMO
+#include "config.h" // For GLOM_ENABLE_MAEMO
 #include <glom/bakery/app.h>
 
 #ifdef GLOM_ENABLE_MAEMO
