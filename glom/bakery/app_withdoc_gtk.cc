@@ -29,7 +29,7 @@
 #include <giomm.h>
 #include <algorithm>
 
-#include <config.h>
+#include "config.h"
 
 #ifdef GLOM_ENABLE_MAEMO
 #include <hildon-fmmm/file-chooser-dialog.h>
