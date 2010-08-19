@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <config.h>
+#include "config.h"
 //We need to include this before anything else, to avoid redefinitions:
 #include <boost/python.hpp>
 

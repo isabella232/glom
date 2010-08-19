@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <config.h>
+#include "config.h"
 //We need to include this before anything else, to avoid redefinitions:
 #include <libglom/python_embed/py_glom_record.h>
 #include <libglom/python_embed/py_glom_ui.h>
