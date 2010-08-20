@@ -9,12 +9,12 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glom&component=general\n"
-"POT-Creation-Date: 2010-08-06 20:24+0000\n"
-"PO-Revision-Date: 2010-08-12 10:20+0100\n"
+"POT-Creation-Date: 2010-08-20 15:04+0000\n"
+"PO-Revision-Date: 2010-08-20 20:40+0100\n"
 "Last-Translator: Andrej Žnidaršič <andrej.znidarsic@gmail.com>\n"
 "Language-Team: Slovenščina <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
 "X-Poedit-Country: SLOVENIA\n"
@@ -38,12 +38,14 @@ msgid "A Database GUI"
 msgstr "Grafični uporabniški vmesnik podatkovnih zbirk"
 
 #: ../glom/application.cc:298
+#: ../glom/bakery/app_withdoc_gtk.cc:260
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:125
 #: ../glom/mode_design/relationships_overview/dialog_relationships_overview.cc:58
 msgid "_File"
 msgstr "_Datoteka"
 
 #: ../glom/application.cc:299
+#: ../glom/bakery/app_withdoc_gtk.cc:261
 msgid "_Recent Files"
 msgstr "N_edavne datoteke"
 
@@ -52,10 +54,12 @@ msgid "_Save as Example"
 msgstr "_Shrani kot primer"
 
 #: ../glom/application.cc:314
+#: ../glom/filechooser_export.cc:41
 msgid "_Export"
 msgstr "_Izvozi"
 
 #: ../glom/application.cc:318
+#: ../glom/glom.glade.h:30
 msgid "I_mport"
 msgstr "_Uvozi"
 
@@ -72,7 +76,9 @@ msgid "_Edit Print Layouts"
 msgstr "_Uredi razporeditve tiskanja"
 
 #: ../glom/application.cc:425
+#: ../glom/frame_glom.cc:152
 #: ../glom/frame_glom.cc:492
+#: ../glom/mode_data/datawidget/datawidget.cc:256
 msgid "Find"
 msgstr "Iskanje"
 
@@ -132,6 +138,7 @@ msgstr "_Način"
 
 #. We remember this action, so that it can be explicitly activated later.
 #: ../glom/application.cc:496
+#: ../glom/frame_glom.cc:149
 msgid "_Find"
 msgstr "_Iskanje"
 
@@ -219,6 +226,7 @@ msgstr "P_okaži orodno vrstico razporeditve"
 
 #. TODO: Put this in the generic bakery code.
 #: ../glom/application.cc:729
+#: ../glom/application.cc:738
 msgid "Open Failed"
 msgstr "Odpiranje je spodletelo"
 
@@ -233,11 +241,13 @@ msgstr "Dokumenta ni mogoče odpreti, ker je bil ustvarjen ali spremenjen z nove
 #. std::cout << "   SOUP_STATUS_FORBIDDEN or SOUP_STATUS_UNAUTHORIZED" << std::endl;
 #. Warn the user, and let him try again:
 #: ../glom/application.cc:789
+#: ../glom/frame_glom.cc:2218
 #: ../glom/frame_glom.cc:2294
 msgid "Connection Failed"
 msgstr "Povezava je spodletela"
 
 #: ../glom/application.cc:789
+#: ../glom/frame_glom.cc:2218
 #: ../glom/frame_glom.cc:2294
 msgid "Glom could not connect to the database server. Maybe you entered an incorrect user name or password, or maybe the postgres database server is not running."
 msgstr "Ni se mogoče povezati s strežnikom podatkovnih zbirk. Morda ste vnesli napačno uporabniško ime ali geslo, ali pa strežnik podatkovne zbirke ni zagnan. "
@@ -247,6 +257,7 @@ msgid "The file cannot be opened because this version of Glom does not support s
 msgstr "Datoteke ni mogoče odpreti, ker ta različica programa ne podpira samo-gostujočih podatkovnih zbirk."
 
 #: ../glom/application.cc:982
+#: ../glom/application.cc:991
 msgid "The file cannot be opened because this version of Glom does not support PostgreSQL databases."
 msgstr "Datoteke ni mogoče odpreti, ker ta različica programa ne podpira podatkovnih zbirk PostgreSQL."
 
@@ -323,11 +334,13 @@ msgid "Help with the application"
 msgstr "Pomoč za program"
 
 #: ../glom/application.cc:1672
+#: ../glom/application.cc:1752
 #: ../glom/application.cc:1940
 msgid "Creating Glom Database"
 msgstr "Ustvarjanje podatkovne zbirke Glom"
 
 #: ../glom/application.cc:1672
+#: ../glom/application.cc:1752
 msgid "Creating Glom database from example file."
 msgstr "Ustvarjanje podatkovne zbirke Glom iz poskusne datoteke."
 
@@ -337,6 +350,7 @@ msgstr "Ustvarjanje podatkovne zbirke Glom iz datoteke varnostne kopije."
 
 #. The save failed. Tell the user and don't do anything else:
 #: ../glom/application.cc:2406
+#: ../glom/bakery/app_withdoc.cc:241
 #: ../glom/bakery/app_withdoc.cc:292
 msgid "Save failed."
 msgstr "Napaka med shranjevanjem."
@@ -346,25 +360,30 @@ msgid "There was an error while saving the example file."
 msgstr "Prišlo je do napake med shranjevanjem datoteke primera."
 
 #: ../glom/application.cc:2447
+#: ../glom/application.cc:2452
 #: ../glom/bakery/app_withdoc_gtk.cc:564
 msgid "Save Document"
 msgstr "Shrani dokument"
 
 #. Warn the user:
 #: ../glom/application.cc:2540
+#: ../glom/bakery/app_withdoc_gtk.cc:613
 msgid "Read-only File."
 msgstr "Datoteka le za branje."
 
 #: ../glom/application.cc:2540
+#: ../glom/bakery/app_withdoc_gtk.cc:613
 msgid "You may not overwrite the existing file, because you do not have sufficient access rights."
 msgstr "Obstoječe datoteke ni mogoče prepisati, saj nimate ustreznih dovoljenj dostopa."
 
 #. Warn the user:
 #: ../glom/application.cc:2554
+#: ../glom/bakery/app_withdoc_gtk.cc:627
 msgid "Read-only Directory."
 msgstr "Mapa le za branje."
 
 #: ../glom/application.cc:2554
+#: ../glom/bakery/app_withdoc_gtk.cc:627
 msgid "You may not create a file in this directory, because you do not have sufficient access rights."
 msgstr "V tej mapi datoteke ni mogoče ustvariti, saj nimate ustreznih dovoljenj dostopa."
 
@@ -377,10 +396,12 @@ msgid "You must specify a title for the new database."
 msgstr "Navesti morate naslov za drugo podatkovno zbirko."
 
 #: ../glom/application.cc:2600
+#: ../glom/frame_glom.cc:1969
 msgid "Directory Already Exists"
 msgstr "Mapa že obstaja"
 
 #: ../glom/application.cc:2600
+#: ../glom/frame_glom.cc:1970
 msgid "There is an existing directory with the same name as the directory that should be created for the new database files. You should specify a different filename to use a new directory instead."
 msgstr "Novo ustvarjena mapa za nove datoteke podatkovne zbirke ima enako ime kot obstoječa mapa. Navedite drugo ime mape za nove datoteke podatkovne zbirke. "
 
@@ -410,6 +431,7 @@ msgid "Restore"
 msgstr "Obnovi"
 
 #: ../glom/application.cc:2914
+#: ../glom/application.cc:2920
 msgid "Restore Backup failed."
 msgstr "Obnova varnostne kopije je spodletela."
 
@@ -422,10 +444,12 @@ msgid "There was an error while restoring the backup. The .glom file could not b
 msgstr "Prišlo je do napake med obnavljanjem varnostne kopije. Datoteke .glom ni mogoče najti."
 
 #: ../glom/application.cc:3024
+#: ../glom/bakery/app_withdoc_gtk.cc:474
 msgid " (read-only)"
 msgstr " (le za branje)"
 
 #: ../glom/base_db.cc:132
+#: ../glom/base_db.cc:145
 msgid "Internal error"
 msgstr "Notranja napaka"
 
@@ -517,6 +541,7 @@ msgid "A user-friendly database environment."
 msgstr "Uporabniku prijazno okolje podatkovnih zbirk."
 
 #: ../glom.desktop.in.in.h:2
+#: ../glom/glom.glade.h:28
 msgid "Glom"
 msgstr "Glom"
 
@@ -575,6 +600,7 @@ msgid "Define Data _Format"
 msgstr "Določi _obliko podatkov"
 
 #: ../glom/frame_glom.cc:134
+#: ../glom/glom.glade.h:43
 msgid "Quick _search:"
 msgstr "_Hitro iskanje:"
 
@@ -597,6 +623,7 @@ msgid "This database has no tables yet."
 msgstr "Ta podatkovna zbirka še nima preglednic."
 
 #: ../glom/frame_glom.cc:441
+#: ../glom/glom.glade.h:20
 msgid "Data"
 msgstr "Podatki"
 
@@ -729,6 +756,7 @@ msgid "The new related table has been created."
 msgstr "Ustvarjena je bila nova povezana preglednica."
 
 #: ../glom/frame_glom.cc:1381
+#: ../glom/glom.glade.h:23
 msgid "Edit Tables"
 msgstr "Uredi preglednice"
 
@@ -754,10 +782,12 @@ msgid "Developer"
 msgstr "Razvijalec"
 
 #: ../glom/frame_glom.cc:1827
+#: ../glom/glom_developer.glade.h:160
 msgid "Reports"
 msgstr "Poročila"
 
 #: ../glom/frame_glom.cc:1858
+#: ../glom/glom_developer.glade.h:154
 msgid "Print Layouts"
 msgstr "Razporeditve tiskanja"
 
@@ -888,6 +918,7 @@ msgid "<b>Summary Field</b>"
 msgstr "<b>Polje povzetka</b>"
 
 #: ../glom/glom_developer.glade.h:24
+#: ../glom/glom.glade.h:7
 msgid "<b>Table:</b>"
 msgstr "<b>Preglednica:</b>"
 
@@ -1387,6 +1418,7 @@ msgid "None"
 msgstr "Brez"
 
 #: ../glom/glom_developer.glade.h:148
+#: ../glom/glom.glade.h:36
 #: ../glom/mode_design/dialog_design.cc:52
 #: ../glom/mode_design/print_layouts/window_print_layout_edit.cc:495
 msgid "None selected"
@@ -1402,6 +1434,7 @@ msgid "Organisation"
 msgstr "Organizacija"
 
 #: ../glom/glom_developer.glade.h:151
+#: ../glom/glom.glade.h:39
 msgid "Password"
 msgstr "Geslo"
 
@@ -1513,6 +1546,7 @@ msgid "Table Name"
 msgstr "Ime preglednice"
 
 #: ../glom/glom_developer.glade.h:180
+#: ../glom/glom.glade.h:45
 msgid "Table:"
 msgstr "Preglednica:"
 
@@ -1599,6 +1633,7 @@ msgid "Use default formatting"
 msgstr "Uporabi privzeto oblikovanje"
 
 #: ../glom/glom_developer.glade.h:202
+#: ../glom/glom.glade.h:46
 msgid "User"
 msgstr "Uporabnik"
 
@@ -1644,6 +1679,7 @@ msgid "_Confirm Password:"
 msgstr "_Potrdi geslo:"
 
 #: ../glom/glom_developer.glade.h:214
+#: ../glom/bakery/app_withdoc_gtk.cc:324
 msgid "_Edit"
 msgstr "_Uredi"
 
@@ -1660,6 +1696,7 @@ msgid "_Name:"
 msgstr "_Ime:"
 
 #: ../glom/glom_developer.glade.h:218
+#: ../glom/glom.glade.h:52
 msgid "_Password:"
 msgstr "_Geslo:"
 
@@ -1676,6 +1713,7 @@ msgid "_Report name:"
 msgstr "Ime _poročila:"
 
 #: ../glom/glom_developer.glade.h:222
+#: ../glom/glom.glade.h:53
 msgid "_Select"
 msgstr "_Izberi"
 
@@ -1701,6 +1739,7 @@ msgid "_User Entry"
 msgstr "_Uporabniški vnos"
 
 #: ../glom/glom_developer.glade.h:228
+#: ../glom/glom.glade.h:55
 msgid "_User:"
 msgstr "_Uporabnik:"
 
@@ -1824,10 +1863,11 @@ msgid "Please enter the connection details for your database server."
 msgstr "Vnesite podrobnosti povezave za vaš strežnik podatkovne zbirke."
 
 #: ../glom/glom.glade.h:41
-msgid "Please wait, your data is being imported&#x2026;"
-msgstr "Počakajte, vaši podatki se uvažajo&#x2026;"
+msgid "Please wait, your data is being imported…"
+msgstr "Počakajte, vaši podatki se uvažajo ..."
 
 #: ../glom/glom.glade.h:42
+#: ../glom/glade_utils.cc:38
 msgid "Processing"
 msgstr "Obdelovanje"
 
@@ -1912,6 +1952,7 @@ msgid "Open Document"
 msgstr "Odpri dokument"
 
 #: ../glom/bakery/app_withdoc.cc:241
+#: ../glom/bakery/app_withdoc.cc:292
 msgid "There was an error while saving the file. Your changes have not been saved."
 msgstr "Prišlo je do napake med shranjevanjem datoteke. Vaše spremembe ne bodo shranjene."
 
@@ -1945,7 +1986,7 @@ msgstr "Zapri brez shranjevanja"
 msgid "Discard"
 msgstr "Zavrzi"
 
-#: ../glom/import_csv/dialog_import_csv.cc:86
+#: ../glom/import_csv/dialog_import_csv.cc:95
 msgid "Auto Detect"
 msgstr "Samodejno zaznaj"
 
@@ -1956,74 +1997,74 @@ msgstr "Samodejno zaznaj"
 #. Get the ISO (not current locale) text representation:
 #. ignored
 #. iso_format
-#: ../glom/import_csv/dialog_import_csv.cc:143
+#: ../glom/import_csv/dialog_import_csv.cc:150
 msgid "Note that the source file should contain numbers and dates in international ISO format. For instance, 22nd November 2008 should be %1."
 msgstr "Izvorna datoteka naj vsebuje številke in datume v mednarodni obliki ISO. Na primer, dvaindvajseti November 2008 bi moral biti %1."
 
-#: ../glom/import_csv/dialog_import_csv.cc:172
+#: ../glom/import_csv/dialog_import_csv.cc:179
 msgid "No Document Available"
 msgstr "Ni dokumentov na voljo"
 
-#: ../glom/import_csv/dialog_import_csv.cc:172
+#: ../glom/import_csv/dialog_import_csv.cc:179
 msgid "You need to open a document to import the data into a table."
 msgstr "Za uvažanje podatkov v preglednico morate odpreti dokument."
 
-#: ../glom/import_csv/dialog_import_csv.cc:183
+#: ../glom/import_csv/dialog_import_csv.cc:190
 msgid "Import From CSV File"
 msgstr "Uvoz iz datoteke CSV"
 
-#: ../glom/import_csv/dialog_import_csv.cc:188
-#: ../glom/import_csv/dialog_import_csv.cc:570
+#: ../glom/import_csv/dialog_import_csv.cc:195
+#: ../glom/import_csv/dialog_import_csv.cc:577
 msgid "<None>"
 msgstr "<Brez>"
 
-#: ../glom/import_csv/dialog_import_csv.cc:268
+#: ../glom/import_csv/dialog_import_csv.cc:275
 msgid "Error Importing CSV File"
 msgstr "Napaka med uvažanjem datoteke CSV"
 
-#: ../glom/import_csv/dialog_import_csv.cc:422
+#: ../glom/import_csv/dialog_import_csv.cc:429
 msgid "Encoding detected as: %1"
 msgstr "Kodiranje je zaznano kot: %1"
 
-#: ../glom/import_csv/dialog_import_csv.cc:461
+#: ../glom/import_csv/dialog_import_csv.cc:468
 msgid "Encoding detection failed. Please manually choose one from the box."
 msgstr "Zaznavanje kodiranja je spodletelo. Izberite enega iz okna."
 
-#: ../glom/import_csv/dialog_import_csv.cc:465
+#: ../glom/import_csv/dialog_import_csv.cc:472
 msgid "The file contains data not in the specified encoding. Please choose another one, or try \"Auto Detect\"."
 msgstr "Datoteka vsebuje podatke, ki niso v navedenemu kodiranju. Izberite drugega ali poskusite \"Samodejno zaznaj\"."
 
 #. Note to translators: This is a straight line, not a database row.
-#: ../glom/import_csv/dialog_import_csv.cc:507
+#: ../glom/import_csv/dialog_import_csv.cc:514
 #: ../glom/libglom/data_structure/layout/layoutitem_line.cc:82
 msgid "Line"
 msgstr "Vrstica"
 
-#: ../glom/import_csv/dialog_import_csv.cc:550
+#: ../glom/import_csv/dialog_import_csv.cc:557
 msgid "Target Field"
 msgstr "Ciljno polje"
 
-#: ../glom/import_csv/dialog_import_csv.cc:595
+#: ../glom/import_csv/dialog_import_csv.cc:602
 msgid "<Import Failure>"
 msgstr "<Uvoz je spodletel>"
 
-#: ../glom/import_csv/dialog_import_csv.cc:605
+#: ../glom/import_csv/dialog_import_csv.cc:612
 msgid "<Picture>"
 msgstr "<Slika>"
 
-#: ../glom/import_csv/dialog_import_csv.cc:704
+#: ../glom/import_csv/dialog_import_csv.cc:711
 msgid "One column needs to be assigned the table's primary key (<b>%1</b>) as target field before importing"
 msgstr "Pred uvozom je treba osnovnemu ključu preglednice (<b>%1</b>) dodeliti en stolpec kot ciljno polje"
 
-#: ../glom/import_csv/dialog_import_csv.cc:733
+#: ../glom/import_csv/dialog_import_csv.cc:748
 msgid "Could Not Open file"
 msgstr "Datoteke ni mogoče odpreti"
 
-#: ../glom/import_csv/dialog_import_csv.cc:734
+#: ../glom/import_csv/dialog_import_csv.cc:749
 msgid "The file at \"%1\" could not be opened: %2"
 msgstr "Datoteke na \"%1\" ni mogoče odpreti: %2"
 
-#: ../glom/import_csv/dialog_import_csv.cc:739
+#: ../glom/import_csv/dialog_import_csv.cc:754
 msgid "Import From CSV File: "
 msgstr "Uvozi iz datoteke CSV:"
 
@@ -2393,6 +2434,8 @@ msgstr "Zagnano s skrbniškim računom"
 #. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
 #. Show message to the user about the broken installation:
 #: ../glom/main.cc:308
+#: ../glom/main.cc:321
+#: ../glom/main.cc:564
 msgid "Incomplete Glom Installation"
 msgstr "Nepopolna namestitev Gloma"
 
@@ -2454,24 +2497,24 @@ msgstr ""
 msgid "gda Python Module Not Installed"
 msgstr "Python modul gda ni nameščen"
 
-#: ../glom/main.cc:477
+#: ../glom/main.cc:487
 msgid "Error while parsing command-line options: "
 msgstr "Napaka med razčlenjevanem možnosti ukazne vrstice:"
 
-#: ../glom/main.cc:478
+#: ../glom/main.cc:488
 msgid "Use --help to see a list of available command-line options."
 msgstr "Uporabite --help za ogled seznama razpoložljivih možnosti ukazne vrstice."
 
-#: ../glom/main.cc:520
+#: ../glom/main.cc:530
 msgid "Glom: The file does not exist."
 msgstr "Glom: Datoteka ne obstaja."
 
-#: ../glom/main.cc:530
+#: ../glom/main.cc:540
 msgid "Glom: The file path is a directory instead of a file."
 msgstr "Glom: Pot datoteke je mapa namesto datoteke."
 
 #. The Postgres provider was not found, so warn the user:
-#: ../glom/main.cc:551
+#: ../glom/main.cc:561
 msgid ""
 "Your installation of Glom is not complete, because the PostgreSQL libgda provider is not available on your system. This provider is needed to access Postgres database servers.\n"
 "\n"
@@ -2923,30 +2966,30 @@ msgid "The relationship may not be used to show related records because the rela
 msgstr "Razmerja ni mogoče uporabiti za prikaz povezanih zapisov, ker razmerje v povezani preglednici uporablja polje edinstvenih vrednosti. To razmerju prepreči določitev več povezanih zapisov. "
 
 #. Translators: This is Automatic text alignment.
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:98
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:106
 msgid "Automatic"
 msgstr "Samodejno"
 
 #. Translators: This is Left text alignment.
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:102
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:110
 msgid "Left"
 msgstr "Levo"
 
 #. Translators: This is Right text alignment.
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:106
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:114
 msgid "Right"
 msgstr "Desno"
 
 #. Add labels (because we will hide the checkboxes):
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:152
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:160
 msgid "Font"
 msgstr "Pisava"
 
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:155
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:163
 msgid "Foreground Color"
 msgstr "Barva ospredja"
 
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:158
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:166
 msgid "Background Color"
 msgstr "Barva ozadja"
 
