@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glom gnome-master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-11 00:17+0200\n"
-"PO-Revision-Date: 2010-08-04 22:04+0200\n"
+"POT-Creation-Date: 2010-08-25 22:05+0200\n"
+"PO-Revision-Date: 2010-08-22 12:37+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -340,14 +340,12 @@ msgstr ""
 #. std::cerr might show some hints, but we don't want to confront the user with them:
 #. TODO: Actually complain about specific stuff such as missing data, because the user might really play with the file system.
 #: ../glom/application.cc:1222
-#, fuzzy
 msgid "Problem Loading Document"
-msgstr "Otevřít dokument"
+msgstr "Problém s načítáním dokumentu"
 
 #: ../glom/application.cc:1222
-#, fuzzy
 msgid "Glom could not load the document."
-msgstr "Glom nemohl vytvořit určený soubor."
+msgstr "Glom nemohl načíst dokument."
 
 #: ../glom/application.cc:1313
 msgid "Exporting Backup"
@@ -2058,7 +2056,7 @@ msgid "Please enter the connection details for your database server."
 msgstr "Zadejte prosím podrobnosti o připojení k vašemu databázovému serveru."
 
 #: ../glom/glom.glade.h:41
-msgid "Please wait, your data is being imported&#x2026;"
+msgid "Please wait, your data is being imported…"
 msgstr "Čekejte prosím, vaše data se importují…"
 
 #: ../glom/glom.glade.h:42 ../glom/glade_utils.cc:38
