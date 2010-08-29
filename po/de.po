@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: glom master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&component=general\n"
-"POT-Creation-Date: 2010-08-06 15:24+0000\n"
-"PO-Revision-Date: 2010-08-06 22:19+0100\n"
+"POT-Creation-Date: 2010-08-20 15:04+0000\n"
+"PO-Revision-Date: 2010-08-29 11:47+0100\n"
 "Last-Translator: Mario Blättermann <mariobl@gnome.org>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -2091,8 +2091,8 @@ msgstr ""
 "Server zu verbinden."
 
 #: ../glom/glom.glade.h:41
-msgid "Please wait, your data is being imported&#x2026;"
-msgstr "Bitte warten Sie, Ihre Daten werden importiert &#x2026;"
+msgid "Please wait, your data is being imported…"
+msgstr "Bitte warten Sie, Ihre Daten werden importiert …"
 
 #: ../glom/glom.glade.h:42 ../glom/glade_utils.cc:38
 msgid "Processing"
@@ -2218,7 +2218,7 @@ msgstr "Schließen, ohne zu speichern"
 msgid "Discard"
 msgstr "Verwerfen"
 
-#: ../glom/import_csv/dialog_import_csv.cc:86
+#: ../glom/import_csv/dialog_import_csv.cc:95
 msgid "Auto Detect"
 msgstr "Automatisch erkennen"
 
@@ -2229,7 +2229,7 @@ msgstr "Automatisch erkennen"
 #. Get the ISO (not current locale) text representation:
 #. ignored
 #. iso_format
-#: ../glom/import_csv/dialog_import_csv.cc:143
+#: ../glom/import_csv/dialog_import_csv.cc:150
 msgid ""
 "Note that the source file should contain numbers and dates in international "
 "ISO format. For instance, 22nd November 2008 should be %1."
@@ -2237,39 +2237,39 @@ msgstr ""
 "Beachten Sie, dass die Quelldatei Zahlen und Daten im internationalen ISO-"
 "Format enthalten sollte. Beispiel: Der 22. November 2008 sollte %1 sein."
 
-#: ../glom/import_csv/dialog_import_csv.cc:172
+#: ../glom/import_csv/dialog_import_csv.cc:179
 msgid "No Document Available"
 msgstr "Kein Dokument verfügbar"
 
-#: ../glom/import_csv/dialog_import_csv.cc:172
+#: ../glom/import_csv/dialog_import_csv.cc:179
 msgid "You need to open a document to import the data into a table."
 msgstr ""
 "Sie müssen ein Dokument öffnen, um die Daten in die Tabelle zu importieren."
 
-#: ../glom/import_csv/dialog_import_csv.cc:183
+#: ../glom/import_csv/dialog_import_csv.cc:190
 msgid "Import From CSV File"
 msgstr "Aus CSV-Datei importieren"
 
-#: ../glom/import_csv/dialog_import_csv.cc:188
-#: ../glom/import_csv/dialog_import_csv.cc:570
+#: ../glom/import_csv/dialog_import_csv.cc:195
+#: ../glom/import_csv/dialog_import_csv.cc:577
 msgid "<None>"
 msgstr "<Nichts>"
 
-#: ../glom/import_csv/dialog_import_csv.cc:268
+#: ../glom/import_csv/dialog_import_csv.cc:275
 msgid "Error Importing CSV File"
 msgstr "Fehler beim Import der CSV-Datei"
 
-#: ../glom/import_csv/dialog_import_csv.cc:422
+#: ../glom/import_csv/dialog_import_csv.cc:429
 msgid "Encoding detected as: %1"
 msgstr "Zeichensatz erkannt als: %1"
 
-#: ../glom/import_csv/dialog_import_csv.cc:461
+#: ../glom/import_csv/dialog_import_csv.cc:468
 msgid "Encoding detection failed. Please manually choose one from the box."
 msgstr ""
 "Zeichensatzerkennung gescheitert. Bitte wählen Sie selbst einen Zeichensatz "
 "aus dem Feld aus."
 
-#: ../glom/import_csv/dialog_import_csv.cc:465
+#: ../glom/import_csv/dialog_import_csv.cc:472
 msgid ""
 "The file contains data not in the specified encoding. Please choose another "
 "one, or try \"Auto Detect\"."
@@ -2278,24 +2278,24 @@ msgstr ""
 "wählen Sie einen anderen Zeichensatz, oder wählen Sie »Automatisch erkennen«."
 
 #. Note to translators: This is a straight line, not a database row.
-#: ../glom/import_csv/dialog_import_csv.cc:507
+#: ../glom/import_csv/dialog_import_csv.cc:514
 #: ../glom/libglom/data_structure/layout/layoutitem_line.cc:82
 msgid "Line"
 msgstr "Linie"
 
-#: ../glom/import_csv/dialog_import_csv.cc:550
+#: ../glom/import_csv/dialog_import_csv.cc:557
 msgid "Target Field"
 msgstr "Zielfeld"
 
-#: ../glom/import_csv/dialog_import_csv.cc:595
+#: ../glom/import_csv/dialog_import_csv.cc:602
 msgid "<Import Failure>"
 msgstr "<Importfehler>"
 
-#: ../glom/import_csv/dialog_import_csv.cc:605
+#: ../glom/import_csv/dialog_import_csv.cc:612
 msgid "<Picture>"
 msgstr "<Bild>"
 
-#: ../glom/import_csv/dialog_import_csv.cc:704
+#: ../glom/import_csv/dialog_import_csv.cc:711
 msgid ""
 "One column needs to be assigned the table's primary key (<b>%1</b>) as target "
 "field before importing"
@@ -2303,15 +2303,15 @@ msgstr ""
 "Einer Spalte muss der Primärschlüssel (<b>%1</b>) der Tabelle als Zielfeld "
 "zugewiesen werden, bevor importiert werden kann"
 
-#: ../glom/import_csv/dialog_import_csv.cc:733
+#: ../glom/import_csv/dialog_import_csv.cc:748
 msgid "Could Not Open file"
 msgstr "Datei konnte nicht geöffnet werden"
 
-#: ../glom/import_csv/dialog_import_csv.cc:734
+#: ../glom/import_csv/dialog_import_csv.cc:749
 msgid "The file at \"%1\" could not be opened: %2"
 msgstr "Die Datei an der Stelle »%1« konnte nicht geöffnet werden: %2"
 
-#: ../glom/import_csv/dialog_import_csv.cc:739
+#: ../glom/import_csv/dialog_import_csv.cc:754
 msgid "Import From CSV File: "
 msgstr "Aus CSV-Datei importieren:"
 
@@ -2718,7 +2718,7 @@ msgstr "Nutzung als Administrator"
 #. Show message to the user about the broken installation:
 #. This is a packaging bug, but it would probably annoy packagers to mention that in the dialog:
 #. Show message to the user about the broken installation:
-#: ../glom/main.cc:308 ../glom/main.cc:321 ../glom/main.cc:554
+#: ../glom/main.cc:308 ../glom/main.cc:321 ../glom/main.cc:564
 msgid "Incomplete Glom Installation"
 msgstr "Unvollständige Glom-Installation"
 
@@ -2799,26 +2799,26 @@ msgstr ""
 msgid "gda Python Module Not Installed"
 msgstr "gda-Python-Modul ist nicht installiert"
 
-#: ../glom/main.cc:477
+#: ../glom/main.cc:487
 msgid "Error while parsing command-line options: "
 msgstr "Fehler beim Einlesen der Befehlszeilenoptionen: "
 
-#: ../glom/main.cc:478
+#: ../glom/main.cc:488
 msgid "Use --help to see a list of available command-line options."
 msgstr ""
 "Benutzen Sie --help, um eine Liste der verfügbaren Befehlszeilenoptionen zu "
 "erhalten."
 
-#: ../glom/main.cc:520
+#: ../glom/main.cc:530
 msgid "Glom: The file does not exist."
 msgstr "Glom: Die Datei existiert nicht."
 
-#: ../glom/main.cc:530
+#: ../glom/main.cc:540
 msgid "Glom: The file path is a directory instead of a file."
 msgstr "Glom: Der Dateipfad ist ein Ordner und keine Datei."
 
 #. The Postgres provider was not found, so warn the user:
-#: ../glom/main.cc:551
+#: ../glom/main.cc:561
 msgid ""
 "Your installation of Glom is not complete, because the PostgreSQL libgda "
 "provider is not available on your system. This provider is needed to access "
@@ -3348,30 +3348,30 @@ msgstr ""
 "kann."
 
 #. Translators: This is Automatic text alignment.
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:98
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:106
 msgid "Automatic"
 msgstr "Automatisch"
 
 #. Translators: This is Left text alignment.
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:102
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:110
 msgid "Left"
 msgstr "Links"
 
 #. Translators: This is Right text alignment.
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:106
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:114
 msgid "Right"
 msgstr "Rechts"
 
 #. Add labels (because we will hide the checkboxes):
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:152
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:160
 msgid "Font"
 msgstr "Schriftart"
 
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:155
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:163
 msgid "Foreground Color"
 msgstr "Vordergrundfarbe"
 
-#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:158
+#: ../glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:166
 msgid "Background Color"
 msgstr "Hintergrundfarbe"
 
