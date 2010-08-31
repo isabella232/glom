@@ -1,3 +1,13 @@
+2010-08-31  Murray Cumming  <murrayc@murrayc.com>
+
+	Catch Gnome::Gda::ConfigError exceptions.
+
+	* glom/libglom/connectionpool_backends/postgres.cc:
+	* glom/libglom/connectionpool_backends/sqlite.cc: Output to stderr when
+  we get ConfigError exceptions. This is informative when the tests fail
+  because of missing libgda providers. Note that this won't happen in the UI
+  because we test for the providers at startup.
+
 2010-08-10  Murray Cumming  <murrayc@murrayc.com>
 
 	Catch exceptions from std::locale::global().

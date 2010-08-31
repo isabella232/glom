@@ -91,6 +91,15 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
     connection->statement_execute_non_select("SET DATESTYLE = 'ISO'");
     data_model = connection->statement_execute_select("SELECT version()");
   }
+  catch(const Gnome::Gda::ConfigError& ex)
+  {
+    //These errors are unusual.
+    //For instance, the PostgreSQL libgda provider could be missing,
+    //though we check for that at startup.
+    std::cerr << G_STRFUNC << 
+      ": ConfigError exception from Gnome::Gda::Connection::open_from_string(): " <<
+      ex.what();
+  }
   catch(const Glib::Error& ex)
   {
 #else
@@ -124,6 +133,15 @@ Glib::RefPtr<Gnome::Gda::Connection> Postgres::attempt_connect(const Glib::ustri
       temp_conn = Gnome::Gda::Connection::open_from_string("PostgreSQL",
         cnc_string, auth_string,
         Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
+    }
+    catch(const Gnome::Gda::ConfigError& ex)
+    {
+      //These errors are unusual.
+      //For instance, the PostgreSQL libgda provider could be missing,
+      //though we check for that at startup.
+      std::cerr << G_STRFUNC << 
+        ": ConfigError exception from Gnome::Gda::Connection::open_from_string(): " <<
+        ex.what();
     }
     catch(const Glib::Error& ex)
     {}

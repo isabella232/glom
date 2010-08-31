@@ -62,6 +62,15 @@ Glib::RefPtr<Gnome::Gda::Connection> Sqlite::connect(const Glib::ustring& databa
         cnc_string, auth_string,
         Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
     }
+    catch(const Gnome::Gda::ConfigError& ex)
+    {
+      //These errors are unusual.
+      //For instance, the SQLite libgda provider could be missing,
+      //though we check for that at startup.
+      std::cerr << G_STRFUNC << 
+        ": ConfigError exception from Gnome::Gda::Connection::open_from_string(): " <<
+        ex.what();
+    }
     catch(const Glib::Error& ex)
     {
 #else
@@ -105,6 +114,15 @@ bool Sqlite::create_database(const Glib::ustring& database_name, const Glib::ust
       Gnome::Gda::Connection::open_from_string("SQLite",
         cnc_string, "",
         Gnome::Gda::CONNECTION_OPTIONS_SQL_IDENTIFIERS_CASE_SENSITIVE);
+  }
+  catch(const Gnome::Gda::ConfigError& ex)
+  {
+    //These errors are unusual.
+    //For instance, the PostgreSQL libgda provider could be missing,
+    //though we check for that at startup.
+    std::cerr << G_STRFUNC << 
+      ": ConfigError exception from Gnome::Gda::Connection::open_from_string(): " <<
+      ex.what();
   }
   catch(const Glib::Error& ex)
   {
