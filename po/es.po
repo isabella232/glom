@@ -2657,7 +2657,7 @@ msgstr "La versión de esta aplicación."
 
 #: ../glom/main.cc:217
 msgid "Whether the filename is a .tar.gz backup to be restored."
-msgstr "Indica si el nombre del archivo es .tar.gz se restaurará el respaldo."
+msgstr "Indica si el nombre del archivo es .tar.gz se restaurará el respaldo."
 
 #: ../glom/main.cc:222
 msgid "Show the generated SQL queries on stdout, for debugging."
