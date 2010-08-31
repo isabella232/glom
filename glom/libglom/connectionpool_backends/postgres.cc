@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <config.h> // For POSTGRES_UTILS_PATH
+#include "config.h" // For POSTGRES_UTILS_PATH
 #include <libglom/libglom_config.h>
 
 #include <libglom/connectionpool_backends/postgres.h>

@@ -1,3 +1,38 @@
+2010-08-19  David King  <davidk@openismus.com>
+
+	Include the correct config.h
+
+	* glom/application.cc:
+	* glom/bakery/app_withdoc.cc:
+	* glom/bakery/app_withdoc_gtk.cc:
+	* glom/bakery/app_withdoc_gtk.h:
+	* glom/bakery/dialog_offersave.cc:
+	* glom/bakery/dialog_offersave.h:
+	* glom/libglom/connectionpool_backends/postgres.cc:
+	* glom/libglom/document/bakery/document.cc:
+	* glom/libglom/gst-package.c:
+	* glom/main.cc:
+	* glom/mode_design/translation/window_translations.cc:
+	* glom/python_embed/glom_python.cc:
+	* glom/python_embed/python_module/py_glom_module.cc:
+	* glom/utils_ui.cc: Be sure to include the local config.h.
+
+2010-08-10  Murray Cumming  <murrayc@murrayc.com>
+
+	SpinButtons: Don't have 0 to 0 ranges with only 0 increments possible.
+
+	* glom/import_csv/dialog_import_csv.cc: (Import dialog)
+	* glom/mode_design/layout/layout_item_dialogs/box_formatting.cc:
+  (Multiline text field height)
+	* glom/utility_widgets/dialog_flowtable.cc: (number of columns in a group):
+  Constructors: Set the range and increment manually, because Glade defaults
+  to useless 0 values for these.
+  This problem was introduced when we remove the extra adjustment objects
+  from the .glade files, so we could simplify our use of Glade.
+  It is a side-effect of GtkBuilder bug
+  http://bugzilla.gnome.org/show_bug.cgi?id=575714
+  This partially fixes bug #625693 (.cvs file import not working).
+
 2010-08-10  Murray Cumming  <murrayc@murrayc.com>
 
 	Catch exceptions from std::locale::global().

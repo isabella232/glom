@@ -19,7 +19,7 @@
 #ifndef DIALOG_OFFERSAVE_H
 #define DIALOG_OFFERSAVE_H
 
-#include <config.h>
+#include "config.h"
 
 #ifdef GLOM_ENABLE_MAEMO
 #include <hildonmm/note.h>
