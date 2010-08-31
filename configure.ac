@@ -191,7 +191,7 @@ MM_ARG_ENABLE_WARNINGS([GLOM_WFLAGS],
 MM_ARG_ENABLE_WARNINGS([GLOM_WXXFLAGS],
                        [-Wall],
                        [-Wall -Wextra -Wno-missing-field-initializers -DGSEAL_ENABLE],
-                       [G GDK GDK_PIXBUF GTK GLIBMM GTKMM])
+                       [G GDK GDK_PIXBUF GTK GLIBMM GDKMM GTKMM])
 
 AC_CHECK_FUNCS([strptime])
 

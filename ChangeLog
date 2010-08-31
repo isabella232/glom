@@ -1,5 +1,12 @@
 2010-08-31  Murray Cumming  <murrayc@murrayc.com>
 
+	Avoid use of deprecated gdkmm API.
+
+	* configure.ac: MM_ARG_ENABLE_WARNINGS(): Added GDKMM to the list of
+  deprecation warnings.
+
+2010-08-31  Murray Cumming  <murrayc@murrayc.com>
+
 	Catch Gnome::Gda::ConfigError exceptions.
 
 	* glom/libglom/connectionpool_backends/postgres.cc:
