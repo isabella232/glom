@@ -1,3 +1,10 @@
+2010-09-02  Murray Cumming  <murrayc@murrayc.com>
+
+	Avoid use of deprecated cairomm API.
+
+	* configure.ac: Also check for CAIROMM deprecations.
+	* glom/import_csv/dialog_import_csv.cc: Fix a bad git merge.
+
 2010-08-19  David King  <davidk@openismus.com>
 
 	Include the correct config.h

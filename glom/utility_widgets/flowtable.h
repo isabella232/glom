@@ -29,7 +29,7 @@ namespace Glom
 
 class FlowTable : public Gtk::Container
 {
-public: 
+public:
   FlowTable();
   virtual ~FlowTable();
 
@@ -43,21 +43,21 @@ public:
   virtual void remove(Gtk::Widget& first); //override
 
   void set_columns_count(guint value);
-  
+
   guint get_columns_count() const;
 
   /** Sets the padding to put between the columns of widgets.
    */
   void set_column_padding(guint padding);
-  
+
   /** Gets the padding between the columns of widgets.
    */
   guint get_column_padding() const;
-  
+
   /** Sets the padding to put between the rows of widgets.
    */
   void set_row_padding(guint padding);
-  
+
   /** Gets the padding between the rows of widgets.
    */
   guint get_row_padding() const;
@@ -71,9 +71,9 @@ public:
   // Implement forall which is not implemented in gtkmm:
   typedef sigc::slot<void, Widget&> ForallSlot;
   void forall(const ForallSlot& slot);
-  
+
   /** Get the column in which the specified "first" widget is placed.
-   * result false if the widget is not one of the "first" widgets, or 
+   * result false if the widget is not one of the "first" widgets, or
    * if has not yet been placed in a column, because the size has not yet been requested.
    */
   bool get_column_for_first_widget(const Gtk::Widget& first, guint& column);
@@ -93,16 +93,16 @@ private:
 protected:
 
   virtual void on_size_allocate(Gtk::Allocation& allocation);
-  
+
   //Do extra drawing:
   //Virtual method overrides:
   void on_realize();
   void on_unrealize();
   bool on_expose_event(GdkEventExpose* event);
-  
+
   int get_column_height(guint start_widget, guint widget_count, int& total_width) const;
 
-  /** 
+  /**
    * @result The height when the children are arranged optimally (so that the height is minimum).
    */
   int get_minimum_column_height(guint start_widget, guint columns_count, int& total_width) const;
@@ -117,16 +117,16 @@ protected:
     Gtk::Widget* m_second;
     bool m_expand_first_full;
     bool m_expand_second;
-    
+
     //The column that the widgets are currently in, due to the size/allocation.
     bool m_has_allocated_column;
     guint m_allocated_column;
-    
+
     bool operator==(Gtk::Widget* child) const
     {
       return (child == m_first || child == m_second);
     }
-    
+
     //Cache the positions, so we can use them in on_expose_event:
     Gtk::Allocation m_first_allocation;
     Gtk::Allocation m_second_allocation;
@@ -138,7 +138,7 @@ private:
   int get_item_requested_height(const FlowTableItem& item) const;
   void get_item_requested_width(const FlowTableItem& item, int& first, int& second) const;
   void get_item_max_width_requested(guint start, guint height, guint& first_max_width, guint& second_max_width, guint& singles_max_width, bool& is_last_column) const; //TODO: maybe combine this with code in get_minimum_column_height().
-  
+
   bool child_is_visible(const Gtk::Widget* widget) const;
 
   Gtk::Allocation assign_child(Gtk::Widget* widget, int x, int y);
@@ -147,10 +147,10 @@ private:
 protected:
   typedef std::vector<FlowTableItem> type_vecChildren;
   type_vecChildren m_children;
-  
+
   //Reset this and check it later to see if the layout of items has changed.
   bool m_columns_allocated_changed;
-  
+
 private:
   guint m_columns_count;
   guint m_column_padding, m_row_padding;
