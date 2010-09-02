@@ -1,5 +1,12 @@
 2010-09-02  Murray Cumming  <murrayc@murrayc.com>
 
+	Fix the build with latest gtkmm.
+
+	* glom/utility_widgets/flowtable.[h|cc]: on_expose_event(): Use
+  Cairo for drawing instead of Gdk::GC, which no longer exists.
+
+2010-09-02  Murray Cumming  <murrayc@murrayc.com>
+
 	Avoid use of deprecated cairomm API.
 
 	* configure.ac: Also check for CAIROMM deprecations.
