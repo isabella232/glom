@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: glom.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glom&component=general\n"
-"POT-Creation-Date: 2010-08-20 20:08+0000\n"
-"PO-Revision-Date: 2010-08-23 10:06+0200\n"
+"POT-Creation-Date: 2010-09-02 15:42+0000\n"
+"PO-Revision-Date: 2010-09-06 11:57+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: es <gnome-es-list@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -2284,15 +2284,15 @@ msgstr ""
 "Se debe asignar una columna a la clave primaria de la tabla (<b>%1</b>) como "
 "archivo destino antes de continuar"
 
-#: ../glom/import_csv/dialog_import_csv.cc:748
+#: ../glom/import_csv/dialog_import_csv.cc:739
 msgid "Could Not Open file"
 msgstr "No se pudo abrir el archivo"
 
-#: ../glom/import_csv/dialog_import_csv.cc:749
+#: ../glom/import_csv/dialog_import_csv.cc:740
 msgid "The file at \"%1\" could not be opened: %2"
 msgstr "El archivo en «%1» no se pudo abrir: «%2»"
 
-#: ../glom/import_csv/dialog_import_csv.cc:754
+#: ../glom/import_csv/dialog_import_csv.cc:746
 msgid "Import From CSV File: "
 msgstr "Importar desde un archivo CSV: "
 
@@ -2657,7 +2657,8 @@ msgstr "La versión de esta aplicación."
 
 #: ../glom/main.cc:217
 msgid "Whether the filename is a .tar.gz backup to be restored."
-msgstr "Indica si el nombre del archivo es .tar.gz se restaurará el respaldo."
+msgstr ""
+"Si el nombre del archivo es una copia de respaldo .tar.gz que restaurar."
 
 #: ../glom/main.cc:222
 msgid "Show the generated SQL queries on stdout, for debugging."
