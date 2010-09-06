@@ -819,7 +819,6 @@
     <property name="default_width">398</property>
     <property name="default_height">400</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox2">
         <property name="visible">True</property>
@@ -1017,7 +1016,6 @@
     <property name="default_width">500</property>
     <property name="default_height">600</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox2">
         <property name="visible">True</property>
@@ -1216,7 +1214,6 @@
     <property name="default_width">300</property>
     <property name="default_height">400</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox2">
         <property name="visible">True</property>
@@ -1382,7 +1379,6 @@
     <property name="default_width">300</property>
     <property name="default_height">360</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox2">
         <property name="visible">True</property>
@@ -1603,7 +1599,6 @@
     <property name="default_width">300</property>
     <property name="default_height">500</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox3">
         <property name="visible">True</property>
@@ -2079,7 +2074,6 @@
     <property name="border_width">6</property>
     <property name="title" translatable="yes">Database User</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="vbox27">
         <property name="visible">True</property>
@@ -2346,7 +2340,6 @@
   <object class="GtkDialog" id="dialog_error_create_database">
     <property name="border_width">6</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="vbox31">
         <property name="visible">True</property>
@@ -2461,7 +2454,6 @@ Glom could not create the new database. Maybe you do not have the necessary acce
     <property name="default_width">300</property>
     <property name="default_height">500</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="vbox35">
         <property name="visible">True</property>
@@ -2645,7 +2637,6 @@ Glom could not create the new database. Maybe you do not have the necessary acce
     <property name="border_width">6</property>
     <property name="title" translatable="yes">Groups</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox4">
         <property name="visible">True</property>
@@ -2933,7 +2924,6 @@ Glom could not create the new database. Maybe you do not have the necessary acce
     <property name="default_width">400</property>
     <property name="default_height">400</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox4">
         <property name="visible">True</property>
@@ -3186,7 +3176,6 @@ Glom could not create the new database. Maybe you do not have the necessary acce
   <object class="GtkDialog" id="dialog_user">
     <property name="title" translatable="yes">User</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox5">
         <property name="visible">True</property>
@@ -3422,7 +3411,6 @@ Glom could not create the new database. Maybe you do not have the necessary acce
   <object class="GtkDialog" id="dialog_new_group">
     <property name="title" translatable="yes">Create Group</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox6">
         <property name="visible">True</property>
@@ -3791,7 +3779,6 @@ Which user should be added to this group?</property>
   <object class="GtkDialog" id="dialog_layout_field_properties">
     <property name="title" translatable="yes">Field Layout</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="vbox50">
         <property name="visible">True</property>
@@ -4087,7 +4074,6 @@ Which user should be added to this group?</property>
   <object class="GtkDialog" id="dialog_database_preferences">
     <property name="title" translatable="yes">Database Preferences</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox7">
         <property name="visible">True</property>
@@ -5231,7 +5217,6 @@ Which user should be added to this group?</property>
   <object class="GtkDialog" id="dialog_group_by">
     <property name="title" translatable="yes">Group By</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="vbox72">
         <property name="visible">True</property>
@@ -5583,7 +5568,6 @@ Which user should be added to this group?</property>
   <object class="GtkDialog" id="dialog_field_summary">
     <property name="title" translatable="yes">Field Summary</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="vbox75">
         <property name="visible">True</property>
@@ -6959,7 +6943,6 @@ Which user should be added to this group?</property>
     <property name="default_width">400</property>
     <property name="default_height">400</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="vbox_main">
         <property name="visible">True</property>
@@ -7042,7 +7025,6 @@ Which user should be added to this group?</property>
   <object class="GtkDialog" id="dialog_change_language">
     <property name="title" translatable="yes">Test Translation</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="vbox86">
         <property name="visible">True</property>
@@ -7586,7 +7568,6 @@ Note that the standard parts of the Glom user interface, such as menus and dialo
   <object class="GtkDialog" id="dialog_translation_identify_original">
     <property name="title" translatable="yes">Identify Original</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="vbox91">
         <property name="visible">True</property>
@@ -7800,7 +7781,6 @@ The language of the original text is currently identified as:</property>
   <object class="GtkDialog" id="dialog_translation_copy">
     <property name="title" translatable="yes">Identify Original</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="vbox91">
         <property name="visible">True</property>
@@ -7990,7 +7970,6 @@ From what language would you like to copy the translations to use as the start o
   <object class="GtkDialog" id="dialog_add_related_table">
     <property name="title" translatable="yes">Add Related Table</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="vbox102">
         <property name="visible">True</property>
@@ -8249,7 +8228,6 @@ If a suitable related table already exists then you should instead cancel and ju
     <property name="default_width">500</property>
     <property name="default_height">600</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox32">
         <property name="visible">True</property>
@@ -8434,7 +8412,6 @@ If a suitable related table already exists then you should instead cancel and ju
     <property name="default_width">311</property>
     <property name="default_height">179</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox33">
         <property name="visible">True</property>
@@ -9654,7 +9631,6 @@ What name should this module have?</property>
     <property name="title" translatable="yes">Properties</property>
     <property name="window_position">center-on-parent</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox29">
         <property name="visible">True</property>
@@ -9745,7 +9721,6 @@ What name should this module have?</property>
     <property name="title" translatable="yes">Group Properties</property>
     <property name="window_position">center-on-parent</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox30">
         <property name="visible">True</property>
