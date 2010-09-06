@@ -1,5 +1,19 @@
 2010-09-06  Murray Cumming  <murrayc@murrayc-desktop>
 
+	Renamed Dialog_GroupBy_SecondaryFields to Dialog_FieldsList.
+
+	* glom/mode_design/layout/layout_item_dialogs/dialog_groupby_second
+	aryfields.[h|cc]: Rename to dialog_fieldslist.[h|cc]:
+  * glom/glom_developer.glade: Renamed the ID too.
+  adapted.
+  * Makefile_glom.am:
+  * glom/mode_design/layout/layout_item_dialogs/dialog_group_by.h:
+  * tests/test_glade_derived_instantiation.cc:
+  Adapted.
+  This lets me use it for other things too.
+
+2010-09-06  Murray Cumming  <murrayc@murrayc-desktop>
+
 	get_choices_related
 
 2010-09-06  Murray Cumming  <murrayc@murrayc.com>
