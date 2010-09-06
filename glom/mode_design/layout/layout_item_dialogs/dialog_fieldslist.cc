@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "dialog_groupby_secondaryfields.h"
+#include "dialog_fieldslist.h"
 #include "dialog_field_layout.h"
 
 //#include <libgnome/gnome-i18n.h>
@@ -27,10 +27,10 @@
 namespace Glom
 {
 
-const char* Dialog_GroupBy_SecondaryFields::glade_id("dialog_groupby_secondary_fields");
-const bool Dialog_GroupBy_SecondaryFields::glade_developer(true);
+const char* Dialog_FieldsList::glade_id("dialog_fieldslist");
+const bool Dialog_FieldsList::glade_developer(true);
 
-Dialog_GroupBy_SecondaryFields::Dialog_GroupBy_SecondaryFields(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
+Dialog_FieldsList::Dialog_FieldsList(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder)
 : Dialog_Layout(cobject, builder, false /* means no table title */),
   m_treeview_fields(0),
   m_button_field_up(0),
@@ -55,7 +55,7 @@ Dialog_GroupBy_SecondaryFields::Dialog_GroupBy_SecondaryFields(BaseObjectType* c
 
     Gtk::CellRendererText* renderer_name = Gtk::manage(new Gtk::CellRendererText);
     column_name->pack_start(*renderer_name);
-    column_name->set_cell_data_func(*renderer_name, sigc::mem_fun(*this, &Dialog_GroupBy_SecondaryFields::on_cell_data_name));
+    column_name->set_cell_data_func(*renderer_name, sigc::mem_fun(*this, &Dialog_FieldsList::on_cell_data_name));
 
 
     //Sort by sequence, so we can change the order by changing the values in the hidden sequence column.
@@ -66,39 +66,39 @@ Dialog_GroupBy_SecondaryFields::Dialog_GroupBy_SecondaryFields(BaseObjectType* c
     Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_fields->get_selection();
     if(refSelection)
     {
-      refSelection->signal_changed().connect( sigc::mem_fun(*this, &Dialog_GroupBy_SecondaryFields::on_treeview_fields_selection_changed) );
+      refSelection->signal_changed().connect( sigc::mem_fun(*this, &Dialog_FieldsList::on_treeview_fields_selection_changed) );
     }
 
-    m_model_fields->signal_row_changed().connect( sigc::mem_fun(*this, &Dialog_GroupBy_SecondaryFields::on_treemodel_row_changed) );
+    m_model_fields->signal_row_changed().connect( sigc::mem_fun(*this, &Dialog_FieldsList::on_treemodel_row_changed) );
   }
 
 
   builder->get_widget("button_field_up", m_button_field_up);
-  m_button_field_up->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_GroupBy_SecondaryFields::on_button_field_up) );
+  m_button_field_up->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_FieldsList::on_button_field_up) );
 
   builder->get_widget("button_field_down", m_button_field_down);
-  m_button_field_down->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_GroupBy_SecondaryFields::on_button_field_down) );
+  m_button_field_down->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_FieldsList::on_button_field_down) );
 
   builder->get_widget("button_field_delete", m_button_field_delete);
-  m_button_field_delete->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_GroupBy_SecondaryFields::on_button_delete) );
+  m_button_field_delete->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_FieldsList::on_button_delete) );
 
   builder->get_widget("button_field_add", m_button_field_add);
-  m_button_field_add->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_GroupBy_SecondaryFields::on_button_add_field) );
+  m_button_field_add->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_FieldsList::on_button_add_field) );
 
   builder->get_widget("button_field_edit", m_button_field_edit);
-  m_button_field_edit->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_GroupBy_SecondaryFields::on_button_edit_field) );
+  m_button_field_edit->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_FieldsList::on_button_edit_field) );
 
   builder->get_widget("button_field_formatting", m_button_field_formatting);
-  m_button_field_formatting->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_GroupBy_SecondaryFields::on_button_formatting) );
+  m_button_field_formatting->signal_clicked().connect( sigc::mem_fun(*this, &Dialog_FieldsList::on_button_formatting) );
 
   show_all_children();
 }
 
-Dialog_GroupBy_SecondaryFields::~Dialog_GroupBy_SecondaryFields()
+Dialog_FieldsList::~Dialog_FieldsList()
 {
 }
 
-void Dialog_GroupBy_SecondaryFields::set_fields(const Glib::ustring& table_name, const LayoutGroup::type_list_items& fields)
+void Dialog_FieldsList::set_fields(const Glib::ustring& table_name, const LayoutGroup::type_list_items& fields)
 {
   m_modified = false;
   m_table_name = table_name;
@@ -135,7 +135,7 @@ void Dialog_GroupBy_SecondaryFields::set_fields(const Glib::ustring& table_name,
   m_modified = false;
 }
 
-void Dialog_GroupBy_SecondaryFields::enable_buttons()
+void Dialog_FieldsList::enable_buttons()
 {
   //Fields:
   Glib::RefPtr<Gtk::TreeView::Selection> refSelection = m_treeview_fields->get_selection();
@@ -177,17 +177,17 @@ void Dialog_GroupBy_SecondaryFields::enable_buttons()
 }
 
 
-void Dialog_GroupBy_SecondaryFields::on_button_field_up()
+void Dialog_FieldsList::on_button_field_up()
 {
   move_treeview_selection_up(m_treeview_fields, m_ColumnsFields.m_col_sequence);
 }
 
-void Dialog_GroupBy_SecondaryFields::on_button_field_down()
+void Dialog_FieldsList::on_button_field_down()
 {
   move_treeview_selection_down(m_treeview_fields, m_ColumnsFields.m_col_sequence);
 }
 
-LayoutGroup::type_list_items Dialog_GroupBy_SecondaryFields::get_fields() const
+LayoutGroup::type_list_items Dialog_FieldsList::get_fields() const
 {
   LayoutGroup::type_list_items result;
 
@@ -202,7 +202,7 @@ LayoutGroup::type_list_items Dialog_GroupBy_SecondaryFields::get_fields() const
     {
       sharedptr<LayoutItem_Field> field_copy = glom_sharedptr_clone(item);
 
-      result[field_sequence] = field_copy; 
+      result[field_sequence] = field_copy;
 
       ++field_sequence;
     }
@@ -211,21 +211,21 @@ LayoutGroup::type_list_items Dialog_GroupBy_SecondaryFields::get_fields() const
   return result;
 }
 
-void Dialog_GroupBy_SecondaryFields::on_treeview_fields_selection_changed()
+void Dialog_FieldsList::on_treeview_fields_selection_changed()
 {
   enable_buttons();
 }
 
-void Dialog_GroupBy_SecondaryFields::on_button_add_field()
+void Dialog_FieldsList::on_button_add_field()
 {
   //Get the chosen fields:
   type_list_field_items fields_list = offer_field_list(m_table_name, this);
-  for(type_list_field_items::iterator iter_chosen = fields_list.begin(); iter_chosen != fields_list.end(); ++iter_chosen) 
+  for(type_list_field_items::iterator iter_chosen = fields_list.begin(); iter_chosen != fields_list.end(); ++iter_chosen)
   {
-    sharedptr<LayoutItem_Field> field = *iter_chosen; 
+    sharedptr<LayoutItem_Field> field = *iter_chosen;
     if(!field)
       continue;
-  
+
     //Add the field details to the layout treeview:
     Gtk::TreeModel::iterator iter =  m_model_fields->append();
 
@@ -246,7 +246,7 @@ void Dialog_GroupBy_SecondaryFields::on_button_add_field()
   }
 }
 
-void Dialog_GroupBy_SecondaryFields::on_button_delete()
+void Dialog_FieldsList::on_button_delete()
 {
   Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
   if(refTreeSelection)
@@ -263,7 +263,7 @@ void Dialog_GroupBy_SecondaryFields::on_button_delete()
 }
 
 
-void Dialog_GroupBy_SecondaryFields::on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
+void Dialog_FieldsList::on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk::TreeModel::iterator& iter)
 {
   //Set the view's cell properties depending on the model's data:
   Gtk::CellRendererText* renderer_text = dynamic_cast<Gtk::CellRendererText*>(renderer);
@@ -281,7 +281,7 @@ void Dialog_GroupBy_SecondaryFields::on_cell_data_name(Gtk::CellRenderer* render
 }
 
 
-void Dialog_GroupBy_SecondaryFields::on_button_edit_field()
+void Dialog_FieldsList::on_button_edit_field()
 {
   Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
   if(refTreeSelection)
@@ -294,7 +294,7 @@ void Dialog_GroupBy_SecondaryFields::on_button_edit_field()
       sharedptr<const LayoutItem_Field> field = row[m_ColumnsFields.m_col_layout_item];
 
       //Get the chosen field:
-      sharedptr<LayoutItem_Field> field_chosen = 
+      sharedptr<LayoutItem_Field> field_chosen =
         offer_field_list_select_one_field(field, m_table_name, this);
 
       //Set the field details in the layout treeview:
@@ -315,7 +315,7 @@ void Dialog_GroupBy_SecondaryFields::on_button_edit_field()
   }
 }
 
-void Dialog_GroupBy_SecondaryFields::on_button_formatting()
+void Dialog_FieldsList::on_button_formatting()
 {
   Glib::RefPtr<Gtk::TreeView::Selection> refTreeSelection = m_treeview_fields->get_selection();
   if(refTreeSelection)
@@ -336,4 +336,3 @@ void Dialog_GroupBy_SecondaryFields::on_button_formatting()
 }
 
 } //namespace Glom
-

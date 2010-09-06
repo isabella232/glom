@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GLOM_MODE_DATA_DIALOG_GROUPBY_SECONDARYFIELDS_HH
-#define GLOM_MODE_DATA_DIALOG_GROUPBY_SECONDARYFIELDS_HH
+#ifndef GLOM_MODE_DATA_DIALOG_FIELDSLIST_HH
+#define GLOM_MODE_DATA_DIALOG_FIELDSLIST_HH
 
 #include <glom/base_db.h>
 #include <glom/mode_design/layout/dialog_layout.h>
@@ -28,15 +28,15 @@
 namespace Glom
 {
 
-class Dialog_GroupBy_SecondaryFields
+class Dialog_FieldsList
  : public Dialog_Layout //It has some useful stuff
 {
 public:
   static const char* glade_id;
   static const bool glade_developer;
 
-  Dialog_GroupBy_SecondaryFields(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
-  virtual ~Dialog_GroupBy_SecondaryFields();
+  Dialog_FieldsList(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& builder);
+  virtual ~Dialog_FieldsList();
 
 
   void set_fields(const Glib::ustring& table_name, const LayoutGroup::type_list_items& table_fields);
@@ -87,4 +87,4 @@ private:
 
 } //namespace Glom
 
-#endif //GLOM_MODE_DATA_DIALOG_GROUPBY_SECONDARYFIELDS_HH
+#endif //GLOM_MODE_DATA_DIALOG_FIELDSLIST_HH
