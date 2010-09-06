@@ -861,14 +861,12 @@ void FlowTable::on_realize()
   if(!m_refGdkWindow)
   {
     m_refGdkWindow = get_window();
-    m_refGC = Gdk::GC::create(m_refGdkWindow);
   }
 }
 
 void FlowTable::on_unrealize()
 {
   m_refGdkWindow.reset();
-  m_refGC.reset();
 
   Gtk::Container::on_unrealize();
 }
@@ -880,21 +878,30 @@ bool FlowTable::on_expose_event(GdkEventExpose* event)
     m_refGdkWindow = get_window();
     if(m_refGdkWindow)
     {
-      m_refGC = Gdk::GC::create(m_refGdkWindow);
-      m_refGC->set_line_attributes(1 /* width */, Gdk::LINE_ON_OFF_DASH, Gdk::CAP_NOT_LAST, Gdk::JOIN_MITER);
+      Cairo::RefPtr<Cairo::Context> cr = m_refGdkWindow->create_cairo_context();
+      cr->set_line_width(1);
+      cr->set_line_cap(Cairo::LINE_CAP_SQUARE);
+      cr->set_line_join(Cairo::LINE_JOIN_MITER);
+      std::vector<double> dashes;
+      dashes.push_back(10);
+      cr->set_dash(dashes, 0);
 
       for(type_vecLines::iterator iter = m_lines_horizontal.begin(); iter != m_lines_horizontal.end(); ++iter)
       {
-        //TODO: Add draw_line(point, point) to gdkmm:
-        m_refGdkWindow->draw_line(m_refGC, iter->first.get_x(), iter->first.get_y(), iter->second.get_x(), iter->second.get_y());
+        cr->move_to(iter->first.get_x(), iter->first.get_y());
+        cr->line_to(iter->second.get_x(), iter->second.get_y());
+        cr->stroke();
       }
 
       for(type_vecLines::iterator iter = m_lines_vertical.begin(); iter != m_lines_vertical.end(); ++iter)
       {
-        m_refGdkWindow->draw_line(m_refGC, iter->first.get_x(), iter->first.get_y(), iter->second.get_x(), iter->second.get_y());
+        cr->move_to(iter->first.get_x(), iter->first.get_y());
+        cr->line_to(iter->second.get_x(), iter->second.get_y());
+        cr->stroke();
       }
     }
   }
+
   return Gtk::Container::on_expose_event(event);
 }
 

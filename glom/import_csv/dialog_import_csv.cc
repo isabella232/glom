@@ -735,18 +735,10 @@ void Dialog_Import_CSV::on_parser_file_read_error(const Glib::ustring& error_mes
   catch(const Glib::ConvertError& ex)
   {
     std::cerr << "Glib::filename_from_uri() failed: " << ex.what() << std::endl;
+
+    show_error_dialog(_("Could Not Open file"),
+      Glib::ustring::compose(_("The file at \"%1\" could not be opened: %2"), filename, error_message) );
   }
-<<<<<<< HEAD:glom/import_csv/dialog_import_csv.cc
-
-=======
-#else
-  std::auto_ptr<Glib::Error> error;
-  filename = Glib::filename_from_uri(m_file_uri, error);
-#endif
-
->>>>>>> 39fc4d7... SpinButtons: Don't have 0 to 0 ranges with only 0 increments possible.:glom/import_csv/dialog_import_csv.cc
-  show_error_dialog(_("Could Not Open file"),
-    Glib::ustring::compose(_("The file at \"%1\" could not be opened: %2"), filename, error_message) );
 }
 
 void Dialog_Import_CSV::on_parser_have_display_name(const Glib::ustring& display_name)

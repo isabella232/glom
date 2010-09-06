@@ -32,13 +32,13 @@ class CanvasTextMovable
     public CanvasItemMovable
 {
 private:
-  explicit CanvasTextMovable(const Glib::ustring& string = Glib::ustring(), double x = 0.0, double y = 0.0, double width = 0.0, Gtk::AnchorType anchor = Gtk::ANCHOR_NORTH_WEST);
+  explicit CanvasTextMovable(const Glib::ustring& string = Glib::ustring(), double x = 0.0, double y = 0.0, double width = 0.0, Goocanvas::AnchorType anchor = Goocanvas::ANCHOR_NORTH_WEST);
   virtual ~CanvasTextMovable();
 
   void init();
 
 public:
-  static Glib::RefPtr<CanvasTextMovable> create(const Glib::ustring& string = Glib::ustring(), double x = 0.0, double y = 0.0, double width = 0.0, Gtk::AnchorType anchor = Gtk::ANCHOR_NORTH_WEST);
+  static Glib::RefPtr<CanvasTextMovable> create(const Glib::ustring& string = Glib::ustring(), double x = 0.0, double y = 0.0, double width = 0.0, Goocanvas::AnchorType anchor = Goocanvas::ANCHOR_NORTH_WEST);
 
   enum Corners
   {

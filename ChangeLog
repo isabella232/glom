@@ -1,3 +1,28 @@
+2010-09-06  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix the build for the latest goocanvasmm and gtkmm API.
+
+	* glom/mode_design/relationships_overview/canvas_group_dbtable.cc:
+	* glom/mode_design/relationships_overview/dialog_relationships_over
+	view.cc:
+	* glom/print_layout/canvas_print_layout.[h|cc]:
+	* glom/utility_widgets/canvas/canvas_text_movable.[h|cc]:
+  Use Goocanvas::AnchorType instead of (removed) Gtk::AnchorType.
+
+2010-09-02  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix the build with latest gtkmm.
+
+	* glom/utility_widgets/flowtable.[h|cc]: on_expose_event(): Use
+  Cairo for drawing instead of Gdk::GC, which no longer exists.
+
+2010-09-02  Murray Cumming  <murrayc@murrayc.com>
+
+	Avoid use of deprecated cairomm API.
+
+	* configure.ac: Also check for CAIROMM deprecations.
+	* glom/import_csv/dialog_import_csv.cc: Fix a bad git merge.
+
 2010-08-19  David King  <davidk@openismus.com>
 
 	Include the correct config.h
