@@ -703,8 +703,8 @@ void Canvas_PrintLayout::fill_with_data_portal(const Glib::RefPtr<CanvasLayoutIt
     LayoutGroup::type_list_items::iterator iter_child_layout_items = child_layout_items.begin();
     for(int col = 0; col < cols_count; ++col)
     {
-      //Glib::RefPtr<Goocanvas::Item> canvas_child = base_item->get_cell_child(row, col); //TODO: Add this to GooCanvas::Table.
-      Glib::RefPtr<Goocanvas::Item> canvas_child = get_canvas_table_cell_child(canvas_table, row, col); //TODO: Add this to GooCanvas::Table.
+      //Glib::RefPtr<Goocanvas::Item> canvas_child = base_item->get_cell_child(row, col); //TODO: Add this to Goocanvas::Table.
+      Glib::RefPtr<Goocanvas::Item> canvas_child = get_canvas_table_cell_child(canvas_table, row, col); //TODO: Add this to Goocanvas::Table.
       if(!canvas_child)
         std::cerr << G_STRFUNC << ": canvas_child is NULL." << std::endl;
 

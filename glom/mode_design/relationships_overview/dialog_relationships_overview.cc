@@ -328,7 +328,7 @@ void Dialog_RelationshipsOverview::draw_lines()
           const double text_y = ((from_field_y + to_field_y) / 2) + y_offset;
           Glib::RefPtr<CanvasTextMovable> text = CanvasTextMovable::create(relationship->get_title_or_name(),
             text_x, text_y, -1, //TODO: Calc a suitable width.
-            Gtk::ANCHOR_CENTER);
+            Goocanvas::ANCHOR_CENTER);
           text->property_font() = "sans 10";
           text->property_use_markup() = true;
           text->set_movement_allowed(false, false); //Move only as part of the parent group.

@@ -27,7 +27,7 @@ namespace Glom
 {
 
 
-CanvasTextMovable::CanvasTextMovable(const Glib::ustring& text, double x, double y, double width, Gtk::AnchorType anchor)
+CanvasTextMovable::CanvasTextMovable(const Glib::ustring& text, double x, double y, double width, Goocanvas::AnchorType anchor)
 : Goocanvas::Text(text, x, y, width, anchor), 
   m_snap_corner(CORNER_TOP_LEFT) //arbitrary default.
 {
@@ -48,7 +48,7 @@ void CanvasTextMovable::init()
   signal_leave_notify_event().connect(sigc::mem_fun(*this, &CanvasItemMovable::on_leave_notify_event));
 }
 
-Glib::RefPtr<CanvasTextMovable> CanvasTextMovable::create(const Glib::ustring& string, double x, double y, double width, Gtk::AnchorType anchor)
+Glib::RefPtr<CanvasTextMovable> CanvasTextMovable::create(const Glib::ustring& string, double x, double y, double width, Goocanvas::AnchorType anchor)
 {
   return Glib::RefPtr<CanvasTextMovable>(new CanvasTextMovable(string, x, y, width, anchor));
 }

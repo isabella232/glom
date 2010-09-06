@@ -1,3 +1,14 @@
+2010-09-06  Murray Cumming  <murrayc@murrayc.com>
+
+	Fix the build for the latest goocanvasmm and gtkmm API.
+
+	* glom/mode_design/relationships_overview/canvas_group_dbtable.cc:
+	* glom/mode_design/relationships_overview/dialog_relationships_over
+	view.cc:
+	* glom/print_layout/canvas_print_layout.[h|cc]:
+	* glom/utility_widgets/canvas/canvas_text_movable.[h|cc]:
+  Use Goocanvas::AnchorType instead of (removed) Gtk::AnchorType.
+
 2010-09-02  Murray Cumming  <murrayc@murrayc.com>
 
 	Fix the build with latest gtkmm.
