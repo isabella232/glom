@@ -189,6 +189,7 @@ public:
   std::string m_arg_filename;
   bool m_arg_version;
   bool m_arg_restore;
+  bool m_arg_stop_auto_server_shutdown;
   bool m_arg_debug_sql;
   bool m_arg_debug_date_check;
 };
@@ -197,6 +198,7 @@ OptionGroup::OptionGroup()
 : Glib::OptionGroup("Glom", _("Glom options"), _("Command-line options for glom")),
   m_arg_version(false),
   m_arg_restore(false),
+  m_arg_stop_auto_server_shutdown(false),
   m_arg_debug_sql(false),
   m_arg_debug_date_check(false)
 {
@@ -216,6 +218,11 @@ OptionGroup::OptionGroup()
   entry_restore.set_long_name("restore");
   entry_restore.set_description(_("Whether the filename is a .tar.gz backup to be restored."));
   add_entry(entry_restore, m_arg_restore);
+
+  Glib::OptionEntry entry_stop_auto_server_shutdown;
+  entry_stop_auto_server_shutdown.set_long_name("stop-auto-server-shutdown");
+  entry_stop_auto_server_shutdown.set_description(_("Do not automatically stop the database server if Glom quits. This is helpful for debugging with gdb."));
+  add_entry(entry_stop_auto_server_shutdown, m_arg_stop_auto_server_shutdown);
 
   Glib::OptionEntry entry_debug_sql;
   entry_debug_sql.set_long_name("debug_sql");
@@ -468,7 +475,7 @@ main(int argc, char* argv[])
   PySys_SetArgv(argc, argv);
 
   std::auto_ptr<Gtk::Main> mainInstance;
-  try 
+  try
   {
     mainInstance = std::auto_ptr<Gtk::Main>( new Gtk::Main(argc, argv, context) );
   }
@@ -611,6 +618,7 @@ main(int argc, char* argv[])
 
     pApplication->set_command_line_args(argc, argv);
     pApplication->set_show_sql_debug(group.m_arg_debug_sql);
+    pApplication->set_stop_auto_server_shutdown(group.m_arg_stop_auto_server_shutdown);
     Glom::ConnectionPool::get_instance()->set_show_debug_output(group.m_arg_debug_sql);
 
     const bool test = pApplication->init(input_uri, group.m_arg_restore); //Sets it up and shows it.
