@@ -212,6 +212,9 @@ public:
    */
   bool cleanup(const SlotProgress& slot_progress);
 
+  ///Whether to automatically shutdown the database server when Glom crashes.
+  void set_auto_server_shutdown(bool val = true);
+
   /** Change the database server's configration to allow or prevent access from
    * other users on the network.
    *
@@ -289,7 +292,7 @@ private:
   Glib::ustring m_host, m_user, m_password, m_database;
 
   FieldTypes* m_pFieldTypes;
-  bool m_show_debug_output;
+  bool m_show_debug_output, m_auto_server_shutdown;
 
 private:
 

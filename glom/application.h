@@ -121,6 +121,9 @@ public:
   ///Whether to show the generated SQL queries on stdout, for debugging.
   void set_show_sql_debug(bool val = true);
 
+  ///Whether to automatically shutdown the database server when Glom crashes.
+  void set_stop_auto_server_shutdown(bool val = true);
+
   void show_table_details(const Glib::ustring& table_name, const Gnome::Gda::Value& primary_key_value);
   void show_table_list(const Glib::ustring& table_name);
 

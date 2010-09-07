@@ -243,6 +243,13 @@ void Application::set_show_sql_debug(bool val)
   m_show_sql_debug = val;
 }
 
+void Application::set_stop_auto_server_shutdown(bool val)
+{
+  ConnectionPool* connection_pool = ConnectionPool::get_instance();
+  if(connection_pool)
+    connection_pool->set_auto_server_shutdown(!val);
+}
+
 void Application::init_layout()
 {
   //We override this method so that we can put everything in the vbox from the glade file, instead of the vbox from App_Gtk.

@@ -1,3 +1,15 @@
+2010-09-07  Murray Cumming  <murrayc@murrayc.com>
+
+	Add a --stop-auto-server-shutdown command-line option for debugging.
+
+	* glom/libglom/connectionpool.[h|cc]: Added set_auto_server_shutdown().
+  startup(): Only handle the linux crash signal if this is set, so we can
+  instead let gdb handle it.
+	* glom/application.[h|cc]: Added set_stop_auto_server_shutdown() which calls
+  it.
+	* glom/main.cc: Add a --stop-auto-server-shutdown command line option that
+  calls that.
+
 2010-09-06  Murray Cumming  <murrayc@murrayc-desktop>
 
 	Renamed Dialog_GroupBy_SecondaryFields to Dialog_FieldsList.

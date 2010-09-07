@@ -104,7 +104,8 @@ ConnectionPool::ConnectionPool()
   m_sharedconnection_refcount(0),
   m_ready_to_connect(false),
   m_pFieldTypes(0),
-  m_show_debug_output(false)
+  m_show_debug_output(false),
+  m_auto_server_shutdown(true)
 {
 }
 
@@ -561,7 +562,7 @@ static void on_linux_signal(int signum)
 {
   ConnectionPool* connection_pool = ConnectionPool::get_instance();
   if(!connection_pool)
-  return;
+    return;
 
   if(signum == SIGSEGV)
   {
@@ -592,7 +593,8 @@ ConnectionPool::StartupErrors ConnectionPool::startup(const SlotProgress& slot_p
 
   //If we crash while running (unlikely, hopefully), then try to cleanup.
   //Comment this out if you want to see the backtrace in a debugger.
-  previous_sig_handler = signal(SIGSEGV, &on_linux_signal);
+  if(m_auto_server_shutdown)
+    previous_sig_handler = signal(SIGSEGV, &on_linux_signal);
 
   return started;
 }
@@ -623,8 +625,11 @@ bool ConnectionPool::cleanup(const SlotProgress& slot_progress)
 #endif // !G_OS_WIN32
 
   //We don't need the segfault handler anymore:
-  signal(SIGSEGV, previous_sig_handler);
-  previous_sig_handler = SIG_DFL; /* Arbitrary default */
+  if(previous_sig_handler != SIG_DFL) /* Arbitrary default */
+  {
+    signal(SIGSEGV, previous_sig_handler);
+    previous_sig_handler = SIG_DFL; /* Arbitrary default */
+  }
 
   return result;
 }
@@ -648,7 +653,7 @@ bool ConnectionPool::add_column(const Glib::ustring& table_name, const sharedptr
 
   if(!m_refGdaConnection)
     return false;
-  
+
   try
   {
     m_backend->add_column(m_refGdaConnection, table_name, field);
@@ -659,7 +664,7 @@ bool ConnectionPool::add_column(const Glib::ustring& table_name, const sharedptr
   {
     std::cerr << G_STRFUNC << ": exception:" << ex.what() << std::endl;
   }
-  
+
   return false;
 }
 
@@ -684,7 +689,7 @@ bool ConnectionPool::drop_column(const Glib::ustring& table_name, const Glib::us
   {
     std::cerr << G_STRFUNC << ": exception:" << ex.what() << std::endl;
   }
-  
+
   return false;
 }
 
@@ -905,10 +910,15 @@ void ConnectionPool::set_show_debug_output(bool val)
 {
   m_show_debug_output = val;
 }
- 
+
 bool ConnectionPool::get_show_debug_output() const
 {
   return m_show_debug_output;
+}
+
+void ConnectionPool::set_auto_server_shutdown(bool val)
+{
+  m_auto_server_shutdown = val;
 }
 
 } //namespace Glom
