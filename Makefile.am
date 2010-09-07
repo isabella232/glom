@@ -22,7 +22,7 @@
 ## error-prone:  http://miller.emu.id.au/pmiller/books/rmch/
 
 # Put compiled object files into the same sub-directory as their sources
-AUTOMAKE_OPTIONS = subdir-objects
+AUTOMAKE_OPTIONS = subdir-objects color-tests
 
 # Use .cc as default extension if no _SOURCES have been defined
 AM_DEFAULT_SOURCE_EXT = .cc

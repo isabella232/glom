@@ -209,22 +209,8 @@ void Dialog_GroupBy::update_labels()
     m_label_sort_by->set_text( Glib::ustring() );
 
   //Secondary Fields:
-  Glib::ustring text_secondary_fields;
-  if(m_layout_item->m_group_secondary_fields)
-  {
-    const LayoutGroup::type_list_items& map_items = m_layout_item->m_group_secondary_fields->m_list_items;
-    for(LayoutGroup::type_list_items::const_iterator iter = map_items.begin(); iter != map_items.end(); ++iter)
-    {
-      if(*iter)
-      {
-        if(!text_secondary_fields.empty())
-          text_secondary_fields += ", ";
-
-        text_secondary_fields += (*iter)->get_layout_display_name();
-      }
-    }
-  }
-
+  const Glib::ustring text_secondary_fields =
+    Utils::get_list_of_layout_items_for_display(m_layout_item->m_group_secondary_fields->m_list_items);
   m_label_secondary_fields->set_text(text_secondary_fields);
 }
 

@@ -177,6 +177,10 @@ bool delete_directory(const std::string& uri);
  */
 Glib::ustring get_directory_child_with_suffix(const Glib::ustring& uri_directory, const std::string& suffix, bool recursive);
 
+/** Get a string to display to the user, as a representation of a list of layout items.
+ */
+Glib::ustring get_list_of_layout_items_for_display(const LayoutGroup::type_list_items& list_layout_fields);
+
 } //namespace Utils
 
 } //namespace Glom

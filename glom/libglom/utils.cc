@@ -1139,5 +1139,22 @@ Glib::ustring Utils::get_directory_child_with_suffix(const Glib::ustring& uri_di
   return Glib::ustring();
 }
 
+Glib::ustring Utils::get_list_of_layout_items_for_display(const LayoutGroup::type_list_items& list_layout_fields)
+{
+  Glib::ustring result;
+  for(LayoutGroup::type_list_items::const_iterator iter = list_layout_fields.begin(); iter != list_layout_fields.end(); ++iter)
+  {
+    const sharedptr<LayoutItem> item = *iter;
+    if(item)
+    {
+      if(!result.empty())
+       result += ", ";
+
+      result += item->get_layout_display_name();
+    }
+  }
+
+  return result;
+}
 
 } //namespace Glom

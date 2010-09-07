@@ -28,9 +28,12 @@
 #include <glom/mode_design/comboentry_currency.h>
 #include <glom/mode_design/layout/combobox_relationship.h>
 #include <glom/mode_design/layout/combobox_fields.h>
+#include <glom/mode_design/layout/layout_item_dialogs/dialog_fieldslist.h>
 
 namespace Glom
 {
+
+class Dialog_FieldsList;
 
 class Box_Formatting
  : public Gtk::VBox,
@@ -47,7 +50,7 @@ public:
    * @param format The starting information.
    */
   void set_formatting(const FieldFormatting& format, bool show_numeric = true, bool show_choices = true);
-  
+
   /**
    * @param format The starting information.
    * @param table_name The field's table.
@@ -56,7 +59,7 @@ public:
   void set_formatting(const FieldFormatting& format, const Glib::ustring& table_name, const sharedptr<const Field>& field);
   bool get_formatting(FieldFormatting& format) const;
 
-  //When used for print layout items, 
+  //When used for print layout items,
   //we hide some stuff:
   void set_is_for_print_layout();
 
@@ -64,6 +67,7 @@ private:
   //Signal handlers:
   void on_combo_choices_relationship_changed();
   void on_checkbox();
+  void on_button_choices_extra();
 
   void enforce_constraints();
 
@@ -98,15 +102,18 @@ private:
   guint m_col_index_custom_choices;
   ComboBox_Relationship* m_combo_choices_relationship;
   ComboBox_Fields* m_combo_choices_field;
-  ComboBox_Fields* m_combo_choices_field_second;
+  Gtk::Label* m_label_choices_extra_fields;
+  Gtk::Button* m_button_choices_extra_fields;
   Gtk::CheckButton* m_checkbutton_choices_related_show_all;
+
+  Dialog_FieldsList* m_dialog_choices_extra_fields;
 
   mutable FieldFormatting m_format;
 
   Glib::ustring m_table_name;
   sharedptr<const Field> m_field;
 
-  //We show different options when 
+  //We show different options when
   //showing this on a print layout.
   bool m_for_print_layout;
 
