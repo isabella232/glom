@@ -1,5 +1,14 @@
 2010-09-07  Murray Cumming  <murrayc@murrayc.com>
 
+	Dialog_FieldsList: Fix a crash.
+
+	* glom/mode_design/layout/layout_item_dialogs/dialog_fieldslist.cc: get_fields():
+  Do not overwrite the vector, fixing a crash.
+  Looking at this code, I think we also ignore reordering of items, so we
+  should fix that later.
+
+2010-09-07  Murray Cumming  <murrayc@murrayc.com>
+
 	Add a --stop-auto-server-shutdown command-line option for debugging.
 
 	* glom/libglom/connectionpool.[h|cc]: Added set_auto_server_shutdown().
