@@ -210,7 +210,7 @@ void Dialog_GroupBy::update_labels()
 
   //Secondary Fields:
   const Glib::ustring text_secondary_fields =
-    Utils::get_list_of_layout_items_for_display(m_layout_item->m_group_secondary_fields->m_list_items);
+    Utils::get_list_of_layout_items_for_display(m_layout_item->m_group_secondary_fields);
   m_label_secondary_fields->set_text(text_secondary_fields);
 }
 

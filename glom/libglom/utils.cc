@@ -1157,4 +1157,12 @@ Glib::ustring Utils::get_list_of_layout_items_for_display(const LayoutGroup::typ
   return result;
 }
 
+Glib::ustring Utils::get_list_of_layout_items_for_display(const sharedptr<const LayoutGroup>& layout_group)
+{
+  if(layout_group)
+    return get_list_of_layout_items_for_display(layout_group->m_list_items);
+  else
+    return Glib::ustring();
+}
+
 } //namespace Glom

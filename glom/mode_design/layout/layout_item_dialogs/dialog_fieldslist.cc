@@ -218,6 +218,7 @@ void Dialog_FieldsList::on_treeview_fields_selection_changed()
 
 void Dialog_FieldsList::on_button_add_field()
 {
+  std::cout << "debug: " << m_table_name << std::endl;
   //Get the chosen fields:
   type_list_field_items fields_list = offer_field_list(m_table_name, this);
   for(type_list_field_items::iterator iter_chosen = fields_list.begin(); iter_chosen != fields_list.end(); ++iter_chosen)

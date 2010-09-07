@@ -275,14 +275,16 @@ void Box_Formatting::set_formatting(const FieldFormatting& format, bool show_num
 
     //Show the list of fields in a label:
     const Glib::ustring text_extra_fields =
-      Utils::get_list_of_layout_items_for_display(choices_field_extras->m_list_items);
+      Utils::get_list_of_layout_items_for_display(choices_field_extras);
      m_label_choices_extra_fields->set_text(text_extra_fields);
 
     //Update the contents of the dialog that will be shown if Edit is clicked:
+    const Glib::ustring related_to_table =
+      (choices_relationship ? choices_relationship->get_to_table() : Glib::ustring());
     if(choices_field_extras)
-      m_dialog_choices_extra_fields->set_fields(m_table_name, choices_field_extras->m_list_items);
+      m_dialog_choices_extra_fields->set_fields(related_to_table, choices_field_extras->m_list_items);
     else
-      m_dialog_choices_extra_fields->set_fields(m_table_name, LayoutGroup::type_list_items());
+      m_dialog_choices_extra_fields->set_fields(related_to_table, LayoutGroup::type_list_items());
 
 
 
