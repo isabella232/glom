@@ -46,18 +46,18 @@ public:
 
 protected:
   //Signal handlers:
-  virtual void on_button_save();
-  virtual void on_button_cancel();
+  void on_button_save();
+  void on_button_cancel();
 
-  virtual void on_anything_changed();
+  void on_anything_changed();
   virtual void on_adddel_user_changed(const Gtk::TreeModel::iterator& /* iter */, guint /* col */);
 
   /// Disable/enable other controls when a control is selected.
   virtual void enforce_constraints();
 
-  virtual void on_foreach_connect(Gtk::Widget& widget);
-  virtual void widget_connect_changed_signal(Gtk::Widget& widget);
-  virtual void set_blocked(bool val = true);
+  void on_foreach_connect(Gtk::Widget& widget);
+  void widget_connect_changed_signal(Gtk::Widget& widget);
+  void set_blocked(bool val = true);
 
   type_signal_apply m_signal_apply;
 
@@ -71,7 +71,7 @@ protected:
 
   bool m_modified;
 
-  //typedef std::list<sigc::connection> type_listConnections; //Store the connections so that we can remove them later.	
+  //typedef std::list<sigc::connection> type_listConnections; //Store the connections so that we can remove them later.
 };
 
 } //namespace Glom
