@@ -189,10 +189,12 @@ void Dialog_FieldsList::on_button_field_down()
 
 LayoutGroup::type_list_items Dialog_FieldsList::get_fields() const
 {
-  LayoutGroup::type_list_items result;
 
-  guint field_sequence = 1; //0 means no sequence
-  for(Gtk::TreeModel::iterator iterFields = m_model_fields->children().begin(); iterFields != m_model_fields->children().end(); ++iterFields)
+  const Gtk::TreeModel::Children children = m_model_fields->children();
+  LayoutGroup::type_list_items result(children.size());
+
+  guint field_sequence = 0;
+  for(Gtk::TreeModel::iterator iterFields = m_model_fields->children().begin(); iterFields != children.end(); ++iterFields)
   {
     Gtk::TreeModel::Row row = *iterFields;
 
@@ -202,6 +204,7 @@ LayoutGroup::type_list_items Dialog_FieldsList::get_fields() const
     {
       sharedptr<LayoutItem_Field> field_copy = glom_sharedptr_clone(item);
 
+      //TODO: This seems to overwrite the sequence set when the user reorders an item.
       result[field_sequence] = field_copy;
 
       ++field_sequence;
