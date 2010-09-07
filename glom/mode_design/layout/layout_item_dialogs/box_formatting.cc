@@ -512,11 +512,15 @@ void Box_Formatting::on_button_choices_extra()
       Utils::get_list_of_layout_items_for_display(m_dialog_choices_extra_fields->get_fields());
      m_label_choices_extra_fields->set_text(text_extra_fields);
 
-    //TODO: Mark the dialog as modified.
+    //Tell the parent (which connects directly to all other (regular) widgets):
+    m_signal_modified.emit();
   }
+}
 
 
-  //update_labels();
+Box_Formatting::type_signal_modified Box_Formatting::signal_modified()
+{
+  return m_signal_modified;
 }
 
 } //namespace Glom

@@ -63,6 +63,9 @@ public:
   //we hide some stuff:
   void set_is_for_print_layout();
 
+  typedef sigc::signal<void> type_signal_modified;
+  type_signal_modified signal_modified();
+
 private:
   //Signal handlers:
   void on_combo_choices_relationship_changed();
@@ -119,6 +122,8 @@ private:
 
   bool m_show_numeric;
   bool m_show_choices;
+
+  type_signal_modified m_signal_modified;
 
 
   class AlignmentColumns: public Gtk::TreeModelColumnRecord
