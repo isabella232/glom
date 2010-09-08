@@ -1,3 +1,10 @@
+2010-09-07  Murray Cumming  <murrayc@murrayc.com>
+
+	Dialog_Properties: Remove the unnecessary virtual keywords.
+
+	* glom/utility_widgets/dialog_properties.h: Make methods non-virtual
+  because nothing overrides them.
+
 2010-09-08  Murray Cumming  <murrayc@murrayc.com>
 
 	Combo widgets: Support multiple extra fields.
