@@ -18,8 +18,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
+
 #include "box_formatting.h"
+#include <glom/utils_ui.h>
+#include <glom/glade_utils.h>
 #include <libglom/data_structure/glomconversions.h>
+#include <glom/mode_design/layout/layout_item_dialogs/dialog_fieldslist.h>
 #include <glibmm/i18n.h>
 
 namespace Glom
@@ -59,8 +63,10 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
   m_col_index_custom_choices(0),
   m_combo_choices_relationship(0),
   m_combo_choices_field(0),
-  m_combo_choices_field_second(0),
+  m_label_choices_extra_fields(0),
+  m_button_choices_extra_fields(0),
   m_checkbutton_choices_related_show_all(0),
+  m_dialog_choices_extra_fields(0),
   m_for_print_layout(false),
   m_show_numeric(true),
   m_show_choices(true)
@@ -115,7 +121,7 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
 
   m_combo_format_text_horizontal_alignment->set_model(m_model_alignment);
   m_combo_format_text_horizontal_alignment->pack_start(m_columns_alignment.m_col_title);
-  
+
 
   //Choices:
   builder->get_widget("vbox_choices", m_vbox_choices);
@@ -126,11 +132,12 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
   m_adddel_choices_custom->set_auto_add();
 
   builder->get_widget("checkbutton_choices_restrict", m_checkbutton_choices_restricted);
-  builder->get_widget("checkbutton_choices_restrict_as_radio_buttons", m_checkbutton_choices_restricted_as_radio_buttons); 
+  builder->get_widget("checkbutton_choices_restrict_as_radio_buttons", m_checkbutton_choices_restricted_as_radio_buttons);
 
   builder->get_widget_derived("combobox_choices_related_relationship", m_combo_choices_relationship);
   builder->get_widget_derived("combobox_choices_related_field", m_combo_choices_field);
-  builder->get_widget_derived("combobox_choices_related_field_second", m_combo_choices_field_second);
+  builder->get_widget("label_choices_related_extra_fields", m_label_choices_extra_fields);
+  builder->get_widget("button_choices_related_extra_fields", m_button_choices_extra_fields);
   builder->get_widget("checkbutton_choices_related_show_all", m_checkbutton_choices_related_show_all);
   builder->get_widget("radiobutton_choices_custom", m_radiobutton_choices_custom);
   builder->get_widget("radiobutton_choices_related", m_radiobutton_choices_related);
@@ -143,12 +150,24 @@ Box_Formatting::Box_Formatting(BaseObjectType* cobject, const Glib::RefPtr<Gtk::
   m_checkbox_format_text_color_background->signal_toggled().connect( sigc::mem_fun(*this, &Box_Formatting::on_checkbox) );
   m_checkbox_format_color_negatives->signal_toggled().connect( sigc::mem_fun(*this, &Box_Formatting::on_checkbox) );
   m_checkbutton_choices_restricted->signal_toggled().connect( sigc::mem_fun(*this, &Box_Formatting::on_checkbox) );
+  m_button_choices_extra_fields->signal_clicked().connect( sigc::mem_fun(*this, &Box_Formatting::on_button_choices_extra) );
+
+  if(!m_dialog_choices_extra_fields)
+  {
+    Utils::get_glade_widget_derived_with_warning(m_dialog_choices_extra_fields);
+    add_view(m_dialog_choices_extra_fields); //Give it access to the document.
+  }
 
   show_all_children();
 }
 
 Box_Formatting::~Box_Formatting()
 {
+  if(m_dialog_choices_extra_fields)
+  {
+    remove_view(m_dialog_choices_extra_fields); //Give it access to the document.
+    delete m_dialog_choices_extra_fields;
+  }
 }
 
 void Box_Formatting::set_is_for_print_layout()
@@ -156,7 +175,7 @@ void Box_Formatting::set_is_for_print_layout()
   m_for_print_layout = true;
   m_show_choices = false;
 
-  //Add labels (because we will hide the checkboxes): 
+  //Add labels (because we will hide the checkboxes):
   Gtk::Label* label = Gtk::manage(new Gtk::Label(_("Font")));
   label->show();
   m_hbox_font->pack_start(*label, Gtk::PACK_SHRINK);
@@ -165,7 +184,7 @@ void Box_Formatting::set_is_for_print_layout()
   m_hbox_color_foreground->pack_start(*label, Gtk::PACK_SHRINK);
   label = Gtk::manage(new Gtk::Label(_("Background Color")));
   label->show();
-  m_hbox_color_background->pack_start(*label, Gtk::PACK_SHRINK); 
+  m_hbox_color_background->pack_start(*label, Gtk::PACK_SHRINK);
 
   enforce_constraints();
 }
@@ -200,9 +219,9 @@ void Box_Formatting::set_formatting(const FieldFormatting& format, bool show_num
     format.m_numeric_format.m_alt_foreground_color_for_negatives );
 
   //Text formatting
-  const FieldFormatting::HorizontalAlignment alignment = 
+  const FieldFormatting::HorizontalAlignment alignment =
     format.get_horizontal_alignment();
-  Gtk::TreeModel::Children children = m_model_alignment->children(); 
+  Gtk::TreeModel::Children children = m_model_alignment->children();
   for(Gtk::TreeModel::Children::iterator iter = children.begin(); iter != children.end(); ++iter)
   {
     Gtk::TreeModel::Row row = *iter;
@@ -245,14 +264,30 @@ void Box_Formatting::set_formatting(const FieldFormatting& format, bool show_num
     m_combo_choices_relationship->set_relationships(vecRelationships);
 
     sharedptr<const Relationship> choices_relationship;
-    Glib::ustring choices_field, choices_field_second;
+    sharedptr<const LayoutItem_Field> choices_field;
+    sharedptr<const LayoutGroup> choices_field_extras;
     bool choices_show_all = false;
-    format.get_choices_related(choices_relationship, choices_field, choices_field_second, choices_show_all);
+    format.get_choices_related(choices_relationship, choices_field, choices_field_extras, choices_show_all);
 
     m_combo_choices_relationship->set_selected_relationship(choices_relationship);
     on_combo_choices_relationship_changed(); //Fill the combos so we can set their active items.
-    m_combo_choices_field->set_selected_field(choices_field);
-    m_combo_choices_field_second->set_selected_field(choices_field_second);
+    m_combo_choices_field->set_selected_field(choices_field ? choices_field->get_name() : Glib::ustring());
+
+    //Show the list of fields in a label:
+    const Glib::ustring text_extra_fields =
+      Utils::get_list_of_layout_items_for_display(choices_field_extras);
+     m_label_choices_extra_fields->set_text(text_extra_fields);
+
+    //Update the contents of the dialog that will be shown if Edit is clicked:
+    const Glib::ustring related_to_table =
+      (choices_relationship ? choices_relationship->get_to_table() : Glib::ustring());
+    if(choices_field_extras)
+      m_dialog_choices_extra_fields->set_fields(related_to_table, choices_field_extras->m_list_items);
+    else
+      m_dialog_choices_extra_fields->set_fields(related_to_table, LayoutGroup::type_list_items());
+
+
+
     m_checkbutton_choices_related_show_all->set_active(choices_show_all);
 
     //Custom choices:
@@ -284,7 +319,7 @@ bool Box_Formatting::get_formatting(FieldFormatting& format) const
 
   m_format.m_numeric_format.m_currency_symbol = m_entry_currency_symbol->get_entry()->get_text();
 
-  m_format.m_numeric_format.m_alt_foreground_color_for_negatives = 
+  m_format.m_numeric_format.m_alt_foreground_color_for_negatives =
     m_checkbox_format_color_negatives->get_active();
 
   //Text formatting:
@@ -317,13 +352,18 @@ bool Box_Formatting::get_formatting(FieldFormatting& format) const
   if(m_field)
   {
     m_format.set_choices_restricted(
-      m_checkbutton_choices_restricted->get_active(), 
+      m_checkbutton_choices_restricted->get_active(),
       m_checkbutton_choices_restricted_as_radio_buttons->get_active());
 
-    sharedptr<Relationship> choices_relationship = m_combo_choices_relationship->get_selected_relationship();
+    const sharedptr<const Relationship> choices_relationship = m_combo_choices_relationship->get_selected_relationship();
+    sharedptr<LayoutItem_Field> layout_choice_first = sharedptr<LayoutItem_Field>::create();
+    layout_choice_first->set_name(m_combo_choices_field->get_selected_field_name());
+
+    sharedptr<LayoutGroup> layout_choice_extra = sharedptr<LayoutGroup>::create();
+    layout_choice_extra->m_list_items = m_dialog_choices_extra_fields->get_fields();
+
     m_format.set_choices_related(choices_relationship,
-      m_combo_choices_field->get_selected_field_name(),
-      m_combo_choices_field_second->get_selected_field_name(),
+      layout_choice_first, layout_choice_extra,
       m_checkbutton_choices_related_show_all->get_active());
 
     //Custom choices:
@@ -364,10 +404,19 @@ void Box_Formatting::on_combo_choices_relationship_changed()
     //Show the list of formats from this relationship:
     if(relationship)
     {
-      Document::type_vec_fields vecFields = pDocument->get_table_fields(relationship->get_to_table());
-
+      const Document::type_vec_fields vecFields = pDocument->get_table_fields(relationship->get_to_table());
       m_combo_choices_field->set_fields(vecFields);
-      m_combo_choices_field_second->set_fields(vecFields, true /* with_none_item */); //We add a "None" item so this GtkComboBox can be cleared by the user.
+
+      //Update the show-all dialog's list:
+      //If the related table name has changed then the list of fields will probably
+      //be ignored, clearing the list, but we try to preserve it if possible:
+      const LayoutGroup::type_list_items list_fields = m_dialog_choices_extra_fields->get_fields();
+      m_dialog_choices_extra_fields->set_fields(relationship->get_to_table(), list_fields);
+
+      //Update the label:
+      const Glib::ustring text_extra_fields =
+        Utils::get_list_of_layout_items_for_display(m_dialog_choices_extra_fields->get_fields());
+       m_label_choices_extra_fields->set_text(text_extra_fields);
     }
   }
 }
@@ -432,7 +481,7 @@ void Box_Formatting::enforce_constraints()
   //Radio buttons only make sense when the items are restricted, instead of free-form:
   m_checkbutton_choices_restricted_as_radio_buttons->set_sensitive(
      m_checkbutton_choices_restricted->get_active());
-     
+
   if(m_show_numeric)
     m_vbox_numeric_format->show();
   else
@@ -447,6 +496,31 @@ void Box_Formatting::enforce_constraints()
 void Box_Formatting::on_checkbox()
 {
   enforce_constraints();
+}
+
+void Box_Formatting::on_button_choices_extra()
+{
+  if(!m_dialog_choices_extra_fields)
+    return;
+
+  const int response = Glom::Utils::dialog_run_with_help(m_dialog_choices_extra_fields);
+  m_dialog_choices_extra_fields->hide();
+  if(response == Gtk::RESPONSE_OK && m_dialog_choices_extra_fields->get_modified())
+  {
+    //Update the label:
+    const Glib::ustring text_extra_fields =
+      Utils::get_list_of_layout_items_for_display(m_dialog_choices_extra_fields->get_fields());
+     m_label_choices_extra_fields->set_text(text_extra_fields);
+
+    //Tell the parent (which connects directly to all other (regular) widgets):
+    m_signal_modified.emit();
+  }
+}
+
+
+Box_Formatting::type_signal_modified Box_Formatting::signal_modified()
+{
+  return m_signal_modified;
 }
 
 } //namespace Glom

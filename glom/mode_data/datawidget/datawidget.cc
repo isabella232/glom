@@ -130,12 +130,7 @@ DataWidget::DataWidget(const sharedptr<LayoutItem_Field>& field, const Glib::ust
         combo = create_combo_widget_for_field(field);
         combo->set_layout_item( get_layout_item(), table_name);
 
-        sharedptr<const Relationship> choice_relationship;
-        Glib::ustring choice_field, choice_second;
-        bool choice_show_all = false;
-        field->get_formatting_used().get_choices_related(choice_relationship, choice_field, choice_second, choice_show_all);
-
-        combo->set_choices_related(document, choice_relationship, choice_field, choice_second, choice_show_all);
+        combo->set_choices_related(document);
       }
       else
       {

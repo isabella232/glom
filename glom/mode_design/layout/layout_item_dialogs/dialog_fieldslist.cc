@@ -120,6 +120,8 @@ void Dialog_FieldsList::set_fields(const Glib::ustring& table_name, const Layout
     for(LayoutGroup::type_list_items::const_iterator iter = fields.begin(); iter != fields.end(); ++iter)
     {
       sharedptr<const LayoutItem_Field> item = sharedptr<const LayoutItem_Field>::cast_dynamic(*iter);
+      if(!item)
+        continue;
 
       Gtk::TreeModel::iterator iterTree = m_model_fields->append();
       Gtk::TreeModel::Row row = *iterTree;
@@ -277,7 +279,16 @@ void Dialog_FieldsList::on_cell_data_name(Gtk::CellRenderer* renderer, const Gtk
       Gtk::TreeModel::Row row = *iter;
 
       sharedptr<const LayoutItem_Field> item = row[m_ColumnsFields.m_col_layout_item]; //TODO_performance: Reduce copying.
-      renderer_text->property_markup() = item->get_layout_display_name();
+      if(item)
+      {
+        renderer_text->property_markup() = item->get_layout_display_name();
+      }
+      else
+      {
+        //Though this really shouldn't even be in the model:
+        renderer_text->property_markup() = Glib::ustring();
+      }
+
       renderer_text->property_editable() = false; //Names can never be edited.
     }
   }

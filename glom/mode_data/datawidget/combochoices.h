@@ -50,11 +50,8 @@ public:
 
   /**
    * See also refresh_data_from_database_with_foreign_key().
-   * @param relationship Just to save some extra lookup in the format, from get_layout_item().
-   * @param field Just to save some extra lookup in the format, from get_layout_item().
-   * @param field_second Just to save some extra lookup in the format, from get_layout_item().
    */
-  virtual void set_choices_related(const Document* document, const sharedptr<const Relationship>& relationship, const Glib::ustring& field, const Glib::ustring& field_second, bool show_all);
+  virtual void set_choices_related(const Document* document);
 
   /** Update a choices widget's list of related choices if a relevant value in its parent table has changed.
    *
@@ -65,17 +62,11 @@ public:
 protected:
   void init();
 
-  typedef std::list< std::pair<Gnome::Gda::Value, Gnome::Gda::Value> > type_list_values_with_second;
+  typedef std::list<Gnome::Gda::Value> type_list_values;
+  typedef std::list< std::pair<Gnome::Gda::Value, type_list_values> > type_list_values_with_second;
   virtual void set_choices_with_second(const type_list_values_with_second& list_values) = 0;
 
   //Gnome::Gda::Value m_value; //The last-stored value. We have this because the displayed value might be unparseable.
-
-  //These are used if it is related choices:
-  sharedptr<const Relationship> m_related_relationship;
-  sharedptr<const Field> m_related_to_field; //To avoid retrieving it each time.
-  sharedptr<const LayoutItem_Field> m_related_field;
-  sharedptr<const LayoutItem_Field> m_related_field_second;
-  bool m_related_show_all;
 };
 
 } //namespace DataWidetChildren

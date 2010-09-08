@@ -480,19 +480,14 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> Utils::build_sql_select_with_key(const Glib
     sharedptr<const Relationship>(), sort_clause, limit);
 }
 
-Utils::type_list_values_with_second Utils::get_choice_values_all(const Document* document, const sharedptr<const LayoutItem_Field>& field, sharedptr<const LayoutItem_Field>& layout_choice_first, sharedptr<const LayoutItem_Field>& layout_choice_second)
+Utils::type_list_values_with_second Utils::get_choice_values_all(const Document* document, const sharedptr<const LayoutItem_Field>& field)
 {
   return get_choice_values(document, field,
-    Gnome::Gda::Value() /* means get all with no WHERE clause */,
-    layout_choice_first, layout_choice_second);
+    Gnome::Gda::Value() /* means get all with no WHERE clause */);
 }
 
-Utils::type_list_values_with_second Utils::get_choice_values(const Document* document, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& foreign_key_value, sharedptr<const LayoutItem_Field>& layout_choice_first, sharedptr<const LayoutItem_Field>& layout_choice_second)
+Utils::type_list_values_with_second Utils::get_choice_values(const Document* document, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& foreign_key_value)
 {
-  //Initialize output parameters:
-  layout_choice_first = sharedptr<LayoutItem_Field>();
-  layout_choice_second = sharedptr<LayoutItem_Field>();
-
   //TODO: Reduce duplication between this and get_choice_values(field).
 
   type_list_values_with_second result;
@@ -508,9 +503,10 @@ Utils::type_list_values_with_second Utils::get_choice_values(const Document* doc
 
   const FieldFormatting& format = field->get_formatting_used();
   sharedptr<const Relationship> choice_relationship;
-  Glib::ustring choice_field, choice_second;
+  sharedptr<const LayoutItem_Field> layout_choice_first;
+  sharedptr<const LayoutGroup> layout_choice_extra;
   bool choice_show_all = false;
-  format.get_choices_related(document, choice_relationship, layout_choice_first, layout_choice_second, choice_show_all);
+  format.get_choices_related(choice_relationship, layout_choice_first, layout_choice_extra, choice_show_all);
 
   if(!choice_relationship)
   {
@@ -520,11 +516,22 @@ Utils::type_list_values_with_second Utils::get_choice_values(const Document* doc
 
   Utils::type_vecConstLayoutFields fields;
   fields.push_back(layout_choice_first);
-  if(layout_choice_second)
-    fields.push_back(layout_choice_second);
+
+  if(layout_choice_extra)
+  {
+    const LayoutGroup::type_list_const_items extra_fields = layout_choice_extra->get_items_recursive();
+    for(LayoutGroup::type_list_const_items::const_iterator iter = extra_fields.begin();
+      iter != extra_fields.end(); ++iter)
+    {
+      const sharedptr<const LayoutItem> item = *iter;
+      const sharedptr<const LayoutItem_Field> item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(item);
+      if(item_field)
+         fields.push_back(item_field); //TODO: Don't ignore other usable items such as static text.
+    }
+  }
 
   const Glib::ustring to_table = choice_relationship->get_to_table();
-  sharedptr<Field> to_field = document->get_field(to_table, choice_relationship->get_to_field());
+  const sharedptr<const Field> to_field = document->get_field(to_table, choice_relationship->get_to_field());
 
   if(!to_field)
   {
@@ -571,11 +578,19 @@ Utils::type_list_values_with_second Utils::get_choice_values(const Document* doc
     for(guint row = 0; row < count; ++row)
     {
 
-      std::pair<Gnome::Gda::Value, Gnome::Gda::Value> itempair;
+      std::pair<Gnome::Gda::Value, type_list_values> itempair;
       itempair.first = datamodel->get_value_at(0, row);
 
-      if(layout_choice_second && (cols_count > 1))
-        itempair.second = datamodel->get_value_at(1, row);
+      if(layout_choice_extra && (cols_count > 1))
+      {
+        type_list_values list_values;
+        for(guint i = 1; i < cols_count; ++i)
+        {
+          list_values.push_back(datamodel->get_value_at(1, row));
+        }
+
+        itempair.second = list_values;
+      }
 
       result.push_back(itempair);
     }
@@ -1124,5 +1139,30 @@ Glib::ustring Utils::get_directory_child_with_suffix(const Glib::ustring& uri_di
   return Glib::ustring();
 }
 
+Glib::ustring Utils::get_list_of_layout_items_for_display(const LayoutGroup::type_list_items& list_layout_fields)
+{
+  Glib::ustring result;
+  for(LayoutGroup::type_list_items::const_iterator iter = list_layout_fields.begin(); iter != list_layout_fields.end(); ++iter)
+  {
+    const sharedptr<LayoutItem> item = *iter;
+    if(item)
+    {
+      if(!result.empty())
+       result += ", ";
+
+      result += item->get_layout_display_name();
+    }
+  }
+
+  return result;
+}
+
+Glib::ustring Utils::get_list_of_layout_items_for_display(const sharedptr<const LayoutGroup>& layout_group)
+{
+  if(layout_group)
+    return get_list_of_layout_items_for_display(layout_group->m_list_items);
+  else
+    return Glib::ustring();
+}
 
 } //namespace Glom

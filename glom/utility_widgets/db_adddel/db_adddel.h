@@ -390,7 +390,7 @@ private:
   //TODO: Remove this and use AppGlom::get_application() instead?
   Application* get_application();
 
-  void set_cell_choices(CellRendererList* cell, const sharedptr<const LayoutItem_Field>& layout_choice_first,  const sharedptr<const LayoutItem_Field>& layout_choice_second, const Utils::type_list_values_with_second& list_values);
+  void set_cell_choices(CellRendererList* cell, const sharedptr<const LayoutItem_Field>& layout_choice_first,  const sharedptr<const LayoutGroup>& layout_choice_extras, const Utils::type_list_values_with_second& list_values);
   void refresh_cell_choices_data_from_database_with_foreign_key(guint model_index, const Gnome::Gda::Value& foreign_key_value);
 
   static void apply_formatting(Gtk::CellRenderer* renderer, const sharedptr<const LayoutItem_WithFormatting>& layout_item);

@@ -45,7 +45,7 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
 
   builder->get_widget("checkbutton_unique",  m_pCheck_Unique);
   builder->get_widget("checkbutton_primarykey",  m_pCheck_PrimaryKey);
-  builder->get_widget("checkbutton_autoincrement",  m_pCheck_AutoIncrement);  
+  builder->get_widget("checkbutton_autoincrement",  m_pCheck_AutoIncrement);
 
   builder->get_widget("hbox_default_value_simple",  m_pBox_DefaultValueSimple);
 
@@ -96,6 +96,10 @@ Dialog_FieldDefinition::Dialog_FieldDefinition(BaseObjectType* cobject, const Gl
   on_foreach_connect(*m_pBox_DefaultValueSimple);
   on_foreach_connect(*m_pBox_ValueTab);
   on_foreach_connect(*m_box_formatting);
+
+  //Plus an extra signal for the related extra show-also fields:
+  m_box_formatting->signal_modified().connect(
+   sigc::mem_fun(*this, &Dialog_FieldDefinition::on_anything_changed));
 
   Dialog_Properties::set_modified(false);
 
@@ -160,7 +164,7 @@ void Dialog_FieldDefinition::set_field(const sharedptr<const Field>& field, cons
   if(!pLabel->get_text().empty())
     m_pBox_DefaultValueSimple->pack_start(*pLabel);
 
-  m_pBox_DefaultValueSimple->pack_end(*m_pDataWidget_DefaultValueSimple, Gtk::PACK_EXPAND_WIDGET); 
+  m_pBox_DefaultValueSimple->pack_end(*m_pDataWidget_DefaultValueSimple, Gtk::PACK_EXPAND_WIDGET);
   m_pDataWidget_DefaultValueSimple->set_value(default_value);
   m_pDataWidget_DefaultValueSimple->show();
 
@@ -220,7 +224,7 @@ sharedptr<Field> Dialog_FieldDefinition::get_field() const
   // const_cast is necessary and save here for the window (jhs)
   sharedptr<SharedConnection> sharedcnc = connect_to_server(const_cast<Dialog_FieldDefinition*>(this));
   Glib::RefPtr<Gnome::Gda::Connection> cnc = sharedcnc->get_gda_connection();
-  
+
   //Get the field info from the widgets:
 
   Glib::RefPtr<Gnome::Gda::Column> fieldInfo = field->get_field_info(); //Preserve previous information.
@@ -372,7 +376,7 @@ void Dialog_FieldDefinition::on_button_edit_calculation()
   //TODO: Share a global instance, to make this quicker?
   Dialog_FieldCalculation* dialog = 0;
   Utils::get_glade_widget_derived_with_warning(dialog);
-  
+
   add_view(dialog); //Give it access to the document.
 
   m_Field->set_calculation( m_pTextView_Calculation->get_buffer()->get_text() );
@@ -389,6 +393,3 @@ void Dialog_FieldDefinition::on_button_edit_calculation()
 }
 
 } //namespace Glom
-
-
-

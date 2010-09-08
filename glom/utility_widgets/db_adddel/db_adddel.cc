@@ -832,25 +832,24 @@ Gtk::CellRenderer* DbAddDel::construct_specified_columns_cellrenderer(const shar
       else if(item_field && item_field->get_formatting_used().get_has_related_choices())
       {
         sharedptr<const Relationship> choice_relationship;
-        Glib::ustring choice_field, choice_second;
+        sharedptr<const LayoutItem_Field> choice_field;
+        sharedptr<const LayoutGroup> choice_extras;
         bool choice_show_all;
-        item_field->get_formatting_used().get_choices_related(choice_relationship, choice_field, choice_second, choice_show_all);
+        item_field->get_formatting_used().get_choices_related(choice_relationship, choice_field, choice_extras, choice_show_all);
 
-        if(choice_relationship && !choice_field.empty())
+        if(choice_relationship && choice_field)
         {
           const Glib::ustring to_table = choice_relationship->get_to_table();
 
-          const bool use_second = !choice_second.empty();
+          const bool use_second = choice_extras;
           pCellRendererCombo->set_use_second(use_second);
 
           //TODO: Update this when the relationship's field value changes:
           if(choice_show_all) //Otherwise it must change whenever the relationships's ID value changes.
           {
-            Document* document = get_document();
-            sharedptr<const LayoutItem_Field> layout_field_first;
-            sharedptr<const LayoutItem_Field> layout_field_second;
-            Utils::type_list_values_with_second list_values = Utils::get_choice_values_all(document, item_field, layout_field_first, layout_field_second);
-            set_cell_choices(pCellRendererCombo,  layout_field_first, layout_field_second, list_values);
+            const Utils::type_list_values_with_second list_values = 
+              Utils::get_choice_values_all(get_document(), item_field);
+            set_cell_choices(pCellRendererCombo, choice_field, choice_extras, list_values);
           }
         }
       }
@@ -1237,7 +1236,7 @@ void DbAddDel::set_value_selected(const sharedptr<const LayoutItem_Field>& layou
   set_value(get_item_selected(), layout_item, value);
 }
 
-void DbAddDel::set_cell_choices(CellRendererList* cell, const sharedptr<const LayoutItem_Field>& layout_choice_first,  const sharedptr<const LayoutItem_Field>& layout_choice_second, const Utils::type_list_values_with_second& list_values)
+void DbAddDel::set_cell_choices(CellRendererList* cell, const sharedptr<const LayoutItem_Field>& layout_choice_first,  const sharedptr<const LayoutGroup>& layout_choice_extras, const Utils::type_list_values_with_second& list_values)
 {
   if(!cell)
     return;
@@ -1251,11 +1250,34 @@ void DbAddDel::set_cell_choices(CellRendererList* cell, const sharedptr<const La
       Conversions::get_text_for_gda_value(
         layout_choice_first->get_glom_type(), iter->first, layout_choice_first->get_formatting_used().m_numeric_format);
 
-    Glib::ustring second;
-    if(layout_choice_second)
+    //TODO: Support multiple extra fields:
+    //For now, use only the first extra field:
+    sharedptr<const LayoutItem_Field> layout_choice_second;
+    if(layout_choice_extras)
     {
+      const LayoutGroup::type_list_const_items extra_fields
+        = layout_choice_extras->get_items_recursive();
+
+      for(LayoutGroup::type_list_const_items::const_iterator iterExtra = extra_fields.begin();
+          iterExtra != extra_fields.end(); ++iterExtra)
+      {
+        const sharedptr<const LayoutItem> item = *iterExtra;
+        const sharedptr<const LayoutItem_Field> item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(item);
+        if(item_field)
+        {
+          layout_choice_second = item_field;
+          break;
+        }
+      }
+    }
+        
+    Glib::ustring second;
+    const Utils::type_list_values extra_values = iter->second;
+    if(layout_choice_second && !extra_values.empty())
+    {
+      const Gnome::Gda::Value value = *(extra_values.begin()); //TODO: Use a vector instead?
       second = Conversions::get_text_for_gda_value(
-        layout_choice_second->get_glom_type(), iter->second, layout_choice_second->get_formatting_used().m_numeric_format);
+        layout_choice_second->get_glom_type(), value, layout_choice_second->get_formatting_used().m_numeric_format);
     }
 
     cell->append_list_item(first, second);
@@ -1294,14 +1316,16 @@ void DbAddDel::refresh_cell_choices_data_from_database_with_foreign_key(guint mo
     return;
   }
 
+  const Utils::type_list_values_with_second list_values =
+    Utils::get_choice_values(get_document(), layout_field, foreign_key_value);
 
+  sharedptr<const Relationship> choice_relationship;
   sharedptr<const LayoutItem_Field> layout_choice_first;
-  sharedptr<const LayoutItem_Field> layout_choice_second;
-  Utils::type_list_values_with_second list_values =
-    Utils::get_choice_values(get_document(), layout_field, foreign_key_value,
-      layout_choice_first, layout_choice_second);
-
-  set_cell_choices(cell, layout_choice_first, layout_choice_second, list_values);
+  sharedptr<const LayoutGroup> layout_choice_extras;
+  bool choice_show_all = false;
+  layout_field->get_formatting_used().get_choices_related(choice_relationship, layout_choice_first, layout_choice_extras, choice_show_all); 
+    
+  set_cell_choices(cell, layout_choice_first, layout_choice_extras, list_values);
 }
 
 void DbAddDel::remove_all_columns()
@@ -1443,10 +1467,9 @@ DbAddDel::type_list_indexes DbAddDel::get_choice_index(const sharedptr<const Lay
 
     const FieldFormatting& format = field->get_formatting_used();
 
-    sharedptr<const Relationship> choice_relationship;
-    Glib::ustring choice_field, choice_second;
     bool choice_show_all = false;
-    format.get_choices_related(choice_relationship, choice_field, choice_second, choice_show_all);
+    const sharedptr<const Relationship> choice_relationship =
+      format.get_choices_related_relationship(choice_show_all);
     if(choice_relationship && !choice_show_all) //"Show All" choices don't use the ID field values.
     {
       if(choice_relationship->get_from_field() == from_key_name)

@@ -73,10 +73,17 @@ ComboGlom::~ComboGlom()
 {
 }
 
-void ComboGlom::set_choices_related(const Document* document, const sharedptr<const Relationship>& relationship, const Glib::ustring& field, const Glib::ustring& field_second, bool show_all)
+void ComboGlom::set_choices_related(const Document* document)
 {
+  //TODO: Remove duplication with ComboEntry:
+  sharedptr<LayoutItem_Field> layout_item = 
+    sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
+  bool choice_show_all = false;
+  bool choice_has_second = false;
+  layout_item->get_formatting_used().get_has_related_choices(choice_show_all, choice_has_second);
+  
   //Add the extra cell if necessary:
-  if(!m_cell_second && !field_second.empty())
+  if(!m_cell_second && choice_has_second)
   {
     #ifndef GLOM_ENABLE_MAEMO
     //We don't use this convenience method, because we want more control over the renderer.
@@ -99,7 +106,7 @@ void ComboGlom::set_choices_related(const Document* document, const sharedptr<co
     #endif //GLOM_ENABLE_MAEMO
   }
 
-  ComboChoicesWithTreeModel::set_choices_related(document, relationship, field, field_second, show_all);
+  ComboChoicesWithTreeModel::set_choices_related(document);
 }
 
 void ComboGlom::check_for_change()

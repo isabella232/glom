@@ -47,11 +47,6 @@ ComboAsRadioButtons::ComboAsRadioButtons()
 
 void ComboAsRadioButtons::init()
 {
-  if(m_related_field_second)
-  {
-    //TODO
-  }
-
   //if(m_glom_type == Field::TYPE_NUMERIC)
    // get_entry()->set_alignment(1.0); //Align numbers to the right.
 }
@@ -59,7 +54,7 @@ void ComboAsRadioButtons::init()
 void ComboAsRadioButtons::set_choices_with_second(const type_list_values_with_second& list_values)
 {
   //Clear existing buttons:
-  for(type_map_buttons::iterator iter = m_map_buttons.begin(); 
+  for(type_map_buttons::iterator iter = m_map_buttons.begin();
     iter != m_map_buttons.end(); ++iter)
   {
      Gtk::RadioButton* button = iter->second;
@@ -67,21 +62,49 @@ void ComboAsRadioButtons::set_choices_with_second(const type_list_values_with_se
   }
   m_map_buttons.clear();
 
+  sharedptr<LayoutItem_Field> layout_item =
+    sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
+  const FieldFormatting& format = layout_item->get_formatting_used();
+  sharedptr<const Relationship> choice_relationship;
+  sharedptr<const LayoutItem_Field> layout_choice_first;
+  sharedptr<const LayoutGroup> layout_choice_extra;
+  bool choice_show_all = false;
+  format.get_choices_related(choice_relationship, layout_choice_first, layout_choice_extra, choice_show_all);
+
+  LayoutGroup::type_list_const_items extra_fields;
+  if(layout_choice_extra)
+    extra_fields = layout_choice_extra->get_items_recursive();
+
   //Add new buttons:
   Gtk::RadioButton::Group group;
   for(type_list_values_with_second::const_iterator iter = list_values.begin(); iter != list_values.end(); ++iter)
   {
-    sharedptr<const LayoutItem_Field> layout_item = sharedptr<LayoutItem_Field>::cast_dynamic(get_layout_item());
-    if(layout_item)
+    if(layout_choice_first)
     {
-      const Glib::ustring value_first = Conversions::get_text_for_gda_value(layout_item->get_glom_type(), iter->first, layout_item->get_formatting_used().m_numeric_format);
+      const Glib::ustring value_first = Conversions::get_text_for_gda_value(layout_choice_first->get_glom_type(), iter->first, layout_choice_first->get_formatting_used().m_numeric_format);
       Glib::ustring title = value_first;
-      if(m_related_field_second)
+
+      const type_list_values extra_values = iter->second;
+      if(layout_choice_extra && !extra_values.empty())
       {
-        const Glib::ustring value_second = Conversions::get_text_for_gda_value(m_related_field_second->get_glom_type(), iter->second, m_related_field_second->get_formatting_used().m_numeric_format);
-        title += " - " + value_second; //TODO: Find a better way to join them?
+        type_list_values::const_iterator iterValues = extra_values.begin();
+        for(LayoutGroup::type_list_const_items::const_iterator iterExtra = extra_fields.begin();
+          iterExtra != extra_fields.end(); ++iterExtra)
+        {
+          const sharedptr<const LayoutItem> item = *iterExtra;
+          const sharedptr<const LayoutItem_Field> item_field = sharedptr<const LayoutItem_Field>::cast_dynamic(item);
+          if(item_field && (iterValues != extra_values.end()))
+          {
+            const Gnome::Gda::Value value = *iterValues; //TODO: Use a vector instead?
+            const Glib::ustring value_second = Conversions::get_text_for_gda_value(item_field->get_glom_type(), value, item_field->get_formatting_used().m_numeric_format);
+
+            title += " - " + value_second; //TODO: Find a better way to join them?
+          }
+          
+          ++iterValues;
+        }
       }
-      
+
       Gtk::RadioButton* button = new Gtk::RadioButton(group, title);
       m_map_buttons[value_first] = button;
       pack_start(*button);
@@ -93,13 +116,13 @@ void ComboAsRadioButtons::set_choices_with_second(const type_list_values_with_se
       button->signal_button_press_event().connect(
         sigc::mem_fun(*this, &ComboAsRadioButtons::on_radiobutton_button_press_event), false);
     }
-  } 
+  }
 }
 
 void ComboAsRadioButtons::set_choices(const FieldFormatting::type_list_values& list_values)
 {
   //Clear existing buttons:
-  for(type_map_buttons::iterator iter = m_map_buttons.begin(); 
+  for(type_map_buttons::iterator iter = m_map_buttons.begin();
     iter != m_map_buttons.end(); ++iter)
   {
      Gtk::RadioButton* button = iter->second;
@@ -115,7 +138,7 @@ void ComboAsRadioButtons::set_choices(const FieldFormatting::type_list_values& l
     if(layout_item)
     {
       const Glib::ustring value_first = Conversions::get_text_for_gda_value(layout_item->get_glom_type(), *iter, layout_item->get_formatting_used().m_numeric_format);
-      
+
       Gtk::RadioButton* button = new Gtk::RadioButton(group, value_first);
       m_map_buttons[value_first] = button;
       pack_start(*button);
@@ -123,20 +146,20 @@ void ComboAsRadioButtons::set_choices(const FieldFormatting::type_list_values& l
       button->signal_toggled().connect(
         sigc::mem_fun(*this, &ComboAsRadioButtons::on_radiobutton_toggled));
     }
-  } 
+  }
 }
 
 
 
 ComboAsRadioButtons::~ComboAsRadioButtons()
 {
-  for(type_map_buttons::iterator iter = m_map_buttons.begin(); 
+  for(type_map_buttons::iterator iter = m_map_buttons.begin();
     iter != m_map_buttons.end(); ++iter)
   {
      Gtk::RadioButton* button = iter->second;
      delete button;
   }
-  m_map_buttons.clear();	
+  m_map_buttons.clear();
 }
 
 void ComboAsRadioButtons::check_for_change()
@@ -224,7 +247,7 @@ Glib::ustring ComboAsRadioButtons::get_text() const
       return iter->first;
     }
   }
-      
+
   return Glib::ustring();
 }
 

@@ -71,7 +71,7 @@ public:
 
   virtual void set_read_only(bool read_only = true);
 
-  virtual void set_choices_related(const Document* document, const sharedptr<const Relationship>& relationship, const Glib::ustring& field, const Glib::ustring& field_second, bool show_all);
+  virtual void set_choices_related(const Document* document);
 
 private:
   void init();

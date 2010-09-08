@@ -1,3 +1,55 @@
+2010-09-08  Murray Cumming  <murrayc@murrayc.com>
+
+	Initial support for multiple show-also fields in related choices.
+
+	* glom/glom_developer.glade: Formatting box: related choices:
+  Replace the second-field combo with a label and an edit button, to
+  open a layout dialog allowing multiple items (fields).
+	* glom/mode_design/layout/layout_item_dialogs/box_formatting.[h|cc]:
+  Add the code for that.
+	* glom/mode_design/fields/dialog_fielddefinition.cc: Handle changes to
+  the extra layout group in BoxFormatting.
+
+	* glom/libglom/data_structure/layout/fieldformatting.[h|cc]:
+  Added a get_has_related_choices() with a has_second& parameter.
+  Added a get_choices_related_relationship() convenience method.
+  set/get_choices_related(): Change the field_second string parameter to
+  a full LayoutGroup, allowing multiple items (fields).
+	* glom/libglom/data_structure/layout/layoutgroup.[h|cc]:
+  Added a get_items_recursive() convenience method.
+  Adapt to the FieldFormatting change.
+	* glom/libglom/document/document.cc:
+  load_after_layout_item_formatting(), save_before_layout_item_formatting():
+  For the related choices extra fields, save an entire layout group instead of
+  just a field name, supporting the deprecated way for documents with the
+  old file format version.
+	* glom/libglom/utils.[h|cc]: get_choice_values(): Do not take
+  the first and second fields as parameters. Instead get the information from
+  the layout item. Support multiple fields, via the new layout group.
+  Added get_list_of_layout_items_for_display() to show a preview of the
+  layout group (list of fields) in the label in BoxFormatting.
+	* glom/mode_data/flowtablewithfields.cc: Adapt to the FieldFormatting change.
+	* glom/mode_design/layout/layout_item_dialogs/dialog_group_by.cc:
+  update_labels(): Improve this code, using the new
+  Utils::get_list_of_layout_items_for_display() method.
+	* glom/utility_widgets/db_adddel/db_adddel.[h|cc]: Adapt to these changes.
+
+	* glom/mode_data/datawidget/combo.[h|cc]:
+	* glom/mode_data/datawidget/combo_as_radio_buttons.cc:
+	* glom/mode_data/datawidget/combochoices.[h|cc]:
+	* glom/mode_data/datawidget/combochoiceswithtreemodel.cc:
+	* glom/mode_data/datawidget/comboentry.[h|cc]:
+  set_choices_related(): Don't take the extra fields as a parameter. Instead
+  discover them from the layout item.
+  set_choices_with_second(): Change the list_value's parameter type to support
+  multiple second values.
+  refresh_data_from_database_with_foreign_key(): Adapt the to the use of a
+  layout group instead of second field name, though this currently only uses the first field.
+	* glom/mode_data/datawidget/datawidget.cc: Adapt to the combo API changes.
+
+	* glom/mode_design/layout/layout_item_dialogs/dialog_fieldslist.cc: Make
+  some code slightly more robust. Not really a related change.
+
 2010-09-07  Murray Cumming  <murrayc@murrayc.com>
 
 	Dialog_Properties: Remove the unnecessary virtual keywords.

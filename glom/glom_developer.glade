@@ -6727,8 +6727,30 @@ Which user should be added to this group?</property>
                                 <property name="column_spacing">6</property>
                                 <property name="row_spacing">6</property>
                                 <child>
-                                  <object class="GtkComboBox" id="combobox_choices_related_field_second">
+                                  <object class="GtkHBox" id="hbox1">
                                     <property name="visible">True</property>
+                                    <child>
+                                      <object class="GtkLabel" id="label_choices_related_extra_fields">
+                                        <property name="visible">True</property>
+                                        <property name="xalign">0</property>
+                                        <property name="label" translatable="yes">label</property>
+                                      </object>
+                                      <packing>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkButton" id="button_choices_related_extra_fields">
+                                        <property name="label">gtk-edit</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">True</property>
+                                        <property name="use_stock">True</property>
+                                      </object>
+                                      <packing>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>

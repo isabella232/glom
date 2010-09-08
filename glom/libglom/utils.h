@@ -111,11 +111,11 @@ Glib::RefPtr<Gnome::Gda::SqlBuilder> build_sql_select_with_key(
 
 Gnome::Gda::SqlExpr get_find_where_clause_quick(const Document* document, const Glib::ustring& table_name, const Gnome::Gda::Value& quick_search);
 
+typedef std::list<Gnome::Gda::Value> type_list_values;
+typedef std::list< std::pair<Gnome::Gda::Value, type_list_values> > type_list_values_with_second; //TODO: Rename this now that we have more than just 1 extra field.
+type_list_values_with_second get_choice_values_all(const Document* document, const sharedptr<const LayoutItem_Field>& field);
 
-typedef std::list< std::pair<Gnome::Gda::Value, Gnome::Gda::Value> > type_list_values_with_second;
-type_list_values_with_second get_choice_values_all(const Document* document, const sharedptr<const LayoutItem_Field>& field, sharedptr<const LayoutItem_Field>& layout_choice_first, sharedptr<const LayoutItem_Field>& layout_choice_second);
-
-type_list_values_with_second get_choice_values(const Document* document, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& foreign_key_value, sharedptr<const LayoutItem_Field>& layout_choice_first, sharedptr<const LayoutItem_Field>& layout_choice_second);
+type_list_values_with_second get_choice_values(const Document* document, const sharedptr<const LayoutItem_Field>& field, const Gnome::Gda::Value& foreign_key_value);
 
 /// Get the full query string suitable for use with std::cout.
 std::string sqlbuilder_get_full_query(
@@ -176,6 +176,14 @@ bool delete_directory(const std::string& uri);
 /** For instance, to find the first file in the directory with a .glom extension.
  */
 Glib::ustring get_directory_child_with_suffix(const Glib::ustring& uri_directory, const std::string& suffix, bool recursive);
+
+/** Get a string to display to the user, as a representation of a list of layout items.
+ */
+Glib::ustring get_list_of_layout_items_for_display(const LayoutGroup::type_list_items& list_layout_fields);
+
+/** Get a string to display to the user, as a representation of a list of layout items.
+ */
+Glib::ustring get_list_of_layout_items_for_display(const sharedptr<const LayoutGroup>& layout_group);
 
 } //namespace Utils
 
